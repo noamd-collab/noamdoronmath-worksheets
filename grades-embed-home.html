@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>דפי עבודה לפי כיתה — מתמטיקה · נועם דורון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@500;700;900&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2138;
+    --ink-soft:#5B6480;
+    --paper:#FFFDF7;
+    --grid:#EAE6DA;
+    --cta:#2F63C6;
+    --radius:20px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Assistant",-apple-system,"Segoe UI",Arial,sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    padding:10px 14px 30px;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      var(--paper);
+  }
+  .wrap{max-width:1060px;margin:0 auto}
+
+  /* ---------------- switch ---------------- */
+  .switchbar{display:flex;justify-content:center;margin:6px 0 8px}
+  .switch{
+    position:relative;display:flex;gap:4px;padding:6px;
+    background:#fff;border:3px solid var(--ink);border-radius:999px;
+    box-shadow:-5px 5px 0 rgba(27,33,56,.14);
+  }
+  .thumb{
+    position:absolute;top:6px;bottom:6px;left:6px;
+    width:0;border-radius:999px;background:var(--ink);
+    transition:left .32s cubic-bezier(.68,-.3,.28,1.32),
+               width .32s cubic-bezier(.68,-.3,.28,1.32),
+               background .25s ease;
+    z-index:0;
+  }
+  .switch[data-active="mid"]  .thumb{background:#0E9384}
+  .switch[data-active="elem"] .thumb{background:#7C3AED}
+  .switch button{
+    position:relative;z-index:1;
+    font-family:"Heebo",sans-serif;font-weight:900;font-size:clamp(15px,2vw,18px);
+    padding:10px 22px;border:0;background:none;cursor:pointer;border-radius:999px;
+    color:var(--ink);transition:color .22s ease;white-space:nowrap;
+  }
+  .switch button[aria-selected="true"]{color:#fff}
+  .switch button:focus-visible{outline:3px solid var(--cta);outline-offset:3px}
+  .switch button small{display:block;font-family:"Assistant";font-weight:700;font-size:12px;opacity:.7}
+
+  .lead{
+    text-align:center;font-weight:700;color:var(--ink-soft);
+    font-size:15px;margin:14px 0 22px;min-height:22px;
+  }
+
+  /* ---------------- grid ---------------- */
+  .panel[hidden]{display:none}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media (max-width:820px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:500px){.grid{grid-template-columns:1fr}}
+
+  /* ---------------- card ---------------- */
+  .card{
+    --c:#888; --tint:#f2f2f2;
+    position:relative;display:flex;flex-direction:column;
+    padding:22px 20px 18px;text-decoration:none;color:inherit;
+    background:var(--tint);
+    border:3px solid var(--ink);border-radius:var(--radius);
+    box-shadow:-6px 6px 0 var(--ink);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .card:hover,.card:focus-visible{
+    transform:translate(4px,-4px);
+    box-shadow:-10px 10px 0 var(--ink);
+  }
+  .card:active{transform:translate(0,0);box-shadow:-3px 3px 0 var(--ink)}
+  .card:focus-visible{outline:3px solid var(--cta);outline-offset:4px}
+
+  .badge{
+    width:70px;height:70px;flex:none;
+    display:grid;place-items:center;
+    background:#fff;border:3px solid var(--ink);border-radius:50%;
+    font-family:"Heebo",sans-serif;font-weight:900;font-size:36px;line-height:1;
+    color:var(--c);transform:rotate(-7deg);
+    transition:transform .28s cubic-bezier(.68,-.4,.3,1.4);
+  }
+  .card:hover .badge{transform:rotate(6deg) scale(1.07)}
+
+  .cardtop{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    width:100%;margin-bottom:16px;
+  }
+  .pill{
+    flex:none;
+    font-family:"Heebo",sans-serif;font-weight:900;font-size:11px;letter-spacing:.02em;
+    background:#fff;border:2px solid var(--ink);border-radius:999px;
+    padding:5px 10px;line-height:1;transform:rotate(3deg);white-space:nowrap;
+  }
+  .title{font-family:"Heebo",sans-serif;font-weight:900;font-size:21px;margin:0 0 6px}
+  .sub{font-size:14.5px;font-weight:600;color:var(--ink-soft);margin:0 0 18px;line-height:1.45}
+  .cta{
+    margin-top:auto;align-self:flex-start;
+    font-family:"Heebo",sans-serif;font-weight:900;font-size:15px;
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 18px;border-radius:999px;
+    background:var(--c);color:#fff;border:3px solid var(--ink);
+  }
+  .cta svg{width:15px;height:15px;transition:transform .2s ease}
+  .card:hover .cta svg{transform:translateX(-4px)}
+
+  /* soon state */
+  .card.soon{background:#F6F5F2;border-style:dashed}
+  .card.soon .cta{background:#fff;color:var(--ink)}
+  .card.soon .sub{opacity:.9}
+
+  /* colors */
+  .g7{--c:#E4572E;--tint:#FFE8DF}
+  .g8{--c:#E0A500;--tint:#FFF4D6}
+  .g9{--c:#0E9384;--tint:#DDF3EF}
+  .g1{--c:#7C3AED;--tint:#EFE7FE}
+  .g2{--c:#0B84D0;--tint:#DFF0FB}
+  .g3{--c:#12A05C;--tint:#DFF5E9}
+  .g4{--c:#D97706;--tint:#FDEDD8}
+  .g5{--c:#DB2777;--tint:#FDE4EF}
+  .g6{--c:#4F5BD5;--tint:#E5E7FC}
+
+  /* entrance */
+  @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+  .panel:not([hidden]) .card{animation:pop .38s both cubic-bezier(.2,.9,.3,1.2)}
+  .panel .card:nth-child(1){animation-delay:.02s}
+  .panel .card:nth-child(2){animation-delay:.07s}
+  .panel .card:nth-child(3){animation-delay:.12s}
+  .panel .card:nth-child(4){animation-delay:.17s}
+  .panel .card:nth-child(5){animation-delay:.22s}
+  .panel .card:nth-child(6){animation-delay:.27s}
+
+
+  /* ---------------- hero ---------------- */
+  .hero{position:relative;text-align:center;padding:18px 10px 6px;margin-bottom:4px}
+  .hero h1{
+    font-family:"Heebo",sans-serif;font-weight:900;letter-spacing:-.02em;
+    font-size:clamp(26px,5vw,44px);margin:0 0 8px;color:var(--ink);
+  }
+  .hero .hl{
+    position:relative;display:inline-block;padding:0 6px;
+    background:linear-gradient(transparent 55%, #FFE47A 55%, #FFE47A 92%, transparent 92%);
+    transform:rotate(-1deg);
+  }
+  .tagline{margin:0;font-weight:700;color:var(--ink-soft);font-size:clamp(14px,2vw,17px)}
+  .doodle{position:absolute;opacity:.35;color:var(--ink);pointer-events:none}
+  .doodle svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .d1{width:46px;height:46px;top:2px;inset-inline-start:6%;animation:float 7s ease-in-out infinite}
+  .d2{width:38px;height:38px;top:12px;inset-inline-end:9%;animation:float 6s ease-in-out infinite reverse}
+  .d3{width:34px;height:34px;bottom:-4px;inset-inline-start:16%;animation:float 8s ease-in-out infinite .8s}
+  .d4{width:40px;height:40px;bottom:0;inset-inline-end:18%;animation:float 7.5s ease-in-out infinite .4s}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-9px) rotate(5deg)}}
+
+  /* ---------------- extra card juice ---------------- */
+  .card{overflow:visible}
+  .card::after{ /* diagonal candy stripes on the tint */
+    content:"";position:absolute;inset:0;border-radius:calc(var(--radius) - 3px);
+    background:repeating-linear-gradient(45deg, rgba(255,255,255,.4) 0 12px, transparent 12px 26px);
+    pointer-events:none;opacity:.5;
+  }
+  .card > *{position:relative;z-index:1}
+  .badge{position:relative}
+  .badge::after{ /* spinning sticker ring */
+    content:"";position:absolute;inset:-8px;border-radius:50%;
+    border:2.5px dashed var(--c);opacity:.55;
+    animation:spin 14s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .card:hover .badge{animation:wob .5s ease 1}
+  @keyframes wob{0%,100%{transform:rotate(-7deg)}35%{transform:rotate(8deg) scale(1.1)}70%{transform:rotate(-4deg)}}
+  .cta{box-shadow:-3px 3px 0 var(--ink);transition:transform .16s ease, box-shadow .16s ease, background .16s ease}
+  .card:hover .cta{transform:translate(1px,-1px);box-shadow:-5px 5px 0 var(--ink)}
+  .pill{box-shadow:-2px 2px 0 var(--ink)}
+
+  /* thumb gets candy stripes too */
+  .thumb{
+    background-image:repeating-linear-gradient(45deg, rgba(255,255,255,.18) 0 8px, transparent 8px 18px);
+  }
+
+  @media (max-width:600px){ .doodle{display:none} }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important}
+    .card:hover{transform:none}
+    .badge::after{animation:none}
+    .doodle{animation:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="doodle d1" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17L20 7M4 7h6M4 12h4"/></svg></span>
+    <span class="doodle d2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4l9 15H3z"/></svg></span>
+    <span class="doodle d3" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><path d="M4 12h16"/><circle cx="12" cy="19" r="1.6"/></svg></span>
+    <span class="doodle d4" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19L19 5"/><circle cx="7" cy="7" r="2.4"/><circle cx="17" cy="17" r="2.4"/></svg></span>
+    <h1>דפי עבודה <span class="hl">במתמטיקה</span></h1>
+    <p class="tagline">בוחרים כיתה, בוחרים רמה — ומתחילים לתרגל 🚀</p>
+  </header>
+
+  <div class="switchbar">
+    <div class="switch" id="switch" data-active="mid" role="tablist" aria-label="בחירת שכבת גיל">
+      <span class="thumb" aria-hidden="true"></span>
+      <button role="tab" id="tab-mid" aria-controls="panel-mid" aria-selected="true">
+        🏫 חטיבת ביניים <small>ז׳ · ח׳ · ט׳</small>
+      </button>
+      <button role="tab" id="tab-elem" aria-controls="panel-elem" aria-selected="false">
+        🎒 יסודי <small>א׳ – ו׳</small>
+      </button>
+    </div>
+  </div>
+
+  <p class="lead" id="lead">מארזים מלאים, שלוש רמות לכל נושא — בחרו כיתה</p>
+
+  <!-- ============ ז׳–ט׳ ============ -->
+  <div class="panel" id="panel-mid" role="tabpanel" aria-labelledby="tab-mid">
+    <div class="grid">
+
+      <a class="card g7" data-page="g7" href="https://www.noamdoronmath.co.il/worksheetsfor7thgrade">
+        <div class="cardtop"><span class="badge">ז׳</span><span class="pill">זמין עכשיו</span></div>
+        <p class="title">🧭 דפי עבודה כיתה ז׳</p>
+        <p class="sub">מספרים מכוונים · ביטויים אלגבריים · גיאומטריה</p>
+        <span class="cta">לכניסה
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </span>
+      </a>
+
+      <a class="card g8" data-page="g8" href="https://www.noamdoronmath.co.il/worksheetsfor8thgrade">
+        <div class="cardtop"><span class="badge">ח׳</span><span class="pill">זמין עכשיו</span></div>
+        <p class="title">🧪 דפי עבודה כיתה ח׳</p>
+        <p class="sub">משוואות ואחוזים · פונקציה קווית · חפיפה ודמיון</p>
+        <span class="cta">לכניסה
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </span>
+      </a>
+
+      <a class="card g9" data-page="g9" href="https://www.noamdoronmath.co.il/worksheetsfor9thgrade">
+        <div class="cardtop"><span class="badge">ט׳</span><span class="pill">זמין עכשיו</span></div>
+        <p class="title">🎯 דפי עבודה כיתה ט׳</p>
+        <p class="sub">אלגברה ופרבולה · גיאומטריה · מעבר לחטיבה העליונה</p>
+        <span class="cta">לכניסה
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ============ א׳–ו׳ ============ -->
+  <div class="panel" id="panel-elem" role="tabpanel" aria-labelledby="tab-elem" hidden>
+    <div class="grid">
+
+      <a class="card g1" data-page="g1" href="https://www.noamdoronmath.co.il/worksheetsfor1thgrade">
+        <div class="cardtop"><span class="badge">א׳</span><span class="pill">זמין עכשיו</span></div>
+        <p class="title">🎈 דפי עבודה כיתה א׳</p>
+        <p class="sub">מנייה, חיבור וחיסור עד 20, צורות ושעון</p>
+        <span class="cta">לכניסה
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </span>
+      </a>
+
+      <a class="card g2" data-page="g2" href="https://www.noamdoronmath.co.il/worksheetsfor2thgrade">
+        <div class="cardtop"><span class="badge">ב׳</span><span class="pill">זמין עכשיו</span></div>
+        <p class="title">🧮 דפי עבודה כיתה ב׳</p>
+        <p class="sub">מספרים עד 1000, כפל וחילוק ראשונים, זמן וכסף</p>
+        <span class="cta">לכניסה
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </span>
+      </a>
+
+      <a class="card g3" data-page="g3" href="https://www.noamdoronmath.co.il/worksheetsfor3thgrade">
+        <div class="cardtop"><span class="badge">ג׳</span><span class="pill">זמין עכשיו</span></div>
+        <p class="title">✏️ דפי עבודה כיתה ג׳</p>
+        <p class="sub">ערך מקום, חיבור בטור, שברים ראשונים, זוויות</p>
+        <span class="cta">לכניסה
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </span>
+      </a>
+
+      <a class="card g4" data-page="g4" href="https://www.noamdoronmath.co.il/worksheetsfor4thgrade">
+        <div class="cardtop"><span class="badge">ד׳</span><span class="pill">זמין עכשיו</span></div>
+        <p class="title">📐 דפי עבודה כיתה ד׳</p>
+        <p class="sub">כפל רב־ספרתי, חילוק ארוך, שברים, שטח והיקף</p>
+        <span class="cta">לכניסה
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </span>
+      </a>
+
+      <a class="card g5" data-page="g5" href="https://www.noamdoronmath.co.il/worksheetsfor5thgrade">
+        <div class="cardtop"><span class="badge">ה׳</span><span class="pill">זמין עכשיו</span></div>
+        <p class="title">📊 דפי עבודה כיתה ה׳</p>
+        <p class="sub">שברים ומספרים עשרוניים, שטחים, נתונים וחקר</p>
+        <span class="cta">לכניסה
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </span>
+      </a>
+
+      <a class="card g6" data-page="g6" href="https://www.noamdoronmath.co.il/worksheetsfor6thgrade">
+        <div class="cardtop"><span class="badge">ו׳</span><span class="pill">זמין עכשיו</span></div>
+        <p class="title">🚀 דפי עבודה כיתה ו׳</p>
+        <p class="sub">כפל וחילוק שברים, אחוזים ויחס, נפח ותיבות</p>
+        <span class="cta">לכניסה
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </span>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  /* =========================================================================
+     ⬇⬇⬇ כתובות עמודי הכיתות — המקום היחיד שצריך לעדכן אם עמוד שינה כתובת.
+     החליפו את הכתובת המתאימה ושמרו. שאר הקוד לא דורש נגיעה.
+     ========================================================================= */
+  var PAGES = {
+    g1: "https://www.noamdoronmath.co.il/worksheetsfor1thgrade",   /* כיתה א׳ */
+    g2: "https://www.noamdoronmath.co.il/worksheetsfor2thgrade",   /* כיתה ב׳ */
+    g3: "https://www.noamdoronmath.co.il/worksheetsfor3thgrade",   /* כיתה ג׳ */
+    g4: "https://www.noamdoronmath.co.il/worksheetsfor4thgrade",   /* כיתה ד׳ */
+    g5: "https://www.noamdoronmath.co.il/worksheetsfor5thgrade",   /* כיתה ה׳ */
+    g6: "https://www.noamdoronmath.co.il/worksheetsfor6thgrade",   /* כיתה ו׳ */
+    g7: "https://www.noamdoronmath.co.il/worksheetsfor7thgrade",   /* כיתה ז׳ */
+    g8: "https://www.noamdoronmath.co.il/worksheetsfor8thgrade",   /* כיתה ח׳ */
+    g9: "https://www.noamdoronmath.co.il/worksheetsfor9thgrade"    /* כיתה ט׳ */
+  };
+  document.querySelectorAll('a.card[data-page]').forEach(function(a){
+    var u = PAGES[a.dataset.page];
+    if (u) a.setAttribute('href', u);
+  });
+
+  var sw   = document.getElementById('switch');
+  var lead = document.getElementById('lead');
+  var tabs = { mid: document.getElementById('tab-mid'), elem: document.getElementById('tab-elem') };
+  var pans = { mid: document.getElementById('panel-mid'), elem: document.getElementById('panel-elem') };
+  var text = {
+    mid:  'מארזים מלאים, שלוש רמות לכל נושא — בחרו כיתה',
+    elem: 'מארזים מלאים לכל כיתה, שלוש רמות לכל נושא — בחרו כיתה'
+  };
+
+  var thumb = sw.querySelector('.thumb');
+
+  function moveThumb(key){
+    var b = tabs[key].getBoundingClientRect();
+    var p = sw.getBoundingClientRect();
+    thumb.style.left  = (b.left - p.left) + 'px';
+    thumb.style.width = b.width + 'px';
+  }
+
+  function select(key){
+    sw.dataset.active = key;
+    moveThumb(key);
+    Object.keys(tabs).forEach(function(k){
+      tabs[k].setAttribute('aria-selected', k === key);
+      pans[k].hidden = (k !== key);
+    });
+    lead.textContent = text[key];
+    // restart entrance animation
+    pans[key].querySelectorAll('.card').forEach(function(c){
+      c.style.animation = 'none'; void c.offsetWidth; c.style.animation = '';
+    });
+  }
+
+  // place thumb on load / after webfonts / on resize
+  requestAnimationFrame(function(){ moveThumb(sw.dataset.active); });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function(){ moveThumb(sw.dataset.active); });
+  }
+  window.addEventListener('resize', function(){ moveThumb(sw.dataset.active); });
+
+  tabs.mid.addEventListener('click', function(){ select('mid'); });
+  tabs.elem.addEventListener('click', function(){ select('elem'); });
+
+  sw.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
+      e.preventDefault();
+      var next = sw.dataset.active === 'mid' ? 'elem' : 'mid';
+      select(next); tabs[next].focus();
+    }
+  });
+
+  // Wix embed: open in parent window, not inside the iframe
+  document.querySelectorAll('a.card').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var url = a.getAttribute('href');
+      try {
+        window.top.location.href = url;
+      } catch(err){
+        var w = window.open(url, '_top');
+        if (!w) window.open(url, '_blank');
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

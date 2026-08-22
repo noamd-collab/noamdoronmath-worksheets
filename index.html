@@ -1,0 +1,2367 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>דפי עבודה במתמטיקה · נועם דורון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* =======================================================================
+     עיצוב "מחברת משבצות" — ערכת הצבעים מתחלפת לפי הלשונית הפעילה
+     באמצעות data-grade על .wrap. אין צורך לגעת בזה.
+     ======================================================================= */
+  .wrap[data-grade="1"], body:has(.wrap[data-grade="1"]){
+    --ink:#241F33; --accent:#7C3AED; --accent-dark:#5620B4; --tint:#EFE7FE;
+    --paper:#FDFBFF; --grid:#E9E2F6; --muted:#6B6484; --ph:#A79EBD;
+  }
+  .wrap[data-grade="2"], body:has(.wrap[data-grade="2"]){
+    --ink:#1B2A38; --accent:#0B84D0; --accent-dark:#085E96; --tint:#DFF0FB;
+    --paper:#FAFDFF; --grid:#DFEAF3; --muted:#5C6E7E; --ph:#93A9BA;
+  }
+  .wrap[data-grade="3"], body:has(.wrap[data-grade="3"]){
+    --ink:#1E2E24; --accent:#12A05C; --accent-dark:#0B7040; --tint:#DFF5E9;
+    --paper:#FAFEFB; --grid:#DFEDE4; --muted:#5A7163; --ph:#93A899;
+  }
+  .wrap[data-grade="4"], body:has(.wrap[data-grade="4"]){
+    --ink:#2E2416; --accent:#D97706; --accent-dark:#9A5304; --tint:#FDEDD8;
+    --paper:#FFFDF8; --grid:#F1E7D6; --muted:#7A6A52; --ph:#B3A38C;
+  }
+  .wrap[data-grade="5"], body:has(.wrap[data-grade="5"]){
+    --ink:#331F2A; --accent:#DB2777; --accent-dark:#A11955; --tint:#FDE4EF;
+    --paper:#FFFBFD; --grid:#F3E0EA; --muted:#7C6270; --ph:#B39CA8;
+  }
+  .wrap[data-grade="6"], body:has(.wrap[data-grade="6"]){
+    --ink:#20233B; --accent:#4F5BD5; --accent-dark:#3641A3; --tint:#E5E7FC;
+    --paper:#FBFBFF; --grid:#E3E5F4; --muted:#63678A; --ph:#9CA0C0;
+  }
+  .wrap[data-grade="7"], body:has(.wrap[data-grade="7"]){
+    --ink:#2A1F26; --accent:#D9451F; --accent-dark:#8F2C10; --tint:#FFE3D8;
+    --paper:#FFFCF6; --grid:#F0E3D6; --muted:#7A6257; --ph:#B39C90;
+  }
+  .wrap[data-grade="8"], body:has(.wrap[data-grade="8"]){
+    --ink:#241F33; --accent:#6D28D9; --accent-dark:#4520A0; --tint:#EEE6FE;
+    --paper:#FDFBFF; --grid:#E8E2F5; --muted:#6B6484; --ph:#A79EBD;
+  }
+  .wrap[data-grade="9"], body:has(.wrap[data-grade="9"]){
+    --ink:#1E2E26; --accent:#0E7C6B; --accent-dark:#08544A; --tint:#DCF2ED;
+    --paper:#FAFEFB; --grid:#DFEDE4; --muted:#5A7167; --ph:#93A89C;
+  }
+  :root{
+    --r-card:18px;
+    --ink:#241F33; --accent:#6D28D9; --accent-dark:#4520A0; --tint:#EEE6FE;
+    --paper:#FDFBFF; --grid:#E8E2F5; --muted:#6B6484; --ph:#A79EBD;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    margin:0; padding:0;
+    font-family:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+    font-size:16px; line-height:1.55; color:var(--ink,#2A1F26);
+    -webkit-font-smoothing:antialiased;
+    background:#ffffff;
+  }
+
+  .wrap{
+    width:100%; padding:26px 18px 14px; color:var(--ink);
+    background:
+      linear-gradient(var(--grid,#EFE7DC) 1.2px, transparent 1.2px) 0 0/28px 28px,
+      linear-gradient(90deg, var(--grid,#EFE7DC) 1.2px, transparent 1.2px) 0 0/28px 28px,
+      var(--paper,#FFFCF6);
+  }
+  /* התוכן עצמו נשאר ברוחב קריא וממורכז, הרקע נמתח לרוחב מלא */
+  .wrap > *{ max-width:1000px; margin-inline:auto; }
+
+  /* ---------- לשוניות כיתה ---------- */
+  .grades{ display:flex; gap:12px; justify-content:center; margin:0 0 26px; flex-wrap:wrap; }
+  .grade-tab{
+    font-family:'Heebo',inherit; font-size:16px; font-weight:900;
+    color:var(--ink); background:#fff;
+    border:3px solid var(--ink); border-radius:999px;
+    padding:10px 30px; cursor:pointer;
+    box-shadow:-4px 4px 0 var(--ink);
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease, color .16s ease;
+  }
+  .grade-tab:hover{ transform:translate(2px,-2px); box-shadow:-6px 6px 0 var(--ink); }
+  .grade-tab:active{ transform:translate(0,0); box-shadow:-2px 2px 0 var(--ink); }
+  .grade-tab[aria-selected="true"]{ background:var(--accent); color:#fff; }
+
+  /* ---------- כותרת ---------- */
+  h1{
+    font-family:'Heebo','Assistant',Arial,sans-serif;
+    font-weight:900; font-size:clamp(23px,4.3vw,37px); line-height:1.3;
+    color:var(--ink); text-align:center; margin:0 0 12px;
+    letter-spacing:-.015em; position:relative; padding-bottom:16px;
+  }
+  h1::after{
+    content:""; position:absolute; bottom:0; left:50%;
+    transform:translateX(-50%) rotate(-.8deg);
+    width:120px; height:9px; background:var(--tint);
+    border:2.5px solid var(--ink); border-radius:999px;
+  }
+  .lede{ text-align:center; color:var(--muted); margin:0 auto 26px; max-width:640px; font-size:15px; font-weight:600; }
+
+  /* ---------- סרגל חיפוש וסינון ---------- */
+  .toolbar{
+    display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between;
+    padding:16px; margin-bottom:10px;
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-6px 6px 0 var(--ink);
+  }
+  .search{ position:relative; flex:1 1 260px; min-width:220px; }
+  .search input{
+    width:100%; font-family:inherit; font-size:15px; font-weight:600; color:var(--ink);
+    padding:12px 42px 12px 16px;
+    background:var(--paper); border:2.5px solid var(--ink); border-radius:999px;
+  }
+  .search input::placeholder{ color:var(--ph); font-weight:600; }
+  .search input:focus{ outline:none; box-shadow:-3px 3px 0 var(--accent); }
+  .search svg{ position:absolute; inset-inline-end:15px; top:50%; transform:translateY(-50%); width:17px; height:17px; stroke:var(--ink); fill:none; stroke-width:2.4; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:'Heebo',inherit; font-size:13.5px; font-weight:800; color:var(--ink);
+    background:var(--paper); border:2.5px solid var(--ink);
+    border-radius:999px; padding:8px 16px; cursor:pointer;
+    transition:background .16s ease, color .16s ease, transform .16s ease;
+  }
+  .chip:hover{ transform:translateY(-2px); }
+  .chip[aria-pressed="true"]{ background:var(--accent); color:#fff; }
+
+  /* ---------- שורת חיפוש חוצה-כיתות ---------- */
+  .cross{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    margin:12px 6px 0; font-size:14px; font-weight:700; color:var(--muted);
+  }
+  .cross label{ display:inline-flex; align-items:center; gap:8px; cursor:pointer; }
+  .cross input{ width:17px; height:17px; accent-color:var(--accent); cursor:pointer; }
+  .hint{ font-size:13.5px; font-weight:600; color:var(--muted); margin:14px 6px 24px; }
+
+  /* ---------- כותרת כיתה בתוצאות חוצות-כיתות ---------- */
+  .grade-band{
+    display:flex; align-items:center; gap:12px;
+    margin:30px 0 16px; padding:10px 16px;
+    background:var(--tint); border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-4px 4px 0 var(--ink);
+  }
+  .grade-band h2{
+    font-family:'Heebo',Arial,sans-serif; font-weight:900; font-size:17px;
+    color:var(--ink); margin:0; white-space:nowrap;
+  }
+  .grade-band .rule{ flex:1; height:2.5px; background:var(--ink); opacity:.18; border-radius:2px; }
+  .grade-band .count{ font-size:13px; font-weight:700; color:var(--ink); opacity:.65; white-space:nowrap; }
+
+  /* ---------- קבוצות נושאים ---------- */
+  .group{ margin-bottom:38px; }
+  .group:last-child{ margin-bottom:0; }
+  .group-head{ display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+  .group-head h3{
+    font-family:'Heebo',Arial,sans-serif; font-weight:900; font-size:16px;
+    color:var(--ink); margin:0; white-space:nowrap; letter-spacing:.01em;
+    background:var(--tint); border:2.5px solid var(--ink); border-radius:999px;
+    padding:7px 18px; transform:rotate(-1.2deg);
+  }
+  .group-head .rule{ flex:1; height:2.5px; background:var(--ink); opacity:.14; border-radius:2px; }
+  .group-head .count{ font-size:13px; font-weight:700; color:var(--muted); white-space:nowrap; }
+
+  /* ---------- כרטיס נושא ---------- */
+  .card{
+    display:flex; align-items:center; gap:22px; justify-content:space-between;
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r-card);
+    padding:18px 22px; margin-bottom:14px;
+    box-shadow:-5px 5px 0 var(--ink);
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    animation:pop .26s ease both;
+  }
+  .card:hover{ background:var(--tint); transform:translate(3px,-3px); box-shadow:-8px 8px 0 var(--ink); }
+
+  .card-text{ min-width:0; }
+  .card-text h4{
+    font-family:'Heebo',Arial,sans-serif; font-weight:900;
+    font-size:20px; color:var(--ink); margin:0 0 6px; line-height:1.35;
+  }
+  .card-text p{ margin:0; font-size:14.5px; font-weight:600; color:var(--muted); line-height:1.5; }
+  .card-text .note{ margin-top:8px; font-size:13px; font-weight:800; color:var(--accent-dark); }
+
+  /* ---------- אייקון נושא ---------- */
+  .card-main{ display:flex; align-items:flex-start; gap:16px; min-width:0; }
+  .tico{
+    flex:none; width:46px; height:46px; margin-top:2px;
+    display:grid; place-items:center;
+    background:var(--tint); border:2.5px solid var(--ink); border-radius:50%;
+    color:var(--accent-dark); transform:rotate(-5deg);
+    transition:transform .25s ease;
+  }
+  .card:hover .tico{ transform:rotate(4deg) scale(1.06); }
+  .tico svg{
+    width:23px; height:23px;
+    fill:none; stroke:currentColor; stroke-width:1.9;
+    stroke-linecap:round; stroke-linejoin:round;
+  }
+
+  /* תג PDF ליד שם הנושא */
+  .pdf-badge{
+    display:inline-flex; align-items:center; gap:4px;
+    margin-inline-start:9px; vertical-align:3px;
+    padding:3px 8px; border-radius:6px;
+    font-family:'Heebo',inherit; font-size:10.5px; font-weight:900; letter-spacing:.04em;
+    color:var(--ink); background:var(--tint); border:2px solid var(--ink);
+    transform:rotate(2deg);
+  }
+  .pdf-badge svg{
+    width:11px; height:13px; flex-shrink:0;
+    fill:none; stroke:var(--ink); stroke-width:1.9;
+    stroke-linejoin:round; stroke-linecap:round;
+  }
+
+  /* ---------- כפתורי רמות ---------- */
+  .levels{ display:flex; gap:10px; flex-shrink:0; }
+  .lvl{
+    display:inline-flex; align-items:center; justify-content:center; text-align:center;
+    min-width:106px; padding:10px 16px;
+    font-family:'Heebo',inherit; font-weight:900; font-size:14px;
+    text-decoration:none; white-space:nowrap; color:var(--ink); background:#fff;
+    border:2.5px solid var(--ink); border-radius:999px;
+    box-shadow:-3px 3px 0 var(--ink);
+    transition:background .16s ease, color .16s ease, transform .16s ease, box-shadow .16s ease;
+  }
+  .lvl--a,.lvl--b,.lvl--c{ background:#fff; color:var(--ink); }
+  .lvl--a:hover,.lvl--b:hover,.lvl--c:hover{
+    background:var(--accent); color:#fff; transform:translate(2px,-2px); box-shadow:-5px 5px 0 var(--ink);
+  }
+  .lvl--a:active,.lvl--b:active,.lvl--c:active{ transform:translate(0,0); box-shadow:-2px 2px 0 var(--ink); }
+
+  /* מצב "אין לינק" — חייב לבוא אחרי .lvl--a/b/c */
+  .lvl--soon,
+  .lvl--soon:hover{
+    background:var(--paper); color:var(--muted);
+    border:2.5px dashed var(--ink); box-shadow:none; transform:none; cursor:default;
+    font-size:12.5px; font-weight:800; white-space:normal; line-height:1.25;
+  }
+  .lvl--soon .soon-note{ font-weight:700; font-size:11.5px; color:var(--muted); opacity:.85; margin-inline-start:5px; }
+  .lvl--one{ min-width:238px; }
+
+  :where(a,button,input):focus-visible{ outline:3px solid var(--accent); outline-offset:3px; }
+
+  .empty{
+    text-align:center; padding:44px 20px; color:var(--muted); font-weight:600;
+    background:#fff; border:3px dashed var(--ink); border-radius:var(--r-card);
+  }
+  .empty strong{ display:block; font-family:'Heebo',Arial,sans-serif; color:var(--ink); font-size:19px; font-weight:900; margin-bottom:8px; }
+  .foot{ text-align:center; font-size:13px; font-weight:700; color:var(--muted); margin:18px 0 0; }
+
+  @keyframes pop{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:none; } }
+
+  /* ---------- מובייל ---------- */
+  @media (max-width:720px){
+    .wrap{ padding:20px 14px 8px; }
+    .grades{ gap:8px; }
+    .grade-tab{ padding:9px 20px; font-size:14px; box-shadow:-3px 3px 0 var(--ink); }
+    .toolbar{ padding:13px; box-shadow:-4px 4px 0 var(--ink); }
+    .card{ flex-direction:column; align-items:stretch; gap:14px; padding:16px; box-shadow:-4px 4px 0 var(--ink); }
+    .card:hover{ transform:none; box-shadow:-4px 4px 0 var(--ink); }
+    .card-text h4{ font-size:18px; }
+    .levels{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .lvl{ min-width:0; padding:11px 4px; font-size:12.5px; box-shadow:-2px 2px 0 var(--ink); }
+    .lvl--soon{ font-size:11px; }
+    .lvl--soon .soon-note{ font-size:10px; }
+    .lvl--one{ min-width:0; grid-column:1 / -1; }
+    .group-head h3{ font-size:14.5px; padding:6px 14px; }
+    .tico{ width:40px; height:40px; }
+    .tico svg{ width:20px; height:20px; }
+  }
+
+  /* ---------- playful upgrade ---------- */
+  /* card hand-placed tilt */
+  .card{ --tilt:0deg; transform:rotate(var(--tilt)); }
+  #list .card:nth-child(odd), .group .card:nth-of-type(odd){ --tilt:-.35deg; }
+  .group .card:nth-of-type(even){ --tilt:.35deg; }
+  .card:hover{ transform:translate(3px,-3px) rotate(0deg); }
+  .card:active{ transform:translate(0,0) rotate(0deg); }
+
+  /* icon wiggle on hover */
+  @keyframes wiggle{
+    0%,100%{ transform:rotate(-5deg) scale(1.06); }
+    30%{ transform:rotate(7deg) scale(1.1); }
+    60%{ transform:rotate(-3deg) scale(1.08); }
+  }
+  .card:hover .tico{ animation:wiggle .5s ease 1; transform:rotate(4deg) scale(1.06); }
+
+  /* level buttons — color-coded */
+  .lvl--a{ background:var(--tint); }
+  .lvl--b{ background:#fff; }
+  .lvl--c{ background:#FFE47A; }
+  .lvl--c::before{ content:"★"; margin-inline-end:6px; font-size:12px; transform:translateY(-1px); }
+  .lvl--a:hover,.lvl--b:hover,.lvl--c:hover{ background:var(--accent); color:#fff; }
+  .lvl--soon, .lvl--soon:hover{ background:var(--paper); color:var(--muted); }
+  .lvl--soon::before{ content:none; }
+
+  /* group stickers alternate tilt */
+  .group:nth-of-type(even) .group-head h3{ transform:rotate(1.2deg); }
+
+  /* active grade tab gets a jaunty tilt */
+  .grade-tab[aria-selected="true"]{ transform:rotate(-2deg); }
+  .grade-tab[aria-selected="true"]:hover{ transform:rotate(-2deg) translate(2px,-2px); }
+
+  /* pdf badge waves on card hover */
+  .card:hover .pdf-badge{ transform:rotate(-3deg) scale(1.08); transition:transform .2s ease; }
+
+  /* empty state doodle */
+  .empty::before{ content:"🔍"; display:block; font-size:38px; margin-bottom:10px; }
+
+
+  /* ---------- כרטיס מודגש: מעבר לחטיבה העליונה (ט׳) ---------- */
+  .card[data-g="bridge"]{
+    background:linear-gradient(135deg, #FFF3C4 0%, #FFE47A 100%);
+    border-width:3.5px;
+  }
+  .card[data-g="bridge"]::after{ opacity:.25; }
+  .card[data-g="bridge"] .tico{ background:#fff; }
+  .card[data-g="bridge"] .card-text h4::before{ content:"🎓 "; }
+  .card[data-g="bridge"]:hover{ background:linear-gradient(135deg, #FFE47A 0%, #FFD84D 100%); }
+
+  @media (prefers-reduced-motion:reduce){
+    .card{ transform:none; }
+    .card:hover .tico{ animation:none; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{ transition:none !important; animation:none !important; }
+    .card:hover,.grade-tab:hover,.lvl:hover,.chip:hover{ transform:none; }
+    .card:hover .tico{ transform:rotate(-5deg); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+
+  <div class="grades" id="grades" role="tablist" aria-label="בחירת כיתה"></div>
+
+  <h1 id="title"></h1>
+  <p class="lede" id="lede"></p>
+
+  <div class="toolbar">
+    <div class="search">
+      <input id="q" type="search" placeholder="חיפוש נושא — למשל: זוויות, פיתגורס, אחוזים" aria-label="חיפוש נושא">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="סינון לפי תחום"></div>
+  </div>
+
+  <div class="cross">
+    <label><input type="checkbox" id="crossq"> חיפוש בכל הכיתות</label>
+    <span id="crosshint"></span>
+  </div>
+
+  <p class="hint">רמה א׳ — מתקדם · רמה ב׳ — בסיסי · רמת מצוינות — אתגר, הוכחות ושאלות מורכבות</p>
+
+  <div id="list"></div>
+
+  <p class="foot">כל הקבצים בפורמט PDF · מתמטיקה · נועם דורון</p>
+</div>
+
+<script>
+/* =========================================================================
+   קובץ אחד לכל תשע הכיתות. הכיתה נבחרת אוטומטית מכתובת העמוד
+   (worksheetsfor4thgrade → כיתה ד׳). אין צורך לערוך דבר בין העמודים —
+   מדביקים את אותו קוד בדיוק בכל תשעת העמודים.
+   אם בכל זאת רוצים לקבע כיתה ידנית, שנו את המספר בשורה הבאה מ-0 ל-1..9.
+   ========================================================================= */
+var FORCE_GRADE = 0;
+
+function detectGrade(){
+  if (FORCE_GRADE >= 1 && FORCE_GRADE <= 9) return FORCE_GRADE;
+  var urls = [];
+  try { if (document.referrer) urls.push(document.referrer); } catch(e){}
+  try { urls.push(window.parent.location.href); } catch(e){}
+  try {
+    if (location.ancestorOrigins) {
+      for (var i = 0; i < location.ancestorOrigins.length; i++) urls.push(location.ancestorOrigins[i]);
+    }
+  } catch(e){}
+  urls.push(location.href);
+  var words = { "1th":1, "2th":2, "3th":3, "4th":4, "5th":5, "6th":6, "7th":7, "8th":8, "9th":9,
+                "1st":1, "2nd":2, "3rd":3 };
+  for (var u = 0; u < urls.length; u++){
+    var s = String(urls[u]).toLowerCase();
+    var q = s.match(/[?&]grade=([1-9])\b/);          /* ?grade=4 */
+    if (q) return Number(q[1]);
+    var m = s.match(/worksheetsfor([1-9])(?:th|st|nd|rd)grade/);
+    if (m) return Number(m[1]);
+    for (var k in words){
+      if (s.indexOf("for" + k + "grade") !== -1) return words[k];
+    }
+  }
+  return 7;   /* ברירת מחדל אם לא זוהתה כיתה */
+}
+var DEFAULT_GRADE = detectGrade();
+
+var BASE = "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
+
+var DATA = {
+
+  /* ================= כיתה א׳ ================= */
+  1: {
+    links: {
+      1:{ a:"bbded85dfadf47738b57cf4643aafc3e",
+          b:"b78f875d3f644e34b02c0e7cd82895d5",
+          c:"0839c6eba18f4b6fa47daffcbc9ac1aa" },
+      2:{ a:"b29bb77dd1d04c118b5bdab4e3ad75bc",
+          b:"eb5fd63a82c9456aacc58f25dead1855",
+          c:"c21f8302951c43728e4d79f9031c0bde" },
+      3:{ a:"ecc6d410f6574d0c8770c5594827e992",
+          b:"9a39d903cd104e24bbce4624c4dc5fdd",
+          c:"3d0d773df7fc470e96d74fd942613129" },
+      4:{ a:"ee6abfc24f5d44a2b846eb6dda9dda48",
+          b:"0ff9db96de2b436eb1e9afb74cb09e98",
+          c:"d59af9a11a084dfa939550fb34b5e0ad" },
+      5:{ a:"2e540739f91f4708bfb4afbc58d63582",
+          b:"e251ccef4ed54795bbc1434a55f302e9",
+          c:"79b13e21e2b7452eae7889ba187bb519" },
+      6:{ a:"cedf52cd16bb47648d366c9a5f59d8c7",
+          b:"0489ff92279b4814b22c095e6ef94e4a",
+          c:"a5ae19e31493404d8941870ecad79d42" },
+      7:{ a:"69fda592b2d84536a94bab969516b3fc",
+          b:"05c6ee26f91742e9adf45a0102f9480d",
+          c:"2d45d05f95ad49a68731a5febb55f95b" },
+      8:{ a:"f85630edf43e47df9510181dc1b2b12e",
+          b:"e07f57eda80447f9b19c6a72fd6ee064",
+          c:"f23444be5a9541faa7a0c114a6c7d536" },
+      9:{ a:"4254f8d9b8ff4d2e8856c883fc181ce3",
+          b:"5d18b4e0b1f94c2294e30f953bbab7c0",
+          c:"2296d1f356624dfa8da4e4fdfde0cb64" },
+      10:{ a:"257a966e6a4e42fbb4d82ea7b035be95",
+          b:"8dc4e2deb1c74bedaaf221ff24b2bad3",
+          c:"4347d8d503ef4eb6b8a2d6e84186d1a2" },
+      11:{ a:"8a8a7ddc2fc14e9cae011d8b02ec90db",
+          b:"6de62604dcf34762b4f805c8013c926d",
+          c:"ade826d365a24583a9c045e0998906ab" },
+      12:{ a:"1f946074ab5943459546367e4b010cdb",
+          b:"e93d253cec774b398479b0d3e61d7aeb",
+          c:"fe82f91bbb28478285db72877a8e9a72" },
+      13:{ a:"719e1ced77a3418992784dad82976486",
+          b:"abfbfbeb8f67432b8b102fb9f6a77546",
+          c:"74d08d1caf5c492199b8fcbc6dd618c5" },
+      14:{ a:"3a1b9f39abdf412391c74d3cd1e07399",
+          b:"321e79c047874cdca1eb4c51c753ada7",
+          c:"00ebf36078084c48be015e9e92ed88cf" },
+      15:{ a:"f4e11139b2854386a10bca479702dfb8",
+          b:"85e8176dfa2e478fa09a75cc4db923c1",
+          c:"a12a5afaa1f04ab28ac8988f739b1586" },
+      16:{ a:"20f6664d12554edcbfbd2dc71a3a2025",
+          b:"c1e5e3e347e049e4a20cdfcb82ba1770",
+          c:"91e851e067da4c2a8dab615f7ff670ac" },
+      17:{ a:"8de76b1c95fa4e11acd85cd750274eb9",
+          b:"e131e68ad3ba4608b75f95c13a9a8e1d",
+          c:"f1dfa4165f1a48a0a1dba393263eed5d" },
+      18:{ a:"f4c824c3e532498da822311cd599807e",
+          b:"e64b367291bb4177b1585062c430daf0",
+          c:"ffc0382f50564d3da698cc361c901185" },
+      19:{ a:"b63da559466b40c09853fb0cd62f80b8",
+          b:"ad162c346d8840d99a69ff6267699068",
+          c:"67a3f73f58a545f4bee3f55b36476140" },
+      20:{ a:"b9f7a387e1f84fc1a30aa0a7ed9c8a7e",
+          b:"f90da167a0a842bab0efc3357fdbc8a6",
+          c:"a5b628773f3a45a7a3fa0127ed28d646" },
+      21:{ a:"24b0b559a4d44a7796b13a78b9a57612",
+          b:"f2541c0b067d498c83564b27b109c3ca",
+          c:"56beadcae16641978e13a876853692f2" },
+      22:{ a:"6b8618c91d794e97a663cc971a230e05",
+          b:"342befed771a49dc970cee43f6f2cd6b",
+          c:"96817d5015c64ebe839734e503f0b513" },
+      23:{ a:"3f696f470b1e418e95c1434ed8f0c8ff",
+          b:"8c61aea069b640768685970cbeec9336",
+          c:"e3a5f626156f432ebcc370467416ba37" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים ומנייה" },
+      { key:"addsub",  name:"חיבור וחיסור" },
+      { key:"think",  name:"חשיבה, דפוסים ושוויון" },
+      { key:"word",  name:"בעיות מילוליות" },
+      { key:"geo",  name:"גיאומטריה ומדידות" },
+      { key:"data",  name:"נתונים" }
+    ],
+
+    topics: [
+      { id:1, ic:"tally", g:"num", t:"מונים בלי לפספס" },
+      { id:2, ic:"star", g:"num", t:"קוראים כותבים ומייצגים עד 100" },
+      { id:3, ic:"lt", g:"num", t:"סדר שכנים והשוואה" },
+      { id:4, ic:"branch", g:"addsub", t:"מרכיבים ומפרקים עד 10" },
+      { id:5, ic:"plusminus", g:"addsub", t:"חיבור בתחום 10" },
+      { id:6, ic:"plusminus", g:"addsub", t:"חיסור בתחום 10" },
+      { id:7, ic:"star", g:"addsub", t:"בונים 20 דרך 10" },
+      { id:8, ic:"plusminus", g:"addsub", t:"חיבור בתחום 20" },
+      { id:9, ic:"plusminus", g:"addsub", t:"חיסור בתחום 20" },
+      { id:10, ic:"scale", g:"think", t:"שוויון נעלם והשוואת תרגילים" },
+      { id:11, ic:"steps", g:"think", t:"דפוסים וסדרות" },
+      { id:12, ic:"table", g:"num", t:"חוקרים את לוח המאה" },
+      { id:13, ic:"steps", g:"think", t:"שרשראות ופירמידות מספרים" },
+      { id:14, ic:"speech", g:"word", t:"בעיות מילוליות בציור ובמספר" },
+      { id:15, ic:"ruler", g:"geo", t:"מודדים ומשווים אורך" },
+      { id:16, ic:"plusminus", g:"addsub", t:"קבוצות שוות וחיבור חוזר" },
+      { id:17, ic:"pgram", g:"geo", t:"מצולעים" },
+      { id:18, ic:"rhomb", g:"geo", t:"ריבוע ומלבן" },
+      { id:19, ic:"branch", g:"addsub", t:"מרכיבים ומפרקים" },
+      { id:20, ic:"clock", g:"geo", t:"שעה שלמה" },
+      { id:21, ic:"bars", g:"data", t:"נתונים" },
+      { id:22, ic:"speech", g:"word", t:"בעיות מילוליות פשוטות" },
+      { id:23, ic:"branch", g:"addsub", t:"הרכבה ופירוק" }
+    ]
+  },
+  /* ================= כיתה ב׳ ================= */
+  2: {
+    links: {
+      1:{ a:"ff2dd4a6cb98441484d5ccf5bbd6357b",
+          b:"ad8cb9d27a26418ca1d577c80ae68afe",
+          c:"880b33b2d95447679ec5662d79214df5" },
+      2:{ a:"f905d6f3774d4934a5c667619ce9514d",
+          b:"d14f67200557442e96b951ed2a97600d",
+          c:"70626429d390456f93b16b7a38a611d9" },
+      3:{ a:"1de32fe4482542ea8bf56a67288042c5",
+          b:"96941e17161a4a05b11ceb876794ca6d",
+          c:"9810cf749ae840629a35a176afbec772" },
+      4:{ a:"5c0ef40ea9a44938923fd47bcf68c4ef",
+          b:"4e7664b255284484a459931279251235",
+          c:"2f9b699f12db48dd9b3f218d676db165" },
+      5:{ a:"a14597d4437e4e92bdfa5e5170346160",
+          b:"9d150b5298ce48b0890038088729d452",
+          c:"ed9360660313494f9a99a74ab7c52896" },
+      6:{ a:"505638c5307b4b27b309ca52bf9948ae",
+          b:"374011a92ef9483e99e48469e0ecfbed",
+          c:"f211839a94f146fb876ab6521459a485" },
+      7:{ a:"ac10260d33c749a3a2f9cde1e2a23569",
+          b:"3755d93215294d799d24c35f32d37db5",
+          c:"bf5da46ee0ca4da2b8385322090a9f2d" },
+      8:{ a:"ae7b6cf8363045d38e8aa623f0979858",
+          b:"aa8fce01c2be496db4a3da739670b4d5",
+          c:"eddb2c6258c6414592d2bd3f9a05c67f" },
+      9:{ a:"e6ccde76447a4c4faa7b5ef49dad1ef2",
+          b:"02f35d1621aa4680aab451de5bd5d371",
+          c:"42ae14d416c94ab88b856cc1d566648d" },
+      10:{ a:"938bc208c1b14cabb47ac2d754a9dca3",
+          b:"32c4879160c343068c2d30c9a3c5e05d",
+          c:"2901073563ab4dbdb65454d9383100ac" },
+      11:{ a:"57a84282780a4977b3d1a2795bf55323",
+          b:"eaaf827eb3a1428682674cac32c9be6d",
+          c:"7ca333d38fc84cf7a512443dea09ccae" },
+      12:{ a:"8ebfc7c2f0b640f2a699f5be0c410c4d",
+          b:"1cff705f56ce449ab0d5d9122de18754",
+          c:"07b0bee10bc141eb97c72a1c2127f795" },
+      13:{ a:"8581c9c1769e48ae9536ec1c2d4b80d7",
+          b:"aae8ddf7200c4a698399e75220d8f2b7",
+          c:"29bded29b09f4db0b6013f727f5baef2" },
+      14:{ a:"73c78d3c905346fba631c22310a04b47",
+          b:"880f440ccc304259a652b648b2ea37f8",
+          c:"6aa7446c86a14683b937ac4be2d64a01" },
+      15:{ a:"4016ae783bc44a98b59d4700bfd239f2",
+          b:"bfe6d42e56364d7d97682d41ff6cfb3b",
+          c:"da65511dba774c509b86b4a10652dfba" },
+      16:{ a:"d30cd667915c4d82aa5b077588d9cc24",
+          b:"6979afd00a0741b2a7c232e685df972d",
+          c:"04b843fe14b24507b5150ec573ce6e49" },
+      17:{ a:"04f010e033b74229a300a07a463e70a7",
+          b:"21877669f4fa4088939331a5641867a2",
+          c:"34f8013a45544a10a43773bfc1c35189" },
+      18:{ a:"b21c247a979840a78b70b6f342eec84b",
+          b:"728055e8202a4274bd458f37d965b0d5",
+          c:"52c21115d1f24d5b978f6bbb66262786" },
+      19:{ a:"c79ffa7303784a6886a016572ca78a18",
+          b:"dc4beede34aa45779a49c4f2cfcb22bb",
+          c:"d5344c6a6b6443478c5089567c2e185b" },
+      20:{ a:"97a872be633a4f16bb8ef9c3422f28f4",
+          b:"23e29600ad4f4b80b504d7ea2e56338c",
+          c:"1f2cc964544f48e2a9f122a87a0fdc2b" },
+      21:{ a:"52fc81f1a33044cbb0b5c094d886b815",
+          b:"d7d9ba49830f43188887dd597a09a8c4",
+          c:"c8dc8e947af2497dbbe9b6bd4928141a" },
+      22:{ a:"b48dec988f854ff7927cd20fd5ffa314",
+          b:"469050361c60456e809d3c6391117fdf",
+          c:"1d86273cafb346df8fbcc598a7f3848e" },
+      23:{ a:"ba18253dd1e342bc9dc93b39b1a8c8b6",
+          b:"3dece5cda52b4a21b219342a22d9ef61",
+          c:"0f91efa40fc841d6b60e5f9ff3f19846" },
+      24:{ a:"6a22ff7f991047d0bdf691ad6a33dbf6",
+          b:"90d051473ebc4d1ba4cbee5bef396fca",
+          c:"2a412e19fa184bc2818ce2fd21b93dce" },
+      25:{ a:"6a791b7edb5f4fb2b511b143ff006fc6",
+          b:"617a52ebe31b4d99ab04f277b45fb282",
+          c:"aef6af112e2d494289d0dcb58c7bd19c" },
+      26:{ a:"de1fa7b1947e4457b4edc77113f61343",
+          b:"90281378460445b3a45c2bae46baf3fd",
+          c:"be035cea589a4cf0a53e7386739dd822" },
+      28:{ a:"a0ac46dacf2a487d8f108ad3733bc999",
+          b:"132611698bbc47ebbf1da1fa87b9c50e",
+          c:"d4a0d60e7a8b42d282cdfcf49d16f639" },
+      29:{ a:"ef57d455e2594196b4e674c581eff980",
+          b:"3c24fcbbbe054fc6ac929d3eeb6fb4bd",
+          c:"532849999bbe43d8aff339577b485004" },
+      30:{ a:"ef6d036beec949acbc41bec13c4030ea",
+          b:"7b36b5057288477b8117afe37f239c47",
+          c:"cabf6433cfba47488e4b3ebbd5ea65e2" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים עד 1000" },
+      { key:"addsub",  name:"חיבור וחיסור" },
+      { key:"muldiv",  name:"כפל וחילוק" },
+      { key:"think",  name:"דפוסים, חשיבה וסיכום" },
+      { key:"word",  name:"בעיות מילוליות וכסף" },
+      { key:"frac",  name:"שברים ראשונים" },
+      { key:"meas",  name:"מדידות וזמן" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"data",  name:"נתונים" }
+    ],
+
+    topics: [
+      { id:1, ic:"branch", g:"num", t:"חוזרים להרכבות 10 ו 20" },
+      { id:2, ic:"table", g:"num", t:"עשרות ויחידות בתחום 100" },
+      { id:3, ic:"numline", g:"num", t:"סדר השוואה וישר מספרים" },
+      { id:4, ic:"branch", g:"addsub", t:"מוסיפים עשרות ומפרקים מספרים" },
+      { id:5, ic:"plusminus", g:"addsub", t:"חיבור דו ספרתי ללא המרה" },
+      { id:6, ic:"plusminus", g:"addsub", t:"חיבור דו ספרתי עם המרה" },
+      { id:7, ic:"plusminus", g:"addsub", t:"חיסור דו ספרתי ללא פריטה" },
+      { id:8, ic:"plusminus", g:"addsub", t:"חיסור דו ספרתי עם פריטה" },
+      { id:9, ic:"magnify", g:"addsub", t:"אסטרטגיות חישוב אומדן ופיצוי" },
+      { id:10, ic:"scale", g:"addsub", t:"שוויון ומספר חסר" },
+      { id:11, ic:"tag", g:"word", t:"בעיות מילוליות וכסף" },
+      { id:12, ic:"bars", g:"data", t:"קוראים טבלה ודיאגרמת עמודות" },
+      { id:13, ic:"table", g:"num", t:"מאות עשרות ויחידות" },
+      { id:14, ic:"lt", g:"num", t:"ממיינים ומשווים מספרים עד 1000" },
+      { id:15, ic:"numline", g:"num", t:"מספרים עד 1000" },
+      { id:16, ic:"times", g:"muldiv", t:"כפל קבוצות שוות ומערכים" },
+      { id:17, ic:"divide", g:"muldiv", t:"חילוק להכלה" },
+      { id:18, ic:"divide", g:"muldiv", t:"חילוק לחלקים שווים" },
+      { id:19, ic:"times", g:"muldiv", t:"משפחת כפל וחילוק" },
+      { id:20, ic:"star", g:"muldiv", t:"פי בקבוצות שוות" },
+      { id:21, ic:"steps", g:"think", t:"זוגי אי זוגי וסדרות א" },
+      { id:22, ic:"steps", g:"think", t:"זוגי אי זוגי וסדרות ב" },
+      { id:23, ic:"ruler", g:"meas", t:"מדידת אורך" },
+      { id:24, ic:"tag", g:"word", t:"בעיות מילוליות וכסף פשוט" },
+      { id:25, ic:"clock", g:"meas", t:"שעון ומשך זמן" },
+      { id:26, ic:"pie", g:"frac", t:"חצי ורבע" },
+      { id:28, ic:"prism", g:"geo", t:"צורות וגופים לא אותו דבר" },
+      { id:29, ic:"mirror", g:"geo", t:"סימטרייה שיקופית אינטואיטיבית" },
+      { id:30, ic:"numline", g:"think", t:"סיכום מספרים פעולות וייצוגים" }
+    ]
+  },
+  /* ================= כיתה ג׳ ================= */
+  3: {
+    links: {
+      1:{ a:"b8cfca6f19324a5d84dc5ab343011c69",
+          b:"7d6d7430cc60490185f642bc5f2a9fad",
+          c:"369b2c2bc0114a82a5f72a388c1dbadf" },
+      2:{ a:"39e1e9d151d540ab9da78d26cba0346c",
+          b:"59d252e547cf4e1189e0a9399848727e",
+          c:"258fc2663a13486fb85bb065a13b75e6" },
+      3:{ a:"f5c54746f8bc47c6ac27747ece1d0657",
+          b:"8b10567533004d94bd7fbe4572021cdf",
+          c:"01bbd1ca5c7c49c491f868c1bd694d27" },
+      4:{ a:"fa0dff22995b4f9e98cb5f2666a10e5f",
+          b:"ed366aee9fc14eb3a720aabbbe60021d",
+          c:"9579ff95a8304947936abfafe0ae0d7b" },
+      5:{ a:"f777d364ce1e4b789e764c0d799c99d6",
+          b:"714bbcf0079a43e9ba580064d83f2b9c",
+          c:"24e5e14e6ca24faeaceb0bf129bf205b" },
+      6:{ a:"1234861048c84ef38c69c33cbee42eec",
+          b:"598175cd27a44d5ebf7510f9f252f9c3",
+          c:"4593c038dd8a4fafb624cd6a58192b60" },
+      7:{ a:"d263b6bc9c234351bdff5f2447a9b00e",
+          b:"7fe76e59fba540d38b40e84fd39183c7",
+          c:"3dabe8f42957490a8076f60af8c9ce40" },
+      8:{ a:"c154bb6c626e41c39f275a1fc522c4d4",
+          b:"d12e82af4e7b4a27aa44e50929d67392",
+          c:"62c0d822e8ac4f58962d264cb9877944" },
+      9:{ a:"217e67d251534a1b84d6a49840e6254f",
+          b:"a5f156d12c2f437586a208230679c06d",
+          c:"6cc87b6d99f44682ab20f8ef14947e11" },
+      10:{ a:"dbab190220dd43ed85c50386c1c57797",
+          b:"e22bcc5df1ac4066952e67b2370cdedc",
+          c:"4de22dcdd0734a55bce10cde55f1217e" },
+      11:{ a:"0c19c4960c01468cbd179f6bf25a33aa",
+          b:"51653ba1c4f446d9a3bb93dda54b66ac",
+          c:"614c7b4437634d378a86e0a7354417aa" },
+      12:{ a:"ac130d440e3f4359bf2865340d6c3e8a",
+          b:"bfbc583f27204efb9417fc3c8ec6dcbc",
+          c:"169639b8576f459fa9b6c02351ad5d61" },
+      13:{ a:"5634846e5260438e9cd5cd7207ad007a",
+          b:"2f73097c31a844b186f0a8122812675e",
+          c:"b82237bc8da441e68dd218dfbb5428c1" },
+      14:{ a:"5fcb59fb9c2240f3aa7c559e590bdb0a",
+          b:"0a569e36bd154fb5bed37c9adc3240f4",
+          c:"a3ba1a2e518d440fb45b4843c8f68dba" },
+      15:{ a:"2e7dfbdc2a9e496aaa1a88c7824b5888",
+          b:"7dda60aafa59448e90fc17b83fadfd80",
+          c:"160ca0ba37904dd88f198af3c14dc7de" },
+      16:{ a:"4bdfbb021bdc424c864a30e5aaab3ec4",
+          b:"6db51ca1801f4c75be7de0fff5a7c0c1",
+          c:"266d9537518c4d409b6922f168d2bea8" },
+      17:{ a:"2a3252c213ec41bf82b8b740cf622057",
+          b:"fdfaa70947f1482889aff9e90e5257c9",
+          c:"bbb3787d36a645728d4d3efdd244741e" },
+      18:{ a:"80e6fb22b69e4760af455f89d895504d",
+          b:"c9052a057ab64d0eb35d23a031ee0140",
+          c:"3417eadba24d4c6d8071c7ad5859a939" },
+      19:{ a:"6393c68fdd2f4c68bec7b7a869d9047c",
+          b:"8ba0d3368f644c3eb2f34a313ea11184",
+          c:"6d9dfa5902a6482c85628f733722df04" },
+      20:{ a:"5526b22a96474a44a02b898fb12b80d6",
+          b:"324e2ba1a55641b396168103b518777e",
+          c:"72ef10f3a3344468823be41e89f7126b" },
+      21:{ a:"742fcb58195043e6ac09776d231971b8",
+          b:"f86d7614d1ce440b8bc4dfeae76bd7f0",
+          c:"8196e39602ba452489ae89efef7d0b37" },
+      22:{ a:"6fbf8e2f6d274fc6a318547a4a30d42c",
+          b:"1a47600810d94651a03ff35f4a17c227",
+          c:"0b76bd7df97f48858a91e3404976c411" },
+      23:{ a:"464efe9f315e42fb8e9f6d2f83841acc",
+          b:"8dd7f6ab81d4447fbf7b8a697e0f1955",
+          c:"87c06f16118f4177828c32c2269984a8" },
+      24:{ a:"9436fc2ba1184e0aab6301cc1f95b1b1",
+          b:"0978263dd9f6441588086fbeffe8e68b",
+          c:"bfa96996a04a4dfc86ed180b2ef0838c" },
+      25:{ a:"6cf48958b2a94955b192ddb614e23360",
+          b:"a14cbacded024a849a78c19bc2237ee5",
+          c:"97dc4b56970b4e87aaf4b847e0215247" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים וערך מקום" },
+      { key:"ops",  name:"חיבור וחיסור בטור" },
+      { key:"muldiv",  name:"כפל וחילוק" },
+      { key:"frac",  name:"שברים" },
+      { key:"word",  name:"בעיות מילוליות" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"meas",  name:"מדידות, היקף וכסף" },
+      { key:"data",  name:"נתונים" }
+    ],
+
+    topics: [
+      { id:1, ic:"table", g:"num", t:"ערך מקום" },
+      { id:2, ic:"numline", g:"num", t:"שכנים וישר מספרים" },
+      { id:3, ic:"steps", g:"num", t:"סדרות ואיתור טעות" },
+      { id:4, ic:"table", g:"num", t:"אל הרבבה" },
+      { id:5, ic:"magnify", g:"num", t:"אומדן באמצעות מספרים קרובים" },
+      { id:6, ic:"plusminus", g:"ops", t:"חיבור בטור עם המרה" },
+      { id:7, ic:"plusminus", g:"ops", t:"חיסור בטור עם פריטה" },
+      { id:8, ic:"speech", g:"word", t:"בעיות מילוליות" },
+      { id:9, ic:"times", g:"muldiv", t:"כפל עובדות ומבנים" },
+      { id:10, ic:"times", g:"muldiv", t:"חילוק והקשר ההפוך לכפל" },
+      { id:11, ic:"frac", g:"frac", t:"שברי יחידה וחלק משלם" },
+      { id:12, ic:"angle", g:"geo", t:"זווית וסוגי זוויות" },
+      { id:13, ic:"angle", g:"geo", t:"קווים וזוויות בצורות מוכרות" },
+      { id:14, ic:"pgram", g:"geo", t:"מצולעים צלעות וקודקודים" },
+      { id:15, ic:"dashrect", g:"meas", t:"היקף מצולעים" },
+      { id:16, ic:"triangle", g:"geo", t:"מיון משולשים" },
+      { id:17, ic:"rhomb", g:"geo", t:"מרובעים לפי תכונות" },
+      { id:18, ic:"lshape", g:"geo", t:"צורות על רשת בנייה ופירוק" },
+      { id:19, ic:"clock", g:"meas", t:"מדידות זמן ומשקל" },
+      { id:20, ic:"bars", g:"data", t:"קוראים דיאגרמה" },
+      { id:21, ic:"times", g:"muldiv", t:"חילוק ובדיקה בכפל" },
+      { id:22, ic:"ruler", g:"meas", t:"מדידות אורך סמ ומטר" },
+      { id:23, ic:"branch", g:"geo", t:"בונים ומפרקים צורות" },
+      { id:24, ic:"bars", g:"data", t:"אוספים נתונים" },
+      { id:25, ic:"tag", g:"meas", t:"כסף" }
+    ]
+  },
+  /* ================= כיתה ד׳ ================= */
+  4: {
+    links: {
+      1:{ a:"5c9d3a42052b4fbbb43fa287706172b6",
+          b:"781ff6cce1e1440f836a9b4ff73a4903",
+          c:"2055124876564ebe8a4a9b16760651cf" },
+      2:{ a:"794b0f9ec8e247898a7fbce99857c348",
+          b:"e3c169c3334e4d7e9122273009fbe25e",
+          c:"53b0cb2947154f148a75769ac9ff6129" },
+      3:{ a:"d7f047a36de240e08812a5e171a8d1ea",
+          b:"21ec8569c9e94fc8b53bc4c17bc947a4",
+          c:"f7eb3d6a12ac4352a304c56ea2f95cf6" },
+      4:{ a:"cc17d0093d8d41dabdb92954d8cab875",
+          b:"41c1fe50f5fb4e65951a81877d5e3a4b",
+          c:"be873101884c43fa8c8b214930208f2e" },
+      5:{ a:"07064d1dbb154feb9412f8ea6989a4f5",
+          b:"1ea14b1e443e443fa16783c92a401cc9",
+          c:"60f724ce9a824444aa967ae20f13d31b" },
+      6:{ a:"cc40189efa314fab9454f4b5150f7863",
+          b:"b76503fcd88044ef8d5bdb1fda8ebf41",
+          c:"df78f017ebd74e8abd00c361710bf15f" },
+      7:{ a:"081d81c9200143a58b027b7122d1291d",
+          b:"0d32ea043626413dbe37815caf8ffbe4",
+          c:"36787c84d9124a3fbdfff5727a8b6446" },
+      8:{ a:"643841dfbd194cffb945b1b9990a345d",
+          b:"611fbeb5a928464a8a399f7b7e14646c",
+          c:"a6906dd4e7d04f5f90e2a95418d958cc" },
+      9:{ a:"5ec1dd9c1fae4154a8ae164587c29f5f",
+          b:"ecc3bd57449e477bbc732bc445bb6e3f",
+          c:"161b1f0d821542998d64beba81e36390" },
+      10:{ a:"42c05e057dc44980a9c0f4e1f02d0cd6",
+          b:"3c1c88bf456c4a8db008007202c3211c",
+          c:"3e6f111426494ae2ae73bf870626e32e" },
+      11:{ a:"2fc9b2b5022d4dec99081c46eb547e25",
+          b:"792909d7e94d4fc0aa94d78d7d19fcfc",
+          c:"bf253ead154e4717bcf7013b8c5990dd" },
+      12:{ a:"7abc1e619816434a841ec26d00bdd1f4",
+          b:"bc0359244b1e45cbb7856a67fe9aaa42",
+          c:"6fe00aca7c6d48f985118fcba91840a3" },
+      13:{ a:"565ce374664749e09c4806bef9141ce4",
+          b:"8b2b5d6141964fd88680956c696ef319",
+          c:"efd38d7610b14860a858fc72e20430c2" },
+      14:{ a:"de2017e1f2ce4d75b4d78b9bbf2852dc",
+          b:"6b907ff0455349ad81bf5e0542a4eebf",
+          c:"4fc725645751471d8c31395463fe2ea4" },
+      15:{ a:"c83d9b94fc6c49e59f3b3b0d2dec3a8c",
+          b:"34fdd28908774901adf7ab68857aab99",
+          c:"5d47aa604fba487382491581be21d731" },
+      16:{ a:"fea28f4700a34a839340743f98212bd6",
+          b:"ba3b77c7a9c2444f8466b8d8ee893953",
+          c:"8f0154710193429885fbf8cda19fa31a" },
+      17:{ a:"44e4740698b44b409c4717c47a1b187d",
+          b:"f777bb86d9f041df9568c6102d960951",
+          c:"ee55a8d69b2b40cba643bccd0da2ad3e" },
+      18:{ a:"33bac5716c184a40873ad164ad0ff8a3",
+          b:"9e57cd00eb254097a895fe481a605067",
+          c:"0f79d1fc345545088cbfb59a29069218" },
+      19:{ a:"fd67a35e0e9a4e5d804f3018d03824c4",
+          b:"8828015b1d1e46548d6ec696872bd44d",
+          c:"85ed0f59f191466b899d6f029027734b" },
+      20:{ a:"82bc53b237984b559399678287a3c97d",
+          b:"ea92d50b12a64a9090d7dd857225ba7c",
+          c:"ce530f1152124353a28e15e16b10544d" },
+      21:{ a:"442a25dbd8964f7c9becdd8d219b2711",
+          b:"dd3d2b763aba460abe0b195abee1db34",
+          c:"0c7bce45cf4d4a438c1494d5e7dbc9d7" },
+      22:{ a:"1104e0bad4cb4198a9089baddca91143",
+          b:"7769d4e6bdc145e885dad4e9009cda39",
+          c:"3103df3f53c244d894f4e6132b70dea9" },
+      23:{ a:"2911b89c2b7048599675451e3c9fe5a6",
+          b:"91737d568e2b4856945d1b0f6bfb86b6",
+          c:"b3fe32484b0b4a0dafa9e754028dac01" },
+      24:{ a:"a0d6ef1821564867ac8cf99b390b3eab",
+          b:"4619f38cca224936ad4cec0613e93036",
+          c:"91f46ee6410d4b5aaec1ae746eba9af8" },
+      25:{ a:"e8afe2856e964755bb5d0861b06b7e0a",
+          b:"63d25bbc3c0d47f3951da6fcc6596341",
+          c:"c19be705438b498e9846dd6e34f4a8bf" },
+      26:{ a:"bbfc24c6d1894510b29dff449b719929",
+          b:"1f50593f8bbf4994bf451b3b3ff3afd2",
+          c:"51d7d623c7c645c5afbc17522b0da165" },
+      27:{ a:"5d54dca3e42e49c3b1870510a45e7a5f",
+          b:"878d695ca92b4bb2819b9cbe2ac64a18",
+          c:"f3c313ba871b4cadaf6a6861b7961895" },
+      28:{ a:"59216d6db75144bc9ba455757e53c83f",
+          b:"3b4b46d9c92843368236c9d96fb3b9d8",
+          c:"0a52a6ea95364a0196278d0b7edd157f" },
+      29:{ a:"4e73f217d7cf4dc098a47620adbecdf4",
+          b:"bd1cf642a9924d409778239d40efd2dd",
+          c:"24b6f6ae4b444782b894c3b1bdf70a3b" },
+      31:{ a:"2fd5c68fd82744f080861171ef912b1a",
+          b:"c170c195604c4ef08241482ed755f52c",
+          c:"337596fab9514ba0bc7a06e1904d6cd3" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים גדולים" },
+      { key:"ops",  name:"חיבור וחיסור" },
+      { key:"muldiv",  name:"כפל, חילוק וסדר פעולות" },
+      { key:"frac",  name:"שברים והתחלקות" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"meas",  name:"מדידות, שטח והיקף" },
+      { key:"data",  name:"נתונים" },
+      { key:"synth",  name:"סיכום" }
+    ],
+
+    topics: [
+      { id:1, ic:"table", g:"num", t:"מספרים עד מיליון קריאה ופירוק" },
+      { id:2, ic:"magnify", g:"num", t:"סדר שכנים ועיגול בתחום המיליון" },
+      { id:3, ic:"plusminus", g:"ops", t:"חיבור רב ספרתי בטור" },
+      { id:4, ic:"plusminus", g:"ops", t:"חיסור רב ספרתי בטור" },
+      { id:5, ic:"tag", g:"ops", t:"אומדן ובעיות חיבור וחיסור כולל כסף" },
+      { id:6, ic:"times", g:"muldiv", t:"חוקי פעולות וכפל בעשרות שלמות" },
+      { id:7, ic:"parens", g:"muldiv", t:"סדר פעולות חשבון" },
+      { id:8, ic:"times", g:"muldiv", t:"חוק הפילוג ומכפלות חלקיות" },
+      { id:9, ic:"times", g:"muldiv", t:"כפל רב ספרתי" },
+      { id:10, ic:"divide", g:"muldiv", t:"חילוק ארוך ושארית" },
+      { id:11, ic:"frac", g:"frac", t:"שבר ייצוגים ושמות שקולים" },
+      { id:12, ic:"frac", g:"frac", t:"שברים על ישר והשוואה" },
+      { id:13, ic:"frac", g:"frac", t:"שברים שקולים ייצוגים השוואה וישר מספרים" },
+      { id:14, ic:"factor", g:"frac", t:"התחלקות וגורמים" },
+      { id:15, ic:"factor", g:"frac", t:"מספרים ראשוניים ופריקים" },
+      { id:16, ic:"lshape", g:"geo", t:"מקבילים ומאונכים בצורות" },
+      { id:17, ic:"pgram", g:"geo", t:"מצולעים ואלכסונים" },
+      { id:18, ic:"ratio", g:"geo", t:"מלבנים ריבועים ויחסי הכלה" },
+      { id:19, ic:"angle", g:"geo", t:"סוגי זוויות" },
+      { id:20, ic:"triangle", g:"geo", t:"מיון משולשים" },
+      { id:21, ic:"ruler", g:"meas", t:"יחידות אורך והמרות" },
+      { id:22, ic:"gridrect", g:"meas", t:"שטח והיקף של מלבן וריבוע" },
+      { id:23, ic:"gridrect", g:"meas", t:"שטח והיקף של צורות מורכבות" },
+      { id:24, ic:"clock", g:"meas", t:"זמן ומשקל המרות ויישום" },
+      { id:25, ic:"bars", g:"data", t:"דיאגרמות ומסקנות" },
+      { id:26, ic:"mirror", g:"geo", t:"סימטריה שיקופית וסיבובית" },
+      { id:27, ic:"angle", g:"geo", t:"זוויות וקווים במישור" },
+      { id:28, ic:"triangle", g:"geo", t:"משולשים מיון ובנייה" },
+      { id:29, ic:"rhomb", g:"geo", t:"מרובעים תכונות מיון והכלה" },
+      { id:31, ic:"book", g:"synth", t:"דף סיכום אינטגרטיבי לכיתה ד" }
+    ]
+  },
+  /* ================= כיתה ה׳ ================= */
+  5: {
+    links: {
+      1:{ a:"a46a7f82eb9849e79dde6786668e7e4d",
+          b:"bad5c0d5fcc041fba276bdafe19455ac",
+          c:"5d9edc0f2eec40668b4c106aeb6959d4" },
+      2:{ a:"7aff44a3dcb94d45a18ed63985de9627",
+          b:"03a4deb7a1c04a5db583c13ca9005671",
+          c:"51685a62d8c142d68177bad60ae7b12d" },
+      3:{ a:"9c91f41104e642dca9ac06a8db7bdd57",
+          b:"e0e88602aa594354aef2e771d45bf4ed",
+          c:"45f7138fa1df43349a2002a878c06702" },
+      4:{ a:"7092f7ba6872490cb3cbfe91f2cd799b",
+          b:"aec77035f42c49f5b4b0bfa1b96a50d3",
+          c:"02885d5eafb842678f6a156812f783a2" },
+      5:{ a:"2e9dc9c5babf4f6795fcfa5118c3c74b",
+          b:"3aba48cd9b7942e1a72f5bb29f0e9d39",
+          c:"48d95d6c2a30456c93dff450b7c69bfe" },
+      6:{ a:"1caabd53270f444bb372259a0133428c",
+          b:"3324fb452c5843f79cf1b7207be16019",
+          c:"5ef1f616a6394394a9b24814bcd7bf76" },
+      7:{ a:"6e1f43ed524e4964a431ac4977da4e27",
+          b:"1b8aeae7583c47dd95a1214b775bfa42",
+          c:"2fb5cf02890442e0b0497749766c81a9" },
+      8:{ a:"f657491bb21c4f62b479e8501b91d65b",
+          b:"143aacce6e414ad997f58b5a58e78507",
+          c:"8c19881d44ec442294479d492a13348b" },
+      9:{ a:"771e7a3cde5a42389d435c0a0051a24e",
+          b:"f9d15d3119154e5eb1396fb456931eed",
+          c:"5084db65549f470b991cbadb2b8ad82f" },
+      10:{ a:"2157dd233f714fa586331de6a7d33478",
+          b:"34555d17cac843d19d80584f81d8b0b2",
+          c:"596994b22e1e4c198969144d017a7646" },
+      11:{ a:"326209216ae345fba9c8553260b04908",
+          b:"a22c886e1a0d41dfbff7cbd6921746b9",
+          c:"5e5d378a676d451a894d9139be3864de" },
+      12:{ a:"e7be15ec81e34664820ea2ca02436c67",
+          b:"91b5a5d2faba4f0f89d0d7a4491e5671",
+          c:"43473fbe28ff468c81efb82373105d0e" },
+      13:{ a:"db1e88b9f3684a8d9c3603aeaaae128d",
+          b:"6952916ea7aa4949869719b418409dd6",
+          c:"1cb5557ab7084419adafff99d34f5c96" },
+      14:{ a:"6969b68b9ec04e8a95341b4be3879862",
+          b:"90e3fb935a0b4de19ec111a18ac5cb61",
+          c:"a6d9e3c91d714a1d9b6fa1b943785c36" },
+      15:{ a:"d731c0e38d1b449aa6ebc01b819374c6",
+          b:"a8bac6d04ce343539c7aeaff89cdb94b",
+          c:"9db6ca9d3258485f849781cd2ad396a7" },
+      16:{ a:"e89f152e4b004795bdcfda95e586e7e7",
+          b:"5cf5785a9a954105aa257d5a40fe4179",
+          c:"1f581f027463422fb64d2e07ab089140" },
+      17:{ a:"0f979bc29dcc4ac1a8a34ef018942ca4",
+          b:"9c5720157262416299bac67b9227c264",
+          c:"14581378105d4a5b9a9528f2bedb8ce8" },
+      18:{ a:"27c314fc54c446cbb3c75f00299e5e46",
+          b:"55975211941e41d4b686bb4ce400e025",
+          c:"4db632d962cc4c58b45778481695600d" },
+      19:{ a:"b6a4b0a6b36a4be5af408eb87509f0bf",
+          b:"e425c1a6524b413bae9acae7a69b9751",
+          c:"0e54dc726ad841c49e7f7db553c367f0" },
+      20:{ a:"e96906d245244c2aba3bef20ee6b1b84",
+          b:"673781f5c72f44e7bac7f5715c2c4d38",
+          c:"1dd9a71ed28a4ec89db725acd4d38d77" },
+      21:{ a:"ef2fc4d640ae4670bb643555a1d4bb46",
+          b:"b03ce166f9d74115b07b53985666a63c",
+          c:"dc5ef6189b6f41519f48729de46d4532" },
+      22:{ a:"b618a28d952740418dc51578d121735b",
+          b:"5da89b7e2cac479ca7af25c2efa60a3a",
+          c:"7ca9ac64df4b4505a3170336e8d1c8d7" },
+      23:{ a:"5984f26fa8ff42e1a99464dc8351acba",
+          b:"68e97e3913f8491690111be8a38c865b",
+          c:"755de65c94ad435fb1ece09ff1c3d7c0" },
+      24:{ a:"2765b1518d044768a8635808d1395c0f",
+          b:"9c8443ee3ced42cca9fffdd5ab1601be",
+          c:"ddfb731ad23c4fbcb3586bb22c31115d" },
+      25:{ a:"794b483765eb4776b17e8147b6c367fc",
+          b:"08e97b75b6114b85980a606a7cc6970f",
+          c:"cb61643d9a5544da8725625ea52985e2" },
+      26:{ a:"30e69abff55647bcb281c71b4a91fe22",
+          b:"7db25f9366a7463ca7d51718f6a5873f",
+          c:"3dacb84dc61d4021bb5b809e298d1fc6" },
+      27:{ a:"f4baa36dca3c4f50a35e34e0f149c7f8",
+          b:"1553bd4a32c84ccb86117c49581cdc2c",
+          c:"d14696af4aa5432082578c934e8c6f0d" },
+      28:{ a:"9d2c2fb020ed405aae89cbb1e830331b",
+          b:"da0407f640914f9ab88d84add874f796",
+          c:"bd0ef67ea7364f94998da822b9c80699" },
+      29:{ a:"7ff1af2f258e484b94aa66594b7fe1b9",
+          b:"dc90de4b84e04cf19fbb6cb7123cd41a",
+          c:"1cd4faf15d5c4375aa383171d6f0cb5a" },
+      30:{ a:"e0a5bb1c4e834b8ba808225a19f05a41",
+          b:"be68de1197754822a3329b889bb078f4",
+          c:"a629553510f54b71a63231b685199461" },
+      31:{ a:"716b03dc7ea642d785e71b5a49606804",
+          b:"d47b79078e274f8c934021d12adeba5c",
+          c:"6c3a7a59420f4618b3e856a34600eda9" },
+      32:{ a:"587f59f60a704ab6b7cdce033639ec07",
+          b:"40d887262be44c2fa6d14f0c80589642",
+          c:"1aea523ca6ff40a0acc6937b6695564c" },
+      33:{ a:"2a6aaa9ac4844d34a88e57c0c015e070",
+          b:"917aa6e72e324b32a12b4b3bcd20ce71",
+          c:"ef2bf863c8a542d6a588c3f4896284f5" },
+      34:{ a:"7cb78715fd9a4a2e8f6e8b0aae365d4d",
+          b:"305b17be53194f308d66898655e170b3",
+          c:"90ea8fc037bb4b4f9ccd1de9b753d4dc" },
+      35:{ a:"b10c83d20c0842d4a572a94c50de6440",
+          b:"138171b78865489fbf9857de13700b97",
+          c:"307bf34ee9f84ae8abc0bbfa34198139" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים ופעולות" },
+      { key:"frac",  name:"שברים" },
+      { key:"dec",  name:"מספרים עשרוניים" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"area",  name:"שטח והיקף" },
+      { key:"meas",  name:"מדידות" },
+      { key:"data",  name:"נתונים וחקר" }
+    ],
+
+    topics: [
+      { id:1, ic:"times", g:"num", t:"תובנה מספרית כפל וחילוק בעשרות ומאות" },
+      { id:2, ic:"magnify", g:"num", t:"מספרים גדולים ערך מקום עיגול ואומדן" },
+      { id:3, ic:"times", g:"num", t:"כפל רב ספרתי ובדיקת סבירות" },
+      { id:4, ic:"divide", g:"num", t:"חילוק מאונך ושארית" },
+      { id:5, ic:"factor", g:"num", t:"גורמים ראשוניים ופריקים" },
+      { id:6, ic:"parens", g:"num", t:"סדר פעולות תכנון ולא רק ביצוע" },
+      { id:7, ic:"frac", g:"frac", t:"חזרה על משמעות השבר וייצוגיו" },
+      { id:8, ic:"frac", g:"frac", t:"שברים על ישר והשוואה" },
+      { id:9, ic:"frac", g:"frac", t:"הרחבה וצמצום שברים שקולים" },
+      { id:10, ic:"star", g:"frac", t:"מכנה משותף בחירה יעילה" },
+      { id:11, ic:"frac", g:"frac", t:"חיבור וחיסור שברים במכנים שונים" },
+      { id:12, ic:"star", g:"frac", t:"חלק מכמות" },
+      { id:13, ic:"frac", g:"frac", t:"שברים גדולים מ 1 ומספרים מעורבים" },
+      { id:14, ic:"plusminus", g:"frac", t:"חיבור וחיסור מספרים מעורבים" },
+      { id:15, ic:"frac", g:"frac", t:"השלמת שברים ופעולות הפוכות" },
+      { id:16, ic:"table", g:"data", t:"קריאת טבלאות וחישוב נתונים" },
+      { id:17, ic:"bars", g:"data", t:"קריאת גרפים והשוואת נתונים" },
+      { id:18, ic:"ratio", g:"geo", t:"משפחת המרובעים ויחסי הכלה" },
+      { id:19, ic:"rhomb", g:"geo", t:"תכונות ואלכסונים במרובעים" },
+      { id:20, ic:"lshape", g:"geo", t:"בניית צורות ומיון לפי תכונות" },
+      { id:21, ic:"ruler", g:"meas", t:"המרות יחידות ומדידת משקל" },
+      { id:22, ic:"dashrect", g:"area", t:"היקף יחידות וקווים מקבילים מאונכים" },
+      { id:23, ic:"angle", g:"geo", t:"גובה במשולש חד זווית וישר זווית" },
+      { id:24, ic:"triangle", g:"geo", t:"גובה במשולש קהה ובמקבילית" },
+      { id:25, ic:"gridrect", g:"area", t:"שטח והיקף של מלבנים וריבועים" },
+      { id:26, ic:"branch", g:"area", t:"שטח צורה מורכבת פירוק והרכבה" },
+      { id:27, ic:"gridrect", g:"area", t:"שטח מקבילית והקשר למלבן" },
+      { id:28, ic:"frac", g:"dec", t:"מספרים עשרוניים ערך מקום וייצוגים" },
+      { id:29, ic:"frac", g:"dec", t:"משווים שברים ומספרים עשרוניים" },
+      { id:30, ic:"frac", g:"dec", t:"חיבור וחיסור מספרים עשרוניים ואומדן" },
+      { id:31, ic:"gridrect", g:"area", t:"שטח משולש בסיס וגובה" },
+      { id:32, ic:"frac", g:"frac", t:"נעלמים ומשוואות בשברים" },
+      { id:33, ic:"bars", g:"data", t:"ממוצע וחקר נתונים" },
+      { id:34, ic:"clock", g:"data", t:"שכיחות סיכוי וזמן מתוך נתונים" },
+      { id:35, ic:"mirror", g:"geo", t:"שיקוף סיבוב והזזה" }
+    ]
+  },
+  /* ================= כיתה ו׳ ================= */
+  6: {
+    links: {
+      1:{ a:"bcdfc8d90bd64fb9a233645fe7538ced",
+          b:"c05712d62da247b9abc2e81396735cb2",
+          c:"791f018daa7642169c8929f4f9f7eab9" },
+      2:{ a:"2e33eaad9a9845b194bf23b874baf8ff",
+          b:"661f06cbf8d74000acca52f9e32183b0",
+          c:"e640c85afec045a69093e5dc4c50fdcd" },
+      3:{ a:"4594dde9e9f443f3a8d07966d2ed0d85",
+          b:"38d0e7f7d91f45aba91047a431115f09",
+          c:"f6df7b8da84a4b9f9188591a5bb154f2" },
+      4:{ a:"61cf3473abc442fbae3ea93c8e34ad44",
+          b:"2edaf4363acb47568f278b255c6e4143",
+          c:"67d94e585e0e417e9b37a8b0da18b30a" },
+      5:{ a:"b75ad6407343499f8d36c33ad12416da",
+          b:"9338a1899cbb4882b033b9b6e3a30620",
+          c:"eacc8b95d5df4cc38f21f2ff4de49005" },
+      6:{ a:"66144c5e73264d5f8415bc1edba1ce8c",
+          b:"e0448ca55de94a80b65e9693023a8c34",
+          c:"b649e0c845b0482a8396d206a4661a7e" },
+      7:{ a:"3e750207f5154f80b8fd2765eae641e3",
+          b:"f4244667f0f249b6989c6ddac2f78bd8",
+          c:"3b0b05fda2ad423eacf5ae1249351ab4" },
+      8:{ a:"d7b94be13ca94c83b5d89a825f856087",
+          b:"be61d9761e3e493590a97ab2544faa62",
+          c:"6d04f01a8f34499388e8a13cbc134498" },
+      9:{ a:"b5382c1fe3854cf0a3a0e41e36bbc259",
+          b:"b8d7ad99bdfa492899ac9836991259f3",
+          c:"4dad2c5e2f6848e89aa67205c12e1d42" },
+      10:{ a:"59cb46d568754ee5866a703f355c1f14",
+          b:"657ac2dffe9742b3bb4320c2522b3f15",
+          c:"82331e8a45da45d0be696cc5c85897de" },
+      11:{ a:"2e545f98b44244c4bca62f5882a43aef",
+          b:"1d9e86029c604ad9ab94ae76f50579c5",
+          c:"356a6e3db52546e5beab80a0461a5c2c" },
+      12:{ a:"8fb7e3ebae4749c6a8ba06a53961617b",
+          b:"9f1b6d18fe52474baae7c85e26e6f794",
+          c:"71819477ce9c4aad9e47d1a6f55540c4" },
+      13:{ a:"cf12b4d5d3ab4b279ccb54d34c462301",
+          b:"abba3db81aec48c88bf24b35646649a8",
+          c:"64c7f37bc20648838b10dd3d172f7268" },
+      14:{ a:"e73833c345e5441db0a7ecfdd081b138",
+          b:"753c2506c7074162a1f4e749578e16fa",
+          c:"e00070fe15674c55aed4c14b1b772a3b" },
+      15:{ a:"034ae02b64f44da9a75b5135555e0f0a",
+          b:"cb618172b7bd402ea776a7ccc1a650f8",
+          c:"0f117572b12c4bada8f2fc79af101a4f" },
+      16:{ a:"0c9155f528f743dc834f04634df3d6c6",
+          b:"cf04676a3d1b489d804f7276e97009b8",
+          c:"c50db07df9294e388b150ce48fd49d65" },
+      17:{ a:"46e9081e576c4380af256fbee4788258",
+          b:"0342ad7a5a104518b72783b332ba67f5",
+          c:"337ca5fa8edb4503957647ec1560cd0a" },
+      18:{ a:"9940efb199e4423da03aa4d928ddccd1",
+          b:"a11926aed2aa46829bbc323d9e0aa450",
+          c:"af99a16916eb4c44b1a9b16eaa73b0c3" },
+      19:{ a:"c46498aea4d24460999f9579d57bbde7",
+          b:"d8e05215251c4ff2ab9d615f172926ea",
+          c:"adee55441c93489aabc030eac1961dff" },
+      20:{ a:"a3b7a012b24f48dcbfe5079e3241d23f",
+          b:"a9fcaf319c1f4fb1afb1adfc512ee9a2",
+          c:"5a86a5ec459f4581b9ad26816dca0d04" },
+      21:{ a:"9b6eab997ebc4720807a8d6a124b825d",
+          b:"875b9bf3d5824784ae7e70b4e56dce98",
+          c:"4a8ac5b03721446cb16629e50653ee37" },
+      22:{ a:"73082adc09e24d7495958ff8c8848e7e",
+          b:"61cccc22b3354f8c96cd00687b6b2560",
+          c:"193a006da34d4591b2b5d02d4092eded" },
+      23:{ a:"95148f1ab3f448ac994e92b6ba4abfde",
+          b:"a1cc7fb59d8a4de890337dfd4b5b4f83",
+          c:"fd1271166c854fecb967c10fe987f7c3" },
+      24:{ a:"f5b2352b7a12402196ac904d03f1f84d",
+          b:"c7642f08f499452bb8e72afc3c115b3a",
+          c:"f3dbd6642af6410fa37191f0c2149d9c" },
+      25:{ a:"6a18982522e34b64b3ff46887d85894b",
+          b:"4a2b8635e2324f2eb37a284c8ee88e26",
+          c:"c799b5f6fe70461fb77aa9b3370d6d50" },
+      26:{ a:"4c629da6f6004be0a801793840ad20df",
+          b:"1db1d426e1c14e209f1e5fffce2f5a94",
+          c:"abbfdb527ec6451b9974e462e460c028" },
+      27:{ a:"bf34b85ac1b14ee5939484e940dabc87",
+          b:"b258748e4d0d413bab0d6598af7464ad",
+          c:"feba902be80749dab510205c697d3444" }
+    },
+
+    groups: [
+      { key:"fracmul",  name:"כפל וחילוק שברים" },
+      { key:"dec",  name:"מספרים עשרוניים" },
+      { key:"solid",  name:"גופים, נפח ושטח פנים" },
+      { key:"pct",  name:"אחוזים, יחס וקנה מידה" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"num",  name:"מספרים ופעולות" },
+      { key:"data",  name:"נתונים" },
+      { key:"synth",  name:"סינתזה וחשיבה" }
+    ],
+
+    topics: [
+      { id:1, ic:"frac", g:"fracmul", t:"כפל שבר במספר שלם" },
+      { id:2, ic:"times", g:"fracmul", t:"כפל כחלק מכמות ושטח" },
+      { id:3, ic:"frac", g:"fracmul", t:"כפל שבר בשבר" },
+      { id:4, ic:"times", g:"fracmul", t:"כפל מספרים מעורבים" },
+      { id:5, ic:"frac", g:"fracmul", t:"כפל שברים יישום ובקרה" },
+      { id:6, ic:"frac", g:"fracmul", t:"משמעות חילוק שברים" },
+      { id:7, ic:"frac", g:"fracmul", t:"אלגוריתם חילוק שברים והופכי" },
+      { id:8, ic:"frac", g:"fracmul", t:"כפל וחילוק שברים בחירת פעולה" },
+      { id:9, ic:"frac", g:"dec", t:"כפל מספרים עשרוניים" },
+      { id:10, ic:"frac", g:"dec", t:"חילוק מספרים עשרוניים" },
+      { id:11, ic:"prism", g:"solid", t:"חקר גופים ותכונותיהם" },
+      { id:12, ic:"cube", g:"solid", t:"תיבות ופריסות מעבר בין דו ממד לתלת ממד" },
+      { id:13, ic:"cube", g:"solid", t:"שטח פנים של תיבה" },
+      { id:14, ic:"cube", g:"solid", t:"נפח תיבה ומבנים" },
+      { id:15, ic:"cyl", g:"solid", t:"קיבול סמק ליטר ומק" },
+      { id:16, ic:"ratio", g:"geo", t:"מרובעים ויחסי הכלה חזרה מנומקת" },
+      { id:17, ic:"ruler", g:"synth", t:"דף סינתזה מדידות גאומטריה ופתרון רב שלבי" },
+      { id:18, ic:"percent", g:"pct", t:"שבר עשרוני ואחוז שלושה ייצוגים לאותו מספר" },
+      { id:19, ic:"percent", g:"pct", t:"אחוז כחלק מכמות" },
+      { id:20, ic:"percent", g:"pct", t:"מציאת השלם ויישומי אחוזים" },
+      { id:21, ic:"ratio", g:"pct", t:"יחס משמעות ייצוג ויחסים שקולים" },
+      { id:22, ic:"map", g:"pct", t:"קנה מידה במפות ובשרטוטים" },
+      { id:23, ic:"magnify", g:"num", t:"מספרים ופעולות סדר אומדן ובדיקת סבירות" },
+      { id:24, ic:"bars", g:"data", t:"אוספים ומייצגים נתונים" },
+      { id:25, ic:"star", g:"data", t:"משווים קבוצות ומנסחים מסקנות זהירות" },
+      { id:26, ic:"cube", g:"geo", t:"שינוי ממדים מה קורה להיקף לשטח ולנפח" },
+      { id:27, ic:"steps", g:"synth", t:"חוקיות ופתרון בעיות רב שלביות" }
+    ]
+  },
+
+
+  /* ================= כיתה ז׳ ================= */
+  7: {
+    links: {
+      1:{ a:"8032a71391e34f68bc4ca30c672ad89e",
+          b:"20a096177b664e219dde9f284997bc25",
+          c:"4feb7b9a3ffa42d1842d4687f9e183a5" },
+      2:{ a:"681a8c3e9a724776a8ac058bd02e4c37",
+          b:"76a8c74c77a64aeb914a11eb154cd74f",
+          c:"b045efedf7704b14a1cd5d9dddc45246" },
+      3:{ a:"ade220b4bf254f27a64f3ecde72ea6a5",
+          b:"6733d37b5ea74aca84a7af0143735156",
+          c:"ab273a2315434cdcb4534ce5214426ea" },
+      4:{ a:"ff954a2be7264fa29a483dd77f5e4086",
+          b:"ac7f159a127145e9ac9d4786269f6456",
+          c:"d25ee64273f44b2a881bf423f359d260" },
+      5:{ a:"9dbe2a9aa57741c097d9eee876c0b075",
+          b:"6d94456f845d468a9bd280ea7f29c56b",
+          c:"9c537e179f22407aa6fdc1b7bb202114" },
+      6:{ a:"2149be4f264446d182b641988d902fc4",
+          b:"8df40bccb81a408ca3ad128b9954002d",
+          c:"da9a05d8c4a3479ca0a8de10834bee9e" },
+      7:{ a:"ad8e50139cd64222b64750c7436e6813",
+          b:"b2353898c3db48b6b18d8c904fdfd8b4",
+          c:"ba5ef41fbefc47e88d8bafb9c7115d8d" },
+      8:{ a:"9b4754664e264a21a5deb2c151cf82c7",
+          b:"4ef7b683947243feaccc809e8faa9a96",
+          c:"edf4af3c072742cdb7c095f4182b5346" },
+      9:{ a:"28e47e3c17dd40af83155c4a51898824",
+          b:"aeb669387eb84505ab2b1dd4bd4b056a",
+          c:"4551f982c27648d286b7d047c734f358" },
+      10:{ a:"bdb0a35ffc434b2986008efc03c76489",
+          b:"e8e8304a62dc41d3b6510a58aea87e5e",
+          c:"5cca7b77faaf4ee1b2cb6756d008d51e" },
+      11:{ a:"8b4a42e8f968447883064790b063f1d3",
+          b:"39f97b6b785d4c448fbeec47f66bc6c7",
+          c:"a6d90a2fe066436d926f7f3fec563c15" },
+      12:{ a:"8acbac0a64e145b683e8c795aae3dff3",
+          b:"66c9d0f74f5546d1816f58f234a9f145",
+          c:"cf201feb9b984cad9b00075bead1b470" },
+      13:{ a:"18fa99770bc249beb3ab7f9551d32f47",
+          b:"119fb2c238ca47548c5a082ec543cb89",
+          c:"2946cbfcf78943289387ed22c0b83f12" },
+      14:{ a:"ec6ed5554d2849db975dbc5b96a6f16c",
+          b:"94dcf9117cfd4102ac70ff74bcc42d6d",
+          c:"f8b2048291b949afae29b2e1b2f8cc3e" },
+      15:{ a:"b2e9b687ea4347a1b53e68f642fdeaf5",
+          b:"77776110d22b404c98e75aa22c83fa89",
+          c:"aa7c518f8333467d92de1a7291c54ef1" },
+      16:{ one:"f1a0411bab3e4f18bac08a0d52be6e8a", oneLabel:"העמקה ורשות" },
+      17:{ a:"4120dbf43b6d439eabb5caabdaa7430c",
+          b:"4b81732d8294468fa9a8ab80198e9a51",
+          c:"c35e4731aa954ee9b08acfefebb0696e" },
+      18:{ a:"69a591cf32644ee9b370d773b508e8f9",
+          b:"cca4051712444b3c9497618609f68c28",
+          c:"5b1f215b3a3741cc8178cb4c0aa24274" },
+      19:{ a:"8aa80e6e707f498599a98bbbfeee3629",
+          b:"dd8dd55cc88f4946b18856c1b1854f58",
+          c:"452922f8677c4e0ab3727a7217788297" },
+      20:{ a:"d238649155ae41f99f4ef19cf50454ed",
+          b:"c92ee1fee5184343ac0a717d451bb34a",
+          c:"cbad6ed9619f4c759098b98b5196dafd" },
+      21:{ a:"7e1143a0ead54a448cb44d640159f25a",
+          b:"a9270cc416c542708f703c77460649c2",
+          c:"236bf646da64426b866d13e8b12d62e8" },
+      22:{ a:"4364614f06994c83b3c92fe720e4edb9",
+          b:"1e9eedcf41314277a4594d27445aeecb",
+          c:"0438e869b96d4f8b8854ffa5770e95a2" },
+      23:{ a:"7182707a6aaf4dabb3adfd44dbbda660",
+          b:"2f1d9373326b439c8a9d7b53afff82c8",
+          c:"6da409ccdbcb47d483624b751596aba1" },
+      24:{ a:"c0801788356947e19d9cb8c847f6ccf2",
+          b:"f25849c2b0a147e399052637dfee4412",
+          c:"163ff151989f405c8f3c40f6ff4cad0a" },
+      25:{ a:"e43f8a1a08974717be7986b8b2852f89",
+          b:"b22ef951c6c24daa94146c4a7b4f8c92",
+          c:"9278600d8ba3471d96e54947d29c67b9" },
+      26:{ a:"88119aa5e63445128075bc5d35bf4737",
+          b:"c690a243f42c494fa106041d4c694684",
+          c:"abfc6f1ea520421b955108a58b50c402" },
+      27:{ a:"fbd2ac82a6014d41ba94707eb32662ca",
+          b:"356f726c1f2043398e1729359a92c540",
+          c:"9755963070c349d2bc912547b43703ab" },
+      28:{ a:"db535f7692f74af3a9defc825b6d9154",
+          b:"f7552dbc232f40a4affc18bb333a13ec",
+          c:"1d035cb1367e44679c4a2d1898cb90e2" },
+      29:{ a:"edc5246d10b347f7bf914e608f108edd",
+          b:"cf3065585dfb4e35a4df39e3dc22bf20",
+          c:"674cad7d39974264a6bb7d20ff862628" },
+      30:{ a:"c997121702d844daae590dd9b8f98ce0",
+          b:"202eb3e5b25444ec916610ddf2857039",
+          c:"c954b9666a8a4dd1bf69dba54612783d" },
+      31:{ a:"f587fbc6e22a4d6ab7046875475764b4",
+          b:"610abfdd599d49f9a133cb6254ac101f",
+          c:"6cfb68e7c0c94ef28442c54abdc5ee2e" },
+      32:{ a:"481dfa689f8f4e259a7e7833f3aeb0f6",
+          b:"36563b34036046a6acd022df4ac15ff6",
+          c:"22df6b65ed584a16aa2106ee304af85d" },
+      33:{ a:"06eb9bc2e0674a15a48e1d008790e7de",
+          b:"df6d81b01b5b4494bc763e2fc7a4580f",
+          c:"5190e9d93b934a1e81c1e764623faafe" },
+      34:{ a:"fc28a7bc68f440e98b35d9457248d0c6",
+          b:"d0d945404a01440abe8161fb0d9c0f3c",
+          c:"13b72bc959e545de93d87d9890903c63" },
+      35:{ a:"690232f139034ea19993cb0629f9559a",
+          b:"27601cd158c94a7595a58d3d6b3566c7",
+          c:"291fbf0c01604e6692a724ca32855dea" },
+      36:{ a:"e7bc0da1dd7a45589292c59f96fb8d3b",
+          b:"8c954705362941a5a666c5c2127f00ba",
+          c:"d9e0be6446474923b49b153bbc47ba2d" },
+      37:{ a:"d4676da1691544199a4875e2f4d682c9",
+          b:"9e0ce37a252f498bb33d534bafe2198d",
+          c:"871cf39a8cab42f4910137b0c142d222" },
+      38:{ a:"8946d8c9166c4e919ee36aa5d6f4b54a",
+          b:"850489bea3194ed495240d787ef4d322",
+          c:"e4014d5422894454afba838592318f9c" },
+      39:{ a:"6a80051d49d94e229315c17a3a0332b5",
+          b:"2843b2df9157455685364e378d4efbdb",
+          c:"e157be6791a04edf86620d0467903c3a" },
+      40:{ a:"99821c0d41e14efda6e44bfee41ce5ff",
+          b:"5672eff33c8040a3a3844aeffe72a654",
+          c:"e76167da1d6a4d9c8ac35dfc41bed116" },
+      41:{ a:"7f0391dfab524a39a6d68a968f7339af",
+          b:"6911455b8d1f4cca9703e720eb335bbd",
+          c:"d71867aca59a4cd6bc3395281c9a201e" },
+      42:{ a:"9e06583e3b664991890e59b3282ddfdb",
+          b:"502005f2cfc2495c81bb32f76135c139",
+          c:"d4b1cfd46b054bd59b916056dc3cc02e" },
+      43:{ a:"688b0fbdce014927a0c0ce47dba69460",
+          b:"f13598940ff74377bf1efd29c00d41f3",
+          c:"d5f88284b6fb4274893d2045895335a0" },
+      44:{ a:"ccf7932867be47f2932b1686e670fde0",
+          b:"fd579e05799a4054864100fc896b73b8",
+          c:"52df7d02859543faba14510fb15eea7e" },
+      45:{ a:"03c75620096a463392559dbaff88f6e5",
+          b:"0c0ee9496d90490396ecbd7126fc4522",
+          c:"4026ab04c9ab4d9fa00cbdc2dae472f9" },
+      46:{ a:"bffc490f20534d2a95c49583f6e19865",
+          b:"e424e7af9c8f483f8901a4fdf9be70fd",
+          c:"18a8726216a2428d80d7a209e48c6647" },
+      47:{ a:"99b5e03ddc654d0caeeb30bc93a54774",
+          b:"923dc7074efe4c4c9df835f49708a697",
+          c:"bc42c2b8b2514537b491adc4c124be1d" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים מכוונים וחשבון" },
+      { key:"alg",  name:"אלגברה ומשוואות" },
+      { key:"eq",  name:"מארז משוואות — צעד אחר צעד (EQ7)" },
+      { key:"coord",  name:"מערכת צירים וגרפים" },
+      { key:"geo",  name:"זוויות, משולשים ופיתגורס" },
+      { key:"area",  name:"היקף ושטח" },
+      { key:"solid",  name:"גופים ונפח" },
+      { key:"data",  name:"נתונים, שכיחות והסתברות" }
+    ],
+
+    topics: [
+      { id:1, ic:"numline", g:"num", t:"מספרים מכוונים — ישר המספרים וערך מוחלט",
+        d:"מספרים חיוביים ושליליים על ציר המספרים, מספר נגדי, ערך מוחלט, השוואה וסידור." },
+      { id:2, ic:"plusminus", g:"num", t:"חיבור וחיסור מספרים מכוונים",
+        d:"חיבור וחיסור מספרים חיוביים ושליליים, סימנים סמוכים, תנועה על הציר ובעיות מהחיים." },
+      { id:3, ic:"times", g:"num", t:"כפל מספרים מכוונים",
+        d:"חוקי הסימנים בכפל, מכפלה של כמה גורמים ופישוט ביטויים." },
+      { id:4, ic:"divide", g:"num", t:"חילוק מספרים מכוונים",
+        d:"חוקי הסימנים בחילוק, שברים עם סימן שלילי והקשר לכפל." },
+      { id:5, ic:"parens", g:"num", t:"סדר פעולות החשבון במספרים מכוונים",
+        d:"סדר הפעולות, סוגריים, חזקות וקו שבר בביטויים עם מספרים מכוונים." },
+      { id:6, ic:"power", g:"num", t:"חזקות עם מעריך טבעי",
+        d:"בסיס ומעריך, חזקת מספר שלילי, חוקי חזקות בסיסיים וסדר פעולות." },
+      { id:7, ic:"root", g:"num", t:"שורש ריבועי",
+        d:"משמעות השורש הריבועי, שורשים של ריבועים שלמים, אומדן והקשר לשטח הריבוע." },
+      { id:8, ic:"axes", g:"coord", t:"מערכת צירים — היכרות וקנה מידה",
+        d:"צירים וראשית, שיעורי נקודה, בחירת קנה מידה מתאים וקריאת נקודות." },
+      { id:9, ic:"quadrants", g:"coord", t:"הרחבת מערכת הצירים חלק 1",
+        d:"ארבעת הרביעים, שיעורים שליליים, נקודות על הצירים ושיקוף נקודות." },
+      { id:10, ic:"analytic", g:"coord", t:"הרחבת מערכת הצירים חלק 2 — יישום והעמקה",
+        d:"מרחקים בין נקודות, צורות במערכת הצירים וחישובי היקף ושטח." },
+      { id:11, ic:"angle", g:"geo", t:"זוויות חלק 1 — היכרות, סימון ומדידה",
+        d:"סוגי זוויות, סימון וקריאה נכונה, מדידה ובנייה בעזרת מד־זווית." },
+      { id:12, ic:"protractor", g:"geo", t:"זוויות חלק 2 — יחסים ופעולות",
+        d:"זוויות צמודות וקודקודיות, משלימות ונשלמות, חוצה זווית וחישובים." },
+      { id:13, ic:"clipboard", g:"geo", t:"זוויות — דף חזרה מסכם",
+        d:"חזרה על כל יחסי הזוויות, חישובים מורכבים וכתיבת נימוקים." },
+      { id:14, ic:"triangle", g:"geo", t:"סכום הזוויות במשולש ובמרובע",
+        d:"משפט סכום הזוויות, זווית חיצונית וחישובי זוויות במשולש ובמרובע." },
+      { id:15, ic:"tritick", g:"geo", t:"משולשים מיוחדים",
+        d:"משולש שווה־שוקיים, שווה־צלעות וישר־זווית — תכונות, זיהוי וחישובים." },
+      { id:16, ic:"star", g:"geo", t:"משולש שווה־צלעות — העמקה ורשות",
+        d:"תכונות וסימטריה, גובה ותיכון ושאלות אתגר ורשות." },
+      { id:17, ic:"twotri", g:"geo", t:"מצולעים חופפים וטרנספורמציות",
+        d:"הזזה, שיקוף וסיבוב, זיהוי מצולעים חופפים והתאמת קודקודים." },
+      { id:18, ic:"gridrect", g:"area", t:"שטח מלבן וריבוע — העמקה",
+        d:"חישובי שטח, מציאת צלע חסרה, יחידות שטח ובעיות מורכבות." },
+      { id:19, ic:"tridash", g:"area", t:"שטח משולש — העמקה",
+        d:"בסיס והגובה המתאים לו, גבהים במשולש קהה־זווית וחישובי שטח הפוכים." },
+      { id:20, ic:"cube", g:"solid", t:"תיבה וקובייה",
+        d:"מבנה התיבה והקובייה, פריסה, שטח פנים, נפח ויחידות מידה." },
+      { id:21, ic:"box_eq", g:"alg", t:"משתנים וביטויים אלגבריים — שפה ומידול",
+        d:"מעבר מתיאור מילולי לביטוי אלגברי, משמעות המשתנה ומידול מצבים מהחיים." },
+      { id:22, ic:"arrowbox", g:"alg", t:"הצבה בביטויים אלגבריים",
+        d:"הצבת ערכים חיוביים ושליליים, חישוב ערך הביטוי והשוואה בין ביטויים." },
+      { id:23, ic:"table", g:"data", t:"איסוף וקריאת מידע",
+        d:"איסוף נתונים, ארגון בטבלה, קריאת דיאגרמות והסקת מסקנות." },
+      { id:24, ic:"tally", g:"data", t:"שכיחות",
+        d:"טבלת שכיחות, השכיח, קריאת נתונים והצגתם בדיאגרמה." },
+      { id:25, ic:"percent", g:"data", t:"שכיחות יחסית חלק 1 — היכרות",
+        d:"חישוב שכיחות יחסית בשבר, בעשרוני ובאחוזים והשוואה בין קבוצות." },
+      { id:26, ic:"flask", g:"data", t:"שכיחות יחסית חלק 2 — ניסויים ויציבות",
+        d:"ניסויים חוזרים, התייצבות השכיחות היחסית והקשר להסתברות." },
+      { id:27, ic:"dice", g:"data", t:"הסתברות — היכרות",
+        d:"מרחב התוצאות, מאורע ודאי ובלתי אפשרי, חישוב הסתברות בסיסית והוגנות." },
+      { id:28, ic:"branch", g:"alg", t:"שוויון ביטויים חלק 1 — כינוס ופילוג",
+        d:"איברים דומים, כינוס איברים, חוק הפילוג ובדיקת שקילות בין ביטויים." },
+      { id:29, ic:"factor", g:"alg", t:"שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים",
+        d:"הוצאת גורם משותף, פתיחת סוגריים אחרי מינוס ופישוט ביטויים מורכבים." },
+      { id:30, ic:"point", g:"coord", t:"נקודות על גרף ברביע הראשון",
+        d:"סימון נקודות, מעבר בין טבלה לגרף, קריאת גרף ותיאור תהליכים." },
+      { id:31, ic:"scale", g:"eq", t:"EQ7-01 — מהו פתרון של משוואה",
+        d:"משמעות הפתרון, בדיקה בהצבה, זיהוי פתרון נכון ומשוואות אמת ושקר." },
+      { id:32, ic:"scale", g:"alg", t:"משוואות ופתרונן חלק 1 — מבוא",
+        d:"משמעות הפתרון, כללי שקילות, העברת אגפים ובדיקת הפתרון." },
+      { id:33, ic:"arrowbox", g:"eq", t:"EQ7-02 — משוואות חד־שלביות",
+        d:"פתרון משוואות בפעולה אחת — חיבור, חיסור, כפל וחילוק — ובדיקת הפתרון." },
+      { id:34, ic:"steps", g:"eq", t:"EQ7-03 — משוואות דו־שלביות",
+        d:"פתרון בשני שלבים, סדר פעולות הפוך, בידוד הנעלם ובדיקת הפתרון." },
+      { id:35, ic:"factor", g:"eq", t:"EQ7-04 — מפשטים ואז פותרים",
+        d:"כינוס איברים דומים בכל אגף, פישוט המשוואה ומעבר מסודר לפתרון." },
+      { id:36, ic:"braces", g:"alg", t:"משוואות ופתרונן חלק 2 — סוגריים ושקילות",
+        d:"משוואות עם סוגריים, נעלם בשני האגפים, אין פתרון ואינסוף פתרונות." },
+      { id:37, ic:"branch", g:"eq", t:"EQ7-05 — סוגריים וחוק הפילוג",
+        d:"פתיחת סוגריים בחוק הפילוג, מינוס לפני סוגריים ופתרון משוואות מלאות." },
+      { id:38, ic:"range", g:"eq", t:"EQ7-06 — הנעלם בשני האגפים",
+        d:"העברת נעלמים ומספרים בין אגפים, כינוס ופתרון, כולל מקרים מיוחדים." },
+      { id:39, ic:"cycle", g:"eq", t:"שלושה ייצוגים לפתרון משוואה",
+        d:"פתרון משוואה בשלושה ייצוגים — מודל, טבלה ופעולות אלגבריות — והמעבר ביניהם." },
+      { id:40, ic:"speech", g:"alg", t:"שאלות מילוליות באמצעות משוואות",
+        d:"בחירת נעלם, בניית משוואה מתוך סיפור, פתרון ובדיקת סבירות התשובה." },
+      { id:41, ic:"pythag", g:"geo", t:"פיתגורס חלק 1 — היכרות וחישוב",
+        d:"משפט פיתגורס, ניצבים ויתר, חישוב צלע חסרה ובדיקה אם המשולש ישר־זווית." },
+      { id:42, ic:"pythag", g:"geo", t:"פיתגורס חלק 2 — שימושים",
+        d:"שימוש בפיתגורס במלבן, בטרפז, בגובה משולש ובבעיות מהחיים." },
+      { id:43, ic:"dashrect", g:"area", t:"חישובי היקף — צורות מורכבות ואלגברה",
+        d:"היקף מצולעים מורכבים, ביטוי היקף באמצעות משתנה והשוואת היקפים." },
+      { id:44, ic:"pgram", g:"area", t:"שטחים ב׳ חלק 1 — מקבילית וטרפז",
+        d:"נוסחאות שטח מקבילית וטרפז, זיהוי הגובה ומציאת נתון חסר." },
+      { id:45, ic:"lshape", g:"area", t:"שטחים ב׳ חלק 2 — מצולעים מורכבים",
+        d:"פירוק לצורות מוכרות, חיסור שטחים ושאלות משולבות." },
+      { id:46, ic:"prism", g:"solid", t:"מנסרה משולשת חלק 1 — מבנה ונפח",
+        d:"זיהוי המנסרה, בסיסים, מקצועות וגובה, חישוב נפח ומציאת נתון חסר." },
+      { id:47, ic:"prism", g:"solid", t:"מנסרה משולשת חלק 2 — שטח פנים",
+        d:"פריסת המנסרה, שטח המעטפת, שטח הבסיסים ושטח הפנים הכולל." }
+    ]
+  },
+  /* ================= כיתה ח׳ ================= */
+  8: {
+    links: {
+      1:{ one:"19007c8c1e624a9b85886e8e61717525" },
+      2:{ a:"015484fb09954ec39d54dd57b238426c",
+          b:"9c712821f018449dbb4290abfe5ffcfa",
+          c:"7b86c2bb63ed49cf87a8920f9f141e73" },
+      3:{ a:"9672e2f8b2d749d584c8c6163ed84709",
+          b:"197a2946d4784aa98a644317a1355d77",
+          c:"87cc50fbb59349aaa2e54a8d48b95760" },
+      4:{ a:"b6cad3d46ed64a5e8c77d8d45a08274e",
+          b:"80fcedef0695488f829ba54b95794088",
+          c:"2d3062862ccb4744a74926c1164ae79b" },
+      5:{ a:"14b1fa8cb2144bc8ac0f372bea044b94",
+          b:"9b5024dcd3954927b69ce94e97c14db6",
+          c:"8dada5b67c1b45a4bf1cd668a720686e" },
+      6:{ a:"54a81904f1fe4142af54284c23fae905",
+          b:"c7ade82ba64f4d5c9d46579c7946e0d4",
+          c:"c4b37f20c4ac44e79d310ce52c72a8d3" },
+      7:{ a:"36239c61b729401683695671b5cc4983",
+          b:"5b363fae19504d74b6d00a84ac1c7619",
+          c:"e3f4172799df4c60837a2542b27e71e0" },
+      8:{ a:"154e7e1e3bcc4407a9e953a8a17decd6",
+          b:"4925e4a363f24902b73192d397ed9da9",
+          c:"19d4f17eb07e4576a4cba7cb68a2119b" },
+      9:{ a:"d9fde034961d4c5db2fca8e8c599a115",
+          b:"ecd23bb0cc3a45609d47c8c9a492a494",
+          c:"fecf66eb956e41b29ab916b02e0ca3a9" },
+      10:{ a:"19c2c872c4a74aecb0240f49cee4e310",
+          b:"ced927b3977540f0849d8e6c08aa0b90",
+          c:"0d3b12ba43364f11847585c56848f4da" },
+      11:{ a:"317ca59d36d347259e568de62df391d4",
+          b:"d5b12dc2fe3c421887ed1373390e3182",
+          c:"faac50249cea4605b26d3d0f722765b6" },
+      12:{ a:"35247f426e7f48b0b6e9d721e7ab91aa",
+          b:"16dc8f52e8cb41b89951e9a50868f54c",
+          c:"0efe1c0e0ab34d7590d93fb94648fa8e" },
+      13:{ a:"2226c12254204984934eb159f89f849f",
+          b:"93b06d5c1a9d49818e03d3cf188108aa",
+          c:"826819bf991143a49d80f64d21a9822a" },
+      14:{ a:"88cf09e6378a4dcabebbc535478f23d3",
+          b:"a8bdb98f0ee04321b2c8643948d53d55",
+          c:"b26782610cdb4e209cfbff30679a9921" },
+      15:{ a:"261406b670584ee2b32cd5c908a16ea7",
+          b:"f64058ef37a0497e8b7c45c1bc56b0b1",
+          c:"4d2c6ee49e274c5083ab122a8d49e76d" },
+      16:{ a:"0d943ad93a17438ab758ae3f56f413bf",
+          b:"81d32f056d644638a728372abd6af312",
+          c:"b1535f81d23d424993a9b39fa2e82cd6" },
+      17:{ a:"4624220fce2841fcbfcf0b45e77073ec",
+          b:"634987cd136e4d399477a4ea767faac6",
+          c:"c795472fab274897b230e8ec6000aa4a" },
+      18:{ a:"dcec71fa373c43e3b288bdb17d8c4723",
+          b:"64ec3248bb6541648e42f5bdc31266f9",
+          c:"f3381b01c76f4fd39fe067bac4f707e3" },
+      19:{ a:"c6960a4495784cb18a047aed42499812",
+          b:"fbf7100264a64403a0135cc53a38a051",
+          c:"febccc7e3abb41ea97fa82f764cb9a8c" },
+      20:{ a:"24d7f048c6f04023b20edb89dd1bf88b",
+          b:"4e5bc47a8f9544928d68f0d99b9aef67",
+          c:"dc8bbec95355436b9721053582a7888c" },
+      21:{ a:"236c41681c264011b6a9ed4a02a17ad7",
+          b:"9012b23420274fb6915c39d126bf5b29",
+          c:"02b685eed0b849aeaf32bb91bfa10cfb" },
+      22:{ a:"ee1b01704528406996f397fdef79593f",
+          b:"536b6f51b01a4e7ca16bb065410f2cb0",
+          c:"30cbdeeeccbf436b8c6fa84e9b031180" },
+      23:{ a:"d0194e180866496e962d2cb44eaceec3",
+          b:"ba5aaed058a54e07b97b828860096626",
+          c:"0bad9b36fa934cd0b0b3066a7d8f0312" },
+      24:{ a:"a2a1f3700a59459d849a414d8b4395b2",
+          b:"3b340098ad0947bb8f93952b0562732e",
+          c:"537ee821363249e6a58ee74847988cb3" },
+      25:{ a:"b8bba95b91a84397b9813374627375b2",
+          b:"f13db3a1dcf44ed4b0ec68d2fb99d76f",
+          c:"bc3bb7eb2c0e436fa0eef77849fa8bab" },
+      26:{ one:"b1dbc30b0c3642629fb3cc0d5e8d397f" },
+      27:{ a:"b1611126b25a4369937e6f25d3334641",
+          b:"859c1ad8f0f747c19335612d310bcf26",
+          c:"c4ee422e17aa45d1b2bed9330cf85223" },
+      28:{ a:"998c5c48178e4747856638432115858a",
+          b:"7c424898d0e34b16a542aec3ce7499b3",
+          c:"e70b821eb2f74543af408e524977e731" },
+      29:{ a:"609d7af2171b4ec2a9f4ed7c38a718de",
+          b:"133caaa73ec2489198ae0c70486941e1",
+          c:"bb1d2729c4594dac967623d1aa93eab3" },
+      30:{ a:"2b4b7fd6167f4524927a409fbcc82b54",
+          b:"10925c46ae01453893ec6e905c6fd657",
+          c:"f5f02384187d4fcbb235ba9f2bb29d95" },
+      31:{ a:"1e9d821ba82f4da0b9df090af64c81e3",
+          b:"b74019a0600444debc6123ac96d373df",
+          c:"aabec71dfbde4e55bb7ee98e634b9b86" },
+      32:{ a:"efd7d39ca08845958c91278aedeb78e7",
+          b:"2d1e772ead7c443e8e36763f404757b5",
+          c:"590d338948344d9dba9cf5f479638f4d" },
+      33:{ a:"a23b727960544ebda5aa960b43b8513f",
+          b:"eee12cd7c10d4ccaa2bfafb1798e588c",
+          c:"29b2cc0f40144264ac949357deab16fd" },
+      34:{ one:"79bc610d34cb4c5b94b91b0f49357150" },
+      35:{ one:"088dffc0d3174c4ba801966f1b8d2827" },
+      36:{ a:"bc1320aa7e4842da880ea6d0a7c337e5",
+          b:"6de11488098b4282960057fbee3c751f",
+          c:"135f952b656649d5b3740dc323a359ce" },
+      37:{ a:"43e28844b39948579c9ca853c1bea1ff",
+          b:"e84ddd7e5ac44034bf1233e01a5d5af6",
+          c:"d01d01dcf9cc41ae84f018437d9cdce8" },
+      38:{ a:"27d90d0811dd418ba0f5715d051998aa",
+          b:"1d70498d99a9410c926110b6cf2964bf",
+          c:"c39ebdd35b8e4c0b87925a80b7cfaebe" },
+      39:{ a:"b57b3309353b491e865e4ae1ed00b20d",
+          b:"a074fee32a6146e3a06e9e909dd4b1e7",
+          c:"c315616812ec45718306001b01f5463b" },
+      40:{ a:"6d26b1adc9124fb8965f2ae2f176388a",
+          b:"14d663eb89a746fcb4e91b67afd92a3f",
+          c:"9f3e342692ce497c9312e638f1cacd44" },
+      41:{ a:"4a610325a1dc47dd8fd8fe0c0227fc51",
+          b:"6b2314cf284c4f1d873da7a1b7376578",
+          c:"c18d3d3baabf490ca6e02bc9646bbbbe" },
+      42:{ a:"c1e0666ffa8240b08f2c4dfbf6705e20",
+          b:"a6441b5404b8455c854c5c289ad9646c",
+          c:"b12bf6899fe1463d81ba20cd1aaebb0a" },
+      43:{ a:"2d17d4f9770649edabc2cfcb4d1576df",
+          b:"d861478772a34e1ca55f637c1e2fbfeb",
+          c:"ef7a3649d8c94f55a99e076604c465ed" },
+      44:{ a:"3281ba333a8e491b9dc8339387063e8f",
+          b:"c21ef6830ba14a61aab778bb07a6fab3",
+          c:"6b659a921e364e98a6fbf45fe7f1080c" },
+      45:{ a:"3695a82f54b44f1f9ca2b0065a3af41d",
+          b:"3163cb035a9e481db1e98ea16b8fcc18",
+          c:"5c8f5bc15e564450a9d257b11130d7c3" },
+      46:{ a:"dec3836a3f42418c8dc97597f309b5d0",
+          b:"a46bfb9d34f849d4a995ba7360ad181d",
+          c:"978eca27886640b1a8e5ec20ae96cde4" },
+      47:{ a:"0ba897cda7734e828676b32a43c9bd1e",
+          b:"81256d17f0b24d0285c1af32d508ed4c",
+          c:"1a88c2a72e89475aa31a385cfd2d80a4" },
+      48:{ a:"a6304ab859824c259891d1dcd2023bb0",
+          b:"f390535b36394436bbd91ba1fc3ed9e1",
+          c:"3b0c48197001435988783754e539f2b1" },
+      49:{ a:"667497e953e846789a15843c53986397",
+          b:"8296ffb6a46b42fc947a80da6619dd15",
+          c:"1a2a265351c049a7a568e9d5cc55243f" },
+      50:{ a:"8bb02f41661949d49a623ec4979229b4",
+          b:"8a5a66109f72448aaa7563ee4391b7e1",
+          c:"8638784f1966446198021e9fbfd11eb3" },
+      51:{ a:"89adbd64165d4488a6f9e4e4f2053b19",
+          b:"3d23ec4fbc2b4b21a6cbfac4824df9d9",
+          c:"bef01844d43b45d8a2674c30a0482032" },
+      52:{ a:"ff5e6af417014fbd80316be4bfb36887",
+          b:"f26ea79a883a48fdb93bd941268ff1fb",
+          c:"a371cc492a574829afe9528132022f58" },
+      53:{ a:"11d5c29f76ee4e86ba66bdee799147f2",
+          b:"67fedc3d1de346488f9e1f80f506827a",
+          c:"cd4d3213d41148ab944f6f8c10b8b64e" },
+      54:{ a:"2495bf1bea54402a9730d6da76efe14b",
+          b:"6acb8186200a4e76a773366e32749786",
+          c:"ae72c81793964ebe986f700020f0ca05" },
+      55:{ a:"b30be89e2bc94ec5bbc2cf88be6887dd",
+          b:"a58d1b7a5a7b40888845060365ec884f",
+          c:"c2c4556d3a64429c972b9f9001211abb" },
+      56:{ one:"8a2c612c4c63415084d4c244ee0322be" },
+      57:{ one:"bfba163a90df4a61a67171f32c94f028" },
+      58:{ one:"2f45f5a2df9b409e9e014c8d267ed758" },
+      59:{ one:"ffc48f458f9547999c296bde6f96fa0a" },
+      60:{ one:"52bf99838a1d4235a2ecf3bcebbdbd92" }
+    },
+
+    groups: [
+      { key:"alg",  name:"אלגברה ומשוואות" },
+      { key:"fun",  name:"פונקציות" },
+      { key:"ratio",  name:"יחס, אחוזים וקנה מידה" },
+      { key:"data",  name:"נתונים, סטטיסטיקה והסתברות" },
+      { key:"model",  name:"מידול" },
+      { key:"geo",  name:"גאומטריה" },
+      { key:"solid",  name:"שורשים, פיתגורס וגופים" },
+      { key:"synth",  name:"סינתזה, הרחבה והערכה" },
+      { key:"support",  name:"תמיכה ואבחון" },
+      { key:"deep",  name:"העמקה" }
+    ],
+
+    topics: [
+      { id:1, ic:"magnify", g:"support", t:"אבחון קדם־ידע",
+        d:"מיפוי ידע מכיתה ז׳ לפני תחילת השנה — מספרים מכוונים, ביטויים אלגבריים ושברים." },
+      { id:2, ic:"scale", g:"alg", t:"משוואות ליניאריות",
+        d:"פתרון משוואות מדרגה ראשונה, כינוס איברים, העברת אגפים, פתיחת סוגריים ובדיקת פתרון." },
+      { id:3, ic:"frac", g:"alg", t:"מכנים מספריים",
+        d:"משוואות עם שברים, מכנה משותף, הכפלה בכל המשוואה ופישוט לפני פתרון." },
+      { id:4, ic:"ratio", g:"ratio", t:"יחס ופרופורציה",
+        d:"יחס בין גדלים, חלוקה לפי יחס, פרופורציה ישרה והפוכה ובעיות יישום." },
+      { id:5, ic:"map", g:"ratio", t:"קנה מידה",
+        d:"קריאת מפות ותרשימים, חישוב מרחקים ואורכים אמיתיים והשפעת קנה המידה על שטח." },
+      { id:6, ic:"percent", g:"ratio", t:"אחוזים — ייצוגים",
+        d:"מעבר בין שבר פשוט, שבר עשרוני ואחוז, חישוב אחוז מכמות ואחוז שלם." },
+      { id:7, ic:"tag", g:"ratio", t:"בעיות אחוזים",
+        d:"מציאת החלק, השלם ואחוז, הנחות ותוספות, מע״מ, ריבית ובעיות מהחיים." },
+      { id:8, ic:"updown", g:"ratio", t:"שינוי באחוזים",
+        d:"עלייה וירידה באחוזים, חישוב אחוז השינוי והמעבר מערך התחלתי לערך סופי." },
+      { id:9, ic:"steps", g:"ratio", t:"שינויים עוקבים",
+        d:"שני שינויים ברצף, אחוז השינוי הכולל, ומדוע ירידה ועלייה שוות אינן מחזירות למחיר המקורי." },
+      { id:10, ic:"root", g:"solid", t:"שורש ריבועי",
+        d:"משמעות השורש, אומדן, פישוט שורשים ופעולות בסיסיות עם שורשים." },
+      { id:11, ic:"pythag", g:"solid", t:"פיתגורס",
+        d:"משפט פיתגורס, חישוב יתר וניצב ובדיקה אם משולש הוא ישר־זווית." },
+      { id:12, ic:"pythag", g:"solid", t:"פיתגורס מורכב",
+        d:"שילוב פיתגורס במרובעים, בגבהים ובמשולשים מורכבים ושילוב עם חישובי שטח." },
+      { id:13, ic:"cyl", g:"solid", t:"גליל — שטח פנים",
+        d:"פריסת הגליל, שטח המעטפת, שטח הבסיסים ושטח הפנים הכולל." },
+      { id:14, ic:"cyl", g:"solid", t:"גליל — נפח",
+        d:"חישוב נפח גליל, מציאת רדיוס או גובה חסרים ובעיות יישום ומיכלים." },
+      { id:15, ic:"cyl", g:"solid", t:"חרוט",
+        d:"מבנה החרוט, הבסיס המעגלי והקודקוד, שטח המעטפת ושטח הפנים, נפח החרוט והשוואה לגליל." },
+      { id:16, ic:"table", g:"data", t:"ארגון נתונים",
+        d:"טבלאות שכיחות, קיבוץ נתונים לקבוצות, שכיחות יחסית וקריאת טבלאות." },
+      { id:17, ic:"bars", g:"data", t:"עמודות ופיקטוגרמות",
+        d:"בניית דיאגרמת עמודות ופיקטוגרמה, קריאתן והשוואה בין קבוצות נתונים." },
+      { id:18, ic:"pie", g:"data", t:"דיאגרמת עוגה",
+        d:"חישוב זוויות המגזרים ואחוזים, בניית עוגה מתוך טבלה וקריאת נתונים ממנה." },
+      { id:19, ic:"machine", g:"fun", t:"מושג הפונקציה",
+        d:"משתנה תלוי ובלתי תלוי, התאמה חד־ערכית, זיהוי פונקציה ושאינה פונקציה." },
+      { id:20, ic:"braces", g:"fun", t:"סימון פונקציה",
+        d:"הסימון f(x), חישוב ערך הפונקציה, מציאת מקור לפי תמונה וקריאת ערכים מגרף." },
+      { id:21, ic:"cycle", g:"fun", t:"מעבר בין ייצוגים",
+        d:"תיאור מילולי, טבלה, גרף ונוסחה — מעבר בין ארבעת הייצוגים והתאמה ביניהם." },
+      { id:22, ic:"range", g:"data", t:"טווח הנתונים",
+        d:"חישוב הטווח, זיהוי ערכים קיצוניים ומשמעות הפיזור בהשוואה בין קבוצות." },
+      { id:23, ic:"avg", g:"data", t:"הממוצע",
+        d:"חישוב ממוצע, ממוצע משוקלל, מציאת נתון חסר והשפעת שינוי נתון על הממוצע." },
+      { id:24, ic:"median", g:"data", t:"החציון",
+        d:"מציאת החציון במספר זוגי ואי־זוגי של נתונים והשוואה בינו לבין הממוצע." },
+      { id:25, ic:"checklist", g:"data", t:"בחירת מדד",
+        d:"מתי מתאים ממוצע, מתי חציון ומתי שכיח — נימוק הבחירה לפי סוג הנתונים." },
+      { id:26, ic:"magnify", g:"synth", t:"אוריינות וביקורת ייצוג",
+        d:"קריאה ביקורתית של גרפים וטבלאות, זיהוי ייצוגים מטעים וניסוח מסקנות מבוססות." },
+      { id:27, ic:"steps", g:"fun", t:"קצב השתנות",
+        d:"שינוי קבוע מול משתנה, חישוב קצב מתוך טבלה ומתוך גרף ומשמעותו בהקשר." },
+      { id:28, ic:"slope", g:"fun", t:"שיפוע וישר y=mx",
+        d:"משמעות השיפוע, ישר העובר בראשית הצירים, שיפוע חיובי ושלילי ופרופורציה ישרה." },
+      { id:29, ic:"linear", g:"fun", t:"פונקציה קווית",
+        d:"הישר y=mx+n, השפעת m ושל n על הגרף, שרטוט לפי טבלה והתאמת גרף לנוסחה." },
+      { id:30, ic:"dots2", g:"fun", t:"חיתוך צירים",
+        d:"נקודות חיתוך עם ציר x ועם ציר y, תחומי חיוביות ושליליות ותחומי עלייה וירידה." },
+      { id:31, ic:"ruler", g:"fun", t:"משוואת ישר",
+        d:"מציאת משוואת ישר לפי שתי נקודות או לפי נקודה ושיפוע, ובדיקת שייכות נקודה לישר." },
+      { id:32, ic:"gridlines", g:"fun", t:"ישרים מקבילים לצירים",
+        d:"הישרים y=k ו-x=k, זיהוי משוואתם מהגרף ושילובם עם ישרים אחרים." },
+      { id:33, ic:"arrowr", g:"model", t:"תנועה",
+        d:"בעיות מרחק, מהירות וזמן — תנועה באותו כיוון, בכיוונים מנוגדים ומפגש." },
+      { id:34, ic:"magnify", g:"support", t:"אבחון אמצע שנה",
+        d:"בדיקת שליטה בנושאי המחצית הראשונה וזיהוי נקודות לחיזוק." },
+      { id:35, ic:"bridge", g:"support", t:"גישור ותיקון פערים",
+        d:"תרגול ממוקד לסגירת פערים בסיסיים לקראת המשך הנושאים." },
+      { id:36, ic:"twotri", g:"geo", t:"חפיפת משולשים",
+        d:"מושג החפיפה, התאמת קודקודים, צלעות וזוויות וזיהוי משולשים חופפים." },
+      { id:37, ic:"twotri", g:"geo", t:"משפטי חפיפה",
+        d:"צ.ז.צ, ז.צ.ז, צ.צ.צ — בחירת המשפט המתאים ויישומו על סרטוט נתון." },
+      { id:38, ic:"clipcheck", g:"geo", t:"הוכחה גאומטרית",
+        d:"מבנה ההוכחה: נתון, צריך להוכיח, טענות ונימוקים וסדר לוגי נכון." },
+      { id:39, ic:"angle", g:"geo", t:"זווית חיצונית",
+        d:"משפט הזווית החיצונית, סכום זוויות במשולש ויישומים בחישוב זוויות." },
+      { id:40, ic:"tritick", g:"geo", t:"משולש שווה שוקיים",
+        d:"ישרים מקבילים וזוויות, תכונות משולש שווה-שוקיים, זוויות בסיס, חוצה זווית ושאלות הוכחה." },
+      { id:41, ic:"clipcheck", g:"geo", t:"הוכחה — שווה שוקיים",
+        d:"המשפט והמשפט ההפוך, שימוש בחפיפה להוכחת שוויון שוקיים ושאלות הוכחה מורכבות." },
+      { id:42, ic:"medtri", g:"geo", t:"התיכון במשולש",
+        d:"תיכון לצלע ותכונותיו, התיכון ליתר במשולש ישר־זווית ושימוש בו בהוכחות." },
+      { id:43, ic:"twotri2", g:"geo", t:"דמיון משולשים",
+        d:"יחס דמיון, התאמת צלעות וזוויות, חישוב אורכים חסרים וקנה מידה." },
+      { id:44, ic:"twotri2", g:"geo", t:"הוכחת דמיון",
+        d:"משפטי הדמיון, כתיבת הוכחה מלאה והסקת שוויון יחסים בין צלעות." },
+      { id:45, ic:"sq2", g:"geo", t:"יחס שטחים",
+        d:"יחס ההיקפים ויחס השטחים במשולשים דומים ובעיות יישום." },
+      { id:46, ic:"speech", g:"model", t:"מילוליות — בחירת נעלמים",
+        d:"בחירת נעלם מתאים, בניית משוואה מתוך סיפור, פתרון ופירוש התשובה בהקשר." },
+      { id:47, ic:"cross2", g:"alg", t:"מערכות — חיתוך גרפי",
+        d:"פתרון מערכת שתי משוואות בעזרת שרטוט ונקודת חיתוך, מקרים של אין פתרון ואינסוף פתרונות." },
+      { id:48, ic:"syseq", g:"alg", t:"מערכות — פתרון אלגברי",
+        d:"שיטת ההצבה ושיטת החיבור והחיסור, בחירת השיטה היעילה ובדיקת הפתרון." },
+      { id:49, ic:"speech", g:"alg", t:"מערכות — מידול",
+        d:"תרגום בעיות מילוליות למערכת שתי משוואות בשני נעלמים ופירוש הפתרון בהקשר הבעיה." },
+      { id:50, ic:"dice", g:"data", t:"הסתברות — מרחב תוצאות",
+        d:"מרחב מדגם, מאורע, ספירת תוצאות והסתברות במרחב אחיד." },
+      { id:51, ic:"flask", g:"data", t:"הסתברות — ניסוי והוגנות",
+        d:"שכיחות יחסית מול הסתברות תאורטית, ניסויים חוזרים ובדיקת הוגנות של משחק." },
+      { id:52, ic:"lt", g:"alg", t:"אי־שוויון",
+        d:"פתרון אי־שוויונות, היפוך סימן בכפל ובחילוק בשלילי וייצוג הפתרון על ציר המספרים." },
+      { id:53, ic:"cross2", g:"alg", t:"אי־שוויון גרפי",
+        d:"קריאת פתרון אי־שוויון מתוך גרף, השוואה בין שני ישרים וסימון תחומי הפתרון." },
+      { id:54, ic:"cube", g:"solid", t:"פיתגורס במרחב",
+        d:"אלכסון תיבה, גובה בגופים ומרחקים במרחב בעזרת שימוש כפול בפיתגורס." },
+      { id:55, ic:"triangle", g:"synth", t:"סינתזה גאומטרית",
+        d:"שאלות המשלבות חפיפה, דמיון, פיתגורס וחישובי שטח בסרטוט אחד." },
+      { id:56, ic:"bulb", g:"deep", t:"העמקה — בעיות לא שגרתיות",
+        d:"בעיות חשיבה, אסטרטגיות פתרון, ספירה חכמה ושאלות אתגר." },
+      { id:57, ic:"flask", g:"deep", t:"העמקה — חקר והכללה",
+        d:"חקר תבניות מספריות וגאומטריות, ניסוח השערה, בדיקה והכללה מנומקת." },
+      { id:58, ic:"book", g:"synth", t:"חזרה מסכמת",
+        d:"חזרה רוחבית על כל פרקי השנה עם שאלות משולבות מכל התחומים." },
+      { id:59, ic:"clipboard", g:"synth", t:"הערכה מסכמת",
+        d:"מבחן מסכם המשלב את נושאי השנה — אלגברה, פונקציות, נתונים וגאומטריה." },
+      { id:60, ic:"magnify", g:"support", t:"אבחון סוף שנה",
+        d:"מיפוי מסכם של הידע לקראת המעבר לכיתה ט׳." }
+    ]
+  },
+  /* ================= כיתה ט׳ ================= */
+  9: {
+    links: {
+      1:{ a:"29845cd4f8af4e2c9678212a078b90af",
+          b:"061ddc4b20614a4ba2ee15b303100a17",
+          c:"5b37465c05254bc1a41b5cc45a2de2cc" },
+      2:{ a:"bb8ccfc0d38d4f1586e8313820b2712a",
+          b:"787975de74d94d86b959eead1ae57492",
+          c:"bbe1fb01dbb04cafa4da34841153ebf1" },
+      3:{ a:"5b48aca3e54a4f5b9b457e8fd441d737",
+          b:"143b1b9f18ba4a2a8d7ebc4f33520b21",
+          c:"e4f96e9adc2c44eeb5c1114d6d802aea" },
+      4:{ a:"f437292ab7a140fba1be6f2648a16b91",
+          b:"2a3de916654f471aa3650cf1d593ac75",
+          c:"30984cdd7bbf453ba111d9f039fcfb30" },
+      5:{ a:"f44f3122bd9b4272a0723bf47f352568",
+          b:"3ccc42c2f7164a3f8bcc9c76d230db48",
+          c:"8984c12c6cee4f99ba33af748148f923" },
+      6:{ a:"5f4dad3c974d4eb0b5719895fa17ac93",
+          b:"df73e4ecf65a41e59a239f5a1108e0a3",
+          c:"0a243164a2ce4785b926e23e275b090f" },
+      7:{ a:"73a47868ea7d4959b348142b7e66f9dd",
+          b:"4e59a261c1b942818cce1e7977d8eb38",
+          c:"c4478b1b9cd047ceba08b26429aabc28" },
+      8:{ a:"aebe44cc40fa4813aa7da6853e1f80fb",
+          b:"551eddddfd6a468d9546cb85068c4edd",
+          c:"7447eda0d870429fb5204ed9e3d358c7" },
+      9:{ a:"47c36c349d964b6eb966dced63553649",
+          b:"62b2886a503e44e5b3b999e893bf0745",
+          c:"2e1a6cd4fbe6494c82b5f51e3ffbbef9" },
+      10:{ a:"235dd63aaa1945b0b2c99b0f59d387b6",
+          b:"de1bdd454434474d9a21af5f4d2c7f83",
+          c:"aab3999f38c6439292dc5eec89e6ebec" },
+      11:{ a:"0b6b5f87bcdd4eee98b75fdcaf84b76d",
+          b:"e237a5e7b17549919cb8cb6d1fb7b5ec",
+          c:"234ad089bd8141c6b11a410de8f495c8" },
+      12:{ a:"d904d3abc4e6470b9255ddf5a5965e40",
+          b:"d4263e13574b4a9982d95d2cc231ab28",
+          c:"480d5b64d0984ca39815ab27c9b795fd" },
+      13:{ a:"cb7f4daf9ddf45ffb49de1cea758c797",
+          b:"4da1e148b1d040e1a86326fa76a31660",
+          c:"021896686f574189af681abd1e3fd29c" },
+      20:{ a:"e397668e8db742aa937cf8a129a6643e",
+          b:"2efbec95b5b94ac7b9458807398c23e7",
+          c:"276cb715b7d44ec2bea701260ec8562f" },
+      21:{ a:"11df0134fc7846a998e988d17b066f9b",
+          b:"326656a21cf8483095feca60fd5ea73b",
+          c:"2a6f4eb6d2644987b11c25010d0792fc" },
+      22:{ a:"c043e3b1919149f79d665683ffe6c6d2",
+          b:"a9b3733cc8104ae1b818fc0edca49794",
+          c:"da8cd12d94f7449f8b86ac5fcdcd8608" },
+      23:{ a:"eb1a0591e39443af9e54cd6771d100b3",
+          b:"db1c70ea316445fcabf1b4bcbe8b4430",
+          c:"62749f8ef9eb45d3b94946006d749180" },
+    },
+
+    groups: [
+      { key:"alg",  name:"אלגברה" },
+      { key:"fun",  name:"פונקציות וגרפים" },
+      { key:"geo",  name:"גיאומטריה — משפחת המרובעים" },
+      { key:"stat",  name:"בעיות, סטטיסטיקה והסתברות" },
+      { key:"bridge",  name:"מעבר לחטיבה העליונה" }
+    ],
+
+    topics: [
+      { id:1, ic:"power", g:"alg", t:"חוקי חזקות",
+        d:"חוקי חזקות, מעריך אפס ומעריך שלילי, פישוט ביטויים, משוואות, כתיב מדעי ויישומים." },
+      { id:2, ic:"branch", g:"alg", t:"חוק הפילוג המורחב",
+        d:"פתיחת מכפלת סוגריים, כינוס איברים, פישוט ביטויים, פתרון משוואות, זהויות ובעיות יישומיות." },
+      { id:3, ic:"factor", g:"alg", t:"פירוק לגורמים",
+        d:"גורם משותף, נוסחאות כפל מקוצר, הפרש ריבועים, טרינום, קיבוץ ושילוב בין שיטות." },
+      { id:4, ic:"frac", g:"alg", t:"צמצום שברים אלגבריים",
+        d:"פירוק לגורמים של מונה ומכנה, תחום הגדרה, צמצום שברים עם נוסחאות כפל מקוצר וטרינומים." },
+      { id:5, ic:"root", g:"alg", t:"שורשים",
+        d:"משמעות השורש, אומדן ופישוט, פעולות בשורשים, תחום הגדרה, משוואות ויישומים." },
+      { id:6, ic:"parabola", g:"fun", t:"הפונקציה הריבועית",
+        d:"הצגות הפרבולה, קודקוד וציר סימטריה, נקודות אפס, הזזות, תחומים, פרמטרים וחיתוך בין גרפים." },
+      { id:7, ic:"lt", g:"alg", t:"אי־שוויונות ריבועיים ומערכות משוואות",
+        d:"פתרון אי-שוויונות ריבועיים, מערכות לא-ליניאריות, חיתוך ישר ופרבולה ובעיות יישומיות." },
+      { id:8, ic:"analytic", g:"fun", t:"גיאומטריה אנליטית",
+        d:"נקודות ושיקופים במערכת הצירים, מרחק ואמצע קטע, שיפוע ומשוואת ישר, שטחים וזיהוי מרובעים." },
+      { id:9, ic:"speech", g:"stat", t:"בעיות מילוליות",
+        d:"תרגום למשוואות ולמערכות, אחוזים, תנועה, הספק, תערובות, יחסים, גילאים ומודלים ריבועיים." },
+      { id:10, ic:"bars", g:"stat", t:"סטטיסטיקה",
+        d:"ממוצע, חציון, שכיח וטווח, טבלאות שכיחות, שכיחות יחסית ומצטברת, נתונים מקובצים וגרפים." },
+      { id:11, ic:"dice", g:"stat", t:"הסתברות",
+        d:"מאורע משלים ואיחוד מאורעות, ניסויים רב-שלביים, עם וללא החזרה, תלות, עצמאות והסתברות מותנית." },
+      { id:12, ic:"wave", g:"fun", t:"קדם אנליזה — מפונקציות לגרפים ובחזרה",
+        d:"קריאת גרפים, אפסים וקיצון, תחומי עלייה, ירידה, חיוביות ושליליות, טרנספורמציות, ערך מוחלט ומידול." },
+      { id:13, ic:"steps", g:"bridge", t:"מעבר לחטיבה העליונה",
+        d:"חזרה ממוקדת לקראת כיתה י׳ — אלגברה, פונקציות וגיאומטריה, כהכנה ללימוד ברמת 4–5 יח״ל." },
+      { id:20, ic:"pgram", g:"geo", t:"המקבילית",
+        d:"זיהוי מקבילית, תכונות הצלעות, הזוויות והאלכסונים, שטח, היקף ושאלות הוכחה." },
+      { id:21, ic:"rect2", g:"geo", t:"המלבן",
+        d:"זיהוי מלבן, תכונות הצלעות והזוויות, אלכסונים, פיתגורס, שטח, היקף והוכחות." },
+      { id:22, ic:"rhomb", g:"geo", t:"המעוין",
+        d:"זיהוי מעוין, תכונות הצלעות והזוויות, אלכסונים מאונכים, שטח, היקף והוכחות." },
+      { id:23, ic:"square2", g:"geo", t:"הריבוע",
+        d:"תכונות הריבוע, אלכסונים, פיתגורס, חישובי שטח והיקף, זיהוי ריבוע ושאלות הוכחה." },
+    ]
+  }
+
+};
+/* ===================== מכאן ומטה אין צורך לגעת ===================== */
+
+var GRADE_EMOJI = { 1:"🎈", 2:"🧮", 3:"✏️", 4:"📐", 5:"📊", 6:"🚀", 7:"🧭", 8:"🧪", 9:"🎯" };
+var GRADE_NAME  = { 1:"כיתה א׳", 2:"כיתה ב׳", 3:"כיתה ג׳", 4:"כיתה ד׳", 5:"כיתה ה׳", 6:"כיתה ו׳",
+                    7:"כיתה ז׳", 8:"כיתה ח׳", 9:"כיתה ט׳" };
+var ELEMENTARY = [1, 2, 3, 4, 5, 6];
+var MIDDLE     = [7, 8, 9];
+/* הלשוניות מציגות את שכבת הגיל של הכיתה הפעילה */
+var GRADE_ORDER = ELEMENTARY;
+function familyOf(g){ return MIDDLE.indexOf(g) !== -1 ? MIDDLE : ELEMENTARY; }
+
+var LEVELS = [
+  { k:"a", label:"רמה א׳",       cls:"lvl--a" },
+  { k:"b", label:"רמה ב׳",       cls:"lvl--b" },
+  { k:"c", label:"רמת מצוינות",  cls:"lvl--c" }
+];
+
+/* אייקוני נושאים — SVG קטן לכל כרטיס */
+var ICONS = {
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/>',
+  mirror:'<path d="M12 3v18" stroke-dasharray="3 3"/><path d="M8 7L4 12l4 5M16 7l4 5-4 5"/>',
+  numline:'<line x1="2" y1="12" x2="22" y2="12"/><line x1="7" y1="9" x2="7" y2="15"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="17" y1="9" x2="17" y2="15"/>',
+  plusminus:'<path d="M8 4.5v7M4.5 8h7M13 16.5h7"/>',
+  times:'<path d="M6 6l12 12M18 6L6 18"/>',
+  divide:'<circle cx="12" cy="5.5" r="1.4"/><line x1="4.5" y1="12" x2="19.5" y2="12"/><circle cx="12" cy="18.5" r="1.4"/>',
+  parens:'<path d="M8.5 4C5.5 8 5.5 16 8.5 20M15.5 4c3 4 3 12 0 16"/>',
+  power:'<rect x="4" y="9" width="10" height="10" rx="1.5"/><rect x="16" y="4" width="5" height="5" rx="1"/>',
+  root:'<path d="M3 13.5l3.5 6L11 4.5h10"/>',
+  box_eq:'<rect x="3.5" y="7" width="8" height="10" rx="1.5"/><path d="M15 10h5.5M15 14h5.5"/>',
+  arrowbox:'<rect x="11" y="6" width="9.5" height="12" rx="2"/><path d="M2.5 12H8M5.5 9l2.8 3-2.8 3"/>',
+  branch:'<path d="M3.5 12H10M10 12l6-5M10 12l6 5"/><circle cx="18.5" cy="6.5" r="1.6"/><circle cx="18.5" cy="17.5" r="1.6"/>',
+  factor:'<path d="M8 5C5.5 8 5.5 16 8 19M16 5c2.5 3 2.5 11 0 14"/><circle cx="12" cy="12" r="1.7"/>',
+  scale:'<path d="M12 4v13M6.5 7h11M6.5 7l-3.5 5.5h7zM17.5 7L14 12.5h7zM8.5 20h7"/>',
+  syseq:'<path d="M4 7.5h7M4 11h7M13 13h7M13 16.5h7"/>',
+  speech:'<path d="M4 5h16v11h-9.5L6 20v-4H4z"/>',
+  axes:'<path d="M5.5 3v16h16"/><path d="M3 5.5L5.5 3 8 5.5M19 16.5L21.5 19 19 21.5"/>',
+  point:'<path d="M5.5 3v16h16"/><circle cx="14" cy="9.5" r="2.2"/>',
+  quadrants:'<path d="M12 2.5v19M2.5 12h19"/><circle cx="17" cy="7" r="1.7"/>',
+  analytic:'<path d="M5.5 3v16h16"/><path d="M9 15l8-7"/><circle cx="9" cy="15" r="1.6"/><circle cx="17" cy="8" r="1.6"/>',
+  angle:'<path d="M4.5 19h15M4.5 19L16 6.5"/><path d="M10.5 19a6.5 6.5 0 0 0-2.2-4.8"/>',
+  protractor:'<path d="M4 16a8 8 0 0 1 16 0z"/><path d="M12 16v-5.5M7 16l1-2.5M17 16l-1-2.5"/>',
+  triangle:'<path d="M12 4l9.5 15.5H2.5z"/>',
+  tritick:'<path d="M12 4l8.5 15.5H3.5z"/><path d="M6.8 11.5l2 1.4M17.2 11.5l-2 1.4"/>',
+  star:'<path d="M12 3l2.6 5.5 6.1.8-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6L3.3 9.3l6.1-.8z"/>',
+  twotri:'<path d="M8 5.5l5 8.5H3zM16 10l5.5 9.5H10.5z"/>',
+  pythag:'<path d="M5.5 19V6l13.5 13z"/><path d="M5.5 14.5H10V19"/>',
+  dashrect:'<rect x="4" y="6" width="16" height="12" rx="1" stroke-dasharray="3.2 3"/>',
+  gridrect:'<rect x="4" y="6" width="16" height="12"/><path d="M4 12h16M12 6v12"/>',
+  tridash:'<path d="M12 4l9 15H3z"/><path d="M12 4v15" stroke-dasharray="3 3"/>',
+  pgram:'<path d="M7.5 6.5H21l-4.5 11H3z"/>',
+  lshape:'<path d="M4 4h9.5v6.5H20V20H4z"/>',
+  cube:'<path d="M4 8.5l8-4.5 8 4.5v7l-8 4.5-8-4.5z"/><path d="M4 8.5l8 4.5 8-4.5M12 13v7"/>',
+  prism:'<path d="M8 15l4-8 4 8z"/><path d="M8 15v4.5h8V15"/>',
+  table:'<rect x="3.5" y="5" width="17" height="14" rx="1"/><path d="M3.5 10h17M9.5 5v14M15.5 5v14"/>',
+  tally:'<path d="M5.5 5v14M9.5 5v14M13.5 5v14M17.5 5v14M3.5 16.5L19.5 7"/>',
+  percent:'<path d="M5.5 18.5l13-13"/><circle cx="7.5" cy="7.5" r="2.6"/><circle cx="16.5" cy="16.5" r="2.6"/>',
+  flask:'<path d="M10 3.5h4M11 3.5V9l-4.8 8.6A2 2 0 0 0 8 20.5h8a2 2 0 0 0 1.8-2.9L13 9V3.5"/><path d="M8.2 15.5h7.6"/>',
+  dice:'<rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.3"/><circle cx="15" cy="9" r="1.3"/><circle cx="9" cy="15" r="1.3"/><circle cx="15" cy="15" r="1.3"/>',
+  frac:'<path d="M6 12h12"/><circle cx="12" cy="6.8" r="2.1"/><circle cx="12" cy="17.2" r="2.1"/>',
+  lt:'<path d="M17.5 5.5L7 12l10.5 6.5"/>',
+  cross2:'<path d="M4 17.5L20 6M4 7l16 10.5"/><circle cx="12" cy="12" r="1.9"/>',
+  machine:'<rect x="8" y="7" width="8" height="10" rx="2"/><path d="M2.5 12H8M16 12h5.5"/>',
+  cycle:'<path d="M7 8a6.5 6.5 0 0 1 10.5 1.5M17 16a6.5 6.5 0 0 1-10.5-1.5"/><path d="M17.5 5.5v4h-4M6.5 18.5v-4h4"/>',
+  steps:'<path d="M3 19.5h5v-4.5h5v-4.5h5V6h3.5"/>',
+  slope:'<path d="M4 19L20 5.5"/><path d="M4 19h7M11 19v-6" stroke-dasharray="3 2.6"/>',
+  linear:'<path d="M5.5 3v16h16"/><path d="M8 17L20 6.5"/>',
+  braces:'<path d="M9 4C7 4 7.5 7 7.5 9s.3 3-2.5 3c2.8 0 2.5 1 2.5 3S7 20 9 20M15 4c2 0 1.5 3 1.5 5s-.3 3 2.5 3c-2.8 0-2.5 1-2.5 3s.5 5-1.5 5"/>',
+  dots2:'<path d="M5.5 3v16h16"/><path d="M8 16L19 6"/><circle cx="8" cy="16" r="1.8"/><circle cx="15.2" cy="9.4" r="1.8"/>',
+  ruler:'<g transform="rotate(-24 12 12)"><rect x="2.5" y="9" width="19" height="6" rx="1.2"/><path d="M7 9v2.8M11.5 9v2.8M16 9v2.8"/></g>',
+  gridlines:'<path d="M5.5 3v16h16"/><path d="M10 5v12M5.5 9.5h14"/>',
+  tag:'<path d="M3.5 12l8.5-8.5H20.5V11.5L12 20z"/><circle cx="16.5" cy="7.5" r="1.6"/>',
+  updown:'<path d="M8 4.5v15M8 4.5L5 7.5M8 4.5l3 3M16 19.5v-15M16 19.5l-3-3M16 19.5l3-3"/>',
+  ratio:'<rect x="3.5" y="6.5" width="5.5" height="11" rx="1"/><rect x="15" y="6.5" width="5.5" height="11" rx="1"/><circle cx="12" cy="9.5" r="1.2"/><circle cx="12" cy="14.5" r="1.2"/>',
+  map:'<path d="M3.5 5.5l5.5-2 6 2 5.5-2v15l-5.5 2-6-2-5.5 2zM9 3.5v15M15 5.5v15"/>',
+  bars:'<path d="M6 20v-7.5M12 20V6.5M18 20v-10M3 20h18"/>',
+  pie:'<circle cx="12" cy="12" r="8.5"/><path d="M12 12V3.5M12 12l6.2 5.5"/>',
+  range:'<path d="M3.5 12h17M3.5 12l3.2-3.2M3.5 12l3.2 3.2M20.5 12l-3.2-3.2M20.5 12l-3.2 3.2"/>',
+  avg:'<path d="M6 20v-6.5M12 20V8M18 20v-9.5"/><path d="M3 12.5h18" stroke-dasharray="3 2.6"/>',
+  median:'<circle cx="4.5" cy="12" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="13.7" cy="12" r="2.6"/><circle cx="19.5" cy="12" r="1.4"/>',
+  checklist:'<path d="M4 6.5h3.5M4 12h3.5M4 17.5h3.5M11 5.5l1.8 1.8 3.7-3.8M11 12h9M11 17.5h9"/>',
+  arrowr:'<path d="M3.5 12h13M12 7l5 5-5 5M3.5 7h5M3.5 17h5"/>',
+  clipcheck:'<rect x="5" y="4.5" width="14" height="16.5" rx="2"/><path d="M9.5 4.5h5V7h-5z"/><path d="M8.5 13.5l2.8 2.8 4.7-5.6"/>',
+  medtri:'<path d="M12 4l9 15H3z"/><path d="M12 4v15"/>',
+  twotri2:'<path d="M9 12.5L12 7l3 5.5zM4.5 20L12 6.5 19.5 20z"/>',
+  sq2:'<rect x="4" y="10.5" width="8" height="8"/><rect x="13.5" y="4.5" width="6" height="6"/>',
+  cyl:'<ellipse cx="12" cy="6" rx="7" ry="2.8"/><path d="M5 6v11.5c0 1.6 3.1 2.9 7 2.9s7-1.3 7-2.9V6"/>',
+  circle:'<circle cx="12" cy="12" r="8.5"/><path d="M12 12h8.5"/>',
+  magnify:'<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l6 6"/>',
+  bridge:'<path d="M3 17.5h18M6.5 17.5v-4a5.5 5.5 0 0 1 11 0v4"/><path d="M9.5 17.5v-2.6M14.5 17.5v-2.6M12 17.5v-3.5"/>',
+  bulb:'<path d="M12 3a6 6 0 0 0-3.8 10.6c.9.8 1.3 1.7 1.3 2.9h5c0-1.2.4-2.1 1.3-2.9A6 6 0 0 0 12 3z"/><path d="M9.5 19.5h5M10.5 22h3"/>',
+  book:'<path d="M12 5.5C10 4 7 3.5 4 3.5v15c3 0 6 .5 8 2 2-1.5 5-2 8-2v-15c-3 0-6 .5-8 2z"/><path d="M12 5.5v15"/>',
+  kite:'<path d="M12 3l6 7.5L12 21l-6-10.5z"/><path d="M12 3v18M6 10.5h12"/>',
+  rect2:'<rect x="3.5" y="6.5" width="17" height="11"/><path d="M3.5 6.5l17 11M20.5 6.5l-17 11"/>',
+  rhomb:'<path d="M12 3l8 9-8 9-8-9z"/><path d="M12 3v18M4 12h16"/>',
+  square2:'<rect x="4.5" y="4.5" width="15" height="15"/><path d="M4.5 4.5l15 15M19.5 4.5l-15 15"/>',
+  trapez:'<path d="M8 6.5h8l4.5 11h-17z"/>',
+  parabola:'<path d="M4.5 4.5v15"/><path d="M6 6c2.5 15 11.5 15 14 0"/>',
+  wave:'<path d="M3 15.5c2.5-8 5-8 7.5 0s5 6 7.5-2.5"/>',
+  clipboard:'<rect x="5" y="4.5" width="14" height="16.5" rx="2"/><path d="M9.5 4.5h5V7h-5z"/><path d="M8.5 12h7M8.5 16h4.5"/>'
+};
+
+var NO_LINK = "אין לינק כעת";
+
+/* תג PDF שמופיע ליד שם כל נושא */
+var PDF_BADGE =
+  '<span class="pdf-badge" aria-label="קובץ PDF להורדה">' +
+    '<svg viewBox="0 0 14 17" aria-hidden="true">' +
+      '<path d="M2.2 1h5.4l4.2 4.2v10.6a.8.8 0 0 1-.8.8H2.2a.8.8 0 0 1-.8-.8V1.8A.8.8 0 0 1 2.2 1z"/>' +
+      '<path d="M7.6 1v4.2h4.2"/>' +
+    '</svg>PDF</span>';
+
+function url(v){
+  if(!v) return "";
+  return /^https?:\/\//.test(v) ? v : BASE + v + ".pdf";
+}
+function esc(s){
+  return String(s).replace(/[&<>"']/g, function(m){
+    return { "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m] || m;
+  });
+}
+
+var state = { grade:DEFAULT_GRADE, q:"", group:"all", cross:false };
+
+/* ---------- לשוניות כיתה ---------- */
+function buildGradeTabs(){
+  var box = document.getElementById("grades");
+  box.innerHTML = GRADE_ORDER.map(function(g){
+    return '<button class="grade-tab" type="button" role="tab" data-grade="' + g + '" ' +
+           'aria-selected="' + (g === state.grade) + '">' + GRADE_NAME[g] + '</button>';
+  }).join("");
+  box.addEventListener("click", function(e){
+    var btn = e.target.closest(".grade-tab");
+    if(!btn) return;
+    state.grade = Number(btn.dataset.grade);
+    state.group = "all";
+    GRADE_ORDER = familyOf(state.grade);
+    Array.prototype.forEach.call(box.children, function(c){
+      c.setAttribute("aria-selected", String(Number(c.dataset.grade) === state.grade));
+    });
+    document.getElementById("wrap").dataset.grade = state.grade;
+    buildChips();
+    setHeader();
+    render();
+  });
+}
+
+function setHeader(){
+  var d = DATA[state.grade];
+  document.getElementById("title").textContent =
+    (GRADE_EMOJI[state.grade] || "") + " דפי עבודה ל" + GRADE_NAME[state.grade] + " — לפי תכנית הלימודים תשפ״ז 2026";
+  document.getElementById("lede").textContent =
+    d.topics.length + " נושאים, כל נושא בשלוש רמות. בחרו רמה והקובץ ייפתח בלשונית חדשה.";
+}
+
+/* ---------- שבבי תחום ---------- */
+function buildChips(){
+  var box = document.getElementById("chips");
+  var items = [{ key:"all", name:"כל הנושאים" }].concat(DATA[state.grade].groups);
+  box.innerHTML = items.map(function(it){
+    return '<button class="chip" type="button" data-group="' + it.key + '" aria-pressed="' +
+           (it.key === state.group) + '">' + it.name + '</button>';
+  }).join("");
+}
+document.getElementById("chips").addEventListener("click", function(e){
+  var btn = e.target.closest(".chip");
+  if(!btn) return;
+  state.group = btn.dataset.group;
+  Array.prototype.forEach.call(this.children, function(c){
+    c.setAttribute("aria-pressed", String(c.dataset.group === state.group));
+  });
+  render();
+});
+
+/* ---------- כרטיס ---------- */
+function cardHTML(topic, grade){
+  var row = DATA[grade].links[topic.id] || {};
+  var buttons;
+
+  if(row.one !== undefined){                 /* דף יחיד ללא רמות */
+    var oneHref  = url(row.one);
+    var oneLabel = row.oneLabel || "דף יחיד — כל הרמות";
+    buttons = oneHref
+      ? '<a class="lvl lvl--a lvl--one" href="' + oneHref + '" target="_blank" rel="noopener noreferrer" ' +
+        'aria-label="' + esc(topic.t) + ' — ' + esc(oneLabel) + ', קובץ PDF">' + esc(oneLabel) + '</a>'
+      : '<span class="lvl lvl--a lvl--one lvl--soon" aria-disabled="true" ' +
+        'aria-label="' + esc(oneLabel) + ' — ' + NO_LINK + '">' + esc(oneLabel) +
+        ' <span class="soon-note">(' + NO_LINK + ')</span></span>';
+  } else {
+    buttons = LEVELS.map(function(lv){
+      var href  = url(row[lv.k]);
+      var label = topic[lv.k + "Label"] || lv.label;
+      if(!href){
+        return '<span class="lvl ' + lv.cls + ' lvl--soon" aria-disabled="true" ' +
+               'aria-label="' + esc(label) + ' — ' + NO_LINK + '">' +
+               esc(label) + ' <span class="soon-note">(' + NO_LINK + ')</span></span>';
+      }
+      return '<a class="lvl ' + lv.cls + '" href="' + href + '" target="_blank" rel="noopener noreferrer" ' +
+             'aria-label="' + esc(topic.t) + ' — ' + esc(label) + ', קובץ PDF">' + esc(label) + '</a>';
+    }).join("");
+  }
+
+  var ico = ICONS[topic.ic] || ICONS.star;
+  return '<article class="card" data-g="' + topic.g + '">' +
+           '<div class="card-main">' +
+             '<span class="tico" aria-hidden="true"><svg viewBox="0 0 24 24">' + ico + '</svg></span>' +
+             '<div class="card-text"><h4>' + esc(topic.t) + PDF_BADGE + '</h4>' + (topic.d ? '<p>' + esc(topic.d) + '</p>' : '') +
+               (topic.n ? '<p class="note">' + esc(topic.n) + '</p>' : '') +
+             '</div>' +
+           '</div>' +
+           '<div class="levels">' + buttons + '</div>' +
+         '</article>';
+}
+
+/* אינדקס תתי־נושאים נסתר לחיפוש — מפתח ראשון: כיתה, מפתח שני: מזהה נושא */
+var SEARCH_TERMS = {
+  1: {
+    2: "ספרות מספר עשרת יחידות",
+    3: "גדול קטן שווה השוואת מספרים סימן",
+    10: "סדרה חוקיות דפוס המשך תבנית",
+    13: "שוויון נעלם משוואה איזון",
+    15: "סנטימטר סרגל מדידה ארוך קצר",
+    17: "משולש מרובע מחומש משושה צלע קודקוד צורות",
+    18: "מרובע צלעות שוות מלבנים ריבועים",
+    20: "שעון מחוגים שעות זמן",
+    21: "דיאגרמת עמודות גרף טבלה איסוף מידע"
+  },
+  2: {
+    3: "מאות עשרות יחידות ערך מקום",
+    5: "חיבור מאונך בטור אנכי",
+    6: "חיבור מאונך בטור אנכי המרה שארית",
+    12: "גרף עמודות דיאגרמה טבלה נתונים",
+    16: "לוח הכפל פעמים",
+    23: "סנטימטר מטר סרגל מדידה",
+    25: "שעון מחוגים דקות שעות",
+    26: "שבר חצאים רבעים חלקים שווים",
+    28: "קובייה תיבה גליל כדור משולש מרובע",
+    29: "שיקוף מראה סימטריה קו סימטריה"
+  },
+  3: {
+    2: "אלף אלפים ערך מקום ספרות",
+    6: "חיבור מאונך בטור אנכי המרה",
+    7: "חיסור מאונך בטור אנכי פריטה",
+    11: "שבר מונה מכנה חלק שלם",
+    12: "זווית ישרה חדה קהה מד זווית",
+    14: "משולש מרובע מחומש משושה צלע קודקוד",
+    15: "היקף סכום צלעות",
+    16: "משולש שווה צלעות שווה שוקיים ישר זווית",
+    17: "ריבוע מלבן מעוין מקבילית טרפז מרובע צלעות מקבילות זוויות ישרות אלכסון",
+    19: "שעון דקות שניות קילוגרם גרם שקילה",
+    22: "סנטימטר מטר מילימטר קילומטר המרה",
+    25: "שקל אגורות מטבעות שטרות קנייה עודף"
+  },
+  4: {
+    1: "רבבה מיליון ערך מקום מספרים גדולים",
+    3: "חיבור מאונך בטור אנכי המרה",
+    4: "חיסור מאונך בטור אנכי פריטה",
+    7: "כפל מאונך בטור דו ספרתי",
+    9: "חילוק ארוך שארית",
+    11: "שבר מונה מכנה שקילות",
+    13: "שברים שקולים הרחבה צמצום",
+    14: "מחלקים כפולות סימני התחלקות",
+    15: "ראשוני פריק פירוק לגורמים",
+    21: "מילימטר סנטימטר מטר קילומטר המרות",
+    22: "שטח היקף סמר מטר רבוע",
+    24: "קילוגרם גרם טון שעות דקות",
+    26: "שיקוף סיבוב קו סימטריה",
+    27: "זווית ישרה חדה קהה שטוחה מקבילים מאונכים",
+    28: "שווה צלעות שווה שוקיים ישר זווית חד זווית קהה זווית",
+    29: "דלתון טרפז מעוין מקבילית מלבן ריבוע הכלה מיון אלכסונים"
+  },
+  5: {
+    7: "מונה מכנה חלק משלם",
+    9: "הרחבה צמצום שברים שקולים",
+    10: "מכנה משותף קטן ביותר",
+    13: "שבר מדומה מספר מעורב שלמים",
+    18: "דלתון טרפז מעוין מקבילית מלבן ריבוע משפחה הכלה",
+    19: "דלתון אלכסונים מאונכים חוצים תכונות מרובעים",
+    21: "קילוגרם גרם טון המרות",
+    25: "שטח היקף מטר רבוע",
+    27: "מקבילית בסיס גובה שטח",
+    28: "שבר עשרוני נקודה עשרונית",
+    29: "עשרוני חיבור חיסור",
+    30: "עשרוני כפל חילוק"
+  },
+  6: {
+    2: "מכנה משותף שברים חיבור חיסור",
+    9: "שבר עשרוני נקודה עשרונית",
+    11: "פאה מקצוע קודקוד מנסרה פירמידה גליל",
+    12: "פריסה תלת ממד קובייה",
+    13: "שטח פנים פאות",
+    14: "נפח סמק מטר מעוקב",
+    15: "מיליליטר ליטר סמק מק קיבול נוזלים",
+    16: "דלתון טרפז מעוין מקבילית מלבן ריבוע הכלה מיון",
+    18: "אחוז שבר עשרוני המרה",
+    19: "אחוזים חישוב חלק מכמות",
+    20: "אחוז השלם הנחה התייקרות",
+    21: "יחס פרופורציה חלוקה",
+    22: "קנה מידה מפה שרטוט הקטנה הגדלה"
+  },
+
+  7: {
+    1: "ערך מוחלט נגדי ציר",
+    6: "בסיס מעריך חזקה",
+    7: "רדיקל שורשים",
+    11: "מד זווית חדה קהה ישרה שטוחה",
+    13: "צמודות קודקודיות משלימות",
+    15: "שווה שוקיים שווה צלעות ישר זווית",
+    20: "קובייה נפח שטח פנים פאות",
+    27: "סיכוי מזל הגרלה קובייה מטבע",
+    41: "משפט פיתגורס ניצב יתר",
+    43: "היקף מצולעים",
+    44: "טרפז מקבילית בסיס גובה שטח",
+    46: "מנסרה נפח בסיס משולש",
+    47: "מנסרה שטח פנים מעטפת פריסה"
+  },
+  8: {
+    4: "יחס פרופורציה חלוקה",
+    5: "מפה שרטוט הקטנה הגדלה",
+    6: "אחוז שבר עשרוני המרה",
+    7: "מעמ ריבית הנחה התייקרות אחוזים",
+    8: "עלייה ירידה אחוז שינוי",
+    11: "משפט פיתגורס ניצב יתר",
+    13: "גליל מעטפת בסיס עיגול",
+    14: "גליל רדיוס נפח",
+    15: "חרוט קודקוד בסיס מעגל נפח",
+    18: "עיגול מגזרים אחוזים עוגה",
+    23: "ממוצע משוקלל",
+    28: "פיזור ערכים קיצוניים",
+    33: "מהירות דרך זמן מפגש",
+    40: "שווה שוקיים זוויות בסיס",
+    43: "יחס דמיון קנה מידה",
+    54: "אלכסון תיבה מרחב",
+    47: "נקודת חיתוך שתי משוואות גרפים"
+  },
+  9: {
+    2: "פתיחת סוגריים כפל מקוצר",
+    3: "טרינום הפרש ריבועים גורם משותף",
+    5: "רדיקל תחום הגדרה",
+    6: "פרבולה קודקוד ציר סימטריה נקודות אפס",
+    8: "שיפוע מרחק אמצע קטע משוואת ישר",
+    12: "פונקציות גרפים קריאת גרף",
+    13: "הכנה לתיכון יחידות לימוד 4 5 חזרה",
+    18: "דלתון שוקיים זוויות בסיס חוצה",
+    20: "מקביליות צלעות נגדיות אלכסונים",
+    21: "מלבנים אלכסונים שווים",
+    22: "מעוינים אלכסונים מאונכים",
+    23: "ריבועים מעוין מלבן מקביליות אלכסונים",
+    25: "משפט פיתגורס ניצב יתר",
+    29: "טרפז מקבילית בסיס גובה שטח",
+    31: "מנסרה נפח",
+    32: "מנסרה שטח פנים פריסה"
+  }
+};
+
+/* ---------- חיפוש חכם: ניקוד, סופיות, ריבוי, תחיליות, כתיב ---------- */
+function searchNorm(s){
+  return String(s)
+    .replace(/[\u0591-\u05C7]/g, "")                 /* ניקוד וטעמים */
+    .replace(/[״"'׳]/g, "")                            /* גרשיים */
+    .replace(/ך/g,"כ").replace(/ם/g,"מ").replace(/ן/g,"נ")
+    .replace(/ף/g,"פ").replace(/ץ/g,"צ")
+    .replace(/גיאו/g,"גאו")                            /* גיאומטריה/גאומטריה */
+    .replace(/[^\u05D0-\u05EA0-9a-zA-Z]+/g, " ")
+    .toLowerCase().trim();
+}
+function stemsOf(tok){
+  var out = [tok];
+  ["וה","שה","מה","כש","ב","ה","ל","ו","מ","ש","כ"].forEach(function(p){
+    if (tok.length > p.length + 2 && tok.indexOf(p) === 0) out.push(tok.slice(p.length));
+  });
+  var more = [];
+  out.forEach(function(t){
+    ["יות","ות","ים","י"].forEach(function(sf){
+      if (t.length > sf.length + 2 && t.slice(-sf.length) === sf) more.push(t.slice(0, -sf.length));
+    });
+  });
+  return out.concat(more);
+}
+function tokenHits(qtok, hayToks){
+  var stems = stemsOf(qtok);
+  for (var i = 0; i < hayToks.length; i++){
+    var h = hayToks[i];
+    for (var j = 0; j < stems.length; j++){
+      var st = stems[j];
+      if (st.length < 2) continue;
+      if (h.indexOf(st) === 0) return true;              /* התאמת תחילית */
+      if (st.indexOf(h) === 0 && h.length >= 3) return true;
+    }
+  }
+  return false;
+}
+var _hayCache = {};
+function topicHaystack(grade, t){
+  var key = grade + ":" + t.id;
+  if (!_hayCache[key]){
+    var extra = (typeof SEARCH_TERMS !== "undefined" && SEARCH_TERMS[grade] && SEARCH_TERMS[grade][t.id]) || "";
+    var gname = "";
+    for (var gi = 0; gi < DATA[grade].groups.length; gi++){
+      if (DATA[grade].groups[gi].key === t.g){ gname = DATA[grade].groups[gi].name; break; }
+    }
+    extra += " " + gname;
+    var base = searchNorm(t.t + " " + (t.d || "") + " " + extra).split(" ").filter(Boolean);
+    var ex = [];
+    base.forEach(function(w){ ex = ex.concat(stemsOf(w)); });
+    _hayCache[key] = ex;
+  }
+  return _hayCache[key];
+}
+function topicMatches(grade, t, q){
+  var qToks = searchNorm(q).split(" ").filter(Boolean);
+  if (!qToks.length) return true;
+  for (var i = 0; i < qToks.length; i++){
+    if (!tokenHits(qToks[i], topicHaystack(grade, t))) return false;
+  }
+  return true;
+}
+
+/* ---------- סינון ---------- */
+function matchesIn(grade, useGroup){
+  var q = state.q.trim();
+  return DATA[grade].topics.filter(function(t){
+    var okGroup = !useGroup || state.group === "all" || t.g === state.group;
+    var okText  = !q || topicMatches(grade, t, q);
+    return okGroup && okText;
+  });
+}
+
+function groupsHTML(grade, list){
+  return DATA[grade].groups.map(function(g){
+    var inGroup = list.filter(function(t){ return t.g === g.key; });
+    if(!inGroup.length) return "";
+    return '<section class="group">' +
+             '<div class="group-head"><h3>' + g.name + '</h3>' +
+               '<span class="rule"></span>' +
+               '<span class="count">' + inGroup.length + ' נושאים</span>' +
+             '</div>' +
+             inGroup.map(function(t){ return cardHTML(t, grade); }).join("") +
+           '</section>';
+  }).join("");
+}
+
+function render(){
+  var list = document.getElementById("list");
+  var hint = document.getElementById("crosshint");
+  var q    = state.q.trim();
+  var html = "", total = 0;
+
+  if(state.cross && q){
+    GRADE_ORDER.forEach(function(g){
+      var m = matchesIn(g, false);
+      if(!m.length) return;
+      total += m.length;
+      html += '<div class="grade-band"><h2>' + GRADE_NAME[g] + '</h2>' +
+              '<span class="rule"></span>' +
+              '<span class="count">' + m.length + ' נושאים</span></div>' +
+              groupsHTML(g, m);
+    });
+    hint.textContent = total ? "נמצאו " + total + " נושאים בכל הכיתות" : "";
+  } else {
+    var m = matchesIn(state.grade, true);
+    total = m.length;
+    html  = groupsHTML(state.grade, m);
+
+    /* רמז: יש תוצאות גם בכיתות אחרות? */
+    if(q && !state.cross){
+      var other = 0;
+      GRADE_ORDER.forEach(function(g){ if(g !== state.grade) other += matchesIn(g, false).length; });
+      hint.textContent = other ? "יש עוד " + other + " תוצאות בכיתות אחרות" : "";
+    } else {
+      hint.textContent = "";
+    }
+  }
+
+  if(!total){
+    list.innerHTML = '<div class="empty"><strong>אין נושא שמתאים לחיפוש</strong>' +
+                     'נסו מילה אחרת, או לחצו על "כל הנושאים" כדי לראות את הרשימה המלאה.</div>';
+    postHeight();
+    return;
+  }
+
+  list.innerHTML = html;
+  postHeight();
+}
+
+/* מדווח את גובה התוכן לעמוד העוטף (שימושי אם רוצים גובה אוטומטי ב-Wix) */
+function postHeight(){
+  try{
+    var h = document.documentElement.scrollHeight;
+    window.parent.postMessage({ type:"setHeight", height:h }, "*");
+  }catch(e){}
+}
+
+document.getElementById("q").addEventListener("input", function(e){
+  state.q = e.target.value;
+  render();
+});
+document.getElementById("crossq").addEventListener("change", function(e){
+  state.cross = e.target.checked;
+  render();
+});
+
+/* אתחול */
+if(!DATA[state.grade]) state.grade = 7;
+GRADE_ORDER = familyOf(state.grade);
+document.getElementById("wrap").dataset.grade = state.grade;
+buildGradeTabs();
+buildChips();
+setHeader();
+render();
+window.addEventListener("load", postHeight);
+window.addEventListener("resize", postHeight);
+</script>
+</body>
+</html>
