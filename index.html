@@ -400,6 +400,20 @@
   .card[data-g="bridge"]                       { --brick:#FFB703; }
   .card:hover .tico{ color:var(--brick); }
 
+
+  /* ---------- מרכוז: גובר על כללי margin מקומיים ---------- */
+  .wrap > .grades,
+  .wrap > h1,
+  .wrap > .lede,
+  .wrap > .toolbar,
+  .wrap > .cross,
+  .wrap > .hint,
+  .wrap > .foot,
+  .wrap > #list{
+    max-width:1000px;
+    margin-inline:auto;
+  }
+
   @media (prefers-reduced-motion:reduce){ .card::before{ filter:none; } }
 
   @media (prefers-reduced-motion:reduce){
