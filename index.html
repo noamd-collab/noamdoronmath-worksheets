@@ -410,9 +410,58 @@
   .wrap > .cross,
   .wrap > .hint,
   .wrap > .foot,
+  .wrap > .jump,
   .wrap > #list{
     max-width:1000px;
     margin-inline:auto;
+  }
+
+
+  /* ---------- שורות לשוניות: יסודי + חטיבה ---------- */
+  .grades{ flex-direction:column; gap:10px; align-items:center; }
+  .tabrow{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center;
+    background:#fff; border:2.5px solid var(--ink); border-radius:999px;
+    padding:8px 16px; box-shadow:-4px 4px 0 var(--ink); max-width:100%;
+  }
+  .tabrow-label{
+    font-family:'Heebo',inherit; font-weight:900; font-size:13px; white-space:nowrap;
+    color:var(--ink); opacity:.75; padding-inline-end:4px;
+  }
+  .tabrow-btns{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+  .tabrow .grade-tab{
+    padding:7px 16px; font-size:14px; box-shadow:-2px 2px 0 var(--ink); border-width:2.5px;
+  }
+  .tabrow .grade-tab:hover{ transform:translate(1px,-1px); box-shadow:-4px 4px 0 var(--ink); }
+  @media (max-width:720px){
+    .tabrow{ padding:8px 12px; }
+    .tabrow-label{ font-size:12px; width:100%; text-align:center; padding:0; }
+    .tabrow .grade-tab{ padding:7px 12px; font-size:13px; }
+  }
+
+
+  /* ---------- מעבר בין שכבות בתחתית העמוד ---------- */
+  .jump{
+    margin:34px auto 0; padding:20px 22px;
+    background:var(--tint); border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-6px 6px 0 var(--ink);
+    display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center;
+  }
+  .jump-label{ font-family:'Heebo',inherit; font-weight:900; font-size:17px; color:var(--ink); }
+  .jump-btns{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .jump-btn{
+    font-family:'Heebo',inherit; font-weight:900; font-size:14px; cursor:pointer;
+    color:var(--ink); background:#fff;
+    border:2.5px solid var(--ink); border-radius:999px; padding:9px 18px;
+    box-shadow:-3px 3px 0 var(--ink);
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease, color .16s ease;
+  }
+  .jump-btn:hover{ background:var(--accent); color:#fff; transform:translate(2px,-2px); box-shadow:-5px 5px 0 var(--ink); }
+  .jump-btn:active{ transform:translate(0,0); box-shadow:-2px 2px 0 var(--ink); }
+  @media (max-width:720px){
+    .jump{ padding:16px; }
+    .jump-label{ font-size:15px; }
+    .jump-btn{ padding:8px 14px; font-size:13px; }
   }
 
   @media (prefers-reduced-motion:reduce){ .card::before{ filter:none; } }
@@ -457,6 +506,8 @@
   </p>
 
   <div id="list"></div>
+
+  <div class="jump" id="jump"></div>
 
   <p class="foot">כל הקבצים בפורמט PDF · מתמטיקה · נועם דורון</p>
 </div>
@@ -2151,25 +2202,67 @@ function esc(s){
 var state = { grade:DEFAULT_GRADE, q:"", group:"all", cross:false };
 
 /* ---------- לשוניות כיתה ---------- */
+function tabsRow(list, label, emoji){
+  return '<div class="tabrow">' +
+           '<span class="tabrow-label">' + emoji + ' ' + label + '</span>' +
+           '<div class="tabrow-btns">' +
+             list.map(function(g){
+               return '<button class="grade-tab" type="button" role="tab" data-grade="' + g + '" ' +
+                      'aria-selected="' + (g === state.grade) + '">' +
+                      (GRADE_EMOJI[g] || "") + ' ' + GRADE_NAME[g] + '</button>';
+             }).join("") +
+           '</div>' +
+         '</div>';
+}
+
 function buildGradeTabs(){
   var box = document.getElementById("grades");
-  box.innerHTML = GRADE_ORDER.map(function(g){
-    return '<button class="grade-tab" type="button" role="tab" data-grade="' + g + '" ' +
-           'aria-selected="' + (g === state.grade) + '">' + GRADE_NAME[g] + '</button>';
-  }).join("");
+  box.innerHTML = tabsRow(ELEMENTARY, "בית ספר יסודי", "🎒") +
+                  tabsRow(MIDDLE,     "חטיבת ביניים",  "🏫");
+  if (box.dataset.bound) return;
+  box.dataset.bound = "1";
   box.addEventListener("click", function(e){
     var btn = e.target.closest(".grade-tab");
     if(!btn) return;
-    state.grade = Number(btn.dataset.grade);
-    state.group = "all";
-    GRADE_ORDER = familyOf(state.grade);
-    Array.prototype.forEach.call(box.children, function(c){
-      c.setAttribute("aria-selected", String(Number(c.dataset.grade) === state.grade));
-    });
-    document.getElementById("wrap").dataset.grade = state.grade;
-    buildChips();
-    setHeader();
-    render();
+    goToGrade(Number(btn.dataset.grade));
+  });
+}
+
+function goToGrade(g){
+  if (!DATA[g]) return;
+  state.grade = g;
+  state.group = "all";
+  state.q = "";
+  var qEl = document.getElementById("q");
+  if (qEl) qEl.value = "";
+  GRADE_ORDER = familyOf(g);
+  document.getElementById("wrap").dataset.grade = g;
+  buildGradeTabs();
+  buildChips();
+  setHeader();
+  render();
+  try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch(e){ window.scrollTo(0,0); }
+}
+
+function buildJump(){
+  var box = document.getElementById("jump");
+  if (!box) return;
+  var inMiddle = MIDDLE.indexOf(state.grade) !== -1;
+  var list  = inMiddle ? ELEMENTARY : MIDDLE;
+  var label = inMiddle ? "🎒 מחפשים דפי עבודה ליסודי?" : "🏫 מחפשים דפי עבודה לחטיבת הביניים?";
+  box.innerHTML =
+    '<span class="jump-label">' + label + '</span>' +
+    '<div class="jump-btns">' +
+      list.map(function(g){
+        return '<button class="jump-btn" type="button" data-grade="' + g + '">' +
+               (GRADE_EMOJI[g] || "") + ' ' + GRADE_NAME[g] + '</button>';
+      }).join("") +
+    '</div>';
+  if (box.dataset.bound) return;
+  box.dataset.bound = "1";
+  box.addEventListener("click", function(e){
+    var b = e.target.closest(".jump-btn");
+    if (b) goToGrade(Number(b.dataset.grade));
   });
 }
 
@@ -2179,6 +2272,7 @@ function setHeader(){
     (GRADE_EMOJI[state.grade] || "") + " דפי עבודה ל" + GRADE_NAME[state.grade] + " — לפי תכנית הלימודים תשפ״ז 2026";
   document.getElementById("lede").textContent =
     d.topics.length + " נושאים, כל נושא בשלוש רמות. בחרו רמה והקובץ ייפתח בלשונית חדשה.";
+  buildJump();
 }
 
 /* ---------- שבבי תחום ---------- */
