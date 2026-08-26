@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>דף עבודה · מתמטיקה · נועם דורון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://amiramnoam.wixstudio.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ========================================================================
+     עמוד צפייה בדף עבודה + נועם AI.
+     מקבל: g (כיתה) · x (קידומת תרגילים) · lv (רמה) · pdf (מזהה) · t (כותרת)
+     ======================================================================== */
+  :root{
+    --ink:#14213D; --accent:#7B2FD1; --accent-dark:#551F92; --tint:#EBDDFB;
+    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#5E5478;
+    --r:18px;
+  }
+  [data-grade="7"]{ --accent:#7B2FD1; --accent-dark:#551F92; --tint:#EBDDFB; --muted:#5E5478; }
+  [data-grade="8"]{ --accent:#D62A8E; --accent-dark:#961B62; --tint:#FBDCEE; --muted:#6E4F62; }
+  [data-grade="9"]{ --accent:#00A08A; --accent-dark:#00705F; --tint:#CFF3EC; --muted:#4A6B64; }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html,body{ height:100%; margin:0; }
+  body{
+    font-family:'Assistant','Heebo',Arial,sans-serif; color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    background:
+      linear-gradient(var(--grid) 2.2px, transparent 2.2px) 0 0/45px 45px,
+      linear-gradient(90deg, var(--grid) 2.2px, transparent 2.2px) 0 0/45px 45px,
+      var(--paper);
+    display:flex; flex-direction:column;
+  }
+
+  /* ---------- כותרת ---------- */
+  .bar{
+    flex:none; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding:12px 18px; background:#fff;
+    border-bottom:3px solid var(--ink);
+  }
+  .bar h1{
+    font-family:'Heebo',sans-serif; font-weight:900; font-size:18px; margin:0;
+    display:flex; align-items:center; gap:10px; min-width:0;
+  }
+  .bar h1 span.ttl{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .chip{
+    font-family:'Heebo',sans-serif; font-weight:900; font-size:12px; white-space:nowrap;
+    border:2.5px solid var(--ink); border-radius:999px; padding:5px 12px; background:var(--tint);
+  }
+  .chip.lvl-c{ background:#FFD84D; }
+  .bar .spacer{ margin-inline-start:auto; }
+  .btn{
+    font-family:'Heebo',sans-serif; font-weight:900; font-size:14px; cursor:pointer;
+    color:var(--ink); background:#fff; text-decoration:none; white-space:nowrap;
+    border:2.5px solid var(--ink); border-radius:999px; padding:8px 16px;
+    box-shadow:-3px 3px 0 var(--ink);
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease, color .16s ease;
+  }
+  .btn:hover{ transform:translate(2px,-2px); box-shadow:-5px 5px 0 var(--ink); }
+  .btn:active{ transform:translate(0,0); box-shadow:-2px 2px 0 var(--ink); }
+  .btn--go{ background:var(--accent); color:#fff; }
+
+  /* ---------- פריסה ---------- */
+  .stage{ flex:1; display:flex; min-height:0; }
+  .pdfwrap{ flex:1; min-width:0; padding:14px; }
+  .pdfwrap iframe{
+    width:100%; height:100%; border:3px solid var(--ink); border-radius:var(--r);
+    background:#fff; box-shadow:-6px 6px 0 var(--ink); display:block;
+  }
+  .mobile-open{ display:none; }
+
+  /* ---------- פאנל AI ---------- */
+  .panel{
+    flex:none; width:380px; max-width:42vw; padding:14px 14px 14px 0;
+    display:flex; flex-direction:column; min-height:0;
+  }
+  .panel.hidden{ display:none; }
+  .panel-in{
+    flex:1; min-height:0; display:flex; flex-direction:column;
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:-6px 6px 0 var(--ink); overflow:hidden;
+  }
+  .panel-head{
+    flex:none; display:flex; align-items:center; gap:10px;
+    padding:12px 14px; background:var(--tint); border-bottom:3px solid var(--ink);
+  }
+  .panel-head b{ font-family:'Heebo',sans-serif; font-weight:900; font-size:16px; }
+  .panel-head button{
+    margin-inline-start:auto; border:none; background:none; cursor:pointer;
+    font-size:20px; line-height:1; color:var(--ink); padding:2px 6px;
+  }
+  .panel-body{ flex:1; min-height:0; overflow-y:auto; padding:14px; }
+  .step-title{ font-family:'Heebo',sans-serif; font-weight:900; font-size:14px; margin:0 0 10px; }
+  .opts{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .opt{
+    font-family:'Heebo',sans-serif; font-weight:900; font-size:14px; cursor:pointer;
+    background:#fff; color:var(--ink); border:2.5px solid var(--ink); border-radius:999px;
+    padding:8px 15px; box-shadow:-2px 2px 0 var(--ink);
+    transition:background .14s ease, color .14s ease, transform .14s ease;
+  }
+  .opt:hover{ background:var(--tint); transform:translateY(-1px); }
+  .opt[aria-pressed="true"]{ background:var(--accent); color:#fff; }
+  .picked{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:var(--tint); border:2.5px solid var(--ink); border-radius:12px;
+    padding:9px 12px; font-weight:800; font-size:14px; margin-bottom:14px;
+  }
+  .picked button{
+    margin-inline-start:auto; font-family:inherit; font-weight:800; font-size:12.5px;
+    cursor:pointer; background:#fff; border:2px solid var(--ink); border-radius:999px; padding:4px 10px;
+  }
+  textarea{
+    width:100%; min-height:92px; resize:vertical; font-family:inherit; font-size:15px;
+    color:var(--ink); padding:11px 13px; background:#fff;
+    border:2.5px solid var(--ink); border-radius:12px;
+  }
+  textarea:focus{ outline:none; box-shadow:-3px 3px 0 var(--accent); }
+  .send{
+    width:100%; margin-top:10px; font-family:'Heebo',sans-serif; font-weight:900; font-size:15px;
+    cursor:pointer; color:#fff; background:var(--accent);
+    border:2.5px solid var(--ink); border-radius:999px; padding:11px;
+    box-shadow:-3px 3px 0 var(--ink);
+  }
+  .send[disabled]{ background:#B9B4C4; cursor:not-allowed; }
+  .hint{ font-size:12.5px; font-weight:700; color:var(--muted); margin:10px 0 0; }
+  .note{
+    background:var(--tint); border:2.5px dashed var(--ink); border-radius:12px;
+    padding:14px; font-weight:700; font-size:14px; line-height:1.55;
+  }
+  .thinking{ display:flex; align-items:center; gap:10px; font-weight:900; font-size:15px; }
+  .dots::after{ content:"."; animation:dots 1.2s steps(4,end) infinite; }
+  @keyframes dots{ 0%{content:"."} 33%{content:".."} 66%{content:"..."} 100%{content:"."} }
+  .answer{
+    background:#fff; border:2.5px solid var(--ink); border-radius:12px; padding:14px;
+    font-size:15px; line-height:1.7; white-space:pre-wrap; word-break:break-word;
+  }
+  .qecho{ font-weight:800; font-size:13.5px; color:var(--muted); margin:0 0 10px; }
+  .skel{ height:38px; border-radius:999px; background:linear-gradient(90deg,#eee,#f7f7f7,#eee);
+         background-size:200% 100%; animation:sh 1.2s linear infinite; margin-bottom:8px; }
+  @keyframes sh{ to{ background-position:-200% 0; } }
+
+  /* ---------- כפתור צף ---------- */
+  .fab{
+    position:fixed; inset-block-end:22px; inset-inline-start:22px; z-index:40;
+    font-family:'Heebo',sans-serif; font-weight:900; font-size:16px; cursor:pointer;
+    color:#fff; background:var(--accent);
+    border:3px solid var(--ink); border-radius:999px; padding:13px 22px;
+    box-shadow:-5px 5px 0 var(--ink);
+  }
+  .fab:hover{ transform:translate(2px,-2px); box-shadow:-7px 7px 0 var(--ink); }
+  .fab.hidden{ display:none; }
+
+  /* ---------- מובייל ---------- */
+  @media (max-width:900px){
+    body{ height:auto; min-height:100%; }
+    .stage{ flex-direction:column; }
+    .pdfwrap{ padding:14px; }
+    .pdfwrap iframe{ display:none; }          /* iOS/Android אינם מרנדרים PDF ב-iframe */
+    .mobile-open{
+      display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center;
+      background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+      box-shadow:-6px 6px 0 var(--ink); padding:26px 18px;
+    }
+    .mobile-open .big{ font-size:40px; line-height:1; }
+    .panel{ width:100%; max-width:100%; padding:0 14px 14px; }
+    .panel.hidden{ display:flex; }            /* במובייל הפאנל תמיד פתוח */
+    .panel-in{ min-height:340px; }
+    .panel-head button{ display:none; }
+    .fab{ display:none; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{ transition:none !important; animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1><span id="emoji">📄</span><span class="ttl" id="title">דף עבודה</span></h1>
+  <span class="chip" id="gradeChip"></span>
+  <span class="chip" id="levelChip"></span>
+  <span class="spacer"></span>
+  <a class="btn" id="backBtn" href="./">→ לכל דפי העבודה</a>
+  <a class="btn btn--go" id="rawBtn" href="#" target="_blank" rel="noopener noreferrer">פתח PDF בלשונית</a>
+</div>
+
+<div class="stage">
+  <div class="pdfwrap">
+    <iframe id="pdf" title="דף העבודה"></iframe>
+    <div class="mobile-open">
+      <div class="big">📄</div>
+      <div style="font-family:Heebo,sans-serif;font-weight:900;font-size:17px">דף העבודה מוכן</div>
+      <div style="font-weight:700;font-size:14px;color:var(--muted)">ייפתח בלשונית חדשה. אפשר לחזור לכאן כדי לשאול את נועם AI.</div>
+      <a class="btn btn--go" id="rawBtn2" href="#" target="_blank" rel="noopener noreferrer">פתח את דף העבודה</a>
+    </div>
+  </div>
+
+  <aside class="panel hidden" id="panel">
+    <div class="panel-in">
+      <div class="panel-head">
+        <span>🤖</span><b>נועם AI</b>
+        <button type="button" id="closePanel" aria-label="סגירה">✕</button>
+      </div>
+      <div class="panel-body" id="panelBody"></div>
+    </div>
+  </aside>
+</div>
+
+<button class="fab" id="fab" type="button">🤖 נועם AI</button>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =======================================================================
+     תצורה — שתי השורות היחידות שמשתנות אם משהו זז בצד השרת.
+     ======================================================================= */
+  var BASE     = "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
+  var API      = "https://amiramnoam.wixstudio.com/my-site-2/_functions";
+  var LEVEL    = { a:"A", b:"B", c:"E" };          /* אושר מול production */
+  var MIN_WAIT = 4200;                              /* המתנה מינימלית להצגת "חושב" */
+  var TIMEOUT  = 20000;
+
+  var GRADE_NAME  = { 7:"כיתה ז׳", 8:"כיתה ח׳", 9:"כיתה ט׳" };
+  var GRADE_EMOJI = { 7:"🧭", 8:"🧪", 9:"🎯" };
+  var LEVEL_NAME  = { a:"רמה א׳", b:"רמה ב׳", c:"רמת מצוינות" };
+
+  /* ---------- קריאת פרמטרים + ולידציה ---------- */
+  var q   = new URLSearchParams(location.search);
+  var g   = parseInt(q.get("g"), 10);
+  var x   = (q.get("x")   || "").trim();
+  var lv  = (q.get("lv")  || "").trim();
+  var pdf = (q.get("pdf") || "").trim();
+  var ttl = (q.get("t")   || "דף עבודה").trim();
+
+  var okPdf   = /^[0-9a-f]{32}$/.test(pdf);
+  var okGrade = g >= 7 && g <= 9;
+  var okX     = /^G[1-9]-T\d{2}$/.test(x) && x.indexOf("G" + g + "-") === 0;
+  var okLv    = Object.prototype.hasOwnProperty.call(LEVEL, lv);
+  var aiReady = okPdf && okGrade && okX && okLv;
+
+  if (!okPdf) {                       /* בלי מזהה תקין אין מה להציג */
+    document.body.innerHTML =
+      '<div style="padding:40px;text-align:center;font-family:Heebo,sans-serif;font-weight:900">' +
+      'הקישור אינו תקין. <a href="./">חזרה לדפי העבודה</a></div>';
+    return;
+  }
+
+  var pdfUrl = BASE + pdf + ".pdf";   /* נבנה מקומית — הפרמטר לעולם אינו כתובת */
+
+  /* ---------- כותרת ומסגרת ---------- */
+  document.body.setAttribute("data-grade", okGrade ? g : 7);
+  document.title = ttl + " · מתמטיקה · נועם דורון";
+  document.getElementById("title").textContent = ttl;
+  document.getElementById("emoji").textContent = GRADE_EMOJI[g] || "📄";
+  document.getElementById("pdf").src = pdfUrl;
+  document.getElementById("rawBtn").href  = pdfUrl;
+  document.getElementById("rawBtn2").href = pdfUrl;
+
+  var gc = document.getElementById("gradeChip");
+  if (okGrade) gc.textContent = GRADE_NAME[g]; else gc.style.display = "none";
+
+  var lc = document.getElementById("levelChip");
+  if (okLv) { lc.textContent = LEVEL_NAME[lv]; if (lv === "c") lc.className = "chip lvl-c"; }
+  else lc.style.display = "none";
+
+  /* חזרה לעמוד הכיתה שממנו הגיע התלמיד */
+  if (okGrade) document.getElementById("backBtn").href = "./?grade=" + g;
+
+  /* ---------- פתיחה וסגירה של הפאנל ---------- */
+  var panel = document.getElementById("panel");
+  var body  = document.getElementById("panelBody");
+  var fab   = document.getElementById("fab");
+
+  if (!aiReady) fab.classList.add("hidden");    /* אין הקשר AI — הכפתור לא מופיע כלל */
+
+  fab.addEventListener("click", function(){
+    panel.classList.remove("hidden");
+    fab.classList.add("hidden");
+    if (!loaded) loadExercises();
+  });
+  document.getElementById("closePanel").addEventListener("click", function(){
+    panel.classList.add("hidden");
+    fab.classList.remove("hidden");
+  });
+
+  /* ---------- מצב ---------- */
+  var loaded = false;
+  var items = [];              /* [{id, questionNumber, section}] */
+  var pickedQ = null, pickedS = null, pickedId = null;
+  var history = [];            /* previousAttempts */
+
+  var prefix = aiReady ? (x + "-" + LEVEL[lv]) : "";
+  var cacheKey = "nx:" + prefix;
+
+  /* Fail-open: פרמטרי AI שגויים משאירים רק את דף העבודה */
+  if (!aiReady) {
+    panel.style.display = "none";
+  } else if (window.matchMedia("(max-width:900px)").matches) {
+    /* במובייל הפאנל פתוח מלכתחילה, אחרי שה-prefix כבר אותחל */
+    panel.classList.remove("hidden");
+    loadExercises();
+  }
+
+  /* ---------- שליפת רשימת התרגילים ---------- */
+  function loadExercises(){
+    loaded = true;
+    try {
+      var c = sessionStorage.getItem(cacheKey);
+      if (c) { items = JSON.parse(c); return renderQuestions(); }
+    } catch(e){}
+
+    body.innerHTML = '<p class="step-title">טוען את שאלות הדף…</p>' +
+                     '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+
+    post(API + "/listExercises", { grade: g, prefix: prefix })
+      .then(function(res){
+        items = (res && res.ok && Array.isArray(res.items)) ? res.items : [];
+        if (!items.length) return renderEmpty();
+        try { sessionStorage.setItem(cacheKey, JSON.stringify(items)); } catch(e){}
+        renderQuestions();
+      })
+      .catch(function(){ renderNetworkError(); });
+  }
+
+  /* ---------- מסכים ---------- */
+  function renderEmpty(){
+    body.innerHTML =
+      '<div class="note">נועם AI עדיין אינו זמין לדף הזה 🙂<br>' +
+      'אפשר להמשיך לעבוד על הדף כרגיל — והעזרה תגיע בקרוב.</div>';
+  }
+
+  function renderNetworkError(){
+    body.innerHTML =
+      '<div class="note">לא הצלחנו להתחבר לנועם AI כרגע.</div>' +
+      '<button class="send" type="button" id="retry">נסו שוב</button>';
+    document.getElementById("retry").addEventListener("click", function(){
+      loaded = false; loadExercises();
+    });
+  }
+
+  function questionNumbers(){
+    var seen = {}, out = [];
+    items.forEach(function(it){
+      var n = it.questionNumber;
+      if (!seen[n]) { seen[n] = 1; out.push(n); }
+    });
+    return out.sort(function(a,b){ return a-b; });
+  }
+  function sectionsOf(n){
+    return items.filter(function(it){ return it.questionNumber === n && it.section; })
+                .map(function(it){ return it.section; });
+  }
+  function idOf(n, sec){
+    var hit = items.filter(function(it){
+      return it.questionNumber === n && (sec ? it.section === sec : !it.section);
+    })[0];
+    return hit ? hit.id : null;
+  }
+
+  function renderQuestions(){
+    pickedQ = pickedS = pickedId = null;
+    var nums = questionNumbers();
+    body.innerHTML =
+      '<p class="step-title">על איזו שאלה בדף נדבר?</p>' +
+      '<div class="opts">' +
+        nums.map(function(n){
+          return '<button class="opt" type="button" data-q="' + n + '">שאלה ' + n + '</button>';
+        }).join("") +
+      '</div>' +
+      '<p class="hint">בוחרים שאלה, ואז את הסעיף — ואז כותבים מה לא ברור.</p>';
+
+    body.querySelectorAll("[data-q]").forEach(function(b){
+      b.addEventListener("click", function(){ pickQuestion(Number(b.dataset.q)); });
+    });
+  }
+
+  function pickQuestion(n){
+    pickedQ = n;
+    var secs = sectionsOf(n);
+    if (!secs.length) { pickedS = null; pickedId = idOf(n, null); return renderCompose(); }
+
+    body.innerHTML =
+      '<p class="step-title">שאלה ' + n + ' — איזה סעיף?</p>' +
+      '<div class="opts">' +
+        secs.map(function(s){
+          return '<button class="opt" type="button" data-s="' + s + '">סעיף ' + s + '</button>';
+        }).join("") +
+      '</div>' +
+      '<button class="opt" type="button" id="backQ">→ שאלה אחרת</button>';
+
+    body.querySelectorAll("[data-s]").forEach(function(b){
+      b.addEventListener("click", function(){
+        pickedS = b.dataset.s;
+        pickedId = idOf(n, pickedS);
+        renderCompose();
+      });
+    });
+    document.getElementById("backQ").addEventListener("click", renderQuestions);
+  }
+
+  function pickedLabel(){
+    return "נבחרה שאלה " + pickedQ + (pickedS ? ", סעיף " + pickedS : "");
+  }
+
+  function renderCompose(prefill){
+    body.innerHTML =
+      '<div class="picked"><span>✓ ' + pickedLabel() + '</span>' +
+        '<button type="button" id="change">שינוי</button></div>' +
+      '<p class="step-title">מה לא ברור לך?</p>' +
+      '<textarea id="msg" maxlength="600" placeholder="למשל: לא הבנתי למה מחסרים כאן / תן לי רמז"></textarea>' +
+      '<button class="send" type="button" id="send">שליחה לנועם AI</button>' +
+      '<p class="hint">אפשר לבקש רמז, הסבר שלב־שלב, או דוגמה דומה.</p>';
+
+    var ta = document.getElementById("msg");
+    if (prefill) ta.value = prefill;
+    ta.focus();
+    document.getElementById("change").addEventListener("click", renderQuestions);
+    document.getElementById("send").addEventListener("click", function(){
+      var t = ta.value.trim();
+      if (!t) { ta.focus(); return; }
+      ask(t);
+    });
+  }
+
+  function renderThinking(){
+    body.innerHTML =
+      '<div class="picked"><span>✓ ' + pickedLabel() + '</span></div>' +
+      '<div class="thinking">🤖 <span>AI חושב</span><span class="dots"></span></div>' +
+      '<p class="hint">רגע אחד, בונים לך הסבר מותאם…</p>';
+  }
+
+  function renderAnswer(text, myQuestion){
+    body.innerHTML =
+      '<div class="picked"><span>✓ ' + pickedLabel() + '</span>' +
+        '<button type="button" id="change2">שינוי</button></div>' +
+      '<p class="qecho">שאלת: ' + esc(myQuestion) + '</p>' +
+      '<div class="answer">' + esc(text) + '</div>' +
+      '<button class="send" type="button" id="again">שאלה נוספת</button>';
+    document.getElementById("again").addEventListener("click", function(){ renderCompose(); });
+    document.getElementById("change2").addEventListener("click", renderQuestions);
+    body.scrollTop = 0;
+  }
+
+  /* ---------- שליחה לנועם AI ---------- */
+  function ask(message){
+    if (!pickedId) return renderQuestions();
+    renderThinking();
+    var started = Date.now();
+
+    post(API + "/noamTutor", {
+      exerciseId: pickedId,                 /* מוסתר מהתלמיד */
+      studentMessage: message,
+      previousAttempts: Math.min(history.length, 10)
+    })
+    .then(function(res){
+      var wait = Math.max(0, MIN_WAIT - (Date.now() - started));
+      setTimeout(function(){
+        if (res && res.ok && res.answer) {
+          history.push({ q: message, a: res.answer });
+          renderAnswer(res.answer, message);
+        } else {
+          renderAskError(message);
+        }
+      }, wait);
+    })
+    .catch(function(){
+      var wait = Math.max(0, MIN_WAIT - (Date.now() - started));
+      setTimeout(function(){ renderAskError(message); }, wait);
+    });
+  }
+
+  function renderAskError(message){
+    body.innerHTML =
+      '<div class="picked"><span>✓ ' + pickedLabel() + '</span></div>' +
+      '<div class="note">לא הצלחנו לקבל תשובה כרגע. אפשר לנסות שוב בעוד רגע.</div>' +
+      '<button class="send" type="button" id="retry2">נסו שוב</button>';
+    document.getElementById("retry2").addEventListener("click", function(){ ask(message); });
+  }
+
+  /* ---------- עזרי רשת ---------- */
+  function post(endpoint, payload){
+    var ctrl = ("AbortController" in window) ? new AbortController() : null;
+    var timer = setTimeout(function(){ if (ctrl) ctrl.abort(); }, TIMEOUT);
+    return fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: ctrl ? ctrl.signal : undefined
+    })
+    .then(function(r){
+      clearTimeout(timer);
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.json();
+    });
+  }
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(m){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m];
+    });
+  }
+})();
+</script>
+</body>
+</html>
