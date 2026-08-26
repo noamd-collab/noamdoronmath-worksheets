@@ -542,6 +542,135 @@ textarea:focus{
     display:none;
   }
 }
+
+
+/* CHAT */
+.chat-shell{
+  display:flex;
+  flex-direction:column;
+  min-height:100%;
+}
+
+.chat-log{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding-bottom:10px;
+}
+
+.chat-row{
+  display:flex;
+  width:100%;
+}
+
+.chat-row.student{
+  justify-content:flex-start;
+}
+
+.chat-row.tutor{
+  justify-content:flex-end;
+}
+
+.chat-bubble{
+  max-width:88%;
+  border:2.5px solid var(--ink);
+  border-radius:16px;
+  padding:10px 12px;
+  font-size:14.5px;
+  line-height:1.6;
+  white-space:pre-wrap;
+  word-break:break-word;
+  box-shadow:-2px 2px 0 var(--ink);
+}
+
+.chat-row.student .chat-bubble{
+  background:var(--accent);
+  color:#fff;
+  border-bottom-right-radius:5px;
+}
+
+.chat-row.tutor .chat-bubble{
+  background:var(--tint);
+  color:var(--ink);
+  border-bottom-left-radius:5px;
+}
+
+.chat-name{
+  display:block;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:11.5px;
+  margin-bottom:3px;
+  opacity:.78;
+}
+
+.chat-thinking{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-weight:900;
+}
+
+.chat-quick{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:10px 0 8px;
+}
+
+.chat-quick .assist-btn{
+  font-size:13px;
+  padding:9px 10px;
+  text-align:center;
+}
+
+.chat-compose{
+  position:sticky;
+  bottom:-14px;
+  margin:0 -2px -14px;
+  padding:10px 2px 14px;
+  background:#fff;
+  border-top:2px solid #ece8f1;
+}
+
+.chat-compose-row{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+}
+
+.chat-input{
+  flex:1;
+  min-height:48px;
+  max-height:120px;
+  resize:vertical;
+  margin:0;
+}
+
+.chat-send{
+  flex:none;
+  width:auto;
+  min-width:72px;
+  margin:0;
+  padding:11px 13px;
+}
+
+.chat-send[disabled],
+.assist-btn[disabled]{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.chat-error{
+  background:#fff4f4;
+  border:2px dashed #9A1D2F;
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:13px;
+  font-weight:800;
+  color:#7b1726;
+}
+
 </style>
 </head>
 
@@ -982,6 +1111,9 @@ var history =
 var hintIndex =
   0;
 
+var canAskMoreHint =
+  true;
+
 var prefix =
   aiReady
     ? (
@@ -1235,8 +1367,14 @@ function renderQuestions(){
   pickedId =
     null;
 
+  history =
+    [];
+
   hintIndex =
     0;
+
+  canAskMoreHint =
+    true;
 
   var nums =
     questionNumbers();
@@ -1480,505 +1618,367 @@ function renderCompose(){
 
   body.innerHTML =
     '<div class="picked">' +
-
-      '<span>' +
-      '✓ ' +
-      pickedLabel() +
-      '</span>' +
-
-      '<button type="button" id="change">' +
-      'שינוי' +
-      '</button>' +
-
+      '<span>✓ ' + pickedLabel() + '</span>' +
+      '<button type="button" id="change">שינוי</button>' +
     '</div>' +
 
-    '<p class="step-title">' +
-    'איך אפשר לעזור?' +
-    '</p>' +
+    '<p class="step-title">איך אפשר לעזור?</p>' +
 
     '<div class="assist-actions">' +
-
-      '<button ' +
-      'class="assist-btn primary" ' +
-      'type="button" ' +
-      'id="hintBtn">' +
-      '💡 תן לי רמז' +
+      '<button class="assist-btn primary" type="button" id="hintBtn">' +
+        '💡 תן לי רמז' +
       '</button>' +
 
-      '<button ' +
-      'class="assist-btn" ' +
-      'type="button" ' +
-      'id="explainBtn">' +
-      '📘 תסביר לי את הרעיון' +
+      '<button class="assist-btn" type="button" id="explainBtn">' +
+        '📘 תסביר לי את הרעיון' +
       '</button>' +
 
-      '<button ' +
-      'class="assist-btn custom" ' +
-      'type="button" ' +
-      'id="customBtn">' +
-      '✍️ יש לי שאלה משלי' +
+      '<button class="assist-btn custom" type="button" id="customBtn">' +
+        '✍️ יש לי שאלה משלי' +
       '</button>' +
-
     '</div>';
 
   document
-    .getElementById(
-      "change"
-    )
+    .getElementById("change")
     .addEventListener(
       "click",
       renderQuestions
     );
 
   document
-    .getElementById(
-      "hintBtn"
-    )
+    .getElementById("hintBtn")
     .addEventListener(
       "click",
       function(){
-
-        getStoredHelp(
-          "hint"
-        );
+        getStoredHelp("hint");
       }
     );
 
   document
-    .getElementById(
-      "explainBtn"
-    )
+    .getElementById("explainBtn")
     .addEventListener(
       "click",
       function(){
-
-        getStoredHelp(
-          "explain"
-        );
+        getStoredHelp("explain");
       }
     );
 
   document
-    .getElementById(
-      "customBtn"
-    )
+    .getElementById("customBtn")
     .addEventListener(
       "click",
       renderCustomQuestion
     );
+}
+
+/* CHAT HELPERS */
+
+function trimHistory(){
+  if (history.length > 20){
+    history = history.slice(-20);
+  }
+}
+
+function historyForApi(){
+  return history
+    .slice(-6)
+    .map(
+      function(turn){
+        return {
+          studentMessage:
+            turn.q || "",
+          tutorAnswer:
+            turn.a || ""
+        };
+      }
+    );
+}
+
+function chatBubble(
+  role,
+  text
+){
+
+  var isStudent =
+    role === "student";
+
+  return (
+    '<div class="chat-row ' +
+    (isStudent ? 'student' : 'tutor') +
+    '">' +
+      '<div class="chat-bubble">' +
+        '<span class="chat-name">' +
+        (isStudent ? 'אתה' : '🤖 נועם AI') +
+        '</span>' +
+        esc(text) +
+      '</div>' +
+    '</div>'
+  );
+}
+
+function historyHtml(){
+
+  return history
+    .map(
+      function(turn){
+        var html = "";
+
+        if (turn.q){
+          html += chatBubble(
+            "student",
+            turn.q
+          );
+        }
+
+        if (turn.a){
+          html += chatBubble(
+            "tutor",
+            turn.a
+          );
+        }
+
+        return html;
+      }
+    )
+    .join("");
+}
+
+function renderChat(options){
+
+  options =
+    options || {};
+
+  var busy =
+    !!options.busy;
+
+  var pendingMessage =
+    String(
+      options.pendingMessage || ""
+    );
+
+  var extraHtml =
+    historyHtml();
+
+  if (pendingMessage){
+    extraHtml += chatBubble(
+      "student",
+      pendingMessage
+    );
+  }
+
+  if (busy){
+    extraHtml +=
+      '<div class="chat-row tutor">' +
+        '<div class="chat-bubble">' +
+          '<span class="chat-name">🤖 נועם AI</span>' +
+          '<span class="chat-thinking">AI חושב<span class="dots"></span></span>' +
+        '</div>' +
+      '</div>';
+  }
+
+  if (options.errorMessage){
+    extraHtml +=
+      '<div class="chat-error">' +
+        esc(options.errorMessage) +
+      '</div>' +
+      '<button class="assist-btn primary" type="button" id="chatRetry">' +
+        'נסו שוב' +
+      '</button>';
+  }
+
+  var quickHtml = "";
+
+  if (!busy && !options.errorMessage){
+
+    quickHtml =
+      '<div class="chat-quick">' +
+        (
+          canAskMoreHint
+            ? '<button class="assist-btn primary" type="button" id="chatHint">' +
+                (hintIndex > 0 ? '💡 רמז נוסף' : '💡 רמז') +
+              '</button>'
+            : ''
+        ) +
+        '<button class="assist-btn" type="button" id="chatExplain">📘 הסבר</button>' +
+      '</div>';
+  }
+
+  body.innerHTML =
+    '<div class="picked">' +
+      '<span>✓ ' + pickedLabel() + '</span>' +
+      '<button type="button" id="chatChange">שינוי תרגיל</button>' +
+    '</div>' +
+
+    '<div class="chat-shell">' +
+      '<div class="chat-log" id="chatLog">' +
+        extraHtml +
+      '</div>' +
+
+      quickHtml +
+
+      '<div class="chat-compose">' +
+        '<div class="chat-compose-row">' +
+          '<textarea class="chat-input" id="chatMsg" maxlength="600" ' +
+            'placeholder="כתוב הודעה נוספת…"' +
+            (busy ? ' disabled' : '') +
+          '></textarea>' +
+          '<button class="send chat-send" type="button" id="chatSend"' +
+            (busy ? ' disabled' : '') +
+          '>שלח</button>' +
+        '</div>' +
+        '<p class="hint">אפשר להמשיך לשאול על אותו תרגיל. נועם AI זוכר את השיחה האחרונה.</p>' +
+      '</div>' +
+    '</div>';
+
+  document
+    .getElementById("chatChange")
+    .addEventListener(
+      "click",
+      renderQuestions
+    );
+
+  var chatHint =
+    document.getElementById("chatHint");
+
+  if (chatHint){
+    chatHint.addEventListener(
+      "click",
+      function(){
+        getStoredHelp("hint");
+      }
+    );
+  }
+
+  var chatExplain =
+    document.getElementById("chatExplain");
+
+  if (chatExplain){
+    chatExplain.addEventListener(
+      "click",
+      function(){
+        getStoredHelp("explain");
+      }
+    );
+  }
+
+  var retry =
+    document.getElementById("chatRetry");
+
+  if (retry){
+    retry.addEventListener(
+      "click",
+      function(){
+        if (options.retryKind){
+          getStoredHelp(
+            options.retryKind
+          );
+          return;
+        }
+
+        if (options.retryMessage){
+          ask(
+            options.retryMessage
+          );
+        }
+      }
+    );
+  }
+
+  var ta =
+    document.getElementById("chatMsg");
+
+  var send =
+    document.getElementById("chatSend");
+
+  function submitChat(){
+    if (busy){
+      return;
+    }
+
+    var message =
+      ta.value.trim();
+
+    if (!message){
+      ta.focus();
+      return;
+    }
+
+    ask(message);
+  }
+
+  send.addEventListener(
+    "click",
+    submitChat
+  );
+
+  ta.addEventListener(
+    "keydown",
+    function(e){
+      if (
+        e.key === "Enter" &&
+        (e.metaKey || e.ctrlKey)
+      ){
+        e.preventDefault();
+        submitChat();
+      }
+    }
+  );
+
+  var log =
+    document.getElementById("chatLog");
+
+  if (log){
+    log.scrollIntoView({
+      block:"end"
+    });
+  }
+
+  body.scrollTop =
+    body.scrollHeight;
+
+  if (!busy && !options.errorMessage){
+    setTimeout(
+      function(){
+        ta.focus();
+      },
+      0
+    );
+  }
 }
 
 /* CUSTOM QUESTION */
 
 function renderCustomQuestion(){
-
-  body.innerHTML =
-    '<div class="picked">' +
-
-      '<span>' +
-      '✓ ' +
-      pickedLabel() +
-      '</span>' +
-
-      '<button type="button" id="backHelp">' +
-      'חזרה' +
-      '</button>' +
-
-    '</div>' +
-
-    '<p class="step-title">' +
-    'מה לא ברור לך?' +
-    '</p>' +
-
-    '<textarea ' +
-    'id="msg" ' +
-    'maxlength="600" ' +
-    'placeholder="למשל: לא הבנתי למה מחסרים כאן">' +
-    '</textarea>' +
-
-    '<button ' +
-    'class="send" ' +
-    'type="button" ' +
-    'id="send">' +
-
-    'שליחה לנועם AI' +
-
-    '</button>';
-
-  var ta =
-    document
-    .getElementById(
-      "msg"
-    );
-
-  ta.focus();
-
-  document
-    .getElementById(
-      "backHelp"
-    )
-    .addEventListener(
-      "click",
-      renderCompose
-    );
-
-  document
-    .getElementById(
-      "send"
-    )
-    .addEventListener(
-      "click",
-      function(){
-
-        var t =
-          ta.value.trim();
-
-        if (!t){
-
-          ta.focus();
-
-          return;
-        }
-
-        ask(t);
-      }
-    );
-}
-
-/* THINKING */
-
-function renderThinking(){
-
-  body.innerHTML =
-    '<div class="picked">' +
-
-      '<span>' +
-      '✓ ' +
-      pickedLabel() +
-      '</span>' +
-
-    '</div>' +
-
-    '<div class="thinking">' +
-
-      '🤖 ' +
-
-      '<span>' +
-      'AI חושב' +
-      '</span>' +
-
-      '<span class="dots"></span>' +
-
-    '</div>' +
-
-    '<p class="hint">' +
-    'רגע אחד, בודקים את דף העבודה ובונים לך עזרה מתאימה…' +
-    '</p>';
-}
-
-/* STORED HELP RESULT */
-
-function renderStoredAnswer(
-  text,
-  kind,
-  hasMore
-){
-
-  var actions =
-    [];
-
-  if (
-    kind === "hint" &&
-    hasMore
-  ){
-
-    actions.push(
-      '<button ' +
-      'class="assist-btn primary" ' +
-      'type="button" ' +
-      'id="moreHint">' +
-      '💡 רמז נוסף' +
-      '</button>'
-    );
-
-  }else if (
-    kind !== "hint"
-  ){
-
-    actions.push(
-      '<button ' +
-      'class="assist-btn primary" ' +
-      'type="button" ' +
-      'id="hintAfter">' +
-      '💡 תן לי רמז' +
-      '</button>'
-    );
-  }
-
-  if (
-    kind !== "explain"
-  ){
-
-    actions.push(
-      '<button ' +
-      'class="assist-btn" ' +
-      'type="button" ' +
-      'id="explainAfter">' +
-      '📘 תסביר לי את הרעיון' +
-      '</button>'
-    );
-  }
-
-  actions.push(
-    '<button ' +
-    'class="assist-btn custom" ' +
-    'type="button" ' +
-    'id="customAfter">' +
-    '✍️ יש לי שאלה משלי' +
-    '</button>'
-  );
-
-  body.innerHTML =
-    '<div class="picked">' +
-
-      '<span>' +
-      '✓ ' +
-      pickedLabel() +
-      '</span>' +
-
-      '<button ' +
-      'type="button" ' +
-      'id="changeStored">' +
-      'שינוי' +
-      '</button>' +
-
-    '</div>' +
-
-    '<div class="answer">' +
-    esc(text) +
-    '</div>' +
-
-    '<div class="assist-actions">' +
-    actions
-      .slice(
-        0,
-        3
-      )
-      .join("") +
-    '</div>';
-
-  var moreHint =
-    document
-    .getElementById(
-      "moreHint"
-    );
-
-  if (moreHint){
-
-    moreHint
-      .addEventListener(
-        "click",
-        function(){
-
-          getStoredHelp(
-            "hint"
-          );
-        }
-      );
-  }
-
-  var hintAfter =
-    document
-    .getElementById(
-      "hintAfter"
-    );
-
-  if (hintAfter){
-
-    hintAfter
-      .addEventListener(
-        "click",
-        function(){
-
-          getStoredHelp(
-            "hint"
-          );
-        }
-      );
-  }
-
-  var explainAfter =
-    document
-    .getElementById(
-      "explainAfter"
-    );
-
-  if (explainAfter){
-
-    explainAfter
-      .addEventListener(
-        "click",
-        function(){
-
-          getStoredHelp(
-            "explain"
-          );
-        }
-      );
-  }
-
-  document
-    .getElementById(
-      "customAfter"
-    )
-    .addEventListener(
-      "click",
-      renderCustomQuestion
-    );
-
-  document
-    .getElementById(
-      "changeStored"
-    )
-    .addEventListener(
-      "click",
-      renderQuestions
-    );
-
-  body.scrollTop =
-    0;
-}
-
-/* AI ANSWER */
-
-function renderAnswer(
-  text,
-  myQuestion
-){
-
-  body.innerHTML =
-    '<div class="picked">' +
-
-      '<span>' +
-      '✓ ' +
-      pickedLabel() +
-      '</span>' +
-
-      '<button ' +
-      'type="button" ' +
-      'id="change2">' +
-      'שינוי' +
-      '</button>' +
-
-    '</div>' +
-
-    '<p class="qecho">' +
-    'שאלת: ' +
-    esc(myQuestion) +
-    '</p>' +
-
-    '<div class="answer">' +
-    esc(text) +
-    '</div>' +
-
-    '<div class="assist-actions">' +
-
-      '<button ' +
-      'class="assist-btn primary" ' +
-      'type="button" ' +
-      'id="hintAgain">' +
-      '💡 תן לי רמז' +
-      '</button>' +
-
-      '<button ' +
-      'class="assist-btn" ' +
-      'type="button" ' +
-      'id="explainAgain">' +
-      '📘 תסביר לי את הרעיון' +
-      '</button>' +
-
-      '<button ' +
-      'class="assist-btn custom" ' +
-      'type="button" ' +
-      'id="again">' +
-      '✍️ שאלה נוספת' +
-      '</button>' +
-
-    '</div>';
-
-  document
-    .getElementById(
-      "hintAgain"
-    )
-    .addEventListener(
-      "click",
-      function(){
-
-        getStoredHelp(
-          "hint"
-        );
-      }
-    );
-
-  document
-    .getElementById(
-      "explainAgain"
-    )
-    .addEventListener(
-      "click",
-      function(){
-
-        getStoredHelp(
-          "explain"
-        );
-      }
-    );
-
-  document
-    .getElementById(
-      "again"
-    )
-    .addEventListener(
-      "click",
-      renderCustomQuestion
-    );
-
-  document
-    .getElementById(
-      "change2"
-    )
-    .addEventListener(
-      "click",
-      renderQuestions
-    );
-
-  body.scrollTop =
-    0;
+  renderChat();
 }
 
 /* STORED SUPABASE HELP — NO QWEN */
 
-function getStoredHelp(
-  kind
-){
+function getStoredHelp(kind){
 
   if (!pickedId){
-
     return renderQuestions();
   }
 
-  renderThinking();
+  var label =
+    kind === "hint"
+      ? (
+          hintIndex > 0
+            ? "💡 תן לי רמז נוסף"
+            : "💡 תן לי רמז"
+        )
+      : "📘 תסביר לי את הרעיון";
+
+  renderChat({
+    busy:true,
+    pendingMessage:label
+  });
 
   post(
-    API +
-    "/exerciseHelp",
+    API + "/exerciseHelp",
     {
-      exerciseId:
-        pickedId,
-
-      kind:
-        kind,
-
+      exerciseId:pickedId,
+      kind:kind,
       hintIndex:
         kind === "hint"
           ? hintIndex
@@ -1994,131 +1994,83 @@ function getStoredHelp(
         res.answer
       ){
 
-        if (
-          kind === "hint"
-        ){
-
-          hintIndex +=
-            1;
+        if (kind === "hint"){
+          hintIndex += 1;
+          canAskMoreHint =
+            !!res.hasMore;
         }
 
-        renderStoredAnswer(
-          res.answer,
-          kind,
-          !!res.hasMore
-        );
+        history.push({
+          q:label,
+          a:res.answer
+        });
+
+        trimHistory();
+        renderChat();
 
       }else{
-
-        renderStoredError(
-          kind
-        );
+        renderChat({
+          pendingMessage:label,
+          errorMessage:
+            "לא הצלחתי להציג את העזרה המוכנה כרגע.",
+          retryKind:kind
+        });
       }
     }
   )
   .catch(
     function(){
-
-      renderStoredError(
-        kind
-      );
+      renderChat({
+        pendingMessage:label,
+        errorMessage:
+          "לא הצלחתי להציג את העזרה המוכנה כרגע.",
+        retryKind:kind
+      });
     }
   );
 }
 
-/* STORED HELP ERROR */
-
-function renderStoredError(
-  kind
-){
-
-  body.innerHTML =
-    '<div class="picked">' +
-
-      '<span>' +
-      '✓ ' +
-      pickedLabel() +
-      '</span>' +
-
-    '</div>' +
-
-    '<div class="note">' +
-    'לא הצלחתי להציג את העזרה המוכנה כרגע.' +
-    '</div>' +
-
-    '<div class="assist-actions">' +
-
-      '<button ' +
-      'class="assist-btn primary" ' +
-      'type="button" ' +
-      'id="storedRetry">' +
-      'נסו שוב' +
-      '</button>' +
-
-      '<button ' +
-      'class="assist-btn custom" ' +
-      'type="button" ' +
-      'id="storedCustom">' +
-      '✍️ יש לי שאלה משלי' +
-      '</button>' +
-
-    '</div>';
-
-  document
-    .getElementById(
-      "storedRetry"
-    )
-    .addEventListener(
-      "click",
-      function(){
-
-        getStoredHelp(
-          kind
-        );
-      }
-    );
-
-  document
-    .getElementById(
-      "storedCustom"
-    )
-    .addEventListener(
-      "click",
-      renderCustomQuestion
-    );
-}
-
 /* FREE QUESTION — QWEN */
 
-function ask(
-  message
-){
+function ask(message){
 
   if (!pickedId){
-
     return renderQuestions();
   }
 
-  renderThinking();
+  var cleanMessage =
+    String(message || "")
+      .trim()
+      .slice(0, 600);
+
+  if (!cleanMessage){
+    renderChat();
+    return;
+  }
+
+  var apiHistory =
+    historyForApi();
+
+  renderChat({
+    busy:true,
+    pendingMessage:cleanMessage
+  });
 
   var started =
     Date.now();
 
   post(
-    API +
-    "/noamTutor",
+    API + "/noamTutor",
     {
-      exerciseId:
-        pickedId,
-
-      studentMessage:
-        message,
-
+      exerciseId:pickedId,
+      studentMessage:cleanMessage,
       previousAttempts:
         Math.min(
           history.length,
           10
-        )
+        ),
+      conversationHistory:
+        apiHistory
     }
   )
   .then(
@@ -2144,20 +2096,20 @@ function ask(
           ){
 
             history.push({
-              q:message,
+              q:cleanMessage,
               a:res.answer
             });
 
-            renderAnswer(
-              res.answer,
-              message
-            );
+            trimHistory();
+            renderChat();
 
           }else{
-
-            renderAskError(
-              message
-            );
+            renderChat({
+              pendingMessage:cleanMessage,
+              errorMessage:
+                "לא הצלחנו לקבל תשובה כרגע. אפשר לנסות שוב בעוד רגע.",
+              retryMessage:cleanMessage
+            });
           }
         },
         wait
@@ -2179,59 +2131,17 @@ function ask(
 
       setTimeout(
         function(){
-
-          renderAskError(
-            message
-          );
+          renderChat({
+            pendingMessage:cleanMessage,
+            errorMessage:
+              "לא הצלחנו לקבל תשובה כרגע. אפשר לנסות שוב בעוד רגע.",
+            retryMessage:cleanMessage
+          });
         },
         wait
       );
     }
   );
-}
-
-/* AI ERROR */
-
-function renderAskError(
-  message
-){
-
-  body.innerHTML =
-    '<div class="picked">' +
-
-      '<span>' +
-      '✓ ' +
-      pickedLabel() +
-      '</span>' +
-
-    '</div>' +
-
-    '<div class="note">' +
-    'לא הצלחנו לקבל תשובה כרגע. אפשר לנסות שוב בעוד רגע.' +
-    '</div>' +
-
-    '<button ' +
-    'class="send" ' +
-    'type="button" ' +
-    'id="retry2">' +
-
-    'נסו שוב' +
-
-    '</button>';
-
-  document
-    .getElementById(
-      "retry2"
-    )
-    .addEventListener(
-      "click",
-      function(){
-
-        ask(
-          message
-        );
-      }
-    );
 }
 
 /* POST */
