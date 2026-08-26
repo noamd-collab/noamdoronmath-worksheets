@@ -12,6 +12,11 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet">
 
+<!-- KaTeX: pinned production math renderer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/contrib/auto-render.min.js"></script>
+
 <style>
 :root{
   --ink:#14213D;
@@ -671,6 +676,38 @@ textarea:focus{
   color:#7b1726;
 }
 
+
+/* ---------- מתמטיקה: KaTeX + RTL/LTR isolation ---------- */
+.katex{
+  direction:ltr;
+  unicode-bidi:isolate;
+  display:inline-block;
+  max-width:100%;
+}
+
+.katex-display{
+  direction:ltr;
+  unicode-bidi:isolate;
+  overflow-x:auto;
+  overflow-y:hidden;
+  max-width:100%;
+  margin:.65em 0;
+  padding:2px 0;
+  text-align:center;
+}
+
+.katex-display > .katex{
+  display:inline-block;
+  text-align:initial;
+}
+
+/* אם KaTeX אינו זמין, הטקסט נשאר קריא במקום לשבור את הפאנל */
+.math-render-error{
+  direction:ltr;
+  unicode-bidi:isolate;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+}
+
 </style>
 </head>
 
@@ -1038,6 +1075,80 @@ var fab =
   .getElementById(
     "fab"
   );
+
+
+/* MATH RENDERING — supports legacy $...$ and canonical \\(...\\) / \\[...\\] */
+var mathRenderScheduled = false;
+
+function renderMath(root){
+  if (
+    !root ||
+    typeof window.renderMathInElement !== "function"
+  ){
+    return;
+  }
+
+  try{
+    window.renderMathInElement(
+      root,
+      {
+        delimiters:[
+          { left:"$$", right:"$$", display:true },
+          { left:"\\[", right:"\\]", display:true },
+          { left:"\\(", right:"\\)", display:false },
+          { left:"$", right:"$", display:false }
+        ],
+        throwOnError:false,
+        strict:"ignore",
+        trust:false,
+        errorColor:"#9A1D2F"
+      }
+    );
+  }catch(error){
+    console.error("KATEX RENDER ERROR:", error);
+  }
+}
+
+function scheduleMathRender(){
+  if (mathRenderScheduled){
+    return;
+  }
+
+  mathRenderScheduled = true;
+
+  var run = function(){
+    mathRenderScheduled = false;
+    renderMath(body);
+  };
+
+  if (typeof window.requestAnimationFrame === "function"){
+    window.requestAnimationFrame(run);
+  }else{
+    setTimeout(run, 0);
+  }
+}
+
+if (typeof window.MutationObserver === "function"){
+  new MutationObserver(
+    function(){
+      scheduleMathRender();
+    }
+  ).observe(
+    body,
+    {
+      childList:true,
+      subtree:true,
+      characterData:true
+    }
+  );
+}
+
+window.addEventListener(
+  "load",
+  function(){
+    renderMath(body);
+  }
+);
 
 if (!aiReady){
 
@@ -1826,7 +1937,7 @@ function renderChat(options){
             (busy ? ' disabled' : '') +
           '>שלח</button>' +
         '</div>' +
-        '<p class="hint">אפשר להמשיך לשאול על אותו תרגיל. נועם AI זוכר את השיחה האחרונה.</p>' +
+        '<p class="hint">Enter לשליחה · Shift+Enter לשורה חדשה. נועם AI זוכר את השיחה האחרונה.</p>' +
       '</div>' +
     '</div>';
 
@@ -1916,7 +2027,7 @@ function renderChat(options){
     function(e){
       if (
         e.key === "Enter" &&
-        (e.metaKey || e.ctrlKey)
+        !e.shiftKey
       ){
         e.preventDefault();
         submitChat();
