@@ -764,16 +764,38 @@ textarea:focus{
 
 
 /* ---------- מתמטיקה: KaTeX + RTL/LTR isolation ---------- */
-.katex{
-  direction:ltr;
+/* טקסט השיחה נשאר RTL; כל נוסחה היא אי LTR עצמאי. */
+.chat-bubble{
+  direction:rtl;
+  text-align:right;
   unicode-bidi:isolate;
+}
+
+.katex,
+.katex-html,
+.katex-mathml{
+  direction:ltr !important;
+  unicode-bidi:isolate !important;
+}
+
+.katex{
   display:inline-block;
   max-width:100%;
 }
 
+/* \text{עברית} בתוך נוסחת legacy מקבל אי RTL משלו.
+   כך a, 0 וסימני = נשארים מתמטיקה LTR בלי להפוך את העברית. */
+.katex .text[dir="rtl"],
+.katex .mord.text[dir="rtl"]{
+  direction:rtl !important;
+  unicode-bidi:isolate !important;
+  display:inline-block !important;
+  text-align:right;
+}
+
 .katex-display{
-  direction:ltr;
-  unicode-bidi:isolate;
+  direction:ltr !important;
+  unicode-bidi:isolate !important;
   overflow-x:auto;
   overflow-y:hidden;
   max-width:100%;
@@ -1170,6 +1192,40 @@ var fab =
 /* MATH RENDERING — supports legacy $...$ and canonical \\(...\\) / \\[...\\] */
 var mathRenderScheduled = false;
 
+function fixRenderedMathBidi(root){
+  if (!root){
+    return;
+  }
+
+  root
+    .querySelectorAll(".katex, .katex-html, .katex-mathml")
+    .forEach(function(el){
+      el.setAttribute("dir", "ltr");
+      el.style.direction = "ltr";
+      el.style.unicodeBidi = "isolate";
+    });
+
+  /*
+    KaTeX itself is LTR, but old Supabase content can contain
+    \text{עברית} inside the formula. Those Hebrew text spans must
+    be isolated as RTL; otherwise the browser's bidi algorithm can
+    visually move a / 0 / = to the wrong side of the sentence.
+  */
+  root
+    .querySelectorAll(".katex .text, .katex .mord.text")
+    .forEach(function(el){
+      var text = String(el.textContent || "");
+
+      if (/[\u0590-\u05FF]/.test(text)){
+        el.setAttribute("dir", "rtl");
+        el.style.direction = "rtl";
+        el.style.unicodeBidi = "isolate";
+        el.style.display = "inline-block";
+        el.style.textAlign = "right";
+      }
+    });
+}
+
 function renderMath(root){
   if (
     !root ||
@@ -1194,6 +1250,8 @@ function renderMath(root){
         errorColor:"#9A1D2F"
       }
     );
+
+    fixRenderedMathBidi(root);
   }catch(error){
     console.error("KATEX RENDER ERROR:", error);
   }
