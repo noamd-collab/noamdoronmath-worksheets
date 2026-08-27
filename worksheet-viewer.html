@@ -677,6 +677,92 @@ textarea:focus{
 }
 
 
+/* ---------- IMAGE ATTACHMENT ---------- */
+.chat-tools{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:8px 0 0;
+  flex-wrap:wrap;
+}
+
+.image-pick{
+  width:auto;
+  margin:0;
+  padding:8px 12px;
+  font-size:13px;
+  background:#fff;
+  color:var(--ink);
+}
+
+.image-pick[disabled]{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.image-preview{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-top:8px;
+  padding:8px 10px;
+  background:var(--tint);
+  border:2px solid var(--ink);
+  border-radius:12px;
+}
+
+.image-preview img{
+  width:54px;
+  height:54px;
+  object-fit:cover;
+  border:2px solid var(--ink);
+  border-radius:9px;
+  background:#fff;
+}
+
+.image-meta{
+  min-width:0;
+  flex:1;
+  font-size:12.5px;
+  font-weight:800;
+  line-height:1.35;
+}
+
+.image-meta b{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.image-remove{
+  flex:none;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  background:#fff;
+  color:var(--ink);
+  font-family:inherit;
+  font-weight:900;
+  cursor:pointer;
+  padding:4px 9px;
+}
+
+.image-error{
+  margin-top:8px;
+  color:#9A1D2F;
+  font-size:12.5px;
+  font-weight:900;
+}
+
+.chat-image-tag{
+  display:block;
+  margin-top:6px;
+  font-size:11.5px;
+  font-weight:900;
+  opacity:.9;
+}
+
+
 /* ---------- מתמטיקה: KaTeX + RTL/LTR isolation ---------- */
 .katex{
   direction:ltr;
@@ -852,6 +938,10 @@ var LEVEL = {
 
 var MIN_WAIT = 4200;
 var TIMEOUT = 20000;
+
+var MAX_IMAGE_BYTES = 2 * 1024 * 1024;
+var TARGET_IMAGE_BYTES = 250 * 1024;
+var MAX_IMAGE_DIMENSION = 1800;
 
 var GRADE_NAME = {
   7:"כיתה ז׳",
@@ -1225,6 +1315,21 @@ var hintIndex =
 var canAskMoreHint =
   true;
 
+var hintProgressByExercise =
+  {};
+
+var exhaustedHintsByExercise =
+  {};
+
+var attachedImage =
+  null;
+
+var imageError =
+  "";
+
+var imageBusy =
+  false;
+
 var prefix =
   aiReady
     ? (
@@ -1465,6 +1570,190 @@ function idOf(
     : null;
 }
 
+/* EXERCISE-SCOPED STATE */
+
+function syncExerciseState(){
+  if (!pickedId){
+    hintIndex = 0;
+    canAskMoreHint = true;
+    return;
+  }
+
+  hintIndex =
+    Number(
+      hintProgressByExercise[pickedId]
+    ) || 0;
+
+  canAskMoreHint =
+    !exhaustedHintsByExercise[pickedId];
+}
+
+/* IMAGE HELPERS */
+
+function humanFileSize(bytes){
+  return Math.max(
+    1,
+    Math.round(Number(bytes || 0) / 1024)
+  ) + " KB";
+}
+
+function fileToDataUrl(file){
+  return new Promise(function(resolve, reject){
+    var reader = new FileReader();
+    reader.onload = function(){ resolve(String(reader.result || "")); };
+    reader.onerror = function(){ reject(new Error("file read failed")); };
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadImageFromUrl(url){
+  return new Promise(function(resolve, reject){
+    var img = new Image();
+    img.onload = function(){ resolve(img); };
+    img.onerror = function(){ reject(new Error("image decode failed")); };
+    img.src = url;
+  });
+}
+
+function canvasToJpegBlob(canvas, quality){
+  return new Promise(function(resolve, reject){
+    canvas.toBlob(
+      function(blob){
+        if (blob){
+          resolve(blob);
+        }else{
+          reject(new Error("image compression failed"));
+        }
+      },
+      "image/jpeg",
+      quality
+    );
+  });
+}
+
+async function compressImageFile(file){
+  var sourceUrl = await fileToDataUrl(file);
+  var img = await loadImageFromUrl(sourceUrl);
+
+  var width = img.naturalWidth || img.width;
+  var height = img.naturalHeight || img.height;
+
+  if (!width || !height){
+    throw new Error("invalid image dimensions");
+  }
+
+  var scale = Math.min(
+    1,
+    MAX_IMAGE_DIMENSION / Math.max(width, height)
+  );
+
+  width = Math.max(1, Math.round(width * scale));
+  height = Math.max(1, Math.round(height * scale));
+
+  var canvas = document.createElement("canvas");
+  var ctx = canvas.getContext("2d");
+
+  if (!ctx){
+    throw new Error("canvas unavailable");
+  }
+
+  var qualitySteps = [0.92,0.86,0.80,0.74,0.68,0.62,0.56];
+  var blob = null;
+
+  for (var round = 0; round < 5; round += 1){
+    canvas.width = width;
+    canvas.height = height;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
+
+    for (var qIndex = 0; qIndex < qualitySteps.length; qIndex += 1){
+      blob = await canvasToJpegBlob(
+        canvas,
+        qualitySteps[qIndex]
+      );
+
+      if (blob.size <= TARGET_IMAGE_BYTES){
+        return {
+          blob:blob,
+          dataUrl:await fileToDataUrl(blob),
+          width:width,
+          height:height
+        };
+      }
+    }
+
+    var longest = Math.max(width, height);
+
+    if (longest <= 720){
+      break;
+    }
+
+    var shrink = Math.max(
+      720 / longest,
+      0.82
+    );
+
+    width = Math.max(1, Math.round(width * shrink));
+    height = Math.max(1, Math.round(height * shrink));
+  }
+
+  if (!blob || blob.size > TARGET_IMAGE_BYTES){
+    throw new Error("image compression failed");
+  }
+
+  return {
+    blob:blob,
+    dataUrl:await fileToDataUrl(blob),
+    width:width,
+    height:height
+  };
+}
+
+async function attachImageFile(file){
+  imageError = "";
+
+  if (!file){
+    return;
+  }
+
+  if (!String(file.type || "").startsWith("image/")){
+    imageError = "אפשר לצרף תמונה בלבד.";
+    renderChat();
+    return;
+  }
+
+  if (file.size > MAX_IMAGE_BYTES){
+    imageError = "התמונה גדולה מ-2MB. בחר תמונה קטנה יותר.";
+    renderChat();
+    return;
+  }
+
+  imageBusy = true;
+  renderChat();
+
+  try{
+    var compressed = await compressImageFile(file);
+
+    attachedImage = {
+      name:String(file.name || "תמונה"),
+      originalSize:Number(file.size || 0),
+      sentSize:Number(compressed.blob.size || 0),
+      dataUrl:compressed.dataUrl
+    };
+
+    imageError = "";
+  }catch(error){
+    console.error("IMAGE ATTACH ERROR:", error);
+    attachedImage = null;
+    imageError = "לא הצלחתי להכין את התמונה. נסה JPG, PNG או WebP.";
+  }
+
+  imageBusy = false;
+  renderChat();
+}
+
 /* QUESTION */
 
 function renderQuestions(){
@@ -1486,6 +1775,15 @@ function renderQuestions(){
 
   canAskMoreHint =
     true;
+
+  attachedImage =
+    null;
+
+  imageError =
+    "";
+
+  imageBusy =
+    false;
 
   var nums =
     questionNumbers();
@@ -1626,6 +1924,8 @@ function pickQuestion(n){
         null
       );
 
+    syncExerciseState();
+
     return renderCompose();
   }
 
@@ -1688,8 +1988,7 @@ function pickQuestion(n){
                 pickedS
               );
 
-            hintIndex =
-              0;
+            syncExerciseState();
 
             renderCompose();
           }
@@ -1736,8 +2035,10 @@ function renderCompose(){
     '<p class="step-title">איך אפשר לעזור?</p>' +
 
     '<div class="assist-actions">' +
-      '<button class="assist-btn primary" type="button" id="hintBtn">' +
-        '💡 תן לי רמז' +
+      '<button class="assist-btn primary" type="button" id="hintBtn"' +
+        (canAskMoreHint ? '' : ' disabled') +
+      '>' +
+        (canAskMoreHint ? '💡 תן לי רמז' : '✓ כל הרמזים הוצגו') +
       '</button>' +
 
       '<button class="assist-btn" type="button" id="explainBtn">' +
@@ -1756,14 +2057,17 @@ function renderCompose(){
       renderQuestions
     );
 
-  document
-    .getElementById("hintBtn")
-    .addEventListener(
+  var hintBtn =
+    document.getElementById("hintBtn");
+
+  if (hintBtn && canAskMoreHint){
+    hintBtn.addEventListener(
       "click",
       function(){
         getStoredHelp("hint");
       }
     );
+  }
 
   document
     .getElementById("explainBtn")
@@ -1807,7 +2111,8 @@ function historyForApi(){
 
 function chatBubble(
   role,
-  text
+  text,
+  hasImage
 ){
 
   var isStudent =
@@ -1822,6 +2127,7 @@ function chatBubble(
         (isStudent ? 'אתה' : '🤖 נועם AI') +
         '</span>' +
         esc(text) +
+        (hasImage ? '<span class="chat-image-tag">📷 תמונה מצורפת</span>' : '') +
       '</div>' +
     '</div>'
   );
@@ -1837,7 +2143,8 @@ function historyHtml(){
         if (turn.q){
           html += chatBubble(
             "student",
-            turn.q
+            turn.q,
+            !!turn.hadImage
           );
         }
 
@@ -1873,7 +2180,8 @@ function renderChat(options){
   if (pendingMessage){
     extraHtml += chatBubble(
       "student",
-      pendingMessage
+      pendingMessage,
+      !!options.pendingHasImage
     );
   }
 
@@ -1903,13 +2211,13 @@ function renderChat(options){
 
     quickHtml =
       '<div class="chat-quick">' +
-        (
-          canAskMoreHint
-            ? '<button class="assist-btn primary" type="button" id="chatHint">' +
-                (hintIndex > 0 ? '💡 רמז נוסף' : '💡 רמז') +
-              '</button>'
-            : ''
-        ) +
+        '<button class="assist-btn primary" type="button" id="chatHint"' +
+          (canAskMoreHint ? '' : ' disabled') +
+        '>' +
+          (canAskMoreHint
+            ? (hintIndex > 0 ? '💡 רמז נוסף' : '💡 רמז')
+            : '✓ כל הרמזים הוצגו') +
+        '</button>' +
         '<button class="assist-btn" type="button" id="chatExplain">📘 הסבר</button>' +
       '</div>';
   }
@@ -1937,6 +2245,24 @@ function renderChat(options){
             (busy ? ' disabled' : '') +
           '>שלח</button>' +
         '</div>' +
+        '<div class="chat-tools">' +
+          '<button class="send image-pick" type="button" id="imagePick"' +
+            ((busy || imageBusy) ? ' disabled' : '') +
+          '>📎 הוסף תמונה</button>' +
+          '<input id="imageFile" type="file" accept="image/*" hidden>' +
+          '<span class="hint" style="margin:0">Cmd+V לתמונה · עד 2MB</span>' +
+        '</div>' +
+        (attachedImage
+          ? '<div class="image-preview">' +
+              '<img src="' + escAttr(attachedImage.dataUrl) + '" alt="תמונה מצורפת">' +
+              '<div class="image-meta"><b>' + esc(attachedImage.name) + '</b>' +
+                'מקור: ' + humanFileSize(attachedImage.originalSize) +
+                ' · נשלח: ' + humanFileSize(attachedImage.sentSize) + '</div>' +
+              '<button class="image-remove" type="button" id="imageRemove">✕</button>' +
+            '</div>'
+          : '') +
+        (imageBusy ? '<p class="hint" style="margin:8px 0 0">מכין את התמונה…</p>' : '') +
+        (imageError ? '<div class="image-error">' + esc(imageError) + '</div>' : '') +
         '<p class="hint">Enter לשליחה · Shift+Enter לשורה חדשה. נועם AI זוכר את השיחה האחרונה.</p>' +
       '</div>' +
     '</div>';
@@ -1951,7 +2277,7 @@ function renderChat(options){
   var chatHint =
     document.getElementById("chatHint");
 
-  if (chatHint){
+  if (chatHint && canAskMoreHint){
     chatHint.addEventListener(
       "click",
       function(){
@@ -2001,15 +2327,81 @@ function renderChat(options){
   var send =
     document.getElementById("chatSend");
 
+  var imagePick =
+    document.getElementById("imagePick");
+
+  var imageFile =
+    document.getElementById("imageFile");
+
+  var imageRemove =
+    document.getElementById("imageRemove");
+
+  if (imagePick && imageFile){
+    imagePick.addEventListener(
+      "click",
+      function(){
+        if (!busy && !imageBusy){
+          imageFile.click();
+        }
+      }
+    );
+
+    imageFile.addEventListener(
+      "change",
+      function(){
+        var file = imageFile.files && imageFile.files[0];
+        if (file){
+          attachImageFile(file);
+        }
+      }
+    );
+  }
+
+  if (imageRemove){
+    imageRemove.addEventListener(
+      "click",
+      function(){
+        attachedImage = null;
+        imageError = "";
+        renderChat();
+      }
+    );
+  }
+
+  ta.addEventListener(
+    "paste",
+    function(e){
+      var clipboard = e.clipboardData;
+      if (!clipboard || !clipboard.items){
+        return;
+      }
+
+      for (var i = 0; i < clipboard.items.length; i += 1){
+        var item = clipboard.items[i];
+        if (
+          item.kind === "file" &&
+          String(item.type || "").startsWith("image/")
+        ){
+          var file = item.getAsFile();
+          if (file){
+            e.preventDefault();
+            attachImageFile(file);
+          }
+          return;
+        }
+      }
+    }
+  );
+
   function submitChat(){
-    if (busy){
+    if (busy || imageBusy){
       return;
     }
 
     var message =
       ta.value.trim();
 
-    if (!message){
+    if (!message && !attachedImage){
       ta.focus();
       return;
     }
@@ -2071,6 +2463,11 @@ function getStoredHelp(kind){
     return renderQuestions();
   }
 
+  if (kind === "hint" && !canAskMoreHint){
+    renderChat();
+    return;
+  }
+
   var label =
     kind === "hint"
       ? (
@@ -2107,8 +2504,16 @@ function getStoredHelp(kind){
 
         if (kind === "hint"){
           hintIndex += 1;
+
+          hintProgressByExercise[pickedId] =
+            hintIndex;
+
           canAskMoreHint =
             !!res.hasMore;
+
+          if (!canAskMoreHint){
+            exhaustedHintsByExercise[pickedId] = true;
+          }
         }
 
         history.push({
@@ -2154,9 +2559,17 @@ function ask(message){
       .trim()
       .slice(0, 600);
 
-  if (!cleanMessage){
+  var imageForRequest =
+    attachedImage;
+
+  if (!cleanMessage && !imageForRequest){
     renderChat();
     return;
+  }
+
+  if (!cleanMessage && imageForRequest){
+    cleanMessage =
+      "עזור לי להבין את התמונה שצירפתי בהקשר של התרגיל.";
   }
 
   var apiHistory =
@@ -2164,7 +2577,8 @@ function ask(message){
 
   renderChat({
     busy:true,
-    pendingMessage:cleanMessage
+    pendingMessage:cleanMessage,
+    pendingHasImage:!!imageForRequest
   });
 
   var started =
@@ -2181,7 +2595,11 @@ function ask(message){
           10
         ),
       conversationHistory:
-        apiHistory
+        apiHistory,
+      imageDataUrl:
+        imageForRequest
+          ? imageForRequest.dataUrl
+          : ""
     }
   )
   .then(
@@ -2208,7 +2626,8 @@ function ask(message){
 
             history.push({
               q:cleanMessage,
-              a:res.answer
+              a:res.answer,
+              hadImage:!!imageForRequest
             });
 
             trimHistory();
@@ -2323,6 +2742,14 @@ function post(
 }
 
 /* ESCAPE HTML */
+
+function escAttr(s){
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
 function esc(s){
 
