@@ -174,8 +174,8 @@ body{
 
 .panel{
   flex:none;
-  width:380px;
-  max-width:42vw;
+  width:430px;
+  max-width:46vw;
   padding:14px 14px 14px 0;
   display:flex;
   flex-direction:column;
@@ -577,12 +577,12 @@ textarea:focus{
 }
 
 .chat-bubble{
-  max-width:88%;
+  max-width:96%;
   border:2.5px solid var(--ink);
   border-radius:16px;
   padding:10px 12px;
-  font-size:14.5px;
-  line-height:1.6;
+  font-size:13.5px;
+  line-height:1.55;
   white-space:pre-wrap;
   word-break:break-word;
   box-shadow:-2px 2px 0 var(--ink);
@@ -2871,16 +2871,58 @@ function renderChat(options){
   var log =
     document.getElementById("chatLog");
 
-  if (log){
-    log.scrollIntoView({
-      block:"end"
-    });
+  function scrollToLatestTutorAnswer(){
+    if (!log){
+      return;
+    }
+
+    var tutorRows =
+      log.querySelectorAll(".chat-row.tutor");
+
+    if (!tutorRows.length){
+      return;
+    }
+
+    var latestTutor =
+      tutorRows[tutorRows.length - 1];
+
+    var doScroll =
+      function(){
+        var bodyRect =
+          body.getBoundingClientRect();
+
+        var answerRect =
+          latestTutor.getBoundingClientRect();
+
+        body.scrollTop +=
+          answerRect.top -
+          bodyRect.top -
+          8;
+      };
+
+    if (typeof window.requestAnimationFrame === "function"){
+      window.requestAnimationFrame(
+        function(){
+          window.requestAnimationFrame(doScroll);
+        }
+      );
+    }else{
+      setTimeout(doScroll, 0);
+    }
   }
 
-  body.scrollTop =
-    body.scrollHeight;
+  if (options.focusLatestAnswer){
+    scrollToLatestTutorAnswer();
+  }else if (busy){
+    body.scrollTop =
+      body.scrollHeight;
+  }
 
-  if (!busy && !options.errorMessage){
+  if (
+    !busy &&
+    !options.errorMessage &&
+    !options.focusLatestAnswer
+  ){
     setTimeout(
       function(){
         ta.focus();
@@ -2963,7 +3005,9 @@ function getStoredHelp(kind){
         });
 
         trimHistory();
-        renderChat();
+        renderChat({
+          focusLatestAnswer:true
+        });
 
       }else{
         renderChat({
@@ -3072,7 +3116,9 @@ function ask(message){
             });
 
             trimHistory();
-            renderChat();
+            renderChat({
+              focusLatestAnswer:true
+            });
 
           }else{
             renderChat({
