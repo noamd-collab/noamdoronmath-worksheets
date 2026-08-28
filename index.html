@@ -485,20 +485,10 @@
     margin:0 0 5px; color:var(--ink);
   }
   .aibanner p{ margin:0; font-size:14.5px; font-weight:600; color:var(--muted); line-height:1.5; }
-  .aibanner .go{
-    flex:none; font-family:'Heebo',sans-serif; font-weight:900; font-size:15px; cursor:pointer;
-    color:#fff; background:var(--accent);
-    border:3px solid var(--ink); border-radius:999px; padding:11px 22px;
-    box-shadow:-4px 4px 0 var(--ink);
-    transition:transform .16s ease, box-shadow .16s ease;
-  }
-  .aibanner .go:hover{ transform:translate(2px,-2px); box-shadow:-6px 6px 0 var(--ink); }
-  .aibanner .go:active{ transform:translate(0,0); box-shadow:-2px 2px 0 var(--ink); }
   @media (max-width:720px){
     .aibanner{ padding:15px; gap:12px; }
     .aibanner .robot{ width:48px; height:48px; font-size:25px; }
     .aibanner h2{ font-size:17px; }
-    .aibanner .go{ width:100%; }
   }
 
   /* תגית AI על כרטיס נושא */
@@ -509,15 +499,6 @@
     border:2px solid var(--ink); border-radius:999px; padding:3px 9px;
   }
 
-
-  /* הבהוב כרטיסי הנושאים בלחיצה על כפתור הבאנר */
-  @keyframes cardflash{
-    0%{ transform:rotate(var(--tilt)); box-shadow:-5px 5px 0 var(--ink); }
-    35%{ transform:translate(4px,-4px) rotate(0deg); box-shadow:-10px 10px 0 var(--ink); }
-    100%{ transform:rotate(var(--tilt)); box-shadow:-5px 5px 0 var(--ink); }
-  }
-  .card.flash{ animation:cardflash .55s ease; }
-  @media (prefers-reduced-motion:reduce){ .card.flash{ animation:none; } }
 
   @media (prefers-reduced-motion:reduce){ .card::before{ filter:none; } }
 
@@ -547,7 +528,6 @@
       <h2 id="aititle">נתקעתם בתרגיל? נועם AI כאן לעזור</h2>
       <p id="aitext"></p>
     </div>
-    <button class="go" type="button" id="aigo">הצג לי את דפי העבודה</button>
   </section>
 
   <div class="toolbar">
@@ -2713,23 +2693,6 @@ document.getElementById("crossq").addEventListener("change", function(e){
 if(!DATA[state.grade]) state.grade = 7;
 GRADE_ORDER = familyOf(state.grade);
 document.getElementById("wrap").dataset.grade = state.grade;
-(function(){
-  /* בתוך iframe גלילה בורחת לעמוד האב וקופצת רחוק מדי.
-     במקום לגלול — מהבהבים את כרטיסי הנושאים. */
-  var go = document.getElementById("aigo");
-  if (go) go.addEventListener("click", function(){
-    var cards = document.querySelectorAll("#list .card");
-    for (var i = 0; i < Math.min(cards.length, 6); i++){
-      (function(c, n){
-        c.classList.remove("flash");
-        void c.offsetWidth;
-        setTimeout(function(){ c.classList.add("flash"); }, n * 45);
-        setTimeout(function(){ c.classList.remove("flash"); }, 1100 + n * 45);
-      })(cards[i], i);
-    }
-  });
-})();
-
 buildGradeTabs();
 buildChips();
 setHeader();
