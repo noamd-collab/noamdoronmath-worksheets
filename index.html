@@ -404,6 +404,7 @@
 
   /* ---------- מרכוז: גובר על כללי margin מקומיים ---------- */
   .wrap > .grades,
+  .wrap > .aibanner,
   .wrap > h1,
   .wrap > .lede,
   .wrap > .toolbar,
@@ -464,6 +465,50 @@
     .jump-btn{ padding:8px 14px; font-size:13px; }
   }
 
+
+  /* ---------- באנר נועם AI ---------- */
+  .aibanner{
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+    margin:0 auto 26px; padding:18px 22px;
+    background:linear-gradient(135deg, #fff 0%, var(--tint) 100%);
+    border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-6px 6px 0 var(--ink);
+  }
+  .aibanner .robot{
+    flex:none; width:58px; height:58px; display:grid; place-items:center;
+    font-size:30px; background:#fff; border:3px solid var(--ink); border-radius:50%;
+    transform:rotate(-6deg);
+  }
+  .aibanner .txt{ flex:1; min-width:230px; }
+  .aibanner h2{
+    font-family:'Heebo',sans-serif; font-weight:900; font-size:19px;
+    margin:0 0 5px; color:var(--ink);
+  }
+  .aibanner p{ margin:0; font-size:14.5px; font-weight:600; color:var(--muted); line-height:1.5; }
+  .aibanner .go{
+    flex:none; font-family:'Heebo',sans-serif; font-weight:900; font-size:15px; cursor:pointer;
+    color:#fff; background:var(--accent);
+    border:3px solid var(--ink); border-radius:999px; padding:11px 22px;
+    box-shadow:-4px 4px 0 var(--ink);
+    transition:transform .16s ease, box-shadow .16s ease;
+  }
+  .aibanner .go:hover{ transform:translate(2px,-2px); box-shadow:-6px 6px 0 var(--ink); }
+  .aibanner .go:active{ transform:translate(0,0); box-shadow:-2px 2px 0 var(--ink); }
+  @media (max-width:720px){
+    .aibanner{ padding:15px; gap:12px; }
+    .aibanner .robot{ width:48px; height:48px; font-size:25px; }
+    .aibanner h2{ font-size:17px; }
+    .aibanner .go{ width:100%; }
+  }
+
+  /* תגית AI על כרטיס נושא */
+  .aihint{
+    display:inline-flex; align-items:center; gap:5px; margin-top:9px;
+    font-family:'Heebo',sans-serif; font-weight:800; font-size:11.5px;
+    color:var(--accent-dark); background:var(--tint);
+    border:2px solid var(--ink); border-radius:999px; padding:3px 9px;
+  }
+
   @media (prefers-reduced-motion:reduce){ .card::before{ filter:none; } }
 
   @media (prefers-reduced-motion:reduce){
@@ -485,6 +530,15 @@
 
   <h1 id="title"></h1>
   <p class="lede" id="lede"></p>
+
+  <section class="aibanner" id="aibanner" aria-labelledby="aititle">
+    <span class="robot" aria-hidden="true">🤖</span>
+    <div class="txt">
+      <h2 id="aititle">נתקעתם בתרגיל? נועם AI כאן לעזור</h2>
+      <p id="aitext"></p>
+    </div>
+    <button class="go" type="button" id="aigo">לדפי העבודה ↓</button>
+  </section>
 
   <div class="toolbar">
     <div class="search">
@@ -2290,6 +2344,14 @@ function setHeader(){
     (GRADE_EMOJI[state.grade] || "") + " דפי עבודה ל" + GRADE_NAME[state.grade] + " — לפי תכנית הלימודים תשפ״ז 2026";
   document.getElementById("lede").textContent =
     d.topics.length + " נושאים, כל נושא בשלוש רמות. בחרו רמה והקובץ ייפתח בלשונית חדשה.";
+
+  var aitxt = document.getElementById("aitext");
+  if (aitxt){
+    aitxt.textContent =
+      "בכל דף עבודה של " + GRADE_NAME[state.grade] + " מחכה נועם AI: שואלים שאלה על תרגיל, " +
+      "ומקבלים רמז או הסבר צעד אחר צעד — בדיוק כמו מורה פרטי. בחינם.";
+  }
+
   buildJump();
 }
 
@@ -2346,6 +2408,7 @@ function cardHTML(topic, grade){
              '<span class="tico" aria-hidden="true"><svg viewBox="0 0 24 24">' + ico + '</svg></span>' +
              '<div class="card-text"><h4>' + esc(topic.t) + PDF_BADGE + '</h4>' + (topic.d ? '<p>' + esc(topic.d) + '</p>' : '') +
                (topic.n ? '<p class="note">' + esc(topic.n) + '</p>' : '') +
+             (topic.x ? '<span class="aihint">🤖 נועם AI זמין בדף הזה</span>' : '') +
              '</div>' +
            '</div>' +
            '<div class="levels">' + buttons + '</div>' +
@@ -2640,6 +2703,16 @@ document.getElementById("crossq").addEventListener("change", function(e){
 if(!DATA[state.grade]) state.grade = 7;
 GRADE_ORDER = familyOf(state.grade);
 document.getElementById("wrap").dataset.grade = state.grade;
+(function(){
+  var go = document.getElementById("aigo");
+  if (go) go.addEventListener("click", function(){
+    var l = document.getElementById("list");
+    if (!l) return;
+    try { l.scrollIntoView({ behavior:"smooth", block:"start" }); }
+    catch(e){ l.scrollIntoView(); }
+  });
+})();
+
 buildGradeTabs();
 buildChips();
 setHeader();
