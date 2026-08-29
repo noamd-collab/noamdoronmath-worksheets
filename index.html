@@ -500,6 +500,14 @@
   }
 
 
+
+  /* מצב "בקרוב" — יסודי, עד שנועם AI יגיע גם לשם */
+  .aibanner.soon{
+    background:#fff;
+    border-style:dashed;
+  }
+  .aibanner.soon .robot{ opacity:.75; }
+
   @media (prefers-reduced-motion:reduce){ .card::before{ filter:none; } }
 
   @media (prefers-reduced-motion:reduce){
@@ -525,7 +533,7 @@
   <section class="aibanner" id="aibanner" aria-labelledby="aititle">
     <span class="robot" aria-hidden="true">🤖</span>
     <div class="txt">
-      <h2 id="aititle">נתקעתם בתרגיל? נועם AI כאן לעזור</h2>
+      <h2 id="aititle"></h2>
       <p id="aitext"></p>
     </div>
   </section>
@@ -2335,11 +2343,26 @@ function setHeader(){
   document.getElementById("lede").textContent =
     d.topics.length + " נושאים, כל נושא בשלוש רמות. בחרו רמה והקובץ ייפתח בלשונית חדשה.";
 
-  var aitxt = document.getElementById("aitext");
+  /* נועם AI זמין כרגע בחטיבת הביניים בלבד (ז׳–ט׳). ביסודי מוצג נוסח "בקרוב".
+     כשה-AI יגיע ליסודי — מספיק להוסיף x לנושאים, והנוסח יתעדכן לבד. */
+  var aiOn   = MIDDLE.indexOf(state.grade) !== -1;
+  var aiHead = document.getElementById("aititle");
+  var aitxt  = document.getElementById("aitext");
+  var banner = document.getElementById("aibanner");
+
+  if (banner) banner.classList.toggle("soon", !aiOn);
+
+  if (aiHead){
+    aiHead.textContent = aiOn
+      ? "נתקעתם בתרגיל? נועם AI כאן לעזור"
+      : "נועם AI בדרך גם ליסודי";
+  }
   if (aitxt){
-    aitxt.textContent =
-      "בכל דף עבודה של " + GRADE_NAME[state.grade] + " מחכה נועם AI: שואלים שאלה על תרגיל, " +
-      "ומקבלים רמז או הסבר צעד אחר צעד — בדיוק כמו מורה פרטי. בחינם.";
+    aitxt.textContent = aiOn
+      ? ("בכל דף עבודה של " + GRADE_NAME[state.grade] + " מחכה נועם AI: שואלים שאלה על תרגיל, " +
+         "ומקבלים רמז או הסבר צעד אחר צעד — בדיוק כמו מורה פרטי. בחינם.")
+      : ("העוזר החכם שמסביר תרגילים צעד אחר צעד זמין כרגע בדפי חטיבת הביניים — ובקרוב גם כאן. " +
+         "בינתיים אפשר להוריד ולהדפיס את כל דפי העבודה של " + GRADE_NAME[state.grade] + " בחינם.");
   }
 
   buildJump();
