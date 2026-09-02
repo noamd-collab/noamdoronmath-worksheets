@@ -1,0 +1,5183 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>דף עבודה · מתמטיקה · נועם דורון</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://amiramnoam.wixstudio.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet">
+
+<!-- KaTeX: pinned production math renderer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/contrib/auto-render.min.js"></script>
+
+<!-- PDF.js: clean, toolbar-free worksheet rendering; native viewer remains available as fallback -->
+<script defer src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+
+<style>
+:root{
+  --ink:#14213D;
+  --accent:#7B2FD1;
+  --accent-dark:#551F92;
+  --tint:#EBDDFB;
+  --paper:#E3DFD2;
+  --grid:#BFBDB2;
+  --muted:#5E5478;
+  --r:18px;
+}
+
+[data-grade="7"]{
+  --accent:#7B2FD1;
+  --accent-dark:#551F92;
+  --tint:#EBDDFB;
+  --muted:#5E5478;
+}
+
+[data-grade="8"]{
+  --accent:#D62A8E;
+  --accent-dark:#961B62;
+  --tint:#FBDCEE;
+  --muted:#6E4F62;
+}
+
+[data-grade="9"]{
+  --accent:#00A08A;
+  --accent-dark:#00705F;
+  --tint:#CFF3EC;
+  --muted:#4A6B64;
+}
+
+*,*::before,*::after{
+  box-sizing:border-box;
+}
+
+html,body{
+  height:100%;
+  margin:0;
+}
+
+body{
+  font-family:'Assistant','Heebo',Arial,sans-serif;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+
+  background:
+    linear-gradient(var(--grid) 2.2px, transparent 2.2px) 0 0/45px 45px,
+    linear-gradient(90deg, var(--grid) 2.2px, transparent 2.2px) 0 0/45px 45px,
+    var(--paper);
+
+  display:flex;
+  flex-direction:column;
+}
+
+/* HEADER */
+
+.bar{
+  flex:none;
+  display:flex;
+  align-items:center;
+  gap:10px 12px;
+  flex-wrap:wrap;
+  padding:10px 14px;
+  background:#fff;
+  border-bottom:3px solid var(--ink);
+}
+
+.bar h1{
+  flex:0 1 auto;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:20px;
+  margin:0;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+}
+
+.bar h1 span.ttl{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.context-chips{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  min-width:0;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:12.5px;
+  line-height:1;
+  white-space:nowrap;
+  border:2.5px solid var(--ink);
+  border-radius:999px;
+  padding:6px 13px;
+  background:var(--tint);
+}
+
+.level-switch{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.level-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:12.5px;
+  line-height:1;
+  color:var(--ink);
+  background:#fff;
+  text-decoration:none;
+  white-space:nowrap;
+  border:2.5px solid var(--ink);
+  border-radius:999px;
+  padding:6px 13px;
+  transition:transform .14s ease, box-shadow .14s ease, background .14s ease;
+}
+
+.level-link:hover{
+  transform:translateY(-1px);
+  box-shadow:-2px 2px 0 var(--ink);
+}
+
+.level-link[aria-current="page"]{
+  color:#fff;
+  background:var(--accent);
+  box-shadow:-2px 2px 0 var(--ink);
+  cursor:default;
+  pointer-events:none;
+}
+
+.level-link[data-level="c"][aria-current="page"]{
+  color:var(--ink);
+  background:#FFD84D;
+}
+
+.level-link.is-loading,
+.level-link[aria-disabled="true"]{
+  opacity:.48;
+  cursor:wait;
+  pointer-events:none;
+}
+
+.bar .spacer{
+  margin-inline-start:auto;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:14px;
+  cursor:pointer;
+  color:var(--ink);
+  background:#fff;
+  text-decoration:none;
+  white-space:nowrap;
+  border:2.5px solid var(--ink);
+  border-radius:999px;
+  padding:8px 16px;
+  box-shadow:-3px 3px 0 var(--ink);
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+.btn--go{
+  background:var(--accent);
+  color:#fff;
+}
+
+/* LAYOUT */
+
+.stage{
+  flex:1;
+  display:flex;
+  min-height:0;
+}
+
+.pdfwrap{
+  flex:1;
+  min-width:0;
+  min-height:0;
+  padding:8px;
+}
+
+.pdf-surface{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:0;
+  overflow:hidden;
+  background:#E9EAEC;
+  border:3px solid var(--ink);
+  border-radius:var(--r);
+  box-shadow:-5px 5px 0 var(--ink);
+}
+
+.pdf-scroll{
+  width:100%;
+  height:100%;
+  overflow:auto;
+  overscroll-behavior:contain;
+  padding:10px 10px 28px;
+  background:#E9EAEC;
+  scrollbar-gutter:stable;
+}
+
+.pdf-scroll.hidden{
+  display:none;
+}
+
+.pdf-pages{
+  width:max-content;
+  min-width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  margin-inline:auto;
+}
+
+.pdf-page{
+  position:relative;
+  flex:none;
+  width:min(900px, calc(100vw - 80px));
+  max-width:none;
+  min-height:320px;
+  aspect-ratio:210 / 297;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 2px 12px rgba(20,33,61,.18);
+}
+
+.pdf-page canvas{
+  display:block;
+  max-width:none;
+  height:auto;
+  background:#fff;
+}
+
+.pdf-page-wait{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  min-height:220px;
+  color:#6C7484;
+  font-family:'Heebo',sans-serif;
+  font-weight:800;
+  font-size:13px;
+}
+
+.pdf-page.is-ready .pdf-page-wait{
+  display:none;
+}
+
+.pdf-status{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  text-align:center;
+  background:#E9EAEC;
+  color:var(--ink);
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+}
+
+.pdf-status.hidden{
+  display:none;
+}
+
+.pdf-native{
+  width:100%;
+  height:100%;
+  border:0;
+  background:#fff;
+  display:block;
+}
+
+.pdf-native.hidden{
+  display:none;
+}
+
+.pdf-tools{
+  position:absolute;
+  inset-block-start:10px;
+  inset-inline-start:10px;
+  z-index:8;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  max-width:calc(100% - 20px);
+  padding:8px;
+  background:rgba(255,255,255,.97);
+  border:2.5px solid var(--ink);
+  border-radius:14px;
+  box-shadow:-3px 3px 0 var(--ink);
+}
+
+.pdf-tools.hidden{
+  display:none;
+}
+
+.pdf-tool,
+.pdf-tool-link{
+  min-height:35px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:12.5px;
+  line-height:1;
+  color:var(--ink);
+  background:#fff;
+  text-decoration:none;
+  white-space:nowrap;
+  cursor:pointer;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  padding:7px 11px;
+}
+
+.pdf-tool.primary{
+  color:#fff;
+  background:var(--accent);
+}
+
+.pdf-zoom-value{
+  min-width:48px;
+  text-align:center;
+  font-family:'Heebo',sans-serif;
+  font-size:12.5px;
+  font-weight:900;
+}
+
+.pdf-fallback-message{
+  position:absolute;
+  inset-inline:12px;
+  inset-block-end:12px;
+  z-index:7;
+  padding:8px 12px;
+  color:var(--ink);
+  background:rgba(255,255,255,.95);
+  border:2px solid var(--ink);
+  border-radius:12px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.pdf-fallback-message.hidden{
+  display:none;
+}
+
+.mobile-open{
+  display:none;
+}
+
+/* AI PANEL */
+
+.panel{
+  flex:none;
+  width:430px;
+  max-width:46vw;
+  padding:8px 8px 8px 0;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+
+.panel.hidden{
+  display:none;
+}
+
+.panel-in{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+  border:3px solid var(--ink);
+  border-radius:var(--r);
+  box-shadow:-5px 5px 0 var(--ink);
+  overflow:hidden;
+}
+
+.panel-head{
+  flex:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:58px;
+  padding:10px 12px;
+  background:var(--tint);
+  border-bottom:3px solid var(--ink);
+}
+
+.panel-head b{
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:17px;
+}
+
+.panel-badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:4px 10px;
+  color:var(--accent-dark);
+  background:rgba(255,255,255,.68);
+  border-radius:999px;
+  font-family:'Heebo',sans-serif;
+  font-size:11.5px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.panel-head-spacer{
+  flex:1;
+}
+
+.panel-back{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  padding:6px 12px;
+  color:var(--ink);
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  font-family:'Heebo',sans-serif;
+  font-size:12.5px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.panel-back[hidden]{
+  display:none;
+}
+
+.panel-close{
+  flex:none;
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  color:var(--ink);
+  background:transparent;
+  border:0;
+  border-radius:50%;
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+}
+
+.panel-close:hover{
+  background:rgba(255,255,255,.58);
+}
+
+.panel-body{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:14px;
+}
+
+.step-title{
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:14px;
+  margin:0 0 10px;
+}
+
+.opts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:16px;
+}
+
+.qpick{
+  display:flex;
+  align-items:stretch;
+  gap:8px;
+  margin-bottom:8px;
+}
+
+.qinput{
+  flex:1;
+  min-width:0;
+  font-family:'Heebo',sans-serif;
+  font-weight:800;
+  font-size:16px;
+  color:var(--ink);
+  background:#fff;
+  border:2.5px solid var(--ink);
+  border-radius:12px;
+  padding:10px 12px;
+  text-align:center;
+}
+
+.qinput:focus{
+  outline:none;
+  box-shadow:-3px 3px 0 var(--accent);
+}
+
+.inline-error{
+  min-height:20px;
+  margin:6px 0 0;
+  color:#9A1D2F;
+  font-weight:800;
+  font-size:13px;
+}
+
+.opt{
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:14px;
+  cursor:pointer;
+  background:#fff;
+  color:var(--ink);
+  border:2.5px solid var(--ink);
+  border-radius:999px;
+  padding:8px 15px;
+  box-shadow:-2px 2px 0 var(--ink);
+}
+
+.picked{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  background:var(--tint);
+  border:2.5px solid var(--ink);
+  border-radius:12px;
+  padding:9px 12px;
+  font-weight:800;
+  font-size:14px;
+  margin-bottom:14px;
+}
+
+.picked button{
+  margin-inline-start:auto;
+  font-family:inherit;
+  font-weight:800;
+  font-size:12.5px;
+  cursor:pointer;
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  padding:4px 10px;
+}
+
+textarea{
+  width:100%;
+  min-height:92px;
+  resize:vertical;
+  font-family:inherit;
+  font-size:15px;
+  color:var(--ink);
+  padding:11px 13px;
+  background:#fff;
+  border:2.5px solid var(--ink);
+  border-radius:12px;
+}
+
+textarea:focus{
+  outline:none;
+  box-shadow:-3px 3px 0 var(--accent);
+}
+
+.send{
+  width:100%;
+  margin-top:10px;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:15px;
+  cursor:pointer;
+  color:#fff;
+  background:var(--accent);
+  border:2.5px solid var(--ink);
+  border-radius:999px;
+  padding:11px;
+  box-shadow:-3px 3px 0 var(--ink);
+}
+
+.send.qgo{
+  flex:none;
+  margin-top:0;
+  width:auto;
+  min-width:92px;
+  padding-inline:18px;
+}
+
+/* 3 BUTTONS */
+
+.assist-actions{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin:8px 0 4px;
+}
+
+.assist-btn{
+  width:100%;
+  text-align:right;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:15px;
+  cursor:pointer;
+  color:var(--ink);
+  background:#fff;
+  border:2.5px solid var(--ink);
+  border-radius:14px;
+  padding:12px 14px;
+  box-shadow:-3px 3px 0 var(--ink);
+}
+
+.assist-btn.primary{
+  background:var(--tint);
+}
+
+.assist-btn.custom{
+  background:var(--accent);
+  color:#fff;
+}
+
+.hint{
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--muted);
+  margin:10px 0 0;
+}
+
+.note{
+  background:var(--tint);
+  border:2.5px dashed var(--ink);
+  border-radius:12px;
+  padding:14px;
+  font-weight:700;
+  font-size:14px;
+  line-height:1.55;
+}
+
+.thinking{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  font-size:15px;
+}
+
+.dots::after{
+  content:".";
+  animation:dots 1.2s steps(4,end) infinite;
+}
+
+@keyframes dots{
+  0%{content:"."}
+  33%{content:".."}
+  66%{content:"..."}
+  100%{content:"."}
+}
+
+.answer{
+  background:#fff;
+  border:2.5px solid var(--ink);
+  border-radius:12px;
+  padding:14px;
+  font-size:15px;
+  line-height:1.7;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.qecho{
+  font-weight:800;
+  font-size:13.5px;
+  color:var(--muted);
+  margin:0 0 10px;
+}
+
+.skel{
+  height:38px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#eee,#f7f7f7,#eee);
+  background-size:200% 100%;
+  animation:sh 1.2s linear infinite;
+  margin-bottom:8px;
+}
+
+@keyframes sh{
+  to{
+    background-position:-200% 0;
+  }
+}
+
+/* FLOATING AI BUTTON */
+
+.fab{
+  position:fixed;
+  inset-block-end:18px;
+  inset-inline-end:18px;
+  z-index:40;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:16px;
+  cursor:pointer;
+  color:#fff;
+  background:var(--accent);
+  border:3px solid var(--ink);
+  border-radius:999px;
+  padding:13px 22px;
+  box-shadow:-5px 5px 0 var(--ink);
+}
+
+.fab.hidden{
+  display:none;
+}
+
+/* MOBILE */
+
+@media (max-width:900px){
+
+  body{
+    height:auto;
+    min-height:100%;
+  }
+
+  .bar{
+    padding:10px 12px 12px;
+  }
+
+  .bar h1{
+    width:100%;
+    flex:1 1 100%;
+    font-size:18px;
+  }
+
+  .context-chips{
+    flex:1 1 auto;
+  }
+
+  .header-actions{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .header-actions .btn{
+    width:100%;
+    padding-inline:10px;
+    text-align:center;
+  }
+
+  #pdfToolsToggle{
+    display:none;
+  }
+
+  .stage{
+    flex-direction:column;
+  }
+
+  .pdfwrap{
+    padding:12px;
+  }
+
+  .pdf-surface{
+    display:none;
+  }
+
+  .mobile-open{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    text-align:center;
+    background:#fff;
+    border:3px solid var(--ink);
+    border-radius:var(--r);
+    box-shadow:-6px 6px 0 var(--ink);
+    padding:26px 18px;
+  }
+
+  .mobile-open .big{
+    font-size:40px;
+    line-height:1;
+  }
+
+  .panel{
+    width:100%;
+    max-width:100%;
+    padding:0 12px 12px;
+  }
+
+  .panel.hidden{
+    display:flex;
+  }
+
+  .panel-in{
+    min-height:340px;
+  }
+
+  .panel-close{
+    display:none;
+  }
+
+  .fab{
+    display:none;
+  }
+}
+
+
+/* CHAT */
+.chat-shell{
+  display:flex;
+  flex-direction:column;
+  min-height:100%;
+}
+
+.chat-log{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding-bottom:10px;
+}
+
+.chat-row{
+  display:flex;
+  width:100%;
+}
+
+.chat-row.student{
+  justify-content:flex-start;
+}
+
+.chat-row.tutor{
+  justify-content:flex-end;
+}
+
+.chat-bubble{
+  max-width:96%;
+  border:2.5px solid var(--ink);
+  border-radius:16px;
+  padding:10px 12px;
+  font-size:13.5px;
+  line-height:1.55;
+  white-space:pre-wrap;
+  word-break:break-word;
+  box-shadow:-2px 2px 0 var(--ink);
+}
+
+.chat-row.student .chat-bubble{
+  background:var(--accent);
+  color:#fff;
+  border-bottom-right-radius:5px;
+}
+
+.chat-row.tutor .chat-bubble{
+  background:var(--tint);
+  color:var(--ink);
+  border-bottom-left-radius:5px;
+}
+
+.chat-name{
+  display:block;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:11.5px;
+  margin-bottom:3px;
+  opacity:.78;
+}
+
+.chat-thinking{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-weight:900;
+}
+
+.chat-quick{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:10px 0 8px;
+}
+
+.chat-quick .assist-btn{
+  font-size:13px;
+  padding:9px 10px;
+  text-align:center;
+}
+
+.chat-compose{
+  position:sticky;
+  bottom:-14px;
+  margin:0 -2px -14px;
+  padding:10px 2px 14px;
+  background:#fff;
+  border-top:2px solid #ece8f1;
+}
+
+.chat-compose-row{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+}
+
+.chat-input{
+  flex:1;
+  min-height:48px;
+  max-height:120px;
+  resize:vertical;
+  margin:0;
+}
+
+.chat-send{
+  flex:none;
+  width:auto;
+  min-width:72px;
+  margin:0;
+  padding:11px 13px;
+}
+
+.chat-send[disabled],
+.assist-btn[disabled]{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.chat-error{
+  background:#fff4f4;
+  border:2px dashed #9A1D2F;
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:13px;
+  font-weight:800;
+  color:#7b1726;
+}
+
+
+/* ---------- IMAGE ATTACHMENT ---------- */
+.chat-tools{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:8px 0 0;
+  flex-wrap:wrap;
+}
+
+.image-pick{
+  width:auto;
+  margin:0;
+  padding:8px 12px;
+  font-size:13px;
+  background:#fff;
+  color:var(--ink);
+}
+
+.image-pick[disabled]{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.image-preview{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-top:8px;
+  padding:8px 10px;
+  background:var(--tint);
+  border:2px solid var(--ink);
+  border-radius:12px;
+}
+
+.image-preview img{
+  width:54px;
+  height:54px;
+  object-fit:cover;
+  border:2px solid var(--ink);
+  border-radius:9px;
+  background:#fff;
+}
+
+.image-meta{
+  min-width:0;
+  flex:1;
+  font-size:12.5px;
+  font-weight:800;
+  line-height:1.35;
+}
+
+.image-meta b{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.image-remove{
+  flex:none;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  background:#fff;
+  color:var(--ink);
+  font-family:inherit;
+  font-weight:900;
+  cursor:pointer;
+  padding:4px 9px;
+}
+
+.image-error{
+  margin-top:8px;
+  color:#9A1D2F;
+  font-size:12.5px;
+  font-weight:900;
+}
+
+.chat-image-tag{
+  display:block;
+  margin-top:6px;
+  font-size:11.5px;
+  font-weight:900;
+  opacity:.9;
+}
+
+
+/* ---------- מתמטיקה: KaTeX + RTL/LTR isolation ---------- */
+/* טקסט השיחה נשאר RTL; כל נוסחה היא אי LTR עצמאי. */
+.chat-bubble{
+  direction:rtl;
+  text-align:right;
+  unicode-bidi:isolate;
+}
+
+.katex,
+.katex-html{
+  direction:ltr !important;
+  unicode-bidi:isolate !important;
+}
+
+.katex{
+  display:inline-block;
+  max-width:100%;
+}
+
+/* נוסחה קצרה שנשלפה מתוך משפט עברי נשמרת כאי LTR עצמאי. */
+.math-island{
+  display:inline-block;
+  direction:ltr;
+  unicode-bidi:isolate;
+  max-width:100%;
+}
+
+/* legacy formula שמכילה \text{עברית}: העברית יוצאת מ-KaTeX
+   ונשארת טקסט RTL רגיל, בעוד המתמטיקה נשארת באיי LTR. */
+.mixed-math{
+  direction:rtl;
+  unicode-bidi:isolate;
+}
+
+.mixed-math-display{
+  display:block;
+  direction:rtl;
+  unicode-bidi:isolate;
+  text-align:right;
+  margin:.65em 0;
+}
+
+.katex-display{
+  direction:ltr !important;
+  unicode-bidi:isolate !important;
+  overflow-x:auto;
+  overflow-y:hidden;
+  max-width:100%;
+  margin:.65em 0;
+  padding:2px 0;
+  text-align:center;
+}
+
+.katex-display > .katex{
+  display:inline-block;
+  text-align:initial;
+}
+
+/* אם KaTeX אינו זמין, הטקסט נשאר קריא במקום לשבור את הפאנל */
+.math-render-error{
+  direction:ltr;
+  unicode-bidi:isolate;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+}
+
+
+
+/* R04: native PDF viewer is the default for reliable Hebrew rendering.
+   Hide the custom PDF.js controls while clean rendering is disabled. */
+#pdfToolsToggle,
+#pdfTools{
+  display:none !important;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bar">
+
+  <h1>
+    <span id="emoji">📄</span>
+    <span class="ttl" id="title">דף עבודה</span>
+  </h1>
+
+  <div class="context-chips">
+    <span class="chip" id="gradeChip"></span>
+    <div class="level-switch" id="levelSwitch" aria-label="מעבר בין רמות"></div>
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="header-actions">
+    <a class="btn" id="backBtn" href="./">
+      לכל דפי העבודה
+    </a>
+
+    <button
+      class="btn"
+      id="pdfToolsToggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="pdfTools"
+    >
+      כלי PDF
+    </button>
+
+    <a
+      class="btn btn--go"
+      id="rawBtn"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      פתח PDF בלשונית
+    </a>
+  </div>
+
+</div>
+
+<div class="stage">
+
+  <div class="pdfwrap">
+
+    <div class="pdf-surface" id="pdfSurface">
+
+      <div
+        class="pdf-scroll"
+        id="pdfScroll"
+        tabindex="0"
+        aria-label="דף העבודה"
+      >
+        <div class="pdf-pages" id="pdfPages"></div>
+      </div>
+
+      <iframe
+        class="pdf-native hidden"
+        id="pdf"
+        title="דף העבודה בתצוגת PDF מלאה"
+      ></iframe>
+
+      <div class="pdf-status" id="pdfStatus" role="status" aria-live="polite">
+        טוען את דף העבודה…
+      </div>
+
+      <div class="pdf-tools hidden" id="pdfTools" aria-label="כלי PDF">
+        <button class="pdf-tool" id="pdfZoomOut" type="button" aria-label="הקטנת הדף">−</button>
+        <span class="pdf-zoom-value" id="pdfZoomValue">100%</span>
+        <button class="pdf-tool" id="pdfZoomIn" type="button" aria-label="הגדלת הדף">+</button>
+        <button class="pdf-tool" id="pdfFit" type="button">התאם לרוחב</button>
+        <button class="pdf-tool primary" id="pdfNativeMode" type="button">תצוגת PDF מלאה</button>
+        <a
+          class="pdf-tool-link"
+          id="pdfOpenFull"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          הורדה / הדפסה
+        </a>
+      </div>
+
+      <div class="pdf-fallback-message hidden" id="pdfFallbackMessage"></div>
+
+    </div>
+
+    <div class="mobile-open">
+
+      <div class="big">
+        📄
+      </div>
+
+      <div style="
+        font-family:Heebo,sans-serif;
+        font-weight:900;
+        font-size:17px;
+      ">
+        דף העבודה מוכן
+      </div>
+
+      <div style="
+        font-weight:700;
+        font-size:14px;
+        color:var(--muted);
+      ">
+        ייפתח בלשונית חדשה.
+        אפשר לחזור לכאן כדי להשתמש בנועם AI.
+      </div>
+
+      <a
+        class="btn btn--go"
+        id="rawBtn2"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        פתח את דף העבודה
+      </a>
+
+    </div>
+
+  </div>
+
+  <aside
+    class="panel hidden"
+    id="panel"
+  >
+
+    <div class="panel-in">
+
+      <div class="panel-head">
+
+        <span>🤖</span>
+
+        <b>
+          נועם AI
+        </b>
+
+        <span class="panel-badge">רמזים בלבד</span>
+        <span class="panel-head-spacer"></span>
+
+        <button
+          class="panel-back"
+          type="button"
+          id="panelBack"
+          hidden
+        >
+          חזרה
+        </button>
+
+        <button
+          class="panel-close"
+          type="button"
+          id="closePanel"
+          aria-label="סגירה"
+        >
+          ✕
+        </button>
+
+      </div>
+
+      <div
+        class="panel-body"
+        id="panelBody"
+      ></div>
+
+    </div>
+
+  </aside>
+
+</div>
+
+<button
+  class="fab"
+  id="fab"
+  type="button"
+>
+  🤖 נועם AI
+</button>
+
+<script>
+(function(){
+
+"use strict";
+
+/* CONFIG */
+
+var BASE =
+  "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
+
+var API =
+  "https://amiramnoam.wixstudio.com/my-site-2/_functions-dev";
+
+var LEVEL = {
+  a:"A",
+  b:"B",
+  c:"E"
+};
+
+var MIN_WAIT = 1250;
+var TIMEOUT = 20000;
+var STATUS_POLL_MS = 1500;
+var ASYNC_JOB_MAX_WAIT = 8 * 60 * 1000;
+
+var MAX_IMAGE_BYTES = 2 * 1024 * 1024;
+var TARGET_IMAGE_BYTES = 250 * 1024;
+var MAX_IMAGE_DIMENSION = 1800;
+
+var GRADE_NAME = {
+  7:"כיתה ז׳",
+  8:"כיתה ח׳",
+  9:"כיתה ט׳"
+};
+
+var GRADE_EMOJI = {
+  7:"🧭",
+  8:"🧪",
+  9:"🎯"
+};
+
+var LEVEL_NAME = {
+  a:"רמה א׳",
+  b:"רמה ב׳",
+  c:"רמת מצוינות"
+};
+
+/* R504-DEV-MIN-20260901-01: LOCAL-OVERRIDE DEVELOPMENT COPY, NOT FOR GITHUB.
+   Observability only: no student text, image data or answer text in this buffer.
+   E2E below is accepted ask() to final UI update; image requests may span
+   multiple short start/status HTTP calls. It is NOT a physical paint,
+   image-attachment/compression or PDF-load measurement. */
+var DEV_CANDIDATE = "R02-ASYNC-DEV-20260902-01";
+var devMeasurements = [];
+var devSequence = 0;
+
+function devNow(){
+  return window.performance && typeof window.performance.now === "function"
+    ? window.performance.now()
+    : Date.now();
+}
+
+function devElapsed(started){
+  return Math.max(0, Math.round(devNow() - started));
+}
+
+function devBegin(route, exerciseId){
+  devSequence += 1;
+  var record = {
+    candidate:DEV_CANDIDATE,
+    clientRequestId:"v504-" + Date.now().toString(36) + "-" +
+      devSequence.toString(36) + "-" + Math.random().toString(36).slice(2, 8),
+    startedAtUtc:new Date().toISOString(),
+    route:route,
+    exerciseId:exerciseId,
+    endpoint:API + "/noamTutor",
+    clock:"performance.now",
+    outcome:"pending",
+    httpStatus:null,
+    requestId:null,
+    networkStartMs:null,
+    headersMs:null,
+    bodyDoneMs:null,
+    uiUpdatedMs:null,
+    nextFrameMs:null,
+    minimumWaitMs:0,
+    responseAnswerChars:null,
+    jobId:null,
+    acceptedMs:null,
+    statusPolls:0,
+    errorCode:null
+  };
+  if (!(window.performance && typeof window.performance.now === "function")){
+    record.clock = "Date.now fallback";
+  }
+  devMeasurements.push(record);
+  if (devMeasurements.length > 80){ devMeasurements.shift(); }
+  console.info("NOAM VIEWER START:", JSON.stringify(record));
+  return { started:devNow(), record:record };
+}
+
+function devReadResponse(measurement, data){
+  if (!measurement){ return; }
+  var record = measurement.record;
+  record.bodyDoneMs = devElapsed(measurement.started);
+  if (data && typeof data.requestId === "string" &&
+      /^r504-[a-z0-9-]{1,150}$/i.test(data.requestId)){
+    record.requestId = data.requestId;
+  }
+  if (data && typeof data.answer === "string"){
+    record.responseAnswerChars = data.answer.length;
+  }
+  if (data && typeof data.hint === "string"){
+    record.responseAnswerChars = data.hint.length;
+  }
+  if (data && typeof data.jobId === "string"){
+    record.jobId = data.jobId;
+  }
+}
+
+function devFinish(measurement, outcome, errorCode){
+  if (!measurement){ return; }
+  measurement.record.outcome = outcome;
+  measurement.record.errorCode = errorCode || null;
+  measurement.record.uiUpdatedMs = devElapsed(measurement.started);
+  console.info("NOAM VIEWER END:", JSON.stringify(measurement.record));
+  if (typeof window.requestAnimationFrame === "function"){
+    window.requestAnimationFrame(function(){
+      measurement.record.nextFrameMs = devElapsed(measurement.started);
+    });
+  }
+}
+
+window.NOAM_DEV = {
+  candidate:DEV_CANDIDATE,
+  endpoint:API,
+  snapshot:function(){
+    return JSON.parse(JSON.stringify({
+      candidate:DEV_CANDIDATE,
+      environment:"development-local-override",
+      endpoint:API,
+      capturedAtUtc:new Date().toISOString(),
+      records:devMeasurements
+    }));
+  }
+};
+console.info("NOAM DEV CANDIDATE:", DEV_CANDIDATE, API);
+
+/* ASYNC OWNER KEY
+   Persisted only in this browser. Never logged or rendered. */
+var OWNER_KEY_STORAGE = "noam-ai-owner-key-v1";
+var OWNER_KEY_RE = /^[A-Za-z0-9_-]{16,200}$/;
+
+function createOwnerKey(){
+  if (window.crypto && typeof window.crypto.randomUUID === "function"){
+    return window.crypto.randomUUID();
+  }
+
+  var bytes = new Uint8Array(24);
+
+  if (window.crypto && typeof window.crypto.getRandomValues === "function"){
+    window.crypto.getRandomValues(bytes);
+  }else{
+    for (var i = 0; i < bytes.length; i += 1){
+      bytes[i] = Math.floor(Math.random() * 256);
+    }
+  }
+
+  var out = "";
+  for (var j = 0; j < bytes.length; j += 1){
+    out += bytes[j].toString(16).padStart(2, "0");
+  }
+  return out;
+}
+
+function getOwnerKey(){
+  var existing = "";
+
+  try{
+    existing = String(localStorage.getItem(OWNER_KEY_STORAGE) || "").trim();
+  }catch(e){}
+
+  if (OWNER_KEY_RE.test(existing)){
+    return existing;
+  }
+
+  var created = createOwnerKey();
+
+  try{
+    localStorage.setItem(OWNER_KEY_STORAGE, created);
+  }catch(e){}
+
+  return created;
+}
+
+var ownerKey = getOwnerKey();
+
+/* PARAMS */
+
+var q =
+  new URLSearchParams(
+    location.search
+  );
+
+var g =
+  parseInt(
+    q.get("g"),
+    10
+  );
+
+var x =
+  (
+    q.get("x") ||
+    ""
+  ).trim();
+
+var lv =
+  (
+    q.get("lv") ||
+    ""
+  ).trim().toLowerCase();
+
+var pdf =
+  (
+    q.get("pdf") ||
+    ""
+  ).trim().toLowerCase();
+
+var ttl =
+  (
+    q.get("t") ||
+    "דף עבודה"
+  ).trim();
+
+var okPdf =
+  /^[0-9a-f]{32}$/
+  .test(pdf);
+
+var okGrade =
+  g >= 7 &&
+  g <= 9;
+
+var okX =
+  /^G[1-9]-T\d{2}$/
+  .test(x) &&
+  x.indexOf(
+    "G" + g + "-"
+  ) === 0;
+
+var okLv =
+  Object.prototype
+  .hasOwnProperty
+  .call(
+    LEVEL,
+    lv
+  );
+
+var aiReady =
+  okPdf &&
+  okGrade &&
+  okX &&
+  okLv;
+
+/* INVALID PDF */
+
+if (!okPdf){
+
+  document.body.innerHTML =
+    '<div style="' +
+    'padding:40px;' +
+    'text-align:center;' +
+    'font-family:Heebo,sans-serif;' +
+    'font-weight:900' +
+    '">' +
+
+    'הקישור אינו תקין. ' +
+
+    '<a href="./">' +
+    'חזרה לדפי העבודה' +
+    '</a>' +
+
+    '</div>';
+
+  return;
+}
+
+/* PDF */
+
+var pdfUrl =
+  BASE +
+  pdf +
+  ".pdf";
+
+document.body
+  .setAttribute(
+    "data-grade",
+    okGrade ? g : 7
+  );
+
+document.title =
+  ttl +
+  " · מתמטיקה · נועם דורון";
+
+document
+  .getElementById("title")
+  .textContent =
+  ttl;
+
+document
+  .getElementById("emoji")
+  .textContent =
+  GRADE_EMOJI[g] ||
+  "📄";
+
+document
+  .getElementById("rawBtn")
+  .href =
+  pdfUrl;
+
+document
+  .getElementById("rawBtn2")
+  .href =
+  pdfUrl;
+
+document
+  .getElementById("pdfOpenFull")
+  .href =
+  pdfUrl;
+
+/* HEADER CONTEXT + LEVEL SWITCHER */
+
+var gc =
+  document
+  .getElementById(
+    "gradeChip"
+  );
+
+if (okGrade){
+
+  gc.textContent =
+    GRADE_NAME[g];
+
+}else{
+
+  gc.style.display =
+    "none";
+}
+
+var levelSwitch =
+  document
+  .getElementById(
+    "levelSwitch"
+  );
+
+var levelPdfMap = {
+  a:"",
+  b:"",
+  c:""
+};
+
+["a", "b", "c"]
+  .forEach(
+    function(key){
+
+      var candidate =
+        String(
+          q.get("p" + key) ||
+          ""
+        )
+        .trim()
+        .toLowerCase();
+
+      if (
+        /^[0-9a-f]{32}$/
+        .test(candidate)
+      ){
+        levelPdfMap[key] =
+          candidate;
+      }
+    }
+  );
+
+if (okLv){
+  levelPdfMap[lv] =
+    pdf;
+}
+
+function buildLevelHref(
+  nextLevel,
+  nextPdf
+){
+
+  var next =
+    new URL(
+      window.location.href
+    );
+
+  next.searchParams
+    .set(
+      "lv",
+      nextLevel
+    );
+
+  next.searchParams
+    .set(
+      "pdf",
+      nextPdf
+    );
+
+  ["a", "b", "c"]
+    .forEach(
+      function(key){
+
+        if (
+          levelPdfMap[key]
+        ){
+          next.searchParams
+            .set(
+              "p" + key,
+              levelPdfMap[key]
+            );
+        }
+      }
+    );
+
+  return (
+    next.pathname +
+    next.search +
+    next.hash
+  );
+}
+
+function renderLevelSwitch(
+  loading
+){
+
+  if (!okLv){
+    levelSwitch.style.display =
+      "none";
+    return;
+  }
+
+  var html =
+    ["a", "b", "c"]
+    .map(
+      function(key){
+
+        var label =
+          LEVEL_NAME[key];
+
+        if (key === lv){
+          return (
+            '<span class="level-link" ' +
+            'data-level="' + key + '" ' +
+            'aria-current="page">' +
+            label +
+            '</span>'
+          );
+        }
+
+        if (
+          levelPdfMap[key]
+        ){
+          return (
+            '<a class="level-link" ' +
+            'data-level="' + key + '" ' +
+            'href="' +
+            escAttr(
+              buildLevelHref(
+                key,
+                levelPdfMap[key]
+              )
+            ) +
+            '">' +
+            label +
+            '</a>'
+          );
+        }
+
+        if (loading){
+          return (
+            '<span class="level-link is-loading" ' +
+            'data-level="' + key + '" ' +
+            'aria-disabled="true">' +
+            label +
+            '</span>'
+          );
+        }
+
+        return "";
+      }
+    )
+    .join("");
+
+  levelSwitch.innerHTML =
+    html;
+}
+
+function escapeRegExp(value){
+  return String(value)
+    .replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+}
+
+function parseIndexLevelPdfs(
+  source
+){
+
+  if (
+    !okGrade ||
+    !okX ||
+    !source
+  ){
+    return null;
+  }
+
+  var topicMatch =
+    new RegExp(
+      "\\{\\s*id\\s*:\\s*(\\d+)\\s*,\\s*x\\s*:\\s*[\"']" +
+      escapeRegExp(x) +
+      "[\"']",
+      "i"
+    )
+    .exec(source);
+
+  if (!topicMatch){
+    return null;
+  }
+
+  var topicId =
+    parseInt(
+      topicMatch[1],
+      10
+    );
+
+  var dataStart =
+    source.indexOf(
+      "var DATA"
+    );
+
+  var gradeSearch =
+    dataStart >= 0
+      ? source.slice(dataStart)
+      : source;
+
+  var gradeMarker =
+    new RegExp(
+      "(?:^|\\n)\\s*" +
+      g +
+      "\\s*:\\s*\\{\\s*(?:\\n\\s*)?links\\s*:\\s*\\{",
+      "m"
+    )
+    .exec(gradeSearch);
+
+  if (!gradeMarker){
+    return null;
+  }
+
+  var gradeStart =
+    gradeMarker.index;
+
+  var groupsIndex =
+    gradeSearch.indexOf(
+      "groups:",
+      gradeStart
+    );
+
+  if (groupsIndex < 0){
+    return null;
+  }
+
+  var gradeBlock =
+    gradeSearch.slice(
+      gradeStart,
+      groupsIndex
+    );
+
+  var rowMatch =
+    new RegExp(
+      "(?:^|\\n)\\s*" +
+      topicId +
+      "\\s*:\\s*\\{([\\s\\S]*?)\\}",
+      "m"
+    )
+    .exec(gradeBlock);
+
+  if (!rowMatch){
+    return null;
+  }
+
+  var row =
+    rowMatch[1];
+
+  var found = {
+    a:"",
+    b:"",
+    c:""
+  };
+
+  ["a", "b", "c"]
+    .forEach(
+      function(key){
+
+        var match =
+          new RegExp(
+            "(?:^|[,\\s])" +
+            key +
+            "\\s*:\\s*[\"']([0-9a-f]{32})[\"']",
+            "i"
+          )
+          .exec(row);
+
+        if (match){
+          found[key] =
+            match[1]
+            .toLowerCase();
+        }
+      }
+    );
+
+  return found;
+}
+
+function discoverSiblingLevels(){
+
+  if (
+    !okX ||
+    !okGrade ||
+    !okLv
+  ){
+    renderLevelSwitch(false);
+    return;
+  }
+
+  renderLevelSwitch(
+    !(
+      levelPdfMap.a &&
+      levelPdfMap.b &&
+      levelPdfMap.c
+    )
+  );
+
+  fetch(
+    "./index.html",
+    {
+      cache:"no-store"
+    }
+  )
+  .then(
+    function(response){
+
+      if (!response.ok){
+        throw new Error(
+          "index " +
+          response.status
+        );
+      }
+
+      return response.text();
+    }
+  )
+  .then(
+    function(source){
+
+      var discovered =
+        parseIndexLevelPdfs(
+          source
+        );
+
+      if (discovered){
+        ["a", "b", "c"]
+          .forEach(
+            function(key){
+
+              if (
+                discovered[key] &&
+                key !== lv
+              ){
+                levelPdfMap[key] =
+                  discovered[key];
+              }
+            }
+          );
+      }
+
+      renderLevelSwitch(false);
+    }
+  )
+  .catch(
+    function(error){
+      console.warn(
+        "LEVEL SWITCH DISCOVERY:",
+        error
+      );
+
+      renderLevelSwitch(false);
+    }
+  );
+}
+
+renderLevelSwitch(true);
+discoverSiblingLevels();
+
+/* CLEAN PDF VIEWER */
+
+var pdfSurface =
+  document.getElementById(
+    "pdfSurface"
+  );
+
+var pdfScroll =
+  document.getElementById(
+    "pdfScroll"
+  );
+
+var pdfPages =
+  document.getElementById(
+    "pdfPages"
+  );
+
+var pdfFrame =
+  document.getElementById(
+    "pdf"
+  );
+
+var pdfStatus =
+  document.getElementById(
+    "pdfStatus"
+  );
+
+var pdfTools =
+  document.getElementById(
+    "pdfTools"
+  );
+
+var pdfToolsToggle =
+  document.getElementById(
+    "pdfToolsToggle"
+  );
+
+var pdfNativeMode =
+  document.getElementById(
+    "pdfNativeMode"
+  );
+
+var pdfFallbackMessage =
+  document.getElementById(
+    "pdfFallbackMessage"
+  );
+
+var pdfZoomValue =
+  document.getElementById(
+    "pdfZoomValue"
+  );
+
+var pdfDocument =
+  null;
+
+var pdfObserver =
+  null;
+
+var pdfResizeObserver =
+  null;
+
+var pdfZoom =
+  1;
+
+var pdfRenderVersion =
+  0;
+
+/* --- PDF.js asset base (worker + CMaps + standard fonts must all match) --- */
+var PDFJS_VERSION =
+  "3.11.174";
+
+var PDFJS_BASE =
+  "https://cdn.jsdelivr.net/npm/pdfjs-dist@" +
+  PDFJS_VERSION +
+  "/";
+
+var PDFJS_CMAP_URL =
+  PDFJS_BASE + "cmaps/";
+
+var PDFJS_STD_FONT_URL =
+  PDFJS_BASE + "standard_fonts/";
+
+/* Canvas rendering is OPT-IN. The native browser viewer is the default,
+   because PDF.js 3.x mis-spaces the embedded subset Hebrew fonts that
+   WeasyPrint produces (glyphs correct, advance widths wrong). */
+var PDF_CLEAN_OPT_IN =
+  false;
+
+var pdfNativeActive =
+  false;
+
+var pdfCleanAvailable =
+  false;
+
+var pdfLastWidth =
+  0;
+
+var pdfResizeTimer =
+  0;
+
+function setPdfStatus(
+  message,
+  visible
+){
+
+  pdfStatus.textContent =
+    message || "";
+
+  pdfStatus.classList
+    .toggle(
+      "hidden",
+      !visible
+    );
+}
+
+function showPdfTools(
+  visible
+){
+
+  pdfTools.classList
+    .toggle(
+      "hidden",
+      !visible
+    );
+
+  pdfToolsToggle
+    .setAttribute(
+      "aria-expanded",
+      visible
+        ? "true"
+        : "false"
+    );
+}
+
+function ensureNativePdf(){
+
+  if (!pdfFrame.src){
+    pdfFrame.src =
+      pdfUrl +
+      "#view=FitH";
+  }
+}
+
+function setNativePdfMode(
+  active
+){
+
+  pdfNativeActive =
+    !!active;
+
+  if (pdfNativeActive){
+    ensureNativePdf();
+  }
+
+  pdfFrame.classList
+    .toggle(
+      "hidden",
+      !pdfNativeActive
+    );
+
+  pdfScroll.classList
+    .toggle(
+      "hidden",
+      pdfNativeActive
+    );
+
+  pdfNativeMode.textContent =
+    pdfNativeActive &&
+    pdfCleanAvailable
+      ? "תצוגה נקייה (ניסיוני)"
+      : "תצוגת PDF מלאה";
+
+  pdfNativeMode.classList
+    .toggle(
+      "hidden",
+      !pdfCleanAvailable
+    );
+
+  /* zoom / fit-width act on the canvas layer only */
+  ["pdfZoomIn","pdfZoomOut","pdfFit"]
+    .forEach(
+      function(id){
+        var btn =
+          document.getElementById(id);
+        if (!btn){ return; }
+        btn.disabled =
+          pdfNativeActive;
+        btn.classList
+          .toggle(
+            "hidden",
+            pdfNativeActive
+          );
+      }
+    );
+
+  pdfZoomValue.classList
+    .toggle(
+      "hidden",
+      pdfNativeActive
+    );
+}
+
+function showPdfFallback(
+  message
+){
+
+  pdfCleanAvailable =
+    false;
+
+  setPdfStatus(
+    "",
+    false
+  );
+
+  pdfFallbackMessage.textContent =
+    message ||
+    "התצוגה הנקייה אינה זמינה בדפדפן הזה; הוצגה תצוגת ה-PDF המלאה.";
+
+  pdfFallbackMessage.classList
+    .remove(
+      "hidden"
+    );
+
+  setNativePdfMode(true);
+}
+
+function createPdfPageShells(
+  doc
+){
+
+  var html =
+    "";
+
+  for (
+    var pageNumber = 1;
+    pageNumber <= doc.numPages;
+    pageNumber += 1
+  ){
+    html +=
+      '<div class="pdf-page" data-page="' +
+      pageNumber +
+      '" data-state="idle">' +
+        '<canvas aria-label="עמוד ' +
+        pageNumber +
+        '"></canvas>' +
+        '<div class="pdf-page-wait">עמוד ' +
+        pageNumber +
+        '</div>' +
+      '</div>';
+  }
+
+  pdfPages.innerHTML =
+    html;
+}
+
+function renderPdfPage(
+  pageNumber,
+  version
+){
+
+  if (
+    !pdfDocument ||
+    version !== pdfRenderVersion
+  ){
+    return;
+  }
+
+  var pageElement =
+    pdfPages.querySelector(
+      '[data-page="' +
+      pageNumber +
+      '"]'
+    );
+
+  if (!pageElement){
+    return;
+  }
+
+  var state =
+    pageElement.getAttribute(
+      "data-state"
+    );
+
+  if (
+    state === "rendering" ||
+    state === "ready"
+  ){
+    return;
+  }
+
+  pageElement.setAttribute(
+    "data-state",
+    "rendering"
+  );
+
+  pdfDocument
+    .getPage(pageNumber)
+    .then(
+      function(page){
+
+        if (
+          version !== pdfRenderVersion
+        ){
+          return;
+        }
+
+        var baseViewport =
+          page.getViewport({
+            scale:1
+          });
+
+        var availableWidth =
+          Math.max(
+            280,
+            pdfScroll.clientWidth -
+            34
+          );
+
+        var cssScale =
+          (
+            availableWidth /
+            baseViewport.width
+          ) *
+          pdfZoom;
+
+        var viewport =
+          page.getViewport({
+            scale:cssScale
+          });
+
+        var pixelRatio =
+          Math.min(
+            window.devicePixelRatio || 1,
+            1.25
+          );
+
+        var canvas =
+          pageElement.querySelector(
+            "canvas"
+          );
+
+        var context =
+          canvas.getContext(
+            "2d",
+            {
+              alpha:false
+            }
+          );
+
+        canvas.width =
+          Math.max(
+            1,
+            Math.floor(
+              viewport.width *
+              pixelRatio
+            )
+          );
+
+        canvas.height =
+          Math.max(
+            1,
+            Math.floor(
+              viewport.height *
+              pixelRatio
+            )
+          );
+
+        canvas.style.width =
+          Math.floor(
+            viewport.width
+          ) +
+          "px";
+
+        canvas.style.height =
+          Math.floor(
+            viewport.height
+          ) +
+          "px";
+
+        pageElement.style.width =
+          Math.floor(
+            viewport.width
+          ) +
+          "px";
+
+        pageElement.style.height =
+          Math.floor(
+            viewport.height
+          ) +
+          "px";
+
+        pageElement.style.aspectRatio =
+          viewport.width +
+          " / " +
+          viewport.height;
+
+        var renderTask =
+          page.render({
+            canvasContext:context,
+            viewport:viewport,
+            transform:
+              pixelRatio === 1
+                ? null
+                : [
+                    pixelRatio,
+                    0,
+                    0,
+                    pixelRatio,
+                    0,
+                    0
+                  ]
+          });
+
+        pageElement._renderTask =
+          renderTask;
+
+        return renderTask.promise;
+      }
+    )
+    .then(
+      function(){
+
+        if (
+          version !== pdfRenderVersion
+        ){
+          return;
+        }
+
+        pageElement.setAttribute(
+          "data-state",
+          "ready"
+        );
+
+        pageElement.classList
+          .add(
+            "is-ready"
+          );
+      }
+    )
+    .catch(
+      function(error){
+
+        if (
+          error &&
+          error.name ===
+          "RenderingCancelledException"
+        ){
+          return;
+        }
+
+        console.warn(
+          "PDF PAGE RENDER:",
+          pageNumber,
+          error
+        );
+
+        pageElement.setAttribute(
+          "data-state",
+          "error"
+        );
+
+        var wait =
+          pageElement.querySelector(
+            ".pdf-page-wait"
+          );
+
+        if (wait){
+          wait.textContent =
+            "לא הצלחתי להציג את עמוד " +
+            pageNumber;
+        }
+      }
+    );
+}
+
+function observePdfPages(){
+
+  if (pdfObserver){
+    pdfObserver.disconnect();
+  }
+
+  var version =
+    pdfRenderVersion;
+
+  if (
+    "IntersectionObserver" in window
+  ){
+    pdfObserver =
+      new IntersectionObserver(
+        function(entries){
+          entries.forEach(
+            function(entry){
+              if (entry.isIntersecting){
+                renderPdfPage(
+                  Number(
+                    entry.target.dataset.page
+                  ),
+                  version
+                );
+              }
+            }
+          );
+        },
+        {
+          root:pdfScroll,
+          rootMargin:"900px 0px",
+          threshold:.01
+        }
+      );
+
+    pdfPages
+      .querySelectorAll(
+        ".pdf-page"
+      )
+      .forEach(
+        function(pageElement){
+          pdfObserver.observe(
+            pageElement
+          );
+        }
+      );
+
+  }else{
+    for (
+      var pageNumber = 1;
+      pageNumber <= pdfDocument.numPages;
+      pageNumber += 1
+    ){
+      renderPdfPage(
+        pageNumber,
+        version
+      );
+    }
+  }
+}
+
+function resetPdfRendering(){
+
+  if (!pdfDocument){
+    return;
+  }
+
+  pdfRenderVersion += 1;
+
+  pdfPages
+    .querySelectorAll(
+      ".pdf-page"
+    )
+    .forEach(
+      function(pageElement){
+
+        if (
+          pageElement._renderTask &&
+          typeof pageElement._renderTask.cancel ===
+            "function"
+        ){
+          try{
+            pageElement._renderTask.cancel();
+          }catch(e){}
+        }
+
+        pageElement._renderTask =
+          null;
+
+        pageElement.classList
+          .remove(
+            "is-ready"
+          );
+
+        pageElement.setAttribute(
+          "data-state",
+          "idle"
+        );
+
+        var canvas =
+          pageElement.querySelector(
+            "canvas"
+          );
+
+        if (canvas){
+          canvas.width = 1;
+          canvas.height = 1;
+          canvas.style.width = "";
+          canvas.style.height = "";
+        }
+
+        pageElement.style.width = "";
+        pageElement.style.height = "";
+        pageElement.style.aspectRatio = "";
+      }
+    );
+
+  observePdfPages();
+}
+
+function setPdfZoom(
+  value
+){
+
+  pdfZoom =
+    Math.max(
+      .7,
+      Math.min(
+        1.7,
+        Math.round(
+          value * 10
+        ) /
+        10
+      )
+    );
+
+  pdfZoomValue.textContent =
+    Math.round(
+      pdfZoom *
+      100
+    ) +
+    "%";
+
+  resetPdfRendering();
+}
+
+function schedulePdfResize(){
+
+  clearTimeout(
+    pdfResizeTimer
+  );
+
+  pdfResizeTimer =
+    setTimeout(
+      function(){
+
+        var nextWidth =
+          Math.round(
+            pdfScroll.clientWidth
+          );
+
+        if (
+          !pdfDocument ||
+          Math.abs(
+            nextWidth -
+            pdfLastWidth
+          ) < 3
+        ){
+          return;
+        }
+
+        pdfLastWidth =
+          nextWidth;
+
+        resetPdfRendering();
+      },
+      180
+    );
+}
+
+function initPdfExperience(){
+
+  /* Default for every viewport: the browser's own PDF viewer.
+     It renders the embedded Hebrew fonts correctly. */
+  setPdfStatus(
+    "",
+    false
+  );
+
+  setNativePdfMode(true);
+
+  showPdfTools(true);
+
+  if (
+    window.matchMedia(
+      "(max-width:900px)"
+    ).matches
+  ){
+    /* Mobile: native only. Previously this branch returned without
+       showing anything at all, leaving an empty pane. */
+    pdfCleanAvailable =
+      false;
+
+    return;
+  }
+
+  if (
+    !PDF_CLEAN_OPT_IN
+  ){
+    pdfCleanAvailable =
+      false;
+
+    return;
+  }
+
+  if (
+    !window.pdfjsLib
+  ){
+    showPdfFallback(
+      "לא ניתן לטעון את התצוגה הנקייה. הוצגה תצוגת ה-PDF המלאה."
+    );
+    return;
+  }
+
+  try{
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      PDFJS_BASE + "build/pdf.worker.min.js";
+  }catch(e){}
+
+  setPdfStatus(
+    "טוען את דף העבודה…",
+    true
+  );
+
+  var loadTask =
+    window.pdfjsLib
+      .getDocument({
+        url:pdfUrl,
+        withCredentials:false,
+        cMapUrl:PDFJS_CMAP_URL,
+        cMapPacked:true,
+        standardFontDataUrl:PDFJS_STD_FONT_URL,
+        disableFontFace:false,
+        useSystemFonts:false
+      });
+
+  loadTask.promise
+    .then(
+      function(doc){
+
+        pdfDocument =
+          doc;
+
+        pdfCleanAvailable =
+          true;
+
+        pdfFallbackMessage.classList
+          .add(
+            "hidden"
+          );
+
+        createPdfPageShells(
+          doc
+        );
+
+        pdfRenderVersion += 1;
+        pdfLastWidth =
+          Math.round(
+            pdfScroll.clientWidth
+          );
+
+        setPdfStatus(
+          "",
+          false
+        );
+
+        observePdfPages();
+
+        if (
+          "ResizeObserver" in window
+        ){
+          pdfResizeObserver =
+            new ResizeObserver(
+              schedulePdfResize
+            );
+
+          pdfResizeObserver.observe(
+            pdfScroll
+          );
+        }else{
+          window.addEventListener(
+            "resize",
+            schedulePdfResize
+          );
+        }
+      }
+    )
+    .catch(
+      function(error){
+        console.warn(
+          "CLEAN PDF VIEWER:",
+          error
+        );
+
+        showPdfFallback(
+          "התצוגה הנקייה נחסמה בדפדפן; הוצגה תצוגת ה-PDF המלאה."
+        );
+      }
+    );
+}
+
+pdfToolsToggle
+  .addEventListener(
+    "click",
+    function(){
+      showPdfTools(
+        pdfTools.classList
+          .contains(
+            "hidden"
+          )
+      );
+    }
+  );
+
+document
+  .getElementById(
+    "pdfZoomOut"
+  )
+  .addEventListener(
+    "click",
+    function(){
+      setPdfZoom(
+        pdfZoom -
+        .1
+      );
+    }
+  );
+
+document
+  .getElementById(
+    "pdfZoomIn"
+  )
+  .addEventListener(
+    "click",
+    function(){
+      setPdfZoom(
+        pdfZoom +
+        .1
+      );
+    }
+  );
+
+document
+  .getElementById(
+    "pdfFit"
+  )
+  .addEventListener(
+    "click",
+    function(){
+      setPdfZoom(1);
+    }
+  );
+
+pdfNativeMode
+  .addEventListener(
+    "click",
+    function(){
+
+      if (
+        !pdfCleanAvailable
+      ){
+        ensureNativePdf();
+        return;
+      }
+
+      setNativePdfMode(
+        !pdfNativeActive
+      );
+    }
+  );
+
+if (
+  document.readyState ===
+  "loading"
+){
+  document.addEventListener(
+    "DOMContentLoaded",
+    initPdfExperience
+  );
+}else{
+  initPdfExperience();
+}
+
+/* BACK */
+
+if (okGrade){
+
+  document
+    .getElementById("backBtn")
+    .href =
+    "./?grade=" +
+    g;
+}
+
+/* PANEL */
+
+var panel =
+  document
+  .getElementById(
+    "panel"
+  );
+
+var body =
+  document
+  .getElementById(
+    "panelBody"
+  );
+
+var fab =
+  document
+  .getElementById(
+    "fab"
+  );
+
+var panelBack =
+  document
+  .getElementById(
+    "panelBack"
+  );
+
+var panelBackAction =
+  null;
+
+function setPanelBack(
+  action,
+  label
+){
+
+  panelBackAction =
+    typeof action === "function"
+      ? action
+      : null;
+
+  panelBack.hidden =
+    !panelBackAction;
+
+  panelBack.textContent =
+    label ||
+    "חזרה";
+}
+
+panelBack
+  .addEventListener(
+    "click",
+    function(){
+      if (panelBackAction){
+        panelBackAction();
+      }
+    }
+  );
+
+
+/* MATH RENDERING — supports legacy $...$ and canonical \\(...\\) / \\[...\\] */
+var mathRenderScheduled = false;
+var HEBREW_RE = /[\u0590-\u05FF]/;
+
+/*
+  KaTeX itself lays out one formula LTR. A legacy formula such as
+  $|a|=\\text{המרחק של }a\\text{ מן }0$
+  is really a Hebrew sentence with math islands, not one LTR formula.
+
+  We therefore split ONLY top-level Hebrew \\text{...} blocks.
+  If a split is unsafe or any math fragment fails KaTeX validation,
+  we leave the original formula untouched and let the normal renderer
+  handle it as a safe fallback.
+*/
+function splitLatexTop(src){
+  var parts = [];
+  var i = 0;
+  var depth = 0;
+  var last = 0;
+  var sawHebrewText = false;
+
+  while (i < src.length){
+    if (src[i] === "\\"){
+      var rest = src.slice(i);
+      var match = /^\\(?:text|textrm|textnormal|mbox)\s*\{/.exec(rest);
+
+      if (match){
+        var open = i + match[0].length;
+        var d = 1;
+        var j = open;
+
+        while (j < src.length && d > 0){
+          if (src[j] === "\\"){
+            j += 2;
+            continue;
+          }
+          if (src[j] === "{"){
+            d += 1;
+          }else if (src[j] === "}"){
+            d -= 1;
+          }
+          j += 1;
+        }
+
+        if (d !== 0){
+          return null;
+        }
+
+        var inner = src.slice(open, j - 1);
+        var hasHebrew = HEBREW_RE.test(inner);
+
+        if (hasHebrew){
+          if (depth !== 0){
+            return null;
+          }
+
+          sawHebrewText = true;
+
+          var before = src.slice(last, i);
+          if (before.trim()){
+            parts.push({ type:"math", value:before });
+          }
+
+          parts.push({ type:"text", value:inner });
+
+          last = j;
+          i = j;
+          continue;
+        }
+
+        /* Non-Hebrew \\text remains part of the math source. */
+        i = j;
+        continue;
+      }
+
+      /* Escaped brace / escaped character: do not count it as grouping. */
+      i += 2;
+      continue;
+    }
+
+    if (src[i] === "{"){
+      depth += 1;
+    }else if (src[i] === "}"){
+      depth -= 1;
+      if (depth < 0){
+        return null;
+      }
+    }
+
+    i += 1;
+  }
+
+  if (!sawHebrewText || depth !== 0){
+    return null;
+  }
+
+  var tail = src.slice(last);
+  if (tail.trim()){
+    parts.push({ type:"math", value:tail });
+  }
+
+  return parts;
+}
+
+function renderKatexIsland(latex){
+  if (!window.katex || typeof window.katex.render !== "function"){
+    return null;
+  }
+
+  var span = document.createElement("span");
+  span.className = "math-island";
+  span.setAttribute("dir", "ltr");
+
+  try{
+    window.katex.render(
+      latex,
+      span,
+      {
+        displayMode:false,
+        throwOnError:true,
+        trust:false,
+        strict:"ignore",
+        maxExpand:1000
+      }
+    );
+  }catch(error){
+    return null;
+  }
+
+  return span;
+}
+
+function buildMixedMathNode(latex, displayMode){
+  var parts = splitLatexTop(latex);
+
+  if (!parts){
+    return null;
+  }
+
+  /* Validate every math fragment before touching the real DOM. */
+  var rendered = [];
+
+  for (var i = 0; i < parts.length; i += 1){
+    var part = parts[i];
+
+    if (part.type === "text"){
+      rendered.push({
+        type:"text",
+        value:part.value
+      });
+      continue;
+    }
+
+    var island = renderKatexIsland(part.value);
+    if (!island){
+      return null;
+    }
+
+    rendered.push({
+      type:"math",
+      node:island
+    });
+  }
+
+  var wrapper = document.createElement(
+    displayMode ? "div" : "span"
+  );
+
+  wrapper.className = displayMode
+    ? "mixed-math mixed-math-display"
+    : "mixed-math";
+
+  wrapper.setAttribute("dir", "rtl");
+  wrapper.setAttribute("data-mixed-math", "1");
+
+  rendered.forEach(function(part){
+    if (part.type === "text"){
+      wrapper.appendChild(
+        document.createTextNode(part.value)
+      );
+    }else{
+      wrapper.appendChild(part.node);
+    }
+  });
+
+  return wrapper;
+}
+
+function isEscapedAt(text, index){
+  var slashes = 0;
+  var i = index - 1;
+
+  while (i >= 0 && text[i] === "\\"){
+    slashes += 1;
+    i -= 1;
+  }
+
+  return slashes % 2 === 1;
+}
+
+function findClosingDelimiter(text, from, right, dollarMode){
+  for (var i = from; i <= text.length - right.length; i += 1){
+    if (text.slice(i, i + right.length) !== right){
+      continue;
+    }
+
+    if (dollarMode && isEscapedAt(text, i)){
+      continue;
+    }
+
+    return i;
+  }
+
+  return -1;
+}
+
+function mixedMathSegments(text){
+  var out = [];
+  var cursor = 0;
+  var i = 0;
+
+  function pushText(end){
+    if (end > cursor){
+      out.push({
+        type:"text",
+        value:text.slice(cursor, end)
+      });
+    }
+  }
+
+  while (i < text.length){
+    var left = "";
+    var right = "";
+    var displayMode = false;
+    var dollarMode = false;
+
+    if (text.slice(i, i + 2) === "\\["){
+      left = "\\[";
+      right = "\\]";
+      displayMode = true;
+    }else if (text.slice(i, i + 2) === "\\("){
+      left = "\\(";
+      right = "\\)";
+    }else if (
+      text.slice(i, i + 2) === "$$" &&
+      !isEscapedAt(text, i)
+    ){
+      left = "$$";
+      right = "$$";
+      displayMode = true;
+      dollarMode = true;
+    }else if (
+      text[i] === "$" &&
+      text.slice(i, i + 2) !== "$$" &&
+      !isEscapedAt(text, i)
+    ){
+      left = "$";
+      right = "$";
+      dollarMode = true;
+    }
+
+    if (!left){
+      i += 1;
+      continue;
+    }
+
+    var contentStart = i + left.length;
+    var close = findClosingDelimiter(
+      text,
+      contentStart,
+      right,
+      dollarMode
+    );
+
+    if (close < 0){
+      i += left.length;
+      continue;
+    }
+
+    var latex = text.slice(contentStart, close);
+    var mixedNode = buildMixedMathNode(latex, displayMode);
+
+    if (!mixedNode){
+      i = close + right.length;
+      continue;
+    }
+
+    pushText(i);
+    out.push({
+      type:"node",
+      node:mixedNode
+    });
+
+    cursor = close + right.length;
+    i = cursor;
+  }
+
+  if (!out.length){
+    return null;
+  }
+
+  if (cursor < text.length){
+    out.push({
+      type:"text",
+      value:text.slice(cursor)
+    });
+  }
+
+  return out;
+}
+
+function preprocessMixedHebrewMath(root){
+  if (!root || !window.katex){
+    return;
+  }
+
+  var walker = document.createTreeWalker(
+    root,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode:function(node){
+        var parent = node.parentElement;
+
+        if (!parent){
+          return NodeFilter.FILTER_REJECT;
+        }
+
+        if (
+          parent.closest(
+            ".katex, .mixed-math, script, style, textarea, code, pre"
+          )
+        ){
+          return NodeFilter.FILTER_REJECT;
+        }
+
+        var value = String(node.nodeValue || "");
+
+        if (
+          value.indexOf("\\text") === -1 &&
+          value.indexOf("\\textrm") === -1 &&
+          value.indexOf("\\textnormal") === -1 &&
+          value.indexOf("\\mbox") === -1
+        ){
+          return NodeFilter.FILTER_REJECT;
+        }
+
+        if (!HEBREW_RE.test(value)){
+          return NodeFilter.FILTER_REJECT;
+        }
+
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    }
+  );
+
+  var nodes = [];
+  var node;
+
+  while ((node = walker.nextNode())){
+    nodes.push(node);
+  }
+
+  nodes.forEach(function(textNode){
+    var segments = mixedMathSegments(
+      String(textNode.nodeValue || "")
+    );
+
+    if (!segments){
+      return;
+    }
+
+    var frag = document.createDocumentFragment();
+
+    segments.forEach(function(segment){
+      if (segment.type === "text"){
+        frag.appendChild(
+          document.createTextNode(segment.value)
+        );
+      }else{
+        frag.appendChild(segment.node);
+      }
+    });
+
+    textNode.parentNode.replaceChild(
+      frag,
+      textNode
+    );
+  });
+}
+
+function fixRenderedMathBidi(root){
+  if (!root){
+    return;
+  }
+
+  root
+    .querySelectorAll(".katex, .katex-html")
+    .forEach(function(el){
+      el.setAttribute("dir", "ltr");
+      el.style.direction = "ltr";
+      el.style.unicodeBidi = "isolate";
+    });
+}
+
+function renderMath(root){
+  if (!root){
+    return;
+  }
+
+  /* First extract only safe top-level Hebrew \\text blocks. */
+  preprocessMixedHebrewMath(root);
+
+  if (typeof window.renderMathInElement !== "function"){
+    return;
+  }
+
+  try{
+    window.renderMathInElement(
+      root,
+      {
+        delimiters:[
+          { left:"$$", right:"$$", display:true },
+          { left:"\\[", right:"\\]", display:true },
+          { left:"\\(", right:"\\)", display:false },
+          { left:"$", right:"$", display:false }
+        ],
+        throwOnError:false,
+        strict:"ignore",
+        trust:false,
+        errorColor:"#9A1D2F"
+      }
+    );
+
+    fixRenderedMathBidi(root);
+  }catch(error){
+    console.error("KATEX RENDER ERROR:", error);
+  }
+}
+
+function scheduleMathRender(){
+  if (mathRenderScheduled){
+    return;
+  }
+
+  mathRenderScheduled = true;
+
+  var run = function(){
+    mathRenderScheduled = false;
+    renderMath(body);
+  };
+
+  if (typeof window.requestAnimationFrame === "function"){
+    window.requestAnimationFrame(run);
+  }else{
+    setTimeout(run, 0);
+  }
+}
+
+if (typeof window.MutationObserver === "function"){
+  new MutationObserver(
+    function(){
+      scheduleMathRender();
+    }
+  ).observe(
+    body,
+    {
+      childList:true,
+      subtree:true,
+      characterData:true
+    }
+  );
+}
+
+window.addEventListener(
+  "load",
+  function(){
+    renderMath(body);
+  }
+);
+
+if (!aiReady){
+
+  fab.classList
+    .add(
+      "hidden"
+    );
+}
+
+fab.addEventListener(
+  "click",
+  function(){
+
+    panel.classList
+      .remove(
+        "hidden"
+      );
+
+    fab.classList
+      .add(
+        "hidden"
+      );
+
+    if (!loaded){
+
+      loadExercises();
+    }
+  }
+);
+
+document
+  .getElementById(
+    "closePanel"
+  )
+  .addEventListener(
+    "click",
+    function(){
+
+      panel.classList
+        .add(
+          "hidden"
+        );
+
+      fab.classList
+        .remove(
+          "hidden"
+        );
+    }
+  );
+
+/* STATE */
+
+var loaded =
+  false;
+
+var items =
+  [];
+
+var pickedQ =
+  null;
+
+var pickedS =
+  null;
+
+var pickedId =
+  null;
+
+var history =
+  [];
+
+var hintIndex =
+  0;
+
+var canAskMoreHint =
+  true;
+
+var hintProgressByExercise =
+  {};
+
+var exhaustedHintsByExercise =
+  {};
+
+var attachedImage =
+  null;
+
+var imageError =
+  "";
+
+var imageBusy =
+  false;
+
+var prefix =
+  aiReady
+    ? (
+        x +
+        "-" +
+        LEVEL[lv]
+      )
+    : "";
+
+var cacheKey =
+  "nx:" +
+  prefix;
+
+/* FAIL OPEN */
+
+if (!aiReady){
+
+  panel.style.display =
+    "none";
+
+}else if (
+  window
+    .matchMedia(
+      "(max-width:900px)"
+    )
+    .matches
+){
+
+  panel.classList
+    .remove(
+      "hidden"
+    );
+
+  loadExercises();
+}
+
+/* LOAD EXERCISES */
+
+function loadExercises(){
+
+  setPanelBack(null);
+
+  loaded =
+    true;
+
+  try{
+
+    var c =
+      sessionStorage
+      .getItem(
+        cacheKey
+      );
+
+    if (c){
+
+      items =
+        JSON.parse(c);
+
+      return renderQuestions();
+    }
+
+  }catch(e){}
+
+  body.innerHTML =
+    '<p class="step-title">' +
+    'טוען את שאלות הדף…' +
+    '</p>' +
+
+    '<div class="skel"></div>' +
+    '<div class="skel"></div>' +
+    '<div class="skel"></div>';
+
+  post(
+    API +
+    "/listExercises",
+    {
+      grade:g,
+      prefix:prefix
+    }
+  )
+  .then(
+    function(res){
+
+      items =
+        (
+          res &&
+          res.ok &&
+          Array.isArray(
+            res.items
+          )
+        )
+        ? res.items
+        : [];
+
+      if (!items.length){
+
+        return renderEmpty();
+      }
+
+      try{
+
+        sessionStorage
+          .setItem(
+            cacheKey,
+            JSON.stringify(
+              items
+            )
+          );
+
+      }catch(e){}
+
+      renderQuestions();
+    }
+  )
+  .catch(
+    function(){
+
+      renderNetworkError();
+    }
+  );
+}
+
+/* EMPTY */
+
+function renderEmpty(){
+
+  setPanelBack(null);
+
+  body.innerHTML =
+    '<div class="note">' +
+
+    'נועם AI עדיין אינו זמין לדף הזה 🙂' +
+
+    '<br>' +
+
+    'אפשר להמשיך לעבוד על הדף כרגיל.' +
+
+    '</div>';
+}
+
+/* NETWORK ERROR */
+
+function renderNetworkError(){
+
+  setPanelBack(null);
+
+  body.innerHTML =
+    '<div class="note">' +
+    'לא הצלחנו להתחבר לנועם AI כרגע.' +
+    '</div>' +
+
+    '<button class="send" type="button" id="retry">' +
+    'נסו שוב' +
+    '</button>';
+
+  document
+    .getElementById(
+      "retry"
+    )
+    .addEventListener(
+      "click",
+      function(){
+
+        loaded =
+          false;
+
+        loadExercises();
+      }
+    );
+}
+
+/* HELPERS */
+
+function questionNumbers(){
+
+  var seen = {};
+  var out = [];
+
+  items.forEach(
+    function(it){
+
+      var n =
+        it.questionNumber;
+
+      if (!seen[n]){
+
+        seen[n] =
+          1;
+
+        out.push(n);
+      }
+    }
+  );
+
+  return out.sort(
+    function(a,b){
+      return a-b;
+    }
+  );
+}
+
+function sectionsOf(n){
+
+  return items
+    .filter(
+      function(it){
+
+        return (
+          it.questionNumber === n &&
+          it.section
+        );
+      }
+    )
+    .map(
+      function(it){
+
+        return it.section;
+      }
+    );
+}
+
+function idOf(
+  n,
+  sec
+){
+
+  var hit =
+    items.filter(
+      function(it){
+
+        return (
+          it.questionNumber === n &&
+          (
+            sec
+              ? it.section === sec
+              : !it.section
+          )
+        );
+      }
+    )[0];
+
+  return hit
+    ? hit.id
+    : null;
+}
+
+/* EXERCISE-SCOPED STATE */
+
+function syncExerciseState(){
+  if (!pickedId){
+    hintIndex = 0;
+    canAskMoreHint = true;
+    return;
+  }
+
+  hintIndex =
+    Number(
+      hintProgressByExercise[pickedId]
+    ) || 0;
+
+  canAskMoreHint =
+    !exhaustedHintsByExercise[pickedId];
+}
+
+/* IMAGE HELPERS */
+
+function humanFileSize(bytes){
+  return Math.max(
+    1,
+    Math.round(Number(bytes || 0) / 1024)
+  ) + " KB";
+}
+
+function fileToDataUrl(file){
+  return new Promise(function(resolve, reject){
+    var reader = new FileReader();
+    reader.onload = function(){ resolve(String(reader.result || "")); };
+    reader.onerror = function(){ reject(new Error("file read failed")); };
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadImageFromUrl(url){
+  return new Promise(function(resolve, reject){
+    var img = new Image();
+    img.onload = function(){ resolve(img); };
+    img.onerror = function(){ reject(new Error("image decode failed")); };
+    img.src = url;
+  });
+}
+
+function canvasToJpegBlob(canvas, quality){
+  return new Promise(function(resolve, reject){
+    canvas.toBlob(
+      function(blob){
+        if (blob){
+          resolve(blob);
+        }else{
+          reject(new Error("image compression failed"));
+        }
+      },
+      "image/jpeg",
+      quality
+    );
+  });
+}
+
+async function compressImageFile(file){
+  var sourceUrl = await fileToDataUrl(file);
+  var img = await loadImageFromUrl(sourceUrl);
+
+  var width = img.naturalWidth || img.width;
+  var height = img.naturalHeight || img.height;
+
+  if (!width || !height){
+    throw new Error("invalid image dimensions");
+  }
+
+  var scale = Math.min(
+    1,
+    MAX_IMAGE_DIMENSION / Math.max(width, height)
+  );
+
+  width = Math.max(1, Math.round(width * scale));
+  height = Math.max(1, Math.round(height * scale));
+
+  var canvas = document.createElement("canvas");
+  var ctx = canvas.getContext("2d");
+
+  if (!ctx){
+    throw new Error("canvas unavailable");
+  }
+
+  var qualitySteps = [0.92,0.86,0.80,0.74,0.68,0.62,0.56];
+  var blob = null;
+
+  for (var round = 0; round < 5; round += 1){
+    canvas.width = width;
+    canvas.height = height;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
+
+    for (var qIndex = 0; qIndex < qualitySteps.length; qIndex += 1){
+      blob = await canvasToJpegBlob(
+        canvas,
+        qualitySteps[qIndex]
+      );
+
+      if (blob.size <= TARGET_IMAGE_BYTES){
+        return {
+          blob:blob,
+          dataUrl:await fileToDataUrl(blob),
+          width:width,
+          height:height
+        };
+      }
+    }
+
+    var longest = Math.max(width, height);
+
+    if (longest <= 720){
+      break;
+    }
+
+    var shrink = Math.max(
+      720 / longest,
+      0.82
+    );
+
+    width = Math.max(1, Math.round(width * shrink));
+    height = Math.max(1, Math.round(height * shrink));
+  }
+
+  if (!blob || blob.size > TARGET_IMAGE_BYTES){
+    throw new Error("image compression failed");
+  }
+
+  return {
+    blob:blob,
+    dataUrl:await fileToDataUrl(blob),
+    width:width,
+    height:height
+  };
+}
+
+async function attachImageFile(file){
+  imageError = "";
+
+  if (!file){
+    return;
+  }
+
+  if (!String(file.type || "").startsWith("image/")){
+    imageError = "אפשר לצרף תמונה בלבד.";
+    renderChat();
+    return;
+  }
+
+  if (file.size > MAX_IMAGE_BYTES){
+    imageError = "התמונה גדולה מ-2MB. בחר תמונה קטנה יותר.";
+    renderChat();
+    return;
+  }
+
+  imageBusy = true;
+  renderChat();
+
+  try{
+    var compressed = await compressImageFile(file);
+
+    attachedImage = {
+      name:String(file.name || "תמונה"),
+      originalSize:Number(file.size || 0),
+      sentSize:Number(compressed.blob.size || 0),
+      dataUrl:compressed.dataUrl
+    };
+
+    imageError = "";
+  }catch(error){
+    console.error("IMAGE ATTACH ERROR:", error);
+    attachedImage = null;
+    imageError = "לא הצלחתי להכין את התמונה. נסה JPG, PNG או WebP.";
+  }
+
+  imageBusy = false;
+  renderChat();
+}
+
+/* QUESTION */
+
+function renderQuestions(){
+
+  setPanelBack(null);
+
+  pickedQ =
+    null;
+
+  pickedS =
+    null;
+
+  pickedId =
+    null;
+
+  history =
+    [];
+
+  hintIndex =
+    0;
+
+  canAskMoreHint =
+    true;
+
+  attachedImage =
+    null;
+
+  imageError =
+    "";
+
+  imageBusy =
+    false;
+
+  var nums =
+    questionNumbers();
+
+  body.innerHTML =
+    '<p class="step-title">' +
+    'איזו שאלה בדף?' +
+    '</p>' +
+
+    '<div class="qpick">' +
+
+      '<input ' +
+      'class="qinput" ' +
+      'id="qnum" ' +
+      'type="text" ' +
+      'inputmode="numeric" ' +
+      'pattern="[0-9]*" ' +
+      'maxlength="3" ' +
+      'autocomplete="off" ' +
+      'aria-label="מספר שאלה" ' +
+      'placeholder="מספר שאלה">' +
+
+      '<button ' +
+      'class="send qgo" ' +
+      'type="button" ' +
+      'id="goQ">' +
+      'המשך' +
+      '</button>' +
+
+    '</div>' +
+
+    '<p class="hint">' +
+    'כתוב את מספר השאלה כפי שהוא מופיע בדף העבודה.' +
+    '</p>' +
+
+    '<p class="inline-error" id="qerr" aria-live="polite"></p>';
+
+  var qInput =
+    document
+    .getElementById(
+      "qnum"
+    );
+
+  var qError =
+    document
+    .getElementById(
+      "qerr"
+    );
+
+  function submitQuestion(){
+
+    var raw =
+      String(
+        qInput.value ||
+        ""
+      ).trim();
+
+    if (!/^\d+$/.test(raw)){
+
+      qError.textContent =
+        "כתוב מספר שאלה.";
+
+      qInput.focus();
+
+      return;
+    }
+
+    var n =
+      parseInt(
+        raw,
+        10
+      );
+
+    if (
+      nums.indexOf(n) === -1
+    ){
+
+      qError.textContent =
+        "לא מצאתי את השאלה הזו. בדוק את המספר שמופיע בדף.";
+
+      qInput.focus();
+      qInput.select();
+
+      return;
+    }
+
+    pickQuestion(n);
+  }
+
+  document
+    .getElementById(
+      "goQ"
+    )
+    .addEventListener(
+      "click",
+      submitQuestion
+    );
+
+  qInput
+    .addEventListener(
+      "keydown",
+      function(e){
+
+        if (
+          e.key ===
+          "Enter"
+        ){
+
+          submitQuestion();
+        }
+      }
+    );
+
+  qInput.focus();
+}
+
+/* SECTION */
+
+function pickQuestion(n){
+
+  pickedQ =
+    n;
+
+  pickedS =
+    null;
+
+  pickedId =
+    null;
+
+  hintIndex =
+    0;
+
+  var secs =
+    sectionsOf(n);
+
+  if (!secs.length){
+
+    pickedS =
+      null;
+
+    pickedId =
+      idOf(
+        n,
+        null
+      );
+
+    syncExerciseState();
+
+    return renderCompose();
+  }
+
+  setPanelBack(
+    renderQuestions,
+    "חזרה"
+  );
+
+  body.innerHTML =
+    '<p class="step-title">' +
+    'שאלה ' +
+    n +
+    ' — איזה סעיף?' +
+    '</p>' +
+
+    '<div class="opts">' +
+
+      secs.map(
+        function(s){
+
+          return (
+            '<button ' +
+            'class="opt" ' +
+            'type="button" ' +
+            'data-s="' +
+            s +
+            '">' +
+
+            'סעיף ' +
+            s +
+
+            '</button>'
+          );
+        }
+      ).join("") +
+
+    '</div>' +
+
+    '<button ' +
+    'class="opt" ' +
+    'type="button" ' +
+    'id="backQ">' +
+
+    'שאלה אחרת' +
+
+    '</button>';
+
+  body
+    .querySelectorAll(
+      "[data-s]"
+    )
+    .forEach(
+      function(b){
+
+        b.addEventListener(
+          "click",
+          function(){
+
+            pickedS =
+              b.dataset.s;
+
+            pickedId =
+              idOf(
+                n,
+                pickedS
+              );
+
+            syncExerciseState();
+
+            renderCompose();
+          }
+        );
+      }
+    );
+
+  document
+    .getElementById(
+      "backQ"
+    )
+    .addEventListener(
+      "click",
+      renderQuestions
+    );
+}
+
+/* LABEL */
+
+function pickedLabel(){
+
+  return (
+    "נבחרה שאלה " +
+    pickedQ +
+    (
+      pickedS
+        ? ", סעיף " +
+          pickedS
+        : ""
+    )
+  );
+}
+
+/* THREE BUTTONS */
+
+function renderCompose(){
+
+  setPanelBack(
+    function(){
+      if (
+        sectionsOf(pickedQ)
+        .length
+      ){
+        pickQuestion(
+          pickedQ
+        );
+      }else{
+        renderQuestions();
+      }
+    },
+    "חזרה"
+  );
+
+  body.innerHTML =
+    '<div class="picked">' +
+      '<span>✓ ' + pickedLabel() + '</span>' +
+      '<button type="button" id="change">שינוי</button>' +
+    '</div>' +
+
+    '<p class="step-title">איך אפשר לעזור?</p>' +
+
+    '<div class="assist-actions">' +
+      '<button class="assist-btn primary" type="button" id="hintBtn"' +
+        (canAskMoreHint ? '' : ' disabled') +
+      '>' +
+        (canAskMoreHint ? '💡 תן לי רמז' : '✓ כל הרמזים הוצגו') +
+      '</button>' +
+
+      '<button class="assist-btn" type="button" id="explainBtn">' +
+        '📘 תסביר לי את הרעיון' +
+      '</button>' +
+
+      '<button class="assist-btn custom" type="button" id="customBtn">' +
+        '✍️ יש לי שאלה משלי' +
+      '</button>' +
+    '</div>';
+
+  document
+    .getElementById("change")
+    .addEventListener(
+      "click",
+      renderQuestions
+    );
+
+  var hintBtn =
+    document.getElementById("hintBtn");
+
+  if (hintBtn && canAskMoreHint){
+    hintBtn.addEventListener(
+      "click",
+      function(){
+        getStoredHelp("hint");
+      }
+    );
+  }
+
+  document
+    .getElementById("explainBtn")
+    .addEventListener(
+      "click",
+      function(){
+        getStoredHelp("explain");
+      }
+    );
+
+  document
+    .getElementById("customBtn")
+    .addEventListener(
+      "click",
+      renderCustomQuestion
+    );
+}
+
+/* CHAT HELPERS */
+
+function trimHistory(){
+  if (history.length > 20){
+    history = history.slice(-20);
+  }
+}
+
+function historyForApi(){
+  return history
+    .slice(-6)
+    .map(
+      function(turn){
+        return {
+          studentMessage:
+            turn.q || "",
+          tutorAnswer:
+            turn.a || ""
+        };
+      }
+    );
+}
+
+function chatBubble(
+  role,
+  text,
+  hasImage
+){
+
+  var isStudent =
+    role === "student";
+
+  return (
+    '<div class="chat-row ' +
+    (isStudent ? 'student' : 'tutor') +
+    '">' +
+      '<div class="chat-bubble">' +
+        '<span class="chat-name">' +
+        (isStudent ? 'אתה' : '🤖 נועם AI') +
+        '</span>' +
+        esc(text) +
+        (hasImage ? '<span class="chat-image-tag">📷 תמונה מצורפת</span>' : '') +
+      '</div>' +
+    '</div>'
+  );
+}
+
+function historyHtml(){
+
+  return history
+    .map(
+      function(turn){
+        var html = "";
+
+        if (turn.q){
+          html += chatBubble(
+            "student",
+            turn.q,
+            !!turn.hadImage
+          );
+        }
+
+        if (turn.a){
+          html += chatBubble(
+            "tutor",
+            turn.a
+          );
+        }
+
+        return html;
+      }
+    )
+    .join("");
+}
+
+function renderChat(options){
+
+  options =
+    options || {};
+
+  var busy =
+    !!options.busy;
+
+  setPanelBack(
+    busy
+      ? null
+      : renderCompose,
+    "חזרה"
+  );
+
+  var pendingMessage =
+    String(
+      options.pendingMessage || ""
+    );
+
+  var extraHtml =
+    historyHtml();
+
+  if (pendingMessage){
+    extraHtml += chatBubble(
+      "student",
+      pendingMessage,
+      !!options.pendingHasImage
+    );
+  }
+
+  if (busy){
+    extraHtml +=
+      '<div class="chat-row tutor">' +
+        '<div class="chat-bubble">' +
+          '<span class="chat-name">🤖 נועם AI</span>' +
+          '<span class="chat-thinking">AI חושב<span class="dots"></span></span>' +
+        '</div>' +
+      '</div>';
+  }
+
+  if (options.errorMessage){
+    extraHtml +=
+      '<div class="chat-error">' +
+        esc(options.errorMessage) +
+      '</div>' +
+      '<button class="assist-btn primary" type="button" id="chatRetry">' +
+        'נסו שוב' +
+      '</button>';
+  }
+
+  var quickHtml = "";
+
+  if (!busy && !options.errorMessage){
+
+    quickHtml =
+      '<div class="chat-quick">' +
+        '<button class="assist-btn primary" type="button" id="chatHint"' +
+          (canAskMoreHint ? '' : ' disabled') +
+        '>' +
+          (canAskMoreHint
+            ? (hintIndex > 0 ? '💡 רמז נוסף' : '💡 רמז')
+            : '✓ כל הרמזים הוצגו') +
+        '</button>' +
+        '<button class="assist-btn" type="button" id="chatExplain">📘 הסבר</button>' +
+      '</div>';
+  }
+
+  body.innerHTML =
+    '<div class="picked">' +
+      '<span>✓ ' + pickedLabel() + '</span>' +
+      '<button type="button" id="chatChange">שינוי תרגיל</button>' +
+    '</div>' +
+
+    '<div class="chat-shell">' +
+      '<div class="chat-log" id="chatLog">' +
+        extraHtml +
+      '</div>' +
+
+      quickHtml +
+
+      '<div class="chat-compose">' +
+        '<div class="chat-compose-row">' +
+          '<textarea class="chat-input" id="chatMsg" maxlength="600" ' +
+            'placeholder="כתוב הודעה נוספת…"' +
+            (busy ? ' disabled' : '') +
+          '></textarea>' +
+          '<button class="send chat-send" type="button" id="chatSend"' +
+            (busy ? ' disabled' : '') +
+          '>שלח</button>' +
+        '</div>' +
+        '<div class="chat-tools">' +
+          '<button class="send image-pick" type="button" id="imagePick"' +
+            ((busy || imageBusy) ? ' disabled' : '') +
+          '>📎 הוסף תמונה</button>' +
+          '<input id="imageFile" type="file" accept="image/*" hidden>' +
+          '<span class="hint" style="margin:0">Cmd+V לתמונה · עד 2MB</span>' +
+        '</div>' +
+        (attachedImage
+          ? '<div class="image-preview">' +
+              '<img src="' + escAttr(attachedImage.dataUrl) + '" alt="תמונה מצורפת">' +
+              '<div class="image-meta"><b>' + esc(attachedImage.name) + '</b>' +
+                'מקור: ' + humanFileSize(attachedImage.originalSize) +
+                ' · נשלח: ' + humanFileSize(attachedImage.sentSize) + '</div>' +
+              '<button class="image-remove" type="button" id="imageRemove">✕</button>' +
+            '</div>'
+          : '') +
+        (imageBusy ? '<p class="hint" style="margin:8px 0 0">מכין את התמונה…</p>' : '') +
+        (imageError ? '<div class="image-error">' + esc(imageError) + '</div>' : '') +
+        '<p class="hint">Enter לשליחה · Shift+Enter לשורה חדשה. נועם AI זוכר את השיחה האחרונה.</p>' +
+      '</div>' +
+    '</div>';
+
+  document
+    .getElementById("chatChange")
+    .addEventListener(
+      "click",
+      renderQuestions
+    );
+
+  var chatHint =
+    document.getElementById("chatHint");
+
+  if (chatHint && canAskMoreHint){
+    chatHint.addEventListener(
+      "click",
+      function(){
+        getStoredHelp("hint");
+      }
+    );
+  }
+
+  var chatExplain =
+    document.getElementById("chatExplain");
+
+  if (chatExplain){
+    chatExplain.addEventListener(
+      "click",
+      function(){
+        getStoredHelp("explain");
+      }
+    );
+  }
+
+  var retry =
+    document.getElementById("chatRetry");
+
+  if (retry){
+    retry.addEventListener(
+      "click",
+      function(){
+        if (options.retryKind){
+          getStoredHelp(
+            options.retryKind
+          );
+          return;
+        }
+
+        if (options.retryMessage){
+          ask(
+            options.retryMessage
+          );
+        }
+      }
+    );
+  }
+
+  var ta =
+    document.getElementById("chatMsg");
+
+  var send =
+    document.getElementById("chatSend");
+
+  var imagePick =
+    document.getElementById("imagePick");
+
+  var imageFile =
+    document.getElementById("imageFile");
+
+  var imageRemove =
+    document.getElementById("imageRemove");
+
+  if (imagePick && imageFile){
+    imagePick.addEventListener(
+      "click",
+      function(){
+        if (!busy && !imageBusy){
+          imageFile.click();
+        }
+      }
+    );
+
+    imageFile.addEventListener(
+      "change",
+      function(){
+        var file = imageFile.files && imageFile.files[0];
+        if (file){
+          attachImageFile(file);
+        }
+      }
+    );
+  }
+
+  if (imageRemove){
+    imageRemove.addEventListener(
+      "click",
+      function(){
+        attachedImage = null;
+        imageError = "";
+        renderChat();
+      }
+    );
+  }
+
+  ta.addEventListener(
+    "paste",
+    function(e){
+      var clipboard = e.clipboardData;
+      if (!clipboard || !clipboard.items){
+        return;
+      }
+
+      for (var i = 0; i < clipboard.items.length; i += 1){
+        var item = clipboard.items[i];
+        if (
+          item.kind === "file" &&
+          String(item.type || "").startsWith("image/")
+        ){
+          var file = item.getAsFile();
+          if (file){
+            e.preventDefault();
+            attachImageFile(file);
+          }
+          return;
+        }
+      }
+    }
+  );
+
+  function submitChat(){
+    if (busy || imageBusy){
+      return;
+    }
+
+    var message =
+      ta.value.trim();
+
+    if (!message && !attachedImage){
+      ta.focus();
+      return;
+    }
+
+    ask(message);
+  }
+
+  send.addEventListener(
+    "click",
+    submitChat
+  );
+
+  ta.addEventListener(
+    "keydown",
+    function(e){
+      if (
+        e.key === "Enter" &&
+        !e.shiftKey
+      ){
+        e.preventDefault();
+        submitChat();
+      }
+    }
+  );
+
+  var log =
+    document.getElementById("chatLog");
+
+  function scrollToLatestTutorAnswer(){
+    if (!log){
+      return;
+    }
+
+    var tutorRows =
+      log.querySelectorAll(".chat-row.tutor");
+
+    if (!tutorRows.length){
+      return;
+    }
+
+    var latestTutor =
+      tutorRows[tutorRows.length - 1];
+
+    var doScroll =
+      function(){
+        var bodyRect =
+          body.getBoundingClientRect();
+
+        var answerRect =
+          latestTutor.getBoundingClientRect();
+
+        body.scrollTop +=
+          answerRect.top -
+          bodyRect.top -
+          8;
+      };
+
+    if (typeof window.requestAnimationFrame === "function"){
+      window.requestAnimationFrame(
+        function(){
+          window.requestAnimationFrame(doScroll);
+        }
+      );
+    }else{
+      setTimeout(doScroll, 0);
+    }
+  }
+
+  if (options.focusLatestAnswer){
+    scrollToLatestTutorAnswer();
+  }else if (busy){
+    body.scrollTop =
+      body.scrollHeight;
+  }
+
+  if (
+    !busy &&
+    !options.errorMessage &&
+    !options.focusLatestAnswer
+  ){
+    setTimeout(
+      function(){
+        ta.focus();
+      },
+      0
+    );
+  }
+}
+
+/* CUSTOM QUESTION */
+
+function renderCustomQuestion(){
+  renderChat();
+}
+
+/* STORED SUPABASE HELP — NO QWEN */
+
+function getStoredHelp(kind){
+
+  if (!pickedId){
+    return renderQuestions();
+  }
+
+  if (kind === "hint" && !canAskMoreHint){
+    renderChat();
+    return;
+  }
+
+  var label =
+    kind === "hint"
+      ? (
+          hintIndex > 0
+            ? "💡 תן לי רמז נוסף"
+            : "💡 תן לי רמז"
+        )
+      : "📘 תן לי כיוון לרעיון";
+
+  var started = devNow();
+
+  renderChat({
+    busy:true,
+    pendingMessage:label
+  });
+
+  function finishAfterFloor(fn){
+    var elapsed = Math.max(0, Math.round(devNow() - started));
+    setTimeout(fn, Math.max(0, MIN_WAIT - elapsed));
+  }
+
+  post(
+    API + "/exerciseHelp",
+    {
+      exerciseId:pickedId,
+      kind:kind,
+      hintIndex:
+        kind === "hint"
+          ? hintIndex
+          : 0
+    }
+  )
+  .then(
+    function(res){
+
+      finishAfterFloor(function(){
+        if (
+          res &&
+          res.ok &&
+          res.answer
+        ){
+
+          if (kind === "hint"){
+            hintIndex += 1;
+
+            hintProgressByExercise[pickedId] =
+              hintIndex;
+
+            canAskMoreHint =
+              !!res.hasMore;
+
+            if (!canAskMoreHint){
+              exhaustedHintsByExercise[pickedId] = true;
+            }
+          }
+
+          history.push({
+            q:label,
+            a:res.answer
+          });
+
+          trimHistory();
+          renderChat({
+            focusLatestAnswer:true
+          });
+
+        }else{
+          renderChat({
+            pendingMessage:label,
+            errorMessage:
+              "לא הצלחתי להציג את הרמז כרגע.",
+            retryKind:kind
+          });
+        }
+      });
+    }
+  )
+  .catch(
+    function(){
+      finishAfterFloor(function(){
+        renderChat({
+          pendingMessage:label,
+          errorMessage:
+            "לא הצלחתי להציג את הרמז כרגע.",
+          retryKind:kind
+        });
+      });
+    }
+  );
+}
+/* FREE QUESTION — QWEN */
+
+function pollNoamJob(jobId, measurement){
+
+  return new Promise(function(resolve, reject){
+
+    var startedAt = Date.now();
+    var consecutiveErrors = 0;
+
+    function fail(code, message){
+      var error = new Error(message || code || "JOB_STATUS_FAILED");
+      error.code = code || "JOB_STATUS_FAILED";
+      reject(error);
+    }
+
+    function check(){
+
+      if (Date.now() - startedAt > ASYNC_JOB_MAX_WAIT){
+        fail(
+          "JOB_CLIENT_TIMEOUT",
+          "הכנת הרמז נמשכת יותר מדי זמן."
+        );
+        return;
+      }
+
+      if (measurement){
+        measurement.record.statusPolls += 1;
+      }
+
+      post(
+        API + "/noamTutorStatus",
+        {
+          ownerKey:ownerKey,
+          jobId:jobId
+        }
+      )
+      .then(function(res){
+
+        consecutiveErrors = 0;
+
+        if (!res || !res.ok){
+          fail(
+            (res && res.code) || "JOB_STATUS_FAILED",
+            (res && res.error) || "בדיקת מצב המשימה נכשלה."
+          );
+          return;
+        }
+
+        if (res.status === "completed"){
+          if (res.hint){
+            resolve(res);
+          }else{
+            fail("EMPTY_HINT", "המשימה הסתיימה ללא רמז.");
+          }
+          return;
+        }
+
+        if (res.status === "failed"){
+          fail(
+            res.code || "WORKER_FAILED",
+            res.error || "לא הצלחתי להכין רמז כרגע."
+          );
+          return;
+        }
+
+        setTimeout(check, STATUS_POLL_MS);
+      })
+      .catch(function(error){
+
+        consecutiveErrors += 1;
+
+        if (consecutiveErrors >= 3){
+          reject(error);
+          return;
+        }
+
+        setTimeout(check, STATUS_POLL_MS);
+      });
+    }
+
+    setTimeout(check, Math.min(STATUS_POLL_MS, MIN_WAIT));
+  });
+}
+
+function ask(message){
+
+  if (!pickedId){
+    return renderQuestions();
+  }
+
+  var cleanMessage =
+    String(message || "")
+      .trim()
+      .slice(0, 600);
+
+  var imageForRequest = attachedImage;
+
+  if (!cleanMessage && !imageForRequest){
+    renderChat();
+    return;
+  }
+
+  if (!cleanMessage && imageForRequest){
+    cleanMessage =
+      "עזור לי להבין את התמונה שצירפתי בהקשר של התרגיל.";
+  }
+
+  var apiHistory = historyForApi();
+  var measurement = devBegin(imageForRequest ? "image-async" : "text", pickedId);
+
+  renderChat({
+    busy:true,
+    pendingMessage:cleanMessage,
+    pendingHasImage:!!imageForRequest
+  });
+
+  // 1.25s UX floor is measured from the original click/send time.
+  // It overlaps real work and is never added after slower processing completes.
+  function remainingWait(){
+    return Math.max(0, MIN_WAIT - devElapsed(measurement.started));
+  }
+
+  function showError(error){
+    var wait = remainingWait();
+    measurement.record.minimumWaitMs = wait;
+
+    setTimeout(function(){
+      var code =
+        error && error.code
+          ? String(error.code)
+          : (error && error.name === "AbortError"
+              ? "CLIENT_ABORT"
+              : "REQUEST_ERROR");
+
+      var message =
+        error && error.publicMessage
+          ? error.publicMessage
+          : (
+              code === "ACTIVE_JOB_EXISTS"
+                ? "כבר מכינים עבורך רמז. אפשר להמתין עוד רגע."
+                : (
+                    code === "JOB_CLIENT_TIMEOUT"
+                      ? "הרמז עדיין לא הסתיים. אפשר לנסות לבדוק שוב בעוד רגע."
+                      : "לא הצלחנו לקבל רמז כרגע. אפשר לנסות שוב בעוד רגע."
+                  )
+            );
+
+      renderChat({
+        pendingMessage:cleanMessage,
+        errorMessage:message,
+        retryMessage:cleanMessage
+      });
+
+      devFinish(measurement, "request_error", code);
+    }, wait);
+  }
+
+  function showAnswer(answer){
+    var wait = remainingWait();
+    measurement.record.minimumWaitMs = wait;
+
+    setTimeout(function(){
+      history.push({
+        q:cleanMessage,
+        a:answer,
+        hadImage:!!imageForRequest
+      });
+
+      trimHistory();
+      renderChat({ focusLatestAnswer:true });
+      devFinish(measurement, "hint", null);
+    }, wait);
+  }
+
+  post(
+    API + "/noamTutor",
+    {
+      exerciseId:pickedId,
+      studentMessage:cleanMessage,
+      previousAttempts:Math.min(history.length, 10),
+      conversationHistory:apiHistory,
+      imageDataUrl:imageForRequest ? imageForRequest.dataUrl : "",
+      clientRequestId:measurement.record.clientRequestId,
+      ownerKey:imageForRequest ? ownerKey : undefined
+    },
+    measurement
+  )
+  .then(function(res){
+
+    if (!imageForRequest){
+      if (res && res.ok && res.answer){
+        showAnswer(res.answer);
+        return;
+      }
+
+      var textError = new Error("NO_HINT");
+      textError.code = (res && res.code) || "NO_HINT";
+      textError.publicMessage = res && res.error;
+      showError(textError);
+      return;
+    }
+
+    if (!(res && res.ok && res.accepted && res.jobId)){
+      var startError = new Error("ASYNC_START_FAILED");
+      startError.code = (res && res.code) || "ASYNC_START_FAILED";
+      startError.publicMessage = res && res.error;
+      showError(startError);
+      return;
+    }
+
+    measurement.record.jobId = res.jobId;
+    measurement.record.acceptedMs = devElapsed(measurement.started);
+
+    pollNoamJob(res.jobId, measurement)
+      .then(function(statusRes){
+        devReadResponse(measurement, statusRes);
+        showAnswer(statusRes.hint);
+      })
+      .catch(showError);
+  })
+  .catch(showError);
+}
+/* POST — each Wix request stays short. Image generation itself is no longer
+   held open here; only start/status requests use this 20s client guard. */
+function post(endpoint, payload, measurement){
+
+  // Development copy is pinned; do not silently fall back to Production.
+  if (endpoint.indexOf(API + "/") !== 0 ||
+      API !== "https://amiramnoam.wixstudio.com/my-site-2/_functions-dev"){
+    return Promise.reject(new Error("DEV_ENDPOINT_BLOCKED"));
+  }
+
+  var ctrl = ("AbortController" in window) ? new AbortController() : null;
+  var timer = setTimeout(function(){
+    if (ctrl){ ctrl.abort(); }
+  }, TIMEOUT);
+
+  if (measurement){
+    measurement.record.networkStartMs = devElapsed(measurement.started);
+  }
+
+  return fetch(endpoint, {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(payload),
+    signal:ctrl ? ctrl.signal : undefined
+  })
+  .then(function(r){
+    clearTimeout(timer);
+    if (measurement){
+      measurement.record.httpStatus = r.status;
+      measurement.record.headersMs = devElapsed(measurement.started);
+    }
+
+    if (!r.ok){
+      // Read optional error JSON to correlate the explicit pre-Solver abort.
+      // Non-JSON errors (including raw Wix 504) remain failures, never success.
+      return r.json().catch(function(){ return null; }).then(function(data){
+        devReadResponse(measurement, data);
+        var error = new Error("http " + r.status);
+        if (data && data.code){
+          error.code = String(data.code);
+        }
+        if (data && data.error){
+          error.publicMessage = String(data.error);
+        }
+        if (r.status === 503 && data && data.code === "BUDGET_ABORT"){
+          error.code = "BUDGET_ABORT";
+        }
+        throw error;
+      });
+    }
+
+    return r.json().then(function(data){
+      devReadResponse(measurement, data);
+      return data;
+    });
+  })
+  .catch(function(error){
+    // Release the client timer on rejection too; do not retry or change its value.
+    clearTimeout(timer);
+    throw error;
+  });
+}
+
+/* ESCAPE HTML */
+
+function escAttr(s){
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function esc(s){
+
+  return String(s)
+    .replace(
+      /[&<>"']/g,
+      function(m){
+
+        return {
+          "&":"&amp;",
+          "<":"&lt;",
+          ">":"&gt;",
+          '"':"&quot;",
+          "'":"&#39;"
+        }[m];
+      }
+    );
+}
+
+})();
+</script>
+
+</body>
+</html>
