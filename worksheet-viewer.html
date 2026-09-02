@@ -17,6 +17,9 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/contrib/auto-render.min.js"></script>
 
+<!-- PDF.js: clean, toolbar-free worksheet rendering; native viewer remains available as fallback -->
+<script defer src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+
 <style>
 :root{
   --ink:#14213D;
@@ -79,21 +82,22 @@ body{
   flex:none;
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:10px 12px;
   flex-wrap:wrap;
-  padding:12px 18px;
+  padding:10px 14px;
   background:#fff;
   border-bottom:3px solid var(--ink);
 }
 
 .bar h1{
+  flex:0 1 auto;
   font-family:'Heebo',sans-serif;
   font-weight:900;
-  font-size:18px;
+  font-size:20px;
   margin:0;
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:9px;
   min-width:0;
 }
 
@@ -103,23 +107,90 @@ body{
   white-space:nowrap;
 }
 
+.context-chips{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  min-width:0;
+}
+
 .chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
   font-family:'Heebo',sans-serif;
   font-weight:900;
-  font-size:12px;
+  font-size:12.5px;
+  line-height:1;
   white-space:nowrap;
   border:2.5px solid var(--ink);
   border-radius:999px;
-  padding:5px 12px;
+  padding:6px 13px;
   background:var(--tint);
 }
 
-.chip.lvl-c{
+.level-switch{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.level-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:12.5px;
+  line-height:1;
+  color:var(--ink);
+  background:#fff;
+  text-decoration:none;
+  white-space:nowrap;
+  border:2.5px solid var(--ink);
+  border-radius:999px;
+  padding:6px 13px;
+  transition:transform .14s ease, box-shadow .14s ease, background .14s ease;
+}
+
+.level-link:hover{
+  transform:translateY(-1px);
+  box-shadow:-2px 2px 0 var(--ink);
+}
+
+.level-link[aria-current="page"]{
+  color:#fff;
+  background:var(--accent);
+  box-shadow:-2px 2px 0 var(--ink);
+  cursor:default;
+  pointer-events:none;
+}
+
+.level-link[data-level="c"][aria-current="page"]{
+  color:var(--ink);
   background:#FFD84D;
+}
+
+.level-link.is-loading,
+.level-link[aria-disabled="true"]{
+  opacity:.48;
+  cursor:wait;
+  pointer-events:none;
 }
 
 .bar .spacer{
   margin-inline-start:auto;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
 }
 
 .btn{
@@ -135,6 +206,10 @@ body{
   border-radius:999px;
   padding:8px 16px;
   box-shadow:-3px 3px 0 var(--ink);
+}
+
+.btn:hover{
+  transform:translateY(-1px);
 }
 
 .btn--go{
@@ -153,17 +228,181 @@ body{
 .pdfwrap{
   flex:1;
   min-width:0;
-  padding:14px;
+  min-height:0;
+  padding:8px;
 }
 
-.pdfwrap iframe{
+.pdf-surface{
+  position:relative;
   width:100%;
   height:100%;
+  min-height:0;
+  overflow:hidden;
+  background:#E9EAEC;
   border:3px solid var(--ink);
   border-radius:var(--r);
+  box-shadow:-5px 5px 0 var(--ink);
+}
+
+.pdf-scroll{
+  width:100%;
+  height:100%;
+  overflow:auto;
+  overscroll-behavior:contain;
+  padding:10px 10px 28px;
+  background:#E9EAEC;
+  scrollbar-gutter:stable;
+}
+
+.pdf-scroll.hidden{
+  display:none;
+}
+
+.pdf-pages{
+  width:max-content;
+  min-width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  margin-inline:auto;
+}
+
+.pdf-page{
+  position:relative;
+  flex:none;
+  width:min(900px, calc(100vw - 80px));
+  max-width:none;
+  min-height:320px;
+  aspect-ratio:210 / 297;
+  overflow:hidden;
   background:#fff;
-  box-shadow:-6px 6px 0 var(--ink);
+  box-shadow:0 2px 12px rgba(20,33,61,.18);
+}
+
+.pdf-page canvas{
   display:block;
+  max-width:none;
+  height:auto;
+  background:#fff;
+}
+
+.pdf-page-wait{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  min-height:220px;
+  color:#6C7484;
+  font-family:'Heebo',sans-serif;
+  font-weight:800;
+  font-size:13px;
+}
+
+.pdf-page.is-ready .pdf-page-wait{
+  display:none;
+}
+
+.pdf-status{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  text-align:center;
+  background:#E9EAEC;
+  color:var(--ink);
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+}
+
+.pdf-status.hidden{
+  display:none;
+}
+
+.pdf-native{
+  width:100%;
+  height:100%;
+  border:0;
+  background:#fff;
+  display:block;
+}
+
+.pdf-native.hidden{
+  display:none;
+}
+
+.pdf-tools{
+  position:absolute;
+  inset-block-start:10px;
+  inset-inline-start:10px;
+  z-index:8;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  max-width:calc(100% - 20px);
+  padding:8px;
+  background:rgba(255,255,255,.97);
+  border:2.5px solid var(--ink);
+  border-radius:14px;
+  box-shadow:-3px 3px 0 var(--ink);
+}
+
+.pdf-tools.hidden{
+  display:none;
+}
+
+.pdf-tool,
+.pdf-tool-link{
+  min-height:35px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Heebo',sans-serif;
+  font-weight:900;
+  font-size:12.5px;
+  line-height:1;
+  color:var(--ink);
+  background:#fff;
+  text-decoration:none;
+  white-space:nowrap;
+  cursor:pointer;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  padding:7px 11px;
+}
+
+.pdf-tool.primary{
+  color:#fff;
+  background:var(--accent);
+}
+
+.pdf-zoom-value{
+  min-width:48px;
+  text-align:center;
+  font-family:'Heebo',sans-serif;
+  font-size:12.5px;
+  font-weight:900;
+}
+
+.pdf-fallback-message{
+  position:absolute;
+  inset-inline:12px;
+  inset-block-end:12px;
+  z-index:7;
+  padding:8px 12px;
+  color:var(--ink);
+  background:rgba(255,255,255,.95);
+  border:2px solid var(--ink);
+  border-radius:12px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.pdf-fallback-message.hidden{
+  display:none;
 }
 
 .mobile-open{
@@ -176,7 +415,7 @@ body{
   flex:none;
   width:430px;
   max-width:46vw;
-  padding:14px 14px 14px 0;
+  padding:8px 8px 8px 0;
   display:flex;
   flex-direction:column;
   min-height:0;
@@ -194,7 +433,7 @@ body{
   background:#fff;
   border:3px solid var(--ink);
   border-radius:var(--r);
-  box-shadow:-6px 6px 0 var(--ink);
+  box-shadow:-5px 5px 0 var(--ink);
   overflow:hidden;
 }
 
@@ -202,8 +441,9 @@ body{
   flex:none;
   display:flex;
   align-items:center;
-  gap:10px;
-  padding:12px 14px;
+  gap:8px;
+  min-height:58px;
+  padding:10px 12px;
   background:var(--tint);
   border-bottom:3px solid var(--ink);
 }
@@ -211,18 +451,64 @@ body{
 .panel-head b{
   font-family:'Heebo',sans-serif;
   font-weight:900;
-  font-size:16px;
+  font-size:17px;
 }
 
-.panel-head button{
-  margin-inline-start:auto;
-  border:none;
-  background:none;
-  cursor:pointer;
-  font-size:20px;
-  line-height:1;
+.panel-badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:4px 10px;
+  color:var(--accent-dark);
+  background:rgba(255,255,255,.68);
+  border-radius:999px;
+  font-family:'Heebo',sans-serif;
+  font-size:11.5px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.panel-head-spacer{
+  flex:1;
+}
+
+.panel-back{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  padding:6px 12px;
   color:var(--ink);
-  padding:2px 6px;
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  font-family:'Heebo',sans-serif;
+  font-size:12.5px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.panel-back[hidden]{
+  display:none;
+}
+
+.panel-close{
+  flex:none;
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  color:var(--ink);
+  background:transparent;
+  border:0;
+  border-radius:50%;
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+}
+
+.panel-close:hover{
+  background:rgba(255,255,255,.58);
 }
 
 .panel-body{
@@ -467,8 +753,8 @@ textarea:focus{
 
 .fab{
   position:fixed;
-  inset-block-end:22px;
-  inset-inline-start:22px;
+  inset-block-end:18px;
+  inset-inline-end:18px;
   z-index:40;
   font-family:'Heebo',sans-serif;
   font-weight:900;
@@ -495,15 +781,45 @@ textarea:focus{
     min-height:100%;
   }
 
+  .bar{
+    padding:10px 12px 12px;
+  }
+
+  .bar h1{
+    width:100%;
+    flex:1 1 100%;
+    font-size:18px;
+  }
+
+  .context-chips{
+    flex:1 1 auto;
+  }
+
+  .header-actions{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .header-actions .btn{
+    width:100%;
+    padding-inline:10px;
+    text-align:center;
+  }
+
+  #pdfToolsToggle{
+    display:none;
+  }
+
   .stage{
     flex-direction:column;
   }
 
   .pdfwrap{
-    padding:14px;
+    padding:12px;
   }
 
-  .pdfwrap iframe{
+  .pdf-surface{
     display:none;
   }
 
@@ -528,7 +844,7 @@ textarea:focus{
   .panel{
     width:100%;
     max-width:100%;
-    padding:0 14px 14px;
+    padding:0 12px 12px;
   }
 
   .panel.hidden{
@@ -539,7 +855,7 @@ textarea:focus{
     min-height:340px;
   }
 
-  .panel-head button{
+  .panel-close{
     display:none;
   }
 
@@ -840,24 +1156,38 @@ textarea:focus{
     <span class="ttl" id="title">דף עבודה</span>
   </h1>
 
-  <span class="chip" id="gradeChip"></span>
-  <span class="chip" id="levelChip"></span>
+  <div class="context-chips">
+    <span class="chip" id="gradeChip"></span>
+    <div class="level-switch" id="levelSwitch" aria-label="מעבר בין רמות"></div>
+  </div>
 
   <span class="spacer"></span>
 
-  <a class="btn" id="backBtn" href="./">
-    לכל דפי העבודה
-  </a>
+  <div class="header-actions">
+    <a class="btn" id="backBtn" href="./">
+      לכל דפי העבודה
+    </a>
 
-  <a
-    class="btn btn--go"
-    id="rawBtn"
-    href="#"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    פתח PDF בלשונית
-  </a>
+    <button
+      class="btn"
+      id="pdfToolsToggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="pdfTools"
+    >
+      כלי PDF
+    </button>
+
+    <a
+      class="btn btn--go"
+      id="rawBtn"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      פתח PDF בלשונית
+    </a>
+  </div>
 
 </div>
 
@@ -865,10 +1195,47 @@ textarea:focus{
 
   <div class="pdfwrap">
 
-    <iframe
-      id="pdf"
-      title="דף העבודה"
-    ></iframe>
+    <div class="pdf-surface" id="pdfSurface">
+
+      <div
+        class="pdf-scroll"
+        id="pdfScroll"
+        tabindex="0"
+        aria-label="דף העבודה"
+      >
+        <div class="pdf-pages" id="pdfPages"></div>
+      </div>
+
+      <iframe
+        class="pdf-native hidden"
+        id="pdf"
+        title="דף העבודה בתצוגת PDF מלאה"
+      ></iframe>
+
+      <div class="pdf-status" id="pdfStatus" role="status" aria-live="polite">
+        טוען את דף העבודה…
+      </div>
+
+      <div class="pdf-tools hidden" id="pdfTools" aria-label="כלי PDF">
+        <button class="pdf-tool" id="pdfZoomOut" type="button" aria-label="הקטנת הדף">−</button>
+        <span class="pdf-zoom-value" id="pdfZoomValue">100%</span>
+        <button class="pdf-tool" id="pdfZoomIn" type="button" aria-label="הגדלת הדף">+</button>
+        <button class="pdf-tool" id="pdfFit" type="button">התאם לרוחב</button>
+        <button class="pdf-tool primary" id="pdfNativeMode" type="button">תצוגת PDF מלאה</button>
+        <a
+          class="pdf-tool-link"
+          id="pdfOpenFull"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          הורדה / הדפסה
+        </a>
+      </div>
+
+      <div class="pdf-fallback-message hidden" id="pdfFallbackMessage"></div>
+
+    </div>
 
     <div class="mobile-open">
 
@@ -922,7 +1289,20 @@ textarea:focus{
           נועם AI
         </b>
 
+        <span class="panel-badge">רמזים בלבד</span>
+        <span class="panel-head-spacer"></span>
+
         <button
+          class="panel-back"
+          type="button"
+          id="panelBack"
+          hidden
+        >
+          חזרה
+        </button>
+
+        <button
+          class="panel-close"
           type="button"
           id="closePanel"
           aria-label="סגירה"
@@ -962,7 +1342,7 @@ var BASE =
   "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
 
 var API =
-  "https://amiramnoam.wixstudio.com/my-site-2/_functions";
+  "https://amiramnoam.wixstudio.com/my-site-2/_functions-dev";
 
 var LEVEL = {
   a:"A",
@@ -970,8 +1350,10 @@ var LEVEL = {
   c:"E"
 };
 
-var MIN_WAIT = 4200;
+var MIN_WAIT = 1250;
 var TIMEOUT = 20000;
+var STATUS_POLL_MS = 1500;
+var ASYNC_JOB_MAX_WAIT = 8 * 60 * 1000;
 
 var MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 var TARGET_IMAGE_BYTES = 250 * 1024;
@@ -994,6 +1376,156 @@ var LEVEL_NAME = {
   b:"רמה ב׳",
   c:"רמת מצוינות"
 };
+
+/* R504-DEV-MIN-20260901-01: LOCAL-OVERRIDE DEVELOPMENT COPY, NOT FOR GITHUB.
+   Observability only: no student text, image data or answer text in this buffer.
+   E2E below is accepted ask() to final UI update; image requests may span
+   multiple short start/status HTTP calls. It is NOT a physical paint,
+   image-attachment/compression or PDF-load measurement. */
+var DEV_CANDIDATE = "R02-ASYNC-DEV-20260902-01";
+var devMeasurements = [];
+var devSequence = 0;
+
+function devNow(){
+  return window.performance && typeof window.performance.now === "function"
+    ? window.performance.now()
+    : Date.now();
+}
+
+function devElapsed(started){
+  return Math.max(0, Math.round(devNow() - started));
+}
+
+function devBegin(route, exerciseId){
+  devSequence += 1;
+  var record = {
+    candidate:DEV_CANDIDATE,
+    clientRequestId:"v504-" + Date.now().toString(36) + "-" +
+      devSequence.toString(36) + "-" + Math.random().toString(36).slice(2, 8),
+    startedAtUtc:new Date().toISOString(),
+    route:route,
+    exerciseId:exerciseId,
+    endpoint:API + "/noamTutor",
+    clock:"performance.now",
+    outcome:"pending",
+    httpStatus:null,
+    requestId:null,
+    networkStartMs:null,
+    headersMs:null,
+    bodyDoneMs:null,
+    uiUpdatedMs:null,
+    nextFrameMs:null,
+    minimumWaitMs:0,
+    responseAnswerChars:null,
+    jobId:null,
+    acceptedMs:null,
+    statusPolls:0,
+    errorCode:null
+  };
+  if (!(window.performance && typeof window.performance.now === "function")){
+    record.clock = "Date.now fallback";
+  }
+  devMeasurements.push(record);
+  if (devMeasurements.length > 80){ devMeasurements.shift(); }
+  console.info("NOAM VIEWER START:", JSON.stringify(record));
+  return { started:devNow(), record:record };
+}
+
+function devReadResponse(measurement, data){
+  if (!measurement){ return; }
+  var record = measurement.record;
+  record.bodyDoneMs = devElapsed(measurement.started);
+  if (data && typeof data.requestId === "string" &&
+      /^r504-[a-z0-9-]{1,150}$/i.test(data.requestId)){
+    record.requestId = data.requestId;
+  }
+  if (data && typeof data.answer === "string"){
+    record.responseAnswerChars = data.answer.length;
+  }
+  if (data && typeof data.hint === "string"){
+    record.responseAnswerChars = data.hint.length;
+  }
+  if (data && typeof data.jobId === "string"){
+    record.jobId = data.jobId;
+  }
+}
+
+function devFinish(measurement, outcome, errorCode){
+  if (!measurement){ return; }
+  measurement.record.outcome = outcome;
+  measurement.record.errorCode = errorCode || null;
+  measurement.record.uiUpdatedMs = devElapsed(measurement.started);
+  console.info("NOAM VIEWER END:", JSON.stringify(measurement.record));
+  if (typeof window.requestAnimationFrame === "function"){
+    window.requestAnimationFrame(function(){
+      measurement.record.nextFrameMs = devElapsed(measurement.started);
+    });
+  }
+}
+
+window.NOAM_DEV = {
+  candidate:DEV_CANDIDATE,
+  endpoint:API,
+  snapshot:function(){
+    return JSON.parse(JSON.stringify({
+      candidate:DEV_CANDIDATE,
+      environment:"development-local-override",
+      endpoint:API,
+      capturedAtUtc:new Date().toISOString(),
+      records:devMeasurements
+    }));
+  }
+};
+console.info("NOAM DEV CANDIDATE:", DEV_CANDIDATE, API);
+
+/* ASYNC OWNER KEY
+   Persisted only in this browser. Never logged or rendered. */
+var OWNER_KEY_STORAGE = "noam-ai-owner-key-v1";
+var OWNER_KEY_RE = /^[A-Za-z0-9_-]{16,200}$/;
+
+function createOwnerKey(){
+  if (window.crypto && typeof window.crypto.randomUUID === "function"){
+    return window.crypto.randomUUID();
+  }
+
+  var bytes = new Uint8Array(24);
+
+  if (window.crypto && typeof window.crypto.getRandomValues === "function"){
+    window.crypto.getRandomValues(bytes);
+  }else{
+    for (var i = 0; i < bytes.length; i += 1){
+      bytes[i] = Math.floor(Math.random() * 256);
+    }
+  }
+
+  var out = "";
+  for (var j = 0; j < bytes.length; j += 1){
+    out += bytes[j].toString(16).padStart(2, "0");
+  }
+  return out;
+}
+
+function getOwnerKey(){
+  var existing = "";
+
+  try{
+    existing = String(localStorage.getItem(OWNER_KEY_STORAGE) || "").trim();
+  }catch(e){}
+
+  if (OWNER_KEY_RE.test(existing)){
+    return existing;
+  }
+
+  var created = createOwnerKey();
+
+  try{
+    localStorage.setItem(OWNER_KEY_STORAGE, created);
+  }catch(e){}
+
+  return created;
+}
+
+var ownerKey = getOwnerKey();
 
 /* PARAMS */
 
@@ -1018,13 +1550,13 @@ var lv =
   (
     q.get("lv") ||
     ""
-  ).trim();
+  ).trim().toLowerCase();
 
 var pdf =
   (
     q.get("pdf") ||
     ""
-  ).trim();
+  ).trim().toLowerCase();
 
 var ttl =
   (
@@ -1113,11 +1645,6 @@ document
   "📄";
 
 document
-  .getElementById("pdf")
-  .src =
-  pdfUrl;
-
-document
   .getElementById("rawBtn")
   .href =
   pdfUrl;
@@ -1127,7 +1654,12 @@ document
   .href =
   pdfUrl;
 
-/* CHIPS */
+document
+  .getElementById("pdfOpenFull")
+  .href =
+  pdfUrl;
+
+/* HEADER CONTEXT + LEVEL SWITCHER */
 
 var gc =
   document
@@ -1146,27 +1678,1229 @@ if (okGrade){
     "none";
 }
 
-var lc =
+var levelSwitch =
   document
   .getElementById(
-    "levelChip"
+    "levelSwitch"
+  );
+
+var levelPdfMap = {
+  a:"",
+  b:"",
+  c:""
+};
+
+["a", "b", "c"]
+  .forEach(
+    function(key){
+
+      var candidate =
+        String(
+          q.get("p" + key) ||
+          ""
+        )
+        .trim()
+        .toLowerCase();
+
+      if (
+        /^[0-9a-f]{32}$/
+        .test(candidate)
+      ){
+        levelPdfMap[key] =
+          candidate;
+      }
+    }
   );
 
 if (okLv){
+  levelPdfMap[lv] =
+    pdf;
+}
 
-  lc.textContent =
-    LEVEL_NAME[lv];
+function buildLevelHref(
+  nextLevel,
+  nextPdf
+){
 
-  if (lv === "c"){
+  var next =
+    new URL(
+      window.location.href
+    );
 
-    lc.className =
-      "chip lvl-c";
+  next.searchParams
+    .set(
+      "lv",
+      nextLevel
+    );
+
+  next.searchParams
+    .set(
+      "pdf",
+      nextPdf
+    );
+
+  ["a", "b", "c"]
+    .forEach(
+      function(key){
+
+        if (
+          levelPdfMap[key]
+        ){
+          next.searchParams
+            .set(
+              "p" + key,
+              levelPdfMap[key]
+            );
+        }
+      }
+    );
+
+  return (
+    next.pathname +
+    next.search +
+    next.hash
+  );
+}
+
+function renderLevelSwitch(
+  loading
+){
+
+  if (!okLv){
+    levelSwitch.style.display =
+      "none";
+    return;
   }
 
-}else{
+  var html =
+    ["a", "b", "c"]
+    .map(
+      function(key){
 
-  lc.style.display =
-    "none";
+        var label =
+          LEVEL_NAME[key];
+
+        if (key === lv){
+          return (
+            '<span class="level-link" ' +
+            'data-level="' + key + '" ' +
+            'aria-current="page">' +
+            label +
+            '</span>'
+          );
+        }
+
+        if (
+          levelPdfMap[key]
+        ){
+          return (
+            '<a class="level-link" ' +
+            'data-level="' + key + '" ' +
+            'href="' +
+            escAttr(
+              buildLevelHref(
+                key,
+                levelPdfMap[key]
+              )
+            ) +
+            '">' +
+            label +
+            '</a>'
+          );
+        }
+
+        if (loading){
+          return (
+            '<span class="level-link is-loading" ' +
+            'data-level="' + key + '" ' +
+            'aria-disabled="true">' +
+            label +
+            '</span>'
+          );
+        }
+
+        return "";
+      }
+    )
+    .join("");
+
+  levelSwitch.innerHTML =
+    html;
+}
+
+function escapeRegExp(value){
+  return String(value)
+    .replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+}
+
+function parseIndexLevelPdfs(
+  source
+){
+
+  if (
+    !okGrade ||
+    !okX ||
+    !source
+  ){
+    return null;
+  }
+
+  var topicMatch =
+    new RegExp(
+      "\\{\\s*id\\s*:\\s*(\\d+)\\s*,\\s*x\\s*:\\s*[\"']" +
+      escapeRegExp(x) +
+      "[\"']",
+      "i"
+    )
+    .exec(source);
+
+  if (!topicMatch){
+    return null;
+  }
+
+  var topicId =
+    parseInt(
+      topicMatch[1],
+      10
+    );
+
+  var dataStart =
+    source.indexOf(
+      "var DATA"
+    );
+
+  var gradeSearch =
+    dataStart >= 0
+      ? source.slice(dataStart)
+      : source;
+
+  var gradeMarker =
+    new RegExp(
+      "(?:^|\\n)\\s*" +
+      g +
+      "\\s*:\\s*\\{\\s*(?:\\n\\s*)?links\\s*:\\s*\\{",
+      "m"
+    )
+    .exec(gradeSearch);
+
+  if (!gradeMarker){
+    return null;
+  }
+
+  var gradeStart =
+    gradeMarker.index;
+
+  var groupsIndex =
+    gradeSearch.indexOf(
+      "groups:",
+      gradeStart
+    );
+
+  if (groupsIndex < 0){
+    return null;
+  }
+
+  var gradeBlock =
+    gradeSearch.slice(
+      gradeStart,
+      groupsIndex
+    );
+
+  var rowMatch =
+    new RegExp(
+      "(?:^|\\n)\\s*" +
+      topicId +
+      "\\s*:\\s*\\{([\\s\\S]*?)\\}",
+      "m"
+    )
+    .exec(gradeBlock);
+
+  if (!rowMatch){
+    return null;
+  }
+
+  var row =
+    rowMatch[1];
+
+  var found = {
+    a:"",
+    b:"",
+    c:""
+  };
+
+  ["a", "b", "c"]
+    .forEach(
+      function(key){
+
+        var match =
+          new RegExp(
+            "(?:^|[,\\s])" +
+            key +
+            "\\s*:\\s*[\"']([0-9a-f]{32})[\"']",
+            "i"
+          )
+          .exec(row);
+
+        if (match){
+          found[key] =
+            match[1]
+            .toLowerCase();
+        }
+      }
+    );
+
+  return found;
+}
+
+function discoverSiblingLevels(){
+
+  if (
+    !okX ||
+    !okGrade ||
+    !okLv
+  ){
+    renderLevelSwitch(false);
+    return;
+  }
+
+  renderLevelSwitch(
+    !(
+      levelPdfMap.a &&
+      levelPdfMap.b &&
+      levelPdfMap.c
+    )
+  );
+
+  fetch(
+    "./index.html",
+    {
+      cache:"no-store"
+    }
+  )
+  .then(
+    function(response){
+
+      if (!response.ok){
+        throw new Error(
+          "index " +
+          response.status
+        );
+      }
+
+      return response.text();
+    }
+  )
+  .then(
+    function(source){
+
+      var discovered =
+        parseIndexLevelPdfs(
+          source
+        );
+
+      if (discovered){
+        ["a", "b", "c"]
+          .forEach(
+            function(key){
+
+              if (
+                discovered[key] &&
+                key !== lv
+              ){
+                levelPdfMap[key] =
+                  discovered[key];
+              }
+            }
+          );
+      }
+
+      renderLevelSwitch(false);
+    }
+  )
+  .catch(
+    function(error){
+      console.warn(
+        "LEVEL SWITCH DISCOVERY:",
+        error
+      );
+
+      renderLevelSwitch(false);
+    }
+  );
+}
+
+renderLevelSwitch(true);
+discoverSiblingLevels();
+
+/* CLEAN PDF VIEWER */
+
+var pdfSurface =
+  document.getElementById(
+    "pdfSurface"
+  );
+
+var pdfScroll =
+  document.getElementById(
+    "pdfScroll"
+  );
+
+var pdfPages =
+  document.getElementById(
+    "pdfPages"
+  );
+
+var pdfFrame =
+  document.getElementById(
+    "pdf"
+  );
+
+var pdfStatus =
+  document.getElementById(
+    "pdfStatus"
+  );
+
+var pdfTools =
+  document.getElementById(
+    "pdfTools"
+  );
+
+var pdfToolsToggle =
+  document.getElementById(
+    "pdfToolsToggle"
+  );
+
+var pdfNativeMode =
+  document.getElementById(
+    "pdfNativeMode"
+  );
+
+var pdfFallbackMessage =
+  document.getElementById(
+    "pdfFallbackMessage"
+  );
+
+var pdfZoomValue =
+  document.getElementById(
+    "pdfZoomValue"
+  );
+
+var pdfDocument =
+  null;
+
+var pdfObserver =
+  null;
+
+var pdfResizeObserver =
+  null;
+
+var pdfZoom =
+  1;
+
+var pdfRenderVersion =
+  0;
+
+/* --- PDF.js asset base (worker + CMaps + standard fonts must all match) --- */
+var PDFJS_VERSION =
+  "3.11.174";
+
+var PDFJS_BASE =
+  "https://cdn.jsdelivr.net/npm/pdfjs-dist@" +
+  PDFJS_VERSION +
+  "/";
+
+var PDFJS_CMAP_URL =
+  PDFJS_BASE + "cmaps/";
+
+var PDFJS_STD_FONT_URL =
+  PDFJS_BASE + "standard_fonts/";
+
+/* Canvas rendering is OPT-IN. The native browser viewer is the default,
+   because PDF.js 3.x mis-spaces the embedded subset Hebrew fonts that
+   WeasyPrint produces (glyphs correct, advance widths wrong). */
+var PDF_CLEAN_OPT_IN =
+  false;
+
+var pdfNativeActive =
+  false;
+
+var pdfCleanAvailable =
+  false;
+
+var pdfLastWidth =
+  0;
+
+var pdfResizeTimer =
+  0;
+
+function setPdfStatus(
+  message,
+  visible
+){
+
+  pdfStatus.textContent =
+    message || "";
+
+  pdfStatus.classList
+    .toggle(
+      "hidden",
+      !visible
+    );
+}
+
+function showPdfTools(
+  visible
+){
+
+  pdfTools.classList
+    .toggle(
+      "hidden",
+      !visible
+    );
+
+  pdfToolsToggle
+    .setAttribute(
+      "aria-expanded",
+      visible
+        ? "true"
+        : "false"
+    );
+}
+
+function ensureNativePdf(){
+
+  if (!pdfFrame.src){
+    pdfFrame.src =
+      pdfUrl +
+      "#view=FitH";
+  }
+}
+
+function setNativePdfMode(
+  active
+){
+
+  pdfNativeActive =
+    !!active;
+
+  if (pdfNativeActive){
+    ensureNativePdf();
+  }
+
+  pdfFrame.classList
+    .toggle(
+      "hidden",
+      !pdfNativeActive
+    );
+
+  pdfScroll.classList
+    .toggle(
+      "hidden",
+      pdfNativeActive
+    );
+
+  pdfNativeMode.textContent =
+    pdfNativeActive &&
+    pdfCleanAvailable
+      ? "תצוגה נקייה (ניסיוני)"
+      : "תצוגת PDF מלאה";
+
+  pdfNativeMode.classList
+    .toggle(
+      "hidden",
+      !pdfCleanAvailable
+    );
+
+  /* zoom / fit-width act on the canvas layer only */
+  ["pdfZoomIn","pdfZoomOut","pdfFit"]
+    .forEach(
+      function(id){
+        var btn =
+          document.getElementById(id);
+        if (!btn){ return; }
+        btn.disabled =
+          pdfNativeActive;
+        btn.classList
+          .toggle(
+            "hidden",
+            pdfNativeActive
+          );
+      }
+    );
+
+  pdfZoomValue.classList
+    .toggle(
+      "hidden",
+      pdfNativeActive
+    );
+}
+
+function showPdfFallback(
+  message
+){
+
+  pdfCleanAvailable =
+    false;
+
+  setPdfStatus(
+    "",
+    false
+  );
+
+  pdfFallbackMessage.textContent =
+    message ||
+    "התצוגה הנקייה אינה זמינה בדפדפן הזה; הוצגה תצוגת ה-PDF המלאה.";
+
+  pdfFallbackMessage.classList
+    .remove(
+      "hidden"
+    );
+
+  setNativePdfMode(true);
+}
+
+function createPdfPageShells(
+  doc
+){
+
+  var html =
+    "";
+
+  for (
+    var pageNumber = 1;
+    pageNumber <= doc.numPages;
+    pageNumber += 1
+  ){
+    html +=
+      '<div class="pdf-page" data-page="' +
+      pageNumber +
+      '" data-state="idle">' +
+        '<canvas aria-label="עמוד ' +
+        pageNumber +
+        '"></canvas>' +
+        '<div class="pdf-page-wait">עמוד ' +
+        pageNumber +
+        '</div>' +
+      '</div>';
+  }
+
+  pdfPages.innerHTML =
+    html;
+}
+
+function renderPdfPage(
+  pageNumber,
+  version
+){
+
+  if (
+    !pdfDocument ||
+    version !== pdfRenderVersion
+  ){
+    return;
+  }
+
+  var pageElement =
+    pdfPages.querySelector(
+      '[data-page="' +
+      pageNumber +
+      '"]'
+    );
+
+  if (!pageElement){
+    return;
+  }
+
+  var state =
+    pageElement.getAttribute(
+      "data-state"
+    );
+
+  if (
+    state === "rendering" ||
+    state === "ready"
+  ){
+    return;
+  }
+
+  pageElement.setAttribute(
+    "data-state",
+    "rendering"
+  );
+
+  pdfDocument
+    .getPage(pageNumber)
+    .then(
+      function(page){
+
+        if (
+          version !== pdfRenderVersion
+        ){
+          return;
+        }
+
+        var baseViewport =
+          page.getViewport({
+            scale:1
+          });
+
+        var availableWidth =
+          Math.max(
+            280,
+            pdfScroll.clientWidth -
+            34
+          );
+
+        var cssScale =
+          (
+            availableWidth /
+            baseViewport.width
+          ) *
+          pdfZoom;
+
+        var viewport =
+          page.getViewport({
+            scale:cssScale
+          });
+
+        var pixelRatio =
+          Math.min(
+            window.devicePixelRatio || 1,
+            1.25
+          );
+
+        var canvas =
+          pageElement.querySelector(
+            "canvas"
+          );
+
+        var context =
+          canvas.getContext(
+            "2d",
+            {
+              alpha:false
+            }
+          );
+
+        canvas.width =
+          Math.max(
+            1,
+            Math.floor(
+              viewport.width *
+              pixelRatio
+            )
+          );
+
+        canvas.height =
+          Math.max(
+            1,
+            Math.floor(
+              viewport.height *
+              pixelRatio
+            )
+          );
+
+        canvas.style.width =
+          Math.floor(
+            viewport.width
+          ) +
+          "px";
+
+        canvas.style.height =
+          Math.floor(
+            viewport.height
+          ) +
+          "px";
+
+        pageElement.style.width =
+          Math.floor(
+            viewport.width
+          ) +
+          "px";
+
+        pageElement.style.height =
+          Math.floor(
+            viewport.height
+          ) +
+          "px";
+
+        pageElement.style.aspectRatio =
+          viewport.width +
+          " / " +
+          viewport.height;
+
+        var renderTask =
+          page.render({
+            canvasContext:context,
+            viewport:viewport,
+            transform:
+              pixelRatio === 1
+                ? null
+                : [
+                    pixelRatio,
+                    0,
+                    0,
+                    pixelRatio,
+                    0,
+                    0
+                  ]
+          });
+
+        pageElement._renderTask =
+          renderTask;
+
+        return renderTask.promise;
+      }
+    )
+    .then(
+      function(){
+
+        if (
+          version !== pdfRenderVersion
+        ){
+          return;
+        }
+
+        pageElement.setAttribute(
+          "data-state",
+          "ready"
+        );
+
+        pageElement.classList
+          .add(
+            "is-ready"
+          );
+      }
+    )
+    .catch(
+      function(error){
+
+        if (
+          error &&
+          error.name ===
+          "RenderingCancelledException"
+        ){
+          return;
+        }
+
+        console.warn(
+          "PDF PAGE RENDER:",
+          pageNumber,
+          error
+        );
+
+        pageElement.setAttribute(
+          "data-state",
+          "error"
+        );
+
+        var wait =
+          pageElement.querySelector(
+            ".pdf-page-wait"
+          );
+
+        if (wait){
+          wait.textContent =
+            "לא הצלחתי להציג את עמוד " +
+            pageNumber;
+        }
+      }
+    );
+}
+
+function observePdfPages(){
+
+  if (pdfObserver){
+    pdfObserver.disconnect();
+  }
+
+  var version =
+    pdfRenderVersion;
+
+  if (
+    "IntersectionObserver" in window
+  ){
+    pdfObserver =
+      new IntersectionObserver(
+        function(entries){
+          entries.forEach(
+            function(entry){
+              if (entry.isIntersecting){
+                renderPdfPage(
+                  Number(
+                    entry.target.dataset.page
+                  ),
+                  version
+                );
+              }
+            }
+          );
+        },
+        {
+          root:pdfScroll,
+          rootMargin:"900px 0px",
+          threshold:.01
+        }
+      );
+
+    pdfPages
+      .querySelectorAll(
+        ".pdf-page"
+      )
+      .forEach(
+        function(pageElement){
+          pdfObserver.observe(
+            pageElement
+          );
+        }
+      );
+
+  }else{
+    for (
+      var pageNumber = 1;
+      pageNumber <= pdfDocument.numPages;
+      pageNumber += 1
+    ){
+      renderPdfPage(
+        pageNumber,
+        version
+      );
+    }
+  }
+}
+
+function resetPdfRendering(){
+
+  if (!pdfDocument){
+    return;
+  }
+
+  pdfRenderVersion += 1;
+
+  pdfPages
+    .querySelectorAll(
+      ".pdf-page"
+    )
+    .forEach(
+      function(pageElement){
+
+        if (
+          pageElement._renderTask &&
+          typeof pageElement._renderTask.cancel ===
+            "function"
+        ){
+          try{
+            pageElement._renderTask.cancel();
+          }catch(e){}
+        }
+
+        pageElement._renderTask =
+          null;
+
+        pageElement.classList
+          .remove(
+            "is-ready"
+          );
+
+        pageElement.setAttribute(
+          "data-state",
+          "idle"
+        );
+
+        var canvas =
+          pageElement.querySelector(
+            "canvas"
+          );
+
+        if (canvas){
+          canvas.width = 1;
+          canvas.height = 1;
+          canvas.style.width = "";
+          canvas.style.height = "";
+        }
+
+        pageElement.style.width = "";
+        pageElement.style.height = "";
+        pageElement.style.aspectRatio = "";
+      }
+    );
+
+  observePdfPages();
+}
+
+function setPdfZoom(
+  value
+){
+
+  pdfZoom =
+    Math.max(
+      .7,
+      Math.min(
+        1.7,
+        Math.round(
+          value * 10
+        ) /
+        10
+      )
+    );
+
+  pdfZoomValue.textContent =
+    Math.round(
+      pdfZoom *
+      100
+    ) +
+    "%";
+
+  resetPdfRendering();
+}
+
+function schedulePdfResize(){
+
+  clearTimeout(
+    pdfResizeTimer
+  );
+
+  pdfResizeTimer =
+    setTimeout(
+      function(){
+
+        var nextWidth =
+          Math.round(
+            pdfScroll.clientWidth
+          );
+
+        if (
+          !pdfDocument ||
+          Math.abs(
+            nextWidth -
+            pdfLastWidth
+          ) < 3
+        ){
+          return;
+        }
+
+        pdfLastWidth =
+          nextWidth;
+
+        resetPdfRendering();
+      },
+      180
+    );
+}
+
+function initPdfExperience(){
+
+  /* Default for every viewport: the browser's own PDF viewer.
+     It renders the embedded Hebrew fonts correctly. */
+  setPdfStatus(
+    "",
+    false
+  );
+
+  setNativePdfMode(true);
+
+  showPdfTools(true);
+
+  if (
+    window.matchMedia(
+      "(max-width:900px)"
+    ).matches
+  ){
+    /* Mobile: native only. Previously this branch returned without
+       showing anything at all, leaving an empty pane. */
+    pdfCleanAvailable =
+      false;
+
+    return;
+  }
+
+  if (
+    !PDF_CLEAN_OPT_IN
+  ){
+    pdfCleanAvailable =
+      false;
+
+    return;
+  }
+
+  if (
+    !window.pdfjsLib
+  ){
+    showPdfFallback(
+      "לא ניתן לטעון את התצוגה הנקייה. הוצגה תצוגת ה-PDF המלאה."
+    );
+    return;
+  }
+
+  try{
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      PDFJS_BASE + "build/pdf.worker.min.js";
+  }catch(e){}
+
+  setPdfStatus(
+    "טוען את דף העבודה…",
+    true
+  );
+
+  var loadTask =
+    window.pdfjsLib
+      .getDocument({
+        url:pdfUrl,
+        withCredentials:false,
+        cMapUrl:PDFJS_CMAP_URL,
+        cMapPacked:true,
+        standardFontDataUrl:PDFJS_STD_FONT_URL,
+        disableFontFace:false,
+        useSystemFonts:false
+      });
+
+  loadTask.promise
+    .then(
+      function(doc){
+
+        pdfDocument =
+          doc;
+
+        pdfCleanAvailable =
+          true;
+
+        pdfFallbackMessage.classList
+          .add(
+            "hidden"
+          );
+
+        createPdfPageShells(
+          doc
+        );
+
+        pdfRenderVersion += 1;
+        pdfLastWidth =
+          Math.round(
+            pdfScroll.clientWidth
+          );
+
+        setPdfStatus(
+          "",
+          false
+        );
+
+        observePdfPages();
+
+        if (
+          "ResizeObserver" in window
+        ){
+          pdfResizeObserver =
+            new ResizeObserver(
+              schedulePdfResize
+            );
+
+          pdfResizeObserver.observe(
+            pdfScroll
+          );
+        }else{
+          window.addEventListener(
+            "resize",
+            schedulePdfResize
+          );
+        }
+      }
+    )
+    .catch(
+      function(error){
+        console.warn(
+          "CLEAN PDF VIEWER:",
+          error
+        );
+
+        showPdfFallback(
+          "התצוגה הנקייה נחסמה בדפדפן; הוצגה תצוגת ה-PDF המלאה."
+        );
+      }
+    );
+}
+
+pdfToolsToggle
+  .addEventListener(
+    "click",
+    function(){
+      showPdfTools(
+        pdfTools.classList
+          .contains(
+            "hidden"
+          )
+      );
+    }
+  );
+
+document
+  .getElementById(
+    "pdfZoomOut"
+  )
+  .addEventListener(
+    "click",
+    function(){
+      setPdfZoom(
+        pdfZoom -
+        .1
+      );
+    }
+  );
+
+document
+  .getElementById(
+    "pdfZoomIn"
+  )
+  .addEventListener(
+    "click",
+    function(){
+      setPdfZoom(
+        pdfZoom +
+        .1
+      );
+    }
+  );
+
+document
+  .getElementById(
+    "pdfFit"
+  )
+  .addEventListener(
+    "click",
+    function(){
+      setPdfZoom(1);
+    }
+  );
+
+pdfNativeMode
+  .addEventListener(
+    "click",
+    function(){
+
+      if (
+        !pdfCleanAvailable
+      ){
+        ensureNativePdf();
+        return;
+      }
+
+      setNativePdfMode(
+        !pdfNativeActive
+      );
+    }
+  );
+
+if (
+  document.readyState ===
+  "loading"
+){
+  document.addEventListener(
+    "DOMContentLoaded",
+    initPdfExperience
+  );
+}else{
+  initPdfExperience();
 }
 
 /* BACK */
@@ -1198,6 +2932,43 @@ var fab =
   document
   .getElementById(
     "fab"
+  );
+
+var panelBack =
+  document
+  .getElementById(
+    "panelBack"
+  );
+
+var panelBackAction =
+  null;
+
+function setPanelBack(
+  action,
+  label
+){
+
+  panelBackAction =
+    typeof action === "function"
+      ? action
+      : null;
+
+  panelBack.hidden =
+    !panelBackAction;
+
+  panelBack.textContent =
+    label ||
+    "חזרה";
+}
+
+panelBack
+  .addEventListener(
+    "click",
+    function(){
+      if (panelBackAction){
+        panelBackAction();
+      }
+    }
   );
 
 
@@ -1811,6 +3582,8 @@ if (!aiReady){
 
 function loadExercises(){
 
+  setPanelBack(null);
+
   loaded =
     true;
 
@@ -1895,6 +3668,8 @@ function loadExercises(){
 
 function renderEmpty(){
 
+  setPanelBack(null);
+
   body.innerHTML =
     '<div class="note">' +
 
@@ -1910,6 +3685,8 @@ function renderEmpty(){
 /* NETWORK ERROR */
 
 function renderNetworkError(){
+
+  setPanelBack(null);
 
   body.innerHTML =
     '<div class="note">' +
@@ -2199,6 +3976,8 @@ async function attachImageFile(file){
 
 function renderQuestions(){
 
+  setPanelBack(null);
+
   pickedQ =
     null;
 
@@ -2348,6 +4127,12 @@ function pickQuestion(n){
   pickedQ =
     n;
 
+  pickedS =
+    null;
+
+  pickedId =
+    null;
+
   hintIndex =
     0;
 
@@ -2369,6 +4154,11 @@ function pickQuestion(n){
 
     return renderCompose();
   }
+
+  setPanelBack(
+    renderQuestions,
+    "חזרה"
+  );
 
   body.innerHTML =
     '<p class="step-title">' +
@@ -2466,6 +4256,22 @@ function pickedLabel(){
 /* THREE BUTTONS */
 
 function renderCompose(){
+
+  setPanelBack(
+    function(){
+      if (
+        sectionsOf(pickedQ)
+        .length
+      ){
+        pickQuestion(
+          pickedQ
+        );
+      }else{
+        renderQuestions();
+      }
+    },
+    "חזרה"
+  );
 
   body.innerHTML =
     '<div class="picked">' +
@@ -2609,6 +4415,13 @@ function renderChat(options){
 
   var busy =
     !!options.busy;
+
+  setPanelBack(
+    busy
+      ? null
+      : renderCompose,
+    "חזרה"
+  );
 
   var pendingMessage =
     String(
@@ -2958,12 +4771,19 @@ function getStoredHelp(kind){
             ? "💡 תן לי רמז נוסף"
             : "💡 תן לי רמז"
         )
-      : "📘 תסביר לי את הרעיון";
+      : "📘 תן לי כיוון לרעיון";
+
+  var started = devNow();
 
   renderChat({
     busy:true,
     pendingMessage:label
   });
+
+  function finishAfterFloor(fn){
+    var elapsed = Math.max(0, Math.round(devNow() - started));
+    setTimeout(fn, Math.max(0, MIN_WAIT - elapsed));
+  }
 
   post(
     API + "/exerciseHelp",
@@ -2979,59 +4799,144 @@ function getStoredHelp(kind){
   .then(
     function(res){
 
-      if (
-        res &&
-        res.ok &&
-        res.answer
-      ){
+      finishAfterFloor(function(){
+        if (
+          res &&
+          res.ok &&
+          res.answer
+        ){
 
-        if (kind === "hint"){
-          hintIndex += 1;
+          if (kind === "hint"){
+            hintIndex += 1;
 
-          hintProgressByExercise[pickedId] =
-            hintIndex;
+            hintProgressByExercise[pickedId] =
+              hintIndex;
 
-          canAskMoreHint =
-            !!res.hasMore;
+            canAskMoreHint =
+              !!res.hasMore;
 
-          if (!canAskMoreHint){
-            exhaustedHintsByExercise[pickedId] = true;
+            if (!canAskMoreHint){
+              exhaustedHintsByExercise[pickedId] = true;
+            }
           }
+
+          history.push({
+            q:label,
+            a:res.answer
+          });
+
+          trimHistory();
+          renderChat({
+            focusLatestAnswer:true
+          });
+
+        }else{
+          renderChat({
+            pendingMessage:label,
+            errorMessage:
+              "לא הצלחתי להציג את הרמז כרגע.",
+            retryKind:kind
+          });
         }
-
-        history.push({
-          q:label,
-          a:res.answer
-        });
-
-        trimHistory();
-        renderChat({
-          focusLatestAnswer:true
-        });
-
-      }else{
-        renderChat({
-          pendingMessage:label,
-          errorMessage:
-            "לא הצלחתי להציג את העזרה המוכנה כרגע.",
-          retryKind:kind
-        });
-      }
+      });
     }
   )
   .catch(
     function(){
-      renderChat({
-        pendingMessage:label,
-        errorMessage:
-          "לא הצלחתי להציג את העזרה המוכנה כרגע.",
-        retryKind:kind
+      finishAfterFloor(function(){
+        renderChat({
+          pendingMessage:label,
+          errorMessage:
+            "לא הצלחתי להציג את הרמז כרגע.",
+          retryKind:kind
+        });
       });
     }
   );
 }
-
 /* FREE QUESTION — QWEN */
+
+function pollNoamJob(jobId, measurement){
+
+  return new Promise(function(resolve, reject){
+
+    var startedAt = Date.now();
+    var consecutiveErrors = 0;
+
+    function fail(code, message){
+      var error = new Error(message || code || "JOB_STATUS_FAILED");
+      error.code = code || "JOB_STATUS_FAILED";
+      reject(error);
+    }
+
+    function check(){
+
+      if (Date.now() - startedAt > ASYNC_JOB_MAX_WAIT){
+        fail(
+          "JOB_CLIENT_TIMEOUT",
+          "הכנת הרמז נמשכת יותר מדי זמן."
+        );
+        return;
+      }
+
+      if (measurement){
+        measurement.record.statusPolls += 1;
+      }
+
+      post(
+        API + "/noamTutorStatus",
+        {
+          ownerKey:ownerKey,
+          jobId:jobId
+        }
+      )
+      .then(function(res){
+
+        consecutiveErrors = 0;
+
+        if (!res || !res.ok){
+          fail(
+            (res && res.code) || "JOB_STATUS_FAILED",
+            (res && res.error) || "בדיקת מצב המשימה נכשלה."
+          );
+          return;
+        }
+
+        if (res.status === "completed"){
+          if (res.hint){
+            resolve(res);
+          }else{
+            fail("EMPTY_HINT", "המשימה הסתיימה ללא רמז.");
+          }
+          return;
+        }
+
+        if (res.status === "failed"){
+          fail(
+            res.code || "WORKER_FAILED",
+            res.error || "לא הצלחתי להכין רמז כרגע."
+          );
+          return;
+        }
+
+        setTimeout(check, STATUS_POLL_MS);
+      })
+      .catch(function(error){
+
+        consecutiveErrors += 1;
+
+        if (consecutiveErrors >= 3){
+          reject(error);
+          return;
+        }
+
+        setTimeout(check, STATUS_POLL_MS);
+      });
+    }
+
+    setTimeout(check, Math.min(STATUS_POLL_MS, MIN_WAIT));
+  });
+}
 
 function ask(message){
 
@@ -3044,8 +4949,7 @@ function ask(message){
       .trim()
       .slice(0, 600);
 
-  var imageForRequest =
-    attachedImage;
+  var imageForRequest = attachedImage;
 
   if (!cleanMessage && !imageForRequest){
     renderChat();
@@ -3057,8 +4961,8 @@ function ask(message){
       "עזור לי להבין את התמונה שצירפתי בהקשר של התרגיל.";
   }
 
-  var apiHistory =
-    historyForApi();
+  var apiHistory = historyForApi();
+  var measurement = devBegin(imageForRequest ? "image-async" : "text", pickedId);
 
   renderChat({
     busy:true,
@@ -3066,166 +4970,173 @@ function ask(message){
     pendingHasImage:!!imageForRequest
   });
 
-  var started =
-    Date.now();
+  // 1.25s UX floor is measured from the original click/send time.
+  // It overlaps real work and is never added after slower processing completes.
+  function remainingWait(){
+    return Math.max(0, MIN_WAIT - devElapsed(measurement.started));
+  }
+
+  function showError(error){
+    var wait = remainingWait();
+    measurement.record.minimumWaitMs = wait;
+
+    setTimeout(function(){
+      var code =
+        error && error.code
+          ? String(error.code)
+          : (error && error.name === "AbortError"
+              ? "CLIENT_ABORT"
+              : "REQUEST_ERROR");
+
+      var message =
+        error && error.publicMessage
+          ? error.publicMessage
+          : (
+              code === "ACTIVE_JOB_EXISTS"
+                ? "כבר מכינים עבורך רמז. אפשר להמתין עוד רגע."
+                : (
+                    code === "JOB_CLIENT_TIMEOUT"
+                      ? "הרמז עדיין לא הסתיים. אפשר לנסות לבדוק שוב בעוד רגע."
+                      : "לא הצלחנו לקבל רמז כרגע. אפשר לנסות שוב בעוד רגע."
+                  )
+            );
+
+      renderChat({
+        pendingMessage:cleanMessage,
+        errorMessage:message,
+        retryMessage:cleanMessage
+      });
+
+      devFinish(measurement, "request_error", code);
+    }, wait);
+  }
+
+  function showAnswer(answer){
+    var wait = remainingWait();
+    measurement.record.minimumWaitMs = wait;
+
+    setTimeout(function(){
+      history.push({
+        q:cleanMessage,
+        a:answer,
+        hadImage:!!imageForRequest
+      });
+
+      trimHistory();
+      renderChat({ focusLatestAnswer:true });
+      devFinish(measurement, "hint", null);
+    }, wait);
+  }
 
   post(
     API + "/noamTutor",
     {
       exerciseId:pickedId,
       studentMessage:cleanMessage,
-      previousAttempts:
-        Math.min(
-          history.length,
-          10
-        ),
-      conversationHistory:
-        apiHistory,
-      imageDataUrl:
-        imageForRequest
-          ? imageForRequest.dataUrl
-          : ""
-    }
+      previousAttempts:Math.min(history.length, 10),
+      conversationHistory:apiHistory,
+      imageDataUrl:imageForRequest ? imageForRequest.dataUrl : "",
+      clientRequestId:measurement.record.clientRequestId,
+      ownerKey:imageForRequest ? ownerKey : undefined
+    },
+    measurement
   )
-  .then(
-    function(res){
+  .then(function(res){
 
-      var wait =
-        Math.max(
-          0,
-          MIN_WAIT -
-          (
-            Date.now() -
-            started
-          )
-        );
-
-      setTimeout(
-        function(){
-
-          if (
-            res &&
-            res.ok &&
-            res.answer
-          ){
-
-            history.push({
-              q:cleanMessage,
-              a:res.answer,
-              hadImage:!!imageForRequest
-            });
-
-            trimHistory();
-            renderChat({
-              focusLatestAnswer:true
-            });
-
-          }else{
-            renderChat({
-              pendingMessage:cleanMessage,
-              errorMessage:
-                "לא הצלחנו לקבל תשובה כרגע. אפשר לנסות שוב בעוד רגע.",
-              retryMessage:cleanMessage
-            });
-          }
-        },
-        wait
-      );
-    }
-  )
-  .catch(
-    function(){
-
-      var wait =
-        Math.max(
-          0,
-          MIN_WAIT -
-          (
-            Date.now() -
-            started
-          )
-        );
-
-      setTimeout(
-        function(){
-          renderChat({
-            pendingMessage:cleanMessage,
-            errorMessage:
-              "לא הצלחנו לקבל תשובה כרגע. אפשר לנסות שוב בעוד רגע.",
-            retryMessage:cleanMessage
-          });
-        },
-        wait
-      );
-    }
-  );
-}
-
-/* POST */
-
-function post(
-  endpoint,
-  payload
-){
-
-  var ctrl =
-    (
-      "AbortController" in window
-    )
-    ? new AbortController()
-    : null;
-
-  var timer =
-    setTimeout(
-      function(){
-
-        if (ctrl){
-
-          ctrl.abort();
-        }
-      },
-      TIMEOUT
-    );
-
-  return fetch(
-    endpoint,
-    {
-      method:"POST",
-
-      headers:{
-        "Content-Type":
-          "application/json"
-      },
-
-      body:
-        JSON.stringify(
-          payload
-        ),
-
-      signal:
-        ctrl
-          ? ctrl.signal
-          : undefined
-    }
-  )
-  .then(
-    function(r){
-
-      clearTimeout(
-        timer
-      );
-
-      if (!r.ok){
-
-        throw new Error(
-          "http " +
-          r.status
-        );
+    if (!imageForRequest){
+      if (res && res.ok && res.answer){
+        showAnswer(res.answer);
+        return;
       }
 
-      return r.json();
+      var textError = new Error("NO_HINT");
+      textError.code = (res && res.code) || "NO_HINT";
+      textError.publicMessage = res && res.error;
+      showError(textError);
+      return;
     }
-  );
+
+    if (!(res && res.ok && res.accepted && res.jobId)){
+      var startError = new Error("ASYNC_START_FAILED");
+      startError.code = (res && res.code) || "ASYNC_START_FAILED";
+      startError.publicMessage = res && res.error;
+      showError(startError);
+      return;
+    }
+
+    measurement.record.jobId = res.jobId;
+    measurement.record.acceptedMs = devElapsed(measurement.started);
+
+    pollNoamJob(res.jobId, measurement)
+      .then(function(statusRes){
+        devReadResponse(measurement, statusRes);
+        showAnswer(statusRes.hint);
+      })
+      .catch(showError);
+  })
+  .catch(showError);
+}
+/* POST — each Wix request stays short. Image generation itself is no longer
+   held open here; only start/status requests use this 20s client guard. */
+function post(endpoint, payload, measurement){
+
+  // Development copy is pinned; do not silently fall back to Production.
+  if (endpoint.indexOf(API + "/") !== 0 ||
+      API !== "https://amiramnoam.wixstudio.com/my-site-2/_functions-dev"){
+    return Promise.reject(new Error("DEV_ENDPOINT_BLOCKED"));
+  }
+
+  var ctrl = ("AbortController" in window) ? new AbortController() : null;
+  var timer = setTimeout(function(){
+    if (ctrl){ ctrl.abort(); }
+  }, TIMEOUT);
+
+  if (measurement){
+    measurement.record.networkStartMs = devElapsed(measurement.started);
+  }
+
+  return fetch(endpoint, {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(payload),
+    signal:ctrl ? ctrl.signal : undefined
+  })
+  .then(function(r){
+    clearTimeout(timer);
+    if (measurement){
+      measurement.record.httpStatus = r.status;
+      measurement.record.headersMs = devElapsed(measurement.started);
+    }
+
+    if (!r.ok){
+      // Read optional error JSON to correlate the explicit pre-Solver abort.
+      // Non-JSON errors (including raw Wix 504) remain failures, never success.
+      return r.json().catch(function(){ return null; }).then(function(data){
+        devReadResponse(measurement, data);
+        var error = new Error("http " + r.status);
+        if (data && data.code){
+          error.code = String(data.code);
+        }
+        if (data && data.error){
+          error.publicMessage = String(data.error);
+        }
+        if (r.status === 503 && data && data.code === "BUDGET_ABORT"){
+          error.code = "BUDGET_ABORT";
+        }
+        throw error;
+      });
+    }
+
+    return r.json().then(function(data){
+      devReadResponse(measurement, data);
+      return data;
+    });
+  })
+  .catch(function(error){
+    // Release the client timer on rejection too; do not retry or change its value.
+    clearTimeout(timer);
+    throw error;
+  });
 }
 
 /* ESCAPE HTML */
