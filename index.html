@@ -13,45 +13,47 @@
      באמצעות data-grade על .wrap. אין צורך לגעת בזה.
      ======================================================================= */
   .wrap[data-grade="1"], body:has(.wrap[data-grade="1"]){
-    --ink:#14213D; --accent:#E63946; --accent-dark:#A81E29; --tint:#FFE0E1;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#6B5A5C; --ph:#B09A9C;
+    --ink:#1B2138; --accent:#7C3AED; --accent-dark:#4C2392; --tint:#EFE7FE;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
   .wrap[data-grade="2"], body:has(.wrap[data-grade="2"]){
-    --ink:#14213D; --accent:#F77F00; --accent-dark:#B85800; --tint:#FFE8CC;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#6E5D46; --ph:#B3A288;
+    --ink:#1B2138; --accent:#0B84D0; --accent-dark:#065180; --tint:#DFF0FB;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
   .wrap[data-grade="3"], body:has(.wrap[data-grade="3"]){
-    --ink:#14213D; --accent:#FCBF11; --accent-dark:#A87C00; --tint:#FFF3CC;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#6E6446; --ph:#B3AA88;
+    --ink:#1B2138; --accent:#12A05C; --accent-dark:#0B6339; --tint:#DFF5E9;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
   .wrap[data-grade="4"], body:has(.wrap[data-grade="4"]){
-    --ink:#14213D; --accent:#2A9D3F; --accent-dark:#1B6E2B; --tint:#D8F3DD;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#4E6B54; --ph:#8FAF96;
+    --ink:#1B2138; --accent:#D97706; --accent-dark:#864903; --tint:#FDEDD8;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
   .wrap[data-grade="5"], body:has(.wrap[data-grade="5"]){
-    --ink:#14213D; --accent:#00A6C0; --accent-dark:#00708A; --tint:#D3F1F7;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#476671; --ph:#8CACB6;
+    --ink:#1B2138; --accent:#DB2777; --accent-dark:#871849; --tint:#FDE4EF;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
   .wrap[data-grade="6"], body:has(.wrap[data-grade="6"]){
-    --ink:#14213D; --accent:#1D5FD8; --accent-dark:#123F94; --tint:#DBE6FD;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#4F5B78; --ph:#96A0BB;
+    --ink:#1B2138; --accent:#4F5BD5; --accent-dark:#303884; --tint:#E5E7FC;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
   .wrap[data-grade="7"], body:has(.wrap[data-grade="7"]){
-    --ink:#14213D; --accent:#7B2FD1; --accent-dark:#551F92; --tint:#EBDDFB;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#5E5478; --ph:#A79EBD;
+    --ink:#1B2138; --accent:#E4572E; --accent-dark:#8D351C; --tint:#FFE8DF;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
   .wrap[data-grade="8"], body:has(.wrap[data-grade="8"]){
-    --ink:#14213D; --accent:#D62A8E; --accent-dark:#961B62; --tint:#FBDCEE;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#6E4F62; --ph:#B392A5;
+    --ink:#1B2138; --accent:#E0A500; --accent-dark:#8A6600; --tint:#FFF4D6;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
   .wrap[data-grade="9"], body:has(.wrap[data-grade="9"]){
-    --ink:#14213D; --accent:#00A08A; --accent-dark:#00705F; --tint:#CFF3EC;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#4A6B64; --ph:#8FB2AA;
+    --ink:#1B2138; --accent:#0E9384; --accent-dark:#085B51; --tint:#DDF3EF;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
   :root{
-    --r-card:18px;
-    --ink:#14213D; --accent:#1D5FD8; --accent-dark:#123F94; --tint:#DBE6FD;
-    --paper:#E3DFD2; --grid:#BFBDB2; --muted:#4F5B78; --ph:#96A0BB;
+    --r-card:20px;
+    --radius:20px;
+    --cta:#2F63C6;
+    --ink:#1B2138; --accent:#0E9384; --accent-dark:#085B51; --tint:#DDF3EF;
+    --paper:#FFFDF7; --grid:#EAE6DA; --muted:#5B6480; --ph:#8B93A6;
   }
 
   *,*::before,*::after{ box-sizing:border-box; }
@@ -62,15 +64,31 @@
     font-family:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
     font-size:16px; line-height:1.55; color:var(--ink,#2A1F26);
     -webkit-font-smoothing:antialiased;
-    background:#E3DFD2;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      var(--paper);
   }
 
+  /* ---------- שוברי צבע ---------- */
+  .hl{
+    background:linear-gradient(transparent 55%, #FFE47A 55%, #FFE47A 92%, transparent 92%);
+    transform:rotate(-1deg); display:inline-block; padding:0 6px;
+  }
+  .doodle{ position:absolute; pointer-events:none; opacity:.85; }
+  .doodle.d1{ inset-inline-end:4px;  top:-8px;  transform:rotate(8deg); }
+  .doodle.d2{ inset-inline-end:66px; top:30px;  transform:rotate(-12deg); }
+  .doodle.d3{ inset-inline-end:140px;top:-4px;  transform:rotate(4deg); }
+  @media (max-width:600px){ .doodle{ display:none; } }
+
   .wrap{
-    width:100%; padding:26px 18px 14px; color:var(--ink);
+    position:relative;
+    width:100%; max-width:1060px; margin:0 auto;
+    padding:26px 18px 14px; color:var(--ink);
     background:
-      linear-gradient(var(--grid,#BFBDB2) 2.2px, transparent 2.2px) 0 0/45px 45px,
-      linear-gradient(90deg, var(--grid,#BFBDB2) 2.2px, transparent 2.2px) 0 0/45px 45px,
-      var(--paper,#E3DFD2);
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      var(--paper);
   }
   /* התוכן עצמו נשאר ברוחב קריא וממורכז, הרקע נמתח לרוחב מלא */
   .wrap > *{ max-width:1000px; margin-inline:auto; }
@@ -527,6 +545,15 @@
 
   <div class="grades" id="grades" role="tablist" aria-label="בחירת כיתה"></div>
 
+  <svg class="doodle d1" width="46" height="30" viewBox="0 0 46 30" aria-hidden="true">
+    <path d="M3 22c7-14 13-14 20 0s13 14 20 0" fill="none"
+          stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/></svg>
+  <svg class="doodle d2" width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+    <path d="M4 19l7 9L30 5" fill="none" stroke="#FFE47A" stroke-width="6"
+          stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="doodle d3" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+    <circle cx="15" cy="15" r="11" fill="none" stroke="var(--ink)"
+            stroke-width="2.5" stroke-dasharray="4 5"/></svg>
   <h1 id="title"></h1>
   <p class="lede" id="lede"></p>
 
@@ -1822,7 +1849,19 @@ var DATA = {
       57:{ one:"75e9c33c6c7447d183f793aca6725f0c" },
       58:{ one:"e56327080e7547b780aa492d3d7c826e" },
       59:{ one:"95f5a57dc6ea438b8669dfdc00a6e2d2" },
-      60:{ one:"f99fd4db033c4d02a90aaa124b706a8d" }
+      60:{ one:"f99fd4db033c4d02a90aaa124b706a8d" },
+      61:{ a:"87b9a141ffdb47cebc37946429e368e9",
+          b:"7044e59403e14a2e85d5107e29fcfb62",
+          c:"ef728a8d0ba741a7be0398c35931b468" },
+      62:{ a:"c0c019e6e3d44572bcbe46bb7824d0dc",
+          b:"9402da4378c5421f9e377b68e0e59732",
+          c:"173d7fd85a3748a1bc12a59785810afe" },
+      63:{ a:"4d23ff3bcdec409588f9e0ded7dcce46",
+          b:"0d867ba91279479c9e58e6c08ea1773b",
+          c:"ebfac4f4252b4e91b1832faed6558e8d" },
+      64:{ a:"96b9941f04dd4a9585300d0a6866239d",
+          b:"81a07d6c32984e258563fda64f851bbb",
+          c:"13209bff6bca4a9f9bb36e9605a8ed12" }
     },
 
     groups: [
@@ -1958,15 +1997,23 @@ var DATA = {
       { id:59, ic:"clipboard", g:"synth", t:"הערכה מסכמת",
         d:"מבחן מסכם המשלב את נושאי השנה — אלגברה, פונקציות, נתונים וגאומטריה." },
       { id:60, ic:"magnify", g:"support", t:"אבחון סוף שנה",
-        d:"מיפוי מסכם של הידע לקראת המעבר לכיתה ט׳." }
+        d:"מיפוי מסכם של הידע לקראת המעבר לכיתה ט׳." },
+      { id:61, ic:"star", g:"data", t:"אינטרפולציה ואקסטרפולציה",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:62, ic:"star", g:"geo", t:"זוויות בין ישרים מקבילים",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:63, ic:"star", g:"solid", t:"מעגל ועיגול — היקף ושטח",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:64, ic:"star", g:"synth", t:"משימת הערכה 1",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." }
     ]
   },
   /* ================= כיתה ט׳ ================= */
   9: {
     links: {
-      1:{ a:"250144808d2d44fe818ddf63c3e05b08",
-          b:"ee3d715b1a6a4a56ac279d3d445c3ca2",
-          c:"c541322f1ba64295b6d10b7c89501ebe" },
+      1:{ a:"df752fa95cfd4389993d9d05d3de1881",
+          b:"9b6036c39182424ab5f1094524989ac7",
+          c:"8525ef6ffad048a69a901dedc22656cf" },
       2:{ a:"b6a5b0838dc140e2ac27f70dda45d62e",
           b:"287d4b4d58ad4072817c86cc2a08e435",
           c:"674487569227485ea4edd4ecdf151674" },
@@ -2057,7 +2104,28 @@ var DATA = {
           c:"c42d443cd9444f5288a326483822b5e6" },
       32:{ a:"b31abe1ad9704de39c9f42889b6d4af7",
           b:"4ada5cbebee54bcbb48af0040a49c7ce",
-          c:"19533012429e44f0b01f6f80eae8ed39" }
+          c:"19533012429e44f0b01f6f80eae8ed39" },
+      33:{ a:"a48b3ab89e014967b66746478624b582",
+          b:"ad97d07b831149b0ac00f177baea83aa",
+          c:"5ce27996916e4ce6b08e0c69a9afff7f" },
+      34:{ a:"072ef7f9be2e4da98f58224595563d8b",
+          b:"73f1a616c59f44d69c5e04f85aca276a",
+          c:"0845038da75e4e7fbb9a22da152ba8bc" },
+      35:{ a:"8cf06ee53e0e4e68a031bc5bd45998d5",
+          b:"ac8d4aff464a440fa930616158cd366a",
+          c:"c351b07f2ff24cbabe34b310bfc4d0c0" },
+      36:{ a:"1c3e93ee562a4814b1d736b312393a68",
+          b:"24038616084e4ee2857e80e3ce97135b",
+          c:"bbcfe8b84ad04943bef20976b887776c" },
+      37:{ a:"01ba7c89f8c947e1ae4095def6839048",
+          b:"daec2d6aa3264f2b84f64c4bf31aa1d0",
+          c:"abafe4e1ebc54b349347472be08f1876" },
+      38:{ a:"3900d1480ea64101a3070ebf57a19a8d",
+          b:"26a4900dd11a4cf5b98ec2d76d6d51ef",
+          c:"6eece74639b449b9833f9a6b7cb68247" },
+      39:{ a:"0c35f9161f73418b94b9d16e3946f853",
+          b:"d8ae72101c124a2b9991afd222c1443f",
+          c:"825d627066e34ff7a241a9f79e8c33d3" }
     },
 
     groups: [
@@ -2066,7 +2134,8 @@ var DATA = {
       { key:"geo",  name:"גיאומטריה — מרובעים ומשולשים" },
       { key:"spiral",  name:"גיאומטריה — חזרה והעמקה לקראת התיכון" },
       { key:"stat",  name:"בעיות, סטטיסטיקה והסתברות" },
-      { key:"bridge",  name:"מעבר לחטיבה העליונה" }
+      { key:"bridge",  name:"מעבר לחטיבה העליונה" },
+      { key:"r9",     name:"ט׳ מצומצמת" }
     ],
 
     topics: [
@@ -2133,7 +2202,21 @@ var DATA = {
       { id:31, x:"G9-T29", ic:"prism", g:"spiral", t:"מנסרה משולשת חלק 2 — שטח פנים — לכיתה ט׳",
         d:"פריסת המנסרה, שטח המעטפת, שטח הבסיסים ושטח הפנים הכולל. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
       { id:32, x:"G9-T30", ic:"analytic", g:"spiral", t:"הרחבת מערכת הצירים חלק 2 — יישום והעמקה — לכיתה ט׳",
-        d:"מרחקים בין נקודות, צורות במערכת הצירים וחישובי היקף ושטח. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." }
+        d:"מרחקים בין נקודות, צורות במערכת הצירים וחישובי היקף ושטח. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:33, ic:"star", g:"r9", t:"גיאומטריה חישובית — משולש",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:34, ic:"star", g:"r9", t:"פונקציה קווית",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:35, ic:"star", g:"r9", t:"משפט פיתגורס",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:36, ic:"star", g:"r9", t:"קריאת גרפים",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:37, ic:"star", g:"spiral", t:"משולש ישר זווית 30-60-90",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:38, ic:"star", g:"spiral", t:"יחסי צלעות וזוויות",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:39, ic:"star", g:"spiral", t:"הטרפז",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." }
     ]
   }
 
@@ -2340,8 +2423,11 @@ function buildJump(){
 
 function setHeader(){
   var d = DATA[state.grade];
-  document.getElementById("title").textContent =
-    (GRADE_EMOJI[state.grade] || "") + " דפי עבודה ל" + GRADE_NAME[state.grade] + " — לפי תכנית הלימודים תשפ״ז 2026";
+  var esc = function(t){ return String(t).replace(/[&<>]/g, function(m){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;"}[m]; }); };
+  document.getElementById("title").innerHTML =
+    esc(GRADE_EMOJI[state.grade] || "") + " דפי עבודה ל<span class=\"hl\">" +
+    esc(GRADE_NAME[state.grade]) + "</span> — לפי תכנית הלימודים תשפ״ז 2026";
   document.getElementById("lede").textContent =
     d.topics.length + " נושאים, כל נושא בשלוש רמות. בחרו רמה והקובץ ייפתח בלשונית חדשה.";
 
