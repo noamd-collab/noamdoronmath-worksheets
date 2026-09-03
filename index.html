@@ -140,7 +140,7 @@
   .search svg{ position:absolute; inset-inline-end:15px; top:50%; transform:translateY(-50%); width:17px; height:17px; stroke:var(--ink); fill:none; stroke-width:2.4; }
 
   .chips{ display:flex; flex-wrap:wrap; gap:8px; }
-  .chip{
+  .chip{ transform:rotate(3deg);
     font-family:'Heebo',inherit; font-size:13.5px; font-weight:800; color:var(--ink);
     background:var(--paper); border:2.5px solid var(--ink);
     border-radius:999px; padding:8px 16px; cursor:pointer;
@@ -205,11 +205,20 @@
     display:flex; align-items:center; gap:22px; justify-content:space-between;
     background:#fff; border:3px solid var(--ink); border-radius:var(--r-card);
     padding:18px 22px; margin-bottom:14px;
-    box-shadow:-5px 5px 0 var(--ink);
+    box-shadow:-6px 6px 0 var(--ink);
     transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
-    animation:pop .26s ease both;
+    animation:pop .32s ease both; animation-delay:var(--d,0s);
+    position:relative;
   }
-  .card:hover{ background:var(--tint); transform:translate(3px,-3px); box-shadow:-8px 8px 0 var(--ink); }
+  .card::after{
+    content:""; position:absolute; inset:0;
+    border-radius:calc(var(--r-card) - 3px);
+    background:repeating-linear-gradient(45deg, rgba(255,255,255,.4) 0 12px, transparent 12px 24px);
+    pointer-events:none; opacity:.5;
+  }
+  .card > *{ position:relative; z-index:1; }
+  .card:hover{ background:var(--tint); transform:translate(4px,-4px); box-shadow:-10px 10px 0 var(--ink); }
+  .card:active{ transform:translate(0,0); box-shadow:-3px 3px 0 var(--ink); }
 
   .card-text{ min-width:0; }
   .card-text h4{
@@ -277,7 +286,7 @@
   .lvl--soon .soon-note{ font-weight:700; font-size:11.5px; color:var(--muted); opacity:.85; margin-inline-start:5px; }
   .lvl--one{ min-width:238px; }
 
-  :where(a,button,input):focus-visible{ outline:3px solid var(--accent); outline-offset:3px; }
+  :where(a,button,input):focus-visible{ outline:3px solid var(--cta); outline-offset:3px; }
 
   .empty{
     text-align:center; padding:44px 20px; color:var(--muted); font-weight:600;
@@ -287,6 +296,10 @@
   .foot{ text-align:center; font-size:13px; font-weight:700; color:var(--muted); margin:18px 0 0; }
 
   @keyframes pop{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:none; } }
+
+  /* ---------- נקודות שבירה לפי המפרט ---------- */
+  @media (max-width:820px){ .grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:500px){ .grid{ grid-template-columns:1fr; } }
 
   /* ---------- מובייל ---------- */
   @media (max-width:720px){
@@ -492,10 +505,27 @@
     border:3px solid var(--ink); border-radius:var(--r-card);
     box-shadow:-6px 6px 0 var(--ink);
   }
+  /* עיגול מספר הכיתה — מוטה, עם טבעת מקווקוות מסתובבת */
+  .headrow{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .gbadge{
+    position:relative; width:70px; height:70px; flex:0 0 auto;
+    display:grid; place-items:center;
+    background:#fff; border:3px solid var(--ink); border-radius:50%;
+    font-family:'Heebo',Arial,sans-serif; font-weight:900; font-size:36px;
+    color:var(--accent); transform:rotate(-7deg);
+  }
+  .gbadge::after{
+    content:""; position:absolute; inset:-8px; border-radius:50%;
+    border:2.5px dashed var(--accent); opacity:.55;
+    animation:spin 14s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion:reduce){ .gbadge::after{ animation:none; } }
+
   .aibanner .robot{
-    flex:none; width:58px; height:58px; display:grid; place-items:center;
-    font-size:30px; background:#fff; border:3px solid var(--ink); border-radius:50%;
-    transform:rotate(-6deg);
+    flex:none; width:66px; height:66px; display:grid; place-items:center;
+    font-size:34px; background:#fff; border:3px solid var(--ink); border-radius:50%;
+    transform:rotate(-7deg);
   }
   .aibanner .txt{ flex:1; min-width:230px; }
   .aibanner h2{
@@ -554,7 +584,10 @@
   <svg class="doodle d3" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
     <circle cx="15" cy="15" r="11" fill="none" stroke="var(--ink)"
             stroke-width="2.5" stroke-dasharray="4 5"/></svg>
-  <h1 id="title"></h1>
+  <div class="headrow">
+    <div class="gbadge" id="gbadge" aria-hidden="true"></div>
+    <h1 id="title"></h1>
+  </div>
   <p class="lede" id="lede"></p>
 
   <section class="aibanner" id="aibanner" aria-labelledby="aititle">
@@ -2428,6 +2461,8 @@ function setHeader(){
   document.getElementById("title").innerHTML =
     esc(GRADE_EMOJI[state.grade] || "") + " דפי עבודה ל<span class=\"hl\">" +
     esc(GRADE_NAME[state.grade]) + "</span> — לפי תכנית הלימודים תשפ״ז 2026";
+  var gb = document.getElementById("gbadge");
+  if (gb) gb.textContent = (GRADE_NAME[state.grade] || "").replace("כיתה ", "").trim();
   document.getElementById("lede").textContent =
     d.topics.length + " נושאים, כל נושא בשלוש רמות. בחרו רמה והקובץ ייפתח בלשונית חדשה.";
 
@@ -2476,7 +2511,7 @@ document.getElementById("chips").addEventListener("click", function(e){
 });
 
 /* ---------- כרטיס ---------- */
-function cardHTML(topic, grade){
+function cardHTML(topic, grade, cardIndex){
   var row = DATA[grade].links[topic.id] || {};
   var buttons;
 
@@ -2504,7 +2539,8 @@ function cardHTML(topic, grade){
   }
 
   var ico = ICONS[topic.ic] || ICONS.star;
-  return '<article class="card" data-g="' + topic.g + '">' +
+  var _d = (typeof cardIndex === "number" ? cardIndex : 0) * 0.05;
+  return '<article class="card" data-g="' + topic.g + '" style="--d:' + _d.toFixed(2) + 's">' +
            '<div class="card-main">' +
              '<span class="tico" aria-hidden="true"><svg viewBox="0 0 24 24">' + ico + '</svg></span>' +
              '<div class="card-text"><h4>' + esc(topic.t) + PDF_BADGE + '</h4>' + (topic.d ? '<p>' + esc(topic.d) + '</p>' : '') +
@@ -2735,7 +2771,7 @@ function groupsHTML(grade, list){
                '<span class="rule"></span>' +
                '<span class="count">' + inGroup.length + ' נושאים</span>' +
              '</div>' +
-             inGroup.map(function(t){ return cardHTML(t, grade); }).join("") +
+             inGroup.map(function(t,ci){ return cardHTML(t, grade, ci); }).join("") +
            '</section>';
   }).join("");
 }
