@@ -1186,7 +1186,7 @@ textarea:focus{
 .pdf-page .noam-exercise-pin::after{
   content:attr(data-label);
   position:absolute;
-  inset-inline-end:34px;
+  inset-inline-start:34px;
   top:50%;
   width:max-content;
   max-width:220px;
@@ -3262,11 +3262,21 @@ function renderManifestPins(){
     var pageElement = pdfPages.querySelector('.pdf-page[data-page="' + pageNumber + '"]');
     if (!pageElement){ return; }
 
+    /*
+      Manifest coordinates point at the printed RTL question/part marker.
+      Keep the robot beside that marker, in the clear right-hand margin,
+      rather than centering it over the Hebrew letter or question number.
+    */
+    var pinX = Number(pin.x);
+    if (!isFinite(pinX)){ pinX = .92; }
+    pinX = Math.max(.02,Math.min(.98,pinX));
+    var pinLeft = "clamp(16px, calc(" + (pinX*100) + "% + 28px), calc(100% - 16px))";
+
     var button = document.createElement("button");
     button.type = "button";
     button.className = "noam-exercise-pin";
     button.textContent = "🤖";
-    button.style.left = (Math.max(.02,Math.min(.98,Number(pin.x)||.92))*100) + "%";
+    button.style.left = pinLeft;
     button.style.top = (Math.max(.02,Math.min(.98,Number(pin.y)||.2))*100) + "%";
     button.dataset.exerciseId = exercise.id;
     button.dataset.label = exerciseLabel(exercise) + " · העזר בנועם AI";
