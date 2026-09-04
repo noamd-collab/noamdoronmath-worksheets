@@ -3293,7 +3293,7 @@ function renderManifestPins(){
     var pinX = Number(pin.x);
     if (!isFinite(pinX)){ pinX = .92; }
     pinX = Math.max(.02,Math.min(.98,pinX));
-    var pinLeft = "clamp(16px, calc(" + (pinX*100) + "% + 28px), calc(100% - 16px))";
+    var pinLeft = "clamp(16px, calc(" + (pinX*100) + "% + 52px), calc(100% - 16px))";
 
     var button = document.createElement("button");
     button.type = "button";
