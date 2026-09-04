@@ -714,7 +714,23 @@ var BASE = "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
    enabled:false מחזיר את כל הקישורים להתנהגות הישנה (PDF ישיר) מיידית.
    נושא ללא שדה x (כל היסודי, וכל דפי "one") ממשיך לקישור PDF ישיר.
    ========================================================================= */
-var VIEWER = { enabled: true, path: "worksheet-viewer.html" };
+var VIEWER = { enabled: true, path: "worksheet-viewer-noam.html" };
+
+var NOAM_PREFIX_FALLBACK = {
+  7:{ 16:"G7-T16" },
+  8:{
+    1:"G8-T01",
+    26:"G8-T35",
+    34:"G8-T26",
+    35:"G8-T27",
+    56:"G8-T56",
+    57:"G8-T57",
+    58:"G8-T58",
+    59:"G8-T59",
+    60:"G8-T60"
+  },
+  9:{ 22:"G9-T16" }
+};
 
 var DATA = {
 
@@ -2418,15 +2434,38 @@ function url(v){
   return /^https?:\/\//.test(v) ? v : BASE + v + ".pdf";
 }
 
-/* קישור הכפתור: ל-Viewer אם יש הקשר AI, אחרת ישירות ל-PDF */
-function sheetHref(topic, grade, level, hex){
-  if (!VIEWER.enabled || !topic || !topic.x || !hex) return url(hex);
-  return VIEWER.path +
-         "?g="   + encodeURIComponent(grade) +
-         "&x="   + encodeURIComponent(topic.x) +
-         "&lv="  + encodeURIComponent(level) +
-         "&pdf=" + encodeURIComponent(hex) +
-         "&t="   + encodeURIComponent(topic.t);
+function noamTopicPrefix(topic, grade){
+  if (topic && topic.x) return topic.x;
+  var gradeMap = NOAM_PREFIX_FALLBACK[grade] || {};
+  return topic ? (gradeMap[topic.id] || "") : "";
+}
+
+/* Universal Noam AI routing for every middle-school worksheet. */
+function sheetHref(topic, grade, level, hex, row){
+  if (!VIEWER.enabled || !topic || !hex) return url(hex);
+
+  var prefix = noamTopicPrefix(topic, grade);
+
+  /* Elementary remains unchanged until its manifests are generated. */
+  if (!prefix || grade < 7 || grade > 9) return url(hex);
+
+  var params = [
+    "g="   + encodeURIComponent(grade),
+    "x="   + encodeURIComponent(prefix),
+    "lv="  + encodeURIComponent(level),
+    "pdf=" + encodeURIComponent(hex),
+    "t="   + encodeURIComponent(topic.t)
+  ];
+
+  if (row){
+    ["a", "b", "c"].forEach(function(key){
+      if (row[key]){
+        params.push("p" + key + "=" + encodeURIComponent(row[key]));
+      }
+    });
+  }
+
+  return VIEWER.path + "?" + params.join("&");
 }
 function esc(s){
   return String(s).replace(/[&<>"']/g, function(m){
@@ -2563,7 +2602,7 @@ function cardHTML(topic, grade, cardIndex){
   var buttons;
 
   if(row.one !== undefined){                 /* דף יחיד ללא רמות */
-    var oneHref  = url(row.one);
+    var oneHref  = sheetHref(topic, grade, "b", row.one, row);
     var oneLabel = row.oneLabel || "דף יחיד — כל הרמות";
     buttons = oneHref
       ? '<a class="lvl lvl--a lvl--one" href="' + oneHref + '" target="_blank" rel="noopener noreferrer" ' +
@@ -2580,7 +2619,7 @@ function cardHTML(topic, grade, cardIndex){
                'aria-label="' + esc(label) + ' — ' + NO_LINK + '">' +
                esc(label) + ' <span class="soon-note">(' + NO_LINK + ')</span></span>';
       }
-      return '<a class="lvl ' + lv.cls + '" href="' + sheetHref(topic, grade, lv.k, row[lv.k]) + '" target="_blank" rel="noopener noreferrer" ' +
+      return '<a class="lvl ' + lv.cls + '" href="' + sheetHref(topic, grade, lv.k, row[lv.k], row) + '" target="_blank" rel="noopener noreferrer" ' +
              'aria-label="' + esc(topic.t) + ' — ' + esc(label) + ', קובץ PDF">' + esc(label) + '</a>';
     }).join("");
   }
