@@ -1236,6 +1236,24 @@ textarea:focus{
   font-size:14px;
   line-height:1.6;
 }
+.noam-picked-preview{
+  width:100%;
+  max-height:220px;
+  margin-top:6px;
+  overflow:hidden;
+  direction:ltr;
+  background:#fff;
+  border:1px solid rgba(20,33,61,.18);
+  border-radius:9px;
+}
+.noam-picked-preview img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:220px;
+  object-fit:contain;
+  object-position:center;
+}
 .noam-actions{
   display:flex;
   flex-wrap:wrap;
@@ -1603,6 +1621,9 @@ var ASYNC_JOB_MAX_WAIT = 8 * 60 * 1000;
 var MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 var TARGET_IMAGE_BYTES = 250 * 1024;
 var MAX_IMAGE_DIMENSION = 1800;
+var SOLVER_MESSAGE_MAX = 700;
+var MATH_OUTPUT_INSTRUCTION =
+  "\n\nהנחיית תצוגה: כתוב כל ביטוי מתמטי ב-LaTeX תקין. עטוף ביטוי בתוך \\( ... \\) ונוסחה נפרדת בתוך \\[ ... \\].";
 
 var GRADE_NAME = {
   7:"כיתה ז׳",
@@ -3165,6 +3186,8 @@ var selectedExercise = null;
 var selectedPin = null;
 var busy = false;
 var analysisCache = {};
+var exercisePreviewCache = {};
+var exercisePreviewOrder = [];
 var MANIFEST_PATH = "./noam-ai/manifests/" + pdf + ".json";
 var THREAD_STORAGE_KEY = "noam-static-threads-v1:" + pdf;
 var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v1:" + pdf;
@@ -3359,7 +3382,8 @@ function renderNoamChat(){
   panelBody.innerHTML =
     '<div class="noam-picked">' +
       '<div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
-      '<div class="noam-picked-text">' + esc(text) + '</div>' +
+      '<div class="noam-picked-preview" id="noamPickedPreview" hidden></div>' +
+      '<div class="noam-picked-text" id="noamPickedText">' + esc(text) + '</div>' +
     '</div>' +
     '<div class="noam-actions">' +
       '<button type="button" class="noam-action" id="noamOverview">הסבר כללי</button>' +
@@ -3414,6 +3438,7 @@ function renderNoamChat(){
   setNoamBusy(busy);
   transcript.scrollTop = transcript.scrollHeight;
   renderPanelMath(panelBody);
+  renderExercisePreview(selectedExercise,0);
 }
 
 function locateSelectedExercise(){
@@ -3447,12 +3472,12 @@ function syntheticAnalysis(exercise){
   };
 }
 
-function cropExerciseImage(exercise){
+function cropExerciseCanvas(exercise){
   return new Promise(function(resolve,reject){
     var crop=exercise.crop||{};
     var page=pdfPages.querySelector('.pdf-page[data-page="'+Number(crop.page||0)+'"]');
     var source=page && page.querySelector("canvas");
-    if (!source || !source.width || !source.height){ reject(new Error("page canvas unavailable"));return; }
+    if (!source || source.width<20 || source.height<20){ reject(new Error("page canvas unavailable"));return; }
     var sx=Math.max(0,Math.floor((Number(crop.x)||0)*source.width));
     var sy=Math.max(0,Math.floor((Number(crop.y)||0)*source.height));
     var sw=Math.max(20,Math.min(source.width-sx,Math.floor((Number(crop.w)||1)*source.width)));
@@ -3464,8 +3489,55 @@ function cropExerciseImage(exercise){
     var ctx=target.getContext("2d",{alpha:false});
     ctx.fillStyle="#fff";ctx.fillRect(0,0,target.width,target.height);
     ctx.drawImage(source,sx,sy,sw,sh,0,0,target.width,target.height);
-    resolve(target.toDataURL("image/jpeg",.84));
+    resolve(target);
   });
+}
+
+function cropExerciseImage(exercise){
+  return cropExerciseCanvas(exercise).then(function(canvas){
+    return canvas.toDataURL("image/jpeg",.84);
+  });
+}
+
+function cacheExercisePreview(exerciseId,dataUrl){
+  if (!exercisePreviewCache[exerciseId]){
+    exercisePreviewOrder.push(exerciseId);
+  }
+  exercisePreviewCache[exerciseId]=dataUrl;
+  while (exercisePreviewOrder.length>16){
+    delete exercisePreviewCache[exercisePreviewOrder.shift()];
+  }
+}
+
+function showExercisePreview(exercise,dataUrl){
+  var preview=document.getElementById("noamPickedPreview");
+  var fallback=document.getElementById("noamPickedText");
+  if (!preview||!fallback||!selectedExercise||selectedExercise.id!==exercise.id){return;}
+  var image=document.createElement("img");
+  image.src=dataUrl;
+  image.alt=exerciseLabel(exercise)+" — "+String(exercise.text||exercise.prompt||"").slice(0,500);
+  preview.replaceChildren(image);
+  preview.hidden=false;
+  fallback.hidden=true;
+}
+
+function renderExercisePreview(exercise,attempt){
+  if (!exercise||!exercise.crop){return;}
+  if (exercisePreviewCache[exercise.id]){
+    showExercisePreview(exercise,exercisePreviewCache[exercise.id]);
+    return;
+  }
+  cropExerciseCanvas(exercise)
+    .then(function(canvas){
+      var dataUrl=canvas.toDataURL("image/png");
+      cacheExercisePreview(exercise.id,dataUrl);
+      showExercisePreview(exercise,dataUrl);
+    })
+    .catch(function(){
+      if (attempt>=12||!selectedExercise||selectedExercise.id!==exercise.id){return;}
+      renderPdfPage(Number(exercise.crop.page||0),pdfRenderVersion);
+      setTimeout(function(){renderExercisePreview(exercise,attempt+1);},150);
+    });
 }
 
 function getExerciseAnalysis(exercise){
@@ -3509,6 +3581,11 @@ function askNoam(helpKind,studentMessage){
 
   getExerciseAnalysis(exercise)
     .then(function(analysis){
+      var solverMessage=String(studentMessage||"");
+      solverMessage=solverMessage.slice(
+        0,
+        Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length)
+      )+MATH_OUTPUT_INSTRUCTION;
       return postJson(API+"/noamImageSolve",{
         exerciseId:exercise.id,
         grade:g,
@@ -3516,7 +3593,7 @@ function askNoam(helpKind,studentMessage){
         topic:ttl,
         helpKind:helpKind,
         hintIndex:hintIndex,
-        studentMessage:studentMessage||"",
+        studentMessage:solverMessage,
         conversationHistory:thread.history,
         imageAnalysis:analysis
       });
