@@ -8,17 +8,13 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://amiramnoam.wixstudio.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://www.noamdoronmath.co.il" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
-<!-- KaTeX: pinned production math renderer -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/contrib/auto-render.min.js"></script>
-
-<!-- PDF.js: clean, toolbar-free worksheet rendering; native viewer remains available as fallback -->
-<script defer src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<!-- Start fetching the PDF engine early; AI math assets load when the panel opens. -->
+<link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" crossorigin="anonymous">
 
 <style>
 :root{
@@ -1146,8 +1142,8 @@ textarea:focus{
 
 
 
-/* R04: native PDF viewer is the default for reliable Hebrew rendering.
-   Hide the custom PDF.js controls while clean rendering is disabled. */
+/* The existing PDF.js font settings preserve worksheet rendering.
+   The browser's native viewer is available on demand and on failure. */
 
 
 /* =============================================================
@@ -2288,6 +2284,11 @@ function discoverSiblingLevels(){
     return;
   }
 
+  if (levelPdfMap.a && levelPdfMap.b && levelPdfMap.c){
+    renderLevelSwitch(false);
+    return;
+  }
+
   renderLevelSwitch(
     !(
       levelPdfMap.a &&
@@ -2299,7 +2300,7 @@ function discoverSiblingLevels(){
   fetch(
     "./index.html",
     {
-      cache:"no-store"
+      cache:"default"
     }
   )
   .then(
@@ -2439,9 +2440,7 @@ var PDFJS_CMAP_URL =
 var PDFJS_STD_FONT_URL =
   PDFJS_BASE + "standard_fonts/";
 
-/* Canvas rendering is OPT-IN. The native browser viewer is the default,
-   because PDF.js 3.x mis-spaces the embedded subset Hebrew fonts that
-   WeasyPrint produces (glyphs correct, advance widths wrong). */
+/* Keep the established PDF.js canvas and font configuration for Noam overlays. */
 var PDF_CLEAN_OPT_IN =
   true;
 
@@ -2509,6 +2508,7 @@ function setNativePdfMode(
 
   if (pdfNativeActive){
     ensureNativePdf();
+    setPdfStatus("",false);
   }
 
   pdfFrame.classList
@@ -2529,11 +2529,7 @@ function setNativePdfMode(
       ? "תצוגה נקייה (ניסיוני)"
       : "תצוגת PDF מלאה";
 
-  pdfNativeMode.classList
-    .toggle(
-      "hidden",
-      !pdfCleanAvailable
-    );
+  pdfNativeMode.classList.remove("hidden");
 
   /* zoom / fit-width act on the canvas layer only */
   ["pdfZoomIn","pdfZoomOut","pdfFit"]
@@ -3014,14 +3010,13 @@ function schedulePdfResize(){
 
 function initPdfExperience(){
 
-  /* Default for every viewport: the browser's own PDF viewer.
-     It renders the embedded Hebrew fonts correctly. */
+  /* Only one viewer requests the PDF during normal startup. */
   setPdfStatus(
-    "",
-    false
+    "טוען את דף העבודה…",
+    !pdfNativeActive
   );
 
-  setNativePdfMode(true);
+  setNativePdfMode(pdfNativeActive);
 
   showPdfTools(true);
 
@@ -3032,7 +3027,8 @@ function initPdfExperience(){
   ){
     pdfCleanAvailable =
       false;
-
+    setNativePdfMode(true);
+    setPdfStatus("",false);
     return;
   }
 
@@ -3052,7 +3048,7 @@ function initPdfExperience(){
 
   setPdfStatus(
     "טוען את דף העבודה…",
-    true
+    !pdfNativeActive
   );
 
   var loadTask =
@@ -3100,7 +3096,7 @@ function initPdfExperience(){
         observePdfPages();
 
         /* The static manifest pins live on the clean page layer. */
-        setNativePdfMode(false);
+        setNativePdfMode(pdfNativeActive);
 
         if (
           "ResizeObserver" in window
@@ -3195,7 +3191,7 @@ pdfNativeMode
       if (
         !pdfCleanAvailable
       ){
-        ensureNativePdf();
+        setNativePdfMode(true);
         return;
       }
 
@@ -3205,17 +3201,56 @@ pdfNativeMode
     }
   );
 
-if (
-  document.readyState ===
-  "loading"
-){
-  document.addEventListener(
-    "DOMContentLoaded",
-    initPdfExperience
-  );
-}else{
-  initPdfExperience();
+var noamAssetLoads = {};
+var noamMathAssetsPromise = null;
+var noamMathAssetsReady = false;
+
+function loadNoamAsset(tag,url){
+  if (noamAssetLoads[url]){return noamAssetLoads[url];}
+  var element=document.createElement(tag);
+  noamAssetLoads[url]=new Promise(function(resolve,reject){
+    element.onload=function(){resolve();};
+    element.onerror=function(){reject(new Error("לא ניתן לטעון רכיב תצוגה."));};
+    if (tag==="script"){
+      element.src=url;
+      element.async=true;
+      element.crossOrigin="anonymous";
+    }else{
+      element.rel="stylesheet";
+      element.href=url;
+    }
+    document.head.appendChild(element);
+  }).catch(function(error){
+    delete noamAssetLoads[url];
+    element.remove();
+    throw error;
+  });
+  return noamAssetLoads[url];
 }
+
+function ensureNoamMathRenderer(){
+  if (noamMathAssetsPromise){return noamMathAssetsPromise;}
+  var base="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/";
+  noamMathAssetsPromise=Promise.all([
+    loadNoamAsset("link",base+"katex.min.css"),
+    loadNoamAsset("script",base+"katex.min.js").then(function(){
+      return loadNoamAsset("script",base+"contrib/auto-render.min.js");
+    })
+  ]).then(function(){
+    noamMathAssetsReady=true;
+  }).catch(function(error){
+    noamMathAssetsPromise=null;
+    throw error;
+  });
+  return noamMathAssetsPromise;
+}
+
+/* This script is below the viewer DOM. No font or AI library needs to finish first. */
+showPdfTools(true);
+setNativePdfMode(false);
+loadNoamAsset("script",PDFJS_BASE+"build/pdf.min.js")
+  .then(initPdfExperience)
+  .catch(function(){showPdfFallback("לא ניתן לטעון את התצוגה הנקייה. הוצגה תצוגת ה-PDF המלאה.");});
 
 /* BACK */
 
@@ -3307,7 +3342,7 @@ function loadStaticManifest(){
     return Promise.resolve(null);
   }
 
-  return fetch(MANIFEST_PATH, { cache:"no-store" })
+  return fetch(MANIFEST_PATH, { cache:"default" })
     .then(function(response){
       if (!response.ok){ throw new Error("manifest " + response.status); }
       return response.json();
@@ -3768,7 +3803,13 @@ function postJson(endpoint,payload){
 }
 
 function renderPanelMath(root){
-  if (!root||typeof window.renderMathInElement!=="function"){return;}
+  if (!root){return;}
+  if (!noamMathAssetsReady||typeof window.renderMathInElement!=="function"){
+    ensureNoamMathRenderer().then(function(){
+      if (root.isConnected&&typeof window.renderMathInElement==="function"){renderPanelMath(root);}
+    }).catch(function(error){console.warn("NOAM MATH ASSETS:",error);});
+    return;
+  }
   try{
     window.renderMathInElement(root,{
       delimiters:[
