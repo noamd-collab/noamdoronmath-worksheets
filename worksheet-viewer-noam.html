@@ -1375,6 +1375,38 @@ textarea:focus{
   font-size:12.5px;
   font-weight:900;
 }
+.noam-compose-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.noam-compose-heading label{margin-bottom:0}
+.noam-math-toggle{
+  padding:4px 8px;
+  border:1px solid var(--ink);
+  border-radius:8px;
+  color:var(--ink);
+  background:var(--tint);
+  font:inherit;
+  font-size:12px;
+  cursor:pointer;
+}
+.noam-math-keys{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:5px;
+  margin-bottom:8px;
+}
+.noam-math-keys[hidden]{display:none}
+.noam-math-key{
+  min-height:34px;
+  padding:3px 6px;
+  border:1px solid var(--ink);
+  border-radius:7px;
+  color:var(--ink);
+  background:#fff;
+  font:600 17px Georgia,serif;
+  cursor:pointer;
+}
+.noam-math-key:hover{background:var(--tint)}
+.noam-math-key:focus-visible,.noam-math-toggle:focus-visible{outline:2px solid var(--accent-dark);outline-offset:2px}
+.noam-math-key[disabled],.noam-math-toggle[disabled]{opacity:.45;cursor:not-allowed}
 .noam-compose textarea{
   width:100%;
   min-height:68px;
@@ -3210,6 +3242,7 @@ var selectedExercise = null;
 var selectedPin = null;
 var busy = false;
 var pendingExerciseId = null;
+var mathKeyboardOpen = false;
 var analysisCache = {};
 var exercisePreviewCache = {};
 var exercisePreviewOrder = [];
@@ -3421,7 +3454,20 @@ function renderNoamChat(){
     '</div>' +
     '<div class="noam-transcript" id="noamTranscript"></div>' +
     '<div class="noam-compose">' +
-      '<label for="noamQuestion">יש לי שאלה</label>' +
+      '<div class="noam-compose-heading">' +
+        '<label for="noamQuestion">יש לי שאלה</label>' +
+        '<button type="button" class="noam-math-toggle" id="noamMathToggle" aria-controls="noamMathKeys" aria-expanded="'+mathKeyboardOpen+'">סימנים מתמטיים</button>' +
+      '</div>' +
+      '<div class="noam-math-keys" id="noamMathKeys" role="group" aria-label="סימנים מתמטיים"'+(mathKeyboardOpen?'':' hidden')+'>' +
+        '<button type="button" class="noam-math-key" data-math="square" dir="ltr" title="העלאה בריבוע" aria-label="העלאה בריבוע">x²</button>' +
+        '<button type="button" class="noam-math-key" data-math="cube" dir="ltr" title="העלאה בחזקה שלישית" aria-label="העלאה בחזקה שלישית">x³</button>' +
+        '<button type="button" class="noam-math-key" data-math="power" dir="ltr" title="חזקה לבחירתכם" aria-label="חזקה לבחירתכם">xⁿ</button>' +
+        '<button type="button" class="noam-math-key" data-math="root" dir="ltr" title="שורש ריבועי" aria-label="שורש ריבועי">√</button>' +
+        '<button type="button" class="noam-math-key" data-math="fraction" dir="ltr" title="שבר" aria-label="שבר">a/b</button>' +
+        '<button type="button" class="noam-math-key" data-math="multiply" dir="ltr" title="כפל" aria-label="כפל">×</button>' +
+        '<button type="button" class="noam-math-key" data-math="divide" dir="ltr" title="חילוק" aria-label="חילוק">÷</button>' +
+        '<button type="button" class="noam-math-key" data-math="parentheses" dir="ltr" title="סוגריים" aria-label="סוגריים">( )</button>' +
+      '</div>' +
       '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp"></textarea>' +
       '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
       '<button type="button" class="noam-send" id="noamSend">שלח לנועם AI</button>' +
@@ -3476,11 +3522,55 @@ function renderNoamChat(){
       event.preventDefault();document.getElementById("noamSend").click();
     }
   });
+  document.getElementById("noamMathToggle").addEventListener("click",function(){
+    mathKeyboardOpen=!mathKeyboardOpen;
+    this.setAttribute("aria-expanded",String(mathKeyboardOpen));
+    document.getElementById("noamMathKeys").hidden=!mathKeyboardOpen;
+  });
+  panelBody.querySelectorAll("[data-math]").forEach(function(button){
+    button.addEventListener("mousedown",function(event){ event.preventDefault(); });
+    button.addEventListener("click",function(){ insertNoamMath(this.getAttribute("data-math")); });
+  });
 
   setNoamBusy(busy);
   transcript.scrollTop = transcript.scrollHeight;
   renderPanelMath(panelBody);
   renderExercisePreview(selectedExercise,0);
+}
+
+function insertNoamMath(kind){
+  var input=document.getElementById("noamQuestion");
+  if (!input||busy||input.disabled){return;}
+  var start=input.selectionStart;
+  var end=input.selectionEnd;
+  var selected=input.value.slice(start,end);
+  var insertion="";
+  var caret;
+  if (kind==="square"||kind==="cube"){
+    insertion=(selected?"("+selected+")":"")+(kind==="square"?"²":"³");
+  }else if (kind==="power"){
+    insertion=(selected?"("+selected+")":"")+"^()";
+    caret=insertion.length-1;
+  }else if (kind==="root"){
+    insertion="√("+selected+")";
+    caret=selected?insertion.length:2;
+  }else if (kind==="fraction"){
+    insertion="("+selected+")/()";
+    caret=selected?insertion.length-1:1;
+  }else if (kind==="multiply"){
+    insertion=" × ";
+  }else if (kind==="divide"){
+    insertion=" ÷ ";
+  }else if (kind==="parentheses"){
+    insertion="("+selected+")";
+    caret=selected?insertion.length:1;
+  }else{return;}
+  input.focus({preventScroll:true});
+  if (input.value.length-(end-start)+insertion.length>input.maxLength){return;}
+  input.setRangeText(insertion,start,end,"end");
+  var position=start+(caret===undefined?insertion.length:caret);
+  input.setSelectionRange(position,position);
+  input.dispatchEvent(new Event("input",{bubbles:true}));
 }
 
 function locateSelectedExercise(){
@@ -3493,8 +3583,9 @@ function locateSelectedExercise(){
 function setNoamBusy(value){
   busy=!!value;
   if (!busy){ pendingExerciseId=null; }
-  ["noamOverview","noamHint","noamMistake","noamSend","noamQuestion","noamNewThread"]
+  ["noamOverview","noamHint","noamMistake","noamSend","noamQuestion","noamNewThread","noamMathToggle"]
     .forEach(function(id){ var el=document.getElementById(id);if(el){el.disabled=busy;} });
+  panelBody.querySelectorAll("[data-math]").forEach(function(button){ button.disabled=busy; });
 }
 
 function syntheticAnalysis(exercise){
