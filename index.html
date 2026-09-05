@@ -7,7 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" media="print" onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap"></noscript>
 <style>
   /* =======================================================================
      עיצוב "מחברת משבצות" — ערכת הצבעים מתחלפת לפי הלשונית הפעילה
@@ -231,7 +233,7 @@
   .grade-band .count{ font-size:13px; font-weight:700; color:var(--ink); opacity:.65; white-space:nowrap; }
 
   /* ---------- קבוצות נושאים ---------- */
-  .group{ margin-bottom:38px; }
+  .group{ content-visibility:auto; contain-intrinsic-size:auto 420px; margin-bottom:38px; }
   .group:last-child{ margin-bottom:0; }
   .group-head{ display:flex; align-items:center; gap:14px; margin-bottom:16px; }
   .group-head h3{
@@ -645,6 +647,12 @@
     .card:hover,.grade-tab:hover,.lvl:hover,.chip:hover{ transform:none; }
     .card:hover .tico{ transform:rotate(-5deg); }
   }
+
+  /* ---------- ביצועים: אנימציות מתחילות רק אחרי הציור הראשון ---------- */
+  .badge::after, .toy, .doodle{ animation-play-state:paused; }
+  html.io-ready .badge::after,
+  html.io-ready .toy,
+  html.io-ready .doodle{ animation-play-state:running; }
 </style>
 </head>
 <body>
@@ -2969,8 +2977,28 @@ syncTrackbar();
 buildChips();
 setHeader();
 render();
-window.addEventListener("load", postHeight);
 window.addEventListener("resize", postHeight);
+
+/* --- ביצועים: כל מה שלא נחוץ לציור הראשון רץ אחריו --- */
+function afterPaint(fn){
+  if ("requestIdleCallback" in window) requestIdleCallback(fn, { timeout: 800 });
+  else setTimeout(fn, 1);
+}
+requestAnimationFrame(function(){
+  requestAnimationFrame(function(){
+    postHeight();                                   /* גובה מיד אחרי הציור */
+    afterPaint(function(){
+      document.documentElement.classList.add("io-ready");  /* אנימציות */
+    });
+  });
+});
+window.addEventListener("load", postHeight);
+/* תמונות מגיעות מ-CDN ומשנות גובה כשהן נוחתות */
+document.querySelectorAll("img").forEach(function(im){
+  if (im.complete) return;
+  im.addEventListener("load", postHeight, { once:true });
+  im.addEventListener("error", postHeight, { once:true });
+});
 </script>
 </body>
 </html>
