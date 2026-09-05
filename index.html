@@ -6,7 +6,7 @@
 <title>דפי עבודה במתמטיקה · נועם דורון</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet">
 <style>
   /* =======================================================================
      עיצוב "מחברת משבצות" — ערכת הצבעים מתחלפת לפי הלשונית הפעילה
@@ -94,6 +94,23 @@
   .track[aria-selected="true"]{ background:var(--accent); color:var(--on-accent,#fff); }
   .tracknote{ font-size:14px; color:var(--muted); margin-inline-start:auto; }
   @media (max-width:600px){ .tracknote{ flex-basis:100%; margin-inline-start:0; } }
+
+  /* ---------- אלמנטים תלת־ממדיים ---------- */
+  .toy{ display:block; height:auto; user-select:none; -webkit-user-drag:none; }
+  .headrow .toy-head{
+    width:clamp(64px,8vw,96px); flex:none; margin-inline-start:auto;
+    transform:rotate(-6deg);
+    filter:drop-shadow(-4px 5px 0 rgba(30,29,26,.14));
+    animation:bob 6.5s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{transform:translateY(0) rotate(-6deg)} 50%{transform:translateY(-7px) rotate(-1deg)} }
+  .outro .toy-outro{
+    position:absolute; inset-inline-end:22px; bottom:-6px;
+    width:clamp(96px,14vw,148px); opacity:.95; z-index:0;
+    transform:rotate(-8deg);
+    filter:drop-shadow(-4px 5px 10px rgba(0,0,0,.45));
+  }
+  @media (max-width:700px){ .outro .toy-outro{ display:none; } .headrow .toy-head{ display:none; } }
 
   /* ---------- שוברי צבע ---------- */
   .hl{
@@ -647,6 +664,8 @@
     <div class="gbadge" id="gbadge" aria-hidden="true"></div>
     <h1 id="title"></h1>
   </div>
+  <img class="toy toy-head" src="assets/cube-192.webp" width="192" height="192"
+       alt="" aria-hidden="true" decoding="async">
   <p class="lede" id="lede"></p>
 
   <section class="aibanner" id="aibanner" aria-labelledby="aititle">
@@ -690,6 +709,8 @@
     <p>כל הדפים חינמיים ומסודרים לפי פריסת ההוראה של משרד החינוך לתשפ״ז.
        אם חסר נושא, או שמצאתם טעות — נשמח לשמוע.</p>
     <span class="oline" aria-hidden="true"></span>
+    <img class="toy toy-outro" src="assets/tools-256.webp" width="256" height="256"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
   </section>
 
   <p class="foot">כל הקבצים בפורמט PDF · מתמטיקה · נועם דורון</p>
@@ -738,23 +759,7 @@ var BASE = "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
    enabled:false מחזיר את כל הקישורים להתנהגות הישנה (PDF ישיר) מיידית.
    נושא ללא שדה x (כל היסודי, וכל דפי "one") ממשיך לקישור PDF ישיר.
    ========================================================================= */
-var VIEWER = { enabled: true, path: "worksheet-viewer-noam.html" };
-
-var NOAM_PREFIX_FALLBACK = {
-  7:{ 16:"G7-T16" },
-  8:{
-    1:"G8-T01",
-    26:"G8-T35",
-    34:"G8-T26",
-    35:"G8-T27",
-    56:"G8-T56",
-    57:"G8-T57",
-    58:"G8-T58",
-    59:"G8-T59",
-    60:"G8-T60"
-  },
-  9:{ 22:"G9-T16" }
-};
+var VIEWER = { enabled: true, path: "worksheet-viewer.html" };
 
 var DATA = {
 
@@ -2118,13 +2123,13 @@ var DATA = {
         d:"מבחן מסכם המשלב את נושאי השנה — אלגברה, פונקציות, נתונים וגאומטריה." },
       { id:60, ic:"magnify", g:"support", t:"אבחון סוף שנה",
         d:"מיפוי מסכם של הידע לקראת המעבר לכיתה ט׳." },
-      { id:61, x:"G8-T61", ic:"star", g:"data", t:"אינטרפולציה ואקסטרפולציה",
+      { id:61, ic:"star", g:"data", t:"אינטרפולציה ואקסטרפולציה",
         d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
-      { id:62, x:"G8-T62", ic:"star", g:"geo", t:"זוויות בין ישרים מקבילים",
+      { id:62, ic:"star", g:"geo", t:"זוויות בין ישרים מקבילים",
         d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
-      { id:63, x:"G8-T63", ic:"star", g:"solid", t:"מעגל ועיגול — היקף ושטח",
+      { id:63, ic:"star", g:"solid", t:"מעגל ועיגול — היקף ושטח",
         d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
-      { id:64, x:"G8-T64", ic:"star", g:"synth", t:"משימת הערכה 1",
+      { id:64, ic:"star", g:"synth", t:"משימת הערכה 1",
         d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." }
     ]
   },
@@ -2324,19 +2329,19 @@ var DATA = {
         d:"פריסת המנסרה, שטח המעטפת, שטח הבסיסים ושטח הפנים הכולל. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
       { id:32, x:"G9-T30", ic:"analytic", g:"spiral", t:"הרחבת מערכת הצירים חלק 2 — יישום והעמקה — לכיתה ט׳",
         d:"מרחקים בין נקודות, צורות במערכת הצירים וחישובי היקף ושטח. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
-      { id:33, x:"G9-T33", ic:"star", g:"r9sep", t:"גיאומטריה חישובית — משולש",
+      { id:33, ic:"star", g:"r9sep", t:"גיאומטריה חישובית — משולש",
         d:"סכום זוויות, שטח והיקף, קטעים מיוחדים במשולש, ושילוב במערכת צירים." },
-      { id:34, x:"G9-T34", ic:"star", g:"r9oct", t:"פונקציה קווית",
+      { id:34, ic:"star", g:"r9oct", t:"פונקציה קווית",
         d:"שיפוע כקצב שינוי, ייצוג אלגברי וגרפי, נקודה על ישר, חיתוך עם הצירים, ישרים מקבילים." },
-      { id:35, x:"G9-T35", ic:"star", g:"r9oct", t:"משפט פיתגורס",
+      { id:35, ic:"star", g:"r9oct", t:"משפט פיתגורס",
         d:"חישובי צלעות, צורות מורכבות, היקפים ושטחים — כולל שורשים שאינם שלמים." },
-      { id:36, x:"G9-T36", ic:"star", g:"r9sep", t:"קריאת גרפים",
+      { id:36, ic:"star", g:"r9sep", t:"קריאת גרפים",
         d:"קריאת מידע מגרף — ערך התחלתי, עלייה וירידה, קטע קבוע, נקודות חיתוך. בלי נוסחאות." },
-      { id:37, x:"G9-T37", ic:"star", g:"spiral", t:"משולש ישר זווית 30-60-90",
+      { id:37, ic:"star", g:"spiral", t:"משולש ישר זווית 30-60-90",
         d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
-      { id:38, x:"G9-T38", ic:"star", g:"spiral", t:"יחסי צלעות וזוויות",
+      { id:38, ic:"star", g:"spiral", t:"יחסי צלעות וזוויות",
         d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
-      { id:39, x:"G9-T39", ic:"star", g:"spiral", t:"הטרפז",
+      { id:39, ic:"star", g:"spiral", t:"הטרפז",
         d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." }
     ]
   }
@@ -2459,38 +2464,15 @@ function url(v){
   return /^https?:\/\//.test(v) ? v : BASE + v + ".pdf";
 }
 
-function noamTopicPrefix(topic, grade){
-  if (topic && topic.x) return topic.x;
-  var gradeMap = NOAM_PREFIX_FALLBACK[grade] || {};
-  return topic ? (gradeMap[topic.id] || "") : "";
-}
-
-/* Universal Noam AI routing for every middle-school worksheet. */
-function sheetHref(topic, grade, level, hex, row){
-  if (!VIEWER.enabled || !topic || !hex) return url(hex);
-
-  var prefix = noamTopicPrefix(topic, grade);
-
-  /* Elementary remains unchanged until its manifests are generated. */
-  if (!prefix || grade < 7 || grade > 9) return url(hex);
-
-  var params = [
-    "g="   + encodeURIComponent(grade),
-    "x="   + encodeURIComponent(prefix),
-    "lv="  + encodeURIComponent(level),
-    "pdf=" + encodeURIComponent(hex),
-    "t="   + encodeURIComponent(topic.t)
-  ];
-
-  if (row){
-    ["a", "b", "c"].forEach(function(key){
-      if (row[key]){
-        params.push("p" + key + "=" + encodeURIComponent(row[key]));
-      }
-    });
-  }
-
-  return VIEWER.path + "?" + params.join("&");
+/* קישור הכפתור: ל-Viewer אם יש הקשר AI, אחרת ישירות ל-PDF */
+function sheetHref(topic, grade, level, hex){
+  if (!VIEWER.enabled || !topic || !topic.x || !hex) return url(hex);
+  return VIEWER.path +
+         "?g="   + encodeURIComponent(grade) +
+         "&x="   + encodeURIComponent(topic.x) +
+         "&lv="  + encodeURIComponent(level) +
+         "&pdf=" + encodeURIComponent(hex) +
+         "&t="   + encodeURIComponent(topic.t);
 }
 function esc(s){
   return String(s).replace(/[&<>"']/g, function(m){
@@ -2655,7 +2637,7 @@ function cardHTML(topic, grade, cardIndex){
   var buttons;
 
   if(row.one !== undefined){                 /* דף יחיד ללא רמות */
-    var oneHref  = sheetHref(topic, grade, "b", row.one, row);
+    var oneHref  = url(row.one);
     var oneLabel = row.oneLabel || "דף יחיד — כל הרמות";
     buttons = oneHref
       ? '<a class="lvl lvl--a lvl--one" href="' + oneHref + '" target="_blank" rel="noopener noreferrer" ' +
@@ -2672,7 +2654,7 @@ function cardHTML(topic, grade, cardIndex){
                'aria-label="' + esc(label) + ' — ' + NO_LINK + '">' +
                esc(label) + ' <span class="soon-note">(' + NO_LINK + ')</span></span>';
       }
-      return '<a class="lvl ' + lv.cls + '" href="' + sheetHref(topic, grade, lv.k, row[lv.k], row) + '" target="_blank" rel="noopener noreferrer" ' +
+      return '<a class="lvl ' + lv.cls + '" href="' + sheetHref(topic, grade, lv.k, row[lv.k]) + '" target="_blank" rel="noopener noreferrer" ' +
              'aria-label="' + esc(topic.t) + ' — ' + esc(label) + ', קובץ PDF">' + esc(label) + '</a>';
     }).join("");
   }
