@@ -1332,7 +1332,30 @@ textarea:focus{
   background:var(--tint);
   border-bottom-left-radius:4px;
 }
-.noam-bubble.thinking{color:var(--muted);background:#f7f8fa}
+.noam-bubble.thinking{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:var(--muted);
+  background:#f7f8fa;
+}
+.noam-thinking-dots{display:inline-flex;gap:4px;flex-shrink:0}
+.noam-thinking-dots span{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--accent-dark);
+  animation:noam-thinking-pulse 1.2s ease-in-out infinite;
+}
+.noam-thinking-dots span:nth-child(2){animation-delay:.16s}
+.noam-thinking-dots span:nth-child(3){animation-delay:.32s}
+@keyframes noam-thinking-pulse{
+  0%,60%,100%{opacity:.35;transform:translateY(0)}
+  30%{opacity:1;transform:translateY(-3px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .noam-thinking-dots span{animation:none;opacity:.7}
+}
 .noam-kind{
   display:block;
   margin-bottom:3px;
@@ -1367,6 +1390,7 @@ textarea:focus{
   direction:rtl;
 }
 .noam-compose textarea:focus{outline:none;box-shadow:-3px 3px 0 var(--accent)}
+.noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}
 .noam-send{
   width:100%;
   margin-top:7px;
@@ -3185,6 +3209,7 @@ var manifestReady = false;
 var selectedExercise = null;
 var selectedPin = null;
 var busy = false;
+var pendingExerciseId = null;
 var analysisCache = {};
 var exercisePreviewCache = {};
 var exercisePreviewOrder = [];
@@ -3397,7 +3422,8 @@ function renderNoamChat(){
     '<div class="noam-transcript" id="noamTranscript"></div>' +
     '<div class="noam-compose">' +
       '<label for="noamQuestion">יש לי שאלה</label>' +
-      '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?"></textarea>' +
+      '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp"></textarea>' +
+      '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
       '<button type="button" class="noam-send" id="noamSend">שלח לנועם AI</button>' +
     '</div>';
 
@@ -3408,6 +3434,22 @@ function renderNoamChat(){
     thread.messages.forEach(function(message){
       addTranscriptBubble(transcript,message.role,message.text,message.kind||"");
     });
+  }
+  if (busy){
+    var thinkingText=pendingExerciseId===selectedExercise.id
+      ? "נועם AI חושב…"
+      : "נועם AI עדיין חושב על הסעיף הקודם…";
+    var thinking=addTranscriptBubble(transcript,"assistant",thinkingText,"");
+    var thinkingBubble=thinking.querySelector(".noam-bubble");
+    thinkingBubble.classList.add("thinking");
+    thinkingBubble.setAttribute("role","status");
+    thinkingBubble.setAttribute("aria-live","polite");
+    thinkingBubble.setAttribute("aria-atomic","true");
+    var dots=document.createElement("span");
+    dots.className="noam-thinking-dots";
+    dots.setAttribute("aria-hidden","true");
+    for (var i=0;i<3;i++){ dots.appendChild(document.createElement("span")); }
+    thinkingBubble.appendChild(dots);
   }
 
   var hintButton = document.getElementById("noamHint");
@@ -3430,7 +3472,7 @@ function renderNoamChat(){
     askNoam("free_question",message);
   });
   document.getElementById("noamQuestion").addEventListener("keydown",function(event){
-    if ((event.metaKey||event.ctrlKey)&&event.key==="Enter"){
+    if (event.key==="Enter"&&!event.shiftKey&&!event.isComposing&&event.keyCode!==229){
       event.preventDefault();document.getElementById("noamSend").click();
     }
   });
@@ -3450,6 +3492,7 @@ function locateSelectedExercise(){
 
 function setNoamBusy(value){
   busy=!!value;
+  if (!busy){ pendingExerciseId=null; }
   ["noamOverview","noamHint","noamMistake","noamSend","noamQuestion","noamNewThread"]
     .forEach(function(id){ var el=document.getElementById(id);if(el){el.disabled=busy;} });
 }
@@ -3574,10 +3617,8 @@ function askNoam(helpKind,studentMessage){
   var started=Date.now();
 
   thread.messages.push({role:"user",text:visible,kind:kindLabel});
-  saveNoamState();renderNoamChat();setNoamBusy(true);
-  var transcript=document.getElementById("noamTranscript");
-  var thinking=addTranscriptBubble(transcript,"assistant","נועם AI חושב…","");
-  thinking.querySelector(".noam-bubble").classList.add("thinking");
+  pendingExerciseId=exercise.id;
+  saveNoamState();setNoamBusy(true);renderNoamChat();
 
   getExerciseAnalysis(exercise)
     .then(function(analysis){
