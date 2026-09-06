@@ -3812,28 +3812,68 @@ function syntheticAnalysis(exercise){
 
 function cropExerciseCanvas(exercise){
   return new Promise(function(resolve,reject){
-    var crop=exercise.crop||{};
-    var page=pdfPages.querySelector('.pdf-page[data-page="'+Number(crop.page||0)+'"]');
-    var source=page && page.querySelector("canvas");
-    if (!source || source.width<20 || source.height<20){ reject(new Error("page canvas unavailable"));return; }
-    var sx=Math.max(0,Math.floor((Number(crop.x)||0)*source.width));
-    var sy=Math.max(0,Math.floor((Number(crop.y)||0)*source.height));
-    var sw=Math.max(20,Math.min(source.width-sx,Math.floor((Number(crop.w)||1)*source.width)));
-    var sh=Math.max(20,Math.min(source.height-sy,Math.floor((Number(crop.h)||1)*source.height)));
-    var maxDim=1500;var scale=Math.min(1,maxDim/Math.max(sw,sh));
-    var target=document.createElement("canvas");
-    target.width=Math.max(20,Math.round(sw*scale));
-    target.height=Math.max(20,Math.round(sh*scale));
-    var ctx=target.getContext("2d",{alpha:false});
-    ctx.fillStyle="#fff";ctx.fillRect(0,0,target.width,target.height);
-    ctx.drawImage(source,sx,sy,sw,sh,0,0,target.width,target.height);
-    resolve(target);
+    var crops=Array.isArray(exercise.crops)&&exercise.crops.length?exercise.crops:[exercise.crop||{}];
+    var version=pdfRenderVersion;
+    var attempts=0;
+    if (crops.length>12){reject(new Error("יותר מדי עמודים לשאלה אחת."));return;}
+    function prepare(){
+      if (version!==pdfRenderVersion){reject(new Error("התצוגה השתנתה. נסו שוב."));return;}
+      var segments=[];
+      var waiting=false;
+      try{
+        crops.forEach(function(crop){
+          var pageNumber=Number(crop.page||0);
+          var page=pdfPages.querySelector('.pdf-page[data-page="'+pageNumber+'"]');
+          if (!page){throw new Error("עמוד השאלה אינו זמין.");}
+          if (page.getAttribute("data-state")==="error"){throw new Error("לא הצלחנו לטעון את עמוד השאלה. נסו לרענן.");}
+          var source=page.querySelector("canvas");
+          if (page.getAttribute("data-state")!=="ready"||!source||source.width<20||source.height<20){
+            renderPdfPage(pageNumber,version);
+            waiting=true;
+            return;
+          }
+          var sx=Math.max(0,Math.floor((Number(crop.x)||0)*source.width));
+          var sy=Math.max(0,Math.floor((Number(crop.y)||0)*source.height));
+          var sw=Math.min(source.width-sx,Math.floor((Number(crop.w)||1)*source.width));
+          var sh=Math.min(source.height-sy,Math.floor((Number(crop.h)||1)*source.height));
+          if (sw<1||sh<1){throw new Error("לא הצלחנו לחתוך את תמונת השאלה.");}
+          segments.push({source:source,sx:sx,sy:sy,sw:sw,sh:sh});
+        });
+        if (waiting){
+          if (++attempts>120){throw new Error("טעינת עמודי השאלה מתעכבת. נסו שוב.");}
+          setTimeout(prepare,100);
+          return;
+        }
+        var width=Math.min(1500,Math.max.apply(null,segments.map(function(s){return s.sw;})));
+        var gap=segments.length>1?12:0;
+        var height=segments.reduce(function(total,s){return total+s.sh*width/s.sw;},0)+gap*(segments.length-1);
+        var scale=Math.min(1,(segments.length>1?3000:1500)/height);
+        var target=document.createElement("canvas");
+        target.width=Math.max(20,Math.round(width*scale));
+        target.height=Math.max(20,Math.round(height*scale));
+        var ctx=target.getContext("2d",{alpha:false});
+        ctx.fillStyle="#fff";ctx.fillRect(0,0,target.width,target.height);
+        var top=0;
+        segments.forEach(function(s){
+          var drawHeight=s.sh*width/s.sw*scale;
+          ctx.drawImage(s.source,s.sx,s.sy,s.sw,s.sh,0,top,target.width,drawHeight);
+          top+=drawHeight+gap*scale;
+        });
+        resolve(target);
+      }catch(error){reject(error);}
+    }
+    prepare();
   });
 }
 
 function cropExerciseImage(exercise){
   return cropExerciseCanvas(exercise).then(function(canvas){
-    return canvas.toDataURL("image/jpeg",.84);
+    var qualities=[.84,.72,.58,.46];
+    for (var i=0;i<qualities.length;i++){
+      var dataUrl=canvas.toDataURL("image/jpeg",qualities[i]);
+      if (dataUrl.length<=390000){return dataUrl;}
+    }
+    throw new Error("תמונת השאלה גדולה מדי לשליחה. נסו שוב בתצוגה קטנה יותר.");
   });
 }
 
@@ -3881,15 +3921,28 @@ function renderExercisePreview(exercise,attempt){
 function getExerciseAnalysis(exercise){
   if (analysisCache[exercise.id]){ return Promise.resolve(analysisCache[exercise.id]); }
   var fallback=syntheticAnalysis(exercise);
-  if (!exercise.needsVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
+  if (!exercise.needsVision&&!exercise.requiresVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
 
-  return cropExerciseImage(exercise)
+  // New manifests share a complete question image across its sections.
+  // This cache is already scoped to the PDF, and stores unmodified analysis.
+  var imageKey=exercise.requiresVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  var cachedImage=imageKey&&analysisCache[imageKey];
+  var request=cachedImage?Promise.resolve({ok:true,analysis:cachedImage}):cropExerciseImage(exercise)
     .then(function(imageDataUrl){
       return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
-    })
+    });
+  return request
     .then(function(result){
       if (!result||!result.ok||!result.analysis){ throw new Error("vision unavailable"); }
       var analysis=result.analysis;
+      if (exercise.requiresVision && analysis.readable!==true){throw new Error("לא הצלחנו לקרוא את השאלה בבירור. נסו שוב.");}
+      if (exercise.requiresVision && !["transcription","math_content","problem_statement","diagram_description"].some(function(key){return typeof analysis[key]==="string"&&analysis[key].trim();})){
+        throw new Error("לא התקבל תוכן קריא מתמונת השאלה.");
+      }
+      if (imageKey){
+        analysisCache[imageKey]=analysis;
+        analysis=JSON.parse(JSON.stringify(analysis));
+      }
       var semantic=exercise.prompt||"";
       analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
       analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
@@ -3899,6 +3952,9 @@ function getExerciseAnalysis(exercise){
       // Security refusals must never trigger another paid request through the
       // synthetic-analysis fallback. Preserve them for the chat error message.
       if (isBotProtectionError(error)){ throw error; }
+      // These manifests deliberately carry no guessed OCR transcription.
+      // The solver must receive the actual worksheet image analysis.
+      if (exercise.requiresVision){throw new Error("לא הצלחנו לקרוא את תמונת השאלה. נסו שוב בעוד רגע.");}
       console.warn("NOAM VISION FALLBACK:",exercise.id,error);
       analysisCache[exercise.id]=fallback;saveNoamState();return fallback;
     });

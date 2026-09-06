@@ -194,3 +194,24 @@ test("rendering at a new zoom height rebuilds clusters without stale pins or los
   assert.equal(f.pins().length, 2);
   assert.equal(f.ctx.selectedPin.dataset.exerciseId, "q2");
 });
+
+test("every installed worksheet keeps all questions reachable with separated phone targets", () => {
+  const directory = path.join(__dirname, "../noam-ai/manifests");
+  for (const file of fs.readdirSync(directory).filter(file => file.endsWith(".json"))) {
+    const manifest = JSON.parse(fs.readFileSync(path.join(directory, file), "utf8"));
+    if (!manifest.exercises || !manifest.exercises.length) continue;
+    for (const height of [280, 500]) {
+      const f = fixture(manifest.exercises, true, height);
+      f.ctx.renderManifestPins();
+      const reachable = f.pins().flatMap(pin => pin.dataset.exerciseIds.split(" "));
+      assert.deepEqual(reachable.sort(), manifest.exercises.map(exercise => exercise.id).sort(), file);
+      for (const page of f.pages.values()) {
+        const centers = page.children.map(pin => parseFloat(pin.style.top)).sort((a, b) => a - b);
+        centers.forEach((center, index) => {
+          assert.ok(center >= 22 && center <= height - 22, file + ": target within page");
+          if (index) assert.ok(center - centers[index - 1] >= 48 - 1e-8, file + ": targets separated");
+        });
+      }
+    }
+  }
+});
