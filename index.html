@@ -20,11 +20,12 @@
     --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
   }
   .wrap[data-grade="2"], body:has(.wrap[data-grade="2"]){
+    --on-accent:#10100E;
     --ink:#1E1D1A; --accent:#0B84D0; --accent-dark:#065180; --tint:#DFF0FB;
     --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
   }
   .wrap[data-grade="3"], body:has(.wrap[data-grade="3"]){
-    --on-accent:#fff;
+    --on-accent:#1E1D1A;
     --ink:#1E1D1A; --accent:#12A05C; --accent-dark:#0B6339; --tint:#DFF5E9;
     --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
   }
@@ -42,6 +43,7 @@
     --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
   }
   .wrap[data-grade="7"], body:has(.wrap[data-grade="7"]){
+    --on-accent:#1E1D1A;
     --ink:#1E1D1A; --accent:#E4572E; --accent-dark:#8D351C; --tint:#FFE8DF;
     --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
   }
@@ -51,6 +53,7 @@
     --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
   }
   .wrap[data-grade="9"], body:has(.wrap[data-grade="9"]){
+    --on-accent:#10100E;
     --ink:#1E1D1A; --accent:#0E9384; --accent-dark:#085B51; --tint:#DDF3EF;
     --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
   }
@@ -67,6 +70,20 @@
 
   *,*::before,*::after{ box-sizing:border-box; }
   html{ -webkit-text-size-adjust:100%; }
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  .skip-link{
+    position:fixed; top:12px; inset-inline-start:12px; z-index:1000;
+    padding:10px 18px; border:3px solid var(--ink); border-radius:12px;
+    background:#fff; color:var(--ink); font-weight:800;
+    transform:translateY(-200%);
+  }
+  .skip-link:focus{ transform:translateY(0); }
+  :where(a,button,input,[tabindex]):focus-visible{
+    outline:3px solid var(--ink); outline-offset:4px;
+  }
 
   body{
     margin:0; padding:0;
@@ -94,7 +111,7 @@
     box-shadow:-3px 3px 0 var(--ink); transition:transform .15s ease, box-shadow .15s ease;
   }
   .track:hover{ transform:translate(2px,-2px); box-shadow:-5px 5px 0 var(--ink); }
-  .track[aria-selected="true"]{ background:var(--accent); color:var(--on-accent,#fff); }
+  .track[aria-pressed="true"]{ background:var(--accent); color:var(--on-accent,#fff); }
   .tracknote{ font-size:14px; color:var(--muted); margin-inline-start:auto; }
   @media (max-width:600px){ .tracknote{ flex-basis:100%; margin-inline-start:0; } }
 
@@ -180,8 +197,9 @@
     padding:12px 42px 12px 16px;
     background:var(--paper); border:2.5px solid var(--ink); border-radius:999px;
   }
-  .search input::placeholder{ color:var(--ph); font-weight:600; }
+  .search input::placeholder{ color:var(--muted); font-weight:600; }
   .search input:focus{ outline:none; box-shadow:-3px 3px 0 var(--accent); }
+  .search input:focus-visible{ outline:3px solid var(--ink); outline-offset:4px; }
   .search svg{ position:absolute; inset-inline-end:15px; top:50%; transform:translateY(-50%); width:17px; height:17px; stroke:var(--ink); fill:none; stroke-width:2.4; }
 
   .chips{ display:flex; flex-wrap:wrap; gap:8px; }
@@ -598,6 +616,7 @@
     border:2.5px dashed var(--accent); opacity:.55;
     animation:spin 14s linear infinite;
   }
+  .wrap[data-grade="8"] .gbadge{ color:var(--accent-dark); }
   @keyframes spin{ to{ transform:rotate(360deg); } }
   @media (prefers-reduced-motion:reduce){ .gbadge::after{ animation:none; } }
 
@@ -656,9 +675,10 @@
 </style>
 </head>
 <body>
-<div class="wrap" id="wrap">
+<a class="skip-link" href="#list">דילוג לדפי העבודה</a>
+<main class="wrap" id="wrap" aria-labelledby="title">
 
-  <div class="grades" id="grades" role="tablist" aria-label="בחירת כיתה"></div>
+  <div class="grades" id="grades" role="tablist" aria-label="בחירת כיתה" aria-orientation="horizontal"></div>
 
   <svg class="doodle d1" width="46" height="30" viewBox="0 0 46 30" aria-hidden="true">
     <path d="M3 22c7-14 13-14 20 0s13 14 20 0" fill="none"
@@ -687,12 +707,12 @@
 
   <div class="toolbar">
     <div class="search">
-      <input id="q" type="search" placeholder="חיפוש נושא — למשל: זוויות, פיתגורס, אחוזים" aria-label="חיפוש נושא">
+      <input id="q" type="search" placeholder="חיפוש נושא — למשל: זוויות, פיתגורס, אחוזים" aria-label="חיפוש נושא" aria-controls="list">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
     </div>
-    <div class="trackbar" id="trackbar" role="tablist" aria-label="מסלול לימוד" hidden>
-      <button class="track" type="button" role="tab" data-track="reg" aria-selected="true">רמה רגילה</button>
-      <button class="track" type="button" role="tab" data-track="red" aria-selected="false">רמה מצומצמת</button>
+    <div class="trackbar" id="trackbar" role="group" aria-label="מסלול לימוד" hidden>
+      <button class="track" type="button" data-track="reg" aria-pressed="true" aria-controls="list">רמה רגילה</button>
+      <button class="track" type="button" data-track="red" aria-pressed="false" aria-controls="list">רמה מצומצמת</button>
       <span class="tracknote" id="tracknote"></span>
     </div>
     <div class="chips" id="chips" role="group" aria-label="סינון לפי תחום"></div>
@@ -709,7 +729,9 @@
     <span class="k c"><i></i>★ מצוינות — אתגר והוכחות</span>
   </p>
 
-  <div id="list"></div>
+  <p class="sr-only" id="results-status" role="status" aria-live="polite" aria-atomic="true"></p>
+  <span id="results-scope" hidden>תוצאות חיפוש בכל הכיתות</span>
+  <div id="list" role="tabpanel" tabindex="0"></div>
 
   <div class="jump" id="jump"></div>
 
@@ -723,7 +745,7 @@
   </section>
 
   <p class="foot">כל הקבצים בפורמט PDF · מתמטיקה · נועם דורון</p>
-</div>
+</main>
 
 <script>
 /* =========================================================================
@@ -2553,8 +2575,9 @@ function tabsRow(list, label, emoji){
            '<div class="tabrow-btns">' +
              list.map(function(g){
                return '<button class="grade-tab" type="button" role="tab" data-grade="' + g + '" ' +
+                      'id="grade-tab-' + g + '" aria-controls="list" tabindex="' + (g === state.grade ? '0' : '-1') + '" ' +
                       'aria-selected="' + (g === state.grade) + '">' +
-                      (GRADE_EMOJI[g] || "") + ' ' + GRADE_NAME[g] + '</button>';
+                      '<span aria-hidden="true">' + (GRADE_EMOJI[g] || "") + '</span> ' + GRADE_NAME[g] + '</button>';
              }).join("") +
            '</div>' +
          '</div>';
@@ -2562,18 +2585,38 @@ function tabsRow(list, label, emoji){
 
 function buildGradeTabs(){
   var box = document.getElementById("grades");
-  box.innerHTML = tabsRow(ELEMENTARY, "בית ספר יסודי", "🎒") +
-                  tabsRow(MIDDLE,     "חטיבת ביניים",  "🏫");
-  if (box.dataset.bound) return;
-  box.dataset.bound = "1";
-  box.addEventListener("click", function(e){
-    var btn = e.target.closest(".grade-tab");
-    if(!btn) return;
-    goToGrade(Number(btn.dataset.grade));
+  if (!box.dataset.bound){
+    box.innerHTML = tabsRow(ELEMENTARY, "בית ספר יסודי", "🎒") +
+                    tabsRow(MIDDLE,     "חטיבת ביניים",  "🏫");
+    box.dataset.bound = "1";
+    box.addEventListener("click", function(e){
+      var btn = e.target.closest(".grade-tab");
+      if(!btn) return;
+      goToGrade(Number(btn.dataset.grade));
+    });
+    box.addEventListener("keydown", function(e){
+      var btn = e.target.closest(".grade-tab");
+      if (!btn || e.altKey || e.ctrlKey || e.metaKey) return;
+      var grades = ELEMENTARY.concat(MIDDLE);
+      var index = grades.indexOf(Number(btn.dataset.grade));
+      if (e.key === "ArrowLeft") index = (index + 1) % grades.length;
+      else if (e.key === "ArrowRight") index = (index + grades.length - 1) % grades.length;
+      else if (e.key === "Home") index = 0;
+      else if (e.key === "End") index = grades.length - 1;
+      else return;
+      e.preventDefault();
+      goToGrade(grades[index], true);
+    });
+  }
+  Array.prototype.forEach.call(box.querySelectorAll(".grade-tab"), function(btn){
+    var selected = Number(btn.dataset.grade) === state.grade;
+    btn.setAttribute("aria-selected", String(selected));
+    btn.tabIndex = selected ? 0 : -1;
   });
+  document.getElementById("list").setAttribute("aria-labelledby", "grade-tab-" + state.grade);
 }
 
-function goToGrade(g){
+function goToGrade(g, focusTab){
   if (!DATA[g]) return;
   state.grade = g;
   state.group = "all";
@@ -2588,7 +2631,9 @@ function goToGrade(g){
   buildChips();
   setHeader();
   render();
-  try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch(e){ window.scrollTo(0,0); }
+  if (focusTab) document.getElementById("grade-tab-" + g).focus({ preventScroll:true });
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  try { window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }); } catch(e){ window.scrollTo(0,0); }
 }
 
 function buildJump(){
@@ -2609,7 +2654,7 @@ function buildJump(){
   box.dataset.bound = "1";
   box.addEventListener("click", function(e){
     var b = e.target.closest(".jump-btn");
-    if (b) goToGrade(Number(b.dataset.grade));
+    if (b) goToGrade(Number(b.dataset.grade), true);
   });
 }
 
@@ -2668,9 +2713,6 @@ document.getElementById("trackbar").addEventListener("click", function(e){
   if(!btn) return;
   state.track = btn.dataset.track;
   state.group = "all";
-  Array.prototype.forEach.call(this.querySelectorAll(".track"), function(b){
-    b.setAttribute("aria-selected", String(b.dataset.track === state.track));
-  });
   syncTrackbar();
   buildChips();
   render();
@@ -2678,6 +2720,9 @@ document.getElementById("trackbar").addEventListener("click", function(e){
 function syncTrackbar(){
   var bar = document.getElementById("trackbar");
   bar.hidden = (state.grade !== 9);
+  Array.prototype.forEach.call(bar.querySelectorAll(".track"), function(b){
+    b.setAttribute("aria-pressed", String(b.dataset.track === state.track));
+  });
   var note = document.getElementById("tracknote");
   if(!note) return;
   note.textContent = state.track === "red"
@@ -2962,11 +3007,23 @@ function groupsHTML(grade, list){
   }).join("");
 }
 
+var resultsStatusTimer;
+function announceResults(total){
+  clearTimeout(resultsStatusTimer);
+  resultsStatusTimer = setTimeout(function(){
+    var message = total ? "נמצאו " + total + " נושאים" : "לא נמצאו נושאים";
+    if (!(state.cross && state.q.trim())) message += " ב" + GRADE_NAME[state.grade];
+    if (state.q.trim()) message += ' לחיפוש "' + state.q.trim() + '"';
+    document.getElementById("results-status").textContent = message + ".";
+  }, 250);
+}
+
 function render(){
   var list = document.getElementById("list");
   var hint = document.getElementById("crosshint");
   var q    = state.q.trim();
   var html = "", total = 0;
+  list.setAttribute("aria-labelledby", "grade-tab-" + state.grade + (state.cross && q ? " results-scope" : ""));
 
   if(state.cross && q){
     GRADE_ORDER.forEach(function(g){
@@ -2982,7 +3039,7 @@ function render(){
   } else {
     var m = matchesIn(state.grade, true);
     total = m.length;
-    html  = groupsHTML(state.grade, m);
+    html  = '<h2 class="sr-only">דפי העבודה</h2>' + groupsHTML(state.grade, m);
 
     /* רמז: יש תוצאות גם בכיתות אחרות? */
     if(q && !state.cross){
@@ -2994,8 +3051,9 @@ function render(){
     }
   }
 
+  announceResults(total);
   if(!total){
-    list.innerHTML = '<div class="empty"><strong>אין נושא שמתאים לחיפוש</strong>' +
+    list.innerHTML = '<h2 class="sr-only">דפי העבודה</h2><div class="empty"><strong>אין נושא שמתאים לחיפוש</strong>' +
                      'נסו מילה אחרת, או לחצו על "כל הנושאים" כדי לראות את הרשימה המלאה.</div>';
     postHeight();
     return;

@@ -21,6 +21,7 @@
   --ink:#14213D;
   --accent:#7B2FD1;
   --accent-dark:#551F92;
+  --on-accent:#fff;
   --tint:#EBDDFB;
   --paper:#E3DFD2;
   --grid:#BFBDB2;
@@ -45,6 +46,7 @@
 [data-grade="9"]{
   --accent:#00A08A;
   --accent-dark:#00705F;
+  --on-accent:#14213D;
   --tint:#CFF3EC;
   --muted:#4A6B64;
 }
@@ -70,6 +72,38 @@ body{
 
   display:flex;
   flex-direction:column;
+}
+
+.noam-sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
+  border:0;
+}
+
+.skip-link{
+  position:fixed;
+  inset-block-start:8px;
+  inset-inline-start:8px;
+  z-index:100;
+  padding:10px 16px;
+  border:3px solid var(--ink);
+  border-radius:10px;
+  color:var(--ink);
+  background:#fff;
+  font-weight:800;
+  transform:translateY(-180%);
+}
+
+.skip-link:focus{transform:translateY(0)}
+:where(a,button,textarea,[tabindex]):focus-visible{
+  outline:3px solid var(--accent-dark);
+  outline-offset:3px;
 }
 
 /* HEADER */
@@ -159,7 +193,7 @@ body{
 }
 
 .level-link[aria-current="page"]{
-  color:#fff;
+  color:var(--on-accent);
   background:var(--accent);
   box-shadow:-2px 2px 0 var(--ink);
   cursor:default;
@@ -210,7 +244,7 @@ body{
 
 .btn--go{
   background:var(--accent);
-  color:#fff;
+  color:var(--on-accent);
 }
 
 /* LAYOUT */
@@ -371,7 +405,7 @@ body{
 }
 
 .pdf-tool.primary{
-  color:#fff;
+  color:var(--on-accent);
   background:var(--accent);
 }
 
@@ -622,7 +656,7 @@ textarea:focus{
   font-weight:900;
   font-size:15px;
   cursor:pointer;
-  color:#fff;
+  color:var(--on-accent);
   background:var(--accent);
   border:2.5px solid var(--ink);
   border-radius:999px;
@@ -668,7 +702,7 @@ textarea:focus{
 
 .assist-btn.custom{
   background:var(--accent);
-  color:#fff;
+  color:var(--on-accent);
 }
 
 .hint{
@@ -752,7 +786,7 @@ textarea:focus{
   font-weight:900;
   font-size:16px;
   cursor:pointer;
-  color:#fff;
+  color:var(--on-accent);
   background:var(--accent);
   border:3px solid var(--ink);
   border-radius:999px;
@@ -808,7 +842,7 @@ textarea:focus{
 
 .chat-row.student .chat-bubble{
   background:var(--accent);
-  color:#fff;
+  color:var(--on-accent);
   border-bottom-right-radius:5px;
 }
 
@@ -1081,7 +1115,7 @@ textarea:focus{
   outline:none;
 }
 .pdf-page .noam-exercise-pin.is-active{
-  color:#fff;
+  color:var(--on-accent);
   background:var(--accent);
   box-shadow:-3px 3px 0 var(--ink);
 }
@@ -1176,7 +1210,7 @@ textarea:focus{
   cursor:pointer;
 }
 .noam-action.primary{
-  color:#fff;
+  color:var(--on-accent);
   background:var(--accent);
 }
 .noam-action[disabled]{opacity:.45;cursor:not-allowed}
@@ -1324,6 +1358,7 @@ textarea:focus{
   direction:rtl;
 }
 .noam-compose textarea:focus{outline:none;box-shadow:-3px 3px 0 var(--accent)}
+.noam-compose textarea:focus-visible{outline:3px solid var(--accent-dark);outline-offset:3px}
 .noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}
 .noam-send{
   width:100%;
@@ -1461,14 +1496,16 @@ textarea:focus{
 
 <div class="bar">
 
+  <a class="skip-link" href="#worksheetMain">דילוג לדף העבודה ולעזרה</a>
+
   <h1>
-    <span id="emoji">📄</span>
+    <span id="emoji" aria-hidden="true">📄</span>
     <span class="ttl" id="title">דף עבודה</span>
   </h1>
 
   <div class="context-chips">
     <span class="chip" id="gradeChip"></span>
-    <div class="level-switch" id="levelSwitch" aria-label="מעבר בין רמות"></div>
+    <div class="level-switch" id="levelSwitch" role="group" aria-label="מעבר בין רמות"></div>
   </div>
 
   <span class="spacer"></span>
@@ -1501,7 +1538,7 @@ textarea:focus{
 
 </div>
 
-<div class="stage">
+<main class="stage" id="worksheetMain" tabindex="-1" aria-labelledby="title">
 
   <div class="pdfwrap">
 
@@ -1513,6 +1550,7 @@ textarea:focus{
         class="pdf-scroll"
         id="pdfScroll"
         tabindex="0"
+        role="region"
         aria-label="דף העבודה"
       >
         <div class="pdf-pages" id="pdfPages"></div>
@@ -1528,7 +1566,7 @@ textarea:focus{
         טוען את דף העבודה…
       </div>
 
-      <div class="pdf-tools hidden" id="pdfTools" aria-label="כלי PDF">
+      <div class="pdf-tools hidden" id="pdfTools" role="group" aria-label="כלי PDF">
         <button class="pdf-tool" id="pdfZoomOut" type="button" aria-label="הקטנת הדף">−</button>
         <span class="pdf-zoom-value" id="pdfZoomValue">100%</span>
         <button class="pdf-tool" id="pdfZoomIn" type="button" aria-label="הגדלת הדף">+</button>
@@ -1554,15 +1592,16 @@ textarea:focus{
   <aside
     class="panel hidden"
     id="panel"
+    aria-labelledby="noamPanelTitle"
   >
 
     <div class="panel-in">
 
       <div class="panel-head">
 
-        <span>🤖</span>
+        <span aria-hidden="true">🤖</span>
 
-        <b>
+        <b id="noamPanelTitle">
           נועם AI
         </b>
 
@@ -1573,6 +1612,7 @@ textarea:focus{
           class="panel-back"
           type="button"
           id="panelBack"
+          aria-label="חזרה לבחירת שאלה"
           hidden
         >
           חזרה
@@ -1589,6 +1629,8 @@ textarea:focus{
 
       </div>
 
+      <div class="noam-sr-only" id="noamAnnouncements" role="status" aria-live="polite" aria-atomic="true"></div>
+
       <div
         class="panel-body"
         id="panelBody"
@@ -1598,12 +1640,14 @@ textarea:focus{
 
   </aside>
 
-</div>
+</main>
 
 <button
   class="fab"
   id="fab"
   type="button"
+  aria-controls="panel"
+  aria-expanded="false"
 >
   🤖 נועם AI
 </button>
@@ -3240,6 +3284,27 @@ var fab = document.getElementById("fab");
 var closePanelButton = document.getElementById("closePanel");
 var panelReturnFocus = null;
 var noamDrafts = {};
+var noamAnnouncementTimer = null;
+
+// Announce new events without making rebuilt conversation history a live log.
+function announceNoam(text){
+  var status = document.getElementById("noamAnnouncements");
+  if (!status){return;}
+  clearTimeout(noamAnnouncementTimer);
+  status.textContent = "";
+  noamAnnouncementTimer = setTimeout(function(){
+    status.textContent = String(text || "");
+  },80);
+}
+
+function restoreNoamChatFocus(focusId){
+  if (!focusId || panel.classList.contains("hidden")){return;}
+  var target = document.getElementById(focusId);
+  if (!target || target.disabled || !target.getClientRects().length){
+    target = document.getElementById("noamTranscript");
+  }
+  if (target){target.focus({preventScroll:true});}
+}
 
 function syncMobilePanel(){
   var modal = mobileLayout.matches && !panel.classList.contains("hidden");
@@ -3342,14 +3407,16 @@ function openNoamPanel(){
   if (wasClosed){panelReturnFocus=document.activeElement;}
   panel.classList.remove("hidden");
   fab.classList.add("hidden");
+  fab.setAttribute("aria-expanded","true");
   syncMobilePanel();
-  if (wasClosed && mobileLayout.matches){closePanelButton.focus({preventScroll:true});}
+  if (wasClosed){closePanelButton.focus({preventScroll:true});}
 }
 
 function closeNoamPanel(){
   if (panel.contains(document.activeElement)){document.activeElement.blur();}
   panel.classList.add("hidden");
   fab.classList.toggle("hidden",!manifestReady);
+  fab.setAttribute("aria-expanded","false");
   syncMobilePanel();
   var target=panelReturnFocus && panelReturnFocus.isConnected ? panelReturnFocus : fab;
   if (target.getClientRects().length){target.focus({preventScroll:true});}
@@ -3453,6 +3520,7 @@ function manifestPinQuestionLabel(exercises){
 }
 
 function renderNoamQuestionParts(exercises, pin){
+  var moveFocus = panelBody.contains && panelBody.contains(document.activeElement);
   selectedExercise = null;
   if (selectedPin){ selectedPin.classList.remove("is-active"); }
   selectedPin = pin;
@@ -3480,11 +3548,18 @@ function renderNoamQuestionParts(exercises, pin){
     });
   });
   openNoamPanel();
+  if (moveFocus){
+    var firstChoice = panelBody.querySelector("[data-exercise-id]");
+    if (firstChoice){firstChoice.focus({preventScroll:true});}
+  }
 }
 
 function renderManifestPins(){
   if (!manifestReady || !pdfPages){ return; }
 
+  var focused = document.activeElement;
+  var focusedPinId = focused && focused.classList && focused.classList.contains("noam-exercise-pin")
+    ? focused.dataset.exerciseId : null;
   var narrow = noamNarrowPinsMedia.matches;
   var activeQuestionKeys = selectedPin ? (selectedPin.dataset.questionKeys || selectedPin.dataset.questionKey || "").split(" ") : [];
   selectedPin = null;
@@ -3554,6 +3629,9 @@ function renderManifestPins(){
       }
     });
     pageElement.appendChild(button);
+    if (focusedPinId && button.dataset.exerciseIds.split(" ").indexOf(focusedPinId)!==-1){
+      button.focus({preventScroll:true});
+    }
   });
 }
 
@@ -3580,6 +3658,7 @@ function selectManifestExercise(exercise, pin){
 }
 
 function renderExercisePicker(){
+  var moveFocus = document.activeElement===panelBack || panelBody.contains(document.activeElement);
   panelBody.classList.remove("is-chat");
   panelBack.hidden = true;
   if (!manifestReady){
@@ -3588,7 +3667,8 @@ function renderExercisePicker(){
   }
 
   var buttons = manifest.exercises.map(function(exercise){
-    return '<button type="button" data-exercise-id="' + escAttr(exercise.id) + '">' +
+    return '<button type="button" data-exercise-id="' + escAttr(exercise.id) +
+      '" aria-label="' + escAttr(exerciseLabel(exercise)) + '">' +
       esc(exercise.part ? (exercise.q + exercise.part) : String(exercise.q)) + '</button>';
   }).join("");
 
@@ -3603,6 +3683,10 @@ function renderExercisePicker(){
       if (exercise){ selectManifestExercise(exercise,null); }
     });
   });
+  if (moveFocus){
+    var firstChoice = panelBody.querySelector("[data-exercise-id]");
+    if (firstChoice){firstChoice.focus({preventScroll:true});}
+  }
 }
 
 function addTranscriptBubble(container, role, text, kind){
@@ -3617,6 +3701,10 @@ function addTranscriptBubble(container, role, text, kind){
     bubble.appendChild(label);
   }
   var content = document.createElement("span");
+  var speaker = document.createElement("span");
+  speaker.className = "noam-sr-only";
+  speaker.textContent = role === "user" ? "השאלה שלך: " : "נועם AI: ";
+  bubble.appendChild(speaker);
   content.textContent = text;
   bubble.appendChild(content);
   row.appendChild(bubble);
@@ -3626,6 +3714,8 @@ function addTranscriptBubble(container, role, text, kind){
 
 function renderNoamChat(){
   if (!selectedExercise){ return renderExercisePicker(); }
+  var focusId = panelBody.contains(document.activeElement)
+    ? (document.activeElement.id || "noamOverview") : "";
   panelBody.classList.add("is-chat");
   panelBack.hidden = false;
   var thread = exerciseThread(selectedExercise.id);
@@ -3646,7 +3736,7 @@ function renderNoamChat(){
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
       '<button type="button" class="noam-link-button" id="noamLocate">הצג בדף</button>' +
     '</div>' +
-    '<div class="noam-transcript" id="noamTranscript"></div>' +
+    '<div class="noam-transcript" id="noamTranscript" role="region" aria-label="השיחה עם נועם AI" tabindex="-1"></div>' +
     '<div class="noam-compose">' +
       '<div class="noam-compose-heading">' +
         '<label for="noamQuestion">יש לי שאלה</label>' +
@@ -3682,9 +3772,6 @@ function renderNoamChat(){
     var thinking=addTranscriptBubble(transcript,"assistant",thinkingText,"");
     var thinkingBubble=thinking.querySelector(".noam-bubble");
     thinkingBubble.classList.add("thinking");
-    thinkingBubble.setAttribute("role","status");
-    thinkingBubble.setAttribute("aria-live","polite");
-    thinkingBubble.setAttribute("aria-atomic","true");
     var dots=document.createElement("span");
     dots.className="noam-thinking-dots";
     dots.setAttribute("aria-hidden","true");
@@ -3733,6 +3820,7 @@ function renderNoamChat(){
   transcript.scrollTop = transcript.scrollHeight;
   renderPanelMath(panelBody);
   renderExercisePreview(selectedExercise,0);
+  restoreNoamChatFocus(focusId);
 }
 
 function insertNoamMath(kind){
@@ -3781,6 +3869,7 @@ function locateSelectedExercise(){
         (button.dataset.exerciseIds||"").split(" ").includes(selectedExercise.id);
     });
     (pin||page).scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
+    (pin||pdfScroll).focus({preventScroll:true});
   }
 }
 
@@ -3962,6 +4051,7 @@ function getExerciseAnalysis(exercise){
 
 function askNoam(helpKind,studentMessage){
   if (!selectedExercise||busy){return;}
+  var requestFocusId = panelBody.contains(document.activeElement) ? document.activeElement.id : "";
   if (helpKind==="free_question"){delete noamDrafts[selectedExercise.id];}
   var exercise=selectedExercise;
   var thread=exerciseThread(exercise.id);
@@ -3974,6 +4064,8 @@ function askNoam(helpKind,studentMessage){
   thread.messages.push({role:"user",text:visible,kind:kindLabel});
   pendingExerciseId=exercise.id;
   saveNoamState();setNoamBusy(true);renderNoamChat();
+  restoreNoamChatFocus(requestFocusId);
+  announceNoam("נועם AI מכין תשובה עבור " + exerciseLabel(exercise) + ".");
 
   getExerciseAnalysis(exercise)
     .then(function(analysis){
@@ -4007,10 +4099,13 @@ function askNoam(helpKind,studentMessage){
       thread.messages=thread.messages.slice(-60);
       if (helpKind==="hint"){thread.hintIndex=Math.min(3,thread.hintIndex+1);}
       saveNoamState();setNoamBusy(false);renderNoamChat();
+      announceNoam(exerciseLabel(exercise) + ". נועם AI: " + answer);
     })
     .catch(function(error){
-      thread.messages.push({role:"assistant",text:String(error&&error.message||"לא הצלחנו לקבל תשובה כרגע."),kind:""});
+      var errorMessage=String(error&&error.message||"לא הצלחנו לקבל תשובה כרגע.");
+      thread.messages.push({role:"assistant",text:errorMessage,kind:""});
       saveNoamState();setNoamBusy(false);renderNoamChat();
+      announceNoam(exerciseLabel(exercise) + ". " + errorMessage);
     });
 }
 
