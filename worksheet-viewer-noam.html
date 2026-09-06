@@ -1659,6 +1659,13 @@ var BASE =
 var API =
   "https://amiramnoam.wixstudio.com/my-site-2/_functions-dev";
 
+// The public config and Google key domains were verified before activation.
+// This release flag cannot be changed by a query parameter or browser storage.
+var BOT_GUARD_ENABLED = true;
+var noamBotClient = null;
+var noamBotClientLoading = null;
+var BOT_CLIENT_LOAD_TIMEOUT_MS = 8000;
+
 var LEVEL = {
   a:"A",
   b:"B",
@@ -3727,6 +3734,9 @@ function getExerciseAnalysis(exercise){
       analysisCache[exercise.id]=analysis;saveNoamState();return analysis;
     })
     .catch(function(error){
+      // Security refusals must never trigger another paid request through the
+      // synthetic-analysis fallback. Preserve them for the chat error message.
+      if (isBotProtectionError(error)){ throw error; }
       console.warn("NOAM VISION FALLBACK:",exercise.id,error);
       analysisCache[exercise.id]=fallback;saveNoamState();return fallback;
     });
@@ -3786,20 +3796,64 @@ function askNoam(helpKind,studentMessage){
 }
 
 function postJson(endpoint,payload){
-  var controller=("AbortController" in window)?new AbortController():null;
-  var timer=setTimeout(function(){if(controller){controller.abort();}},TIMEOUT);
-  return fetch(endpoint,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify(payload),
-    signal:controller?controller.signal:undefined
-  }).then(function(response){
-    clearTimeout(timer);
-    return response.json().catch(function(){return null;}).then(function(data){
-      if (!response.ok){throw new Error((data&&data.error)||("HTTP "+response.status));}
-      return data;
-    });
-  }).catch(function(error){clearTimeout(timer);throw error;});
+  return ensureNoamBotClient().then(function(client){
+    return client.postJson(endpoint,payload);
+  });
+}
+
+function ensureNoamBotClient(){
+  if (noamBotClient){return Promise.resolve(noamBotClient);}
+  if (noamBotClientLoading){return noamBotClientLoading;}
+  // Even the small local client loads only when AI is requested. Opening or
+  // downloading a worksheet starts no security script or verification request.
+  noamBotClientLoading=new Promise(function(resolve,reject){
+    var script=null;
+    var timer=null;
+    var finished=false;
+    function finish(success){
+      if (finished){return;}
+      finished=true;
+      clearTimeout(timer);
+      if (script){script.onload=null;script.onerror=null;}
+      if (success&&window.NoamBotClient&&typeof window.NoamBotClient.create==="function"){
+        try{
+          noamBotClient=window.NoamBotClient.create({
+            api:API,
+            enabled:BOT_GUARD_ENABLED,
+            modelTimeoutMs:TIMEOUT
+          });
+          if (noamBotClient&&typeof noamBotClient.postJson==="function"){
+            resolve(noamBotClient);return;
+          }
+        }catch(error){/* Treat an incomplete client as an unavailable asset. */}
+      }
+      noamBotClient=null;
+      if (script&&script.parentNode){script.parentNode.removeChild(script);}
+      var unavailable=new Error("לא הצלחנו לטעון את נועם AI. נסו שוב בעוד רגע.");
+      unavailable.code="BOT_CLIENT_UNAVAILABLE";
+      reject(unavailable);
+    }
+    if (window.NoamBotClient){finish(true);return;}
+    script=document.createElement("script");
+    script.src="./noam-bot-client.js";
+    script.async=true;
+    script.onload=function(){finish(true);};
+    script.onerror=function(){finish(false);};
+    timer=setTimeout(function(){finish(false);},BOT_CLIENT_LOAD_TIMEOUT_MS);
+    try{document.head.appendChild(script);}catch(error){finish(false);}
+  }).catch(function(error){
+    noamBotClientLoading=null;
+    throw error;
+  });
+  return noamBotClientLoading;
+}
+
+function isBotProtectionError(error){
+  if (window.NoamBotClient&&typeof window.NoamBotClient.isProtectionError==="function"){
+    return window.NoamBotClient.isProtectionError(error);
+  }
+  var status=error&&(error.status||error.httpStatus);
+  return !!(error&&(/^(BOT_|HTTP_ERROR_BODY_)/.test(String(error.code||""))||status===401||status===403||status===429));
 }
 
 function renderPanelMath(root){
