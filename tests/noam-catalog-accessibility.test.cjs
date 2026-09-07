@@ -159,12 +159,32 @@ function renderedLinks(markup) {
   });
 }
 
-test("factorization renders once with three new PDFs and a native disclosure for the three original levels", () => {
-  const f = fixture(); f.ctx.goToGrade(9);
-  const familyIds = [2, 41, 42, 43];
-  assert.deepEqual(Array.from(f.ctx.matchesIn(9, true)).filter(topic => familyIds.includes(topic.id)).map(topic => topic.id), [2]);
+// Bundle behavior is exercised with fixture-only worksheets so held or removed
+// production PDFs are not required to stay in the public catalog.
+function bundleFixture() {
+  const f = fixture();
+  f.ctx.DATA[9].topics = [
+    { id: 901, x: "G9-TEST-P", ic: "factor", g: "alg", t: "פירוק לגורמים", d: "תרגול פירוק" },
+    { id: 902, x: "G9-TEST-C1", parent: 901, aLabel: "גורם משותף · רמה א׳", ic: "factor", g: "alg", t: "הוצאת גורם משותף", d: "מחוץ לסוגריים" },
+    { id: 903, x: "G9-TEST-C2", parent: 901, aLabel: "כפל מקוצר וטרינום · רמה א׳", ic: "factor", g: "alg", t: "כפל מקוצר וטרינום" },
+    { id: 904, x: "G9-TEST-C3", parent: 901, cLabel: "פירוק מלא ומשוואות · רמת מצוינות", ic: "factor", g: "alg", t: "פירוק מלא ומשוואות" }
+  ];
+  f.ctx.DATA[9].links = {
+    901: { a: "fixture-parent-a", b: "fixture-parent-b", c: "fixture-parent-c" },
+    902: { a: "fixture-child-1-a" },
+    903: { a: "fixture-child-2-a" },
+    904: { c: "fixture-child-3-c" }
+  };
+  f.ctx._hayCache = {};
+  return f;
+}
+
+test("a worksheet bundle renders once with primary PDFs and a native disclosure for original levels", () => {
+  const f = bundleFixture(); f.ctx.goToGrade(9);
+  const familyIds = [901, 902, 903, 904];
+  assert.deepEqual(Array.from(f.ctx.matchesIn(9, true)).filter(topic => familyIds.includes(topic.id)).map(topic => topic.id), [901]);
   const cards = [...f.elements.get("list").innerHTML.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]);
-  const familyCards = cards.filter(card => /[?&]x=G9-T(?:03|41|42|43)&/.test(card));
+  const familyCards = cards.filter(card => /[?&]x=G9-TEST-(?:P|C[123])&/.test(card));
   assert.equal(familyCards.length, 1);
   const card = familyCards[0];
   assert.match(card, /<h4>פירוק לגורמים<span\b/);
@@ -173,24 +193,24 @@ test("factorization renders once with three new PDFs and a native disclosure for
   assert.doesNotMatch(disclosure[1], /\bopen(?:\s|=|$)/);
   assert.match(disclosure[2], /<summary\b[^>]*>תרגול נוסף לפי רמות<\/summary>/);
   const primary = renderedLinks(card.replace(disclosure[0], ""));
-  assert.deepEqual(primary.map(link => new URL(link.href, "https://example.test/").searchParams.get("x")), ["G9-T41", "G9-T42", "G9-T43"]);
+  assert.deepEqual(primary.map(link => new URL(link.href, "https://example.test/").searchParams.get("x")), ["G9-TEST-C1", "G9-TEST-C2", "G9-TEST-C3"]);
   assert.equal(renderedLinks(disclosure[2]).length, 3);
   assert.doesNotMatch(card, /lvl--soon|אין לינק כעת/);
 });
 
-test("the grouped factorization card preserves each PDF's exact prefix, level and isolated sibling map", () => {
-  const f = fixture(), parent = f.ctx.DATA[9].topics.find(topic => topic.id === 2);
+test("a grouped card preserves each PDF's exact prefix, level and isolated sibling map", () => {
+  const f = bundleFixture(), parent = f.ctx.DATA[9].topics.find(topic => topic.id === 901);
   const links = renderedLinks(f.ctx.cardHTML(parent, 9, 0));
   const original = {
-    a: "ce861949ea654d129ec3a4b3934d7607",
-    b: "8590cfff24e04703a9e87f0b669171e1",
-    c: "a8146d8e91e544a3964c6a6784eff08f"
+    a: "fixture-parent-a",
+    b: "fixture-parent-b",
+    c: "fixture-parent-c"
   };
   const expected = [
-    ["G9-T41", "a", "3f9546987fea4b9aa4294249ea017278", { a: "3f9546987fea4b9aa4294249ea017278" }],
-    ["G9-T42", "a", "3329215ba8e24999b3522228011baae2", { a: "3329215ba8e24999b3522228011baae2" }],
-    ["G9-T43", "c", "9764420460f84628acbffb2ea2ee53a5", { c: "9764420460f84628acbffb2ea2ee53a5" }],
-    ...Object.entries(original).map(([level, pdf]) => ["G9-T03", level, pdf, original])
+    ["G9-TEST-C1", "a", "fixture-child-1-a", { a: "fixture-child-1-a" }],
+    ["G9-TEST-C2", "a", "fixture-child-2-a", { a: "fixture-child-2-a" }],
+    ["G9-TEST-C3", "c", "fixture-child-3-c", { c: "fixture-child-3-c" }],
+    ...Object.entries(original).map(([level, pdf]) => ["G9-TEST-P", level, pdf, original])
   ];
   assert.equal(links.length, 6);
   assert.equal(new Set(links.map(link => link.href)).size, 6);
@@ -208,9 +228,9 @@ test("the grouped factorization card preserves each PDF's exact prefix, level an
     assert.equal(url.searchParams.get("t"), topic.t);
     assert.ok(link["aria-label"].includes(topic.t), "link has its own worksheet title");
     const label = {
-      "G9-T41": "גורם משותף · רמה א׳",
-      "G9-T42": "כפל מקוצר וטרינום · רמה א׳",
-      "G9-T43": "פירוק מלא ומשוואות · רמת מצוינות"
+      "G9-TEST-C1": "גורם משותף · רמה א׳",
+      "G9-TEST-C2": "כפל מקוצר וטרינום · רמה א׳",
+      "G9-TEST-C3": "פירוק מלא ומשוואות · רמת מצוינות"
     }[prefix] || (level === "c" ? "רמת מצוינות" : "רמה " + (level === "a" ? "א׳" : "ב׳"));
     assert.equal(link.text, label);
     assert.ok(link["aria-label"].includes(label));
@@ -219,35 +239,54 @@ test("the grouped factorization card preserves each PDF's exact prefix, level an
   }
 });
 
-test("searching child worksheet content returns the factorization parent once and obeys grade and group filters", () => {
-  const f = fixture(); f.ctx.goToGrade(9);
+test("searching child worksheet content returns its parent once and obeys grade and group filters", () => {
+  const f = bundleFixture(); f.ctx.goToGrade(9);
   for (const query of ["טרינום", "משוואות", "גורם משותף", "מחוץ לסוגריים"]) {
     f.ctx.state.q = query;
     const results = Array.from(f.ctx.matchesIn(9, true));
-    assert.deepEqual(results.filter(topic => [2, 41, 42, 43].includes(topic.id)).map(topic => topic.id), [2], query);
+    assert.deepEqual(results.filter(topic => [901, 902, 903, 904].includes(topic.id)).map(topic => topic.id), [901], query);
   }
   f.ctx.state.group = "geo";
-  assert.ok(!Array.from(f.ctx.matchesIn(9, true)).some(topic => topic.id === 2));
+  assert.ok(!Array.from(f.ctx.matchesIn(9, true)).some(topic => topic.id === 901));
   f.ctx.state.group = "all";
   f.ctx.state.track = "red";
-  assert.ok(!Array.from(f.ctx.matchesIn(9, true)).some(topic => topic.id === 2));
+  assert.ok(!Array.from(f.ctx.matchesIn(9, true)).some(topic => topic.id === 901));
   f.ctx.state.track = "reg";
   f.ctx.state.q = "";
   for (let grade = 1; grade <= 8; grade++) {
-    const topic = f.ctx.DATA[grade].topics.find(item => item.id === 2);
-    const card = f.ctx.cardHTML(topic, grade, 0), row = f.ctx.DATA[grade].links[2];
-    assert.doesNotMatch(card, /<details\b|x=G9-T(?:03|41|42|43)&/);
+    const topic = f.ctx.DATA[grade].topics.find(item => item.parent === undefined);
+    const card = f.ctx.cardHTML(topic, grade, 0), row = f.ctx.DATA[grade].links[topic.id];
+    assert.doesNotMatch(card, /<details\b|x=G9-TEST-/);
     assert.equal(renderedLinks(card).length, row.one !== undefined ? 1 : ["a", "b", "c"].filter(key => row[key]).length);
   }
 });
 
-test("the grade9 header counts the grouped topic once without promising unavailable levels", () => {
-  const f = fixture(); f.ctx.goToGrade(9);
-  assert.match(f.elements.get("lede").textContent, /^40 נושאים\./);
+test("the grade9 header counts a grouped topic once without promising unavailable levels", () => {
+  const f = bundleFixture();
+  f.ctx.DATA[9].topics.push({ id: 905, x: "G9-TEST-SINGLE", ic: "factor", g: "alg", t: "נושא נוסף" });
+  f.ctx.DATA[9].links[905] = { b: "fixture-single-b" };
+  f.ctx.goToGrade(9);
+  assert.match(f.elements.get("lede").textContent, /^2 נושאים\./);
   assert.doesNotMatch(f.elements.get("lede").textContent, /שלוש|3 רמות/);
   for (const grade of [7, 8]) {
     f.ctx.goToGrade(grade);
     assert.ok(f.elements.get("lede").textContent.startsWith(f.ctx.DATA[grade].topics.length + " נושאים."));
+  }
+});
+
+test("the catalog retains original factorization levels without exposing the three held worksheets", () => {
+  const f = fixture(); f.ctx.goToGrade(9);
+  const parent = f.ctx.DATA[9].topics.find(topic => topic.id === 2);
+  assert.equal(parent.x, "G9-T03");
+  assert.equal(f.ctx.topicChildren(9, parent).length, 0);
+  const card = f.ctx.cardHTML(parent, 9, 0), links = renderedLinks(card);
+  assert.doesNotMatch(card, /<details\b|lvl--soon/);
+  assert.deepEqual(links.map(link => new URL(link.href, "https://example.test/").searchParams.get("pdf")), [
+    "ce861949ea654d129ec3a4b3934d7607", "8590cfff24e04703a9e87f0b669171e1", "a8146d8e91e544a3964c6a6784eff08f"
+  ]);
+  for (const prefix of ["G9-T41", "G9-T42", "G9-T43"]) {
+    assert.ok(!f.ctx.DATA[9].topics.some(topic => topic.x === prefix));
+    assert.doesNotMatch(f.elements.get("list").innerHTML, new RegExp("x=" + prefix + "&"));
   }
 });
 
