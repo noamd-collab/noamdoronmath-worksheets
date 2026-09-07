@@ -1,0 +1,21 @@
+.wrap > .toy-head{display:none}
+.wrap .headrow{max-width:1000px;margin:14px auto 4px;gap:12px}
+.wrap .headrow h1{font-size:clamp(23px,3vw,36px);margin:0;line-height:1.35}
+.wrap .headrow .gbadge{width:52px;height:52px;font-size:25px}
+.wrap > .lede{margin-block:8px 12px}
+.wrap > .aibanner{padding:12px 16px;margin-block:12px}
+.wrap > .aibanner .robot{width:40px;height:40px;font-size:24px}
+.wrap > .aibanner h2{font-size:18px}
+.wrap > .aibanner p{font-size:14px}
+.wrap > .toolbar{margin-top:14px}
+.ai-details{max-width:1000px;margin:10px auto;font-size:14px}
+.ai-details summary{cursor:pointer;font-weight:700}
+.ai-details .aibanner{margin:8px 0;padding:12px}
+.topic-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:10px}
+.topic-actions a,.topic-actions button,.saved-topics button{font:inherit;font-size:14px;color:var(--ink);background:white;border:1px solid currentColor;border-radius:9px;padding:7px 11px;cursor:pointer}
+.topic-actions [aria-pressed=true]{background:var(--tint)}
+.saved-topics{max-width:1000px;margin:12px auto 24px;background:white;border:2px solid var(--ink);border-radius:12px;padding:12px 16px}
+.saved-topics summary{cursor:pointer;font-weight:700}
+#saved-topic-list{display:grid;gap:10px;padding:14px 0}
+#saved-topic-list a{color:var(--ink)}
+@media(max-width:600px){.wrap .headrow{margin-top:10px}.wrap .headrow .gbadge{display:none}.wrap .headrow h1{font-size:23px}.topic-actions{gap:7px}.topic-actions a,.topic-actions button{font-size:13px;min-height:40px}}

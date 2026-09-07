@@ -3347,6 +3347,27 @@ if (okGrade){
 
 /* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
 
+// Only accept a return path to this catalog, never an arbitrary redirect.
+try {
+  var navigationParams = new URL(location.href).searchParams;
+  var catalogRoot = new URL('./', location.href);
+  var returnPath = navigationParams.get('back');
+  if (returnPath) {
+    var catalogReturn = new URL(returnPath, location.href);
+    if (catalogReturn.origin === location.origin &&
+        (catalogReturn.pathname === catalogRoot.pathname || catalogReturn.pathname === catalogRoot.pathname + 'index.html')) {
+      document.getElementById('backBtn').href = catalogReturn.href;
+    }
+  }
+  if (/^\d+$/.test(navigationParams.get('topic') || '') && okGrade) {
+    var topicBack = document.createElement('a');
+    topicBack.className = 'btn';
+    topicBack.textContent = 'חזרה לנושא';
+    topicBack.href = './?grade=' + g + '&topic=' + navigationParams.get('topic');
+    document.getElementById('backBtn').after(topicBack);
+  }
+} catch (navigationError) { /* The default grade link remains available. */ }
+
 var panel = document.getElementById("panel");
 var panelBody = document.getElementById("panelBody");
 var panelBack = document.getElementById("panelBack");
