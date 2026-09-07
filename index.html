@@ -329,6 +329,13 @@
 
   /* ---------- כפתורי רמות ---------- */
   .levels{ display:flex; gap:10px; flex-shrink:0; }
+  .card--bundle{ flex-wrap:wrap; }
+  .card--bundle .card-main{ flex-basis:100%; }
+  .levels.levels--bundle{ display:flex; flex-direction:column; width:100%; gap:8px; }
+  .worksheet-links{ display:flex; flex-wrap:wrap; gap:10px; }
+  .worksheet-links .lvl{ flex:1 1 180px; min-height:44px; white-space:normal; line-height:1.35; }
+  .more-worksheets summary{ cursor:pointer; font-weight:800; min-height:44px; padding:10px 0; }
+  .more-worksheets summary:focus-visible{ outline:3px solid var(--ink); outline-offset:3px; }
   .lvl{
     display:inline-flex; align-items:center; justify-content:center; text-align:center;
     min-width:106px; padding:10px 16px;
@@ -2331,12 +2338,12 @@ var DATA = {
       { id:1, x:"G9-T02", ic:"branch", g:"alg", t:"חוק הפילוג המורחב",
         d:"פתיחת מכפלת סוגריים, כינוס איברים, פישוט ביטויים, פתרון משוואות, זהויות ובעיות יישומיות." },
       { id:2, x:"G9-T03", ic:"factor", g:"alg", t:"פירוק לגורמים",
-        d:"גורם משותף, נוסחאות כפל מקוצר, הפרש ריבועים, טרינום, קיבוץ ושילוב בין שיטות." },
-      { id:41, x:"G9-T41", ic:"factor", g:"alg", t:"פירוק לגורמים 1 — הוצאת גורם משותף",
+        d:"גורם משותף, נוסחאות כפל מקוצר, הפרש ריבועים, טרינום, קיבוץ ושילוב בין שיטות, משוואות ושברים אלגבריים." },
+      { id:41, x:"G9-T41", parent:2, aLabel:"גורם משותף · רמה א׳", ic:"factor", g:"alg", t:"פירוק לגורמים 1 — הוצאת גורם משותף",
         d:"זיהוי גורם משותף והוצאתו מחוץ לסוגריים, ותרגול פירוק לגורמים." },
-      { id:42, x:"G9-T42", ic:"factor", g:"alg", t:"פירוק לגורמים 2 — נוסחאות הכפל המקוצר וטרינום",
+      { id:42, x:"G9-T42", parent:2, aLabel:"כפל מקוצר וטרינום · רמה א׳", ic:"factor", g:"alg", t:"פירוק לגורמים 2 — נוסחאות הכפל המקוצר וטרינום",
         d:"פירוק לגורמים בעזרת נוסחאות הכפל המקוצר וטרינום, ובחירת השיטה המתאימה." },
-      { id:43, x:"G9-T43", ic:"factor", g:"alg", t:"פירוק לגורמים 3 — פירוק מלא, משוואות ושברים אלגבריים",
+      { id:43, x:"G9-T43", parent:2, cLabel:"פירוק מלא ומשוואות · רמת מצוינות", ic:"factor", g:"alg", t:"פירוק לגורמים 3 — פירוק מלא, משוואות ושברים אלגבריים",
         d:"תרגול מצוינות בשילוב שיטות פירוק לגורמים, פתרון משוואות ועבודה עם שברים אלגבריים." },
       { id:3, x:"G9-T04", ic:"frac", g:"alg", t:"צמצום שברים אלגבריים",
         d:"פירוק לגורמים של מונה ומכנה, תחום הגדרה, צמצום שברים עם נוסחאות כפל מקוצר וטרינומים." },
@@ -2677,7 +2684,8 @@ function setHeader(){
   var gb = document.getElementById("gbadge");
   if (gb) gb.textContent = (GRADE_NAME[state.grade] || "").replace("כיתה ", "").trim();
   document.getElementById("lede").textContent =
-    d.topics.length + " נושאים, כל נושא בשלוש רמות. בחרו רמה והקובץ ייפתח בלשונית חדשה.";
+    d.topics.filter(function(t){ return t.parent === undefined; }).length +
+    " נושאים. בחרו דף והוא ייפתח בלשונית חדשה.";
 
   /* נועם AI זמין כרגע בחטיבת הביניים בלבד (ז׳–ט׳). ביסודי מוצג נוסח "בקרוב".
      כשה-AI יגיע ליסודי — מספיק להוסיף x לנושאים, והנוסח יתעדכן לבד. */
@@ -2749,7 +2757,11 @@ document.getElementById("chips").addEventListener("click", function(e){
 });
 
 /* ---------- כרטיס ---------- */
-function cardHTML(topic, grade, cardIndex){
+function topicChildren(grade, topic){
+  return DATA[grade].topics.filter(function(t){ return t.parent === topic.id; });
+}
+
+function levelLinksHTML(topic, grade){
   var row = DATA[grade].links[topic.id] || {};
   var buttons;
 
@@ -2773,10 +2785,23 @@ function cardHTML(topic, grade, cardIndex){
              'aria-label="' + esc(topic.t) + ' — ' + esc(label) + ', קובץ PDF">' + esc(label) + '</a>';
     }).join("");
   }
+  return buttons;
+}
+
+function cardHTML(topic, grade, cardIndex){
+  var children = topicChildren(grade, topic);
+  var buttons = levelLinksHTML(topic, grade);
+  if (children.length){
+    buttons = '<div class="worksheet-links">' + children.map(function(child){
+      return levelLinksHTML(child, grade);
+    }).join("") + '</div>' +
+      '<details class="more-worksheets"><summary>תרגול נוסף לפי רמות</summary>' +
+      '<div class="worksheet-links">' + buttons + '</div></details>';
+  }
 
   var ico = ICONS[topic.ic] || ICONS.star;
   var _d = (typeof cardIndex === "number" ? cardIndex : 0) * 0.05;
-  return '<article class="card" data-g="' + topic.g + '" style="--d:' + _d.toFixed(2) + 's">' +
+  return '<article class="card' + (children.length ? ' card--bundle' : '') + '" data-g="' + topic.g + '" style="--d:' + _d.toFixed(2) + 's">' +
            '<div class="card-main">' +
              '<span class="tico" aria-hidden="true"><svg viewBox="0 0 24 24">' + ico + '</svg></span>' +
              '<div class="card-text"><h4>' + esc(topic.t) + PDF_BADGE + '</h4>' + (topic.d ? '<p>' + esc(topic.d) + '</p>' : '') +
@@ -2784,7 +2809,7 @@ function cardHTML(topic, grade, cardIndex){
              (topic.x ? '<span class="aihint">🤖 נועם AI זמין בדף הזה</span>' : '') +
              '</div>' +
            '</div>' +
-           '<div class="levels">' + buttons + '</div>' +
+           '<div class="levels' + (children.length ? ' levels--bundle' : '') + '">' + buttons + '</div>' +
          '</article>';
 }
 
@@ -2972,6 +2997,9 @@ function topicHaystack(grade, t){
       if (DATA[grade].groups[gi].key === t.g){ gname = DATA[grade].groups[gi].name; break; }
     }
     extra += " " + gname;
+    extra += " " + topicChildren(grade, t).map(function(child){
+      return child.t + " " + (child.d || "");
+    }).join(" ");
     var base = searchNorm(t.t + " " + (t.d || "") + " " + extra).split(" ").filter(Boolean);
     var ex = [];
     base.forEach(function(w){ ex = ex.concat(stemsOf(w)); });
@@ -2992,6 +3020,7 @@ function topicMatches(grade, t, q){
 function matchesIn(grade, useGroup){
   var q = state.q.trim();
   return DATA[grade].topics.filter(function(t){
+    if (t.parent !== undefined) return false;
     var isTrack = !!TRACK_GROUPS[t.g];
     var okTrack = grade !== 9 || (state.track === "red" ? isTrack : !isTrack);
     var okGroup = !useGroup || state.group === "all" || t.g === state.group;
@@ -3077,6 +3106,10 @@ function postHeight(){
     window.parent.postMessage({ type:"setHeight", height:h }, "*");
   }catch(e){}
 }
+
+document.getElementById("list").addEventListener("toggle", function(e){
+  if (e.target.classList.contains("more-worksheets")) postHeight();
+}, true);
 
 document.getElementById("q").addEventListener("input", function(e){
   state.q = e.target.value;
