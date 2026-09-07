@@ -2767,9 +2767,7 @@ function cardHTML(topic, grade, cardIndex){
       var href  = url(row[lv.k]);
       var label = topic[lv.k + "Label"] || lv.label;
       if(!href){
-        return '<span class="lvl ' + lv.cls + ' lvl--soon" aria-disabled="true" ' +
-               'aria-label="' + esc(label) + ' — ' + NO_LINK + '">' +
-               esc(label) + ' <span class="soon-note">(' + NO_LINK + ')</span></span>';
+        return '';
       }
       return '<a class="lvl ' + lv.cls + '" href="' + sheetHref(topic, grade, lv.k, row[lv.k], row) + '" target="_blank" rel="noopener noreferrer" ' +
              'aria-label="' + esc(topic.t) + ' — ' + esc(label) + ', קובץ PDF">' + esc(label) + '</a>';
