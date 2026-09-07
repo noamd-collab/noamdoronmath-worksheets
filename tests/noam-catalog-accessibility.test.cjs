@@ -159,8 +159,7 @@ function renderedLinks(markup) {
   });
 }
 
-// Bundle behavior is exercised with fixture-only worksheets so held or removed
-// production PDFs are not required to stay in the public catalog.
+// Synthetic worksheets isolate generic bundle behavior from catalog changes.
 function bundleFixture() {
   const f = fixture();
   f.ctx.DATA[9].topics = [
@@ -274,19 +273,52 @@ test("the grade9 header counts a grouped topic once without promising unavailabl
   }
 });
 
-test("the catalog retains original factorization levels without exposing the three held worksheets", () => {
+test("the catalog groups all factorization worksheets once and preserves their original PDF links", () => {
   const f = fixture(); f.ctx.goToGrade(9);
   const parent = f.ctx.DATA[9].topics.find(topic => topic.id === 2);
   assert.equal(parent.x, "G9-T03");
-  assert.equal(f.ctx.topicChildren(9, parent).length, 0);
+  assert.deepEqual(Array.from(f.ctx.topicChildren(9, parent)).map(topic => topic.id), [41, 42, 43]);
+  assert.deepEqual(Array.from(f.ctx.matchesIn(9, true)).filter(topic => [2, 41, 42, 43].includes(topic.id)).map(topic => topic.id), [2]);
+  const cards = [...f.elements.get("list").innerHTML.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]);
+  assert.equal(cards.filter(card => /[?&]x=G9-T(?:03|41|42|43)&/.test(card)).length, 1);
   const card = f.ctx.cardHTML(parent, 9, 0), links = renderedLinks(card);
-  assert.doesNotMatch(card, /<details\b|lvl--soon/);
+  assert.match(card, /<details\b/);
+  assert.doesNotMatch(card, /lvl--soon/);
   assert.deepEqual(links.map(link => new URL(link.href, "https://example.test/").searchParams.get("pdf")), [
+    "3f9546987fea4b9aa4294249ea017278", "3329215ba8e24999b3522228011baae2", "9764420460f84628acbffb2ea2ee53a5",
     "ce861949ea654d129ec3a4b3934d7607", "8590cfff24e04703a9e87f0b669171e1", "a8146d8e91e544a3964c6a6784eff08f"
   ]);
-  for (const prefix of ["G9-T41", "G9-T42", "G9-T43"]) {
-    assert.ok(!f.ctx.DATA[9].topics.some(topic => topic.x === prefix));
-    assert.doesNotMatch(f.elements.get("list").innerHTML, new RegExp("x=" + prefix + "&"));
+  assert.equal(new Set(links.map(link => link.href)).size, 6);
+});
+
+test("all six reported grade9 topics expose every level and preserve the exact sibling PDF map", () => {
+  const f = fixture(); f.ctx.goToGrade(9);
+  const expected = [
+    [9, "G9-T10", ["1e33b2a687c244dda0cbaee87c368a87", "c7ff58f8a0654c47bf609a8c6c3f0db3", "fedb3727e2334f788a42fc8b73255ef2"]],
+    [40, "G9-T40", ["c36b8c65a59945fdaab8b535ecba138c", "bc5cc22687cb43dcb817a9011b9fd82c", "0cad8f83ec23481ea1ecf9e4bc27dafd"]],
+    [12, "G9-T12", ["5ab732fdbfff41a9b85c5f17eeb7d65e", "4aff82fdb7444fde902e8eccfabe5ce9", "202919d9e3ad459b8a992aafb9fcf379"]],
+    [15, "G9-T08", ["e22046d654f0415295654534b0273b7a", "6b7bd4c4ee7b4887ae18135ca4350861", "60a072886a5f48c6a1217024d46530e4"]],
+    [4, "G9-T15", ["4cb7cb9d384d46daae3da7c3e229b294", "c6b1224c0dfd44339db956c457e2cc42", "4720512147174043962d6dccb5ce8052"]],
+    [17, "G9-T05", ["3b6237712ad24c4fbfcb3a7eb161b464", "4f02a33bb07f46a2b2b274c780c14140", "62788be89c1945e99784db8d3bbbf369"]]
+  ];
+  const cards = [...f.elements.get("list").innerHTML.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]);
+  for (const [id, prefix, pdfs] of expected) {
+    const topic = f.ctx.DATA[9].topics.find(item => item.id === id);
+    assert.equal(topic.x, prefix);
+    const matchingCards = cards.filter(card => card.includes("x=" + prefix + "&"));
+    assert.equal(matchingCards.length, 1, prefix + " renders once");
+    const links = renderedLinks(matchingCards[0]);
+    assert.deepEqual(links.map(link => link.text), ["רמה א׳", "רמה ב׳", "רמת מצוינות"], prefix + " level buttons");
+    links.forEach((link, index) => {
+      const url = new URL(link.href, "https://example.test/");
+      assert.equal(url.searchParams.get("x"), prefix);
+      assert.equal(url.searchParams.get("g"), "9");
+      assert.equal(url.searchParams.get("lv"), ["a", "b", "c"][index]);
+      assert.equal(url.searchParams.get("pdf"), pdfs[index]);
+      ["a", "b", "c"].forEach((level, siblingIndex) => {
+        assert.equal(url.searchParams.get("p" + level), pdfs[siblingIndex], prefix + " sibling " + level);
+      });
+    });
   }
 });
 
