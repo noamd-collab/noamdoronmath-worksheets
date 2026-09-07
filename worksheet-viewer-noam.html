@@ -101,7 +101,7 @@ body{
 }
 
 .skip-link:focus{transform:translateY(0)}
-:where(a,button,textarea,[tabindex]):focus-visible{
+:where(a,button,input,textarea,[tabindex]):focus-visible{
   outline:3px solid var(--accent-dark);
   outline-offset:3px;
 }
@@ -450,6 +450,18 @@ body{
   font-family:'Heebo',sans-serif;
   font-size:12.5px;
   font-weight:900;
+}
+
+.pdf-zoom-slider{
+  display:block;
+  flex-shrink:0;
+  width:100%;
+  min-width:0;
+  height:44px;
+  margin:0;
+  direction:ltr;
+  accent-color:var(--accent);
+  cursor:ew-resize;
 }
 
 .pdf-fallback-message{
@@ -1601,9 +1613,10 @@ textarea:focus{
       </div>
 
       <div class="pdf-tools hidden" id="pdfTools" role="group" aria-label="כלי PDF">
-        <button class="pdf-tool" id="pdfZoomOut" type="button" aria-label="הקטנת הדף">−</button>
-        <span class="pdf-zoom-value" id="pdfZoomValue">100%</span>
-        <button class="pdf-tool" id="pdfZoomIn" type="button" aria-label="הגדלת הדף">+</button>
+        <button class="pdf-tool" id="pdfZoomOut" type="button" aria-label="הקטנת הדף באחוז אחד">−</button>
+        <input class="pdf-zoom-slider" id="pdfZoomSlider" type="range" min="70" max="170" step="1" value="100" aria-label="גודל תצוגת הדף באחוזים" aria-valuetext="100%">
+        <output class="pdf-zoom-value" id="pdfZoomValue" for="pdfZoomSlider">100%</output>
+        <button class="pdf-tool" id="pdfZoomIn" type="button" aria-label="הגדלת הדף באחוז אחד">+</button>
         <button class="pdf-tool" id="pdfFit" type="button">התאם לרוחב</button>
         <button class="pdf-tool primary" id="pdfNativeMode" type="button">תצוגת PDF מלאה</button>
         <a
@@ -2454,6 +2467,9 @@ var pdfZoomValue =
     "pdfZoomValue"
   );
 
+var pdfZoomSlider = document.getElementById("pdfZoomSlider");
+var pdfZoomRenderTimer = 0;
+
 var pdfDocument =
   null;
 
@@ -2579,7 +2595,7 @@ function setNativePdfMode(
   pdfNativeMode.classList.remove("hidden");
 
   /* zoom / fit-width act on the canvas layer only */
-  ["pdfZoomIn","pdfZoomOut","pdfFit"]
+  ["pdfZoomIn","pdfZoomOut","pdfZoomSlider","pdfFit"]
     .forEach(
       function(id){
         var btn =
@@ -2997,30 +3013,28 @@ function resetPdfRendering(){
   observePdfPages();
 }
 
-function setPdfZoom(
-  value
-){
+function setPdfZoom(value, deferRender){
+  if (!Number.isFinite(value)){ return; }
+  var percent = Math.max(70, Math.min(170, Math.round(value * 100)));
+  var nextZoom = percent / 100;
+  var changed = nextZoom !== pdfZoom;
+  pdfZoom = nextZoom;
+  pdfZoomValue.textContent = percent + "%";
+  pdfZoomSlider.value = String(percent);
+  pdfZoomSlider.setAttribute("aria-valuetext", percent + "%");
 
-  pdfZoom =
-    Math.max(
-      .7,
-      Math.min(
-        1.7,
-        Math.round(
-          value * 10
-        ) /
-        10
-      )
-    );
-
-  pdfZoomValue.textContent =
-    Math.round(
-      pdfZoom *
-      100
-    ) +
-    "%";
-
-  resetPdfRendering();
+  if (!changed && !pdfZoomRenderTimer){ return; }
+  clearTimeout(pdfZoomRenderTimer);
+  pdfZoomRenderTimer = 0;
+  // Update the percentage immediately; redraw after a short pause or release.
+  if (deferRender){
+    pdfZoomRenderTimer = setTimeout(function(){
+      pdfZoomRenderTimer = 0;
+      resetPdfRendering();
+    }, 120);
+  }else{
+    resetPdfRendering();
+  }
 }
 
 function schedulePdfResize(){
@@ -3202,7 +3216,7 @@ document
     function(){
       setPdfZoom(
         pdfZoom -
-        .1
+        .01
       );
     }
   );
@@ -3216,10 +3230,17 @@ document
     function(){
       setPdfZoom(
         pdfZoom +
-        .1
+        .01
       );
     }
   );
+
+pdfZoomSlider.addEventListener("input", function(){
+  setPdfZoom(Number(pdfZoomSlider.value) / 100, true);
+});
+pdfZoomSlider.addEventListener("change", function(){
+  setPdfZoom(Number(pdfZoomSlider.value) / 100);
+});
 
 document
   .getElementById(
