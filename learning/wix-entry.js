@@ -15,7 +15,7 @@ const styles=`
 #noam-learning-home-entry a:focus-visible{outline:3px solid #fff;outline-offset:4px}
 #noam-learning-home-entry p{color:#ffffb5;font:inherit;font-size:14px;line-height:1.6;margin:10px 0 0}
 #noam-learning-home-entry .nl-entry-sync{display:block;font-size:13px;color:#d5d6b7;margin-top:2px}
-@media(max-width:640px){#noam-learning-home-entry{scroll-margin-top:24px}#noam-learning-home-entry .nl-entry-actions{flex-direction:column;gap:10px}#noam-learning-home-entry a{width:290px}#noam-learning-home-entry p{font-size:13px}}
+@media(max-width:640px){#noam-learning-home-entry{scroll-margin-top:64px}#noam-learning-home-entry .nl-entry-actions{flex-direction:column;gap:10px}#noam-learning-home-entry a{width:290px}#noam-learning-home-entry p{font-size:13px}}
 `;
 function apply(){
  const parent=document.getElementById('comp-mtsd3jdp');if(!parent||document.getElementById(id))return;
@@ -25,6 +25,11 @@ function apply(){
  box.querySelector('.nl-entry-google').href=base+'learning.html?signin=google';
  box.querySelector('.nl-entry-google img').src=base+'learning/google-g-logo.png';
  box.querySelector('.nl-entry-local').href=base+'learning.html';
+ // These external links are injected after Wix initializes its router.
+ box.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{
+  if(e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+  e.preventDefault();e.stopPropagation();window.location.assign(a.href);
+ }));
  parent.append(box);
 }
 let queued=false;function start(){apply();new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}).observe(document.body,{childList:true,subtree:true});}
