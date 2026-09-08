@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const id='noam-learning-home-entry',base='https://noamd-collab.github.io/noamdoronmath-worksheets/';
 const styles=`
-#noam-learning-home-entry{width:100%;text-align:center;direction:rtl;padding:4px 0 10px;box-sizing:border-box;scroll-margin-top:260px}
+#noam-learning-home-entry{position:relative;z-index:1;width:100%;text-align:center;direction:rtl;padding:4px 0 10px;box-sizing:border-box;scroll-margin-top:260px}
 #noam-learning-home-entry *{box-sizing:border-box}
 #noam-learning-home-entry .nl-entry-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px}
 #noam-learning-home-entry a{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;max-width:100%;border:1px solid;border-radius:999px;padding:10px 18px;font:inherit;font-size:14px;line-height:20px;text-decoration:none}
@@ -25,11 +25,6 @@ function apply(){
  box.querySelector('.nl-entry-google').href=base+'learning.html?signin=google';
  box.querySelector('.nl-entry-google img').src=base+'learning/google-g-logo.png';
  box.querySelector('.nl-entry-local').href=base+'learning.html';
- // These external links are injected after Wix initializes its router.
- box.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{
-  if(e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
-  e.preventDefault();e.stopPropagation();window.location.assign(a.href);
- }));
  parent.append(box);
 }
 let queued=false;function start(){apply();new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}).observe(document.body,{childList:true,subtree:true});}
