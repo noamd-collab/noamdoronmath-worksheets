@@ -3,6 +3,12 @@
  var catalog=window.NOAM_LEARNING_CATALOG||[],Core=window.NoamLearningCore;if(!catalog.length||!Core)return;
  var cfg=window.NOAM_LEARNING_CONFIG||{},base='https://noamd-collab.github.io/noamdoronmath-worksheets/',portal=new URL('learning.html',location.href).href;
  var byId=new Map(catalog.map(function(x){return[x.id,x];})),client=null,engine,portalMode=!!document.getElementById('learning-app'),embedded=window.self!==window.top;
+ var signInRequested=false,signInPending=false,entryUrl=new URL(location.href);
+ // Only an explicit portal link starts Google sign-in. Consume it before any redirect so Back/reload cannot start a loop.
+ if(portalMode&&entryUrl.searchParams.get('signin')==='google'){
+  signInRequested=!embedded&&!entryUrl.searchParams.has('code')&&!entryUrl.searchParams.has('error')&&!/^#.*(?:error|access_token)=/.test(entryUrl.hash);
+  entryUrl.searchParams.delete('signin');history.replaceState(null,'',entryUrl.pathname+entryUrl.search+entryUrl.hash);
+ }
  var storage;try{storage=localStorage;}catch(e){storage={getItem:function(){throw e;},setItem:function(){throw e;},removeItem:function(){throw e;}};}
  if(cfg.googleEnabled&&window.supabase&&!embedded){try{client=window.supabase.createClient(cfg.url,cfg.key,{auth:{flowType:'pkce',storageKey:'noam-learning-auth-v1',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});}catch(e){client=null;}}
  engine=Core.create({catalog:catalog,storage:storage,client:client});
@@ -12,6 +18,12 @@
  function link(text,href){var a=el('a',text);a.href=href;return a;}
  function tell(text){message.textContent=text;}
  function fail(){tell('השינוי לא נשמר. בדקו את החיבור ונסו שוב. אפשר להמשיך לפתוח ולתרגל את כל הדפים.');}
+ async function signInWithGoogle(){
+  if(!client||signInPending||engine.snapshot().user)return;
+  signInPending=true;renderAuth();
+  try{var r=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:base+'learning.html',queryParams:{prompt:'select_account'}}});if(r.error)throw r.error;}
+  catch(e){signInPending=false;renderAuth();tell('לא הצלחנו לפתוח את הכניסה בגוגל. אפשר להמשיך ללא כניסה.');}
+ }
  function openPdf(item){
   var raw=item.pdf,full=/^https:\/\//.test(raw)?raw:'https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_'+raw+'.pdf';
   if(item.g<7||!item.x)return full;
@@ -35,7 +47,7 @@
    authBox.append(el('strong','אפשר לעבוד כאן בלי להתחבר.'));
    authBox.append(el('p','סימוני העבודה נשמרים בדפדפן הזה. במחשב משותף כדאי למחוק אותם בסיום.'));
    if(embedded){var a=link('פתיחת הלמידה שלי בחלון מלא',portal);a.target='_blank';a.rel='noopener';authBox.append(a);}
-   else if(client){var b=button('המשך עם Google',async function(){b.disabled=true;try{var r=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:base+'learning.html',queryParams:{prompt:'select_account'}}});if(r.error)throw r.error;}catch(e){b.disabled=false;tell('לא הצלחנו לפתוח את הכניסה בגוגל. אפשר להמשיך ללא כניסה.');}},'nl-google');authBox.append(b,el('small','הכניסה אופציונלית ומאפשרת שמירה בין מכשירים. שם, כתובת דוא״ל ומזהה חשבון משמשים לזיהוי. איננו מבקשים גישה ל־Gmail או ל־Drive.'));}
+   else if(client){var b=button(signInPending?'פותחים את הכניסה עם Google…':'המשך עם Google',signInWithGoogle,'nl-google');b.disabled=signInPending;authBox.append(b,el('small','הכניסה אופציונלית ומאפשרת שמירה בין מכשירים. שם, כתובת דוא״ל ומזהה חשבון משמשים לזיהוי. איננו מבקשים גישה ל־Gmail או ל־Drive.'));}
    else authBox.append(el('small',cfg.googleEnabled?'חיבור Google אינו זמין כרגע. אפשר להמשיך במעקב המקומי ולנסות שוב לאחר רענון.':'שמירה בין מכשירים עם Google נמצאת בהכנה. המעקב במכשיר כבר זמין ללא כניסה.'));
   }
  }
@@ -83,8 +95,9 @@
  }
  function update(){var active=document.activeElement,box=active&&active.closest('[data-learning-id]'),id=box&&box.dataset.learningId,status=active&&active.dataset.status;renderAuth();renderPortal();refreshControls();if(id&&status!==undefined){var target=document.querySelector('[data-learning-id="'+id+'"] button[data-status="'+status+'"]');if(target&&!target.disabled&&!target.hidden)target.focus({preventScroll:true});}}engine.subscribe(update);update();
  window.addEventListener('storage',function(e){if(e.key===Core.storageKey)engine.storageChanged();});
+ window.addEventListener('pageshow',function(e){if(e.persisted&&signInPending){signInPending=false;renderAuth();}});
  if(client){client.auth.onAuthStateChange(function(event,session){setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);});
-  client.auth.getSession().then(function(r){if(r.error){tell('החיבור לחשבון אינו זמין. נסו לרענן את הדף.');}return engine.setUser(r.data&&r.data.session&&r.data.session.user);}).catch(fail);
+  client.auth.getSession().then(async function(r){if(r.error){tell('החיבור לחשבון אינו זמין. נסו לרענן את הדף.');}await engine.setUser(r.data&&r.data.session&&r.data.session.user);if(signInRequested&&!r.error)await signInWithGoogle();}).catch(fail);
   if(new URL(location.href).searchParams.has('code')){client.auth.getSession().finally(function(){var u=new URL(location.href);u.searchParams.delete('code');history.replaceState(null,'',u.pathname+u.search);});}
  }
 })();
