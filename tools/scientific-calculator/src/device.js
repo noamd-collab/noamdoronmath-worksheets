@@ -77,10 +77,15 @@
     const math = options.math || global.math;
     const engine = options.engine || global.createEngine(math);
     const alg = options.alg || global.createAlgorithms(math);
+    const editorFactory=options.editorFactory||global.createNaturalEditor||(typeof module!=='undefined'&&module.exports?require('./natural-editor.js').createNaturalEditor:null);
+    if(!editorFactory)throw new Error('Natural editor is unavailable');
+    const natural=editorFactory({math});
     const input = $('lcd-input'), expression = $('lcd-expression'), result = $('lcd-result'), menuEl = $('lcd-menu'), status = $('lcd-status');
     if (!input || !expression || !result || !menuEl || !status) throw new Error('Calculator LCD elements are missing');
     const state = Object.assign({}, DEFAULTS, {scope:{A:0,B:0,C:0,D:0,E:0,F:0,X:0,Y:0,M:0,Ans:0},last:0,lastExpr:'',exact:null,style:'decimal',history:[],historyIndex:-1,shift:false,alpha:false,off:false,afterResult:false,engPower:0,stats:null});
-    let menu = null, errorState = null, memoryAction = null, multi = null, autoOff = null, modes;
+    let menu = null, errorState = null, memoryAction = null, multi = null, autoOff = null, modes,lastScientificKey=null;
+    let fitFrame=null,fitObserver=null,destroyed=false;
+    const fitOriginalStyles=new WeakMap();
     const storage = options.storage === undefined ? (()=>{try{return win.localStorage;}catch(_){return null;}})() : options.storage;
     const storageKey = 'noam-casio-esplus-v1';
     function persist() {
@@ -137,11 +142,18 @@
       return engine.evaluate(source,opts({scope,onCoordinates:pair=>{scope.X=pair[0];scope.Y=pair[1];}}));
     }
     function activeInput(){return menu&&menu.type==='input'?$('lcd-prompt'):input;}
+    function usesNatural(){return state.display==='math'&&state.mode!=='BASE-N'&&activeInput()===input;}
+    function syncNatural(){input.value=natural.getSource();const at=natural.getSelection();input.setSelectionRange(at,at);}
+    function ensureNatural(){if(natural.getSource()!==input.value){natural.setSource(input.value);syncNatural();}}
+    function editNatural(action,{postfix=false}={}){
+      if(state.afterResult){natural.setSource(postfix?'Ans':'');state.afterResult=false;state.resultComplex=null;multi=null;syncNatural();}
+      ensureNatural();action();syncNatural();focusInput(input);renderNatural();
+    }
     function focusInput(el=activeInput()){if(el){try{el.focus({preventScroll:true});}catch(_){el.focus();}}}
     function touch(){if(autoOff)win.clearTimeout(autoOff);if(!options.noAutoOff){autoOff=win.setTimeout(()=>powerOff(),600000);if(autoOff&&autoOff.unref)autoOff.unref();}}
     function renderStatus(){
       const modeStatus=modes&&modes.getStatus?modes.getStatus():state.mode;
-      status.textContent=state.off?'':[state.shift?'S':'',state.alpha?'A':'',memoryAction||'',state.scope.M!==0?'M':'',modeStatus==='COMP'?'':modeStatus,{deg:'D',rad:'R',gra:'G'}[state.angle],state.format==='fix'?'FIX':state.format==='sci'?'SCI':'',state.display==='math'?'Math':'',state.overwrite?'INS':'',multi?'Disp':'',state.history.length?'↕':''].filter(Boolean).join(' ');
+      status.textContent=state.off?'':[state.shift?'S':'',state.alpha?'A':'',memoryAction||'',state.scope.M!==0?'M':'',modeStatus==='COMP'?'':modeStatus,{deg:'D',rad:'R',gra:'G'}[state.angle],state.format==='fix'?'FIX':state.format==='sci'?'SCI':'',state.display==='math'?'Math':'',state.overwrite||natural.isCaptureArmed()?'INS':'',multi?'Disp':'',state.history.length?'↕':''].filter(Boolean).join(' ');
       root.classList.toggle('is-off',state.off);root.classList.toggle('is-shift',state.shift);root.classList.toggle('is-alpha',state.alpha);root.classList.toggle('is-menu-open',!!menu||!!errorState);root.classList.toggle('is-error',!!errorState);
       root.style.setProperty('--lcd-contrast',String(.65+state.contrast*.07));
       root.querySelectorAll('[data-key="shift"],[data-key="alpha"]').forEach(button=>button.setAttribute('aria-pressed',String(state[button.dataset.key])));
@@ -151,17 +163,48 @@
     function renderArrayState(){
       const array=Array.isArray(state.last),visible=state.afterResult&&array&&!menu&&!errorState&&!state.off;
       root.classList.toggle('is-array-result',visible);
+      root.classList.toggle('is-editing',!state.afterResult&&!menu&&!errorState&&!state.off);
       expression.hidden=!!menu||!!errorState||state.off||visible;
-      result.hidden=!!menu||!!errorState||state.off||(array&&!state.afterResult);
+      result.hidden=!!menu||!!errorState||state.off||!state.afterResult;
     }
     function renderNatural(){
       renderArrayState();
       const position=input.selectionStart||0;
       const active=input.value[position]==='□'?input.value.slice(0,position).split('□').length-1:-1;
       const cursor=!state.afterResult&&!menu&&!state.off?position:-1;
-      expression.innerHTML=state.display==='math'?mathMarkup(math,engine,input.value,active,cursor):'<span class="lcd-linear">'+(cursor>=0?escape(input.value.slice(0,cursor))+'<span class="lcd-cursor">▏</span>'+escape(input.value.slice(cursor)):escape(input.value))+'</span>';
+      if(state.display==='math'&&state.mode!=='BASE-N'){ensureNatural();expression.innerHTML=natural.render({cursor:!state.afterResult&&!menu&&!state.off});}
+      else expression.innerHTML='<span class="lcd-linear">'+(cursor>=0?escape(input.value.slice(0,cursor))+'<span class="lcd-cursor" data-caret="true">▏</span>'+escape(input.value.slice(cursor)):escape(input.value))+'</span>';
       expression.setAttribute('aria-label',input.value||'Expression');
       expression.scrollLeft=expression.scrollWidth;
+      scheduleExpressionFit();
+    }
+    // MathML fractions/roots have content-dependent height. Preserve the CSS
+    // font whenever it fits; only the current expression receives a smaller font.
+    function fitExpression(){
+      if(destroyed||expression.hidden)return;
+      const mathElement=expression.querySelector('math');if(!mathElement)return;
+      const height=expression.clientHeight;if(!(height>0))return;
+      if(!fitOriginalStyles.has(mathElement))fitOriginalStyles.set(mathElement,mathElement.getAttribute('style')||'');
+      const baseStyle=fitOriginalStyles.get(mathElement);
+      if(baseStyle)mathElement.setAttribute('style',baseStyle);else mathElement.removeAttribute('style');
+      const boxStyle=win.getComputedStyle(expression),paddingTop=parseFloat(boxStyle.paddingTop)||0,paddingBottom=parseFloat(boxStyle.paddingBottom)||0;
+      const available=height-paddingTop-paddingBottom;if(!(available>0))return;
+      const box=expression.getBoundingClientRect(),bottom=box.top+expression.clientTop+height-paddingBottom;
+      let font=parseFloat(win.getComputedStyle(mathElement).fontSize);
+      if(!(font>0))return;
+      for(let attempt=0;attempt<3;attempt++){
+        const rect=mathElement.getBoundingClientRect();if(!(rect.height>0))return;
+        const room=Math.min(available,bottom-Math.max(rect.top,box.top+expression.clientTop+paddingTop));
+        if(!(room>0)||rect.height<=room+.25)return;
+        const scale=Math.min(.999,Math.max(.01,(room-.5)/rect.height));
+        font*=scale;mathElement.setAttribute('style',baseStyle+(baseStyle&&!baseStyle.trim().endsWith(';')?';':'')+'font-size:'+font.toFixed(3)+'px');
+      }
+    }
+    function scheduleExpressionFit(){
+      if(destroyed)return;
+      if(typeof win.requestAnimationFrame!=='function'){fitExpression();return;}
+      if(fitFrame!==null)return;
+      fitFrame=win.requestAnimationFrame(()=>{fitFrame=null;fitExpression();});
     }
     function renderResult(){
       if(Array.isArray(state.last)){
@@ -210,7 +253,7 @@
     function showMenu(title,entries,settings={}){menu={type:'menu',title:String(title),entries,page:0,pageSize:Math.max(1,Math.min(9,Math.floor(settings.pageSize||8)))};errorState=null;paintMenu();}
     function showInput(title,initial,onSubmit){menu={type:'input',title:String(title),value:String(initial===undefined?'':initial),onSubmit};errorState=null;paintMenu();}
     function submitPrompt(){const current=menu;if(!current||current.type!=='input')return;current.value=$('lcd-prompt').value;current.onSubmit(current.value);if(menu===current)closeMenu();}
-    function setExpression(text){input.value=String(text||'');state.afterResult=false;state.resultComplex=null;state.historyIndex=-1;input.setSelectionRange(input.value.length,input.value.length);renderNatural();}
+    function setExpression(text){input.value=String(text||'');state.afterResult=false;state.resultComplex=null;state.historyIndex=-1;if(state.display==='math'&&state.mode!=='BASE-N'){natural.setSource(input.value);syncNatural();}else input.setSelectionRange(input.value.length,input.value.length);renderNatural();}
     function setResultFormat(complex){
       if(!['polar','rect'].includes(complex))throw new Error('Unknown complex format');
       state.resultComplex=complex;closeMenu();
@@ -223,6 +266,7 @@
     }
     function insert(text,options={}){
       const el=activeInput();if(!el)return;
+      if(usesNatural()){editNatural(()=>natural.insert(text),options);return;}
       if(el===input&&state.afterResult){input.value=options.postfix?'Ans':'';input.setSelectionRange(input.value.length,input.value.length);state.afterResult=false;state.resultComplex=null;multi=null;}
       let start=el.selectionStart??el.value.length,end=el.selectionEnd??start;
       if(start===end&&el.value[start]==='□')end=start+1;
@@ -233,18 +277,24 @@
       if(menu&&menu.type==='input'){menu.value=el.value;if(menu.autoDigits&&new RegExp('^\\d{'+menu.autoDigits+'}$').test(menu.value)){submitPrompt();return;}}
       focusInput(el);if(el===input)renderNatural();
     }
-    function clear(){closeMenu();memoryAction=null;multi=null;input.value='';state.afterResult=false;state.resultComplex=null;state.last=0;state.exact=null;state.style='decimal';state.shift=false;state.alpha=false;state.historyIndex=-1;result.dataset.label='';render();}
+    function clear(){closeMenu();memoryAction=null;multi=null;natural.reset();input.value='';state.afterResult=false;state.resultComplex=null;state.last=0;state.exact=null;state.style='decimal';state.shift=false;state.alpha=false;state.historyIndex=-1;result.dataset.label='';render();}
     function powerOff(){persist();closeMenu();state.off=true;state.shift=false;state.alpha=false;memoryAction=null;renderStatus();announce('Power off');}
     function on(){state.off=false;clear();touch();announce('Power on');}
     function history(direction){
       if(!state.history.length)return;
       state.historyIndex=Math.max(-1,Math.min(state.history.length-1,state.historyIndex+(direction==='up'?1:-1)));
       if(state.historyIndex<0){input.value='';state.afterResult=false;renderNatural();return;}
-      const row=state.history[state.historyIndex];input.value=row.expr;input.setSelectionRange(input.value.length,input.value.length);state.afterResult=true;state.last=row.value;state.exact=row.exact;state.style=row.style;render();
+      const row=state.history[state.historyIndex];input.value=row.expr;if(row.natural){natural.restore(row.natural);syncNatural();}else{natural.setSource(row.expr);syncNatural();}state.afterResult=true;state.last=row.value;state.exact=row.exact;state.style=row.style;render();
     }
     function move(direction){
       const el=activeInput();if(!el)return;
-      if(el===input&&state.afterResult&&(direction==='left'||direction==='right'))el.setSelectionRange(el.value.length,el.value.length);
+      if(usesNatural()){
+        ensureNatural();
+        if(state.afterResult){if(direction==='up'||direction==='down'){history(direction);return;}state.afterResult=false;natural.end();syncNatural();renderNatural();focusInput(input);return;}
+        const moved=natural.move(direction);if(!moved&&!input.value&&(direction==='up'||direction==='down')){history(direction);return;}
+        syncNatural();renderNatural();focusInput(input);return;
+      }
+      if(el===input&&state.afterResult&&(direction==='left'||direction==='right')){el.setSelectionRange(el.value.length,el.value.length);state.afterResult=false;renderNatural();focusInput(el);return;}
       const s=el.selectionStart||0,e=el.selectionEnd||0;
       if(el===input&&(direction==='up'||direction==='down')&&!input.value.includes('□'))return history(direction);
       const forward=direction==='right'||direction==='down';
@@ -254,7 +304,7 @@
       else {pos=forward?Math.min(el.value.length,e>s?e:s+1):Math.max(0,s-1);el.setSelectionRange(pos,pos);}
       if(el===input){state.afterResult=false;renderNatural();}focusInput(el);
     }
-    function del(){const el=activeInput();const start=el.selectionStart||0,end=el.selectionEnd||0;if(start===end&&start>0)el.setRangeText('',start-1,end,'end');else el.setRangeText('',start,end,'end');if(el===input){state.afterResult=false;renderNatural();}else if(menu)menu.value=el.value;focusInput(el);}
+    function del(){if(usesNatural()){if(state.afterResult){state.afterResult=false;ensureNatural();natural.end();}editNatural(()=>natural.delete());return;}const el=activeInput();const start=el.selectionStart||0,end=el.selectionEnd||0;if(start===end&&start>0)el.setRangeText('',start-1,end,'end');else el.setRangeText('',start,end,'end');if(el===input){state.afterResult=false;renderNatural();}else if(menu)menu.value=el.value;focusInput(el);}
     function calculate(){
       if(multi&&state.afterResult){runStatement();return;}
       const source=input.value.trim()||'Ans';
@@ -272,7 +322,7 @@
       state.scope=scope;const fullSource=multi.source;multi.index++;if(multi.index>=multi.pieces.length)multi=null;
       showValue(value,'',{expr:rhs,exact:!assignment,scope:exactScope});
       if(typeof value==='number'&&/\bdms\(/.test(rhs)&&!/[a-df-zA-DF-Z]/.test(rhs.replace(/dms\([^()]*\)/g,'1'))){state.style='dms';renderResult();}
-      state.history.unshift({expr:fullSource,value,exact:state.exact,style:state.style});state.history=state.history.slice(0,40);state.historyIndex=-1;renderStatus();
+      state.history.unshift({expr:fullSource,value,exact:state.exact,style:state.style,natural:usesNatural()?natural.snapshot():null});state.history=state.history.slice(0,40);state.historyIndex=-1;renderStatus();
     }
     function setMode(mode){if(!MODE_NAMES.includes(mode))throw new Error('Unknown mode');closeMenu();if(modes)modes.exit();state.mode=mode;input.value='';state.afterResult=false;state.resultComplex=null;state.exact=null;state.style='decimal';state.last=0;multi=null;state.history=[];state.historyIndex=-1;if(modes)modes.enter(mode);render();persist();}
     function setup(page=0){
@@ -280,7 +330,7 @@
       const setDisplay=(display,mathOutput)=>{if(display!==state.display&&modes&&modes.resetTable)modes.resetTable();state.display=display;state.mathOutput=mathOutput;closeMenu();render();persist();};
       if(page===1){showMenu('SETUP ▼',[{label:'ab/c',action:set('mixed',true)},{label:'d/c',action:set('mixed',false)},{label:'CMPLX',action:()=>showMenu('CMPLX',[{label:'a+bi',action:set('complex','rect')},{label:'r∠θ',action:set('complex','polar')}])},{label:'STAT',action:()=>showMenu('FREQ',[{label:'ON',action:set('freq',true)},{label:'OFF',action:set('freq',false)}])},{label:'Disp',action:()=>showMenu('Decimal',[{label:'Dot',action:set('decimal','dot')},{label:'Comma',action:set('decimal','comma')}])},{label:'◀ CONT ▶',action:()=>{menu={type:'contrast',title:'Contrast'};menuEl.innerHTML='<div class="lcd-menu-title">Contrast</div><div class="lcd-prompt-help">◀ Light · Dark ▶ · AC</div>';renderStatus();}}]);menu.setupPage=1;return;}
       function digits(kind){showInput(kind+' 0–9','',v=>{if(!/^\d$/.test(v))throw new Error('Enter one digit from 0 to 9.');state.format=kind.toLowerCase();state.digits=+v||(kind==='Sci'?10:0);closeMenu();render();persist();});menu.autoDigits=1;}
-      showMenu('SETUP',[{label:'MthIO',action:()=>showMenu('MthIO',[{label:'MathO',action:()=>setDisplay('math',true)},{label:'LineO',action:()=>setDisplay('math',false)}])},{label:'LineIO',action:()=>setDisplay('line',false)},{label:'Deg',action:set('angle','deg')},{label:'Rad',action:set('angle','rad')},{label:'Gra',action:set('angle','gra')},{label:'Fix',action:()=>digits('Fix')},{label:'Sci',action:()=>digits('Sci')},{label:'Norm',action:()=>showMenu('Norm',[{label:'Norm 1',action:set('format','norm')},{label:'Norm 2',action:set('format','norm2')}])}]);menu.setupPage=0;
+      showMenu('SETUP',[{label:'MthIO',action:()=>setDisplay('math',true)},{label:'LineIO',action:()=>setDisplay('line',false)},{label:'Deg',action:set('angle','deg')},{label:'Rad',action:set('angle','rad')},{label:'Gra',action:set('angle','gra')},{label:'Fix',action:()=>digits('Fix')},{label:'Sci',action:()=>digits('Sci')},{label:'Norm',action:()=>showMenu('Norm',[{label:'Norm 1',action:set('format','norm')},{label:'Norm 2',action:set('format','norm2')}])}]);menu.setupPage=0;
     }
     function resetMenu(){showMenu('CLR',[{label:'Setup',action:()=>confirmReset('Setup')},{label:'Memory',action:()=>confirmReset('Memory')},{label:'All',action:()=>confirmReset('All')}]);}
     function confirmReset(kind){showInput('Reset '+kind+'? = Yes','',()=>{if(kind==='Setup'||kind==='All'){Object.assign(state,DEFAULTS);if(modes&&modes.resetTable)modes.resetTable();}if(kind==='Memory'||kind==='All'){state.scope={A:0,B:0,C:0,D:0,E:0,F:0,X:0,Y:0,M:0,Ans:0};state.stats=null;state.baseResult=null;}state.history=[];if(modes)modes.exit();clear();persist();announce('Reset '+kind);});}
@@ -290,12 +340,12 @@
       showInput(kind+' 01–40','',id=>{const padded=String(id).padStart(2,'0'),item=rows.find(r=>String(r.id).padStart(2,'0')===padded);if(!item)throw new Error('Enter a code from 01 to 40.');closeMenu();if(kind==='CONST')insert('('+item.value+')');else {const value=state.afterResult?state.last:finite(input.value||'Ans');const convert=options.convert||global.convertScientificUnit;showValue(convert(value,item.id),item.from+'→'+item.to);}});menu.autoDigits=2;
     }
     function shiftAction(key){
-      if(key==='mode'){setup();return true;}if(key==='ac'){powerOff();return true;}if(key==='del'){state.overwrite=state.display==='line'?!state.overwrite:false;announce(state.display==='math'?'Natural input uses insertion.':state.overwrite?'Overwrite':'Insert');renderStatus();return true;}
+      if(key==='mode'){setup();return true;}if(key==='ac'){powerOff();return true;}if(key==='del'){if(usesNatural()){ensureNatural();natural.armCaptureNext();announce('Insert the next expression into a template.');}else{state.overwrite=state.display==='line'?!state.overwrite:false;announce(state.overwrite?'Overwrite':'Insert');}renderStatus();return true;}
       if(key==='rcl'){memoryAction='STO';renderStatus();return true;}if(key==='7'||key==='8'){catalogMenu(key==='7'?'CONST':'CONV');return true;}if(key==='9'){resetMenu();return true;}
       if(key==='ans'){showMenu('DRG▶',[{label:'°',action:()=>wrapAngle('deg')},{label:'r',action:()=>wrapAngle('rad')},{label:'g',action:()=>wrapAngle('gra')}]);return true;}
       if(key==='hyp'){insert('Abs(□)');return true;}
       if(key==='dms'){if(state.afterResult)dms();else{calculate();state.style='decimal';renderResult();}return true;}
-      if(key==='fraction'){insert('(□+(□)/(□))');return true;}
+      if(key==='fraction'){if(usesNatural())editNatural(()=>natural.mixed());else insert('(□+(□)/(□))');return true;}
       if(key==='sd'){state.mixed=!state.mixed;if(state.exact&&state.lastExpr){try{state.exact=engine.exact(state.lastExpr,{...state.exactOptions,mixed:state.mixed});}catch(_){}}if(state.style==='decimal')state.style='fraction';renderResult();persist();return true;}
       if(key==='eng'){engineering(3);return true;}if(key==='mplus'){memoryAdd(-1);return true;}
       if(key==='mul'||key==='div'){wrapBinary(key==='mul'?'nPr':'nCr');return true;}
@@ -315,10 +365,12 @@
       return {start,end:start,text:'□'};
     }
     function wrapBinary(name,reverse=false){
+      if(usesNatural()){editNatural(()=>natural.wrapBinary(name,reverse),{postfix:true});return;}
       const el=activeInput();if(el===input&&state.afterResult){el.value='Ans';el.setSelectionRange(3,3);state.afterResult=false;}
       const range=operandRange(el);el.setSelectionRange(range.start,range.end);insert(name+'('+(reverse?'□,'+range.text:range.text+',□')+')');
     }
     function fraction(){
+      if(usesNatural()){editNatural(()=>natural.fraction(),{postfix:true});return;}
       const el=activeInput();
       if(el===input&&state.afterResult){el.value='Ans';el.setSelectionRange(3,3);state.afterResult=false;}
       const range=operandRange(el);el.setSelectionRange(range.start,range.end);insert('('+range.text+')/(□)');
@@ -328,12 +380,18 @@
     function sd(){if(!state.afterResult)return;if(state.style==='exact'||state.style==='fraction')state.style='decimal';else if(state.exact)state.style='exact';else{if(!engine.fraction(state.last,{mixed:state.mixed}))throw new Error('No fraction form for this value.');state.style='fraction';}renderResult();}
     function dms(){
       if(state.afterResult){state.style=state.style==='dms'?'decimal':'dms';renderResult();return;}
+      if(usesNatural()){editNatural(()=>natural.dms());return;}
       const el=activeInput(),position=el.selectionStart||0;
       const start=el.value.lastIndexOf('dms(',position),end=start>=0?el.value.indexOf(')',start):-1;
       if(start>=0&&(end<0||position<=end)){move('right');return;}
       const range=operandRange(el);el.setSelectionRange(range.start,range.end);insert('dms('+range.text+',□,□)');
     }
     function keyPress(key){
+      if(!['shift','alpha'].includes(key)){
+        const stamp=(state.shift?'shift:':state.alpha?'alpha:':'')+key;
+        if(stamp==='square'&&lastScientificKey==='square'&&!state.afterResult&&!menu&&usesNatural())return;
+        lastScientificKey=stamp;
+      }
       touch();if(key==='on'){on();return;}if(state.off)return;
       if(errorState){if(['left','right','up','down'].includes(key)){menu=errorState.menu;errorState=null;if(menu)paintMenu();else{menuEl.replaceChildren();render();focusInput();}return;}if(key==='ac'){errorState=null;clear();return;}return;}
       if(key==='shift'){state.shift=!state.shift;state.alpha=false;renderStatus();return;}if(key==='alpha'){state.alpha=!state.alpha;state.shift=false;renderStatus();return;}
@@ -359,7 +417,7 @@
       if(key==='equals'){calculate();return;}if(key==='ac'){clear();return;}if(key==='del'){del();return;}
       if(key==='fraction'){fraction();return;}
       if(key==='rcl'){memoryAction='RCL';renderStatus();return;}if(key==='sd'){sd();return;}if(key==='eng'){if(state.mode==='CMPLX')insert('i');else engineering(-3);return;}if(key==='mplus'){memoryAdd(1);return;}if(key==='dms'){dms();return;}
-      if(key==='rparen'){const el=activeInput();if(el.selectionStart===el.selectionEnd&&el.value[el.selectionStart]===')'){const next=el.selectionStart+1;el.setSelectionRange(next,next);if(el===input)renderNatural();return;}}
+      if(key==='rparen'&&!usesNatural()){const el=activeInput();if(el.selectionStart===el.selectionEnd&&el.value[el.selectionStart]===')'){const next=el.selectionStart+1;el.setSelectionRange(next,next);if(el===input)renderNatural();return;}}
       if(key==='hyp'){showMenu('HYP',[{label:'sinh',action:()=>{closeMenu();insert('sinh(□)');}},{label:'cosh',action:()=>{closeMenu();insert('cosh(□)');}},{label:'tanh',action:()=>{closeMenu();insert('tanh(□)');}},{label:'sinh⁻¹',action:()=>{closeMenu();insert('asinh(□)');}},{label:'cosh⁻¹',action:()=>{closeMenu();insert('acosh(□)');}},{label:'tanh⁻¹',action:()=>{closeMenu();insert('atanh(□)');}}]);return;}
       const text={integral:'integral(□,□,□)',inverse:'^(-1)',logbase:'log(□,□)',sqrt:'sqrt(□)',square:'^2',power:'^(□)',log:'log(□)',ln:'ln(□)',negative:'-',sin:'sin(□)',cos:'cos(□)',tan:'tan(□)',lparen:'(',rparen:')',mul:'*',div:'/',add:'+',sub:'-',dot:'.',exp:'*10^(□)',ans:'Ans'}[key];
       if(text!==undefined)insert(text,{postfix:['inverse','square','power','mul','div','add','sub','exp'].includes(key)});else if(/^\d$/.test(key))insert(key);
@@ -368,7 +426,7 @@
     const modesFactory=options.modesFactory||global.createDeviceModes;
     const api={math,engine,alg,getState:()=>state,ev,showMenu,showInput,showValue,insert,announce,onModeChange:setMode,closeMenu,format,getExpression:()=>input.value,setExpression,setResultFormat};
     modes=modesFactory?modesFactory(api):null;
-    const click=event=>{const key=event.target.closest('[data-key]');if(key&&root.contains(key)){event.preventDefault();protect(()=>keyPress(key.dataset.key));return;}const item=event.target.closest('[data-menu-index]');if(item&&menu&&menu.type==='menu'){const entry=menu.entries[+item.dataset.menuIndex];if(entry)protect(()=>entry.action());return;}const hole=event.target.closest('[data-hole]');if(hole&&expression.contains(hole)){let n=+hole.getAttribute('data-hole'),at=-1;do{at=input.value.indexOf('□',at+1);}while(n-->0&&at>=0);if(at>=0){input.setSelectionRange(at,at+1);focusInput(input);renderNatural();}}};
+    const click=event=>{const key=event.target.closest('[data-key]');if(key&&root.contains(key)){event.preventDefault();protect(()=>keyPress(key.dataset.key));return;}const item=event.target.closest('[data-menu-index]');if(item&&menu&&menu.type==='menu'){const entry=menu.entries[+item.dataset.menuIndex];if(entry)protect(()=>entry.action());return;}const target=event.target.closest('[data-edit-slot]');if(target&&expression.contains(target)){state.afterResult=false;natural.click(target.dataset.editSlot,target.dataset.editIndex);syncNatural();focusInput(input);renderNatural();}};
     const keyboard=event=>{
       if(!root.contains(event.target))return;
       // Native focused buttons activate on Enter/Space; Tab remains native too.
@@ -377,14 +435,17 @@
       if(map[event.key]){event.preventDefault();protect(()=>keyPress(map[event.key]));return;}
       if(menu&&menu.type==='menu'&&/^\d$/.test(event.key)){event.preventDefault();protect(()=>keyPress(event.key));return;}
       if(state.off){event.preventDefault();return;}
+      if(usesNatural()&&event.target===input&&event.key.length===1&&!event.ctrlKey&&!event.metaKey){event.preventDefault();protect(()=>insert(event.key,{postfix:/^[+*/^-]$/.test(event.key)}));return;}
       if(event.target!==input&&event.target!==$('lcd-prompt')&&event.key.length===1&&!event.ctrlKey&&!event.metaKey){event.preventDefault();protect(()=>insert(event.key));}
       else if(event.target===input&&event.key.length===1&&!event.ctrlKey&&!event.metaKey&&state.afterResult){input.value=/^[+*/^-]$/.test(event.key)?'Ans':'';state.afterResult=false;state.resultComplex=null;multi=null;}
     };
     root.addEventListener('click',click);root.addEventListener('keydown',keyboard);
-    input.addEventListener('input',()=>{if(input.value.length>1000)input.value=input.value.slice(0,1000);state.afterResult=false;multi=null;renderNatural();touch();});
+    if(typeof win.ResizeObserver==='function'){fitObserver=new win.ResizeObserver(scheduleExpressionFit);fitObserver.observe(expression);}else win.addEventListener('resize',scheduleExpressionFit);
+    if(doc.fonts&&doc.fonts.ready)doc.fonts.ready.then(scheduleExpressionFit).catch(()=>{});
+    input.addEventListener('input',()=>protect(()=>{if(input.value.length>1000)input.value=input.value.slice(0,1000);state.afterResult=false;multi=null;if(usesNatural()){const atEnd=input.selectionStart===input.value.length;natural.setSource(input.value,input.selectionStart);if(atEnd)natural.end();syncNatural();}renderNatural();touch();}));
     input.addEventListener('select',renderNatural);input.setAttribute('autocomplete','off');input.setAttribute('spellcheck','false');input.setAttribute('maxlength','1000');input.setAttribute('dir','ltr');
     input.value='';render();touch();
-    const device={press:key=>protect(()=>keyPress(String(key))),state,engine,alg,setExpression,calculate:()=>protect(calculate),showMenu,showInput,showValue,render,mathMarkup:source=>mathMarkup(math,engine,source),get menu(){return menu;},get error(){return errorState&&errorState.error;},destroy(){if(autoOff)win.clearTimeout(autoOff);root.removeEventListener('click',click);root.removeEventListener('keydown',keyboard);persist();}};
+    const device={press:key=>protect(()=>keyPress(String(key))),state,engine,alg,natural,setExpression,calculate:()=>protect(calculate),showMenu,showInput,showValue,render,fitExpression,mathMarkup:source=>mathMarkup(math,engine,source),get menu(){return menu;},get error(){return errorState&&errorState.error;},destroy(){destroyed=true;if(autoOff)win.clearTimeout(autoOff);if(fitFrame!==null&&win.cancelAnimationFrame)win.cancelAnimationFrame(fitFrame);if(fitObserver)fitObserver.disconnect();else win.removeEventListener('resize',scheduleExpressionFit);root.removeEventListener('click',click);root.removeEventListener('keydown',keyboard);persist();}};
     root.casioDevice=device;return device;
   }
   if(typeof module!=='undefined'&&module.exports)module.exports={createCasioDevice,mathMarkup};

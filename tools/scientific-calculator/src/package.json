@@ -1,7 +1,7 @@
 {
   "name": "noam-scientific-calculator",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Independent physical-key fx-991ES PLUS-style learning calculator",
   "dependencies": {
     "mathjs": "15.2.0"
