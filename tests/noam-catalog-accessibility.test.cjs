@@ -286,7 +286,7 @@ test("the catalog groups all factorization worksheets once and preserves their o
   assert.doesNotMatch(card, /lvl--soon/);
   assert.deepEqual(links.map(link => new URL(link.href, "https://example.test/").searchParams.get("pdf")), [
     "3f9546987fea4b9aa4294249ea017278", "3329215ba8e24999b3522228011baae2", "9764420460f84628acbffb2ea2ee53a5",
-    "ce861949ea654d129ec3a4b3934d7607", "8590cfff24e04703a9e87f0b669171e1", "a8146d8e91e544a3964c6a6784eff08f"
+    "6a37fe7160324a17ad107b3dbe43c1db", "4008f04978f9488c85e916d69a753323", "43bd9f8b67bc40bc9f653764eba1a930"
   ]);
   assert.equal(new Set(links.map(link => link.href)).size, 6);
 });
@@ -294,12 +294,12 @@ test("the catalog groups all factorization worksheets once and preserves their o
 test("all six reported grade9 topics expose every level and preserve the exact sibling PDF map", () => {
   const f = fixture(); f.ctx.goToGrade(9);
   const expected = [
-    [9, "G9-T10", ["1e33b2a687c244dda0cbaee87c368a87", "c7ff58f8a0654c47bf609a8c6c3f0db3", "fedb3727e2334f788a42fc8b73255ef2"]],
-    [40, "G9-T40", ["c36b8c65a59945fdaab8b535ecba138c", "bc5cc22687cb43dcb817a9011b9fd82c", "0cad8f83ec23481ea1ecf9e4bc27dafd"]],
-    [12, "G9-T12", ["5ab732fdbfff41a9b85c5f17eeb7d65e", "4aff82fdb7444fde902e8eccfabe5ce9", "202919d9e3ad459b8a992aafb9fcf379"]],
-    [15, "G9-T08", ["e22046d654f0415295654534b0273b7a", "6b7bd4c4ee7b4887ae18135ca4350861", "60a072886a5f48c6a1217024d46530e4"]],
-    [4, "G9-T15", ["4cb7cb9d384d46daae3da7c3e229b294", "c6b1224c0dfd44339db956c457e2cc42", "4720512147174043962d6dccb5ce8052"]],
-    [17, "G9-T05", ["3b6237712ad24c4fbfcb3a7eb161b464", "4f02a33bb07f46a2b2b274c780c14140", "62788be89c1945e99784db8d3bbbf369"]]
+    [9, "G9-T10", ["31daf6adaab54967ab25cdcf14367728", "de61f3fb197e481796aa9ba2e98dc89a", "1481ffdfa63d416982e7ccbfe09bb71e"]],
+    [40, "G9-T40", ["cbc951ad64d347099b1eaf5b10b34e7f", "5b1d05c4655144eba82e34199475706c", "a260c5eec7a84cf5929f89921d10dec8"]],
+    [12, "G9-T12", ["a8ebcc5274e04de69ae964eb823e33a4", "fd50cac43f14444eabc6f685999ac05b", "453125b31ea24576910f04f190698bdc"]],
+    [15, "G9-T08", ["ee0dffce722c4682bff4d4d9cb9ba435", "c02ba4059e964dacbda49a0dc501e05d", "2e4554c89aa9465ebb44e91b3ce0806f"]],
+    [4, "G9-T15", ["34aa5bdaa1f640299cb058c576b4f3f4", "948a3944cc3245228f701c916681ac49", "d6ee4238793f49e881c9b2a70915efa6"]],
+    [17, "G9-T05", ["4b7ef32fdaa04b8580e0cdbb46e4aa0d", "aa0ae3dc2ccf44c09ec54313391523fd", "3b9f18232fdc42f3bd8c0d9e236a16cd"]]
   ];
   const cards = [...f.elements.get("list").innerHTML.matchAll(/<article\b[^>]*>[\s\S]*?<\/article>/g)].map(match => match[0]);
   for (const [id, prefix, pdfs] of expected) {
