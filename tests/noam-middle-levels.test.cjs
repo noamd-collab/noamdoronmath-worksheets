@@ -83,7 +83,12 @@ test("each protected level renders its own AI viewer link with correct sibling l
     const row = catalog.DATA[item.grade].links[item.id];
     const rendered = renderedLinks(catalog.levelLinksHTML(topic, item.grade));
     for (const [level, pdf] of Object.entries(item.links)) {
-      const links = rendered.filter(link => new URL(link.href, "https://catalog.test/").searchParams.get("pdf") === pdf);
+      const viewerLevel = level === "one" ? "b" : level;
+      // A PDF may legitimately be reused by another level or grade.
+      const links = rendered.filter(link => {
+        const params = new URL(link.href, "https://catalog.test/").searchParams;
+        return params.get("pdf") === pdf && params.get("lv") === viewerLevel;
+      });
       assert.equal(links.length, 1, `Expected one visible link: grade ${item.grade}, topic ${item.id}, level ${level}`);
       const link = links[0];
       const destination = new URL(link.href, "https://catalog.test/");
@@ -91,7 +96,7 @@ test("each protected level renders its own AI viewer link with correct sibling l
       assert.equal(destination.pathname, "/worksheet-viewer-noam.html");
       assert.equal(destination.searchParams.get("g"), String(item.grade));
       assert.equal(destination.searchParams.get("x"), item.prefix);
-      assert.equal(destination.searchParams.get("lv"), level === "one" ? "b" : level);
+      assert.equal(destination.searchParams.get("lv"), viewerLevel);
       assert.equal(destination.searchParams.get("t"), topic.t);
       for (const sibling of ["a", "b", "c"]) {
         assert.equal(destination.searchParams.get("p" + sibling), row[sibling] || null,
