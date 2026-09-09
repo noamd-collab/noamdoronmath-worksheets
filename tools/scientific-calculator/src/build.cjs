@@ -1,0 +1,11 @@
+'use strict';
+const fs=require('fs'),path=require('path');
+const outputDir=path.resolve(__dirname,process.argv[2]||'.');
+fs.mkdirSync(outputDir,{recursive:true});
+require('./make-ui.cjs');
+const read=f=>fs.readFileSync(path.join(__dirname,f),'utf8');
+const script=['node_modules/mathjs/lib/browser/math.js','core.js','algorithms.js','catalog.js','modes.js','device.js'].map(read).join('\n;\n').replace(/<\/script/gi,'<\\/script');
+const html='<!doctype html>\n<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><meta name="color-scheme" content="light"><title>מחשבון מדעי fx-991ES PLUS — נועם דורון</title></head><body>'+read('ui.html')+'\n<script>'+script+'</script></body></html>\n';
+fs.writeFileSync(path.join(outputDir,'index.html'),html);
+fs.writeFileSync(path.join(outputDir,'preview.html'),'<!doctype html><html lang="he"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>תצוגת המחשבון</title><body>'+read('ui.html')+'<style>.calculator-page{padding:3px;min-width:0}.device-stage{width:100%}.device-caption,.device-help{display:none}.lcd-cursor{display:none}</style><script>document.querySelectorAll("button,input,a,summary").forEach(el=>{el.setAttribute("tabindex","-1");el.setAttribute("aria-hidden","true");});document.getElementById("lcd-expression").innerHTML=\'<math><mrow><msubsup><mo>∫</mo><mn>0</mn><mfrac><mi>π</mi><mn>2</mn></mfrac></msubsup><mi>cos</mi><mo>(</mo><mi>X</mi><mo>)</mo><mi>dX</mi></mrow></math>\';document.getElementById("lcd-result").textContent="1";</script></body></html>');
+console.log(JSON.stringify({bytes:Buffer.byteLength(html),file:path.join(outputDir,'index.html')}));
