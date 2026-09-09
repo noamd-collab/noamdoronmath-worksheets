@@ -4,3 +4,4 @@
 #lcd-result math:has(mfrac){font-size:6cqw}#lcd-expression math:has(msubsup){font-size:5cqw}#lcd-expression math:has(mfrac mfrac),#lcd-result math:has(mfrac mfrac){font-size:4.5cqw}
 .lcd-menu-grid{gap:.3cqw .7cqw}.lcd-menu-item{min-height:4cqw;padding:.25cqw .2cqw}.lcd-menu-footer{font-size:2.5cqw;margin-top:.5cqw}.lcd-menu-grid:has(.lcd-menu-item:nth-child(9)){grid-template-columns:repeat(3,minmax(0,1fr))}
 .is-array-result #lcd-expression{visibility:hidden}.is-array-result #lcd-result{height:24cqw;align-items:center}.is-array-result #lcd-result math{font-size:4.5cqw}.is-array-result #lcd-result mtable{column-spacing:1cqw;row-spacing:.3cqw}.is-array-result #lcd-result .lcd-result-caption{max-width:20cqw;font-size:3cqw;white-space:normal}
+.device-caption,.device-help{max-width:360px;color:#d5ddd7;background:#242c27;border:1px solid #404b44;border-radius:8px;padding:6px 10px}.device-help summary{color:#e2e8e3}
