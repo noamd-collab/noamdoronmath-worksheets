@@ -1,0 +1,16 @@
+{
+  "name": "noam-fx82ms-calculator",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Independent fx-82MS 2nd edition practice calculator",
+  "dependencies": {
+    "mathjs": "15.2.0"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
+  },
+  "scripts": {
+    "build": "node build.cjs ..",
+    "test": "node build.cjs . && node --test *.test.cjs"
+  }
+}
