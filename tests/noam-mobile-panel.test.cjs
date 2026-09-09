@@ -7,7 +7,8 @@ const path = require("node:path");
 const vm = require("node:vm");
 
 const viewer = fs.readFileSync(path.join(__dirname, "../worksheet-viewer-noam.html"), "utf8");
-const syncSource = viewer.slice(viewer.indexOf("function syncMobilePanel(){"), viewer.indexOf("\nmobileLayout.addEventListener"));
+const syncSource = viewer.slice(viewer.indexOf("function syncMobilePanel(){"), viewer.indexOf("\n// The visible Google badge"));
+const mediaListenerSource = viewer.slice(viewer.indexOf('if (typeof mobileLayout.addEventListener === "function")'), viewer.indexOf('\nwindow.addEventListener("resize",syncMobilePanel);'));
 const panelSource = viewer.slice(viewer.indexOf("function openNoamPanel(){"), viewer.indexOf("\nclosePanelButton.addEventListener"));
 
 function fixture() {
@@ -33,7 +34,11 @@ function fixture() {
     return item;
   }
   document.body = element("body");
-  const background = { ".bar": element("bar"), ".pdfwrap": element("pdfwrap") };
+  const background = {
+    ".bar": element("bar"), ".pdfwrap": element("pdfwrap"),
+    ".nl-viewer-progress": element("learningProgress"),
+    "#noam-accessibility": element("accessibilityControls")
+  };
   document.querySelector = selector => background[selector];
   const ctx = {
     document,
@@ -57,6 +62,8 @@ test("opening and closing phone help restores worksheet access and the triggerin
   assert.equal(ctx.panel.attributes["aria-modal"], "true");
   assert.equal(background[".bar"].inert, true);
   assert.equal(background[".pdfwrap"].inert, true);
+  assert.equal(background[".nl-viewer-progress"].inert, true);
+  assert.equal(background["#noam-accessibility"].inert, true);
   assert.equal(ctx.document.body.classList.contains("noam-panel-open"), true);
   assert.equal(ctx.document.activeElement, ctx.closePanelButton);
   element("noamQuestion", true).focus();
@@ -64,6 +71,8 @@ test("opening and closing phone help restores worksheet access and the triggerin
   assert.equal(ctx.panel.classList.contains("hidden"), true);
   assert.equal(background[".bar"].inert, false);
   assert.equal(background[".pdfwrap"].inert, false);
+  assert.equal(background[".nl-viewer-progress"].inert, false);
+  assert.equal(background["#noam-accessibility"].inert, false);
   assert.equal(ctx.document.body.classList.contains("noam-panel-open"), false);
   assert.equal(ctx.panel.attributes["aria-modal"], undefined);
   assert.equal(ctx.fab.classList.contains("hidden"), false);
@@ -80,7 +89,34 @@ test("expanding to desktop releases the background while leaving help open", () 
   assert.equal(ctx.panel.attributes["aria-modal"], undefined);
   assert.equal(background[".bar"].inert, false);
   assert.equal(background[".pdfwrap"].inert, false);
+  assert.equal(background[".nl-viewer-progress"].inert, false);
+  assert.equal(background["#noam-accessibility"].inert, false);
   assert.equal(ctx.closePanelButton.attributes["aria-label"], "סגירה");
+});
+
+test("optional learning and accessibility controls do not prevent opening the mobile dialog", () => {
+  const { ctx, background } = fixture();
+  delete background[".nl-viewer-progress"];
+  delete background["#noam-accessibility"];
+  assert.doesNotThrow(() => { ctx.openNoamPanel(); ctx.closeNoamPanel(); });
+  assert.equal(background[".bar"].inert, false);
+  assert.equal(background[".pdfwrap"].inert, false);
+});
+
+test("the mobile dialog updates on media changes with either listener API", () => {
+  for (const legacy of [false, true]) {
+    const { ctx, background } = fixture();
+    let listener;
+    if (legacy) ctx.mobileLayout.addListener = callback => { listener = callback; };
+    else ctx.mobileLayout.addEventListener = (name, callback) => { assert.equal(name, "change"); listener = callback; };
+    vm.runInContext(mediaListenerSource, ctx);
+    assert.equal(typeof listener, "function");
+    ctx.openNoamPanel();
+    ctx.mobileLayout.matches = false;
+    listener();
+    assert.equal(ctx.panel.attributes["aria-modal"], undefined);
+    assert.ok(Object.values(background).every(item => item.inert === false));
+  }
 });
 
 test("keyboard viewport follows available height and offset without treating pinch zoom as a keyboard", () => {

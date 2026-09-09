@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 
 <title>דף עבודה · מתמטיקה · נועם דורון</title>
 
@@ -1458,97 +1458,133 @@ textarea:focus{
   .noam-question-list{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
-/* The phone keeps the worksheet in place; AI opens over it when requested. */
+/* Phones and small tablets keep a wide document and a single modal conversation. */
+.noam-preview-toggle{display:none}
 @media(max-width:900px){
-  body{height:100vh;height:100dvh;overflow:hidden}
+  html{height:100%;overflow:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{height:100vh;height:100dvh;overflow:hidden;--noam-tools-height:0px;--noam-badge-height:0px}
+  body.noam-pdf-tools-open{--noam-tools-height:103px}
+  body.noam-recaptcha-visible{--noam-badge-height:66px}
   .bar{
-    gap:8px;
-    padding:8px max(10px,env(safe-area-inset-right)) 10px max(10px,env(safe-area-inset-left));
-    padding-top:max(8px,env(safe-area-inset-top));
-    border-bottom-width:2px;
+    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 8px;
+    padding:6px max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left));
+    padding-top:max(6px,env(safe-area-inset-top));border-bottom-width:2px;
   }
-  .bar h1{flex:1 1 100%;font-size:17px;gap:6px}
+  .bar h1{grid-column:1;grid-row:1;font-size:16px;line-height:1.4;gap:5px}
   .bar .spacer{display:none}
-  .context-chips{width:100%;flex-wrap:nowrap;gap:5px}
-  .chip,.level-link{font-size:11px;padding:6px 9px;min-height:36px;border-width:2px;box-shadow:none}
-  .level-switch{flex:1;flex-wrap:nowrap;gap:5px}
-  .level-link{flex:1}
-  .header-actions{width:100%;display:grid;grid-template-columns:1fr auto 1fr;gap:7px}
-  .header-actions .btn{min-height:40px;padding:9px 7px;font-size:11px;text-align:center;border-width:2px;box-shadow:none}
+  .context-chips{display:contents}
+  .chip{grid-column:2;grid-row:1;font-size:11px;min-height:28px;padding:4px 8px;border-width:1px}
+  .level-switch{grid-column:1/-1;grid-row:2;display:flex;flex-wrap:nowrap;gap:6px;min-width:0}
+  .level-link{flex:1;min-width:0;min-height:44px;font-size:12px;padding:7px 8px;border-width:2px;box-shadow:none}
+  .header-actions{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;min-width:0}
+  .header-actions .btn,.header-actions .nl-viewer-link{display:flex;align-items:center;justify-content:center;min-width:0;min-height:44px;padding:6px;font-size:12px;line-height:1.3;text-align:center;border-width:1px;box-shadow:none;white-space:normal}
+  .header-actions #rawBtn,.header-actions .topic-back{display:none}
   .stage{overflow:hidden}
-  .pdfwrap{display:flex;flex-direction:column;gap:5px;padding:5px 6px 8px}
-  .mobile-hint{display:block;margin:0;text-align:center;font-size:12px;font-weight:700;line-height:22px}
-  .pdf-surface{--pdf-tools-width:96px;flex:1;min-height:0;border-width:2px;border-radius:12px;box-shadow:none}
-  .pdf-scroll{padding:8px 6px 88px;scrollbar-gutter:auto;-webkit-overflow-scrolling:touch}
+  .pdfwrap{display:flex;flex-direction:column;gap:3px;padding:3px max(4px,env(safe-area-inset-right)) max(4px,calc(var(--noam-badge-height) + env(safe-area-inset-bottom))) max(4px,env(safe-area-inset-left))}
+  .mobile-hint{display:block;margin:0;text-align:center;font-size:11px;font-weight:700;line-height:18px}
+  .pdf-surface{flex:1;min-height:0;border-width:1px;border-radius:10px;box-shadow:none}
+  .pdf-surface.has-pdf-tools{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}
+  .pdf-surface.has-pdf-tools .pdf-scroll,.pdf-surface.has-pdf-tools .pdf-native{grid-area:1/1}
+  .pdf-surface.has-pdf-tools .pdf-status,.pdf-surface.has-pdf-tools .pdf-fallback-message{inset-inline-start:0}
+  .pdf-scroll{padding:6px 6px 76px;scrollbar-gutter:auto;-webkit-overflow-scrolling:touch;overflow-anchor:none}
   .pdf-pages{gap:10px}
-  .pdf-page{width:calc(100vw - 28px);min-height:0}
-  .pdf-tools{gap:5px;padding:5px;margin:8px 5px;max-height:calc(100% - 16px);border-width:2px;box-shadow:0 3px 10px #14213d20}
-  .pdf-tool,.pdf-tool-link{min-height:44px;font-size:12px;padding:8px 5px}
-  .pdf-zoom-value{min-width:36px}
+  .pdf-page{width:calc(100vw - 76px);min-height:0;margin-inline-start:52px;overflow:visible}
+  .pdf-page .noam-question-pin{width:44px;height:44px;font-size:20px;box-shadow:0 1px 4px #14213d30}
+  .pdf-tools{grid-area:2/1;position:static;display:grid;grid-template-columns:44px minmax(0,1fr) 48px 44px;gap:4px;padding:5px 8px;margin:0;width:100%;max-height:none;border:0;border-top:1px solid #b7bec9;border-radius:0;box-shadow:none;direction:ltr}
+  .pdf-tools.hidden{display:none}
+  #pdfZoomOut,#pdfZoomIn{width:44px;height:44px;min-height:44px;font-size:24px;border:1px solid #b7bec9}
+  .pdf-zoom-value{min-width:0;align-self:center;font-size:12px}
+  .pdf-zoom-slider{min-height:44px}
+  .pdf-tool,.pdf-tool-link{min-height:44px;font-size:12px;padding:6px;direction:rtl;border-width:1px}
+  #pdfFit{grid-column:1/3}
+  #pdfOpenFull{grid-column:3/5}
   #pdfNativeMode{display:none}
-  .fab{display:block;min-height:48px;font-size:14px;padding:10px 15px;inset-inline-end:max(12px,env(safe-area-inset-left));inset-block-end:calc(14px + env(safe-area-inset-bottom));box-shadow:-3px 3px 0 var(--ink)}
+  .fab{display:block;min-height:48px;font-size:14px;padding:10px 15px;inset-inline-end:max(10px,env(safe-area-inset-left));inset-block-end:calc(10px + var(--noam-tools-height) + var(--noam-badge-height) + env(safe-area-inset-bottom));box-shadow:0 2px 8px #14213d30}
+  #noam-accessibility{right:max(10px,env(safe-area-inset-right))!important;bottom:calc(10px + var(--noam-tools-height) + var(--noam-badge-height) + env(safe-area-inset-bottom))!important}
   .fab.hidden,.panel.hidden{display:none}
+  body.noam-panel-open #noam-accessibility,body.noam-panel-open .nl-viewer-progress{visibility:hidden;pointer-events:none}
   .panel{
     position:fixed;z-index:50;inset-inline:0;top:var(--noam-viewport-top,0px);
-    height:100vh;height:var(--noam-viewport-height,100dvh);
-    width:100%;max-width:none;padding:6px;
-    padding-top:max(6px,env(safe-area-inset-top));
-    padding-bottom:max(6px,env(safe-area-inset-bottom));
-    background:var(--paper);
+    height:100vh;height:var(--noam-viewport-height,100dvh);width:100%;max-width:none;
+    padding:4px max(4px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(4px,env(safe-area-inset-left));
+    padding-top:max(4px,env(safe-area-inset-top));background:var(--paper);
   }
-  .panel-in{min-height:0;border-width:2px;border-radius:16px;box-shadow:none}
-  .panel-head{gap:6px;min-height:56px;padding:6px 8px;border-bottom-width:2px}
-  .panel-head b{font-size:15px}
-  .panel-badge{font-size:10px;min-height:24px;padding:4px 6px}
-  .panel-back{min-height:40px;padding:6px 9px;font-size:11px}
-  .panel-close{display:flex;justify-content:center;gap:4px;width:auto;min-width:44px;height:44px;padding:6px 8px;border:1px solid var(--ink);border-radius:12px;font-size:18px}
+  .panel-in{min-height:0;border-width:1px;border-radius:14px;box-shadow:none}
+  .panel-head{gap:5px;min-height:52px;padding:4px 6px;border-bottom-width:1px}
+  .panel-head b{font-size:14px}
+  .panel-badge{font-size:10px;min-height:24px;padding:4px 5px}
+  .panel-back{min-width:44px;min-height:44px;padding:6px;font-size:11px}
+  .panel-close{display:flex;justify-content:center;gap:4px;width:auto;min-width:44px;height:44px;padding:6px 8px;border:1px solid var(--ink);border-radius:10px;font-size:18px}
   .mobile-close-label{display:inline;font:800 11px 'Heebo',sans-serif}
-  .panel-body{display:flex;flex-direction:column;gap:8px;overflow-y:auto;overscroll-behavior:contain;padding:10px}
+  .panel-body{display:flex;flex-direction:column;gap:6px;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:8px}
   .panel-body>*{flex-shrink:0}
-  .panel-body.is-chat{overflow-y:auto}
-  .noam-picked{padding:8px;margin:0;max-height:27%;overflow:auto}
-  .noam-picked-label{font-size:12px;margin-bottom:2px}
-  .noam-picked-preview,.noam-picked-preview img{max-height:130px}
-  .noam-picked-text{font-size:14px}
-  .noam-actions{gap:7px;margin:0}
-  .noam-action{min-height:44px;padding:8px 12px;box-shadow:none}
-  .noam-thread-tools{margin:0;min-height:28px}
-  .noam-link-button{min-height:28px;font-size:12px}
-  .noam-transcript{flex:1;min-height:48px;max-height:none;overflow-y:auto;overscroll-behavior:contain;padding:3px 1px 7px}
-  .noam-bubble{font-size:15px;max-width:94%}
-  .noam-compose{flex:none;padding-top:8px;background:#fff}
-  .noam-compose textarea{font-size:16px;min-height:52px;max-height:90px;resize:none;padding:8px}
+  .panel-body.is-chat{overflow:hidden}
+  .noam-picked{padding:6px;margin:0;max-height:none;overflow:hidden}
+  .noam-picked-heading{display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .noam-picked-label{font-size:12px;margin:0;min-width:0}
+  .noam-preview-toggle{display:block;flex:none;min-height:44px;padding:6px 10px;color:var(--ink);background:#fff;border:1px solid var(--ink);border-radius:10px;font:700 12px 'Assistant',sans-serif;cursor:pointer}
+  .noam-picked-preview,.noam-picked-preview img{max-height:96px}
+  .noam-picked-text{font-size:14px;max-height:60px;overflow:auto}
+  .noam-actions{gap:6px;margin:0}
+  .noam-action{min-height:44px;padding:7px 12px;box-shadow:none}
+  .noam-thread-tools{margin:0;min-height:32px}
+  .noam-link-button{min-height:44px;font-size:12px;padding:5px}
+  .noam-transcript{flex:1;min-height:48px;max-height:none;overflow-y:auto;overscroll-behavior:contain;padding:3px 1px 6px;-webkit-overflow-scrolling:touch}
+  .noam-bubble{font-size:16px;max-width:96%;border-width:1px}
+  .noam-compose{flex:none;padding-top:6px;background:#fff}
+  .noam-compose-heading{margin-bottom:4px}
+  .noam-compose textarea{font-size:16px;min-height:48px;max-height:80px;resize:none;padding:8px}
   .noam-compose-help{display:none}
-  .noam-send{min-height:44px;margin-top:5px;padding:8px}
-  .noam-math-toggle{min-height:36px}
-  .noam-math-key{min-height:40px}
+  .noam-send{min-height:44px;margin-top:4px;padding:7px}
+  .noam-math-toggle{min-height:44px}
+  .noam-math-key{min-height:44px}
   .noam-question-list{grid-template-columns:repeat(3,minmax(0,1fr))}
   .noam-question-list button{min-height:48px;font-size:14px}
-  .panel.is-typing .noam-picked-preview,.panel.is-typing .noam-picked-text,
-  .panel.is-typing .noam-actions,.panel.is-typing .noam-thread-tools{display:none}
-  .panel.is-typing .noam-picked{max-height:none;padding:5px 8px}
+  .panel.is-typing .noam-picked,.panel.is-typing .noam-actions,.panel.is-typing .noam-thread-tools{display:none}
   .panel.is-typing .panel-badge{display:none}
-  /* Keep a focused composer usable when the software keyboard reduces height. */
   .panel.is-short .noam-picked-preview,.panel.is-short .noam-picked-text{display:none}
-  .panel.is-short .noam-picked{padding:4px 8px}
-  .panel.is-short .panel-body{gap:5px}
+  .panel.is-short .noam-picked{padding:2px 6px}
+  .panel.is-short .panel-body{gap:3px;padding:5px}
+  .panel.is-short .noam-thread-tools{display:none}
+  .panel.is-short .noam-transcript{min-height:32px}
   .panel.is-short .panel-body.is-chat{overflow-y:auto}
-  .panel.is-short .noam-transcript{flex:none;min-height:64px;max-height:120px}
-  body.noam-recaptcha-visible .panel{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
-  body.noam-panel-open .grecaptcha-badge{z-index:60;bottom:calc(var(--noam-keyboard-gap,0px) + env(safe-area-inset-bottom) + 6px)!important}
+  .panel.is-short .noam-compose{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"field field" "keys keys" "send tools";gap:4px}
+  .panel.is-short .noam-compose-heading{grid-area:tools;margin:0;display:flex}
+  .panel.is-short .noam-compose-heading label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .panel.is-short .noam-math-toggle{width:100%}
+  .panel.is-short .noam-compose textarea{grid-area:field;min-height:44px;height:44px}
+  .panel.is-short .noam-send{grid-area:send;margin:0}
+  .panel.is-short .noam-math-keys{grid-area:keys;grid-template-columns:repeat(8,minmax(48px,1fr));overflow-x:auto;margin:0;padding-bottom:2px;min-width:0}
+  .panel-body.is-previewing{overflow:hidden}
+  .panel-body.is-previewing>:not(.noam-picked){display:none}
+  .panel-body.is-previewing>.noam-picked{display:block;flex:1;min-height:0;max-height:none;overflow:auto;padding:0 6px 6px}
+  .panel-body.is-previewing .noam-picked-heading{position:sticky;top:0;background:var(--tint);z-index:1;padding:4px 0}
+  .panel-body.is-previewing .noam-picked-preview,.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
+  .panel-body.is-previewing .noam-picked-text{display:block;max-height:none}
+  body.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+  body.noam-panel-open .grecaptcha-badge{z-index:60;bottom:calc(var(--noam-keyboard-gap,0px) + env(safe-area-inset-bottom) + 4px)!important}
 }
-@media(max-width:600px){
-  .pdf-page{width:calc(100vw - 80px);margin-inline-start:52px;overflow:visible}
-  .pdf-page .noam-question-pin{width:44px;height:44px;font-size:20px;box-shadow:0 1px 4px #14213d30}
+@media(min-width:500px) and (max-width:900px) and (max-height:500px){
+  body.noam-pdf-tools-open{--noam-tools-height:55px}
+  .bar{grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;padding-block:4px;padding-top:max(4px,env(safe-area-inset-top))}
+  .bar h1{font-size:14px}
+  .level-switch{grid-row:2;grid-column:1}
+  .header-actions{grid-row:2;grid-column:2;display:flex}
+  .header-actions .btn,.header-actions .nl-viewer-link{min-width:44px;padding:5px 8px;font-size:11px}
+  .header-actions .nl-viewer-link{display:none}
+  .chip{justify-self:end}
+  .mobile-hint{display:none}
+  .pdf-tools{grid-template-columns:44px minmax(60px,1fr) 44px 44px minmax(80px,auto) minmax(85px,auto)}
+  #pdfFit,#pdfOpenFull{grid-column:auto}
 }
 @media(max-width:360px){
-  .chip,.level-link{font-size:10px;padding-inline:6px}
+  .chip{font-size:10px}
+  .level-link{font-size:11px;padding-inline:5px}
   .panel-badge{display:none}
-  .header-actions .btn{font-size:10px;padding-inline:5px}
 }
 
 </style>
-<link rel="stylesheet" href="noam-learning.css?v=20260908-1">
+<link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1">
 </head>
 
 <body>
@@ -2555,6 +2591,7 @@ function showPdfTools(
     );
 
   pdfSurface.classList.toggle("has-pdf-tools",!!visible);
+  document.body.classList.toggle("noam-pdf-tools-open",!!visible);
   schedulePdfResize();
 
   pdfToolsToggle
@@ -2740,20 +2777,7 @@ function renderPdfPage(
             scale:1
           });
 
-        var availableWidth =
-          Math.max(
-            120,
-            pdfScroll.clientWidth -
-            (mobileLayout.matches ? 12 : 34) -
-            (window.matchMedia("(max-width:600px)").matches ? 52 : 0)
-          );
-
-        var cssScale =
-          (
-            availableWidth /
-            baseViewport.width
-          ) *
-          pdfZoom;
+        var cssScale = getPdfPageWidth() / baseViewport.width;
 
         var viewport =
           page.getViewport({
@@ -2967,12 +2991,34 @@ function observePdfPages(){
   }
 }
 
+function getPdfPageWidth(){
+  return Math.max(120,pdfScroll.clientWidth - (mobileLayout.matches ? 64 : 34)) * pdfZoom;
+}
+
+// Keep the same point on the current page when rotation or zoom changes page sizes.
+function capturePdfPosition(){
+  var top = pdfScroll.getBoundingClientRect().top;
+  var pages = Array.from(pdfPages.querySelectorAll(".pdf-page"));
+  var page = pages.find(function(item){ return item.getBoundingClientRect().bottom > top; });
+  if (!page){return null;}
+  var rect = page.getBoundingClientRect();
+  return { page:page, fraction:Math.max(0,Math.min(1,(top-rect.top)/Math.max(1,rect.height))) };
+}
+
+function restorePdfPosition(anchor){
+  if (!anchor || !anchor.page.isConnected){return;}
+  var rect = anchor.page.getBoundingClientRect();
+  pdfScroll.scrollTop += rect.top - pdfScroll.getBoundingClientRect().top + anchor.fraction * rect.height;
+}
+
 function resetPdfRendering(){
 
   if (!pdfDocument){
     return;
   }
 
+  var anchor = capturePdfPosition();
+  var nextWidth = getPdfPageWidth();
   pdfRenderVersion += 1;
 
   pdfPages
@@ -3017,12 +3063,14 @@ function resetPdfRendering(){
           canvas.style.height = "";
         }
 
-        pageElement.style.width = "";
-        pageElement.style.height = "";
-        pageElement.style.aspectRatio = "";
+        var oldRect = pageElement.getBoundingClientRect();
+        var ratio = oldRect.width > 0 && oldRect.height > 0 ? oldRect.height / oldRect.width : 297 / 210;
+        pageElement.style.width = nextWidth + "px";
+        pageElement.style.height = (nextWidth * ratio) + "px";
       }
     );
 
+  restorePdfPosition(anchor);
   observePdfPages();
 }
 
@@ -3329,7 +3377,7 @@ function ensureNoamMathRenderer(){
 }
 
 /* This script is below the viewer DOM. No font or AI library needs to finish first. */
-showPdfTools(true);
+showPdfTools(!mobileLayout.matches);
 setNativePdfMode(false);
 loadNoamAsset("script",PDFJS_BASE+"build/pdf.min.js")
   .then(initPdfExperience)
@@ -3362,7 +3410,7 @@ try {
   }
   if (/^\d+$/.test(navigationParams.get('topic') || '') && okGrade) {
     var topicBack = document.createElement('a');
-    topicBack.className = 'btn';
+    topicBack.className = 'btn topic-back';
     topicBack.textContent = 'חזרה לנושא';
     topicBack.href = './?grade=' + g + '&topic=' + navigationParams.get('topic');
     document.getElementById('backBtn').after(topicBack);
@@ -3403,6 +3451,10 @@ function syncMobilePanel(){
   document.body.classList.toggle("noam-panel-open",modal);
   document.querySelector(".bar").inert = modal;
   document.querySelector(".pdfwrap").inert = modal;
+  [".nl-viewer-progress", "#noam-accessibility"].forEach(function(selector){
+    var background = document.querySelector(selector);
+    if (background){ background.inert = modal; }
+  });
   if (modal){
     panel.setAttribute("role","dialog");
     panel.setAttribute("aria-modal","true");
@@ -3434,7 +3486,11 @@ var noamBadgeObserver = window.MutationObserver ? new MutationObserver(reserveRe
 if (noamBadgeObserver){noamBadgeObserver.observe(document.body,{childList:true,subtree:true});}
 reserveRecaptchaBadge();
 
-mobileLayout.addEventListener("change",syncMobilePanel);
+if (typeof mobileLayout.addEventListener === "function"){
+  mobileLayout.addEventListener("change",syncMobilePanel);
+}else if (typeof mobileLayout.addListener === "function"){
+  mobileLayout.addListener(syncMobilePanel);
+}
 window.addEventListener("resize",syncMobilePanel);
 if (window.visualViewport){
   window.visualViewport.addEventListener("resize",syncMobilePanel);
@@ -3558,7 +3614,7 @@ function loadStaticManifest(){
     });
 }
 
-var noamNarrowPinsMedia = window.matchMedia("(max-width:600px)");
+var noamNarrowPinsMedia = mobileLayout;
 
 function buildManifestPinGroups(exercises, groupByQuestion){
   var groups = [];
@@ -3618,7 +3674,7 @@ function renderNoamQuestionParts(exercises, pin){
   selectedPin = pin;
   if (selectedPin){ selectedPin.classList.add("is-active"); }
   panelBack.hidden = false;
-  panelBody.classList.remove("is-chat");
+  panelBody.classList.remove("is-chat", "is-previewing");
   var multipleQuestions = exercises.some(function(exercise){ return exercise.q !== exercises[0].q; });
   panelBody.innerHTML =
     '<div class="noam-manifest-note">' + esc(manifestPinQuestionLabel(exercises)) +
@@ -3727,10 +3783,16 @@ function renderManifestPins(){
   });
 }
 
+function refreshNoamMobileLayout(){
+  showPdfTools(!mobileLayout.matches);
+  pdfLastWidth = Math.round(pdfScroll.clientWidth);
+  resetPdfRendering();
+  renderManifestPins();
+}
 if (typeof noamNarrowPinsMedia.addEventListener === "function"){
-  noamNarrowPinsMedia.addEventListener("change", renderManifestPins);
+  noamNarrowPinsMedia.addEventListener("change", refreshNoamMobileLayout);
 }else if (typeof noamNarrowPinsMedia.addListener === "function"){
-  noamNarrowPinsMedia.addListener(renderManifestPins);
+  noamNarrowPinsMedia.addListener(refreshNoamMobileLayout);
 }
 
 if (window.MutationObserver){
@@ -3740,6 +3802,7 @@ if (window.MutationObserver){
 }
 
 function selectManifestExercise(exercise, pin){
+  panelBody.classList.remove("is-previewing");
   selectedExercise = exercise;
   if (selectedPin){ selectedPin.classList.remove("is-active"); }
   selectedPin = pin || null;
@@ -3751,7 +3814,7 @@ function selectManifestExercise(exercise, pin){
 
 function renderExercisePicker(){
   var moveFocus = document.activeElement===panelBack || panelBody.contains(document.activeElement);
-  panelBody.classList.remove("is-chat");
+  panelBody.classList.remove("is-chat", "is-previewing");
   panelBack.hidden = true;
   if (!manifestReady){
     panelBody.innerHTML = '<div class="note">נועם AI עדיין אינו זמין לדף הזה.</div>';
@@ -3811,11 +3874,13 @@ function renderNoamChat(){
   panelBody.classList.add("is-chat");
   panelBack.hidden = false;
   var thread = exerciseThread(selectedExercise.id);
+  var previewing = panelBody.classList.contains("is-previewing");
   var text = selectedExercise.text || selectedExercise.prompt || selectedExercise.context || "";
 
   panelBody.innerHTML =
     '<div class="noam-picked">' +
-      '<div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
+      '<div class="noam-picked-heading"><div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
+      '<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הגדלת השאלה')+'</button></div>' +
       '<div class="noam-picked-preview" id="noamPickedPreview" hidden></div>' +
       '<div class="noam-picked-text" id="noamPickedText">' + esc(text) + '</div>' +
     '</div>' +
@@ -3849,6 +3914,14 @@ function renderNoamChat(){
       '<button type="button" class="noam-send" id="noamSend">שלח לנועם AI</button>' +
     '</div>';
 
+  document.getElementById("noamPreviewToggle").addEventListener("click",function(){
+    var expanded = !panelBody.classList.contains("is-previewing");
+    panelBody.classList.toggle("is-previewing",expanded);
+    this.setAttribute("aria-expanded",String(expanded));
+    this.textContent = expanded ? "חזרה לשיחה" : "הגדלת השאלה";
+    panelBody.scrollTop = 0;
+    this.focus({preventScroll:true});
+  });
   var transcript = document.getElementById("noamTranscript");
   if (!thread.messages.length){
     transcript.innerHTML = '<div class="noam-empty">בחרו סוג עזרה או כתבו שאלה. השיחה תישמר גם אם תעברו לסעיף אחר.</div>';

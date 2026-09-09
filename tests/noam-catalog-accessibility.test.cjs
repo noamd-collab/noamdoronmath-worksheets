@@ -10,7 +10,8 @@ const html = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 
 function fixture() {
-  const elements = new Map(), timers = new Map(), scrolls = [];
+  const elements = new Map(), timers = new Map(), scrolls = [], messages = [], frames = [], observed = [];
+  let resizeCallback;
   let nextTimer = 0;
   const document = { activeElement: null, referrer: "", documentElement: { scrollHeight: 1000, classList: { add() {} } } };
   function element(id = "", className = "") {
@@ -52,10 +53,11 @@ function fixture() {
   const location = { href: "https://example.test/worksheetsfor7thgrade" };
   const ctx = {
     document, location,
-    window: { parent: { location, postMessage() {} }, addEventListener() {}, scrollTo: options => scrolls.push(options), matchMedia: () => ({ matches: false }) },
+    window: { parent: { location, postMessage(message) { messages.push(message); } }, addEventListener() {}, scrollTo: options => scrolls.push(options), matchMedia: () => ({ matches: false }),
+      ResizeObserver: class { constructor(callback) { resizeCallback = callback; } observe(target) { observed.push(target); } } },
     setTimeout(fn) { timers.set(++nextTimer, fn); return nextTimer; },
     clearTimeout(id) { timers.delete(id); },
-    requestAnimationFrame() {}
+    requestAnimationFrame(fn) { frames.push(fn); return frames.length; }
   };
   vm.createContext(ctx);
   vm.runInContext(source, ctx);
@@ -70,7 +72,8 @@ function fixture() {
   function flush() {
     const jobs = [...timers.values()]; timers.clear(); jobs.forEach(fn => fn());
   }
-  return { ctx, document, elements, tabs, key, timers, flush, scrolls };
+  return { ctx, document, elements, tabs, key, timers, flush, scrolls, messages, observed,
+    resize: () => resizeCallback([]), flushFrames: () => { while (frames.length) frames.shift()(); } };
 }
 
 test("grade tabs have one tab stop, a labelled results panel, and stable nodes during selection", () => {
@@ -368,4 +371,21 @@ test("all grade palettes meet text contrast for selected controls, search placeh
   }
   assert.match(html, /\.search input::placeholder\{ color:var\(--muted\)/);
   assert.match(html, /\.wrap\[data-grade="8"\] \.gbadge\{ color:var\(--accent-dark\)/);
+});
+
+
+test("late content and enlarged fonts resize the iframe once, and filtered content can shrink it", () => {
+  const f = fixture(), wrap = f.elements.get("wrap");
+  assert.equal(f.observed[0], wrap);
+  wrap.scrollHeight = 1800;
+  wrap.getBoundingClientRect = () => ({ height: wrap.scrollHeight - 0.25 });
+  f.resize(); f.resize(); f.flushFrames();
+  assert.equal(f.messages.at(-1).type, "setHeight");
+  assert.equal(f.messages.at(-1).height, 1800);
+  const count = f.messages.length;
+  f.resize(); f.flushFrames();
+  assert.equal(f.messages.length, count, "unchanged geometry must not create parent resize loops");
+  wrap.scrollHeight = 420;
+  f.resize(); f.flushFrames();
+  assert.equal(f.messages.at(-1).height, 420, "the previous iframe viewport must not prevent shrinking");
 });
