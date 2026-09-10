@@ -77,6 +77,10 @@
     '.est{font-size:12px;opacity:.75;margin-top:6px}',
     'input[type=range]{accent-color:currentColor;height:24px;cursor:pointer}',
     '.hidden{display:none}',
+    // The bar version supplies its own surface, so the block drops its box there.
+    ':host([bare]) .wrap{border:0;background:none;padding:0;margin:0;border-radius:0}',
+    ':host([bare]) .top{margin-bottom:6px}',
+    ':host([bare]) .speed{margin-top:8px}',
     '@media (max-width:420px){.speed{flex-wrap:wrap}}',
   ].join('');
 

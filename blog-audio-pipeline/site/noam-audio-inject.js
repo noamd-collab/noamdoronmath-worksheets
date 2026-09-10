@@ -4,7 +4,7 @@
  *
  * The site's editor offers no Custom Element and placing an embed inside the blog
  * post layout is awkward, so this script does the placing instead: on a post page
- * it loads the player and inserts it directly under the post title.
+ * it loads the player and attaches it as a bar fixed to the bottom of the window.
  *
  * It does nothing at all on any page that is not a blog post, it never autoplays,
  * and if it cannot find an anchor it gives up quietly rather than moving anything.
@@ -13,7 +13,7 @@
 (function () {
   // Readable from the page, so which build is running can be established from
   // outside instead of inferred.
-  window.__noamAudioLoader = { build: 4, startedAt: new Date().toISOString(), state: 'loaded' };
+  window.__noamAudioLoader = { build: 5, startedAt: new Date().toISOString(), state: 'loaded' };
 
   var PLAYER_SRC = 'https://noamd-collab.github.io/noamdoronmath-worksheets/blog-audio/noam-audio-player.js';
   var TAG = 'noam-audio-player';
@@ -57,23 +57,40 @@
     document.head.appendChild(s);
   }
 
-  function mount(anchor) {
+  // The player is deliberately NOT inserted into the article. Wix re-renders the
+  // post after any insertion and takes the block with it, which showed up as a
+  // player that flashed and vanished. A bar attached to the body sits outside the
+  // part of the page Wix owns, so nothing removes it - and it stays in reach while
+  // the reader scrolls, which suits a narration control better anyway.
+  function mount() {
     if (document.querySelector('[' + MARK + ']')) return true;
+    if (!document.body) return false;
+
+    if (!document.getElementById('noam-audio-bar-style')) {
+      var style = document.createElement('style');
+      style.id = 'noam-audio-bar-style';
+      style.textContent = [
+        '[' + MARK + ']{position:fixed;inset-inline:0;bottom:0;z-index:2147483000;direction:rtl;',
+        'padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.94);',
+        '-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);',
+        'border-top:1px solid rgba(0,0,0,.12);box-shadow:0 -6px 24px rgba(0,0,0,.10);color:#14181f}',
+        '[' + MARK + '] > div{max-width:760px;margin:0 auto}',
+        '@media (prefers-color-scheme: dark){[' + MARK + ']{background:rgba(20,24,31,.94);',
+        'border-top-color:rgba(255,255,255,.16);color:#f2f4f7}}',
+      ].join('');
+      document.head.appendChild(style);
+    }
+
     var holder = document.createElement('div');
     holder.setAttribute(MARK, '1');
-    holder.style.margin = '18px 0';
-    holder.style.direction = 'rtl';
+    var inner = document.createElement('div');
     var player = document.createElement(TAG);
-    holder.appendChild(player);
+    player.setAttribute('bare', '1');
+    inner.appendChild(player);
+    holder.appendChild(inner);
 
-    // Sit after the title's own block, so the player does not land inside a
-    // heading container that Wix may re-render.
-    var target = anchor.closest('[data-hook]') || anchor;
-    if (target.parentNode) {
-      target.parentNode.insertBefore(holder, target.nextSibling);
-      return true;
-    }
-    return false;
+    document.body.appendChild(holder);
+    return true;
   }
 
   function start() {
@@ -104,16 +121,17 @@
         stop();
         return;
       }
-      var anchor = findAnchor();
-      if (!anchor) { window.__noamAudioLoader.state = 'waiting for the post title'; return; }
+      // The title is still what tells us the post has actually rendered; the bar
+      // itself no longer attaches to it.
+      if (!findAnchor()) { window.__noamAudioLoader.state = 'waiting for the post to render'; return; }
       try {
-        if (mount(anchor)) {
+        if (mount()) {
           mounts++;
           window.__noamAudioLoader.state = 'mounted';
           window.__noamAudioLoader.mounts = mounts;
           if (timer) { clearInterval(timer); timer = null; }
         } else {
-          window.__noamAudioLoader.state = 'anchor had no parent to mount beside';
+          window.__noamAudioLoader.state = 'no body to attach the bar to';
         }
       } catch (e) {
         window.__noamAudioLoader.state = 'mount threw: ' + (e && e.message);
