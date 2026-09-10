@@ -60,6 +60,9 @@ for (const fnName of ['blogAudioPosts', 'blogAudioInfo']) {
     const res = await fetch(`${base}/${fnName}?probe=1`, { method: 'GET' });
     if (res.status === 401 || res.status === 403) ok(`${fnName} deployed and refusing unauthenticated calls (${res.status})`);
     else if (res.status === 200) ok(`${fnName} deployed and answering (200)`);
+    // A 400 is the function itself rejecting a probe that carries no slug, which
+    // proves it is deployed just as clearly as a 403 does.
+    else if (res.status === 400) ok(`${fnName} deployed and rejecting the incomplete probe (400)`);
     else bad(`${fnName} answered HTTP ${res.status}. On this site every /_functions/<name> answers 500 with an empty body, so a 500 does not tell missing code from a broken module - check Wix Site Monitoring. If the code really is absent, append wix-backend/http-functions.SNIPPET.js to the site backend/http-functions.js`);
   } catch (e) {
     bad(`${fnName} unreachable: ${e.message.slice(0, 120)}`);
