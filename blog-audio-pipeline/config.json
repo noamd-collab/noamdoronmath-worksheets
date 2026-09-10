@@ -29,25 +29,31 @@
   "pricing": {
     "note": "USD per 1M tokens, from https://ai.google.dev/gemini-api/docs/pricing (checked 2026-09-10).",
     "gemini-3.1-flash-tts-preview": {
-      "inputTextPerMTok": 1.0,
-      "outputAudioPerMTok": 20.0
+      "inputTextPerMTok": 1,
+      "outputAudioPerMTok": 20
     },
     "gemini-2.5-pro-preview-tts": {
-      "inputTextPerMTok": 1.0,
-      "outputAudioPerMTok": 20.0
+      "inputTextPerMTok": 1,
+      "outputAudioPerMTok": 20
     },
     "gemini-2.5-flash-preview-tts": {
       "inputTextPerMTok": 0.5,
-      "outputAudioPerMTok": 10.0
+      "outputAudioPerMTok": 10
     },
     "gemini-2.5-flash": {
       "inputTextPerMTok": 0.3,
       "outputTextPerMTok": 2.5,
-      "inputAudioPerMTok": 1.0
+      "inputAudioPerMTok": 1
     },
     "assumedAudioTokensPerSecond": 32,
-    "assumedHebrewCharsPerSecond": 14,
-    "assumedHebrewCharsPerToken": 2.5
+    "assumedHebrewCharsPerSecond": 10,
+    "assumedHebrewCharsPerToken": 2.5,
+    "gemini-3.6-flash": {
+      "inputTextPerMTok": 0.3,
+      "outputTextPerMTok": 2.5,
+      "inputAudioPerMTok": 1,
+      "note": "assumed same as gemini-2.5-flash; not confirmed against the pricing page"
+    }
   },
   "limits": {
     "maxConcurrentPosts": 1,
@@ -55,17 +61,17 @@
     "retryBaseDelayMs": 4000,
     "requestTimeoutMs": 180000,
     "minDelayBetweenRequestsMs": 1200,
-    "spendLimitUsd": 8.0,
-    "spendWarnUsd": 5.0,
+    "spendLimitUsd": 8,
+    "spendWarnUsd": 5,
     "killSwitchFile": "STOP",
     "lockStaleMinutes": 30
   },
   "verify": {
-    "asrModel": "gemini-2.5-flash",
+    "asrModel": "gemini-3.6-flash",
     "minCoverage": 0.93,
     "maxExtraRatio": 0.12,
     "charsPerSecondRange": [
-      9,
+      8,
       22
     ]
   },
