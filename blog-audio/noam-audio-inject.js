@@ -33,9 +33,12 @@
       'main h1',
       'h1',
     ];
+    // Visibility is deliberately not required here: the site shows a disclaimer
+    // gate over the article, and a title that is momentarily unrendered is still
+    // the right place to mount.
     for (var i = 0; i < selectors.length; i++) {
       var el = document.querySelector(selectors[i]);
-      if (el && el.offsetParent !== null) return el;
+      if (el) return el;
     }
     return null;
   }
