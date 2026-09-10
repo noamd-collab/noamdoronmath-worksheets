@@ -13,7 +13,7 @@
 (function () {
   // Readable from the page, so which build is running can be established from
   // outside instead of inferred.
-  window.__noamAudioLoader = { build: 3, startedAt: new Date().toISOString(), state: 'loaded' };
+  window.__noamAudioLoader = { build: 4, startedAt: new Date().toISOString(), state: 'loaded' };
 
   var PLAYER_SRC = 'https://noamd-collab.github.io/noamdoronmath-worksheets/blog-audio/noam-audio-player.js';
   var TAG = 'noam-audio-player';
@@ -21,6 +21,7 @@
   // Wix renders the post body well after this script runs, and the tag manager
   // that loads this script is itself late, so the window has to be generous.
   var GIVE_UP_MS = 90000;
+  var MAX_MOUNTS = 40;
 
   function isPostPage() {
     return /\/post\//.test(window.location.pathname);
@@ -82,28 +83,46 @@
     var deadline = Date.now() + GIVE_UP_MS;
     var observer = null;
     var timer = null;
+    var mounts = 0;
 
     function stop() {
       if (timer) clearInterval(timer);
       if (observer) observer.disconnect();
+      timer = null;
+      observer = null;
     }
 
+    // The site re-renders the post after the player is inserted and takes it with
+    // it, so mounting once is not enough: the block has to be put back each time
+    // it disappears. The cap is there so a render loop cannot become a fight.
     function attempt() {
       if (!isPostPage()) { window.__noamAudioLoader.state = 'left the post page'; stop(); return; }
-      if (Date.now() > deadline) { window.__noamAudioLoader.state = 'gave up waiting for the post to render'; stop(); return; }
+      if (document.querySelector('[' + MARK + ']')) return;
+      if (mounts >= MAX_MOUNTS) { window.__noamAudioLoader.state = 'the page kept removing the player'; stop(); return; }
+      if (Date.now() > deadline && mounts === 0) {
+        window.__noamAudioLoader.state = 'gave up waiting for the post to render';
+        stop();
+        return;
+      }
       var anchor = findAnchor();
       if (!anchor) { window.__noamAudioLoader.state = 'waiting for the post title'; return; }
       try {
-        if (mount(anchor)) { window.__noamAudioLoader.state = 'mounted'; stop(); }
-        else window.__noamAudioLoader.state = 'anchor had no parent to mount beside';
+        if (mount(anchor)) {
+          mounts++;
+          window.__noamAudioLoader.state = 'mounted';
+          window.__noamAudioLoader.mounts = mounts;
+          if (timer) { clearInterval(timer); timer = null; }
+        } else {
+          window.__noamAudioLoader.state = 'anchor had no parent to mount beside';
+        }
       } catch (e) {
         window.__noamAudioLoader.state = 'mount threw: ' + (e && e.message);
         stop();
       }
     }
 
-    // The observer catches the moment Wix renders the post; the interval is the
-    // backstop for renders that do not touch the observed subtree.
+    // The observer catches both the moment the post renders and the moment a
+    // re-render removes the player; the interval is the backstop until first mount.
     if (window.MutationObserver) {
       observer = new MutationObserver(attempt);
       observer.observe(document.documentElement, { childList: true, subtree: true });
