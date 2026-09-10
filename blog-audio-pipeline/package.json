@@ -1,0 +1,21 @@
+{
+  "name": "noam-blog-audio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Hebrew audio narration pipeline for the noamdoronmath.co.il Wix blog (Gemini TTS -> MP3 -> Wix Media Manager).",
+  "scripts": {
+    "verify-access": "node bin/verify-access.mjs",
+    "map": "node bin/map.mjs",
+    "generate": "node bin/generate.mjs",
+    "verify-audio": "node bin/verify-audio.mjs",
+    "status": "node bin/status.mjs",
+    "selftest": "node bin/selftest.mjs"
+  },
+  "dependencies": {
+    "@google/genai": "^2.21.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

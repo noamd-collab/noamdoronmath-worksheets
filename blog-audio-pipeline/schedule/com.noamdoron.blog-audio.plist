@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Periodic catch-up run. Copy to ~/Library/LaunchAgents/ and load it with:
+
+      launchctl load  ~/Library/LaunchAgents/com.noamdoron.blog-audio.plist
+      launchctl unload ~/Library/LaunchAgents/com.noamdoron.blog-audio.plist
+
+  It runs every 6 hours, asks the site what is outstanding, and renders at most
+  three posts per run. It does nothing when the queue is empty, and it stops
+  immediately if the STOP file exists or the spend limit is reached.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.noamdoron.blog-audio</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>/Users/noamdoron/Desktop/noam-blog-audio/bin/generate.mjs</string>
+    <string>--from-queue</string>
+    <string>--source=wix</string>
+    <string>--limit=3</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/noamdoron/Desktop/noam-blog-audio</string>
+
+  <key>StartInterval</key>
+  <integer>21600</integer>
+
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/noamdoron/Desktop/noam-blog-audio/state/launchd.out.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/noamdoron/Desktop/noam-blog-audio/state/launchd.err.log</string>
+</dict>
+</plist>

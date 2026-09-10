@@ -1,0 +1,82 @@
+{
+  "site": {
+    "baseUrl": "https://www.noamdoronmath.co.il",
+    "functionsBase": "https://www.noamdoronmath.co.il/_functions",
+    "functionsBaseDev": "https://www.noamdoronmath.co.il/_functions-dev"
+  },
+  "tts": {
+    "provider": "gemini-api",
+    "model": "gemini-3.1-flash-tts-preview",
+    "modelAlternatives": [
+      "gemini-2.5-pro-preview-tts",
+      "gemini-2.5-flash-preview-tts"
+    ],
+    "voice": "Charon",
+    "language": null,
+    "styleInstruction": "הקרא את הטקסט בעברית ישראלית טבעית וברורה, בקצב נינוח, עם הפסקות מתאימות בין משפטים ופסקאות. הקרא את הטקסט במלואו, בלי לסכם, להוסיף פתיח או להקריא את הוראות הסגנון.",
+    "chunkTargetChars": 1200,
+    "chunkMaxChars": 1800,
+    "interChunkSilenceMs": 350
+  },
+  "audio": {
+    "pcmSampleRate": 24000,
+    "pcmChannels": 1,
+    "pcmBytesPerSample": 2,
+    "mp3Bitrate": "128k",
+    "mp3SampleRate": 24000,
+    "mp3Channels": 1
+  },
+  "pricing": {
+    "note": "USD per 1M tokens, from https://ai.google.dev/gemini-api/docs/pricing (checked 2026-09-10).",
+    "gemini-3.1-flash-tts-preview": {
+      "inputTextPerMTok": 1.0,
+      "outputAudioPerMTok": 20.0
+    },
+    "gemini-2.5-pro-preview-tts": {
+      "inputTextPerMTok": 1.0,
+      "outputAudioPerMTok": 20.0
+    },
+    "gemini-2.5-flash-preview-tts": {
+      "inputTextPerMTok": 0.5,
+      "outputAudioPerMTok": 10.0
+    },
+    "gemini-2.5-flash": {
+      "inputTextPerMTok": 0.3,
+      "outputTextPerMTok": 2.5,
+      "inputAudioPerMTok": 1.0
+    },
+    "assumedAudioTokensPerSecond": 32,
+    "assumedHebrewCharsPerSecond": 14,
+    "assumedHebrewCharsPerToken": 2.5
+  },
+  "limits": {
+    "maxConcurrentPosts": 1,
+    "maxRetriesPerChunk": 3,
+    "retryBaseDelayMs": 4000,
+    "requestTimeoutMs": 180000,
+    "minDelayBetweenRequestsMs": 1200,
+    "spendLimitUsd": 8.0,
+    "spendWarnUsd": 5.0,
+    "killSwitchFile": "STOP",
+    "lockStaleMinutes": 30
+  },
+  "verify": {
+    "asrModel": "gemini-2.5-flash",
+    "minCoverage": 0.93,
+    "maxExtraRatio": 0.12,
+    "charsPerSecondRange": [
+      9,
+      22
+    ]
+  },
+  "storage": {
+    "backend": "github-pages",
+    "github": {
+      "repoDir": "/Users/noamdoron/Desktop/noamdoronmath-worksheets",
+      "subdir": "blog-audio",
+      "branch": "main",
+      "publicBase": "https://noamd-collab.github.io/noamdoronmath-worksheets"
+    },
+    "note": "Set backend to wix-media to store the files in the site Media Manager instead."
+  }
+}

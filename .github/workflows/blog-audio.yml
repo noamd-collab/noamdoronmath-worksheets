@@ -1,0 +1,86 @@
+name: blog-audio
+
+# Produces narration audio for blog posts that the Wix site has flagged as needing it.
+# Runs in GitHub's cloud, so it does not depend on any particular machine being on.
+#
+# Required repository secrets:
+#   GEMINI_API_KEY             the Google AI Studio key (Gemini API, not Vertex)
+#   NOAM_AUDIO_WORKER_TOKEN    same value as the Wix site secret of that name
+
+on:
+  schedule:
+    # Every six hours, at 07 minutes past, UTC.
+    - cron: '7 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'How many posts to render in this run'
+        required: false
+        default: '3'
+
+permissions:
+  contents: write
+
+# Never let two runs render the same post at once.
+concurrency:
+  group: blog-audio
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Check out the audio repository
+        uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+          ffmpeg -version | head -1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: blog-audio-pipeline
+        run: npm ci --no-audit --no-fund
+
+      # Carries the spend ledger from one run to the next. If the cache is ever
+      # lost the spend limit restarts from zero, so keep the per-run limit small.
+      - name: Restore the spend ledger
+        uses: actions/cache@v4
+        with:
+          path: blog-audio-pipeline/state
+          key: blog-audio-state-${{ github.run_id }}
+          restore-keys: blog-audio-state-
+
+      - name: Confirm access before spending anything
+        working-directory: blog-audio-pipeline
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NOAM_AUDIO_WORKER_TOKEN: ${{ secrets.NOAM_AUDIO_WORKER_TOKEN }}
+        run: node bin/verify-access.mjs
+
+      - name: Identify the committer
+        run: |
+          git config user.name 'blog-audio bot'
+          git config user.email 'noamd-collab@users.noreply.github.com'
+
+      - name: Render whatever the site has queued
+        working-directory: blog-audio-pipeline
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NOAM_AUDIO_WORKER_TOKEN: ${{ secrets.NOAM_AUDIO_WORKER_TOKEN }}
+          BLOG_AUDIO_REPO_DIR: ${{ github.workspace }}
+        run: node bin/generate.mjs --from-queue --source=wix --limit=${{ github.event.inputs.limit || '3' }}
+
+      - name: Report what happened
+        if: always()
+        working-directory: blog-audio-pipeline
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NOAM_AUDIO_WORKER_TOKEN: ${{ secrets.NOAM_AUDIO_WORKER_TOKEN }}
+        run: node bin/status.mjs

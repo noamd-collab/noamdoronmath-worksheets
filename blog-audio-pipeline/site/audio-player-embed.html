@@ -1,0 +1,82 @@
+<!--
+  Fallback player for an Embed HTML element on the blog post page.
+
+  An embed runs in a cross-origin iframe, so it cannot read the post slug from the
+  address bar. Give it the slug one of two ways:
+
+    1. In the embed URL:      ...audio-player-embed.html?slug=<post-slug>
+    2. From the page's Velo code:
+         $w('#html1').postMessage({ noamAudioSlug: <slug from wix-location> });
+
+  Prefer the custom element (site/noam-audio-player.js) - it runs in the page and
+  needs no wiring. This file exists for pages where a custom element is not an option.
+-->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#111}
+  .wrap{border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:14px 16px;background:rgba(0,0,0,.02)}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .label{font-weight:600}
+  .meta{font-size:13px;opacity:.7}
+  audio{width:100%;margin-top:10px}
+  a.dl{font-size:14px;text-decoration:none;border:1px solid rgba(0,0,0,.2);border-radius:999px;padding:6px 14px;color:inherit}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap hidden" id="wrap">
+  <div class="row">
+    <span class="label">גרסת שמע לפוסט</span>
+    <span class="meta" id="meta"></span>
+    <a class="dl hidden" id="dl" download>הורדת MP3</a>
+  </div>
+  <audio id="player" controls preload="none"></audio>
+</div>
+<script>
+(function () {
+  var API = 'https://www.noamdoronmath.co.il/_functions/blogAudioInfo';
+  var wrap = document.getElementById('wrap');
+  var meta = document.getElementById('meta');
+  var dl = document.getElementById('dl');
+  var player = document.getElementById('player');
+  var loaded = false;
+
+  function mmss(sec) {
+    sec = Math.round(Number(sec) || 0);
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function load(slug) {
+    if (loaded || !slug) return;
+    loaded = true;
+    fetch(API + '?slug=' + encodeURIComponent(slug), { credentials: 'omit' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (info) {
+        if (!info || !info.available || !info.src) return;
+        player.src = info.src;
+        dl.href = info.download || info.src;
+        dl.setAttribute('download', slug + '.mp3');
+        dl.classList.remove('hidden');
+        meta.textContent = 'משך ההקראה ' + mmss(info.durationSec);
+        wrap.classList.remove('hidden');
+      })
+      .catch(function () {});
+  }
+
+  var fromQuery = new URLSearchParams(location.search).get('slug');
+  if (fromQuery) load(fromQuery);
+
+  // Messages from the hosting page are data, not commands: only a slug string is read.
+  window.addEventListener('message', function (e) {
+    var d = e && e.data;
+    if (d && typeof d.noamAudioSlug === 'string') load(d.noamAudioSlug);
+  });
+})();
+</script>
+</body>
+</html>
