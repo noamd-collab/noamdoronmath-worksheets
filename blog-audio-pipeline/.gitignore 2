@@ -1,0 +1,11 @@
+# Never commit secrets, state, audio or intermediate PCM.
+.env
+.env.*
+node_modules/
+state/
+work/
+out/
+*.mp3
+*.pcm
+*.wav
+STOP

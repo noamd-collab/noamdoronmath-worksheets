@@ -143,6 +143,23 @@ async function audioRowForPost(match) {
   return res.items[0] || null;
 }
 
+// getPostBySlug does not answer for this site's Hebrew slugs, so a miss falls back
+// to scanning the published list. Eighteen posts, one call, and it is the same data.
+async function publishedPostBySlug(slug, fieldsets) {
+  try {
+    const res = await posts.getPostBySlug(slug, { fieldsets: fieldsets || ['URL'] });
+    if (res && res.post) return res.post;
+  } catch (e) {
+    // fall through to the scan
+  }
+  try {
+    const all = await listAllPublishedPosts(fieldsets || ['URL']);
+    return all.find((p) => p.slug === slug) || null;
+  } catch (e) {
+    return null;
+  }
+}
+
 /* ------------------------------------------------------------ public endpoints */
 
 // Player metadata. Answers only for a post that is published right now; a post that
@@ -152,13 +169,7 @@ export async function get_blogAudioInfo(request) {
     const slug = request.query && request.query.slug;
     if (!slug) return json({ error: 'slug is required' }, 400);
 
-    let post;
-    try {
-      const res = await posts.getPostBySlug(slug, { fieldsets: ['URL'] });
-      post = res && res.post;
-    } catch (e) {
-      post = null;
-    }
+    const post = await publishedPostBySlug(slug);
     if (!post) return json({ available: false, reason: 'post not published' }, 200);
 
     const row = await audioRowForPost({ field: 'postId', value: post._id })
@@ -193,13 +204,7 @@ export async function get_blogAudio(request) {
     const slug = request.query && request.query.slug;
     if (!slug) return badRequest({ headers: JSON_HEADERS, body: JSON.stringify({ error: 'slug is required' }) });
 
-    let post = null;
-    try {
-      const res = await posts.getPostBySlug(slug, { fieldsets: ['URL'] });
-      post = res && res.post;
-    } catch (e) {
-      post = null;
-    }
+    const post = await publishedPostBySlug(slug);
     if (!post) return notFound({ headers: JSON_HEADERS, body: JSON.stringify({ error: 'post not published' }) });
 
     const row = await audioRowForPost({ field: 'postId', value: post._id })
@@ -316,13 +321,7 @@ export async function post_blogAudioRegister(request) {
       if (b[required] === undefined || b[required] === null) return json({ error: `${required} is required` }, 400);
     }
 
-    let post = null;
-    try {
-      const res = await posts.getPostBySlug(b.slug, { fieldsets: ['URL', 'CONTENT_TEXT'] });
-      post = res && res.post;
-    } catch (e) {
-      post = null;
-    }
+    const post = await publishedPostBySlug(b.slug, ['URL', 'CONTENT_TEXT']);
     if (!post) return json({ error: 'refusing to register audio for a post that is not published' }, 409);
 
     const existing = await audioRowForPost({ field: 'postId', value: post._id })
