@@ -11,6 +11,10 @@
  */
 
 (function () {
+  // Readable from the page, so which build is running can be established from
+  // outside instead of inferred.
+  window.__noamAudioLoader = { build: 3, startedAt: new Date().toISOString(), state: 'loaded' };
+
   var PLAYER_SRC = 'https://noamd-collab.github.io/noamdoronmath-worksheets/blog-audio/noam-audio-player.js';
   var TAG = 'noam-audio-player';
   var MARK = 'data-noam-audio-mounted';
@@ -85,9 +89,17 @@
     }
 
     function attempt() {
-      if (!isPostPage() || Date.now() > deadline) { stop(); return; }
+      if (!isPostPage()) { window.__noamAudioLoader.state = 'left the post page'; stop(); return; }
+      if (Date.now() > deadline) { window.__noamAudioLoader.state = 'gave up waiting for the post to render'; stop(); return; }
       var anchor = findAnchor();
-      if (anchor && mount(anchor)) stop();
+      if (!anchor) { window.__noamAudioLoader.state = 'waiting for the post title'; return; }
+      try {
+        if (mount(anchor)) { window.__noamAudioLoader.state = 'mounted'; stop(); }
+        else window.__noamAudioLoader.state = 'anchor had no parent to mount beside';
+      } catch (e) {
+        window.__noamAudioLoader.state = 'mount threw: ' + (e && e.message);
+        stop();
+      }
     }
 
     // The observer catches the moment Wix renders the post; the interval is the
