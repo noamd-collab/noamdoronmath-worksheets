@@ -1663,8 +1663,8 @@ textarea:focus{
 
       <div class="pdf-tools hidden" id="pdfTools" role="group" aria-label="כלי PDF">
         <button class="pdf-tool" id="pdfZoomOut" type="button" aria-label="הקטנת הדף באחוז אחד">−</button>
-        <input class="pdf-zoom-slider" id="pdfZoomSlider" type="range" min="70" max="170" step="1" value="100" aria-label="גודל תצוגת הדף באחוזים" aria-valuetext="100%">
-        <output class="pdf-zoom-value" id="pdfZoomValue" for="pdfZoomSlider">100%</output>
+        <input class="pdf-zoom-slider" id="pdfZoomSlider" type="range" min="70" max="170" step="1" value="70" aria-label="גודל תצוגת הדף באחוזים" aria-valuetext="70%">
+        <output class="pdf-zoom-value" id="pdfZoomValue" for="pdfZoomSlider">70%</output>
         <button class="pdf-tool" id="pdfZoomIn" type="button" aria-label="הגדלת הדף באחוז אחד">+</button>
         <button class="pdf-tool" id="pdfFit" type="button">התאם לרוחב</button>
         <button class="pdf-tool primary" id="pdfNativeMode" type="button">תצוגת PDF מלאה</button>
@@ -2529,7 +2529,7 @@ var pdfResizeObserver =
   null;
 
 var pdfZoom =
-  1;
+  .7;
 
 var pdfRenderVersion =
   0;
