@@ -58,9 +58,9 @@
   "limits": {
     "maxConcurrentPosts": 1,
     "maxRetriesPerChunk": 3,
-    "retryBaseDelayMs": 4000,
+    "retryBaseDelayMs": 8000,
     "requestTimeoutMs": 180000,
-    "minDelayBetweenRequestsMs": 1200,
+    "minDelayBetweenRequestsMs": 2000,
     "spendLimitUsd": 8,
     "spendWarnUsd": 5,
     "killSwitchFile": "STOP",

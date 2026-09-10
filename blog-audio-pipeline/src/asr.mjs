@@ -4,7 +4,11 @@
 
 import { GoogleGenAI } from '@google/genai';
 import { getSecret } from './secret.mjs';
+import { ffmpegPath } from './mp3.mjs';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 let client = null;
 function ai() {
@@ -12,19 +16,30 @@ function ai() {
   return client;
 }
 
-export async function transcribeMp3(filePath, { model = 'gemini-2.5-flash' } = {}) {
+const PROMPT = 'תמלל את קובץ השמע במלואו לעברית, מילה במילה, בלי לסכם, בלי להוסיף הערות ובלי חתימות זמן. החזר טקסט בלבד.';
+
+// Whole-file transcription of a ten-minute reading either runs out of output budget
+// or comes back malformed, and both look exactly like narration that skipped a
+// section. Anything longer than this is transcribed in pieces instead.
+const SEGMENT_SECONDS = 240;
+
+async function transcribeOne(filePath, model) {
   const data = fs.readFileSync(filePath).toString('base64');
   const res = await ai().models.generateContent({
     model,
     contents: [{
       role: 'user',
       parts: [
-        { text: 'תמלל את קובץ השמע במלואו לעברית, מילה במילה, בלי לסכם, בלי להוסיף הערות ובלי חתימות זמן. החזר טקסט בלבד.' },
+        { text: PROMPT },
         { inlineData: { mimeType: 'audio/mp3', data } },
       ],
     }],
-    config: { temperature: 0 },
+    config: { temperature: 0, maxOutputTokens: 65536 },
   });
+  const finish = res.candidates && res.candidates[0] && res.candidates[0].finishReason;
+  if (finish && finish !== 'STOP') {
+    throw new Error(`transcription stopped early (${finish}); the verdict would describe the transcript, not the audio`);
+  }
   return {
     text: res.text || '',
     usage: {
@@ -32,6 +47,53 @@ export async function transcribeMp3(filePath, { model = 'gemini-2.5-flash' } = {
       outputTokens: Number(res.usageMetadata?.candidatesTokenCount || 0),
     },
   };
+}
+
+export async function transcribeMp3(filePath, { model = 'gemini-2.5-flash' } = {}) {
+  const parts = splitForTranscription(filePath);
+  if (parts.length === 1) return transcribeOne(filePath, model);
+
+  const texts = [];
+  const usage = { inputTokens: 0, outputTokens: 0 };
+  try {
+    for (const part of parts) {
+      const r = await transcribeOne(part, model);
+      texts.push(r.text.trim());
+      usage.inputTokens += r.usage.inputTokens;
+      usage.outputTokens += r.usage.outputTokens;
+    }
+  } finally {
+    for (const part of parts) { try { fs.unlinkSync(part); } catch (e) { /* best effort */ } }
+    try { fs.rmdirSync(path.dirname(parts[0])); } catch (e) { /* best effort */ }
+  }
+  return { text: texts.join('\n\n'), usage };
+}
+
+// Returns the file itself when it is short enough, otherwise a list of temporary
+// segments. Segmenting copies the stream, so it neither re-encodes nor drops audio.
+function splitForTranscription(filePath) {
+  const seconds = durationSeconds(filePath);
+  if (!seconds || seconds <= SEGMENT_SECONDS * 1.2) return [filePath];
+
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'noam-asr-'));
+  execFileSync(ffmpegPath() || 'ffmpeg', [
+    '-hide_banner', '-loglevel', 'error', '-i', filePath,
+    '-f', 'segment', '-segment_time', String(SEGMENT_SECONDS), '-c', 'copy',
+    path.join(dir, 'part-%03d.mp3'),
+  ]);
+  return fs.readdirSync(dir).sort().map((f) => path.join(dir, f));
+}
+
+function durationSeconds(filePath) {
+  try {
+    const probe = (ffmpegPath() || 'ffmpeg').replace(/ffmpeg$/, 'ffprobe');
+    const out = execFileSync(probe, [
+      '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', filePath,
+    ], { encoding: 'utf8' });
+    return Number(out.trim()) || 0;
+  } catch (e) {
+    return 0;
+  }
 }
 
 const strip = (s) => String(s || '')
