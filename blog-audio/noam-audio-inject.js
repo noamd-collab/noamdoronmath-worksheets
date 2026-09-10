@@ -14,7 +14,9 @@
   var PLAYER_SRC = 'https://noamd-collab.github.io/noamdoronmath-worksheets/blog-audio/noam-audio-player.js';
   var TAG = 'noam-audio-player';
   var MARK = 'data-noam-audio-mounted';
-  var GIVE_UP_MS = 20000;
+  // Wix renders the post body well after this script runs, and the tag manager
+  // that loads this script is itself late, so the window has to be generous.
+  var GIVE_UP_MS = 90000;
 
   function isPostPage() {
     return /\/post\//.test(window.location.pathname);
@@ -71,11 +73,28 @@
     loadPlayerScript();
 
     var deadline = Date.now() + GIVE_UP_MS;
-    var timer = setInterval(function () {
-      if (!isPostPage() || Date.now() > deadline) { clearInterval(timer); return; }
+    var observer = null;
+    var timer = null;
+
+    function stop() {
+      if (timer) clearInterval(timer);
+      if (observer) observer.disconnect();
+    }
+
+    function attempt() {
+      if (!isPostPage() || Date.now() > deadline) { stop(); return; }
       var anchor = findAnchor();
-      if (anchor && mount(anchor)) clearInterval(timer);
-    }, 400);
+      if (anchor && mount(anchor)) stop();
+    }
+
+    // The observer catches the moment Wix renders the post; the interval is the
+    // backstop for renders that do not touch the observed subtree.
+    if (window.MutationObserver) {
+      observer = new MutationObserver(attempt);
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+    }
+    timer = setInterval(attempt, 500);
+    attempt();
   }
 
   // Wix routes between posts without a full page load, so re-run on navigation.
