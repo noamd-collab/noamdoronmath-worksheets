@@ -93,7 +93,12 @@ Object.keys(DATA).forEach(function(gk){
       linkCount += 1;
       allHex.push({ hex:L.one, where:'כיתה ' + g + ' נושא ' + t.id + '/one' });
     } else {
-      ['a','b','c'].forEach(function(k){
+      var levelKeys = ['a','b','c'];
+      if (t.parent !== undefined){
+        var declaredChildLevels = levelKeys.filter(function(k){ return t[k + 'Label'] !== undefined; });
+        if (declaredChildLevels.length) levelKeys = declaredChildLevels;
+      }
+      levelKeys.forEach(function(k){
         if (L[k] === undefined) warnings.push('כיתה ' + g + ' נושא ' + t.id + ' ("' + t.t + '"): חסר קישור רמה "' + k + '"');
         else { linkCount += 1; allHex.push({ hex:L[k], where:'כיתה ' + g + ' נושא ' + t.id + '/' + k }); }
       });
