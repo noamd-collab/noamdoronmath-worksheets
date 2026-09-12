@@ -4004,9 +4004,9 @@ function renderNoamChat(){
   hintButton.disabled = busy || thread.hintIndex>=3;
   document.getElementById("noamMistake").hidden = thread.hintIndex<3;
 
-  document.getElementById("noamOverview").addEventListener("click",function(){ askNoam("overview","תן לי הסבר כללי קצר על הרעיון הדרוש כאן."); });
-  hintButton.addEventListener("click",function(){ askNoam("hint","תן לי רמז."); });
-  document.getElementById("noamMistake").addEventListener("click",function(){ askNoam("common_mistake","מה הטעות הנפוצה שכדאי להיזהר ממנה כאן?"); });
+  document.getElementById("noamOverview").addEventListener("click",function(){ askNoam("overview","תן לי הסבר כללי קצר על הרעיון הדרוש כאן, בלי לפתור ובלי לגלות את התשובה."); });
+  hintButton.addEventListener("click",function(){ askNoam("hint","תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי."); });
+  document.getElementById("noamMistake").addEventListener("click",function(){ askNoam("common_mistake","מה הטעות הנפוצה שכדאי להיזהר ממנה כאן? בלי לפתור ובלי לגלות את התשובה."); });
   document.getElementById("noamNewThread").addEventListener("click",function(){
     threads[selectedExercise.id]={hintIndex:0,history:[],messages:[]};
     saveNoamState();renderNoamChat();
