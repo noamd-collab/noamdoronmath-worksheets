@@ -47,5 +47,5 @@ test("every linked middle-school PDF has a usable matching Noam AI manifest", ()
       }
     }
   }
-  assert.equal(count, 449, "Middle-school coverage changed");
+  assert.equal(count, 452, "Middle-school coverage changed");
 });

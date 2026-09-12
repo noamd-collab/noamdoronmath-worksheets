@@ -4,7 +4,7 @@
   "policy": "Protect existing grade-topic-level-PDF mappings and AI routing from silent removal or replacement. Additions are allowed. Update this fixture only after an explicitly authorized mapping change, never as an automatic catalog build step.",
   "expectedLinkCounts": {
     "7": 148,
-    "8": 174,
+    "8": 177,
     "9": 127
   },
   "grades": {
@@ -1129,6 +1129,16 @@
           "a": "5df573c813e2416aa040c716b7843d7b",
           "b": "ad99e05436844f7e95964434bfc07285",
           "c": "0f56fd61bb9142fab50c82ed99005704"
+        }
+      },
+      {
+        "id": 65,
+        "title": "הוכחות בחפיפת משולשים",
+        "prefix": "G8-T65",
+        "links": {
+          "a": "fc62c3516b5c4f4c8e3f433792c84c40",
+          "b": "993467c2757a4950abd2a0237f18a48c",
+          "c": "1626318ee2c94f6a9b53ffcaf289ec83"
         }
       }
     ],
