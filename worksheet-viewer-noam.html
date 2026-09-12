@@ -1820,9 +1820,12 @@ var ASYNC_JOB_MAX_WAIT = 8 * 60 * 1000;
 var MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 var TARGET_IMAGE_BYTES = 250 * 1024;
 var MAX_IMAGE_DIMENSION = 1800;
+/* The backend hard-truncates studentMessage at 700 characters, and this
+   instruction rides at its end, so the total must stay at or under 700. */
 var SOLVER_MESSAGE_MAX = 700;
 var MATH_OUTPUT_INSTRUCTION =
-  "\n\nהנחיית תצוגה: כתוב כל ביטוי מתמטי ב-LaTeX תקין. עטוף ביטוי בתוך \\( ... \\) ונוסחה נפרדת בתוך \\[ ... \\].";
+  "\n\nהנחיית תצוגה: כתוב כל ביטוי מתמטי ב-LaTeX תקין. עטוף ביטוי בתוך \\( ... \\) ונוסחה נפרדת בתוך \\[ ... \\]." +
+  " שמות משפטים בעברית בסימון הישראלי: צ.ז.צ, ז.צ.ז, צ.צ.צ. בלי ראשי תיבות באנגלית ובלי LaTeX סביב שם משפט.";
 
 var GRADE_NAME = {
   7:"כיתה ז׳",
