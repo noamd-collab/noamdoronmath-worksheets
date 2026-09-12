@@ -4064,7 +4064,131 @@ function syntheticAnalysis(exercise){
   };
 }
 
+/* QUESTION IMAGE FOR NOAM AI — rendered from the PDF itself, not from the on-screen
+   canvas. The display canvas is capped at devicePixelRatio 1.25 on desktop, which put
+   about 115 dots per inch in front of the image model and made small labels such as the
+   vertices of a triangle unreadable. Here the page is rendered again, off-screen, at a
+   scale chosen so the cropped band itself reaches CROP_TARGET_WIDTH pixels. */
+
+var CROP_TARGET_WIDTH_DESKTOP = 2200;
+var CROP_TARGET_WIDTH_MOBILE = 1800;
+var CROP_MIN_RENDER_SCALE = 1.5;
+var CROP_MAX_RENDER_SCALE = 8;
+var CROP_MAX_PAGE_PIXELS = 36000000;
+var CROP_PAGE_CACHE_LIMIT = 2;
+var cropPageCache = [];
+
+function cropTargetWidth(){
+  return (mobileLayout && mobileLayout.matches)
+    ? CROP_TARGET_WIDTH_MOBILE
+    : CROP_TARGET_WIDTH_DESKTOP;
+}
+
+function cropRenderScale(baseViewport, crop){
+  var band = Math.max(.05, Math.min(1, Number(crop && crop.w) || 1));
+  var scale = cropTargetWidth() / (baseViewport.width * band);
+  scale = Math.min(CROP_MAX_RENDER_SCALE, Math.max(CROP_MIN_RENDER_SCALE, scale));
+  while (
+    scale > CROP_MIN_RENDER_SCALE &&
+    baseViewport.width * scale * baseViewport.height * scale > CROP_MAX_PAGE_PIXELS
+  ){
+    scale *= .8;
+  }
+  return Math.round(scale * 100) / 100;
+}
+
+function cachedCropPage(pageNumber, scale){
+  for (var i = 0; i < cropPageCache.length; i++){
+    if (cropPageCache[i].page === pageNumber && cropPageCache[i].scale === scale){
+      return cropPageCache[i].canvas;
+    }
+  }
+  return null;
+}
+
+function renderCropPageCanvas(pageNumber, scale){
+  var cached = cachedCropPage(pageNumber, scale);
+  if (cached){ return Promise.resolve(cached); }
+  return pdfDocument.getPage(pageNumber).then(function(page){
+    var viewport = page.getViewport({scale:scale});
+    var canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.floor(viewport.width));
+    canvas.height = Math.max(1, Math.floor(viewport.height));
+    var context = canvas.getContext("2d",{alpha:false});
+    context.fillStyle = "#fff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    return page.render({canvasContext:context, viewport:viewport}).promise.then(function(){
+      cropPageCache.push({page:pageNumber, scale:scale, canvas:canvas});
+      /* one full-resolution page is about 25 megabytes of canvas, so phones keep one */
+      var keep = (mobileLayout && mobileLayout.matches) ? 1 : CROP_PAGE_CACHE_LIMIT;
+      while (cropPageCache.length > keep){ cropPageCache.shift(); }
+      return canvas;
+    });
+  });
+}
+
+function cropExerciseSegment(crop){
+  var pageNumber = Number(crop && crop.page || 0);
+  if (!(pageNumber >= 1)){ return Promise.reject(new Error("עמוד השאלה אינו זמין.")); }
+  return pdfDocument.getPage(pageNumber).then(function(page){
+    var scale = cropRenderScale(page.getViewport({scale:1}), crop);
+    return renderCropPageCanvas(pageNumber, scale);
+  }).then(function(canvas){
+    var sx = Math.max(0, Math.floor((Number(crop.x) || 0) * canvas.width));
+    var sy = Math.max(0, Math.floor((Number(crop.y) || 0) * canvas.height));
+    var sw = Math.min(canvas.width - sx, Math.floor((Number(crop.w) || 1) * canvas.width));
+    var sh = Math.min(canvas.height - sy, Math.floor((Number(crop.h) || 1) * canvas.height));
+    if (sw < 1 || sh < 1){ throw new Error("לא הצלחנו לחתוך את תמונת השאלה."); }
+    return {source:canvas, sx:sx, sy:sy, sw:sw, sh:sh};
+  });
+}
+
+function stitchCropSegments(segments){
+  var width = Math.min(cropTargetWidth(), Math.max.apply(null, segments.map(function(s){return s.sw;})));
+  var gap = segments.length > 1 ? 16 : 0;
+  var height = segments.reduce(function(total,s){return total + s.sh * width / s.sw;}, 0) + gap * (segments.length - 1);
+  var scale = Math.min(1, (segments.length > 1 ? 5200 : 3600) / height);
+  var target = document.createElement("canvas");
+  target.width = Math.max(20, Math.round(width * scale));
+  target.height = Math.max(20, Math.round(height * scale));
+  var ctx = target.getContext("2d",{alpha:false});
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, target.width, target.height);
+  var top = 0;
+  segments.forEach(function(s){
+    var drawHeight = s.sh * width / s.sw * scale;
+    ctx.drawImage(s.source, s.sx, s.sy, s.sw, s.sh, 0, top, target.width, drawHeight);
+    top += drawHeight + gap * scale;
+  });
+  return target;
+}
+
+function cropExerciseCanvasFromPdf(exercise){
+  var crops = Array.isArray(exercise.crops) && exercise.crops.length ? exercise.crops : [exercise.crop||{}];
+  if (crops.length > 12){ return Promise.reject(new Error("יותר מדי עמודים לשאלה אחת.")); }
+  return crops.reduce(function(chain, crop){
+    return chain.then(function(segments){
+      return cropExerciseSegment(crop).then(function(segment){
+        segments.push(segment);
+        return segments;
+      });
+    });
+  }, Promise.resolve([])).then(stitchCropSegments);
+}
+
 function cropExerciseCanvas(exercise){
+  if (typeof pdfDocument !== "undefined" && pdfDocument && typeof cropExerciseCanvasFromPdf === "function"){
+    return cropExerciseCanvasFromPdf(exercise).catch(function(error){
+      console.warn("NOAM CROP HIGH RES FALLBACK:", error);
+      return cropExerciseCanvasFromView(exercise);
+    });
+  }
+  return cropExerciseCanvasFromView(exercise);
+}
+
+function cropExerciseCanvasFromView(exercise){
   return new Promise(function(resolve,reject){
     var crops=Array.isArray(exercise.crops)&&exercise.crops.length?exercise.crops:[exercise.crop||{}];
     var version=pdfRenderVersion;
@@ -4120,12 +4244,40 @@ function cropExerciseCanvas(exercise){
   });
 }
 
+function encodeCropCanvas(canvas){
+  var qualities=[.84,.72,.58,.46];
+  for (var i=0;i<qualities.length;i++){
+    var dataUrl=canvas.toDataURL("image/jpeg",qualities[i]);
+    if (dataUrl.length<=390000){return dataUrl;}
+  }
+  return "";
+}
+
+function shrinkCropCanvas(canvas,factor){
+  var smaller=document.createElement("canvas");
+  smaller.width=Math.max(20,Math.round(canvas.width*factor));
+  smaller.height=Math.max(20,Math.round(canvas.height*factor));
+  var ctx=smaller.getContext("2d",{alpha:false});
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality="high";
+  ctx.fillStyle="#fff";
+  ctx.fillRect(0,0,smaller.width,smaller.height);
+  ctx.drawImage(canvas,0,0,canvas.width,canvas.height,0,0,smaller.width,smaller.height);
+  return smaller;
+}
+
+/* The image is built at the highest resolution the question needs and is only reduced
+   when it does not fit the backend limit of 390,000 characters. Resolution is given up
+   before quality, because small printed labels survive compression better than scaling. */
 function cropExerciseImage(exercise){
   return cropExerciseCanvas(exercise).then(function(canvas){
-    var qualities=[.84,.72,.58,.46];
-    for (var i=0;i<qualities.length;i++){
-      var dataUrl=canvas.toDataURL("image/jpeg",qualities[i]);
-      if (dataUrl.length<=390000){return dataUrl;}
+    var dataUrl=encodeCropCanvas(canvas);
+    if (dataUrl){return dataUrl;}
+    var factors=[.8,.64,.5];
+    for (var i=0;i<factors.length;i++){
+      if (!(canvas.width>0&&canvas.height>0)){break;}
+      dataUrl=encodeCropCanvas(shrinkCropCanvas(canvas,factors[i]));
+      if (dataUrl){return dataUrl;}
     }
     throw new Error("תמונת השאלה גדולה מדי לשליחה. נסו שוב בתצוגה קטנה יותר.");
   });
@@ -4161,7 +4313,12 @@ function renderExercisePreview(exercise,attempt){
   }
   cropExerciseCanvas(exercise)
     .then(function(canvas){
-      var dataUrl=canvas.toDataURL("image/png");
+      /* the panel preview only has to be readable on screen; the full-resolution
+         image is kept for the model, not for this thumbnail */
+      var preview=(canvas.width>1200&&typeof shrinkCropCanvas==="function")
+        ? shrinkCropCanvas(canvas,1200/canvas.width)
+        : canvas;
+      var dataUrl=preview.toDataURL("image/png");
       cacheExercisePreview(exercise.id,dataUrl);
       showExercisePreview(exercise,dataUrl);
     })
