@@ -2064,9 +2064,9 @@ var DATA = {
       40:{ a:"76be5b17412c473199ff77d617ebf751",
           b:"923bc1787a37463e89a2de303fc0a998",
           c:"f2843487095d49b49e3ad58813c59ad0" },
-      41:{ a:"7b7e8140483b4b45bb06aaaf8acbc698",
-          b:"00c6c6920a8f4603986b17ed0934babf",
-          c:"b541fbaee25c40c2848775a8deb56c03" },
+      41:{ a:"9abda6035afd5a017011b08a5b7da28b",
+          b:"4ed1b334808faaf5fe56fc1804d9dc6a",
+          c:"c6c6d3120b6da57c86a9e7fffaf47dd1" },
       42:{ a:"1e4a7ccf837b4e72adee0acdabe70acc",
           b:"a9bee41d5e3744dcb5b58d48d8247b97",
           c:"ab081025fd8e4bce8a92a135fb866d00" },
@@ -2629,6 +2629,7 @@ var PDF_BADGE =
 
 function url(v){
   if(!v) return "";
+  if (/^(9abda6035afd5a017011b08a5b7da28b|4ed1b334808faaf5fe56fc1804d9dc6a|c6c6d3120b6da57c86a9e7fffaf47dd1)$/.test(v)) return "./worksheets/grade8/topic41/" + v + ".pdf";
   return /^https?:\/\//.test(v) ? v : BASE + v + ".pdf";
 }
 
@@ -3269,7 +3270,7 @@ document.querySelectorAll("img").forEach(function(im){
 <script src="noam-discovery.js?v=20260908-1" defer></script>
 <script src="noam-accessibility.js?v=20260907-1" defer></script>
 
-<script src="noam-learning-catalog.js?v=20260910-four-pdf-fixes" defer></script>
+<script src="noam-learning-catalog.js?v=20260912-topic41" defer></script>
 <script src="noam-learning-config.js?v=20260908-1" defer></script>
 
 <script src="noam-learning-core.js?v=20260908-1" defer></script>
