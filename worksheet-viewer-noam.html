@@ -1419,6 +1419,42 @@ textarea:focus{
 .noam-compose textarea:focus{outline:none;box-shadow:-3px 3px 0 var(--accent)}
 .noam-compose textarea:focus-visible{outline:3px solid var(--accent-dark);outline-offset:3px}
 .noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}
+    .noam-attach{margin:6px 0 8px}
+    .noam-attach-button{
+      padding:5px 10px;
+      color:var(--ink);
+      background:var(--tint);
+      border:1px solid var(--ink);
+      border-radius:8px;
+      font:inherit;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .noam-attach-button[disabled]{opacity:.55;cursor:default}
+    .noam-attach-note{margin:4px 2px 0;color:var(--muted);font-size:11.5px}
+    .noam-attach-note.is-error{color:#a3121f;font-weight:700}
+    .noam-attach-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+    .noam-attach-item{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      max-width:100%;
+      padding:3px 6px 3px 3px;
+      background:#fff;
+      border:1px solid rgba(20,33,61,.22);
+      border-radius:9px;
+    }
+    .noam-attach-item img{width:34px;height:34px;object-fit:cover;border-radius:6px;display:block}
+    .noam-attach-name{max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px}
+    .noam-attach-remove{
+      padding:0 4px;
+      color:var(--muted);
+      background:transparent;
+      border:0;
+      font-size:15px;
+      line-height:1;
+      cursor:pointer;
+    }
 .noam-send{
   width:100%;
   margin-top:7px;
@@ -3909,10 +3945,29 @@ function renderNoamChat(){
         '<button type="button" class="noam-math-key" data-math="divide" dir="ltr" title="חילוק" aria-label="חילוק">÷</button>' +
         '<button type="button" class="noam-math-key" data-math="parentheses" dir="ltr" title="סוגריים" aria-label="סוגריים">( )</button>' +
       '</div>' +
+      '<div class="noam-attach">' +
+        '<button type="button" class="noam-attach-button" id="noamAttachButton">צירוף צילום או קובץ</button>' +
+        '<input type="file" id="noamAttachInput" accept="image/*,application/pdf" multiple hidden>' +
+        '<div class="noam-attach-list" id="noamAttachList"></div>' +
+        '<div class="noam-attach-note" id="noamAttachNote" role="status" aria-live="polite">' + attachmentHint() + '</div>' +
+      '</div>' +
       '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp">'+esc(noamDrafts[selectedExercise.id]||"")+'</textarea>' +
       '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
       '<button type="button" class="noam-send" id="noamSend">שלח לנועם AI</button>' +
     '</div>';
+
+  var attachButton=document.getElementById("noamAttachButton");
+  var attachInput=document.getElementById("noamAttachInput");
+  if (attachButton&&attachInput){
+    attachButton.addEventListener("click",function(){attachInput.click();});
+    attachInput.addEventListener("change",function(){
+      // FileList is live: copy it before clearing the input, or it empties.
+      var files=Array.prototype.slice.call(this.files);
+      this.value="";
+      addNoamAttachments(files);
+    });
+  }
+  renderNoamAttachments();
 
   document.getElementById("noamPreviewToggle").addEventListener("click",function(){
     var expanded = !panelBody.classList.contains("is-previewing");
@@ -4062,6 +4117,211 @@ function syntheticAnalysis(exercise){
     complexity:exercise.needsVision ? "medium" : "easy",
     complexity_reasons:["static worksheet manifest"]
   };
+}
+
+/* STUDENT ATTACHMENTS — a photo or file of the student's own work, sent together
+   with the question image so the analyzer can separate printed content from
+   handwriting. Up to ATTACH_MAX_FILES files, each up to ATTACH_MAX_BYTES. The
+   files never leave the browser except inside that one combined image. */
+
+var ATTACH_MAX_FILES = 3;
+var ATTACH_MAX_BYTES = 4 * 1024 * 1024;
+var ATTACH_MAX_WIDTH = 1600;
+var ATTACH_MAX_PDF_PAGES = 2;
+var noamAttachments = {};
+
+function attachmentsFor(exerciseId){
+  if (!exerciseId){ return []; }
+  if (!noamAttachments[exerciseId]){ noamAttachments[exerciseId] = []; }
+  return noamAttachments[exerciseId];
+}
+
+function currentAttachments(){
+  return (typeof selectedExercise !== "undefined" && selectedExercise)
+    ? attachmentsFor(selectedExercise.id)
+    : [];
+}
+
+function attachmentHint(){
+  return "אפשר לצרף עד " + ATTACH_MAX_FILES + " קבצים, כל אחד עד 4 מגה בייט. תמונה או PDF.";
+}
+
+function setAttachmentNote(text, isError){
+  var note = document.getElementById("noamAttachNote");
+  if (!note){ return; }
+  note.textContent = text || attachmentHint();
+  note.classList.toggle("is-error", !!isError);
+}
+
+function scaleCanvasTo(source, maxWidth){
+  if (!(source.width > maxWidth)){ return source; }
+  return shrinkCropCanvas(source, maxWidth / source.width);
+}
+
+function canvasFromImageFile(file){
+  return new Promise(function(resolve, reject){
+    var url = URL.createObjectURL(file);
+    var image = new Image();
+    image.onload = function(){
+      URL.revokeObjectURL(url);
+      var canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, image.naturalWidth || image.width);
+      canvas.height = Math.max(1, image.naturalHeight || image.height);
+      var ctx = canvas.getContext("2d",{alpha:false});
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, 0, 0);
+      resolve(scaleCanvasTo(canvas, ATTACH_MAX_WIDTH));
+    };
+    image.onerror = function(){
+      URL.revokeObjectURL(url);
+      reject(new Error("לא הצלחנו לקרוא את התמונה. נסו קובץ JPG או PNG."));
+    };
+    image.src = url;
+  });
+}
+
+function canvasFromPdfFile(file){
+  if (typeof pdfjsLib === "undefined" || !pdfjsLib){
+    return Promise.reject(new Error("קובצי PDF אינם נתמכים כרגע. אפשר לצרף צילום."));
+  }
+  return file.arrayBuffer().then(function(buffer){
+    return pdfjsLib.getDocument({data:new Uint8Array(buffer)}).promise;
+  }).then(function(doc){
+    var count = Math.min(doc.numPages, ATTACH_MAX_PDF_PAGES);
+    var pages = [];
+    var chain = Promise.resolve();
+    for (var number = 1; number <= count; number += 1){
+      (function(pageNumber){
+        chain = chain.then(function(){
+          return doc.getPage(pageNumber).then(function(page){
+            var base = page.getViewport({scale:1});
+            var viewport = page.getViewport({scale:Math.min(3, ATTACH_MAX_WIDTH / base.width)});
+            var canvas = document.createElement("canvas");
+            canvas.width = Math.max(1, Math.floor(viewport.width));
+            canvas.height = Math.max(1, Math.floor(viewport.height));
+            var ctx = canvas.getContext("2d",{alpha:false});
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            return page.render({canvasContext:ctx, viewport:viewport}).promise.then(function(){
+              pages.push(canvas);
+            });
+          });
+        });
+      })(number);
+    }
+    return chain.then(function(){
+      if (!pages.length){ throw new Error("לא הצלחנו לקרוא את ה-PDF."); }
+      return pages.length === 1 ? pages[0] : stackCanvases(pages, 14);
+    });
+  });
+}
+
+function stackCanvases(list, gap){
+  var width = Math.max.apply(null, list.map(function(c){return c.width;}));
+  var height = list.reduce(function(total,c){return total + c.height * width / c.width;}, 0) + gap * (list.length - 1);
+  var target = document.createElement("canvas");
+  target.width = Math.max(20, Math.round(width));
+  target.height = Math.max(20, Math.round(height));
+  var ctx = target.getContext("2d",{alpha:false});
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, target.width, target.height);
+  var top = 0;
+  list.forEach(function(canvas){
+    var drawHeight = canvas.height * target.width / canvas.width;
+    ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, top, target.width, drawHeight);
+    top += drawHeight + gap;
+  });
+  return target;
+}
+
+function addNoamAttachments(fileList){
+  var files = Array.prototype.slice.call(fileList || []);
+  if (!files.length){ return Promise.resolve(); }
+  var list = currentAttachments();
+  var room = ATTACH_MAX_FILES - list.length;
+  if (room <= 0){
+    setAttachmentNote("כבר צורפו " + ATTACH_MAX_FILES + " קבצים. אפשר להסיר אחד ולצרף אחר.", true);
+    return Promise.resolve();
+  }
+  var skipped = files.length - room;
+  files = files.slice(0, room);
+  setAttachmentNote("מכין את הקבצים…", false);
+  var errors = [];
+  return files.reduce(function(chain, file){
+    return chain.then(function(){
+      if (file.size > ATTACH_MAX_BYTES){
+        errors.push(file.name + " גדול מ-4 מגה בייט");
+        return;
+      }
+      var isPdf = file.type === "application/pdf" || /\.pdf$/i.test(file.name);
+      var reader = isPdf ? canvasFromPdfFile(file) : canvasFromImageFile(file);
+      return reader.then(function(canvas){
+        list.push({name:file.name, canvas:canvas, thumb:shrinkCropCanvas(canvas, Math.min(1, 120 / canvas.width)).toDataURL("image/jpeg",.7)});
+      }).catch(function(error){
+        errors.push(file.name + ": " + (error && error.message ? error.message : "לא נקרא"));
+      });
+    });
+  }, Promise.resolve()).then(function(){
+    renderNoamAttachments();
+    if (skipped > 0){ errors.push("אפשר לצרף עד " + ATTACH_MAX_FILES + " קבצים בבת אחת"); }
+    setAttachmentNote(errors.length ? errors.join(" · ") : "", errors.length > 0);
+  });
+}
+
+function removeNoamAttachment(index){
+  var list = currentAttachments();
+  list.splice(index, 1);
+  renderNoamAttachments();
+  setAttachmentNote("", false);
+}
+
+function clearNoamAttachments(exerciseId){
+  if (exerciseId){ noamAttachments[exerciseId] = []; }
+  renderNoamAttachments();
+}
+
+function renderNoamAttachments(){
+  var holder = document.getElementById("noamAttachList");
+  if (!holder){ return; }
+  var list = currentAttachments();
+  holder.replaceChildren();
+  list.forEach(function(item, index){
+    var chip = document.createElement("div");
+    chip.className = "noam-attach-item";
+    var image = document.createElement("img");
+    image.src = item.thumb;
+    image.alt = "";
+    var name = document.createElement("span");
+    name.className = "noam-attach-name";
+    name.textContent = item.name;
+    var remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "noam-attach-remove";
+    remove.textContent = "×";
+    remove.setAttribute("aria-label", "הסרת " + item.name);
+    remove.addEventListener("click", function(){ removeNoamAttachment(index); });
+    chip.append(image, name, remove);
+    holder.append(chip);
+  });
+  var button = document.getElementById("noamAttachButton");
+  if (button){ button.disabled = list.length >= ATTACH_MAX_FILES; }
+}
+
+function exerciseImageWithAttachments(exercise, list){
+  return cropExerciseCanvas(exercise).then(function(canvas){
+    var stacked = stackCanvases([canvas].concat(list.map(function(item){return item.canvas;})), 24);
+    var dataUrl = encodeCropCanvas(stacked);
+    if (dataUrl){ return dataUrl; }
+    var factors = [.8,.64,.5,.4];
+    for (var i = 0; i < factors.length; i++){
+      dataUrl = encodeCropCanvas(shrinkCropCanvas(stacked, factors[i]));
+      if (dataUrl){ return dataUrl; }
+    }
+    throw new Error("הקבצים שצורפו גדולים מדי לשליחה. נסו לצרף פחות קבצים.");
+  });
 }
 
 /* QUESTION IMAGE FOR NOAM AI — rendered from the PDF itself, not from the on-screen
@@ -4330,6 +4590,24 @@ function renderExercisePreview(exercise,attempt){
 }
 
 function getExerciseAnalysis(exercise){
+  // A student's own photo makes the image unique to this request: it is never
+  // served from the cache and is never written into it.
+  var attachments=(typeof currentAttachments==="function")?currentAttachments():[];
+  if (attachments.length){
+    return exerciseImageWithAttachments(exercise,attachments)
+      .then(function(imageDataUrl){
+        return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"attach-"+Date.now().toString(36)});
+      })
+      .then(function(result){
+        if (!result||!result.ok||!result.analysis){ throw new Error("לא הצלחנו לקרוא את הקבצים שצורפו. נסו שוב."); }
+        var analysis=result.analysis;
+        if (analysis.readable!==true){ throw new Error("לא הצלחנו לקרוא את הקבצים שצורפו בבירור. נסו צילום ברור יותר."); }
+        var semantic=exercise.prompt||"";
+        analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
+        analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
+        return analysis;
+      });
+  }
   if (analysisCache[exercise.id]){ return Promise.resolve(analysisCache[exercise.id]); }
   var fallback=syntheticAnalysis(exercise);
   if (!exercise.needsVision&&!exercise.requiresVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
@@ -4389,6 +4667,8 @@ function askNoam(helpKind,studentMessage){
   restoreNoamChatFocus(requestFocusId);
   announceNoam("נועם AI מכין תשובה עבור " + exerciseLabel(exercise) + ".");
 
+  var attachments=(typeof currentAttachments==="function")?currentAttachments().slice():[];
+
   getExerciseAnalysis(exercise)
     .then(function(analysis){
       var solverMessage=String(studentMessage||"");
@@ -4420,6 +4700,7 @@ function askNoam(helpKind,studentMessage){
       thread.history=thread.history.slice(-8);
       thread.messages=thread.messages.slice(-60);
       if (helpKind==="hint"){thread.hintIndex=Math.min(3,thread.hintIndex+1);}
+      if (attachments.length&&typeof clearNoamAttachments==="function"){clearNoamAttachments(exercise.id);}
       saveNoamState();setNoamBusy(false);renderNoamChat();
       announceNoam(exerciseLabel(exercise) + ". נועם AI: " + answer);
     })
