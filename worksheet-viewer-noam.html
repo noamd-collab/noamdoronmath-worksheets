@@ -329,11 +329,13 @@ body{
 .pdf-page{
   position:relative;
   flex:none;
-  width:min(900px, calc(100vw - 80px));
+  width:min(900px, calc(100vw - 124px));
   max-width:none;
   min-height:320px;
   aspect-ratio:210 / 297;
-  overflow:hidden;
+  /* Physical right gutter belongs to the AI/report pair, including at zoom >100%. */
+  margin-right:44px;
+  overflow:visible;
   background:#fff;
   box-shadow:0 2px 12px rgba(20,33,61,.18);
 }
@@ -1621,7 +1623,7 @@ textarea:focus{
   .pdf-surface.has-pdf-tools .pdf-status,.pdf-surface.has-pdf-tools .pdf-fallback-message{inset-inline-start:0}
   .pdf-scroll{padding:6px 6px 76px;scrollbar-gutter:auto;-webkit-overflow-scrolling:touch;overflow-anchor:none}
   .pdf-pages{gap:10px}
-  .pdf-page{width:calc(100vw - 76px);min-height:0;margin-inline-start:52px;overflow:visible}
+  .pdf-page{width:calc(100vw - 128px);min-height:0;margin-right:104px;overflow:visible}
   .pdf-page .noam-question-pin{width:44px;height:44px;font-size:20px;box-shadow:0 1px 4px #14213d30}
   .pdf-tools{grid-area:2/1;position:static;display:grid;grid-template-columns:44px minmax(0,1fr) 48px 44px;gap:4px;padding:5px 8px;margin:0;width:100%;max-height:none;border:0;border-top:1px solid #b7bec9;border-radius:0;box-shadow:none;direction:ltr}
   .pdf-tools.hidden{display:none}
@@ -3141,7 +3143,8 @@ function observePdfPages(){
 }
 
 function getPdfPageWidth(){
-  return Math.max(120,pdfScroll.clientWidth - (mobileLayout.matches ? 64 : 34)) * pdfZoom;
+  // Reserve the fixed button gutter before scaling the document; gutter itself never scales.
+  return Math.max(120,pdfScroll.clientWidth - (mobileLayout.matches ? 116 : 78)) * pdfZoom;
 }
 
 // Keep the same point on the current page when rotation or zoom changes page sizes.
@@ -3572,6 +3575,7 @@ var panelBack = document.getElementById("panelBack");
 var fab = document.getElementById("fab");
 var closePanelButton = document.getElementById("closePanel");
 var panelReturnFocus = null;
+var feedbackReturnExerciseId = null;
 var feedbackDialog = document.getElementById("noamFeedbackDialog");
 var feedbackContext = document.getElementById("noamFeedbackContext");
 var feedbackChoices = document.getElementById("noamFeedbackChoices");
@@ -3728,6 +3732,8 @@ function showFeedbackPicker(exercises){
   var choices = (exercises || []).filter(function(item){ return item && item.id; });
   if (choices.length === 1){ openFeedbackForm(choices[0]); return; }
   if (!feedbackDialog || !feedbackContext || !feedbackChoices){ return; }
+  feedbackReturnExerciseId = document.activeElement && document.activeElement.dataset
+    ? document.activeElement.dataset.exerciseId : null;
   feedbackContext.textContent = "בחרו את השאלה או הסעיף שעליו תרצו לדווח.";
   feedbackChoices.innerHTML = "";
   choices.forEach(function(exercise){
@@ -3745,6 +3751,15 @@ function showFeedbackPicker(exercises){
   }
 }
 
+feedbackDialog.addEventListener("close", function(){
+  if (!feedbackReturnExerciseId){ return; }
+  // Lazy PDF rendering can replace the original opener while this dialog is open.
+  var target = Array.from(pdfPages.querySelectorAll(".noam-report-pin")).find(function(pin){
+    return (pin.dataset.exerciseIds || "").split(" ").indexOf(feedbackReturnExerciseId) !== -1;
+  });
+  feedbackReturnExerciseId = null;
+  if (target){ target.focus({preventScroll:true}); }
+});
 feedbackClose.addEventListener("click", function(){ feedbackDialog.close(); });
 feedbackDialog.addEventListener("click", function(event){
   if (event.target === feedbackDialog){ feedbackDialog.close(); }
@@ -3906,7 +3921,8 @@ function renderManifestPins(){
   if (!manifestReady || !pdfPages){ return; }
 
   var focused = document.activeElement;
-  var focusedPinId = focused && focused.classList && focused.classList.contains("noam-exercise-pin")
+  var focusedReport = focused && focused.classList && focused.classList.contains("noam-report-pin");
+  var focusedPinId = focused && focused.classList && (focusedReport || focused.classList.contains("noam-exercise-pin"))
     ? focused.dataset.exerciseId : null;
   var narrow = noamNarrowPinsMedia.matches;
   var activeQuestionKeys = selectedPin ? (selectedPin.dataset.questionKeys || selectedPin.dataset.questionKey || "").split(" ") : [];
@@ -3939,8 +3955,10 @@ function renderManifestPins(){
 
     /*
       Manifest coordinates point at the printed RTL question/part marker.
-      Desktop robots stay beside that marker. Phone targets use the reserved
-      outer gutter so their larger touch area cannot cover printed content.
+      Desktop robots stay beside that marker. The report shares the robot's
+      clamped anchor plus a fixed gap, so the two buttons cannot converge at
+      the page edge. Reserved right gutters keep both controls reachable;
+      phone targets sit entirely outside the printed content.
     */
     var pinX = Number(pin.x);
     if (!isFinite(pinX)){ pinX = .92; }
@@ -3983,12 +4001,14 @@ function renderManifestPins(){
     report.textContent = "!";
     report.style.left = narrow
       ? "calc(100% + 76px)"
-      : "clamp(16px, calc(" + (pinX*100) + "% + 92px), calc(100% - 16px))";
+      : "calc(" + pinLeft + " + 40px)";
     report.style.top = button.style.top;
+    report.dataset.exerciseId = exercise.id;
+    report.dataset.exerciseIds = button.dataset.exerciseIds;
     report.dataset.label = "יש הערה על השאלה?";
-    report.setAttribute("aria-label", group.exercises.length > 1
-      ? "דיווח על שאלה או סעיף"
-      : "יש הערה על השאלה?");
+    report.setAttribute("aria-label", "דיווח על " + (group.exercises.length > 1
+      ? manifestPinQuestionLabel(group.exercises) + " · בחירת שאלה וסעיף"
+      : exerciseLabel(exercise)));
     report.addEventListener("click", function(event){
       event.preventDefault();
       event.stopPropagation();
@@ -3996,7 +4016,7 @@ function renderManifestPins(){
     });
     pageElement.appendChild(report);
     if (focusedPinId && button.dataset.exerciseIds.split(" ").indexOf(focusedPinId)!==-1){
-      button.focus({preventScroll:true});
+      (focusedReport ? report : button).focus({preventScroll:true});
     }
   });
 }

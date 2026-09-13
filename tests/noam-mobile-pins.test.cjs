@@ -52,7 +52,12 @@ function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false
       media.matches = viewportWidth <= media.maxWidth;
       return media;
     } },
-    document: { createElement: tag => { assert.equal(tag, "button"); return button(); } },
+    document: { createElement: tag => {
+      assert.equal(tag, "button");
+      const item = button();
+      item.focus = () => { ctx.document.activeElement = item; };
+      return item;
+    } },
     manifestReady: true, manifest: { exercises }, selectedExercise: null, selectedPin: null,
     panelBack: {}, panelBody: picker, openings: 0,
     pdfScroll: { clientWidth: viewportWidth }, pdfLastWidth: viewportWidth,
@@ -115,7 +120,8 @@ test("every Noam AI target gets a separate feedback target", () => {
   f.ctx.showFeedbackPicker = exercises => reports.push(exercises.map(exercise => exercise.id));
   f.ctx.renderManifestPins();
   assert.equal(f.reports().length, f.pins().length);
-  assert.equal(f.reports()[0].attributes["aria-label"], "דיווח על שאלה או סעיף");
+  assert.equal(f.reports()[0].attributes["aria-label"], "דיווח על שאלה 1 · בחירת שאלה וסעיף");
+  assert.equal(f.reports()[2].attributes["aria-label"], "דיווח על שאלה 2");
   f.reports()[0].click();
   assert.deepEqual([...reports[0]], ["q1a", "q1b"]);
 });
@@ -287,4 +293,87 @@ test("every installed worksheet keeps all questions reachable with separated pho
       }
     }
   }
+});
+
+
+test("report focus survives lazy rerenders and question regrouping", () => {
+  const f = fixture(parts, false);
+  f.ctx.renderManifestPins();
+  f.reports()[1].focus();
+  const oldReport = f.ctx.document.activeElement;
+  f.ctx.renderManifestPins();
+  assert.notEqual(f.ctx.document.activeElement, oldReport);
+  assert.equal(f.ctx.document.activeElement, f.reports()[1]);
+  assert.match(f.ctx.document.activeElement.attributes["aria-label"], /שאלה 1.*סעיף ב/);
+  f.resize(390);
+  assert.ok(f.ctx.document.activeElement.classList.contains("noam-report-pin"));
+  assert.equal(f.ctx.document.activeElement.dataset.exerciseIds, "q1a q1b");
+});
+
+// Evaluate the generated CSS coordinates independently at real rendered widths.
+// Browser QA also checks actual element bounds and scroll-container clipping.
+function cssPixels(value, pageWidth) {
+  const expression = value.replace(/([\d.]+)%/g, (_, number) => String(Number(number) * pageWidth / 100))
+    .replace(/px/g, "").replace(/calc\(/g, "(");
+  return vm.runInNewContext(expression, { clamp: (min, value, max) => Math.max(min, Math.min(value, max)) });
+}
+
+test("desktop pairs retain a gap and stay inside the reserved gutter at narrow and wide PDF zooms", () => {
+  const exercises = Array.from({ length: 99 }, (_, index) => ({
+    id: "x" + index, q: index + 1, pin: { page: 1, x: (index + 1) / 100, y: .4 }
+  }));
+  const f = fixture(exercises, false);
+  f.ctx.renderManifestPins();
+  const desktopGutter = Number(viewer.match(/margin-right:(\d+)px;/)[1]);
+  for (const width of [120, 240, 436, 500, 582, 654, 761, 1200, 1800]) {
+    f.pins().forEach((pin, index) => {
+      const ai = cssPixels(pin.style.left, width);
+      const report = cssPixels(f.reports()[index].style.left, width);
+      assert.ok(report - 12.5 - (ai + 14.5) >= 12.99, `width ${width}: pair keeps 13px gap`);
+      assert.ok(ai - 14.5 >= 0, `width ${width}: AI stays within page left edge`);
+      assert.ok(report + 12.5 <= width + desktopGutter, `width ${width}: report inside right gutter`);
+    });
+  }
+});
+
+test("mobile pairs fit the reserved gutter with a ten-pixel gap at every document zoom", () => {
+  const f = fixture(parts);
+  f.ctx.renderManifestPins();
+  const mobileGutter = Number(viewer.match(/\.pdf-page\{width:calc\(100vw - \d+px\);min-height:0;margin-right:(\d+)px/)[1]);
+  for (const width of [120, 185, 264, 316, 528, 792]) {
+    const ai = cssPixels(f.pins()[0].style.left, width);
+    const report = cssPixels(f.reports()[0].style.left, width);
+    assert.ok(ai - 22 >= width, "AI never covers printed content");
+    assert.equal(report - 18 - (ai + 22), 10);
+    assert.ok(report + 18 <= width + mobileGutter, "report fits even at 100% and higher zoom");
+  }
+});
+
+
+test("closing the feedback picker restores its opener after that report was rebuilt", () => {
+  const f = fixture(parts);
+  const events = {};
+  Object.assign(f.ctx, {
+    feedbackReturnExerciseId: null,
+    feedbackDialog: {
+      showModal() { this.open = true; },
+      close() { this.open = false; events.close(); },
+      addEventListener(name, listener) { events[name] = listener; }
+    },
+    feedbackContext: {}, feedbackClose: { addEventListener() {} },
+    feedbackChoices: { appendChild() {}, querySelector() { return null; } },
+    feedbackLocation: f.ctx.exerciseLabel
+  });
+  const pickerSource = viewer.slice(viewer.indexOf("function showFeedbackPicker(exercises){"), viewer.indexOf("\nfunction openNoamPanel(){"));
+  vm.runInContext(pickerSource, f.ctx);
+  f.ctx.renderManifestPins();
+  f.reports()[0].focus();
+  const opener = f.ctx.document.activeElement;
+  f.ctx.showFeedbackPicker(parts.slice(0, 2));
+  f.ctx.document.activeElement = f.ctx.feedbackDialog;
+  f.ctx.renderManifestPins();
+  f.ctx.feedbackDialog.close();
+  assert.notEqual(f.ctx.document.activeElement, opener);
+  assert.equal(f.ctx.document.activeElement, f.reports()[0]);
+  assert.equal(f.ctx.feedbackReturnExerciseId, null);
 });

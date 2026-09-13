@@ -86,3 +86,25 @@ test("missing or detached page anchors leave scroll position unchanged", () => {
   f.ctx.restorePdfPosition({ page: { isConnected: false }, fraction: .5 });
   assert.equal(f.scroll.scrollTop, 123);
 });
+
+
+test("fit width reserves both feedback and AI gutters before document scaling", () => {
+  const f = fixture();
+  const desktopGutter = Number(viewer.match(/margin-right:(\d+)px;/)[1]);
+  const mobileGutter = Number(viewer.match(/\.pdf-page\{width:calc\(100vw - \d+px\);min-height:0;margin-right:(\d+)px/)[1]);
+  for (const mobile of [true, false]) {
+    f.ctx.mobileLayout.matches = mobile;
+    const gutter = mobile ? mobileGutter : desktopGutter;
+    const containerInset = mobile ? 12 : 34;
+    for (const width of [280, 320, 380, 664, 1024]) {
+      f.scroll.clientWidth = width;
+      f.ctx.pdfZoom = 1;
+      const fitted = f.ctx.getPdfPageWidth();
+      assert.equal(fitted + gutter + containerInset, width, "100% document plus buttons fits scroll viewport");
+      f.ctx.pdfZoom = .7;
+      assert.ok(f.ctx.getPdfPageWidth() + gutter + containerInset <= width, "default zoom keeps both targets visible");
+      f.ctx.pdfZoom = 2;
+      assert.equal(f.ctx.getPdfPageWidth(), fitted * 2, "document zoom does not scale button gutter");
+    }
+  }
+});
