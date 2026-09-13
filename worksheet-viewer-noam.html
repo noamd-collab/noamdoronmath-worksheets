@@ -1494,6 +1494,103 @@ textarea:focus{
   .noam-question-list{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
+.pdf-page .noam-report-pin{
+  position:absolute;
+  z-index:11;
+  width:25px;
+  height:25px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  transform:translate(-50%,-50%);
+  color:var(--ink);
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:50%;
+  box-shadow:-2px 2px 0 var(--ink);
+  cursor:pointer;
+  font-family:'Heebo',sans-serif;
+  font-size:14px;
+  font-weight:900;
+  line-height:1;
+}
+.pdf-page .noam-report-pin:hover,
+.pdf-page .noam-report-pin:focus-visible{
+  color:#fff;
+  background:#b42318;
+  outline:none;
+}
+.pdf-page .noam-report-pin::after{
+  content:attr(data-label);
+  position:absolute;
+  inset-inline-start:30px;
+  top:50%;
+  width:max-content;
+  max-width:220px;
+  transform:translateY(-50%);
+  padding:6px 9px;
+  color:var(--ink);
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  box-shadow:-2px 2px 0 var(--ink);
+  font-family:'Heebo',sans-serif;
+  font-size:11.5px;
+  font-weight:900;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+}
+.pdf-page .noam-report-pin:hover::after,
+.pdf-page .noam-report-pin:focus-visible::after{opacity:1}
+.noam-feedback-dialog{
+  width:min(440px,calc(100vw - 28px));
+  padding:0;
+  color:var(--ink);
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:16px;
+  box-shadow:-5px 5px 0 var(--ink);
+  direction:rtl;
+}
+.noam-feedback-dialog::backdrop{background:rgba(20,33,61,.45)}
+.noam-feedback-dialog-in{padding:18px}
+.noam-feedback-dialog h2{margin:0 34px 6px 0;font-size:19px}
+.noam-feedback-dialog p{margin:0 0 14px;font-size:13px;line-height:1.55}
+.noam-feedback-close{
+  float:inline-end;
+  width:30px;
+  height:30px;
+  padding:0;
+  color:var(--ink);
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:8px;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+}
+.noam-feedback-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.noam-feedback-choices button{
+  min-height:44px;
+  padding:7px 9px;
+  color:var(--ink);
+  background:var(--tint);
+  border:2px solid var(--ink);
+  border-radius:10px;
+  font-family:'Heebo',sans-serif;
+  font-size:13px;
+  font-weight:900;
+  cursor:pointer;
+}
+.noam-feedback-choices button:hover,.noam-feedback-choices button:focus-visible{background:#fff;outline:none}
+@media(max-width:900px){
+  .pdf-page .noam-report-pin{width:36px;height:36px;font-size:17px;box-shadow:none}
+  .pdf-page .noam-report-pin::after{display:none}
+  .noam-feedback-dialog{width:min(440px,calc(100vw - 20px))}
+  .noam-feedback-choices{grid-template-columns:1fr}
+}
+
 /* Phones and small tablets keep a wide document and a single modal conversation. */
 .noam-preview-toggle{display:none}
 @media(max-width:900px){
@@ -1784,6 +1881,15 @@ textarea:focus{
   🤖 נועם AI
 </button>
 
+<dialog class="noam-feedback-dialog" id="noamFeedbackDialog" aria-labelledby="noamFeedbackTitle">
+  <div class="noam-feedback-dialog-in">
+    <button class="noam-feedback-close" id="noamFeedbackClose" type="button" aria-label="סגירת חלון הדיווח">×</button>
+    <h2 id="noamFeedbackTitle">יש הערה על השאלה?</h2>
+    <p id="noamFeedbackContext"></p>
+    <div class="noam-feedback-choices" id="noamFeedbackChoices"></div>
+  </div>
+</dialog>
+
 <script>
 (function(){
 
@@ -1838,6 +1944,9 @@ var GRADE_EMOJI = {
   8:"🧪",
   9:"🎯"
 };
+
+var FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfm4kwMe7cbEXqrFprYiq9ENw6dsP-9QkC7jb2-bMwxrjH8IQ/viewform?usp=pp_url";
+var FEEDBACK_FORM_CONTEXT_FIELD = "entry.147537363";
 
 var LEVEL_NAME = {
   a:"רמה א׳",
@@ -3463,6 +3572,10 @@ var panelBack = document.getElementById("panelBack");
 var fab = document.getElementById("fab");
 var closePanelButton = document.getElementById("closePanel");
 var panelReturnFocus = null;
+var feedbackDialog = document.getElementById("noamFeedbackDialog");
+var feedbackContext = document.getElementById("noamFeedbackContext");
+var feedbackChoices = document.getElementById("noamFeedbackChoices");
+var feedbackClose = document.getElementById("noamFeedbackClose");
 var noamDrafts = {};
 var noamAnnouncementTimer = null;
 
@@ -3589,6 +3702,53 @@ function exerciseLabel(exercise){
     ? "שאלה " + exercise.q + " · סעיף " + exercise.part
     : "שאלה " + exercise.q;
 }
+
+function feedbackLocation(exercise){
+  return [
+    GRADE_NAME[g] || "כיתה",
+    ttl || "דף עבודה",
+    LEVEL_NAME[lv] || "רמה",
+    exerciseLabel(exercise)
+  ].join(" · ");
+}
+
+function feedbackUrl(exercise){
+  var url = new URL(FEEDBACK_FORM_URL);
+  url.searchParams.set(FEEDBACK_FORM_CONTEXT_FIELD, feedbackLocation(exercise));
+  return url.href;
+}
+
+function openFeedbackForm(exercise){
+  if (!exercise){ return; }
+  if (feedbackDialog && feedbackDialog.open){ feedbackDialog.close(); }
+  window.open(feedbackUrl(exercise), "_blank", "noopener,noreferrer");
+}
+
+function showFeedbackPicker(exercises){
+  var choices = (exercises || []).filter(function(item){ return item && item.id; });
+  if (choices.length === 1){ openFeedbackForm(choices[0]); return; }
+  if (!feedbackDialog || !feedbackContext || !feedbackChoices){ return; }
+  feedbackContext.textContent = "בחרו את השאלה או הסעיף שעליו תרצו לדווח.";
+  feedbackChoices.innerHTML = "";
+  choices.forEach(function(exercise){
+    var button = document.createElement("button");
+    button.type = "button";
+    button.textContent = exerciseLabel(exercise);
+    button.setAttribute("aria-label", "דיווח על " + feedbackLocation(exercise));
+    button.addEventListener("click", function(){ openFeedbackForm(exercise); });
+    feedbackChoices.appendChild(button);
+  });
+  if (typeof feedbackDialog.showModal === "function"){
+    feedbackDialog.showModal();
+    var first = feedbackChoices.querySelector("button");
+    if (first){ first.focus(); }
+  }
+}
+
+feedbackClose.addEventListener("click", function(){ feedbackDialog.close(); });
+feedbackDialog.addEventListener("click", function(event){
+  if (event.target === feedbackDialog){ feedbackDialog.close(); }
+});
 
 function openNoamPanel(){
   var wasClosed=panel.classList.contains("hidden");
@@ -3751,7 +3911,7 @@ function renderManifestPins(){
   var narrow = noamNarrowPinsMedia.matches;
   var activeQuestionKeys = selectedPin ? (selectedPin.dataset.questionKeys || selectedPin.dataset.questionKey || "").split(" ") : [];
   selectedPin = null;
-  pdfPages.querySelectorAll(".noam-exercise-pin")
+  pdfPages.querySelectorAll(".noam-exercise-pin, .noam-report-pin")
     .forEach(function(button){ button.remove(); });
 
   var groups = buildManifestPinGroups(manifest.exercises, narrow);
@@ -3817,6 +3977,24 @@ function renderManifestPins(){
       }
     });
     pageElement.appendChild(button);
+    var report = document.createElement("button");
+    report.type = "button";
+    report.className = "noam-report-pin";
+    report.textContent = "!";
+    report.style.left = narrow
+      ? "calc(100% + 76px)"
+      : "clamp(16px, calc(" + (pinX*100) + "% + 92px), calc(100% - 16px))";
+    report.style.top = button.style.top;
+    report.dataset.label = "יש הערה על השאלה?";
+    report.setAttribute("aria-label", group.exercises.length > 1
+      ? "דיווח על שאלה או סעיף"
+      : "יש הערה על השאלה?");
+    report.addEventListener("click", function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      showFeedbackPicker(group.exercises);
+    });
+    pageElement.appendChild(report);
     if (focusedPinId && button.dataset.exerciseIds.split(" ").indexOf(focusedPinId)!==-1){
       button.focus({preventScroll:true});
     }

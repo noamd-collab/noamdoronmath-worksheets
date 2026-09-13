@@ -60,7 +60,11 @@ function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false
     showPdfTools: visible => { ctx.toolsVisible = visible; },
     resetPdfRendering: () => { ctx.pdfResetCount++; },
     pdfPages: {
-      querySelectorAll: () => [...pages.values()].flatMap(page => page.children),
+      querySelectorAll: selector => [...pages.values()].flatMap(page => page.children)
+        .filter(item => !selector || selector.split(",").some(part => {
+          const match = part.trim().match(/^\.([\w-]+)/);
+          return !match || item.classList.contains(match[1]);
+        })),
       querySelector: selector => pages.get(Number(selector.match(/data-page="(\d+)"/)[1]))
     },
     exerciseLabel: exercise => "שאלה " + exercise.q + (exercise.part ? " · סעיף " + exercise.part : ""),
@@ -73,6 +77,10 @@ function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false
   vm.createContext(ctx);
   vm.runInContext(mediaSource + "\n" + source, ctx);
   return { ctx, media, pages, picker, selections,
+    pins: () => [...pages.values()].flatMap(page => page.children)
+      .filter(pin => pin.classList.contains("noam-exercise-pin")),
+    reports: () => [...pages.values()].flatMap(page => page.children)
+      .filter(pin => pin.classList.contains("noam-report-pin")),
     resize(width) {
       const wasMobile = media.matches;
       ctx.window.innerWidth = width;
@@ -80,7 +88,6 @@ function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false
       media.matches = width <= media.maxWidth;
       if (media.matches !== wasMobile) media.onChange();
     },
-    pins: () => [...pages.values()].flatMap(page => page.children)
   };
 }
 
@@ -100,6 +107,17 @@ test("phone robots group by both question and page, anchored at the first part",
   assert.equal(f.pins()[0].style.left, "calc(100% + 26px)");
   assert.ok(f.pins().every(pin => pin.classList.contains("noam-question-pin")));
   assert.match(f.pins()[0].attributes["aria-label"], /שאלה 1.*בחירת/);
+});
+
+test("every Noam AI target gets a separate feedback target", () => {
+  const f = fixture(parts);
+  const reports = [];
+  f.ctx.showFeedbackPicker = exercises => reports.push(exercises.map(exercise => exercise.id));
+  f.ctx.renderManifestPins();
+  assert.equal(f.reports().length, f.pins().length);
+  assert.equal(f.reports()[0].attributes["aria-label"], "דיווח על שאלה או סעיף");
+  f.reports()[0].click();
+  assert.deepEqual([...reports[0]], ["q1a", "q1b"]);
 });
 
 test("group selection opens accessible part choices without choosing or requesting AI prematurely", () => {
@@ -222,7 +240,8 @@ test("small rendered pages, including a real 14-question page, keep every target
       const reachable = f.pins().flatMap(pin => pin.dataset.exerciseIds.split(" "));
       assert.deepEqual(reachable.sort(), manifest.exercises.map(exercise => exercise.id).sort());
       for (const page of f.pages.values()) {
-        const centers = page.children.map(pin => parseFloat(pin.style.top)).sort((a, b) => a - b);
+        const centers = page.children.filter(pin => pin.classList.contains("noam-exercise-pin"))
+          .map(pin => parseFloat(pin.style.top)).sort((a, b) => a - b);
         centers.forEach((center, index) => {
           assert.ok(center >= 22 && center <= height - 22, "44px target remains within the page height");
           if (index) assert.ok(center - centers[index - 1] >= 48 - 1e-8, "neighboring touch targets have at least4px space");
@@ -259,7 +278,8 @@ test("every installed worksheet keeps all questions reachable with separated pho
       const reachable = f.pins().flatMap(pin => pin.dataset.exerciseIds.split(" "));
       assert.deepEqual(reachable.sort(), manifest.exercises.map(exercise => exercise.id).sort(), file);
       for (const page of f.pages.values()) {
-        const centers = page.children.map(pin => parseFloat(pin.style.top)).sort((a, b) => a - b);
+        const centers = page.children.filter(pin => pin.classList.contains("noam-exercise-pin"))
+          .map(pin => parseFloat(pin.style.top)).sort((a, b) => a - b);
         centers.forEach((center, index) => {
           assert.ok(center >= 22 && center <= height - 22, file + ": target within page");
           if (index) assert.ok(center - centers[index - 1] >= 48 - 1e-8, file + ": targets separated");
