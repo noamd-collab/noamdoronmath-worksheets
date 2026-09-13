@@ -1525,7 +1525,8 @@ textarea:focus{
 .pdf-page .noam-report-pin::after{
   content:attr(data-label);
   position:absolute;
-  inset-inline-start:30px;
+  left:calc(100% + 8px);
+  right:auto;
   top:50%;
   width:max-content;
   max-width:220px;
@@ -1545,6 +1546,9 @@ textarea:focus{
 }
 .pdf-page .noam-report-pin:hover::after,
 .pdf-page .noam-report-pin:focus-visible::after{opacity:1}
+@media (min-width:901px) and (max-width:1100px){
+  .pdf-page .noam-report-pin::after{max-width:120px;white-space:normal;line-height:1.35}
+}
 .noam-feedback-dialog{
   width:min(440px,calc(100vw - 28px));
   padding:0;
