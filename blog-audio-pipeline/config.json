@@ -6,10 +6,10 @@
   },
   "tts": {
     "provider": "gemini-api",
-    "model": "gemini-3.1-flash-tts-preview",
+    "model": "gemini-2.5-flash-preview-tts",
     "modelAlternatives": [
-      "gemini-2.5-pro-preview-tts",
-      "gemini-2.5-flash-preview-tts"
+      "gemini-3.1-flash-tts-preview",
+      "gemini-2.5-pro-preview-tts"
     ],
     "voice": "Charon",
     "language": null,
