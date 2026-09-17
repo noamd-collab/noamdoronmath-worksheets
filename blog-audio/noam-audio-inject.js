@@ -13,9 +13,9 @@
 (function () {
   // Readable from the page, so which build is running can be established from
   // outside instead of inferred.
-  window.__noamAudioLoader = { build: 5, startedAt: new Date().toISOString(), state: 'loaded' };
+  window.__noamAudioLoader = { build: 6, startedAt: new Date().toISOString(), state: 'loaded' };
 
-  var PLAYER_SRC = 'https://noamd-collab.github.io/noamdoronmath-worksheets/blog-audio/noam-audio-player.js';
+  var PLAYER_SRC = 'https://noamd-collab.github.io/noamdoronmath-worksheets/blog-audio/noam-audio-player.js?v=6';
   var TAG = 'noam-audio-player';
   var MARK = 'data-noam-audio-mounted';
   // Wix renders the post body well after this script runs, and the tag manager
@@ -69,14 +69,15 @@
     if (!document.getElementById('noam-audio-bar-style')) {
       var style = document.createElement('style');
       style.id = 'noam-audio-bar-style';
+      // Matte strip: one flat colour and a hairline rule. Blur and shadow were
+      // dropped deliberately - they read as glass, and this should read as metal.
       style.textContent = [
         '[' + MARK + ']{position:fixed;inset-inline:0;bottom:0;z-index:2147483000;direction:rtl;',
-        'padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.94);',
-        '-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);',
-        'border-top:1px solid rgba(0,0,0,.12);box-shadow:0 -6px 24px rgba(0,0,0,.10);color:#14181f}',
-        '[' + MARK + '] > div{max-width:760px;margin:0 auto}',
-        '@media (prefers-color-scheme: dark){[' + MARK + ']{background:rgba(20,24,31,.94);',
-        'border-top-color:rgba(255,255,255,.16);color:#f2f4f7}}',
+        'padding:11px 16px calc(11px + env(safe-area-inset-bottom));background:#f1f2f4;',
+        'border-top:1px solid rgba(18,22,28,.13);color:#12161c}',
+        '[' + MARK + '] > div{max-width:720px;margin:0 auto}',
+        '@media (prefers-color-scheme: dark){[' + MARK + ']{background:#14181e;',
+        'border-top-color:rgba(233,237,243,.13);color:#e9edf3}}',
       ].join('');
       document.head.appendChild(style);
     }

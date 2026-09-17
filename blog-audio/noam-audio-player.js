@@ -52,36 +52,86 @@
     return s + '×';
   }
 
+  // Matte console: flat surfaces, hairline rules, one accent borrowed from the
+  // site's own lime. No gloss, no glass, no shadow bloom - the depth comes from
+  // three steps of grey rather than from highlights.
   var CSS = [
-    ':host{display:block;direction:rtl;font-family:inherit;color:inherit}',
-    '.wrap{border:1px solid rgba(128,128,128,.35);border-radius:16px;padding:14px 16px;margin:18px 0;',
-    'background:rgba(128,128,128,.08)}',
-    '.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}',
-    '.label{font-weight:700;font-size:15px}',
+    ':host{display:block;direction:rtl;font-family:inherit;',
+    '--ink:#12161c;--dim:rgba(18,22,28,.58);--rail:rgba(18,22,28,.14);',
+    '--edge:rgba(18,22,28,.14);--surface:#f1f2f4;--accent:#c8e23f;--onaccent:#14181f;',
+    '--tick:rgba(18,22,28,.22)}',
+    '@media (prefers-color-scheme: dark){:host{--ink:#e9edf3;--dim:rgba(233,237,243,.56);',
+    '--rail:rgba(233,237,243,.16);--edge:rgba(233,237,243,.14);--surface:#14181e;',
+    '--accent:#d7f24a;--onaccent:#12161c;--tick:rgba(233,237,243,.26)}}',
+    ':host{color:var(--ink)}',
+
+    '.wrap{border:1px solid var(--edge);border-radius:14px;padding:13px 15px;margin:18px 0;',
+    'background:var(--surface)}',
+
+    '.top{display:flex;align-items:baseline;gap:10px;margin-bottom:9px}',
+    '.label{font-size:11px;font-weight:700;letter-spacing:.09em;color:var(--dim);',
+    'transition:color .2s}',
+    ':host([playing]) .label{color:var(--accent)}',
     '.spacer{flex:1 1 auto}',
-    'a.dl{font-size:13px;text-decoration:none;border:1px solid rgba(128,128,128,.5);border-radius:999px;',
-    'padding:5px 13px;color:inherit;white-space:nowrap}',
-    'a.dl:hover{background:rgba(128,128,128,.18)}',
-    '.line{display:flex;align-items:center;gap:12px}',
-    '.play{flex:0 0 auto;width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;',
-    'background:currentColor;display:flex;align-items:center;justify-content:center;padding:0}',
-    '.play:focus-visible{outline:3px solid rgba(128,128,128,.7);outline-offset:3px}',
-    '.play svg{width:20px;height:20px;display:block}',
+    'a.dl{font-size:11px;font-weight:600;letter-spacing:.04em;text-decoration:none;',
+    'border:1px solid var(--edge);border-radius:8px;padding:4px 10px;color:var(--dim);',
+    'white-space:nowrap;transition:color .15s,border-color .15s}',
+    'a.dl:hover{color:var(--ink);border-color:var(--ink)}',
+
+    '.line{display:flex;align-items:center;gap:13px}',
+    '.play{flex:0 0 auto;width:42px;height:42px;border-radius:12px;border:0;cursor:pointer;',
+    'background:var(--accent);display:flex;align-items:center;justify-content:center;padding:0;',
+    'transition:transform .12s ease,filter .15s ease}',
+    '.play:hover{filter:brightness(1.06)}',
+    '.play:active{transform:scale(.95)}',
+    '.play:focus-visible{outline:2px solid var(--accent);outline-offset:3px}',
+    '.play svg{width:17px;height:17px;display:block}',
+    '.play svg path{fill:var(--onaccent)}',
+
     '.grow{flex:1 1 auto;min-width:0}',
-    '.bar{display:block;width:100%}',
-    '.times{display:flex;justify-content:space-between;font-size:12px;opacity:.75;margin-top:4px;',
-    'font-variant-numeric:tabular-nums}',
-    '.speed{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:13px}',
-    '.speed input{flex:1 1 auto;min-width:120px}',
-    '.speed .val{font-weight:700;min-width:46px;text-align:center;font-variant-numeric:tabular-nums}',
-    '.est{font-size:12px;opacity:.75;margin-top:6px}',
-    'input[type=range]{accent-color:currentColor;height:24px;cursor:pointer}',
+    '.times{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);',
+    'margin-top:5px;font-variant-numeric:tabular-nums;letter-spacing:.03em}',
+
+    '.speed{display:flex;align-items:center;gap:11px;margin-top:11px;padding-top:10px;',
+    'border-top:1px solid var(--edge);font-size:11px;font-weight:600;letter-spacing:.06em;',
+    'color:var(--dim)}',
+    '.speed input{flex:1 1 auto;min-width:110px;max-width:220px}',
+    '.speed .val{font-size:12px;font-weight:700;letter-spacing:0;color:var(--ink);',
+    'min-width:42px;text-align:center;font-variant-numeric:tabular-nums}',
+    '.est{margin-inline-start:auto;font-size:11px;color:var(--dim);white-space:nowrap}',
+
+    // Both rails are drawn by hand: a flat groove, the played part in accent, and a
+    // small square handle. --p is the filled share, written from the script.
+    'input[type=range]{-webkit-appearance:none;appearance:none;display:block;width:100%;',
+    'height:18px;margin:0;background:none;cursor:pointer}',
+    'input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:3px;',
+    'background:linear-gradient(to left,var(--accent) 0,var(--accent) calc(var(--p,0) * 1%),',
+    'var(--rail) calc(var(--p,0) * 1%),var(--rail) 100%)}',
+    // The position rail is ruled like a scrubber: fine ticks show through the part
+    // not played yet, and the played part covers them.
+    '.bar::-webkit-slider-runnable-track{height:6px;border-radius:3px;',
+    'background:linear-gradient(to left,var(--accent) 0,var(--accent) calc(var(--p,0) * 1%),',
+    'transparent calc(var(--p,0) * 1%),transparent 100%),',
+    'repeating-linear-gradient(to left,var(--tick) 0 1px,transparent 1px 7px),var(--rail)}',
+    '.bar::-webkit-slider-thumb{margin-top:-3px}',
+    'input[type=range]::-moz-range-track{height:5px;border-radius:3px;background:var(--rail)}',
+    'input[type=range]::-moz-range-progress{height:5px;border-radius:3px;background:var(--accent)}',
+    'input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;',
+    'width:12px;height:12px;border-radius:4px;border:0;background:var(--ink);',
+    'margin-top:-4px;transition:transform .12s ease}',
+    'input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:4px;border:0;',
+    'background:var(--ink)}',
+    'input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.15)}',
+    'input[type=range]:focus-visible{outline:none}',
+    'input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(--accent)}',
+
     '.hidden{display:none}',
-    // The bar version supplies its own surface, so the block drops its box there.
+    // In the bar the surrounding strip is the surface, so the block sheds its own.
     ':host([bare]) .wrap{border:0;background:none;padding:0;margin:0;border-radius:0}',
-    ':host([bare]) .top{margin-bottom:6px}',
-    ':host([bare]) .speed{margin-top:8px}',
-    '@media (max-width:420px){.speed{flex-wrap:wrap}}',
+    ':host([bare]) .top{margin-bottom:7px}',
+    ':host([bare]) .speed{margin-top:9px}',
+    '@media (max-width:520px){.speed{flex-wrap:wrap;row-gap:7px}',
+    '.est{margin-inline-start:0;width:100%}}',
   ].join('');
 
   var PLAY_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M8 5v14l11-7z"/></svg>';
@@ -158,7 +208,10 @@
       var total = duration();
       var rate = audio.playbackRate || 1;
       var at = audio.currentTime || 0;
-      if (!seeking && total > 0) bar.value = String(Math.round((at / total) * 1000));
+      if (!seeking && total > 0) {
+        bar.value = String(Math.round((at / total) * 1000));
+        bar.style.setProperty('--p', String((at / total) * 100));
+      }
       elapsedEl.textContent = mmss(at / rate);
       leftEl.textContent = '−' + mmss(Math.max(0, (total - at) / rate));
       estEl.textContent = total > 0
@@ -169,6 +222,7 @@
     function applyRate(rate) {
       audio.playbackRate = rate;
       rateInput.value = String(rate);
+      rateInput.style.setProperty('--p', String(((rate - MIN_RATE) / (MAX_RATE - MIN_RATE)) * 100));
       rateVal.textContent = rateLabel(rate);
       rememberRate(rate);
       paint();
@@ -185,10 +239,12 @@
     audio.addEventListener('play', function () {
       playBtn.innerHTML = PAUSE_ICON;
       playBtn.setAttribute('aria-label', 'השהייה');
+      host.setAttribute('playing', '');
     });
     audio.addEventListener('pause', function () {
       playBtn.innerHTML = PLAY_ICON;
       playBtn.setAttribute('aria-label', 'הפעלה');
+      host.removeAttribute('playing');
     });
     audio.addEventListener('ended', function () {
       audio.currentTime = 0;
@@ -202,6 +258,7 @@
       seeking = true;
       var total = duration();
       var rate = audio.playbackRate || 1;
+      bar.style.setProperty('--p', String(Number(bar.value) / 10));
       if (total > 0) {
         var at = (Number(bar.value) / 1000) * total;
         elapsedEl.textContent = mmss(at / rate);
