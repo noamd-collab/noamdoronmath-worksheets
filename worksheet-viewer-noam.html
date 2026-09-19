@@ -2939,10 +2939,15 @@ function renderPdfPage(
             scale:cssScale
           });
 
+        /* Render the visible worksheet at the screen's full physical resolution.
+           The former 1.25 desktop cap blurred small Hebrew type and geometry labels
+           on Retina displays even though the source PDF was sharp.  The AI still
+           receives its own off-screen question crop below; this canvas exists only
+           for the student-facing PDF layer and the HTML pins remain independent. */
         var pixelRatio =
           Math.min(
             window.devicePixelRatio || 1,
-            mobileLayout.matches ? 2 : 1.25
+            2
           );
 
         var canvas =
@@ -4531,10 +4536,9 @@ function exerciseImageWithAttachments(exercise, list){
 }
 
 /* QUESTION IMAGE FOR NOAM AI — rendered from the PDF itself, not from the on-screen
-   canvas. The display canvas is capped at devicePixelRatio 1.25 on desktop, which put
-   about 115 dots per inch in front of the image model and made small labels such as the
-   vertices of a triangle unreadable. Here the page is rendered again, off-screen, at a
-   scale chosen so the cropped band itself reaches CROP_TARGET_WIDTH pixels. */
+   canvas. The visible page now uses the screen's full device-pixel resolution, while
+   the model still receives a separate off-screen rendering at a scale chosen so the
+   cropped question band itself reaches CROP_TARGET_WIDTH pixels. */
 
 var CROP_TARGET_WIDTH_DESKTOP = 2200;
 var CROP_TARGET_WIDTH_MOBILE = 1800;
