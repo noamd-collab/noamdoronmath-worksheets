@@ -27,7 +27,7 @@
 דוגמת Custom Code לאחר שהקובץ זמין ב-GitHub Pages:
 
 ```html
-<script defer src="https://noamd-collab.github.io/noamdoronmath-worksheets/blog-audio-pipeline/site/noam-latex-renderer.js"></script>
+<script defer src="https://noamd-collab.github.io/noamdoronmath-worksheets/blog-audio/noam-latex-renderer.js"></script>
 ```
 
 ## התנהגות במקרה תקלה
