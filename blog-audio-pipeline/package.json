@@ -10,7 +10,8 @@
     "generate": "node bin/generate.mjs",
     "verify-audio": "node bin/verify-audio.mjs",
     "status": "node bin/status.mjs",
-    "selftest": "node bin/selftest.mjs"
+    "selftest": "node bin/selftest.mjs",
+    "test:latex": "node --test test/text-latex.test.mjs test/latex-renderer.test.mjs && node --check site/noam-latex-renderer.js"
   },
   "dependencies": {
     "@google/genai": "^2.21.0"

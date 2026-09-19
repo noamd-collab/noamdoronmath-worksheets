@@ -11,6 +11,7 @@
 const NBSP = / /g;
 const ZERO_WIDTH = /[​-‏‪-‮⁦-⁩]/g;
 const NIQQUD = /[֑-ׇֽֿׁׂׅׄ]/g;
+const MATH_SPAN = /\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$/g;
 
 // Hebrew abbreviations and symbols that a TTS model reads badly in raw form.
 const REPLACEMENTS = [
@@ -50,6 +51,27 @@ const REPLACEMENTS = [
   [/(\d),(\d{3})(?!\d)/g, '$1$2'],
 ];
 
+// Split only on explicit delimiters supported by the blog renderer.  Keeping
+// formulae as atomic segments prevents Markdown cleanup and chunking from
+// changing commands such as \sqrt, subscripts, exponents, or unary minus.
+export function splitMathSegments(raw) {
+  const text = String(raw || '');
+  const out = [];
+  let cursor = 0;
+  MATH_SPAN.lastIndex = 0;
+  for (const match of text.matchAll(MATH_SPAN)) {
+    if (match.index > cursor) out.push({ math: false, text: text.slice(cursor, match.index) });
+    out.push({ math: true, text: match[0] });
+    cursor = match.index + match[0].length;
+  }
+  if (cursor < text.length) out.push({ math: false, text: text.slice(cursor) });
+  return out;
+}
+
+function mapProse(text, transform) {
+  return splitMathSegments(text).map((part) => part.math ? part.text : transform(part.text)).join('');
+}
+
 export function normalizeForSpeech(raw) {
   let t = String(raw || '')
     .replace(NBSP, ' ')
@@ -57,18 +79,21 @@ export function normalizeForSpeech(raw) {
     .replace(NIQQUD, '')
     .replace(/\r\n?/g, '\n');
 
-  // Drop link markup residue and bare URLs - a read-aloud URL is noise.
-  t = t.replace(/https?:\/\/\S+/g, '');
+  // Keep a Markdown link's label (which may itself contain delimited LaTeX), but
+  // remove its destination. Bare URLs and markup cleanup apply to prose only.
   t = t.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
+  t = mapProse(t, (prose) => {
+    let p = prose.replace(/https?:\/\/\S+/g, '');
 
-  // Operator and unit rewrites run before markup stripping, so that comparison
-  // signs are turned into words instead of being deleted as markup.
-  for (const [re, to] of REPLACEMENTS) t = t.replace(re, to);
+    // Operator and unit rewrites run before markup stripping, so comparison
+    // signs in ordinary prose become words. Delimited LaTeX stays untouched.
+    for (const [re, to] of REPLACEMENTS) p = p.replace(re, to);
 
-  // Leftover markup characters. '>' is only removed at the start of a line
-  // (blockquote marker); elsewhere it has already been rewritten above.
-  t = t.replace(/^[ \t]*>+[ \t]*/gm, '');
-  t = t.replace(/[*_`#]{1,3}/g, '');
+    // Leftover Markdown characters. '>' is only a quote marker at line start.
+    p = p.replace(/^[ \t]*>+[ \t]*/gm, '');
+    p = p.replace(/[*_`#]{1,3}/g, '');
+    return p;
+  });
 
   // Collapse whitespace but keep paragraph boundaries.
   t = t.split('\n').map((l) => l.replace(/[ \t]+/g, ' ').trim()).join('\n');
@@ -95,21 +120,64 @@ export function buildScript({ title, body }) {
 function splitSentences(par) {
   const parts = [];
   let buf = '';
-  for (let i = 0; i < par.length; i++) {
-    const ch = par[i];
-    buf += ch;
-    if (/[.!?׃]/.test(ch)) {
-      const next = par[i + 1];
-      const prev = par[i - 1];
-      const isDecimal = ch === '.' && /\d/.test(prev || '') && /\d/.test(next || '');
-      if (!isDecimal && (next === undefined || /\s/.test(next))) {
-        parts.push(buf.trim());
-        buf = '';
+  for (const segment of splitMathSegments(par)) {
+    if (segment.math) {
+      buf += segment.text;
+      continue;
+    }
+    for (let i = 0; i < segment.text.length; i++) {
+      const ch = segment.text[i];
+      buf += ch;
+      if (/[.!?׃]/.test(ch)) {
+        const next = segment.text[i + 1];
+        const prev = segment.text[i - 1] || buf[buf.length - 2];
+        const isDecimal = ch === '.' && /\d/.test(prev || '') && /\d/.test(next || '');
+        if (!isDecimal && (next === undefined || /\s/.test(next))) {
+          parts.push(buf.trim());
+          buf = '';
+        }
       }
     }
   }
   if (buf.trim()) parts.push(buf.trim());
   return parts;
+}
+
+// Last-resort splitting for a very long sentence.  Formula segments are one
+// indivisible unit; an unusually large single formula is allowed to exceed the
+// target rather than being corrupted in the middle.
+function splitLongSentence(sentence, maxChars) {
+  const units = [];
+  for (const part of splitMathSegments(sentence)) {
+    if (part.math) {
+      units.push(part.text);
+      continue;
+    }
+    const words = part.text.match(/\S+\s*/g) || [];
+    for (const word of words) {
+      if (word.length <= maxChars) {
+        units.push(word);
+      } else {
+        for (let i = 0; i < word.length; i += maxChars) units.push(word.slice(i, i + maxChars));
+      }
+    }
+  }
+
+  const pieces = [];
+  let current = '';
+  for (const unit of units) {
+    if (current && current.length + unit.length > maxChars) {
+      pieces.push(current.trim());
+      current = '';
+    }
+    if (!current && unit.length > maxChars) {
+      pieces.push(unit.trim());
+    } else {
+      current += unit;
+    }
+  }
+  if (current.trim()) pieces.push(current.trim());
+  return pieces;
 }
 
 // Chunks the script on paragraph boundaries first, sentence boundaries second.
@@ -146,16 +214,13 @@ export function chunkScript(script, { chunkTargetChars = 1200, chunkMaxChars = 1
         slen = 0;
       }
       if (sent.length > chunkMaxChars) {
-        // Last resort: hard split on a comma or space near the limit.
-        let rest = sent;
-        while (rest.length > chunkMaxChars) {
-          let cut = rest.lastIndexOf(',', chunkMaxChars);
-          if (cut < chunkMaxChars * 0.5) cut = rest.lastIndexOf(' ', chunkMaxChars);
-          if (cut < chunkMaxChars * 0.5) cut = chunkMaxChars;
-          chunks.push(rest.slice(0, cut + 1).trim());
-          rest = rest.slice(cut + 1).trim();
+        // Last resort: split prose on word boundaries, never inside LaTeX.
+        if (sbuf.length) {
+          chunks.push(sbuf.join(' '));
+          sbuf = [];
+          slen = 0;
         }
-        if (rest) { sbuf.push(rest); slen += rest.length + 1; }
+        chunks.push(...splitLongSentence(sent, chunkMaxChars));
         continue;
       }
       sbuf.push(sent);
