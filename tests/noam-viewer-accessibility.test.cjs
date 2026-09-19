@@ -125,5 +125,5 @@ test("the viewer remains valid JavaScript with one main target and one persisten
   assert.match(html, /href="#worksheetMain"/);
   assert.match(html, /<main[^>]+id="worksheetMain"[^>]+tabindex="-1"/);
   assert.equal((html.match(/id="noamAnnouncements"/g) || []).length, 1);
-  assert.match(html, /\.noam-compose textarea:focus-visible\{outline:3px/);
+  assert.match(html, /\.noam-input-shell:focus-within\{[\s\S]*?outline:3px/);
 });

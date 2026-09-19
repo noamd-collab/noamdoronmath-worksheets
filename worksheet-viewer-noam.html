@@ -1408,18 +1408,42 @@ textarea:focus{
   width:100%;
   min-height:68px;
   resize:vertical;
-  padding:9px 10px;
+  padding:5px 1px 9px;
   color:var(--ink);
-  background:#fff;
-  border:2px solid var(--ink);
-  border-radius:11px;
+  background:transparent;
+  border:0;
+  border-radius:0;
   font-family:'Assistant',sans-serif;
   font-size:14.5px;
   line-height:1.5;
   direction:rtl;
 }
-.noam-compose textarea:focus{outline:none;box-shadow:-3px 3px 0 var(--accent)}
-.noam-compose textarea:focus-visible{outline:3px solid var(--accent-dark);outline-offset:3px}
+.noam-input-shell{
+  padding:7px 9px 0;
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:11px;
+}
+.noam-input-shell:focus-within{
+  outline:3px solid var(--accent-dark);
+  outline-offset:3px;
+  box-shadow:-3px 3px 0 var(--accent);
+}
+.noam-input-actions{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:5px;
+  margin:0 0 2px;
+}
+.noam-input-actions .noam-action{
+  min-height:28px;
+  padding:3px 9px;
+  border-width:1px;
+  box-shadow:none;
+  font-size:11.5px;
+}
+.noam-compose textarea:focus,.noam-compose textarea:focus-visible{outline:none;box-shadow:none}
 .noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}
     .noam-attach{margin:6px 0 8px}
     .noam-attach-button{
@@ -1666,20 +1690,23 @@ textarea:focus{
   .noam-picked-text{font-size:14px;max-height:60px;overflow:auto}
   .noam-actions{gap:6px;margin:0}
   .noam-action{min-height:44px;padding:7px 12px;box-shadow:none}
+  .noam-input-actions{gap:5px;margin:0 0 2px}
+  .noam-input-actions .noam-action{min-height:30px;padding:3px 9px;font-size:11.5px}
+  .noam-input-shell{padding:6px 8px 0}
   .noam-thread-tools{margin:0;min-height:32px}
   .noam-link-button{min-height:44px;font-size:12px;padding:5px}
   .noam-transcript{flex:1;min-height:48px;max-height:none;overflow-y:auto;overscroll-behavior:contain;padding:3px 1px 6px;-webkit-overflow-scrolling:touch}
   .noam-bubble{font-size:16px;max-width:96%;border-width:1px}
   .noam-compose{flex:none;padding-top:6px;background:#fff}
   .noam-compose-heading{margin-bottom:4px}
-  .noam-compose textarea{font-size:16px;min-height:48px;max-height:80px;resize:none;padding:8px}
+  .noam-compose textarea{font-size:16px;min-height:48px;max-height:80px;resize:none;padding:4px 1px 7px}
   .noam-compose-help{display:none}
   .noam-send{min-height:44px;margin-top:4px;padding:7px}
   .noam-math-toggle{min-height:44px}
   .noam-math-key{min-height:44px}
   .noam-question-list{grid-template-columns:repeat(3,minmax(0,1fr))}
   .noam-question-list button{min-height:48px;font-size:14px}
-  .panel.is-typing .noam-picked,.panel.is-typing .noam-actions,.panel.is-typing .noam-thread-tools{display:none}
+  .panel.is-typing .noam-picked,.panel.is-typing .noam-thread-tools{display:none}
   .panel.is-typing .panel-badge{display:none}
   .panel.is-short .noam-picked-preview,.panel.is-short .noam-picked-text{display:none}
   .panel.is-short .noam-picked{padding:2px 6px}
@@ -1691,7 +1718,8 @@ textarea:focus{
   .panel.is-short .noam-compose-heading{grid-area:tools;margin:0;display:flex}
   .panel.is-short .noam-compose-heading label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
   .panel.is-short .noam-math-toggle{width:100%}
-  .panel.is-short .noam-compose textarea{grid-area:field;min-height:44px;height:44px}
+  .panel.is-short .noam-input-shell{grid-area:field}
+  .panel.is-short .noam-compose textarea{min-height:44px;height:44px}
   .panel.is-short .noam-send{grid-area:send;margin:0}
   .panel.is-short .noam-math-keys{grid-area:keys;grid-template-columns:repeat(8,minmax(48px,1fr));overflow-x:auto;margin:0;padding-bottom:2px;min-width:0}
   .panel-body.is-previewing{overflow:hidden}
@@ -4131,11 +4159,6 @@ function renderNoamChat(){
       '<div class="noam-picked-preview" id="noamPickedPreview" hidden></div>' +
       '<div class="noam-picked-text" id="noamPickedText">' + esc(text) + '</div>' +
     '</div>' +
-    '<div class="noam-actions">' +
-      '<button type="button" class="noam-action" id="noamOverview">הסבר כללי</button>' +
-      '<button type="button" class="noam-action primary" id="noamHint">רמז</button>' +
-      '<button type="button" class="noam-action" id="noamMistake" hidden>טעות נפוצה</button>' +
-    '</div>' +
     '<div class="noam-thread-tools">' +
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
       '<button type="button" class="noam-link-button" id="noamLocate">הצג בדף</button>' +
@@ -4162,7 +4185,14 @@ function renderNoamChat(){
         '<div class="noam-attach-list" id="noamAttachList"></div>' +
         '<div class="noam-attach-note" id="noamAttachNote" role="status" aria-live="polite">' + attachmentHint() + '</div>' +
       '</div>' +
-      '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp">'+esc(noamDrafts[selectedExercise.id]||"")+'</textarea>' +
+      '<div class="noam-input-shell">' +
+        '<div class="noam-input-actions" role="group" aria-label="עזרה מהירה">' +
+          '<button type="button" class="noam-action" id="noamOverview">הסבר כללי</button>' +
+          '<button type="button" class="noam-action primary" id="noamHint">רמז</button>' +
+          '<button type="button" class="noam-action" id="noamMistake" hidden>טעות נפוצה</button>' +
+        '</div>' +
+        '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp">'+esc(noamDrafts[selectedExercise.id]||"")+'</textarea>' +
+      '</div>' +
       '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
       '<button type="button" class="noam-send" id="noamSend">שלח לנועם AI</button>' +
     '</div>';
