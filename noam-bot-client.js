@@ -31,6 +31,17 @@
       status === 401 || status === 403 || status === 429));
   }
 
+  function isTransientNetworkError(error) {
+    if (!error || isProtectionError(error) ||
+        typeof (error.status || error.httpStatus) === "number" ||
+        error.code === "REQUEST_TIMEOUT") {
+      return false;
+    }
+    var message = String(error.message || error);
+    return error.name === "TypeError" ||
+      /failed to fetch|networkerror|network request failed|load failed/i.test(message);
+  }
+
   function responseError(response, data) {
     var detail = data && data.error;
     var message = typeof detail === "string" ? detail : detail && detail.message;
@@ -48,6 +59,8 @@
     var enabled = options.enabled === true;
     var verificationTimeout = options.verificationTimeoutMs || 15000;
     var modelTimeout = options.modelTimeoutMs || 20000;
+    var networkRetryDelay = typeof options.networkRetryDelayMs === "number" ?
+      Math.max(0, options.networkRetryDelayMs) : 650;
     var configPromise = null;
     var scriptPromise = null;
 
@@ -209,16 +222,32 @@
         Object.prototype.hasOwnProperty.call(ACTIONS, route) && ACTIONS[route];
       // Retired/unknown routes stay unavailable even before bot enforcement.
       if (!action) { return Promise.reject(makeError(VERIFY_MESSAGE, "BOT_ROUTE_UNSUPPORTED")); }
-      if (!enabled) { return send(endpoint, payload); }
-      return getVerification(action).then(function (verification) {
-        var body = Object.assign({}, payload, { botVerification: verification });
-        // AI timeout starts after the verification finishes. No automatic retry.
-        return send(endpoint, body);
+      function attempt() {
+        if (!enabled) { return send(endpoint, payload); }
+        return getVerification(action).then(function (verification) {
+          var body = Object.assign({}, payload, { botVerification: verification });
+          // Every attempt receives a fresh single-use verification token.
+          return send(endpoint, body);
+        });
+      }
+      return attempt().catch(function (error) {
+        if (!isTransientNetworkError(error)) { throw error; }
+        return new Promise(function (resolve) {
+          setTimeout(resolve, networkRetryDelay);
+        }).then(attempt).catch(function (retryError) {
+          if (!isTransientNetworkError(retryError)) { throw retryError; }
+          throw makeError("החיבור לנועם AI נקטע. בדקו את החיבור ונסו שוב בעוד רגע.",
+            "NETWORK_UNAVAILABLE");
+        });
       });
     }
 
     return { postJson: postJson };
   }
 
-  return { create: create, isProtectionError: isProtectionError };
+  return {
+    create: create,
+    isProtectionError: isProtectionError,
+    isTransientNetworkError: isTransientNetworkError
+  };
 }));

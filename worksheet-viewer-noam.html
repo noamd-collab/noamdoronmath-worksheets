@@ -4980,7 +4980,7 @@ function ensureNoamBotClient(){
     }
     if (window.NoamBotClient){finish(true);return;}
     script=document.createElement("script");
-    script.src="./noam-bot-client.js";
+    script.src="./noam-bot-client.js?v=20260920-network-retry-1";
     script.async=true;
     script.onload=function(){finish(true);};
     script.onerror=function(){finish(false);};
