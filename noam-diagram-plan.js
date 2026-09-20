@@ -200,6 +200,16 @@
         var expected=description==="חדה"||description.toLowerCase()==="acute"?"acute":"obtuse",degrees=angle(names.split("")).degrees;
         if(expected==="acute"?degrees>=90-EPS:degrees<=90+EPS){fail("source_coordinate_contradiction",{type:"angleClass",points:names.split(""),expectedClass:expected,actualDegrees:Math.round(degrees*1e6)/1e6});}
       }
+      function checkPointExtension(point,ends,beyond){
+        if(ends[0]===ends[1]||ends.indexOf(beyond)===-1||!allPresent(point+ends.join(""))){return;}
+        var start=points[ends[0]],end=points[ends[1]],extension=points[point];
+        var along=[end[0]-start[0],end[1]-start[1]],offset=[extension[0]-start[0],extension[1]-start[1]];
+        var cross=along[0]*offset[1]-along[1]*offset[0],projection=(along[0]*offset[0]+along[1]*offset[1])/(along[0]*along[0]+along[1]*along[1]);
+        var isBeyond=beyond===ends[0]?projection < -EPS:projection > 1+EPS;
+        if(Math.abs(cross)>EPS*Math.max(1,Math.hypot(along[0],along[1])*Math.hypot(offset[0],offset[1]))||!isBeyond){
+          fail("source_coordinate_contradiction",{type:"pointOnExtension",point:point,ends:ends,beyond:beyond});
+        }
+      }
       sentences(question+". "+hint).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
         var s=compact(sentence),match,re=/(?:^|[^A-Z0-9+*/=−-])([A-Z]{2})(=|∥|⊥)([A-Z]{2})(?=$|[^A-Z0-9+*/=−-])/g;
         while((match=re.exec(s))){if(allPresent(match[1]+match[3])){var a=match[1].split(""),b=match[3].split("");if(match[2]==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,match[2])){fail("source_coordinate_contradiction",{type:"relation",first:a,second:b,relation:match[2]});}}}
@@ -217,16 +227,12 @@
         re=/([A-Z])\s+(?:(?:נמצא|נמצאת)\s+)?על\s+(?:(הצלע|הקטע|האלכסון|הישר)\s+)?([A-Z]{2})(?![A-Z])/g;
         while((match=re.exec(sentence))){if(allPresent(match[1]+match[3])){var middle=points[match[1]],start=points[match[3][0]],end=points[match[3][1]],onSegment=sameLength(distance(start,middle)+distance(middle,end),distance(start,end)),cross=(end[0]-start[0])*(middle[1]-start[1])-(end[1]-start[1])*(middle[0]-start[0]);if(match[2]==="הישר"?Math.abs(cross)>EPS*Math.max(1,distance(start,end)*distance(start,middle)):!onSegment){fail("source_coordinate_contradiction",{type:"pointOn",point:match[1],ends:match[3].split(""),extent:match[2]==="הישר"?"line":"segment"});}}}
         re=/([A-Z])\s+(?:(?:נמצא|נמצאת)\s+)?על\s+המשך\s+(?:(?:הצלע|הקטע)\s+)?([A-Z]{2})\s+מעבר\s+ל\s*[־-]?\s*([A-Z])(?![A-Za-z])/g;
-        while((match=re.exec(sentence))){
-          var extensionPoint=match[1],extensionEnds=match[2].split(""),beyond=match[3];
-          if(extensionEnds[0]===extensionEnds[1]||extensionEnds.indexOf(beyond)===-1||!allPresent(extensionPoint+match[2])){continue;}
-          var extensionStart=points[extensionEnds[0]],extensionEnd=points[extensionEnds[1]],extension=points[extensionPoint];
-          var along=[extensionEnd[0]-extensionStart[0],extensionEnd[1]-extensionStart[1]],offset=[extension[0]-extensionStart[0],extension[1]-extensionStart[1]];
-          var extensionCross=along[0]*offset[1]-along[1]*offset[0],projection=(along[0]*offset[0]+along[1]*offset[1])/(along[0]*along[0]+along[1]*along[1]);
-          var isBeyond=beyond===extensionEnds[0]?projection < -EPS:projection > 1+EPS;
-          if(Math.abs(extensionCross)>EPS*Math.max(1,Math.hypot(along[0],along[1])*Math.hypot(offset[0],offset[1]))||!isBeyond){
-            fail("source_coordinate_contradiction",{type:"pointOnExtension",point:extensionPoint,ends:extensionEnds,beyond:beyond});
-          }
+        while((match=re.exec(sentence))){checkPointExtension(match[1],match[2].split(""),match[3]);}
+        // Vision analysis may state the worksheet's given in English. Accept
+        // its explicit point/segment/direction only, never a conditional.
+        if(!/\b(?:if|unless)\b/i.test(sentence)){
+          re=/\b(?:point\s+)?([A-Z])\s+(?:lies|is)\s+on\s+the\s+extension\s+of\s+(?:(?:side|segment)\s+)?([A-Z]{2})\s+beyond\s+([A-Z])(?![A-Za-z])/gi;
+          while((match=re.exec(sentence))){checkPointExtension(match[1],match[2].split(""),match[3]);}
         }
         re=/(משולש|מעוין|ריבוע|מלבן|מקבילית)\s*[△Δ]?\s*([A-Z]{3,4})(?![A-Z])/g;
         while((match=re.exec(sentence))){if(!allPresent(match[2])){continue;}var shape=match[1],names=match[2].split("");

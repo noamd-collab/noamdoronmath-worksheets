@@ -81,3 +81,40 @@ test("a missing point, unspecified direction or unrelated beyond-point is not pr
     assert.equal(Plan.inspect(plan,context).ok,true,claim);
   }
 });
+
+test("the actual saved English vision source rejects E on AC while accepting E beyond A on BA",()=>{
+  const actualSource="Given: In isosceles triangle △ABC with AB = AC. Point E lies on the extension of BA beyond A. Ray AD is drawn from A such that AD ∥ BC. The problem asks to prove that AD bisects the exterior angle ∠EAC.";
+  const actualDescription="Point E lies on the extension of side BA beyond A (so B–A–E are collinear in that order).";
+  for(const questionText of [actualSource,"Given: triangle ABC and point D. "+actualDescription]){
+    const {plan,context}=fixture();context.questionText=questionText;
+    assert.equal(Plan.inspect(plan,context).ok,true,questionText);
+    plan.points.E=[-1,4];const result=Plan.inspect(plan,context);
+    assert.equal(result.reason,"source_coordinate_contradiction");
+    assert.deepEqual(result.constraint,{type:"pointOnExtension",point:"E",ends:["B","A"],beyond:"A"});
+  }
+});
+
+test("English extension wording shares endpoint-direction validation with Hebrew",()=>{
+  for(const claim of ["E is on the extension of segment BA beyond A.","Point E lies on the extension of AB beyond A."]){
+    const {plan,context}=fixture();context.questionText="Given: triangle ABC and point D. "+claim;
+    assert.equal(Plan.inspect(plan,context).ok,true);
+    plan.points.E=[-1.5,1.5];assert.equal(Plan.inspect(plan,context).constraint.type,"pointOnExtension");
+    plan.points.E=[-4,-1];assert.equal(Plan.inspect(plan,context).constraint.type,"pointOnExtension");
+  }
+});
+
+test("English goals, negations, questions and conditional extensions remain unproven",()=>{
+  for(const claim of [
+    "Prove that Point E lies on the extension of BA beyond A.",
+    "Show that Point E lies on the extension of BA beyond A.",
+    "It is not given that Point E lies on the extension of BA beyond A.",
+    "Point E lies on the extension of BA beyond A?",
+    "Suppose Point E lies on the extension of BA beyond A.",
+    "If Point E lies on the extension of BA beyond A, identify an angle.",
+    "Point E lies on the extension of BA beyond A if another condition holds.",
+    "Unless Point E lies on the extension of BA beyond A, another construction is needed."
+  ]){
+    const {plan,context}=fixture();context.questionText="Given: triangle ABC and points D, E. "+claim;plan.points.E=[-1,4];
+    assert.equal(Plan.inspect(plan,context).ok,true,claim);
+  }
+});

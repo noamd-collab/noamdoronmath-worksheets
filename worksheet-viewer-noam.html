@@ -2151,7 +2151,7 @@ textarea:focus{
 <script src="noam-didactic-guides.js?v=20260920-3"></script>
 <script src="noam-geometry.js?v=20260920-4"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
-<script src="noam-diagram-plan.js?v=20260920-8"></script>
+<script src="noam-diagram-plan.js?v=20260920-9"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
 <script src="noam-glossary.js?v=20260920-3"></script>
@@ -5925,10 +5925,6 @@ function noamRenderAiDiagram(visual){
   var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
   if (!exercise||visual.sourceIdentity!==noamDiagramSourceIdentity(exercise)){return null;}
   try{
-    // Opt-in, local diagnosis of worksheet recognition; never log student chat.
-    if (new URLSearchParams(location.search).get("diagramDebug")==="1"){
-      console.debug("NOAM_DIAGRAM_WORKSHEET_SOURCE",String(visual.context&&visual.context.questionText||"").slice(0,12000));
-    }
     var scene=window.NoamDiagramPlan.compile(visual.plan,visual.context);
     return scene?window.NoamGeometry.render(document,scene):null;
   }catch(error){return null;}
