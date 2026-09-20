@@ -5334,9 +5334,9 @@ function noamSolverMessage(studentMessage,thread,topic){
   var geometry=noamGeometryContext(topic+" "+current+" "+noamRecentThreadText(thread,220));
   var visual=window.NoamLocalVisual&&window.NoamLocalVisual.wantsVisualSupport&&window.NoamLocalVisual.wantsVisualSupport(current);
   var guard=geometry
-    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק את הקודקוד ואת שתי הקרניים."
+    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך."
     : "";
-  if (visual){guard+=" התלמיד מתקשה בזיהוי חזותי. ציין במפורש מה לסמן בשרטוט; אל תבקש ממנו לנחש לאיזו זווית התכוונת.";}
+  if (visual){guard+=" התלמיד מתקשה בזיהוי חזותי. ציין מה לסמן; אל תבקש ממנו לנחש. האתר יציג שרטוט לצד התשובה, לכן אל תאמר שאינך יכול לצייר.";}
   var label="הודעת התלמיד עכשיו: ";
   var currentBudget=Math.min(current.length,Math.max(140,Math.floor(budget*.42)));
   var currentText=current.slice(0,currentBudget);
@@ -5358,6 +5358,17 @@ function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintI
   var triangle=local&&local.parseLabeledTriangle?local.parseLabeledTriangle(conversation):null;
   if (triangle){return triangle;}
   return {type:"question-image",exerciseId:exercise.id,label:"השרטוט מתוך השאלה"};
+}
+
+function noamVisualAnswer(studentMessage,answer,visual){
+  var local=window.NoamLocalVisual;
+  var askedToDraw=local&&local.wantsDrawing&&local.wantsDrawing(studentMessage);
+  if (!visual||!askedToDraw||!/(?:לא\s+(?:יכול|יכולה)|אין\s+לי\s+אפשרות)\s+(?:לצייר|לשרטט)/i.test(String(answer||""))){return answer;}
+  if (visual.type==="labeled-triangle"){
+    var name=(visual.vertices||[]).join("");
+    return "הנה משולש "+name+" לבדו. האות האמצעית בשם כל זווית היא הקודקוד שלה.";
+  }
+  return "הנה השרטוט מתוך השאלה, צמוד להסבר.";
 }
 
 function askNoam(helpKind,studentMessage){
@@ -5405,6 +5416,7 @@ function askNoam(helpKind,studentMessage){
     .then(function(result){
       var answer=String(result.answer||"").trim();
       var visual=noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,requestAnalysis);
+      answer=noamVisualAnswer(studentMessage,answer,visual);
       thread.messages.push({role:"assistant",text:answer,kind:"",visual:visual});
       thread.history.push({role:"user",content:historyQuestion},{role:"assistant",content:answer});
       thread.history=thread.history.slice(-8);

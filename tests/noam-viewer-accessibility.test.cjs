@@ -112,6 +112,7 @@ test("geometry follow-ups carry recent context and a non-circular proof guard th
   const message = f.payloads[0].studentMessage;
   assert.match(message,/הפרד בין הנתונים לבין מה שצריך להוכיח/);
   assert.match(message,/אסור להשתמש במסקנה כנתון/);
+  assert.match(message,/אל תבלבל אותו עם ישר חותך/);
   assert.match(message,/הקשר קודם/);
   assert.match(message,/DE מקביל ל-BC/);
   assert.match(message,/הודעת התלמיד עכשיו: help/);
@@ -174,6 +175,20 @@ test("visual geometry help can render a clean triangle or the scanned question b
   assert.match(html,/type:"question-image",exerciseId:exercise\.id/);
   assert.match(html,/noam-question-visual-image/);
   assert.match(html,/parseLabeledTriangle\(conversation\)/);
+});
+
+test("a contradictory model refusal is replaced when the viewer supplies the requested drawing", () => {
+  const ctx = {
+    window:{NoamLocalVisual:{wantsDrawing:text=>/לצייר/.test(text)}},
+    Set,Math,String,Number,Array,Object,RegExp
+  };
+  vm.createContext(ctx);
+  vm.runInContext(askSource,ctx);
+  const visual={type:"labeled-triangle",vertices:["E","D","B"],angles:["EBD","BDE"]};
+  assert.equal(
+    ctx.noamVisualAnswer("אפשר לצייר לי?","אני לא יכול לצייר, הסתכלו בדף.",visual),
+    "הנה משולש EDB לבדו. האות האמצעית בשם כל זווית היא הקודקוד שלה."
+  );
 });
 
 test("the viewer remains valid JavaScript with one main target and one persistent announcer", () => {
