@@ -310,7 +310,7 @@ test("question feedback pins remain, while AI-answer feedback appears once below
 test("local visual analysis deduplicates identical manifest text before parsing", () => {
   assert.match(html, /values\.indexOf\(value\)===index/);
   assert.match(html, /if \(!tryNoamLocalVisual\(message\)\)\{askNoam\("free_question",message\);\}/);
-  assert.match(html, /noam-didactic-guides\.js\?v=20260920-2/);
+  assert.match(html, /noam-didactic-guides\.js\?v=20260920-3/);
   assert.match(html, /noam-local-visual\.js\?v=20260920-3/);
   assert.ok(html.indexOf("noam-didactic-guides.js")<html.indexOf("noam-local-visual.js"));
 });
