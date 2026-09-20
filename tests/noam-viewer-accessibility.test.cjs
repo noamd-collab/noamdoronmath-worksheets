@@ -128,6 +128,13 @@ test("the compact composer hides attachment limits until a four-file limit is ex
   assert.doesNotMatch(html, /class="noam-compose-heading"/);
 });
 
+test("an untouched chat has no instructional filler and collapses beside the scanned question", () => {
+  assert.doesNotMatch(html, /בחרו סוג עזרה או כתבו שאלה/);
+  assert.doesNotMatch(html, /השיחה תישמר גם אם תעברו לסעיף אחר/);
+  assert.match(html, /\.noam-transcript\.is-empty\{flex:0 0 0;min-height:0;max-height:0/);
+  assert.match(html, /if \(!thread\.messages\.length&&!busy\)\{ transcript\.classList\.add\("is-empty"\); \}/);
+});
+
 test("the viewer remains valid JavaScript with one main target and one persistent announcer", () => {
   const script = html.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
   assert.doesNotThrow(() => new vm.Script(script));

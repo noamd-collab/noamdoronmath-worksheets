@@ -1302,12 +1302,7 @@ textarea:focus{
   padding:7px 2px 12px;
   scroll-behavior:smooth;
 }
-.noam-empty{
-  padding:10px 2px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.55;
-}
+.noam-transcript.is-empty{flex:0 0 0;min-height:0;max-height:0;overflow:hidden;padding:0}
 .noam-row{display:flex;width:100%}
 .noam-row.user{justify-content:flex-start}
 .noam-row.assistant{justify-content:flex-end}
@@ -4218,13 +4213,10 @@ function renderNoamChat(){
     this.focus({preventScroll:true});
   });
   var transcript = document.getElementById("noamTranscript");
-  if (!thread.messages.length){
-    transcript.innerHTML = '<div class="noam-empty">בחרו סוג עזרה או כתבו שאלה. השיחה תישמר גם אם תעברו לסעיף אחר.</div>';
-  }else{
-    thread.messages.forEach(function(message){
-      addTranscriptBubble(transcript,message.role,message.text,message.kind||"");
-    });
-  }
+  thread.messages.forEach(function(message){
+    addTranscriptBubble(transcript,message.role,message.text,message.kind||"");
+  });
+  if (!thread.messages.length&&!busy){ transcript.classList.add("is-empty"); }
   if (busy){
     var thinkingText=pendingExerciseId===selectedExercise.id
       ? "נועם AI חושב…"
