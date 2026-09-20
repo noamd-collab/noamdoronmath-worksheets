@@ -306,6 +306,14 @@ test("an untouched chat has no instructional filler and collapses beside the sca
   assert.match(html, /if \(!thread\.messages\.length&&!busy\)\{ transcript\.classList\.add\("is-empty"\); \}/);
 });
 
+test("the source question image disappears once a conversation starts while its label remains", () => {
+  assert.match(html,/hasConversation = !!\(thread\.messages\.length \|\| thread\.history\.length \|\| thread\.hintIndex\)/);
+  assert.match(html,/showQuestionPreview = !hasConversation/);
+  assert.match(html,/showQuestionPreview\?'':' noam-picked-compact'/);
+  assert.match(html,/if \(showQuestionPreview\)\{renderExercisePreview\(selectedExercise,0\);\}/);
+  assert.match(html,/noam-picked-label[^\n]*exerciseLabel\(selectedExercise\)/);
+});
+
 test("question feedback pins remain, while AI-answer feedback appears once below the composer", () => {
   assert.match(html, /report\.className = "noam-report-pin"/);
   assert.match(html, /report\.dataset\.label = "יש הערה על השאלה\?"/);

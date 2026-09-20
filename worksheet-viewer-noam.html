@@ -1223,6 +1223,8 @@ textarea:focus{
   border:2px solid var(--ink);
   border-radius:12px;
 }
+.noam-picked.noam-picked-compact{padding:6px 10px;margin-bottom:4px}
+.noam-picked.noam-picked-compact .noam-picked-label{margin-bottom:0}
 .noam-picked-label{
   font-family:'Heebo',sans-serif;
   font-size:13px;
@@ -4612,18 +4614,20 @@ function renderNoamChat(){
   panelBody.classList.add("is-chat");
   panelBack.hidden = false;
   var thread = exerciseThread(selectedExercise.id);
-  var previewing = panelBody.classList.contains("is-previewing");
+  var hasConversation = !!(thread.messages.length || thread.history.length || thread.hintIndex);
+  var showQuestionPreview = !hasConversation;
+  if (!showQuestionPreview){panelBody.classList.remove("is-previewing");}
+  var previewing = showQuestionPreview && panelBody.classList.contains("is-previewing");
   var text = selectedExercise.text || selectedExercise.prompt || selectedExercise.context || "";
   var hasAssistantAnswer = thread.messages.some(function(message){
     return message && message.role === "assistant" && String(message.text || "").trim();
   });
 
   panelBody.innerHTML =
-    '<div class="noam-picked">' +
+    '<div class="noam-picked'+(showQuestionPreview?'':' noam-picked-compact')+'">' +
       '<div class="noam-picked-heading"><div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
-      '<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הגדלת השאלה')+'</button></div>' +
-      '<div class="noam-picked-preview" id="noamPickedPreview" hidden></div>' +
-      '<div class="noam-picked-text" id="noamPickedText">' + esc(text) + '</div>' +
+      (showQuestionPreview?'<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הגדלת השאלה')+'</button>':'')+'</div>' +
+      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText">' + esc(text) + '</div>':'') +
     '</div>' +
     '<div class="noam-thread-tools">' +
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
@@ -4676,14 +4680,17 @@ function renderNoamChat(){
   }
   renderNoamAttachments();
 
-  document.getElementById("noamPreviewToggle").addEventListener("click",function(){
-    var expanded = !panelBody.classList.contains("is-previewing");
-    panelBody.classList.toggle("is-previewing",expanded);
-    this.setAttribute("aria-expanded",String(expanded));
-    this.textContent = expanded ? "חזרה לשיחה" : "הגדלת השאלה";
-    panelBody.scrollTop = 0;
-    this.focus({preventScroll:true});
-  });
+  var previewToggle=document.getElementById("noamPreviewToggle");
+  if (previewToggle){
+    previewToggle.addEventListener("click",function(){
+      var expanded = !panelBody.classList.contains("is-previewing");
+      panelBody.classList.toggle("is-previewing",expanded);
+      this.setAttribute("aria-expanded",String(expanded));
+      this.textContent = expanded ? "חזרה לשיחה" : "הגדלת השאלה";
+      panelBody.scrollTop = 0;
+      this.focus({preventScroll:true});
+    });
+  }
   var transcript = document.getElementById("noamTranscript");
   thread.messages.forEach(function(message){
     addTranscriptBubble(transcript,message.role,message.text,message.kind||"",message.visual||null,message,thread);
@@ -4762,7 +4769,7 @@ function renderNoamChat(){
   setNoamBusy(busy);
   renderPanelMath(panelBody);
   panelBody.querySelectorAll(".noam-row.assistant .noam-bubble,#noamPickedText").forEach(enhanceNoamGlossary);
-  renderExercisePreview(selectedExercise,0);
+  if (showQuestionPreview){renderExercisePreview(selectedExercise,0);}
   restoreNoamChatFocus(focusId);
   transcript.scrollTop = transcript.scrollHeight;
 }
