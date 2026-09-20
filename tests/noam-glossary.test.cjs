@@ -36,6 +36,17 @@ test("Hebrew word boundaries avoid highlighting a term inside an unrelated word"
   assert.equal(glossary.findTerms("ריבוע", 9, 6)[0].id, "square");
 });
 
+test("axis-scale language used by Noam AI is explained in grade 7", () => {
+  const text = "ציר מספרי אינו חייב להתחיל ב־0, ולכן יש להסיק את קנה המידה. בין 20 ל־50 בציר ה־x ובין 9 ל־15 בציר ה־y.";
+  const matches = glossary.findTerms(text, 7);
+  assert.deepEqual(matches.map(match => match.id), ["number-line", "scale", "coordinate-axis"]);
+  assert.equal(glossary.get("scale").short, "הערך הקבוע שכל מרווח בציר או כל יחידת אורך בשרטוט מייצגים.");
+});
+
+test("Pythagoras is available at the grade where the catalog teaches it", () => {
+  assert.deepEqual(glossary.findTerms("משפט פיתגורס", 7).map(match => match.id), ["pythagorean"]);
+});
+
 test("the viewer exposes hover, focus, tap and a free detailed explanation tab", () => {
   assert.match(viewer, /noam-glossary\.js\?v=/);
   assert.match(viewer, /pointerenter[\s\S]*?focus[\s\S]*?click/);
