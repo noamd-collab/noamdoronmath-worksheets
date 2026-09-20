@@ -5931,6 +5931,10 @@ function noamRenderAiDiagram(visual){
 }
 
 function noamDiagramError(error){
+  if (typeof URLSearchParams!=="undefined"&&typeof location!=="undefined"&&
+      new URLSearchParams(location.search).get("diagramDebug")==="1"&&error&&error.diagramReason){
+    return "DIAGRAM DEBUG: "+String(error.diagramReason).slice(0,120);
+  }
   if (isBotProtectionError(error)){return String(error.message||"לא הצלחנו לאמת את הבקשה. נסו שוב בעוד רגע.").slice(0,220);}
   if (error&&error.code==="DIAGRAM_UNSUPPORTED"){
     return "עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.";
@@ -6014,7 +6018,8 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
         var checked=result&&result.ok&&window.NoamDiagramPlan.inspect(result.plan,context);
         if (!checked||!checked.ok){
           console.warn("NOAM_DIAGRAM_REJECTED",String(result&&result.validationReason||checked&&checked.reason||"unavailable").slice(0,80),JSON.stringify(result&&result.constraint||null));
-          var error=new Error("diagram unsupported");error.code="DIAGRAM_UNSUPPORTED";throw error;
+          var error=new Error("diagram unsupported");error.code="DIAGRAM_UNSUPPORTED";
+          error.diagramReason=String(result&&result.validationReason||checked&&checked.reason||"unavailable");throw error;
         }
         if (!window.NoamGeometry||!window.NoamGeometry.render(document,checked.scene)){
           console.warn("NOAM_DIAGRAM_RENDER_FAILED",JSON.stringify({points:result.plan.points,segments:result.plan.segments,
