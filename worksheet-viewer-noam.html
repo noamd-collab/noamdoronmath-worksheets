@@ -1362,33 +1362,25 @@ textarea:focus{
   font-weight:900;
 }
 .noam-compose{
-  padding-top:11px;
-  border-top:2px solid var(--ink);
+  padding-top:4px;
 }
-.noam-compose label{
-  display:block;
-  margin-bottom:6px;
-  font-family:'Heebo',sans-serif;
-  font-size:12.5px;
-  font-weight:900;
-}
-.noam-compose-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
-.noam-compose-heading label{margin-bottom:0}
 .noam-math-toggle{
-  padding:4px 8px;
+  flex:0 0 auto;
+  width:29px;
+  min-height:28px;
+  padding:2px;
   border:1px solid var(--ink);
-  border-radius:8px;
+  border-radius:7px;
   color:var(--ink);
-  background:var(--tint);
-  font:inherit;
-  font-size:12px;
+  background:#fff;
+  font:700 12px Georgia,serif;
   cursor:pointer;
 }
 .noam-math-keys{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:5px;
-  margin-bottom:8px;
+  margin:5px 0 2px;
 }
 .noam-math-keys[hidden]{display:none}
 .noam-math-key{
@@ -1431,11 +1423,12 @@ textarea:focus{
 }
 .noam-input-actions{
   display:flex;
-  flex-wrap:wrap;
+  flex-wrap:nowrap;
   align-items:center;
   gap:5px;
   margin:0 0 2px;
 }
+.noam-input-spacer{flex:1 1 auto}
 .noam-input-actions .noam-action{
   min-height:28px;
   padding:3px 9px;
@@ -1445,21 +1438,34 @@ textarea:focus{
 }
 .noam-compose textarea:focus,.noam-compose textarea:focus-visible{outline:none;box-shadow:none}
 .noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}
-    .noam-attach{margin:6px 0 8px}
     .noam-attach-button{
-      padding:5px 10px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+      width:29px;
+      min-height:28px;
+      padding:2px;
       color:var(--ink);
-      background:var(--tint);
+      background:#fff;
       border:1px solid var(--ink);
-      border-radius:8px;
+      border-radius:7px;
       font:inherit;
-      font-size:12px;
       cursor:pointer;
     }
-    .noam-attach-button[disabled]{opacity:.55;cursor:default}
-    .noam-attach-note{margin:4px 2px 0;color:var(--muted);font-size:11.5px}
-    .noam-attach-note.is-error{color:#a3121f;font-weight:700}
-    .noam-attach-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+    .noam-attach-button svg{width:15px;height:15px;display:block}
+    .noam-attach-note{
+      margin:5px 0 2px;
+      padding:5px 8px;
+      color:var(--muted);
+      background:var(--tint);
+      border:1px solid rgba(20,33,61,.18);
+      border-radius:8px;
+      font-size:11.5px;
+    }
+    .noam-attach-note[hidden]{display:none}
+    .noam-attach-note.is-error{color:#8f111d;background:#ffe7e9;border-color:#d92d3b;font-weight:800}
+    .noam-attach-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
     .noam-attach-item{
       display:flex;
       align-items:center;
@@ -1697,12 +1703,11 @@ textarea:focus{
   .noam-link-button{min-height:44px;font-size:12px;padding:5px}
   .noam-transcript{flex:1;min-height:48px;max-height:none;overflow-y:auto;overscroll-behavior:contain;padding:3px 1px 6px;-webkit-overflow-scrolling:touch}
   .noam-bubble{font-size:16px;max-width:96%;border-width:1px}
-  .noam-compose{flex:none;padding-top:6px;background:#fff}
-  .noam-compose-heading{margin-bottom:4px}
+  .noam-compose{flex:none;padding-top:2px;background:#fff}
   .noam-compose textarea{font-size:16px;min-height:48px;max-height:80px;resize:none;padding:4px 1px 7px}
   .noam-compose-help{display:none}
   .noam-send{min-height:44px;margin-top:4px;padding:7px}
-  .noam-math-toggle{min-height:44px}
+  .noam-math-toggle,.noam-attach-button{width:30px;min-height:30px}
   .noam-math-key{min-height:44px}
   .noam-question-list{grid-template-columns:repeat(3,minmax(0,1fr))}
   .noam-question-list button{min-height:48px;font-size:14px}
@@ -1714,14 +1719,11 @@ textarea:focus{
   .panel.is-short .noam-thread-tools{display:none}
   .panel.is-short .noam-transcript{min-height:32px}
   .panel.is-short .panel-body.is-chat{overflow-y:auto}
-  .panel.is-short .noam-compose{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"field field" "keys keys" "send tools";gap:4px}
-  .panel.is-short .noam-compose-heading{grid-area:tools;margin:0;display:flex}
-  .panel.is-short .noam-compose-heading label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-  .panel.is-short .noam-math-toggle{width:100%}
+  .panel.is-short .noam-compose{display:grid;grid-template-columns:1fr;grid-template-areas:"field" "send";gap:4px}
   .panel.is-short .noam-input-shell{grid-area:field}
   .panel.is-short .noam-compose textarea{min-height:44px;height:44px}
   .panel.is-short .noam-send{grid-area:send;margin:0}
-  .panel.is-short .noam-math-keys{grid-area:keys;grid-template-columns:repeat(8,minmax(48px,1fr));overflow-x:auto;margin:0;padding-bottom:2px;min-width:0}
+  .panel.is-short .noam-math-keys{grid-template-columns:repeat(8,minmax(48px,1fr));overflow-x:auto;margin:4px 0 0;padding-bottom:2px;min-width:0}
   .panel-body.is-previewing{overflow:hidden}
   .panel-body.is-previewing>:not(.noam-picked){display:none}
   .panel-body.is-previewing>.noam-picked{display:block;flex:1;min-height:0;max-height:none;overflow:auto;padding:0 6px 6px}
@@ -4165,32 +4167,29 @@ function renderNoamChat(){
     '</div>' +
     '<div class="noam-transcript" id="noamTranscript" role="region" aria-label="השיחה עם נועם AI" tabindex="-1"></div>' +
     '<div class="noam-compose">' +
-      '<div class="noam-compose-heading">' +
-        '<label for="noamQuestion">יש לי שאלה</label>' +
-        '<button type="button" class="noam-math-toggle" id="noamMathToggle" aria-controls="noamMathKeys" aria-expanded="'+mathKeyboardOpen+'">סימנים מתמטיים</button>' +
-      '</div>' +
-      '<div class="noam-math-keys" id="noamMathKeys" role="group" aria-label="סימנים מתמטיים"'+(mathKeyboardOpen?'':' hidden')+'>' +
-        '<button type="button" class="noam-math-key" data-math="square" dir="ltr" title="העלאה בריבוע" aria-label="העלאה בריבוע">x²</button>' +
-        '<button type="button" class="noam-math-key" data-math="cube" dir="ltr" title="העלאה בחזקה שלישית" aria-label="העלאה בחזקה שלישית">x³</button>' +
-        '<button type="button" class="noam-math-key" data-math="power" dir="ltr" title="חזקה לבחירתכם" aria-label="חזקה לבחירתכם">xⁿ</button>' +
-        '<button type="button" class="noam-math-key" data-math="root" dir="ltr" title="שורש ריבועי" aria-label="שורש ריבועי">√</button>' +
-        '<button type="button" class="noam-math-key" data-math="fraction" dir="ltr" title="שבר" aria-label="שבר">a/b</button>' +
-        '<button type="button" class="noam-math-key" data-math="multiply" dir="ltr" title="כפל" aria-label="כפל">×</button>' +
-        '<button type="button" class="noam-math-key" data-math="divide" dir="ltr" title="חילוק" aria-label="חילוק">÷</button>' +
-        '<button type="button" class="noam-math-key" data-math="parentheses" dir="ltr" title="סוגריים" aria-label="סוגריים">( )</button>' +
-      '</div>' +
-      '<div class="noam-attach">' +
-        '<button type="button" class="noam-attach-button" id="noamAttachButton">צירוף צילום או קובץ</button>' +
-        '<input type="file" id="noamAttachInput" accept="image/*,application/pdf" multiple hidden>' +
-        '<div class="noam-attach-list" id="noamAttachList"></div>' +
-        '<div class="noam-attach-note" id="noamAttachNote" role="status" aria-live="polite">' + attachmentHint() + '</div>' +
-      '</div>' +
       '<div class="noam-input-shell">' +
         '<div class="noam-input-actions" role="group" aria-label="עזרה מהירה">' +
           '<button type="button" class="noam-action" id="noamOverview">הסבר כללי</button>' +
           '<button type="button" class="noam-action primary" id="noamHint">רמז</button>' +
           '<button type="button" class="noam-action" id="noamMistake" hidden>טעות נפוצה</button>' +
+          '<span class="noam-input-spacer" aria-hidden="true"></span>' +
+          '<button type="button" class="noam-math-toggle" id="noamMathToggle" aria-label="פתיחת סימנים מתמטיים" title="סימנים מתמטיים" aria-controls="noamMathKeys" aria-expanded="'+mathKeyboardOpen+'">x²</button>' +
+          '<button type="button" class="noam-attach-button" id="noamAttachButton" aria-label="צירוף צילום או קובץ" title="צירוף צילום או קובץ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 12.5 15 6a3.5 3.5 0 0 1 5 5l-8.5 8.5a5 5 0 0 1-7-7L13 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+          '<input type="file" id="noamAttachInput" accept="image/*,application/pdf" multiple hidden>' +
         '</div>' +
+        '<div class="noam-math-keys" id="noamMathKeys" role="group" aria-label="סימנים מתמטיים"'+(mathKeyboardOpen?'':' hidden')+'>' +
+          '<button type="button" class="noam-math-key" data-math="square" dir="ltr" title="העלאה בריבוע" aria-label="העלאה בריבוע">x²</button>' +
+          '<button type="button" class="noam-math-key" data-math="cube" dir="ltr" title="העלאה בחזקה שלישית" aria-label="העלאה בחזקה שלישית">x³</button>' +
+          '<button type="button" class="noam-math-key" data-math="power" dir="ltr" title="חזקה לבחירתכם" aria-label="חזקה לבחירתכם">xⁿ</button>' +
+          '<button type="button" class="noam-math-key" data-math="root" dir="ltr" title="שורש ריבועי" aria-label="שורש ריבועי">√</button>' +
+          '<button type="button" class="noam-math-key" data-math="fraction" dir="ltr" title="שבר" aria-label="שבר">a/b</button>' +
+          '<button type="button" class="noam-math-key" data-math="multiply" dir="ltr" title="כפל" aria-label="כפל">×</button>' +
+          '<button type="button" class="noam-math-key" data-math="divide" dir="ltr" title="חילוק" aria-label="חילוק">÷</button>' +
+          '<button type="button" class="noam-math-key" data-math="parentheses" dir="ltr" title="סוגריים" aria-label="סוגריים">( )</button>' +
+        '</div>' +
+        '<div class="noam-attach-list" id="noamAttachList"></div>' +
+        '<div class="noam-attach-note" id="noamAttachNote" role="status" aria-live="polite" hidden></div>' +
+        '<label class="noam-sr-only" for="noamQuestion">יש לי שאלה</label>' +
         '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp">'+esc(noamDrafts[selectedExercise.id]||"")+'</textarea>' +
       '</div>' +
       '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
@@ -4365,7 +4364,7 @@ function syntheticAnalysis(exercise){
    handwriting. Up to ATTACH_MAX_FILES files, each up to ATTACH_MAX_BYTES. The
    files never leave the browser except inside that one combined image. */
 
-var ATTACH_MAX_FILES = 3;
+var ATTACH_MAX_FILES = 4;
 var ATTACH_MAX_BYTES = 4 * 1024 * 1024;
 var ATTACH_MAX_WIDTH = 1600;
 var ATTACH_MAX_PDF_PAGES = 2;
@@ -4383,15 +4382,14 @@ function currentAttachments(){
     : [];
 }
 
-function attachmentHint(){
-  return "אפשר לצרף עד " + ATTACH_MAX_FILES + " קבצים, כל אחד עד 4 מגה בייט. תמונה או PDF.";
-}
-
 function setAttachmentNote(text, isError){
   var note = document.getElementById("noamAttachNote");
   if (!note){ return; }
-  note.textContent = text || attachmentHint();
+  note.textContent = text || "";
+  note.hidden = !text;
   note.classList.toggle("is-error", !!isError);
+  note.setAttribute("role", isError ? "alert" : "status");
+  note.setAttribute("aria-live", isError ? "assertive" : "polite");
 }
 
 function scaleCanvasTo(source, maxWidth){
@@ -4547,8 +4545,6 @@ function renderNoamAttachments(){
     chip.append(image, name, remove);
     holder.append(chip);
   });
-  var button = document.getElementById("noamAttachButton");
-  if (button){ button.disabled = list.length >= ATTACH_MAX_FILES; }
 }
 
 function exerciseImageWithAttachments(exercise, list){

@@ -117,6 +117,17 @@ test("active accent controls retain readable text for every grade", () => {
   }
 });
 
+test("the compact composer hides attachment limits until a four-file limit is exceeded", () => {
+  assert.match(html, /var ATTACH_MAX_FILES = 4;/);
+  assert.match(html, /id="noamAttachButton" aria-label="צירוף צילום או קובץ"/);
+  assert.match(html, /id="noamMathToggle" aria-label="פתיחת סימנים מתמטיים"/);
+  assert.match(html, /id="noamAttachNote" role="status" aria-live="polite" hidden/);
+  assert.match(html, /note\.hidden = !text;/);
+  assert.match(html, /note\.setAttribute\("role", isError \? "alert" : "status"\);/);
+  assert.doesNotMatch(html, />צירוף צילום או קובץ<\/button>/);
+  assert.doesNotMatch(html, /class="noam-compose-heading"/);
+});
+
 test("the viewer remains valid JavaScript with one main target and one persistent announcer", () => {
   const script = html.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
   assert.doesNotThrow(() => new vm.Script(script));
