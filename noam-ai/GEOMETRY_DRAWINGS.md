@@ -23,6 +23,33 @@ The exact live PDFs were downloaded and visually compared with the manifests on 
 - Existing screenshot-only conversations can use the new drawing action without requesting the same hint again.
 - Unsupported constructions retain the original question image with the label “הצג את השרטוט המקורי”. They are not presented as a generated demonstration.
 
-To add a new family, verify its actual PDF and point order, add a source-bound resolver and narrowly scoped stages, and test positive and misleading/conflicting cases. Verify SVG appearance at a narrow width before publishing. Do not expand coverage by matching arbitrary chat text or question numbers alone.
+Verified local guides remain the free first choice. The new general fallback uses
+`noam-diagram-plan.js` to compile an AI-produced JSON plan for straight-line
+geometry, without any exercise-ID-specific resolver. It supports named points,
+segments, highlights and angles; it is not a universal geometry theorem prover.
+It checks recognized source relations and requires affirmative source evidence
+for equality, right-angle and numeric marks. Goals and student assertions are not
+evidence. Generated prose, SVG/HTML and executable code are forbidden.
+
+The viewer calls `noamDiagramPlan` only on an explicit drawing request, with the
+worksheet analysis and the exact clicked answer/student message. It deduplicates
+requests, caches validated successes, preserves hint progress, and does not
+replace an unsuccessful demonstration with the original scan. Cached plans are
+scoped to the source PDF/version and revalidated before rendering.
+
+Deployment checkpoint (2026-09-20): the compiler asset was published in commit
+`ead8c83`. The general viewer integration and Wix route are not activated yet.
+Deploy the private Wix backend first, verify the protected route, then publish
+the viewer and perform real desktop/mobile rendering and live model checks.
+Backend implementation, exact source backups, build and 28 server tests are in
+the workspace's `work/diagram-ai/`. Runtime model: `qwen3.8-flash`, thinking off,
+max 1800 output tokens, existing Wix Secrets and usage meter. No new provider,
+database architecture or API credential is introduced.
+
+For verified local guides, verify the actual PDF and point order, add a
+source-bound resolver and narrowly scoped stages, and test positive and
+misleading/conflicting cases. Verify SVG appearance at a narrow width before
+publishing. Do not expand local guide coverage by matching arbitrary chat text
+or question numbers alone.
 
 Checks: `node --test tests/*.test.cjs` and `node tools/validate.js index.html`.

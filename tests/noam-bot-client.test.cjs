@@ -79,3 +79,20 @@ test("an HTTP failure is returned once without retrying a paid request", async (
   );
   assert.equal(calls, 1);
 });
+
+test("diagram plans use their own verified action and cannot be sent to an unknown host or route",async()=>{
+  const actions=[],requests=[];
+  const client=NoamBotClient.create({api:"https://api.test/_functions",enabled:true,
+    loadRecaptcha:async()=>({ready(fn){fn();},execute:async(_key,options)=>{actions.push(options.action);return "diagram-token";}}),
+    fetch:async(url,options)=>{
+      if(url.endsWith("/noamBotConfig")){return response(200,{ok:true,provider:"recaptcha-v3",mode:"enforce",siteKey:"public-site-key"});}
+      requests.push({url,body:JSON.parse(options.body)});return response(200,{ok:true,plan:{version:1,status:"unsupported"}});
+    }});
+  await client.postJson("https://api.test/_functions/noamDiagramPlan",{exerciseId:"G8-T09-A-Q02א"});
+  assert.deepEqual(actions,["noam_diagram_plan"]);
+  assert.equal(requests[0].body.botVerification.token,"diagram-token");
+  for(const endpoint of ["https://other.test/_functions/noamDiagramPlan","https://api.test/_functions/noamDiagramPlan?bypass=1"]){
+    await assert.rejects(client.postJson(endpoint,{}),error=>error.code==="BOT_ROUTE_UNSUPPORTED");
+  }
+  assert.equal(requests.length,1);
+});

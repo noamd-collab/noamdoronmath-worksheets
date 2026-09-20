@@ -12,7 +12,8 @@
   var VERIFY_MESSAGE = "לא הצלחנו להשלים את בדיקת האבטחה. נסו שוב בעוד רגע.";
   var ACTIONS = {
     noamImageAnalyze: "noam_image_analyze",
-    noamImageSolve: "noam_image_solve"
+    noamImageSolve: "noam_image_solve",
+    noamDiagramPlan: "noam_diagram_plan"
   };
 
   function makeError(message, code, status) {

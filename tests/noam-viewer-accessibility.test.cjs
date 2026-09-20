@@ -346,10 +346,9 @@ test("question drawings use deterministic guide focus when available and safely 
   assert.match(html,/noam-question-focus-segment\.is-parallel/);
 });
 
-test("geometry answers offer a free local drawing action and hide it after use", () => {
+test("geometry answers offer a drawing action without passing an original scan off as a demonstration", () => {
   assert.match(html,/drawButton\.textContent="הדגם באמצעות שרטוט"/);
-  assert.match(html,/message\.visual=manualVisual;[\s\S]*?saveNoamState\(\);[\s\S]*?renderNoamChat\(\)/);
-  assert.match(html,/message\.visual&&\(message\.visual\.type!=="question-image"/);
+  assert.match(html,/requestNoamDiagram\(drawingExercise,thread,message\)/);
   assert.match(html,/failed\\s\+to\\s\+fetch/);
   const handler = html.slice(html.indexOf('drawButton.addEventListener("click"'), html.indexOf("bubble.appendChild(drawButton)"));
   assert.doesNotMatch(handler,/askNoam|postJson|fetch\(/);
@@ -365,15 +364,14 @@ test("geometry answers offer a free local drawing action and hide it after use",
   const thread={history:[]};
   const message={role:"assistant",text:"סמנו את הזווית."};
   assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),true);
-  assert.deepEqual(
-    JSON.parse(JSON.stringify(ctx.noamManualVisual({id:"q"},thread,message))),
-    {type:"question-image",exerciseId:"q",label:"השרטוט מתוך השאלה",focusKey:""}
-  );
+  assert.equal(ctx.noamManualVisual({id:"q"},thread,message),null);
   message.visual={type:"question-image"};
+  assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),true);
+  message.visual={type:"geometry-guide"};
   assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),false);
 });
 
-test("manual Question 4 drawings follow the latest student question and keep only a verified focus key", () => {
+test("manual drawing requests preserve the named angle, but cannot construct from an unverified source", () => {
   const ctx = {
     ttl:"הוכחה גאומטרית",
     window:{NoamLocalVisual:{},NoamDidacticGuides:DidacticGuides},
@@ -383,11 +381,11 @@ test("manual Question 4 drawings follow the latest student question and keep onl
   vm.createContext(ctx);
   vm.runInContext(askSource,ctx);
   const thread={hintIndex:2,history:[],messages:[{role:"user",text:"איפה הזווית ∠EDB?"}]};
-  const visual=JSON.parse(JSON.stringify(ctx.noamManualVisual(
-    {id:"G9-T15-E-Q04א"},thread,{role:"assistant",text:"סמנו את ∠EDB."}
-  )));
-  assert.equal(visual.focusKey,"q4a-angle-edb");
-  assert.equal(Object.hasOwn(visual,"focus"),false);
+  const message={role:"assistant",text:"סמנו את ∠EDB."};
+  const options=ctx.noamMessageVisualOptions(thread,message);
+  assert.equal(options.studentMessage,"איפה הזווית ∠EDB?");
+  assert.equal(options.answer,"סמנו את ∠EDB.");
+  assert.equal(ctx.noamManualVisual({id:"G9-T15-E-Q04א"},thread,message),null);
 });
 
 test("a model-supplied geometry explanation selects a guide-owned focus key", async () => {

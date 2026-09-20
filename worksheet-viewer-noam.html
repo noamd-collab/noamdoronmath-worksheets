@@ -1526,6 +1526,8 @@ textarea:focus{
   outline:2px solid var(--accent-dark);
   outline-offset:2px;
 }
+.noam-draw-action:disabled{cursor:wait;opacity:.65}
+.noam-draw-error{display:block;margin-top:7px;color:#a42828;font:600 13px/1.4 Assistant,sans-serif}
 .noam-bubble.thinking{
   display:flex;
   align-items:center;
@@ -2149,6 +2151,7 @@ textarea:focus{
 <script src="noam-didactic-guides.js?v=20260920-3"></script>
 <script src="noam-geometry.js?v=20260920-1"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
+<script src="noam-diagram-plan.js?v=20260920-1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
 <script src="noam-glossary.js?v=20260920-3"></script>
@@ -4427,7 +4430,7 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
       });
       delete visualSpec.focusKey;
     }
-    var visualElement=visual.type==="geometry-guide"
+    var visualElement=visual.type==="ai-diagram" ? noamRenderAiDiagram(visual) : visual.type==="geometry-guide"
       ? noamRenderGeometryGuide(visual)
       : window.NoamLocalVisual.render(document,visualSpec);
     if (!visualElement&&visual.type==="geometry-guide"){
@@ -4443,23 +4446,22 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     drawButton.type="button";
     drawButton.className="noam-draw-action";
     drawButton.textContent="הדגם באמצעות שרטוט";
-    if (!noamConstructedVisual(selectedExercise,noamMessageVisualOptions(thread,message))){
-      drawButton.textContent="הצג את השרטוט המקורי";
-    }
+    var drawingExercise=selectedExercise;
+    var drawingPending=noamDiagramRuntime().messages.has(message);
+    drawButton.textContent=drawingPending?"מכין שרטוט…":message.diagramError?"נסו להכין שרטוט שוב":"הדגם באמצעות שרטוט";
+    drawButton.disabled=drawingPending;
     drawButton.setAttribute("aria-label",drawButton.textContent);
     drawButton.addEventListener("click",function(){
-      var manualVisual=noamManualVisual(selectedExercise,thread,message);
-      if (!manualVisual){return;}
-      message.visual=manualVisual;
-      saveNoamState();
-      renderNoamChat();
-      var messageIndex=(thread.messages||[]).indexOf(message);
-      var transcript=document.getElementById("noamTranscript");
-      var target=transcript&&transcript.children[messageIndex];
-      if (target){target.scrollIntoView({block:"nearest"});}
-      announceNoam("נוסף שרטוט להסבר של נועם AI.");
+      requestNoamDiagram(drawingExercise,thread,message);
     });
     bubble.appendChild(drawButton);
+    if (message.diagramError){
+      var drawError=document.createElement("span");
+      drawError.className="noam-draw-error";
+      drawError.setAttribute("role","status");
+      drawError.textContent=message.diagramError;
+      bubble.appendChild(drawError);
+    }
   }
   row.appendChild(bubble);
   container.appendChild(row);
@@ -4799,7 +4801,16 @@ function tryNoamLocalVisual(studentMessage){
   delete options.focusKey;
   var visual=noamConstructedVisual(selectedExercise,options)||
     window.NoamLocalVisual.parseFactoredQuadraticInequality(localVisualExerciseSource(selectedExercise));
-  if (!visual){return false;}
+  if (!visual){
+    if (!window.NoamDiagramPlan){return false;}
+    var drawingExercise=selectedExercise;
+    delete noamDrafts[drawingExercise.id];
+    var drawingReply={role:"assistant",text:"מכין המחשה לשלב שעליו שאלת.",kind:"",diagramOptions:options,diagramTyped:true};
+    thread.messages.push({role:"user",text:studentMessage,kind:""},drawingReply);
+    thread.messages=thread.messages.slice(-60);
+    requestNoamDiagram(drawingExercise,thread,drawingReply,options);
+    return true;
+  }
   var answer=visual.type==="geometry-guide"
     ? "הנה המחשה מסומנת של השלב שעליו שאלת."
     : window.NoamLocalVisual.assistantText(visual);
@@ -5365,7 +5376,7 @@ function renderExercisePreview(exercise,attempt){
 function getExerciseAnalysis(exercise){
   // A student's own photo makes the image unique to this request: it is never
   // served from the cache and is never written into it.
-  var attachments=(typeof currentAttachments==="function")?currentAttachments():[];
+  var attachments=arguments[1]===true?[]:(typeof currentAttachments==="function")?currentAttachments():[];
   if (attachments.length){
     return exerciseImageWithAttachments(exercise,attachments)
       .then(function(imageDataUrl){
@@ -5774,8 +5785,9 @@ function noamCanOfferDrawing(exercise,thread,message){
   if (!exercise||!thread||!message||message.role!=="assistant"||!String(message.text||"").trim()){
     return false;
   }
-  if (message.visual&&(message.visual.type!=="question-image"||
-      !noamConstructedVisual(exercise,noamMessageVisualOptions(thread,message)))){return false;}
+  if (message.visual&&message.visual.type!=="question-image"&&
+      !(message.visual.type==="ai-diagram"&&!noamRenderAiDiagram(message.visual))){return false;}
+  if (message.diagramOptions){return true;}
   if (!window.NoamLocalVisual||/failed\s+to\s+fetch|לא\s+זמין|נסו\s+שוב\s+בעוד/i.test(String(message.text||""))){
     return false;
   }
@@ -5787,13 +5799,7 @@ function noamManualVisual(exercise,thread,message){
   if (!exercise||!thread||!window.NoamLocalVisual){return null;}
   var options=noamMessageVisualOptions(thread,message);
   var constructed=noamConstructedVisual(exercise,options);
-  if (constructed){return constructed;}
-  return {
-    type:"question-image",
-    exerciseId:exercise.id,
-    label:"השרטוט מתוך השאלה",
-    focusKey:noamDidacticVisualKey(exercise.id,options)
-  };
+  return constructed||null;
 }
 
 function noamMessageVisualOptions(thread,message){
@@ -5802,6 +5808,10 @@ function noamMessageVisualOptions(thread,message){
   if (index<0){index=messages.length;}
   if (message&&message.visual&&message.visual.type==="geometry-guide"&&message.visual.options){
     return Object.assign({},message.visual.options);
+  }
+  if (message&&message.diagramOptions){return Object.assign({},message.diagramOptions);}
+  if (message&&message.visual&&message.visual.type==="ai-diagram"&&message.visual.context){
+    return {answer:message.visual.context.hintText,studentMessage:message.visual.context.studentMessage};
   }
   var options={answer:String(message&&message.text||""),studentMessage:"",progress:0};
   // An older answer must keep its own question and hint scope, even after
@@ -5844,6 +5854,147 @@ function noamRenderGeometryGuide(visual){
     var scene=guides.resolve(exercise,visual.options||{});
     return scene?engine.render(document,scene):null;
   }catch(error){return null;}
+}
+
+function noamDiagramRuntime(){
+  // Private runtime maps are not transcript state. A reload never leaves a
+  // disabled "pending" button behind, and failures never enter the cache.
+  if (!noamDiagramRuntime.state){noamDiagramRuntime.state={jobs:new Map(),cache:new Map(),messages:new Map()};}
+  return noamDiagramRuntime.state;
+}
+
+function noamDiagramSourceIdentity(exercise){
+  return JSON.stringify([
+    typeof pdf==="string"?pdf:"",manifest&&manifest.sourceSha256||"",exercise.id,
+    exercise.geometrySourcePdfSha256||"",exercise.geometrySource||"",
+    exercise.context||"",exercise.prompt||"",exercise.text||"",exercise.crops||exercise.crop||null
+  ]);
+}
+
+function noamDiagramAnalysis(analysis){
+  var clean={readable:!!(analysis&&analysis.readable)},remaining=12000;
+  ["diagram_description","transcription","problem_statement","math_content"].forEach(function(key){
+    var value=String(analysis&&analysis[key]||"").slice(0,Math.min(4000,remaining));
+    clean[key]=value;remaining-=value.length;
+  });
+  // Handwritten student work is not evidence for equal/parallel/angle marks.
+  return clean;
+}
+
+function noamDiagramQuestionText(exercise,analysis){
+  return [exercise.geometrySource,exercise.context,exercise.prompt,exercise.text,
+    analysis.transcription,analysis.problem_statement,analysis.math_content,analysis.diagram_description]
+    .filter(Boolean).filter(function(value,index,items){return items.indexOf(value)===index;}).join("\n").slice(0,12000);
+}
+
+function noamRenderAiDiagram(visual){
+  if (!visual||!window.NoamDiagramPlan||!window.NoamGeometry||!manifest){return null;}
+  var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
+  if (!exercise||visual.sourceIdentity!==noamDiagramSourceIdentity(exercise)){return null;}
+  try{
+    var scene=window.NoamDiagramPlan.compile(visual.plan,visual.context);
+    return scene?window.NoamGeometry.render(document,scene):null;
+  }catch(error){return null;}
+}
+
+function noamDiagramError(error){
+  if (isBotProtectionError(error)){return String(error.message||"לא הצלחנו לאמת את הבקשה. נסו שוב בעוד רגע.").slice(0,220);}
+  if (error&&error.code==="DIAGRAM_UNSUPPORTED"){
+    return "עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.";
+  }
+  return "לא הצלחתי להכין את השרטוט כרגע. אפשר לנסות שוב.";
+}
+
+function noamDiagramCurrent(exercise,thread){
+  return !!(selectedExercise&&selectedExercise.id===exercise.id&&exerciseThread(exercise.id)===thread);
+}
+
+function noamDiagramRefresh(exercise,thread,message,complete){
+  if (!noamDiagramCurrent(exercise,thread)){return;}
+  renderNoamChat();
+  if (complete){
+    var transcript=document.getElementById("noamTranscript");
+    var target=transcript&&transcript.children[(thread.messages||[]).indexOf(message)];
+    if (target&&typeof target.scrollIntoView==="function"){target.scrollIntoView({block:"nearest"});}
+    announceNoam(message.diagramError||"נוסף שרטוט להמחשת השלב הנוכחי.");
+  }
+}
+
+function requestNoamDiagram(exercise,thread,message,providedOptions){
+  var runtime=noamDiagramRuntime();
+  if (runtime.messages.has(message)){return runtime.messages.get(message);}
+  var options=providedOptions||noamMessageVisualOptions(thread,message);
+  options={answer:String(options.answer||"").slice(0,4000),studentMessage:String(options.studentMessage||"").slice(0,700),
+    helpKind:String(options.helpKind||""),hintIndex:Number(options.hintIndex)||0,
+    progress:Number(options.progress)||0,focusKey:String(options.focusKey||"")};
+  var local=noamConstructedVisual(exercise,options);
+  if (local){
+    message.visual=local;delete message.diagramError;
+    saveNoamState();noamDiagramRefresh(exercise,thread,message,true);
+    return Promise.resolve(local);
+  }
+  message.diagramOptions=options;
+  delete message.diagramError;
+  var sourceIdentity=noamDiagramSourceIdentity(exercise);
+  var key=JSON.stringify(["diagram-v1",sourceIdentity,options.answer,options.studentMessage]);
+  var job=runtime.cache.has(key)?Promise.resolve(runtime.cache.get(key)):runtime.jobs.get(key);
+  // Reuse a validated saved transcript result after reload, but only for an
+  // identical worksheet version, question, student request, and current hint.
+  if (!job){
+    var saved=(thread.messages||[]).map(function(item){return item.visual;}).find(function(visual){
+      return visual&&visual.type==="ai-diagram"&&visual.cacheKey===key&&noamRenderAiDiagram(visual);
+    });
+    if (saved){job=Promise.resolve(saved);}
+  }
+  if (!job){
+    job=Promise.resolve().then(function(){
+      if (!window.NoamDiagramPlan){throw new Error("diagram compiler unavailable");}
+      // Draw the worksheet itself. Attached student work must not become a
+      // trusted source, nor change a cached worksheet illustration.
+      return getExerciseAnalysis(exercise,true);
+    }).then(function(analysis){
+      var cleanAnalysis=noamDiagramAnalysis(analysis);
+      var context={questionText:noamDiagramQuestionText(exercise,cleanAnalysis),hintText:options.answer,studentMessage:options.studentMessage};
+      return postJson(API+"/noamDiagramPlan",{
+        exerciseId:exercise.id,grade:g,level:LEVEL[lv],topic:String(ttl||"").slice(0,180),
+        studentMessage:context.studentMessage,currentHint:context.hintText,
+        questionText:context.questionText,imageAnalysis:cleanAnalysis,
+        clientRequestId:"diagram-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9)
+      }).then(function(result){
+        var checked=result&&result.ok&&window.NoamDiagramPlan.inspect(result.plan,context);
+        if (!checked||!checked.ok){var error=new Error("diagram unsupported");error.code="DIAGRAM_UNSUPPORTED";throw error;}
+        return {type:"ai-diagram",exerciseId:exercise.id,sourceIdentity:sourceIdentity,cacheKey:key,
+          plan:JSON.parse(JSON.stringify(result.plan)),context:context};
+      });
+    }).then(function(visual){
+      runtime.cache.set(key,visual);
+      while(runtime.cache.size>16){runtime.cache.delete(runtime.cache.keys().next().value);}
+      runtime.jobs.delete(key);return visual;
+    },function(error){runtime.jobs.delete(key);throw error;});
+    runtime.jobs.set(key,job);
+  }
+  var completion=job.then(function(visual){
+    if ((thread.messages||[]).indexOf(message)<0){return visual;}
+    // A section switch does not cancel a useful result, but it cannot mutate
+    // or redraw the new section's conversation.
+    message.visual=visual;delete message.diagramError;
+    if (message.diagramTyped){
+      message.text="הנה המחשה של השלב שעליו שאלת.";
+      thread.history.push({role:"user",content:options.studentMessage},
+        {role:"assistant",content:message.text+" [הוצג שרטוט של השלב הנוכחי.]"});
+      thread.history=thread.history.slice(-8);delete message.diagramTyped;
+    }
+    return visual;
+  },function(error){
+    message.diagramError=noamDiagramError(error);
+    if (message.diagramTyped){message.text="השרטוט עדיין לא מוכן.";}
+    return null;
+  }).then(function(visual){
+    runtime.messages.delete(message);saveNoamState();noamDiagramRefresh(exercise,thread,message,true);return visual;
+  });
+  runtime.messages.set(message,completion);
+  saveNoamState();noamDiagramRefresh(exercise,thread,message,false);
+  return completion;
 }
 
 function noamVisualAnswer(studentMessage,answer,visual){
@@ -5997,7 +6148,7 @@ function ensureNoamBotClient(){
     }
     if (window.NoamBotClient){finish(true);return;}
     script=document.createElement("script");
-    script.src="./noam-bot-client.js?v=20260920-network-retry-1";
+    script.src="./noam-bot-client.js?v=20260920-diagram-1";
     script.async=true;
     script.onload=function(){finish(true);};
     script.onerror=function(){finish(false);};
