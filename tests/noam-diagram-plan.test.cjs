@@ -457,3 +457,29 @@ test("evidence cannot be forged through extra fields, wrong source, duplication,
 test("schema and compile are usable independently from the browser renderer",()=>{
   assert.match(Plan.PROMPT_SCHEMA,/status:'unsupported'/);assert.match(Plan.PROMPT_SCHEMA,/No title, caption/);assert.equal(Plan.render(null,basic(),context()),null);
 });
+
+test('source heights and medians reject the live-like wrong geometry, including renamed points',()=>{
+ for(const labels of ['ABCEFM','KLMRST']){
+  const [A,B,C,E,F,M]=labels;
+  const p={version:1,status:'ok',points:{[A]:[0,6],[B]:[-4,0],[C]:[5,0],[E]:[2.631579,2.842105],[F]:[-1.8,3.3],[M]:[.5,0]},segments:[[A,B],[B,C],[C,A],[B,E],[C,F],[M,E],[M,F]],highlights:[{from:B,to:C,color:'blue'}]};
+  const source=`במשולש חד-זוויות ${A+B+C} העבירו את הגבהים ${B+E} ו-${C+F} (${E} על ${A+C}, ${F} על ${A+B}). הנקודה ${M} היא אמצע הצלע ${B+C}.`;
+  const ctx={questionText:source,hintText:`הסתכלו על ${B+C}.`};
+  assert.equal(Plan.inspect(p,ctx).reason,'source_coordinate_contradiction');
+  function foot(q,a,b){const v=b.map((x,i)=>x-a[i]),t=v.reduce((s,x,i)=>s+x*(q[i]-a[i]),0)/v.reduce((s,x)=>s+x*x,0);return a.map((x,i)=>x+t*v[i]);}
+  p.points[E]=foot(p.points[B],p.points[A],p.points[C]);p.points[F]=foot(p.points[C],p.points[A],p.points[B]);
+  assert.equal(Plan.inspect(p,ctx).ok,true);
+  p.points[M]=[1,0];assert.equal(Plan.inspect(p,ctx).reason,'source_coordinate_contradiction');
+ }
+});
+test('a median and vertex-only given angle constrain coordinates without assuming the goal',()=>{
+ const p={version:1,status:'ok',points:{A:[0,4],B:[0,0],C:[6,0],M:[3,2]},segments:[['A','B'],['B','C'],['A','C'],['B','M']],highlights:[{from:'B',to:'M',color:'blue'}]};
+ const ctx={questionText:'במשולש ABC נתון ∠B = 90°. הקטע BM הוא תיכון ליתר AC.',hintText:'סמן BM.'};
+ assert.equal(Plan.inspect(p,ctx).ok,true);
+ p.points.M=[3.6,1.6];assert.equal(Plan.inspect(p,ctx).reason,'source_coordinate_contradiction');
+ p.points.M=[3,2];p.points.B=[.3,0];assert.equal(Plan.inspect(p,ctx).reason,'source_coordinate_contradiction');
+ assert.equal(Plan.inspect(p,{...ctx,questionText:'נתון משולש ABC. הוכיחו כי BM הוא תיכון ליתר AC. האם ∠B = 90°?'}).ok,true);
+});
+test('ambiguous construction is rejected rather than silently dropping its constraints',()=>{
+ const p=basic();const ctx=context({questionText:'משולש ABC. הקטע AB הוא גובה.'});
+ assert.equal(Plan.inspect(p,ctx).reason,'unresolved_source_construction');
+});

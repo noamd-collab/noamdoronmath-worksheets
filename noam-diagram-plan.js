@@ -327,6 +327,64 @@
       function(_all,first,relation,second){return first+(relation==="מקביל"?"∥":"⊥")+second;});
   }
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
+  // Compile stated constructions to geometry, independent of worksheet IDs.
+  // Never infer a given from a goal, a student request, or how coordinates look.
+  function constructionGivens(source){
+    var accepted=sentences(sourceWithoutMachineMarkers(source)).filter(function(s){return !UNPROVEN.test(s);});
+    var facts=markerJson(source,"DIAGRAM_FACTS_JSON:")||{},out=[],on={},triangles={},jobs=[];
+    function addOn(point,ends){
+      if(!/^[A-Z]$/.test(point)||!/^[A-Z]{2}$/.test(ends)||ends.indexOf(point)!==-1){return;}
+      (on[point]||(on[point]={}))[pairKey(ends.split(""))]=true;
+    }
+    accepted.forEach(function(sentence){
+      var re=/([A-Z])\s+(?:(?:היא|הוא|נמצאת|נמצא)\s+)?(?:על|אמצע)\s+(?:(?:הצלע|הקטע|היתר|האלכסון)\s+)?([A-Z]{2})(?![A-Z])/g,m;
+      while((m=re.exec(sentence))){addOn(m[1],m[2]);}
+      re=/משולש(?:\s+[א-ת־-]+){0,3}\s*[△Δ]?\s*([A-Z]{3})(?![A-Z])/g;
+      while((m=re.exec(sentence))){triangles[m[1].split("").sort().join("")]=true;}
+      re=/([A-Z])\s+(?:(?:היא|הוא)\s+)?אמצע\s+(?:(?:הצלע|הקטע|היתר|האלכסון)\s+)?([A-Z]{2})(?![A-Z])/g;
+      while((m=re.exec(sentence))){out.push(m[1]+" על הקטע "+m[2]+".",m[1]+m[2][0]+"="+m[1]+m[2][1]+".");}
+      // Both "הגובה BE" and "BE הוא גובה"; plural constructions are split.
+      re=/(?:ה?גובה|ה?גבהים|ה?תיכון|ה?תיכונים)\s+([A-Z]{2}(?:\s*[,ו־-]+\s*[A-Z]{2})*)/g;
+      while((m=re.exec(sentence))){var kind=/גובה|גבהים/.test(m[0])?"altitude":"median";
+        (m[1].match(/[A-Z]{2}/g)||[]).forEach(function(segment){jobs.push({kind:kind,segment:segment,sentence:sentence});});}
+      re=/([A-Z]{2})\s+(?:(?:הוא|הינו)\s+)?(?:ה?גובה|ה?תיכון)(?=\s|[.,;]|$)/g;
+      while((m=re.exec(sentence))){jobs.push({kind:/גובה/.test(m[0])?"altitude":"median",segment:m[1],sentence:sentence});}
+    });
+    jobs.forEach(function(job){
+      var candidates={},segment=job.segment;
+      function target(foot,ends){if(ends.indexOf(foot)!==-1||ends.indexOf(segment[foot===segment[0]?1:0])!==-1)return;
+        candidates[foot+":"+pairKey(ends.split(""))]={foot:foot,ends:ends};}
+      // Explicit named destination takes priority over general incidence.
+      var direct=new RegExp(segment+"\\s+(?:(?:הוא|הינו)\\s+)?(?:(?:ה?גובה|ה?תיכון)\\s+)?(?:ל|אל\\s+)(?:[־-]\\s*)?(?:ה?(?:צלע|יתר|קטע)\\s+)?([A-Z]{2})(?![A-Z])").exec(job.sentence);
+      var lines=Array.isArray(facts.intersections)?facts.intersections:[];
+      segment.split("").forEach(function(foot){
+        Object.keys(on[foot]||{}).forEach(function(ends){if(!direct||pairKey(ends.split(""))===pairKey(direct[1].split("")))target(foot,ends);});
+        lines.forEach(function(item){
+          if(!item||item.point!==foot||!Array.isArray(item.lines))return;
+          var strokes=item.lines.filter(function(line){return Array.isArray(line)&&line.length>=2&&line.every(function(n){return /^[A-Z]$/.test(n);});});
+          if(!strokes.some(function(line){return line.indexOf(segment[0])!==-1&&line.indexOf(segment[1])!==-1;}))return;
+          strokes.forEach(function(line){var ends=line[0]+line[line.length-1];if(!direct||pairKey(ends.split(""))===pairKey(direct[1].split("")))target(foot,ends);});
+        });
+      });
+      if(direct&&!Object.keys(candidates).length){target(segment[1],direct[1]);}
+      var options=Object.keys(candidates);
+      if(options.length!==1){fail("unresolved_source_construction");}
+      var c=candidates[options[0]];
+      out.push(c.foot+(job.kind==="altitude"?" על הישר ":" על הקטע ")+c.ends+".");
+      if(job.kind==="altitude")out.push(segment+"⊥"+c.ends+".");
+      else out.push(c.foot+c.ends[0]+"="+c.foot+c.ends[1]+".");
+    });
+    accepted.forEach(function(sentence){
+      var re=/∠\s*([A-Z])\s*=\s*(\d+(?:\.\d+)?)\s*°/g,m;
+      while((m=re.exec(sentence))){
+        var vertex=m[1],possible=Object.keys(triangles).filter(function(t){return t.indexOf(vertex)!==-1;});
+        if(possible.length!==1){fail("ambiguous_source_angle");}
+        var other=possible[0].split("").filter(function(n){return n!==vertex;});
+        out.push("∠"+other[0]+vertex+other[1]+"="+m[2]+"°.");
+      }
+    });
+    return out.join(" ");
+  }
   function grounded(quote,source){
     quote=clean(quote).replace(/\s+/g," ");
     if(!quote||quote.length>400||UNPROVEN.test(quote)){return false;}
@@ -513,7 +571,7 @@
           fail("source_coordinate_contradiction",{type:"pointOnExtension",point:point,ends:ends,beyond:beyond});
         }
       }
-      sentences(question+". "+hint).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
+      sentences(question+". "+hint+". "+constructionGivens(rawQuestion)).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
         var s=compact(explicitRelationSymbols(sentence)),match,re=/(?:^|[^A-Z0-9+*/=−-])([A-Z]{2})(=|∥|⊥)([A-Z]{2})(?=$|[^A-Z0-9+*/=−-])/g;
         while((match=re.exec(s))){if(allPresent(match[1]+match[3])){var a=match[1].split(""),b=match[3].split("");if(match[2]==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,match[2])){fail("source_coordinate_contradiction",{type:"relation",first:a,second:b,relation:match[2]});}}}
         re=/(?:^|[^A-Z0-9+*/=−-])∠?([A-Z]{3})=(\d+(?:\.\d+)?)°(?=$|[^A-Z0-9+*/=−-])/g;

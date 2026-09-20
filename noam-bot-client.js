@@ -213,6 +213,16 @@
             error.code = "HTTP_ERROR_BODY_TIMEOUT";
           }
         }
+        // Only fixed route and bounded machine codes: never log payloads or tokens.
+        if (win.console && typeof win.console.warn === "function") {
+          var route = String(endpoint || "").split("/").pop();
+          var code = String(error && error.code || "UNKNOWN");
+          win.console.warn("NOAM_REQUEST_FAILED", JSON.stringify({
+            route: Object.prototype.hasOwnProperty.call(ACTIONS, route) ? route : "unknown",
+            status: typeof responseStatus === "number" ? responseStatus : null,
+            code: /^[A-Z0-9_]{1,80}$/.test(code) ? code : "UNKNOWN"
+          }));
+        }
         throw error;
       });
     }
