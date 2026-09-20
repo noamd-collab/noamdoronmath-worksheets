@@ -350,11 +350,32 @@
     try{context=context||{};return Object.keys(sourceRays(clean(context.questionText||"")+". "+clean(context.hintText||"")));}
     catch(_error){return [];}
   }
+  function requestedParallelConstruction(context){
+    // A construction instruction may be phrased as a question. It authorizes
+    // drawing that line, never treating a proposed equality as a given.
+    try{
+      context=context||{};
+      var hint=clean(context.hintText||""),student=clean(context.studentMessage||"");
+      var instruction=tokens(student).length||singlePointNames(student).length?student:hint;
+      if(/(?:אל|לא|בלי|ללא)\s+(?:תעביר|להעביר|לשרטט|תשרטט|תצייר|לצייר)|אינו\s+מקביל|לא\s+מקביל/.test(instruction)){return null;}
+      var m=instruction.match(/(?:דרך|מבעד)\s+(?:ה?נקודה\s+)?([A-Z])(?![A-Za-z])[^.!?\n]{0,45}?ישר\s+(?:ה?מקביל)\s+(?:ל[־-]?\s*)?(?:(?:ה?צלעות|ה?צלע|ה?קטע|ה?ישר)\s+)?([A-Z]{2})(?![A-Za-z])/);
+      if(!m){return null;}
+      var through=m[1],reference=m[2].split("");
+      if(reference.includes(through)||reference[0]===reference[1]){return null;}
+      var facts=markerJson(context.questionText,"DIAGRAM_FACTS_JSON:");
+      if(!object(facts)){return null;}
+      var strokes=list(facts.strokes,40).concat(list(facts.collinear_orders,40));
+      if(!strokes.some(function(line){return Array.isArray(line)&&reference.every(function(n){return line.includes(n);});})||
+          !strokes.some(function(line){return Array.isArray(line)&&line.includes(through);})||
+          strokes.some(function(line){return Array.isArray(line)&&[through].concat(reference).every(function(n){return line.includes(n);});})){return null;}
+      return {kind:"parallel",through:through,parallelTo:reference,color:"blue"};
+    }catch(_error){return null;}
+  }
   function inspect(plan,context){
     try{
       context=context||{};safeTree(plan,0);
       if(JSON.stringify(plan).length>24000){fail("plan_too_large");}
-      keys(plan,["version","status","points","segments","rays","highlights","pointHighlights","angles","equalGroups","rightAngles","evidence"]);
+      keys(plan,["version","status","points","segments","rays","highlights","pointHighlights","angles","equalGroups","rightAngles","evidence","auxiliaryLines"]);
       if(plan.version!==1){fail("unsupported_version");}
       if(plan.status==="unsupported"){return {ok:false,scene:null,reason:"unsupported"};}
       if(plan.status!=="ok"){fail("invalid_status");}
@@ -387,6 +408,17 @@
       // Call only for existing marks after their exact label/focus validation.
       function optionalNameEvidence(mark){if(evidence[mark]){usedEvidence[mark]=true;}}
       var scene={type:"geometry-scene",title:"המחשה לשלב הנוכחי",caption:"שרטוט סכמטי: הצבעים מדגישים את הנקודות, הקטעים והזוויות שבשלב הנוכחי.",points:points,segments:segments,equations:[]};
+      var requestedConstruction=requestedParallelConstruction(context);
+      scene.auxiliaryLines=list(plan.auxiliaryLines,1).map(function(item){
+        keys(item,["kind","through","parallelTo","color"]);
+        var reference=pair(item.parallelTo);
+        if(!requestedConstruction||item.kind!=="parallel"||item.through!==requestedConstruction.through||
+            pairKey(reference)!==pairKey(requestedConstruction.parallelTo)||!points[item.through]||
+            !isDrawn(reference)||!isDrawn([item.through,item.through])){fail("ungrounded_construction");}
+        return {kind:"parallel",through:item.through,parallelTo:reference,color:color(item.color)};
+      });
+      if(requestedConstruction&&!scene.auxiliaryLines.length){fail("missing_requested_construction");}
+      if(scene.auxiliaryLines.length){scene.caption="הקו הכחול המקווקו הוא קו העזר שהוצע ברמז. השרטוט סכמטי.";}
       var declaredRays=sourceRays(question+". "+hint),raySeen={};
       list(plan.rays,16).forEach(function(item){
         var ends=pair(item),name=ends.join(""),key=pairKey(ends);
@@ -603,5 +635,5 @@
   }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}
-  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,buildCollinearSegmentPlan:buildCollinearSegmentPlan,buildPerpendicularTrianglePlan:buildPerpendicularTrianglePlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
+  return {requestedParallelConstruction:requestedParallelConstruction,inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,buildCollinearSegmentPlan:buildCollinearSegmentPlan,buildPerpendicularTrianglePlan:buildPerpendicularTrianglePlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
 });

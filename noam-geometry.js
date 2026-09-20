@@ -67,6 +67,12 @@
     var valid={points:points,names:names,title:text(scene.title,120),caption:text(scene.caption,320)};
     valid.segments=array(scene.segments,64).map(function(item){return pair(points,item);});
     if(!valid.segments.length){fail("A scene needs segments");}
+    valid.auxiliaryLines=array(scene.auxiliaryLines,1).map(function(item){
+      if(!item||item.kind!=="parallel"){fail("Invalid construction");}
+      point(points,item.through);var reference=pair(points,item.parallelTo);
+      if(reference.includes(item.through)||!valid.segments.some(function(pair){return pair.includes(item.through);})){fail("Invalid construction point");}
+      return {through:item.through,parallelTo:reference,color:color(item.color)};
+    });
     var raySeen={};
     valid.rays=array(scene.rays,16).map(function(item){
       var ends=pair(points,item),name=ends.join("");
@@ -165,6 +171,22 @@
       }
       function line(a,b,attributes){var attrs={x1:a[0],y1:a[1],x2:b[0],y2:b[1],fill:"none","stroke-linecap":"round"};Object.keys(attributes||{}).forEach(function(k){attrs[k]=attributes[k];});var node=svgElement(doc,"line",attrs);svg.appendChild(node);return node;}
       data.segments.forEach(function(ends){line(screen(ends[0]),screen(ends[1]),{stroke:"#172440","stroke-width":1.8,"class":"noam-geometry-segment"});});
+      data.auxiliaryLines.forEach(function(item){
+        // Direction and incidence are derived here; the model supplies no line
+        // endpoints or fabricated intersection names. Clip inside the figure.
+        var p=screen(item.through),a=screen(item.parallelTo[0]),b=screen(item.parallelTo[1]);
+        var dx=b[0]-a[0],dy=b[1]-a[1],size=Math.hypot(dx,dy);dx/=size;dy/=size;
+        var low=-Infinity,high=Infinity;
+        [[p[0],dx,24,296],[p[1],dy,22,202]].forEach(function(axis){
+          if(Math.abs(axis[1])<1e-9){return;}
+          var t1=(axis[2]-axis[0])/axis[1],t2=(axis[3]-axis[0])/axis[1];
+          low=Math.max(low,Math.min(t1,t2));high=Math.min(high,Math.max(t1,t2));
+        });
+        if(!Number.isFinite(low)||!Number.isFinite(high)||low>=high){fail("Invalid construction extent");}
+        line([p[0]+low*dx,p[1]+low*dy],[p[0]+high*dx,p[1]+high*dy],
+          {stroke:item.color,"stroke-width":3,"stroke-dasharray":"7 5","class":"noam-geometry-construction",
+           "aria-label":"קו עזר דרך "+item.through+" המקביל ל־"+item.parallelTo.join("")});
+      });
       var pendingSegmentLabels=[];
       data.highlights.forEach(function(item){
         var a=screen(item.ends[0]),b=screen(item.ends[1]);line(a,b,{stroke:item.color,"stroke-width":4,opacity:.85,"class":"noam-geometry-highlight"});
