@@ -70,6 +70,16 @@
       return /משולש|מרובע|מלבן|מעוין|מקבילית|טרפז|ריבוע|מחומש|משושה/.test(value)&&pairKey([token[0],token[token.length-1]])===pairKey(ends);
     });
   }
+  function sourceFocusTriangles(question){
+    var marker="DIAGRAM_FACTS_JSON:",start=question.lastIndexOf(marker);if(start<0){return [];}
+    try{
+      var parsed=JSON.parse(question.slice(start+marker.length).split("\n",1)[0].trim()),items=parsed&&parsed.focus_triangles;
+      if(!Array.isArray(items)||items.length!==2){return [];}
+      var triangles=items.map(function(item){return Array.isArray(item)?item.slice():[];});
+      if(triangles.some(function(item){return item.length!==3||new Set(item).size!==3||item.some(function(name){return typeof name!=="string"||!/^[A-Z]$/.test(name);});})){return [];}
+      return triangles;
+    }catch(_error){return [];}
+  }
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   function grounded(quote,source){
@@ -126,7 +136,19 @@
       var segments=list(plan.segments,40).map(pair),seen={};
       segments.forEach(function(p){var key=pairKey(p);if(seen[key]){fail("duplicate_segment");}seen[key]=true;});
       function isDrawn(ends){return segments.some(function(s){var a=points[s[0]],b=points[s[1]],length=distance(a,b);return ends.every(function(name){var p=points[name];return sameLength(distance(a,p)+distance(p,b),length);});});}
-      function focused(ends,isAngle){if(!focusAllows(focus,ends,isAngle)){fail("outside_current_focus");}if(isAngle){if(!isDrawn([ends[0],ends[1]])||!isDrawn([ends[1],ends[2]])){fail("undrawn_mark");}}else if(!isDrawn(ends)){fail("undrawn_mark");}}
+      var student=clean(context.studentMessage||""),focusTriangles=sourceFocusTriangles(String(context.questionText||"")),genericTriangleEdges={};
+      var asksWhichTriangles=/(?:בין\s+)?איזה\s+משולשים|מהם\s+שני\s+המשולשים|which\s+(?:two\s+)?triangles/i.test(student);
+      var genericTriangleHint=/שני\s+ה?משולשים|two\s+triangles/i.test(hint);
+      if(asksWhichTriangles&&genericTriangleHint&&focusTriangles.length===2&&
+          focusTriangles.flat().every(function(name){return Object.prototype.hasOwnProperty.call(points,name);})&&
+          list(plan.angles,8).length===0&&list(plan.equalGroups,6).length===0&&list(plan.rightAngles,8).length===0&&list(plan.pointHighlights,8).length===0){
+        focusTriangles.forEach(function(names){for(var i=0;i<3;i++){genericTriangleEdges[pairKey([names[i],names[(i+1)%3]])]=true;}});
+        var rawHighlights=list(plan.highlights,12),seenFocusEdges={};
+        rawHighlights.forEach(function(item){if(item&&typeof item.from==="string"&&typeof item.to==="string"){seenFocusEdges[pairKey([item.from,item.to])]=true;}});
+        var expected=Object.keys(genericTriangleEdges),actual=Object.keys(seenFocusEdges);
+        if(expected.length<5||expected.length>6||actual.length!==expected.length||actual.some(function(key){return !genericTriangleEdges[key];})){genericTriangleEdges={};}
+      }
+      function focused(ends,isAngle){if(!(isAngle===false&&genericTriangleEdges[pairKey(ends)])&&!focusAllows(focus,ends,isAngle)){fail("outside_current_focus");}if(isAngle){if(!isDrawn([ends[0],ends[1]])||!isDrawn([ends[1],ends[2]])){fail("undrawn_mark");}}else if(!isDrawn(ends)){fail("undrawn_mark");}}
       var evidence={};list(plan.evidence,32).forEach(function(item){keys(item,["mark","source","quote"]);if(typeof item.mark!=="string"||!/^(equalGroups|rightAngles|angles|highlights)\.\d{1,2}$/.test(item.mark)||evidence[item.mark]||(item.source!=="question"&&item.source!=="hint")){fail("invalid_evidence");}text(item.quote,400);if(!grounded(item.quote,item.source==="question"?question:hint)){fail("unproven_evidence");}evidence[item.mark]=item;});
       var usedEvidence={};function proof(mark,check){var item=evidence[mark];if(!item||!check(item.quote)){fail("ungrounded_mark");}usedEvidence[mark]=true;}
       // Every entry was grounded above. An optional citation on a validated

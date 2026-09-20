@@ -24,6 +24,28 @@ test("new parallelogram point names and a student-specific edge need no per-ques
   c.studentMessage="";assert.equal(Plan.inspect(p,c).reason,"outside_current_focus");
 });
 
+test("a student asking which two triangles may receive exactly the two vision-grounded triangle outlines",()=>{
+  const p={version:1,status:"ok",points:{A:[0,0],B:[4,0],C:[4,4],L:[2.8,4],P:[3.1,3.1]},
+    segments:[["A","B"],["B","P"],["P","A"],["C","L"],["L","P"],["P","C"]],
+    highlights:[
+      {from:"A",to:"B",color:"blue",label:""},{from:"B",to:"P",color:"blue",label:""},{from:"P",to:"A",color:"blue",label:""},
+      {from:"C",to:"L",color:"orange",label:""},{from:"L",to:"P",color:"orange",label:""},{from:"P",to:"C",color:"orange",label:""}
+    ],angles:[],equalGroups:[],rightAngles:[],evidence:[]};
+  const marker='DIAGRAM_FACTS_JSON:{"focus_triangles":[["A","B","P"],["C","L","P"]]}';
+  const c={questionText:"בריבוע ABCD מסומנות הנקודות L ו-P. "+marker,
+    hintText:"האם שני המשולשים חולקים זווית ישרה אחת?",studentMessage:"בין איזה משולשים? אתה יכול לשרטט לי?"};
+  const result=Plan.inspect(p,c);assert.equal(result.ok,true,result.reason);
+  p.highlights.pop();assert.equal(Plan.inspect(p,c).reason,"outside_current_focus","an incomplete pair is not authorized");
+  p.highlights.push({from:"A",to:"C",color:"pink",label:""});
+  p.segments.push(["A","C"]);assert.equal(Plan.inspect(p,c).reason,"outside_current_focus","an extra edge is not authorized");
+});
+
+test("generic triangle wording without two trusted focus triangles stays blocked",()=>{
+  const p=basic();p.highlights=[{from:"A",to:"B",color:"blue",label:"AB"},{from:"B",to:"C",color:"blue",label:"BC"},{from:"C",to:"A",color:"blue",label:"CA"}];
+  const c=context({hintText:"האם שני המשולשים חולקים זווית ישרה אחת?",studentMessage:"בין איזה משולשים? אתה יכול לשרטט לי?"});
+  assert.equal(Plan.inspect(p,c).reason,"outside_current_focus");
+});
+
 test("named angle arcs identify the right vertex without asserting equality or degrees",()=>{
   const p=basic();p.highlights=[];p.angles=[{from:"B",vertex:"A",to:"C",label:"∠CAB"}];
   const c=context({hintText:"הסתכלו על הזווית BAC."});
