@@ -24,6 +24,9 @@ test("Q24 false transversal hint is rejected using its explicit parallel given",
     assert.equal(review.ok,false,answer);assert.match(review.reasons.join(" "),/AD∥BC/);
   }
   assert.equal(ctx.noamGeometryAnswerReview(bad,{transcription:q24.replace("AD∥BC","\\(\\mathrm{AD} \\parallel BC\\)")},null).ok,false);
+  for(const source of ["נתון AD∥BC הוכיחו כי AD חוצה את ∠EAC.","נתון AD∥BC והוכיחו כי AD חוצה את ∠EAC.","נתון AD∥BC\nהוכיחו כי AD חוצה את ∠EAC.","הנקודה E על המשך BA מעבר ל-A, ונתון AD∥BC; הוכיחו כי AD חוצה את ∠EAC."]){
+    assert.match(ctx.noamParallelTransversalIssue(bad,source),/AD∥BC/,source);
+  }
 });
 
 test("bounded transversal review preserves correct, unknown, negative and hypothetical statements",()=>{
@@ -31,7 +34,7 @@ test("bounded transversal review preserves correct, unknown, negative and hypoth
   for(const answer of [good,"הישר BE חותך את הישרים המקבילים AD ו-BC.","AD אינו חותך את BC.","הקרן AD אינה חותכת את הישר BC.","לא נכון שהקרן AD חותכת את הישרים המקבילים BC ו-AE.","אם הקרן AD חותכת את הישרים המקבילים BC ו-AE, צריך לבדוק את הנתונים.","האם הקרן AD חותכת את הישר BC?","התלמיד טעה כשכתב שהקרן AD חותכת את הישרים המקבילים BC ו-AE.","הקרן AE חותכת את הישרים המקבילים BC ו-AD.","הישר XY חותך את הישר ZW."]){
     assert.equal(ctx.noamParallelTransversalIssue(answer,q24),null,answer);
   }
-  for(const source of ["נתון משולש ABC.","הוכיחו AD∥BC.","האם AD∥BC?","AD∥BC?","לא נתון AD∥BC.","נניח AD∥BC.","אם AD∥BC אז חפשו זוויות."]){
+  for(const source of ["נתון משולש ABC.","הוכיחו AD∥BC.","נתון משולש ABC והוכיחו AD∥BC.","האם AD∥BC?","AD∥BC?","לא נתון AD∥BC.","נניח AD∥BC.","אם AD∥BC אז חפשו זוויות.","אם AD∥BC הוכיחו שוויון זוויות."]){
     assert.equal(ctx.noamParallelTransversalIssue(bad,source),null,source);
   }
 });

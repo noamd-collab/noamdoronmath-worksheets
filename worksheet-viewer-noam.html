@@ -5626,7 +5626,12 @@ function noamParallelTransversalIssue(answer,source){
   // Only explicit affirmative parallel givens authorize this rejection. A
   // goal or hypothetical relation is not a fact, even if it names both lines.
   var uncertain=/(?:\?|האם|הוכיחו|הוכח|להוכיח|הראו|להראות|נניח|בהנחה|ייתכן|אולי|(?:^|[^א-ת])(?:אם|לא|אין|אינו|אינה)(?:[^א-ת]|$))/;
-  var pairs=(normalized(source).match(/[^\n.!?;]+[.!?;]?/g)||[]).filter(function(sentence){
+  var pairs=(normalized(source).match(/[^\n.!?;]+[.!?;]?/g)||[]).map(function(sentence){
+    // OCR may join "given AD∥BC" and "prove ..." on one line. Keep only the
+    // facts before the goal; never extract a parallel relation from the goal.
+    var goal=sentence.search(/(?:^|[^א-ת])ו?(?:הוכיחו|הוכח(?:ו)?|הראו|יש\s+להוכיח|צריך\s+להוכיח|נדרש\s+להוכיח)/);
+    return goal>0?sentence.slice(0,goal):sentence;
+  }).filter(function(sentence){
     return !uncertain.test(sentence);
   }).flatMap(function(sentence){return noamParallelPairs(sentence);});
   if (!pairs.length){return null;}
