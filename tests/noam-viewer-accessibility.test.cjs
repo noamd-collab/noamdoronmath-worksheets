@@ -210,6 +210,21 @@ test("question 4 angle confusion is answered locally from the verified guide", a
   assert.equal(response.visual.focusKey, "q4a-alternate");
 });
 
+test("a named-angle question keeps the local answer and diagram on that same angle", async () => {
+  const f = await requestFixture(new Error("the model must not be called"), {
+    exercise: { id: "G9-T15-E-Q04א", q: 4, part: "א" },
+    didacticGuides: DidacticGuides,
+    topic: "הוכחה גאומטרית",
+    helpKind: "free_question",
+    studentMessage: "איפה הזווית ∠EBD?"
+  });
+  assert.equal(f.payloads.length, 0);
+  const response = f.thread.messages.at(-1);
+  assert.match(response.text, /∠EBD/);
+  assert.doesNotMatch(response.text, /∠EDB|∠DBC/);
+  assert.equal(response.visual.focusKey, "q4a-angle-ebd");
+});
+
 test("a guided next-step answer keeps the authoritative drawing when the student asks to draw", async () => {
   const f = await requestFixture(new Error("the model must not be called"), {
     exercise: { id: "G9-T15-E-Q04א", q: 4, part: "א" },

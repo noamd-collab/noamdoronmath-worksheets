@@ -88,6 +88,25 @@ test("a question naming one angle highlights only that angle",()=>{
   assert.equal(namedPair.key,"q4b-parallel");
 });
 
+test("a named-angle help reply describes the same single angle as its diagram",()=>{
+  [
+    ["G9-T15-E-Q04א","EBD","q4a-angle-ebd",["EDB","DBC","ABD"]],
+    ["G9-T15-E-Q04א","EDB","q4a-angle-edb",["EBD","DBC","ABD"]],
+    ["G9-T15-E-Q04ב","ADE","q4b-angle-ade",["ACB","EDB","EBD"]],
+    ["G9-T15-E-Q04ב","ACB","q4b-angle-acb",["ADE","EDB","EBD"]]
+  ].forEach(([exerciseId,angle,key,otherAngles])=>{
+    const response=guides.respond(exerciseId,{
+      helpKind:"free_question",
+      studentMessage:`איפה הזווית ∠${angle}?`
+    });
+    const selected=guides.resolveVisual(exerciseId,{key:response.focusKey});
+    assert.equal(response.focusKey,key);
+    assert.match(response.text,new RegExp(`∠${angle}`));
+    otherAngles.forEach(other=>assert.doesNotMatch(response.text,new RegExp(`∠${other}`)));
+    assert.deepEqual(selected.focus.angles.map(item=>item.label),[`∠${angle}`]);
+  });
+});
+
 test("visual selection uses progress and rejects unverified focus keys",()=>{
   assert.equal(
     guides.resolveVisual("G9-T15-E-Q04א",{progress:1,studentMessage:"ואז מה?"}).key,

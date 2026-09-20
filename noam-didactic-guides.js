@@ -67,6 +67,15 @@
     "q4b-angle-acb":q4Visual("הזווית ∠ACB",[],["ACB"])
   };
 
+  var q4AngleHelpByName={
+    EBD:"∠EBD נמצאת בקודקוד B, בין הקרניים BE ו־BD. מכיוון ש־E נמצאת על AB, הקרן BE מונחת על הקרן BA.",
+    EDB:"∠EDB נמצאת בקודקוד D, בין הקרניים DE ו־DB. זו הזווית שבתוך המשולש EDB ליד D.",
+    ABD:"∠ABD נמצאת בקודקוד B, בין הקרניים BA ו־BD. זו הזווית שבין הצלע AB לחוצה הזווית BD.",
+    DBC:"∠DBC נמצאת בקודקוד B, בין הקרניים BD ו־BC. זו הזווית שבין חוצה הזווית BD לצלע BC.",
+    ADE:"∠ADE נמצאת בקודקוד D, בין הקרניים DA ו־DE. חפשו אותה ליד D, מעל הקטע DE.",
+    ACB:"∠ACB נמצאת בקודקוד C, בין הקרניים CA ו־CB. זו הזווית של המשולש ABC ליד C."
+  };
+
   var guides={
     "G9-T15-E-Q04א":{
       kind:"geometry-proof",
@@ -94,6 +103,7 @@
       defaultVisualKey:"q4a-alternate",
       hintVisualKeys:["q4a-base-angles","q4a-bisector","q4a-alternate"],
       angleVisualKeys:{EBD:"q4a-angle-ebd",EDB:"q4a-angle-edb",ABD:"q4a-angle-abd",DBC:"q4a-angle-dbc"},
+      angleHelpByName:q4AngleHelpByName,
       anglePairVisualKeys:{"EBD|EDB":"q4a-base-angles","DBC|EBD":"q4a-bisector","DBC|EDB":"q4a-alternate"},
       angleHelpVisualKey:"q4a-alternate",
       intentVisualKeys:{base:"q4a-base-angles",bisector:"q4a-bisector",parallel:"q4a-alternate"},
@@ -124,6 +134,7 @@
       defaultVisualKey:"q4b-bisector",
       hintVisualKeys:["q4b-bisector","q4b-isosceles","q4b-parallel"],
       angleVisualKeys:{ABD:"q4b-angle-abd",DBC:"q4b-angle-dbc",EBD:"q4b-angle-ebd",EDB:"q4b-angle-edb",ADE:"q4b-angle-ade",ACB:"q4b-angle-acb"},
+      angleHelpByName:q4AngleHelpByName,
       anglePairVisualKeys:{"ABD|DBC":"q4b-bisector","EBD|EDB":"q4b-isosceles","ACB|ADE":"q4b-parallel"},
       angleHelpVisualKey:"q4b-parallel",
       intentVisualKeys:{base:"q4b-isosceles",bisector:"q4b-bisector",parallel:"q4b-parallel"},
@@ -136,7 +147,7 @@
   }
 
   function asksWhichAngle(text){
-    return /איז(?:ו|ה)\s+זווית|קשה\s+לי\s+לזהות|לא\s+(?:רואה|מזהה).*זווית|סמ(?:ן|ני)\s+לי.*זווית/i.test(String(text||""));
+    return /איז(?:ו|ה)\s+זווית|(?:איפה|היכן)\s+(?:נמצאת\s+)?(?:ה)?(?:זווית|∠)|קשה\s+לי\s+לזהות|לא\s+(?:רואה|מזהה).*זווית|סמ(?:ן|ני)\s+לי.*(?:זווית|∠)/i.test(String(text||""));
   }
 
   function asksForNextStep(text){
@@ -148,13 +159,17 @@
     return /(?:שרטוט|ציור|תמונה).*(?:קטן|הגדל)|(?:קטן|הגדל).*(?:שרטוט|ציור|תמונה)/i.test(value);
   }
 
-  function namedVisualKey(guide,text){
+  function namedAngles(guide,text){
     var value=String(text||"").toUpperCase();
     var keys=Object.keys(guide.angleVisualKeys||{});
-    var named=keys.filter(function(name){
+    return keys.filter(function(name){
       var pattern=new RegExp("(?:∠\\s*|זווית(?:\\s+של)?\\s*)"+name+"(?![A-Z])","i");
       return pattern.test(value);
     });
+  }
+
+  function namedVisualKey(guide,text){
+    var named=namedAngles(guide,text);
     if(named.length===1){return guide.angleVisualKeys[named[0]];}
     if(named.length===2){
       return (guide.anglePairVisualKeys||{})[named.slice().sort().join("|")]||"";
@@ -237,7 +252,9 @@
       return {text:"הנה השרטוט המלא כשהחלק הגאומטרי מוגדל והזוויות הדרושות מסומנות.",visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
     }
     if(asksWhichAngle(message)){
-      return {text:guide.angleHelp,visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
+      var named=namedAngles(guide,message);
+      var angleText=named.length===1&&(guide.angleHelpByName||{})[named[0]];
+      return {text:angleText||guide.angleHelp,visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
     }
     if(asksForNextStep(message)){
       return {text:guide.nextStep,visual:null,focusKey:visual&&visual.key||"",source:"didactic-guide"};
