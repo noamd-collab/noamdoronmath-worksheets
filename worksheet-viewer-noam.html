@@ -5962,7 +5962,10 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
         clientRequestId:"diagram-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9)
       }).then(function(result){
         var checked=result&&result.ok&&window.NoamDiagramPlan.inspect(result.plan,context);
-        if (!checked||!checked.ok){var error=new Error("diagram unsupported");error.code="DIAGRAM_UNSUPPORTED";throw error;}
+        if (!checked||!checked.ok){
+          console.warn("NOAM_DIAGRAM_REJECTED",String(result&&result.validationReason||checked&&checked.reason||"unavailable").slice(0,80));
+          var error=new Error("diagram unsupported");error.code="DIAGRAM_UNSUPPORTED";throw error;
+        }
         return {type:"ai-diagram",exerciseId:exercise.id,sourceIdentity:sourceIdentity,cacheKey:key,
           plan:JSON.parse(JSON.stringify(result.plan)),context:context};
       });
