@@ -1487,6 +1487,25 @@ textarea:focus{
 }
 .noam-compose textarea:focus,.noam-compose textarea:focus-visible{outline:none;box-shadow:none}
 .noam-compose-help{margin:4px 2px 0;color:var(--muted);font-size:12px}
+.noam-ai-feedback{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  margin:7px auto 1px;
+  padding:2px 4px;
+  color:var(--muted);
+  background:transparent;
+  border:0;
+  font:700 11.5px/1.4 Assistant,sans-serif;
+  text-decoration:underline;
+  cursor:pointer;
+}
+.noam-ai-feedback:hover,.noam-ai-feedback:focus-visible{
+  color:var(--ink);
+  outline:2px solid var(--accent-dark);
+  outline-offset:2px;
+  border-radius:4px;
+}
     .noam-attach-button{
       display:inline-flex;
       align-items:center;
@@ -1625,6 +1644,10 @@ textarea:focus{
 }
 .pdf-page .noam-report-pin:hover::after,
 .pdf-page .noam-report-pin:focus-visible::after{opacity:1}
+.pdf-page .noam-report-pin.noam-report-before::after{
+  left:auto;
+  right:calc(100% + 8px);
+}
 @media (min-width:901px) and (max-width:1100px){
   .pdf-page .noam-report-pin::after{max-width:120px;white-space:normal;line-height:1.35}
 }
@@ -3811,6 +3834,15 @@ function feedbackUrl(exercise){
   return url.href;
 }
 
+function aiFeedbackUrl(exercise){
+  var url = new URL(FEEDBACK_FORM_URL);
+  url.searchParams.set(
+    FEEDBACK_FORM_CONTEXT_FIELD,
+    feedbackLocation(exercise) + " · משוב על תשובת נועם AI"
+  );
+  return url.href;
+}
+
 function openFeedbackForm(exercise){
   if (!exercise){ return; }
   if (feedbackDialog && feedbackDialog.open){ feedbackDialog.close(); }
@@ -4035,6 +4067,39 @@ function renderManifestPins(){
       }
     });
   }
+  /*
+    On two-column worksheets a narrow rendered page can squeeze the report
+    button of the left-hand question against the AI button of the right-hand
+    question. Keep one report per question, but place the left report on the
+    outer side of its own AI button when the two pairs would visually collide.
+  */
+  if (!narrow){
+    groups.forEach(function(group){
+      var exercise = group.exercises[0];
+      var pin = exercise.pin || {};
+      var pageNumber = Number(pin.page || 0);
+      var pageElement = pdfPages.querySelector('.pdf-page[data-page="' + pageNumber + '"]');
+      if (!pageElement || pageElement.clientWidth <= 0){ return; }
+      var pinX = Number(pin.x);
+      if (!isFinite(pinX)){ pinX = .92; }
+      pinX = Math.max(.02,Math.min(.98,pinX));
+      var center = Math.max(16,Math.min(pageElement.clientWidth - 16,pinX * pageElement.clientWidth + 52));
+      var pinY = Math.max(.02,Math.min(.98,Number(pin.y)||.2));
+      var hasCloseRightNeighbor = groups.some(function(other){
+        if (other === group){ return false; }
+        var otherPin = other.exercises[0].pin || {};
+        if (Number(otherPin.page || 0) !== pageNumber){ return false; }
+        var otherY = Math.max(.02,Math.min(.98,Number(otherPin.y)||.2));
+        if (Math.abs(otherY - pinY) * pageElement.clientHeight > 18){ return false; }
+        var otherX = Number(otherPin.x);
+        if (!isFinite(otherX)){ otherX = .92; }
+        otherX = Math.max(.02,Math.min(.98,otherX));
+        var otherCenter = Math.max(16,Math.min(pageElement.clientWidth - 16,otherX * pageElement.clientWidth + 52));
+        return otherCenter > center && otherCenter - center < 70;
+      });
+      group.reportBefore = hasCloseRightNeighbor && center >= 56;
+    });
+  }
   groups.forEach(function(group){
     var exercise = group.exercises[0];
     var pin = exercise.pin || {};
@@ -4086,11 +4151,11 @@ function renderManifestPins(){
     pageElement.appendChild(button);
     var report = document.createElement("button");
     report.type = "button";
-    report.className = "noam-report-pin";
+    report.className = "noam-report-pin" + (group.reportBefore ? " noam-report-before" : "");
     report.textContent = "!";
     report.style.left = narrow
       ? "calc(100% + 76px)"
-      : "calc(" + pinLeft + " + 40px)";
+      : "calc(" + pinLeft + (group.reportBefore ? " - 40px)" : " + 40px)");
     report.style.top = button.style.top;
     report.dataset.exerciseId = exercise.id;
     report.dataset.exerciseIds = button.dataset.exerciseIds;
@@ -4207,6 +4272,9 @@ function renderNoamChat(){
   var thread = exerciseThread(selectedExercise.id);
   var previewing = panelBody.classList.contains("is-previewing");
   var text = selectedExercise.text || selectedExercise.prompt || selectedExercise.context || "";
+  var hasAssistantAnswer = thread.messages.some(function(message){
+    return message && message.role === "assistant" && String(message.text || "").trim();
+  });
 
   panelBody.innerHTML =
     '<div class="noam-picked">' +
@@ -4248,7 +4316,10 @@ function renderNoamChat(){
       '</div>' +
       '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
       '<button type="button" class="noam-send" id="noamSend">שלח לנועם AI</button>' +
-    '</div>';
+    '</div>' +
+    (hasAssistantAnswer
+      ? '<button type="button" class="noam-ai-feedback" id="noamAiFeedback">יש הערה על התשובה שקיבלתם מנועם AI? כתבו לנו</button>'
+      : '');
 
   var attachButton=document.getElementById("noamAttachButton");
   var attachInput=document.getElementById("noamAttachInput");
@@ -4316,6 +4387,12 @@ function renderNoamChat(){
     saveNoamState();renderNoamChat();
   });
   document.getElementById("noamLocate").addEventListener("click",locateSelectedExercise);
+  var aiFeedbackButton=document.getElementById("noamAiFeedback");
+  if (aiFeedbackButton){
+    aiFeedbackButton.addEventListener("click",function(){
+      window.open(aiFeedbackUrl(selectedExercise),"_blank","noopener,noreferrer");
+    });
+  }
   document.getElementById("noamSend").addEventListener("click",function(){
     var input=document.getElementById("noamQuestion");
     var message=String(input.value||"").trim().slice(0,700);

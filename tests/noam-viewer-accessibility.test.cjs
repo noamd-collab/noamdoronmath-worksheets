@@ -135,6 +135,14 @@ test("an untouched chat has no instructional filler and collapses beside the sca
   assert.match(html, /if \(!thread\.messages\.length&&!busy\)\{ transcript\.classList\.add\("is-empty"\); \}/);
 });
 
+test("question feedback pins remain, while AI-answer feedback appears once below the composer", () => {
+  assert.match(html, /report\.className = "noam-report-pin"/);
+  assert.match(html, /report\.dataset\.label = "יש הערה על השאלה\?"/);
+  assert.equal((html.match(/id=\\?"noamAiFeedback\\?"/g) || []).length, 1);
+  assert.match(html, /hasAssistantAnswer[\s\S]*?יש הערה על התשובה שקיבלתם מנועם AI\? כתבו לנו/);
+  assert.match(html, /feedbackLocation\(exercise\) \+ " · משוב על תשובת נועם AI"/);
+});
+
 test("local visual analysis deduplicates identical manifest text before parsing", () => {
   assert.match(html, /values\.indexOf\(value\)===index/);
   assert.match(html, /if \(!tryNoamLocalVisual\(message\)\)\{askNoam\("free_question",message\);\}/);

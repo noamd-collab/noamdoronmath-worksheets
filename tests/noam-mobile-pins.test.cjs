@@ -25,11 +25,11 @@ function button() {
   return item;
 }
 
-function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false) {
+function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false, pageWidth = 550) {
   const pages = new Map();
   exercises.forEach(exercise => {
     const page = exercise.pin.page;
-    if (!pages.has(page)) pages.set(page, { clientHeight: pageHeight, children: [], appendChild(item) { item.parent = this; this.children.push(item); } });
+    if (!pages.has(page)) pages.set(page, { clientHeight: pageHeight, clientWidth: pageWidth, children: [], appendChild(item) { item.parent = this; this.children.push(item); } });
   });
   const viewportWidth = narrow ? 390 : 901;
   const media = { matches: narrow };
@@ -124,6 +124,24 @@ test("every Noam AI target gets a separate feedback target", () => {
   assert.equal(f.reports()[2].attributes["aria-label"], "דיווח על שאלה 2");
   f.reports()[0].click();
   assert.deepEqual([...reports[0]], ["q1a", "q1b"]);
+});
+
+test("two-column questions keep one clearly paired report target when the rendered page is narrow", () => {
+  const exercises = [
+    { id: "right", q: 1, pin: { page: 1, x: .91, y: .3 } },
+    { id: "left", q: 2, pin: { page: 1, x: .48, y: .3 } }
+  ];
+  const f = fixture(exercises, false, 350, false, 250);
+  f.ctx.renderManifestPins();
+  assert.equal(f.reports().length, 2);
+  assert.equal(f.pins().length, 2);
+  assert.equal(f.reports()[0].classList.contains("noam-report-before"), false);
+  assert.equal(f.reports()[1].classList.contains("noam-report-before"), true);
+  const rightRobot = cssPixels(f.pins()[0].style.left, 250);
+  const leftRobot = cssPixels(f.pins()[1].style.left, 250);
+  const rightReport = cssPixels(f.reports()[0].style.left, 250);
+  const leftReport = cssPixels(f.reports()[1].style.left, 250);
+  assert.ok(leftReport < leftRobot && leftRobot < rightRobot && rightRobot < rightReport);
 });
 
 test("group selection opens accessible part choices without choosing or requesting AI prematurely", () => {
@@ -329,8 +347,12 @@ test("desktop pairs retain a gap and stay inside the reserved gutter at narrow a
     f.pins().forEach((pin, index) => {
       const ai = cssPixels(pin.style.left, width);
       const report = cssPixels(f.reports()[index].style.left, width);
-      assert.ok(report - 12.5 - (ai + 14.5) >= 12.99, `width ${width}: pair keeps 13px gap`);
+      const gap = report < ai
+        ? ai - 14.5 - (report + 12.5)
+        : report - 12.5 - (ai + 14.5);
+      assert.ok(gap >= 12.99, `width ${width}: pair keeps 13px gap`);
       assert.ok(ai - 14.5 >= 0, `width ${width}: AI stays within page left edge`);
+      assert.ok(report - 12.5 >= 0, `width ${width}: report stays within page left edge`);
       assert.ok(report + 12.5 <= width + desktopGutter, `width ${width}: report inside right gutter`);
     });
   }
