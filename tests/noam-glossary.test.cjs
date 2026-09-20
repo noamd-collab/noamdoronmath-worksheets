@@ -63,6 +63,26 @@ test("grade scope prevents advanced terms from appearing too early", () => {
   assert.deepEqual(glossary.findTerms("פונקציה ריבועית ופרבולה", 9, 6).map(match => match.id), ["quadratic-function", "parabola"]);
 });
 
+test("definite and plural right-triangle phrases stay one concept with their original spelling", () => {
+  for (const phrase of [
+    "המשולש ישר הזווית", "במשולש ישר זווית", "והמשולש ישר־הזווית",
+    "המשולש ישר-הזווית", "משולש ישר-זווית", "המשולשים ישרי הזווית",
+    "במשולשים ישרי־זווית", "משולשים ישרי-זווית"
+  ]) {
+    for (const grade of [7, 8, 9]) {
+      const text = `ובחנו את ${phrase} BHQ.`;
+      const matches = glossary.findTerms(text, grade);
+      assert.deepEqual(matches.map(match => match.id), ["right-triangle"], text);
+      assert.equal(matches[0].text, phrase);
+      assert.equal(text.slice(matches[0].start, matches[0].end), phrase);
+    }
+  }
+  const separate = glossary.findTerms("המשולש נמצא ליד הישר והזווית מסומנת.", 9);
+  assert.equal(separate.some(match => match.id === "right-triangle"), false);
+  assert.ok(separate.some(match => match.id === "triangle"));
+  assert.ok(separate.some(match => match.id === "angle"));
+});
+
 test("Hebrew word boundaries avoid highlighting a term inside an unrelated word", () => {
   assert.equal(glossary.findTerms("הריבועית", 9, 6).some(match => match.id === "square"), false);
   assert.equal(glossary.findTerms("ריבוע", 9, 6)[0].id, "square");
