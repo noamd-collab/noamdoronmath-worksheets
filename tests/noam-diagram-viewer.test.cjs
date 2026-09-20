@@ -84,6 +84,19 @@ test("failed plans never cache or pretend to draw, and a deliberate retry succee
   assert.equal(calls,2);assert.equal(f.message.diagramError,undefined);
 });
 
+test("a valid plan that cannot render never claims a drawing or enters the success cache",async()=>{
+  const f=fixture();
+  f.message.diagramTyped=true;f.message.text="מכין המחשה לשלב שעליו שאלת.";
+  f.ctx.NoamGeometry.render=()=>null;
+  assert.equal(await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message),null);
+  assert.equal(f.message.visual,undefined);
+  assert.equal(f.message.text,"השרטוט עדיין לא מוכן.");
+  assert.match(f.message.diagramError,/מדויקת/);
+  assert.equal(f.ctx.noamDiagramRuntime().cache.size,0);
+  assert.equal(f.thread.history.length,0);
+  assert.ok(!f.notices.some(s=>/נוסף שרטוט/.test(s)));
+});
+
 test("switching section while waiting cannot redraw or populate the new conversation",async()=>{
   const f=fixture(),gate=deferred();f.ctx.postJson=()=>gate.promise;
   const pending=f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);

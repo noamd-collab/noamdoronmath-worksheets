@@ -84,6 +84,36 @@ test("angle names and degree claims are checked against their actual vertex and 
   s.angles[0].to="B";assert.equal(render(s),null);
 });
 
+test("two separated triangles keep both angle markings when their labels do not fit inside",()=>{
+  const s={type:"geometry-scene",points:{A:[0,0],B:[3,0],C:[2,3],D:[20,2],E:[22,0],F:[23,4]},
+    segments:[["A","B"],["B","C"],["C","A"],["D","E"],["E","F"],["F","D"]],
+    highlights:[{from:"C",to:"A",color:"blue",label:"CA"},{from:"A",to:"B",color:"blue",label:"AB"},{from:"F",to:"D",color:"orange",label:"FD"},{from:"D",to:"E",color:"orange",label:"DE"}],
+    angles:[{from:"C",vertex:"A",to:"B",label:"∠CAB"},{from:"F",vertex:"D",to:"E",label:"∠FDE"}]};
+  const before=JSON.stringify(s),card=render(s),all=nodes(card);assert.ok(card,"valid two-triangle drawing must not disappear because a label is crowded");
+  assert.equal(JSON.stringify(s),before,"layout does not rewrite coordinates or annotations");
+  assert.equal(all.filter(n=>n.className==="noam-geometry-segment").length,6);
+  assert.equal(all.filter(n=>n.className==="noam-geometry-highlight").length,4);
+  assert.deepEqual(all.filter(n=>n.className==="noam-geometry-label").map(n=>n.textContent),["A","B","C","D","E","F"]);
+  const arcs=all.filter(n=>n.className==="noam-geometry-angle");
+  assert.deepEqual(arcs.map(n=>n.attributes["data-angle-vertex"]),["A","D"]);
+  assert.deepEqual(arcs.map(n=>n.attributes["data-angle-name"]),["CAB","FDE"]);
+  const legend=all.filter(n=>n.className==="noam-geometry-legend-item");assert.equal(legend.length,2);
+  legend.forEach((item,i)=>{
+    const label=item.children.find(n=>n.className==="noam-geometry-legend-label"),swatch=item.children.find(n=>n.className==="noam-geometry-legend-swatch");
+    assert.equal(label.textContent,s.angles[i].label);assert.equal(swatch.attributes.style,"background-color:"+arcs[i].attributes.stroke);
+  });
+});
+
+test("a crowded numeric angle retains its exact name and value in the legend",()=>{
+  const s={type:"geometry-scene",points:{A:[0,0],B:[3,0],C:[3,3],D:[30,0],E:[33,0],F:[33,3]},
+    segments:[["A","B"],["B","C"],["C","A"],["D","E"],["E","F"],["F","D"]],
+    angles:[{from:"C",vertex:"A",to:"B",label:"45°"}]};
+  const all=nodes(render(s));assert.ok(all.length);
+  assert.equal(all.find(n=>n.className==="noam-geometry-legend-label").textContent,"∠CAB = 45°");
+  assert.equal(all.find(n=>n.className==="noam-geometry-angle").attributes["data-angle-vertex"],"A");
+  s.angles[0].label="48°";assert.equal(render(s),null,"a legend never bypasses mathematical validation");
+});
+
 test("highlights identify segments without implicitly marking equality",()=>{
   const s=rectangleScene();s.highlights=[{from:"A",to:"B",color:"blue"},{from:"B",to:"C",color:"blue"}];
   const all=nodes(render(s));assert.equal(all.filter(n=>n.className==="noam-geometry-highlight").length,2);assert.equal(all.filter(n=>n.className==="noam-geometry-equality-mark").length,0);

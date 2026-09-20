@@ -13,8 +13,9 @@
   var PROMPT_SCHEMA="Return JSON only. Supported geometry is straight segments between 3–16 named uppercase single-letter points. Format: {version:1,status:'ok',points:{A:[0,0],B:[4,0],C:[0,3]},segments:[['A','B'],['B','C'],['C','A']],highlights:[{from:'A',to:'B',color:'blue',label:'AB'}],angles:[],equalGroups:[],rightAngles:[],evidence:[]}. Use double quotes in JSON. Allowed colors: blue,orange,teal,pink. Angles: {from,vertex,to,label}; label is empty, the exact angle name such as ∠ABC, or a given numeric degree value. Equality groups: {segments:[[A,B],[C,D]],count:1|2|3,color}. Right angles: [[A,B,C]] with B the vertex. Each equality group, right-angle mark, numeric angle/segment label needs evidence {mark:'equalGroups.0'|'rightAngles.0'|'angles.0'|'highlights.0',source:'question'|'hint',quote:'exact affirmative text from supplied question or current hint'}. Never cite a goal, question, conditional statement, negation, or a student assertion as evidence. Coordinates must agree with every explicit given relation and with marked values. Use simple exact coordinates where possible. Only emphasize the named objects in the current hint or the student's explicit drawing request. Points must already occur in question/hint. No title, caption, prose, equations, SVG, HTML, code, extra keys, computed solution, or later proof step. If unsupported, return {version:1,status:'unsupported'}.";
 
   PROMPT_SCHEMA += " The additional optional field pointHighlights is supported: [{point:'B',color:'blue'}]. Use it to locate a single point or vertex explicitly named on its own in the current hint or drawing request. If the hint asks which side is opposite vertex B, emphasize only B; do not select the opposite side or add rays/angle marks that were not named. Point highlighting requires no factual evidence and must not introduce a new point.";
+  PROMPT_SCHEMA += " Optional rays:[[M,A],[M,C]] are directed from the first point through the second. A ray must be explicitly called a ray in affirmative source text (Hebrew קרן/קרניים or English ray/rays), and its named point pair must also be in segments. Never convert a segment or line to a ray based on a student request. The renderer adds arrowheads beyond the named through-point. Preserve explicitly stated acute/obtuse angle classes; an approximate diagram description is not an exact degree measurement.";
 
-  function fail(reason){throw Object.assign(new Error(reason),{reason:reason});}
+  function fail(reason,constraint){throw Object.assign(new Error(reason),{reason:reason},constraint?{constraint:constraint}:{});}
   function object(value){return value&&typeof value==="object"&&!Array.isArray(value)&&(Object.getPrototypeOf(value)===Object.prototype||Object.getPrototypeOf(value)===null);}
   function keys(value,allowed){if(!object(value)){fail("invalid_object");}Object.keys(value).forEach(function(key){if(allowed.indexOf(key)<0){fail("unknown_field");}});}
   function safeTree(value,depth){
@@ -52,7 +53,7 @@
       return /משולש|מרובע|מלבן|מעוין|מקבילית|טרפז|ריבוע|מחומש|משושה/.test(value)&&pairKey([token[0],token[token.length-1]])===pairKey(ends);
     });
   }
-  var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?\s+(?:כי|ש)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
+  var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   function grounded(quote,source){
     quote=clean(quote).replace(/\s+/g," ");
@@ -68,11 +69,21 @@
     return false;
   }
   function perpendicularIn(quote,ends){var a=segmentAlternates([ends[0],ends[1]]),b=segmentAlternates([ends[1],ends[2]]);return new RegExp("(?:^|[^A-Z])(?:"+a+"⊥"+b+"|"+b+"⊥"+a+")(?=$|[^A-Z])").test(compact(quote))||numericIn(quote,ends,90,true);}
+  function sourceRays(source){
+    var rays={};
+    sentences(source).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
+      // Only explicit lists immediately after the object type are accepted.
+      // Point order matters: ray MA starts at M, unlike ray AM.
+      var re=/(?:^|[^א-תA-Za-z])(?:ה?קרן|ה?קרניים|rays?)\s*:?\s*([A-Z]{2}(?:\s*(?:,\s*(?:and\s+|ו[־-]?)?|and\s+|ו[־-]?)\s*[A-Z]{2})*)(?![A-Za-z])/g,match;
+      while((match=re.exec(sentence))){(match[1].match(/[A-Z]{2}/g)||[]).forEach(function(name){rays[name]=name.split("");});}
+    });
+    return rays;
+  }
   function inspect(plan,context){
     try{
       context=context||{};safeTree(plan,0);
       if(JSON.stringify(plan).length>24000){fail("plan_too_large");}
-      keys(plan,["version","status","points","segments","highlights","pointHighlights","angles","equalGroups","rightAngles","evidence"]);
+      keys(plan,["version","status","points","segments","rays","highlights","pointHighlights","angles","equalGroups","rightAngles","evidence"]);
       if(plan.version!==1){fail("unsupported_version");}
       if(plan.status==="unsupported"){return {ok:false,scene:null,reason:"unsupported"};}
       if(plan.status!=="ok"){fail("invalid_status");}
@@ -98,6 +109,12 @@
       var evidence={};list(plan.evidence,32).forEach(function(item){keys(item,["mark","source","quote"]);if(typeof item.mark!=="string"||!/^(equalGroups|rightAngles|angles|highlights)\.\d{1,2}$/.test(item.mark)||evidence[item.mark]||(item.source!=="question"&&item.source!=="hint")){fail("invalid_evidence");}text(item.quote,400);if(!grounded(item.quote,item.source==="question"?question:hint)){fail("unproven_evidence");}evidence[item.mark]=item;});
       var usedEvidence={};function proof(mark,check){var item=evidence[mark];if(!item||!check(item.quote)){fail("ungrounded_mark");}usedEvidence[mark]=true;}
       var scene={type:"geometry-scene",title:"המחשה לשלב הנוכחי",caption:"שרטוט סכמטי: הצבעים מדגישים את הנקודות, הקטעים והזוויות שבשלב הנוכחי.",points:points,segments:segments,equations:[]};
+      var declaredRays=sourceRays(question+". "+hint),raySeen={};
+      list(plan.rays,16).forEach(function(item){var ends=pair(item),name=ends.join("");if(raySeen[name]){fail("duplicate_ray");}if(!declaredRays[name]){fail("ungrounded_ray");}if(!seen[pairKey(ends)]){fail("undrawn_ray");}raySeen[name]=true;});
+      // A source-labelled ray stays a ray even in a cached plan that omitted
+      // the optional field. This adds no point, segment, fact or emphasis.
+      scene.rays=Object.keys(declaredRays).filter(function(name){return seen[pairKey(declaredRays[name])];}).map(function(name){return declaredRays[name].slice();});
+      if(scene.rays.length>16){fail("invalid_list");}
       var emphasizedPoints={};scene.pointHighlights=list(plan.pointHighlights,8).map(function(item){
         keys(item,["point","color"]);
         if(typeof item.point!=="string"||!Object.prototype.hasOwnProperty.call(points,item.point)||emphasizedPoints[item.point]){fail("invalid_point_highlight");}
@@ -144,23 +161,30 @@
       function linesAgree(first,second,relation){var u=vector(first),v=vector(second),size=Math.hypot(u[0],u[1])*Math.hypot(v[0],v[1]);return relation==="∥"?Math.abs(u[0]*v[1]-u[1]*v[0])<=EPS*size:Math.abs(u[0]*v[0]+u[1]*v[1])<=EPS*size;}
       sentences(question+". "+hint).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
         var s=compact(sentence),match,re=/(?:^|[^A-Z0-9+*/=−-])([A-Z]{2})(=|∥|⊥)([A-Z]{2})(?=$|[^A-Z0-9+*/=−-])/g;
-        while((match=re.exec(s))){if(allPresent(match[1]+match[3])){var a=match[1].split(""),b=match[3].split("");if(match[2]==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,match[2])){fail("source_coordinate_contradiction");}}}
+        while((match=re.exec(s))){if(allPresent(match[1]+match[3])){var a=match[1].split(""),b=match[3].split("");if(match[2]==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,match[2])){fail("source_coordinate_contradiction",{type:"relation",first:a,second:b,relation:match[2]});}}}
         re=/(?:^|[^A-Z0-9+*/=−-])∠?([A-Z]{3})=(\d+(?:\.\d+)?)°(?=$|[^A-Z0-9+*/=−-])/g;
-        while((match=re.exec(s))){if(allPresent(match[1])&&Math.abs(angle(match[1].split("")).degrees-Number(match[2]))>.5){fail("source_coordinate_contradiction");}}
+        while((match=re.exec(s))){if(allPresent(match[1])){var anglePoints=match[1].split(""),expectedDegrees=Number(match[2]),actualDegrees=angle(anglePoints).degrees;if(Math.abs(actualDegrees-expectedDegrees)>.5){
+          // Only parsed geometry values enter diagnostics; never source prose.
+          var constraint={type:"angle",points:anglePoints,actualDegrees:Math.round(actualDegrees*1e6)/1e6};
+          if(Number.isFinite(expectedDegrees)&&expectedDegrees>=0&&expectedDegrees<=180){Object.assign(constraint,{expectedDegrees:expectedDegrees});}
+          fail("source_coordinate_contradiction",constraint);
+        }}}
+        re=/(?:ה?זווית\s*∠?([A-Z]{3})\s*(?:(?:היא|הינה)\s*)?(חדה|קהה)(?=$|[^א-ת])|\b(?:angle\s+)?∠?([A-Z]{3})\s+(?:is\s+)?(acute|obtuse)\b)/g;
+        while((match=re.exec(sentence))){var classNames=match[1]||match[3],expectedClass=match[2]==="חדה"||match[4]==="acute"?"acute":"obtuse";if(allPresent(classNames)){var classDegrees=angle(classNames.split("")).degrees;if(expectedClass==="acute"?classDegrees>=90-EPS:classDegrees<=90+EPS){fail("source_coordinate_contradiction",{type:"angleClass",points:classNames.split(""),expectedClass:expectedClass,actualDegrees:Math.round(classDegrees*1e6)/1e6});}}}
         re=/([A-Z])\s+(?:(?:נמצא|נמצאת)\s+)?על\s+(?:(הצלע|הקטע|האלכסון|הישר)\s+)?([A-Z]{2})(?![A-Z])/g;
-        while((match=re.exec(sentence))){if(allPresent(match[1]+match[3])){var middle=points[match[1]],start=points[match[3][0]],end=points[match[3][1]],onSegment=sameLength(distance(start,middle)+distance(middle,end),distance(start,end)),cross=(end[0]-start[0])*(middle[1]-start[1])-(end[1]-start[1])*(middle[0]-start[0]);if(match[2]==="הישר"?Math.abs(cross)>EPS*Math.max(1,distance(start,end)*distance(start,middle)):!onSegment){fail("source_coordinate_contradiction");}}}
+        while((match=re.exec(sentence))){if(allPresent(match[1]+match[3])){var middle=points[match[1]],start=points[match[3][0]],end=points[match[3][1]],onSegment=sameLength(distance(start,middle)+distance(middle,end),distance(start,end)),cross=(end[0]-start[0])*(middle[1]-start[1])-(end[1]-start[1])*(middle[0]-start[0]);if(match[2]==="הישר"?Math.abs(cross)>EPS*Math.max(1,distance(start,end)*distance(start,middle)):!onSegment){fail("source_coordinate_contradiction",{type:"pointOn",point:match[1],ends:match[3].split(""),extent:match[2]==="הישר"?"line":"segment"});}}}
         re=/(משולש|מעוין|ריבוע|מלבן|מקבילית)\s*[△Δ]?\s*([A-Z]{3,4})(?![A-Z])/g;
         while((match=re.exec(sentence))){if(!allPresent(match[2])){continue;}var shape=match[1],names=match[2].split("");
           if(shape==="משולש"&&names.length===3){angle(names);continue;}
           if(names.length!==4){continue;}
           var edges=names.map(function(n,i){return [n,names[(i+1)%4]];});
-          if(!linesAgree(edges[0],edges[2],"∥")||!linesAgree(edges[1],edges[3],"∥")){fail("source_coordinate_contradiction");}
-          if((shape==="מלבן"||shape==="ריבוע")&&!linesAgree(edges[0],edges[1],"⊥")){fail("source_coordinate_contradiction");}
-          if((shape==="מעוין"||shape==="ריבוע")&&!sameLength(distance(points[names[0]],points[names[1]]),distance(points[names[1]],points[names[2]]))){fail("source_coordinate_contradiction");}
+          if(!linesAgree(edges[0],edges[2],"∥")||!linesAgree(edges[1],edges[3],"∥")){fail("source_coordinate_contradiction",{type:"shape",shape:shape,points:names,required:"oppositeSidesParallel"});}
+          if((shape==="מלבן"||shape==="ריבוע")&&!linesAgree(edges[0],edges[1],"⊥")){fail("source_coordinate_contradiction",{type:"shape",shape:shape,points:names,required:"adjacentSidesPerpendicular"});}
+          if((shape==="מעוין"||shape==="ריבוע")&&!sameLength(distance(points[names[0]],points[names[1]]),distance(points[names[1]],points[names[2]]))){fail("source_coordinate_contradiction",{type:"shape",shape:shape,points:names,required:"adjacentSidesEqual"});}
         }
       });
       return {ok:true,scene:scene,reason:null};
-    }catch(error){return {ok:false,scene:null,reason:error.reason||"invalid_plan"};}
+    }catch(error){var result={ok:false,scene:null,reason:error.reason||"invalid_plan"};if(error.reason==="source_coordinate_contradiction"&&error.constraint){return Object.assign(result,{constraint:error.constraint});}return result;}
   }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}

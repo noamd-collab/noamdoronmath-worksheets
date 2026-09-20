@@ -2149,9 +2149,9 @@ textarea:focus{
 </dialog>
 
 <script src="noam-didactic-guides.js?v=20260920-3"></script>
-<script src="noam-geometry.js?v=20260920-2"></script>
+<script src="noam-geometry.js?v=20260920-3"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
-<script src="noam-diagram-plan.js?v=20260920-2"></script>
+<script src="noam-diagram-plan.js?v=20260920-3"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
 <script src="noam-glossary.js?v=20260920-3"></script>
@@ -5963,8 +5963,13 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
       }).then(function(result){
         var checked=result&&result.ok&&window.NoamDiagramPlan.inspect(result.plan,context);
         if (!checked||!checked.ok){
-          console.warn("NOAM_DIAGRAM_REJECTED",String(result&&result.validationReason||checked&&checked.reason||"unavailable").slice(0,80));
+          console.warn("NOAM_DIAGRAM_REJECTED",String(result&&result.validationReason||checked&&checked.reason||"unavailable").slice(0,80),JSON.stringify(result&&result.constraint||null));
           var error=new Error("diagram unsupported");error.code="DIAGRAM_UNSUPPORTED";throw error;
+        }
+        if (!window.NoamGeometry||!window.NoamGeometry.render(document,checked.scene)){
+          console.warn("NOAM_DIAGRAM_RENDER_FAILED",JSON.stringify({points:result.plan.points,segments:result.plan.segments,
+            highlights:result.plan.highlights,angles:result.plan.angles,pointHighlights:result.plan.pointHighlights}));
+          var renderError=new Error("diagram render failed");renderError.code="DIAGRAM_UNSUPPORTED";throw renderError;
         }
         return {type:"ai-diagram",exerciseId:exercise.id,sourceIdentity:sourceIdentity,cacheKey:key,
           plan:JSON.parse(JSON.stringify(result.plan)),context:context};

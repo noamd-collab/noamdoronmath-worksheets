@@ -12,6 +12,8 @@
   var EPS=1e-7;
   var CSS=".noam-geometry{box-sizing:border-box;max-width:100%;margin:10px 0;padding:12px;border:1px solid #d6e2ed;border-radius:14px;background:#fff;color:#172440;text-align:right;overflow:hidden}.noam-geometry .noam-geometry-title{margin:0 0 4px;font-size:15px;font-weight:700;line-height:1.45}.noam-geometry .noam-geometry-svg{display:block;width:100%;height:auto;max-height:240px;overflow:visible;background:#fff}.noam-geometry .noam-geometry-caption{margin:5px 0 0;font-size:13px;line-height:1.5;overflow-wrap:anywhere}.noam-geometry .noam-geometry-equations{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;margin-top:6px;font-size:14px;line-height:1.5}.noam-geometry .noam-geometry-equation{unicode-bidi:isolate;white-space:pre-wrap;overflow-wrap:anywhere}.noam-geometry .noam-geometry-label,.noam-geometry .noam-geometry-angle-label,.noam-geometry .noam-geometry-length-label{font-family:Arial,sans-serif;font-weight:600;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round;direction:ltr;unicode-bidi:isolate}.noam-geometry .noam-geometry-label{font-size:14px;fill:#172440}.noam-geometry .noam-geometry-angle-label,.noam-geometry .noam-geometry-length-label{font-size:12px}";
 
+  CSS+=".noam-geometry .noam-geometry-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 14px;margin:6px 0;padding:0;list-style:none;font:600 13px/1.5 Arial,sans-serif;direction:ltr;unicode-bidi:isolate}.noam-geometry .noam-geometry-legend-item{display:flex;align-items:center;gap:5px}.noam-geometry .noam-geometry-legend-swatch{display:inline-block;width:15px;height:3px;border-radius:2px}";
+
   function fail(message){throw new Error(message);}
   function finite(value){return typeof value==="number"&&Number.isFinite(value)&&Math.abs(value)<=1e6;}
   function coordinate(value){return Array.isArray(value)&&value.length===2&&value.every(finite);}
@@ -65,6 +67,12 @@
     var valid={points:points,names:names,title:text(scene.title,120),caption:text(scene.caption,320)};
     valid.segments=array(scene.segments,64).map(function(item){return pair(points,item);});
     if(!valid.segments.length){fail("A scene needs segments");}
+    var raySeen={};
+    valid.rays=array(scene.rays,16).map(function(item){
+      var ends=pair(points,item),name=ends.join("");
+      if(raySeen[name]||!valid.segments.some(function(segment){return segment[0]===ends[0]&&segment[1]===ends[1]||segment[0]===ends[1]&&segment[1]===ends[0];})){fail("Invalid or undrawn ray");}
+      raySeen[name]=true;return ends;
+    });
     valid.highlights=array(scene.highlights,24).map(function(item){if(!item||typeof item!=="object"){fail("Invalid highlight");}return {ends:pair(points,[item.from,item.to]),color:color(item.color),label:text(item.label,32)};});
     var pointHighlightsSeen={};
     valid.pointHighlights=array(scene.pointHighlights,8).map(function(item){
@@ -106,6 +114,13 @@
       if(width<EPS||height<EPS){return null;}
       var scale=Math.min(248/width,162/height),centerX=(maxX+minX)/2,centerY=(maxY+minY)/2;
       function screen(name){var p=points[name];return [160+(p[0]-centerX)*scale,112-(p[1]-centerY)*scale];}
+      function screenRay(ends){
+        var a=screen(ends[0]),b=screen(ends[1]),dx=b[0]-a[0],dy=b[1]-a[1],size=Math.hypot(dx,dy),ux=dx/size,uy=dy/size;
+        // Points already occupy x=36..284 and y=31..193. A 17px extension
+        // leaves room for a visible arrowhead inside the 320x224 viewBox.
+        var tip=[b[0]+ux*17,b[1]+uy*17];
+        return {from:a,tip:tip,left:[tip[0]-ux*7-uy*4,tip[1]-uy*7+ux*4],right:[tip[0]-ux*7+uy*4,tip[1]-uy*7-ux*4]};
+      }
       var card=html(doc,"figure","noam-geometry");card.setAttribute("dir","rtl");
       var style=html(doc,"style","noam-geometry-style",CSS);card.appendChild(style);
       if(data.title){card.appendChild(html(doc,"figcaption","noam-geometry-title",data.title));}
@@ -114,13 +129,14 @@
       // Reserve conservative text bounds, including the white halo. All label
       // types share these reservations, so a later vertex cannot cover an
       // earlier segment or angle label (particularly O beside EO and OF).
-      var labelBoxes=[],pointBoxes=data.names.map(function(name){var p=screen(name),r=data.pointHighlights.some(function(item){return item.point===name;})?10:4;return [p[0]-r,p[1]-r,p[0]+r,p[1]+r];});
+      var angleLegend=[],labelBoxes=[],pointBoxes=data.names.map(function(name){var p=screen(name),r=data.pointHighlights.some(function(item){return item.point===name;})?10:4;return [p[0]-r,p[1]-r,p[0]+r,p[1]+r];});
       var markBoxes=data.rightAngles.map(function(item){
         var r=screenRays(item),s=Math.min(11,r.size*.22),a=[r.v[0]+r.u[0]*s,r.v[1]+r.u[1]*s],b=[a[0]+r.w[0]*s,a[1]+r.w[1]*s],c=[r.v[0]+r.w[0]*s,r.v[1]+r.w[1]*s];
         return [Math.min(a[0],b[0],c[0])-3,Math.min(a[1],b[1],c[1])-3,Math.max(a[0],b[0],c[0])+3,Math.max(a[1],b[1],c[1])+3];
       });
+      data.rays.forEach(function(ends){var r=screenRay(ends);markBoxes.push([Math.min(r.tip[0],r.left[0],r.right[0])-3,Math.min(r.tip[1],r.left[1],r.right[1])-3,Math.max(r.tip[0],r.left[0],r.right[0])+3,Math.max(r.tip[1],r.left[1],r.right[1])+3]);});
       function overlaps(a,b){return a[0]<b[2]+2&&a[2]>b[0]-2&&a[1]<b[3]+2&&a[3]>b[1]-2;}
-      function label(value,anchor,preferred,size,attributes,alternatives,interiorLimit){
+      function label(value,anchor,preferred,size,attributes,alternatives,interiorLimit,allowLegend){
         var units=Array.from(value).reduce(function(sum,c){return sum+(/[MW@]/.test(c)?1.08:/[ilI1.,:°]/.test(c)?.52:.85);},0);
         var halfWidth=(units*size+6)/2,halfHeight=(size*1.35+4)/2;
         var dx=preferred[0]-anchor[0],dy=preferred[1]-anchor[1],radius=Math.max(14,Math.hypot(dx,dy)),direction=Math.atan2(dy,dx);
@@ -140,11 +156,12 @@
           if(labelBoxes.some(function(other){return overlaps(box,other);})||pointBoxes.some(function(other){return overlaps(box,other);})||markBoxes.some(function(other){return overlaps(box,other);})){continue;}
           chosen=p;bounds=box;break;
         }
-        if(!chosen){fail("No legible label placement");}
+        if(!chosen){if(allowLegend){return false;}fail("No legible label placement");}
         labelBoxes.push(bounds);
         var attrs={x:chosen[0],y:chosen[1],"text-anchor":"middle","dominant-baseline":"central"};
         Object.keys(attributes||{}).forEach(function(key){attrs[key]=attributes[key];});
         svg.appendChild(svgElement(doc,"text",attrs,value));
+        return true;
       }
       function line(a,b,attributes){var attrs={x1:a[0],y1:a[1],x2:b[0],y2:b[1],fill:"none","stroke-linecap":"round"};Object.keys(attributes||{}).forEach(function(k){attrs[k]=attributes[k];});var node=svgElement(doc,"line",attrs);svg.appendChild(node);return node;}
       data.segments.forEach(function(ends){line(screen(ends[0]),screen(ends[1]),{stroke:"#172440","stroke-width":1.8,"class":"noam-geometry-segment"});});
@@ -157,6 +174,11 @@
           pendingSegmentLabels.push(function(){label(item.label,mid,[mid[0]-dy/n*15,mid[1]+dx/n*15],12,{fill:item.color,"class":"noam-geometry-length-label"},alternatives);});
         }
       });
+      data.rays.forEach(function(ends){
+        var r=screenRay(ends),highlight=data.highlights.find(function(item){return item.ends[0]===ends[0]&&item.ends[1]===ends[1]||item.ends[0]===ends[1]&&item.ends[1]===ends[0];}),shade=highlight?highlight.color:"#172440";
+        line(r.from,r.tip,{stroke:shade,"stroke-width":highlight?4:1.8,opacity:highlight?.85:1,"class":"noam-geometry-ray","data-ray":ends.join("")});
+        svg.appendChild(svgElement(doc,"path",{d:"M"+r.left.join(" ")+" L"+r.tip.join(" ")+" L"+r.right.join(" "),fill:"none",stroke:shade,"stroke-width":highlight?2.5:1.8,"stroke-linecap":"round","stroke-linejoin":"round","class":"noam-geometry-ray-arrow","data-ray":ends.join(""),"aria-label":"קרן "+ends.join("")}));
+      });
       data.equalGroups.forEach(function(group){group.segments.forEach(function(ends){
         var a=screen(ends[0]),b=screen(ends[1]),dx=b[0]-a[0],dy=b[1]-a[1],n=Math.hypot(dx,dy),ux=dx/n,uy=dy/n;
         for(var i=0;i<group.count;i++){var shift=(i-(group.count-1)/2)*5,cx=(a[0]+b[0])/2+ux*shift,cy=(a[1]+b[1])/2+uy*shift;line([cx-uy*5,cy+ux*5],[cx+uy*5,cy-ux*5],{stroke:group.color,"stroke-width":2,"class":"noam-geometry-equality-mark"});}
@@ -165,8 +187,18 @@
       data.rightAngles.forEach(function(item){var r=screenRays(item),s=Math.min(11,r.size*.22),a=[r.v[0]+r.u[0]*s,r.v[1]+r.u[1]*s],b=[a[0]+r.w[0]*s,a[1]+r.w[1]*s],c=[r.v[0]+r.w[0]*s,r.v[1]+r.w[1]*s];svg.appendChild(svgElement(doc,"path",{d:"M"+a.join(" ")+" L"+b.join(" ")+" L"+c.join(" "),fill:"none",stroke:COLORS.teal,"stroke-width":1.6,"class":"noam-geometry-right-angle"}));});
       data.angles.forEach(function(item,index){
         var r=screenRays(item),radius=Math.min(23,r.size*.29),a=[r.v[0]+r.u[0]*radius,r.v[1]+r.u[1]*radius],b=[r.v[0]+r.w[0]*radius,r.v[1]+r.w[1]*radius],cross=r.u[0]*r.w[1]-r.u[1]*r.w[0],shade=[COLORS.orange,COLORS.blue,COLORS.teal,COLORS.pink][index%4];
-        svg.appendChild(svgElement(doc,"path",{d:"M"+a.join(" ")+" A"+radius+" "+radius+" 0 0 "+(cross>0?1:0)+" "+b.join(" "),fill:"none",stroke:shade,"stroke-width":2.2,"class":"noam-geometry-angle","data-angle-vertex":item.vertex}));
-        if(item.label){var bx=r.u[0]+r.w[0],by=r.u[1]+r.w[1],bn=Math.hypot(bx,by),offset=radius+12;label(item.label,r.v,[r.v[0]+bx/bn*offset,r.v[1]+by/bn*offset],12,{fill:shade,"class":"noam-geometry-angle-label"},[],r.size*.88);}
+        var angleName=item.from+item.vertex+item.to;
+        svg.appendChild(svgElement(doc,"path",{d:"M"+a.join(" ")+" A"+radius+" "+radius+" 0 0 "+(cross>0?1:0)+" "+b.join(" "),fill:"none",stroke:shade,"stroke-width":2.2,"class":"noam-geometry-angle","data-angle-vertex":item.vertex,"data-angle-name":angleName,"aria-label":"זווית "+angleName+(item.label?": "+item.label:"")}));
+        if(item.label){
+          var bx=r.u[0]+r.w[0],by=r.u[1]+r.w[1],bn=Math.hypot(bx,by),offset=radius+12;
+          if(!label(item.label,r.v,[r.v[0]+bx/bn*offset,r.v[1]+by/bn*offset],12,{fill:shade,"class":"noam-geometry-angle-label"},[],r.size*.88,true)){
+            // A crowded angle must not discard the whole valid drawing or
+            // move a label across its rays. Preserve its name/value in a
+            // color-matched legend and leave the arc at the correct vertex.
+            var isNamed=/^\s*∠?[A-Za-z]{3}\s*$/.test(item.label);
+            angleLegend.push({label:isNamed?item.label:"∠"+angleName+" = "+item.label,color:shade});
+          }
+        }
       });
       // Angle labels have the strictest placement (inside their own sector).
       // Give them priority before placing the more flexible segment labels.
@@ -182,6 +214,11 @@
         label(name,p,[p[0]+offset[0],p[1]+offset[1]],14,{"class":"noam-geometry-label"});
       });
       card.appendChild(svg);
+      if(angleLegend.length){
+        var legend=html(doc,"ul","noam-geometry-legend");legend.setAttribute("aria-label","סימוני הזוויות בשרטוט");
+        angleLegend.forEach(function(item){var entry=html(doc,"li","noam-geometry-legend-item"),swatch=html(doc,"span","noam-geometry-legend-swatch");swatch.setAttribute("style","background-color:"+item.color);swatch.setAttribute("aria-hidden","true");entry.appendChild(swatch);entry.appendChild(html(doc,"span","noam-geometry-legend-label",item.label));legend.appendChild(entry);});
+        card.appendChild(legend);
+      }
       if(data.caption){card.appendChild(html(doc,"p","noam-geometry-caption",data.caption));}
       if(data.equations.length){var equations=html(doc,"div","noam-geometry-equations");data.equations.forEach(function(value){var equation=html(doc,"span","noam-geometry-equation",value);equation.setAttribute("dir","auto");equations.appendChild(equation);});card.appendChild(equations);}
       return card;

@@ -121,6 +121,46 @@ test("visible outlines must also agree with recognized givens, even without fact
   assert.equal(Plan.inspect(q,context({questionText:"נתונה מקבילית ABCD."})).ok,true);
 });
 
+test("source angle rejection identifies the exact vertex and bounded expected and actual degrees",()=>{
+  const p={version:1,status:"ok",points:{A:[0,0],B:[6,0],C:[6,4],D:[0,4],O:[3,2]},segments:[["A","B"],["B","C"],["C","D"],["D","A"],["A","C"],["B","D"]],highlights:[{from:"A",to:"C"},{from:"B",to:"D"}]};
+  const c=context({questionText:"במלבן ABCD האלכסונים נפגשים בנקודה O. מידע פרטי שלא צריך להופיע באבחון. נתון ∠AOB=48°.",hintText:"הדגש את AC ואת BD."});
+  const result=Plan.inspect(p,c);
+  assert.equal(result.ok,false);assert.equal(result.scene,null);assert.equal(result.reason,"source_coordinate_contradiction");
+  assert.deepEqual(result.constraint,{type:"angle",points:["A","O","B"],expectedDegrees:48,actualDegrees:112.619865});
+  assert.equal(JSON.stringify(result.constraint).includes("פרטי"),false);
+  c.questionText="במלבן ABCD האלכסונים נפגשים בנקודה O. נתון ∠AOB=112.619865°.";
+  assert.equal(Plan.inspect(p,c).ok,true);assert.equal(Object.hasOwn(Plan.inspect(p,c),"constraint"),false);
+  c.questionText="במלבן ABCD. נתון ∠AOB="+"9".repeat(400)+"°.";
+  const huge=Plan.inspect(p,c);assert.equal(huge.reason,"source_coordinate_contradiction");
+  assert.deepEqual(huge.constraint,{type:"angle",points:["A","O","B"],actualDegrees:112.619865});
+});
+
+test("source relation rejection reports only named segments and the recognized relation",()=>{
+  const p=basic();p.points.C=[1,3];
+  for(const relation of ["⊥","∥","="]){
+    const result=Plan.inspect(p,context({questionText:"נתון משולש ABC. נתון AB"+relation+"AC."}));
+    assert.equal(result.reason,"source_coordinate_contradiction");
+    assert.deepEqual(result.constraint,{type:"relation",first:["A","B"],second:["A","C"],relation});
+  }
+});
+
+test("source shape and point-incidence diagnostics do not weaken geometric gates",()=>{
+  const p={version:1,status:"ok",points:{A:[0,0],B:[5,0],C:[6,3],D:[1,3]},segments:[["A","B"],["B","C"],["C","D"],["D","A"]],highlights:[{from:"A",to:"B"}]};
+  let result=Plan.inspect(p,context({questionText:"נתון מלבן ABCD."}));
+  assert.equal(result.reason,"source_coordinate_contradiction");
+  assert.deepEqual(result.constraint,{type:"shape",shape:"מלבן",points:["A","B","C","D"],required:"adjacentSidesPerpendicular"});
+  p.points.C=[7,3];result=Plan.inspect(p,context({questionText:"נתון מלבן ABCD."}));
+  assert.equal(result.constraint.required,"oppositeSidesParallel");
+  const q=basic();q.points.D=[2,1];q.segments.push(["A","D"]);
+  for(const [word,extent] of [["הקטע","segment"],["הישר","line"]]){
+    result=Plan.inspect(q,context({questionText:"נתון משולש ABC. D נמצאת על "+word+" AB."}));
+    assert.equal(result.reason,"source_coordinate_contradiction");
+    assert.deepEqual(result.constraint,{type:"pointOn",point:"D",ends:["A","B"],extent});
+  }
+  q.highlights=[{from:"B",to:"C"}];result=Plan.inspect(q,context());
+  assert.equal(result.reason,"unknown_point");assert.equal(Object.hasOwn(result,"constraint"),false);
+});
+
 test("out-of-focus marks and unmentioned points cannot reveal the next proof step",()=>{
   const p=basic();p.highlights=[{from:"B",to:"C"}];assert.equal(Plan.inspect(p,context()).reason,"outside_current_focus");
   p.highlights=[{from:"A",to:"B"}];p.points.D=[2,2];assert.equal(Plan.inspect(p,context({studentMessage:"הוסף D"})).reason,"unknown_point");
