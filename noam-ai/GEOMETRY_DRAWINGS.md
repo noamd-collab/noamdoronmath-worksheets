@@ -63,6 +63,25 @@ remain active after repair. Rejection diagnostics can identify a bounded angle,
 relation, shape or point-incidence constraint; they contain no raw source/student
 prose and are not student-facing explanation text.
 
+The latest private planner enumerates permitted directed ray names. A narrow
+normalization may remove an unsupported arrowhead only when its base segment
+already exists, and accepts the result only after complete contract revalidation.
+It does not add a model call, segment, point, or mathematical fact. The planner
+also resolves angle pronouns against the current hint and asks for the permitted
+angle arcs; coloring only a transversal is insufficient for an angle-location
+request. A bounded frontend review catches the observed explicit contradiction
+of a source-parallel line being called a transversal, using the existing single
+repair path. It is not a general proof checker.
+
+Recognized Hebrew and English statements that a point lies on an extension
+beyond a named endpoint become `pointOnExtension` constraints. A deterministic
+repair may correct coordinates only, then must pass the complete contract again.
+It cannot change labels, givens, marks or focus and does not add an AI call. Tests
+now include the actual Q24 English source with and without “side” before BA.
+The live v9 saved-plan suppression check passes; its retry failed with
+`outside_current_focus`. The final v10 retry and reload both passed. Coverage is limited to the
+recognized source forms, not all possible wording.
+
 The server caches up to 40 successful plans for ten minutes and joins identical
 in-flight requests, with at most 20 distinct requests pending. The browser keeps
 up to 16 validated successful plans and can reuse a matching saved conversation
@@ -75,13 +94,54 @@ the workspace's `work/diagram-ai/`.
 
 ## Verification checkpoint
 
-Real model requests for a triangle and a square have passed. The triangle's
-single-vertex hint also displayed only the requested vertex, without revealing
-the opposite side. Final live verification of the rectangle, ray-focused drawing
-and two-triangle drawing remains pending at this checkpoint. Do not describe
-these as fully verified or infer support for every worksheet from passing local
-tests. The general mechanism remains limited to its supported straight-line
-geometry contract and source readability.
+2026-09-20: frontend `21e871f3876411af374914b20ddfd99426dedd87`
+was published with script version `20260920-10`; Pages `35527663952` succeeded. Prior
+frontend `415d905` / run `35527319123` succeeded.
+Diagnostic deployment `39b2087` / `35527091239` and preceding `26f3b9d` /
+`35526761229` succeeded. The latest Wix planner read back exactly as 52,346
+characters (FNV-1a `3233995830`), then synced and published with Studio confirmation. The main
+solver was not edited. Temporary opt-in diagnostics are removed, with no normal raw-question
+console logging. Automated checks passed 288 frontend and 46 backend tests.
+Only the latest continuity-document edits await their commit.
+Catalog validation covered 959 catalog PDF IDs; it did not open or visually
+inspect 959 PDFs.
+
+The original live G9-T15 excellence Q24 named-angle retry returned a constructed
+SVG with colored EAD and DAC arcs, persisted after reload, and contained 0
+transcript image elements. The newest natural-request figure was correct live: the
+hint identified alternating angles formed by transversal AC and parallel lines
+AD and BC, and “כן אתה יכול לסמן לי אותן כי אני לא בטוח שאני מבין.” produced
+DAC marked orange and ACB marked blue. Full visual inspection verified E beyond
+A on BA, AD∥BC and AB=AC; the transcript image count was 0. This does not prove
+that the deterministic extension repair ran. Earlier attempts highlighting only
+AC, or placing E on AC, failed visual QA. On the earlier v8 reload, the
+older incorrect E-on-AC figure still rendered alongside the newest correct figure.
+Opt-in diagnosis confirmed the source was English: “Point E lies on the extension
+of BA beyond A.” and its “extension of side BA” variant. The earlier validator
+only recognized Hebrew. Those exact forms now pass regression tests, including
+the backend repair path. Live reload with v9 removed the old invalid figure (SVG count 2 → 1), preserved
+the correct newer figure, exposed its retry, and contained 0 transcript images.
+The v9 retry then failed `outside_current_focus`; it did not produce a successful
+replacement. The published correction can correct only a wrong name-only arc choice
+when the allowed pair is uniquely derived from the parallel lines and transversal.
+Narrower requests for one angle must not be expanded, including Hebrew and
+lowercase forms. This adds no model call. The final published v10 actual retry passed: DAC and ACB named arcs were
+visible in a complete SVG above the composer, with E correctly beyond A on BA,
+AB=AC and AD∥BC. Both current figures are correct; the old bad figure was replaced
+and transcript images remained 0. Final v10 reload also passed: script `20260920-10` was verified in the DOM,
+both correct SVGs and their coordinates persisted, transcript images were 0,
+and no retry button appeared. This reproduced Q24 case is complete; no universal
+worksheet-coverage claim follows.
+
+Prior live checks recorded on 2026-09-20: G9-T18-A-Q02א displayed a constructed
+rectangle with AC, BD and O after the retry, without repeating the worksheet crop
+or adding a solution; G7-T15 displayed a constructed angle/ray drawing on desktop
+and mobile, and its conversation survived reload. Earlier real model requests
+for a triangle and square also passed; the single-vertex triangle hint showed
+only its requested vertex. These prior checks are not fresh tests of the latest
+publication. The two-triangle case remains unverified live. Do not infer support
+for every worksheet from these checks: the general mechanism remains limited to
+its supported straight-line geometry contract and source readability.
 
 For verified local guides, verify the actual PDF and point order, add a
 source-bound resolver and narrowly scoped stages, and test positive and
