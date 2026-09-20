@@ -135,6 +135,12 @@ test("an untouched chat has no instructional filler and collapses beside the sca
   assert.match(html, /if \(!thread\.messages\.length&&!busy\)\{ transcript\.classList\.add\("is-empty"\); \}/);
 });
 
+test("local visual analysis deduplicates identical manifest text before parsing", () => {
+  assert.match(html, /values\.indexOf\(value\)===index/);
+  assert.match(html, /if \(!tryNoamLocalVisual\(message\)\)\{askNoam\("free_question",message\);\}/);
+  assert.match(html, /noam-local-visual\.js\?v=20260920-1/);
+});
+
 test("the viewer remains valid JavaScript with one main target and one persistent announcer", () => {
   const script = html.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
   assert.doesNotThrow(() => new vm.Script(script));
