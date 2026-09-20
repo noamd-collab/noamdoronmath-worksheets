@@ -19,15 +19,16 @@ function fixture(){
   const exercise={id:"G8-T09-A-Q02א",text:"נתון משולש ABC."};
   const message={role:"assistant",text:"סמנו את הקטע AB."};
   const thread={hintIndex:2,history:[],messages:[{role:"user",text:"אפשר רמז 2?",kind:"רמז 2"},message]};
-  const calls=[],notices=[],renders=[];
+  const calls=[],statusCalls=[],notices=[],renders=[];
   const context={manifest:{sourceSha256:"source-v1",exercises:[exercise]},pdf:"public-pdf-id",
     selectedExercise:exercise,threads:{[exercise.id]:thread},busy:false,noamDrafts:{},
     API:"https://api.test/_functions",g:8,lv:"a",LEVEL:{a:"A"},ttl:"משולשים",
+    ownerKey:"owner-key-1234567890",STATUS_POLL_MS:0,ASYNC_JOB_MAX_WAIT:1000,
     currentAttachments:()=>[],exerciseThread(id){return context.threads[id];},
     saveNoamState(){},renderNoamChat(){renders.push(context.selectedExercise.id);},announceNoam(s){notices.push(s);},
     exerciseLabel:()=>"שאלה 2",localVisualExerciseSource:e=>e.text,
     getExerciseAnalysis:async (_exercise,worksheetOnly)=>{assert.equal(worksheetOnly,true);return {readable:true,transcription:exercise.text,student_work:"AB = AC"};},
-    postJson:async (url,payload)=>{calls.push({url,payload});return {ok:true,plan};},
+    postJson:async (url,payload)=>{calls.push({url,payload});return {ok:true,accepted:true,jobId:"job-1",status:"pending"};},
     isBotProtectionError:e=>!!(e&&e.status===403),
     document:{createElement:el,createElementNS:(_ns,name)=>el(name),getElementById:()=>null}};
   context.window=context;
@@ -35,12 +36,13 @@ function fixture(){
   for(const name of ["noam-geometry.js","noam-diagram-plan.js"]){vm.runInContext(fs.readFileSync(path.join(__dirname,"..",name),"utf8"),context);}
   context.NoamLocalVisual={wantsDrawing:()=>true,wantsVisualSupport:()=>true,parseFactoredQuadraticInequality:()=>null,render:()=>null};
   vm.runInContext(helpers+local+drawing,context);
+  context.pollNoamDiagramJob=async jobId=>{statusCalls.push(jobId);return {ok:true,plan};};
   // Mock HTTP JSON deserialization inside the same realm as the browser.
   const inspect=context.NoamDiagramPlan.inspect,compile=context.NoamDiagramPlan.compile;
   const clone=value=>vm.runInContext("JSON.parse("+JSON.stringify(JSON.stringify(value))+")",context);
   context.NoamDiagramPlan.inspect=(p,c)=>inspect(clone(p),clone(c));
   context.NoamDiagramPlan.compile=(p,c)=>compile(clone(p),clone(c));
-  return {ctx:context,exercise,thread,message,calls,notices,renders};
+  return {ctx:context,exercise,thread,message,calls,statusCalls,notices,renders};
 }
 
 test("an unseen worksheet gets one protected plan request and a real local SVG",async()=>{
@@ -52,7 +54,9 @@ test("an unseen worksheet gets one protected plan request and a real local SVG",
   assert.equal(f.calls[0].url,"https://api.test/_functions/noamDiagramPlan");
   assert.equal(f.calls[0].payload.currentHint,"סמנו את הקטע AB.");
   assert.equal(f.calls[0].payload.studentMessage,"אפשר רמז 2?");
-  assert.equal(Object.hasOwn(f.calls[0].payload.imageAnalysis,"student_work"),false);
+  assert.equal(f.calls[0].payload.ownerKey,"owner-key-1234567890");
+  assert.equal(f.calls[0].payload.imageDataUrl,"");
+  assert.equal(f.statusCalls.length,1);
   assert.equal(f.thread.hintIndex,2);
   const node=c.noamRenderAiDiagram(visual);
   assert.ok(node);
@@ -69,14 +73,14 @@ test("double clicks and simultaneous identical requests share one in-flight job"
   const copy={role:"assistant",text:f.message.text};f.thread.messages.push(copy);
   const second=f.ctx.requestNoamDiagram(f.exercise,f.thread,copy,f.ctx.noamMessageVisualOptions(f.thread,f.message));
   await new Promise(resolve=>setImmediate(resolve));assert.equal(calls,1);
-  gate.resolve({ok:true,plan});await Promise.all([first,second]);
+  gate.resolve({ok:true,accepted:true,jobId:"job-1",status:"pending"});await Promise.all([first,second]);
   await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
   assert.equal(calls,1);assert.equal(f.ctx.noamDiagramRuntime().messages.size,0);
 });
 
 test("failed plans never cache or pretend to draw, and a deliberate retry succeeds",async()=>{
   const f=fixture();let calls=0;
-  f.ctx.postJson=async()=>({ok:true,plan:++calls===1?{version:1,status:"unsupported"}:plan});
+  f.ctx.pollNoamDiagramJob=async()=>({ok:true,plan:++calls===1?{version:1,status:"unsupported"}:plan});
   assert.equal(await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message),null);
   assert.equal(f.message.visual,undefined);assert.match(f.message.diagramError,/מדויקת/);
   assert.equal(f.ctx.noamDiagramRuntime().cache.size,0);
@@ -103,7 +107,7 @@ test("switching section while waiting cannot redraw or populate the new conversa
   const other={id:"G8-T09-A-Q03א",text:"שאלה אחרת"};
   f.ctx.selectedExercise=other;f.ctx.threads[other.id]={messages:[],history:[]};
   const renders=f.renders.length,notices=f.notices.length;
-  gate.resolve({ok:true,plan});await pending;
+  gate.resolve({ok:true,accepted:true,jobId:"job-1",status:"pending"});await pending;
   assert.equal(f.renders.length,renders);assert.equal(f.notices.length,notices);
   assert.equal(f.ctx.threads[other.id].messages.length,0);
   assert.equal(f.message.visual.type,"ai-diagram");
@@ -113,7 +117,7 @@ test("resetting a conversation cannot redraw the replaced thread when a request 
   const f=fixture(),gate=deferred();f.ctx.postJson=()=>gate.promise;
   const pending=f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
   f.ctx.threads[f.exercise.id]={messages:[],history:[]};const renders=f.renders.length;
-  gate.resolve({ok:true,plan});await pending;
+  gate.resolve({ok:true,accepted:true,jobId:"job-1",status:"pending"});await pending;
   assert.equal(f.renders.length,renders);assert.equal(f.ctx.threads[f.exercise.id].messages.length,0);
 });
 
