@@ -7,9 +7,10 @@ const path = require("node:path");
 
 const glossary = require("../noam-glossary.js");
 const viewer = fs.readFileSync(path.join(__dirname, "../worksheet-viewer-noam.html"), "utf8");
+const curriculum = JSON.parse(fs.readFileSync(path.join(__dirname, "fixtures/noam-glossary-curriculum.json"), "utf8"));
 
 test("the local glossary ships complete, unique, grade-scoped teaching entries", () => {
-  assert.ok(glossary.entries.length >= 70);
+  assert.ok(glossary.entries.length >= 290);
   assert.equal(new Set(glossary.entries.map(entry => entry.id)).size, glossary.entries.length);
   for (const entry of glossary.entries) {
     for (const field of ["id", "term", "short", "detail", "example", "prerequisite", "question"]) {
@@ -20,6 +21,35 @@ test("the local glossary ships complete, unique, grade-scoped teaching entries",
   }
 });
 
+test("curriculum aliases cannot highlight bare numbers or punctuation", () => {
+  for (const entry of glossary.entries) {
+    for (const alias of entry.aliases) {
+      assert.equal(/^\d+(?:[.,]\d+)?$/.test(alias), false, `${entry.id}: numeric alias ${alias}`);
+      assert.match(alias, /[\p{L}\p{N}]/u, `${entry.id}: punctuation-only alias ${alias}`);
+    }
+  }
+  assert.equal(glossary.findTerms("10 100", 7).length, 0);
+});
+
+test("generated follow-up questions are grammatical and refer to the named concept", () => {
+  const numerator = glossary.entries.find(entry => entry.term === "מונה");
+  const multiplication = glossary.entries.find(entry => entry.term === "כפל");
+  assert.equal(numerator.question, "מהי המשמעות של ״מונה״, ואיך היא קשורה לתרגיל?");
+  assert.equal(multiplication.question, "מתי משתמשים ב־״כפל״, ומה עושים תחילה?");
+  assert.equal(glossary.entries
+    .filter(entry => entry.id.startsWith("curriculum-"))
+    .some(entry => /איך מזהים את /.test(entry.question)), false);
+});
+
+test("every concept row supplied for grades 1-9 is available when Noam AI can use it", () => {
+  assert.ok(curriculum.rows.length >= 370);
+  for (const row of curriculum.rows) {
+    const grade = Math.max(7, row.grade);
+    const matches = glossary.findTerms(row.term, grade, 10);
+    assert.ok(matches.length, `missing grade ${row.grade} concept in grade ${grade}: ${row.term}`);
+  }
+});
+
 test("longer mathematical terms win and each concept is highlighted once per passage", () => {
   const matches = glossary.findTerms("שורשי הפונקציה מתקבלים מן הפרבולה. אחר כך בודקים שוב את שורשי הפונקציה.", 9, 6);
   assert.deepEqual(matches.map(match => match.id), ["function-roots", "parabola"]);
@@ -27,7 +57,9 @@ test("longer mathematical terms win and each concept is highlighted once per pas
 });
 
 test("grade scope prevents advanced terms from appearing too early", () => {
-  assert.equal(glossary.findTerms("פונקציה ריבועית ופרבולה", 7, 6).length, 0);
+  const earlyIds = glossary.findTerms("פונקציה ריבועית ופרבולה", 7, 6).map(match => match.id);
+  assert.equal(earlyIds.includes("quadratic-function"), false);
+  assert.equal(earlyIds.includes("parabola"), false);
   assert.deepEqual(glossary.findTerms("פונקציה ריבועית ופרבולה", 9, 6).map(match => match.id), ["quadratic-function", "parabola"]);
 });
 
@@ -48,6 +80,7 @@ test("Pythagoras is available at the grade where the catalog teaches it", () => 
 });
 
 test("the viewer exposes hover, focus, tap and a free detailed explanation tab", () => {
+  assert.match(viewer, /noam-glossary-curriculum\.js\?v=[^<]+<\/script>\s*<script src="noam-glossary\.js/);
   assert.match(viewer, /noam-glossary\.js\?v=/);
   assert.match(viewer, /pointerenter[\s\S]*?focus[\s\S]*?click/);
   assert.match(viewer, /role=\\?"tablist\\?"[\s\S]*?שיחה[\s\S]*?הסבר/);
