@@ -74,7 +74,7 @@
     sentences(source).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
       // Only explicit lists immediately after the object type are accepted.
       // Point order matters: ray MA starts at M, unlike ray AM.
-      var re=/(?:^|[^א-תA-Za-z])(?:ה?קרן|ה?קרניים|rays?)\s*:?\s*([A-Z]{2}(?:\s*(?:,\s*(?:and\s+|ו[־-]?)?|and\s+|ו[־-]?)\s*[A-Z]{2})*)(?![A-Za-z])/g,match;
+      var re=/(?:^|[^א-תA-Za-z])(?:ו[־-]?)?(?:ה?קרן|ה?קרניים|rays?)\s*:?\s*([A-Z]{2}(?:\s*(?:,\s*(?:and\s+|ו[־-]?)?|and\s+|ו[־-]?)\s*[A-Z]{2})*)(?![A-Za-z])/gi,match;
       while((match=re.exec(sentence))){(match[1].match(/[A-Z]{2}/g)||[]).forEach(function(name){rays[name]=name.split("");});}
     });
     return rays;
@@ -159,6 +159,11 @@
       function allPresent(names){return names.split("").every(function(n){return Object.prototype.hasOwnProperty.call(points,n);});}
       function vector(ends){return [points[ends[1]][0]-points[ends[0]][0],points[ends[1]][1]-points[ends[0]][1]];}
       function linesAgree(first,second,relation){var u=vector(first),v=vector(second),size=Math.hypot(u[0],u[1])*Math.hypot(v[0],v[1]);return relation==="∥"?Math.abs(u[0]*v[1]-u[1]*v[0])<=EPS*size:Math.abs(u[0]*v[0]+u[1]*v[1])<=EPS*size;}
+      function checkAngleClass(names,description){
+        if(!allPresent(names)){return;}
+        var expected=description==="חדה"||description.toLowerCase()==="acute"?"acute":"obtuse",degrees=angle(names.split("")).degrees;
+        if(expected==="acute"?degrees>=90-EPS:degrees<=90+EPS){fail("source_coordinate_contradiction",{type:"angleClass",points:names.split(""),expectedClass:expected,actualDegrees:Math.round(degrees*1e6)/1e6});}
+      }
       sentences(question+". "+hint).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
         var s=compact(sentence),match,re=/(?:^|[^A-Z0-9+*/=−-])([A-Z]{2})(=|∥|⊥)([A-Z]{2})(?=$|[^A-Z0-9+*/=−-])/g;
         while((match=re.exec(s))){if(allPresent(match[1]+match[3])){var a=match[1].split(""),b=match[3].split("");if(match[2]==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,match[2])){fail("source_coordinate_contradiction",{type:"relation",first:a,second:b,relation:match[2]});}}}
@@ -169,8 +174,10 @@
           if(Number.isFinite(expectedDegrees)&&expectedDegrees>=0&&expectedDegrees<=180){Object.assign(constraint,{expectedDegrees:expectedDegrees});}
           fail("source_coordinate_contradiction",constraint);
         }}}
-        re=/(?:ה?זווית\s*∠?([A-Z]{3})\s*(?:(?:היא|הינה)\s*)?(חדה|קהה)(?=$|[^א-ת])|\b(?:angle\s+)?∠?([A-Z]{3})\s+(?:is\s+)?(acute|obtuse)\b)/g;
-        while((match=re.exec(sentence))){var classNames=match[1]||match[3],expectedClass=match[2]==="חדה"||match[4]==="acute"?"acute":"obtuse";if(allPresent(classNames)){var classDegrees=angle(classNames.split("")).degrees;if(expectedClass==="acute"?classDegrees>=90-EPS:classDegrees<=90+EPS){fail("source_coordinate_contradiction",{type:"angleClass",points:classNames.split(""),expectedClass:expectedClass,actualDegrees:Math.round(classDegrees*1e6)/1e6});}}}
+        re=/(?:(?:ה?זווית\s*∠?|∠)([A-Z]{3})\s*(?:(?:היא|הינה)\s*)?(?:זווית\s*)?(חדה|קהה)(?=$|[^א-ת])|\b(?:angle\s+)?∠?([A-Z]{3})\s+(?:is\s+)?(acute|obtuse)\b)/gi;
+        while((match=re.exec(sentence))){checkAngleClass(match[1]||match[3],match[2]||match[4]);}
+        re=/(?:ה?זווית\s+ה?(חדה|קהה)\s*∠?([A-Z]{3})(?![A-Za-z])|\b(acute|obtuse)\s+angle\s*∠?([A-Z]{3})(?![A-Za-z]))/gi;
+        while((match=re.exec(sentence))){checkAngleClass(match[2]||match[4],match[1]||match[3]);}
         re=/([A-Z])\s+(?:(?:נמצא|נמצאת)\s+)?על\s+(?:(הצלע|הקטע|האלכסון|הישר)\s+)?([A-Z]{2})(?![A-Z])/g;
         while((match=re.exec(sentence))){if(allPresent(match[1]+match[3])){var middle=points[match[1]],start=points[match[3][0]],end=points[match[3][1]],onSegment=sameLength(distance(start,middle)+distance(middle,end),distance(start,end)),cross=(end[0]-start[0])*(middle[1]-start[1])-(end[1]-start[1])*(middle[0]-start[0]);if(match[2]==="הישר"?Math.abs(cross)>EPS*Math.max(1,distance(start,end)*distance(start,middle)):!onSegment){fail("source_coordinate_contradiction",{type:"pointOn",point:match[1],ends:match[3].split(""),extent:match[2]==="הישר"?"line":"segment"});}}}
         re=/(משולש|מעוין|ריבוע|מלבן|מקבילית)\s*[△Δ]?\s*([A-Z]{3,4})(?![A-Z])/g;

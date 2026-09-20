@@ -176,7 +176,7 @@
       });
       data.rays.forEach(function(ends){
         var r=screenRay(ends),highlight=data.highlights.find(function(item){return item.ends[0]===ends[0]&&item.ends[1]===ends[1]||item.ends[0]===ends[1]&&item.ends[1]===ends[0];}),shade=highlight?highlight.color:"#172440";
-        line(r.from,r.tip,{stroke:shade,"stroke-width":highlight?4:1.8,opacity:highlight?.85:1,"class":"noam-geometry-ray","data-ray":ends.join("")});
+        line(r.from,r.tip,{stroke:shade,"stroke-width":highlight?4:1.8,opacity:highlight ? .85 : 1,"class":"noam-geometry-ray","data-ray":ends.join("")});
         svg.appendChild(svgElement(doc,"path",{d:"M"+r.left.join(" ")+" L"+r.tip.join(" ")+" L"+r.right.join(" "),fill:"none",stroke:shade,"stroke-width":highlight?2.5:1.8,"stroke-linecap":"round","stroke-linejoin":"round","class":"noam-geometry-ray-arrow","data-ray":ends.join(""),"aria-label":"קרן "+ends.join("")}));
       });
       data.equalGroups.forEach(function(group){group.segments.forEach(function(ends){
