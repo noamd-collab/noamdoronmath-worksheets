@@ -207,7 +207,7 @@ test("question 4 angle confusion is answered locally from the verified guide", a
   assert.match(response.text, /∠DBC/);
   assert.match(response.text, /מתחלפות פנימיות/);
   assert.equal(response.visual.type, "question-image");
-  assert.ok(response.visual.focus);
+  assert.equal(response.visual.focusKey, "q4a-alternate");
 });
 
 test("a guided next-step answer keeps the authoritative drawing when the student asks to draw", async () => {
@@ -223,6 +223,7 @@ test("a guided next-step answer keeps the authoritative drawing when the student
   const response = f.thread.messages.at(-1);
   assert.match(response.text, /∠EBD\s*=\s*∠DBC/);
   assert.equal(response.visual.type, "question-image");
+  assert.equal(response.visual.focusKey, "q4a-base-angles");
 });
 
 test("two unsafe model answers fall back to the verified proof chain", async () => {
@@ -294,7 +295,7 @@ test("question feedback pins remain, while AI-answer feedback appears once below
 test("local visual analysis deduplicates identical manifest text before parsing", () => {
   assert.match(html, /values\.indexOf\(value\)===index/);
   assert.match(html, /if \(!tryNoamLocalVisual\(message\)\)\{askNoam\("free_question",message\);\}/);
-  assert.match(html, /noam-didactic-guides\.js\?v=20260920-1/);
+  assert.match(html, /noam-didactic-guides\.js\?v=20260920-2/);
   assert.match(html, /noam-local-visual\.js\?v=20260920-3/);
   assert.ok(html.indexOf("noam-didactic-guides.js")<html.indexOf("noam-local-visual.js"));
 });
@@ -308,23 +309,22 @@ test("visual geometry help always renders the authoritative scanned question bes
 });
 
 test("question drawings use deterministic guide focus when available and safely fall back when absent", () => {
-  const focus={
-    crop:{x:.05,y:.01,w:.3,h:.7},
-    segments:[{from:[.1,.3],to:[.2,.3],role:"parallel"}],
-    angles:[{vertex:[.2,.3],from:[.1,.3],to:[.1,.6],label:"∠EDB"}]
-  };
   const ctx = {
-    window:{NoamDidacticGuides:{get:id=>id==="guided"?{visualFocus:focus}:null}},
+    window:{NoamDidacticGuides:DidacticGuides},
     Set,Math,String,Number,Array,Object,RegExp
   };
   vm.createContext(ctx);
   vm.runInContext(askSource,ctx);
-  assert.deepEqual(JSON.parse(JSON.stringify(ctx.noamDidacticVisualFocus("guided"))),focus);
+  const selected=DidacticGuides.resolveVisual("G9-T15-E-Q04א",{key:"q4a-angle-edb"});
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(ctx.noamDidacticVisualFocus("G9-T15-E-Q04א","q4a-angle-edb"))),
+    selected.focus
+  );
   assert.equal(ctx.noamDidacticVisualFocus("plain"),null);
-  assert.match(html,/focus:noamDidacticVisualFocus\(visual\.exerciseId\)/);
+  assert.match(html,/noamDidacticVisualSelection\(visual\.exerciseId,\{key:visual\.focusKey\}\)/);
   assert.doesNotMatch(
     html.slice(html.indexOf("function addTranscriptBubble("),html.indexOf("function ensureNoamGlossaryPopover(")),
-    /visual\.focus/
+    /focus\s*:\s*visual\.focus(?:\s*[,}])/
   );
   assert.match(html,/noam-question-visual-stage/);
   assert.match(html,/noam-question-focus-segment\.is-parallel/);
@@ -351,10 +351,42 @@ test("geometry answers offer a free local drawing action and hide it after use",
   assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),true);
   assert.deepEqual(
     JSON.parse(JSON.stringify(ctx.noamManualVisual({id:"q"},thread,message))),
-    {type:"question-image",exerciseId:"q",label:"השרטוט מתוך השאלה"}
+    {type:"question-image",exerciseId:"q",label:"השרטוט מתוך השאלה",focusKey:""}
   );
   message.visual={type:"question-image"};
   assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),false);
+});
+
+test("manual Question 4 drawings follow the latest student question and keep only a verified focus key", () => {
+  const ctx = {
+    ttl:"הוכחה גאומטרית",
+    window:{NoamLocalVisual:{},NoamDidacticGuides:DidacticGuides},
+    localVisualExerciseSource:()=>"משולש ABC",
+    Set,Math,String,Number,Array,Object,RegExp
+  };
+  vm.createContext(ctx);
+  vm.runInContext(askSource,ctx);
+  const thread={hintIndex:2,history:[],messages:[{role:"user",text:"איפה הזווית ∠EDB?"}]};
+  const visual=JSON.parse(JSON.stringify(ctx.noamManualVisual(
+    {id:"G9-T15-E-Q04א"},thread,{role:"assistant",text:"סמנו את ∠EDB."}
+  )));
+  assert.equal(visual.focusKey,"q4a-angle-edb");
+  assert.equal(Object.hasOwn(visual,"focus"),false);
+});
+
+test("a model-supplied geometry explanation selects a guide-owned focus key", async () => {
+  const f = await requestFixture({ok:true,answer:"סמנו תחילה את הזווית ∠EDB ליד הקודקוד D."}, {
+    exercise:{id:"G9-T15-E-Q04א",q:4,part:"א"},
+    didacticGuides:Object.assign({},DidacticGuides,{respond:()=>null}),
+    wantsVisualSupport:()=>true,
+    analysis:question4Analysis,
+    topic:"הוכחה גאומטרית",
+    helpKind:"free_question",
+    studentMessage:"אפשר שרטוט של הזווית ∠EDB?"
+  });
+  const visual=f.thread.messages.at(-1).visual;
+  assert.equal(visual.focusKey,"q4a-angle-edb");
+  assert.equal(Object.hasOwn(visual,"focus"),false);
 });
 
 test("a contradictory model refusal is replaced when the viewer supplies the requested drawing", () => {
