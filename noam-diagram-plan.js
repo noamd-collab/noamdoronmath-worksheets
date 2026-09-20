@@ -14,6 +14,7 @@
 
   PROMPT_SCHEMA += " The additional optional field pointHighlights is supported: [{point:'B',color:'blue'}]. Use it to locate a single point or vertex explicitly named on its own in the current hint or drawing request. If the hint asks which side is opposite vertex B, emphasize only B; do not select the opposite side or add rays/angle marks that were not named. Point highlighting requires no factual evidence and must not introduce a new point.";
   PROMPT_SCHEMA += " Optional rays:[[M,A],[M,C]] are directed from the first point through the second. A ray must be explicitly called a ray in affirmative source text (Hebrew קרן/קרניים or English ray/rays), and its named point pair must also be in segments. Never convert a segment or line to a ray based on a student request. The renderer adds arrowheads beyond the named through-point. Preserve explicitly stated acute/obtuse angle classes; an approximate diagram description is not an exact degree measurement.";
+  PROMPT_SCHEMA += " Angle-label examples: for {from:'E',vertex:'A',to:'D'} use label:'∠EAD' or label:''; for {from:'D',vertex:'A',to:'C'} use label:'∠DAC'. Write plain Unicode angle names, with the vertex in the middle. Never use alpha/beta, an equality such as EAD=DAC, explanatory words, or a computed angle value as a label. Identifying two angles does not mark or prove their equality.";
 
   function fail(reason,constraint){throw Object.assign(new Error(reason),{reason:reason},constraint?{constraint:constraint}:{});}
   function object(value){return value&&typeof value==="object"&&!Array.isArray(value)&&(Object.getPrototypeOf(value)===Object.prototype||Object.getPrototypeOf(value)===null);}
@@ -32,6 +33,21 @@
   }
   function list(value,max){if(value===undefined){return [];}if(!Array.isArray(value)||value.length>max){fail("invalid_list");}return value;}
   function text(value,max){if(value===undefined){return "";}if(typeof value!=="string"||value.length>max){fail("invalid_text");}return value;}
+  function angleLabel(value){
+    // Accept only presentation wrappers around a complete angle name. Do not
+    // use clean(): removing arbitrary braces or commands could change a claim.
+    var label=text(value,80).replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g,"").trim();
+    [["$$","$$"],["$","$"],["\\(","\\)"],["\\[","\\]"]].some(function(pair){
+      if(label.length>=pair[0].length+pair[1].length&&label.slice(0,pair[0].length)===pair[0]&&label.slice(-pair[1].length)===pair[1]){
+        label=label.slice(pair[0].length,-pair[1].length).trim();return true;
+      }
+      return false;
+    });
+    if(!label||/^\d+(?:\.\d+)?°$/.test(label)){return label;}
+    var named=label.match(/^(?:(?:∠|∡|\\angle)\s*)?(?:([A-Z])\s*([A-Z])\s*([A-Z])|\\(?:mathrm|text)\s*\{\s*([A-Z])\s*([A-Z])\s*([A-Z])\s*\})$/);
+    if(!named){fail("invalid_angle_label");}
+    return "∠"+named.slice(1).filter(Boolean).join("");
+  }
   function clean(value){return text(value,20000).replace(/\\(?:text|mathrm|operatorname)\s*\{([^{}]*)\}/g,"$1").replace(/\\(?:left|right)/g,"").replace(/\\parallel/g,"∥").replace(/\\perp/g,"⊥").replace(/\\angle/g,"∠").replace(/\\circ/g,"°").replace(/[∡]/g,"∠").replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069{}$^]/g,"").replace(/\\[()[\]]/g,"").replace(/[ \t\r]+/g," ").trim();}
   function compact(value){return clean(value).replace(/\s/g,"");}
   function distance(a,b){return Math.hypot(a[0]-b[0],a[1]-b[1]);}
@@ -143,7 +159,7 @@
       });
       scene.rightAngles=list(plan.rightAngles,8).map(function(item,index){var a=angle(item);focused(item,true);proof("rightAngles."+index,function(quote){return perpendicularIn(quote,item);});if(Math.abs(a.cosine)>EPS){fail("coordinate_contradiction");}return item.slice();});
       scene.angles=list(plan.angles,8).map(function(item,index){
-        keys(item,["from","vertex","to","label"]);var a=angle([item.from,item.vertex,item.to]),label=text(item.label,16);focused(a.ends,true);
+        keys(item,["from","vertex","to","label"]);var a=angle([item.from,item.vertex,item.to]),label=angleLabel(item.label);focused(a.ends,true);
         var name=label.replace(/^∠/,""),numeric=label.match(/^(\d+(?:\.\d+)?)°$/);
         if(numeric){proof("angles."+index,function(quote){return numericIn(quote,a.ends,Number(numeric[1]),true);});if(Math.abs(a.degrees-Number(numeric[1]))>.5){fail("coordinate_contradiction");}}
         else if(label&&name!==a.ends.join("")&&name!==a.ends.slice().reverse().join("")){fail("invalid_angle_label");}

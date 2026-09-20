@@ -5,6 +5,9 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 const DidacticGuides = require("../noam-didactic-guides.js");
+const GeometryGuides = require("../noam-geometry-guides.js");
+const Geometry = require("../noam-geometry.js");
+const question4Exercise = require("../noam-ai/manifests/d6ee4238793f49e881c9b2a70915efa6.json").exercises.find(e=>e.id==="G9-T15-E-Q04א");
 
 const html = fs.readFileSync(path.join(__dirname, "../worksheet-viewer-noam.html"), "utf8");
 const helpers = html.slice(html.indexOf("function announceNoam(text){"), html.indexOf("function syncMobilePanel(){"));
@@ -65,15 +68,18 @@ async function requestFixture(result, options = {}) {
   const focusRestores = [];
   const payloads = [];
   const outcomes = Array.isArray(result) ? result.slice() : [result];
+  const exercise = options.exercise || { id: "q1a", q: 1, part: "א" };
+  const element = name => ({name,children:[],attributes:{},textContent:"",appendChild(child){this.children.push(child);},setAttribute(key,value){this.attributes[key]=String(value);}});
   const ctx = {
-    selectedExercise: options.exercise || { id: "q1a", q: 1, part: "א" }, busy: false,
+    selectedExercise: exercise, manifest:{exercises:[exercise]}, busy: false,
     noamDrafts: {}, API: "/test", g: 7, lv: "a", LEVEL: { a: "A" }, ttl: options.topic || "test",
     SOLVER_MESSAGE_MAX: 700, MATH_OUTPUT_INSTRUCTION: "", MIN_WAIT: 0,
     window: {
       NoamLocalVisual: { wantsVisualSupport: options.wantsVisualSupport || (() => false), parseLabeledTriangle: () => null },
-      NoamDidacticGuides: options.didacticGuides
+      NoamDidacticGuides: options.didacticGuides,
+      NoamGeometryGuides: GeometryGuides, NoamGeometry: Geometry
     },
-    panelBody: { contains: () => true }, document: { activeElement: { id: "noamHint" } },
+    panelBody: { contains: () => true }, document: { activeElement: { id: "noamHint" }, createElement:element,createElementNS:(_ns,name)=>element(name) },
     exerciseThread: () => thread, exerciseLabel: () => "שאלה 1 · סעיף א",
     saveNoamState() {}, renderNoamChat() {},
     setNoamBusy(value) { ctx.busy = value; },
@@ -195,7 +201,7 @@ test("the alternate-angle guard reads the claimed pair instead of every nearby a
 
 test("question 4 angle confusion is answered locally from the verified guide", async () => {
   const f = await requestFixture(new Error("the model must not be called"), {
-    exercise: { id: "G9-T15-E-Q04א", q: 4, part: "א" },
+    exercise: question4Exercise,
     didacticGuides: DidacticGuides,
     topic: "הוכחה גאומטרית",
     helpKind: "free_question",
@@ -206,13 +212,14 @@ test("question 4 angle confusion is answered locally from the verified guide", a
   assert.match(response.text, /∠EDB/);
   assert.match(response.text, /∠DBC/);
   assert.match(response.text, /מתחלפות פנימיות/);
-  assert.equal(response.visual.type, "question-image");
-  assert.equal(response.visual.focusKey, "q4a-alternate");
+  assert.equal(response.visual.type, "geometry-guide");
+  assert.equal(response.visual.options.focusKey, "q4a-alternate");
+  assert.ok(f.ctx.noamRenderGeometryGuide(response.visual));
 });
 
 test("a named-angle question keeps the local answer and diagram on that same angle", async () => {
   const f = await requestFixture(new Error("the model must not be called"), {
-    exercise: { id: "G9-T15-E-Q04א", q: 4, part: "א" },
+    exercise: question4Exercise,
     didacticGuides: DidacticGuides,
     topic: "הוכחה גאומטרית",
     helpKind: "free_question",
@@ -222,12 +229,12 @@ test("a named-angle question keeps the local answer and diagram on that same ang
   const response = f.thread.messages.at(-1);
   assert.match(response.text, /∠EBD/);
   assert.doesNotMatch(response.text, /∠EDB|∠DBC/);
-  assert.equal(response.visual.focusKey, "q4a-angle-ebd");
+  assert.equal(response.visual.options.focusKey, "q4a-angle-ebd");
 });
 
 test("a guided next-step answer keeps the authoritative drawing when the student asks to draw", async () => {
   const f = await requestFixture(new Error("the model must not be called"), {
-    exercise: { id: "G9-T15-E-Q04א", q: 4, part: "א" },
+    exercise: question4Exercise,
     didacticGuides: DidacticGuides,
     wantsVisualSupport: text => /לשרטט/.test(text),
     topic: "הוכחה גאומטרית",
@@ -237,8 +244,8 @@ test("a guided next-step answer keeps the authoritative drawing when the student
   assert.equal(f.payloads.length, 0);
   const response = f.thread.messages.at(-1);
   assert.match(response.text, /∠EBD\s*=\s*∠DBC/);
-  assert.equal(response.visual.type, "question-image");
-  assert.equal(response.visual.focusKey, "q4a-base-angles");
+  assert.equal(response.visual.type, "geometry-guide");
+  assert.equal(response.visual.options.focusKey, "q4a-base-angles");
 });
 
 test("two unsafe model answers fall back to the verified proof chain", async () => {
@@ -315,10 +322,10 @@ test("local visual analysis deduplicates identical manifest text before parsing"
   assert.ok(html.indexOf("noam-didactic-guides.js")<html.indexOf("noam-local-visual.js"));
 });
 
-test("verified geometry can be constructed while unsupported geometry retains the scanned source", () => {
+test("assistant geometry replies use constructed diagrams and keep the source in the question preview", () => {
   assert.match(html,/noamResponseVisual\(exercise,thread,studentMessage,answer,helpKind,hintIndex,requestAnalysis\)/);
-  assert.match(html,/type:"question-image",exerciseId:exercise\.id/);
-  assert.match(html,/noam-question-visual-image/);
+  assert.doesNotMatch(html,/type:"question-image",exerciseId:exercise\.id/);
+  assert.match(html,/preview\.replaceChildren\(image\)/);
   const responseVisual = html.slice(html.indexOf("function noamResponseVisual("), html.indexOf("function noamCanOfferDrawing("));
   assert.match(responseVisual,/noamConstructedVisual\(exercise/);
   assert.doesNotMatch(responseVisual,/parseLabeledTriangle|labeled-triangle/);
@@ -337,7 +344,7 @@ test("question drawings use deterministic guide focus when available and safely 
     selected.focus
   );
   assert.equal(ctx.noamDidacticVisualFocus("plain"),null);
-  assert.match(html,/noamDidacticVisualSelection\(visual\.exerciseId,\{key:visual\.focusKey\}\)/);
+  assert.match(html,/focusKey:guidedFocus&&guidedFocus\.key/);
   assert.doesNotMatch(
     html.slice(html.indexOf("function addTranscriptBubble("),html.indexOf("function ensureNoamGlossaryPopover(")),
     /focus\s*:\s*visual\.focus(?:\s*[,}])/
@@ -368,7 +375,7 @@ test("geometry answers offer a drawing action without passing an original scan o
   message.visual={type:"question-image"};
   assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),true);
   message.visual={type:"geometry-guide"};
-  assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),false);
+  assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),true,"an unrenderable saved guide retains its retry action");
 });
 
 test("manual drawing requests preserve the named angle, but cannot construct from an unverified source", () => {
@@ -390,7 +397,7 @@ test("manual drawing requests preserve the named angle, but cannot construct fro
 
 test("a model-supplied geometry explanation selects a guide-owned focus key", async () => {
   const f = await requestFixture({ok:true,answer:"סמנו תחילה את הזווית ∠EDB ליד הקודקוד D."}, {
-    exercise:{id:"G9-T15-E-Q04א",q:4,part:"א"},
+    exercise:question4Exercise,
     didacticGuides:Object.assign({},DidacticGuides,{respond:()=>null}),
     wantsVisualSupport:()=>true,
     analysis:question4Analysis,
@@ -399,7 +406,7 @@ test("a model-supplied geometry explanation selects a guide-owned focus key", as
     studentMessage:"אפשר שרטוט של הזווית ∠EDB?"
   });
   const visual=f.thread.messages.at(-1).visual;
-  assert.equal(visual.focusKey,"q4a-angle-edb");
+  assert.equal(GeometryGuides.resolve(question4Exercise,visual.options).key,"q4a-angle-edb");
   assert.equal(Object.hasOwn(visual,"focus"),false);
 });
 

@@ -2151,7 +2151,7 @@ textarea:focus{
 <script src="noam-didactic-guides.js?v=20260920-3"></script>
 <script src="noam-geometry.js?v=20260920-4"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
-<script src="noam-diagram-plan.js?v=20260920-4"></script>
+<script src="noam-diagram-plan.js?v=20260920-5"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
 <script src="noam-glossary.js?v=20260920-3"></script>
@@ -4420,32 +4420,13 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   bubble.appendChild(speaker);
   content.textContent = text;
   bubble.appendChild(content);
-  // The selected-question preview already keeps the original crop available.
-  // Once a drawing was requested, repeating that crop inside the answer looks
-  // like a generated demonstration even when the planner actually failed.
-  if (visual&&visual.type==="question-image"&&message&&
-      (message.diagramOptions||message.diagramTyped||message.diagramError)){
-    visual=null;
-  }
-  if (visual && window.NoamLocalVisual){
-    var visualSpec=visual;
-    if (visual.type==="question-image"){
-      var guideVisual=noamDidacticVisualSelection(visual.exerciseId,{key:visual.focusKey});
-      visualSpec=Object.assign({},visual,{
-        src:exercisePreviewCache[visual.exerciseId]||"",
-        focus:guideVisual&&guideVisual.focus||null
-      });
-      delete visualSpec.focusKey;
-    }
+  // Source crops belong only in the selected-question preview. This also
+  // suppresses old saved replies that predate the diagram mechanism.
+  if (visual&&visual.type==="question-image"){visual=null;}
+  if (visual){
     var visualElement=visual.type==="ai-diagram" ? noamRenderAiDiagram(visual) : visual.type==="geometry-guide"
       ? noamRenderGeometryGuide(visual)
-      : window.NoamLocalVisual.render(document,visualSpec);
-    if (!visualElement&&visual.type==="geometry-guide"){
-      visualElement=window.NoamLocalVisual.render(document,{
-        type:"question-image",exerciseId:visual.exerciseId,label:"השרטוט המקורי מתוך השאלה",
-        src:exercisePreviewCache[visual.exerciseId]||""
-      });
-    }
+      : window.NoamLocalVisual&&window.NoamLocalVisual.render(document,visual);
     if (visualElement){bubble.appendChild(visualElement);}
   }
   if (message&&thread&&noamCanOfferDrawing(selectedExercise,thread,message)){
@@ -4797,7 +4778,10 @@ function localVisualExerciseSource(exercise){
 }
 
 function tryNoamLocalVisual(studentMessage){
-  if (!selectedExercise||busy||!window.NoamLocalVisual||!window.NoamLocalVisual.wantsDrawing(studentMessage)){return false;}
+  var local=window.NoamLocalVisual;
+  var visualRequest=local&&((local.wantsDrawing&&local.wantsDrawing(studentMessage))||
+    (local.wantsVisualSupport&&local.wantsVisualSupport(studentMessage)));
+  if (!selectedExercise||busy||!visualRequest){return false;}
   if (typeof currentAttachments==="function"&&currentAttachments().length){return false;}
   var thread=exerciseThread(selectedExercise.id);
   var lastAnswer=(thread.messages||[]).filter(function(item){return item.role==="assistant";}).slice(-1)[0];
@@ -5768,36 +5752,23 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt){
 function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,imageAnalysis){
   var visualContext=ttl+" "+String(imageAnalysis&&imageAnalysis.diagram_description||"");
   if (!exercise||!noamVisualNeed(studentMessage,answer,helpKind,hintIndex,visualContext)){return null;}
-  var constructed=noamConstructedVisual(exercise,{
+  return noamConstructedVisual(exercise,{
     studentMessage:studentMessage,answer:answer,helpKind:helpKind,hintIndex:hintIndex,
     progress:thread&&thread.hintIndex
   });
-  if (constructed){return constructed;}
-  if (window.NoamLocalVisual&&window.NoamLocalVisual.wantsDrawing&&
-      window.NoamLocalVisual.wantsDrawing(studentMessage)){
-    return null;
-  }
-  // Unsupported sources retain their original drawing; never invent geometry.
-  return {
-    type:"question-image",
-    exerciseId:exercise.id,
-    label:"השרטוט מתוך השאלה",
-    focusKey:noamDidacticVisualKey(exercise.id,{
-      helpKind:helpKind,
-      hintIndex:hintIndex,
-      progress:thread&&thread.hintIndex,
-      studentMessage:studentMessage,
-      answer:answer
-    })
-  };
 }
 
 function noamCanOfferDrawing(exercise,thread,message){
   if (!exercise||!thread||!message||message.role!=="assistant"||!String(message.text||"").trim()){
     return false;
   }
-  if (message.visual&&message.visual.type!=="question-image"&&
-      !(message.visual.type==="ai-diagram"&&!noamRenderAiDiagram(message.visual))){return false;}
+  if (message.visual&&message.visual.type==="geometry-guide"){
+    return !noamRenderGeometryGuide(message.visual);
+  }
+  if (message.visual&&message.visual.type==="ai-diagram"){
+    return !noamRenderAiDiagram(message.visual);
+  }
+  if (message.visual&&message.visual.type!=="question-image"){return false;}
   if (message.diagramOptions||message.diagramTyped||message.diagramError){return true;}
   if (!window.NoamLocalVisual||/failed\s+to\s+fetch|לא\s+זמין|נסו\s+שוב\s+בעוד/i.test(String(message.text||""))){
     return false;
@@ -5853,7 +5824,7 @@ function noamConstructedVisual(exercise,options){
     if (!guides.resolve(exercise,options||{})){return null;}
     // Store bounded context, not SVG or caller-supplied coordinates. Rendering
     // rebuilds the scene from the current worksheet's verified source facts.
-    return {type:"geometry-guide",exerciseId:exercise.id,options:{
+    var visual={type:"geometry-guide",exerciseId:exercise.id,options:{
       studentMessage:String(options&&options.studentMessage||"").slice(0,700),
       answer:String(options&&options.answer||"").slice(0,4000),
       helpKind:String(options&&options.helpKind||""),
@@ -5861,6 +5832,8 @@ function noamConstructedVisual(exercise,options){
       progress:Number(options&&options.progress)||0,
       focusKey:String(options&&options.focusKey||"")
     }};
+    // Resolving a scene is not success unless the current renderer can draw it.
+    return noamRenderGeometryGuide(visual)?visual:null;
   }catch(error){return null;}
 }
 
@@ -5946,6 +5919,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
   options={answer:String(options.answer||"").slice(0,4000),studentMessage:String(options.studentMessage||"").slice(0,700),
     helpKind:String(options.helpKind||""),hintIndex:Number(options.hintIndex)||0,
     progress:Number(options.progress)||0,focusKey:String(options.focusKey||"")};
+  message.diagramOptions=options;
   var local=noamConstructedVisual(exercise,options);
   if (local){
     message.visual=local;delete message.diagramError;
@@ -5953,7 +5927,6 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
     return Promise.resolve(local);
   }
   if (message.visual&&message.visual.type==="question-image"){delete message.visual;}
-  message.diagramOptions=options;
   delete message.diagramError;
   var sourceIdentity=noamDiagramSourceIdentity(exercise);
   var key=JSON.stringify(["diagram-v1",sourceIdentity,options.answer,options.studentMessage]);
@@ -6035,7 +6008,7 @@ function noamVisualAnswer(studentMessage,answer,visual){
     var name=(visual.vertices||[]).join("");
     return "הנה משולש "+name+" לבדו. האות האמצעית בשם כל זווית היא הקודקוד שלה.";
   }
-  return "הנה השרטוט מתוך השאלה, צמוד להסבר.";
+  return "הנה המחשה של השלב שעליו שאלת.";
 }
 
 function askNoam(helpKind,studentMessage){
@@ -6076,9 +6049,8 @@ function askNoam(helpKind,studentMessage){
       answer:guidedAnswer
     });
     var guidedVisual=guidedNeedsVisual
-      ? (noamConstructedVisual(exercise,{studentMessage:studentMessage,answer:guidedAnswer,
-          helpKind:helpKind,hintIndex:hintIndex,progress:thread.hintIndex,focusKey:guidedFocus&&guidedFocus.key||""})||
-         {type:"question-image",exerciseId:exercise.id,label:"השרטוט המוגדל",focusKey:guidedFocus&&guidedFocus.key||""})
+      ? noamConstructedVisual(exercise,{studentMessage:studentMessage,answer:guidedAnswer,
+          helpKind:helpKind,hintIndex:hintIndex,progress:thread.hintIndex,focusKey:guidedFocus&&guidedFocus.key||""})
       : null;
     thread.messages.push({role:"assistant",text:guidedAnswer,kind:"",visual:guidedVisual});
     thread.history.push({role:"user",content:historyQuestion},{role:"assistant",content:guidedAnswer});

@@ -31,6 +31,49 @@ test("named angle arcs identify the right vertex without asserting equality or d
   p.angles[0].label="∠ABC";assert.equal(Plan.inspect(p,c).reason,"invalid_angle_label");
 });
 
+function q24AngleCase(){
+  return {
+    plan:{version:1,status:"ok",points:{A:[0,3],B:[-3,0],C:[3,0],D:[4,3],E:[1,4]},
+      segments:[["A","B"],["B","C"],["C","A"],["A","E"],["A","D"]],
+      angles:[{from:"E",vertex:"A",to:"D",label:"∠EAD"},{from:"D",vertex:"A",to:"C",label:"∠DAC"},{from:"A",vertex:"B",to:"C",label:"∠ABC"}]},
+    context:{questionText:"במשולש שווה־השוקיים ABC שבו AB=AC. הנקודה E על המשך BA מעבר ל-A. הנקודה D בתוך הזווית EAC כך שמתקיים AD∥BC. הוכיחו כי AD חוצה את הזווית החיצונית EAC.",
+      hintText:"סמן בשרטוט את הזווית \\(\\angle EAD\\) (בין הקרן AE לקרן AD) ואת הזווית ∠DAC (בין הקרן AD לצלע AC). הזווית ∠EAD שווה ל-∠ABC כי הן זוויות מתאימות בין הישרים המקבילים AD∥BC והחותך BE.",
+      studentMessage:"כן אתה יכול לסמן לי אותן כי אני לא בטוח שאני מבין"}
+  };
+}
+
+test("Q24 requested angle names accept bounded math formatting and render canonical labels",()=>{
+  const formats=["∠EAD","∡EAD","E A D","\\angle EAD","\\(\\angle EAD\\)","$\\angle EAD$","$$\\angle EAD$$","\\[\\angle EAD\\]","\\angle \\mathrm{EAD}","\\(\\angle \\text{E A D}\\)","\u2066\\(\\angle EAD\\)\u2069","\u200f∡ E\u200e A D\u200f"];
+  for(const label of formats){
+    const {plan,context:c}=q24AngleCase();plan.angles[0].label=label;const original=clone(plan),result=Plan.inspect(plan,c);
+    assert.equal(result.ok,true,`${label}: ${result.reason}`);
+    assert.deepEqual(result.scene.angles.map(a=>a.label),["∠EAD","∠DAC","∠ABC"]);
+    assert.deepEqual(result.scene.equalGroups,[],"recognizing angle names does not establish an equality");
+    assert.deepEqual(plan,original,"normalization never mutates model data");
+    const all=nodes(Plan.render(documentStub(),plan,c));
+    assert.ok(all.some(n=>n.name==="svg"),label);
+    assert.ok(all.some(n=>n.textContent==="∠EAD"),label);
+  }
+  const {plan,context:c}=q24AngleCase();plan.angles[0].label="\\(\\angle DAE\\)";
+  assert.equal(Plan.inspect(plan,c).ok,true,"reversing the rays preserves the same angle");
+});
+
+test("Q24 formatting tolerance still rejects mismatched names, claims, commands and unproved values",()=>{
+  for(const label of ["∠EDA","\\angle ABC","\\angle EAC","α","\\alpha","EAD=DAC","\\(\\angle EAD = \\angle DAC\\)","∠EAD 45°","∠EAD כי הן שוות","\\href{https://example.com}{EAD}","\\htmlClass{x}{EAD}","<svg>EAD</svg>","E{A}D","∠{EAD}","\\(\\angle EAD$","$∠EAD","\\angle EAD\\phantom{X}","∠EADX"]){
+    const {plan,context:c}=q24AngleCase();plan.angles[0].label=label;
+    assert.equal(Plan.inspect(plan,c).reason,"invalid_angle_label",label);
+    assert.equal(Plan.render(documentStub(),plan,c),null,label);
+  }
+  for(const label of ["45°","$45°$","\\(45°\\)"]){
+    const {plan,context:c}=q24AngleCase();plan.angles[0].label=label;
+    assert.equal(Plan.inspect(plan,c).reason,"ungrounded_mark",label);
+  }
+  const {plan,context:c}=q24AngleCase();c.hintText="סמן את הזווית ∠EAD.";plan.angles=[{from:"E",vertex:"A",to:"C",label:"\\angle EAC"}];
+  assert.equal(Plan.inspect(plan,c).reason,"outside_current_focus","a valid name still cannot move to another angle");
+  plan.angles=[{from:"E",vertex:"A",to:"D",label:"\\angle EAD"}];plan.points.D=[4,4];
+  assert.equal(Plan.inspect(plan,c).reason,"source_coordinate_contradiction","normalizing labels cannot hide a contradiction with AD∥BC");
+});
+
 test("the live opposite-side hint locates B without revealing the opposite side",()=>{
   const p=basic();p.highlights=[];p.pointHighlights=[{point:"B",color:"blue"}];
   const c=context({hintText:"האם אתה יודע איזו צלע נמצאת מול הקודקוד \\(B\\)?"});

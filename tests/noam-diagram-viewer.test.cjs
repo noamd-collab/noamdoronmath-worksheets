@@ -142,6 +142,23 @@ test("typed drawing requests use the same plan route and preserve hint progress"
   assert.doesNotMatch(reply.text,/מכין/);
 });
 
+test("a student's request to mark the mentioned objects uses the current answer as diagram focus",async()=>{
+  const f=fixture();
+  f.ctx.NoamLocalVisual=require("../noam-local-visual.js");
+  const request="כן אתה יכול לסמן לי אותן כי אני לא בטוח שאני מבין";
+  assert.equal(f.ctx.NoamLocalVisual.wantsDrawing(request),false);
+  assert.equal(f.ctx.tryNoamLocalVisual(request),true);
+  const reply=f.thread.messages.at(-1);
+  await f.ctx.noamDiagramRuntime().messages.get(reply);
+  assert.equal(reply.visual.type,"ai-diagram");
+  assert.equal(f.calls.length,1);
+  assert.equal(f.calls[0].payload.currentHint,"סמנו את הקטע AB.");
+  assert.equal(f.calls[0].payload.studentMessage,request);
+  assert.equal(f.thread.hintIndex,2);
+  assert.equal(f.ctx.tryNoamLocalVisual("אפשר רמז נוסף?"),false);
+  assert.equal(f.calls.length,1,"ordinary hint requests do not start paid diagram calls");
+});
+
 test("drawing control shows pending and retry state without losing the original answer",async()=>{
   const f=fixture(),gate=deferred();f.ctx.postJson=()=>gate.promise;
   let host=el("main");f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",null,f.message,f.thread);
@@ -175,8 +192,42 @@ test("the fallback is limited to missed visual requests and never repeats the qu
   assert.equal(button.textContent,"השרטוט לא הופיע — נסו שוב");
 });
 
+test("restored source-only replies hide their crop even before a retry and retain the edge action",()=>{
+  const f=fixture();
+  f.message.visual={type:"question-image",exerciseId:f.exercise.id};
+  f.ctx.NoamLocalVisual.render=()=>{throw new Error("an assistant reply must never render the source crop");};
+  const host=el("main");
+  f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",f.message.visual,f.message,f.thread);
+  assert.ok(host.children[0].children[0].children.some(n=>n.name==="button"));
+  assert.equal(f.message.text,"סמנו את הקטע AB.");
+});
+
+test("implicit visual replies and later hints never use a source crop as a constructed diagram",()=>{
+  const f=fixture();
+  f.ctx.NoamLocalVisual=require("../noam-local-visual.js");
+  for(const args of [["קשה לי לזהות","free_question",0],["אפשר רמז נוסף?","hint",1]]){
+    assert.equal(f.ctx.noamResponseVisual(f.exercise,f.thread,args[0],"סמנו את הזווית ABC.",args[1],args[2],{}),null);
+  }
+  assert.equal(f.calls.length,0);
+});
+
+test("an unrenderable restored guide never becomes a crop or hides its retry action",async()=>{
+  const f=fixture();
+  f.message.visual={type:"geometry-guide",exerciseId:f.exercise.id,options:{answer:f.message.text,studentMessage:"סמן לי את AB"}};
+  f.ctx.NoamGeometryGuides={resolve:()=>({type:"geometry-scene"})};
+  f.ctx.NoamLocalVisual.render=()=>{throw new Error("a failed guide must never render the source crop");};
+  const host=el("main");
+  f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",f.message.visual,f.message,f.thread);
+  const button=host.children[0].children[0].children.find(n=>n.name==="button");
+  assert.ok(button);
+  button.handlers.click();
+  const visual=await f.ctx.noamDiagramRuntime().messages.get(f.message);
+  assert.equal(visual.type,"ai-diagram");
+  assert.equal(f.calls.length,1,"failed local rendering proceeds to the general planner");
+});
+
 test("local verified guides do not invoke analysis or the paid diagram endpoint",async()=>{
-  const f=fixture();f.ctx.NoamGeometryGuides={resolve:()=>({type:"geometry-scene"})};
+  const f=fixture();f.ctx.NoamGeometryGuides={resolve:()=>({type:"geometry-scene",points:plan.points,segments:plan.segments})};
   f.ctx.getExerciseAnalysis=()=>{throw new Error("unexpected analysis");};
   const visual=await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
   assert.equal(visual.type,"geometry-guide");assert.equal(f.calls.length,0);
