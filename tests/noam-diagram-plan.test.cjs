@@ -77,6 +77,15 @@ test("a pair of vertical angles at M uses the same structured angle focus",()=>{
   p.angles.pop();assert.equal(Plan.inspect(p,c).reason,"incomplete_current_focus");
 });
 
+test("an intersection fact grounds angle rays even when the vision strokes list only line endpoints",()=>{
+  const facts={visible_points:["A","C","D","M","Q"],strokes:[["A","Q"],["D","C"]],
+    intersections:[{point:"M",lines:[["A","Q"],["D","C"]]}]};
+  const focus={version:1,status:"ok",mode:"locate",objects:[
+    {kind:"angle",points:["A","M","D"],color:"blue"},{kind:"angle",points:["Q","M","C"],color:"orange"}]};
+  const source="הישרים AQ ו-DC נחתכים בנקודה M.\nDIAGRAM_FACTS_JSON:"+JSON.stringify(facts);
+  assert.equal(Plan.validateFocus(focus,source).ok,true);
+});
+
 test("focus selection is rejected when it is not grounded in visible strokes",()=>{
   const source="משולש ABC.\nDIAGRAM_FACTS_JSON:"+JSON.stringify({visible_points:["A","B","C"],strokes:[["A","B"],["B","C"]]});
   const result=Plan.validateFocus({version:1,status:"ok",mode:"locate",objects:[{kind:"triangle",points:["A","B","C"],color:"blue"}]},source);
