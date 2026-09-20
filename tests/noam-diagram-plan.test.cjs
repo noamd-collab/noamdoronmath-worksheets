@@ -42,6 +42,19 @@ function q24AngleCase(){
   };
 }
 
+test("Q24 missing ray base compiles the requested angles without requiring duplicate segment declarations",()=>{
+  const {plan,context:c}=q24AngleCase();
+  plan.segments=plan.segments.filter(s=>s[1]!=="D");plan.rays=[["A","D"]];
+  const before=clone(plan),result=Plan.inspect(plan,c);
+  assert.equal(result.ok,true,result.reason);
+  assert.ok(result.scene.segments.some(s=>s.join("")==="AD"));
+  assert.deepEqual(result.scene.angles.map(a=>a.label),["∠EAD","∠DAC","∠ABC"]);
+  assert.deepEqual(plan,before);
+  assert.ok(nodes(Plan.render(documentStub(),plan,c)).some(n=>n.className==="noam-geometry-ray-arrow"&&n.attributes["data-ray"]==="AD"));
+  plan.points.D=[4,4];
+  assert.equal(Plan.inspect(plan,c).reason,"source_coordinate_contradiction","AD must remain parallel to BC");
+});
+
 test("Q24 requested angle names accept bounded math formatting and render canonical labels",()=>{
   const formats=["∠EAD","∡EAD","E A D","\\angle EAD","\\(\\angle EAD\\)","$\\angle EAD$","$$\\angle EAD$$","\\[\\angle EAD\\]","\\angle \\mathrm{EAD}","\\(\\angle \\text{E A D}\\)","\u2066\\(\\angle EAD\\)\u2069","\u200f∡ E\u200e A D\u200f"];
   for(const label of formats){

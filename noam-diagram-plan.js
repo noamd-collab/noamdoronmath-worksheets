@@ -13,7 +13,7 @@
   var PROMPT_SCHEMA="Return JSON only. Supported geometry is straight segments between 3–16 named uppercase single-letter points. Format: {version:1,status:'ok',points:{A:[0,0],B:[4,0],C:[0,3]},segments:[['A','B'],['B','C'],['C','A']],highlights:[{from:'A',to:'B',color:'blue',label:'AB'}],angles:[],equalGroups:[],rightAngles:[],evidence:[]}. Use double quotes in JSON. Allowed colors: blue,orange,teal,pink. Angles: {from,vertex,to,label}; label is empty, the exact angle name such as ∠ABC, or a given numeric degree value. Equality groups: {segments:[[A,B],[C,D]],count:1|2|3,color}. Right angles: [[A,B,C]] with B the vertex. Each equality group, right-angle mark, numeric angle/segment label needs evidence {mark:'equalGroups.0'|'rightAngles.0'|'angles.0'|'highlights.0',source:'question'|'hint',quote:'exact affirmative text from supplied question or current hint'}. Never cite a goal, question, conditional statement, negation, or a student assertion as evidence. Coordinates must agree with every explicit given relation and with marked values. Use simple exact coordinates where possible. Only emphasize the named objects in the current hint or the student's explicit drawing request. Points must already occur in question/hint. No title, caption, prose, equations, SVG, HTML, code, extra keys, computed solution, or later proof step. If unsupported, return {version:1,status:'unsupported'}.";
 
   PROMPT_SCHEMA += " The additional optional field pointHighlights is supported: [{point:'B',color:'blue'}]. Use it to locate a single point or vertex explicitly named on its own in the current hint or drawing request. If the hint asks which side is opposite vertex B, emphasize only B; do not select the opposite side or add rays/angle marks that were not named. Point highlighting requires no factual evidence and must not introduce a new point.";
-  PROMPT_SCHEMA += " Optional rays:[[M,A],[M,C]] are directed from the first point through the second. A ray must be explicitly called a ray in affirmative source text (Hebrew קרן/קרניים or English ray/rays), and its named point pair must also be in segments. Never convert a segment or line to a ray based on a student request. The renderer adds arrowheads beyond the named through-point. Preserve explicitly stated acute/obtuse angle classes; an approximate diagram description is not an exact degree measurement.";
+  PROMPT_SCHEMA += " Optional rays:[[M,A],[M,C]] are directed from the first point through the second. A ray must be explicitly called a ray in affirmative source text (Hebrew קרן/קרניים or English ray/rays). Its base segment is included automatically; repeating that point pair in segments is optional. Never convert a segment or line to a ray based on a student request. The renderer adds arrowheads beyond the named through-point. Preserve explicitly stated acute/obtuse angle classes; an approximate diagram description is not an exact degree measurement.";
   PROMPT_SCHEMA += " Angle-label examples: for {from:'E',vertex:'A',to:'D'} use label:'∠EAD' or label:''; for {from:'D',vertex:'A',to:'C'} use label:'∠DAC'. Write plain Unicode angle names, with the vertex in the middle. Never use alpha/beta, an equality such as EAD=DAC, explanatory words, or a computed angle value as a label. Identifying two angles does not mark or prove their equality.";
   PROMPT_SCHEMA += " Name-only or empty angle/segment labels identify objects; they need no evidence entry. Reserve evidence for factual markings and numeric values.";
 
@@ -119,7 +119,7 @@
       function pair(value){if(!Array.isArray(value)||value.length!==2||value.some(function(n){return typeof n!=="string"||!Object.prototype.hasOwnProperty.call(points,n);})||value[0]===value[1]){fail("invalid_segment");}return value.slice();}
       function angle(value){if(!Array.isArray(value)||value.length!==3){fail("invalid_angle");}pair([value[0],value[1]]);pair([value[1],value[2]]);var a=points[value[0]],v=points[value[1]],b=points[value[2]],u=[a[0]-v[0],a[1]-v[1]],w=[b[0]-v[0],b[1]-v[1]],cos=(u[0]*w[0]+u[1]*w[1])/(distance(a,v)*distance(b,v)),deg=Math.acos(Math.max(-1,Math.min(1,cos)))*180/Math.PI;if(deg<EPS||180-deg<EPS){fail("degenerate_angle");}return {ends:value.slice(),degrees:deg,cosine:cos};}
       function color(value){if(value===undefined){return "blue";}if(COLORS.indexOf(value)<0){fail("invalid_color");}return value;}
-      var segments=list(plan.segments,40).map(pair),seen={};if(!segments.length){fail("missing_segments");}
+      var segments=list(plan.segments,40).map(pair),seen={};
       segments.forEach(function(p){var key=pairKey(p);if(seen[key]){fail("duplicate_segment");}seen[key]=true;});
       function isDrawn(ends){return segments.some(function(s){var a=points[s[0]],b=points[s[1]],length=distance(a,b);return ends.every(function(name){var p=points[name];return sameLength(distance(a,p)+distance(p,b),length);});});}
       function focused(ends,isAngle){if(!focusAllows(focus,ends,isAngle)){fail("outside_current_focus");}if(isAngle){if(!isDrawn([ends[0],ends[1]])||!isDrawn([ends[1],ends[2]])){fail("undrawn_mark");}}else if(!isDrawn(ends)){fail("undrawn_mark");}}
@@ -131,7 +131,17 @@
       function optionalNameEvidence(mark){if(evidence[mark]){usedEvidence[mark]=true;}}
       var scene={type:"geometry-scene",title:"המחשה לשלב הנוכחי",caption:"שרטוט סכמטי: הצבעים מדגישים את הנקודות, הקטעים והזוויות שבשלב הנוכחי.",points:points,segments:segments,equations:[]};
       var declaredRays=sourceRays(question+". "+hint),raySeen={};
-      list(plan.rays,16).forEach(function(item){var ends=pair(item),name=ends.join("");if(raySeen[name]){fail("duplicate_ray");}if(!declaredRays[name]){fail("ungrounded_ray");}if(!seen[pairKey(ends)]){fail("undrawn_ray");}raySeen[name]=true;});
+      list(plan.rays,16).forEach(function(item){
+        var ends=pair(item),name=ends.join(""),key=pairKey(ends);
+        if(raySeen[name]){fail("duplicate_ray");}
+        if(!declaredRays[name]){fail("ungrounded_ray");}
+        // A grounded ray already declares its base segment. Normalize only
+        // that redundant omission, preserving the source direction and every
+        // later focus/relation check. segments is a copy, never model input.
+        if(!seen[key]){if(segments.length>=40){fail("invalid_list");}segments.push(ends);seen[key]=true;}
+        raySeen[name]=true;
+      });
+      if(!segments.length){fail("missing_segments");}
       // A source-labelled ray stays a ray even in a cached plan that omitted
       // the optional field. This adds no point, segment, fact or emphasis.
       scene.rays=Object.keys(declaredRays).filter(function(name){return seen[pairKey(declaredRays[name])];}).map(function(name){return declaredRays[name].slice();});

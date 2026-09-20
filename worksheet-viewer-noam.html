@@ -2151,7 +2151,7 @@ textarea:focus{
 <script src="noam-didactic-guides.js?v=20260920-3"></script>
 <script src="noam-geometry.js?v=20260920-4"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
-<script src="noam-diagram-plan.js?v=20260920-6"></script>
+<script src="noam-diagram-plan.js?v=20260920-7"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
 <script src="noam-glossary.js?v=20260920-3"></script>
@@ -5617,14 +5617,50 @@ function noamAlternateAngleIssue(answer,source){
   return null;
 }
 
+function noamParallelTransversalIssue(answer,source){
+  function normalized(value){
+    return String(value||"").replace(/\\(?:text|mathrm)\s*\{([^{}]*)\}/g,"$1")
+      .replace(/\\parallel/g,"∥").replace(/\\[()[\]]/g,"")
+      .replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069${}]/g,"").toUpperCase();
+  }
+  // Only explicit affirmative parallel givens authorize this rejection. A
+  // goal or hypothetical relation is not a fact, even if it names both lines.
+  var uncertain=/(?:\?|האם|הוכיחו|הוכח|להוכיח|הראו|להראות|נניח|בהנחה|ייתכן|אולי|(?:^|[^א-ת])(?:אם|לא|אין|אינו|אינה)(?:[^א-ת]|$))/;
+  var pairs=(normalized(source).match(/[^\n.!?;]+[.!?;]?/g)||[]).filter(function(sentence){
+    return !uncertain.test(sentence);
+  }).flatMap(function(sentence){return noamParallelPairs(sentence);});
+  if (!pairs.length){return null;}
+  var text=normalized(answer);
+  var relation=/(?:^|[^A-Z])([A-Z]{2})\s+(?:חותך|חותכת)\s+את\s+(?:(?:שני\s+)?הישרים\s+ה?מקבילים\s+([A-Z]{2})\s*(?:ו[-־]?\s*|,\s*)([A-Z]{2})|(?:(?:הקרן|הישר|הקטע)\s+)?([A-Z]{2}))(?![A-Z])/g;
+  var match;
+  while ((match=relation.exec(text))){
+    var start=Math.max(text.lastIndexOf(".",match.index),text.lastIndexOf("!",match.index),text.lastIndexOf("?",match.index),text.lastIndexOf("\n",match.index),text.lastIndexOf(";",match.index))+1;
+    var prefix=text.slice(start,match.index).replace(/האם\s+(?:שמת(?:ם)?\s+לב|ראית(?:ם)?)\s+ש/,"");
+    // Preserve actual questions, negations, hypotheses and reported mistakes.
+    // The observed "האם שמת לב ש..." explicitly presupposes the false fact.
+    if (uncertain.test(prefix)||/(?:האם|טעות|טועה|שגוי|שגויה|התלמיד|נטען|נכתב)/.test(prefix)){continue;}
+    var transversal=noamSegmentKey(match[1]);
+    var crossed=[match[2],match[3],match[4]].filter(Boolean).map(noamSegmentKey);
+    for (var i=0;i<pairs.length;i+=1){
+      var pair=pairs[i],first=noamSegmentKey(pair.first),second=noamSegmentKey(pair.second);
+      if ((transversal===first&&crossed.indexOf(second)!==-1)||(transversal===second&&crossed.indexOf(first)!==-1)){
+        return "לפי הנתון "+pair.first+"∥"+pair.second+", אי אפשר לתאר אחד מהם כישר חותך של האחר. בדוק מחדש את זהות הישרים המקבילים ואת הישר החותך לפי הנתונים בלבד.";
+      }
+    }
+  }
+  return null;
+}
+
 function noamGeometryAnswerReview(answer,analysis,guide){
   var source=noamGeometryAnalysisSource(analysis,guide);
   if (!noamGeometryContext(source+" "+answer)){return {ok:true,reasons:[]};}
   var reasons=[];
   var circular=noamCircularProofIssue(answer,source);
   var alternate=noamAlternateAngleIssue(answer,source);
+  var transversal=noamParallelTransversalIssue(answer,source);
   if (circular){reasons.push(circular);}
   if (alternate){reasons.push(alternate);}
+  if (transversal){reasons.push(transversal);}
   return {ok:reasons.length===0,reasons:reasons};
 }
 
@@ -5905,9 +5941,25 @@ function noamDiagramRefresh(exercise,thread,message,complete){
   if (!noamDiagramCurrent(exercise,thread)){return;}
   renderNoamChat();
   if (complete){
-    var transcript=document.getElementById("noamTranscript");
-    var target=transcript&&transcript.children[(thread.messages||[]).indexOf(message)];
-    if (target&&typeof target.scrollIntoView==="function"){target.scrollIntoView({block:"nearest"});}
+    var reveal=function(){
+      if (!noamDiagramCurrent(exercise,thread)){return;}
+      var transcript=document.getElementById("noamTranscript");
+      var row=transcript&&transcript.children[(thread.messages||[]).indexOf(message)];
+      if (!row||row.isConnected===false){return;}
+      var figure=!message.diagramError&&row.querySelector&&row.querySelector(".noam-geometry");
+      var target=figure||(message.diagramError&&row.querySelector&&row.querySelector(".noam-draw-action, .noam-draw-error"))||row;
+      // A long answer can be taller than the scrollport. Reveal its drawing,
+      // not the whole answer; prefer the SVG if the complete figure cannot fit.
+      if (figure&&figure.getBoundingClientRect&&transcript.clientHeight>0&&
+          figure.getBoundingClientRect().height>transcript.clientHeight){
+        target=figure.querySelector(".noam-geometry-svg")||figure;
+      }
+      if (typeof target.scrollIntoView==="function"){
+        target.scrollIntoView({block:figure?"center":"nearest",inline:"nearest",behavior:"instant"});
+      }
+    };
+    // Finish layout first and cancel the generic smooth scroll to transcript end.
+    if (typeof window.requestAnimationFrame==="function"){window.requestAnimationFrame(reveal);}else{reveal();}
     announceNoam(message.diagramError||"נוסף שרטוט להמחשת השלב הנוכחי.");
   }
 }

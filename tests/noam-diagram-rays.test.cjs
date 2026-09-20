@@ -22,14 +22,58 @@ test("source-named Hebrew rays acquire arrowheads even when cached wire plan omi
   assert.equal(all.some(n=>n.className==="noam-geometry-equality-mark"||n.className==="noam-geometry-right-angle"||n.className==="noam-geometry-length-label"),false);
 });
 
-test("explicit directed ray declarations must match source direction and an existing segment",()=>{
+test("explicit directed ray declarations must match source direction and reject duplicates",()=>{
   const p=plan();p.rays=[["M","A"],["M","C"]];
   assert.equal(Plan.inspect(p,context()).ok,true);
   p.rays=[["A","M"]];assert.equal(Plan.inspect(p,context()).reason,"ungrounded_ray");
   p.rays=[["M","A"],["M","A"]];assert.equal(Plan.inspect(p,context()).reason,"duplicate_ray");
   p.rays=Array.from({length:17},()=>["M","A"]);assert.equal(Plan.inspect(p,context()).reason,"invalid_list");
-  p.rays=[["M","A"]];p.segments=p.segments.filter(ends=>ends[1]!=="A");
-  assert.equal(Plan.inspect(p,context()).reason,"undrawn_ray");
+});
+
+test("grounded explicit rays supply omitted base segments without mutating the model plan",()=>{
+  const p=plan();p.rays=[["M","A"],["M","C"]];p.segments=[["M","B"]];
+  const before=JSON.stringify(p),result=Plan.inspect(p,context());
+  assert.equal(result.ok,true,result.reason);
+  assert.deepEqual(result.scene.segments,[["M","B"],["M","A"],["M","C"]]);
+  assert.deepEqual(result.scene.rays,[["M","A"],["M","B"],["M","C"]]);
+  assert.equal(JSON.stringify(p),before);
+  assert.equal(nodes(Plan.render(documentStub(),p,context())).filter(n=>n.className==="noam-geometry-ray-arrow").length,3);
+  p.segments.push(["A","M"]);
+  const reversedSegment=Plan.inspect(p,context());
+  assert.equal(reversedSegment.ok,true,reversedSegment.reason);
+  assert.equal(reversedSegment.scene.segments.filter(s=>s.includes("A")&&s.includes("M")).length,1);
+  assert.deepEqual(reversedSegment.scene.rays[0],["M","A"]);
+  // A ray-only construction must not need one arbitrary duplicate segment.
+  for(const value of [[],undefined]){
+    if(value===undefined){delete p.segments;}else{p.segments=value;}
+    const rayOnly=Plan.inspect(p,context());assert.equal(rayOnly.ok,true,rayOnly.reason);
+    assert.deepEqual(rayOnly.scene.segments,[["M","A"],["M","C"]]);
+  }
+  p.rays=[];assert.equal(Plan.inspect(p,context()).reason,"missing_segments");
+});
+
+test("omitted ray bases do not weaken grounding, focus, endpoint or coordinate checks",()=>{
+  const p=plan();p.rays=[["M","A"]];p.segments=[["M","B"],["M","C"]];
+  const ungrounded=context("מסומנות הנקודות M, A, B, C והקטעים MA, MB ו-MC.");
+  ungrounded.studentMessage="הדגם את הקרן MA ואת MC ואת M.";
+  assert.equal(Plan.inspect(p,ungrounded).reason,"ungrounded_ray");
+  assert.equal(Plan.inspect({...p,rays:[["A","M"]]},context()).reason,"ungrounded_ray");
+  assert.equal(Plan.inspect({...p,rays:[["M","Z"]]},context()).reason,"invalid_segment");
+  const c=context();c.studentMessage="סמן את MB ואת M.";
+  assert.equal(Plan.inspect(p,c).reason,"outside_current_focus");
+  assert.equal(Plan.inspect(p,context("מן הנקודה M יוצאות הקרניים MA, MB ו-MC. MA∥MC.")).reason,"source_coordinate_contradiction");
+  const noRay={...p,rays:[]};
+  assert.equal(Plan.inspect(noRay,context()).reason,"undrawn_mark");
+});
+
+test("explicit ray normalization cannot exceed the combined segment budget",()=>{
+  const letters="ABCDEFGHIJ".split(""),points=Object.fromEntries(letters.map((n,i)=>[n,[i,i*i]])),segments=[];
+  for(let i=0;i<letters.length;i++){for(let j=i+1;j<letters.length;j++){if(i!==0||j!==1){segments.push([letters[i],letters[j]]);}}}
+  const p={version:1,status:"ok",points,segments:segments.slice(0,40),rays:[["A","B"]],pointHighlights:[{point:"A"}]};
+  const c={questionText:"מסומנות הנקודות A, B, C, D, E, F, G, H, I, J. נתונה הקרן AB.",hintText:"סמן את הנקודה A."};
+  assert.equal(Plan.inspect(p,c).reason,"invalid_list");
+  p.segments.pop();
+  const result=Plan.inspect(p,c);assert.equal(result.ok,true,result.reason);assert.equal(result.scene.segments.length,40);
 });
 
 test("English and Hebrew singular/plural ray lists are grounded without promoting student requests",()=>{

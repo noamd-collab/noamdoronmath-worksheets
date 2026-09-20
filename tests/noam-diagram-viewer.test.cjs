@@ -117,6 +117,60 @@ test("resetting a conversation cannot redraw the replaced thread when a request 
   assert.equal(f.renders.length,renders);assert.equal(f.ctx.threads[f.exercise.id].messages.length,0);
 });
 
+function scrollFixture(figureHeight=180){
+  const f=fixture(),frames=[],scrolled=[];
+  const svg={scrollIntoView:options=>scrolled.push({target:"svg",options})};
+  const figure={getBoundingClientRect:()=>({height:figureHeight}),
+    querySelector:selector=>selector===".noam-geometry-svg"?svg:null,
+    scrollIntoView:options=>scrolled.push({target:"figure",options})};
+  const retry={scrollIntoView:options=>scrolled.push({target:"retry",options})};
+  const row={isConnected:true,
+    querySelector:selector=>selector===".noam-geometry"?figure:retry,
+    scrollIntoView:options=>scrolled.push({target:"row",options})};
+  const transcript={clientHeight:260,children:[{},row]};
+  f.ctx.document.getElementById=id=>id==="noamTranscript"?transcript:null;
+  f.ctx.requestAnimationFrame=callback=>frames.push(callback);
+  return Object.assign(f,{frames,scrolled,row});
+}
+
+test("a completed diagram reveals its figure after layout instead of the long answer row",()=>{
+  const f=scrollFixture();
+  f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
+  assert.equal(f.frames.length,1);
+  assert.equal(f.scrolled.length,0,"wait for layout before scrolling");
+  f.frames[0]();
+  assert.deepEqual(JSON.parse(JSON.stringify(f.scrolled)),[
+    {target:"figure",options:{block:"center",inline:"nearest",behavior:"instant"}}
+  ],"target the diagram and cancel the transcript's competing smooth scroll");
+});
+
+test("a figure taller than the visible transcript reveals the SVG, while a failure reveals retry",()=>{
+  const f=scrollFixture(500);
+  f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
+  f.frames.shift()();
+  assert.equal(f.scrolled[0].target,"svg");
+  f.message.diagramError="לא הצלחתי להכין את השרטוט כרגע.";
+  f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
+  f.frames.shift()();
+  assert.equal(f.scrolled[1].target,"retry");
+  assert.equal(f.scrolled[1].options.behavior,"instant");
+});
+
+test("a scheduled diagram reveal cannot scroll another section, a replaced thread, or a detached row",()=>{
+  for(const change of [
+    f=>{f.ctx.selectedExercise={id:"another-section"};},
+    f=>{f.ctx.threads[f.exercise.id]={messages:[],history:[]};},
+    f=>{f.thread.messages=[];},
+    f=>{f.row.isConnected=false;}
+  ]){
+    const f=scrollFixture();
+    f.ctx.noamDiagramRefresh(f.exercise,f.thread,f.message,true);
+    change(f);
+    f.frames[0]();
+    assert.equal(f.scrolled.length,0);
+  }
+});
+
 test("saved plans are revalidated and invalidated when the PDF or source changes",async()=>{
   const f=fixture(),visual=await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
   f.ctx.noamDiagramRuntime.state=null;
