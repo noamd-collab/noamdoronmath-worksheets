@@ -96,8 +96,20 @@
     list(facts.strokes,40).concat(list(facts.collinear_orders,40)).forEach(addStroke);
     list(facts.intersections,16).forEach(function(item){
       if(!object(item)){return;}
-      var point=pointName(item.point);if(!point||!Array.isArray(item.lines)){return;}
-      var validLines=item.lines.slice(0,8).map(function(line){
+      var point=pointName(item.point);if(!point){return;}
+      // Vision models sometimes return one line as `lines:["A","H"]`
+      // and the crossing line as `other_line:["B","M","Q"]`, instead of
+      // the canonical nested `lines:[[...],[...]]`. Both describe the same
+      // source-grounded intersection. Normalize the two shapes before focus
+      // validation so a labelled intersection is considered part of each
+      // line even when it was omitted from that line's stroke list.
+      var rawLines=[];
+      if(Array.isArray(item.lines)){
+        if(item.lines.every(function(name){return pointName(name);})){rawLines.push(item.lines);}
+        else{rawLines=rawLines.concat(item.lines.slice(0,8));}
+      }
+      if(Array.isArray(item.other_line)){rawLines.push(item.other_line);}
+      var validLines=rawLines.slice(0,8).map(function(line){
         if(!Array.isArray(line)){return null;}
         var names=line.map(pointName).filter(Boolean).filter(function(name,index,all){return !index||name!==all[index-1];});
         if(names.length<2||names.length>16||new Set(names).size!==names.length){return null;}

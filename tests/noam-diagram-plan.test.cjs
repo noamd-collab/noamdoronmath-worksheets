@@ -86,6 +86,17 @@ test("an intersection fact grounds angle rays even when the vision strokes list 
   assert.equal(Plan.validateFocus(focus,source).ok,true);
 });
 
+test("split intersection facts ground adjacent requested segments without a question-specific rule",()=>{
+  const facts={visible_points:["R","S","T","U","V"],strokes:[["R","T","V"],["S","U"]],
+    intersections:[{point:"U",lines:["S","U"],other_line:["R","T","V"]}]};
+  const focus={version:1,status:"ok",mode:"locate",objects:[
+    {kind:"segment",points:["R","U"],color:"blue"},{kind:"segment",points:["U","T"],color:"orange"}]};
+  const source="U היא נקודת חיתוך על הישר RTV.\nDIAGRAM_FACTS_JSON:"+JSON.stringify(facts);
+  const result=Plan.validateFocus(focus,source);
+  assert.equal(result.ok,true,result.reason);
+  assert.deepEqual(result.scope.objects.map(item=>item.points),[["R","U"],["U","T"]]);
+});
+
 test("vision fact normalization keeps valid topology when one optional fact is malformed",()=>{
   const facts={visible_points:["A","C","D","M","Q","not-a-point"],
     strokes:[["A","M","Q"],["D","M","C"],["bad"]],
