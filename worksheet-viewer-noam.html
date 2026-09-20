@@ -4608,6 +4608,18 @@ function renderNoamGlossaryDetail(entryId){
   document.getElementById("noamGlossaryChatTab").focus({preventScroll:true});
 }
 
+function noamLatestDrawingAnswer(thread){
+  var messages=thread&&thread.messages||[];
+  for(var i=messages.length-1;i>=0;i--){
+    var message=messages[i];
+    if(!message||message.role!=="assistant"){continue;}
+    if(message.answerError||!String(message.text||"").trim()){return null;}
+    if(!message.diagramOptions&&!message.diagramError&&/failed\s+to\s+fetch|לא\s+זמין|לא\s+(?:ניתן|הצלחנו)\s+(?:להשלים|לקבל)|נסו\s+שוב\s+בעוד/i.test(message.text)){return null;}
+    return message;
+  }
+  return null;
+}
+
 function renderNoamChat(){
   if (!selectedExercise){ return renderExercisePicker(); }
   hideNoamGlossaryPopover();
@@ -4617,6 +4629,8 @@ function renderNoamChat(){
   panelBody.classList.add("is-chat");
   panelBack.hidden = false;
   var thread = exerciseThread(selectedExercise.id);
+  var drawingAnswer = noamLatestDrawingAnswer(thread);
+  var drawingPending = !!(drawingAnswer&&noamDiagramRuntime().messages.has(drawingAnswer));
   var hasConversation = !!(thread.messages.length || thread.history.length || thread.hintIndex);
   var showQuestionPreview = !hasConversation;
   if (!showQuestionPreview){panelBody.classList.remove("is-previewing");}
@@ -4642,6 +4656,7 @@ function renderNoamChat(){
         '<div class="noam-input-actions" role="group" aria-label="עזרה מהירה">' +
           '<button type="button" class="noam-action" id="noamOverview">הסבר כללי</button>' +
           '<button type="button" class="noam-action primary" id="noamHint">רמז</button>' +
+          '<button type="button" class="noam-action" id="noamDraw"'+(drawingAnswer?'':' hidden')+'>'+(drawingPending?'מכין שרטוט…':'שרטוט להמחשה')+'</button>' +
           '<button type="button" class="noam-action" id="noamMistake" hidden>טעות נפוצה</button>' +
           '<span class="noam-input-spacer" aria-hidden="true"></span>' +
           '<button type="button" class="noam-math-toggle" id="noamMathToggle" aria-label="פתיחת סימנים מתמטיים" title="סימנים מתמטיים" aria-controls="noamMathKeys" aria-expanded="'+mathKeyboardOpen+'">x²</button>' +
@@ -4731,6 +4746,10 @@ function renderNoamChat(){
   hintButton.disabled = busy || thread.hintIndex>=3;
   document.getElementById("noamMistake").hidden = thread.hintIndex<3;
 
+  document.getElementById("noamDraw").addEventListener("click",function(){
+    if(busy||!drawingAnswer||noamDiagramRuntime().messages.has(drawingAnswer)){return;}
+    requestNoamDiagram(selectedExercise,thread,drawingAnswer);
+  });
   document.getElementById("noamOverview").addEventListener("click",function(){ askNoam("overview","תן לי הסבר כללי קצר על הרעיון הדרוש כאן, בלי לפתור ובלי לגלות את התשובה."); });
   hintButton.addEventListener("click",function(){ askNoam("hint","תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי."); });
   document.getElementById("noamMistake").addEventListener("click",function(){ askNoam("common_mistake","מה הטעות הנפוצה שכדאי להיזהר ממנה כאן? בלי לפתור ובלי לגלות את התשובה."); });
@@ -4770,6 +4789,7 @@ function renderNoamChat(){
   });
 
   setNoamBusy(busy);
+  document.getElementById("noamDraw").disabled=busy||drawingPending;
   renderPanelMath(panelBody);
   panelBody.querySelectorAll(".noam-row.assistant .noam-bubble,#noamPickedText").forEach(enhanceNoamGlossary);
   if (showQuestionPreview){renderExercisePreview(selectedExercise,0);}
@@ -4887,7 +4907,7 @@ function locateSelectedExercise(){
 function setNoamBusy(value){
   busy=!!value;
   if (!busy){ pendingExerciseId=null; }
-  ["noamOverview","noamHint","noamMistake","noamSend","noamQuestion","noamNewThread","noamMathToggle"]
+  ["noamOverview","noamHint","noamMistake","noamDraw","noamSend","noamQuestion","noamNewThread","noamMathToggle"]
     .forEach(function(id){ var el=document.getElementById(id);if(el){el.disabled=busy;} });
   panelBody.querySelectorAll("[data-math]").forEach(function(button){ button.disabled=busy; });
 }
@@ -6242,7 +6262,7 @@ function askNoam(helpKind,studentMessage){
     })
     .catch(function(error){
       var errorMessage=String(error&&error.message||"לא הצלחנו לקבל תשובה כרגע.");
-      thread.messages.push({role:"assistant",text:errorMessage,kind:""});
+      thread.messages.push({role:"assistant",text:errorMessage,kind:"",answerError:true});
       saveNoamState();setNoamBusy(false);renderNoamChat();
       announceNoam(exerciseLabel(exercise) + ". " + errorMessage);
     });
