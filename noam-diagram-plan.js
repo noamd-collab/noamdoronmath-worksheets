@@ -70,16 +70,56 @@
       return /משולש|מרובע|מלבן|מעוין|מקבילית|טרפז|ריבוע|מחומש|משושה/.test(value)&&pairKey([token[0],token[token.length-1]])===pairKey(ends);
     });
   }
-  function sourceFocusTriangles(question){
-    var marker="DIAGRAM_FACTS_JSON:",start=question.lastIndexOf(marker);if(start<0){return [];}
-    try{
-      var parsed=JSON.parse(question.slice(start+marker.length).split("\n",1)[0].trim()),items=parsed&&parsed.focus_triangles;
-      if(!Array.isArray(items)||items.length!==2){return [];}
-      var triangles=items.map(function(item){return Array.isArray(item)?item.slice():[];});
-      if(triangles.some(function(item){return item.length!==3||new Set(item).size!==3||item.some(function(name){return typeof name!=="string"||!/^[A-Z]$/.test(name);});})){return [];}
-      return triangles;
-    }catch(_error){return [];}
+  function markerJson(source,marker){
+    var start=String(source||"").lastIndexOf(marker);if(start<0){return null;}
+    try{return JSON.parse(String(source).slice(start+marker.length).split("\n",1)[0].trim());}
+    catch(_error){return null;}
   }
+  function sourceWithoutMachineMarkers(source){
+    return String(source||"").split("\n").filter(function(line){return !/^(?:DIAGRAM_FACTS_JSON|PEDAGOGICAL_FOCUS_JSON):/.test(line.trim());}).join("\n");
+  }
+  function focusAngleKey(points){return points[1]+":"+[points[0],points[2]].sort().join("");}
+  function structuredFocus(focus,source){
+    if(!object(focus)||focus.version!==1||focus.status!=="ok"){fail("invalid_focus_contract");}
+    keys(focus,["version","status","mode","objects"]);text(focus.mode,40);
+    var facts=markerJson(source,"DIAGRAM_FACTS_JSON:");
+    if(!object(facts)){fail("missing_diagram_facts");}
+    var strokes=list(facts.strokes,40),visible={};
+    list(facts.visible_points,24).forEach(function(name){if(typeof name!=="string"||!/^[A-Z]$/.test(name)){fail("invalid_diagram_facts");}visible[name]=true;});
+    strokes=strokes.map(function(stroke){
+      if(!Array.isArray(stroke)||stroke.length<2||stroke.length>16||new Set(stroke).size!==stroke.length||stroke.some(function(name){return typeof name!=="string"||!/^[A-Z]$/.test(name); })){fail("invalid_diagram_facts");}
+      stroke.forEach(function(name){visible[name]=true;});return stroke.slice();
+    });
+    if(Object.keys(visible).length<3||!strokes.length){fail("missing_diagram_facts");}
+    function onStroke(first,last){return strokes.some(function(stroke){return stroke.indexOf(first)!==-1&&stroke.indexOf(last)!==-1;});}
+    var scope={present:true,edges:{},angles:{},points:{},objects:[]},seen={};
+    list(focus.objects,8).forEach(function(item){
+      keys(item,["kind","points","color"]);var kind=text(item.kind,16),colorName=text(item.color,16);if(colorName&&COLORS.indexOf(colorName)<0){fail("invalid_focus_contract");}
+      var pointsList=list(item.points,8).slice();
+      if(["point","segment","angle","triangle","polygon"].indexOf(kind)<0||pointsList.some(function(name){return typeof name!=="string"||!/^[A-Z]$/.test(name)||!visible[name];})||new Set(pointsList).size!==pointsList.length){fail("invalid_focus_contract");}
+      if((kind==="point"&&pointsList.length!==1)||(kind==="segment"&&pointsList.length!==2)||(kind==="angle"&&pointsList.length!==3)||(kind==="triangle"&&pointsList.length!==3)||(kind==="polygon"&&(pointsList.length<3||pointsList.length>8))){fail("invalid_focus_contract");}
+      var signature=kind+":"+pointsList.join("");if(seen[signature]){fail("invalid_focus_contract");}seen[signature]=true;
+      if(kind==="point"){scope.points[pointsList[0]]=true;}
+      if(kind==="segment"){
+        if(!onStroke(pointsList[0],pointsList[1])){fail("focus_not_in_source");}scope.edges[pairKey(pointsList)]=true;
+      }
+      if(kind==="angle"){
+        if(!onStroke(pointsList[0],pointsList[1])||!onStroke(pointsList[1],pointsList[2])){fail("focus_not_in_source");}
+        scope.angles[focusAngleKey(pointsList)]=true;scope.edges[pairKey(pointsList.slice(0,2))]=true;scope.edges[pairKey(pointsList.slice(1,3))]=true;
+      }
+      if(kind==="triangle"||kind==="polygon"){
+        for(var i=0;i<pointsList.length;i++){var edge=[pointsList[i],pointsList[(i+1)%pointsList.length]];if(!onStroke(edge[0],edge[1])){fail("focus_not_in_source");}scope.edges[pairKey(edge)]=true;}
+      }
+      scope.objects.push({kind:kind,points:pointsList,color:colorName||""});
+    });
+    if(!scope.objects.length){fail("invalid_focus_contract");}
+    return scope;
+  }
+  function sourceStructuredFocus(source){
+    var focus=markerJson(source,"PEDAGOGICAL_FOCUS_JSON:");if(!focus){return {present:false,edges:{},angles:{},points:{},objects:[]};}
+    return structuredFocus(focus,source);
+  }
+  function validateFocus(focus,source){try{return {ok:true,scope:structuredFocus(focus,source),reason:null};}catch(error){return {ok:false,scope:null,reason:error.reason||"invalid_focus_contract"};}}
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   function grounded(quote,source){
@@ -118,7 +158,7 @@
       if(plan.version!==1){fail("unsupported_version");}
       if(plan.status==="unsupported"){return {ok:false,scene:null,reason:"unsupported"};}
       if(plan.status!=="ok"){fail("invalid_status");}
-      var question=clean(context.questionText||""),hint=clean(context.hintText||""),trusted=namesIn(question+" "+hint),focus=focusText(context);
+      var rawQuestion=String(context.questionText||""),question=clean(sourceWithoutMachineMarkers(rawQuestion)),hint=clean(context.hintText||""),trusted=namesIn(question+" "+hint),focus=focusText(context),focusScope=sourceStructuredFocus(rawQuestion);
       if(!question||!focus){fail("missing_context");}
       if(!object(plan.points)){fail("invalid_points");}
       var pointNames=Object.keys(plan.points),points={};
@@ -136,19 +176,10 @@
       var segments=list(plan.segments,40).map(pair),seen={};
       segments.forEach(function(p){var key=pairKey(p);if(seen[key]){fail("duplicate_segment");}seen[key]=true;});
       function isDrawn(ends){return segments.some(function(s){var a=points[s[0]],b=points[s[1]],length=distance(a,b);return ends.every(function(name){var p=points[name];return sameLength(distance(a,p)+distance(p,b),length);});});}
-      var student=clean(context.studentMessage||""),focusTriangles=sourceFocusTriangles(String(context.questionText||"")),genericTriangleEdges={};
-      var asksWhichTriangles=/(?:בין\s+)?איזה\s+משולשים|מהם\s+שני\s+המשולשים|which\s+(?:two\s+)?triangles/i.test(student);
-      var genericTriangleHint=/שני\s+ה?משולשים|two\s+triangles/i.test(hint);
-      if(asksWhichTriangles&&genericTriangleHint&&focusTriangles.length===2&&
-          focusTriangles.flat().every(function(name){return Object.prototype.hasOwnProperty.call(points,name);})&&
-          list(plan.angles,8).length===0&&list(plan.equalGroups,6).length===0&&list(plan.rightAngles,8).length===0&&list(plan.pointHighlights,8).length===0){
-        focusTriangles.forEach(function(names){for(var i=0;i<3;i++){genericTriangleEdges[pairKey([names[i],names[(i+1)%3]])]=true;}});
-        var rawHighlights=list(plan.highlights,12),seenFocusEdges={};
-        rawHighlights.forEach(function(item){if(item&&typeof item.from==="string"&&typeof item.to==="string"){seenFocusEdges[pairKey([item.from,item.to])]=true;}});
-        var expected=Object.keys(genericTriangleEdges),actual=Object.keys(seenFocusEdges);
-        if(expected.length<5||expected.length>6||actual.length!==expected.length||actual.some(function(key){return !genericTriangleEdges[key];})){genericTriangleEdges={};}
+      function focused(ends,isAngle){
+        var allowed=focusScope.present?(isAngle?!!focusScope.angles[focusAngleKey(ends)]:!!focusScope.edges[pairKey(ends)]):focusAllows(focus,ends,isAngle);
+        if(!allowed){fail("outside_current_focus");}if(isAngle){if(!isDrawn([ends[0],ends[1]])||!isDrawn([ends[1],ends[2]])){fail("undrawn_mark");}}else if(!isDrawn(ends)){fail("undrawn_mark");}
       }
-      function focused(ends,isAngle){if(!(isAngle===false&&genericTriangleEdges[pairKey(ends)])&&!focusAllows(focus,ends,isAngle)){fail("outside_current_focus");}if(isAngle){if(!isDrawn([ends[0],ends[1]])||!isDrawn([ends[1],ends[2]])){fail("undrawn_mark");}}else if(!isDrawn(ends)){fail("undrawn_mark");}}
       var evidence={};list(plan.evidence,32).forEach(function(item){keys(item,["mark","source","quote"]);if(typeof item.mark!=="string"||!/^(equalGroups|rightAngles|angles|highlights)\.\d{1,2}$/.test(item.mark)||evidence[item.mark]||(item.source!=="question"&&item.source!=="hint")){fail("invalid_evidence");}text(item.quote,400);if(!grounded(item.quote,item.source==="question"?question:hint)){fail("unproven_evidence");}evidence[item.mark]=item;});
       var usedEvidence={};function proof(mark,check){var item=evidence[mark];if(!item||!check(item.quote)){fail("ungrounded_mark");}usedEvidence[mark]=true;}
       // Every entry was grounded above. An optional citation on a validated
@@ -177,7 +208,7 @@
         if(typeof item.point!=="string"||!Object.prototype.hasOwnProperty.call(points,item.point)||emphasizedPoints[item.point]){fail("invalid_point_highlight");}
         // A hint that asks for the side opposite B may locate B, but must not
         // color AC (the answer) or pick incident rays on the student's behalf.
-        if(singlePointNames(focus).indexOf(item.point)<0){fail("outside_current_focus");}
+        if(focusScope.present?!focusScope.points[item.point]:singlePointNames(focus).indexOf(item.point)<0){fail("outside_current_focus");}
         if(!isDrawn([item.point,item.point])){fail("undrawn_mark");}
         emphasizedPoints[item.point]=true;
         return {point:item.point,color:color(item.color)};
@@ -207,6 +238,19 @@
         else{optionalNameEvidence("angles."+index);}
         return {from:item.from,vertex:item.vertex,to:item.to,label:label};
       });
+      if(focusScope.present){
+        var actualEdges={},actualAngles={},actualPoints={};
+        scene.highlights.forEach(function(item){actualEdges[pairKey([item.from,item.to])]=true;});
+        scene.angles.forEach(function(item){actualAngles[focusAngleKey([item.from,item.vertex,item.to])]=true;});
+        scene.rightAngles.forEach(function(item){actualAngles[focusAngleKey(item)]=true;});
+        scene.pointHighlights.forEach(function(item){actualPoints[item.point]=true;});
+        focusScope.objects.forEach(function(item){
+          if(item.kind==="point"&&!actualPoints[item.points[0]]){fail("incomplete_current_focus");}
+          if(item.kind==="segment"&&!actualEdges[pairKey(item.points)]){fail("incomplete_current_focus");}
+          if(item.kind==="angle"&&!actualAngles[focusAngleKey(item.points)]){fail("incomplete_current_focus");}
+          if(item.kind==="triangle"||item.kind==="polygon"){for(var i=0;i<item.points.length;i++){if(!actualEdges[pairKey([item.points[i],item.points[(i+1)%item.points.length]])]){fail("incomplete_current_focus");}}}
+        });
+      }
       if(Object.keys(evidence).some(function(mark){return !usedEvidence[mark];})){fail("unused_evidence");}
       if(!scene.highlights.length&&!scene.pointHighlights.length&&!scene.angles.length&&!scene.equalGroups.length&&!scene.rightAngles.length){fail("missing_focus");}
       var xs=pointNames.map(function(n){return points[n][0];}),ys=pointNames.map(function(n){return points[n][1];});
@@ -359,5 +403,5 @@
   }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}
-  return {inspect:inspect,compile:compile,render:render,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
+  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
 });

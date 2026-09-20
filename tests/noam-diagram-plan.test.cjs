@@ -24,26 +24,63 @@ test("new parallelogram point names and a student-specific edge need no per-ques
   c.studentMessage="";assert.equal(Plan.inspect(p,c).reason,"outside_current_focus");
 });
 
-test("a student asking which two triangles may receive exactly the two vision-grounded triangle outlines",()=>{
+function structuredSource(focus){
+  const facts={visible_points:["A","B","C","L","P"],strokes:[["A","B"],["B","P"],["P","A"],["C","L"],["L","P"],["P","C"]]};
+  return "Visible points A, B, C, L and P.\nDIAGRAM_FACTS_JSON:"+JSON.stringify(facts)+"\nPEDAGOGICAL_FOCUS_JSON:"+JSON.stringify(focus);
+}
+
+test("a validated pedagogical focus renders exactly two grounded triangle outlines",()=>{
   const p={version:1,status:"ok",points:{A:[0,0],B:[4,0],C:[4,4],L:[2.8,4],P:[3.1,3.1]},
     segments:[["A","B"],["B","P"],["P","A"],["C","L"],["L","P"],["P","C"]],
     highlights:[
       {from:"A",to:"B",color:"blue",label:""},{from:"B",to:"P",color:"blue",label:""},{from:"P",to:"A",color:"blue",label:""},
       {from:"C",to:"L",color:"orange",label:""},{from:"L",to:"P",color:"orange",label:""},{from:"P",to:"C",color:"orange",label:""}
     ],angles:[],equalGroups:[],rightAngles:[],evidence:[]};
-  const marker='DIAGRAM_FACTS_JSON:{"focus_triangles":[["A","B","P"],["C","L","P"]]}';
-  const c={questionText:"בריבוע ABCD מסומנות הנקודות L ו-P. "+marker,
+  const focus={version:1,status:"ok",mode:"locate",objects:[
+    {kind:"triangle",points:["A","B","P"],color:"blue"},{kind:"triangle",points:["C","L","P"],color:"orange"}]};
+  const c={questionText:structuredSource(focus),
     hintText:"האם שני המשולשים חולקים זווית ישרה אחת?",studentMessage:"בין איזה משולשים? אתה יכול לשרטט לי?"};
   const result=Plan.inspect(p,c);assert.equal(result.ok,true,result.reason);
-  p.highlights.pop();assert.equal(Plan.inspect(p,c).reason,"outside_current_focus","an incomplete pair is not authorized");
+  p.highlights.pop();assert.equal(Plan.inspect(p,c).reason,"incomplete_current_focus","an incomplete pair is not authorized");
   p.highlights.push({from:"A",to:"C",color:"pink",label:""});
   p.segments.push(["A","C"]);assert.equal(Plan.inspect(p,c).reason,"outside_current_focus","an extra edge is not authorized");
 });
 
-test("generic triangle wording without two trusted focus triangles stays blocked",()=>{
+test("generic triangle wording without a validated pedagogical focus stays blocked",()=>{
   const p=basic();p.highlights=[{from:"A",to:"B",color:"blue",label:"AB"},{from:"B",to:"C",color:"blue",label:"BC"},{from:"C",to:"A",color:"blue",label:"CA"}];
   const c=context({hintText:"האם שני המשולשים חולקים זווית ישרה אחת?",studentMessage:"בין איזה משולשים? אתה יכול לשרטט לי?"});
   assert.equal(Plan.inspect(p,c).reason,"outside_current_focus");
+});
+
+test("the same focus contract covers a point, segment and angle without question-specific rules",()=>{
+  const facts={visible_points:["A","B","C"],strokes:[["A","B"],["B","C"],["C","A"]]};
+  function source(objects){return "משולש ABC.\nDIAGRAM_FACTS_JSON:"+JSON.stringify(facts)+"\nPEDAGOGICAL_FOCUS_JSON:"+JSON.stringify({version:1,status:"ok",mode:"locate",objects});}
+  let p=basic();p.highlights=[];p.pointHighlights=[{point:"B",color:"blue"}];
+  let c=context({questionText:source([{kind:"point",points:["B"],color:"blue"}]),studentMessage:"איפה B?"});
+  assert.equal(Plan.inspect(p,c).ok,true);
+  p=basic();c=context({questionText:source([{kind:"segment",points:["A","B"],color:"teal"}]),studentMessage:"סמן את AB"});
+  assert.equal(Plan.inspect(p,c).ok,true);
+  p=basic();p.highlights=[];p.angles=[{from:"A",vertex:"B",to:"C",label:"∠ABC"}];
+  c=context({questionText:source([{kind:"angle",points:["A","B","C"],color:"orange"}]),studentMessage:"איפה הזווית ABC?"});
+  assert.equal(Plan.inspect(p,c).ok,true);
+});
+
+test("a pair of vertical angles at M uses the same structured angle focus",()=>{
+  const facts={visible_points:["A","B","C","D","M"],strokes:[["A","M","C"],["B","M","D"]]};
+  const focus={version:1,status:"ok",mode:"locate",objects:[
+    {kind:"angle",points:["A","M","B"],color:"blue"},{kind:"angle",points:["C","M","D"],color:"orange"}]};
+  const source="הישרים AC ו-BD נחתכים בנקודה M.\nDIAGRAM_FACTS_JSON:"+JSON.stringify(facts)+"\nPEDAGOGICAL_FOCUS_JSON:"+JSON.stringify(focus);
+  const p={version:1,status:"ok",points:{A:[-3,-3],B:[3,-3],C:[3,3],D:[-3,3],M:[0,0]},segments:[["A","C"],["B","D"]],highlights:[],
+    angles:[{from:"A",vertex:"M",to:"B",label:"∠AMB"},{from:"C",vertex:"M",to:"D",label:"∠CMD"}],equalGroups:[],rightAngles:[],evidence:[]};
+  const c=context({questionText:source,hintText:"האם שתי הזוויות בנקודה M הן זוויות קודקודיות?",studentMessage:"אתה יכול להראות לי את השרטוט?"});
+  assert.equal(Plan.inspect(p,c).ok,true);
+  p.angles.pop();assert.equal(Plan.inspect(p,c).reason,"incomplete_current_focus");
+});
+
+test("focus selection is rejected when it is not grounded in visible strokes",()=>{
+  const source="משולש ABC.\nDIAGRAM_FACTS_JSON:"+JSON.stringify({visible_points:["A","B","C"],strokes:[["A","B"],["B","C"]]});
+  const result=Plan.validateFocus({version:1,status:"ok",mode:"locate",objects:[{kind:"triangle",points:["A","B","C"],color:"blue"}]},source);
+  assert.equal(result.ok,false);assert.equal(result.reason,"focus_not_in_source");
 });
 
 test("named angle arcs identify the right vertex without asserting equality or degrees",()=>{
