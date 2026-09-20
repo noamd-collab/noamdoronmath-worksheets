@@ -96,6 +96,10 @@
     });
     return rays;
   }
+  function sourceRayNames(context){
+    try{context=context||{};return Object.keys(sourceRays(clean(context.questionText||"")+". "+clean(context.hintText||"")));}
+    catch(_error){return [];}
+  }
   function inspect(plan,context){
     try{
       context=context||{};safeTree(plan,0);
@@ -212,6 +216,18 @@
         while((match=re.exec(sentence))){checkAngleClass(match[2]||match[4],match[1]||match[3]);}
         re=/([A-Z])\s+(?:(?:נמצא|נמצאת)\s+)?על\s+(?:(הצלע|הקטע|האלכסון|הישר)\s+)?([A-Z]{2})(?![A-Z])/g;
         while((match=re.exec(sentence))){if(allPresent(match[1]+match[3])){var middle=points[match[1]],start=points[match[3][0]],end=points[match[3][1]],onSegment=sameLength(distance(start,middle)+distance(middle,end),distance(start,end)),cross=(end[0]-start[0])*(middle[1]-start[1])-(end[1]-start[1])*(middle[0]-start[0]);if(match[2]==="הישר"?Math.abs(cross)>EPS*Math.max(1,distance(start,end)*distance(start,middle)):!onSegment){fail("source_coordinate_contradiction",{type:"pointOn",point:match[1],ends:match[3].split(""),extent:match[2]==="הישר"?"line":"segment"});}}}
+        re=/([A-Z])\s+(?:(?:נמצא|נמצאת)\s+)?על\s+המשך\s+(?:(?:הצלע|הקטע)\s+)?([A-Z]{2})\s+מעבר\s+ל\s*[־-]?\s*([A-Z])(?![A-Za-z])/g;
+        while((match=re.exec(sentence))){
+          var extensionPoint=match[1],extensionEnds=match[2].split(""),beyond=match[3];
+          if(extensionEnds[0]===extensionEnds[1]||extensionEnds.indexOf(beyond)===-1||!allPresent(extensionPoint+match[2])){continue;}
+          var extensionStart=points[extensionEnds[0]],extensionEnd=points[extensionEnds[1]],extension=points[extensionPoint];
+          var along=[extensionEnd[0]-extensionStart[0],extensionEnd[1]-extensionStart[1]],offset=[extension[0]-extensionStart[0],extension[1]-extensionStart[1]];
+          var extensionCross=along[0]*offset[1]-along[1]*offset[0],projection=(along[0]*offset[0]+along[1]*offset[1])/(along[0]*along[0]+along[1]*along[1]);
+          var isBeyond=beyond===extensionEnds[0]?projection < -EPS:projection > 1+EPS;
+          if(Math.abs(extensionCross)>EPS*Math.max(1,Math.hypot(along[0],along[1])*Math.hypot(offset[0],offset[1]))||!isBeyond){
+            fail("source_coordinate_contradiction",{type:"pointOnExtension",point:extensionPoint,ends:extensionEnds,beyond:beyond});
+          }
+        }
         re=/(משולש|מעוין|ריבוע|מלבן|מקבילית)\s*[△Δ]?\s*([A-Z]{3,4})(?![A-Z])/g;
         while((match=re.exec(sentence))){if(!allPresent(match[2])){continue;}var shape=match[1],names=match[2].split("");
           if(shape==="משולש"&&names.length===3){angle(names);continue;}
@@ -225,7 +241,82 @@
       return {ok:true,scene:scene,reason:null};
     }catch(error){var result={ok:false,scene:null,reason:error.reason||"invalid_plan"};if(error.reason==="source_coordinate_contradiction"&&error.constraint){return Object.assign(result,{constraint:error.constraint});}return result;}
   }
+  function normalizeRayPresentation(plan,context){
+    // Optional repair of presentation, never source geometry: remove only an
+    // unsupported arrow from a segment the model already drew explicitly.
+    // Keep inspect strict; callers must opt in and receive a fully rechecked
+    // plan. A missing base segment, malformed ray, or other failure is not
+    // repaired, and all non-ray data is copied without alteration.
+    if(inspect(plan,context).reason!=="ungrounded_ray"){return null;}
+    try{
+      var allowed=sourceRayNames(context),seen={},removed=false,invalid=false;
+      var kept=plan.rays.filter(function(ends){
+        if(!Array.isArray(ends)||ends.length!==2||ends[0]===ends[1]||ends.some(function(n){return typeof n!=="string"||!Object.prototype.hasOwnProperty.call(plan.points,n);})){invalid=true;return true;}
+        var name=ends.join("");if(seen[name]){invalid=true;return true;}seen[name]=true;
+        if(allowed.indexOf(name)!==-1){return true;}
+        if(!plan.segments.some(function(segment){return pairKey(segment)===pairKey(ends);})){invalid=true;return true;}
+        removed=true;return false;
+      });
+      if(invalid||!removed){return null;}
+      var normalized=JSON.parse(JSON.stringify(plan));normalized.rays=kept.map(function(ends){return ends.slice();});
+      return inspect(normalized,context).ok?normalized:null;
+    }catch(_error){return null;}
+  }
+  function normalizeParallelAngleFocus(plan,context){
+    // Locate a requested pair; do not prove equality or complete a later step.
+    // Only three explicitly named segments with direct endpoint intersections
+    // are supported. Missing topology, ambiguous language, factual angle marks,
+    // or a narrower student focus remain the model's responsibility.
+    var initial=inspect(plan,context);
+    if(!initial.ok&&initial.reason!=="missing_focus"){return null;}
+    try{
+      context=context||{};
+      var hint=clean(context.hintText||""),student=clean(context.studentMessage||""),question=clean(context.questionText||"");
+      var drawing=/סמן|סמני|שרטט|שרטוט|צייר|ציור|הדגם|תדגים|הראה|הראי|תראה|תראי|\b(?:draw|mark|show|illustrate)\b/i;
+      var declined=/(?:אל|לא|בלי|ללא)\s+(?:תסמן|תסמני|לסמן|סימון|תשרטט|לשרטט|שרטוט|תצייר|לצייר|ציור|תראה|להראות)|\b(?:do not|don't|without)\s+(?:draw|mark|show|illustrate)\b/i;
+      if(!drawing.test(student)||declined.test(student)||tokens(student).length||singlePointNames(student).length){return null;}
+      if(!/זוויות\s+ה?מתחלפות|\balternate(?:\s+interior)?\s+angles\b/i.test(hint)||/חיצוניות|\bexterior\b/i.test(hint)||declined.test(hint)||/(?:^|[^א-ת])(?:לא|אין|אינן|בלי|ללא)(?=[^א-ת]|$)|\b(?:not|no|without)\b/i.test(hint)){return null;}
+      var hintTokens=tokens(hint),hintPairs={};
+      if(hintTokens.some(function(n){return n.length!==2;})||singlePointNames(hint).length){return null;}
+      hintTokens.forEach(function(n){hintPairs[pairKey(n.split(""))]=true;});
+      if(Object.keys(hintPairs).length!==3){return null;}
+      var transversalNames={},match,re=/(?:ה?חותך|\btransversal)\s*:?\s*([A-Z]{2})(?![A-Za-z])/gi;
+      while((match=re.exec(hint))){transversalNames[pairKey(match[1].split(""))]=match[1].split("");}
+      if(Object.keys(transversalNames).length!==1){return null;}
+      var transversal=transversalNames[Object.keys(transversalNames)[0]],transversalKey=pairKey(transversal),relations={};
+      if(!hintPairs[transversalKey]){return null;}
+      sentences(question+". "+hint).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
+        var relationRe=/(?:^|[^A-Z0-9+*/=−-])([A-Z]{2})∥([A-Z]{2})(?=$|[^A-Z0-9+*/=−-])/g,relation;
+        while((relation=relationRe.exec(compact(sentence)))){
+          var first=relation[1].split(""),second=relation[2].split(""),firstKey=pairKey(first),secondKey=pairKey(second);
+          if(firstKey!==secondKey&&firstKey!==transversalKey&&secondKey!==transversalKey&&hintPairs[firstKey]&&hintPairs[secondKey]){
+            relations[[firstKey,secondKey].sort().join(":")]=[first,second];
+          }
+        }
+      });
+      if(Object.keys(relations).length!==1){return null;}
+      var parallel=relations[Object.keys(relations)[0]],allNames=parallel[0].concat(parallel[1]);
+      if(new Set(allNames).size!==4||allNames.some(function(n){return !Object.prototype.hasOwnProperty.call(plan.points,n);})){return null;}
+      var drawn=initial.scene?initial.scene.segments:list(plan.segments,40);
+      if(parallel.concat([transversal]).some(function(ends){return !drawn.some(function(s){return pairKey(s)===pairKey(ends);});})){return null;}
+      var intersections=parallel.map(function(ends){return ends.filter(function(n){return transversal.indexOf(n)!==-1;});});
+      if(intersections.some(function(ends){return ends.length!==1;})||intersections[0][0]===intersections[1][0]){return null;}
+      var u=intersections[0][0],v=intersections[1][0],a=parallel[0].filter(function(n){return n!==u;})[0],b=parallel[1].filter(function(n){return n!==v;})[0];
+      var pu=plan.points[u],pv=plan.points[v],pa=plan.points[a],pb=plan.points[b],t=[pv[0]-pu[0],pv[1]-pu[1]];
+      var firstSide=t[0]*(pa[1]-pu[1])-t[1]*(pa[0]-pu[0]),secondSide=t[0]*(pb[1]-pv[1])-t[1]*(pb[0]-pv[0]);
+      var tolerance=EPS*Math.hypot(t[0],t[1])*Math.max(distance(pu,pa),distance(pv,pb));
+      if(Math.abs(firstSide)<=tolerance||Math.abs(secondSide)<=tolerance||Math.sign(firstSide)===Math.sign(secondSide)){return null;}
+      function angleKey(ends){return ends[1]+":"+[ends[0],ends[2]].sort().join("");}
+      var desired=[[a,u,v],[u,v,b]],wanted=desired.map(angleKey),existing=list(plan.angles,8),seenAngles={};
+      if(list(plan.evidence,32).some(function(item){return /^angles\./.test(item.mark);})){return null;}
+      if(existing.some(function(item){var label=angleLabel(item.label),key=angleKey([item.from,item.vertex,item.to]);seenAngles[key]=true;return /^\d/.test(label)||wanted.indexOf(key)===-1;})){return null;}
+      if(existing.length===2&&Object.keys(seenAngles).length===2){return null;}
+      var normalized=JSON.parse(JSON.stringify(plan));
+      normalized.angles=desired.map(function(ends){return {from:ends[0],vertex:ends[1],to:ends[2],label:"∠"+ends.join("")};});
+      return inspect(normalized,context).ok?normalized:null;
+    }catch(_error){return null;}
+  }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}
-  return {inspect:inspect,compile:compile,render:render,PROMPT_SCHEMA:PROMPT_SCHEMA};
+  return {inspect:inspect,compile:compile,render:render,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
 });

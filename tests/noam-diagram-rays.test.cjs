@@ -96,6 +96,69 @@ test("goals, questions, conditionals and negated ray claims are not affirmative 
   }
 });
 
+test("source ray names expose only affirmative source declarations for a constrained prompt",()=>{
+  const c=context("מסומנות הנקודות M, A, B, C. נתונה הקרן MA.");
+  c.hintText="האם שמת לב כיצד הקרן MC יוצרת זווית עם MB?";
+  c.studentMessage="סמן את הקרן MB.";
+  assert.deepEqual(Plan.sourceRayNames(c),["MA"]);
+  assert.deepEqual(Plan.sourceRayNames({questionText:"x".repeat(20001)}),[]);
+});
+
+test("optional ray-presentation repair drops only unsupported arrows from explicit existing segments",()=>{
+  const p=plan();p.rays=[["M","A"],["M","C"]];
+  const c=context("מסומנות הנקודות M, A, B, C והקטעים MA, MB ו-MC. נתונה הקרן MA.");
+  const before=JSON.stringify(p);
+  assert.equal(Plan.inspect(p,c).reason,"ungrounded_ray","strict validation remains unchanged");
+  const normalized=Plan.normalizeRayPresentation(p,c);
+  assert.ok(normalized);assert.deepEqual(normalized,{...p,rays:[["M","A"]]});
+  assert.equal(JSON.stringify(p),before);
+  assert.deepEqual(Plan.inspect(normalized,c).scene.rays,[["M","A"]]);
+  assert.deepEqual(Plan.inspect(normalized,c).scene.segments,p.segments);
+  const all=nodes(Plan.render(documentStub(),normalized,c));
+  assert.equal(all.filter(n=>n.className==="noam-geometry-ray-arrow").length,1);
+  assert.equal(Plan.normalizeRayPresentation(normalized,c),null,"already valid plans need no repair");
+});
+
+test("rhetorical hints can use a segment drawing without asserting an ungrounded ray",()=>{
+  const p={version:1,status:"ok",points:{A:[0,3],B:[-3,0],C:[3,0],D:[4,3],E:[1,4]},
+    segments:[["A","B"],["B","C"],["C","A"],["A","E"],["D","A"]],rays:[["A","D"]],
+    angles:[{from:"D",vertex:"A",to:"C",label:"∠DAC"},{from:"A",vertex:"C",to:"B",label:"∠ACB"}]};
+  const c={questionText:"במשולש שווה־השוקיים ABC שבו AB=AC. הנקודה E על המשך BA מעבר ל-A. הנקודה D בתוך הזווית EAC כך שמתקיים AD∥BC.",
+    hintText:"האם שמת לב כיצד הקרן AD והצלע BC המקבילות לה יוצרות זוויות מתחלפות עם הישר החותך AC?",
+    studentMessage:"כן אתה יכול לסמן לי אותן כי אני לא בטוח שאני מבין"};
+  assert.equal(Plan.inspect(p,c).reason,"ungrounded_ray");
+  const normalized=Plan.normalizeRayPresentation(p,c);assert.ok(normalized);
+  assert.deepEqual(normalized,{...p,rays:[]});
+  assert.deepEqual(Plan.inspect(normalized,c).scene.angles.map(a=>a.label),["∠DAC","∠ACB"]);
+  assert.ok(Plan.render(documentStub(),normalized,c));
+});
+
+test("ray-presentation repair cannot add missing geometry or rescue malformed or duplicate rays",()=>{
+  const c=context("מסומנות הנקודות M, A, B, C והקטעים MA, MB ו-MC.");
+  const p=plan();p.rays=[["M","A"]];
+  p.segments=p.segments.filter(s=>s[1]!=="A");
+  assert.equal(Plan.normalizeRayPresentation(p,c),null,"missing ray base cannot be invented");
+  p.segments=[["M","B"],["M","C"],["B","A"]];
+  assert.equal(Plan.normalizeRayPresentation(p,c),null,"two connected segments are not the explicit requested base");
+  p.segments=plan().segments;
+  for(const rays of [[["M","A"],["M","A"]],[["M","A"],["M","Z"]],[["M","A"],["A","A"]],[["M","A"],{from:"M",to:"C"}]]){
+    assert.equal(Plan.normalizeRayPresentation({...p,rays},c),null);
+  }
+});
+
+test("ray-presentation repair revalidates focus, factual evidence and coordinates without altering them",()=>{
+  const c=context("מסומנות הנקודות M, A, B, C והקטעים MA, MB ו-MC.");
+  const base=plan();base.rays=[["M","A"]];
+  const wrongFocus={...base,highlights:[{from:"A",to:"B"}]};
+  assert.equal(Plan.normalizeRayPresentation(wrongFocus,c),null);
+  const factual={...base,highlights:[{from:"M",to:"A",label:"4"}]};
+  assert.equal(Plan.normalizeRayPresentation(factual,c),null,"an unsupported numeric value remains rejected");
+  const contradiction={...c,questionText:c.questionText+" MA∥MC."};
+  assert.equal(Plan.normalizeRayPresentation(base,contradiction),null);
+  const angleContradiction={...base,angles:[{from:"A",vertex:"M",to:"C",label:"∠MAC"}]};
+  assert.equal(Plan.normalizeRayPresentation(angleContradiction,c),null);
+});
+
 test("arrow tips extend beyond through-points in the correct direction and remain inside the viewBox",()=>{
   const p=plan();p.points.C=[-1,3];
   const card=Plan.render(documentStub(),p,context()),all=nodes(card);assert.ok(card);
