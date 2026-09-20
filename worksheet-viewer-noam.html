@@ -6073,7 +6073,10 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
         }
         return pollNoamDiagramJob(start.jobId);
       }).then(function(result){
-        var checked=result&&result.ok&&window.NoamDiagramPlan.inspect(result.plan,context);
+        var validatedContext={questionText:typeof result.validationQuestionText==="string"?
+          result.validationQuestionText.slice(0,18000):context.questionText,
+          hintText:context.hintText,studentMessage:context.studentMessage};
+        var checked=result&&result.ok&&window.NoamDiagramPlan.inspect(result.plan,validatedContext);
         if (!checked||!checked.ok){
           console.warn("NOAM_DIAGRAM_REJECTED",String(result&&result.validationReason||checked&&checked.reason||"unavailable").slice(0,80),JSON.stringify(result&&result.constraint||null));
           var error=new Error("diagram unsupported");error.code="DIAGRAM_UNSUPPORTED";
@@ -6085,7 +6088,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
           var renderError=new Error("diagram render failed");renderError.code="DIAGRAM_UNSUPPORTED";throw renderError;
         }
         return {type:"ai-diagram",exerciseId:exercise.id,sourceIdentity:sourceIdentity,cacheKey:key,
-          plan:JSON.parse(JSON.stringify(result.plan)),context:context};
+          plan:JSON.parse(JSON.stringify(result.plan)),context:validatedContext};
       });
     }).then(function(visual){
       runtime.cache.set(key,visual);
