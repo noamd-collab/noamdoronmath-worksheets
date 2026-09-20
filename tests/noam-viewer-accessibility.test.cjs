@@ -177,6 +177,35 @@ test("visual geometry help can render a clean triangle or the scanned question b
   assert.match(html,/parseLabeledTriangle\(conversation\)/);
 });
 
+test("geometry answers offer a free local drawing action and hide it after use", () => {
+  assert.match(html,/drawButton\.textContent="הדגם באמצעות שרטוט"/);
+  assert.match(html,/message\.visual=manualVisual;[\s\S]*?saveNoamState\(\);[\s\S]*?renderNoamChat\(\)/);
+  assert.match(html,/message\.role!=="assistant"\|\|message\.visual/);
+  assert.match(html,/failed\\s\+to\\s\+fetch/);
+  const handler = html.slice(html.indexOf('drawButton.addEventListener("click"'), html.indexOf("bubble.appendChild(drawButton)"));
+  assert.doesNotMatch(handler,/askNoam|postJson|fetch\(/);
+
+  const ctx = {
+    ttl:"משולשים וזוויות",
+    window:{NoamLocalVisual:{
+      parseLabeledTriangle:source=>source.includes("EDB")?{type:"labeled-triangle",vertices:["E","D","B"],angles:[]}:null
+    }},
+    localVisualExerciseSource:()=>"משולש EDB",
+    Set,Math,String,Number,Array,Object,RegExp
+  };
+  vm.createContext(ctx);
+  vm.runInContext(askSource,ctx);
+  const thread={history:[]};
+  const message={role:"assistant",text:"סמנו את הזווית."};
+  assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),true);
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(ctx.noamManualVisual({id:"q"},thread,message))),
+    {type:"labeled-triangle",vertices:["E","D","B"],angles:[]}
+  );
+  message.visual={type:"question-image"};
+  assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),false);
+});
+
 test("a contradictory model refusal is replaced when the viewer supplies the requested drawing", () => {
   const ctx = {
     window:{NoamLocalVisual:{wantsDrawing:text=>/לצייר/.test(text)}},

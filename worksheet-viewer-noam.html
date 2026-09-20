@@ -1462,6 +1462,24 @@ textarea:focus{
   cursor:pointer;
 }
 .noam-visual-question:hover,.noam-visual-question:focus-visible{background:#fff;outline:2px solid var(--accent-dark);outline-offset:2px}
+.noam-draw-action{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  margin:7px 0 0 auto;
+  padding:5px 9px;
+  color:var(--ink);
+  background:#fff;
+  border:1.5px solid var(--accent-dark);
+  border-radius:999px;
+  font:900 12.5px/1.25 Assistant,sans-serif;
+  cursor:pointer;
+}
+.noam-draw-action:hover,.noam-draw-action:focus-visible{
+  background:color-mix(in srgb,var(--tint) 70%,#fff);
+  outline:2px solid var(--accent-dark);
+  outline-offset:2px;
+}
 .noam-bubble.thinking{
   display:flex;
   align-items:center;
@@ -4332,7 +4350,7 @@ function renderExercisePicker(){
   }
 }
 
-function addTranscriptBubble(container, role, text, kind, visual){
+function addTranscriptBubble(container, role, text, kind, visual, message, thread){
   var row = document.createElement("div");
   row.className = "noam-row " + role;
   var bubble = document.createElement("div");
@@ -4357,6 +4375,22 @@ function addTranscriptBubble(container, role, text, kind, visual){
     }
     var visualElement=window.NoamLocalVisual.render(document,visualSpec);
     if (visualElement){bubble.appendChild(visualElement);}
+  }
+  if (message&&thread&&noamCanOfferDrawing(selectedExercise,thread,message)){
+    var drawButton=document.createElement("button");
+    drawButton.type="button";
+    drawButton.className="noam-draw-action";
+    drawButton.textContent="הדגם באמצעות שרטוט";
+    drawButton.setAttribute("aria-label","הדגם את ההסבר באמצעות שרטוט");
+    drawButton.addEventListener("click",function(){
+      var manualVisual=noamManualVisual(selectedExercise,thread,message);
+      if (!manualVisual){return;}
+      message.visual=manualVisual;
+      saveNoamState();
+      renderNoamChat();
+      announceNoam("נוסף שרטוט להסבר של נועם AI.");
+    });
+    bubble.appendChild(drawButton);
   }
   row.appendChild(bubble);
   container.appendChild(row);
@@ -4593,7 +4627,7 @@ function renderNoamChat(){
   });
   var transcript = document.getElementById("noamTranscript");
   thread.messages.forEach(function(message){
-    addTranscriptBubble(transcript,message.role,message.text,message.kind||"",message.visual||null);
+    addTranscriptBubble(transcript,message.role,message.text,message.kind||"",message.visual||null,message,thread);
   });
   transcript.querySelectorAll("[data-noam-suggested-question]").forEach(function(button){
     button.addEventListener("click",function(){
@@ -5356,6 +5390,27 @@ function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintI
   var local=window.NoamLocalVisual;
   var conversation=noamRecentThreadText(thread,1400)+"\n"+studentMessage+"\n"+answer;
   var triangle=local&&local.parseLabeledTriangle?local.parseLabeledTriangle(conversation):null;
+  if (triangle){return triangle;}
+  return {type:"question-image",exerciseId:exercise.id,label:"השרטוט מתוך השאלה"};
+}
+
+function noamCanOfferDrawing(exercise,thread,message){
+  if (!exercise||!thread||!message||message.role!=="assistant"||message.visual||!String(message.text||"").trim()){
+    return false;
+  }
+  if (!window.NoamLocalVisual||/failed\s+to\s+fetch|לא\s+זמין|נסו\s+שוב\s+בעוד/i.test(String(message.text||""))){
+    return false;
+  }
+  var source=ttl+"\n"+localVisualExerciseSource(exercise)+"\n"+noamRecentThreadText(thread,700)+"\n"+message.text;
+  return noamGeometryContext(source);
+}
+
+function noamManualVisual(exercise,thread,message){
+  if (!exercise||!thread||!window.NoamLocalVisual){return null;}
+  var source=localVisualExerciseSource(exercise)+"\n"+noamRecentThreadText(thread,1400)+"\n"+String(message&&message.text||"");
+  var triangle=window.NoamLocalVisual.parseLabeledTriangle
+    ? window.NoamLocalVisual.parseLabeledTriangle(source)
+    : null;
   if (triangle){return triangle;}
   return {type:"question-image",exerciseId:exercise.id,label:"השרטוט מתוך השאלה"};
 }
