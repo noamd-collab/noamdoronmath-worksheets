@@ -12,6 +12,35 @@
     return /(?:צייר|לצייר|שרטט|שרטוט|תמחיש|המחשה|גרף|פרבולה)/i.test(String(text||""));
   }
 
+  function wantsVisualSupport(text){
+    return wantsDrawing(text)||/(?:איזו?|איפה|היכן)\s+(?:היא\s+)?(?:ה)?זווית|קשה\s+לי\s+לזהות|לא\s+(?:רואה|מזהה)|סמ(?:ן|ני)\s+לי|תראה\s+לי/i.test(String(text||""));
+  }
+
+  function compactLatinLetters(value){
+    return String(value||"").replace(/[^A-Za-z]/g,"").toUpperCase();
+  }
+
+  function parseLabeledTriangle(source){
+    var text=String(source||"");
+    var trianglePattern=/(?:△|\\triangle|משולש(?:\s+שווה[־-]?שוקיים)?(?:\s+))\s*([A-Za-z])\s*([A-Za-z])\s*([A-Za-z])/gi;
+    var triangleMatch,vertices=null;
+    while((triangleMatch=trianglePattern.exec(text))){
+      var candidate=compactLatinLetters(triangleMatch.slice(1).join(""));
+      if(candidate.length===3&&new Set(candidate).size===3){vertices=candidate.split("");}
+    }
+    if(!vertices){return null;}
+
+    var anglePattern=/(?:∠|\\angle)\s*([A-Za-z])\s*([A-Za-z])\s*([A-Za-z])/gi;
+    var angleMatch,angles=[];
+    while((angleMatch=anglePattern.exec(text))){
+      var angle=compactLatinLetters(angleMatch.slice(1).join(""));
+      if(angle.length===3&&angle.split("").every(function(letter){return vertices.indexOf(letter)!==-1;})&&angles.indexOf(angle)===-1){
+        angles.push(angle);
+      }
+    }
+    return {type:"labeled-triangle",vertices:vertices,angles:angles.slice(-3)};
+  }
+
   function normalizedRelation(value){
     return ({">=":"≥","<=":"≤","≥":"≥","≤":"≤",">":">","<":"<"})[value]||"";
   }
@@ -43,7 +72,16 @@
   }
 
   function describe(spec){
-    if(!spec||spec.type!=="factored-quadratic-inequality"){return "";}
+    if(!spec){return "";}
+    if(spec.type==="labeled-triangle"){
+      var triangle=(spec.vertices||[]).join("");
+      var angles=(spec.angles||[]).map(function(angle){return "∠"+angle;}).join(" ו־");
+      return "משולש "+triangle+(angles?", ובו מסומנות הזוויות "+angles:".");
+    }
+    if(spec.type==="question-image"){
+      return String(spec.label||"השרטוט מתוך השאלה");
+    }
+    if(spec.type!=="factored-quadratic-inequality"){return "";}
     var inclusive=spec.relation==="≥"||spec.relation==="≤";
     var position=spec.relation==="≥"||spec.relation===">"?"מעל ציר x":"מתחת לציר x";
     return "פרבולה הפתוחה כלפי מעלה, חותכת את ציר x ב־"+formatNumber(spec.roots[0])+" וב־"+formatNumber(spec.roots[1])+". החלקים "+position+(inclusive?" או עליו":"")+" מודגשים.";
@@ -73,8 +111,87 @@
     return value<-1e-9;
   }
 
+  function triangleAnglePath(points,angle){
+    var center=points[angle.charAt(1)];
+    var first=points[angle.charAt(0)];
+    var last=points[angle.charAt(2)];
+    if(!center||!first||!last){return "";}
+    function unit(target){
+      var dx=target.x-center.x,dy=target.y-center.y;
+      var length=Math.sqrt(dx*dx+dy*dy)||1;
+      return {x:dx/length,y:dy/length};
+    }
+    var a=unit(first),b=unit(last),radius=25;
+    var start={x:center.x+a.x*radius,y:center.y+a.y*radius};
+    var end={x:center.x+b.x*radius,y:center.y+b.y*radius};
+    var middle={x:center.x+(a.x+b.x)*radius*.72,y:center.y+(a.y+b.y)*radius*.72};
+    return "M"+start.x.toFixed(1)+" "+start.y.toFixed(1)+" Q"+middle.x.toFixed(1)+" "+middle.y.toFixed(1)+" "+end.x.toFixed(1)+" "+end.y.toFixed(1);
+  }
+
+  function renderQuestionImage(documentRef,spec){
+    var card=documentRef.createElement("figure");
+    card.className="noam-visual-card noam-question-visual";
+    card.setAttribute("dir","rtl");
+    var title=documentRef.createElement("figcaption");
+    title.className="noam-visual-title";
+    title.textContent=spec.label||"השרטוט מתוך השאלה";
+    card.appendChild(title);
+    var image=documentRef.createElement("img");
+    image.className="noam-question-visual-image";
+    image.alt=spec.label||"השרטוט מתוך השאלה";
+    image.setAttribute("data-exercise-id",String(spec.exerciseId||""));
+    if(spec.src){image.src=spec.src;}else{image.hidden=true;}
+    card.appendChild(image);
+    return card;
+  }
+
+  function renderLabeledTriangle(documentRef,spec){
+    var vertices=Array.isArray(spec.vertices)?spec.vertices.slice(0,3):[];
+    if(vertices.length!==3||new Set(vertices).size!==3){return null;}
+    var card=documentRef.createElement("figure");
+    card.className="noam-visual-card noam-triangle-visual";
+    card.setAttribute("dir","rtl");
+    var title=documentRef.createElement("figcaption");
+    title.className="noam-visual-title";
+    title.textContent="המשולש לבדו";
+    card.appendChild(title);
+    var svg=svgElement(documentRef,"svg",{
+      class:"noam-visual-svg",viewBox:"0 0 360 220",role:"img",
+      "aria-label":describe(spec),preserveAspectRatio:"xMidYMid meet"
+    });
+    svg.appendChild(svgElement(documentRef,"title",{},describe(spec)));
+    var coordinates=[{x:180,y:26},{x:48,y:182},{x:312,y:182}];
+    var points={};
+    vertices.forEach(function(letter,index){points[letter]=coordinates[index];});
+    svg.appendChild(svgElement(documentRef,"path",{
+      class:"noam-visual-triangle",d:"M180 26 L48 182 L312 182 Z"
+    }));
+    (spec.angles||[]).forEach(function(angle){
+      var path=triangleAnglePath(points,angle);
+      if(path){svg.appendChild(svgElement(documentRef,"path",{class:"noam-visual-angle",d:path}));}
+    });
+    vertices.forEach(function(letter,index){
+      var point=coordinates[index];
+      var dx=index===0?0:(index===1?-16:16);
+      var dy=index===0?-9:20;
+      svg.appendChild(svgElement(documentRef,"circle",{class:"noam-visual-vertex",cx:point.x,cy:point.y,r:3.5}));
+      svg.appendChild(svgElement(documentRef,"text",{class:"noam-visual-vertex-label",x:point.x+dx,y:point.y+dy},letter));
+    });
+    card.appendChild(svg);
+    if((spec.angles||[]).length){
+      var note=documentRef.createElement("p");
+      note.className="noam-visual-note";
+      note.textContent=(spec.angles||[]).map(function(angle){return "ב־∠"+angle+" הקודקוד הוא "+angle.charAt(1);}).join(" · ");
+      card.appendChild(note);
+    }
+    return card;
+  }
+
   function render(documentRef,spec){
-    if(!documentRef||!spec||spec.type!=="factored-quadratic-inequality"){return null;}
+    if(!documentRef||!spec){return null;}
+    if(spec.type==="question-image"){return renderQuestionImage(documentRef,spec);}
+    if(spec.type==="labeled-triangle"){return renderLabeledTriangle(documentRef,spec);}
+    if(spec.type!=="factored-quadratic-inequality"){return null;}
     var left=Number(spec.roots[0]),right=Number(spec.roots[1]);
     if(!Number.isFinite(left)||!Number.isFinite(right)||left>=right){return null;}
 
@@ -186,6 +303,8 @@
 
   return {
     wantsDrawing:wantsDrawing,
+    wantsVisualSupport:wantsVisualSupport,
+    parseLabeledTriangle:parseLabeledTriangle,
     parseFactoredQuadraticInequality:parseFactoredQuadraticInequality,
     assistantText:assistantText,
     describe:describe,

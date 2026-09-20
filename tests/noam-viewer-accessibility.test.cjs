@@ -7,7 +7,7 @@ const vm = require("node:vm");
 
 const html = fs.readFileSync(path.join(__dirname, "../worksheet-viewer-noam.html"), "utf8");
 const helpers = html.slice(html.indexOf("function announceNoam(text){"), html.indexOf("function syncMobilePanel(){"));
-const askSource = html.slice(html.indexOf("function askNoam(helpKind,studentMessage){"), html.indexOf("function postJson(endpoint,payload){"));
+const askSource = html.slice(html.indexOf("function noamGeometryContext(text){"), html.indexOf("function postJson(endpoint,payload){"));
 
 function helperFixture() {
   let nextTimer = 0;
@@ -55,14 +55,16 @@ test("chat focus returns to a recreated control, or the conversation while contr
   assert.deepEqual(focused, ["input", "transcript", "transcript"]);
 });
 
-async function requestFixture(result) {
+async function requestFixture(result, options = {}) {
   const notices = [];
-  const thread = { hintIndex: 0, history: [], messages: [{ role: "assistant", text: "old answer must not repeat" }] };
+  const thread = { hintIndex: 0, history: options.history || [], messages: [{ role: "assistant", text: "old answer must not repeat" }] };
   const focusRestores = [];
+  const payloads = [];
   const ctx = {
     selectedExercise: { id: "q1a", q: 1, part: "א" }, busy: false,
-    noamDrafts: {}, API: "/test", g: 7, lv: "a", LEVEL: { a: "A" }, ttl: "test",
+    noamDrafts: {}, API: "/test", g: 7, lv: "a", LEVEL: { a: "A" }, ttl: options.topic || "test",
     SOLVER_MESSAGE_MAX: 700, MATH_OUTPUT_INSTRUCTION: "", MIN_WAIT: 0,
+    window: { NoamLocalVisual: { wantsVisualSupport: () => false, parseLabeledTriangle: () => null } },
     panelBody: { contains: () => true }, document: { activeElement: { id: "noamHint" } },
     exerciseThread: () => thread, exerciseLabel: () => "שאלה 1 · סעיף א",
     saveNoamState() {}, renderNoamChat() {},
@@ -70,14 +72,14 @@ async function requestFixture(result) {
     restoreNoamChatFocus(id) { focusRestores.push(id); },
     announceNoam(value) { notices.push(value); },
     getExerciseAnalysis: () => Promise.resolve({ readable: true }),
-    postJson: () => result instanceof Error ? Promise.reject(result) : Promise.resolve(result),
+    postJson: (url, payload) => { payloads.push(payload); return result instanceof Error ? Promise.reject(result) : Promise.resolve(result); },
     setTimeout(fn) { fn(); }
   };
   vm.createContext(ctx);
   vm.runInContext(askSource, ctx);
   ctx.askNoam("hint", "help");
   await new Promise(resolve => setImmediate(resolve));
-  return { notices, thread, focusRestores, ctx };
+  return { notices, thread, focusRestores, ctx, payloads };
 }
 
 test("a successful request announces only its new answer, with the selected question", async () => {
@@ -96,6 +98,24 @@ test("a refused request announces its actual error without announcing old histor
   assert.match(f.notices[1], /שאלה 1.*verification refused/);
   assert.ok(f.notices.every(text => !text.includes("old answer")));
   assert.equal(f.ctx.busy, false);
+});
+
+test("geometry follow-ups carry recent context and a non-circular proof guard through the legacy bridge", async () => {
+  const history = [
+    {role:"user",content:"אפשר רמז?"},
+    {role:"assistant",content:"השתמש בנתון DE מקביל ל-BC."}
+  ];
+  const f = await requestFixture(
+    {ok:true,answer:"בדקו את הקודקוד ואת שתי הקרניים."},
+    {topic:"משולש שווה שוקיים",history}
+  );
+  const message = f.payloads[0].studentMessage;
+  assert.match(message,/הפרד בין הנתונים לבין מה שצריך להוכיח/);
+  assert.match(message,/אסור להשתמש במסקנה כנתון/);
+  assert.match(message,/הקשר קודם/);
+  assert.match(message,/DE מקביל ל-BC/);
+  assert.match(message,/הודעת התלמיד עכשיו: help/);
+  assert.ok(message.length <= 700);
 });
 
 function luminance(hex) {
@@ -146,7 +166,14 @@ test("question feedback pins remain, while AI-answer feedback appears once below
 test("local visual analysis deduplicates identical manifest text before parsing", () => {
   assert.match(html, /values\.indexOf\(value\)===index/);
   assert.match(html, /if \(!tryNoamLocalVisual\(message\)\)\{askNoam\("free_question",message\);\}/);
-  assert.match(html, /noam-local-visual\.js\?v=20260920-1/);
+  assert.match(html, /noam-local-visual\.js\?v=20260920-2/);
+});
+
+test("visual geometry help can render a clean triangle or the scanned question beside the answer", () => {
+  assert.match(html,/noamResponseVisual\(exercise,thread,studentMessage,answer,helpKind,hintIndex,requestAnalysis\)/);
+  assert.match(html,/type:"question-image",exerciseId:exercise\.id/);
+  assert.match(html,/noam-question-visual-image/);
+  assert.match(html,/parseLabeledTriangle\(conversation\)/);
 });
 
 test("the viewer remains valid JavaScript with one main target and one persistent announcer", () => {

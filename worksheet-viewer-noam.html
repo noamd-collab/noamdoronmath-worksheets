@@ -1438,6 +1438,11 @@ textarea:focus{
 .noam-visual-endpoint{stroke:var(--accent-dark);stroke-width:2.5}
 .noam-visual-endpoint.is-closed{fill:var(--accent-dark)}
 .noam-visual-endpoint.is-open{fill:#fff}
+.noam-visual-triangle{fill:#fff;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.noam-visual-vertex{fill:var(--accent-dark)}
+.noam-visual-vertex-label{fill:var(--ink);font-family:'Heebo',sans-serif;font-size:18px;font-weight:900;text-anchor:middle}
+.noam-visual-angle{fill:none;stroke:var(--accent-dark);stroke-width:7;stroke-linecap:round}
+.noam-question-visual-image{display:block;width:100%;height:auto;max-height:310px;object-fit:contain;background:#fff;border:1.5px solid #14213d33;border-radius:9px}
 .noam-visual-note{margin:2px 4px 0;color:var(--muted);font-size:12.5px;line-height:1.35}
 .noam-visual-steps{margin:7px 4px 0;font-size:12.5px;line-height:1.45}
 .noam-visual-steps summary{width:max-content;max-width:100%;color:var(--accent-dark);font-weight:900;cursor:pointer}
@@ -2077,7 +2082,7 @@ textarea:focus{
   </div>
 </dialog>
 
-<script src="noam-local-visual.js?v=20260920-1"></script>
+<script src="noam-local-visual.js?v=20260920-2"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
 <script src="noam-glossary.js?v=20260920-3"></script>
 <script>
@@ -4346,7 +4351,11 @@ function addTranscriptBubble(container, role, text, kind, visual){
   content.textContent = text;
   bubble.appendChild(content);
   if (visual && window.NoamLocalVisual){
-    var visualElement=window.NoamLocalVisual.render(document,visual);
+    var visualSpec=visual;
+    if (visual.type==="question-image"){
+      visualSpec=Object.assign({},visual,{src:exercisePreviewCache[visual.exerciseId]||""});
+    }
+    var visualElement=window.NoamLocalVisual.render(document,visualSpec);
     if (visualElement){bubble.appendChild(visualElement);}
   }
   row.appendChild(bubble);
@@ -5213,6 +5222,8 @@ function showExercisePreview(exercise,dataUrl){
   preview.replaceChildren(image);
   preview.hidden=false;
   fallback.hidden=true;
+  panelBody.querySelectorAll('.noam-question-visual-image[data-exercise-id="'+exercise.id+'"]')
+    .forEach(function(visualImage){visualImage.src=dataUrl;visualImage.hidden=false;});
 }
 
 function renderExercisePreview(exercise,attempt){
@@ -5299,6 +5310,56 @@ function getExerciseAnalysis(exercise){
     });
 }
 
+function noamGeometryContext(text){
+  return /גאומטר|גיאומטר|משולש|מרובע|זווית|מקביל|מאונך|חפיפ|דמיון|פיתגורס|טרפז|מעוין|מלבן|ריבוע/i.test(String(text||""));
+}
+
+function noamVisualNeed(studentMessage,answer,helpKind,hintIndex,topic){
+  var local=window.NoamLocalVisual;
+  if (!local){return false;}
+  if (local.wantsVisualSupport&&local.wantsVisualSupport(studentMessage)){return true;}
+  return helpKind==="hint"&&hintIndex>0&&noamGeometryContext(topic)&&noamGeometryContext(answer);
+}
+
+function noamRecentThreadText(thread,limit){
+  return (thread.history||[]).slice(-4).map(function(item){
+    var speaker=item.role==="assistant"?"נועם AI":"התלמיד";
+    return speaker+": "+String(item.content||"").replace(/\s+/g," ").trim();
+  }).join("\n").slice(-Math.max(0,Number(limit)||0));
+}
+
+function noamSolverMessage(studentMessage,thread,topic){
+  var budget=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
+  var current=String(studentMessage||"").trim();
+  var geometry=noamGeometryContext(topic+" "+current+" "+noamRecentThreadText(thread,220));
+  var visual=window.NoamLocalVisual&&window.NoamLocalVisual.wantsVisualSupport&&window.NoamLocalVisual.wantsVisualSupport(current);
+  var guard=geometry
+    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק את הקודקוד ואת שתי הקרניים."
+    : "";
+  if (visual){guard+=" התלמיד מתקשה בזיהוי חזותי. ציין במפורש מה לסמן בשרטוט; אל תבקש ממנו לנחש לאיזו זווית התכוונת.";}
+  var label="הודעת התלמיד עכשיו: ";
+  var currentBudget=Math.min(current.length,Math.max(140,Math.floor(budget*.42)));
+  var currentText=current.slice(0,currentBudget);
+  var prefixBudget=Math.max(0,budget-label.length-currentText.length-2);
+  var prefix=guard.slice(0,prefixBudget);
+  var contextRoom=Math.max(0,prefixBudget-prefix.length-(prefix?1:0));
+  if (contextRoom>45&&(thread.history||[]).length){
+    var context="הקשר קודם, שעשוי לכלול טעות: "+noamRecentThreadText(thread,contextRoom-34);
+    prefix+=(prefix?"\n":"")+context.slice(0,contextRoom);
+  }
+  return (prefix?prefix+"\n":"")+label+currentText+MATH_OUTPUT_INSTRUCTION;
+}
+
+function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,imageAnalysis){
+  var visualContext=ttl+" "+String(imageAnalysis&&imageAnalysis.diagram_description||"");
+  if (!exercise||!noamVisualNeed(studentMessage,answer,helpKind,hintIndex,visualContext)){return null;}
+  var local=window.NoamLocalVisual;
+  var conversation=noamRecentThreadText(thread,1400)+"\n"+studentMessage+"\n"+answer;
+  var triangle=local&&local.parseLabeledTriangle?local.parseLabeledTriangle(conversation):null;
+  if (triangle){return triangle;}
+  return {type:"question-image",exerciseId:exercise.id,label:"השרטוט מתוך השאלה"};
+}
+
 function askNoam(helpKind,studentMessage){
   if (!selectedExercise||busy){return;}
   var requestFocusId = panelBody.contains(document.activeElement) ? document.activeElement.id : "";
@@ -5318,14 +5379,12 @@ function askNoam(helpKind,studentMessage){
   announceNoam("נועם AI מכין תשובה עבור " + exerciseLabel(exercise) + ".");
 
   var attachments=(typeof currentAttachments==="function")?currentAttachments().slice():[];
+  var requestAnalysis=null;
 
   getExerciseAnalysis(exercise)
     .then(function(analysis){
-      var solverMessage=String(studentMessage||"");
-      solverMessage=solverMessage.slice(
-        0,
-        Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length)
-      )+MATH_OUTPUT_INSTRUCTION;
+      requestAnalysis=analysis;
+      var solverMessage=noamSolverMessage(studentMessage,thread,ttl);
       return postJson(API+"/noamImageSolve",{
         exerciseId:exercise.id,
         grade:g,
@@ -5345,7 +5404,8 @@ function askNoam(helpKind,studentMessage){
     })
     .then(function(result){
       var answer=String(result.answer||"").trim();
-      thread.messages.push({role:"assistant",text:answer,kind:""});
+      var visual=noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,requestAnalysis);
+      thread.messages.push({role:"assistant",text:answer,kind:"",visual:visual});
       thread.history.push({role:"user",content:historyQuestion},{role:"assistant",content:answer});
       thread.history=thread.history.slice(-8);
       thread.messages=thread.messages.slice(-60);

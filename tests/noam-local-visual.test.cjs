@@ -10,6 +10,24 @@ test("drawing requests are recognized in natural Hebrew", () => {
   assert.equal(LocalVisual.wantsDrawing("איך מתחילים?"), false);
 });
 
+test("visual confusion about an angle is recognized without requiring the word drawing", () => {
+  for (const request of ["איזו זווית?", "קשה לי לזהות את הזווית", "איפה הזווית הזאת?", "תראה לי איפה"]){
+    assert.equal(LocalVisual.wantsVisualSupport(request), true, request);
+  }
+  assert.equal(LocalVisual.wantsVisualSupport("איך פותרים משוואה?"), false);
+});
+
+test("a triangle and its named angles are recovered from the recent Hebrew conversation", () => {
+  assert.deepEqual(
+    LocalVisual.parseLabeledTriangle("במשולש \\(\\triangle EDB\\) הסתכל על \\(\\angle EBD\\) ועל \\(\\angle EDB\\)."),
+    {type:"labeled-triangle",vertices:["E","D","B"],angles:["EBD","EDB"]}
+  );
+  assert.deepEqual(
+    LocalVisual.parseLabeledTriangle("שרטט לי את משולש abc לבדו"),
+    {type:"labeled-triangle",vertices:["A","B","C"],angles:[]}
+  );
+});
+
 test("the grade 9 pilot parses the exact factored quadratic inequality", () => {
   assert.deepEqual(
     LocalVisual.parseFactoredQuadraticInequality("(x − 4)(x + 1) ≥ 0"),
