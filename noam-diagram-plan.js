@@ -137,6 +137,31 @@
     return structuredFocus(focus,source);
   }
   function validateFocus(focus,source){try{return {ok:true,scope:structuredFocus(focus,source),reason:null};}catch(error){return {ok:false,scope:null,reason:error.reason||"invalid_focus_contract"};}}
+  function repairVerticalAngleFocus(focus,source,hint){
+    try{
+      if(!/זוויות?\s+קודקודיות|\bvertical\s+angles?\b/i.test(clean(hint||""))||!object(focus)||focus.status!=="ok"){return null;}
+      var objects=list(focus.objects,8),angles=objects.filter(function(item){return object(item)&&item.kind==="angle"&&Array.isArray(item.points)&&item.points.length===3;});
+      if(objects.length!==2||angles.length!==2||angles[0].points[1]!==angles[1].points[1]){return null;}
+      var facts=markerJson(source,"DIAGRAM_FACTS_JSON:");if(!object(facts)){return null;}
+      var lines=list(facts.strokes,40).concat(list(facts.collinear_orders,40)).filter(function(line){
+        return Array.isArray(line)&&line.length>=3&&line.length<=16&&new Set(line).size===line.length&&line.every(function(name){return typeof name==="string"&&/^[A-Z]$/.test(name);});
+      });
+      var first=angles[0],vertex=first.points[1];
+      function opposite(point){
+        var choices=[];
+        lines.forEach(function(line){
+          var v=line.indexOf(vertex),p=line.indexOf(point);if(v<=0||v>=line.length-1||p<0||p===v){return;}
+          var candidate=p<v?line[v+1]:line[v-1];if(choices.indexOf(candidate)===-1){choices.push(candidate);}
+        });
+        return choices.length===1?choices[0]:null;
+      }
+      var oppositeFrom=opposite(first.points[0]),oppositeTo=opposite(first.points[2]);
+      if(!oppositeFrom||!oppositeTo||oppositeFrom===oppositeTo){return null;}
+      var repaired=JSON.parse(JSON.stringify(focus));
+      repaired.objects[1]={kind:"angle",points:[oppositeFrom,vertex,oppositeTo],color:angles[1].color};
+      return validateFocus(repaired,source).ok?repaired:null;
+    }catch(_error){return null;}
+  }
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   function grounded(quote,source){
@@ -420,5 +445,5 @@
   }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}
-  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
+  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
 });

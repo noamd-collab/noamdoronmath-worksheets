@@ -99,6 +99,18 @@ test("vision fact normalization keeps valid topology when one optional fact is m
   assert.equal(Plan.validateFocus(focus,source).ok,true);
 });
 
+test("vertical-angle focus is repaired from general opposite-ray topology",()=>{
+  const facts={visible_points:["A","C","D","H","M","Q"],
+    strokes:[["A","H","M","Q"],["D","M","C"]],collinear_orders:[["A","H","M","Q"],["D","M","C"]]};
+  const source="שני ישרים נחתכים בנקודה M.\nDIAGRAM_FACTS_JSON:"+JSON.stringify(facts);
+  const selected={version:1,status:"ok",mode:"locate",objects:[
+    {kind:"angle",points:["A","M","D"],color:"blue"},{kind:"angle",points:["H","M","C"],color:"orange"}]};
+  const repaired=Plan.repairVerticalAngleFocus(selected,source,"האם שתי הזוויות בנקודה M הן זוויות קודקודיות?");
+  assert.ok(repaired);assert.deepEqual(repaired.objects[1].points,["Q","M","C"]);
+  assert.equal(Plan.validateFocus(repaired,source).ok,true);
+  assert.equal(Plan.repairVerticalAngleFocus(selected,source,"סמנו שתי זוויות סמוכות"),null);
+});
+
 test("focus selection is rejected when it is not grounded in visible strokes",()=>{
   const source="משולש ABC.\nDIAGRAM_FACTS_JSON:"+JSON.stringify({visible_points:["A","B","C"],strokes:[["A","B"],["B","C"]]});
   const result=Plan.validateFocus({version:1,status:"ok",mode:"locate",objects:[{kind:"triangle",points:["A","B","C"],color:"blue"}]},source);
