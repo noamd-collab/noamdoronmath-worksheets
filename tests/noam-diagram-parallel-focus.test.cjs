@@ -80,6 +80,20 @@ test("a named student focus, a different angle request, or ambiguous hint is nev
   }
 });
 
+test("singular, positional, restricted and lowercase student focus never expands to two angles",()=>{
+  for(const student of [
+    "סמן לי רק את dac","סמן לי רק את הזווית העליונה","סמן לי רק אחת מהן",
+    "סמן לי את הראשונה","סמן לי את השנייה","סמן לי את התחתונה","סמן לי אותן בלבד",
+    "סמן לי את הזווית","סמן לי את dac","סמן לי ∠dac","סמן לי את a",
+    "show only one","mark the upper angle","show just the first","mark \\angle dac","show a"
+  ]){
+    const {plan,context}=fixture();context.studentMessage=student;
+    assert.equal(Plan.normalizeParallelAngleFocus(plan,context),null,student);
+  }
+  const {plan,context}=fixture();context.studentMessage="show me them";
+  assert.ok(Plan.normalizeParallelAngleFocus(plan,context),"ordinary English pronouns are not lower-case point names");
+});
+
 test("parallelism must be source-grounded and all three segments must already be drawn",()=>{
   for(const replacement of ["הוכיחו כי AD∥BC","האם AD∥BC?","לא נתון כי AD∥BC","נניח כי AD∥BC","AD⊥BC"]){
     const {plan,context}=fixture();context.questionText="מסומנות הנקודות A, B, C, D, E. נתונה הקרן AD. "+replacement+".";
@@ -101,7 +115,7 @@ test("same-side, contradictory or non-endpoint geometry cannot masquerade as alt
   assert.equal(Plan.normalizeParallelAngleFocus(detached.plan,detached.context),null);
 });
 
-test("numeric angle labels, angle evidence and any unrecognized or invalid arc are preserved by refusing repair",()=>{
+test("numeric angle labels, angle evidence and invalid arcs are preserved by refusing repair",()=>{
   const {plan,context}=fixture();plan.evidence=[{mark:"angles.0",source:"question",quote:"AD∥BC"}];
   assert.equal(Plan.inspect(plan,context).ok,true);
   assert.equal(Plan.normalizeParallelAngleFocus(plan,context),null,"do not reassign evidence to another vertex");
@@ -109,6 +123,39 @@ test("numeric angle labels, angle evidence and any unrecognized or invalid arc a
   assert.equal(Plan.normalizeParallelAngleFocus(plan,context),null);
   plan.angles=[{from:"D",vertex:"A",to:"C",label:"∠DAC = ∠ACB"}];
   assert.equal(Plan.normalizeParallelAngleFocus(plan,context),null);
-  plan.angles=[{from:"E",vertex:"A",to:"D",label:"∠EAD"}];
+  plan.angles=[{from:"E",vertex:"A",to:"D",label:"∠DAC"}];
   assert.equal(Plan.normalizeParallelAngleFocus(plan,context),null);
+});
+
+test("a broad request repairs unrelated name-only arcs using only the uniquely requested parallel pair",()=>{
+  for(const label of ["","∠EAD","\\(\\angle EAD\\)"]){
+    const {plan,context}=fixture();plan.angles=[{from:"E",vertex:"A",to:"D",label},{from:"D",vertex:"A",to:"C",label:"∠DAC"}];
+    const before=copy(plan);
+    assert.equal(Plan.inspect(plan,context).reason,"outside_current_focus");
+    const normalized=Plan.normalizeParallelAngleFocus(plan,context);assert.ok(normalized);
+    assert.deepEqual(new Set(normalized.angles.map(angleKey)),new Set(["A:CD","C:AB"]));
+    assert.deepEqual({...normalized,angles:before.angles},before,"only the angle list may change");
+    assert.deepEqual(plan,before);assert.equal(Plan.inspect(normalized,context).ok,true);
+  }
+});
+
+test("angle-focus repair never suppresses an unrelated scope failure or a hidden malformed later arc",()=>{
+  const {plan,context}=fixture();plan.angles=[{from:"E",vertex:"A",to:"D",label:"∠EAD"}];
+  plan.highlights=[{from:"A",to:"E",label:"AE"}];
+  assert.equal(Plan.normalizeParallelAngleFocus(plan,context),null,"an out-of-focus highlight remains out of scope");
+  plan.highlights=[];
+  for(const invalid of [
+    {from:"D",vertex:"A",to:"C",label:"45°"},
+    {from:"D",vertex:"A",to:"C",label:"∠ACB"},
+    {from:"D",vertex:"A",to:"C",label:"",color:"blue"},
+    {from:"Z",vertex:"A",to:"C",label:""},
+    {from:"B",vertex:"A",to:"E",label:""},
+    {from:"D",vertex:"A",to:"A",label:""}
+  ]){
+    plan.angles=[{from:"E",vertex:"A",to:"D",label:"∠EAD"},invalid];
+    assert.equal(Plan.inspect(plan,context).reason,"outside_current_focus","first bad focus hides the later mark from initial inspection");
+    assert.equal(Plan.normalizeParallelAngleFocus(plan,context),null,JSON.stringify(invalid));
+  }
+  plan.angles=[{from:"E",vertex:"A",to:"D",label:"∠EAD"}];plan.points.E=[-1,4];
+  assert.equal(Plan.normalizeParallelAngleFocus(plan,context),null,"wrong extension coordinates remain invalid after arc replacement");
 });

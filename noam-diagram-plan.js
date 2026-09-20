@@ -274,13 +274,15 @@
     // are supported. Missing topology, ambiguous language, factual angle marks,
     // or a narrower student focus remain the model's responsibility.
     var initial=inspect(plan,context);
-    if(!initial.ok&&initial.reason!=="missing_focus"){return null;}
+    if(!initial.ok&&initial.reason!=="missing_focus"&&initial.reason!=="outside_current_focus"){return null;}
     try{
       context=context||{};
       var hint=clean(context.hintText||""),student=clean(context.studentMessage||""),question=clean(context.questionText||"");
       var drawing=/סמן|סמני|שרטט|שרטוט|צייר|ציור|הדגם|תדגים|הראה|הראי|תראה|תראי|\b(?:draw|mark|show|illustrate)\b/i;
       var declined=/(?:אל|לא|בלי|ללא)\s+(?:תסמן|תסמני|לסמן|סימון|תשרטט|לשרטט|שרטוט|תצייר|לצייר|ציור|תראה|להראות)|\b(?:do not|don't|without)\s+(?:draw|mark|show|illustrate)\b/i;
-      if(!drawing.test(student)||declined.test(student)||tokens(student).length||singlePointNames(student).length){return null;}
+      var narrow=/(?:^|[^א-ת])(?:רק|בלבד|אחת|אחד|ה?(?:ראשון|ראשונה|שני|שנייה|שניה|עליון|עליונה|תחתון|תחתונה|ימני|ימנית|שמאלי|שמאלית|זווית|קודקוד|נקודה|קטע|צלע|קרן)|למעלה|למטה|ימין|שמאל)(?=[^א-ת]|$)|\b(?:only|just|one|single|first|second|upper|lower|left|right|top|bottom|angle|vertex|point|segment|side|ray)\b/i;
+      var lowerName=/(?:^|[^A-Za-z])[a-z](?=$|[^A-Za-z])|(?:∠|\\angle)\s*[a-z]{3}(?![A-Za-z])|(?:ה?זווית|ה?קטע|ה?צלע|ה?קרן|ה?נקודה|ה?קודקוד|את)\s+[a-z]{1,3}(?![A-Za-z])/;
+      if(!drawing.test(student)||declined.test(student)||narrow.test(student)||lowerName.test(student)||tokens(student).length||singlePointNames(student).length){return null;}
       if(!/זוויות\s+ה?מתחלפות|\balternate(?:\s+interior)?\s+angles\b/i.test(hint)||/חיצוניות|\bexterior\b/i.test(hint)||declined.test(hint)||/(?:^|[^א-ת])(?:לא|אין|אינן|בלי|ללא)(?=[^א-ת]|$)|\b(?:not|no|without)\b/i.test(hint)){return null;}
       var hintTokens=tokens(hint),hintPairs={};
       if(hintTokens.some(function(n){return n.length!==2;})||singlePointNames(hint).length){return null;}
@@ -315,8 +317,19 @@
       function angleKey(ends){return ends[1]+":"+[ends[0],ends[2]].sort().join("");}
       var desired=[[a,u,v],[u,v,b]],wanted=desired.map(angleKey),existing=list(plan.angles,8),seenAngles={};
       if(list(plan.evidence,32).some(function(item){return /^angles\./.test(item.mark);})){return null;}
-      if(existing.some(function(item){var label=angleLabel(item.label),key=angleKey([item.from,item.vertex,item.to]);seenAngles[key]=true;return /^\d/.test(label)||wanted.indexOf(key)===-1;})){return null;}
-      if(existing.length===2&&Object.keys(seenAngles).length===2){return null;}
+      if(existing.some(function(item){
+        keys(item,["from","vertex","to","label"]);
+        var ends=[item.from,item.vertex,item.to],label=angleLabel(item.label),name=label.replace(/^∠/,"");
+        if(new Set(ends).size!==3||ends.some(function(n){return typeof n!=="string"||!Object.prototype.hasOwnProperty.call(plan.points,n);})||/^\d/.test(label)||(label&&name!==ends.join("")&&name!==ends.slice().reverse().join(""))){return true;}
+        var first=plan.points[ends[0]],vertex=plan.points[ends[1]],last=plan.points[ends[2]];
+        var cross=(first[0]-vertex[0])*(last[1]-vertex[1])-(first[1]-vertex[1])*(last[0]-vertex[0]);
+        if(Math.abs(cross)<=Math.sin(EPS*Math.PI/180)*distance(first,vertex)*distance(last,vertex)){return true;}
+        seenAngles[angleKey(ends)]=true;return false;
+      })){return null;}
+      if(existing.length===2&&Object.keys(seenAngles).length===2&&wanted.every(function(key){return seenAngles[key];})){return null;}
+      // A broad request can receive the wrong name-only arcs from the model.
+      // Replace those only after deriving this unique requested pair. All
+      // other scope, source and factual checks still run on the complete plan.
       var normalized=JSON.parse(JSON.stringify(plan));
       normalized.angles=desired.map(function(ends){return {from:ends[0],vertex:ends[1],to:ends[2],label:"∠"+ends.join("")};});
       return inspect(normalized,context).ok?normalized:null;
