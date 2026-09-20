@@ -84,20 +84,28 @@
     keys(focus,["version","status","mode","objects"]);text(focus.mode,40);
     var facts=markerJson(source,"DIAGRAM_FACTS_JSON:");
     if(!object(facts)){fail("missing_diagram_facts");}
-    var strokes=list(facts.strokes,40).concat(list(facts.collinear_orders,40)),visible={};
-    list(facts.visible_points,24).forEach(function(name){if(typeof name!=="string"||!/^[A-Z]$/.test(name)){fail("invalid_diagram_facts");}visible[name]=true;});
-    strokes=strokes.map(function(stroke){
-      if(!Array.isArray(stroke)||stroke.length<2||stroke.length>16||new Set(stroke).size!==stroke.length||stroke.some(function(name){return typeof name!=="string"||!/^[A-Z]$/.test(name); })){fail("invalid_diagram_facts");}
-      stroke.forEach(function(name){visible[name]=true;});return stroke.slice();
-    });
+    var strokes=[],visible={};
+    function pointName(name){return typeof name==="string"&&/^[A-Z]$/.test(name)?name:null;}
+    function addStroke(raw){
+      if(!Array.isArray(raw)){return null;}
+      var stroke=raw.map(pointName).filter(Boolean).filter(function(name,index,names){return !index||name!==names[index-1];});
+      if(stroke.length<2||stroke.length>16||new Set(stroke).size!==stroke.length){return null;}
+      stroke.forEach(function(name){visible[name]=true;});strokes.push(stroke);return stroke;
+    }
+    list(facts.visible_points,24).forEach(function(name){name=pointName(name);if(name){visible[name]=true;}});
+    list(facts.strokes,40).concat(list(facts.collinear_orders,40)).forEach(addStroke);
     list(facts.intersections,16).forEach(function(item){
-      if(!object(item)||typeof item.point!=="string"||!/^[A-Z]$/.test(item.point)||!Array.isArray(item.lines)||item.lines.length!==2){fail("invalid_diagram_facts");}
-      visible[item.point]=true;
-      item.lines.forEach(function(line){
-        if(!Array.isArray(line)||line.length!==2||line[0]===line[1]||line.some(function(name){return typeof name!=="string"||!/^[A-Z]$/.test(name); })){fail("invalid_diagram_facts");}
-        line.forEach(function(name){visible[name]=true;});
-        strokes.push(line.indexOf(item.point)===-1?[line[0],item.point,line[1]]:line.slice());
-      });
+      if(!object(item)){return;}
+      var point=pointName(item.point);if(!point||!Array.isArray(item.lines)){return;}
+      var validLines=item.lines.slice(0,8).map(function(line){
+        if(!Array.isArray(line)){return null;}
+        var names=line.map(pointName).filter(Boolean).filter(function(name,index,all){return !index||name!==all[index-1];});
+        if(names.length<2||names.length>16||new Set(names).size!==names.length){return null;}
+        if(names.indexOf(point)===-1){names.splice(1,0,point);}
+        return names;
+      }).filter(Boolean);
+      if(validLines.length<2){return;}
+      visible[point]=true;validLines.forEach(addStroke);
     });
     if(Object.keys(visible).length<3||!strokes.length){fail("missing_diagram_facts");}
     function onStroke(first,last){return strokes.some(function(stroke){return stroke.indexOf(first)!==-1&&stroke.indexOf(last)!==-1;});}
