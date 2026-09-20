@@ -272,7 +272,7 @@
       }
       var textSource=sourceWithoutMachineMarkers(source),relations=[];
       sentences(textSource).filter(function(sentence){return !UNPROVEN.test(sentence);}).forEach(function(sentence){
-        var normalized=compact(sentence),match,re=/(?:^|[^A-Z0-9])([A-Z]{2})⊥([A-Z]{2})(?=$|[^A-Z0-9])/g;
+        var normalized=compact(explicitRelationSymbols(sentence)),match,re=/(?:^|[^A-Z0-9])([A-Z]{2})⊥([A-Z]{2})(?=$|[^A-Z0-9])/g;
         while((match=re.exec(normalized))){relations.push([match[1].split(""),match[2].split("")]);}
         re=/(?:^|[^A-Z0-9])∠?([A-Z]{3})=90°(?=$|[^A-Z0-9])/g;
         while((match=re.exec(normalized))){relations.push([[match[1][1],match[1][0]],[match[1][1],match[1][2]]]);}
@@ -321,6 +321,11 @@
     }catch(_error){return null;}
   }
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
+  function explicitRelationSymbols(sentence){
+    return String(sentence||"").replace(/⟂/g,"⊥").replace(
+      /([A-Z]{2})\s+(?:(?:הוא|הינו)\s+)?(מאונך|ניצב|מקביל)\s+ל[־-]?\s*(?:(?:אלכסון|ישר|צלע|קטע)\s+)?([A-Z]{2})(?![A-Z])/g,
+      function(_all,first,relation,second){return first+(relation==="מקביל"?"∥":"⊥")+second;});
+  }
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   function grounded(quote,source){
     quote=clean(quote).replace(/\s+/g," ");
@@ -509,7 +514,7 @@
         }
       }
       sentences(question+". "+hint).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
-        var s=compact(sentence),match,re=/(?:^|[^A-Z0-9+*/=−-])([A-Z]{2})(=|∥|⊥)([A-Z]{2})(?=$|[^A-Z0-9+*/=−-])/g;
+        var s=compact(explicitRelationSymbols(sentence)),match,re=/(?:^|[^A-Z0-9+*/=−-])([A-Z]{2})(=|∥|⊥)([A-Z]{2})(?=$|[^A-Z0-9+*/=−-])/g;
         while((match=re.exec(s))){if(allPresent(match[1]+match[3])){var a=match[1].split(""),b=match[3].split("");if(match[2]==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,match[2])){fail("source_coordinate_contradiction",{type:"relation",first:a,second:b,relation:match[2]});}}}
         re=/(?:^|[^A-Z0-9+*/=−-])∠?([A-Z]{3})=(\d+(?:\.\d+)?)°(?=$|[^A-Z0-9+*/=−-])/g;
         while((match=re.exec(s))){if(allPresent(match[1])){var anglePoints=match[1].split(""),expectedDegrees=Number(match[2]),actualDegrees=angle(anglePoints).degrees;if(Math.abs(actualDegrees-expectedDegrees)>.5){
