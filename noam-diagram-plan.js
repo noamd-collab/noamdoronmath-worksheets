@@ -162,6 +162,21 @@
       return validateFocus(repaired,source).ok?repaired:null;
     }catch(_error){return null;}
   }
+  function buildVerticalAnglePlan(focus,source,hint){
+    try{
+      if(!validateFocus(focus,source).ok||!/זוויות?\s+קודקודיות|\bvertical\s+angles?\b/i.test(clean(hint||""))){return null;}
+      var objects=list(focus.objects,8);if(objects.length!==2||objects.some(function(item){return !object(item)||item.kind!=="angle"||!Array.isArray(item.points)||item.points.length!==3;})){return null;}
+      var first=objects[0].points,second=objects[1].points,vertex=first[1];
+      if(second[1]!==vertex||new Set(first.concat(second)).size!==5){return null;}
+      var plan={version:1,status:"ok",points:{},segments:[],highlights:[],angles:[],equalGroups:[],rightAngles:[],evidence:[]};
+      plan.points[vertex]=[0,0];plan.points[first[0]]=[-3,-2];plan.points[second[0]]=[3,2];
+      plan.points[first[2]]=[-3,2];plan.points[second[2]]=[3,-2];
+      plan.segments=[[vertex,first[0]],[vertex,second[0]],[vertex,first[2]],[vertex,second[2]]];
+      plan.angles=[{from:first[0],vertex:vertex,to:first[2],label:"∠"+first.join("")},
+        {from:second[0],vertex:vertex,to:second[2],label:"∠"+second.join("")}];
+      return plan;
+    }catch(_error){return null;}
+  }
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   function grounded(quote,source){
@@ -445,5 +460,5 @@
   }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}
-  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
+  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
 });

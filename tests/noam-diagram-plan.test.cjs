@@ -111,6 +111,19 @@ test("vertical-angle focus is repaired from general opposite-ray topology",()=>{
   assert.equal(Plan.repairVerticalAngleFocus(selected,source,"סמנו שתי זוויות סמוכות"),null);
 });
 
+test("a verified vertical-angle focus builds a minimal deterministic crossing",()=>{
+  const facts={visible_points:["A","C","D","M","Q"],strokes:[["A","M","Q"],["D","M","C"]],
+    collinear_orders:[["A","M","Q"],["D","M","C"]]};
+  const focus={version:1,status:"ok",mode:"locate",objects:[
+    {kind:"angle",points:["A","M","D"],color:"blue"},{kind:"angle",points:["Q","M","C"],color:"orange"}]};
+  const source="הנקודות A, M, Q על ישר אחד, והנקודות D, M, C על ישר אחר.\nDIAGRAM_FACTS_JSON:"+JSON.stringify(facts)+"\nPEDAGOGICAL_FOCUS_JSON:"+JSON.stringify(focus);
+  const hint="האם שתי הזוויות בנקודה M הן זוויות קודקודיות?";
+  const plan=Plan.buildVerticalAnglePlan(focus,source,hint);assert.ok(plan);
+  assert.deepEqual(plan.segments,[["M","A"],["M","Q"],["M","D"],["M","C"]]);
+  assert.deepEqual(plan.angles.map(a=>a.label),["∠AMD","∠QMC"]);
+  assert.equal(Plan.inspect(plan,{questionText:source,hintText:hint,studentMessage:"אפשר לראות שרטוט?"}).ok,true);
+});
+
 test("focus selection is rejected when it is not grounded in visible strokes",()=>{
   const source="משולש ABC.\nDIAGRAM_FACTS_JSON:"+JSON.stringify({visible_points:["A","B","C"],strokes:[["A","B"],["B","C"]]});
   const result=Plan.validateFocus({version:1,status:"ok",mode:"locate",objects:[{kind:"triangle",points:["A","B","C"],color:"blue"}]},source);
