@@ -2147,6 +2147,8 @@ textarea:focus{
 </dialog>
 
 <script src="noam-didactic-guides.js?v=20260920-3"></script>
+<script src="noam-geometry.js?v=20260920-1"></script>
+<script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
 <script src="noam-glossary.js?v=20260920-3"></script>
@@ -3943,7 +3945,7 @@ var mathKeyboardOpen = false;
 var analysisCache = {};
 var exercisePreviewCache = {};
 var exercisePreviewOrder = [];
-var MANIFEST_PATH = "./noam-ai/manifests/" + pdf + ".json";
+var MANIFEST_PATH = "./noam-ai/manifests/" + pdf + ".json?v=20260920-geometry";
 var THREAD_STORAGE_KEY = "noam-static-threads-v1:" + pdf;
 var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v1:" + pdf;
 var threads = {};
@@ -4425,7 +4427,15 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
       });
       delete visualSpec.focusKey;
     }
-    var visualElement=window.NoamLocalVisual.render(document,visualSpec);
+    var visualElement=visual.type==="geometry-guide"
+      ? noamRenderGeometryGuide(visual)
+      : window.NoamLocalVisual.render(document,visualSpec);
+    if (!visualElement&&visual.type==="geometry-guide"){
+      visualElement=window.NoamLocalVisual.render(document,{
+        type:"question-image",exerciseId:visual.exerciseId,label:"השרטוט המקורי מתוך השאלה",
+        src:exercisePreviewCache[visual.exerciseId]||""
+      });
+    }
     if (visualElement){bubble.appendChild(visualElement);}
   }
   if (message&&thread&&noamCanOfferDrawing(selectedExercise,thread,message)){
@@ -4433,13 +4443,20 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     drawButton.type="button";
     drawButton.className="noam-draw-action";
     drawButton.textContent="הדגם באמצעות שרטוט";
-    drawButton.setAttribute("aria-label","הדגם את ההסבר באמצעות שרטוט");
+    if (!noamConstructedVisual(selectedExercise,noamMessageVisualOptions(thread,message))){
+      drawButton.textContent="הצג את השרטוט המקורי";
+    }
+    drawButton.setAttribute("aria-label",drawButton.textContent);
     drawButton.addEventListener("click",function(){
       var manualVisual=noamManualVisual(selectedExercise,thread,message);
       if (!manualVisual){return;}
       message.visual=manualVisual;
       saveNoamState();
       renderNoamChat();
+      var messageIndex=(thread.messages||[]).indexOf(message);
+      var transcript=document.getElementById("noamTranscript");
+      var target=transcript&&transcript.children[messageIndex];
+      if (target){target.scrollIntoView({block:"nearest"});}
       announceNoam("נוסף שרטוט להסבר של נועם AI.");
     });
     bubble.appendChild(drawButton);
@@ -4545,7 +4562,7 @@ function enhanceNoamGlossary(root){
     var node=walker.currentNode;
     var parent=node.parentElement;
     if (!parent||!node.nodeValue.trim()){continue;}
-    if (parent.closest("button,a,textarea,script,style,.katex,.noam-sr-only,.noam-term,.noam-glossary-popover")){continue;}
+    if (parent.closest("button,a,textarea,script,style,svg,.katex,.noam-sr-only,.noam-term,.noam-glossary-popover")){continue;}
     nodes.push(node);
   }
   nodes.forEach(function(node){
@@ -4753,11 +4770,11 @@ function renderNoamChat(){
   });
 
   setNoamBusy(busy);
-  transcript.scrollTop = transcript.scrollHeight;
   renderPanelMath(panelBody);
   panelBody.querySelectorAll(".noam-row.assistant .noam-bubble,#noamPickedText").forEach(enhanceNoamGlossary);
   renderExercisePreview(selectedExercise,0);
   restoreNoamChatFocus(focusId);
+  transcript.scrollTop = transcript.scrollHeight;
 }
 
 function localVisualExerciseSource(exercise){
@@ -4773,16 +4790,25 @@ function localVisualExerciseSource(exercise){
 function tryNoamLocalVisual(studentMessage){
   if (!selectedExercise||busy||!window.NoamLocalVisual||!window.NoamLocalVisual.wantsDrawing(studentMessage)){return false;}
   if (typeof currentAttachments==="function"&&currentAttachments().length){return false;}
-  var visual=window.NoamLocalVisual.parseFactoredQuadraticInequality(localVisualExerciseSource(selectedExercise));
-  if (!visual){return false;}
   var thread=exerciseThread(selectedExercise.id);
-  var answer=window.NoamLocalVisual.assistantText(visual);
+  var lastAnswer=(thread.messages||[]).filter(function(item){return item.role==="assistant";}).slice(-1)[0];
+  var options=noamMessageVisualOptions(thread,lastAnswer);
+  options.studentMessage=studentMessage;
+  options.helpKind="free_question";
+  options.hintIndex=0;
+  delete options.focusKey;
+  var visual=noamConstructedVisual(selectedExercise,options)||
+    window.NoamLocalVisual.parseFactoredQuadraticInequality(localVisualExerciseSource(selectedExercise));
+  if (!visual){return false;}
+  var answer=visual.type==="geometry-guide"
+    ? "הנה המחשה מסומנת של השלב שעליו שאלת."
+    : window.NoamLocalVisual.assistantText(visual);
   delete noamDrafts[selectedExercise.id];
   thread.messages.push({role:"user",text:studentMessage,kind:""});
   thread.messages.push({role:"assistant",text:answer,kind:"",visual:visual});
   thread.history.push(
     {role:"user",content:studentMessage},
-    {role:"assistant",content:answer+" [הוצג שרטוט מקומי של הפרבולה והשורשים.]"}
+    {role:"assistant",content:answer+(visual.type==="geometry-guide"?" [הוצג שרטוט גאומטרי מסומן של השלב הנוכחי.]":" [הוצג שרטוט מקומי של הפרבולה והשורשים.]")}
   );
   thread.history=thread.history.slice(-8);
   thread.messages=thread.messages.slice(-60);
@@ -5724,8 +5750,12 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt){
 function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,imageAnalysis){
   var visualContext=ttl+" "+String(imageAnalysis&&imageAnalysis.diagram_description||"");
   if (!exercise||!noamVisualNeed(studentMessage,answer,helpKind,hintIndex,visualContext)){return null;}
-  // Geometry help always starts from the worksheet's own drawing. Reconstructing
-  // a shape from chat text can silently omit a point, a parallel or an extension.
+  var constructed=noamConstructedVisual(exercise,{
+    studentMessage:studentMessage,answer:answer,helpKind:helpKind,hintIndex:hintIndex,
+    progress:thread&&thread.hintIndex
+  });
+  if (constructed){return constructed;}
+  // Unsupported sources retain their original drawing; never invent geometry.
   return {
     type:"question-image",
     exerciseId:exercise.id,
@@ -5741,9 +5771,11 @@ function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintI
 }
 
 function noamCanOfferDrawing(exercise,thread,message){
-  if (!exercise||!thread||!message||message.role!=="assistant"||message.visual||!String(message.text||"").trim()){
+  if (!exercise||!thread||!message||message.role!=="assistant"||!String(message.text||"").trim()){
     return false;
   }
+  if (message.visual&&(message.visual.type!=="question-image"||
+      !noamConstructedVisual(exercise,noamMessageVisualOptions(thread,message)))){return false;}
   if (!window.NoamLocalVisual||/failed\s+to\s+fetch|לא\s+זמין|נסו\s+שוב\s+בעוד/i.test(String(message.text||""))){
     return false;
   }
@@ -5753,26 +5785,65 @@ function noamCanOfferDrawing(exercise,thread,message){
 
 function noamManualVisual(exercise,thread,message){
   if (!exercise||!thread||!window.NoamLocalVisual){return null;}
-  // The worksheet crop is the authoritative geometry drawing. A generic
-  // triangle can omit auxiliary points, parallels or extensions and mislead.
-  var studentMessage="";
-  var messages=thread.messages||[];
-  for (var i=messages.length-1;i>=0;i--){
-    if (messages[i]&&messages[i].role==="user"){
-      studentMessage=String(messages[i].text||"");
-      break;
-    }
-  }
+  var options=noamMessageVisualOptions(thread,message);
+  var constructed=noamConstructedVisual(exercise,options);
+  if (constructed){return constructed;}
   return {
     type:"question-image",
     exerciseId:exercise.id,
     label:"השרטוט מתוך השאלה",
-    focusKey:noamDidacticVisualKey(exercise.id,{
-      progress:thread.hintIndex,
-      studentMessage:studentMessage,
-      answer:message&&message.text
-    })
+    focusKey:noamDidacticVisualKey(exercise.id,options)
   };
+}
+
+function noamMessageVisualOptions(thread,message){
+  var messages=thread&&thread.messages||[];
+  var index=messages.indexOf(message);
+  if (index<0){index=messages.length;}
+  if (message&&message.visual&&message.visual.type==="geometry-guide"&&message.visual.options){
+    return Object.assign({},message.visual.options);
+  }
+  var options={answer:String(message&&message.text||""),studentMessage:"",progress:0};
+  // An older answer must keep its own question and hint scope, even after
+  // the student has advanced to a later proof step.
+  for (var i=index-1;i>=0;i--){
+    if (messages[i]&&messages[i].role==="user"){
+      options.studentMessage=String(messages[i].text||"");
+      var hint=String(messages[i].kind||"").match(/^רמז\s+([1-3])$/);
+      if (hint){options.helpKind="hint";options.hintIndex=Number(hint[1])-1;options.progress=Number(hint[1]);}
+      break;
+    }
+  }
+  return options;
+}
+
+function noamConstructedVisual(exercise,options){
+  var guides=window.NoamGeometryGuides;
+  if (!exercise||!guides||typeof guides.resolve!=="function"){return null;}
+  try{
+    if (!guides.resolve(exercise,options||{})){return null;}
+    // Store bounded context, not SVG or caller-supplied coordinates. Rendering
+    // rebuilds the scene from the current worksheet's verified source facts.
+    return {type:"geometry-guide",exerciseId:exercise.id,options:{
+      studentMessage:String(options&&options.studentMessage||"").slice(0,700),
+      answer:String(options&&options.answer||"").slice(0,4000),
+      helpKind:String(options&&options.helpKind||""),
+      hintIndex:Number(options&&options.hintIndex)||0,
+      progress:Number(options&&options.progress)||0,
+      focusKey:String(options&&options.focusKey||"")
+    }};
+  }catch(error){return null;}
+}
+
+function noamRenderGeometryGuide(visual){
+  var guides=window.NoamGeometryGuides,engine=window.NoamGeometry;
+  if (!guides||!engine||!manifest){return null;}
+  var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
+  if (!exercise){return null;}
+  try{
+    var scene=guides.resolve(exercise,visual.options||{});
+    return scene?engine.render(document,scene):null;
+  }catch(error){return null;}
 }
 
 function noamVisualAnswer(studentMessage,answer,visual){
@@ -5780,6 +5851,7 @@ function noamVisualAnswer(studentMessage,answer,visual){
   var askedToDraw=local&&local.wantsDrawing&&local.wantsDrawing(studentMessage);
   var conflicts=/(?:לא\s+(?:יכול|יכולה)|אין\s+לי\s+אפשרות)\s+(?:לצייר|לשרטט)|האתר\s+יציג\s+(?:את\s+)?השרטוט/i.test(String(answer||""));
   if (!visual||!askedToDraw||!conflicts){return answer;}
+  if (visual.type==="geometry-guide"){return "הנה המחשה מסומנת של השלב שעליו שאלת.";}
   if (visual.type==="labeled-triangle"){
     var name=(visual.vertices||[]).join("");
     return "הנה משולש "+name+" לבדו. האות האמצעית בשם כל זווית היא הקודקוד שלה.";
@@ -5825,7 +5897,9 @@ function askNoam(helpKind,studentMessage){
       answer:guidedAnswer
     });
     var guidedVisual=guidedNeedsVisual
-      ? {type:"question-image",exerciseId:exercise.id,label:"השרטוט המוגדל",focusKey:guidedFocus&&guidedFocus.key||""}
+      ? (noamConstructedVisual(exercise,{studentMessage:studentMessage,answer:guidedAnswer,
+          helpKind:helpKind,hintIndex:hintIndex,progress:thread.hintIndex,focusKey:guidedFocus&&guidedFocus.key||""})||
+         {type:"question-image",exerciseId:exercise.id,label:"השרטוט המוגדל",focusKey:guidedFocus&&guidedFocus.key||""})
       : null;
     thread.messages.push({role:"assistant",text:guidedAnswer,kind:"",visual:guidedVisual});
     thread.history.push({role:"user",content:historyQuestion},{role:"assistant",content:guidedAnswer});

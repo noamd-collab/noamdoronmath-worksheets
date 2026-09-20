@@ -315,11 +315,12 @@ test("local visual analysis deduplicates identical manifest text before parsing"
   assert.ok(html.indexOf("noam-didactic-guides.js")<html.indexOf("noam-local-visual.js"));
 });
 
-test("visual geometry help always renders the authoritative scanned question beside the answer", () => {
+test("verified geometry can be constructed while unsupported geometry retains the scanned source", () => {
   assert.match(html,/noamResponseVisual\(exercise,thread,studentMessage,answer,helpKind,hintIndex,requestAnalysis\)/);
   assert.match(html,/type:"question-image",exerciseId:exercise\.id/);
   assert.match(html,/noam-question-visual-image/);
   const responseVisual = html.slice(html.indexOf("function noamResponseVisual("), html.indexOf("function noamCanOfferDrawing("));
+  assert.match(responseVisual,/noamConstructedVisual\(exercise/);
   assert.doesNotMatch(responseVisual,/parseLabeledTriangle|labeled-triangle/);
 });
 
@@ -348,7 +349,7 @@ test("question drawings use deterministic guide focus when available and safely 
 test("geometry answers offer a free local drawing action and hide it after use", () => {
   assert.match(html,/drawButton\.textContent="הדגם באמצעות שרטוט"/);
   assert.match(html,/message\.visual=manualVisual;[\s\S]*?saveNoamState\(\);[\s\S]*?renderNoamChat\(\)/);
-  assert.match(html,/message\.role!=="assistant"\|\|message\.visual/);
+  assert.match(html,/message\.visual&&\(message\.visual\.type!=="question-image"/);
   assert.match(html,/failed\\s\+to\\s\+fetch/);
   const handler = html.slice(html.indexOf('drawButton.addEventListener("click"'), html.indexOf("bubble.appendChild(drawButton)"));
   assert.doesNotMatch(handler,/askNoam|postJson|fetch\(/);
