@@ -4051,7 +4051,7 @@ feedbackDialog.addEventListener("click", function(event){
 function openNoamPanel(){
   var wasClosed=panel.classList.contains("hidden");
   if (wasClosed){panelReturnFocus=document.activeElement;}
-  if (wasClosed && pdfZoom < .85){setPdfZoom(.85);}
+  if (wasClosed){setPdfZoom(.85);}
   panel.classList.remove("hidden");
   fab.classList.add("hidden");
   fab.setAttribute("aria-expanded","true");
@@ -4060,9 +4060,11 @@ function openNoamPanel(){
 }
 
 function closeNoamPanel(){
+  var wasOpen=!panel.classList.contains("hidden");
   if (typeof hideNoamGlossaryPopover==="function"){hideNoamGlossaryPopover();}
   if (panel.contains(document.activeElement)){document.activeElement.blur();}
   panel.classList.add("hidden");
+  if (wasOpen){setPdfZoom(.7);}
   fab.classList.toggle("hidden",!manifestReady);
   fab.setAttribute("aria-expanded","false");
   syncMobilePanel();

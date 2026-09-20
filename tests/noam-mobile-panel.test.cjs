@@ -81,17 +81,22 @@ test("opening and closing phone help restores worksheet access and the triggerin
   assert.equal(ctx.document.activeElement, robot);
 });
 
-test("opening Noam AI raises a small PDF view to 85 percent without shrinking a larger view", () => {
+test("Noam AI uses 85 percent while open and restores 70 percent when closed", () => {
   const first = fixture();
   first.ctx.openNoamPanel();
   assert.equal(first.ctx.pdfZoom, .85);
   assert.deepEqual(first.ctx.zoomCalls, [.85]);
+  first.ctx.closeNoamPanel();
+  assert.equal(first.ctx.pdfZoom, .7);
+  assert.deepEqual(first.ctx.zoomCalls, [.85, .7]);
 
   const second = fixture();
   second.ctx.pdfZoom = .92;
   second.ctx.openNoamPanel();
-  assert.equal(second.ctx.pdfZoom, .92);
-  assert.deepEqual(second.ctx.zoomCalls, []);
+  assert.equal(second.ctx.pdfZoom, .85);
+  second.ctx.closeNoamPanel();
+  assert.equal(second.ctx.pdfZoom, .7);
+  assert.deepEqual(second.ctx.zoomCalls, [.85, .7]);
 });
 
 test("expanding to desktop releases the background while leaving help open", () => {
