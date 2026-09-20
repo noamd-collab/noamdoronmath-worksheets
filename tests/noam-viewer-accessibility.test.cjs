@@ -187,9 +187,7 @@ test("geometry answers offer a free local drawing action and hide it after use",
 
   const ctx = {
     ttl:"משולשים וזוויות",
-    window:{NoamLocalVisual:{
-      parseLabeledTriangle:source=>source.includes("EDB")?{type:"labeled-triangle",vertices:["E","D","B"],angles:[]}:null
-    }},
+    window:{NoamLocalVisual:{}},
     localVisualExerciseSource:()=>"משולש EDB",
     Set,Math,String,Number,Array,Object,RegExp
   };
@@ -200,7 +198,7 @@ test("geometry answers offer a free local drawing action and hide it after use",
   assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),true);
   assert.deepEqual(
     JSON.parse(JSON.stringify(ctx.noamManualVisual({id:"q"},thread,message))),
-    {type:"labeled-triangle",vertices:["E","D","B"],angles:[]}
+    {type:"question-image",exerciseId:"q",label:"השרטוט מתוך השאלה"}
   );
   message.visual={type:"question-image"};
   assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),false);

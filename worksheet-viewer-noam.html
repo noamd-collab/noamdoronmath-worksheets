@@ -5407,11 +5407,8 @@ function noamCanOfferDrawing(exercise,thread,message){
 
 function noamManualVisual(exercise,thread,message){
   if (!exercise||!thread||!window.NoamLocalVisual){return null;}
-  var source=localVisualExerciseSource(exercise)+"\n"+noamRecentThreadText(thread,1400)+"\n"+String(message&&message.text||"");
-  var triangle=window.NoamLocalVisual.parseLabeledTriangle
-    ? window.NoamLocalVisual.parseLabeledTriangle(source)
-    : null;
-  if (triangle){return triangle;}
+  // The worksheet crop is the authoritative geometry drawing. A generic
+  // triangle can omit auxiliary points, parallels or extensions and mislead.
   return {type:"question-image",exerciseId:exercise.id,label:"השרטוט מתוך השאלה"};
 }
 
