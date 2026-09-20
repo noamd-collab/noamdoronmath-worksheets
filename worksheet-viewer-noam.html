@@ -5925,6 +5925,10 @@ function noamRenderAiDiagram(visual){
   var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
   if (!exercise||visual.sourceIdentity!==noamDiagramSourceIdentity(exercise)){return null;}
   try{
+    // Opt-in, local diagnosis of worksheet recognition; never log student chat.
+    if (new URLSearchParams(location.search).get("diagramDebug")==="1"){
+      console.debug("NOAM_DIAGRAM_WORKSHEET_SOURCE",String(visual.context&&visual.context.questionText||"").slice(0,12000));
+    }
     var scene=window.NoamDiagramPlan.compile(visual.plan,visual.context);
     return scene?window.NoamGeometry.render(document,scene):null;
   }catch(error){return null;}
