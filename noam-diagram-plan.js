@@ -237,6 +237,89 @@
       return plan;
     }catch(_error){return null;}
   }
+  function buildPerpendicularTrianglePlan(focus,source){
+    // Build a minimal highlighted triangle only when the source itself proves
+    // that two of its sides lie on perpendicular lines. This is a deterministic
+    // fallback for vision/planner coordinate drift, not a theorem prover.
+    try{
+      if(!validateFocus(focus,source).ok){return null;}
+      var objects=list(focus.objects,8);
+      if(objects.length!==1||!object(objects[0])||objects[0].kind!=="triangle"||
+          !Array.isArray(objects[0].points)||objects[0].points.length!==3){return null;}
+      var triangle=objects[0],vertices=triangle.points.slice(),facts=markerJson(source,"DIAGRAM_FACTS_JSON:");
+      if(!object(facts)){return null;}
+      var lines=[];
+      function addLine(raw,intersection){
+        if(!Array.isArray(raw)){return;}
+        var names=raw.map(function(name){return typeof name==="string"&&/^[A-Z]$/.test(name)?name:null;})
+          .filter(Boolean).filter(function(name,index,all){return all.indexOf(name)===index;});
+        if(intersection&&names.indexOf(intersection)===-1){names.splice(Math.min(1,names.length),0,intersection);}
+        if(names.length>=2){lines.push(names);}
+      }
+      list(facts.strokes,40).concat(list(facts.collinear_orders,40)).forEach(function(line){addLine(line,"");});
+      list(facts.intersections,16).forEach(function(item){
+        if(!object(item)||typeof item.point!=="string"||!/^[A-Z]$/.test(item.point)){return;}
+        if(Array.isArray(item.lines)){
+          if(item.lines.every(function(name){return typeof name==="string"&&/^[A-Z]$/.test(name);})){
+            if(item.lines.length===4){addLine(item.lines.slice(0,2),item.point);addLine(item.lines.slice(2),item.point);}
+            else{addLine(item.lines,item.point);}
+          }else{item.lines.forEach(function(line){addLine(line,item.point);});}
+        }
+        addLine(item.other_line,item.point);
+      });
+      function sameSourceLine(first,second){
+        return lines.some(function(line){return first.concat(second).every(function(name){return line.indexOf(name)!==-1;});});
+      }
+      var textSource=sourceWithoutMachineMarkers(source),relations=[];
+      sentences(textSource).filter(function(sentence){return !UNPROVEN.test(sentence);}).forEach(function(sentence){
+        var normalized=compact(sentence),match,re=/(?:^|[^A-Z0-9])([A-Z]{2})⊥([A-Z]{2})(?=$|[^A-Z0-9])/g;
+        while((match=re.exec(normalized))){relations.push([match[1].split(""),match[2].split("")]);}
+        re=/(?:^|[^A-Z0-9])∠?([A-Z]{3})=90°(?=$|[^A-Z0-9])/g;
+        while((match=re.exec(normalized))){relations.push([[match[1][1],match[1][0]],[match[1][1],match[1][2]]]);}
+        var altitudePatterns=[
+          /(?:ה?גובה)\s*([A-Z]{2})[^.\n]{0,45}?(?:ל|אל)\s*[-‐-―]?\s*(?:ה?יתר|ה?צלע|ה?קטע|ה?ישר)?\s*([A-Z]{2})/i,
+          /([A-Z]{2})\s+(?:הוא\s+|היא\s+)?(?:גובה)[^.\n]{0,25}?(?:ל|אל)\s*[-‐-―]?\s*(?:ה?יתר|ה?צלע|ה?קטע|ה?ישר)?\s*([A-Z]{2})/i,
+          /(?:altitude|height)\s+([A-Z]{2})[^.\n]{0,35}?\b(?:to|onto)\b\s+(?:the\s+)?(?:hypotenuse|side|segment|line)?\s*([A-Z]{2})/i,
+          /([A-Z]{2})\s+is\s+(?:an?\s+)?(?:altitude|height)[^.\n]{0,35}?\b(?:to|onto)\b\s+(?:the\s+)?(?:hypotenuse|side|segment|line)?\s*([A-Z]{2})/i
+        ];
+        altitudePatterns.forEach(function(pattern){var found=sentence.match(pattern);if(found){relations.push([found[1].split(""),found[2].split("")]);}});
+      });
+      var edges=vertices.map(function(name,index){return [name,vertices[(index+1)%vertices.length]];}),chosen=null;
+      relations.some(function(relation){
+        var first=edges.filter(function(edge){return sameSourceLine(edge,relation[0]);});
+        var second=edges.filter(function(edge){return sameSourceLine(edge,relation[1]);});
+        return first.some(function(a){return second.some(function(b){
+          var shared=a.filter(function(name){return b.indexOf(name)!==-1;});
+          if(shared.length!==1||pairKey(a)===pairKey(b)){return false;}
+          chosen={first:a,second:b,vertex:shared[0],relation:relation};return true;
+        });});
+      });
+      if(!chosen){return null;}
+      var firstOuter=chosen.first.find(function(name){return name!==chosen.vertex;}),secondOuter=chosen.second.find(function(name){return name!==chosen.vertex;});
+      if(!firstOuter||!secondOuter||firstOuter===secondOuter){return null;}
+      var plan={version:1,status:"ok",points:{},segments:[],highlights:[],angles:[],equalGroups:[],rightAngles:[],evidence:[]};
+      plan.points[chosen.vertex]=[0,0];plan.points[firstOuter]=[0,3];plan.points[secondOuter]=[-3,0];
+      plan.segments=edges.map(function(edge){return edge.slice();});
+      function addRelationContext(segment,axisOuter,axisVector){
+        var sourceLine=lines.find(function(item){return item.indexOf(chosen.vertex)!==-1&&item.indexOf(axisOuter)!==-1&&segment.every(function(name){return item.indexOf(name)!==-1;});});
+        segment.forEach(function(name){
+          if(plan.points[name]){return;}
+          var sign=-1,scale=1;
+          if(sourceLine){
+            var vertexIndex=sourceLine.indexOf(chosen.vertex),outerIndex=sourceLine.indexOf(axisOuter),nameIndex=sourceLine.indexOf(name);
+            sign=(nameIndex-vertexIndex)*(outerIndex-vertexIndex)>=0?1:-1;
+            scale=sign>0?1.6:1;
+          }
+          plan.points[name]=[axisVector[0]*sign*scale,axisVector[1]*sign*scale];
+        });
+        if(!plan.segments.some(function(item){return pairKey(item)===pairKey(segment);})){plan.segments.push(segment.slice());}
+      }
+      addRelationContext(chosen.relation[0],firstOuter,[0,3]);
+      addRelationContext(chosen.relation[1],secondOuter,[-3,0]);
+      plan.highlights=edges.map(function(edge){return {from:edge[0],to:edge[1],color:triangle.color||"blue",label:""};});
+      return plan;
+    }catch(_error){return null;}
+  }
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   function grounded(quote,source){
@@ -520,5 +603,5 @@
   }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}
-  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,buildCollinearSegmentPlan:buildCollinearSegmentPlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
+  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,buildCollinearSegmentPlan:buildCollinearSegmentPlan,buildPerpendicularTrianglePlan:buildPerpendicularTrianglePlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
 });

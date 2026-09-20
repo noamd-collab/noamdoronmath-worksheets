@@ -110,6 +110,34 @@ test("two adjacent collinear focus segments get a minimal deterministic context 
   assert.equal(result.ok,true,result.reason);
 });
 
+test("a focused altitude triangle is rebuilt from source topology when model coordinates drift",()=>{
+  const facts={visible_points:["A","B","C","H","M"],
+    strokes:[["A","H","M","B"],["C","H"],["C","M"],["C","A"],["C","B"]],
+    intersections:[{point:"H",lines:["C","H","A","B"]},{point:"M",lines:[["C","M"],["A","B"]]}],
+    collinear_orders:[["A","H","M","B"]]};
+  const focus={version:1,status:"ok",mode:"locate",objects:[
+    {kind:"triangle",points:["A","C","H"],color:"blue"}]};
+  const source="במשולש ישר זווית ABC, הקטע CH הוא גובה ליתר AB.\nDIAGRAM_FACTS_JSON:"+
+    JSON.stringify(facts)+"\nPEDAGOGICAL_FOCUS_JSON:"+JSON.stringify(focus);
+  const plan=Plan.buildPerpendicularTrianglePlan(focus,source);assert.ok(plan);
+  assert.deepEqual(Object.keys(plan.points).sort(),["A","B","C","H"]);
+  assert.ok(plan.segments.some(segment=>segment.includes("A")&&segment.includes("B")),"the full source line keeps H's intersection verifiable");
+  assert.equal(plan.highlights.length,3);
+  const result=Plan.inspect(plan,{questionText:source,
+    hintText:"האם זיהית שמשולש ACH הוא ישר זווית?",studentMessage:"אתה יכול להראות לי בשרטוט?"});
+  assert.equal(result.ok,true,result.reason);
+  const A=plan.points.A,C=plan.points.C,H=plan.points.H;
+  const HA=[A[0]-H[0],A[1]-H[1]],HC=[C[0]-H[0],C[1]-H[1]];
+  assert.equal(HA[0]*HC[0]+HA[1]*HC[1],0);
+});
+
+test("a question about a possible altitude is not promoted into a perpendicular drawing",()=>{
+  const facts={visible_points:["A","B","C","H"],strokes:[["A","H","B"],["C","H"],["C","A"]]};
+  const focus={version:1,status:"ok",mode:"locate",objects:[{kind:"triangle",points:["A","C","H"],color:"blue"}]};
+  const source="האם CH הוא גובה ליתר AB?\nDIAGRAM_FACTS_JSON:"+JSON.stringify(facts);
+  assert.equal(Plan.buildPerpendicularTrianglePlan(focus,source),null);
+});
+
 test("vision fact normalization keeps valid topology when one optional fact is malformed",()=>{
   const facts={visible_points:["A","C","D","M","Q","not-a-point"],
     strokes:[["A","M","Q"],["D","M","C"],["bad"]],
