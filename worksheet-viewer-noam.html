@@ -5363,7 +5363,8 @@ function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintI
 function noamVisualAnswer(studentMessage,answer,visual){
   var local=window.NoamLocalVisual;
   var askedToDraw=local&&local.wantsDrawing&&local.wantsDrawing(studentMessage);
-  if (!visual||!askedToDraw||!/(?:לא\s+(?:יכול|יכולה)|אין\s+לי\s+אפשרות)\s+(?:לצייר|לשרטט)/i.test(String(answer||""))){return answer;}
+  var conflicts=/(?:לא\s+(?:יכול|יכולה)|אין\s+לי\s+אפשרות)\s+(?:לצייר|לשרטט)|האתר\s+יציג\s+(?:את\s+)?השרטוט/i.test(String(answer||""));
+  if (!visual||!askedToDraw||!conflicts){return answer;}
   if (visual.type==="labeled-triangle"){
     var name=(visual.vertices||[]).join("");
     return "הנה משולש "+name+" לבדו. האות האמצעית בשם כל זווית היא הקודקוד שלה.";

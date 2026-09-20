@@ -189,6 +189,10 @@ test("a contradictory model refusal is replaced when the viewer supplies the req
     ctx.noamVisualAnswer("אפשר לצייר לי?","אני לא יכול לצייר, הסתכלו בדף.",visual),
     "הנה משולש EDB לבדו. האות האמצעית בשם כל זווית היא הקודקוד שלה."
   );
+  assert.equal(
+    ctx.noamVisualAnswer("אפשר לצייר לי?","האתר יציג את השרטוט לצד התשובה.",visual),
+    "הנה משולש EDB לבדו. האות האמצעית בשם כל זווית היא הקודקוד שלה."
+  );
 });
 
 test("the viewer remains valid JavaScript with one main target and one persistent announcer", () => {
