@@ -4789,14 +4789,17 @@ function localVisualExerciseSource(exercise){
 
 function tryNoamLocalVisual(studentMessage){
   var local=window.NoamLocalVisual;
+  var previousThread=selectedExercise&&exerciseThread(selectedExercise.id);
+  var previousAnswer=previousThread&&(previousThread.messages||[]).filter(function(item){return item.role==="assistant";}).slice(-1)[0];
+  var retryDrawing=!!(previousAnswer&&previousAnswer.diagramError&&/^(?:(?:בבקשה|אולי)\s+)?(?:נסה|נסי|נסו|תנסה|תנסי)\s+שוב[.!?\s]*$/.test(String(studentMessage||"").trim()));
   var visualRequest=local&&((local.wantsDrawing&&local.wantsDrawing(studentMessage))||
     (local.wantsVisualSupport&&local.wantsVisualSupport(studentMessage)));
-  if (!selectedExercise||busy||!visualRequest){return false;}
+  if (!selectedExercise||busy||(!visualRequest&&!retryDrawing)){return false;}
   if (typeof currentAttachments==="function"&&currentAttachments().length){return false;}
   var thread=exerciseThread(selectedExercise.id);
   var lastAnswer=(thread.messages||[]).filter(function(item){return item.role==="assistant";}).slice(-1)[0];
   var options=noamMessageVisualOptions(thread,lastAnswer);
-  options.studentMessage=studentMessage;
+  if (!retryDrawing){options.studentMessage=studentMessage;}
   options.helpKind="free_question";
   options.hintIndex=0;
   delete options.focusKey;
@@ -4807,6 +4810,7 @@ function tryNoamLocalVisual(studentMessage){
     var drawingExercise=selectedExercise;
     delete noamDrafts[drawingExercise.id];
     var drawingReply={role:"assistant",text:"מכין המחשה לשלב שעליו שאלת.",kind:"",diagramOptions:options,diagramTyped:true};
+    if (retryDrawing){drawingReply.diagramError=previousAnswer.diagramError;}
     thread.messages.push({role:"user",text:studentMessage,kind:""},drawingReply);
     thread.messages=thread.messages.slice(-60);
     requestNoamDiagram(drawingExercise,thread,drawingReply,options);
@@ -6054,6 +6058,9 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
     return Promise.resolve(local);
   }
   if (message.visual&&message.visual.type==="question-image"){delete message.visual;}
+  // The existing proxy forwards clientRequestId unchanged. Its review prefix
+  // signals an explicit retry without changing the student's pedagogical input.
+  var reviewRequested=!!message.diagramError;
   delete message.diagramError;
   var sourceIdentity=noamDiagramSourceIdentity(exercise);
   var key=JSON.stringify(["diagram-v1",sourceIdentity,options.answer,options.studentMessage]);
@@ -6076,7 +6083,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
         exerciseId:exercise.id,grade:g,level:LEVEL[lv],topic:String(ttl||"").slice(0,180),
         studentMessage:context.studentMessage,currentHint:context.hintText,
         questionText:context.questionText,imageDataUrl:source.imageDataUrl,ownerKey:ownerKey,
-        clientRequestId:"diagram-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9)
+        clientRequestId:(reviewRequested?"diagram-review-":"diagram-")+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9)
       }).then(function(start){
         if(!start||!start.ok||!start.accepted||typeof start.jobId!=="string"){
           var startError=new Error("diagram start failed");startError.code="DIAGRAM_UNAVAILABLE";throw startError;

@@ -86,6 +86,7 @@ test("failed plans never cache or pretend to draw, and a deliberate retry succee
   assert.equal(f.ctx.noamDiagramRuntime().cache.size,0);
   assert.equal((await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message)).type,"ai-diagram");
   assert.equal(calls,2);assert.equal(f.message.diagramError,undefined);
+  assert.match(f.calls[1].payload.clientRequestId,/^diagram-review-/);
 });
 
 test("a valid plan that cannot render never claims a drawing or enters the success cache",async()=>{
@@ -289,4 +290,20 @@ test("local verified guides do not invoke analysis or the paid diagram endpoint"
   f.ctx.getExerciseAnalysis=()=>{throw new Error("unexpected analysis");};
   const visual=await f.ctx.requestNoamDiagram(f.exercise,f.thread,f.message);
   assert.equal(visual.type,"geometry-guide");assert.equal(f.calls.length,0);
+});
+
+test("typed retry after a failed drawing preserves the current hint and requests independent review",async()=>{
+ const f=fixture();f.ctx.NoamLocalVisual.wantsDrawing=()=>false;f.ctx.NoamLocalVisual.wantsVisualSupport=()=>false;
+ f.message.diagramError="לא הצלחנו להכין שרטוט";
+ f.message.diagramOptions={answer:"סמנו את הקטע AB.",studentMessage:"תוכל לשרטט לי?"};
+ assert.equal(f.ctx.tryNoamLocalVisual("נסה שוב"),true);
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(f.calls.length,1);assert.match(f.calls[0].payload.clientRequestId,/^diagram-review-/);
+ assert.equal(f.calls[0].payload.currentHint,"סמנו את הקטע AB.");
+ assert.equal(f.calls[0].payload.studentMessage,"תוכל לשרטט לי?");
+ assert.equal(f.thread.messages.at(-1).visual.type,"ai-diagram");
+});
+test("typed retry without a failed drawing remains a normal tutor question",()=>{
+ const f=fixture();f.ctx.NoamLocalVisual.wantsDrawing=()=>false;f.ctx.NoamLocalVisual.wantsVisualSupport=()=>false;
+ assert.equal(f.ctx.tryNoamLocalVisual("נסה שוב"),false);assert.equal(f.calls.length,0);
 });
