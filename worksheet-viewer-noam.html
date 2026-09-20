@@ -4051,6 +4051,7 @@ feedbackDialog.addEventListener("click", function(event){
 function openNoamPanel(){
   var wasClosed=panel.classList.contains("hidden");
   if (wasClosed){panelReturnFocus=document.activeElement;}
+  if (wasClosed && pdfZoom < .85){setPdfZoom(.85);}
   panel.classList.remove("hidden");
   fab.classList.add("hidden");
   fab.setAttribute("aria-expanded","true");

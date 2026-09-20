@@ -45,8 +45,10 @@ function fixture() {
     window: { innerHeight: 800, visualViewport: { height: 800, offsetTop: 0, scale: 1 } },
     mobileLayout: { matches: true },
     panel: element("panel"), closePanelButton: element("close", true),
-    fab: element("fab"), panelReturnFocus: null, manifestReady: true
+    fab: element("fab"), panelReturnFocus: null, manifestReady: true,
+    pdfZoom: .7, zoomCalls: []
   };
+  ctx.setPdfZoom = value => { ctx.pdfZoom = value; ctx.zoomCalls.push(value); };
   ctx.panel.classList.add("hidden");
   const robot = element("questionRobot");
   robot.focus();
@@ -77,6 +79,19 @@ test("opening and closing phone help restores worksheet access and the triggerin
   assert.equal(ctx.panel.attributes["aria-modal"], undefined);
   assert.equal(ctx.fab.classList.contains("hidden"), false);
   assert.equal(ctx.document.activeElement, robot);
+});
+
+test("opening Noam AI raises a small PDF view to 85 percent without shrinking a larger view", () => {
+  const first = fixture();
+  first.ctx.openNoamPanel();
+  assert.equal(first.ctx.pdfZoom, .85);
+  assert.deepEqual(first.ctx.zoomCalls, [.85]);
+
+  const second = fixture();
+  second.ctx.pdfZoom = .92;
+  second.ctx.openNoamPanel();
+  assert.equal(second.ctx.pdfZoom, .92);
+  assert.deepEqual(second.ctx.zoomCalls, []);
 });
 
 test("expanding to desktop releases the background while leaving help open", () => {
