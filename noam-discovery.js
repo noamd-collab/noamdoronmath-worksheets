@@ -3,10 +3,10 @@
   'use strict';
   var base = 'https://noamd-collab.github.io/noamdoronmath-worksheets/';
   var storageKey = 'noam-saved-topics-v1';
-  var aiDetails=document.createElement('details');aiDetails.className='ai-details';
-  var aiSummary=document.createElement('summary');aiSummary.textContent='על העזרה של נועם AI';
-  aiDetails.append(aiSummary,document.getElementById('aibanner'));
-  document.querySelector('.toolbar').after(aiDetails);
+  /* Keep the Noam AI explanation visible wherever the catalog presents it.
+     A permanent banner is clearer than a disclosure and avoids a redundant arrow. */
+  var aiBanner=document.getElementById('aibanner');
+  document.querySelector('.toolbar').after(aiBanner);
   function readSaved(){ try { var items=JSON.parse(localStorage.getItem(storageKey)||'[]'); return Array.isArray(items)?items.filter(function(x){return x && DATA[x.grade] && DATA[x.grade].topics.some(function(t){return t.id===x.topic;});}).slice(0,30):[]; } catch(e){return [];} }
   function link(grade,topic){return base+'?grade='+grade+'&topic='+topic;}
   function topicFor(g,id){return DATA[g] && DATA[g].topics.find(function(t){return t.id===Number(id);});}

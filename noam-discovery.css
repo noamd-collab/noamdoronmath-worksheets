@@ -8,9 +8,7 @@
 .wrap > .aibanner h2{font-size:18px}
 .wrap > .aibanner p{font-size:14px}
 .wrap > .toolbar{margin-top:14px}
-.ai-details{max-width:1000px;margin:10px auto;font-size:14px}
-.ai-details summary{cursor:pointer;font-weight:700}
-.ai-details .aibanner{margin:8px 0;padding:12px}
+.wrap > .aibanner{margin-block:10px;padding:12px}
 .topic-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:10px}
 .topic-actions a,.topic-actions button,.saved-topics button{font:inherit;font-size:14px;color:var(--ink);background:white;border:1px solid currentColor;border-radius:9px;padding:7px 11px;cursor:pointer}
 .topic-actions [aria-pressed=true]{background:var(--tint)}
