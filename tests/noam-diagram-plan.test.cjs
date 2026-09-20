@@ -97,6 +97,19 @@ test("split intersection facts ground adjacent requested segments without a ques
   assert.deepEqual(result.scope.objects.map(item=>item.points),[["R","U"],["U","T"]]);
 });
 
+test("two adjacent collinear focus segments get a minimal deterministic context drawing",()=>{
+  const facts={visible_points:["R","S","T","U","V"],strokes:[["R","T","V"],["S","U"]],
+    intersections:[{point:"U",lines:["S","U"],other_line:["R","T","V"]}],collinear_orders:[["R","U","T","V"]]};
+  const focus={version:1,status:"ok",mode:"locate",objects:[
+    {kind:"segment",points:["R","U"],color:"blue"},{kind:"segment",points:["U","T"],color:"orange"}]};
+  const source="הנקודות R,U,T נמצאות על ישר אחד, והקטע SU עובר דרך U.\nDIAGRAM_FACTS_JSON:"+JSON.stringify(facts)+"\nPEDAGOGICAL_FOCUS_JSON:"+JSON.stringify(focus);
+  const plan=Plan.buildCollinearSegmentPlan(focus,source);assert.ok(plan);
+  assert.deepEqual(plan.highlights.map(item=>item.label),["RU","UT"]);
+  assert.ok(plan.segments.some(item=>item.includes("S")&&item.includes("U")),"a source-grounded auxiliary stroke supplies non-flat context");
+  const result=Plan.inspect(plan,{questionText:source,hintText:"התבוננו בקטעים RU ו-UT.",studentMessage:"אפשר להראות בשרטוט?"});
+  assert.equal(result.ok,true,result.reason);
+});
+
 test("vision fact normalization keeps valid topology when one optional fact is malformed",()=>{
   const facts={visible_points:["A","C","D","M","Q","not-a-point"],
     strokes:[["A","M","Q"],["D","M","C"],["bad"]],

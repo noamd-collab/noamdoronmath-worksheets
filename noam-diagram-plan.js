@@ -189,6 +189,54 @@
       return plan;
     }catch(_error){return null;}
   }
+  function buildCollinearSegmentPlan(focus,source){
+    try{
+      if(!validateFocus(focus,source).ok){return null;}
+      var objects=list(focus.objects,8);
+      if(objects.length!==2||objects.some(function(item){return !object(item)||item.kind!=="segment"||!Array.isArray(item.points)||item.points.length!==2;})){return null;}
+      var counts={},all=[];
+      objects.forEach(function(item){item.points.forEach(function(name){counts[name]=(counts[name]||0)+1;if(all.indexOf(name)===-1){all.push(name);}});});
+      if(all.length!==3){return null;}
+      var shared=all.filter(function(name){return counts[name]===2;})[0];
+      if(!shared){return null;}
+      var outer=all.filter(function(name){return name!==shared;});
+      var facts=markerJson(source,"DIAGRAM_FACTS_JSON:");if(!object(facts)){return null;}
+      var lines=[];
+      function addLine(raw,intersection){
+        if(!Array.isArray(raw)){return;}
+        var names=raw.filter(function(name,index){return typeof name==="string"&&/^[A-Z]$/.test(name)&&raw.indexOf(name)===index;});
+        if(intersection&&names.indexOf(intersection)===-1){names.splice(1,0,intersection);}
+        if(names.length>=2){lines.push(names);}
+      }
+      list(facts.strokes,40).concat(list(facts.collinear_orders,40)).forEach(function(line){addLine(line,"");});
+      list(facts.intersections,16).forEach(function(item){
+        if(!object(item)||typeof item.point!=="string"||!/^[A-Z]$/.test(item.point)){return;}
+        if(Array.isArray(item.lines)){
+          if(item.lines.every(function(name){return typeof name==="string";})){addLine(item.lines,item.point);}
+          else{item.lines.forEach(function(line){addLine(line,item.point);});}
+        }
+        addLine(item.other_line,item.point);
+      });
+      var main=lines.find(function(line){return all.every(function(name){return line.indexOf(name)!==-1;});});
+      if(!main){return null;}
+      var sharedIndex=main.indexOf(shared),firstIndex=main.indexOf(outer[0]),secondIndex=main.indexOf(outer[1]);
+      if(!((firstIndex<sharedIndex&&sharedIndex<secondIndex)||(secondIndex<sharedIndex&&sharedIndex<firstIndex))){return null;}
+      var auxiliary=null,anchor=null;
+      [shared].concat(outer).some(function(candidate){
+        var line=lines.find(function(item){return item.indexOf(candidate)!==-1&&item.some(function(name){return all.indexOf(name)===-1;});});
+        if(!line){return false;}
+        auxiliary=line.find(function(name){return all.indexOf(name)===-1;})||null;anchor=candidate;return !!auxiliary;
+      });
+      if(!auxiliary||!anchor){return null;}
+      var plan={version:1,status:"ok",points:{},segments:[],highlights:[],angles:[],equalGroups:[],rightAngles:[],evidence:[]};
+      plan.points[outer[0]]=[-3,-1.5];plan.points[shared]=[0,0];plan.points[outer[1]]=[3,1.5];
+      var base=plan.points[anchor],direction=[3,1.5];
+      plan.points[auxiliary]=[base[0]+direction[1],base[1]-direction[0]];
+      plan.segments=[[outer[0],shared],[shared,outer[1]],[anchor,auxiliary]];
+      plan.highlights=objects.map(function(item,index){return {from:item.points[0],to:item.points[1],color:item.color||COLORS[index],label:item.points.join("")};});
+      return plan;
+    }catch(_error){return null;}
+  }
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   function grounded(quote,source){
@@ -472,5 +520,5 @@
   }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}
-  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
+  return {inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,buildCollinearSegmentPlan:buildCollinearSegmentPlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
 });
