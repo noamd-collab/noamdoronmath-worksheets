@@ -4,10 +4,14 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
+const DidacticGuides = require("../noam-didactic-guides.js");
 
 const html = fs.readFileSync(path.join(__dirname, "../worksheet-viewer-noam.html"), "utf8");
 const helpers = html.slice(html.indexOf("function announceNoam(text){"), html.indexOf("function syncMobilePanel(){"));
 const askSource = html.slice(html.indexOf("function noamGeometryContext(text){"), html.indexOf("function postJson(endpoint,payload){"));
+const mathOutputInstruction = vm.runInNewContext(
+  html.match(/var MATH_OUTPUT_INSTRUCTION\s*=\s*([\s\S]*?);\n\nvar GRADE_NAME/)[1]
+);
 
 function helperFixture() {
   let nextTimer = 0;
@@ -60,24 +64,32 @@ async function requestFixture(result, options = {}) {
   const thread = { hintIndex: 0, history: options.history || [], messages: [{ role: "assistant", text: "old answer must not repeat" }] };
   const focusRestores = [];
   const payloads = [];
+  const outcomes = Array.isArray(result) ? result.slice() : [result];
   const ctx = {
-    selectedExercise: { id: "q1a", q: 1, part: "א" }, busy: false,
+    selectedExercise: options.exercise || { id: "q1a", q: 1, part: "א" }, busy: false,
     noamDrafts: {}, API: "/test", g: 7, lv: "a", LEVEL: { a: "A" }, ttl: options.topic || "test",
     SOLVER_MESSAGE_MAX: 700, MATH_OUTPUT_INSTRUCTION: "", MIN_WAIT: 0,
-    window: { NoamLocalVisual: { wantsVisualSupport: () => false, parseLabeledTriangle: () => null } },
+    window: {
+      NoamLocalVisual: { wantsVisualSupport: options.wantsVisualSupport || (() => false), parseLabeledTriangle: () => null },
+      NoamDidacticGuides: options.didacticGuides
+    },
     panelBody: { contains: () => true }, document: { activeElement: { id: "noamHint" } },
     exerciseThread: () => thread, exerciseLabel: () => "שאלה 1 · סעיף א",
     saveNoamState() {}, renderNoamChat() {},
     setNoamBusy(value) { ctx.busy = value; },
     restoreNoamChatFocus(id) { focusRestores.push(id); },
     announceNoam(value) { notices.push(value); },
-    getExerciseAnalysis: () => Promise.resolve({ readable: true }),
-    postJson: (url, payload) => { payloads.push(payload); return result instanceof Error ? Promise.reject(result) : Promise.resolve(result); },
+    getExerciseAnalysis: () => Promise.resolve(options.analysis || { readable: true }),
+    postJson: (url, payload) => {
+      payloads.push(payload);
+      const outcome = outcomes.length > 1 ? outcomes.shift() : outcomes[0];
+      return outcome instanceof Error ? Promise.reject(outcome) : Promise.resolve(outcome);
+    },
     setTimeout(fn) { fn(); }
   };
   vm.createContext(ctx);
   vm.runInContext(askSource, ctx);
-  ctx.askNoam("hint", "help");
+  ctx.askNoam(options.helpKind || "hint", options.studentMessage || "help");
   await new Promise(resolve => setImmediate(resolve));
   return { notices, thread, focusRestores, ctx, payloads };
 }
@@ -117,6 +129,121 @@ test("geometry follow-ups carry recent context and a non-circular proof guard th
   assert.match(message,/DE מקביל ל-BC/);
   assert.match(message,/הודעת התלמיד עכשיו: help/);
   assert.ok(message.length <= 700);
+});
+
+test("the verified guide fits the backend limit with its goal, chain and angle prohibition intact", () => {
+  const ctx = {
+    window: { NoamLocalVisual: {}, NoamDidacticGuides: DidacticGuides },
+    SOLVER_MESSAGE_MAX: 700,
+    MATH_OUTPUT_INSTRUCTION: mathOutputInstruction,
+    Set, Math, String, Number, Array, Object, RegExp, Promise
+  };
+  vm.createContext(ctx);
+  vm.runInContext(askSource, ctx);
+  const prompt = ctx.noamDidacticPrompt("G9-T15-E-Q04א");
+  const message = ctx.noamSolverMessage("אפשר להסביר לי מה הצעד הבא?", { history: [] }, "הוכחה גאומטרית", prompt);
+  assert.ok(message.length <= 700);
+  assert.match(message, /להוכיח ED = EB/);
+  assert.match(message, /∠DBC = ∠EDB/);
+  assert.match(message, /∠EBD אינה זווית מתחלפת/);
+  assert.match(message, /הודעת התלמיד עכשיו/);
+});
+
+const question4Analysis = {
+  readable: true,
+  transcription: "במשולש ABC הנקודה E נמצאת על AB. הקטע BD חוצה את ∠ABC, וכן DE ∥ BC. הוכיחו: ED = EB."
+};
+
+function geometryReviewFixture() {
+  const ctx = {
+    window: { NoamLocalVisual: {} },
+    SOLVER_MESSAGE_MAX: 700,
+    MATH_OUTPUT_INSTRUCTION: "",
+    API: "/test",
+    postJson: () => Promise.reject(new Error("not used")),
+    Set, Math, String, Number, Array, Object, RegExp, Promise
+  };
+  vm.createContext(ctx);
+  vm.runInContext(askSource, ctx);
+  return ctx;
+}
+
+test("the client rejects both exact geometry failures from the question 4 transcript", () => {
+  const ctx = geometryReviewFixture();
+  const circular = ctx.noamGeometryAnswerReview(
+    "שימו לב לנתון ED=EB, ולכן המשולש EDB שווה שוקיים.",
+    question4Analysis,
+    null
+  );
+  const wrongAlternate = ctx.noamGeometryAnswerReview(
+    "מכיוון ש-DE ∥ BC, הזוויות ∠EBD ו-∠DBC הן זוויות מתחלפות פנימיות.",
+    question4Analysis,
+    null
+  );
+  assert.equal(circular.ok, false);
+  assert.match(circular.reasons.join(" "), /יעד ההוכחה/);
+  assert.equal(wrongAlternate.ok, false);
+  assert.match(wrongAlternate.reasons.join(" "), /∠EBD|אותו קודקוד/);
+});
+
+test("the alternate-angle guard reads the claimed pair instead of every nearby angle", () => {
+  const ctx = geometryReviewFixture();
+  const answer = "ידוע ש-∠EBD=∠DBC מחוצה הזווית, ואילו ∠DBC ו-∠EDB הן זוויות מתחלפות פנימיות כי DE ∥ BC. לכן ∠EBD=∠EDB, ומכאן ED=EB.";
+  const review = ctx.noamGeometryAnswerReview(answer, question4Analysis, null);
+  assert.deepEqual(JSON.parse(JSON.stringify(review)), { ok: true, reasons: [] });
+});
+
+test("question 4 angle confusion is answered locally from the verified guide", async () => {
+  const f = await requestFixture(new Error("the model must not be called"), {
+    exercise: { id: "G9-T15-E-Q04א", q: 4, part: "א" },
+    didacticGuides: DidacticGuides,
+    topic: "הוכחה גאומטרית",
+    helpKind: "free_question",
+    studentMessage: "איזה זווית קשה לי לזהות"
+  });
+  assert.equal(f.payloads.length, 0);
+  const response = f.thread.messages.at(-1);
+  assert.match(response.text, /∠EDB/);
+  assert.match(response.text, /∠DBC/);
+  assert.match(response.text, /מתחלפות פנימיות/);
+  assert.equal(response.visual.type, "question-image");
+  assert.ok(response.visual.focus);
+});
+
+test("a guided next-step answer keeps the authoritative drawing when the student asks to draw", async () => {
+  const f = await requestFixture(new Error("the model must not be called"), {
+    exercise: { id: "G9-T15-E-Q04א", q: 4, part: "א" },
+    didacticGuides: DidacticGuides,
+    wantsVisualSupport: text => /לשרטט/.test(text),
+    topic: "הוכחה גאומטרית",
+    helpKind: "free_question",
+    studentMessage: "ואז מה? אתה יכול לשרטט לי את המשולש?"
+  });
+  assert.equal(f.payloads.length, 0);
+  const response = f.thread.messages.at(-1);
+  assert.match(response.text, /∠EBD\s*=\s*∠DBC/);
+  assert.equal(response.visual.type, "question-image");
+});
+
+test("two unsafe model answers fall back to the verified proof chain", async () => {
+  const f = await requestFixture([
+    { ok: true, answer: "שימו לב לנתון ED=EB, ולכן המשולש EDB שווה שוקיים." },
+    { ok: true, answer: "מכיוון ש-DE ∥ BC, ∠EBD ו-∠DBC הן זוויות מתחלפות." }
+  ], {
+    exercise: { id: "G9-T15-E-Q04א", q: 4, part: "א" },
+    didacticGuides: Object.assign({}, DidacticGuides, { respond: () => null }),
+    analysis: question4Analysis,
+    topic: "הוכחה גאומטרית",
+    helpKind: "free_question",
+    studentMessage: "אפשר הסבר מלא?"
+  });
+  assert.equal(f.payloads.length, 2);
+  assert.match(f.payloads[0].studentMessage, /מדריך מאומת/);
+  assert.match(f.payloads[1].studentMessage, /טיוטת התשובה נפסלה/);
+  const finalAnswer = f.thread.messages.at(-1).text;
+  assert.match(finalAnswer, /∠DBC = ∠EDB/);
+  assert.match(finalAnswer, /ED = EB/);
+  assert.doesNotMatch(finalAnswer, /נתון ED=EB/);
 });
 
 function luminance(hex) {
@@ -167,14 +294,40 @@ test("question feedback pins remain, while AI-answer feedback appears once below
 test("local visual analysis deduplicates identical manifest text before parsing", () => {
   assert.match(html, /values\.indexOf\(value\)===index/);
   assert.match(html, /if \(!tryNoamLocalVisual\(message\)\)\{askNoam\("free_question",message\);\}/);
-  assert.match(html, /noam-local-visual\.js\?v=20260920-2/);
+  assert.match(html, /noam-didactic-guides\.js\?v=20260920-1/);
+  assert.match(html, /noam-local-visual\.js\?v=20260920-3/);
+  assert.ok(html.indexOf("noam-didactic-guides.js")<html.indexOf("noam-local-visual.js"));
 });
 
-test("visual geometry help can render a clean triangle or the scanned question beside the answer", () => {
+test("visual geometry help always renders the authoritative scanned question beside the answer", () => {
   assert.match(html,/noamResponseVisual\(exercise,thread,studentMessage,answer,helpKind,hintIndex,requestAnalysis\)/);
   assert.match(html,/type:"question-image",exerciseId:exercise\.id/);
   assert.match(html,/noam-question-visual-image/);
-  assert.match(html,/parseLabeledTriangle\(conversation\)/);
+  const responseVisual = html.slice(html.indexOf("function noamResponseVisual("), html.indexOf("function noamCanOfferDrawing("));
+  assert.doesNotMatch(responseVisual,/parseLabeledTriangle|labeled-triangle/);
+});
+
+test("question drawings use deterministic guide focus when available and safely fall back when absent", () => {
+  const focus={
+    crop:{x:.05,y:.01,w:.3,h:.7},
+    segments:[{from:[.1,.3],to:[.2,.3],role:"parallel"}],
+    angles:[{vertex:[.2,.3],from:[.1,.3],to:[.1,.6],label:"∠EDB"}]
+  };
+  const ctx = {
+    window:{NoamDidacticGuides:{get:id=>id==="guided"?{visualFocus:focus}:null}},
+    Set,Math,String,Number,Array,Object,RegExp
+  };
+  vm.createContext(ctx);
+  vm.runInContext(askSource,ctx);
+  assert.deepEqual(JSON.parse(JSON.stringify(ctx.noamDidacticVisualFocus("guided"))),focus);
+  assert.equal(ctx.noamDidacticVisualFocus("plain"),null);
+  assert.match(html,/focus:noamDidacticVisualFocus\(visual\.exerciseId\)/);
+  assert.doesNotMatch(
+    html.slice(html.indexOf("function addTranscriptBubble("),html.indexOf("function ensureNoamGlossaryPopover(")),
+    /visual\.focus/
+  );
+  assert.match(html,/noam-question-visual-stage/);
+  assert.match(html,/noam-question-focus-segment\.is-parallel/);
 });
 
 test("geometry answers offer a free local drawing action and hide it after use", () => {

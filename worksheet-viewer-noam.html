@@ -1443,6 +1443,52 @@ textarea:focus{
 .noam-visual-vertex-label{fill:var(--ink);font-family:'Heebo',sans-serif;font-size:18px;font-weight:900;text-anchor:middle}
 .noam-visual-angle{fill:none;stroke:var(--accent-dark);stroke-width:7;stroke-linecap:round}
 .noam-question-visual-image{display:block;width:100%;height:auto;max-height:310px;object-fit:contain;background:#fff;border:1.5px solid #14213d33;border-radius:9px}
+.noam-question-visual-stage{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  background:#fff;
+  border:1.5px solid #14213d33;
+  border-radius:9px;
+}
+.noam-question-visual-stage .noam-question-visual-focus-image{
+  position:absolute;
+  max-width:none;
+  max-height:none;
+  object-fit:initial;
+  border:0;
+  border-radius:0;
+}
+.noam-question-visual-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.noam-question-focus-segment{
+  fill:none;
+  stroke-width:6;
+  stroke-linecap:round;
+  opacity:.82;
+  filter:drop-shadow(0 0 2px #fff);
+}
+.noam-question-focus-segment.is-parallel{stroke:#008b80}
+.noam-question-focus-segment.is-transversal{stroke:#d45b17;stroke-width:5}
+.noam-question-focus-segment.is-emphasis{stroke:var(--accent-dark)}
+.noam-question-focus-angle{
+  fill:none;
+  stroke:#c4264f;
+  stroke-width:7;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 2px #fff);
+}
+.noam-question-focus-label{
+  fill:#8c1538;
+  stroke:#fff;
+  stroke-width:7;
+  paint-order:stroke fill;
+  font-family:'Heebo',Arial,sans-serif;
+  font-size:35px;
+  font-weight:900;
+  text-anchor:middle;
+  direction:ltr;
+}
+.noam-question-visual-note{margin-top:6px}
 .noam-visual-note{margin:2px 4px 0;color:var(--muted);font-size:12.5px;line-height:1.35}
 .noam-visual-steps{margin:7px 4px 0;font-size:12.5px;line-height:1.45}
 .noam-visual-steps summary{width:max-content;max-width:100%;color:var(--accent-dark);font-weight:900;cursor:pointer}
@@ -2100,7 +2146,8 @@ textarea:focus{
   </div>
 </dialog>
 
-<script src="noam-local-visual.js?v=20260920-2"></script>
+<script src="noam-didactic-guides.js?v=20260920-1"></script>
+<script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
 <script src="noam-glossary.js?v=20260920-3"></script>
 <script>
@@ -4371,7 +4418,10 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   if (visual && window.NoamLocalVisual){
     var visualSpec=visual;
     if (visual.type==="question-image"){
-      visualSpec=Object.assign({},visual,{src:exercisePreviewCache[visual.exerciseId]||""});
+      visualSpec=Object.assign({},visual,{
+        src:exercisePreviewCache[visual.exerciseId]||"",
+        focus:noamDidacticVisualFocus(visual.exerciseId)
+      });
     }
     var visualElement=window.NoamLocalVisual.render(document,visualSpec);
     if (visualElement){bubble.appendChild(visualElement);}
@@ -5362,20 +5412,289 @@ function noamRecentThreadText(thread,limit){
   }).join("\n").slice(-Math.max(0,Number(limit)||0));
 }
 
-function noamSolverMessage(studentMessage,thread,topic){
+function noamGeometryAnalysisSource(analysis,guide){
+  var values=[
+    analysis&&analysis.transcription,
+    analysis&&analysis.problem_statement,
+    analysis&&analysis.math_content,
+    analysis&&analysis.diagram_description,
+    guide&&guide.goal,
+    guide&&guide.canonicalFacts&&guide.canonicalFacts.join("\n"),
+    guide&&guide.canonicalChain,
+    guide&&guide.forbidden&&guide.forbidden.join("\n")
+  ].map(function(value){return String(value||"").trim();}).filter(function(value,index,all){
+    return value&&all.indexOf(value)===index;
+  });
+  return values.join("\n");
+}
+
+function noamSegmentKey(segment){
+  return String(segment||"").replace(/[^A-Z]/gi,"").toUpperCase().split("").sort().join("");
+}
+
+function noamSegmentEqualityKey(left,right){
+  return [noamSegmentKey(left),noamSegmentKey(right)].sort().join("=");
+}
+
+function noamSegmentEqualities(text){
+  var source=String(text||"").toUpperCase();
+  var result=[];
+  var expression=/(^|[^A-Z])([A-Z]{2})\s*=\s*([A-Z]{2})(?![A-Z])/g;
+  var match;
+  while ((match=expression.exec(source))){
+    result.push({
+      left:match[2],right:match[3],
+      key:noamSegmentEqualityKey(match[2],match[3]),
+      index:match.index+match[1].length,
+      end:expression.lastIndex
+    });
+  }
+  return result;
+}
+
+function noamProofTargets(text){
+  var source=String(text||"");
+  var targets=[];
+  var cues=/(?:הוכיחו|הוכח(?:נה)?|יש\s+להוכיח|צריך\s+להוכיח|הראו|יש\s+להראות|צריך\s+להראות)\s*:?\s*/gi;
+  var cue;
+  while ((cue=cues.exec(source))){
+    var tail=source.slice(cues.lastIndex,cues.lastIndex+220).split(/[\n.!?;]/)[0];
+    noamSegmentEqualities(tail).forEach(function(item){
+      if (!targets.some(function(target){return target.key===item.key;})){targets.push(item);}
+    });
+  }
+  return targets;
+}
+
+function noamCircularProofIssue(answer,source){
+  var targets=noamProofTargets(source);
+  if (!targets.length){return null;}
+  var text=String(answer||"");
+  var mentions=noamSegmentEqualities(text);
+  for (var i=0;i<mentions.length;i+=1){
+    var mention=mentions[i];
+    if (!targets.some(function(target){return target.key===mention.key;})){continue;}
+    var before=text.slice(Math.max(0,mention.index-70),mention.index);
+    var after=text.slice(mention.end,mention.end+45);
+    var negated=/(?:לא|אינו|אינה|אין|אסור|אל)\s+[^.!?\n]{0,28}$/i.test(before);
+    var premise=/(?:שימו\s+לב\s+לנתון|מהנתון|לפי\s+הנתון|נתון(?:\s+לנו)?(?:\s+ש)?|ידוע(?:\s+ש)?|מאחר\s+ש|מכיוון\s+ש|מפני\s+ש|נניח\s+ש|מתקיים|נשתמש\s+(?:גם\s+)?ב(?:נתון|כך\s+ש)?)\s*[-:–—־]?\s*$/i.test(before);
+    var usedToInfer=/^\s*[,.;:]?\s*(?:ו?לכן|מכאן|אז|אפשר\s+להסיק)/i.test(after);
+    var goalFraming=/(?:המטרה(?:\s+היא)?|צריך\s+להוכיח|נרצה\s+להוכיח|כדי\s+להוכיח)\s*[-:–—־]?\s*$/i.test(before);
+    var completion=/^\s*[,.;:]?\s*(?:ו?לכן\s+)?(?:סיימנו|זה\s+מה|כנדרש|הוכחנו)/i.test(after);
+    if (!negated&&(premise||(mention.index<80&&usedToInfer&&!goalFraming&&!completion))){
+      return "השוויון "+mention.left+"="+mention.right+" הוא יעד ההוכחה, ולכן אסור להשתמש בו כנתון או כהנחה בדרך.";
+    }
+  }
+  return null;
+}
+
+function noamParallelPairs(text){
+  var source=String(text||"").toUpperCase();
+  var pairs=[];
+  var expression=/([A-Z])\s*([A-Z])\s*(?:∥|\|\||\\PARALLEL|מקביל(?:ה|ים|ות)?\s*ל\s*[-־]?)\s*([A-Z])\s*([A-Z])/g;
+  var match;
+  while ((match=expression.exec(source))){
+    var first=match[1]+match[2];
+    var second=match[3]+match[4];
+    var key=[noamSegmentKey(first),noamSegmentKey(second)].sort().join("∥");
+    if (!pairs.some(function(pair){return pair.key===key;})){pairs.push({first:first,second:second,key:key});}
+  }
+  return pairs;
+}
+
+function noamAngles(text){
+  var source=String(text||"").toUpperCase();
+  var angles=[];
+  var expression=/(?:∠|\\ANGLE\s*\{?|הזווית\s+)([A-Z])\s*([A-Z])\s*([A-Z])\}?/g;
+  var match;
+  while ((match=expression.exec(source))){
+    var name=match[1]+match[2]+match[3];
+    angles.push({name:name,left:match[1],vertex:match[2],right:match[3],index:match.index,end:expression.lastIndex});
+  }
+  return angles;
+}
+
+function noamAnglesClaimedByRelation(text,relationStart,relationEnd){
+  var beforeBoundary=Math.max(text.lastIndexOf(".",relationStart-1),text.lastIndexOf("!",relationStart-1),text.lastIndexOf("?",relationStart-1),text.lastIndexOf("\n",relationStart-1),text.lastIndexOf(";",relationStart-1));
+  var boundaryCandidates=[text.indexOf(".",relationEnd),text.indexOf("!",relationEnd),text.indexOf("?",relationEnd),text.indexOf("\n",relationEnd),text.indexOf(";",relationEnd)]
+    .filter(function(index){return index!==-1;});
+  var afterBoundary=boundaryCandidates.length?Math.min.apply(Math,boundaryCandidates):text.length;
+  var sentenceStart=beforeBoundary+1;
+  var sentence=text.slice(sentenceStart,afterBoundary);
+  var angles=noamAngles(sentence);
+  if (!angles.length){
+    return noamAngles(text).filter(function(angle){return angle.end<=relationStart;})
+      .sort(function(a,b){return b.end-a.end;}).slice(0,1);
+  }
+  relationStart-=sentenceStart;
+  relationEnd-=sentenceStart;
+  var before=angles.filter(function(angle){return angle.end<=relationStart;})
+    .sort(function(a,b){return b.end-a.end;});
+  var after=angles.filter(function(angle){return angle.index>=relationEnd;})
+    .sort(function(a,b){return a.index-b.index;});
+  if (before.length&&after.length){return [before[0],after[0]];}
+  if (before.length>=2){return before.slice(0,2);}
+  if (after.length>=2){return after.slice(0,2);}
+  return before.concat(after).slice(0,2);
+}
+
+function noamAngleParallelRole(angle,pair){
+  var lines=[pair.first,pair.second];
+  for (var i=0;i<lines.length;i+=1){
+    var line=lines[i];
+    if (angle.vertex!==line[0]&&angle.vertex!==line[1]){continue;}
+    var other=angle.vertex===line[0]?line[1]:line[0];
+    if (angle.left===other||angle.right===other){return i;}
+  }
+  return -1;
+}
+
+function noamAlternateAngleIssue(answer,source){
+  var pairs=noamParallelPairs(source);
+  if (!pairs.length){return null;}
+  var text=String(answer||"");
+  var relation=/(?:מתחלפ(?:ת|ות|ים)?|מתאימ(?:ה|ות|ים)?)/gi;
+  var match;
+  while ((match=relation.exec(text))){
+    var windowText=text.slice(Math.max(0,match.index-170),Math.min(text.length,relation.lastIndex+170));
+    var offset=Math.max(0,match.index-170);
+    var angles=noamAnglesClaimedByRelation(windowText,match.index-offset,relation.lastIndex-offset);
+    for (var a=0;a<angles.length;a+=1){
+      var angle=angles[a];
+      var endpointPairs=pairs.filter(function(pair){return (pair.first+pair.second).indexOf(angle.vertex)!==-1;});
+      if (endpointPairs.length&&!endpointPairs.some(function(pair){return noamAngleParallelRole(angle,pair)!==-1;})){
+        return "הזווית ∠"+angle.name+" אינה כוללת קרן על אחד הישרים המקבילים בנקודת החיתוך, ולכן אינה יכולה לשמש כאן כזווית מתחלפת או מתאימה.";
+      }
+    }
+    for (var left=0;left<angles.length;left+=1){
+      for (var right=left+1;right<angles.length;right+=1){
+        if (angles[left].vertex===angles[right].vertex){
+          return "זוג הזוויות שנקרא מתחלף חולק אותו קודקוד. זוויות מתחלפות של ישר חותך נמצאות בשתי נקודות חיתוך שונות.";
+        }
+        var sharedPairs=pairs.filter(function(pair){
+          var leftRole=noamAngleParallelRole(angles[left],pair);
+          var rightRole=noamAngleParallelRole(angles[right],pair);
+          return leftRole!==-1&&rightRole!==-1;
+        });
+        if (sharedPairs.length&&sharedPairs.every(function(pair){
+          return noamAngleParallelRole(angles[left],pair)===noamAngleParallelRole(angles[right],pair);
+        })){
+          return "שתי הזוויות שנקראו מתחלפות נשענות על אותו ישר מקביל; צריך זווית אחת בכל אחת משתי נקודות החיתוך של החותך.";
+        }
+      }
+    }
+  }
+  return null;
+}
+
+function noamGeometryAnswerReview(answer,analysis,guide){
+  var source=noamGeometryAnalysisSource(analysis,guide);
+  if (!noamGeometryContext(source+" "+answer)){return {ok:true,reasons:[]};}
+  var reasons=[];
+  var circular=noamCircularProofIssue(answer,source);
+  var alternate=noamAlternateAngleIssue(answer,source);
+  if (circular){reasons.push(circular);}
+  if (alternate){reasons.push(alternate);}
+  return {ok:reasons.length===0,reasons:reasons};
+}
+
+function noamGeometryRepairMessage(studentMessage,review,guidePrompt){
+  var instruction="טיוטת התשובה נפסלה בבדיקת דיוק מקומית. "+review.reasons.join(" ")+
+    " "+String(guidePrompt||"")+" פתור מחדש מן הנתונים בלבד. לפני שוויון זוויות רשום את הקודקוד ואת שתי הקרניים. אל תזכיר את הטיוטה. שאלת התלמיד: "+String(studentMessage||"").trim();
+  var room=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
+  return instruction.slice(0,room)+MATH_OUTPUT_INSTRUCTION;
+}
+
+function noamVerifiedGeometryFallback(guide){
+  if (!guide){return "";}
+  return [guide.forbidden&&guide.forbidden[0],guide.canonicalFacts&&guide.canonicalFacts.join(" "),guide.canonicalChain]
+    .filter(Boolean).join(" ");
+}
+
+function noamGuardGeometryResult(result,payload,analysis,studentMessage,guide,guidePrompt){
+  if (!result||!result.ok||!result.answer){return Promise.resolve(result);}
+  var review=noamGeometryAnswerReview(result.answer,analysis,guide);
+  if (review.ok){return Promise.resolve(result);}
+  var retryPayload=Object.assign({},payload,{studentMessage:noamGeometryRepairMessage(studentMessage,review,guidePrompt)});
+  return postJson(API+"/noamImageSolve",retryPayload).then(function(retry){
+    var retryReview=retry&&retry.answer?noamGeometryAnswerReview(retry.answer,analysis,guide):review;
+    if (retry&&retry.ok&&retry.answer&&retryReview.ok){return retry;}
+    return {
+      ok:true,
+      answer:noamVerifiedGeometryFallback(guide)||"עצרתי תשובה לא מדויקת לפני שהוצגה: היא השתמשה במסקנה כנתון או קישרה זוויות למקבילים בלי לבדוק את הקרניים. נסו שוב כדי שאבנה את ההוכחה מן הנתונים בלבד.",
+      geometryGuarded:true
+    };
+  },function(){
+    return {
+      ok:true,
+      answer:noamVerifiedGeometryFallback(guide)||"עצרתי תשובה לא מדויקת לפני שהוצגה: היא השתמשה במסקנה כנתון או קישרה זוויות למקבילים בלי לבדוק את הקרניים. נסו שוב כדי שאבנה את ההוכחה מן הנתונים בלבד.",
+      geometryGuarded:true
+    };
+  });
+}
+
+function noamDidacticVisualFocus(exerciseId){
+  var guide=noamDidacticGuide(exerciseId);
+  return guide&&guide.visualFocus||null;
+}
+
+function noamDidacticGuide(exerciseId){
+  var guides=window.NoamDidacticGuides;
+  if (!exerciseId||!guides||typeof guides.get!=="function"){return null;}
+  try{
+    return guides.get(exerciseId)||null;
+  }catch(error){
+    return null;
+  }
+}
+
+function noamDidacticPrompt(exerciseId){
+  var guides=window.NoamDidacticGuides;
+  if (!exerciseId||!guides||typeof guides.prompt!=="function"){return "";}
+  try{
+    var fullPrompt=String(guides.prompt(exerciseId)||"");
+    var guide=noamDidacticGuide(exerciseId);
+    if (!guide){return fullPrompt;}
+    if (guide.modelPrompt){return fullPrompt;}
+    return [
+      "מדריך מאומת: "+guide.goal+".",
+      "שרשרת: "+guide.canonicalChain,
+      "איסורים: "+(guide.forbidden||[]).join(" ")
+    ].join(" ");
+  }catch(error){return "";}
+}
+
+function noamDidacticResponse(exercise,helpKind,hintIndex,studentMessage){
+  var guides=window.NoamDidacticGuides;
+  if (!exercise||!guides||typeof guides.respond!=="function"){return null;}
+  try{
+    return guides.respond(exercise.id,{
+      helpKind:helpKind,
+      hintIndex:hintIndex,
+      studentMessage:studentMessage
+    })||null;
+  }catch(error){
+    return null;
+  }
+}
+
+function noamSolverMessage(studentMessage,thread,topic,guidePrompt){
   var budget=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
   var current=String(studentMessage||"").trim();
   var geometry=noamGeometryContext(topic+" "+current+" "+noamRecentThreadText(thread,220));
   var visual=window.NoamLocalVisual&&window.NoamLocalVisual.wantsVisualSupport&&window.NoamLocalVisual.wantsVisualSupport(current);
-  var guard=geometry
+  var generalGuard=geometry
     ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך."
     : "";
-  if (visual){guard+=" התלמיד מתקשה בזיהוי חזותי. ציין מה לסמן; אל תבקש ממנו לנחש. האתר יציג שרטוט לצד התשובה, לכן אל תאמר שאינך יכול לצייר.";}
+  var verified=String(guidePrompt||"");
+  var guard=verified||generalGuard;
+  if (visual){guard+=verified?" ציין בדיוק מה לסמן בשרטוט.":" התלמיד מתקשה בזיהוי חזותי. ציין מה לסמן; אל תבקש ממנו לנחש. האתר יציג שרטוט לצד התשובה, לכן אל תאמר שאינך יכול לצייר.";}
   var label="הודעת התלמיד עכשיו: ";
-  var currentBudget=Math.min(current.length,Math.max(140,Math.floor(budget*.42)));
+  var currentBudget=Math.min(current.length,Math.max(90,Math.floor(budget*(verified ? .24 : .42))));
   var currentText=current.slice(0,currentBudget);
   var prefixBudget=Math.max(0,budget-label.length-currentText.length-2);
-  var prefix=guard.slice(0,prefixBudget);
+  var prefix=guard.length<=prefixBudget?guard:
+    (guard.slice(0,Math.max(0,prefixBudget-145))+" … "+guard.slice(-140)).slice(0,prefixBudget);
   var contextRoom=Math.max(0,prefixBudget-prefix.length-(prefix?1:0));
   if (contextRoom>45&&(thread.history||[]).length){
     var context="הקשר קודם, שעשוי לכלול טעות: "+noamRecentThreadText(thread,contextRoom-34);
@@ -5387,10 +5706,8 @@ function noamSolverMessage(studentMessage,thread,topic){
 function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,imageAnalysis){
   var visualContext=ttl+" "+String(imageAnalysis&&imageAnalysis.diagram_description||"");
   if (!exercise||!noamVisualNeed(studentMessage,answer,helpKind,hintIndex,visualContext)){return null;}
-  var local=window.NoamLocalVisual;
-  var conversation=noamRecentThreadText(thread,1400)+"\n"+studentMessage+"\n"+answer;
-  var triangle=local&&local.parseLabeledTriangle?local.parseLabeledTriangle(conversation):null;
-  if (triangle){return triangle;}
+  // Geometry help always starts from the worksheet's own drawing. Reconstructing
+  // a shape from chat text can silently omit a point, a parallel or an extension.
   return {type:"question-image",exerciseId:exercise.id,label:"השרטוט מתוך השאלה"};
 }
 
@@ -5443,13 +5760,34 @@ function askNoam(helpKind,studentMessage){
   announceNoam("נועם AI מכין תשובה עבור " + exerciseLabel(exercise) + ".");
 
   var attachments=(typeof currentAttachments==="function")?currentAttachments().slice():[];
+  var guide=noamDidacticGuide(exercise.id);
+  var guidePrompt=noamDidacticPrompt(exercise.id);
+  var guidedResponse=attachments.length?null:noamDidacticResponse(exercise,helpKind,hintIndex,studentMessage);
   var requestAnalysis=null;
+  var requestPayload=null;
+
+  if (guidedResponse&&guidedResponse.text){
+    var guidedAnswer=String(guidedResponse.text).trim();
+    var guidedNeedsVisual=guidedResponse.visual==="focus"||
+      !!(window.NoamLocalVisual&&window.NoamLocalVisual.wantsVisualSupport&&window.NoamLocalVisual.wantsVisualSupport(studentMessage));
+    var guidedVisual=guidedNeedsVisual
+      ? {type:"question-image",exerciseId:exercise.id,label:"השרטוט המוגדל",focus:guide&&guide.visualFocus||null}
+      : null;
+    thread.messages.push({role:"assistant",text:guidedAnswer,kind:"",visual:guidedVisual});
+    thread.history.push({role:"user",content:historyQuestion},{role:"assistant",content:guidedAnswer});
+    thread.history=thread.history.slice(-8);
+    thread.messages=thread.messages.slice(-60);
+    if (helpKind==="hint"){thread.hintIndex=Math.min(3,thread.hintIndex+1);}
+    saveNoamState();setNoamBusy(false);renderNoamChat();
+    announceNoam(exerciseLabel(exercise) + ". נועם AI: " + guidedAnswer);
+    return;
+  }
 
   getExerciseAnalysis(exercise)
     .then(function(analysis){
       requestAnalysis=analysis;
-      var solverMessage=noamSolverMessage(studentMessage,thread,ttl);
-      return postJson(API+"/noamImageSolve",{
+      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt);
+      requestPayload={
         exerciseId:exercise.id,
         grade:g,
         level:LEVEL[lv],
@@ -5459,7 +5797,11 @@ function askNoam(helpKind,studentMessage){
         studentMessage:solverMessage,
         conversationHistory:thread.history,
         imageAnalysis:analysis
-      });
+      };
+      return postJson(API+"/noamImageSolve",requestPayload);
+    })
+    .then(function(result){
+      return noamGuardGeometryResult(result,requestPayload,requestAnalysis,studentMessage,guide,guidePrompt);
     })
     .then(function(result){
       if (!result||!result.ok||!result.answer){ throw new Error((result&&result.error)||"נועם AI לא זמין כרגע."); }
