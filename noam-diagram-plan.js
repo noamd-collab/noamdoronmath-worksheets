@@ -15,6 +15,7 @@
   PROMPT_SCHEMA += " The additional optional field pointHighlights is supported: [{point:'B',color:'blue'}]. Use it to locate a single point or vertex explicitly named on its own in the current hint or drawing request. If the hint asks which side is opposite vertex B, emphasize only B; do not select the opposite side or add rays/angle marks that were not named. Point highlighting requires no factual evidence and must not introduce a new point.";
   PROMPT_SCHEMA += " Optional rays:[[M,A],[M,C]] are directed from the first point through the second. A ray must be explicitly called a ray in affirmative source text (Hebrew קרן/קרניים or English ray/rays), and its named point pair must also be in segments. Never convert a segment or line to a ray based on a student request. The renderer adds arrowheads beyond the named through-point. Preserve explicitly stated acute/obtuse angle classes; an approximate diagram description is not an exact degree measurement.";
   PROMPT_SCHEMA += " Angle-label examples: for {from:'E',vertex:'A',to:'D'} use label:'∠EAD' or label:''; for {from:'D',vertex:'A',to:'C'} use label:'∠DAC'. Write plain Unicode angle names, with the vertex in the middle. Never use alpha/beta, an equality such as EAD=DAC, explanatory words, or a computed angle value as a label. Identifying two angles does not mark or prove their equality.";
+  PROMPT_SCHEMA += " Name-only or empty angle/segment labels identify objects; they need no evidence entry. Reserve evidence for factual markings and numeric values.";
 
   function fail(reason,constraint){throw Object.assign(new Error(reason),{reason:reason},constraint?{constraint:constraint}:{});}
   function object(value){return value&&typeof value==="object"&&!Array.isArray(value)&&(Object.getPrototypeOf(value)===Object.prototype||Object.getPrototypeOf(value)===null);}
@@ -124,6 +125,10 @@
       function focused(ends,isAngle){if(!focusAllows(focus,ends,isAngle)){fail("outside_current_focus");}if(isAngle){if(!isDrawn([ends[0],ends[1]])||!isDrawn([ends[1],ends[2]])){fail("undrawn_mark");}}else if(!isDrawn(ends)){fail("undrawn_mark");}}
       var evidence={};list(plan.evidence,32).forEach(function(item){keys(item,["mark","source","quote"]);if(typeof item.mark!=="string"||!/^(equalGroups|rightAngles|angles|highlights)\.\d{1,2}$/.test(item.mark)||evidence[item.mark]||(item.source!=="question"&&item.source!=="hint")){fail("invalid_evidence");}text(item.quote,400);if(!grounded(item.quote,item.source==="question"?question:hint)){fail("unproven_evidence");}evidence[item.mark]=item;});
       var usedEvidence={};function proof(mark,check){var item=evidence[mark];if(!item||!check(item.quote)){fail("ungrounded_mark");}usedEvidence[mark]=true;}
+      // Every entry was grounded above. An optional citation on a validated
+      // name-only mark adds no fact; do not reject an otherwise useful diagram.
+      // Call only for existing marks after their exact label/focus validation.
+      function optionalNameEvidence(mark){if(evidence[mark]){usedEvidence[mark]=true;}}
       var scene={type:"geometry-scene",title:"המחשה לשלב הנוכחי",caption:"שרטוט סכמטי: הצבעים מדגישים את הנקודות, הקטעים והזוויות שבשלב הנוכחי.",points:points,segments:segments,equations:[]};
       var declaredRays=sourceRays(question+". "+hint),raySeen={};
       list(plan.rays,16).forEach(function(item){var ends=pair(item),name=ends.join("");if(raySeen[name]){fail("duplicate_ray");}if(!declaredRays[name]){fail("ungrounded_ray");}if(!seen[pairKey(ends)]){fail("undrawn_ray");}raySeen[name]=true;});
@@ -147,7 +152,7 @@
           if(!/^\d+(?:\.\d+)?$/.test(label)){fail("invalid_segment_label");}
           proof("highlights."+index,function(quote){return numericIn(quote,ends,Number(label),false);});
           if(!sameLength(distance(points[ends[0]],points[ends[1]]),Number(label))){fail("coordinate_contradiction");}
-        }
+        }else{optionalNameEvidence("highlights."+index);}
         return {from:ends[0],to:ends[1],color:color(item.color),label:label};
       });
       var groupLengths={};scene.equalGroups=list(plan.equalGroups,6).map(function(item,index){
@@ -163,6 +168,7 @@
         var name=label.replace(/^∠/,""),numeric=label.match(/^(\d+(?:\.\d+)?)°$/);
         if(numeric){proof("angles."+index,function(quote){return numericIn(quote,a.ends,Number(numeric[1]),true);});if(Math.abs(a.degrees-Number(numeric[1]))>.5){fail("coordinate_contradiction");}}
         else if(label&&name!==a.ends.join("")&&name!==a.ends.slice().reverse().join("")){fail("invalid_angle_label");}
+        else{optionalNameEvidence("angles."+index);}
         return {from:item.from,vertex:item.vertex,to:item.to,label:label};
       });
       if(Object.keys(evidence).some(function(mark){return !usedEvidence[mark];})){fail("unused_evidence");}

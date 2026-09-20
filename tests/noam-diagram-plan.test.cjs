@@ -74,6 +74,48 @@ test("Q24 formatting tolerance still rejects mismatched names, claims, commands 
   assert.equal(Plan.inspect(plan,c).reason,"source_coordinate_contradiction","normalizing labels cannot hide a contradiction with AD∥BC");
 });
 
+test("Q24 tolerates redundant grounded evidence on named or unlabeled angle and segment marks",()=>{
+  for(const empty of [false,true]){
+    const {plan,context:c}=q24AngleCase();
+    plan.highlights=[{from:"A",to:"D",label:empty?"":"AD"}];
+    if(empty){plan.angles.forEach(a=>{a.label="";});}
+    const expected=Plan.inspect(plan,c);assert.equal(expected.ok,true,expected.reason);
+    plan.evidence=[
+      {mark:"angles.0",source:"hint",quote:"סמן בשרטוט את הזווית \\(\\angle EAD\\)"},
+      {mark:"angles.1",source:"hint",quote:"את הזווית ∠DAC"},
+      {mark:"angles.2",source:"hint",quote:"הזווית ∠EAD שווה ל-∠ABC כי הן זוויות מתאימות בין הישרים המקבילים AD∥BC והחותך BE"},
+      {mark:"highlights.0",source:"question",quote:"AD∥BC"}
+    ];
+    const result=Plan.inspect(plan,c);assert.equal(result.ok,true,result.reason);
+    assert.deepEqual(result.scene,expected.scene,"optional provenance must not add facts or marks");
+    assert.ok(Plan.render(documentStub(),plan,c));
+  }
+});
+
+test("optional name evidence never rescues dangling citations, unproved facts or incorrect numeric labels",()=>{
+  for(const mark of ["angles.3","angles.9","highlights.0","equalGroups.0","rightAngles.0"]){
+    const {plan,context:c}=q24AngleCase();plan.evidence=[{mark,source:"question",quote:"AD∥BC"}];
+    assert.equal(Plan.inspect(plan,c).reason,"unused_evidence",mark);
+  }
+  const {plan,context:c}=q24AngleCase();
+  plan.evidence=[{mark:"angles.0",source:"question",quote:"הוכיחו כי AD חוצה את הזווית החיצונית EAC"}];
+  assert.equal(Plan.inspect(plan,c).reason,"unproven_evidence");
+  plan.evidence=[{mark:"angles.0",source:"student",quote:"∠EAD=45°"}];
+  assert.equal(Plan.inspect(plan,c).reason,"invalid_evidence");
+  plan.evidence=[{mark:"angles.0",source:"hint",quote:"∠EAD=45°"}];
+  assert.equal(Plan.inspect(plan,c).reason,"unproven_evidence");
+  plan.evidence=[{mark:"angles.0",source:"hint",quote:"את הזווית ∠DAC"}];plan.angles[0].label="45°";
+  assert.equal(Plan.inspect(plan,c).reason,"ungrounded_mark","a grounded name citation does not prove a numeric value");
+  plan.angles[0].label="∠EAD";plan.points.D=[4,4];
+  assert.equal(Plan.inspect(plan,c).reason,"source_coordinate_contradiction");
+  plan.points.D=[4,3];plan.angles[0].label="∠ABC";
+  assert.equal(Plan.inspect(plan,c).reason,"invalid_angle_label");
+  plan.angles[0].label="∠EAD";plan.evidence=[{mark:"highlights.0",source:"question",quote:"AD∥BC"}];
+  plan.highlights=[{from:"A",to:"D",label:"4"}];
+  assert.equal(Plan.inspect(plan,c).reason,"ungrounded_mark","parallel evidence does not prove a segment length");
+  plan.highlights[0].label="AB";assert.equal(Plan.inspect(plan,c).reason,"invalid_segment_label");
+});
+
 test("the live opposite-side hint locates B without revealing the opposite side",()=>{
   const p=basic();p.highlights=[];p.pointHighlights=[{point:"B",color:"blue"}];
   const c=context({hintText:"האם אתה יודע איזו צלע נמצאת מול הקודקוד \\(B\\)?"});
