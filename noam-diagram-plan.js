@@ -12,6 +12,8 @@
   var COLORS=["blue","orange","teal","pink"],EPS=1e-6;
   var PROMPT_SCHEMA="Return JSON only. Supported geometry is straight segments between 3–16 named uppercase single-letter points. Format: {version:1,status:'ok',points:{A:[0,0],B:[4,0],C:[0,3]},segments:[['A','B'],['B','C'],['C','A']],highlights:[{from:'A',to:'B',color:'blue',label:'AB'}],angles:[],equalGroups:[],rightAngles:[],evidence:[]}. Use double quotes in JSON. Allowed colors: blue,orange,teal,pink. Angles: {from,vertex,to,label}; label is empty, the exact angle name such as ∠ABC, or a given numeric degree value. Equality groups: {segments:[[A,B],[C,D]],count:1|2|3,color}. Right angles: [[A,B,C]] with B the vertex. Each equality group, right-angle mark, numeric angle/segment label needs evidence {mark:'equalGroups.0'|'rightAngles.0'|'angles.0'|'highlights.0',source:'question'|'hint',quote:'exact affirmative text from supplied question or current hint'}. Never cite a goal, question, conditional statement, negation, or a student assertion as evidence. Coordinates must agree with every explicit given relation and with marked values. Use simple exact coordinates where possible. Only emphasize the named objects in the current hint or the student's explicit drawing request. Points must already occur in question/hint. No title, caption, prose, equations, SVG, HTML, code, extra keys, computed solution, or later proof step. If unsupported, return {version:1,status:'unsupported'}.";
 
+  PROMPT_SCHEMA += " The additional optional field pointHighlights is supported: [{point:'B',color:'blue'}]. Use it to locate a single point or vertex explicitly named on its own in the current hint or drawing request. If the hint asks which side is opposite vertex B, emphasize only B; do not select the opposite side or add rays/angle marks that were not named. Point highlighting requires no factual evidence and must not introduce a new point.";
+
   function fail(reason){throw Object.assign(new Error(reason),{reason:reason});}
   function object(value){return value&&typeof value==="object"&&!Array.isArray(value)&&(Object.getPrototypeOf(value)===Object.prototype||Object.getPrototypeOf(value)===null);}
   function keys(value,allowed){if(!object(value)){fail("invalid_object");}Object.keys(value).forEach(function(key){if(allowed.indexOf(key)<0){fail("unknown_field");}});}
@@ -35,7 +37,8 @@
   function sameLength(a,b){return Math.abs(a-b)<=EPS*Math.max(1,a,b);}
   function namesIn(value){var names={};(clean(value).match(/(?:^|[^A-Za-z])[A-Z]{1,6}(?=$|[^A-Za-z])/g)||[]).forEach(function(token){token=token.replace(/[^A-Z]/g,"");if(["PDF","SVG","JSON","HTTP","HTTPS","AI"].indexOf(token)<0){token.split("").forEach(function(n){names[n]=true;});}});return names;}
   function tokens(value){return (clean(value).match(/(?:^|[^A-Za-z])[A-Z]{2,6}(?=$|[^A-Za-z])/g)||[]).map(function(v){return v.replace(/[^A-Z]/g,"");}).filter(function(v){return ["PDF","SVG","JSON","HTTP","HTTPS","AI"].indexOf(v)<0;});}
-  function focusText(context){var student=clean(context.studentMessage||"");return /איפה|היכן|סמן|סמני|הראה|הראי|תראה|תראי|צייר|ציור|שרטט|שרטוט|הדגם|תדגים|הצג/.test(student)&&tokens(student).length?student:clean(context.hintText||"");}
+  function singlePointNames(value){return (clean(value).match(/(?:^|[^A-Za-z])[A-Z](?=$|[^A-Za-z])/g)||[]).map(function(v){return v.replace(/[^A-Z]/g,"");});}
+  function focusText(context){var student=clean(context.studentMessage||"");return /איפה|היכן|סמן|סמני|הראה|הראי|תראה|תראי|צייר|ציור|שרטט|שרטוט|הדגם|תדגים|הצג/.test(student)&&(tokens(student).length||singlePointNames(student).length)?student:clean(context.hintText||"");}
   function pairKey(pair){return pair.slice().sort().join("");}
   function focusAllows(value,ends,isAngle){
     var wanted=ends.join(""),reverse=ends.slice().reverse().join("");
@@ -69,7 +72,7 @@
     try{
       context=context||{};safeTree(plan,0);
       if(JSON.stringify(plan).length>24000){fail("plan_too_large");}
-      keys(plan,["version","status","points","segments","highlights","angles","equalGroups","rightAngles","evidence"]);
+      keys(plan,["version","status","points","segments","highlights","pointHighlights","angles","equalGroups","rightAngles","evidence"]);
       if(plan.version!==1){fail("unsupported_version");}
       if(plan.status==="unsupported"){return {ok:false,scene:null,reason:"unsupported"};}
       if(plan.status!=="ok"){fail("invalid_status");}
@@ -94,7 +97,17 @@
       function focused(ends,isAngle){if(!focusAllows(focus,ends,isAngle)){fail("outside_current_focus");}if(isAngle){if(!isDrawn([ends[0],ends[1]])||!isDrawn([ends[1],ends[2]])){fail("undrawn_mark");}}else if(!isDrawn(ends)){fail("undrawn_mark");}}
       var evidence={};list(plan.evidence,32).forEach(function(item){keys(item,["mark","source","quote"]);if(typeof item.mark!=="string"||!/^(equalGroups|rightAngles|angles|highlights)\.\d{1,2}$/.test(item.mark)||evidence[item.mark]||(item.source!=="question"&&item.source!=="hint")){fail("invalid_evidence");}text(item.quote,400);if(!grounded(item.quote,item.source==="question"?question:hint)){fail("unproven_evidence");}evidence[item.mark]=item;});
       var usedEvidence={};function proof(mark,check){var item=evidence[mark];if(!item||!check(item.quote)){fail("ungrounded_mark");}usedEvidence[mark]=true;}
-      var scene={type:"geometry-scene",title:"המחשה לשלב הנוכחי",caption:"שרטוט סכמטי: הצבעים מדגישים את הקטעים והזוויות שבשלב הנוכחי.",points:points,segments:segments,equations:[]};
+      var scene={type:"geometry-scene",title:"המחשה לשלב הנוכחי",caption:"שרטוט סכמטי: הצבעים מדגישים את הנקודות, הקטעים והזוויות שבשלב הנוכחי.",points:points,segments:segments,equations:[]};
+      var emphasizedPoints={};scene.pointHighlights=list(plan.pointHighlights,8).map(function(item){
+        keys(item,["point","color"]);
+        if(typeof item.point!=="string"||!Object.prototype.hasOwnProperty.call(points,item.point)||emphasizedPoints[item.point]){fail("invalid_point_highlight");}
+        // A hint that asks for the side opposite B may locate B, but must not
+        // color AC (the answer) or pick incident rays on the student's behalf.
+        if(singlePointNames(focus).indexOf(item.point)<0){fail("outside_current_focus");}
+        if(!isDrawn([item.point,item.point])){fail("undrawn_mark");}
+        emphasizedPoints[item.point]=true;
+        return {point:item.point,color:color(item.color)};
+      });
       scene.highlights=list(plan.highlights,12).map(function(item,index){
         keys(item,["from","to","color","label"]);var ends=pair([item.from,item.to]),label=text(item.label,16);focused(ends,false);
         if(label&&label!==ends.join("")&&label!==ends.slice().reverse().join("")){
@@ -120,7 +133,7 @@
         return {from:item.from,vertex:item.vertex,to:item.to,label:label};
       });
       if(Object.keys(evidence).some(function(mark){return !usedEvidence[mark];})){fail("unused_evidence");}
-      if(!scene.highlights.length&&!scene.angles.length&&!scene.equalGroups.length&&!scene.rightAngles.length){fail("missing_focus");}
+      if(!scene.highlights.length&&!scene.pointHighlights.length&&!scene.angles.length&&!scene.equalGroups.length&&!scene.rightAngles.length){fail("missing_focus");}
       var xs=pointNames.map(function(n){return points[n][0];}),ys=pointNames.map(function(n){return points[n][1];});
       if(Math.max.apply(null,xs)-Math.min.apply(null,xs)<EPS||Math.max.apply(null,ys)-Math.min.apply(null,ys)<EPS){fail("flat_scene");}
       // A plain outline can contradict a given even without a false tick mark.

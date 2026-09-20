@@ -31,6 +31,45 @@ test("named angle arcs identify the right vertex without asserting equality or d
   p.angles[0].label="∠ABC";assert.equal(Plan.inspect(p,c).reason,"invalid_angle_label");
 });
 
+test("the live opposite-side hint locates B without revealing the opposite side",()=>{
+  const p=basic();p.highlights=[];p.pointHighlights=[{point:"B",color:"blue"}];
+  const c=context({hintText:"האם אתה יודע איזו צלע נמצאת מול הקודקוד \\(B\\)?"});
+  const result=Plan.inspect(p,c);assert.equal(result.ok,true,result.reason);
+  const rendered=Plan.render(documentStub(),p,c),all=nodes(rendered);
+  assert.ok(rendered);
+  const marked=all.filter(n=>n.className==="noam-geometry-point-highlight");
+  assert.equal(marked.length,1);assert.equal(marked[0].attributes["data-point"],"B");
+  assert.equal(all.some(n=>n.className==="noam-geometry-highlight"||n.className==="noam-geometry-angle"),false);
+  p.highlights=[{from:"A",to:"C"}];assert.equal(Plan.inspect(p,c).reason,"outside_current_focus","AC is the answer, not an authorized mark");
+  p.highlights=[{from:"B",to:"A"}];assert.equal(Plan.inspect(p,c).reason,"outside_current_focus","naming a vertex alone does not choose a ray");
+  p.highlights=[];p.angles=[{from:"A",vertex:"B",to:"C",label:"∠ABC"}];assert.equal(Plan.inspect(p,c).reason,"outside_current_focus");
+});
+
+test("an explicit drawing request for one point overrides the previous segment focus",()=>{
+  const p=basic();p.highlights=[];p.pointHighlights=[{point:"B",color:"teal"}];
+  const c=context({hintText:"הסתכלו על הקטע AC.",studentMessage:"הראה לי את הקודקוד B"});
+  assert.equal(Plan.inspect(p,c).ok,true);
+  p.pointHighlights[0].point="A";assert.equal(Plan.inspect(p,c).reason,"outside_current_focus");
+  p.pointHighlights[0].point="B";c.studentMessage="אני חושב שהנקודה B";
+  assert.equal(Plan.inspect(p,c).reason,"outside_current_focus","a student's assertion is not a drawing focus override");
+});
+
+test("point highlights remain bounded and cannot invent points or prove an equality",()=>{
+  const p=basic();p.highlights=[];p.pointHighlights=[{point:"B",color:"blue"}];
+  const c=context({hintText:"התבונן בקודקוד B."});
+  for(const mark of [{point:"Z"},{point:"BC"},{point:"B",label:"90°"},{point:"B",color:"url(fake)"}]){
+    p.pointHighlights=[mark];assert.equal(Plan.inspect(p,c).ok,false);
+  }
+  p.pointHighlights=[{point:"B"},{point:"B"}];assert.equal(Plan.inspect(p,c).reason,"invalid_point_highlight");
+  p.pointHighlights=Array.from({length:9},()=>({point:"B"}));assert.equal(Plan.inspect(p,c).reason,"invalid_list");
+  p.pointHighlights=[{point:"B"}];p.equalGroups=[{segments:[["A","B"],["A","C"]],count:1}];
+  assert.equal(Plan.inspect(p,c).reason,"outside_current_focus");
+  p.equalGroups=[];c.hintText="התבוננו במשולש ABC.";
+  assert.equal(Plan.inspect(p,c).reason,"outside_current_focus","a polygon token alone does not select one vertex");
+  p.points.D=[2,2];c.questionText="נתון משולש ABC. מסומנת גם נקודה D.";c.hintText="התבוננו בנקודה D.";
+  p.pointHighlights=[{point:"D"}];assert.equal(Plan.inspect(p,c).reason,"undrawn_mark");
+});
+
 test("given equality requires a positive quote, exact operands, and compatible coordinates",()=>{
   const p=basic();p.points={A:[0,3],B:[-4,0],C:[4,0]};p.highlights=[];p.equalGroups=[{segments:[["A","B"],["A","C"]],count:1,color:"blue"}];
   p.evidence=[{mark:"equalGroups.0",source:"question",quote:"AB = AC"}];

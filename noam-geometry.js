@@ -66,6 +66,12 @@
     valid.segments=array(scene.segments,64).map(function(item){return pair(points,item);});
     if(!valid.segments.length){fail("A scene needs segments");}
     valid.highlights=array(scene.highlights,24).map(function(item){if(!item||typeof item!=="object"){fail("Invalid highlight");}return {ends:pair(points,[item.from,item.to]),color:color(item.color),label:text(item.label,32)};});
+    var pointHighlightsSeen={};
+    valid.pointHighlights=array(scene.pointHighlights,8).map(function(item){
+      if(!item||typeof item!=="object"||pointHighlightsSeen[item.point]){fail("Invalid point highlight");}
+      point(points,item.point);pointHighlightsSeen[item.point]=true;
+      return {point:item.point,color:color(item.color)};
+    });
     var equalityLengths={};
     valid.equalGroups=array(scene.equalGroups,8).map(function(group){
       if(!group||[1,2,3].indexOf(group.count)<0){fail("Invalid equality marks");}
@@ -108,7 +114,7 @@
       // Reserve conservative text bounds, including the white halo. All label
       // types share these reservations, so a later vertex cannot cover an
       // earlier segment or angle label (particularly O beside EO and OF).
-      var labelBoxes=[],pointBoxes=data.names.map(function(name){var p=screen(name);return [p[0]-4,p[1]-4,p[0]+4,p[1]+4];});
+      var labelBoxes=[],pointBoxes=data.names.map(function(name){var p=screen(name),r=data.pointHighlights.some(function(item){return item.point===name;})?10:4;return [p[0]-r,p[1]-r,p[0]+r,p[1]+r];});
       var markBoxes=data.rightAngles.map(function(item){
         var r=screenRays(item),s=Math.min(11,r.size*.22),a=[r.v[0]+r.u[0]*s,r.v[1]+r.u[1]*s],b=[a[0]+r.w[0]*s,a[1]+r.w[1]*s],c=[r.v[0]+r.w[0]*s,r.v[1]+r.w[1]*s];
         return [Math.min(a[0],b[0],c[0])-3,Math.min(a[1],b[1],c[1])-3,Math.max(a[0],b[0],c[0])+3,Math.max(a[1],b[1],c[1])+3];
@@ -165,9 +171,14 @@
       // Angle labels have the strictest placement (inside their own sector).
       // Give them priority before placing the more flexible segment labels.
       pendingSegmentLabels.forEach(function(draw){draw();});
+      data.pointHighlights.forEach(function(item){
+        var p=screen(item.point);
+        svg.appendChild(svgElement(doc,"circle",{cx:p[0],cy:p[1],r:7,fill:"#fff",stroke:item.color,"stroke-width":2.5,"class":"noam-geometry-point-highlight","data-point":item.point}));
+      });
       data.names.forEach(function(name){
         var p=screen(name),dx=p[0]-160,dy=p[1]-112,n=Math.hypot(dx,dy),offset=n<5?[10,14]:[dx/n*13,dy/n*13];
-        svg.appendChild(svgElement(doc,"circle",{cx:p[0],cy:p[1],r:2.4,fill:"#172440","class":"noam-geometry-point"}));
+        var highlight=data.pointHighlights.find(function(item){return item.point===name;});
+        svg.appendChild(svgElement(doc,"circle",{cx:p[0],cy:p[1],r:highlight?3:2.4,fill:highlight?highlight.color:"#172440","class":"noam-geometry-point"}));
         label(name,p,[p[0]+offset[0],p[1]+offset[1]],14,{"class":"noam-geometry-label"});
       });
       card.appendChild(svg);
