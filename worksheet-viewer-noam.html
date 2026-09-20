@@ -1324,6 +1324,85 @@ textarea:focus{
   background:var(--tint);
   border-bottom-left-radius:4px;
 }
+.noam-term{
+  display:inline;
+  margin:0;
+  padding:0;
+  color:#0B57D0;
+  background:transparent;
+  border:0;
+  font:inherit;
+  line-height:inherit;
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:2px;
+  cursor:help;
+}
+.noam-term:hover,.noam-term:focus-visible{
+  color:#073B92;
+  background:transparent;
+  outline:2px solid rgba(11,87,208,.28);
+  outline-offset:2px;
+}
+.noam-glossary-popover{
+  position:fixed;
+  z-index:90;
+  width:min(280px,calc(100vw - 24px));
+  padding:10px 11px;
+  color:var(--ink);
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:12px;
+  box-shadow:-4px 4px 0 var(--ink);
+  direction:rtl;
+  font-family:'Assistant',sans-serif;
+}
+.noam-glossary-popover[hidden]{display:none}
+.noam-glossary-popover-kind{color:var(--accent-dark);font-size:11px;font-weight:900}
+.noam-glossary-popover-title{display:block;margin:1px 0 3px;font-family:'Heebo',sans-serif;font-size:15px;font-weight:900}
+.noam-glossary-popover-text{
+  display:-webkit-box;
+  overflow:hidden;
+  font-size:13px;
+  line-height:1.5;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  line-clamp:3;
+}
+.noam-glossary-more{
+  display:block;
+  margin:7px 0 0 auto;
+  padding:4px 8px;
+  color:var(--ink);
+  background:var(--tint);
+  border:1.5px solid var(--ink);
+  border-radius:999px;
+  font-family:'Assistant',sans-serif;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+.noam-glossary-tabs{display:flex;gap:7px;margin-bottom:10px;border-bottom:2px solid var(--ink);padding-bottom:7px}
+.noam-glossary-tab{
+  padding:6px 12px;
+  color:var(--ink);
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  font-family:'Heebo',sans-serif;
+  font-size:12.5px;
+  font-weight:900;
+  cursor:pointer;
+}
+.noam-glossary-tab[aria-selected="true"]{color:var(--on-accent);background:var(--accent)}
+.noam-glossary-detail{padding:13px;background:#fff;border:2px solid var(--ink);border-radius:14px}
+.noam-glossary-detail-kind{margin:0;color:var(--accent-dark);font-size:12px;font-weight:900}
+.noam-glossary-detail h2{margin:2px 0 9px;font-family:'Heebo',sans-serif;font-size:22px}
+.noam-glossary-detail h3{margin:13px 0 3px;font-family:'Heebo',sans-serif;font-size:14px}
+.noam-glossary-detail p{margin:0;font-size:14px;line-height:1.65}
+.noam-glossary-example{margin-top:11px!important;padding:9px 10px;background:var(--tint);border-radius:9px}
+.noam-glossary-prerequisite{color:var(--muted)}
+.noam-glossary-question{width:100%;margin-top:14px;white-space:normal;line-height:1.45}
 .noam-visual-card{
   width:min(100%,390px);
   margin:9px 0 1px;
@@ -1999,6 +2078,7 @@ textarea:focus{
 </dialog>
 
 <script src="noam-local-visual.js?v=20260920-1"></script>
+<script src="noam-glossary.js?v=20260920-1"></script>
 <script>
 (function(){
 
@@ -3694,6 +3774,10 @@ var feedbackChoices = document.getElementById("noamFeedbackChoices");
 var feedbackClose = document.getElementById("noamFeedbackClose");
 var noamDrafts = {};
 var noamAnnouncementTimer = null;
+var activeGlossaryEntryId = null;
+var noamGlossaryPopover = null;
+var noamGlossaryTrigger = null;
+var noamGlossaryCloseTimer = null;
 
 // Announce new events without making rebuilt conversation history a live log.
 function announceNoam(text){
@@ -3897,6 +3981,7 @@ function openNoamPanel(){
 }
 
 function closeNoamPanel(){
+  if (typeof hideNoamGlossaryPopover==="function"){hideNoamGlossaryPopover();}
   if (panel.contains(document.activeElement)){document.activeElement.blur();}
   panel.classList.add("hidden");
   fab.classList.toggle("hidden",!manifestReady);
@@ -3914,6 +3999,11 @@ fab.addEventListener("click", function(){
 });
 
 panelBack.addEventListener("click", function(){
+  if (activeGlossaryEntryId && selectedExercise){
+    activeGlossaryEntryId = null;
+    renderNoamChat();
+    return;
+  }
   selectedExercise = null;
   if (selectedPin){ selectedPin.classList.remove("is-active"); }
   selectedPin = null;
@@ -4263,8 +4353,157 @@ function addTranscriptBubble(container, role, text, kind, visual){
   return row;
 }
 
+function ensureNoamGlossaryPopover(){
+  if (noamGlossaryPopover){return noamGlossaryPopover;}
+  noamGlossaryPopover=document.createElement("div");
+  noamGlossaryPopover.id="noamGlossaryPopover";
+  noamGlossaryPopover.className="noam-glossary-popover";
+  noamGlossaryPopover.hidden=true;
+  noamGlossaryPopover.setAttribute("role","dialog");
+  noamGlossaryPopover.setAttribute("aria-label","הגדרה קצרה");
+  noamGlossaryPopover.innerHTML=
+    '<span class="noam-glossary-popover-kind" id="noamGlossaryPopoverKind"></span>'+
+    '<b class="noam-glossary-popover-title" id="noamGlossaryPopoverTitle"></b>'+
+    '<span class="noam-glossary-popover-text" id="noamGlossaryPopoverText"></span>'+
+    '<button type="button" class="noam-glossary-more" id="noamGlossaryMore">להסבר מלא</button>';
+  noamGlossaryPopover.addEventListener("pointerenter",function(){clearTimeout(noamGlossaryCloseTimer);});
+  noamGlossaryPopover.addEventListener("pointerleave",scheduleNoamGlossaryClose);
+  noamGlossaryPopover.addEventListener("focusout",function(){setTimeout(function(){
+    if (!noamGlossaryPopover.contains(document.activeElement) && document.activeElement!==noamGlossaryTrigger){
+      hideNoamGlossaryPopover();
+    }
+  },0);});
+  document.body.appendChild(noamGlossaryPopover);
+  return noamGlossaryPopover;
+}
+
+function positionNoamGlossaryPopover(trigger){
+  if (!trigger||!noamGlossaryPopover||noamGlossaryPopover.hidden){return;}
+  var rect=trigger.getBoundingClientRect();
+  var width=noamGlossaryPopover.offsetWidth;
+  var height=noamGlossaryPopover.offsetHeight;
+  var viewportWidth=document.documentElement.clientWidth;
+  var viewportHeight=window.innerHeight;
+  var left=Math.max(12,Math.min(viewportWidth-width-12,rect.left+(rect.width-width)/2));
+  var below=rect.bottom+8;
+  var top=below+height<=viewportHeight-10?below:Math.max(10,rect.top-height-8);
+  noamGlossaryPopover.style.left=Math.round(left)+"px";
+  noamGlossaryPopover.style.top=Math.round(top)+"px";
+}
+
+function hideNoamGlossaryPopover(){
+  clearTimeout(noamGlossaryCloseTimer);
+  if (noamGlossaryTrigger){noamGlossaryTrigger.setAttribute("aria-expanded","false");}
+  noamGlossaryTrigger=null;
+  if (noamGlossaryPopover){noamGlossaryPopover.hidden=true;}
+}
+
+function scheduleNoamGlossaryClose(){
+  clearTimeout(noamGlossaryCloseTimer);
+  noamGlossaryCloseTimer=setTimeout(function(){
+    if (noamGlossaryPopover && !noamGlossaryPopover.contains(document.activeElement) && document.activeElement!==noamGlossaryTrigger){
+      hideNoamGlossaryPopover();
+    }
+  },180);
+}
+
+function showNoamGlossaryPopover(trigger,entry,keyboardOpen){
+  if (!trigger||!entry){return;}
+  var popover=ensureNoamGlossaryPopover();
+  clearTimeout(noamGlossaryCloseTimer);
+  if (noamGlossaryTrigger&&noamGlossaryTrigger!==trigger){noamGlossaryTrigger.setAttribute("aria-expanded","false");}
+  noamGlossaryTrigger=trigger;
+  trigger.setAttribute("aria-expanded","true");
+  document.getElementById("noamGlossaryPopoverKind").textContent=entry.kind||"מושג";
+  document.getElementById("noamGlossaryPopoverTitle").textContent=entry.term;
+  document.getElementById("noamGlossaryPopoverText").textContent=entry.short;
+  var more=document.getElementById("noamGlossaryMore");
+  more.onclick=function(){hideNoamGlossaryPopover();renderNoamGlossaryDetail(entry.id);};
+  popover.hidden=false;
+  positionNoamGlossaryPopover(trigger);
+  if (keyboardOpen){more.focus({preventScroll:true});}
+}
+
+function makeNoamGlossaryTerm(match){
+  var button=document.createElement("button");
+  button.type="button";
+  button.className="noam-term";
+  button.textContent=match.text;
+  button.dataset.glossaryId=match.id;
+  button.setAttribute("aria-expanded","false");
+  button.setAttribute("aria-controls","noamGlossaryPopover");
+  button.setAttribute("aria-label",match.text+" — "+match.entry.short+" לחצו להסבר מלא");
+  button.addEventListener("pointerenter",function(){showNoamGlossaryPopover(button,match.entry,false);});
+  button.addEventListener("pointerleave",scheduleNoamGlossaryClose);
+  button.addEventListener("focus",function(){showNoamGlossaryPopover(button,match.entry,false);});
+  button.addEventListener("click",function(event){showNoamGlossaryPopover(button,match.entry,event.detail===0);});
+  button.addEventListener("keydown",function(event){if(event.key==="Escape"){hideNoamGlossaryPopover();button.focus();}});
+  return button;
+}
+
+function enhanceNoamGlossary(root){
+  if (!root||!window.NoamGlossary){return;}
+  var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+  var nodes=[];
+  while(walker.nextNode()){
+    var node=walker.currentNode;
+    var parent=node.parentElement;
+    if (!parent||!node.nodeValue.trim()){continue;}
+    if (parent.closest("button,a,textarea,script,style,.katex,.noam-sr-only,.noam-term,.noam-glossary-popover")){continue;}
+    nodes.push(node);
+  }
+  nodes.forEach(function(node){
+    var matches=window.NoamGlossary.findTerms(node.nodeValue,g,6);
+    if (!matches.length){return;}
+    var fragment=document.createDocumentFragment();
+    var cursor=0;
+    matches.forEach(function(match){
+      if (match.start>cursor){fragment.appendChild(document.createTextNode(node.nodeValue.slice(cursor,match.start)));}
+      fragment.appendChild(makeNoamGlossaryTerm(match));
+      cursor=match.end;
+    });
+    if (cursor<node.nodeValue.length){fragment.appendChild(document.createTextNode(node.nodeValue.slice(cursor)));}
+    node.parentNode.replaceChild(fragment,node);
+  });
+}
+
+function renderNoamGlossaryDetail(entryId){
+  var entry=window.NoamGlossary&&window.NoamGlossary.get(entryId);
+  if (!entry||!selectedExercise){return;}
+  activeGlossaryEntryId=entry.id;
+  panelBody.classList.remove("is-chat","is-previewing");
+  panelBack.hidden=false;
+  panelBody.innerHTML=
+    '<div class="noam-glossary-tabs" role="tablist" aria-label="שיחה והסבר">'+
+      '<button type="button" class="noam-glossary-tab" id="noamGlossaryChatTab" role="tab" aria-selected="false">שיחה</button>'+
+      '<button type="button" class="noam-glossary-tab" role="tab" aria-selected="true" tabindex="-1">הסבר</button>'+
+    '</div>'+
+    '<article class="noam-glossary-detail" aria-labelledby="noamGlossaryTitle">'+
+      '<p class="noam-glossary-detail-kind">'+esc(entry.kind||"מושג")+'</p>'+
+      '<h2 id="noamGlossaryTitle">'+esc(entry.term)+'</h2>'+
+      '<p>'+esc(entry.detail)+'</p>'+
+      '<p class="noam-glossary-example"><b>דוגמה: </b>'+esc(entry.example)+'</p>'+
+      '<h3>מה כדאי לדעת קודם?</h3>'+
+      '<p class="noam-glossary-prerequisite">'+esc(entry.prerequisite)+'</p>'+
+      '<button type="button" class="noam-action primary noam-glossary-question" id="noamGlossaryQuestion">רוצה להבין יותר? '+esc(entry.question)+'</button>'+
+    '</article>';
+  document.getElementById("noamGlossaryChatTab").addEventListener("click",function(){activeGlossaryEntryId=null;renderNoamChat();});
+  document.getElementById("noamGlossaryQuestion").addEventListener("click",function(){
+    noamDrafts[selectedExercise.id]=entry.question;
+    activeGlossaryEntryId=null;
+    renderNoamChat();
+    var input=document.getElementById("noamQuestion");
+    if(input){input.focus({preventScroll:false});input.setSelectionRange(input.value.length,input.value.length);}
+    announceNoam("השאלה המוצעת הועברה לתיבת הטקסט.");
+  });
+  document.getElementById("noamGlossaryTitle").scrollIntoView({block:"nearest"});
+  document.getElementById("noamGlossaryChatTab").focus({preventScroll:true});
+}
+
 function renderNoamChat(){
   if (!selectedExercise){ return renderExercisePicker(); }
+  hideNoamGlossaryPopover();
+  activeGlossaryEntryId=null;
   var focusId = panelBody.contains(document.activeElement)
     ? (document.activeElement.id || "noamOverview") : "";
   panelBody.classList.add("is-chat");
@@ -4420,6 +4659,7 @@ function renderNoamChat(){
   setNoamBusy(busy);
   transcript.scrollTop = transcript.scrollHeight;
   renderPanelMath(panelBody);
+  panelBody.querySelectorAll(".noam-row.assistant .noam-bubble,#noamPickedText").forEach(enhanceNoamGlossary);
   renderExercisePreview(selectedExercise,0);
   restoreNoamChatFocus(focusId);
 }
