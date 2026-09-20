@@ -347,7 +347,7 @@ test("question drawings use deterministic guide focus when available and safely 
 });
 
 test("geometry answers offer a drawing action without passing an original scan off as a demonstration", () => {
-  assert.match(html,/drawButton\.textContent="הדגם באמצעות שרטוט"/);
+  assert.match(html,/drawButton\.textContent="לא הופיע שרטוט להמחשה\? לחצו כאן"/);
   assert.match(html,/requestNoamDiagram\(drawingExercise,thread,message\)/);
   assert.match(html,/failed\\s\+to\\s\+fetch/);
   const handler = html.slice(html.indexOf('drawButton.addEventListener("click"'), html.indexOf("bubble.appendChild(drawButton)"));
@@ -363,7 +363,7 @@ test("geometry answers offer a drawing action without passing an original scan o
   vm.runInContext(askSource,ctx);
   const thread={history:[]};
   const message={role:"assistant",text:"סמנו את הזווית."};
-  assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),true);
+  assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),false,"ordinary geometry answers do not get a permanent fallback button");
   assert.equal(ctx.noamManualVisual({id:"q"},thread,message),null);
   message.visual={type:"question-image"};
   assert.equal(ctx.noamCanOfferDrawing({id:"q"},thread,message),true);

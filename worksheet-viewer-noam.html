@@ -4420,6 +4420,13 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   bubble.appendChild(speaker);
   content.textContent = text;
   bubble.appendChild(content);
+  // The selected-question preview already keeps the original crop available.
+  // Once a drawing was requested, repeating that crop inside the answer looks
+  // like a generated demonstration even when the planner actually failed.
+  if (visual&&visual.type==="question-image"&&message&&
+      (message.diagramOptions||message.diagramTyped||message.diagramError)){
+    visual=null;
+  }
   if (visual && window.NoamLocalVisual){
     var visualSpec=visual;
     if (visual.type==="question-image"){
@@ -4445,10 +4452,10 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     var drawButton=document.createElement("button");
     drawButton.type="button";
     drawButton.className="noam-draw-action";
-    drawButton.textContent="הדגם באמצעות שרטוט";
+    drawButton.textContent="לא הופיע שרטוט להמחשה? לחצו כאן";
     var drawingExercise=selectedExercise;
     var drawingPending=noamDiagramRuntime().messages.has(message);
-    drawButton.textContent=drawingPending?"מכין שרטוט…":message.diagramError?"נסו להכין שרטוט שוב":"הדגם באמצעות שרטוט";
+    drawButton.textContent=drawingPending?"מכין שרטוט…":message.diagramError?"השרטוט לא הופיע — נסו שוב":"לא הופיע שרטוט להמחשה? לחצו כאן";
     drawButton.disabled=drawingPending;
     drawButton.setAttribute("aria-label",drawButton.textContent);
     drawButton.addEventListener("click",function(){
@@ -5766,6 +5773,10 @@ function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintI
     progress:thread&&thread.hintIndex
   });
   if (constructed){return constructed;}
+  if (window.NoamLocalVisual&&window.NoamLocalVisual.wantsDrawing&&
+      window.NoamLocalVisual.wantsDrawing(studentMessage)){
+    return null;
+  }
   // Unsupported sources retain their original drawing; never invent geometry.
   return {
     type:"question-image",
@@ -5787,10 +5798,18 @@ function noamCanOfferDrawing(exercise,thread,message){
   }
   if (message.visual&&message.visual.type!=="question-image"&&
       !(message.visual.type==="ai-diagram"&&!noamRenderAiDiagram(message.visual))){return false;}
-  if (message.diagramOptions){return true;}
+  if (message.diagramOptions||message.diagramTyped||message.diagramError){return true;}
   if (!window.NoamLocalVisual||/failed\s+to\s+fetch|לא\s+זמין|נסו\s+שוב\s+בעוד/i.test(String(message.text||""))){
     return false;
   }
+  var options=noamMessageVisualOptions(thread,message);
+  var studentAskedForVisual=!!(window.NoamLocalVisual.wantsVisualSupport&&
+    window.NoamLocalVisual.wantsVisualSupport(options.studentMessage));
+  var sourceOnlyFallback=!!(message.visual&&message.visual.type==="question-image");
+  // This is an escape hatch for visual edge cases, not a permanent control on
+  // every geometry answer. Offer it only after a visual request was missed or
+  // when the only visual available is the original worksheet crop.
+  if (!studentAskedForVisual&&!sourceOnlyFallback){return false;}
   var source=ttl+"\n"+localVisualExerciseSource(exercise)+"\n"+noamRecentThreadText(thread,700)+"\n"+message.text;
   return noamGeometryContext(source);
 }
@@ -5933,6 +5952,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
     saveNoamState();noamDiagramRefresh(exercise,thread,message,true);
     return Promise.resolve(local);
   }
+  if (message.visual&&message.visual.type==="question-image"){delete message.visual;}
   message.diagramOptions=options;
   delete message.diagramError;
   var sourceIdentity=noamDiagramSourceIdentity(exercise);

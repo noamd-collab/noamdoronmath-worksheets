@@ -33,7 +33,7 @@ function fixture(){
   context.window=context;
   vm.createContext(context);
   for(const name of ["noam-geometry.js","noam-diagram-plan.js"]){vm.runInContext(fs.readFileSync(path.join(__dirname,"..",name),"utf8"),context);}
-  context.NoamLocalVisual={wantsDrawing:()=>true,parseFactoredQuadraticInequality:()=>null,render:()=>null};
+  context.NoamLocalVisual={wantsDrawing:()=>true,wantsVisualSupport:()=>true,parseFactoredQuadraticInequality:()=>null,render:()=>null};
   vm.runInContext(helpers+local+drawing,context);
   // Mock HTTP JSON deserialization inside the same realm as the browser.
   const inspect=context.NoamDiagramPlan.inspect,compile=context.NoamDiagramPlan.compile;
@@ -146,7 +146,7 @@ test("drawing control shows pending and retry state without losing the original 
   const f=fixture(),gate=deferred();f.ctx.postJson=()=>gate.promise;
   let host=el("main");f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",null,f.message,f.thread);
   let button=host.children[0].children[0].children.find(n=>n.name==="button");
-  assert.equal(button.textContent,"הדגם באמצעות שרטוט");button.handlers.click();
+  assert.equal(button.textContent,"לא הופיע שרטוט להמחשה? לחצו כאן");button.handlers.click();
   host=el("main");f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",null,f.message,f.thread);
   button=host.children[0].children[0].children.find(n=>n.name==="button");
   assert.equal(button.disabled,true);assert.match(button.textContent,/מכין/);
@@ -155,6 +155,24 @@ test("drawing control shows pending and retry state without losing the original 
   button=host.children[0].children[0].children.find(n=>n.name==="button");
   assert.equal(button.disabled,false);assert.match(button.textContent,/שוב/);
   assert.equal(f.message.text,"סמנו את הקטע AB.");
+});
+
+test("the fallback is limited to missed visual requests and never repeats the question crop after a diagram attempt",()=>{
+  const f=fixture();
+  f.ctx.NoamLocalVisual.wantsVisualSupport=()=>false;
+  let host=el("main");
+  f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",null,f.message,f.thread);
+  assert.equal(host.children[0].children[0].children.some(n=>n.name==="button"),false);
+
+  f.message.visual={type:"question-image",exerciseId:f.exercise.id};
+  f.message.diagramError="לא הצלחנו להכין שרטוט מדויק.";
+  let renderedOriginal=false;
+  f.ctx.NoamLocalVisual.render=()=>{renderedOriginal=true;return el("question-image-card");};
+  host=el("main");
+  f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",f.message.visual,f.message,f.thread);
+  const button=host.children[0].children[0].children.find(n=>n.name==="button");
+  assert.equal(renderedOriginal,false);
+  assert.equal(button.textContent,"השרטוט לא הופיע — נסו שוב");
 });
 
 test("local verified guides do not invoke analysis or the paid diagram endpoint",async()=>{
