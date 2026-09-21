@@ -362,7 +362,9 @@ test("question drawings use deterministic guide focus when available and safely 
 });
 
 test("geometry answers offer a drawing action without passing an original scan off as a demonstration", () => {
-  assert.match(html,/drawButton\.textContent="לא הופיע שרטוט להמחשה\? לחצו כאן"/);
+  assert.match(html,/setNoamDiagramButtonLabel\(drawButton,[\s\S]*?"לא הופיע שרטוט להמחשה\? לחצו כאן"/);
+  assert.match(html,/class="noam-draw-beta" dir="ltr">\(Beta\)<\/small>/);
+  assert.match(html,/\.noam-draw-beta\{/);
   assert.match(html,/requestNoamDiagram\(drawingExercise,thread,message\)/);
   assert.match(html,/failed\\s\+to\\s\+fetch/);
   const handler = html.slice(html.indexOf('drawButton.addEventListener("click"'), html.indexOf("bubble.appendChild(drawButton)"));

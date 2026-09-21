@@ -7,7 +7,7 @@ const path=require("node:path");
 const html=fs.readFileSync(path.join(__dirname,"../worksheet-viewer-noam.html"),"utf8");
 const helpers=html.slice(html.indexOf("function noamGeometryContext(text){"),html.indexOf("function postJson(endpoint,payload){"));
 const local=html.slice(html.indexOf("function tryNoamLocalVisual(studentMessage){"),html.indexOf("function insertNoamMath(kind){"));
-const drawing=html.slice(html.indexOf("function addTranscriptBubble("),html.indexOf("function ensureNoamGlossaryPopover("));
+const drawing=html.slice(html.indexOf("function setNoamDiagramButtonLabel("),html.indexOf("function ensureNoamGlossaryPopover("));
 const plan={version:1,status:"ok",points:{A:[0,0],B:[4,0],C:[1,3]},
   segments:[["A","B"],["B","C"],["C","A"]],highlights:[{from:"A",to:"B",color:"blue",label:"AB"}],
   angles:[],equalGroups:[],rightAngles:[],evidence:[]};
@@ -222,7 +222,8 @@ test("drawing control shows pending and retry state without losing the original 
   const f=fixture(),gate=deferred();f.ctx.postJson=()=>gate.promise;
   let host=el("main");f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",null,f.message,f.thread);
   let button=host.children[0].children[0].children.find(n=>n.name==="button");
-  assert.equal(button.textContent,"לא הופיע שרטוט להמחשה? לחצו כאן");button.handlers.click();
+  assert.equal(button.textContent,"לא הופיע שרטוט להמחשה? לחצו כאן");
+  assert.equal(button.children[0].textContent,"(Beta)");button.handlers.click();
   host=el("main");f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",null,f.message,f.thread);
   button=host.children[0].children[0].children.find(n=>n.name==="button");
   assert.equal(button.disabled,true);assert.match(button.textContent,/מכין/);
@@ -230,6 +231,7 @@ test("drawing control shows pending and retry state without losing the original 
   host=el("main");f.ctx.addTranscriptBubble(host,"assistant",f.message.text,"",null,f.message,f.thread);
   button=host.children[0].children[0].children.find(n=>n.name==="button");
   assert.equal(button.disabled,false);assert.match(button.textContent,/שוב/);
+  assert.equal(button.children[0].textContent,"(Beta)");
   assert.equal(f.message.text,"סמנו את הקטע AB.");
 });
 

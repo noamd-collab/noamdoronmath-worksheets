@@ -1529,6 +1529,16 @@ textarea:focus{
   outline-offset:2px;
 }
 .noam-draw-action:disabled{cursor:wait;opacity:.65}
+.noam-draw-beta{
+  display:inline-block;
+  margin-inline-start:3px;
+  color:inherit;
+  font:800 .62em/1 Assistant,sans-serif;
+  direction:ltr;
+  unicode-bidi:isolate;
+  vertical-align:super;
+  opacity:.72;
+}
 .noam-draw-error{display:block;margin-top:7px;color:#a42828;font:600 13px/1.4 Assistant,sans-serif}
 .noam-bubble.thinking{
   display:flex;
@@ -4407,6 +4417,18 @@ function renderExercisePicker(){
   }
 }
 
+function setNoamDiagramButtonLabel(button,label,showBeta){
+  button.textContent=label;
+  if (showBeta){
+    var beta=document.createElement("small");
+    beta.className="noam-draw-beta";
+    beta.dir="ltr";
+    beta.textContent="(Beta)";
+    button.appendChild(beta);
+  }
+  button.setAttribute("aria-label",label+(showBeta?" Beta":""));
+}
+
 function addTranscriptBubble(container, role, text, kind, visual, message, thread){
   var row = document.createElement("div");
   row.className = "noam-row " + role;
@@ -4438,12 +4460,10 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     var drawButton=document.createElement("button");
     drawButton.type="button";
     drawButton.className="noam-draw-action";
-    drawButton.textContent="לא הופיע שרטוט להמחשה? לחצו כאן";
     var drawingExercise=selectedExercise;
     var drawingPending=noamDiagramRuntime().messages.has(message);
-    drawButton.textContent=drawingPending?"מכין שרטוט…":message.diagramError?"השרטוט לא הופיע — נסו שוב":"לא הופיע שרטוט להמחשה? לחצו כאן";
+    setNoamDiagramButtonLabel(drawButton,drawingPending?"מכין שרטוט…":message.diagramError?"השרטוט לא הופיע — נסו שוב":"לא הופיע שרטוט להמחשה? לחצו כאן",!drawingPending);
     drawButton.disabled=drawingPending;
-    drawButton.setAttribute("aria-label",drawButton.textContent);
     drawButton.addEventListener("click",function(){
       requestNoamDiagram(drawingExercise,thread,message);
     });
@@ -4656,7 +4676,7 @@ function renderNoamChat(){
         '<div class="noam-input-actions" role="group" aria-label="עזרה מהירה">' +
           '<button type="button" class="noam-action" id="noamOverview">הסבר כללי</button>' +
           '<button type="button" class="noam-action primary" id="noamHint">רמז</button>' +
-          '<button type="button" class="noam-action" id="noamDraw"'+(drawingAnswer?'':' hidden')+'>'+(drawingPending?'מכין שרטוט…':'שרטוט להמחשה')+'</button>' +
+          '<button type="button" class="noam-action" id="noamDraw"'+(drawingAnswer?'':' hidden')+'>'+(drawingPending?'מכין שרטוט…':'שרטוט להמחשה <small class="noam-draw-beta" dir="ltr">(Beta)</small>')+'</button>' +
           '<button type="button" class="noam-action" id="noamMistake" hidden>טעות נפוצה</button>' +
           '<span class="noam-input-spacer" aria-hidden="true"></span>' +
           '<button type="button" class="noam-math-toggle" id="noamMathToggle" aria-label="פתיחת סימנים מתמטיים" title="סימנים מתמטיים" aria-controls="noamMathKeys" aria-expanded="'+mathKeyboardOpen+'">x²</button>' +
