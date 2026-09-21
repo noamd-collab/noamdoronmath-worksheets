@@ -88,6 +88,16 @@ test("Hebrew word boundaries avoid highlighting a term inside an unrelated word"
   assert.equal(glossary.findTerms("ריבוע", 9, 6)[0].id, "square");
 });
 
+test("approved Sheet aliases extend an existing definition without replacing it", () => {
+  const before = glossary.get("right-triangle");
+  assert.equal(glossary.mergeAliases([{ conceptId: "right-triangle", phrase: "משולש עם זווית ישרה" }]), 1);
+  assert.equal(glossary.get("right-triangle"), before);
+  assert.equal(glossary.findTerms("בנו משולש עם זווית ישרה.", 9, 6)[0].id, "right-triangle");
+  assert.equal(glossary.mergeAliases([{ conceptId: "unknown", phrase: "משולש עם זווית ישרה" }]), 0);
+  assert.equal(glossary.mergeAliases([{ conceptId: "square", phrase: "משולש עם זווית ישרה" }]), 0);
+  assert.equal(glossary.mergeAliases([{ conceptId: "square", phrase: "<script>" }]), 0);
+});
+
 test("axis-scale language used by Noam AI is explained in grade 7", () => {
   const text = "ציר מספרי אינו חייב להתחיל ב־0, ולכן יש להסיק את קנה המידה. בין 20 ל־50 בציר ה־x ובין 9 ל־15 בציר ה־y.";
   const matches = glossary.findTerms(text, 7);
@@ -102,6 +112,8 @@ test("Pythagoras is available at the grade where the catalog teaches it", () => 
 test("the viewer exposes hover, focus, tap and a free detailed explanation tab", () => {
   assert.match(viewer, /noam-glossary-curriculum\.js\?v=[^<]+<\/script>\s*<script src="noam-glossary\.js/);
   assert.match(viewer, /noam-glossary\.js\?v=/);
+  assert.match(viewer, /NOAM_GLOSSARY_FEED_URL[\s\S]*?exec\?feed=1/);
+  assert.match(viewer, /NoamGlossary\.mergeAliases\(feed\.aliases\)/);
   assert.match(viewer, /pointerenter[\s\S]*?focus[\s\S]*?click/);
   assert.match(viewer, /role=\\?"tablist\\?"[\s\S]*?שיחה[\s\S]*?הסבר/);
   assert.match(viewer, /NoamGlossary\.findTerms\(node\.nodeValue,g,6\)/);

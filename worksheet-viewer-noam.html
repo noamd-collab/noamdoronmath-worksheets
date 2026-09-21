@@ -2156,7 +2156,7 @@ textarea:focus{
 <script src="noam-diagram-plan.js?v=20260921-constructions1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
-<script src="noam-glossary.js?v=20260921-1"></script>
+<script src="noam-glossary.js?v=20260921-2"></script>
 <script>
 (function(){
 
@@ -6350,12 +6350,31 @@ function renderPanelMath(root){
   }catch(error){console.warn("NOAM KATEX:",error);}
 }
 
+// The Sheet publishes only approved phrase → existing-concept mappings. The
+// canonical definitions always remain in the versioned local glossary, so an
+// unavailable feed cannot remove or weaken any explanation.
+var NOAM_GLOSSARY_FEED_URL="https://script.google.com/macros/s/AKfycbxc9lNBL_awGULrhzNWK3MRT2mq6ppPfhZPQVuTCX3rPeuX-g3vVmtdEd-mWt6rQIR6/exec?feed=1";
+function loadNoamGlossaryFeed(){
+  if(!window.NoamGlossary||typeof window.NoamGlossary.mergeAliases!=="function"||typeof window.fetch!=="function"){return;}
+  window.fetch(NOAM_GLOSSARY_FEED_URL,{method:"GET",mode:"cors",cache:"no-store"})
+    .then(function(response){if(!response.ok){throw new Error("GLOSSARY_FEED_HTTP");}return response.json();})
+    .then(function(feed){
+      if(!feed||feed.ok!==true||!Array.isArray(feed.aliases)||feed.aliases.length>1200){return;}
+      var added=window.NoamGlossary.mergeAliases(feed.aliases);
+      if(added&&panelBody){
+        panelBody.querySelectorAll(".noam-row.assistant .noam-bubble,#noamPickedText").forEach(enhanceNoamGlossary);
+      }
+    })
+    .catch(function(){/* Static glossary remains fully available offline. */});
+}
+
 if (!aiReady){
   fab.classList.add("hidden");
   panel.style.display="none";
 }else{
   fab.classList.remove("hidden");
   loadStaticManifest();
+  loadNoamGlossaryFeed();
 }
 
 /* ESCAPE HTML */

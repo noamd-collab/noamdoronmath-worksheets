@@ -611,5 +611,26 @@
     return entries.find(function(entry){return entry.id===id;})||null;
   }
 
-  return {entries:entries,get:get,findTerms:findTerms};
+  function mergeAliases(aliases){
+    if(!Array.isArray(aliases)){return 0;}
+    var owners=Object.create(null);
+    entries.forEach(function(entry){
+      (entry.aliases||[]).forEach(function(alias){owners[String(alias)]=entry.id;});
+    });
+    var added=0;
+    aliases.forEach(function(item){
+      var entry=get(item&&item.conceptId);
+      var phrase=String(item&&item.phrase||"").trim();
+      if(!entry||phrase.length<4||phrase.length>90||
+        !/^[א-ת\u0591-\u05C7 ־–—-]+$/.test(phrase)||owners[phrase]){return;}
+      entry.aliases=entry.aliases||[];
+      entry.aliases.push(phrase);
+      owners[phrase]=entry.id;
+      added+=1;
+    });
+    if(added){candidateCache=Object.create(null);}
+    return added;
+  }
+
+  return {entries:entries,get:get,findTerms:findTerms,mergeAliases:mergeAliases};
 });
