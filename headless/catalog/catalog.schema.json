@@ -1,0 +1,349 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://noamdoronmath.local/headless/catalog/catalog.schema.json",
+  "title": "NoamDoronMath worksheets catalog contract v1",
+  "description": "Machine-readable worksheet catalog derived from index.html. index.html remains the authoritative live source of truth. This schema documents the generated contract for a future Headless (e.g. Next.js) frontend. Do not treat Wix CMS as source of truth.",
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "sourceOfTruth",
+    "config",
+    "icons",
+    "searchTerms",
+    "grades"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contractVersion": {
+      "type": "integer",
+      "const": 1,
+      "description": "Required. Contract major version. Bump only with intentional breaking shape changes."
+    },
+    "sourceOfTruth": {
+      "type": "object",
+      "required": ["path", "authoritative"],
+      "additionalProperties": true,
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": "index.html",
+          "description": "Required. Live catalog SoT path in this repository."
+        },
+        "authoritative": {
+          "type": "boolean",
+          "const": true,
+          "description": "Required. Always true while production still serves index.html."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional. Human guidance — not consumed by runtime."
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "required": [
+        "pdfBase",
+        "viewer",
+        "levels",
+        "defaults",
+        "elementaryGrades",
+        "middleGrades",
+        "gradeNames",
+        "gradeEmojis",
+        "trackGroups",
+        "noamPrefixFallback"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "pdfBase": {
+          "type": "string",
+          "description": "Required. Generated from index.html BASE. Full PDF URL = pdfBase + pdfId + '.pdf'. Do not expand to hundreds of full URLs in this file."
+        },
+        "viewer": {
+          "type": "object",
+          "required": ["enabled", "path"],
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Required. From VIEWER.enabled kill-switch."
+            },
+            "path": {
+              "type": "string",
+              "description": "Required. From VIEWER.path (relative viewer HTML)."
+            }
+          }
+        },
+        "levels": {
+          "type": "array",
+          "description": "Required. Default level labels/classes from LEVELS (a/b/c).",
+          "items": {
+            "type": "object",
+            "required": ["key", "label", "cssClass"],
+            "additionalProperties": false,
+            "properties": {
+              "key": { "type": "string", "enum": ["a", "b", "c"] },
+              "label": { "type": "string" },
+              "cssClass": { "type": "string", "description": "From LEVELS[].cls — presentation only." }
+            }
+          }
+        },
+        "defaults": {
+          "type": "object",
+          "required": ["oneLabel"],
+          "additionalProperties": false,
+          "properties": {
+            "oneLabel": {
+              "type": "string",
+              "description": "Required. Default label when links.one is used and links.oneLabel is absent (from levelLinksHTML)."
+            }
+          }
+        },
+        "elementaryGrades": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1, "maximum": 9 },
+          "description": "Required. From ELEMENTARY."
+        },
+        "middleGrades": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1, "maximum": 9 },
+          "description": "Required. From MIDDLE. Viewer routing applies only when grade is in this set AND a Noam prefix resolves."
+        },
+        "gradeNames": {
+          "type": "object",
+          "description": "Required. From GRADE_NAME. Keys are grade numbers as strings.",
+          "additionalProperties": { "type": "string" }
+        },
+        "gradeEmojis": {
+          "type": "object",
+          "description": "Required. From GRADE_EMOJI. Presentation only.",
+          "additionalProperties": { "type": "string" }
+        },
+        "trackGroups": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Required. Group keys from TRACK_GROUPS that belong to grade-9 reduced program (מסלול מצומצם)."
+        },
+        "noamPrefixFallback": {
+          "type": "object",
+          "description": "Required. From NOAM_PREFIX_FALLBACK. grade → topicId → prefix string. Used when topic.x is absent.",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        }
+      }
+    },
+    "icons": {
+      "type": "object",
+      "description": "Required. From ICONS. Map of icon key → SVG path markup (inner content for 24×24 viewBox). Topics reference keys only via topic.icon.",
+      "additionalProperties": { "type": "string" }
+    },
+    "searchTerms": {
+      "type": "object",
+      "description": "Required. From SEARCH_TERMS. grade → topicId → space-separated hidden search terms. Legacy/search-specific; preserve for search parity.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": { "type": "string" }
+      }
+    },
+    "grades": {
+      "type": "array",
+      "description": "Required. One entry per DATA grade, ascending. Topic/group array order matches index.html display order.",
+      "items": { "$ref": "#/$defs/grade" }
+    }
+  },
+  "$defs": {
+    "grade": {
+      "type": "object",
+      "required": ["grade", "label", "groups", "topics"],
+      "additionalProperties": false,
+      "properties": {
+        "grade": { "type": "integer", "minimum": 1, "maximum": 9 },
+        "label": {
+          "type": "string",
+          "description": "Required. From GRADE_NAME."
+        },
+        "emoji": {
+          "type": "string",
+          "description": "Optional. From GRADE_EMOJI — presentation."
+        },
+        "groups": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/group" }
+        },
+        "topics": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/topic" }
+        }
+      }
+    },
+    "group": {
+      "type": "object",
+      "required": ["key", "label", "reducedProgram"],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Required. From groups[].key."
+        },
+        "label": {
+          "type": "string",
+          "description": "Required. From groups[].name."
+        },
+        "reducedProgram": {
+          "type": "boolean",
+          "description": "Required. Derived: true when key ∈ config.trackGroups (grade-9 reduced track)."
+        }
+      }
+    },
+    "topic": {
+      "type": "object",
+      "required": ["id", "title", "group", "icon", "levels", "routing"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Required. From topics[].id. Unique within a grade."
+        },
+        "title": {
+          "type": "string",
+          "description": "Required. From topics[].t."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional. From topics[].d when present."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional. From topics[].n when present (supported by cardHTML; may be absent in current DATA)."
+        },
+        "group": {
+          "type": "string",
+          "description": "Required. From topics[].g — must exist in the same grade's groups."
+        },
+        "icon": {
+          "type": "string",
+          "description": "Required. From topics[].ic — must exist in icons."
+        },
+        "parent": {
+          "type": "integer",
+          "description": "Optional. From topics[].parent — child worksheet bundled under parent card."
+        },
+        "noamTopicId": {
+          "type": "string",
+          "description": "Optional. From topics[].x when present. Explicit Noam AI topic id (also drives the catalog AI hint badge)."
+        },
+        "levels": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/level" },
+          "description": "Required. Worksheet levels with Wix Media PDF ids (not full URLs)."
+        },
+        "routing": {
+          "$ref": "#/$defs/routing",
+          "description": "Required. Derived sheetHref facts — do not invent URLs; combine with config.pdfBase / config.viewer."
+        }
+      }
+    },
+    "level": {
+      "type": "object",
+      "required": ["key", "label", "pdfId", "labelSource"],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "enum": ["a", "b", "c", "one"],
+          "description": "Required. Level key from links (a|b|c|one)."
+        },
+        "label": {
+          "type": "string",
+          "description": "Required. Display label (topic.*Label, link.oneLabel, or defaults)."
+        },
+        "pdfId": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$",
+          "description": "Required. Wix Media 32-hex id from DATA.links. Never rewrite."
+        },
+        "labelSource": {
+          "type": "string",
+          "description": "Required. Provenance marker: topic.aLabel|topic.bLabel|topic.cLabel|link.oneLabel|default."
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "required": [
+        "resolvedNoamPrefix",
+        "aiHintShown",
+        "usesViewer",
+        "viewerPath",
+        "siblingPdfQuery"
+      ],
+      "additionalProperties": false,
+      "description": "Derived. Mirrors index.html noamTopicPrefix + sheetHref gating. Generated — not a DATA field.",
+      "properties": {
+        "resolvedNoamPrefix": {
+          "type": ["string", "null"],
+          "description": "topic.x if set, else config.noamPrefixFallback[grade][id], else null."
+        },
+        "aiHintShown": {
+          "type": "boolean",
+          "description": "True only when topics[].x is set (matches cardHTML AI badge)."
+        },
+        "usesViewer": {
+          "type": "boolean",
+          "description": "True when VIEWER.enabled AND resolvedNoamPrefix AND grade ∈ middleGrades (matches sheetHref)."
+        },
+        "viewerPath": {
+          "type": ["string", "null"],
+          "description": "config.viewer.path when usesViewer, else null (caller should use pdfBase+pdfId+'.pdf')."
+        },
+        "siblingPdfQuery": {
+          "type": "object",
+          "description": "When usesViewer, optional pa/pb/pc query values from the topic's a/b/c link row (sheetHref sibling params). Empty object otherwise.",
+          "additionalProperties": { "type": "string", "pattern": "^[0-9a-f]{32}$" }
+        }
+      }
+    }
+  },
+  "x-field-classification": {
+    "required-source": [
+      "contractVersion",
+      "config.pdfBase",
+      "config.viewer",
+      "config.levels",
+      "config.elementaryGrades",
+      "config.middleGrades",
+      "config.gradeNames",
+      "config.trackGroups",
+      "config.noamPrefixFallback",
+      "icons",
+      "searchTerms",
+      "grades[].grade",
+      "grades[].groups",
+      "grades[].topics[].id|title|group|icon|levels[].key|pdfId"
+    ],
+    "optional-source": [
+      "grades[].topics[].description (d)",
+      "grades[].topics[].note (n)",
+      "grades[].topics[].parent",
+      "grades[].topics[].noamTopicId (x)",
+      "level custom labels (aLabel/bLabel/cLabel/oneLabel)"
+    ],
+    "generated-derived": [
+      "grades[].groups[].reducedProgram",
+      "grades[].topics[].routing.*",
+      "levels[].labelSource",
+      "stable key ordering in serialized JSON"
+    ],
+    "legacy-specific": [
+      "searchTerms (SEARCH_TERMS hidden index)",
+      "config.noamPrefixFallback",
+      "config.gradeEmojis",
+      "icons SVG bodies"
+    ],
+    "sheetHref-recipe": "If routing.usesViewer: viewerPath + ?g&x=resolvedNoamPrefix&lv=level.key&pdf=level.pdfId&t=title + siblingPdfQuery. Else: config.pdfBase + level.pdfId + '.pdf'."
+  }
+}
