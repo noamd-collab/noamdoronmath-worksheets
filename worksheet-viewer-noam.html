@@ -1926,7 +1926,7 @@ textarea:focus{
   .noam-picked-heading{display:flex;align-items:center;justify-content:space-between;gap:6px}
   .noam-picked-label{font-size:12px;margin:0;min-width:0}
   .noam-preview-toggle{display:block;flex:none;min-height:44px;padding:6px 10px;color:var(--ink);background:#fff;border:1px solid var(--ink);border-radius:10px;font:700 12px 'Assistant',sans-serif;cursor:pointer}
-  .noam-picked-preview,.noam-picked-preview img{max-height:96px}
+  .noam-picked-preview,.noam-picked-preview img{max-height:160px}
   .noam-picked-text{font-size:14px;max-height:60px;overflow:auto}
   .noam-actions{gap:6px;margin:0}
   .noam-action{min-height:44px;padding:7px 12px;box-shadow:none}
@@ -1962,8 +1962,10 @@ textarea:focus{
   .panel-body.is-previewing>:not(.noam-picked){display:none}
   .panel-body.is-previewing>.noam-picked{display:block;flex:1;min-height:0;max-height:none;overflow:auto;padding:0 6px 6px}
   .panel-body.is-previewing .noam-picked-heading{position:sticky;top:0;background:var(--tint);z-index:1;padding:4px 0}
-  .panel-body.is-previewing .noam-picked-preview,.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
-  .panel-body.is-previewing .noam-picked-text{display:block;max-height:none}
+  .panel-body.is-previewing .noam-picked-preview:not([hidden]),.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
+  .panel-body.is-previewing .noam-picked-preview:not([hidden]){direction:rtl}
+  .panel-body.is-previewing .noam-picked-preview img{width:720px;max-width:none}
+  .panel-body.is-previewing .noam-picked-text:not([hidden]){display:block;max-height:none}
   body.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
   body.noam-panel-open .grecaptcha-badge{z-index:60;bottom:calc(var(--noam-keyboard-gap,0px) + env(safe-area-inset-bottom) + 4px)!important}
 }
@@ -3218,7 +3220,7 @@ function renderPdfPage(
         var pixelRatio =
           Math.min(
             window.devicePixelRatio || 1,
-            2
+            mobileLayout.matches ? 3 : 2
           );
 
         var canvas =
@@ -3423,8 +3425,12 @@ function observePdfPages(){
 }
 
 function getPdfPageWidth(){
-  // Reserve the fixed button gutter before scaling the document; gutter itself never scales.
-  return Math.max(120,pdfScroll.clientWidth - (mobileLayout.matches ? 116 : 78)) * pdfZoom;
+  // On phones, 70% is the page width that fits beside the fixed button gutter.
+  // Scale only the PDF from there; scaling the gutter as well made the page tiny.
+  if (mobileLayout.matches){
+    return Math.max(120,pdfScroll.clientWidth - 116) * pdfZoom / .7;
+  }
+  return Math.max(120,pdfScroll.clientWidth - 78) * pdfZoom;
 }
 
 // Keep the same point on the current page when rotation or zoom changes page sizes.
@@ -4655,7 +4661,6 @@ function renderNoamChat(){
   var showQuestionPreview = !hasConversation;
   if (!showQuestionPreview){panelBody.classList.remove("is-previewing");}
   var previewing = showQuestionPreview && panelBody.classList.contains("is-previewing");
-  var text = selectedExercise.text || selectedExercise.prompt || selectedExercise.context || "";
   var hasAssistantAnswer = thread.messages.some(function(message){
     return message && message.role === "assistant" && String(message.text || "").trim();
   });
@@ -4664,7 +4669,7 @@ function renderNoamChat(){
     '<div class="noam-picked'+(showQuestionPreview?'':' noam-picked-compact')+'">' +
       '<div class="noam-picked-heading"><div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
       (showQuestionPreview?'<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הגדלת השאלה')+'</button>':'')+'</div>' +
-      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText">' + esc(text) + '</div>':'') +
+      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText" role="status">טוען את השאלה מתוך ה־PDF…</div>':'') +
     '</div>' +
     '<div class="noam-thread-tools">' +
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
@@ -5171,13 +5176,14 @@ function cropTargetWidth(){
     : CROP_TARGET_WIDTH_DESKTOP;
 }
 
-function cropRenderScale(baseViewport, crop){
+function cropRenderScale(baseViewport, crop, options){
+  options = options || {};
   var band = Math.max(.05, Math.min(1, Number(crop && crop.w) || 1));
-  var scale = cropTargetWidth() / (baseViewport.width * band);
-  scale = Math.min(CROP_MAX_RENDER_SCALE, Math.max(CROP_MIN_RENDER_SCALE, scale));
+  var scale = (options.targetWidth || cropTargetWidth()) / (baseViewport.width * band);
+  scale = Math.min(options.maxScale || CROP_MAX_RENDER_SCALE, Math.max(CROP_MIN_RENDER_SCALE, scale));
   while (
     scale > CROP_MIN_RENDER_SCALE &&
-    baseViewport.width * scale * baseViewport.height * scale > CROP_MAX_PAGE_PIXELS
+    baseViewport.width * scale * baseViewport.height * scale > (options.maxPagePixels || CROP_MAX_PAGE_PIXELS)
   ){
     scale *= .8;
   }
@@ -5214,11 +5220,11 @@ function renderCropPageCanvas(pageNumber, scale){
   });
 }
 
-function cropExerciseSegment(crop){
+function cropExerciseSegment(crop, options){
   var pageNumber = Number(crop && crop.page || 0);
   if (!(pageNumber >= 1)){ return Promise.reject(new Error("עמוד השאלה אינו זמין.")); }
   return pdfDocument.getPage(pageNumber).then(function(page){
-    var scale = cropRenderScale(page.getViewport({scale:1}), crop);
+    var scale = cropRenderScale(page.getViewport({scale:1}), crop, options);
     return renderCropPageCanvas(pageNumber, scale);
   }).then(function(canvas){
     var sx = Math.max(0, Math.floor((Number(crop.x) || 0) * canvas.width));
@@ -5230,11 +5236,12 @@ function cropExerciseSegment(crop){
   });
 }
 
-function stitchCropSegments(segments){
-  var width = Math.min(cropTargetWidth(), Math.max.apply(null, segments.map(function(s){return s.sw;})));
+function stitchCropSegments(segments, options){
+  options = options || {};
+  var width = Math.min(options.targetWidth || cropTargetWidth(), Math.max.apply(null, segments.map(function(s){return s.sw;})));
   var gap = segments.length > 1 ? 16 : 0;
   var height = segments.reduce(function(total,s){return total + s.sh * width / s.sw;}, 0) + gap * (segments.length - 1);
-  var scale = Math.min(1, (segments.length > 1 ? 5200 : 3600) / height);
+  var scale = Math.min(1, (options.maxHeight || (segments.length > 1 ? 5200 : 3600)) / height);
   var target = document.createElement("canvas");
   target.width = Math.max(20, Math.round(width * scale));
   target.height = Math.max(20, Math.round(height * scale));
@@ -5252,17 +5259,17 @@ function stitchCropSegments(segments){
   return target;
 }
 
-function cropExerciseCanvasFromPdf(exercise){
+function cropExerciseCanvasFromPdf(exercise, options){
   var crops = Array.isArray(exercise.crops) && exercise.crops.length ? exercise.crops : [exercise.crop||{}];
   if (crops.length > 12){ return Promise.reject(new Error("יותר מדי עמודים לשאלה אחת.")); }
   return crops.reduce(function(chain, crop){
     return chain.then(function(segments){
-      return cropExerciseSegment(crop).then(function(segment){
+      return cropExerciseSegment(crop, options).then(function(segment){
         segments.push(segment);
         return segments;
       });
     });
-  }, Promise.resolve([])).then(stitchCropSegments);
+  }, Promise.resolve([])).then(function(segments){return stitchCropSegments(segments, options);});
 }
 
 function cropExerciseCanvas(exercise){
@@ -5394,13 +5401,33 @@ function showExercisePreview(exercise,dataUrl){
     .forEach(function(visualImage){visualImage.src=dataUrl;visualImage.hidden=false;});
 }
 
+function showExercisePreviewFailure(exercise){
+  var fallback=document.getElementById("noamPickedText");
+  if (!fallback||!selectedExercise||selectedExercise.id!==exercise.id){return;}
+  var link=document.createElement("a");
+  link.href=pdfUrl;
+  link.target="_blank";
+  link.rel="noopener noreferrer";
+  link.textContent="פתחו את השאלה בדף ה־PDF";
+  fallback.replaceChildren(link);
+}
+
 function renderExercisePreview(exercise,attempt){
   if (!exercise||!exercise.crop){return;}
   if (exercisePreviewCache[exercise.id]){
     showExercisePreview(exercise,exercisePreviewCache[exercise.id]);
     return;
   }
-  cropExerciseCanvas(exercise)
+  if (!pdfDocument){
+    if (pdfNativeActive||attempt>=60){showExercisePreviewFailure(exercise);return;}
+    setTimeout(function(){renderExercisePreview(exercise,attempt+1);},500);
+    return;
+  }
+  var previewSource=mobileLayout.matches
+    ? cropExerciseCanvasFromPdf(exercise,{targetWidth:1200,maxScale:4,maxPagePixels:8000000,maxHeight:3200})
+        .catch(function(){return cropExerciseCanvasFromView(exercise);})
+    : cropExerciseCanvas(exercise);
+  previewSource
     .then(function(canvas){
       /* the panel preview only has to be readable on screen; the full-resolution
          image is kept for the model, not for this thumbnail */
@@ -5412,9 +5439,10 @@ function renderExercisePreview(exercise,attempt){
       showExercisePreview(exercise,dataUrl);
     })
     .catch(function(){
-      if (attempt>=12||!selectedExercise||selectedExercise.id!==exercise.id){return;}
+      if (!selectedExercise||selectedExercise.id!==exercise.id){return;}
+      if (attempt>=3){showExercisePreviewFailure(exercise);return;}
       renderPdfPage(Number(exercise.crop.page||0),pdfRenderVersion);
-      setTimeout(function(){renderExercisePreview(exercise,attempt+1);},150);
+      setTimeout(function(){renderExercisePreview(exercise,attempt+1);},500);
     });
 }
 

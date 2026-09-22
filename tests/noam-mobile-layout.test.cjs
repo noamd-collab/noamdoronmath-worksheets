@@ -8,6 +8,7 @@ const vm = require("node:vm");
 
 const viewer = fs.readFileSync(path.join(__dirname, "../worksheet-viewer-noam.html"), "utf8");
 const source = viewer.slice(viewer.indexOf("function getPdfPageWidth(){"), viewer.indexOf("\nfunction setPdfZoom("));
+const previewSource = viewer.slice(viewer.indexOf("function cacheExercisePreview(exerciseId,dataUrl){"), viewer.indexOf("\nfunction getExerciseAnalysis(exercise){"));
 
 // The rectangles respond to each page's current size and scrollTop, as they do
 // in the layout engine. These tests check scroll-position math, not CSS layout.
@@ -88,7 +89,7 @@ test("missing or detached page anchors leave scroll position unchanged", () => {
 });
 
 
-test("fit width reserves both feedback and AI gutters before document scaling", () => {
+test("phone PDF fills the available width at 70% while buttons keep their fixed gutter", () => {
   const f = fixture();
   const desktopGutter = Number(viewer.match(/margin-right:(\d+)px;/)[1]);
   const mobileGutter = Number(viewer.match(/\.pdf-page\{width:calc\(100vw - \d+px\);min-height:0;margin-right:(\d+)px/)[1]);
@@ -98,13 +99,75 @@ test("fit width reserves both feedback and AI gutters before document scaling", 
     const containerInset = mobile ? 12 : 34;
     for (const width of [280, 320, 380, 664, 1024]) {
       f.scroll.clientWidth = width;
-      f.ctx.pdfZoom = 1;
+      f.ctx.pdfZoom = mobile ? .7 : 1;
       const fitted = f.ctx.getPdfPageWidth();
-      assert.equal(fitted + gutter + containerInset, width, "100% document plus buttons fits scroll viewport");
-      f.ctx.pdfZoom = .7;
-      assert.ok(f.ctx.getPdfPageWidth() + gutter + containerInset <= width, "default zoom keeps both targets visible");
-      f.ctx.pdfZoom = 2;
-      assert.equal(f.ctx.getPdfPageWidth(), fitted * 2, "document zoom does not scale button gutter");
+      assert.ok(Math.abs(fitted + gutter + containerInset - width) < 1e-9,
+        "the fitted PDF and buttons fill the viewport");
+      f.ctx.pdfZoom = mobile ? .85 : 2;
+      assert.ok(Math.abs(f.ctx.getPdfPageWidth() / fitted - (mobile ? .85 / .7 : 2)) < 1e-9,
+        "changing zoom scales the PDF, not the button gutter");
     }
   }
+});
+
+test("an early tap on a phone waits for the PDF instead of showing reconstructed question text", async () => {
+  const timers = [];
+  const calls = [];
+  const imageHolder = { hidden: true, replaceChildren(image) { this.image = image; } };
+  const fallback = { hidden: false, replaceChildren(node) { this.child = node; } };
+  const exercise = { id: "q3a", crop: { page: 1 }, q: 3, text: "OCR text must stay hidden" };
+  const ctx = {
+    document: {
+      getElementById(id) { return id === "noamPickedPreview" ? imageHolder : id === "noamPickedText" ? fallback : null; },
+      createElement(tag) { return { tag }; }
+    },
+    panelBody: { querySelectorAll() { return []; } },
+    selectedExercise: exercise,
+    exercisePreviewCache: {}, exercisePreviewOrder: [],
+    pdfDocument: null, pdfNativeActive: false, pdfUrl: "/actual.pdf",
+    mobileLayout: { matches: true },
+    setTimeout(fn) { timers.push(fn); },
+    exerciseLabel() { return "שאלה 3 · סעיף א"; },
+    cropExerciseCanvasFromPdf(_exercise, options) {
+      calls.push(options);
+      return Promise.resolve({ width: 900, toDataURL() { return "data:image/png;base64,PDF"; } });
+    },
+    cropExerciseCanvasFromView() { throw new Error("not needed"); },
+    renderPdfPage() { throw new Error("not needed"); },
+    pdfRenderVersion: 0
+  };
+  vm.createContext(ctx);
+  vm.runInContext(previewSource, ctx);
+  ctx.renderExercisePreview(exercise, 0);
+  assert.equal(calls.length, 0);
+  assert.equal(imageHolder.hidden, true);
+  ctx.pdfDocument = {};
+  timers.shift()();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].targetWidth, 1200);
+  assert.equal(calls[0].maxPagePixels, 8000000);
+  assert.equal(imageHolder.hidden, false);
+  assert.match(imageHolder.image.src, /^data:image\/png/);
+  assert.equal(fallback.hidden, true);
+});
+
+test("a phone with no PDF renderer offers the original PDF, never HTML question text", () => {
+  const fallback = { replaceChildren(node) { this.child = node; } };
+  const exercise = { id: "q3a", crop: { page: 1 }, text: "OCR text must stay hidden" };
+  const ctx = {
+    document: {
+      getElementById(id) { return id === "noamPickedText" ? fallback : null; },
+      createElement(tag) { return { tag }; }
+    },
+    selectedExercise: exercise,
+    exercisePreviewCache: {}, exercisePreviewOrder: [],
+    pdfDocument: null, pdfNativeActive: true, pdfUrl: "/actual.pdf"
+  };
+  vm.createContext(ctx);
+  vm.runInContext(previewSource, ctx);
+  ctx.renderExercisePreview(exercise, 0);
+  assert.equal(fallback.child.tag, "a");
+  assert.equal(fallback.child.href, "/actual.pdf");
+  assert.doesNotMatch(fallback.child.textContent, /OCR/);
 });
