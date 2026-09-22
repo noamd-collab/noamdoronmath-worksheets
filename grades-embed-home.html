@@ -192,6 +192,33 @@
 
   @media (max-width:600px){ .doodle{display:none} }
 
+  /* ---------------- phone fit ----------------
+     The home page lives inside a Wix iframe. Safari may enlarge type in an
+     iframe, so keep the switch and every card constrained to the viewport. */
+  @media (max-width:600px){
+    html{ -webkit-text-size-adjust:100%; }
+    html,body{ max-width:100%; overflow-x:clip; }
+    body{ padding:8px 12px 24px; }
+    .wrap{ width:100%; min-width:0; }
+    .hero{ padding:14px 4px 4px; }
+    .hero h1{ font-size:clamp(24px,8vw,30px); line-height:1.25; }
+    .tagline{ font-size:14px; line-height:1.45; }
+    .switchbar{ width:100%; margin:8px 0; }
+    .switch{ width:100%; max-width:100%; gap:2px; padding:4px; box-shadow:-3px 3px 0 rgba(27,33,56,.14); }
+    .switch button{ flex:1 1 0; min-width:0; padding:8px 5px; font-size:14px; line-height:1.2; white-space:normal; }
+    .switch button small{ margin-top:2px; font-size:11px; line-height:1.2; }
+    .lead{ margin:12px 4px 18px; min-height:0; font-size:14px; line-height:1.45; }
+    .grid{ gap:14px; }
+    .card{ min-width:0; padding:16px 14px 14px; border-radius:16px; box-shadow:-4px 4px 0 var(--ink); }
+    .card:hover,.card:focus-visible{ transform:none; box-shadow:-4px 4px 0 var(--ink); }
+    .cardtop{ min-width:0; margin-bottom:12px; }
+    .badge{ width:58px; height:58px; font-size:30px; }
+    .pill{ min-width:0; max-width:calc(100% - 70px); padding:5px 8px; overflow-wrap:anywhere; white-space:normal; text-align:center; }
+    .title{ font-size:19px; line-height:1.35; overflow-wrap:anywhere; }
+    .sub{ font-size:14px; line-height:1.5; margin-bottom:14px; }
+    .cta{ min-height:44px; padding:9px 15px; }
+  }
+
   @media (prefers-reduced-motion:reduce){
     *{animation:none !important;transition:none !important}
     .card:hover{transform:none}
