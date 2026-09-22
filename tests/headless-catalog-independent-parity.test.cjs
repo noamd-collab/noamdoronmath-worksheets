@@ -328,3 +328,18 @@ test('independent negative control: mutated resolved prefix is detected', () => 
     m.prefix
   );
 });
+
+test('independent negative control: extra SEARCH_TERMS entry is detected', () => {
+  const mutated = JSON.parse(JSON.stringify(catalog.searchTerms));
+  const gradeKey = Object.keys(mutated)[0];
+  mutated[gradeKey]['999999'] = 'ערך שלא אמור להיות כאן';
+  let detected = false;
+  try {
+    assertSearchTermsEqual(mutated, expected.searchTerms, 'should fail on extra entry');
+  } catch (err) {
+    detected = true;
+  }
+  assert.equal(detected, true);
+  // committed catalog untouched
+  assertSearchTermsEqual(readCommittedCatalog().searchTerms, expected.searchTerms);
+});
