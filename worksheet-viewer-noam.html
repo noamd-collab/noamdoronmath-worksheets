@@ -5987,7 +5987,7 @@ function noamRenderAiDiagram(visual){
 function noamDiagramError(error){
   if (isBotProtectionError(error)){return String(error.message||"לא הצלחנו לאמת את הבקשה. נסו שוב בעוד רגע.").slice(0,220);}
   if (error&&error.code==="DIAGRAM_UNSUPPORTED"){
-    return "עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.";
+    return "עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב מה תרצו שאדגיש בהמחשה.";
   }
   return "לא הצלחתי להכין את השרטוט כרגע. אפשר לנסות שוב.";
 }
