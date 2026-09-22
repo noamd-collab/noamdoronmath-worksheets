@@ -255,7 +255,7 @@
         "key": {
           "type": "string",
           "enum": ["a", "b", "c", "one"],
-          "description": "Required. Level key from links (a|b|c|one)."
+          "description": "Required. Level key from links (a|b|c|one). Catalog identity stays 'one' for single-sheet rows — do not rename to 'b'. When that row is viewer-routed, production levelLinksHTML passes level argument \"b\" into sheetHref (query lv=b); see x-field-classification.sheetHref-recipe."
         },
         "label": {
           "type": "string",
@@ -344,6 +344,6 @@
       "config.gradeEmojis",
       "icons SVG bodies"
     ],
-    "sheetHref-recipe": "If routing.usesViewer: viewerPath + ?g&x=resolvedNoamPrefix&lv=level.key&pdf=level.pdfId&t=title + siblingPdfQuery. Else: config.pdfBase + level.pdfId + '.pdf'."
+    "sheetHref-recipe": "Matches index.html levelLinksHTML → sheetHref. Direct PDF (config.pdfBase + pdfId + '.pdf') when: config.viewer.enabled is false, OR hex/topic missing, OR no resolved Noam prefix, OR grade not in middleGrades (7–9). Viewer URL when routing.usesViewer would be true under those same gates: viewerPath + ?g=<grade>&x=<resolvedNoamPrefix>&lv=<viewerLevel>&pdf=<pdfId>&t=<title> plus sibling pa/pb/pc from siblingPdfQuery when present. viewerLevel = level.key for a|b|c; for key 'one', production passes \"b\" so lv=b (catalog key remains 'one'). Not every 'one' row is viewer-routed — elementary and prefix-less topics stay direct PDF."
   }
 }

@@ -69,8 +69,8 @@ The headless export **reads** `index.html`; it does not replace `tools/validate.
 - **Grades / labels** — `grades[].grade`, `grades[].label` (+ emoji from `GRADE_EMOJI`).
 - **Groups** — `key`, `label` (from `name`), `reducedProgram` when key ∈ `TRACK_GROUPS`.
 - **Topics** — `id`, `title` (`t`), optional `description` (`d`) / `note` (`n`), `group`, `icon`, optional `parent`, optional `noamTopicId` (`x`).
-- **Levels** — `a` / `b` / `c` / `one` with `pdfId` and resolved display `label`.
-- **Routing** — `topics[].routing` mirrors `noamTopicPrefix` + `sheetHref` gating (derived; see schema `x-field-classification.sheetHref-recipe`).
+- **Levels** — `a` / `b` / `c` / `one` with `pdfId` and resolved display `label`. The catalog level id for a single-sheet row stays `one` (do not rename to `b`).
+- **Routing** — `topics[].routing` mirrors `noamTopicPrefix` + `sheetHref` gating (derived; see schema `x-field-classification.sheetHref-recipe`). Viewer links are used only when the viewer is enabled, a Noam prefix resolves (`x` or `NOAM_PREFIX_FALLBACK`), and the grade is middle school (7–9); otherwise the href is a direct PDF (`pdfBase` + `pdfId` + `.pdf`). For viewer-routed `one` rows, production `levelLinksHTML` calls `sheetHref(..., "b", row.one, ...)` so the query param is `lv=b` while the catalog level key remains `one`.
 - **Search** — `searchTerms` mirrors `SEARCH_TERMS`.
 - **Icons** — full `ICONS` map keyed by topic `icon`.
 
