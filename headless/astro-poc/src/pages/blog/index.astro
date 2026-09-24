@@ -1,0 +1,15 @@
+---
+import BlogArchivePage from '../../components/BlogArchivePage.astro';
+import { loadBlogArchiveByPath } from '../../lib/blogArchives';
+
+export const prerender = false;
+
+const archive = loadBlogArchiveByPath('/blog');
+if (!archive) {
+  return new Response('Blog archive missing', {
+    status: 404,
+    headers: { 'content-type': 'text/plain; charset=utf-8' },
+  });
+}
+---
+<BlogArchivePage archive={archive} />

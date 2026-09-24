@@ -1,0 +1,226 @@
+{
+  "path": "/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9C%D7%95%D7%97-%D7%94%D7%9B%D7%A4%D7%9C-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F-%D7%91%D7%91%D7%99%D7%AA",
+  "pathSlug": "%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9C%D7%95%D7%97-%D7%94%D7%9B%D7%A4%D7%9C-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F-%D7%91%D7%91%D7%99%D7%AA",
+  "decodedSlug": "דפי-עבודה-ללוח-הכפל-לתרגול-נכון-בבית",
+  "fileSlug": "multiplication-table-worksheets",
+  "title": "דפי עבודה ללוח הכפל לתרגול נכון בבית",
+  "description": "דפי עבודה ללוח הכפל לתרגול נכון בבית: משחקים, טבלאות, שליפה מהירה עד 10 וביסוס זיכרון לטווח ארוך. בחינם ללא הרשמה, לבניית בסיס חזק וביטחון.",
+  "ogTitle": "דפי עבודה ללוח הכפל לתרגול נכון בבית",
+  "ogDescription": "תרגול כפל בכיתות ב׳–ג׳ מתוך דפים קיימים: קבוצות שוות, מערכים, עובדות כפל ובדיקה בחילוק. חינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp",
+  "h1": "דפי עבודה ללוח הכפל לתרגול נכון בבית",
+  "author": "נועם דורון מתמטיקה",
+  "datePublished": "2026-08-28T09:12:46.000Z",
+  "dateModified": "2026-09-12T14:23:12.087Z",
+  "dateDisplay": "28 באוג׳",
+  "readingTime": "זמן קריאה 2 דקות",
+  "authorAvatar": {
+    "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+    "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+  },
+  "coverImage": "https://static.wixstatic.com/media/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp",
+  "blocks": [
+    {
+      "type": "p",
+      "text": "לוח הכפל נעשה מובן יותר כשמחברים בין עובדת הכפל לבין קבוצות שוות. ארבע קבוצות של שש הן 24. אפשר לראות זאת בציור, במערך של שורות ועמודות, או בחיבור חוזר. המסלול כאן מפנה לדפי העבודה הקיימים בכיתות ב׳ וג׳, וכולם פתוחים בחינם."
+    },
+    {
+      "type": "h2",
+      "text": "דוגמה: משתמשים בעובדה שכבר מכירים"
+    },
+    {
+      "type": "p",
+      "text": "כדי למצוא שבע פעמים שמונה אפשר להתחיל מחמש פעמים שמונה, שהן 40, ולהוסיף עוד פעמיים שמונה, שהן 16. יחד מתקבל 56. הפירוק אינו ניחוש: חמש קבוצות ועוד שתי קבוצות הן שבע קבוצות של אותו גודל."
+    },
+    {
+      "type": "h2",
+      "text": "בוחרים את נקודת ההתחלה"
+    },
+    {
+      "type": "p",
+      "text": "כיתה ב׳ — כפל, קבוצות שוות ומערכים",
+      "segments": [
+        {
+          "type": "a",
+          "text": "כיתה ב׳ — כפל, קבוצות שוות ומערכים",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=2&topic=16"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "כיתה ב׳ — משפחת כפל וחילוק",
+      "segments": [
+        {
+          "type": "a",
+          "text": "כיתה ב׳ — משפחת כפל וחילוק",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=2&topic=19"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "כיתה ג׳ — כפל, עובדות ומבנים",
+      "segments": [
+        {
+          "type": "a",
+          "text": "כיתה ג׳ — כפל, עובדות ומבנים",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=3&topic=9"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "כיתה ג׳ — חילוק ובדיקה בכפל",
+      "segments": [
+        {
+          "type": "a",
+          "text": "כיתה ג׳ — חילוק ובדיקה בכפל",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=3&topic=21"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "אם הילד עדיין סופר כל פריט בנפרד, התחילו במערך מוחשי. אם הוא מבין קבוצות שוות אך מתעכב בשליפה, בחרו כמה עובדות כפל וחזרו אליהן בדרכים שונות. אין צורך למדוד זמן בכל שאלה: בקשו גם הסבר קצר שמראה כיצד הגיע לתוצאה."
+    },
+    {
+      "type": "h2",
+      "text": "שגרת תרגול שאפשר לחזור אליה"
+    },
+    {
+      "type": "p",
+      "text": "פותחים בשאלה מוכרת, פותרים כמה שאלות מהדף, ובוחרים תוצאה אחת לבדיקה בפעולה ההפוכה. למשל, אם שש פעמים שבע הן 42, אז 42 בחלוקה לשש הם שבע. בסיום מסמנים עובדה אחת לתרגול הבא. אפשר לשמור את הקישור לנושא במכשיר בלי חשבון."
+    },
+    {
+      "type": "h2",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "p",
+      "text": "כאשר הקבוצות אינן שוות, אי אפשר לייצג את כולן בכפל אחד בלי התאמה. כדאי גם להפריד בין חיבור גורמים לבין כפל: שבע ועוד שמונה אינם שבע פעמים שמונה. כשמשתמשים בחילוק לבדיקה, יש לשמור על הקשר בין המכפלה לשני הגורמים."
+    },
+    {
+      "type": "h2",
+      "text": "בדיקה עצמית"
+    },
+    {
+      "type": "p",
+      "text": "יש חמש שורות ובהן שבעה כיסאות בכל שורה. מוסיפים עוד שתי שורות כאלה. כמה כיסאות יש? תשובה: 49. בחמש השורות היו 35 כיסאות ובשתיים הנוספות 14. הסבר אחר: שבע שורות של שבעה כיסאות."
+    },
+    {
+      "type": "p",
+      "text": "למאגר כיתה ג׳",
+      "segments": [
+        {
+          "type": "a",
+          "text": "למאגר כיתה ג׳",
+          "href": "https://www.noamdoronmath.co.il/grade-3"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+      "segments": [
+        {
+          "type": "a",
+          "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+          "href": "https://www.noamdoronmath.co.il/aboutus"
+        }
+      ]
+    }
+  ],
+  "related": [],
+  "categories": [
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+    },
+    {
+      "text": "חטיבת הביניים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math"
+    },
+    {
+      "text": "מורים והורים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents"
+    },
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+    }
+  ],
+  "whatsapp": {
+    "heading": "נפגשים גם בוואטסאפ",
+    "body": "הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.",
+    "ctaLabel": "להצטרפות לקבוצת הוואטסאפ ↗",
+    "ctaHref": "https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t",
+    "note": "ההצטרפות לבחירתכם. כל דפי העבודה פתוחים גם בלי להצטרף."
+  },
+  "recentPosts": {
+    "heading": "פוסטים אחרונים",
+    "viewAllLabel": "הצג הכול",
+    "viewAllHref": "https://www.noamdoronmath.co.il/blog",
+    "items": [
+      {
+        "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+        "href": "https://www.noamdoronmath.co.il/post/איך-לתרגל-גאומטריה-לכיתה-ו-ולהצליח-במבחנים",
+        "imageAlt": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים"
+      },
+      {
+        "title": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+        "href": "https://www.noamdoronmath.co.il/post/תרגול-שברים-לכיתה-ד-שמחזק-הבנה-וביטחון",
+        "imageAlt": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון"
+      },
+      {
+        "title": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה",
+        "href": "https://www.noamdoronmath.co.il/post/תרגילי-אתגר-במתמטיקה-לכיתה-ד-שמקדמים-חשיבה",
+        "imageAlt": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה"
+      }
+    ]
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "author": {
+        "@type": "Person",
+        "name": "נועם דורון מתמטיקה"
+      },
+      "dateModified": "2026-09-12T14:23:12.087Z",
+      "datePublished": "2026-08-28T09:12:46.000Z",
+      "headline": "דפי עבודה ללוח הכפל לתרגול נכון בבית",
+      "mainEntityOfPage": {
+        "@id": "https://www.noamdoronmath.co.il/post/דפי-עבודה-ללוח-הכפל-לתרגול-נכון-בבית",
+        "@type": "itemPage",
+        "url": "https://www.noamdoronmath.co.il/post/דפי-עבודה-ללוח-הכפל-לתרגול-נכון-בבית"
+      },
+      "description": "דפי עבודה ללוח הכפל לתרגול נכון בבית: משחקים, טבלאות, שליפה מהירה עד 10 וביסוס זיכרון לטווח ארוך. בחינם ללא הרשמה, לבניית בסיס חזק וביטחון.",
+      "url": "https://www.noamdoronmath.co.il/post/דפי-עבודה-ללוח-הכפל-לתרגול-נכון-בבית",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://static.wixstatic.com/media/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp",
+        "width": "1536",
+        "height": "1024"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+        "url": "https://www.noamdoronmath.co.il"
+      }
+    }
+  ],
+  "featureKey": "alt+author+captions+date+h2+images+lists+many-links+medium-body+schema",
+  "clusterSize": 6,
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9C%D7%95%D7%97-%D7%94%D7%9B%D7%A4%D7%9C-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F-%D7%91%D7%91%D7%99%D7%AA",
+    "capturedAt": "2026-09-23T21:36:04.004Z",
+    "bodyChars": 1513
+  },
+  "postCategory": {
+    "text": "יסודי",
+    "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+  },
+  "batch": "m27",
+  "categoryHint": "elementary-math"
+}

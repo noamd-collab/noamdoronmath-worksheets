@@ -1,0 +1,226 @@
+{
+  "slug": "number-line-absolute-value-grade-7",
+  "path": "/number-line-absolute-value-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/number-line-absolute-value-grade-7",
+  "fetchedAt": "2026-09-23T16:20:35.257Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "ישר המספרים וערך מוחלט לכיתה ז׳ | דפי עבודה חינם",
+  "description": "דפי עבודה בישר המספרים וערך מוחלט לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. ממקמים מספרים חיוביים ושליליים על ישר המספרים, מוצאים מספר נגדי וערך מוחלט.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "ישר המספרים וערך מוחלט לכיתה ז׳",
+  "intro": "ממקמים מספרים חיוביים ושליליים על ישר המספרים, מוצאים מספר נגדי וערך מוחלט, ומשווים ומסדרים מספרים מכוונים. מתאים לתחילת נושא המספרים המכוונים בכיתה ז׳. שלוש רמות תרגול, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "ערך מוחלט הוא המרחק של מספר מאפס, ולכן הוא אינו שלילי לעולם. שני מספרים נגדיים נמצאים באותו מרחק מאפס, משני צדדיו. דוגמה: |−7| = 7 וגם |7| = 7, והמספר הנגדי ל־7 הוא −7.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לחשוב ש־−9 גדול מ־−2 כי 9 גדול מ־2. על ישר המספרים −9 נמצא שמאלה יותר, ולכן הוא קטן יותר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "סדרו מן הקטן אל הגדול: 3, −5, 0, −1.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: −5, −1, 0, 3.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "אחרי: חיבור וחיסור מספרים מכוונים",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בהמשך הפרק: כפל מספרים מכוונים",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "קישורים קשורים",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא ישר המספרים וערך מוחלט לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא ישר המספרים וערך מוחלט לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-7",
+      "label": "כל דפי כיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    },
+    {
+      "path": "/signed-numbers-grade-7",
+      "label": "מספרים מכוונים",
+      "productionHref": "https://www.noamdoronmath.co.il/signed-numbers-grade-7"
+    },
+    {
+      "path": "/angles-introduction-measurement-grade-7",
+      "label": "זוויות",
+      "productionHref": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=1",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=1",
+    "catalogTopicId": 1,
+    "catalogTopicTitle": "מספרים מכוונים — ישר המספרים וערך מוחלט"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=1",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=1",
+      "catalogTopicId": 1,
+      "catalogTopicTitle": "מספרים מכוונים — ישר המספרים וערך מוחלט"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/number-line-absolute-value-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/number-line-absolute-value-grade-7",
+        "name": "ישר המספרים וערך מוחלט לכיתה ז׳ | דפי עבודה חינם",
+        "description": "דפי עבודה בישר המספרים וערך מוחלט לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. ממקמים מספרים חיוביים ושליליים על ישר המספרים, מוצאים מספר נגדי וערך מוחלט.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/number-line-absolute-value-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/number-line-absolute-value-grade-7#learning-resource",
+        "name": "ישר המספרים וערך מוחלט לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/number-line-absolute-value-grade-7",
+        "description": "דפי עבודה בישר המספרים וערך מוחלט לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. ממקמים מספרים חיוביים ושליליים על ישר המספרים, מוצאים מספר נגדי וערך מוחלט.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/number-line-absolute-value-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא ישר המספרים וערך מוחלט לכיתה ז׳ מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

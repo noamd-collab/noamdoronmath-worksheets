@@ -1,0 +1,144 @@
+{
+  "slug": "pythagoras-applications-grade-7",
+  "source": "production",
+  "url": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7",
+  "capturedAt": "2026-09-23T17:03:41.178Z",
+  "httpStatus": 200,
+  "title": "פיתגורס — שימושים לכיתה ז׳ | דפי עבודה חינם",
+  "description": "שימושי משפט פיתגורס במלבן, טרפז, גובה משולש ובעיות מהחיים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+  "h1": "פיתגורס — שימושים לכיתה ז׳",
+  "intro": "מיישמים את משפט פיתגורס במלבן, בטרפז, בגובה במשולש ובבעיות מהחיים. דפי תרגול ברמות שונות — בחינם.",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "authorLine": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "paragraphs": [
+        "במלבן שצלעותיו 3 ו־4, אורך האלכסון הוא 5, כי 3²+4²=5²."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "paragraphs": [
+        "טעות נפוצה: לבלבל בין היתר לניצב, או להשתמש במשפט פיתגורס במשולש שאינו ישר־זווית."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "ניצבים 6 ו־8. מה אורך היתר?",
+        "תשובה: 10."
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מיישמים את משפט פיתגורס במלבן, בטרפז, בגובה במשולש ובבעיות מהחיים. דפי תרגול ברמות שונות — בחינם.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פיתגורס — שימושים — בחירת דף ורמה",
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=43",
+      "catalogTopicId": 43
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במלבן שצלעותיו 3 ו־4, אורך האלכסון הוא 5, כי 3²+4²=5².",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה: לבלבל בין היתר לניצב, או להשתמש במשפט פיתגורס במשולש שאינו ישר־זווית.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "ניצבים 6 ו־8. מה אורך היתר?",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא פיתגורס — שימושים לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7",
+      "label": "זוויות"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/triangle-area-grade-7",
+      "label": "שטח משולש"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7",
+      "label": "משפט פיתגורס"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=43",
+    "label": "פיתגורס — שימושים — בחירת דף ורמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=43",
+      "label": "פיתגורס — שימושים — בחירת דף ורמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא פיתגורס — שימושים לכיתה ז׳ מתאימים לכיתה ז׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}

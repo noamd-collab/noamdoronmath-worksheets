@@ -1,0 +1,226 @@
+{
+  "slug": "square-root-grade-7",
+  "path": "/square-root-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/square-root-grade-7",
+  "fetchedAt": "2026-09-23T16:20:40.058Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "שורש ריבועי לכיתה ז׳ | דפי עבודה חינם",
+  "description": "דפי עבודה בשורש ריבועי לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מבינים את משמעות השורש הריבועי, מוצאים שורשים של ריבועים שלמים ואומדים שורשים.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שורש ריבועי לכיתה ז׳",
+  "intro": "מבינים את משמעות השורש הריבועי, מוצאים שורשים של ריבועים שלמים, אומדים שורשים ומקשרים לשטח של ריבוע. מתאים לכיתה ז׳ אחרי חזקות. שלוש רמות תרגול, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "השורש הריבועי של מספר הוא המספר האי־שלילי שבריבוע נותן אותו. לכן √49 = 7, וזה גם אורך הצלע של ריבוע ששטחו 49. דוגמה לאומדן: √50 נמצא בין 7 ל־8, כי 49 < 50 < 64.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לחלק את המספר ב־2 ולחשוב ש־√36 = 18. השורש הוא המספר שכופלים בעצמו: √36 = 6.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בין אילו שני מספרים שלמים עוקבים נמצא √30?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: בין 5 ל־6, כי 25 < 30 < 36.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לפני: חזקות עם מעריך טבעי",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בהמשך: מערכת צירים — היכרות וקנה מידה",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "קישורים קשורים",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא שורש ריבועי לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא שורש ריבועי לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/angles-introduction-measurement-grade-7",
+      "label": "זוויות",
+      "productionHref": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7"
+    },
+    {
+      "path": "/triangle-area-grade-7",
+      "label": "שטח משולש",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-area-grade-7"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-7",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=7",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=7",
+    "catalogTopicId": 7,
+    "catalogTopicTitle": "שורש ריבועי"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=7",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=7",
+      "catalogTopicId": 7,
+      "catalogTopicTitle": "שורש ריבועי"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/square-root-grade-7",
+        "name": "שורש ריבועי לכיתה ז׳ | דפי עבודה חינם",
+        "description": "דפי עבודה בשורש ריבועי לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מבינים את משמעות השורש הריבועי, מוצאים שורשים של ריבועים שלמים ואומדים שורשים.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#learning-resource",
+        "name": "שורש ריבועי לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/square-root-grade-7",
+        "description": "דפי עבודה בשורש ריבועי לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מבינים את משמעות השורש הריבועי, מוצאים שורשים של ריבועים שלמים ואומדים שורשים.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא שורש ריבועי לכיתה ז׳ מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

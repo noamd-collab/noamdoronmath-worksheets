@@ -1,0 +1,206 @@
+{
+  "slug": "algebraic-fractions-grade-9",
+  "path": "/algebraic-fractions-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9",
+  "fetchedAt": "2026-09-23T16:22:02.825Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "צמצום שברים אלגבריים לכיתה ט׳ | נועם דורון",
+  "description": "תרגול צמצום שברים אלגבריים ותחום הצבה לכיתה ט׳. דפי עבודה חינמיים בשלוש רמות, דוגמה מוסברת ורמזי נועם AI, ללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "צמצום שברים אלגבריים לכיתה ט׳",
+  "intro": "מפרקים לגורמים, מצמצמים שברים אלגבריים ורושמים תחום הצבה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בביטוי (x²−9)/(x−3) תחילה קובעים x≠3. לאחר פירוק המונה לגורמים מצמצמים גורם משותף ומקבלים x+3, עם אותה הגבלה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מצמצמים גורמים במכפלה, לא איברים בסכום. תחום ההצבה נשאר בתוקף גם אחרי הצמצום.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מה מקבלים מצמצום (x²−4)/(x−2), ובאיזה תנאי? תשובה: x+2, בתנאי x≠2.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא צמצום שברים אלגבריים לכיתה ט׳ מתאימים לכיתה ט׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא צמצום שברים אלגבריים לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/factoring-grade-9",
+      "label": "פירוק לגורמים",
+      "productionHref": "https://www.noamdoronmath.co.il/factoring-grade-9"
+    },
+    {
+      "path": "/quadratic-equations-grade-9",
+      "label": "משוואות ריבועיות",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
+    },
+    {
+      "path": "/quadratic-function-grade-9",
+      "label": "הפונקציה הריבועית",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-function-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=9&topic=3",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=3",
+    "catalogTopicId": 3,
+    "catalogTopicTitle": "צמצום שברים אלגבריים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=3",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=3",
+      "catalogTopicId": 3,
+      "catalogTopicTitle": "צמצום שברים אלגבריים"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9",
+        "name": "צמצום שברים אלגבריים לכיתה ט׳ | נועם דורון",
+        "description": "תרגול צמצום שברים אלגבריים ותחום הצבה לכיתה ט׳. דפי עבודה חינמיים בשלוש רמות, דוגמה מוסברת ורמזי נועם AI, ללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#learning-resource",
+        "name": "צמצום שברים אלגבריים לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9",
+        "description": "תרגול צמצום שברים אלגבריים ותחום הצבה לכיתה ט׳. דפי עבודה חינמיים בשלוש רמות, דוגמה מוסברת ורמזי נועם AI, ללא הרשמה.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא צמצום שברים אלגבריים לכיתה ט׳ מתאימים לכיתה ט׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

@@ -1,0 +1,59 @@
+{
+  "slug": "aboutus",
+  "title": "מי אני | נועם דורון, מורה למתמטיקה",
+  "description": "נועם דורון, מורה למתמטיקה עם תעודת הוראה. דפי עבודה חינמיים לכיתות א׳–ט׳, לפי תוכנית הלימודים, בשלוש רמות.",
+  "h1": "מי אני?",
+  "intro": [
+    "שמי נועם דורון, איש חינוך עם ותק של 10 שנים בהוראת מתמטיקה, הדוגל במתן מענה פדגוגי איכותי וברור המותאם לכלל שכבות הגיל. *התמונה נערכה באמצעות AI על מנת לשמור על פרטיות*"
+  ],
+  "blocks": [
+    {
+      "type": "img",
+      "src": "https://static.wixstatic.com/media/d8e7ad_7947f415697a48ee96ee4eda7e0df198~mv2.jpeg/v1/fill/w_603,h_337,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Gemini_Generated_Image_pm88icpm88icpm88.jpeg",
+      "alt": "Gemini_Generated_Image_pm88icpm88icpm88.jpeg"
+    },
+    {
+      "type": "p",
+      "text": "שמי נועם דורון, איש חינוך עם ותק של 10 שנים בהוראת מתמטיקה, הדוגל במתן מענה פדגוגי איכותי וברור המותאם לכלל שכבות הגיל. *התמונה נערכה באמצעות AI על מנת לשמור על פרטיות*"
+    },
+    {
+      "type": "h2",
+      "text": "צרו קשר"
+    },
+    {
+      "type": "p",
+      "text": "אשמח לשמוע מכם! בין אם אתם מחפשים חומרים נוספים, מעוניינים בשיתוף פעולה או שזיהיתם טעות שצריך לתקן – מלאו את הפרטים ואחזור אליכם בהקדם."
+    },
+    {
+      "type": "contact",
+      "note": "wix-form-dry-run-only",
+      "mailto": "mailto:noamd@noamdoronmath.co.il",
+      "mailtoLabel": "פנו אליי בדוא״ל: noamd@noamdoronmath.co.il",
+      "fieldsShownAsLabels": [
+        "שם פרטי",
+        "שם משפחה",
+        "כתובת אימייל",
+        "הודעה"
+      ],
+      "wixForm": {
+        "formId": "b8f7e551-c9bd-44a1-8371-45c115344b8f",
+        "componentId": "comp-mrxgdvcl",
+        "metaSiteId": "36dd9544-acf9-4e85-a01a-798f3c1efbb9",
+        "siteId": "0ca81118-7ca8-40a7-8f97-8d06d901a556",
+        "formsAppDefinitionId": "225dd912-7dea-4738-8688-4b8c6955ffc2",
+        "submitMode": "dry-run",
+        "fieldTargets": {
+          "firstName": "form_field_3ba2",
+          "lastName": "form_field_799d",
+          "email": "form_field_6673",
+          "message": "form_field_7c94"
+        }
+      }
+    }
+  ],
+  "formSkipped": false,
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/aboutus",
+    "capturedAt": "2026-09-23T20:05:24.152Z"
+  }
+}

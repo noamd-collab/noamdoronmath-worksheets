@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { WorksheetsClient } from '../components/WorksheetsClient';
+import { loadCatalog } from '../lib/catalog/loadCatalog';
+import { familyOf, parseGradeParam, worksheetsHref, type GradeNum } from '../lib/grades';
+import { parseWorksheetsUrlState } from '../lib/worksheetsUrlState';
+
+export const prerender = false;
+
+const catalog = loadCatalog();
+const parsed = parseGradeParam(Astro.url.searchParams.get('grade'));
+const invalid = parsed.invalid || !parsed.grade;
+const grade = parsed.grade;
+const gradeEntry = !invalid && grade ? catalog.grades.find((g) => g.grade === grade) : undefined;
+const missingEntry = !invalid && !!grade && !gradeEntry;
+const familyGrades =
+  gradeEntry && grade
+    ? familyOf(grade).map((g) => {
+        const entry = catalog.grades.find((x) => x.grade === g);
+        if (!entry) throw new Error('Missing catalog grade in family: ' + g);
+        return entry;
+      })
+    : [];
+const urlState = parseWorksheetsUrlState(Astro.url.searchParams, grade || 7);
+const highlightTopicId = urlState.topic;
+const initialUrlState = {
+  q: urlState.q,
+  group: urlState.group,
+  cross: urlState.cross,
+  track: urlState.track,
+};
+---
+
+{
+  invalid ? (
+    <BaseLayout title="כיתה לא חוקית · אב־טיפוס Astro" activeNav="worksheets">
+      <main class="wrap" data-grade="7">
+        <header class="banner">
+          <h1>כיתה לא חוקית</h1>
+          <p>
+            הפרמטר <code>grade={parsed.raw || '(ריק)'}</code> אינו כיתה במערכת (מותר 1–9 בלבד).
+            לא מוצג תוכן של כיתה אחרת תחת התווית הזו.
+          </p>
+          <ul class="invalid-grade-list">
+            {
+              catalog.grades.map((g) => (
+                <li>
+                  <a href={worksheetsHref(g.grade as GradeNum)}>
+                    {(g.emoji || '') + ' '}
+                    {g.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </header>
+      </main>
+    </BaseLayout>
+  ) : missingEntry ? (
+    <BaseLayout title="כיתה חסרה · אב־טיפוס Astro" activeNav="worksheets">
+      <main class="wrap" data-grade="7">
+        <header class="banner">
+          <h1>כיתה לא נמצאה בקטלוג</h1>
+          <p>
+            <a href="/worksheets?grade=7">חזרה לכיתה ז׳</a>
+          </p>
+        </header>
+      </main>
+    </BaseLayout>
+  ) : (
+    <BaseLayout
+      title={`דפי עבודה · ${gradeEntry!.label} (Astro POC)`}
+      activeNav="worksheets"
+      compactBrand={true}
+    >
+      <main>
+        <WorksheetsClient
+          client:load
+          catalog={catalog}
+          grade={grade!}
+          gradeEntry={gradeEntry!}
+          familyGrades={familyGrades}
+          highlightTopicId={highlightTopicId}
+          initialUrlState={initialUrlState}
+        />
+      </main>
+    </BaseLayout>
+  )
+}

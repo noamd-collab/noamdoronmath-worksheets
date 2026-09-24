@@ -1,0 +1,326 @@
+{
+  "grade": 8,
+  "path": "/grade-8",
+  "sourceUrl": "https://www.noamdoronmath.co.il/grade-8",
+  "fetchedAt": "2026-09-23T14:40:00Z",
+  "title": "דפי עבודה במתמטיקה לכיתה ח׳ להדפסה בחינם | נועם דורון",
+  "description": "דפי עבודה במתמטיקה לכיתה ח׳: מספרים מכוונים, חזקות, שורשים, משוואות, גיאומטריה ופונקציות — להורדה ולהדפסה בחינם, עם נועם AI שמסביר כל תרגיל צעד אחר צעד.",
+  "h1": "דפי עבודה במתמטיקה לכיתה ח׳ — בחינם",
+  "intro": "בעמוד זה תמצאו דפי עבודה במתמטיקה לכיתה ח׳, המסודרים לפי נושאי הלימוד המרכזיים ובהתאם לתוכנית הלימודים. אפשר לתרגל משוואות ליניאריות, מערכות משוואות, אי־שוויונות, פונקציה קווית, חפיפת משולשים, הוכחות, דמיון, משפט פיתגורס, מעגל וגופים במרחב. בכל נושא ניתן לבחור דף ורמת קושי, לפתור באופן עצמאי ולהיעזר בהסברים ובנועם AI לקבלת רמזים ומשוב. הדפים זמינים בחינם, ללא הרשמה, ומתאימים לשיעורי בית, לתרגול בכיתה, להשלמת פערים ולחזרה לקראת מבחן. מומלץ לבחור את הנושא הנלמד כעת, להתחיל ברמה המתאימה, להציג את דרך הפתרון בצורה מסודרת ולבדוק את התשובות לפני שמתקדמים לתרגול מאתגר יותר.",
+  "topicSections": [
+    {
+      "heading": "אלגברה ופונקציות",
+      "links": [
+        {
+          "path": "/linear-equations-grade-8",
+          "label": "משוואות ליניאריות",
+          "productionHref": "https://www.noamdoronmath.co.il/linear-equations-grade-8"
+        },
+        {
+          "path": "/systems-of-equations-grade-8",
+          "label": "מערכות משוואות",
+          "productionHref": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8"
+        },
+        {
+          "path": "/inequalities-grade-8",
+          "label": "אי־שוויונות",
+          "productionHref": "https://www.noamdoronmath.co.il/inequalities-grade-8"
+        },
+        {
+          "path": "/percentage-problems-grade-8",
+          "label": "בעיות אחוזים",
+          "productionHref": "https://www.noamdoronmath.co.il/percentage-problems-grade-8"
+        },
+        {
+          "path": "/linear-function-grade-8",
+          "label": "פונקציה קווית",
+          "productionHref": "https://www.noamdoronmath.co.il/linear-function-grade-8"
+        },
+        {
+          "path": "/coordinate-plane-grade-8",
+          "label": "מערכת צירים",
+          "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8"
+        },
+        {
+          "path": "/statistics-grade-8",
+          "label": "סטטיסטיקה",
+          "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-8"
+        }
+      ]
+    },
+    {
+      "heading": "משולשים והוכחות",
+      "links": [
+        {
+          "path": "/triangle-congruence-grade-8",
+          "label": "חפיפת משולשים",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-congruence-grade-8"
+        },
+        {
+          "path": "/congruence-theorems-grade-8",
+          "label": "משפטי חפיפה",
+          "productionHref": "https://www.noamdoronmath.co.il/congruence-theorems-grade-8"
+        },
+        {
+          "path": "/geometric-proof-grade-8",
+          "label": "הוכחה גאומטרית",
+          "productionHref": "https://www.noamdoronmath.co.il/geometric-proof-grade-8"
+        },
+        {
+          "path": "/triangle-congruence-proofs-grade-8",
+          "label": "הוכחות בחפיפת משולשים",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-congruence-proofs-grade-8"
+        },
+        {
+          "path": "/exterior-angle-triangle-grade-8",
+          "label": "זווית חיצונית",
+          "productionHref": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8"
+        },
+        {
+          "path": "/isosceles-triangle-properties-grade-8",
+          "label": "משולש שווה שוקיים — תכונות",
+          "productionHref": "https://www.noamdoronmath.co.il/isosceles-triangle-properties-grade-8"
+        },
+        {
+          "path": "/isosceles-triangle-grade-8",
+          "label": "הוכחה — משולש שווה שוקיים",
+          "productionHref": "https://www.noamdoronmath.co.il/isosceles-triangle-grade-8"
+        },
+        {
+          "path": "/triangle-median-grade-8",
+          "label": "התיכון במשולש",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-median-grade-8"
+        },
+        {
+          "path": "/parallel-lines-angles-grade-8",
+          "label": "זוויות בין ישרים מקבילים",
+          "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-8"
+        }
+      ]
+    },
+    {
+      "heading": "דמיון ופיתגורס",
+      "links": [
+        {
+          "path": "/similar-triangles-grade-8",
+          "label": "דמיון משולשים",
+          "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-8"
+        },
+        {
+          "path": "/triangle-similarity-proof-grade-8",
+          "label": "הוכחת דמיון משולשים",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-similarity-proof-grade-8"
+        },
+        {
+          "path": "/similar-triangles-area-ratio-grade-8",
+          "label": "יחסי שטחים במשולשים דומים",
+          "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-area-ratio-grade-8"
+        },
+        {
+          "path": "/pythagorean-theorem-grade-8",
+          "label": "משפט פיתגורס",
+          "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-8"
+        },
+        {
+          "path": "/advanced-pythagoras-grade-8",
+          "label": "פיתגורס מורכב",
+          "productionHref": "https://www.noamdoronmath.co.il/advanced-pythagoras-grade-8"
+        },
+        {
+          "path": "/pythagoras-in-space-grade-8",
+          "label": "פיתגורס במרחב",
+          "productionHref": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8"
+        }
+      ]
+    },
+    {
+      "heading": "מעגל וגופים במרחב",
+      "links": [
+        {
+          "path": "/circle-area-circumference-grade-8",
+          "label": "מעגל ועיגול — היקף ושטח",
+          "productionHref": "https://www.noamdoronmath.co.il/circle-area-circumference-grade-8"
+        },
+        {
+          "path": "/cylinder-surface-area-grade-8",
+          "label": "גליל — שטח פנים",
+          "productionHref": "https://www.noamdoronmath.co.il/cylinder-surface-area-grade-8"
+        },
+        {
+          "path": "/cylinder-volume-grade-8",
+          "label": "גליל — נפח",
+          "productionHref": "https://www.noamdoronmath.co.il/cylinder-volume-grade-8"
+        },
+        {
+          "path": "/cone-grade-8",
+          "label": "חרוט",
+          "productionHref": "https://www.noamdoronmath.co.il/cone-grade-8"
+        }
+      ]
+    }
+  ],
+  "topicLinks": [
+    {
+      "path": "/linear-equations-grade-8",
+      "label": "משוואות ליניאריות",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-equations-grade-8"
+    },
+    {
+      "path": "/systems-of-equations-grade-8",
+      "label": "מערכות משוואות",
+      "productionHref": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8"
+    },
+    {
+      "path": "/inequalities-grade-8",
+      "label": "אי־שוויונות",
+      "productionHref": "https://www.noamdoronmath.co.il/inequalities-grade-8"
+    },
+    {
+      "path": "/percentage-problems-grade-8",
+      "label": "בעיות אחוזים",
+      "productionHref": "https://www.noamdoronmath.co.il/percentage-problems-grade-8"
+    },
+    {
+      "path": "/linear-function-grade-8",
+      "label": "פונקציה קווית",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-function-grade-8"
+    },
+    {
+      "path": "/coordinate-plane-grade-8",
+      "label": "מערכת צירים",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8"
+    },
+    {
+      "path": "/statistics-grade-8",
+      "label": "סטטיסטיקה",
+      "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-8"
+    },
+    {
+      "path": "/triangle-congruence-grade-8",
+      "label": "חפיפת משולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-congruence-grade-8"
+    },
+    {
+      "path": "/congruence-theorems-grade-8",
+      "label": "משפטי חפיפה",
+      "productionHref": "https://www.noamdoronmath.co.il/congruence-theorems-grade-8"
+    },
+    {
+      "path": "/geometric-proof-grade-8",
+      "label": "הוכחה גאומטרית",
+      "productionHref": "https://www.noamdoronmath.co.il/geometric-proof-grade-8"
+    },
+    {
+      "path": "/triangle-congruence-proofs-grade-8",
+      "label": "הוכחות בחפיפת משולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-congruence-proofs-grade-8"
+    },
+    {
+      "path": "/exterior-angle-triangle-grade-8",
+      "label": "זווית חיצונית",
+      "productionHref": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8"
+    },
+    {
+      "path": "/isosceles-triangle-properties-grade-8",
+      "label": "משולש שווה שוקיים — תכונות",
+      "productionHref": "https://www.noamdoronmath.co.il/isosceles-triangle-properties-grade-8"
+    },
+    {
+      "path": "/isosceles-triangle-grade-8",
+      "label": "הוכחה — משולש שווה שוקיים",
+      "productionHref": "https://www.noamdoronmath.co.il/isosceles-triangle-grade-8"
+    },
+    {
+      "path": "/triangle-median-grade-8",
+      "label": "התיכון במשולש",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-median-grade-8"
+    },
+    {
+      "path": "/parallel-lines-angles-grade-8",
+      "label": "זוויות בין ישרים מקבילים",
+      "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-8"
+    },
+    {
+      "path": "/similar-triangles-grade-8",
+      "label": "דמיון משולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-8"
+    },
+    {
+      "path": "/triangle-similarity-proof-grade-8",
+      "label": "הוכחת דמיון משולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-similarity-proof-grade-8"
+    },
+    {
+      "path": "/similar-triangles-area-ratio-grade-8",
+      "label": "יחסי שטחים במשולשים דומים",
+      "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-area-ratio-grade-8"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-8",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-8"
+    },
+    {
+      "path": "/advanced-pythagoras-grade-8",
+      "label": "פיתגורס מורכב",
+      "productionHref": "https://www.noamdoronmath.co.il/advanced-pythagoras-grade-8"
+    },
+    {
+      "path": "/pythagoras-in-space-grade-8",
+      "label": "פיתגורס במרחב",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagoras-in-space-grade-8"
+    },
+    {
+      "path": "/circle-area-circumference-grade-8",
+      "label": "מעגל ועיגול — היקף ושטח",
+      "productionHref": "https://www.noamdoronmath.co.il/circle-area-circumference-grade-8"
+    },
+    {
+      "path": "/cylinder-surface-area-grade-8",
+      "label": "גליל — שטח פנים",
+      "productionHref": "https://www.noamdoronmath.co.il/cylinder-surface-area-grade-8"
+    },
+    {
+      "path": "/cylinder-volume-grade-8",
+      "label": "גליל — נפח",
+      "productionHref": "https://www.noamdoronmath.co.il/cylinder-volume-grade-8"
+    },
+    {
+      "path": "/cone-grade-8",
+      "label": "חרוט",
+      "productionHref": "https://www.noamdoronmath.co.il/cone-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת כל דפי העבודה לכיתה ח׳ ובחירת רמה",
+    "href": "/worksheets?grade=8",
+    "source": "production-github-cta"
+  },
+  "faqHeading": "שאלות נפוצות - כיתה ח׳",
+  "faq": [
+    {
+      "question": "האם דפי העבודה באמת חינמיים וללא הרשמה?",
+      "answer": "כן, כל דפי העבודה לכיתה ח׳ זמינים לצפייה והורדה ישירה ללא צורך ביצירת חשבון או תשלום."
+    },
+    {
+      "question": "אילו נושאים מכוסים בדפי העבודה?",
+      "answer": "הדפים מכסים את כל תוכנית הלימודים: אלגברה, פונקציות, חפיפת משולשים, דמיון, משפט פיתגורס וגופים במרחב."
+    },
+    {
+      "question": "האם יש רמות קושי שונות?",
+      "answer": "בהחלט. לכל נושא תוכלו לבחור בין שלוש רמות: בסיסית, בינונית ומאתגרת, בהתאם לקצב האישי שלכם."
+    },
+    {
+      "question": "איך משתמשים בכלי נועם AI?",
+      "answer": "בזמן הצפייה בדף העבודה, תוכלו להפעיל את העוזר הדיגיטלי לקבלת הסברים, רמזים ופתרונות שלב אחר שלב."
+    },
+    {
+      "question": "האם ניתן להדפיס את דפי העבודה?",
+      "answer": "כן, כל דפי העבודה נועדו להדפסה נוחה בפורמט PDF. פשוט לחצו על כפתור ההדפסה במציג הקבצים."
+    }
+  ],
+  "terms": {
+    "label": "תקנון שימוש בדפי עבודה חינמיים",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  }
+}

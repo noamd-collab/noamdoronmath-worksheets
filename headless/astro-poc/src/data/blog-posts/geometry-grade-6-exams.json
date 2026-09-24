@@ -1,0 +1,251 @@
+{
+  "path": "/post/%D7%90%D7%99%D7%9A-%D7%9C%D7%AA%D7%A8%D7%92%D7%9C-%D7%92%D7%90%D7%95%D7%9E%D7%98%D7%A8%D7%99%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%95-%D7%95%D7%9C%D7%94%D7%A6%D7%9C%D7%99%D7%97-%D7%91%D7%9E%D7%91%D7%97%D7%A0%D7%99%D7%9D",
+  "pathSlug": "%D7%90%D7%99%D7%9A-%D7%9C%D7%AA%D7%A8%D7%92%D7%9C-%D7%92%D7%90%D7%95%D7%9E%D7%98%D7%A8%D7%99%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%95-%D7%95%D7%9C%D7%94%D7%A6%D7%9C%D7%99%D7%97-%D7%91%D7%9E%D7%91%D7%97%D7%A0%D7%99%D7%9D",
+  "decodedSlug": "איך-לתרגל-גאומטריה-לכיתה-ו-ולהצליח-במבחנים",
+  "fileSlug": "geometry-grade-6-exams",
+  "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+  "description": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים: זוויות, משולשים, שטחים והיקפים בתרגול מסודר וברור. דפי עבודה בחינם ללא הרשמה, עם שרטוטים ופתרונות.",
+  "ogTitle": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+  "ogDescription": "מסלול תרגול בגאומטריה לכיתה ו׳: גופים, פריסות, שטח פנים ונפח, עם דוגמה פתורה וקישורים לדפי העבודה הקיימים בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp",
+  "h1": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+  "author": "נועם דורון מתמטיקה",
+  "datePublished": "2026-09-07T08:22:04.000Z",
+  "dateModified": "2026-09-12T14:17:08.098Z",
+  "dateDisplay": "7 בספט׳",
+  "coverImage": "https://static.wixstatic.com/media/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp",
+  "blocks": [
+    {
+      "type": "p",
+      "text": "לפני שמתחילים לפתור, בודקים מה נכלל במבחן: גופים, פריסות, שטח פנים, נפח או מיון מרובעים. המסלול שלפניכם משתמש בדפים שכבר קיימים במאגר. אפשר לפתוח כל דף בחינם וללא הרשמה ולבחור מתוך הרמות הזמינות בו."
+    },
+    {
+      "type": "h2",
+      "text": "מתחילים מההבדל בין שטח פנים לנפח"
+    },
+    {
+      "type": "p",
+      "text": "שטח פנים מודד את השטח הכולל של הפאות שמכסות את הגוף. נפח מודד כמה מקום הגוף תופס. קופסה יכולה לדרוש חישוב של כמות הנייר לעטיפה — שטח פנים — או של המקום שהיא מכילה — נפח. לפני כל חישוב כתבו מה מבקשים למצוא."
+    },
+    {
+      "type": "h2",
+      "text": "דוגמה פתורה: תיבה"
+    },
+    {
+      "type": "p",
+      "text": "בתיבה שאורכה 5 ס״מ, רוחבה 3 ס״מ וגובהה 2 ס״מ, שטח הבסיס הוא 15 סמ״ר. יש שתי שכבות בגובה של סנטימטר, ולכן הנפח הוא 30 סמ״ק. לשטח הפנים מחברים שלושה זוגות של פאות: פעמיים 15, פעמיים 10 ופעמיים 6. בסך הכול 62 סמ״ר. אותן מידות מובילות לשתי תשובות שונות כי נשאלו שתי שאלות שונות."
+    },
+    {
+      "type": "h2",
+      "text": "סדר תרגול מהדפים הקיימים"
+    },
+    {
+      "type": "p",
+      "text": "1. מזהים פאות, מקצועות וקודקודים — חקר גופים ותכונותיהם",
+      "segments": [
+        {
+          "type": "a",
+          "text": "1. מזהים פאות, מקצועות וקודקודים — חקר גופים ותכונותיהם",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=11"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "2. מחברים בין ציור שטוח לגוף — תיבות ופריסות",
+      "segments": [
+        {
+          "type": "a",
+          "text": "2. מחברים בין ציור שטוח לגוף — תיבות ופריסות",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=12"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "3. מחשבים את השטח של כל הפאות — שטח פנים של תיבה",
+      "segments": [
+        {
+          "type": "a",
+          "text": "3. מחשבים את השטח של כל הפאות — שטח פנים של תיבה",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=13"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "4. מחשבים שכבות ומקום — נפח תיבה ומבנים",
+      "segments": [
+        {
+          "type": "a",
+          "text": "4. מחשבים שכבות ומקום — נפח תיבה ומבנים",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=14"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "בכל מפגש בחרו כמה שאלות מאותו נושא, בדקו והסבירו טעות אחת. אם הקושי הוא בזיהוי הפאות, חזרו לדף הגופים לפני הוספת חישובים. בוחרים רמה לפי תוכן השאלות והשליטה בפועל; אות הרמה לבדה אינה אבחון של התלמיד."
+    },
+    {
+      "type": "h2",
+      "text": "שתי טעויות שכדאי לבדוק"
+    },
+    {
+      "type": "p",
+      "text": "אל תכתבו סמ״ר בתשובת נפח או סמ״ק בתשובת שטח. בדקו גם שכל המידות באותה יחידה לפני הכפל. בציור של תיבה לא רואים תמיד את כל הפאות: גם הפאות האחוריות והתחתונה נספרות בשטח הפנים."
+    },
+    {
+      "type": "h2",
+      "text": "בדיקה עצמית"
+    },
+    {
+      "type": "p",
+      "text": "לתיבה מידות 4, 3 ו־2 ס״מ. מהו נפחה? התשובה: 24 סמ״ק. אם רק הגובה מוכפל ל־4 ס״מ, הנפח מוכפל ל־48 סמ״ק. נסו להסביר זאת בעזרת מספר השכבות."
+    },
+    {
+      "type": "p",
+      "text": "לכל דפי העבודה לכיתה ו׳",
+      "segments": [
+        {
+          "type": "a",
+          "text": "לכל דפי העבודה לכיתה ו׳",
+          "href": "https://www.noamdoronmath.co.il/grade-6"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+      "segments": [
+        {
+          "type": "a",
+          "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+          "href": "https://www.noamdoronmath.co.il/aboutus"
+        }
+      ]
+    }
+  ],
+  "related": [],
+  "categories": [
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+    },
+    {
+      "text": "חטיבת הביניים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math"
+    },
+    {
+      "text": "מורים והורים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents"
+    },
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+    }
+  ],
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "author": {
+        "@type": "Person",
+        "name": "נועם דורון מתמטיקה"
+      },
+      "dateModified": "2026-09-12T14:17:08.098Z",
+      "datePublished": "2026-09-07T08:22:04.000Z",
+      "headline": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+      "mainEntityOfPage": {
+        "@id": "https://www.noamdoronmath.co.il/post/איך-לתרגל-גאומטריה-לכיתה-ו-ולהצליח-במבחנים",
+        "@type": "itemPage",
+        "url": "https://www.noamdoronmath.co.il/post/איך-לתרגל-גאומטריה-לכיתה-ו-ולהצליח-במבחנים"
+      },
+      "description": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים: זוויות, משולשים, שטחים והיקפים בתרגול מסודר וברור. דפי עבודה בחינם ללא הרשמה, עם שרטוטים ופתרונות.",
+      "url": "https://www.noamdoronmath.co.il/post/איך-לתרגל-גאומטריה-לכיתה-ו-ולהצליח-במבחנים",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://static.wixstatic.com/media/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp",
+        "width": "1536",
+        "height": "1024"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+        "url": "https://www.noamdoronmath.co.il"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+      "description": "לפני שמתחילים לפתור, בודקים מה נכלל במבחן: גופים, פריסות, שטח פנים, נפח או מיון מרובעים. המסלול שלפניכם משתמש בדפים שכבר קיימים במאגר. אפשר לפתוח כל דף בחינם וללא הרשמה ולבחור מתוך הרמות הזמינות בו.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "text": "מזהים פאות, מקצועות וקודקודים — חקר גופים ותכונותיהם"
+        },
+        {
+          "@type": "HowToStep",
+          "text": "מחברים בין ציור שטוח לגוף — תיבות ופריסות"
+        },
+        {
+          "@type": "HowToStep",
+          "text": "מחשבים את השטח של כל הפאות — שטח פנים של תיבה"
+        },
+        {
+          "@type": "HowToStep",
+          "text": "מחשבים שכבות ומקום — נפח תיבה ומבנים"
+        }
+      ]
+    }
+  ],
+  "featureKey": "alt+author+captions+date+h2+images+lists+many-links+medium-body+schema",
+  "clusterSize": 7,
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9C%D7%AA%D7%A8%D7%92%D7%9C-%D7%92%D7%90%D7%95%D7%9E%D7%98%D7%A8%D7%99%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%95-%D7%95%D7%9C%D7%94%D7%A6%D7%9C%D7%99%D7%97-%D7%91%D7%9E%D7%91%D7%97%D7%A0%D7%99%D7%9D",
+    "capturedAt": "2026-09-23T20:24:34.962Z",
+    "bodyChars": 1558
+  },
+  "readingTime": "זמן קריאה 2 דקות",
+  "whatsapp": {
+    "heading": "נפגשים גם בוואטסאפ",
+    "body": "הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.",
+    "ctaLabel": "להצטרפות לקבוצת הוואטסאפ ↗",
+    "ctaHref": "https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t",
+    "note": "ההצטרפות לבחירתכם. כל דפי העבודה פתוחים גם בלי להצטרף."
+  },
+  "recentPosts": {
+    "heading": "פוסטים אחרונים",
+    "viewAllLabel": "הצג הכול",
+    "viewAllHref": "https://www.noamdoronmath.co.il/blog",
+    "items": [
+      {
+        "title": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+        "href": "https://www.noamdoronmath.co.il/post/תרגול-שברים-לכיתה-ד-שמחזק-הבנה-וביטחון",
+        "imageAlt": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון"
+      },
+      {
+        "title": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה",
+        "href": "https://www.noamdoronmath.co.il/post/תרגילי-אתגר-במתמטיקה-לכיתה-ד-שמקדמים-חשיבה",
+        "imageAlt": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה"
+      },
+      {
+        "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+        "href": "https://www.noamdoronmath.co.il/post/הכנה-למבחן-במתמטיקה-לכיתה-ה-ב-7-ימים",
+        "imageAlt": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים"
+      }
+    ]
+  },
+  "authorAvatar": {
+    "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+    "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+  },
+  "postCategory": {
+    "text": "יסודי",
+    "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math",
+    "y": 2083.21875,
+    "h": 17
+  },
+  "batch": "m25"
+}

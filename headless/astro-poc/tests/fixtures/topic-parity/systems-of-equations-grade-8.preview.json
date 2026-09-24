@@ -1,0 +1,155 @@
+{
+  "slug": "systems-of-equations-grade-8",
+  "source": "preview",
+  "url": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/systems-of-equations-grade-8",
+  "capturedAt": "2026-09-23T17:43:42.921Z",
+  "httpStatus": 200,
+  "title": "מערכות משוואות לכיתה ח׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "מערכות משוואות לכיתה ח׳: פתרון בשיטת ההצבה ובשיטת החיבור, ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "h1": "מערכות משוואות לכיתה ח׳",
+  "intro": "לומדים לפתור שתי משוואות בשני נעלמים, בעזרת הצבה, חיבור וחיסור משוואות או גרף. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "authorLine": "נכתב ונערך על ידי נועם דורון , מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "paragraphs": [
+        "פתרון המערכת הוא זוג מספרים שמקיים את שתי המשוואות. בגרף הוא נקודת החיתוך של הישרים; אפשר למצוא אותו גם בהצבה או בחיבור וחיסור משוואות.",
+        "דוגמה: x+y=7, x−y=1, ולכן x=4 ו־y=3."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "paragraphs": [
+        "זוג הפתרונות חייב לקיים את שתי המשוואות, לא רק אחת מהן."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "פתרו: x+y=10, x−y=2.",
+        "תשובה: x=6, y=4."
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לפתור שתי משוואות בשני נעלמים, בעזרת הצבה, חיבור וחיסור משוואות או גרף. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=47",
+      "catalogTopicId": 47
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרון המערכת הוא זוג מספרים שמקיים את שתי המשוואות. בגרף הוא נקודת החיתוך של הישרים; אפשר למצוא אותו גם בהצבה או בחיבור וחיסור משוואות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: x+y=7, x−y=1, ולכן x=4 ו־y=3.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "זוג הפתרונות חייב לקיים את שתי המשוואות, לא רק אחת מהן.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו: x+y=10, x−y=2.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "תשובה: x=6, y=4.",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/linear-equations-grade-8",
+      "label": "משוואות ליניאריות"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/linear-function-grade-8",
+      "label": "פונקציה קווית"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/inequalities-grade-8",
+      "label": "אי־שוויונות"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=8&topic=47",
+    "label": "פתיחת דפי העבודה ובחירת רמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=8&topic=47",
+      "label": "פתיחת דפי העבודה ובחירת רמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}

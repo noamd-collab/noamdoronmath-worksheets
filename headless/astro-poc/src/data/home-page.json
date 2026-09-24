@@ -1,0 +1,122 @@
+{
+  "title": "דפי עבודה במתמטיקה בחינם לכיתות א׳-ט׳ | נועם דורון",
+  "description": "מאגר המשימות של נועם דורון. מתרגלים עכשיו ומשפרים את הישגי המתמטיקה בקלות ובצורה חופשית",
+  "devNotice": {
+    "title": "האתר נמצא כרגע בתהליכי פיתוח",
+    "body": "האתר נמצא כרגע בתהליכי פיתוח, ולכן ייתכנו שיבושים זמניים בפעילות הגלישה והקישורים. אנחנו עמלים על השקת הגרסה המלאה, שתהיה נגישה, יציבה ואיכותית יותר."
+  },
+  "hero": {
+    "eyebrow": "מאגר המשימות של נועם דורון",
+    "titleLine": "דפי עבודה שעושים",
+    "titleEm": "חשק לפתור",
+    "lede": "מתרגלים עכשיו ומשפרים את הישגי המתמטיקה בקלות ובצורה חופשית",
+    "searchCta": {
+      "label": "למציאת משימת תרגול",
+      "href": "/worksheets",
+      "note": "Live Harmony points this CTA at /noamdoronmath-worksheets/?cross=1 (GitHub cross-site finder). Preview maps it to the same-origin worksheets catalog search."
+    }
+  },
+  "grades": [
+    { "grade": 1, "label": "כיתה א׳", "href": "/grade-1", "ai": false },
+    { "grade": 2, "label": "כיתה ב׳", "href": "/grade-2", "ai": false },
+    { "grade": 3, "label": "כיתה ג׳", "href": "/grade-3", "ai": false },
+    { "grade": 4, "label": "כיתה ד׳", "href": "/grade-4", "ai": false },
+    { "grade": 5, "label": "כיתה ה׳", "href": "/grade-5", "ai": false },
+    { "grade": 6, "label": "כיתה ו׳", "href": "/grade-6", "ai": false },
+    {
+      "grade": 7,
+      "label": "חטיבה ז׳",
+      "href": "/grade-7",
+      "ai": true,
+      "aiLabel": "עם עוזר בינה מלאכותית"
+    },
+    {
+      "grade": 8,
+      "label": "חטיבה ח׳",
+      "href": "/grade-8",
+      "ai": true,
+      "aiLabel": "עם עוזר בינה מלאכותית"
+    },
+    {
+      "grade": 9,
+      "label": "חטיבה ט׳",
+      "href": "/grade-9",
+      "ai": true,
+      "aiLabel": "עם עוזר בינה מלאכותית"
+    }
+  ],
+  "learning": {
+    "googleLabel": "התחברות עם Google",
+    "googleHref": "/learning.html?signin=google",
+    "learningLabel": "הלמידה שלי — מעקב עבודה אישי",
+    "learningHref": "/learning.html",
+    "noteLocal": "אפשר לסמן התקדמות גם בלי להתחבר",
+    "noteGoogle": "עם Google אפשר להמשיך גם ממכשיר אחר."
+  },
+  "valueSections": {
+    "heading": "תרגול מתמטיקה מותאם אישית לכל רמה",
+    "items": [
+      {
+        "title": "חטיבת ביניים",
+        "body": "תרגול מקיף המכין את תלמידי כיתות ז׳-ט׳ למבחנים ולתיכון",
+        "href": "/worksheets?grade=7"
+      },
+      {
+        "title": "יסודי ומוכנות",
+        "body": "דפי עבודה חווייתיים לבניית בסיס מתמטי איתן",
+        "href": "/worksheets?grade=1"
+      },
+      {
+        "title": "אתגר והעשרה",
+        "body": "משימות חקר ופתרון בעיות מעמיק לתלמידים סקרנים",
+        "href": "/worksheets?grade=7"
+      }
+    ]
+  },
+  "whatsapp": {
+    "kicker": "הצטרפו למאות תלמידים שכבר מצליחים.",
+    "heading": "נפגשים גם בוואטסאפ",
+    "body": "הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.",
+    "ctaLabel": "להצטרפות לקבוצת הוואטסאפ",
+    "ctaHref": "https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t",
+    "note": "ההצטרפות לבחירתכם. כל דפי העבודה פתוחים גם בלי להצטרף.",
+    "qrAlt": "קוד QR להזמנה לקבוצת הוואטסאפ של נועם דורון מתמטיקה",
+    "qrSrc": "/brand/whatsapp-group-qr.png",
+    "qrCaption": "אפשר גם לסרוק ולהצטרף"
+  },
+  "footer": {
+    "brandName": "נועם דורון - מתמטיקה",
+    "brandBlurb": "דפי עבודה במתמטיקה להורדה בחינם לכיתות א׳–ט׳. תשתית למידה איכותית לכל תלמיד.",
+    "contactHeading": "צור קשר",
+    "contactBody": "מורים והורים, נשמח לעזור בכל שאלה.",
+    "email": "noamd@noamdoronmath.co.il",
+    "quickNavHeading": "ניווט מהיר",
+    "quickNav": [
+      { "label": "בית", "href": "/" },
+      { "label": "דפי עבודה", "href": "/worksheets" },
+      { "label": "אודותינו", "href": "/aboutus" },
+      { "label": "בלוג", "href": "/blog" }
+    ],
+    "legal": [
+      {
+        "label": "תקנון שימוש בדפי עבודה חינמיים",
+        "href": "/conditionforfreeworksheets"
+      },
+      { "label": "תנאי השימוש", "href": "/terms" },
+      {
+        "label": "הצהרת נגישות",
+        "href": "/accessibilityadaptation",
+        "note": "Combined accessibility + privacy page (verified)."
+      },
+      {
+        "label": "מדיניות פרטיות",
+        "href": "/accessibilityadaptation#privacy-policy",
+        "note": "Same combined page; stable anchor to H2 מדיניות פרטיות. Existence verified on production and preview — not a missing-policy gap."
+      }
+    ],
+    "copyright": "© 2026 נועם דורון מתמטיקה. כל הזכויות שמורות.",
+    "disclaimer": "האתר נמצא כעת בשלבי הקמה ופיתוח, וכל השירותים והתכנים המוצגים בו ניתנים ללא תשלום. אין לראות באמור באתר משום התחייבות סופית מצד בעלי האתר, וייתכנו שינויים בתכנים בהמשך.",
+    "privacyNote": "אנו מכבדים את פרטיותכם. מדיניות הפרטיות והצהרת הנגישות מופיעות בעמוד הנגישות והפרטיות. לשאלות: noamd@noamdoronmath.co.il.",
+    "previewNote": "אב־טיפוס קוד־מנוהל (Astro) — תצוגה מקדימה בלבד. לא מחליף את האתר החי."
+  }
+}

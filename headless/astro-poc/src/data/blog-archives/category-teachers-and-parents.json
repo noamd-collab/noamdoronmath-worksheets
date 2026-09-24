@@ -1,0 +1,133 @@
+{
+  "path": "/blog/categories/teachers-and-parents",
+  "fileSlug": "category-teachers-and-parents",
+  "kind": "category",
+  "categorySlug": "teachers-and-parents",
+  "title": "מורים והורים",
+  "description": "איך לבחור תרגול, לתכנן חזרה ולעזור לתלמידים בעזרת דפי העבודה החינמיים.",
+  "ogTitle": "מורים והורים",
+  "h1": "מורים והורים",
+  "nav": [
+    {
+      "text": "כל הפוסטים",
+      "href": "https://www.noamdoronmath.co.il/blog",
+      "current": false
+    },
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math",
+      "current": false
+    },
+    {
+      "text": "חטיבת הביניים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math",
+      "current": false
+    },
+    {
+      "text": "מורים והורים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents",
+      "current": true
+    }
+  ],
+  "cards": [
+    {
+      "title": "בעיות מילוליות במתמטיקה פותרים שלב אחר שלב",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%91%D7%A2%D7%99%D7%95%D7%AA-%D7%9E%D7%99%D7%9C%D7%95%D7%9C%D7%99%D7%95%D7%AA-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A4%D7%95%D7%AA%D7%A8%D7%99%D7%9D-%D7%A9%D7%9C%D7%91-%D7%90%D7%97%D7%A8-%D7%A9%D7%9C%D7%91",
+      "excerpt": "בעיות מילוליות במתמטיקה נפתרות כשקוראים נכון, מזהים נתונים, בוחרים פעולה ובודקים תשובה. מדריך מעשי לתלמידים, הורים ומורים עם דוגמאות ותרגול מדורג בכיתה ובבית.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "5 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_75820f7521c642cc995fd943abd7839c~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_75820f7521c642cc995fd943abd7839c~mv2.webp",
+      "imageAlt": "בעיות מילוליות במתמטיקה פותרים שלב אחר שלב"
+    },
+    {
+      "title": "תרגול חשיבה מתמטית לילדים שבונה ביטחון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%97%D7%A9%D7%99%D7%91%D7%94-%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%AA-%D7%9C%D7%99%D7%9C%D7%93%D7%99%D7%9D-%D7%A9%D7%91%D7%95%D7%A0%D7%94-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+      "excerpt": "תרגול חשיבה מתמטית לילדים בבית: איך בוחרים שאלות לפי כיתה ורמה, מחזקים הבנה ולא רק תשובות, ויוצרים הרגל קצר שמקדם ביטחון ופתרון בעיות.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "4 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_220aa6f3b7c34cbcaa128f90697497ac~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_220aa6f3b7c34cbcaa128f90697497ac~mv2.webp",
+      "imageAlt": "תרגול חשיבה מתמטית לילדים שבונה ביטחון"
+    },
+    {
+      "title": "דפי עבודה לשיעורי בית במתמטיקה שמקדמים ביטחון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%A9%D7%99%D7%A2%D7%95%D7%A8%D7%99-%D7%91%D7%99%D7%AA-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A7%D7%93%D7%9E%D7%99%D7%9D-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+      "excerpt": "דפי עבודה לשיעורי בית במתמטיקה לכיתות א׳-ט׳: בוחרים נושא ורמה, מורידים ומדפיסים בחינם לתרגול ממוקד, חזרה למבחן והתקדמות בטוחה בבית.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "3 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_09b7494662ca4f328aecfd41d00daec2~mv2.webp/v1/fill/w_332,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_09b7494662ca4f328aecfd41d00daec2~mv2.webp",
+      "imageAlt": "דפי עבודה לשיעורי בית במתמטיקה שמקדמים ביטחון"
+    },
+    {
+      "title": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9E%D7%95%D7%A8%D7%99%D7%9D-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A7%D7%A6%D7%A8%D7%99%D7%9D-%D7%94%D7%9B%D7%A0%D7%94-%D7%9C%D7%A9%D7%99%D7%A2%D7%95%D7%A8",
+      "excerpt": "בונים שיעור מתוך הדפים שכבר קיימים: מגדירים מטרה, בוחרים שאלות ורמות, ומסיימים בבדיקה קצרה. קישורי תרגול ישירים וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "2 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp",
+      "imageAlt": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור"
+    },
+    {
+      "title": "תרגול מתמטיקה לתלמידים מתקשים שמקדם ביטחון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%AA%D7%9C%D7%9E%D7%99%D7%93%D7%99%D7%9D-%D7%9E%D7%AA%D7%A7%D7%A9%D7%99%D7%9D-%D7%A9%D7%9E%D7%A7%D7%93%D7%9D-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+      "excerpt": "תרגול מתמטיקה לתלמידים מתקשים מתחיל בזיהוי הפער, בחירה ברמת קושי נכונה וחזרה קצרה ועקבית. כך בונים הבנה, ביטחון והתקדמות בבית ובכיתה. בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "1 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_dfcaa5d0c0cf4813ba0b989fa054ae51~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_dfcaa5d0c0cf4813ba0b989fa054ae51~mv2.webp",
+      "imageAlt": "תרגול מתמטיקה לתלמידים מתקשים שמקדם ביטחון"
+    },
+    {
+      "title": "דפי עבודה במתמטיקה ללא הרשמה לכל כיתה ונושא",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%9C%D7%90-%D7%94%D7%A8%D7%A9%D7%9E%D7%94-%D7%9C%D7%9B%D7%9C-%D7%9B%D7%99%D7%AA%D7%94-%D7%95%D7%A0%D7%95%D7%A9%D7%90",
+      "excerpt": "דפי עבודה במתמטיקה ללא הרשמה לכיתות א׳–ט׳: בוחרים כיתה ונושא, מורידים בחינם ומקבלים תרגול מדורג לבית, לכיתה ולהכנה ממוקדת למבחן בלי עלות ובלי תהליך טכני.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "26 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_b9e2ab89c32b4865aa39f2acb07cd199~mv2.webp/v1/fill/w_332,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_b9e2ab89c32b4865aa39f2acb07cd199~mv2.webp",
+      "imageAlt": "דפי עבודה במתמטיקה ללא הרשמה לכל כיתה ונושא"
+    },
+    {
+      "title": "דפי עבודה במתמטיקה בחינם לכיתות א׳–ט׳, עם נועם AI בחטיבה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%91%D7%97%D7%99%D7%A0%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%95%D7%AA-%D7%90-%D7%98-%D7%9C%D7%91%D7%99%D7%AA-%D7%95%D7%91%D7%A7%D7%A8%D7%95%D7%91-%D7%92%D7%9D-%D7%A1%D7%95%D7%9B%D7%9F-ai-%D7%AA%D7%95%D7%9E%D7%9A",
+      "excerpt": "מוצאים דף לפי כיתה, נושא ורמה, פותחים ומתרגלים ללא הרשמה. נועם AI זמין בדפי חטיבת הביניים במציג.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "24 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_a51e9a9007344814b193bb5655eeb75a~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_a51e9a9007344814b193bb5655eeb75a~mv2.webp",
+      "imageAlt": "דפי עבודה במתמטיקה בחינם לכיתות א׳–ט׳, עם נועם AI בחטיבה"
+    }
+  ],
+  "pagination": null,
+  "loadMore": null,
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents",
+    "capturedAt": "2026-09-23T21:22:03.102Z",
+    "cardCount": 7,
+    "captureMethod": "ssr-html"
+  }
+}

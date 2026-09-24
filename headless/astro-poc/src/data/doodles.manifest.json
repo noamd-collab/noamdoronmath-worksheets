@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-24T18:13:34.512Z",
+  "publicBase": "/brand/doodles",
+  "note": "DOODLES-45 — ten individual transparent webp motifs from peer media/doodles-45/.",
+  "coverage": {
+    "includes": "All public Astro pages via BaseLayout → SiteDoodles (pathname-seeded).",
+    "excludes": [
+      "Homepage / — keeps DOODLES-44 HeroIllustrations two-cluster (no double density)",
+      "public/worksheet-viewer-noam.html — exercise viewer; no BaseLayout",
+      "public/learning.html and learning UI — no BaseLayout doodle injection",
+      "Printed PDFs / @media print — site doodles display:none",
+      "Static tools under public/ (fx-82ms etc.) — outside Astro shell"
+    ]
+  },
+  "motifs": [
+    {
+      "id": "telescope",
+      "src": "/brand/doodles/telescope.webp"
+    },
+    {
+      "id": "kite",
+      "src": "/brand/doodles/kite.webp"
+    },
+    {
+      "id": "curious-cat",
+      "src": "/brand/doodles/curious-cat.webp"
+    },
+    {
+      "id": "snail",
+      "src": "/brand/doodles/snail.webp"
+    },
+    {
+      "id": "cube-plant",
+      "src": "/brand/doodles/cube-plant.webp"
+    },
+    {
+      "id": "orbit-pencil",
+      "src": "/brand/doodles/orbit-pencil.webp"
+    },
+    {
+      "id": "sleepy-owl",
+      "src": "/brand/doodles/sleepy-owl.webp"
+    },
+    {
+      "id": "geometry-fish",
+      "src": "/brand/doodles/geometry-fish.webp"
+    },
+    {
+      "id": "eye-spiral",
+      "src": "/brand/doodles/eye-spiral.webp"
+    },
+    {
+      "id": "paper-boat",
+      "src": "/brand/doodles/paper-boat.webp"
+    }
+  ],
+  "hashReport": [
+    {
+      "file": "telescope.webp",
+      "sha256": "3cc624771299e02c57a7e702f6e3d84be93c1441e9ebbccc10b697dc4f896b1d",
+      "verified": true,
+      "bytes": 500368
+    },
+    {
+      "file": "kite.webp",
+      "sha256": "207c2b01354b6b9d98bb9f3435fce0fc9db59275eb47361e5853b92c3302c64e",
+      "verified": true,
+      "bytes": 350374
+    },
+    {
+      "file": "curious-cat.webp",
+      "sha256": "99c4840015086b5320ed19d6852daee620520992718f4d76ce483d76dbefe48a",
+      "verified": true,
+      "bytes": 633610
+    },
+    {
+      "file": "snail.webp",
+      "sha256": "b15439f14da1d761372c4a322e1070afbd9c1dd288a118720c2a859ce9f43bdc",
+      "verified": true,
+      "bytes": 721542
+    },
+    {
+      "file": "cube-plant.webp",
+      "sha256": "104c6824f71a2263e42836988ae4bb656dec8f4bfaade08ccced92658101e7fd",
+      "verified": true,
+      "bytes": 367964
+    },
+    {
+      "file": "orbit-pencil.webp",
+      "sha256": "96ed307da1099a69b9380474ddcc015de0c3f18e6b87ab1f1f48c932c8fb3b95",
+      "verified": true,
+      "bytes": 490664
+    },
+    {
+      "file": "sleepy-owl.webp",
+      "sha256": "ec89b57d2aa0e1e736fdd54046959aeda8b9a2ff20e8752858ec78d5c697b848",
+      "verified": true,
+      "bytes": 700188
+    },
+    {
+      "file": "geometry-fish.webp",
+      "sha256": "a5b6e578ca32825c17153bc39898636671315bc2dbede0ca1533dcbb3d03493a",
+      "verified": true,
+      "bytes": 415654
+    },
+    {
+      "file": "eye-spiral.webp",
+      "sha256": "0aecbaa268f8ae60fc4f1f038717b2441ae0bf000ed38d87a22bf06c847b855f",
+      "verified": true,
+      "bytes": 396892
+    },
+    {
+      "file": "paper-boat.webp",
+      "sha256": "4b91569fb4e7b37bde441d86a8a4f845957047f374546e83cc5b9f43977a3a1f",
+      "verified": true,
+      "bytes": 359674
+    }
+  ]
+}

@@ -1,0 +1,377 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  localizeBlogHref,
+  type BlogBodyBlock,
+  type BlogPostContent,
+} from '../lib/blogPosts';
+
+interface Props {
+  post: BlogPostContent;
+}
+const { post } = Astro.props;
+
+const jsonLdScripts = Array.isArray(post.jsonLd) ? post.jsonLd : [];
+
+const ae = post.authorEditor;
+const aboutHref = ae?.aboutHref ? localizeBlogHref(ae.aboutHref) : null;
+const aboutLabel = ae?.aboutLabel || null;
+const authorParts =
+  ae && aboutLabel && ae.text.includes(aboutLabel) ? ae.text.split(aboutLabel) : null;
+
+const relatedTopics =
+  ae?.relatedLinks && ae.relatedLinks.length > 0
+    ? ae.relatedLinks
+    : !ae && post.related.length > 0
+      ? post.related
+      : [];
+const relatedHeading = ae?.relatedHeading || (relatedTopics.length ? 'נושאים קשורים' : null);
+
+const hasFaq = !!(post.faq?.items && post.faq.items.length > 0);
+const hasWhatsapp = !!post.whatsapp?.heading;
+const hasCategory = !!post.postCategory?.text;
+const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 0);
+---
+<BaseLayout
+  title={post.title}
+  description={post.description}
+  ogImage={post.ogImage || post.coverImage}
+  skipHref="#blog-post-main"
+>
+  {
+    jsonLdScripts.map((ld) => (
+      <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    ))
+  }
+  <main
+    id="blog-post-main"
+    class="wrap blog-post"
+    data-blog-post={post.pathSlug}
+    data-blog-path={post.path}
+  >
+    <nav class="blog-post__crumbs" aria-label="מיקום">
+      <a href="/">בית</a>
+      <span aria-hidden="true">·</span>
+      <span>בלוג</span>
+      <span aria-hidden="true">·</span>
+      <span>{post.h1}</span>
+    </nav>
+
+    <header class="banner blog-post__header">
+      <h1>{post.h1}</h1>
+      <div class="blog-post__byline">
+        {
+          post.authorAvatar?.src && (
+            <img
+              class="blog-post__avatar"
+              data-blog-author-avatar
+              src={post.authorAvatar.src}
+              alt={post.authorAvatar.alt || ''}
+              width="32"
+              height="32"
+              loading="eager"
+            />
+          )
+        }
+        <p class="blog-post__meta">
+          {
+            post.author && (
+              <span class="blog-post__author" data-blog-author>
+                {post.author}
+              </span>
+            )
+          }
+          {
+            (post.datePublished || post.dateDisplay) && (
+              <>
+                {post.author && <span aria-hidden="true"> · </span>}
+                <time
+                  data-blog-date
+                  datetime={post.datePublished || undefined}
+                >
+                  {post.dateDisplay || post.datePublished}
+                </time>
+              </>
+            )
+          }
+          {
+            post.readingTime && (
+              <>
+                {(post.author || post.datePublished || post.dateDisplay) && (
+                  <span aria-hidden="true"> · </span>
+                )}
+                <span class="blog-post__reading-time" data-blog-reading-time>
+                  {post.readingTime}
+                </span>
+              </>
+            )
+          }
+        </p>
+      </div>
+    </header>
+
+    {
+      post.coverImage && (
+        <figure class="blog-post__cover">
+          <img
+            src={post.coverImage}
+            alt={post.coverAlt || post.h1}
+            loading="eager"
+          />
+        </figure>
+      )
+    }
+
+    <div class="blog-post__body" data-blog-body>
+      {
+        post.blocks.map((block: BlogBodyBlock) => {
+          if (block.type === 'h2') return <h2>{block.text}</h2>;
+          if (block.type === 'h3') return <h3>{block.text}</h3>;
+          if (block.type === 'h4') return <h4>{block.text}</h4>;
+          if (block.type === 'blockquote') return <blockquote>{block.text}</blockquote>;
+          if (block.type === 'p') {
+            if (block.segments?.length) {
+              return (
+                <p>
+                  {block.segments.map((seg) =>
+                    seg.type === 'a' ? (
+                      <a href={localizeBlogHref(seg.href)} rel="noopener noreferrer">{seg.text}</a>
+                    ) : seg.type === 'strong' ? (
+                      <strong>{seg.text}</strong>
+                    ) : seg.type === 'em' ? (
+                      <em>{seg.text}</em>
+                    ) : (
+                      seg.text
+                    )
+                  )}
+                </p>
+              );
+            }
+            return <p>{block.text}</p>;
+          }
+          if (block.type === 'ul' || block.type === 'ol') {
+            const Tag = block.type;
+            return (
+              <Tag>
+                {block.items.map((item) => {
+                  if (item.segments?.length) {
+                    return (
+                      <li>
+                        {item.segments.map((seg) =>
+                          seg.type === 'a' ? (
+                            <a href={localizeBlogHref(seg.href)} rel="noopener noreferrer">{seg.text}</a>
+                          ) : seg.type === 'strong' ? (
+                            <strong>{seg.text}</strong>
+                          ) : seg.type === 'em' ? (
+                            <em>{seg.text}</em>
+                          ) : (
+                            seg.text
+                          )
+                        )}
+                      </li>
+                    );
+                  }
+                  if (item.href) {
+                    return (
+                      <li>
+                        <a href={localizeBlogHref(item.href)} rel="noopener noreferrer">
+                          {item.linkText || item.text}
+                        </a>
+                        {item.linkText && item.text !== item.linkText ? ` ${item.text}` : null}
+                      </li>
+                    );
+                  }
+                  return <li>{item.text}</li>;
+                })}
+              </Tag>
+            );
+          }
+          if (block.type === 'figure') {
+            return (
+              <figure class="blog-post__figure">
+                <img src={block.src} alt={block.alt || ''} loading="lazy" />
+                {block.caption && <figcaption>{block.caption}</figcaption>}
+              </figure>
+            );
+          }
+          if (block.type === 'img') {
+            return (
+              <figure class="blog-post__figure">
+                <img src={block.src} alt={block.alt || ''} loading="lazy" />
+              </figure>
+            );
+          }
+          if (block.type === 'table') {
+            return (
+              <div class="blog-post__table-wrap">
+                <table>
+                  <tbody>
+                    {block.rows.map((row) => (
+                      <tr>
+                        {row.map((cell) => (
+                          <td>{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            );
+          }
+          if (block.type === 'a') {
+            return (
+              <p class="blog-post__cta">
+                <a class="cta cta--mid" href={localizeBlogHref(block.href)} rel="noopener noreferrer">
+                  {block.text}
+                </a>
+              </p>
+            );
+          }
+          return null;
+        })
+      }
+    </div>
+
+    {
+      ae?.text && (
+        <p class="blog-post__author-editor" data-blog-author-editor>
+          {
+            authorParts && aboutHref && aboutLabel ? (
+              <>
+                {authorParts[0]}
+                <a href={aboutHref} rel="noopener noreferrer">
+                  {aboutLabel}
+                </a>
+                {authorParts.slice(1).join(aboutLabel)}
+              </>
+            ) : (
+              <>
+                {ae.text}
+                {aboutHref && aboutLabel && (
+                  <>
+                    {' '}
+                    <a href={aboutHref} rel="noopener noreferrer">
+                      ({aboutLabel})
+                    </a>
+                  </>
+                )}
+              </>
+            )
+          }
+        </p>
+      )
+    }
+
+    {
+      relatedTopics.length > 0 && (
+        <nav
+          class="blog-post__related-topics"
+          aria-label={relatedHeading || 'נושאים קשורים'}
+          data-blog-related-topics
+        >
+          <h2 class="blog-post__section-title">{relatedHeading || 'נושאים קשורים'}</h2>
+          <ul>
+            {relatedTopics.map((rel) => (
+              <li>
+                <a href={localizeBlogHref(rel.href)} rel="noopener noreferrer">
+                  {rel.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    {
+      hasFaq && post.faq && (
+        <section class="blog-post__faq" aria-labelledby="blog-faq-heading" data-blog-faq>
+          <h2 id="blog-faq-heading">{post.faq.heading}</h2>
+          <div class="blog-post__faq-list">
+            {post.faq.items.map((item) => (
+              <div class="blog-post__faq-item" data-blog-faq-item>
+                <h3>{item.question}</h3>
+                <p>{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      hasWhatsapp && post.whatsapp && (
+        <aside class="blog-post__whatsapp" aria-label={post.whatsapp.heading} data-blog-whatsapp>
+          <h2 class="blog-post__section-title">{post.whatsapp.heading}</h2>
+          {post.whatsapp.body && <p>{post.whatsapp.body}</p>}
+          {
+            post.whatsapp.ctaHref && post.whatsapp.ctaLabel && (
+              <p>
+                <a href={post.whatsapp.ctaHref} rel="noopener noreferrer">
+                  {post.whatsapp.ctaLabel}
+                </a>
+              </p>
+            )
+          }
+          {post.whatsapp.note && <p class="blog-post__whatsapp-note">{post.whatsapp.note}</p>}
+        </aside>
+      )
+    }
+
+    {
+      hasCategory && post.postCategory && (
+        <p class="blog-post__category" data-blog-category>
+          <a href={localizeBlogHref(post.postCategory.href)} rel="noopener noreferrer">
+            {post.postCategory.text}
+          </a>
+        </p>
+      )
+    }
+
+    {
+      hasRecent && post.recentPosts && (
+        <section class="blog-post__recent" aria-labelledby="blog-recent-heading" data-blog-recent>
+          <div class="blog-post__recent-head">
+            <h2 id="blog-recent-heading">{post.recentPosts.heading}</h2>
+            {
+              post.recentPosts.viewAllHref && post.recentPosts.viewAllLabel && (
+                <a
+                  class="blog-post__recent-all"
+                  href={localizeBlogHref(post.recentPosts.viewAllHref)}
+                  rel="noopener noreferrer"
+                >
+                  {post.recentPosts.viewAllLabel}
+                </a>
+              )
+            }
+          </div>
+          <ul class="blog-post__recent-list">
+            {post.recentPosts.items.map((item) => (
+              <li class="blog-post__recent-item" data-blog-recent-item>
+                {
+                  item.imageSrc && (
+                    <a
+                      class="blog-post__recent-img"
+                      href={localizeBlogHref(item.href)}
+                      rel="noopener noreferrer"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <img src={item.imageSrc} alt={item.imageAlt || ''} loading="lazy" />
+                    </a>
+                  )
+                }
+                <div class="blog-post__recent-body">
+                  <a href={localizeBlogHref(item.href)} rel="noopener noreferrer">
+                    {item.title}
+                  </a>
+                  {item.description && <p>{item.description}</p>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </main>
+</BaseLayout>

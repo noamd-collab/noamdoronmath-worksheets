@@ -1,0 +1,266 @@
+{
+  "slug": "coordinate-plane-four-quadrants-grade-7",
+  "path": "/coordinate-plane-four-quadrants-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7",
+  "fetchedAt": "2026-09-23T17:03:18.204Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "מערכת צירים — ארבעת הרביעים לכיתה ז׳ | דפי עבודה חינם",
+  "description": "דפי עבודה במערכת צירים — ארבעת הרביעים לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מרחיבים את מערכת הצירים לשיעורים שליליים ומזהים רביע.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מערכת צירים — ארבעת הרביעים לכיתה ז׳",
+  "intro": "מרחיבים את מערכת הצירים לשיעורים שליליים, מזהים באיזה רביע נמצאת נקודה, ומשקפים נקודות ביחס לצירים. דפי העבודה זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "ברביע הראשון שני השיעורים חיוביים, בשני x שלילי ו־y חיובי, בשלישי שניהם שליליים וברביע הרביעי x חיובי ו־y שלילי. בשיקוף ביחס לציר x משתנה רק הסימן של y. דוגמה: שיקוף הנקודה (4,−3) ביחס לציר x הוא (4,3).",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לשייך לרביע נקודה שנמצאת על ציר. הנקודה (0,−5) נמצאת על ציר y ואינה שייכת לאף רביע.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "באיזה רביע נמצאת הנקודה (−2,−6)? תשובה: ברביע השלישי, כי שני השיעורים שליליים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מערכת צירים — היכרות וקנה מידה",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מרחיבים את מערכת הצירים לשיעורים שליליים, מזהים באיזה רביע נמצאת נקודה, ומשקפים נקודות ביחס לצירים. דפי העבודה זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=9",
+      "catalogTopicId": 9
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "ברביע הראשון שני השיעורים חיוביים, בשני x שלילי ו־y חיובי, בשלישי שניהם שליליים וברביע הרביעי x חיובי ו־y שלילי. בשיקוף ביחס לציר x משתנה רק הסימן של y. דוגמה: שיקוף הנקודה (4,−3) ביחס לציר x הוא (4,3).",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לשייך לרביע נקודה שנמצאת על ציר. הנקודה (0,−5) נמצאת על ציר y ואינה שייכת לאף רביע.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "באיזה רביע נמצאת הנקודה (−2,−6)? תשובה: ברביע השלישי, כי שני השיעורים שליליים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מערכת צירים — היכרות וקנה מידה",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לכל דפי כיתה ז׳",
+      "role": "body"
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מערכת צירים — ארבעת הרביעים לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מערכת צירים — ארבעת הרביעים לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/coordinate-plane-scale-grade-7",
+      "label": "מערכת צירים",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-scale-grade-7"
+    },
+    {
+      "path": "/coordinate-plane-applications-grade-7",
+      "label": "יישומים במערכת צירים",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7"
+    },
+    {
+      "path": "/patterns-and-graphs-grade-7",
+      "label": "חוקיות וגרפים",
+      "productionHref": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=9",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=9",
+    "catalogTopicId": 9,
+    "catalogTopicTitle": "הרחבת מערכת הצירים חלק 1"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=9",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=9",
+      "catalogTopicId": 9,
+      "catalogTopicTitle": "הרחבת מערכת הצירים חלק 1"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7",
+        "name": "מערכת צירים — ארבעת הרביעים לכיתה ז׳ | דפי עבודה חינם",
+        "description": "דפי עבודה במערכת צירים — ארבעת הרביעים לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מרחיבים את מערכת הצירים לשיעורים שליליים ומזהים רביע.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7#learning-resource",
+        "name": "מערכת צירים — ארבעת הרביעים לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7",
+        "description": "דפי עבודה במערכת צירים — ארבעת הרביעים לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מרחיבים את מערכת הצירים לשיעורים שליליים ומזהים רביע.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מערכת צירים — ארבעת הרביעים לכיתה ז׳ מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

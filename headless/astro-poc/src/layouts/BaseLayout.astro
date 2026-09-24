@@ -1,0 +1,56 @@
+---
+import '../styles/catalog.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteDoodles from '../components/SiteDoodles.astro';
+import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  /** Optional override; default is pathname-derived (M37). */
+  activeNav?: ActiveNavKey | null;
+  compactBrand?: boolean;
+  skipHref?: string;
+}
+const {
+  title = 'נועם דורון מתמטיקה · דפי עבודה',
+  description = 'קטלוג דפי עבודה בעברית — Astro POC',
+  ogImage,
+  activeNav,
+  compactBrand = false,
+  skipHref = '#topic-list',
+} = Astro.props;
+
+const resolvedNav: ActiveNavKey | null =
+  activeNav !== undefined ? activeNav : resolveActiveNav(Astro.url.pathname);
+const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
+---
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:title" content={title} />}
+    {ogImage && <meta property="og:description" content={description} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href={skipHref}>דילוג לתוכן</a>
+    <SiteHeader active={resolvedNav} compactBrand={useCompactBrand} />
+    <SiteDoodles />
+    <slot />
+    <!-- Production entry-gate copy (ndGate); privacy → combined a11y page. No invented legal text. -->
+    <script src="/nd-site-gate.js" defer></script>
+    <script src="/noam-accessibility.js" defer></script>
+  </body>
+</html>

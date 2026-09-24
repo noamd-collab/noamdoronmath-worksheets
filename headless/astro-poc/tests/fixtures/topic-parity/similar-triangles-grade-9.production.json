@@ -1,0 +1,165 @@
+{
+  "slug": "similar-triangles-grade-9",
+  "source": "production",
+  "url": "https://www.noamdoronmath.co.il/similar-triangles-grade-9",
+  "capturedAt": "2026-09-23T17:04:49.306Z",
+  "httpStatus": 200,
+  "title": "דמיון משולשים לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "דמיון משולשים לכיתה ט׳: יחסי צלעות, היקפים ושטחים במשולשים דומים, עם הסברים ודוגמאות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית.",
+  "h1": "דמיון משולשים לכיתה ט׳",
+  "intro": "מתרגלים יחסי צלעות, היקפים ושטחים במשולשים דומים, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "updatedLine": null,
+  "authorLine": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "יחסי צלעות והיקפים",
+      "paragraphs": [
+        "כאשר יחס הדמיון הוא 3:5, גם יחס ההיקפים הוא 3:5."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "יחס שטחים",
+      "paragraphs": [
+        "יחס השטחים הוא ריבוע יחס הדמיון, ולכן 9:25."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "דמיון וחפיפה",
+      "paragraphs": [
+        "בחפיפה כל הצלעות המתאימות שוות; בדמיון נשמר היחס."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "היקף משולש קטן 18 ויחס הדמיון קטן:גדול הוא 2:3. מה היקף הגדול? תשובה: 27.",
+        "לכל דפי העבודה של כיתה ט׳"
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מתרגלים יחסי צלעות, היקפים ושטחים במשולשים דומים, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=19",
+      "catalogTopicId": 19
+    },
+    {
+      "type": "heading",
+      "text": "יחסי צלעות והיקפים"
+    },
+    {
+      "type": "paragraph",
+      "text": "כאשר יחס הדמיון הוא 3:5, גם יחס ההיקפים הוא 3:5.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "יחס שטחים"
+    },
+    {
+      "type": "paragraph",
+      "text": "יחס השטחים הוא ריבוע יחס הדמיון, ולכן 9:25.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "דמיון וחפיפה"
+    },
+    {
+      "type": "paragraph",
+      "text": "בחפיפה כל הצלעות המתאימות שוות; בדמיון נשמר היחס.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "היקף משולש קטן 18 ויחס הדמיון קטן:גדול הוא 2:3. מה היקף הגדול? תשובה: 27.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לכל דפי העבודה של כיתה ט׳",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא דמיון משולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-9",
+      "label": "משפט פיתגורס"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/rectangle-grade-9",
+      "label": "מלבן"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/square-grade-9",
+      "label": "ריבוע"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=19",
+    "label": "פתיחת דפי העבודה ובחירת רמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=19",
+      "label": "פתיחת דפי העבודה ובחירת רמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא דמיון משולשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}

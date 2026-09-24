@@ -1,0 +1,159 @@
+---
+/**
+ * DOODLES-45 — site-wide decorative motifs (illustration webp only).
+ * Selection is pathname-seeded in src/lib/doodles/selectSiteDoodles.ts.
+ * Homepage skips this layer (HeroIllustrations owns that surface).
+ *
+ * ≤1200px: reserved NORMAL-FLOW strip (gutters insufficient) — 1–2 motifs L/R.
+ * >1200px: fixed outer gutters only (2–3 motifs) — never mid-content slots.
+ */
+import {
+  selectSiteDoodles,
+  shouldSkipSiteDoodles,
+  type DoodleMotif,
+} from '../lib/doodles/selectSiteDoodles';
+import manifest from '../data/doodles.manifest.json';
+
+const pathname = Astro.url.pathname;
+const motifs = (manifest.motifs || []) as DoodleMotif[];
+const placements =
+  shouldSkipSiteDoodles(pathname) || motifs.length === 0
+    ? []
+    : selectSiteDoodles(pathname, motifs);
+
+/** Among strip-visible motifs, alternate start/end so they never stack. */
+let stripOrdinal = 0;
+const decorated = placements.map((p) => {
+  let stripSide: 'start' | 'end' | null = null;
+  if (p.mobileVisible) {
+    stripSide = stripOrdinal % 2 === 0 ? 'start' : 'end';
+    stripOrdinal += 1;
+  }
+  return { ...p, stripSide };
+});
+---
+
+{
+  decorated.length > 0 && (
+    <div class="site-doodles" aria-hidden="true" data-site-doodles data-path={pathname}>
+      {decorated.map((p) => (
+        <img
+          class:list={[
+            'site-doodle',
+            `site-doodle--${p.slot}`,
+            p.mobileVisible ? 'site-doodle--strip' : 'site-doodle--gutter-only',
+            p.stripSide ? `site-doodle--s-${p.stripSide}` : null,
+          ]}
+          src={p.src}
+          alt=""
+          width="160"
+          height="160"
+          decoding="async"
+          loading="lazy"
+          data-doodle-id={p.id}
+          data-strip-side={p.stripSide || undefined}
+          style={`--doodle-scale:${p.scale};--doodle-rotate:${p.rotate}deg`}
+        />
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .site-doodles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .site-doodle {
+    position: absolute;
+    display: block;
+    width: clamp(72px, 8vw, 120px);
+    height: auto;
+    max-width: 140px;
+    opacity: 0.82;
+    transform: scale(var(--doodle-scale, 1)) rotate(var(--doodle-rotate, 0deg));
+    transform-origin: center center;
+  }
+
+  /*
+   * Wide desktop gutters only — content shell ≈1100px.
+   * Place OUTSIDE half-width 560px so motifs sit in true margins (>1200vw).
+   */
+  .site-doodle--tl {
+    top: 150px;
+    left: max(6px, calc(50% - 640px));
+  }
+  .site-doodle--tr {
+    /* Below RTL brand/logo hit-box (~32–130) and basad */
+    top: 168px;
+    right: max(6px, calc(50% - 640px));
+  }
+  .site-doodle--bl {
+    bottom: 80px;
+    left: max(6px, calc(50% - 640px));
+  }
+  .site-doodle--br {
+    bottom: 100px;
+    right: max(6px, calc(50% - 640px));
+  }
+  /* Mid slots unused by selector but keep as extreme edges if ever assigned */
+  .site-doodle--ml {
+    top: 40%;
+    left: max(6px, calc(50% - 640px));
+  }
+  .site-doodle--mr {
+    top: 46%;
+    right: max(6px, calc(50% - 640px));
+  }
+
+  /*
+   * ≤1200: gutters insufficient (1024/768/390) — reserved in-flow strip.
+   * Hides gutter-only (3rd) motif; shows 1–2 strip motifs L/R.
+   */
+  @media (max-width: 1200px) {
+    .site-doodles {
+      position: relative !important;
+      inset: auto !important;
+      height: 76px;
+      width: 100%;
+      z-index: 0;
+      margin: 4px 0 6px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .site-doodle--gutter-only {
+      display: none !important;
+    }
+    .site-doodle--strip {
+      position: absolute !important;
+      width: 70px !important;
+      max-width: 18vw !important;
+      height: auto !important;
+      opacity: 0.9;
+      top: 3px !important;
+      bottom: auto !important;
+      transform: rotate(var(--doodle-rotate, 0deg)) !important;
+      left: auto !important;
+      right: auto !important;
+    }
+    .site-doodle--s-start {
+      left: 12px !important;
+      right: auto !important;
+    }
+    .site-doodle--s-end {
+      right: 12px !important;
+      left: auto !important;
+    }
+  }
+
+  @media print {
+    .site-doodles {
+      display: none !important;
+    }
+  }
+</style>

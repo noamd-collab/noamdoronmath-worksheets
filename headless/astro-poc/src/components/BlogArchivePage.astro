@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  localizeArchiveHref,
+  type BlogArchiveContent,
+} from '../lib/blogArchives';
+
+interface Props {
+  archive: BlogArchiveContent;
+}
+const { archive } = Astro.props;
+const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
+---
+<BaseLayout
+  title={archive.title}
+  description={archive.description}
+  ogImage={archive.ogImage}
+  skipHref="#blog-archive-main"
+>
+  {
+    jsonLdScripts.map((ld) => (
+      <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    ))
+  }
+  <main
+    id="blog-archive-main"
+    class="wrap blog-archive"
+    data-blog-archive={archive.fileSlug}
+    data-blog-archive-path={archive.path}
+    data-blog-archive-kind={archive.kind}
+  >
+    <nav class="blog-archive__crumbs" aria-label="מיקום">
+      <a href="/">בית</a>
+      <span aria-hidden="true">·</span>
+      {
+        archive.kind === 'category' ? (
+          <>
+            <a href={localizeArchiveHref('https://www.noamdoronmath.co.il/blog')}>בלוג</a>
+            <span aria-hidden="true">·</span>
+            <span>{archive.h1}</span>
+          </>
+        ) : (
+          <span>{archive.h1}</span>
+        )
+      }
+    </nav>
+
+    <header class="banner blog-archive__header">
+      <h1>{archive.h1}</h1>
+    </header>
+
+    {
+      archive.nav.length > 0 && (
+        <nav class="blog-archive__nav" aria-label="בלוג" data-blog-archive-nav>
+          <ul>
+            {archive.nav.map((item) => (
+              <li>
+                <a
+                  href={localizeArchiveHref(item.href)}
+                  aria-current={item.current ? 'page' : undefined}
+                  data-blog-archive-nav-item={item.current ? 'current' : undefined}
+                >
+                  {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    <section class="blog-archive__list" aria-label="פוסטים" data-blog-archive-list>
+      {
+        archive.cards.map((card) => (
+          <article class="blog-archive__card" data-blog-archive-card>
+            {
+              card.imageSrc && (
+                <a
+                  class="blog-archive__card-media"
+                  href={localizeArchiveHref(card.href)}
+                  rel="noopener noreferrer"
+                  tabindex="-1"
+                  aria-hidden="true"
+                >
+                  <img
+                    src={card.imageSrc}
+                    alt={card.imageAlt || card.title}
+                    loading="lazy"
+                    data-blog-archive-card-img
+                  />
+                </a>
+              )
+            }
+            <div class="blog-archive__card-body">
+              <h2 class="blog-archive__card-title">
+                <a href={localizeArchiveHref(card.href)} rel="noopener noreferrer" data-blog-archive-card-link>
+                  {card.title}
+                </a>
+              </h2>
+              {
+                card.excerpt && (
+                  <p class="blog-archive__card-excerpt" data-blog-archive-card-excerpt>
+                    {card.excerpt}
+                  </p>
+                )
+              }
+              <div class="blog-archive__card-meta">
+                {
+                  card.authorAvatar?.src && (
+                    <img
+                      class="blog-archive__card-avatar"
+                      src={card.authorAvatar.src}
+                      alt={card.authorAvatar.alt || ''}
+                      width="28"
+                      height="28"
+                      loading="lazy"
+                    />
+                  )
+                }
+                {
+                  card.author && (
+                    <span class="blog-archive__card-author" data-blog-archive-card-author>
+                      {card.author}
+                    </span>
+                  )
+                }
+                {
+                  card.date && (
+                    <time class="blog-archive__card-date" data-blog-archive-card-date>
+                      {card.date}
+                    </time>
+                  )
+                }
+              </div>
+              {
+                card.categories && card.categories.length > 0 && (
+                  <ul class="blog-archive__card-cats">
+                    {card.categories.map((cat) => (
+                      <li>
+                        <a href={localizeArchiveHref(cat.href)} rel="noopener noreferrer">
+                          {cat.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )
+              }
+            </div>
+          </article>
+        ))
+      }
+    </section>
+
+    {
+      archive.loadMore && (
+        <p class="blog-archive__load-more" data-blog-archive-load-more>
+          {archive.loadMore.label}
+        </p>
+      )
+    }
+
+    {
+      archive.pagination && archive.pagination.length > 0 && (
+        <nav class="blog-archive__pagination" aria-label="עמודים" data-blog-archive-pagination>
+          <ul>
+            {archive.pagination.map((p) => (
+              <li>
+                <a href={localizeArchiveHref(p.href)} rel="noopener noreferrer">
+                  {p.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+  </main>
+</BaseLayout>

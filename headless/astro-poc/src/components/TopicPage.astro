@@ -1,0 +1,327 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  loadTopicPage,
+  synthesizeBodyFlow,
+  type TopicBodyFlowItem,
+  type TopicPageFaqGroup,
+} from '../lib/topicPages';
+import { localizeSiteHref } from '../lib/sitePages';
+import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
+import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+const page = loadTopicPage(slug);
+const contentImages = (page.images || []).filter((i) => i.role === 'content-candidate');
+const about = page.author.links.find((l) => l.href.includes('aboutus'));
+const authorParts = about && page.author.text.includes(about.label)
+  ? page.author.text.split(about.label)
+  : null;
+
+const beforeUpdateCount =
+  page.updatedLinePlacement === 'after-first-faq-group' ? 1 : 0;
+const faqBeforeUpdate = page.faqGroups.slice(0, beforeUpdateCount);
+const faqAfterUpdate = page.faqGroups.slice(beforeUpdateCount);
+const bodyFlow: TopicBodyFlowItem[] = synthesizeBodyFlow(page);
+
+/** Group flow so H2 sections nest following paragraphs/lists; CTAs stay ordered siblings. */
+type BodyUnit =
+  | { kind: 'intro'; text: string }
+  | { kind: 'cta'; item: Extract<TopicBodyFlowItem, { type: 'cta' }> }
+  | {
+      kind: 'section';
+      heading: string;
+      blocks: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }>[];
+    }
+  | { kind: 'orphan'; item: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }> };
+
+function groupBodyFlow(flow: TopicBodyFlowItem[]): BodyUnit[] {
+  const units: BodyUnit[] = [];
+  let current: {
+    heading: string;
+    blocks: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }>[];
+  } | null = null;
+  const flush = () => {
+    if (current) {
+      units.push({ kind: 'section', heading: current.heading, blocks: current.blocks });
+      current = null;
+    }
+  };
+  for (const b of flow) {
+    if (b.type === 'paragraph' && b.role === 'intro') {
+      flush();
+      units.push({ kind: 'intro', text: b.text });
+      continue;
+    }
+    if (b.type === 'cta') {
+      flush();
+      units.push({ kind: 'cta', item: b });
+      continue;
+    }
+    if (b.type === 'heading') {
+      flush();
+      current = { heading: b.text, blocks: [] };
+      continue;
+    }
+    if (b.type === 'paragraph' || b.type === 'list') {
+      if (current) current.blocks.push(b);
+      else units.push({ kind: 'orphan', item: b });
+    }
+  }
+  flush();
+  return units;
+}
+
+const bodyUnits = groupBodyFlow(bodyFlow);
+const gradeCrumbLabel = isGradeHubGrade(page.grade)
+  ? `כיתה ${gradeHubLabel(page.grade)}`
+  : `כיתה ${page.grade}`;
+
+function faqHeadingId(groupIndex: number) {
+  return groupIndex === 0 ? 'topic-faq-heading' : `topic-faq-heading-${groupIndex}`;
+}
+---
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  ogImage={page.ogImage || undefined}
+  activeNav="worksheets"
+  skipHref="#topic-page-main"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(page.jsonLd)} />
+
+  <main
+    class="topic-page wrap"
+    data-grade={String(page.grade)}
+    id="topic-page-main"
+    data-topic-slug={page.slug}
+  >
+    <nav class="topic-page__crumbs" aria-label="מיקום">
+      <a href="/">בית</a>
+      <span aria-hidden="true">/</span>
+      <a href={page.gradeHubHref}>{gradeCrumbLabel}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{page.h1}</span>
+    </nav>
+
+    {
+      (page.preH1Ctas || []).map((cta) => (
+        <p class="topic-page__cta-row topic-page__cta-row--pre-h1" data-flow="cta" data-pre-h1-cta data-catalog-ctas>
+          <a
+            class="cta cta--mid topic-page__cta"
+            href={resolveSiteHrefString(cta.href)}
+            data-catalog-topic={
+              cta.catalogTopicId != null ? String(cta.catalogTopicId) : undefined
+            }
+          >
+            {cta.label}
+          </a>
+        </p>
+      ))
+    }
+
+    <header class="topic-page__header banner">
+      <h1>{page.h1}</h1>
+    </header>
+
+    <div class="topic-page__body" data-body-flow>
+      {
+        bodyUnits.map((unit) => {
+          if (unit.kind === 'intro') {
+            return (
+              <p class="topic-page__intro" data-flow="paragraph" data-role="intro">
+                {unit.text}
+              </p>
+            );
+          }
+          if (unit.kind === 'cta') {
+            const block = unit.item;
+            return (
+              <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
+                <a
+                  class="cta cta--mid topic-page__cta"
+                  href={resolveSiteHrefString(block.href)}
+                  data-catalog-topic={
+                    block.catalogTopicId != null ? String(block.catalogTopicId) : undefined
+                  }
+                >
+                  {block.label}
+                </a>
+              </p>
+            );
+          }
+          if (unit.kind === 'section') {
+            return (
+              <section class="topic-page__section" data-flow="heading">
+                <h2>{unit.heading}</h2>
+                {unit.blocks.map((block) => {
+                  if (block.type === 'paragraph') {
+                    const cls =
+                      block.role === 'self-check' ? 'topic-page__self-check' : undefined;
+                    return (
+                      <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
+                        {block.text}
+                      </p>
+                    );
+                  }
+                  if (block.type === 'list') {
+                    return block.ordered ? (
+                      <ol data-flow="list">
+                        {block.items.map((item) => (
+                          <li set:text={item} />
+                        ))}
+                      </ol>
+                    ) : (
+                      <ul data-flow="list">
+                        {block.items.map((item) => (
+                          <li set:text={item} />
+                        ))}
+                      </ul>
+                    );
+                  }
+                  return null;
+                })}
+              </section>
+            );
+          }
+          if (unit.kind === 'orphan') {
+            const block = unit.item;
+            if (block.type === 'paragraph') {
+              const cls = block.role === 'self-check' ? 'topic-page__self-check' : undefined;
+              return (
+                <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
+                  {block.text}
+                </p>
+              );
+            }
+            if (block.type === 'list') {
+              return block.ordered ? (
+                <ol data-flow="list">
+                  {block.items.map((item) => (
+                    <li set:text={item} />
+                  ))}
+                </ol>
+              ) : (
+                <ul data-flow="list">
+                  {block.items.map((item) => (
+                    <li set:text={item} />
+                  ))}
+                </ul>
+              );
+            }
+          }
+          return null;
+        })
+      }
+    </div>
+
+    {
+      contentImages.length > 0 && (
+        <figure class="topic-page__figure">
+          {contentImages.map((img) => (
+            <img src={img.src} alt={img.alt || page.h1} loading="lazy" />
+          ))}
+        </figure>
+      )
+    }
+
+    {
+      faqBeforeUpdate.map((group: TopicPageFaqGroup, gi: number) => (
+        <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
+          <h2 id={faqHeadingId(gi)}>{group.heading}</h2>
+          <div class="topic-page__faq-list">
+            {group.items.map((item) => (
+              <div class="topic-page__faq-item" data-faq-item>
+                <h3>{item.question}</h3>
+                <p>{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    {
+      page.updatedLine && (
+        <p class="topic-page__updated" data-updated-line>
+          {page.updatedLine}
+        </p>
+      )
+    }
+
+    <p class="topic-page__author">
+      {
+        authorParts && about ? (
+          <>
+            {authorParts[0]}
+            <a href={localizeSiteHref(about.href)} rel="noopener noreferrer">
+              {about.label}
+            </a>
+            {authorParts.slice(1).join(about.label)}
+          </>
+        ) : (
+          <>
+            {page.author.text}
+            {about && (
+              <>
+                {' '}
+                <a href={localizeSiteHref(about.href)} rel="noopener noreferrer">
+                  ({about.label})
+                </a>
+              </>
+            )}
+          </>
+        )
+      }
+    </p>
+
+    {
+      page.relatedTopics.length > 0 && (
+        <nav class="topic-page__related" aria-label="נושאים קשורים">
+          <h2 class="topic-page__related-title">נושאים קשורים</h2>
+          <ul>
+            {page.relatedTopics.map((rel) => (
+              <li>
+                <a
+                  href={resolveSiteHrefString(rel.productionHref || rel.path)}
+                  rel="noopener noreferrer"
+                  data-topic-path={rel.path}
+                >
+                  {rel.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    {
+      faqAfterUpdate.map((group: TopicPageFaqGroup, oi: number) => {
+        const gi = beforeUpdateCount + oi;
+        return (
+          <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
+            <h2 id={faqHeadingId(gi)}>{group.heading}</h2>
+            <div class="topic-page__faq-list">
+              {group.items.map((item) => (
+                <div class="topic-page__faq-item" data-faq-item>
+                  <h3>{item.question}</h3>
+                  <p>{item.answer}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })
+    }
+
+    <p class="topic-page__terms">
+      <a href={localizeSiteHref(page.terms.href)} rel="noopener noreferrer">
+        {page.terms.label}
+      </a>
+    </p>
+  </main>
+</BaseLayout>

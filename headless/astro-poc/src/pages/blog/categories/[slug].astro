@@ -1,0 +1,23 @@
+---
+import BlogArchivePage from '../../../components/BlogArchivePage.astro';
+import { loadBlogArchiveByCategorySlug } from '../../../lib/blogArchives';
+
+export const prerender = false;
+
+const slug = Astro.params.slug;
+if (!slug || typeof slug !== 'string') {
+  return new Response('Missing category', {
+    status: 404,
+    headers: { 'content-type': 'text/plain; charset=utf-8' },
+  });
+}
+
+const archive = loadBlogArchiveByCategorySlug(slug);
+if (!archive) {
+  return new Response('Blog category not in M26 archives', {
+    status: 404,
+    headers: { 'content-type': 'text/plain; charset=utf-8' },
+  });
+}
+---
+<BlogArchivePage archive={archive} />

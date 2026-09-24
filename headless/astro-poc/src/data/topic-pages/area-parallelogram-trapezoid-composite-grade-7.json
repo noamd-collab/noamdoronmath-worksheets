@@ -1,0 +1,275 @@
+{
+  "slug": "area-parallelogram-trapezoid-composite-grade-7",
+  "path": "/area-parallelogram-trapezoid-composite-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7",
+  "fetchedAt": "2026-09-23T17:27:47.488Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ | דפי עבודה חינם",
+  "description": "שטח מקבילית וטרפז, פירוק מצולעים וחיסור שטחים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳",
+  "intro": "מחשבים שטח מקבילית וטרפז, מזהים גובה ומפרקים מצולעים מורכבים לצורות מוכרות. תרגול ברמות שונות — בחינם.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שטח מקבילית = בסיס×גובה. שטח טרפז = (סכום הבסיסים)×גובה÷2. במצולע מורכב מפרקים לצורות מוכרות או מחסרים שטחים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "טרפז עם בסיסים 6 ו־10 וגובה 4: שטח (6+10)×4÷2=32.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה: להשתמש בצלע אלכסונית במקום בגובה המאונך לבסיס.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מקבילית בסיס 9 וגובה 5. מה השטח?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: 45 יחידות שטח.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מחשבים שטח מקבילית וטרפז, מזהים גובה ומפרקים מצולעים מורכבים לצורות מוכרות. תרגול ברמות שונות — בחינם.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "מצולעים מורכבים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=46",
+      "catalogTopicId": 46
+    },
+    {
+      "type": "cta",
+      "label": "מקבילית וטרפז — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=45",
+      "catalogTopicId": 45
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "שטח מקבילית = בסיס×גובה. שטח טרפז = (סכום הבסיסים)×גובה÷2. במצולע מורכב מפרקים לצורות מוכרות או מחסרים שטחים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "טרפז עם בסיסים 6 ו־10 וגובה 4: שטח (6+10)×4÷2=32.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה: להשתמש בצלע אלכסונית במקום בגובה המאונך לבסיס.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מקבילית בסיס 9 וגובה 5. מה השטח?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "תשובה: 45 יחידות שטח.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/angles-introduction-measurement-grade-7",
+      "label": "זוויות",
+      "productionHref": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7"
+    },
+    {
+      "path": "/triangle-area-grade-7",
+      "label": "שטח משולש",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-area-grade-7"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-7",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "מצולעים מורכבים — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=46",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=46",
+    "catalogTopicId": 46,
+    "catalogTopicTitle": "שטחים ב׳ חלק 2 — מצולעים מורכבים"
+  },
+  "catalogCtas": [
+    {
+      "label": "מצולעים מורכבים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=46",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=46",
+      "catalogTopicId": 46,
+      "catalogTopicTitle": "שטחים ב׳ חלק 2 — מצולעים מורכבים"
+    },
+    {
+      "label": "מקבילית וטרפז — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=45",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=45",
+      "catalogTopicId": 45,
+      "catalogTopicTitle": "שטחים ב׳ חלק 1 — מקבילית וטרפז"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7",
+        "name": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ | דפי עבודה חינם",
+        "description": "שטח מקבילית וטרפז, פירוק מצולעים וחיסור שטחים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#learning-resource",
+        "name": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7",
+        "description": "שטח מקבילית וטרפז, פירוק מצולעים וחיסור שטחים לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳ מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

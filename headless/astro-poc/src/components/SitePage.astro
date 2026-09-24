@@ -1,0 +1,275 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadSitePage, localizeSiteHref, type SitePageBlock } from '../lib/sitePages';
+
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+const page = loadSitePage(slug);
+
+const footerLinks = [
+  { href: '/conditionforfreeworksheets', label: 'תקנון שימוש בדפי עבודה חינמיים' },
+  { href: '/terms', label: 'תנאי השימוש' },
+  { href: '/accessibilityadaptation', label: 'הצהרת נגישות ומדיניות פרטיות' },
+  { href: '/aboutus', label: 'צור קשר' },
+];
+
+function renderListItem(item: { text: string; href?: string; linkText?: string }) {
+  return item;
+}
+
+function isPreviewBlock(block: SitePageBlock) {
+  return block.type !== 'contact' && block.region === 'calculator-preview';
+}
+
+type RenderUnit =
+  | { kind: 'block'; block: SitePageBlock }
+  | { kind: 'preview'; blocks: SitePageBlock[] };
+
+function renderUnits(blocks: SitePageBlock[], slug: string): RenderUnit[] {
+  if (slug !== 'math-tools') return blocks.map((block) => ({ kind: 'block', block }));
+  const units: RenderUnit[] = [];
+  const preview: SitePageBlock[] = [];
+  const flush = () => {
+    if (preview.length) units.push({ kind: 'preview', blocks: preview.splice(0) });
+  };
+  for (const block of blocks) {
+    if (isPreviewBlock(block)) {
+      preview.push(block);
+      continue;
+    }
+    flush();
+    units.push({ kind: 'block', block });
+  }
+  flush();
+  return units;
+}
+
+const units = renderUnits(page.blocks, page.slug);
+---
+<BaseLayout title={page.title} description={page.description} skipHref="#site-page-main">
+  <main id="site-page-main" class="wrap site-page" data-site-page={page.slug}>
+    <nav class="site-page__crumbs" aria-label="מיקום">
+      <a href="/">בית</a>
+      <span aria-hidden="true">·</span>
+      <span>{page.h1}</span>
+    </nav>
+
+    <header class="banner site-page__header">
+      <h1>{page.h1}</h1>
+    </header>
+
+    <div class="site-page__body" data-site-body data-legal-body={page.slug === 'terms' ? '1' : undefined}>
+      {
+        units.map((unit) => {
+          if (unit.kind === 'preview') {
+            return (
+              <details class="site-page__fold" dir="rtl">
+                <summary>תצוגה מקדימה של המחשבון</summary>
+                {unit.blocks.map((block) => {
+                  if (block.type === 'h3') return <h3>{block.text}</h3>;
+                  if (block.type === 'p') {
+                    if (block.segments && block.segments.length > 0) {
+                      return (
+                        <p>
+                          {block.segments.map((seg) =>
+                            seg.type === 'a' ? (
+                              <a href={localizeSiteHref(seg.href)} rel="noopener noreferrer">
+                                {seg.text}
+                              </a>
+                            ) : (
+                              seg.text
+                            )
+                          )}
+                        </p>
+                      );
+                    }
+                    return block.dir === 'ltr' ? (
+                      <p>
+                        <span dir="ltr">{block.text}</span>
+                      </p>
+                    ) : (
+                      <p>{block.text}</p>
+                    );
+                  }
+                  if (block.type === 'a') {
+                    return (
+                      <p class="site-page__cta">
+                        <a
+                          class="cta cta--mid"
+                          href={localizeSiteHref(block.href)}
+                          rel="noopener noreferrer"
+                        >
+                          {block.text}
+                        </a>
+                      </p>
+                    );
+                  }
+                  if (block.type === 'img') {
+                    return (
+                      <figure class="site-page__figure">
+                        <img src={block.src} alt={block.alt || ''} loading="lazy" />
+                      </figure>
+                    );
+                  }
+                  if (block.type === 'iframe') {
+                    return (
+                      <div class="site-page__embed site-page__embed--preview">
+                        <iframe
+                          src={block.src}
+                          title={block.title || ''}
+                          loading="lazy"
+                          referrerpolicy="no-referrer-when-downgrade"
+                        />
+                      </div>
+                    );
+                  }
+                  // Do not silently drop unsupported preview-region types.
+                  throw new Error(
+                    `Unsupported calculator-preview block type: ${(block as { type: string }).type}`
+                  );
+                })}
+              </details>
+            );
+          }
+          const block = unit.block;
+          if (block.type === 'h2') {
+            // Stable anchor for combined accessibility+privacy page (verified content exists).
+            const id = block.text === 'מדיניות פרטיות' ? 'privacy-policy' : undefined;
+            return <h2 id={id}>{block.text}</h2>;
+          }
+          if (block.type === 'h3') return <h3>{block.text}</h3>;
+          if (block.type === 'h4') return <h4>{block.text}</h4>;
+          if (block.type === 'p') {
+            if (block.segments && block.segments.length > 0) {
+              return (
+                <p>
+                  {block.segments.map((seg) =>
+                    seg.type === 'a' ? (
+                      <a href={localizeSiteHref(seg.href)} rel="noopener noreferrer">
+                        {seg.text}
+                      </a>
+                    ) : (
+                      seg.text
+                    )
+                  )}
+                </p>
+              );
+            }
+            return block.dir === 'ltr' ? (
+              <p>
+                <span dir="ltr">{block.text}</span>
+              </p>
+            ) : (
+              <p>{block.text}</p>
+            );
+          }
+          if (block.type === 'ul' || block.type === 'ol') {
+            const Tag = block.type;
+            return (
+              <Tag>
+                {block.items.map((item) => {
+                  const it = renderListItem(item);
+                  if (it.href) {
+                    return (
+                      <li>
+                        <a href={localizeSiteHref(it.href)} rel="noopener noreferrer">
+                          {it.text}
+                        </a>
+                      </li>
+                    );
+                  }
+                  return <li>{it.text}</li>;
+                })}
+              </Tag>
+            );
+          }
+          if (block.type === 'a') {
+            return (
+              <p class="site-page__cta">
+                <a class="cta cta--mid" href={localizeSiteHref(block.href)} rel="noopener noreferrer">
+                  {block.text}
+                </a>
+              </p>
+            );
+          }
+          if (block.type === 'img') {
+            return (
+              <figure class="site-page__figure">
+                <img src={block.src} alt={block.alt || ''} loading="lazy" />
+              </figure>
+            );
+          }
+          if (block.type === 'iframe') {
+            return (
+              <div class="site-page__embed">
+                <iframe
+                  src={block.src}
+                  title={block.title || ''}
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                />
+              </div>
+            );
+          }
+          if (block.type === 'contact') {
+            const wf = block.wixForm;
+            const mode = wf?.submitMode || 'dry-run';
+            return (
+              <div
+                class="site-page__contact"
+                data-contact-form
+                data-contact-fallback={mode === 'dry-run' || mode === 'mock' ? '1' : undefined}
+                data-note={block.note}
+                data-form-id={wf?.formId || ''}
+                data-submit-mode={mode}
+              >
+                <form class="site-page__contact-form" novalidate aria-label="צור קשר">
+                  <label>
+                    שם פרטי*
+                    <input name="firstName" type="text" autocomplete="given-name" required />
+                  </label>
+                  <label>
+                    שם משפחה*
+                    <input name="lastName" type="text" autocomplete="family-name" required />
+                  </label>
+                  <label>
+                    כתובת אימייל*
+                    <input name="email" type="email" autocomplete="email" required />
+                  </label>
+                  <label>
+                    הודעה*
+                    <textarea name="message" required />
+                  </label>
+                  <button type="submit">שליחה</button>
+                </form>
+                <p class="site-page__contact-status" data-contact-status role="status" aria-live="polite" />
+                <p class="site-page__contact-note">
+                  בתצוגה זו הטופס במצב בדיקה בלבד וההודעה אינה נמסרת לבעל האתר. אפשר גם לפנות ישירות:
+                </p>
+                <p>
+                  <a href={block.mailto}>{block.mailtoLabel}</a>
+                </p>
+                <script src="/nd-contact-form.js" defer />
+              </div>
+            );
+          }
+          return null;
+        })
+      }
+    </div>
+
+    <nav class="site-page__footer-links" aria-label="קישורים נוספים">
+      <ul>
+        {
+          footerLinks.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </main>
+</BaseLayout>

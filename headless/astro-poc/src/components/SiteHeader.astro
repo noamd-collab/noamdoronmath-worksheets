@@ -1,0 +1,42 @@
+---
+import SiteBrand from './SiteBrand.astro';
+import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
+
+interface Props {
+  /** Optional override; default derives from the request pathname. */
+  active?: ActiveNavKey | null;
+  compactBrand?: boolean;
+}
+
+const pathname = Astro.url.pathname;
+const active: ActiveNavKey | null =
+  Astro.props.active !== undefined ? Astro.props.active : resolveActiveNav(pathname);
+const { compactBrand = false } = Astro.props;
+
+function navProps(key: ActiveNavKey) {
+  const isActive = active === key;
+  return {
+    class: ['site-nav__link', isActive ? 'is-active' : undefined].filter(Boolean).join(' '),
+    'aria-current': isActive ? ('page' as const) : undefined,
+  };
+}
+---
+<div class="basad" lang="he" data-basad>בס״ד</div>
+<header class="site-header">
+  <div class="site-header__inner">
+    <div class="site-header__brand">
+      <SiteBrand href="/" compact={compactBrand} />
+    </div>
+    <nav class="site-nav" aria-label="ניווט ראשי">
+      <a {...navProps('home')} href="/">בית</a>
+      <a {...navProps('about')} href="/aboutus">אודותינו</a>
+      <a {...navProps('worksheets')} href="/worksheets">דפי עבודה</a>
+      <a {...navProps('blog')} href="/blog">בלוג</a>
+      <a {...navProps('tools')} href="/math-tools">תוספים</a>
+      <a {...navProps('highschool')} href="/high-school-math-1">
+        מתמטיקה לתיכון (חיצוני)
+      </a>
+      <a {...navProps('learning')} href="/learning.html">הלמידה שלי</a>
+    </nav>
+  </div>
+</header>

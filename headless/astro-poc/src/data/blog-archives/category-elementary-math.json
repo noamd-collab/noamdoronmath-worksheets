@@ -1,0 +1,133 @@
+{
+  "path": "/blog/categories/elementary-math",
+  "fileSlug": "category-elementary-math",
+  "kind": "category",
+  "categorySlug": "elementary-math",
+  "title": "יסודי",
+  "description": "מדריכים ותרגול במתמטיקה לכיתות א׳–ו׳, עם דפי עבודה קיימים בחינם וללא הרשמה.",
+  "ogTitle": "יסודי",
+  "h1": "יסודי",
+  "nav": [
+    {
+      "text": "כל הפוסטים",
+      "href": "https://www.noamdoronmath.co.il/blog",
+      "current": false
+    },
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math",
+      "current": true
+    },
+    {
+      "text": "חטיבת הביניים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math",
+      "current": false
+    },
+    {
+      "text": "מורים והורים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents",
+      "current": false
+    }
+  ],
+  "cards": [
+    {
+      "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9C%D7%AA%D7%A8%D7%92%D7%9C-%D7%92%D7%90%D7%95%D7%9E%D7%98%D7%A8%D7%99%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%95-%D7%95%D7%9C%D7%94%D7%A6%D7%9C%D7%99%D7%97-%D7%91%D7%9E%D7%91%D7%97%D7%A0%D7%99%D7%9D",
+      "excerpt": "מסלול תרגול בגאומטריה לכיתה ו׳: גופים, פריסות, שטח פנים ונפח, עם דוגמה פתורה וקישורים לדפי העבודה הקיימים בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "7 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp",
+      "imageAlt": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים"
+    },
+    {
+      "title": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A9%D7%91%D7%A8%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%93-%D7%A9%D7%9E%D7%97%D7%96%D7%A7-%D7%94%D7%91%D7%A0%D7%94-%D7%95%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+      "excerpt": "שברים לכיתה ד׳ דרך שלם, חלקים שווים וישר המספרים. דוגמאות, בדיקה עצמית ושלושה נושאי תרגול קיימים בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "6 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp",
+      "imageAlt": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון"
+    },
+    {
+      "title": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%99%D7%9C%D7%99-%D7%90%D7%AA%D7%92%D7%A8-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%93-%D7%A9%D7%9E%D7%A7%D7%93%D7%9E%D7%99%D7%9D-%D7%97%D7%A9%D7%99%D7%91%D7%94",
+      "excerpt": "תרגילי אתגר במתמטיקה לכיתה ד׳ מחזקים חשיבה, דיוק והתמדה. כך בוחרים משימות מתאימות, מלווים את הילד ובודקים שהאתגר מקדם ולא מתסכל גם בבית ובכיתה בקלות.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "31 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_52b78088839f4bbbbecacaa694510d53~mv2.webp/v1/fill/w_332,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_52b78088839f4bbbbecacaa694510d53~mv2.webp",
+      "imageAlt": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה"
+    },
+    {
+      "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%94%D7%9B%D7%A0%D7%94-%D7%9C%D7%9E%D7%91%D7%97%D7%9F-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%94-%D7%91-7-%D7%99%D7%9E%D7%99%D7%9D",
+      "excerpt": "תוכנית שבועית גמישה לכיתה ה׳, עם קישורים לדפי העבודה הקיימים. בוחרים רק נושאים שנכללים במבחן ומתרגלים בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "30 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_87d186f5e1124c238365864b9b2cda03~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_87d186f5e1124c238365864b9b2cda03~mv2.webp",
+      "imageAlt": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים"
+    },
+    {
+      "title": "תרגול מספרים עשרוניים לכיתה ו׳ בבית ובכיתה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%9E%D7%A1%D7%A4%D7%A8%D7%99%D7%9D-%D7%A2%D7%A9%D7%A8%D7%95%D7%A0%D7%99%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%95-%D7%91%D7%91%D7%99%D7%AA-%D7%95%D7%91%D7%9B%D7%99%D7%AA%D7%94",
+      "excerpt": "תרגול מספרים עשרוניים לכיתה ו׳: כך בונים ביטחון בחיבור, חיסור, כפל, חילוק ובעיות מילוליות, עם סדר פעולות ברור, רמות קושי והתקדמות אמיתית לכל תלמיד בקלות.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "29 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_598cdb38812e463999d566f851719596~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_598cdb38812e463999d566f851719596~mv2.webp",
+      "imageAlt": "תרגול מספרים עשרוניים לכיתה ו׳ בבית ובכיתה"
+    },
+    {
+      "title": "דפי עבודה ללוח הכפל לתרגול נכון בבית",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9C%D7%95%D7%97-%D7%94%D7%9B%D7%A4%D7%9C-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F-%D7%91%D7%91%D7%99%D7%AA",
+      "excerpt": "תרגול כפל בכיתות ב׳–ג׳ מתוך דפים קיימים: קבוצות שוות, מערכים, עובדות כפל ובדיקה בחילוק. חינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "28 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp/v1/fill/w_332,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp",
+      "imageAlt": "דפי עבודה ללוח הכפל לתרגול נכון בבית"
+    },
+    {
+      "title": "תרגילי חיבור וחיסור לכיתה א׳ לתרגול נכון בבית",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%99%D7%9C%D7%99-%D7%97%D7%99%D7%91%D7%95%D7%A8-%D7%95%D7%97%D7%99%D7%A1%D7%95%D7%A8-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%90-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F-%D7%91%D7%91%D7%99%D7%AA",
+      "excerpt": "תרגילי חיבור וחיסור לכיתה א׳ עוזרים לבסס הבנת מספרים. כך בוחרים דפי עבודה לפי רמה, מתרגלים בבית בנחת ומתקדמים בביטחון, בקצב שמתאים לילד, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "27 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_a735e3e34cce4ac7bbaa26404d54220e~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_a735e3e34cce4ac7bbaa26404d54220e~mv2.webp",
+      "imageAlt": "תרגילי חיבור וחיסור לכיתה א׳ לתרגול נכון בבית"
+    }
+  ],
+  "pagination": null,
+  "loadMore": null,
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/blog/categories/elementary-math",
+    "capturedAt": "2026-09-23T21:21:44.377Z",
+    "cardCount": 7,
+    "captureMethod": "ssr-html"
+  }
+}

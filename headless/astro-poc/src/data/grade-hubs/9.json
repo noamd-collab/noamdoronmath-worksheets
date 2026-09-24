@@ -1,0 +1,471 @@
+{
+  "grade": 9,
+  "path": "/grade-9",
+  "sourceUrl": "https://www.noamdoronmath.co.il/grade-9",
+  "fetchedAt": "2026-09-23T14:40:00Z",
+  "title": "דפי עבודה במתמטיקה לכיתה ט׳ להדפסה בחינם | נועם דורון",
+  "description": "דפי עבודה במתמטיקה לכיתה ט׳: דו־איבר בריבוע, הפרש ריבועים, משוואות ריבועיות, פונקציות, פיתגורס ודמיון משולשים. להורדה ולהדפסה בחינם וללא הרשמה.",
+  "h1": "דפי עבודה במתמטיקה לכיתה ט׳ — בחינם",
+  "intro": "בעמוד זה תמצאו דפי עבודה במתמטיקה לכיתה ט׳, המסודרים לפי נושאי הלימוד המרכזיים ובהתאם לתוכנית הלימודים. אפשר לתרגל משוואות ריבועיות, פירוק לגורמים, פונקציות, גאומטריה אנליטית, מרובעים, דמיון משולשים, משפט פיתגורס, שטחים, סטטיסטיקה והסתברות. בכל נושא ניתן לבחור דף ורמת קושי, לפתור באופן עצמאי ולהיעזר בהסברים ובנועם AI לקבלת רמזים ומשוב. הדפים זמינים בחינם, ללא הרשמה, ומתאימים לשיעורי בית, לתרגול בכיתה, להשלמת פערים ולחזרה לקראת מבחנים. מומלץ לבחור את הנושא הנלמד, להתחיל ברמה המתאימה, להציג דרך פתרון מלאה ולבדוק את התשובות לפני שמתקדמים לנושא הבא או לרמת מצוינות.",
+  "topicSections": [
+    {
+      "heading": "אלגברה ומשוואות",
+      "links": [
+        {
+          "path": "/distributive-law-grade-9",
+          "label": "חוק הפילוג המורחב",
+          "productionHref": "https://www.noamdoronmath.co.il/distributive-law-grade-9"
+        },
+        {
+          "path": "/factoring-grade-9",
+          "label": "פירוק לגורמים",
+          "productionHref": "https://www.noamdoronmath.co.il/factoring-grade-9"
+        },
+        {
+          "path": "/quadratic-equations-grade-9",
+          "label": "משוואות ריבועיות",
+          "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
+        },
+        {
+          "path": "/quadratic-inequalities-systems-grade-9",
+          "label": "אי־שוויונות ריבועיים ומערכות משוואות",
+          "productionHref": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9"
+        },
+        {
+          "path": "/exponent-rules-grade-9",
+          "label": "חוקי חזקות",
+          "productionHref": "https://www.noamdoronmath.co.il/exponent-rules-grade-9"
+        },
+        {
+          "path": "/square-roots-grade-9",
+          "label": "שורשים",
+          "productionHref": "https://www.noamdoronmath.co.il/square-roots-grade-9"
+        },
+        {
+          "path": "/word-problems-grade-9",
+          "label": "בעיות מילוליות",
+          "productionHref": "https://www.noamdoronmath.co.il/word-problems-grade-9"
+        },
+        {
+          "path": "/binomial-square-grade-9",
+          "label": "דו־איבר בריבוע",
+          "productionHref": "https://www.noamdoronmath.co.il/binomial-square-grade-9"
+        },
+        {
+          "path": "/difference-of-squares-grade-9",
+          "label": "הפרש ריבועים",
+          "productionHref": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9"
+        },
+        {
+          "path": "/algebraic-fractions-grade-9",
+          "label": "צמצום שברים אלגבריים",
+          "productionHref": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9"
+        }
+      ]
+    },
+    {
+      "heading": "פונקציות וגרפים",
+      "links": [
+        {
+          "path": "/quadratic-function-grade-9",
+          "label": "הפונקציה הריבועית",
+          "productionHref": "https://www.noamdoronmath.co.il/quadratic-function-grade-9"
+        },
+        {
+          "path": "/linear-function-grade-9",
+          "label": "פונקציה קווית",
+          "productionHref": "https://www.noamdoronmath.co.il/linear-function-grade-9"
+        },
+        {
+          "path": "/precalculus-functions-graphs-grade-9",
+          "label": "קדם אנליזה — פונקציות וגרפים",
+          "productionHref": "https://www.noamdoronmath.co.il/precalculus-functions-graphs-grade-9"
+        },
+        {
+          "path": "/reading-graphs-grade-9",
+          "label": "קריאת גרפים",
+          "productionHref": "https://www.noamdoronmath.co.il/reading-graphs-grade-9"
+        },
+        {
+          "path": "/analytic-geometry-grade-9",
+          "label": "גאומטריה אנליטית",
+          "productionHref": "https://www.noamdoronmath.co.il/analytic-geometry-grade-9"
+        },
+        {
+          "path": "/coordinate-plane-applications-grade-9",
+          "label": "מערכת הצירים — יישום והעמקה",
+          "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-9"
+        }
+      ]
+    },
+    {
+      "heading": "מרובעים ומשולשים",
+      "links": [
+        {
+          "path": "/parallelogram-grade-9",
+          "label": "מקבילית",
+          "productionHref": "https://www.noamdoronmath.co.il/parallelogram-grade-9"
+        },
+        {
+          "path": "/rectangle-grade-9",
+          "label": "מלבן",
+          "productionHref": "https://www.noamdoronmath.co.il/rectangle-grade-9"
+        },
+        {
+          "path": "/rhombus-grade-9",
+          "label": "מעוין",
+          "productionHref": "https://www.noamdoronmath.co.il/rhombus-grade-9"
+        },
+        {
+          "path": "/square-grade-9",
+          "label": "ריבוע",
+          "productionHref": "https://www.noamdoronmath.co.il/square-grade-9"
+        },
+        {
+          "path": "/trapezoid-grade-9",
+          "label": "טרפז",
+          "productionHref": "https://www.noamdoronmath.co.il/trapezoid-grade-9"
+        },
+        {
+          "path": "/similar-triangles-grade-9",
+          "label": "דמיון משולשים",
+          "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-9"
+        },
+        {
+          "path": "/triangle-similarity-aa-grade-9",
+          "label": "דמיון משולשים — ז.ז וחישובים",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-similarity-aa-grade-9"
+        },
+        {
+          "path": "/triangle-30-60-90-grade-9",
+          "label": "משולש ישר־זווית 30–60–90",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-30-60-90-grade-9"
+        },
+        {
+          "path": "/triangle-sides-angles-grade-9",
+          "label": "יחסי צלעות וזוויות במשולש",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-sides-angles-grade-9"
+        },
+        {
+          "path": "/congruent-polygons-transformations-grade-9",
+          "label": "טרנספורמציות וצורות חופפות",
+          "productionHref": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-9"
+        },
+        {
+          "path": "/isosceles-triangle-grade-9",
+          "label": "משולש שווה־שוקיים",
+          "productionHref": "https://www.noamdoronmath.co.il/isosceles-triangle-grade-9"
+        },
+        {
+          "path": "/triangle-calculations-grade-9",
+          "label": "חישובים במשולשים",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9"
+        }
+      ]
+    },
+    {
+      "heading": "פיתגורס, שטחים ונפח",
+      "links": [
+        {
+          "path": "/pythagoras-basics-grade-9",
+          "label": "פיתגורס — היכרות וחישוב",
+          "productionHref": "https://www.noamdoronmath.co.il/pythagoras-basics-grade-9"
+        },
+        {
+          "path": "/pythagoras-applications-grade-9",
+          "label": "פיתגורס — שימושים",
+          "productionHref": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-9"
+        },
+        {
+          "path": "/pythagorean-theorem-grade-9",
+          "label": "משפט פיתגורס",
+          "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-9"
+        },
+        {
+          "path": "/rectangle-square-area-grade-9",
+          "label": "שטח מלבן וריבוע — העמקה",
+          "productionHref": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-9"
+        },
+        {
+          "path": "/triangle-area-grade-9",
+          "label": "שטח משולש — העמקה",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-area-grade-9"
+        },
+        {
+          "path": "/parallelogram-trapezoid-area-grade-9",
+          "label": "שטח מקבילית וטרפז",
+          "productionHref": "https://www.noamdoronmath.co.il/parallelogram-trapezoid-area-grade-9"
+        },
+        {
+          "path": "/composite-polygons-area-grade-9",
+          "label": "שטח מצולעים מורכבים",
+          "productionHref": "https://www.noamdoronmath.co.il/composite-polygons-area-grade-9"
+        },
+        {
+          "path": "/triangular-prism-volume-grade-9",
+          "label": "מנסרה משולשת — מבנה ונפח",
+          "productionHref": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-9"
+        },
+        {
+          "path": "/triangular-prism-surface-area-grade-9",
+          "label": "מנסרה משולשת — שטח פנים",
+          "productionHref": "https://www.noamdoronmath.co.il/triangular-prism-surface-area-grade-9"
+        }
+      ]
+    },
+    {
+      "heading": "סטטיסטיקה, הסתברות והמשך הלמידה",
+      "links": [
+        {
+          "path": "/statistics-grade-9",
+          "label": "סטטיסטיקה",
+          "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-9"
+        },
+        {
+          "path": "/probability-grade-9",
+          "label": "הסתברות",
+          "productionHref": "https://www.noamdoronmath.co.il/probability-grade-9"
+        },
+        {
+          "path": "/transition-to-high-school-grade-9",
+          "label": "מעבר לחטיבה העליונה",
+          "productionHref": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9"
+        }
+      ]
+    }
+  ],
+  "topicLinks": [
+    {
+      "path": "/distributive-law-grade-9",
+      "label": "חוק הפילוג המורחב",
+      "productionHref": "https://www.noamdoronmath.co.il/distributive-law-grade-9"
+    },
+    {
+      "path": "/factoring-grade-9",
+      "label": "פירוק לגורמים",
+      "productionHref": "https://www.noamdoronmath.co.il/factoring-grade-9"
+    },
+    {
+      "path": "/quadratic-equations-grade-9",
+      "label": "משוואות ריבועיות",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
+    },
+    {
+      "path": "/quadratic-inequalities-systems-grade-9",
+      "label": "אי־שוויונות ריבועיים ומערכות משוואות",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9"
+    },
+    {
+      "path": "/exponent-rules-grade-9",
+      "label": "חוקי חזקות",
+      "productionHref": "https://www.noamdoronmath.co.il/exponent-rules-grade-9"
+    },
+    {
+      "path": "/square-roots-grade-9",
+      "label": "שורשים",
+      "productionHref": "https://www.noamdoronmath.co.il/square-roots-grade-9"
+    },
+    {
+      "path": "/word-problems-grade-9",
+      "label": "בעיות מילוליות",
+      "productionHref": "https://www.noamdoronmath.co.il/word-problems-grade-9"
+    },
+    {
+      "path": "/binomial-square-grade-9",
+      "label": "דו־איבר בריבוע",
+      "productionHref": "https://www.noamdoronmath.co.il/binomial-square-grade-9"
+    },
+    {
+      "path": "/difference-of-squares-grade-9",
+      "label": "הפרש ריבועים",
+      "productionHref": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9"
+    },
+    {
+      "path": "/algebraic-fractions-grade-9",
+      "label": "צמצום שברים אלגבריים",
+      "productionHref": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9"
+    },
+    {
+      "path": "/quadratic-function-grade-9",
+      "label": "הפונקציה הריבועית",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-function-grade-9"
+    },
+    {
+      "path": "/linear-function-grade-9",
+      "label": "פונקציה קווית",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-function-grade-9"
+    },
+    {
+      "path": "/precalculus-functions-graphs-grade-9",
+      "label": "קדם אנליזה — פונקציות וגרפים",
+      "productionHref": "https://www.noamdoronmath.co.il/precalculus-functions-graphs-grade-9"
+    },
+    {
+      "path": "/reading-graphs-grade-9",
+      "label": "קריאת גרפים",
+      "productionHref": "https://www.noamdoronmath.co.il/reading-graphs-grade-9"
+    },
+    {
+      "path": "/analytic-geometry-grade-9",
+      "label": "גאומטריה אנליטית",
+      "productionHref": "https://www.noamdoronmath.co.il/analytic-geometry-grade-9"
+    },
+    {
+      "path": "/coordinate-plane-applications-grade-9",
+      "label": "מערכת הצירים — יישום והעמקה",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-9"
+    },
+    {
+      "path": "/parallelogram-grade-9",
+      "label": "מקבילית",
+      "productionHref": "https://www.noamdoronmath.co.il/parallelogram-grade-9"
+    },
+    {
+      "path": "/rectangle-grade-9",
+      "label": "מלבן",
+      "productionHref": "https://www.noamdoronmath.co.il/rectangle-grade-9"
+    },
+    {
+      "path": "/rhombus-grade-9",
+      "label": "מעוין",
+      "productionHref": "https://www.noamdoronmath.co.il/rhombus-grade-9"
+    },
+    {
+      "path": "/square-grade-9",
+      "label": "ריבוע",
+      "productionHref": "https://www.noamdoronmath.co.il/square-grade-9"
+    },
+    {
+      "path": "/trapezoid-grade-9",
+      "label": "טרפז",
+      "productionHref": "https://www.noamdoronmath.co.il/trapezoid-grade-9"
+    },
+    {
+      "path": "/similar-triangles-grade-9",
+      "label": "דמיון משולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-9"
+    },
+    {
+      "path": "/triangle-similarity-aa-grade-9",
+      "label": "דמיון משולשים — ז.ז וחישובים",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-similarity-aa-grade-9"
+    },
+    {
+      "path": "/triangle-30-60-90-grade-9",
+      "label": "משולש ישר־זווית 30–60–90",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-30-60-90-grade-9"
+    },
+    {
+      "path": "/triangle-sides-angles-grade-9",
+      "label": "יחסי צלעות וזוויות במשולש",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-sides-angles-grade-9"
+    },
+    {
+      "path": "/congruent-polygons-transformations-grade-9",
+      "label": "טרנספורמציות וצורות חופפות",
+      "productionHref": "https://www.noamdoronmath.co.il/congruent-polygons-transformations-grade-9"
+    },
+    {
+      "path": "/isosceles-triangle-grade-9",
+      "label": "משולש שווה־שוקיים",
+      "productionHref": "https://www.noamdoronmath.co.il/isosceles-triangle-grade-9"
+    },
+    {
+      "path": "/triangle-calculations-grade-9",
+      "label": "חישובים במשולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-calculations-grade-9"
+    },
+    {
+      "path": "/pythagoras-basics-grade-9",
+      "label": "פיתגורס — היכרות וחישוב",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagoras-basics-grade-9"
+    },
+    {
+      "path": "/pythagoras-applications-grade-9",
+      "label": "פיתגורס — שימושים",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-9"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-9",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-9"
+    },
+    {
+      "path": "/rectangle-square-area-grade-9",
+      "label": "שטח מלבן וריבוע — העמקה",
+      "productionHref": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-9"
+    },
+    {
+      "path": "/triangle-area-grade-9",
+      "label": "שטח משולש — העמקה",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-area-grade-9"
+    },
+    {
+      "path": "/parallelogram-trapezoid-area-grade-9",
+      "label": "שטח מקבילית וטרפז",
+      "productionHref": "https://www.noamdoronmath.co.il/parallelogram-trapezoid-area-grade-9"
+    },
+    {
+      "path": "/composite-polygons-area-grade-9",
+      "label": "שטח מצולעים מורכבים",
+      "productionHref": "https://www.noamdoronmath.co.il/composite-polygons-area-grade-9"
+    },
+    {
+      "path": "/triangular-prism-volume-grade-9",
+      "label": "מנסרה משולשת — מבנה ונפח",
+      "productionHref": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-9"
+    },
+    {
+      "path": "/triangular-prism-surface-area-grade-9",
+      "label": "מנסרה משולשת — שטח פנים",
+      "productionHref": "https://www.noamdoronmath.co.il/triangular-prism-surface-area-grade-9"
+    },
+    {
+      "path": "/statistics-grade-9",
+      "label": "סטטיסטיקה",
+      "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-9"
+    },
+    {
+      "path": "/probability-grade-9",
+      "label": "הסתברות",
+      "productionHref": "https://www.noamdoronmath.co.il/probability-grade-9"
+    },
+    {
+      "path": "/transition-to-high-school-grade-9",
+      "label": "מעבר לחטיבה העליונה",
+      "productionHref": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת כל דפי העבודה לכיתה ט׳ ובחירת רמה",
+    "href": "/worksheets?grade=9",
+    "source": "production-github-cta"
+  },
+  "faqHeading": "שאלות נפוצות על דפי עבודה במתמטיקה לכיתה ט׳",
+  "faq": [
+    {
+      "question": "האם דפי העבודה מתאימים לתוכנית הלימודים החדשה?",
+      "answer": "כן, כל דפי העבודה נכתבו בהתאם להנחיות המעודכנות של משרד החינוך לכיתה ט׳, כולל הכנה למבחני המפמ״ר."
+    },
+    {
+      "question": "האם ניתן להוריד את דפי העבודה כקובץ PDF?",
+      "answer": "בוודאי. כל דף עבודה זמין להורדה מהירה והדפסה באיכות גבוהה לשימוש בכיתה או בבית."
+    },
+    {
+      "question": "האם יש פתרונות מלאים לתרגילים?",
+      "answer": "חלק מהדפים כוללים תשובות סופיות, ובנוסף ניתן להיעזר במורה הוירטואלי נועם AI להסברים מפורטים על כל נושא."
+    },
+    {
+      "question": "לאילו רמות לימוד דפי העבודה מיועדים?",
+      "answer": "הדפים מותאמים לכל רמות הלימוד בכיתה ט׳ — הקבצות א׳, ב׳ ורמה מצטיינת, עם דגש על הכנה לתיכון."
+    },
+    {
+      "question": "האם השימוש באתר כרוך בתשלום או בהרשמה?",
+      "answer": "לא, הגישה לכל דפי העבודה ולשירותי נועם AI פתוחה לכולם בחינם לגמרי וללא צורך בהרשמה מראש."
+    }
+  ],
+  "terms": {
+    "label": "תקנון שימוש בדפי עבודה חינמיים",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  }
+}

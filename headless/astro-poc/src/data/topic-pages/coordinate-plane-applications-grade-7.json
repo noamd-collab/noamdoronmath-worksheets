@@ -1,0 +1,281 @@
+{
+  "slug": "coordinate-plane-applications-grade-7",
+  "path": "/coordinate-plane-applications-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7",
+  "fetchedAt": "2026-09-23T17:03:27.541Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "מערכת צירים — מרחקים, היקף ושטח לכיתה ז׳ | דפי עבודה חינם",
+  "description": "דפי עבודה במערכת צירים — מרחקים, היקף ושטח לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מחשבים מרחקים בין נקודות על קווים אופקיים ואנכיים.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מערכת צירים — מרחקים, היקף ושטח לכיתה ז׳",
+  "intro": "מחשבים מרחקים בין נקודות על קווים אופקיים ואנכיים, משרטטים צורות במערכת הצירים ומחשבים היקף ושטח. דפי העבודה זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כששתי נקודות נמצאות על אותו קו אופקי, המרחק ביניהן הוא ההפרש בין שיעורי ה-x. דוגמה: המרחק בין (−2,3) לבין (5,3) הוא 5 − (−2) = 7 יחידות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לחבר את השיעורים במקום לחסר, או לשכוח את הסימן כשאחד השיעורים שלילי.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מלבן שקודקודיו (1,1), (6,1), (6,4) ו(1,4). מה שטחו?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: 15 יחידות שטח, כי אורכו 5 ורוחבו 3.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לפני: מערכת צירים — ארבעת הרביעים",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "קישורים קשורים",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מחשבים מרחקים בין נקודות על קווים אופקיים ואנכיים, משרטטים צורות במערכת הצירים ומחשבים היקף ושטח. דפי העבודה זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=10",
+      "catalogTopicId": 10
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "כששתי נקודות נמצאות על אותו קו אופקי, המרחק ביניהן הוא ההפרש בין שיעורי ה-x. דוגמה: המרחק בין (−2,3) לבין (5,3) הוא 5 − (−2) = 7 יחידות.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לחבר את השיעורים במקום לחסר, או לשכוח את הסימן כשאחד השיעורים שלילי.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מלבן שקודקודיו (1,1), (6,1), (6,4) ו(1,4). מה שטחו?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "תשובה: 15 יחידות שטח, כי אורכו 5 ורוחבו 3.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לפני: מערכת צירים — ארבעת הרביעים",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "קישורים קשורים",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לכל דפי כיתה ז׳",
+      "role": "body"
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מערכת צירים — מרחקים, היקף ושטח לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מערכת צירים — מרחקים, היקף ושטח לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/coordinate-plane-scale-grade-7",
+      "label": "מערכת צירים",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-scale-grade-7"
+    },
+    {
+      "path": "/patterns-and-graphs-grade-7",
+      "label": "חוקיות וגרפים",
+      "productionHref": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=10",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=10",
+    "catalogTopicId": 10,
+    "catalogTopicTitle": "הרחבת מערכת הצירים חלק 2 — יישום והעמקה"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=10",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=10",
+      "catalogTopicId": 10,
+      "catalogTopicTitle": "הרחבת מערכת הצירים חלק 2 — יישום והעמקה"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7",
+        "name": "מערכת צירים — מרחקים, היקף ושטח לכיתה ז׳ | דפי עבודה חינם",
+        "description": "דפי עבודה במערכת צירים — מרחקים, היקף ושטח לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מחשבים מרחקים בין נקודות על קווים אופקיים ואנכיים.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7#learning-resource",
+        "name": "מערכת צירים — מרחקים, היקף ושטח לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7",
+        "description": "דפי עבודה במערכת צירים — מרחקים, היקף ושטח לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מחשבים מרחקים בין נקודות על קווים אופקיים ואנכיים.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מערכת צירים — מרחקים, היקף ושטח לכיתה ז׳ מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

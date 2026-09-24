@@ -1,0 +1,223 @@
+{
+  "slug": "difference-of-squares-grade-9",
+  "path": "/difference-of-squares-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9",
+  "fetchedAt": "2026-09-23T16:46:33.146Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "הפרש ריבועים לכיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+  "description": "הפרש ריבועים לכיתה ט׳: זיהוי התבנית ופירוק לגורמים, עם דוגמה ותרגול. דפי עבודה חינמיים בשלוש רמות להורדה ולהדפסה, ללא הרשמה, עם רמזים של נועם AI.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "הפרש ריבועים לכיתה ט׳",
+  "intro": "מתרגלים פירוק לגורמים בעזרת נוסחת הפרש ריבועים, מזהים שני ריבועים ומוודאים את התוצאה בכפל. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הפרש ריבועים — הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "הפרש ריבועים מתפרק למכפלת סכום בהפרש: a²−b²=(a−b)(a+b). לכן x²−25=(x−5)(x+5).",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה: הנוסחה חלה על הפרש ריבועים. אין להחיל אותה באותה צורה על סכום ריבועים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: כיצד מפרקים את x²−49? תשובה: למכפלה של x−7 ושל x+7.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מתרגלים פירוק לגורמים בעזרת נוסחת הפרש ריבועים, מזהים שני ריבועים ומוודאים את התוצאה בכפל. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי עבודה",
+      "href": "/worksheets?grade=9&topic=45",
+      "catalogTopicId": 45
+    },
+    {
+      "type": "heading",
+      "text": "הפרש ריבועים — הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "הפרש ריבועים מתפרק למכפלת סכום בהפרש: a²−b²=(a−b)(a+b). לכן x²−25=(x−5)(x+5).",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה: הנוסחה חלה על הפרש ריבועים. אין להחיל אותה באותה צורה על סכום ריבועים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: כיצד מפרקים את x²−49? תשובה: למכפלה של x−7 ושל x+7.",
+      "role": "self-check"
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא הפרש ריבועים לכיתה ט׳ מתאימים לכיתה ט׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא הפרש ריבועים לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/similar-triangles-grade-9",
+      "label": "דמיון משולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-9"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-9",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-9"
+    },
+    {
+      "path": "/rectangle-grade-9",
+      "label": "מלבן",
+      "productionHref": "https://www.noamdoronmath.co.il/rectangle-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי עבודה",
+    "href": "/worksheets?grade=9&topic=45",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=45",
+    "catalogTopicId": 45,
+    "catalogTopicTitle": "הפרש ריבועים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי עבודה",
+      "href": "/worksheets?grade=9&topic=45",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=45",
+      "catalogTopicId": 45,
+      "catalogTopicTitle": "הפרש ריבועים"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9",
+        "name": "הפרש ריבועים לכיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+        "description": "הפרש ריבועים לכיתה ט׳: זיהוי התבנית ופירוק לגורמים, עם דוגמה ותרגול. דפי עבודה חינמיים בשלוש רמות להורדה ולהדפסה, ללא הרשמה, עם רמזים של נועם AI.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#learning-resource",
+        "name": "הפרש ריבועים לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9",
+        "description": "הפרש ריבועים לכיתה ט׳: זיהוי התבנית ופירוק לגורמים, עם דוגמה ותרגול. דפי עבודה חינמיים בשלוש רמות להורדה ולהדפסה, ללא הרשמה, עם רמזים של נועם AI.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/difference-of-squares-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא הפרש ריבועים לכיתה ט׳ מתאימים לכיתה ט׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

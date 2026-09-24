@@ -1,0 +1,32 @@
+---
+import BlogPostPage from '../../components/BlogPostPage.astro';
+import { isPilotBlogPath, loadBlogPostByPath } from '../../lib/blogPosts';
+
+export const prerender = false;
+
+const raw = Astro.params.slug;
+const parts = Array.isArray(raw) ? raw : typeof raw === 'string' ? [raw] : [];
+// Astro gives decoded segments; rebuild path variants
+const decodedJoined = parts.join('/');
+const encodedJoined = parts.map((s) => encodeURIComponent(s)).join('/');
+
+const candidates = [
+  Astro.url.pathname.replace(/\/$/, '') || '/',
+  `/post/${decodedJoined}`,
+  `/post/${encodedJoined}`,
+];
+
+let post = null;
+for (const c of candidates) {
+  post = loadBlogPostByPath(c);
+  if (post) break;
+}
+
+if (!post || !isPilotBlogPath(post.path)) {
+  return new Response('Blog post not in served set (M25–M29) or unknown', {
+    status: 404,
+    headers: { 'content-type': 'text/plain; charset=utf-8' },
+  });
+}
+---
+<BlogPostPage post={post} />

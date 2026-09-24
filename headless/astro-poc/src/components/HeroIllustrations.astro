@@ -1,0 +1,55 @@
+---
+/** Original notebook-margin art; decorative only, isolated to the homepage. */
+---
+<div class="notebook-art" aria-hidden="true">
+  <span class="notebook-doodle notebook-doodle--left"></span>
+  <span class="notebook-doodle notebook-doodle--right"></span>
+</div>
+
+<style>
+  .notebook-art {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+  .notebook-doodle {
+    position: absolute;
+    display: block;
+    width: 210px;
+    aspect-ratio: 3 / 4;
+    background-image: url('/brand/notebook-doodles-v1.webp');
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    opacity: .8;
+  }
+  .notebook-doodle--left {
+    left: -6px;
+    top: 35px;
+    background-position: left center;
+    transform: rotate(-7deg);
+  }
+  .notebook-doodle--right {
+    right: -6px;
+    top: 75px;
+    background-position: right center;
+    transform: rotate(5deg);
+  }
+  @media (max-width: 1024px) {
+    .notebook-doodle { width: 125px; }
+    .notebook-doodle--left { left: 0; top: -24px; }
+    .notebook-doodle--right { right: 0; top: -18px; }
+    :global(.home-hero__copy) { padding-top: 130px; }
+  }
+  @media (max-width: 480px) {
+    .notebook-doodle { width: 106px; }
+    .notebook-doodle--left { top: -32px; }
+    .notebook-doodle--right { top: -30px; }
+    :global(.home-hero__copy) { padding-top: 108px; }
+  }
+  @media print {
+    .notebook-art { display: none; }
+    :global(.home-hero__copy) { padding-top: 0; }
+  }
+</style>

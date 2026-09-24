@@ -1,0 +1,211 @@
+{
+  "slug": "rectangle-grade-9",
+  "path": "/rectangle-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/rectangle-grade-9",
+  "fetchedAt": "2026-09-23T15:35:01.969Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "מלבן לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "מלבן לכיתה ט׳: תכונות המלבן, זוויות ואלכסונים, היקף ושטח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מלבן לכיתה ט׳",
+  "intro": "לומדים לזהות מלבן, להשתמש בזוויות ישרות ובתכונות האלכסונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במלבן כל הזוויות ישרות, הצלעות הנגדיות מקבילות ושוות, והאלכסונים שווים וחוצים זה את זה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: במלבן שאורכי צלעותיו 8 ס״מ ו־5 ס״מ, ההיקף הוא 26 ס״מ והשטח הוא 40 סמ״ר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מרובע שיש בו זווית ישרה אחת אינו בהכרח מלבן. יש לבסס את המסקנה על נתונים מתאימים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במלבן אחת הצלעות היא 9 ס״מ והצלע הסמוכה לה היא 4 ס״מ. מהו ההיקף?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: 26 ס״מ, כי 2×(9+4)=26.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מלבן לכיתה ט׳ מתאימים לכיתה ט׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מלבן לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/similar-triangles-grade-9",
+      "label": "דמיון משולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-9"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-9",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-9"
+    },
+    {
+      "path": "/square-grade-9",
+      "label": "ריבוע",
+      "productionHref": "https://www.noamdoronmath.co.il/square-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=9&topic=11",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=11",
+    "catalogTopicId": 11,
+    "catalogTopicTitle": "המלבן"
+  },
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/rectangle-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/rectangle-grade-9",
+        "name": "מלבן לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "מלבן לכיתה ט׳: תכונות המלבן, זוויות ואלכסונים, היקף ושטח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/rectangle-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/rectangle-grade-9#learning-resource",
+        "name": "מלבן לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/rectangle-grade-9",
+        "description": "מלבן לכיתה ט׳: תכונות המלבן, זוויות ואלכסונים, היקף ושטח. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/rectangle-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מלבן לכיתה ט׳ מתאימים לכיתה ט׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": [],
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=11",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=11",
+      "catalogTopicId": 11,
+      "catalogTopicTitle": "המלבן"
+    }
+  ]
+}

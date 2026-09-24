@@ -1,0 +1,54 @@
+---
+/**
+ * Exact brand lockup — proportions preserved; presentation cleaned for premium chrome.
+ */
+interface Props {
+  href?: string;
+  compact?: boolean;
+}
+const { href = '/', compact = false } = Astro.props;
+---
+<a class:list={['site-brand', compact && 'site-brand--compact']} href={href} aria-label="נועם דורון מתמטיקה — דף הבית">
+  <img
+    class="site-brand__logo"
+    src="/brand/noam-doron-math-logo-cropped.png"
+    alt="נועם דורון מתמטיקה"
+    width="573"
+    height="243"
+    decoding="async"
+  />
+</a>
+
+<style>
+  .site-brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    width: 232px;
+    max-width: 100%;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .site-brand--compact {
+    width: 168px;
+  }
+  .site-brand__logo {
+    display: block;
+    width: 232px;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 573 / 243;
+    background: transparent;
+  }
+  .site-brand--compact .site-brand__logo {
+    width: 168px;
+  }
+  @media (max-width: 640px) {
+    .site-brand,
+    .site-brand__logo {
+      width: 196px;
+    }
+  }
+</style>

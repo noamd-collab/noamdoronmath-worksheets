@@ -1,0 +1,237 @@
+{
+  "slug": "algebraic-expressions-grade-7",
+  "path": "/algebraic-expressions-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7",
+  "fetchedAt": "2026-09-23T15:55:16.991Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳ | דפי עבודה חינם",
+  "description": "מתרגלים ביטויים אלגבריים, הצבת ערכים חיוביים ושליליים, ולהמשיך לפישוט עם גורם משותף ומינוס לפני סוגריים. דפי התרגול ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳",
+  "intro": "לומדים לתרגם ממילים לביטוי אלגברי, להציב ערכים חיוביים ושליליים, ולהמשיך לפישוט עם גורם משותף ומינוס לפני סוגריים. דפי התרגול ברמות א׳, ב׳ ומצוינות — בחינם ללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "ביטוי אברי וא תיאור מספרי עם נעלמם. בהצבה מחליפם כל נעלם במספר ומחשבם. בפישוט מכונסים איברי דומים, ולפעמי מוציאים גורם משותף או פותים סוגריים אחרי מינוס.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמאות בביטויים אלגבריים דוגמה 1: הצבה בביטוי 3x + 5",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בביטוי מתקבל x=2 אם מצבים את הערך 3 × 2 + 5 = 11 ערך הביטוי הוא 11 x=2 לכן כאשר דוגמה 2: פישוט ביטוי נפשט את הביטוי: ‭2(x + 3) - x = 2x + 6 - x = x + 6‬",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לשכח לפתח את המינוס לפני הסוגריים, או להציב רק בחלק מהאיברים. כתבו את ההצבה שלב־שלב ובדקו יחידות/סימנים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "דוגמה: פישוט ביטוי נפשט את הביטוי 4x * 2(x-3)",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "4x * 2(x-3) = 8x(x-3) = 8x^2 - 24x",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: 8x^2 - 24x",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/signed-numbers-grade-7",
+      "label": "מספרים מכוונים",
+      "productionHref": "https://www.noamdoronmath.co.il/signed-numbers-grade-7"
+    },
+    {
+      "path": "/powers-grade-7",
+      "label": "חזקות",
+      "productionHref": "https://www.noamdoronmath.co.il/powers-grade-7"
+    },
+    {
+      "path": "/equations-basics-grade-7",
+      "label": "משוואות",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-basics-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "גורם משותף ומינוס לפני וגריים — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=30",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=30",
+    "catalogTopicId": 30,
+    "catalogTopicTitle": "שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים"
+  },
+  "catalogCtas": [
+    {
+      "label": "גורם משותף ומינוס לפני וגריים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=30",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=30",
+      "catalogTopicId": 30,
+      "catalogTopicTitle": "שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים"
+    },
+    {
+      "label": "הצבה בביטויים אגבריים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=23",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=23",
+      "catalogTopicId": 23,
+      "catalogTopicTitle": "הצבה בביטויים אלגבריים"
+    },
+    {
+      "label": "משתנים וביטויים אלגבריים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=22",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=22",
+      "catalogTopicId": 22,
+      "catalogTopicTitle": "משתנים וביטויים אלגבריים — שפה ומידול"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7",
+        "name": "ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳ | דפי עבודה חינם",
+        "description": "מתרגלים ביטויים אלגבריים, הצבת ערכים חיוביים ושליליים, ולהמשיך לפישוט עם גורם משותף ומינוס לפני סוגריים. דפי התרגול ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7#learning-resource",
+        "name": "ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7",
+        "description": "מתרגלים ביטויים אלגבריים, הצבת ערכים חיוביים ושליליים, ולהמשיך לפישוט עם גורם משותף ומינוס לפני סוגריים. דפי התרגול ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳ מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

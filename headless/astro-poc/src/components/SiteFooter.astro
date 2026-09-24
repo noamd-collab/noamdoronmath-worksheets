@@ -1,0 +1,67 @@
+---
+import type { HomePageContent } from '../lib/homePage';
+
+interface Props {
+  footer: HomePageContent['footer'];
+}
+const { footer } = Astro.props;
+---
+<footer class="site-footer" data-home-footer>
+  <div class="site-footer__inner">
+    <div class="site-footer__brand">
+      <p class="site-footer__brand-name">{footer.brandName}</p>
+      <p class="site-footer__brand-blurb">{footer.brandBlurb}</p>
+    </div>
+
+    <div class="site-footer__contact">
+      <h2 class="site-footer__heading">{footer.contactHeading}</h2>
+      <p>{footer.contactBody}</p>
+      <a class="site-footer__email" href={`mailto:${footer.email}`}>{footer.email}</a>
+    </div>
+
+    <nav class="site-footer__quick" aria-label={footer.quickNavHeading}>
+      <h2 class="site-footer__heading">{footer.quickNavHeading}</h2>
+      <ul>
+        {
+          footer.quickNav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav class="site-footer__legal" aria-label="מידע נוסף">
+      <h2 class="site-footer__heading">מידע נוסף</h2>
+      <ul>
+        {
+          footer.legal.map((item) => (
+            <li>
+              {item.href ? (
+                <a href={item.href}>{item.label}</a>
+              ) : (
+                <span
+                  class="site-footer__legal-gap"
+                  data-legal-gap={item.knownGap ? 'privacy' : undefined}
+                >
+                  {item.label}
+                  {item.knownGap && (
+                    <span class="site-footer__gap-mark"> (פער ידוע — אין יעד תקף בתצוגה)</span>
+                  )}
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="site-footer__meta">
+    <p>{footer.copyright}</p>
+    <p class="site-footer__disclaimer">{footer.disclaimer}</p>
+    <p class="site-footer__privacy-note">{footer.privacyNote}</p>
+    <p class="home-foot">{footer.previewNote}</p>
+  </div>
+</footer>

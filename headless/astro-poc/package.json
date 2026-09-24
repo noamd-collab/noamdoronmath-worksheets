@@ -1,0 +1,57 @@
+{
+  "name": "astro-poc",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "wix dev",
+    "build": "wix build",
+    "preview": "wix preview",
+    "astro": "astro",
+    "typecheck": "astro check",
+    "test": "node scripts/run-tests.mjs",
+    "test:unit": "node scripts/run-tests.mjs --unit",
+    "test:live-ssr": "node scripts/run-tests.mjs --live-ssr",
+    "refresh:catalog": "node scripts/refresh-catalog-snapshot.mjs refresh",
+    "check:catalog": "node scripts/refresh-catalog-snapshot.mjs check",
+    "refresh:content": "node scripts/content-refresh.mjs",
+    "check:content": "node scripts/content-refresh.mjs --check",
+    "check:cms": "npx tsx scripts/cms-catalog-status.ts",
+    "sync:viewer": "node scripts/sync-viewer-assets.mjs",
+    "sync:static": "node scripts/sync-github-static.mjs",
+    "check:static": "node scripts/sync-github-static.mjs check",
+    "audit:routes": "node scripts/audit-production-routes.mjs",
+    "wix": "wix",
+    "release": "wix release",
+    "generate": "wix generate",
+    "env": "wix env",
+    "skills": "wix skills"
+  },
+  "dependencies": {
+    "@astrojs/node": "^9.5.5",
+    "@astrojs/react": "^4.4.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@wix/dashboard": "^1.3.43",
+    "@wix/essentials": "^0.1.23",
+    "@wix/sdk": "^1.15.23",
+    "astro": "^5.18.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@wix/astro": "^2.39.0",
+    "@wix/astro-pages": "^2.0.4",
+    "@wix/astro-wix-hosting-adapter": "^2.0.0",
+    "@wix/cli": "^1.1.92",
+    "tsx": "^4.23.15"
+  },
+  "allowScripts": {
+    "esbuild": true
+  }
+}

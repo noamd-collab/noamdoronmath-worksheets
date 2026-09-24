@@ -1,0 +1,208 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadCatalog } from '../lib/catalog/loadCatalog';
+import {
+  loadGradeHub,
+  siblingGradeHubLinks,
+  type GradeHubGrade,
+} from '../lib/gradeHubs';
+import { localizeSiteHref } from '../lib/sitePages';
+import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+
+interface Props {
+  grade: GradeHubGrade;
+}
+const { grade } = Astro.props;
+const hub = loadGradeHub(grade);
+const siblings = siblingGradeHubLinks(grade);
+const familyLabel = grade <= 6 ? 'כיתות יסודי' : 'כיתות חטיבה';
+const introIsCta = !!(hub.catalogCta && hub.catalogCta.label === hub.intro);
+const hasFaq = hub.faq.length > 0 && !!hub.faqHeading;
+const hasTopics = hub.topicSections.some((s) => s.links.length > 0);
+const grade1Catalog =
+  grade === 1 ? loadCatalog().grades.find((entry) => entry.grade === 1) : undefined;
+const grade1Groups = (grade1Catalog?.groups ?? [])
+  .map((group) => ({
+    key: group.key,
+    label: group.label,
+    topics: (grade1Catalog?.topics ?? []).filter(
+      (topic) => topic.group === group.key && topic.parent === undefined
+    ),
+  }))
+  .filter((group) => group.topics.length > 0);
+const faqJsonLd = hasFaq
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: hub.faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    }
+  : null;
+---
+<BaseLayout
+  title={hub.title}
+  description={hub.description}
+  activeNav="worksheets"
+  skipHref="#grade-hub-main"
+>
+  {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
+  <main class="grade-hub wrap" data-grade={String(grade)} id="grade-hub-main">
+    <nav class="grade-hub__siblings" aria-label={familyLabel}>
+      {
+        siblings.map((s) => (
+          <a
+            class:list={['grade-tab', s.grade === grade && 'is-current']}
+            href={s.href}
+            aria-current={s.grade === grade ? 'page' : undefined}
+          >
+            כיתה {s.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <header class="grade-hub__header banner">
+      <h1>{hub.h1}</h1>
+      {hub.lead && <p class="grade-hub__lead">{hub.lead}</p>}
+      {
+        hub.lead && hub.catalogCta && (
+          <p class="grade-hub__cta-wrap">
+            <a class="cta cta--mid grade-hub__cta" href={hub.catalogCta.href}>
+              {hub.catalogCta.label}
+            </a>
+          </p>
+        )
+      }
+      {
+        !hub.lead && !introIsCta && <p class="grade-hub__intro">{hub.intro}</p>
+      }
+      {
+        !hub.lead && hub.catalogCta && (
+          <p class="grade-hub__cta-wrap">
+            <a class="cta cta--mid grade-hub__cta" href={hub.catalogCta.href}>
+              {hub.catalogCta.label}
+            </a>
+          </p>
+        )
+      }
+    </header>
+
+    {
+      grade1Groups.length > 0 && (
+        <section class="grade-hub__topics" aria-label="קבוצות נושאים">
+          <h2 class="grade-hub__section-title">נושאים במאגר</h2>
+          {grade1Groups.map((group) => (
+            <div class="grade-hub__section">
+              <h3 class="grade-hub__section-title">
+                <a href={`/worksheets?grade=1&group=${group.key}`}>{group.label}</a>
+              </h3>
+              <ul class="grade-hub__topic-list">
+                {group.topics.map((topic) => (
+                  <li>
+                    <a href={`/worksheets?grade=1&group=${group.key}&topic=${topic.id}`}>
+                      {topic.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      hasTopics && (
+        <section class="grade-hub__topics" aria-label="נושאים">
+          {hub.topicSections.map((section) => (
+            <div class="grade-hub__section">
+              {section.heading && <h2 class="grade-hub__section-title">{section.heading}</h2>}
+              <ul class="grade-hub__topic-list">
+                {section.links.map((link) => (
+                  <li>
+                    <a
+                      href={resolveSiteHrefString(link.productionHref || link.path)}
+                      rel="noopener noreferrer"
+                      data-topic-path={link.path}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      hub.lead && !introIsCta && (
+        <details class="grade-hub__intro-fold">
+          <summary>ההסבר המלא</summary>
+          <p class="grade-hub__intro">{hub.intro}</p>
+        </details>
+      )
+    }
+
+    {
+      hasFaq && (
+        <section class="grade-hub__faq" aria-labelledby="grade-hub-faq-heading">
+          <h2 id="grade-hub-faq-heading">{hub.faqHeading}</h2>
+          <div class="grade-hub__faq-list">
+            {hub.faq.map((item) => (
+              <details class="grade-hub__faq-item">
+                <summary>{item.question}</summary>
+                <p>{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      hub.whatsapp && (
+        <aside class="grade-hub__whatsapp" aria-label={hub.whatsapp.heading}>
+          <h2 class="grade-hub__section-title">{hub.whatsapp.heading}</h2>
+          <p>{hub.whatsapp.body}</p>
+          <p>
+            <a href={hub.whatsapp.href} rel="noopener noreferrer">
+              {hub.whatsapp.ctaLabel}
+            </a>
+          </p>
+        </aside>
+      )
+    }
+
+    {
+      hub.footerLinks && hub.footerLinks.length > 0 && (
+        <nav class="grade-hub__footer-links" aria-label="קישורים נוספים">
+          <ul>
+            {hub.footerLinks.map((link) => (
+              <li>
+                <a href={localizeSiteHref(link.href)} rel="noopener noreferrer">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    {
+      hub.contactLine && <p class="grade-hub__contact">{hub.contactLine}</p>
+    }
+
+    <p class="grade-hub__terms">
+      <a href={localizeSiteHref(hub.terms.href)} rel="noopener noreferrer">{hub.terms.label}</a>
+    </p>
+  </main>
+</BaseLayout>

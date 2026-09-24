@@ -1,0 +1,188 @@
+{
+  "slug": "math-tools",
+  "title": "מחשבון מדעי אונליין וכלי מתמטיקה | נועם דורון",
+  "description": "מחשבון מדעי אונליין בחינם: שברים, שורשים, משוואות, סטטיסטיקה, מטריצות, וקטורים והמרות יחידות. כלי עזר לתרגול במתמטיקה, ללא הרשמה.",
+  "h1": "כלים למתמטיקה ומחשבון מדעי אונליין",
+  "intro": [
+    "חינם · ללא הרשמה",
+    "כלי עזר לחישוב, לבדיקה ולתרגול במתמטיקה. בוחרים כלי, פותחים וממשיכים לפתור בקצב שלכם."
+  ],
+  "blocks": [
+    {
+      "type": "p",
+      "text": "חינם · ללא הרשמה"
+    },
+    {
+      "type": "p",
+      "text": "כלי עזר לחישוב, לבדיקה ולתרגול במתמטיקה. בוחרים כלי, פותחים וממשיכים לפתור בקצב שלכם."
+    },
+    {
+      "type": "h3",
+      "text": "המחשבון המדעי של נועם דורון"
+    },
+    {
+      "type": "p",
+      "text": "משבר פשוט ועד מערכת משוואות — מחשבון עם תצוגה מתמטית ברורה, מקשים מדעיים וכלים לעבודה עם מספרים, פונקציות ונתונים."
+    },
+    {
+      "type": "p",
+      "text": "8 מצבי חישוב · 40 קבועים · 40 המרות"
+    },
+    {
+      "type": "p",
+      "text": "המחשבון המדעי מוטמע כאן לעבודה נוחה"
+    },
+    {
+      "type": "iframe",
+      "src": "https://noamd-collab.github.io/noamdoronmath-worksheets/tools/scientific-calculator/calculators.html?v=17aa692",
+      "title": "מחשבון מדעי — בחירת fx-991ES PLUS או fx-82MS"
+    },
+    {
+      "type": "p",
+      "text": "לשימוש במסך מלא (טאב חדש)",
+      "segments": [
+        {
+          "type": "a",
+          "text": "לשימוש במסך מלא (טאב חדש)",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/tools/scientific-calculator/calculators.html?v=17aa692"
+        }
+      ]
+    },
+    {
+      "type": "a",
+      "text": "פתיחת המחשבון המדעי",
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/tools/scientific-calculator/calculators.html?v=17aa692"
+    },
+    {
+      "type": "h3",
+      "text": "כלי תרגול אינטראקטיביים"
+    },
+    {
+      "type": "p",
+      "text": "חיבור וחיסור, כפל וחילוק, שברים, שעון, ישר המספרים ומערכת צירים — בוחרים פעילות במרכז הכלים."
+    },
+    {
+      "type": "p",
+      "text": "נפתח באתר חיצוני"
+    },
+    {
+      "type": "a",
+      "text": "פתיחת מרכז התרגול",
+      "href": "https://rest-nine-beta.vercel.app/?menu=basic"
+    },
+    {
+      "type": "h3",
+      "text": "10 שיטות במחשבון שיצילו אותך במבחן",
+      "region": "calculator-preview"
+    },
+    {
+      "type": "img",
+      "src": "https://static.wixstatic.com/media/d8e7ad_2604ccf5b25b46c8a5342e16fe187147~mv2.jpg/v1/fill/w_633,h_346,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ai-generated-IMAGE.jpg",
+      "alt": "",
+      "region": "calculator-preview"
+    },
+    {
+      "type": "p",
+      "text": "תצוגה מקדימה",
+      "region": "calculator-preview"
+    },
+    {
+      "type": "p",
+      "text": "√72 = 6√2",
+      "dir": "ltr",
+      "region": "calculator-preview"
+    },
+    {
+      "type": "iframe",
+      "src": "https://noamd-collab.github.io/noamdoronmath-worksheets/tools/scientific-calculator/preview.html?v=17aa692",
+      "title": "תצוגה מקדימה של המחשבון",
+      "region": "calculator-preview"
+    },
+    {
+      "type": "h2",
+      "text": "מה אפשר לחשב?"
+    },
+    {
+      "type": "p",
+      "text": "שברים, שורשים, חזקות, אחוזים, לוגריתמים ופונקציות טריגונומטריות."
+    },
+    {
+      "type": "p",
+      "text": "משוואות ריבועיות וקיוביות ומערכות משוואות עם 2 ו-3 נעלמים."
+    },
+    {
+      "type": "p",
+      "text": "נגזרות, אינטגרלים, סכומים וטבלאות ערכים."
+    },
+    {
+      "type": "p",
+      "text": "סטטיסטיקה, רגרסיה, מספרים מרוכבים, מטריצות, וקטורים ובסיסי ספירה."
+    },
+    {
+      "type": "h2",
+      "text": "ממשיכים לתרגל על הדף"
+    },
+    {
+      "type": "p",
+      "text": "ארכיון דפי העבודה | מתמטיקה לחטיבה עליונה",
+      "segments": [
+        {
+          "type": "a",
+          "text": "ארכיון דפי העבודה",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/"
+        },
+        {
+          "type": "text",
+          "text": " | "
+        },
+        {
+          "type": "a",
+          "text": "מתמטיקה לחטיבה עליונה",
+          "href": "https://www.noamdoronmath.co.il/high-school-math"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "האם נדרשת הרשמה או הורדה?"
+    },
+    {
+      "type": "p",
+      "text": "לא, כל הכלים זמינים אונליין בחינם לשימוש מיידי ללא צורך בהורדה או הרשמה."
+    },
+    {
+      "type": "p",
+      "text": "האם המחשבון מציג דרך פתרון?"
+    },
+    {
+      "type": "p",
+      "text": "המחשבון מציג את התוצאות הסופיות ואת הביטוי המתמטי, אך אינו מספק הסברים שלב-אחר-שלב."
+    },
+    {
+      "type": "p",
+      "text": "מה ההבדל בין DEG ל-RAD?"
+    },
+    {
+      "type": "p",
+      "text": "DEG מציין עבודה במעלות (Degrees) ו-RAD מציין עבודה ברדיאנים (Radians), כפי שנהוג בחישובי פונקציות טריגונומטריות."
+    },
+    {
+      "type": "p",
+      "text": "האם חישובי האינטגרלים והנגזרות מדויקים?"
+    },
+    {
+      "type": "p",
+      "text": "אלה חישובים נומריים שנותנים קירוב לתוצאה. הדיוק תלוי בפונקציה, בתחום ובנתונים; SOLVE עשוי למצוא פתרון אחד בלבד, בהתאם לערך ההתחלתי."
+    }
+  ],
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/math-tools",
+    "capturedAt": "2026-09-23T20:05:28.702Z",
+    "removedOrphans": [
+      {
+        "text": "3/4",
+        "reason": "Removed on purpose. A standalone paragraph with no heading, between the fullscreen link and the practice-tools section. Treated as an editing leftover, not a labeled fraction example."
+      }
+    ]
+  }
+}

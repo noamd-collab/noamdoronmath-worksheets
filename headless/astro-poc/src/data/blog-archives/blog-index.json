@@ -1,0 +1,271 @@
+{
+  "path": "/blog",
+  "fileSlug": "blog-index",
+  "kind": "index",
+  "categorySlug": null,
+  "title": "בלוג מתמטיקה | טיפים, הסברים ודפי עבודה | נועם דורון",
+  "description": "בלוג המתמטיקה של נועם דורון: טיפים ללימוד, הסברים, פתרון תרגילים ודפי עבודה לכיתות א׳-ט׳ — בחינם, עם נועם AI שמסביר כל תרגיל.",
+  "ogTitle": "בלוג מתמטיקה | טיפים, הסברים ודפי עבודה | נועם דורון",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "כל הפוסטים",
+  "nav": [
+    {
+      "text": "כל הפוסטים",
+      "href": "https://www.noamdoronmath.co.il/blog",
+      "current": true
+    },
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math",
+      "current": false
+    },
+    {
+      "text": "חטיבת הביניים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math",
+      "current": false
+    },
+    {
+      "text": "מורים והורים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents",
+      "current": false
+    }
+  ],
+  "cards": [
+    {
+      "title": "מדריך לקריאת גרפים לילדים בצורה פשוטה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%93%D7%A8%D7%99%D7%9A-%D7%9C%D7%A7%D7%A8%D7%99%D7%90%D7%AA-%D7%92%D7%A8%D7%A4%D7%99%D7%9D-%D7%9C%D7%99%D7%9C%D7%93%D7%99%D7%9D-%D7%91%D7%A6%D7%95%D7%A8%D7%94-%D7%A4%D7%A9%D7%95%D7%98%D7%94",
+      "excerpt": "מדריך לקריאת גרפים לילדים עם הסברים פשוטים, שאלות לתרגול ורעיונות לבית ולכיתה. כך מזהים כותרת, צירים, מקרא ונתונים ובונים ביטחון צעד אחר צעד בקלות ובדיוק.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 19 שעות",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_6c5aebcd5120432a8b5d0f69cba1b196~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_6c5aebcd5120432a8b5d0f69cba1b196~mv2.webp",
+      "imageAlt": "מדריך לקריאת גרפים לילדים בצורה פשוטה"
+    },
+    {
+      "title": "איך פותרים סדר פעולות חשבון בלי להתבלבל?",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%A4%D7%95%D7%AA%D7%A8%D7%99%D7%9D-%D7%A1%D7%93%D7%A8-%D7%A4%D7%A2%D7%95%D7%9C%D7%95%D7%AA-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%91%D7%9C%D7%99-%D7%9C%D7%94%D7%AA%D7%91%D7%9C%D7%91%D7%9C",
+      "excerpt": "איך פותרים סדר פעולות חשבון בביטחון? מדריך פשוט לתלמידים ולהורים: מזהים סוגריים, עובדים לפי הסדר הנכון, בודקים טעויות ומתרגלים צעד אחר צעד בכל תרגיל.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני יומיים (2)",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_27b08c36de8b40f8a512d90f0452144e~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_27b08c36de8b40f8a512d90f0452144e~mv2.webp",
+      "imageAlt": "איך פותרים סדר פעולות חשבון בלי להתבלבל?"
+    },
+    {
+      "title": "מדריך לתרגול צירים קואורדינטות שמתחיל נכון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%93%D7%A8%D7%99%D7%9A-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A6%D7%99%D7%A8%D7%99%D7%9D-%D7%A7%D7%95%D7%90%D7%95%D7%A8%D7%93%D7%99%D7%A0%D7%98%D7%95%D7%AA-%D7%A9%D7%9E%D7%AA%D7%97%D7%99%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F",
+      "excerpt": "מדריך לתרגול צירים קואורדינטות לתלמידים ולהורים: כך מזהים צירים, קוראים נקודות, נמנעים מטעויות ומתקדמים מתרגול בסיסי לאתגר לקראת מבחן ובקצב נוח לכל ילד.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 3 ימים",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_9bcecc5035c649daadd4db7d8e331559~mv2.webp/v1/fill/w_332,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_9bcecc5035c649daadd4db7d8e331559~mv2.webp",
+      "imageAlt": "מדריך לתרגול צירים קואורדינטות שמתחיל נכון"
+    },
+    {
+      "title": "בינה חינוכית שמקדמת כל תלמיד במתמטיקה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%91%D7%99%D7%A0%D7%94-%D7%97%D7%99%D7%A0%D7%95%D7%9B%D7%99%D7%AA-%D7%A9%D7%9E%D7%A7%D7%93%D7%9E%D7%AA-%D7%9B%D7%9C-%D7%AA%D7%9C%D7%9E%D7%99%D7%93-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94",
+      "excerpt": "בינה חינוכית במתמטיקה מתחילה בבחירת תרגול מדויק: מזהים קושי, מתאימים רמה, מקבלים הכוונה ובודקים התקדמות בלי להעמיס על התלמיד ועל ההורה, ומחזקים ביטחון לאורך הדרך.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_e332be39f4d146eaa0e7dfcc60f3ea6b~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_e332be39f4d146eaa0e7dfcc60f3ea6b~mv2.webp",
+      "imageAlt": "בינה חינוכית שמקדמת כל תלמיד במתמטיקה"
+    },
+    {
+      "title": "הצבה בביטויים אלגבריים לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/substitution-in-algebraic-expressions-grade-7",
+      "excerpt": "דפי עבודה בהצבה בביטויים אלגבריים לכיתה ז׳: הצבת ערכים חיוביים ושליליים, חישוב ערך הביטוי והשוואה בין ביטויים. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/common-factor-and-minus-parentheses-grade-7",
+      "excerpt": "דפי עבודה בגורם משותף ובמינוס לפני סוגריים לכיתה ז׳: הוצאת גורם, פתיחת סוגריים ופישוט ביטויים. שלוש רמות, חינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "מפשטים ואז פותרים לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/simplify-then-solve-equations-grade-7",
+      "excerpt": "דפי עבודה בפישוט ובפתרון משוואות לכיתה ז׳: כינוס איברים דומים בכל אגף ומעבר מסודר לפתרון. שלוש רמות, חינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "שלושה ייצוגים לפתרון משוואה לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/three-representations-equation-solution-grade-7",
+      "excerpt": "דפי עבודה בשלושה ייצוגים לפתרון משוואה לכיתה ז׳: פתרון משוואה בשלושה ייצוגים — מודל, טבלה ופעולות אלגבריות — והמעבר ביניהם. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "מהו פתרון של משוואה לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/what-is-an-equation-solution-grade-7",
+      "excerpt": "דפי עבודה בנושא פתרון משוואה לכיתה ז׳: משמעות הפתרון, בדיקה בהצבה וזיהוי פתרון נכון. שלוש רמות, חינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "מנסרה משולשת חלק 1 — מבנה ונפח לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/triangular-prism-volume-grade-7",
+      "excerpt": "דפי עבודה במנסרה משולשת חלק 1 — מבנה ונפח לכיתה ז׳: זיהוי המנסרה, בסיסים, מקצועות וגובה, חישוב נפח ומציאת נתון חסר. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "מנסרה משולשת חלק 2 — שטח פנים לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/triangular-prism-surface-area-grade-7",
+      "excerpt": "דפי עבודה במנסרה משולשת חלק 2 — שטח פנים לכיתה ז׳: פריסת המנסרה, שטח המעטפת, שטח הבסיסים ושטח הפנים הכולל. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "חוקיות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/patterns-grade-7",
+      "excerpt": "דפי עבודה בחוקיות לכיתה ז׳: זיהוי חוקיות בסדרות ובתבניות, ניסוח הכלל במילים ובביטוי אלגברי, מציאת איבר כללי והמשך הסדרה. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "שאלות מילוליות באמצעות משוואות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/word-problems-with-equations-grade-7",
+      "excerpt": "דפי עבודה בשאלות מילוליות באמצעות משוואות לכיתה ז׳: בחירת נעלם, בניית משוואה מתוך סיפור, פתרון ובדיקת סבירות התשובה. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "חישובי היקף — צורות מורכבות ואלגברה לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/perimeter-complex-shapes-algebra-grade-7",
+      "excerpt": "דפי עבודה בחישובי היקף — צורות מורכבות ואלגברה לכיתה ז׳: היקף מצולעים מורכבים, ביטוי היקף באמצעות משתנה והשוואת היקפים. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "שטחים ב׳ חלק 1 — מקבילית וטרפז לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/parallelogram-trapezoid-area-grade-7",
+      "excerpt": "דפי עבודה בשטחים ב׳ חלק 1 — מקבילית וטרפז לכיתה ז׳: נוסחאות שטח מקבילית וטרפז, זיהוי הגובה ומציאת נתון חסר. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "משוואות ופתרונן חלק 2 — סוגריים ושקילות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/equations-parentheses-equivalence-grade-7",
+      "excerpt": "דפי עבודה במשוואות עם סוגריים לכיתה ז׳: נעלם בשני האגפים, אין פתרון ואינסוף פתרונות. שלוש רמות, חינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "משוואות חד־שלביות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/one-step-equations-grade-7",
+      "excerpt": "דפי עבודה במשוואות חד־שלביות לכיתה ז׳: פתרון משוואות בפעולה אחת — חיבור, חיסור, כפל וחילוק — ובדיקת הפתרון. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "תיבה וקובייה לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/box-and-cube-grade-7",
+      "excerpt": "דפי עבודה בתיבה וקובייה לכיתה ז׳: מבנה התיבה והקובייה, פריסה, שטח פנים, נפח ויחידות מידה. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "שטח מלבן וריבוע — העמקה לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/rectangle-square-area-advanced-grade-7",
+      "excerpt": "דפי עבודה בשטח מלבן וריבוע — העמקה לכיתה ז׳: חישובי שטח, מציאת צלע חסרה, יחידות שטח ובעיות מורכבות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    },
+    {
+      "title": "שטחים ב׳ חלק 2 — מצולעים מורכבים לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/composite-polygons-area-grade-7",
+      "excerpt": "דפי עבודה בשטחים ב׳ חלק 2 — מצולעים מורכבים לכיתה ז׳: פירוק לצורות מוכרות, חיסור שטחים ושאלות משולבות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים"
+    }
+  ],
+  "pagination": null,
+  "loadMore": null,
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/blog",
+    "capturedAt": "2026-09-23T21:21:34.923Z",
+    "cardCount": 20,
+    "captureMethod": "ssr-html"
+  }
+}

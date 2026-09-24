@@ -1,0 +1,3271 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>דפי עבודה במתמטיקה · נועם דורון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" media="print" onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap"></noscript>
+<style>
+  /* =======================================================================
+     עיצוב "מחברת משבצות" — ערכת הצבעים מתחלפת לפי הלשונית הפעילה
+     באמצעות data-grade על .wrap. אין צורך לגעת בזה.
+     ======================================================================= */
+  .wrap[data-grade="1"], body:has(.wrap[data-grade="1"]){
+    --ink:#1E1D1A; --accent:#7C3AED; --accent-dark:#4C2392; --tint:#EFE7FE;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+  .wrap[data-grade="2"], body:has(.wrap[data-grade="2"]){
+    --on-accent:#10100E;
+    --ink:#1E1D1A; --accent:#0B84D0; --accent-dark:#065180; --tint:#DFF0FB;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+  .wrap[data-grade="3"], body:has(.wrap[data-grade="3"]){
+    --on-accent:#1E1D1A;
+    --ink:#1E1D1A; --accent:#12A05C; --accent-dark:#0B6339; --tint:#DFF5E9;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+  .wrap[data-grade="4"], body:has(.wrap[data-grade="4"]){
+    --on-accent:#1E1D1A;
+    --ink:#1E1D1A; --accent:#D97706; --accent-dark:#864903; --tint:#FDEDD8;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+  .wrap[data-grade="5"], body:has(.wrap[data-grade="5"]){
+    --ink:#1E1D1A; --accent:#DB2777; --accent-dark:#871849; --tint:#FDE4EF;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+  .wrap[data-grade="6"], body:has(.wrap[data-grade="6"]){
+    --ink:#1E1D1A; --accent:#4F5BD5; --accent-dark:#303884; --tint:#E5E7FC;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+  .wrap[data-grade="7"], body:has(.wrap[data-grade="7"]){
+    --on-accent:#1E1D1A;
+    --ink:#1E1D1A; --accent:#E4572E; --accent-dark:#8D351C; --tint:#FFE8DF;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+  .wrap[data-grade="8"], body:has(.wrap[data-grade="8"]){
+    --on-accent:#1E1D1A;
+    --ink:#1E1D1A; --accent:#E0A500; --accent-dark:#8A6600; --tint:#FFF4D6;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+  .wrap[data-grade="9"], body:has(.wrap[data-grade="9"]){
+    --on-accent:#10100E;
+    --ink:#1E1D1A; --accent:#0E9384; --accent-dark:#085B51; --tint:#DDF3EF;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+  :root{
+    --r-card:20px;
+    --radius:20px;
+    --cta:#2F63C6;
+    --lime:#BACA76;
+    --on-accent:#fff;
+    --foot:#1E1D1A;
+    --ink:#1E1D1A; --accent:#0E9384; --accent-dark:#085B51; --tint:#DDF3EF;
+    --paper:#FDFCF4; --grid:#E4E2CF; --muted:#57564A; --ph:#8E8C7C;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  .skip-link{
+    position:fixed; top:12px; inset-inline-start:12px; z-index:1000;
+    padding:10px 18px; border:3px solid var(--ink); border-radius:12px;
+    background:#fff; color:var(--ink); font-weight:800;
+    transform:translateY(-200%);
+  }
+  .skip-link:focus{ transform:translateY(0); }
+  :where(a,button,input,[tabindex]):focus-visible{
+    outline:3px solid var(--ink); outline-offset:4px;
+  }
+
+  body{
+    margin:0; padding:0;
+    font-family:'Assistant','Heebo','Arial Hebrew',Arial,sans-serif;
+    font-size:16px; line-height:1.55; color:var(--ink,#2A1F26);
+    -webkit-font-smoothing:antialiased;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      var(--paper);
+  }
+
+  /* ---------- מתג מסלול (ט׳ בלבד) ---------- */
+  .trackbar{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    margin:0 0 14px; padding:10px 12px;
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-6px 6px 0 var(--ink);
+  }
+  .trackbar[hidden]{ display:none; }
+  .track{
+    font-family:'Heebo',Arial,sans-serif; font-weight:900; font-size:15px;
+    background:#fff; color:var(--ink); cursor:pointer;
+    border:3px solid var(--ink); border-radius:999px; padding:8px 18px;
+    box-shadow:-3px 3px 0 var(--ink); transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .track:hover{ transform:translate(2px,-2px); box-shadow:-5px 5px 0 var(--ink); }
+  .track[aria-pressed="true"]{ background:var(--accent); color:var(--on-accent,#fff); }
+  .tracknote{ font-size:14px; color:var(--muted); margin-inline-start:auto; }
+  @media (max-width:600px){ .tracknote{ flex-basis:100%; margin-inline-start:0; } }
+
+  /* ---------- אלמנטים תלת־ממדיים ---------- */
+  .toy{ display:block; height:auto; user-select:none; -webkit-user-drag:none; }
+  .headrow .toy-head{
+    width:clamp(64px,8vw,96px); flex:none; margin-inline-start:auto;
+    transform:rotate(-6deg);
+    filter:drop-shadow(-4px 5px 0 rgba(30,29,26,.14));
+    animation:bob 6.5s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{transform:translateY(0) rotate(-6deg)} 50%{transform:translateY(-7px) rotate(-1deg)} }
+  .outro .toy-outro{
+    position:absolute; inset-inline-end:22px; bottom:-6px;
+    width:clamp(96px,14vw,148px); opacity:.95; z-index:0;
+    transform:rotate(-8deg);
+    filter:drop-shadow(-4px 5px 10px rgba(0,0,0,.45));
+  }
+  @media (max-width:700px){ .outro .toy-outro{ display:none; } .headrow .toy-head{ display:none; } }
+
+  /* ---------- שוברי צבע ---------- */
+  .hl{
+    background:linear-gradient(transparent 55%, #FEFF91 55%, #FEFF91 92%, transparent 92%);
+    transform:rotate(-1deg); display:inline-block; padding:0 6px;
+  }
+  .doodle{ position:absolute; pointer-events:none; opacity:.85; }
+  .doodle.d1{ inset-inline-end:4px;  top:-8px;  transform:rotate(8deg); }
+  .doodle.d2{ inset-inline-end:66px; top:30px;  transform:rotate(-12deg); }
+  .doodle.d3{ inset-inline-end:140px;top:-4px;  transform:rotate(4deg); }
+  @media (max-width:600px){ .doodle{ display:none; } }
+
+  .wrap{
+    position:relative;
+    width:100%; max-width:1060px; margin:0 auto;
+    padding:26px 18px 14px; color:var(--ink);
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/26px 26px,
+      var(--paper);
+  }
+  /* התוכן עצמו נשאר ברוחב קריא וממורכז, הרקע נמתח לרוחב מלא */
+  .wrap > *{ max-width:1000px; margin-inline:auto; }
+
+  /* ---------- לשוניות כיתה ---------- */
+  .grades{ display:flex; gap:12px; justify-content:center; margin:0 0 26px; flex-wrap:wrap; }
+  .grade-tab{
+    font-family:'Heebo',inherit; font-size:16px; font-weight:900;
+    color:var(--ink); background:#fff;
+    border:3px solid var(--ink); border-radius:999px;
+    padding:10px 30px; cursor:pointer;
+    box-shadow:-4px 4px 0 var(--ink);
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease, color .16s ease;
+  }
+  .grade-tab:hover{ transform:translate(2px,-2px); box-shadow:-6px 6px 0 var(--ink); }
+  .grade-tab:active{ transform:translate(0,0); box-shadow:-2px 2px 0 var(--ink); }
+  .grade-tab[aria-selected="true"]{ background:var(--accent); color:var(--on-accent,#fff); }
+
+  /* ---------- כותרת ---------- */
+  h1{
+    font-family:'Heebo','Assistant',Arial,sans-serif;
+    font-weight:900; font-size:clamp(23px,4.3vw,37px); line-height:1.3;
+    color:var(--ink); text-align:center; margin:0 0 12px;
+    letter-spacing:-.015em; position:relative; padding-bottom:16px;
+  }
+  h1::after{
+    content:""; position:absolute; bottom:0; left:50%;
+    transform:translateX(-50%) rotate(-.8deg);
+    width:120px; height:9px; background:var(--tint);
+    border:2.5px solid var(--ink); border-radius:999px;
+  }
+  .lede{ text-align:center; color:var(--muted); margin:0 auto 26px; max-width:640px; font-size:15px; font-weight:600; }
+
+  /* ---------- סרגל חיפוש וסינון ---------- */
+  .toolbar{
+    display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between;
+    padding:16px; margin-bottom:10px;
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-6px 6px 0 var(--ink);
+  }
+  .search{ position:relative; flex:1 1 260px; min-width:220px; }
+  .search input{
+    width:100%; font-family:inherit; font-size:15px; font-weight:600; color:var(--ink);
+    padding:12px 42px 12px 16px;
+    background:var(--paper); border:2.5px solid var(--ink); border-radius:999px;
+  }
+  .search input::placeholder{ color:var(--muted); font-weight:600; }
+  .search input:focus{ outline:none; box-shadow:-3px 3px 0 var(--accent); }
+  .search input:focus-visible{ outline:3px solid var(--ink); outline-offset:4px; }
+  .search svg{ position:absolute; inset-inline-end:15px; top:50%; transform:translateY(-50%); width:17px; height:17px; stroke:var(--ink); fill:none; stroke-width:2.4; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{ transform:rotate(3deg);
+    font-family:'Heebo',inherit; font-size:13.5px; font-weight:800; color:var(--ink);
+    background:var(--paper); border:2.5px solid var(--ink);
+    border-radius:999px; padding:8px 16px; cursor:pointer;
+    transition:background .16s ease, color .16s ease, transform .16s ease;
+  }
+  .chip:hover{ transform:translateY(-2px); }
+  .chip[aria-pressed="true"]{ background:var(--accent); color:var(--on-accent,#fff); }
+
+  /* ---------- שורת חיפוש חוצה-כיתות ---------- */
+  .cross{
+    display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+    margin:14px auto 0; font-size:14px; font-weight:800; color:var(--ink);
+    background:#fff; border:2.5px solid var(--ink); border-radius:999px;
+    padding:8px 18px; width:fit-content; box-shadow:-3px 3px 0 var(--ink);
+  }
+  .cross label{ display:inline-flex; align-items:center; gap:8px; cursor:pointer; }
+  .cross input{ width:17px; height:17px; accent-color:var(--accent); cursor:pointer; }
+  .hint{
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px;
+    font-size:13.5px; font-weight:800; color:var(--ink);
+    margin:16px auto 26px; text-align:center;
+  }
+  .hint b{ font-weight:900; }
+  .hint .k{
+    display:inline-flex; align-items:center; gap:6px;
+    border:2px solid var(--ink); border-radius:999px; padding:5px 12px; background:#fff;
+  }
+  .hint .k i{ width:12px; height:12px; border-radius:4px; border:2px solid var(--ink); display:inline-block; font-style:normal; }
+  .hint .k.a i{ background:var(--tint); }
+  .hint .k.b i{ background:#fff; }
+  .hint .k.c i{ background:#FFD84D; }
+
+  /* ---------- כותרת כיתה בתוצאות חוצות-כיתות ---------- */
+  .grade-band{
+    display:flex; align-items:center; gap:12px;
+    margin:30px 0 16px; padding:10px 16px;
+    background:var(--tint); border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-4px 4px 0 var(--ink);
+  }
+  .grade-band h2{
+    font-family:'Heebo',Arial,sans-serif; font-weight:900; font-size:17px;
+    color:var(--ink); margin:0; white-space:nowrap;
+  }
+  .grade-band .rule{ flex:1; height:2.5px; background:var(--ink); opacity:.18; border-radius:2px; }
+  .grade-band .count{ font-size:13px; font-weight:700; color:var(--ink); opacity:.65; white-space:nowrap; }
+
+  /* ---------- קבוצות נושאים ---------- */
+  .group{ content-visibility:auto; contain-intrinsic-size:auto 420px; margin-bottom:38px; }
+  .group:last-child{ margin-bottom:0; }
+  .group-head{ display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+  .group-head h3{
+    font-family:'Heebo',Arial,sans-serif; font-weight:900; font-size:16px;
+    color:var(--ink); margin:0; white-space:nowrap; letter-spacing:.01em;
+    background:var(--tint); border:2.5px solid var(--ink); border-radius:999px;
+    padding:7px 18px; transform:rotate(-1.2deg);
+  }
+  .group-head::after{
+    content:""; display:block; height:4px; width:88px; margin-top:8px;
+    background:var(--lime); border:2px solid var(--ink); border-radius:999px;
+    transform:rotate(-1deg);
+  }
+  .group-head .rule{ flex:1; height:2.5px; background:var(--ink); opacity:.14; border-radius:2px; }
+  .group-head .count{ font-size:13px; font-weight:700; color:var(--muted); white-space:nowrap; }
+
+  /* ---------- כרטיס נושא ---------- */
+  .card{
+    display:flex; align-items:center; gap:22px; justify-content:space-between;
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r-card);
+    padding:18px 22px; margin-bottom:14px;
+    box-shadow:-6px 6px 0 var(--ink);
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    animation:pop .32s ease both; animation-delay:var(--d,0s);
+    position:relative;
+  }
+  .card::after{
+    content:""; position:absolute; inset:0;
+    border-radius:calc(var(--r-card) - 3px);
+    background:repeating-linear-gradient(45deg, rgba(255,255,255,.4) 0 12px, transparent 12px 24px);
+    pointer-events:none; opacity:.5;
+  }
+  .card > *{ position:relative; z-index:1; }
+  .card:hover{ background:var(--tint); transform:translate(4px,-4px); box-shadow:-10px 10px 0 var(--ink); }
+  .card:active{ transform:translate(0,0); box-shadow:-3px 3px 0 var(--ink); }
+
+  .card-text{ min-width:0; }
+  .card-text h4{
+    font-family:'Heebo',Arial,sans-serif; font-weight:900;
+    font-size:20px; color:var(--ink); margin:0 0 6px; line-height:1.35;
+  }
+  .card-text p{ margin:0; font-size:14.5px; font-weight:600; color:var(--muted); line-height:1.5; }
+  .card-text .note{ margin-top:8px; font-size:13px; font-weight:800; color:var(--accent-dark); }
+
+  /* ---------- אייקון נושא ---------- */
+  .card-main{ display:flex; align-items:flex-start; gap:16px; min-width:0; }
+  .tico{
+    flex:none; width:46px; height:46px; margin-top:2px;
+    display:grid; place-items:center;
+    background:var(--tint); border:2.5px solid var(--ink); border-radius:50%;
+    color:var(--accent-dark); transform:rotate(-5deg);
+    transition:transform .25s ease;
+  }
+  .card:hover .tico{ transform:rotate(4deg) scale(1.06); }
+  .tico svg{
+    width:23px; height:23px;
+    fill:none; stroke:currentColor; stroke-width:1.9;
+    stroke-linecap:round; stroke-linejoin:round;
+  }
+
+  /* תג PDF ליד שם הנושא */
+  .pdf-badge{
+    display:inline-flex; align-items:center; gap:4px;
+    margin-inline-start:9px; vertical-align:3px;
+    padding:3px 8px; border-radius:6px;
+    font-family:'Heebo',inherit; font-size:10.5px; font-weight:900; letter-spacing:.04em;
+    color:var(--ink); background:var(--tint); border:2px solid var(--ink);
+    transform:rotate(2deg);
+  }
+  .pdf-badge svg{
+    width:11px; height:13px; flex-shrink:0;
+    fill:none; stroke:var(--ink); stroke-width:1.9;
+    stroke-linejoin:round; stroke-linecap:round;
+  }
+
+  /* ---------- כפתורי רמות ---------- */
+  .levels{ display:flex; gap:10px; flex-shrink:0; }
+  .card--bundle{ flex-wrap:wrap; }
+  .card--bundle .card-main{ flex-basis:100%; }
+  .levels.levels--bundle{ display:flex; flex-direction:column; width:100%; gap:8px; }
+  .worksheet-links{ display:flex; flex-wrap:wrap; gap:10px; }
+  .worksheet-links .lvl{ flex:1 1 180px; min-height:44px; white-space:normal; line-height:1.35; }
+  .more-worksheets summary{ cursor:pointer; font-weight:800; min-height:44px; padding:10px 0; }
+  .more-worksheets summary:focus-visible{ outline:3px solid var(--ink); outline-offset:3px; }
+  .lvl{
+    display:inline-flex; align-items:center; justify-content:center; text-align:center;
+    min-width:106px; padding:10px 16px;
+    font-family:'Heebo',inherit; font-weight:900; font-size:14px;
+    text-decoration:none; white-space:nowrap; color:var(--ink); background:#fff;
+    border:2.5px solid var(--ink); border-radius:999px;
+    box-shadow:-3px 3px 0 var(--ink);
+    transition:background .16s ease, color .16s ease, transform .16s ease, box-shadow .16s ease;
+  }
+  .lvl--a,.lvl--b,.lvl--c{ background:#fff; color:var(--ink); }
+  .lvl--a:hover,.lvl--b:hover,.lvl--c:hover{
+    background:var(--accent); color:var(--on-accent,#fff); transform:translate(2px,-2px); box-shadow:-5px 5px 0 var(--ink);
+  }
+  .lvl--a:active,.lvl--b:active,.lvl--c:active{ transform:translate(0,0); box-shadow:-2px 2px 0 var(--ink); }
+
+  /* מצב "אין לינק" — חייב לבוא אחרי .lvl--a/b/c */
+  .lvl--soon,
+  .lvl--soon:hover{
+    background:var(--paper); color:var(--muted);
+    border:2.5px dashed var(--ink); box-shadow:none; transform:none; cursor:default;
+    font-size:12.5px; font-weight:800; white-space:normal; line-height:1.25;
+  }
+  .lvl--soon .soon-note{ font-weight:700; font-size:11.5px; color:var(--muted); opacity:.85; margin-inline-start:5px; }
+  .lvl--one{ min-width:238px; }
+
+  :where(a,button,input):focus-visible{ outline:3px solid var(--cta); outline-offset:3px; }
+
+  .empty{
+    text-align:center; padding:44px 20px; color:var(--muted); font-weight:600;
+    background:#fff; border:3px dashed var(--ink); border-radius:var(--r-card);
+  }
+  .empty strong{ display:block; font-family:'Heebo',Arial,sans-serif; color:var(--ink); font-size:19px; font-weight:900; margin-bottom:8px; }
+  .foot{ text-align:center; font-size:13px; font-weight:700; color:var(--muted); margin:18px 0 0; }
+
+  @keyframes pop{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:none; } }
+
+  /* ---------- פס מעבר אל הפוטר של האתר ----------
+     נדגם מן האתר עצמו: רקע #1E1D1A, ליים #BACA76, טקסט #FEFF91.
+     שומר על שפת ה-embed (גבול 3px, צל מוצק שמאלה) כדי שיישאר שייך. */
+  .outro{
+    position:relative; overflow:hidden;
+    margin:34px 0 0; padding:26px 26px 24px;
+    border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-6px 6px 0 var(--ink);
+    background:linear-gradient(105deg, #7C8551 0%, #2E2E22 34%, #1E1D1A 100%);
+    color:#FEFF91;
+  }
+  .outro::after{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.30;
+    background:repeating-linear-gradient(45deg, rgba(255,255,255,.10) 0 12px, transparent 12px 24px);
+  }
+  .outro > *{ position:relative; z-index:1; }
+  .outro h3{
+    font-family:'Heebo',Arial,sans-serif; font-weight:900;
+    font-size:clamp(19px,2.6vw,26px); margin:0 0 6px; color:#FEFF91;
+    letter-spacing:-.01em;
+  }
+  .outro p{ margin:0; color:#EAFE93; font-size:15px; max-width:62ch; line-height:1.6; }
+  .outro .oline{
+    display:block; height:5px; width:132px; margin:14px 0 0;
+    background:#BACA76; border:2px solid #1E1D1A; border-radius:999px;
+    transform:rotate(-1deg);
+  }
+  @media (max-width:600px){ .outro{ padding:20px 18px; } }
+
+  /* ---------- נקודות שבירה לפי המפרט ---------- */
+  @media (max-width:820px){ .grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:500px){ .grid{ grid-template-columns:1fr; } }
+
+  /* ---------- מובייל ---------- */
+  @media (max-width:720px){
+    .wrap{ padding:20px 14px 8px; }
+    .grades{ gap:8px; }
+    .grade-tab{ padding:9px 20px; font-size:14px; box-shadow:-3px 3px 0 var(--ink); }
+    .toolbar{ padding:13px; box-shadow:-4px 4px 0 var(--ink); }
+    .card{ flex-direction:column; align-items:stretch; gap:14px; padding:16px; box-shadow:-4px 4px 0 var(--ink); }
+    .card:hover{ transform:none; box-shadow:-4px 4px 0 var(--ink); }
+    .card-text h4{ font-size:18px; }
+    .levels{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .lvl{ min-width:0; padding:11px 4px; font-size:12.5px; box-shadow:-2px 2px 0 var(--ink); }
+    .lvl--soon{ font-size:11px; }
+    .lvl--soon .soon-note{ font-size:10px; }
+    .lvl--one{ min-width:0; grid-column:1 / -1; }
+    .group-head h3{ font-size:14.5px; padding:6px 14px; }
+    .tico{ width:40px; height:40px; }
+    .tico svg{ width:20px; height:20px; }
+  }
+
+  /* ---------- playful upgrade ---------- */
+  /* card hand-placed tilt */
+  .card{ --tilt:0deg; transform:rotate(var(--tilt)); }
+  #list .card:nth-child(odd), .group .card:nth-of-type(odd){ --tilt:-.35deg; }
+  .group .card:nth-of-type(even){ --tilt:.35deg; }
+  .card:hover{ transform:translate(3px,-3px) rotate(0deg); }
+  .card:active{ transform:translate(0,0) rotate(0deg); }
+
+  /* icon wiggle on hover */
+  @keyframes wiggle{
+    0%,100%{ transform:rotate(-5deg) scale(1.06); }
+    30%{ transform:rotate(7deg) scale(1.1); }
+    60%{ transform:rotate(-3deg) scale(1.08); }
+  }
+  .card:hover .tico{ animation:wiggle .5s ease 1; transform:rotate(4deg) scale(1.06); }
+
+  /* level buttons — color-coded */
+  .lvl--a{ background:var(--tint); }
+  .lvl--b{ background:#fff; }
+  .lvl--c{ background:#FEFF91; }
+  .lvl--c::before{ content:"★"; margin-inline-end:6px; font-size:12px; transform:translateY(-1px); }
+  .lvl--a:hover,.lvl--b:hover,.lvl--c:hover{ background:var(--accent); color:var(--on-accent,#fff); }
+  .lvl--soon, .lvl--soon:hover{ background:var(--paper); color:var(--muted); }
+  .lvl--soon::before{ content:none; }
+
+  /* group stickers alternate tilt */
+  .group:nth-of-type(even) .group-head h3{ transform:rotate(1.2deg); }
+
+  /* active grade tab gets a jaunty tilt */
+  .grade-tab[aria-selected="true"]{ transform:rotate(-2deg); }
+  .grade-tab[aria-selected="true"]:hover{ transform:rotate(-2deg) translate(2px,-2px); }
+
+  /* pdf badge waves on card hover */
+  .card:hover .pdf-badge{ transform:rotate(-3deg) scale(1.08); transition:transform .2s ease; }
+
+  /* empty state doodle */
+  .empty::before{ content:"🔍"; display:block; font-size:38px; margin-bottom:10px; }
+
+
+  /* ---------- כרטיס מודגש: מעבר לחטיבה העליונה (ט׳) ---------- */
+  .card[data-g="bridge"]{
+    background:linear-gradient(135deg, #FFF3C4 0%, #FEFF91 100%);
+    border-width:3.5px;
+  }
+  .card[data-g="bridge"]::after{ opacity:.25; }
+  .card[data-g="bridge"] .tico{ background:#fff; }
+  .card[data-g="bridge"] .card-text h4::before{ content:"🎓 "; }
+  .card[data-g="bridge"]:hover{ background:linear-gradient(135deg, #FEFF91 0%, #FFD84D 100%); }
+
+
+  /* ---------- לגו: פיני חיבור בראש כל כרטיס ---------- */
+  .card::before{
+    content:""; position:absolute; top:-9px; inset-inline-start:26px;
+    width:64px; height:12px; z-index:2; pointer-events:none;
+    background:
+      radial-gradient(circle at 12px 50%, var(--accent) 0 6px, transparent 6.5px),
+      radial-gradient(circle at 40px 50%, var(--accent) 0 6px, transparent 6.5px);
+    filter:drop-shadow(0 -2px 0 var(--ink));
+    opacity:.95;
+  }
+  .card{ position:relative; }
+  .card[data-g="bridge"]::before{ background:
+      radial-gradient(circle at 12px 50%, #FFB703 0 6px, transparent 6.5px),
+      radial-gradient(circle at 40px 50%, #FFB703 0 6px, transparent 6.5px); }
+
+  /* צבע לכל קבוצת נושאים — סרגל צד מזהה */
+  .card{ border-inline-end-width:9px; }
+
+  /* לשוניות ושבבים — יותר "כפתורי לגו" */
+  .grade-tab, .chip, .lvl{ letter-spacing:.01em; }
+  .grade-tab[aria-selected="true"]{ box-shadow:-4px 4px 0 var(--ink); }
+  .chip[aria-pressed="true"]{ box-shadow:-3px 3px 0 var(--ink); }
+
+  /* מדבקת הקבוצה — צבעונית וגדולה יותר */
+  .group-head h3{ background:var(--accent); color:var(--on-accent,#fff); }
+  .group-head .rule{ background:var(--accent); opacity:.35; height:3px; }
+
+  /* כותרת: פס מרקר בצבע הכיתה */
+  h1::after{ background:var(--accent); border-color:var(--ink); width:150px; }
+
+  /* אייקון הנושא — עיגול בצבע מלא */
+  .tico{ background:var(--tint); }
+  .card:hover .tico{ background:#fff; }
+
+  /* סרגל החיפוש — מסגרת צבעונית */
+  .toolbar{ border-color:var(--ink); box-shadow:-6px 6px 0 var(--accent); }
+  .search input:focus{ box-shadow:-3px 3px 0 var(--accent); }
+
+  @media (max-width:720px){
+    .card::before{ inset-inline-start:18px; width:52px; }
+  }
+
+  /* ---------- לבנת לגו לכל קבוצת נושאים ---------- */
+  .card[data-g]{ --brick:var(--accent); border-inline-end-color:var(--brick); }
+  .card::before{ background:
+      radial-gradient(circle at 12px 50%, var(--brick) 0 6px, transparent 6.5px),
+      radial-gradient(circle at 40px 50%, var(--brick) 0 6px, transparent 6.5px); }
+  .card[data-g="num"],   .card[data-g="alg"]   { --brick:#E63946; }
+  .card[data-g="addsub"],.card[data-g="ops"]   { --brick:#F77F00; }
+  .card[data-g="muldiv"],.card[data-g="fun"]   { --brick:#FCBF11; }
+  .card[data-g="frac"],  .card[data-g="fracmul"],.card[data-g="ratio"]{ --brick:#2A9D3F; }
+  .card[data-g="dec"],   .card[data-g="pct"]   { --brick:#00A6C0; }
+  .card[data-g="geo"]                          { --brick:#1D5FD8; }
+  .card[data-g="meas"],  .card[data-g="area"]  { --brick:#7B2FD1; }
+  .card[data-g="solid"], .card[data-g="coord"] { --brick:#D62A8E; }
+  .card[data-g="data"],  .card[data-g="stat"]  { --brick:#00A08A; }
+  .card[data-g="think"], .card[data-g="model"],.card[data-g="eq"]{ --brick:#8D5A2B; }
+  .card[data-g="word"],  .card[data-g="synth"],.card[data-g="support"],.card[data-g="deep"]{ --brick:#5A6B7A; }
+  .card[data-g="bridge"]                       { --brick:#FFB703; }
+  .card[data-g="spiral"]                       { --brick:#8D5A2B; }
+  .card:hover .tico{ color:var(--brick); }
+
+
+  /* ---------- מרכוז: גובר על כללי margin מקומיים ---------- */
+  .wrap > .grades,
+  .wrap > .aibanner,
+  .wrap > h1,
+  .wrap > .lede,
+  .wrap > .toolbar,
+  .wrap > .cross,
+  .wrap > .hint,
+  .wrap > .foot,
+  .wrap > .jump,
+  .wrap > #list{
+    max-width:1000px;
+    margin-inline:auto;
+  }
+
+
+  /* ---------- שורות לשוניות: יסודי + חטיבה ---------- */
+  .grades{ flex-direction:column; gap:10px; align-items:center; }
+  .tabrow{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center;
+    background:#fff; border:2.5px solid var(--ink); border-radius:999px;
+    padding:8px 16px; box-shadow:-4px 4px 0 var(--ink); max-width:100%;
+  }
+  .tabrow-label{
+    font-family:'Heebo',inherit; font-weight:900; font-size:13px; white-space:nowrap;
+    color:var(--ink); opacity:.75; padding-inline-end:4px;
+  }
+  .tabrow-btns{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+  .tabrow .grade-tab{
+    padding:7px 16px; font-size:14px; box-shadow:-2px 2px 0 var(--ink); border-width:2.5px;
+  }
+  .tabrow .grade-tab:hover{ transform:translate(1px,-1px); box-shadow:-4px 4px 0 var(--ink); }
+  @media (max-width:720px){
+    .tabrow{ padding:8px 12px; }
+    .tabrow-label{ font-size:12px; width:100%; text-align:center; padding:0; }
+    .tabrow .grade-tab{ padding:7px 12px; font-size:13px; }
+  }
+
+
+  /* ---------- מעבר בין שכבות בתחתית העמוד ---------- */
+  .jump{
+    margin:34px auto 0; padding:20px 22px;
+    background:var(--tint); border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-6px 6px 0 var(--ink);
+    display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center;
+  }
+  .jump-label{ font-family:'Heebo',inherit; font-weight:900; font-size:17px; color:var(--ink); }
+  .jump-btns{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .jump-btn{
+    font-family:'Heebo',inherit; font-weight:900; font-size:14px; cursor:pointer;
+    color:var(--ink); background:#fff;
+    border:2.5px solid var(--ink); border-radius:999px; padding:9px 18px;
+    box-shadow:-3px 3px 0 var(--ink);
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease, color .16s ease;
+  }
+  .jump-btn:hover{ background:var(--accent); color:var(--on-accent,#fff); transform:translate(2px,-2px); box-shadow:-5px 5px 0 var(--ink); }
+  .jump-btn:active{ transform:translate(0,0); box-shadow:-2px 2px 0 var(--ink); }
+  @media (max-width:720px){
+    .jump{ padding:16px; }
+    .jump-label{ font-size:15px; }
+    .jump-btn{ padding:8px 14px; font-size:13px; }
+  }
+
+
+  /* ---------- באנר נועם AI ---------- */
+  .aibanner{
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+    margin:0 auto 26px; padding:18px 22px;
+    background:linear-gradient(135deg, #fff 0%, var(--tint) 100%);
+    border:3px solid var(--ink); border-radius:var(--r-card);
+    box-shadow:-6px 6px 0 var(--ink);
+  }
+  /* עיגול מספר הכיתה — מוטה, עם טבעת מקווקוות מסתובבת */
+  .headrow{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .gbadge{
+    position:relative; width:70px; height:70px; flex:0 0 auto;
+    display:grid; place-items:center;
+    background:#fff; border:3px solid var(--ink); border-radius:50%;
+    font-family:'Heebo',Arial,sans-serif; font-weight:900; font-size:36px;
+    color:var(--accent); transform:rotate(-7deg);
+  }
+  .gbadge::after{
+    content:""; position:absolute; inset:-8px; border-radius:50%;
+    border:2.5px dashed var(--accent); opacity:.55;
+    animation:spin 14s linear infinite;
+  }
+  .wrap[data-grade="8"] .gbadge{ color:var(--accent-dark); }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion:reduce){ .gbadge::after{ animation:none; } }
+
+  .aibanner .robot{
+    flex:none; width:66px; height:66px; display:grid; place-items:center;
+    font-size:34px; background:#fff; border:3px solid var(--ink); border-radius:50%;
+    transform:rotate(-7deg);
+  }
+  .aibanner .txt{ flex:1; min-width:230px; }
+  .aibanner h2{
+    font-family:'Heebo',sans-serif; font-weight:900; font-size:19px;
+    margin:0 0 5px; color:var(--ink);
+  }
+  .aibanner p{ margin:0; font-size:14.5px; font-weight:600; color:var(--muted); line-height:1.5; }
+  @media (max-width:720px){
+    .aibanner{ padding:15px; gap:12px; }
+    .aibanner .robot{ width:48px; height:48px; font-size:25px; }
+    .aibanner h2{ font-size:17px; }
+  }
+
+  /* תגית AI על כרטיס נושא */
+  .aihint{
+    display:inline-flex; align-items:center; gap:5px; margin-top:9px;
+    font-family:'Heebo',sans-serif; font-weight:800; font-size:11.5px;
+    color:var(--accent-dark); background:var(--tint);
+    border:2px solid var(--ink); border-radius:999px; padding:3px 9px;
+  }
+
+
+
+  /* מצב "בקרוב" — יסודי, עד שנועם AI יגיע גם לשם */
+  .aibanner.soon{
+    background:#fff;
+    border-style:dashed;
+  }
+  .aibanner.soon .robot{ opacity:.75; }
+
+  @media (prefers-reduced-motion:reduce){ .card::before{ filter:none; } }
+
+  @media (prefers-reduced-motion:reduce){
+    .card{ transform:none; }
+    .card:hover .tico{ animation:none; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{ transition:none !important; animation:none !important; }
+    .card:hover,.grade-tab:hover,.lvl:hover,.chip:hover{ transform:none; }
+    .card:hover .tico{ transform:rotate(-5deg); }
+  }
+
+  /* ---------- ביצועים: אנימציות מתחילות רק אחרי הציור הראשון ---------- */
+  .badge::after, .toy, .doodle{ animation-play-state:paused; }
+  html.io-ready .badge::after,
+  html.io-ready .toy,
+  html.io-ready .doodle{ animation-play-state:running; }
+</style>
+<link rel="stylesheet" href="noam-discovery.css?v=20260920-2">
+<link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1">
+<style id="phone-catalog-layout">
+/* Phone catalog: keep every topic and level in the same reading order. */
+@media (max-width:720px), (pointer:coarse) and (max-width:900px){
+  .wrap{padding:14px 12px 20px;min-width:0;}
+  .wrap > *{min-width:0;max-width:100%;}
+  .wrap .grades{gap:10px;margin-bottom:16px;}
+  .wrap .tabrow{display:block;width:100%;padding:8px;border-radius:16px;box-shadow:-2px 2px 0 var(--ink);}
+  .wrap .tabrow-label{display:block;margin-bottom:6px;font-size:12px;line-height:1.4;}
+  .wrap .tabrow-btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
+  .wrap .tabrow .grade-tab{min-width:44px;min-height:44px;padding:7px 4px;font-size:14px;line-height:1.25;box-shadow:none;transform:none;}
+  .wrap .grade-tab>span[aria-hidden]{display:none;}
+  .wrap .headrow{margin:12px 0 6px;justify-content:center;}
+  .wrap .headrow .gbadge{display:none;}
+  .wrap .headrow h1{font-size:23px;line-height:1.35;overflow-wrap:anywhere;}
+  .wrap > .lede{font-size:14px;line-height:1.55;margin-block:8px 14px;}
+  .wrap .toolbar{display:block;padding:10px;margin-block:10px;border-radius:16px;box-shadow:-3px 3px 0 var(--ink);}
+  .wrap .search{width:100%;min-width:0;}
+  .wrap .search input{font-size:16px;min-height:48px;padding-block:10px;padding-inline:12px 42px;border-radius:12px;}
+  .wrap .search svg{pointer-events:none;}
+  .wrap .chips{width:100%;min-width:0;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;gap:8px;padding:6px 4px 8px;margin-top:6px;scroll-padding-inline:6px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+  .wrap .chip{flex:0 0 auto;min-width:44px;min-height:44px;padding:8px 12px;font-size:14px;line-height:1.3;transform:none;box-shadow:none;}
+  .wrap .trackbar{gap:8px;padding:10px 0 2px;margin:0;border:0;border-radius:0;box-shadow:none;}
+  .wrap .track{flex:1 1 110px;min-height:44px;min-width:0;padding:8px;font-size:14px;box-shadow:none;}
+  .wrap .tracknote{flex-basis:100%;font-size:13px;line-height:1.4;}
+  .wrap .cross{width:100%;gap:4px;margin-top:10px;padding:0 10px;border-radius:12px;box-shadow:none;}
+  .wrap .cross label{min-height:44px;line-height:1.4;}
+  .wrap .cross input{flex:none;width:20px;height:20px;margin:0;}
+  .wrap #crosshint:not(:empty){width:100%;padding-bottom:8px;font-size:13px;line-height:1.4;}
+  .wrap .hint{gap:6px;margin:12px 0 16px;font-size:12px;}
+  .wrap .hint .k{padding:4px 8px;}
+  .wrap .saved-topics>summary{min-height:44px;padding-block:10px;line-height:1.5;}
+  .wrap .aibanner{align-items:flex-start;padding:12px;gap:10px;box-shadow:-2px 2px 0 var(--ink);}
+  .wrap .aibanner .txt{min-width:0;flex:1;}
+  .wrap .aibanner .robot{width:36px;height:36px;font-size:22px;}
+  .wrap .aibanner h2{font-size:17px;line-height:1.35;}
+  .wrap .saved-topics{margin-block:10px 18px;padding:0 12px;border-radius:12px;}
+  .wrap .saved-topics button,.wrap #saved-topic-list a{display:flex;align-items:center;min-height:44px;max-width:100%;padding:8px;line-height:1.45;overflow-wrap:anywhere;}
+  .wrap #clear-saved-topics{margin-bottom:10px;}
+  .wrap .group{margin-bottom:26px;}
+  .wrap .group-head{gap:8px;margin-bottom:12px;}
+  .wrap .group-head h3{min-width:0;max-width:100%;padding:7px 12px;font-size:15px;line-height:1.4;white-space:normal;transform:none;}
+  .wrap .group-head::after{display:none;}
+  .wrap .group-head .rule{min-width:8px;}
+  .wrap .grade-band{gap:8px;padding:10px;margin-block:22px 14px;box-shadow:-2px 2px 0 var(--ink);}
+  .wrap .grade-band h2{font-size:16px;white-space:normal;}
+  .wrap .card{gap:12px;padding:14px 12px;margin-bottom:16px;border-radius:16px;border-inline-end-width:5px;box-shadow:-3px 3px 0 var(--ink);transform:none;animation:none;}
+  .wrap .card:hover,.wrap .card:active{transform:none;box-shadow:-3px 3px 0 var(--ink);}
+  .wrap .card::before{display:none;}
+  .wrap .card-main{gap:10px;}
+  .wrap .tico{width:34px;height:34px;margin-top:1px;}
+  .wrap .tico svg{width:19px;height:19px;}
+  .wrap .card-text h4{font-size:18px;line-height:1.4;overflow-wrap:anywhere;}
+  .wrap .card-text p{font-size:14px;line-height:1.55;}
+  .wrap .pdf-badge{margin-inline-start:5px;font-size:10px;}
+  .wrap .aihint{font-size:11px;margin-top:7px;max-width:100%;white-space:normal;}
+  .wrap .card>.levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;min-width:0;}
+  .wrap .card>.levels.levels--bundle{display:flex;flex-direction:column;}
+  .wrap .lvl{min-width:0;min-height:44px;padding:8px 5px;font-size:13px;line-height:1.35;white-space:normal;overflow-wrap:anywhere;box-shadow:-2px 2px 0 var(--ink);}
+  .wrap .worksheet-links{gap:8px;}
+  .wrap .worksheet-links .lvl{flex:1 1 150px;}
+  .wrap .topic-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:10px;border-top:1px solid var(--grid);}
+  .wrap .topic-actions>a,.wrap .topic-actions>button{display:flex;align-items:center;justify-content:center;min-width:0;min-height:44px;padding:8px 6px;font-size:13px;line-height:1.4;text-align:center;white-space:normal;overflow-wrap:anywhere;}
+  .wrap .topic-actions>[data-save-topic]{grid-column:1/-1;}
+  .wrap .jump{margin-top:24px;padding:14px;border-radius:16px;box-shadow:-3px 3px 0 var(--ink);}
+  .wrap .jump-btns{gap:8px;}
+  .wrap .jump-btn{min-width:44px;min-height:44px;padding:8px 12px;font-size:14px;transform:none;}
+  .wrap .outro{margin-top:24px;padding:18px 14px;box-shadow:-3px 3px 0 var(--ink);}
+}
+@media (min-width:480px) and (max-width:720px), (pointer:coarse) and (min-width:480px) and (max-width:900px){
+  .wrap .tabrow:first-child .tabrow-btns{grid-template-columns:repeat(6,minmax(0,1fr));}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#list">דילוג לדפי העבודה</a>
+<main class="wrap" id="wrap" aria-labelledby="title">
+
+  <div class="grades" id="grades" role="tablist" aria-label="בחירת כיתה" aria-orientation="horizontal"></div>
+
+  <svg class="doodle d1" width="46" height="30" viewBox="0 0 46 30" aria-hidden="true">
+    <path d="M3 22c7-14 13-14 20 0s13 14 20 0" fill="none"
+          stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/></svg>
+  <svg class="doodle d2" width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+    <path d="M4 19l7 9L30 5" fill="none" stroke="var(--lime)" stroke-width="6"
+          stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="doodle d3" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+    <circle cx="15" cy="15" r="11" fill="none" stroke="var(--ink)"
+            stroke-width="2.5" stroke-dasharray="4 5"/></svg>
+  <div class="headrow">
+    <div class="gbadge" id="gbadge" aria-hidden="true"></div>
+    <h1 id="title"></h1>
+  </div>
+  <img class="toy toy-head" src="https://static.wixstatic.com/media/d8e7ad_8e95ac2ccd51434e94b2b1a53355a1e4~mv2.webp" width="192" height="192"
+       alt="" aria-hidden="true" decoding="async">
+  <p class="lede" id="lede"></p>
+
+  <section class="aibanner" id="aibanner" aria-labelledby="aititle">
+    <span class="robot" aria-hidden="true">🤖</span>
+    <div class="txt">
+      <h2 id="aititle"></h2>
+      <p id="aitext"></p>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <div class="search">
+      <input id="q" type="search" placeholder="חיפוש נושא — למשל: זוויות, פיתגורס, אחוזים" aria-label="חיפוש נושא" aria-controls="list">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+    </div>
+    <div class="trackbar" id="trackbar" role="group" aria-label="מסלול לימוד" hidden>
+      <button class="track" type="button" data-track="reg" aria-pressed="true" aria-controls="list">רמה רגילה</button>
+      <button class="track" type="button" data-track="red" aria-pressed="false" aria-controls="list">רמה מצומצמת</button>
+      <span class="tracknote" id="tracknote"></span>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="סינון לפי תחום"></div>
+  </div>
+
+  <div class="cross">
+    <label><input type="checkbox" id="crossq"> חיפוש בכל הכיתות</label>
+    <span id="crosshint"></span>
+  </div>
+
+  <p class="hint">
+    <span class="k b"><i></i>רמה ב׳ — בסיסי</span>
+    <span class="k a"><i></i>רמה א׳ — מתקדם</span>
+    <span class="k c"><i></i>★ מצוינות — אתגר והוכחות</span>
+  </p>
+
+  <p class="sr-only" id="results-status" role="status" aria-live="polite" aria-atomic="true"></p>
+  <span id="results-scope" hidden>תוצאות חיפוש בכל הכיתות</span>
+  <div id="list" role="tabpanel" tabindex="0"></div>
+
+  <div class="jump" id="jump"></div>
+
+  <section class="outro" aria-label="סיום">
+    <h3>לא מצאתם את מה שחיפשתם?</h3>
+    <p>כל הדפים חינמיים ומסודרים לפי פריסת ההוראה של משרד החינוך לתשפ״ז.
+       אם חסר נושא, או שמצאתם טעות — נשמח לשמוע.</p>
+    <span class="oline" aria-hidden="true"></span>
+    <img class="toy toy-outro" src="https://static.wixstatic.com/media/d8e7ad_454143bc5f4445938792192a26f2e760~mv2.webp" width="256" height="256"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+  </section>
+
+  <p class="foot">כל הקבצים בפורמט PDF · מתמטיקה · נועם דורון</p>
+</main>
+
+<script>
+/* =========================================================================
+   קובץ אחד לכל תשע הכיתות. הכיתה נבחרת אוטומטית מכתובת העמוד
+   (worksheetsfor4thgrade → כיתה ד׳). אין צורך לערוך דבר בין העמודים —
+   מדביקים את אותו קוד בדיוק בכל תשעת העמודים.
+   אם בכל זאת רוצים לקבע כיתה ידנית, שנו את המספר בשורה הבאה מ-0 ל-1..9.
+   ========================================================================= */
+var FORCE_GRADE = 0;
+
+function detectGrade(){
+  if (FORCE_GRADE >= 1 && FORCE_GRADE <= 9) return FORCE_GRADE;
+  var urls = [];
+  try { if (document.referrer) urls.push(document.referrer); } catch(e){}
+  try { urls.push(window.parent.location.href); } catch(e){}
+  try {
+    if (location.ancestorOrigins) {
+      for (var i = 0; i < location.ancestorOrigins.length; i++) urls.push(location.ancestorOrigins[i]);
+    }
+  } catch(e){}
+  urls.push(location.href);
+  var words = { "1th":1, "2th":2, "3th":3, "4th":4, "5th":5, "6th":6, "7th":7, "8th":8, "9th":9,
+                "1st":1, "2nd":2, "3rd":3 };
+  for (var u = 0; u < urls.length; u++){
+    var s = String(urls[u]).toLowerCase();
+    var q = s.match(/[?&]grade=([1-9])\b/);          /* ?grade=4 */
+    if (q) return Number(q[1]);
+    var m = s.match(/worksheetsfor([1-9])(?:th|st|nd|rd)grade/);
+    if (m) return Number(m[1]);
+    for (var k in words){
+      if (s.indexOf("for" + k + "grade") !== -1) return words[k];
+    }
+  }
+  return 7;   /* ברירת מחדל אם לא זוהתה כיתה */
+}
+var DEFAULT_GRADE = detectGrade();
+
+var BASE = "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
+
+/* =========================================================================
+   נועם AI — עמוד צפייה בדף עבודה עם עוזר.
+   enabled:false מחזיר את כל הקישורים להתנהגות הישנה (PDF ישיר) מיידית.
+   נושא ללא שדה x (כל היסודי, וכל דפי "one") ממשיך לקישור PDF ישיר.
+   ========================================================================= */
+var VIEWER = { enabled: true, path: "worksheet-viewer-noam.html" };
+
+var NOAM_PREFIX_FALLBACK = {
+  7:{ 16:"G7-T16" },
+  8:{
+    1:"G8-T01",
+    26:"G8-T35",
+    34:"G8-T26",
+    35:"G8-T27",
+    56:"G8-T56",
+    57:"G8-T57",
+    58:"G8-T58",
+    59:"G8-T59",
+    60:"G8-T60"
+  },
+  9:{ 22:"G9-T16" }
+};
+
+var DATA = {
+
+  /* ================= כיתה א׳ ================= */
+  1: {
+    links: {
+      1:{ a:"3b7080759e5240fe8f7faa8e0e261084",
+          b:"93024cad97864567b17f16023aec04ed",
+          c:"aa53193933054f77939bc8349c748461" },
+      2:{ a:"565d8a7618b148619387c3132bb74c4d",
+          b:"e955cca812d1457eb75d2c88b3a852e0",
+          c:"cb0711433bac40efa0c2fdf8a1d705a6" },
+      3:{ a:"087677099c724f8abcc48834af6a5ee2",
+          b:"e5fb1788eebf4454af724db1134864ee",
+          c:"1284b66742884f629e4ab6a692fad4f7" },
+      4:{ a:"1eb6198dbf4f45df9cb7a0727a87aa82",
+          b:"7def3a0c711240ff9040ab12d0a175a5",
+          c:"b82e06e37d6347ba9894733742f7ed3a" },
+      5:{ a:"8482661bf8064a19825e8433087b86df",
+          b:"5e45520af87542ed8fe6bd954ec62e1d",
+          c:"86fee50806ab4f2bb085a2874548e622" },
+      6:{ a:"1696192f5f054d5e853fcaee49e1500b",
+          b:"6fe74bdf0cc74ef1839970e06dbe683f",
+          c:"52bf36b6b0c34c0b94f390c623010a55" },
+      7:{ a:"d8a231ad5afa45998b0a22498216a4c8",
+          b:"0dbf6ebd9d444700a077f9e2d5bd599e",
+          c:"9aac4b55e7524b429cb7d222dda40612" },
+      8:{ a:"b3d2659bb61b410ea9a5e23c8ddfa705",
+          b:"25b115607d574d89b99d5e41a67c5d18",
+          c:"0741b30f161245b79fcaf13dd8c87892" },
+      9:{ a:"f488deb2d20440fe94ede20dec685858",
+          b:"0d6aa328c2e74cc798ae04eb9c6301cf",
+          c:"c656760c7d4449b6acb2fb6463bb719d" },
+      10:{ a:"e34e62a0e28d41749baa3c91c228bc24",
+          b:"7365ed0dcf294b1db773cc5e49b4fe04",
+          c:"b249e11faa6a4d3bb433ee85e0c071c6" },
+      11:{ a:"fa4a852d28a2413194e3df3b911ae62e",
+          b:"ac4e8a55534a44a9a7bb55002c61a59f",
+          c:"cb6081f38fc843d9a0808ef67dda7b5f" },
+      12:{ a:"a7a85defdc5446cf9680b0876360dd78",
+          b:"77167bf796284fc2a9c7c5b2b32c9b8f",
+          c:"aec3c001aced4b7ca67f4e5d07bed89d" },
+      13:{ a:"d9fd0dfdc28b4dbba0c299bb8aaa835a",
+          b:"4f950534797e45fc893d3122ef37df09",
+          c:"a44d8a914a7944269031d386616d059e" },
+      14:{ a:"993862a7e55342d38e89fd9cd322dfcf",
+          b:"82a5fb61ee63421c95ecdce03e96eade",
+          c:"d5150d40761143e29f4ca6498dd15c27" },
+      15:{ a:"27609e0a818e4734be2d91cf2256cdb8",
+          b:"d9d3938fc7d94c4e844dee3c1631f42d",
+          c:"56bd82d2c55e45ae8361dda997a8e5bc" },
+      16:{ a:"f178d05de2aa4bb48cdb8366de692b22",
+          b:"6b04a93bef8048b9a3ede394c01b8c47",
+          c:"8450b90c1f314bf48b4262f4a5a4e948" },
+      17:{ a:"e164f4a076a648ada3ee4da1440c5c90",
+          b:"b534b62f2e0e4a1197ac7fd27d2a7014",
+          c:"90a621ac2acd4e13972ff8d64a5cad58" },
+      18:{ a:"8356de8c0bfe4b92937091bab7347a03",
+          b:"887a0729bda64d8d81eb1c033e4d167e",
+          c:"f54c90c36f054c3681381f178069f265" },
+      19:{ a:"7e0abedb940449d684f2af1ec1ca95a1",
+          b:"4fae6c5d4ad54d97a52e3b25a12101f0",
+          c:"6ff20850f90b4006855b56f7e54c4c11" },
+      20:{ a:"8b8a3d3c0dd04a098a31beca631fbbc8",
+          b:"08619875e75949978a7a0117581e1768",
+          c:"ff7e1b534d2741bcb33afc310ba1b7ab" },
+      21:{ a:"8207640e48594b30866254ec1b4e53ed",
+          b:"b610f28362444d6486e866e3e18ff353",
+          c:"eb9ea1806b9e494ba835dc2f182d54bb" },
+      22:{ a:"3082fcf59c844db5aa87f427c956c921",
+          b:"9e8d4d3e97f2412988e5f8fed4039d04",
+          c:"4901e467c30a42f19490fad085c048b3" },
+      23:{ a:"aacbfd9b229a481a856213a019590f82",
+          b:"201acd73177e4dc69dd7ebdc10303a1e",
+          c:"daa26ec41a8e4045848e7210b4490984" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים ומנייה" },
+      { key:"addsub",  name:"חיבור וחיסור" },
+      { key:"think",  name:"חשיבה, דפוסים ושוויון" },
+      { key:"word",  name:"בעיות מילוליות" },
+      { key:"geo",  name:"גיאומטריה ומדידות" },
+      { key:"data",  name:"נתונים" }
+    ],
+
+    topics: [
+      { id:1, ic:"tally", g:"num", t:"מונים בלי לפספס" },
+      { id:2, ic:"star", g:"num", t:"קוראים כותבים ומייצגים עד 100" },
+      { id:3, ic:"lt", g:"num", t:"סדר שכנים והשוואה" },
+      { id:4, ic:"branch", g:"addsub", t:"מרכיבים ומפרקים עד 10" },
+      { id:5, ic:"plusminus", g:"addsub", t:"חיבור בתחום 10" },
+      { id:6, ic:"plusminus", g:"addsub", t:"חיסור בתחום 10" },
+      { id:7, ic:"star", g:"addsub", t:"בונים 20 דרך 10" },
+      { id:8, ic:"plusminus", g:"addsub", t:"חיבור בתחום 20" },
+      { id:9, ic:"plusminus", g:"addsub", t:"חיסור בתחום 20" },
+      { id:10, ic:"scale", g:"think", t:"שוויון נעלם והשוואת תרגילים" },
+      { id:11, ic:"steps", g:"think", t:"דפוסים וסדרות" },
+      { id:12, ic:"table", g:"num", t:"חוקרים את לוח המאה" },
+      { id:13, ic:"steps", g:"think", t:"שרשראות ופירמידות מספרים" },
+      { id:14, ic:"speech", g:"word", t:"בעיות מילוליות בציור ובמספר" },
+      { id:15, ic:"ruler", g:"geo", t:"מודדים ומשווים אורך" },
+      { id:16, ic:"plusminus", g:"addsub", t:"קבוצות שוות וחיבור חוזר" },
+      { id:17, ic:"pgram", g:"geo", t:"מצולעים" },
+      { id:18, ic:"rhomb", g:"geo", t:"ריבוע ומלבן" },
+      { id:19, ic:"branch", g:"addsub", t:"מרכיבים ומפרקים" },
+      { id:20, ic:"clock", g:"geo", t:"שעה שלמה" },
+      { id:21, ic:"bars", g:"data", t:"נתונים" },
+      { id:22, ic:"speech", g:"word", t:"בעיות מילוליות פשוטות" },
+      { id:23, ic:"branch", g:"addsub", t:"הרכבה ופירוק" }
+    ]
+  },
+  /* ================= כיתה ב׳ ================= */
+  2: {
+    links: {
+      1:{ a:"93ebe0eb0303457bb305b41577498037",
+          b:"f7e8186f8f934bf6afd41a28b8e762de",
+          c:"56dd1fc5347943b48fea991334b4d940" },
+      2:{ a:"5d590fa4720448a7b3020a2256cac55c",
+          b:"f260e9f8518c40969d687883f88e31e7",
+          c:"e7a4d6dd428a4d618c9c132abd0b6689" },
+      3:{ a:"3454a93cf2d14ccc99cf653701b897bd",
+          b:"311e3ef7d6d74e22a102045f10f4bb61",
+          c:"16a9ca02cc94415fbdae558f32332987" },
+      4:{ a:"b9e00c1b0fca4672aeb0447a937888c8",
+          b:"6c9e22dc5d4648a29e0bdb675c73bd1f",
+          c:"64bb3b9026a54e5cbf378e653861c44b" },
+      5:{ a:"1c5c6d9ccd0d434699e29fc589e19d56",
+          b:"47d4638e1a904015b1d8f724681bb799",
+          c:"c15da48ebb3f4a6ea3737c71c20810f2" },
+      6:{ a:"89d6ffb21a134d319ead83904817acb5",
+          b:"e1fd4ea38ff24d3abba2e16411388444",
+          c:"c761f8d29d3d412b99c7e11044807c9c" },
+      7:{ a:"01acfa2796fb419e98f1c557afcf5ad6",
+          b:"15bc7f5e05714c4ea42d97638371fac3",
+          c:"79e33ab35ac14f7c89703b88304565c3" },
+      8:{ a:"c01401da7a404a8eba3bb017352f9940",
+          b:"eeb6f6ef08274bce9df4e9863ac5a7c4",
+          c:"efc337091f534ebb81808317094acfe4" },
+      9:{ a:"fc252874db8c4b6a9e6339b6cea3f3ea",
+          b:"2e0c66dfae8b4fffa2e7f0df40507b23",
+          c:"925868b9f4b940898274eba615f23668" },
+      10:{ a:"932ac8f7a0b446dc8f3054082f99af68",
+          b:"5c4668e01a434b9bb6ee2c05060901d1",
+          c:"d03912693f984e9ba2bc8d7cbba998b5" },
+      11:{ a:"185b6b6898fa493fbe033dcb450ba2a1",
+          b:"e7d34c800da64904913891d951abc08f",
+          c:"f0322f3b96534e008538a9b9c2287fa8" },
+      12:{ a:"06d904d53a9c4d3194b7cc763ccb4447",
+          b:"b8166c63691f4eacb6111a57a2edea1f",
+          c:"743ea1ca16d146f887ce0ddd3f703ef6" },
+      13:{ a:"7a1677cade96484e9e99a12cd8a22d7a",
+          b:"96210fe573df48cc9403e182900b67a7",
+          c:"ea729112623947438f48fc3e3b982219" },
+      14:{ a:"a5cb541e565b4dba8c36a1f8865344dc",
+          b:"14892443cd424d4d884c9e11104cce63",
+          c:"8e0207e52c854a6a95418b1353587174" },
+      15:{ a:"451e1aaba1cd4811a3929697d2049b4a",
+          b:"d30a41993b3b43d7a382a5014f19b9b1",
+          c:"2752eeb577bf476dbf0c67b4c58928d6" },
+      16:{ a:"48ecf4e316e14ab185bcbf726f86a09f",
+          b:"b980f7718c5a417aa47d45fdfb5b1116",
+          c:"29f03da2ae744fb8bcc2c2f8a5f0bfc3" },
+      17:{ a:"c4014a193c9a4e77ba34755ff95b71d3",
+          b:"d7ccca4dfca9496fa61581c7db5201f7",
+          c:"9b30a9dde8a54935a7f928d804158983" },
+      18:{ a:"1946612fd6794dbbb514c8f97edea75b",
+          b:"85ff43db693a4fdd8d6f785619a52558",
+          c:"2d947122f72744a2b3c3eb5057bb0ba1" },
+      19:{ a:"f2439d1ce90d4c2a87485dfc534bb79e",
+          b:"ef4ab672a58642ecb2a323e4c08de80c",
+          c:"9b384b81ac59432382296203e0478944" },
+      20:{ a:"f5d3a7e9b364436897f87f030dc92259",
+          b:"4db357775cc94905a844a1ea64a8b28b",
+          c:"a067bf391896471bb199868cba1a9a2f" },
+      21:{ a:"2113855c96244de6bf59a91f7f931b49",
+          b:"9e43bc9407354193a8f413f0fc742d01",
+          c:"ca3da8674b8c4315af973bc4f9fe76f6" },
+      22:{ a:"dde8aeeba45c4601a2b01c386a200df2",
+          b:"ef35e8bd27eb48cea6c76d479ce01e57",
+          c:"31c30b40f55d44efb4804bd12e4b52f8" },
+      23:{ a:"08a221fcde964d8dbb1350eeeebe1c36",
+          b:"a7e163c12aef42feb8628ce01ee1b91f",
+          c:"322f4b74298d496b827e204fd7edc69f" },
+      24:{ a:"23aa357184e44b7d91e784ad87fba10c",
+          b:"4994bc3777ef4ddd82f21d455a0cd2f5",
+          c:"63bed16964274aba8c5111993c682513" },
+      25:{ a:"ad0473bbbd944ae59bc60449928df6d1",
+          b:"f03eaeae9bf943cd968c931139c2fcff",
+          c:"09ed723fa5b34bfca4d4124d31e23cf7" },
+      26:{ a:"d7896eb1f13b4184b6a3e96ae9535ccc",
+          b:"a74254204af944e88c91aed72daa6de8",
+          c:"b8cc96b907a344e1816b13b8f660cf7e" },
+      28:{ a:"01b8d86f2f174d18bbd0e95951e2bc5b",
+          b:"00c0c9f4dfec435782b4a9b3c0ea9148",
+          c:"c0129c9cdcbe4107930bc784dcf9b7b5" },
+      29:{ a:"c0c8fae7f9324aa7841a177a50d116d7",
+          b:"4093188d300f4529acccd64aeb2d0b52",
+          c:"c23f3e4b17864cb7ba5c4191fe31df70" },
+      30:{ a:"6b04b33cf8d345ba80609603df46135c",
+          b:"92c54eeada9747f8bdcd2d4d5dbff37b",
+          c:"c78d2c887e5f48a9bed79c237a138328" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים עד 1000" },
+      { key:"addsub",  name:"חיבור וחיסור" },
+      { key:"muldiv",  name:"כפל וחילוק" },
+      { key:"think",  name:"דפוסים, חשיבה וסיכום" },
+      { key:"word",  name:"בעיות מילוליות וכסף" },
+      { key:"frac",  name:"שברים ראשונים" },
+      { key:"meas",  name:"מדידות וזמן" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"data",  name:"נתונים" }
+    ],
+
+    topics: [
+      { id:1, ic:"branch", g:"num", t:"חוזרים להרכבות 10 ו 20" },
+      { id:2, ic:"table", g:"num", t:"עשרות ויחידות בתחום 100" },
+      { id:3, ic:"numline", g:"num", t:"סדר השוואה וישר מספרים" },
+      { id:4, ic:"branch", g:"addsub", t:"מוסיפים עשרות ומפרקים מספרים" },
+      { id:5, ic:"plusminus", g:"addsub", t:"חיבור דו ספרתי ללא המרה" },
+      { id:6, ic:"plusminus", g:"addsub", t:"חיבור דו ספרתי עם המרה" },
+      { id:7, ic:"plusminus", g:"addsub", t:"חיסור דו ספרתי ללא פריטה" },
+      { id:8, ic:"plusminus", g:"addsub", t:"חיסור דו ספרתי עם פריטה" },
+      { id:9, ic:"magnify", g:"addsub", t:"אסטרטגיות חישוב אומדן ופיצוי" },
+      { id:10, ic:"scale", g:"addsub", t:"שוויון ומספר חסר" },
+      { id:11, ic:"tag", g:"word", t:"בעיות מילוליות וכסף" },
+      { id:12, ic:"bars", g:"data", t:"קוראים טבלה ודיאגרמת עמודות" },
+      { id:13, ic:"table", g:"num", t:"מאות עשרות ויחידות" },
+      { id:14, ic:"lt", g:"num", t:"ממיינים ומשווים מספרים עד 1000" },
+      { id:15, ic:"numline", g:"num", t:"מספרים עד 1000" },
+      { id:16, ic:"times", g:"muldiv", t:"כפל קבוצות שוות ומערכים" },
+      { id:17, ic:"divide", g:"muldiv", t:"חילוק להכלה" },
+      { id:18, ic:"divide", g:"muldiv", t:"חילוק לחלקים שווים" },
+      { id:19, ic:"times", g:"muldiv", t:"משפחת כפל וחילוק" },
+      { id:20, ic:"star", g:"muldiv", t:"פי בקבוצות שוות" },
+      { id:21, ic:"steps", g:"think", t:"זוגי אי זוגי וסדרות א" },
+      { id:22, ic:"steps", g:"think", t:"זוגי אי זוגי וסדרות ב" },
+      { id:23, ic:"ruler", g:"meas", t:"מדידת אורך" },
+      { id:24, ic:"tag", g:"word", t:"בעיות מילוליות וכסף פשוט" },
+      { id:25, ic:"clock", g:"meas", t:"שעון ומשך זמן" },
+      { id:26, ic:"pie", g:"frac", t:"חצי ורבע" },
+      { id:28, ic:"prism", g:"geo", t:"צורות וגופים לא אותו דבר" },
+      { id:29, ic:"mirror", g:"geo", t:"סימטרייה שיקופית אינטואיטיבית" },
+      { id:30, ic:"numline", g:"think", t:"סיכום מספרים פעולות וייצוגים" }
+    ]
+  },
+  /* ================= כיתה ג׳ ================= */
+  3: {
+    links: {
+      1:{ a:"66ff70bda98c40d4a27be64f6351d21f",
+          b:"a53c73dd570241fa86392f06b42036e8",
+          c:"0c52fba6ca724f3ba8cf7347e1a06913" },
+      2:{ a:"2f85744f4f5b4fd3aaef823b399099a3",
+          b:"4d5649341a3c43e788bd828961fd1dda",
+          c:"24aebdcd8b344b14bd27b9c4cb441325" },
+      3:{ a:"c74090e51f8747bdb43cba6c9690ce73",
+          b:"7e2b555b1e7044aaa81d5661db940da0",
+          c:"f7215421b05142288d9480138282d7e1" },
+      4:{ a:"07c4554866c94e1c8d161431c5b2c146",
+          b:"7779f3290cce45bf89d246941a821aaa",
+          c:"8a2718a7bd0c4e01a7900013b4ad3876" },
+      5:{ a:"63cd209d97604f10941ce63115d8d0e5",
+          b:"4e226ab096ab4f22a1019bc81e542401",
+          c:"4d27373122ac435c86b829cce5b42eb5" },
+      6:{ a:"0069f3da129040e9a2b13485e509a63f",
+          b:"4472f21222ff44e7adb3aa5cefa91435",
+          c:"d01624a6c4fa4e90a28b931d857d3c9d" },
+      7:{ a:"df720cd2c2ef44f585c82442de7d976e",
+          b:"16d2f551bfa24240b2bb8df966c39684",
+          c:"c56f00dc2cea45f9b2d5419e32905a5b" },
+      8:{ a:"c579c4f978274253ba29af6ba8da4661",
+          b:"69da324200a74e408a80d2106f2033c3",
+          c:"652a1fb7418e41e5839d61b95251303a" },
+      9:{ a:"48426185c96d4a0ca1006f514d155757",
+          b:"0d6297f14d4149e2b2e2e2bc67b386c4",
+          c:"fc80e342c58e4cb2b154216fd3095612" },
+      10:{ a:"3f0c8c1007de4a3f8443c1533db78c27",
+          b:"aed63e1684d245c19ec6f26ee9c550ee",
+          c:"ef2518919d284820a6f47041cbdebbd8" },
+      11:{ a:"ce932ef443044f35a4c07f938bf954f0",
+          b:"a0977442f65941728bdbb3e5f0a2ce83",
+          c:"3d56bca1424241c29d27bdf2fda0daef" },
+      12:{ a:"fc9ac60445034ae3b14df378e6f88c31",
+          b:"657a905ab8ff4bdeb6820b6c4aa3c7f2",
+          c:"b43f610e710e4cc8961cec0a70295b09" },
+      13:{ a:"9368ab7efd874203bf1b2af0a856095f",
+          b:"74f50f6482714a08b168c9cf6daf3243",
+          c:"723cb10975aa4de58d642aa1f33b0a1c" },
+      14:{ a:"dce1ebf1e14541f58d5ada9918a1e97e",
+          b:"da60eb1557e04c9e88b767bfda4a7d12",
+          c:"933a9edea1c14d7995f78b7c6bc07ad6" },
+      15:{ a:"378bef85fabb46fc8c43643a7cd359a6",
+          b:"a6a7a4b41ca44748aee41a0dd543af36",
+          c:"b9c3490dc28d40c984b3be67484b48d0" },
+      16:{ a:"34fb40e50c854fabaa83199ca2df304a",
+          b:"6a8bed02a0574351901c2e1c80b8f0a8",
+          c:"e98f0207a4f44047be6953d6d36fcbcc" },
+      17:{ a:"5c22657a94a742679fe08930f129e185",
+          b:"f47d2401257a4618966a8363e5c4d922",
+          c:"4bf8a12b04f54b3495a28c4eb7c59aa1" },
+      18:{ a:"021771df01a74ae9a428edb797bbb58d",
+          b:"2c26dd7de5934e5b968464339dc449f2",
+          c:"c1285207887d425581319a8eaafcfbc5" },
+      19:{ a:"ed57ab38a2f44bd18228d010f57cdfc1",
+          b:"7cce3054ea8e4899ae903677c141f058",
+          c:"88f49314d9c2498f9c86302eb3b0c373" },
+      20:{ a:"026062778c5e44b0b34f4945bedda34f",
+          b:"d9d2a864cd754df8a0d0a4de77d90e8b",
+          c:"108e6d047d00490b9499a1e80171b2fe" },
+      21:{ a:"9d3d0401daa04cc3be88e8808c3b40e6",
+          b:"c42b75328efd445291200ee1d3863413",
+          c:"2eb3cb61a60c45b19ead8566f7935cd2" },
+      22:{ a:"6a67cc3a2dcb42fab7537202b29a38fb",
+          b:"757e3ad1371f4909b7db99e9bb7f3534",
+          c:"313a4acb03174a308c9ea36198767aec" },
+      23:{ a:"0b994dcbd85348e7aba548cfa7415f4e",
+          b:"35dd261b6c684d30b0b0667430609c90",
+          c:"f2e2546357d7418e86517688f4aec048" },
+      24:{ a:"3f0642dc56b74ae7999a58732368cf68",
+          b:"4591b9e193264cad8fc7c1c35a09e010",
+          c:"c7b404e2a8604ebda53acdb8764c2d9b" },
+      25:{ a:"73a80adfc4224048a655c97968271658",
+          b:"0cc40c26e42748188b1661bde49059f1",
+          c:"43edba2842ed4083ad4f6c847665c9b8" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים וערך מקום" },
+      { key:"ops",  name:"חיבור וחיסור בטור" },
+      { key:"muldiv",  name:"כפל וחילוק" },
+      { key:"frac",  name:"שברים" },
+      { key:"word",  name:"בעיות מילוליות" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"meas",  name:"מדידות, היקף וכסף" },
+      { key:"data",  name:"נתונים" }
+    ],
+
+    topics: [
+      { id:1, ic:"table", g:"num", t:"ערך מקום" },
+      { id:2, ic:"numline", g:"num", t:"שכנים וישר מספרים" },
+      { id:3, ic:"steps", g:"num", t:"סדרות ואיתור טעות" },
+      { id:4, ic:"table", g:"num", t:"אל הרבבה" },
+      { id:5, ic:"magnify", g:"num", t:"אומדן באמצעות מספרים קרובים" },
+      { id:6, ic:"plusminus", g:"ops", t:"חיבור בטור עם המרה" },
+      { id:7, ic:"plusminus", g:"ops", t:"חיסור בטור עם פריטה" },
+      { id:8, ic:"speech", g:"word", t:"בעיות מילוליות" },
+      { id:9, ic:"times", g:"muldiv", t:"כפל עובדות ומבנים" },
+      { id:10, ic:"times", g:"muldiv", t:"חילוק והקשר ההפוך לכפל" },
+      { id:11, ic:"frac", g:"frac", t:"שברי יחידה וחלק משלם" },
+      { id:12, ic:"angle", g:"geo", t:"זווית וסוגי זוויות" },
+      { id:13, ic:"angle", g:"geo", t:"קווים וזוויות בצורות מוכרות" },
+      { id:14, ic:"pgram", g:"geo", t:"מצולעים צלעות וקודקודים" },
+      { id:15, ic:"dashrect", g:"meas", t:"היקף מצולעים" },
+      { id:16, ic:"triangle", g:"geo", t:"מיון משולשים" },
+      { id:17, ic:"rhomb", g:"geo", t:"מרובעים לפי תכונות" },
+      { id:18, ic:"lshape", g:"geo", t:"צורות על רשת בנייה ופירוק" },
+      { id:19, ic:"clock", g:"meas", t:"מדידות זמן ומשקל" },
+      { id:20, ic:"bars", g:"data", t:"קוראים דיאגרמה" },
+      { id:21, ic:"times", g:"muldiv", t:"חילוק ובדיקה בכפל" },
+      { id:22, ic:"ruler", g:"meas", t:"מדידות אורך סמ ומטר" },
+      { id:23, ic:"branch", g:"geo", t:"בונים ומפרקים צורות" },
+      { id:24, ic:"bars", g:"data", t:"אוספים נתונים" },
+      { id:25, ic:"tag", g:"meas", t:"כסף" }
+    ]
+  },
+  /* ================= כיתה ד׳ ================= */
+  4: {
+    links: {
+      1:{ a:"c16511e176924a3abe9e7a78d84282b6",
+          b:"fd79ec99777644aaaa82aca99741e72d",
+          c:"3fddf5c02e2745eca67a93ac3e063172" },
+      2:{ a:"d26febce53e54be6aeb8240f0b4905f1",
+          b:"ee9199cf8ed147cb88d0af902cc01eda",
+          c:"52fb4917a43c475abb8a2155fbec6ed5" },
+      3:{ a:"cde64aee2b8a41b09c97a2e926ed3c6f",
+          b:"bf1bdd58f069427096a5fcaac0963e2a",
+          c:"2a812c5935904d7c9192e3e6c51a85e1" },
+      4:{ a:"9db72eb2e73843ad883097dfe7052e88",
+          b:"e2a3037f4afe475bb4f5b5e36ba35b83",
+          c:"cc48ddaf044840aaa1e5416ad61b87da" },
+      5:{ a:"e0e9707b398b44e2bc899bf2b408d49e",
+          b:"13de751b05d54280890a64d482642333",
+          c:"69f8cea0ad6a40d993ce9a57021065a8" },
+      6:{ a:"6c79037d21dd4fe99490ff36f872648a",
+          b:"c22a0ce64c4e49e7b3750e7646e34b07",
+          c:"4a466ab88c3944018b9320d87f205120" },
+      7:{ a:"8e770368a7e24c6c8324edd1883a798e",
+          b:"c7b4c06938c4452ab3dd6c437cc4f02b",
+          c:"8f879a4de7ae40c3a8a95b01cc4228b0" },
+      8:{ a:"072388651e114a7db4521b071b3090b0",
+          b:"5c95fe7a3cef46dc96cd171898e33e05",
+          c:"8fde5d2774f849bab4c8176a77594451" },
+      9:{ a:"4fb55b64601c4b39a715cd10d9d8fd19",
+          b:"38d3852173d642e195771f0bfc4466c2",
+          c:"1a157b4d67f64b21aa0662fb413ffe3c" },
+      10:{ a:"cd932c0513b24262873c39811d9ba7ee",
+          b:"53c57aa1d85f45288d4ffe7e2bb11636",
+          c:"008d194c4d044e529b83263797f12111" },
+      11:{ a:"3b791261d41b449ba45a234b5294483d",
+          b:"5609e8d80c0b43a2bdaaebb90c5f76f8",
+          c:"6f03feb428164154b271cd13b1ca2513" },
+      12:{ a:"c4ade11dcb7e42d6987b3eabd71308ad",
+          b:"ed260cae5fdb4600a39d200f780df02e",
+          c:"a406072c341a415a8c124b6e3f926e57" },
+      13:{ a:"de12590ded914d43befe73a56d895911",
+          b:"9c51d628e5bf4f80867f11dd880056b7",
+          c:"8b48931495a047dda84f77d29f1a57cb" },
+      14:{ a:"36a5228a38944129bdce2e255d85173f",
+          b:"2f33fa07b41046d095b12eab168d75c8",
+          c:"7fd0038b766a4bc9b2fbfd051384e10a" },
+      15:{ a:"fe8c1a1691db42189124f2752c9f3f3b",
+          b:"60965c8bfc754177a0450b2520a86f5c",
+          c:"2d7676a1741748bba7e52986d7d25810" },
+      16:{ a:"2dd7240572dc41e3a320d6ab258c53aa",
+          b:"edf4cee1f5d44bab92eeed9302bd122e",
+          c:"889384e085ab494789e861613537fb2f" },
+      17:{ a:"0bea028f4c2f48e68b0f9ccd4d346af4",
+          b:"7349dbab99604336bb5fca936829ca64",
+          c:"5ca4a4392fc84c9496fc7e2fdbbc14da" },
+      18:{ a:"c9ba5991de514567a44f08062a908023",
+          b:"42e3101305374c1890f9f10d550b13ca",
+          c:"b2701fb979b145818365c44a71d09015" },
+      19:{ a:"e878b597f9a74401987780ff36935b80",
+          b:"d3b1fd9ed32a4c8192201c136c708120",
+          c:"6315abb98cd443d99574fc98ddadeb4c" },
+      20:{ a:"716d152915294437b1348099f1333305",
+          b:"2f51d11167664fa8ac6e27cba9863e6d",
+          c:"12e990a6cb384855965c63e8d7233698" },
+      21:{ a:"d8fe9431a9a4441cbff7804ca36bb39a",
+          b:"7f133278fe38497884f68569c5e4451d",
+          c:"01facc4c8984418f95f7cacd383627ff" },
+      22:{ a:"c902d595f9ce4449bdf568984b0c0484",
+          b:"2dfc0404b46f4e02981de187d7eedd46",
+          c:"7e7c36bd45ec4b75bb1fe791a3056c2e" },
+      23:{ a:"a06f892b214b4bbd9f2670e17390ac43",
+          b:"d427fe58f1c6442eaa54ad127c1675d8",
+          c:"9a4a52fdde994bc09ed26d64f1a60e91" },
+      24:{ a:"8f1a456bddbf4da1823d873cadd80bc0",
+          b:"e3ee1aa0fb95439e8e113026676b5c90",
+          c:"88febedf1f964eef9bb04ad189ada3d4" },
+      25:{ a:"22d109068cb64697aac959e4b8f9006c",
+          b:"357825c14da54b359435cc64150fa64b",
+          c:"69e5180c0bba4c138759dcee7ecff140" },
+      26:{ a:"f5b5667b73704755b1a658c7fa5b52fa",
+          b:"ba87adbaa6cf45d5bfe7580006620b0d",
+          c:"7cd1538324c14ae9b73e98c493b847cf" },
+      27:{ a:"bb7ea15a7288433e8f20b3a761700082",
+          b:"97a78f8ad7e14537964b08fd496ca8ad",
+          c:"af8f6ce5baa34773873d858dfd9fe5ab" },
+      28:{ a:"5794d9b0846c4859bfee8541e77ee3f6",
+          b:"474a51d8ec314fcf98a43d2c0bf49e91",
+          c:"ac71f6b3330444b3b1004cb82a889001" },
+      29:{ a:"07de1dbfc6f644d7a25ca965d0e19cb2",
+          b:"2bb8285cc3e54277ab2f3be506f8291c",
+          c:"394f29b6dba242989bdadf18503f35df" },
+      31:{ a:"ef716fba16f84b7f9d31bd4a14f2eff5",
+          b:"92f2188824954405a7eb673878682c77",
+          c:"858f257962a94f04adf6327e7093592f" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים גדולים" },
+      { key:"ops",  name:"חיבור וחיסור" },
+      { key:"muldiv",  name:"כפל, חילוק וסדר פעולות" },
+      { key:"frac",  name:"שברים והתחלקות" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"meas",  name:"מדידות, שטח והיקף" },
+      { key:"data",  name:"נתונים" },
+      { key:"synth",  name:"סיכום" }
+    ],
+
+    topics: [
+      { id:1, ic:"table", g:"num", t:"מספרים עד מיליון קריאה ופירוק" },
+      { id:2, ic:"magnify", g:"num", t:"סדר שכנים ועיגול בתחום המיליון" },
+      { id:3, ic:"plusminus", g:"ops", t:"חיבור רב ספרתי בטור" },
+      { id:4, ic:"plusminus", g:"ops", t:"חיסור רב ספרתי בטור" },
+      { id:5, ic:"tag", g:"ops", t:"אומדן ובעיות חיבור וחיסור כולל כסף" },
+      { id:6, ic:"times", g:"muldiv", t:"חוקי פעולות וכפל בעשרות שלמות" },
+      { id:7, ic:"parens", g:"muldiv", t:"סדר פעולות חשבון" },
+      { id:8, ic:"times", g:"muldiv", t:"חוק הפילוג ומכפלות חלקיות" },
+      { id:9, ic:"times", g:"muldiv", t:"כפל רב ספרתי" },
+      { id:10, ic:"divide", g:"muldiv", t:"חילוק ארוך ושארית" },
+      { id:11, ic:"frac", g:"frac", t:"שבר ייצוגים ושמות שקולים" },
+      { id:12, ic:"frac", g:"frac", t:"שברים על ישר והשוואה" },
+      { id:13, ic:"frac", g:"frac", t:"שברים שקולים ייצוגים השוואה וישר מספרים" },
+      { id:14, ic:"factor", g:"frac", t:"התחלקות וגורמים" },
+      { id:15, ic:"factor", g:"frac", t:"מספרים ראשוניים ופריקים" },
+      { id:16, ic:"lshape", g:"geo", t:"מקבילים ומאונכים בצורות" },
+      { id:17, ic:"pgram", g:"geo", t:"מצולעים ואלכסונים" },
+      { id:18, ic:"ratio", g:"geo", t:"מלבנים ריבועים ויחסי הכלה" },
+      { id:19, ic:"angle", g:"geo", t:"סוגי זוויות" },
+      { id:20, ic:"triangle", g:"geo", t:"מיון משולשים" },
+      { id:21, ic:"ruler", g:"meas", t:"יחידות אורך והמרות" },
+      { id:22, ic:"gridrect", g:"meas", t:"שטח והיקף של מלבן וריבוע" },
+      { id:23, ic:"gridrect", g:"meas", t:"שטח והיקף של צורות מורכבות" },
+      { id:24, ic:"clock", g:"meas", t:"זמן ומשקל המרות ויישום" },
+      { id:25, ic:"bars", g:"data", t:"דיאגרמות ומסקנות" },
+      { id:26, ic:"mirror", g:"geo", t:"סימטריה שיקופית וסיבובית" },
+      { id:27, ic:"angle", g:"geo", t:"זוויות וקווים במישור" },
+      { id:28, ic:"triangle", g:"geo", t:"משולשים מיון ובנייה" },
+      { id:29, ic:"rhomb", g:"geo", t:"מרובעים תכונות מיון והכלה" },
+      { id:31, ic:"book", g:"synth", t:"דף סיכום אינטגרטיבי לכיתה ד" }
+    ]
+  },
+  /* ================= כיתה ה׳ ================= */
+  5: {
+    links: {
+      1:{ a:"279ea200737b44ea9acf275831d7d19c",
+          b:"7af64cc15ad24446a4537764553ecb79",
+          c:"567aa489fe4c40ed8563025260dfee0d" },
+      2:{ a:"4abf84de7ce24b71bf5e47603d0334d7",
+          b:"a213cee8e0a1449e901f12cc721a8e61",
+          c:"a6558c915cca42309e2dd7e37909709f" },
+      3:{ a:"082390d2a73b4c13a910df1551114223",
+          b:"7613788163e34cfdbdf102bb21d98087",
+          c:"34f133f69bdf4af0b504ae88a6106b2f" },
+      4:{ a:"5eb8668453e84edf873af87c12dccec6",
+          b:"6f5d93961b5c4e93bdc2b418afd3f4eb",
+          c:"42701040b879426c943ea19441246e1b" },
+      5:{ a:"9bc70aca2e45443ba589470f6b69dba5",
+          b:"01c53f1a499a4d418a5c4f7f80122151",
+          c:"15486a3c194d47019c50e32e5f34f62d" },
+      6:{ a:"bf087bb730f3462fa6524835a8b516b7",
+          b:"d52fa784e0bb409c8a4608fd9fb0122c",
+          c:"ce4e08353f4548ab9f4fe8d678664e99" },
+      7:{ a:"cd700d350f67411a803741ae1e2dc9ec",
+          b:"972a0329aa4d422abeb985816a36db35",
+          c:"4b1967df36dc49db91ab058391ab8305" },
+      8:{ a:"10477353cde545bdba613b4c853a5a09",
+          b:"786fa82f879f42f9b6262b27b6fe60ac",
+          c:"c279e6a077444ecdbe1d0d0b3e04acb3" },
+      9:{ a:"5dcead75ede34b7892fffdea2bb20087",
+          b:"cfc6da608a8d4950a8d479f387d89e04",
+          c:"bc001edd88854c548d59dbf87f19be35" },
+      10:{ a:"1e4cc091f6fb4addb3084537871187e3",
+          b:"6a2abc6e28534321a3af4d7ada2b13d7",
+          c:"8768da1fb9c44b828daf3a58aeb1448b" },
+      11:{ a:"bb0f9ce2918747a49111d8e944f55c97",
+          b:"047b3cf13c684c76a7a130f8e66a94e2",
+          c:"78519b006ef14eb08824825e7dc11888" },
+      12:{ a:"65e887ce5770403abca2892741876bc4",
+          b:"22cbc9d3ac124e41abc40d0e762c3d27",
+          c:"e403744f65f64642aa9228e059ed6afb" },
+      13:{ a:"6e27197feecc46c3a901b89bd78d0798",
+          b:"196bae675c754d98af1a454966bf91ae",
+          c:"4b9d564658a847e19435a7d2a7658290" },
+      14:{ a:"e5be02dde9a4485ea3cfd2977e5c4987",
+          b:"d81a4bd4b7c34662a7a968ddb23831d5",
+          c:"60e91f28456d49cabe5bca5a95bf1cc2" },
+      15:{ a:"8ce5045097ae4b5685a0ac5425e8fdca",
+          b:"e69b17161f424491ae34aeb24f225d1b",
+          c:"fa4391c3bd5d4dc2a8bbe59b4df98a6e" },
+      16:{ a:"9f2d74bca9b74a22a17156cfcf2866ce",
+          b:"255386dbf0ee4256aed11861c856b27a",
+          c:"a10761363a324da3874435f23c85b474" },
+      17:{ a:"5f00f26f765f48c091df28fa5389c229",
+          b:"56f620d49a0d42c78624e80386aea3e0",
+          c:"c869e3f60ef44488ad751e95f32e8b0b" },
+      18:{ a:"f11e6c74021b42fbba74b9eba971af8d",
+          b:"eeea738783c04c01a14578a599a968a6",
+          c:"17be3972a889401091b468d8e5e04bf2" },
+      19:{ a:"2f49fcbedaa34f1b9997341d7e077362",
+          b:"166f6c3d4124433788bae2e23819f9b0",
+          c:"4a4b639ca2fb4a2395cf6aef67d6e234" },
+      20:{ a:"b305c04c17ad4ba4b7021b6be273ea87",
+          b:"fc7dc71e88f24a25bd9947a7ce052577",
+          c:"e20c9ddfd2dc4868a87eeb3cf3bd62cf" },
+      21:{ a:"a016c68e75be4ee180c4d4c44d531e06",
+          b:"3aaf47cac9444a96969e48425ceee23a",
+          c:"9393231770ca4aceabbcc28b59498533" },
+      22:{ a:"fa55e7cc520342109df6766b39fe126a",
+          b:"d5ee1fa37f0144aaaa3a3dfb9ba1b16a",
+          c:"c3aeb7e6bf444fcea376c1ae3b13bb8e" },
+      23:{ a:"5faf61b196664f3bb38a3feadec6e1f9",
+          b:"f448dc893ff847feaf99370c191efcee",
+          c:"c3ef78e93744461bb897d2013e39bd68" },
+      24:{ a:"2896006711854b278551cbc6dfcb1324",
+          b:"34d92d0ef47a4fcba3787efe8ede83f2",
+          c:"b21a2953c0fd469d996f634046be8c63" },
+      25:{ a:"82731f6bb0ea47a1b634e947ae150a51",
+          b:"c02475c752324cf3a82e41bfa94b1f48",
+          c:"1761d0555172444085209da34f977922" },
+      26:{ a:"d26b17230aaa4eb9b98374c78ac96868",
+          b:"d7bf6b38debf497880eb0cbe48b580b4",
+          c:"bd52f3b243d640d4aaaff6bd545875da" },
+      27:{ a:"37dab7d711124e378702a495eab046c8",
+          b:"5512b7ecabe44c5792de1a1a93f67d8a",
+          c:"b2bfaafd50d94895b6e06072540fccc9" },
+      28:{ a:"1d9b2d11ec6e41b3b1c7233464e30413",
+          b:"7106b4638b2c4bb9b81b0fc668f898dd",
+          c:"afd18b2fd1434bcb92b39ae7a46ae8c1" },
+      29:{ a:"c82a4f617f9340adbd493f55c2f30ec0",
+          b:"cf88e6fe5db74a37a167d388e32b5bda",
+          c:"c4aeefcd86e541f38d3d3d6d88e38b27" },
+      30:{ a:"c959c7a8f4064a0db9dc7b9b3af42a09",
+          b:"0dec15979b9f424e9e1a12484f33cd74",
+          c:"a3b676973d404e52abf3a94a02527040" },
+      31:{ a:"0df19a15439844c19046824b58d839ff",
+          b:"a5d5558f754d4af9ac9a8bd5bde8966d",
+          c:"8be63237709b4eb1a5574b8f65097850" },
+      32:{ a:"fa8592180c5a42f9bf77b69bf9e4993d",
+          b:"62c5fcb4518e4b16bb70194bb635a320",
+          c:"435846964cae4c21bf8fa6685bc9f89a" },
+      33:{ a:"25a35bec1b9b4104892ce769859a6512",
+          b:"207e690c250944928d94ddb2384ec7d8",
+          c:"ff4c197865614c76b543d1546f4b4c7a" },
+      34:{ a:"a026f35df72e4a2488e5dbdac76cfcb9",
+          b:"f46b9f920bde495497cc05b2c76d6e7e",
+          c:"f2ab05fea8574817afa0fa8c205c7341" },
+      35:{ a:"5c162439c4464cc5beeaafd6645464dd",
+          b:"1de7ecd9b3ec44a4a183002b4475ad4c",
+          c:"a1a015a125c442d68ba44a6890cbc5fd" }
+    },
+
+    groups: [
+      { key:"num",  name:"מספרים ופעולות" },
+      { key:"frac",  name:"שברים" },
+      { key:"dec",  name:"מספרים עשרוניים" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"area",  name:"שטח והיקף" },
+      { key:"meas",  name:"מדידות" },
+      { key:"data",  name:"נתונים וחקר" }
+    ],
+
+    topics: [
+      { id:1, ic:"times", g:"num", t:"תובנה מספרית כפל וחילוק בעשרות ומאות" },
+      { id:2, ic:"magnify", g:"num", t:"מספרים גדולים ערך מקום עיגול ואומדן" },
+      { id:3, ic:"times", g:"num", t:"כפל רב ספרתי ובדיקת סבירות" },
+      { id:4, ic:"divide", g:"num", t:"חילוק מאונך ושארית" },
+      { id:5, ic:"factor", g:"num", t:"גורמים ראשוניים ופריקים" },
+      { id:6, ic:"parens", g:"num", t:"סדר פעולות תכנון ולא רק ביצוע" },
+      { id:7, ic:"frac", g:"frac", t:"חזרה על משמעות השבר וייצוגיו" },
+      { id:8, ic:"frac", g:"frac", t:"שברים על ישר והשוואה" },
+      { id:9, ic:"frac", g:"frac", t:"הרחבה וצמצום שברים שקולים" },
+      { id:10, ic:"star", g:"frac", t:"מכנה משותף בחירה יעילה" },
+      { id:11, ic:"frac", g:"frac", t:"חיבור וחיסור שברים במכנים שונים" },
+      { id:12, ic:"star", g:"frac", t:"חלק מכמות" },
+      { id:13, ic:"frac", g:"frac", t:"שברים גדולים מ 1 ומספרים מעורבים" },
+      { id:14, ic:"plusminus", g:"frac", t:"חיבור וחיסור מספרים מעורבים" },
+      { id:15, ic:"frac", g:"frac", t:"השלמת שברים ופעולות הפוכות" },
+      { id:16, ic:"table", g:"data", t:"קריאת טבלאות וחישוב נתונים" },
+      { id:17, ic:"bars", g:"data", t:"קריאת גרפים והשוואת נתונים" },
+      { id:18, ic:"ratio", g:"geo", t:"משפחת המרובעים ויחסי הכלה" },
+      { id:19, ic:"rhomb", g:"geo", t:"תכונות ואלכסונים במרובעים" },
+      { id:20, ic:"lshape", g:"geo", t:"בניית צורות ומיון לפי תכונות" },
+      { id:21, ic:"ruler", g:"meas", t:"המרות יחידות ומדידת משקל" },
+      { id:22, ic:"dashrect", g:"area", t:"היקף יחידות וקווים מקבילים מאונכים" },
+      { id:23, ic:"angle", g:"geo", t:"גובה במשולש חד זווית וישר זווית" },
+      { id:24, ic:"triangle", g:"geo", t:"גובה במשולש קהה ובמקבילית" },
+      { id:25, ic:"gridrect", g:"area", t:"שטח והיקף של מלבנים וריבועים" },
+      { id:26, ic:"branch", g:"area", t:"שטח צורה מורכבת פירוק והרכבה" },
+      { id:27, ic:"gridrect", g:"area", t:"שטח מקבילית והקשר למלבן" },
+      { id:28, ic:"frac", g:"dec", t:"מספרים עשרוניים ערך מקום וייצוגים" },
+      { id:29, ic:"frac", g:"dec", t:"משווים שברים ומספרים עשרוניים" },
+      { id:30, ic:"frac", g:"dec", t:"חיבור וחיסור מספרים עשרוניים ואומדן" },
+      { id:31, ic:"gridrect", g:"area", t:"שטח משולש בסיס וגובה" },
+      { id:32, ic:"frac", g:"frac", t:"נעלמים ומשוואות בשברים" },
+      { id:33, ic:"bars", g:"data", t:"ממוצע וחקר נתונים" },
+      { id:34, ic:"clock", g:"data", t:"שכיחות סיכוי וזמן מתוך נתונים" },
+      { id:35, ic:"mirror", g:"geo", t:"שיקוף סיבוב והזזה" }
+    ]
+  },
+  /* ================= כיתה ו׳ ================= */
+  6: {
+    links: {
+      1:{ a:"83109f8e238549a3bdc19f79108144cb",
+          b:"4b290d5f7ff84bba92a8922754904fc8",
+          c:"a338383a6d6840deb2034c5c1aee7d2d" },
+      2:{ a:"fb7b23a6ba0148a1b3214b2bded38404",
+          b:"0a4f563e6e524a4197827361d4beba41",
+          c:"3006527c1a284acd82fa8d3666ec2b38" },
+      3:{ a:"0b5f334408b54a6296ae689cd3825c14",
+          b:"f9601108b5c041018a64abfcfadd3c70",
+          c:"7293e2a2261f426fbdda52a3fee8f0da" },
+      4:{ a:"e38b2869141b41fb9f000c5cd3dcad50",
+          b:"38e317b81414403db63211a098802715",
+          c:"5e27f374f1174eb5bb599e0f376b44d7" },
+      5:{ a:"5887c0d0837b464a9fa34a05ddea50d0",
+          b:"d6daf1c7a6704c19aae5d63c82bff8db",
+          c:"8ef7dfbb350a4928a398258415f2f192" },
+      6:{ a:"c57518a2c69e482685be059fec68470a",
+          b:"3701d63874d341b8aac8d529b4cebcd6",
+          c:"88fd2c8e7b7344108109d63c556ca435" },
+      7:{ a:"c73305ad3c064839bf4375ee1cb23f29",
+          b:"0be14af5dc214d23975e51eb5050bd36",
+          c:"43c898389ca74873a6972e49f6ae024e" },
+      8:{ a:"f163f83d87f849f4b981db6ee2722269",
+          b:"96d53ded6e0044dfb07e32ef87d7941f",
+          c:"46df9eaca3ff48b581474f29bab19c80" },
+      9:{ a:"1ea1f15a94f34e66b8c2be73548ffc5a",
+          b:"f7e52398769742119ef519ca780a2910",
+          c:"2feaa550e5624413850647e884ea7076" },
+      10:{ a:"512187a59bb74fc1aea64cc35aa5a23f",
+          b:"37bc30ee47e147b082dbd33af980a151",
+          c:"7ad8b30e2e8f4e64b089a3233e7e6beb" },
+      11:{ a:"a373338a56b04c8a8252aaf5cb15e36a",
+          b:"0977e97f7d95447585aab8b01270ca3d",
+          c:"a9e9bcfb23534a17aee0c47ff808a22d" },
+      12:{ a:"26eedcd10ea64b7e9994367bfcd90c33",
+          b:"4cbce46755aa48bdb2637ab19efabe5a",
+          c:"2a659fe72592474693a00b469687867b" },
+      13:{ a:"b974946af46b47f3b95da3d76c9bb7d8",
+          b:"b1e3a1e58df2423fbbe265dc84eba96d",
+          c:"6a828a45dba340c190817ed516eea6b2" },
+      14:{ a:"73c7da8297034ae885f2f12d9de66e68",
+          b:"9afd181d018240c7a4421edf5cacf1d7",
+          c:"e224d2095c3640e6b17f36cc113d3663" },
+      15:{ a:"88fdc091ceb04702a8c386094cb97627",
+          b:"bfd3f3ca19da48c4afb5038ff159fa7d",
+          c:"73a2e04f778643e2ade45ba38ffb242b" },
+      16:{ a:"bbf3d375a36f4fd1a609bb875822f059",
+          b:"d8b002095de6412ab85048f3910e60df",
+          c:"d00ead119d7a4edf975eee7b7698bb1a" },
+      17:{ a:"37bd6cb1cf224c10bb5c352731e2bd5d",
+          b:"73dbb957351b4c4c818afc8694eedca8",
+          c:"85be0c2282a34d91b2fbdf474237077d" },
+      18:{ a:"e85bc87a7bdb49d780d445b6d4a0eca3",
+          b:"0e4e3d1c0b744f4b982d5cab44aa1729",
+          c:"77aadbfee73a4d2fa104c5f2bd2b637b" },
+      19:{ a:"3b2a86c6eda04c9f8306847cf8b3a1b5",
+          b:"e6085f0b07e9474a84bf173f1b6a2a79",
+          c:"2b940056be9b44b78c566b16ec2b452d" },
+      20:{ a:"b72fa1e34ff84f15802173f2dcf8dd0f",
+          b:"1229226e126b4a4b908488503eafcba4",
+          c:"1f47546e37aa40cf8814c485ee6a3e30" },
+      21:{ a:"21d2e85e62174c03aaa3dde332f01552",
+          b:"ed6ea5745d3848768ab3eb8431330a93",
+          c:"366d3e1d5f4745359cfa5b1afc32ff3a" },
+      22:{ a:"044d3f37c6bd4fada6aa6192ba3d0fe3",
+          b:"0ec9f2398585408dada6611f6fa5557d",
+          c:"4d53088bd9ca4dee89007cc14a7a33c1" },
+      23:{ a:"6134fd28ceef44dea885a9a10818c26f",
+          b:"5cf26d7842c94b9fa3a9ed286689257f",
+          c:"5b8cf4a731194480ba7ae7b209dbd6e1" },
+      24:{ a:"023bea915d664537ab3f8ebc5c54019a",
+          b:"c5ccf54cbd2144f5a650ac6edbdf4aa9",
+          c:"a4d9b10a5ec9440cbb72aeea32b15e05" },
+      25:{ a:"ef41934296044efeb6f8e36c80c7a1e3",
+          b:"fdd86091d2d34c81ae2e008fd5b4b09b",
+          c:"a14eb0b9e66a4bc69ccc39e36bf4273a" },
+      26:{ a:"b504d2a6490f4973b1608844220cb792",
+          b:"fb1ecc23a81946cf81e83dddf224da03",
+          c:"a4100c050b4f46e5bf3983256762dccf" },
+      27:{ a:"79cc6db7432d4fd6a683ef45980d4299",
+          b:"608ccf74446b420e8d28a36ba023e34d",
+          c:"325dbe7b49a341aebe80b552c9cd80ec" }
+    },
+
+    groups: [
+      { key:"fracmul",  name:"כפל וחילוק שברים" },
+      { key:"dec",  name:"מספרים עשרוניים" },
+      { key:"solid",  name:"גופים, נפח ושטח פנים" },
+      { key:"pct",  name:"אחוזים, יחס וקנה מידה" },
+      { key:"geo",  name:"גיאומטריה" },
+      { key:"num",  name:"מספרים ופעולות" },
+      { key:"data",  name:"נתונים" },
+      { key:"synth",  name:"סינתזה וחשיבה" }
+    ],
+
+    topics: [
+      { id:1, ic:"frac", g:"fracmul", t:"כפל שבר במספר שלם" },
+      { id:2, ic:"times", g:"fracmul", t:"כפל כחלק מכמות ושטח" },
+      { id:3, ic:"frac", g:"fracmul", t:"כפל שבר בשבר" },
+      { id:4, ic:"times", g:"fracmul", t:"כפל מספרים מעורבים" },
+      { id:5, ic:"frac", g:"fracmul", t:"כפל שברים יישום ובקרה" },
+      { id:6, ic:"frac", g:"fracmul", t:"משמעות חילוק שברים" },
+      { id:7, ic:"frac", g:"fracmul", t:"אלגוריתם חילוק שברים והופכי" },
+      { id:8, ic:"frac", g:"fracmul", t:"כפל וחילוק שברים בחירת פעולה" },
+      { id:9, ic:"frac", g:"dec", t:"כפל מספרים עשרוניים" },
+      { id:10, ic:"frac", g:"dec", t:"חילוק מספרים עשרוניים" },
+      { id:11, ic:"prism", g:"solid", t:"חקר גופים ותכונותיהם" },
+      { id:12, ic:"cube", g:"solid", t:"תיבות ופריסות מעבר בין דו ממד לתלת ממד" },
+      { id:13, ic:"cube", g:"solid", t:"שטח פנים של תיבה" },
+      { id:14, ic:"cube", g:"solid", t:"נפח תיבה ומבנים" },
+      { id:15, ic:"cyl", g:"solid", t:"קיבול סמק ליטר ומק" },
+      { id:16, ic:"ratio", g:"geo", t:"מרובעים ויחסי הכלה חזרה מנומקת" },
+      { id:17, ic:"ruler", g:"synth", t:"דף סינתזה מדידות גאומטריה ופתרון רב שלבי" },
+      { id:18, ic:"percent", g:"pct", t:"שבר עשרוני ואחוז שלושה ייצוגים לאותו מספר" },
+      { id:19, ic:"percent", g:"pct", t:"אחוז כחלק מכמות" },
+      { id:20, ic:"percent", g:"pct", t:"מציאת השלם ויישומי אחוזים" },
+      { id:21, ic:"ratio", g:"pct", t:"יחס משמעות ייצוג ויחסים שקולים" },
+      { id:22, ic:"map", g:"pct", t:"קנה מידה במפות ובשרטוטים" },
+      { id:23, ic:"magnify", g:"num", t:"מספרים ופעולות סדר אומדן ובדיקת סבירות" },
+      { id:24, ic:"bars", g:"data", t:"אוספים ומייצגים נתונים" },
+      { id:25, ic:"star", g:"data", t:"משווים קבוצות ומנסחים מסקנות זהירות" },
+      { id:26, ic:"cube", g:"geo", t:"שינוי ממדים מה קורה להיקף לשטח ולנפח" },
+      { id:27, ic:"steps", g:"synth", t:"חוקיות ופתרון בעיות רב שלביות" }
+    ]
+  },
+  /* ================= כיתה ז׳ ================= */
+  7: {
+    links: {
+      1:{ a:"22303ba02b3b46c3ae2529e347cbce2b",
+          b:"986094aab49a40c2896c5c9707eb1f9b",
+          c:"3b76f7b2dabe498b845a8441a2fcb896" },
+      2:{ a:"1772f7ba7ef24a409dbb2d0423702d7d",
+          b:"c00e0a3cfa24427abe1549232cdc4749",
+          c:"bea3993e136246edaffb14a03e469c31" },
+      3:{ a:"0c2a80be32414c0a8feac1c6ef34e381",
+          b:"25ecf3b768764d178f44bc1f10118a25",
+          c:"aed975f61ad34daca4bbed2a5f8a0cfe" },
+      4:{ a:"fe41cb40e2684998a75d6b81dd59f2e1",
+          b:"a0ab6e613ac442cda1e33bb5c1f8bdbc",
+          c:"4682de36b557484ead900a3f1d3afd0e" },
+      5:{ a:"40f2c2216dce473da84e2a52c8f6d3d1",
+          b:"fc05cf6b5c224f87ada0720dd677a3d5",
+          c:"2ac6115677dc4f068d0de1eebd19e842" },
+      6:{ a:"24fcfe98b87c4658956fd9b38de0c3fa",
+          b:"36b06847078942d887b89b4f7b02f879",
+          c:"128e852808de4280ad80ab68efc6c983" },
+      7:{ a:"49dab9ee86ab4a1695a9c2d9907c1352",
+          b:"a6a6bbb4ab4a4abea68198d4d5e3599c",
+          c:"ac9644a7213d411eaf0e3b6259fee48d" },
+      8:{ a:"91def8012efb44c9bdd092522fa576d6",
+          b:"52ce097ba42e4fd98e08c9beb5ec7754",
+          c:"177a3ed14275467a98ed9b2d43068a39" },
+      9:{ a:"9cc828f0a95545a5914b218815193f85",
+          b:"e878759e4a3f47b5a74943b59ef6f801",
+          c:"6f909c7d488943bb9a05d1f6f95eadcf" },
+      10:{ a:"0ba3006d6cd742d2aea3e5589589f081",
+          b:"22888a56204a4e03b8a683eb0184170f",
+          c:"d022d39d03d7401b9bad9ed49e47931a" },
+      11:{ a:"dfb4400a11c9432988225d4ce46ad10b",
+          b:"fab820d281f0404dbfcbbb1285e3832a",
+          c:"7ccc82cfdb244d588eb7ec0490737516" },
+      12:{ a:"67212d6b868f435497cd0e499d505554",
+          b:"bcde51d6e6434dc29488251d732e5ce6",
+          c:"1bb23435fc384a8fb1740572d3c96d4a" },
+      13:{ a:"c922481b9d684fcd95fa9cd3f8a443b6",
+          b:"ad34b53f6f4a478f8295841dacf5567b",
+          c:"65323c3837f84ec69e42562c1b7b5250" },
+      14:{ a:"a439f7ee6fd449cb8967d68736c85baf",
+          b:"71b5e01552e24cadb06f534583325094",
+          c:"7f33f448709344a8a2b59c8eaf82ce99" },
+      15:{ a:"57ca08aa4a1c4a7e98642f09f7004a96",
+          b:"a510e487b4b74a6dbd558e1421120374",
+          c:"8b1c151fd0c945a08b8599785f3e63da" },
+      16:{ one:"7d8f7aa1d3c743f896c9ddddb943355e" },
+      17:{ a:"747baedcab3d41df85f6b1ec7335effe",
+          b:"d11ffa4f8e624651b66c99ba4329af41",
+          c:"ae6680f3a438438e8661207636a20bd1" },
+      18:{ a:"6897f6fbfe9c4903ae785551ec5b1140",
+          b:"514a8fad839e493e9ffc4ad707872962",
+          c:"5bdd7cd2b2974728bc8dc804af6f77fa" },
+      19:{ a:"a15b26c37ac64c20916a058e9d7bf7b7",
+          b:"e8d7e047c4fc4cd9923e139d248eac97",
+          c:"4fa83be3bf83400baf867c15d9054b63" },
+      20:{ a:"6e8c4a042e5a4a1ab3447118fbe0e242",
+          b:"2a8a4f8bc5f5465eb3ad6faf965509a1",
+          c:"59408ea089bd442a829c4bb989e86927" },
+      21:{ a:"120a05cce9424f3597ac63b7ca89345e",
+          b:"56c0d095329147cc9707159e4f484ce5",
+          c:"f0918f4bf4dc487480242a3262a53872" },
+      22:{ a:"ba03fe1063d64e999ed205cd18fd208a",
+          b:"1a0296d8cb5b48f097a3bdb9da8d90d5",
+          c:"ca991255a8d04d62b41325c6945296e4" },
+      23:{ a:"33b858063d6e4afbb6faaed6a859d8d3",
+          b:"8437303834c1443aa2595639d937c0af",
+          c:"9925cef7cc404df088bba756e8ca30d0" },
+      24:{ a:"129976246ab548809e8decb9905dfd1a",
+          b:"0d88d1d98f07422aa5cbc2e711852f51",
+          c:"be86819fa47d4577b048bc4ca384d1aa" },
+      25:{ a:"d8e572a0802f4380bedcd24b93845936",
+          b:"77bee497e59e4727b225ff9fa3014372",
+          c:"b43f7fb8659f42cfa5baff8ed062543a" },
+      26:{ a:"ea61dc93d42c4f6c9b2799b0d240b577",
+          b:"1202677ce8d842b0ad0206900f741ae4",
+          c:"2dee153201634f86b6c8e48c6b70cbda" },
+      27:{ a:"4ba20c8578f14678974bb4e82a6d1431",
+          b:"5525087590c44365ab85c43fa2c66216",
+          c:"1bd1549b99c547b0b915f02f455d6707" },
+      28:{ a:"42f063f1b6b44000bdfacb5d927a0524",
+          b:"8df0665dfc3d4a6b94b3a60f383a3c28",
+          c:"67b85e5cf6ca4a88bf10e4ce7501a1fc" },
+      29:{ a:"e3427c3756614e028766768e439e667a",
+          b:"f1131c405f964186b3957ce2110c2915",
+          c:"adef6cf437894f559832c4b28583a695" },
+      30:{ a:"d12388139a1240f6b02be4ae7a8dcd6b",
+          b:"d19c792b455147539676c69dc877715a",
+          c:"c6b1e18f34644f72abf64a5e7d751323" },
+      31:{ a:"3134c24d12974828960f495809749c16",
+          b:"9c2cdff6b0ce42abb551303df3d304cc",
+          c:"c553fd7766a44f71823dd8d522aae95d" },
+      32:{ a:"fe59996ff67f4f56970e4dad5d87d4bc",
+          b:"88ef879d37d7440e9bdd7d065de80783",
+          c:"a91be378648f45be9cf0266fc3f8ebd0" },
+      33:{ a:"b5682a094ac7484c9304e204698af1d2",
+          b:"74b8bcb6d2a74c0fb6b5f34003a37334",
+          c:"8429207575cb4e129439efa5ca3a3191" },
+      34:{ a:"54c5448bd4144627aaa38b219761bae0",
+          b:"172ed37f17364a5facc2888a73440217",
+          c:"fd417c53e4934fdeb656a56ba50f3098" },
+      35:{ a:"1b3ad38b98514fd6ad2ab1b123b86b69",
+          b:"f802c020989d4603b395a3a68af7d7ba",
+          c:"a5bf56446b3a46659478fd2990bb16ee" },
+      36:{ a:"b977f935d4a945728fe185d584f5758f",
+          b:"e429aa318e6c421395fe1faafa1aa1c2",
+          c:"7d942e2631264d10b4b66329c8befd88" },
+      37:{ a:"27698585e03a4077a04f97d63cecbf4b",
+          b:"0e3c7ab812674cfcb8ec35837e160705",
+          c:"e13ce58e9f254208af499819247e95a3" },
+      38:{ a:"957eae726e9b4a838f3fc3315486241f",
+          b:"59772635b2fd47b39158f9cf2f0ff807",
+          c:"b583e62654ed4a8bb4c3578992d3d66f" },
+      39:{ a:"23bd176050df49fcb2533508ef41c8ab",
+          b:"b4d831e8bc114ee7a82a1d771257e10b",
+          c:"c80fb941f8b14acaa9dbc6b4c3727404" },
+      40:{ a:"09fd76e916674a12a863714c2a86461e",
+          b:"69e49f7d599849e2af919db27819a053",
+          c:"652838b9733d4328b0f9962091c746de" },
+      41:{ a:"5dca17e162c84920b693c81bd4237ebd",
+          b:"4cf55a78f5b04c76814251c24fcea4d7",
+          c:"39d83e0146bb4e00a6264e595d5edb80" },
+      42:{ a:"1d0f944ba18741f1bce3436297d438bd",
+          b:"e29afc0d9c824f4f9bd94ed04d54436d",
+          c:"f60bd48e0b284c718193734d2a4b3e93" },
+      43:{ a:"250e2c98cba14765b4c575b17e62f874",
+          b:"5acb785125b341b4864f326b110e5c14",
+          c:"21612954cae64ebd906bc2e3f7c96100" },
+      44:{ a:"bf38ce8d1dcf489fb83708a841c8cd54",
+          b:"60f2c2def408469caed9054886444358",
+          c:"5176407fd2764857b73afabc3e8ea473" },
+      45:{ a:"cf520921a59643039a85435dc9ab0e0f",
+          b:"6c2acf8d46f046989b4b83aa513041d4",
+          c:"34ab8d47f6ad420fafde21213ff1c88d" },
+      46:{ a:"16e94a984ae44fe0b712d1c0b2361fc3",
+          b:"e6085fabad2847c1a26399376ea79e4e",
+          c:"e741516014b54bc992d24f2174a45395" },
+      47:{ a:"7a78894354e24eb78844cbef20cd0f3b",
+          b:"4bd841f8e6594fc9bd30ac2ab3e138e2",
+          c:"e4dac9f4a5d441e196caa8e5b6f1f800" },
+      48:{ a:"6f42329079d149f290bf53c43e7a9937",
+          b:"19a22d39aa434f6c96e634f3d29b461e",
+          c:"87966d2e33c9457da7a9b8edec626621" },
+      49:{ a:"bc88bd1836924989a2aaab3ff9842eaa",
+          b:"656dfb5d91fc415eb87b6167c7fc5f44",
+          c:"34210cee0b094468befcc394e97ff051" },
+      50:{ a:"d69b5574b7de42f4a5d088fdbdd505c3",
+          b:"4ea72c7bc2da42169cf54e1c5d5174ea",
+          c:"3e7dd7eaab2c4322b686b47ddb58b46a" }
+    },
+
+    groups: [
+      { key:"m09", name:"ספטמבר" },
+      { key:"m10", name:"אוקטובר" },
+      { key:"m11", name:"נובמבר" },
+      { key:"m12", name:"דצמבר" },
+      { key:"m01", name:"ינואר" },
+      { key:"m02", name:"פברואר" },
+      { key:"m03", name:"מרץ" },
+      { key:"m04", name:"אפריל" },
+      { key:"m05", name:"מאי" },
+      { key:"m06", name:"יוני" }
+    ],
+
+    topics: [
+      { id:8, x:"G7-T08", ic:"axes", g:"m09", t:"מערכת צירים — היכרות וקנה מידה",
+        d:"צירים וראשית, שיעורי נקודה, בחירת קנה מידה מתאים וקריאת נקודות." },
+      { id:1, x:"G7-T01", ic:"numline", g:"m09", t:"מספרים מכוונים — ישר המספרים וערך מוחלט",
+        d:"מספרים חיוביים ושליליים על ציר המספרים, מספר נגדי, ערך מוחלט, השוואה וסידור." },
+      { id:11, x:"G7-T11", ic:"angle", g:"m09", t:"זוויות חלק 1 — היכרות, סימון ומדידה",
+        d:"סוגי זוויות, סימון וקריאה נכונה, מדידה ובנייה בעזרת מד־זווית." },
+      { id:2, x:"G7-T02", ic:"plusminus", g:"m10", t:"חיבור וחיסור מספרים מכוונים",
+        d:"חיבור וחיסור מספרים חיוביים ושליליים, סימנים סמוכים, תנועה על הציר ובעיות מהחיים." },
+      { id:9, x:"G7-T09", ic:"quadrants", g:"m10", t:"הרחבת מערכת הצירים חלק 1",
+        d:"ארבעת הרביעים, שיעורים שליליים, נקודות על הצירים ושיקוף נקודות." },
+      { id:12, x:"G7-T12", ic:"protractor", g:"m10", t:"זוויות חלק 2 — יחסים ופעולות",
+        d:"זוויות צמודות וקודקודיות, משלימות ונשלמות, חוצה זווית וחישובים." },
+      { id:13, x:"G7-T13", ic:"clipboard", g:"m10", t:"זוויות — דף חזרה מסכם",
+        d:"חזרה על כל יחסי הזוויות, חישובים מורכבים וכתיבת נימוקים." },
+      { id:10, x:"G7-T10", ic:"analytic", g:"m11", t:"הרחבת מערכת הצירים חלק 2 — יישום והעמקה",
+        d:"מרחקים בין נקודות, צורות במערכת הצירים וחישובי היקף ושטח." },
+      { id:3, x:"G7-T03", ic:"times", g:"m11", t:"כפל מספרים מכוונים",
+        d:"חוקי הסימנים בכפל, מכפלה של כמה גורמים ופישוט ביטויים." },
+      { id:4, x:"G7-T04", ic:"divide", g:"m11", t:"חילוק מספרים מכוונים",
+        d:"חוקי הסימנים בחילוק, שברים עם סימן שלילי והקשר לכפל." },
+      { id:5, x:"G7-T05", ic:"parens", g:"m11", t:"סדר פעולות החשבון במספרים מכוונים",
+        d:"סדר הפעולות, סוגריים, חזקות וקו שבר בביטויים עם מספרים מכוונים." },
+      { id:15, x:"G7-T15", ic:"tritick", g:"m11", t:"משולשים מיוחדים",
+        d:"משולש שווה־שוקיים, שווה־צלעות וישר־זווית — תכונות, זיהוי וחישובים." },
+      { id:14, x:"G7-T14", ic:"triangle", g:"m11", t:"סכום הזוויות במשולש ובמרובע",
+        d:"משפט סכום הזוויות, זווית חיצונית וחישובי זוויות במשולש ובמרובע." },
+      { id:17, x:"G7-T17", ic:"twotri", g:"m11", t:"מצולעים חופפים וטרנספורמציות",
+        d:"הזזה, שיקוף וסיבוב, זיהוי מצולעים חופפים והתאמת קודקודים." },
+      { id:6, x:"G7-T06", ic:"power", g:"m12", t:"חזקות עם מעריך טבעי",
+        d:"בסיס ומעריך, חזקת מספר שלילי, חוקי חזקות בסיסיים וסדר פעולות." },
+      { id:7, x:"G7-T07", ic:"root", g:"m12", t:"שורש ריבועי",
+        d:"משמעות השורש הריבועי, שורשים של ריבועים שלמים, אומדן והקשר לשטח הריבוע." },
+      { id:18, x:"G7-T18", ic:"gridrect", g:"m12", t:"שטח מלבן וריבוע — העמקה",
+        d:"חישובי שטח, מציאת צלע חסרה, יחידות שטח ובעיות מורכבות." },
+      { id:19, x:"G7-T19", ic:"tridash", g:"m12", t:"שטח משולש — העמקה",
+        d:"בסיס והגובה המתאים לו, גבהים במשולש קהה־זווית וחישובי שטח הפוכים." },
+      { id:22, x:"G7-T22", ic:"box_eq", g:"m12", t:"משתנים וביטויים אלגבריים — שפה ומידול",
+        d:"מעבר מתיאור מילולי לביטוי אלגברי, משמעות המשתנה ומידול מצבים מהחיים." },
+      { id:23, x:"G7-T23", ic:"arrowbox", g:"m12", t:"הצבה בביטויים אלגבריים",
+        d:"הצבת ערכים חיוביים ושליליים, חישוב ערך הביטוי והשוואה בין ביטויים." },
+      { id:21, x:"G7-T21", ic:"steps", g:"m01", t:"חוקיות",
+        d:"זיהוי חוקיות בסדרות ובתבניות, ניסוח הכלל במילים ובביטוי אלגברי, מציאת איבר כללי והמשך הסדרה." },
+      { id:29, x:"G7-T29", ic:"branch", g:"m01", t:"שוויון ביטויים חלק 1 — כינוס ופילוג",
+        d:"איברים דומים, כינוס איברים, חוק הפילוג ובדיקת שקילות בין ביטויים." },
+      { id:20, x:"G7-T20", ic:"cube", g:"m01", t:"תיבה וקובייה",
+        d:"מבנה התיבה והקובייה, פריסה, שטח פנים, נפח ויחידות מידה." },
+      { id:24, x:"G7-T24", ic:"table", g:"m01", t:"איסוף וקריאת מידע",
+        d:"איסוף נתונים, ארגון בטבלה, קריאת דיאגרמות והסקת מסקנות." },
+      { id:25, x:"G7-T25", ic:"tally", g:"m02", t:"שכיחות",
+        d:"טבלת שכיחות, השכיח, קריאת נתונים והצגתם בדיאגרמה." },
+      { id:26, x:"G7-T26", ic:"percent", g:"m02", t:"שכיחות יחסית חלק 1 — היכרות",
+        d:"חישוב שכיחות יחסית בשבר, בעשרוני ובאחוזים והשוואה בין קבוצות." },
+      { id:27, x:"G7-T27", ic:"flask", g:"m02", t:"שכיחות יחסית חלק 2 — ניסויים ויציבות",
+        d:"ניסויים חוזרים, התייצבות השכיחות היחסית והקשר להסתברות." },
+      { id:28, x:"G7-T28", ic:"dice", g:"m02", t:"הסתברות — היכרות",
+        d:"מרחב התוצאות, מאורע ודאי ובלתי אפשרי, חישוב הסתברות בסיסית והוגנות." },
+      { id:30, x:"G7-T30", ic:"factor", g:"m02", t:"שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים",
+        d:"הוצאת גורם משותף, פתיחת סוגריים אחרי מינוס ופישוט ביטויים מורכבים." },
+      { id:33, x:"G7-T33", ic:"scale", g:"m03", t:"משוואות ופתרונן חלק 1 — מבוא",
+        d:"משמעות הפתרון, כללי שקילות, העברת אגפים ובדיקת הפתרון." },
+      { id:32, x:"G7-T32", ic:"scale", g:"m03", t:"מהו פתרון של משוואה",
+        d:"משמעות הפתרון, בדיקה בהצבה, זיהוי פתרון נכון ומשוואות אמת ושקר." },
+      { id:34, x:"G7-T34", ic:"arrowbox", g:"m03", t:"משוואות חד־שלביות",
+        d:"פתרון משוואות בפעולה אחת — חיבור, חיסור, כפל וחילוק — ובדיקת הפתרון." },
+      { id:35, x:"G7-T35", ic:"steps", g:"m03", t:"משוואות דו־שלביות",
+        d:"פתרון בשני שלבים, סדר פעולות הפוך, בידוד הנעלם ובדיקת הפתרון." },
+      { id:36, x:"G7-T36", ic:"factor", g:"m03", t:"מפשטים ואז פותרים",
+        d:"כינוס איברים דומים בכל אגף, פישוט המשוואה ומעבר מסודר לפתרון." },
+      { id:37, x:"G7-T37", ic:"braces", g:"m03", t:"משוואות ופתרונן חלק 2 — סוגריים ושקילות",
+        d:"משוואות עם סוגריים, נעלם בשני האגפים, אין פתרון ואינסוף פתרונות." },
+      { id:38, x:"G7-T38", ic:"branch", g:"m03", t:"סוגריים וחוק הפילוג",
+        d:"פתיחת סוגריים בחוק הפילוג, מינוס לפני סוגריים ופתרון משוואות מלאות." },
+      { id:39, x:"G7-T39", ic:"range", g:"m03", t:"הנעלם בשני האגפים",
+        d:"העברת נעלמים ומספרים בין אגפים, כינוס ופתרון, כולל מקרים מיוחדים." },
+      { id:40, x:"G7-T40", ic:"cycle", g:"m03", t:"שלושה ייצוגים לפתרון משוואה",
+        d:"פתרון משוואה בשלושה ייצוגים — מודל, טבלה ופעולות אלגבריות — והמעבר ביניהם." },
+      { id:42, x:"G7-T42", ic:"pythag", g:"m03", t:"פיתגורס חלק 1 — היכרות וחישוב",
+        d:"משפט פיתגורס, ניצבים ויתר, חישוב צלע חסרה ובדיקה אם המשולש ישר־זווית." },
+      { id:43, x:"G7-T43", ic:"pythag", g:"m03", t:"פיתגורס חלק 2 — שימושים",
+        d:"שימוש בפיתגורס במלבן, בטרפז, בגובה משולש ובבעיות מהחיים." },
+      { id:41, x:"G7-T41", ic:"speech", g:"m04", t:"שאלות מילוליות באמצעות משוואות",
+        d:"בחירת נעלם, בניית משוואה מתוך סיפור, פתרון ובדיקת סבירות התשובה." },
+      { id:45, x:"G7-T45", ic:"pgram", g:"m04", t:"שטחים ב׳ חלק 1 — מקבילית וטרפז",
+        d:"נוסחאות שטח מקבילית וטרפז, זיהוי הגובה ומציאת נתון חסר." },
+      { id:46, x:"G7-T46", ic:"lshape", g:"m04", t:"שטחים ב׳ חלק 2 — מצולעים מורכבים",
+        d:"פירוק לצורות מוכרות, חיסור שטחים ושאלות משולבות." },
+      { id:31, x:"G7-T31", ic:"point", g:"m05", t:"נקודות על גרף ברביע הראשון",
+        d:"סימון נקודות, מעבר בין טבלה לגרף, קריאת גרף ותיאור תהליכים." },
+      { id:44, x:"G7-T44", ic:"dashrect", g:"m05", t:"חישובי היקף — צורות מורכבות ואלגברה",
+        d:"היקף מצולעים מורכבים, ביטוי היקף באמצעות משתנה והשוואת היקפים." },
+      { id:47, x:"G7-T47", ic:"prism", g:"m05", t:"מנסרה משולשת חלק 1 — מבנה ונפח",
+        d:"זיהוי המנסרה, בסיסים, מקצועות וגובה, חישוב נפח ומציאת נתון חסר." },
+      { id:48, x:"G7-T48", ic:"prism", g:"m05", t:"מנסרה משולשת חלק 2 — שטח פנים",
+        d:"פריסת המנסרה, שטח המעטפת, שטח הבסיסים ושטח הפנים הכולל." },
+      { id:16, ic:"star", g:"m06", t:"משולש שווה־צלעות — העמקה ורשות",
+        d:"תכונות וסימטריה, גובה ותיכון ושאלות אתגר ורשות." },
+      { id:49, x:"G7-T49", ic:"clipboard", g:"m06", t:"חזרה שנתית",
+        d:"חזרה מסכמת על נושאי כיתה ז׳, בשלוש רמות." },
+      { id:50, x:"G7-T50", ic:"clipboard", g:"m11", t:"משימת הערכה 1",
+        d:"משימת הערכה ראשונה בכיתה ז׳, בשלוש רמות." }
+    ]
+  },
+  /* ================= כיתה ח׳ ================= */
+  8: {
+    links: {
+      1:{ one:"c6602eecfb3841c38f4dbbfe6d10f538" },
+      2:{ a:"2c47f33e99f44174a32f7f4cfb3b5e3e",
+          b:"86a563a229964377b0408693e1d4584a",
+          c:"73a7fa15988d48b88bf69926bc4351dc" },
+      3:{ a:"9488f7dcddd24a508514c95b3b6346a9",
+          b:"e35abc3cadf24904ba543a7322802d77",
+          c:"60b3ca0f913844acb9c9fe1891122d54" },
+      4:{ a:"de73a9e95e264a10816023e34a518b87",
+          b:"a07273a6c2b545ecb70eff5693b139f6",
+          c:"a187b5f9358a4ac98a28cefc0cd0b455" },
+      5:{ a:"1eaf93b18083476f94ad7675aa5b793c",
+          b:"f1a9b8f2f9594d2590f7fbb5a7a08422",
+          c:"60e2b322ce874ac2ae7610899f8cd203" },
+      6:{ a:"53ce7c8ccf8a4b2baf20dd3077b959fc",
+          b:"4ddad47c159748229fa42e74daeac8d5",
+          c:"af10b57372d94e27b5452235cf2a5a53" },
+      7:{ a:"ba042049d4464a62829b67f55869caab",
+          b:"56c7ea92ce4546719d5ba8c655188415",
+          c:"89548da67a6c4bcc9b284fab93cba94c" },
+      8:{ a:"02f2fbf8babb4d42a7ef1fc6c385bd61",
+          b:"c77d200f197e4043a9e8124af27383db",
+          c:"6f583e7972c542608b396094ac14c54a" },
+      9:{ a:"6ffd8b54e3d2443390371f557e8bfb03",
+          b:"480bdf8fe18a4fa7b03b29da5901a9ff",
+          c:"b21376514281439ab6bb70f7eafb525a" },
+      10:{ a:"bc509600c8f242b49d39a438b54abbc9",
+          b:"f5e0edfba19344c890f203a33c6a0c27",
+          c:"89fbc35e9f5c4e3480794c2589f2003b" },
+      11:{ a:"e1a5c17bf98f45d98fdc20681608440a",
+          b:"c23d26203cc24fc9833a4e4d212b3d5f",
+          c:"cefacac0619a4656ae966ab08b846332" },
+      12:{ a:"4316de8b7b304da38d3f47c67bcbb169",
+          b:"103377f4e4934f7da2e43c0ac0a510f1",
+          c:"71318c32ce584a33a55085c031253ef5" },
+      13:{ a:"32c9b1b5aea5413f864e8baaa0cf5ca2",
+          b:"0001a2f4eb334aecaac682e62b50ce6a",
+          c:"0d55ce157c4a49dd8e0b63d70417aa52" },
+      14:{ a:"a349066a266843f48df9c578fdb29053",
+          b:"d053182fce2645a692affb549ab255fb",
+          c:"7113358defed49109c4f222d5644ee6a" },
+      15:{ a:"2796cafaa2ae4895bef51c415e659b24",
+          b:"2346e6cb402b45049467a83b6f492852",
+          c:"ee6ed7b3cffb42f2b53bd3eb246396e7" },
+      16:{ a:"b8e94cb37f8d4758bc06709e4474c870",
+          b:"a7d120932ec54102b16fa1097eb9c7b8",
+          c:"4284c9ef9ae8489e8b0cf066a4b642fb" },
+      17:{ a:"99fd66960e1345d89eb2be9e6cc0cee1",
+          b:"65f29fd8c4e945e49779c822c4949ec0",
+          c:"b517c48eb17e4c3ea92480d5991445d9" },
+      18:{ a:"b5fa3c05c31c41e898a582781d820f83",
+          b:"df302ac9438245c999579e924c53b894",
+          c:"88bee65cef714a71a678d5f677d29de4" },
+      19:{ a:"1dafe53ed9834db5b6790a6ccc82a35a",
+          b:"7a2743f7e7fc40a3ad92cd5775b0b3c0",
+          c:"32c67369d1824ffb966ce64c7045a126" },
+      20:{ a:"a1b3206ca348450c959ddcd91800bc55",
+          b:"0b0711dca4b14ecb84d4413065c3b7c5",
+          c:"1483fe5af469436db77fd7f014fda3f4" },
+      21:{ a:"8d57063b0d8245ec92d3427f35721d45",
+          b:"137c91e53d1b463dabd899e23472e441",
+          c:"7b55ca005f744c37824ee7da4f13c52b" },
+      22:{ a:"59ddefb05828412a92662f45af71b4cd",
+          b:"993bf42ff0524dda8add2700cbef70cd",
+          c:"cc9ebe9ff429404c9eae996948298b59" },
+      23:{ a:"91d3c7a866f04334b0bf4e219d55531b",
+          b:"82a5285c2446440f8ab8ef4aad7b6cd3",
+          c:"5050767dca2d4e35bd953df51a32eb9c" },
+      24:{ a:"8de3a79f1de542918fcd20fb037f05eb",
+          b:"5ccc39f3843149e68d3a5aae10a1a853",
+          c:"7ea0b53881f44c21afaaf20c149605f5" },
+      25:{ a:"0e9eba9ba0a045159401d71d749c339b",
+          b:"d3eae004cfd54bd2ae7ca665dae27bc2",
+          c:"5ecb4d7839ea46e687452fc8e987a598" },
+      26:{ one:"61de250883604d0ba51bf684fff19241" },
+      27:{ a:"afd6f0b012ca4b2c82c48da5235ecef3",
+          b:"5f39c35987c14a23aa60db42218adc7c",
+          c:"06bbbcb688b14b7991999ae4937d235d" },
+      28:{ a:"c053fa31cbf44db8a28ee0345f757880",
+          b:"20cce401606c412bae0174a1dc0ee89c",
+          c:"6f36cc55a6bf45d599f295990dd59bcc" },
+      29:{ a:"36a4312b653a46fd84c3ca1b06d9fd9d",
+          b:"825ce7b3e65445b08183b39a206c6df9",
+          c:"d2120e63d58d46098bbac02f0876d0c8" },
+      30:{ a:"0ae6e55773aa4829b12a6aff5c15bfee",
+          b:"99b4074f98d34a2ab569fbfb4b1a9f9f",
+          c:"10051158962240b99db50a3166db6e44" },
+      31:{ a:"b17bd323bed645ce96fdb73ce5f2236a",
+          b:"7a0db3e48a5943efa8b359ad83527a9d",
+          c:"384b411a0f1f4ee1b2aa9f3b0fe89150" },
+      32:{ a:"10d326087dac4c2eb2c90a2adf4453fd",
+          b:"d52759a778cb447588ae43dc2fdb2e3e",
+          c:"a3294dde5fed48689780d31553968edd" },
+      33:{ a:"a302133b9c8044dc960168c717e36712",
+          b:"37f381eff5fc48709c82b473dcac2d84",
+          c:"a13721b9c09a4580a6b6f6113b0d7f43" },
+      34:{ one:"114ce88ff3514961b13a830c90608953" },
+      35:{ one:"07fb9927193242f8859fc107b39f6aec" },
+      36:{ a:"d7220ff03c1644c196dc820a0438b11f",
+          b:"e2534608194f4b2da81513455d8e5276",
+          c:"742b7aa6db284c24bd2d6a6ae55f653b" },
+      37:{ a:"3a7a568d1f654271a0f77bece24536b4",
+          b:"a3c646c8ff704abb8d07d69d3a181d80",
+          c:"d129ef514eb9441eb4f2f619dfa417ad" },
+      38:{ a:"cae0734f982c4189b658e774a8fe5d31",
+          b:"cc56262b89a643539facb8d395c8eac5",
+          c:"39fe4a9e549b48b6b2519ec0367a526d" },
+      39:{ a:"968752bfd6074645b5a594c1f0b6ce08",
+          b:"f5fc815d55594464b6993c8711b4dba9",
+          c:"237ec9ec2fca4598a9221c147c714baa" },
+      40:{ a:"76be5b17412c473199ff77d617ebf751",
+          b:"923bc1787a37463e89a2de303fc0a998",
+          c:"f2843487095d49b49e3ad58813c59ad0" },
+      41:{ a:"51c4ed1e225c4325825970d9aca00a05",
+          b:"6007b826b92a4d97a56c4ab5f8df8318",
+          c:"18ec1bc8c0374b8aa8c8f059a3da665b" },
+      42:{ a:"1e4a7ccf837b4e72adee0acdabe70acc",
+          b:"a9bee41d5e3744dcb5b58d48d8247b97",
+          c:"ab081025fd8e4bce8a92a135fb866d00" },
+      43:{ a:"831390f8e9504f2db0958e01d8d5fe71",
+          b:"882bc55c1c8748e1bf7f416c6d2cbd19",
+          c:"5427d9b77df24696b66bfc78fec8df61" },
+      44:{ a:"03bc260d7c71497cbeb614216a420504",
+          b:"1be8760e8bdc42b280ddf61a4253c967",
+          c:"0d2c19b340234a8db8c0bc9d080b50d1" },
+      45:{ a:"09fa81169748476fbb517f0e9ed5b995",
+          b:"a9455ac3a1734720b8a003924702bc94",
+          c:"687e425a629d4aa09423081426518cf8" },
+      46:{ a:"ffc05ae95ee94af2b09e47a211197c73",
+          b:"30ffcc8086724713b50ea7ca5e244d22",
+          c:"23b536c1218744678c30db18bb6c115b" },
+      47:{ a:"8b899263461041b192021b30fdfb26fe",
+          b:"9078d06d3dfb4a45a9f52cb1d2d41eb3",
+          c:"dfb888deddfa46cd8f7b614b929752fa" },
+      48:{ a:"d359aa570dc34715b9d954990c118222",
+          b:"f9cbd69fe5244a218cd78555d690ad16",
+          c:"82b0f92f0e0b4521a4b24e05e05b5e68" },
+      49:{ a:"c2ff9abab9cc4ce9bb939c3011a4c3ed",
+          b:"357b9398b6c24ceda9e6435a5957abbe",
+          c:"36006c66008647979d1c919c35c92e82" },
+      50:{ a:"3fc6ed9403a94715a8754bcb71b2787f",
+          b:"7cbf69f5b9784a589c769fbcbbff4367",
+          c:"c40a2009e1174bd991c1f12423ddc1a8" },
+      51:{ a:"3c2c3c3769aa4587afc8c9d0a04f049f",
+          b:"c6cd9c900b54441fb70d704deddcf240",
+          c:"27dbd729bfa347d79b92af1a29ba211c" },
+      52:{ a:"0194c8508a9f45139d36a162d68683cc",
+          b:"a58da373a7e7423da4f6f52b34e5de60",
+          c:"17350882e67843e988a512ecc5fc1aad" },
+      53:{ a:"3d2b6937dd0d41f5a29cf37975fc2145",
+          b:"40c4c02dadac47dd9f3eac3dfa716650",
+          c:"b0f59b29ad6f43a581d0a2d416fc5e3d" },
+      54:{ a:"aa577c63e9864ff898a6dcbc6dbd2b1f",
+          b:"ee05c7d0b7fd4b928db13cc1c3d96a0c",
+          c:"94b1dc9902014d0992cdfcf1449ce3af" },
+      55:{ a:"db0ac55bcd744767b34578c1f77f9475",
+          b:"bf4c61f3e6c649f6bb52014c3173e801",
+          c:"f4c4d27439a44b5eb8f980b029992640" },
+      56:{ one:"2d8795a2be0241038adc0b4aab74680d" },
+      57:{ one:"48a794452e1846119fddd0e5d91da524" },
+      58:{ one:"11ca0a8bb1dd485d84bedd6de155e988" },
+      59:{ one:"db9c04190e124de1818dd41f9beb9258" },
+      60:{ one:"6a752ec33aec46bd8480aaf98af5a4bb" },
+      61:{ a:"b0ad8352e0454f458dc410eeb0ee13c7",
+          b:"49711853d5da421e8e4c1b4f18ff46a3",
+          c:"cc0a3f293d084bf7aa068f1e02ea7e74" },
+      62:{ a:"d570670ee04040f5be500b5c2e8d340b",
+          b:"129d683d836f4b9b860c8221f1c69587",
+          c:"5a00235fb4d2402889a721cb4964ab1e" },
+      63:{ a:"e0c9195f53534f45bc19259cbb85ccb8",
+          b:"15e9a1d10681431e94b2f11201450b03",
+          c:"1e0e355ae32a44c58c0e73440b569e9b" },
+      64:{ a:"5df573c813e2416aa040c716b7843d7b",
+          b:"ad99e05436844f7e95964434bfc07285",
+          c:"0f56fd61bb9142fab50c82ed99005704" },
+      65:{ a:"fc62c3516b5c4f4c8e3f433792c84c40",
+          b:"993467c2757a4950abd2a0237f18a48c",
+          c:"1626318ee2c94f6a9b53ffcaf289ec83" }
+    },
+
+    groups: [
+      { key:"alg",  name:"אלגברה ומשוואות" },
+      { key:"fun",  name:"פונקציות" },
+      { key:"ratio",  name:"יחס, אחוזים וקנה מידה" },
+      { key:"data",  name:"נתונים, סטטיסטיקה והסתברות" },
+      { key:"model",  name:"מידול" },
+      { key:"geo",  name:"גאומטריה" },
+      { key:"solid",  name:"שורשים, פיתגורס וגופים" },
+      { key:"synth",  name:"סינתזה, הרחבה והערכה" },
+      { key:"support",  name:"תמיכה ואבחון" },
+      { key:"deep",  name:"העמקה" }
+    ],
+
+    topics: [
+      { id:1, ic:"magnify", g:"support", t:"אבחון קדם־ידע",
+        d:"מיפוי ידע מכיתה ז׳ לפני תחילת השנה — מספרים מכוונים, ביטויים אלגבריים ושברים." },
+      { id:2, x:"G8-T02", ic:"scale", g:"alg", t:"משוואות ליניאריות",
+        d:"פתרון משוואות מדרגה ראשונה, כינוס איברים, העברת אגפים, פתיחת סוגריים ובדיקת פתרון." },
+      { id:3, x:"G8-T03", ic:"frac", g:"alg", t:"מכנים מספריים",
+        d:"משוואות עם שברים, מכנה משותף, הכפלה בכל המשוואה ופישוט לפני פתרון." },
+      { id:4, x:"G8-T24", ic:"ratio", g:"ratio", t:"יחס ופרופורציה",
+        d:"יחס בין גדלים, חלוקה לפי יחס, פרופורציה ישרה והפוכה ובעיות יישום." },
+      { id:5, x:"G8-T25", ic:"map", g:"ratio", t:"קנה מידה",
+        d:"קריאת מפות ותרשימים, חישוב מרחקים ואורכים אמיתיים והשפעת קנה המידה על שטח." },
+      { id:6, x:"G8-T20", ic:"percent", g:"ratio", t:"אחוזים — ייצוגים",
+        d:"מעבר בין שבר פשוט, שבר עשרוני ואחוז, חישוב אחוז מכמות ואחוז שלם." },
+      { id:7, x:"G8-T21", ic:"tag", g:"ratio", t:"בעיות אחוזים",
+        d:"מציאת החלק, השלם ואחוז, הנחות ותוספות, מע״מ, ריבית ובעיות מהחיים." },
+      { id:8, x:"G8-T22", ic:"updown", g:"ratio", t:"שינוי באחוזים",
+        d:"עלייה וירידה באחוזים, חישוב אחוז השינוי והמעבר מערך התחלתי לערך סופי." },
+      { id:9, x:"G8-T23", ic:"steps", g:"ratio", t:"שינויים עוקבים",
+        d:"שני שינויים ברצף, אחוז השינוי הכולל, ומדוע ירידה ועלייה שוות אינן מחזירות למחיר המקורי." },
+      { id:10, x:"G8-T48", ic:"root", g:"solid", t:"שורש ריבועי",
+        d:"משמעות השורש, אומדן, פישוט שורשים ופעולות בסיסיות עם שורשים." },
+      { id:11, x:"G8-T49", ic:"pythag", g:"solid", t:"פיתגורס",
+        d:"משפט פיתגורס, חישוב יתר וניצב ובדיקה אם משולש הוא ישר־זווית." },
+      { id:12, x:"G8-T50", ic:"pythag", g:"solid", t:"פיתגורס מורכב",
+        d:"שילוב פיתגורס במרובעים, בגבהים ובמשולשים מורכבים ושילוב עם חישובי שטח." },
+      { id:13, x:"G8-T52", ic:"cyl", g:"solid", t:"גליל — שטח פנים",
+        d:"פריסת הגליל, שטח המעטפת, שטח הבסיסים ושטח הפנים הכולל." },
+      { id:14, x:"G8-T53", ic:"cyl", g:"solid", t:"גליל — נפח",
+        d:"חישוב נפח גליל, מציאת רדיוס או גובה חסרים ובעיות יישום ומיכלים." },
+      { id:15, x:"G8-T54", ic:"cyl", g:"solid", t:"חרוט",
+        d:"מבנה החרוט, הבסיס המעגלי והקודקוד, שטח המעטפת ושטח הפנים, נפח החרוט והשוואה לגליל." },
+      { id:16, x:"G8-T28", ic:"table", g:"data", t:"ארגון נתונים",
+        d:"טבלאות שכיחות, קיבוץ נתונים לקבוצות, שכיחות יחסית וקריאת טבלאות." },
+      { id:17, x:"G8-T29", ic:"bars", g:"data", t:"עמודות ופיקטוגרמות",
+        d:"בניית דיאגרמת עמודות ופיקטוגרמה, קריאתן והשוואה בין קבוצות נתונים." },
+      { id:18, x:"G8-T30", ic:"pie", g:"data", t:"דיאגרמת עוגה",
+        d:"חישוב זוויות המגזרים ואחוזים, בניית עוגה מתוך טבלה וקריאת נתונים ממנה." },
+      { id:19, x:"G8-T11", ic:"machine", g:"fun", t:"מושג הפונקציה",
+        d:"משתנה תלוי ובלתי תלוי, התאמה חד־ערכית, זיהוי פונקציה ושאינה פונקציה." },
+      { id:20, x:"G8-T16", ic:"braces", g:"fun", t:"סימון פונקציה",
+        d:"הסימון f(x), חישוב ערך הפונקציה, מציאת מקור לפי תמונה וקריאת ערכים מגרף." },
+      { id:21, x:"G8-T12", ic:"cycle", g:"fun", t:"מעבר בין ייצוגים",
+        d:"תיאור מילולי, טבלה, גרף ונוסחה — מעבר בין ארבעת הייצוגים והתאמה ביניהם." },
+      { id:22, x:"G8-T31", ic:"range", g:"data", t:"טווח הנתונים",
+        d:"חישוב הטווח, זיהוי ערכים קיצוניים ומשמעות הפיזור בהשוואה בין קבוצות." },
+      { id:23, x:"G8-T32", ic:"avg", g:"data", t:"הממוצע",
+        d:"חישוב ממוצע, ממוצע משוקלל, מציאת נתון חסר והשפעת שינוי נתון על הממוצע." },
+      { id:24, x:"G8-T33", ic:"median", g:"data", t:"החציון",
+        d:"מציאת החציון במספר זוגי ואי־זוגי של נתונים והשוואה בינו לבין הממוצע." },
+      { id:25, x:"G8-T34", ic:"checklist", g:"data", t:"בחירת מדד",
+        d:"מתי מתאים ממוצע, מתי חציון ומתי שכיח — נימוק הבחירה לפי סוג הנתונים." },
+      { id:26, ic:"magnify", g:"synth", t:"אוריינות וביקורת ייצוג",
+        d:"קריאה ביקורתית של גרפים וטבלאות, זיהוי ייצוגים מטעים וניסוח מסקנות מבוססות." },
+      { id:27, x:"G8-T13", ic:"steps", g:"fun", t:"קצב השתנות",
+        d:"שינוי קבוע מול משתנה, חישוב קצב מתוך טבלה ומתוך גרף ומשמעותו בהקשר." },
+      { id:28, x:"G8-T14", ic:"slope", g:"fun", t:"שיפוע וישר y=mx",
+        d:"משמעות השיפוע, ישר העובר בראשית הצירים, שיפוע חיובי ושלילי ופרופורציה ישרה." },
+      { id:29, x:"G8-T15", ic:"linear", g:"fun", t:"פונקציה קווית",
+        d:"הישר y=mx+n, השפעת m ושל n על הגרף, שרטוט לפי טבלה והתאמת גרף לנוסחה." },
+      { id:30, x:"G8-T17", ic:"dots2", g:"fun", t:"חיתוך צירים",
+        d:"נקודות חיתוך עם ציר x ועם ציר y, תחומי חיוביות ושליליות ותחומי עלייה וירידה." },
+      { id:31, x:"G8-T18", ic:"ruler", g:"fun", t:"משוואת ישר",
+        d:"מציאת משוואת ישר לפי שתי נקודות או לפי נקודה ושיפוע, ובדיקת שייכות נקודה לישר." },
+      { id:32, x:"G8-T19", ic:"gridlines", g:"fun", t:"ישרים מקבילים לצירים",
+        d:"הישרים y=k ו-x=k, זיהוי משוואתם מהגרף ושילובם עם ישרים אחרים." },
+      { id:33, x:"G8-T10", ic:"arrowr", g:"model", t:"תנועה",
+        d:"בעיות מרחק, מהירות וזמן — תנועה באותו כיוון, בכיוונים מנוגדים ומפגש." },
+      { id:34, ic:"magnify", g:"support", t:"אבחון אמצע שנה",
+        d:"בדיקת שליטה בנושאי המחצית הראשונה וזיהוי נקודות לחיזוק." },
+      { id:35, ic:"bridge", g:"support", t:"גישור ותיקון פערים",
+        d:"תרגול ממוקד לסגירת פערים בסיסיים לקראת המשך הנושאים." },
+      { id:36, x:"G8-T38", ic:"twotri", g:"geo", t:"חפיפת משולשים",
+        d:"מושג החפיפה, התאמת קודקודים, צלעות וזוויות וזיהוי משולשים חופפים." },
+      { id:37, x:"G8-T39", ic:"twotri", g:"geo", t:"משפטי חפיפה",
+        d:"צ.ז.צ, ז.צ.ז, צ.צ.צ — בחירת המשפט המתאים ויישומו על סרטוט נתון." },
+      { id:38, x:"G8-T40", ic:"clipcheck", g:"geo", t:"הוכחה גאומטרית",
+        d:"מבנה ההוכחה: נתון, צריך להוכיח, טענות ונימוקים וסדר לוגי נכון." },
+      { id:65, x:"G8-T65", ic:"clipcheck", g:"geo", t:"הוכחות בחפיפת משולשים",
+        d:"דף מסכם: בחירת משפט החפיפה המתאים, איתור נתונים נסתרים וכתיבת הוכחה מלאה עם טענה ונימוק לכל שלב." },
+      { id:39, x:"G8-T41", ic:"angle", g:"geo", t:"זווית חיצונית",
+        d:"משפט הזווית החיצונית, סכום זוויות במשולש ויישומים בחישוב זוויות." },
+      { id:40, x:"G8-T42", ic:"tritick", g:"geo", t:"משולש שווה שוקיים",
+        d:"ישרים מקבילים וזוויות, תכונות משולש שווה-שוקיים, זוויות בסיס, חוצה זווית ושאלות הוכחה." },
+      { id:41, x:"G8-T43", ic:"clipcheck", g:"geo", t:"הוכחה — שווה שוקיים",
+        d:"המשפט והמשפט ההפוך, שימוש בחפיפה להוכחת שוויון שוקיים ושאלות הוכחה מורכבות." },
+      { id:42, x:"G8-T44", ic:"medtri", g:"geo", t:"התיכון במשולש",
+        d:"תיכון לצלע ותכונותיו, התיכון ליתר במשולש ישר־זווית ושימוש בו בהוכחות." },
+      { id:43, x:"G8-T45", ic:"twotri2", g:"geo", t:"דמיון משולשים",
+        d:"יחס דמיון, התאמת צלעות וזוויות, חישוב אורכים חסרים וקנה מידה." },
+      { id:44, x:"G8-T46", ic:"twotri2", g:"geo", t:"הוכחת דמיון",
+        d:"משפטי הדמיון, כתיבת הוכחה מלאה והסקת שוויון יחסים בין צלעות." },
+      { id:45, x:"G8-T47", ic:"sq2", g:"geo", t:"יחס שטחים",
+        d:"יחס ההיקפים ויחס השטחים במשולשים דומים ובעיות יישום." },
+      { id:46, x:"G8-T09", ic:"speech", g:"model", t:"מילוליות — בחירת נעלמים",
+        d:"בחירת נעלם מתאים, בניית משוואה מתוך סיפור, פתרון ופירוש התשובה בהקשר." },
+      { id:47, x:"G8-T06", ic:"cross2", g:"alg", t:"מערכות — חיתוך גרפי",
+        d:"פתרון מערכת שתי משוואות בעזרת שרטוט ונקודת חיתוך, מקרים של אין פתרון ואינסוף פתרונות." },
+      { id:48, x:"G8-T07", ic:"syseq", g:"alg", t:"מערכות — פתרון אלגברי",
+        d:"שיטת ההצבה ושיטת החיבור והחיסור, בחירת השיטה היעילה ובדיקת הפתרון." },
+      { id:49, x:"G8-T08", ic:"speech", g:"alg", t:"מערכות — מידול",
+        d:"תרגום בעיות מילוליות למערכת שתי משוואות בשני נעלמים ופירוש הפתרון בהקשר הבעיה." },
+      { id:50, x:"G8-T36", ic:"dice", g:"data", t:"הסתברות — מרחב תוצאות",
+        d:"מרחב מדגם, מאורע, ספירת תוצאות והסתברות במרחב אחיד." },
+      { id:51, x:"G8-T37", ic:"flask", g:"data", t:"הסתברות — ניסוי והוגנות",
+        d:"שכיחות יחסית מול הסתברות תאורטית, ניסויים חוזרים ובדיקת הוגנות של משחק." },
+      { id:52, x:"G8-T04", ic:"lt", g:"alg", t:"אי־שוויון",
+        d:"פתרון אי־שוויונות, היפוך סימן בכפל ובחילוק בשלילי וייצוג הפתרון על ציר המספרים." },
+      { id:53, x:"G8-T05", ic:"cross2", g:"alg", t:"אי־שוויון גרפי",
+        d:"קריאת פתרון אי־שוויון מתוך גרף, השוואה בין שני ישרים וסימון תחומי הפתרון." },
+      { id:54, x:"G8-T51", ic:"cube", g:"solid", t:"פיתגורס במרחב",
+        d:"אלכסון תיבה, גובה בגופים ומרחקים במרחב בעזרת שימוש כפול בפיתגורס." },
+      { id:55, x:"G8-T55", ic:"triangle", g:"synth", t:"סינתזה גאומטרית",
+        d:"שאלות המשלבות חפיפה, דמיון, פיתגורס וחישובי שטח בסרטוט אחד." },
+      { id:56, ic:"bulb", g:"deep", t:"העמקה — בעיות לא שגרתיות",
+        d:"בעיות חשיבה, אסטרטגיות פתרון, ספירה חכמה ושאלות אתגר." },
+      { id:57, ic:"flask", g:"deep", t:"העמקה — חקר והכללה",
+        d:"חקר תבניות מספריות וגאומטריות, ניסוח השערה, בדיקה והכללה מנומקת." },
+      { id:58, ic:"book", g:"synth", t:"חזרה מסכמת",
+        d:"חזרה רוחבית על כל פרקי השנה עם שאלות משולבות מכל התחומים." },
+      { id:59, ic:"clipboard", g:"synth", t:"הערכה מסכמת",
+        d:"מבחן מסכם המשלב את נושאי השנה — אלגברה, פונקציות, נתונים וגאומטריה." },
+      { id:60, ic:"magnify", g:"support", t:"אבחון סוף שנה",
+        d:"מיפוי מסכם של הידע לקראת המעבר לכיתה ט׳." },
+      { id:61, x:"G8-T61", ic:"star", g:"data", t:"אינטרפולציה ואקסטרפולציה",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:62, x:"G8-T62", ic:"star", g:"geo", t:"זוויות בין ישרים מקבילים",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:63, x:"G8-T63", ic:"star", g:"solid", t:"מעגל ועיגול — היקף ושטח",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:64, x:"G8-T64", ic:"star", g:"synth", t:"משימת הערכה 1",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." }
+    ]
+  },
+  /* ================= כיתה ט׳ ================= */
+  9: {
+    links: {
+      1:{ a:"8896327abb7a4d4fa8ed20aac2863dd2",
+          b:"023f5a3d47ab43d9a77269ec0b52202a",
+          c:"778fce1f3d9f4514891be894c10a0abb" },
+      2:{ a:"6a37fe7160324a17ad107b3dbe43c1db",
+          b:"4008f04978f9488c85e916d69a753323",
+          c:"43bd9f8b67bc40bc9f653764eba1a930" },
+      3:{ a:"beb376a34e514144872d47b7dc33a4ff",
+          b:"c12d7b7e76da4b2da644f391c73d0a3b",
+          c:"8e879dcbdd7a44b790bf3f7139c39cbd" },
+      4:{ a:"34aa5bdaa1f640299cb058c576b4f3f4",
+          b:"948a3944cc3245228f701c916681ac49",
+          c:"d6ee4238793f49e881c9b2a70915efa6" },
+      5:{ a:"5371b06fd311438e9ea47762c679854a",
+          b:"77f1d90c95694712ba8169f71d8bd632",
+          c:"74e645e68d334cee8903eea3e9a492f5" },
+      6:{ a:"9b5453934a0c4305973fc7473f228cbf",
+          b:"1e44df88220a4cafa4b62ba4ab1b82aa",
+          c:"d7b408af0724473295b9dab6bd09251b" },
+      7:{ a:"fef1b3b9b2da48cabcf9ea8c595aaf3a",
+          b:"f41dd83e9f8b4200b7bfced99715646f",
+          c:"f068defc5cfc4d399f757acd636dde49" },
+      8:{ a:"87f441dba2a948d7bf4cd12105090a5a",
+          b:"8a4f98e856284beaa2cc80e68c3a68b8",
+          c:"b8c21c2721c84962b0cbeb5480294603" },
+      9:{ a:"31daf6adaab54967ab25cdcf14367728",
+          b:"de61f3fb197e481796aa9ba2e98dc89a",
+          c:"1481ffdfa63d416982e7ccbfe09bb71e" },
+      10:{ a:"d9f8a83aaa9e4c8eb3a2fcdd3091c471",
+          b:"e1e687cf7eb844bf8ac3dff676207100",
+          c:"aa50e67bc208402c9fce992ae078f7c2" },
+      11:{ a:"ece8e07ec57f48789692dbd38faba16f",
+          b:"b58f0c185bf04a8b8a7462f980658f41",
+          c:"4c0906fe2efd44d0988769bb3ae01e77" },
+      12:{ a:"a8ebcc5274e04de69ae964eb823e33a4",
+          b:"fd50cac43f14444eabc6f685999ac05b",
+          c:"453125b31ea24576910f04f190698bdc" },
+      13:{ a:"e15adebe83404217949112c18ca80e53",
+          b:"e091562d859a4059abca94dfddc17bfa",
+          c:"7a9d853a35664317b4f3ecf2156acf5f" },
+      14:{ a:"6b7dea020c594657ab117891291903a1",
+          b:"8ba146288121421caa89fea26af67740",
+          c:"341d85268f0b4c36b138a11be0fd21cc" },
+      15:{ a:"ee0dffce722c4682bff4d4d9cb9ba435",
+          b:"c02ba4059e964dacbda49a0dc501e05d",
+          c:"2e4554c89aa9465ebb44e91b3ce0806f" },
+      16:{ a:"deb2cde8e4f84ab480c2b19903ef681c",
+          b:"3b57e8050f754ce894f18531810f8f51",
+          c:"cc93fad9d3a343cca1f61ab1bd6b2e53" },
+      17:{ a:"4b7ef32fdaa04b8580e0cdbb46e4aa0d",
+          b:"aa0ae3dc2ccf44c09ec54313391523fd",
+          c:"3b9f18232fdc42f3bd8c0d9e236a16cd" },
+      18:{ a:"92fa92fa27c54e6f9dbd1844ff974f4a",
+          b:"2de72d016066488b9b9368f59dacdc72",
+          c:"16e2b60f0db249c8b326eb3763411df1" },
+      19:{ a:"f97c62649ba442b788d9e4b6783f4be4",
+          b:"d84668df3c894999b50350634abfab0f",
+          c:"52d5c542bc224c15a3ebd2a156748883" },
+      20:{ a:"38fc873857f54de0818483698c4b3a0c",
+          b:"164a358449514472b61f35fde0914af9",
+          c:"d2a23ffe965c4a5691c425136a4dd63e" },
+      22:{ one:"3ac93dc4b8814eaa8d120e2f3802f27b" },
+      23:{ a:"0d548ce76eb74a1ab10385cdaf1f77ca",
+          b:"7993474ed2a344c0840f8ba278993112",
+          c:"ecfa7dc568e9472ba30ba355de4472df" },
+      24:{ a:"cb71a00f50dd4b628b07901a3cde1575",
+          b:"88d6e46a52b04928b5a42bf5b9897959",
+          c:"b7a76fde760d4c2e9252a933ed40a6c5" },
+      25:{ a:"69db60200a0c4859b04594fde0ba9827",
+          b:"f4e2bea04e5a4e7382733a7be67c5e46",
+          c:"050b9cc226cd4326931adfb3c0775a05" },
+      26:{ a:"15bafc193e7d4786a2c422abd2e9bd1a",
+          b:"0925c3a433404f029cb13b291ae93ef0",
+          c:"ed8fbb45fc7647d7a0d498a57c7ea189" },
+      27:{ a:"20ccf680970d403e84f601fff326e0ae",
+          b:"e06dc4f3d13d460984f6248581632005",
+          c:"f03012dbe20d432a927645844a5b0131" },
+      28:{ a:"5dc50f7cf7114a41b44cb7008323f89d",
+          b:"9a5e20e3bc8348d58aa35fd2f91c7863",
+          c:"898561fe73b9404fb5074fe8fc463292" },
+      29:{ a:"4aba762b64b54af098827d1f386bcf68",
+          b:"9c95b48e57124721b4c2b56d79cf72ba",
+          c:"871fe90d52a04673a7d30fc039e4bf2e" },
+      30:{ a:"58c3cfe666dc4b17a23c97a49fc93705",
+          b:"66bed922d7f540e3b3a327081e194b1a",
+          c:"d8ef1a0b6b554adcb2c180826f606848" },
+      31:{ a:"ad582b0fea044a80a2516a64a7eec9d9",
+          b:"358e079ff10d40a8b4dafb2d8f83e977",
+          c:"d0df2d2a47be4256ad324595cd099c59" },
+      32:{ a:"2056de6d71e14c98aa5efe856d2e1bcf",
+          b:"1eb4054d3cbd4960b2d0b7291a3ec5a9",
+          c:"433c4bb73f7545d8997ed55b1dcd0ed4" },
+      33:{ a:"3e3b24d65be44a87a1c95640bbb44611",
+          b:"03caab3083444a6589a8e730968b5a34",
+          c:"409b02d9f18a40109671432a0d379f22" },
+      34:{ a:"ad939668965743fab37474a0a45e141b",
+          b:"936cac05d06c47c7ba47dcd41d8b7329",
+          c:"79b2904d275d4b1bb5b9ec7ad260c9f5" },
+      35:{ a:"f8cd27a059954becb846145802e92be4",
+          b:"cffd33bdee5e402bac3150c0e5ff7922",
+          c:"74e2fb2a64b44672834bc3b45709efe2" },
+      36:{ a:"f6358b93ac6b4b06a507ed6981be5660",
+          b:"c6eb738ace6e4f7d95e6147d32221317",
+          c:"898010bb7046401da0c8499f43e4081e" },
+      37:{ a:"2671eb03adf24137a510e069d1ac68c0",
+          b:"e24abb3640284e0b982453d36a86217f",
+          c:"313a34dbbfc94382b195a3d8d409b298" },
+      38:{ a:"dd8a073962444df9b1c136462c7ba851",
+          b:"eaacaafa395d4576864bc1c8adf44e85",
+          c:"6744a532c10a4bdeb4ce43e00848a2a3" },
+      39:{ a:"d19ab294164347eb9f34c8b635f3461d",
+          b:"62b362d015014ac0818926703824514f",
+          c:"19f3facb7b7643e5a18d2054cf953800" },
+      40:{ a:"cbc951ad64d347099b1eaf5b10b34e7f",
+          b:"5b1d05c4655144eba82e34199475706c",
+          c:"a260c5eec7a84cf5929f89921d10dec8" },
+      41:{ a:"3f9546987fea4b9aa4294249ea017278" },
+      42:{ a:"3329215ba8e24999b3522228011baae2" },
+      43:{ c:"9764420460f84628acbffb2ea2ee53a5" },
+      44:{ a:"b74fba1acf804f27be8dc4f785d1a002",
+          b:"5be1af0651d142648da6c08d0ff028f4",
+          c:"5dbd91577b8f4ac1a94947583a6e5140" },
+      45:{ a:"e411b71b6b02446ea943eef41430f56a",
+          b:"7cf739195a244b8aad4a77a4a35230b8",
+          c:"425c4cfaa0834530abde0f5aa8347128" }
+    },
+
+    groups: [
+      { key:"alg",  name:"אלגברה" },
+      { key:"fun",  name:"פונקציות וגרפים" },
+      { key:"geo",  name:"גיאומטריה — מרובעים ומשולשים" },
+      { key:"spiral",  name:"גיאומטריה — חזרה והעמקה לקראת התיכון" },
+      { key:"stat",  name:"בעיות, סטטיסטיקה והסתברות" },
+      { key:"bridge",  name:"מעבר לחטיבה העליונה" },
+      { key:"r9sep",  name:"ספטמבר" },
+      { key:"r9oct",  name:"אוקטובר" }
+    ],
+
+    topics: [
+      { id:1, x:"G9-T02", ic:"branch", g:"alg", t:"חוק הפילוג המורחב",
+        d:"פתיחת מכפלת סוגריים, כינוס איברים, פישוט ביטויים, פתרון משוואות, זהויות ובעיות יישומיות." },
+      { id:44, x:"G9-T44", ic:"power", g:"alg", t:"דו איבר בריבוע",
+        d:"דפי עבודה לכיתה ט׳ בריבוע סכום וריבוע הפרש: נוסחאות הכפל המקוצר, פתיחת סוגריים ופישוט ביטויים. רמה א׳, רמה ב׳ ומצוינות." },
+      { id:45, x:"G9-T45", ic:"factor", g:"alg", t:"הפרש ריבועים",
+        d:"דפי עבודה לכיתה ט׳ בזיהוי הפרש ריבועים, פירוק לגורמים ובמכפלת סכום והפרש, עם תרגול מדורג ברמה א׳, רמה ב׳ ומצוינות." },
+      { id:2, x:"G9-T03", ic:"factor", g:"alg", t:"פירוק לגורמים",
+        d:"גורם משותף, נוסחאות כפל מקוצר, הפרש ריבועים, טרינום, קיבוץ ושילוב בין שיטות, משוואות ושברים אלגבריים." },
+      { id:41, x:"G9-T41", parent:2, aLabel:"גורם משותף · רמה א׳", ic:"factor", g:"alg", t:"פירוק לגורמים 1 — הוצאת גורם משותף",
+        d:"זיהוי גורם משותף והוצאתו מחוץ לסוגריים, ותרגול פירוק לגורמים." },
+      { id:42, x:"G9-T42", parent:2, aLabel:"כפל מקוצר וטרינום · רמה א׳", ic:"factor", g:"alg", t:"פירוק לגורמים 2 — נוסחאות הכפל המקוצר וטרינום",
+        d:"פירוק לגורמים בעזרת נוסחאות הכפל המקוצר וטרינום, ובחירת השיטה המתאימה." },
+      { id:43, x:"G9-T43", parent:2, cLabel:"פירוק מלא ומשוואות · רמת מצוינות", ic:"factor", g:"alg", t:"פירוק לגורמים 3 — פירוק מלא, משוואות ושברים אלגבריים",
+        d:"תרגול מצוינות בשילוב שיטות פירוק לגורמים, פתרון משוואות ועבודה עם שברים אלגבריים." },
+      { id:3, x:"G9-T04", ic:"frac", g:"alg", t:"צמצום שברים אלגבריים",
+        d:"פירוק לגורמים של מונה ומכנה, תחום הגדרה, צמצום שברים עם נוסחאות כפל מקוצר וטרינומים." },
+      { id:4, x:"G9-T15", ic:"tritick", g:"geo", t:"משולש שווה שוקיים",
+        d:"ישרים מקבילים וזוויות, תכונות משולש שווה-שוקיים, זוויות בסיס, חוצה זווית ושאלות הוכחה." },
+      { id:5, x:"G9-T06", ic:"parabola", g:"fun", t:"הפונקציה הריבועית",
+        d:"הצגות הפרבולה, קודקוד וציר סימטריה, נקודות אפס, הזזות, תחומים, פרמטרים וחיתוך בין גרפים." },
+      { id:6, x:"G9-T31", ic:"root", g:"alg", t:"משוואות ריבועיות ונוסחת השורשים",
+        d:"פתרון משוואות ריבועיות בעזרת נוסחת השורשים ובפירוק לגורמים, דיסקרימיננטה ומספר הפתרונות ובעיות יישום." },
+      { id:7, x:"G9-T17", ic:"pgram", g:"geo", t:"המקבילית",
+        d:"זיהוי מקבילית, תכונות הצלעות, הזוויות והאלכסונים, שטח, היקף ושאלות הוכחה." },
+      { id:8, x:"G9-T07", ic:"lt", g:"fun", t:"אי־שוויונות ריבועיים ומערכות משוואות",
+        d:"פתרון אי-שוויונות ריבועיים, מערכות לא-ליניאריות, חיתוך ישר ופרבולה ובעיות יישומיות." },
+      { id:9, x:"G9-T10", ic:"bars", g:"stat", t:"סטטיסטיקה",
+        d:"ממוצע, חציון, שכיח וטווח, טבלאות שכיחות, שכיחות יחסית ומצטברת, נתונים מקובצים וגרפים." },
+      { id:10, x:"G9-T11", ic:"dice", g:"stat", t:"הסתברות",
+        d:"מאורע משלים ואיחוד מאורעות, ניסויים רב-שלביים, עם וללא החזרה, תלות, עצמאות והסתברות מותנית." },
+      { id:11, x:"G9-T18", ic:"rect2", g:"geo", t:"המלבן",
+        d:"זיהוי מלבן, תכונות הצלעות והזוויות, אלכסונים, פיתגורס, שטח, היקף והוכחות." },
+      { id:12, x:"G9-T12", ic:"wave", g:"fun", t:"קדם אנליזה — מפונקציות לגרפים ובחזרה",
+        d:"קריאת גרפים, אפסים וקיצון, תחומי עלייה, ירידה, חיוביות ושליליות, טרנספורמציות, ערך מוחלט ומידול." },
+      { id:13, x:"G9-T19", ic:"rhomb", g:"geo", t:"המעוין",
+        d:"זיהוי מעוין, תכונות הצלעות והזוויות, אלכסונים מאונכים, שטח, היקף והוכחות." },
+      { id:14, x:"G9-T20", ic:"square2", g:"geo", t:"הריבוע",
+        d:"תכונות הריבוע, אלכסונים, פיתגורס, חישובי שטח והיקף, זיהוי ריבוע ושאלות הוכחה." },
+      { id:15, x:"G9-T08", ic:"analytic", g:"fun", t:"גיאומטריה אנליטית",
+        d:"נקודות ושיקופים במערכת הצירים, מרחק ואמצע קטע, שיפוע ומשוואת ישר, שטחים וזיהוי מרובעים." },
+      { id:16, x:"G9-T01", ic:"power", g:"alg", t:"חוקי חזקות",
+        d:"חוקי חזקות, מעריך אפס ומעריך שלילי, פישוט ביטויים, משוואות, כתיב מדעי ויישומים." },
+      { id:17, x:"G9-T05", ic:"root", g:"alg", t:"שורשים",
+        d:"משמעות השורש, אומדן ופישוט, פעולות בשורשים, תחום הגדרה, משוואות ויישומים." },
+      { id:18, x:"G9-T09", ic:"speech", g:"stat", t:"בעיות מילוליות",
+        d:"תרגום למשוואות ולמערכות, אחוזים, תנועה, הספק, תערובות, יחסים, גילאים ומודלים ריבועיים." },
+      { id:40, x:"G9-T40", ic:"twotri2", g:"geo", t:"דמיון משולשים — משפט ז.ז וחישובים",
+        d:"זיהוי דמיון לפי שתי זוויות, התאמת צלעות וחישוב אורכים באמצעות יחס הדמיון." },
+      { id:19, x:"G9-T32", ic:"twotri2", g:"geo", t:"דמיון משולשים",
+        d:"יחס דמיון, התאמת צלעות וזוויות, חישוב אורכים חסרים וקנה מידה." },
+      { id:20, x:"G9-T13", ic:"steps", g:"bridge", t:"מעבר לחטיבה העליונה",
+        d:"חזרה ממוקדת לקראת כיתה י׳ — אלגברה, פונקציות וגיאומטריה, כהכנה ללימוד ברמת 4–5 יח״ל." },
+      { id:22, ic:"star", g:"spiral", t:"משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳",
+        d:"תכונות וסימטריה, גובה ותיכון ושאלות אתגר ורשות. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:23, x:"G9-T21", ic:"twotri", g:"spiral", t:"מצולעים חופפים וטרנספורמציות — לכיתה ט׳",
+        d:"הזזה, שיקוף וסיבוב, זיהוי מצולעים חופפים והתאמת קודקודים. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:24, x:"G9-T22", ic:"pythag", g:"spiral", t:"פיתגורס חלק 1 — היכרות וחישוב — לכיתה ט׳",
+        d:"משפט פיתגורס, ניצבים ויתר, חישוב צלע חסרה ובדיקה אם המשולש ישר־זווית. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:25, x:"G9-T23", ic:"pythag", g:"spiral", t:"פיתגורס חלק 2 — שימושים — לכיתה ט׳",
+        d:"שימוש בפיתגורס במלבן, בטרפז, בגובה משולש ובבעיות מהחיים. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:26, x:"G9-T24", ic:"gridrect", g:"spiral", t:"שטח מלבן וריבוע — העמקה — לכיתה ט׳",
+        d:"חישובי שטח, מציאת צלע חסרה, יחידות שטח ובעיות מורכבות. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:27, x:"G9-T25", ic:"tridash", g:"spiral", t:"שטח משולש — העמקה — לכיתה ט׳",
+        d:"בסיס והגובה המתאים לו, גבהים במשולש קהה־זווית וחישובי שטח הפוכים. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:28, x:"G9-T26", ic:"pgram", g:"spiral", t:"שטחים ב׳ חלק 1 — מקבילית וטרפז — לכיתה ט׳",
+        d:"נוסחאות שטח מקבילית וטרפז, זיהוי הגובה ומציאת נתון חסר. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:29, x:"G9-T27", ic:"lshape", g:"spiral", t:"שטחים ב׳ חלק 2 — מצולעים מורכבים — לכיתה ט׳",
+        d:"פירוק לצורות מוכרות, חיסור שטחים ושאלות משולבות. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:30, x:"G9-T28", ic:"prism", g:"spiral", t:"מנסרה משולשת חלק 1 — מבנה ונפח — לכיתה ט׳",
+        d:"זיהוי המנסרה, בסיסים, מקצועות וגובה, חישוב נפח ומציאת נתון חסר. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:31, x:"G9-T29", ic:"prism", g:"spiral", t:"מנסרה משולשת חלק 2 — שטח פנים — לכיתה ט׳",
+        d:"פריסת המנסרה, שטח המעטפת, שטח הבסיסים ושטח הפנים הכולל. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:32, x:"G9-T30", ic:"analytic", g:"spiral", t:"הרחבת מערכת הצירים חלק 2 — יישום והעמקה — לכיתה ט׳",
+        d:"מרחקים בין נקודות, צורות במערכת הצירים וחישובי היקף ושטח. ברמת כיתה ט׳ — חזרה והעמקה לקראת התיכון." },
+      { id:33, x:"G9-T33", ic:"star", g:"r9sep", t:"גיאומטריה חישובית — משולש",
+        d:"סכום זוויות, שטח והיקף, קטעים מיוחדים במשולש, ושילוב במערכת צירים." },
+      { id:34, x:"G9-T34", ic:"star", g:"r9oct", t:"פונקציה קווית",
+        d:"שיפוע כקצב שינוי, ייצוג אלגברי וגרפי, נקודה על ישר, חיתוך עם הצירים, ישרים מקבילים." },
+      { id:35, x:"G9-T35", ic:"star", g:"r9oct", t:"משפט פיתגורס",
+        d:"חישובי צלעות, צורות מורכבות, היקפים ושטחים — כולל שורשים שאינם שלמים." },
+      { id:36, x:"G9-T36", ic:"star", g:"r9sep", t:"קריאת גרפים",
+        d:"קריאת מידע מגרף — ערך התחלתי, עלייה וירידה, קטע קבוע, נקודות חיתוך. בלי נוסחאות." },
+      { id:37, x:"G9-T37", ic:"star", g:"spiral", t:"משולש ישר זווית 30-60-90",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:38, x:"G9-T38", ic:"star", g:"spiral", t:"יחסי צלעות וזוויות",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." },
+      { id:39, x:"G9-T39", ic:"star", g:"spiral", t:"הטרפז",
+        d:"דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז." }
+    ]
+  }
+
+};
+
+/* ===================== מכאן ומטה אין צורך לגעת ===================== */
+
+var GRADE_EMOJI = { 1:"🎈", 2:"🧮", 3:"✏️", 4:"📐", 5:"📊", 6:"🚀", 7:"🧭", 8:"🧪", 9:"🎯" };
+var GRADE_NAME  = { 1:"כיתה א׳", 2:"כיתה ב׳", 3:"כיתה ג׳", 4:"כיתה ד׳", 5:"כיתה ה׳", 6:"כיתה ו׳",
+                    7:"כיתה ז׳", 8:"כיתה ח׳", 9:"כיתה ט׳" };
+var ELEMENTARY = [1, 2, 3, 4, 5, 6];
+var MIDDLE     = [7, 8, 9];
+/* הלשוניות מציגות את שכבת הגיל של הכיתה הפעילה */
+var GRADE_ORDER = ELEMENTARY;
+function familyOf(g){ return MIDDLE.indexOf(g) !== -1 ? MIDDLE : ELEMENTARY; }
+
+var LEVELS = [
+  { k:"a", label:"רמה א׳",       cls:"lvl--a" },
+  { k:"b", label:"רמה ב׳",       cls:"lvl--b" },
+  { k:"c", label:"רמת מצוינות",  cls:"lvl--c" }
+];
+
+/* אייקוני נושאים — SVG קטן לכל כרטיס */
+var ICONS = {
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/>',
+  mirror:'<path d="M12 3v18" stroke-dasharray="3 3"/><path d="M8 7L4 12l4 5M16 7l4 5-4 5"/>',
+  numline:'<line x1="2" y1="12" x2="22" y2="12"/><line x1="7" y1="9" x2="7" y2="15"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="17" y1="9" x2="17" y2="15"/>',
+  plusminus:'<path d="M8 4.5v7M4.5 8h7M13 16.5h7"/>',
+  times:'<path d="M6 6l12 12M18 6L6 18"/>',
+  divide:'<circle cx="12" cy="5.5" r="1.4"/><line x1="4.5" y1="12" x2="19.5" y2="12"/><circle cx="12" cy="18.5" r="1.4"/>',
+  parens:'<path d="M8.5 4C5.5 8 5.5 16 8.5 20M15.5 4c3 4 3 12 0 16"/>',
+  power:'<rect x="4" y="9" width="10" height="10" rx="1.5"/><rect x="16" y="4" width="5" height="5" rx="1"/>',
+  root:'<path d="M3 13.5l3.5 6L11 4.5h10"/>',
+  box_eq:'<rect x="3.5" y="7" width="8" height="10" rx="1.5"/><path d="M15 10h5.5M15 14h5.5"/>',
+  arrowbox:'<rect x="11" y="6" width="9.5" height="12" rx="2"/><path d="M2.5 12H8M5.5 9l2.8 3-2.8 3"/>',
+  branch:'<path d="M3.5 12H10M10 12l6-5M10 12l6 5"/><circle cx="18.5" cy="6.5" r="1.6"/><circle cx="18.5" cy="17.5" r="1.6"/>',
+  factor:'<path d="M8 5C5.5 8 5.5 16 8 19M16 5c2.5 3 2.5 11 0 14"/><circle cx="12" cy="12" r="1.7"/>',
+  scale:'<path d="M12 4v13M6.5 7h11M6.5 7l-3.5 5.5h7zM17.5 7L14 12.5h7zM8.5 20h7"/>',
+  syseq:'<path d="M4 7.5h7M4 11h7M13 13h7M13 16.5h7"/>',
+  speech:'<path d="M4 5h16v11h-9.5L6 20v-4H4z"/>',
+  axes:'<path d="M5.5 3v16h16"/><path d="M3 5.5L5.5 3 8 5.5M19 16.5L21.5 19 19 21.5"/>',
+  point:'<path d="M5.5 3v16h16"/><circle cx="14" cy="9.5" r="2.2"/>',
+  quadrants:'<path d="M12 2.5v19M2.5 12h19"/><circle cx="17" cy="7" r="1.7"/>',
+  analytic:'<path d="M5.5 3v16h16"/><path d="M9 15l8-7"/><circle cx="9" cy="15" r="1.6"/><circle cx="17" cy="8" r="1.6"/>',
+  angle:'<path d="M4.5 19h15M4.5 19L16 6.5"/><path d="M10.5 19a6.5 6.5 0 0 0-2.2-4.8"/>',
+  protractor:'<path d="M4 16a8 8 0 0 1 16 0z"/><path d="M12 16v-5.5M7 16l1-2.5M17 16l-1-2.5"/>',
+  triangle:'<path d="M12 4l9.5 15.5H2.5z"/>',
+  tritick:'<path d="M12 4l8.5 15.5H3.5z"/><path d="M6.8 11.5l2 1.4M17.2 11.5l-2 1.4"/>',
+  star:'<path d="M12 3l2.6 5.5 6.1.8-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6L3.3 9.3l6.1-.8z"/>',
+  twotri:'<path d="M8 5.5l5 8.5H3zM16 10l5.5 9.5H10.5z"/>',
+  pythag:'<path d="M5.5 19V6l13.5 13z"/><path d="M5.5 14.5H10V19"/>',
+  dashrect:'<rect x="4" y="6" width="16" height="12" rx="1" stroke-dasharray="3.2 3"/>',
+  gridrect:'<rect x="4" y="6" width="16" height="12"/><path d="M4 12h16M12 6v12"/>',
+  tridash:'<path d="M12 4l9 15H3z"/><path d="M12 4v15" stroke-dasharray="3 3"/>',
+  pgram:'<path d="M7.5 6.5H21l-4.5 11H3z"/>',
+  lshape:'<path d="M4 4h9.5v6.5H20V20H4z"/>',
+  cube:'<path d="M4 8.5l8-4.5 8 4.5v7l-8 4.5-8-4.5z"/><path d="M4 8.5l8 4.5 8-4.5M12 13v7"/>',
+  prism:'<path d="M8 15l4-8 4 8z"/><path d="M8 15v4.5h8V15"/>',
+  table:'<rect x="3.5" y="5" width="17" height="14" rx="1"/><path d="M3.5 10h17M9.5 5v14M15.5 5v14"/>',
+  tally:'<path d="M5.5 5v14M9.5 5v14M13.5 5v14M17.5 5v14M3.5 16.5L19.5 7"/>',
+  percent:'<path d="M5.5 18.5l13-13"/><circle cx="7.5" cy="7.5" r="2.6"/><circle cx="16.5" cy="16.5" r="2.6"/>',
+  flask:'<path d="M10 3.5h4M11 3.5V9l-4.8 8.6A2 2 0 0 0 8 20.5h8a2 2 0 0 0 1.8-2.9L13 9V3.5"/><path d="M8.2 15.5h7.6"/>',
+  dice:'<rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.3"/><circle cx="15" cy="9" r="1.3"/><circle cx="9" cy="15" r="1.3"/><circle cx="15" cy="15" r="1.3"/>',
+  frac:'<path d="M6 12h12"/><circle cx="12" cy="6.8" r="2.1"/><circle cx="12" cy="17.2" r="2.1"/>',
+  lt:'<path d="M17.5 5.5L7 12l10.5 6.5"/>',
+  cross2:'<path d="M4 17.5L20 6M4 7l16 10.5"/><circle cx="12" cy="12" r="1.9"/>',
+  machine:'<rect x="8" y="7" width="8" height="10" rx="2"/><path d="M2.5 12H8M16 12h5.5"/>',
+  cycle:'<path d="M7 8a6.5 6.5 0 0 1 10.5 1.5M17 16a6.5 6.5 0 0 1-10.5-1.5"/><path d="M17.5 5.5v4h-4M6.5 18.5v-4h4"/>',
+  steps:'<path d="M3 19.5h5v-4.5h5v-4.5h5V6h3.5"/>',
+  slope:'<path d="M4 19L20 5.5"/><path d="M4 19h7M11 19v-6" stroke-dasharray="3 2.6"/>',
+  linear:'<path d="M5.5 3v16h16"/><path d="M8 17L20 6.5"/>',
+  braces:'<path d="M9 4C7 4 7.5 7 7.5 9s.3 3-2.5 3c2.8 0 2.5 1 2.5 3S7 20 9 20M15 4c2 0 1.5 3 1.5 5s-.3 3 2.5 3c-2.8 0-2.5 1-2.5 3s.5 5-1.5 5"/>',
+  dots2:'<path d="M5.5 3v16h16"/><path d="M8 16L19 6"/><circle cx="8" cy="16" r="1.8"/><circle cx="15.2" cy="9.4" r="1.8"/>',
+  ruler:'<g transform="rotate(-24 12 12)"><rect x="2.5" y="9" width="19" height="6" rx="1.2"/><path d="M7 9v2.8M11.5 9v2.8M16 9v2.8"/></g>',
+  gridlines:'<path d="M5.5 3v16h16"/><path d="M10 5v12M5.5 9.5h14"/>',
+  tag:'<path d="M3.5 12l8.5-8.5H20.5V11.5L12 20z"/><circle cx="16.5" cy="7.5" r="1.6"/>',
+  updown:'<path d="M8 4.5v15M8 4.5L5 7.5M8 4.5l3 3M16 19.5v-15M16 19.5l-3-3M16 19.5l3-3"/>',
+  ratio:'<rect x="3.5" y="6.5" width="5.5" height="11" rx="1"/><rect x="15" y="6.5" width="5.5" height="11" rx="1"/><circle cx="12" cy="9.5" r="1.2"/><circle cx="12" cy="14.5" r="1.2"/>',
+  map:'<path d="M3.5 5.5l5.5-2 6 2 5.5-2v15l-5.5 2-6-2-5.5 2zM9 3.5v15M15 5.5v15"/>',
+  bars:'<path d="M6 20v-7.5M12 20V6.5M18 20v-10M3 20h18"/>',
+  pie:'<circle cx="12" cy="12" r="8.5"/><path d="M12 12V3.5M12 12l6.2 5.5"/>',
+  range:'<path d="M3.5 12h17M3.5 12l3.2-3.2M3.5 12l3.2 3.2M20.5 12l-3.2-3.2M20.5 12l-3.2 3.2"/>',
+  avg:'<path d="M6 20v-6.5M12 20V8M18 20v-9.5"/><path d="M3 12.5h18" stroke-dasharray="3 2.6"/>',
+  median:'<circle cx="4.5" cy="12" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="13.7" cy="12" r="2.6"/><circle cx="19.5" cy="12" r="1.4"/>',
+  checklist:'<path d="M4 6.5h3.5M4 12h3.5M4 17.5h3.5M11 5.5l1.8 1.8 3.7-3.8M11 12h9M11 17.5h9"/>',
+  arrowr:'<path d="M3.5 12h13M12 7l5 5-5 5M3.5 7h5M3.5 17h5"/>',
+  clipcheck:'<rect x="5" y="4.5" width="14" height="16.5" rx="2"/><path d="M9.5 4.5h5V7h-5z"/><path d="M8.5 13.5l2.8 2.8 4.7-5.6"/>',
+  medtri:'<path d="M12 4l9 15H3z"/><path d="M12 4v15"/>',
+  twotri2:'<path d="M9 12.5L12 7l3 5.5zM4.5 20L12 6.5 19.5 20z"/>',
+  sq2:'<rect x="4" y="10.5" width="8" height="8"/><rect x="13.5" y="4.5" width="6" height="6"/>',
+  cyl:'<ellipse cx="12" cy="6" rx="7" ry="2.8"/><path d="M5 6v11.5c0 1.6 3.1 2.9 7 2.9s7-1.3 7-2.9V6"/>',
+  circle:'<circle cx="12" cy="12" r="8.5"/><path d="M12 12h8.5"/>',
+  magnify:'<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l6 6"/>',
+  bridge:'<path d="M3 17.5h18M6.5 17.5v-4a5.5 5.5 0 0 1 11 0v4"/><path d="M9.5 17.5v-2.6M14.5 17.5v-2.6M12 17.5v-3.5"/>',
+  bulb:'<path d="M12 3a6 6 0 0 0-3.8 10.6c.9.8 1.3 1.7 1.3 2.9h5c0-1.2.4-2.1 1.3-2.9A6 6 0 0 0 12 3z"/><path d="M9.5 19.5h5M10.5 22h3"/>',
+  book:'<path d="M12 5.5C10 4 7 3.5 4 3.5v15c3 0 6 .5 8 2 2-1.5 5-2 8-2v-15c-3 0-6 .5-8 2z"/><path d="M12 5.5v15"/>',
+  kite:'<path d="M12 3l6 7.5L12 21l-6-10.5z"/><path d="M12 3v18M6 10.5h12"/>',
+  rect2:'<rect x="3.5" y="6.5" width="17" height="11"/><path d="M3.5 6.5l17 11M20.5 6.5l-17 11"/>',
+  rhomb:'<path d="M12 3l8 9-8 9-8-9z"/><path d="M12 3v18M4 12h16"/>',
+  square2:'<rect x="4.5" y="4.5" width="15" height="15"/><path d="M4.5 4.5l15 15M19.5 4.5l-15 15"/>',
+  trapez:'<path d="M8 6.5h8l4.5 11h-17z"/>',
+  parabola:'<path d="M4.5 4.5v15"/><path d="M6 6c2.5 15 11.5 15 14 0"/>',
+  wave:'<path d="M3 15.5c2.5-8 5-8 7.5 0s5 6 7.5-2.5"/>',
+  clipboard:'<rect x="5" y="4.5" width="14" height="16.5" rx="2"/><path d="M9.5 4.5h5V7h-5z"/><path d="M8.5 12h7M8.5 16h4.5"/>'
+};
+
+var NO_LINK = "אין לינק כעת";
+
+/* תג PDF שמופיע ליד שם כל נושא */
+var PDF_BADGE =
+  '<span class="pdf-badge" aria-label="קובץ PDF להורדה">' +
+    '<svg viewBox="0 0 14 17" aria-hidden="true">' +
+      '<path d="M2.2 1h5.4l4.2 4.2v10.6a.8.8 0 0 1-.8.8H2.2a.8.8 0 0 1-.8-.8V1.8A.8.8 0 0 1 2.2 1z"/>' +
+      '<path d="M7.6 1v4.2h4.2"/>' +
+    '</svg>PDF</span>';
+
+function url(v){
+  if(!v) return "";
+  return /^https?:\/\//.test(v) ? v : BASE + v + ".pdf";
+}
+
+function noamTopicPrefix(topic, grade){
+  if (topic && topic.x) return topic.x;
+  var gradeMap = NOAM_PREFIX_FALLBACK[grade] || {};
+  return topic ? (gradeMap[topic.id] || "") : "";
+}
+
+/* Universal Noam AI routing for every middle-school worksheet. */
+function sheetHref(topic, grade, level, hex, row){
+  if (!VIEWER.enabled || !topic || !hex) return url(hex);
+
+  var prefix = noamTopicPrefix(topic, grade);
+
+  /* Elementary remains unchanged until its manifests are generated. */
+  if (!prefix || grade < 7 || grade > 9) return url(hex);
+
+  var params = [
+    "g="   + encodeURIComponent(grade),
+    "x="   + encodeURIComponent(prefix),
+    "lv="  + encodeURIComponent(level),
+    "pdf=" + encodeURIComponent(hex),
+    "t="   + encodeURIComponent(topic.t)
+  ];
+
+  if (row){
+    ["a", "b", "c"].forEach(function(key){
+      if (row[key]){
+        params.push("p" + key + "=" + encodeURIComponent(row[key]));
+      }
+    });
+  }
+
+  return VIEWER.path + "?" + params.join("&");
+}
+function esc(s){
+  return String(s).replace(/[&<>"']/g, function(m){
+    return { "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m] || m;
+  });
+}
+
+var state = { grade:DEFAULT_GRADE, q:"", group:"all", cross:false, track:"reg" };
+var TRACK_GROUPS = { r9sep:true, r9oct:true };   /* קבוצות ששייכות למסלול המצומצם */
+
+/* ---------- לשוניות כיתה ---------- */
+function tabsRow(list, label, emoji){
+  return '<div class="tabrow">' +
+           '<span class="tabrow-label">' + emoji + ' ' + label + '</span>' +
+           '<div class="tabrow-btns">' +
+             list.map(function(g){
+               return '<button class="grade-tab" type="button" role="tab" data-grade="' + g + '" ' +
+                      'id="grade-tab-' + g + '" aria-controls="list" tabindex="' + (g === state.grade ? '0' : '-1') + '" ' +
+                      'aria-selected="' + (g === state.grade) + '">' +
+                      '<span aria-hidden="true">' + (GRADE_EMOJI[g] || "") + '</span> ' + GRADE_NAME[g] + '</button>';
+             }).join("") +
+           '</div>' +
+         '</div>';
+}
+
+function buildGradeTabs(){
+  var box = document.getElementById("grades");
+  if (!box.dataset.bound){
+    box.innerHTML = tabsRow(ELEMENTARY, "בית ספר יסודי", "🎒") +
+                    tabsRow(MIDDLE,     "חטיבת ביניים",  "🏫");
+    box.dataset.bound = "1";
+    box.addEventListener("click", function(e){
+      var btn = e.target.closest(".grade-tab");
+      if(!btn) return;
+      goToGrade(Number(btn.dataset.grade));
+    });
+    box.addEventListener("keydown", function(e){
+      var btn = e.target.closest(".grade-tab");
+      if (!btn || e.altKey || e.ctrlKey || e.metaKey) return;
+      var grades = ELEMENTARY.concat(MIDDLE);
+      var index = grades.indexOf(Number(btn.dataset.grade));
+      if (e.key === "ArrowLeft") index = (index + 1) % grades.length;
+      else if (e.key === "ArrowRight") index = (index + grades.length - 1) % grades.length;
+      else if (e.key === "Home") index = 0;
+      else if (e.key === "End") index = grades.length - 1;
+      else return;
+      e.preventDefault();
+      goToGrade(grades[index], true);
+    });
+  }
+  Array.prototype.forEach.call(box.querySelectorAll(".grade-tab"), function(btn){
+    var selected = Number(btn.dataset.grade) === state.grade;
+    btn.setAttribute("aria-selected", String(selected));
+    btn.tabIndex = selected ? 0 : -1;
+  });
+  document.getElementById("list").setAttribute("aria-labelledby", "grade-tab-" + state.grade);
+}
+
+function goToGrade(g, focusTab){
+  if (!DATA[g]) return;
+  state.grade = g;
+  state.group = "all";
+  state.track = "reg";
+  state.q = "";
+  var qEl = document.getElementById("q");
+  if (qEl) qEl.value = "";
+  GRADE_ORDER = familyOf(g);
+  document.getElementById("wrap").dataset.grade = g;
+  buildGradeTabs();
+  syncTrackbar();
+  buildChips();
+  setHeader();
+  render();
+  if (focusTab) document.getElementById("grade-tab-" + g).focus({ preventScroll:true });
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  try { window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }); } catch(e){ window.scrollTo(0,0); }
+}
+
+function buildJump(){
+  var box = document.getElementById("jump");
+  if (!box) return;
+  var inMiddle = MIDDLE.indexOf(state.grade) !== -1;
+  var list  = inMiddle ? ELEMENTARY : MIDDLE;
+  var label = inMiddle ? "🎒 מחפשים דפי עבודה ליסודי?" : "🏫 מחפשים דפי עבודה לחטיבת הביניים?";
+  box.innerHTML =
+    '<span class="jump-label">' + label + '</span>' +
+    '<div class="jump-btns">' +
+      list.map(function(g){
+        return '<button class="jump-btn" type="button" data-grade="' + g + '">' +
+               (GRADE_EMOJI[g] || "") + ' ' + GRADE_NAME[g] + '</button>';
+      }).join("") +
+    '</div>';
+  if (box.dataset.bound) return;
+  box.dataset.bound = "1";
+  box.addEventListener("click", function(e){
+    var b = e.target.closest(".jump-btn");
+    if (b) goToGrade(Number(b.dataset.grade), true);
+  });
+}
+
+function setHeader(){
+  var d = DATA[state.grade];
+  var esc = function(t){ return String(t).replace(/[&<>]/g, function(m){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;"}[m]; }); };
+  document.getElementById("title").innerHTML =
+    esc(GRADE_EMOJI[state.grade] || "") + " דפי עבודה ל<span class=\"hl\">" +
+    esc(GRADE_NAME[state.grade]) + "</span> — לפי תכנית הלימודים תשפ״ז 2026";
+  var gb = document.getElementById("gbadge");
+  if (gb) gb.textContent = (GRADE_NAME[state.grade] || "").replace("כיתה ", "").trim();
+  document.getElementById("lede").textContent =
+    d.topics.filter(function(t){ return t.parent === undefined; }).length +
+    " נושאים. בחרו דף והוא ייפתח בלשונית חדשה.";
+
+  /* נועם AI זמין כרגע בחטיבת הביניים בלבד (ז׳–ט׳). ביסודי מוצג נוסח "בקרוב".
+     כשה-AI יגיע ליסודי — מספיק להוסיף x לנושאים, והנוסח יתעדכן לבד. */
+  var aiOn   = MIDDLE.indexOf(state.grade) !== -1;
+  var aiHead = document.getElementById("aititle");
+  var aitxt  = document.getElementById("aitext");
+  var banner = document.getElementById("aibanner");
+
+  if (banner) banner.classList.toggle("soon", !aiOn);
+
+  if (aiHead){
+    aiHead.textContent = aiOn
+      ? "נתקעתם בתרגיל? נועם AI כאן לעזור"
+      : "נועם AI בדרך גם ליסודי";
+  }
+  if (aitxt){
+    aitxt.textContent = aiOn
+      ? ("בכל דף עבודה של " + GRADE_NAME[state.grade] + " מחכה נועם AI: שואלים שאלה על תרגיל, " +
+         "ומקבלים רמז או הסבר צעד אחר צעד — בדיוק כמו מורה פרטי. בחינם.")
+      : ("העוזר החכם שמסביר תרגילים צעד אחר צעד זמין כרגע בדפי חטיבת הביניים — ובקרוב גם כאן. " +
+         "בינתיים אפשר להוריד ולהדפיס את כל דפי העבודה של " + GRADE_NAME[state.grade] + " בחינם.");
+  }
+
+  buildJump();
+}
+
+/* ---------- שבבי תחום ---------- */
+function buildChips(){
+  var box = document.getElementById("chips");
+  var groups = DATA[state.grade].groups.filter(function(g){
+    var isTrack = !!TRACK_GROUPS[g.key];
+    return state.track === "red" ? isTrack : !isTrack;
+  });
+  var items = [{ key:"all", name:"כל הנושאים" }].concat(groups);
+  box.innerHTML = items.map(function(it){
+    return '<button class="chip" type="button" data-group="' + it.key + '" aria-pressed="' +
+           (it.key === state.group) + '">' + it.name + '</button>';
+  }).join("");
+}
+document.getElementById("trackbar").addEventListener("click", function(e){
+  var btn = e.target.closest(".track");
+  if(!btn) return;
+  state.track = btn.dataset.track;
+  state.group = "all";
+  syncTrackbar();
+  buildChips();
+  render();
+});
+function syncTrackbar(){
+  var bar = document.getElementById("trackbar");
+  bar.hidden = (state.grade !== 9);
+  Array.prototype.forEach.call(bar.querySelectorAll(".track"), function(b){
+    b.setAttribute("aria-pressed", String(b.dataset.track === state.track));
+  });
+  var note = document.getElementById("tracknote");
+  if(!note) return;
+  note.textContent = state.track === "red"
+    ? "מסלול נפרד לקראת 3 יח״ל — 162 שעות, לפי פריסת תשפ״ז"
+    : "לפי פריסת תשפ״ז — רמה רגילה";
+}
+document.getElementById("chips").addEventListener("click", function(e){
+  var btn = e.target.closest(".chip");
+  if(!btn) return;
+  state.group = btn.dataset.group;
+  Array.prototype.forEach.call(this.children, function(c){
+    c.setAttribute("aria-pressed", String(c.dataset.group === state.group));
+  });
+  render();
+});
+
+/* ---------- כרטיס ---------- */
+function topicChildren(grade, topic){
+  return DATA[grade].topics.filter(function(t){ return t.parent === topic.id; });
+}
+
+function levelLinksHTML(topic, grade){
+  var row = DATA[grade].links[topic.id] || {};
+  var buttons;
+
+  if(row.one !== undefined){                 /* דף יחיד ללא רמות */
+    var oneHref  = sheetHref(topic, grade, "b", row.one, row);
+    var oneLabel = row.oneLabel || "דף יחיד — כל הרמות";
+    buttons = oneHref
+      ? '<a class="lvl lvl--a lvl--one" href="' + oneHref + '" target="_blank" rel="noopener noreferrer" ' +
+        'aria-label="' + esc(topic.t) + ' — ' + esc(oneLabel) + ', קובץ PDF">' + esc(oneLabel) + '</a>'
+      : '<span class="lvl lvl--a lvl--one lvl--soon" aria-disabled="true" ' +
+        'aria-label="' + esc(oneLabel) + ' — ' + NO_LINK + '">' + esc(oneLabel) +
+        ' <span class="soon-note">(' + NO_LINK + ')</span></span>';
+  } else {
+    buttons = LEVELS.map(function(lv){
+      var href  = url(row[lv.k]);
+      var label = topic[lv.k + "Label"] || lv.label;
+      if(!href){
+        return '';
+      }
+      return '<a class="lvl ' + lv.cls + '" href="' + sheetHref(topic, grade, lv.k, row[lv.k], row) + '" target="_blank" rel="noopener noreferrer" ' +
+             'aria-label="' + esc(topic.t) + ' — ' + esc(label) + ', קובץ PDF">' + esc(label) + '</a>';
+    }).join("");
+  }
+  return buttons;
+}
+
+function cardHTML(topic, grade, cardIndex){
+  var children = topicChildren(grade, topic);
+  var buttons = levelLinksHTML(topic, grade);
+  if (children.length){
+    buttons = '<div class="worksheet-links">' + children.map(function(child){
+      return levelLinksHTML(child, grade);
+    }).join("") + '</div>' +
+      '<details class="more-worksheets"><summary>תרגול נוסף לפי רמות</summary>' +
+      '<div class="worksheet-links">' + buttons + '</div></details>';
+  }
+
+  var ico = ICONS[topic.ic] || ICONS.star;
+  var _d = (typeof cardIndex === "number" ? cardIndex : 0) * 0.05;
+  return '<article class="card' + (children.length ? ' card--bundle' : '') + '" data-g="' + topic.g + '" style="--d:' + _d.toFixed(2) + 's">' +
+           '<div class="card-main">' +
+             '<span class="tico" aria-hidden="true"><svg viewBox="0 0 24 24">' + ico + '</svg></span>' +
+             '<div class="card-text"><h4>' + esc(topic.t) + PDF_BADGE + '</h4>' + (topic.d ? '<p>' + esc(topic.d) + '</p>' : '') +
+               (topic.n ? '<p class="note">' + esc(topic.n) + '</p>' : '') +
+             (topic.x ? '<span class="aihint">🤖 נועם AI זמין בדף הזה</span>' : '') +
+             '</div>' +
+           '</div>' +
+           '<div class="levels' + (children.length ? ' levels--bundle' : '') + '">' + buttons + '</div>' +
+         '</article>';
+}
+
+/* אינדקס תתי־נושאים נסתר לחיפוש — מפתח ראשון: כיתה, מפתח שני: מזהה נושא */
+var SEARCH_TERMS = {
+  1: {
+    2: "ספרות מספר עשרת יחידות",
+    3: "גדול קטן שווה השוואת מספרים סימן",
+    10: "סדרה חוקיות דפוס המשך תבנית",
+    13: "שוויון נעלם משוואה איזון",
+    15: "סנטימטר סרגל מדידה ארוך קצר",
+    17: "משולש מרובע מחומש משושה צלע קודקוד צורות",
+    18: "מרובע צלעות שוות מלבנים ריבועים",
+    20: "שעון מחוגים שעות זמן",
+    21: "דיאגרמת עמודות גרף טבלה איסוף מידע"
+  },
+  2: {
+    3: "מאות עשרות יחידות ערך מקום",
+    5: "חיבור מאונך בטור אנכי",
+    6: "חיבור מאונך בטור אנכי המרה שארית",
+    12: "גרף עמודות דיאגרמה טבלה נתונים",
+    16: "לוח הכפל פעמים",
+    23: "סנטימטר מטר סרגל מדידה",
+    25: "שעון מחוגים דקות שעות",
+    26: "שבר חצאים רבעים חלקים שווים",
+    28: "קובייה תיבה גליל כדור משולש מרובע",
+    29: "שיקוף מראה סימטריה קו סימטריה"
+  },
+  3: {
+    2: "אלף אלפים ערך מקום ספרות",
+    6: "חיבור מאונך בטור אנכי המרה",
+    7: "חיסור מאונך בטור אנכי פריטה",
+    11: "שבר מונה מכנה חלק שלם",
+    12: "זווית ישרה חדה קהה מד זווית",
+    14: "משולש מרובע מחומש משושה צלע קודקוד",
+    15: "היקף סכום צלעות",
+    16: "משולש שווה צלעות שווה שוקיים ישר זווית",
+    17: "ריבוע מלבן מעוין מקבילית טרפז מרובע צלעות מקבילות זוויות ישרות אלכסון",
+    19: "שעון דקות שניות קילוגרם גרם שקילה",
+    22: "סנטימטר מטר מילימטר קילומטר המרה",
+    25: "שקל אגורות מטבעות שטרות קנייה עודף"
+  },
+  4: {
+    1: "רבבה מיליון ערך מקום מספרים גדולים",
+    3: "חיבור מאונך בטור אנכי המרה",
+    4: "חיסור מאונך בטור אנכי פריטה",
+    7: "כפל מאונך בטור דו ספרתי",
+    9: "חילוק ארוך שארית",
+    11: "שבר מונה מכנה שקילות",
+    13: "שברים שקולים הרחבה צמצום",
+    14: "מחלקים כפולות סימני התחלקות",
+    15: "ראשוני פריק פירוק לגורמים",
+    21: "מילימטר סנטימטר מטר קילומטר המרות",
+    22: "שטח היקף סמר מטר רבוע",
+    24: "קילוגרם גרם טון שעות דקות",
+    26: "שיקוף סיבוב קו סימטריה",
+    27: "זווית ישרה חדה קהה שטוחה מקבילים מאונכים",
+    28: "שווה צלעות שווה שוקיים ישר זווית חד זווית קהה זווית",
+    29: "דלתון טרפז מעוין מקבילית מלבן ריבוע הכלה מיון אלכסונים"
+  },
+  5: {
+    7: "מונה מכנה חלק משלם",
+    9: "הרחבה צמצום שברים שקולים",
+    10: "מכנה משותף קטן ביותר",
+    13: "שבר מדומה מספר מעורב שלמים",
+    18: "דלתון טרפז מעוין מקבילית מלבן ריבוע משפחה הכלה",
+    19: "דלתון אלכסונים מאונכים חוצים תכונות מרובעים",
+    21: "קילוגרם גרם טון המרות",
+    25: "שטח היקף מטר רבוע",
+    27: "מקבילית בסיס גובה שטח",
+    28: "שבר עשרוני נקודה עשרונית",
+    29: "עשרוני חיבור חיסור",
+    30: "עשרוני כפל חילוק"
+  },
+  6: {
+    2: "מכנה משותף שברים חיבור חיסור",
+    9: "שבר עשרוני נקודה עשרונית",
+    11: "פאה מקצוע קודקוד מנסרה פירמידה גליל",
+    12: "פריסה תלת ממד קובייה",
+    13: "שטח פנים פאות",
+    14: "נפח סמק מטר מעוקב",
+    15: "מיליליטר ליטר סמק מק קיבול נוזלים",
+    16: "דלתון טרפז מעוין מקבילית מלבן ריבוע הכלה מיון",
+    18: "אחוז שבר עשרוני המרה",
+    19: "אחוזים חישוב חלק מכמות",
+    20: "אחוז השלם הנחה התייקרות",
+    21: "יחס פרופורציה חלוקה",
+    22: "קנה מידה מפה שרטוט הקטנה הגדלה"
+  },
+
+  7: {
+    27: "סיכוי מזל הגרלה קובייה מטבע",
+    1: "ערך מוחלט נגדי ציר",
+    48: "סדרה סדרות דפוס תבנית איבר כללי המשך הסדרה כלל חוקיות",
+    6: "בסיס מעריך חזקה",
+    7: "רדיקל שורשים",
+    11: "מד זווית חדה קהה ישרה שטוחה",
+    13: "צמודות קודקודיות משלימות",
+    15: "שווה שוקיים שווה צלעות ישר זווית",
+    20: "קובייה נפח שטח פנים פאות",
+    41: "משפט פיתגורס ניצב יתר",
+    43: "היקף מצולעים",
+    44: "טרפז מקבילית בסיס גובה שטח",
+    46: "מנסרה נפח בסיס משולש",
+    47: "מנסרה שטח פנים מעטפת פריסה"
+  },
+  8: {
+    65: "הוכחה חפיפה משפטי חפיפה טענה נימוק נתון משותף דף מסכם",
+    4: "יחס פרופורציה חלוקה",
+    5: "מפה שרטוט הקטנה הגדלה",
+    6: "אחוז שבר עשרוני המרה",
+    7: "מעמ ריבית הנחה התייקרות אחוזים",
+    8: "עלייה ירידה אחוז שינוי",
+    11: "משפט פיתגורס ניצב יתר",
+    13: "גליל מעטפת בסיס עיגול",
+    14: "גליל רדיוס נפח",
+    15: "חרוט קודקוד בסיס מעגל נפח",
+    18: "עיגול מגזרים אחוזים עוגה",
+    23: "ממוצע משוקלל",
+    28: "פיזור ערכים קיצוניים",
+    33: "מהירות דרך זמן מפגש",
+    40: "שווה שוקיים זוויות בסיס",
+    43: "יחס דמיון קנה מידה",
+    54: "אלכסון תיבה מרחב",
+    47: "נקודת חיתוך שתי משוואות גרפים"
+  },
+  9: {
+    23: "ריבועים מעוין מלבן מקביליות אלכסונים",
+    2: "פתיחת סוגריים כפל מקוצר",
+    44: "דו איבר דו־איבר דו-איבר ריבוע דו איבר ריבוע סכום ריבוע הפרש נוסחאות כפל מקוצר נוסחות פתיחת סוגריים פישוט ביטויים",
+    45: "הפרש ריבועים נוסחאות כפל מקוצר נוסחות מכפלת סכום והפרש פירוק לגורמים ריבועים אלגברה",
+    3: "טרינום הפרש ריבועים גורם משותף",
+    5: "רדיקל תחום הגדרה",
+    6: "פרבולה קודקוד ציר סימטריה נקודות אפס",
+    8: "שיפוע מרחק אמצע קטע משוואת ישר",
+    12: "פונקציות גרפים קריאת גרף",
+    13: "הכנה לתיכון יחידות לימוד 4 5 חזרה",
+    20: "מקביליות צלעות נגדיות אלכסונים",
+    22: "מעוינים אלכסונים מאונכים",
+  }
+};
+
+/* ---------- חיפוש חכם: ניקוד, סופיות, ריבוי, תחיליות, כתיב ---------- */
+function searchNorm(s){
+  return String(s)
+    .replace(/[\u0591-\u05C7]/g, "")                 /* ניקוד וטעמים */
+    .replace(/[״"'׳]/g, "")                            /* גרשיים */
+    .replace(/ך/g,"כ").replace(/ם/g,"מ").replace(/ן/g,"נ")
+    .replace(/ף/g,"פ").replace(/ץ/g,"צ")
+    .replace(/גיאו/g,"גאו")                            /* גיאומטריה/גאומטריה */
+    .replace(/[^\u05D0-\u05EA0-9a-zA-Z]+/g, " ")
+    .toLowerCase().trim();
+}
+function stemsOf(tok){
+  var out = [tok];
+  ["וה","שה","מה","כש","ב","ה","ל","ו","מ","ש","כ"].forEach(function(p){
+    if (tok.length > p.length + 2 && tok.indexOf(p) === 0) out.push(tok.slice(p.length));
+  });
+  var more = [];
+  out.forEach(function(t){
+    ["יות","ות","ים","י"].forEach(function(sf){
+      if (t.length > sf.length + 2 && t.slice(-sf.length) === sf) more.push(t.slice(0, -sf.length));
+    });
+  });
+  return out.concat(more);
+}
+function tokenHits(qtok, hayToks){
+  var stems = stemsOf(qtok);
+  for (var i = 0; i < hayToks.length; i++){
+    var h = hayToks[i];
+    for (var j = 0; j < stems.length; j++){
+      var st = stems[j];
+      if (st.length < 2) continue;
+      if (h.indexOf(st) === 0) return true;              /* התאמת תחילית */
+      if (st.indexOf(h) === 0 && h.length >= 3) return true;
+    }
+  }
+  return false;
+}
+var _hayCache = {};
+function topicHaystack(grade, t){
+  var key = grade + ":" + t.id;
+  if (!_hayCache[key]){
+    var extra = (typeof SEARCH_TERMS !== "undefined" && SEARCH_TERMS[grade] && SEARCH_TERMS[grade][t.id]) || "";
+    var gname = "";
+    for (var gi = 0; gi < DATA[grade].groups.length; gi++){
+      if (DATA[grade].groups[gi].key === t.g){ gname = DATA[grade].groups[gi].name; break; }
+    }
+    extra += " " + gname;
+    extra += " " + topicChildren(grade, t).map(function(child){
+      return child.t + " " + (child.d || "");
+    }).join(" ");
+    var base = searchNorm(t.t + " " + (t.d || "") + " " + extra).split(" ").filter(Boolean);
+    var ex = [];
+    base.forEach(function(w){ ex = ex.concat(stemsOf(w)); });
+    _hayCache[key] = ex;
+  }
+  return _hayCache[key];
+}
+function topicMatches(grade, t, q){
+  var qToks = searchNorm(q).split(" ").filter(Boolean);
+  if (!qToks.length) return true;
+  for (var i = 0; i < qToks.length; i++){
+    if (!tokenHits(qToks[i], topicHaystack(grade, t))) return false;
+  }
+  return true;
+}
+
+/* ---------- סינון ---------- */
+function matchesIn(grade, useGroup){
+  var q = state.q.trim();
+  return DATA[grade].topics.filter(function(t){
+    if (t.parent !== undefined) return false;
+    var isTrack = !!TRACK_GROUPS[t.g];
+    var okTrack = grade !== 9 || (state.track === "red" ? isTrack : !isTrack);
+    var okGroup = !useGroup || state.group === "all" || t.g === state.group;
+    var okText  = !q || topicMatches(grade, t, q);
+    return okTrack && okGroup && okText;
+  });
+}
+
+function groupsHTML(grade, list){
+  return DATA[grade].groups.map(function(g){
+    var inGroup = list.filter(function(t){ return t.g === g.key; });
+    if(!inGroup.length) return "";
+    return '<section class="group">' +
+             '<div class="group-head"><h3>' + g.name + '</h3>' +
+               '<span class="rule"></span>' +
+               '<span class="count">' + inGroup.length + ' נושאים</span>' +
+             '</div>' +
+             inGroup.map(function(t,ci){ return cardHTML(t, grade, ci); }).join("") +
+           '</section>';
+  }).join("");
+}
+
+var resultsStatusTimer;
+function announceResults(total){
+  clearTimeout(resultsStatusTimer);
+  resultsStatusTimer = setTimeout(function(){
+    var message = total ? "נמצאו " + total + " נושאים" : "לא נמצאו נושאים";
+    if (!(state.cross && state.q.trim())) message += " ב" + GRADE_NAME[state.grade];
+    if (state.q.trim()) message += ' לחיפוש "' + state.q.trim() + '"';
+    document.getElementById("results-status").textContent = message + ".";
+  }, 250);
+}
+
+function render(){
+  var list = document.getElementById("list");
+  var hint = document.getElementById("crosshint");
+  var q    = state.q.trim();
+  var html = "", total = 0;
+  list.setAttribute("aria-labelledby", "grade-tab-" + state.grade + (state.cross && q ? " results-scope" : ""));
+
+  if(state.cross && q){
+    GRADE_ORDER.forEach(function(g){
+      var m = matchesIn(g, false);
+      if(!m.length) return;
+      total += m.length;
+      html += '<div class="grade-band"><h2>' + GRADE_NAME[g] + '</h2>' +
+              '<span class="rule"></span>' +
+              '<span class="count">' + m.length + ' נושאים</span></div>' +
+              groupsHTML(g, m);
+    });
+    hint.textContent = total ? "נמצאו " + total + " נושאים בכל הכיתות" : "";
+  } else {
+    var m = matchesIn(state.grade, true);
+    total = m.length;
+    html  = '<h2 class="sr-only">דפי העבודה</h2>' + groupsHTML(state.grade, m);
+
+    /* רמז: יש תוצאות גם בכיתות אחרות? */
+    if(q && !state.cross){
+      var other = 0;
+      GRADE_ORDER.forEach(function(g){ if(g !== state.grade) other += matchesIn(g, false).length; });
+      hint.textContent = other ? "יש עוד " + other + " תוצאות בכיתות אחרות" : "";
+    } else {
+      hint.textContent = "";
+    }
+  }
+
+  announceResults(total);
+  if(!total){
+    list.innerHTML = '<h2 class="sr-only">דפי העבודה</h2><div class="empty"><strong>אין נושא שמתאים לחיפוש</strong>' +
+                     'נסו מילה אחרת, או לחצו על "כל הנושאים" כדי לראות את הרשימה המלאה.</div>';
+    postHeight();
+    return;
+  }
+
+  list.innerHTML = html;
+  postHeight();
+}
+
+/* מדווח את גובה התוכן לעמוד העוטף (שימושי אם רוצים גובה אוטומטי ב-Wix) */
+var lastPostedHeight = 0;
+var heightFrame = 0;
+function postHeight(){
+  try{
+    var wrap = document.getElementById("wrap");
+    // Content height can shrink below the iframe's current viewport after filtering.
+    var h = wrap && wrap.getBoundingClientRect
+      ? Math.ceil(Math.max(wrap.scrollHeight, wrap.getBoundingClientRect().height))
+      : document.documentElement.scrollHeight;
+    if (!h || h === lastPostedHeight) return;
+    window.parent.postMessage({ type:"setHeight", height:h }, "*");
+    lastPostedHeight = h;
+  }catch(e){}
+}
+function scheduleHeight(){
+  if (heightFrame) return;
+  heightFrame = requestAnimationFrame(function(){
+    heightFrame = 0;
+    postHeight();
+  });
+}
+// Optional progress panels, font preferences and late content also resize the embed.
+if (window.ResizeObserver){
+  var wrapSizeObserver = new window.ResizeObserver(scheduleHeight);
+  wrapSizeObserver.observe(document.getElementById("wrap"));
+}
+document.getElementById("wrap").addEventListener("toggle", postHeight, true);
+
+document.getElementById("list").addEventListener("toggle", function(e){
+  if (e.target.classList.contains("more-worksheets")) postHeight();
+}, true);
+
+document.getElementById("q").addEventListener("input", function(e){
+  state.q = e.target.value;
+  render();
+});
+document.getElementById("crossq").addEventListener("change", function(e){
+  state.cross = e.target.checked;
+  render();
+});
+
+/* אתחול */
+if(!DATA[state.grade]) state.grade = 7;
+GRADE_ORDER = familyOf(state.grade);
+document.getElementById("wrap").dataset.grade = state.grade;
+buildGradeTabs();
+syncTrackbar();
+buildChips();
+setHeader();
+render();
+window.addEventListener("resize", postHeight);
+
+/* --- ביצועים: כל מה שלא נחוץ לציור הראשון רץ אחריו --- */
+function afterPaint(fn){
+  if ("requestIdleCallback" in window) requestIdleCallback(fn, { timeout: 800 });
+  else setTimeout(fn, 1);
+}
+requestAnimationFrame(function(){
+  requestAnimationFrame(function(){
+    postHeight();                                   /* גובה מיד אחרי הציור */
+    afterPaint(function(){
+      document.documentElement.classList.add("io-ready");  /* אנימציות */
+    });
+  });
+});
+window.addEventListener("load", postHeight);
+/* תמונות מגיעות מ-CDN ומשנות גובה כשהן נוחתות */
+document.querySelectorAll("img").forEach(function(im){
+  if (im.complete) return;
+  im.addEventListener("load", postHeight, { once:true });
+  im.addEventListener("error", postHeight, { once:true });
+});
+</script>
+<script src="noam-discovery.js?v=20260920-2" defer></script>
+<script src="noam-accessibility.js?v=20260907-1" defer></script>
+
+<script src="noam-learning-catalog.js?v=20260912-topic41" defer></script>
+<script src="noam-learning-config.js?v=20260908-1" defer></script>
+
+<script src="noam-learning-core.js?v=20260908-1" defer></script>
+<script src="noam-learning-boot.js?v=20260908-1" defer></script>
+</body>
+</html>

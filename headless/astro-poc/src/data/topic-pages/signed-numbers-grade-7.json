@@ -1,0 +1,244 @@
+{
+  "slug": "signed-numbers-grade-7",
+  "path": "/signed-numbers-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/signed-numbers-grade-7",
+  "fetchedAt": "2026-09-23T15:05:00Z",
+  "verifiedVia": "production-html+headless-chrome-visible-dom",
+  "title": "חיבור וחיסור מספרים מכוונים לכיתה ז׳ | נועם דורון מתמטיקה",
+  "description": "לומדים חיבור וחיסור מספרים מכוונים לכיתה ז׳ עם ציר המספרים, דוגמה פתורה וטעויות נפוצות. בוחרים דפי עבודה קיימים ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "חיבור וחיסור מספרים מכוונים לכיתה ז׳",
+  "intro": "מתרגלים מספרים חיוביים ושליליים, תנועה על ציר וסימנים סמוכים. דפי העבודה בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בחיבור מספר חיובי נעים ימינה על ציר המספרים, ובחיבור מספר שלילי נעים שמאלה. חיסור מספר הוא חיבור המספר הנגדי. טעויות נפוצות: משנים לנגדי רק את המספר שאחרי סימן החיסור; לא את שני המספרים. חיסור מספר שלילי אינו מבטיח תוצאה חיובית, למשל מינוס שבע פחות מינוס ארבע שווה מינוס שלוש.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "(−3) − (−5) = (−3) + 5 = 2",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מהו (−7)+4?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא −3, כי מתקדמים 4 צעדים ימינה מ־−7.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול ממוקד במספרים מכוונים ומתאים לתלמידי כיתה ז׳."
+    },
+    {
+      "question": "האם צריך להירשם?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    },
+    {
+      "question": "איך בודקים תשובות?",
+      "answer": "פותחים את רמת התרגול המתאימה ונעזרים ברמזים ובהסברים שמופיעים בדף."
+    },
+    {
+      "question": "האם דפי העבודה בנושא חיבור וחיסור מספרים מכוונים לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/powers-grade-7",
+      "label": "חזקות",
+      "productionHref": "https://www.noamdoronmath.co.il/powers-grade-7"
+    },
+    {
+      "path": "/algebraic-expressions-grade-7",
+      "label": "ביטויים אלגבריים",
+      "productionHref": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7"
+    },
+    {
+      "path": "/equations-basics-grade-7",
+      "label": "משוואות",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-basics-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=2",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=2",
+    "catalogTopicId": 2,
+    "catalogTopicTitle": "חיבור וחיסור מספרים מכוונים"
+  },
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/signed-numbers-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/signed-numbers-grade-7",
+        "name": "חיבור וחיסור מספרים מכוונים לכיתה ז׳",
+        "inLanguage": "he",
+        "mainEntity": [
+          {
+            "@id": "https://www.noamdoronmath.co.il/signed-numbers-grade-7#learning-resource"
+          },
+          {
+            "@id": "https://www.noamdoronmath.co.il/signed-numbers-grade-7#faq"
+          }
+        ]
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/signed-numbers-grade-7#learning-resource",
+        "name": "חיבור וחיסור מספרים מכוונים לכיתה ז׳",
+        "description": "הסבר, דוגמה ודפי עבודה בחינם לתרגול חיבור וחיסור מספרים מכוונים לכיתה ז׳.",
+        "inLanguage": "he",
+        "isAccessibleForFree": true,
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דף עבודה והסבר",
+        "teaches": "חיבור וחיסור מספרים מכוונים",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#person"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#person",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/signed-numbers-grade-7#faq",
+        "inLanguage": "he",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול ממוקד במספרים מכוונים ומתאים לתלמידי כיתה ז׳."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בודקים תשובות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "פותחים את רמת התרגול המתאימה ונעזרים ברמזים ובהסברים שמופיעים בדף."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תקנון שימוש בדפי עבודה חינמיים",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": [
+    {
+      "src": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+      "alt": "חיבור וחיסור מספרים מכוונים לכיתה ז׳",
+      "role": "og"
+    },
+    {
+      "src": "https://static.wixstatic.com/media/d8e7ad_4da0b8c52a6f4248ab446554c0157f92~mv2.jpg",
+      "alt": "חיבור וחיסור מספרים מכוונים לכיתה ז׳",
+      "role": "content-candidate"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 8.9.2026",
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "rich-text+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול ממוקד במספרים מכוונים ומתאים לתלמידי כיתה ז׳."
+        },
+        {
+          "question": "האם צריך להירשם?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        },
+        {
+          "question": "איך בודקים תשובות?",
+          "answer": "פותחים את רמת התרגול המתאימה ונעזרים ברמזים ובהסברים שמופיעים בדף."
+        }
+      ]
+    },
+    {
+      "heading": "שאלות נפוצות",
+      "source": "ng-faq-visible",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא חיבור וחיסור מספרים מכוונים לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "updatedLinePlacement": "after-first-faq-group",
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=2",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=2",
+      "catalogTopicId": 2,
+      "catalogTopicTitle": "חיבור וחיסור מספרים מכוונים"
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "slug": "combining-like-terms-grade-7",
+  "source": "production",
+  "url": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7",
+  "capturedAt": "2026-09-23T16:46:27.783Z",
+  "httpStatus": 200,
+  "title": "כינוס איברים וחוק הפילוג לכיתה ז׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "כינוס איברים וחוק הפילוג לכיתה ז׳: הסבר קצר, דוגמה פתורה, טעויות נפוצות ושאלת בדיקה. קישורים לדפי עבודה בשלוש רמות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+  "h1": "כינוס איברים וחוק הפילוג לכיתה ז׳",
+  "intro": "לומדים לזהות איברים דומים, לכנס אותם ולהשתמש נכון בחוק הפילוג. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "authorLine": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "paragraphs": [
+        "איברים דומים מכילים אותו משתנה באותה חזקה. בחוק הפילוג כופלים את הגורם שמחוץ לסוגריים בכל איבר שבתוכם.",
+        "דוגמה: 3(x+2)+2x=3x+6+2x=5x+6."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "paragraphs": [
+        "אי אפשר לכנס את 5x ואת 6, כי הם אינם איברים דומים. בפתיחת סוגריים חשוב לכפול כל איבר, ובייחוד לשים לב לסימן שלילי."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "פשטו: 4(y−2)+3y.",
+        "תשובה: 7y−8."
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לזהות איברים דומים, לכנס אותם ולהשתמש נכון בחוק הפילוג. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=29",
+      "catalogTopicId": 29
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "איברים דומים מכילים אותו משתנה באותה חזקה. בחוק הפילוג כופלים את הגורם שמחוץ לסוגריים בכל איבר שבתוכם.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: 3(x+2)+2x=3x+6+2x=5x+6.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "אי אפשר לכנס את 5x ואת 6, כי הם אינם איברים דומים. בפתיחת סוגריים חשוב לכפול כל איבר, ובייחוד לשים לב לסימן שלילי.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פשטו: 4(y−2)+3y.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "תשובה: 7y−8.",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא כינוס איברים וחוק הפילוג לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/grade-7",
+      "label": "כל דפי כיתה ז׳"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/signed-numbers-grade-7",
+      "label": "מספרים מכוונים"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7",
+      "label": "זוויות"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=29",
+    "label": "פתיחת דפי העבודה ובחירת רמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=29",
+      "label": "פתיחת דפי העבודה ובחירת רמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא כינוס איברים וחוק הפילוג לכיתה ז׳ מתאימים לכיתה ז׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "grade": 2,
+  "path": "/grade-2",
+  "sourceUrl": "https://www.noamdoronmath.co.il/grade-2",
+  "fetchedAt": "2026-09-23T14:52:00Z",
+  "verifiedVia": "production-html+headless-chrome-visible-dom",
+  "title": "דפי עבודה במתמטיקה לכיתה ב׳ להדפסה בחינם | נועם דורון",
+  "description": "דפי עבודה במתמטיקה לכיתה ב׳: חיבור, חיסור, כפל, שברים ראשונים ובעיות מילוליות — להורדה ולהדפסה בחינם, עם נועם AI שמסביר כל תרגיל צעד אחר צעד.",
+  "h1": "דפי עבודה במתמטיקה לכיתה ב׳ — בחינם",
+  "intro": "מחפשים נושא, בוחרים מתוך הרמות הזמינות ופותחים את הדף. כל התרגול כאן חינמי וללא הרשמה.",
+  "topicSections": [],
+  "topicLinks": [],
+  "topicLinksNote": "Production elementary grade hubs have no per-topic SEO link list; topics are reached via the worksheets catalog CTA.",
+  "catalogCta": {
+    "label": "פתיחת המאגר ישירות",
+    "href": "/worksheets?grade=2",
+    "source": "production-github-cta"
+  },
+  "faqHeading": null,
+  "faq": [],
+  "faqNote": "Production /grade-1…6 pages have no visible FAQ section (verified in browser). Not invented.",
+  "whatsapp": {
+    "heading": "נפגשים גם בוואטסאפ",
+    "body": "הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.",
+    "ctaLabel": "להצטרפות לקבוצת הוואטסאפ",
+    "href": "https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t",
+    "hrefSource": "production-whatsapp-link"
+  },
+  "terms": {
+    "label": "תקנון שימוש בדפי עבודה חינמיים",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "footerLinks": [
+    {
+      "label": "אודותינו",
+      "href": "https://www.noamdoronmath.co.il/aboutus#Who%20is%20Noam%20Doron"
+    },
+    {
+      "label": "בלוג",
+      "href": "https://www.noamdoronmath.co.il/blog"
+    },
+    {
+      "label": "תוספים",
+      "href": "https://www.noamdoronmath.co.il/math-tools"
+    },
+    {
+      "label": "מתמטיקה לתיכון (חיצוני)",
+      "href": "https://www.noamdoronmath.co.il/high-school-math-1"
+    },
+    {
+      "label": "תקנון שימוש בדפי עבודה חינמיים",
+      "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+    },
+    {
+      "label": "מדיניות הפרטיות",
+      "href": "https://www.noamdoronmath.co.il/privacy"
+    },
+    {
+      "label": "תנאי השימוש",
+      "href": "https://www.noamdoronmath.co.il/terms"
+    }
+  ],
+  "contactLine": "מורים והורים, נשמח לעזור בכל שאלה."
+}
