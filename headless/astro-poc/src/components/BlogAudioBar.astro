@@ -1,0 +1,64 @@
+---
+/**
+ * OPEN-07 — narration bar on a blog post, same player and look as the live site.
+ *
+ * Live: blog-audio/noam-audio-inject.js attaches a fixed matte bar with
+ * <noam-audio-player bare> to <body>. Here the server already knows whether the post
+ * has audio, so the bar is rendered only when it does (no empty strip, no layout
+ * shift), and the player reads metadata through the same-origin proxy.
+ */
+import type { BlogAudioInfo } from '../lib/blogAudio';
+
+interface Props {
+  info: BlogAudioInfo;
+}
+const { info } = Astro.props;
+---
+{
+  info.available && (
+    <>
+      <div class="noam-audio-spacer" aria-hidden="true"></div>
+      <div data-noam-audio-mounted="1" data-blog-audio={info.slug}>
+        <div>
+          <noam-audio-player bare="1" slug={info.slug} api="/api/blog-audio-info"></noam-audio-player>
+        </div>
+      </div>
+      <script is:inline src="/blog-audio/noam-audio-player.js" defer></script>
+    </>
+  )
+}
+<style is:global>
+  /* Copied from the live loader (noam-audio-inject.js, build 6): matte strip, no blur. */
+  [data-noam-audio-mounted] {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 2147483000;
+    direction: rtl;
+    padding: 11px 16px calc(11px + env(safe-area-inset-bottom));
+    background: #f1f2f4;
+    border-top: 1px solid rgba(18, 22, 28, 0.13);
+    color: #12161c;
+  }
+  [data-noam-audio-mounted] > div {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  @media (prefers-color-scheme: dark) {
+    [data-noam-audio-mounted] {
+      background: #14181e;
+      border-top-color: rgba(233, 237, 243, 0.13);
+      color: #e9edf3;
+    }
+  }
+  /* Keeps the end of the post (footer, recent posts) from hiding under the bar. */
+  .noam-audio-spacer {
+    height: calc(96px + env(safe-area-inset-bottom));
+  }
+  /* On a phone the player wraps to two rows (about 155px). */
+  @media (max-width: 600px) {
+    .noam-audio-spacer {
+      height: calc(168px + env(safe-area-inset-bottom));
+    }
+  }
+</style>

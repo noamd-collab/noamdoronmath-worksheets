@@ -1,6 +1,7 @@
 ---
 import BlogPostPage from '../../components/BlogPostPage.astro';
 import { isPilotBlogPath, loadBlogPostByPath } from '../../lib/blogPosts';
+import { fetchBlogAudioInfo } from '../../lib/blogAudio';
 
 export const prerender = false;
 
@@ -28,5 +29,7 @@ if (!post || !isPilotBlogPath(post.path)) {
     headers: { 'content-type': 'text/plain; charset=utf-8' },
   });
 }
+// OPEN-07: short, cached, never throws; a slow upstream only means no audio bar.
+const audio = await fetchBlogAudioInfo(post.decodedSlug);
 ---
-<BlogPostPage post={post} />
+<BlogPostPage post={post} audio={audio} />
