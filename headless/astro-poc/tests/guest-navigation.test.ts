@@ -38,6 +38,9 @@ describe('guest navigation routing (HEADLESS-MIGRATION-14)', () => {
     assert.ok(html.includes('catalogReturn.pathname === "/learning.html"'));
     assert.ok(html.includes('catalogReturn.pathname === "/"'));
     assert.ok(html.includes('catalogReturn.pathname === "/worksheets"'));
+    // URGENT-46: Headless hosts must not follow github.io legacy back=
+    assert.ok(html.includes('isHeadlessHost'));
+    assert.ok(html.includes('!isHeadlessHost'));
   });
 
   it('representative G7/G8/G9 viewer prefixes remain catalog-routable', () => {

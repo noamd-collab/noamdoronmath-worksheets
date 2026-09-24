@@ -107,6 +107,18 @@
  window.addEventListener('storage',function(e){if(e.key===Core.storageKey)engine.storageChanged();});
  window.addEventListener('pageshow',function(e){if(e.persisted&&signInPending){signInPending=false;renderAuth();}});
  if(client){client.auth.onAuthStateChange(function(event,session){setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);});
+  // Surface OAuth callback errors (e.g. redirect_uri not allowlisted) — never treat guest localStorage as a pass.
+  (function(){
+   var u=new URL(location.href);
+   var err=u.searchParams.get('error')||u.searchParams.get('error_code');
+   var desc=u.searchParams.get('error_description')||'';
+   if(err){
+    tell('הכניסה עם Google לא הושלמה ('+String(err)+'). ודאו שכתובת החזרה של תצוגת ה־Headless מופיעה ב־Supabase Auth → Redirect URLs, ורעננו אחרי תיקון.');
+    u.searchParams.delete('error');u.searchParams.delete('error_code');u.searchParams.delete('error_description');u.searchParams.delete('state');
+    history.replaceState(null,'',u.pathname+u.search+u.hash);
+    return;
+   }
+  })();
   client.auth.getSession().then(async function(r){if(r.error){tell('החיבור לחשבון אינו זמין. נסו לרענן את הדף.');}await engine.setUser(r.data&&r.data.session&&r.data.session.user);if(signInRequested&&!r.error)await signInWithGoogle();}).catch(fail);
   if(new URL(location.href).searchParams.has('code')){
    // Exchange happens via detectSessionInUrl + same-origin PKCE storage; strip code from address bar (never leave tokens in URL).

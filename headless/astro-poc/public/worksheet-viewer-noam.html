@@ -2161,6 +2161,7 @@ textarea:focus{
 </dialog>
 
 <script src="noam-didactic-guides.js?v=20260920-3"></script>
+<script src="noam-ai-job-resume.js?v=20260925-urgent46-1"></script>
 <script src="noam-geometry.js?v=20260921-aux1"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20260921-constructions1"></script>
@@ -2394,6 +2395,31 @@ function getOwnerKey(){
 }
 
 var ownerKey = getOwnerKey();
+
+/* LONG-JOB RESUME (sessionStorage) — existing Wix _functions ↔ Supabase jobs */
+function noamAiJobStore(){
+  try{ return window.sessionStorage; }catch(e){ return null; }
+}
+function noamSavePendingJob(rec){
+  var Resume = window.NoamAiJobResume;
+  var store = noamAiJobStore();
+  if (!Resume || !store){ return false; }
+  return Resume.savePending(store, Object.assign({
+    ownerKey:ownerKey, g:g, x:x, pdf:pdf, startedAt:Date.now()
+  }, rec));
+}
+function noamLoadPendingJob(kind){
+  var Resume = window.NoamAiJobResume;
+  var store = noamAiJobStore();
+  if (!Resume || !store){ return null; }
+  return Resume.loadPending(store, { ownerKey:ownerKey, kind:kind, g:g, x:x, pdf:pdf });
+}
+function noamClearPendingJob(jobId){
+  var Resume = window.NoamAiJobResume;
+  var store = noamAiJobStore();
+  if (!Resume || !store){ return; }
+  Resume.clearIfJob(store, jobId);
+}
 
 /* PARAMS */
 
@@ -3846,11 +3872,12 @@ if (okGrade){
 
 /* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
 
-// Accept same-origin catalog returns OR the legacy GitHub Pages catalog path.
+// Accept same-origin catalog returns. On Headless hosts, never jump to github.io.
 try {
   var navigationParams = new URL(location.href).searchParams;
   var catalogRoot = new URL('./', location.href);
   var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
+  var isHeadlessHost = /\.wix-site-host\.com$/i.test(location.hostname);
   var returnPath = navigationParams.get('back');
   if (returnPath) {
     var catalogReturn;
@@ -3872,10 +3899,14 @@ try {
        catalogReturn.pathname === "/worksheets" ||
        catalogReturn.pathname.indexOf("/worksheets") === 0);
     var legacyCatalog =
+      !isHeadlessHost &&
       catalogReturn.origin === legacyRoot.origin &&
       catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\/$/, "")) === 0;
     if (sameOriginCatalog || legacyCatalog) {
       document.getElementById("backBtn").href = catalogReturn.href;
+    } else if (isHeadlessHost && okGrade) {
+      // Safe fallback: stay on Headless worksheets for this grade (preserve no github.io).
+      document.getElementById("backBtn").href = "/worksheets?grade=" + g;
     }
   }
   if (/^\d+$/.test(navigationParams.get("topic") || "") && okGrade) {
@@ -6101,23 +6132,26 @@ function pollNoamDiagramJob(jobId){
     var started=Date.now(),errors=0;
     function check(){
       if(Date.now()-started>ASYNC_JOB_MAX_WAIT){
+        noamClearPendingJob(jobId);
         var timeout=new Error("diagram job timeout");timeout.code="DIAGRAM_JOB_TIMEOUT";reject(timeout);return;
       }
       postNoamDiagramStatus(jobId).then(function(status){
         errors=0;
         if(status.status==="completed"){
+          noamClearPendingJob(jobId);
           if(status.result&&status.result.ok&&status.result.plan){resolve(status.result);}
           else{var empty=new Error("empty diagram result");empty.code="DIAGRAM_UNSUPPORTED";reject(empty);}
           return;
         }
         if(status.status==="failed"){
+          noamClearPendingJob(jobId);
           var failed=new Error(status.error||"diagram worker failed");
           failed.code=status.code||"DIAGRAM_UNAVAILABLE";reject(failed);return;
         }
         setTimeout(check,STATUS_POLL_MS);
       }).catch(function(error){
         errors+=1;
-        if(errors>=3){reject(error);return;}
+        if(errors>=3){noamClearPendingJob(jobId);reject(error);return;}
         setTimeout(check,STATUS_POLL_MS);
       });
     }
@@ -6170,6 +6204,9 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
         if(!start||!start.ok||!start.accepted||typeof start.jobId!=="string"){
           var startError=new Error("diagram start failed");startError.code="DIAGRAM_UNAVAILABLE";throw startError;
         }
+        noamSavePendingJob({
+          jobId:start.jobId, kind:"diagram", cacheKey:key, exerciseId:exercise.id
+        });
         return pollNoamDiagramJob(start.jobId);
       }).then(function(result){
         var validatedContext={questionText:typeof result.validationQuestionText==="string"?
@@ -6466,6 +6503,30 @@ function esc(s){
       }
     );
 }
+
+/* Resume in-flight diagram long-job after refresh (same owner + worksheet scope). */
+(function resumePendingDiagramJob(){
+  var pending = noamLoadPendingJob('diagram');
+  if (!pending || !pending.jobId){ return; }
+  var runtime = noamDiagramRuntime();
+  var key = pending.cacheKey || ('resume:' + pending.jobId);
+  if (runtime.cache.has(key) || runtime.jobs.has(key)){ return; }
+  announceNoam('ממשיכים להמתין לשרטוט שהתחלתם…');
+  var job = pollNoamDiagramJob(pending.jobId).then(function(result){
+    if (result && result.ok && result.plan){
+      runtime.cache.set(key, { type:'ai-diagram', plan:result.plan, resumed:true, cacheKey:key });
+      while(runtime.cache.size>16){ runtime.cache.delete(runtime.cache.keys().next().value); }
+      announceNoam('השרטוט מוכן. אפשר ללחוץ שוב על בקשת השרטוט כדי להציג אותו.');
+      return result;
+    }
+    announceNoam('השרטוט לא הושלם. אפשר לנסות שוב.');
+    return null;
+  }, function(){
+    announceNoam('השרטוט לא הושלם. אפשר לנסות שוב.');
+    return null;
+  }).then(function(v){ runtime.jobs.delete(key); return v; }, function(e){ runtime.jobs.delete(key); throw e; });
+  runtime.jobs.set(key, job);
+})();
 
 })();
 </script>

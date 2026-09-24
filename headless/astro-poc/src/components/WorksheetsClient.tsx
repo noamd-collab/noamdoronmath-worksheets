@@ -139,6 +139,30 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [highlightTopicId, grade]);
 
+  // Preserve catalog scroll when returning from viewer via `back=` (new document load).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const KEY = 'noam-worksheets-scroll-v1';
+    try {
+      const raw = sessionStorage.getItem(KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw) as { href?: string; y?: number; t?: number };
+      const cur = `${window.location.pathname}${window.location.search}`;
+      if (!saved || saved.href !== cur || typeof saved.y !== 'number') return;
+      if (typeof saved.t === 'number' && Date.now() - saved.t > 30 * 60 * 1000) {
+        sessionStorage.removeItem(KEY);
+        return;
+      }
+      sessionStorage.removeItem(KEY);
+      const y = saved.y;
+      requestAnimationFrame(() => {
+        window.scrollTo(0, y);
+      });
+    } catch {
+      /* ignore */
+    }
+  }, [grade, q, group, cross, track]);
+
   const activeGroups = useMemo(() => {
     if (!showTrack) return gradeEntry.groups;
     return gradeEntry.groups.filter((g) =>
@@ -317,6 +341,20 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${topic.title} — ${level.label}, קובץ PDF`}
+          onClick={() => {
+            try {
+              sessionStorage.setItem(
+                'noam-worksheets-scroll-v1',
+                JSON.stringify({
+                  href: `${window.location.pathname}${window.location.search}`,
+                  y: window.scrollY || 0,
+                  t: Date.now(),
+                })
+              );
+            } catch {
+              /* ignore */
+            }
+          }}
         >
           {level.label}
         </a>
