@@ -3872,12 +3872,21 @@ if (okGrade){
 
 /* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
 
-// Accept same-origin catalog returns. On Headless hosts, never jump to github.io.
+// back= allowlist: same origin, production (www + apex), *.wix-site-host.com,
+// and local POC. github.io is not on the list, so production and Headless
+// previews cannot follow a legacy catalog after domain cutover.
 try {
+  var isManagedViewerHost = function (hostname) {
+    var host = String(hostname || "").toLowerCase().replace(/\.$/, "");
+    if (host === "www.noamdoronmath.co.il" || host === "noamdoronmath.co.il") return true;
+    if (/\.wix-site-host\.com$/i.test(host)) return true;
+    if (host === "localhost" || host === "127.0.0.1") return true;
+    return false;
+  };
   var navigationParams = new URL(location.href).searchParams;
   var catalogRoot = new URL('./', location.href);
   var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
-  var isHeadlessHost = /\.wix-site-host\.com$/i.test(location.hostname);
+  var isHeadlessHost = isManagedViewerHost(location.hostname);
   var returnPath = navigationParams.get('back');
   if (returnPath) {
     var catalogReturn;
@@ -3890,22 +3899,28 @@ try {
     } else {
       catalogReturn = new URL(returnPath, location.href);
     }
+    var catalogPathOk =
+      catalogReturn.pathname === catalogRoot.pathname ||
+      catalogReturn.pathname === catalogRoot.pathname + "index.html" ||
+      catalogReturn.pathname === "/" ||
+      catalogReturn.pathname === "/learning.html" ||
+      catalogReturn.pathname === "/worksheets" ||
+      catalogReturn.pathname.indexOf("/worksheets") === 0;
     var sameOriginCatalog =
       catalogReturn.origin === location.origin &&
-      (catalogReturn.pathname === catalogRoot.pathname ||
-       catalogReturn.pathname === catalogRoot.pathname + "index.html" ||
-       catalogReturn.pathname === "/" ||
-       catalogReturn.pathname === "/learning.html" ||
-       catalogReturn.pathname === "/worksheets" ||
-       catalogReturn.pathname.indexOf("/worksheets") === 0);
+      catalogPathOk;
+    var allowlistedCrossHost =
+      catalogReturn.origin !== location.origin &&
+      isManagedViewerHost(catalogReturn.hostname) &&
+      catalogPathOk;
     var legacyCatalog =
       !isHeadlessHost &&
       catalogReturn.origin === legacyRoot.origin &&
       catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\/$/, "")) === 0;
-    if (sameOriginCatalog || legacyCatalog) {
+    if (sameOriginCatalog || allowlistedCrossHost || legacyCatalog) {
       document.getElementById("backBtn").href = catalogReturn.href;
     } else if (isHeadlessHost && okGrade) {
-      // Safe fallback: stay on Headless worksheets for this grade (preserve no github.io).
+      // Safe fallback: stay on this site's worksheets for this grade (never github.io).
       document.getElementById("backBtn").href = "/worksheets?grade=" + g;
     }
   }

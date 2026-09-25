@@ -13,6 +13,7 @@ import {
   PUBLIC_USE_HEADLESS_VIEWER,
   PUBLIC_WORKSHEETS_BASE,
 } from '../src/lib/worksheetLinks.ts';
+import { LEGACY_GITHUB_CATALOG, viewerBackHref } from './viewer-back-href.ts';
 
 const pub = join(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const catalog = loadCatalog();
@@ -38,9 +39,101 @@ describe('guest navigation routing (HEADLESS-MIGRATION-14)', () => {
     assert.ok(html.includes('catalogReturn.pathname === "/learning.html"'));
     assert.ok(html.includes('catalogReturn.pathname === "/"'));
     assert.ok(html.includes('catalogReturn.pathname === "/worksheets"'));
-    // URGENT-46: Headless hosts must not follow github.io legacy back=
+    // URGENT-46: managed hosts must not follow github.io legacy back=
     assert.ok(html.includes('isHeadlessHost'));
     assert.ok(html.includes('!isHeadlessHost'));
+    assert.ok(html.includes('isManagedViewerHost'));
+  });
+
+  it('rejects github.io back= on production, apex, Headless preview, and localhost', () => {
+    const html = readFileSync(join(pub, 'worksheet-viewer-noam.html'), 'utf8');
+    const hosts = [
+      'www.noamdoronmath.co.il',
+      'noamdoronmath.co.il',
+      'pqdrcz-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com',
+      'localhost',
+      '127.0.0.1',
+    ];
+    for (const hostname of hosts) {
+      const href = viewerBackHref(html, { hostname, back: LEGACY_GITHUB_CATALOG });
+      assert.ok(!href.includes('github.io'), `${hostname} followed ${href}`);
+      assert.equal(href, '/worksheets?grade=7');
+    }
+  });
+
+  it('rejects legacy /noamdoronmath-worksheets and protocol-relative github.io backs on production', () => {
+    const html = readFileSync(join(pub, 'worksheet-viewer-noam.html'), 'utf8');
+    const backs = [
+      '/noamdoronmath-worksheets/?grade=7',
+      '//noamd-collab.github.io/noamdoronmath-worksheets/?grade=7',
+      'https://evil.noamdoronmath.co.il/worksheets?grade=7',
+      'https://www.noamdoronmath.co.il.evil/worksheets?grade=7',
+    ];
+    for (const back of backs) {
+      for (const hostname of ['www.noamdoronmath.co.il', 'noamdoronmath.co.il']) {
+        const href = viewerBackHref(html, { hostname, back });
+        assert.ok(!href.includes('github.io'), `${hostname} ${back} -> ${href}`);
+        assert.ok(!href.includes('evil'), `${hostname} ${back} -> ${href}`);
+        assert.equal(href, '/worksheets?grade=7');
+      }
+    }
+  });
+
+  it('keeps same-site catalog returns and allowlisted cross-host returns', () => {
+    const html = readFileSync(join(pub, 'worksheet-viewer-noam.html'), 'utf8');
+    const www = 'www.noamdoronmath.co.il';
+    assert.equal(
+      viewerBackHref(html, { hostname: www, back: '/worksheets?grade=7&q=alg' }),
+      'https://www.noamdoronmath.co.il/worksheets?grade=7&q=alg'
+    );
+    assert.equal(
+      viewerBackHref(html, { hostname: www, back: '/learning.html' }),
+      'https://www.noamdoronmath.co.il/learning.html'
+    );
+    assert.equal(
+      viewerBackHref(html, { hostname: www, back: '/' }),
+      'https://www.noamdoronmath.co.il/'
+    );
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: www,
+        back: 'https://noamdoronmath.co.il/worksheets?grade=8',
+        g: 8,
+      }),
+      'https://noamdoronmath.co.il/worksheets?grade=8'
+    );
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: 'preview.wix-site-host.com',
+        back: 'https://www.noamdoronmath.co.il/worksheets?grade=7',
+      }),
+      'https://www.noamdoronmath.co.il/worksheets?grade=7'
+    );
+    // Viewer served from GitHub Pages itself: same-origin catalog return stays.
+    assert.ok(
+      viewerBackHref(html, {
+        hostname: 'noamd-collab.github.io',
+        pathname: '/noamdoronmath-worksheets/worksheet-viewer-noam.html',
+        back: '/noamdoronmath-worksheets/?grade=7',
+      }).includes('github.io')
+    );
+    // Hosts outside the allowlist keep the legacy catalog branch (rollback).
+    assert.ok(
+      viewerBackHref(html, {
+        hostname: 'notnoamdoronmath.co.il',
+        back: LEGACY_GITHUB_CATALOG,
+      }).includes('github.io')
+    );
+  });
+
+  it('classic Wix viewer still accepts only same-origin catalog returns', () => {
+    const classic = readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'worksheet-viewer-noam.html'),
+      'utf8'
+    );
+    assert.ok(classic.includes('catalogReturn.origin === location.origin'));
+    assert.ok(!classic.includes('isManagedViewerHost'));
+    assert.ok(!classic.includes('HEADLESS_LEGACY_PAGES'));
   });
 
   it('representative G7/G8/G9 viewer prefixes remain catalog-routable', () => {

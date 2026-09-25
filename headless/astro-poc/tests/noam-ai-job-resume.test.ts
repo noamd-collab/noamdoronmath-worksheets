@@ -8,6 +8,8 @@ import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
+import { LEGACY_GITHUB_CATALOG, viewerBackHref } from './viewer-back-href.ts';
+
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
 const Resume = require(join(root, 'public/noam-ai-job-resume.js'));
@@ -100,5 +102,10 @@ describe('NoamAiJobResume', () => {
     assert.ok(html.includes('isHeadlessHost'));
     assert.ok(html.includes('!isHeadlessHost'));
     assert.ok(html.includes('noamSavePendingJob({\n          jobId:start.jobId'));
+    for (const hostname of ['www.noamdoronmath.co.il', 'noamdoronmath.co.il']) {
+      const href = viewerBackHref(html, { hostname, back: LEGACY_GITHUB_CATALOG });
+      assert.ok(!href.includes('github.io'), `${hostname} followed ${href}`);
+      assert.equal(href, '/worksheets?grade=7');
+    }
   });
 });
