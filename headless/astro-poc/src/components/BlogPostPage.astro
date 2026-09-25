@@ -7,13 +7,15 @@ import {
   type BlogBodyBlock,
   type BlogPostContent,
 } from '../lib/blogPosts';
+import { isolateBlogPostDisplay } from '../lib/mathDirection';
 
 interface Props {
   post: BlogPostContent;
   /** OPEN-07: live post slug; the bar looks up its audio after the page paints. */
   audioSlug?: string;
 }
-const { post, audioSlug } = Astro.props;
+const { audioSlug } = Astro.props;
+const post = isolateBlogPostDisplay(Astro.props.post);
 
 const jsonLdScripts = Array.isArray(post.jsonLd) ? post.jsonLd : [];
 

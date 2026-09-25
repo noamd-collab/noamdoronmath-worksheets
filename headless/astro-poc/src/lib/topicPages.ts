@@ -99,6 +99,7 @@ import triangleSidesAnglesGrade9 from '../data/topic-pages/triangle-sides-angles
 import triangleSimilarityAaGrade9 from '../data/topic-pages/triangle-similarity-aa-grade-9.json';
 import triangularPrismSurfaceAreaGrade9 from '../data/topic-pages/triangular-prism-surface-area-grade-9.json';
 import triangularPrismVolumeGrade9 from '../data/topic-pages/triangular-prism-volume-grade-9.json';
+import { isolateMathRuns } from './mathDirection';
 
 /** M18 pilot (3). */
 export const TOPIC_PAGE_PILOT_SLUGS = [
@@ -481,9 +482,64 @@ function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
   });
 }
 
+function presentBodyFlow(flow: TopicBodyFlowItem[]): TopicBodyFlowItem[] {
+  return flow.map((b) => {
+    if (b.type === 'paragraph') return { ...b, text: isolateMathRuns(b.text) };
+    if (b.type === 'heading') return { ...b, text: isolateMathRuns(b.text) };
+    if (b.type === 'list') return { ...b, items: b.items.map((item) => isolateMathRuns(item)) };
+    return b;
+  });
+}
+
+function isolateJsonLdFaq(jsonLd: Record<string, unknown>): Record<string, unknown> {
+  const clone = structuredClone(jsonLd);
+  const graph = (clone['@graph'] as Record<string, unknown>[] | undefined) || [];
+  for (const node of graph) {
+    if (node['@type'] !== 'FAQPage') continue;
+    const entities = (node.mainEntity as Record<string, unknown>[] | undefined) || [];
+    for (const q of entities) {
+      if (typeof q.name === 'string') q.name = isolateMathRuns(q.name);
+      const answer = q.acceptedAnswer as Record<string, unknown> | undefined;
+      if (answer && typeof answer.text === 'string') answer.text = isolateMathRuns(answer.text);
+    }
+  }
+  return clone;
+}
+
+/**
+ * Visible strings TopicPage renders outside bodyFlow (h1, FAQ, related labels).
+ * Sections, intro, and stored bodyFlow stay as captured; synthesizeBodyFlow
+ * isolates those when the page is rendered.
+ */
+function withVisibleMathIsolates(data: TopicPageContent): TopicPageContent {
+  return {
+    ...data,
+    h1: isolateMathRuns(data.h1),
+    faq: (data.faq || []).map((item) => ({
+      ...item,
+      question: isolateMathRuns(item.question),
+      answer: isolateMathRuns(item.answer),
+    })),
+    faqGroups: data.faqGroups.map((g) => ({
+      ...g,
+      heading: isolateMathRuns(g.heading),
+      items: g.items.map((item) => ({
+        ...item,
+        question: isolateMathRuns(item.question),
+        answer: isolateMathRuns(item.answer),
+      })),
+    })),
+    relatedTopics: (data.relatedTopics || []).map((rel) => ({
+      ...rel,
+      label: isolateMathRuns(rel.label),
+    })),
+    jsonLd: isolateJsonLdFaq(data.jsonLd),
+  };
+}
+
 /** Build legacy body order when capture predates bodyFlow. */
 export function synthesizeBodyFlow(page: TopicPageContent): TopicBodyFlowItem[] {
-  if (page.bodyFlow && page.bodyFlow.length) return page.bodyFlow;
+  if (page.bodyFlow && page.bodyFlow.length) return presentBodyFlow(page.bodyFlow);
   const flow: TopicBodyFlowItem[] = [];
   if (page.intro) flow.push({ type: 'paragraph', text: page.intro, role: 'intro' });
   // CTAs that live before H1 on source stay out of post-H1 bodyFlow
@@ -508,7 +564,7 @@ export function synthesizeBodyFlow(page: TopicPageContent): TopicBodyFlowItem[] 
       }
     }
   }
-  return flow;
+  return presentBodyFlow(flow);
 }
 
 export function bodyFlowHasSelfCheck(flow: TopicBodyFlowItem[]): boolean {
@@ -614,7 +670,7 @@ export function loadTopicPage(slug: string): TopicPageContent {
   if (!data.jsonLd) {
     throw new Error(`Topic page ${slug}: missing JSON-LD`);
   }
-  return data;
+  return withVisibleMathIsolates(data);
 }
 
 export function loadAllTopicPages(): TopicPageContent[] {
