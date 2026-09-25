@@ -42,7 +42,7 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
   ogImage={post.ogImage || post.coverImage}
   skipHref="#blog-post-main"
 >
-  <BlogSeoTags slot="seo-tags" description={post.description} image={post.ogImage || post.coverImage} />
+  <BlogSeoTags slot="seo-tags" description={post.description} image={post.ogImage || post.coverImage} jsonLd={post.jsonLd} />
   {
     jsonLdScripts.map((ld) => (
       <script type="application/ld+json" set:html={JSON.stringify(ld)} />
