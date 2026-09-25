@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://noamdoronmath.local/noam-ai/contracts/exercise-package-vision/schemas/exercise-package.geometry.schema.json",
+  "title": "ExercisePackage.geometry (draft)",
+  "description": "Authoritative geometric SoT for an exercise package. Semantic point names live here. Vision must not invent these names. Draft freeze only — not wired to live analyzer/planner.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "exerciseId",
+    "semantic_points",
+    "expected"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "exerciseId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^G[7-9]-T\\d{2}-[ABE]-Q\\d{1,3}[א-ת]?$"
+    },
+    "semantic_points": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 24,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Z]$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role"],
+        "properties": {
+          "role": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "segments",
+        "labels_on_pdf"
+      ],
+      "properties": {
+        "segments": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/namedSegment"
+          }
+        },
+        "dashed": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/namedSegment"
+          },
+          "default": []
+        },
+        "right_angles": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/namedAngleTriple"
+          },
+          "default": []
+        },
+        "equal_sides": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 8,
+            "items": {
+              "$ref": "#/$defs/namedSegment"
+            }
+          },
+          "default": []
+        },
+        "parallel": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 8,
+            "items": {
+              "$ref": "#/$defs/namedSegment"
+            }
+          },
+          "default": []
+        },
+        "collinear": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 16,
+            "items": {
+              "$ref": "#/$defs/pointName"
+            },
+            "uniqueItems": true
+          },
+          "default": []
+        },
+        "intersections": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["point", "of"],
+            "properties": {
+              "point": {
+                "$ref": "#/$defs/pointName"
+              },
+              "of": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 4,
+                "items": {
+                  "$ref": "#/$defs/namedSegment"
+                }
+              }
+            }
+          },
+          "default": []
+        },
+        "measures": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["on", "value"],
+            "properties": {
+              "on": {
+                "$ref": "#/$defs/namedSegment"
+              },
+              "value": {
+                "type": "number"
+              },
+              "unit": {
+                "type": ["string", "null"],
+                "maxLength": 24
+              }
+            }
+          },
+          "default": []
+        },
+        "labels_on_pdf": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/pointName"
+          },
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        },
+        "shape_hints": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "points"],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "triangle",
+                  "isosceles_triangle",
+                  "right_triangle",
+                  "rectangle",
+                  "parallelogram",
+                  "rhombus",
+                  "trapezoid",
+                  "polygon"
+                ]
+              },
+              "points": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 8,
+                "items": {
+                  "$ref": "#/$defs/pointName"
+                },
+                "uniqueItems": true
+              }
+            }
+          },
+          "default": []
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "$defs": {
+    "pointName": {
+      "type": "string",
+      "pattern": "^[A-Z]$"
+    },
+    "namedSegment": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/pointName"
+      },
+      "uniqueItems": true
+    },
+    "namedAngleTriple": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/pointName"
+      },
+      "uniqueItems": true
+    }
+  }
+}
