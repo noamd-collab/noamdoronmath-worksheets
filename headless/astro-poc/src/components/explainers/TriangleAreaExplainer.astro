@@ -1,0 +1,72 @@
+---
+/**
+ * Triangle area: a rectangle is drawn, its diagonal cuts it in two equal halves,
+ * one half fades away, and what remains is base × height ÷ 2.
+ * Default CSS = final state (no JS / reduced motion). See explainer-runtime.ts.
+ */
+import ExplainerFrame from './ExplainerFrame.astro';
+const label = 'אנימציה: מלבן בגודל בסיס כפול גובה נחתך באלכסון לשני משולשים שווים. חצי אחד נעלם, ולכן שטח המשולש הוא בסיס כפול גובה חלקי 2.';
+---
+<ExplainerFrame id="triangle-area" title="שטח משולש" caption="כל משולש ישר זווית הוא חצי ממלבן: אותו בסיס, אותו גובה, חצי מהשטח.">
+  <svg viewBox="0 0 320 240" role="img" aria-label={label} class="tri">
+    <polygon class="keep" points="50,40 50,170 270,170" />
+    <polygon class="cut" points="50,40 270,40 270,170" />
+    <rect class="ghost" x="50" y="40" width="220" height="130" />
+    <rect class="rdraw" x="50" y="40" width="220" height="130" pathLength="1" />
+    <line class="diag" x1="50" y1="40" x2="270" y2="170" pathLength="1" />
+    <polygon class="outline" points="50,40 50,170 270,170" />
+    <path class="angle" d="M50 158 H62 V170" />
+    <text class="lbl" x="160" y="192" text-anchor="middle" direction="rtl">בסיס</text>
+    <text class="lbl" x="30" y="109" text-anchor="middle" direction="rtl">גובה</text>
+    <text class="fA" x="160" y="222" text-anchor="middle" direction="rtl">שטח המלבן = בסיס × גובה</text>
+    <text class="fB" x="160" y="222" text-anchor="middle" direction="rtl">שטח המשולש = בסיס × גובה ÷ 2</text>
+  </svg>
+</ExplainerFrame>
+<style>
+  .tri {
+    --e: cubic-bezier(0.45, 0.05, 0.25, 1);
+    font-family: 'Assistant', 'Heebo', system-ui, sans-serif;
+  }
+  .keep { fill: #cfe6e3; stroke: none; }
+  .cut { fill: #f3dfb3; stroke: none; opacity: 0; }
+  .ghost { fill: none; stroke: #9aa4b5; stroke-width: 1.5; stroke-dasharray: 4 5; }
+  .rdraw { fill: none; stroke: #22304a; stroke-width: 2.5; stroke-linejoin: round; opacity: 0; stroke-dasharray: 1; }
+  .diag { stroke: #22304a; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1; }
+  .outline { fill: none; stroke: #1f7a78; stroke-width: 3; stroke-linejoin: round; }
+  .angle { fill: none; stroke: #22304a; stroke-width: 1.5; }
+  .lbl { font-size: 15px; font-weight: 600; fill: #22304a; }
+  .fA, .fB { font-size: 16px; font-weight: 700; fill: #22304a; }
+  .fA { opacity: 0; }
+
+  /* Armed = first frame, before the reader scrolls it into view. */
+  :global([data-state='armed']) .rdraw { opacity: 1; stroke-dashoffset: 1; }
+  :global([data-state='armed']) .diag { stroke-dashoffset: 1; }
+  :global([data-state='armed']) :is(.keep, .ghost, .outline, .angle, .lbl, .fB) { opacity: 0; }
+
+  :global([data-state='play']) .rdraw { animation: ex-draw 1.2s var(--e) 0s both, ex-out 0.6s var(--e) 3.9s both; }
+  :global([data-state='play']) .lbl { animation: ex-in 0.6s var(--e) 1s both; }
+  :global([data-state='play']) .angle { animation: ex-in 0.5s var(--e) 1.2s both; }
+  :global([data-state='play']) .fA { animation: tri-formula-a 3.6s var(--e) 1.4s both; }
+  :global([data-state='play']) .diag { animation: ex-draw 0.8s var(--e) 2.2s both; }
+  :global([data-state='play']) .keep { animation: ex-in 0.5s var(--e) 3s both; }
+  :global([data-state='play']) .cut { animation: tri-cut 2.3s var(--e) 3s both; }
+  :global([data-state='play']) .ghost { animation: ex-in 0.6s var(--e) 3.9s both; }
+  :global([data-state='play']) .outline { animation: ex-in 0.6s var(--e) 3.9s both; }
+  :global([data-state='play']) .fB { animation: ex-in 0.6s var(--e) 5s both; }
+
+  @keyframes ex-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes ex-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes ex-out { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes tri-formula-a { 0% { opacity: 0; } 14% { opacity: 1; } 89% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes tri-cut {
+    0% { opacity: 0; transform: translate(0, 0); }
+    20% { opacity: 1; transform: translate(0, 0); }
+    45% { opacity: 1; transform: translate(0, 0); }
+    100% { opacity: 0; transform: translate(12px, -10px); }
+  }
+
+  /* Reduced motion: no animation at all; the defaults above are the final picture. */
+  @media (prefers-reduced-motion: reduce) {
+    .tri * { animation: none !important; }
+  }
+</style>

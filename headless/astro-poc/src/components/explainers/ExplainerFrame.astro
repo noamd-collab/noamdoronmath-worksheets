@@ -1,0 +1,97 @@
+---
+/**
+ * Shared frame for the explainer animations: card, Hebrew caption, replay button.
+ * The SVG goes in the default slot. Fixed aspect ratio → no layout shift (CLS 0).
+ */
+interface Props {
+  id: string;
+  title: string;
+  caption: string;
+}
+const { id, title, caption } = Astro.props;
+---
+<figure class="explainer" data-explainer={id} dir="rtl">
+  <div class="explainer__stage">
+    <slot />
+  </div>
+  <figcaption class="explainer__caption">
+    <strong>{title}</strong>
+    <span>{caption}</span>
+  </figcaption>
+  <button type="button" class="explainer__replay" data-replay aria-label={`הפעלה מחדש: ${title}`}>
+    <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" focusable="false">
+      <path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9M15.5 3.5v3.6h-3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    הפעלה מחדש
+  </button>
+</figure>
+<script>
+  import './explainer-runtime';
+</script>
+<style>
+  .explainer {
+    --ex-ink: #22304a;
+    --ex-soft: #6b778c;
+    --ex-paper: #fbfaf6;
+    --ex-line: #d9dde5;
+    margin: 0;
+    padding: 18px 18px 14px;
+    background: var(--ex-paper);
+    border: 1px solid var(--ex-line);
+    border-radius: 16px;
+    color: var(--ex-ink);
+    font-family: 'Assistant', 'Heebo', system-ui, sans-serif;
+    display: grid;
+    gap: 10px;
+    max-width: 560px;
+  }
+  .explainer__stage :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    overflow: visible;
+  }
+  .explainer__caption {
+    display: grid;
+    gap: 2px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .explainer__caption strong {
+    font-size: 17px;
+  }
+  .explainer__caption span {
+    color: var(--ex-soft);
+  }
+  .explainer__replay {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font: 600 14px/1 'Assistant', system-ui, sans-serif;
+    color: var(--ex-ink);
+    background: #fff;
+    border: 1px solid var(--ex-line);
+    border-radius: 999px;
+    padding: 8px 14px;
+    cursor: pointer;
+  }
+  .explainer__replay:hover {
+    border-color: var(--ex-soft);
+  }
+  .explainer__replay:focus-visible {
+    outline: 3px solid #7fb3c9;
+    outline-offset: 2px;
+  }
+  /* Replay only makes sense once the runtime is active (JS on, motion allowed).
+     visibility, not display: the button keeps its space, so nothing shifts. */
+  .explainer:not([data-state]) .explainer__replay {
+    visibility: hidden;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .explainer__replay {
+      visibility: hidden;
+    }
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+/**
+ * Distributive law as an area model: one rectangle a × (b + c) splits into two
+ * rectangles a × b and a × c whose areas add up to the whole.
+ * Default CSS = final state (no JS / reduced motion). See explainer-runtime.ts.
+ */
+import ExplainerFrame from './ExplainerFrame.astro';
+const label = 'אנימציה: מלבן שרוחבו b ועוד c וגובהו a מתחלק בקו לשני מלבנים, a כפול b ו-a כפול c. סכום השטחים שלהם שווה לשטח המלבן כולו: a כפול סוגריים b ועוד c שווה a כפול b ועוד a כפול c.';
+---
+<ExplainerFrame id="distributive" title="חוק הפילוג" caption="מלבן אחד נחתך לשניים. השטח לא משתנה, רק נכתב כסכום של שני חלקים.">
+  <svg viewBox="0 0 320 240" role="img" aria-label={label} class="dist">
+    <g class="part part-b">
+      <rect class="fill-b" x="55" y="60" width="130" height="90" />
+      <rect class="edge" x="55" y="60" width="130" height="90" />
+      <text class="m in-b" x="120" y="111" text-anchor="middle" direction="ltr">a × b</text>
+    </g>
+    <g class="part part-c">
+      <rect class="fill-c" x="185" y="60" width="80" height="90" />
+      <rect class="edge" x="185" y="60" width="80" height="90" />
+      <text class="m in-c" x="225" y="111" text-anchor="middle" direction="ltr">a × c</text>
+    </g>
+    <rect class="whole" x="55" y="60" width="210" height="90" pathLength="1" />
+    <line class="divider" x1="185" y1="60" x2="185" y2="150" pathLength="1" />
+    <text class="m whole-lbl" x="160" y="111" text-anchor="middle" direction="ltr">a × (b + c)</text>
+    <text class="m dim top-bc" x="160" y="48" text-anchor="middle" direction="ltr">b + c</text>
+    <text class="m dim top-b" x="114" y="48" text-anchor="middle" direction="ltr">b</text>
+    <text class="m dim top-c" x="231" y="48" text-anchor="middle" direction="ltr">c</text>
+    <text class="m dim side-a" x="38" y="110" text-anchor="middle" direction="ltr">a</text>
+    <text class="m formula" x="160" y="198" text-anchor="middle" direction="ltr">a × (b + c) = a × b + a × c</text>
+  </svg>
+</ExplainerFrame>
+<style>
+  .dist { --e: cubic-bezier(0.45, 0.05, 0.25, 1); }
+  .m { font-family: Georgia, 'Times New Roman', serif; font-style: italic; fill: #22304a; }
+  .in-b, .in-c, .whole-lbl { font-size: 17px; }
+  .dim { font-size: 16px; }
+  .formula { font-size: 18px; font-weight: 600; }
+  .fill-b { fill: #cfe6e3; }
+  .fill-c { fill: #f3dfb3; }
+  .edge { fill: none; stroke: #22304a; stroke-width: 2; }
+  .whole { fill: none; stroke: #22304a; stroke-width: 2.5; stroke-dasharray: 1; opacity: 0; }
+  .divider { stroke: #1f7a78; stroke-width: 2.5; stroke-dasharray: 1; opacity: 0; }
+  .whole-lbl, .top-bc { opacity: 0; }
+  /* final: the two parts sit slightly apart */
+  .part-b { transform: translateX(-7px); }
+  .part-c { transform: translateX(7px); }
+  .top-b { transform: translateX(-7px); }
+  .top-c { transform: translateX(7px); }
+
+  :global([data-state='armed']) .whole { opacity: 1; stroke-dashoffset: 1; }
+  :global([data-state='armed']) .divider { opacity: 1; stroke-dashoffset: 1; }
+  :global([data-state='armed']) :is(.part-b, .part-c) { transform: none; }
+  :global([data-state='armed']) :is(.fill-b, .fill-c, .edge, .in-b, .in-c, .top-b, .top-c, .side-a, .formula) { opacity: 0; }
+
+  :global([data-state='play']) .whole { animation: di-draw 1.2s var(--e) 0s both, di-out 0.5s var(--e) 3.4s both; }
+  :global([data-state='play']) .side-a { animation: di-in 0.5s var(--e) 1s both; }
+  :global([data-state='play']) .top-bc { animation: di-show-then-hide 2.6s var(--e) 1s both; }
+  :global([data-state='play']) .whole-lbl { animation: di-show-then-hide 1.1s var(--e) 1.2s both; }
+  :global([data-state='play']) .divider { animation: di-draw 0.8s var(--e) 2.2s both, di-out 0.5s var(--e) 3.4s both; }
+  :global([data-state='play']) :is(.fill-b, .fill-c) { animation: di-in 0.5s var(--e) 2.9s both; }
+  :global([data-state='play']) .edge { animation: di-in 0.4s var(--e) 3.4s both; }
+  :global([data-state='play']) .part-b { animation: di-apart-b 0.8s var(--e) 3.5s both; }
+  :global([data-state='play']) .part-c { animation: di-apart-c 0.8s var(--e) 3.5s both; }
+  :global([data-state='play']) .top-b { animation: di-in 0.5s var(--e) 3.6s both, di-apart-b 0.8s var(--e) 3.5s both; }
+  :global([data-state='play']) .top-c { animation: di-in 0.5s var(--e) 3.6s both, di-apart-c 0.8s var(--e) 3.5s both; }
+  :global([data-state='play']) :is(.in-b, .in-c) { animation: di-in 0.6s var(--e) 3.9s both; }
+  :global([data-state='play']) .formula { animation: di-in 0.6s var(--e) 4.8s both; }
+
+  @keyframes di-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes di-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes di-out { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes di-show-then-hide { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes di-apart-b { from { transform: none; } to { transform: translateX(-7px); } }
+  @keyframes di-apart-c { from { transform: none; } to { transform: translateX(7px); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dist * { animation: none !important; }
+  }
+</style>

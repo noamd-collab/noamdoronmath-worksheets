@@ -1,0 +1,56 @@
+---
+/**
+ * POC demo for the explainer animations. Internal preview only:
+ * noindex, not linked from anywhere, standalone (does not use BaseLayout).
+ */
+import TriangleAreaExplainer from '../components/explainers/TriangleAreaExplainer.astro';
+import PythagorasExplainer from '../components/explainers/PythagorasExplainer.astro';
+import DistributiveExplainer from '../components/explainers/DistributiveExplainer.astro';
+
+export const prerender = false;
+---
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>POC · אנימציות הסבר</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <main class="demo">
+      <h1>אנימציות הסבר, POC</h1>
+      <p class="lead">כל אנימציה מתחילה כשהיא נכנסת למסך ורצה פעם אחת. אפשר להפעיל שוב בכפתור. מי שביקש להפחית תנועה רואה את התמונה הסופית.</p>
+      <TriangleAreaExplainer />
+      <PythagorasExplainer />
+      <DistributiveExplainer />
+    </main>
+  </body>
+</html>
+<style>
+  body {
+    margin: 0;
+    background: #f4f2ec;
+    color: #22304a;
+    font-family: 'Assistant', system-ui, sans-serif;
+  }
+  .demo {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 16px 64px;
+    display: grid;
+    gap: 28px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 26px;
+  }
+  .lead {
+    margin: -12px 0 0;
+    color: #55607a;
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+/**
+ * Pythagoras: squares grow on the three sides of a right triangle (3-4-5), then the
+ * areas of the two small squares flow into the square on the hypotenuse: a² + b² = c².
+ * Default CSS = final state (no JS / reduced motion). See explainer-runtime.ts.
+ */
+import ExplainerFrame from './ExplainerFrame.astro';
+const label = 'אנימציה: על שלוש הצלעות של משולש ישר זווית נבנים ריבועים. השטחים של שני הריבועים על הניצבים זורמים וממלאים בדיוק את הריבוע על היתר: a בריבוע ועוד b בריבוע שווה c בריבוע.';
+---
+<ExplainerFrame id="pythagoras" title="משפט פיתגורס" caption="השטחים של שני הריבועים על הניצבים ממלאים בדיוק את הריבוע על היתר.">
+  <svg viewBox="20 30 320 240" role="img" aria-label={label} class="py">
+    <!-- square on leg a (left of the vertical leg), grows out of the leg -->
+    <g transform="translate(150 160)">
+      <g class="sq sq-a">
+        <rect class="fill-a small-a" x="-45" y="-45" width="45" height="45" />
+        <rect class="edge" x="-45" y="-45" width="45" height="45" />
+      </g>
+    </g>
+    <!-- square on leg b (below the horizontal leg) -->
+    <g transform="translate(150 160)">
+      <g class="sq sq-b">
+        <rect class="fill-b small-b" x="0" y="0" width="60" height="60" />
+        <rect class="edge" x="0" y="0" width="60" height="60" />
+      </g>
+    </g>
+    <!-- square on the hypotenuse; local x runs along the hypotenuse, -y points outward -->
+    <g transform="translate(150 115) rotate(36.8699)">
+      <g class="sq sq-c">
+        <rect class="fill-c" x="0" y="-75" width="75" height="75" />
+        <rect class="flow flow-a fill-a" x="0" y="-27" width="75" height="27" />
+        <rect class="flow flow-b fill-b" x="0" y="-75" width="75" height="48" />
+        <rect class="edge" x="0" y="-75" width="75" height="75" />
+      </g>
+    </g>
+    <polygon class="tri" points="150,160 210,160 150,115" pathLength="1" />
+    <path class="angle" d="M150 150 H160 V160" />
+    <text class="sym s-a" x="127.5" y="143" text-anchor="middle" direction="ltr">a²</text>
+    <text class="sym s-b" x="180" y="196" text-anchor="middle" direction="ltr">b²</text>
+    <text class="sym s-c" x="202.5" y="113" text-anchor="middle" direction="ltr">c²</text>
+    <text class="formula" x="180" y="258" text-anchor="middle" direction="ltr">a² + b² = c²</text>
+  </svg>
+</ExplainerFrame>
+<style>
+  .py { --e: cubic-bezier(0.45, 0.05, 0.25, 1); }
+  .sq { transform-box: fill-box; }
+  .sq-a { transform-origin: 100% 50%; }
+  .sq-b { transform-origin: 50% 0%; }
+  .sq-c { transform-origin: 50% 100%; }
+  .edge { fill: none; stroke: #22304a; stroke-width: 1.8; stroke-linejoin: round; }
+  .fill-a { fill: #9fd3cc; }
+  .fill-b { fill: #f2cf87; }
+  .fill-c { fill: #eef1f6; }
+  .small-a, .small-b { opacity: 0.3; }
+  .flow { transform-box: fill-box; transform-origin: 50% 100%; }
+  .tri { fill: #fff; stroke: #1f7a78; stroke-width: 3; stroke-linejoin: round; stroke-dasharray: 1; }
+  .angle { fill: none; stroke: #22304a; stroke-width: 1.4; }
+  .sym, .formula { font-family: Georgia, 'Times New Roman', serif; font-style: italic; fill: #22304a; }
+  .sym { font-size: 15px; }
+  .formula { font-size: 20px; font-weight: 600; }
+
+  :global([data-state='armed']) .tri { stroke-dashoffset: 1; }
+  :global([data-state='armed']) .sq-a { transform: scaleX(0); }
+  :global([data-state='armed']) :is(.sq-b, .sq-c, .flow) { transform: scaleY(0); }
+  :global([data-state='armed']) :is(.small-a, .small-b) { opacity: 1; }
+  :global([data-state='armed']) :is(.angle, .sym, .formula) { opacity: 0; }
+
+  :global([data-state='play']) .tri { animation: py-draw 1s var(--e) 0s both; }
+  :global([data-state='play']) .angle { animation: py-in 0.4s var(--e) 0.8s both; }
+  :global([data-state='play']) .sq-a { animation: py-grow-x 0.8s var(--e) 1.2s both; }
+  :global([data-state='play']) .sq-b { animation: py-grow-y 0.8s var(--e) 1.6s both; }
+  :global([data-state='play']) .sq-c { animation: py-grow-y 0.8s var(--e) 2s both; }
+  :global([data-state='play']) .s-a { animation: py-in 0.5s var(--e) 1.8s both; }
+  :global([data-state='play']) .s-b { animation: py-in 0.5s var(--e) 2.2s both; }
+  :global([data-state='play']) .s-c { animation: py-in 0.5s var(--e) 2.6s both; }
+  /* the two small areas pour into the big square, one after the other */
+  :global([data-state='play']) .small-a { animation: py-drain 1s var(--e) 3.2s both; }
+  :global([data-state='play']) .flow-a { animation: py-grow-y 1s var(--e) 3.2s both; }
+  :global([data-state='play']) .small-b { animation: py-drain 1s var(--e) 4.3s both; }
+  :global([data-state='play']) .flow-b { animation: py-grow-y 1s var(--e) 4.3s both; }
+  :global([data-state='play']) .formula { animation: py-in 0.6s var(--e) 5.5s both; }
+
+  @keyframes py-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes py-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes py-grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes py-grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes py-drain { from { opacity: 1; } to { opacity: 0.3; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .py * { animation: none !important; }
+  }
+</style>
