@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
-import { BLOG_ARCHIVE_M26_PATHS } from '../src/lib/blogArchives';
+import { fileURLToPath } from 'node:url';
+import { BLOG_ARCHIVE_M26_PATHS, BLOG_ARCHIVE_SITEMAP_LASTMOD } from '../src/lib/blogArchives';
 import { BLOG_POST_SERVED_PATHS, listServedBlogPosts } from '../src/lib/blogPosts';
 import {
   BLOG_SITEMAP_ORIGIN,
@@ -17,6 +18,18 @@ const ARCHIVE_LOCS = [
   'https://www.noamdoronmath.co.il/blog/categories/middle-school-math',
   'https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents',
 ];
+
+const ARCHIVE_LASTMOD: Record<string, string> = {
+  'https://www.noamdoronmath.co.il/blog': '2026-09-25',
+  'https://www.noamdoronmath.co.il/blog/categories/elementary-math': '2026-09-08',
+  'https://www.noamdoronmath.co.il/blog/categories/middle-school-math': '2026-09-19',
+  'https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents': '2026-09-08',
+};
+
+/** Paths relative to this file, so the suite does not depend on process cwd. */
+function fromTest(relativePath: string): string {
+  return fileURLToPath(new URL(relativePath, import.meta.url));
+}
 
 function assertWellFormedXml(xml: string): void {
   assert.equal(xml.includes('\0'), false);
@@ -74,8 +87,14 @@ describe('blog sitemap /sitemap-blog.xml', () => {
       assert.equal(entry.lastmod, post.dateModified?.slice(0, 10));
       assert.match(entry.lastmod || '', /^\d{4}-\d{2}-\d{2}$/);
     }
+    assert.deepEqual(BLOG_ARCHIVE_SITEMAP_LASTMOD, {
+      '/blog': '2026-09-25',
+      '/blog/categories/elementary-math': '2026-09-08',
+      '/blog/categories/middle-school-math': '2026-09-19',
+      '/blog/categories/teachers-and-parents': '2026-09-08',
+    });
     for (const loc of ARCHIVE_LOCS) {
-      assert.equal(entries.find((item) => item.loc === loc)?.lastmod, undefined);
+      assert.equal(entries.find((item) => item.loc === loc)?.lastmod, ARCHIVE_LASTMOD[loc]);
     }
   });
 
@@ -103,16 +122,17 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     assert.equal(BLOG_SITEMAP_PATH.startsWith('/_functions/'), false);
     assert.notEqual(BLOG_SITEMAP_PATH, '/robots.txt');
 
-    const pageFile = 'src/pages/sitemap-blog.xml.ts';
+    const pageFile = fromTest('../src/pages/sitemap-blog.xml.ts');
     assert.equal(pageFile.endsWith('-sitemap.xml.ts'), false);
     assert.ok(existsSync(pageFile));
     const pageSource = readFileSync(pageFile, 'utf8');
     assert.match(pageSource, /application\/xml/);
     assert.match(pageSource, /renderBlogSitemapXml/);
+    assert.match(pageSource, /max-age=3600/);
     assert.doesNotMatch(pageSource, /Astro\.url/);
     assert.doesNotMatch(pageSource, /wixsite/);
-    assert.equal(existsSync('src/pages/robots.txt'), false);
-    assert.equal(existsSync('src/pages/sitemap.xml.ts'), false);
+    assert.equal(existsSync(fromTest('../src/pages/robots.txt')), false);
+    assert.equal(existsSync(fromTest('../src/pages/sitemap.xml.ts')), false);
 
     const xml = renderBlogSitemapXml();
     assertWellFormedXml(xml);
@@ -121,13 +141,14 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     assert.equal(new Set(locs).size, 64);
     assert.equal(locs.every((loc) => loc.startsWith(`${BLOG_SITEMAP_ORIGIN}/`)), true);
     assert.equal((xml.match(/<url>/g) || []).length, 64);
-    assert.equal((xml.match(/<lastmod>/g) || []).length, 60);
+    assert.equal((xml.match(/<lastmod>/g) || []).length, 64);
   });
 
   it('GET returns the same XML as application/xml', async () => {
     const response = await GET({} as never);
     assert.equal(response.status, 200);
     assert.equal(response.headers.get('content-type'), 'application/xml; charset=utf-8');
+    assert.equal(response.headers.get('cache-control'), 'public, max-age=3600');
     const body = await response.text();
     assert.equal(body, renderBlogSitemapXml());
     assertWellFormedXml(body);

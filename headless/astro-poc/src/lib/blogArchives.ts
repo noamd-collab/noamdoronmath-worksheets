@@ -54,6 +54,17 @@ export const BLOG_ARCHIVE_M26_PATHS = [
   '/blog/categories/teachers-and-parents',
 ] as const;
 
+/**
+ * Frozen lastmod dates from the live blog-categories sitemap (YYYY-MM-DD).
+ * Archives have no dateModified; these are the dashboard dates, not capture time.
+ */
+export const BLOG_ARCHIVE_SITEMAP_LASTMOD: Record<(typeof BLOG_ARCHIVE_M26_PATHS)[number], string> = {
+  '/blog': '2026-09-25',
+  '/blog/categories/elementary-math': '2026-09-08',
+  '/blog/categories/middle-school-math': '2026-09-19',
+  '/blog/categories/teachers-and-parents': '2026-09-08',
+};
+
 const ALL: BlogArchiveContent[] = [
   blogIndex,
   categoryElementary,
