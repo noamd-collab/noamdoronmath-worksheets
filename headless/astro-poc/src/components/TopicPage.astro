@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
+import ConceptLoop from './ConceptLoop.astro';
+import topicFamilies from '../data/topicFamilies.json';
 import {
   loadTopicPage,
   synthesizeBodyFlow,
@@ -82,6 +84,35 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
   ? `כיתה ${gradeHubLabel(page.grade)}`
   : `כיתה ${page.grade}`;
 
+/* FAMILIES-B1: every topic page in a family that has a loop shows it in a
+   card beside the intro text. Family comes from topicFamilies.json via the
+   page's own catalog topic id (g{grade}-t{id}). triangle-area-grade-7 keeps
+   its hands-on explorer instead. */
+const FAMILY_LOOP = {
+  F01: 'sticks',
+  F02: 'numberline',
+  F03: 'tenframes',
+  F04: 'balance',
+  F05: 'pattern',
+  F06: 'bars',
+  F21: 'area-model',
+  F26: 'triangle',
+  F38: 'pythagoras',
+} as const;
+const topicId = page.catalogCta?.catalogTopicId ?? null;
+const family =
+  topicId != null
+    ? (topicFamilies as Record<string, string>)[`g${page.grade}-t${topicId}`]
+    : undefined;
+const loopVariant =
+  slug !== 'triangle-area-grade-7' && family
+    ? FAMILY_LOOP[family as keyof typeof FAMILY_LOOP]
+    : undefined;
+// pair the card with the intro paragraph (pulled out of the body flow)
+const loopIntro =
+  loopVariant && bodyUnits[0]?.kind === 'intro' ? bodyUnits[0].text : null;
+const flowUnits = loopIntro ? bodyUnits.slice(1) : bodyUnits;
+
 function faqHeadingId(groupIndex: number) {
   return groupIndex === 0 ? 'topic-faq-heading' : `topic-faq-heading-${groupIndex}`;
 }
@@ -134,9 +165,22 @@ function faqHeadingId(groupIndex: number) {
         line parallel to the base; the area stays 12. */}
     {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
 
+    {/* FAMILIES-B1: family loop card beside the intro (text right, card
+        left in RTL; stacks below the text on mobile) */}
+    {loopVariant && (
+      <div class="topic-loop-row">
+        {loopIntro && (
+          <p class="topic-page__intro topic-loop-row__text" data-flow="paragraph" data-role="intro">
+            {loopIntro}
+          </p>
+        )}
+        <ConceptLoop variant={loopVariant} />
+      </div>
+    )}
+
     <div class="topic-page__body" data-body-flow>
       {
-        bodyUnits.map((unit) => {
+        flowUnits.map((unit) => {
           if (unit.kind === 'intro') {
             return (
               <p class="topic-page__intro" data-flow="paragraph" data-role="intro">

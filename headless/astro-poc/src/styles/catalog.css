@@ -3406,3 +3406,96 @@ html.noam-a11y-motion .hero-draw {
 html.noam-a11y-motion .concept-loop__toggle { display: none; }
 html.noam-a11y-motion .tri-explorer__hint,
 html.noam-a11y-motion .tri-explorer .te-handle { transition: none; }
+
+/* ——— KIMI-FAMILIES-B1: loops F01–F06 ——— */
+
+/* fixed problem strip (families layout): never moves, clears the toggle */
+.concept-loop__top {
+  margin: 0 0 4px;
+  min-height: 1.5em;
+  padding-inline: 44px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--navy);
+}
+
+/* F01 sticks */
+.concept-loop .cl-col { fill: #fafafa; stroke: #d1d5db; stroke-width: 1.5; stroke-dasharray: 5 4; }
+.concept-loop .cl-stick { fill: var(--navy); transition: fill 0.45s ease; }
+.concept-loop .cl-band { fill: none; stroke: #ea580c; stroke-width: 2.5; }
+.concept-loop .cl-digit { font-size: 26px; font-weight: 800; }
+
+/* F02 number line */
+.concept-loop .cl-small { font-size: 12px; }
+.concept-loop .cl-arc { fill: none; stroke: #6b7280; stroke-width: 1.5; }
+.concept-loop .cl-arc-fill { fill: #6b7280; }
+.concept-loop .cl-pt-a { fill: var(--cobalt); stroke: #fff; stroke-width: 2; }
+.concept-loop .cl-pt-b { fill: #7c3aed; stroke: #7c3aed; stroke-width: 2; }
+
+/* F03 ten frames */
+.concept-loop .cl-frame2 { fill: #fff; stroke: var(--navy); stroke-width: 2; }
+.concept-loop .cl-grid { stroke: #d1d5db; stroke-width: 1; }
+.concept-loop .cl-dot { stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-dot-a { fill: rgba(30, 136, 229, 0.55); }
+.concept-loop .cl-dot-b { fill: rgba(124, 58, 237, 0.5); }
+
+/* F04 balance */
+.concept-loop .cl-cube { fill: rgba(30, 136, 229, 0.4); stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-ol { fill: none; stroke: #ea580c; stroke-width: 2; }
+.concept-loop .cl-box { fill: #e5e7eb; stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-mini2 { fill: rgba(30, 136, 229, 0.45); stroke: var(--navy); stroke-width: 1; }
+
+/* F05 pattern */
+.concept-loop .cl-sq { fill: rgba(30, 136, 229, 0.28); stroke: var(--navy); stroke-width: 1.2; }
+.concept-loop .cl-sq5 { fill: rgba(234, 88, 12, 0.35); stroke: #ea580c; stroke-width: 1.5; }
+.concept-loop .cl-ol2 { fill: none; stroke: #ea580c; stroke-width: 2; }
+.concept-loop .cl-slot { fill: none; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 6 5; }
+.concept-loop .cl-digit2 { font-size: 20px; font-weight: 800; }
+
+/* F06 bars */
+.concept-loop .cl-bar-a { fill: rgba(30, 136, 229, 0.35); stroke: var(--cobalt); stroke-width: 1.5; }
+.concept-loop .cl-bar-b { fill: rgba(30, 136, 229, 0.16); stroke: var(--cobalt); stroke-width: 1.5; }
+.concept-loop .cl-bar-c { fill: rgba(234, 88, 12, 0.32); stroke: #ea580c; stroke-width: 1.5; }
+
+/* transient pieces of the family loops start hidden (engine drives inline opacity) */
+.concept-loop [data-el^='band-'], .concept-loop [data-el^='blbl-'],
+.concept-loop [data-el='digit-3'], .concept-loop [data-el='digit-4'],
+.concept-loop [data-el='tick47'], .concept-loop [data-el^='arc'], .concept-loop [data-el^='arcl'],
+.concept-loop [data-el='d40'], .concept-loop [data-el='d50'], .concept-loop [data-el='arrow'],
+.concept-loop [data-el='lbl47'], .concept-loop [data-el='lbl52'],
+.concept-loop [data-el='pt47'], .concept-loop [data-el='pt52'],
+.concept-loop [data-el='lbl7'], .concept-loop [data-el='lbl10'],
+.concept-loop [data-el='lbl2'], .concept-loop [data-el='lbl5'],
+.concept-loop [data-blue], .concept-loop [data-purp],
+.concept-loop [data-el='oll'], .concept-loop [data-el='olr'], .concept-loop [data-mini2],
+.concept-loop [data-el='hl2'], .concept-loop [data-el='hl3'], .concept-loop [data-el='hl4'],
+.concept-loop [data-el='n14'], .concept-loop [data-el='s5copy'], .concept-loop [data-el='s5new'],
+.concept-loop [data-el='bar-r'], .concept-loop [data-el='ld1'], .concept-loop [data-el='lr1'],
+.concept-loop [data-el='l5'], .concept-loop [data-el='brk'], .concept-loop [data-el='lbl17'],
+.concept-loop [data-el='brkv'], .concept-loop [data-el='q29'] {
+  opacity: 0;
+}
+
+/* FAMILIES-B1: family loop card beside the intro text on topic pages
+   (RTL grid: first column = right; text right, card left; stacks on mobile) */
+.topic-loop-row {
+  display: grid;
+  gap: 20px;
+  margin: 4px 0 20px;
+}
+.topic-loop-row .concept-loop {
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .topic-loop-row {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: 26px;
+  }
+  .topic-loop-row__text {
+    margin: 0;
+  }
+}

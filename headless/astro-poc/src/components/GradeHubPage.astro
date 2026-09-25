@@ -46,10 +46,30 @@ const faqJsonLd = hasFaq
       })),
     }
   : null;
-/* K3: one Brilliant-style film loop per חטיבה grade page, beside the header
-   text (text right, card left; stacks below the text on mobile). */
+/* K3 + FAMILIES-B1: one Brilliant-style film loop per grade hub, beside the
+   header text (text right, card left; stacks below the text on mobile).
+   א׳=F03 tenframes, ב׳=F01 sticks, ג׳=F06 bars, ד׳=F02 numberline,
+   ה׳=F04 balance, ו׳=F05 pattern; ז׳–ט׳ keep the K3 loops. */
 const loopVariant =
-  grade === 7 ? 'triangle' : grade === 8 ? 'pythagoras' : grade === 9 ? 'area-model' : null;
+  grade === 7
+    ? 'triangle'
+    : grade === 8
+      ? 'pythagoras'
+      : grade === 9
+        ? 'area-model'
+        : grade === 1
+          ? 'tenframes'
+          : grade === 2
+            ? 'sticks'
+            : grade === 3
+              ? 'bars'
+              : grade === 4
+                ? 'numberline'
+                : grade === 5
+                  ? 'balance'
+                  : grade === 6
+                    ? 'pattern'
+                    : null;
 ---
 <BaseLayout
   title={hub.title}
