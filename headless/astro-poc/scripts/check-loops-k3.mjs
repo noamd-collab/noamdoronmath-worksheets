@@ -71,7 +71,7 @@ const FRAMES = {
   pythagoras: [2.2, 5.5, 7.6],
   'area-model': [3.0, 6.2, 7.5],
   sticks: [2.0, 4.6, 6.5],
-  numberline: [1.8, 4.2, 6.5],
+  numberline: [1.8, 3.4, 6.5],
   tenframes: [1.6, 3.0, 6.5],
   balance: [2.0, 4.6, 6.0],
   pattern: [1.6, 4.0, 6.0],

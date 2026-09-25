@@ -349,9 +349,15 @@ function renderNumberline(root: LoopRoot, t: number) {
   op(p52, ph(t, 1.4, 1.7) * (1 - ph(t, 8.2, 8.8)));
   op(q(root, 'lbl52'), ph(t, 1.7, 2.0) * (1 - ph(t, 3.6, 4.0)));
 
-  op(q(root, 'arrow'), ph(t, 2.2, 2.6) * (1 - ph(t, 7.6, 8.1)));
+  // the top question follows the phase: comparison first, then rounding
+  op(q(root, 'topa'), 1 - ph(t, 3.6, 4.0));
+  op(q(root, 'topb'), ph(t, 3.6, 4.0));
+
+  // the comparison scene (arrow, then distance arcs) closes as the slide
+  // to 50 begins — keeps the area around 50 uncluttered
+  op(q(root, 'arrow'), ph(t, 2.2, 2.6) * (1 - ph(t, 3.7, 4.2)));
   ['arc40', 'arc50', 'd40', 'd50'].forEach((n) =>
-    op(q(root, n), ph(t, 3.0, 3.4) * (1 - ph(t, 7.4, 7.9)))
+    op(q(root, n), ph(t, 3.0, 3.4) * (1 - ph(t, 3.8, 4.3)))
   );
 
   // bottom bar: "47 < 52" gives way to "47 ≈ 50" + ✓

@@ -56,7 +56,6 @@ const ariaLabels: Record<string, string> = {
    formula-like strips are rendered LTR */
 const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   sticks: { text: 'כמה מקלות?' },
-  numberline: { text: 'מי גדול יותר? לאן מעגלים?' },
   tenframes: { text: '7 + 5 = ?', ltr: true },
   balance: { text: '3 + □ = 8', ltr: true },
   pattern: { text: 'מה מספר הריבועים בשלב 5?' },
@@ -170,6 +169,16 @@ const BAR_R = 460;
       top && (
         <p class="concept-loop__top" dir={top.ltr ? 'ltr' : undefined}>
           {top.text}
+        </p>
+      )
+    }
+    {
+      /* numberline: the question matches the current phase (B1-FIXES) */
+      variant === 'numberline' && (
+        <p class="concept-loop__top cl-topswap">
+          <span class="cl-topsz" aria-hidden="true">לאן מעגלים את 47?</span>
+          <span class="cl-tops" data-el="topa">מי גדול יותר?</span>
+          <span class="cl-tops" data-el="topb">לאן מעגלים את 47?</span>
         </p>
       )
     }
@@ -315,16 +324,16 @@ const BAR_R = 460;
           </g>
 
           {/* cell term labels */}
-          <text data-el="term-x2" class="cl-t cl-term cl-tc-a" x="249" y="122" text-anchor="middle">
+          <text data-el="term-x2" class="cl-t cl-term cl-num cl-tc-a" x="249" y="122" text-anchor="middle">
             x²
           </text>
-          <text data-el="term-2x" class="cl-t cl-term cl-tc-b" x="342" y="122" text-anchor="middle">
+          <text data-el="term-2x" class="cl-t cl-term cl-num cl-tc-b" x="342" y="122" text-anchor="middle">
             2x
           </text>
-          <text data-el="term-3x" class="cl-t cl-term cl-tc-c" x="249" y="234" text-anchor="middle">
+          <text data-el="term-3x" class="cl-t cl-term cl-num cl-tc-c" x="249" y="234" text-anchor="middle">
             3x
           </text>
-          <text data-el="term-6" class="cl-t cl-term cl-tc-d" x="342" y="234" text-anchor="middle">
+          <text data-el="term-6" class="cl-t cl-term cl-num cl-tc-d" x="342" y="234" text-anchor="middle">
             6
           </text>
 
@@ -332,7 +341,7 @@ const BAR_R = 460;
           <rect data-el="hl-2x" class="cl-hl cl-hl-b" x="306" y="62" width="72" height="106" rx="6" />
           <rect data-el="hl-3x" class="cl-hl cl-hl-c" x="196" y="172" width="106" height="110" rx="6" />
           <rect data-el="chip-5x" class="cl-chip" x="268" y="159" width="54" height="36" rx="9" />
-          <text data-el="term-5x" class="cl-t cl-term cl-tc-ok" x="295" y="183" text-anchor="middle">
+          <text data-el="term-5x" class="cl-t cl-term cl-num cl-tc-ok" x="295" y="183" text-anchor="middle">
             5x
           </text>
         </svg>
@@ -572,9 +581,11 @@ const BAR_R = 460;
       /* ═══════ F06 — bar model: 12 + 17 = 29 ═══════ */
       variant === 'bars' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
-          {/* names to the right of the bars (reading direction) */}
-          <text class="cl-t" x="545" y="119" text-anchor="end">דנה</text>
-          <text class="cl-t" x="545" y="189" text-anchor="end">רון</text>
+          {/* names to the right of the bars (reading direction). RTL text:
+              text-anchor="start" pins the RIGHT edge, so the name extends
+              leftward and never clips the svg edge */}
+          <text class="cl-t" x="552" y="119" text-anchor="start">דנה</text>
+          <text class="cl-t" x="552" y="189" text-anchor="start">רון</text>
 
           {/* Dana's bar grows right→left to 12 units (192px) */}
           <rect data-el="bar-d" class="cl-bar-a" x="460" y="100" width="0" height="26" rx="4" />

@@ -3499,3 +3499,17 @@ html.noam-a11y-motion .tri-explorer .te-handle { transition: none; }
     margin: 0;
   }
 }
+
+/* ——— KIMI-B1-FIXES ——— */
+/* every formula chunk is bidi-isolated LTR (the □/≈/− chars are neutral and
+   would follow the page's RTL direction without an explicit override) */
+.concept-loop__formula [data-fx],
+.concept-loop__top[dir='ltr'] {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* numberline: the top question swaps per phase without layout shift */
+.concept-loop__top.cl-topswap { position: relative; }
+.cl-topsz { visibility: hidden; }
+.cl-tops { position: absolute; inset: 0; }
