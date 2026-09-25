@@ -277,6 +277,60 @@ Unit coverage: root `tests/noam-learning.test.cjs` — **18/18 pass** this run. 
 
 ---
 
+## 9. Addendum 2 — reCAPTCHA v3 vs Headless preview (Perplexity hints → code proof)
+
+**Date:** 2026-09-25  
+**Scope:** Verify Perplexity research hints against `recaptchaGuard` / `noamBotGuard` / client. **No** Google Admin changes, **no** Production publish.  
+**Perplexity file:** `~/Downloads/PERPLEXITY_HEADLESS_SEO_REDIRECTS_RECAPTCHA.md` §3 — **not present** in this agent VM; hints taken from coordinator message only.
+
+### 9.1 Hint checklist (code proof)
+
+| # | Perplexity hint | Verdict from code / live evidence |
+|---|-----------------|-----------------------------------|
+| 1 | Token carries **page** hostname (preview), not http-function; siteverify returns `hostname` | **Confirmed.** Client mints via `grecaptcha.execute` on the viewer origin. Studio `recaptchaGuard.js` reads `assessment.hostname` after Google siteverify and requires `hostnames.has(assessment.hostname.toLowerCase())`. Failures before score use `BOT_REJECTED`. |
+| 2 | Exact compare to only `www.noamdoronmath.co.il` would fail preview **and** apex | **Nuance.** Guard uses an **exact Set** allowlist, not www-only. Live `noamBotSettings.js` includes `www`, **apex**, and `noamd-collab.github.io`. Preview fails when **absent from that list** — not because apex is missing. A www-only list *would* also break apex; that is not the current config. |
+| 3 | Preview domain must be in Google Admin Domains or mint fails | **External — report only, do not change.** Mint already succeeds on wglqn3 (`grecaptcha.execute` ~710-char token in prior probe). Failure mode observed is post-siteverify **app** hostname gate (`BOT_REJECTED`), not Admin mint block. Revisit Admin only if siteverify returns hostname-related `error-codes`. |
+| 4 | Front site key + Secrets Manager secret = same key, v3 | **Aligned in contract.** Client requires `provider: "recaptcha-v3"` + siteKey from `noamBotConfig`. Live config: `siteKey: 6LdPhawt…`, `mode: enforce`. Settings: same public key; secret via `NOAM_RECAPTCHA_SECRET_KEY` (value not read). Pairing of secret↔key cannot be proven without a deliberate siteverify; not probed here. |
+| 5 | Token single-use / short-lived — fresh token per call, also after refresh/resume | **Client OK.** `noam-bot-client.js`: «Execute once per AI request; tokens are never cached»; network retry mints a **new** token (unit test asserts first≠second). Diagram **status** polls use `ownerKey`+`jobId` only (no reCAPTCHA). Fresh token only on guarded routes (`noamImageAnalyze` / `Solve` / `DiagramPlan`) via `postJson`. |
+
+### 9.2 Guard implementation (Studio `my-site-2`, not this worksheets repo)
+
+| Module | Role |
+|--------|------|
+| `src/backend/recaptchaGuard.js` | siteverify → require `success`, matching `action`, **exact** `hostname` in allowlist, score in range; low score → `BOT_RISK_REJECTED` (429) in enforce |
+| `src/backend/noamBotGuard.js` | wires settings + Secrets Manager → `rejectNoamBotRequest` / public `noamBotConfig` |
+| `src/backend/noamBotSettings.js` | public `siteKey`, `secretName`, `mode`, `minimumScore`, `allowedHostnames` |
+
+Hostname validation regex on settings **rejects wildcards** (`*`). Preferred safe fix = **exact** host entries only — matches Perplexity recommendation and existing guard design. Do **not** disable verify.
+
+### 9.3 Current allowlist status (git default, 2026-09-25 read)
+
+`allowedHostnames` on default `my-site-2` tree now includes:
+
+- `noamd-collab.github.io`
+- `www.noamdoronmath.co.il`
+- `noamdoronmath.co.il`
+- `wglqn3-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com`
+- `sxut7j-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com`
+
+**Caveat:** Wix HTTP functions go live only after **site Publish**. Earlier live Chromium still saw `BOT_REJECTED` on wglqn3 (pre-publish). This agent did **not** re-run Google mint E2E and did **not** publish.
+
+### 9.4 Preferred fix (unchanged recommendation)
+
+1. Keep `mode: 'enforce'`; do not turn off verification.  
+2. Add **exact** preview / future canonical hostnames to `allowedHostnames` (already present in git for wglqn3/sxut7j).  
+3. Noam: **Publish** Studio site if git already has the hosts but live still `BOT_REJECTED`.  
+4. Do **not** change Google Admin unless mint/siteverify proves domain rejection.  
+5. After publish: one short רמז on wglqn3; expect pass hostname gate (may still hit score/`BOT_RISK_REJECTED`).
+
+### 9.5 Client tests this addendum
+
+`tests/noam-bot-client.test.cjs` — **4/4 pass** (incl. fresh token on network retry).
+
+Related store notes (other agents): `internal/noam-ai-bot-rejected-wglqn3.md`, `internal/report-cursor-noam-ai-headless.md`.
+
+---
+
 ## Production
 
-**No.** Audit / report only.
+**No.** Audit / report only (including §9). No Google Admin edits, no Studio publish from this agent.
