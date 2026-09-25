@@ -102,7 +102,13 @@ describe('NoamAiJobResume', () => {
     assert.ok(html.includes('isHeadlessHost'));
     assert.ok(html.includes('!isHeadlessHost'));
     assert.ok(html.includes('noamSavePendingJob({\n          jobId:start.jobId'));
-    for (const hostname of ['www.noamdoronmath.co.il', 'noamdoronmath.co.il']) {
+    for (const hostname of [
+      'www.noamdoronmath.co.il',
+      'noamdoronmath.co.il',
+      'pqdrcz-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com',
+      'localhost',
+      '127.0.0.1',
+    ]) {
       const href = viewerBackHref(html, { hostname, back: LEGACY_GITHUB_CATALOG });
       assert.ok(!href.includes('github.io'), `${hostname} followed ${href}`);
       assert.equal(href, '/worksheets?grade=7');

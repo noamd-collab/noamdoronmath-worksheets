@@ -3872,16 +3872,30 @@ if (okGrade){
 
 /* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
 
-// back= allowlist: same origin, production (www + apex), *.wix-site-host.com,
-// and local POC. github.io is not on the list, so production and Headless
-// previews cannot follow a legacy catalog after domain cutover.
+// back= allowlist: same origin, or the production pair (www <-> apex).
+// *.wix-site-host.com and localhost are managed viewer hosts only, so a
+// page on those hosts still rejects github.io, but they are not back=
+// targets from www or apex.
 try {
+  var normalizeViewerHost = function (hostname) {
+    return String(hostname || "").toLowerCase().replace(/\.$/, "");
+  };
+  var isProductionPairHost = function (hostname) {
+    var host = normalizeViewerHost(hostname);
+    return host === "www.noamdoronmath.co.il" || host === "noamdoronmath.co.il";
+  };
   var isManagedViewerHost = function (hostname) {
-    var host = String(hostname || "").toLowerCase().replace(/\.$/, "");
-    if (host === "www.noamdoronmath.co.il" || host === "noamdoronmath.co.il") return true;
+    var host = normalizeViewerHost(hostname);
+    if (isProductionPairHost(host)) return true;
     if (/\.wix-site-host\.com$/i.test(host)) return true;
     if (host === "localhost" || host === "127.0.0.1") return true;
     return false;
+  };
+  // From www or apex, back= may only land on that pair. Elsewhere, any
+  // managed viewer host remains a cross-host target (preview -> production).
+  var allowlistedBackHost = function (currentHost, targetHost) {
+    if (isProductionPairHost(currentHost)) return isProductionPairHost(targetHost);
+    return isManagedViewerHost(targetHost);
   };
   var navigationParams = new URL(location.href).searchParams;
   var catalogRoot = new URL('./', location.href);
@@ -3905,13 +3919,13 @@ try {
       catalogReturn.pathname === "/" ||
       catalogReturn.pathname === "/learning.html" ||
       catalogReturn.pathname === "/worksheets" ||
-      catalogReturn.pathname.indexOf("/worksheets") === 0;
+      catalogReturn.pathname.indexOf("/worksheets/") === 0;
     var sameOriginCatalog =
       catalogReturn.origin === location.origin &&
       catalogPathOk;
     var allowlistedCrossHost =
       catalogReturn.origin !== location.origin &&
-      isManagedViewerHost(catalogReturn.hostname) &&
+      allowlistedBackHost(location.hostname, catalogReturn.hostname) &&
       catalogPathOk;
     var legacyCatalog =
       !isHeadlessHost &&

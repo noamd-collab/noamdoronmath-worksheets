@@ -109,6 +109,20 @@ describe('guest navigation routing (HEADLESS-MIGRATION-14)', () => {
       }),
       'https://www.noamdoronmath.co.il/worksheets?grade=7'
     );
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: 'noamdoronmath.co.il',
+        back: 'https://www.noamdoronmath.co.il/worksheets?grade=7',
+      }),
+      'https://www.noamdoronmath.co.il/worksheets?grade=7'
+    );
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: www,
+        back: 'https://noamdoronmath.co.il/worksheets/grade-7',
+      }),
+      'https://noamdoronmath.co.il/worksheets/grade-7'
+    );
     // Viewer served from GitHub Pages itself: same-origin catalog return stays.
     assert.ok(
       viewerBackHref(html, {
@@ -124,6 +138,26 @@ describe('guest navigation routing (HEADLESS-MIGRATION-14)', () => {
         back: LEGACY_GITHUB_CATALOG,
       }).includes('github.io')
     );
+  });
+
+  it('www and apex reject wix-site-host, localhost, and /worksheetsEvil as back=', () => {
+    const html = readFileSync(join(pub, 'worksheet-viewer-noam.html'), 'utf8');
+    const rejected = [
+      'https://anything.wix-site-host.com/worksheets',
+      'https://preview.wix-site-host.com/worksheets?grade=7',
+      'http://localhost/worksheets',
+      'https://localhost/worksheets?grade=7',
+      'http://127.0.0.1/worksheets',
+      'https://www.noamdoronmath.co.il/worksheetsEvil',
+      'https://noamdoronmath.co.il/worksheetsEvil?grade=7',
+      '/worksheetsEvil',
+    ];
+    for (const hostname of ['www.noamdoronmath.co.il', 'noamdoronmath.co.il']) {
+      for (const back of rejected) {
+        const href = viewerBackHref(html, { hostname, back });
+        assert.equal(href, '/worksheets?grade=7', `${hostname} ${back} -> ${href}`);
+      }
+    }
   });
 
   it('classic Wix viewer still accepts only same-origin catalog returns', () => {
