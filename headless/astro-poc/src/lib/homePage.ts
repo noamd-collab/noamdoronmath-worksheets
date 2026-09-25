@@ -63,6 +63,51 @@ export function loadHomePage(): HomePageContent {
   return homePageJson as HomePageContent;
 }
 
+/** Canonical site origin used in homepage JSON-LD. */
+export const HOME_SITE_ORIGIN = 'https://www.noamdoronmath.co.il';
+
+/**
+ * Homepage structured data.
+ * LocalBusiness and WebSite match the live Wix blocks. EducationalOrganization
+ * is added here (not in BaseLayout) and points at the about page via subjectOf.
+ */
+export function homePageJsonLd(): Record<string, unknown>[] {
+  const origin = HOME_SITE_ORIGIN;
+  return [
+    {
+      '@context': 'https://schema.org/',
+      '@type': 'LocalBusiness',
+      name: 'נועם דורון מתמטיקה',
+      url: origin,
+      image:
+        'https://static.wixstatic.com/media/d8e7ad_12988010be694a34866bae3abba88878~mv2.png',
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: 'IL',
+        addressLocality: 'Bet Shemesh',
+      },
+    },
+    {
+      '@context': 'https://schema.org/',
+      '@type': 'WebSite',
+      name: 'נועם דורון - מתמטיקה דפי מתמטיקה בחינם',
+      url: origin,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'EducationalOrganization',
+      name: 'נועם דורון',
+      alternateName: 'נועם דורון מתמטיקה',
+      url: `${origin}/`,
+      logo: `${origin}/brand/noam-doron-math-logo-cropped.png`,
+      subjectOf: {
+        '@type': 'AboutPage',
+        url: `${origin}/aboutus`,
+      },
+    },
+  ];
+}
+
 /** Same-origin hrefs the homepage must expose for parity gates. */
 export function homePageRequiredHrefs(home: HomePageContent = loadHomePage()): string[] {
   const hrefs = [

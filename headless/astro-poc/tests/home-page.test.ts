@@ -2,11 +2,11 @@
  * HEADLESS-MIGRATION-31 — homepage Harmony content/interaction parity gates.
  */
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { homePageRequiredHrefs, loadHomePage } from '../src/lib/homePage.ts';
+import { homePageJsonLd, homePageRequiredHrefs, loadHomePage } from '../src/lib/homePage.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const home = loadHomePage();
@@ -49,6 +49,36 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
   it('value sections keep live Hebrew titles', () => {
     const titles = home.valueSections.items.map((i) => i.title);
     assert.deepEqual(titles, ['חטיבת ביניים', 'יסודי ומוכנות', 'אתגר והעשרה']);
+  });
+
+  it('homepage JSON-LD keeps LocalBusiness and WebSite and adds EducationalOrganization', () => {
+    const blocks = homePageJsonLd();
+    const types = blocks.map((b) => b['@type']);
+    assert.deepEqual(types, ['LocalBusiness', 'WebSite', 'EducationalOrganization']);
+
+    const org = blocks.find((b) => b['@type'] === 'EducationalOrganization')!;
+    assert.equal(org.name, 'נועם דורון');
+    assert.equal(org.url, 'https://www.noamdoronmath.co.il/');
+    assert.equal(org.logo, 'https://www.noamdoronmath.co.il/brand/noam-doron-math-logo-cropped.png');
+    const about = org.subjectOf as { '@type': string; url: string };
+    assert.equal(about['@type'], 'AboutPage');
+    assert.equal(about.url, 'https://www.noamdoronmath.co.il/aboutus');
+    assert.ok(
+      existsSync(join(root, 'public', 'brand', 'noam-doron-math-logo-cropped.png')),
+      'logo file missing from public/brand'
+    );
+
+    const local = blocks.find((b) => b['@type'] === 'LocalBusiness')!;
+    assert.equal(local.name, 'נועם דורון מתמטיקה');
+    assert.equal(local.url, 'https://www.noamdoronmath.co.il');
+    const site = blocks.find((b) => b['@type'] === 'WebSite')!;
+    assert.equal(site.url, 'https://www.noamdoronmath.co.il');
+
+    const index = readFileSync(join(root, 'src', 'pages', 'index.astro'), 'utf8');
+    assert.ok(index.includes('homePageJsonLd'));
+    assert.ok(index.includes('application/ld+json'));
+    const layout = readFileSync(join(root, 'src', 'layouts', 'BaseLayout.astro'), 'utf8');
+    assert.ok(!layout.includes('EducationalOrganization'));
   });
 
   it('index page wires fixture sections and does not invent privacy URL /privacy', () => {
