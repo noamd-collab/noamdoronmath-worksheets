@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogSeoTags from './BlogSeoTags.astro';
 import {
   localizeArchiveHref,
   type BlogArchiveContent,
@@ -17,6 +18,7 @@ const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
   ogImage={archive.ogImage}
   skipHref="#blog-archive-main"
 >
+  <BlogSeoTags slot="seo-tags" description={archive.description} image={archive.ogImage} jsonLd={archive.jsonLd} />
   {
     jsonLdScripts.map((ld) => (
       <script type="application/ld+json" set:html={JSON.stringify(ld)} />
