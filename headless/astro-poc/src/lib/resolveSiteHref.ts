@@ -7,6 +7,7 @@
  */
 import { TOPIC_PAGE_SLUGS } from './topicPages';
 import { BLOG_POST_SERVED_PATHS } from './blogPosts';
+import { redirectTargetFor } from './redirects';
 
 export const PROD_ORIGIN = 'https://www.noamdoronmath.co.il';
 
@@ -18,13 +19,13 @@ const LOCAL_SITE_PATHS = new Set([
   '/accessibilityadaptation',
   '/conditionforfreeworksheets',
   '/high-school-math',
-  '/high-school-math-1',
-  '/page',
   '/worksheets',
   '/learning.html',
   '/worksheet-viewer-noam.html',
-  '/equations-grade-7', // 301 → /equations-basics-grade-7
 ]);
+// Old paths such as /high-school-math-1, /page and /equations-grade-7 are not pages:
+// the middleware answers them with a 301 (src/data/redirects.json), and links to them
+// are rewritten below straight to the target, so no rendered link costs a redirect.
 
 const LOCAL_TOPIC_PATHS = new Set(TOPIC_PAGE_SLUGS.map((s) => `/${s}`));
 
@@ -126,7 +127,14 @@ export function resolveSiteHref(href: string): ResolveSiteHrefResult {
     }
 
     // Relative or own-host
-    const path = normPath(u.pathname);
+    const requested = normPath(u.pathname);
+    let decoded = requested;
+    try {
+      decoded = decodeURI(requested);
+    } catch {
+      /* keep the raw path */
+    }
+    const path = redirectTargetFor(decoded) ?? requested;
     const suffix = `${u.search}${u.hash}`;
 
     if (isLocallyServedPath(path)) {

@@ -178,16 +178,16 @@ describe('M24 site / policy pages', () => {
     assert.ok(localizeSiteHref('https://www.geekhero.co.il/x').startsWith('https://'));
   });
 
-  it('SitePage template and redirect routes exist', () => {
+  it('SitePage template exists; old paths are middleware redirects, not pages (OPEN-15)', () => {
     const tpl = readFileSync('src/components/SitePage.astro', 'utf8');
     assert.ok(tpl.includes('data-site-body'));
     assert.ok(tpl.includes('data-contact-fallback'));
-    assert.ok(existsSync('src/pages/high-school-math-1.astro'));
-    assert.ok(existsSync('src/pages/page.astro'));
-    const r1 = readFileSync('src/pages/high-school-math-1.astro', 'utf8');
-    const r2 = readFileSync('src/pages/page.astro', 'utf8');
-    assert.ok(r1.includes("redirect('/high-school-math'"));
-    assert.ok(r2.includes("redirect('/terms'"));
+    // A page file would put the old path into Wix's page registry and sitemap.
+    assert.ok(!existsSync('src/pages/high-school-math-1.astro'));
+    assert.ok(!existsSync('src/pages/page.astro'));
+    const map = JSON.parse(readFileSync('src/data/redirects.json', 'utf8')).rules as Array<{ from: string; to: string }>;
+    assert.ok(map.some((r) => r.from === '/high-school-math-1' && r.to === '/high-school-math'));
+    assert.ok(map.some((r) => r.from === '/page' && r.to === '/terms'));
   });
 
   it('audit classifier treats conditionforfreeworksheets as policy before worksheet keyword', () => {

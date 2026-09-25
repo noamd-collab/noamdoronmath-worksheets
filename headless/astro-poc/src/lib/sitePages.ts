@@ -71,7 +71,7 @@ export const SITE_PAGE_M24_SLUGS = [
   'high-school-math',
 ] as const;
 
-/** Production redirects represented as Astro redirect routes. */
+/** Production redirects, served by the middleware from src/data/redirects.json (OPEN-15). */
 export const SITE_PAGE_M24_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
   { from: 'high-school-math-1', to: '/high-school-math' },
   { from: 'page', to: '/terms' },

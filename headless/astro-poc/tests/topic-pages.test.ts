@@ -97,11 +97,12 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
     );
     assert.ok(existsSync(join(pagesDir, 'triangle-area-grade-7.astro')));
     assert.ok(existsSync(join(pagesDir, 'triangle-similarity-aa-grade-9.astro')));
-    assert.ok(existsSync(join(pagesDir, 'equations-grade-7.astro')));
+    // OPEN-15: /equations-grade-7 is a middleware 301 (src/data/redirects.json), not a page.
+    assert.ok(!existsSync(join(pagesDir, 'equations-grade-7.astro')));
     assert.ok(existsSync(join(pagesDir, 'special-triangles-grade-7-new.astro')));
     assert.ok(existsSync(join(pagesDir, 'patterns-and-graphs-grade-7.astro')));
-    const redirectSrc = readFileSync(join(pagesDir, 'equations-grade-7.astro'), 'utf8');
-    assert.ok(redirectSrc.includes("Astro.redirect('/equations-basics-grade-7', 301)"));
+    const redirectMap = JSON.parse(readFileSync(join(root, 'src', 'data', 'redirects.json'), 'utf8')).rules as Array<{ from: string; to: string }>;
+    assert.ok(redirectMap.some((r) => r.from === '/equations-grade-7' && r.to === '/equations-basics-grade-7'));
     assert.ok(existsSync(join(pagesDir, 'binomial-square-grade-9.astro')));
     assert.ok(existsSync(join(pagesDir, 'difference-of-squares-grade-9.astro')));
     assert.ok(existsSync(join(pagesDir, 'triangle-30-60-90-grade-9.astro')));

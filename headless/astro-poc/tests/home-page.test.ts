@@ -71,7 +71,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
       'href="/worksheets"',
       'href="/blog"',
       'href="/math-tools"',
-      'href="/high-school-math-1"',
+      'href="/high-school-math"',
       'href="/learning.html"',
       'תוספים',
       'מתמטיקה לתיכון (חיצוני)',
@@ -86,7 +86,8 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
       assert.ok(hrefs.includes(`/grade-${g}`));
     }
     assert.ok(hrefs.includes('/math-tools'));
-    assert.ok(hrefs.includes('/high-school-math-1'));
+    assert.ok(hrefs.includes('/high-school-math'));
+    assert.ok(!hrefs.includes('/high-school-math-1'), 'link the target, not the 301');
     assert.ok(hrefs.includes('/accessibilityadaptation'));
     assert.ok(hrefs.includes('/accessibilityadaptation#privacy-policy'));
     assert.ok(hrefs.includes('mailto:noamd@noamdoronmath.co.il'));
