@@ -140,6 +140,68 @@ describe('guest navigation routing (HEADLESS-MIGRATION-14)', () => {
     );
   });
 
+  it('wix preview back= allows only the production pair or the same host', () => {
+    const html = readFileSync(join(pub, 'worksheet-viewer-noam.html'), 'utf8');
+    const preview = 'pqdrcz-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com';
+    const other = 'preview.wix-site-host.com';
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: preview,
+        back: 'https://www.noamdoronmath.co.il/worksheets?grade=7',
+      }),
+      'https://www.noamdoronmath.co.il/worksheets?grade=7'
+    );
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: preview,
+        back: 'https://noamdoronmath.co.il/worksheets?grade=8',
+        g: 8,
+      }),
+      'https://noamdoronmath.co.il/worksheets?grade=8'
+    );
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: preview,
+        back: `https://${preview}/worksheets?grade=7&q=alg`,
+      }),
+      `https://${preview}/worksheets?grade=7&q=alg`
+    );
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: preview,
+        back: `http://${preview}/worksheets?grade=7`,
+      }),
+      `http://${preview}/worksheets?grade=7`
+    );
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: preview,
+        back: `https://${preview.toUpperCase()}/worksheets/grade-7`,
+      }),
+      `https://${preview}/worksheets/grade-7`
+    );
+    const rejected = [
+      `https://${other}/worksheets?grade=7`,
+      'https://other.wix-site-host.com/worksheets',
+      'http://localhost/worksheets',
+      'https://127.0.0.1/worksheets?grade=7',
+      LEGACY_GITHUB_CATALOG,
+      '/worksheetsEvil',
+    ];
+    for (const back of rejected) {
+      const href = viewerBackHref(html, { hostname: preview, back });
+      assert.equal(href, '/worksheets?grade=7', `${back} -> ${href}`);
+      assert.ok(!href.includes('github.io'), href);
+    }
+    assert.equal(
+      viewerBackHref(html, {
+        hostname: 'localhost',
+        back: 'https://www.noamdoronmath.co.il/worksheets?grade=7',
+      }),
+      'https://www.noamdoronmath.co.il/worksheets?grade=7'
+    );
+  });
+
   it('www and apex reject wix-site-host, localhost, and /worksheetsEvil as back=', () => {
     const html = readFileSync(join(pub, 'worksheet-viewer-noam.html'), 'utf8');
     const rejected = [

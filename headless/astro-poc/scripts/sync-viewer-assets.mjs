@@ -107,6 +107,156 @@ export function ensureHeadlessLearningChrome(html) {
   return learning;
 }
 
+/**
+ * Upstream viewer back= block (root worksheet-viewer-noam.html) and the
+ * Headless replacement. headlessViewerBackBlock must stay identical to the
+ * block in public/worksheet-viewer-noam.html.
+ */
+const headlessViewerBackUpstream = `/* BACK */
+
+if (okGrade){
+
+  document
+    .getElementById("backBtn")
+    .href =
+    "./?grade=" +
+    g;
+}
+
+/* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
+
+// Only accept a return path to this catalog, never an arbitrary redirect.
+try {
+  var navigationParams = new URL(location.href).searchParams;
+  var catalogRoot = new URL('./', location.href);
+  var returnPath = navigationParams.get('back');
+  if (returnPath) {
+    var catalogReturn = new URL(returnPath, location.href);
+    if (catalogReturn.origin === location.origin &&
+        (catalogReturn.pathname === catalogRoot.pathname || catalogReturn.pathname === catalogRoot.pathname + 'index.html')) {
+      document.getElementById('backBtn').href = catalogReturn.href;
+    }
+  }
+  if (/^\\d+$/.test(navigationParams.get('topic') || '') && okGrade) {
+    var topicBack = document.createElement('a');
+    topicBack.className = 'btn topic-back';
+    topicBack.textContent = 'חזרה לנושא';
+    topicBack.href = './?grade=' + g + '&topic=' + navigationParams.get('topic');
+    document.getElementById('backBtn').after(topicBack);
+  }
+} catch (navigationError) { /* The default grade link remains available. */ }`;
+
+export const headlessViewerBackBlock = `/* BACK — Headless adapter: default to legacy GitHub catalog (same UX target). */
+
+if (okGrade){
+
+  document
+    .getElementById("backBtn")
+    .href =
+    "/worksheets?grade=" +
+    g;
+}
+
+/* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
+
+// back= allowlist: same origin, or the production pair (www <-> apex).
+// *.wix-site-host.com and localhost are managed viewer hosts only, so a
+// page on those hosts still rejects github.io, but they are not back=
+// targets from www or apex. A *.wix-site-host.com preview may return only
+// to the production pair or to itself, not to another preview host.
+try {
+  var normalizeViewerHost = function (hostname) {
+    return String(hostname || "").toLowerCase().replace(/\\.$/, "");
+  };
+  var isProductionPairHost = function (hostname) {
+    var host = normalizeViewerHost(hostname);
+    return host === "www.noamdoronmath.co.il" || host === "noamdoronmath.co.il";
+  };
+  var isManagedViewerHost = function (hostname) {
+    var host = normalizeViewerHost(hostname);
+    if (isProductionPairHost(host)) return true;
+    if (/\\.wix-site-host\\.com$/i.test(host)) return true;
+    if (host === "localhost" || host === "127.0.0.1") return true;
+    return false;
+  };
+  // From www or apex, back= may only land on that pair.
+  // From a *.wix-site-host.com preview, only the production pair or the
+  // same preview host. Elsewhere, any managed viewer host remains a target.
+  var allowlistedBackHost = function (currentHost, targetHost) {
+    var current = normalizeViewerHost(currentHost);
+    var target = normalizeViewerHost(targetHost);
+    if (isProductionPairHost(current)) return isProductionPairHost(target);
+    if (/\\.wix-site-host\\.com$/i.test(current)) {
+      return isProductionPairHost(target) || target === current;
+    }
+    return isManagedViewerHost(target);
+  };
+  var navigationParams = new URL(location.href).searchParams;
+  var catalogRoot = new URL('./', location.href);
+  var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
+  var isHeadlessHost = isManagedViewerHost(location.hostname);
+  var returnPath = navigationParams.get('back');
+  if (returnPath) {
+    var catalogReturn;
+    if (/^https?:\\/\\//i.test(returnPath)) {
+      catalogReturn = new URL(returnPath);
+    } else if (returnPath.indexOf("/noamdoronmath-worksheets") === 0) {
+      catalogReturn = new URL(returnPath, legacyRoot.origin);
+    } else if (returnPath.indexOf("/worksheets") === 0) {
+      catalogReturn = new URL(returnPath, location.href);
+    } else {
+      catalogReturn = new URL(returnPath, location.href);
+    }
+    var catalogPathOk =
+      catalogReturn.pathname === catalogRoot.pathname ||
+      catalogReturn.pathname === catalogRoot.pathname + "index.html" ||
+      catalogReturn.pathname === "/" ||
+      catalogReturn.pathname === "/learning.html" ||
+      catalogReturn.pathname === "/worksheets" ||
+      catalogReturn.pathname.indexOf("/worksheets/") === 0;
+    var sameOriginCatalog =
+      catalogReturn.origin === location.origin &&
+      catalogPathOk;
+    var allowlistedCrossHost =
+      catalogReturn.origin !== location.origin &&
+      allowlistedBackHost(location.hostname, catalogReturn.hostname) &&
+      catalogPathOk;
+    var legacyCatalog =
+      !isHeadlessHost &&
+      catalogReturn.origin === legacyRoot.origin &&
+      catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\\/$/, "")) === 0;
+    if (sameOriginCatalog || allowlistedCrossHost || legacyCatalog) {
+      document.getElementById("backBtn").href = catalogReturn.href;
+    } else if (isHeadlessHost && okGrade) {
+      // Safe fallback: stay on this site's worksheets for this grade (never github.io).
+      document.getElementById("backBtn").href = "/worksheets?grade=" + g;
+    }
+  }
+  if (/^\\d+$/.test(navigationParams.get("topic") || "") && okGrade) {
+    var topicBack = document.createElement("a");
+    topicBack.className = "btn topic-back";
+    topicBack.textContent = "חזרה לנושא";
+    topicBack.href =
+      "/worksheets?grade=" +
+      g +
+      "&topic=" +
+      navigationParams.get("topic");
+    document.getElementById("backBtn").after(topicBack);
+  }
+} catch (navigationError) { /* The default grade link remains available. */ }`;
+
+export function applyHeadlessViewerBack(html) {
+  if (html.includes(headlessViewerBackUpstream)) {
+    html = html.replace(headlessViewerBackUpstream, headlessViewerBackBlock);
+  } else if (!html.includes('HEADLESS_LEGACY_PAGES +') || !html.includes('legacyCatalog')) {
+    console.warn('WARN: back-navigation block already patched or diverged; verify manually.');
+  }
+  if (html.includes('pathname.indexOf("/worksheets") === 0')) {
+    throw new Error('back= guard regressed to pathname.indexOf("/worksheets") === 0');
+  }
+  return html;
+}
+
 const isDirectRun =
   Boolean(process.argv[1]) && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
@@ -234,103 +384,7 @@ html = html.replace(
   `    '<a href="/worksheets">' +\n    'חזרה לדפי העבודה' +\n    '</a>'`
 );
 
-const oldBack = `/* BACK */
-
-if (okGrade){
-
-  document
-    .getElementById("backBtn")
-    .href =
-    "./?grade=" +
-    g;
-}
-
-/* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
-
-// Only accept a return path to this catalog, never an arbitrary redirect.
-try {
-  var navigationParams = new URL(location.href).searchParams;
-  var catalogRoot = new URL('./', location.href);
-  var returnPath = navigationParams.get('back');
-  if (returnPath) {
-    var catalogReturn = new URL(returnPath, location.href);
-    if (catalogReturn.origin === location.origin &&
-        (catalogReturn.pathname === catalogRoot.pathname || catalogReturn.pathname === catalogRoot.pathname + 'index.html')) {
-      document.getElementById('backBtn').href = catalogReturn.href;
-    }
-  }
-  if (/^\\d+$/.test(navigationParams.get('topic') || '') && okGrade) {
-    var topicBack = document.createElement('a');
-    topicBack.className = 'btn topic-back';
-    topicBack.textContent = 'חזרה לנושא';
-    topicBack.href = './?grade=' + g + '&topic=' + navigationParams.get('topic');
-    document.getElementById('backBtn').after(topicBack);
-  }
-} catch (navigationError) { /* The default grade link remains available. */ }`;
-
-const newBack = `/* BACK — Headless adapter: default to legacy GitHub catalog (same UX target). */
-
-if (okGrade){
-
-  document
-    .getElementById("backBtn")
-    .href =
-    "/worksheets?grade=" +
-    g;
-}
-
-/* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
-
-// Accept same-origin catalog returns OR the legacy GitHub Pages catalog path.
-try {
-  var navigationParams = new URL(location.href).searchParams;
-  var catalogRoot = new URL('./', location.href);
-  var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
-  var returnPath = navigationParams.get('back');
-  if (returnPath) {
-    var catalogReturn;
-    if (/^https?:\\/\\//i.test(returnPath)) {
-      catalogReturn = new URL(returnPath);
-    } else if (returnPath.indexOf("/noamdoronmath-worksheets") === 0) {
-      catalogReturn = new URL(returnPath, legacyRoot.origin);
-    } else if (returnPath.indexOf("/worksheets") === 0) {
-      catalogReturn = new URL(returnPath, location.href);
-    } else {
-      catalogReturn = new URL(returnPath, location.href);
-    }
-    var sameOriginCatalog =
-      catalogReturn.origin === location.origin &&
-      (catalogReturn.pathname === catalogRoot.pathname ||
-       catalogReturn.pathname === catalogRoot.pathname + "index.html" ||
-       catalogReturn.pathname === "/" ||
-       catalogReturn.pathname === "/learning.html" ||
-       catalogReturn.pathname === "/worksheets" ||
-       catalogReturn.pathname.indexOf("/worksheets") === 0);
-    var legacyCatalog =
-      catalogReturn.origin === legacyRoot.origin &&
-      catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\\/$/, "")) === 0;
-    if (sameOriginCatalog || legacyCatalog) {
-      document.getElementById("backBtn").href = catalogReturn.href;
-    }
-  }
-  if (/^\\d+$/.test(navigationParams.get("topic") || "") && okGrade) {
-    var topicBack = document.createElement("a");
-    topicBack.className = "btn topic-back";
-    topicBack.textContent = "חזרה לנושא";
-    topicBack.href =
-      "/worksheets?grade=" +
-      g +
-      "&topic=" +
-      navigationParams.get("topic");
-    document.getElementById("backBtn").after(topicBack);
-  }
-} catch (navigationError) { /* The default grade link remains available. */ }`;
-
-if (html.includes(oldBack)) {
-  html = html.replace(oldBack, newBack);
-} else if (!html.includes('HEADLESS_LEGACY_PAGES +') || !html.includes('legacyCatalog')) {
-  console.warn('WARN: back-navigation block already patched or diverged; verify manually.');
-}
+html = applyHeadlessViewerBack(html);
 
 if (!html.includes('HEADLESS_MANIFEST_BASE + pdf')) {
   throw new Error('Failed to apply MANIFEST_PATH adapter');

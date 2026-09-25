@@ -3875,7 +3875,8 @@ if (okGrade){
 // back= allowlist: same origin, or the production pair (www <-> apex).
 // *.wix-site-host.com and localhost are managed viewer hosts only, so a
 // page on those hosts still rejects github.io, but they are not back=
-// targets from www or apex.
+// targets from www or apex. A *.wix-site-host.com preview may return only
+// to the production pair or to itself, not to another preview host.
 try {
   var normalizeViewerHost = function (hostname) {
     return String(hostname || "").toLowerCase().replace(/\.$/, "");
@@ -3891,11 +3892,17 @@ try {
     if (host === "localhost" || host === "127.0.0.1") return true;
     return false;
   };
-  // From www or apex, back= may only land on that pair. Elsewhere, any
-  // managed viewer host remains a cross-host target (preview -> production).
+  // From www or apex, back= may only land on that pair.
+  // From a *.wix-site-host.com preview, only the production pair or the
+  // same preview host. Elsewhere, any managed viewer host remains a target.
   var allowlistedBackHost = function (currentHost, targetHost) {
-    if (isProductionPairHost(currentHost)) return isProductionPairHost(targetHost);
-    return isManagedViewerHost(targetHost);
+    var current = normalizeViewerHost(currentHost);
+    var target = normalizeViewerHost(targetHost);
+    if (isProductionPairHost(current)) return isProductionPairHost(target);
+    if (/\.wix-site-host\.com$/i.test(current)) {
+      return isProductionPairHost(target) || target === current;
+    }
+    return isManagedViewerHost(target);
   };
   var navigationParams = new URL(location.href).searchParams;
   var catalogRoot = new URL('./', location.href);
