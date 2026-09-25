@@ -1,6 +1,17 @@
 /* Shared accessibility preferences for Noam's Wix site and worksheet pages. */
 (function () {
   'use strict';
+  // Astro shell only. The catalog and the worksheet viewer load this file
+  // with a relative src, and keep the original launcher placement.
+  var scriptSrc = '';
+  try { scriptSrc = (document.currentScript && document.currentScript.getAttribute('src')) || ''; } catch (_) {}
+  var astroShell = scriptSrc === '/noam-accessibility.js';
+  var narrowQuery = window.matchMedia('(max-width: 800px)');
+
+  function docked() {
+    return astroShell && narrowQuery.matches;
+  }
+
   function init() {
     if (document.getElementById('noam-accessibility')) return;
     const defaults = { text: 100, contrast: false, links: false, motion: false };
@@ -24,12 +35,75 @@
         animation:none!important; transition:none!important; scroll-behavior:auto!important;
       }
       @media print { #noam-accessibility { display:none!important; } }
+      /* Inner scroller, not body: body overflow is handed to the viewport and does not clip. */
+      @media (max-width: 800px) {
+        html.noam-a11y-dock body {
+          height: 100dvh;
+          min-height: 0;
+          overflow: hidden;
+        }
+        html.noam-a11y-dock #noam-a11y-scroll {
+          box-sizing: border-box;
+          height: calc(100dvh - 60px - env(safe-area-inset-bottom, 0px));
+          overflow-x: hidden;
+          overflow-y: auto;
+          padding-bottom: 16px;
+          scroll-padding-bottom: 16px;
+        }
+      }
+      @media print {
+        html.noam-a11y-dock body,
+        html.noam-a11y-dock #noam-a11y-scroll {
+          height: auto !important;
+          overflow: visible !important;
+        }
+      }
     `;
     document.head.appendChild(style);
     const host = document.createElement('div');
     host.id = 'noam-accessibility';
     // Shadow DOM keeps site-wide button rules from changing the menu.
-    host.style.cssText = 'position:fixed;right:14px;bottom:calc(82px + env(safe-area-inset-bottom));z-index:10000;width:48px;height:48px;';
+    const keepOut = new Set(['noam-a11y-scroll', 'ndGateOverlay', 'noam-accessibility']);
+    function ensureScroller() {
+      let scroller = document.getElementById('noam-a11y-scroll');
+      if (!scroller) {
+        scroller = document.createElement('div');
+        scroller.id = 'noam-a11y-scroll';
+        const nodes = [...document.body.childNodes];
+        document.body.insertBefore(scroller, document.body.firstChild);
+        for (const node of nodes) {
+          if (node.nodeType === 1 && keepOut.has(node.id)) continue;
+          scroller.appendChild(node);
+        }
+      }
+      const gate = document.getElementById('ndGateOverlay');
+      scroller.style.overflowY = gate ? 'hidden' : '';
+    }
+    function releaseScroller() {
+      const scroller = document.getElementById('noam-a11y-scroll');
+      if (!scroller) return;
+      while (scroller.firstChild) document.body.insertBefore(scroller.firstChild, scroller);
+      scroller.remove();
+    }
+    let placing = false;
+    function placeLauncher() {
+      if (placing) return;
+      placing = true;
+      try {
+      const dock = docked();
+      document.documentElement.classList.toggle('noam-a11y-dock', dock);
+      if (dock) {
+        host.style.cssText = 'position:fixed;right:8px;bottom:calc(8px + env(safe-area-inset-bottom, 0px));z-index:10000;width:44px;height:44px;';
+        ensureScroller();
+        if (host.parentNode !== document.documentElement) document.documentElement.appendChild(host);
+      } else {
+        host.style.cssText = 'position:fixed;right:14px;bottom:calc(82px + env(safe-area-inset-bottom, 0px));z-index:10000;width:48px;height:48px;';
+        releaseScroller();
+        if (host.parentNode !== document.body) document.body.appendChild(host);
+      }
+      } finally { placing = false; }
+    }
+    if (astroShell) narrowQuery.addEventListener('change', placeLauncher);
     const root = host.attachShadow({mode:'open'});
     root.innerHTML = `
       <style>
@@ -41,6 +115,12 @@
         button:disabled { opacity:.45; cursor:default; }
         #launch { width:48px; height:48px; padding:8px; border-radius:50%; background:#075e57; color:white; border:2px solid white; box-shadow:0 2px 8px #14213d66; display:grid; place-items:center; }
         #launch svg { width:28px; height:28px; }
+        :host-context(html.noam-a11y-dock) #launch {
+          width:44px; height:44px; padding:8px;
+          background:rgba(7,94,87,0.82); border-color:rgba(255,255,255,0.95);
+          box-shadow:0 2px 8px rgba(20,33,61,0.28);
+        }
+        :host-context(html.noam-a11y-dock) #launch svg { width:22px; height:22px; }
         dialog { direction:rtl; position:fixed; inset:auto 14px calc(140px + env(safe-area-inset-bottom)) auto; margin:0; width:min(330px,calc(100vw - 28px)); max-height:calc(100dvh - 165px); overflow:auto; background:#fff; color:#14213d; border:2px solid #14213d; border-radius:18px; padding:16px; box-shadow:0 8px 30px #14213d40; font:16px/1.5 Arial,sans-serif; }
         dialog::backdrop { background:#14213d26; }
         header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
@@ -76,7 +156,10 @@
         <p>ההעדפות נשמרות בדפדפן עבור אתר זה. להגדלת דף העבודה עצמו השתמשו בסליידר הזום של הדף.</p>
       </dialog>
     `;
-    document.body.appendChild(host);
+    placeLauncher();
+    if (astroShell) {
+      new MutationObserver(placeLauncher).observe(document.body, { childList: true });
+    }
     const dialog = root.getElementById('menu');
     const launch = root.getElementById('launch');
     launch.addEventListener('click', () => { dialog.showModal(); launch.setAttribute('aria-expanded','true'); root.getElementById('close').focus(); });
