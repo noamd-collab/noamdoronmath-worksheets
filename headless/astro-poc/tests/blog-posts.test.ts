@@ -193,7 +193,8 @@ describe('M25 blog pilot', () => {
     );
     assert.equal(
       localizeBlogHref('https://www.noamdoronmath.co.il/equations-grade-7'),
-      '/equations-grade-7'
+      // OPEN-15: an old path is linked straight to its 301 target
+      '/equations-basics-grade-7'
     );
     // All /post/* bodies are now served (M29)
     assert.equal(

@@ -115,17 +115,17 @@
     {
       "from": "/high-school-math-1",
       "to": "/high-school-math",
-      "note": "live 301; also src/pages/high-school-math-1.astro (redundant once middleware ships)"
+      "note": "live 301; served only by the middleware (the .astro redirect page was removed)"
     },
     {
       "from": "/equations-grade-7",
       "to": "/equations-basics-grade-7",
-      "note": "live 301; also src/pages/equations-grade-7.astro (redundant once middleware ships)"
+      "note": "live 301; served only by the middleware (the .astro redirect page was removed)"
     },
     {
       "from": "/page",
       "to": "/terms",
-      "note": "live 301; also src/pages/page.astro (redundant once middleware ships)"
+      "note": "live 301; served only by the middleware (the .astro redirect page was removed)"
     }
   ]
 }

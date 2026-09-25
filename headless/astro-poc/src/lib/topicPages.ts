@@ -231,7 +231,7 @@ export const TOPIC_PAGE_M23_UNMIGRATED = [] as const;
 
 /**
  * M30 batch — last topic-SEO gaps (self-canonical pages).
- * `/equations-grade-7` is a 301 redirect route (not in SLUGS).
+ * `/equations-grade-7` is a 301 answered by the middleware (not in SLUGS).
  */
 export const TOPIC_PAGE_M30_SLUGS = [
   'triangle-area-grade-7',
@@ -240,7 +240,7 @@ export const TOPIC_PAGE_M30_SLUGS = [
   'patterns-and-graphs-grade-7',
 ] as const;
 
-/** Production topic redirects represented as Astro redirect routes. */
+/** Production topic redirects, served by the middleware from src/data/redirects.json (OPEN-15). */
 export const TOPIC_PAGE_M30_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
   { from: 'equations-grade-7', to: '/equations-basics-grade-7' },
 ];

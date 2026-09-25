@@ -70,7 +70,7 @@ export function homePageRequiredHrefs(home: HomePageContent = loadHomePage()): s
     '/aboutus',
     '/blog',
     '/math-tools',
-    '/high-school-math-1',
+    '/high-school-math',
     '/worksheets',
     '/learning.html',
     '/learning.html?signin=google',

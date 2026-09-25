@@ -32,6 +32,11 @@ function isExcluded(path: string): boolean {
   );
 }
 
+/** Exact-map target for an already-normalized path (no trailing slash), or undefined. */
+export function redirectTargetFor(path: string): string | undefined {
+  return byFrom.get(path);
+}
+
 /** Returns the absolute-path redirect target (with the original query), or null. */
 export function resolveRedirect(pathname: string, search = ''): string | null {
   let path: string;

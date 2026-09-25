@@ -6,6 +6,9 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { existsSync } from 'node:fs';
 import { REDIRECT_RULES, resolveRedirect } from '../src/lib/redirects';
+import { SITE_PAGE_M24_REDIRECTS } from '../src/lib/sitePages';
+import { TOPIC_PAGE_M30_REDIRECTS } from '../src/lib/topicPages';
+import { resolveSiteHref } from '../src/lib/resolveSiteHref';
 
 const pageExists = (p: string) =>
   p === '/' || existsSync(new URL(`../src/pages${p}.astro`, import.meta.url));
@@ -50,5 +53,28 @@ describe('OPEN-15 redirects', () => {
     assert.equal(REDIRECT_RULES.filter((r) => r.from.startsWith('/worksheetsfor')).length, 9);
     assert.match(REDIRECT_RULES.find((r) => r.from === '/triangle-area-grade-7-worksheets')!.note!, /live-mapping-looks-wrong-check-with-noam/);
     assert.equal(REDIRECT_RULES.filter((r) => /pending-wix-api/.test(r.note || '')).length, 22);
+  });
+
+  it('cleanup: no page file answers a redirected path; older redirect lists agree with the map', () => {
+    for (const r of REDIRECT_RULES)
+      assert.ok(!existsSync(new URL(`../src/pages${r.from}.astro`, import.meta.url)), `page file still exists for ${r.from}`);
+    const byFrom = new Map(REDIRECT_RULES.map((r) => [r.from, r.to]));
+    for (const r of [...SITE_PAGE_M24_REDIRECTS, ...TOPIC_PAGE_M30_REDIRECTS])
+      assert.equal(byFrom.get(`/${r.from}`), r.to, r.from);
+  });
+
+  it('cleanup: rendered links to old paths go straight to the target (no 301 hop)', () => {
+    const cases: Array<[string, string]> = [
+      ['https://www.noamdoronmath.co.il/high-school-math-1', '/high-school-math'],
+      ['https://www.noamdoronmath.co.il/page', '/terms'],
+      ['/equations-grade-7', '/equations-basics-grade-7'],
+      ['https://www.noamdoronmath.co.il/coordinate-plane-intro-grade-7#x', '/coordinate-plane-scale-grade-7#x'],
+      ['https://www.noamdoronmath.co.il/worksheetsfor7thgrade', '/grade-7'],
+    ];
+    for (const [href, want] of cases) {
+      const r = resolveSiteHref(href);
+      assert.equal(r.href, want, href);
+      assert.equal(r.local, true, href);
+    }
   });
 });
