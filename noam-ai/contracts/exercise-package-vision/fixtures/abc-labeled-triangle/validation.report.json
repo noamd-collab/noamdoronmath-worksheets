@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "exerciseId": "G7-T15-A-Q04א",
+  "ok": true,
+  "overall_confidence": 0.92,
+  "layers": {
+    "text_numeric": {
+      "status": "match",
+      "confidence": 0.9,
+      "notes": ["Stem names משולש ABC."]
+    },
+    "vertex_labels": {
+      "status": "match",
+      "confidence": 0.95,
+      "notes": ["Visible glyphs A,B,C match package labels_on_pdf true."]
+    },
+    "structural": {
+      "status": "match",
+      "confidence": 0.88,
+      "notes": ["Anonymous triangle topology present."]
+    }
+  },
+  "bindings": [
+    {
+      "package": "A",
+      "observation": "n0",
+      "visible_glyph": "A",
+      "basis": "glyph_and_structure",
+      "confidence": 0.94
+    },
+    {
+      "package": "B",
+      "observation": "n1",
+      "visible_glyph": "B",
+      "basis": "glyph_and_structure",
+      "confidence": 0.94
+    },
+    {
+      "package": "C",
+      "observation": "n2",
+      "visible_glyph": "C",
+      "basis": "glyph_and_structure",
+      "confidence": 0.93
+    }
+  ],
+  "mismatches": [],
+  "drawing_policy": {
+    "may_use_package_names": true,
+    "require_visible_labels": true,
+    "reason": "glyph_and_structure_binding",
+    "min_binding_confidence": 0.7
+  },
+  "notes": "Glyph binding path: Vision reports glyphs only; validator binds glyph+node to package names."
+}

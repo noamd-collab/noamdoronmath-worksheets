@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://noamdoronmath.local/noam-ai/contracts/exercise-package-vision/schemas/validation-report.schema.json",
+  "title": "ValidationReport (draft)",
+  "description": "Compares ExercisePackage.geometry (SoT for semantic names) to layered VisionObservation. Binding of anonymous structural nodes to package names happens ONLY here — never inside Vision. Explicit layer statuses, mismatches, confidence, and drawing_policy. Draft freeze only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "exerciseId",
+    "ok",
+    "overall_confidence",
+    "layers",
+    "bindings",
+    "mismatches",
+    "drawing_policy"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "exerciseId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^G[7-9]-T\\d{2}-[ABE]-Q\\d{1,3}[א-ת]?$"
+    },
+    "ok": {
+      "type": "boolean",
+      "description": "True when drawing_policy may proceed under the freeze rules for this fixture class (not a universal production gate yet)."
+    },
+    "overall_confidence": {
+      "$ref": "#/$defs/confidence"
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text_numeric", "vertex_labels", "structural"],
+      "properties": {
+        "text_numeric": { "$ref": "#/$defs/layerResult" },
+        "vertex_labels": { "$ref": "#/$defs/layerResult" },
+        "structural": { "$ref": "#/$defs/layerResult" }
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["package", "observation", "basis", "confidence"],
+        "properties": {
+          "package": {
+            "type": "string",
+            "pattern": "^[A-Z]$",
+            "description": "Semantic name from the package — not invented by Vision."
+          },
+          "observation": {
+            "type": ["string", "null"],
+            "description": "Anonymous structural node id (n0…) or null when bound only via visible glyph without structural node yet.",
+            "pattern": "^n[0-9]{1,3}$"
+          },
+          "visible_glyph": {
+            "type": ["string", "null"],
+            "pattern": "^[A-Z]$",
+            "description": "Set when binding used a visible glyph. Must equal package when basis includes glyph."
+          },
+          "basis": {
+            "type": "string",
+            "enum": [
+              "glyph",
+              "structure",
+              "structure_and_role",
+              "structure_and_measure",
+              "glyph_and_structure"
+            ]
+          },
+          "confidence": { "$ref": "#/$defs/confidence" }
+        }
+      }
+    },
+    "mismatches": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "severity", "message"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "LABEL_EXPECTED_BUT_ABSENT",
+              "LABEL_UNEXPECTED",
+              "LABEL_MISMATCH",
+              "MEASURE_MISSING_IN_IMAGE",
+              "MEASURE_MISMATCH",
+              "MARK_MISSING",
+              "MARK_EXTRA",
+              "TOPOLOGY_MISMATCH",
+              "COLLINEAR_ORDER_MISMATCH",
+              "CONFIDENCE_TOO_LOW",
+              "BINDING_AMBIGUOUS",
+              "BINDING_INCOMPLETE"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high"]
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          },
+          "package_ref": {
+            "type": ["string", "null"],
+            "maxLength": 120
+          },
+          "observation_ref": {
+            "type": ["string", "null"],
+            "maxLength": 120
+          }
+        }
+      }
+    },
+    "drawing_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "may_use_package_names",
+        "require_visible_labels",
+        "reason"
+      ],
+      "properties": {
+        "may_use_package_names": {
+          "type": "boolean",
+          "description": "If true, planner may emit package semantic names via validator bindings only."
+        },
+        "require_visible_labels": {
+          "type": "boolean",
+          "description": "If true, every bound point used in the draw must also have a visible glyph."
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "structure_matched_unlabeled_figure",
+            "glyph_binding",
+            "glyph_and_structure_binding",
+            "blocked_topology_mismatch",
+            "blocked_confidence_too_low",
+            "blocked_binding_incomplete",
+            "blocked_labels_expected_absent"
+          ]
+        },
+        "min_binding_confidence": {
+          "$ref": "#/$defs/confidence"
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "$defs": {
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "layerResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "confidence"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["match", "partial", "mismatch", "missing"]
+        },
+        "confidence": { "$ref": "#/$defs/confidence" },
+        "notes": {
+          "type": "array",
+          "maxItems": 16,
+          "items": { "type": "string", "maxLength": 240 }
+        }
+      }
+    }
+  }
+}

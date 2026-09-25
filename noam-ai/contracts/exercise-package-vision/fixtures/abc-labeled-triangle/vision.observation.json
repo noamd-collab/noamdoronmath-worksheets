@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "exerciseId": "G7-T15-A-Q04א",
+  "source": {
+    "pdfId": "fixture-abc-labeled",
+    "page": 1,
+    "crop_note": "Synthetic labeled ABC triangle control for glyph→package binding"
+  },
+  "confidence": 0.91,
+  "layers": {
+    "text_numeric": {
+      "version": 1,
+      "layer": "text_numeric",
+      "transcription": "במשולש ABC נתון…",
+      "numbers": [],
+      "hebrew_phrases": ["משולש ABC"],
+      "confidence": 0.9
+    },
+    "vertex_labels": {
+      "version": 1,
+      "layer": "vertex_labels",
+      "visible_labels": [
+        { "glyph": "A", "near": "vertex", "bbox": null, "confidence": 0.96 },
+        { "glyph": "B", "near": "vertex", "bbox": null, "confidence": 0.96 },
+        { "glyph": "C", "near": "vertex", "bbox": null, "confidence": 0.95 }
+      ],
+      "emptiness_is_confident": false,
+      "confidence": 0.95
+    },
+    "structural": {
+      "version": 1,
+      "layer": "structural",
+      "nodes": [
+        { "id": "n0", "kind": "vertex" },
+        { "id": "n1", "kind": "vertex" },
+        { "id": "n2", "kind": "vertex" }
+      ],
+      "segments": [
+        { "id": "s0", "ends": ["n0", "n1"], "style": "solid", "role_hint": "side" },
+        { "id": "s1", "ends": ["n1", "n2"], "style": "solid", "role_hint": "side" },
+        { "id": "s2", "ends": ["n2", "n0"], "style": "solid", "role_hint": "side" }
+      ],
+      "intersections": [],
+      "right_angle_marks": [],
+      "equal_side_marks": [],
+      "parallel_marks": [],
+      "collinear_orders": [],
+      "shape_hints": [
+        { "kind": "triangle", "nodes": ["n0", "n1", "n2"] }
+      ],
+      "numeric_attachments": [],
+      "confidence": 0.88
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "exercise-package-vision-contract",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Frozen JSON Schema drafts + fixtures for exercise-package vision validation (no runtime)",
+  "scripts": {
+    "test": "node --test contract-fixtures.test.cjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  }
+}

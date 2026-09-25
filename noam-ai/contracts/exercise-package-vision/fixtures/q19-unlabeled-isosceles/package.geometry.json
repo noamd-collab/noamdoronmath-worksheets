@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "exerciseId": "G7-T43-A-Q19א",
+  "semantic_points": {
+    "A": { "role": "apex" },
+    "B": { "role": "base_left" },
+    "C": { "role": "base_right" },
+    "H": { "role": "altitude_foot_on_BC" }
+  },
+  "expected": {
+    "segments": [["A", "B"], ["B", "C"], ["C", "A"], ["A", "H"]],
+    "dashed": [["A", "H"]],
+    "right_angles": [["A", "H", "B"]],
+    "equal_sides": [[["A", "B"], ["A", "C"]]],
+    "parallel": [],
+    "collinear": [["B", "H", "C"]],
+    "intersections": [
+      { "point": "H", "of": [["A", "H"], ["B", "C"]] }
+    ],
+    "measures": [
+      { "on": ["A", "B"], "value": 25, "unit": null },
+      { "on": ["A", "C"], "value": 25, "unit": null },
+      { "on": ["B", "C"], "value": 14, "unit": null }
+    ],
+    "labels_on_pdf": {
+      "A": false,
+      "B": false,
+      "C": false,
+      "H": false
+    },
+    "shape_hints": [
+      { "kind": "isosceles_triangle", "points": ["A", "B", "C"] }
+    ]
+  },
+  "notes": "Fixture for unlabeled isosceles + altitude. Package holds semantic names; PDF has no vertex glyphs."
+}
