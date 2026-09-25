@@ -41,9 +41,9 @@
   p.set('g',item.g);p.set('x',item.x);p.set('lv',item.l==='one'?'b':item.l);p.set('pdf',raw);p.set('t',item.title);p.set('topic',item.parent);p.set('back',new URL('learning.html',location.href).pathname);
   catalog.filter(function(x){return x.g===item.g&&x.t===item.t;}).forEach(function(x){if(x.l!=='one')p.set('p'+x.l,x.pdf);});return u.href;
  }
- function controls(item){var box=el('div',undefined,'nl-controls');box.dataset.learningId=item.id;box.setAttribute('role','group');box.setAttribute('aria-label',item.title+' — '+item.label+' — מצב עבודה');
-  Object.keys(Core.states).forEach(function(s){var b=button(Core.states[s],function(){engine.change(item.id,s).then(function(){tell(engine.snapshot().user?'המצב נשמר בחשבון.':'המצב נשמר במכשיר הזה. אין צורך להתחבר.');}).catch(fail);});b.dataset.status=s;b.setAttribute('aria-pressed','false');box.append(b);});
-  var undo=button('ביטול סימון',function(){engine.change(item.id,null).then(function(){tell('הסימון הוסר.');}).catch(fail);},'nl-reset');undo.dataset.status='';box.append(undo);return box;
+ function controls(item){var box=el('div',undefined,'nl-controls');box.dataset.learningId=item.id;box.dataset.level=item.l;box.setAttribute('role','group');box.setAttribute('aria-label',item.title+' — '+item.label+' — מצב עבודה');
+  Object.keys(Core.states).forEach(function(s){var b=button(Core.states[s],function(){engine.change(item.id,s).then(function(){tell((engine.snapshot().user?'המצב נשמר בחשבון':'המצב נשמר במכשיר הזה')+' עבור '+item.label+' בלבד. רמות אחרות באותו נושא לא משתנות.');}).catch(fail);});b.dataset.status=s;b.setAttribute('aria-pressed','false');box.append(b);});
+  var undo=button('ביטול סימון',function(){engine.change(item.id,null).then(function(){tell('הסימון הוסר מ'+item.label+' בלבד.');}).catch(fail);},'nl-reset');undo.dataset.status='';box.append(undo);return box;
  }
  function refreshControls(){var s=engine.snapshot();document.querySelectorAll('[data-learning-id]').forEach(function(box){var id=box.dataset.learningId,row=s.rows[id];box.querySelectorAll('button[data-status]').forEach(function(b){b.setAttribute('aria-pressed',String(!!row&&row.status===b.dataset.status));b.disabled=!s.ready||!!s.user&&!s.cloudReady||s.pending.includes(id)||s.pending.includes('*');if(!b.dataset.status)b.hidden=!row;});});}
  var authBox=el('section',undefined,'nl-account');authBox.setAttribute('aria-label','שמירת התקדמות');
@@ -62,19 +62,29 @@
   }
  }
  var cards=null,filter=null,search=null;
- function card(item,row){var a=el('article',undefined,'nl-card'),h=el('h2',item.title);a.append(el('p','כיתה '+('אבגדהוזחט'[item.g-1])+'׳ · '+item.label,'nl-meta'),h);
-  var pdf=link('פתיחת דף העבודה',openPdf(item));pdf.target='_blank';pdf.rel='noopener noreferrer';a.append(pdf);
-  if(row)a.append(el('p',Core.states[row.status]+' · עודכן '+new Date(row.updated_at).toLocaleDateString('he-IL'),'nl-meta'));
-  a.append(controls(item));return a;
+ function levelRow(item,row){var group=el('div',undefined,'nl-level-progress');group.append(el('strong',item.label));
+  var pdf=link('פתיחת דף העבודה',openPdf(item));pdf.target='_blank';pdf.rel='noopener noreferrer';group.append(pdf);
+  if(row)group.append(el('p',Core.states[row.status]+' · עודכן '+new Date(row.updated_at).toLocaleDateString('he-IL'),'nl-meta'));
+  group.append(controls(item));return group;
+ }
+ function card(item,row){var a=el('article',undefined,'nl-card');a.append(el('p','כיתה '+('אבגדהוזחט'[item.g-1])+'׳','nl-meta'),el('h2',item.title),levelRow(item,row));return a;}
+ /** One card per topic; each level is its own row with its own worksheet_id controls (no cross-level leak). */
+ function topicCard(group,s){var a=el('article',undefined,'nl-card');a.dataset.topicKey=group.key;
+  a.append(el('p','כיתה '+('אבגדהוזחט'[group.g-1])+'׳ · '+group.items.length+' רמות','nl-meta'),el('h2',group.title));
+  group.items.forEach(function(item){a.append(levelRow(item,s.rows[item.id]));});return a;
  }
  function renderPortal(){if(!cards)return;var s=engine.snapshot(),term=search.value.trim(),mode=filter.value;
   var rows=catalog.filter(function(x){var r=s.rows[x.id];return (mode==='all'||mode==='saved'&&r||r&&r.status===mode)&&(!term||(x.title+' '+x.label+' כיתה '+('אבגדהוזחט'[x.g-1])+'׳').includes(term));});
-  rows.sort(function(a,b){return Date.parse((s.rows[b.id]||{}).updated_at||0)-Date.parse((s.rows[a.id]||{}).updated_at||0)||a.g-b.g||a.t-b.t;});
+  rows.sort(function(a,b){return Date.parse((s.rows[b.id]||{}).updated_at||0)-Date.parse((s.rows[a.id]||{}).updated_at||0)||a.g-b.g||a.t-b.t||String(a.l).localeCompare(String(b.l));});
+  // Group filtered levels by grade+topic so א׳/ב׳/מצוינות stay visually separate rows under one title.
+  var groups=[],seen=new Map();
+  rows.forEach(function(x){var k=x.g+':'+x.t;var g=seen.get(k);if(!g){g={key:k,g:x.g,t:x.t,title:x.title,items:[],fresh:0};seen.set(k,g);groups.push(g);}g.items.push(x);g.fresh=Math.max(g.fresh,Date.parse((s.rows[x.id]||{}).updated_at||0)||0);});
+  groups.sort(function(a,b){return b.fresh-a.fresh||a.g-b.g||a.t-b.t;});
   cards.replaceChildren();document.getElementById('nl-count').textContent=rows.length===1?'דף עבודה אחד':rows.length+' דפי עבודה';
   if(!rows.length)cards.append(el('p',mode==='all'?'לא נמצאו דפים. נסו מילת חיפוש אחרת.':'עדיין אין כאן סימונים. בחרו ״כל הדפים״ או סמנו מצב עבודה במאגר.','nl-empty'));
   var chosen=new URL(location.href).searchParams.get('worksheet');if(chosen&&byId.has(chosen)&&!document.getElementById('nl-chosen')){var chosenBox=el('section');chosenBox.id='nl-chosen';chosenBox.append(el('h2','הדף שבחרתם'),card(byId.get(chosen),s.rows[chosen]));cards.before(chosenBox);}
-  var page=rows.slice(0,60);page.forEach(function(x){cards.append(card(x,s.rows[x.id]));});
-  if(rows.length>60)cards.append(el('p','מוצגים 60 הדפים הראשונים. השתמשו בחיפוש כדי לצמצם את הרשימה.'));
+  var page=groups.slice(0,40);page.forEach(function(g){cards.append(topicCard(g,s));});
+  if(groups.length>40)cards.append(el('p','מוצגים 40 הנושאים הראשונים. השתמשו בחיפוש כדי לצמצם את הרשימה.'));
  }
  if(portalMode){var app=document.getElementById('learning-app');app.append(authBox,message);
   var bar=el('div',undefined,'nl-filters'),label=el('label','הצגת דפים ');filter=el('select');filter.setAttribute('aria-label','סינון מצב עבודה');
@@ -90,12 +100,12 @@
   var info=el('details',undefined,'nl-account-details');info.append(el('summary','על שמירת ההתקדמות'),authBox);bar.after(info,message);
   var original=levelLinksHTML;
   levelLinksHTML=function(topic,grade){var html=original(topic,grade),items=catalog.filter(function(x){return x.g===grade&&x.t===topic.id;});
-   var details=el('details',undefined,'nl-topic-progress');details.append(el('summary','סימון מצב עבודה'+(topic.parent?' — '+topic.t:'')));
+   var details=el('details',undefined,'nl-topic-progress');details.append(el('summary','סימון מצב עבודה לפי רמה'+(topic.parent?' — '+topic.t:'')));
    items.forEach(function(item){var group=el('div',undefined,'nl-level-progress');group.append(el('strong',item.label),controls(item));details.append(group);});
    return html+(items.length?details.outerHTML:'');
   };
-  // Generated catalog cards use delegated events, so keyboard and mouse both work after filters rerender.
-  document.getElementById('list').addEventListener('click',function(e){var b=e.target.closest('[data-learning-id] button[data-status]');if(!b)return;var id=b.closest('[data-learning-id]').dataset.learningId;engine.change(id,b.dataset.status||null).then(function(){tell(engine.snapshot().user?'המצב נשמר בחשבון.':'המצב נשמר במכשיר הזה.');}).catch(fail);});
+  // Delegated clicks use data-learning-id (per level). Never propagate to sibling levels.
+  document.getElementById('list').addEventListener('click',function(e){var b=e.target.closest('[data-learning-id] button[data-status]');if(!b)return;var box=b.closest('[data-learning-id]');var id=box&&box.dataset.learningId;if(!id||!Core.isWorksheetId(id))return;engine.change(id,b.dataset.status||null).then(function(){var item=byId.get(id);tell((engine.snapshot().user?'המצב נשמר בחשבון':'המצב נשמר במכשיר הזה')+' עבור '+(item&&item.label||id)+' בלבד.');}).catch(fail);});
   var oldRender=render;render=function(){oldRender();refreshControls();};render();
  }else{
   var p=new URL(location.href).searchParams,item=catalog.find(function(x){return x.g===Number(p.get('g'))&&x.pdf===p.get('pdf')&&(x.l===p.get('lv')||x.l==='one');});

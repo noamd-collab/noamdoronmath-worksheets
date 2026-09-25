@@ -86,8 +86,8 @@ describe('M35 learning auth same-origin callback', () => {
     const mem = {
       data: {
         'noam-learning-guest-v1': JSON.stringify({
-          a: { status: 'started', updated_at: '2026-01-01T00:00:00.000Z' },
-          b: { status: 'completed', updated_at: '2026-01-02T00:00:00.000Z' },
+          'g7-t1-a': { status: 'started', updated_at: '2026-01-01T00:00:00.000Z' },
+          'g7-t2-a': { status: 'completed', updated_at: '2026-01-02T00:00:00.000Z' },
         }),
       },
       getItem(k) {
@@ -101,7 +101,11 @@ describe('M35 learning auth same-origin callback', () => {
       },
     };
     const cloudRows = {
-      b: { worksheet_id: 'b', status: 'review', updated_at: '2026-01-03T00:00:00.000Z' },
+      'g7-t2-a': {
+        worksheet_id: 'g7-t2-a',
+        status: 'review',
+        updated_at: '2026-01-03T00:00:00.000Z',
+      },
     };
     const upserted = [];
     const client = {
@@ -147,24 +151,24 @@ describe('M35 learning auth same-origin callback', () => {
     };
     const engine = Core.create({
       catalog: [
-        { id: 'a', title: 'A', g: 7, t: 1, l: 'one', label: 'א' },
-        { id: 'b', title: 'B', g: 7, t: 2, l: 'one', label: 'ב' },
+        { id: 'g7-t1-a', title: 'A', g: 7, t: 1, l: 'a', label: 'א' },
+        { id: 'g7-t2-a', title: 'B', g: 7, t: 2, l: 'a', label: 'ב' },
       ],
       storage: mem,
       client,
     });
     await engine.setUser({ id: 'user-1', email: 't@example.com' });
-    // After setUser refresh, cloud has b only
+    // After setUser refresh, cloud has g7-t2-a only
     assert.equal(engine.snapshot().cloudReady, true);
-    assert.ok(engine.snapshot().rows.b);
+    assert.ok(engine.snapshot().rows['g7-t2-a']);
     assert.equal(engine.snapshot().guestCount, 2);
     await engine.importGuest();
-    // Only missing guest row `a` should upsert; `b` already in cloud → not overwritten
+    // Only missing guest row g7-t1-a should upsert; g7-t2-a already in cloud → not overwritten
     assert.ok(upserted.length >= 1);
     const last = upserted[upserted.length - 1];
     assert.equal(last.opts.ignoreDuplicates, true);
     const ids = last.rows.map((r) => r.worksheet_id);
-    assert.ok(ids.includes('a'));
-    assert.ok(!ids.includes('b'));
+    assert.ok(ids.includes('g7-t1-a'));
+    assert.ok(!ids.includes('g7-t2-a'));
   });
 });

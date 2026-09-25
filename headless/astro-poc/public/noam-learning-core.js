@@ -1,15 +1,20 @@
-/* Optional progress. Guest data stays on this device; account data is never cached as guest data. */
+/* Optional progress. Guest data stays on this device; account data is never cached as guest data.
+ * Keys are per worksheet LEVEL: g{grade}-t{topicId}-{a|b|c|one}. Never topic-only.
+ * change(id) writes exactly one worksheet_id — siblings in the same topic are untouched. */
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.NoamLearningCore=factory();})(typeof window!=='undefined'?window:this,function(){
  'use strict';
  var STATES={started:'התחלתי',completed:'סיימתי',review:'צריך עוד תרגול'};
  var KEY='noam-learning-guest-v1';
+ /** Must include level suffix — topic-only ids (g1-t1) are rejected. */
+ var WORKSHEET_ID_RE=/^g[1-9]-t[0-9]+-(a|b|c|one)$/;
+ function isWorksheetId(id){return typeof id==='string'&&WORKSHEET_ID_RE.test(id);}
  function create(options){
   var catalog=new Map(options.catalog.map(function(x){return[x.id,x];}));
   var storage=options.storage,client=options.client||null,account=null,cloud={},epoch=0,ready=!client,cloudReady=false;
   var listeners=[],pending=new Set(),storageError=false;
   function emit(){listeners.forEach(function(fn){fn();});}
   function clean(rows){var out={};if(!rows||typeof rows!=='object'||Array.isArray(rows))return out;
-   Object.keys(rows).slice(0,2000).forEach(function(id){var r=rows[id];if(catalog.has(id)&&r&&Object.hasOwn(STATES,r.status)&&Number.isFinite(Date.parse(r.updated_at)))out[id]={status:r.status,updated_at:r.updated_at};});return out;}
+   Object.keys(rows).slice(0,2000).forEach(function(id){var r=rows[id];if(isWorksheetId(id)&&catalog.has(id)&&r&&Object.hasOwn(STATES,r.status)&&Number.isFinite(Date.parse(r.updated_at)))out[id]={status:r.status,updated_at:r.updated_at};});return out;}
   function guests(){try{return clean(JSON.parse(storage.getItem(KEY)||'{}'));}catch(e){storageError=true;return {};}}
   function saveGuest(data){storage.setItem(KEY,JSON.stringify(clean(data)));storageError=false;}
   function snapshot(){return{user:account,ready:ready,cloudReady:cloudReady,rows:account?Object.assign({},cloud):guests(),guestCount:Object.keys(guests()).length,pending:Array.from(pending),storageError:storageError};}
@@ -20,7 +25,8 @@
    var data={};(result.data||[]).forEach(function(r){data[r.worksheet_id]=r;});cloud=clean(data);cloudReady=true;emit();}
   async function setUser(user){epoch++;pending.clear();account=user?{id:user.id,email:user.email||''}:null;cloud={};ready=true;cloudReady=false;emit();if(account)await refresh();}
   async function change(id,status){
-   if(!catalog.has(id)||status!==null&&!Object.hasOwn(STATES,status))throw Error('INVALID_PROGRESS');
+   // Single-id write only — never fan out to other levels of the same topic.
+   if(!isWorksheetId(id)||!catalog.has(id)||status!==null&&!Object.hasOwn(STATES,status))throw Error('INVALID_PROGRESS');
    if(!ready||pending.has(id)||pending.has('*'))throw Error('BUSY');
    if(!account){var data=guests();if(status===null)delete data[id];else data[id]={status:status,updated_at:new Date().toISOString()};saveGuest(data);emit();return;}
    if(!cloudReady)throw Error('SYNC_NOT_READY');
@@ -47,5 +53,5 @@
   }
   return{snapshot:snapshot,subscribe:function(fn){listeners.push(fn);},refresh:refresh,setUser:setUser,change:change,importGuest:importGuest,clear:clear,storageChanged:emit};
  }
- return{create:create,states:STATES,storageKey:KEY};
+ return{create:create,states:STATES,storageKey:KEY,isWorksheetId:isWorksheetId,worksheetIdPattern:WORKSHEET_ID_RE};
 });

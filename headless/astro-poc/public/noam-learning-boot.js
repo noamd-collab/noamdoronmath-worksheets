@@ -6,12 +6,12 @@
     if (started) return;
     started = true;
     var s = document.createElement('script');
-    s.src = 'noam-learning.js?v=20260924-m35-1';
+    s.src = 'noam-learning.js?v=20260925-level-iso-1';
     document.body.append(s);
   }
   function loadLearning() {
     var auth = document.createElement('script');
-    auth.src = 'noam-learning-auth-redirect.js?v=20260924-m35-1';
+    auth.src = 'noam-learning-auth-redirect.js?v=20260925-level-iso-1';
     auth.onload = start;
     auth.onerror = start;
     document.body.append(auth);
