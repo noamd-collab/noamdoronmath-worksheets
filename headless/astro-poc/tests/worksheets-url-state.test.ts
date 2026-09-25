@@ -2,6 +2,7 @@
  * HEADLESS-MIGRATION-32 — worksheets URL-state contract unit tests.
  */
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import {
   buildWorksheetsHref,
@@ -106,5 +107,14 @@ describe('worksheetsUrlState contract (M32)', () => {
       ),
       true
     );
+  });
+
+  it('worksheets document titles do not carry the Astro POC suffix', () => {
+    const src = readFileSync('src/pages/worksheets.astro', 'utf8');
+    assert.equal(src.includes('(Astro POC)'), false);
+    assert.equal(src.includes('אב־טיפוס Astro'), false);
+    assert.ok(src.includes('title={`דפי עבודה · ${gradeEntry!.label}`}'));
+    assert.ok(src.includes('title="כיתה לא חוקית"'));
+    assert.ok(src.includes('title="כיתה חסרה"'));
   });
 });
