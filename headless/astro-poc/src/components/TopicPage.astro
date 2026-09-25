@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LineArtDoodles from './LineArtDoodles.astro';
 import {
   loadTopicPage,
   synthesizeBodyFlow,
@@ -106,6 +107,7 @@ function faqHeadingId(groupIndex: number) {
       <span aria-hidden="true">/</span>
       <span aria-current="page">{page.h1}</span>
     </nav>
+    <LineArtDoodles variant="topic" />
 
     {
       (page.preH1Ctas || []).map((cta) => (

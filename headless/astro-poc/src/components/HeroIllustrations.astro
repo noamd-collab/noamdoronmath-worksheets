@@ -6,6 +6,19 @@
   <span class="notebook-doodle notebook-doodle--right"></span>
 </div>
 
+{/* Looping hand-drawn strokes — the "drawn in a loop" hero decoration.
+    Dash animation lives in catalog.css (.hero-draw) with full
+    reduced-motion + accessibility-menu guards. */}
+<svg class="hero-lines" viewBox="0 0 1200 430" aria-hidden="true" focusable="false">
+  <path
+    class="hero-draw hero-draw--squiggle"
+    pathLength="1"
+    d="M70 340 C 150 250, 250 255, 330 320 S 490 395, 575 330 C 640 280, 700 285, 760 330"
+  ></path>
+  <circle class="hero-draw hero-draw--loop" pathLength="1" cx="640" cy="58" r="40"></circle>
+  <path class="hero-draw hero-draw--triangle" pathLength="1" d="M1088 392 l 32 -54 l -64 0 Z"></path>
+</svg>
+
 <style>
   .notebook-art {
     position: absolute;
@@ -23,18 +36,39 @@
     background-size: 200% 100%;
     background-repeat: no-repeat;
     opacity: .8;
+    /* Gentle idle float (transform only); off under reduced-motion / a11y toggle. */
+    animation: doodle-float 7s ease-in-out infinite;
+    will-change: transform;
   }
   .notebook-doodle--left {
     left: -6px;
     top: 35px;
     background-position: left center;
-    transform: rotate(-7deg);
+    --doodle-rot: -7deg;
+    transform: rotate(var(--doodle-rot));
   }
   .notebook-doodle--right {
     right: -6px;
     top: 75px;
     background-position: right center;
-    transform: rotate(5deg);
+    --doodle-rot: 5deg;
+    transform: rotate(var(--doodle-rot));
+    animation-duration: 8.5s;
+    animation-delay: 1.2s;
+  }
+  @keyframes doodle-float {
+    0%, 100% { transform: translateY(0) rotate(var(--doodle-rot, 0deg)); }
+    50% { transform: translateY(-8px) rotate(var(--doodle-rot, 0deg)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .notebook-doodle { animation: none; }
+  }
+  :global(html.noam-a11y-motion) .notebook-doodle {
+    animation: none !important;
+  }
+  /* Keep the line-draw layer behind the hero copy on small screens. */
+  @media (max-width: 640px) {
+    .hero-lines { opacity: .55; }
   }
   @media (max-width: 1024px) {
     .notebook-doodle { width: 125px; }

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LineArtDoodles from './LineArtDoodles.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import {
   loadGradeHub,
@@ -92,6 +93,7 @@ const faqJsonLd = hasFaq
         )
       }
     </header>
+    <LineArtDoodles variant="hub" />
 
     {
       grade1Groups.length > 0 && (
