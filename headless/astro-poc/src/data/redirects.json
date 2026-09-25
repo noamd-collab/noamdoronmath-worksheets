@@ -1,0 +1,131 @@
+{
+  "_about": "OPEN-15 301 map for the domain move. Source: ~/Downloads/open15-redirects.csv + conductor decisions (25.09.2026). Rows marked pending-wix-api were found by probing the live site and will be reconciled with the full classic-site Redirect Manager list. Blog (/blog, /post/*) and /_files/ugd PDFs are handled elsewhere.",
+  "status": 301,
+  "rules": [
+    {
+      "from": "/worksheetsfor1thgrade",
+      "to": "/grade-1",
+      "note": "pending-wix-api; critical: external link from grades-embed-home.html (GitHub Pages)"
+    },
+    {
+      "from": "/worksheetsfor2thgrade",
+      "to": "/grade-2",
+      "note": "pending-wix-api; critical: external link from grades-embed-home.html (GitHub Pages)"
+    },
+    {
+      "from": "/worksheetsfor3thgrade",
+      "to": "/grade-3",
+      "note": "pending-wix-api; critical: external link from grades-embed-home.html (GitHub Pages)"
+    },
+    {
+      "from": "/worksheetsfor4thgrade",
+      "to": "/grade-4",
+      "note": "pending-wix-api; critical: external link from grades-embed-home.html (GitHub Pages)"
+    },
+    {
+      "from": "/worksheetsfor5thgrade",
+      "to": "/grade-5",
+      "note": "pending-wix-api; critical: external link from grades-embed-home.html (GitHub Pages)"
+    },
+    {
+      "from": "/worksheetsfor6thgrade",
+      "to": "/grade-6",
+      "note": "pending-wix-api; critical: external link from grades-embed-home.html (GitHub Pages)"
+    },
+    {
+      "from": "/worksheetsfor7thgrade",
+      "to": "/grade-7",
+      "note": "pending-wix-api; critical: external link from grades-embed-home.html (GitHub Pages)"
+    },
+    {
+      "from": "/worksheetsfor8thgrade",
+      "to": "/grade-8",
+      "note": "pending-wix-api; critical: external link from grades-embed-home.html (GitHub Pages)"
+    },
+    {
+      "from": "/worksheetsfor9thgrade",
+      "to": "/grade-9",
+      "note": "pending-wix-api; critical: external link from grades-embed-home.html (GitHub Pages)"
+    },
+    {
+      "from": "/home",
+      "to": "/",
+      "note": "pending-wix-api; live /home is the homepage (200, canonical /)"
+    },
+    {
+      "from": "/triangle-area-grade-7-worksheets",
+      "to": "/powers-grade-7",
+      "note": "pending-wix-api; live-mapping-looks-wrong-check-with-noam"
+    },
+    {
+      "from": "/coordinate-plane-intro-grade-7",
+      "to": "/coordinate-plane-scale-grade-7",
+      "note": "pending-wix-api; fixed: live points to /triangular-prism-volume-grade-9 (wrong topic)"
+    },
+    {
+      "from": "/blank",
+      "to": "/grade-9",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/blank-1",
+      "to": "/quadratic-inequalities-systems-grade-9",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/blank-2",
+      "to": "/precalculus-functions-graphs-grade-9",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/equations-grade-7-1",
+      "to": "/equations-both-sides-word-problems-grade-7",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/equations-both-sides-word-problems-grade-7-1",
+      "to": "/pythagoras-applications-grade-7",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/inequalities-grade-8-1",
+      "to": "/statistics-grade-8",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/page-1",
+      "to": "/accessibilityadaptation",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/page-2",
+      "to": "/aboutus",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/page-3",
+      "to": "/accessibilityadaptation",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/page-5",
+      "to": "/conditionforfreeworksheets",
+      "note": "pending-wix-api"
+    },
+    {
+      "from": "/high-school-math-1",
+      "to": "/high-school-math",
+      "note": "live 301; also src/pages/high-school-math-1.astro (redundant once middleware ships)"
+    },
+    {
+      "from": "/equations-grade-7",
+      "to": "/equations-basics-grade-7",
+      "note": "live 301; also src/pages/equations-grade-7.astro (redundant once middleware ships)"
+    },
+    {
+      "from": "/page",
+      "to": "/terms",
+      "note": "live 301; also src/pages/page.astro (redundant once middleware ships)"
+    }
+  ]
+}

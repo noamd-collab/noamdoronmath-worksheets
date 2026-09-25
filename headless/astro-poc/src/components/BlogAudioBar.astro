@@ -86,7 +86,10 @@ const { slug } = Astro.props;
       }
     }
 
-    fetch('/api/blog-audio-info?slug=' + encodeURIComponent(slug), { credentials: 'omit' })
+    // The proxy itself gives up on Wix after 2.5 s; 4 s here bounds a stuck request.
+    var init = { credentials: 'omit' };
+    if (window.AbortSignal && typeof AbortSignal.timeout === 'function') init.signal = AbortSignal.timeout(4000);
+    fetch('/api/blog-audio-info?slug=' + encodeURIComponent(slug), init)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (info) { if (info && info.available) show(); })
       .catch(function () { /* no bar; the post reads normally */ });
