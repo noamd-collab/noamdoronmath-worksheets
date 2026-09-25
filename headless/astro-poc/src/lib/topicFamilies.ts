@@ -138,17 +138,23 @@ export function gradeHubRelatedTopic(grade: number): FamilyRelatedTopic {
 }
 
 /**
- * Related topics for a page, same selection as the live GEO script:
- * family list, drop the current path, keep three.
- * Grade-hub links for algebra/geometry/graphs are added separately.
+ * Related topics for a page: family list, drop the current path, keep three.
+ * Algebra, geometry, and graphs also link to the page's grade hub. The default
+ * block already starts with that hub.
  */
 export function familyRelatedTopics(slugOrPath: string, grade: number): FamilyRelatedTopic[] {
   const path = topicPath(slugOrPath);
   const family = classifyTopicFamily(path);
   const table = LINKS[grade];
-  if (!table) return [];
-  return (table[family] || table.default)
+  if (!table) {
+    return grade >= 1 && grade <= 9 ? [gradeHubRelatedTopic(grade)] : [];
+  }
+  const topics = (table[family] || table.default)
     .filter(([href]) => href !== path)
     .slice(0, 3)
     .map(toRelated);
+  if (family === 'default') return topics;
+  const hub = gradeHubRelatedTopic(grade);
+  if (topics.some((row) => row.path === hub.path)) return topics;
+  return [hub, ...topics];
 }
