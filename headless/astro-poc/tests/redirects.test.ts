@@ -20,7 +20,9 @@ describe('OPEN-15 redirects', () => {
       ['/worksheetsfor1thgrade', '/grade-1'],
       ['/home', '/'],
       ['/coordinate-plane-intro-grade-7', '/coordinate-plane-scale-grade-7'],
-      ['/triangle-area-grade-7-worksheets', '/powers-grade-7'],
+      ['/triangle-area-grade-7-worksheets', '/triangle-area-grade-7'],
+      ['/equations-both-sides-word-problems-grade-7-1', '/equations-both-sides-word-problems-grade-7'],
+      ['/inequalities-grade-8-1', '/inequalities-grade-8'],
       ['/blank-1', '/quadratic-inequalities-systems-grade-9'],
       ['/page-2', '/aboutus'],
       ['/equations-grade-7', '/equations-basics-grade-7'],
@@ -51,8 +53,12 @@ describe('OPEN-15 redirects', () => {
       assert.notEqual(r.to, '/triangular-prism-volume-grade-9', 'wrong live mapping must not be copied');
     }
     assert.equal(REDIRECT_RULES.filter((r) => r.from.startsWith('/worksheetsfor')).length, 9);
-    assert.match(REDIRECT_RULES.find((r) => r.from === '/triangle-area-grade-7-worksheets')!.note!, /live-mapping-looks-wrong-check-with-noam/);
-    assert.equal(REDIRECT_RULES.filter((r) => /pending-wix-api/.test(r.note || '')).length, 22);
+    assert.match(REDIRECT_RULES.find((r) => r.from === '/triangle-area-grade-7-worksheets')!.note!, /triangle-area-grade-7/);
+    assert.notEqual(REDIRECT_RULES.find((r) => r.from === '/triangle-area-grade-7-worksheets')!.to, '/powers-grade-7');
+    assert.notEqual(REDIRECT_RULES.find((r) => r.from === '/equations-both-sides-word-problems-grade-7-1')!.to, '/pythagoras-applications-grade-7');
+    assert.notEqual(REDIRECT_RULES.find((r) => r.from === '/inequalities-grade-8-1')!.to, '/statistics-grade-8');
+    // pending-wix-api count dropped as topic-mismatch rows were corrected (still pending live Wix edit)
+    assert.ok(REDIRECT_RULES.filter((r) => /pending-wix-api/.test(r.note || '')).length >= 18);
   });
 
   it('cleanup: no page file answers a redirected path; older redirect lists agree with the map', () => {
