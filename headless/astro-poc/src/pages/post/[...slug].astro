@@ -28,5 +28,6 @@ if (!post || !isPilotBlogPath(post.path)) {
     headers: { 'content-type': 'text/plain; charset=utf-8' },
   });
 }
+// OPEN-07: audio is looked up in the browser after paint; the HTML never waits on Wix.
 ---
-<BlogPostPage post={post} />
+<BlogPostPage post={post} audioSlug={post.decodedSlug} />

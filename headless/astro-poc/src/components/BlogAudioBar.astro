@@ -1,0 +1,142 @@
+---
+/**
+ * OPEN-07 — narration bar on a blog post, same player and look as the live site.
+ *
+ * Live: blog-audio/noam-audio-inject.js attaches a fixed matte bar with
+ * <noam-audio-player bare> to <body>. Here the bar ships hidden in the HTML and a
+ * small script asks the same-origin proxy whether the post has audio once the page
+ * has painted, so a slow or absent Wix backend never delays the post itself.
+ * Only when audio exists is the bar shown and the player script loaded.
+ */
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+---
+<div class="noam-audio-spacer" data-noam-audio-spacer hidden aria-hidden="true"></div>
+<div data-noam-audio-mounted="1" data-blog-audio={slug} hidden>
+  <div>
+    <noam-audio-player bare="1" slug={slug} api="/api/blog-audio-info"></noam-audio-player>
+    <span class="noam-audio-sr" data-noam-audio-live aria-live="polite"></span>
+  </div>
+</div>
+<script is:inline>
+  (function () {
+    var bar = document.querySelector('[data-noam-audio-mounted][data-blog-audio]');
+    var spacer = document.querySelector('[data-noam-audio-spacer]');
+    if (!bar || !spacer || !window.fetch) return;
+    var slug = bar.getAttribute('data-blog-audio');
+    var live = bar.querySelector('[data-noam-audio-live]');
+
+    function mmss(sec) {
+      sec = Math.max(0, Math.floor(sec || 0));
+      var m = Math.floor(sec / 60), s = sec % 60;
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    // The bar's height depends on width and wrapping; the spacer follows it so the
+    // end of the post never sits under the fixed bar.
+    function fitSpacer() {
+      spacer.style.height = bar.offsetHeight + 16 + 'px';
+    }
+
+    // Screen readers hear play, pause, the end, and each full minute: never every second.
+    function announce(player) {
+      var audio = player._audio;
+      if (!audio || !live) return;
+      var lastMinute = -1;
+      function say(text) { live.textContent = text; }
+      audio.addEventListener('play', function () { say('ההקראה פועלת, ' + mmss(audio.currentTime)); });
+      audio.addEventListener('pause', function () {
+        if (!audio.ended) say('ההקראה הושהתה אחרי ' + mmss(audio.currentTime));
+      });
+      audio.addEventListener('ended', function () { say('ההקראה הסתיימה'); });
+      audio.addEventListener('timeupdate', function () {
+        var minute = Math.floor(audio.currentTime / 60);
+        if (minute > 0 && minute !== lastMinute && !audio.paused) {
+          lastMinute = minute;
+          var total = isFinite(audio.duration) ? ' מתוך ' + mmss(audio.duration) : '';
+          say((minute === 1 ? 'עברה דקה אחת' : 'עברו ' + minute + ' דקות') + total);
+        }
+      });
+    }
+
+    function show() {
+      bar.hidden = false;
+      spacer.hidden = false;
+      fitSpacer();
+      // ResizeObserver alone is not enough: it only reports on rendered frames, and the
+      // player fills in its shadow DOM asynchronously. Re-measure at each known step too.
+      if (window.ResizeObserver) new ResizeObserver(fitSpacer).observe(bar);
+      window.addEventListener('resize', fitSpacer);
+      window.addEventListener('orientationchange', fitSpacer);
+      var s = document.createElement('script');
+      s.src = '/blog-audio/noam-audio-player.js';
+      s.async = true;
+      document.head.appendChild(s);
+      if (window.customElements) {
+        window.customElements.whenDefined('noam-audio-player').then(function () {
+          var player = bar.querySelector('noam-audio-player');
+          announce(player);
+          fitSpacer();
+          setTimeout(fitSpacer, 250);
+          setTimeout(fitSpacer, 1500);
+          if (player && player._audio) player._audio.addEventListener('loadedmetadata', fitSpacer);
+        });
+      }
+    }
+
+    fetch('/api/blog-audio-info?slug=' + encodeURIComponent(slug), { credentials: 'omit' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (info) { if (info && info.available) show(); })
+      .catch(function () { /* no bar; the post reads normally */ });
+  })();
+</script>
+<style is:global>
+  /* Copied from the live loader (noam-audio-inject.js, build 6): matte strip, no blur. */
+  [data-noam-audio-mounted] {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 2147483000;
+    direction: rtl;
+    padding: 11px 16px calc(11px + env(safe-area-inset-bottom));
+    background: #f1f2f4;
+    border-top: 1px solid rgba(18, 22, 28, 0.13);
+    color: #12161c;
+  }
+  [data-noam-audio-mounted][hidden],
+  .noam-audio-spacer[hidden] {
+    display: none;
+  }
+  [data-noam-audio-mounted] > div {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  @media (prefers-color-scheme: dark) {
+    [data-noam-audio-mounted] {
+      background: #14181e;
+      border-top-color: rgba(233, 237, 243, 0.13);
+      color: #e9edf3;
+    }
+  }
+  /* Fallback until the script measures the bar (desktop one row, phone two). */
+  .noam-audio-spacer {
+    height: calc(96px + env(safe-area-inset-bottom));
+  }
+  @media (max-width: 600px) {
+    .noam-audio-spacer {
+      height: calc(168px + env(safe-area-inset-bottom));
+    }
+  }
+  .noam-audio-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

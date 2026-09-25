@@ -62,7 +62,8 @@ describe('M26 blog archives', () => {
       'משוואות חד־שלביות לכיתה ז׳ — דפי עבודה',
       'תיבה וקובייה לכיתה ז׳ — דפי עבודה',
       'שטח מלבן וריבוע — העמקה לכיתה ז׳ — דפי עבודה',
-      'שטחים ב׳ חלק 2 — מצולעים מורכבים לכיתה ז׳ — דפי עבודה',
+      // OPEN-07-FIX: the 25.09 post pushed 'שטחים ב׳ חלק 2' to page 2 of live /blog
+      // (it stays on middle-school below); the live-SSR gate pins the exact order.
     ];
     const midMust = [
       'שטחים ב׳ חלק 2 — מצולעים מורכבים לכיתה ז׳ — דפי עבודה',
@@ -83,11 +84,13 @@ describe('M26 blog archives', () => {
         `middle-school missing ${t}`
       );
     }
-    // source order: previously omitted blog cards are the last 5 SSR items
+    // source order: previously omitted blog cards are the last SSR items
     assert.deepEqual(
-      blog.cards.slice(-5).map((c) => c.title),
+      blog.cards.slice(-blogMust.length).map((c) => c.title),
       blogMust
     );
+    // OPEN-07-FIX: the newest live post leads /blog.
+    assert.equal(blog.cards[0].title, 'פערים לימודיים במתמטיקה: כך סוגרים אותם נכון');
   });
 
   it('preserves cover images+alt when present on live cards', () => {
