@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
+import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import {
   loadTopicPage,
   synthesizeBodyFlow,
@@ -128,6 +129,10 @@ function faqHeadingId(groupIndex: number) {
     <header class="topic-page__header banner">
       <h1>{page.h1}</h1>
     </header>
+
+    {/* K3: hands-on demo for the triangle-area topic — drag the apex along a
+        line parallel to the base; the area stays 12. */}
+    {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
 
     <div class="topic-page__body" data-body-flow>
       {

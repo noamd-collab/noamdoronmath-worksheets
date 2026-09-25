@@ -3080,3 +3080,329 @@ html.noam-a11y-motion .hero-draw {
   animation: none !important;
   stroke-dashoffset: 0 !important;
 }
+
+/* ============================================================
+   KIMI-LOOPS-K3 — Brilliant-style concept film loops +
+   triangle-area explorer (topic page).
+   Black-on-white cards, one accent (cobalt), green only for
+   "correct", moves 0.3–0.8 s cubic-bezier(.16,1,.3,1) (JS-driven).
+   Reduced-motion / noam-a11y-motion: engine renders the completed
+   state statically and hides the toggle; the opacity-0 defaults
+   below only apply before JS runs (JS sets inline opacity).
+   ============================================================ */
+
+.concept-loop {
+  width: 100%;
+}
+
+.concept-loop__card {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid rgba(26, 43, 74, 0.1);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 14px 14px 8px;
+}
+
+.concept-loop__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ——— shared SVG language ——— */
+.concept-loop .cl-line {
+  stroke: var(--navy);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.concept-loop .cl-line-thin {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  fill: none;
+}
+.concept-loop .cl-dash {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+  fill: none;
+}
+.concept-loop .cl-dash-strong {
+  stroke: var(--navy);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+  fill: none;
+}
+/* draw-in paths (pathLength="1") — engine sets stroke-dashoffset inline */
+.concept-loop [pathLength='1'] {
+  stroke-dasharray: 1;
+}
+.concept-loop .cl-frame {
+  fill: #f3f4f6;
+  stroke: #d1d5db;
+  stroke-width: 1.5;
+}
+.concept-loop .cl-rail {
+  stroke: #9ca3af;
+  stroke-width: 1.5;
+  stroke-dasharray: 7 6;
+  fill: none;
+}
+.concept-loop .cl-apex {
+  fill: var(--cobalt);
+  stroke: #fff;
+  stroke-width: 2;
+}
+.concept-loop .cl-big { font-size: 18px; font-weight: 800; }
+
+/* accent fills/strokes */
+.concept-loop .cl-fill-a { fill: rgba(30, 136, 229, 0.16); }
+.concept-loop .cl-fill-b { fill: rgba(124, 58, 237, 0.14); }
+.concept-loop .cl-fill-c { fill: rgba(234, 88, 12, 0.14); }
+.concept-loop .cl-fill-d { fill: #e5e7eb; }
+.concept-loop .cl-stroke-a { stroke: var(--cobalt); stroke-width: 2.5; }
+.concept-loop .cl-stroke-b { stroke: #7c3aed; stroke-width: 2.5; }
+
+.concept-loop .cl-t {
+  font-family: 'Assistant', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--navy);
+}
+.concept-loop .cl-num,
+.cl-num {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.concept-loop .cl-term {
+  font-size: 19px;
+  font-weight: 800;
+}
+.cl-tc-a { fill: var(--cobalt); color: var(--cobalt); }
+.cl-tc-b { fill: #7c3aed; color: #7c3aed; }
+.cl-tc-c { fill: #ea580c; color: #ea580c; }
+.cl-tc-d { fill: #4b5563; color: #4b5563; }
+.cl-tc-ok, .cl-ok { fill: var(--green); color: var(--green); }
+
+.concept-loop .cl-tile { stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-tile-a { fill: rgba(30, 136, 229, 0.38); }
+.concept-loop .cl-tile-b { fill: rgba(124, 58, 237, 0.32); }
+.concept-loop .cl-mini { fill: #fff; stroke: var(--navy); stroke-width: 1.5; }
+
+.concept-loop .cl-hl { fill: none; stroke-width: 2.5; }
+.concept-loop .cl-chip { fill: #fff; stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-hl-b { stroke: #7c3aed; }
+.concept-loop .cl-hl-c { stroke: #ea580c; }
+
+/* transient pieces start hidden; the engine drives inline opacity */
+.concept-loop [data-el='tri-fill'], .concept-loop [data-el='tri-line-l'],
+.concept-loop [data-el='tri-line-r'], .concept-loop [data-el='diag'],
+.concept-loop [data-el='lbl24'], .concept-loop [data-el='apex-dot'],
+.concept-loop [data-el='basext'],
+.concept-loop [data-el='sq-a'], .concept-loop [data-el='sq-b'],
+.concept-loop [data-el='sq-c'], .concept-loop [data-el='lbl-c'],
+.concept-loop [data-el='split-v'], .concept-loop [data-el='split-h'],
+.concept-loop [data-el='cell-x2'], .concept-loop [data-el='cell-2x'],
+.concept-loop [data-el='cell-3x'], .concept-loop [data-el='cell-6'],
+.concept-loop [data-el='term-x2'], .concept-loop [data-el='term-2x'],
+.concept-loop [data-el='term-3x'], .concept-loop [data-el='term-6'],
+.concept-loop [data-el='term-5x'],
+.concept-loop [data-el='hl-2x'], .concept-loop [data-el='hl-3x'],
+.concept-loop [data-el='chip-5x'],
+.concept-loop [data-el='minis'] rect,
+.concept-loop [data-el='tiles-a'] rect, .concept-loop [data-el='tiles-b'] rect,
+.concept-loop [data-fx], .concept-loop [data-el='caption'] {
+  opacity: 0;
+}
+
+/* ——— formula + caption rows (HTML, LTR formulas) ——— */
+.concept-loop__formula {
+  margin: 10px 4px 0;
+  min-height: 1.5em;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.concept-loop__formula [data-fx] {
+  display: inline-block;
+  margin: 0 2px;
+}
+.concept-loop__caption {
+  margin: 2px 4px 6px;
+  min-height: 1.4em;
+  text-align: center;
+  font-weight: 700;
+  color: var(--navy);
+}
+.cl-check {
+  display: inline-block;
+  color: var(--green);
+  font-weight: 900;
+  margin-inline-start: 6px;
+}
+
+/* ——— pause/play toggle ——— */
+.concept-loop__toggle {
+  position: absolute;
+  inset-inline-start: 10px;
+  top: 10px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid rgba(26, 43, 74, 0.18);
+  background: #fff;
+  cursor: pointer;
+}
+.concept-loop__toggle svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--navy);
+}
+.concept-loop__toggle:hover {
+  border-color: var(--cobalt);
+}
+
+/* ——— placement: card beside the text (RTL: text right, card left) ——— */
+@media (min-width: 1100px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 36px;
+  }
+  .home-hero .concept-loop {
+    max-width: 520px;
+    justify-self: center;
+  }
+}
+@media (max-width: 1099.98px) {
+  .home-hero .concept-loop {
+    max-width: 480px;
+    margin: 22px auto 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grade-hub__header--loop {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 26px;
+    align-items: center;
+  }
+}
+.grade-hub__header--loop .concept-loop {
+  max-width: 470px;
+  margin: 8px auto;
+}
+
+/* ——— triangle-area explorer (topic page) ——— */
+.tri-explorer {
+  margin: 6px 0 20px;
+}
+.tri-explorer__card {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid rgba(26, 43, 74, 0.1);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 14px 16px 12px;
+  max-width: 640px;
+}
+.tri-explorer__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.tri-explorer .te-line {
+  stroke: var(--navy);
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tri-explorer .te-line-thin {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  fill: none;
+}
+.tri-explorer .te-dash {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+}
+.tri-explorer .te-parallel {
+  stroke: #9ca3af;
+  stroke-width: 1.5;
+  stroke-dasharray: 7 6;
+}
+.tri-explorer .te-fill { fill: rgba(30, 136, 229, 0.15); }
+.tri-explorer .te-t {
+  font-family: 'Assistant', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  fill: var(--navy);
+}
+.tri-explorer .te-num { direction: ltr; unicode-bidi: isolate; }
+.tri-explorer .te-hit {
+  fill: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+.tri-explorer .te-handle {
+  fill: var(--cobalt);
+  stroke: #fff;
+  stroke-width: 3;
+  pointer-events: none;
+  transition: r 0.2s ease;
+}
+.tri-explorer .te-handle.is-held { r: 13; cursor: grabbing; }
+.tri-explorer__readout {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.tri-explorer__hint {
+  margin: 6px 0 2px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.tri-explorer__hint.is-on { opacity: 1; }
+.te-ok { color: var(--green); }
+
+/* the synced range doubles as keyboard/SR control — visually quiet */
+.te-slider {
+  display: block;
+  margin: 10px auto 0;
+  max-width: 340px;
+}
+.te-slider input[type='range'] {
+  width: 100%;
+  accent-color: var(--cobalt);
+  height: 28px;
+  background: transparent;
+}
+
+/* reduced motion / a11y menu: no demo, static completed frame (JS-driven),
+   toggle hidden; drag/slider keep working */
+@media (prefers-reduced-motion: reduce) {
+  .concept-loop__toggle { display: none; }
+  .tri-explorer__hint { transition: none; }
+  .tri-explorer .te-handle { transition: none; }
+}
+html.noam-a11y-motion .concept-loop__toggle { display: none; }
+html.noam-a11y-motion .tri-explorer__hint,
+html.noam-a11y-motion .tri-explorer .te-handle { transition: none; }

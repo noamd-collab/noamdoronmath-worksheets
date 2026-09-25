@@ -1,0 +1,70 @@
+---
+/**
+ * KIMI-LOOPS-K3 — triangle-area topic page: short auto demo, then hands-on.
+ *
+ * The learner drags the triangle's apex along a line parallel to the base;
+ * the shape shears but the area readout stays S = a·h/2 = 6·4/2 = 12.
+ *
+ *   - demo glides the apex once (≤3 s), only when in view, once per session
+ *   - drag: Pointer Events with setPointerCapture, touch-action: none
+ *   - keyboard/SR: a real <input type="range"> (arrows work natively),
+ *     synced with the SVG handle both ways; aria-live announces the area
+ *   - prefers-reduced-motion / html.noam-a11y-motion: no auto demo, no
+ *     transitions — dragging keeps working
+ *
+ * Driven by ../lib/triExplorer.ts.
+ */
+---
+
+<div class="tri-explorer" data-tri-explorer>
+  <div class="tri-explorer__card">
+    <svg class="tri-explorer__svg" viewBox="0 0 560 330" aria-hidden="true" focusable="false">
+      {/* the parallel line the apex slides on */}
+      <line class="te-parallel" x1="60" y1="92" x2="500" y2="92" />
+
+      {/* triangle (fill under the stroke) */}
+      <polygon data-el="poly-fill" class="te-fill" points="150,252 390,252 270,92" />
+      <polygon data-el="poly" class="te-line" points="150,252 390,252 270,92" />
+
+      {/* height guide + right-angle mark */}
+      <line data-el="height" class="te-dash" x1="270" y1="252" x2="270" y2="92" />
+      <path data-el="ra" class="te-line-thin" d="M270 240 L282 240 L282 252" />
+
+      {/* base */}
+      <line class="te-line" x1="150" y1="252" x2="390" y2="252" />
+      <text class="te-t te-num" x="270" y="278" text-anchor="middle">a = 6</text>
+      <text data-el="lbl-h" class="te-t te-num" x="290" y="176">h = 4</text>
+
+      {/* draggable apex handle (visual + generous hit area) */}
+      <circle data-el="hit" class="te-hit" cx="270" cy="92" r="30" />
+      <circle data-el="handle" class="te-handle" cx="270" cy="92" r="11" />
+    </svg>
+
+    <p class="tri-explorer__readout" dir="ltr">
+      S = a·h/2 = 6·4/2 = <b class="te-ok">12</b>
+    </p>
+    <p class="tri-explorer__hint" data-el="hint">
+      גררו את הקודקוד ימינה ושמאלה — הבסיס והגובה לא משתנים, וגם השטח נשאר <bdi>12</bdi>
+    </p>
+
+    <label class="te-slider">
+      <span class="sr-only">מיקום קודקוד המשולש לאורך הקו המקביל לבסיס</span>
+      <input
+        type="range"
+        data-el="range"
+        min="-1.5"
+        max="8"
+        step="0.1"
+        value="3"
+        aria-describedby="te-readout-note"
+      />
+    </label>
+    <p class="sr-only" id="te-readout-note">שטח המשולש הוא 12 בכל מיקום של הקודקוד</p>
+    <p class="sr-only" aria-live="polite" data-el="live"></p>
+  </div>
+</div>
+
+<script>
+  import { initTriExplorers } from '../lib/triExplorer';
+  initTriExplorers();
+</script>
