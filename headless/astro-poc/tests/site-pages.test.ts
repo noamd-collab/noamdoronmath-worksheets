@@ -122,14 +122,24 @@ describe('M24 site / policy pages', () => {
   });
 
 
-  it('conditionforfreeworksheets preserves full תקנון wording', () => {
+  it('conditionforfreeworksheets preserves full תקנון wording as separate paragraphs', () => {
     const page = loadSitePage('conditionforfreeworksheets');
-    const body = page.blocks.find((b) => b.type === 'p');
-    assert.ok(body && body.type === 'p');
-    if (body && body.type === 'p') {
-      assert.ok(body.text.includes('נועם דורון - מתמטיקה'));
-      assert.ok(body.text.includes('שימוש מסחרי'));
-      assert.ok(body.text.length > 400);
+    const paras = page.blocks.filter((b) => b.type === 'p');
+    assert.ok(paras.length >= 7);
+    const texts = paras.map((b) => (b.type === 'p' ? b.text : ''));
+    const joined = texts.join('\n');
+    assert.ok(joined.includes('נועם דורון - מתמטיקה'));
+    assert.ok(joined.includes('שימוש מסחרי'));
+    assert.ok(joined.length > 400);
+    for (const text of texts) {
+      assert.equal(/[א-ת]\.[א-ת]/.test(text), false, text.slice(0, 40));
+    }
+    assert.deepEqual(page.intro, texts);
+    const terms = loadSitePage('terms');
+    const termTexts = terms.blocks.map((b) => ('text' in b ? b.text : '')).filter(Boolean);
+    assert.ok(terms.blocks.some((b) => b.type === 'h2'));
+    for (const text of termTexts) {
+      assert.equal(/[א-ת]\.[א-ת]/.test(text), false, text.slice(0, 40));
     }
   });
 
