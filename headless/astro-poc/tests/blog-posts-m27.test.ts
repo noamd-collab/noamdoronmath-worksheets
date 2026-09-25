@@ -17,12 +17,12 @@ import {
 } from '../src/lib/blogPosts';
 
 describe('M27 blog batch (15 of remaining 51)', () => {
-  it('serves exactly 15 M27 posts within 59 total served', () => {
+  it('serves exactly 15 M27 posts within 60 total served (59 + OPEN-07-FIX)', () => {
     assert.equal(BLOG_POST_M25_PILOT_PATHS.length, 8);
     assert.equal(BLOG_POST_M27_PATHS.length, 15);
-    assert.equal(BLOG_POST_SERVED_PATHS.length, 59);
+    assert.equal(BLOG_POST_SERVED_PATHS.length, 60);
     assert.equal(listM27BlogPosts().length, 15);
-    assert.equal(listServedBlogPosts().length, 59);
+    assert.equal(listServedBlogPosts().length, 60);
   });
 
   it('spans elementary, middle-school, teachers, and general layout clusters', () => {

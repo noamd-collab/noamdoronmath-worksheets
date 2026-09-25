@@ -25,6 +25,7 @@ import functionsGrade9Graphs from '../data/blog-posts/functions-grade-9-graphs.j
 import geometryGrade6Exams from '../data/blog-posts/geometry-grade-6-exams.json';
 import grade1WorksheetsConfidence from '../data/blog-posts/grade-1-worksheets-confidence.json';
 import homeworkWorksheets from '../data/blog-posts/homework-worksheets.json';
+import learningGapsMath from '../data/blog-posts/learning-gaps-math.json';
 import mathForKidsConfidencePractice from '../data/blog-posts/math-for-kids-confidence-practice.json';
 import mathThinkingPractice from '../data/blog-posts/math-thinking-practice.json';
 import multiplicationTableWorksheets from '../data/blog-posts/multiplication-table-worksheets.json';
@@ -158,7 +159,7 @@ export function expectedChromeFlags(post: BlogPostContent) {
 }
 
 /**
- * Frozen live-visible chrome expectations for served blog posts (M25–M29; all 59).
+ * Frozen live-visible chrome expectations for served blog posts (M25–M29 + OPEN-07-FIX; all 60).
  * Prevents a falsely green gate when fixture fields are dropped.
  */
 export const LIVE_CHROME_BASELINE: Record<
@@ -178,6 +179,14 @@ export const LIVE_CHROME_BASELINE: Record<
     faq: false,
     whatsapp: true,
     postCategory: true,
+    recentPosts: true,
+  },
+  'learning-gaps-math': {
+    readingTime: true,
+    authorEditor: false,
+    faq: false,
+    whatsapp: true,
+    postCategory: false,
     recentPosts: true,
   },
   'ai-tutor-agent-free': {
@@ -721,12 +730,18 @@ export const BLOG_POST_M29_PATHS = [
   '/post/word-problems-with-equations-grade-7',
 ] as const;
 
-/** All locally served blog post paths (M25–M29 = 59). */
+/** OPEN-07-FIX: post published on the live site after the M29 capture (60th). */
+export const BLOG_POST_OPEN07_PATHS = [
+  '/post/%D7%A4%D7%A2%D7%A8%D7%99%D7%9D-%D7%9C%D7%99%D7%9E%D7%95%D7%93%D7%99%D7%99%D7%9D-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9B%D7%9A-%D7%A1%D7%95%D7%92%D7%A8%D7%99%D7%9D-%D7%90%D7%95%D7%AA%D7%9D-%D7%A0%D7%9B%D7%95%D7%9F',
+] as const;
+
+/** All locally served blog post paths (M25–M29 = 59, + OPEN-07-FIX = 60). */
 export const BLOG_POST_SERVED_PATHS = [
   ...BLOG_POST_M25_PILOT_PATHS,
   ...BLOG_POST_M27_PATHS,
   ...BLOG_POST_M28_PATHS,
   ...BLOG_POST_M29_PATHS,
+  ...BLOG_POST_OPEN07_PATHS,
 ] as const;
 
 /** Covered in M26 (blog archives). Kept for docs/history. */
@@ -734,7 +749,7 @@ export const BLOG_M25_DEFERRED = [] as const;
 
 /** Remaining after M29: 0 post bodies; 5 topic-SEO exclusions remain. */
 export const BLOG_M29_DEFERRED_POSTS_NOTE =
-  '0 remaining /post/* bodies; 59 posts + 4 archives are served locally. 5 topic exclusions remain.';
+  '0 remaining /post/* bodies; 60 posts + 4 archives are served locally. 5 topic exclusions remain.';
 
 /** @deprecated use BLOG_M29_DEFERRED_POSTS_NOTE */
 export const BLOG_M28_DEFERRED_POSTS_NOTE = BLOG_M29_DEFERRED_POSTS_NOTE;
@@ -771,6 +786,7 @@ const ALL_POSTS: BlogPostContent[] = [
   geometryGrade6Exams,
   grade1WorksheetsConfidence,
   homeworkWorksheets,
+  learningGapsMath,
   mathForKidsConfidencePractice,
   mathThinkingPractice,
   multiplicationTableWorksheets,
@@ -841,12 +857,22 @@ export function listM29BlogPosts(): BlogPostContent[] {
   });
 }
 
+export function listOpen07BlogPosts(): BlogPostContent[] {
+  const byPath = new Map(ALL_POSTS.map((p) => [p.path, p]));
+  return BLOG_POST_OPEN07_PATHS.map((path) => {
+    const p = byPath.get(path);
+    if (!p) throw new Error(`Missing OPEN-07 blog post fixture for ${path}`);
+    return p;
+  });
+}
+
 export function listServedBlogPosts(): BlogPostContent[] {
   return [
     ...listPilotBlogPosts(),
     ...listM27BlogPosts(),
     ...listM28BlogPosts(),
     ...listM29BlogPosts(),
+    ...listOpen07BlogPosts(),
   ];
 }
 

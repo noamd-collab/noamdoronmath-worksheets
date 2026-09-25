@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogAudioBar from './BlogAudioBar.astro';
-import type { BlogAudioInfo } from '../lib/blogAudio';
 import {
   localizeBlogHref,
   type BlogBodyBlock,
@@ -10,10 +9,10 @@ import {
 
 interface Props {
   post: BlogPostContent;
-  /** OPEN-07: narration audio, looked up server-side; absent means no bar. */
-  audio?: BlogAudioInfo;
+  /** OPEN-07: live post slug; the bar looks up its audio after the page paints. */
+  audioSlug?: string;
 }
-const { post, audio } = Astro.props;
+const { post, audioSlug } = Astro.props;
 
 const jsonLdScripts = Array.isArray(post.jsonLd) ? post.jsonLd : [];
 
@@ -377,6 +376,6 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
         </section>
       )
     }
-    {audio && <BlogAudioBar info={audio} />}
+    {audioSlug && <BlogAudioBar slug={audioSlug} />}
   </main>
 </BaseLayout>

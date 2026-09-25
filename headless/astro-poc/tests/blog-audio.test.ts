@@ -10,6 +10,7 @@ import {
   blogAudioFunctionsBase,
   clearBlogAudioCache,
   fetchBlogAudioInfo,
+  handleBlogAudioInfoRequest,
   isAllowedAudioUrl,
   isValidAudioSlug,
   sanitizeBlogAudioInfo,
@@ -68,6 +69,44 @@ describe('OPEN-07 blog audio', () => {
     assert.equal((await fetchBlogAudioInfo('q', { fetch: async () => json({}, 500) })).available, false);
     assert.equal((await fetchBlogAudioInfo('r', { fetch: async () => new Response('<html>') })).available, false);
     assert.equal((await fetchBlogAudioInfo('bad/slug', { fetch: async () => json(live) })).available, false);
+  });
+
+  it('never follows a redirect: the fetch asks for manual mode and a 3xx means no audio', async () => {
+    const inits: RequestInit[] = [];
+    const redirecting = async (_u: string, init?: RequestInit) => {
+      inits.push(init || {});
+      return new Response(null, { status: 301, headers: { location: 'https://www.noamdoronmath.co.il/_functions/blogAudioInfo' } });
+    };
+    const info = await fetchBlogAudioInfo('annual-review-grade-7', { fetch: redirecting });
+    assert.equal(inits.length, 1);
+    assert.equal(inits[0].redirect, 'manual');
+    assert.deepEqual(info, { available: false, slug: 'annual-review-grade-7', reason: 'upstream 301' });
+    // Not cached: a redirect during the DNS move may be transient.
+    await fetchBlogAudioInfo('annual-review-grade-7', { fetch: redirecting });
+    assert.equal(inits.length, 2);
+    // An opaque redirect (status 0, as browsers report manual redirects) is also no audio.
+    const opaque = await fetchBlogAudioInfo('x', { fetch: async () => ({ status: 0, ok: false, json: async () => live }) as unknown as Response });
+    assert.equal(opaque.available, false);
+  });
+
+  it('proxy answers 400 to a slug with a path separator and calls nothing upstream', async () => {
+    let calls = 0;
+    const r = await handleBlogAudioInfoRequest(new URL('http://poc.local/api/blog-audio-info?slug=a/b'), { fetch: async () => { calls++; return json(live); } });
+    assert.equal(r.status, 400);
+    assert.deepEqual(await r.json(), { error: 'slug is required' });
+    assert.equal(calls, 0);
+    const missing = await handleBlogAudioInfoRequest(new URL('http://poc.local/api/blog-audio-info'), { fetch: async () => { calls++; return json(live); } });
+    assert.equal(missing.status, 400);
+    assert.equal(calls, 0);
+  });
+
+  it('proxy returns sanitized info with short caching for a valid slug', async () => {
+    const r = await handleBlogAudioInfoRequest(new URL('http://poc.local/api/blog-audio-info?slug=annual-review-grade-7'), { fetch: async () => json(live) });
+    assert.equal(r.status, 200);
+    assert.equal(r.headers.get('cache-control'), 'public, max-age=300');
+    const body = await r.json();
+    assert.equal(body.available, true);
+    assert.equal(body.src, MP3);
   });
 
   it('public player is the live player with only the api override added', () => {

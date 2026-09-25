@@ -32,6 +32,19 @@
   ],
   "cards": [
     {
+      "title": "פערים לימודיים במתמטיקה: כך סוגרים אותם נכון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%A4%D7%A2%D7%A8%D7%99%D7%9D-%D7%9C%D7%99%D7%9E%D7%95%D7%93%D7%99%D7%99%D7%9D-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9B%D7%9A-%D7%A1%D7%95%D7%92%D7%A8%D7%99%D7%9D-%D7%90%D7%95%D7%AA%D7%9D-%D7%A0%D7%9B%D7%95%D7%9F",
+      "excerpt": "פערים לימודיים במתמטיקה אינם גזירת גורל: כך מזהים את נקודת הקושי, בונים תרגול מדורג ומחזירים לתלמידים ביטחון, ידע והרגלי למידה יציבים בבית ובכיתה בכל יום.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 7 שעות",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_e35e70cf0a5e4abf8dc4ad8deb71925e~mv2.webp/v1/fit/w_1000,h_1000,al_c,q_80/file.png",
+      "imageAlt": "פערים לימודיים במתמטיקה: כך סוגרים אותם נכון"
+    },
+    {
       "title": "מדריך לקריאת גרפים לילדים בצורה פשוטה",
       "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%93%D7%A8%D7%99%D7%9A-%D7%9C%D7%A7%D7%A8%D7%99%D7%90%D7%AA-%D7%92%D7%A8%D7%A4%D7%99%D7%9D-%D7%9C%D7%99%D7%9C%D7%93%D7%99%D7%9D-%D7%91%D7%A6%D7%95%D7%A8%D7%94-%D7%A4%D7%A9%D7%95%D7%98%D7%94",
       "excerpt": "מדריך לקריאת גרפים לילדים עם הסברים פשוטים, שאלות לתרגול ורעיונות לבית ולכיתה. כך מזהים כותרת, צירים, מקרא ונתונים ובונים ביטחון צעד אחר צעד בקלות ובדיוק.",
@@ -241,17 +254,6 @@
       "title": "שטח מלבן וריבוע — העמקה לכיתה ז׳ — דפי עבודה",
       "href": "https://www.noamdoronmath.co.il/post/rectangle-square-area-advanced-grade-7",
       "excerpt": "דפי עבודה בשטח מלבן וריבוע — העמקה לכיתה ז׳: חישובי שטח, מציאת צלע חסרה, יחידות שטח ובעיות מורכבות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
-      "authorAvatar": {
-        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
-        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
-      },
-      "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
-    },
-    {
-      "title": "שטחים ב׳ חלק 2 — מצולעים מורכבים לכיתה ז׳ — דפי עבודה",
-      "href": "https://www.noamdoronmath.co.il/post/composite-polygons-area-grade-7",
-      "excerpt": "דפי עבודה בשטחים ב׳ חלק 2 — מצולעים מורכבים לכיתה ז׳: פירוק לצורות מוכרות, חיסור שטחים ושאלות משולבות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
       "authorAvatar": {
         "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"

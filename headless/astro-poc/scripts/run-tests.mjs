@@ -18,7 +18,7 @@ const args = new Set(process.argv.slice(2));
 const onlyUnit = args.has('--unit');
 const onlyLive = args.has('--live-ssr');
 
-const LIVE_SSR_FILES = new Set(['blog-archive-ssr-gate.test.ts']);
+const LIVE_SSR_FILES = new Set(['blog-archive-ssr-gate.test.ts', 'blog-posts-live-sitemap.test.ts']);
 
 function listTests(kind) {
   const all = readdirSync(join(root, 'tests')).filter((f) => f.endsWith('.test.ts'));

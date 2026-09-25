@@ -27,7 +27,7 @@ describe('M25 blog pilot', () => {
 
   it('defers 0 remaining posts after M29 (M30 closed topic gaps)', () => {
     assert.deepEqual([...BLOG_M25_DEFERRED], []);
-    assert.equal(BLOG_POST_SERVED_PATHS.length, 59);
+    assert.equal(BLOG_POST_SERVED_PATHS.length, 60);
   });
 
   it('each pilot has title, description, h1, ordered body, author, schema', () => {

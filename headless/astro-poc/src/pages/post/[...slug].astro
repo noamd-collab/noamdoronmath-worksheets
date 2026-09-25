@@ -1,7 +1,6 @@
 ---
 import BlogPostPage from '../../components/BlogPostPage.astro';
 import { isPilotBlogPath, loadBlogPostByPath } from '../../lib/blogPosts';
-import { fetchBlogAudioInfo } from '../../lib/blogAudio';
 
 export const prerender = false;
 
@@ -29,7 +28,6 @@ if (!post || !isPilotBlogPath(post.path)) {
     headers: { 'content-type': 'text/plain; charset=utf-8' },
   });
 }
-// OPEN-07: short, cached, never throws; a slow upstream only means no audio bar.
-const audio = await fetchBlogAudioInfo(post.decodedSlug);
+// OPEN-07: audio is looked up in the browser after paint; the HTML never waits on Wix.
 ---
-<BlogPostPage post={post} audio={audio} />
+<BlogPostPage post={post} audioSlug={post.decodedSlug} />

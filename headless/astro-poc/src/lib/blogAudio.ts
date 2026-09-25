@@ -12,6 +12,11 @@
  *  - After the domain moves to Headless, `www.noamdoronmath.co.il/_functions/*` is
  *    served by the Headless project, which has no Velo code. The classic site keeps
  *    answering at its free wixsite.com address, so that is the default base.
+ *
+ * Configuration: `BLOG_AUDIO_FUNCTIONS_BASE` (server, public, optional) is declared in
+ * `env.schema` in astro.config.mjs and read from `astro:env/server` by the API route,
+ * which passes it in here. This module never reads the environment itself, so it runs
+ * the same on Wix hosting (Cloudflare Workers, no process.env) and in unit tests.
  */
 
 /** Classic Wix site (36dd9544-…), free address — independent of the custom domain. */
@@ -45,7 +50,7 @@ export type BlogAudioInfo =
 
 type FetchLike = (input: string, init?: RequestInit) => Promise<Response>;
 
-export function blogAudioFunctionsBase(env: Record<string, string | undefined> = readEnv()): string {
+export function blogAudioFunctionsBase(env: Record<string, string | undefined> = {}): string {
   const raw = (env.BLOG_AUDIO_FUNCTIONS_BASE || '').trim();
   if (!raw) return DEFAULT_BLOG_AUDIO_FUNCTIONS_BASE;
   let u: URL;
@@ -56,13 +61,6 @@ export function blogAudioFunctionsBase(env: Record<string, string | undefined> =
   }
   if (u.protocol !== 'https:' || !/\/_functions(-dev)?\/?$/.test(u.pathname)) return DEFAULT_BLOG_AUDIO_FUNCTIONS_BASE;
   return u.origin + u.pathname.replace(/\/$/, '');
-}
-
-function readEnv(): Record<string, string | undefined> {
-  const fromImportMeta = (import.meta as { env?: Record<string, string | undefined> }).env || {};
-  const proc = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process;
-  const fromProcess = proc?.env || {};
-  return { ...fromProcess, ...fromImportMeta };
 }
 
 /** Post slugs are what the live site uses in `/post/<slug>`: Hebrew allowed, no separators. */
@@ -121,7 +119,7 @@ export async function fetchBlogAudioInfo(
   const hit = cache.get(slug);
   if (hit && now() - hit.at < (hit.info.available ? OK_TTL_MS : MISS_TTL_MS)) return hit.info;
 
-  const base = opts.base || blogAudioFunctionsBase();
+  const base = opts.base || DEFAULT_BLOG_AUDIO_FUNCTIONS_BASE;
   const doFetch: FetchLike = opts.fetch || ((i, init) => fetch(i, init));
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), opts.timeoutMs ?? 2500);
@@ -131,11 +129,14 @@ export async function fetchBlogAudioInfo(
     const r = await doFetch(`${base}/blogAudioInfo?slug=${encodeURIComponent(slug)}`, {
       signal: controller.signal,
       headers: { accept: 'application/json' },
-      redirect: 'follow',
+      // Never follow: after the domain move a redirect would lead to the Headless
+      // project itself or anywhere else. Anything but a plain 200 means no audio.
+      redirect: 'manual',
     });
-    if (!r.ok) {
+    if (r.status !== 200) {
       info = { available: false, slug, reason: `upstream ${r.status}` };
-      cacheable = r.status < 500;
+      // 4xx is a stable answer; 5xx, 3xx and opaque redirects (status 0) may be transient.
+      cacheable = r.status >= 400 && r.status < 500;
     } else {
       info = sanitizeBlogAudioInfo(slug, await r.json());
     }
@@ -150,4 +151,25 @@ export async function fetchBlogAudioInfo(
     cache.set(slug, { at: now(), info });
   }
   return info;
+}
+
+const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8' };
+
+/**
+ * The `/api/blog-audio-info` handler, kept here so it can be tested without Astro's
+ * virtual modules. Public data only; no secret is read or forwarded.
+ */
+export async function handleBlogAudioInfoRequest(
+  url: URL,
+  opts: { base?: string; fetch?: FetchLike; timeoutMs?: number } = {},
+): Promise<Response> {
+  const slug = url.searchParams.get('slug');
+  if (!isValidAudioSlug(slug)) {
+    return new Response(JSON.stringify({ error: 'slug is required' }), { status: 400, headers: JSON_HEADERS });
+  }
+  const info = await fetchBlogAudioInfo(slug, opts);
+  return new Response(JSON.stringify(info), {
+    status: 200,
+    headers: { ...JSON_HEADERS, 'cache-control': info.available ? 'public, max-age=300' : 'public, max-age=60' },
+  });
 }

@@ -18,13 +18,13 @@ import {
 } from '../src/lib/blogPosts';
 
 describe('M28 blog batch (18 of remaining 36)', () => {
-  it('serves exactly 18 M28 posts within 59 total served', () => {
+  it('serves exactly 18 M28 posts within 60 total served (59 + OPEN-07-FIX)', () => {
     assert.equal(BLOG_POST_M25_PILOT_PATHS.length, 8);
     assert.equal(BLOG_POST_M27_PATHS.length, 15);
     assert.equal(BLOG_POST_M28_PATHS.length, 18);
-    assert.equal(BLOG_POST_SERVED_PATHS.length, 59);
+    assert.equal(BLOG_POST_SERVED_PATHS.length, 60);
     assert.equal(listM28BlogPosts().length, 18);
-    assert.equal(listServedBlogPosts().length, 59);
+    assert.equal(listServedBlogPosts().length, 60);
   });
 
   it('spans elementary, middle-school, and layout clusters', () => {
@@ -55,7 +55,7 @@ describe('M28 blog batch (18 of remaining 36)', () => {
     }
   });
 
-  it('all 59 served posts have LIVE_CHROME_BASELINE entries', () => {
+  it('all 60 served posts have LIVE_CHROME_BASELINE entries', () => {
     for (const post of listServedBlogPosts()) {
       assert.ok(LIVE_CHROME_BASELINE[post.fileSlug], post.fileSlug);
       assert.deepEqual(expectedChromeFlags(post), LIVE_CHROME_BASELINE[post.fileSlug], post.fileSlug);
