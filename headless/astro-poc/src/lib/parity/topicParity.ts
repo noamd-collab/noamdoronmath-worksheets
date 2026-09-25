@@ -66,8 +66,13 @@ export interface TopicParitySnapshot {
   jsonLd: TopicParityJsonLd;
 }
 
+/** Drop bidi isolates added at render time so parity compares the stored wording. */
+export function stripBidiIsolates(s: string | null | undefined): string {
+  return (s || '').replace(/[\u2066\u2067\u2068\u2069]/g, '');
+}
+
 export function cleanText(s: string | null | undefined): string {
-  return (s || '')
+  return stripBidiIsolates(s)
     .replace(/[\u200b\u200e\u200f\ufeff]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
@@ -115,7 +120,7 @@ export function diffTopicParity(
       actual: preview.description,
     });
   }
-  if (!source.h1 || source.h1 !== preview.h1) {
+  if (!source.h1 || stripBidiIsolates(source.h1) !== stripBidiIsolates(preview.h1)) {
     push({
       field: 'h1',
       severity: 'error',
@@ -309,8 +314,8 @@ export function diffTopicParity(
           .slice(0, prvFirstCta === -1 ? 0 : prvFirstCta)
           .filter((b) => b.type === 'heading');
         if (
-          srcHeadBeforeCta.map((b) => (b as { text: string }).text).join('|') !==
-          prvHeadBeforeCta.map((b) => (b as { text: string }).text).join('|')
+          srcHeadBeforeCta.map((b) => stripBidiIsolates((b as { text: string }).text)).join('|') !==
+          prvHeadBeforeCta.map((b) => stripBidiIsolates((b as { text: string }).text)).join('|')
         ) {
           push({
             field: 'bodyFlow.ctaPlacement',

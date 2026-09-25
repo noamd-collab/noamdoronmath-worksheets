@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { loadHomePage } from '../lib/homePage';
+
+export const prerender = false;
+
+const home = loadHomePage();
+---
+<BaseLayout
+  title="העמוד לא נמצא | נועם דורון מתמטיקה"
+  description="העמוד שביקשתם לא נמצא. אפשר לחזור לדף הבית, לדפי העבודה או לבלוג."
+  skipHref="#not-found-main"
+>
+  <main id="not-found-main" class="wrap not-found">
+    <header class="banner">
+      <h1>העמוד לא נמצא</h1>
+      <p>
+        לא מצאנו את העמוד שביקשתם. אפשר לחזור לדף הבית, לעיין בדפי העבודה, או לקרוא בבלוג.
+      </p>
+      <nav class="not-found__links" aria-label="קישורים חלופיים">
+        <a href="/">דף הבית</a>
+        <a href="/worksheets">דפי עבודה</a>
+        <a href="/blog">בלוג</a>
+      </nav>
+    </header>
+  </main>
+  <SiteFooter footer={home.footer} />
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-bottom: 28px;
+  }
+  .not-found__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    margin-top: 8px;
+  }
+  .not-found__links a {
+    color: #0d47a1;
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .not-found__links a:hover,
+  .not-found__links a:focus-visible {
+    color: #1565c0;
+  }
+  .not-found__links a:focus-visible {
+    outline: 3px solid #1565c0;
+    outline-offset: 3px;
+  }
+</style>

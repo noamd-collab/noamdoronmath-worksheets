@@ -911,10 +911,34 @@ export const isLocalBlogPostPath = isPilotBlogPath;
 
 // Re-export the single general resolver (M32). Placed after BLOG_POST_SERVED_PATHS
 // so resolveSiteHref can import that constant without a circular init failure.
-export {
-  isLocallyServedPath,
-  resolveSiteHrefString as localizeBlogHref,
-} from './resolveSiteHref';
+import { isLocallyServedPath, resolveSiteHrefString } from './resolveSiteHref';
+
+export { isLocallyServedPath };
+
+/**
+ * GitHub Pages catalog links (grade + topic, 1:1) become same-origin /worksheets.
+ * Other github.io URLs (viewer HTML, audio) stay absolute.
+ */
+export function localizeBlogHref(href: string): string {
+  const catalog = rewriteGithubWorksheetsCatalog(href);
+  if (catalog) return catalog;
+  return resolveSiteHrefString(href);
+}
+
+function rewriteGithubWorksheetsCatalog(href: string): string | null {
+  let url: URL;
+  try {
+    url = new URL(href);
+  } catch {
+    return null;
+  }
+  if (url.hostname.toLowerCase() !== 'noamd-collab.github.io') return null;
+  const path = url.pathname.replace(/\/+$/, '') || '/';
+  if (path !== '/noamdoronmath-worksheets' && path !== '/noamdoronmath-worksheets/index.html') {
+    return null;
+  }
+  return `/worksheets${url.search}${url.hash}`;
+}
 
 /** Collect every navigational href stored on a blog post fixture. */
 export function collectBlogPostHrefs(post: BlogPostContent): Array<{ where: string; href: string }> {

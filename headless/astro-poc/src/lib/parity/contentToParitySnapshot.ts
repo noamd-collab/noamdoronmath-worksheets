@@ -58,10 +58,12 @@ export function contentToParitySnapshot(
       heading: g.heading,
       items: g.items.map((i) => ({ question: i.question, answer: i.answer })),
     })),
-    relatedLinks: page.relatedTopics.map((r) => ({
-      href: r.productionHref,
-      label: r.label,
-    })),
+    relatedLinks: (page.sourceRelatedTopics?.length ? page.sourceRelatedTopics : page.relatedTopics).map(
+      (r) => ({
+        href: r.productionHref,
+        label: r.label,
+      })
+    ),
     catalogCta: ctas[0] || null,
     catalogCtas: ctas,
     images: (page.images || [])

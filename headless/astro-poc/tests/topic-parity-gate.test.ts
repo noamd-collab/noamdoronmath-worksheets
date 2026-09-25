@@ -32,6 +32,7 @@ import {
   assertNoParityErrors,
   diffJsonLdFaqVisibility,
   diffTopicParity,
+  stripBidiIsolates,
   type TopicParitySnapshot,
 } from '../src/lib/parity/topicParity.ts';
 import { contentToParitySnapshot } from '../src/lib/parity/contentToParitySnapshot.ts';
@@ -269,7 +270,11 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
       const pageFaq = page.faqGroups.flatMap((g) => g.items);
       for (const item of srcFaq) {
         assert.ok(
-          pageFaq.some((p) => p.question === item.question && p.answer === item.answer),
+          pageFaq.some(
+            (p) =>
+              stripBidiIsolates(p.question) === item.question &&
+              stripBidiIsolates(p.answer) === item.answer
+          ),
           `${slug}: missing semantic FAQ ${item.question}`
         );
       }

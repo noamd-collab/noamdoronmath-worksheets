@@ -15,6 +15,7 @@ import {
   expectedChromeFlags,
   collectBlogPostHrefs,
 } from '../src/lib/blogPosts';
+import { loadBlogArchiveByPath } from '../src/lib/blogArchives';
 
 describe('M25 blog pilot', () => {
   it('selects exactly 8 pilot posts spanning feature clusters', () => {
@@ -215,6 +216,22 @@ describe('M25 blog pilot', () => {
     );
     assert.equal(isLocallyServedPath('/signed-numbers-grade-7'), true);
     assert.ok(localizeBlogHref('https://noamd-collab.github.io/x').startsWith('https://'));
+    assert.equal(
+      localizeBlogHref('https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=2'),
+      '/worksheets?grade=7&topic=2'
+    );
+    assert.equal(
+      localizeBlogHref('http://noamd-collab.github.io/noamdoronmath-worksheets/?topic=31&grade=9'),
+      '/worksheets?topic=31&grade=9'
+    );
+    assert.equal(
+      localizeBlogHref('https://noamd-collab.github.io/noamdoronmath-worksheets/index.html?grade=8&topic=11#top'),
+      '/worksheets?grade=8&topic=11#top'
+    );
+    assert.equal(
+      localizeBlogHref('https://noamd-collab.github.io/noamdoronmath-worksheets/learning.html?code=abc'),
+      'https://noamd-collab.github.io/noamdoronmath-worksheets/learning.html?code=abc'
+    );
   });
 
   it('every href in all 8 pilots localizes only when the route is served', () => {
@@ -231,7 +248,11 @@ describe('M25 blog pilot', () => {
           /^https?:\/\/(www\.)?noamdoronmath\.co\.il/i.test(href) ||
           href.startsWith('/');
         if (!own) {
-          assert.equal(out, href, `${post.fileSlug} ${where} external`);
+          if (/^https?:\/\/noamd-collab\.github\.io\/noamdoronmath-worksheets\/?(?:index\.html)?(?:[?#]|$)/i.test(href)) {
+            assert.match(out, /^\/worksheets(?:[?#]|$)/, `${post.fileSlug} ${where} ${href} -> ${out}`);
+          } else {
+            assert.equal(out, href, `${post.fileSlug} ${where} external`);
+          }
           continue;
         }
         if (isLocallyServedPath(path)) {
@@ -268,6 +289,23 @@ describe('M25 blog pilot', () => {
     assert.ok(tpl.includes('authorAvatar'));
   });
 
+  it('newest learning-gaps post resolves encoded and decoded and leads /blog', () => {
+    const slug = 'פערים-לימודיים-במתמטיקה-כך-סוגרים-אותם-נכון';
+    const encoded = encodeURIComponent(slug);
+    const variants = [`/post/${slug}`, `/post/${encoded}`, `/post/${encodeURI(slug)}`];
+    for (const path of variants) {
+      const post = loadBlogPostByPath(path);
+      assert.ok(post, path);
+      assert.equal(post.fileSlug, 'learning-gaps-math');
+      assert.equal(isPilotBlogPath(post.path), true);
+      assert.equal(isLocallyServedPath(path), true, path);
+    }
+    const archive = loadBlogArchiveByPath('/blog');
+    assert.ok(archive);
+    assert.equal(archive.cards[0]?.title, 'פערים לימודיים במתמטיקה: כך סוגרים אותם נכון');
+    assert.ok(archive.cards[0]?.href.includes(encoded));
+  });
+
   it('manifest file documents classification + pilot (no bulk 63)', () => {
     const m = readFileSync('reports/m25-blog/pilot-manifest.txt', 'utf8');
     assert.ok(m.includes('59'));
@@ -275,5 +313,35 @@ describe('M25 blog pilot', () => {
     assert.ok(m.includes('Deferred'));
     assert.ok(m.includes('aboutus contact mailto-only'));
     assert.ok(m.includes('terms'));
+  });
+});
+
+function contrastRatio(fg: string, bg: string): number {
+  const lin = (hex: string) => {
+    const n = hex.replace('#', '');
+    const ch = [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16) / 255);
+    return ch.map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  };
+  const L = (hex: string) => {
+    const [r, g, b] = lin(hex);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const lighter = Math.max(L(fg), L(bg));
+  const darker = Math.min(L(fg), L(bg));
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+describe('blog CTA contrast', () => {
+  it('scoped CTA style reaches WCAG AA for text on the button', () => {
+    const src = readFileSync('src/components/BlogPostPage.astro', 'utf8');
+    const style = src.slice(src.lastIndexOf('<style>'));
+    assert.match(style, /\.blog-post__cta a\.cta/);
+    assert.match(style, /color:\s*#fff/);
+    assert.match(style, /background-color:\s*#1565c0/i);
+    assert.match(style, /:hover/);
+    assert.match(style, /:focus-visible/);
+    assert.ok(contrastRatio('#ffffff', '#1565c0') >= 4.5);
+    assert.ok(contrastRatio('#ffffff', '#0d47a1') >= 4.5);
+    assert.ok(!src.includes('catalog.css'));
   });
 });

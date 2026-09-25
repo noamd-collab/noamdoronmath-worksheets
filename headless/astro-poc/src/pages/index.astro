@@ -2,9 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroIllustrations from '../components/HeroIllustrations.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { loadHomePage } from '../lib/homePage';
+import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 
 const home = loadHomePage();
+const homeJsonLd = homePageJsonLd();
 ---
 <BaseLayout
   title={home.title}
@@ -12,6 +13,11 @@ const home = loadHomePage();
   activeNav="home"
   skipHref="#home-main"
 >
+  {
+    homeJsonLd.map((block) => (
+      <script type="application/ld+json" set:html={JSON.stringify(block)} />
+    ))
+  }
   <main class="home-shell" id="home-main" data-family="home" data-home-page>
     <aside class="home-notice" role="status" data-home-dev-notice>
       <strong>{home.devNotice.title}</strong>

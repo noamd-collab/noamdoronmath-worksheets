@@ -33,7 +33,7 @@ const initialUrlState = {
 
 {
   invalid ? (
-    <BaseLayout title="כיתה לא חוקית · אב־טיפוס Astro" activeNav="worksheets">
+    <BaseLayout title="כיתה לא חוקית" activeNav="worksheets">
       <main class="wrap" data-grade="7">
         <header class="banner">
           <h1>כיתה לא חוקית</h1>
@@ -57,7 +57,7 @@ const initialUrlState = {
       </main>
     </BaseLayout>
   ) : missingEntry ? (
-    <BaseLayout title="כיתה חסרה · אב־טיפוס Astro" activeNav="worksheets">
+    <BaseLayout title="כיתה חסרה" activeNav="worksheets">
       <main class="wrap" data-grade="7">
         <header class="banner">
           <h1>כיתה לא נמצאה בקטלוג</h1>
@@ -69,7 +69,7 @@ const initialUrlState = {
     </BaseLayout>
   ) : (
     <BaseLayout
-      title={`דפי עבודה · ${gradeEntry!.label} (Astro POC)`}
+      title={`דפי עבודה · ${gradeEntry!.label}`}
       activeNav="worksheets"
       compactBrand={true}
     >

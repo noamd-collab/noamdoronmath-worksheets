@@ -7,13 +7,15 @@ import {
   type BlogBodyBlock,
   type BlogPostContent,
 } from '../lib/blogPosts';
+import { isolateBlogPostDisplay } from '../lib/mathDirection';
 
 interface Props {
   post: BlogPostContent;
   /** OPEN-07: live post slug; the bar looks up its audio after the page paints. */
   audioSlug?: string;
 }
-const { post, audioSlug } = Astro.props;
+const { audioSlug } = Astro.props;
+const post = isolateBlogPostDisplay(Astro.props.post);
 
 const jsonLdScripts = Array.isArray(post.jsonLd) ? post.jsonLd : [];
 
@@ -381,3 +383,21 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
     {audioSlug && <BlogAudioBar slug={audioSlug} />}
   </main>
 </BaseLayout>
+
+<style>
+  /* Beat .blog-post__body a (accent on cobalt). White on #1565C0 is about 5.7:1. */
+  .blog-post__cta a.cta {
+    color: #fff;
+    background-color: #1565c0;
+  }
+  .blog-post__cta a.cta:hover,
+  .blog-post__cta a.cta:focus-visible {
+    color: #fff;
+    background-color: #0d47a1;
+    filter: none;
+  }
+  .blog-post__cta a.cta:focus-visible {
+    outline: 3px solid #0d47a1;
+    outline-offset: 3px;
+  }
+</style>
