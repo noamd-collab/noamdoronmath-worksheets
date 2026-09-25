@@ -3872,12 +3872,42 @@ if (okGrade){
 
 /* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
 
-// Accept same-origin catalog returns. On Headless hosts, never jump to github.io.
+// back= allowlist: same origin, or the production pair (www <-> apex).
+// *.wix-site-host.com and localhost are managed viewer hosts only, so a
+// page on those hosts still rejects github.io, but they are not back=
+// targets from www or apex. A *.wix-site-host.com preview may return only
+// to the production pair or to itself, not to another preview host.
 try {
+  var normalizeViewerHost = function (hostname) {
+    return String(hostname || "").toLowerCase().replace(/\.$/, "");
+  };
+  var isProductionPairHost = function (hostname) {
+    var host = normalizeViewerHost(hostname);
+    return host === "www.noamdoronmath.co.il" || host === "noamdoronmath.co.il";
+  };
+  var isManagedViewerHost = function (hostname) {
+    var host = normalizeViewerHost(hostname);
+    if (isProductionPairHost(host)) return true;
+    if (/\.wix-site-host\.com$/i.test(host)) return true;
+    if (host === "localhost" || host === "127.0.0.1") return true;
+    return false;
+  };
+  // From www or apex, back= may only land on that pair.
+  // From a *.wix-site-host.com preview, only the production pair or the
+  // same preview host. Elsewhere, any managed viewer host remains a target.
+  var allowlistedBackHost = function (currentHost, targetHost) {
+    var current = normalizeViewerHost(currentHost);
+    var target = normalizeViewerHost(targetHost);
+    if (isProductionPairHost(current)) return isProductionPairHost(target);
+    if (/\.wix-site-host\.com$/i.test(current)) {
+      return isProductionPairHost(target) || target === current;
+    }
+    return isManagedViewerHost(target);
+  };
   var navigationParams = new URL(location.href).searchParams;
   var catalogRoot = new URL('./', location.href);
   var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
-  var isHeadlessHost = /\.wix-site-host\.com$/i.test(location.hostname);
+  var isHeadlessHost = isManagedViewerHost(location.hostname);
   var returnPath = navigationParams.get('back');
   if (returnPath) {
     var catalogReturn;
@@ -3890,22 +3920,28 @@ try {
     } else {
       catalogReturn = new URL(returnPath, location.href);
     }
+    var catalogPathOk =
+      catalogReturn.pathname === catalogRoot.pathname ||
+      catalogReturn.pathname === catalogRoot.pathname + "index.html" ||
+      catalogReturn.pathname === "/" ||
+      catalogReturn.pathname === "/learning.html" ||
+      catalogReturn.pathname === "/worksheets" ||
+      catalogReturn.pathname.indexOf("/worksheets/") === 0;
     var sameOriginCatalog =
       catalogReturn.origin === location.origin &&
-      (catalogReturn.pathname === catalogRoot.pathname ||
-       catalogReturn.pathname === catalogRoot.pathname + "index.html" ||
-       catalogReturn.pathname === "/" ||
-       catalogReturn.pathname === "/learning.html" ||
-       catalogReturn.pathname === "/worksheets" ||
-       catalogReturn.pathname.indexOf("/worksheets") === 0);
+      catalogPathOk;
+    var allowlistedCrossHost =
+      catalogReturn.origin !== location.origin &&
+      allowlistedBackHost(location.hostname, catalogReturn.hostname) &&
+      catalogPathOk;
     var legacyCatalog =
       !isHeadlessHost &&
       catalogReturn.origin === legacyRoot.origin &&
       catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\/$/, "")) === 0;
-    if (sameOriginCatalog || legacyCatalog) {
+    if (sameOriginCatalog || allowlistedCrossHost || legacyCatalog) {
       document.getElementById("backBtn").href = catalogReturn.href;
     } else if (isHeadlessHost && okGrade) {
-      // Safe fallback: stay on Headless worksheets for this grade (preserve no github.io).
+      // Safe fallback: stay on this site's worksheets for this grade (never github.io).
       document.getElementById("backBtn").href = "/worksheets?grade=" + g;
     }
   }
