@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroIllustrations from '../components/HeroIllustrations.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import ConceptLoop from '../components/ConceptLoop.astro';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 
 const home = loadHomePage();
@@ -45,6 +46,9 @@ const homeJsonLd = homePageJsonLd();
           <a class="cta cta--mid" href="/worksheets?grade=7">חטיבה ז׳–ט׳</a>
         </div>
       </div>
+      {/* K3: Brilliant-style film loop — text on the right, card on the left
+          (grid columns in RTL); on mobile it stacks below the copy. */}
+      <ConceptLoop variant="triangle" />
     </section>
 
     <section class="home-grades" aria-labelledby="home-grades-title" data-home-grades>

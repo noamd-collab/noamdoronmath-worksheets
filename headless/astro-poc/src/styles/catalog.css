@@ -2912,3 +2912,604 @@ a {
 .site-page__contact-status[data-state='blocked'] {
   color: #8a2f2f;
 }
+
+/* ============================================================
+   POC Motion System — branch poc-animations-fix (round 2)
+   Base: headless/astro-poc-baseline @ aa864c54
+   Goals: modern, gentle motion; CSS-first; zero heavy libraries;
+   no LCP/CLS regression; full reduced-motion + a11y-menu support.
+   ============================================================ */
+
+/* ——— 1) Cross-page View Transitions (Chromium; CSS-only, no JS) ———
+   UA skips these automatically under prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+/* ——— 1b) Accessibility menu override: the "הפחתת תנועה" toggle sets
+   html.noam-a11y-motion — kill the cross-page transition for those users.
+   (The pseudo-elements live on <html>, so the class selector works.) ——— */
+html.noam-a11y-motion::view-transition-group(*),
+html.noam-a11y-motion::view-transition-old(*),
+html.noam-a11y-motion::view-transition-new(*) {
+  animation: none !important;
+}
+
+/* ——— 2) Self-drawing strokes — like the live site's SMIL vector art:
+   drawn on load, and re-drawn on hover. Paths carry pathLength="1",
+   so dasharray/dashoffset are unitless. Base state is FULLY DRAWN
+   (dashoffset: 0); the load animation only replays the draw.
+   transform/opacity untouched: no layout impact. ——— */
+.hero-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Self-contained decorative strip used on grade-hub / topic / tools pages. */
+.line-art-box {
+  position: relative;
+  height: 84px;
+  margin: -4px 0 6px;
+  /* auto (not none) so the hover re-draw mouseover can actually fire;
+     the SVG inside stays pointer-events:none so nothing blocks clicks */
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+.line-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero-draw {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  /* draw-in on load; JS re-triggers the same animation on hover */
+  animation: hero-draw-once 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0.25s backwards;
+}
+
+.hero-draw--squiggle {
+  stroke: var(--green);
+  stroke-width: 5;
+}
+
+.hero-draw--loop {
+  stroke: var(--cobalt);
+  stroke-width: 4.5;
+  animation-delay: 0.55s;
+}
+
+.hero-draw--triangle {
+  stroke: var(--red);
+  stroke-width: 4;
+  animation-delay: 0.85s;
+}
+
+@keyframes hero-draw-once {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ——— 3) Scroll reveal — JS adds .poc-reveal only to BELOW-the-fold
+   elements at DOMContentLoaded, so first paint / LCP is untouched
+   (no hidden content in the initial viewport). transform+opacity only. ——— */
+.poc-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.poc-reveal.is-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* ——— 4) Micro-interaction: press feedback on interactive components.
+   (aa864c54 already ships a global :focus-visible ring for
+   a/button/input — not duplicated here.) ——— */
+.card:active,
+.cta:active,
+.home-grade:active,
+.home-value:active,
+.lane:active,
+.chip:active,
+.jump-btn:active,
+.grade-tab:active,
+.lvl:active,
+.blog-archive__card:active,
+.grade-hub__topic-list a:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ——— 5) Accessibility guards — the supported "stop motion" paths:
+   a) OS/browser prefers-reduced-motion
+   b) the site's accessibility menu (noam-accessibility.js toggles
+      html.noam-a11y-motion). Line-draw paths must end FULLY DRAWN
+      (dashoffset: 0) when motion is off — never invisible. */
+@media (prefers-reduced-motion: reduce) {
+  .poc-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hero-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .home-grade,
+  .home-value,
+  .blog-archive__card,
+  .grade-hub__topic-list a,
+  .topic-page__section,
+  .topic-page__faq-item,
+  .blog-post__figure,
+  .site-page__figure {
+    transition: none;
+    animation: none !important;
+  }
+}
+
+html.noam-a11y-motion .poc-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html.noam-a11y-motion .hero-draw {
+  animation: none !important;
+  stroke-dashoffset: 0 !important;
+}
+
+/* ============================================================
+   KIMI-LOOPS-K3 — Brilliant-style concept film loops +
+   triangle-area explorer (topic page).
+   Black-on-white cards, one accent (cobalt), green only for
+   "correct", moves 0.3–0.8 s cubic-bezier(.16,1,.3,1) (JS-driven).
+   Reduced-motion / noam-a11y-motion: engine renders the completed
+   state statically and hides the toggle; the opacity-0 defaults
+   below only apply before JS runs (JS sets inline opacity).
+   ============================================================ */
+
+.concept-loop {
+  width: 100%;
+}
+
+.concept-loop__card {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid rgba(26, 43, 74, 0.1);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 14px 14px 8px;
+}
+
+.concept-loop__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ——— shared SVG language ——— */
+.concept-loop .cl-line {
+  stroke: var(--navy);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.concept-loop .cl-line-thin {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  fill: none;
+}
+.concept-loop .cl-dash {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+  fill: none;
+}
+.concept-loop .cl-dash-strong {
+  stroke: var(--navy);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+  fill: none;
+}
+/* draw-in paths (pathLength="1") — engine sets stroke-dashoffset inline */
+.concept-loop [pathLength='1'] {
+  stroke-dasharray: 1;
+}
+.concept-loop .cl-frame {
+  fill: #f3f4f6;
+  stroke: #d1d5db;
+  stroke-width: 1.5;
+}
+.concept-loop .cl-rail {
+  stroke: #9ca3af;
+  stroke-width: 1.5;
+  stroke-dasharray: 7 6;
+  fill: none;
+}
+.concept-loop .cl-apex {
+  fill: var(--cobalt);
+  stroke: #fff;
+  stroke-width: 2;
+}
+.concept-loop .cl-big { font-size: 18px; font-weight: 800; }
+
+/* accent fills/strokes */
+.concept-loop .cl-fill-a { fill: rgba(30, 136, 229, 0.16); }
+.concept-loop .cl-fill-b { fill: rgba(124, 58, 237, 0.14); }
+.concept-loop .cl-fill-c { fill: rgba(234, 88, 12, 0.14); }
+.concept-loop .cl-fill-d { fill: #e5e7eb; }
+.concept-loop .cl-stroke-a { stroke: var(--cobalt); stroke-width: 2.5; }
+.concept-loop .cl-stroke-b { stroke: #7c3aed; stroke-width: 2.5; }
+
+.concept-loop .cl-t {
+  font-family: 'Assistant', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--navy);
+}
+.concept-loop .cl-num,
+.cl-num {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.concept-loop .cl-term {
+  font-size: 19px;
+  font-weight: 800;
+}
+.cl-tc-a { fill: var(--cobalt); color: var(--cobalt); }
+.cl-tc-b { fill: #7c3aed; color: #7c3aed; }
+.cl-tc-c { fill: #ea580c; color: #ea580c; }
+.cl-tc-d { fill: #4b5563; color: #4b5563; }
+.cl-tc-ok, .cl-ok { fill: var(--green); color: var(--green); }
+
+.concept-loop .cl-tile { stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-tile-a { fill: rgba(30, 136, 229, 0.38); }
+.concept-loop .cl-tile-b { fill: rgba(124, 58, 237, 0.32); }
+.concept-loop .cl-mini { fill: #fff; stroke: var(--navy); stroke-width: 1.5; }
+
+.concept-loop .cl-hl { fill: none; stroke-width: 2.5; }
+.concept-loop .cl-chip { fill: #fff; stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-hl-b { stroke: #7c3aed; }
+.concept-loop .cl-hl-c { stroke: #ea580c; }
+
+/* transient pieces start hidden; the engine drives inline opacity */
+.concept-loop [data-el='tri-fill'], .concept-loop [data-el='tri-line-l'],
+.concept-loop [data-el='tri-line-r'], .concept-loop [data-el='diag'],
+.concept-loop [data-el='lbl24'], .concept-loop [data-el='apex-dot'],
+.concept-loop [data-el='basext'],
+.concept-loop [data-el='sq-a'], .concept-loop [data-el='sq-b'],
+.concept-loop [data-el='sq-c'], .concept-loop [data-el='lbl-c'],
+.concept-loop [data-el='split-v'], .concept-loop [data-el='split-h'],
+.concept-loop [data-el='cell-x2'], .concept-loop [data-el='cell-2x'],
+.concept-loop [data-el='cell-3x'], .concept-loop [data-el='cell-6'],
+.concept-loop [data-el='term-x2'], .concept-loop [data-el='term-2x'],
+.concept-loop [data-el='term-3x'], .concept-loop [data-el='term-6'],
+.concept-loop [data-el='term-5x'],
+.concept-loop [data-el='hl-2x'], .concept-loop [data-el='hl-3x'],
+.concept-loop [data-el='chip-5x'],
+.concept-loop [data-el='minis'] rect,
+.concept-loop [data-el='tiles-a'] rect, .concept-loop [data-el='tiles-b'] rect,
+.concept-loop [data-fx], .concept-loop [data-el='caption'] {
+  opacity: 0;
+}
+
+/* ——— formula + caption rows (HTML, LTR formulas) ——— */
+.concept-loop__formula {
+  margin: 10px 4px 0;
+  min-height: 1.5em;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.concept-loop__formula [data-fx] {
+  display: inline-block;
+  margin: 0 2px;
+}
+.concept-loop__caption {
+  margin: 2px 4px 6px;
+  min-height: 1.4em;
+  text-align: center;
+  font-weight: 700;
+  color: var(--navy);
+}
+.cl-check {
+  display: inline-block;
+  color: var(--green);
+  font-weight: 900;
+  margin-inline-start: 6px;
+}
+
+/* ——— pause/play toggle ——— */
+.concept-loop__toggle {
+  position: absolute;
+  inset-inline-start: 10px;
+  top: 10px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid rgba(26, 43, 74, 0.18);
+  background: #fff;
+  cursor: pointer;
+}
+.concept-loop__toggle svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--navy);
+}
+.concept-loop__toggle:hover {
+  border-color: var(--cobalt);
+}
+
+/* ——— placement: card beside the text (RTL: text right, card left) ——— */
+@media (min-width: 1100px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 36px;
+  }
+  .home-hero .concept-loop {
+    max-width: 520px;
+    justify-self: center;
+  }
+}
+@media (max-width: 1099.98px) {
+  .home-hero .concept-loop {
+    max-width: 480px;
+    margin: 22px auto 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grade-hub__header--loop {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 26px;
+    align-items: center;
+  }
+}
+.grade-hub__header--loop .concept-loop {
+  max-width: 470px;
+  margin: 8px auto;
+}
+
+/* ——— triangle-area explorer (topic page) ——— */
+.tri-explorer {
+  margin: 6px 0 20px;
+}
+.tri-explorer__card {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid rgba(26, 43, 74, 0.1);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 14px 16px 12px;
+  max-width: 640px;
+}
+.tri-explorer__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.tri-explorer .te-line {
+  stroke: var(--navy);
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tri-explorer .te-line-thin {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  fill: none;
+}
+.tri-explorer .te-dash {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+}
+.tri-explorer .te-parallel {
+  stroke: #9ca3af;
+  stroke-width: 1.5;
+  stroke-dasharray: 7 6;
+}
+.tri-explorer .te-fill { fill: rgba(30, 136, 229, 0.15); }
+.tri-explorer .te-t {
+  font-family: 'Assistant', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  fill: var(--navy);
+}
+.tri-explorer .te-num { direction: ltr; unicode-bidi: isolate; }
+.tri-explorer .te-hit {
+  fill: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+.tri-explorer .te-handle {
+  fill: var(--cobalt);
+  stroke: #fff;
+  stroke-width: 3;
+  pointer-events: none;
+  transition: r 0.2s ease;
+}
+.tri-explorer .te-handle.is-held { r: 13; cursor: grabbing; }
+.tri-explorer__readout {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.tri-explorer__hint {
+  margin: 6px 0 2px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.tri-explorer__hint.is-on { opacity: 1; }
+.te-ok { color: var(--green); }
+
+/* the synced range doubles as keyboard/SR control — visually quiet */
+.te-slider {
+  display: block;
+  margin: 10px auto 0;
+  max-width: 340px;
+}
+.te-slider input[type='range'] {
+  width: 100%;
+  accent-color: var(--cobalt);
+  height: 28px;
+  background: transparent;
+}
+
+/* reduced motion / a11y menu: no demo, static completed frame (JS-driven),
+   toggle hidden; drag/slider keep working */
+@media (prefers-reduced-motion: reduce) {
+  .concept-loop__toggle { display: none; }
+  .tri-explorer__hint { transition: none; }
+  .tri-explorer .te-handle { transition: none; }
+}
+html.noam-a11y-motion .concept-loop__toggle { display: none; }
+html.noam-a11y-motion .tri-explorer__hint,
+html.noam-a11y-motion .tri-explorer .te-handle { transition: none; }
+
+/* ——— KIMI-FAMILIES-B1: loops F01–F06 ——— */
+
+/* fixed problem strip (families layout): never moves, clears the toggle */
+.concept-loop__top {
+  margin: 0 0 4px;
+  min-height: 1.5em;
+  padding-inline: 44px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--navy);
+}
+
+/* F01 sticks */
+.concept-loop .cl-col { fill: #fafafa; stroke: #d1d5db; stroke-width: 1.5; stroke-dasharray: 5 4; }
+.concept-loop .cl-stick { fill: var(--navy); transition: fill 0.45s ease; }
+.concept-loop .cl-band { fill: none; stroke: #ea580c; stroke-width: 2.5; }
+.concept-loop .cl-digit { font-size: 26px; font-weight: 800; }
+
+/* F02 number line */
+.concept-loop .cl-small { font-size: 12px; }
+.concept-loop .cl-arc { fill: none; stroke: #6b7280; stroke-width: 1.5; }
+.concept-loop .cl-arc-fill { fill: #6b7280; }
+.concept-loop .cl-pt-a { fill: var(--cobalt); stroke: #fff; stroke-width: 2; }
+.concept-loop .cl-pt-b { fill: #7c3aed; stroke: #7c3aed; stroke-width: 2; }
+
+/* F03 ten frames */
+.concept-loop .cl-frame2 { fill: #fff; stroke: var(--navy); stroke-width: 2; }
+.concept-loop .cl-grid { stroke: #d1d5db; stroke-width: 1; }
+.concept-loop .cl-dot { stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-dot-a { fill: rgba(30, 136, 229, 0.55); }
+.concept-loop .cl-dot-b { fill: rgba(124, 58, 237, 0.5); }
+
+/* F04 balance */
+.concept-loop .cl-cube { fill: rgba(30, 136, 229, 0.4); stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-ol { fill: none; stroke: #ea580c; stroke-width: 2; }
+.concept-loop .cl-box { fill: #e5e7eb; stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-mini2 { fill: rgba(30, 136, 229, 0.45); stroke: var(--navy); stroke-width: 1; }
+
+/* F05 pattern */
+.concept-loop .cl-sq { fill: rgba(30, 136, 229, 0.28); stroke: var(--navy); stroke-width: 1.2; }
+.concept-loop .cl-sq5 { fill: rgba(234, 88, 12, 0.35); stroke: #ea580c; stroke-width: 1.5; }
+.concept-loop .cl-ol2 { fill: none; stroke: #ea580c; stroke-width: 2; }
+.concept-loop .cl-slot { fill: none; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 6 5; }
+.concept-loop .cl-digit2 { font-size: 20px; font-weight: 800; }
+
+/* F06 bars */
+.concept-loop .cl-bar-a { fill: rgba(30, 136, 229, 0.35); stroke: var(--cobalt); stroke-width: 1.5; }
+.concept-loop .cl-bar-b { fill: rgba(30, 136, 229, 0.16); stroke: var(--cobalt); stroke-width: 1.5; }
+.concept-loop .cl-bar-c { fill: rgba(234, 88, 12, 0.32); stroke: #ea580c; stroke-width: 1.5; }
+
+/* transient pieces of the family loops start hidden (engine drives inline opacity) */
+.concept-loop [data-el^='band-'], .concept-loop [data-el^='blbl-'],
+.concept-loop [data-el='digit-3'], .concept-loop [data-el='digit-4'],
+.concept-loop [data-el='tick47'], .concept-loop [data-el^='arc'], .concept-loop [data-el^='arcl'],
+.concept-loop [data-el='d40'], .concept-loop [data-el='d50'], .concept-loop [data-el='arrow'],
+.concept-loop [data-el='lbl47'], .concept-loop [data-el='lbl52'],
+.concept-loop [data-el='pt47'], .concept-loop [data-el='pt52'],
+.concept-loop [data-el='lbl7'], .concept-loop [data-el='lbl10'],
+.concept-loop [data-el='lbl2'], .concept-loop [data-el='lbl5'],
+.concept-loop [data-blue], .concept-loop [data-purp],
+.concept-loop [data-el='oll'], .concept-loop [data-el='olr'], .concept-loop [data-mini2],
+.concept-loop [data-el='hl2'], .concept-loop [data-el='hl3'], .concept-loop [data-el='hl4'],
+.concept-loop [data-el='n14'], .concept-loop [data-el='s5copy'], .concept-loop [data-el='s5new'],
+.concept-loop [data-el='bar-r'], .concept-loop [data-el='ld1'], .concept-loop [data-el='lr1'],
+.concept-loop [data-el='l5'], .concept-loop [data-el='brk'], .concept-loop [data-el='lbl17'],
+.concept-loop [data-el='brkv'], .concept-loop [data-el='q29'] {
+  opacity: 0;
+}
+
+/* FAMILIES-B1: family loop card beside the intro text on topic pages
+   (RTL grid: first column = right; text right, card left; stacks on mobile) */
+.topic-loop-row {
+  display: grid;
+  gap: 20px;
+  margin: 4px 0 20px;
+}
+.topic-loop-row .concept-loop {
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .topic-loop-row {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: 26px;
+  }
+  .topic-loop-row__text {
+    margin: 0;
+  }
+}
+
+/* ——— KIMI-B1-FIXES ——— */
+/* every formula chunk is bidi-isolated LTR (the □/≈/− chars are neutral and
+   would follow the page's RTL direction without an explicit override) */
+.concept-loop__formula [data-fx],
+.concept-loop__top[dir='ltr'] {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* numberline: the top question swaps per phase without layout shift */
+.concept-loop__top.cl-topswap { position: relative; }
+.cl-topsz { visibility: hidden; }
+.cl-tops { position: absolute; inset: 0; }

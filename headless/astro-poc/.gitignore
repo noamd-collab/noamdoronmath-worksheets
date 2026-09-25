@@ -4,7 +4,10 @@ dist/
 .astro/
 
 # dependencies
+# (bare name too: in this worktree node_modules is a SYMLINK to the shared
+# install, and a trailing-slash rule matches real directories only)
 node_modules/
+node_modules
 
 # Wix CLI / local hosting metadata
 .wix/

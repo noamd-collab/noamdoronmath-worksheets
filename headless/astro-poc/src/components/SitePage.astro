@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LineArtDoodles from './LineArtDoodles.astro';
 import { loadSitePage, localizeSiteHref, type SitePageBlock } from '../lib/sitePages';
 
 interface Props {
@@ -59,6 +60,7 @@ const units = renderUnits(page.blocks, page.slug);
     <header class="banner site-page__header">
       <h1>{page.h1}</h1>
     </header>
+    {slug === 'math-tools' && <LineArtDoodles variant="tools" />}
 
     <div class="site-page__body" data-site-body data-legal-body={page.slug === 'terms' ? '1' : undefined}>
       {
