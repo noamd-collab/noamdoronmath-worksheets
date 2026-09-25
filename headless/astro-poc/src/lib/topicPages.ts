@@ -100,6 +100,7 @@ import triangleSimilarityAaGrade9 from '../data/topic-pages/triangle-similarity-
 import triangularPrismSurfaceAreaGrade9 from '../data/topic-pages/triangular-prism-surface-area-grade-9.json';
 import triangularPrismVolumeGrade9 from '../data/topic-pages/triangular-prism-volume-grade-9.json';
 import { isolateMathRuns } from './mathDirection';
+import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
 /** M18 pilot (3). */
 export const TOPIC_PAGE_PILOT_SLUGS = [
@@ -349,6 +350,11 @@ export interface TopicPageContent {
     links: { href: string; label: string }[];
   };
   relatedTopics: { path: string; label: string; productionHref: string }[];
+  /**
+   * Captured production related links, before family classification.
+   * Parity compares these; TopicPage renders relatedTopics.
+   */
+  sourceRelatedTopics?: { path: string; label: string; productionHref: string }[];
   /** First worksheet CTA (DOM order); prefer catalogCtas when multiple. */
   catalogCta: TopicPageCatalogCta;
   /** All worksheet CTAs in production DOM order. */
@@ -491,6 +497,17 @@ function presentBodyFlow(flow: TopicBodyFlowItem[]): TopicBodyFlowItem[] {
   });
 }
 
+function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
+  return { ...rel, label: isolateMathRuns(rel.label) };
+}
+
+/** Classified related block for rendering. Captured links stay on sourceRelatedTopics. */
+function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
+  const classified = familyRelatedTopics(data.slug, data.grade);
+  const rows = classified.length ? classified : data.relatedTopics || [];
+  return rows.map(isolateRelatedLabel);
+}
+
 function isolateJsonLdFaq(jsonLd: Record<string, unknown>): Record<string, unknown> {
   const clone = structuredClone(jsonLd);
   const graph = (clone['@graph'] as Record<string, unknown>[] | undefined) || [];
@@ -529,10 +546,11 @@ function withVisibleMathIsolates(data: TopicPageContent): TopicPageContent {
         answer: isolateMathRuns(item.answer),
       })),
     })),
-    relatedTopics: (data.relatedTopics || []).map((rel) => ({
+    sourceRelatedTopics: (data.sourceRelatedTopics || data.relatedTopics || []).map((rel) => ({
       ...rel,
       label: isolateMathRuns(rel.label),
     })),
+    relatedTopics: presentRelatedTopics(data),
     jsonLd: isolateJsonLdFaq(data.jsonLd),
   };
 }
