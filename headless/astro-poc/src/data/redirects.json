@@ -54,8 +54,8 @@
     },
     {
       "from": "/triangle-area-grade-7-worksheets",
-      "to": "/powers-grade-7",
-      "note": "pending-wix-api; live-mapping-looks-wrong-check-with-noam"
+      "to": "/triangle-area-grade-7",
+      "note": "fixed 2026-09-25: was wrongly /powers-grade-7 (copied from live Redirect Manager). Correct page is /triangle-area-grade-7 (200, H1 שטח משולש). Live Wix Redirect Manager still needs Noam to update."
     },
     {
       "from": "/coordinate-plane-intro-grade-7",
@@ -84,13 +84,13 @@
     },
     {
       "from": "/equations-both-sides-word-problems-grade-7-1",
-      "to": "/pythagoras-applications-grade-7",
-      "note": "pending-wix-api"
+      "to": "/equations-both-sides-word-problems-grade-7",
+      "note": "fixed 2026-09-25: was wrongly /pythagoras-applications-grade-7 (topic mismatch; live Redirect Manager still wrong). -1 slug is a Wix duplicate of the equations page."
     },
     {
       "from": "/inequalities-grade-8-1",
-      "to": "/statistics-grade-8",
-      "note": "pending-wix-api"
+      "to": "/inequalities-grade-8",
+      "note": "fixed 2026-09-25: was wrongly /statistics-grade-8 (topic mismatch; live Redirect Manager still wrong). -1 slug is a Wix duplicate of the inequalities page."
     },
     {
       "from": "/page-1",
