@@ -1,11 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SiteFooter from '../components/SiteFooter.astro';
-import { loadHomePage } from '../lib/homePage';
 
 export const prerender = false;
-
-const home = loadHomePage();
 ---
 <BaseLayout
   title="העמוד לא נמצא | נועם דורון מתמטיקה"
@@ -25,7 +21,6 @@ const home = loadHomePage();
       </nav>
     </header>
   </main>
-  <SiteFooter footer={home.footer} />
 </BaseLayout>
 
 <style>

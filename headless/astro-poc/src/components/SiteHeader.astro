@@ -27,7 +27,17 @@ function navProps(key: ActiveNavKey) {
     <div class="site-header__brand">
       <SiteBrand href="/" compact={compactBrand} />
     </div>
-    <nav class="site-nav" aria-label="ניווט ראשי">
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+      data-nav-toggle
+    >
+      <span class="nav-toggle__bars" aria-hidden="true"></span>
+      <span class="nav-toggle__label">תפריט</span>
+    </button>
+    <nav class="site-nav" id="primary-nav" aria-label="ניווט ראשי" data-nav-panel>
       <a {...navProps('home')} href="/">בית</a>
       <a {...navProps('about')} href="/aboutus">אודותינו</a>
       <a {...navProps('worksheets')} href="/worksheets">דפי עבודה</a>
@@ -40,3 +50,35 @@ function navProps(key: ActiveNavKey) {
     </nav>
   </div>
 </header>
+
+<script>
+  // Mobile nav toggle: aria-expanded, Esc/outside/resize close, focus moves.
+  (function () {
+    var toggle = document.querySelector('[data-nav-toggle]');
+    var panel = document.getElementById('primary-nav');
+    if (!toggle || !panel) return;
+    function isOpen() { return panel.hasAttribute('data-open'); }
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      if (open) {
+        panel.setAttribute('data-open', '');
+        var first = panel.querySelector('a');
+        if (first) first.focus();
+      } else {
+        panel.removeAttribute('data-open');
+        if (document.activeElement && panel.contains(document.activeElement)) toggle.focus();
+      }
+    }
+    toggle.addEventListener('click', function () { setOpen(!isOpen()); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && isOpen()) setOpen(false);
+    });
+    document.addEventListener('click', function (e) {
+      if (isOpen() && !e.target.closest('.site-header')) setOpen(false);
+    });
+    var mq = window.matchMedia('(min-width: 768px)');
+    (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(function (e) {
+      if (e.matches && isOpen()) setOpen(false);
+    });
+  })();
+</script>

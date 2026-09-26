@@ -2942,15 +2942,6 @@ html.noam-a11y-motion::view-transition-new(*) {
    so dasharray/dashoffset are unitless. Base state is FULLY DRAWN
    (dashoffset: 0); the load animation only replays the draw.
    transform/opacity untouched: no layout impact. ——— */
-.hero-lines {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
 /* Self-contained decorative strip used on grade-hub / topic / tools pages. */
 .line-art-box {
   position: relative;
@@ -3513,3 +3504,119 @@ html.noam-a11y-motion .tri-explorer .te-handle { transition: none; }
 .concept-loop__top.cl-topswap { position: relative; }
 .cl-topsz { visibility: hidden; }
 .cl-tops { position: absolute; inset: 0; }
+
+/* ——— plane flight layer: content always paints above it ——— */
+.home-hero__copy,
+.home-notice,
+.home-grades,
+.home-learning,
+.home-values,
+.home-whatsapp,
+.home-foot,
+.home-section__title,
+.home-section__lede {
+  position: relative;
+  z-index: 1;
+}
+
+/* positioned containing block for the margin-art layer */
+body {
+  position: relative;
+}
+
+/* ——— mobile nav toggle (visible <768px, in-flow — covers nothing) ——— */
+.nav-toggle {
+  display: none;
+}
+@keyframes nav-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 767px) {
+  .site-header__inner {
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 14px;
+    background: var(--paper);
+    border: 2px solid var(--navy);
+    border-radius: 12px;
+    font-family: 'Heebo', inherit;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--navy);
+    cursor: pointer;
+  }
+  .nav-toggle:focus-visible {
+    outline: 3px solid var(--cobalt);
+    outline-offset: 2px;
+  }
+  .nav-toggle[aria-expanded='true'] {
+    background: var(--tint);
+    border-color: var(--cobalt-dark);
+  }
+  .nav-toggle__bars {
+    position: relative;
+    width: 20px;
+    height: 14px;
+    flex: 0 0 auto;
+  }
+  .nav-toggle__bars::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      currentColor 0 2.5px,
+      transparent 2.5px 5.75px,
+      currentColor 5.75px 8.25px,
+      transparent 8.25px 11.5px,
+      currentColor 11.5px 14px
+    );
+  }
+  .site-nav {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    background: var(--paper);
+    border: 1.5px solid rgba(26, 43, 74, 0.12);
+    border-radius: 14px;
+    padding: 8px;
+    box-shadow: var(--shadow-soft);
+  }
+  .site-nav[data-open] {
+    display: flex;
+    animation: nav-panel-in 0.22s ease;
+  }
+  .site-nav__link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(26, 43, 74, 0.08);
+    border-radius: 8px;
+  }
+  .site-nav__link:last-child {
+    border-bottom: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-nav[data-open] {
+    animation: none;
+  }
+}
