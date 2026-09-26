@@ -5,16 +5,15 @@
  * topic pages here). Not linked from anywhere; excluded from the sitemap.
  * Used by scripts/check-loops-k3.mjs for bbox/behaviour checks and screenshots.
  *
- * Production (www / non-preview hosts): 404 — must not ship as a public page.
- * Local / Wix preview hosts: available for QA (see isPreviewHost).
+ * Gated with `import.meta.env.DEV`: available under `astro dev` (local QA);
+ * any production / preview *build* returns 404 (does not ship as a public page).
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ConceptLoop from '../components/ConceptLoop.astro';
-import { isPreviewHost } from '../lib/siteSeo';
 
 export const prerender = false;
 
-if (!isPreviewHost(Astro.url.hostname)) {
+if (!import.meta.env.DEV) {
   return new Response('Not Found', {
     status: 404,
     headers: { 'content-type': 'text/plain; charset=utf-8' },
