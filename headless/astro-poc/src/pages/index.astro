@@ -3,7 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroIllustrations from '../components/HeroIllustrations.astro';
 import PlaneFlight from '../components/PlaneFlight.astro';
 import HomeMarginArt from '../components/HomeMarginArt.astro';
-import HomeRandomLoop from '../components/HomeRandomLoop.astro';
+import ConceptLoop from '../components/ConceptLoop.astro';
+import HomeSectionDoodle from '../components/HomeSectionDoodle.astro';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 
 const home = loadHomePage();
@@ -49,13 +50,16 @@ const homeJsonLd = homePageJsonLd();
           <a class="cta cta--mid" href="/worksheets?grade=7">חטיבה ז׳–ט׳</a>
         </div>
       </div>
-      {/* K3 / KIMI-ANIM-6: film loop card — random restored variant each visit
-          (F01–F06 + triangle/pythagoras/area-model). Text right, card left in RTL;
-          on mobile it stacks below the copy. */}
-      <HomeRandomLoop />
+      {/* Fixed hero film (geometry/area) — not random. Text right, card left in RTL. */}
+      <ConceptLoop variant="triangle" />
     </section>
 
+    {/*
+      KIMI-ANIM-6: one restored DOODLES-45 motif per section, topic-matched.
+      hero → triangle ConceptLoop (above); grades/learning/values/whatsapp → doodles.
+    */}
     <section class="home-grades" aria-labelledby="home-grades-title" data-home-grades>
+      <HomeSectionDoodle motif="telescope" rotate={-8} side="end" />
       <h2 class="home-section__title" id="home-grades-title">בחרו כיתה והתחילו לתרגל</h2>
       <p class="home-section__lede">דפי עבודה בחינם לכיתות א׳–ט׳</p>
       <ul class="home-grades__grid">
@@ -75,6 +79,7 @@ const homeJsonLd = homePageJsonLd();
     </section>
 
     <section class="home-learning" aria-labelledby="home-learning-title" data-home-learning>
+      <HomeSectionDoodle motif="orbit-pencil" rotate={5} side="start" />
       <h2 class="home-section__title" id="home-learning-title">הלמידה שלי</h2>
       <div class="home-learning__actions">
         <a class="cta cta--mid" href={home.learning.googleHref} data-home-google>
@@ -89,6 +94,7 @@ const homeJsonLd = homePageJsonLd();
     </section>
 
     <section class="home-values" aria-labelledby="home-values-title" data-home-values>
+      <HomeSectionDoodle motif="geometry-fish" rotate={-4} side="end" />
       <h2 class="home-section__title" id="home-values-title">{home.valueSections.heading}</h2>
       <ul class="home-values__grid">
         {
@@ -105,6 +111,7 @@ const homeJsonLd = homePageJsonLd();
     </section>
 
     <section class="home-whatsapp" aria-labelledby="home-whatsapp-title" data-home-whatsapp>
+      <HomeSectionDoodle motif="paper-boat" rotate={7} side="start" />
       <p class="home-whatsapp__kicker">{home.whatsapp.kicker}</p>
       <h2 class="home-section__title" id="home-whatsapp-title">{home.whatsapp.heading}</h2>
       <p>{home.whatsapp.body}</p>

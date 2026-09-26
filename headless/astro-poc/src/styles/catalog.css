@@ -1157,12 +1157,21 @@ a {
 }
 
 .home-section__title {
+  position: relative;
+  z-index: 1;
   font-family: 'Heebo', Arial, sans-serif;
   font-weight: 900;
   font-size: clamp(1.2rem, 2.6vw, 1.55rem);
   margin: 0 0 8px;
   color: var(--navy);
   text-align: center;
+  /* keep centered title clear of corner HomeSectionDoodle (≈88px) */
+  padding-inline: 96px;
+}
+@media (max-width: 640px) {
+  .home-section__title {
+    padding-inline: 72px;
+  }
 }
 
 .home-section__lede {
@@ -3278,15 +3287,13 @@ html.noam-a11y-motion .hero-draw {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: 36px;
   }
-  .home-hero .concept-loop,
-  .home-hero .home-random-loop {
+  .home-hero .concept-loop {
     max-width: 520px;
     justify-self: center;
   }
 }
 @media (max-width: 1099.98px) {
-  .home-hero .concept-loop,
-  .home-hero .home-random-loop {
+  .home-hero .concept-loop {
     max-width: 480px;
     margin: 22px auto 10px;
   }

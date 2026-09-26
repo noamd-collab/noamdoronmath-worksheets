@@ -1,0 +1,92 @@
+---
+/**
+ * KIMI-ANIM-6 — one restored DOODLES-45 motif per home section.
+ * Decorative only (aria-hidden). Gentle float; off under reduced-motion /
+ * html.noam-a11y-motion. Fixed size so it cannot shift section layout.
+ */
+import manifest from '../data/doodles.manifest.json';
+
+export interface Props {
+  /** Motif id from doodles.manifest.json */
+  motif: string;
+  /** Modest tilt in degrees */
+  rotate?: number;
+  /** Logical corner inside the relatively-positioned section */
+  side?: 'start' | 'end';
+}
+
+const { motif, rotate = -6, side = 'end' } = Astro.props;
+const entry = (manifest.motifs as { id: string; src: string }[]).find(
+  (m) => m.id === motif,
+);
+---
+
+{
+  entry && (
+    <img
+      class:list={['home-section-doodle', `home-section-doodle--${side}`]}
+      src={entry.src}
+      alt=""
+      width="120"
+      height="120"
+      decoding="async"
+      loading="lazy"
+      aria-hidden="true"
+      data-doodle-id={entry.id}
+      data-home-section-doodle
+      style={`--doodle-rot:${rotate}deg`}
+    />
+  )
+}
+
+<style>
+  .home-section-doodle {
+    position: absolute;
+    top: -6px;
+    width: 88px;
+    height: auto;
+    max-width: 22vw;
+    opacity: 0.88;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    transform: rotate(var(--doodle-rot, 0deg));
+    transform-origin: center center;
+    animation: home-section-doodle-float 7.5s ease-in-out infinite;
+    will-change: transform;
+  }
+  .home-section-doodle--end {
+    inset-inline-end: 0;
+  }
+  .home-section-doodle--start {
+    inset-inline-start: 0;
+  }
+  @keyframes home-section-doodle-float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(var(--doodle-rot, 0deg));
+    }
+    50% {
+      transform: translateY(-7px) rotate(var(--doodle-rot, 0deg));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-section-doodle {
+      animation: none;
+    }
+  }
+  :global(html.noam-a11y-motion) .home-section-doodle {
+    animation: none !important;
+  }
+  @media (max-width: 640px) {
+    .home-section-doodle {
+      width: 64px;
+      top: -2px;
+    }
+  }
+  @media print {
+    .home-section-doodle {
+      display: none !important;
+    }
+  }
+</style>
