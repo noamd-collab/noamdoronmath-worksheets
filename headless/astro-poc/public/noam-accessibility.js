@@ -15,12 +15,57 @@
   function init() {
     if (document.getElementById('noam-accessibility')) return;
     const defaults = { text: 100, contrast: false, links: false, motion: false };
-    let prefs = { ...defaults };
+    const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let prefs = { ...defaults, stopAnim: reduceQuery.matches, stopAnimChosen: false };
     try {
       const saved = JSON.parse(localStorage.getItem('noam-accessibility-v1') || '{}');
       prefs.text = [100,110,120,130,140,150].includes(saved.text) ? saved.text : 100;
       for (const key of ['contrast','links','motion']) prefs[key] = saved[key] === true;
+      if (saved.stopAnim === true || saved.stopAnim === false) {
+        prefs.stopAnim = saved.stopAnim;
+        prefs.stopAnimChosen = true;
+      }
     } catch (_) { /* Preferences still work when storage is unavailable. */ }
+
+    // JS loops call requestAnimationFrame by name. Hold those callbacks while
+    // animations are stopped, then release them when the option is turned off.
+    var nativeRaf = window.requestAnimationFrame.bind(window);
+    var nativeCancel = window.cancelAnimationFrame.bind(window);
+    var rafFrozen = false;
+    var rafPending = new Map();
+    window.requestAnimationFrame = function (cb) {
+      var id = nativeRaf(function (ts) {
+        if (rafFrozen) { rafPending.set(id, cb); return; }
+        cb(ts);
+      });
+      return id;
+    };
+    window.cancelAnimationFrame = function (id) {
+      rafPending.delete(id);
+      nativeCancel(id);
+    };
+    function setRafFrozen(off) {
+      rafFrozen = off;
+      if (off) return;
+      rafPending.forEach(function (cb, id) {
+        rafPending.delete(id);
+        nativeRaf(cb);
+      });
+    }
+    function syncVideos(off) {
+      document.querySelectorAll('video').forEach(function (video) {
+        if (off) {
+          if (!video.paused && !video.ended) {
+            video.setAttribute('data-nd-was-playing', '1');
+            video.pause();
+          }
+        } else if (video.getAttribute('data-nd-was-playing') === '1') {
+          video.removeAttribute('data-nd-was-playing');
+          var pending = video.play();
+          if (pending && pending.catch) pending.catch(function () {});
+        }
+      });
+    }
 
     const style = document.createElement('style');
     style.textContent = `
@@ -33,6 +78,9 @@
       html.noam-a11y-contrast a { color:#ffed75!important; }
       html.noam-a11y-motion *, html.noam-a11y-motion *::before, html.noam-a11y-motion *::after {
         animation:none!important; transition:none!important; scroll-behavior:auto!important;
+      }
+      html.nd-motion-off *, html.nd-motion-off *::before, html.nd-motion-off *::after {
+        animation:none!important; animation-play-state:paused!important; transition:none!important;
       }
       @media print { #noam-accessibility { display:none!important; } }
       /* Reserve the corner. The window stays the scroller. */
@@ -128,6 +176,7 @@
         <button class="option" data-pref="contrast" type="button" aria-pressed="false">ניגודיות גבוהה</button>
         <button class="option" data-pref="links" type="button" aria-pressed="false">הדגשת קישורים</button>
         <button class="option" data-pref="motion" type="button" aria-pressed="false">הפחתת תנועה</button>
+        <button class="option" id="stop-anim" type="button" aria-pressed="false">עצירת אנימציות</button>
         <button id="reset" type="button">איפוס הגדרות</button>
         <p>ההעדפות נשמרות בדפדפן עבור אתר זה. להגדלת דף העבודה עצמו השתמשו בסליידר הזום של הדף.</p>
       </dialog>
@@ -260,23 +309,50 @@
       if (prefs.text === 100) original.clear();
     }
     function apply(save) {
+      var stopOn = prefs.stopAnim === true;
       for (const key of ['contrast','links','motion']) {
-        document.documentElement.classList.toggle('noam-a11y-'+key,prefs[key]);
-        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed',String(prefs[key]));
+        var on = prefs[key] === true;
+        if (key === 'motion') on = on || stopOn;
+        document.documentElement.classList.toggle('noam-a11y-'+key, on);
+        root.querySelector('[data-pref="'+key+'"]').setAttribute('aria-pressed', String(prefs[key] === true));
       }
+      document.documentElement.classList.toggle('nd-motion-off', stopOn);
+      root.getElementById('stop-anim').setAttribute('aria-pressed', String(stopOn));
+      setRafFrozen(stopOn);
+      syncVideos(stopOn);
       root.getElementById('size').textContent = prefs.text+'%';
       root.getElementById('increase').disabled = prefs.text >= 150;
       root.getElementById('decrease').disabled = prefs.text <= 100;
       scaleText();
       if (astroShell && host.isConnected && !dialog.open) settleLauncher();
-      if (save) try { localStorage.setItem('noam-accessibility-v1',JSON.stringify(prefs)); } catch (_) {}
+      if (save) {
+        try {
+          var stored = { text: prefs.text, contrast: prefs.contrast, links: prefs.links, motion: prefs.motion };
+          if (prefs.stopAnimChosen) stored.stopAnim = stopOn;
+          localStorage.setItem('noam-accessibility-v1', JSON.stringify(stored));
+        } catch (_) {}
+      }
+      window.dispatchEvent(new CustomEvent('nd:motion-off', { detail: { off: stopOn } }));
     }
     root.getElementById('increase').addEventListener('click', () => { prefs.text = Math.min(150,prefs.text+10); apply(true); });
     root.getElementById('decrease').addEventListener('click', () => { prefs.text = Math.max(100,prefs.text-10); apply(true); });
     root.querySelectorAll('[data-pref]').forEach(button => button.addEventListener('click', () => {
       const key = button.dataset.pref; prefs[key] = !prefs[key]; apply(true);
     }));
-    root.getElementById('reset').addEventListener('click', () => { prefs = {...defaults}; apply(true); });
+    root.getElementById('stop-anim').addEventListener('click', () => {
+      prefs.stopAnim = prefs.stopAnim !== true;
+      prefs.stopAnimChosen = true;
+      apply(true);
+    });
+    root.getElementById('reset').addEventListener('click', () => {
+      prefs = { ...defaults, stopAnim: reduceQuery.matches, stopAnimChosen: false };
+      apply(true);
+    });
+    reduceQuery.addEventListener('change', () => {
+      if (prefs.stopAnimChosen) return;
+      prefs.stopAnim = reduceQuery.matches;
+      apply(false);
+    });
     let scheduled = false;
     new MutationObserver(() => {
       if (prefs.text === 100 || scheduled) return;
