@@ -1,8 +1,7 @@
 ---
 /**
- * Mobile-only organic notebook scatter for topic / hub pages.
- * Absolute doodles + scribbles inside the page band — no flex strip,
- * no layout push. Hidden ≥768px (SiteDoodles gutters cover desktop).
+ * Mobile+desktop organic φ scatter for topic pages (absolute, no strip).
+ * Every doodle bobs + wobbles when motion is allowed.
  */
 import manifest from '../data/doodles.manifest.json';
 import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
@@ -12,7 +11,6 @@ import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
 export interface Props {
   seed: string;
   preferred?: string[];
-  /** Motif count on mobile (default 5 → 4–6 range). */
   count?: number;
 }
 
@@ -35,25 +33,27 @@ const scatter = selectNotebookScatter(seed, motifs, {
     >
       {scatter.motifs.map((m) => (
         <img
-          class:list={[
-            'mobile-nb-corner',
-            m.float ? 'mobile-nb-corner--float' : null,
-          ]}
+          class="mobile-nb-corner mobile-nb-corner--motion"
           src={m.src}
           alt=""
-          width={m.mobileSizePx}
-          height={m.mobileSizePx}
+          width={m.sizePx}
+          height={m.sizePx}
           decoding="async"
           loading="lazy"
           data-doodle-id={m.id}
           data-nb-side={m.side}
           style={[
+            `--d-size:${m.sizePx}px`,
             `--m-size:${m.mobileSizePx}px`,
-            `--r:${m.mobileRotate}deg`,
+            `--r:${m.rotate}deg`,
+            `--d-op:${m.opacity}`,
             `--m-op:${m.mobileOpacity}`,
-            `--m-top:${m.topPx}px`,
-            `--m-inset:${m.insetPx}px`,
             `--d-delay:${m.delay}s`,
+            `--d-dur:${m.duration}s`,
+            `--d-bob:${m.bobPx}px`,
+            `--d-wobble:${m.wobbleDeg}deg`,
+            `--x:${m.xPct}%`,
+            `--y:${m.yPct}%`,
           ].join(';')}
         />
       ))}
@@ -64,61 +64,58 @@ const scatter = selectNotebookScatter(seed, motifs, {
 
 <style>
   .mobile-nb-corners {
-    display: none;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    overflow: visible;
+  }
+  .mobile-nb-corner {
+    position: absolute;
+    display: block;
+    left: var(--x, 38.2%);
+    top: var(--y, 61.8%);
+    width: var(--d-size, 45px);
+    max-width: min(120px, 22vw);
+    height: auto;
+    opacity: var(--d-op, 0.75);
+    transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+    z-index: 0;
+  }
+  .mobile-nb-corner--motion {
+    animation: topic-nb-bob-wobble var(--d-dur, 6.5s) ease-in-out infinite;
+    animation-delay: var(--d-delay, 0s);
+    will-change: transform;
+  }
+  @keyframes topic-nb-bob-wobble {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) translateY(0)
+        rotate(calc(var(--r, 0deg) - var(--d-wobble, 4deg)));
+    }
+    50% {
+      transform: translate(-50%, -50%) translateY(calc(-1 * var(--d-bob, 6px)))
+        rotate(calc(var(--r, 0deg) + var(--d-wobble, 4deg)));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-nb-corner--motion {
+      animation: none;
+    }
+  }
+  :global(html.noam-a11y-motion) .mobile-nb-corner--motion,
+  :global(html.nd-motion-off) .mobile-nb-corner--motion {
+    animation: none !important;
   }
   @media (max-width: 767px) {
-    .mobile-nb-corners {
-      display: block;
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-      overflow: visible;
-    }
     .mobile-nb-corner {
-      position: absolute;
-      display: block;
-      top: var(--m-top, 8px);
       width: var(--m-size, 36px);
-      max-width: 56px;
-      height: auto;
+      max-width: 73px;
       opacity: var(--m-op, 0.7);
-      transform: rotate(var(--r, 0deg));
-      z-index: 0;
-    }
-    .mobile-nb-corner[data-nb-side='start'] {
-      inset-inline-start: var(--m-inset, 6px);
-      inset-inline-end: auto;
-    }
-    .mobile-nb-corner[data-nb-side='end'] {
-      inset-inline-end: var(--m-inset, 6px);
-      inset-inline-start: auto;
-    }
-    .mobile-nb-corner--float {
-      animation: mobile-nb-float 7.6s ease-in-out infinite;
-      animation-delay: var(--d-delay, 0s);
-      will-change: transform;
-    }
-    @keyframes mobile-nb-float {
-      0%,
-      100% {
-        transform: translateY(0) rotate(var(--r, 0deg));
-      }
-      50% {
-        transform: translateY(-8px) rotate(var(--r, 0deg));
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .mobile-nb-corner--float {
-        animation: none;
-      }
-    }
-    :global(html.noam-a11y-motion) .mobile-nb-corner--float,
-    :global(html.nd-motion-off) .mobile-nb-corner--float {
-      animation: none !important;
     }
   }
+  /* Topic pages: keep φ scatter on desktop too (SiteDoodles gutters are separate) */
   @media print {
     .mobile-nb-corners {
       display: none !important;

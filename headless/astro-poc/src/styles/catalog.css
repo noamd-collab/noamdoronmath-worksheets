@@ -1230,38 +1230,29 @@ a {
   justify-content: flex-start;
   overflow: visible;
 }
-/* Notice-edge doodles are mobile-only (desktop keeps clean notice card) */
-@media (min-width: 768px) {
-  .home-notice > [data-home-section-notebook] {
-    display: none !important;
-  }
-}
-
 /*
- * Mobile organic notebook: sections host absolute scatters.
- * Text/CTAs stay above doodles; doodles never push layout.
+ * φ notebook scatters: absolute inside sections on desktop AND mobile.
+ * Never a flex/grid strip. Text/CTAs stay above doodles.
  */
-@media (max-width: 767px) {
-  .home-hero,
-  .home-notice,
-  .home-grades,
-  .home-learning,
-  .home-values,
-  .home-whatsapp,
-  .topic-page--nb {
-    position: relative;
-    overflow-x: clip;
-  }
-  .home-section__head,
-  .home-section__title,
-  .home-section__lede,
-  .home-whatsapp__kicker,
-  .home-hero__copy,
-  .home-notice > :not([data-home-section-notebook]),
-  .topic-page--nb > :not([data-mobile-nb-corners]) {
-    position: relative;
-    z-index: 1;
-  }
+.home-hero,
+.home-notice,
+.home-grades,
+.home-learning,
+.home-values,
+.home-whatsapp,
+.topic-page--nb {
+  position: relative;
+  overflow-x: clip;
+}
+.home-section__head,
+.home-section__title,
+.home-section__lede,
+.home-whatsapp__kicker,
+.home-hero__copy,
+.home-notice > :not([data-home-section-notebook]),
+.topic-page--nb > :not([data-mobile-nb-corners]) {
+  position: relative;
+  z-index: 1;
 }
 
 .topic-page__header--nb {
@@ -1277,24 +1268,18 @@ a {
 .home-whatsapp__kicker,
 .home-whatsapp__row,
 .home-whatsapp__note,
-.home-section__head > p {
+.home-section__head > p,
+.home-hero .concept-loop {
   position: relative;
   z-index: 1;
 }
 
-/* Hero: notebook band spans full width under copy + concept-loop (desktop) */
+/* Absolute φ layer — never participate in hero grid (kills flat bottom row) */
 .home-hero > [data-home-section-notebook] {
-  grid-column: 1 / -1;
-  width: 100%;
-  justify-self: stretch;
-}
-@media (max-width: 767px) {
-  /* Absolute layer — don't participate in hero grid */
-  .home-hero > [data-home-section-notebook] {
-    grid-column: auto;
-    width: auto;
-    justify-self: auto;
-  }
+  grid-column: auto;
+  width: auto;
+  justify-self: auto;
+  z-index: 0;
 }
 
 .home-grades__grid {

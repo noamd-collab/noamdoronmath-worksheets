@@ -1,22 +1,19 @@
 ---
 /**
- * Small hand-drawn math scribbles (SVG) — stars, spirals, arrows,
- * underlines, readable formulas (a²+b²=c²). Notebook ink language.
- * NOT the thin grey HomeMarginArt icon set.
- * Formulas force LTR so they stay readable on RTL pages.
- * When organicMobile: absolute edge placements on ≤767 (no flex row).
+ * Hand-drawn math scribbles — stars, spirals, arrows, underlines, formulas.
+ * Formulas force LTR. When organicMobile: absolute φ placement + draw-once
+ * for a²+b²=c². Every scribble bobs/wobbles when motion is allowed.
  */
 import type { ScribbleItem } from '../lib/doodles/selectNotebookScatter';
 
 export interface Props {
   items: ScribbleItem[];
-  /** Absolute organic layout on mobile (with HomeSectionDoodle / MobileNotebookCorners). */
+  /** Absolute φ layout (with HomeSectionDoodle / MobileNotebookCorners). */
   organicMobile?: boolean;
 }
 
 const { items, organicMobile = false } = Astro.props;
 
-/** Alternate readable formulas (picked by item index). Always LTR. */
 const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
 ---
 
@@ -26,15 +23,19 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
       class:list={[
         'math-scribble',
         `math-scribble--${s.kind}`,
-        s.float ? 'math-scribble--float' : null,
+        'math-scribble--motion',
         organicMobile ? 'math-scribble--organic' : null,
+        s.kind === 'formula' ? 'math-scribble--draw' : null,
       ]}
       style={[
         `--s-rot:${s.rotate}deg`,
         `--s-size:${s.sizePx}px`,
         `--s-delay:${s.delay}s`,
-        `--m-top:${s.topPx}px`,
-        `--m-inset:${s.insetPx}px`,
+        `--d-dur:${s.duration}s`,
+        `--d-bob:${s.bobPx}px`,
+        `--d-wobble:${s.wobbleDeg}deg`,
+        `--x:${s.xPct}%`,
+        `--y:${s.yPct}%`,
         `--m-op:${s.mobileOpacity}`,
         s.kind === 'formula' ? 'direction:ltr;unicode-bidi:isolate' : '',
       ]
@@ -113,8 +114,8 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
             viewBox="0 0 112 32"
             focusable="false"
           >
-            {/* Readable hand-ink formula; explicit LTR for RTL pages */}
             <text
+              class="math-scribble__formula-text"
               x="4"
               y="22"
               direction="ltr"
@@ -156,7 +157,6 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
     flex: 0 0 auto;
   }
   .math-scribble--formula {
-    /* Wider so a²+b²=c² / πr² stay readable; force LTR in RTL doc */
     width: max(88px, calc(var(--s-size, 40px) * 1.8));
     direction: ltr;
     unicode-bidi: isolate;
@@ -170,52 +170,83 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
     display: block;
     overflow: visible;
   }
-  .math-scribble--float {
-    animation: site-doodle-float 7.8s ease-in-out infinite;
+  .math-scribble--motion {
+    animation: scribble-bob-wobble var(--d-dur, 6.5s) ease-in-out infinite;
     animation-delay: var(--s-delay, 0s);
     will-change: transform;
   }
-  @keyframes site-doodle-float {
+  @keyframes scribble-bob-wobble {
     0%,
     100% {
-      transform: translateY(0) rotate(var(--s-rot, 0deg));
+      transform: translateY(0) rotate(calc(var(--s-rot, 0deg) - var(--d-wobble, 4deg)));
     }
     50% {
-      transform: translateY(-8px) rotate(var(--s-rot, 0deg));
+      transform: translateY(calc(-1 * var(--d-bob, 6px)))
+        rotate(calc(var(--s-rot, 0deg) + var(--d-wobble, 4deg)));
     }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .math-scribble--float {
-      animation: none;
-    }
-  }
-  :global(html.noam-a11y-motion) .math-scribble--float,
-  :global(html.nd-motion-off) .math-scribble--float {
-    animation: none !important;
   }
 
-  /* Organic mobile: absolute edge placements (parent is the scatter wrapper) */
-  @media (max-width: 767px) {
-    .math-scribble--organic {
-      position: absolute;
-      display: block;
-      top: var(--m-top, 40px);
-      opacity: var(--m-op, 0.65);
-      flex: none;
-      z-index: 0;
-      /* Keep formulas readable but compact on phone */
-      max-width: 96px;
+  /* Formula draws itself once (LTR clip reveal), then keeps bobbing */
+  .math-scribble--draw .math-scribble__formula-svg {
+    animation: formula-draw 2.6s ease forwards;
+    animation-delay: var(--s-delay, 0.2s);
+  }
+  @keyframes formula-draw {
+    from {
+      clip-path: inset(0 100% 0 0);
     }
-    .math-scribble--organic[data-nb-side='start'] {
-      inset-inline-start: var(--m-inset, 4px);
-      inset-inline-end: auto;
+    to {
+      clip-path: inset(0 0 0 0);
     }
-    .math-scribble--organic[data-nb-side='end'] {
-      inset-inline-end: var(--m-inset, 4px);
-      inset-inline-start: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .math-scribble--motion,
+    .math-scribble--draw .math-scribble__formula-svg {
+      animation: none;
     }
-    .math-scribble--organic.math-scribble--formula {
-      width: min(96px, max(72px, calc(var(--s-size, 40px) * 1.5)));
+    .math-scribble--draw .math-scribble__formula-svg {
+      clip-path: none;
     }
+  }
+  :global(html.noam-a11y-motion) .math-scribble--motion,
+  :global(html.nd-motion-off) .math-scribble--motion,
+  :global(html.noam-a11y-motion) .math-scribble--draw .math-scribble__formula-svg,
+  :global(html.nd-motion-off) .math-scribble--draw .math-scribble__formula-svg {
+    animation: none !important;
+  }
+  :global(html.noam-a11y-motion) .math-scribble--draw .math-scribble__formula-svg,
+  :global(html.nd-motion-off) .math-scribble--draw .math-scribble__formula-svg {
+    clip-path: none !important;
+  }
+
+  /* Absolute φ placement inside section scatter wrappers */
+  .math-scribble--organic {
+    position: absolute;
+    display: block;
+    left: var(--x, 61.8%);
+    top: var(--y, 38.2%);
+    opacity: var(--m-op, 0.7);
+    flex: none;
+    z-index: 0;
+    max-width: 110px;
+    transform: translate(-50%, -50%) rotate(var(--s-rot, 0deg));
+  }
+  .math-scribble--organic.math-scribble--motion {
+    animation-name: scribble-bob-wobble-abs;
+  }
+  @keyframes scribble-bob-wobble-abs {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) translateY(0)
+        rotate(calc(var(--s-rot, 0deg) - var(--d-wobble, 4deg)));
+    }
+    50% {
+      transform: translate(-50%, -50%) translateY(calc(-1 * var(--d-bob, 6px)))
+        rotate(calc(var(--s-rot, 0deg) + var(--d-wobble, 4deg)));
+    }
+  }
+  .math-scribble--organic.math-scribble--formula {
+    width: min(110px, max(72px, calc(var(--s-size, 40px) * 1.6)));
   }
 </style>

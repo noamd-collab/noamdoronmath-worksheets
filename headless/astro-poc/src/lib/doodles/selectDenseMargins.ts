@@ -18,8 +18,12 @@ export type DenseMarginPlacement = {
   sizePx: number;
   rotate: number;
   scale: number;
+  /** Always true — every gutter doodle moves when motion allowed. */
   float: boolean;
   delay: number;
+  duration: number;
+  bobPx: number;
+  wobbleDeg: number;
   opacity: number;
   /** Shown in the ≤1200 in-flow strip. */
   mobileVisible: boolean;
@@ -78,8 +82,10 @@ export function selectDenseMargins(
     const sizePx = Math.round(88 + rng() * 100); // 88–188 desktop base
     const rotate = Math.round((-16 + rng() * 32) * 10) / 10;
     const scale = Math.round((0.82 + rng() * 0.28) * 1000) / 1000;
-    const float = rng() < 0.45;
-    const delay = Math.round(rng() * 22) / 10;
+    const delay = Math.round(rng() * 45) / 10; // 0–4.5s stagger
+    const duration = Math.round((4 + rng() * 5) * 10) / 10; // 4–9s
+    const bobPx = Math.round(4 + rng() * 4); // 4–8
+    const wobbleDeg = Math.round((3 + rng() * 3) * 10) / 10; // 3–6
     const opacity = Math.round((0.8 + rng() * 0.16) * 100) / 100;
     return {
       id: m.id,
@@ -89,8 +95,11 @@ export function selectDenseMargins(
       sizePx,
       rotate,
       scale,
-      float,
+      float: true,
       delay,
+      duration,
+      bobPx,
+      wobbleDeg,
       opacity,
       mobileVisible: i < mobileWant,
     };

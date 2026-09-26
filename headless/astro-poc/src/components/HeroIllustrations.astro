@@ -54,7 +54,8 @@
   @media (prefers-reduced-motion: reduce) {
     .notebook-doodle { animation: none; }
   }
-  :global(html.noam-a11y-motion) .notebook-doodle {
+  :global(html.noam-a11y-motion) .notebook-doodle,
+  :global(html.nd-motion-off) .notebook-doodle {
     animation: none !important;
   }
   /* K3: at ≥1100px the hero is a two-column row (copy + concept-loop card);

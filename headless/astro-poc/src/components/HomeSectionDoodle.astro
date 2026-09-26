@@ -1,10 +1,8 @@
 ---
 /**
- * KIMI-ANIM-6 — dense notebook scatter per home section (3–6 webp motifs
- * + small math scribbles) on desktop.
- * Mobile: absolute organic scatter inside the section (no flex/grid strip,
- * no layout push). Subset floats; off under prefers-reduced-motion /
- * noam-a11y-motion / nd-motion-off.
+ * Golden-ratio notebook scatter per home section (3–6 webps + scribbles).
+ * Absolute φ anchors on desktop AND mobile — never a flex/grid strip.
+ * Every doodle bobs + wobbles when motion is allowed.
  */
 import manifest from '../data/doodles.manifest.json';
 import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
@@ -12,13 +10,9 @@ import MathScribbles from './MathScribbles.astro';
 import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
 
 export interface Props {
-  /** Section seed for deterministic layout */
   seed: string;
-  /** Preferred motif ids (topic-matched); fillers complete the cluster */
   preferred?: string[];
-  /** Motif count 3–6 (default 5) */
   count?: number;
-  /** Scribble count (default 3; 0 to hide) */
   scribbleCount?: number;
 }
 
@@ -41,10 +35,7 @@ const scatter = selectNotebookScatter(seed, motifs, {
     >
       {scatter.motifs.map((m) => (
         <img
-          class:list={[
-            'home-nb-doodle',
-            m.float ? 'home-nb-doodle--float' : null,
-          ]}
+          class="home-nb-doodle home-nb-doodle--motion"
           src={m.src}
           alt=""
           width={m.sizePx}
@@ -56,14 +47,16 @@ const scatter = selectNotebookScatter(seed, motifs, {
           data-nb-side={m.side}
           style={[
             `--d-size:${m.sizePx}px`,
-            `--d-rot:${m.rotate}deg`,
-            `--d-op:${m.opacity}`,
-            `--d-delay:${m.delay}s`,
             `--m-size:${m.mobileSizePx}px`,
-            `--r:${m.mobileRotate}deg`,
+            `--r:${m.rotate}deg`,
+            `--d-op:${m.opacity}`,
             `--m-op:${m.mobileOpacity}`,
-            `--m-top:${m.topPx}px`,
-            `--m-inset:${m.insetPx}px`,
+            `--d-delay:${m.delay}s`,
+            `--d-dur:${m.duration}s`,
+            `--d-bob:${m.bobPx}px`,
+            `--d-wobble:${m.wobbleDeg}deg`,
+            `--x:${m.xPct}%`,
+            `--y:${m.yPct}%`,
           ].join(';')}
         />
       ))}
@@ -73,101 +66,68 @@ const scatter = selectNotebookScatter(seed, motifs, {
 }
 
 <style>
+  /*
+   * Absolute φ scatter on every viewport — kills the flat flex bottom row.
+   * Parent section must be position:relative + overflow-x:clip.
+   */
   .home-section-notebook {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 6px 14px;
-    width: 100%;
-    margin: 6px 0 14px;
-    padding: 4px 8px 8px;
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
     pointer-events: none;
     user-select: none;
     z-index: 0;
   }
   .home-nb-doodle {
+    position: absolute;
     display: block;
-    width: var(--d-size, 100px);
+    /* Physical % — works in RTL; left/top so φ points stay stable */
+    left: var(--x, 38.2%);
+    top: var(--y, 61.8%);
+    width: var(--d-size, 45px);
+    max-width: min(120px, 22vw);
     height: auto;
-    max-width: min(180px, 28vw);
-    opacity: var(--d-op, 0.9);
-    transform: rotate(var(--d-rot, 0deg));
+    opacity: var(--d-op, 0.8);
+    transform: translate(-50%, -50%) rotate(var(--r, 0deg));
     transform-origin: center center;
-    flex: 0 0 auto;
+    z-index: 0;
   }
-  .home-nb-doodle--float {
-    animation: site-doodle-float 7.5s ease-in-out infinite;
+  .home-nb-doodle--motion {
+    animation: nb-doodle-bob-wobble var(--d-dur, 6.5s) ease-in-out infinite;
     animation-delay: var(--d-delay, 0s);
     will-change: transform;
   }
-  @keyframes site-doodle-float {
+  @keyframes nb-doodle-bob-wobble {
     0%,
     100% {
-      transform: translateY(0) rotate(var(--d-rot, 0deg));
+      transform: translate(-50%, -50%) translateY(0)
+        rotate(calc(var(--r, 0deg) - var(--d-wobble, 4deg)));
     }
     50% {
-      transform: translateY(-10px) rotate(var(--d-rot, 0deg));
+      transform: translate(-50%, -50%) translateY(calc(-1 * var(--d-bob, 6px)))
+        rotate(calc(var(--r, 0deg) + var(--d-wobble, 4deg)));
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .home-nb-doodle--float {
+    .home-nb-doodle--motion {
       animation: none;
     }
   }
-  :global(html.noam-a11y-motion) .home-nb-doodle--float,
-  :global(html.nd-motion-off) .home-nb-doodle--float {
+  :global(html.noam-a11y-motion) .home-nb-doodle--motion,
+  :global(html.nd-motion-off) .home-nb-doodle--motion {
     animation: none !important;
   }
 
-  /*
-   * Mobile: absolute organic scatter — no flex/grid row, no layout push.
-   * Parent section is position:relative + overflow-x:clip (catalog.css).
-   */
   @media (max-width: 767px) {
-    .home-section-notebook {
-      position: absolute;
-      inset: 0;
-      display: block;
-      width: auto;
-      height: auto;
-      margin: 0;
-      padding: 0;
-      overflow: visible;
-      pointer-events: none;
-      z-index: 0;
-    }
     .home-nb-doodle {
-      position: absolute;
-      display: block;
-      top: var(--m-top, 8px);
       width: var(--m-size, 36px) !important;
-      max-width: 56px !important;
-      height: auto;
+      max-width: 73px !important;
       opacity: var(--m-op, 0.7);
-      transform: rotate(var(--r, 0deg));
-      z-index: 0;
-      flex: none;
-    }
-    .home-nb-doodle[data-nb-side='start'] {
-      inset-inline-start: var(--m-inset, 6px);
-      inset-inline-end: auto;
-    }
-    .home-nb-doodle[data-nb-side='end'] {
-      inset-inline-end: var(--m-inset, 6px);
-      inset-inline-start: auto;
-    }
-    .home-nb-doodle--float {
-      animation-name: site-doodle-float-mobile;
-    }
-    @keyframes site-doodle-float-mobile {
-      0%,
-      100% {
-        transform: translateY(0) rotate(var(--r, 0deg));
-      }
-      50% {
-        transform: translateY(-8px) rotate(var(--r, 0deg));
-      }
     }
   }
   @media print {

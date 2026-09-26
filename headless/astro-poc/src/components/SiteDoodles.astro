@@ -2,8 +2,8 @@
 /**
  * DOODLES-45 / KIMI-ANIM-6 — dense notebook margin columns.
  * Uses ALL catalog motifs in alternating start/end gutters (desktop)
- * and a dense in-flow wrap on ≤1200 / mobile. Homepage included.
- * Subset floats; off under reduced-motion / noam-a11y-motion.
+ * and a dense in-flow wrap on ≤1200 tablet. Hidden ≤767 (section scatters).
+ * EVERY gutter doodle bobs+wobbles; off under reduced-motion / a11y.
  */
 import { selectDenseMargins } from '../lib/doodles/selectDenseMargins';
 import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
@@ -30,9 +30,9 @@ const placements =
         <img
           class:list={[
             'site-doodle',
+            'site-doodle--float',
             p.side === 'start' ? 'site-doodle--start' : 'site-doodle--end',
             p.mobileVisible ? 'site-doodle--strip' : 'site-doodle--gutter-only',
-            p.float ? 'site-doodle--float' : null,
           ]}
           src={p.src}
           alt=""
@@ -42,7 +42,16 @@ const placements =
           loading="lazy"
           data-doodle-id={p.id}
           data-doodle-side={p.side}
-          style={`top:${p.topPct}%;width:${Math.round(p.sizePx * p.scale)}px;--doodle-rotate:${p.rotate}deg;--doodle-op:${p.opacity};--doodle-delay:${p.delay}s`}
+          style={[
+            `top:${p.topPct}%`,
+            `width:${Math.round(p.sizePx * p.scale)}px`,
+            `--doodle-rotate:${p.rotate}deg`,
+            `--doodle-op:${p.opacity}`,
+            `--doodle-delay:${p.delay}s`,
+            `--doodle-dur:${p.duration}s`,
+            `--doodle-bob:${p.bobPx}px`,
+            `--doodle-wobble:${p.wobbleDeg}deg`,
+          ].join(';')}
         />
       ))}
     </div>
@@ -81,18 +90,20 @@ const placements =
     inset-inline-start: auto;
   }
   .site-doodle--float {
-    animation: site-doodle-float 7.4s ease-in-out infinite;
+    animation: site-doodle-bob-wobble var(--doodle-dur, 6.5s) ease-in-out infinite;
     animation-delay: var(--doodle-delay, 0s);
     will-change: transform;
   }
 
-  @keyframes site-doodle-float {
+  @keyframes site-doodle-bob-wobble {
     0%,
     100% {
-      transform: translateY(0) rotate(var(--doodle-rotate, 0deg));
+      transform: translateY(0)
+        rotate(calc(var(--doodle-rotate, 0deg) - var(--doodle-wobble, 4deg)));
     }
     50% {
-      transform: translateY(-12px) rotate(var(--doodle-rotate, 0deg));
+      transform: translateY(calc(-1 * var(--doodle-bob, 6px)))
+        rotate(calc(var(--doodle-rotate, 0deg) + var(--doodle-wobble, 4deg)));
     }
   }
 

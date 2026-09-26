@@ -1,31 +1,45 @@
 /**
- * KIMI-ANIM-6 — dense “student notebook” scatter for home sections.
- * Deterministic (pathname/seed hashed); SSR-safe — no Math.random().
- * Mobile organic placements: absolute coords (no flex/grid strip).
+ * Golden-ratio notebook scatter for home/topic sections.
+ * Deterministic (seed hashed); SSR-safe — no Math.random().
+ * Positions at φ points (23.6 / 38.2 / 61.8 / 76.4 %); sizes 28 / 45 / 73.
+ * Every motif animates (bob + wobble) when motion is allowed.
  */
 import { hashPathname, type DoodleMotif } from './selectSiteDoodles';
 
-/** Phone doodle widths — mix of 28–56px family. */
-export const MOBILE_DOODLE_SIZES = [30, 36, 44, 52] as const;
+/** φ ≈ 1.618 — size ladder 28 → 45 → 73 */
+export const PHI = 1.6180339887;
+export const PHI_SIZES = [28, 45, 73] as const;
+/** Section % anchors (and nested 1/φ² bands). */
+export const PHI_POINTS = [23.6, 38.2, 61.8, 76.4] as const;
 
 export type ScatterItem = {
   id: string;
   src: string;
-  /** Desktop display width in px (varied small→large). */
+  /** Display width — φ ladder (28 / 45 / 73). */
   sizePx: number;
+  /** Base rotation (deg). */
   rotate: number;
-  /** Gentle float on a subset only. */
+  /** Always true — every doodle moves when motion allowed. */
   float: boolean;
   opacity: number;
-  /** Stagger delay seconds when floating. */
+  /** Animation delay seconds. */
   delay: number;
-  /** Mobile organic absolute layout (ignored on desktop CSS). */
+  /** Animation duration seconds (4–9). */
+  duration: number;
+  /** translateY amplitude px (4–8). */
+  bobPx: number;
+  /** Extra rotate wobble ±deg (3–6). */
+  wobbleDeg: number;
+  /** Absolute placement inside section (0–100). */
+  xPct: number;
+  yPct: number;
+  /** Mobile size (same φ ladder; may differ from desktop size). */
   mobileSizePx: number;
   mobileRotate: number;
   mobileOpacity: number;
+  /** Legacy edge fields (derived from xPct for RTL-friendly CSS). */
   topPx: number;
   side: 'start' | 'end';
-  /** Logical inset from inline edge; negative = half-tucked behind edge. */
   insetPx: number;
 };
 
@@ -43,7 +57,11 @@ export type ScribbleItem = {
   sizePx: number;
   float: boolean;
   delay: number;
-  /** Mobile absolute layout */
+  duration: number;
+  bobPx: number;
+  wobbleDeg: number;
+  xPct: number;
+  yPct: number;
   topPx: number;
   side: 'start' | 'end';
   insetPx: number;
@@ -84,55 +102,79 @@ const SCRIBBLE_KINDS: ScribbleKind[] = [
   'dots',
 ];
 
-/** Edge recipes — tops stagger so no two consecutive share the same band. */
-type EdgeSlot = {
-  topMin: number;
-  topMax: number;
-  side: 'start' | 'end';
-  insetMin: number;
-  insetMax: number;
-};
-
-const EDGE_SLOTS: EdgeSlot[] = [
-  { topMin: 4, topMax: 14, side: 'start', insetMin: 2, insetMax: 10 },
-  { topMin: 56, topMax: 88, side: 'end', insetMin: 6, insetMax: 16 },
-  { topMin: 110, topMax: 150, side: 'start', insetMin: -10, insetMax: 4 },
-  { topMin: 22, topMax: 42, side: 'end', insetMin: 4, insetMax: 14 },
-  { topMin: 170, topMax: 220, side: 'end', insetMin: -8, insetMax: 6 },
-  { topMin: 78, topMax: 118, side: 'start', insetMin: 8, insetMax: 18 },
-  { topMin: 200, topMax: 260, side: 'start', insetMin: -6, insetMax: 8 },
-  { topMin: 140, topMax: 190, side: 'end', insetMin: 10, insetMax: 20 },
-];
-
-function pickOrganicSlots(
+/** All unique (x,y) φ-point pairs — never a shared baseline. */
+function buildPhiSlots(
   rng: () => number,
   count: number
-): Array<{ topPx: number; side: 'start' | 'end'; insetPx: number }> {
-  const order = shuffleIndices(rng, EDGE_SLOTS.length);
-  const out: Array<{ topPx: number; side: 'start' | 'end'; insetPx: number }> = [];
-  let prevTop = -999;
-  for (const si of order) {
-    if (out.length >= count) break;
-    const slot = EDGE_SLOTS[si];
-    let topPx = Math.round(slot.topMin + rng() * (slot.topMax - slot.topMin));
-    // Never the same top value twice in a row — keep ≥16px band gap
-    if (Math.abs(topPx - prevTop) < 16) {
-      topPx = prevTop + (topPx >= prevTop ? 18 : -18);
-      if (topPx < 2) topPx = prevTop + 18;
+): Array<{ xPct: number; yPct: number }> {
+  const pairs: Array<{ xPct: number; yPct: number }> = [];
+  for (const x of PHI_POINTS) {
+    for (const y of PHI_POINTS) {
+      // Tiny deterministic jitter (±1.2%) so neighbours aren't on a lattice
+      pairs.push({ xPct: x, yPct: y });
     }
-    const insetPx = Math.round(
-      slot.insetMin + rng() * (slot.insetMax - slot.insetMin)
-    );
-    out.push({ topPx, side: slot.side, insetPx });
-    prevTop = topPx;
+  }
+  const order = shuffleIndices(rng, pairs.length);
+  const out: Array<{ xPct: number; yPct: number }> = [];
+  let prevY = -999;
+  let prevX = -999;
+  for (const oi of order) {
+    if (out.length >= count) break;
+    const base = pairs[oi];
+    const jx = Math.round((base.xPct + (rng() - 0.5) * 2.4) * 10) / 10;
+    let jy = Math.round((base.yPct + (rng() - 0.5) * 2.4) * 10) / 10;
+    // Never same Y band as previous (no common baseline)
+    if (Math.abs(jy - prevY) < 6) {
+      jy = prevY + (jy >= prevY ? 8 : -8);
+    }
+    // Prefer φ spacing from previous neighbour on X
+    if (Math.abs(jx - prevX) < 8 && out.length > 0) continue;
+    const xPct = Math.min(88, Math.max(8, jx));
+    const yPct = Math.min(88, Math.max(8, jy));
+    out.push({ xPct, yPct });
+    prevY = yPct;
+    prevX = xPct;
+  }
+  // Fill if we skipped too many
+  while (out.length < count) {
+    const x = PHI_POINTS[out.length % PHI_POINTS.length];
+    const y = PHI_POINTS[(out.length * 2 + 1) % PHI_POINTS.length];
+    out.push({
+      xPct: x + out.length * 0.3,
+      yPct: y + ((out.length % 3) - 1) * 4,
+    });
   }
   return out;
 }
 
+function phiSize(rng: () => number): number {
+  return PHI_SIZES[Math.floor(rng() * PHI_SIZES.length)];
+}
+
+function motionParams(rng: () => number) {
+  return {
+    float: true as const,
+    delay: Math.round((rng() * 4.5) * 10) / 10, // 0–4.5s
+    duration: Math.round((4 + rng() * 5) * 10) / 10, // 4–9s
+    bobPx: Math.round(4 + rng() * 4), // 4–8
+    wobbleDeg: Math.round((3 + rng() * 3) * 10) / 10, // 3–6
+  };
+}
+
+function edgeFromPct(xPct: number, yPct: number, sectionHintPx = 360) {
+  // Derive legacy edge fields for CSS that still keys off side/inset
+  const side: 'start' | 'end' = xPct >= 50 ? 'end' : 'start';
+  const insetPct = side === 'start' ? xPct : 100 - xPct;
+  return {
+    side,
+    insetPx: Math.round((insetPct / 100) * 40) - 8, // small edge bias
+    topPx: Math.round((yPct / 100) * sectionHintPx),
+  };
+}
+
 /**
- * Pick `count` motifs (preferred first, then fillers), varied size/rotation.
- * About ~40% get float. Also returns 2–4 small math scribbles.
- * Every motif/scribble carries mobile absolute placement fields.
+ * Pick `count` motifs (preferred first, then fillers) on golden-ratio anchors.
+ * EVERY motif floats. Also returns 2–4 math scribbles (formula always included).
  */
 export function selectNotebookScatter(
   seed: string,
@@ -175,44 +217,38 @@ export function selectNotebookScatter(
     picked.push(m);
   }
 
-  // Slight reshuffle so preferred aren't always first visually
   const order = shuffleIndices(rng, picked.length).map((i) => picked[i]);
-  const mobileSlots = pickOrganicSlots(rng, order.length);
+  const slots = buildPhiSlots(rng, order.length);
 
   const items: ScatterItem[] = order.map((m, i) => {
-    const sizePx = Math.round(56 + rng() * 100); // 56–156 desktop
-    const rotate = Math.round((-18 + rng() * 36) * 10) / 10;
-    const float = rng() < 0.42;
-    const opacity = Math.round((0.78 + rng() * 0.18) * 100) / 100;
-    const delay = Math.round(rng() * 18) / 10;
-    const mobileSizePx =
-      MOBILE_DOODLE_SIZES[Math.floor(rng() * MOBILE_DOODLE_SIZES.length)];
-    // -14deg … +12deg
+    const sizePx = phiSize(rng);
+    const mobileSizePx = phiSize(rng);
+    const rotate = Math.round((-14 + rng() * 26) * 10) / 10;
     const mobileRotate = Math.round((-14 + rng() * 26) * 10) / 10;
-    // Most 0.55–0.9; ~20% ghosted ~0.45
-    const mobileOpacity =
-      rng() < 0.22
+    const opacity =
+      rng() < 0.2
         ? Math.round((0.42 + rng() * 0.08) * 100) / 100
         : Math.round((0.55 + rng() * 0.35) * 100) / 100;
-    const slot = mobileSlots[i] || {
-      topPx: 8 + i * 40,
-      side: (i % 2 === 0 ? 'start' : 'end') as 'start' | 'end',
-      insetPx: 6,
-    };
+    const mobileOpacity =
+      rng() < 0.2
+        ? Math.round((0.42 + rng() * 0.08) * 100) / 100
+        : Math.round((0.55 + rng() * 0.35) * 100) / 100;
+    const motion = motionParams(rng);
+    const slot = slots[i];
+    const edge = edgeFromPct(slot.xPct, slot.yPct);
     return {
       id: `${m.id}-${i}`,
       src: m.src,
       sizePx,
       rotate,
-      float,
       opacity,
-      delay,
       mobileSizePx,
       mobileRotate,
       mobileOpacity,
-      topPx: slot.topPx,
-      side: slot.side,
-      insetPx: slot.insetPx,
+      xPct: slot.xPct,
+      yPct: slot.yPct,
+      ...edge,
+      ...motion,
     };
   });
 
@@ -220,7 +256,6 @@ export function selectNotebookScatter(
 
   const scribbleOrder = shuffleIndices(rng, SCRIBBLE_KINDS.length);
   const kinds: ScribbleKind[] = [];
-  // Always include a readable formula scribble (LTR a²+b²=c² / πr² / …)
   kinds.push('formula');
   for (const ki of scribbleOrder) {
     const k = SCRIBBLE_KINDS[ki];
@@ -229,29 +264,27 @@ export function selectNotebookScatter(
     kinds.push(k);
   }
 
-  const scribbleSlots = pickOrganicSlots(rng, kinds.length);
+  const scribbleSlots = buildPhiSlots(rng, kinds.length);
   const scribbles: ScribbleItem[] = kinds.map((kind, i) => {
-    const slot = scribbleSlots[i] || {
-      topPx: 30 + i * 50,
-      side: (i % 2 === 0 ? 'end' : 'start') as 'start' | 'end',
-      insetPx: 4,
-    };
+    const slot = scribbleSlots[i];
+    const edge = edgeFromPct(slot.xPct, slot.yPct, 320);
+    const motion = motionParams(rng);
     return {
       kind,
-      // Formulas stay nearly upright so they stay readable
       rotate:
         kind === 'formula'
           ? Math.round((-6 + rng() * 12) * 10) / 10
-          : Math.round((-22 + rng() * 44) * 10) / 10,
+          : Math.round((-18 + rng() * 36) * 10) / 10,
       sizePx:
         kind === 'formula'
-          ? Math.round(52 + rng() * 24) // 52–76 wider readable
-          : Math.round(28 + rng() * 36),
-      float: kind === 'formula' ? false : rng() < 0.35,
-      delay: Math.round(rng() * 20) / 10,
-      topPx: slot.topPx + 12, // offset vs motif tops
-      side: slot.side,
-      insetPx: slot.insetPx,
+          ? PHI_SIZES[1] // 45 — readable
+          : phiSize(rng),
+      ...motion,
+      // Formula gets a one-shot draw; still bob gently after
+      float: true,
+      xPct: slot.xPct,
+      yPct: slot.yPct,
+      ...edge,
       mobileOpacity:
         rng() < 0.25
           ? Math.round((0.4 + rng() * 0.1) * 100) / 100

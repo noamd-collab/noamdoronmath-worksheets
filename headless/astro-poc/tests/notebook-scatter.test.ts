@@ -1,10 +1,14 @@
 /**
- * KIMI-ANIM-6 — dense notebook scatter + margin selectors.
+ * Golden-ratio notebook scatter + margin selectors.
  */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { selectDenseMargins } from '../src/lib/doodles/selectDenseMargins.ts';
-import { selectNotebookScatter } from '../src/lib/doodles/selectNotebookScatter.ts';
+import {
+  PHI_POINTS,
+  PHI_SIZES,
+  selectNotebookScatter,
+} from '../src/lib/doodles/selectNotebookScatter.ts';
 import type { DoodleMotif } from '../src/lib/doodles/selectSiteDoodles.ts';
 
 const catalog: DoodleMotif[] = [
@@ -40,29 +44,35 @@ describe('selectNotebookScatter', () => {
     );
   });
 
-  it('varies sizes and marks only a subset to float', () => {
+  it('uses φ sizes and animates every motif (no sync)', () => {
     const s = selectNotebookScatter('home-values', catalog, { count: 6 });
-    const sizes = new Set(s.motifs.map((m) => m.sizePx));
-    assert.ok(sizes.size >= 2, 'expected size variety');
-    const floats = s.motifs.filter((m) => m.float).length;
-    assert.ok(floats >= 1 && floats < s.motifs.length);
+    assert.ok(s.motifs.every((m) => (PHI_SIZES as readonly number[]).includes(m.sizePx)));
+    assert.ok(s.motifs.every((m) => m.float === true));
+    assert.ok(s.motifs.every((m) => m.duration >= 4 && m.duration <= 9));
+    assert.ok(s.motifs.every((m) => m.bobPx >= 4 && m.bobPx <= 8));
+    assert.ok(s.motifs.every((m) => m.wobbleDeg >= 3 && m.wobbleDeg <= 6));
+    const durs = new Set(s.motifs.map((m) => m.duration));
+    const delays = new Set(s.motifs.map((m) => m.delay));
+    assert.ok(durs.size + delays.size >= 3, 'expected staggered motion params');
   });
 
-  it('adds organic mobile placements (varied tops/sides, phone sizes)', () => {
+  it('places on golden-ratio anchors — never a shared baseline', () => {
     const s = selectNotebookScatter('home-hero', catalog, { count: 5 });
-    assert.ok(s.motifs.every((m) => [30, 36, 44, 52].includes(m.mobileSizePx)));
-    assert.ok(s.motifs.every((m) => m.mobileRotate >= -14 && m.mobileRotate <= 12));
-    assert.ok(s.motifs.every((m) => m.mobileOpacity >= 0.4 && m.mobileOpacity <= 0.95));
-    assert.ok(s.motifs.some((m) => m.side === 'start'));
-    assert.ok(s.motifs.some((m) => m.side === 'end'));
-    // No two consecutive tops within 16px
+    assert.ok(s.motifs.every((m) => m.xPct >= 8 && m.xPct <= 88));
+    assert.ok(s.motifs.every((m) => m.yPct >= 8 && m.yPct <= 88));
+    // No two consecutive Y within 6% (common baseline guard)
     for (let i = 1; i < s.motifs.length; i++) {
       assert.ok(
-        Math.abs(s.motifs[i].topPx - s.motifs[i - 1].topPx) >= 16,
-        `tops too close: ${s.motifs[i - 1].topPx} then ${s.motifs[i].topPx}`
+        Math.abs(s.motifs[i].yPct - s.motifs[i - 1].yPct) >= 6,
+        `shared baseline: ${s.motifs[i - 1].yPct} then ${s.motifs[i].yPct}`
       );
     }
-    assert.ok(s.scribbles.every((sc) => typeof sc.topPx === 'number' && sc.side));
+    // At least one motif near a canonical φ point
+    const nearPhi = s.motifs.some((m) =>
+      PHI_POINTS.some((p) => Math.abs(m.xPct - p) < 4 || Math.abs(m.yPct - p) < 4)
+    );
+    assert.ok(nearPhi, 'expected a φ-point anchor');
+    assert.ok(s.scribbles.every((sc) => typeof sc.xPct === 'number' && sc.float));
   });
 });
 
@@ -87,8 +97,10 @@ describe('selectDenseMargins', () => {
     assert.notEqual(sig(a), sig(c));
   });
 
-  it('also densifies the homepage path', () => {
+  it('also densifies the homepage path and always floats', () => {
     const home = selectDenseMargins('/', catalog);
     assert.equal(home.length, catalog.length);
+    assert.ok(home.every((p) => p.float === true));
+    assert.ok(home.every((p) => p.duration >= 4 && p.duration <= 9));
   });
 });
