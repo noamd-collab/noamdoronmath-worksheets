@@ -883,6 +883,172 @@ function renderTransform(root: LoopRoot, t: number) {
 }
 const TRANS_HOLD = 6.8;
 
+/* ═══════════════ L01 — angle-sum: three wedges join a straight line (D = 10 s) ═══════════════ */
+
+function renderAngleSum(root: LoopRoot, t: number) {
+  const moveP = ph(t, 2.0, 3.5) - ph(t, 8.2, 9.4);
+  const homes = [
+    { x: 168, y: 236 },
+    { x: 392, y: 236 },
+    { x: 280, y: 118 },
+  ];
+  const targets = [
+    { x: 168, y: 300 },
+    { x: 248, y: 300 },
+    { x: 328, y: 300 },
+  ];
+  for (let i = 0; i < 3; i++) {
+    const g = q(root, `ang${i}`);
+    const x = lerp(homes[i].x, targets[i].x, moveP);
+    const y = lerp(homes[i].y, targets[i].y, moveP);
+    if (g) g.setAttribute('transform', `translate(${r2(x)} ${r2(y)})`);
+    op(g, ph(t, 0.7, 1.1) * (1 - ph(t, 9.4, 9.8)));
+  }
+  const line = q(root, 'straight');
+  op(line, ph(t, 3.2, 3.6) * (1 - ph(t, 8.4, 9.0)));
+  draw(line, ph(t, 3.3, 4.0));
+  op(q(root, 'lbl180'), ph(t, 4.0, 4.4) * (1 - ph(t, 8.2, 8.8)));
+  const fxs = qa(root, '[data-fx]');
+  const show = ph(t, 4.5, 4.9) * (1 - ph(t, 8.0, 8.6));
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 4.9, 5.3) * (1 - ph(t, 8.0, 8.6)));
+}
+const ANGLE_SUM_HOLD = 6.2;
+
+/* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════ */
+
+function renderParaRect(root: LoopRoot, t: number) {
+  const flat = ph(t, 1.3, 2.7) - ph(t, 8.1, 9.3);
+  const s = 72 * (1 - flat);
+  const shape = q(root, 'shape');
+  if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(160 + s)},128`);
+  op(q(root, 'height'), 1);
+  op(q(root, 'lbl-h'), ph(t, 0.6, 1.0));
+  op(q(root, 'lbl-same'), ph(t, 2.8, 3.3) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
+}
+const PARA_RECT_HOLD = 5.4;
+
+/* ═══════════════ L03 — angle-kinds: acute, right, obtuse (D = 10 s) ═══════════════ */
+
+function renderAngleKinds(root: LoopRoot, t: number) {
+  const toAcute = ph(t, 0.5, 1.5);
+  const toRight = ph(t, 2.1, 3.1);
+  const toObtuse = ph(t, 3.7, 4.8);
+  const back = ph(t, 8.2, 9.4);
+  let deg = lerp(26, 42, toAcute);
+  deg = lerp(deg, 90, toRight);
+  deg = lerp(deg, 128, toObtuse);
+  deg = lerp(deg, 26, back);
+  const rad = (deg * Math.PI) / 180;
+  const ray = q(root, 'ray');
+  if (ray) {
+    ray.setAttribute('x2', String(r2(180 + 160 * Math.cos(rad))));
+    ray.setAttribute('y2', String(r2(230 - 160 * Math.sin(rad))));
+  }
+  const nearRight = deg > 78 && deg < 102 && back < 0.15 ? 1 : 0;
+  op(q(root, 'square'), nearRight * (1 - toObtuse));
+  op(q(root, 'lbl-acute'), (deg < 70 && toRight < 0.4 && back < 0.2 ? 1 : 0));
+  op(q(root, 'lbl-right'), nearRight * (1 - ph(t, 3.5, 3.9)));
+  op(q(root, 'lbl-obtuse'), (deg > 108 && back < 0.25 ? 1 : 0) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.9, 5.3) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 5.3, 5.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const ANGLE_KINDS_HOLD = 6.2;
+
+/* ═══════════════ L04 — frac-product: half of a third is a sixth (D = 10 s) ═══════════════ */
+
+function renderFracProduct(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'half'), ph(t, 0.8, 1.4) * fade);
+  op(q(root, 'third'), ph(t, 1.8, 2.4) * fade);
+  op(q(root, 'overlap'), ph(t, 2.8, 3.4) * fade);
+  op(q(root, 'lbl-half'), ph(t, 1.2, 1.6) * fade);
+  op(q(root, 'lbl-third'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'lbl-sixth'), ph(t, 3.3, 3.8) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.8, 4.2) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 4.2, 4.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const FRAC_PRODUCT_HOLD = 5.8;
+
+/* ═══════════════ L05 — slope: rise 2, run 1, twice (D = 10 s) ═══════════════ */
+
+function renderSlope(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const line = q(root, 'line');
+  op(line, ph(t, 0.5, 0.8) * fade);
+  draw(line, ph(t, 0.6, 1.8));
+  op(q(root, 'tri1'), ph(t, 2.0, 2.6) * fade);
+  op(q(root, 'run1'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'rise1'), ph(t, 2.6, 3.1) * fade);
+  op(q(root, 'tri2'), ph(t, 3.3, 3.9) * fade);
+  op(q(root, 'run2'), ph(t, 3.5, 3.9) * fade);
+  op(q(root, 'rise2'), ph(t, 3.9, 4.3) * fade);
+  op(q(root, 'lbl2'), ph(t, 4.3, 4.7) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 5.0, 5.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const SLOPE_HOLD = 6.2;
+
+/* ═══════════════ L06 — add-within: 3 dots join 4 dots (D = 10 s) ═══════════════ */
+
+function renderAddWithin(root: LoopRoot, t: number) {
+  const slide = ph(t, 1.2, 2.4) - ph(t, 8.2, 9.3);
+  const g = q(root, 'group3');
+  if (g) g.setAttribute('transform', `translate(${r2(96 * slide)} 0)`);
+  op(q(root, 'lbl3'), ph(t, 0.4, 0.8) * (1 - ph(t, 2.2, 2.6)));
+  op(q(root, 'lbl4'), ph(t, 0.5, 0.9) * (1 - ph(t, 2.4, 2.8)));
+  op(q(root, 'lbl7'), ph(t, 2.6, 3.1) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.1, 3.5) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.5, 3.9) * (1 - ph(t, 8.0, 8.6)));
+}
+const ADD_WITHIN_HOLD = 5.2;
+
+/* ═══════════════ L07 — similar: triangle doubles, angles stay (D = 10 s) ═══════════════ */
+
+function renderSimilar(root: LoopRoot, t: number) {
+  const grow = ph(t, 1.2, 2.6) - ph(t, 8.2, 9.4);
+  const big = q(root, 'big');
+  const bx = lerp(240, 400, grow);
+  const cy = lerp(170, 90, grow);
+  if (big) big.setAttribute('points', `160,250 ${r2(bx)},250 160,${r2(cy)}`);
+  const vis = ph(t, 0.8, 1.2) * (1 - ph(t, 9.2, 9.7));
+  op(big, vis);
+  op(q(root, 'lbl-leg'), vis);
+  op(q(root, 'lbl-ht'), vis);
+  op(q(root, 'arc-big'), ph(t, 2.4, 2.9) * (1 - ph(t, 8.4, 9.0)));
+  const leg = q(root, 'lbl-leg');
+  const ht = q(root, 'lbl-ht');
+  if (leg) leg.textContent = grow > 0.85 ? '8' : '4';
+  if (ht) ht.textContent = grow > 0.85 ? '6' : '3';
+  op(q(root, 'lbl-same'), ph(t, 3.0, 3.5) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.8, 4.2) * (1 - ph(t, 8.0, 8.6)));
+}
+const SIMILAR_HOLD = 5.4;
+
+/* ═══════════════ L08 — order-ops: 2+3×4 = 14, (2+3)×4 = 20 (D = 10 s) ═══════════════ */
+
+function renderOrderOps(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.3, 9.1);
+  op(q(root, 'box-mul'), ph(t, 0.8, 1.2) * (1 - ph(t, 2.6, 3.0)) * fade);
+  op(q(root, 'eq14'), ph(t, 1.6, 2.1) * fade);
+  op(q(root, 'row2'), ph(t, 2.8, 3.2) * fade);
+  op(q(root, 'box-par'), ph(t, 3.2, 3.6) * (1 - ph(t, 4.4, 4.8)) * fade);
+  op(q(root, 'eq20'), ph(t, 4.0, 4.5) * fade);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 5.0, 5.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const ORDER_OPS_HOLD = 6.2;
+
 /* ═══════════════ engine ═══════════════ */
 
 const SPECS = {
@@ -903,14 +1069,24 @@ const SPECS = {
   cookies: { duration: 10, hold: CK_HOLD, render: renderCookies },
   fraction: { duration: 10, hold: FRAC_HOLD, render: renderFraction },
   transform: { duration: 11, hold: TRANS_HOLD, render: renderTransform },
+  'angle-sum': { duration: 10, hold: ANGLE_SUM_HOLD, render: renderAngleSum },
+  'para-rect': { duration: 10, hold: PARA_RECT_HOLD, render: renderParaRect },
+  'angle-kinds': { duration: 10, hold: ANGLE_KINDS_HOLD, render: renderAngleKinds },
+  'frac-product': { duration: 10, hold: FRAC_PRODUCT_HOLD, render: renderFracProduct },
+  slope: { duration: 10, hold: SLOPE_HOLD, render: renderSlope },
+  'add-within': { duration: 10, hold: ADD_WITHIN_HOLD, render: renderAddWithin },
+  similar: { duration: 10, hold: SIMILAR_HOLD, render: renderSimilar },
+  'order-ops': { duration: 10, hold: ORDER_OPS_HOLD, render: renderOrderOps },
 } as const;
 
 const MAX_LAPS = 4;
 
 function motionOff(): boolean {
+  const html = document.documentElement;
   return (
     window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-    document.documentElement.classList.contains('noam-a11y-motion')
+    html.classList.contains('noam-a11y-motion') ||
+    html.classList.contains('nd-motion-off')
   );
 }
 
