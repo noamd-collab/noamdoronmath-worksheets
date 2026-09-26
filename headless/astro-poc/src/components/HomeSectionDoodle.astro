@@ -1,0 +1,144 @@
+---
+/**
+ * KIMI-ANIM-6 — dense notebook scatter per home section (3–6 webp motifs
+ * + small math scribbles). Topic-matched preferred motifs first; fillers
+ * from the full DOODLES-45 set. In-flow wrap so nothing covers text/CTAs.
+ * Subset floats; off under prefers-reduced-motion / noam-a11y-motion.
+ */
+import manifest from '../data/doodles.manifest.json';
+import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
+import MathScribbles from './MathScribbles.astro';
+import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
+
+export interface Props {
+  /** Section seed for deterministic layout */
+  seed: string;
+  /** Preferred motif ids (topic-matched); fillers complete the cluster */
+  preferred?: string[];
+  /** Motif count 3–6 (default 5) */
+  count?: number;
+}
+
+const { seed, preferred = [], count = 5 } = Astro.props;
+const motifs = (manifest.motifs || []) as DoodleMotif[];
+const scatter = selectNotebookScatter(seed, motifs, {
+  preferred,
+  count,
+  scribbleCount: 3,
+});
+---
+
+{
+  scatter.motifs.length > 0 && (
+    <div
+      class="home-section-notebook"
+      aria-hidden="true"
+      data-home-section-notebook
+      data-notebook-seed={seed}
+    >
+      {scatter.motifs.map((m) => (
+        <img
+          class:list={[
+            'home-nb-doodle',
+            m.float ? 'home-nb-doodle--float' : null,
+          ]}
+          src={m.src}
+          alt=""
+          width={m.sizePx}
+          height={m.sizePx}
+          decoding="async"
+          loading="lazy"
+          data-doodle-id={m.id}
+          data-home-section-doodle
+          style={`--d-size:${m.sizePx}px;--d-rot:${m.rotate}deg;--d-op:${m.opacity};--d-delay:${m.delay}s`}
+        />
+      ))}
+      <MathScribbles items={scatter.scribbles} />
+    </div>
+  )
+}
+
+<style>
+  .home-section-notebook {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 14px;
+    width: 100%;
+    margin: 6px 0 14px;
+    padding: 4px 8px 8px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+  .home-nb-doodle {
+    display: block;
+    width: var(--d-size, 100px);
+    height: auto;
+    max-width: min(180px, 28vw);
+    opacity: var(--d-op, 0.9);
+    transform: rotate(var(--d-rot, 0deg));
+    transform-origin: center center;
+    flex: 0 0 auto;
+  }
+  .home-nb-doodle--float {
+    animation: site-doodle-float 7.5s ease-in-out infinite;
+    animation-delay: var(--d-delay, 0s);
+    will-change: transform;
+  }
+  @keyframes site-doodle-float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(var(--d-rot, 0deg));
+    }
+    50% {
+      transform: translateY(-10px) rotate(var(--d-rot, 0deg));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-nb-doodle--float {
+      animation: none;
+    }
+  }
+  :global(html.noam-a11y-motion) .home-nb-doodle--float {
+    animation: none !important;
+  }
+  /*
+   * Mobile: compact single row (~≤72px tall) so grade cards / CTAs
+   * sit near their pre-doodle vertical position — still visible, no overlap.
+   */
+  @media (max-width: 640px) {
+    .home-section-notebook {
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 2px 6px;
+      margin: 2px 0 6px;
+      padding: 0 4px;
+      max-height: 64px;
+      overflow: hidden;
+    }
+    .home-nb-doodle {
+      width: 48px !important;
+      max-width: 52px !important;
+    }
+    /* Keep 3 small motifs; hide the rest of the dense desktop cluster */
+    .home-nb-doodle:nth-child(n + 4) {
+      display: none;
+    }
+    /* One tiny scribble max on phone (prefer formula if present) */
+    .home-section-notebook :global(.math-scribble:not(.math-scribble--formula)) {
+      display: none;
+    }
+    .home-section-notebook :global(.math-scribble--formula) {
+      width: 78px;
+      max-width: 34vw;
+    }
+  }
+  @media print {
+    .home-section-notebook {
+      display: none !important;
+    }
+  }
+</style>
