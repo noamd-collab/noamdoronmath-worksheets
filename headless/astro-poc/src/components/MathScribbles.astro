@@ -256,14 +256,10 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
   .math-scribble--organic.math-scribble--formula {
     width: min(110px, max(72px, calc(var(--s-size, 40px) * 1.6)));
   }
-  /* Mobile: keep only the formula scribble (density ≤2–3 with edge motifs) */
+  /* Mobile: hide section scribbles — thin edge motifs carry the density budget */
   @media (max-width: 767px) {
-    .math-scribble--organic:not(.math-scribble--formula) {
+    .math-scribble--organic {
       display: none !important;
-    }
-    .math-scribble--organic.math-scribble--formula {
-      max-width: 72px;
-      opacity: calc(var(--m-op, 0.7) * 0.9);
     }
   }
 </style>

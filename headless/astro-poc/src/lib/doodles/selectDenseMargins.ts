@@ -157,11 +157,11 @@ export function selectDenseMargins(
     };
   });
 
-  // Sparse mobile set: pick 4 with max vertical separation (≤2–3 in a viewport).
-  const mobileWant = Math.min(4, placements.length);
+  // Sparse mobile set: pick 3 with large vertical gaps (≤1–2 edges in a viewport).
+  const mobileWant = Math.min(3, placements.length);
   const byTop = [...placements].sort((a, b) => a.topPct - b.topPct);
   const chosen: DenseMarginPlacement[] = [];
-  const minGap = 22; // % of document — ~2–3 visible per screen on typical pages
+  const minGap = 28; // % of document — keeps thin edges from stacking in one screen
   for (const p of byTop) {
     if (chosen.length >= mobileWant) break;
     if (chosen.every((c) => Math.abs(c.topPct - p.topPct) >= minGap)) {

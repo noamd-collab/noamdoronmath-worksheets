@@ -132,12 +132,12 @@ describe('selectDenseMargins', () => {
     const unique = new Set(tops.map((t) => Math.round(t)));
     assert.ok(unique.size >= 6, `expected φ spread, got ${unique.size}`);
     const mobile = home.filter((p) => p.mobileVisible);
-    assert.ok(mobile.length >= 3 && mobile.length <= 4, `mobileVisible=${mobile.length}`);
-    // Mobile tops spaced ≥22% so ≤2–3 fit a viewport
+    assert.ok(mobile.length >= 2 && mobile.length <= 3, `mobileVisible=${mobile.length}`);
+    // Mobile tops spaced ≥28% so ≤1–2 edge doodles fit a viewport
     const mt = [...mobile].sort((a, b) => a.topPct - b.topPct);
     for (let i = 1; i < mt.length; i++) {
       assert.ok(
-        mt[i].topPct - mt[i - 1].topPct >= 20,
+        mt[i].topPct - mt[i - 1].topPct >= 26,
         `mobile gap too tight: ${mt[i - 1].topPct} → ${mt[i].topPct}`
       );
     }
