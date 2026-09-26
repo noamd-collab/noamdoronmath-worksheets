@@ -1,8 +1,9 @@
 ---
 /**
  * KIMI-ANIM-6 — one restored DOODLES-45 motif per home section.
- * Decorative only (aria-hidden). Gentle float; off under reduced-motion /
- * html.noam-a11y-motion. Fixed size so it cannot shift section layout.
+ * Visual weight matches SiteDoodles margin motifs (~180–240px desktop).
+ * Same gentle float as `.site-doodle`; off under reduced-motion /
+ * html.noam-a11y-motion. Decorative only (aria-hidden); never captures clicks.
  */
 import manifest from '../data/doodles.manifest.json';
 
@@ -27,8 +28,8 @@ const entry = (manifest.motifs as { id: string; src: string }[]).find(
       class:list={['home-section-doodle', `home-section-doodle--${side}`]}
       src={entry.src}
       alt=""
-      width="120"
-      height="120"
+      width="220"
+      height="220"
       decoding="async"
       loading="lazy"
       aria-hidden="true"
@@ -42,34 +43,42 @@ const entry = (manifest.motifs as { id: string; src: string }[]).find(
 <style>
   .home-section-doodle {
     position: absolute;
-    top: -6px;
-    width: 88px;
+    top: -4px;
+    /* Match SiteDoodles gutter weight (~180–240px desktop). */
+    width: clamp(180px, 16vw, 240px);
     height: auto;
-    max-width: 22vw;
-    opacity: 0.88;
+    max-width: 240px;
+    opacity: 0.9;
     pointer-events: none;
     user-select: none;
     z-index: 0;
-    transform: rotate(var(--doodle-rot, 0deg));
+    transform: translateY(0) rotate(var(--doodle-rot, 0deg));
     transform-origin: center center;
-    animation: home-section-doodle-float 7.5s ease-in-out infinite;
+    /* Same motion language as SiteDoodles `.site-doodle-float`. */
+    animation: site-doodle-float 7.5s ease-in-out infinite;
     will-change: transform;
   }
   .home-section-doodle--end {
-    inset-inline-end: 0;
+    inset-inline-end: -4px;
+    animation-duration: 8.2s;
+    animation-delay: 0.5s;
   }
   .home-section-doodle--start {
-    inset-inline-start: 0;
+    inset-inline-start: -4px;
+    animation-duration: 7.8s;
+    animation-delay: 1s;
   }
-  @keyframes home-section-doodle-float {
+
+  @keyframes site-doodle-float {
     0%,
     100% {
       transform: translateY(0) rotate(var(--doodle-rot, 0deg));
     }
     50% {
-      transform: translateY(-7px) rotate(var(--doodle-rot, 0deg));
+      transform: translateY(-12px) rotate(var(--doodle-rot, 0deg));
     }
   }
+
   @media (prefers-reduced-motion: reduce) {
     .home-section-doodle {
       animation: none;
@@ -78,10 +87,19 @@ const entry = (manifest.motifs as { id: string; src: string }[]).find(
   :global(html.noam-a11y-motion) .home-section-doodle {
     animation: none !important;
   }
+
+  /* Sensible mobile downscale; still readable, clears centered copy. */
+  @media (max-width: 900px) {
+    .home-section-doodle {
+      width: clamp(120px, 26vw, 160px);
+      max-width: 160px;
+      top: 0;
+    }
+  }
   @media (max-width: 640px) {
     .home-section-doodle {
-      width: 64px;
-      top: -2px;
+      width: clamp(96px, 28vw, 128px);
+      max-width: 128px;
     }
   }
   @media print {

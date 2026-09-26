@@ -1165,21 +1165,34 @@ a {
   margin: 0 0 8px;
   color: var(--navy);
   text-align: center;
-  /* keep centered title clear of corner HomeSectionDoodle (≈88px) */
-  padding-inline: 96px;
+  /* clear enlarged HomeSectionDoodle (~180–240px) in section corners */
+  padding-inline: clamp(140px, 22vw, 260px);
+}
+@media (max-width: 900px) {
+  .home-section__title {
+    padding-inline: clamp(110px, 30vw, 180px);
+  }
 }
 @media (max-width: 640px) {
   .home-section__title {
-    padding-inline: 72px;
+    padding-inline: clamp(88px, 30vw, 140px);
   }
 }
 
 .home-section__lede {
+  position: relative;
+  z-index: 1;
   margin: 0 0 18px;
   text-align: center;
   font-weight: 700;
   color: var(--muted);
   font-size: 14.5px;
+  padding-inline: clamp(120px, 18vw, 220px);
+}
+@media (max-width: 640px) {
+  .home-section__lede {
+    padding-inline: clamp(72px, 26vw, 120px);
+  }
 }
 
 .home-grades,
@@ -1189,6 +1202,38 @@ a {
   position: relative;
   z-index: 1;
   margin: 36px 0 8px;
+  overflow: visible;
+}
+
+/* Reserved band for large corner doodles — keeps grids/CTAs clear below */
+.home-section__head {
+  position: relative;
+  z-index: 0;
+  /* taller than ~240px doodle + float so AABB cannot reach grade/value cards */
+  min-height: clamp(240px, 24vw, 280px);
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* Keep interactive content above decorative doodles */
+.home-grades__grid,
+.home-learning__actions,
+.home-learning__note,
+.home-values__grid,
+.home-whatsapp__kicker,
+.home-whatsapp__row,
+.home-whatsapp__note,
+.home-section__head > p {
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 640px) {
+  .home-section__head {
+    min-height: clamp(140px, 38vw, 170px);
+  }
 }
 
 .home-grades__grid {

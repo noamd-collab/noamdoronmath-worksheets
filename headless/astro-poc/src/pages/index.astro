@@ -59,9 +59,11 @@ const homeJsonLd = homePageJsonLd();
       hero → triangle ConceptLoop (above); grades/learning/values/whatsapp → doodles.
     */}
     <section class="home-grades" aria-labelledby="home-grades-title" data-home-grades>
-      <HomeSectionDoodle motif="telescope" rotate={-8} side="end" />
-      <h2 class="home-section__title" id="home-grades-title">בחרו כיתה והתחילו לתרגל</h2>
-      <p class="home-section__lede">דפי עבודה בחינם לכיתות א׳–ט׳</p>
+      <div class="home-section__head">
+        <HomeSectionDoodle motif="telescope" rotate={-8} side="end" />
+        <h2 class="home-section__title" id="home-grades-title">בחרו כיתה והתחילו לתרגל</h2>
+        <p class="home-section__lede">דפי עבודה בחינם לכיתות א׳–ט׳</p>
+      </div>
       <ul class="home-grades__grid">
         {
           home.grades.map((g) => (
@@ -79,8 +81,10 @@ const homeJsonLd = homePageJsonLd();
     </section>
 
     <section class="home-learning" aria-labelledby="home-learning-title" data-home-learning>
-      <HomeSectionDoodle motif="orbit-pencil" rotate={5} side="start" />
-      <h2 class="home-section__title" id="home-learning-title">הלמידה שלי</h2>
+      <div class="home-section__head">
+        <HomeSectionDoodle motif="orbit-pencil" rotate={5} side="start" />
+        <h2 class="home-section__title" id="home-learning-title">הלמידה שלי</h2>
+      </div>
       <div class="home-learning__actions">
         <a class="cta cta--mid" href={home.learning.googleHref} data-home-google>
           {home.learning.googleLabel}
@@ -94,8 +98,10 @@ const homeJsonLd = homePageJsonLd();
     </section>
 
     <section class="home-values" aria-labelledby="home-values-title" data-home-values>
-      <HomeSectionDoodle motif="geometry-fish" rotate={-4} side="end" />
-      <h2 class="home-section__title" id="home-values-title">{home.valueSections.heading}</h2>
+      <div class="home-section__head">
+        <HomeSectionDoodle motif="geometry-fish" rotate={-4} side="end" />
+        <h2 class="home-section__title" id="home-values-title">{home.valueSections.heading}</h2>
+      </div>
       <ul class="home-values__grid">
         {
           home.valueSections.items.map((item) => (
@@ -111,10 +117,12 @@ const homeJsonLd = homePageJsonLd();
     </section>
 
     <section class="home-whatsapp" aria-labelledby="home-whatsapp-title" data-home-whatsapp>
-      <HomeSectionDoodle motif="paper-boat" rotate={7} side="start" />
-      <p class="home-whatsapp__kicker">{home.whatsapp.kicker}</p>
-      <h2 class="home-section__title" id="home-whatsapp-title">{home.whatsapp.heading}</h2>
-      <p>{home.whatsapp.body}</p>
+      <div class="home-section__head">
+        <HomeSectionDoodle motif="paper-boat" rotate={7} side="start" />
+        <p class="home-whatsapp__kicker">{home.whatsapp.kicker}</p>
+        <h2 class="home-section__title" id="home-whatsapp-title">{home.whatsapp.heading}</h2>
+        <p>{home.whatsapp.body}</p>
+      </div>
       <div class="home-whatsapp__row">
         <a
           class="cta cta--mid"
