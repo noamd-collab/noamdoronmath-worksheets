@@ -5,19 +5,34 @@ interface Props {
   footer: HomePageContent['footer'];
 }
 const { footer } = Astro.props;
+
+/** Found on the live homepage embed `#noam-whatsapp-footer`. No other social URL was in the header or footer. */
+const whatsappHref = 'https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t';
 ---
 <footer class="site-footer" data-home-footer>
   <div class="site-footer__inner">
-    <div class="site-footer__brand">
+    <section class="site-footer__brand" aria-label="אודות">
       <p class="site-footer__brand-name">{footer.brandName}</p>
       <p class="site-footer__brand-blurb">{footer.brandBlurb}</p>
-    </div>
-
-    <div class="site-footer__contact">
-      <h2 class="site-footer__heading">{footer.contactHeading}</h2>
-      <p>{footer.contactBody}</p>
-      <a class="site-footer__email" href={`mailto:${footer.email}`}>{footer.email}</a>
-    </div>
+      <ul class="site-footer__social">
+        <li>
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener"
+            aria-label="קבוצת הוואטסאפ של נועם דורון, נפתח בלשונית חדשה"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+              <path
+                fill="currentColor"
+                d="M12 3.1A8.4 8.4 0 0 0 4.7 15.4L3.5 20.3l5-1.3A8.4 8.4 0 1 0 12 3.1Zm0 1.7a6.7 6.7 0 0 1 5.7 10.1 6.7 6.7 0 0 1-9.4 2l-.4-.2-2.6.7.7-2.5-.2-.4A6.7 6.7 0 0 1 12 4.8Z"
+              ></path>
+            </svg>
+            <span>וואטסאפ</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
     <nav class="site-footer__quick" aria-label={footer.quickNavHeading}>
       <h2 class="site-footer__heading">{footer.quickNavHeading}</h2>
@@ -56,6 +71,12 @@ const { footer } = Astro.props;
         }
       </ul>
     </nav>
+
+    <section class="site-footer__contact" aria-label={footer.contactHeading}>
+      <h2 class="site-footer__heading">{footer.contactHeading}</h2>
+      <p>{footer.contactBody}</p>
+      <a class="site-footer__email" href={`mailto:${footer.email}`}>{footer.email}</a>
+    </section>
   </div>
 
   <div class="site-footer__meta">

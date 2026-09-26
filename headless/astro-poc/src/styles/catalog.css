@@ -1368,8 +1368,8 @@ a {
 
 .site-footer__inner {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px 28px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px 24px;
 }
 
 .site-footer__heading {
@@ -1392,13 +1392,39 @@ a {
 .site-footer__contact p {
   margin: 0 0 8px;
   font-weight: 600;
-  color: var(--muted);
+  color: #3e4e66;
   line-height: 1.55;
-  font-size: 14.5px;
+  font-size: 15px;
+}
+
+.site-footer__social {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+}
+
+.site-footer__social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+  color: var(--navy);
+  background: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.site-footer__social a:hover {
+  background: var(--tint);
 }
 
 .site-footer__email {
   font-weight: 800;
+  font-size: 15px;
   color: var(--accent-dark);
   text-decoration: none;
 }
@@ -1418,19 +1444,24 @@ a {
   font-weight: 700;
   color: var(--accent-dark);
   text-decoration: none;
-  font-size: 14.5px;
+  font-size: 15px;
 }
 
 .site-footer__legal-gap {
   font-weight: 700;
-  color: var(--muted);
-  font-size: 14.5px;
+  color: #3e4e66;
+  font-size: 15px;
 }
 
 .site-footer__gap-mark {
   font-weight: 600;
-  font-size: 12.5px;
-  color: var(--muted);
+  font-size: 14px;
+  color: #3e4e66;
+}
+
+.site-footer a:focus-visible {
+  outline: 3px solid var(--cobalt-dark);
+  outline-offset: 3px;
 }
 
 .site-footer__quick a:hover,
@@ -1440,22 +1471,32 @@ a {
 }
 
 .site-footer__meta {
-  margin-top: 24px;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(26, 43, 74, 0.1);
   text-align: center;
 }
 
 .site-footer__meta p {
-  margin: 0 0 10px;
-  font-size: 13.5px;
+  margin: 0 auto 8px;
+  max-width: 46rem;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--muted);
-  line-height: 1.55;
+  color: #3e4e66;
+  line-height: 1.45;
 }
 
 .site-footer__disclaimer,
 .site-footer__privacy-note {
-  max-width: 52rem;
+  max-width: 46rem;
   margin-inline: auto;
+}
+
+@media (max-width: 899px) {
+  .site-footer__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
 }
 
 .site-nav {
