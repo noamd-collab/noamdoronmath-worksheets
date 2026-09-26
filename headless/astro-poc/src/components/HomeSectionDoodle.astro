@@ -1,122 +1,121 @@
 ---
 /**
- * KIMI-ANIM-6 — one restored DOODLES-45 motif per home section.
- * Desktop: corner placement (~180–240px). Mobile: in-flow between
- * section title and content so motifs stay visible and never cover
- * text/buttons. Same site-doodle-float; off under reduced-motion /
- * html.noam-a11y-motion.
+ * KIMI-ANIM-6 — dense notebook scatter per home section (3–6 webp motifs
+ * + small math scribbles). Topic-matched preferred motifs first; fillers
+ * from the full DOODLES-45 set. In-flow wrap so nothing covers text/CTAs.
+ * Subset floats; off under prefers-reduced-motion / noam-a11y-motion.
  */
 import manifest from '../data/doodles.manifest.json';
+import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
+import MathScribbles from './MathScribbles.astro';
+import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
 
 export interface Props {
-  /** Motif id from doodles.manifest.json */
-  motif: string;
-  /** Modest tilt in degrees */
-  rotate?: number;
-  /** Logical corner inside the relatively-positioned section (desktop) */
-  side?: 'start' | 'end';
+  /** Section seed for deterministic layout */
+  seed: string;
+  /** Preferred motif ids (topic-matched); fillers complete the cluster */
+  preferred?: string[];
+  /** Motif count 3–6 (default 5) */
+  count?: number;
 }
 
-const { motif, rotate = -6, side = 'end' } = Astro.props;
-const entry = (manifest.motifs as { id: string; src: string }[]).find(
-  (m) => m.id === motif,
-);
+const { seed, preferred = [], count = 5 } = Astro.props;
+const motifs = (manifest.motifs || []) as DoodleMotif[];
+const scatter = selectNotebookScatter(seed, motifs, {
+  preferred,
+  count,
+  scribbleCount: 3,
+});
 ---
 
 {
-  entry && (
-    <img
-      class:list={['home-section-doodle', `home-section-doodle--${side}`]}
-      src={entry.src}
-      alt=""
-      width="220"
-      height="220"
-      decoding="async"
-      loading="lazy"
+  scatter.motifs.length > 0 && (
+    <div
+      class="home-section-notebook"
       aria-hidden="true"
-      data-doodle-id={entry.id}
-      data-home-section-doodle
-      style={`--doodle-rot:${rotate}deg`}
-    />
+      data-home-section-notebook
+      data-notebook-seed={seed}
+    >
+      {scatter.motifs.map((m) => (
+        <img
+          class:list={[
+            'home-nb-doodle',
+            m.float ? 'home-nb-doodle--float' : null,
+          ]}
+          src={m.src}
+          alt=""
+          width={m.sizePx}
+          height={m.sizePx}
+          decoding="async"
+          loading="lazy"
+          data-doodle-id={m.id}
+          data-home-section-doodle
+          style={`--d-size:${m.sizePx}px;--d-rot:${m.rotate}deg;--d-op:${m.opacity};--d-delay:${m.delay}s`}
+        />
+      ))}
+      <MathScribbles items={scatter.scribbles} />
+    </div>
   )
 }
 
 <style>
-  .home-section-doodle {
-    position: absolute;
-    top: -4px;
-    /* Match SiteDoodles gutter weight (~180–240px desktop). */
-    width: clamp(180px, 16vw, 240px);
-    height: auto;
-    max-width: 240px;
-    opacity: 0.9;
+  .home-section-notebook {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 14px;
+    width: 100%;
+    margin: 6px 0 14px;
+    padding: 4px 8px 8px;
     pointer-events: none;
     user-select: none;
     z-index: 0;
-    transform: translateY(0) rotate(var(--doodle-rot, 0deg));
+  }
+  .home-nb-doodle {
+    display: block;
+    width: var(--d-size, 100px);
+    height: auto;
+    max-width: min(180px, 28vw);
+    opacity: var(--d-op, 0.9);
+    transform: rotate(var(--d-rot, 0deg));
     transform-origin: center center;
+    flex: 0 0 auto;
+  }
+  .home-nb-doodle--float {
     animation: site-doodle-float 7.5s ease-in-out infinite;
+    animation-delay: var(--d-delay, 0s);
     will-change: transform;
   }
-  .home-section-doodle--end {
-    inset-inline-end: -4px;
-    animation-duration: 8.2s;
-    animation-delay: 0.5s;
-  }
-  .home-section-doodle--start {
-    inset-inline-start: -4px;
-    animation-duration: 7.8s;
-    animation-delay: 1s;
-  }
-
   @keyframes site-doodle-float {
     0%,
     100% {
-      transform: translateY(0) rotate(var(--doodle-rot, 0deg));
+      transform: translateY(0) rotate(var(--d-rot, 0deg));
     }
     50% {
-      transform: translateY(-12px) rotate(var(--doodle-rot, 0deg));
+      transform: translateY(-10px) rotate(var(--d-rot, 0deg));
     }
   }
-
   @media (prefers-reduced-motion: reduce) {
-    .home-section-doodle {
+    .home-nb-doodle--float {
       animation: none;
     }
   }
-  :global(html.noam-a11y-motion) .home-section-doodle {
+  :global(html.noam-a11y-motion) .home-nb-doodle--float {
     animation: none !important;
   }
-
-  /*
-   * Mobile / narrow: bring doodle into normal flow BETWEEN title and
-   * section body — clearly visible, never overlays text or buttons.
-   */
-  @media (max-width: 900px) {
-    .home-section-doodle,
-    .home-section-doodle--end,
-    .home-section-doodle--start {
-      position: relative;
-      inset: auto;
-      top: auto;
-      display: block;
-      width: clamp(120px, 32vw, 150px);
-      max-width: 150px;
-      margin: 4px auto 10px;
-      order: 2; /* after title/lede when head is flex column */
-    }
-  }
   @media (max-width: 640px) {
-    .home-section-doodle,
-    .home-section-doodle--end,
-    .home-section-doodle--start {
-      width: clamp(118px, 36vw, 148px);
-      max-width: 148px;
-      margin: 6px auto 12px;
+    .home-section-notebook {
+      gap: 4px 10px;
+      margin: 4px 0 10px;
+    }
+    .home-nb-doodle {
+      max-width: min(120px, 34vw);
+      width: min(var(--d-size, 90px), 34vw);
     }
   }
   @media print {
-    .home-section-doodle {
+    .home-section-notebook {
       display: none !important;
     }
   }

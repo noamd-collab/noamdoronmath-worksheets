@@ -1,58 +1,46 @@
 ---
 /**
- * DOODLES-45 — site-wide decorative motifs (illustration webp only).
- * Selection is pathname-seeded in src/lib/doodles/selectSiteDoodles.ts.
- * Homepage skips this layer (HeroIllustrations owns that surface).
- *
- * ≤1200px: in-flow centered row — ALL selected motifs (incl. former gutter-only).
- * >1200px: fixed outer gutters only (2–3 motifs) — never mid-content slots.
+ * DOODLES-45 / KIMI-ANIM-6 — dense notebook margin columns.
+ * Uses ALL catalog motifs in alternating start/end gutters (desktop)
+ * and a dense in-flow wrap on ≤1200 / mobile. Homepage included.
+ * Subset floats; off under reduced-motion / noam-a11y-motion.
  */
-import {
-  selectSiteDoodles,
-  shouldSkipSiteDoodles,
-  type DoodleMotif,
-} from '../lib/doodles/selectSiteDoodles';
+import { selectDenseMargins } from '../lib/doodles/selectDenseMargins';
+import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
 import manifest from '../data/doodles.manifest.json';
 
 const pathname = Astro.url.pathname;
 const motifs = (manifest.motifs || []) as DoodleMotif[];
 const placements =
-  shouldSkipSiteDoodles(pathname) || motifs.length === 0
-    ? []
-    : selectSiteDoodles(pathname, motifs);
-
-/** Among strip-visible motifs, alternate start/end so they never stack. */
-let stripOrdinal = 0;
-const decorated = placements.map((p) => {
-  let stripSide: 'start' | 'end' | null = null;
-  if (p.mobileVisible) {
-    stripSide = stripOrdinal % 2 === 0 ? 'start' : 'end';
-    stripOrdinal += 1;
-  }
-  return { ...p, stripSide };
-});
+  motifs.length === 0 ? [] : selectDenseMargins(pathname, motifs, { mobileCount: 6 });
 ---
 
 {
-  decorated.length > 0 && (
-    <div class="site-doodles" aria-hidden="true" data-site-doodles data-path={pathname}>
-      {decorated.map((p) => (
+  placements.length > 0 && (
+    <div
+      class="site-doodles"
+      aria-hidden="true"
+      data-site-doodles
+      data-site-doodles-dense
+      data-path={pathname}
+    >
+      {placements.map((p) => (
         <img
           class:list={[
             'site-doodle',
-            `site-doodle--${p.slot}`,
+            `site-doodle--${p.side}`,
             p.mobileVisible ? 'site-doodle--strip' : 'site-doodle--gutter-only',
-            p.stripSide ? `site-doodle--s-${p.stripSide}` : null,
+            p.float ? 'site-doodle--float' : null,
           ]}
           src={p.src}
           alt=""
-          width="160"
-          height="160"
+          width={p.sizePx}
+          height={p.sizePx}
           decoding="async"
           loading="lazy"
           data-doodle-id={p.id}
-          data-strip-side={p.stripSide || undefined}
-          style={`--doodle-scale:${p.scale};--doodle-rotate:${p.rotate}deg`}
+          data-doodle-side={p.side}
+          style={`--doodle-size:${p.sizePx}px;--doodle-scale:${p.scale};--doodle-rotate:${p.rotate}deg;--doodle-top:${p.topPct}%;--doodle-op:${p.opacity};--doodle-delay:${p.delay}s`}
         />
       ))}
     </div>
@@ -69,101 +57,54 @@ const decorated = placements.map((p) => {
     overflow: hidden;
   }
 
-  /*
-   * KIMI-ANIM-6: margin doodles were shipping tiny (~72–120px) and with
-   * animation:none — never got the HeroIllustrations float. Restore a
-   * readable gutter size + gentle idle motion (transform only).
-   */
   .site-doodle {
     position: absolute;
     display: block;
-    width: clamp(140px, 14vw, 200px);
+    width: calc(var(--doodle-size, 140px) * var(--doodle-scale, 1));
+    max-width: 200px;
     height: auto;
-    max-width: 220px;
-    opacity: 0.88;
-    transform: translateY(0) scale(var(--doodle-scale, 1))
-      rotate(var(--doodle-rotate, 0deg));
+    opacity: var(--doodle-op, 0.88);
+    top: var(--doodle-top, 20%);
+    transform: translateY(0) rotate(var(--doodle-rotate, 0deg));
     transform-origin: center center;
-    animation: site-doodle-float 7s ease-in-out infinite;
+  }
+  /* Outside ~1100px content shell */
+  .site-doodle--start {
+    left: max(4px, calc(50% - 640px));
+    right: auto;
+  }
+  .site-doodle--end {
+    right: max(4px, calc(50% - 640px));
+    left: auto;
+  }
+  .site-doodle--float {
+    animation: site-doodle-float 7.4s ease-in-out infinite;
+    animation-delay: var(--doodle-delay, 0s);
     will-change: transform;
-  }
-  .site-doodle--tr {
-    animation-duration: 8.2s;
-    animation-delay: 0.7s;
-  }
-  .site-doodle--bl {
-    animation-duration: 7.6s;
-    animation-delay: 1.1s;
-  }
-  .site-doodle--br {
-    animation-duration: 8.8s;
-    animation-delay: 0.35s;
-  }
-  .site-doodle--ml {
-    animation-duration: 7.3s;
-    animation-delay: 0.9s;
-  }
-  .site-doodle--mr {
-    animation-duration: 8s;
-    animation-delay: 1.4s;
   }
 
   @keyframes site-doodle-float {
     0%,
     100% {
-      transform: translateY(0) scale(var(--doodle-scale, 1))
-        rotate(var(--doodle-rotate, 0deg));
+      transform: translateY(0) rotate(var(--doodle-rotate, 0deg));
     }
     50% {
-      transform: translateY(-12px) scale(var(--doodle-scale, 1))
-        rotate(var(--doodle-rotate, 0deg));
+      transform: translateY(-12px) rotate(var(--doodle-rotate, 0deg));
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .site-doodle {
+    .site-doodle--float {
       animation: none;
     }
   }
-  :global(html.noam-a11y-motion) .site-doodle {
+  :global(html.noam-a11y-motion) .site-doodle--float {
     animation: none !important;
   }
 
   /*
-   * Wide desktop gutters only — content shell ≈1100px.
-   * Place OUTSIDE half-width 560px so motifs sit in true margins (>1200vw).
-   */
-  .site-doodle--tl {
-    top: 150px;
-    left: max(6px, calc(50% - 640px));
-  }
-  .site-doodle--tr {
-    /* Below RTL brand/logo hit-box (~32–130) and basad */
-    top: 168px;
-    right: max(6px, calc(50% - 640px));
-  }
-  .site-doodle--bl {
-    bottom: 80px;
-    left: max(6px, calc(50% - 640px));
-  }
-  .site-doodle--br {
-    bottom: 100px;
-    right: max(6px, calc(50% - 640px));
-  }
-  /* Mid slots unused by selector but keep as extreme edges if ever assigned */
-  .site-doodle--ml {
-    top: 40%;
-    left: max(6px, calc(50% - 640px));
-  }
-  .site-doodle--mr {
-    top: 46%;
-    right: max(6px, calc(50% - 640px));
-  }
-
-  /*
-   * ≤1200 / mobile: gutters gone — show ALL selected motifs in a clear
-   * in-flow row (KIMI-ANIM-6: do not hide gutter-only on small screens).
-   * Sized to read at 390px; float kept; never covers page text/buttons.
+   * ≤1200 / mobile: dense in-flow wrap — ALL strip-visible motifs,
+   * gutter-only also shown (notebook density on small screens too).
    */
   @media (max-width: 1200px) {
     .site-doodles {
@@ -173,15 +114,14 @@ const decorated = placements.map((p) => {
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 14px 18px;
+      gap: 8px 12px;
       height: auto;
-      min-height: 148px;
+      min-height: 120px;
       width: 100%;
       z-index: 0;
-      margin: 8px 0 12px;
-      padding: 10px 12px;
+      margin: 6px 0 10px;
+      padding: 8px 10px;
       overflow: visible;
-      pointer-events: none;
     }
     .site-doodle--gutter-only {
       display: block !important;
@@ -190,27 +130,24 @@ const decorated = placements.map((p) => {
     .site-doodle--strip,
     .site-doodle--gutter-only {
       position: relative !important;
-      width: clamp(120px, 30vw, 150px) !important;
-      max-width: 150px !important;
-      height: auto !important;
-      opacity: 0.92;
       top: auto !important;
-      bottom: auto !important;
       left: auto !important;
       right: auto !important;
+      width: clamp(72px, 22vw, 110px) !important;
+      max-width: 110px !important;
     }
   }
   @media (max-width: 640px) {
     .site-doodles {
-      min-height: 132px;
-      gap: 10px 14px;
-      padding: 8px 10px;
+      min-height: 100px;
+      gap: 6px 8px;
+      padding: 6px 8px;
     }
     .site-doodle,
     .site-doodle--strip,
     .site-doodle--gutter-only {
-      width: clamp(112px, 34vw, 140px) !important;
-      max-width: 140px !important;
+      width: clamp(64px, 26vw, 96px) !important;
+      max-width: 96px !important;
     }
   }
 

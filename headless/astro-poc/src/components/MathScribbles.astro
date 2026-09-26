@@ -1,0 +1,205 @@
+---
+/**
+ * Small hand-drawn math scribbles (SVG strokes) — stars, spirals, arrows,
+ * underlines, a²+b²=c². Same notebook ink language as DOODLES-45 webps.
+ * NOT the thin grey HomeMarginArt icon set.
+ */
+import type { ScribbleItem } from '../lib/doodles/selectNotebookScatter';
+
+export interface Props {
+  items: ScribbleItem[];
+}
+
+const { items } = Astro.props;
+---
+
+{
+  items.map((s, i) => (
+    <span
+      class:list={[
+        'math-scribble',
+        `math-scribble--${s.kind}`,
+        s.float ? 'math-scribble--float' : null,
+      ]}
+      style={`--s-rot:${s.rotate}deg;--s-size:${s.sizePx}px;--s-delay:${s.delay}s`}
+      data-scribble={s.kind}
+      data-scribble-i={i}
+      aria-hidden="true"
+    >
+      {
+        s.kind === 'star' && (
+          <svg viewBox="0 0 40 40" focusable="false">
+            <path
+              d="M20 4 L24 15 L36 15 L26 23 L30 35 L20 28 L10 35 L14 23 L4 15 L16 15 Z"
+              fill="none"
+              stroke="var(--cobalt, #2a5db0)"
+              stroke-width="2.2"
+              stroke-linejoin="round"
+            />
+          </svg>
+        )
+      }
+      {
+        s.kind === 'spiral' && (
+          <svg viewBox="0 0 40 40" focusable="false">
+            <path
+              d="M20 32 C 10 32, 8 22, 14 16 C 20 10, 30 12, 30 20 C 30 26, 24 28, 20 26 C 16 24, 16 20, 19 19"
+              fill="none"
+              stroke="var(--navy, #1a3358)"
+              stroke-width="2.4"
+              stroke-linecap="round"
+            />
+          </svg>
+        )
+      }
+      {
+        s.kind === 'arrow' && (
+          <svg viewBox="0 0 48 28" focusable="false">
+            <path
+              d="M4 18 C 16 6, 28 6, 40 14"
+              fill="none"
+              stroke="var(--cobalt, #2a5db0)"
+              stroke-width="2.4"
+              stroke-linecap="round"
+            />
+            <path
+              d="M34 8 L42 14 L34 20"
+              fill="none"
+              stroke="var(--cobalt, #2a5db0)"
+              stroke-width="2.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        )
+      }
+      {
+        s.kind === 'underline' && (
+          <svg viewBox="0 0 56 20" focusable="false">
+            <path
+              d="M4 12 C 14 4, 22 18, 32 10 S 46 6, 52 12"
+              fill="none"
+              stroke="var(--red, #c45c4a)"
+              stroke-width="2.6"
+              stroke-linecap="round"
+            />
+          </svg>
+        )
+      }
+      {
+        s.kind === 'formula' && (
+          <svg viewBox="0 0 78 30" focusable="false">
+            {/* Hand-inked a²+b²=c² (paths, not UI chrome icons) */}
+            <path
+              d="M6 20 q4 -14 10 -2 m-8 -6 h9"
+              fill="none"
+              stroke="var(--navy, #1a3358)"
+              stroke-width="2.2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M20 10 v-4 m2 2 h-4"
+              fill="none"
+              stroke="var(--navy, #1a3358)"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+            <path
+              d="M28 16 l6 0 m-3 -3 l0 8"
+              fill="none"
+              stroke="var(--cobalt, #2a5db0)"
+              stroke-width="2.2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M38 20 q3 -12 9 0 m1 0 q3 -12 9 0"
+              fill="none"
+              stroke="var(--navy, #1a3358)"
+              stroke-width="2.2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M50 9 v-3 m1.5 1.5 h-3"
+              fill="none"
+              stroke="var(--navy, #1a3358)"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+            <path
+              d="M60 14 h10 m-2 -3 l3 3 l-3 3"
+              fill="none"
+              stroke="var(--red, #c45c4a)"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M66 22 q4 -10 8 0"
+              fill="none"
+              stroke="var(--navy, #1a3358)"
+              stroke-width="2.2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M74 10 v-3 m1.5 1.5 h-3"
+              fill="none"
+              stroke="var(--navy, #1a3358)"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
+        )
+      }
+      {
+        s.kind === 'dots' && (
+          <svg viewBox="0 0 40 16" focusable="false">
+            <circle cx="6" cy="8" r="2.4" fill="var(--cobalt, #2a5db0)" />
+            <circle cx="20" cy="8" r="2.4" fill="var(--muted, #6b7c93)" />
+            <circle cx="34" cy="8" r="2.4" fill="var(--red, #c45c4a)" />
+          </svg>
+        )
+      }
+    </span>
+  ))
+}
+
+<style>
+  .math-scribble {
+    display: inline-flex;
+    width: var(--s-size, 40px);
+    height: auto;
+    opacity: 0.85;
+    pointer-events: none;
+    user-select: none;
+    transform: rotate(var(--s-rot, 0deg));
+    flex: 0 0 auto;
+  }
+  .math-scribble svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+  .math-scribble--float {
+    animation: site-doodle-float 7.8s ease-in-out infinite;
+    animation-delay: var(--s-delay, 0s);
+    will-change: transform;
+  }
+  @keyframes site-doodle-float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(var(--s-rot, 0deg));
+    }
+    50% {
+      transform: translateY(-8px) rotate(var(--s-rot, 0deg));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .math-scribble--float {
+      animation: none;
+    }
+  }
+  :global(html.noam-a11y-motion) .math-scribble--float {
+    animation: none !important;
+  }
+</style>
