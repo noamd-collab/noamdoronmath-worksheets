@@ -1,9 +1,9 @@
 ---
 /**
  * Full-page edge-margin doodles (home + every BaseLayout page).
- * Fixed L/R columns, φ vertical spacing, half-bleed off the edge
+ * Document-absolute L/R columns, φ vertical spacing, 15–30% bleed
  * (parent clips — no horizontal scroll). Animated bob+wobble.
- * Mobile: thin 24–36px edges, half tucked, never over text.
+ * Mobile: thin 24/39px edges, half tucked, sparse ≤2–3/viewport.
  */
 import { selectDenseMargins } from '../lib/doodles/selectDenseMargins';
 import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
@@ -30,6 +30,7 @@ const placements =
             'site-doodle',
             'site-doodle--float',
             p.side === 'start' ? 'site-doodle--start' : 'site-doodle--end',
+            p.mobileVisible ? 'site-doodle--mobile' : 'site-doodle--desktop-only',
           ]}
           src={p.src}
           alt=""
@@ -39,10 +40,12 @@ const placements =
           loading="lazy"
           data-doodle-id={p.id}
           data-doodle-side={p.side}
+          data-mobile-visible={p.mobileVisible ? '1' : '0'}
           style={[
-            `top:${p.topPct}%`,
-            `--d-size:${Math.round(p.sizePx * p.scale)}px`,
+            `inset-block-start:${p.topPct}%`,
+            `--d-size:${p.sizePx}px`,
             `--m-size:${p.mobileSizePx}px`,
+            `--doodle-bleed:${p.bleed}`,
             `--doodle-rotate:${p.rotate}deg`,
             `--doodle-op:${p.opacity}`,
             `--doodle-delay:${p.delay}s`,
@@ -58,40 +61,43 @@ const placements =
 
 <style>
   /*
-   * Fixed edge layer — clips bleed so half-off doodles never cause H-scroll.
-   * z-index 0: behind text/CTAs (content is relative z-1+).
+   * Document-absolute edge layer — scrolls with the page so density thins
+   * per viewport. Clips bleed; z-index 0 behind content (z-index ≥1).
    */
   .site-doodles {
-    position: fixed;
-    inset: 0;
+    position: absolute;
+    inset-block-start: 0;
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    width: 100%;
+    min-height: 100%;
     pointer-events: none;
     user-select: none;
     z-index: 0;
-    overflow: hidden; /* clip the bleed */
+    overflow: hidden; /* clip the bleed — no H-scroll */
   }
 
   .site-doodle {
     position: absolute;
     display: block;
-    width: var(--d-size, 96px);
-    max-width: min(160px, 12vw);
+    width: var(--d-size, 45px);
+    max-width: min(120px, 11vw);
     height: auto;
     opacity: var(--doodle-op, 0.75);
     transform: translateY(-50%) rotate(var(--doodle-rotate, 0deg));
     transform-origin: center center;
-    left: auto;
-    right: auto;
-    /* Center on top% so φ bands sit correctly */
-    margin-top: 0;
+    /* Center on block % so φ bands sit correctly */
+    margin: 0;
   }
 
-  /* Bleed ~40% off the page edge (logical for RTL) */
+  /* Bleed 15–30% of doodle width past the logical edge */
   .site-doodle--start {
-    inset-inline-start: -36px;
+    inset-inline-start: calc(var(--d-size, 45px) * var(--doodle-bleed, 0.2) * -1);
     inset-inline-end: auto;
   }
   .site-doodle--end {
-    inset-inline-end: -36px;
+    inset-inline-end: calc(var(--d-size, 45px) * var(--doodle-bleed, 0.2) * -1);
     inset-inline-start: auto;
   }
 
@@ -123,34 +129,24 @@ const placements =
     animation: none !important;
   }
 
-  /* Mid widths: keep edge gutters (no flex strip) — slightly less bleed */
-  @media (max-width: 1200px) {
-    .site-doodle--start {
-      inset-inline-start: -28px;
-    }
-    .site-doodle--end {
-      inset-inline-end: -28px;
-    }
-    .site-doodle {
-      max-width: min(120px, 14vw);
-    }
-  }
-
   /*
-   * Mobile: thin side edges, 24–36px, ~half tucked off-screen.
-   * Stay behind text (z-0); never cover tap targets.
+   * Mobile: thin side edges, 24/39px, ~half tucked off-screen.
+   * Only sparse mobileVisible set renders — max ~2–3 per viewport.
    */
   @media (max-width: 767px) {
-    .site-doodle {
-      width: var(--m-size, 28px) !important;
-      max-width: 36px !important;
-      opacity: calc(var(--doodle-op, 0.7) * 0.9);
+    .site-doodle--desktop-only {
+      display: none !important;
     }
-    .site-doodle--start {
-      inset-inline-start: -14px;
+    .site-doodle--mobile {
+      width: var(--m-size, 24px) !important;
+      max-width: 39px !important;
+      opacity: calc(var(--doodle-op, 0.7) * 0.95);
     }
-    .site-doodle--end {
-      inset-inline-end: -14px;
+    .site-doodle--mobile.site-doodle--start {
+      inset-inline-start: calc(var(--m-size, 24px) * -0.5);
+    }
+    .site-doodle--mobile.site-doodle--end {
+      inset-inline-end: calc(var(--m-size, 24px) * -0.5);
     }
   }
 

@@ -1,6 +1,7 @@
 /**
- * Edge-margin doodle columns — left/right page edges, full height.
+ * Edge-margin doodle columns — left/right page edges, full document height.
  * Golden-ratio vertical spacing; deterministic pathname seed.
+ * Desktop: φ sizes 28/45/73, bleed 15–30%. Mobile: 24/39, sparse so ≤2–3/viewport.
  */
 import {
   hashPathname,
@@ -8,31 +9,37 @@ import {
   type DoodleMotif,
 } from './selectSiteDoodles';
 
-/** φ vertical anchors for start column (and nested offsets for end). */
-export const PHI_EDGE_TOPS_START = [14.6, 23.6, 38.2, 61.8, 76.4] as const;
-export const PHI_EDGE_TOPS_END = [19.1, 32.0, 50.0, 68.0, 85.4] as const;
-/** Mobile edge widths — half-tucked. */
-export const MOBILE_EDGE_SIZES = [24, 28, 32, 36] as const;
+/** φ ≈ 1.618 */
+export const PHI = 1.6180339887;
+/** Desktop edge size ladder (≥30% steps). */
+export const PHI_EDGE_SIZES = [28, 45, 73] as const;
+/** Mobile edge sizes (φ step). */
+export const MOBILE_EDGE_SIZES = [24, 39] as const;
+/** φ vertical anchors for start column (document %). */
+export const PHI_EDGE_TOPS_START = [12.0, 23.6, 38.2, 61.8, 76.4] as const;
+/** End column — offset so L/R never share a horizontal band. */
+export const PHI_EDGE_TOPS_END = [17.5, 30.0, 50.0, 68.0, 85.4] as const;
 
 export type DenseMarginPlacement = {
   id: string;
   src: string;
   /** Logical margin column (RTL-safe). */
   side: 'start' | 'end';
-  /** 0–100 vertical position along the viewport. */
+  /** 0–100 vertical position along the document. */
   topPct: number;
   sizePx: number;
-  /** Mobile edge size 24–36. */
+  /** Mobile edge size 24 | 39. */
   mobileSizePx: number;
   rotate: number;
-  scale: number;
+  /** Fraction of width tucked past the edge (0.15–0.30). */
+  bleed: number;
   float: boolean;
   delay: number;
   duration: number;
   bobPx: number;
   wobbleDeg: number;
   opacity: number;
-  /** Always true for edge columns (no strip). */
+  /** Sparse mobile set — only these render ≤767px. */
   mobileVisible: boolean;
 };
 
@@ -56,9 +63,23 @@ function shuffleIndices(rng: () => number, n: number): number[] {
   return pool;
 }
 
+function nextPhiSize(
+  rng: () => number,
+  prev: number | null,
+  ladder: readonly number[]
+): number {
+  const pool =
+    prev == null
+      ? [...ladder]
+      : ladder.filter((s) => Math.abs(s - prev) / Math.max(prev, 1) >= 0.3);
+  const use = pool.length ? pool : [...ladder];
+  return use[Math.floor(rng() * use.length)];
+}
+
 /**
- * Place every motif into alternating start/end edge columns with
- * golden-ratio vertical spacing — full-page margin doodles.
+ * Place motifs into alternating start/end edge columns with φ vertical
+ * spacing. Document-absolute layer (not a strip). Mobile keeps a sparse
+ * subset so a 390px viewport shows at most ~2–3 edge doodles.
  */
 export function selectDenseMargins(
   pathname: string,
@@ -73,15 +94,22 @@ export function selectDenseMargins(
 
   const startTops = [...PHI_EDGE_TOPS_START];
   const endTops = [...PHI_EDGE_TOPS_END];
-  // Extra motifs beyond 5 per side: extend with φ steps into the remaining band
   while (startTops.length + endTops.length < order.length) {
     const nextStart = Math.min(
       92,
-      Math.round((startTops[startTops.length - 1] + (100 - startTops[startTops.length - 1]) / 1.618) * 10) / 10
+      Math.round(
+        (startTops[startTops.length - 1] +
+          (100 - startTops[startTops.length - 1]) / PHI) *
+          10
+      ) / 10
     );
     const nextEnd = Math.min(
       94,
-      Math.round((endTops[endTops.length - 1] + (100 - endTops[endTops.length - 1]) / 1.618) * 10) / 10
+      Math.round(
+        (endTops[endTops.length - 1] +
+          (100 - endTops[endTops.length - 1]) / PHI) *
+          10
+      ) / 10
     );
     if (startTops.length <= endTops.length) startTops.push(nextStart);
     else endTops.push(nextEnd);
@@ -89,24 +117,27 @@ export function selectDenseMargins(
 
   let si = 0;
   let ei = 0;
-  return order.map((m, i) => {
+  let prevSize: number | null = null;
+  let prevMobileSize: number | null = null;
+
+  const placements: DenseMarginPlacement[] = order.map((m, i) => {
     const side: 'start' | 'end' = i % 2 === 0 ? 'start' : 'end';
     const tops = side === 'start' ? startTops : endTops;
     const ti = side === 'start' ? si++ : ei++;
     const baseTop = tops[ti % tops.length];
-    // Tiny jitter so L/R never share an exact baseline
-    const jitter = (rng() - 0.5) * 2.4;
+    const jitter = (rng() - 0.5) * 2.0;
     const topPct = Math.min(94, Math.max(6, Math.round((baseTop + jitter) * 10) / 10));
-    const sizePx = Math.round(72 + rng() * 80); // 72–152 desktop
-    const mobileSizePx =
-      MOBILE_EDGE_SIZES[Math.floor(rng() * MOBILE_EDGE_SIZES.length)];
-    const rotate = Math.round((-16 + rng() * 32) * 10) / 10;
-    const scale = Math.round((0.85 + rng() * 0.25) * 1000) / 1000;
-    const delay = Math.round(rng() * 45) / 10;
-    const duration = Math.round((4 + rng() * 5) * 10) / 10;
-    const bobPx = Math.round(4 + rng() * 4);
-    const wobbleDeg = Math.round((3 + rng() * 3) * 10) / 10;
-    const opacity = Math.round((0.55 + rng() * 0.35) * 100) / 100;
+    const sizePx = nextPhiSize(rng, prevSize, PHI_EDGE_SIZES);
+    prevSize = sizePx;
+    const mobileSizePx = nextPhiSize(rng, prevMobileSize, MOBILE_EDGE_SIZES);
+    prevMobileSize = mobileSizePx;
+    const rotate = Math.round((-14 + rng() * 26) * 10) / 10; // −14..+12
+    const bleed = Math.round((0.15 + rng() * 0.15) * 100) / 100; // 15–30%
+    const delay = Math.round(rng() * 45) / 10; // 0–4.5s
+    const duration = Math.round((5 + rng() * 4) * 10) / 10; // 5–9s
+    const bobPx = Math.round(4 + rng() * 4); // 4–8
+    const wobbleDeg = Math.round((3 + rng() * 2) * 10) / 10; // 3–5
+    const opacity = Math.round((0.5 + rng() * 0.38) * 100) / 100; // 0.5–0.88
     return {
       id: m.id,
       src: m.src,
@@ -115,14 +146,37 @@ export function selectDenseMargins(
       sizePx,
       mobileSizePx,
       rotate,
-      scale,
+      bleed,
       float: true,
       delay,
       duration,
       bobPx,
       wobbleDeg,
       opacity,
-      mobileVisible: true,
+      mobileVisible: false, // filled below
     };
   });
+
+  // Sparse mobile set: pick 4 with max vertical separation (≤2–3 in a viewport).
+  const mobileWant = Math.min(4, placements.length);
+  const byTop = [...placements].sort((a, b) => a.topPct - b.topPct);
+  const chosen: DenseMarginPlacement[] = [];
+  const minGap = 22; // % of document — ~2–3 visible per screen on typical pages
+  for (const p of byTop) {
+    if (chosen.length >= mobileWant) break;
+    if (chosen.every((c) => Math.abs(c.topPct - p.topPct) >= minGap)) {
+      chosen.push(p);
+    }
+  }
+  // Fill if gaps were too aggressive
+  for (const p of byTop) {
+    if (chosen.length >= mobileWant) break;
+    if (!chosen.includes(p)) chosen.push(p);
+  }
+  const mobileIds = new Set(chosen.map((p) => p.id));
+  for (const p of placements) {
+    p.mobileVisible = mobileIds.has(p.id);
+  }
+
+  return placements;
 }

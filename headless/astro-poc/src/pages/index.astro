@@ -28,7 +28,7 @@ const homeJsonLd = homePageJsonLd();
       <HomeSectionDoodle
         seed="home-notice"
         preferred={['paper-boat', 'snail', 'eye-spiral']}
-        count={3}
+        count={2}
         scribbleCount={1}
       />
       <strong>{home.devNotice.title}</strong>
@@ -58,24 +58,23 @@ const homeJsonLd = homePageJsonLd();
       </div>
       {/* Fixed hero film (geometry/area) — not random. Text right, card left in RTL. */}
       <ConceptLoop variant="triangle" />
-      {/* Desktop: flex band under hero. Mobile: absolute organic scatter. */}
+      {/* Absolute edge marginalia — never a flex strip. */}
       <HomeSectionDoodle
         seed="home-hero"
         preferred={['kite', 'curious-cat', 'snail', 'cube-plant']}
-        count={5}
+        count={3}
       />
     </section>
 
     {/*
-      KIMI-ANIM-6: dense notebook scatter per section (3–6 webps + scribbles),
-      topic-matched preferred motifs + fillers from full DOODLES-45 set.
-      On mobile the scatter is absolute inside the section (no strip push).
+      Notebook marginalia per section (2–4 webps + scribbles) in edge gutters.
+      Diagonal φ descent; mobile keeps ≤2 motifs + formula per section.
     */}
     <section class="home-grades" aria-labelledby="home-grades-title" data-home-grades>
       <HomeSectionDoodle
         seed="home-grades"
         preferred={['telescope', 'sleepy-owl', 'orbit-pencil']}
-        count={6}
+        count={3}
       />
       <div class="home-section__head">
         <h2 class="home-section__title" id="home-grades-title">בחרו כיתה והתחילו לתרגל</h2>
@@ -101,7 +100,7 @@ const homeJsonLd = homePageJsonLd();
       <HomeSectionDoodle
         seed="home-learning"
         preferred={['orbit-pencil', 'eye-spiral', 'curious-cat']}
-        count={5}
+        count={3}
       />
       <div class="home-section__head">
         <h2 class="home-section__title" id="home-learning-title">הלמידה שלי</h2>
@@ -122,7 +121,7 @@ const homeJsonLd = homePageJsonLd();
       <HomeSectionDoodle
         seed="home-values"
         preferred={['geometry-fish', 'kite', 'cube-plant', 'snail']}
-        count={6}
+        count={3}
       />
       <div class="home-section__head">
         <h2 class="home-section__title" id="home-values-title">{home.valueSections.heading}</h2>
@@ -145,7 +144,7 @@ const homeJsonLd = homePageJsonLd();
       <HomeSectionDoodle
         seed="home-whatsapp"
         preferred={['paper-boat', 'geometry-fish', 'telescope']}
-        count={5}
+        count={3}
       />
       <div class="home-section__head">
         <p class="home-whatsapp__kicker">{home.whatsapp.kicker}</p>

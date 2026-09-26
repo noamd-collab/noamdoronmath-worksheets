@@ -1,8 +1,8 @@
 ---
 /**
- * Golden-ratio notebook scatter per home section (3–6 webps + scribbles).
- * Absolute φ anchors on desktop AND mobile — never a flex/grid strip.
- * Every doodle bobs + wobbles when motion is allowed.
+ * Golden-ratio notebook marginalia per home section (2–4 webps + scribbles).
+ * Absolute edge gutters — never a flex/grid strip, never on cards/text.
+ * Diagonal descent; every doodle bobs + wobbles when motion is allowed.
  */
 import manifest from '../data/doodles.manifest.json';
 import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
@@ -16,11 +16,11 @@ export interface Props {
   scribbleCount?: number;
 }
 
-const { seed, preferred = [], count = 5, scribbleCount = 3 } = Astro.props;
+const { seed, preferred = [], count = 3, scribbleCount = 2 } = Astro.props;
 const motifs = (manifest.motifs || []) as DoodleMotif[];
 const scatter = selectNotebookScatter(seed, motifs, {
   preferred,
-  count,
+  count: Math.min(4, Math.max(2, count)),
   scribbleCount,
 });
 ---
@@ -33,9 +33,14 @@ const scatter = selectNotebookScatter(seed, motifs, {
       data-home-section-notebook
       data-notebook-seed={seed}
     >
-      {scatter.motifs.map((m) => (
+      {scatter.motifs.map((m, i) => (
         <img
-          class="home-nb-doodle home-nb-doodle--motion"
+          class:list={[
+            'home-nb-doodle',
+            'home-nb-doodle--motion',
+            m.side === 'start' ? 'home-nb-doodle--start' : 'home-nb-doodle--end',
+            i < 2 ? 'home-nb-doodle--mobile-show' : 'home-nb-doodle--mobile-hide',
+          ]}
           src={m.src}
           alt=""
           width={m.sizePx}
@@ -55,7 +60,7 @@ const scatter = selectNotebookScatter(seed, motifs, {
             `--d-dur:${m.duration}s`,
             `--d-bob:${m.bobPx}px`,
             `--d-wobble:${m.wobbleDeg}deg`,
-            `--x:${m.xPct}%`,
+            `--inline-inset:${m.inlineInsetPct}%`,
             `--y:${m.yPct}%`,
           ].join(';')}
         />
@@ -67,8 +72,8 @@ const scatter = selectNotebookScatter(seed, motifs, {
 
 <style>
   /*
-   * Absolute φ scatter on every viewport — kills the flat flex bottom row.
-   * Parent section must be position:relative + overflow-x:clip.
+   * Absolute marginalia — zero layout height. Parent section must be
+   * position:relative + overflow:clip. Content stays z-index:1.
    */
   .home-section-notebook {
     position: absolute;
@@ -86,16 +91,22 @@ const scatter = selectNotebookScatter(seed, motifs, {
   .home-nb-doodle {
     position: absolute;
     display: block;
-    /* Physical % — works in RTL; left/top so φ points stay stable */
-    left: var(--x, 38.2%);
-    top: var(--y, 61.8%);
+    inset-block-start: var(--y, 38.2%);
     width: var(--d-size, 45px);
-    max-width: min(120px, 22vw);
+    max-width: min(96px, 12vw);
     height: auto;
-    opacity: var(--d-op, 0.8);
-    transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+    opacity: var(--d-op, 0.75);
+    transform: translateY(-50%) rotate(var(--r, 0deg));
     transform-origin: center center;
     z-index: 0;
+  }
+  .home-nb-doodle--start {
+    inset-inline-start: var(--inline-inset, 4%);
+    inset-inline-end: auto;
+  }
+  .home-nb-doodle--end {
+    inset-inline-end: var(--inline-inset, 4%);
+    inset-inline-start: auto;
   }
   .home-nb-doodle--motion {
     animation: nb-doodle-bob-wobble var(--d-dur, 6.5s) ease-in-out infinite;
@@ -105,11 +116,11 @@ const scatter = selectNotebookScatter(seed, motifs, {
   @keyframes nb-doodle-bob-wobble {
     0%,
     100% {
-      transform: translate(-50%, -50%) translateY(0)
+      transform: translateY(-50%) translateY(0)
         rotate(calc(var(--r, 0deg) - var(--d-wobble, 4deg)));
     }
     50% {
-      transform: translate(-50%, -50%) translateY(calc(-1 * var(--d-bob, 6px)))
+      transform: translateY(-50%) translateY(calc(-1 * var(--d-bob, 6px)))
         rotate(calc(var(--r, 0deg) + var(--d-wobble, 4deg)));
     }
   }
@@ -124,10 +135,20 @@ const scatter = selectNotebookScatter(seed, motifs, {
   }
 
   @media (max-width: 767px) {
-    .home-nb-doodle {
-      width: var(--m-size, 36px) !important;
-      max-width: 73px !important;
+    .home-nb-doodle--mobile-hide {
+      display: none !important;
+    }
+    .home-nb-doodle--mobile-show {
+      width: var(--m-size, 24px) !important;
+      max-width: 39px !important;
       opacity: var(--m-op, 0.7);
+      /* Tug toward the thin edge so they never sit on text */
+    }
+    .home-nb-doodle--mobile-show.home-nb-doodle--start {
+      inset-inline-start: -6px;
+    }
+    .home-nb-doodle--mobile-show.home-nb-doodle--end {
+      inset-inline-end: -6px;
     }
   }
   @media print {

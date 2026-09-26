@@ -34,7 +34,7 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
         `--d-dur:${s.duration}s`,
         `--d-bob:${s.bobPx}px`,
         `--d-wobble:${s.wobbleDeg}deg`,
-        `--x:${s.xPct}%`,
+        `--inline-inset:${s.inlineInsetPct}%`,
         `--y:${s.yPct}%`,
         `--m-op:${s.mobileOpacity}`,
         s.kind === 'formula' ? 'direction:ltr;unicode-bidi:isolate' : '',
@@ -220,17 +220,24 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
     clip-path: none !important;
   }
 
-  /* Absolute φ placement inside section scatter wrappers */
+  /* Absolute margin placement inside section scatter wrappers */
   .math-scribble--organic {
     position: absolute;
     display: block;
-    left: var(--x, 61.8%);
-    top: var(--y, 38.2%);
+    inset-block-start: var(--y, 38.2%);
     opacity: var(--m-op, 0.7);
     flex: none;
     z-index: 0;
     max-width: 110px;
-    transform: translate(-50%, -50%) rotate(var(--s-rot, 0deg));
+    transform: translateY(-50%) rotate(var(--s-rot, 0deg));
+  }
+  .math-scribble--organic[data-nb-side='start'] {
+    inset-inline-start: var(--inline-inset, 4%);
+    inset-inline-end: auto;
+  }
+  .math-scribble--organic[data-nb-side='end'] {
+    inset-inline-end: var(--inline-inset, 4%);
+    inset-inline-start: auto;
   }
   .math-scribble--organic.math-scribble--motion {
     animation-name: scribble-bob-wobble-abs;
@@ -238,15 +245,25 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
   @keyframes scribble-bob-wobble-abs {
     0%,
     100% {
-      transform: translate(-50%, -50%) translateY(0)
+      transform: translateY(-50%) translateY(0)
         rotate(calc(var(--s-rot, 0deg) - var(--d-wobble, 4deg)));
     }
     50% {
-      transform: translate(-50%, -50%) translateY(calc(-1 * var(--d-bob, 6px)))
+      transform: translateY(-50%) translateY(calc(-1 * var(--d-bob, 6px)))
         rotate(calc(var(--s-rot, 0deg) + var(--d-wobble, 4deg)));
     }
   }
   .math-scribble--organic.math-scribble--formula {
     width: min(110px, max(72px, calc(var(--s-size, 40px) * 1.6)));
+  }
+  /* Mobile: keep only the formula scribble (density ≤2–3 with edge motifs) */
+  @media (max-width: 767px) {
+    .math-scribble--organic:not(.math-scribble--formula) {
+      display: none !important;
+    }
+    .math-scribble--organic.math-scribble--formula {
+      max-width: 72px;
+      opacity: calc(var(--m-op, 0.7) * 0.9);
+    }
   }
 </style>

@@ -1242,7 +1242,8 @@ a {
 .home-whatsapp,
 .topic-page--nb {
   position: relative;
-  overflow-x: clip;
+  /* Clip doodle bleed; zero layout impact from absolute marginalia */
+  overflow: clip;
 }
 .home-section__head,
 .home-section__title,

@@ -137,11 +137,11 @@ function faqHeadingId(groupIndex: number) {
     id="topic-page-main"
     data-topic-slug={page.slug}
   >
-    {/* Mobile organic scatter over the page band; desktop uses SiteDoodles gutters */}
+    {/* Edge marginalia over the page band; SiteDoodles adds full-page gutters */}
     <MobileNotebookCorners
       seed={`topic-${page.slug}`}
       preferred={['orbit-pencil', 'geometry-fish', 'eye-spiral', 'telescope', 'kite']}
-      count={5}
+      count={3}
     />
     <nav class="topic-page__crumbs" aria-label="מיקום">
       <a href="/">בית</a>

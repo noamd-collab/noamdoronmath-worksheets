@@ -1,7 +1,7 @@
 ---
 /**
- * Mobile+desktop organic φ scatter for topic pages (absolute, no strip).
- * Every doodle bobs + wobbles when motion is allowed.
+ * Topic-page marginalia (absolute edge gutters, no strip).
+ * Diagonal φ descent; every doodle bobs + wobbles when motion is allowed.
  */
 import manifest from '../data/doodles.manifest.json';
 import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
@@ -14,12 +14,12 @@ export interface Props {
   count?: number;
 }
 
-const { seed, preferred = [], count = 5 } = Astro.props;
+const { seed, preferred = [], count = 3 } = Astro.props;
 const motifs = (manifest.motifs || []) as DoodleMotif[];
 const scatter = selectNotebookScatter(seed, motifs, {
   preferred,
-  count: Math.min(6, Math.max(4, count)),
-  scribbleCount: 3,
+  count: Math.min(4, Math.max(2, count)),
+  scribbleCount: 2,
 });
 ---
 
@@ -31,9 +31,14 @@ const scatter = selectNotebookScatter(seed, motifs, {
       data-mobile-nb-corners
       data-notebook-seed={seed}
     >
-      {scatter.motifs.map((m) => (
+      {scatter.motifs.map((m, i) => (
         <img
-          class="mobile-nb-corner mobile-nb-corner--motion"
+          class:list={[
+            'mobile-nb-corner',
+            'mobile-nb-corner--motion',
+            m.side === 'start' ? 'mobile-nb-corner--start' : 'mobile-nb-corner--end',
+            i < 2 ? 'mobile-nb-corner--mobile-show' : 'mobile-nb-corner--mobile-hide',
+          ]}
           src={m.src}
           alt=""
           width={m.sizePx}
@@ -52,7 +57,7 @@ const scatter = selectNotebookScatter(seed, motifs, {
             `--d-dur:${m.duration}s`,
             `--d-bob:${m.bobPx}px`,
             `--d-wobble:${m.wobbleDeg}deg`,
-            `--x:${m.xPct}%`,
+            `--inline-inset:${m.inlineInsetPct}%`,
             `--y:${m.yPct}%`,
           ].join(';')}
         />
@@ -74,14 +79,21 @@ const scatter = selectNotebookScatter(seed, motifs, {
   .mobile-nb-corner {
     position: absolute;
     display: block;
-    left: var(--x, 38.2%);
-    top: var(--y, 61.8%);
+    inset-block-start: var(--y, 38.2%);
     width: var(--d-size, 45px);
-    max-width: min(120px, 22vw);
+    max-width: min(96px, 12vw);
     height: auto;
     opacity: var(--d-op, 0.75);
-    transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+    transform: translateY(-50%) rotate(var(--r, 0deg));
     z-index: 0;
+  }
+  .mobile-nb-corner--start {
+    inset-inline-start: var(--inline-inset, 4%);
+    inset-inline-end: auto;
+  }
+  .mobile-nb-corner--end {
+    inset-inline-end: var(--inline-inset, 4%);
+    inset-inline-start: auto;
   }
   .mobile-nb-corner--motion {
     animation: topic-nb-bob-wobble var(--d-dur, 6.5s) ease-in-out infinite;
@@ -91,11 +103,11 @@ const scatter = selectNotebookScatter(seed, motifs, {
   @keyframes topic-nb-bob-wobble {
     0%,
     100% {
-      transform: translate(-50%, -50%) translateY(0)
+      transform: translateY(-50%) translateY(0)
         rotate(calc(var(--r, 0deg) - var(--d-wobble, 4deg)));
     }
     50% {
-      transform: translate(-50%, -50%) translateY(calc(-1 * var(--d-bob, 6px)))
+      transform: translateY(-50%) translateY(calc(-1 * var(--d-bob, 6px)))
         rotate(calc(var(--r, 0deg) + var(--d-wobble, 4deg)));
     }
   }
@@ -109,13 +121,21 @@ const scatter = selectNotebookScatter(seed, motifs, {
     animation: none !important;
   }
   @media (max-width: 767px) {
-    .mobile-nb-corner {
-      width: var(--m-size, 36px);
-      max-width: 73px;
+    .mobile-nb-corner--mobile-hide {
+      display: none !important;
+    }
+    .mobile-nb-corner--mobile-show {
+      width: var(--m-size, 24px);
+      max-width: 39px;
       opacity: var(--m-op, 0.7);
     }
+    .mobile-nb-corner--mobile-show.mobile-nb-corner--start {
+      inset-inline-start: -6px;
+    }
+    .mobile-nb-corner--mobile-show.mobile-nb-corner--end {
+      inset-inline-end: -6px;
+    }
   }
-  /* Topic pages: keep φ scatter on desktop too (SiteDoodles gutters are separate) */
   @media print {
     .mobile-nb-corners {
       display: none !important;
