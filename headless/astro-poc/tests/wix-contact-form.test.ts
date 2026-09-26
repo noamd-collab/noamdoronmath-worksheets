@@ -8,6 +8,7 @@ import {
   buildWixSubmissionPayload,
   submitContactForm,
   formsLiveSubmitBlocker,
+  formsCredentialStatus,
   validateContactInput,
 } from '../src/lib/wixContactForm.ts';
 
@@ -32,8 +33,18 @@ describe('M35 Wix contact form adapter', () => {
     assert.equal(payload.submission.submissions.form_field_7c94, 'שלום');
   });
 
-  it('dry-run succeeds without calling Wix; live mode blocked', async () => {
+  it('dry-run succeeds without calling Wix; live gated; honeypot rejected', async () => {
     assert.equal(validateContactInput({ firstName: '', lastName: 'x', email: 'a@b.co', message: 'm' }), 'MISSING_FIELDS');
+    assert.equal(
+      validateContactInput({
+        firstName: 'א',
+        lastName: 'ב',
+        email: 'a@b.co',
+        message: 'בדיקה',
+        company: 'bot',
+      }),
+      'SPAM_REJECTED'
+    );
     const dry = await submitContactForm(
       { firstName: 'א', lastName: 'ב', email: 'a@b.co', message: 'בדיקה' },
       { mode: 'dry-run' }
@@ -43,16 +54,20 @@ describe('M35 Wix contact form adapter', () => {
     assert.ok(dry.payloadPreview?.targets.includes('form_field_3ba2'));
     const live = await submitContactForm(
       { firstName: 'א', lastName: 'ב', email: 'a@b.co', message: 'בדיקה' },
-      { mode: 'live-blocked' }
+      { mode: 'live' }
     );
     assert.equal(live.ok, false);
-    assert.equal(live.error, 'LIVE_SUBMIT_NOT_AUTHORIZED');
+    assert.ok(
+      live.error === 'LIVE_SUBMIT_NOT_AUTHORIZED' || live.error === 'FORMS_API_KEY_INVALID',
+      live.error
+    );
+    assert.equal(live.mode, 'live-blocked');
     const blocker = formsLiveSubmitBlocker();
     assert.equal(blocker.blocked, true);
-    assert.equal(blocker.readOnlyVerified.siteScopedStatus, 200);
-    assert.equal(blocker.readOnlyVerified.accountTokenStatus, 401);
-    assert.equal(blocker.readOnlyVerified.targetFormPresent, true);
-    assert.match(blocker.exactAction, /durable server-only|API key|OAuth app/i);
-    assert.match(blocker.exactAction, /never a short-lived CLI token/i);
+    assert.equal(blocker.credential.readyForLive, false);
+    assert.ok(blocker.credential.needsNoam);
+    assert.match(blocker.credential.needsNoam!, /IST\.|WIX_FORMS_LIVE_SUBMIT|Forms/i);
+    const cred = formsCredentialStatus();
+    assert.equal(cred.readyForLive, false);
   });
 });
