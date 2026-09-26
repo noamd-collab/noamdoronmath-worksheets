@@ -1230,26 +1230,43 @@ a {
   justify-content: flex-start;
   overflow: visible;
 }
-/* Mobile corner doodles sit in the head; keep title/lede above them */
-@media (max-width: 640px) {
-  .home-section__head > :not([data-home-section-notebook]) {
+/* Notice-edge doodles are mobile-only (desktop keeps clean notice card) */
+@media (min-width: 768px) {
+  .home-notice > [data-home-section-notebook] {
+    display: none !important;
+  }
+}
+
+/*
+ * Mobile organic notebook: sections host absolute scatters.
+ * Text/CTAs stay above doodles; doodles never push layout.
+ */
+@media (max-width: 767px) {
+  .home-hero,
+  .home-notice,
+  .home-grades,
+  .home-learning,
+  .home-values,
+  .home-whatsapp,
+  .topic-page--nb {
+    position: relative;
+    overflow-x: clip;
+  }
+  .home-section__head,
+  .home-section__title,
+  .home-section__lede,
+  .home-whatsapp__kicker,
+  .home-hero__copy,
+  .home-notice > :not([data-home-section-notebook]),
+  .topic-page--nb > :not([data-mobile-nb-corners]) {
     position: relative;
     z-index: 1;
   }
-  /* Clear absolute corner doodles (~56px) so titles never look covered */
-  .home-section__title,
-  .home-section__lede,
-  .home-whatsapp__kicker {
-    padding-inline: 58px;
-  }
 }
+
 .topic-page__header--nb {
   position: relative;
   overflow: visible;
-}
-.topic-page__header--nb > :not([data-mobile-nb-corners]) {
-  position: relative;
-  z-index: 1;
 }
 
 /* Keep interactive content above any leftover absolute decoration */
@@ -1265,11 +1282,19 @@ a {
   z-index: 1;
 }
 
-/* Hero: notebook band spans full width under copy + concept-loop */
+/* Hero: notebook band spans full width under copy + concept-loop (desktop) */
 .home-hero > [data-home-section-notebook] {
   grid-column: 1 / -1;
   width: 100%;
   justify-self: stretch;
+}
+@media (max-width: 767px) {
+  /* Absolute layer — don't participate in hero grid */
+  .home-hero > [data-home-section-notebook] {
+    grid-column: auto;
+    width: auto;
+    justify-self: auto;
+  }
 }
 
 .home-grades__grid {
@@ -3863,8 +3888,8 @@ body {
 
 /* ——— UI/UX fix-2 (KIMICODE-UIUX-FIX-2): mobile fold, wide screens ——— */
 
-/* NOTE: do NOT hide `.site-doodles` on phones — live notebook doodles (KIMI-ANIM-6)
- * must stay visible. Compact strip sizing lives in SiteDoodles.astro. */
+/* Phone notebook look: SiteDoodles strip is hidden ≤767; organic absolute
+ * scatters live in HomeSectionDoodle / MobileNotebookCorners instead. */
 
 /* Tighter vertical rhythm on mobile so real content reaches the first screen */
 @media (max-width: 767px) {

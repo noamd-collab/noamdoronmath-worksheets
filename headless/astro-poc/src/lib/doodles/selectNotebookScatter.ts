@@ -1,13 +1,17 @@
 /**
  * KIMI-ANIM-6 — dense “student notebook” scatter for home sections.
  * Deterministic (pathname/seed hashed); SSR-safe — no Math.random().
+ * Mobile organic placements: absolute coords (no flex/grid strip).
  */
 import { hashPathname, type DoodleMotif } from './selectSiteDoodles';
+
+/** Phone doodle widths — mix of 28–56px family. */
+export const MOBILE_DOODLE_SIZES = [30, 36, 44, 52] as const;
 
 export type ScatterItem = {
   id: string;
   src: string;
-  /** Display width in px (varied small→large). */
+  /** Desktop display width in px (varied small→large). */
   sizePx: number;
   rotate: number;
   /** Gentle float on a subset only. */
@@ -15,6 +19,14 @@ export type ScatterItem = {
   opacity: number;
   /** Stagger delay seconds when floating. */
   delay: number;
+  /** Mobile organic absolute layout (ignored on desktop CSS). */
+  mobileSizePx: number;
+  mobileRotate: number;
+  mobileOpacity: number;
+  topPx: number;
+  side: 'start' | 'end';
+  /** Logical inset from inline edge; negative = half-tucked behind edge. */
+  insetPx: number;
 };
 
 export type ScribbleKind =
@@ -31,6 +43,11 @@ export type ScribbleItem = {
   sizePx: number;
   float: boolean;
   delay: number;
+  /** Mobile absolute layout */
+  topPx: number;
+  side: 'start' | 'end';
+  insetPx: number;
+  mobileOpacity: number;
 };
 
 export type NotebookScatterResult = {
@@ -67,9 +84,55 @@ const SCRIBBLE_KINDS: ScribbleKind[] = [
   'dots',
 ];
 
+/** Edge recipes — tops stagger so no two consecutive share the same band. */
+type EdgeSlot = {
+  topMin: number;
+  topMax: number;
+  side: 'start' | 'end';
+  insetMin: number;
+  insetMax: number;
+};
+
+const EDGE_SLOTS: EdgeSlot[] = [
+  { topMin: 4, topMax: 14, side: 'start', insetMin: 2, insetMax: 10 },
+  { topMin: 56, topMax: 88, side: 'end', insetMin: 6, insetMax: 16 },
+  { topMin: 110, topMax: 150, side: 'start', insetMin: -10, insetMax: 4 },
+  { topMin: 22, topMax: 42, side: 'end', insetMin: 4, insetMax: 14 },
+  { topMin: 170, topMax: 220, side: 'end', insetMin: -8, insetMax: 6 },
+  { topMin: 78, topMax: 118, side: 'start', insetMin: 8, insetMax: 18 },
+  { topMin: 200, topMax: 260, side: 'start', insetMin: -6, insetMax: 8 },
+  { topMin: 140, topMax: 190, side: 'end', insetMin: 10, insetMax: 20 },
+];
+
+function pickOrganicSlots(
+  rng: () => number,
+  count: number
+): Array<{ topPx: number; side: 'start' | 'end'; insetPx: number }> {
+  const order = shuffleIndices(rng, EDGE_SLOTS.length);
+  const out: Array<{ topPx: number; side: 'start' | 'end'; insetPx: number }> = [];
+  let prevTop = -999;
+  for (const si of order) {
+    if (out.length >= count) break;
+    const slot = EDGE_SLOTS[si];
+    let topPx = Math.round(slot.topMin + rng() * (slot.topMax - slot.topMin));
+    // Never the same top value twice in a row — keep ≥16px band gap
+    if (Math.abs(topPx - prevTop) < 16) {
+      topPx = prevTop + (topPx >= prevTop ? 18 : -18);
+      if (topPx < 2) topPx = prevTop + 18;
+    }
+    const insetPx = Math.round(
+      slot.insetMin + rng() * (slot.insetMax - slot.insetMin)
+    );
+    out.push({ topPx, side: slot.side, insetPx });
+    prevTop = topPx;
+  }
+  return out;
+}
+
 /**
  * Pick `count` motifs (preferred first, then fillers), varied size/rotation.
  * About ~40% get float. Also returns 2–4 small math scribbles.
+ * Every motif/scribble carries mobile absolute placement fields.
  */
 export function selectNotebookScatter(
   seed: string,
@@ -114,13 +177,28 @@ export function selectNotebookScatter(
 
   // Slight reshuffle so preferred aren't always first visually
   const order = shuffleIndices(rng, picked.length).map((i) => picked[i]);
+  const mobileSlots = pickOrganicSlots(rng, order.length);
 
   const items: ScatterItem[] = order.map((m, i) => {
-    const sizePx = Math.round(56 + rng() * 100); // 56–156
+    const sizePx = Math.round(56 + rng() * 100); // 56–156 desktop
     const rotate = Math.round((-18 + rng() * 36) * 10) / 10;
     const float = rng() < 0.42;
     const opacity = Math.round((0.78 + rng() * 0.18) * 100) / 100;
     const delay = Math.round(rng() * 18) / 10;
+    const mobileSizePx =
+      MOBILE_DOODLE_SIZES[Math.floor(rng() * MOBILE_DOODLE_SIZES.length)];
+    // -14deg … +12deg
+    const mobileRotate = Math.round((-14 + rng() * 26) * 10) / 10;
+    // Most 0.55–0.9; ~20% ghosted ~0.45
+    const mobileOpacity =
+      rng() < 0.22
+        ? Math.round((0.42 + rng() * 0.08) * 100) / 100
+        : Math.round((0.55 + rng() * 0.35) * 100) / 100;
+    const slot = mobileSlots[i] || {
+      topPx: 8 + i * 40,
+      side: (i % 2 === 0 ? 'start' : 'end') as 'start' | 'end',
+      insetPx: 6,
+    };
     return {
       id: `${m.id}-${i}`,
       src: m.src,
@@ -129,6 +207,12 @@ export function selectNotebookScatter(
       float,
       opacity,
       delay,
+      mobileSizePx,
+      mobileRotate,
+      mobileOpacity,
+      topPx: slot.topPx,
+      side: slot.side,
+      insetPx: slot.insetPx,
     };
   });
 
@@ -145,20 +229,35 @@ export function selectNotebookScatter(
     kinds.push(k);
   }
 
-  const scribbles: ScribbleItem[] = kinds.map((kind) => ({
-    kind,
-    // Formulas stay nearly upright so they stay readable
-    rotate:
-      kind === 'formula'
-        ? Math.round((-6 + rng() * 12) * 10) / 10
-        : Math.round((-22 + rng() * 44) * 10) / 10,
-    sizePx:
-      kind === 'formula'
-        ? Math.round(52 + rng() * 24) // 52–76 wider readable
-        : Math.round(28 + rng() * 36),
-    float: kind === 'formula' ? false : rng() < 0.35,
-    delay: Math.round(rng() * 20) / 10,
-  }));
+  const scribbleSlots = pickOrganicSlots(rng, kinds.length);
+  const scribbles: ScribbleItem[] = kinds.map((kind, i) => {
+    const slot = scribbleSlots[i] || {
+      topPx: 30 + i * 50,
+      side: (i % 2 === 0 ? 'end' : 'start') as 'start' | 'end',
+      insetPx: 4,
+    };
+    return {
+      kind,
+      // Formulas stay nearly upright so they stay readable
+      rotate:
+        kind === 'formula'
+          ? Math.round((-6 + rng() * 12) * 10) / 10
+          : Math.round((-22 + rng() * 44) * 10) / 10,
+      sizePx:
+        kind === 'formula'
+          ? Math.round(52 + rng() * 24) // 52–76 wider readable
+          : Math.round(28 + rng() * 36),
+      float: kind === 'formula' ? false : rng() < 0.35,
+      delay: Math.round(rng() * 20) / 10,
+      topPx: slot.topPx + 12, // offset vs motif tops
+      side: slot.side,
+      insetPx: slot.insetPx,
+      mobileOpacity:
+        rng() < 0.25
+          ? Math.round((0.4 + rng() * 0.1) * 100) / 100
+          : Math.round((0.55 + rng() * 0.3) * 100) / 100,
+    };
+  });
 
   return { motifs: items, scribbles };
 }

@@ -1,49 +1,63 @@
 ---
 /**
- * Mobile-only notebook corners for topic / hub pages — 1–2 small absolute
- * doodles in the page header band. No layout push, pointer-events none.
- * Hidden ≥641px (SiteDoodles gutters cover desktop).
+ * Mobile-only organic notebook scatter for topic / hub pages.
+ * Absolute doodles + scribbles inside the page band — no flex strip,
+ * no layout push. Hidden ≥768px (SiteDoodles gutters cover desktop).
  */
 import manifest from '../data/doodles.manifest.json';
 import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
+import MathScribbles from './MathScribbles.astro';
 import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
 
 export interface Props {
   seed: string;
   preferred?: string[];
+  /** Motif count on mobile (default 5 → 4–6 range). */
+  count?: number;
 }
 
-const { seed, preferred = [] } = Astro.props;
+const { seed, preferred = [], count = 5 } = Astro.props;
 const motifs = (manifest.motifs || []) as DoodleMotif[];
 const scatter = selectNotebookScatter(seed, motifs, {
   preferred,
-  count: 2,
-  scribbleCount: 0,
+  count: Math.min(6, Math.max(4, count)),
+  scribbleCount: 3,
 });
-const duo = scatter.motifs.slice(0, 2);
 ---
 
 {
-  duo.length > 0 && (
+  scatter.motifs.length > 0 && (
     <div
       class="mobile-nb-corners"
       aria-hidden="true"
       data-mobile-nb-corners
       data-notebook-seed={seed}
     >
-      {duo.map((m, i) => (
+      {scatter.motifs.map((m) => (
         <img
-          class:list={['mobile-nb-corner', i === 0 ? 'mobile-nb-corner--a' : 'mobile-nb-corner--b']}
+          class:list={[
+            'mobile-nb-corner',
+            m.float ? 'mobile-nb-corner--float' : null,
+          ]}
           src={m.src}
           alt=""
-          width="56"
-          height="56"
+          width={m.mobileSizePx}
+          height={m.mobileSizePx}
           decoding="async"
           loading="lazy"
           data-doodle-id={m.id}
-          style={`--d-rot:${m.rotate}deg`}
+          data-nb-side={m.side}
+          style={[
+            `--m-size:${m.mobileSizePx}px`,
+            `--r:${m.mobileRotate}deg`,
+            `--m-op:${m.mobileOpacity}`,
+            `--m-top:${m.topPx}px`,
+            `--m-inset:${m.insetPx}px`,
+            `--d-delay:${m.delay}s`,
+          ].join(';')}
         />
       ))}
+      <MathScribbles items={scatter.scribbles} organicMobile />
     </div>
   )
 }
@@ -52,7 +66,7 @@ const duo = scatter.motifs.slice(0, 2);
   .mobile-nb-corners {
     display: none;
   }
-  @media (max-width: 640px) {
+  @media (max-width: 767px) {
     .mobile-nb-corners {
       display: block;
       position: absolute;
@@ -65,19 +79,44 @@ const duo = scatter.motifs.slice(0, 2);
     .mobile-nb-corner {
       position: absolute;
       display: block;
-      width: 56px;
+      top: var(--m-top, 8px);
+      width: var(--m-size, 36px);
       max-width: 56px;
       height: auto;
-      opacity: 0.4;
-      transform: rotate(var(--d-rot, 0deg));
+      opacity: var(--m-op, 0.7);
+      transform: rotate(var(--r, 0deg));
+      z-index: 0;
     }
-    .mobile-nb-corner--a {
-      inset-inline-start: 2px;
-      top: 4px;
+    .mobile-nb-corner[data-nb-side='start'] {
+      inset-inline-start: var(--m-inset, 6px);
+      inset-inline-end: auto;
     }
-    .mobile-nb-corner--b {
-      inset-inline-end: 2px;
-      top: 36px;
+    .mobile-nb-corner[data-nb-side='end'] {
+      inset-inline-end: var(--m-inset, 6px);
+      inset-inline-start: auto;
+    }
+    .mobile-nb-corner--float {
+      animation: mobile-nb-float 7.6s ease-in-out infinite;
+      animation-delay: var(--d-delay, 0s);
+      will-change: transform;
+    }
+    @keyframes mobile-nb-float {
+      0%,
+      100% {
+        transform: translateY(0) rotate(var(--r, 0deg));
+      }
+      50% {
+        transform: translateY(-8px) rotate(var(--r, 0deg));
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .mobile-nb-corner--float {
+        animation: none;
+      }
+    }
+    :global(html.noam-a11y-motion) .mobile-nb-corner--float,
+    :global(html.nd-motion-off) .mobile-nb-corner--float {
+      animation: none !important;
     }
   }
   @media print {

@@ -47,6 +47,23 @@ describe('selectNotebookScatter', () => {
     const floats = s.motifs.filter((m) => m.float).length;
     assert.ok(floats >= 1 && floats < s.motifs.length);
   });
+
+  it('adds organic mobile placements (varied tops/sides, phone sizes)', () => {
+    const s = selectNotebookScatter('home-hero', catalog, { count: 5 });
+    assert.ok(s.motifs.every((m) => [30, 36, 44, 52].includes(m.mobileSizePx)));
+    assert.ok(s.motifs.every((m) => m.mobileRotate >= -14 && m.mobileRotate <= 12));
+    assert.ok(s.motifs.every((m) => m.mobileOpacity >= 0.4 && m.mobileOpacity <= 0.95));
+    assert.ok(s.motifs.some((m) => m.side === 'start'));
+    assert.ok(s.motifs.some((m) => m.side === 'end'));
+    // No two consecutive tops within 16px
+    for (let i = 1; i < s.motifs.length; i++) {
+      assert.ok(
+        Math.abs(s.motifs[i].topPx - s.motifs[i - 1].topPx) >= 16,
+        `tops too close: ${s.motifs[i - 1].topPx} then ${s.motifs[i].topPx}`
+      );
+    }
+    assert.ok(s.scribbles.every((sc) => typeof sc.topPx === 'number' && sc.side));
+  });
 });
 
 describe('selectDenseMargins', () => {

@@ -107,7 +107,9 @@ const placements =
   }
 
   /*
-   * ≤1200 / mobile: dense in-flow wrap — show every motif (notebook density).
+   * ≤1200 tablet: dense in-flow wrap — show every motif (notebook density).
+   * Phones (≤767): hidden — organic absolute scatters live in page sections
+   * (HomeSectionDoodle / MobileNotebookCorners). No neat flex/grid strip.
    */
   @media (max-width: 1200px) {
     .site-doodles {
@@ -143,24 +145,10 @@ const placements =
       max-width: 96px !important;
     }
   }
-  /* Phone: one compact strip row — 4 small motifs, no tall empty block */
-  @media (max-width: 640px) {
+  /* Phone: kill the header strip — section scatters own the notebook look */
+  @media (max-width: 767px) {
     .site-doodles {
-      flex-wrap: nowrap;
-      min-height: 0;
-      max-height: 56px;
-      overflow: hidden;
-      gap: 4px 6px;
-      padding: 4px 6px;
-      margin: 4px 0 6px;
-    }
-    .site-doodle--gutter-only {
       display: none !important;
-    }
-    .site-doodle,
-    .site-doodle--strip {
-      width: 44px !important;
-      max-width: 48px !important;
     }
   }
 

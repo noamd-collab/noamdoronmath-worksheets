@@ -132,11 +132,17 @@ function faqHeadingId(groupIndex: number) {
   <script type="application/ld+json" set:html={JSON.stringify(page.jsonLd)} />
 
   <main
-    class="topic-page wrap"
+    class="topic-page wrap topic-page--nb"
     data-grade={String(page.grade)}
     id="topic-page-main"
     data-topic-slug={page.slug}
   >
+    {/* Mobile organic scatter over the page band; desktop uses SiteDoodles gutters */}
+    <MobileNotebookCorners
+      seed={`topic-${page.slug}`}
+      preferred={['orbit-pencil', 'geometry-fish', 'eye-spiral', 'telescope', 'kite']}
+      count={5}
+    />
     <nav class="topic-page__crumbs" aria-label="מיקום">
       <a href="/">בית</a>
       <span aria-hidden="true">/</span>
@@ -163,10 +169,6 @@ function faqHeadingId(groupIndex: number) {
     }
 
     <header class="topic-page__header banner topic-page__header--nb">
-      <MobileNotebookCorners
-        seed={`topic-${page.slug}`}
-        preferred={['orbit-pencil', 'geometry-fish', 'eye-spiral']}
-      />
       <h1>{page.h1}</h1>
     </header>
 

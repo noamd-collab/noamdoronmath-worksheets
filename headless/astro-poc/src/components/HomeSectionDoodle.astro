@@ -1,9 +1,10 @@
 ---
 /**
  * KIMI-ANIM-6 — dense notebook scatter per home section (3–6 webp motifs
- * + small math scribbles) on desktop. Mobile: 1–2 absolute corner doodles
- * in the section head (no layout push). Subset floats; off under
- * prefers-reduced-motion / noam-a11y-motion / nd-motion-off.
+ * + small math scribbles) on desktop.
+ * Mobile: absolute organic scatter inside the section (no flex/grid strip,
+ * no layout push). Subset floats; off under prefers-reduced-motion /
+ * noam-a11y-motion / nd-motion-off.
  */
 import manifest from '../data/doodles.manifest.json';
 import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
@@ -17,14 +18,16 @@ export interface Props {
   preferred?: string[];
   /** Motif count 3–6 (default 5) */
   count?: number;
+  /** Scribble count (default 3; 0 to hide) */
+  scribbleCount?: number;
 }
 
-const { seed, preferred = [], count = 5 } = Astro.props;
+const { seed, preferred = [], count = 5, scribbleCount = 3 } = Astro.props;
 const motifs = (manifest.motifs || []) as DoodleMotif[];
 const scatter = selectNotebookScatter(seed, motifs, {
   preferred,
   count,
-  scribbleCount: 3,
+  scribbleCount,
 });
 ---
 
@@ -36,12 +39,10 @@ const scatter = selectNotebookScatter(seed, motifs, {
       data-home-section-notebook
       data-notebook-seed={seed}
     >
-      {scatter.motifs.map((m, i) => (
+      {scatter.motifs.map((m) => (
         <img
           class:list={[
             'home-nb-doodle',
-            i === 0 ? 'home-nb-doodle--a' : null,
-            i === 1 ? 'home-nb-doodle--b' : null,
             m.float ? 'home-nb-doodle--float' : null,
           ]}
           src={m.src}
@@ -52,10 +53,21 @@ const scatter = selectNotebookScatter(seed, motifs, {
           loading="lazy"
           data-doodle-id={m.id}
           data-home-section-doodle
-          style={`--d-size:${m.sizePx}px;--d-rot:${m.rotate}deg;--d-op:${m.opacity};--d-delay:${m.delay}s`}
+          data-nb-side={m.side}
+          style={[
+            `--d-size:${m.sizePx}px`,
+            `--d-rot:${m.rotate}deg`,
+            `--d-op:${m.opacity}`,
+            `--d-delay:${m.delay}s`,
+            `--m-size:${m.mobileSizePx}px`,
+            `--r:${m.mobileRotate}deg`,
+            `--m-op:${m.mobileOpacity}`,
+            `--m-top:${m.topPx}px`,
+            `--m-inset:${m.insetPx}px`,
+          ].join(';')}
         />
       ))}
-      <MathScribbles items={scatter.scribbles} />
+      <MathScribbles items={scatter.scribbles} organicMobile />
     </div>
   )
 }
@@ -109,10 +121,10 @@ const scatter = selectNotebookScatter(seed, motifs, {
   }
 
   /*
-   * Mobile notebook: 1–2 small absolute corner doodles inside the section
-   * head — no in-flow height, no horizontal scroll, never over text.
+   * Mobile: absolute organic scatter — no flex/grid row, no layout push.
+   * Parent section is position:relative + overflow-x:clip (catalog.css).
    */
-  @media (max-width: 640px) {
+  @media (max-width: 767px) {
     .home-section-notebook {
       position: absolute;
       inset: 0;
@@ -127,28 +139,35 @@ const scatter = selectNotebookScatter(seed, motifs, {
     }
     .home-nb-doodle {
       position: absolute;
-      display: none;
-      width: 52px !important;
-      max-width: 52px !important;
-      opacity: 0.38;
+      display: block;
+      top: var(--m-top, 8px);
+      width: var(--m-size, 36px) !important;
+      max-width: 56px !important;
+      height: auto;
+      opacity: var(--m-op, 0.7);
+      transform: rotate(var(--r, 0deg));
       z-index: 0;
+      flex: none;
     }
-    .home-nb-doodle--a {
-      display: block;
-      inset-inline-start: -2px;
-      top: 0;
+    .home-nb-doodle[data-nb-side='start'] {
+      inset-inline-start: var(--m-inset, 6px);
+      inset-inline-end: auto;
     }
-    .home-nb-doodle--b {
-      display: block;
-      inset-inline-end: -2px;
-      top: 28px;
+    .home-nb-doodle[data-nb-side='end'] {
+      inset-inline-end: var(--m-inset, 6px);
+      inset-inline-start: auto;
     }
-    /* Hide dense desktop fillers + scribbles on phone */
-    .home-nb-doodle:not(.home-nb-doodle--a):not(.home-nb-doodle--b) {
-      display: none !important;
+    .home-nb-doodle--float {
+      animation-name: site-doodle-float-mobile;
     }
-    .home-section-notebook :global(.math-scribble) {
-      display: none !important;
+    @keyframes site-doodle-float-mobile {
+      0%,
+      100% {
+        transform: translateY(0) rotate(var(--r, 0deg));
+      }
+      50% {
+        transform: translateY(-8px) rotate(var(--r, 0deg));
+      }
     }
   }
   @media print {

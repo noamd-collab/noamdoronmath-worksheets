@@ -4,14 +4,17 @@
  * underlines, readable formulas (a²+b²=c²). Notebook ink language.
  * NOT the thin grey HomeMarginArt icon set.
  * Formulas force LTR so they stay readable on RTL pages.
+ * When organicMobile: absolute edge placements on ≤767 (no flex row).
  */
 import type { ScribbleItem } from '../lib/doodles/selectNotebookScatter';
 
 export interface Props {
   items: ScribbleItem[];
+  /** Absolute organic layout on mobile (with HomeSectionDoodle / MobileNotebookCorners). */
+  organicMobile?: boolean;
 }
 
-const { items } = Astro.props;
+const { items, organicMobile = false } = Astro.props;
 
 /** Alternate readable formulas (picked by item index). Always LTR. */
 const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
@@ -24,12 +27,22 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
         'math-scribble',
         `math-scribble--${s.kind}`,
         s.float ? 'math-scribble--float' : null,
+        organicMobile ? 'math-scribble--organic' : null,
       ]}
-      style={`--s-rot:${s.rotate}deg;--s-size:${s.sizePx}px;--s-delay:${s.delay}s${
-        s.kind === 'formula' ? ';direction:ltr;unicode-bidi:isolate' : ''
-      }`}
+      style={[
+        `--s-rot:${s.rotate}deg`,
+        `--s-size:${s.sizePx}px`,
+        `--s-delay:${s.delay}s`,
+        `--m-top:${s.topPx}px`,
+        `--m-inset:${s.insetPx}px`,
+        `--m-op:${s.mobileOpacity}`,
+        s.kind === 'formula' ? 'direction:ltr;unicode-bidi:isolate' : '',
+      ]
+        .filter(Boolean)
+        .join(';')}
       data-scribble={s.kind}
       data-scribble-i={i}
+      data-nb-side={s.side}
       dir={s.kind === 'formula' ? 'ltr' : undefined}
       aria-hidden="true"
     >
@@ -179,5 +192,30 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
   :global(html.noam-a11y-motion) .math-scribble--float,
   :global(html.nd-motion-off) .math-scribble--float {
     animation: none !important;
+  }
+
+  /* Organic mobile: absolute edge placements (parent is the scatter wrapper) */
+  @media (max-width: 767px) {
+    .math-scribble--organic {
+      position: absolute;
+      display: block;
+      top: var(--m-top, 40px);
+      opacity: var(--m-op, 0.65);
+      flex: none;
+      z-index: 0;
+      /* Keep formulas readable but compact on phone */
+      max-width: 96px;
+    }
+    .math-scribble--organic[data-nb-side='start'] {
+      inset-inline-start: var(--m-inset, 4px);
+      inset-inline-end: auto;
+    }
+    .math-scribble--organic[data-nb-side='end'] {
+      inset-inline-end: var(--m-inset, 4px);
+      inset-inline-start: auto;
+    }
+    .math-scribble--organic.math-scribble--formula {
+      width: min(96px, max(72px, calc(var(--s-size, 40px) * 1.5)));
+    }
   }
 </style>
