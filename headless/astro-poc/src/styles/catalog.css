@@ -1169,13 +1169,14 @@ a {
   padding-inline: clamp(140px, 22vw, 260px);
 }
 @media (max-width: 900px) {
+  /* Corner clearance unused once doodle goes in-flow on narrow viewports */
   .home-section__title {
-    padding-inline: clamp(110px, 30vw, 180px);
+    padding-inline: 12px;
   }
 }
 @media (max-width: 640px) {
   .home-section__title {
-    padding-inline: clamp(88px, 30vw, 140px);
+    padding-inline: 12px;
   }
 }
 
@@ -1189,9 +1190,14 @@ a {
   font-size: 14.5px;
   padding-inline: clamp(120px, 18vw, 220px);
 }
+@media (max-width: 900px) {
+  .home-section__lede {
+    padding-inline: 12px;
+  }
+}
 @media (max-width: 640px) {
   .home-section__lede {
-    padding-inline: clamp(72px, 26vw, 120px);
+    padding-inline: 12px;
   }
 }
 
@@ -1230,9 +1236,29 @@ a {
   position: relative;
   z-index: 1;
 }
+@media (max-width: 900px) {
+  /* Mobile: copy first, then in-flow doodle — never overlays text/CTAs */
+  .home-section__head {
+    min-height: 0;
+    margin-bottom: 8px;
+    align-items: center;
+  }
+  .home-section__head > :not([data-home-section-doodle]) {
+    order: 1;
+  }
+  .home-section__head > [data-home-section-doodle] {
+    order: 2;
+  }
+  .home-section__title,
+  .home-section__lede,
+  .home-section__head > p,
+  .home-whatsapp__kicker {
+    padding-inline: 12px;
+  }
+}
 @media (max-width: 640px) {
   .home-section__head {
-    min-height: clamp(140px, 38vw, 170px);
+    min-height: 0;
   }
 }
 

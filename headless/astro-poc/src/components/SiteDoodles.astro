@@ -4,7 +4,7 @@
  * Selection is pathname-seeded in src/lib/doodles/selectSiteDoodles.ts.
  * Homepage skips this layer (HeroIllustrations owns that surface).
  *
- * ≤1200px: reserved NORMAL-FLOW strip (gutters insufficient) — 1–2 motifs L/R.
+ * ≤1200px: in-flow centered row — ALL selected motifs (incl. former gutter-only).
  * >1200px: fixed outer gutters only (2–3 motifs) — never mid-content slots.
  */
 import {
@@ -161,42 +161,56 @@ const decorated = placements.map((p) => {
   }
 
   /*
-   * ≤1200: gutters insufficient (1024/768/390) — reserved in-flow strip.
-   * Hides gutter-only (3rd) motif; shows 1–2 strip motifs L/R.
-   * Keep scale in transform (old rule wiped it with rotate-only !important).
+   * ≤1200 / mobile: gutters gone — show ALL selected motifs in a clear
+   * in-flow row (KIMI-ANIM-6: do not hide gutter-only on small screens).
+   * Sized to read at 390px; float kept; never covers page text/buttons.
    */
   @media (max-width: 1200px) {
     .site-doodles {
       position: relative !important;
       inset: auto !important;
-      height: 128px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 14px 18px;
+      height: auto;
+      min-height: 148px;
       width: 100%;
       z-index: 0;
-      margin: 4px 0 6px;
-      overflow: hidden;
+      margin: 8px 0 12px;
+      padding: 10px 12px;
+      overflow: visible;
       pointer-events: none;
     }
     .site-doodle--gutter-only {
-      display: none !important;
+      display: block !important;
     }
-    .site-doodle--strip {
-      position: absolute !important;
-      width: 112px !important;
-      max-width: 28vw !important;
+    .site-doodle,
+    .site-doodle--strip,
+    .site-doodle--gutter-only {
+      position: relative !important;
+      width: clamp(120px, 30vw, 150px) !important;
+      max-width: 150px !important;
       height: auto !important;
-      opacity: 0.9;
-      top: 8px !important;
+      opacity: 0.92;
+      top: auto !important;
       bottom: auto !important;
       left: auto !important;
       right: auto !important;
     }
-    .site-doodle--s-start {
-      left: 12px !important;
-      right: auto !important;
+  }
+  @media (max-width: 640px) {
+    .site-doodles {
+      min-height: 132px;
+      gap: 10px 14px;
+      padding: 8px 10px;
     }
-    .site-doodle--s-end {
-      right: 12px !important;
-      left: auto !important;
+    .site-doodle,
+    .site-doodle--strip,
+    .site-doodle--gutter-only {
+      width: clamp(112px, 34vw, 140px) !important;
+      max-width: 140px !important;
     }
   }
 

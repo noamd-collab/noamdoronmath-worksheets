@@ -1,9 +1,10 @@
 ---
 /**
  * KIMI-ANIM-6 — one restored DOODLES-45 motif per home section.
- * Visual weight matches SiteDoodles margin motifs (~180–240px desktop).
- * Same gentle float as `.site-doodle`; off under reduced-motion /
- * html.noam-a11y-motion. Decorative only (aria-hidden); never captures clicks.
+ * Desktop: corner placement (~180–240px). Mobile: in-flow between
+ * section title and content so motifs stay visible and never cover
+ * text/buttons. Same site-doodle-float; off under reduced-motion /
+ * html.noam-a11y-motion.
  */
 import manifest from '../data/doodles.manifest.json';
 
@@ -12,7 +13,7 @@ export interface Props {
   motif: string;
   /** Modest tilt in degrees */
   rotate?: number;
-  /** Logical corner inside the relatively-positioned section */
+  /** Logical corner inside the relatively-positioned section (desktop) */
   side?: 'start' | 'end';
 }
 
@@ -54,7 +55,6 @@ const entry = (manifest.motifs as { id: string; src: string }[]).find(
     z-index: 0;
     transform: translateY(0) rotate(var(--doodle-rot, 0deg));
     transform-origin: center center;
-    /* Same motion language as SiteDoodles `.site-doodle-float`. */
     animation: site-doodle-float 7.5s ease-in-out infinite;
     will-change: transform;
   }
@@ -88,18 +88,31 @@ const entry = (manifest.motifs as { id: string; src: string }[]).find(
     animation: none !important;
   }
 
-  /* Sensible mobile downscale; still readable, clears centered copy. */
+  /*
+   * Mobile / narrow: bring doodle into normal flow BETWEEN title and
+   * section body — clearly visible, never overlays text or buttons.
+   */
   @media (max-width: 900px) {
-    .home-section-doodle {
-      width: clamp(120px, 26vw, 160px);
-      max-width: 160px;
-      top: 0;
+    .home-section-doodle,
+    .home-section-doodle--end,
+    .home-section-doodle--start {
+      position: relative;
+      inset: auto;
+      top: auto;
+      display: block;
+      width: clamp(120px, 32vw, 150px);
+      max-width: 150px;
+      margin: 4px auto 10px;
+      order: 2; /* after title/lede when head is flex column */
     }
   }
   @media (max-width: 640px) {
-    .home-section-doodle {
-      width: clamp(96px, 28vw, 128px);
-      max-width: 128px;
+    .home-section-doodle,
+    .home-section-doodle--end,
+    .home-section-doodle--start {
+      width: clamp(118px, 36vw, 148px);
+      max-width: 148px;
+      margin: 6px auto 12px;
     }
   }
   @media print {
