@@ -388,9 +388,10 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           aria-labelledby={`group-${gEntry.grade}-${g.key}`}
         >
           <div className="group-head">
-            <h2 id={`group-${gEntry.grade}-${g.key}`}>{g.label}</h2>
+            <h2 id={`group-${gEntry.grade}-${g.key}`}>
+              {g.label} <span className="count">({listTopics.length})</span>
+            </h2>
             <span className="rule" aria-hidden="true" />
-            <span className="count">{listTopics.length}</span>
           </div>
           {listTopics.map((topic) => renderTopicCard(topic, gEntry))}
         </section>
