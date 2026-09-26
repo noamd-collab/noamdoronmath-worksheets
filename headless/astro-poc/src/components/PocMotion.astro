@@ -29,9 +29,11 @@
     ].join(',');
 
     function motionAllowed() {
+      var html = document.documentElement;
       return (
         !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
-        !document.documentElement.classList.contains('noam-a11y-motion')
+        !html.classList.contains('noam-a11y-motion') &&
+        !html.classList.contains('nd-motion-off')
       );
     }
 

@@ -1,0 +1,88 @@
+---
+/**
+ * Mobile-only notebook corners for topic / hub pages — 1–2 small absolute
+ * doodles in the page header band. No layout push, pointer-events none.
+ * Hidden ≥641px (SiteDoodles gutters cover desktop).
+ */
+import manifest from '../data/doodles.manifest.json';
+import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
+import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
+
+export interface Props {
+  seed: string;
+  preferred?: string[];
+}
+
+const { seed, preferred = [] } = Astro.props;
+const motifs = (manifest.motifs || []) as DoodleMotif[];
+const scatter = selectNotebookScatter(seed, motifs, {
+  preferred,
+  count: 2,
+  scribbleCount: 0,
+});
+const duo = scatter.motifs.slice(0, 2);
+---
+
+{
+  duo.length > 0 && (
+    <div
+      class="mobile-nb-corners"
+      aria-hidden="true"
+      data-mobile-nb-corners
+      data-notebook-seed={seed}
+    >
+      {duo.map((m, i) => (
+        <img
+          class:list={['mobile-nb-corner', i === 0 ? 'mobile-nb-corner--a' : 'mobile-nb-corner--b']}
+          src={m.src}
+          alt=""
+          width="56"
+          height="56"
+          decoding="async"
+          loading="lazy"
+          data-doodle-id={m.id}
+          style={`--d-rot:${m.rotate}deg`}
+        />
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .mobile-nb-corners {
+    display: none;
+  }
+  @media (max-width: 640px) {
+    .mobile-nb-corners {
+      display: block;
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+      overflow: visible;
+    }
+    .mobile-nb-corner {
+      position: absolute;
+      display: block;
+      width: 56px;
+      max-width: 56px;
+      height: auto;
+      opacity: 0.4;
+      transform: rotate(var(--d-rot, 0deg));
+    }
+    .mobile-nb-corner--a {
+      inset-inline-start: 2px;
+      top: 4px;
+    }
+    .mobile-nb-corner--b {
+      inset-inline-end: 2px;
+      top: 36px;
+    }
+  }
+  @media print {
+    .mobile-nb-corners {
+      display: none !important;
+    }
+  }
+</style>

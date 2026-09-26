@@ -86,10 +86,11 @@ export function selectNotebookScatter(
     motifs.length,
     Math.max(3, Math.min(6, opts.count ?? 5))
   );
-  const scribbleWant = Math.min(
-    SCRIBBLE_KINDS.length,
-    Math.max(2, Math.min(4, opts.scribbleCount ?? 3))
-  );
+  const scribbleWantRaw = opts.scribbleCount ?? 3;
+  const scribbleWant =
+    scribbleWantRaw <= 0
+      ? 0
+      : Math.min(SCRIBBLE_KINDS.length, Math.max(1, Math.min(4, scribbleWantRaw)));
 
   const rng = mulberry32(hashPathname(`scatter:${seed}`));
   const byId = new Map(motifs.map((m) => [m.id, m]));

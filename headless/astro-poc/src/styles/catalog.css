@@ -864,6 +864,16 @@ a {
   padding: 32px 20px 8px;
   background: transparent;
 }
+/* FIX-3 stacking: mobile nav (z-60 inside header) must beat sticky .toolbar (z-30).
+ * Raise the header stacking context on narrow viewports / when the drawer is open. */
+@media (max-width: 900px) {
+  .site-header {
+    z-index: 40;
+  }
+  .site-header:has(.site-nav[data-open]) {
+    z-index: 50;
+  }
+}
 
 .site-header__inner {
   display: flex;
@@ -1219,6 +1229,21 @@ a {
   align-items: center;
   justify-content: flex-start;
   overflow: visible;
+}
+/* Mobile corner doodles sit in the head; keep title/lede above them */
+@media (max-width: 640px) {
+  .home-section__head > :not([data-home-section-notebook]) {
+    position: relative;
+    z-index: 1;
+  }
+}
+.topic-page__header--nb {
+  position: relative;
+  overflow: visible;
+}
+.topic-page__header--nb > :not([data-mobile-nb-corners]) {
+  position: relative;
+  z-index: 1;
 }
 
 /* Keep interactive content above any leftover absolute decoration */
@@ -3832,13 +3857,8 @@ body {
 
 /* ——— UI/UX fix-2 (KIMICODE-UIUX-FIX-2): mobile fold, wide screens ——— */
 
-/* Hide the decorative doodle strip on phones — it costs ~80px of fold height.
- * Specificity (0,2,1) + !important beats the component-scoped (0,2,0) !important strip rule. */
-@media (max-width: 767px) {
-  body .site-doodles[data-site-doodles] {
-    display: none !important;
-  }
-}
+/* NOTE: do NOT hide `.site-doodles` on phones — live notebook doodles (KIMI-ANIM-6)
+ * must stay visible. Compact strip sizing lives in SiteDoodles.astro. */
 
 /* Tighter vertical rhythm on mobile so real content reaches the first screen */
 @media (max-width: 767px) {

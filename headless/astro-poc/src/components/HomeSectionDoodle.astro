@@ -1,9 +1,9 @@
 ---
 /**
  * KIMI-ANIM-6 — dense notebook scatter per home section (3–6 webp motifs
- * + small math scribbles). Topic-matched preferred motifs first; fillers
- * from the full DOODLES-45 set. In-flow wrap so nothing covers text/CTAs.
- * Subset floats; off under prefers-reduced-motion / noam-a11y-motion.
+ * + small math scribbles) on desktop. Mobile: 1–2 absolute corner doodles
+ * in the section head (no layout push). Subset floats; off under
+ * prefers-reduced-motion / noam-a11y-motion / nd-motion-off.
  */
 import manifest from '../data/doodles.manifest.json';
 import { selectNotebookScatter } from '../lib/doodles/selectNotebookScatter';
@@ -36,10 +36,12 @@ const scatter = selectNotebookScatter(seed, motifs, {
       data-home-section-notebook
       data-notebook-seed={seed}
     >
-      {scatter.motifs.map((m) => (
+      {scatter.motifs.map((m, i) => (
         <img
           class:list={[
             'home-nb-doodle',
+            i === 0 ? 'home-nb-doodle--a' : null,
+            i === 1 ? 'home-nb-doodle--b' : null,
             m.float ? 'home-nb-doodle--float' : null,
           ]}
           src={m.src}
@@ -101,39 +103,52 @@ const scatter = selectNotebookScatter(seed, motifs, {
       animation: none;
     }
   }
-  :global(html.noam-a11y-motion) .home-nb-doodle--float {
+  :global(html.noam-a11y-motion) .home-nb-doodle--float,
+  :global(html.nd-motion-off) .home-nb-doodle--float {
     animation: none !important;
   }
+
   /*
-   * Mobile: compact single row (~≤72px tall) so grade cards / CTAs
-   * sit near their pre-doodle vertical position — still visible, no overlap.
+   * Mobile notebook: 1–2 small absolute corner doodles inside the section
+   * head — no in-flow height, no horizontal scroll, never over text.
    */
   @media (max-width: 640px) {
     .home-section-notebook {
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      gap: 2px 6px;
-      margin: 2px 0 6px;
-      padding: 0 4px;
-      max-height: 64px;
-      overflow: hidden;
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: auto;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 0;
     }
     .home-nb-doodle {
-      width: 48px !important;
-      max-width: 52px !important;
-    }
-    /* Keep 3 small motifs; hide the rest of the dense desktop cluster */
-    .home-nb-doodle:nth-child(n + 4) {
+      position: absolute;
       display: none;
+      width: 56px !important;
+      max-width: 56px !important;
+      opacity: 0.42;
+      z-index: 0;
     }
-    /* One tiny scribble max on phone (prefer formula if present) */
-    .home-section-notebook :global(.math-scribble:not(.math-scribble--formula)) {
-      display: none;
+    .home-nb-doodle--a {
+      display: block;
+      inset-inline-start: -2px;
+      top: 0;
     }
-    .home-section-notebook :global(.math-scribble--formula) {
-      width: 78px;
-      max-width: 34vw;
+    .home-nb-doodle--b {
+      display: block;
+      inset-inline-end: -2px;
+      top: 28px;
+    }
+    /* Hide dense desktop fillers + scribbles on phone */
+    .home-nb-doodle:not(.home-nb-doodle--a):not(.home-nb-doodle--b) {
+      display: none !important;
+    }
+    .home-section-notebook :global(.math-scribble) {
+      display: none !important;
     }
   }
   @media print {
