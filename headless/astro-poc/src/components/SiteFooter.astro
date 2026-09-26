@@ -112,3 +112,17 @@ const { footer } = Astro.props;
     <p class="home-foot">{footer.previewNote}</p>
   </div>
 </footer>
+
+<style>
+  .site-footer__quick a,
+  .site-footer__legal a,
+  .site-footer__email {
+    display: inline-block;
+    box-sizing: border-box;
+    min-height: 44px;
+    min-width: 44px;
+    max-width: 100%;
+    padding-block: 12px;
+    overflow-wrap: anywhere;
+  }
+</style>

@@ -56,15 +56,24 @@
     const host = document.createElement('div');
     host.id = 'noam-accessibility';
     // Shadow DOM keeps site-wide button rules from changing the menu.
+    // The concept-loop pause control sits on the physical right. On the Astro
+    // shell, park the launcher in the lowest corner that does not cover text
+    // or a control, then lift it if both corners are taken.
+    function launcherMetrics() {
+      var narrow = docked();
+      return { size: narrow ? 44 : 48, edge: narrow ? 8 : 14 };
+    }
+    function applyHostBox(side, edge, bottomPx, size) {
+      var other = side === 'right' ? 'left' : 'right';
+      host.style.cssText = 'position:fixed;' + side + ':' + edge + 'px;' + other + ':auto;bottom:calc(' + bottomPx + 'px + env(safe-area-inset-bottom, 0px));z-index:10000;width:' + size + 'px;height:' + size + 'px;';
+    }
     function placeLauncher() {
       document.documentElement.classList.toggle('noam-a11y-pad', astroShell);
       if (!astroShell) {
         host.style.cssText = 'position:fixed;right:14px;bottom:calc(82px + env(safe-area-inset-bottom, 0px));z-index:10000;width:48px;height:48px;';
-      } else if (docked()) {
-        host.style.cssText = 'position:fixed;right:8px;bottom:calc(8px + env(safe-area-inset-bottom, 0px));z-index:10000;width:44px;height:44px;';
-      } else {
-        host.style.cssText = 'position:fixed;right:14px;bottom:calc(8px + env(safe-area-inset-bottom, 0px));z-index:10000;width:48px;height:48px;';
+        return;
       }
+      settleLauncher();
     }
     if (astroShell) narrowQuery.addEventListener('change', placeLauncher);
     const root = host.attachShadow({mode:'open'});
@@ -127,7 +136,97 @@
     document.body.appendChild(host);
     const dialog = root.getElementById('menu');
     const launch = root.getElementById('launch');
-    launch.addEventListener('click', () => { dialog.showModal(); launch.setAttribute('aria-expanded','true'); root.getElementById('close').focus(); });
+
+    function obstacleRects() {
+      var rects = [];
+      var nodes = document.querySelectorAll('a,button,input,select,textarea,summary,[role="button"],p,h1,h2,h3,h4');
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        if (el.closest('#noam-accessibility,#ndGateOverlay,.site-doodles')) continue;
+        var st = getComputedStyle(el);
+        if (st.display === 'none' || st.visibility === 'hidden' || Number(st.opacity) === 0) continue;
+        var r = el.getBoundingClientRect();
+        if (r.width < 2 || r.height < 2) continue;
+        if (r.bottom <= 0 || r.top >= window.innerHeight || r.right <= 0 || r.left >= window.innerWidth) continue;
+        rects.push(r);
+      }
+      var fixedNodes = document.body.querySelectorAll('*');
+      for (var j = 0; j < fixedNodes.length; j++) {
+        var fixedEl = fixedNodes[j];
+        if (fixedEl.closest('#noam-accessibility,#ndGateOverlay,.site-doodles')) continue;
+        var fixedStyle = getComputedStyle(fixedEl);
+        if (fixedStyle.position !== 'fixed' && fixedStyle.position !== 'sticky') continue;
+        if (fixedStyle.pointerEvents === 'none' || fixedStyle.display === 'none' || fixedStyle.visibility === 'hidden') continue;
+        var fr = fixedEl.getBoundingClientRect();
+        if (fr.width < 2 || fr.height < 2) continue;
+        if (fr.width >= window.innerWidth - 4 && fr.height >= window.innerHeight - 4) continue;
+        if (fr.bottom <= 0 || fr.top >= window.innerHeight || fr.right <= 0 || fr.left >= window.innerWidth) continue;
+        rects.push(fr);
+      }
+      return rects;
+    }
+    function boxHits(box, rects) {
+      if (box.width < 2 || box.bottom < 0 || box.top > window.innerHeight) return true;
+      for (var i = 0; i < rects.length; i++) {
+        var r = rects[i];
+        var ix = Math.min(box.right, r.right + 6) - Math.max(box.left, r.left - 6);
+        var iy = Math.min(box.bottom, r.bottom + 6) - Math.max(box.top, r.top - 6);
+        if (ix > 0.5 && iy > 0.5) return true;
+      }
+      return false;
+    }
+    function settleLauncher() {
+      if (!astroShell || !host.isConnected || dialog.open) return;
+      var metrics = launcherMetrics();
+      var rects = obstacleRects();
+      var maxBottom = Math.max(8, Math.round(window.innerHeight * 0.75));
+      var bottoms = [8, 0];
+      for (var bottom = 16; bottom <= maxBottom; bottom += 8) bottoms.push(bottom);
+      var sides = ['right', 'left'];
+      for (var i = 0; i < bottoms.length; i++) {
+        for (var s = 0; s < sides.length; s++) {
+          applyHostBox(sides[s], metrics.edge, bottoms[i], metrics.size);
+          if (!boxHits(host.getBoundingClientRect(), rects)) return;
+        }
+      }
+      applyHostBox('left', metrics.edge, 8, metrics.size);
+    }
+    function placeDialogNearLauncher() {
+      if (!astroShell) return;
+      var b = host.getBoundingClientRect();
+      var onLeft = (b.left + b.width / 2) < window.innerWidth / 2;
+      dialog.style.left = onLeft ? '14px' : 'auto';
+      dialog.style.right = onLeft ? 'auto' : '14px';
+      var spaceAbove = b.top - 16;
+      var spaceBelow = window.innerHeight - b.bottom - 16;
+      if (spaceAbove >= 200 || spaceAbove >= spaceBelow) {
+        dialog.style.top = 'auto';
+        dialog.style.bottom = Math.round(window.innerHeight - b.top + 12) + 'px';
+        dialog.style.maxHeight = Math.max(160, Math.floor(spaceAbove - 8)) + 'px';
+      } else {
+        dialog.style.bottom = 'auto';
+        dialog.style.top = Math.round(b.bottom + 12) + 'px';
+        dialog.style.maxHeight = Math.max(160, Math.floor(spaceBelow - 8)) + 'px';
+      }
+    }
+    if (astroShell) {
+      settleLauncher();
+      window.addEventListener('resize', settleLauncher);
+      var scrollTimer = 0;
+      window.addEventListener('scroll', function () {
+        window.clearTimeout(scrollTimer);
+        scrollTimer = window.setTimeout(settleLauncher, 160);
+      }, { passive: true });
+      window.addEventListener('load', settleLauncher, { once: true });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { settleLauncher(); });
+      window.setTimeout(settleLauncher, 500);
+    }
+    launch.addEventListener('click', () => {
+      placeDialogNearLauncher();
+      dialog.showModal();
+      launch.setAttribute('aria-expanded','true');
+      root.getElementById('close').focus();
+    });
     root.getElementById('close').addEventListener('click', () => dialog.close());
     dialog.addEventListener('close', () => { launch.setAttribute('aria-expanded','false'); launch.focus(); });
 
@@ -169,6 +268,7 @@
       root.getElementById('increase').disabled = prefs.text >= 150;
       root.getElementById('decrease').disabled = prefs.text <= 100;
       scaleText();
+      if (astroShell && host.isConnected && !dialog.open) settleLauncher();
       if (save) try { localStorage.setItem('noam-accessibility-v1',JSON.stringify(prefs)); } catch (_) {}
     }
     root.getElementById('increase').addEventListener('click', () => { prefs.text = Math.min(150,prefs.text+10); apply(true); });
