@@ -27,7 +27,15 @@ export interface Props {
     | 'tenframes'
     | 'balance'
     | 'pattern'
-    | 'bars';
+    | 'bars'
+    | 'ruler'
+    | 'array'
+    | 'polygon'
+    | 'data'
+    | 'baseten'
+    | 'cookies'
+    | 'fraction'
+    | 'transform';
 }
 const { variant } = Astro.props;
 
@@ -50,9 +58,20 @@ const ariaLabels: Record<string, string> = {
     'הדגמה: תבנית הריבועים 2, 5, 8, 11 גדלה ב־3 בכל שלב. השלב החמישי הוא 14.',
   bars:
     'הדגמה: מודל פסים — פס של 12 לדנה, פס של 12 ועוד 5 לרון, ויחד 12 + 17 = 29.',
+  ruler: 'הדגמה: סרגל של מטר אחד מתחלק לעשרה קטעים של 10 ס״מ — 1 m = 100 cm.',
+  array:
+    'הדגמה: 4 קבוצות של 3 נקודות מתיישרות למערך 4 × 3, המערך מסתובב ל־3 × 4 — אותן 12 נקודות.',
+  polygon: 'הדגמה: מחומש נבנה צלע אחר צלע, והמונים מראים שמספר הצלעות שווה למספר הקודקודים.',
+  data: 'הדגמה: סימני ספירה בטבלה הופכים לעמודות ואז לדיאגרמת עוגה — אותם 16 נתונים בשלושה ייצוגים.',
+  baseten:
+    'הדגמה: 38 + 25 בקוביות בסיס עשר — 8 ועוד 5 הם 13 יחידות, עשר מתאחדות למוט, ומתקבל 63.',
+  cookies: 'הדגמה: 14 עוגיות מחולקות ל־4 צלחות — 3 בכל צלחת ו־2 נשארות: 14 = 4 × 3 + 2.',
+  fraction: 'הדגמה: עוגה נחתכת לארבעה חלקים שווים ואחד נצבע — אותו רבע מופיע גם על פס וגם על ישר.',
+  transform:
+    'הדגמה: משולש משתקף סביב ישר, מסתובב 90 מעלות סביב נקודה ומוזז — הצורה נשארת חופפת.',
 };
 
-/* fixed top-strip problem text per variant (families F01–F06 layout);
+/* fixed top-strip problem text per variant (families layout);
    formula-like strips are rendered LTR */
 const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   sticks: { text: 'כמה מקלות?' },
@@ -60,6 +79,12 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   balance: { text: '3 + □ = 8', ltr: true },
   pattern: { text: 'מה מספר הריבועים בשלב 5?' },
   bars: { text: 'לדנה 12 מדבקות. לרון 5 מדבקות יותר מלדנה. כמה מדבקות יש להם יחד?' },
+  ruler: { text: 'כמה ס״מ יש במטר?' },
+  array: { text: '4 קבוצות של 3 — כמה נקודות?' },
+  polygon: { text: 'כמה צלעות וכמה קודקודים?' },
+  baseten: { text: '38 + 25 = ?', ltr: true },
+  cookies: { text: 'כמה עוגיות בכל צלחת? ומה נשאר?' },
+  fraction: { text: 'איזה חלק של העוגה צבוע?' },
 };
 const top = topTexts[variant];
 
@@ -145,6 +170,86 @@ const pat5new = [0, 1, 2].map((r) => ({ x: 514, y: 204 - 16 * r })); // new oran
 
 /* ═══════ F06 bars — unit 16px; bars anchored at the right edge x=460 ═══════ */
 const BAR_R = 460;
+
+/* ═══════ F07 ruler — 1 m bar = 100 cm (4.4 px/cm) ═══════ */
+const RUL_X0 = 60;
+const RUL_SEG = Array.from({ length: 10 }, (_, i) => ({ x: RUL_X0 + i * 44, n: (i + 1) * 10 }));
+
+/* ═══════ F08 array — 4 clusters of 3 → 4×3 array → rotate to 3×4 ═══════ */
+const ARR_CENTER = { x: 251, y: 258 };
+const arrHome = (k: number, j: number) => ({
+  x: 90 + k * 95 + [-12, 12, 0][j],
+  y: 90 + [-11, -11, 13][j],
+});
+const arrCell = (i: number) => ({ x: 217 + (i % 3) * 34, y: 207 + Math.floor(i / 3) * 34 });
+const arrDots = Array.from({ length: 12 }, (_, i) => ({
+  home: arrHome(Math.floor(i / 3), i % 3),
+  cell: arrCell(i),
+}));
+
+/* ═══════ F09 polygon — pentagon built side by side, counters tick together ═══════ */
+const PENT = Array.from({ length: 5 }, (_, k) => {
+  const a = (-90 + k * 72) * (Math.PI / 180);
+  return { x: 280 + 95 * Math.cos(a), y: 170 + 95 * Math.sin(a) };
+});
+
+/* ═══════ F10 data — tally 8/5/3 → bars → pie (total 16) ═══════ */
+const DATA_ROWS = [
+  { name: 'תפוחים', v: 8, color: 'rgba(30,136,229,0.55)', stroke: 'var(--cobalt)' },
+  { name: 'בננות', v: 5, color: 'rgba(124,58,237,0.5)', stroke: '#7c3aed' },
+  { name: 'ענבים', v: 3, color: 'rgba(234,88,12,0.5)', stroke: '#ea580c' },
+];
+const PIE = (() => {
+  const total = 16;
+  let a0 = -90;
+  return DATA_ROWS.map((r) => {
+    const a1 = a0 + (r.v / total) * 360;
+    const large = a1 - a0 > 180 ? 1 : 0;
+    const rad = (d: number) => (d * Math.PI) / 180;
+    const p0 = { x: 490 + 70 * Math.cos(rad(a0)), y: 175 + 70 * Math.sin(rad(a0)) };
+    const p1 = { x: 490 + 70 * Math.cos(rad(a1)), y: 175 + 70 * Math.sin(rad(a1)) };
+    const mid = rad((a0 + a1) / 2);
+    const slice = `M490 175 L${p0.x.toFixed(1)} ${p0.y.toFixed(1)} A70 70 0 ${large} 1 ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} Z`;
+    const label = { x: 490 + 40 * Math.cos(mid), y: 175 + 40 * Math.sin(mid) };
+    a0 = a1;
+    return { slice, label, v: r.v };
+  });
+})();
+
+/* ═══════ F11 base-ten — 38 + 25 = 63 ═══════ */
+const bt38 = {
+  rods: [120, 140, 160].map((x) => ({ x, y: 90 })),
+  ones: Array.from({ length: 8 }, (_, i) => ({ x: 190 + (i % 2) * 18, y: 90 + Math.floor(i / 2) * 18 })),
+};
+const bt25 = {
+  rods: [380, 400].map((x) => ({ x, y: 90 })),
+  ones: Array.from({ length: 5 }, (_, i) => ({ x: 430 + (i % 3) * 18, y: 90 + Math.floor(i / 3) * 18 })),
+};
+// gather slots for the 13 ones in the middle, then 10 merge into a rod
+const btGather = Array.from({ length: 13 }, (_, i) => ({ x: 200 + (i % 7) * 20, y: 236 + Math.floor(i / 7) * 20 }));
+
+/* ═══════ F12 cookies — 14 cookies onto 4 plates: 3 each, 2 left ═══════ */
+const ckTray = Array.from({ length: 14 }, (_, i) => ({ x: 80 + i * 30, y: 70 }));
+const ckPlates = [130, 230, 330, 430].map((x) => ({ x, y: 205 }));
+const ckSeat = (i: number) => {
+  const plate = i % 4;
+  const seat = Math.floor(i / 4); // 0,1,2
+  return { x: ckPlates[plate].x - 18 + seat * 18, y: 198 };
+};
+
+/* ═══════ F13 fraction — 1/4 on a cake, a bar and a number line ═══════ */
+const FR_BAR = { x: 330, y: 110, w: 180, h: 40 };
+
+/* ═══════ F14 transform — ghost triangle, copy reflects/rotates/translates ═══════ */
+const TR_GHOST = [
+  { x: 120, y: 90 },
+  { x: 60, y: 190 },
+  { x: 190, y: 190 },
+];
+const TR_PTS = (pts: { x: number; y: number }[]) => pts.map((p) => `${r2(p.x)},${r2(p.y)}`).join(' ');
+const TR_AXIS = 260;
+const TR_PIVOT = { x: 400, y: 90 }; // = reflected A
+const TR_MOVE = { dx: 40, dy: 60 }; // keeps the copy inside the card
 ---
 
 <div class="concept-loop" data-loop={variant}>
@@ -179,6 +284,28 @@ const BAR_R = 460;
           <span class="cl-topsz" aria-hidden="true">לאן מעגלים את 47?</span>
           <span class="cl-tops" data-el="topa">מי גדול יותר?</span>
           <span class="cl-tops" data-el="topb">לאן מעגלים את 47?</span>
+        </p>
+      )
+    }
+    {
+      /* data: one question per representation phase */
+      variant === 'data' && (
+        <p class="concept-loop__top cl-topswap">
+          <span class="cl-topsz" aria-hidden="true">ואותם נתונים — בעוגה?</span>
+          <span class="cl-tops" data-el="top0">איך סופרים בטבלה?</span>
+          <span class="cl-tops" data-el="top1">איך זה נראה בעמודות?</span>
+          <span class="cl-tops" data-el="top2">ואותם נתונים — בעוגה?</span>
+        </p>
+      )
+    }
+    {
+      /* transform: one question per transformation phase */
+      variant === 'transform' && (
+        <p class="concept-loop__top cl-topswap">
+          <span class="cl-topsz" aria-hidden="true">ומה זו הזזה?</span>
+          <span class="cl-tops" data-el="top0">מה זה שיקוף?</span>
+          <span class="cl-tops" data-el="top1">ומה זה סיבוב?</span>
+          <span class="cl-tops" data-el="top2">ומה זו הזזה?</span>
         </p>
       )
     }
@@ -609,6 +736,253 @@ const BAR_R = 460;
     }
 
     {
+      /* ═══════ F07 — ruler: 1 m = 100 cm ═══════ */
+      variant === 'ruler' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={ariaLabels[variant]}>
+          {/* persistent: the meter bar outline + its label */}
+          <rect class="cl-line" x="60" y="110" width="440" height="30" pathLength="1" />
+          <text class="cl-t cl-num" x="66" y="100">1 m</text>
+          {/* nine dividers split it into ten 10-cm segments */}
+          {RUL_SEG.slice(0, 9).map((s, i) => (
+            <line class="cl-line" data-el={`div-${i}`} x1={s.x + 44} y1="110" x2={s.x + 44} y2="140" pathLength="1" />
+          ))}
+          {/* running totals under the segment ends: 10 … 100 */}
+          {RUL_SEG.map((s, i) => (
+            <text class="cl-t cl-num cl-small" data-el={`rcnt-${i}`} x={s.x + 44} y="158" text-anchor="middle">
+              {s.n}
+            </text>
+          ))}
+          {/* brace over the first segment: 10 cm */}
+          <path data-el="brace" class="cl-arc" pathLength="1" d="M60 78 L60 86 L104 86 L104 78" />
+          <text data-el="ten" class="cl-t cl-num" x="82" y="70" text-anchor="middle">10 cm</text>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F08 — array: 4 × 3 = 3 × 4 = 12 ═══════ */
+      variant === 'array' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {/* the rotating array (dots fly in from the clusters) */}
+          <g data-el="arrgroup">
+            {arrDots.map((d, i) => (
+              <circle
+                class="cl-dot cl-dot-a"
+                data-arr={i}
+                cx={d.home.x}
+                cy={d.home.y}
+                r="9"
+                data-h={`${d.home.x},${d.home.y}`}
+                data-t={`${d.cell.x},${d.cell.y}`}
+              />
+            ))}
+          </g>
+          {/* cluster labels "3" under each group of three */}
+          {[0, 1, 2, 3].map((k) => (
+            <text class="cl-t cl-num" data-el={`clbl-${k}`} x={90 + k * 95} y="140" text-anchor="middle">
+              3
+            </text>
+          ))}
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F09 — polygon: sides = vertices ═══════ */
+      variant === 'polygon' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <polygon data-el="pent-fill" class="cl-fill-a" points={PENT.map((p) => `${r2(p.x)},${r2(p.y)}`).join(' ')} />
+          {PENT.map((p, i) => (
+            <line
+              class="cl-line cl-stroke-a"
+              data-el={`side-${i}`}
+              x1={PENT[i].x}
+              y1={PENT[i].y}
+              x2={PENT[(i + 1) % 5].x}
+              y2={PENT[(i + 1) % 5].y}
+              pathLength="1"
+            />
+          ))}
+          {PENT.map((p, i) => (
+            <circle class="cl-pt cl-pt-a" data-el={`vert-${i}`} cx={r2(p.x)} cy={r2(p.y)} r="6" />
+          ))}
+          {/* counters tick together: sides on the right, vertices on the left.
+              RTL text: text-anchor="start" pins the RIGHT edge (no clipping) */}
+          <text class="cl-t" x="530" y="90" text-anchor="start">
+            צלעות: <tspan class="cl-num" data-el="cnt-side">0</tspan>
+          </text>
+          <text class="cl-t" x="530" y="122" text-anchor="start">
+            קודקודים: <tspan class="cl-num" data-el="cnt-vert">0</tspan>
+          </text>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F10 — data: tally → bars → pie ═══════ */
+      variant === 'data' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {/* tally table (left): fruit names + marks */}
+          {DATA_ROWS.map((row, ri) => (
+            <>
+              <text class="cl-t cl-small" x="112" y={104 + ri * 40} text-anchor="start">
+                {row.name}
+              </text>
+              {Array.from({ length: row.v }, (_, m) => (
+                <line
+                  class="cl-tally"
+                  data-tally={`${ri}-${m}`}
+                  x1={122 + m * 9 + Math.floor(m / 5) * 8}
+                  y1={92 + ri * 40}
+                  x2={122 + m * 9 + Math.floor(m / 5) * 8}
+                  y2={108 + ri * 40}
+                />
+              ))}
+            </>
+          ))}
+          {/* bar chart (center): axes persistent, bars grow */}
+          <line class="cl-line-thin" x1="240" y1="80" x2="240" y2="260" />
+          <line class="cl-line-thin" x1="240" y1="260" x2="400" y2="260" />
+          {DATA_ROWS.map((row, ri) => (
+            <>
+              <rect
+                class="cl-dbar"
+                data-bar={ri}
+                x={254 + ri * 48}
+                y={260 - row.v * 18}
+                width="36"
+                height={row.v * 18}
+                style={{ fill: row.color, stroke: row.stroke }}
+              />
+              <text class="cl-t cl-num" data-barlbl={ri} x={272 + ri * 48} y={248 - row.v * 18} text-anchor="middle">
+                {row.v}
+              </text>
+            </>
+          ))}
+          {/* pie (right): slices appear in the same values */}
+          {PIE.map((s, i) => (
+            <path class="cl-slice" data-slice={i} d={s.slice} style={{ fill: DATA_ROWS[i].color, stroke: DATA_ROWS[i].stroke }} />
+          ))}
+          {PIE.map((s, i) => (
+            <text class="cl-t cl-num cl-small" data-slicelbl={i} x={r2(s.label.x)} y={r2(s.label.y)} text-anchor="middle">
+              {s.v}
+            </text>
+          ))}
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F11 — base-ten: 38 + 25 = 63 ═══════ */
+      variant === 'baseten' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {/* 38: three rods + eight ones */}
+          {bt38.rods.map((r, i) => (
+            <rect class="cl-rod" data-rod38={i} x={r.x} y={r.y} width="14" height="90" rx="3" />
+          ))}
+          {bt38.ones.map((o, i) => (
+            <rect class="cl-one cl-one-a" data-one38={i} x={o.x} y={o.y} width="15" height="15" rx="3" data-h={`${o.x},${o.y}`} data-t={`${btGather[i].x},${btGather[i].y}`} />
+          ))}
+          <text class="cl-t cl-num" data-el="lbl38" x="170" y="212" text-anchor="middle">38</text>
+          {/* 25: two rods + five ones */}
+          {bt25.rods.map((r, i) => (
+            <rect class="cl-rod cl-rod-b" data-rod25={i} x={r.x} y={r.y} width="14" height="90" rx="3" />
+          ))}
+          {bt25.ones.map((o, i) => (
+            <rect class="cl-one cl-one-b" data-one25={i} x={o.x} y={o.y} width="15" height="15" rx="3" data-h={`${o.x},${o.y}`} data-t={`${btGather[8 + i].x},${btGather[8 + i].y}`} />
+          ))}
+          <text class="cl-t cl-num" data-el="lbl25" x="420" y="212" text-anchor="middle">25</text>
+          {/* the new ten-rod the ten ones merge into */}
+          <rect class="cl-rod cl-rod-new" data-el="newrod" x="340" y="150" width="14" height="90" rx="3" />
+          {/* orange outlines around the ten ones that merge (7 + 3) */}
+          <rect class="cl-ol" data-el="merge-ol-a" x="194" y="230" width="148" height="26" rx="8" />
+          <rect class="cl-ol" data-el="merge-ol-b" x="194" y="250" width="68" height="26" rx="8" />
+          <text class="cl-t cl-num" data-el="lbl63" x="347" y="262" text-anchor="middle">63</text>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F12 — cookies: 14 = 4 × 3 + 2 ═══════ */
+      variant === 'cookies' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {/* four plates (persistent) */}
+          {ckPlates.map((p) => (
+            <ellipse class="cl-plate" cx={p.x} cy={p.y} rx="34" ry="15" />
+          ))}
+          {/* 14 cookies on a tray row → dealt onto the plates */}
+          {ckTray.map((c, i) => (
+            <circle
+              class="cl-cookie"
+              data-cookie={i}
+              cx={c.x}
+              cy={c.y}
+              r="10"
+              data-h={`${c.x},${c.y}`}
+              data-t={i < 12 ? `${ckSeat(i).x},${ckSeat(i).y}` : `${c.x},${c.y}`}
+            />
+          ))}
+          {/* the 2 leftovers stay on the tray */}
+          {[12, 13].map((i) => (
+            <circle class="cl-olc" data-el={`left-${i}`} cx={ckTray[i].x} cy={ckTray[i].y} r="13" />
+          ))}
+          <text class="cl-t" data-el="lbl-left" x="410" y="52">נשארו 2</text>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F13 — fraction: 1/4 three ways ═══════ */
+      variant === 'fraction' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {/* cake (persistent outline) */}
+          <circle class="cl-line" cx="160" cy="140" r="70" pathLength="1" />
+          {/* cut lines */}
+          <line class="cl-line-thin" data-el="cut-v" x1="160" y1="70" x2="160" y2="210" pathLength="1" />
+          <line class="cl-line-thin" data-el="cut-h" x1="90" y1="140" x2="230" y2="140" pathLength="1" />
+          {/* one quarter shaded */}
+          <path data-el="q-shade" class="cl-fill-a" d="M160 140 L160 70 A70 70 0 0 1 230 140 Z" />
+          <text class="cl-t cl-num" data-el="q-lbl" x="252" y="122">1/4</text>
+
+          {/* bar: same 1/4 */}
+          <rect class="cl-line-thin" data-el="bar-o" x={FR_BAR.x} y={FR_BAR.y} width={FR_BAR.w} height={FR_BAR.h} pathLength="1" />
+          <rect data-el="bar-shade" class="cl-fill-a" x={FR_BAR.x} y={FR_BAR.y} width={FR_BAR.w / 4} height={FR_BAR.h} />
+          {[1, 2, 3].map((k) => (
+            <line class="cl-line-thin" data-el={`bar-d${k}`} x1={FR_BAR.x + k * 45} y1={FR_BAR.y} x2={FR_BAR.x + k * 45} y2={FR_BAR.y + FR_BAR.h} pathLength="1" />
+          ))}
+          <text class="cl-t cl-num" data-el="bar-lbl" x="352" y="172">1/4</text>
+
+          {/* number line 0–1: point at 1/4 */}
+          <line class="cl-line-thin" data-el="nl" x1="330" y1="230" x2="510" y2="230" pathLength="1" />
+          <text class="cl-t cl-num cl-small" data-el="nl0" x="330" y="252" text-anchor="middle">0</text>
+          <text class="cl-t cl-num cl-small" data-el="nl1" x="510" y="252" text-anchor="middle">1</text>
+          <circle class="cl-pt cl-pt-a" data-el="nl-pt" cx="375" cy="230" r="7" />
+          <text class="cl-t cl-num" data-el="nl-lbl" x="375" y="212" text-anchor="middle">1/4</text>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F14 — transform: reflect, rotate, translate ═══════ */
+      variant === 'transform' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {/* ghost of the original (persistent, faint) */}
+          <polygon class="cl-ghost" points={TR_PTS(TR_GHOST)} />
+          {/* reflection axis */}
+          <line class="cl-dash" data-el="axis" x1="260" y1="50" x2="260" y2="240" />
+          {/* the moving copy */}
+          <polygon data-el="copy" class="cl-line cl-stroke-a" points={TR_PTS(TR_GHOST)} />
+          <polygon data-el="copy-fill" class="cl-fill-a" points={TR_PTS(TR_GHOST)} />
+          {/* rotation pivot */}
+          <circle class="cl-pt cl-pt-b" data-el="pivot" cx={TR_PIVOT.x} cy={TR_PIVOT.y} r="6" />
+          {/* translation vector */}
+          <line class="cl-dash-strong" data-el="vec" x1="0" y1="0" x2="0" y2="0" />
+          <path class="cl-arc-fill" data-el="vec-head" d="M0 0" />
+        </svg>
+      )
+    }
+
+    {
       variant === 'triangle' && (
         <>
           <p class="concept-loop__formula" dir="ltr">
@@ -734,6 +1108,98 @@ const BAR_R = 460;
           <span data-fx="0">
             12 + 17 = <b class="cl-ok">29</b>
           </span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'ruler' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">1 m =</span>
+          <span data-fx="1">
+            <b class="cl-ok">100</b> cm
+          </span>
+          <span data-fx="2" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'array' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">4 × 3 = 12</span>
+          <span data-fx="1">3 × 4 = 12</span>
+          <span data-fx="2" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'polygon' && (
+        <p class="concept-loop__formula">
+          <span data-fx="0">מספר הצלעות = מספר הקודקודים</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'data' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">8 + 5 + 3 =</span>
+          <span data-fx="1">
+            <b class="cl-ok">16</b>
+          </span>
+          <span data-fx="2" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'baseten' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">38 + 25 = 60 + 3</span>
+          <span data-fx="1">
+            = <b class="cl-ok">63</b>
+          </span>
+          <span data-fx="2" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'cookies' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">
+            14 = 4 × <b class="cl-ok">3</b> + 2
+          </span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'fraction' && (
+        <p class="concept-loop__formula">
+          <span data-fx="0">אותו חלק בשלוש צורות: עוגה, פס וישר</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'transform' && (
+        <p class="concept-loop__formula">
+          <span data-fx="0">שיקוף, סיבוב והזזה — הצורה נשארת חופפת</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">
             ✓
           </span>

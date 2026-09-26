@@ -30,7 +30,7 @@ const arg = (name, dflt) => {
 };
 const BASE = arg('base', 'http://127.0.0.1:4400');
 const SET = arg('pages', 'all');
-const SHOTS = process.argv.includes('--shots');
+
 const OUT = arg('out', join(homedir(), 'Downloads', 'kimi-loops-k3-shots'));
 mkdirSync(OUT, { recursive: true });
 
@@ -62,6 +62,11 @@ const PAGESETS = {
     ['F26 triangle-area-grade-9', '/triangle-area-grade-9'],
     ['F38 pythagorean-theorem-grade-8', '/pythagorean-theorem-grade-8'],
   ],
+  b2: [
+    ['dev-loops (F07-F14)', '/dev-loops'],
+    ['F10 statistics-grade-8', '/statistics-grade-8'],
+    ['F14 congruent-polygons-transformations-grade-9', '/congruent-polygons-transformations-grade-9'],
+  ],
 };
 const PAGES = SET === 'all' ? Object.values(PAGESETS).flat() : PAGESETS[SET];
 
@@ -76,19 +81,41 @@ const FRAMES = {
   balance: [2.0, 4.6, 6.0],
   pattern: [1.6, 4.0, 6.0],
   bars: [1.8, 3.8, 6.2],
+  ruler: [1.8, 3.6, 5.0],
+  array: [1.4, 4.4, 6.4],
+  polygon: [2.4, 4.6, 5.2],
+  data: [1.6, 3.4, 7.0],
+  baseten: [1.8, 4.2, 6.2],
+  cookies: [2.0, 4.4, 6.2],
+  fraction: [1.8, 4.4, 6.4],
+  transform: [1.6, 3.0, 6.8],
 };
 /* where to shoot each family variant from */
-const SHOT_PAGES = [
-  ['/', 'triangle'],
-  ['/grade-8', 'pythagoras'],
-  ['/grade-9', 'area-model'],
-  ['/grade-2', 'sticks'],
-  ['/grade-4', 'numberline'],
-  ['/grade-1', 'tenframes'],
-  ['/grade-5', 'balance'],
-  ['/grade-6', 'pattern'],
-  ['/grade-3', 'bars'],
-];
+const SHOT_SETS = {
+  b1: [
+    ['/', 'triangle'],
+    ['/grade-8', 'pythagoras'],
+    ['/grade-9', 'area-model'],
+    ['/grade-2', 'sticks'],
+    ['/grade-4', 'numberline'],
+    ['/grade-1', 'tenframes'],
+    ['/grade-5', 'balance'],
+    ['/grade-6', 'pattern'],
+    ['/grade-3', 'bars'],
+  ],
+  b2: [
+    ['/dev-loops', 'ruler'],
+    ['/dev-loops', 'array'],
+    ['/dev-loops', 'polygon'],
+    ['/statistics-grade-8', 'data'],
+    ['/dev-loops', 'baseten'],
+    ['/dev-loops', 'cookies'],
+    ['/dev-loops', 'fraction'],
+    ['/congruent-polygons-transformations-grade-9', 'transform'],
+  ],
+};
+const SHOT_PAGES = SHOT_SETS[arg('shots', 'b1')] || SHOT_SETS.b1.concat(SHOT_SETS.b2);
+const DO_SHOTS = process.argv.some((a) => a === '--shots' || a.startsWith('--shots='));
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -302,8 +329,8 @@ try {
     }
   }
 
-  /* 2) reduced-motion: static completed frame, toggle hidden (three variants) */
-  for (const [path, label] of [['/grade-7', 'triangle'], ['/grade-1', 'tenframes'], ['/grade-5', 'balance']]) {
+  /* 2) reduced-motion: static completed frame, toggle hidden (five variants) */
+  for (const [path, label] of [['/grade-7', 'triangle'], ['/grade-1', 'tenframes'], ['/grade-5', 'balance'], ['/statistics-grade-8', 'data'], ['/dev-loops', 'baseten']]) {
     const pg = await openPage();
     await send(
       'Emulation.setEmulatedMedia',
@@ -312,13 +339,13 @@ try {
     );
     await goto(pg, BASE + path, 1280);
     const loops = await evaljs(pg, LOOP_STATE_JS);
-    const l = loops[0];
+    const l = loops.find((v) => v.variant === label) || loops[0];
     const pass = l && l.static === true && Number(l.formulaOpacity) === 1 && l.t > 5.5;
     results.push({ page: `${label} reduced-motion`, ok: !!pass, loops });
     console.log(
       `${pass ? 'PASS' : 'FAIL'} reduced-motion ${label} → static=${l?.static} t=${l?.t} formulaOpacity=${l?.formulaOpacity}`
     );
-    if (SHOTS) await shot(pg, `rm-${label}-static.png`);
+    if (DO_SHOTS) await shot(pg, `rm-${label}-static.png`);
     await send('Target.closeTarget', { targetId: pg.targetId });
   }
 
@@ -357,7 +384,7 @@ try {
   }
 
   /* 4) report screenshots: 3 frames per loop + full-page context */
-  if (SHOTS) {
+  if (DO_SHOTS) {
     for (const [page, variant] of SHOT_PAGES) {
       const pg = await openPage();
       await goto(pg, BASE + page, 1280);
@@ -384,14 +411,14 @@ try {
     await goto(pg, BASE + '/triangle-area-grade-7', 1280);
     await sleep(3400);
     await shot(pg, 'topic-page-1280.png');
-    await goto(pg, BASE + '/grade-2', 390, 844);
+    await goto(pg, BASE + '/dev-loops', 390, 844);
     await sleep(800);
-    await shot(pg, 'grade2-390.png');
-    await goto(pg, BASE + '/distributive-law-grade-9', 390, 844);
+    await shot(pg, 'dev-loops-390.png');
+    await goto(pg, BASE + '/statistics-grade-8', 390, 844);
     await sleep(800);
-    await shot(pg, 'topic-f21-390.png');
+    await shot(pg, 'topic-f10-390.png');
     await send('Target.closeTarget', { targetId: pg.targetId });
-    console.log('SHOT topic-page-1280, grade2-390, topic-f21-390');
+    console.log('SHOT topic-page-1280, dev-loops-390, topic-f10-390');
   }
 
   const fails = results.filter((r) => !r.ok);
