@@ -1,20 +1,20 @@
 ---
 /**
- * PlaneFlight — paper plane gliding along Noam's drawn route (see
- * ~/Downloads/noam-plane-path.png): enters top-left under the header,
- * dips behind the dev-notice banner, waves left-to-right across the hero
- * band, loops once on the right, and rests next to the robot doodle.
+ * PlaneFlight — paper plane gliding along a calm route that stays in the
+ * gutters / margins of the hero: enters under the header, arcs around the
+ * ConceptLoop card and hero copy (never across them), loops once in open
+ * space, and rests beside a margin doodle.
  *
  * Hard rules honored:
  * - BACKGROUND layer: z-index below all content, pointer-events none.
- *   Text/banner/cards/buttons always paint on top and stay readable.
- * - The path is computed at runtime from the actual layout (banner rect,
- *   hero rect), so it scales to any viewport without distortion.
+ *   Text/cards/buttons always paint on top and stay readable.
+ * - The path is computed at runtime from the actual layout (hero card +
+ *   copy + nearby doodles), so it scales to any viewport without distortion.
  * - Calm: ~15s flight, ease in/out, then rest at the end spot. Once per
  *   browser session. rAF-driven (auto-pauses when the tab is hidden).
  * - Reduced motion / a11y motion-off: plane sits statically at its end
  *   spot, no trail, no flight.
- * - Mobile (<768px): shorter simplified path, smaller plane, still behind.
+ * - Mobile (<768px): shorter path around stacked copy/card, still behind.
  */
 ---
 
@@ -54,13 +54,18 @@
   @media (prefers-reduced-motion: reduce) {
     .plane-trail { display: none; }
   }
+  :global(html.noam-a11y-motion) .plane-trail {
+    display: none;
+  }
 </style>
 
 <script>
   (function () {
     var layer = document.querySelector('.plane-layer');
     if (!layer) return;
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduced =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      document.documentElement.classList.contains('noam-a11y-motion');
     var svg = layer.querySelector('.plane-svg');
     var trail = layer.querySelector('.plane-trail');
     var icon = layer.querySelector('.plane-icon');
@@ -70,51 +75,172 @@
     var mobile = W < 768;
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
 
-    var notice = document.querySelector('.home-notice');
-    var hero = document.querySelector('.home-hero');
-    var nR = notice ? notice.getBoundingClientRect() : null;
-    var hR = hero ? hero.getBoundingClientRect() : null;
+    function localBox(el) {
+      if (!el) return null;
+      var r = el.getBoundingClientRect();
+      if (r.width < 8 || r.height < 8) return null;
+      return {
+        left: r.left - layerRect.left,
+        right: r.right - layerRect.left,
+        top: r.top - layerRect.top,
+        bottom: r.bottom - layerRect.top,
+      };
+    }
+    function inflate(b, p) {
+      if (!b) return null;
+      return {
+        left: b.left - p,
+        right: b.right + p,
+        top: b.top - p,
+        bottom: b.bottom + p,
+      };
+    }
 
-    // End spot: next to the robot doodle on the right of the hero.
-    var endX = hR ? Math.min(W - 30, hR.right - layerRect.left - (mobile ? 60 : 150)) : W - 150;
-    var endY = hR ? hR.top - layerRect.top + (mobile ? 60 : 105) : 320;
+    var card =
+      localBox(document.querySelector('.home-hero .hero-loop')) ||
+      localBox(document.querySelector('.home-hero .concept-loop'));
+    var copy = localBox(document.querySelector('.home-hero__copy'));
+    var PAD = mobile ? 14 : 22;
+    var cardPad = inflate(card, PAD);
+    var copyPad = inflate(copy, PAD);
 
-    function pt(x, y) { return [Math.round(x), Math.round(y)]; }
+    // Nearby doodles in the plane band — keep end spot clear of them.
+    var doodles = Array.prototype.map
+      .call(document.querySelectorAll('.home-hero .site-doodle, .home-hero [data-doodle-id], .site-doodles .site-doodle'), function (el) {
+        return inflate(localBox(el), 10);
+      })
+      .filter(Boolean)
+      .filter(function (b) {
+        return b.top < H && b.bottom > 0 && b.left < W && b.right > 0;
+      });
+
+    function clearOf(x, y, boxes, rad) {
+      for (var i = 0; i < boxes.length; i++) {
+        var b = boxes[i];
+        if (!b) continue;
+        if (x >= b.left - rad && x <= b.right + rad && y >= b.top - rad && y <= b.bottom + rad) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    var obstacles = [cardPad, copyPad].concat(doodles).filter(Boolean);
+
+    // Prefer an end spot in open margin (right/outer on desktop, after card on mobile).
+    function pickEnd() {
+      var candidates;
+      if (!mobile) {
+        var baseY = copyPad ? copyPad.top + 40 : 120;
+        candidates = [
+          [W - 36, baseY],
+          [W - 48, (copyPad ? copyPad.bottom : H * 0.45) + 28],
+          [W * 0.92, 90],
+          [(cardPad ? cardPad.right : W * 0.4) + 36, (cardPad ? cardPad.top : 160) - 8],
+        ];
+      } else {
+        var gapY = copyPad && cardPad ? (copyPad.bottom + cardPad.top) / 2 : H * 0.42;
+        candidates = [
+          [W - 28, gapY],
+          [W * 0.85, (cardPad ? cardPad.top : gapY) - 18],
+          [24, gapY],
+          [W - 32, (cardPad ? cardPad.bottom : H * 0.7) + 20],
+        ];
+      }
+      for (var i = 0; i < candidates.length; i++) {
+        var c = candidates[i];
+        var x = Math.max(16, Math.min(W - 16, c[0]));
+        var y = Math.max(24, Math.min(H - 24, c[1]));
+        if (clearOf(x, y, obstacles, 6)) return [x, y];
+      }
+      return [Math.max(16, W - 40), Math.max(40, mobile ? 80 : 100)];
+    }
+
+    var end = pickEnd();
+    var endX = end[0];
+    var endY = end[1];
+
+    function pt(x, y) {
+      return [Math.round(x), Math.round(y)];
+    }
+
     var d;
     if (!mobile) {
-      var bandY = nR ? nR.bottom - layerRect.top + 46 : 250;   // wave band under the banner
-      var loopX = W * 0.76, loopY = bandY + 6, loopR = Math.min(38, W * 0.035);
+      // Ceiling above both illustrations; gutter between card (left) and copy (right).
+      var ceiling = Math.min(
+        cardPad ? cardPad.top : 200,
+        copyPad ? copyPad.top : 200
+      ) - 10;
+      ceiling = Math.max(48, Math.min(ceiling, 160));
+      var gutterX = cardPad && copyPad
+        ? (cardPad.right + copyPad.left) / 2
+        : W * 0.5;
+      var rightMarginX = copyPad ? Math.min(W - 28, copyPad.right + 28) : W - 40;
+      if (rightMarginX < (copyPad ? copyPad.right : W) - 4) {
+        rightMarginX = W - 32;
+      }
+      var loopX = Math.min(W - 36, Math.max(rightMarginX, W * 0.88));
+      var loopY = Math.min(ceiling + 8, (copyPad ? copyPad.top : 140) - 12);
+      var loopR = Math.min(32, W * 0.028);
+      // Dip gently into the center gutter without entering card/copy boxes.
+      var gutterY = cardPad && copyPad
+        ? Math.min(cardPad.bottom, copyPad.bottom) - 24
+        : ceiling + 80;
+      gutterY = Math.max(ceiling + 40, Math.min(gutterY, H - 80));
+      if (cardPad && gutterX > cardPad.left && gutterX < cardPad.right) {
+        gutterX = cardPad.right + 20;
+      }
+      if (copyPad && gutterX > copyPad.left && gutterX < copyPad.right) {
+        gutterX = copyPad.left - 20;
+      }
+
       d =
-        'M ' + pt(W * 0.10, -30) +
-        ' C ' + pt(W * 0.05, 60) + ' ' + pt(W * 0.13, (nR ? nR.top - layerRect.top - 30 : 120)) + ' ' + pt(W * 0.16, (nR ? nR.top - layerRect.top + 20 : 170)) +
-        // dip behind the banner and emerge under its left third
-        ' S ' + pt(W * 0.22, (nR ? nR.bottom - layerRect.top + 14 : 240)) + ' ' + pt(W * 0.28, bandY) +
-        // gentle wave across the page
-        ' C ' + pt(W * 0.36, bandY + 34) + ' ' + pt(W * 0.42, bandY - 26) + ' ' + pt(W * 0.50, bandY + 10) +
-        ' S ' + pt(W * 0.62, bandY + 36) + ' ' + pt(W * 0.68, bandY + 4) +
-        // small loop on the right
-        ' C ' + pt(loopX - loopR * 1.4, loopY - loopR) + ' ' + pt(loopX - loopR * 0.2, loopY - loopR * 1.5) + ' ' + pt(loopX, loopY - loopR) +
-        ' C ' + pt(loopX + loopR * 1.3, loopY - loopR) + ' ' + pt(loopX + loopR * 1.5, loopY + loopR * 0.7) + ' ' + pt(loopX + loopR * 0.3, loopY + loopR) +
-        ' C ' + pt(loopX - loopR * 0.6, loopY + loopR * 1.4) + ' ' + pt(loopX - loopR, loopY + loopR * 0.2) + ' ' + pt(loopX - loopR * 0.9, loopY - loopR * 0.2) +
-        // glide to the end spot
-        ' S ' + pt(endX - 40, endY - 60) + ' ' + pt(endX, endY);
+        'M ' + pt(W * 0.08, -28) +
+        // rise under header, stay above illustrations
+        ' C ' + pt(W * 0.04, 50) + ' ' + pt(W * 0.18, ceiling - 10) + ' ' + pt(W * 0.28, ceiling) +
+        ' S ' + pt(W * 0.48, ceiling - 18) + ' ' + pt(gutterX, ceiling + 6) +
+        // soft dip in the open gutter between card and copy
+        ' C ' + pt(gutterX + 10, ceiling + 50) + ' ' + pt(gutterX - 6, gutterY) + ' ' + pt(gutterX + 8, Math.min(gutterY + 20, H - 60)) +
+        // climb back toward the right margin (around the copy, not through it)
+        ' C ' + pt(gutterX + 40, ceiling + 30) + ' ' + pt(loopX - 50, loopY + 10) + ' ' + pt(loopX - loopR, loopY) +
+        // small loop in open air on the right
+        ' C ' + pt(loopX - loopR * 0.2, loopY - loopR * 1.3) + ' ' + pt(loopX + loopR * 1.2, loopY - loopR) + ' ' + pt(loopX + loopR * 0.4, loopY + loopR * 0.2) +
+        ' C ' + pt(loopX - loopR * 0.4, loopY + loopR * 1.2) + ' ' + pt(loopX - loopR * 1.1, loopY + 8) + ' ' + pt(loopX - 8, loopY - 4) +
+        // glide to rest
+        ' S ' + pt(endX - 20, endY - 36) + ' ' + pt(endX, endY);
     } else {
-      var mBand = nR ? nR.bottom - layerRect.top + 34 : 220;
+      // Stacked: copy above, card below — fly left margin, cross the gap, rest on the right.
+      var gapMid = copyPad && cardPad
+        ? (copyPad.bottom + cardPad.top) / 2
+        : H * 0.4;
+      var leftX = 18;
+      var aboveCopy = copyPad ? Math.max(36, copyPad.top - 16) : 70;
+      var belowCard = cardPad ? Math.min(H - 28, cardPad.bottom + 18) : H * 0.78;
       d =
-        'M ' + pt(W * 0.08, -24) +
-        ' C ' + pt(W * 0.02, 60) + ' ' + pt(W * 0.20, mBand - 40) + ' ' + pt(W * 0.30, mBand) +
-        ' S ' + pt(W * 0.62, mBand + 30) + ' ' + pt(W * 0.78, mBand - 6) +
-        ' S ' + pt(endX - 30, endY - 40) + ' ' + pt(endX, endY);
+        'M ' + pt(W * 0.1, -22) +
+        ' C ' + pt(leftX, 40) + ' ' + pt(leftX + 4, aboveCopy) + ' ' + pt(leftX + 8, gapMid - 10) +
+        // cross the open band between copy and card
+        ' S ' + pt(W * 0.55, gapMid + 8) + ' ' + pt(W * 0.82, gapMid - 4) +
+        // skim the right margin around the card, then settle
+        ' C ' + pt(W - 18, gapMid + 30) + ' ' + pt(W - 22, belowCard - 40) + ' ' + pt(endX, endY);
     }
+
     var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('d', d);
     var len = 0;
-    try { len = path.getTotalLength(); } catch (e) { return; }
+    try {
+      len = path.getTotalLength();
+    } catch (e) {
+      return;
+    }
     var scale = mobile ? 0.62 : 1;
 
     function place(p, tangent) {
       var deg = (Math.atan2(tangent.y, tangent.x) * 180) / Math.PI;
-      icon.setAttribute('transform', 'translate(' + p.x + ' ' + p.y + ') rotate(' + deg + ') scale(' + scale + ')');
+      icon.setAttribute(
+        'transform',
+        'translate(' + p.x + ' ' + p.y + ') rotate(' + deg + ') scale(' + scale + ')'
+      );
     }
     function pointAt(t) {
       var p = path.getPointAtLength(len * t);
@@ -122,9 +248,9 @@
       return { p: p, tangent: { x: p2.x - p.x, y: p2.y - p.y } };
     }
 
-    if (reduced || document.documentElement.classList.contains('noam-a11y-motion')) {
-      var end = pointAt(1);
-      place(end.p, end.tangent);
+    if (reduced) {
+      var endPt = pointAt(1);
+      place(endPt.p, endPt.tangent);
       trail.style.display = 'none';
       return;
     }
@@ -138,18 +264,21 @@
     trail.setAttribute('d', d);
     var DURATION = 15000;
     var start = null;
-    function ease(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+    function ease(t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
     function frame(ts) {
-      if (start === null) start = ts + 700; // small settle-in delay
+      if (start === null) start = ts + 700;
       var t = Math.min(1, Math.max(0, (ts - start) / DURATION));
       var s = pointAt(ease(t));
       place(s.p, s.tangent);
-      // trail reveals ahead of the plane, then fades after landing
       var reveal = Math.max(0, Math.min(1, ease(t) * 1.04));
       trail.style.strokeDasharray = '14 12';
       trail.style.strokeDashoffset = String(len * (1 - reveal));
       if (t >= 1) {
-        try { sessionStorage.setItem('plane-flown-v1', '1'); } catch (e) {}
+        try {
+          sessionStorage.setItem('plane-flown-v1', '1');
+        } catch (e) {}
         var fade = 0;
         var fadeStart = ts;
         (function fadeOut(now) {
