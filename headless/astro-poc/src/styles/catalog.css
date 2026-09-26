@@ -1358,6 +1358,14 @@ a {
   isolation: isolate;
 }
 
+.site-footer__inner,
+.site-footer__meta {
+  width: min(1100px, 100%);
+  margin-inline: auto;
+  padding-inline: 20px;
+  box-sizing: border-box;
+}
+
 .site-footer__inner {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
