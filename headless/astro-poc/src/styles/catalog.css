@@ -249,9 +249,9 @@ a {
 }
 
 .grade-tab[aria-selected='true'] {
-  background: var(--accent);
+  background: var(--accent-dark);
   color: var(--on-accent);
-  border-color: var(--accent);
+  border-color: var(--accent-dark);
 }
 
 .wrap--elementary .grade-tab[aria-selected='true'] {
@@ -283,7 +283,7 @@ a {
 }
 
 .track[aria-pressed='true'] {
-  background: var(--accent);
+  background: var(--accent-dark);
   color: var(--on-accent);
 }
 
@@ -308,8 +308,16 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-height: 44px;
   cursor: pointer;
   color: var(--ink);
+}
+
+.cross input[type='checkbox'] {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  margin: 0;
 }
 
 .crosshint {
@@ -389,7 +397,7 @@ a {
 }
 
 .jump-btn:hover {
-  background: var(--accent);
+  background: var(--accent-dark);
   color: var(--on-accent);
   transform: translate(2px, -2px);
 }
@@ -474,6 +482,10 @@ a {
 }
 
 .chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   font-family: 'Heebo', inherit;
   font-size: 13.5px;
   font-weight: 800;
@@ -491,7 +503,7 @@ a {
 }
 
 .chip[aria-pressed='true'] {
-  background: var(--accent);
+  background: var(--accent-dark);
   color: var(--on-accent);
 }
 
@@ -528,7 +540,7 @@ a {
   font-family: 'Heebo', inherit;
   font-weight: 900;
   font-size: 15px;
-  background: var(--accent);
+  background: var(--accent-dark);
   color: var(--on-accent);
   border: 3px solid var(--ink);
   border-radius: 999px;
@@ -653,7 +665,7 @@ a {
 .aihint {
   display: inline-block;
   margin-top: 8px;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 800;
   color: var(--accent-dark);
 }
@@ -671,6 +683,7 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 44px;
   text-decoration: none;
   font-family: 'Heebo', inherit;
   font-weight: 800;
@@ -875,6 +888,9 @@ a {
 }
 
 .site-nav__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-family: 'Heebo', inherit;
   font-weight: 700;
   font-size: 15px;
@@ -980,12 +996,12 @@ a {
 }
 
 .cta--elem {
-  background: var(--red);
+  background: var(--red-dark);
   color: #fff;
 }
 
 .cta--mid {
-  background: var(--cobalt);
+  background: var(--cobalt-dark);
   color: #fff;
 }
 
@@ -1099,11 +1115,11 @@ a {
 }
 
 .lane__go--red {
-  background: var(--red);
+  background: var(--red-dark);
 }
 
 .lane__go--blue {
-  background: var(--cobalt);
+  background: var(--cobalt-dark);
 }
 
 .home-foot {
@@ -1139,7 +1155,7 @@ a {
 .home-notice p {
   margin: 0;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 14.5px;
   line-height: 1.55;
 }
@@ -1219,7 +1235,7 @@ a {
 }
 
 .home-grade__ai {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 800;
   color: var(--accent-dark);
   background: var(--tint);
@@ -1497,7 +1513,7 @@ a {
   font-family: 'Heebo', inherit;
   font-weight: 800;
   font-size: 15px;
-  background: var(--accent);
+  background: var(--accent-dark);
   color: var(--on-accent);
   border: none;
   border-radius: 999px;
@@ -1614,9 +1630,9 @@ a {
 
 .grade-hub__siblings .grade-tab.is-current,
 .grade-hub__siblings .grade-tab[aria-current='page'] {
-  background: var(--accent);
+  background: var(--accent-dark);
   color: var(--on-accent);
-  border-color: var(--accent);
+  border-color: var(--accent-dark);
 }
 
 .grade-hub__header.banner {
@@ -3618,5 +3634,51 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .site-nav[data-open] {
     animation: none;
+  }
+}
+
+/* ——— UI/UX fix-1 (KIMICODE-UIUX-FIX-1): tap targets, breadcrumbs, mobile text ——— */
+
+/* Breadcrumbs: 44px tap height + ellipsis on the current-page segment */
+.topic-page__crumbs a,
+.site-page__crumbs a,
+.blog-post__crumbs a,
+.blog-archive__crumbs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.topic-page__crumbs [aria-current='page'],
+.site-page__crumbs [aria-current='page'],
+.blog-post__crumbs [aria-current='page'],
+.blog-archive__crumbs [aria-current='page'] {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Mobile readability: body text >= 16px below 768px (footer excluded — owned elsewhere) */
+@media (max-width: 767px) {
+  .banner p,
+  .card-text p,
+  .home-notice p,
+  .home-learning__note,
+  .home-value span,
+  .grade-hub__topic-list a,
+  .grade-hub__faq-item p,
+  .topic-page__intro,
+  .topic-page__faq-item p,
+  .topic-page__author,
+  .topic-page__related a,
+  .blog-post__author-editor,
+  .blog-post__related-topics a,
+  .blog-post__faq-item p,
+  .blog-post__category,
+  .blog-archive__nav a,
+  .blog-archive__card-excerpt,
+  .cross label {
+    font-size: 16px;
   }
 }
