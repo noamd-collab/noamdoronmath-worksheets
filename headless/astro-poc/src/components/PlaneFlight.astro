@@ -1,11 +1,11 @@
 ---
 /**
- * PlaneFlight — paper plane along a calm route in hero gutters/margins.
- * Enters under the header, arcs around the ConceptLoop card and hero copy
- * (never across them), loops once in open space, rests at a clear end spot.
+ * PlaneFlight — soft, flowing paper-plane trail through hero gutters.
+ * Smooth cubic Beziers weave around the ConceptLoop card and hero copy
+ * (never across them), with a gentle loop, then rest at a clear end spot.
  *
  * - Background layer (z-index 0), pointer-events none.
- * - Path from live layout rects (card + copy).
+ * - Path from live layout rects (card + copy); hit-checked before use.
  * - ~15s flight, once per session; rAF.
  * - prefers-reduced-motion / html.noam-a11y-motion: static end, no trail.
  */
@@ -39,6 +39,7 @@
     stroke: var(--cobalt);
     stroke-width: 2.5;
     stroke-linecap: round;
+    stroke-linejoin: round;
     opacity: 0.55;
   }
   @media (max-width: 767px) {
@@ -67,7 +68,6 @@
     var W = layerRect.width;
     var H = layerRect.height;
     var mobile = W < 768;
-    // Grow the layer to cover the full hero so under-card routes aren't clipped.
     var heroEl = document.querySelector('.home-hero');
     if (heroEl) {
       var needH = heroEl.getBoundingClientRect().bottom - layerRect.top + 48;
@@ -90,120 +90,131 @@
         bottom: r.bottom - layerRect.top,
       };
     }
+    function r(n) {
+      return Math.round(n);
+    }
+    function C(c1x, c1y, c2x, c2y, x, y) {
+      return ' C ' + r(c1x) + ',' + r(c1y) + ' ' + r(c2x) + ',' + r(c2y) + ' ' + r(x) + ',' + r(y);
+    }
+    function clamp(v, a, b) {
+      return Math.max(a, Math.min(b, v));
+    }
 
     var card =
       boxOf(document.querySelector('.home-hero .hero-loop')) ||
       boxOf(document.querySelector('.home-hero .concept-loop'));
     var copy = boxOf(document.querySelector('.home-hero__copy'));
-    var PAD = mobile ? 18 : 26;
+    var PAD = mobile ? 22 : 36;
 
-    /** Build a smooth path through waypoints with tight controls (no big bows). */
-    function pathThrough(points) {
-      if (!points.length) return '';
-      var d = 'M ' + Math.round(points[0][0]) + ',' + Math.round(points[0][1]);
-      for (var i = 1; i < points.length; i++) {
-        var prev = points[i - 1];
-        var cur = points[i];
-        var mx = (prev[0] + cur[0]) / 2;
-        var my = (prev[1] + cur[1]) / 2;
-        // Keep controls on the segment so the curve cannot swing into neighbors.
-        d +=
-          ' C ' +
-          Math.round(prev[0] * 0.35 + mx * 0.65) +
-          ',' +
-          Math.round(prev[1] * 0.35 + my * 0.65) +
-          ' ' +
-          Math.round(cur[0] * 0.35 + mx * 0.65) +
-          ',' +
-          Math.round(cur[1] * 0.35 + my * 0.65) +
-          ' ' +
-          Math.round(cur[0]) +
-          ',' +
-          Math.round(cur[1]);
+    function pathHits(dAttr, boxes) {
+      var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      p.setAttribute('d', dAttr);
+      var len = 0;
+      try {
+        len = p.getTotalLength();
+      } catch (e) {
+        return true;
       }
-      return d;
+      if (!len) return true;
+      var inset = 8;
+      for (var i = 0; i <= 80; i++) {
+        var pt = p.getPointAtLength((len * i) / 80);
+        for (var j = 0; j < boxes.length; j++) {
+          var b = boxes[j];
+          if (
+            pt.x >= b.left + inset &&
+            pt.x <= b.right - inset &&
+            pt.y >= b.top + inset &&
+            pt.y <= b.bottom - inset
+          ) {
+            return true;
+          }
+        }
+      }
+      return false;
     }
 
-    var points;
+    var obstacles = [card, copy].filter(Boolean);
+    var d;
+
     if (!mobile && card && copy) {
-      var ceiling = Math.max(36, Math.min(card.top, copy.top) - PAD);
+      // Sky band above both boxes; gutter dive keeps x in (card.right+PAD, copy.left-PAD).
+      var sky = Math.max(28, Math.min(card.top, copy.top) - PAD);
       var gL = card.right + PAD;
       var gR = copy.left - PAD;
-      var hasGutter = gR - gL >= 40;
-      var gutterX = hasGutter ? (gL + gR) / 2 : null;
-      var rightX = Math.min(W - 18, Math.max(copy.right + PAD, W * 0.93));
-      var leftX = Math.max(14, Math.min(card.left - PAD, W * 0.06));
-      var endX = rightX;
-      var endY = Math.min(H - 36, Math.max(ceiling + 12, copy.top + 28));
-      var dipY = hasGutter
-        ? Math.max(ceiling + 56, Math.min(Math.min(card.bottom, copy.bottom) - PAD, H - 80))
-        : ceiling;
+      var hasGutter = gR - gL >= 44;
+      var gx = hasGutter ? (gL + gR) / 2 : (card.right + copy.left) / 2;
+      var lx = clamp(Math.min(card.left - PAD, W * 0.08), 12, 40);
+      // Right margin strictly outside the copy
+      var rx = Math.max(copy.right + PAD, W - 36);
+      if (rx > W - 10) rx = W - 12;
+      var room = W - rx;
+      var loopR = clamp(room * 0.85, 18, 36);
+      var endX = rx + loopR * 0.15;
+      var endY = sky + 18;
+      // Stay above the copy whenever x is inside its span
+      var yOver = Math.min(sky, copy.top - PAD);
 
-      points = [
-        [W * 0.1, -28],
-        [leftX, ceiling * 0.55],
-        [leftX + 24, ceiling + 4],
-      ];
-      if (hasGutter) {
-        var gSpan = (gR - gL) / 2;
-        points.push([gutterX - gSpan * 0.35, ceiling - 6]);
-        points.push([gutterX + 4, ceiling + 10]);
-        points.push([gutterX - 6, ceiling + (dipY - ceiling) * 0.55]);
-        points.push([gutterX + 5, dipY]);
-        points.push([gutterX - 4, ceiling + (dipY - ceiling) * 0.4]);
-        points.push([gutterX + 2, ceiling + 8]);
-      } else {
-        points.push([W * 0.4, ceiling - 8]);
-        points.push([W * 0.55, ceiling + 6]);
+      function build(dipDepth) {
+        var dip = sky + dipDepth;
+        var out =
+          'M ' + r(W * 0.07) + ',-28' +
+          C(W * 0.0, 42, lx - 8, sky * 0.35, lx + 16, sky + 4) +
+          // long soft wave over the card (above it)
+          C(lx + 100, sky - 30, gx - 90, sky + 34, gx - 4, sky + 2);
+        if (hasGutter && dipDepth > 0) {
+          out +=
+            C(clamp(gx + 12, gL, gR), sky + dipDepth * 0.45, clamp(gx - 12, gL, gR), dip - 6, gx, dip) +
+            C(clamp(gx + 14, gL, gR), dip - dipDepth * 0.4, clamp(gx - 8, gL, gR), sky + 28, gx + 2, sky);
+        }
+        // glide across above the hero text with a soft sine-like bend
+        out +=
+          C(gx + 40, yOver - 24, (copy.left + copy.right) / 2, yOver + 26, copy.right - 40, yOver - 4) +
+          C(copy.right - 10, yOver - 18, rx - 8, yOver + 8, rx, yOver) +
+          // petal loop entirely in the right margin (x ≥ rx)
+          C(rx + loopR, yOver - loopR * 0.9, rx + loopR * 1.05, yOver + loopR * 0.55, rx + loopR * 0.25, yOver + loopR * 0.85) +
+          C(rx + 2, yOver + loopR * 0.55, rx + 4, yOver + 8, endX, endY);
+        return out;
       }
-      points.push([rightX - 12, ceiling - 4]);
-      points.push([rightX, ceiling + 6]);
-      // small loop in the right margin (x stays ≥ rightX - 2)
-      var lr = Math.min(26, Math.max(14, W - rightX - 4));
-      points.push([rightX + lr * 0.45, ceiling - lr * 0.85]);
-      points.push([rightX + lr, ceiling + 2]);
-      points.push([rightX + lr * 0.25, ceiling + lr * 0.75]);
-      points.push([rightX + 2, ceiling + 8]);
-      points.push([endX, endY]);
+
+      // Prefer a soft gutter arc; fall back to shallower, then no dive.
+      d = build(hasGutter ? 95 : 0);
+      if (pathHits(d, obstacles)) d = build(hasGutter ? 55 : 0);
+      if (pathHits(d, obstacles)) d = build(0);
     } else if (mobile && copy && card) {
       var gapTop = copy.bottom + PAD;
       var gapBot = card.top - PAD;
-      var gapOk = gapBot - gapTop >= 24;
-      var leftX = 14;
-      var rightX = W - 16;
+      var gapOk = gapBot - gapTop >= 28;
+      var marginX = clamp(Math.min(card.left, copy.left) - PAD, 4, 14);
+      var rightX = W - 12;
       if (gapOk) {
         var gapY = (gapTop + gapBot) / 2;
-        points = [
-          [W * 0.12, -22],
-          [leftX, Math.max(40, copy.top - 14)],
-          [leftX, gapY],
-          [W * 0.5, gapY],
-          [rightX, gapY],
-        ];
+        d =
+          'M ' + r(W * 0.16) + ',-22' +
+          C(W * 0.02, 40, marginX + 20, copy.top - 6, marginX + 4, gapY - 22) +
+          C(marginX - 8, gapY + 18, W * 0.4, gapY - 20, W * 0.62, gapY + 12) +
+          C(W * 0.82, gapY + 22, rightX + 6, gapY - 24, rightX - 2, gapY);
       } else {
-        // No gap — left margin outside both boxes, then under the card.
-        var marginX = Math.max(4, Math.min(leftX, card.left - PAD, copy.left - PAD));
-        var underY = Math.min(H - 16, card.bottom + Math.max(PAD, 28));
-        points = [
-          [W * 0.12, -22],
-          [marginX, Math.max(36, copy.top - 12)],
-          [marginX, Math.min(copy.bottom, card.top) - 4],
-          [marginX, underY],
-          [W * 0.55, underY],
-          [rightX, underY],
-        ];
+        var underY = clamp(card.bottom + PAD, card.bottom + 28, H - 12);
+        d =
+          'M ' + r(W * 0.16) + ',-22' +
+          C(marginX - 10, 55, marginX + 18, copy.top + 40, marginX + 2, copy.bottom - 10) +
+          C(marginX - 14, card.top + 50, marginX + 16, underY - 40, marginX + 6, underY) +
+          C(W * 0.38, underY + 18, W * 0.68, underY - 16, rightX, underY + 2);
+      }
+      if (pathHits(d, obstacles)) {
+        d =
+          'M ' + r(W * 0.14) + ',-20' +
+          C(W * 0.04, 36, W * 0.3, 62, W * 0.52, 44) +
+          C(W * 0.72, 28, W * 0.88, 72, W - 18, 96);
       }
     } else {
-      points = [
-        [W * 0.1, -24],
-        [W * 0.25, 64],
-        [W * 0.55, 72],
-        [W * 0.8, 68],
-        [W - 36, 90],
-      ];
+      d =
+        'M ' + r(W * 0.1) + ',-24' +
+        C(W * 0.2, 55, W * 0.45, 78, W * 0.65, 60) +
+        C(W * 0.82, 42, W * 0.9, 85, W - 36, 95);
     }
 
-    var d = pathThrough(points);
     var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('d', d);
     var len = 0;
@@ -252,7 +263,8 @@
       var s = pointAt(ease(t));
       place(s.p, s.tangent);
       var reveal = Math.max(0, Math.min(1, ease(t) * 1.04));
-      trail.style.strokeDasharray = '14 12';
+      // Continuous stroke draw (no boxy dash segments)
+      trail.style.strokeDasharray = String(len);
       trail.style.strokeDashoffset = String(len * (1 - reveal));
       if (t >= 1) {
         try {
