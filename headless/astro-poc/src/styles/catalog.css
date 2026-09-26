@@ -3620,3 +3620,51 @@ body {
     animation: none;
   }
 }
+
+/* ——— KIMI-FAMILIES-B2: loops F07–F14 ——— */
+
+/* Hebrew formula bars (sentence, not math) stay RTL despite the LTR default */
+.concept-loop__formula[dir='rtl'] { direction: rtl; }
+
+/* F07 ruler */
+.concept-loop .cl-rail2 { stroke: var(--navy); stroke-width: 1.5; }
+
+/* F08/F09 shared dot styles reuse cl-dot / cl-pt */
+
+/* F10 data */
+.concept-loop .cl-tally { stroke: var(--navy); stroke-width: 2; stroke-linecap: round; }
+.concept-loop .cl-dbar { stroke-width: 1.5; }
+.concept-loop .cl-slice { stroke-width: 1.5; }
+
+/* F11 base-ten */
+.concept-loop .cl-rod { fill: rgba(30, 136, 229, 0.4); stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-rod-b { fill: rgba(124, 58, 237, 0.35); }
+.concept-loop .cl-rod-new { fill: rgba(234, 88, 12, 0.4); stroke: #ea580c; }
+.concept-loop .cl-one { stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-one-a { fill: rgba(30, 136, 229, 0.4); }
+.concept-loop .cl-one-b { fill: rgba(124, 58, 237, 0.4); }
+
+/* F12 cookies */
+.concept-loop .cl-plate { fill: #f3f4f6; stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-cookie { fill: #d4a373; stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-olc { fill: none; stroke: #ea580c; stroke-width: 2; }
+
+/* F14 transform */
+.concept-loop .cl-ghost { fill: rgba(26, 43, 74, 0.06); stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 4; }
+
+/* transient pieces of the B2 loops start hidden */
+.concept-loop [data-el^='div-'], .concept-loop [data-el^='rcnt-'], .concept-loop [data-el='brace'], .concept-loop [data-el='ten'],
+.concept-loop [data-arr], .concept-loop [data-el^='clbl-'],
+.concept-loop [data-el='pent-fill'], .concept-loop [data-el^='side-'], .concept-loop [data-el^='vert-'],
+.concept-loop [data-tally], .concept-loop [data-bar], .concept-loop [data-barlbl], .concept-loop [data-slice], .concept-loop [data-slicelbl],
+.concept-loop [data-rod38], .concept-loop [data-rod25], .concept-loop [data-one38], .concept-loop [data-one25],
+.concept-loop [data-el='newrod'], .concept-loop [data-el='merge-ol-a'], .concept-loop [data-el='merge-ol-b'],
+.concept-loop [data-el='lbl38'], .concept-loop [data-el='lbl25'], .concept-loop [data-el='lbl63'],
+.concept-loop [data-el^='left-'], .concept-loop [data-el='lbl-left'],
+.concept-loop [data-el='cut-v'], .concept-loop [data-el='cut-h'], .concept-loop [data-el='q-shade'], .concept-loop [data-el='q-lbl'],
+.concept-loop [data-el='bar-o'], .concept-loop [data-el='bar-shade'], .concept-loop [data-el='bar-d1'], .concept-loop [data-el='bar-d2'], .concept-loop [data-el='bar-d3'], .concept-loop [data-el='bar-lbl'],
+.concept-loop [data-el='nl'], .concept-loop [data-el='nl0'], .concept-loop [data-el='nl1'], .concept-loop [data-el='nl-pt'], .concept-loop [data-el='nl-lbl'],
+.concept-loop [data-el='axis'], .concept-loop [data-el='copy'], .concept-loop [data-el='copy-fill'],
+.concept-loop [data-el='pivot'], .concept-loop [data-el='vec'], .concept-loop [data-el='vec-head'] {
+  opacity: 0;
+}
