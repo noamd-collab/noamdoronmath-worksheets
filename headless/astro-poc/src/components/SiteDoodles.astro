@@ -101,6 +101,13 @@ const decorated = placements.map((p) => {
     bottom: 100px;
     right: max(6px, calc(50% - 640px));
   }
+  /* Fixed bottom motifs sit on the footer once it reaches the viewport. */
+  @media (min-width: 1201px) {
+    .site-doodle--bl,
+    .site-doodle--br {
+      display: none;
+    }
+  }
   /* Mid slots unused by selector but keep as extreme edges if ever assigned */
   .site-doodle--ml {
     top: 40%;

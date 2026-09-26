@@ -78,10 +78,12 @@
   .margin-art {
     position: absolute;
     top: 0;
-    bottom: 0;
+    /* Stop above the footer. Percentage slots stay inside this box. */
+    height: calc(100% - 28rem);
     inset-inline: 0;
     pointer-events: none;
     z-index: 0;
+    overflow: hidden;
   }
   .ma {
     position: absolute;
@@ -91,12 +93,12 @@
   }
   @media (min-width: 1200px) {
     .ma { display: block; }
-    .ma--l1 { left: calc((100% - 1100px) / 2 - 128px); top: 24%; }
-    .ma--r1 { right: calc((100% - 1100px) / 2 - 128px); top: 20%; }
-    .ma--l2 { left: calc((100% - 1100px) / 2 - 136px); top: 44%; }
-    .ma--r2 { right: calc((100% - 1100px) / 2 - 130px); top: 47%; }
-    .ma--l3 { left: calc((100% - 1100px) / 2 - 126px); top: 66%; }
-    .ma--r3 { right: calc((100% - 1100px) / 2 - 134px); top: 68%; }
-    .ma--l4 { left: calc((100% - 1100px) / 2 - 132px); top: 86%; }
+    .ma--l1 { left: max(12px, calc((100% - 1100px) / 2 - 108px)); top: 24%; }
+    .ma--r1 { right: max(12px, calc((100% - 1100px) / 2 - 108px)); top: 20%; }
+    .ma--l2 { left: max(12px, calc((100% - 1100px) / 2 - 108px)); top: 44%; }
+    .ma--r2 { right: max(12px, calc((100% - 1100px) / 2 - 108px)); top: 47%; }
+    .ma--l3 { left: max(12px, calc((100% - 1100px) / 2 - 108px)); top: 62%; }
+    .ma--r3 { right: max(12px, calc((100% - 1100px) / 2 - 108px)); top: 64%; }
+    .ma--l4 { left: max(12px, calc((100% - 1100px) / 2 - 108px)); top: 78%; }
   }
 </style>
