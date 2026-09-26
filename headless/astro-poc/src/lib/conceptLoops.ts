@@ -1049,6 +1049,176 @@ function renderOrderOps(root: LoopRoot, t: number) {
 }
 const ORDER_OPS_HOLD = 6.2;
 
+/* ═══════════════ L09 — sup-angles: 60° + 120° = 180° (D = 10 s) ═══════════════
+   The approved list wrote 60+30 on a straight line. 60+30 is 90, so the card
+   uses 120° next to 60° and the hold frame shows both wedges filling the line. */
+
+function renderSupAngles(root: LoopRoot, t: number) {
+  const lock = ph(t, 1.1, 2.5) - ph(t, 8.2, 9.3);
+  const fade = ph(t, 0.4, 0.9) * (1 - ph(t, 9.2, 9.7));
+  const w60 = q(root, 'w60');
+  const w120 = q(root, 'w120');
+  if (w60) w60.setAttribute('transform', `translate(${r2(-70 * (1 - lock))} ${r2(-48 * (1 - lock))})`);
+  if (w120) w120.setAttribute('transform', `translate(${r2(64 * (1 - lock))} ${r2(-40 * (1 - lock))})`);
+  op(w60, fade);
+  op(w120, fade);
+  const labels = ph(t, 2.6, 3.1) * (1 - ph(t, 8.2, 8.8));
+  op(q(root, 'lbl60'), labels);
+  op(q(root, 'lbl120'), labels);
+  op(q(root, 'lbl180'), labels);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const SUP_ANGLES_HOLD = 5.4;
+
+/* ═══════════════ L10 — share-12: 12 into 3 equal groups, no remainder (D = 10 s) ═══════════════ */
+
+function renderShare12(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.1);
+  const plates = [130, 280, 430];
+  for (let i = 0; i < 12; i++) {
+    const dot = q(root, `d${i}`);
+    const plate = Math.floor(i / 4);
+    const seat = i % 4;
+    const hx = 64 + (i % 6) * 36;
+    const hy = i < 6 ? 72 : 108;
+    const tx = plates[plate] + (seat - 1.5) * 18;
+    const ty = 196;
+    const p = ph(t, 1.0 + plate * 0.45, 1.7 + plate * 0.45) - ph(t, 8.2, 9.1);
+    if (dot) {
+      dot.setAttribute('cx', String(r2(lerp(hx, tx, p))));
+      dot.setAttribute('cy', String(r2(lerp(hy, ty, p))));
+    }
+  }
+  const shown = ph(t, 3.2, 3.6) * fade;
+  op(q(root, 'c0'), shown);
+  op(q(root, 'c1'), shown);
+  op(q(root, 'c2'), shown);
+  op(q(root, 'none-left'), ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.0, 4.4) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 4.4, 4.8) * (1 - ph(t, 8.0, 8.6)));
+}
+const SHARE12_HOLD = 5.8;
+
+/* ═══════════════ L11 — corr-angles: matching angles on parallel lines (D = 10 s) ═══════════════ */
+
+function renderCorrAngles(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const trav = q(root, 'trav');
+  op(trav, ph(t, 0.6, 0.9) * fade);
+  draw(trav, ph(t, 0.7, 1.6));
+  const marks = ph(t, 2.0, 2.6) * fade;
+  op(q(root, 'ang-top'), marks);
+  op(q(root, 'ang-bot'), marks);
+  op(q(root, 'deg-top'), ph(t, 2.6, 3.0) * fade);
+  op(q(root, 'deg-bot'), ph(t, 2.8, 3.2) * fade);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.8, 4.2) * (1 - ph(t, 8.0, 8.6)));
+}
+const CORR_ANGLES_HOLD = 5.6;
+
+/* ═══════════════ L12 — mean-cols: 2, 4, 6 level to 4 (D = 10 s) ═══════════════ */
+
+function renderMeanCols(root: LoopRoot, t: number) {
+  const p = ph(t, 1.4, 2.8) - ph(t, 8.2, 9.2);
+  const starts = [44, 88, 132];
+  const xs = [150, 250, 350];
+  for (let i = 0; i < 3; i++) {
+    const h = lerp(starts[i], 88, p);
+    const bar = q(root, `bar${i}`);
+    if (bar) {
+      bar.setAttribute('y', String(r2(250 - h)));
+      bar.setAttribute('height', String(r2(h)));
+    }
+    op(q(root, `n${i}`), ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+  }
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
+}
+const MEAN_COLS_HOLD = 5.2;
+
+/* ═══════════════ L13 — pct-25: 25 of 100 cells (D = 10 s) ═══════════════ */
+
+function renderPct25(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.3, 9.1);
+  for (let i = 0; i < 25; i++) {
+    const start = 0.5 + (i / 25) * 2.4;
+    op(q(root, `pc${i}`), ph(t, start, start + 0.2) * fade);
+  }
+  op(q(root, 'lbl25'), ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 4.0, 4.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const PCT25_HOLD = 5.6;
+
+/* ═══════════════ L14 — diff-sq: 25 − 9 unfolds to a rectangle of 16 (D = 10 s) ═══════════════ */
+
+function renderDiffSq(root: LoopRoot, t: number) {
+  const slide = ph(t, 1.6, 2.8) - ph(t, 8.2, 9.2);
+  const rect = q(root, 'rect16');
+  if (rect) rect.setAttribute('transform', `translate(${r2(-170 * (1 - slide))} 0)`);
+  op(rect, ph(t, 1.4, 1.9) * (1 - ph(t, 9.0, 9.6)));
+  op(q(root, 'lbl16'), ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
+}
+const DIFF_SQ_HOLD = 5.4;
+
+/* ═══════════════ L15 — clock-3: hour on 3, minute on 12 (D = 10 s) ═══════════════ */
+
+function renderClock3(root: LoopRoot, t: number) {
+  const p = ph(t, 0.8, 2.4) - ph(t, 8.2, 9.3);
+  const ang = p * (Math.PI / 2);
+  const hour = q(root, 'hour');
+  if (hour) {
+    hour.setAttribute('x2', String(r2(280 + 52 * Math.sin(ang))));
+    hour.setAttribute('y2', String(r2(168 - 52 * Math.cos(ang))));
+  }
+  op(q(root, 'lbl-time'), ph(t, 2.6, 3.1) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.1, 3.5) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.5, 3.9) * (1 - ph(t, 8.0, 8.6)));
+}
+const CLOCK3_HOLD = 5.2;
+
+/* ═══════════════ L16 — peri-rect: walk 6+4+6+4 = 20 (D = 10 s) ═══════════════ */
+
+function renderPeriRect(root: LoopRoot, t: number) {
+  const back = ph(t, 8.2, 9.3);
+  const steps = (ph(t, 0.7, 4.4) - back) * 4;
+  const s = Math.max(0, steps);
+  const corners = [
+    { x: 150, y: 230 },
+    { x: 390, y: 230 },
+    { x: 390, y: 90 },
+    { x: 150, y: 90 },
+  ];
+  const seg = Math.min(3, Math.floor(s));
+  const f = s - seg;
+  const a = corners[seg];
+  const b = corners[(seg + 1) % 4];
+  const dot = q(root, 'dot');
+  if (dot) {
+    dot.setAttribute('cx', String(r2(lerp(a.x, b.x, Math.min(1, f)))));
+    dot.setAttribute('cy', String(r2(lerp(a.y, b.y, Math.min(1, f)))));
+  }
+  for (let i = 0; i < 4; i++) {
+    const on = s >= i + 1 ? 1 : 0;
+    op(q(root, `side${i}`), on * (1 - back));
+  }
+  op(q(root, 'total'), (s >= 4 ? 1 : 0) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], (s >= 4 ? 1 : 0) * ph(t, 4.6, 5.0) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 5.0, 5.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const PERI_RECT_HOLD = 6.2;
+
 /* ═══════════════ engine ═══════════════ */
 
 const SPECS = {
@@ -1077,6 +1247,14 @@ const SPECS = {
   'add-within': { duration: 10, hold: ADD_WITHIN_HOLD, render: renderAddWithin },
   similar: { duration: 10, hold: SIMILAR_HOLD, render: renderSimilar },
   'order-ops': { duration: 10, hold: ORDER_OPS_HOLD, render: renderOrderOps },
+  'sup-angles': { duration: 10, hold: SUP_ANGLES_HOLD, render: renderSupAngles },
+  'share-12': { duration: 10, hold: SHARE12_HOLD, render: renderShare12 },
+  'corr-angles': { duration: 10, hold: CORR_ANGLES_HOLD, render: renderCorrAngles },
+  'mean-cols': { duration: 10, hold: MEAN_COLS_HOLD, render: renderMeanCols },
+  'pct-25': { duration: 10, hold: PCT25_HOLD, render: renderPct25 },
+  'diff-sq': { duration: 10, hold: DIFF_SQ_HOLD, render: renderDiffSq },
+  'clock-3': { duration: 10, hold: CLOCK3_HOLD, render: renderClock3 },
+  'peri-rect': { duration: 10, hold: PERI_RECT_HOLD, render: renderPeriRect },
 } as const;
 
 const MAX_LAPS = 4;
