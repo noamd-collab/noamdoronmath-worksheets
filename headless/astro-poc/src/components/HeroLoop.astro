@@ -8,7 +8,20 @@ const HERO_POOL = [
 ] as const;
 const DEFAULT = 'triangle';
 ---
-<div class="hero-loop" data-hero-loop>
+{/* Inline style before markup: hide until sync swap (no triangle→variant flash, no CLS). */}
+<style is:inline>
+  .hero-loop[data-pending] {
+    visibility: hidden;
+  }
+</style>
+<noscript>
+  <style>
+    .hero-loop[data-pending] {
+      visibility: visible !important;
+    }
+  </style>
+</noscript>
+<div class="hero-loop" data-hero-loop data-pending>
   <div data-hero-loop-current>
     <ConceptLoop variant={DEFAULT} />
   </div>
@@ -35,12 +48,16 @@ const DEFAULT = 'triangle';
     var candidates = pool.filter(function (v) { return v !== last; });
     var pick = candidates[Math.floor(Math.random() * candidates.length)];
     try { sessionStorage.setItem(KEY, pick); } catch (e) {}
-    if (pick === 'triangle') return;
-    var tpl = root.querySelector('template[data-hero-loop-variant="' + pick + '"]');
-    var current = root.querySelector('[data-hero-loop-current]');
-    if (tpl && current) current.replaceChildren(tpl.content.cloneNode(true));
+    if (pick !== 'triangle') {
+      var tpl = root.querySelector('template[data-hero-loop-variant="' + pick + '"]');
+      var current = root.querySelector('[data-hero-loop-current]');
+      if (tpl && current) current.replaceChildren(tpl.content.cloneNode(true));
+    }
+    root.removeAttribute('data-pending');
   })();
 </script>
 <style>
-  .hero-loop .concept-loop__svg { aspect-ratio: 560 / 340; }
+  .hero-loop .concept-loop__svg {
+    aspect-ratio: 560 / 340;
+  }
 </style>
