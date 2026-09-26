@@ -3250,7 +3250,8 @@ html.noam-a11y-motion .hero-draw {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1.5px solid rgba(26, 43, 74, 0.18);
+  /* No visible ring at rest / on pointer — keep transparent border for hit size */
+  border: 1.5px solid transparent;
   background: #fff;
   cursor: pointer;
 }
@@ -3260,7 +3261,15 @@ html.noam-a11y-motion .hero-draw {
   fill: var(--navy);
 }
 .concept-loop__toggle:hover {
-  border-color: var(--cobalt);
+  /* Affordance without a circle/ring (was border-color: cobalt) */
+  background: var(--tint, #f0f5fb);
+}
+.concept-loop__toggle:focus {
+  outline: none;
+}
+.concept-loop__toggle:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
 }
 
 /* ——— placement: card beside the text (RTL: text right, card left) ——— */
