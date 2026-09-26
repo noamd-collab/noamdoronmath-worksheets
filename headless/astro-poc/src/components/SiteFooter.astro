@@ -6,8 +6,6 @@ interface Props {
 }
 const { footer } = Astro.props;
 
-/** Found on the live homepage embed `#noam-whatsapp-footer`. No other social URL was in the header or footer. */
-const whatsappHref = 'https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t';
 ---
 <footer class="site-footer" data-home-footer>
   <div class="site-footer__inner">
@@ -17,10 +15,39 @@ const whatsappHref = 'https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t
       <ul class="site-footer__social">
         <li>
           <a
-            href={whatsappHref}
+            href="https://www.instagram.com/noamdoronmath/"
             target="_blank"
-            rel="noopener"
-            aria-label="קבוצת הוואטסאפ של נועם דורון, נפתח בלשונית חדשה"
+            rel="noopener noreferrer"
+            aria-label="אינסטגרם של נועם דורון מתמטיקה"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+              <rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="2"></rect>
+              <circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" stroke-width="2"></circle>
+              <circle cx="17" cy="7" r="1" fill="currentColor"></circle>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.facebook.com/profile.php?id=61593749281930"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="פייסבוק של נועם דורון מתמטיקה"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+              <path
+                fill="currentColor"
+                d="M14.2 20v-6.2h2.1l.3-2.4h-2.4V9.9c0-.7.2-1.2 1.2-1.2h1.3V6.6c-.2 0-1-.1-1.9-.1-1.9 0-3.2 1.2-3.2 3.3v1.6H9.4v2.4h2.2V20h2.6Z"
+              ></path>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="הצטרפות לקבוצת הוואטסאפ"
           >
             <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
               <path
@@ -28,7 +55,6 @@ const whatsappHref = 'https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t
                 d="M12 3.1A8.4 8.4 0 0 0 4.7 15.4L3.5 20.3l5-1.3A8.4 8.4 0 1 0 12 3.1Zm0 1.7a6.7 6.7 0 0 1 5.7 10.1 6.7 6.7 0 0 1-9.4 2l-.4-.2-2.6.7.7-2.5-.2-.4A6.7 6.7 0 0 1 12 4.8Z"
               ></path>
             </svg>
-            <span>וואטסאפ</span>
           </a>
         </li>
       </ul>
