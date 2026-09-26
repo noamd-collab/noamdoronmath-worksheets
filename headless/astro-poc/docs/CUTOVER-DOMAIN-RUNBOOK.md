@@ -8,9 +8,10 @@
 ## Preconditions (day-1 cutover)
 
 - [x] PDF CDN fleet OPEN-08 CLOSED (956/956)
-- [ ] `WIX_FORMS_API_KEY` = real `IST.` site key for metaSite `36dd9544-…` (Forms only)
-- [ ] Noam approves contact live test → then `WIX_FORMS_LIVE_SUBMIT=1`
-- [ ] Redirect map merged + live Wix Redirect Manager rows updated by Noam (triangle / equations-1 / inequalities-1 / coordinate-plane-intro)
+- [x] `WIX_FORMS_API_KEY` = real `IST.` site key for metaSite `36dd9544-…` (Forms only); one live test done — **keep `WIX_FORMS_LIVE_SUBMIT` off** unless Noam re-enables
+- [x] Live Redirect Manager (4): triangle-area-grade-7-worksheets, coordinate-plane-intro-grade-7, equations-both-sides-word-problems-grade-7-1, inequalities-grade-8-1 — CLOSED (curl 301 verified 2026-09-26)
+- [x] `/workflow` decision: real **404** until content exists (no redirect to home, no stub page) — Headless map/tests updated
+- [ ] Live Redirect Manager still open: `/worksheets8grade-1` and `/worksheets8grade-2` → `/grade-8` (live still → grade-1 / grade-2)
 - [ ] Preview SEO: noindex on `*.wix-site-host.com`; production build uses index + canonical `https://www.noamdoronmath.co.il`
 - [ ] Supabase Auth Redirect URL includes **exact** production `https://www.noamdoronmath.co.il/learning.html` (and www variant if used)
 - [ ] Google Workspace MX / SPF / DKIM / DMARC / TXT inventory captured **before** any DNS edit
@@ -21,7 +22,7 @@
 2. Assign custom domain to Headless Wix site `df6b8141-…` (www + apex).
 3. Wait for SSL on www + root.
 4. Point DNS A/CNAME/ALIAS per Wix Headless domain instructions **without** touching MX/TXT mail records.
-5. Verify: home 200, `/worksheetsfor7thgrade` → `/grade-7` one hop, PDF CDN 200, `/learning.html` Google button, `/aboutus` contact dry-run or approved live, `/sitemap-index.xml` + `/sitemap-blog.xml`.
+5. Verify: home 200, `/worksheetsfor7thgrade` → `/grade-7` one hop, `/workflow` → real **404** (not home), PDF CDN 200, `/learning.html` Google button, `/aboutus` contact (live submit off unless re-enabled), `/sitemap-index.xml` + `/sitemap-blog.xml`.
 6. Search Console: submit sitemap-index; spot-check indexed URLs from PPLX list.
 7. Keep classic site unpublished/unlinked but recoverable for rollback window (agree duration with Noam).
 

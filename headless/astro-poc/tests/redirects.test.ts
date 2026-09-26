@@ -37,12 +37,18 @@ describe('OPEN-15 redirects', () => {
     for (const [from, to] of cases) assert.equal(resolveRedirect(from), to, from);
   });
 
-  it('does not auto-redirect /workflow', () => {
+  it('keeps /workflow as a real 404 (no redirect, no stub page)', () => {
     assert.equal(resolveRedirect('/workflow'), null);
+    assert.ok(
+      !existsSync(new URL('../src/pages/workflow.astro', import.meta.url)),
+      'must not ship a /workflow stub page'
+    );
     const map = JSON.parse(
       readFileSync(new URL('../src/data/redirects.json', import.meta.url), 'utf8')
-    ) as { flaggedDoNotAutoRedirect?: Array<{ from: string }> };
-    assert.ok(map.flaggedDoNotAutoRedirect?.some((r) => r.from === '/workflow'));
+    ) as { flaggedDoNotAutoRedirect?: Array<{ from: string; reason?: string }> };
+    const flagged = map.flaggedDoNotAutoRedirect?.find((r) => r.from === '/workflow');
+    assert.ok(flagged, 'must stay in flaggedDoNotAutoRedirect');
+    assert.match(String(flagged.reason || ''), /404/i);
   });
 
   it('strips a trailing slash, in one hop even for a mapped path, and keeps the query', () => {

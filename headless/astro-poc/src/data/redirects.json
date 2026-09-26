@@ -1,5 +1,5 @@
 {
-  "_about": "OPEN-15 301 map for classic Wix → Headless. Cutover-readiness 2026-09-26 on consolidation-r1. Blog (/blog, /post/*) and /_files/ugd PDFs handled elsewhere. /workflow is intentionally NOT redirected — flag for Noam.",
+  "_about": "OPEN-15 301 map for classic Wix → Headless. Cutover-readiness 2026-09-26 on consolidation-r1. Blog (/blog, /post/*) and /_files/ugd PDFs handled elsewhere. /workflow: Noam 2026-09-26 — real 404 until content exists (no redirect to home, no stub page).",
   "status": 301,
   "rules": [
     {
@@ -65,7 +65,7 @@
     {
       "from": "/triangle-area-grade-7-worksheets",
       "to": "/triangle-area-grade-7",
-      "note": "Noam decision 2026-09-25/26: NOT /powers-grade-7. Live Redirect Manager still wrong until Noam edits."
+      "note": "Noam decision: NOT /powers-grade-7. Live Redirect Manager CLOSED 2026-09-26 (curl 301 verified)."
     },
     {
       "from": "/special-triangles-grade-7",
@@ -75,7 +75,7 @@
     {
       "from": "/coordinate-plane-intro-grade-7",
       "to": "/coordinate-plane-scale-grade-7",
-      "note": "fixed: live Redirect Manager wrongly → /triangular-prism-volume-grade-9"
+      "note": "Live Redirect Manager CLOSED 2026-09-26 (was /triangular-prism-volume-grade-9; curl 301 verified)."
     },
     {
       "from": "/blank",
@@ -100,12 +100,12 @@
     {
       "from": "/equations-both-sides-word-problems-grade-7-1",
       "to": "/equations-both-sides-word-problems-grade-7",
-      "note": "fixed: was wrongly /pythagoras-applications-grade-7"
+      "note": "Live Redirect Manager CLOSED 2026-09-26 (was /pythagoras-applications-grade-7; curl 301 verified)."
     },
     {
       "from": "/inequalities-grade-8-1",
       "to": "/inequalities-grade-8",
-      "note": "fixed: was wrongly /statistics-grade-8"
+      "note": "Live Redirect Manager CLOSED 2026-09-26 (was /statistics-grade-8; curl 301 verified)."
     },
     {
       "from": "/page-1",
@@ -146,7 +146,7 @@
   "flaggedDoNotAutoRedirect": [
     {
       "from": "/workflow",
-      "reason": "Ambiguous / not mapped — do NOT auto-redirect to home. Needs Noam decision."
+      "reason": "Noam 2026-09-26: keep as a real 404 until content exists. No redirect to home, no stub page."
     }
   ],
   "ambiguousForNoam": [
