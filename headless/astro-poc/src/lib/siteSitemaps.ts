@@ -10,7 +10,8 @@ import { BLOG_SITEMAP_PATH } from './blogSitemap';
 import { REDIRECT_RULES } from './redirects';
 import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 
-const SKIP_SLUGS = new Set(['404', 'index', 'learning']);
+/** Non-public / noise slugs — never appear in /sitemap-pages.xml. */
+const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops']);
 
 function excludePath(path: string): boolean {
   if (path !== '/' && REDIRECT_RULES.some((r) => r.from === path)) return true;

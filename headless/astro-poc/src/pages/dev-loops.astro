@@ -2,11 +2,24 @@
 /**
  * DEV/QA ONLY — loop preview page for family variants that have no topic
  * page in this POC (F07–F09, F11–F13 live only in grades 1–6, which have no
- * topic pages here). Not linked from anywhere; the site ships noindex,nofollow.
+ * topic pages here). Not linked from anywhere; excluded from the sitemap.
  * Used by scripts/check-loops-k3.mjs for bbox/behaviour checks and screenshots.
+ *
+ * Production (www / non-preview hosts): 404 — must not ship as a public page.
+ * Local / Wix preview hosts: available for QA (see isPreviewHost).
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ConceptLoop from '../components/ConceptLoop.astro';
+import { isPreviewHost } from '../lib/siteSeo';
+
+export const prerender = false;
+
+if (!isPreviewHost(Astro.url.hostname)) {
+  return new Response('Not Found', {
+    status: 404,
+    headers: { 'content-type': 'text/plain; charset=utf-8' },
+  });
+}
 
 const groups: Array<{ title: string; variants: Array<{ v: any; name: string }> }> = [
   {
@@ -23,7 +36,6 @@ const groups: Array<{ title: string; variants: Array<{ v: any; name: string }> }
     ],
   },
 ];
-export const prerender = false;
 ---
 
 <BaseLayout title="DEV loop previews" description="dev only" activeNav={null} skipHref="#dev-loops-main">
