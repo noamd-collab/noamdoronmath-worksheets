@@ -1,6 +1,6 @@
 /**
- * Aboutus contact form — dry-run posts to /api/contact-form (server adapter).
- * Never enables live Wix submit from the browser.
+ * Aboutus contact form — posts to /api/contact-form (server adapter).
+ * Default server mode is dry-run until Noam enables live submit.
  */
 (function () {
   'use strict';
@@ -19,6 +19,7 @@
       lastName: String(fd.get('lastName') || '').trim(),
       email: String(fd.get('email') || '').trim(),
       message: String(fd.get('message') || '').trim(),
+      company: String(fd.get('company') || '').trim(),
     };
     if (!payload.firstName || !payload.lastName || !payload.email || !payload.message) {
       if (status) {
@@ -28,7 +29,7 @@
       return;
     }
     if (status) {
-      status.textContent = 'שולחים בדיקה (dry-run)…';
+      status.textContent = 'שולחים…';
       status.dataset.state = 'pending';
     }
     fetch('/api/contact-form', {
@@ -42,21 +43,27 @@
         });
       })
       .then(function (res) {
-        if (status) {
-          if (res.j && res.j.ok && res.j.mode === 'dry-run') {
-            status.textContent =
-              'מצב בדיקה: ההודעה לא נמסרה לבעל האתר (dry-run — אין שליחה ב־Wix Forms)';
-            status.dataset.state = 'dry-run';
-            form.reset();
-          } else {
-            status.textContent = 'הבדיקה נכשלה. ניתן לפנות בדוא״ל.';
-            status.dataset.state = 'error';
-          }
+        if (!status) return;
+        if (res.j && res.j.ok && res.j.mode === 'dry-run') {
+          status.textContent =
+            'מצב בדיקה: ההודעה לא נמסרה לבעל האתר (dry-run — אין שליחה ב־Wix Forms)';
+          status.dataset.state = 'dry-run';
+          form.reset();
+        } else if (res.j && res.j.ok && res.j.mode === 'live') {
+          status.textContent = 'ההודעה נשלחה בהצלחה.';
+          status.dataset.state = 'ok';
+          form.reset();
+        } else if (res.j && res.j.error === 'SPAM_REJECTED') {
+          status.textContent = 'לא ניתן לשלוח את הטופס.';
+          status.dataset.state = 'error';
+        } else {
+          status.textContent = 'השליחה נכשלה. ניתן לפנות בדוא״ל.';
+          status.dataset.state = 'error';
         }
       })
       .catch(function () {
         if (status) {
-          status.textContent = 'הבדיקה נכשלה. ניתן לפנות בדוא״ל.';
+          status.textContent = 'השליחה נכשלה. ניתן לפנות בדוא״ל.';
           status.dataset.state = 'error';
         }
       });

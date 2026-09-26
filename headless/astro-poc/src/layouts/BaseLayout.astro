@@ -6,6 +6,12 @@ import PocMotion from '../components/PocMotion.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { loadHomePage } from '../lib/homePage';
 import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
+import {
+  DEFAULT_SITE_DESCRIPTION,
+  DEFAULT_SITE_TITLE,
+  canonicalUrl,
+  robotsContent,
+} from '../lib/siteSeo';
 
 interface Props {
   title?: string;
@@ -17,8 +23,8 @@ interface Props {
   skipHref?: string;
 }
 const {
-  title = 'נועם דורון מתמטיקה · דפי עבודה',
-  description = 'קטלוג דפי עבודה בעברית — Astro POC',
+  title = DEFAULT_SITE_TITLE,
+  description = DEFAULT_SITE_DESCRIPTION,
   ogImage,
   activeNav,
   compactBrand = false,
@@ -29,22 +35,26 @@ const { footer } = loadHomePage();
 const resolvedNav: ActiveNavKey | null =
   activeNav !== undefined ? activeNav : resolveActiveNav(Astro.url.pathname);
 const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
+const robots = robotsContent(Astro.url.hostname);
+const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
 ---
 <!doctype html>
 <html lang="he" dir="rtl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex,nofollow" />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="he_IL" />
     {ogImage && <meta property="og:image" content={ogImage} />}
-    {ogImage && <meta property="og:title" content={title} />}
-    {ogImage && <meta property="og:description" content={description} />}
     {/* Wix-documented slot for item-page SEO (<SEO.Tags slot="seo-tags">).
-        Empty for main pages — their tags come from the Wix dashboard
-        injection; see REPORT_SEO_HEAD.md. No fallback tags here on purpose:
-        they would duplicate the dashboard-owned injected tags. */}
+        Blog item pages fill this; main pages use props above as the single
+        title/meta source (no "Astro POC" / "Home | …" duplicates). */}
     <slot name="seo-tags" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

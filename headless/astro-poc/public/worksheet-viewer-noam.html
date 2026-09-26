@@ -1926,7 +1926,7 @@ textarea:focus{
   .noam-picked-heading{display:flex;align-items:center;justify-content:space-between;gap:6px}
   .noam-picked-label{font-size:12px;margin:0;min-width:0}
   .noam-preview-toggle{display:block;flex:none;min-height:44px;padding:6px 10px;color:var(--ink);background:#fff;border:1px solid var(--ink);border-radius:10px;font:700 12px 'Assistant',sans-serif;cursor:pointer}
-  .noam-picked-preview,.noam-picked-preview img{max-height:96px}
+  .noam-picked-preview,.noam-picked-preview img{max-height:160px}
   .noam-picked-text{font-size:14px;max-height:60px;overflow:auto}
   .noam-actions{gap:6px;margin:0}
   .noam-action{min-height:44px;padding:7px 12px;box-shadow:none}
@@ -1962,8 +1962,10 @@ textarea:focus{
   .panel-body.is-previewing>:not(.noam-picked){display:none}
   .panel-body.is-previewing>.noam-picked{display:block;flex:1;min-height:0;max-height:none;overflow:auto;padding:0 6px 6px}
   .panel-body.is-previewing .noam-picked-heading{position:sticky;top:0;background:var(--tint);z-index:1;padding:4px 0}
-  .panel-body.is-previewing .noam-picked-preview,.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
-  .panel-body.is-previewing .noam-picked-text{display:block;max-height:none}
+  .panel-body.is-previewing .noam-picked-preview:not([hidden]),.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
+  .panel-body.is-previewing .noam-picked-preview:not([hidden]){direction:rtl}
+  .panel-body.is-previewing .noam-picked-preview img{width:720px;max-width:none}
+  .panel-body.is-previewing .noam-picked-text:not([hidden]){display:block;max-height:none}
   body.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
   body.noam-panel-open .grecaptcha-badge{z-index:60;bottom:calc(var(--noam-keyboard-gap,0px) + env(safe-area-inset-bottom) + 4px)!important}
 }
@@ -3232,7 +3234,7 @@ function renderPdfPage(
         var pixelRatio =
           Math.min(
             window.devicePixelRatio || 1,
-            2
+            mobileLayout.matches ? 3 : 2
           );
 
         var canvas =
@@ -4706,7 +4708,7 @@ function renderNoamChat(){
     '<div class="noam-picked'+(showQuestionPreview?'':' noam-picked-compact')+'">' +
       '<div class="noam-picked-heading"><div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
       (showQuestionPreview?'<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הגדלת השאלה')+'</button>':'')+'</div>' +
-      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText">' + esc(text) + '</div>':'') +
+      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText" role="status">טוען את השאלה מתוך ה־PDF…</div>':'') +
     '</div>' +
     '<div class="noam-thread-tools">' +
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
@@ -5292,6 +5294,17 @@ function stitchCropSegments(segments){
     top += drawHeight + gap * scale;
   });
   return target;
+}
+
+function showExercisePreviewFailure(exercise){
+  var fallback=document.getElementById("noamPickedText");
+  if (!fallback||!selectedExercise||selectedExercise.id!==exercise.id){return;}
+  var link=document.createElement("a");
+  link.href=pdfUrl;
+  link.target="_blank";
+  link.rel="noopener noreferrer";
+  link.textContent="פתחו את השאלה בדף ה־PDF";
+  fallback.replaceChildren(link);
 }
 
 function cropExerciseCanvasFromPdf(exercise){

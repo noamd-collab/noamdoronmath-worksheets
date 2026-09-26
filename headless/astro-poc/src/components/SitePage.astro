@@ -228,6 +228,11 @@ const units = renderUnits(page.blocks, page.slug);
                 data-submit-mode={mode}
               >
                 <form class="site-page__contact-form" novalidate aria-label="צור קשר">
+                  {/* Honeypot — hidden from humans; bots that fill it are rejected server-side. */}
+                  <label class="site-page__contact-hp" aria-hidden="true">
+                    חברה
+                    <input name="company" type="text" tabindex="-1" autocomplete="off" />
+                  </label>
                   <label>
                     שם פרטי*
                     <input name="firstName" type="text" autocomplete="given-name" required />
