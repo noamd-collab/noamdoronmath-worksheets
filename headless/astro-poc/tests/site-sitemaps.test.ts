@@ -83,10 +83,11 @@ describe('site sitemaps /sitemap-pages.xml + /sitemap-index.xml', () => {
     assert.ok(locs.includes(`${SITE_CANONICAL_ORIGIN}/grade-7`));
   });
 
-  it('filters 404/index noise from glob keys', () => {
+  it('filters 404/index/dev-loops noise from glob keys', () => {
     const keys = pageGlobKeysFromDisk();
     const paths = listMainPagePaths(keys);
     assert.equal(paths.includes('/404'), false);
+    assert.equal(paths.includes('/dev-loops'), false);
     assert.equal(paths.filter((p) => p === '/').length, 1);
   });
 
