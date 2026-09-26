@@ -17,6 +17,10 @@ interface Props {
 const { grade } = Astro.props;
 const hub = loadGradeHub(grade);
 const siblings = siblingGradeHubLinks(grade);
+/* Other school family (יסודי ↔ חטיבה) — a visible path to grades that aren't
+   in this page's own tab strip. */
+const otherFamilySiblings = siblingGradeHubLinks(grade <= 6 ? 7 : 1);
+const otherFamilyLabel = grade <= 6 ? 'כיתות חטיבה' : 'כיתות יסודי';
 const familyLabel = grade <= 6 ? 'כיתות יסודי' : 'כיתות חטיבה';
 const introIsCta = !!(hub.catalogCta && hub.catalogCta.label === hub.intro);
 const hasFaq = hub.faq.length > 0 && !!hub.faqHeading;
@@ -87,6 +91,17 @@ const loopVariant =
             href={s.href}
             aria-current={s.grade === grade ? 'page' : undefined}
           >
+            כיתה {s.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <nav class="grade-hub__siblings grade-hub__siblings--other" aria-label={otherFamilyLabel}>
+      <span class="grade-hub__siblings-label">{otherFamilyLabel}:</span>
+      {
+        otherFamilySiblings.map((s) => (
+          <a class="grade-tab" href={s.href}>
             כיתה {s.label}
           </a>
         ))
