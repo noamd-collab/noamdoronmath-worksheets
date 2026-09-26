@@ -139,21 +139,31 @@
         ? Math.max(ceiling + 56, Math.min(Math.min(card.bottom, copy.bottom) - PAD, H - 80))
         : ceiling;
 
-      points = [[W * 0.1, -28], [leftX, ceiling * 0.45], [leftX + 10, ceiling]];
+      points = [
+        [W * 0.1, -28],
+        [leftX, ceiling * 0.55],
+        [leftX + 24, ceiling + 4],
+      ];
       if (hasGutter) {
-        points.push([gutterX, ceiling]);
-        points.push([gutterX, dipY]);
-        points.push([gutterX, ceiling + 6]); // climb back up inside gutter before going right
+        var gSpan = (gR - gL) / 2;
+        points.push([gutterX - gSpan * 0.35, ceiling - 6]);
+        points.push([gutterX + 4, ceiling + 10]);
+        points.push([gutterX - 6, ceiling + (dipY - ceiling) * 0.55]);
+        points.push([gutterX + 5, dipY]);
+        points.push([gutterX - 4, ceiling + (dipY - ceiling) * 0.4]);
+        points.push([gutterX + 2, ceiling + 8]);
       } else {
-        points.push([W * 0.45, ceiling]);
+        points.push([W * 0.4, ceiling - 8]);
+        points.push([W * 0.55, ceiling + 6]);
       }
-      points.push([rightX, ceiling]);
-      // small loop in the right margin (all x >= rightX - 4)
+      points.push([rightX - 12, ceiling - 4]);
+      points.push([rightX, ceiling + 6]);
+      // small loop in the right margin (x stays ≥ rightX - 2)
       var lr = Math.min(26, Math.max(14, W - rightX - 4));
-      points.push([rightX + lr * 0.3, ceiling - lr]);
-      points.push([rightX + lr, ceiling]);
-      points.push([rightX + lr * 0.2, ceiling + lr * 0.7]);
-      points.push([rightX, ceiling + 4]);
+      points.push([rightX + lr * 0.45, ceiling - lr * 0.85]);
+      points.push([rightX + lr, ceiling + 2]);
+      points.push([rightX + lr * 0.25, ceiling + lr * 0.75]);
+      points.push([rightX + 2, ceiling + 8]);
       points.push([endX, endY]);
     } else if (mobile && copy && card) {
       var gapTop = copy.bottom + PAD;
