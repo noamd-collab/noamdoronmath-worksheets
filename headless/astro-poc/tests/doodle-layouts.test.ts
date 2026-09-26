@@ -33,6 +33,15 @@ describe('doodleLayouts', () => {
       const tops = edge.map((s) => Math.round(s.topPct));
       assert.equal(new Set(tops).size, tops.length, `layout ${i} shared top`);
       assertLayoutRules(edge, SECTION_LAYOUTS[i % SECTION_LAYOUTS.length]);
+      // mobileVisible slots alternate sides (diagonal)
+      const mob = edge.filter((s) => s.mobileVisible);
+      for (let j = 1; j < mob.length; j++) {
+        assert.notEqual(
+          mob[j].side,
+          mob[j - 1].side,
+          `layout ${i} mobileVisible not diagonal`
+        );
+      }
     }
   });
 
