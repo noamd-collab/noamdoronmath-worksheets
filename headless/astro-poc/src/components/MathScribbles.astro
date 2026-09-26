@@ -25,9 +25,12 @@ const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
         `math-scribble--${s.kind}`,
         s.float ? 'math-scribble--float' : null,
       ]}
-      style={`--s-rot:${s.rotate}deg;--s-size:${s.sizePx}px;--s-delay:${s.delay}s`}
+      style={`--s-rot:${s.rotate}deg;--s-size:${s.sizePx}px;--s-delay:${s.delay}s${
+        s.kind === 'formula' ? ';direction:ltr;unicode-bidi:isolate' : ''
+      }`}
       data-scribble={s.kind}
       data-scribble-i={i}
+      dir={s.kind === 'formula' ? 'ltr' : undefined}
       aria-hidden="true"
     >
       {
