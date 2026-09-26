@@ -88,6 +88,10 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
    card beside the intro text. Family comes from topicFamilies.json via the
    page's own catalog topic id (g{grade}-t{id}). triangle-area-grade-7 keeps
    its hands-on explorer instead. */
+/* F07–F14 loop variants exist in ConceptLoop/conceptLoops and /dev-loops (QA),
+   but are NOT mounted on topic pages — they replaced the quiet doodle/LineArt
+   intro look with thin film cards (KIMI-ANIM-6 regression). Keep F01–F06 +
+   F21/F26/F38 only, matching pre-#13 TopicPage wiring. */
 const FAMILY_LOOP = {
   F01: 'sticks',
   F02: 'numberline',
@@ -95,14 +99,6 @@ const FAMILY_LOOP = {
   F04: 'balance',
   F05: 'pattern',
   F06: 'bars',
-  F07: 'ruler',
-  F08: 'array',
-  F09: 'polygon',
-  F10: 'data',
-  F11: 'baseten',
-  F12: 'cookies',
-  F13: 'fraction',
-  F14: 'transform',
   F21: 'area-model',
   F26: 'triangle',
   F38: 'pythagoras',

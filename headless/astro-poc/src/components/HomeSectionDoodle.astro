@@ -1,0 +1,123 @@
+---
+/**
+ * KIMI-ANIM-6 — one restored DOODLES-45 motif per home section.
+ * Desktop: corner placement (~180–240px). Mobile: in-flow between
+ * section title and content so motifs stay visible and never cover
+ * text/buttons. Same site-doodle-float; off under reduced-motion /
+ * html.noam-a11y-motion.
+ */
+import manifest from '../data/doodles.manifest.json';
+
+export interface Props {
+  /** Motif id from doodles.manifest.json */
+  motif: string;
+  /** Modest tilt in degrees */
+  rotate?: number;
+  /** Logical corner inside the relatively-positioned section (desktop) */
+  side?: 'start' | 'end';
+}
+
+const { motif, rotate = -6, side = 'end' } = Astro.props;
+const entry = (manifest.motifs as { id: string; src: string }[]).find(
+  (m) => m.id === motif,
+);
+---
+
+{
+  entry && (
+    <img
+      class:list={['home-section-doodle', `home-section-doodle--${side}`]}
+      src={entry.src}
+      alt=""
+      width="220"
+      height="220"
+      decoding="async"
+      loading="lazy"
+      aria-hidden="true"
+      data-doodle-id={entry.id}
+      data-home-section-doodle
+      style={`--doodle-rot:${rotate}deg`}
+    />
+  )
+}
+
+<style>
+  .home-section-doodle {
+    position: absolute;
+    top: -4px;
+    /* Match SiteDoodles gutter weight (~180–240px desktop). */
+    width: clamp(180px, 16vw, 240px);
+    height: auto;
+    max-width: 240px;
+    opacity: 0.9;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    transform: translateY(0) rotate(var(--doodle-rot, 0deg));
+    transform-origin: center center;
+    animation: site-doodle-float 7.5s ease-in-out infinite;
+    will-change: transform;
+  }
+  .home-section-doodle--end {
+    inset-inline-end: -4px;
+    animation-duration: 8.2s;
+    animation-delay: 0.5s;
+  }
+  .home-section-doodle--start {
+    inset-inline-start: -4px;
+    animation-duration: 7.8s;
+    animation-delay: 1s;
+  }
+
+  @keyframes site-doodle-float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(var(--doodle-rot, 0deg));
+    }
+    50% {
+      transform: translateY(-12px) rotate(var(--doodle-rot, 0deg));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-section-doodle {
+      animation: none;
+    }
+  }
+  :global(html.noam-a11y-motion) .home-section-doodle {
+    animation: none !important;
+  }
+
+  /*
+   * Mobile / narrow: bring doodle into normal flow BETWEEN title and
+   * section body — clearly visible, never overlays text or buttons.
+   */
+  @media (max-width: 900px) {
+    .home-section-doodle,
+    .home-section-doodle--end,
+    .home-section-doodle--start {
+      position: relative;
+      inset: auto;
+      top: auto;
+      display: block;
+      width: clamp(120px, 32vw, 150px);
+      max-width: 150px;
+      margin: 4px auto 10px;
+      order: 2; /* after title/lede when head is flex column */
+    }
+  }
+  @media (max-width: 640px) {
+    .home-section-doodle,
+    .home-section-doodle--end,
+    .home-section-doodle--start {
+      width: clamp(118px, 36vw, 148px);
+      max-width: 148px;
+      margin: 6px auto 12px;
+    }
+  }
+  @media print {
+    .home-section-doodle {
+      display: none !important;
+    }
+  }
+</style>
