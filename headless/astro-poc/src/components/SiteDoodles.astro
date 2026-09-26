@@ -12,7 +12,9 @@ import manifest from '../data/doodles.manifest.json';
 const pathname = Astro.url.pathname;
 const motifs = (manifest.motifs || []) as DoodleMotif[];
 const placements =
-  motifs.length === 0 ? [] : selectDenseMargins(pathname, motifs, { mobileCount: 6 });
+  motifs.length === 0
+    ? []
+    : selectDenseMargins(pathname, motifs, { mobileCount: 4 });
 ---
 
 {
@@ -116,7 +118,7 @@ const placements =
       align-items: center;
       gap: 8px 12px;
       height: auto;
-      min-height: 120px;
+      min-height: 96px;
       width: 100%;
       z-index: 0;
       margin: 6px 0 10px;
@@ -136,21 +138,28 @@ const placements =
       left: auto !important;
       right: auto !important;
       inset: auto !important;
-      width: clamp(72px, 22vw, 110px) !important;
-      max-width: 110px !important;
+      width: clamp(64px, 18vw, 96px) !important;
+      max-width: 96px !important;
     }
   }
+  /* Phone: one compact strip row — 4 small motifs, no tall empty block */
   @media (max-width: 640px) {
     .site-doodles {
-      min-height: 100px;
-      gap: 6px 8px;
-      padding: 6px 8px;
+      flex-wrap: nowrap;
+      min-height: 0;
+      max-height: 56px;
+      overflow: hidden;
+      gap: 4px 6px;
+      padding: 4px 6px;
+      margin: 4px 0 6px;
+    }
+    .site-doodle--gutter-only {
+      display: none !important;
     }
     .site-doodle,
-    .site-doodle--strip,
-    .site-doodle--gutter-only {
-      width: clamp(64px, 26vw, 96px) !important;
-      max-width: 96px !important;
+    .site-doodle--strip {
+      width: 44px !important;
+      max-width: 48px !important;
     }
   }
 

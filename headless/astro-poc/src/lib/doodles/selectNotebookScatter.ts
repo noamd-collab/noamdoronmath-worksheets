@@ -132,11 +132,28 @@ export function selectNotebookScatter(
   });
 
   const scribbleOrder = shuffleIndices(rng, SCRIBBLE_KINDS.length);
-  const scribbles: ScribbleItem[] = scribbleOrder.slice(0, scribbleWant).map((ki) => ({
-    kind: SCRIBBLE_KINDS[ki],
-    rotate: Math.round((-22 + rng() * 44) * 10) / 10,
-    sizePx: Math.round(28 + rng() * 36), // 28–64
-    float: rng() < 0.35,
+  const kinds: ScribbleKind[] = [];
+  // Always include a readable formula scribble (LTR a²+b²=c² / πr² / …)
+  kinds.push('formula');
+  for (const ki of scribbleOrder) {
+    const k = SCRIBBLE_KINDS[ki];
+    if (k === 'formula') continue;
+    if (kinds.length >= scribbleWant) break;
+    kinds.push(k);
+  }
+
+  const scribbles: ScribbleItem[] = kinds.map((kind) => ({
+    kind,
+    // Formulas stay nearly upright so they stay readable
+    rotate:
+      kind === 'formula'
+        ? Math.round((-6 + rng() * 12) * 10) / 10
+        : Math.round((-22 + rng() * 44) * 10) / 10,
+    sizePx:
+      kind === 'formula'
+        ? Math.round(52 + rng() * 24) // 52–76 wider readable
+        : Math.round(28 + rng() * 36),
+    float: kind === 'formula' ? false : rng() < 0.35,
     delay: Math.round(rng() * 20) / 10,
   }));
 

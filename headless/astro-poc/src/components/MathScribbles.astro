@@ -1,8 +1,9 @@
 ---
 /**
- * Small hand-drawn math scribbles (SVG strokes) — stars, spirals, arrows,
- * underlines, a²+b²=c². Same notebook ink language as DOODLES-45 webps.
+ * Small hand-drawn math scribbles (SVG) — stars, spirals, arrows,
+ * underlines, readable formulas (a²+b²=c²). Notebook ink language.
  * NOT the thin grey HomeMarginArt icon set.
+ * Formulas force LTR so they stay readable on RTL pages.
  */
 import type { ScribbleItem } from '../lib/doodles/selectNotebookScatter';
 
@@ -11,6 +12,9 @@ export interface Props {
 }
 
 const { items } = Astro.props;
+
+/** Alternate readable formulas (picked by item index). Always LTR. */
+const FORMULAS = ['a²+b²=c²', 'πr²', 'y=mx+b'] as const;
 ---
 
 {
@@ -88,65 +92,26 @@ const { items } = Astro.props;
       }
       {
         s.kind === 'formula' && (
-          <svg viewBox="0 0 78 30" focusable="false">
-            {/* Hand-inked a²+b²=c² (paths, not UI chrome icons) */}
-            <path
-              d="M6 20 q4 -14 10 -2 m-8 -6 h9"
-              fill="none"
-              stroke="var(--navy, #1a3358)"
-              stroke-width="2.2"
-              stroke-linecap="round"
-            />
-            <path
-              d="M20 10 v-4 m2 2 h-4"
-              fill="none"
-              stroke="var(--navy, #1a3358)"
-              stroke-width="1.8"
-              stroke-linecap="round"
-            />
-            <path
-              d="M28 16 l6 0 m-3 -3 l0 8"
-              fill="none"
-              stroke="var(--cobalt, #2a5db0)"
-              stroke-width="2.2"
-              stroke-linecap="round"
-            />
-            <path
-              d="M38 20 q3 -12 9 0 m1 0 q3 -12 9 0"
-              fill="none"
-              stroke="var(--navy, #1a3358)"
-              stroke-width="2.2"
-              stroke-linecap="round"
-            />
-            <path
-              d="M50 9 v-3 m1.5 1.5 h-3"
-              fill="none"
-              stroke="var(--navy, #1a3358)"
-              stroke-width="1.6"
-              stroke-linecap="round"
-            />
-            <path
-              d="M60 14 h10 m-2 -3 l3 3 l-3 3"
-              fill="none"
-              stroke="var(--red, #c45c4a)"
-              stroke-width="2.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M66 22 q4 -10 8 0"
-              fill="none"
-              stroke="var(--navy, #1a3358)"
-              stroke-width="2.2"
-              stroke-linecap="round"
-            />
-            <path
-              d="M74 10 v-3 m1.5 1.5 h-3"
-              fill="none"
-              stroke="var(--navy, #1a3358)"
-              stroke-width="1.6"
-              stroke-linecap="round"
-            />
+          <svg
+            class="math-scribble__formula-svg"
+            viewBox="0 0 112 32"
+            focusable="false"
+          >
+            {/* Readable hand-ink formula; explicit LTR for RTL pages */}
+            <text
+              x="4"
+              y="22"
+              direction="ltr"
+              unicode-bidi="isolate"
+              fill="var(--navy, #1a3358)"
+              font-family="Heebo, Assistant, 'Segoe Print', 'Comic Sans MS', cursive"
+              font-size="17"
+              font-weight="800"
+              font-style="italic"
+              letter-spacing="0.5"
+            >
+              {FORMULAS[i % FORMULAS.length]}
+            </text>
           </svg>
         )
       }
@@ -173,6 +138,15 @@ const { items } = Astro.props;
     user-select: none;
     transform: rotate(var(--s-rot, 0deg));
     flex: 0 0 auto;
+  }
+  .math-scribble--formula {
+    /* Wider so a²+b²=c² / πr² stay readable; force LTR in RTL doc */
+    width: max(88px, calc(var(--s-size, 40px) * 1.8));
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  .math-scribble__formula-svg {
+    direction: ltr;
   }
   .math-scribble svg {
     width: 100%;

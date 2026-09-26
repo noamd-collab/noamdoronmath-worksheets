@@ -34,6 +34,10 @@ describe('selectNotebookScatter', () => {
     assert.ok(a.motifs.length >= 3 && a.motifs.length <= 6);
     assert.ok(a.scribbles.length >= 2 && a.scribbles.length <= 4);
     assert.ok(a.motifs.some((m) => m.src.includes('telescope')));
+    assert.ok(
+      a.scribbles.some((s) => s.kind === 'formula'),
+      'expected a readable formula scribble'
+    );
   });
 
   it('varies sizes and marks only a subset to float', () => {

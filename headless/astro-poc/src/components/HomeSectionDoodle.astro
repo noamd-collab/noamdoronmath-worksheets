@@ -104,14 +104,36 @@ const scatter = selectNotebookScatter(seed, motifs, {
   :global(html.noam-a11y-motion) .home-nb-doodle--float {
     animation: none !important;
   }
+  /*
+   * Mobile: compact single row (~≤72px tall) so grade cards / CTAs
+   * sit near their pre-doodle vertical position — still visible, no overlap.
+   */
   @media (max-width: 640px) {
     .home-section-notebook {
-      gap: 4px 10px;
-      margin: 4px 0 10px;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 2px 6px;
+      margin: 2px 0 6px;
+      padding: 0 4px;
+      max-height: 64px;
+      overflow: hidden;
     }
     .home-nb-doodle {
-      max-width: min(120px, 34vw);
-      width: min(var(--d-size, 90px), 34vw);
+      width: 48px !important;
+      max-width: 52px !important;
+    }
+    /* Keep 3 small motifs; hide the rest of the dense desktop cluster */
+    .home-nb-doodle:nth-child(n + 4) {
+      display: none;
+    }
+    /* One tiny scribble max on phone (prefer formula if present) */
+    .home-section-notebook :global(.math-scribble:not(.math-scribble--formula)) {
+      display: none;
+    }
+    .home-section-notebook :global(.math-scribble--formula) {
+      width: 78px;
+      max-width: 34vw;
     }
   }
   @media print {
