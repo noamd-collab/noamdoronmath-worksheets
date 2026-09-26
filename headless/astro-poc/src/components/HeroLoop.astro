@@ -1,0 +1,63 @@
+---
+import ConceptLoop from './ConceptLoop.astro';
+/* Keep in sync with SPECS in ../lib/conceptLoops.ts. Default stays triangle for no-JS/SEO. */
+const HERO_POOL = [
+  'triangle', 'pythagoras', 'area-model', 'sticks', 'numberline', 'tenframes',
+  'balance', 'pattern', 'bars', 'ruler', 'array', 'polygon', 'data',
+  'baseten', 'cookies', 'fraction', 'transform',
+] as const;
+const DEFAULT = 'triangle';
+---
+{/* Inline style before markup: hide until sync swap (no triangle→variant flash, no CLS). */}
+<style is:inline>
+  .hero-loop[data-pending] {
+    visibility: hidden;
+  }
+</style>
+<noscript>
+  <style>
+    .hero-loop[data-pending] {
+      visibility: visible !important;
+    }
+  </style>
+</noscript>
+<div class="hero-loop" data-hero-loop data-pending>
+  <div data-hero-loop-current>
+    <ConceptLoop variant={DEFAULT} />
+  </div>
+  {
+    HERO_POOL.filter((v) => v !== DEFAULT).map((v) => (
+      <template data-hero-loop-variant={v}>
+        <ConceptLoop variant={v} />
+      </template>
+    ))
+  }
+</div>
+<script is:inline>
+  (function () {
+    var root = document.querySelector('[data-hero-loop]');
+    if (!root) return;
+    var KEY = 'nd_hero_loop_last';
+    var pool = Array.prototype.map.call(
+      root.querySelectorAll('template[data-hero-loop-variant]'),
+      function (t) { return t.getAttribute('data-hero-loop-variant'); }
+    );
+    pool.push('triangle');
+    var last = null;
+    try { last = sessionStorage.getItem(KEY); } catch (e) {}
+    var candidates = pool.filter(function (v) { return v !== last; });
+    var pick = candidates[Math.floor(Math.random() * candidates.length)];
+    try { sessionStorage.setItem(KEY, pick); } catch (e) {}
+    if (pick !== 'triangle') {
+      var tpl = root.querySelector('template[data-hero-loop-variant="' + pick + '"]');
+      var current = root.querySelector('[data-hero-loop-current]');
+      if (tpl && current) current.replaceChildren(tpl.content.cloneNode(true));
+    }
+    root.removeAttribute('data-pending');
+  })();
+</script>
+<style>
+  .hero-loop .concept-loop__svg {
+    aspect-ratio: 560 / 340;
+  }
+</style>

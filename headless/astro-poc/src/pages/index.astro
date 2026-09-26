@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroIllustrations from '../components/HeroIllustrations.astro';
 import PlaneFlight from '../components/PlaneFlight.astro';
-import ConceptLoop from '../components/ConceptLoop.astro';
+import HeroLoop from '../components/HeroLoop.astro';
 import HomeSectionDoodle from '../components/HomeSectionDoodle.astro';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 
@@ -46,8 +46,8 @@ const homeJsonLd = homePageJsonLd();
           <a class="cta cta--mid" href="/worksheets?grade=7">חטיבה ז׳–ט׳</a>
         </div>
       </div>
-      {/* Fixed hero film (geometry/area) — not random. Text right, card left in RTL. */}
-      <ConceptLoop variant="triangle" />
+      {/* Hero film: SSR default triangle; pre-paint client swap from pool (no server random). */}
+      <HeroLoop />
       {/* Absolute edge marginalia — never a flex strip. */}
       <HomeSectionDoodle
         seed="home-hero"
