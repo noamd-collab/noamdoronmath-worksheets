@@ -3278,13 +3278,15 @@ html.noam-a11y-motion .hero-draw {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: 36px;
   }
-  .home-hero .concept-loop {
+  .home-hero .concept-loop,
+  .home-hero .home-random-loop {
     max-width: 520px;
     justify-self: center;
   }
 }
 @media (max-width: 1099.98px) {
-  .home-hero .concept-loop {
+  .home-hero .concept-loop,
+  .home-hero .home-random-loop {
     max-width: 480px;
     margin: 22px auto 10px;
   }

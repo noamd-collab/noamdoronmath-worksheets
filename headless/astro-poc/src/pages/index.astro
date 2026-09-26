@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroIllustrations from '../components/HeroIllustrations.astro';
 import PlaneFlight from '../components/PlaneFlight.astro';
 import HomeMarginArt from '../components/HomeMarginArt.astro';
-import ConceptLoop from '../components/ConceptLoop.astro';
+import HomeRandomLoop from '../components/HomeRandomLoop.astro';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 
 const home = loadHomePage();
@@ -49,9 +49,10 @@ const homeJsonLd = homePageJsonLd();
           <a class="cta cta--mid" href="/worksheets?grade=7">חטיבה ז׳–ט׳</a>
         </div>
       </div>
-      {/* K3: Brilliant-style film loop — text on the right, card on the left
-          (grid columns in RTL); on mobile it stacks below the copy. */}
-      <ConceptLoop variant="triangle" />
+      {/* K3 / KIMI-ANIM-6: film loop card — random restored variant each visit
+          (F01–F06 + triangle/pythagoras/area-model). Text right, card left in RTL;
+          on mobile it stacks below the copy. */}
+      <HomeRandomLoop />
     </section>
 
     <section class="home-grades" aria-labelledby="home-grades-title" data-home-grades>
