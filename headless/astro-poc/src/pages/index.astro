@@ -20,13 +20,10 @@ const homeJsonLd = homePageJsonLd();
       <script type="application/ld+json" set:html={JSON.stringify(block)} />
     ))
   }
-  {/* HomeMarginArt (thin grey SVGs) removed — dense DOODLES-45 webps via SiteDoodles + section scatters. */}
+  {/* HomeMarginArt (thin grey SVGs) removed — dense DOODLES-45 webps via SiteDoodles + section scatters.
+      Dev-notice yellow banner removed (Noam 01:02) — no leftover spacing. */}
   <main class="home-shell" id="home-main" data-family="home" data-home-page>
     <PlaneFlight />
-    <aside class="home-notice" role="status" data-home-dev-notice>
-      <strong>{home.devNotice.title}</strong>
-      <p>{home.devNotice.body}</p>
-    </aside>
 
     <section class="home-hero" aria-labelledby="home-title">
       <HeroIllustrations />
@@ -51,27 +48,27 @@ const homeJsonLd = homePageJsonLd();
       </div>
       {/* Fixed hero film (geometry/area) — not random. Text right, card left in RTL. */}
       <ConceptLoop variant="triangle" />
-      {/* Dense notebook band under hero copy/loop — never over CTAs */}
+      {/* Absolute edge marginalia — never a flex strip. */}
       <HomeSectionDoodle
         seed="home-hero"
         preferred={['kite', 'curious-cat', 'snail', 'cube-plant']}
-        count={5}
+        count={3}
       />
     </section>
 
     {/*
-      KIMI-ANIM-6: dense notebook scatter per section (3–6 webps + scribbles),
-      topic-matched preferred motifs + fillers from full DOODLES-45 set.
+      Notebook marginalia per section (2–4 webps + scribbles) in edge gutters.
+      Diagonal φ descent; mobile keeps ≤2 motifs + formula per section.
     */}
     <section class="home-grades" aria-labelledby="home-grades-title" data-home-grades>
+      <HomeSectionDoodle
+        seed="home-grades"
+        preferred={['telescope', 'sleepy-owl', 'orbit-pencil']}
+        count={3}
+      />
       <div class="home-section__head">
         <h2 class="home-section__title" id="home-grades-title">בחרו כיתה והתחילו לתרגל</h2>
         <p class="home-section__lede">דפי עבודה בחינם לכיתות א׳–ט׳</p>
-        <HomeSectionDoodle
-          seed="home-grades"
-          preferred={['telescope', 'sleepy-owl', 'orbit-pencil']}
-          count={6}
-        />
       </div>
       <ul class="home-grades__grid">
         {
@@ -90,13 +87,13 @@ const homeJsonLd = homePageJsonLd();
     </section>
 
     <section class="home-learning" aria-labelledby="home-learning-title" data-home-learning>
+      <HomeSectionDoodle
+        seed="home-learning"
+        preferred={['orbit-pencil', 'eye-spiral', 'curious-cat']}
+        count={3}
+      />
       <div class="home-section__head">
         <h2 class="home-section__title" id="home-learning-title">הלמידה שלי</h2>
-        <HomeSectionDoodle
-          seed="home-learning"
-          preferred={['orbit-pencil', 'eye-spiral', 'curious-cat']}
-          count={5}
-        />
       </div>
       <div class="home-learning__actions">
         <a class="cta cta--mid" href={home.learning.googleHref} data-home-google>
@@ -111,13 +108,13 @@ const homeJsonLd = homePageJsonLd();
     </section>
 
     <section class="home-values" aria-labelledby="home-values-title" data-home-values>
+      <HomeSectionDoodle
+        seed="home-values"
+        preferred={['geometry-fish', 'kite', 'cube-plant', 'snail']}
+        count={3}
+      />
       <div class="home-section__head">
         <h2 class="home-section__title" id="home-values-title">{home.valueSections.heading}</h2>
-        <HomeSectionDoodle
-          seed="home-values"
-          preferred={['geometry-fish', 'kite', 'cube-plant', 'snail']}
-          count={6}
-        />
       </div>
       <ul class="home-values__grid">
         {
@@ -134,15 +131,15 @@ const homeJsonLd = homePageJsonLd();
     </section>
 
     <section class="home-whatsapp" aria-labelledby="home-whatsapp-title" data-home-whatsapp>
+      <HomeSectionDoodle
+        seed="home-whatsapp"
+        preferred={['paper-boat', 'geometry-fish', 'telescope']}
+        count={3}
+      />
       <div class="home-section__head">
         <p class="home-whatsapp__kicker">{home.whatsapp.kicker}</p>
         <h2 class="home-section__title" id="home-whatsapp-title">{home.whatsapp.heading}</h2>
         <p>{home.whatsapp.body}</p>
-        <HomeSectionDoodle
-          seed="home-whatsapp"
-          preferred={['paper-boat', 'geometry-fish', 'telescope']}
-          count={5}
-        />
       </div>
       <div class="home-whatsapp__row">
         <a

@@ -29,54 +29,74 @@
     ].join(',');
 
     function motionAllowed() {
+      var html = document.documentElement;
       return (
         !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
-        !document.documentElement.classList.contains('noam-a11y-motion')
+        !html.classList.contains('noam-a11y-motion') &&
+        !html.classList.contains('nd-motion-off')
       );
     }
 
     function setup() {
-      if (!motionAllowed()) return; // content stays fully visible, static
-      var vh = window.innerHeight;
-      var pending = [];
-      Array.prototype.forEach.call(
-        document.querySelectorAll(REVEAL_SEL),
-        function (el) {
-          var r = el.getBoundingClientRect();
-          if (r.height === 0) return;
-          // Never hide anything in (or near) the first viewport: LCP/CLS safe.
-          if (r.top < vh * 0.92) return;
-          el.classList.add('poc-reveal');
-          pending.push(el);
-        }
-      );
-      // Gentle stagger among revealed siblings.
-      pending.forEach(function (el) {
-        var sibs = el.parentElement
-          ? Array.prototype.filter.call(el.parentElement.children, function (c) {
-              return c.classList && c.classList.contains('poc-reveal');
-            })
-          : [el];
-        var i = sibs.indexOf(el);
-        el.style.setProperty('--reveal-delay', Math.min(Math.max(i, 0), 5) * 70 + 'ms');
-      });
-      if (!pending.length) return;
-      if (!('IntersectionObserver' in window)) {
-        pending.forEach(function (el) { el.classList.add('is-in'); });
-        return;
+      /* FIX-13 (audit): content must never be hidden by this script unless it
+         can also be revealed. So gate on EVERYTHING before adding the
+         pre-reveal state:
+           - JS off: this file never runs → content visible by default.
+           - No IntersectionObserver (old browsers): bail out → we never
+             add .poc-reveal, so nothing is ever hidden.
+           - prefers-reduced-motion / the accessibility menu's
+             noam-a11y-motion: bail out → content fully visible, no animation.
+         The old order hid elements first and only then looked for a
+         fallback — anything throwing in between would strand hidden content. */
+      if (typeof IntersectionObserver !== 'function') return;
+      if (!motionAllowed()) return;
+      try {
+        var vh = window.innerHeight;
+        var pending = [];
+        Array.prototype.forEach.call(
+          document.querySelectorAll(REVEAL_SEL),
+          function (el) {
+            var r = el.getBoundingClientRect();
+            if (r.height === 0) return;
+            // Never hide anything in (or near) the first viewport: LCP/CLS safe.
+            if (r.top < vh * 0.92) return;
+            el.classList.add('poc-reveal');
+            pending.push(el);
+          }
+        );
+        if (!pending.length) return;
+        // Gentle stagger among revealed siblings.
+        pending.forEach(function (el) {
+          var sibs = el.parentElement
+            ? Array.prototype.filter.call(el.parentElement.children, function (c) {
+                return c.classList && c.classList.contains('poc-reveal');
+              })
+            : [el];
+          var i = sibs.indexOf(el);
+          el.style.setProperty('--reveal-delay', Math.min(Math.max(i, 0), 5) * 70 + 'ms');
+        });
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.01 }
+        );
+        pending.forEach(function (el) { io.observe(el); });
+      } catch (err) {
+        /* Fail visible: if anything above broke, undo the hidden state so
+           no content is ever stuck invisible because of this script. */
+        Array.prototype.forEach.call(
+          document.querySelectorAll('.poc-reveal'),
+          function (el) {
+            el.classList.add('is-in');
+          }
+        );
       }
-      var io = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) {
-              e.target.classList.add('is-in');
-              io.unobserve(e.target);
-            }
-          });
-        },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0.01 }
-      );
-      pending.forEach(function (el) { io.observe(el); });
     }
 
     if (document.readyState === 'loading')

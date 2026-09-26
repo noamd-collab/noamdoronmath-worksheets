@@ -1,0 +1,32 @@
+---
+/**
+ * Client-side doodle layout picker (Noam 00:50).
+ * Bundled script + fade CSS. Does not touch ConceptLoop.
+ */
+---
+
+<script>
+  import '../scripts/doodle-randomize';
+</script>
+
+<style is:global>
+  /* Hide until layout applied — absolute layers → no CLS */
+  html.doodles-pending [data-site-doodles],
+  html.doodles-pending [data-home-section-notebook],
+  html.doodles-pending [data-mobile-nb-corners] {
+    opacity: 0;
+  }
+  html.doodles-ready [data-site-doodles],
+  html.doodles-ready [data-home-section-notebook],
+  html.doodles-ready [data-mobile-nb-corners] {
+    opacity: 1;
+    transition: opacity 300ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html.doodles-ready [data-site-doodles],
+    html.doodles-ready [data-home-section-notebook],
+    html.doodles-ready [data-mobile-nb-corners] {
+      transition: none;
+    }
+  }
+</style>

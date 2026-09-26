@@ -11,7 +11,8 @@ export type HomeGrade = {
 export type HomePageContent = {
   title: string;
   description: string;
-  devNotice: { title: string; body: string };
+  /** Removed from UI (Noam 01:02); kept optional for older fixtures. */
+  devNotice?: { title: string; body: string };
   hero: {
     eyebrow: string;
     titleLine: string;

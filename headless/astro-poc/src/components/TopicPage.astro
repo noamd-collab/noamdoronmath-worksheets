@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
+import MobileNotebookCorners from './MobileNotebookCorners.astro';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
 import topicFamilies from '../data/topicFamilies.json';
@@ -131,11 +132,17 @@ function faqHeadingId(groupIndex: number) {
   <script type="application/ld+json" set:html={JSON.stringify(page.jsonLd)} />
 
   <main
-    class="topic-page wrap"
+    class="topic-page wrap topic-page--nb"
     data-grade={String(page.grade)}
     id="topic-page-main"
     data-topic-slug={page.slug}
   >
+    {/* Edge marginalia over the page band; SiteDoodles adds full-page gutters */}
+    <MobileNotebookCorners
+      seed={`topic-${page.slug}`}
+      preferred={['orbit-pencil', 'geometry-fish', 'eye-spiral', 'telescope', 'kite']}
+      count={3}
+    />
     <nav class="topic-page__crumbs" aria-label="מיקום">
       <a href="/">בית</a>
       <span aria-hidden="true">/</span>
@@ -161,7 +168,7 @@ function faqHeadingId(groupIndex: number) {
       ))
     }
 
-    <header class="topic-page__header banner">
+    <header class="topic-page__header banner topic-page__header--nb">
       <h1>{page.h1}</h1>
     </header>
 
