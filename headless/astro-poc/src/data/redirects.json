@@ -50,12 +50,12 @@
     {
       "from": "/worksheets8grade-1",
       "to": "/grade-8",
-      "note": "PPLX / live alias → grade-8 hub"
+      "note": "Live Redirect Manager CLOSED 2026-09-26 16:33 (curl 301 → /grade-8)."
     },
     {
       "from": "/worksheets8grade-2",
       "to": "/grade-8",
-      "note": "PPLX / live alias → grade-8 hub"
+      "note": "Live Redirect Manager CLOSED 2026-09-26 16:33 (curl 301 → /grade-8)."
     },
     {
       "from": "/home",

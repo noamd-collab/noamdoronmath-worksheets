@@ -10,11 +10,12 @@
 - [x] PDF CDN fleet OPEN-08 CLOSED (956/956)
 - [x] `WIX_FORMS_API_KEY` = real `IST.` site key for metaSite `36dd9544-…` (Forms only); one live test done — **keep `WIX_FORMS_LIVE_SUBMIT` off** unless Noam re-enables
 - [x] Live Redirect Manager (4): triangle-area-grade-7-worksheets, coordinate-plane-intro-grade-7, equations-both-sides-word-problems-grade-7-1, inequalities-grade-8-1 — CLOSED (curl 301 verified 2026-09-26)
+- [x] Live Redirect Manager: `/worksheets8grade-1` + `/worksheets8grade-2` → `/grade-8` — CLOSED (curl 301 verified 2026-09-26 16:33)
 - [x] `/workflow` decision: real **404** until content exists (no redirect to home, no stub page) — Headless map/tests updated
-- [ ] Live Redirect Manager still open: `/worksheets8grade-1` and `/worksheets8grade-2` → `/grade-8` (live still → grade-1 / grade-2)
-- [ ] Preview SEO: noindex on `*.wix-site-host.com`; production build uses index + canonical `https://www.noamdoronmath.co.il`
+- [ ] Preview SEO: noindex on `*.wix-site-host.com`; production build uses index + canonical `https://www.noamdoronmath.co.il` (code on PR #10; confirm on Headless after domain assign)
 - [ ] Supabase Auth Redirect URL includes **exact** production `https://www.noamdoronmath.co.il/learning.html` (and www variant if used)
 - [ ] Google Workspace MX / SPF / DKIM / DMARC / TXT inventory captured **before** any DNS edit
+- [ ] Explicit Noam go-ahead for DNS/domain cut-over
 
 ## Cut-over steps (execute only when authorized)
 
