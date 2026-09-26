@@ -20,20 +20,10 @@ const homeJsonLd = homePageJsonLd();
       <script type="application/ld+json" set:html={JSON.stringify(block)} />
     ))
   }
-  {/* HomeMarginArt (thin grey SVGs) removed — dense DOODLES-45 webps via SiteDoodles + section scatters. */}
+  {/* HomeMarginArt (thin grey SVGs) removed — dense DOODLES-45 webps via SiteDoodles + section scatters.
+      Dev-notice yellow banner removed (Noam 01:02) — no leftover spacing. */}
   <main class="home-shell" id="home-main" data-family="home" data-home-page>
     <PlaneFlight />
-    <aside class="home-notice" role="status" data-home-dev-notice>
-      {/* Absolute edge doodles — tucked behind notice card corners on mobile */}
-      <HomeSectionDoodle
-        seed="home-notice"
-        preferred={['paper-boat', 'snail', 'eye-spiral']}
-        count={2}
-        scribbleCount={1}
-      />
-      <strong>{home.devNotice.title}</strong>
-      <p>{home.devNotice.body}</p>
-    </aside>
 
     <section class="home-hero" aria-labelledby="home-title">
       <HeroIllustrations />

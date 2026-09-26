@@ -83,7 +83,8 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
 
   it('index page wires fixture sections and does not invent privacy URL /privacy', () => {
     const index = readFileSync(join(root, 'src', 'pages', 'index.astro'), 'utf8');
-    assert.ok(index.includes('data-home-dev-notice'));
+    assert.ok(!index.includes('data-home-dev-notice'));
+    assert.ok(!index.includes('home-notice'));
     assert.ok(index.includes('data-home-search-cta'));
     assert.ok(index.includes('data-home-grades'));
     assert.ok(index.includes('data-home-learning'));
