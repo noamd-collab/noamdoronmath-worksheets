@@ -26,6 +26,7 @@ describe('OPEN-15 redirects', () => {
       ['/coordinate-plane-intro-grade-7', '/coordinate-plane-scale-grade-7'],
       ['/triangle-area-grade-7-worksheets', '/triangle-area-grade-7'],
       ['/special-triangles-grade-7', '/special-triangles-grade-7-new'],
+      ['/advanced-pythagoras-grade-8-worksheet', '/advanced-pythagoras-grade-8'],
       ['/blank-1', '/quadratic-inequalities-systems-grade-9'],
       ['/page', '/terms'],
       ['/page-2', '/aboutus'],

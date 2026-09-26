@@ -73,6 +73,11 @@
       "note": "fix 404: only -new page exists in Headless"
     },
     {
+      "from": "/advanced-pythagoras-grade-8-worksheet",
+      "to": "/advanced-pythagoras-grade-8",
+      "note": "PPLX Check A gap 2026-09-26: live classic 301; needed in Headless map for cut-over (no page at -worksheet)."
+    },
+    {
       "from": "/coordinate-plane-intro-grade-7",
       "to": "/coordinate-plane-scale-grade-7",
       "note": "Live Redirect Manager CLOSED 2026-09-26 (was /triangular-prism-volume-grade-9; curl 301 verified)."
