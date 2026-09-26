@@ -28,7 +28,7 @@ const placements =
         <img
           class:list={[
             'site-doodle',
-            `site-doodle--${p.side}`,
+            p.side === 'start' ? 'site-doodle--start' : 'site-doodle--end',
             p.mobileVisible ? 'site-doodle--strip' : 'site-doodle--gutter-only',
             p.float ? 'site-doodle--float' : null,
           ]}
@@ -40,7 +40,7 @@ const placements =
           loading="lazy"
           data-doodle-id={p.id}
           data-doodle-side={p.side}
-          style={`--doodle-size:${p.sizePx}px;--doodle-scale:${p.scale};--doodle-rotate:${p.rotate}deg;--doodle-top:${p.topPct}%;--doodle-op:${p.opacity};--doodle-delay:${p.delay}s`}
+          style={`top:${p.topPct}%;width:${Math.round(p.sizePx * p.scale)}px;--doodle-rotate:${p.rotate}deg;--doodle-op:${p.opacity};--doodle-delay:${p.delay}s`}
         />
       ))}
     </div>
@@ -54,28 +54,29 @@ const placements =
     pointer-events: none;
     user-select: none;
     z-index: 1;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .site-doodle {
     position: absolute;
     display: block;
-    width: calc(var(--doodle-size, 140px) * var(--doodle-scale, 1));
-    max-width: 200px;
     height: auto;
+    max-width: min(200px, 14vw);
     opacity: var(--doodle-op, 0.88);
-    top: var(--doodle-top, 20%);
     transform: translateY(0) rotate(var(--doodle-rotate, 0deg));
     transform-origin: center center;
-  }
-  /* Outside ~1100px content shell */
-  .site-doodle--start {
-    left: max(4px, calc(50% - 640px));
+    /* reset physical sides — RTL-safe logical placement below */
+    left: auto;
     right: auto;
   }
+  /* Outside ~1100px content shell — logical margins for RTL Hebrew */
+  .site-doodle--start {
+    inset-inline-start: max(4px, calc(50% - 640px));
+    inset-inline-end: auto;
+  }
   .site-doodle--end {
-    right: max(4px, calc(50% - 640px));
-    left: auto;
+    inset-inline-end: max(4px, calc(50% - 640px));
+    inset-inline-start: auto;
   }
   .site-doodle--float {
     animation: site-doodle-float 7.4s ease-in-out infinite;
@@ -103,8 +104,7 @@ const placements =
   }
 
   /*
-   * ≤1200 / mobile: dense in-flow wrap — ALL strip-visible motifs,
-   * gutter-only also shown (notebook density on small screens too).
+   * ≤1200 / mobile: dense in-flow wrap — show every motif (notebook density).
    */
   @media (max-width: 1200px) {
     .site-doodles {
@@ -128,11 +128,14 @@ const placements =
     }
     .site-doodle,
     .site-doodle--strip,
-    .site-doodle--gutter-only {
+    .site-doodle--gutter-only,
+    .site-doodle--start,
+    .site-doodle--end {
       position: relative !important;
       top: auto !important;
       left: auto !important;
       right: auto !important;
+      inset: auto !important;
       width: clamp(72px, 22vw, 110px) !important;
       max-width: 110px !important;
     }
