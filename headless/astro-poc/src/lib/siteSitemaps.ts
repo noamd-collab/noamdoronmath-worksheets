@@ -1,24 +1,52 @@
-import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
-import { SITE_CANONICAL_ORIGIN } from './siteSeo';
+/**
+ * Site page + index sitemaps for Headless cut-over.
+ *
+ * Cloudflare / Wix Workers have no `src/pages` tree. The route must pass Vite
+ * `import.meta.glob` keys — never read the pages directory from disk here
+ * (even as a fallback), or the Worker chunk may fail to load.
+ */
+import redirectsMap from '../data/redirects.json';
 import { BLOG_SITEMAP_PATH } from './blogSitemap';
+import { REDIRECT_RULES } from './redirects';
+import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 
-const SKIP = new Set(['404.astro', 'index.astro', 'learning.astro']);
+const SKIP_SLUGS = new Set(['404', 'index', 'learning']);
 
-export function listMainPagePaths(): string[] {
-  const dir = join(process.cwd(), 'src/pages');
-  const out = ['/'];
-  for (const name of readdirSync(dir)) {
-    if (!name.endsWith('.astro')) continue;
-    if (SKIP.has(name) || name.startsWith('_')) continue;
-    out.push('/' + name.replace(/\.astro$/, ''));
-  }
-  return out.sort();
+function excludePath(path: string): boolean {
+  if (path !== '/' && REDIRECT_RULES.some((r) => r.from === path)) return true;
+  const flagged = redirectsMap.flaggedDoNotAutoRedirect ?? [];
+  if (flagged.some((r) => r.from === path)) return true;
+  return false;
 }
 
-export function renderPagesSitemapXml(): string {
+/** Turn `import.meta.glob('./*.astro')` keys (or `./file.astro` names) into URL paths. */
+export function pathsFromAstroModuleKeys(moduleKeys: readonly string[]): string[] {
+  const out = new Set<string>(['/']);
+  for (const modulePath of moduleKeys) {
+    const file = modulePath.split('/').pop() || '';
+    if (!file.endsWith('.astro')) continue;
+    const slug = file.replace(/\.astro$/, '');
+    if (!slug || SKIP_SLUGS.has(slug) || slug.startsWith('_') || slug.includes('[')) continue;
+    const path = `/${slug}`;
+    if (!excludePath(path)) out.add(path);
+  }
+  return [...out].sort((a, b) => a.localeCompare(b));
+}
+
+/**
+ * @param pageModuleKeys - keys from `import.meta.glob('./*.astro')` in the route
+ *   (required). Unit tests pass the same shape built from a local readdir.
+ */
+export function listMainPagePaths(pageModuleKeys: readonly string[]): string[] {
+  if (!pageModuleKeys.length) {
+    throw new Error('listMainPagePaths requires Vite glob module keys (no filesystem on Workers)');
+  }
+  return pathsFromAstroModuleKeys(pageModuleKeys);
+}
+
+export function renderPagesSitemapXml(pageModuleKeys: readonly string[]): string {
   const today = new Date().toISOString().slice(0, 10);
-  const urls = listMainPagePaths()
+  const urls = listMainPagePaths(pageModuleKeys)
     .map(
       (path) =>
         `  <url><loc>${SITE_CANONICAL_ORIGIN}${path === '/' ? '/' : path}</loc><lastmod>${today}</lastmod></url>`
