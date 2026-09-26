@@ -315,11 +315,24 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
 ---
 
 <div class="concept-loop" data-loop={variant}>
-  <div class="concept-loop__card">
+  {/* PAUSE-CARD-3: the whole card is the pause/play control (role=button,
+      Tab-focusable, Enter/Space). The engine's original button stays as the
+      tiny corner indicator — conceptLoops.ts is not editable in this task,
+      so its state machine is reused by forwarding card events to it. */}
+  <div
+    class="concept-loop__card"
+    role="button"
+    tabindex="0"
+    aria-label="השהיית הנפשה"
+    aria-pressed="false"
+    data-pause-card
+  >
     <button
       type="button"
-      class="concept-loop__toggle"
+      class="concept-loop__toggle cl-toggle-mini"
       data-el="toggle"
+      tabindex="-1"
+      aria-hidden="true"
       aria-label="השהיית ההדגמה"
     >
       <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -1643,3 +1656,177 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
   import { initConceptLoops } from '../lib/conceptLoops';
   initConceptLoops();
 </script>
+
+<script>
+  /**
+   * PAUSE-CARD-3 — the whole card is the pause/play control
+   * (WCAG 2.2.2 / IS 5568). conceptLoops.ts and catalog.css are off-limits
+   * in this task, so:
+   *   - the card (role=button, Tab, Enter/Space) forwards to the engine's
+   *     own toggle button → the engine keeps its state machine (userPaused,
+   *     4-lap park, replay) untouched;
+   *   - the toggle is restyled into the tiny corner indicator (scoped style);
+   *   - paused state is remembered per card (variant key) in sessionStorage;
+   *   - the accessibility menu's global switch pauses everything:
+   *     <html class="nd-motion-off"> and the window event "nd:motion-off"
+   *     (detail.off true/false). A card the user paused manually stays
+   *     paused when the global switch is turned off again.
+   */
+  (function () {
+    'use strict';
+
+    function ready(fn) {
+      if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', fn, { once: true });
+      else fn();
+    }
+
+    ready(function () {
+      requestAnimationFrame(function () {
+        document.querySelectorAll('[data-pause-card]').forEach(initCard);
+      });
+    });
+
+    function initCard(card) {
+      var root = card.closest('[data-loop]');
+      if (!root || !root.__loop) return;
+      var hook = root.__loop;
+      var toggleBtn = root.querySelector('[data-el="toggle"]');
+      if (!toggleBtn) return;
+      var KEY = 'k3-pause:' + (root.getAttribute('data-loop') || '');
+      var manual = false;
+      try {
+        manual = sessionStorage.getItem(KEY) === '1';
+      } catch (e) {}
+
+      function ndOff() {
+        return document.documentElement.classList.contains('nd-motion-off');
+      }
+      function state() {
+        return hook.state();
+      }
+      function sync() {
+        var s = state();
+        var paused = !s.playing && !s.static;
+        card.classList.toggle('is-paused', paused);
+        card.setAttribute('aria-pressed', paused ? 'true' : 'false');
+        card.setAttribute('aria-label', paused ? 'הפעלת הנפשה' : 'השהיית הנפשה');
+        // static frame (reduced-motion): the control is inert
+        card.setAttribute('aria-disabled', s.static ? 'true' : 'false');
+        if (s.static) card.setAttribute('tabindex', '-1');
+        else card.setAttribute('tabindex', '0');
+      }
+      function toggle() {
+        if (state().static) return;
+        toggleBtn.click(); // the engine's own toggle: pause/play/replay
+        var s = state();
+        manual = !s.playing;
+        try {
+          if (manual) sessionStorage.setItem(KEY, '1');
+          else sessionStorage.removeItem(KEY);
+        } catch (e) {}
+        sync();
+      }
+
+      card.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('[data-el="toggle"]')) return; // the button handles itself
+        toggle();
+      });
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+
+      // global accessibility-menu switch
+      function applyGlobal(off) {
+        var s = state();
+        if (s.static) return;
+        if (off) hook.pause();
+        else if (!manual && inView && !s.done) hook.play();
+        sync();
+      }
+      window.addEventListener('nd:motion-off', function (e) {
+        applyGlobal(!!(e && e.detail && e.detail.off));
+      });
+      new MutationObserver(function () {
+        applyGlobal(ndOff());
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+      // our own visibility tracking: re-entering view must not resume a
+      // manually (or globally) paused card
+      var inView = false;
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(
+          function (entries) {
+            inView = entries[0].isIntersecting;
+            if (inView && (ndOff() || manual) && state().playing) hook.pause();
+            sync();
+          },
+          { threshold: 0.35 }
+        ).observe(root);
+      }
+
+      // restore a session pause: drive the engine into paused+userPaused
+      if (manual && !state().static) {
+        if (!state().playing) toggleBtn.click(); // play first if needed…
+        toggleBtn.click(); // …then pause — net: paused + userPaused=true
+      }
+      if (ndOff()) hook.pause();
+      sync();
+      // aria stays truthful when the engine parks after 4 laps or pauses
+      // off-screen (its own observers don't notify us)
+      setInterval(sync, 500);
+    }
+  })();
+</script>
+
+<style>
+  /* PAUSE-CARD-3: card-as-button affordances + tiny corner indicator.
+     Scoped to this component; catalog.css is not editable in this task. */
+  .concept-loop__card {
+    cursor: pointer;
+  }
+  .concept-loop__card:focus-visible {
+    outline: 3px solid var(--cobalt);
+    outline-offset: 2px;
+  }
+  /* the engine's old big round button → tiny corner bars/triangle */
+  .concept-loop .concept-loop__card .concept-loop__toggle {
+    inset-inline-start: auto;
+    inset-inline-end: 10px;
+    top: 8px;
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    opacity: 0.65;
+  }
+  .concept-loop .concept-loop__card .concept-loop__toggle svg {
+    width: 14px;
+    height: 14px;
+  }
+  .concept-loop__card:hover .concept-loop__toggle,
+  .concept-loop__card:focus-visible .concept-loop__toggle {
+    opacity: 1;
+  }
+  /* static frame (reduced-motion / a11y menu): no pause affordance */
+  @media (prefers-reduced-motion: reduce) {
+    .concept-loop__card {
+      cursor: default;
+    }
+    .concept-loop .concept-loop__card .concept-loop__toggle {
+      display: none;
+    }
+  }
+  :global(html.noam-a11y-motion) .concept-loop .concept-loop__card .concept-loop__toggle {
+    display: none;
+  }
+  :global(html.noam-a11y-motion) .concept-loop__card {
+    cursor: default;
+  }
+</style>
+
