@@ -1,0 +1,112 @@
+---
+/**
+ * POC motion system (branch poc-animations-fix) — scroll reveal for
+ * below-the-fold content + hover re-draw for the line art.
+ * Rendered by BaseLayout right after <slot />. Inline on purpose: no
+ * extra request, runs on every full page load (MPA).
+ */
+---
+
+<script is:inline>
+  (function () {
+    'use strict';
+    var REVEAL_SEL = [
+      '.card',
+      '.home-grade',
+      '.home-value',
+      '.home-whatsapp',
+      '.home-learning',
+      '.grade-hub__topic-list a',
+      '.grade-hub__faq-item',
+      '.topic-page__section',
+      '.topic-page__faq-item',
+      '.topic-page__figure',
+      '.blog-archive__card',
+      '.blog-post__figure',
+      '.blog-post__faq-item',
+      '.blog-post__recent-item',
+      '.site-page__figure',
+    ].join(',');
+
+    function motionAllowed() {
+      return (
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        !document.documentElement.classList.contains('noam-a11y-motion')
+      );
+    }
+
+    function setup() {
+      if (!motionAllowed()) return; // content stays fully visible, static
+      var vh = window.innerHeight;
+      var pending = [];
+      Array.prototype.forEach.call(
+        document.querySelectorAll(REVEAL_SEL),
+        function (el) {
+          var r = el.getBoundingClientRect();
+          if (r.height === 0) return;
+          // Never hide anything in (or near) the first viewport: LCP/CLS safe.
+          if (r.top < vh * 0.92) return;
+          el.classList.add('poc-reveal');
+          pending.push(el);
+        }
+      );
+      // Gentle stagger among revealed siblings.
+      pending.forEach(function (el) {
+        var sibs = el.parentElement
+          ? Array.prototype.filter.call(el.parentElement.children, function (c) {
+              return c.classList && c.classList.contains('poc-reveal');
+            })
+          : [el];
+        var i = sibs.indexOf(el);
+        el.style.setProperty('--reveal-delay', Math.min(Math.max(i, 0), 5) * 70 + 'ms');
+      });
+      if (!pending.length) return;
+      if (!('IntersectionObserver' in window)) {
+        pending.forEach(function (el) { el.classList.add('is-in'); });
+        return;
+      }
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in');
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.01 }
+      );
+      pending.forEach(function (el) { io.observe(el); });
+    }
+
+    if (document.readyState === 'loading')
+      document.addEventListener('DOMContentLoaded', setup, { once: true });
+    else setup();
+
+    // Hover re-draw — like the live site's hover-triggered SMIL. Restart the
+    // draw-in animation when the pointer enters a line-art strip or the home
+    // hero. Skipped when motion is disabled, and on touch-only devices
+    // (where a tap fires mouseover and would re-draw unexpectedly).
+    function retriggerDraw(container) {
+      Array.prototype.forEach.call(
+        container.querySelectorAll('.hero-draw'),
+        function (p) {
+          p.style.animation = 'none';
+          void p.getBoundingClientRect();
+          p.style.animation = '';
+        }
+      );
+    }
+    var fineHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+    document.addEventListener('mouseover', function (e) {
+      if (!motionAllowed() || !fineHover.matches || !e.target.closest) return;
+      var entered =
+        e.target.closest('[data-line-draw]') ||
+        e.target.closest('.home-hero');
+      if (!entered) return;
+      var from = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest('[data-line-draw], .home-hero') : null;
+      if (from === entered) return;
+      retriggerDraw(entered);
+    });
+  })();
+</script>

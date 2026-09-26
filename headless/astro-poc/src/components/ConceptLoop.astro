@@ -1,0 +1,749 @@
+---
+/**
+ * KIMI-LOOPS-K3 — Brilliant-style self-playing math film loops.
+ *
+ * Three variants, each explains ONE idea in a 9–11 s seamless loop:
+ *   triangle    (grade 7) — same base & height → same area; S = a·h/2 = 12
+ *   pythagoras  (grade 8) — squares on 3-4-5 legs; 9 + 16 tiles fill c² = 25
+ *   area-model  (grade 9) — (x+3)(x+2) area model → x² + 5x + 6
+ *
+ * Behaviour (driven by ../lib/conceptLoops.ts):
+ *   - plays only while in view (IntersectionObserver), pauses off-screen
+ *     and resumes from the same point; stops on the completed state after
+ *     4 laps; small pause/play toggle; prefers-reduced-motion and
+ *     html.noam-a11y-motion show the completed state as a static frame.
+ *
+ * Markup below is the REST state of each loop (what render(0) produces),
+ * so the card is meaningful before/without JS. Transient pieces start at
+ * opacity 0 and are driven per-frame by the engine.
+ */
+export interface Props {
+  variant:
+    | 'triangle'
+    | 'pythagoras'
+    | 'area-model'
+    | 'sticks'
+    | 'numberline'
+    | 'tenframes'
+    | 'balance'
+    | 'pattern'
+    | 'bars';
+}
+const { variant } = Astro.props;
+
+const ariaLabels: Record<string, string> = {
+  triangle:
+    'הדגמה: מלבן 6×4 שווה 24; אלכסון מראה שהמשולש הוא חצי ממנו — S = a·h/2 = 12. הקודקוד מחליק על קו מקביל לבסיס, והשטח נשאר 12.',
+  pythagoras:
+    'הדגמה: משולש ישר-זווית 3-4-5. הריבועונים של a² ושל b² עוברים וממלאים את הריבוע של c². c = 5.',
+  'area-model':
+    'הדגמה: מלבן (x+3) על (x+2) מתחלק לארבעה תאים: x² ועוד 2x ועוד 3x ועוד 6, ומתאחד ל־x² + 5x + 6.',
+  sticks:
+    'הדגמה: 34 מקלות נאספים לשלוש אגודות של עשר ועוד ארבעה בודדים — 34 = 30 + 4.',
+  numberline:
+    'הדגמה: 47 ו־52 על ישר המספרים. 47 קטן מ־52, ו־47 מעוגל ל־50 כי הוא רחוק 3 מ־50 ו־7 מ־40.',
+  tenframes:
+    'הדגמה: במסגרת העשר, 7 ועוד 5 — שלושה משלימים לעשר ושניים נשארים: 7 + 5 = 12.',
+  balance:
+    'הדגמה: מאזניים עם 3 + □ מול 8. מורידים 3 משני הצדדים, המאזניים מתייצבים, ו־□ = 5.',
+  pattern:
+    'הדגמה: תבנית הריבועים 2, 5, 8, 11 גדלה ב־3 בכל שלב. השלב החמישי הוא 14.',
+  bars:
+    'הדגמה: מודל פסים — פס של 12 לדנה, פס של 12 ועוד 5 לרון, ויחד 12 + 17 = 29.',
+};
+
+/* fixed top-strip problem text per variant (families F01–F06 layout);
+   formula-like strips are rendered LTR */
+const topTexts: Record<string, { text: string; ltr?: boolean }> = {
+  sticks: { text: 'כמה מקלות?' },
+  tenframes: { text: '7 + 5 = ?', ltr: true },
+  balance: { text: '3 + □ = 8', ltr: true },
+  pattern: { text: 'מה מספר הריבועים בשלב 5?' },
+  bars: { text: 'לדנה 12 מדבקות. לרון 5 מדבקות יותר מלדנה. כמה מדבקות יש להם יחד?' },
+};
+const top = topTexts[variant];
+
+/* ——— Pythagoras tile geometry (viewBox units). The engine reads the
+   data-home-* / data-target-* attributes — single source of truth. ——— */
+const ROT_C = 36.87; // degrees: the c-square is rotated by atan(3/4)
+const A0 = { x: 280, y: 192 }; // top of a-leg / c-square origin corner
+const uv = { x: 20.8, y: 15.6 }; // c-square cell step along the hypotenuse
+const nv = { x: 15.6, y: -20.8 }; // c-square cell step along the outward normal
+const cCell = (i: number, j: number) => ({
+  x: A0.x + uv.x * (i + 0.5) + nv.x * (j + 0.5),
+  y: A0.y + uv.y * (i + 0.5) + nv.y * (j + 0.5),
+});
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const blueCells = [...[0, 1, 2, 3, 4].map((i) => ({ i, j: 0 })), ...[0, 1, 2, 3].map((i) => ({ i, j: 1 }))];
+const purpCells = [
+  { i: 4, j: 1 },
+  ...[0, 1, 2, 3, 4].map((i) => ({ i, j: 2 })),
+  ...[0, 1, 2, 3, 4].map((i) => ({ i, j: 3 })),
+  ...[0, 1, 2, 3, 4].map((i) => ({ i, j: 4 })),
+];
+const tilesA = blueCells.map((c, k) => ({
+  home: { x: 215 + 26 * (k % 3), y: 205 + 26 * Math.floor(k / 3) },
+  target: cCell(c.i, c.j),
+}));
+const tilesB = purpCells.map((c, k) => ({
+  home: { x: 293 + 26 * (k % 4), y: 283 + 26 * Math.floor(k / 4) },
+  target: cCell(c.i, c.j),
+}));
+
+/* ——— Area-model mini squares (the "6" cell): 2 cols × 3 rows ——— */
+const minis = [0, 1, 2, 3, 4, 5].map((k) => ({
+  x: 309 + (k % 2) * 36,
+  y: 176 + Math.floor(k / 2) * 38,
+}));
+
+/* ═══════ F01 sticks — 34 sticks: 6×6 grid → 3 bundles of 10 + 4 singles ═══════ */
+const STICK_HOME = (i: number) => ({ x: 340 + (i % 6) * 30 + 10, y: 86 + Math.floor(i / 6) * 38, w: 10, h: 26 });
+const STICK_TARGET = (i: number) =>
+  i < 30
+    ? { x: 62 + (i % 10) * 8, y: 86 + Math.floor(i / 10) * 66, w: 6, h: 36 } // bundles in the tens column
+    : { x: 174 + (i - 30) * 9, y: 86, w: 6, h: 36 }; // singles in the ones column
+const sticks = Array.from({ length: 34 }, (_, i) => ({ home: STICK_HOME(i), target: STICK_TARGET(i) }));
+
+/* ═══════ F02 number line — 0..100, ticks every 10 (4.4 px/unit) ═══════ */
+const NL_X = (v: number) => 60 + v * 4.4;
+const nlTicks = Array.from({ length: 11 }, (_, i) => ({ v: i * 10, x: NL_X(i * 10) }));
+
+/* ═══════ F03 ten frames — two 2×5 frames; 7 blue, 5 purple ═══════ */
+const TF_CELL = (frame: number, cell: number) => ({
+  x: 125 + (cell % 5) * 30,
+  y: (frame === 0 ? 85 : 195) + Math.floor(cell / 5) * 30,
+});
+const tfBlue = Array.from({ length: 7 }, (_, i) => TF_CELL(0, i)); // frame A, row-major LTR
+const tfPurple = Array.from({ length: 5 }, (_, k) => ({
+  home: { x: 340 + k * 34, y: 100 }, // outside row, right of the frames
+  target: k < 3 ? TF_CELL(0, 7 + k) : TF_CELL(1, k - 3), // 3 complete the ten, 2 go to frame B
+}));
+
+/* ═══════ F04 balance — 3 + □ = 8 ═══════ */
+const balCubesL = [0, 1, 2].map((i) => ({ x: 96 + i * 18, y: 174 })); // left pan
+const balCubesR = Array.from({ length: 8 }, (_, i) => ({ x: 382 + (i % 4) * 18, y: 174 - Math.floor(i / 4) * 18 }));
+const BAL_RISE_R = [4, 5, 6]; // top-row cubes that lift off the right pan
+const balBoxMinis = Array.from({ length: 5 }, (_, i) => ({ x: 154 + (i % 3) * 11, y: 178 - Math.floor(i / 3) * 11 }));
+
+/* ═══════ F05 pattern — stage n: column of 2 + (n−1) columns of 3, LTR ═══════ */
+const PAT_SQ = 14;
+const patStageX = (k: number) => 50 + (k - 1) * 100;
+const patSquares = (k: number) => {
+  const out: { x: number; y: number }[] = [];
+  const x0 = patStageX(k);
+  for (let r = 0; r < 2; r++) out.push({ x: x0, y: 204 - 16 * r }); // the pair
+  for (let c = 1; c < k; c++) for (let r = 0; r < 3; r++) out.push({ x: x0 + 16 * c, y: 204 - 16 * r });
+  return out;
+};
+const patStages = [1, 2, 3, 4].map((k) => ({
+  k,
+  squares: patSquares(k),
+  cx: patStageX(k) + (16 * k - 2) / 2, // centre of the stage, for the number row
+}));
+const pat5copy = patSquares(4); // slides +100px into the dashed stage-5 slot
+const pat5new = [0, 1, 2].map((r) => ({ x: 514, y: 204 - 16 * r })); // new orange column
+
+/* ═══════ F06 bars — unit 16px; bars anchored at the right edge x=460 ═══════ */
+const BAR_R = 460;
+---
+
+<div class="concept-loop" data-loop={variant}>
+  <div class="concept-loop__card">
+    <button
+      type="button"
+      class="concept-loop__toggle"
+      data-el="toggle"
+      aria-label="השהיית ההדגמה"
+    >
+      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <g data-el="ic-pause">
+          <rect x="3" y="2.5" width="3.4" height="11" rx="1.2"></rect>
+          <rect x="9.6" y="2.5" width="3.4" height="11" rx="1.2"></rect>
+        </g>
+        <path data-el="ic-play" d="M4 2.2 L13.4 8 L4 13.8 Z" style="display:none"></path>
+      </svg>
+    </button>
+
+    {
+      /* families F01–F06: fixed problem strip that never moves */
+      top && (
+        <p class="concept-loop__top" dir={top.ltr ? 'ltr' : undefined}>
+          {top.text}
+        </p>
+      )
+    }
+    {
+      /* numberline: the question matches the current phase (B1-FIXES) */
+      variant === 'numberline' && (
+        <p class="concept-loop__top cl-topswap">
+          <span class="cl-topsz" aria-hidden="true">לאן מעגלים את 47?</span>
+          <span class="cl-tops" data-el="topa">מי גדול יותר?</span>
+          <span class="cl-tops" data-el="topb">לאן מעגלים את 47?</span>
+        </p>
+      )
+    }
+
+    {
+      variant === 'triangle' && (
+        <svg
+          class="concept-loop__svg"
+          viewBox="0 0 560 330"
+          role="img"
+          aria-label={ariaLabels[variant]}
+        >
+          {/* persistent rest state: frame + rail + base + height + labels */}
+          <rect data-el="frame" class="cl-frame" x="132" y="78" width="276" height="184" rx="4" />
+          {/* the dashed parallel line the apex slides on (wider than the base) */}
+          <line data-el="rail" class="cl-rail" x1="72" y1="78" x2="468" y2="78" />
+          {/* faint base-line extension — appears only during the slide */}
+          <line data-el="basext" class="cl-rail" x1="72" y1="262" x2="468" y2="262" />
+          <line data-el="base" class="cl-line" x1="132" y1="262" x2="408" y2="262" />
+          <text data-el="lbl-a" class="cl-t cl-num" x="270" y="285" text-anchor="middle">
+            a = 6
+          </text>
+          <line data-el="height" class="cl-dash" x1="408" y1="262" x2="408" y2="78" />
+          <text data-el="lbl-h" class="cl-t cl-num" x="420" y="172">
+            h = 4
+          </text>
+
+          {/* the half-story: "6·4 = 24", then a diagonal cuts the rectangle */}
+          <text data-el="lbl24" class="cl-t cl-num cl-big" x="195" y="135" text-anchor="middle">
+            6·4 = 24
+          </text>
+          <line data-el="diag" class="cl-line" x1="132" y1="262" x2="408" y2="78" pathLength="1" />
+
+          {/* one triangle: starts as the right half of the rectangle
+              (apex at the top-right corner), then shears along the rail */}
+          <path data-el="tri-fill" class="cl-fill-a" d="M132 262 L408 262 L408 78 Z" />
+          <line data-el="tri-line-l" class="cl-line cl-stroke-a" x1="132" y1="262" x2="408" y2="78" pathLength="1" />
+          <line data-el="tri-line-r" class="cl-line cl-stroke-a" x1="408" y1="262" x2="408" y2="78" pathLength="1" />
+          <circle data-el="apex-dot" class="cl-apex" cx="408" cy="78" r="6" />
+        </svg>
+      )
+    }
+
+    {
+      variant === 'pythagoras' && (
+        <svg
+          class="concept-loop__svg"
+          viewBox="0 0 560 400"
+          role="img"
+          aria-label={ariaLabels[variant]}
+        >
+          {/* persistent: the bare right triangle + right-angle mark + leg labels */}
+          <path data-el="tri" class="cl-line" d="M280 270 L280 192 L384 270 Z" pathLength="1" />
+          <path data-el="ra" class="cl-line-thin" d="M280 256 L294 256 L294 270" />
+          <text data-el="lbl-a" class="cl-t cl-num" x="192" y="236" text-anchor="end">
+            a = 3
+          </text>
+          <text data-el="lbl-b" class="cl-t cl-num" x="332" y="394" text-anchor="middle">
+            b = 4
+          </text>
+
+          {/* squares on the sides */}
+          <rect data-el="sq-a" class="cl-line cl-stroke-a" x="202" y="192" width="78" height="78" pathLength="1" />
+          <rect data-el="sq-b" class="cl-line cl-stroke-b" x="280" y="270" width="104" height="104" pathLength="1" />
+          <path data-el="sq-c" class="cl-dash-strong" d="M280 192 L384 270 L462 166 L358 88 Z" pathLength="1" />
+          <text data-el="lbl-c" class="cl-t cl-num" x="470" y="172">
+            c = ?
+          </text>
+
+          {/* 9 blue tiles (a²) then 16 purple tiles (b²) */}
+          <g data-el="tiles-a">
+            {tilesA.map((t) => (
+              <rect
+                class="cl-tile cl-tile-a"
+                x="-11"
+                y="-11"
+                width="22"
+                height="22"
+                rx="3"
+                data-home={`${t.home.x},${t.home.y}`}
+                data-target={`${r2(t.target.x)},${r2(t.target.y)}`}
+                data-rot={String(ROT_C)}
+                transform={`translate(${t.home.x} ${t.home.y})`}
+              />
+            ))}
+          </g>
+          <g data-el="tiles-b">
+            {tilesB.map((t) => (
+              <rect
+                class="cl-tile cl-tile-b"
+                x="-11"
+                y="-11"
+                width="22"
+                height="22"
+                rx="3"
+                data-home={`${t.home.x},${t.home.y}`}
+                data-target={`${r2(t.target.x)},${r2(t.target.y)}`}
+                data-rot={String(ROT_C)}
+                transform={`translate(${t.home.x} ${t.home.y})`}
+              />
+            ))}
+          </g>
+        </svg>
+      )
+    }
+
+    {
+      variant === 'area-model' && (
+        <svg
+          class="concept-loop__svg"
+          viewBox="0 0 560 340"
+          role="img"
+          aria-label={ariaLabels[variant]}
+        >
+          {/* persistent: outer rectangle + edge labels */}
+          <rect data-el="rect" class="cl-line" x="194" y="60" width="186" height="224" pathLength="1" />
+          <text data-el="ex1" class="cl-t cl-num" x="249" y="48" text-anchor="middle">
+            x
+          </text>
+          <text data-el="ex2" class="cl-t cl-num" x="342" y="48" text-anchor="middle">
+            2
+          </text>
+          <text data-el="ey1" class="cl-t cl-num" x="180" y="120" text-anchor="end">
+            x
+          </text>
+          <text data-el="ey2" class="cl-t cl-num" x="180" y="232" text-anchor="end">
+            3
+          </text>
+
+          {/* split lines */}
+          <line data-el="split-v" class="cl-line" x1="304" y1="60" x2="304" y2="284" pathLength="1" />
+          <line data-el="split-h" class="cl-line" x1="194" y1="170" x2="380" y2="170" pathLength="1" />
+
+          {/* cells */}
+          <rect data-el="cell-x2" class="cl-fill-a" x="194" y="60" width="110" height="110" />
+          <rect data-el="cell-2x" class="cl-fill-b" x="304" y="60" width="76" height="110" />
+          <rect data-el="cell-3x" class="cl-fill-c" x="194" y="170" width="110" height="114" />
+          <rect data-el="cell-6" class="cl-fill-d" x="304" y="170" width="76" height="114" />
+          <g data-el="minis">
+            {minis.map((m) => (
+              <rect class="cl-mini" x={m.x} y={m.y} width="31" height="32" rx="3" />
+            ))}
+          </g>
+
+          {/* cell term labels */}
+          <text data-el="term-x2" class="cl-t cl-term cl-num cl-tc-a" x="249" y="122" text-anchor="middle">
+            x²
+          </text>
+          <text data-el="term-2x" class="cl-t cl-term cl-num cl-tc-b" x="342" y="122" text-anchor="middle">
+            2x
+          </text>
+          <text data-el="term-3x" class="cl-t cl-term cl-num cl-tc-c" x="249" y="234" text-anchor="middle">
+            3x
+          </text>
+          <text data-el="term-6" class="cl-t cl-term cl-num cl-tc-d" x="342" y="234" text-anchor="middle">
+            6
+          </text>
+
+          {/* merge: 2x + 3x → 5x */}
+          <rect data-el="hl-2x" class="cl-hl cl-hl-b" x="306" y="62" width="72" height="106" rx="6" />
+          <rect data-el="hl-3x" class="cl-hl cl-hl-c" x="196" y="172" width="106" height="110" rx="6" />
+          <rect data-el="chip-5x" class="cl-chip" x="268" y="159" width="54" height="36" rx="9" />
+          <text data-el="term-5x" class="cl-t cl-term cl-num cl-tc-ok" x="295" y="183" text-anchor="middle">
+            5x
+          </text>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F01 — sticks: 34 = 30 + 4 ═══════ */
+      variant === 'sticks' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {/* place-value table: tens column LEFT, ones RIGHT (digit order) */}
+          <text class="cl-t" x="101" y="52" text-anchor="middle">עשרות</text>
+          <text class="cl-t" x="211" y="52" text-anchor="middle">יחידות</text>
+          <rect class="cl-col" x="56" y="64" width="90" height="226" rx="8" />
+          <rect class="cl-col" x="166" y="64" width="90" height="226" rx="8" />
+
+          {/* 34 sticks: home = 6×6 grid (2 cells stay empty), target = bundle / ones */}
+          {sticks.map((s, i) => (
+            <rect
+              class="cl-stick"
+              data-stick={i}
+              x={s.home.x}
+              y={s.home.y}
+              width={s.home.w}
+              height={s.home.h}
+              rx="3"
+              data-h={`${s.home.x},${s.home.y},${s.home.w},${s.home.h}`}
+              data-t={`${s.target.x},${s.target.y},${s.target.w},${s.target.h}`}
+            />
+          ))}
+
+          {/* rubber bands around the three bundles */}
+          {[0, 1, 2].map((k) => (
+            <rect class="cl-band" data-el={`band-${k}`} x="58" y={80 + k * 66} width="86" height="48" rx="10" />
+          ))}
+
+          {/* running totals beside each bundle */}
+          {[0, 1, 2].map((k) => (
+            <text class="cl-t cl-num" data-el={`blbl-${k}`} x="152" y={112 + k * 66}>
+              {(k + 1) * 10}
+            </text>
+          ))}
+
+          {/* the digits of 34 under the columns */}
+          <text class="cl-t cl-num cl-digit" data-el="digit-3" x="101" y="322" text-anchor="middle">3</text>
+          <text class="cl-t cl-num cl-digit" data-el="digit-4" x="211" y="322" text-anchor="middle">4</text>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F02 — number line: 47 < 52, 47 ≈ 50 ═══════ */
+      variant === 'numberline' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={ariaLabels[variant]}>
+          <line class="cl-line" x1="60" y1="150" x2="500" y2="150" />
+          {nlTicks.map((tk) => (
+            <>
+              <line class="cl-line-thin" x1={tk.x} y1="144" x2={tk.x} y2="156" />
+              <text class="cl-t cl-num cl-small" x={tk.x} y="176" text-anchor="middle">
+                {tk.v}
+              </text>
+            </>
+          ))}
+          <line data-el="tick47" class="cl-line-thin" x1={NL_X(47)} y1="142" x2={NL_X(47)} y2="158" />
+
+          {/* distance arcs below the line: 47→40 is 7, 47→50 is 3 */}
+          <path data-el="arc40" class="cl-arc" d={`M${NL_X(47)} 158 Q ${(NL_X(47) + NL_X(40)) / 2} 210, ${NL_X(40)} 158`} />
+          <path data-el="arc50" class="cl-arc" d={`M${NL_X(47)} 158 Q ${(NL_X(47) + NL_X(50)) / 2} 186, ${NL_X(50)} 158`} />
+          <text data-el="d40" class="cl-t cl-num" x={(NL_X(47) + NL_X(40)) / 2 - 2} y="202" text-anchor="middle">7</text>
+          <text data-el="d50" class="cl-t cl-num" x={(NL_X(47) + NL_X(50)) / 2} y="198" text-anchor="middle">3</text>
+
+          {/* comparison arrow 47 → 52 above the labels */}
+          <g data-el="arrow">
+            <line class="cl-arc" x1={NL_X(47)} y1="106" x2={NL_X(52)} y2="106" />
+            <path class="cl-arc-fill" d={`M${NL_X(52)} 106 l -8 -4 l 0 8 Z`} />
+          </g>
+
+          <text data-el="lbl47" class="cl-t cl-num" x={NL_X(47)} y="126" text-anchor="middle">47</text>
+          <text data-el="lbl52" class="cl-t cl-num" x={NL_X(52)} y="126" text-anchor="middle">52</text>
+          <circle data-el="pt47" class="cl-pt cl-pt-a" cx={NL_X(47)} cy="150" r="8" />
+          <circle data-el="pt52" class="cl-pt cl-pt-b" cx={NL_X(52)} cy="150" r="8" />
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F03 — ten frames: 7 + 5 = 12 ═══════ */
+      variant === 'tenframes' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {[0, 1].map((f) => (
+            <>
+              <rect class="cl-frame2" x="110" y={70 + f * 110} width="150" height="60" rx="4" />
+              {[1, 2, 3, 4].map((c) => (
+                <line class="cl-grid" x1={110 + c * 30} y1={70 + f * 110} x2={110 + c * 30} y2={130 + f * 110} />
+              ))}
+              <line class="cl-grid" x1="110" y1={100 + f * 110} x2="260" y2={100 + f * 110} />
+            </>
+          ))}
+
+          {/* 7 blue counters fill frame A (top row LTR, then 2 below) */}
+          {tfBlue.map((c, i) => (
+            <circle class="cl-dot cl-dot-a" data-blue={i} cx={c.x} cy={c.y} r="12" />
+          ))}
+          {/* 5 purple counters: outside row → 3 complete the ten, 2 go to frame B */}
+          {tfPurple.map((p, k) => (
+            <circle
+              class="cl-dot cl-dot-b"
+              data-purp={k}
+              cx={p.home.x}
+              cy={p.home.y}
+              r="12"
+              data-h={`${p.home.x},${p.home.y}`}
+              data-t={`${p.target.x},${p.target.y}`}
+            />
+          ))}
+
+          <text class="cl-t cl-num" data-el="lbl7" x="96" y="110" text-anchor="end">7</text>
+          <text class="cl-t cl-num" data-el="lbl10" x="96" y="110" text-anchor="end">10</text>
+          <text class="cl-t cl-num" data-el="lbl2" x="96" y="220" text-anchor="end">2</text>
+          <text class="cl-t cl-num" data-el="lbl5" x="408" y="76" text-anchor="middle">5</text>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F04 — balance: 3 + □ = 8 ═══════ */
+      variant === 'balance' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {/* stand */}
+          <line class="cl-line" x1="280" y1="150" x2="280" y2="252" />
+          <line class="cl-line" x1="280" y1="252" x2="280" y2="260" />
+          <line class="cl-line" x1="242" y1="260" x2="318" y2="260" />
+
+          {/* beam + pans + contents rotate together around the pivot (280,150) */}
+          <g data-el="beam">
+            <line class="cl-line" x1="140" y1="150" x2="420" y2="150" />
+            <line class="cl-line-thin" x1="140" y1="150" x2="140" y2="190" />
+            <line class="cl-line-thin" x1="420" y1="150" x2="420" y2="190" />
+            <line class="cl-line" x1="92" y1="190" x2="188" y2="190" />
+            <line class="cl-line" x1="372" y1="190" x2="468" y2="190" />
+
+            {/* right pan: 8 cubes; the 3 top-row ones lift off later */}
+            {balCubesR.map((c, i) =>
+              BAL_RISE_R.includes(i) ? null : (
+                <rect class="cl-cube" x={c.x} y={c.y} width="16" height="16" rx="3" />
+              )
+            )}
+            <g data-el="rise-r">
+              {BAL_RISE_R.map((i) => (
+                <rect class="cl-cube" x={balCubesR[i].x} y={balCubesR[i].y} width="16" height="16" rx="3" />
+              ))}
+            </g>
+            <g data-el="olr">
+              {BAL_RISE_R.map((i) => (
+                <rect class="cl-ol" x={balCubesR[i].x - 2} y={balCubesR[i].y - 2} width="20" height="20" rx="5" />
+              ))}
+            </g>
+
+            {/* left pan: the unknown box (5 cubes inside) + 3 cubes that lift */}
+            <g data-el="box-g">
+              {balBoxMinis.map((m) => (
+                <rect class="cl-mini2" data-mini2 x={m.x} y={m.y} width="10" height="10" rx="2" />
+              ))}
+              <rect data-el="box" class="cl-box" x="150" y="148" width="38" height="42" rx="5" />
+              <text data-el="boxq" class="cl-t cl-num" x="169" y="173" text-anchor="middle">?</text>
+            </g>
+            <g data-el="rise-l">
+              {balCubesL.map((c) => (
+                <rect class="cl-cube" x={c.x} y={c.y} width="16" height="16" rx="3" />
+              ))}
+            </g>
+            <g data-el="oll">
+              {balCubesL.map((c) => (
+                <rect class="cl-ol" x={c.x - 2} y={c.y - 2} width="20" height="20" rx="5" />
+              ))}
+            </g>
+          </g>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F05 — pattern: 2, 5, 8, 11, ? ═══════ */
+      variant === 'pattern' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={ariaLabels[variant]}>
+          {patStages.map((s) => (
+            <>
+              {s.squares.map((sq) => (
+                <rect class="cl-sq" x={sq.x} y={sq.y} width="14" height="14" rx="2" />
+              ))}
+              <text class="cl-t cl-num" x={s.cx} y="240" text-anchor="middle">
+                {s.squares.length}
+              </text>
+            </>
+          ))}
+
+          {/* orange outline on each stage's added column */}
+          {[2, 3, 4].map((k) => (
+            <rect class="cl-ol2" data-el={`hl${k}`} x={patStageX(k) + 16 * (k - 1) - 2} y="170" width="18" height="52" rx="4" />
+          ))}
+
+          {/* +3 arcs between consecutive counts */}
+          {[1, 2, 3].map((k) => (
+            <>
+              <path
+                class="cl-arc"
+                data-el={`arc${k}`}
+                d={`M${patStages[k - 1].cx} 248 Q ${(patStages[k - 1].cx + patStages[k].cx) / 2} 264, ${patStages[k].cx} 248`}
+              />
+              <text class="cl-t cl-num cl-small" data-el={`arcl${k}`} x={(patStages[k - 1].cx + patStages[k].cx) / 2} y="276" text-anchor="middle">
+                +3
+              </text>
+            </>
+          ))}
+
+          {/* dashed slot for stage 5 */}
+          <rect class="cl-slot" x="446" y="148" width="86" height="78" rx="8" />
+          <text class="cl-t cl-num" data-el="q5" x="489" y="240" text-anchor="middle">?</text>
+          <text class="cl-t cl-num cl-digit2 cl-tc-ok" data-el="n14" x="489" y="240" text-anchor="middle">14</text>
+
+          {/* stage 5: copy of stage 4 slides in, new orange column grows */}
+          <g data-el="s5copy">
+            {pat5copy.map((sq) => (
+              <rect class="cl-sq" x={sq.x} y={sq.y} width="14" height="14" rx="2" />
+            ))}
+          </g>
+          <g data-el="s5new">
+            {pat5new.map((sq) => (
+              <rect class="cl-sq5" x={sq.x} y={sq.y} width="14" height="14" rx="2" />
+            ))}
+          </g>
+        </svg>
+      )
+    }
+
+    {
+      /* ═══════ F06 — bar model: 12 + 17 = 29 ═══════ */
+      variant === 'bars' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {/* names to the right of the bars (reading direction). RTL text:
+              text-anchor="start" pins the RIGHT edge, so the name extends
+              leftward and never clips the svg edge */}
+          <text class="cl-t" x="552" y="119" text-anchor="start">דנה</text>
+          <text class="cl-t" x="552" y="189" text-anchor="start">רון</text>
+
+          {/* Dana's bar grows right→left to 12 units (192px) */}
+          <rect data-el="bar-d" class="cl-bar-a" x="460" y="100" width="0" height="26" rx="4" />
+          {/* Ron's bar: a copy of Dana's slides down, then an orange +5 extension */}
+          <rect data-el="bar-r" class="cl-bar-b" x="268" y="170" width="192" height="26" rx="4" />
+          <rect data-el="bar-ext" class="cl-bar-c" x="268" y="170" width="0" height="26" rx="4" />
+
+          <text class="cl-t cl-num" data-el="ld1" x="364" y="92" text-anchor="middle">12</text>
+          <text class="cl-t cl-num" data-el="lr1" x="364" y="162" text-anchor="middle">12</text>
+          <text class="cl-t cl-num" data-el="l5" x="228" y="162" text-anchor="middle">5</text>
+
+          {/* bracket under Ron's bar: 12 + 5 = 17 */}
+          <path data-el="brk" class="cl-arc" pathLength="1" d="M188 206 L188 214 L460 214 L460 206" />
+          <text class="cl-t cl-num" data-el="lbl17" x="324" y="234" text-anchor="middle">12 + 5 = 17</text>
+
+          {/* vertical bracket joining both bars: the total */}
+          <path data-el="brkv" class="cl-arc" pathLength="1" d="M182 100 L172 100 L172 196 L182 196" />
+          <text class="cl-t cl-num" data-el="q29" x="162" y="155" text-anchor="end">?</text>
+        </svg>
+      )
+    }
+
+    {
+      variant === 'triangle' && (
+        <>
+          <p class="concept-loop__formula" dir="ltr">
+            <span data-fx="0">S = a·h/2</span>
+            <span data-fx="1">= 6·4/2</span>
+            <span data-fx="2">
+              = <b>12</b>
+            </span>
+          </p>
+          <p class="concept-loop__caption" data-el="caption">
+            אותו שטח: <bdi class="cl-ok">12</bdi>
+            <span class="cl-check" data-el="check" aria-hidden="true">✓</span>
+          </p>
+        </>
+      )
+    }
+    {
+      variant === 'pythagoras' && (
+        <>
+          <p class="concept-loop__formula" dir="ltr">
+            <span data-fx="0">c² =</span>
+            <span data-fx="1">9 + 16</span>
+            <span data-fx="2">
+              = <b>25</b>
+            </span>
+          </p>
+          <p class="concept-loop__caption" data-el="caption">
+            ולכן <bdi class="cl-num">c = <b class="cl-ok">5</b></bdi>
+            <span class="cl-check" data-el="check" aria-hidden="true">✓</span>
+          </p>
+        </>
+      )
+    }
+    {
+      variant === 'area-model' && (
+        <>
+          <p class="concept-loop__formula" dir="ltr">
+            <span data-fx="0">(x+3)(x+2)</span>
+            <span data-fx="1" class="cl-tc-a">= x²</span>
+            <span data-fx="2" class="cl-tc-b">+ 2x</span>
+            <span data-fx="3" class="cl-tc-c">+ 3x</span>
+            <span data-fx="4" class="cl-tc-d">+ 6</span>
+            <span data-fx="5" class="cl-final">
+              = x² + <b>5x</b> + 6
+            </span>
+            <span data-fx="6" class="cl-check" aria-hidden="true">
+              ✓
+            </span>
+          </p>
+          <p class="concept-loop__caption cl-num" data-el="caption" dir="ltr">
+            2x + 3x = 5x
+          </p>
+        </>
+      )
+    }
+    {
+      variant === 'sticks' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">
+            <b class="cl-ok">34</b> =
+          </span>
+          <span data-fx="1">30 + 4</span>
+          <span data-fx="2" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'numberline' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">47 &lt; 52</span>
+          <span data-fx="1">
+            47 ≈ <b class="cl-ok">50</b>
+          </span>
+          <span data-fx="2" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'tenframes' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">7 + 5 = 7 + 3 + 2 = 10 + 2</span>
+          <span data-fx="1">
+            = <b class="cl-ok">12</b>
+          </span>
+          <span data-fx="2" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'balance' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">□ = 8 − 3</span>
+          <span data-fx="1">
+            □ = <b class="cl-ok">5</b>
+          </span>
+          <span data-fx="2" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'pattern' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">
+            11 + 3 = <b class="cl-ok">14</b>
+          </span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+    {
+      variant === 'bars' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">
+            12 + 17 = <b class="cl-ok">29</b>
+          </span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">
+            ✓
+          </span>
+        </p>
+      )
+    }
+  </div>
+</div>
+
+<script>
+  import { initConceptLoops } from '../lib/conceptLoops';
+  initConceptLoops();
+</script>

@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroIllustrations from '../components/HeroIllustrations.astro';
-import SiteFooter from '../components/SiteFooter.astro';
+import PlaneFlight from '../components/PlaneFlight.astro';
+import HomeMarginArt from '../components/HomeMarginArt.astro';
+import ConceptLoop from '../components/ConceptLoop.astro';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 
 const home = loadHomePage();
@@ -18,7 +20,9 @@ const homeJsonLd = homePageJsonLd();
       <script type="application/ld+json" set:html={JSON.stringify(block)} />
     ))
   }
+  <HomeMarginArt />
   <main class="home-shell" id="home-main" data-family="home" data-home-page>
+    <PlaneFlight />
     <aside class="home-notice" role="status" data-home-dev-notice>
       <strong>{home.devNotice.title}</strong>
       <p>{home.devNotice.body}</p>
@@ -45,6 +49,9 @@ const homeJsonLd = homePageJsonLd();
           <a class="cta cta--mid" href="/worksheets?grade=7">חטיבה ז׳–ט׳</a>
         </div>
       </div>
+      {/* K3: Brilliant-style film loop — text on the right, card on the left
+          (grid columns in RTL); on mobile it stacks below the copy. */}
+      <ConceptLoop variant="triangle" />
     </section>
 
     <section class="home-grades" aria-labelledby="home-grades-title" data-home-grades>
@@ -123,7 +130,5 @@ const homeJsonLd = homePageJsonLd();
       </div>
       <p class="home-whatsapp__note">{home.whatsapp.note}</p>
     </section>
-
-    <SiteFooter footer={home.footer} />
   </main>
 </BaseLayout>

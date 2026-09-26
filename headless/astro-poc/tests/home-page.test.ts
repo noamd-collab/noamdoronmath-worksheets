@@ -89,8 +89,14 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.ok(index.includes('data-home-learning'));
     assert.ok(index.includes('data-home-values'));
     assert.ok(index.includes('data-home-whatsapp'));
-    assert.ok(index.includes('SiteFooter'));
+    assert.ok(!index.includes('SiteFooter')); // footer moved to BaseLayout (every page)
     assert.ok(!index.includes('href="/privacy"'));
+  });
+
+  it('BaseLayout renders the shared footer exactly once per page', () => {
+    const layout = readFileSync(join(root, 'src', 'layouts', 'BaseLayout.astro'), 'utf8');
+    assert.ok(layout.includes('SiteFooter'));
+    assert.strictEqual(layout.split('<SiteFooter').length - 1, 1);
   });
 
   it('SiteHeader exposes Harmony primary nav destinations', () => {

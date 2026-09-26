@@ -1,5 +1,9 @@
 ---
-/** Original notebook-margin art; decorative only, isolated to the homepage. */
+/** Original notebook-margin art; decorative only, isolated to the homepage.
+    K3: the full-hero .hero-lines overlay was removed — its strokes crossed
+    the title and CTA buttons at several widths (iron rule: nothing paints
+    over text). The corner doodles stay; ≥1100px the concept-loop card is
+    the hero visual. */
 ---
 <div class="notebook-art" aria-hidden="true">
   <span class="notebook-doodle notebook-doodle--left"></span>
@@ -23,30 +27,53 @@
     background-size: 200% 100%;
     background-repeat: no-repeat;
     opacity: .8;
+    /* Gentle idle float (transform only); off under reduced-motion / a11y toggle. */
+    animation: doodle-float 7s ease-in-out infinite;
+    will-change: transform;
   }
   .notebook-doodle--left {
     left: -6px;
     top: 35px;
     background-position: left center;
-    transform: rotate(-7deg);
+    --doodle-rot: -7deg;
+    transform: rotate(var(--doodle-rot));
   }
   .notebook-doodle--right {
     right: -6px;
     top: 75px;
     background-position: right center;
-    transform: rotate(5deg);
+    --doodle-rot: 5deg;
+    transform: rotate(var(--doodle-rot));
+    animation-duration: 8.5s;
+    animation-delay: 1.2s;
   }
+  @keyframes doodle-float {
+    0%, 100% { transform: translateY(0) rotate(var(--doodle-rot, 0deg)); }
+    50% { transform: translateY(-8px) rotate(var(--doodle-rot, 0deg)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .notebook-doodle { animation: none; }
+  }
+  :global(html.noam-a11y-motion) .notebook-doodle {
+    animation: none !important;
+  }
+  /* K3: at ≥1100px the hero is a two-column row (copy + concept-loop card);
+     the margin doodles have no gutter left — the loop card is the visual. */
+  @media (min-width: 1100px) {
+    .notebook-doodle { display: none; }
+  }
+  /* K3 no-overlap: doodles stay INSIDE the hero's top band, small enough
+     to clear the copy (which is pushed down by padding-top) and the
+     notice above the hero. */
   @media (max-width: 1024px) {
-    .notebook-doodle { width: 125px; }
-    .notebook-doodle--left { left: 0; top: -24px; }
-    .notebook-doodle--right { right: 0; top: -18px; }
+    .notebook-doodle { width: 96px; }
+    .notebook-doodle--left { left: 0; top: 0; }
+    .notebook-doodle--right { right: 0; top: 0; }
     :global(.home-hero__copy) { padding-top: 130px; }
   }
   @media (max-width: 480px) {
-    .notebook-doodle { width: 106px; }
-    .notebook-doodle--left { top: -32px; }
-    .notebook-doodle--right { top: -30px; }
-    :global(.home-hero__copy) { padding-top: 108px; }
+    .notebook-doodle { width: 64px; }
+    :global(.home-hero__copy) { padding-top: 96px; }
   }
   @media print {
     .notebook-art { display: none; }

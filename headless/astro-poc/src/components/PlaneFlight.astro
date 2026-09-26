@@ -1,0 +1,166 @@
+---
+/**
+ * PlaneFlight — paper plane gliding along Noam's drawn route (see
+ * ~/Downloads/noam-plane-path.png): enters top-left under the header,
+ * dips behind the dev-notice banner, waves left-to-right across the hero
+ * band, loops once on the right, and rests next to the robot doodle.
+ *
+ * Hard rules honored:
+ * - BACKGROUND layer: z-index below all content, pointer-events none.
+ *   Text/banner/cards/buttons always paint on top and stay readable.
+ * - The path is computed at runtime from the actual layout (banner rect,
+ *   hero rect), so it scales to any viewport without distortion.
+ * - Calm: ~15s flight, ease in/out, then rest at the end spot. Once per
+ *   browser session. rAF-driven (auto-pauses when the tab is hidden).
+ * - Reduced motion / a11y motion-off: plane sits statically at its end
+ *   spot, no trail, no flight.
+ * - Mobile (<768px): shorter simplified path, smaller plane, still behind.
+ */
+---
+
+<div class="plane-layer" aria-hidden="true">
+  <svg class="plane-svg" preserveAspectRatio="none">
+    <path class="plane-trail" fill="none" />
+    <g class="plane-icon">
+      <path d="M0 -7 L20 0 L0 7 L4 0 Z" fill="var(--cobalt)" stroke="var(--cobalt-dark)" stroke-width="1" stroke-linejoin="round" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .plane-layer {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 720px;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .plane-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .plane-trail {
+    stroke: var(--cobalt);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    opacity: 0.55;
+  }
+  @media (max-width: 767px) {
+    .plane-layer { height: 640px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plane-trail { display: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var layer = document.querySelector('.plane-layer');
+    if (!layer) return;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var svg = layer.querySelector('.plane-svg');
+    var trail = layer.querySelector('.plane-trail');
+    var icon = layer.querySelector('.plane-icon');
+    var layerRect = layer.getBoundingClientRect();
+    var W = layerRect.width;
+    var H = layerRect.height;
+    var mobile = W < 768;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+    var notice = document.querySelector('.home-notice');
+    var hero = document.querySelector('.home-hero');
+    var nR = notice ? notice.getBoundingClientRect() : null;
+    var hR = hero ? hero.getBoundingClientRect() : null;
+
+    // End spot: next to the robot doodle on the right of the hero.
+    var endX = hR ? Math.min(W - 30, hR.right - layerRect.left - (mobile ? 60 : 150)) : W - 150;
+    var endY = hR ? hR.top - layerRect.top + (mobile ? 60 : 105) : 320;
+
+    function pt(x, y) { return [Math.round(x), Math.round(y)]; }
+    var d;
+    if (!mobile) {
+      var bandY = nR ? nR.bottom - layerRect.top + 46 : 250;   // wave band under the banner
+      var loopX = W * 0.76, loopY = bandY + 6, loopR = Math.min(38, W * 0.035);
+      d =
+        'M ' + pt(W * 0.10, -30) +
+        ' C ' + pt(W * 0.05, 60) + ' ' + pt(W * 0.13, (nR ? nR.top - layerRect.top - 30 : 120)) + ' ' + pt(W * 0.16, (nR ? nR.top - layerRect.top + 20 : 170)) +
+        // dip behind the banner and emerge under its left third
+        ' S ' + pt(W * 0.22, (nR ? nR.bottom - layerRect.top + 14 : 240)) + ' ' + pt(W * 0.28, bandY) +
+        // gentle wave across the page
+        ' C ' + pt(W * 0.36, bandY + 34) + ' ' + pt(W * 0.42, bandY - 26) + ' ' + pt(W * 0.50, bandY + 10) +
+        ' S ' + pt(W * 0.62, bandY + 36) + ' ' + pt(W * 0.68, bandY + 4) +
+        // small loop on the right
+        ' C ' + pt(loopX - loopR * 1.4, loopY - loopR) + ' ' + pt(loopX - loopR * 0.2, loopY - loopR * 1.5) + ' ' + pt(loopX, loopY - loopR) +
+        ' C ' + pt(loopX + loopR * 1.3, loopY - loopR) + ' ' + pt(loopX + loopR * 1.5, loopY + loopR * 0.7) + ' ' + pt(loopX + loopR * 0.3, loopY + loopR) +
+        ' C ' + pt(loopX - loopR * 0.6, loopY + loopR * 1.4) + ' ' + pt(loopX - loopR, loopY + loopR * 0.2) + ' ' + pt(loopX - loopR * 0.9, loopY - loopR * 0.2) +
+        // glide to the end spot
+        ' S ' + pt(endX - 40, endY - 60) + ' ' + pt(endX, endY);
+    } else {
+      var mBand = nR ? nR.bottom - layerRect.top + 34 : 220;
+      d =
+        'M ' + pt(W * 0.08, -24) +
+        ' C ' + pt(W * 0.02, 60) + ' ' + pt(W * 0.20, mBand - 40) + ' ' + pt(W * 0.30, mBand) +
+        ' S ' + pt(W * 0.62, mBand + 30) + ' ' + pt(W * 0.78, mBand - 6) +
+        ' S ' + pt(endX - 30, endY - 40) + ' ' + pt(endX, endY);
+    }
+    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    var len = 0;
+    try { len = path.getTotalLength(); } catch (e) { return; }
+    var scale = mobile ? 0.62 : 1;
+
+    function place(p, tangent) {
+      var deg = (Math.atan2(tangent.y, tangent.x) * 180) / Math.PI;
+      icon.setAttribute('transform', 'translate(' + p.x + ' ' + p.y + ') rotate(' + deg + ') scale(' + scale + ')');
+    }
+    function pointAt(t) {
+      var p = path.getPointAtLength(len * t);
+      var p2 = path.getPointAtLength(Math.min(len, len * t + 2));
+      return { p: p, tangent: { x: p2.x - p.x, y: p2.y - p.y } };
+    }
+
+    if (reduced || document.documentElement.classList.contains('noam-a11y-motion')) {
+      var end = pointAt(1);
+      place(end.p, end.tangent);
+      trail.style.display = 'none';
+      return;
+    }
+    if (sessionStorage.getItem('plane-flown-v1')) {
+      var e2 = pointAt(1);
+      place(e2.p, e2.tangent);
+      trail.style.display = 'none';
+      return;
+    }
+
+    trail.setAttribute('d', d);
+    var DURATION = 15000;
+    var start = null;
+    function ease(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+    function frame(ts) {
+      if (start === null) start = ts + 700; // small settle-in delay
+      var t = Math.min(1, Math.max(0, (ts - start) / DURATION));
+      var s = pointAt(ease(t));
+      place(s.p, s.tangent);
+      // trail reveals ahead of the plane, then fades after landing
+      var reveal = Math.max(0, Math.min(1, ease(t) * 1.04));
+      trail.style.strokeDasharray = '14 12';
+      trail.style.strokeDashoffset = String(len * (1 - reveal));
+      if (t >= 1) {
+        try { sessionStorage.setItem('plane-flown-v1', '1'); } catch (e) {}
+        var fade = 0;
+        var fadeStart = ts;
+        (function fadeOut(now) {
+          fade = Math.min(1, (now - fadeStart) / 1600);
+          trail.style.opacity = String(0.55 * (1 - fade));
+          if (fade < 1) requestAnimationFrame(fadeOut);
+        })(ts);
+        return;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+</script>

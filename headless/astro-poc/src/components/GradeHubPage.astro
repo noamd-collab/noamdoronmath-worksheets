@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LineArtDoodles from './LineArtDoodles.astro';
+import ConceptLoop from './ConceptLoop.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import {
   loadGradeHub,
@@ -44,6 +46,30 @@ const faqJsonLd = hasFaq
       })),
     }
   : null;
+/* K3 + FAMILIES-B1: one Brilliant-style film loop per grade hub, beside the
+   header text (text right, card left; stacks below the text on mobile).
+   א׳=F03 tenframes, ב׳=F01 sticks, ג׳=F06 bars, ד׳=F02 numberline,
+   ה׳=F04 balance, ו׳=F05 pattern; ז׳–ט׳ keep the K3 loops. */
+const loopVariant =
+  grade === 7
+    ? 'triangle'
+    : grade === 8
+      ? 'pythagoras'
+      : grade === 9
+        ? 'area-model'
+        : grade === 1
+          ? 'tenframes'
+          : grade === 2
+            ? 'sticks'
+            : grade === 3
+              ? 'bars'
+              : grade === 4
+                ? 'numberline'
+                : grade === 5
+                  ? 'balance'
+                  : grade === 6
+                    ? 'pattern'
+                    : null;
 ---
 <BaseLayout
   title={hub.title}
@@ -67,31 +93,37 @@ const faqJsonLd = hasFaq
       }
     </nav>
 
-    <header class="grade-hub__header banner">
-      <h1>{hub.h1}</h1>
-      {hub.lead && <p class="grade-hub__lead">{hub.lead}</p>}
-      {
-        hub.lead && hub.catalogCta && (
-          <p class="grade-hub__cta-wrap">
-            <a class="cta cta--mid grade-hub__cta" href={hub.catalogCta.href}>
-              {hub.catalogCta.label}
-            </a>
-          </p>
-        )
-      }
-      {
-        !hub.lead && !introIsCta && <p class="grade-hub__intro">{hub.intro}</p>
-      }
-      {
-        !hub.lead && hub.catalogCta && (
-          <p class="grade-hub__cta-wrap">
-            <a class="cta cta--mid grade-hub__cta" href={hub.catalogCta.href}>
-              {hub.catalogCta.label}
-            </a>
-          </p>
-        )
-      }
+    <header
+      class:list={['grade-hub__header', 'banner', loopVariant && 'grade-hub__header--loop']}
+    >
+      <div class="grade-hub__header-main">
+        <h1>{hub.h1}</h1>
+        {hub.lead && <p class="grade-hub__lead">{hub.lead}</p>}
+        {
+          hub.lead && hub.catalogCta && (
+            <p class="grade-hub__cta-wrap">
+              <a class="cta cta--mid grade-hub__cta" href={hub.catalogCta.href}>
+                {hub.catalogCta.label}
+              </a>
+            </p>
+          )
+        }
+        {
+          !hub.lead && !introIsCta && <p class="grade-hub__intro">{hub.intro}</p>
+        }
+        {
+          !hub.lead && hub.catalogCta && (
+            <p class="grade-hub__cta-wrap">
+              <a class="cta cta--mid grade-hub__cta" href={hub.catalogCta.href}>
+                {hub.catalogCta.label}
+              </a>
+            </p>
+          )
+        }
+      </div>
+      {loopVariant && <ConceptLoop variant={loopVariant} />}
     </header>
+    <LineArtDoodles variant="hub" />
 
     {
       grade1Groups.length > 0 && (

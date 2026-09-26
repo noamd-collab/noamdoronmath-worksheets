@@ -2,6 +2,9 @@
 import '../styles/catalog.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteDoodles from '../components/SiteDoodles.astro';
+import PocMotion from '../components/PocMotion.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { loadHomePage } from '../lib/homePage';
 import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
 
 interface Props {
@@ -22,6 +25,7 @@ const {
   skipHref = '#topic-list',
 } = Astro.props;
 
+const { footer } = loadHomePage();
 const resolvedNav: ActiveNavKey | null =
   activeNav !== undefined ? activeNav : resolveActiveNav(Astro.url.pathname);
 const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
@@ -37,6 +41,11 @@ const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
     {ogImage && <meta property="og:image" content={ogImage} />}
     {ogImage && <meta property="og:title" content={title} />}
     {ogImage && <meta property="og:description" content={description} />}
+    {/* Wix-documented slot for item-page SEO (<SEO.Tags slot="seo-tags">).
+        Empty for main pages — their tags come from the Wix dashboard
+        injection; see REPORT_SEO_HEAD.md. No fallback tags here on purpose:
+        they would duplicate the dashboard-owned injected tags. */}
+    <slot name="seo-tags" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -49,6 +58,11 @@ const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
     <SiteHeader active={resolvedNav} compactBrand={useCompactBrand} />
     <SiteDoodles />
     <slot />
+    <SiteFooter footer={footer} />
+    {/* POC motion system (branch poc-animations-fix): scroll reveal +
+        hover re-draw; honors prefers-reduced-motion, the accessibility
+        menu's noam-a11y-motion class, and fine-pointer devices. */}
+    <PocMotion />
     <!-- Production entry-gate copy (ndGate); privacy → combined a11y page. No invented legal text. -->
     <script src="/nd-site-gate.js" defer></script>
     <script src="/noam-accessibility.js" defer></script>
