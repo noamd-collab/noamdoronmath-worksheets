@@ -1647,6 +1647,10 @@ a {
     padding: 8px 14px 44px;
   }
 
+  .site-footer {
+    padding-inline: 14px;
+  }
+
   .home-hero {
     min-height: 0;
     padding-top: 16px;

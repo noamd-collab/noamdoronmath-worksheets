@@ -1,20 +1,13 @@
 ---
 /**
- * PlaneFlight — paper plane gliding along a calm route that stays in the
- * gutters / margins of the hero: enters under the header, arcs around the
- * ConceptLoop card and hero copy (never across them), loops once in open
- * space, and rests beside a margin doodle.
+ * PlaneFlight — paper plane along a calm route in hero gutters/margins.
+ * Enters under the header, arcs around the ConceptLoop card and hero copy
+ * (never across them), loops once in open space, rests at a clear end spot.
  *
- * Hard rules honored:
- * - BACKGROUND layer: z-index below all content, pointer-events none.
- *   Text/cards/buttons always paint on top and stay readable.
- * - The path is computed at runtime from the actual layout (hero card +
- *   copy + nearby doodles), so it scales to any viewport without distortion.
- * - Calm: ~15s flight, ease in/out, then rest at the end spot. Once per
- *   browser session. rAF-driven (auto-pauses when the tab is hidden).
- * - Reduced motion / a11y motion-off: plane sits statically at its end
- *   spot, no trail, no flight.
- * - Mobile (<768px): shorter path around stacked copy/card, still behind.
+ * - Background layer (z-index 0), pointer-events none.
+ * - Path from live layout rects (card + copy).
+ * - ~15s flight, once per session; rAF.
+ * - prefers-reduced-motion / html.noam-a11y-motion: static end, no trail.
  */
 ---
 
@@ -49,13 +42,14 @@
     opacity: 0.55;
   }
   @media (max-width: 767px) {
-    .plane-layer { height: 640px; }
+    .plane-layer {
+      height: 640px;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .plane-trail { display: none; }
-  }
-  :global(html.noam-a11y-motion) .plane-trail {
-    display: none;
+    .plane-trail {
+      display: none;
+    }
   }
 </style>
 
@@ -73,9 +67,19 @@
     var W = layerRect.width;
     var H = layerRect.height;
     var mobile = W < 768;
+    // Grow the layer to cover the full hero so under-card routes aren't clipped.
+    var heroEl = document.querySelector('.home-hero');
+    if (heroEl) {
+      var needH = heroEl.getBoundingClientRect().bottom - layerRect.top + 48;
+      if (needH > H) {
+        layer.style.height = Math.ceil(needH) + 'px';
+        H = Math.ceil(needH);
+        layerRect = layer.getBoundingClientRect();
+      }
+    }
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
 
-    function localBox(el) {
+    function boxOf(el) {
       if (!el) return null;
       var r = el.getBoundingClientRect();
       if (r.width < 8 || r.height < 8) return null;
@@ -86,145 +90,110 @@
         bottom: r.bottom - layerRect.top,
       };
     }
-    function inflate(b, p) {
-      if (!b) return null;
-      return {
-        left: b.left - p,
-        right: b.right + p,
-        top: b.top - p,
-        bottom: b.bottom + p,
-      };
-    }
 
     var card =
-      localBox(document.querySelector('.home-hero .hero-loop')) ||
-      localBox(document.querySelector('.home-hero .concept-loop'));
-    var copy = localBox(document.querySelector('.home-hero__copy'));
-    var PAD = mobile ? 14 : 22;
-    var cardPad = inflate(card, PAD);
-    var copyPad = inflate(copy, PAD);
+      boxOf(document.querySelector('.home-hero .hero-loop')) ||
+      boxOf(document.querySelector('.home-hero .concept-loop'));
+    var copy = boxOf(document.querySelector('.home-hero__copy'));
+    var PAD = mobile ? 18 : 26;
 
-    // Nearby doodles in the plane band — keep end spot clear of them.
-    var doodles = Array.prototype.map
-      .call(document.querySelectorAll('.home-hero .site-doodle, .home-hero [data-doodle-id], .site-doodles .site-doodle'), function (el) {
-        return inflate(localBox(el), 10);
-      })
-      .filter(Boolean)
-      .filter(function (b) {
-        return b.top < H && b.bottom > 0 && b.left < W && b.right > 0;
-      });
-
-    function clearOf(x, y, boxes, rad) {
-      for (var i = 0; i < boxes.length; i++) {
-        var b = boxes[i];
-        if (!b) continue;
-        if (x >= b.left - rad && x <= b.right + rad && y >= b.top - rad && y <= b.bottom + rad) {
-          return false;
-        }
+    /** Build a smooth path through waypoints with tight controls (no big bows). */
+    function pathThrough(points) {
+      if (!points.length) return '';
+      var d = 'M ' + Math.round(points[0][0]) + ',' + Math.round(points[0][1]);
+      for (var i = 1; i < points.length; i++) {
+        var prev = points[i - 1];
+        var cur = points[i];
+        var mx = (prev[0] + cur[0]) / 2;
+        var my = (prev[1] + cur[1]) / 2;
+        // Keep controls on the segment so the curve cannot swing into neighbors.
+        d +=
+          ' C ' +
+          Math.round(prev[0] * 0.35 + mx * 0.65) +
+          ',' +
+          Math.round(prev[1] * 0.35 + my * 0.65) +
+          ' ' +
+          Math.round(cur[0] * 0.35 + mx * 0.65) +
+          ',' +
+          Math.round(cur[1] * 0.35 + my * 0.65) +
+          ' ' +
+          Math.round(cur[0]) +
+          ',' +
+          Math.round(cur[1]);
       }
-      return true;
+      return d;
     }
 
-    var obstacles = [cardPad, copyPad].concat(doodles).filter(Boolean);
+    var points;
+    if (!mobile && card && copy) {
+      var ceiling = Math.max(36, Math.min(card.top, copy.top) - PAD);
+      var gL = card.right + PAD;
+      var gR = copy.left - PAD;
+      var hasGutter = gR - gL >= 40;
+      var gutterX = hasGutter ? (gL + gR) / 2 : null;
+      var rightX = Math.min(W - 18, Math.max(copy.right + PAD, W * 0.93));
+      var leftX = Math.max(14, Math.min(card.left - PAD, W * 0.06));
+      var endX = rightX;
+      var endY = Math.min(H - 36, Math.max(ceiling + 12, copy.top + 28));
+      var dipY = hasGutter
+        ? Math.max(ceiling + 56, Math.min(Math.min(card.bottom, copy.bottom) - PAD, H - 80))
+        : ceiling;
 
-    // Prefer an end spot in open margin (right/outer on desktop, after card on mobile).
-    function pickEnd() {
-      var candidates;
-      if (!mobile) {
-        var baseY = copyPad ? copyPad.top + 40 : 120;
-        candidates = [
-          [W - 36, baseY],
-          [W - 48, (copyPad ? copyPad.bottom : H * 0.45) + 28],
-          [W * 0.92, 90],
-          [(cardPad ? cardPad.right : W * 0.4) + 36, (cardPad ? cardPad.top : 160) - 8],
+      points = [[W * 0.1, -28], [leftX, ceiling * 0.45], [leftX + 10, ceiling]];
+      if (hasGutter) {
+        points.push([gutterX, ceiling]);
+        points.push([gutterX, dipY]);
+        points.push([gutterX, ceiling + 6]); // climb back up inside gutter before going right
+      } else {
+        points.push([W * 0.45, ceiling]);
+      }
+      points.push([rightX, ceiling]);
+      // small loop in the right margin (all x >= rightX - 4)
+      var lr = Math.min(26, Math.max(14, W - rightX - 4));
+      points.push([rightX + lr * 0.3, ceiling - lr]);
+      points.push([rightX + lr, ceiling]);
+      points.push([rightX + lr * 0.2, ceiling + lr * 0.7]);
+      points.push([rightX, ceiling + 4]);
+      points.push([endX, endY]);
+    } else if (mobile && copy && card) {
+      var gapTop = copy.bottom + PAD;
+      var gapBot = card.top - PAD;
+      var gapOk = gapBot - gapTop >= 24;
+      var leftX = 14;
+      var rightX = W - 16;
+      if (gapOk) {
+        var gapY = (gapTop + gapBot) / 2;
+        points = [
+          [W * 0.12, -22],
+          [leftX, Math.max(40, copy.top - 14)],
+          [leftX, gapY],
+          [W * 0.5, gapY],
+          [rightX, gapY],
         ];
       } else {
-        var gapY = copyPad && cardPad ? (copyPad.bottom + cardPad.top) / 2 : H * 0.42;
-        candidates = [
-          [W - 28, gapY],
-          [W * 0.85, (cardPad ? cardPad.top : gapY) - 18],
-          [24, gapY],
-          [W - 32, (cardPad ? cardPad.bottom : H * 0.7) + 20],
+        // No gap — left margin outside both boxes, then under the card.
+        var marginX = Math.max(4, Math.min(leftX, card.left - PAD, copy.left - PAD));
+        var underY = Math.min(H - 16, card.bottom + Math.max(PAD, 28));
+        points = [
+          [W * 0.12, -22],
+          [marginX, Math.max(36, copy.top - 12)],
+          [marginX, Math.min(copy.bottom, card.top) - 4],
+          [marginX, underY],
+          [W * 0.55, underY],
+          [rightX, underY],
         ];
       }
-      for (var i = 0; i < candidates.length; i++) {
-        var c = candidates[i];
-        var x = Math.max(16, Math.min(W - 16, c[0]));
-        var y = Math.max(24, Math.min(H - 24, c[1]));
-        if (clearOf(x, y, obstacles, 6)) return [x, y];
-      }
-      return [Math.max(16, W - 40), Math.max(40, mobile ? 80 : 100)];
-    }
-
-    var end = pickEnd();
-    var endX = end[0];
-    var endY = end[1];
-
-    function pt(x, y) {
-      return [Math.round(x), Math.round(y)];
-    }
-
-    var d;
-    if (!mobile) {
-      // Ceiling above both illustrations; gutter between card (left) and copy (right).
-      var ceiling = Math.min(
-        cardPad ? cardPad.top : 200,
-        copyPad ? copyPad.top : 200
-      ) - 10;
-      ceiling = Math.max(48, Math.min(ceiling, 160));
-      var gutterX = cardPad && copyPad
-        ? (cardPad.right + copyPad.left) / 2
-        : W * 0.5;
-      var rightMarginX = copyPad ? Math.min(W - 28, copyPad.right + 28) : W - 40;
-      if (rightMarginX < (copyPad ? copyPad.right : W) - 4) {
-        rightMarginX = W - 32;
-      }
-      var loopX = Math.min(W - 36, Math.max(rightMarginX, W * 0.88));
-      var loopY = Math.min(ceiling + 8, (copyPad ? copyPad.top : 140) - 12);
-      var loopR = Math.min(32, W * 0.028);
-      // Dip gently into the center gutter without entering card/copy boxes.
-      var gutterY = cardPad && copyPad
-        ? Math.min(cardPad.bottom, copyPad.bottom) - 24
-        : ceiling + 80;
-      gutterY = Math.max(ceiling + 40, Math.min(gutterY, H - 80));
-      if (cardPad && gutterX > cardPad.left && gutterX < cardPad.right) {
-        gutterX = cardPad.right + 20;
-      }
-      if (copyPad && gutterX > copyPad.left && gutterX < copyPad.right) {
-        gutterX = copyPad.left - 20;
-      }
-
-      d =
-        'M ' + pt(W * 0.08, -28) +
-        // rise under header, stay above illustrations
-        ' C ' + pt(W * 0.04, 50) + ' ' + pt(W * 0.18, ceiling - 10) + ' ' + pt(W * 0.28, ceiling) +
-        ' S ' + pt(W * 0.48, ceiling - 18) + ' ' + pt(gutterX, ceiling + 6) +
-        // soft dip in the open gutter between card and copy
-        ' C ' + pt(gutterX + 10, ceiling + 50) + ' ' + pt(gutterX - 6, gutterY) + ' ' + pt(gutterX + 8, Math.min(gutterY + 20, H - 60)) +
-        // climb back toward the right margin (around the copy, not through it)
-        ' C ' + pt(gutterX + 40, ceiling + 30) + ' ' + pt(loopX - 50, loopY + 10) + ' ' + pt(loopX - loopR, loopY) +
-        // small loop in open air on the right
-        ' C ' + pt(loopX - loopR * 0.2, loopY - loopR * 1.3) + ' ' + pt(loopX + loopR * 1.2, loopY - loopR) + ' ' + pt(loopX + loopR * 0.4, loopY + loopR * 0.2) +
-        ' C ' + pt(loopX - loopR * 0.4, loopY + loopR * 1.2) + ' ' + pt(loopX - loopR * 1.1, loopY + 8) + ' ' + pt(loopX - 8, loopY - 4) +
-        // glide to rest
-        ' S ' + pt(endX - 20, endY - 36) + ' ' + pt(endX, endY);
     } else {
-      // Stacked: copy above, card below — fly left margin, cross the gap, rest on the right.
-      var gapMid = copyPad && cardPad
-        ? (copyPad.bottom + cardPad.top) / 2
-        : H * 0.4;
-      var leftX = 18;
-      var aboveCopy = copyPad ? Math.max(36, copyPad.top - 16) : 70;
-      var belowCard = cardPad ? Math.min(H - 28, cardPad.bottom + 18) : H * 0.78;
-      d =
-        'M ' + pt(W * 0.1, -22) +
-        ' C ' + pt(leftX, 40) + ' ' + pt(leftX + 4, aboveCopy) + ' ' + pt(leftX + 8, gapMid - 10) +
-        // cross the open band between copy and card
-        ' S ' + pt(W * 0.55, gapMid + 8) + ' ' + pt(W * 0.82, gapMid - 4) +
-        // skim the right margin around the card, then settle
-        ' C ' + pt(W - 18, gapMid + 30) + ' ' + pt(W - 22, belowCard - 40) + ' ' + pt(endX, endY);
+      points = [
+        [W * 0.1, -24],
+        [W * 0.25, 64],
+        [W * 0.55, 72],
+        [W * 0.8, 68],
+        [W - 36, 90],
+      ];
     }
 
+    var d = pathThrough(points);
     var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('d', d);
     var len = 0;
@@ -279,10 +248,9 @@
         try {
           sessionStorage.setItem('plane-flown-v1', '1');
         } catch (e) {}
-        var fade = 0;
         var fadeStart = ts;
         (function fadeOut(now) {
-          fade = Math.min(1, (now - fadeStart) / 1600);
+          var fade = Math.min(1, (now - fadeStart) / 1600);
           trail.style.opacity = String(0.55 * (1 - fade));
           if (fade < 1) requestAnimationFrame(fadeOut);
         })(ts);
