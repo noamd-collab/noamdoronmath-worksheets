@@ -88,6 +88,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Decorative margin-art/doodles may bleed past the viewport — never scroll sideways. */
+  overflow-x: clip;
 }
 
 body {
@@ -869,8 +871,7 @@ a {
   justify-content: flex-start;
   gap: 8px 22px;
   max-width: 1100px;
-  margin-right: 0;
-  margin-left: auto;
+  margin: 0 auto;
 }
 
 .site-header__brand {
@@ -1536,13 +1537,16 @@ a {
   }
 
   .site-header {
-    padding: 30px 14px 6px;
+    padding: 26px 14px 6px;
   }
 
+  /* One row: logo at the inline-start (right), hamburger at the inline-end (left). */
   .site-header__inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px 12px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 12px;
     margin-left: 0;
   }
 
@@ -3556,8 +3560,10 @@ body {
 }
 @media (max-width: 767px) {
   .site-header__inner {
-    flex-wrap: wrap;
-    gap: 10px 14px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    position: relative;
+    gap: 8px 12px;
   }
   .nav-toggle {
     display: inline-flex;
@@ -3584,6 +3590,26 @@ body {
     background: var(--tint);
     border-color: var(--cobalt-dark);
   }
+  /* Morph the 3 bars into a clear close X while the menu is open */
+  .nav-toggle[aria-expanded='true'] .nav-toggle__bars::before,
+  .nav-toggle[aria-expanded='true'] .nav-toggle__bars::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: auto;
+    height: 2.5px;
+    margin-top: -1.25px;
+    background: currentColor;
+    border-radius: 2px;
+  }
+  .nav-toggle[aria-expanded='true'] .nav-toggle__bars::before {
+    transform: rotate(45deg);
+  }
+  .nav-toggle[aria-expanded='true'] .nav-toggle__bars::after {
+    transform: rotate(-45deg);
+  }
   .nav-toggle__bars {
     position: relative;
     width: 20px;
@@ -3605,7 +3631,12 @@ body {
   }
   .site-nav {
     display: none;
-    flex-basis: 100%;
+    /* Overlay drawer: floats above the page, never pushes content down. */
+    position: absolute;
+    top: 100%;
+    inset-inline: 0;
+    z-index: 60;
+    margin-top: 6px;
     flex-direction: column;
     align-items: stretch;
     gap: 2px;
@@ -3613,7 +3644,7 @@ body {
     border: 1.5px solid rgba(26, 43, 74, 0.12);
     border-radius: 14px;
     padding: 8px;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 14px 34px rgba(26, 43, 74, 0.18);
   }
   .site-nav[data-open] {
     display: flex;
@@ -3629,6 +3660,13 @@ body {
   }
   .site-nav__link:last-child {
     border-bottom: none;
+  }
+  /* Active page: tinted background + bold, not a focus-ring look */
+  .site-nav__link.is-active {
+    background: var(--tint);
+    border-bottom-color: rgba(26, 43, 74, 0.08);
+    color: var(--cobalt-dark);
+    font-weight: 800;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -3680,5 +3718,63 @@ body {
   .blog-archive__card-excerpt,
   .cross label {
     font-size: 16px;
+  }
+}
+
+/* ——— UI/UX fix-2 (KIMICODE-UIUX-FIX-2): mobile fold, wide screens ——— */
+
+/* Hide the decorative doodle strip on phones — it costs ~80px of fold height.
+ * Specificity (0,2,1) + !important beats the component-scoped (0,2,0) !important strip rule. */
+@media (max-width: 767px) {
+  body .site-doodles[data-site-doodles] {
+    display: none !important;
+  }
+}
+
+/* Tighter vertical rhythm on mobile so real content reaches the first screen */
+@media (max-width: 767px) {
+  .grades {
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .tabrow {
+    padding: 6px 8px;
+  }
+  .tabrow-label {
+    margin-bottom: 4px;
+  }
+  .banner {
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .toolbar {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .home-hero {
+    padding-top: 8px;
+  }
+  /* Filter chips: one scrollable row instead of a tall wrapped stack */
+  .chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+  }
+  .chips .chip {
+    flex: 0 0 auto;
+  }
+}
+
+/* Wide screens: use the width, and keep the header on the content grid */
+@media (min-width: 1600px) {
+  .site-header__inner {
+    max-width: 1320px;
+  }
+  .home-shell {
+    max-width: 1320px;
+  }
+  .wrap {
+    max-width: 1180px;
   }
 }
