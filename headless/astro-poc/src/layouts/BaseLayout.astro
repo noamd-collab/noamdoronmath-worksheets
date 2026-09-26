@@ -2,6 +2,7 @@
 import '../styles/catalog.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteDoodles from '../components/SiteDoodles.astro';
+import DoodleRandomize from '../components/DoodleRandomize.astro';
 import PocMotion from '../components/PocMotion.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { loadHomePage } from '../lib/homePage';
@@ -62,11 +63,16 @@ const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
       href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap"
       rel="stylesheet"
     />
+    {/* Hide absolute doodles until client layout pick — no CLS */}
+    <script is:inline>
+      document.documentElement.classList.add('doodles-pending');
+    </script>
   </head>
   <body>
     <a class="skip-link" href={skipHref}>דילוג לתוכן</a>
     <SiteHeader active={resolvedNav} compactBrand={useCompactBrand} />
     <SiteDoodles />
+    <DoodleRandomize />
     <slot />
     <SiteFooter footer={footer} />
     {/* POC motion system (branch poc-animations-fix): scroll reveal +
