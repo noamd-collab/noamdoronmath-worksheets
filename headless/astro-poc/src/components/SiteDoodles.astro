@@ -1,9 +1,9 @@
 ---
 /**
- * DOODLES-45 / KIMI-ANIM-6 — dense notebook margin columns.
- * Uses ALL catalog motifs in alternating start/end gutters (desktop)
- * and a dense in-flow wrap on ≤1200 tablet. Hidden ≤767 (section scatters).
- * EVERY gutter doodle bobs+wobbles; off under reduced-motion / a11y.
+ * Full-page edge-margin doodles (home + every BaseLayout page).
+ * Fixed L/R columns, φ vertical spacing, half-bleed off the edge
+ * (parent clips — no horizontal scroll). Animated bob+wobble.
+ * Mobile: thin 24–36px edges, half tucked, never over text.
  */
 import { selectDenseMargins } from '../lib/doodles/selectDenseMargins';
 import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
@@ -12,9 +12,7 @@ import manifest from '../data/doodles.manifest.json';
 const pathname = Astro.url.pathname;
 const motifs = (manifest.motifs || []) as DoodleMotif[];
 const placements =
-  motifs.length === 0
-    ? []
-    : selectDenseMargins(pathname, motifs, { mobileCount: 4 });
+  motifs.length === 0 ? [] : selectDenseMargins(pathname, motifs);
 ---
 
 {
@@ -23,7 +21,7 @@ const placements =
       class="site-doodles"
       aria-hidden="true"
       data-site-doodles
-      data-site-doodles-dense
+      data-site-doodles-edges
       data-path={pathname}
     >
       {placements.map((p) => (
@@ -32,7 +30,6 @@ const placements =
             'site-doodle',
             'site-doodle--float',
             p.side === 'start' ? 'site-doodle--start' : 'site-doodle--end',
-            p.mobileVisible ? 'site-doodle--strip' : 'site-doodle--gutter-only',
           ]}
           src={p.src}
           alt=""
@@ -44,7 +41,8 @@ const placements =
           data-doodle-side={p.side}
           style={[
             `top:${p.topPct}%`,
-            `width:${Math.round(p.sizePx * p.scale)}px`,
+            `--d-size:${Math.round(p.sizePx * p.scale)}px`,
+            `--m-size:${p.mobileSizePx}px`,
             `--doodle-rotate:${p.rotate}deg`,
             `--doodle-op:${p.opacity}`,
             `--doodle-delay:${p.delay}s`,
@@ -59,36 +57,44 @@ const placements =
 }
 
 <style>
+  /*
+   * Fixed edge layer — clips bleed so half-off doodles never cause H-scroll.
+   * z-index 0: behind text/CTAs (content is relative z-1+).
+   */
   .site-doodles {
     position: fixed;
     inset: 0;
     pointer-events: none;
     user-select: none;
-    z-index: 1;
-    overflow: visible;
+    z-index: 0;
+    overflow: hidden; /* clip the bleed */
   }
 
   .site-doodle {
     position: absolute;
     display: block;
+    width: var(--d-size, 96px);
+    max-width: min(160px, 12vw);
     height: auto;
-    max-width: min(200px, 14vw);
-    opacity: var(--doodle-op, 0.88);
-    transform: translateY(0) rotate(var(--doodle-rotate, 0deg));
+    opacity: var(--doodle-op, 0.75);
+    transform: translateY(-50%) rotate(var(--doodle-rotate, 0deg));
     transform-origin: center center;
-    /* reset physical sides — RTL-safe logical placement below */
     left: auto;
     right: auto;
+    /* Center on top% so φ bands sit correctly */
+    margin-top: 0;
   }
-  /* Outside ~1100px content shell — logical margins for RTL Hebrew */
+
+  /* Bleed ~40% off the page edge (logical for RTL) */
   .site-doodle--start {
-    inset-inline-start: max(4px, calc(50% - 640px));
+    inset-inline-start: -36px;
     inset-inline-end: auto;
   }
   .site-doodle--end {
-    inset-inline-end: max(4px, calc(50% - 640px));
+    inset-inline-end: -36px;
     inset-inline-start: auto;
   }
+
   .site-doodle--float {
     animation: site-doodle-bob-wobble var(--doodle-dur, 6.5s) ease-in-out infinite;
     animation-delay: var(--doodle-delay, 0s);
@@ -98,11 +104,11 @@ const placements =
   @keyframes site-doodle-bob-wobble {
     0%,
     100% {
-      transform: translateY(0)
+      transform: translateY(-50%) translateY(0)
         rotate(calc(var(--doodle-rotate, 0deg) - var(--doodle-wobble, 4deg)));
     }
     50% {
-      transform: translateY(calc(-1 * var(--doodle-bob, 6px)))
+      transform: translateY(-50%) translateY(calc(-1 * var(--doodle-bob, 6px)))
         rotate(calc(var(--doodle-rotate, 0deg) + var(--doodle-wobble, 4deg)));
     }
   }
@@ -117,49 +123,34 @@ const placements =
     animation: none !important;
   }
 
-  /*
-   * ≤1200 tablet: dense in-flow wrap — show every motif (notebook density).
-   * Phones (≤767): hidden — organic absolute scatters live in page sections
-   * (HomeSectionDoodle / MobileNotebookCorners). No neat flex/grid strip.
-   */
+  /* Mid widths: keep edge gutters (no flex strip) — slightly less bleed */
   @media (max-width: 1200px) {
-    .site-doodles {
-      position: relative !important;
-      inset: auto !important;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 8px 12px;
-      height: auto;
-      min-height: 96px;
-      width: 100%;
-      z-index: 0;
-      margin: 6px 0 10px;
-      padding: 8px 10px;
-      overflow: visible;
+    .site-doodle--start {
+      inset-inline-start: -28px;
     }
-    .site-doodle--gutter-only {
-      display: block !important;
-    }
-    .site-doodle,
-    .site-doodle--strip,
-    .site-doodle--gutter-only,
-    .site-doodle--start,
     .site-doodle--end {
-      position: relative !important;
-      top: auto !important;
-      left: auto !important;
-      right: auto !important;
-      inset: auto !important;
-      width: clamp(64px, 18vw, 96px) !important;
-      max-width: 96px !important;
+      inset-inline-end: -28px;
+    }
+    .site-doodle {
+      max-width: min(120px, 14vw);
     }
   }
-  /* Phone: kill the header strip — section scatters own the notebook look */
+
+  /*
+   * Mobile: thin side edges, 24–36px, ~half tucked off-screen.
+   * Stay behind text (z-0); never cover tap targets.
+   */
   @media (max-width: 767px) {
-    .site-doodles {
-      display: none !important;
+    .site-doodle {
+      width: var(--m-size, 28px) !important;
+      max-width: 36px !important;
+      opacity: calc(var(--doodle-op, 0.7) * 0.9);
+    }
+    .site-doodle--start {
+      inset-inline-start: -14px;
+    }
+    .site-doodle--end {
+      inset-inline-end: -14px;
     }
   }
 

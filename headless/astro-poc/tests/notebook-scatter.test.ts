@@ -77,15 +77,15 @@ describe('selectNotebookScatter', () => {
 });
 
 describe('selectDenseMargins', () => {
-  it('places every catalog motif with alternating sides', () => {
+  it('places every catalog motif on alternating edge columns', () => {
     const sel = selectDenseMargins('/statistics-grade-8', catalog);
     assert.equal(sel.length, catalog.length);
     const ids = new Set(sel.map((p) => p.id));
     assert.equal(ids.size, catalog.length);
     assert.ok(sel.some((p) => p.side === 'start'));
     assert.ok(sel.some((p) => p.side === 'end'));
-    const mobile = sel.filter((p) => p.mobileVisible);
-    assert.ok(mobile.length >= 4);
+    assert.ok(sel.every((p) => p.mobileVisible === true));
+    assert.ok(sel.every((p) => [24, 28, 32, 36].includes(p.mobileSizePx)));
   });
 
   it('is deterministic per pathname and differs across routes', () => {
@@ -97,10 +97,20 @@ describe('selectDenseMargins', () => {
     assert.notEqual(sig(a), sig(c));
   });
 
-  it('also densifies the homepage path and always floats', () => {
+  it('spreads φ vertical bands on home and always floats', () => {
     const home = selectDenseMargins('/', catalog);
     assert.equal(home.length, catalog.length);
     assert.ok(home.every((p) => p.float === true));
     assert.ok(home.every((p) => p.duration >= 4 && p.duration <= 9));
+    const tops = home.map((p) => p.topPct);
+    const unique = new Set(tops.map((t) => Math.round(t)));
+    assert.ok(unique.size >= 6, `expected φ spread, got ${unique.size}`);
+    // Start/end columns should not share the same rounded top (no row)
+    const startTops = new Set(
+      home.filter((p) => p.side === 'start').map((p) => Math.round(p.topPct))
+    );
+    const endTops = home.filter((p) => p.side === 'end').map((p) => Math.round(p.topPct));
+    const shared = endTops.filter((t) => startTops.has(t));
+    assert.ok(shared.length <= 1, `too many shared baselines: ${shared}`);
   });
 });

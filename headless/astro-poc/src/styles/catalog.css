@@ -3873,8 +3873,8 @@ body {
 
 /* ——— UI/UX fix-2 (KIMICODE-UIUX-FIX-2): mobile fold, wide screens ——— */
 
-/* Phone notebook look: SiteDoodles strip is hidden ≤767; organic absolute
- * scatters live in HomeSectionDoodle / MobileNotebookCorners instead. */
+/* Phone notebook: SiteDoodles = thin edge gutters (half-tucked); section
+ * scatters live in HomeSectionDoodle / MobileNotebookCorners. */
 
 /* Tighter vertical rhythm on mobile so real content reaches the first screen */
 @media (max-width: 767px) {
