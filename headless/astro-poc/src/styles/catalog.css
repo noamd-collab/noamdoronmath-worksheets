@@ -1236,6 +1236,12 @@ a {
     position: relative;
     z-index: 1;
   }
+  /* Clear absolute corner doodles (~56px) so titles never look covered */
+  .home-section__title,
+  .home-section__lede,
+  .home-whatsapp__kicker {
+    padding-inline: 58px;
+  }
 }
 .topic-page__header--nb {
   position: relative;

@@ -132,6 +132,8 @@ export function selectNotebookScatter(
     };
   });
 
+  if (scribbleWant <= 0) return { motifs: items, scribbles: [] };
+
   const scribbleOrder = shuffleIndices(rng, SCRIBBLE_KINDS.length);
   const kinds: ScribbleKind[] = [];
   // Always include a readable formula scribble (LTR a²+b²=c² / πr² / …)
