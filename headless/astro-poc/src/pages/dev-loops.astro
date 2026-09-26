@@ -1,0 +1,66 @@
+---
+/**
+ * DEV/QA ONLY — loop preview page for family variants that have no topic
+ * page in this POC (F07–F09, F11–F13 live only in grades 1–6, which have no
+ * topic pages here). Not linked from anywhere; the site ships noindex,nofollow.
+ * Used by scripts/check-loops-k3.mjs for bbox/behaviour checks and screenshots.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ConceptLoop from '../components/ConceptLoop.astro';
+
+const groups: Array<{ title: string; variants: Array<{ v: any; name: string }> }> = [
+  {
+    title: 'F07–F14 (B2)',
+    variants: [
+      { v: 'ruler', name: 'F07 מדידה ויחידות' },
+      { v: 'array', name: 'F08 כפל — מערך' },
+      { v: 'polygon', name: 'F09 צורות ומצולעים' },
+      { v: 'data', name: 'F10 נתונים' },
+      { v: 'baseten', name: 'F11 חיבור רב־ספרתי' },
+      { v: 'cookies', name: 'F12 חילוק' },
+      { v: 'fraction', name: 'F13 שבר כחלק משלם' },
+      { v: 'transform', name: 'F14 טרנספורמציות' },
+    ],
+  },
+];
+export const prerender = false;
+---
+
+<BaseLayout title="DEV loop previews" description="dev only" activeNav={null} skipHref="#dev-loops-main">
+  <main class="wrap" id="dev-loops-main">
+    <h1>DEV — loop previews</h1>
+    {
+      groups.map((g) => (
+        <section>
+          <h2>{g.title}</h2>
+          <div class="dev-loops-grid">
+            {g.variants.map((x) => (
+              <figure class="dev-loops-cell">
+                <ConceptLoop variant={x.v} />
+                <figcaption>{x.name}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </main>
+</BaseLayout>
+
+<style>
+  .dev-loops-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 26px;
+    margin: 18px 0 40px;
+  }
+  .dev-loops-cell {
+    margin: 0;
+  }
+  .dev-loops-cell figcaption {
+    text-align: center;
+    color: var(--muted);
+    font-weight: 600;
+    margin-top: 6px;
+  }
+</style>
