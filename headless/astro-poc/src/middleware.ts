@@ -8,18 +8,13 @@
  * (local/node, or if edge passes through). Prefer CDN links from catalog.
  *
  * Astra / Wix quirk: public `*.html` assets 404 for document navigations that
- * include a query string. Rewrite to the bare pathname so the static file is
- * served while the browser URL (and `location.search`) stay intact for the viewer.
+ * include a query string. `context.rewrite(pathname)` still 404s on Wix — return
+ * the bundled HTML body instead so the browser URL (and location.search) stay.
  */
 import { defineMiddleware } from 'astro:middleware';
 import { redirectTargetForSiteUgdPath } from './lib/wixMedia';
 import { resolveRedirect } from './lib/redirects';
-
-/** Public HTML shells that must accept `?...` (viewer / learning). */
-const PUBLIC_HTML_WITH_QUERY = new Set([
-  '/worksheet-viewer-noam.html',
-  '/learning.html',
-]);
+import { PUBLIC_HTML_SHELLS } from './lib/publicHtmlShells';
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const path = context.url.pathname;
@@ -32,8 +27,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (moved) {
     return context.redirect(moved, 301);
   }
-  if (PUBLIC_HTML_WITH_QUERY.has(path) && context.url.search) {
-    return context.rewrite(path);
+  const shell = context.url.search ? PUBLIC_HTML_SHELLS[path] : undefined;
+  if (shell) {
+    return new Response(shell, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+      },
+    });
   }
   return next();
 });
