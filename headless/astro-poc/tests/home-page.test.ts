@@ -109,11 +109,13 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     );
     assert.ok(html.includes('target="_blank"'));
     assert.ok(html.includes('rel="noopener"'));
-    assert.ok(html.includes('aria-label="אינסטגרם של נועם דורון מתמטיקה"'));
-    assert.ok(html.includes('aria-label="פייסבוק של נועם דורון מתמטיקה"'));
-    assert.ok(html.includes('data-footer-social="instagram"'));
-    assert.ok(html.includes('data-footer-social="facebook"'));
-    assert.ok(html.includes('data-footer-social="whatsapp"'));
+    assert.ok(html.includes('אינסטגרם של נועם דורון מתמטיקה'));
+    assert.ok(html.includes('פייסבוק של נועם דורון מתמטיקה'));
+    assert.ok(html.includes("network: 'instagram'"));
+    assert.ok(html.includes("network: 'facebook'"));
+    assert.ok(html.includes("network: 'whatsapp'"));
+    assert.ok(html.includes('data-footer-social={item.network}'));
+    assert.ok(html.includes('aria-label={item.label}'));
     assert.ok(!html.includes('tiktok.com'));
     // high-school third-party YouTube must not be treated as brand social
     assert.ok(!html.includes('youtube.com'));
