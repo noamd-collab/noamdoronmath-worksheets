@@ -51,7 +51,23 @@ export interface Props {
     | 'pct-25'
     | 'diff-sq'
     | 'clock-3'
-    | 'peri-rect';
+    | 'peri-rect'
+    | 'signed-jump'
+    | 'prime-rect'
+    | 'sas-snap'
+    | 'obtuse-ht'
+    | 'box-vol'
+    | 'trap-area'
+    | 'odd-pair'
+    | 'birds-sub'
+    | 'circ-unroll'
+    | 'rect-count'
+    | 'l-split'
+    | 'quad-tree'
+    | 'tri-sort'
+    | 'parab'
+    | 'ratio-beads'
+    | 'neighbors';
 }
 const { variant } = Astro.props;
 
@@ -103,6 +119,22 @@ const ariaLabels: Record<string, string> = {
   'diff-sq': 'הדגמה: ההפרש בין שני ריבועים נפרש למלבן אחד, והשטח נשמר.',
   'clock-3': 'הדגמה: השעון נעצר על השעה 3:00, שעה שלמה.',
   'peri-rect': 'הדגמה: הליכה על שפת המלבן סוכמת את ארבע הצלעות להיקף.',
+  'signed-jump': 'הדגמה: על הישר, קפיצה של 5 מ־2− מגיעה אל 3.',
+  'prime-rect': 'הדגמה: 6 נכנס למלבן של נקודות, ו־7 נשאר בלי מלבן.',
+  'sas-snap': 'הדגמה: שני משולשים עם אותם סימנים נצמדים ומתלכדים.',
+  'obtuse-ht': 'הדגמה: הגובה למשולש קהה יורד מחוץ לצורה ופוגש את המשך הבסיס.',
+  'box-vol': 'הדגמה: קוביות יחידה ממלאות תיבה, 3 כפול 2 כפול 2 שווה 12.',
+  'trap-area': 'הדגמה: בטרפז, ממוצע שני הבסיסים כפול הגובה נותן את השטח.',
+  'odd-pair': 'הדגמה: נקודות נכנסות לזוגות, ושארית של נקודה אחת אומרת אי־זוגי.',
+  'birds-sub': 'הדגמה: מ־6 ציפורים עפות 2, ונשארות 4.',
+  'circ-unroll': 'הדגמה: היקף המעגל נפרש לקו, והקו ארוך קצת משלושה קטרים.',
+  'rect-count': 'הדגמה: במלבן סופרים משבצות לשטח, ובנפרד את השפה להיקף.',
+  'l-split': 'הדגמה: צורת L נפרדת לשני מלבנים, 12 ועוד 4 שווה 16, והחלקים חוזרים.',
+  'quad-tree': 'הדגמה: מעץ המרובעים, ריבוע יורש גם מלבן וגם מעוין.',
+  'tri-sort': 'הדגמה: שלושה משולשים ממוינים לפי אורך הצלעות לשלושה סלים.',
+  parab: 'הדגמה: קודקוד הפרבולה זז, והמספר שלידו מראה את גובה הנקודה.',
+  'ratio-beads': 'הדגמה: 2 מול 3 מוכפלים ל־4 מול 6, והיחס נשאר אותו דבר.',
+  neighbors: 'הדגמה: המספר 8 יושב בין 7 ל־9, ושני השכנים מסומנים.',
 };
 
 /* fixed top-strip problem text per variant (families layout);
@@ -135,6 +167,22 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'diff-sq': { text: '25 − 9 = ?', ltr: true },
   'clock-3': { text: 'איזו שעה שלמה?' },
   'peri-rect': { text: 'מה היקף המלבן?' },
+  'signed-jump': { text: '−2 + 5 = ?', ltr: true },
+  'prime-rect': { text: 'למי יש מלבן?' },
+  'sas-snap': { text: 'האם הסימנים זהים?' },
+  'obtuse-ht': { text: 'איפה פוגש הגובה?' },
+  'box-vol': { text: '3 × 2 × 2 = ?', ltr: true },
+  'trap-area': { text: 'מה שטח הטרפז?' },
+  'odd-pair': { text: 'האם נשארה נקודה?' },
+  'birds-sub': { text: '6 − 2 = ?', ltr: true },
+  'circ-unroll': { text: 'כמה קטרים בהיקף?' },
+  'rect-count': { text: 'שטח או היקף?' },
+  'l-split': { text: '12 + 4 = ?', ltr: true },
+  'quad-tree': { text: 'מה יורש הריבוע?' },
+  'tri-sort': { text: 'לאיזה סל?' },
+  parab: { text: 'מה ה־y של הקודקוד?' },
+  'ratio-beads': { text: '2 : 3 = ?', ltr: true },
+  neighbors: { text: 'מי השכנים של 8?' },
 };
 const top = topTexts[variant];
 
@@ -1147,13 +1195,13 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'similar' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
-          <polygon class="cl-line cl-stroke-a" points="160,250 240,250 160,170" />
-          <path class="cl-line cl-stroke-a" d="M160 226 L184 226 L184 250" />
-          <polygon class="cl-line cl-fill-b cl-stroke-b" data-el="big" points="160,250 240,250 160,170" style="opacity:0" />
+          <polygon class="cl-line cl-stroke-a" points="160,250 240,250 160,190" />
+          <path class="cl-line cl-stroke-a" d="M160 228 L182 228 L182 250" />
+          <polygon class="cl-line cl-fill-b cl-stroke-b" data-el="big" points="160,250 240,250 160,190" style="opacity:0" />
           <path class="cl-line cl-stroke-b" data-el="arc-big" d="M160 214 L196 214 L196 250" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="lbl-leg" x="300" y="246" style="opacity:0">4</text>
-          <text class="cl-t cl-num" data-el="lbl-ht" x="128" y="160" style="opacity:0">3</text>
-          <text class="cl-t" data-el="lbl-same" x="300" y="120" style="opacity:0">הזוויות נשארות</text>
+          <text class="cl-t cl-num" data-el="lbl-leg" x="200" y="268" text-anchor="middle" style="opacity:0">4</text>
+          <text class="cl-t cl-num" data-el="lbl-ht" x="142" y="225" text-anchor="end" style="opacity:0">3</text>
+          <text class="cl-t" data-el="lbl-same" x="360" y="170" style="opacity:0">הזוויות נשארות</text>
         </svg>
       )
     }
@@ -1293,6 +1341,324 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <text class="cl-t cl-num" data-el="side3" x="118" y="164" style="opacity:0">4</text>
           <circle class="cl-stroke-a" data-el="dot" cx="150" cy="230" r="8" fill="#2563EB" />
           <text class="cl-t cl-num cl-ok" data-el="total" x="270" y="290" text-anchor="middle" style="opacity:0">20</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'signed-jump' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <line class="cl-line" x1="80" y1="200" x2="480" y2="200" />
+          {[-4, -3, -2, -1, 0, 1, 2, 3, 4, 5].map((n) => (
+            <g>
+              <line class="cl-line-thin" x1={280 + n * 40} y1="194" x2={280 + n * 40} y2="206" />
+              <text class="cl-t cl-num cl-small" x={280 + n * 40} y="226" text-anchor="middle">{n}</text>
+            </g>
+          ))}
+          <path class="cl-line cl-stroke-a" data-el="arc" d="M200 196 Q300 120 400 196" style="opacity:0" />
+          <text class="cl-t cl-num" data-el="plus5" x="300" y="108" text-anchor="middle" style="opacity:0">+5</text>
+          <circle data-el="pt" class="cl-stroke-a" cx="200" cy="200" r="8" fill="#2563EB" />
+          <rect class="cl-line" x="508" y="90" width="18" height="150" />
+          <rect data-el="merc" x="511" y="220" width="12" height="20" fill="#2563EB" />
+          <text class="cl-t cl-num cl-small" x="534" y="224">−2</text>
+          <text class="cl-t cl-num cl-small" x="534" y="176">0</text>
+          <text class="cl-t cl-num cl-small" x="534" y="114">3</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'prime-rect' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <circle class="cl-fill-a cl-stroke-a" data-el={`s${i}`} cx={70 + (i % 3) * 28} cy={80 + Math.floor(i / 3) * 28} r="10" />
+          ))}
+          {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+            <circle class="cl-fill-b cl-stroke-b" data-el={`p${i}`} cx={340 + (i % 4) * 26} cy={70 + Math.floor(i / 4) * 26} r="10" />
+          ))}
+          <rect class="cl-line" data-el="fit" x="136" y="136" width="100" height="64" pathLength="1" style="opacity:0" />
+          <rect class="cl-dash" data-el="miss" x="346" y="136" width="100" height="64" pathLength="1" style="opacity:0" />
+          <text class="cl-t cl-num" data-el="ok6" x="186" y="230" text-anchor="middle" style="opacity:0">2×3</text>
+          <text class="cl-t" data-el="no7" x="470" y="100" style="opacity:0">אין מלבן</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'sas-snap' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <polygon class="cl-col" data-el="ghost" points="280,204 390,184 340,104" />
+          <polygon class="cl-line cl-stroke-a" points="90,220 200,200 150,120" />
+          <line class="cl-line" x1="132" y1="214" x2="140" y2="206" />
+          <line class="cl-line" x1="112" y1="182" x2="122" y2="176" />
+          <path class="cl-line cl-stroke-a" d="M112 214 A22 22 0 0 1 108 196" />
+          <g data-el="copy">
+            <polygon class="cl-line cl-stroke-b" points="90,220 200,200 150,120" fill="rgba(124,58,237,0.12)" />
+            <line class="cl-stroke-b" x1="132" y1="214" x2="140" y2="206" />
+            <line class="cl-stroke-b" x1="112" y1="182" x2="122" y2="176" />
+            <path class="cl-stroke-b" d="M112 214 A22 22 0 0 1 108 196" fill="none" />
+          </g>
+          <text class="cl-t" data-el="same" x="280" y="270" text-anchor="middle" style="opacity:0">התלכדו, והסימנים זהים</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'obtuse-ht' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <polygon class="cl-line cl-fill-a" points="200,230 420,230 130,110" />
+          <line class="cl-dash" data-el="ext" x1="70" y1="230" x2="200" y2="230" pathLength="1" style="opacity:0" />
+          <line class="cl-line cl-stroke-a" data-el="ht" x1="130" y1="110" x2="130" y2="230" pathLength="1" style="opacity:0" />
+          <path class="cl-line cl-stroke-a" data-el="sq" d="M130 214 L146 214 L146 230" style="opacity:0" />
+          <text class="cl-t cl-num" data-el="lbl-h" x="108" y="170" style="opacity:0">h</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'box-vol' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <rect class="cl-line cl-fill-a" data-el={`k${i}`} x={170 + (i % 3) * 36 + Math.floor(i / 3) * 18} y={200 + Math.floor(i / 3) * 18} width="32" height="24" style="opacity:0" />
+          ))}
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <rect class="cl-line cl-fill-b" data-el={`k${i + 6}`} x={156 + (i % 3) * 36 + Math.floor(i / 3) * 18} y={150 + Math.floor(i / 3) * 18} width="32" height="24" style="opacity:0" />
+          ))}
+          <text class="cl-t cl-num" data-el="dims" x="300" y="270" text-anchor="middle" style="opacity:0">3 × 2 × 2</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'trap-area' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <polygon class="cl-line cl-fill-a" points="140,230 356,230 284,122 212,122" />
+          <text class="cl-t cl-num" x="248" y="252" text-anchor="middle">6</text>
+          <text class="cl-t cl-num" x="248" y="112" text-anchor="middle">2</text>
+          <line class="cl-dash" x1="212" y1="122" x2="212" y2="230" />
+          <path class="cl-line" d="M212 214 L228 214 L228 230" />
+          <text class="cl-t cl-num" data-el="lbl-h" x="224" y="208">3</text>
+          <line class="cl-line cl-stroke-a" data-el="mid" x1="176" y1="176" x2="320" y2="176" pathLength="1" style="opacity:0" />
+          <text class="cl-t cl-num cl-ok" data-el="lbl-m" x="330" y="180" style="opacity:0">4</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'odd-pair' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+            <circle class="cl-fill-a cl-stroke-a" data-el={`o${i}`} cx={80 + i * 58} cy="150" r="14" />
+          ))}
+          <g data-el="pairs" style="opacity:0">
+            <path class="cl-line" d="M100 196 H158" />
+            <path class="cl-line" d="M220 196 H278" />
+            <path class="cl-line" d="M340 196 H398" />
+          </g>
+          <circle class="cl-dash-strong" data-el="left" cx="470" cy="188" r="22" style="opacity:0" />
+          <text class="cl-t" data-el="odd" x="280" y="250" text-anchor="middle" style="opacity:0">אי־זוגי</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'birds-sub' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <line class="cl-line" x1="60" y1="230" x2="500" y2="230" />
+          {[0, 1, 2, 3].map((i) => (
+            <g transform={`translate(${100 + i * 70} 200)`}>
+              <ellipse class="cl-fill-a cl-stroke-a" cx="0" cy="0" rx="16" ry="11" />
+              <path class="cl-stroke-a" d="M12 -2 L24 2 L12 6 Z" fill="#1e3a5f" />
+            </g>
+          ))}
+          <g data-el="b4" transform="translate(380 200)">
+            <ellipse class="cl-fill-c cl-line" cx="0" cy="0" rx="16" ry="11" />
+            <path class="cl-line" d="M12 -2 L24 2 L12 6 Z" fill="#9a3412" />
+          </g>
+          <g data-el="b5" transform="translate(450 200)">
+            <ellipse class="cl-fill-c cl-line" cx="0" cy="0" rx="16" ry="11" />
+            <path class="cl-line" d="M12 -2 L24 2 L12 6 Z" fill="#9a3412" />
+          </g>
+          <text class="cl-t cl-num cl-ok" data-el="stay" x="180" y="270" style="opacity:0">4</text>
+          <text class="cl-t cl-num" data-el="gone" x="470" y="96" text-anchor="middle" style="opacity:0">2</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'circ-unroll' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <circle class="cl-line" cx="150" cy="130" r="35" />
+          <line class="cl-line cl-stroke-a" x1="115" y1="130" x2="185" y2="130" />
+          <text class="cl-t cl-num" x="150" y="118" text-anchor="middle">d</text>
+          <line class="cl-line" data-el="seg0" x1="230" y1="230" x2="300" y2="230" pathLength="1" style="opacity:0" />
+          <line class="cl-line" data-el="seg1" x1="300" y1="230" x2="370" y2="230" pathLength="1" style="opacity:0" />
+          <line class="cl-line" data-el="seg2" x1="370" y1="230" x2="440" y2="230" pathLength="1" style="opacity:0" />
+          <line class="cl-hl-c" data-el="extra" x1="440" y1="230" x2="449.9" y2="230" pathLength="1" stroke-width="4" style="opacity:0" />
+          <text class="cl-t cl-num" data-el="sd0" x="265" y="252" text-anchor="middle" style="opacity:0">d</text>
+          <text class="cl-t cl-num" data-el="sd1" x="335" y="252" text-anchor="middle" style="opacity:0">d</text>
+          <text class="cl-t cl-num" data-el="sd2" x="405" y="252" text-anchor="middle" style="opacity:0">d</text>
+          <text class="cl-t cl-num cl-small" data-el="extra-lbl" x="468" y="226" text-anchor="start" style="opacity:0">0.14d</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'rect-count' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (
+            <rect
+              class="cl-fill-a cl-line"
+              data-el={`cell${i}`}
+              x={196 + (i % 4) * 32}
+              y={78 + Math.floor(i / 4) * 32}
+              width="32"
+              height="32"
+              style="opacity:0"
+            />
+          ))}
+          <rect class="cl-line cl-stroke-a" data-el="rim" x="196" y="78" width="128" height="96" style="opacity:0" />
+          <text class="cl-t cl-num cl-ok" data-el="area" x="260" y="132" text-anchor="middle" style="opacity:0">12</text>
+          <text class="cl-t cl-num" data-el="side4" x="260" y="66" text-anchor="middle" style="opacity:0">4</text>
+          <text class="cl-t cl-num" data-el="side3" x="176" y="130" text-anchor="end" style="opacity:0">3</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'l-split' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <rect class="cl-fill-a cl-stroke-a" x="150" y="70" width="88" height="66" />
+          <text class="cl-t cl-num" data-el="n12" x="194" y="108" text-anchor="middle" style="opacity:0">12</text>
+          <g data-el="part4">
+            <rect class="cl-fill-c cl-line" x="150" y="136" width="44" height="44" />
+            <text class="cl-t cl-num" data-el="n4" x="172" y="164" text-anchor="middle" style="opacity:0">4</text>
+          </g>
+        </svg>
+      )
+    }
+    {
+      variant === 'quad-tree' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 360" role="img" aria-label={ariaLabels[variant]}>
+          <polygon class="cl-line cl-fill-a" points="230,48 340,48 370,96 260,96" />
+          <text class="cl-t" x="300" y="78" text-anchor="middle">מקבילית</text>
+          <g data-el="arms" style="opacity:0">
+            <line class="cl-dash" x1="300" y1="96" x2="130" y2="150" />
+            <line class="cl-dash" x1="300" y1="96" x2="450" y2="150" />
+          </g>
+          <g data-el="kids" style="opacity:0">
+            <rect class="cl-line" x="70" y="150" width="120" height="56" />
+            <text class="cl-t" x="130" y="182" text-anchor="middle">מלבן</text>
+            <polygon class="cl-line" points="390,178 445,150 500,178 445,206" />
+            <text class="cl-t" x="445" y="182" text-anchor="middle">מעוין</text>
+          </g>
+          <g data-el="down" style="opacity:0">
+            <line class="cl-dash" x1="130" y1="206" x2="250" y2="250" />
+            <line class="cl-dash" x1="445" y1="206" x2="310" y2="250" />
+          </g>
+          <g data-el="sq" style="opacity:0">
+            <rect class="cl-line cl-stroke-a" x="250" y="250" width="60" height="60" />
+            <text class="cl-t" x="280" y="286" text-anchor="middle">ריבוע</text>
+          </g>
+        </svg>
+      )
+    }
+    {
+      variant === 'tri-sort' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 360" role="img" aria-label={ariaLabels[variant]}>
+          <text class="cl-t" x="90" y="188" text-anchor="middle">שווה צלעות</text>
+          <text class="cl-t" x="270" y="188" text-anchor="middle">שווה שוקיים</text>
+          <text class="cl-t" x="450" y="188" text-anchor="middle">צלעות שונות</text>
+          <rect class="cl-line" x="20" y="198" width="150" height="120" />
+          <rect class="cl-line" x="190" y="198" width="160" height="120" />
+          <rect class="cl-line" x="370" y="198" width="160" height="120" />
+          <g data-el="tri0">
+            <polygon class="cl-line cl-stroke-a" points="66,292 114,292 90,250" />
+            <line class="cl-stroke-a" x1="90" y1="286" x2="90" y2="298" />
+            <line class="cl-stroke-a" x1="74" y1="268" x2="82" y2="274" />
+            <line class="cl-stroke-a" x1="106" y1="268" x2="98" y2="274" />
+          </g>
+          <g data-el="tri1">
+            <polygon class="cl-line cl-stroke-b" points="254,292 286,292 270,244" />
+            <line class="cl-stroke-b" x1="258" y1="264" x2="266" y2="270" />
+            <line class="cl-stroke-b" x1="282" y1="264" x2="274" y2="270" />
+          </g>
+          <g data-el="tri2">
+            <polygon class="cl-line" points="400,292 448,292 400,256" />
+            <text class="cl-t cl-num cl-small" x="388" y="278">3</text>
+            <text class="cl-t cl-num cl-small" x="424" y="308">4</text>
+            <text class="cl-t cl-num cl-small" x="430" y="270">5</text>
+          </g>
+        </svg>
+      )
+    }
+    {
+      variant === 'parab' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <line class="cl-line-thin" x1="60" y1="250" x2="500" y2="250" />
+          <line class="cl-line-thin" x1="280" y1="250" x2="280" y2="36" />
+          <g>
+            <line class="cl-line" x1="228" y1="244" x2="228" y2="256" />
+            <line class="cl-line" x1="254" y1="244" x2="254" y2="256" />
+            <line class="cl-line" x1="306" y1="244" x2="306" y2="256" />
+            <line class="cl-line" x1="332" y1="244" x2="332" y2="256" />
+            <text class="cl-t cl-num cl-small" x="228" y="270" text-anchor="middle">-2</text>
+            <text class="cl-t cl-num cl-small" x="254" y="270" text-anchor="middle">-1</text>
+            <text class="cl-t cl-num cl-small" x="306" y="270" text-anchor="middle">1</text>
+            <text class="cl-t cl-num cl-small" x="332" y="270" text-anchor="middle">2</text>
+            <line class="cl-line" x1="274" y1="224" x2="286" y2="224" />
+            <line class="cl-line" x1="274" y1="198" x2="286" y2="198" />
+            <line class="cl-line" x1="274" y1="172" x2="286" y2="172" />
+            <text class="cl-t cl-num cl-small" x="266" y="228" text-anchor="end">1</text>
+            <text class="cl-t cl-num cl-small" x="266" y="202" text-anchor="end">2</text>
+            <text class="cl-t cl-num cl-small" x="266" y="176" text-anchor="end">3</text>
+          </g>
+          <g data-el="curve">
+            <polyline class="cl-line cl-stroke-a" points="228,146 241,191 254,224 267,243 280,250 293,243 306,224 319,191 332,146" />
+            <circle class="cl-stroke-a" cx="280" cy="250" r="6" fill="#2563EB" />
+          </g>
+          <text class="cl-t cl-num" data-el="yval" x="300" y="246">y = 0</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'ratio-beads' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
+          <circle class="cl-fill-c cl-line" cx="90" cy="90" r="12" />
+          <circle class="cl-fill-c cl-line" cx="126" cy="90" r="12" />
+          <text class="cl-t cl-num cl-small" x="90" y="94" text-anchor="middle">א</text>
+          <text class="cl-t cl-num cl-small" x="126" y="94" text-anchor="middle">א</text>
+          <rect class="cl-fill-a cl-stroke-a" x="150" y="78" width="24" height="24" />
+          <rect class="cl-fill-a cl-stroke-a" x="186" y="78" width="24" height="24" />
+          <rect class="cl-fill-a cl-stroke-a" x="222" y="78" width="24" height="24" />
+          <text class="cl-t cl-num cl-small" x="162" y="94" text-anchor="middle">כ</text>
+          <text class="cl-t cl-num cl-small" x="198" y="94" text-anchor="middle">כ</text>
+          <text class="cl-t cl-num cl-small" x="234" y="94" text-anchor="middle">כ</text>
+          <text class="cl-t cl-num" x="160" y="124" text-anchor="middle">2 : 3</text>
+          <g data-el="row2" style="opacity:0">
+            {[0, 1, 2, 3].map((i) => (
+              <g>
+                <circle class="cl-fill-c cl-line" cx={90 + i * 36} cy="180" r="12" />
+                <text class="cl-t cl-num cl-small" x={90 + i * 36} y="184" text-anchor="middle">א</text>
+              </g>
+            ))}
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <g>
+                <rect class="cl-fill-a cl-stroke-a" x={222 + i * 36} y="168" width="24" height="24" />
+                <text class="cl-t cl-num cl-small" x={234 + i * 36} y="184" text-anchor="middle">כ</text>
+              </g>
+            ))}
+          </g>
+          <text class="cl-t cl-num" data-el="tag2" x="250" y="214" text-anchor="middle" style="opacity:0">4 : 6</text>
+        </svg>
+      )
+    }
+    {
+      variant === 'neighbors' && (
+        <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={ariaLabels[variant]}>
+          <line class="cl-line" x1="80" y1="150" x2="480" y2="150" />
+          <line class="cl-line-thin" x1="160" y1="142" x2="160" y2="158" />
+          <line class="cl-line-thin" x1="280" y1="142" x2="280" y2="158" />
+          <line class="cl-line-thin" x1="400" y1="142" x2="400" y2="158" />
+          <text class="cl-t cl-num" x="160" y="182" text-anchor="middle">7</text>
+          <text class="cl-t cl-num cl-big" x="280" y="182" text-anchor="middle">8</text>
+          <text class="cl-t cl-num" x="400" y="182" text-anchor="middle">9</text>
+          <circle class="cl-stroke-a" data-el="glow" cx="280" cy="150" r="16" style="opacity:0" />
+          <g data-el="nbr" style="opacity:0">
+            <path class="cl-line" d="M140 196 H180" />
+            <path class="cl-line" d="M380 196 H420" />
+            <text class="cl-t" x="160" y="214" text-anchor="middle">שכן</text>
+            <text class="cl-t" x="400" y="214" text-anchor="middle">שכן</text>
+          </g>
         </svg>
       )
     }
@@ -1645,6 +2011,134 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'peri-rect' && (
         <p class="concept-loop__formula" dir="ltr">
           <span data-fx="0">6 + 4 + 6 + 4 = 20</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'signed-jump' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">−2 + 5 = 3</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'prime-rect' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">6 = 2×3, 7 ≠ □</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'sas-snap' && (
+        <p class="concept-loop__formula">
+          <span data-fx="0">צלע־זווית־צלע</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'obtuse-ht' && (
+        <p class="concept-loop__formula">
+          <span data-fx="0">הגובה פוגש את המשך הבסיס</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'box-vol' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">3 × 2 × 2 = 12</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'trap-area' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">(6 + 2) / 2 × 3 = 12</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'odd-pair' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">7 = 3×2 + 1</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'birds-sub' && (
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0">6 − 2 = 4</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'circ-unroll' && (
+        <p class="concept-loop__formula cl-num" dir="ltr">
+          <span data-fx="0">C = πd ≈ 3.14d</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'rect-count' && (
+        <p class="concept-loop__formula cl-num" dir="ltr">
+          <span data-fx="0">4×3 = 12, P = 14</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'l-split' && (
+        <p class="concept-loop__formula cl-num" dir="ltr">
+          <span data-fx="0">12 + 4 = 16</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'quad-tree' && (
+        <p class="concept-loop__formula">
+          <span data-fx="0">ריבוע יורש מלבן ומעוין</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'tri-sort' && (
+        <p class="concept-loop__formula">
+          <span data-fx="0">לפי אורך הצלעות</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'parab' && (
+        <p class="concept-loop__formula cl-num" dir="ltr">
+          <span data-fx="0">y = x² + 3</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'ratio-beads' && (
+        <p class="concept-loop__formula cl-num" dir="ltr">
+          <span data-fx="0">2:3 = 4:6</span>
+          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
+        </p>
+      )
+    }
+    {
+      variant === 'neighbors' && (
+        <p class="concept-loop__formula cl-num" dir="ltr">
+          <span data-fx="0">7 &lt; 8 &lt; 9</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
