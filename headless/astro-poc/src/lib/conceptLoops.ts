@@ -1552,6 +1552,132 @@ function renderNeighbors(root: LoopRoot, t: number) {
 }
 const NEIGHBORS_HOLD = 4.8;
 
+/* ═══════════════ L33 — signed-ops: (−3) + 2×4 = 5 (D = 10 s) ═══════════════ */
+
+function renderSignedOps(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'box'), ph(t, 0.7, 1.1) * fade);
+  op(q(root, 'eight'), ph(t, 1.4, 1.8) * (1 - ph(t, 2.6, 3.0)) * fade);
+  op(q(root, 'five'), ph(t, 2.8, 3.3) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const SIGNED_OPS_HOLD = 5.2;
+
+/* ═══════════════ L34 — clock-span: hour hand from 2 to 4 (D = 10 s) ═══════════════ */
+
+function renderClockSpan(root: LoopRoot, t: number) {
+  const p = ph(t, 1.0, 2.6) - ph(t, 8.2, 9.3);
+  const rad = ((60 + 60 * p) * Math.PI) / 180;
+  const hour = q(root, 'hour');
+  if (hour) {
+    hour.setAttribute('x2', String(r2(270 + 46 * Math.sin(rad))));
+    hour.setAttribute('y2', String(r2(156 - 46 * Math.cos(rad))));
+  }
+  const show = ph(t, 2.7, 3.1) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'arc'), show);
+  op(q(root, 'hrs'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.1, 3.5) * (1 - ph(t, 8.0, 8.6)));
+}
+const CLOCK_SPAN_HOLD = 5.0;
+
+/* ═══════════════ L35 — exterior: 90° + 60° = 150° (D = 10 s) ═══════════════
+   30-60-90 triangle. Exterior at the 30° vertex is exactly 150°. */
+
+function renderExterior(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'w90'), ph(t, 1.2, 1.8) * fade);
+  op(q(root, 'w60'), ph(t, 1.9, 2.5) * fade);
+  op(q(root, 'a90'), ph(t, 1.5, 1.9) * fade);
+  op(q(root, 'a60'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'a150'), ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const EXTERIOR_HOLD = 5.2;
+
+/* ═══════════════ L36 — para-perp: equal gaps of 80, and a right angle (D = 10 s) ═══════════════ */
+
+function renderParaPerp(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'gaps'), ph(t, 0.8, 1.4) * fade);
+  op(q(root, 'cross'), ph(t, 1.8, 2.3) * fade);
+  op(q(root, 'sq'), ph(t, 2.3, 2.7) * fade);
+  const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const PARA_PERP_HOLD = 5.2;
+
+/* ═══════════════ L37 — quarter-12: 1/4 of 12 is 3 (D = 10 s) ═══════════════
+   12 dots, step 36 px, radius 11. The first three are one quarter. */
+
+function renderQuarter12(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'mark'), ph(t, 1.2, 1.8) * fade);
+  op(q(root, 'count'), ph(t, 1.8, 2.2) * fade);
+  const show = ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+}
+const QUARTER12_HOLD = 4.8;
+
+/* ═══════════════ L38 — two-coins: 4 equally likely outcomes (D = 10 s) ═══════════════ */
+
+function renderTwoCoins(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'grid'), ph(t, 1.2, 1.8) * fade);
+  op(q(root, 'pick'), ph(t, 2.2, 2.7) * fade);
+  op(q(root, 'pick-lbl'), ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const TWO_COINS_HOLD = 5.2;
+
+/* ═══════════════ L39 — map-scale: 4 × 5 = 20 (D = 10 s) ═══════════════
+   Map bar is 40 px. Real bar is 5 copies, 200 px. */
+
+function renderMapScale(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const bar = q(root, 'real');
+  const grow = ph(t, 1.2, 2.6);
+  if (bar) bar.setAttribute('width', String(r2(200 * grow)));
+  op(bar, ph(t, 1.1, 1.3) * fade);
+  op(q(root, 'ticks'), ph(t, 2.4, 2.8) * fade);
+  op(q(root, 'real-lbl'), ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+}
+const MAP_SCALE_HOLD = 5.2;
+
+/* ═══════════════ L40 — unit-frac: equal wholes, 1/2 > 1/3 > 1/4 (D = 10 s) ═══════════════
+   Each bar is 180 px. Shaded widths are 90, 60 and 45. */
+
+function renderUnitFrac(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'h'), ph(t, 0.6, 1.1) * fade);
+  op(q(root, 't'), ph(t, 1.2, 1.7) * fade);
+  op(q(root, 'q'), ph(t, 1.8, 2.3) * fade);
+  op(q(root, 'labs'), ph(t, 2.2, 2.6) * fade);
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const UNIT_FRAC_HOLD = 5.0;
+
 /* ═══════════════ engine ═══════════════ */
 
 const SPECS = {
@@ -1604,6 +1730,14 @@ const SPECS = {
   parab: { duration: 10, hold: PARAB_HOLD, render: renderParab },
   'ratio-beads': { duration: 10, hold: RATIO_BEADS_HOLD, render: renderRatioBeads },
   neighbors: { duration: 10, hold: NEIGHBORS_HOLD, render: renderNeighbors },
+  'signed-ops': { duration: 10, hold: SIGNED_OPS_HOLD, render: renderSignedOps },
+  'clock-span': { duration: 10, hold: CLOCK_SPAN_HOLD, render: renderClockSpan },
+  exterior: { duration: 10, hold: EXTERIOR_HOLD, render: renderExterior },
+  'para-perp': { duration: 10, hold: PARA_PERP_HOLD, render: renderParaPerp },
+  'quarter-12': { duration: 10, hold: QUARTER12_HOLD, render: renderQuarter12 },
+  'two-coins': { duration: 10, hold: TWO_COINS_HOLD, render: renderTwoCoins },
+  'map-scale': { duration: 10, hold: MAP_SCALE_HOLD, render: renderMapScale },
+  'unit-frac': { duration: 10, hold: UNIT_FRAC_HOLD, render: renderUnitFrac },
 } as const;
 
 const MAX_LAPS = 4;
