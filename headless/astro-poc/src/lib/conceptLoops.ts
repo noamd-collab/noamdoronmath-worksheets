@@ -1415,8 +1415,8 @@ function renderBirdsSub(root: LoopRoot, t: number) {
 }
 const BIRDS_SUB_HOLD = 5.0;
 
-/* ═══════════════ L25 — circ-unroll: circumference ≈ 3 diameters (D = 10 s) ═══════════════
-   Scale: diameter = 70 px. The straight line is 3 × 70 = 210 px. */
+/* ═══════════════ L25 — circ-unroll: circumference = πd (D = 10 s) ═══════════════
+   Scale: diameter = 70 px. Three full diameters are 210 px, then πd − 3d ≈ 9.9 px. */
 
 function renderCircUnroll(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
@@ -1426,8 +1426,11 @@ function renderCircUnroll(root: LoopRoot, t: number) {
     draw(seg, ph(t, 1.1 + i * 0.55, 1.7 + i * 0.55));
     op(q(root, `sd${i}`), ph(t, 1.6 + i * 0.55, 2.0 + i * 0.55) * fade);
   }
+  const extra = q(root, 'extra');
+  op(extra, ph(t, 2.6, 3.0) * fade);
+  draw(extra, ph(t, 2.7, 3.1));
+  op(q(root, 'extra-lbl'), ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
   const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
-  op(q(root, 'approx'), show);
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
   op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));

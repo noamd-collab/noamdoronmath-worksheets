@@ -127,7 +127,7 @@ const ariaLabels: Record<string, string> = {
   'trap-area': 'הדגמה: בטרפז, ממוצע שני הבסיסים כפול הגובה נותן את השטח.',
   'odd-pair': 'הדגמה: נקודות נכנסות לזוגות, ושארית של נקודה אחת אומרת אי־זוגי.',
   'birds-sub': 'הדגמה: מ־6 ציפורים עפות 2, ונשארות 4.',
-  'circ-unroll': 'הדגמה: היקף המעגל נפרש לקו, והקו באורך של בערך שלושה קטרים.',
+  'circ-unroll': 'הדגמה: היקף המעגל נפרש לקו, והקו ארוך קצת משלושה קטרים.',
   'rect-count': 'הדגמה: במלבן סופרים משבצות לשטח, ובנפרד את השפה להיקף.',
   'l-split': 'הדגמה: צורת L נפרדת לשני מלבנים, 12 ועוד 4 שווה 16, והחלקים חוזרים.',
   'quad-tree': 'הדגמה: מעץ המרובעים, ריבוע יורש גם מלבן וגם מעוין.',
@@ -1472,10 +1472,11 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <line class="cl-line" data-el="seg0" x1="230" y1="230" x2="300" y2="230" pathLength="1" style="opacity:0" />
           <line class="cl-line" data-el="seg1" x1="300" y1="230" x2="370" y2="230" pathLength="1" style="opacity:0" />
           <line class="cl-line" data-el="seg2" x1="370" y1="230" x2="440" y2="230" pathLength="1" style="opacity:0" />
+          <line class="cl-hl-c" data-el="extra" x1="440" y1="230" x2="449.9" y2="230" pathLength="1" stroke-width="4" style="opacity:0" />
           <text class="cl-t cl-num" data-el="sd0" x="265" y="252" text-anchor="middle" style="opacity:0">d</text>
           <text class="cl-t cl-num" data-el="sd1" x="335" y="252" text-anchor="middle" style="opacity:0">d</text>
           <text class="cl-t cl-num" data-el="sd2" x="405" y="252" text-anchor="middle" style="opacity:0">d</text>
-          <text class="cl-t cl-num" data-el="approx" x="335" y="278" text-anchor="middle" style="opacity:0">≈ 3d</text>
+          <text class="cl-t cl-num cl-small" data-el="extra-lbl" x="468" y="226" text-anchor="start" style="opacity:0">0.14d</text>
         </svg>
       )
     }
@@ -1572,6 +1573,22 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <line class="cl-line-thin" x1="60" y1="250" x2="500" y2="250" />
           <line class="cl-line-thin" x1="280" y1="250" x2="280" y2="36" />
+          <g>
+            <line class="cl-line" x1="228" y1="244" x2="228" y2="256" />
+            <line class="cl-line" x1="254" y1="244" x2="254" y2="256" />
+            <line class="cl-line" x1="306" y1="244" x2="306" y2="256" />
+            <line class="cl-line" x1="332" y1="244" x2="332" y2="256" />
+            <text class="cl-t cl-num cl-small" x="228" y="270" text-anchor="middle">-2</text>
+            <text class="cl-t cl-num cl-small" x="254" y="270" text-anchor="middle">-1</text>
+            <text class="cl-t cl-num cl-small" x="306" y="270" text-anchor="middle">1</text>
+            <text class="cl-t cl-num cl-small" x="332" y="270" text-anchor="middle">2</text>
+            <line class="cl-line" x1="274" y1="224" x2="286" y2="224" />
+            <line class="cl-line" x1="274" y1="198" x2="286" y2="198" />
+            <line class="cl-line" x1="274" y1="172" x2="286" y2="172" />
+            <text class="cl-t cl-num cl-small" x="266" y="228" text-anchor="end">1</text>
+            <text class="cl-t cl-num cl-small" x="266" y="202" text-anchor="end">2</text>
+            <text class="cl-t cl-num cl-small" x="266" y="176" text-anchor="end">3</text>
+          </g>
           <g data-el="curve">
             <polyline class="cl-line cl-stroke-a" points="228,146 241,191 254,224 267,243 280,250 293,243 306,224 319,191 332,146" />
             <circle class="cl-stroke-a" cx="280" cy="250" r="6" fill="#2563EB" />
@@ -2052,7 +2069,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'circ-unroll' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">C ≈ 3d</span>
+          <span data-fx="0">C = πd ≈ 3.14d</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
