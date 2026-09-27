@@ -1799,13 +1799,8 @@ function renderSqStretch(root: LoopRoot, t: number) {
   const w = r2(100 + 80 * p);
   const box = q(root, 'box');
   if (box) box.setAttribute('width', String(w));
-  const x = r2(280 + 80 * p);
-  const c1 = q(root, 'c1');
-  const c2 = q(root, 'c2');
-  if (c1) c1.setAttribute('cx', String(x));
-  if (c2) c2.setAttribute('cx', String(x));
   const show = ph(t, 2.7, 3.1) * (1 - ph(t, 8.0, 8.6));
-  op(q(root, 'four'), show);
+  op(q(root, 'sides'), show);
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
   op(fxs[1], ph(t, 3.1, 3.5) * (1 - ph(t, 8.0, 8.6)));
