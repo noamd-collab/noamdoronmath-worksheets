@@ -38,3 +38,4 @@ reports/
 # Claude Design handoff (spec only; do not import)
 design_handoff_noam_site/
 
+public/build-stamp.json
