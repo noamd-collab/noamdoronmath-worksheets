@@ -2186,7 +2186,7 @@ function setupLoop(root: LoopRoot) {
   window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applyMotionPrefs);
   new MutationObserver(applyMotionPrefs).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['class'],
+    attributeFilter: ['class', 'data-motion'],
   });
 
   applyMotionPrefs();
