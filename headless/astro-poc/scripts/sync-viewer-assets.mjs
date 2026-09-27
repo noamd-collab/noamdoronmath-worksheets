@@ -387,6 +387,51 @@ if (!html.includes('pdfZoom / .7')) {
   throw new Error('Failed to apply live GitHub mobile getPdfPageWidth');
 }
 
+// Claude's approved student-screen design is a Headless-only presentation
+// layer. Keep the GitHub viewer and its PDF/Noam AI handlers untouched.
+const designCss = '<link rel="stylesheet" href="/claude-viewer.css?v=2">';
+const designJs = '<script src="/claude-viewer.js?v=2" defer></script>';
+if (!html.includes(designCss)) {
+  html = html.replace('</head>', `${designCss}\n</head>`);
+}
+if (!html.includes('class="nd-claude-viewer"')) {
+  html = html.replace('<body>', '<body class="nd-claude-viewer">');
+}
+if (!html.includes('id="ramziToolbar"')) {
+  html = html.replace(
+    '<div class="header-actions">',
+    '<div class="header-actions">\n' +
+    '  <button class="btn ramzi-toolbar" id="ramziToolbar" type="button" aria-controls="panel" aria-expanded="false" disabled>' +
+    'עזרה מרמזי</button>'
+  );
+}
+if (!html.includes('id="ramziTabs"')) {
+  html = html.replace(
+    '<main class="stage"',
+    '<nav class="ramzi-tabs" id="ramziTabs" aria-label="מעבר בין דף העבודה לעזרה">' +
+    '<button id="ramziPageTab" type="button" aria-current="page">דף העבודה</button>' +
+    '<button id="ramziHelpTab" type="button" aria-controls="panel" disabled>עזרה מרמזי</button>' +
+    '</nav>\n<main class="stage"'
+  );
+}
+html = html.replace(
+  'var mobileLayout = window.matchMedia("(max-width:900px)");',
+  'var mobileLayout = window.matchMedia("(max-width:999px), (max-height:639px)");'
+);
+html = html.replace(
+  '<span aria-hidden="true">🤖</span>\n\n        <b id="noamPanelTitle">\n          נועם AI\n        </b>',
+  '<img class="ramzi-avatar" id="ramziAvatar" src="/ramzi/ramzi-A-idle.svg" width="44" height="44" alt="" aria-hidden="true">\n\n' +
+  '        <b id="noamPanelTitle">רמזי <small>נועם AI</small></b>'
+);
+html = html.replace('aria-labelledby="noamPanelTitle"', 'aria-label="רמזי, עזרה בדף העבודה"');
+if (!html.includes(designJs)) {
+  html = html.replace('</body>', `${designJs}\n</body>`);
+}
+for (const marker of [designCss, designJs, 'id="ramziToolbar"', 'id="ramziTabs"',
+  'id="ramziAvatar"', 'max-height:639px']) {
+  if (!html.includes(marker)) throw new Error('Claude viewer adapter failed: ' + marker);
+}
+
 writeFileSync(viewerPath, html);
 
 const learningPath = join(pub, 'learning.html');

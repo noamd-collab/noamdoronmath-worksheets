@@ -1,0 +1,339 @@
+/* Headless-only student worksheet console, based on Claude Design's approved
+   Student Worksheet Preview (27 Sep 2026). PDF and Noam AI behavior stay in
+   the source viewer; this file only changes its presentation. */
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+body.nd-claude-viewer{
+  --ink:#22305a;
+  --accent:#2a7c7a;
+  --accent-dark:#1e605e;
+  --on-accent:#fff;
+  --tint:#eaf4f3;
+  --paper:#fbfaf5;
+  --grid:rgba(34,48,90,.065);
+  --muted:#3d4870;
+  --r:14px;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+  font-family:Heebo,Assistant,Arial,sans-serif;
+}
+body.nd-claude-viewer :where(a,button,input,textarea,[tabindex]):focus-visible{
+  outline:3px solid #e6a534;
+  outline-offset:2px;
+}
+body.nd-claude-viewer .bar{
+  border-bottom:2px solid var(--ink);
+  background:#fff;
+}
+body.nd-claude-viewer .bar h1,
+body.nd-claude-viewer .panel-head b,
+body.nd-claude-viewer .noam-glossary-detail h2{
+  font-family:'Secular One',Heebo,sans-serif;
+  font-weight:400;
+}
+body.nd-claude-viewer .bar h1{font-size:21px}
+body.nd-claude-viewer .chip,
+body.nd-claude-viewer .level-link,
+body.nd-claude-viewer .btn,
+body.nd-claude-viewer .noam-action,
+body.nd-claude-viewer .noam-send,
+body.nd-claude-viewer .panel-back{
+  border-width:2px;
+  border-radius:12px 5px 13px 6px;
+  box-shadow:3px 3px 0 rgba(34,48,90,.15);
+}
+body.nd-claude-viewer .btn{min-height:44px}
+body.nd-claude-viewer .ramzi-toolbar{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  background:#fff;
+  color:var(--ink);
+  white-space:nowrap;
+}
+body.nd-claude-viewer .ramzi-toolbar::before{
+  content:'';
+  flex:none;
+  display:block;
+  width:28px;
+  height:28px;
+  background:url('/ramzi/ramzi-A-idle.svg') center/contain no-repeat;
+}
+body.nd-claude-viewer .ramzi-toolbar:disabled,
+body.nd-claude-viewer .ramzi-tabs button:disabled{opacity:.5;cursor:not-allowed}
+body.nd-claude-viewer .pdfwrap{padding:12px}
+body.nd-claude-viewer .pdf-surface{
+  border:2px solid var(--ink);
+  border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
+  box-shadow:4px 4px 0 rgba(34,48,90,.15);
+}
+body.nd-claude-viewer .panel{
+  width:clamp(360px,32vw,460px);
+  max-width:none;
+  padding:0;
+  border-right:2px solid var(--ink);
+}
+body.nd-claude-viewer .panel-in{
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  background:#fff;
+}
+body.nd-claude-viewer .panel-head{
+  min-height:62px;
+  padding:8px 13px;
+  background:#eaf4f3;
+  border-bottom:2px solid var(--ink);
+}
+body.nd-claude-viewer .ramzi-avatar{display:block;flex:none;width:44px;height:44px;object-fit:contain}
+body.nd-claude-viewer .ramzi-avatar.is-thinking{animation:ramzi-bob 1.6s ease-in-out infinite}
+@keyframes ramzi-bob{50%{transform:translateY(-1.6px)}}
+body.nd-claude-viewer .panel-head b{font-size:20px;line-height:1.05}
+body.nd-claude-viewer .panel-head b small{
+  display:block;
+  font:700 10px/1.3 Heebo,sans-serif;
+  color:#1e605e;
+}
+body.nd-claude-viewer .panel-badge{
+  background:#fff;
+  color:#1e605e;
+  border:1px solid #2a7c7a;
+  font-size:11px;
+}
+body.nd-claude-viewer .panel-close{min-width:44px;min-height:44px}
+body.nd-claude-viewer .panel-body{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  gap:8px;
+  padding:12px;
+}
+body.nd-claude-viewer .panel-body>*{flex-shrink:0}
+body.nd-claude-viewer .panel-body.is-chat{overflow-y:auto}
+body.nd-claude-viewer .noam-picked{
+  background:#fdf3de;
+  border:2px solid var(--ink);
+  border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
+  margin:0;
+  padding:10px 12px;
+}
+body.nd-claude-viewer .noam-picked-label{font-size:15px}
+body.nd-claude-viewer .noam-picked-text{color:#3d4870}
+body.nd-claude-viewer .noam-picked-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+body.nd-claude-viewer .noam-preview-toggle{display:none!important}
+body.nd-claude-viewer .ramzi-context-toggle{
+  flex:none;
+  min-height:36px;
+  padding:4px 9px;
+  color:#22305a;
+  background:#fff;
+  border:1.5px solid #22305a;
+  border-radius:12px 5px 13px 6px;
+  font:700 12px Heebo,sans-serif;
+  cursor:pointer;
+}
+body.nd-claude-viewer .noam-picked:not(.ramzi-expanded) .noam-picked-preview{display:none!important}
+body.nd-claude-viewer .noam-picked:not(.ramzi-expanded) .noam-picked-text{
+  max-height:24px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+body.nd-claude-viewer .noam-picked.ramzi-expanded .noam-picked-preview:not([hidden]){display:block}
+body.nd-claude-viewer .noam-thread-tools{margin:0}
+body.nd-claude-viewer .noam-link-button{min-height:36px;color:#1e605e}
+body.nd-claude-viewer .noam-transcript{
+  flex:1 1 auto;
+  min-height:160px;
+  max-height:none;
+  padding:8px 3px 12px;
+  gap:10px;
+}
+body.nd-claude-viewer .noam-transcript.is-empty{
+  flex:1 1 auto;
+  min-height:160px;
+  max-height:none;
+  display:grid;
+  place-items:center;
+  color:#3d4870;
+  font-size:15px;
+}
+body.nd-claude-viewer .noam-transcript.is-empty::before{content:'על מה נעבוד בשאלה הזו?'}
+body.nd-claude-viewer .noam-bubble{font-size:15px;line-height:1.65}
+body.nd-claude-viewer .noam-row.user .noam-bubble{
+  background:#22305a;
+  border-color:#22305a;
+  color:#fff;
+  border-radius:16px 16px 16px 4px;
+}
+body.nd-claude-viewer .noam-row.assistant .noam-bubble{
+  background:#fff;
+  border:2px solid #22305a;
+  color:#22305a;
+  border-radius:16px 16px 4px 16px;
+}
+body.nd-claude-viewer .noam-row.assistant:has(.noam-retry-action) .noam-bubble{
+  border-color:#a84434;
+  background:#fff8f6;
+}
+body.nd-claude-viewer .noam-row.assistant .noam-bubble.thinking{background:#eaf4f3}
+body.nd-claude-viewer .noam-term{
+  color:#1e605e;
+  text-decoration-style:dotted;
+  text-decoration-thickness:2px;
+}
+body.nd-claude-viewer .noam-action.primary{
+  background:#e6a534;
+  color:#22305a;
+}
+body.nd-claude-viewer .noam-input-shell,
+body.nd-claude-viewer .noam-glossary-popover{
+  border:2px solid #22305a;
+  border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
+  box-shadow:4px 4px 0 rgba(34,48,90,.12);
+}
+body.nd-claude-viewer .noam-input-actions .noam-action,
+body.nd-claude-viewer .noam-math-toggle,
+body.nd-claude-viewer .noam-attach-button{
+  min-height:40px;
+  border:1.5px solid #22305a;
+  box-shadow:none;
+  font-size:12px;
+}
+body.nd-claude-viewer .noam-math-toggle,
+body.nd-claude-viewer .noam-attach-button{min-width:40px}
+body.nd-claude-viewer .noam-math-key{min-height:44px}
+body.nd-claude-viewer .noam-compose textarea{font:400 16px/1.5 Heebo,Assistant,sans-serif}
+body.nd-claude-viewer .noam-send{
+  min-height:44px;
+  background:#1e605e;
+  color:#fff;
+  margin-top:8px;
+}
+body.nd-claude-viewer .noam-compose{position:sticky;bottom:-12px;z-index:2;padding:5px 0 8px;background:#fff}
+body.nd-claude-viewer .noam-question-list button{
+  min-height:44px;
+  border:2px solid #22305a;
+  border-radius:12px 5px 13px 6px;
+  box-shadow:3px 3px 0 rgba(34,48,90,.12);
+  background:#fff;
+  font-size:14px;
+}
+body.nd-claude-viewer .pdf-page .noam-exercise-pin{
+  width:36px;
+  height:36px;
+  min-width:36px;
+  color:transparent;
+  font-size:0;
+  background:#fff url('/ramzi/ramzi-A-idle.svg') center/29px no-repeat;
+  border:2px solid #22305a;
+  border-radius:12px 5px 13px 6px;
+  box-shadow:2px 2px 0 rgba(34,48,90,.2);
+}
+body.nd-claude-viewer .pdf-page .noam-exercise-pin.is-active{
+  background-color:#fdf3de;
+  border-color:#e6a534;
+}
+body.nd-claude-viewer .pdf-page .noam-exercise-pin::after{color:#22305a;font-size:11px}
+body.nd-claude-viewer .fab{display:none!important}
+body.nd-claude-viewer .ramzi-tabs{display:none}
+html.nd-motion-off body.nd-claude-viewer .ramzi-avatar,
+html.nd-motion-off body.nd-claude-viewer .noam-thinking-dots span,
+html.nd-motion-off body.nd-claude-viewer *,
+html.nd-motion-off body.nd-claude-viewer *::before,
+html.nd-motion-off body.nd-claude-viewer *::after{
+  animation:none!important;
+  transition:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  body.nd-claude-viewer .ramzi-avatar,
+  body.nd-claude-viewer .noam-thinking-dots span{animation:none!important}
+}
+
+@media(max-width:999px), (max-height:639px){
+  html:has(body.nd-claude-viewer){height:100%;overflow:hidden}
+  body.nd-claude-viewer{height:100vh;height:100dvh;overflow:hidden}
+  body.nd-claude-viewer .ramzi-tabs{
+    position:fixed;
+    z-index:70;
+    top:var(--noam-viewport-top,0px);
+    inset-inline:0;
+    height:48px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    background:#fff;
+    border-bottom:2px solid #22305a;
+  }
+  body.nd-claude-viewer .ramzi-tabs button{
+    min-width:0;
+    min-height:44px;
+    background:#fff;
+    color:#22305a;
+    border:0;
+    font:700 14px Heebo,sans-serif;
+    cursor:pointer;
+  }
+  body.nd-claude-viewer .ramzi-tabs button[aria-current="page"]{
+    background:#eaf4f3;
+    box-shadow:inset 0 -4px #2a7c7a;
+  }
+  body.nd-claude-viewer .bar{
+    margin-top:48px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:5px 8px;
+    padding:6px 10px;
+  }
+  body.nd-claude-viewer .bar h1{grid-column:1;grid-row:1;min-width:0;font-size:17px}
+  body.nd-claude-viewer .bar .spacer{display:none}
+  body.nd-claude-viewer .context-chips{display:contents}
+  body.nd-claude-viewer .chip{grid-column:2;grid-row:1;font-size:11px;min-height:28px}
+  body.nd-claude-viewer .level-switch{grid-column:1/-1;grid-row:2;flex-wrap:nowrap}
+  body.nd-claude-viewer .level-link{flex:1;min-height:44px;font-size:12px;box-shadow:none}
+  body.nd-claude-viewer .header-actions{grid-column:1/-1;grid-row:3;display:flex;gap:6px}
+  body.nd-claude-viewer .header-actions .btn{flex:1;min-width:0;min-height:44px;padding:6px;font-size:12px;text-align:center;box-shadow:none}
+  body.nd-claude-viewer .header-actions #rawBtn,
+  body.nd-claude-viewer .header-actions .topic-back,
+  body.nd-claude-viewer .header-actions .ramzi-toolbar{display:none}
+  body.nd-claude-viewer .stage{min-height:0;overflow:hidden}
+  body.nd-claude-viewer .pdfwrap{padding:4px;min-height:0}
+  body.nd-claude-viewer .pdf-surface{border-width:1px;border-radius:8px;box-shadow:none}
+  body.nd-claude-viewer .panel{
+    position:fixed;
+    z-index:50;
+    inset-inline:0;
+    top:calc(var(--noam-viewport-top,0px) + 48px);
+    width:100%;
+    max-width:none;
+    height:calc(var(--noam-viewport-height,100dvh) - 48px);
+    padding:4px max(4px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(4px,env(safe-area-inset-left));
+    background:#fbfaf5;
+    border:0;
+  }
+  body.nd-claude-viewer .panel-in{border:1px solid #22305a;border-radius:10px}
+  body.nd-claude-viewer .panel-head{min-height:52px;padding:4px 8px}
+  body.nd-claude-viewer .ramzi-avatar{width:36px;height:36px}
+  body.nd-claude-viewer .panel-head b{font-size:17px}
+  body.nd-claude-viewer .panel-badge{display:none}
+  body.nd-claude-viewer .panel-body{min-height:0;overflow:auto;padding:8px;gap:5px}
+  body.nd-claude-viewer .noam-picked{padding:7px 9px}
+  body.nd-claude-viewer .noam-picked-text{max-height:60px;overflow:auto}
+  body.nd-claude-viewer .noam-transcript,
+  body.nd-claude-viewer .noam-transcript.is-empty{flex:1 1 auto;min-height:160px;max-height:none;overflow:auto}
+  body.nd-claude-viewer .noam-compose{flex:none;background:#fff}
+  body.nd-claude-viewer .noam-compose textarea{min-height:48px;max-height:80px;resize:none}
+  body.nd-claude-viewer .noam-input-actions .noam-action{min-height:40px}
+  body.nd-claude-viewer .pdf-page .noam-exercise-pin{width:44px;height:44px;background-size:36px}
+  body.nd-claude-viewer .pdf-page .noam-exercise-pin::after{display:none}
+  body.nd-claude-viewer .panel.is-short .noam-transcript{min-height:96px}
+  body.nd-claude-viewer.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+  body.nd-claude-viewer.noam-panel-open #noam-accessibility{
+    visibility:hidden;
+    pointer-events:none;
+  }
+}
+@media(max-width:900px){
+  body.nd-claude-viewer .panel{top:calc(var(--noam-viewport-top,0px) + 48px);height:calc(var(--noam-viewport-height,100dvh) - 48px)}
+}
