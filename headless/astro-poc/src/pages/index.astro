@@ -2,7 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PlaneFlight from '../components/PlaneFlight.astro';
 import HomeMarginArt from '../components/HomeMarginArt.astro';
-import ConceptLoop from '../components/ConceptLoop.astro';
+import MathWidget from '../components/MathWidget.astro';
+import GenieMark from '../components/GenieMark.astro';
+import HomeV2Fx from '../components/HomeV2Fx.astro';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 
 const home = loadHomePage();
@@ -15,6 +17,15 @@ const gradeDoodles: Record<number, string> = {
   4: 'kite',
   5: 'geometry-fish',
   6: 'cube-plant',
+};
+
+const gradeTl: Record<number, string> = {
+  1: 'א׳',
+  2: 'ב׳',
+  3: 'ג׳',
+  4: 'ד׳',
+  5: 'ה׳',
+  6: 'ו׳',
 };
 
 const valueArt: Record<string, { src: string; bg: string }> = {
@@ -55,7 +66,7 @@ const middle = home.grades.filter((g) => g.grade >= 7);
     <section class="home-hero" aria-labelledby="home-title">
       <div class="home-hero__demo" data-pop="0">
         <div class="home-hero__panel home-hero__panel--elem">
-          <ConceptLoop variant="triangle" />
+          <MathWidget variant="triangle" mode="loop" family="elem" />
         </div>
         <img
           class="home-hero__doodle home-hero__doodle--kite"
@@ -99,50 +110,147 @@ const middle = home.grades.filter((g) => g.grade >= 7);
     </section>
 
     <section class="home-grades" aria-labelledby="home-grades-title" data-home-grades>
-      <h2 class="home-section__title" id="home-grades-title">בחרו כיתה והתחילו לתרגל</h2>
+      <div class="home-grades__cat" data-doodle="cat" aria-hidden="true">
+        <img
+          src="/brand/doodles/sleeping-cat.svg"
+          alt=""
+          width="120"
+          height="90"
+          loading="lazy"
+          decoding="async"
+        />
+        <span data-zzz="0" class="home-grades__zzz home-grades__zzz--0">Z</span>
+        <span data-zzz="1" class="home-grades__zzz home-grades__zzz--1">Z</span>
+        <span data-zzz="2" class="home-grades__zzz home-grades__zzz--2">Z</span>
+      </div>
+      <h2 class="home-grades__title" id="home-grades-title">
+        <span class="home-grades__w home-grades__w--1">בחרו</span>
+        <span class="home-grades__w home-grades__w--2">כיתה</span>
+        <span class="home-grades__w home-grades__w--3">והתחילו</span>
+        <span class="home-grades__w home-grades__w--4">
+          לתרגל
+          <svg
+            class="home-grades__wave"
+            viewBox="0 0 120 16"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              data-grades-wave
+              pathLength="1"
+              d="M3 9 Q 18 2, 33 9 T 63 9 T 93 9 T 117 7"
+              fill="none"
+              stroke="#e6a534"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-dasharray="1"
+              stroke-dashoffset="1"
+            ></path>
+          </svg>
+        </span>
+        <span class="home-grades__w home-grades__w--bang">!</span>
+      </h2>
       <p class="home-section__lede">דפי עבודה בחינם לכיתות א׳–ט׳</p>
-      <img
-        class="home-grades__cat"
-        src="/brand/doodles/curious-cat.webp"
-        alt=""
-        width="130"
-        height="130"
-        loading="lazy"
-        decoding="async"
-        aria-hidden="true"
-      />
       <ul class="home-grades__grid home-grades__grid--elem">
         {
-          elementary.map((g) => (
-            <li>
-              <a class="home-grade home-grade--elem" href={g.href} data-home-grade={g.grade}>
-                <span class="home-grade__kicker">כיתה</span>
-                <span class="home-grade__label">{g.label.replace(/^כיתה\s*/, '')}</span>
-                {gradeDoodles[g.grade] && (
-                  <img
-                    class="home-grade__doodle"
-                    src={`/brand/doodles/${gradeDoodles[g.grade]}.webp`}
-                    alt=""
-                    width="58"
-                    height="58"
-                    loading="lazy"
-                    decoding="async"
-                    aria-hidden="true"
-                  />
-                )}
-              </a>
-            </li>
-          ))
+          elementary.map((g) => {
+            const letter = gradeTl[g.grade] || g.label.replace(/^כיתה\s*/, '');
+            const doodle = gradeDoodles[g.grade];
+            return (
+              <li>
+                <a
+                  class="home-grade home-grade--elem"
+                  href={g.href}
+                  data-home-grade={g.grade}
+                  data-peek="elem"
+                  data-tl={letter}
+                >
+                  <span class="home-grade__kicker">כיתה</span>
+                  <span class="home-grade__label">{letter}</span>
+                  {doodle && (
+                    <span
+                      class="home-grade__doodle"
+                      data-tileimg
+                      style={`background-image:url(/brand/doodles/${doodle}.webp)`}
+                      aria-hidden="true"
+                    >
+                      {g.grade === 1 && (
+                        <span data-water class="home-grade__water">
+                          <svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true">
+                            <path
+                              d="M0 6 q5 -4 10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0"
+                              fill="none"
+                              stroke="#2a7c7a"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-dasharray="12 8"
+                              opacity=".75"
+                            ></path>
+                            <path
+                              d="M5 15 q5 -4 10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0 t10 0"
+                              fill="none"
+                              stroke="#2a7c7a"
+                              stroke-width="1.6"
+                              stroke-linecap="round"
+                              stroke-dasharray="6 14"
+                              opacity=".55"
+                            ></path>
+                          </svg>
+                        </span>
+                      )}
+                      {g.grade === 2 && <span data-wink class="home-grade__wink home-grade__wink--snail"></span>}
+                      {g.grade === 5 && (
+                        <>
+                          <span data-wink class="home-grade__wink home-grade__wink--fish"></span>
+                          <span data-bub class="home-grade__bub" style="--bub:0"></span>
+                          <span data-bub class="home-grade__bub" style="--bub:1"></span>
+                          <span data-bub class="home-grade__bub" style="--bub:2"></span>
+                        </>
+                      )}
+                      {g.grade === 6 && (
+                        <>
+                          <svg data-ice class="home-grade__ice" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                            <polygon points="46,30.7 65.4,32.7 57,39.3 37.1,36.7" fill="rgba(200,232,248,.8)"></polygon>
+                            <polygon points="37.1,36.7 57,39.3 58.6,59.2 39.2,56.4" fill="rgba(160,212,240,.7)"></polygon>
+                            <polygon points="57,39.3 65.4,32.7 66.6,52.6 58.6,59.2" fill="rgba(120,190,230,.7)"></polygon>
+                            <polygon points="39,56.4 65.4,57.8 55.6,65 30.9,62.2" fill="rgba(200,232,248,.8)"></polygon>
+                            <polygon points="30.9,62.2 55.6,65 55.6,88 31.9,83.7" fill="rgba(160,212,240,.7)"></polygon>
+                            <polygon points="55.6,65 65.4,57.8 65.6,80 55.6,88" fill="rgba(120,190,230,.7)"></polygon>
+                          </svg>
+                          <span data-drop class="home-grade__drop" style="--dx:33%;--dy:84%"></span>
+                          <span data-drop class="home-grade__drop" style="--dx:55.6%;--dy:87.5%"></span>
+                          <span data-drop class="home-grade__drop" style="--dx:65.6%;--dy:79.5%"></span>
+                          <span data-puddle class="home-grade__puddle"></span>
+                        </>
+                      )}
+                    </span>
+                  )}
+                  {g.grade === 3 && (
+                    <span data-meow class="home-grade__meow" aria-hidden="true">מיאו!</span>
+                  )}
+                </a>
+              </li>
+            );
+          })
         }
       </ul>
       <ul class="home-grades__grid home-grades__grid--mid">
         {
           middle.map((g) => (
             <li>
-              <a class="home-grade home-grade--mid" href={g.href} data-home-grade={g.grade}>
-                <span class="home-grade__label">{g.label}</span>
+              <a
+                class="home-grade home-grade--mid"
+                href={g.href}
+                data-home-grade={g.grade}
+                data-peek="mid"
+                data-tl="mid"
+              >
+                <span class="home-grade__label">{g.label.replace(/^חטיבה\s*/, '')}</span>
                 {g.ai && g.aiLabel && (
-                  <span class="home-grade__ai">{g.aiLabel}</span>
+                  <span class="home-grade__ai" data-lamp>
+                    {g.aiLabel}
+                    <GenieMark />
+                  </span>
                 )}
               </a>
             </li>
@@ -185,6 +293,20 @@ const middle = home.grades.filter((g) => g.grade >= 7);
 
     <section class="home-duo" aria-label="הלמידה שלי ווואטסאפ">
       <div class="home-learning" aria-labelledby="home-learning-title" data-home-learning>
+        <div class="home-learning__robot" data-doodle="robot" dir="ltr" aria-hidden="true">
+          <div class="home-learning__robot-frame">
+            <img
+              src="/brand/notebook-doodles-v1.webp"
+              alt=""
+              width="300"
+              height="200"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="home-learning__plane-cover"></span>
+          </div>
+          <span class="home-learning__plane" data-plane></span>
+        </div>
         <h2 class="home-section__title" id="home-learning-title">הלמידה שלי</h2>
         <div class="home-learning__actions">
           <a class="cta cta--secondary" href={home.learning.googleHref} data-home-google data-peek="google">
@@ -224,7 +346,18 @@ const middle = home.grades.filter((g) => g.grade >= 7);
           </figure>
         </div>
         <p class="home-whatsapp__note">{home.whatsapp.note}</p>
+        <div class="home-whatsapp__boat" data-doodle="boat" aria-hidden="true">
+          <img
+            src="/brand/doodles/paper-boat.webp"
+            alt=""
+            width="130"
+            height="90"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
       </section>
     </section>
   </main>
+  <HomeV2Fx />
 </BaseLayout>

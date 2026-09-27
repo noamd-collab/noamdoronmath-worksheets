@@ -2,7 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
-import ConceptLoop from './ConceptLoop.astro';
+import MathWidget from './MathWidget.astro';
+import type { MathWidgetVariant } from './MathWidget.astro';
 import topicFamilies from '../data/topicFamilies.json';
 import {
   loadTopicPage,
@@ -108,9 +109,22 @@ const loopVariant =
   slug !== 'triangle-area-grade-7' && family
     ? FAMILY_LOOP[family as keyof typeof FAMILY_LOOP]
     : undefined;
+/** ConceptLoop engine → MathWidget design variant (chrome + loop mapping). */
+const LOOP_TO_MATH: Partial<Record<NonNullable<typeof loopVariant>, MathWidgetVariant>> = {
+  triangle: 'triangle',
+  pythagoras: 'exterior',
+  'area-model': 'areaModel',
+  tenframes: 'tenframes',
+  balance: 'balance',
+  sticks: 'array',
+  pattern: 'fractions',
+  bars: 'fractions',
+  numberline: 'array',
+};
+const mathVariant = loopVariant ? LOOP_TO_MATH[loopVariant] : undefined;
 // pair the card with the intro paragraph (pulled out of the body flow)
 const loopIntro =
-  loopVariant && bodyUnits[0]?.kind === 'intro' ? bodyUnits[0].text : null;
+  mathVariant && bodyUnits[0]?.kind === 'intro' ? bodyUnits[0].text : null;
 const flowUnits = loopIntro ? bodyUnits.slice(1) : bodyUnits;
 
 function faqHeadingId(groupIndex: number) {
@@ -133,9 +147,9 @@ function faqHeadingId(groupIndex: number) {
     data-topic-slug={page.slug}
   >
     <nav class="topic-page__crumbs" aria-label="מיקום">
-      <a href="/">בית</a>
+      <a href="/" data-peek="home">בית</a>
       <span aria-hidden="true">/</span>
-      <a href={page.gradeHubHref}>{gradeCrumbLabel}</a>
+      <a href={page.gradeHubHref} data-peek={page.grade <= 6 ? 'elem' : 'mid'}>{gradeCrumbLabel}</a>
       <span aria-hidden="true">/</span>
       <span aria-current="page">{page.h1}</span>
     </nav>
@@ -167,14 +181,18 @@ function faqHeadingId(groupIndex: number) {
 
     {/* FAMILIES-B1: family loop card beside the intro (text right, card
         left in RTL; stacks below the text on mobile) */}
-    {loopVariant && (
+    {mathVariant && (
       <div class="topic-loop-row">
         {loopIntro && (
           <p class="topic-page__intro topic-loop-row__text" data-flow="paragraph" data-role="intro">
             {loopIntro}
           </p>
         )}
-        <ConceptLoop variant={loopVariant} />
+        <MathWidget
+          variant={mathVariant}
+          mode="loop"
+          family={page.grade <= 6 ? 'elem' : 'mid'}
+        />
       </div>
     )}
 

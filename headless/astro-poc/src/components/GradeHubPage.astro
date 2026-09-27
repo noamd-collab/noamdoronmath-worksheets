@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
-import ConceptLoop from './ConceptLoop.astro';
+import MathWidget from './MathWidget.astro';
+import type { MathWidgetVariant } from './MathWidget.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import {
   loadGradeHub,
@@ -50,26 +51,28 @@ const faqJsonLd = hasFaq
    header text (text right, card left; stacks below the text on mobile).
    א׳=F03 tenframes, ב׳=F01 sticks, ג׳=F06 bars, ד׳=F02 numberline,
    ה׳=F04 balance, ו׳=F05 pattern; ז׳–ט׳ keep the K3 loops. */
-const loopVariant =
+/** Design MathWidget variants on hubs (loop mode). Grades 2–4/6 map to closest didactic demo. */
+const mathVariant: MathWidgetVariant | null =
   grade === 7
     ? 'triangle'
     : grade === 8
-      ? 'pythagoras'
+      ? 'exterior'
       : grade === 9
-        ? 'area-model'
+        ? 'areaModel'
         : grade === 1
           ? 'tenframes'
           : grade === 2
-            ? 'sticks'
+            ? 'array'
             : grade === 3
-              ? 'bars'
+              ? 'fractions'
               : grade === 4
-                ? 'numberline'
+                ? 'array'
                 : grade === 5
                   ? 'balance'
                   : grade === 6
-                    ? 'pattern'
+                    ? 'fractions'
                     : null;
+const mathFamily = grade <= 6 ? 'elem' : 'mid';
 ---
 <BaseLayout
   title={hub.title}
@@ -86,6 +89,7 @@ const loopVariant =
             class:list={['grade-tab', s.grade === grade && 'is-current']}
             href={s.href}
             aria-current={s.grade === grade ? 'page' : undefined}
+            data-peek={`g:${s.grade}`}
           >
             כיתה {s.label}
           </a>
@@ -94,7 +98,7 @@ const loopVariant =
     </nav>
 
     <header
-      class:list={['grade-hub__header', 'banner', loopVariant && 'grade-hub__header--loop']}
+      class:list={['grade-hub__header', 'banner', mathVariant && 'grade-hub__header--loop']}
     >
       <div class="grade-hub__header-main">
         <h1>{hub.h1}</h1>
@@ -102,7 +106,7 @@ const loopVariant =
         {
           hub.lead && hub.catalogCta && (
             <p class="grade-hub__cta-wrap">
-              <a class="cta cta--mid grade-hub__cta" href={hub.catalogCta.href}>
+              <a class="cta cta--primary grade-hub__cta" href={hub.catalogCta.href} data-peek="ws">
                 {hub.catalogCta.label}
               </a>
             </p>
@@ -114,14 +118,18 @@ const loopVariant =
         {
           !hub.lead && hub.catalogCta && (
             <p class="grade-hub__cta-wrap">
-              <a class="cta cta--mid grade-hub__cta" href={hub.catalogCta.href}>
+              <a class="cta cta--primary grade-hub__cta" href={hub.catalogCta.href} data-peek="ws">
                 {hub.catalogCta.label}
               </a>
             </p>
           )
         }
       </div>
-      {loopVariant && <ConceptLoop variant={loopVariant} />}
+      {
+        mathVariant && (
+          <MathWidget variant={mathVariant} mode="loop" family={mathFamily} />
+        )
+      }
     </header>
     <LineArtDoodles variant="hub" />
 

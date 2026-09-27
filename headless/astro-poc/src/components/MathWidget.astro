@@ -1,0 +1,156 @@
+---
+/**
+ * MathWidget (design handoff §6.6) — loop mode chrome around ConceptLoop demos.
+ * Maps design variants onto existing film-loop engines; pointer-events none in loop mode.
+ * Reduced-motion / noam-a11y-motion handled inside ConceptLoop.
+ */
+import ConceptLoop from './ConceptLoop.astro';
+
+export type MathWidgetVariant =
+  | 'tenframes'
+  | 'array'
+  | 'fractions'
+  | 'balance'
+  | 'triangle'
+  | 'exterior'
+  | 'areaModel'
+  | 'rotation';
+
+interface Props {
+  variant?: MathWidgetVariant;
+  mode?: 'loop' | 'interactive';
+  /** Pastel panel family for hero framing */
+  family?: 'elem' | 'mid';
+}
+
+const { variant = 'triangle', mode = 'loop', family = 'elem' } = Astro.props;
+
+type LoopVariant =
+  | 'triangle'
+  | 'pythagoras'
+  | 'area-model'
+  | 'sticks'
+  | 'numberline'
+  | 'tenframes'
+  | 'balance'
+  | 'pattern'
+  | 'bars';
+
+/** Design variant → existing ConceptLoop engine (closest didactic match). */
+const LOOP_MAP: Record<MathWidgetVariant, LoopVariant> = {
+  triangle: 'triangle',
+  areaModel: 'area-model',
+  tenframes: 'tenframes',
+  balance: 'balance',
+  exterior: 'pythagoras',
+  array: 'sticks',
+  fractions: 'pattern',
+  rotation: 'area-model',
+};
+
+const loopVariant = LOOP_MAP[variant];
+
+const labels: Record<MathWidgetVariant, string> = {
+  triangle: 'שטח משולש',
+  areaModel: 'מודל שטח',
+  tenframes: 'מסגרת עשר',
+  balance: 'מאזניים',
+  exterior: 'זווית חיצונית',
+  array: 'מערך',
+  fractions: 'שברים',
+  rotation: 'סיבוב',
+};
+---
+<div
+  class:list={['math-widget', family === 'mid' && 'math-widget--mid']}
+  data-math-widget
+  data-variant={variant}
+  data-mode={mode}
+>
+  <div
+    class="math-widget__bot"
+    aria-hidden="true"
+    style="background-image:url(/brand/notebook-doodles-v1.webp)"
+  ></div>
+  <div class="math-widget__stage">
+    <ConceptLoop variant={loopVariant} />
+  </div>
+  <p class="math-widget__caption">
+    <span class="math-widget__pill">{labels[variant]}</span>
+  </p>
+</div>
+
+<style>
+  .math-widget {
+    position: relative;
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: #fff;
+    border-radius: 22px 8px 26px 10px / 10px 26px 8px 22px;
+    border: 2px solid #e3e6ee;
+    box-shadow: 0 16px 40px -18px rgba(34, 48, 90, 0.3);
+    padding: 18px 18px 14px;
+  }
+  .math-widget--mid {
+    border-color: #cfe6e4;
+  }
+  .math-widget__bot {
+    position: absolute;
+    top: -44px;
+    left: 14px;
+    width: 72px;
+    height: 81px;
+    background-size: 345.6px 230.4px;
+    background-position: -193.5px -45px;
+    background-repeat: no-repeat;
+    transform-origin: 50% 100%;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .math-widget__stage {
+    pointer-events: none;
+  }
+  .math-widget__stage :global(.concept-loop) {
+    margin: 0;
+    max-width: none;
+  }
+  .math-widget__caption {
+    margin: 10px 0 0;
+    display: flex;
+    justify-content: center;
+  }
+  .math-widget__pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    background: #fff;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .math-widget__bot {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var bots = document.querySelectorAll('.math-widget__bot');
+    var reduce =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      document.documentElement.classList.contains('noam-a11y-motion');
+    if (reduce) return;
+    bots.forEach(function (bot) {
+      bot.animate(
+        [
+          { transform: 'translateY(0) rotate(-2deg)' },
+          { transform: 'translateY(-4px) rotate(2deg)' },
+        ],
+        { duration: 2400, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' }
+      );
+    });
+  })();
+</script>

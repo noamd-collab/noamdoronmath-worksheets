@@ -1,0 +1,13 @@
+---
+/**
+ * Mounts link-peek client (design §6.8). No SSR tooltip markup.
+ */
+---
+<script>
+  import { initLinkPeek } from '../lib/design/linkPeek';
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => initLinkPeek(), { once: true });
+  } else {
+    initLinkPeek();
+  }
+</script>

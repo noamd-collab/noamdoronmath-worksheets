@@ -4,6 +4,8 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteDoodles from '../components/SiteDoodles.astro';
 import PocMotion from '../components/PocMotion.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import ScrollDoodle from '../components/ScrollDoodle.astro';
+import LinkPeek from '../components/LinkPeek.astro';
 import { loadHomePage } from '../lib/homePage';
 import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
 import {
@@ -70,11 +72,13 @@ const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
     <a class="skip-link" href={skipHref}>דילוג לתוכן</a>
     <SiteHeader active={resolvedNav} compactBrand={useCompactBrand} />
     <SiteDoodles />
+    <ScrollDoodle />
     <slot />
     <SiteFooter footer={footer} />
     {/* POC motion system: scroll reveal + logo wiggle; honors
         prefers-reduced-motion and html.noam-a11y-motion. */}
     <PocMotion />
+    <LinkPeek />
     <!-- Production entry-gate copy (ndGate); privacy → combined a11y page. No invented legal text. -->
     <script src="/nd-site-gate.js" defer></script>
     <script src="/noam-accessibility.js" defer></script>
