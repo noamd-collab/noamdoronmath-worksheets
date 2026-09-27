@@ -1219,6 +1219,194 @@ function renderPeriRect(root: LoopRoot, t: number) {
 }
 const PERI_RECT_HOLD = 6.2;
 
+/* ═══════════════ L17 — signed-jump: −2 + 5 = 3, through 0 (D = 10 s) ═══════════════ */
+
+function renderSignedJump(root: LoopRoot, t: number) {
+  const p = ph(t, 1.1, 2.8) - ph(t, 8.2, 9.3);
+  const x = lerp(200, 400, p);
+  const pt = q(root, 'pt');
+  if (pt) pt.setAttribute('cx', String(r2(x)));
+  const arc = q(root, 'arc');
+  if (arc) {
+    const mid = (200 + x) / 2;
+    arc.setAttribute('d', `M200 196 Q${r2(mid)} 120 ${r2(x)} 196`);
+  }
+  op(arc, ph(t, 1.2, 1.6) * (1 - ph(t, 8.4, 9.0)));
+  const v = lerp(-2, 3, p);
+  const yTop = 220 - (v + 2) * 22;
+  const merc = q(root, 'merc');
+  if (merc) {
+    merc.setAttribute('y', String(r2(yTop)));
+    merc.setAttribute('height', String(r2(240 - yTop)));
+  }
+  const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'plus5'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const SIGNED_JUMP_HOLD = 5.2;
+
+/* ═══════════════ L18 — prime-rect: 6 fits a rectangle, 7 does not (D = 10 s) ═══════════════ */
+
+function renderPrimeRect(root: LoopRoot, t: number) {
+  const p = ph(t, 1.0, 2.4) - ph(t, 8.2, 9.2);
+  const six = [
+    [150, 150], [186, 150], [222, 150],
+    [150, 186], [186, 186], [222, 186],
+  ];
+  for (let i = 0; i < 6; i++) {
+    const dot = q(root, `s${i}`);
+    const hx = 70 + (i % 3) * 28;
+    const hy = 80 + Math.floor(i / 3) * 28;
+    if (dot) {
+      dot.setAttribute('cx', String(r2(lerp(hx, six[i][0], p))));
+      dot.setAttribute('cy', String(r2(lerp(hy, six[i][1], p))));
+    }
+  }
+  const seven = [
+    [360, 150], [396, 150], [432, 150],
+    [360, 186], [396, 186], [432, 186],
+    [470, 110],
+  ];
+  for (let i = 0; i < 7; i++) {
+    const dot = q(root, `p${i}`);
+    const hx = 340 + (i % 4) * 26;
+    const hy = 70 + Math.floor(i / 4) * 26;
+    if (dot) {
+      dot.setAttribute('cx', String(r2(lerp(hx, seven[i][0], p))));
+      dot.setAttribute('cy', String(r2(lerp(hy, seven[i][1], p))));
+    }
+  }
+  const box = q(root, 'fit');
+  op(box, ph(t, 2.2, 2.6) * (1 - ph(t, 8.2, 8.8)));
+  draw(box, ph(t, 2.3, 2.9));
+  const miss = q(root, 'miss');
+  op(miss, ph(t, 2.4, 2.8) * (1 - ph(t, 8.2, 8.8)));
+  draw(miss, ph(t, 2.5, 3.2));
+  const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'ok6'), show);
+  op(q(root, 'no7'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const PRIME_RECT_HOLD = 5.4;
+
+/* ═══════════════ L19 — sas-snap: two marked triangles coincide (D = 10 s) ═══════════════ */
+
+function renderSasSnap(root: LoopRoot, t: number) {
+  const p = ph(t, 1.2, 2.6) - ph(t, 8.2, 9.3);
+  const g = q(root, 'copy');
+  if (g) g.setAttribute('transform', `translate(${r2(190 * (1 - p))} ${r2(-16 * (1 - p))})`);
+  op(q(root, 'ghost'), (1 - p) * (1 - ph(t, 8.6, 9.2)));
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'same'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const SAS_SNAP_HOLD = 5.2;
+
+/* ═══════════════ L20 — obtuse-ht: height meets the base extension (D = 10 s) ═══════════════ */
+
+function renderObtuseHt(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const ext = q(root, 'ext');
+  op(ext, ph(t, 0.8, 1.1) * fade);
+  draw(ext, ph(t, 0.9, 1.5));
+  const ht = q(root, 'ht');
+  op(ht, ph(t, 1.6, 1.9) * fade);
+  draw(ht, ph(t, 1.7, 2.5));
+  op(q(root, 'sq'), ph(t, 2.5, 2.9) * fade);
+  op(q(root, 'lbl-h'), ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.1, 3.5) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.5, 3.9) * (1 - ph(t, 8.0, 8.6)));
+}
+const OBTUSE_HT_HOLD = 5.2;
+
+/* ═══════════════ L21 — box-vol: 3×2×2 cubes = 12 (D = 10 s) ═══════════════ */
+
+function renderBoxVol(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.3, 9.1);
+  for (let i = 0; i < 12; i++) {
+    const start = 0.6 + (i / 12) * 2.6;
+    op(q(root, `k${i}`), ph(t, start, start + 0.25) * fade);
+  }
+  const show = ph(t, 3.5, 3.9) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'dims'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.9, 4.3) * (1 - ph(t, 8.0, 8.6)));
+}
+const BOX_VOL_HOLD = 5.6;
+
+/* ═══════════════ L22 — trap-area: (6+2)/2 × 3 = 12 (D = 10 s) ═══════════════ */
+
+function renderTrapArea(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const mid = q(root, 'mid');
+  op(mid, ph(t, 1.4, 1.8) * fade);
+  draw(mid, ph(t, 1.5, 2.3));
+  op(q(root, 'lbl-m'), ph(t, 2.3, 2.7) * fade);
+  const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'lbl-h'), 1);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const TRAP_AREA_HOLD = 5.2;
+
+/* ═══════════════ L23 — odd-pair: 7 dots, one left over (D = 10 s) ═══════════════ */
+
+function renderOddPair(root: LoopRoot, t: number) {
+  const p = ph(t, 1.1, 2.5) - ph(t, 8.2, 9.2);
+  const targets = [
+    [110, 168], [148, 168],
+    [230, 168], [268, 168],
+    [350, 168], [388, 168],
+    [470, 188],
+  ];
+  for (let i = 0; i < 7; i++) {
+    const dot = q(root, `o${i}`);
+    const hx = 80 + i * 58;
+    if (dot) {
+      dot.setAttribute('cx', String(r2(lerp(hx, targets[i][0], p))));
+      dot.setAttribute('cy', String(r2(lerp(150, targets[i][1], p))));
+    }
+  }
+  const show = ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'pairs'), show);
+  op(q(root, 'left'), show);
+  op(q(root, 'odd'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const ODD_PAIR_HOLD = 5.4;
+
+/* ═══════════════ L24 — birds-sub: 6 − 2 = 4 (D = 10 s) ═══════════════ */
+
+function renderBirdsSub(root: LoopRoot, t: number) {
+  const p = ph(t, 1.2, 2.4) - ph(t, 8.2, 9.2);
+  const fly = [
+    { id: 'b4', x: 340, y: 200, dx: 36 },
+    { id: 'b5', x: 410, y: 200, dx: 78 },
+  ];
+  for (const bird of fly) {
+    const g = q(root, bird.id);
+    if (g) g.setAttribute('transform', `translate(${r2(bird.x + bird.dx * p)} ${r2(bird.y - 78 * p)})`);
+  }
+  const show = ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'stay'), show);
+  op(q(root, 'gone'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const BIRDS_SUB_HOLD = 5.0;
+
 /* ═══════════════ engine ═══════════════ */
 
 const SPECS = {
@@ -1255,6 +1443,14 @@ const SPECS = {
   'diff-sq': { duration: 10, hold: DIFF_SQ_HOLD, render: renderDiffSq },
   'clock-3': { duration: 10, hold: CLOCK3_HOLD, render: renderClock3 },
   'peri-rect': { duration: 10, hold: PERI_RECT_HOLD, render: renderPeriRect },
+  'signed-jump': { duration: 10, hold: SIGNED_JUMP_HOLD, render: renderSignedJump },
+  'prime-rect': { duration: 10, hold: PRIME_RECT_HOLD, render: renderPrimeRect },
+  'sas-snap': { duration: 10, hold: SAS_SNAP_HOLD, render: renderSasSnap },
+  'obtuse-ht': { duration: 10, hold: OBTUSE_HT_HOLD, render: renderObtuseHt },
+  'box-vol': { duration: 10, hold: BOX_VOL_HOLD, render: renderBoxVol },
+  'trap-area': { duration: 10, hold: TRAP_AREA_HOLD, render: renderTrapArea },
+  'odd-pair': { duration: 10, hold: ODD_PAIR_HOLD, render: renderOddPair },
+  'birds-sub': { duration: 10, hold: BIRDS_SUB_HOLD, render: renderBirdsSub },
 } as const;
 
 const MAX_LAPS = 4;
