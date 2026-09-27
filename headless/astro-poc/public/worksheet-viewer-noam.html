@@ -2183,8 +2183,8 @@ textarea:focus{
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20260921-constructions1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
-<script src="noam-glossary-curriculum.js?v=20260927-concepts3"></script>
-<script src="noam-glossary.js?v=20260927-concepts3"></script>
+<script src="noam-glossary-curriculum.js?v=20260927-concepts2"></script>
+<script src="noam-glossary.js?v=20260927-concepts2"></script>
 <script>
 (function(){
 
@@ -5110,6 +5110,36 @@ function syntheticAnalysis(exercise){
   };
 }
 
+/* Bad static OCR that leaked later parts (ב/ג/ד) into one exercise blob, or
+   signed-arithmetic token soup — must not be sent to the model as ground truth. */
+function noamManifestOcrUnreliable(exercise){
+  var text=String((exercise&&(exercise.text||exercise.prompt))||"");
+  if (!text){return false;}
+  if (/(?:^|[\s−\-\d.+])ב\s*\.[\s\S]{0,80}?ג\s*\./.test(text)){return true;}
+  if (/[−\-]\s+\d+\s+[+＋]\s+\d+\s+[−\-]\s+ב\s*\./.test(text)){return true;}
+  return false;
+}
+
+function noamExerciseSectionLabel(exercise){
+  var q=exercise&&exercise.q!=null?String(exercise.q):"";
+  var part=exercise&&exercise.part?String(exercise.part):"";
+  if (q&&part){return "שאלה "+q+" סעיף "+part;}
+  if (q){return "שאלה "+q;}
+  return String(exercise&&exercise.id||"התרגיל הנבחר");
+}
+
+function noamScopedExerciseSemantic(exercise){
+  if (!noamManifestOcrUnreliable(exercise)){
+    return String(exercise&&exercise.prompt||"");
+  }
+  return "התרגיל שנבחר הוא "+noamExerciseSectionLabel(exercise)+
+    ". קראו מתמונת השאלה רק את הביטוי של הסעיף הנבחר. אם מופיעים סעיפים נוספים באותה תמונה — התעלמו מהם. אל תשחזרו טקסט OCR משובש כנתון.";
+}
+
+function noamExerciseNeedsLiveVision(exercise){
+  return !!(exercise&&(exercise.requiresVision||exercise.needsVision||noamManifestOcrUnreliable(exercise)));
+}
+
 /* STUDENT ATTACHMENTS — a photo or file of the student's own work, sent together
    with the question image so the analyzer can separate printed content from
    handwriting. Up to ATTACH_MAX_FILES files, each up to ATTACH_MAX_BYTES. The
@@ -5561,7 +5591,11 @@ function showExercisePreview(exercise,dataUrl){
   if (!preview||!fallback||!selectedExercise||selectedExercise.id!==exercise.id){return;}
   var image=document.createElement("img");
   image.src=dataUrl;
-  image.alt=exerciseLabel(exercise)+" — "+String(exercise.text||exercise.prompt||"").slice(0,500);
+  image.alt=exerciseLabel(exercise)+" — "+(
+    noamManifestOcrUnreliable(exercise)
+      ? noamExerciseSectionLabel(exercise)
+      : String(exercise.text||exercise.prompt||"")
+  ).slice(0,500);
   preview.replaceChildren(image);
   preview.hidden=false;
   fallback.hidden=true;
@@ -5606,7 +5640,7 @@ function getExerciseAnalysis(exercise){
         if (!result||!result.ok||!result.analysis){ throw new Error("לא הצלחנו לקרוא את הקבצים שצורפו. נסו שוב."); }
         var analysis=result.analysis;
         if (analysis.readable!==true){ throw new Error("לא הצלחנו לקרוא את הקבצים שצורפו בבירור. נסו צילום ברור יותר."); }
-        var semantic=exercise.prompt||"";
+        var semantic=noamScopedExerciseSemantic(exercise);
         analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
         analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
         return analysis;
@@ -5614,11 +5648,13 @@ function getExerciseAnalysis(exercise){
   }
   if (analysisCache[exercise.id]){ return Promise.resolve(analysisCache[exercise.id]); }
   var fallback=syntheticAnalysis(exercise);
-  if (!exercise.needsVision&&!exercise.requiresVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
+  var forceVision=noamExerciseNeedsLiveVision(exercise);
+  var ocrUnreliable=noamManifestOcrUnreliable(exercise);
+  if (!forceVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
 
   // New manifests share a complete question image across its sections.
   // This cache is already scoped to the PDF, and stores unmodified analysis.
-  var imageKey=exercise.requiresVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  var imageKey=forceVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
   var cachedImage=imageKey&&analysisCache[imageKey];
   function requestVisionAnalysis(allowCachedImage){
     return ensurePdfDocumentForCrop()
@@ -5644,17 +5680,22 @@ function getExerciseAnalysis(exercise){
     .then(function(result){
       if (!result||!result.ok||!result.analysis){ throw new Error("vision unavailable"); }
       var analysis=result.analysis;
-      if (exercise.requiresVision && analysis.readable!==true){throw new Error("לא הצלחנו לקרוא את השאלה בבירור. נסו שוב.");}
-      if (exercise.requiresVision && !["transcription","math_content","problem_statement","diagram_description"].some(function(key){return typeof analysis[key]==="string"&&analysis[key].trim();})){
+      var strictVision=!!(exercise.requiresVision||ocrUnreliable);
+      if (strictVision && analysis.readable!==true){throw new Error("לא הצלחנו לקרוא את השאלה בבירור. נסו שוב.");}
+      if (strictVision && !["transcription","math_content","problem_statement","diagram_description"].some(function(key){return typeof analysis[key]==="string"&&analysis[key].trim();})){
         throw new Error("לא התקבל תוכן קריא מתמונת השאלה.");
       }
       if (imageKey){
         analysisCache[imageKey]=analysis;
         analysis=JSON.parse(JSON.stringify(analysis));
       }
-      var semantic=exercise.prompt||"";
+      var semantic=noamScopedExerciseSemantic(exercise);
       analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
       analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
+      if (ocrUnreliable){
+        analysis.content_type="vision_over_unreliable_ocr";
+        analysis.manifest_ocr_unreliable=true;
+      }
       analysisCache[exercise.id]=analysis;saveNoamState();return analysis;
     })
     .catch(function(error){
@@ -5662,8 +5703,8 @@ function getExerciseAnalysis(exercise){
       // synthetic-analysis fallback. Preserve them for the chat error message.
       if (isBotProtectionError(error)){ throw error; }
       // These manifests deliberately carry no guessed OCR transcription.
-      // The solver must receive the actual worksheet image analysis.
-      if (exercise.requiresVision){
+      // Unreliable OCR must not fall back to the garbled static text either.
+      if (exercise.requiresVision||ocrUnreliable){
         var visionError=new Error(
           "לא הצלחנו לקרוא את תמונת השאלה. אפשר לנסות שוב — בלי לנחש את תוכן השאלה."
         );
@@ -5679,7 +5720,7 @@ function getExerciseAnalysis(exercise){
 function clearExerciseVisionCache(exercise){
   if (!exercise){ return; }
   delete analysisCache[exercise.id];
-  var imageKey=exercise.requiresVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  var imageKey=noamExerciseNeedsLiveVision(exercise)?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
   if (imageKey){ delete analysisCache[imageKey]; }
   delete exercisePreviewCache[exercise.id];
   pdfCropLoadPromise=null;
@@ -5719,7 +5760,16 @@ function noamGeometryContext(text){
 }
 
 function noamSignedNumberContext(text){
-  return /מספר(?:ים)?\s+מכוונ|ערך\s+מוחלט|סימנים\s+שונים|מספר(?:ים)?\s+שלילי|חיבור\s+(?:וחיסור\s+)?מספרים|ישר\s+המספרים|ציר\s+המספרים/i.test(String(text||""));
+  var source=String(text||"");
+  if (/מספר(?:ים)?\s+מכוונ|ערך\s+מוחלט|סימנים\s+שונים|מספר(?:ים)?\s+שלילי|חיבור\s+(?:וחיסור\s+)?מספרים|ישר\s+המספרים|ציר\s+המספרים/i.test(source)){
+    return true;
+  }
+  // Mixed-sign arithmetic cues such as −7+4 or 5+(−3), without requiring topic keywords.
+  if (/(?:^|[^\d])[−\-]\s*\d+(?:\s*[,،]\s*[−\-]?\d+)*\s*(?:\+|[\u2212\-])\s*[−\-]?\d+/.test(source)){
+    return true;
+  }
+  if (/\d+\s*(?:\+|[\u2212\-])\s*[(\[]?\s*[−\-]\s*\d+/.test(source)){return true;}
+  return false;
 }
 
 /* Focused rewrite for ambiguous different-sign addition language.
@@ -5747,6 +5797,28 @@ function noamClarifySignedAddLanguage(answer){
     }
   );
   return text;
+}
+
+function noamMixedSignAddExpression(text){
+  var source=String(text||"");
+  return /[−\-]\s*\d+\s*\+\s*(?![−\-])\d+/.test(source) ||
+    /\d+\s*\+\s*[−\-]\s*\d+/.test(source) ||
+    /\d+\s*\+\s*\(\s*[−\-]\s*\d+/.test(source);
+}
+
+/* Wrong rule family: answering a mixed-sign sum with the both-negatives rule. */
+function noamWrongSignedAddRuleIssue(answer,analysis){
+  var source=[
+    analysis&&analysis.transcription,
+    analysis&&analysis.math_content,
+    analysis&&analysis.problem_statement
+  ].filter(Boolean).join("\n");
+  if (!noamMixedSignAddExpression(source)){return null;}
+  var text=String(answer||"");
+  if (/(?:לחבר|חיבור)\s+מספרים\s+שליליים|שני(?:ם)?\s+מספרים\s+שליליים|שני\s+השליליים|חבר(?:ו|י)?\s+את\s+הערכים\s+המוחלטים[\s\S]{0,60}סימן\s+מינוס/i.test(text)){
+    return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים, לא שני מספרים שליליים. השתמשו בכלל הסימנים השונים עם ערכים מוחלטים, בלי לחשוף את התוצאה המספרית.";
+  }
+  return null;
 }
 
 function noamVisualNeed(studentMessage,answer,helpKind,hintIndex,topic){
@@ -6030,6 +6102,34 @@ function noamGuardGeometryResult(result,payload,analysis,studentMessage,guide,gu
       ok:true,
       answer:noamVerifiedGeometryFallback(guide)||"עצרתי תשובה לא מדויקת לפני שהוצגה: היא השתמשה במסקנה כנתון או קישרה זוויות למקבילים בלי לבדוק את הקרניים. נסו שוב כדי שאבנה את ההוכחה מן הנתונים בלבד.",
       geometryGuarded:true
+    };
+  });
+}
+
+function noamSignedAddRepairMessage(studentMessage,issue){
+  var instruction="טיוטת התשובה נפסלה בבדיקת כלל סימנים מקומית. "+String(issue||"")+
+    " פתרו מחדש לפי הביטוי של הסעיף הנבחר בלבד. אל תחשפו את התוצאה. אל תזכירו את הטיוטה. שאלת התלמיד: "+String(studentMessage||"").trim();
+  var room=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
+  return instruction.slice(0,room)+MATH_OUTPUT_INSTRUCTION;
+}
+
+function noamGuardSignedAddResult(result,payload,analysis,studentMessage){
+  if (!result||!result.ok||!result.answer){return Promise.resolve(result);}
+  var issue=noamWrongSignedAddRuleIssue(result.answer,analysis);
+  if (!issue){return Promise.resolve(result);}
+  var retryPayload=Object.assign({},payload,{studentMessage:noamSignedAddRepairMessage(studentMessage,issue)});
+  return postJson(API+"/noamImageSolve",retryPayload).then(function(retry){
+    if (retry&&retry.ok&&retry.answer&&!noamWrongSignedAddRuleIssue(retry.answer,analysis)){return retry;}
+    return {
+      ok:true,
+      answer:"בביטוי הנבחר יש סימנים שונים. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול — בלי לחשוף את התוצאה כאן.",
+      signedAddGuarded:true
+    };
+  },function(){
+    return {
+      ok:true,
+      answer:"בביטוי הנבחר יש סימנים שונים. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול — בלי לחשוף את התוצאה כאן.",
+      signedAddGuarded:true
     };
   });
 }
@@ -6546,6 +6646,9 @@ function askNoam(helpKind,studentMessage){
     })
     .then(function(result){
       return noamGuardGeometryResult(result,requestPayload,requestAnalysis,studentMessage,guide,guidePrompt);
+    })
+    .then(function(result){
+      return noamGuardSignedAddResult(result,requestPayload,requestAnalysis,studentMessage);
     })
     .then(function(result){
       if (!result||!result.ok||!result.answer){ throw new Error((result&&result.error)||"נועם AI לא זמין כרגע."); }
