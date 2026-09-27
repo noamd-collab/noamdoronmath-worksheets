@@ -7,14 +7,7 @@
 import ConceptLoop from './ConceptLoop.astro';
 
 export type MathWidgetVariant =
-  | 'tenframes'
-  | 'array'
-  | 'fractions'
-  | 'balance'
-  | 'triangle'
-  | 'exterior'
-  | 'areaModel'
-  | 'rotation';
+  'tenframes' | 'array' | 'fractions' | 'balance' | 'triangle' | 'exterior' | 'areaModel' | 'rotation';
 
 interface Props {
   variant?: MathWidgetVariant;
@@ -26,15 +19,7 @@ interface Props {
 const { variant = 'triangle', mode = 'loop', family = 'elem' } = Astro.props;
 
 type LoopVariant =
-  | 'triangle'
-  | 'pythagoras'
-  | 'area-model'
-  | 'sticks'
-  | 'numberline'
-  | 'tenframes'
-  | 'balance'
-  | 'pattern'
-  | 'bars';
+  'triangle' | 'pythagoras' | 'area-model' | 'sticks' | 'numberline' | 'tenframes' | 'balance' | 'pattern' | 'bars';
 
 /** Design variant → existing ConceptLoop engine (closest didactic match). */
 const LOOP_MAP: Record<MathWidgetVariant, LoopVariant> = {
