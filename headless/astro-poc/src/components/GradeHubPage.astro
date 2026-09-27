@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
 import MathWidget from './MathWidget.astro';
 import type { MathWidgetVariant } from './MathWidget.astro';
-import GrokLoopPanel from './GrokLoopPanel.astro';
+import GradeLoopPlayer from './GradeLoopPlayer.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import {
   loadGradeHub,
@@ -49,11 +49,8 @@ const faqJsonLd = hasFaq
       })),
     }
   : null;
-/* K3 + FAMILIES-B1: one Brilliant-style film loop per grade hub, beside the
-   header text (text right, card left; stacks below the text on mobile).
-   א׳=F03 tenframes, ב׳=F01 sticks, ג׳=F06 bars, ד׳=F02 numberline,
-   ה׳=F04 balance, ו׳=F05 pattern; ז׳–ט׳ keep the K3 loops. */
-/** Design MathWidget variants on hubs (loop mode). Grades 2–4/6 map to closest didactic demo. */
+
+/** Mid-school hubs keep a single MathWidget film; grades 1–6 use dual Grok players. */
 const mathVariant: MathWidgetVariant | null =
   grade === 7
     ? 'triangle'
@@ -61,21 +58,12 @@ const mathVariant: MathWidgetVariant | null =
       ? 'exterior'
       : grade === 9
         ? 'areaModel'
-        : grade === 1
-          ? 'tenframes'
-          : grade === 2
-            ? 'array'
-            : grade === 3
-              ? 'fractions'
-              : grade === 4
-                ? 'array'
-                : grade === 5
-                  ? 'balance'
-                  : grade === 6
-                    ? 'fractions'
-                    : null;
+        : null;
 const mathFamily = grade <= 6 ? 'elem' : 'mid';
 const grokGradeLoops = visibleGrokLoops(grokLoopsForGrade(grade));
+const useDualGrokPlayers = grade >= 1 && grade <= 6 && grokGradeLoops.length > 0;
+const playerA = useDualGrokPlayers ? grokGradeLoops.slice(0, 3) : [];
+const playerB = useDualGrokPlayers ? grokGradeLoops.slice(3, 6) : [];
 ---
 <BaseLayout
   title={hub.title}
@@ -130,53 +118,33 @@ const grokGradeLoops = visibleGrokLoops(grokLoopsForGrade(grade));
       </div>
       {
         mathVariant && (
-          <div class="grade-loop-rotator" data-grade-loop-rotator>
-            <div class="grade-loop-rotator__stage">
-              <div data-rot-panel data-rot-i="0" data-rot-active>
-                <MathWidget variant={mathVariant} mode="loop" family={mathFamily} />
-              </div>
-              {
-                grokGradeLoops.map((entry, i) => (
-                  <div data-rot-panel data-rot-i={String(i + 1)} hidden>
-                    <GrokLoopPanel
-                      variant={entry.variant}
-                      topic={entry.topic}
-                      loopId={entry.id}
-                    />
-                  </div>
-                ))
-              }
-            </div>
-            {
-              grokGradeLoops.length > 0 && (
-                <button type="button" class="grade-loop-rotator__btn" data-rot-next>
-                  ↻ עוד המחשה
-                </button>
-              )
-            }
-          </div>
+          <MathWidget variant={mathVariant} mode="loop" family={mathFamily} />
         )
       }
     </header>
     <LineArtDoodles variant="hub" />
 
     {
-      grokGradeLoops.length > 0 && (
-        <section class="grade-grok-grid" aria-labelledby="grade-grok-grid-title">
-          <h2 id="grade-grok-grid-title" class="grade-hub__section-title">
+      useDualGrokPlayers && (
+        <section
+          class="grade-dual-players"
+          aria-labelledby="grade-dual-players-title"
+          data-grade-dual-players
+        >
+          <h2 id="grade-dual-players-title" class="grade-hub__section-title">
             המחשות לפי נושא
           </h2>
-          <div class="grade-grok-grid__list">
-            {
-              grokGradeLoops.map((entry) => (
-                <GrokLoopPanel
-                  variant={entry.variant}
-                  topic={entry.topic}
-                  loopId={entry.id}
-                  compact
-                />
-              ))
-            }
+          <div class="grade-dual-players__grid">
+            <GradeLoopPlayer
+              entries={playerA}
+              playerId={`grade-${grade}-player-a`}
+              label="נגן המחשות 1"
+            />
+            <GradeLoopPlayer
+              entries={playerB}
+              playerId={`grade-${grade}-player-b`}
+              label="נגן המחשות 2"
+            />
           </div>
         </section>
       )
@@ -296,54 +264,24 @@ const grokGradeLoops = visibleGrokLoops(grokLoopsForGrade(grade));
   </main>
 </BaseLayout>
 
-<script>
-  (function () {
-    document.querySelectorAll('[data-grade-loop-rotator]').forEach((root) => {
-      const panels = [...root.querySelectorAll('[data-rot-panel]')] as HTMLElement[];
-      const btn = root.querySelector('[data-rot-next]') as HTMLButtonElement | null;
-      if (!btn || panels.length < 2) return;
-      let i = 0;
-      btn.addEventListener('click', () => {
-        panels[i].hidden = true;
-        panels[i].removeAttribute('data-rot-active');
-        i = (i + 1) % panels.length;
-        panels[i].hidden = false;
-        panels[i].setAttribute('data-rot-active', '');
-        btn.textContent = i === 0 ? '↻ עוד המחשה' : '↻ עוד המחשה';
-      });
-    });
-  })();
-</script>
-
 <style>
-  .grade-loop-rotator {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    min-width: min(100%, 340px);
+  .grade-dual-players {
+    margin-block: 28px 16px;
   }
-  .grade-loop-rotator__btn {
-    align-self: center;
-    font-family: var(--font-body, Heebo, sans-serif);
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #22305a;
-    background: #fff;
-    border: 2px solid #e3e6ee;
-    border-radius: 12px 6px 14px 8px / 8px 14px 6px 12px;
-    padding: 8px 14px;
-    cursor: pointer;
-  }
-  .grade-loop-rotator__btn:hover {
-    border-color: #cfe6e4;
-  }
-  .grade-grok-grid {
-    margin-block: 28px 12px;
-  }
-  .grade-grok-grid__list {
+  .grade-dual-players__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-    gap: 16px;
+    gap: 28px;
+  }
+  @media (min-width: 1100px) {
+    .grade-dual-players__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 36px;
+      align-items: stretch;
+    }
+  }
+  @media (max-width: 1099.98px) {
+    .grade-dual-players__grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

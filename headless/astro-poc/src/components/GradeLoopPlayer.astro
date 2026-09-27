@@ -1,0 +1,413 @@
+---
+/**
+ * One large grade hub player: cycles a small set of Grok loops (typically 3)
+ * in a single stage with synced title / question / explain + prev/next/pause.
+ */
+import ConceptLoop from './ConceptLoop.astro';
+import type { GrokLoopEntry } from '../lib/grokLoops';
+import { loopExplain, loopQuestion } from '../lib/loopCopy';
+
+interface Props {
+  entries: GrokLoopEntry[];
+  playerId: string;
+  label?: string;
+}
+const { entries, playerId, label = 'המחשות' } = Astro.props;
+const slides = entries.map((entry) => ({
+  ...entry,
+  question: loopQuestion(entry.variant),
+  explain: loopExplain(entry.variant),
+}));
+const first = slides[0];
+---
+{
+  slides.length > 0 && first && (
+    <section
+      class="grade-loop-player"
+      data-grade-loop-player
+      data-player-id={playerId}
+      aria-roledescription="נגן המחשות"
+      aria-label={label}
+    >
+      <div class="grade-loop-player__copy">
+        <p class="grade-loop-player__kicker">{label}</p>
+        <h3 class="grade-loop-player__title" data-glp-title id={`${playerId}-title`}>
+          {first.topic}
+        </h3>
+        <p class="grade-loop-player__question" data-glp-question>
+          {first.question}
+        </p>
+        <p class="grade-loop-player__explain" data-glp-explain>
+          {first.explain}
+        </p>
+        <div class="grade-loop-player__controls" role="group" aria-label="שליטה בהמחשות">
+          <button type="button" class="grade-loop-player__btn" data-glp-prev aria-label="המחשה קודמת">
+            הקודם
+          </button>
+          <span class="grade-loop-player__count" data-glp-count aria-live="polite">
+            1 / {slides.length}
+          </span>
+          <button type="button" class="grade-loop-player__btn" data-glp-next aria-label="המחשה הבאה">
+            הבא
+          </button>
+          <button
+            type="button"
+            class="grade-loop-player__btn grade-loop-player__btn--play"
+            data-glp-toggle
+            aria-label="השהיית ההמחשה"
+          >
+            השהיה
+          </button>
+        </div>
+      </div>
+      <div class="grade-loop-player__stage" data-glp-stage>
+        {
+          slides.map((entry, i) => (
+            <div
+              class="grade-loop-player__panel"
+              data-glp-panel
+              data-glp-i={String(i)}
+              data-topic={entry.topic}
+              data-question={entry.question}
+              data-explain={entry.explain}
+              data-loop-id={entry.id}
+              data-variant={entry.variant}
+              hidden={i !== 0}
+              aria-hidden={i !== 0 ? 'true' : 'false'}
+            >
+              <ConceptLoop variant={entry.variant as any} />
+            </div>
+          ))
+        }
+      </div>
+      <script type="application/json" data-glp-slides set:html={JSON.stringify(slides.map((s) => ({ id: s.id, variant: s.variant, topic: s.topic, question: s.question, explain: s.explain })))} />
+    </section>
+  )
+}
+
+<script>
+  (function () {
+    function motionOff() {
+      const html = document.documentElement;
+      const attr = html.getAttribute('data-motion');
+      return (
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        html.classList.contains('noam-a11y-motion') ||
+        html.classList.contains('nd-motion-off') ||
+        attr === 'כבוי' ||
+        attr === 'off'
+      );
+    }
+
+    function activeRoot(panel) {
+      return panel?.querySelector('[data-loop]');
+    }
+
+    function initPlayer(root) {
+      if (root.dataset.glpReady) return;
+      root.dataset.glpReady = '1';
+      const panels = [...root.querySelectorAll('[data-glp-panel]')];
+      if (!panels.length) return;
+      const titleEl = root.querySelector('[data-glp-title]');
+      const qEl = root.querySelector('[data-glp-question]');
+      const exEl = root.querySelector('[data-glp-explain]');
+      const countEl = root.querySelector('[data-glp-count]');
+      const prevBtn = root.querySelector('[data-glp-prev]');
+      const nextBtn = root.querySelector('[data-glp-next]');
+      const toggleBtn = root.querySelector('[data-glp-toggle]');
+      let i = 0;
+      let playlistPaused = false;
+      let advancing = false;
+
+      function syncCopy(panel) {
+        if (titleEl) titleEl.textContent = panel.getAttribute('data-topic') || '';
+        if (qEl) qEl.textContent = panel.getAttribute('data-question') || '';
+        if (exEl) exEl.textContent = panel.getAttribute('data-explain') || '';
+        if (countEl) countEl.textContent = `${i + 1} / ${panels.length}`;
+        root.setAttribute('data-active-variant', panel.getAttribute('data-variant') || '');
+        root.setAttribute('data-active-loop', panel.getAttribute('data-loop-id') || '');
+      }
+
+      function syncToggleLabel() {
+        if (!toggleBtn) return;
+        if (motionOff()) {
+          toggleBtn.disabled = true;
+          toggleBtn.textContent = 'תנועה כבויה';
+          toggleBtn.setAttribute('aria-label', 'תנועה כבויה');
+          return;
+        }
+        toggleBtn.disabled = false;
+        const rootLoop = activeRoot(panels[i]);
+        const st = rootLoop?.__loop?.state?.();
+        const paused = playlistPaused || (st && !st.playing && !st.done);
+        toggleBtn.textContent = paused ? 'הפעלה' : 'השהיה';
+        toggleBtn.setAttribute('aria-label', paused ? 'הפעלת ההמחשה' : 'השהיית ההמחשה');
+      }
+
+      function withLoop(panel, fn) {
+        const tryOnce = () => {
+          const loop = activeRoot(panel);
+          if (loop?.__loop) {
+            fn(loop);
+            return true;
+          }
+          return false;
+        };
+        if (tryOnce()) return;
+        let n = 0;
+        const id = window.setInterval(() => {
+          n += 1;
+          if (tryOnce() || n > 40) window.clearInterval(id);
+        }, 50);
+      }
+
+      function show(index, { autoplay = true } = {}) {
+        const next = ((index % panels.length) + panels.length) % panels.length;
+        const prevPanel = panels[i];
+        const prevLoop = activeRoot(prevPanel);
+        prevLoop?.__loop?.pause?.();
+        panels.forEach((panel, idx) => {
+          const on = idx === next;
+          panel.hidden = !on;
+          panel.setAttribute('aria-hidden', on ? 'false' : 'true');
+        });
+        i = next;
+        syncCopy(panels[i]);
+        withLoop(panels[i], (loop) => {
+          if (motionOff()) {
+            loop.__loop.restart();
+          } else if (autoplay && !playlistPaused) {
+            loop.__loop.restart();
+          } else {
+            loop.__loop.restart();
+            loop.__loop.pause();
+            playlistPaused = true;
+          }
+          syncToggleLabel();
+        });
+        syncToggleLabel();
+      }
+
+      function go(delta) {
+        advancing = true;
+        show(i + delta, { autoplay: !playlistPaused && !motionOff() });
+        queueMicrotask(() => {
+          advancing = false;
+        });
+      }
+
+      prevBtn?.addEventListener('click', () => go(-1));
+      nextBtn?.addEventListener('click', () => go(1));
+      toggleBtn?.addEventListener('click', () => {
+        if (motionOff()) return;
+        const loop = activeRoot(panels[i]);
+        if (!loop?.__loop) return;
+        const st = loop.__loop.state();
+        if (st.playing) {
+          playlistPaused = true;
+          loop.__loop.pause();
+        } else {
+          playlistPaused = false;
+          if (st.done) loop.__loop.restart();
+          else loop.__loop.play();
+        }
+        syncToggleLabel();
+      });
+
+      root.addEventListener('conceptloop:done', (ev) => {
+        if (advancing || motionOff() || playlistPaused) return;
+        const panel = panels[i];
+        if (!panel.contains(ev.target)) return;
+        // Auto-advance only after a full illustration cycle completed.
+        window.setTimeout(() => {
+          if (motionOff() || playlistPaused) return;
+          go(1);
+        }, 450);
+      });
+
+      root.addEventListener('keydown', (ev) => {
+        if (ev.key === 'ArrowRight') {
+          ev.preventDefault();
+          go(-1); // RTL: right = previous
+        } else if (ev.key === 'ArrowLeft') {
+          ev.preventDefault();
+          go(1);
+        } else if (ev.key === ' ' || ev.key === 'Enter') {
+          if (ev.target === prevBtn || ev.target === nextBtn || ev.target === toggleBtn) return;
+          if (document.activeElement === root || root.contains(document.activeElement)) {
+            ev.preventDefault();
+            toggleBtn?.click();
+          }
+        }
+      });
+
+      // Focusable landmark for keyboard
+      if (!root.hasAttribute('tabindex')) root.setAttribute('tabindex', '0');
+
+      new MutationObserver(syncToggleLabel).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'data-motion'],
+      });
+      window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => {
+        show(i, { autoplay: !motionOff() && !playlistPaused });
+      });
+
+      syncCopy(panels[0]);
+      syncToggleLabel();
+      // Ensure first panel starts cleanly
+      const first = activeRoot(panels[0]);
+      if (first?.__loop && !motionOff() && !playlistPaused) {
+        // already autoplays via IntersectionObserver; leave it
+      } else if (first?.__loop && motionOff()) {
+        first.__loop.restart();
+      }
+    }
+
+    function boot() {
+      document.querySelectorAll('[data-grade-loop-player]').forEach(initPlayer);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot, { once: true });
+    } else {
+      boot();
+    }
+  })();
+</script>
+
+<style>
+  .grade-loop-player {
+    display: grid;
+    gap: 18px 28px;
+    align-items: center;
+    padding: 18px 16px 16px;
+    background: linear-gradient(160deg, #f4f7fb 0%, #eef6f4 100%);
+    border: 2px solid #e3e6ee;
+    border-radius: 22px 8px 26px 10px / 10px 26px 8px 22px;
+    box-shadow: 6px 6px 0 rgba(34, 48, 90, 0.08);
+    color: #22305a;
+    font-family: var(--font-body, Heebo, sans-serif);
+    outline: none;
+  }
+  .grade-loop-player:focus-visible {
+    box-shadow:
+      6px 6px 0 rgba(34, 48, 90, 0.08),
+      0 0 0 3px #fff,
+      0 0 0 5px #2a7c7a;
+  }
+  .grade-loop-player__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .grade-loop-player__kicker {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #2a7c7a;
+  }
+  .grade-loop-player__title {
+    margin: 0;
+    font-family: var(--font-display, 'Secular One', Heebo, sans-serif);
+    font-size: clamp(1.25rem, 2.2vw, 1.55rem);
+    font-weight: 400;
+    line-height: 1.25;
+    color: #22305a;
+  }
+  .grade-loop-player__question {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+  .grade-loop-player__explain {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: #3a4668;
+  }
+  .grade-loop-player__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-block-start: 6px;
+  }
+  .grade-loop-player__btn {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #22305a;
+    background: #fff;
+    border: 2px solid #e3e6ee;
+    border-radius: 12px 6px 14px 8px / 8px 14px 6px 12px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  .grade-loop-player__btn:hover {
+    border-color: #cfe6e4;
+  }
+  .grade-loop-player__btn:focus-visible {
+    outline: 3px solid #2a7c7a;
+    outline-offset: 2px;
+  }
+  .grade-loop-player__btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .grade-loop-player__count {
+    min-inline-size: 3.5rem;
+    text-align: center;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .grade-loop-player__stage {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    margin-inline: auto;
+    aspect-ratio: 560 / 340;
+    min-height: 220px;
+  }
+  .grade-loop-player__panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: stretch;
+  }
+  .grade-loop-player__panel[hidden] {
+    display: none !important;
+  }
+  .grade-loop-player__panel :global(.concept-loop) {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .grade-loop-player__panel :global(.concept-loop__card) {
+    height: 100%;
+  }
+  .grade-loop-player__panel :global(.concept-loop__toggle) {
+    /* Player-level pause/play owns controls; keep engine toggle for a11y fallback off-screen */
+    display: none !important;
+  }
+
+  @media (min-width: 900px) {
+    .grade-loop-player {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+      padding: 22px 22px 18px;
+    }
+  }
+
+  @media (max-width: 899.98px) {
+    .grade-loop-player {
+      grid-template-columns: 1fr;
+    }
+    .grade-loop-player__stage {
+      max-width: none;
+      order: 2;
+    }
+    .grade-loop-player__copy {
+      order: 1;
+    }
+  }
+</style>

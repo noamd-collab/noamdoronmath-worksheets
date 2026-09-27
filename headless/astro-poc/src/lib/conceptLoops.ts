@@ -20,6 +20,7 @@ interface LoopDebug {
   seek: (t: number) => void;
   pause: () => void;
   play: () => void;
+  restart: () => void;
   state: () => { t: number; playing: boolean; laps: number; done: boolean; static: boolean };
 }
 
@@ -2106,6 +2107,7 @@ function setupLoop(root: LoopRoot) {
       playing = false;
       done = true;
       setToggle('הפעלת ההדגמה מחדש', true);
+      root.dispatchEvent(new CustomEvent('conceptloop:done', { bubbles: true }));
       return;
     }
     drawFrame();
@@ -2192,6 +2194,21 @@ function setupLoop(root: LoopRoot) {
   applyMotionPrefs();
   if (!isStatic) setToggle('השהיית ההדגמה', false);
 
+  function restart() {
+    done = false;
+    lap = 1;
+    t = 0;
+    userPaused = false;
+    drawFrame();
+    if (isStatic) {
+      t = spec.hold;
+      drawFrame();
+      return;
+    }
+    if (inView) play();
+    else setToggle('הפעלת ההדגמה', true);
+  }
+
   // deterministic hook for automated checks / report screenshots
   root.__loop = {
     seek(tt: number) {
@@ -2200,6 +2217,7 @@ function setupLoop(root: LoopRoot) {
     },
     pause,
     play,
+    restart,
     state: () => ({ t, playing, laps: lap, done, static: isStatic }),
   };
 }
