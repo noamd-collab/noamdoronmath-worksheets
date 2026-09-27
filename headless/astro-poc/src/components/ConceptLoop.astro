@@ -164,12 +164,12 @@ const ariaLabels: Record<string, string> = {
   exterior: 'הדגמה: הזווית החיצונית שווה לסכום שתי הזוויות הפנימיות הרחוקות.',
   'para-perp': 'הדגמה: שני ישרים נשארים מקבילים, ושניים אחרים נפגשים בזווית ישרה.',
   'quarter-12': 'הדגמה: רבע מ־12 נקודות הוא 3 נקודות מסומנות.',
-  'two-coins': 'הדגמה: שני מטבעות נותנים 4 תוצאות שוות, ואחת מתוך ארבע מסומנת.',
+  'two-coins': 'הדגמה: בשתי הטלות של מטבע הוגן יש ארבע תוצאות שוות־הסתברות; עץ־עץ היא אחת מהן ולכן ההסתברות שלה רבע.',
   'map-scale': 'הדגמה: קטע על המפה מוכפל לפי קנה המידה, ומופיע האורך במציאות.',
   'unit-frac': 'הדגמה: חצי, שליש ורבע מוצגים זה לצד זה, והחצי הוא החלק הגדול ביותר.',
   'coord-walk': 'הדגמה: נקודה צועדת 3 ימינה ו־2 למעלה ומגיעה אל (3,2).',
   'coins-12': 'הדגמה: מטבע של 10 ועוד שני מטבעות של 1 שווים 12.',
-  'cyl-stack': 'הדגמה: ארבע שכבות בגובה יחידה נערמות לגליל, והגובה הוא 4.',
+  'cyl-stack': 'הדגמה: ארבע שכבות שוות ממלאות גליל. גובה כל שכבה יחידה אחת, ולכן גובה הגליל הוא 4.',
   'tenth-cell': 'הדגמה: פס אחד הוא עשירית, ומשבצת אחת בתוכו היא מאית.',
   'equiv-half': 'הדגמה: חצי, שני רבעים ושלוש שישיות יושבים על אותה נקודה בישר.',
   'half-eq': 'הדגמה: חציית משולש שווה צלעות נותנת משולש 30-60-90, והצלע שמול 30 היא חצי היתר.',
@@ -178,8 +178,8 @@ const ariaLabels: Record<string, string> = {
   'cube-8': 'הדגמה: 2 כפול 2 כפול 2 נבנה מקוביות, ויוצא 8.',
   'place-123': 'הדגמה: מאה אחת, שתי עשרות ושלוש יחידות מרכיבות את 123.',
   'jumps-4': 'הדגמה: ארבע קפיצות שוות של 3 על הישר מגיעות אל 12.',
-  'apples-5': 'הדגמה: בציור, 2 תפוחים ועוד 3 תפוחים נותנים 5.',
-  'topic-card': 'הדגמה: כרטיס נושא שעוד לא התייצב מקבל צבע, ומשם ממשיכים.',
+  'apples-5': 'הדגמה: שני תפוחים ושלושה תפוחים מחליפים מקום. הסדר משתנה, אבל הסכום נשאר 5.',
+  'topic-card': 'הדגמה: בתבנית 2, 4, 6, 8 המספר החסר הוא 6.',
   'mark-250': 'הדגמה: 250 מסומן על הישר בין 200 ל־300.',
   'quad-gate': 'הדגמה: צורה עם 4 צלעות נכנסת לסל המרובעים, ומשולש נשאר בחוץ.',
   'two-diag': 'הדגמה: במרובע נמתחים שני אלכסונים, אחד ואחר כך השני.',
@@ -235,7 +235,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'clock-span': { text: 'כמה שעות עברו?' },
   exterior: { text: 'כמה הזווית החיצונית?' },
   'para-perp': { text: 'מקביל או מאונך?' },
-  'quarter-12': { text: '1/4 מ־12 = ?' },
+  'quarter-12': { text: '¼ מ־12 = ?' },
   'two-coins': { text: 'מה ההסתברות לשני עצים?' },
   'map-scale': { text: '4 × 5 = ?', ltr: true },
   'unit-frac': { text: 'איזה חלק הכי גדול?' },
@@ -250,8 +250,8 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'cube-8': { text: '2 × 2 × 2 = ?', ltr: true },
   'place-123': { text: '100 + 20 + 3 = ?', ltr: true },
   'jumps-4': { text: '4 × 3 = ?', ltr: true },
-  'apples-5': { text: '2 + 3 = ?', ltr: true },
-  'topic-card': { text: 'מה קורה לכרטיס?' },
+  'apples-5': { text: '2 + 3 או 3 + 2?', ltr: true },
+  'topic-card': { text: 'מה המספר החסר?' },
   'mark-250': { text: '200 < ? < 300', ltr: true },
   'quad-gate': { text: 'איזו צורה נכנסת?' },
   'two-diag': { text: 'כמה אלכסונים?' },
@@ -1841,7 +1841,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <text class="cl-t cl-num" x="433" y="180" text-anchor="middle">פפ</text>
           </g>
           <rect class="cl-stroke-a" data-el="pick" x="70" y="140" width="90" height="70" fill="none" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="pick-lbl" x="115" y="232" text-anchor="middle" style="opacity:0">1/4</text>
+          <text class="cl-t cl-num" data-el="pick-lbl" x="115" y="232" text-anchor="middle" style="opacity:0">P(עע) = 1/4</text>
         </svg>
       )
     }
@@ -2150,7 +2150,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <line class="cl-line" x1="342" y1="124" x2="342" y2="112" />
             <text class="cl-t cl-num" x="296" y="180" text-anchor="middle">3</text>
           </g>
-          <text class="cl-t cl-num cl-ok cl-big" data-el="five" x="430" y="148" style="opacity:0">= 5</text>
+          <text class="cl-t cl-num cl-ok cl-big" data-el="five" x="280" y="230" text-anchor="middle" style="opacity:0">2 + 3 = 3 + 2 = 5</text>
         </svg>
       )
     }
@@ -2160,12 +2160,12 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <rect class="cl-line" x="40" y="110" width="108" height="70" style="fill:#fff" />
           <rect class="cl-line" x="164" y="110" width="108" height="70" style="fill:#fff" />
           <rect class="cl-line" x="412" y="110" width="108" height="70" style="fill:#fff" />
-          <text class="cl-t" x="94" y="152" text-anchor="middle">נושא א</text>
-          <text class="cl-t" x="218" y="152" text-anchor="middle">נושא ב</text>
-          <text class="cl-t" x="466" y="152" text-anchor="middle">נושא ד</text>
+          <text class="cl-t cl-num" x="94" y="152" text-anchor="middle">2</text>
+          <text class="cl-t cl-num" x="218" y="152" text-anchor="middle">4</text>
+          <text class="cl-t cl-num" x="466" y="152" text-anchor="middle">8</text>
           <rect class="cl-fill-d cl-dash" x="288" y="110" width="108" height="70" />
           <rect class="cl-fill-a cl-stroke-a" data-el="solid" x="288" y="110" width="108" height="70" style="opacity:0" />
-          <text class="cl-t" x="342" y="152" text-anchor="middle">נושא ג</text>
+          <text class="cl-t cl-num" x="342" y="152" text-anchor="middle">6</text>
           <text class="cl-t cl-ok cl-big" data-el="ok" x="378" y="140" style="opacity:0">✓</text>
         </svg>
       )
@@ -2737,7 +2737,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'two-coins' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">1/4</span>
+          <span data-fx="0">P(עע) = 1/4</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2825,7 +2825,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'cube-8' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">2 × 2 × 2 = 8</span>
+          <span data-fx="0">2³ = 2 × 2 × 2 = 8</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2849,7 +2849,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'apples-5' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">2 + 3 = 5</span>
+          <span data-fx="0">2 + 3 = 3 + 2 = 5</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2857,7 +2857,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'topic-card' && (
         <p class="concept-loop__formula">
-          <span data-fx="0">ממשיכים</span>
+          <span data-fx="0">2, 4, 6, 8</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -3066,4 +3066,3 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     cursor: default;
   }
 </style>
-
