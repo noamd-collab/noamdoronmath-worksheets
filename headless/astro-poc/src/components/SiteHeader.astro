@@ -20,6 +20,8 @@ function navProps(key: ActiveNavKey) {
     'aria-current': isActive ? ('page' as const) : undefined,
   };
 }
+
+const learnNav = navProps('learning');
 ---
 <header class="site-header">
   <div class="site-header__inner">
@@ -47,10 +49,10 @@ function navProps(key: ActiveNavKey) {
       </a>
     </nav>
     <a
-      class:list={['site-header__learn', active === 'learning' && 'is-active']}
+      class:list={['site-header__learn', learnNav.class.includes('is-active') && 'is-active']}
       href="/learning.html"
       data-peek="learn"
-      {...(active === 'learning' ? { 'aria-current': 'page' as const } : {})}
+      aria-current={learnNav['aria-current']}
     >
       הלמידה שלי
     </a>
