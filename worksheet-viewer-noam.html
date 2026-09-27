@@ -4734,15 +4734,23 @@ function enhanceNoamGlossary(root){
   }
   nodes.forEach(function(node){
     var matches=window.NoamGlossary.findTerms(node.nodeValue,g,6);
-    if (!matches.length){return;}
+    if (!matches.length){
+      var cleanedAlone=noamStripMarkdownEmphasis(node.nodeValue);
+      if (cleanedAlone!==node.nodeValue){node.nodeValue=cleanedAlone;}
+      return;
+    }
     var fragment=document.createDocumentFragment();
     var cursor=0;
     matches.forEach(function(match){
-      if (match.start>cursor){fragment.appendChild(document.createTextNode(node.nodeValue.slice(cursor,match.start)));}
+      if (match.start>cursor){
+        fragment.appendChild(document.createTextNode(noamStripMarkdownEmphasis(node.nodeValue.slice(cursor,match.start))));
+      }
       fragment.appendChild(makeNoamGlossaryTerm(match));
       cursor=match.end;
     });
-    if (cursor<node.nodeValue.length){fragment.appendChild(document.createTextNode(node.nodeValue.slice(cursor)));}
+    if (cursor<node.nodeValue.length){
+      fragment.appendChild(document.createTextNode(noamStripMarkdownEmphasis(node.nodeValue.slice(cursor))));
+    }
     node.parentNode.replaceChild(fragment,node);
   });
 }
