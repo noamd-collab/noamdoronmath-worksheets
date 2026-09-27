@@ -1557,9 +1557,9 @@ const NEIGHBORS_HOLD = 4.8;
 function renderSignedOps(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
   op(q(root, 'box'), ph(t, 0.7, 1.1) * fade);
-  op(q(root, 'eight'), ph(t, 1.4, 1.8) * (1 - ph(t, 2.6, 3.0)) * fade);
-  op(q(root, 'five'), ph(t, 2.8, 3.3) * (1 - ph(t, 8.0, 8.6)));
-  const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'eight'), ph(t, 1.5, 2.1) * (1 - ph(t, 8.0, 8.6)));
+  op(q(root, 'sum'), ph(t, 2.6, 3.2) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
   op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));

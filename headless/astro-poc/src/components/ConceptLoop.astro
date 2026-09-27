@@ -203,7 +203,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'clock-span': { text: 'כמה שעות עברו?' },
   exterior: { text: 'כמה הזווית החיצונית?' },
   'para-perp': { text: 'מקביל או מאונך?' },
-  'quarter-12': { text: '1/4 מ־12 = ?', ltr: true },
+  'quarter-12': { text: '1/4 מ־12 = ?' },
   'two-coins': { text: 'כמה תוצאות שוות?' },
   'map-scale': { text: '4 × 5 = ?', ltr: true },
   'unit-frac': { text: 'איזה חלק הכי גדול?' },
@@ -418,10 +418,20 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
 
     {
       /* families F01–F06: fixed problem strip that never moves */
-      top && (
-        <p class="concept-loop__top" dir={top.ltr ? 'ltr' : undefined}>
-          {top.text}
+      variant === 'quarter-12' ? (
+        <p class="concept-loop__top">
+          <span class="cl-num">1/4</span>
+          {' מ־'}
+          <span class="cl-num">12</span>
+          {' = '}
+          <span class="cl-num">?</span>
         </p>
+      ) : (
+        top && (
+          <p class="concept-loop__top" dir={top.ltr ? 'ltr' : undefined}>
+            {top.text}
+          </p>
+        )
       )
     }
     {
@@ -1689,11 +1699,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'signed-ops' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={ariaLabels[variant]}>
-          <text class="cl-t cl-num cl-big" x="70" y="140">(−3) +</text>
-          <text class="cl-t cl-num cl-big" x="210" y="140">2 × 4</text>
-          <rect class="cl-dash-strong" data-el="box" x="196" y="108" width="100" height="44" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="eight" x="246" y="96" text-anchor="middle" style="opacity:0">= 8</text>
-          <text class="cl-t cl-num cl-ok cl-big" data-el="five" x="320" y="140" style="opacity:0">= 5</text>
+          <text class="cl-t cl-num cl-big" x="150" y="118">2 × 4</text>
+          <rect class="cl-dash-strong" data-el="box" x="136" y="86" width="108" height="46" style="opacity:0" />
+          <text class="cl-t cl-num cl-big" data-el="eight" x="258" y="118" style="opacity:0">= 8</text>
+          <text class="cl-t cl-num cl-ok cl-big" data-el="sum" x="70" y="196" style="opacity:0">(−3) + 8 = 5</text>
         </svg>
       )
     }
@@ -1725,7 +1734,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <path class="cl-fill-c cl-line" data-el="w60" d="M200 100 L256 100 L254.1 114.5 L248.5 128 L239.6 139.6 L228 148.5 Z" style="opacity:0" />
           <text class="cl-t cl-num" data-el="a90" x="224" y="80" text-anchor="middle" style="opacity:0">90°</text>
           <text class="cl-t cl-num" data-el="a60" x="232" y="122" text-anchor="middle" style="opacity:0">60°</text>
-          <text class="cl-t cl-num cl-ok" data-el="a150" x="286" y="76" style="opacity:0">150°</text>
+          <text class="cl-t cl-num cl-ok" data-el="a150" x="268" y="72" text-anchor="middle" style="opacity:0">150°</text>
         </svg>
       )
     }
@@ -2308,7 +2317,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'signed-ops' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">(−3) + 2×4 = 5</span>
+          <span data-fx="0">2×4 = 8, (−3)+8 = 5</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2331,8 +2340,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
     {
       variant === 'para-perp' && (
-        <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">80 = 80, 90°</span>
+        <p class="concept-loop__formula">
+          <span data-fx="0">מרחק שווה · <span class="cl-num">90°</span></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
