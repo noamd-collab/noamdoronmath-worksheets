@@ -1715,25 +1715,28 @@ function renderCoins12(root: LoopRoot, t: number) {
 }
 const COINS12_HOLD = 5.0;
 
-/* ═══════════════ L43 — cyl-stack: 4 equal layers, height = 4 ═══════════════
-   Centers at y = 260, 232, 204, 176. Step is 28 px. */
+/* ═══════════════ L43 — cyl-stack: 4 slabs, 5 boundary ellipses, step 28 ═══════════════
+   Boundaries at y = 250, 222, 194, 166, 138. Each gap is one unit of height. */
 
 function renderCylStack(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
-  let topped = 0;
-  for (let i = 0; i < 4; i++) {
-    const p = ph(t, 0.7 + i * 0.45, 1.05 + i * 0.45);
+  let slabs = 0;
+  for (let i = 0; i < 5; i++) {
+    const p = ph(t, 0.5 + i * 0.4, 0.85 + i * 0.4);
     op(q(root, `e${i}`), p * fade);
-    op(q(root, `n${i}`), p * fade);
-    topped += p;
+    if (i > 0) {
+      op(q(root, `n${i - 1}`), p * fade);
+      slabs += p;
+    }
   }
-  const y2 = r2(260 - 28 * Math.max(0, topped - 1));
+  const y2 = r2(250 - 28 * slabs);
   const left = q(root, 'sideL');
   const right = q(root, 'sideR');
   if (left) left.setAttribute('y2', String(y2));
   if (right) right.setAttribute('y2', String(y2));
-  op(left, fade);
-  op(right, fade);
+  const side = slabs > 0 ? fade : 0;
+  op(left, side);
+  op(right, side);
   const show = ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6));
   op(q(root, 'base'), show);
   op(q(root, 'hlbl'), show);

@@ -169,7 +169,7 @@ const ariaLabels: Record<string, string> = {
   'unit-frac': 'הדגמה: חצי, שליש ורבע מוצגים זה לצד זה, והחצי הוא החלק הגדול ביותר.',
   'coord-walk': 'הדגמה: נקודה צועדת 3 ימינה ו־2 למעלה ומגיעה אל (3,2).',
   'coins-12': 'הדגמה: מטבע של 10 ועוד שני מטבעות של 1 שווים 12.',
-  'cyl-stack': 'הדגמה: עיגולים שווים נערמים לגליל, ומספר השכבות הוא הגובה.',
+  'cyl-stack': 'הדגמה: ארבע שכבות בגובה יחידה נערמות לגליל, והגובה הוא 4.',
   'tenth-cell': 'הדגמה: פס אחד הוא עשירית, ומשבצת אחת בתוכו היא מאית.',
   'equiv-half': 'הדגמה: חצי, שני רבעים ושלוש שישיות יושבים על אותה נקודה בישר.',
   'half-eq': 'הדגמה: חציית משולש שווה צלעות נותנת משולש 30-60-90, והצלע שמול 30 היא חצי היתר.',
@@ -236,7 +236,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   exterior: { text: 'כמה הזווית החיצונית?' },
   'para-perp': { text: 'מקביל או מאונך?' },
   'quarter-12': { text: '1/4 מ־12 = ?' },
-  'two-coins': { text: 'כמה תוצאות שוות?' },
+  'two-coins': { text: 'מה ההסתברות לשני עצים?' },
   'map-scale': { text: '4 × 5 = ?', ltr: true },
   'unit-frac': { text: 'איזה חלק הכי גדול?' },
   'coord-walk': { text: '(3, 2) = ?', ltr: true },
@@ -1819,7 +1819,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <circle class="cl-fill-a cl-stroke-a" cx="142" cy="140" r="11" />
             <path class="cl-line" d="M54 154 V168 H158 V154" />
           </g>
-          <text class="cl-t cl-num" data-el="count" x="106" y="190" text-anchor="middle" style="opacity:0">1/4 = 3</text>
+          <text class="cl-t cl-num" data-el="count" x="106" y="190" text-anchor="middle" style="opacity:0">¼ × 12 = 3</text>
         </svg>
       )
     }
@@ -1925,22 +1925,23 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'cyl-stack' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 360" role="img" aria-label={ariaLabels[variant]}>
-          <line class="cl-line" data-el="sideL" x1="200" y1="260" x2="200" y2="260" />
-          <line class="cl-line" data-el="sideR" x1="340" y1="260" x2="340" y2="260" />
-          <ellipse class="cl-fill-a cl-line" data-el="e0" cx="270" cy="260" rx="70" ry="16" style="opacity:0" />
-          <ellipse class="cl-fill-a cl-line" data-el="e1" cx="270" cy="232" rx="70" ry="16" style="opacity:0" />
-          <ellipse class="cl-fill-a cl-line" data-el="e2" cx="270" cy="204" rx="70" ry="16" style="opacity:0" />
-          <ellipse class="cl-fill-a cl-line" data-el="e3" cx="270" cy="176" rx="70" ry="16" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="n0" x="360" y="265" style="opacity:0">1</text>
-          <text class="cl-t cl-num" data-el="n1" x="360" y="237" style="opacity:0">2</text>
-          <text class="cl-t cl-num" data-el="n2" x="360" y="209" style="opacity:0">3</text>
-          <text class="cl-t cl-num" data-el="n3" x="360" y="181" style="opacity:0">4</text>
+          <line class="cl-line" data-el="sideL" x1="200" y1="250" x2="200" y2="250" style="opacity:0" />
+          <line class="cl-line" data-el="sideR" x1="340" y1="250" x2="340" y2="250" style="opacity:0" />
+          <ellipse class="cl-fill-a cl-line" data-el="e0" cx="270" cy="250" rx="70" ry="16" style="opacity:0" />
+          <ellipse class="cl-fill-a cl-line" data-el="e1" cx="270" cy="222" rx="70" ry="16" style="opacity:0" />
+          <ellipse class="cl-fill-a cl-line" data-el="e2" cx="270" cy="194" rx="70" ry="16" style="opacity:0" />
+          <ellipse class="cl-fill-a cl-line" data-el="e3" cx="270" cy="166" rx="70" ry="16" style="opacity:0" />
+          <ellipse class="cl-fill-a cl-line" data-el="e4" cx="270" cy="138" rx="70" ry="16" style="opacity:0" />
+          <text class="cl-t cl-num" data-el="n0" x="378" y="240" style="opacity:0">1</text>
+          <text class="cl-t cl-num" data-el="n1" x="378" y="212" style="opacity:0">2</text>
+          <text class="cl-t cl-num" data-el="n2" x="378" y="184" style="opacity:0">3</text>
+          <text class="cl-t cl-num" data-el="n3" x="378" y="156" style="opacity:0">4</text>
           <g data-el="base" style="opacity:0">
-            <line class="cl-stroke-b" x1="270" y1="260" x2="340" y2="260" />
-            <text class="cl-t cl-num" x="346" y="254">r</text>
-            <text class="cl-t cl-num" x="270" y="300" text-anchor="middle">B = πr²</text>
+            <line class="cl-stroke-b" x1="270" y1="250" x2="340" y2="250" />
+            <text class="cl-t cl-num" x="346" y="246">r</text>
+            <text class="cl-t cl-num" x="270" y="292" text-anchor="middle">B = πr²</text>
           </g>
-          <text class="cl-t cl-num" data-el="hlbl" x="184" y="222" text-anchor="end" style="opacity:0">h = 4</text>
+          <text class="cl-t cl-num" data-el="hlbl" x="184" y="198" text-anchor="end" style="opacity:0">h = 4</text>
         </svg>
       )
     }
@@ -1999,7 +2000,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <line class="cl-stroke-a" data-el="alt" x1="240" y1="131.4" x2="240" y2="270" style="opacity:0" />
           <path class="cl-line" data-el="sq" d="M240 254 L256 254 L256 270" style="opacity:0" />
           <path class="cl-stroke-a" data-el="a30" d="M240 157.4 A26 26 0 0 1 253 153.9" style="fill:none;opacity:0" />
-          <text class="cl-t cl-num cl-small" data-el="a30t" x="258" y="172" style="opacity:0">30°</text>
+          <text class="cl-t cl-num cl-small" data-el="a30t" x="258" y="206" text-anchor="middle" style="opacity:0">30°</text>
           <path class="cl-stroke-b" data-el="a60" d="M298 270 A22 22 0 0 1 309 251" style="fill:none;opacity:0" />
           <text class="cl-t cl-num cl-small" data-el="a60t" x="286" y="258" style="opacity:0">60°</text>
           <g data-el="dims" style="opacity:0">
@@ -2192,7 +2193,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         <svg class="concept-loop__svg" viewBox="0 0 560 320" role="img" aria-label={ariaLabels[variant]}>
           <rect class="cl-line" x="60" y="150" width="180" height="120" />
           <text class="cl-t" x="150" y="140" text-anchor="middle">מרובעים</text>
-          <g data-el="sq">
+          <g data-el="sq" transform="translate(340 70)">
             <rect class="cl-line cl-stroke-a" x="0" y="0" width="52" height="52" style="fill:#fff" />
             <text class="cl-t cl-num" x="26" y="32" text-anchor="middle">4</text>
           </g>
