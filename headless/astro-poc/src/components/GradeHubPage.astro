@@ -50,7 +50,7 @@ const faqJsonLd = hasFaq
     }
   : null;
 
-/** Mid-school hubs keep a single MathWidget film; grades 1–6 use dual Grok players. */
+/** Mid-school hubs keep a single MathWidget film; grades 1–6 use one unified Grok player. */
 const mathVariant: MathWidgetVariant | null =
   grade === 7
     ? 'triangle'
@@ -61,9 +61,7 @@ const mathVariant: MathWidgetVariant | null =
         : null;
 const mathFamily = grade <= 6 ? 'elem' : 'mid';
 const grokGradeLoops = visibleGrokLoops(grokLoopsForGrade(grade));
-const useDualGrokPlayers = grade >= 1 && grade <= 6 && grokGradeLoops.length > 0;
-const playerA = useDualGrokPlayers ? grokGradeLoops.slice(0, 3) : [];
-const playerB = useDualGrokPlayers ? grokGradeLoops.slice(3, 6) : [];
+const useUnifiedGrokPlayer = grade >= 1 && grade <= 6 && grokGradeLoops.length > 0;
 ---
 <BaseLayout
   title={hub.title}
@@ -125,27 +123,20 @@ const playerB = useDualGrokPlayers ? grokGradeLoops.slice(3, 6) : [];
     <LineArtDoodles variant="hub" />
 
     {
-      useDualGrokPlayers && (
+      useUnifiedGrokPlayer && (
         <section
-          class="grade-dual-players"
-          aria-labelledby="grade-dual-players-title"
-          data-grade-dual-players
+          class="grade-unified-player"
+          aria-labelledby="grade-unified-player-title"
+          data-grade-unified-player
         >
-          <h2 id="grade-dual-players-title" class="grade-hub__section-title">
-            המחשות לפי נושא
+          <h2 id="grade-unified-player-title" class="grade-hub__section-title">
+            המחשות הכיתה
           </h2>
-          <div class="grade-dual-players__grid">
-            <GradeLoopPlayer
-              entries={playerA}
-              playerId={`grade-${grade}-player-a`}
-              label="נגן המחשות 1"
-            />
-            <GradeLoopPlayer
-              entries={playerB}
-              playerId={`grade-${grade}-player-b`}
-              label="נגן המחשות 2"
-            />
-          </div>
+          <GradeLoopPlayer
+            entries={grokGradeLoops}
+            playerId={`grade-${grade}-player`}
+            label="כל המחשות הכיתה"
+          />
         </section>
       )
     }
@@ -265,23 +256,7 @@ const playerB = useDualGrokPlayers ? grokGradeLoops.slice(3, 6) : [];
 </BaseLayout>
 
 <style>
-  .grade-dual-players {
+  .grade-unified-player {
     margin-block: 28px 16px;
-  }
-  .grade-dual-players__grid {
-    display: grid;
-    gap: 28px;
-  }
-  @media (min-width: 1100px) {
-    .grade-dual-players__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 32px 36px;
-      align-items: stretch;
-    }
-  }
-  @media (max-width: 1099.98px) {
-    .grade-dual-players__grid {
-      grid-template-columns: 1fr;
-    }
   }
 </style>
