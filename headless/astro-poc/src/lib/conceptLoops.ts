@@ -1678,6 +1678,164 @@ function renderUnitFrac(root: LoopRoot, t: number) {
 }
 const UNIT_FRAC_HOLD = 5.0;
 
+/* ═══════════════ L41 — coord-walk: 3 right, then 2 up, to (3,2) ═══════════════
+   Origin (170, 250). One unit is 36 px, so (3,2) is (278, 178). */
+
+function renderCoordWalk(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const right = ph(t, 0.8, 2.2) - ph(t, 8.2, 9.0);
+  const up = ph(t, 2.4, 3.6) - ph(t, 8.4, 9.2);
+  const hseg = q(root, 'hseg');
+  if (hseg) hseg.setAttribute('x2', String(r2(170 + 108 * right)));
+  const vseg = q(root, 'vseg');
+  if (vseg) vseg.setAttribute('y2', String(r2(250 - 72 * up)));
+  op(vseg, ph(t, 2.3, 2.5) * fade);
+  const pt = q(root, 'pt');
+  if (pt) pt.setAttribute('transform', `translate(${r2(108 * right)} ${r2(-72 * up)})`);
+  op(q(root, 'lbl'), ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.8, 4.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 4.2, 4.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const COORD_WALK_HOLD = 5.2;
+
+/* ═══════════════ L42 — coins-12: 10 + 1 + 1 = 12 ═══════════════ */
+
+function renderCoins12(root: LoopRoot, t: number) {
+  const p = ph(t, 1.0, 2.2) - ph(t, 8.2, 9.2);
+  shift(q(root, 'c10'), 40 * p, 0);
+  shift(q(root, 'c1a'), -44 * p, 0);
+  shift(q(root, 'c1b'), -66 * p, 0);
+  const show = ph(t, 2.5, 2.9) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'sum'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const COINS12_HOLD = 5.0;
+
+/* ═══════════════ L43 — cyl-stack: 4 equal layers, height = 4 ═══════════════
+   Centers at y = 260, 232, 204, 176. Step is 28 px. */
+
+function renderCylStack(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  let topped = 0;
+  for (let i = 0; i < 4; i++) {
+    const p = ph(t, 0.7 + i * 0.45, 1.05 + i * 0.45);
+    op(q(root, `e${i}`), p * fade);
+    op(q(root, `n${i}`), p * fade);
+    topped += p;
+  }
+  const y2 = r2(260 - 28 * Math.max(0, topped - 1));
+  const left = q(root, 'sideL');
+  const right = q(root, 'sideR');
+  if (left) left.setAttribute('y2', String(y2));
+  if (right) right.setAttribute('y2', String(y2));
+  op(left, fade);
+  op(right, fade);
+  const show = ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const CYL_STACK_HOLD = 5.2;
+
+/* ═══════════════ L44 — tenth-cell: 10×10, one row, one cell ═══════════════ */
+
+function renderTenthCell(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'row'), ph(t, 0.8, 1.4) * fade);
+  const mark = ph(t, 1.8, 2.3) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'cell'), mark);
+  op(q(root, 'hun'), mark);
+  const show = ph(t, 2.5, 2.9) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6)));
+}
+const TENTH_CELL_HOLD = 5.0;
+
+/* ═══════════════ L45 — equiv-half: 1/2 = 2/4 = 3/6 on one point ═══════════════
+   The line is 360 px. Half, the second quarter and the third sixth are all x = 270. */
+
+function renderEquivHalf(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const guide = ph(t, 0.7, 1.1) * fade;
+  op(q(root, 'guide'), guide);
+  op(q(root, 'h'), guide);
+  op(q(root, 'quarters'), ph(t, 1.5, 2.0) * fade);
+  op(q(root, 'q'), ph(t, 1.8, 2.2) * fade);
+  op(q(root, 'sixths'), ph(t, 2.5, 3.0) * fade);
+  op(q(root, 's'), ph(t, 2.8, 3.2) * fade);
+  const show = ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
+}
+const EQUIV_HALF_HOLD = 5.2;
+
+/* ═══════════════ L46 — half-eq: equilateral cut, 80 opposite 30°, hypotenuse 160 ═══════════════ */
+
+function renderHalfEq(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const cut = ph(t, 1.0, 1.6) * fade;
+  op(q(root, 'alt'), cut);
+  op(q(root, 'sq'), ph(t, 1.6, 2.0) * fade);
+  op(q(root, 'a30'), ph(t, 1.8, 2.2) * fade);
+  op(q(root, 'a60'), ph(t, 2.0, 2.4) * fade);
+  op(q(root, 'dims'), ph(t, 2.3, 2.8) * fade);
+  const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const HALF_EQ_HOLD = 5.2;
+
+/* ═══════════════ L47 — sq-stretch: square 100×100 becomes a 180×100 rectangle ═══════════════ */
+
+function renderSqStretch(root: LoopRoot, t: number) {
+  const p = ph(t, 1.1, 2.5) - ph(t, 8.2, 9.3);
+  const w = r2(100 + 80 * p);
+  const box = q(root, 'box');
+  if (box) box.setAttribute('width', String(w));
+  const x = r2(280 + 80 * p);
+  const c1 = q(root, 'c1');
+  const c2 = q(root, 'c2');
+  if (c1) c1.setAttribute('cx', String(x));
+  if (c2) c2.setAttribute('cx', String(x));
+  const show = ph(t, 2.7, 3.1) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'four'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.1, 3.5) * (1 - ph(t, 8.0, 8.6)));
+}
+const SQ_STRETCH_HOLD = 5.0;
+
+/* ═══════════════ L48 — area-x4: side 56 → 112, four equal 56×56 cells ═══════════════ */
+
+function renderAreaX4(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const g = ph(t, 1.0, 2.4) - ph(t, 8.2, 9.2);
+  const sq = q(root, 'sq');
+  const s = r2(56 + 56 * g);
+  if (sq) {
+    sq.setAttribute('width', String(s));
+    sq.setAttribute('height', String(s));
+  }
+  const grid = ph(t, 2.5, 2.9) * fade;
+  op(q(root, 'mv'), grid);
+  op(q(root, 'mh'), grid);
+  op(q(root, 'n2'), grid);
+  op(q(root, 'n3'), grid);
+  op(q(root, 'n4'), grid);
+  const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+}
+const AREA_X4_HOLD = 5.2;
+
 /* ═══════════════ engine ═══════════════ */
 
 const SPECS = {
@@ -1738,6 +1896,14 @@ const SPECS = {
   'two-coins': { duration: 10, hold: TWO_COINS_HOLD, render: renderTwoCoins },
   'map-scale': { duration: 10, hold: MAP_SCALE_HOLD, render: renderMapScale },
   'unit-frac': { duration: 10, hold: UNIT_FRAC_HOLD, render: renderUnitFrac },
+  'coord-walk': { duration: 10, hold: COORD_WALK_HOLD, render: renderCoordWalk },
+  'coins-12': { duration: 10, hold: COINS12_HOLD, render: renderCoins12 },
+  'cyl-stack': { duration: 10, hold: CYL_STACK_HOLD, render: renderCylStack },
+  'tenth-cell': { duration: 10, hold: TENTH_CELL_HOLD, render: renderTenthCell },
+  'equiv-half': { duration: 10, hold: EQUIV_HALF_HOLD, render: renderEquivHalf },
+  'half-eq': { duration: 10, hold: HALF_EQ_HOLD, render: renderHalfEq },
+  'sq-stretch': { duration: 10, hold: SQ_STRETCH_HOLD, render: renderSqStretch },
+  'area-x4': { duration: 10, hold: AREA_X4_HOLD, render: renderAreaX4 },
 } as const;
 
 const MAX_LAPS = 4;
