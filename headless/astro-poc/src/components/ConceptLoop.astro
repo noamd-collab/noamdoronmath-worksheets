@@ -2051,35 +2051,25 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'cube-8' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
-          <g data-el="bot" style="opacity:0">
-            <polygon class="cl-fill-b cl-line" points="236,278 264,260 264,214 236,232" />
-            <polygon class="cl-fill-b cl-line" points="264,260 292,242 292,196 264,214" />
-            <rect class="cl-fill-a cl-line" x="190" y="232" width="46" height="46" />
-            <rect class="cl-fill-a cl-line" x="236" y="232" width="46" height="46" />
-          </g>
-          <g data-el="top" style="opacity:0">
-            <polygon class="cl-fill-b cl-line" points="236,232 264,214 264,168 236,186" />
-            <polygon class="cl-fill-b cl-line" points="264,214 292,196 292,150 264,168" />
-            <polygon class="cl-fill-c cl-line" points="190,186 236,186 264,168 218,168" />
-            <polygon class="cl-fill-c cl-line" points="236,186 282,186 310,168 264,168" />
-            <polygon class="cl-fill-c cl-line" points="218,168 264,168 292,150 246,150" />
-            <polygon class="cl-fill-c cl-line" points="264,168 310,168 338,150 292,150" />
-            <rect class="cl-fill-a cl-line" x="190" y="186" width="46" height="46" />
-            <rect class="cl-fill-a cl-line" x="236" y="186" width="46" height="46" />
+          <g data-el="cube" style="opacity:0">
+            <polygon class="cl-fill-b cl-line" points="290,150 290,230 338,202 338,122" />
+            <polygon class="cl-fill-c cl-line" points="210,150 290,150 338,122 258,122" />
+            <polygon class="cl-fill-a cl-line" points="210,150 290,150 290,230 210,230" />
+            <line class="cl-line" x1="250" y1="150" x2="250" y2="230" />
+            <line class="cl-line" x1="210" y1="190" x2="290" y2="190" />
+            <line class="cl-line" x1="250" y1="150" x2="298" y2="122" />
+            <line class="cl-line" x1="234" y1="136" x2="314" y2="136" />
+            <line class="cl-line" x1="290" y1="190" x2="338" y2="162" />
+            <line class="cl-line" x1="314" y1="136" x2="314" y2="216" />
           </g>
           <g data-el="edges" style="opacity:0">
-            <line class="cl-line-thin" x1="190" y1="278" x2="190" y2="292" />
-            <line class="cl-line-thin" x1="282" y1="278" x2="282" y2="292" />
-            <line class="cl-line-thin" x1="190" y1="292" x2="282" y2="292" />
-            <text class="cl-t cl-num" x="236" y="308" text-anchor="middle">2</text>
-            <line class="cl-line-thin" x1="190" y1="278" x2="176" y2="278" />
-            <line class="cl-line-thin" x1="190" y1="186" x2="176" y2="186" />
-            <line class="cl-line-thin" x1="176" y1="278" x2="176" y2="186" />
-            <text class="cl-t cl-num" x="164" y="236" text-anchor="end">2</text>
-            <line class="cl-line-thin" x1="310" y1="260" x2="328" y2="274" />
-            <text class="cl-t cl-num" x="332" y="278">2</text>
+            <line class="cl-line-thin" x1="250" y1="230" x2="250" y2="244" />
+            <text class="cl-t cl-num" x="250" y="260" text-anchor="middle">2</text>
+            <line class="cl-line-thin" x1="210" y1="190" x2="196" y2="190" />
+            <text class="cl-t cl-num" x="184" y="194" text-anchor="end">2</text>
+            <line class="cl-line-thin" x1="314" y1="216" x2="328" y2="230" />
+            <text class="cl-t cl-num" x="332" y="246">2</text>
           </g>
-          <text class="cl-t cl-num cl-big cl-ok" data-el="eight" x="360" y="168" style="opacity:0">8</text>
         </svg>
       )
     }
