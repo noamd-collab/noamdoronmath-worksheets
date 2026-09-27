@@ -5140,6 +5140,199 @@ function noamExerciseNeedsLiveVision(exercise){
   return !!(exercise&&(exercise.requiresVision||exercise.needsVision||noamManifestOcrUnreliable(exercise)));
 }
 
+/* Hebrew section markers א–ד (and finals) used as worksheet part labels. */
+function noamIsPartLabelToken(text){
+  return /^[א-ת]$/.test(String(text||"").trim());
+}
+
+/* Merge a detached unary minus glyph with the digit immediately to its right.
+   PDF text layers (and RTL worksheets) often emit "−" as its own item left of 7. */
+function noamAssociateUnaryMinusTokens(tokens){
+  var sorted=(tokens||[]).slice().sort(function(a,b){
+    return (a.x-b.x)||(a.y-b.y);
+  });
+  var out=[];
+  for (var i=0;i<sorted.length;i++){
+    var tok=sorted[i];
+    var next=sorted[i+1];
+    var minus=/^[−\-\u2212–]$/.test(String(tok.text||"").trim());
+    if (minus&&next&&/^\d+$/.test(String(next.text||"").trim())){
+      var gap=(Number(next.x0)!=null?next.x0:next.x)-(Number(tok.x1)!=null?tok.x1:tok.x);
+      if (!(gap>0.03)){
+        out.push({
+          text:"−"+String(next.text).trim(),
+          x:(tok.x+next.x)/2,
+          y:(tok.y+next.y)/2,
+          x0:tok.x0!=null?tok.x0:tok.x,
+          x1:next.x1!=null?next.x1:next.x,
+          y0:Math.min(tok.y0!=null?tok.y0:tok.y,next.y0!=null?next.y0:next.y),
+          y1:Math.max(tok.y1!=null?tok.y1:tok.y,next.y1!=null?next.y1:next.y)
+        });
+        i+=1;
+        continue;
+      }
+    }
+    out.push(tok);
+  }
+  return out;
+}
+
+/* Pure rebuild of one part's arithmetic expression from normalized page tokens.
+   tokens: [{text,x,y,x0,x1,y0,y1}] with x/y in 0..1, origin top-left. */
+function noamRebuildPartExpressionFromTokens(tokens, partLabel, crop){
+  var part=String(partLabel||"").trim();
+  if (!part||!tokens||!tokens.length){return null;}
+  var cx=Number(crop&&crop.x)||0;
+  var cy=Number(crop&&crop.y)||0;
+  var cw=Number(crop&&crop.w)||1;
+  var ch=Number(crop&&crop.h)||1;
+  var inCrop=tokens.filter(function(tok){
+    return tok.x>=cx-0.02&&tok.x<=cx+cw+0.02&&tok.y>=cy-0.02&&tok.y<=cy+ch+0.02;
+  });
+  var label=null;
+  inCrop.forEach(function(tok){
+    if (String(tok.text||"").trim()!==part){return;}
+    if (!label||tok.x>label.x){label=tok;}
+  });
+  if (!label){return null;}
+  var line=inCrop.filter(function(tok){
+    return Math.abs(tok.y-label.y)<0.014&&tok.x<=label.x+0.015;
+  });
+  var merged=noamAssociateUnaryMinusTokens(line);
+  var pieces=[];
+  merged.forEach(function(tok){
+    var t=String(tok.text||"").trim();
+    if (!t||t===part){return;}
+    if (t==="."||t==="·"){return;}
+    pieces.push(t);
+  });
+  if (pieces.length<3){return null;}
+  var expression=pieces.join(" ").replace(/\s+/g," ").trim();
+  // Require a signed/operator form so we never promote heading words as math.
+  if (!/(?:[−\-\u2212]\s*\d|\d\s*[+＋−\-\u2212])/.test(expression)){return null;}
+  if (!/\d/.test(expression)){return null;}
+  // Space binary operators only; keep unary minus glued to its digit (−7 not − 7).
+  expression=expression
+    .replace(/\s*([+＋])\s*/g," $1 ")
+    .replace(/(\d)\s*([−\-\u2212])\s*(?=\d)/g,"$1 $2 ")
+    .replace(/\s+/g," ")
+    .trim();
+  return expression;
+}
+
+/* Vertical band covering the selected part (and the question heading for part א). */
+function noamPartBandCropFromTokens(tokens, partLabel, crop){
+  var base=crop||{};
+  var part=String(partLabel||"").trim();
+  if (!part){return null;}
+  var cx=Number(base.x)||0;
+  var cy=Number(base.y)||0;
+  var cw=Number(base.w)||1;
+  var ch=Number(base.h)||1;
+  var labels=[];
+  (tokens||[]).forEach(function(tok){
+    var t=String(tok.text||"").trim();
+    if (!noamIsPartLabelToken(t)){return;}
+    if (tok.x<cx-0.02||tok.x>cx+cw+0.02||tok.y<cy-0.02||tok.y>cy+ch+0.02){return;}
+    labels.push(tok);
+  });
+  labels.sort(function(a,b){return a.y-b.y;});
+  var idx=-1;
+  for (var i=0;i<labels.length;i++){
+    if (String(labels[i].text).trim()===part){idx=i;break;}
+  }
+  if (idx<0){return null;}
+  var y0=idx===0?cy:(labels[idx-1].y+labels[idx].y)/2;
+  var y1=idx===labels.length-1?(cy+ch):(labels[idx].y+labels[idx+1].y)/2;
+  var pad=0.006;
+  y0=Math.max(cy,y0-pad);
+  y1=Math.min(cy+ch,y1+pad);
+  if (!(y1-y0>0.02)){return null;}
+  return {
+    page:Number(base.page)||1,
+    x:cx,
+    y:y0,
+    w:cw,
+    h:y1-y0
+  };
+}
+
+function noamNormalizePdfJsTextItems(items, viewport){
+  var width=viewport.width||1;
+  var height=viewport.height||1;
+  var out=[];
+  (items||[]).forEach(function(item){
+    var raw=String(item&&item.str||"").replace(/\u00a0/g," ");
+    if (!raw.trim()){return;}
+    var transform=item.transform||[1,0,0,1,0,0];
+    var pt=viewport.convertToViewportPoint
+      ? viewport.convertToViewportPoint(transform[4],transform[5])
+      : [transform[4], height-transform[5]];
+    var x=pt[0]/width;
+    var y=pt[1]/height;
+    var w=(Number(item.width)||0)/width;
+    var h=(Number(item.height)||Math.abs(transform[3])||0)/height;
+    // Split runs like "7 + 4" or "א." so a detached "−" can attach to its digit.
+    var chunks=raw.trim().split(/\s+/).filter(Boolean);
+    var step=chunks.length?w/chunks.length:w;
+    chunks.forEach(function(chunk,index){
+      var x0=x+step*index;
+      var x1=x+step*(index+1);
+      var mx=(x0+x1)/2;
+      if (/^[א-ת]\.$/.test(chunk)){
+        out.push({text:chunk.charAt(0),x:mx,y:y,x0:x0,x1:x1,y0:y,y1:y+h});
+        return;
+      }
+      out.push({text:chunk,x:mx,y:y,x0:x0,x1:x1,y0:y,y1:y+h});
+    });
+  });
+  return out;
+}
+
+function noamRebuildSelectedPartExpression(exercise){
+  if (!exercise||!exercise.part||!exercise.crop){return Promise.resolve(null);}
+  if (typeof pdfDocument==="undefined"||!pdfDocument){return Promise.resolve(null);}
+  var pageNumber=Number(exercise.crop.page||0);
+  if (!(pageNumber>=1)){return Promise.resolve(null);}
+  return pdfDocument.getPage(pageNumber).then(function(page){
+    var viewport=page.getViewport({scale:1});
+    return page.getTextContent().then(function(content){
+      var tokens=noamNormalizePdfJsTextItems(content&&content.items||[],viewport);
+      var expression=noamRebuildPartExpressionFromTokens(tokens,exercise.part,exercise.crop);
+      if (!expression){return null;}
+      var tight=noamPartBandCropFromTokens(tokens,exercise.part,exercise.crop);
+      return {
+        expression:expression,
+        crop:tight||exercise.crop,
+        source:"pdf_text_layer"
+      };
+    });
+  }).catch(function(){return null;});
+}
+
+function noamAnalysisFromPartExpression(exercise,rebuild){
+  var expression=String(rebuild&&rebuild.expression||"").trim();
+  var label=noamExerciseSectionLabel(exercise);
+  var statement=label+": "+expression;
+  return {
+    readable:true,
+    readability_confidence:0.95,
+    content_type:"pdf_part_expression_rebuild",
+    transcription:statement,
+    math_content:expression,
+    problem_statement:statement,
+    diagram_description:"",
+    student_work:"",
+    extracted_entities:{numbers:[],expressions:[expression],labels:[String(exercise.part||="")],units:[]},
+    uncertain_parts:[],
+    complexity:"easy",
+    complexity_reasons:["pdf text-layer rebuild of selected part"],
+    selected_part_expression:expression,
+    manifest_ocr_unreliable:true,
+    pdf_part_rebuild:true
+  };
+}
+
 /* STUDENT ATTACHMENTS — a photo or file of the student's own work, sent together
    with the question image so the analyzer can separate printed content from
    handwriting. Up to ATTACH_MAX_FILES files, each up to ATTACH_MAX_BYTES. The
@@ -5454,16 +5647,24 @@ function showExercisePreviewFailure(exercise){
 }
 
 function cropExerciseCanvasFromPdf(exercise){
-  var crops = Array.isArray(exercise.crops) && exercise.crops.length ? exercise.crops : [exercise.crop||{}];
-  if (crops.length > 12){ return Promise.reject(new Error("יותר מדי עמודים לשאלה אחת.")); }
-  return crops.reduce(function(chain, crop){
-    return chain.then(function(segments){
-      return cropExerciseSegment(crop).then(function(segment){
-        segments.push(segment);
-        return segments;
+  var baseCrops = Array.isArray(exercise.crops) && exercise.crops.length ? exercise.crops : [exercise.crop||{}];
+  if (baseCrops.length > 12){ return Promise.reject(new Error("יותר מדי עמודים לשאלה אחת.")); }
+  var cropPromise=Promise.resolve(baseCrops);
+  if (noamManifestOcrUnreliable(exercise)&&exercise.part&&baseCrops.length===1){
+    cropPromise=noamRebuildSelectedPartExpression(exercise).then(function(rebuild){
+      return (rebuild&&rebuild.crop)?[rebuild.crop]:baseCrops;
+    }).catch(function(){ return baseCrops; });
+  }
+  return cropPromise.then(function(crops){
+    return crops.reduce(function(chain, crop){
+      return chain.then(function(segments){
+        return cropExerciseSegment(crop).then(function(segment){
+          segments.push(segment);
+          return segments;
+        });
       });
-    });
-  }, Promise.resolve([])).then(stitchCropSegments);
+    }, Promise.resolve([])).then(stitchCropSegments);
+  });
 }
 
 function cropExerciseCanvas(exercise){
@@ -5649,8 +5850,11 @@ function getExerciseAnalysis(exercise){
   var ocrUnreliable=noamManifestOcrUnreliable(exercise);
   if (analysisCache[exercise.id]){
     var cachedAnalysis=analysisCache[exercise.id];
-    // Drop stale synthetic caches that were built from garbled multi-part OCR.
-    if (ocrUnreliable&&cachedAnalysis&&cachedAnalysis.content_type==="static_manifest_exercise"){
+    // Drop stale synthetic / vision-without-expression caches for unreliable OCR.
+    if (ocrUnreliable&&cachedAnalysis&&(
+      cachedAnalysis.content_type==="static_manifest_exercise"||
+      (cachedAnalysis.content_type==="vision_over_unreliable_ocr"&&!cachedAnalysis.selected_part_expression)
+    )){
       delete analysisCache[exercise.id];
     }else{
       return Promise.resolve(cachedAnalysis);
@@ -5660,9 +5864,23 @@ function getExerciseAnalysis(exercise){
   var forceVision=noamExerciseNeedsLiveVision(exercise);
   if (!forceVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
 
-  // New manifests share a complete question image across its sections.
-  // This cache is already scoped to the PDF, and stores unmodified analysis.
-  var imageKey=forceVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  // Unreliable multi-part OCR: prefer PDF text-layer rebuild of the selected part
+  // (reattach detached minus glyphs). Tall-crop vision has dropped the leading
+  // minus and leaked ב/ג/ד into the solve payload.
+  function analysisFromPdfRebuild(){
+    return ensurePdfDocumentForCrop()
+      .catch(function(){ return null; })
+      .then(function(){ return noamRebuildSelectedPartExpression(exercise); })
+      .then(function(rebuild){
+        if (!rebuild||!rebuild.expression){return null;}
+        var analysis=noamAnalysisFromPartExpression(exercise,rebuild);
+        analysisCache[exercise.id]=analysis;saveNoamState();
+        return analysis;
+      });
+  }
+
+  // Cache key includes part so a shared-question crop cannot poison siblings.
+  var imageKey=forceVision?"image:"+String(exercise.part||"")+":"+JSON.stringify(exercise.crops||[exercise.crop]):null;
   var cachedImage=imageKey&&analysisCache[imageKey];
   function requestVisionAnalysis(allowCachedImage){
     return ensurePdfDocumentForCrop()
@@ -5671,12 +5889,30 @@ function getExerciseAnalysis(exercise){
         if (allowCachedImage && cachedImage){
           return {ok:true,analysis:cachedImage};
         }
-        return cropExerciseImage(exercise).then(function(imageDataUrl){
-          return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
+        return noamRebuildSelectedPartExpression(exercise).then(function(rebuild){
+          var cropExercise=exercise;
+          if (rebuild&&rebuild.crop&&ocrUnreliable){
+            cropExercise=Object.assign({},exercise,{crop:rebuild.crop,crops:null});
+          }
+          return cropExerciseImage(cropExercise).then(function(imageDataUrl){
+            return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
+          }).then(function(result){
+            if (result&&result.analysis&&rebuild&&rebuild.expression){
+              result.analysis.selected_part_expression=rebuild.expression;
+              result.analysis.math_content=rebuild.expression;
+              var pinned="ביטוי הסעיף הנבחר: "+rebuild.expression;
+              result.analysis.transcription=[pinned,result.analysis.transcription||""].filter(Boolean).join("\n");
+              result.analysis.problem_statement=[pinned,result.analysis.problem_statement||""].filter(Boolean).join("\n");
+            }
+            return result;
+          });
         });
       });
   }
-  return requestVisionAnalysis(true)
+  var rebuildFirst=ocrUnreliable?analysisFromPdfRebuild():Promise.resolve(null);
+  return rebuildFirst.then(function(rebuilt){
+    if (rebuilt){return rebuilt;}
+    return requestVisionAnalysis(true)
     .catch(function(error){
       if (isBotProtectionError(error)){ throw error; }
       // One recovery pass after ensuring the crop document (covers clean-view races).
@@ -5698,10 +5934,14 @@ function getExerciseAnalysis(exercise){
         analysis=JSON.parse(JSON.stringify(analysis));
       }
       var semantic=noamScopedExerciseSemantic(exercise);
-      analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
-      analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
+      if (!analysis.selected_part_expression){
+        analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
+        analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
+      }
       if (ocrUnreliable){
-        analysis.content_type="vision_over_unreliable_ocr";
+        analysis.content_type=analysis.selected_part_expression
+          ? "vision_with_pdf_part_expression"
+          : "vision_over_unreliable_ocr";
         analysis.manifest_ocr_unreliable=true;
       }
       analysisCache[exercise.id]=analysis;saveNoamState();return analysis;
@@ -5723,12 +5963,15 @@ function getExerciseAnalysis(exercise){
       console.warn("NOAM VISION FALLBACK:",exercise.id,error);
       analysisCache[exercise.id]=fallback;saveNoamState();return fallback;
     });
+  });
 }
 
 function clearExerciseVisionCache(exercise){
   if (!exercise){ return; }
   delete analysisCache[exercise.id];
-  var imageKey=noamExerciseNeedsLiveVision(exercise)?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  var imageKey=noamExerciseNeedsLiveVision(exercise)
+    ?"image:"+String(exercise.part||"")+":"+JSON.stringify(exercise.crops||[exercise.crop])
+    :null;
   if (imageKey){ delete analysisCache[imageKey]; }
   delete exercisePreviewCache[exercise.id];
   pdfCropLoadPromise=null;
@@ -5814,9 +6057,10 @@ function noamMixedSignAddExpression(text){
     /\d+\s*\+\s*\(\s*[−\-]\s*\d+/.test(source);
 }
 
-/* Wrong rule family: answering a mixed-sign sum with the both-negatives rule. */
+/* Wrong rule family for a mixed-sign sum: both-negatives OR same-sign add rules. */
 function noamWrongSignedAddRuleIssue(answer,analysis){
   var source=[
+    analysis&&analysis.selected_part_expression,
     analysis&&analysis.transcription,
     analysis&&analysis.math_content,
     analysis&&analysis.problem_statement
@@ -5825,6 +6069,13 @@ function noamWrongSignedAddRuleIssue(answer,analysis){
   var text=String(answer||"");
   if (/(?:לחבר|חיבור)\s+מספרים\s+שליליים|שני(?:ם)?\s+מספרים\s+שליליים|שני\s+השליליים|חבר(?:ו|י)?\s+את\s+הערכים\s+המוחלטים[\s\S]{0,60}סימן\s+מינוס/i.test(text)){
     return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים, לא שני מספרים שליליים. השתמשו בכלל הסימנים השונים עם ערכים מוחלטים, בלי לחשוף את התוצאה המספרית.";
+  }
+  // Same-sign rule applied to −a+b (user S10: "אותו סימן" / "אותו צד של אפס" / unsigned 4 ו-7).
+  if (/(?:בעלי\s+)?אותו\s+סימן|סימנים?\s+זהים|אותו\s+צד\s+של\s+אפס|שני\s+המספרים\s+\d+\s+ו[־\-]?\s*\d+/i.test(text)){
+    return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים (יש מינוס לפני אחד מהמספרים). אל תשתמשו בכלל אותו סימן; השתמשו בכלל הסימנים השונים עם ערכים מוחלטים, בלי לחשוף את התוצאה המספרית.";
+  }
+  if (/כאשר\s+מחברים\s+שני\s+מספרים[\s\S]{0,40}אותו\s+סימן|סכום\s+הערכים\s+המוחלטים\s+הוא\s+גודל/i.test(text)){
+    return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים. אל תחברו ערכים מוחלטים כאילו הסימנים זהים; מחסרים את הקטן מהגדול בערך מוחלט ולוקחים את סימן הגדול בערך מוחלט — בלי לחשוף את התוצאה.";
   }
   return null;
 }
@@ -6207,19 +6458,25 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis){
   var budget=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
   var current=String(studentMessage||"").trim();
   var recent=noamRecentThreadText(thread,220);
+  var pinnedExpr=String(analysis&&analysis.selected_part_expression||"").trim();
   var analysisText=[
+    pinnedExpr,
     analysis&&analysis.transcription,
     analysis&&analysis.problem_statement,
     analysis&&analysis.math_content
   ].filter(Boolean).join(" ");
   var geometry=noamGeometryContext(topic+" "+current+" "+recent);
   var signed=noamSignedNumberContext(topic+" "+current+" "+recent+" "+analysisText);
+  var mixed=noamMixedSignAddExpression(analysisText);
   var visual=window.NoamLocalVisual&&window.NoamLocalVisual.wantsVisualSupport&&window.NoamLocalVisual.wantsVisualSupport(current);
-  var generalGuard=geometry
-    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך. אל תערבב זוויות מתחלפות עם זוויות מתאימות — בדוק באיזה צד של החותך נמצאת כל זווית. ברמז ראשון כוון לחשיבה בלי לחשוף את הצעד המרכזי; ברמזים הבאים הוסף צעד קטן בלי פתרון מלא ובלי נתונים מומצאים."
+  var signedGuard=mixed
+    ? "הביטוי של הסעיף הנבחר הוא "+(pinnedExpr||"חיבור עם סימנים שונים")+". זה סימנים שונים — לא אותו סימן ולא שני שליליים. השוו ערכים מוחלטים במפורש; מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול. אל תחשפו את התוצאה המספרית."
     : (signed
       ? "בחיבור מספרים בעלי סימנים שונים השוו ערכים מוחלטים במפורש — לא 'הגדול/הקטן' כמספרים על הציר. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול. אל תחשפו את התוצאה המספרית."
       : "");
+  var generalGuard=geometry
+    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך. אל תערבב זוויות מתחלפות עם זוויות מתאימות — בדוק באיזה צד של החותך נמצאת כל זווית. ברמז ראשון כוון לחשיבה בלי לחשוף את הצעד המרכזי; ברמזים הבאים הוסף צעד קטן בלי פתרון מלא ובלי נתונים מומצאים."
+    : signedGuard;
   var verified=String(guidePrompt||"");
   var guard=verified||generalGuard;
   if (visual){guard+=verified?" ציין בדיוק מה לסמן בשרטוט.":" התלמיד מתקשה בזיהוי חזותי. ציין מה לסמן; אל תבקש ממנו לנחש. האתר יציג שרטוט לצד התשובה, לכן אל תאמר שאינך יכול לצייר.";}
