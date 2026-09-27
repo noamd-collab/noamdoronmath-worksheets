@@ -129,24 +129,26 @@
       <style>
         :host { color-scheme:light; font:16px Arial,sans-serif; }
         * { box-sizing:border-box; }
-        button { font:700 16px Arial,sans-serif; cursor:pointer; color:#14213d; background:#fff; border:2px solid #14213d; border-radius:10px; min-height:44px; padding:8px 12px; }
-        button:focus-visible,a:focus-visible { outline:3px solid #005fcc; outline-offset:3px; }
-        button[aria-pressed="true"] { color:#fff; background:#075e57; }
+        button { font:700 16px Heebo,Arial,sans-serif; cursor:pointer; color:#22305a; background:#fff; border:2px solid #22305a; border-radius:18px 6px 20px 8px / 8px 20px 6px 18px; min-height:44px; padding:8px 12px; box-shadow:3px 3px 0 #e6a534; }
+        button:focus-visible,a:focus-visible { outline:3px solid #1e605e; outline-offset:3px; }
+        button[aria-pressed="true"] { color:#fff; background:#1e605e; border-color:#1e605e; box-shadow:3px 3px 0 #e5735c; }
         button:disabled { opacity:.45; cursor:default; }
-        #launch { width:48px; height:48px; padding:8px; border-radius:50%; background:#075e57; color:white; border:2px solid white; box-shadow:0 2px 8px #14213d66; display:grid; place-items:center; }
+        #launch { width:48px; height:48px; padding:8px; border-radius:18px 6px 20px 8px / 8px 20px 6px 18px; background:#2a7c7a; color:white; border:2px solid #22305a; box-shadow:3px 3px 0 #e6a534; display:grid; place-items:center; }
         #launch svg { width:28px; height:28px; }
         :host-context(html.noam-a11y-pad) #launch {
           width:44px; height:44px; padding:8px;
-          background:rgba(7,94,87,0.82); border-color:rgba(255,255,255,0.95);
-          box-shadow:0 2px 8px rgba(20,33,61,0.28);
+          background:rgba(42,124,122,0.9); border-color:#22305a;
+          box-shadow:3px 3px 0 rgba(230,165,52,0.85);
         }
         :host-context(html.noam-a11y-pad) #launch svg { width:22px; height:22px; }
         @media (min-width: 801px) {
-          :host-context(html.noam-a11y-pad) #launch { width:48px; height:48px; background:#075e57; border-color:#fff; box-shadow:0 2px 8px #14213d66; }
+          :host-context(html.noam-a11y-pad) #launch { width:48px; height:48px; background:#2a7c7a; border-color:#22305a; box-shadow:3px 3px 0 #e6a534; }
           :host-context(html.noam-a11y-pad) #launch svg { width:28px; height:28px; }
         }
-        dialog { direction:rtl; position:fixed; inset:auto 14px calc(140px + env(safe-area-inset-bottom)) auto; margin:0; width:min(330px,calc(100vw - 28px)); max-height:calc(100dvh - 165px); overflow:auto; background:#fff; color:#14213d; border:2px solid #14213d; border-radius:18px; padding:16px; box-shadow:0 8px 30px #14213d40; font:16px/1.5 Arial,sans-serif; }
-        dialog::backdrop { background:#14213d26; }
+        #stop-anim { border-radius:18px 6px 20px 8px / 8px 20px 6px 18px; }
+        #stop-anim[aria-pressed="true"] { background:#a84434; border-color:#22305a; color:#fff; }
+        dialog { direction:rtl; position:fixed; inset:auto 14px calc(140px + env(safe-area-inset-bottom)) auto; margin:0; width:min(330px,calc(100vw - 28px)); max-height:calc(100dvh - 165px); overflow:auto; background:#fbfaf5; color:#22305a; border:2px solid #22305a; border-radius:22px 8px 26px 10px / 10px 26px 8px 22px; padding:16px; box-shadow:6px 6px 0 #e6a534; font:16px/1.5 Heebo,Arial,sans-serif; }
+        dialog::backdrop { background:rgba(34,48,90,0.35); }
         header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
         h2 { font-size:21px; margin:0; }
         #close { padding:0; width:44px; font-size:24px; }

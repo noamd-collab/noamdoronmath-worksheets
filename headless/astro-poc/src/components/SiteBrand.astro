@@ -1,6 +1,6 @@
 ---
 /**
- * Exact brand lockup — proportions preserved; presentation cleaned for premium chrome.
+ * Exact brand lockup — proportions preserved; ~68px height per design v2.
  */
 interface Props {
   href?: string;
@@ -8,7 +8,7 @@ interface Props {
 }
 const { href = '/', compact = false } = Astro.props;
 ---
-<a class:list={['site-brand', compact && 'site-brand--compact']} href={href} aria-label="נועם דורון מתמטיקה — דף הבית">
+<a class:list={['site-brand', compact && 'site-brand--compact']} href={href} aria-label="נועם דורון מתמטיקה — דף הבית" data-peek="home">
   <img
     class="site-brand__logo"
     src="/brand/noam-doron-math-logo-cropped.png"
@@ -24,7 +24,8 @@ const { href = '/', compact = false } = Astro.props;
     display: inline-flex;
     align-items: center;
     text-decoration: none;
-    width: 232px;
+    /* 68px tall → width = 68 * (573/243) ≈ 160 */
+    width: 160px;
     max-width: 100%;
     background: transparent;
     border: 0;
@@ -32,23 +33,23 @@ const { href = '/', compact = false } = Astro.props;
     box-shadow: none;
   }
   .site-brand--compact {
-    width: 168px;
+    width: 132px;
   }
   .site-brand__logo {
     display: block;
-    width: 232px;
+    width: 160px;
     max-width: 100%;
     height: auto;
     aspect-ratio: 573 / 243;
     background: transparent;
   }
   .site-brand--compact .site-brand__logo {
-    width: 168px;
+    width: 132px;
   }
   @media (max-width: 640px) {
     .site-brand,
     .site-brand__logo {
-      width: 196px;
+      width: 140px;
     }
   }
 </style>
