@@ -12,13 +12,14 @@ const env: Record<string, string | undefined> =
 
 /**
  * Rollback / cutover flag for HEADLESS-MIGRATION-11.
- * Default OFF: catalog links keep pointing at the GitHub Pages viewer.
- * Set PUBLIC_USE_HEADLESS_VIEWER=true only after desktop+390px parity on the
- * Headless-owned `/worksheet-viewer-noam.html` route.
+ * Default ON: catalog opens the Headless-owned `/worksheet-viewer-noam.html`
+ * (same origin) so «חזרה לנושא» stays on the live site with search state.
+ * Set PUBLIC_USE_HEADLESS_VIEWER=false to roll back to GitHub Pages.
  */
-export const PUBLIC_USE_HEADLESS_VIEWER =
-  String(env.PUBLIC_USE_HEADLESS_VIEWER || '').toLowerCase() === 'true' ||
-  String(env.PUBLIC_USE_HEADLESS_VIEWER || '') === '1';
+export const PUBLIC_USE_HEADLESS_VIEWER = (() => {
+  const raw = String(env.PUBLIC_USE_HEADLESS_VIEWER ?? 'true').toLowerCase();
+  return raw !== 'false' && raw !== '0';
+})();
 
 /**
  * Optional absolute origin for the Headless viewer (e.g. a preview host).

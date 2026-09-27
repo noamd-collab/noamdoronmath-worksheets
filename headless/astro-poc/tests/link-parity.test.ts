@@ -25,14 +25,14 @@ describe('astro-poc grade helpers', () => {
 });
 
 describe('astro-poc buildWorksheetHref parity (representative)', () => {
-  it('grade-7 viewer a/b/c keeps public github.io base + siblings', () => {
+  it('grade-7 viewer a/b/c uses Headless same-origin path + siblings', () => {
     const g = catalog.grades.find((x) => x.grade === 7)!;
     const topic = g.topics.find(
       (t) => t.routing.usesViewer && t.levels.some((l) => l.key === 'a')
     )!;
     const href = buildWorksheetHref({ catalog, grade: 7, topic, levelKey: 'a' });
-    assert.ok(href.startsWith(PUBLIC_WORKSHEETS_BASE));
-    const u = new URL(href);
+    assert.ok(href.startsWith('/worksheet-viewer-noam.html'));
+    const u = new URL(href, 'https://www.noamdoronmath.co.il');
     assert.ok(u.pathname.endsWith('/worksheet-viewer-noam.html'));
     assert.equal(u.searchParams.get('g'), '7');
     assert.equal(u.searchParams.get('lv'), 'a');
@@ -41,6 +41,7 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
     if (topic.routing.siblingPdfQuery.pb) {
       assert.equal(u.searchParams.get('pb'), topic.routing.siblingPdfQuery.pb);
     }
+    assert.ok(!href.includes('github.io'));
     assert.ok(!href.includes('localhost'));
     assert.ok(!href.includes('127.0.0.1'));
   });
@@ -52,14 +53,14 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
     )!;
     assert.equal(topic.levels[0].key, 'one');
     const href = buildWorksheetHref({ catalog, grade: 7, topic, levelKey: 'one' });
-    const u = new URL(href);
+    const u = new URL(href, 'https://www.noamdoronmath.co.il');
     assert.equal(u.searchParams.get('lv'), 'b');
     assert.equal(u.searchParams.get('pdf'), topic.levels[0].pdfId);
     assert.equal(
       u.searchParams.get('topic'),
       String(topic.parent !== undefined ? topic.parent : topic.id)
     );
-    assert.equal(u.searchParams.get('back'), '/noamdoronmath-worksheets/?grade=7');
+    assert.equal(u.searchParams.get('back'), '/worksheets?grade=7');
   });
 
   it('direct PDF uses Wix Media pdfBase (elementary or non-viewer)', () => {
@@ -73,7 +74,7 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
     assert.ok(href.endsWith('.pdf'));
   });
 
-  it('grade-9 viewer-routed topic stays on public viewer base', () => {
+  it('grade-9 viewer-routed topic stays on Headless viewer path', () => {
     const g = catalog.grades.find((x) => x.grade === 9)!;
     const topic = g.topics.find((t) => t.routing.usesViewer)!;
     const level = topic.levels[0];
@@ -83,17 +84,16 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
       topic,
       levelKey: level.key,
     });
-    assert.ok(href.startsWith(PUBLIC_WORKSHEETS_BASE));
-    const u = new URL(href);
+    assert.ok(href.startsWith('/worksheet-viewer-noam.html'));
+    const u = new URL(href, 'https://www.noamdoronmath.co.il');
     assert.equal(u.searchParams.get('g'), '9');
     assert.equal(u.searchParams.get('x'), topic.routing.resolvedNoamPrefix);
     if (level.key === 'one') assert.equal(u.searchParams.get('lv'), 'b');
     else assert.equal(u.searchParams.get('lv'), level.key);
   });
 
-  it('rollback flag defaults OFF — Headless viewer path not used', () => {
-    // Env is unset in tests; PUBLIC_USE_HEADLESS_VIEWER must stay false.
-    assert.equal(PUBLIC_USE_HEADLESS_VIEWER, false);
+  it('Headless viewer path defaults ON — GitHub Pages reserved for explicit rollback', () => {
+    assert.equal(PUBLIC_USE_HEADLESS_VIEWER, true);
     const g = catalog.grades.find((x) => x.grade === 7)!;
     const topic = g.topics.find((t) => t.routing.usesViewer)!;
     const href = buildWorksheetHref({
@@ -102,7 +102,7 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
       topic,
       levelKey: topic.levels[0].key,
     });
-    assert.ok(href.startsWith(PUBLIC_WORKSHEETS_BASE));
-    assert.ok(!href.startsWith('/worksheet-viewer-noam.html'));
+    assert.ok(href.startsWith('/worksheet-viewer-noam.html'));
+    assert.ok(!href.startsWith(PUBLIC_WORKSHEETS_BASE));
   });
 });
