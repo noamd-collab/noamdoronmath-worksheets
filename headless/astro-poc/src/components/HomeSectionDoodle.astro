@@ -150,6 +150,63 @@ const scatter = selectNotebookScatter(seed, motifs, {
     .home-nb-doodle--mobile-show.home-nb-doodle--end {
       inset-inline-end: -6px;
     }
+
+    /*
+     * Hero: park the single mobile doodle beside the ConceptLoop card
+     * (lower band), never next to title/lede — pencil / telescope / kite
+     * were kissing «המתמטיקה» and headings at 390.
+     */
+    :global(.home-hero) .home-nb-doodle--mobile-show {
+      inset-block-start: 78% !important;
+      width: 28px !important;
+      max-width: 30px !important;
+      opacity: calc(var(--m-op, 0.7) * 0.9);
+    }
+    :global(.home-hero) .home-nb-doodle--mobile-show.home-nb-doodle--start {
+      inset-inline-start: -14px !important;
+    }
+    :global(.home-hero) .home-nb-doodle--mobile-show.home-nb-doodle--end {
+      inset-inline-end: -14px !important;
+    }
+  }
+
+  /*
+   * Hero (all viewports): ignore inward --inline-inset so doodles stay in
+   * the clipped outer gutter — never on title / lede / CTAs (incl. pencil).
+   */
+  :global(.home-hero) .home-nb-doodle {
+    max-width: min(56px, 9vw);
+  }
+  :global(.home-hero) .home-nb-doodle--start {
+    inset-inline-start: -10px !important;
+    inset-inline-end: auto !important;
+  }
+  :global(.home-hero) .home-nb-doodle--end {
+    inset-inline-end: -10px !important;
+    inset-inline-start: auto !important;
+  }
+  @media (min-width: 768px) {
+    :global(.home-hero) .home-nb-doodle--start {
+      inset-inline-start: -18px !important;
+    }
+    :global(.home-hero) .home-nb-doodle--end {
+      inset-inline-end: -18px !important;
+    }
+  }
+  /*
+   * Wide 2-col hero: copy fills the inline-start column to the shell edge,
+   * so start-side doodles always kiss headings. Keep only the card-side
+   * (end) marginalia; park it mid-card vertically.
+   */
+  @media (min-width: 1100px) {
+    :global(.home-hero) .home-nb-doodle--start {
+      display: none !important;
+    }
+    :global(.home-hero) .home-nb-doodle--end {
+      inset-inline-end: -22px !important;
+      inset-block-start: 48% !important;
+      max-width: 48px;
+    }
   }
   @media print {
     .home-section-notebook {
