@@ -45,7 +45,8 @@ describe('topic family classification', () => {
     );
     assert.equal(page.gradeHubHref, '/grade-9');
     const topicPage = readFileSync(join(root, 'src', 'components', 'TopicPage.astro'), 'utf8');
-    assert.match(topicPage, /<a href=\{page\.gradeHubHref\}>/);
+    // Crawlable grade-hub crumb (may carry design data-peek attrs).
+    assert.match(topicPage, /<a href=\{page\.gradeHubHref\}[^>]*>/);
     assert.equal(page.sourceRelatedTopics?.[0]?.path, '/similar-triangles-grade-9');
   });
 
