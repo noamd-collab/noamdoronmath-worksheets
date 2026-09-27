@@ -5,6 +5,7 @@ import HomeMarginArt from '../components/HomeMarginArt.astro';
 import MathWidget from '../components/MathWidget.astro';
 import GenieMark from '../components/GenieMark.astro';
 import HomeV2Fx from '../components/HomeV2Fx.astro';
+import HeroDoodle from '../components/HeroDoodle.astro';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 
 const home = loadHomePage();
@@ -106,6 +107,7 @@ const middle = home.grades.filter((g) => g.grade >= 7);
           <a class="cta cta--secondary" href="/worksheets?grade=1">יסודי א׳–ו׳</a>
           <a class="cta cta--secondary" href="/worksheets?grade=7">חטיבה ז׳–ט׳</a>
         </div>
+        <HeroDoodle />
       </div>
     </section>
 

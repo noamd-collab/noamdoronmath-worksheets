@@ -1,0 +1,385 @@
+---
+/**
+ * Hero doodle v3 (README §13): in-flow under hero CTAs, 150×188.
+ * Time cycle ~11.6s: shapes → twist → Noam AI bot. Hidden &lt;760px.
+ * כבוי: freeze at end-frame (bot). Not scroll-linked; replaces ScrollDoodle.
+ */
+---
+<div class="hero-doodle" data-hero-doodle aria-hidden="true">
+  <svg class="hero-doodle__svg" viewBox="0 0 120 150" focusable="false">
+    <g data-zig-path>
+      <g data-axes opacity="0" stroke="#22305a" stroke-width="2" stroke-linecap="round" fill="none">
+        <path d="M2 138 H116 M110 133 L117 138 L110 143"></path>
+        <path d="M60 152 V8 M55 14 L60 7 L65 14"></path>
+        <path
+          d="M34 134 V142 M86 134 V142 M8 134 V142 M112 134 V142 M56 108 H64 M56 79 H64 M56 50 H64 M56 21 H64"
+          stroke-width="1.5"
+        ></path>
+        <text x="112" y="130" stroke="none" style="font:italic 800 13px Heebo;fill:#22305a;">x</text>
+        <text x="68" y="14" stroke="none" style="font:italic 800 13px Heebo;fill:#22305a;">y</text>
+      </g>
+      <path pathLength="1" fill="none" stroke="#e0483e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" stroke-dashoffset="1"></path>
+      <path pathLength="1" fill="none" stroke="#e0483e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" stroke-dashoffset="1"></path>
+      <path pathLength="1" fill="none" stroke="#e0483e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" stroke-dashoffset="1"></path>
+      <path pathLength="1" fill="none" stroke="#e6a534" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" stroke-dashoffset="1"></path>
+      <path pathLength="1" fill="none" stroke="#e6a534" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" stroke-dashoffset="1"></path>
+      <path pathLength="1" fill="none" stroke="#e0483e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" stroke-dashoffset="1"></path>
+      <path pathLength="1" fill="none" stroke="#e6a534" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" stroke-dashoffset="1"></path>
+      <g data-tri opacity="0" style="font:italic 800 14px Heebo;">
+        <text x="40" y="120" text-anchor="middle" style="fill:#c98a1a;font-size:13px;">α</text>
+        <text x="86" y="120" text-anchor="middle" style="fill:#c98a1a;font-size:13px;">β</text>
+        <text x="65.5" y="50" text-anchor="middle" style="fill:#c98a1a;font-size:13px;">γ</text>
+        <text x="60" y="152" text-anchor="middle" direction="ltr" style="font:800 14px Heebo;fill:#22305a;">α+β+γ=180°</text>
+      </g>
+      <g data-play opacity="0">
+        <circle cx="60" cy="22" r="4.5" fill="#e6a534" stroke="#22305a" stroke-width="1.5"></circle>
+      </g>
+      <g data-play-s opacity="0">
+        <path d="M0 22 H120" stroke="#22305a" stroke-width="1.5" stroke-dasharray="3 4" opacity=".5"></path>
+        <text x="60" y="152" text-anchor="middle" direction="ltr" style="font:800 14px Heebo;fill:#22305a;">S = a·h/2</text>
+      </g>
+      <g data-circ>
+        <g data-th opacity="0">
+          <path d="M92.1 113.3 A50 50 0 0 1 27.9 113.3" fill="none" stroke="#e5735c" stroke-width="4" stroke-linecap="round"></path>
+          <line x1="31.3" y1="34" x2="92.1" y2="113.3" stroke="#2a7c7a" stroke-width="2.5" stroke-linecap="round"></line>
+          <line x1="31.3" y1="34" x2="27.9" y2="113.3" stroke="#2a7c7a" stroke-width="2.5" stroke-linecap="round"></line>
+          <path d="M37.4 41.9 A10 10 0 0 1 30.9 44" fill="none" stroke="#e6a534" stroke-width="2.5" stroke-linecap="round"></path>
+          <text x="36.4" y="54" text-anchor="middle" direction="ltr" style="font:italic 800 12px Heebo;fill:#c98a1a;">α</text>
+          <line x1="85" y1="31.7" x2="92.1" y2="113.3" stroke="#2a7c7a" stroke-width="2.5" stroke-linecap="round"></line>
+          <line x1="85" y1="31.7" x2="27.9" y2="113.3" stroke="#2a7c7a" stroke-width="2.5" stroke-linecap="round"></line>
+          <path d="M85.9 41.7 A10 10 0 0 1 79.3 39.9" fill="none" stroke="#e6a534" stroke-width="2.5" stroke-linecap="round"></path>
+          <text x="80.6" y="52" text-anchor="middle" direction="ltr" style="font:italic 800 12px Heebo;fill:#c98a1a;">α</text>
+          <circle cx="92.1" cy="113.3" r="3" fill="#22305a"></circle>
+          <circle cx="27.9" cy="113.3" r="3" fill="#22305a"></circle>
+          <circle cx="31.3" cy="34" r="3" fill="#22305a"></circle>
+          <circle cx="85" cy="31.7" r="3" fill="#22305a"></circle>
+          <text x="60" y="146" text-anchor="middle" direction="ltr" style="font:italic 800 12px Heebo;fill:#22305a;">α = α</text>
+        </g>
+        <g data-th opacity="0">
+          <path d="M92.1 113.3 A50 50 0 0 1 27.9 113.3" fill="none" stroke="#e5735c" stroke-width="4" stroke-linecap="round"></path>
+          <line x1="31.3" y1="34" x2="92.1" y2="113.3" stroke="#2a7c7a" stroke-width="2.5" stroke-linecap="round"></line>
+          <line x1="31.3" y1="34" x2="27.9" y2="113.3" stroke="#2a7c7a" stroke-width="2.5" stroke-linecap="round"></line>
+          <path d="M37.4 41.9 A10 10 0 0 1 30.9 44" fill="none" stroke="#e6a534" stroke-width="2.5" stroke-linecap="round"></path>
+          <text x="36.4" y="54" text-anchor="middle" direction="ltr" style="font:italic 800 12px Heebo;fill:#c98a1a;">α</text>
+          <line x1="60" y1="75" x2="92.1" y2="113.3" stroke="#22305a" stroke-width="2.5" stroke-linecap="round"></line>
+          <line x1="60" y1="75" x2="27.9" y2="113.3" stroke="#22305a" stroke-width="2.5" stroke-linecap="round"></line>
+          <path d="M67.7 84.2 A12 12 0 0 1 52.3 84.2" fill="none" stroke="#e6a534" stroke-width="2.5" stroke-linecap="round"></path>
+          <text x="60" y="101" text-anchor="middle" direction="ltr" style="font:italic 800 12px Heebo;fill:#c98a1a;">2α</text>
+          <circle cx="60" cy="75" r="3" fill="#22305a"></circle>
+          <circle cx="92.1" cy="113.3" r="3" fill="#22305a"></circle>
+          <circle cx="27.9" cy="113.3" r="3" fill="#22305a"></circle>
+          <circle cx="31.3" cy="34" r="3" fill="#22305a"></circle>
+          <text x="60" y="146" text-anchor="middle" direction="ltr" style="font:italic 800 12px Heebo;fill:#22305a;">∠O = 2α</text>
+        </g>
+        <g data-th opacity="0">
+          <line x1="85.8" y1="19.7" x2="120.8" y2="80.3" stroke="#2a7c7a" stroke-width="2.5" stroke-linecap="round"></line>
+          <line x1="60" y1="75" x2="103.3" y2="50" stroke="#22305a" stroke-width="3" stroke-linecap="round"></line>
+          <path d="M97.2 53.5 L100.7 59.6 L106.8 56.1" fill="none" stroke="#e6a534" stroke-width="2" stroke-linecap="round"></path>
+          <circle cx="60" cy="75" r="3" fill="#22305a"></circle>
+          <circle cx="103.3" cy="50" r="3" fill="#e6a534"></circle>
+          <text x="80" y="58" text-anchor="middle" direction="ltr" style="font:italic 800 13px Heebo;fill:#22305a;">r</text>
+          <text x="60" y="146" text-anchor="middle" direction="ltr" style="font:italic 800 12px Heebo;fill:#22305a;">r ⊥ משיק</text>
+        </g>
+      </g>
+      <g data-rad opacity="0">
+        <line x1="60" y1="75" x2="110" y2="75" stroke="#22305a" stroke-width="3" stroke-linecap="round"></line>
+        <circle cx="60" cy="75" r="3.5" fill="#22305a"></circle>
+        <circle cx="110" cy="75" r="4" fill="#e6a534" stroke="#22305a" stroke-width="1.5"></circle>
+        <text x="82" y="68" style="font:italic 800 14px Heebo;fill:#22305a;">r</text>
+      </g>
+      <text x="58" y="58" opacity="0" style="font:italic 800 15px Heebo;fill:#c98a1a;">α</text>
+      <text x="54" y="104" opacity="0" style="font:italic 800 15px Heebo;fill:#c98a1a;">α</text>
+    </g>
+    <g data-bot opacity="0">
+      <line x1="60" y1="40" x2="60" y2="26" stroke="#22305a" stroke-width="3" stroke-linecap="round"></line>
+      <circle cx="60" cy="22" r="5" fill="#e6a534" stroke="#22305a" stroke-width="2"></circle>
+      <rect x="20" y="56" width="8" height="18" rx="3" fill="#e6a534" stroke="#22305a" stroke-width="2"></rect>
+      <rect x="92" y="56" width="8" height="18" rx="3" fill="#e6a534" stroke="#22305a" stroke-width="2"></rect>
+      <rect x="28" y="40" width="64" height="52" rx="14" fill="#eaf4f3" stroke="#22305a" stroke-width="3"></rect>
+      <circle data-beye cx="46" cy="62" r="5.5" fill="#22305a"></circle>
+      <circle data-beye cx="74" cy="62" r="5.5" fill="#22305a"></circle>
+      <path d="M49 76 Q60 85 71 76" fill="none" stroke="#22305a" stroke-width="3" stroke-linecap="round"></path>
+      <text x="60" y="118" text-anchor="middle" style="font:400 17px 'Secular One';fill:#22305a;">נועם AI</text>
+    </g>
+  </svg>
+</div>
+
+<script>
+  import { readMotionMode } from '../lib/design/motionMode';
+
+  (function () {
+    const el = document.querySelector('[data-hero-doodle]') as HTMLElement | null;
+    if (!el) return;
+    const g = el.querySelector('[data-zig-path]') as SVGGElement | null;
+    if (!g) return;
+    const botG = el.querySelector('[data-bot]') as SVGGElement | null;
+    const paths = [...g.querySelectorAll(':scope > path')] as SVGPathElement[];
+    const texts = [...g.querySelectorAll(':scope > text')] as SVGTextElement[];
+    const rad = g.querySelector('[data-rad]') as SVGGElement | null;
+    const axes = g.querySelector('[data-axes]') as SVGGElement | null;
+    const ths = [...g.querySelectorAll('[data-th]')] as SVGGElement[];
+    const tri = g.querySelector('[data-tri]') as SVGGElement | null;
+    const play = g.querySelector('[data-play]') as SVGGElement | null;
+    const playS = g.querySelector('[data-play-s]') as SVGGElement | null;
+    if (!botG || !rad || !axes || !tri || !play || !playS || paths.length < 7) return;
+
+    const N = 90;
+    const ST = 1500;
+    const CYCLE = 5 * ST + 900 + 3200; // ~11.6s
+    type Pt = [number, number];
+    const poly = (pts: Pt[]): Pt[] => {
+      const L = [0];
+      for (let i = 1; i < pts.length; i++)
+        L.push(L[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+      const T = L[L.length - 1] || 1;
+      return Array.from({ length: N }, (_, k) => {
+        const d = (k / (N - 1)) * T;
+        let i = 1;
+        while (i < L.length - 1 && L[i] < d) i++;
+        const f = (d - L[i - 1]) / (L[i] - L[i - 1] || 1);
+        return [
+          pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * f,
+          pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * f,
+        ] as Pt;
+      });
+    };
+    const fn = (f: (t: number) => Pt) => Array.from({ length: N }, (_, k) => f(k / (N - 1)));
+    const dot = () => fn(() => [60, 75] as Pt);
+    const arc = (cx: number, cy: number, r: number, a0: number, a1: number) =>
+      fn((t) => {
+        const a = a0 + (a1 - a0) * t;
+        return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+      });
+    const playTri = (now: number, off: boolean) => {
+      const cx = off ? 66 : 60 + 46 * Math.sin(now / 1500);
+      const C: Pt = [cx, 22];
+      return [
+        poly([[18, 130], C]),
+        poly([C, [cx, 130]]),
+        poly([
+          [18, 130],
+          [108, 130],
+        ]),
+        dot(),
+        dot(),
+        poly([[108, 130], C]),
+        dot(),
+      ];
+    };
+    const tA = Math.atan2(140, -80);
+    const tB = Math.atan2(-140, 80);
+    const S: Pt[][][] = [
+      [
+        poly([
+          [6, 10],
+          [74, 2],
+          [22, 70],
+          [98, 40],
+          [38, 112],
+          [112, 84],
+          [80, 146],
+        ]),
+        dot(),
+        dot(),
+        dot(),
+        dot(),
+        dot(),
+        dot(),
+      ],
+      [
+        fn((t) => {
+          const x = 8 + 104 * t;
+          const u = (x - 60) / 52;
+          return [x, 138 - 118 * u * u];
+        }),
+        dot(),
+        dot(),
+        dot(),
+        dot(),
+        dot(),
+        dot(),
+      ],
+      [
+        fn((t) => {
+          const a = -Math.PI * 0.75 + t * Math.PI * 2;
+          return [60 + 50 * Math.cos(a), 75 + 50 * Math.sin(a)];
+        }),
+        dot(),
+        dot(),
+        dot(),
+        dot(),
+        dot(),
+        dot(),
+      ],
+      [
+        poly([
+          [20, 145],
+          [100, 5],
+        ]),
+        poly([
+          [2, 40],
+          [118, 40],
+        ]),
+        poly([
+          [2, 110],
+          [118, 110],
+        ]),
+        arc(80, 40, 15, Math.PI, tA),
+        arc(40, 110, 15, 0, tB),
+        dot(),
+        dot(),
+      ],
+      [
+        poly([
+          [18, 130],
+          [66, 22],
+        ]),
+        poly([
+          [66, 22],
+          [66, 22],
+        ]),
+        poly([
+          [18, 130],
+          [108, 130],
+        ]),
+        arc(18, 130, 16, Math.atan2(-108, 48), 0),
+        arc(108, 130, 16, Math.atan2(-108, -42), -Math.PI),
+        poly([
+          [108, 130],
+          [66, 22],
+        ]),
+        arc(66, 22, 14, Math.atan2(108, 42), Math.atan2(108, -48)),
+      ],
+      [dot(), dot(), dot(), dot(), dot(), dot(), dot()],
+    ];
+    const OP = [
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 0, 0],
+      [1, 0, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 1, 0],
+    ];
+    const LAST = S.length - 1;
+    let draw = 0;
+    let sp: number | null = null;
+    let zc0: number | null = null;
+    let ztt = 0;
+    let t0 = performance.now();
+    const ss = (x: number) => x * x * (3 - 2 * x);
+
+    const tick = (now: number) => {
+      const mode = readMotionMode();
+      const off = mode === 'כבוי';
+      const narrow = window.innerWidth < 760;
+      el.style.display = narrow ? 'none' : 'block';
+      if (narrow) {
+        requestAnimationFrame(tick);
+        return;
+      }
+      if (zc0 == null) zc0 = now;
+      // כבוי: freeze after shape cycle into end-frame (design startZig: bot visible).
+      // README also says "עומד על המשולש" — end of αβγ/play sequence before/with twist.
+      const tt = off ? 5 * ST + 2000 : (now - zc0) % CYCLE;
+      if (!off && tt < ztt) {
+        sp = 0;
+        t0 = now;
+      }
+      ztt = tt;
+      const prog = Math.min(1, tt / (5 * ST));
+      const botOp =
+        tt > 5 * ST + 900 ? Math.min(1, (tt - 5 * ST - 900) / 400) : 0;
+      el.style.opacity = '1';
+      if (sp == null) sp = prog;
+      if (off) {
+        draw = 1;
+        sp = prog;
+      } else {
+        draw = Math.min(1, (now - t0) / 1100);
+        sp += (prog - sp) * 0.18;
+      }
+      const q = Math.min(LAST - 1e-4, sp * LAST);
+      const i = Math.floor(q);
+      const f = ss(Math.min(1, Math.max(0, (q - i - 0.3) / 0.4)));
+      const j = Math.min(LAST, i + 1);
+      if (j === LAST) {
+        S[LAST] = playTri(now, off);
+        play.setAttribute(
+          'transform',
+          `translate(${(S[LAST][1][0][0] - 60).toFixed(1)} 0)`
+        );
+      }
+      play.setAttribute('opacity', (i === LAST - 1 ? f : 0).toFixed(3));
+      playS.setAttribute('opacity', (i === LAST - 1 ? f : 0).toFixed(3));
+      paths.forEach((p, n) => {
+        const A = S[i][n];
+        const B = S[j][n];
+        let d = '';
+        for (let k = 0; k < N; k++)
+          d +=
+            (k ? 'L' : 'M') +
+            (A[k][0] + (B[k][0] - A[k][0]) * f).toFixed(1) +
+            ' ' +
+            (A[k][1] + (B[k][1] - A[k][1]) * f).toFixed(1);
+        p.setAttribute('d', d);
+        p.setAttribute('opacity', (OP[i][n] + (OP[j][n] - OP[i][n]) * f).toFixed(3));
+      });
+      const aOp = i === 3 ? 1 - f : i === 2 ? f : 0;
+      texts.forEach((t) => t.setAttribute('opacity', aOp.toFixed(3)));
+      const rOp = i === 1 ? f : i === 2 ? 1 - f : 0;
+      const ph = off ? 1 : (now / 3400) % 4;
+      const kk = Math.floor(ph);
+      const fr = ph - kk;
+      const w = [0, 0, 0, 0];
+      w[kk] = fr < 0.85 ? 1 : 1 - (fr - 0.85) / 0.15;
+      if (fr > 0.85) w[(kk + 1) % 4] = (fr - 0.85) / 0.15;
+      rad.setAttribute('opacity', (rOp * w[0]).toFixed(3));
+      ths.forEach((t, n) => t.setAttribute('opacity', (rOp * w[n + 1]).toFixed(3)));
+      tri.setAttribute('opacity', (i === 3 ? f : i === 4 ? 1 - f : 0).toFixed(3));
+      axes.setAttribute('opacity', (i === 0 ? f : i === 1 ? 1 - f : 0).toFixed(3));
+      rad.setAttribute('transform', `rotate(${off ? -45 : ((now / 16) % 360).toFixed(1)} 60 75)`);
+      const wob = off ? 0 : Math.sin(now / 900) * 2.5;
+      el.style.transform = `rotate(${wob.toFixed(2)}deg)`;
+      g.style.opacity = (1 - botOp).toFixed(3);
+      const bs =
+        0.5 +
+        0.5 * (1 - Math.pow(1 - botOp, 3)) +
+        (botOp >= 1 ? Math.sin(now / 260) * 0.02 : 0);
+      botG.setAttribute('opacity', botOp.toFixed(3));
+      botG.setAttribute(
+        'transform',
+        `translate(60 70) scale(${bs.toFixed(3)}) translate(-60 -70)`
+      );
+      const e = 1 - Math.pow(1 - draw, 3);
+      paths.forEach((p) => {
+        p.style.strokeDashoffset = (1 - e).toFixed(3);
+      });
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  })();
+</script>
+
+<style>
+  .hero-doodle {
+    position: relative;
+    width: 150px;
+    height: 188px;
+    margin-top: 28px;
+    z-index: 1;
+    pointer-events: none;
+    will-change: transform;
+    opacity: 0;
+  }
+  .hero-doodle__svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+  }
+  @media (max-width: 759px) {
+    .hero-doodle {
+      display: none !important;
+    }
+  }
+</style>
