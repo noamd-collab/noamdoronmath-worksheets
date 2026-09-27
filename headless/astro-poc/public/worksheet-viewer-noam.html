@@ -1540,6 +1540,22 @@ textarea:focus{
   opacity:.72;
 }
 .noam-draw-error{display:block;margin-top:7px;color:#a42828;font:600 13px/1.4 Assistant,sans-serif}
+.noam-retry-action{
+  display:inline-block;
+  margin-block-start:10px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid color-mix(in srgb, var(--accent, #1a7a9c) 45%, #fff);
+  background:#fff;
+  color:var(--accent-dark, #0b4f6c);
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+}
+.noam-retry-action:focus-visible{
+  outline:2px solid var(--accent, #1a7a9c);
+  outline-offset:2px;
+}
 .noam-bubble.thinking{
   display:flex;
   align-items:center;
@@ -2162,13 +2178,13 @@ textarea:focus{
   </div>
 </dialog>
 
-<script src="noam-didactic-guides.js?v=20260920-3"></script>
+<script src="noam-didactic-guides.js?v=20260927-hints1"></script>
 <script src="noam-geometry.js?v=20260921-aux1"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20260921-constructions1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
-<script src="noam-glossary-curriculum.js?v=20260920-1"></script>
-<script src="noam-glossary.js?v=20260921-2"></script>
+<script src="noam-glossary-curriculum.js?v=20260927-concepts2"></script>
+<script src="noam-glossary.js?v=20260927-concepts2"></script>
 <script>
 (function(){
 
@@ -2964,6 +2980,11 @@ var pdfZoomRenderTimer = 0;
 var pdfDocument =
   null;
 
+/* Crop/vision must keep a PDF.js document even when the clean canvas UI falls
+   back to the native PDF viewer. A failed clean-view paint must not block hints. */
+var pdfCropLoadPromise =
+  null;
+
 var pdfObserver =
   null;
 
@@ -3132,6 +3153,70 @@ function showPdfFallback(
     );
 
   setNativePdfMode(true);
+
+  /* Native display is fine for reading; still load PDF.js bytes for Noam crops. */
+  ensurePdfDocumentForCrop().catch(function(error){
+    console.warn("PDF CROP DOCUMENT:", error);
+  });
+}
+
+function pdfJsGetDocumentOptions(source){
+  var options = {
+    withCredentials:false,
+    cMapUrl:PDFJS_CMAP_URL,
+    cMapPacked:true,
+    standardFontDataUrl:PDFJS_STD_FONT_URL,
+    disableFontFace:true,
+    useSystemFonts:false
+  };
+  if (source instanceof ArrayBuffer || ArrayBuffer.isView(source)){
+    options.data = source instanceof ArrayBuffer ? new Uint8Array(source) : source;
+  }else{
+    options.url = source || pdfUrl;
+  }
+  return options;
+}
+
+/** Resolve a PDF.js document for cropping, independent of clean-view UI success. */
+function ensurePdfDocumentForCrop(){
+  if (pdfDocument){ return Promise.resolve(pdfDocument); }
+  if (pdfCropLoadPromise){ return pdfCropLoadPromise; }
+  if (!window.pdfjsLib || typeof window.pdfjsLib.getDocument !== "function"){
+    return Promise.reject(new Error("מנוע התצוגה של ה-PDF אינו זמין לחיתוך השאלה."));
+  }
+  try{
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      PDFJS_BASE + "build/pdf.worker.min.js";
+  }catch(e){}
+
+  pdfCropLoadPromise = fetch(pdfUrl, {
+    method:"GET",
+    mode:"cors",
+    credentials:"omit",
+    cache:"force-cache"
+  }).then(function(response){
+    if (!response.ok){
+      throw new Error("טעינת קובץ ה-PDF לחיתוך נכשלה (" + response.status + ").");
+    }
+    return response.arrayBuffer();
+  }).then(function(buffer){
+    return window.pdfjsLib.getDocument(pdfJsGetDocumentOptions(buffer)).promise;
+  }).then(function(doc){
+    pdfDocument = doc;
+    return doc;
+  }).catch(function(error){
+    /* URL load as second chance when arraybuffer fetch is blocked. */
+    return window.pdfjsLib.getDocument(pdfJsGetDocumentOptions(pdfUrl)).promise
+      .then(function(doc){
+        pdfDocument = doc;
+        return doc;
+      }, function(){
+        pdfCropLoadPromise = null;
+        throw error;
+      });
+  });
+
+  return pdfCropLoadPromise;
 }
 
 function createPdfPageShells(
@@ -3605,6 +3690,9 @@ function initPdfExperience(){
       false;
     setNativePdfMode(true);
     setPdfStatus("",false);
+    ensurePdfDocumentForCrop().catch(function(error){
+      console.warn("PDF CROP DOCUMENT:", error);
+    });
     return;
   }
 
@@ -3629,15 +3717,7 @@ function initPdfExperience(){
 
   var loadTask =
     window.pdfjsLib
-      .getDocument({
-        url:pdfUrl,
-        withCredentials:false,
-        cMapUrl:PDFJS_CMAP_URL,
-        cMapPacked:true,
-        standardFontDataUrl:PDFJS_STD_FONT_URL,
-        disableFontFace:true,
-        useSystemFonts:false
-      });
+      .getDocument(pdfJsGetDocumentOptions(pdfUrl));
 
   loadTask.promise
     .then(
@@ -3645,6 +3725,8 @@ function initPdfExperience(){
 
         pdfDocument =
           doc;
+        pdfCropLoadPromise =
+          Promise.resolve(doc);
 
         pdfCleanAvailable =
           true;
@@ -3654,41 +3736,52 @@ function initPdfExperience(){
             "hidden"
           );
 
-        createPdfPageShells(
-          doc
-        );
-
-        pdfRenderVersion += 1;
-        pdfLastWidth =
-          Math.round(
-            pdfScroll.clientWidth
+        try{
+          createPdfPageShells(
+            doc
           );
 
-        setPdfStatus(
-          "",
-          false
-        );
-
-        observePdfPages();
-
-        /* The static manifest pins live on the clean page layer. */
-        setNativePdfMode(pdfNativeActive);
-
-        if (
-          "ResizeObserver" in window
-        ){
-          pdfResizeObserver =
-            new ResizeObserver(
-              schedulePdfResize
+          pdfRenderVersion += 1;
+          pdfLastWidth =
+            Math.round(
+              pdfScroll.clientWidth
             );
 
-          pdfResizeObserver.observe(
-            pdfScroll
+          setPdfStatus(
+            "",
+            false
           );
-        }else{
-          window.addEventListener(
-            "resize",
-            schedulePdfResize
+
+          observePdfPages();
+
+          /* The static manifest pins live on the clean page layer. */
+          setNativePdfMode(pdfNativeActive);
+
+          if (
+            "ResizeObserver" in window
+          ){
+            pdfResizeObserver =
+              new ResizeObserver(
+                schedulePdfResize
+              );
+
+            pdfResizeObserver.observe(
+              pdfScroll
+            );
+          }else{
+            window.addEventListener(
+              "resize",
+              schedulePdfResize
+            );
+          }
+        }catch(uiError){
+          console.warn(
+            "CLEAN PDF UI:",
+            uiError
+          );
+          /* Keep pdfDocument for crops; fall back only for on-page pins/canvas. */
+          showPdfFallback(
+            "התצוגה הנקייה נחסמה בדפדפן; הוצגה תצוגת ה-PDF המלאה."
           );
         }
       }
@@ -3835,7 +3928,7 @@ loadNoamAsset("script",PDFJS_BASE+"build/pdf.min.js")
   .then(initPdfExperience)
   .catch(function(){showPdfFallback("לא ניתן לטעון את התצוגה הנקייה. הוצגה תצוגת ה-PDF המלאה.");});
 
-/* BACK — Headless adapter: default to legacy GitHub catalog (same UX target). */
+/* BACK — prefer live /worksheets catalog; preserve search/topic from `back=`. */
 
 if (okGrade){
 
@@ -3848,12 +3941,27 @@ if (okGrade){
 
 /* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
 
-// Accept same-origin catalog returns OR the legacy GitHub Pages catalog path.
+// Accept same-origin /worksheets returns. On the live domain, never send the
+// student to the legacy GitHub Pages catalog — map those URLs to /worksheets.
 try {
   var navigationParams = new URL(location.href).searchParams;
   var catalogRoot = new URL('./', location.href);
   var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
+  var liveHost = /(?:^|\.)noamdoronmath\.co\.il$/i.test(location.hostname);
   var returnPath = navigationParams.get('back');
+  function worksheetsHrefFromReturn(urlObj, gradeNum, topicId){
+    var out = new URL("/worksheets", location.origin);
+    if (urlObj && urlObj.searchParams){
+      urlObj.searchParams.forEach(function(value, key){
+        out.searchParams.set(key, value);
+      });
+    }
+    if (gradeNum && !out.searchParams.get("grade")){
+      out.searchParams.set("grade", String(gradeNum));
+    }
+    if (topicId){ out.searchParams.set("topic", String(topicId)); }
+    return out.pathname + out.search;
+  }
   if (returnPath) {
     var catalogReturn;
     if (/^https?:\/\//i.test(returnPath)) {
@@ -3877,18 +3985,32 @@ try {
       catalogReturn.origin === legacyRoot.origin &&
       catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\/$/, "")) === 0;
     if (sameOriginCatalog || legacyCatalog) {
-      document.getElementById("backBtn").href = catalogReturn.href;
+      var backHref;
+      if (liveHost || catalogReturn.pathname.indexOf("/worksheets") === 0){
+        backHref = worksheetsHrefFromReturn(
+          catalogReturn.pathname.indexOf("/worksheets") === 0 ? catalogReturn : new URL("/worksheets"+catalogReturn.search, location.origin),
+          okGrade ? g : null,
+          null
+        );
+      } else if (!liveHost && legacyCatalog){
+        backHref = catalogReturn.href;
+      } else {
+        backHref = worksheetsHrefFromReturn(catalogReturn, okGrade ? g : null, null);
+      }
+      document.getElementById("backBtn").href = backHref;
     }
   }
   if (/^\d+$/.test(navigationParams.get("topic") || "") && okGrade) {
     var topicBack = document.createElement("a");
     topicBack.className = "btn topic-back";
     topicBack.textContent = "חזרה לנושא";
-    topicBack.href =
-      "/worksheets?grade=" +
-      g +
-      "&topic=" +
-      navigationParams.get("topic");
+    var topicId = navigationParams.get("topic");
+    var backForTopic = document.getElementById("backBtn").getAttribute("href") || "";
+    if (backForTopic.indexOf("/worksheets") === 0 || /^https?:\/\/[^/]+\/worksheets/i.test(backForTopic)){
+      topicBack.href = worksheetsHrefFromReturn(new URL(backForTopic, location.origin), g, topicId);
+    } else {
+      topicBack.href = worksheetsHrefFromReturn(null, g, topicId);
+    }
     document.getElementById("backBtn").after(topicBack);
   }
 } catch (navigationError) { /* The default grade link remains available. */ }
@@ -4489,8 +4611,16 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   speaker.className = "noam-sr-only";
   speaker.textContent = role === "user" ? "השאלה שלך: " : "נועם AI: ";
   bubble.appendChild(speaker);
-  content.textContent = text;
+  content.textContent = role === "assistant" ? noamStripMarkdownEmphasis(text) : text;
   bubble.appendChild(content);
+  if (message && message.answerError){
+    var retry=document.createElement("button");
+    retry.type="button";
+    retry.className="noam-retry-action";
+    retry.textContent=noamRetryActionLabel(message);
+    retry.addEventListener("click",function(){ retryLastNoamHelp(); });
+    bubble.appendChild(retry);
+  }
   // Source crops belong only in the selected-question preview. This also
   // suppresses old saved replies that predate the diagram mechanism.
   if (visual&&visual.type==="question-image"){visual=null;}
@@ -4596,6 +4726,13 @@ function showNoamGlossaryPopover(trigger,entry,keyboardOpen){
   if (keyboardOpen){more.focus({preventScroll:true});}
 }
 
+function noamStripMarkdownEmphasis(text){
+  // Keep math asterisks like 2*3; only unwrap common emphasis wrappers.
+  return String(text||"")
+    .replace(/\*\*([^*]+)\*\*/g,"$1")
+    .replace(/(^|[\s(„"'])\*([^*\n]+)\*(?=[\s).,;:!?״"']|$)/g,"$1$2");
+}
+
 function makeNoamGlossaryTerm(match){
   var button=document.createElement("button");
   button.type="button";
@@ -4626,15 +4763,23 @@ function enhanceNoamGlossary(root){
   }
   nodes.forEach(function(node){
     var matches=window.NoamGlossary.findTerms(node.nodeValue,g,6);
-    if (!matches.length){return;}
+    if (!matches.length){
+      var cleanedAlone=noamStripMarkdownEmphasis(node.nodeValue);
+      if (cleanedAlone!==node.nodeValue){node.nodeValue=cleanedAlone;}
+      return;
+    }
     var fragment=document.createDocumentFragment();
     var cursor=0;
     matches.forEach(function(match){
-      if (match.start>cursor){fragment.appendChild(document.createTextNode(node.nodeValue.slice(cursor,match.start)));}
+      if (match.start>cursor){
+        fragment.appendChild(document.createTextNode(noamStripMarkdownEmphasis(node.nodeValue.slice(cursor,match.start))));
+      }
       fragment.appendChild(makeNoamGlossaryTerm(match));
       cursor=match.end;
     });
-    if (cursor<node.nodeValue.length){fragment.appendChild(document.createTextNode(node.nodeValue.slice(cursor)));}
+    if (cursor<node.nodeValue.length){
+      fragment.appendChild(document.createTextNode(noamStripMarkdownEmphasis(node.nodeValue.slice(cursor))));
+    }
     node.parentNode.replaceChild(fragment,node);
   });
 }
@@ -4994,6 +5139,229 @@ function syntheticAnalysis(exercise){
   };
 }
 
+/* Bad static OCR that leaked later parts (ב/ג/ד) into one exercise blob, or
+   signed-arithmetic token soup — must not be sent to the model as ground truth. */
+function noamManifestOcrUnreliable(exercise){
+  var text=String((exercise&&(exercise.text||exercise.prompt))||"");
+  if (!text){return false;}
+  if (/(?:^|[\s−\-\d.+])ב\s*\.[\s\S]{0,80}?ג\s*\./.test(text)){return true;}
+  if (/[−\-]\s+\d+\s+[+＋]\s+\d+\s+[−\-]\s+ב\s*\./.test(text)){return true;}
+  return false;
+}
+
+function noamExerciseSectionLabel(exercise){
+  var q=exercise&&exercise.q!=null?String(exercise.q):"";
+  var part=exercise&&exercise.part?String(exercise.part):"";
+  if (q&&part){return "שאלה "+q+" סעיף "+part;}
+  if (q){return "שאלה "+q;}
+  return String(exercise&&exercise.id||"התרגיל הנבחר");
+}
+
+function noamScopedExerciseSemantic(exercise){
+  if (!noamManifestOcrUnreliable(exercise)){
+    return String(exercise&&exercise.prompt||"");
+  }
+  return "התרגיל שנבחר הוא "+noamExerciseSectionLabel(exercise)+
+    ". קראו מתמונת השאלה רק את הביטוי של הסעיף הנבחר. אם מופיעים סעיפים נוספים באותה תמונה — התעלמו מהם. אל תשחזרו טקסט OCR משובש כנתון.";
+}
+
+function noamExerciseNeedsLiveVision(exercise){
+  return !!(exercise&&(exercise.requiresVision||exercise.needsVision||noamManifestOcrUnreliable(exercise)));
+}
+
+/* Hebrew section markers א–ד (and finals) used as worksheet part labels. */
+function noamIsPartLabelToken(text){
+  return /^[א-ת]$/.test(String(text||"").trim());
+}
+
+/* Merge a detached unary minus glyph with the digit immediately to its right.
+   PDF text layers (and RTL worksheets) often emit "−" as its own item left of 7. */
+function noamAssociateUnaryMinusTokens(tokens){
+  var sorted=(tokens||[]).slice().sort(function(a,b){
+    return (a.x-b.x)||(a.y-b.y);
+  });
+  var out=[];
+  for (var i=0;i<sorted.length;i++){
+    var tok=sorted[i];
+    var next=sorted[i+1];
+    var minus=/^[−\-\u2212–]$/.test(String(tok.text||"").trim());
+    if (minus&&next&&/^\d+$/.test(String(next.text||"").trim())){
+      var gap=(Number(next.x0)!=null?next.x0:next.x)-(Number(tok.x1)!=null?tok.x1:tok.x);
+      if (!(gap>0.03)){
+        out.push({
+          text:"−"+String(next.text).trim(),
+          x:(tok.x+next.x)/2,
+          y:(tok.y+next.y)/2,
+          x0:tok.x0!=null?tok.x0:tok.x,
+          x1:next.x1!=null?next.x1:next.x,
+          y0:Math.min(tok.y0!=null?tok.y0:tok.y,next.y0!=null?next.y0:next.y),
+          y1:Math.max(tok.y1!=null?tok.y1:tok.y,next.y1!=null?next.y1:next.y)
+        });
+        i+=1;
+        continue;
+      }
+    }
+    out.push(tok);
+  }
+  return out;
+}
+
+/* Pure rebuild of one part's arithmetic expression from normalized page tokens.
+   tokens: [{text,x,y,x0,x1,y0,y1}] with x/y in 0..1, origin top-left. */
+function noamRebuildPartExpressionFromTokens(tokens, partLabel, crop){
+  var part=String(partLabel||"").trim();
+  if (!part||!tokens||!tokens.length){return null;}
+  var cx=Number(crop&&crop.x)||0;
+  var cy=Number(crop&&crop.y)||0;
+  var cw=Number(crop&&crop.w)||1;
+  var ch=Number(crop&&crop.h)||1;
+  var inCrop=tokens.filter(function(tok){
+    return tok.x>=cx-0.02&&tok.x<=cx+cw+0.02&&tok.y>=cy-0.02&&tok.y<=cy+ch+0.02;
+  });
+  var label=null;
+  inCrop.forEach(function(tok){
+    if (String(tok.text||"").trim()!==part){return;}
+    if (!label||tok.x>label.x){label=tok;}
+  });
+  if (!label){return null;}
+  var line=inCrop.filter(function(tok){
+    return Math.abs(tok.y-label.y)<0.014&&tok.x<=label.x+0.015;
+  });
+  var merged=noamAssociateUnaryMinusTokens(line);
+  var pieces=[];
+  merged.forEach(function(tok){
+    var t=String(tok.text||"").trim();
+    if (!t||t===part){return;}
+    if (t==="."||t==="·"){return;}
+    pieces.push(t);
+  });
+  if (pieces.length<3){return null;}
+  var expression=pieces.join(" ").replace(/\s+/g," ").trim();
+  // Require a signed/operator form so we never promote heading words as math.
+  if (!/(?:[−\-\u2212]\s*\d|\d\s*[+＋−\-\u2212])/.test(expression)){return null;}
+  if (!/\d/.test(expression)){return null;}
+  // Space binary operators only; keep unary minus glued to its digit (−7 not − 7).
+  expression=expression
+    .replace(/\s*([+＋])\s*/g," $1 ")
+    .replace(/(\d)\s*([−\-\u2212])\s*(?=\d)/g,"$1 $2 ")
+    .replace(/\s+/g," ")
+    .trim();
+  return expression;
+}
+
+/* Vertical band covering the selected part (and the question heading for part א). */
+function noamPartBandCropFromTokens(tokens, partLabel, crop){
+  var base=crop||{};
+  var part=String(partLabel||"").trim();
+  if (!part){return null;}
+  var cx=Number(base.x)||0;
+  var cy=Number(base.y)||0;
+  var cw=Number(base.w)||1;
+  var ch=Number(base.h)||1;
+  var labels=[];
+  (tokens||[]).forEach(function(tok){
+    var t=String(tok.text||"").trim();
+    if (!noamIsPartLabelToken(t)){return;}
+    if (tok.x<cx-0.02||tok.x>cx+cw+0.02||tok.y<cy-0.02||tok.y>cy+ch+0.02){return;}
+    labels.push(tok);
+  });
+  labels.sort(function(a,b){return a.y-b.y;});
+  var idx=-1;
+  for (var i=0;i<labels.length;i++){
+    if (String(labels[i].text).trim()===part){idx=i;break;}
+  }
+  if (idx<0){return null;}
+  var y0=idx===0?cy:(labels[idx-1].y+labels[idx].y)/2;
+  var y1=idx===labels.length-1?(cy+ch):(labels[idx].y+labels[idx+1].y)/2;
+  var pad=0.006;
+  y0=Math.max(cy,y0-pad);
+  y1=Math.min(cy+ch,y1+pad);
+  if (!(y1-y0>0.02)){return null;}
+  return {
+    page:Number(base.page)||1,
+    x:cx,
+    y:y0,
+    w:cw,
+    h:y1-y0
+  };
+}
+
+function noamNormalizePdfJsTextItems(items, viewport){
+  var width=viewport.width||1;
+  var height=viewport.height||1;
+  var out=[];
+  (items||[]).forEach(function(item){
+    var raw=String(item&&item.str||"").replace(/\u00a0/g," ");
+    if (!raw.trim()){return;}
+    var transform=item.transform||[1,0,0,1,0,0];
+    var pt=viewport.convertToViewportPoint
+      ? viewport.convertToViewportPoint(transform[4],transform[5])
+      : [transform[4], height-transform[5]];
+    var x=pt[0]/width;
+    var y=pt[1]/height;
+    var w=(Number(item.width)||0)/width;
+    var h=(Number(item.height)||Math.abs(transform[3])||0)/height;
+    // Split runs like "7 + 4" or "א." so a detached "−" can attach to its digit.
+    var chunks=raw.trim().split(/\s+/).filter(Boolean);
+    var step=chunks.length?w/chunks.length:w;
+    chunks.forEach(function(chunk,index){
+      var x0=x+step*index;
+      var x1=x+step*(index+1);
+      var mx=(x0+x1)/2;
+      if (/^[א-ת]\.$/.test(chunk)){
+        out.push({text:chunk.charAt(0),x:mx,y:y,x0:x0,x1:x1,y0:y,y1:y+h});
+        return;
+      }
+      out.push({text:chunk,x:mx,y:y,x0:x0,x1:x1,y0:y,y1:y+h});
+    });
+  });
+  return out;
+}
+
+function noamRebuildSelectedPartExpression(exercise){
+  if (!exercise||!exercise.part||!exercise.crop){return Promise.resolve(null);}
+  if (typeof pdfDocument==="undefined"||!pdfDocument){return Promise.resolve(null);}
+  var pageNumber=Number(exercise.crop.page||0);
+  if (!(pageNumber>=1)){return Promise.resolve(null);}
+  return pdfDocument.getPage(pageNumber).then(function(page){
+    var viewport=page.getViewport({scale:1});
+    return page.getTextContent().then(function(content){
+      var tokens=noamNormalizePdfJsTextItems(content&&content.items||[],viewport);
+      var expression=noamRebuildPartExpressionFromTokens(tokens,exercise.part,exercise.crop);
+      if (!expression){return null;}
+      var tight=noamPartBandCropFromTokens(tokens,exercise.part,exercise.crop);
+      return {
+        expression:expression,
+        crop:tight||exercise.crop,
+        source:"pdf_text_layer"
+      };
+    });
+  }).catch(function(){return null;});
+}
+
+function noamAnalysisFromPartExpression(exercise,rebuild){
+  var expression=String(rebuild&&rebuild.expression||"").trim();
+  var label=noamExerciseSectionLabel(exercise);
+  var statement=label+": "+expression;
+  return {
+    readable:true,
+    readability_confidence:0.95,
+    content_type:"pdf_part_expression_rebuild",
+    transcription:statement,
+    math_content:expression,
+    problem_statement:statement,
+    diagram_description:"",
+    student_work:"",
+    extracted_entities:{numbers:[],expressions:[expression],labels:[String(exercise.part||="")],units:[]},
+    uncertain_parts:[],
+    complexity:"easy",
+    complexity_reasons:["pdf text-layer rebuild of selected part"],
+    selected_part_expression:expression,
+    manifest_ocr_unreliable:true,
+    pdf_part_rebuild:true
+  };
+}
+
 /* STUDENT ATTACHMENTS — a photo or file of the student's own work, sent together
    with the question image so the analyzer can separate printed content from
    handwriting. Up to ATTACH_MAX_FILES files, each up to ATTACH_MAX_BYTES. The
@@ -5308,26 +5676,38 @@ function showExercisePreviewFailure(exercise){
 }
 
 function cropExerciseCanvasFromPdf(exercise){
-  var crops = Array.isArray(exercise.crops) && exercise.crops.length ? exercise.crops : [exercise.crop||{}];
-  if (crops.length > 12){ return Promise.reject(new Error("יותר מדי עמודים לשאלה אחת.")); }
-  return crops.reduce(function(chain, crop){
-    return chain.then(function(segments){
-      return cropExerciseSegment(crop).then(function(segment){
-        segments.push(segment);
-        return segments;
+  var baseCrops = Array.isArray(exercise.crops) && exercise.crops.length ? exercise.crops : [exercise.crop||{}];
+  if (baseCrops.length > 12){ return Promise.reject(new Error("יותר מדי עמודים לשאלה אחת.")); }
+  var cropPromise=Promise.resolve(baseCrops);
+  if (noamManifestOcrUnreliable(exercise)&&exercise.part&&baseCrops.length===1){
+    cropPromise=noamRebuildSelectedPartExpression(exercise).then(function(rebuild){
+      return (rebuild&&rebuild.crop)?[rebuild.crop]:baseCrops;
+    }).catch(function(){ return baseCrops; });
+  }
+  return cropPromise.then(function(crops){
+    return crops.reduce(function(chain, crop){
+      return chain.then(function(segments){
+        return cropExerciseSegment(crop).then(function(segment){
+          segments.push(segment);
+          return segments;
+        });
       });
-    });
-  }, Promise.resolve([])).then(stitchCropSegments);
+    }, Promise.resolve([])).then(stitchCropSegments);
+  });
 }
 
 function cropExerciseCanvas(exercise){
-  if (typeof pdfDocument !== "undefined" && pdfDocument && typeof cropExerciseCanvasFromPdf === "function"){
-    return cropExerciseCanvasFromPdf(exercise).catch(function(error){
-      console.warn("NOAM CROP HIGH RES FALLBACK:", error);
+  return ensurePdfDocumentForCrop()
+    .catch(function(){ return null; })
+    .then(function(){
+      if (typeof pdfDocument !== "undefined" && pdfDocument && typeof cropExerciseCanvasFromPdf === "function"){
+        return cropExerciseCanvasFromPdf(exercise).catch(function(error){
+          console.warn("NOAM CROP HIGH RES FALLBACK:", error);
+          return cropExerciseCanvasFromView(exercise);
+        });
+      }
       return cropExerciseCanvasFromView(exercise);
     });
-  }
-  return cropExerciseCanvasFromView(exercise);
 }
 
 function cropExerciseCanvasFromView(exercise){
@@ -5441,7 +5821,11 @@ function showExercisePreview(exercise,dataUrl){
   if (!preview||!fallback||!selectedExercise||selectedExercise.id!==exercise.id){return;}
   var image=document.createElement("img");
   image.src=dataUrl;
-  image.alt=exerciseLabel(exercise)+" — "+String(exercise.text||exercise.prompt||"").slice(0,500);
+  image.alt=exerciseLabel(exercise)+" — "+(
+    noamManifestOcrUnreliable(exercise)
+      ? noamExerciseSectionLabel(exercise)
+      : String(exercise.text||exercise.prompt||"")
+  ).slice(0,500);
   preview.replaceChildren(image);
   preview.hidden=false;
   fallback.hidden=true;
@@ -5486,39 +5870,109 @@ function getExerciseAnalysis(exercise){
         if (!result||!result.ok||!result.analysis){ throw new Error("לא הצלחנו לקרוא את הקבצים שצורפו. נסו שוב."); }
         var analysis=result.analysis;
         if (analysis.readable!==true){ throw new Error("לא הצלחנו לקרוא את הקבצים שצורפו בבירור. נסו צילום ברור יותר."); }
-        var semantic=exercise.prompt||"";
+        var semantic=noamScopedExerciseSemantic(exercise);
         analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
         analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
         return analysis;
       });
   }
-  if (analysisCache[exercise.id]){ return Promise.resolve(analysisCache[exercise.id]); }
+  var ocrUnreliable=noamManifestOcrUnreliable(exercise);
+  if (analysisCache[exercise.id]){
+    var cachedAnalysis=analysisCache[exercise.id];
+    // Drop stale synthetic / vision-without-expression caches for unreliable OCR.
+    if (ocrUnreliable&&cachedAnalysis&&(
+      cachedAnalysis.content_type==="static_manifest_exercise"||
+      (cachedAnalysis.content_type==="vision_over_unreliable_ocr"&&!cachedAnalysis.selected_part_expression)
+    )){
+      delete analysisCache[exercise.id];
+    }else{
+      return Promise.resolve(cachedAnalysis);
+    }
+  }
   var fallback=syntheticAnalysis(exercise);
-  if (!exercise.needsVision&&!exercise.requiresVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
+  var forceVision=noamExerciseNeedsLiveVision(exercise);
+  if (!forceVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
 
-  // New manifests share a complete question image across its sections.
-  // This cache is already scoped to the PDF, and stores unmodified analysis.
-  var imageKey=exercise.requiresVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  // Unreliable multi-part OCR: prefer PDF text-layer rebuild of the selected part
+  // (reattach detached minus glyphs). Tall-crop vision has dropped the leading
+  // minus and leaked ב/ג/ד into the solve payload.
+  function analysisFromPdfRebuild(){
+    return ensurePdfDocumentForCrop()
+      .catch(function(){ return null; })
+      .then(function(){ return noamRebuildSelectedPartExpression(exercise); })
+      .then(function(rebuild){
+        if (!rebuild||!rebuild.expression){return null;}
+        var analysis=noamAnalysisFromPartExpression(exercise,rebuild);
+        analysisCache[exercise.id]=analysis;saveNoamState();
+        return analysis;
+      });
+  }
+
+  // Cache key includes part so a shared-question crop cannot poison siblings.
+  var imageKey=forceVision?"image:"+String(exercise.part||"")+":"+JSON.stringify(exercise.crops||[exercise.crop]):null;
   var cachedImage=imageKey&&analysisCache[imageKey];
-  var request=cachedImage?Promise.resolve({ok:true,analysis:cachedImage}):cropExerciseImage(exercise)
-    .then(function(imageDataUrl){
-      return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
-    });
-  return request
+  function requestVisionAnalysis(allowCachedImage){
+    return ensurePdfDocumentForCrop()
+      .catch(function(){ return null; })
+      .then(function(){
+        if (allowCachedImage && cachedImage){
+          return {ok:true,analysis:cachedImage};
+        }
+        return noamRebuildSelectedPartExpression(exercise).then(function(rebuild){
+          var cropExercise=exercise;
+          if (rebuild&&rebuild.crop&&ocrUnreliable){
+            cropExercise=Object.assign({},exercise,{crop:rebuild.crop,crops:null});
+          }
+          return cropExerciseImage(cropExercise).then(function(imageDataUrl){
+            return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
+          }).then(function(result){
+            if (result&&result.analysis&&rebuild&&rebuild.expression){
+              result.analysis.selected_part_expression=rebuild.expression;
+              result.analysis.math_content=rebuild.expression;
+              var pinned="ביטוי הסעיף הנבחר: "+rebuild.expression;
+              result.analysis.transcription=[pinned,result.analysis.transcription||""].filter(Boolean).join("\n");
+              result.analysis.problem_statement=[pinned,result.analysis.problem_statement||""].filter(Boolean).join("\n");
+            }
+            return result;
+          });
+        });
+      });
+  }
+  var rebuildFirst=ocrUnreliable?analysisFromPdfRebuild():Promise.resolve(null);
+  return rebuildFirst.then(function(rebuilt){
+    if (rebuilt){return rebuilt;}
+    return requestVisionAnalysis(true)
+    .catch(function(error){
+      if (isBotProtectionError(error)){ throw error; }
+      // One recovery pass after ensuring the crop document (covers clean-view races).
+      console.warn("NOAM VISION RETRY AFTER CROP DOC:", exercise.id, error);
+      cachedImage=null;
+      pdfCropLoadPromise=null;
+      return requestVisionAnalysis(false);
+    })
     .then(function(result){
       if (!result||!result.ok||!result.analysis){ throw new Error("vision unavailable"); }
       var analysis=result.analysis;
-      if (exercise.requiresVision && analysis.readable!==true){throw new Error("לא הצלחנו לקרוא את השאלה בבירור. נסו שוב.");}
-      if (exercise.requiresVision && !["transcription","math_content","problem_statement","diagram_description"].some(function(key){return typeof analysis[key]==="string"&&analysis[key].trim();})){
+      var strictVision=!!(exercise.requiresVision||ocrUnreliable);
+      if (strictVision && analysis.readable!==true){throw new Error("לא הצלחנו לקרוא את השאלה בבירור. נסו שוב.");}
+      if (strictVision && !["transcription","math_content","problem_statement","diagram_description"].some(function(key){return typeof analysis[key]==="string"&&analysis[key].trim();})){
         throw new Error("לא התקבל תוכן קריא מתמונת השאלה.");
       }
       if (imageKey){
         analysisCache[imageKey]=analysis;
         analysis=JSON.parse(JSON.stringify(analysis));
       }
-      var semantic=exercise.prompt||"";
-      analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
-      analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
+      var semantic=noamScopedExerciseSemantic(exercise);
+      if (!analysis.selected_part_expression){
+        analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
+        analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
+      }
+      if (ocrUnreliable){
+        analysis.content_type=analysis.selected_part_expression
+          ? "vision_with_pdf_part_expression"
+          : "vision_over_unreliable_ocr";
+        analysis.manifest_ocr_unreliable=true;
+      }
       analysisCache[exercise.id]=analysis;saveNoamState();return analysis;
     })
     .catch(function(error){
@@ -5526,15 +5980,133 @@ function getExerciseAnalysis(exercise){
       // synthetic-analysis fallback. Preserve them for the chat error message.
       if (isBotProtectionError(error)){ throw error; }
       // These manifests deliberately carry no guessed OCR transcription.
-      // The solver must receive the actual worksheet image analysis.
-      if (exercise.requiresVision){throw new Error("לא הצלחנו לקרוא את תמונת השאלה. נסו שוב בעוד רגע.");}
+      // Unreliable OCR must not fall back to the garbled static text either.
+      if (exercise.requiresVision||ocrUnreliable){
+        var visionError=new Error(
+          "לא הצלחנו לקרוא את תמונת השאלה. אפשר לנסות שוב — בלי לנחש את תוכן השאלה."
+        );
+        visionError.code="QUESTION_IMAGE_UNREADABLE";
+        visionError.cause=error;
+        throw visionError;
+      }
       console.warn("NOAM VISION FALLBACK:",exercise.id,error);
       analysisCache[exercise.id]=fallback;saveNoamState();return fallback;
     });
+  });
+}
+
+function clearExerciseVisionCache(exercise){
+  if (!exercise){ return; }
+  delete analysisCache[exercise.id];
+  var imageKey=noamExerciseNeedsLiveVision(exercise)
+    ?"image:"+String(exercise.part||"")+":"+JSON.stringify(exercise.crops||[exercise.crop])
+    :null;
+  if (imageKey){ delete analysisCache[imageKey]; }
+  delete exercisePreviewCache[exercise.id];
+  pdfCropLoadPromise=null;
+}
+
+function retryLastNoamHelp(){
+  if (!selectedExercise||busy){ return; }
+  var thread=exerciseThread(selectedExercise.id);
+  // Drop failed assistant + matching user turn so retry does not stack dead-ends.
+  if (thread.messages.length&&thread.messages[thread.messages.length-1].answerError){
+    thread.messages.pop();
+  }
+  var lastUser=null;
+  if (thread.messages.length&&thread.messages[thread.messages.length-1].role==="user"){
+    lastUser=thread.messages.pop();
+  }
+  if (!lastUser){ return; }
+  clearExerciseVisionCache(selectedExercise);
+  var kind=lastUser.kind||"";
+  if (/^רמז/.test(kind)){
+    thread.hintIndex=Math.max(0, thread.hintIndex-1);
+    saveNoamState();
+    askNoam("hint","תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי.");
+    return;
+  }
+  if (kind==="הסבר כללי"){
+    saveNoamState();
+    askNoam("overview","תן לי הסבר כללי קצר על הרעיון הדרוש כאן, בלי לפתור ובלי לגלות את התשובה.");
+    return;
+  }
+  saveNoamState();
+  askNoam("free_question", String(lastUser.text||"").trim());
 }
 
 function noamGeometryContext(text){
   return /גאומטר|גיאומטר|משולש|מרובע|זווית|מקביל|מאונך|חפיפ|דמיון|פיתגורס|טרפז|מעוין|מלבן|ריבוע/i.test(String(text||""));
+}
+
+function noamSignedNumberContext(text){
+  var source=String(text||"");
+  if (/מספר(?:ים)?\s+מכוונ|ערך\s+מוחלט|סימנים\s+שונים|מספר(?:ים)?\s+שלילי|חיבור\s+(?:וחיסור\s+)?מספרים|ישר\s+המספרים|ציר\s+המספרים/i.test(source)){
+    return true;
+  }
+  // Mixed-sign arithmetic cues such as −7+4 or 5+(−3), without requiring topic keywords.
+  if (/(?:^|[^\d])[−\-]\s*\d+(?:\s*[,،]\s*[−\-]?\d+)*\s*(?:\+|[\u2212\-])\s*[−\-]?\d+/.test(source)){
+    return true;
+  }
+  if (/\d+\s*(?:\+|[\u2212\-])\s*[(\[]?\s*[−\-]\s*\d+/.test(source)){return true;}
+  return false;
+}
+
+/* Focused rewrite for ambiguous different-sign addition language.
+   Does NOT blanket-replace גדול/קטן outside this signed-add rule phrasing. */
+function noamClarifySignedAddLanguage(answer){
+  var text=String(answer||"");
+  if (!text){return text;}
+  var ruleCue=/סימנים\s+שונים|חיבור\s+(?:של\s+)?מספרים|מספרים\s+(?:בעלי\s+)?סימנים|הערך\s+הקטן\s+מהגדול|הסימן\s+של\s+הגדול/i.test(text);
+  if (!ruleCue){return text;}
+  if (/ערך(?:ים)?\s+מוחלט|\|/i.test(text)){return text;}
+  text=text.replace(
+    /חסר(?:ים)?\s+את\s+הערך\s+הקטן\s+מהגדול(?:\s+יותר)?/gi,
+    "מחסרים את הערך המוחלט הקטן מהגדול"
+  );
+  text=text.replace(
+    /שמור(?:ו|י)?\s+על\s+הסימן\s+של\s+הגדול(?:\s+יותר)?/gi,
+    "לוקחים את הסימן של המספר בעל הערך המוחלט הגדול"
+  );
+  text=text.replace(
+    /(?:^|[^\u0590-\u05FF])הסימן\s+של\s+הגדול(?:\s+יותר)?(?!\s+ערך)/gi,
+    function(match){
+      var prefix=match.charAt(0);
+      var he=/[\u0590-\u05FF]/.test(prefix)?"":prefix;
+      return he+"הסימן של המספר בעל הערך המוחלט הגדול";
+    }
+  );
+  return text;
+}
+
+function noamMixedSignAddExpression(text){
+  var source=String(text||"");
+  return /[−\-]\s*\d+\s*\+\s*(?![−\-])\d+/.test(source) ||
+    /\d+\s*\+\s*[−\-]\s*\d+/.test(source) ||
+    /\d+\s*\+\s*\(\s*[−\-]\s*\d+/.test(source);
+}
+
+/* Wrong rule family for a mixed-sign sum: both-negatives OR same-sign add rules. */
+function noamWrongSignedAddRuleIssue(answer,analysis){
+  var source=[
+    analysis&&analysis.selected_part_expression,
+    analysis&&analysis.transcription,
+    analysis&&analysis.math_content,
+    analysis&&analysis.problem_statement
+  ].filter(Boolean).join("\n");
+  if (!noamMixedSignAddExpression(source)){return null;}
+  var text=String(answer||"");
+  if (/(?:לחבר|חיבור)\s+מספרים\s+שליליים|שני(?:ם)?\s+מספרים\s+שליליים|שני\s+השליליים|חבר(?:ו|י)?\s+את\s+הערכים\s+המוחלטים[\s\S]{0,60}סימן\s+מינוס/i.test(text)){
+    return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים, לא שני מספרים שליליים. השתמשו בכלל הסימנים השונים עם ערכים מוחלטים, בלי לחשוף את התוצאה המספרית.";
+  }
+  // Same-sign rule applied to −a+b (user S10: "אותו סימן" / "אותו צד של אפס" / unsigned 4 ו-7).
+  if (/(?:בעלי\s+)?אותו\s+סימן|סימנים?\s+זהים|אותו\s+צד\s+של\s+אפס|שני\s+המספרים\s+\d+\s+ו[־\-]?\s*\d+/i.test(text)){
+    return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים (יש מינוס לפני אחד מהמספרים). אל תשתמשו בכלל אותו סימן; השתמשו בכלל הסימנים השונים עם ערכים מוחלטים, בלי לחשוף את התוצאה המספרית.";
+  }
+  if (/כאשר\s+מחברים\s+שני\s+מספרים[\s\S]{0,40}אותו\s+סימן|סכום\s+הערכים\s+המוחלטים\s+הוא\s+גודל/i.test(text)){
+    return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים. אל תחברו ערכים מוחלטים כאילו הסימנים זהים; מחסרים את הקטן מהגדול בערך מוחלט ולוקחים את סימן הגדול בערך מוחלט — בלי לחשוף את התוצאה.";
+  }
+  return null;
 }
 
 function noamVisualNeed(studentMessage,answer,helpKind,hintIndex,topic){
@@ -5689,12 +6261,21 @@ function noamAngleParallelRole(angle,pair){
 }
 
 function noamAlternateAngleIssue(answer,source){
+  var text=String(answer||"");
+  // Specific known mislabel: ∠BMN with ∠BAC on transversal AB are corresponding, not alternate.
+  if (/מתחלפ(?:ת|ות|ים)?/i.test(text) &&
+      /(?:∠\s*)?BMN/i.test(text) &&
+      /(?:∠\s*)?BAC/i.test(text) &&
+      !/(?:בדקו|האם|מתאימות\s+או)/i.test(text)){
+    return "∠BMN ו־∠BAC אינן זוויות מתחלפות בזיהוי הזה; הן זוויות מתאימות ביחס לחותך AB.";
+  }
   var pairs=noamParallelPairs(source);
   if (!pairs.length){return null;}
-  var text=String(answer||"");
   var relation=/(?:מתחלפ(?:ת|ות|ים)?|מתאימ(?:ה|ות|ים)?)/gi;
   var match;
   while ((match=relation.exec(text))){
+    var word=String(match[0]||"");
+    var isAlternate=/מתחלפ/i.test(word);
     var windowText=text.slice(Math.max(0,match.index-170),Math.min(text.length,relation.lastIndex+170));
     var offset=Math.max(0,match.index-170);
     var angles=noamAnglesClaimedByRelation(windowText,match.index-offset,relation.lastIndex-offset);
@@ -5708,17 +6289,17 @@ function noamAlternateAngleIssue(answer,source){
     for (var left=0;left<angles.length;left+=1){
       for (var right=left+1;right<angles.length;right+=1){
         if (angles[left].vertex===angles[right].vertex){
-          return "זוג הזוויות שנקרא מתחלף חולק אותו קודקוד. זוויות מתחלפות של ישר חותך נמצאות בשתי נקודות חיתוך שונות.";
+          return "זוג הזוויות שנקרא "+(isAlternate?"מתחלף":"מתאים")+" חולק אותו קודקוד. זוויות של ישר חותך נמצאות בשתי נקודות חיתוך שונות.";
         }
         var sharedPairs=pairs.filter(function(pair){
           var leftRole=noamAngleParallelRole(angles[left],pair);
           var rightRole=noamAngleParallelRole(angles[right],pair);
           return leftRole!==-1&&rightRole!==-1;
         });
-        if (sharedPairs.length&&sharedPairs.every(function(pair){
+        if (isAlternate&&sharedPairs.length&&sharedPairs.every(function(pair){
           return noamAngleParallelRole(angles[left],pair)===noamAngleParallelRole(angles[right],pair);
         })){
-          return "שתי הזוויות שנקראו מתחלפות נשענות על אותו ישר מקביל; צריך זווית אחת בכל אחת משתי נקודות החיתוך של החותך.";
+          return "שתי הזוויות שנקראו מתחלפות נשענות על אותו ישר מקביל; צריך זווית אחת בכל אחת משתי נקודות החיתוך של החותך. בדקו אם מדובר בזוויות מתאימות.";
         }
       }
     }
@@ -5813,6 +6394,34 @@ function noamGuardGeometryResult(result,payload,analysis,studentMessage,guide,gu
   });
 }
 
+function noamSignedAddRepairMessage(studentMessage,issue){
+  var instruction="טיוטת התשובה נפסלה בבדיקת כלל סימנים מקומית. "+String(issue||"")+
+    " פתרו מחדש לפי הביטוי של הסעיף הנבחר בלבד. אל תחשפו את התוצאה. אל תזכירו את הטיוטה. שאלת התלמיד: "+String(studentMessage||"").trim();
+  var room=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
+  return instruction.slice(0,room)+MATH_OUTPUT_INSTRUCTION;
+}
+
+function noamGuardSignedAddResult(result,payload,analysis,studentMessage){
+  if (!result||!result.ok||!result.answer){return Promise.resolve(result);}
+  var issue=noamWrongSignedAddRuleIssue(result.answer,analysis);
+  if (!issue){return Promise.resolve(result);}
+  var retryPayload=Object.assign({},payload,{studentMessage:noamSignedAddRepairMessage(studentMessage,issue)});
+  return postJson(API+"/noamImageSolve",retryPayload).then(function(retry){
+    if (retry&&retry.ok&&retry.answer&&!noamWrongSignedAddRuleIssue(retry.answer,analysis)){return retry;}
+    return {
+      ok:true,
+      answer:"בביטוי הנבחר יש סימנים שונים. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול — בלי לחשוף את התוצאה כאן.",
+      signedAddGuarded:true
+    };
+  },function(){
+    return {
+      ok:true,
+      answer:"בביטוי הנבחר יש סימנים שונים. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול — בלי לחשוף את התוצאה כאן.",
+      signedAddGuarded:true
+    };
+  });
+}
+
 function noamDidacticVisualSelection(exerciseId,options){
   var guides=window.NoamDidacticGuides;
   if (!exerciseId||!guides||typeof guides.resolveVisual!=="function"){return null;}
@@ -5874,14 +6483,29 @@ function noamDidacticResponse(exercise,helpKind,hintIndex,studentMessage,progres
   }
 }
 
-function noamSolverMessage(studentMessage,thread,topic,guidePrompt){
+function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis){
   var budget=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
   var current=String(studentMessage||"").trim();
-  var geometry=noamGeometryContext(topic+" "+current+" "+noamRecentThreadText(thread,220));
+  var recent=noamRecentThreadText(thread,220);
+  var pinnedExpr=String(analysis&&analysis.selected_part_expression||"").trim();
+  var analysisText=[
+    pinnedExpr,
+    analysis&&analysis.transcription,
+    analysis&&analysis.problem_statement,
+    analysis&&analysis.math_content
+  ].filter(Boolean).join(" ");
+  var geometry=noamGeometryContext(topic+" "+current+" "+recent);
+  var signed=noamSignedNumberContext(topic+" "+current+" "+recent+" "+analysisText);
+  var mixed=noamMixedSignAddExpression(analysisText);
   var visual=window.NoamLocalVisual&&window.NoamLocalVisual.wantsVisualSupport&&window.NoamLocalVisual.wantsVisualSupport(current);
+  var signedGuard=mixed
+    ? "הביטוי של הסעיף הנבחר הוא "+(pinnedExpr||"חיבור עם סימנים שונים")+". זה סימנים שונים — לא אותו סימן ולא שני שליליים. השוו ערכים מוחלטים במפורש; מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול. אל תחשפו את התוצאה המספרית."
+    : (signed
+      ? "בחיבור מספרים בעלי סימנים שונים השוו ערכים מוחלטים במפורש — לא 'הגדול/הקטן' כמספרים על הציר. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול. אל תחשפו את התוצאה המספרית."
+      : "");
   var generalGuard=geometry
-    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך."
-    : "";
+    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך. אל תערבב זוויות מתחלפות עם זוויות מתאימות — בדוק באיזה צד של החותך נמצאת כל זווית. ברמז ראשון כוון לחשיבה בלי לחשוף את הצעד המרכזי; ברמזים הבאים הוסף צעד קטן בלי פתרון מלא ובלי נתונים מומצאים."
+    : signedGuard;
   var verified=String(guidePrompt||"");
   var guard=verified||generalGuard;
   if (visual){guard+=verified?" ציין בדיוק מה לסמן בשרטוט.":" התלמיד מתקשה בזיהוי חזותי. ציין מה לסמן; אל תבקש ממנו לנחש. האתר יציג שרטוט לצד התשובה, לכן אל תאמר שאינך יכול לצייר.";}
@@ -6300,7 +6924,7 @@ function askNoam(helpKind,studentMessage){
   getExerciseAnalysis(exercise)
     .then(function(analysis){
       requestAnalysis=analysis;
-      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt);
+      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt,analysis);
       requestPayload={
         exerciseId:exercise.id,
         grade:g,
@@ -6318,7 +6942,11 @@ function askNoam(helpKind,studentMessage){
       return noamGuardGeometryResult(result,requestPayload,requestAnalysis,studentMessage,guide,guidePrompt);
     })
     .then(function(result){
+      return noamGuardSignedAddResult(result,requestPayload,requestAnalysis,studentMessage);
+    })
+    .then(function(result){
       if (!result||!result.ok||!result.answer){ throw new Error((result&&result.error)||"נועם AI לא זמין כרגע."); }
+      if (result&&result.answer){result.answer=noamClarifySignedAddLanguage(result.answer);}
       var elapsed=Date.now()-started;
       return new Promise(function(resolve){setTimeout(function(){resolve(result);},Math.max(0,MIN_WAIT-elapsed));});
     })
@@ -6337,10 +6965,33 @@ function askNoam(helpKind,studentMessage){
     })
     .catch(function(error){
       var errorMessage=String(error&&error.message||"לא הצלחנו לקבל תשובה כרגע.");
-      thread.messages.push({role:"assistant",text:errorMessage,kind:"",answerError:true});
+      thread.messages.push({
+        role:"assistant",
+        text:errorMessage,
+        kind:"",
+        answerError:true,
+        answerErrorCode:String(error&&error.code||"")
+      });
       saveNoamState();setNoamBusy(false);renderNoamChat();
       announceNoam(exerciseLabel(exercise) + ". " + errorMessage);
     });
+}
+
+function noamRetryActionLabel(message){
+  var code=String(message&&message.answerErrorCode||"");
+  var text=String(message&&message.text||"");
+  // Match the retry CTA to the failure that was shown — never imply a crop/read
+  // problem when bot verification (or another non-vision refusal) was the cause.
+  if (isBotProtectionError({code:code,message:text}) || /בדיקת האבטחה|לאמת את הבקשה/.test(text)){
+    return "נסו שוב את בדיקת האבטחה";
+  }
+  if (code==="QUESTION_IMAGE_UNREADABLE" || /תמונת השאלה|לקרוא את השאלה|לקרוא את הקבצים/.test(text)){
+    return "נסו שוב לקרוא את השאלה";
+  }
+  if (code==="NETWORK_UNAVAILABLE" || /החיבור לנועם AI נקטע/.test(text)){
+    return "נסו שוב להתחבר";
+  }
+  return "נסו שוב";
 }
 
 function postJson(endpoint,payload){

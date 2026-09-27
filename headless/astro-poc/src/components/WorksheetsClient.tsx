@@ -68,6 +68,8 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   const [group, setGroup] = useState(boot.group);
   const [track, setTrack] = useState<TrackMode>(boot.track);
   const [cross, setCross] = useState(boot.cross);
+  // Client-owned topic pin so "נקה" / URL edits can drop landing ?topic= without reload.
+  const [topicPin, setTopicPin] = useState<number | null>(highlightTopicId);
   const searchId = useId();
   const statusId = useId();
   const listId = 'topic-list';
@@ -88,9 +90,9 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       group,
       cross,
       track: showTrack ? track : 'reg',
-      topic: highlightTopicId,
+      topic: topicPin,
     }),
-    [grade, q, group, cross, track, showTrack, highlightTopicId]
+    [grade, q, group, cross, track, showTrack, topicPin]
   );
 
   const gradeHref = useCallback(
@@ -125,6 +127,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       setQ(s.q);
       setGroup(s.group);
       setCross(s.cross);
+      setTopicPin(s.topic);
       if (showTrack) setTrack(s.track);
     };
     window.addEventListener('popstate', onPop);
@@ -132,12 +135,12 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   }, [grade, showTrack]);
 
   useEffect(() => {
-    if (highlightTopicId == null) return;
-    const el = document.querySelector(`[data-topic-id="${highlightTopicId}"]`);
+    if (topicPin == null) return;
+    const el = document.querySelector(`[data-topic-id="${topicPin}"]`);
     if (!(el instanceof HTMLElement)) return;
     el.classList.add('is-topic-target');
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, [highlightTopicId, grade]);
+  }, [topicPin, grade]);
 
   const activeGroups = useMemo(() => {
     if (!showTrack) return gradeEntry.groups;
@@ -227,10 +230,13 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       query: string
     ): CatalogTopic[] => {
       const hay = haystacksByGrade.get(gEntry.grade) || new Map();
+      const pin = !query.trim() && topicPin != null ? topicPin : null;
       return gEntry.topics.filter((t) => {
         if (t.parent !== undefined) return false;
         if (!topicAllowedByTrack(gEntry.grade, t, mode)) return false;
         if (useGroup && group !== 'all' && t.group !== group) return false;
+        // Landing CTAs pass ?topic=N — filter to that topic when search is empty.
+        if (pin != null && t.id !== pin) return false;
         return topicMatchesQuery(hay.get(t.id) || [], query);
       });
     };
@@ -254,6 +260,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     group,
     haystacksByGrade,
     topicAllowedByTrack,
+    topicPin,
   ]);
 
   const visibleCount = visibleBlocks.reduce((n, b) => n + b.topics.length, 0);
@@ -282,6 +289,11 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       if (crossActive) return `${visibleCount} נושאים תואמים בחיפוש בין כיתות השכבה`;
       return `${visibleCount} נושאים תואמים לחיפוש`;
     }
+    if (topicPin != null && !q.trim() && visibleCount) {
+      return visibleCount === 1
+        ? 'מוצג הנושא שנבחר מדף הנחיתה'
+        : `${visibleCount} נושאים לפי בחירה מכתובת הנושא`;
+    }
     if (group === 'all') return `${visibleCount} נושאים בכיתה זו`;
     return `${visibleCount} נושאים בקבוצה שנבחרה`;
   })();
@@ -290,6 +302,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     setQ('');
     setGroup('all');
     setCross(false);
+    setTopicPin(null);
     if (showTrack) setTrack('reg');
   }
 

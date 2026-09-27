@@ -117,4 +117,31 @@ describe('worksheetsUrlState contract (M32)', () => {
     assert.ok(src.includes('title="כיתה לא חוקית"'));
     assert.ok(src.includes('title="כיתה חסרה"'));
   });
+
+  it('landing ?topic= is parsed and serialized for catalog filter', () => {
+    const state = parseWorksheetsUrlState(
+      new URLSearchParams('grade=7&topic=19'),
+      7
+    );
+    assert.equal(state.topic, 19);
+    assert.equal(buildWorksheetsHref(state), '/worksheets?grade=7&topic=19');
+  });
+
+  it('WorksheetsClient filters by topic pin from landing CTA', () => {
+    const src = readFileSync('src/components/WorksheetsClient.tsx', 'utf8');
+    assert.match(src, /Landing CTAs pass \?topic=N/);
+    assert.match(src, /topicPin/);
+    assert.match(src, /setTopicPin\(null\)/);
+  });
+
+  it('viewer topic-back preserves worksheets search state on live host', () => {
+    const src = readFileSync('public/worksheet-viewer-noam.html', 'utf8');
+    assert.match(src, /worksheetsHrefFromReturn/);
+    assert.match(src, /liveHost/);
+    assert.match(src, /prefer live \/worksheets catalog/);
+    assert.doesNotMatch(
+      src,
+      /topicBack\.href =\s*"\/worksheets\?grade=" \+\s*g \+\s*"&topic="/
+    );
+  });
 });

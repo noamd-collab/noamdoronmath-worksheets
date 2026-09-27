@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import {
   DEFAULT_SITE_DESCRIPTION,
@@ -34,5 +35,18 @@ describe('siteSeo preview vs production', () => {
     assert.match(DEFAULT_SITE_TITLE, /נועם/);
     assert.doesNotMatch(DEFAULT_SITE_TITLE, /Astro POC|Home \|/i);
     assert.doesNotMatch(DEFAULT_SITE_DESCRIPTION, /Astro POC/i);
+  });
+
+  it('BaseLayout strips conflicting Wix SEO title/canonical/og:title tags', () => {
+    const src = readFileSync('src/layouts/BaseLayout.astro', 'utf8');
+    assert.match(src, /stripWixSeoDupes/);
+    assert.match(src, /wix-seo-tag/);
+    assert.match(src, /showPreviewNote=\{showPreviewNote\}/);
+  });
+
+  it('SiteFooter preview note is gated off production hosts', () => {
+    const src = readFileSync('src/components/SiteFooter.astro', 'utf8');
+    assert.match(src, /showPreviewNote/);
+    assert.match(src, /showPreviewNote && footer\.previewNote/);
   });
 });

@@ -3,8 +3,10 @@ import type { HomePageContent } from '../lib/homePage';
 
 interface Props {
   footer: HomePageContent['footer'];
+  /** Preview hosts only — never claim “preview only” on the live domain. */
+  showPreviewNote?: boolean;
 }
-const { footer } = Astro.props;
+const { footer, showPreviewNote = false } = Astro.props;
 
 /**
  * Brand social URLs — verified only (do not invent):
@@ -144,7 +146,9 @@ const socialLinks = [
     <p>{footer.copyright}</p>
     <p class="site-footer__disclaimer">{footer.disclaimer}</p>
     <p class="site-footer__privacy-note">{footer.privacyNote}</p>
-    <p class="home-foot">{footer.previewNote}</p>
+    {showPreviewNote && footer.previewNote ? (
+      <p class="home-foot">{footer.previewNote}</p>
+    ) : null}
   </div>
 </footer>
 

@@ -268,7 +268,7 @@ try {
   }
 } catch (navigationError) { /* The default grade link remains available. */ }`;
 
-const newBack = `/* BACK — Headless adapter: default to legacy GitHub catalog (same UX target). */
+const newBack = `/* BACK — prefer live /worksheets catalog; preserve search/topic from \`back=\`. */
 
 if (okGrade){
 
@@ -281,12 +281,27 @@ if (okGrade){
 
 /* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
 
-// Accept same-origin catalog returns OR the legacy GitHub Pages catalog path.
+// Accept same-origin /worksheets returns. On the live domain, never send the
+// student to the legacy GitHub Pages catalog — map those URLs to /worksheets.
 try {
   var navigationParams = new URL(location.href).searchParams;
   var catalogRoot = new URL('./', location.href);
   var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
+  var liveHost = /(?:^|\\.)noamdoronmath\\.co\\.il$/i.test(location.hostname);
   var returnPath = navigationParams.get('back');
+  function worksheetsHrefFromReturn(urlObj, gradeNum, topicId){
+    var out = new URL("/worksheets", location.origin);
+    if (urlObj && urlObj.searchParams){
+      urlObj.searchParams.forEach(function(value, key){
+        out.searchParams.set(key, value);
+      });
+    }
+    if (gradeNum && !out.searchParams.get("grade")){
+      out.searchParams.set("grade", String(gradeNum));
+    }
+    if (topicId){ out.searchParams.set("topic", String(topicId)); }
+    return out.pathname + out.search;
+  }
   if (returnPath) {
     var catalogReturn;
     if (/^https?:\\/\\//i.test(returnPath)) {
@@ -310,25 +325,48 @@ try {
       catalogReturn.origin === legacyRoot.origin &&
       catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\\/$/, "")) === 0;
     if (sameOriginCatalog || legacyCatalog) {
-      document.getElementById("backBtn").href = catalogReturn.href;
+      var backHref;
+      if (liveHost || catalogReturn.pathname.indexOf("/worksheets") === 0){
+        backHref = worksheetsHrefFromReturn(
+          catalogReturn.pathname.indexOf("/worksheets") === 0 ? catalogReturn : new URL("/worksheets"+catalogReturn.search, location.origin),
+          okGrade ? g : null,
+          null
+        );
+      } else if (!liveHost && legacyCatalog){
+        backHref = catalogReturn.href;
+      } else {
+        backHref = worksheetsHrefFromReturn(catalogReturn, okGrade ? g : null, null);
+      }
+      document.getElementById("backBtn").href = backHref;
     }
   }
   if (/^\\d+$/.test(navigationParams.get("topic") || "") && okGrade) {
     var topicBack = document.createElement("a");
     topicBack.className = "btn topic-back";
     topicBack.textContent = "חזרה לנושא";
-    topicBack.href =
-      "/worksheets?grade=" +
-      g +
-      "&topic=" +
-      navigationParams.get("topic");
+    var topicId = navigationParams.get("topic");
+    var backForTopic = document.getElementById("backBtn").getAttribute("href") || "";
+    if (backForTopic.indexOf("/worksheets") === 0 || /^https?:\\/\\/[^/]+\\/worksheets/i.test(backForTopic)){
+      topicBack.href = worksheetsHrefFromReturn(new URL(backForTopic, location.origin), g, topicId);
+    } else {
+      topicBack.href = worksheetsHrefFromReturn(null, g, topicId);
+    }
     document.getElementById("backBtn").after(topicBack);
   }
 } catch (navigationError) { /* The default grade link remains available. */ }`;
 
+const legacyHeadlessBackMarker =
+  '/* BACK — Headless adapter: default to legacy GitHub catalog (same UX target). */';
 if (html.includes(oldBack)) {
   html = html.replace(oldBack, newBack);
-} else if (!html.includes('HEADLESS_LEGACY_PAGES +') || !html.includes('legacyCatalog')) {
+} else if (html.includes(legacyHeadlessBackMarker)) {
+  // Upgrade older Headless adapter (lost search state / could leak to GitHub).
+  const legacyStart = html.indexOf(legacyHeadlessBackMarker);
+  const legacyEnd = html.indexOf('var panel = document.getElementById("panel");', legacyStart);
+  if (legacyStart >= 0 && legacyEnd > legacyStart) {
+    html = html.slice(0, legacyStart) + newBack + '\n\n' + html.slice(legacyEnd);
+  }
+} else if (!html.includes('worksheetsHrefFromReturn')) {
   console.warn('WARN: back-navigation block already patched or diverged; verify manually.');
 }
 
