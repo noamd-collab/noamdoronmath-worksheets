@@ -119,3 +119,19 @@ test("visual selection uses progress and rejects unverified focus keys",()=>{
   assert.equal(fallback.key,"q4a-alternate");
   assert.equal(guides.resolveVisual("unknown",{key:"q4a-alternate"}),null);
 });
+
+test("G9-T20-E-Q06א graduated hints avoid full solution and mislabeled alternate angles", () => {
+  const guide = guides.get("G9-T20-E-Q06א");
+  assert.ok(guide);
+  assert.equal(guide.hints.length, 3);
+  const h1 = guides.respond("G9-T20-E-Q06א", { helpKind: "hint", hintIndex: 0 }).text;
+  const h2 = guides.respond("G9-T20-E-Q06א", { helpKind: "hint", hintIndex: 1 }).text;
+  const h3 = guides.respond("G9-T20-E-Q06א", { helpKind: "hint", hintIndex: 2 }).text;
+  assert.match(h1, /BMN|BM = BN/);
+  assert.doesNotMatch(h1, /MN ∥ AC|MN \|\| AC/);
+  assert.match(h2, /BAC|45|בסיס/);
+  assert.match(h3, /מתאימ/);
+  assert.doesNotMatch(h3, /מתחלפ/);
+  assert.ok(guide.forbidden.some(item => /מתחלפ/.test(item)));
+});
+

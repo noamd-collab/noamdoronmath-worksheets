@@ -83,6 +83,19 @@ test("definite and plural right-triangle phrases stay one concept with their ori
   assert.ok(separate.some(match => match.id === "angle"));
 });
 
+
+test("compound right-triangle and hyphenated phrases do not fall back to bare line", () => {
+  for (const phrase of ["ישר-זווית", "ישר־זווית", "*ישר-זווית*", "משולש ישר-זווית"]) {
+    const matches = glossary.findTerms(`בדקו ${phrase} במשולש.`, 9);
+    assert.deepEqual(matches.map(match => match.id).filter(id => id === "right-triangle" || id === "curriculum-b95ff3a56e" || id === "angle"),
+      ["right-triangle"], phrase);
+  }
+  assert.deepEqual(glossary.findTerms("משולש שווה-שוקיים", 9).map(m => m.id), ["isosceles"]);
+  assert.deepEqual(glossary.findTerms("זוויות מתאימות וזוויות מתחלפות", 9).map(m => m.id),
+    ["corresponding-angles", "alternate-angles"]);
+  assert.deepEqual(glossary.findTerms("הזווית הישרה בריבוע", 9).map(m => m.id), ["right-angle", "square"]);
+});
+
 test("Hebrew word boundaries avoid highlighting a term inside an unrelated word", () => {
   assert.equal(glossary.findTerms("הריבועית", 9, 6).some(match => match.id === "square"), false);
   assert.equal(glossary.findTerms("ריבוע", 9, 6)[0].id, "square");

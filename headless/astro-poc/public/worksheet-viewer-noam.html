@@ -2178,13 +2178,13 @@ textarea:focus{
   </div>
 </dialog>
 
-<script src="noam-didactic-guides.js?v=20260920-3"></script>
+<script src="noam-didactic-guides.js?v=20260927-hints1"></script>
 <script src="noam-geometry.js?v=20260921-aux1"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20260921-constructions1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20260920-1"></script>
-<script src="noam-glossary.js?v=20260921-2"></script>
+<script src="noam-glossary.js?v=20260927-concepts1"></script>
 <script>
 (function(){
 
@@ -4582,7 +4582,7 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   speaker.className = "noam-sr-only";
   speaker.textContent = role === "user" ? "השאלה שלך: " : "נועם AI: ";
   bubble.appendChild(speaker);
-  content.textContent = text;
+  content.textContent = role === "assistant" ? noamStripMarkdownEmphasis(text) : text;
   bubble.appendChild(content);
   if (message && message.answerError){
     var retry=document.createElement("button");
@@ -4695,6 +4695,13 @@ function showNoamGlossaryPopover(trigger,entry,keyboardOpen){
   popover.hidden=false;
   positionNoamGlossaryPopover(trigger);
   if (keyboardOpen){more.focus({preventScroll:true});}
+}
+
+function noamStripMarkdownEmphasis(text){
+  // Keep math asterisks like 2*3; only unwrap common emphasis wrappers.
+  return String(text||"")
+    .replace(/\*\*([^*]+)\*\*/g,"$1")
+    .replace(/(^|[\s(„"'])\*([^*\n]+)\*(?=[\s).,;:!?״"']|$)/g,"$1$2");
 }
 
 function makeNoamGlossaryTerm(match){
@@ -5855,12 +5862,21 @@ function noamAngleParallelRole(angle,pair){
 }
 
 function noamAlternateAngleIssue(answer,source){
+  var text=String(answer||"");
+  // Specific known mislabel: ∠BMN with ∠BAC on transversal AB are corresponding, not alternate.
+  if (/מתחלפ(?:ת|ות|ים)?/i.test(text) &&
+      /(?:∠\s*)?BMN/i.test(text) &&
+      /(?:∠\s*)?BAC/i.test(text) &&
+      !/(?:בדקו|האם|מתאימות\s+או)/i.test(text)){
+    return "∠BMN ו־∠BAC אינן זוויות מתחלפות בזיהוי הזה; הן זוויות מתאימות ביחס לחותך AB.";
+  }
   var pairs=noamParallelPairs(source);
   if (!pairs.length){return null;}
-  var text=String(answer||"");
   var relation=/(?:מתחלפ(?:ת|ות|ים)?|מתאימ(?:ה|ות|ים)?)/gi;
   var match;
   while ((match=relation.exec(text))){
+    var word=String(match[0]||"");
+    var isAlternate=/מתחלפ/i.test(word);
     var windowText=text.slice(Math.max(0,match.index-170),Math.min(text.length,relation.lastIndex+170));
     var offset=Math.max(0,match.index-170);
     var angles=noamAnglesClaimedByRelation(windowText,match.index-offset,relation.lastIndex-offset);
@@ -5874,17 +5890,17 @@ function noamAlternateAngleIssue(answer,source){
     for (var left=0;left<angles.length;left+=1){
       for (var right=left+1;right<angles.length;right+=1){
         if (angles[left].vertex===angles[right].vertex){
-          return "זוג הזוויות שנקרא מתחלף חולק אותו קודקוד. זוויות מתחלפות של ישר חותך נמצאות בשתי נקודות חיתוך שונות.";
+          return "זוג הזוויות שנקרא "+(isAlternate?"מתחלף":"מתאים")+" חולק אותו קודקוד. זוויות של ישר חותך נמצאות בשתי נקודות חיתוך שונות.";
         }
         var sharedPairs=pairs.filter(function(pair){
           var leftRole=noamAngleParallelRole(angles[left],pair);
           var rightRole=noamAngleParallelRole(angles[right],pair);
           return leftRole!==-1&&rightRole!==-1;
         });
-        if (sharedPairs.length&&sharedPairs.every(function(pair){
+        if (isAlternate&&sharedPairs.length&&sharedPairs.every(function(pair){
           return noamAngleParallelRole(angles[left],pair)===noamAngleParallelRole(angles[right],pair);
         })){
-          return "שתי הזוויות שנקראו מתחלפות נשענות על אותו ישר מקביל; צריך זווית אחת בכל אחת משתי נקודות החיתוך של החותך.";
+          return "שתי הזוויות שנקראו מתחלפות נשענות על אותו ישר מקביל; צריך זווית אחת בכל אחת משתי נקודות החיתוך של החותך. בדקו אם מדובר בזוויות מתאימות.";
         }
       }
     }
@@ -6046,7 +6062,7 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt){
   var geometry=noamGeometryContext(topic+" "+current+" "+noamRecentThreadText(thread,220));
   var visual=window.NoamLocalVisual&&window.NoamLocalVisual.wantsVisualSupport&&window.NoamLocalVisual.wantsVisualSupport(current);
   var generalGuard=geometry
-    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך."
+    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך. אל תערבב זוויות מתחלפות עם זוויות מתאימות — בדוק באיזה צד של החותך נמצאת כל זווית. ברמז ראשון כוון לחשיבה בלי לחשוף את הצעד המרכזי; ברמזים הבאים הוסף צעד קטן בלי פתרון מלא ובלי נתונים מומצאים."
     : "";
   var verified=String(guidePrompt||"");
   var guard=verified||generalGuard;

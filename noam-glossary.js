@@ -486,14 +486,35 @@
       question:"איך סדר הנתונים עוזר לכתוב את החפיפה נכון?"
     },
     {
-      id:"isosceles",term:"משולש שווה־שוקיים",aliases:["משולש שווה־שוקיים","משולש שווה שוקיים","שווה־שוקיים","שווה שוקיים"],grades:[7,8,9],kind:"הגדרה ומשפט",
+      id:"isosceles",term:"משולש שווה־שוקיים",aliases:["משולש שווה־שוקיים","משולש שווה-שוקיים","משולש שווה שוקיים","שווה־שוקיים","שווה-שוקיים","שווה שוקיים"],grades:[7,8,9],kind:"הגדרה ומשפט",
       short:"משולש בעל שתי צלעות שוות; הזוויות שמולן שוות.",
       detail:"הצלעות השוות הן השוקיים והצלע השלישית היא הבסיס. גם המשפט ההפוך נכון: אם שתי זוויות במשולש שוות, הצלעות שמולן שוות.",
       example:"אם AB=AC, אז ∠B=∠C.",prerequisite:"צלעות וזוויות מתאימות במשולש.",
       question:"איך יודעים אילו זוויות הן זוויות הבסיס?"
     },
     {
-      id:"right-triangle",term:"משולש ישר־זווית",aliases:["משולש ישר־זווית","משולש ישר-זווית","משולש ישר זווית","משולש ישר־הזווית","משולש ישר-הזווית","משולש ישר הזווית","משולשים ישרי־זווית","משולשים ישרי-זווית","משולשים ישרי זווית","משולשים ישרי־הזווית","משולשים ישרי-הזווית","משולשים ישרי הזווית","יתר","ניצבים"],grades:[7,8,9],kind:"הגדרה",
+      id:"right-angle",term:"זווית ישרה",aliases:["זווית ישרה","זוויות ישרות","הזווית הישרה"],grades:[7,8,9],kind:"הגדרה",
+      short:"זווית שמידתה 90°.",
+      detail:"זווית ישרה מסומנת לעיתים בריבוע קטן ליד הקודקוד. אין לבלבל בינה לבין קו ישר (180°) או משולש ישר־זווית.",
+      example:"בריבוע כל ארבע הזוויות ישרות.",prerequisite:"זווית ומדידת מעלות.",
+      question:"איך מבחינים בין זווית ישרה לבין קו ישר?"
+    },
+    {
+      id:"alternate-angles",term:"זוויות מתחלפות",aliases:["זוויות מתחלפות","זווית מתחלפת","זוויות מתחלפות פנימיות"],grades:[7,8,9],kind:"הגדרה",
+      short:"זוג זוויות בשתי נקודות חיתוך של חותך עם שני ישרים, הנמצאות בצדדים מנוגדים של החותך.",
+      detail:"כאשר הישרים מקבילים, זוויות מתחלפות פנימיות שוות. לפני שקוראים לזוג ״מתחלפות״ בודקים שיש חותך ושתי נקודות חיתוך ושני צדדים מנוגדים.",
+      example:"אם DE ∥ BC והחותך הוא DB, אז ∠EDB ו־∠DBC הן זוויות מתחלפות פנימיות.",prerequisite:"ישרים מקבילים וישר חותך.",
+      question:"איך בודקים ששתי זוויות הן מתחלפות ולא מתאימות?"
+    },
+    {
+      id:"corresponding-angles",term:"זוויות מתאימות",aliases:["זוויות מתאימות","זווית מתאימה"],grades:[7,8,9],kind:"הגדרה",
+      short:"זוג זוויות בשתי נקודות חיתוך של חותך עם שני ישרים, הנמצאות באותו צד של החותך ובמיקום מתאים.",
+      detail:"כאשר הישרים מקבילים, זוויות מתאימות שוות. אין להחליף בין ״מתאימות״ לבין ״מתחלפות״: ההבדל הוא האם הזוויות באותו צד של החותך או בצדדים מנוגדים.",
+      example:"אם MN ∥ AC והחותך הוא AB, אז ∠BMN ו־∠BAC יכולות להיות זוויות מתאימות.",prerequisite:"ישרים מקבילים וישר חותך.",
+      question:"מתי משתמשים בזוויות מתאימות כדי להוכיח מקבילות?"
+    },
+    {
+      id:"right-triangle",term:"משולש ישר־זווית",aliases:["משולש ישר־זווית","משולש ישר-זווית","משולש ישר זווית","משולש ישר־הזווית","משולש ישר-הזווית","משולש ישר הזווית","משולשים ישרי־זווית","משולשים ישרי-זווית","משולשים ישרי זווית","משולשים ישרי־הזווית","משולשים ישרי-הזווית","משולשים ישרי הזווית","ישר־זווית","ישר-זווית","ישר זווית","ישרי־זווית","ישרי-זווית","ישרי זווית","יתר","ניצבים"],grades:[7,8,9],kind:"הגדרה",
       short:"משולש שבו אחת הזוויות היא 90°; הצלע שמולה היא היתר ושתי האחרות הן הניצבים.",
       detail:"היתר הוא הצלע הארוכה במשולש ישר־זווית ותמיד נמצא מול הזווית הישרה. שני הניצבים יוצרים את הזווית הישרה.",
       example:"במשולש שאורכי צלעותיו 3, 4 ו־5, הצלע 5 היא היתר.",prerequisite:"זווית ישרה וצלעות במשולש.",
@@ -558,6 +579,36 @@
     return !!character&&/[A-Za-z0-9\u0590-\u05FF]/.test(character);
   }
 
+  function isIgnorableMarkup(character){
+    return character==="*"||character==="_"||character==="`"||character==="~";
+  }
+
+  function isHyphenConnector(character){
+    // ASCII hyphen, maqaf, and common dashes bind a compound term.
+    return !!character&&/[\-\u05BE\u2010-\u2015\u2212]/.test(character);
+  }
+
+  function canonicalizeGlossaryText(value){
+    // Keep length/positions stable: only swap hyphen code points for maqaf.
+    return String(value||"").replace(/[\-\u2010-\u2015\u2212]/g,"\u05BE");
+  }
+
+  function boundaryFree(source,index,atEnd){
+    var step=atEnd?1:-1;
+    var i=atEnd?index:index-1;
+    while(i>=0&&i<source.length&&isIgnorableMarkup(source.charAt(i))){i+=step;}
+    if(i<0||i>=source.length){return true;}
+    var character=source.charAt(i);
+    if(isWordCharacter(character)){return false;}
+    // Do not split "ישר-זווית" / "שווה־שוקיים" into bare "ישר" / "שווה".
+    if(isHyphenConnector(character)){
+      var j=i+step;
+      while(j>=0&&j<source.length&&isIgnorableMarkup(source.charAt(j))){j+=step;}
+      if(j>=0&&j<source.length&&isWordCharacter(source.charAt(j))){return false;}
+    }
+    return true;
+  }
+
   function eligible(entry,grade){
     var number=gradeNumber(grade);
     return !entry.grades||!entry.grades.length||entry.grades.indexOf(number)!==-1;
@@ -581,17 +632,18 @@
 
   function findTerms(text,grade,limit){
     var source=String(text||"");
-    var lower=source.toLocaleLowerCase("he");
+    var lower=canonicalizeGlossaryText(source).toLocaleLowerCase("he");
     var occupied=[];
     var found=[];
     var seen=Object.create(null);
     candidates(grade).some(function(candidate){
-      var needle=candidate.alias.toLocaleLowerCase("he");
+      var needle=canonicalizeGlossaryText(candidate.alias).toLocaleLowerCase("he");
+      if(!needle){return false;}
       var from=0,index=-1;
       while((index=lower.indexOf(needle,from))!==-1){
         var end=index+needle.length;
-        var leftOk=!isWordCharacter(source.charAt(index-1));
-        var rightOk=!isWordCharacter(source.charAt(end));
+        var leftOk=boundaryFree(source,index,false);
+        var rightOk=boundaryFree(source,end,true);
         var free=!occupied.some(function(range){return index<range.end&&end>range.start;});
         if(leftOk&&rightOk&&free){
           occupied.push({start:index,end:end});
