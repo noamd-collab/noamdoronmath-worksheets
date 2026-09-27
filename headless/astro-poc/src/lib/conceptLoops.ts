@@ -1399,8 +1399,8 @@ const ODD_PAIR_HOLD = 5.4;
 function renderBirdsSub(root: LoopRoot, t: number) {
   const p = ph(t, 1.2, 2.4) - ph(t, 8.2, 9.2);
   const fly = [
-    { id: 'b4', x: 340, y: 200, dx: 36 },
-    { id: 'b5', x: 410, y: 200, dx: 78 },
+    { id: 'b4', x: 380, y: 200, dx: 36 },
+    { id: 'b5', x: 450, y: 200, dx: 50 },
   ];
   for (const bird of fly) {
     const g = q(root, bird.id);
