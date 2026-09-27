@@ -1,20 +1,13 @@
 ---
 /**
- * PlaneFlight — paper plane gliding along Noam's drawn route (see
- * ~/Downloads/noam-plane-path.png): enters top-left under the header,
- * dips behind the dev-notice banner, waves left-to-right across the hero
- * band, loops once on the right, and rests next to the robot doodle.
+ * PlaneFlight — soft flowing paper-plane trail that ORBITS the hero
+ * ConceptLoop card and hero copy on all sides (above / beside / below),
+ * with comfortable clearance. Never crosses art or text.
  *
- * Hard rules honored:
- * - BACKGROUND layer: z-index below all content, pointer-events none.
- *   Text/banner/cards/buttons always paint on top and stay readable.
- * - The path is computed at runtime from the actual layout (banner rect,
- *   hero rect), so it scales to any viewport without distortion.
- * - Calm: ~15s flight, ease in/out, then rest at the end spot. Once per
- *   browser session. rAF-driven (auto-pauses when the tab is hidden).
- * - Reduced motion / a11y motion-off: plane sits statically at its end
- *   spot, no trail, no flight.
- * - Mobile (<768px): shorter simplified path, smaller plane, still behind.
+ * - Background layer (z-index 0), pointer-events none.
+ * - Path from live layout rects (card + copy); hit-checked before use.
+ * - ~16s flight, once per session; rAF.
+ * - prefers-reduced-motion / html.noam-a11y-motion: static end, no trail.
  */
 ---
 
@@ -46,13 +39,18 @@
     stroke: var(--cobalt);
     stroke-width: 2.5;
     stroke-linecap: round;
+    stroke-linejoin: round;
     opacity: 0.55;
   }
   @media (max-width: 767px) {
-    .plane-layer { height: 640px; }
+    .plane-layer {
+      height: 720px;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .plane-trail { display: none; }
+    .plane-trail {
+      display: none;
+    }
   }
 </style>
 
@@ -60,7 +58,9 @@
   (function () {
     var layer = document.querySelector('.plane-layer');
     if (!layer) return;
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduced =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      document.documentElement.classList.contains('noam-a11y-motion');
     var svg = layer.querySelector('.plane-svg');
     var trail = layer.querySelector('.plane-trail');
     var icon = layer.querySelector('.plane-icon');
@@ -68,53 +68,167 @@
     var W = layerRect.width;
     var H = layerRect.height;
     var mobile = W < 768;
+
+    function boxOf(el) {
+      if (!el) return null;
+      var r = el.getBoundingClientRect();
+      if (r.width < 8 || r.height < 8) return null;
+      return {
+        left: r.left - layerRect.left,
+        right: r.right - layerRect.left,
+        top: r.top - layerRect.top,
+        bottom: r.bottom - layerRect.top,
+      };
+    }
+    function r(n) {
+      return Math.round(n);
+    }
+    function C(c1x, c1y, c2x, c2y, x, y) {
+      return ' C ' + r(c1x) + ',' + r(c1y) + ' ' + r(c2x) + ',' + r(c2y) + ' ' + r(x) + ',' + r(y);
+    }
+    function clamp(v, a, b) {
+      return Math.max(a, Math.min(b, v));
+    }
+
+    var card =
+      boxOf(document.querySelector('.home-hero .hero-loop')) ||
+      boxOf(document.querySelector('.home-hero .concept-loop'));
+    var copy = boxOf(document.querySelector('.home-hero__copy'));
+    var PAD = mobile ? 20 : 34;
+
+    // Grow layer so the bottom of the orbit has room.
+    if (card && copy) {
+      var needH = Math.max(card.bottom, copy.bottom) + PAD + 56;
+      if (needH > H) {
+        layer.style.height = Math.ceil(needH) + 'px';
+        H = Math.ceil(needH);
+        layerRect = layer.getBoundingClientRect();
+        // Re-measure after height change (tops shift only if page reflowed; usually same).
+        card =
+          boxOf(document.querySelector('.home-hero .hero-loop')) ||
+          boxOf(document.querySelector('.home-hero .concept-loop'));
+        copy = boxOf(document.querySelector('.home-hero__copy'));
+      }
+    }
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
 
-    var notice = document.querySelector('.home-notice');
-    var hero = document.querySelector('.home-hero');
-    var nR = notice ? notice.getBoundingClientRect() : null;
-    var hR = hero ? hero.getBoundingClientRect() : null;
-
-    // End spot: next to the robot doodle on the right of the hero.
-    var endX = hR ? Math.min(W - 30, hR.right - layerRect.left - (mobile ? 60 : 150)) : W - 150;
-    var endY = hR ? hR.top - layerRect.top + (mobile ? 60 : 105) : 320;
-
-    function pt(x, y) { return [Math.round(x), Math.round(y)]; }
-    var d;
-    if (!mobile) {
-      var bandY = nR ? nR.bottom - layerRect.top + 46 : 250;   // wave band under the banner
-      var loopX = W * 0.76, loopY = bandY + 6, loopR = Math.min(38, W * 0.035);
-      d =
-        'M ' + pt(W * 0.10, -30) +
-        ' C ' + pt(W * 0.05, 60) + ' ' + pt(W * 0.13, (nR ? nR.top - layerRect.top - 30 : 120)) + ' ' + pt(W * 0.16, (nR ? nR.top - layerRect.top + 20 : 170)) +
-        // dip behind the banner and emerge under its left third
-        ' S ' + pt(W * 0.22, (nR ? nR.bottom - layerRect.top + 14 : 240)) + ' ' + pt(W * 0.28, bandY) +
-        // gentle wave across the page
-        ' C ' + pt(W * 0.36, bandY + 34) + ' ' + pt(W * 0.42, bandY - 26) + ' ' + pt(W * 0.50, bandY + 10) +
-        ' S ' + pt(W * 0.62, bandY + 36) + ' ' + pt(W * 0.68, bandY + 4) +
-        // small loop on the right
-        ' C ' + pt(loopX - loopR * 1.4, loopY - loopR) + ' ' + pt(loopX - loopR * 0.2, loopY - loopR * 1.5) + ' ' + pt(loopX, loopY - loopR) +
-        ' C ' + pt(loopX + loopR * 1.3, loopY - loopR) + ' ' + pt(loopX + loopR * 1.5, loopY + loopR * 0.7) + ' ' + pt(loopX + loopR * 0.3, loopY + loopR) +
-        ' C ' + pt(loopX - loopR * 0.6, loopY + loopR * 1.4) + ' ' + pt(loopX - loopR, loopY + loopR * 0.2) + ' ' + pt(loopX - loopR * 0.9, loopY - loopR * 0.2) +
-        // glide to the end spot
-        ' S ' + pt(endX - 40, endY - 60) + ' ' + pt(endX, endY);
-    } else {
-      var mBand = nR ? nR.bottom - layerRect.top + 34 : 220;
-      d =
-        'M ' + pt(W * 0.08, -24) +
-        ' C ' + pt(W * 0.02, 60) + ' ' + pt(W * 0.20, mBand - 40) + ' ' + pt(W * 0.30, mBand) +
-        ' S ' + pt(W * 0.62, mBand + 30) + ' ' + pt(W * 0.78, mBand - 6) +
-        ' S ' + pt(endX - 30, endY - 40) + ' ' + pt(endX, endY);
+    function pathHits(dAttr, boxes) {
+      var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      p.setAttribute('d', dAttr);
+      var len = 0;
+      try {
+        len = p.getTotalLength();
+      } catch (e) {
+        return true;
+      }
+      if (!len) return true;
+      var inset = 6;
+      for (var i = 0; i <= 100; i++) {
+        var pt = p.getPointAtLength((len * i) / 100);
+        for (var j = 0; j < boxes.length; j++) {
+          var b = boxes[j];
+          if (
+            pt.x >= b.left + inset &&
+            pt.x <= b.right - inset &&
+            pt.y >= b.top + inset &&
+            pt.y <= b.bottom - inset
+          ) {
+            return true;
+          }
+        }
+      }
+      return false;
     }
+
+    var obstacles = [card, copy].filter(Boolean);
+    var d;
+
+    if (card && copy) {
+      var uL = Math.min(card.left, copy.left);
+      var uR = Math.max(card.right, copy.right);
+      var uT = Math.min(card.top, copy.top);
+      var uB = Math.max(card.bottom, copy.bottom);
+
+      function buildOrbit(pad) {
+        // Outer orbit frame — control points stay OUTSIDE so Beziers don't
+        // sag into the card/copy. Soft wave amplitudes for a flowing look.
+        var L = clamp(uL - pad, 6, W * 0.2);
+        var R = clamp(uR + pad, W * 0.8, W - 6);
+        var T = clamp(uT - pad, 14, Math.max(20, uT - 8));
+        var B = clamp(uB + pad, uB + 12, H - 10);
+        // If right gutter is too tight, hug the shell edge rather than cut in.
+        if (R - uR < pad * 0.55) R = Math.min(W - 5, Math.max(R, uR + Math.min(pad, W - uR - 5)));
+        if (uL - L < pad * 0.55) L = Math.max(5, Math.min(L, uL - Math.min(pad, uL - 5)));
+
+        var w = R - L;
+        var h = B - T;
+        var kx = clamp(w * 0.08, mobile ? 10 : 18, mobile ? 22 : 40);
+        var ky = clamp(h * 0.08, mobile ? 10 : 16, mobile ? 22 : 36);
+        // Organic: slightly uneven wave on each side
+        var kTop = ky * 1.15;
+        var kRight = kx * 1.05;
+        var kBot = ky * 1.25;
+        var kLeft = kx * 0.95;
+
+        // Enter from above-left, then clockwise: top → right → bottom → left → soft close.
+        var dOut =
+          'M ' + r(L + w * 0.12) + ',-22' +
+          C(L - 8, T * 0.25, L - kx * 0.4, T - kTop * 0.3, L, T) +
+          // above both
+          C(L + w * 0.28, T - kTop, L + w * 0.55, T - kTop * 0.55, L + w * 0.72, T - kTop * 0.85) +
+          C(L + w * 0.88, T - kTop * 0.4, R - kx * 0.2, T - kTop * 0.15, R, T) +
+          // beside (right of copy)
+          C(R + kRight, T + h * 0.22, R + kRight * 1.1, T + h * 0.45, R + kRight * 0.35, T + h * 0.62) +
+          C(R + kRight * 0.7, T + h * 0.78, R + kRight * 0.25, B - kBot * 0.2, R, B) +
+          // below both
+          C(L + w * 0.78, B + kBot, L + w * 0.52, B + kBot * 0.7, L + w * 0.32, B + kBot * 0.95) +
+          C(L + w * 0.14, B + kBot * 0.45, L + kLeft * 0.2, B + kBot * 0.15, L, B) +
+          // beside (left of card)
+          C(L - kLeft, B - h * 0.22, L - kLeft * 1.05, B - h * 0.48, L - kLeft * 0.3, B - h * 0.68) +
+          C(L - kLeft * 0.65, T + h * 0.28, L - kLeft * 0.15, T + 18, L + 10, T + 6);
+
+        // Soft petal / rest just outside the top-left corner (closed-ish).
+        var endX = clamp(L + (mobile ? 22 : 36), L + 8, L + w * 0.22);
+        var endY = clamp(T + (mobile ? 10 : 16), T + 4, T + 28);
+        dOut +=
+          C(L + 28, T - kTop * 0.6, endX + 18, endY + 22, endX, endY);
+        return dOut;
+      }
+
+      // Prefer full clearance; fall back to tighter pads if a hit slips through.
+      var pads = mobile ? [PAD, 14, 10] : [PAD, 26, 18];
+      d = null;
+      for (var pi = 0; pi < pads.length; pi++) {
+        var candidate = buildOrbit(pads[pi]);
+        if (!pathHits(candidate, obstacles)) {
+          d = candidate;
+          break;
+        }
+      }
+      if (!d) d = buildOrbit(pads[pads.length - 1]);
+    } else {
+      d =
+        'M ' + r(W * 0.1) + ',-24' +
+        C(W * 0.2, 55, W * 0.45, 78, W * 0.65, 60) +
+        C(W * 0.82, 42, W * 0.9, 85, W - 36, 95);
+    }
+
     var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('d', d);
     var len = 0;
-    try { len = path.getTotalLength(); } catch (e) { return; }
+    try {
+      len = path.getTotalLength();
+    } catch (e) {
+      return;
+    }
     var scale = mobile ? 0.62 : 1;
 
     function place(p, tangent) {
       var deg = (Math.atan2(tangent.y, tangent.x) * 180) / Math.PI;
-      icon.setAttribute('transform', 'translate(' + p.x + ' ' + p.y + ') rotate(' + deg + ') scale(' + scale + ')');
+      icon.setAttribute(
+        'transform',
+        'translate(' + p.x + ' ' + p.y + ') rotate(' + deg + ') scale(' + scale + ')'
+      );
     }
     function pointAt(t) {
       var p = path.getPointAtLength(len * t);
@@ -122,13 +236,13 @@
       return { p: p, tangent: { x: p2.x - p.x, y: p2.y - p.y } };
     }
 
-    if (reduced || document.documentElement.classList.contains('noam-a11y-motion')) {
-      var end = pointAt(1);
-      place(end.p, end.tangent);
+    if (reduced) {
+      var endPt = pointAt(1);
+      place(endPt.p, endPt.tangent);
       trail.style.display = 'none';
       return;
     }
-    if (sessionStorage.getItem('plane-flown-v1')) {
+    if (sessionStorage.getItem('plane-flown-orbit-v1')) {
       var e2 = pointAt(1);
       place(e2.p, e2.tangent);
       trail.style.display = 'none';
@@ -136,24 +250,26 @@
     }
 
     trail.setAttribute('d', d);
-    var DURATION = 15000;
+    var DURATION = 16000;
     var start = null;
-    function ease(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+    function ease(t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
     function frame(ts) {
-      if (start === null) start = ts + 700; // small settle-in delay
+      if (start === null) start = ts + 700;
       var t = Math.min(1, Math.max(0, (ts - start) / DURATION));
       var s = pointAt(ease(t));
       place(s.p, s.tangent);
-      // trail reveals ahead of the plane, then fades after landing
       var reveal = Math.max(0, Math.min(1, ease(t) * 1.04));
-      trail.style.strokeDasharray = '14 12';
+      trail.style.strokeDasharray = String(len);
       trail.style.strokeDashoffset = String(len * (1 - reveal));
       if (t >= 1) {
-        try { sessionStorage.setItem('plane-flown-v1', '1'); } catch (e) {}
-        var fade = 0;
+        try {
+          sessionStorage.setItem('plane-flown-orbit-v1', '1');
+        } catch (e) {}
         var fadeStart = ts;
         (function fadeOut(now) {
-          fade = Math.min(1, (now - fadeStart) / 1600);
+          var fade = Math.min(1, (now - fadeStart) / 1600);
           trail.style.opacity = String(0.55 * (1 - fade));
           if (fade < 1) requestAnimationFrame(fadeOut);
         })(ts);

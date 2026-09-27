@@ -139,14 +139,15 @@ const placements =
     }
     .site-doodle--mobile {
       width: var(--m-size, 24px) !important;
-      max-width: 39px !important;
-      opacity: calc(var(--doodle-op, 0.7) * 0.95);
+      max-width: 32px !important;
+      opacity: calc(var(--doodle-op, 0.7) * 0.9);
     }
+    /* Tuck ~65% off-edge so motifs never kiss hero title/lede at 390 */
     .site-doodle--mobile.site-doodle--start {
-      inset-inline-start: calc(var(--m-size, 24px) * -0.5);
+      inset-inline-start: calc(var(--m-size, 24px) * -0.65);
     }
     .site-doodle--mobile.site-doodle--end {
-      inset-inline-end: calc(var(--m-size, 24px) * -0.5);
+      inset-inline-end: calc(var(--m-size, 24px) * -0.65);
     }
   }
 
