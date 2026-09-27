@@ -1840,6 +1840,118 @@ function renderAreaX4(root: LoopRoot, t: number) {
 }
 const AREA_X4_HOLD = 5.2;
 
+/* ═══════════════ L49 — cube-8: two layers of 2×2, eight cells (D = 10 s) ═══════════════ */
+
+function renderCube8(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'bot'), ph(t, 0.6, 1.2) * fade);
+  op(q(root, 'top'), ph(t, 1.6, 2.2) * fade);
+  op(q(root, 'posts'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'eight'), ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+}
+const CUBE8_HOLD = 5.2;
+
+/* ═══════════════ L50 — place-123: 100 + two 10s + three 1s (D = 10 s) ═══════════════ */
+
+function renderPlace123(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'flat'), ph(t, 0.6, 1.2) * fade);
+  op(q(root, 'rods'), ph(t, 1.4, 2.0) * fade);
+  op(q(root, 'ones'), ph(t, 2.2, 2.7) * fade);
+  op(q(root, 'tot'), ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const PLACE123_HOLD = 5.2;
+
+/* ═══════════════ L51 — jumps-4: four arcs of 3, landing on 12 (D = 10 s) ═══════════════
+   Unit is 32 px. Each jump is 96 px: 70, 166, 262, 358, 454. */
+
+function renderJumps4(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  for (let i = 0; i < 4; i++) op(q(root, `j${i}`), ph(t, 0.7 + i * 0.5, 1.1 + i * 0.5) * fade);
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const JUMPS4_HOLD = 5.0;
+
+/* ═══════════════ L52 — apples-5: 2 + 3 = 5 (D = 10 s) ═══════════════ */
+
+function renderApples5(root: LoopRoot, t: number) {
+  const p = ph(t, 1.0, 2.2) - ph(t, 8.2, 9.2);
+  shift(q(root, 'a2'), 24 * p, 0);
+  shift(q(root, 'a3'), -24 * p, 0);
+  const show = ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'five'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const APPLES5_HOLD = 5.0;
+
+/* ═══════════════ L53 — topic-card: the gray card becomes solid (D = 10 s) ═══════════════ */
+
+function renderTopicCard(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'solid'), ph(t, 1.2, 1.8) * fade);
+  op(q(root, 'ok'), ph(t, 1.8, 2.3) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+}
+const TOPIC_CARD_HOLD = 4.8;
+
+/* ═══════════════ L54 — mark-250: 250 is midway from 200 to 300 on a 0–1000 line ═══════════════
+   400 px = 1000, so 250 is x = 160, exactly between 140 and 180. */
+
+function renderMark250(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const on = ph(t, 1.2, 1.8) * fade;
+  op(q(root, 'dot'), on);
+  op(q(root, 'lab'), ph(t, 1.6, 2.1) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 2.2, 2.6) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const MARK250_HOLD = 4.8;
+
+/* ═══════════════ L55 — quad-gate: the 4-side square enters, the triangle stays out ═══════════════ */
+
+function renderQuadGate(root: LoopRoot, t: number) {
+  const p = ph(t, 1.1, 2.4) - ph(t, 8.2, 9.2);
+  shift(q(root, 'sq'), lerp(340, 100, p), lerp(70, 190, p));
+  const show = ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const QUAD_GATE_HOLD = 5.0;
+
+/* ═══════════════ L56 — two-diag: a quadrilateral gets two diagonals (D = 10 s) ═══════════════ */
+
+function renderTwoDiag(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'd1'), ph(t, 0.8, 1.4) * fade);
+  op(q(root, 'n1'), ph(t, 1.3, 1.7) * fade);
+  op(q(root, 'd2'), ph(t, 1.9, 2.5) * fade);
+  op(q(root, 'n2'), ph(t, 2.4, 2.8) * fade);
+  const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const TWO_DIAG_HOLD = 5.2;
+
 /* ═══════════════ engine ═══════════════ */
 
 const SPECS = {
@@ -1908,6 +2020,14 @@ const SPECS = {
   'half-eq': { duration: 10, hold: HALF_EQ_HOLD, render: renderHalfEq },
   'sq-stretch': { duration: 10, hold: SQ_STRETCH_HOLD, render: renderSqStretch },
   'area-x4': { duration: 10, hold: AREA_X4_HOLD, render: renderAreaX4 },
+  'cube-8': { duration: 10, hold: CUBE8_HOLD, render: renderCube8 },
+  'place-123': { duration: 10, hold: PLACE123_HOLD, render: renderPlace123 },
+  'jumps-4': { duration: 10, hold: JUMPS4_HOLD, render: renderJumps4 },
+  'apples-5': { duration: 10, hold: APPLES5_HOLD, render: renderApples5 },
+  'topic-card': { duration: 10, hold: TOPIC_CARD_HOLD, render: renderTopicCard },
+  'mark-250': { duration: 10, hold: MARK250_HOLD, render: renderMark250 },
+  'quad-gate': { duration: 10, hold: QUAD_GATE_HOLD, render: renderQuadGate },
+  'two-diag': { duration: 10, hold: TWO_DIAG_HOLD, render: renderTwoDiag },
 } as const;
 
 const MAX_LAPS = 4;
