@@ -1650,7 +1650,7 @@ const TWO_COINS_HOLD = 5.2;
 function renderMapScale(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
   const bar = q(root, 'real');
-  const grow = ph(t, 1.2, 2.6);
+  const grow = ph(t, 1.2, 2.6) * (1 - ph(t, 8.2, 9.0));
   if (bar) bar.setAttribute('width', String(r2(200 * grow)));
   op(bar, ph(t, 1.1, 1.3) * fade);
   op(q(root, 'ticks'), ph(t, 2.4, 2.8) * fade);
@@ -1715,8 +1715,8 @@ function renderCoins12(root: LoopRoot, t: number) {
 }
 const COINS12_HOLD = 5.0;
 
-/* ═══════════════ L43 — cyl-stack: 4 slabs, 5 boundary ellipses, step 28 ═══════════════
-   Boundaries at y = 250, 222, 194, 166, 138. Each gap is one unit of height. */
+/* ═══════════════ L43 — cyl-stack: 4 unit layers, height = 4 ═══════════════
+   Five boundaries at 28 px intervals enclose four equal layers. */
 
 function renderCylStack(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
@@ -1729,7 +1729,9 @@ function renderCylStack(root: LoopRoot, t: number) {
       slabs += p;
     }
   }
-  const y2 = r2(250 - 28 * slabs);
+  // Once the drawing has faded out, restore the collapsed geometry too. This
+  // makes the restart frame identical to the initial frame, not merely blank.
+  const y2 = r2(fade ? 250 - 28 * slabs : 250);
   const left = q(root, 'sideL');
   const right = q(root, 'sideR');
   if (left) left.setAttribute('y2', String(y2));
@@ -1884,12 +1886,13 @@ function renderJumps4(root: LoopRoot, t: number) {
 }
 const JUMPS4_HOLD = 5.0;
 
-/* ═══════════════ L52 — apples-5: 2 + 3 = 5 (D = 10 s) ═══════════════ */
+/* ═══════════════ L52 — apples-5: 2 + 3 = 3 + 2 = 5 (D = 10 s) ═══════════════ */
 
 function renderApples5(root: LoopRoot, t: number) {
   const p = ph(t, 1.0, 2.2) - ph(t, 8.2, 9.2);
-  shift(q(root, 'a2'), 24 * p, 0);
-  shift(q(root, 'a3'), -24 * p, 0);
+  // The two groups swap places: order changes, but the total does not.
+  shift(q(root, 'a2'), 204 * p, 0);
+  shift(q(root, 'a3'), -206 * p, 0);
   const show = ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6));
   op(q(root, 'five'), show);
   const fxs = qa(root, '[data-fx]');
@@ -1898,7 +1901,7 @@ function renderApples5(root: LoopRoot, t: number) {
 }
 const APPLES5_HOLD = 5.0;
 
-/* ═══════════════ L53 — topic-card: the gray card becomes solid (D = 10 s) ═══════════════ */
+/* ═══════════════ L53 — topic-card: complete 2, 4, 6, 8 (D = 10 s) ═══════════════ */
 
 function renderTopicCard(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
