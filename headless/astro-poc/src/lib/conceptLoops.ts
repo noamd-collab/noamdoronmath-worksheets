@@ -1015,8 +1015,8 @@ const ADD_WITHIN_HOLD = 5.2;
 function renderSimilar(root: LoopRoot, t: number) {
   const grow = ph(t, 1.2, 2.6) - ph(t, 8.2, 9.4);
   const big = q(root, 'big');
-  const bx = lerp(240, 400, grow);
-  const cy = lerp(170, 90, grow);
+  const bx = lerp(240, 320, grow);
+  const cy = lerp(190, 130, grow);
   if (big) big.setAttribute('points', `160,250 ${r2(bx)},250 160,${r2(cy)}`);
   const vis = ph(t, 0.8, 1.2) * (1 - ph(t, 9.2, 9.7));
   op(big, vis);
@@ -1025,8 +1025,16 @@ function renderSimilar(root: LoopRoot, t: number) {
   op(q(root, 'arc-big'), ph(t, 2.4, 2.9) * (1 - ph(t, 8.4, 9.0)));
   const leg = q(root, 'lbl-leg');
   const ht = q(root, 'lbl-ht');
-  if (leg) leg.textContent = grow > 0.85 ? '8' : '4';
-  if (ht) ht.textContent = grow > 0.85 ? '6' : '3';
+  if (leg) {
+    leg.textContent = grow > 0.85 ? '8' : '4';
+    leg.setAttribute('x', String(r2((160 + bx) / 2)));
+    leg.setAttribute('y', '268');
+  }
+  if (ht) {
+    ht.textContent = grow > 0.85 ? '6' : '3';
+    ht.setAttribute('x', '142');
+    ht.setAttribute('y', String(r2((250 + cy) / 2 + 5)));
+  }
   op(q(root, 'lbl-same'), ph(t, 3.0, 3.5) * (1 - ph(t, 8.0, 8.6)));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
