@@ -1911,6 +1911,12 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <text class="cl-t cl-num" data-el="n1" x="360" y="237" style="opacity:0">2</text>
           <text class="cl-t cl-num" data-el="n2" x="360" y="209" style="opacity:0">3</text>
           <text class="cl-t cl-num" data-el="n3" x="360" y="181" style="opacity:0">4</text>
+          <g data-el="base" style="opacity:0">
+            <line class="cl-stroke-b" x1="270" y1="260" x2="340" y2="260" />
+            <text class="cl-t cl-num" x="346" y="254">r</text>
+            <text class="cl-t cl-num" x="270" y="300" text-anchor="middle">B = πr²</text>
+          </g>
+          <text class="cl-t cl-num" data-el="hlbl" x="184" y="222" text-anchor="end" style="opacity:0">h = 4</text>
         </svg>
       )
     }
@@ -1938,14 +1944,20 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <text class="cl-t cl-num" x="90" y="196" text-anchor="middle">0</text>
           <text class="cl-t cl-num" x="450" y="196" text-anchor="middle">1</text>
           <g data-el="quarters" style="opacity:0">
-            <line class="cl-line-thin" x1="180" y1="162" x2="180" y2="178" />
-            <line class="cl-line-thin" x1="360" y1="162" x2="360" y2="178" />
+            <line class="cl-stroke-a" x1="180" y1="150" x2="180" y2="190" />
+            <line class="cl-stroke-a" x1="360" y1="150" x2="360" y2="190" />
+            <text class="cl-t cl-num cl-small" x="180" y="142" text-anchor="middle">1/4</text>
+            <text class="cl-t cl-num cl-small" x="360" y="142" text-anchor="middle">3/4</text>
           </g>
           <g data-el="sixths" style="opacity:0">
-            <line class="cl-line-thin" x1="150" y1="164" x2="150" y2="176" />
-            <line class="cl-line-thin" x1="210" y1="164" x2="210" y2="176" />
-            <line class="cl-line-thin" x1="330" y1="164" x2="330" y2="176" />
-            <line class="cl-line-thin" x1="390" y1="164" x2="390" y2="176" />
+            <line class="cl-line" x1="150" y1="170" x2="150" y2="186" />
+            <line class="cl-line" x1="210" y1="170" x2="210" y2="186" />
+            <line class="cl-line" x1="330" y1="170" x2="330" y2="186" />
+            <line class="cl-line" x1="390" y1="170" x2="390" y2="186" />
+            <text class="cl-t cl-num cl-small" x="150" y="204" text-anchor="middle">1/6</text>
+            <text class="cl-t cl-num cl-small" x="210" y="204" text-anchor="middle">2/6</text>
+            <text class="cl-t cl-num cl-small" x="330" y="204" text-anchor="middle">4/6</text>
+            <text class="cl-t cl-num cl-small" x="390" y="204" text-anchor="middle">5/6</text>
           </g>
           <line class="cl-stroke-a" data-el="guide" x1="270" y1="118" x2="270" y2="248" style="opacity:0" />
           <circle cx="270" cy="170" r="6" fill="#1e3a5f" />
@@ -1961,8 +1973,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <polygon class="cl-line" points="240,131.4 160,270 320,270" />
           <line class="cl-stroke-a" data-el="alt" x1="240" y1="131.4" x2="240" y2="270" style="opacity:0" />
           <path class="cl-line" data-el="sq" d="M240 254 L256 254 L256 270" style="opacity:0" />
-          <text class="cl-t cl-num cl-small" data-el="a30" x="252" y="168" style="opacity:0">30°</text>
-          <text class="cl-t cl-num cl-small" data-el="a60" x="292" y="256" style="opacity:0">60°</text>
+          <path class="cl-stroke-a" data-el="a30" d="M240 157.4 A26 26 0 0 1 253 153.9" style="fill:none;opacity:0" />
+          <text class="cl-t cl-num cl-small" data-el="a30t" x="258" y="172" style="opacity:0">30°</text>
+          <path class="cl-stroke-b" data-el="a60" d="M298 270 A22 22 0 0 1 309 251" style="fill:none;opacity:0" />
+          <text class="cl-t cl-num cl-small" data-el="a60t" x="286" y="258" style="opacity:0">60°</text>
           <g data-el="dims" style="opacity:0">
             <line class="cl-line-thin" x1="240" y1="270" x2="240" y2="286" />
             <line class="cl-line-thin" x1="320" y1="270" x2="320" y2="286" />
@@ -2564,8 +2578,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
     {
       variant === 'cyl-stack' && (
-        <p class="concept-loop__formula">
-          <span data-fx="0">גובה = <span class="cl-num">4</span> שכבות</span>
+        <p class="concept-loop__formula cl-num" dir="ltr">
+          <span data-fx="0">V = B·h = 4πr²</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2596,8 +2610,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
     {
       variant === 'sq-stretch' && (
-        <p class="concept-loop__formula">
-          <span data-fx="0"><span class="cl-num">4</span> צלעות</span>
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0"><span class="cl-num">4</span> <span dir="rtl">צלעות</span></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )

@@ -1735,6 +1735,8 @@ function renderCylStack(root: LoopRoot, t: number) {
   op(left, fade);
   op(right, fade);
   const show = ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'base'), show);
+  op(q(root, 'hlbl'), show);
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
   op(fxs[1], ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6)));
@@ -1783,7 +1785,9 @@ function renderHalfEq(root: LoopRoot, t: number) {
   op(q(root, 'alt'), cut);
   op(q(root, 'sq'), ph(t, 1.6, 2.0) * fade);
   op(q(root, 'a30'), ph(t, 1.8, 2.2) * fade);
+  op(q(root, 'a30t'), ph(t, 1.8, 2.2) * fade);
   op(q(root, 'a60'), ph(t, 2.0, 2.4) * fade);
+  op(q(root, 'a60t'), ph(t, 2.0, 2.4) * fade);
   op(q(root, 'dims'), ph(t, 2.3, 2.8) * fade);
   const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
