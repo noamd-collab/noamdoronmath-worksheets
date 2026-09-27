@@ -1,6 +1,6 @@
 ---
 /**
- * Exact brand lockup — proportions preserved; presentation cleaned for premium chrome.
+ * Brand lockup — design handoff: ~68px logo height, transform-origin for wiggle.
  */
 interface Props {
   href?: string;
@@ -8,13 +8,18 @@ interface Props {
 }
 const { href = '/', compact = false } = Astro.props;
 ---
-<a class:list={['site-brand', compact && 'site-brand--compact']} href={href} aria-label="נועם דורון מתמטיקה — דף הבית">
+<a
+  class:list={['site-brand', compact && 'site-brand--compact']}
+  href={href}
+  aria-label="נועם דורון מתמטיקה — דף הבית"
+  data-logo-brand
+>
   <img
     class="site-brand__logo"
     src="/brand/noam-doron-math-logo-cropped.png"
     alt="נועם דורון מתמטיקה"
-    width="573"
-    height="243"
+    width="160"
+    height="68"
     decoding="async"
   />
 </a>
@@ -24,31 +29,25 @@ const { href = '/', compact = false } = Astro.props;
     display: inline-flex;
     align-items: center;
     text-decoration: none;
-    width: 232px;
-    max-width: 100%;
     background: transparent;
     border: 0;
     border-radius: 0;
     box-shadow: none;
   }
-  .site-brand--compact {
-    width: 168px;
-  }
   .site-brand__logo {
     display: block;
-    width: 232px;
-    max-width: 100%;
-    height: auto;
-    aspect-ratio: 573 / 243;
+    height: 68px;
+    width: auto;
+    max-width: min(200px, 42vw);
     background: transparent;
+    transform-origin: 30% 80%;
   }
   .site-brand--compact .site-brand__logo {
-    width: 168px;
+    height: 52px;
   }
   @media (max-width: 640px) {
-    .site-brand,
     .site-brand__logo {
-      width: 196px;
+      height: 56px;
     }
   }
 </style>

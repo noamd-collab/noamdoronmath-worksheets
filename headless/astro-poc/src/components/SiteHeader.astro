@@ -21,7 +21,6 @@ function navProps(key: ActiveNavKey) {
   };
 }
 ---
-<div class="basad" lang="he" data-basad>בס״ד</div>
 <header class="site-header">
   <div class="site-header__inner">
     <div class="site-header__brand">
@@ -38,16 +37,24 @@ function navProps(key: ActiveNavKey) {
       <span class="nav-toggle__label">תפריט</span>
     </button>
     <nav class="site-nav" id="primary-nav" aria-label="ניווט ראשי" data-nav-panel>
-      <a {...navProps('home')} href="/">בית</a>
-      <a {...navProps('about')} href="/aboutus">אודותינו</a>
-      <a {...navProps('worksheets')} href="/worksheets">דפי עבודה</a>
-      <a {...navProps('blog')} href="/blog">בלוג</a>
-      <a {...navProps('tools')} href="/math-tools">תוספים</a>
-      <a {...navProps('highschool')} href="/high-school-math">
+      <a {...navProps('home')} href="/" data-peek="home">בית</a>
+      <a {...navProps('about')} href="/aboutus" data-peek="about">אודותינו</a>
+      <a {...navProps('worksheets')} href="/worksheets" data-peek="ws">דפי עבודה</a>
+      <a {...navProps('blog')} href="/blog" data-peek="blog">בלוג</a>
+      <a {...navProps('tools')} href="/math-tools" data-peek="tools">תוספים</a>
+      <a {...navProps('highschool')} href="/high-school-math" data-peek="hs">
         מתמטיקה לתיכון (חיצוני)
       </a>
-      <a {...navProps('learning')} href="/learning.html">הלמידה שלי</a>
     </nav>
+    <a
+      class:list={['site-header__learn', active === 'learning' && 'is-active']}
+      href="/learning.html"
+      data-peek="learn"
+      {...(active === 'learning' ? { 'aria-current': 'page' as const } : {})}
+    >
+      הלמידה שלי
+    </a>
+    <span class="basad" lang="he" data-basad>בס״ד</span>
   </div>
 </header>
 

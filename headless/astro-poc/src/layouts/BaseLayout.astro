@@ -59,9 +59,12 @@ const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap"
       rel="stylesheet"
     />
+    <script is:inline>
+      document.documentElement.classList.add('js-anim');
+    </script>
   </head>
   <body>
     <a class="skip-link" href={skipHref}>דילוג לתוכן</a>
@@ -69,9 +72,8 @@ const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
     <SiteDoodles />
     <slot />
     <SiteFooter footer={footer} />
-    {/* POC motion system (branch poc-animations-fix): scroll reveal +
-        hover re-draw; honors prefers-reduced-motion, the accessibility
-        menu's noam-a11y-motion class, and fine-pointer devices. */}
+    {/* POC motion system: scroll reveal + logo wiggle; honors
+        prefers-reduced-motion and html.noam-a11y-motion. */}
     <PocMotion />
     <!-- Production entry-gate copy (ndGate); privacy → combined a11y page. No invented legal text. -->
     <script src="/nd-site-gate.js" defer></script>

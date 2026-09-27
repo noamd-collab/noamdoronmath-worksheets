@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroIllustrations from '../components/HeroIllustrations.astro';
 import PlaneFlight from '../components/PlaneFlight.astro';
 import HomeMarginArt from '../components/HomeMarginArt.astro';
 import ConceptLoop from '../components/ConceptLoop.astro';
@@ -8,6 +7,24 @@ import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 
 const home = loadHomePage();
 const homeJsonLd = homePageJsonLd();
+
+const gradeDoodles: Record<number, string> = {
+  1: 'paper-boat',
+  2: 'snail',
+  3: 'curious-cat',
+  4: 'kite',
+  5: 'geometry-fish',
+  6: 'cube-plant',
+};
+
+const valueArt: Record<string, { src: string; bg: string }> = {
+  'חטיבת ביניים': { src: '/brand/doodles/sleepy-owl.webp', bg: '#f4f7fb' },
+  'יסודי ומוכנות': { src: '/brand/doodles/cube-plant.webp', bg: '#fdf6e8' },
+  'אתגר והעשרה': { src: '/brand/doodles/telescope.webp', bg: '#fcefeb' },
+};
+
+const elementary = home.grades.filter((g) => g.grade <= 6);
+const middle = home.grades.filter((g) => g.grade >= 7);
 ---
 <BaseLayout
   title={home.title}
@@ -23,13 +40,43 @@ const homeJsonLd = homePageJsonLd();
   <HomeMarginArt />
   <main class="home-shell" id="home-main" data-family="home" data-home-page>
     <PlaneFlight />
-    <aside class="home-notice" role="status" data-home-dev-notice>
+
+    {/* Dev notice: keep data-home-dev-notice for parity tests; dialog UX behind flag. */}
+    <aside
+      class="home-notice"
+      role="status"
+      data-home-dev-notice
+      data-dev-notice-flag="1"
+    >
       <strong>{home.devNotice.title}</strong>
       <p>{home.devNotice.body}</p>
     </aside>
 
     <section class="home-hero" aria-labelledby="home-title">
-      <HeroIllustrations />
+      <div class="home-hero__demo" data-pop="0">
+        <div class="home-hero__panel home-hero__panel--elem">
+          <ConceptLoop variant="triangle" />
+        </div>
+        <img
+          class="home-hero__doodle home-hero__doodle--kite"
+          src="/brand/doodles/kite.webp"
+          alt=""
+          width="120"
+          height="120"
+          decoding="async"
+          aria-hidden="true"
+        />
+        <img
+          class="home-hero__doodle home-hero__doodle--snail"
+          src="/brand/doodles/snail.webp"
+          alt=""
+          width="110"
+          height="110"
+          decoding="async"
+          aria-hidden="true"
+          data-doodle="snail"
+        />
+      </div>
       <div class="home-hero__copy">
         <p class="home-hero__eyebrow">{home.hero.eyebrow}</p>
         <h1 class="home-hero__title" id="home-title">
@@ -39,29 +86,60 @@ const homeJsonLd = homePageJsonLd();
         <p class="home-hero__lede">{home.hero.lede}</p>
         <div class="home-hero__cta">
           <a
-            class="cta cta--mid home-search-cta"
+            class="cta cta--primary home-search-cta"
             href={home.hero.searchCta.href}
             data-home-search-cta
           >
             {home.hero.searchCta.label}
           </a>
-          <a class="cta cta--elem" href="/worksheets?grade=1">יסודי א׳–ו׳</a>
-          <a class="cta cta--mid" href="/worksheets?grade=7">חטיבה ז׳–ט׳</a>
+          <a class="cta cta--secondary" href="/worksheets?grade=1">יסודי א׳–ו׳</a>
+          <a class="cta cta--secondary" href="/worksheets?grade=7">חטיבה ז׳–ט׳</a>
         </div>
       </div>
-      {/* K3: Brilliant-style film loop — text on the right, card on the left
-          (grid columns in RTL); on mobile it stacks below the copy. */}
-      <ConceptLoop variant="triangle" />
     </section>
 
     <section class="home-grades" aria-labelledby="home-grades-title" data-home-grades>
       <h2 class="home-section__title" id="home-grades-title">בחרו כיתה והתחילו לתרגל</h2>
       <p class="home-section__lede">דפי עבודה בחינם לכיתות א׳–ט׳</p>
-      <ul class="home-grades__grid">
+      <img
+        class="home-grades__cat"
+        src="/brand/doodles/curious-cat.webp"
+        alt=""
+        width="130"
+        height="130"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+      <ul class="home-grades__grid home-grades__grid--elem">
         {
-          home.grades.map((g) => (
+          elementary.map((g) => (
             <li>
-              <a class="home-grade" href={g.href} data-home-grade={g.grade}>
+              <a class="home-grade home-grade--elem" href={g.href} data-home-grade={g.grade}>
+                <span class="home-grade__kicker">כיתה</span>
+                <span class="home-grade__label">{g.label.replace(/^כיתה\s*/, '')}</span>
+                {gradeDoodles[g.grade] && (
+                  <img
+                    class="home-grade__doodle"
+                    src={`/brand/doodles/${gradeDoodles[g.grade]}.webp`}
+                    alt=""
+                    width="58"
+                    height="58"
+                    loading="lazy"
+                    decoding="async"
+                    aria-hidden="true"
+                  />
+                )}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="home-grades__grid home-grades__grid--mid">
+        {
+          middle.map((g) => (
+            <li>
+              <a class="home-grade home-grade--mid" href={g.href} data-home-grade={g.grade}>
                 <span class="home-grade__label">{g.label}</span>
                 {g.ai && g.aiLabel && (
                   <span class="home-grade__ai">{g.aiLabel}</span>
@@ -73,62 +151,80 @@ const homeJsonLd = homePageJsonLd();
       </ul>
     </section>
 
-    <section class="home-learning" aria-labelledby="home-learning-title" data-home-learning>
-      <h2 class="home-section__title" id="home-learning-title">הלמידה שלי</h2>
-      <div class="home-learning__actions">
-        <a class="cta cta--mid" href={home.learning.googleHref} data-home-google>
-          {home.learning.googleLabel}
-        </a>
-        <a class="cta cta--elem" href={home.learning.learningHref} data-home-learning-link>
-          {home.learning.learningLabel}
-        </a>
-      </div>
-      <p class="home-learning__note">{home.learning.noteLocal}</p>
-      <p class="home-learning__note">{home.learning.noteGoogle}</p>
-    </section>
-
     <section class="home-values" aria-labelledby="home-values-title" data-home-values>
       <h2 class="home-section__title" id="home-values-title">{home.valueSections.heading}</h2>
       <ul class="home-values__grid">
         {
-          home.valueSections.items.map((item) => (
-            <li>
-              <a class="home-value" href={item.href}>
-                <strong>{item.title}</strong>
-                <span>{item.body}</span>
-              </a>
-            </li>
-          ))
+          home.valueSections.items.map((item) => {
+            const art = valueArt[item.title];
+            return (
+              <li>
+                <a class="home-value" href={item.href} style={art ? `--value-bg:${art.bg}` : undefined}>
+                  {art && (
+                    <img
+                      class="home-value__art"
+                      src={art.src}
+                      alt=""
+                      width="200"
+                      height="200"
+                      loading="lazy"
+                      decoding="async"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <strong>{item.title}</strong>
+                  <span>{item.body}</span>
+                </a>
+              </li>
+            );
+          })
         }
       </ul>
+      <p class="home-values__closer" aria-hidden="false">{home.whatsapp.kicker}</p>
     </section>
 
-    <section class="home-whatsapp" aria-labelledby="home-whatsapp-title" data-home-whatsapp>
-      <p class="home-whatsapp__kicker">{home.whatsapp.kicker}</p>
-      <h2 class="home-section__title" id="home-whatsapp-title">{home.whatsapp.heading}</h2>
-      <p>{home.whatsapp.body}</p>
-      <div class="home-whatsapp__row">
-        <a
-          class="cta cta--mid"
-          href={home.whatsapp.ctaHref}
-          rel="noopener noreferrer"
-          data-home-whatsapp-cta
-        >
-          {home.whatsapp.ctaLabel}
-        </a>
-        <figure class="home-whatsapp__qr">
-          <img
-            src={home.whatsapp.qrSrc}
-            alt={home.whatsapp.qrAlt}
-            width="160"
-            height="160"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption>{home.whatsapp.qrCaption}</figcaption>
-        </figure>
+    <section class="home-duo" aria-label="הלמידה שלי ווואטסאפ">
+      <div class="home-learning" aria-labelledby="home-learning-title" data-home-learning>
+        <h2 class="home-section__title" id="home-learning-title">הלמידה שלי</h2>
+        <div class="home-learning__actions">
+          <a class="cta cta--secondary" href={home.learning.googleHref} data-home-google data-peek="google">
+            {home.learning.googleLabel}
+          </a>
+          <a class="cta cta--primary" href={home.learning.learningHref} data-home-learning-link data-peek="learn">
+            {home.learning.learningLabel}
+          </a>
+        </div>
+        <p class="home-learning__note">{home.learning.noteLocal}</p>
+        <p class="home-learning__note">{home.learning.noteGoogle}</p>
       </div>
-      <p class="home-whatsapp__note">{home.whatsapp.note}</p>
+
+      <section class="home-whatsapp" aria-labelledby="home-whatsapp-title" data-home-whatsapp>
+        <h2 class="home-section__title" id="home-whatsapp-title">{home.whatsapp.heading}</h2>
+        <p>{home.whatsapp.body}</p>
+        <div class="home-whatsapp__row">
+          <a
+            class="cta cta--primary"
+            href={home.whatsapp.ctaHref}
+            rel="noopener noreferrer"
+            data-home-whatsapp-cta
+            data-peek="whatsapp"
+          >
+            {home.whatsapp.ctaLabel}
+          </a>
+          <figure class="home-whatsapp__qr">
+            <img
+              src={home.whatsapp.qrSrc}
+              alt={home.whatsapp.qrAlt}
+              width="120"
+              height="120"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>{home.whatsapp.qrCaption}</figcaption>
+          </figure>
+        </div>
+        <p class="home-whatsapp__note">{home.whatsapp.note}</p>
+      </section>
     </section>
   </main>
 </BaseLayout>

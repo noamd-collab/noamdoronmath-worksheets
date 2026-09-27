@@ -5,6 +5,15 @@ interface Props {
   footer: HomePageContent['footer'];
 }
 const { footer } = Astro.props;
+
+/** Only verified social URL from site content (high-school page). Others left out — no invented links. */
+const social = [
+  {
+    label: 'יוטיוב',
+    href: 'https://www.youtube.com/channel/UCDwMsN0spl2JqmYtdgJzkIQ',
+    icon: 'yt',
+  },
+] as const;
 ---
 <footer class="site-footer" data-home-footer>
   <div class="site-footer__inner">
@@ -17,6 +26,24 @@ const { footer } = Astro.props;
       <h2 class="site-footer__heading">{footer.contactHeading}</h2>
       <p>{footer.contactBody}</p>
       <a class="site-footer__email" href={`mailto:${footer.email}`}>{footer.email}</a>
+      <ul class="site-footer__social" aria-label="רשתות חברתיות">
+        {
+          social.map((s) => (
+            <li>
+              <a
+                class="site-footer__social-btn"
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                data-peek={s.icon === 'yt' ? 'youtube' : undefined}
+              >
+                <span aria-hidden="true">{s.icon === 'yt' ? '▶' : s.label[0]}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
 
     <nav class="site-footer__quick" aria-label={footer.quickNavHeading}>

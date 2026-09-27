@@ -1,0 +1,23 @@
+---
+description: כללי עיצוב והגנה לאתר נועם דורון מתמטיקה
+alwaysApply: true
+---
+
+# הגנות (תמיד)
+- אסור לשנות: את נתוני קטלוג דפי העבודה, את מזהי ה-PDF, את SEARCH_TERMS, את "הלמידה שלי", את נועם AI ואת קישורי ה-PDF במדיה של Wix.
+- אסור לשנות: את `site` ב-astro.config, את ה-`<head>` (title, description, canonical, og, JSON-LD), את robots, את ה-sitemap ואת ההפניות.
+- אסור להריץ `wix release`, לעשות push ל-main או לשנות הגדרות ב-Wix Dashboard בלי אישור מפורש.
+- כל ניווט הוא `<a href>` אמיתי לנתיב הקיים. לא `href="#"` ולא ניווט ב-JS בלבד.
+- תוכן גלוי ב-HTML של השרת. אנימציות מסתירות רק תחת `html.js-anim`.
+- `design_handoff_noam_site/` הוא מפרט. לא מייבאים ממנו קוד ולא מעתיקים את support.js.
+
+# עיצוב
+- RTL, Heebo (גוף), Secular One (כותרות), Amatic SC (כתב יד).
+- ink `#22305a`, paper `#fbfaf5`, teal `#2a7c7a`, coral `#e5735c`, yellow `#e6a534`. ירוק `#2e9d57` רק ל"נכון".
+- רדיוסים "מצוירים ביד" (למשל `18px 6px 20px 8px / 8px 20px 6px 18px`), וצלליות היסט מלא בלי blur.
+- נוסחאות: `dir="ltr"` + `unicode-bidi:isolate`.
+
+# תנועה
+- Web Animations API או CSS, על transform ו-opacity בלבד.
+- מצב גלובלי: שובב / רגוע (idle ×1.8) / כבוי (מצב סופי, בלי לולאות). prefers-reduced-motion → כבוי.
+- עוצרים כשהלשונית מוסתרת או כשהרכיב מחוץ למסך. במכשירי מגע אין הצצות hover.
