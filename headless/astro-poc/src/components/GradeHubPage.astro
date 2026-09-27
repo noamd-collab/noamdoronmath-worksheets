@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
 import MathWidget from './MathWidget.astro';
 import type { MathWidgetVariant } from './MathWidget.astro';
+import GrokLoopPanel from './GrokLoopPanel.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import {
   loadGradeHub,
@@ -11,6 +12,7 @@ import {
 } from '../lib/gradeHubs';
 import { localizeSiteHref } from '../lib/sitePages';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import { grokLoopsForGrade, visibleGrokLoops } from '../lib/grokLoops';
 
 interface Props {
   grade: GradeHubGrade;
@@ -73,6 +75,7 @@ const mathVariant: MathWidgetVariant | null =
                     ? 'fractions'
                     : null;
 const mathFamily = grade <= 6 ? 'elem' : 'mid';
+const grokGradeLoops = visibleGrokLoops(grokLoopsForGrade(grade));
 ---
 <BaseLayout
   title={hub.title}
@@ -127,11 +130,57 @@ const mathFamily = grade <= 6 ? 'elem' : 'mid';
       </div>
       {
         mathVariant && (
-          <MathWidget variant={mathVariant} mode="loop" family={mathFamily} />
+          <div class="grade-loop-rotator" data-grade-loop-rotator>
+            <div class="grade-loop-rotator__stage">
+              <div data-rot-panel data-rot-i="0" data-rot-active>
+                <MathWidget variant={mathVariant} mode="loop" family={mathFamily} />
+              </div>
+              {
+                grokGradeLoops.map((entry, i) => (
+                  <div data-rot-panel data-rot-i={String(i + 1)} hidden>
+                    <GrokLoopPanel
+                      variant={entry.variant}
+                      topic={entry.topic}
+                      loopId={entry.id}
+                    />
+                  </div>
+                ))
+              }
+            </div>
+            {
+              grokGradeLoops.length > 0 && (
+                <button type="button" class="grade-loop-rotator__btn" data-rot-next>
+                  ↻ עוד המחשה
+                </button>
+              )
+            }
+          </div>
         )
       }
     </header>
     <LineArtDoodles variant="hub" />
+
+    {
+      grokGradeLoops.length > 0 && (
+        <section class="grade-grok-grid" aria-labelledby="grade-grok-grid-title">
+          <h2 id="grade-grok-grid-title" class="grade-hub__section-title">
+            המחשות לפי נושא
+          </h2>
+          <div class="grade-grok-grid__list">
+            {
+              grokGradeLoops.map((entry) => (
+                <GrokLoopPanel
+                  variant={entry.variant}
+                  topic={entry.topic}
+                  loopId={entry.id}
+                  compact
+                />
+              ))
+            }
+          </div>
+        </section>
+      )
+    }
 
     {
       grade1Groups.length > 0 && (
@@ -246,3 +295,55 @@ const mathFamily = grade <= 6 ? 'elem' : 'mid';
     </p>
   </main>
 </BaseLayout>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-grade-loop-rotator]').forEach((root) => {
+      const panels = [...root.querySelectorAll('[data-rot-panel]')] as HTMLElement[];
+      const btn = root.querySelector('[data-rot-next]') as HTMLButtonElement | null;
+      if (!btn || panels.length < 2) return;
+      let i = 0;
+      btn.addEventListener('click', () => {
+        panels[i].hidden = true;
+        panels[i].removeAttribute('data-rot-active');
+        i = (i + 1) % panels.length;
+        panels[i].hidden = false;
+        panels[i].setAttribute('data-rot-active', '');
+        btn.textContent = i === 0 ? '↻ עוד המחשה' : '↻ עוד המחשה';
+      });
+    });
+  })();
+</script>
+
+<style>
+  .grade-loop-rotator {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    min-width: min(100%, 340px);
+  }
+  .grade-loop-rotator__btn {
+    align-self: center;
+    font-family: var(--font-body, Heebo, sans-serif);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #22305a;
+    background: #fff;
+    border: 2px solid #e3e6ee;
+    border-radius: 12px 6px 14px 8px / 8px 14px 6px 12px;
+    padding: 8px 14px;
+    cursor: pointer;
+  }
+  .grade-loop-rotator__btn:hover {
+    border-color: #cfe6e4;
+  }
+  .grade-grok-grid {
+    margin-block: 28px 12px;
+  }
+  .grade-grok-grid__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 16px;
+  }
+</style>

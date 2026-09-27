@@ -3693,6 +3693,7 @@ html.noam-a11y-motion .hero-draw {
 .concept-loop .cl-fill-d { fill: #e5e7eb; }
 .concept-loop .cl-stroke-a { stroke: var(--cobalt); stroke-width: 2.5; }
 .concept-loop .cl-stroke-b { stroke: #7c3aed; stroke-width: 2.5; }
+.concept-loop .cl-stroke-c { stroke: #ea580c; stroke-width: 2.5; }
 
 .concept-loop .cl-t {
   font-family: 'Assistant', Arial, sans-serif;
@@ -3787,7 +3788,8 @@ html.noam-a11y-motion .hero-draw {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1.5px solid rgba(26, 43, 74, 0.18);
+  /* No visible ring at rest / on pointer — keep transparent border for hit size */
+  border: 1.5px solid transparent;
   background: #fff;
   cursor: pointer;
 }
@@ -3797,7 +3799,15 @@ html.noam-a11y-motion .hero-draw {
   fill: var(--navy);
 }
 .concept-loop__toggle:hover {
-  border-color: var(--cobalt);
+  /* Affordance without a circle/ring (was border-color: cobalt) */
+  background: var(--tint, #f0f5fb);
+}
+.concept-loop__toggle:focus {
+  outline: none;
+}
+.concept-loop__toggle:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
 }
 
 /* ——— placement: card beside the text (RTL: text right, card left) ——— */
@@ -4032,7 +4042,457 @@ html.noam-a11y-motion .tri-explorer .te-handle { transition: none; }
 /* ——— KIMI-B1-FIXES ——— */
 /* every formula chunk is bidi-isolated LTR (the □/≈/− chars are neutral and
    would follow the page's RTL direction without an explicit override) */
-.concept-loop__formula [data-fx],
+.concept-loop__formula[dir='ltr'] [data-fx],
+.concept-loop__formula bdi[dir='ltr'],
+.concept-loop__top[dir='ltr'] {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* numberline: the top question swaps per phase without layout shift */
+.concept-loop__top.cl-topswap { position: relative; }
+.cl-topsz { visibility: hidden; }
+.cl-tops { position: absolute; inset: 0; }
+
+/* ——— plane flight layer: content always paints above it ——— */
+.home-hero__copy,
+.home-notice,
+.home-grades,
+.home-learning,
+.home-values,
+.home-whatsapp,
+.home-foot,
+.home-section__title,
+.home-section__lede {
+  position: relative;
+  z-index: 1;
+}
+
+/* positioned containing block for the margin-art layer */
+body {
+  position: relative;
+}
+
+/* ——— mobile nav toggle (visible <768px, in-flow — covers nothing) ——— */
+.nav-toggle {
+  display: none;
+}
+@keyframes nav-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 767px) {
+  .site-header__inner {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    position: relative;
+    gap: 8px 12px;
+  }
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 14px;
+    background: var(--paper);
+    border: 2px solid var(--navy);
+    border-radius: 12px;
+    font-family: 'Heebo', inherit;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--navy);
+    cursor: pointer;
+  }
+  .nav-toggle:focus-visible {
+    outline: 3px solid var(--cobalt);
+    outline-offset: 2px;
+  }
+  .nav-toggle[aria-expanded='true'] {
+    background: var(--tint);
+    border-color: var(--cobalt-dark);
+  }
+  /* Morph the 3 bars into a clear close X while the menu is open */
+  .nav-toggle[aria-expanded='true'] .nav-toggle__bars::before,
+  .nav-toggle[aria-expanded='true'] .nav-toggle__bars::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: auto;
+    height: 2.5px;
+    margin-top: -1.25px;
+    background: currentColor;
+    border-radius: 2px;
+  }
+  .nav-toggle[aria-expanded='true'] .nav-toggle__bars::before {
+    transform: rotate(45deg);
+  }
+  .nav-toggle[aria-expanded='true'] .nav-toggle__bars::after {
+    transform: rotate(-45deg);
+  }
+  .nav-toggle__bars {
+    position: relative;
+    width: 20px;
+    height: 14px;
+    flex: 0 0 auto;
+  }
+  .nav-toggle__bars::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      currentColor 0 2.5px,
+      transparent 2.5px 5.75px,
+      currentColor 5.75px 8.25px,
+      transparent 8.25px 11.5px,
+      currentColor 11.5px 14px
+    );
+  }
+  .site-nav {
+    display: none;
+    /* Overlay drawer: floats above the page, never pushes content down. */
+    position: absolute;
+    top: 100%;
+    inset-inline: 0;
+    z-index: 60;
+    margin-top: 6px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    background: var(--paper);
+    border: 1.5px solid rgba(26, 43, 74, 0.12);
+    border-radius: 14px;
+    padding: 8px;
+    box-shadow: 0 14px 34px rgba(26, 43, 74, 0.18);
+  }
+  .site-nav[data-open] {
+    display: flex;
+    animation: nav-panel-in 0.22s ease;
+  }
+  .site-nav__link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(26, 43, 74, 0.08);
+    border-radius: 8px;
+  }
+  .site-nav__link:last-child {
+    border-bottom: none;
+  }
+  /* Active page: tinted background + bold, not a focus-ring look */
+  .site-nav__link.is-active {
+    background: var(--tint);
+    border-bottom-color: rgba(26, 43, 74, 0.08);
+    color: var(--cobalt-dark);
+    font-weight: 800;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-nav[data-open] {
+    animation: none;
+  }
+}
+
+/* Contact honeypot — visually hidden, not display:none (some bots skip display:none). */
+.site-page__contact-hp{
+  position:absolute !important;
+  width:1px;height:1px;
+  padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);
+  white-space:nowrap;border:0;
+}
+
+/* ——— KIMI-FAMILIES-B2: loops F07–F14 ——— */
+
+/* Hebrew formula bars (sentence, not math) stay RTL despite the LTR default */
+.concept-loop__formula[dir='rtl'] { direction: rtl; }
+
+/* F07 ruler */
+.concept-loop .cl-rail2 { stroke: var(--navy); stroke-width: 1.5; }
+
+/* F08/F09 shared dot styles reuse cl-dot / cl-pt */
+
+/* F10 data */
+.concept-loop .cl-tally { stroke: var(--navy); stroke-width: 2; stroke-linecap: round; }
+.concept-loop .cl-dbar { stroke-width: 1.5; }
+.concept-loop .cl-slice { stroke-width: 1.5; }
+
+/* F11 base-ten */
+.concept-loop .cl-rod { fill: rgba(30, 136, 229, 0.4); stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-rod-b { fill: rgba(124, 58, 237, 0.35); }
+.concept-loop .cl-rod-new { fill: rgba(234, 88, 12, 0.4); stroke: #ea580c; }
+.concept-loop .cl-one { stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-one-a { fill: rgba(30, 136, 229, 0.4); }
+.concept-loop .cl-one-b { fill: rgba(124, 58, 237, 0.4); }
+
+/* F12 cookies */
+.concept-loop .cl-plate { fill: #f3f4f6; stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-cookie { fill: #d4a373; stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-olc { fill: none; stroke: #ea580c; stroke-width: 2; }
+
+/* F14 transform */
+.concept-loop .cl-ghost { fill: rgba(26, 43, 74, 0.06); stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 5 4; }
+
+/* transient pieces of the B2 loops start hidden */
+.concept-loop [data-el^='div-'], .concept-loop [data-el^='rcnt-'], .concept-loop [data-el='brace'], .concept-loop [data-el='ten'],
+.concept-loop [data-arr], .concept-loop [data-el^='clbl-'],
+.concept-loop [data-el='pent-fill'], .concept-loop [data-el^='side-'], .concept-loop [data-el^='vert-'],
+.concept-loop [data-tally], .concept-loop [data-bar], .concept-loop [data-barlbl], .concept-loop [data-slice], .concept-loop [data-slicelbl],
+.concept-loop [data-rod38], .concept-loop [data-rod25], .concept-loop [data-one38], .concept-loop [data-one25],
+.concept-loop [data-el='newrod'], .concept-loop [data-el='merge-ol-a'], .concept-loop [data-el='merge-ol-b'],
+.concept-loop [data-el='lbl38'], .concept-loop [data-el='lbl25'], .concept-loop [data-el='lbl63'],
+.concept-loop [data-el^='left-'], .concept-loop [data-el='lbl-left'],
+.concept-loop [data-el='cut-v'], .concept-loop [data-el='cut-h'], .concept-loop [data-el='q-shade'], .concept-loop [data-el='q-lbl'],
+.concept-loop [data-el='bar-o'], .concept-loop [data-el='bar-shade'], .concept-loop [data-el='bar-d1'], .concept-loop [data-el='bar-d2'], .concept-loop [data-el='bar-d3'], .concept-loop [data-el='bar-lbl'],
+.concept-loop [data-el='nl'], .concept-loop [data-el='nl0'], .concept-loop [data-el='nl1'], .concept-loop [data-el='nl-pt'], .concept-loop [data-el='nl-lbl'],
+.concept-loop [data-el='axis'], .concept-loop [data-el='copy'], .concept-loop [data-el='copy-fill'],
+.concept-loop [data-el='pivot'], .concept-loop [data-el='vec'], .concept-loop [data-el='vec-head'] {
+  opacity: 0;
+}
+
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 36px;
+  }
+  .home-hero .concept-loop {
+    max-width: 520px;
+    justify-self: center;
+  }
+}
+@media (max-width: 1099.98px) {
+  .home-hero .concept-loop {
+    max-width: 480px;
+    margin: 22px auto 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grade-hub__header--loop {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 26px;
+    align-items: center;
+  }
+}
+.grade-hub__header--loop .concept-loop {
+  max-width: 470px;
+  margin: 8px auto;
+}
+
+/* ——— triangle-area explorer (topic page) ——— */
+.tri-explorer {
+  margin: 6px 0 20px;
+}
+.tri-explorer__card {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid rgba(26, 43, 74, 0.1);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 14px 16px 12px;
+  max-width: 640px;
+}
+.tri-explorer__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.tri-explorer .te-line {
+  stroke: var(--navy);
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tri-explorer .te-line-thin {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  fill: none;
+}
+.tri-explorer .te-dash {
+  stroke: var(--navy);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+}
+.tri-explorer .te-parallel {
+  stroke: #9ca3af;
+  stroke-width: 1.5;
+  stroke-dasharray: 7 6;
+}
+.tri-explorer .te-fill { fill: rgba(30, 136, 229, 0.15); }
+.tri-explorer .te-t {
+  font-family: 'Assistant', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  fill: var(--navy);
+}
+.tri-explorer .te-num { direction: ltr; unicode-bidi: isolate; }
+.tri-explorer .te-hit {
+  fill: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+.tri-explorer .te-handle {
+  fill: var(--cobalt);
+  stroke: #fff;
+  stroke-width: 3;
+  pointer-events: none;
+  transition: r 0.2s ease;
+}
+.tri-explorer .te-handle.is-held { r: 13; cursor: grabbing; }
+.tri-explorer__readout {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.tri-explorer__hint {
+  margin: 6px 0 2px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.tri-explorer__hint.is-on { opacity: 1; }
+.te-ok { color: var(--green); }
+
+/* the synced range doubles as keyboard/SR control — visually quiet */
+.te-slider {
+  display: block;
+  margin: 10px auto 0;
+  max-width: 340px;
+}
+.te-slider input[type='range'] {
+  width: 100%;
+  accent-color: var(--cobalt);
+  height: 28px;
+  background: transparent;
+}
+
+/* reduced motion / a11y menu: no demo, static completed frame (JS-driven),
+   toggle hidden; drag/slider keep working */
+@media (prefers-reduced-motion: reduce) {
+  .concept-loop__toggle { display: none; }
+  .tri-explorer__hint { transition: none; }
+  .tri-explorer .te-handle { transition: none; }
+}
+html.noam-a11y-motion .concept-loop__toggle { display: none; }
+html.noam-a11y-motion .tri-explorer__hint,
+html.noam-a11y-motion .tri-explorer .te-handle { transition: none; }
+
+/* ——— KIMI-FAMILIES-B1: loops F01–F06 ——— */
+
+/* fixed problem strip (families layout): never moves, clears the toggle */
+.concept-loop__top {
+  margin: 0 0 4px;
+  min-height: 1.5em;
+  padding-inline: 44px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--navy);
+}
+
+/* F01 sticks */
+.concept-loop .cl-col { fill: #fafafa; stroke: #d1d5db; stroke-width: 1.5; stroke-dasharray: 5 4; }
+.concept-loop .cl-stick { fill: var(--navy); transition: fill 0.45s ease; }
+.concept-loop .cl-band { fill: none; stroke: #ea580c; stroke-width: 2.5; }
+.concept-loop .cl-digit { font-size: 26px; font-weight: 800; }
+
+/* F02 number line */
+.concept-loop .cl-small { font-size: 12px; }
+.concept-loop .cl-arc { fill: none; stroke: #6b7280; stroke-width: 1.5; }
+.concept-loop .cl-arc-fill { fill: #6b7280; }
+.concept-loop .cl-pt-a { fill: var(--cobalt); stroke: #fff; stroke-width: 2; }
+.concept-loop .cl-pt-b { fill: #7c3aed; stroke: #7c3aed; stroke-width: 2; }
+
+/* F03 ten frames */
+.concept-loop .cl-frame2 { fill: #fff; stroke: var(--navy); stroke-width: 2; }
+.concept-loop .cl-grid { stroke: #d1d5db; stroke-width: 1; }
+.concept-loop .cl-dot { stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-dot-a { fill: rgba(30, 136, 229, 0.55); }
+.concept-loop .cl-dot-b { fill: rgba(124, 58, 237, 0.5); }
+
+/* F04 balance */
+.concept-loop .cl-cube { fill: rgba(30, 136, 229, 0.4); stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-ol { fill: none; stroke: #ea580c; stroke-width: 2; }
+.concept-loop .cl-box { fill: #e5e7eb; stroke: var(--navy); stroke-width: 1.5; }
+.concept-loop .cl-mini2 { fill: rgba(30, 136, 229, 0.45); stroke: var(--navy); stroke-width: 1; }
+
+/* F05 pattern */
+.concept-loop .cl-sq { fill: rgba(30, 136, 229, 0.28); stroke: var(--navy); stroke-width: 1.2; }
+.concept-loop .cl-sq5 { fill: rgba(234, 88, 12, 0.35); stroke: #ea580c; stroke-width: 1.5; }
+.concept-loop .cl-ol2 { fill: none; stroke: #ea580c; stroke-width: 2; }
+.concept-loop .cl-slot { fill: none; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 6 5; }
+.concept-loop .cl-digit2 { font-size: 20px; font-weight: 800; }
+
+/* F06 bars */
+.concept-loop .cl-bar-a { fill: rgba(30, 136, 229, 0.35); stroke: var(--cobalt); stroke-width: 1.5; }
+.concept-loop .cl-bar-b { fill: rgba(30, 136, 229, 0.16); stroke: var(--cobalt); stroke-width: 1.5; }
+.concept-loop .cl-bar-c { fill: rgba(234, 88, 12, 0.32); stroke: #ea580c; stroke-width: 1.5; }
+
+/* transient pieces of the family loops start hidden (engine drives inline opacity) */
+.concept-loop [data-el^='band-'], .concept-loop [data-el^='blbl-'],
+.concept-loop [data-el='digit-3'], .concept-loop [data-el='digit-4'],
+.concept-loop [data-el='tick47'], .concept-loop [data-el^='arc'], .concept-loop [data-el^='arcl'],
+.concept-loop [data-el='d40'], .concept-loop [data-el='d50'], .concept-loop [data-el='arrow'],
+.concept-loop [data-el='lbl47'], .concept-loop [data-el='lbl52'],
+.concept-loop [data-el='pt47'], .concept-loop [data-el='pt52'],
+.concept-loop [data-el='lbl7'], .concept-loop [data-el='lbl10'],
+.concept-loop [data-el='lbl2'], .concept-loop [data-el='lbl5'],
+.concept-loop [data-blue], .concept-loop [data-purp],
+.concept-loop [data-el='oll'], .concept-loop [data-el='olr'], .concept-loop [data-mini2],
+.concept-loop [data-el='hl2'], .concept-loop [data-el='hl3'], .concept-loop [data-el='hl4'],
+.concept-loop [data-el='n14'], .concept-loop [data-el='s5copy'], .concept-loop [data-el='s5new'],
+.concept-loop [data-el='bar-r'], .concept-loop [data-el='ld1'], .concept-loop [data-el='lr1'],
+.concept-loop [data-el='l5'], .concept-loop [data-el='brk'], .concept-loop [data-el='lbl17'],
+.concept-loop [data-el='brkv'], .concept-loop [data-el='q29'] {
+  opacity: 0;
+}
+
+/* FAMILIES-B1: family loop card beside the intro text on topic pages
+   (RTL grid: first column = right; text right, card left; stacks on mobile) */
+.topic-loop-row {
+  display: grid;
+  gap: 20px;
+  margin: 4px 0 20px;
+}
+.topic-loop-row .concept-loop {
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .topic-loop-row {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: 26px;
+  }
+  .topic-loop-row__text {
+    margin: 0;
+  }
+}
+
+/* ——— KIMI-B1-FIXES ——— */
+/* every formula chunk is bidi-isolated LTR (the □/≈/− chars are neutral and
+   would follow the page's RTL direction without an explicit override) */
+.concept-loop__formula[dir='ltr'] [data-fx],
+.concept-loop__formula bdi[dir='ltr'],
 .concept-loop__top[dir='ltr'] {
   direction: ltr;
   unicode-bidi: isolate;

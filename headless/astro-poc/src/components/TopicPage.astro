@@ -4,6 +4,7 @@ import LineArtDoodles from './LineArtDoodles.astro';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import MathWidget from './MathWidget.astro';
 import type { MathWidgetVariant } from './MathWidget.astro';
+import GrokLoopPanel from './GrokLoopPanel.astro';
 import topicFamilies from '../data/topicFamilies.json';
 import {
   loadTopicPage,
@@ -14,6 +15,7 @@ import {
 import { localizeSiteHref } from '../lib/sitePages';
 import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import { grokLoopForTopicSlug, isGrokLoopBlocked } from '../lib/grokLoops';
 
 interface Props {
   slug: string;
@@ -122,9 +124,18 @@ const LOOP_TO_MATH: Partial<Record<NonNullable<typeof loopVariant>, MathWidgetVa
   numberline: 'array',
 };
 const mathVariant = loopVariant ? LOOP_TO_MATH[loopVariant] : undefined;
+const grokEntry = grokLoopForTopicSlug(slug);
+const grokVisible =
+  !!grokEntry && !isGrokLoopBlocked(grokEntry.id);
+/** Grok replaces MathWidget when the topic has no family MathWidget chrome. */
+const grokAsPrimary = grokVisible && !mathVariant;
+/** Both present → MathWidget primary; Grok as "עוד המחשה" below. */
+const grokAsSecondary = grokVisible && !!mathVariant;
 // pair the card with the intro paragraph (pulled out of the body flow)
 const loopIntro =
-  mathVariant && bodyUnits[0]?.kind === 'intro' ? bodyUnits[0].text : null;
+  (mathVariant || grokAsPrimary) && bodyUnits[0]?.kind === 'intro'
+    ? bodyUnits[0].text
+    : null;
 const flowUnits = loopIntro ? bodyUnits.slice(1) : bodyUnits;
 
 function faqHeadingId(groupIndex: number) {
@@ -179,20 +190,29 @@ function faqHeadingId(groupIndex: number) {
         line parallel to the base; the area stays 12. */}
     {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
 
-    {/* FAMILIES-B1: family loop card beside the intro (text right, card
-        left in RTL; stacks below the text on mobile) */}
-    {mathVariant && (
+    {/* FAMILIES-B1 / Grok: family MathWidget or primary Grok loop beside intro */}
+    {(mathVariant || grokAsPrimary) && (
       <div class="topic-loop-row">
         {loopIntro && (
           <p class="topic-page__intro topic-loop-row__text" data-flow="paragraph" data-role="intro">
             {loopIntro}
           </p>
         )}
-        <MathWidget
-          variant={mathVariant}
-          mode="loop"
-          family={page.grade <= 6 ? 'elem' : 'mid'}
-        />
+        {mathVariant ? (
+          <MathWidget
+            variant={mathVariant}
+            mode="loop"
+            family={page.grade <= 6 ? 'elem' : 'mid'}
+          />
+        ) : (
+          grokEntry && (
+            <GrokLoopPanel
+              variant={grokEntry.variant}
+              topic={grokEntry.topic}
+              loopId={grokEntry.id}
+            />
+          )
+        )}
       </div>
     )}
 
@@ -286,6 +306,21 @@ function faqHeadingId(groupIndex: number) {
         })
       }
     </div>
+
+    {
+      grokAsSecondary && grokEntry && (
+        <section class="topic-grok-extra" aria-labelledby="topic-grok-extra-title">
+          <h2 id="topic-grok-extra-title" class="topic-page__section-title">
+            עוד המחשה
+          </h2>
+          <GrokLoopPanel
+            variant={grokEntry.variant}
+            topic={grokEntry.topic}
+            loopId={grokEntry.id}
+          />
+        </section>
+      )
+    }
 
     {
       contentImages.length > 0 && (
@@ -394,3 +429,14 @@ function faqHeadingId(groupIndex: number) {
     </p>
   </main>
 </BaseLayout>
+
+<style>
+  .topic-grok-extra {
+    margin-block: 28px 8px;
+    max-width: 760px;
+  }
+  .topic-grok-extra .topic-page__section-title,
+  .topic-grok-extra :global(.topic-page__section-title) {
+    margin-block-end: 12px;
+  }
+</style>

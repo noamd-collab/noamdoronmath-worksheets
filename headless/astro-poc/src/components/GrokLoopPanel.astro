@@ -1,0 +1,55 @@
+---
+/**
+ * Site chrome around a Grok ConceptLoop (GROK_INTEGRATION §1.4).
+ * Pastel panel + topic caption; loop SVG colors stay inside the engine.
+ */
+import ConceptLoop from './ConceptLoop.astro';
+
+interface Props {
+  variant: string;
+  topic: string;
+  loopId?: string;
+  compact?: boolean;
+}
+const { variant, topic, loopId, compact = false } = Astro.props;
+---
+<figure
+  class:list={['grok-loop-panel', compact && 'grok-loop-panel--compact']}
+  data-grok-loop={loopId}
+  data-variant={variant}
+>
+  <ConceptLoop variant={variant as any} />
+  <figcaption class="grok-loop-panel__topic">{topic}</figcaption>
+</figure>
+
+<style>
+  .grok-loop-panel {
+    margin: 0;
+    padding: 14px 14px 10px;
+    background: linear-gradient(160deg, #f4f7fb 0%, #eef6f4 100%);
+    border: 2px solid #e3e6ee;
+    border-radius: 22px 8px 26px 10px / 10px 26px 8px 22px;
+    box-shadow: 6px 6px 0 rgba(34, 48, 90, 0.08);
+    max-width: 760px;
+    color: #22305a;
+    font-family: var(--font-body, Heebo, sans-serif);
+  }
+  .grok-loop-panel--compact {
+    max-width: none;
+    padding: 10px 10px 8px;
+    box-shadow: 3px 3px 0 rgba(34, 48, 90, 0.08);
+  }
+  .grok-loop-panel :global(.concept-loop) {
+    margin: 0;
+  }
+  .grok-loop-panel--compact :global(.concept-loop__svg) {
+    aspect-ratio: 560 / 300;
+  }
+  .grok-loop-panel__topic {
+    margin: 8px 4px 2px;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #22305a;
+  }
+</style>
