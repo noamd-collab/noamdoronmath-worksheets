@@ -4588,7 +4588,7 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     var retry=document.createElement("button");
     retry.type="button";
     retry.className="noam-retry-action";
-    retry.textContent="נסו שוב לקרוא את השאלה";
+    retry.textContent=noamRetryActionLabel(message);
     retry.addEventListener("click",function(){ retryLastNoamHelp(); });
     bubble.appendChild(retry);
   }
@@ -6503,10 +6503,33 @@ function askNoam(helpKind,studentMessage){
     })
     .catch(function(error){
       var errorMessage=String(error&&error.message||"לא הצלחנו לקבל תשובה כרגע.");
-      thread.messages.push({role:"assistant",text:errorMessage,kind:"",answerError:true});
+      thread.messages.push({
+        role:"assistant",
+        text:errorMessage,
+        kind:"",
+        answerError:true,
+        answerErrorCode:String(error&&error.code||"")
+      });
       saveNoamState();setNoamBusy(false);renderNoamChat();
       announceNoam(exerciseLabel(exercise) + ". " + errorMessage);
     });
+}
+
+function noamRetryActionLabel(message){
+  var code=String(message&&message.answerErrorCode||"");
+  var text=String(message&&message.text||"");
+  // Match the retry CTA to the failure that was shown — never imply a crop/read
+  // problem when bot verification (or another non-vision refusal) was the cause.
+  if (isBotProtectionError({code:code,message:text}) || /בדיקת האבטחה|לאמת את הבקשה/.test(text)){
+    return "נסו שוב את בדיקת האבטחה";
+  }
+  if (code==="QUESTION_IMAGE_UNREADABLE" || /תמונת השאלה|לקרוא את השאלה|לקרוא את הקבצים/.test(text)){
+    return "נסו שוב לקרוא את השאלה";
+  }
+  if (code==="NETWORK_UNAVAILABLE" || /החיבור לנועם AI נקטע/.test(text)){
+    return "נסו שוב להתחבר";
+  }
+  return "נסו שוב";
 }
 
 function postJson(endpoint,payload){
