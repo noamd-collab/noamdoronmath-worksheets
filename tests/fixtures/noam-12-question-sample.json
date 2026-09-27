@@ -1,0 +1,453 @@
+{
+  "publishedAtUTC": "2026-09-27T14:44:33.247Z",
+  "hardStopUTC": "2026-09-27T16:41:54Z",
+  "note": "12 distinct exercise IDs; local/mock/live separated; live hint text not claimed",
+  "items": [
+    {
+      "slot": "S01",
+      "id": "G9-T20-E-Q06א",
+      "kind": "geo",
+      "grade": 9,
+      "level": "c",
+      "topic": "הריבוע",
+      "pdf": "341d85268f0b4c36b138a11be0fd21cc",
+      "page": 3,
+      "prefix": "G9-T20",
+      "hasGuide": true,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=9&x=G9-T20&lv=c&pdf=341d85268f0b4c36b138a11be0fd21cc&pa=6b7dea020c594657ab117891291903a1&pb=8ba146288121421caa89fea26af67740&pc=341d85268f0b4c36b138a11be0fd21cc",
+      "path": "/worksheet-viewer-noam.html?g=9&x=G9-T20&lv=c&pdf=341d85268f0b4c36b138a11be0fd21cc&pa=6b7dea020c594657ab117891291903a1&pb=8ba146288121421caa89fea26af67740&pc=341d85268f0b4c36b138a11be0fd21cc",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": [
+            "הסתכלו על המשולש BMN ליד הקודקוד B. מה אפשר לומר עליו לפי השוויון BM = BN?",
+            "חשבו את זוויות הבסיס במשולש BMN בעזרת הזווית הישרה ב־B, והשוו ל־∠BAC שיוצר האלכסון AC עם הצלע AB.",
+            "עכשיו יש שתי זוויות שוות על החותך AB. זהו זוג זוויות מתאימות — השתמשו בכך כדי להסיק על MN ו־AC."
+          ]
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 3
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": [
+        "הסתכלו על המשולש BMN ליד הקודקוד B. מה אפשר לומר עליו לפי השוויון BM = BN?",
+        "חשבו את זוויות הבסיס במשולש BMN בעזרת הזווית הישרה ב־B, והשוו ל־∠BAC שיוצר האלכסון AC עם הצלע AB.",
+        "עכשיו יש שתי זוויות שוות על החותך AB. זהו זוג זוויות מתאימות — השתמשו בכך כדי להסיק על MN ו־AC."
+      ]
+    },
+    {
+      "slot": "S02",
+      "id": "G9-T15-E-Q04א",
+      "kind": "geo",
+      "grade": 9,
+      "level": "c",
+      "topic": "משולש שווה שוקיים",
+      "pdf": "d6ee4238793f49e881c9b2a70915efa6",
+      "page": 2,
+      "prefix": "G9-T15",
+      "hasGuide": true,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=9&x=G9-T15&lv=c&pdf=d6ee4238793f49e881c9b2a70915efa6&pa=34aa5bdaa1f640299cb058c576b4f3f4&pb=948a3944cc3245228f701c916681ac49&pc=d6ee4238793f49e881c9b2a70915efa6",
+      "path": "/worksheet-viewer-noam.html?g=9&x=G9-T15&lv=c&pdf=d6ee4238793f49e881c9b2a70915efa6&pa=34aa5bdaa1f640299cb058c576b4f3f4&pb=948a3944cc3245228f701c916681ac49&pc=d6ee4238793f49e881c9b2a70915efa6",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": [
+            "כדי להוכיח ED = EB, חפשו במשולש EDB שתי זוויות בסיס שוות. התמקדו ב־∠EBD וב־∠EDB.",
+            "מכיוון ש־E נמצאת על AB ו־BD חוצה את ∠ABC, מתקבל ∠EBD = ∠DBC. כעת השתמשו במקבילים.",
+            "הישר DB חותך את המקבילים DE ו־BC, ולכן ∠DBC = ∠EDB. חברו זאת לשוויון הקודם."
+          ]
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 3
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": [
+        "כדי להוכיח ED = EB, חפשו במשולש EDB שתי זוויות בסיס שוות. התמקדו ב־∠EBD וב־∠EDB.",
+        "מכיוון ש־E נמצאת על AB ו־BD חוצה את ∠ABC, מתקבל ∠EBD = ∠DBC. כעת השתמשו במקבילים.",
+        "הישר DB חותך את המקבילים DE ו־BC, ולכן ∠DBC = ∠EDB. חברו זאת לשוויון הקודם."
+      ]
+    },
+    {
+      "slot": "S03",
+      "id": "G7-T14-A-Q01א",
+      "kind": "geo",
+      "grade": 7,
+      "level": "a",
+      "topic": "סכום הזוויות במשולש ובמרובע",
+      "pdf": "a439f7ee6fd449cb8967d68736c85baf",
+      "page": 1,
+      "prefix": "G7-T14",
+      "hasGuide": false,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=7&x=G7-T14&lv=a&pdf=a439f7ee6fd449cb8967d68736c85baf&pa=a439f7ee6fd449cb8967d68736c85baf&pc=8b1c151fd0c945a08b8599785f3e63da",
+      "path": "/worksheet-viewer-noam.html?g=7&x=G7-T14&lv=a&pdf=a439f7ee6fd449cb8967d68736c85baf&pa=a439f7ee6fd449cb8967d68736c85baf&pc=8b1c151fd0c945a08b8599785f3e63da",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 3
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    },
+    {
+      "slot": "S04",
+      "id": "G7-T15-B-Q01א",
+      "kind": "geo",
+      "grade": 7,
+      "level": "b",
+      "topic": "משולשים מיוחדים",
+      "pdf": "a510e487b4b74a6dbd558e1421120374",
+      "page": 1,
+      "prefix": "G7-T15",
+      "hasGuide": false,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=7&x=G7-T15&lv=b&pdf=a510e487b4b74a6dbd558e1421120374&pa=57ca08aa4a1c4a7e98642f09f7004a96&pc=a510e487b4b74a6dbd558e1421120374",
+      "path": "/worksheet-viewer-noam.html?g=7&x=G7-T15&lv=b&pdf=a510e487b4b74a6dbd558e1421120374&pa=57ca08aa4a1c4a7e98642f09f7004a96&pc=a510e487b4b74a6dbd558e1421120374",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 3
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    },
+    {
+      "slot": "S05",
+      "id": "G8-T19-A-Q01א",
+      "kind": "geo",
+      "grade": 8,
+      "level": "a",
+      "topic": "ישרים מקבילים לצירים",
+      "pdf": "10d326087dac4c2eb2c90a2adf4453fd",
+      "page": 1,
+      "prefix": "G8-T19",
+      "hasGuide": false,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=8&x=G8-T19&lv=a&pdf=10d326087dac4c2eb2c90a2adf4453fd&pa=10d326087dac4c2eb2c90a2adf4453fd&pc=384b411a0f1f4ee1b2aa9f3b0fe89150",
+      "path": "/worksheet-viewer-noam.html?g=8&x=G8-T19&lv=a&pdf=10d326087dac4c2eb2c90a2adf4453fd&pa=10d326087dac4c2eb2c90a2adf4453fd&pc=384b411a0f1f4ee1b2aa9f3b0fe89150",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 3
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    },
+    {
+      "slot": "S06",
+      "id": "G8-T38-B-Q01א",
+      "kind": "geo",
+      "grade": 8,
+      "level": "b",
+      "topic": "חפיפת משולשים",
+      "pdf": "e2534608194f4b2da81513455d8e5276",
+      "page": 1,
+      "prefix": "G8-T38",
+      "hasGuide": false,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=8&x=G8-T38&lv=b&pdf=e2534608194f4b2da81513455d8e5276&pa=d7220ff03c1644c196dc820a0438b11f&pc=e2534608194f4b2da81513455d8e5276",
+      "path": "/worksheet-viewer-noam.html?g=8&x=G8-T38&lv=b&pdf=e2534608194f4b2da81513455d8e5276&pa=d7220ff03c1644c196dc820a0438b11f&pc=e2534608194f4b2da81513455d8e5276",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 3
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    },
+    {
+      "slot": "S07",
+      "id": "G9-T16-B-Q01א",
+      "kind": "geo",
+      "grade": 9,
+      "level": "b",
+      "topic": "משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳",
+      "pdf": "3ac93dc4b8814eaa8d120e2f3802f27b",
+      "page": 1,
+      "prefix": "G9-T16",
+      "hasGuide": false,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=9&x=G9-T16&lv=b&pdf=3ac93dc4b8814eaa8d120e2f3802f27b&pa=3ac93dc4b8814eaa8d120e2f3802f27b&pc=d2a23ffe965c4a5691c425136a4dd63e",
+      "path": "/worksheet-viewer-noam.html?g=9&x=G9-T16&lv=b&pdf=3ac93dc4b8814eaa8d120e2f3802f27b&pa=3ac93dc4b8814eaa8d120e2f3802f27b&pc=d2a23ffe965c4a5691c425136a4dd63e",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 3
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    },
+    {
+      "slot": "S08",
+      "id": "G7-T01-A-Q01א",
+      "kind": "alg",
+      "grade": 7,
+      "level": "a",
+      "topic": "מספרים מכוונים — ישר המספרים וערך מוחלט",
+      "pdf": "22303ba02b3b46c3ae2529e347cbce2b",
+      "page": 1,
+      "prefix": "G7-T01",
+      "hasGuide": false,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=7&x=G7-T01&lv=a&pdf=22303ba02b3b46c3ae2529e347cbce2b&pa=22303ba02b3b46c3ae2529e347cbce2b&pc=177a3ed14275467a98ed9b2d43068a39",
+      "path": "/worksheet-viewer-noam.html?g=7&x=G7-T01&lv=a&pdf=22303ba02b3b46c3ae2529e347cbce2b&pa=22303ba02b3b46c3ae2529e347cbce2b&pc=177a3ed14275467a98ed9b2d43068a39",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 1
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    },
+    {
+      "slot": "S09",
+      "id": "G7-T02-B-Q01א",
+      "kind": "alg",
+      "grade": 7,
+      "level": "b",
+      "topic": "חיבור וחיסור מספרים מכוונים",
+      "pdf": "c00e0a3cfa24427abe1549232cdc4749",
+      "page": 1,
+      "prefix": "G7-T02",
+      "hasGuide": false,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=7&x=G7-T02&lv=b&pdf=c00e0a3cfa24427abe1549232cdc4749&pa=1772f7ba7ef24a409dbb2d0423702d7d&pc=c00e0a3cfa24427abe1549232cdc4749",
+      "path": "/worksheet-viewer-noam.html?g=7&x=G7-T02&lv=b&pdf=c00e0a3cfa24427abe1549232cdc4749&pa=1772f7ba7ef24a409dbb2d0423702d7d&pc=c00e0a3cfa24427abe1549232cdc4749",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 1
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    },
+    {
+      "slot": "S10",
+      "id": "G8-T01-B-Q01א",
+      "kind": "alg",
+      "grade": 8,
+      "level": "b",
+      "topic": "אבחון קדם־ידע",
+      "pdf": "c6602eecfb3841c38f4dbbfe6d10f538",
+      "page": 1,
+      "prefix": "G8-T01",
+      "hasGuide": false,
+      "requiresVision": false,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=8&x=G8-T01&lv=b&pdf=c6602eecfb3841c38f4dbbfe6d10f538&pa=c6602eecfb3841c38f4dbbfe6d10f538&pc=c6602eecfb3841c38f4dbbfe6d10f538",
+      "path": "/worksheet-viewer-noam.html?g=8&x=G8-T01&lv=b&pdf=c6602eecfb3841c38f4dbbfe6d10f538&pa=c6602eecfb3841c38f4dbbfe6d10f538&pc=c6602eecfb3841c38f4dbbfe6d10f538",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 1
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    },
+    {
+      "slot": "S11",
+      "id": "G8-T02-B-Q01א",
+      "kind": "alg",
+      "grade": 8,
+      "level": "b",
+      "topic": "משוואות ליניאריות",
+      "pdf": "86a563a229964377b0408693e1d4584a",
+      "page": 1,
+      "prefix": "G8-T02",
+      "hasGuide": false,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=8&x=G8-T02&lv=b&pdf=86a563a229964377b0408693e1d4584a&pa=2c47f33e99f44174a32f7f4cfb3b5e3e&pc=86a563a229964377b0408693e1d4584a",
+      "path": "/worksheet-viewer-noam.html?g=8&x=G8-T02&lv=b&pdf=86a563a229964377b0408693e1d4584a&pa=2c47f33e99f44174a32f7f4cfb3b5e3e&pc=86a563a229964377b0408693e1d4584a",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 1
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    },
+    {
+      "slot": "S12",
+      "id": "G9-T01-A-Q01א",
+      "kind": "alg",
+      "grade": 9,
+      "level": "a",
+      "topic": "חוקי חזקות",
+      "pdf": "deb2cde8e4f84ab480c2b19903ef681c",
+      "page": 1,
+      "prefix": "G9-T01",
+      "hasGuide": false,
+      "requiresVision": true,
+      "url_www": "https://www.noamdoronmath.co.il/worksheet-viewer-noam.html?g=9&x=G9-T01&lv=a&pdf=deb2cde8e4f84ab480c2b19903ef681c&pa=deb2cde8e4f84ab480c2b19903ef681c&pc=2e4554c89aa9465ebb44e91b3ce0806f",
+      "path": "/worksheet-viewer-noam.html?g=9&x=G9-T01&lv=a&pdf=deb2cde8e4f84ab480c2b19903ef681c&pa=deb2cde8e4f84ab480c2b19903ef681c&pc=2e4554c89aa9465ebb44e91b3ce0806f",
+      "results": {
+        "local": {
+          "mode": "local",
+          "ok": true,
+          "hints": null,
+          "detail": "no didactic guide — model-path hints (not locally answered)"
+        },
+        "mock": {
+          "ok": true,
+          "guardPresent": true,
+          "noBlanketReplace": true,
+          "probeCount": 1
+        },
+        "live": {
+          "page_ok": true,
+          "manifest_has_exercise": true,
+          "hint_live": "NOT_RUN",
+          "concept_live": "NOT_RUN"
+        }
+      },
+      "localHints": null
+    }
+  ]
+}
