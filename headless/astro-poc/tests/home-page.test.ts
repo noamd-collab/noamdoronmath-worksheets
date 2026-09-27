@@ -100,6 +100,27 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.strictEqual(layout.split('<SiteFooter').length - 1, 1);
   });
 
+  it('SiteFooter exposes verified Instagram, Facebook, WhatsApp only (no invented networks)', () => {
+    const html = readFileSync(join(root, 'src', 'components', 'SiteFooter.astro'), 'utf8');
+    assert.ok(html.includes('https://www.instagram.com/noamdoronmath/'));
+    assert.ok(html.includes('https://www.facebook.com/profile.php?id=61593749281930'));
+    assert.ok(
+      html.includes('https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t')
+    );
+    assert.ok(html.includes('target="_blank"'));
+    assert.ok(html.includes('rel="noopener"'));
+    assert.ok(html.includes('אינסטגרם של נועם דורון מתמטיקה'));
+    assert.ok(html.includes('פייסבוק של נועם דורון מתמטיקה'));
+    assert.ok(html.includes("network: 'instagram'"));
+    assert.ok(html.includes("network: 'facebook'"));
+    assert.ok(html.includes("network: 'whatsapp'"));
+    assert.ok(html.includes('data-footer-social={item.network}'));
+    assert.ok(html.includes('aria-label={item.label}'));
+    assert.ok(!html.includes('tiktok.com'));
+    // high-school third-party YouTube must not be treated as brand social
+    assert.ok(!html.includes('youtube.com'));
+  });
+
   it('SiteHeader exposes Harmony primary nav destinations', () => {
     const html = readFileSync(join(root, 'src', 'components', 'SiteHeader.astro'), 'utf8');
     for (const needle of [
