@@ -1844,9 +1844,9 @@ const AREA_X4_HOLD = 5.2;
 
 function renderCube8(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
-  op(q(root, 'bot'), ph(t, 0.6, 1.2) * fade);
-  op(q(root, 'top'), ph(t, 1.6, 2.2) * fade);
-  op(q(root, 'posts'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'bot'), ph(t, 0.6, 1.3) * fade);
+  op(q(root, 'top'), ph(t, 1.5, 2.2) * fade);
+  op(q(root, 'edges'), ph(t, 2.2, 2.6) * (1 - ph(t, 8.0, 8.6)));
   op(q(root, 'eight'), ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
   const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
