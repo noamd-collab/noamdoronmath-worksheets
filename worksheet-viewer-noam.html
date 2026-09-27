@@ -1540,6 +1540,22 @@ textarea:focus{
   opacity:.72;
 }
 .noam-draw-error{display:block;margin-top:7px;color:#a42828;font:600 13px/1.4 Assistant,sans-serif}
+.noam-retry-action{
+  display:inline-block;
+  margin-block-start:10px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid color-mix(in srgb, var(--accent, #1a7a9c) 45%, #fff);
+  background:#fff;
+  color:var(--accent-dark, #0b4f6c);
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+}
+.noam-retry-action:focus-visible{
+  outline:2px solid var(--accent, #1a7a9c);
+  outline-offset:2px;
+}
 .noam-bubble.thinking{
   display:flex;
   align-items:center;
@@ -1926,7 +1942,7 @@ textarea:focus{
   .noam-picked-heading{display:flex;align-items:center;justify-content:space-between;gap:6px}
   .noam-picked-label{font-size:12px;margin:0;min-width:0}
   .noam-preview-toggle{display:block;flex:none;min-height:44px;padding:6px 10px;color:var(--ink);background:#fff;border:1px solid var(--ink);border-radius:10px;font:700 12px 'Assistant',sans-serif;cursor:pointer}
-  .noam-picked-preview,.noam-picked-preview img{max-height:96px}
+  .noam-picked-preview,.noam-picked-preview img{max-height:160px}
   .noam-picked-text{font-size:14px;max-height:60px;overflow:auto}
   .noam-actions{gap:6px;margin:0}
   .noam-action{min-height:44px;padding:7px 12px;box-shadow:none}
@@ -1962,8 +1978,10 @@ textarea:focus{
   .panel-body.is-previewing>:not(.noam-picked){display:none}
   .panel-body.is-previewing>.noam-picked{display:block;flex:1;min-height:0;max-height:none;overflow:auto;padding:0 6px 6px}
   .panel-body.is-previewing .noam-picked-heading{position:sticky;top:0;background:var(--tint);z-index:1;padding:4px 0}
-  .panel-body.is-previewing .noam-picked-preview,.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
-  .panel-body.is-previewing .noam-picked-text{display:block;max-height:none}
+  .panel-body.is-previewing .noam-picked-preview:not([hidden]),.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
+  .panel-body.is-previewing .noam-picked-preview:not([hidden]){direction:rtl}
+  .panel-body.is-previewing .noam-picked-preview img{width:720px;max-width:none}
+  .panel-body.is-previewing .noam-picked-text:not([hidden]){display:block;max-height:none}
   body.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
   body.noam-panel-open .grecaptcha-badge{z-index:60;bottom:calc(var(--noam-keyboard-gap,0px) + env(safe-area-inset-bottom) + 4px)!important}
 }
@@ -2176,11 +2194,25 @@ var mobileLayout = window.matchMedia("(max-width:900px)");
 
 /* CONFIG */
 
+/* M36: domain-independent Wix Media CDN (same ugd bytes as /_files/ugd/…). */
 var BASE =
-  "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
+  "https://static.wixstatic.com/ugd/d8e7ad_";
 
 var API =
   "https://amiramnoam.wixstudio.com/my-site-2/_functions";
+
+/* HEADLESS-MIGRATION-11/13 adapters (reversible): keep UI identical; only path bases change.
+   Manifests: same-origin public/noam-ai/manifests when HEADLESS_USE_LOCAL_MANIFESTS is true
+   (rollback: set false to fetch GitHub Pages). PDFs stay on Wix Media. */
+var HEADLESS_LEGACY_PAGES =
+  "https://noamd-collab.github.io/noamdoronmath-worksheets/";
+var HEADLESS_USE_LOCAL_MANIFESTS = true;
+var HEADLESS_MANIFEST_BASE = HEADLESS_USE_LOCAL_MANIFESTS
+  ? "./noam-ai/manifests/"
+  : HEADLESS_LEGACY_PAGES + "noam-ai/manifests/";
+var HEADLESS_LEGACY_INDEX = HEADLESS_USE_LOCAL_MANIFESTS
+  ? "./legacy-github/index.html"
+  : HEADLESS_LEGACY_PAGES + "index.html";
 
 // The public config and Google key domains were verified before activation.
 // This release flag cannot be changed by a query parameter or browser storage.
@@ -2461,7 +2493,7 @@ if (!okPdf){
 
     'הקישור אינו תקין. ' +
 
-    '<a href="./">' +
+    '<a href="/worksheets">' +
     'חזרה לדפי העבודה' +
     '</a>' +
 
@@ -2830,7 +2862,7 @@ function discoverSiblingLevels(){
   );
 
   fetch(
-    "./index.html",
+    HEADLESS_LEGACY_INDEX,
     {
       cache:"default"
     }
@@ -2946,6 +2978,11 @@ var pdfZoomSlider = document.getElementById("pdfZoomSlider");
 var pdfZoomRenderTimer = 0;
 
 var pdfDocument =
+  null;
+
+/* Crop/vision must keep a PDF.js document even when the clean canvas UI falls
+   back to the native PDF viewer. A failed clean-view paint must not block hints. */
+var pdfCropLoadPromise =
   null;
 
 var pdfObserver =
@@ -3116,6 +3153,70 @@ function showPdfFallback(
     );
 
   setNativePdfMode(true);
+
+  /* Native display is fine for reading; still load PDF.js bytes for Noam crops. */
+  ensurePdfDocumentForCrop().catch(function(error){
+    console.warn("PDF CROP DOCUMENT:", error);
+  });
+}
+
+function pdfJsGetDocumentOptions(source){
+  var options = {
+    withCredentials:false,
+    cMapUrl:PDFJS_CMAP_URL,
+    cMapPacked:true,
+    standardFontDataUrl:PDFJS_STD_FONT_URL,
+    disableFontFace:true,
+    useSystemFonts:false
+  };
+  if (source instanceof ArrayBuffer || ArrayBuffer.isView(source)){
+    options.data = source instanceof ArrayBuffer ? new Uint8Array(source) : source;
+  }else{
+    options.url = source || pdfUrl;
+  }
+  return options;
+}
+
+/** Resolve a PDF.js document for cropping, independent of clean-view UI success. */
+function ensurePdfDocumentForCrop(){
+  if (pdfDocument){ return Promise.resolve(pdfDocument); }
+  if (pdfCropLoadPromise){ return pdfCropLoadPromise; }
+  if (!window.pdfjsLib || typeof window.pdfjsLib.getDocument !== "function"){
+    return Promise.reject(new Error("מנוע התצוגה של ה-PDF אינו זמין לחיתוך השאלה."));
+  }
+  try{
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      PDFJS_BASE + "build/pdf.worker.min.js";
+  }catch(e){}
+
+  pdfCropLoadPromise = fetch(pdfUrl, {
+    method:"GET",
+    mode:"cors",
+    credentials:"omit",
+    cache:"force-cache"
+  }).then(function(response){
+    if (!response.ok){
+      throw new Error("טעינת קובץ ה-PDF לחיתוך נכשלה (" + response.status + ").");
+    }
+    return response.arrayBuffer();
+  }).then(function(buffer){
+    return window.pdfjsLib.getDocument(pdfJsGetDocumentOptions(buffer)).promise;
+  }).then(function(doc){
+    pdfDocument = doc;
+    return doc;
+  }).catch(function(error){
+    /* URL load as second chance when arraybuffer fetch is blocked. */
+    return window.pdfjsLib.getDocument(pdfJsGetDocumentOptions(pdfUrl)).promise
+      .then(function(doc){
+        pdfDocument = doc;
+        return doc;
+      }, function(){
+        pdfCropLoadPromise = null;
+        throw error;
+      });
+  });
+
+  return pdfCropLoadPromise;
 }
 
 function createPdfPageShells(
@@ -3218,7 +3319,7 @@ function renderPdfPage(
         var pixelRatio =
           Math.min(
             window.devicePixelRatio || 1,
-            2
+            mobileLayout.matches ? 3 : 2
           );
 
         var canvas =
@@ -3423,8 +3524,12 @@ function observePdfPages(){
 }
 
 function getPdfPageWidth(){
-  // Reserve the fixed button gutter before scaling the document; gutter itself never scales.
-  return Math.max(120,pdfScroll.clientWidth - (mobileLayout.matches ? 116 : 78)) * pdfZoom;
+  // Match live GitHub viewer: on phones, 70% zoom is the width that fits
+  // beside the fixed button gutter. Scale only the PDF from there.
+  if (mobileLayout.matches){
+    return Math.max(120,pdfScroll.clientWidth - 116) * pdfZoom / .7;
+  }
+  return Math.max(120,pdfScroll.clientWidth - 78) * pdfZoom;
 }
 
 // Keep the same point on the current page when rotation or zoom changes page sizes.
@@ -3585,6 +3690,9 @@ function initPdfExperience(){
       false;
     setNativePdfMode(true);
     setPdfStatus("",false);
+    ensurePdfDocumentForCrop().catch(function(error){
+      console.warn("PDF CROP DOCUMENT:", error);
+    });
     return;
   }
 
@@ -3609,15 +3717,7 @@ function initPdfExperience(){
 
   var loadTask =
     window.pdfjsLib
-      .getDocument({
-        url:pdfUrl,
-        withCredentials:false,
-        cMapUrl:PDFJS_CMAP_URL,
-        cMapPacked:true,
-        standardFontDataUrl:PDFJS_STD_FONT_URL,
-        disableFontFace:true,
-        useSystemFonts:false
-      });
+      .getDocument(pdfJsGetDocumentOptions(pdfUrl));
 
   loadTask.promise
     .then(
@@ -3625,6 +3725,8 @@ function initPdfExperience(){
 
         pdfDocument =
           doc;
+        pdfCropLoadPromise =
+          Promise.resolve(doc);
 
         pdfCleanAvailable =
           true;
@@ -3634,41 +3736,52 @@ function initPdfExperience(){
             "hidden"
           );
 
-        createPdfPageShells(
-          doc
-        );
-
-        pdfRenderVersion += 1;
-        pdfLastWidth =
-          Math.round(
-            pdfScroll.clientWidth
+        try{
+          createPdfPageShells(
+            doc
           );
 
-        setPdfStatus(
-          "",
-          false
-        );
-
-        observePdfPages();
-
-        /* The static manifest pins live on the clean page layer. */
-        setNativePdfMode(pdfNativeActive);
-
-        if (
-          "ResizeObserver" in window
-        ){
-          pdfResizeObserver =
-            new ResizeObserver(
-              schedulePdfResize
+          pdfRenderVersion += 1;
+          pdfLastWidth =
+            Math.round(
+              pdfScroll.clientWidth
             );
 
-          pdfResizeObserver.observe(
-            pdfScroll
+          setPdfStatus(
+            "",
+            false
           );
-        }else{
-          window.addEventListener(
-            "resize",
-            schedulePdfResize
+
+          observePdfPages();
+
+          /* The static manifest pins live on the clean page layer. */
+          setNativePdfMode(pdfNativeActive);
+
+          if (
+            "ResizeObserver" in window
+          ){
+            pdfResizeObserver =
+              new ResizeObserver(
+                schedulePdfResize
+              );
+
+            pdfResizeObserver.observe(
+              pdfScroll
+            );
+          }else{
+            window.addEventListener(
+              "resize",
+              schedulePdfResize
+            );
+          }
+        }catch(uiError){
+          console.warn(
+            "CLEAN PDF UI:",
+            uiError
+          );
+          /* Keep pdfDocument for crops; fall back only for on-page pins/canvas. */
+          showPdfFallback(
+            "התצוגה הנקייה נחסמה בדפדפן; הוצגה תצוגת ה-PDF המלאה."
           );
         }
       }
@@ -3815,37 +3928,61 @@ loadNoamAsset("script",PDFJS_BASE+"build/pdf.min.js")
   .then(initPdfExperience)
   .catch(function(){showPdfFallback("לא ניתן לטעון את התצוגה הנקייה. הוצגה תצוגת ה-PDF המלאה.");});
 
-/* BACK */
+/* BACK — Headless adapter: default to legacy GitHub catalog (same UX target). */
 
 if (okGrade){
 
   document
     .getElementById("backBtn")
     .href =
-    "./?grade=" +
+    "/worksheets?grade=" +
     g;
 }
 
 /* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
 
-// Only accept a return path to this catalog, never an arbitrary redirect.
+// Accept same-origin catalog returns OR the legacy GitHub Pages catalog path.
 try {
   var navigationParams = new URL(location.href).searchParams;
   var catalogRoot = new URL('./', location.href);
+  var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
   var returnPath = navigationParams.get('back');
   if (returnPath) {
-    var catalogReturn = new URL(returnPath, location.href);
-    if (catalogReturn.origin === location.origin &&
-        (catalogReturn.pathname === catalogRoot.pathname || catalogReturn.pathname === catalogRoot.pathname + 'index.html')) {
-      document.getElementById('backBtn').href = catalogReturn.href;
+    var catalogReturn;
+    if (/^https?:\/\//i.test(returnPath)) {
+      catalogReturn = new URL(returnPath);
+    } else if (returnPath.indexOf("/noamdoronmath-worksheets") === 0) {
+      catalogReturn = new URL(returnPath, legacyRoot.origin);
+    } else if (returnPath.indexOf("/worksheets") === 0) {
+      catalogReturn = new URL(returnPath, location.href);
+    } else {
+      catalogReturn = new URL(returnPath, location.href);
+    }
+    var sameOriginCatalog =
+      catalogReturn.origin === location.origin &&
+      (catalogReturn.pathname === catalogRoot.pathname ||
+       catalogReturn.pathname === catalogRoot.pathname + "index.html" ||
+       catalogReturn.pathname === "/" ||
+       catalogReturn.pathname === "/learning.html" ||
+       catalogReturn.pathname === "/worksheets" ||
+       catalogReturn.pathname.indexOf("/worksheets") === 0);
+    var legacyCatalog =
+      catalogReturn.origin === legacyRoot.origin &&
+      catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\/$/, "")) === 0;
+    if (sameOriginCatalog || legacyCatalog) {
+      document.getElementById("backBtn").href = catalogReturn.href;
     }
   }
-  if (/^\d+$/.test(navigationParams.get('topic') || '') && okGrade) {
-    var topicBack = document.createElement('a');
-    topicBack.className = 'btn topic-back';
-    topicBack.textContent = 'חזרה לנושא';
-    topicBack.href = './?grade=' + g + '&topic=' + navigationParams.get('topic');
-    document.getElementById('backBtn').after(topicBack);
+  if (/^\d+$/.test(navigationParams.get("topic") || "") && okGrade) {
+    var topicBack = document.createElement("a");
+    topicBack.className = "btn topic-back";
+    topicBack.textContent = "חזרה לנושא";
+    topicBack.href =
+      "/worksheets?grade=" +
+      g +
+      "&topic=" +
+      navigationParams.get("topic");
+    document.getElementById("backBtn").after(topicBack);
   }
 } catch (navigationError) { /* The default grade link remains available. */ }
 
@@ -3960,7 +4097,7 @@ var mathKeyboardOpen = false;
 var analysisCache = {};
 var exercisePreviewCache = {};
 var exercisePreviewOrder = [];
-var MANIFEST_PATH = "./noam-ai/manifests/" + pdf + ".json?v=20260920-geometry";
+var MANIFEST_PATH = HEADLESS_MANIFEST_BASE + pdf + ".json?v=20260920-geometry";
 var THREAD_STORAGE_KEY = "noam-static-threads-v1:" + pdf;
 var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v1:" + pdf;
 var threads = {};
@@ -4447,6 +4584,14 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   bubble.appendChild(speaker);
   content.textContent = text;
   bubble.appendChild(content);
+  if (message && message.answerError){
+    var retry=document.createElement("button");
+    retry.type="button";
+    retry.className="noam-retry-action";
+    retry.textContent="נסו שוב לקרוא את השאלה";
+    retry.addEventListener("click",function(){ retryLastNoamHelp(); });
+    bubble.appendChild(retry);
+  }
   // Source crops belong only in the selected-question preview. This also
   // suppresses old saved replies that predate the diagram mechanism.
   if (visual&&visual.type==="question-image"){visual=null;}
@@ -4664,7 +4809,7 @@ function renderNoamChat(){
     '<div class="noam-picked'+(showQuestionPreview?'':' noam-picked-compact')+'">' +
       '<div class="noam-picked-heading"><div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
       (showQuestionPreview?'<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הגדלת השאלה')+'</button>':'')+'</div>' +
-      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText">' + esc(text) + '</div>':'') +
+      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText" role="status">טוען את השאלה מתוך ה־PDF…</div>':'') +
     '</div>' +
     '<div class="noam-thread-tools">' +
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
@@ -5252,6 +5397,17 @@ function stitchCropSegments(segments){
   return target;
 }
 
+function showExercisePreviewFailure(exercise){
+  var fallback=document.getElementById("noamPickedText");
+  if (!fallback||!selectedExercise||selectedExercise.id!==exercise.id){return;}
+  var link=document.createElement("a");
+  link.href=pdfUrl;
+  link.target="_blank";
+  link.rel="noopener noreferrer";
+  link.textContent="פתחו את השאלה בדף ה־PDF";
+  fallback.replaceChildren(link);
+}
+
 function cropExerciseCanvasFromPdf(exercise){
   var crops = Array.isArray(exercise.crops) && exercise.crops.length ? exercise.crops : [exercise.crop||{}];
   if (crops.length > 12){ return Promise.reject(new Error("יותר מדי עמודים לשאלה אחת.")); }
@@ -5266,13 +5422,17 @@ function cropExerciseCanvasFromPdf(exercise){
 }
 
 function cropExerciseCanvas(exercise){
-  if (typeof pdfDocument !== "undefined" && pdfDocument && typeof cropExerciseCanvasFromPdf === "function"){
-    return cropExerciseCanvasFromPdf(exercise).catch(function(error){
-      console.warn("NOAM CROP HIGH RES FALLBACK:", error);
+  return ensurePdfDocumentForCrop()
+    .catch(function(){ return null; })
+    .then(function(){
+      if (typeof pdfDocument !== "undefined" && pdfDocument && typeof cropExerciseCanvasFromPdf === "function"){
+        return cropExerciseCanvasFromPdf(exercise).catch(function(error){
+          console.warn("NOAM CROP HIGH RES FALLBACK:", error);
+          return cropExerciseCanvasFromView(exercise);
+        });
+      }
       return cropExerciseCanvasFromView(exercise);
     });
-  }
-  return cropExerciseCanvasFromView(exercise);
 }
 
 function cropExerciseCanvasFromView(exercise){
@@ -5445,11 +5605,27 @@ function getExerciseAnalysis(exercise){
   // This cache is already scoped to the PDF, and stores unmodified analysis.
   var imageKey=exercise.requiresVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
   var cachedImage=imageKey&&analysisCache[imageKey];
-  var request=cachedImage?Promise.resolve({ok:true,analysis:cachedImage}):cropExerciseImage(exercise)
-    .then(function(imageDataUrl){
-      return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
-    });
-  return request
+  function requestVisionAnalysis(allowCachedImage){
+    return ensurePdfDocumentForCrop()
+      .catch(function(){ return null; })
+      .then(function(){
+        if (allowCachedImage && cachedImage){
+          return {ok:true,analysis:cachedImage};
+        }
+        return cropExerciseImage(exercise).then(function(imageDataUrl){
+          return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
+        });
+      });
+  }
+  return requestVisionAnalysis(true)
+    .catch(function(error){
+      if (isBotProtectionError(error)){ throw error; }
+      // One recovery pass after ensuring the crop document (covers clean-view races).
+      console.warn("NOAM VISION RETRY AFTER CROP DOC:", exercise.id, error);
+      cachedImage=null;
+      pdfCropLoadPromise=null;
+      return requestVisionAnalysis(false);
+    })
     .then(function(result){
       if (!result||!result.ok||!result.analysis){ throw new Error("vision unavailable"); }
       var analysis=result.analysis;
@@ -5472,10 +5648,55 @@ function getExerciseAnalysis(exercise){
       if (isBotProtectionError(error)){ throw error; }
       // These manifests deliberately carry no guessed OCR transcription.
       // The solver must receive the actual worksheet image analysis.
-      if (exercise.requiresVision){throw new Error("לא הצלחנו לקרוא את תמונת השאלה. נסו שוב בעוד רגע.");}
+      if (exercise.requiresVision){
+        var visionError=new Error(
+          "לא הצלחנו לקרוא את תמונת השאלה. אפשר לנסות שוב — בלי לנחש את תוכן השאלה."
+        );
+        visionError.code="QUESTION_IMAGE_UNREADABLE";
+        visionError.cause=error;
+        throw visionError;
+      }
       console.warn("NOAM VISION FALLBACK:",exercise.id,error);
       analysisCache[exercise.id]=fallback;saveNoamState();return fallback;
     });
+}
+
+function clearExerciseVisionCache(exercise){
+  if (!exercise){ return; }
+  delete analysisCache[exercise.id];
+  var imageKey=exercise.requiresVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  if (imageKey){ delete analysisCache[imageKey]; }
+  delete exercisePreviewCache[exercise.id];
+  pdfCropLoadPromise=null;
+}
+
+function retryLastNoamHelp(){
+  if (!selectedExercise||busy){ return; }
+  var thread=exerciseThread(selectedExercise.id);
+  // Drop failed assistant + matching user turn so retry does not stack dead-ends.
+  if (thread.messages.length&&thread.messages[thread.messages.length-1].answerError){
+    thread.messages.pop();
+  }
+  var lastUser=null;
+  if (thread.messages.length&&thread.messages[thread.messages.length-1].role==="user"){
+    lastUser=thread.messages.pop();
+  }
+  if (!lastUser){ return; }
+  clearExerciseVisionCache(selectedExercise);
+  var kind=lastUser.kind||"";
+  if (/^רמז/.test(kind)){
+    thread.hintIndex=Math.max(0, thread.hintIndex-1);
+    saveNoamState();
+    askNoam("hint","תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי.");
+    return;
+  }
+  if (kind==="הסבר כללי"){
+    saveNoamState();
+    askNoam("overview","תן לי הסבר כללי קצר על הרעיון הדרוש כאן, בלי לפתור ובלי לגלות את התשובה.");
+    return;
+  }
+  saveNoamState();
+  askNoam("free_question", String(lastUser.text||"").trim());
 }
 
 function noamGeometryContext(text){

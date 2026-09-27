@@ -5,20 +5,32 @@ import {
   localizeArchiveHref,
   type BlogArchiveContent,
 } from '../lib/blogArchives';
+import type { BuiltBlogArchive } from '../lib/blogArchiveBuild';
+import { archivePageHref } from '../lib/blogArchiveBuild';
 
 interface Props {
-  archive: BlogArchiveContent;
+  archive: BlogArchiveContent | BuiltBlogArchive;
 }
 const { archive } = Astro.props;
 const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
+const built = archive as BuiltBlogArchive;
+const page = built.page ?? 1;
+const pageCount = built.pageCount ?? 1;
+const totalCards = built.totalCards ?? archive.cards.length;
+const prevHref = page > 1 ? archivePageHref(archive.path, page - 1) : null;
+const nextHref = page < pageCount ? archivePageHref(archive.path, page + 1) : null;
+const title =
+  page > 1 ? `${archive.title} · עמוד ${page}` : archive.title;
 ---
 <BaseLayout
-  title={archive.title}
+  title={title}
   description={archive.description}
   ogImage={archive.ogImage}
   skipHref="#blog-archive-main"
 >
   <BlogSeoTags slot="seo-tags" description={archive.description} image={archive.ogImage} jsonLd={archive.jsonLd} />
+  {prevHref && <link slot="seo-tags" rel="prev" href={prevHref} />}
+  {nextHref && <link slot="seo-tags" rel="next" href={nextHref} />}
   {
     jsonLdScripts.map((ld) => (
       <script type="application/ld+json" set:html={JSON.stringify(ld)} />
@@ -30,6 +42,9 @@ const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
     data-blog-archive={archive.fileSlug}
     data-blog-archive-path={archive.path}
     data-blog-archive-kind={archive.kind}
+    data-blog-archive-page={String(page)}
+    data-blog-archive-page-count={String(pageCount)}
+    data-blog-archive-total={String(totalCards)}
   >
     <nav class="blog-archive__crumbs" aria-label="מיקום">
       <a href="/">בית</a>
@@ -49,6 +64,13 @@ const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
 
     <header class="banner blog-archive__header">
       <h1>{archive.h1}</h1>
+      {
+        pageCount > 1 && (
+          <p class="blog-archive__page-status" data-blog-archive-page-status>
+            עמוד {page} מתוך {pageCount} · {totalCards} פוסטים
+          </p>
+        )
+      }
     </header>
 
     {
@@ -165,13 +187,35 @@ const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
       archive.pagination && archive.pagination.length > 0 && (
         <nav class="blog-archive__pagination" aria-label="עמודים" data-blog-archive-pagination>
           <ul>
-            {archive.pagination.map((p) => (
+            {prevHref && (
               <li>
-                <a href={localizeArchiveHref(p.href)} rel="noopener noreferrer">
-                  {p.text}
+                <a href={prevHref} rel="prev" data-blog-archive-page-link="prev">
+                  הקודם
                 </a>
               </li>
-            ))}
+            )}
+            {archive.pagination.map((p) => {
+              const href = localizeArchiveHref(p.href);
+              const isCurrent = Number(p.text) === page;
+              return (
+                <li>
+                  <a
+                    href={href}
+                    aria-current={isCurrent ? 'page' : undefined}
+                    data-blog-archive-page-link={p.text}
+                  >
+                    {p.text}
+                  </a>
+                </li>
+              );
+            })}
+            {nextHref && (
+              <li>
+                <a href={nextHref} rel="next" data-blog-archive-page-link="next">
+                  הבא
+                </a>
+              </li>
+            )}
           </ul>
         </nav>
       )

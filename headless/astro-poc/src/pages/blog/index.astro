@@ -1,12 +1,22 @@
 ---
 import BlogArchivePage from '../../components/BlogArchivePage.astro';
-import { loadBlogArchiveByPath } from '../../lib/blogArchives';
+import {
+  loadBuiltArchiveByPath,
+  parseArchivePageParam,
+} from '../../lib/blogArchiveBuild';
 
 export const prerender = false;
 
-const archive = loadBlogArchiveByPath('/blog');
+const page = parseArchivePageParam(Astro.url.searchParams.get('page'));
+const archive = loadBuiltArchiveByPath('/blog', page);
 if (!archive) {
   return new Response('Blog archive missing', {
+    status: 404,
+    headers: { 'content-type': 'text/plain; charset=utf-8' },
+  });
+}
+if (page > archive.pageCount) {
+  return new Response('Blog archive page not found', {
     status: 404,
     headers: { 'content-type': 'text/plain; charset=utf-8' },
   });

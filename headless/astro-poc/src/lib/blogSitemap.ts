@@ -1,4 +1,5 @@
-import { BLOG_ARCHIVE_SITEMAP_LASTMOD, listBlogArchives } from './blogArchives';
+import { BLOG_ARCHIVE_SITEMAP_LASTMOD } from './blogArchives';
+import { listArchivePaginationPaths } from './blogArchiveBuild';
 import { listServedBlogPosts } from './blogPosts';
 
 /** Production origin. Never a preview host or the request host. */
@@ -46,14 +47,21 @@ function archiveLastmod(path: string): string {
 }
 
 /**
- * 60 served posts plus the 4 archive routes.
+ * Served posts plus archive routes including crawlable pagination pages.
  * Post paths are decoded so Hebrew slugs match the live sitemap strings.
  */
 export function listBlogSitemapEntries(): BlogSitemapEntry[] {
-  const archives = listBlogArchives().map((archive) => ({
-    loc: productionLoc(archive.path),
-    lastmod: archiveLastmod(archive.path),
-  }));
+  const archives = listArchivePaginationPaths().map((pathWithQuery) => {
+    const basePath = pathWithQuery.split('?')[0] || pathWithQuery;
+    const loc =
+      pathWithQuery.includes('?')
+        ? `${BLOG_SITEMAP_ORIGIN}${pathWithQuery}`
+        : productionLoc(basePath);
+    return {
+      loc,
+      lastmod: archiveLastmod(basePath),
+    };
+  });
   const posts = listServedBlogPosts().map((post) => ({
     loc: productionLoc(post.path),
     lastmod: lastmodFromDateModified(post.dateModified, post.path),

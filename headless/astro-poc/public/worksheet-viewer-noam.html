@@ -1540,6 +1540,22 @@ textarea:focus{
   opacity:.72;
 }
 .noam-draw-error{display:block;margin-top:7px;color:#a42828;font:600 13px/1.4 Assistant,sans-serif}
+.noam-retry-action{
+  display:inline-block;
+  margin-block-start:10px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid color-mix(in srgb, var(--accent, #1a7a9c) 45%, #fff);
+  background:#fff;
+  color:var(--accent-dark, #0b4f6c);
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+}
+.noam-retry-action:focus-visible{
+  outline:2px solid var(--accent, #1a7a9c);
+  outline-offset:2px;
+}
 .noam-bubble.thinking{
   display:flex;
   align-items:center;
@@ -2964,6 +2980,11 @@ var pdfZoomRenderTimer = 0;
 var pdfDocument =
   null;
 
+/* Crop/vision must keep a PDF.js document even when the clean canvas UI falls
+   back to the native PDF viewer. A failed clean-view paint must not block hints. */
+var pdfCropLoadPromise =
+  null;
+
 var pdfObserver =
   null;
 
@@ -3132,6 +3153,70 @@ function showPdfFallback(
     );
 
   setNativePdfMode(true);
+
+  /* Native display is fine for reading; still load PDF.js bytes for Noam crops. */
+  ensurePdfDocumentForCrop().catch(function(error){
+    console.warn("PDF CROP DOCUMENT:", error);
+  });
+}
+
+function pdfJsGetDocumentOptions(source){
+  var options = {
+    withCredentials:false,
+    cMapUrl:PDFJS_CMAP_URL,
+    cMapPacked:true,
+    standardFontDataUrl:PDFJS_STD_FONT_URL,
+    disableFontFace:true,
+    useSystemFonts:false
+  };
+  if (source instanceof ArrayBuffer || ArrayBuffer.isView(source)){
+    options.data = source instanceof ArrayBuffer ? new Uint8Array(source) : source;
+  }else{
+    options.url = source || pdfUrl;
+  }
+  return options;
+}
+
+/** Resolve a PDF.js document for cropping, independent of clean-view UI success. */
+function ensurePdfDocumentForCrop(){
+  if (pdfDocument){ return Promise.resolve(pdfDocument); }
+  if (pdfCropLoadPromise){ return pdfCropLoadPromise; }
+  if (!window.pdfjsLib || typeof window.pdfjsLib.getDocument !== "function"){
+    return Promise.reject(new Error("מנוע התצוגה של ה-PDF אינו זמין לחיתוך השאלה."));
+  }
+  try{
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      PDFJS_BASE + "build/pdf.worker.min.js";
+  }catch(e){}
+
+  pdfCropLoadPromise = fetch(pdfUrl, {
+    method:"GET",
+    mode:"cors",
+    credentials:"omit",
+    cache:"force-cache"
+  }).then(function(response){
+    if (!response.ok){
+      throw new Error("טעינת קובץ ה-PDF לחיתוך נכשלה (" + response.status + ").");
+    }
+    return response.arrayBuffer();
+  }).then(function(buffer){
+    return window.pdfjsLib.getDocument(pdfJsGetDocumentOptions(buffer)).promise;
+  }).then(function(doc){
+    pdfDocument = doc;
+    return doc;
+  }).catch(function(error){
+    /* URL load as second chance when arraybuffer fetch is blocked. */
+    return window.pdfjsLib.getDocument(pdfJsGetDocumentOptions(pdfUrl)).promise
+      .then(function(doc){
+        pdfDocument = doc;
+        return doc;
+      }, function(){
+        pdfCropLoadPromise = null;
+        throw error;
+      });
+  });
+
+  return pdfCropLoadPromise;
 }
 
 function createPdfPageShells(
@@ -3605,6 +3690,9 @@ function initPdfExperience(){
       false;
     setNativePdfMode(true);
     setPdfStatus("",false);
+    ensurePdfDocumentForCrop().catch(function(error){
+      console.warn("PDF CROP DOCUMENT:", error);
+    });
     return;
   }
 
@@ -3629,15 +3717,7 @@ function initPdfExperience(){
 
   var loadTask =
     window.pdfjsLib
-      .getDocument({
-        url:pdfUrl,
-        withCredentials:false,
-        cMapUrl:PDFJS_CMAP_URL,
-        cMapPacked:true,
-        standardFontDataUrl:PDFJS_STD_FONT_URL,
-        disableFontFace:true,
-        useSystemFonts:false
-      });
+      .getDocument(pdfJsGetDocumentOptions(pdfUrl));
 
   loadTask.promise
     .then(
@@ -3645,6 +3725,8 @@ function initPdfExperience(){
 
         pdfDocument =
           doc;
+        pdfCropLoadPromise =
+          Promise.resolve(doc);
 
         pdfCleanAvailable =
           true;
@@ -3654,41 +3736,52 @@ function initPdfExperience(){
             "hidden"
           );
 
-        createPdfPageShells(
-          doc
-        );
-
-        pdfRenderVersion += 1;
-        pdfLastWidth =
-          Math.round(
-            pdfScroll.clientWidth
+        try{
+          createPdfPageShells(
+            doc
           );
 
-        setPdfStatus(
-          "",
-          false
-        );
-
-        observePdfPages();
-
-        /* The static manifest pins live on the clean page layer. */
-        setNativePdfMode(pdfNativeActive);
-
-        if (
-          "ResizeObserver" in window
-        ){
-          pdfResizeObserver =
-            new ResizeObserver(
-              schedulePdfResize
+          pdfRenderVersion += 1;
+          pdfLastWidth =
+            Math.round(
+              pdfScroll.clientWidth
             );
 
-          pdfResizeObserver.observe(
-            pdfScroll
+          setPdfStatus(
+            "",
+            false
           );
-        }else{
-          window.addEventListener(
-            "resize",
-            schedulePdfResize
+
+          observePdfPages();
+
+          /* The static manifest pins live on the clean page layer. */
+          setNativePdfMode(pdfNativeActive);
+
+          if (
+            "ResizeObserver" in window
+          ){
+            pdfResizeObserver =
+              new ResizeObserver(
+                schedulePdfResize
+              );
+
+            pdfResizeObserver.observe(
+              pdfScroll
+            );
+          }else{
+            window.addEventListener(
+              "resize",
+              schedulePdfResize
+            );
+          }
+        }catch(uiError){
+          console.warn(
+            "CLEAN PDF UI:",
+            uiError
+          );
+          /* Keep pdfDocument for crops; fall back only for on-page pins/canvas. */
+          showPdfFallback(
+            "התצוגה הנקייה נחסמה בדפדפן; הוצגה תצוגת ה-PDF המלאה."
           );
         }
       }
@@ -4491,6 +4584,14 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   bubble.appendChild(speaker);
   content.textContent = text;
   bubble.appendChild(content);
+  if (message && message.answerError){
+    var retry=document.createElement("button");
+    retry.type="button";
+    retry.className="noam-retry-action";
+    retry.textContent="נסו שוב לקרוא את השאלה";
+    retry.addEventListener("click",function(){ retryLastNoamHelp(); });
+    bubble.appendChild(retry);
+  }
   // Source crops belong only in the selected-question preview. This also
   // suppresses old saved replies that predate the diagram mechanism.
   if (visual&&visual.type==="question-image"){visual=null;}
@@ -5321,13 +5422,17 @@ function cropExerciseCanvasFromPdf(exercise){
 }
 
 function cropExerciseCanvas(exercise){
-  if (typeof pdfDocument !== "undefined" && pdfDocument && typeof cropExerciseCanvasFromPdf === "function"){
-    return cropExerciseCanvasFromPdf(exercise).catch(function(error){
-      console.warn("NOAM CROP HIGH RES FALLBACK:", error);
+  return ensurePdfDocumentForCrop()
+    .catch(function(){ return null; })
+    .then(function(){
+      if (typeof pdfDocument !== "undefined" && pdfDocument && typeof cropExerciseCanvasFromPdf === "function"){
+        return cropExerciseCanvasFromPdf(exercise).catch(function(error){
+          console.warn("NOAM CROP HIGH RES FALLBACK:", error);
+          return cropExerciseCanvasFromView(exercise);
+        });
+      }
       return cropExerciseCanvasFromView(exercise);
     });
-  }
-  return cropExerciseCanvasFromView(exercise);
 }
 
 function cropExerciseCanvasFromView(exercise){
@@ -5500,11 +5605,27 @@ function getExerciseAnalysis(exercise){
   // This cache is already scoped to the PDF, and stores unmodified analysis.
   var imageKey=exercise.requiresVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
   var cachedImage=imageKey&&analysisCache[imageKey];
-  var request=cachedImage?Promise.resolve({ok:true,analysis:cachedImage}):cropExerciseImage(exercise)
-    .then(function(imageDataUrl){
-      return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
-    });
-  return request
+  function requestVisionAnalysis(allowCachedImage){
+    return ensurePdfDocumentForCrop()
+      .catch(function(){ return null; })
+      .then(function(){
+        if (allowCachedImage && cachedImage){
+          return {ok:true,analysis:cachedImage};
+        }
+        return cropExerciseImage(exercise).then(function(imageDataUrl){
+          return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
+        });
+      });
+  }
+  return requestVisionAnalysis(true)
+    .catch(function(error){
+      if (isBotProtectionError(error)){ throw error; }
+      // One recovery pass after ensuring the crop document (covers clean-view races).
+      console.warn("NOAM VISION RETRY AFTER CROP DOC:", exercise.id, error);
+      cachedImage=null;
+      pdfCropLoadPromise=null;
+      return requestVisionAnalysis(false);
+    })
     .then(function(result){
       if (!result||!result.ok||!result.analysis){ throw new Error("vision unavailable"); }
       var analysis=result.analysis;
@@ -5527,10 +5648,55 @@ function getExerciseAnalysis(exercise){
       if (isBotProtectionError(error)){ throw error; }
       // These manifests deliberately carry no guessed OCR transcription.
       // The solver must receive the actual worksheet image analysis.
-      if (exercise.requiresVision){throw new Error("לא הצלחנו לקרוא את תמונת השאלה. נסו שוב בעוד רגע.");}
+      if (exercise.requiresVision){
+        var visionError=new Error(
+          "לא הצלחנו לקרוא את תמונת השאלה. אפשר לנסות שוב — בלי לנחש את תוכן השאלה."
+        );
+        visionError.code="QUESTION_IMAGE_UNREADABLE";
+        visionError.cause=error;
+        throw visionError;
+      }
       console.warn("NOAM VISION FALLBACK:",exercise.id,error);
       analysisCache[exercise.id]=fallback;saveNoamState();return fallback;
     });
+}
+
+function clearExerciseVisionCache(exercise){
+  if (!exercise){ return; }
+  delete analysisCache[exercise.id];
+  var imageKey=exercise.requiresVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  if (imageKey){ delete analysisCache[imageKey]; }
+  delete exercisePreviewCache[exercise.id];
+  pdfCropLoadPromise=null;
+}
+
+function retryLastNoamHelp(){
+  if (!selectedExercise||busy){ return; }
+  var thread=exerciseThread(selectedExercise.id);
+  // Drop failed assistant + matching user turn so retry does not stack dead-ends.
+  if (thread.messages.length&&thread.messages[thread.messages.length-1].answerError){
+    thread.messages.pop();
+  }
+  var lastUser=null;
+  if (thread.messages.length&&thread.messages[thread.messages.length-1].role==="user"){
+    lastUser=thread.messages.pop();
+  }
+  if (!lastUser){ return; }
+  clearExerciseVisionCache(selectedExercise);
+  var kind=lastUser.kind||"";
+  if (/^רמז/.test(kind)){
+    thread.hintIndex=Math.max(0, thread.hintIndex-1);
+    saveNoamState();
+    askNoam("hint","תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי.");
+    return;
+  }
+  if (kind==="הסבר כללי"){
+    saveNoamState();
+    askNoam("overview","תן לי הסבר כללי קצר על הרעיון הדרוש כאן, בלי לפתור ובלי לגלות את התשובה.");
+    return;
+  }
+  saveNoamState();
+  askNoam("free_question", String(lastUser.text||"").trim());
 }
 
 function noamGeometryContext(text){

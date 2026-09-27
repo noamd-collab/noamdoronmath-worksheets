@@ -12,17 +12,24 @@ import {
 } from '../src/lib/blogSitemap';
 import { GET } from '../src/pages/sitemap-blog.xml.ts';
 
+/** Bare archive paths plus crawlable pagination pages. */
 const ARCHIVE_LOCS = [
   'https://www.noamdoronmath.co.il/blog',
+  'https://www.noamdoronmath.co.il/blog?page=2',
+  'https://www.noamdoronmath.co.il/blog?page=3',
   'https://www.noamdoronmath.co.il/blog/categories/elementary-math',
   'https://www.noamdoronmath.co.il/blog/categories/middle-school-math',
+  'https://www.noamdoronmath.co.il/blog/categories/middle-school-math?page=2',
   'https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents',
 ];
 
 const ARCHIVE_LASTMOD: Record<string, string> = {
   'https://www.noamdoronmath.co.il/blog': '2026-09-25',
+  'https://www.noamdoronmath.co.il/blog?page=2': '2026-09-25',
+  'https://www.noamdoronmath.co.il/blog?page=3': '2026-09-25',
   'https://www.noamdoronmath.co.il/blog/categories/elementary-math': '2026-09-08',
   'https://www.noamdoronmath.co.il/blog/categories/middle-school-math': '2026-09-19',
+  'https://www.noamdoronmath.co.il/blog/categories/middle-school-math?page=2': '2026-09-19',
   'https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents': '2026-09-08',
 };
 
@@ -60,23 +67,25 @@ function assertWellFormedXml(xml: string): void {
 }
 
 describe('blog sitemap /sitemap-blog.xml', () => {
-  it('lists 64 production URLs: 60 posts and 4 archives, no duplicates', () => {
+  it('lists 67 production URLs: 60 posts and 7 archive/pagination pages, no duplicates', () => {
     const entries = listBlogSitemapEntries();
     const locs = entries.map((entry) => entry.loc);
-    assert.equal(entries.length, 64);
-    assert.equal(new Set(locs).size, 64);
+    assert.equal(entries.length, 67);
+    assert.equal(new Set(locs).size, 67);
 
-    assert.deepEqual(locs.slice(0, 4), ARCHIVE_LOCS);
-    assert.deepEqual(
-      [...BLOG_ARCHIVE_M26_PATHS].map((path) => `${BLOG_SITEMAP_ORIGIN}${path}`),
-      ARCHIVE_LOCS
-    );
+    assert.deepEqual(locs.slice(0, ARCHIVE_LOCS.length), ARCHIVE_LOCS);
+    for (const path of BLOG_ARCHIVE_M26_PATHS) {
+      assert.ok(
+        locs.includes(`${BLOG_SITEMAP_ORIGIN}${path}`),
+        `missing archive base ${path}`
+      );
+    }
 
     const postLocs = BLOG_POST_SERVED_PATHS.map(
       (path) => `${BLOG_SITEMAP_ORIGIN}${decodeURIComponent(path)}`
     );
     assert.equal(postLocs.length, 60);
-    assert.deepEqual(locs.slice(4), postLocs);
+    assert.deepEqual(locs.slice(ARCHIVE_LOCS.length), postLocs);
 
     const posts = listServedBlogPosts();
     assert.equal(posts.length, 60);
@@ -112,7 +121,7 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     }
   });
 
-  it('renders valid XML with 64 locs and rejects a reserved sitemap filename', () => {
+  it('renders valid XML with 67 locs and rejects a reserved sitemap filename', () => {
     assert.equal(BLOG_SITEMAP_PATH, '/sitemap-blog.xml');
     assert.equal(BLOG_SITEMAP_PATH.endsWith('-sitemap.xml'), false);
     assert.notEqual(BLOG_SITEMAP_PATH, '/sitemap.xml');
@@ -137,11 +146,11 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     const xml = renderBlogSitemapXml();
     assertWellFormedXml(xml);
     const locs = [...xml.matchAll(/<loc>([^<]*)<\/loc>/g)].map((match) => match[1]);
-    assert.equal(locs.length, 64);
-    assert.equal(new Set(locs).size, 64);
+    assert.equal(locs.length, 67);
+    assert.equal(new Set(locs).size, 67);
     assert.equal(locs.every((loc) => loc.startsWith(`${BLOG_SITEMAP_ORIGIN}/`)), true);
-    assert.equal((xml.match(/<url>/g) || []).length, 64);
-    assert.equal((xml.match(/<lastmod>/g) || []).length, 64);
+    assert.equal((xml.match(/<url>/g) || []).length, 67);
+    assert.equal((xml.match(/<lastmod>/g) || []).length, 67);
   });
 
   it('GET returns the same XML as application/xml', async () => {
