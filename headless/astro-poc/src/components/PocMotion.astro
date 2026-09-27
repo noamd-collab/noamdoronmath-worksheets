@@ -79,9 +79,93 @@
       pending.forEach(function (el) { io.observe(el); });
     }
 
+    function revealDataAttrs() {
+      var nodes = document.querySelectorAll('[data-pop], [data-draw]');
+      if (!nodes.length) return;
+      function finish(el) {
+        el.classList.add('is-revealed');
+        el.style.opacity = '1';
+        el.style.transform = '';
+      }
+      if (!motionAllowed()) {
+        Array.prototype.forEach.call(nodes, finish);
+        return;
+      }
+      Array.prototype.forEach.call(nodes, function (el) {
+        var delay = parseInt(el.getAttribute('data-pop') || el.getAttribute('data-draw') || '0', 10) || 0;
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                if (!e.isIntersecting) return;
+                setTimeout(function () {
+                  el.animate(
+                    [
+                      { opacity: 0, transform: 'translateY(8px)' },
+                      { opacity: 1, transform: 'none' },
+                    ],
+                    { duration: 520, easing: 'cubic-bezier(.2,.8,.3,1.2)', fill: 'forwards' }
+                  );
+                  finish(el);
+                }, delay);
+                io.unobserve(el);
+              });
+            },
+            { threshold: 0.2 }
+          );
+          io.observe(el);
+        } else {
+          finish(el);
+        }
+      });
+      setTimeout(function () {
+        Array.prototype.forEach.call(nodes, function (el) {
+          if (!el.classList.contains('is-revealed')) finish(el);
+        });
+      }, 2500);
+    }
+
+    function logoWiggle() {
+      var logo = document.querySelector('[data-logo-brand] .site-brand__logo');
+      if (!logo || !motionAllowed()) return;
+      function play() {
+        if (document.hidden || !motionAllowed()) return;
+        logo.animate(
+          [
+            { transform: 'translateY(-10px) rotate(-6deg) scale(1.06, 0.96)' },
+            { transform: 'rotate(4deg) scale(0.96, 1.04)' },
+            { transform: 'rotate(-2deg)' },
+            { transform: 'none' },
+          ],
+          { duration: 800, easing: 'ease-in-out' }
+        );
+      }
+      // Landing bounce once
+      logo.animate(
+        [
+          { transform: 'translateY(-40px) rotate(-12deg) scale(0.7)' },
+          { transform: 'translateY(4px) rotate(3deg) scale(1.05)', offset: 0.6 },
+          { transform: 'none' },
+        ],
+        { duration: 900, easing: 'cubic-bezier(.3,1.3,.5,1)' }
+      );
+      setInterval(play, 7000);
+      var brand = logo.closest('[data-logo-brand]');
+      if (brand) {
+        brand.addEventListener('mouseenter', play);
+        brand.addEventListener('click', play);
+      }
+    }
+
+    function boot() {
+      setup();
+      revealDataAttrs();
+      logoWiggle();
+    }
+
     if (document.readyState === 'loading')
-      document.addEventListener('DOMContentLoaded', setup, { once: true });
-    else setup();
+      document.addEventListener('DOMContentLoaded', boot, { once: true });
+    else boot();
 
     // Hover re-draw — like the live site's hover-triggered SMIL. Restart the
     // draw-in animation when the pointer enters a line-art strip or the home
