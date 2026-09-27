@@ -32,10 +32,10 @@
     },
     {
       id:"power",term:"חזקה",aliases:["חזקה","חזקות","בסיס החזקה","מעריך החזקה"],grades:[7,8,9],kind:"מושג",
-      short:"כתיבה מקוצרת של כפל חוזר של אותו גורם.",
-      detail:"בביטוי aⁿ המספר a הוא הבסיס ו־n הוא המעריך. המעריך קובע כמה פעמים הבסיס מופיע כגורם.",
-      example:"3⁴ = 3×3×3×3.",prerequisite:"כפל וסדר פעולות חשבון.",
-      question:"מה ההבדל בין בסיס החזקה לבין המעריך?"
+      short:"כתיבה מקוצרת לכפל חוזר של אותו גורם; ההגדרה מתרחבת גם למעריך שלם.",
+      detail:"בביטוי aⁿ המספר a הוא הבסיס ו־n הוא המעריך. כש־n מספר טבעי, המעריך קובע כמה פעמים הבסיס מופיע כגורם. ההגדרה מתרחבת למעריך שלם: a⁰ = 1 ו־a⁻ⁿ = 1/aⁿ (כאשר a ≠ 0).",
+      example:"3⁴ = 3×3×3×3; וגם 2⁻³ = 1/2³.",prerequisite:"כפל וסדר פעולות חשבון.",
+      question:"מה ההבדל בין בסיס החזקה לבין המעריך, ומה קורה כשהמעריך שלילי?"
     },
     {
       id:"square-root",term:"שורש ריבועי",aliases:["שורש ריבועי","שורשים ריבועיים","שורש"],grades:[7,8,9],kind:"מושג",
@@ -493,6 +493,13 @@
       question:"איך יודעים אילו זוויות הן זוויות הבסיס?"
     },
     {
+      id:"equilateral",term:"משולש שווה־צלעות",aliases:["משולש שווה־צלעות","משולש שווה-צלעות","משולש שווה צלעות","שווה־צלעות","שווה-צלעות","שווה צלעות"],grades:[7,8,9],kind:"הגדרה ומשפט",
+      short:"משולש שכל שלוש צלעותיו שוות; כל זוויותיו שוות ל־60°.",
+      detail:"במשולש שווה־צלעות כל הצלעות שוות וכל הזוויות שוות. מסכום הזוויות במשולש נובע שכל זווית היא 60°.",
+      example:"אם AB=BC=CA, אז ∠A=∠B=∠C=60°.",prerequisite:"צלעות וזוויות במשולש וסכום זוויות.",
+      question:"למה במשולש שווה־צלעות כל זווית היא 60°?"
+    },
+    {
       id:"right-angle",term:"זווית ישרה",aliases:["זווית ישרה","זוויות ישרות","הזווית הישרה"],grades:[7,8,9],kind:"הגדרה",
       short:"זווית שמידתה 90°.",
       detail:"זווית ישרה מסומנת לעיתים בריבוע קטן ליד הקודקוד. אין לבלבל בינה לבין קו ישר (180°) או משולש ישר־זווית.",
@@ -609,6 +616,19 @@
     return true;
   }
 
+  // "ביחס ל…" is positional Hebrew ("with respect to"), not the numeric ratio concept.
+  // Keep bare "יחס" / "היחס" / "יחס בין…" linkable.
+  function contextAllowsMatch(entry,source,index,end){
+    if(!entry||entry.id!=="ratio"){return true;}
+    var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
+    if(!/(^|ו)ביחס$/.test(matched)){return true;}
+    var after=String(source||"").slice(end);
+    if(/^[\s\u00a0\u200e\u200f\u202a-\u202e]*[־\-\u2010-\u2015\u2212]?[\s\u00a0\u200e\u200f\u202a-\u202e]*ל/.test(after)){
+      return false;
+    }
+    return true;
+  }
+
   function eligible(entry,grade){
     var number=gradeNumber(grade);
     return !entry.grades||!entry.grades.length||entry.grades.indexOf(number)!==-1;
@@ -645,7 +665,7 @@
         var leftOk=boundaryFree(source,index,false);
         var rightOk=boundaryFree(source,end,true);
         var free=!occupied.some(function(range){return index<range.end&&end>range.start;});
-        if(leftOk&&rightOk&&free){
+        if(leftOk&&rightOk&&free&&contextAllowsMatch(candidate.entry,source,index,end)){
           occupied.push({start:index,end:end});
           if(!seen[candidate.entry.id]){
             found.push({start:index,end:end,id:candidate.entry.id,entry:candidate.entry,text:source.slice(index,end)});

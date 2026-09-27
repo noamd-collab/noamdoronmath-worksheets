@@ -96,6 +96,62 @@ test("compound right-triangle and hyphenated phrases do not fall back to bare li
   assert.deepEqual(glossary.findTerms("הזווית הישרה בריבוע", 9).map(m => m.id), ["right-angle", "square"]);
 });
 
+test("ביחס ל is positional and does not link the numeric ratio concept", () => {
+  const s06 =
+    "שימו לב למיקום של הקודקוד A במשולש השמאלי – באיזה פינה הוא נמצא ביחס לצלע התחתונה?";
+  assert.equal(
+    glossary.findTerms(s06, 8).some((m) => m.id === "ratio"),
+    false
+  );
+  assert.equal(glossary.findTerms("ביחס לצלע", 8).some((m) => m.id === "ratio"), false);
+  assert.equal(glossary.findTerms("וביחס לחותך AB", 9).some((m) => m.id === "ratio"), false);
+  // Legitimate numeric-ratio language must still link.
+  assert.deepEqual(glossary.findTerms("יחס בין אורכים", 8).map((m) => m.id), ["ratio"]);
+  assert.deepEqual(glossary.findTerms("היחס 6:9", 8).map((m) => m.id), ["ratio"]);
+  assert.ok(glossary.findTerms("יחס הדמיון", 9).some((m) => m.id === "ratio" || m.id === "similarity"));
+});
+
+test("equilateral compound with maqaf and ב prefix links as one unit", () => {
+  assert.deepEqual(
+    glossary.findTerms("במשולש שווה־צלעות", 9).map((m) => ({ id: m.id, text: m.text })),
+    [{ id: "equilateral", text: "במשולש שווה־צלעות" }]
+  );
+  assert.deepEqual(
+    glossary.findTerms("משולש שווה-צלעות", 9).map((m) => m.id),
+    ["equilateral"]
+  );
+  assert.deepEqual(
+    glossary.findTerms("שווה־צלעות", 9).map((m) => m.id),
+    ["equilateral"]
+  );
+  const s07 =
+    "האם אתה זוכר מהו הערך של כל זווית במשולש שווה־צלעות?";
+  assert.equal(
+    glossary.findTerms(s07, 9).some((m) => m.id === "triangle" && m.text === "במשולש"),
+    false
+  );
+  assert.ok(glossary.findTerms(s07, 9).some((m) => m.id === "equilateral"));
+});
+
+test("power detail covers integer exponents including zero and negative", () => {
+  const power = glossary.get("power");
+  assert.match(power.detail, /מעריך שלם/);
+  assert.match(power.detail, /a\u2070\s*=\s*1|a⁰\s*=\s*1/);
+  assert.match(power.detail, /a\u207b|a⁻/);
+  assert.match(power.detail, /a\s*≠\s*0|a ≠ 0/);
+  assert.doesNotMatch(power.detail, /^בביטוי aⁿ המספר a הוא הבסיס ו־n הוא המעריך\. המעריך קובע כמה פעמים הבסיס מופיע כגורם\.$/);
+});
+
+test("פינה glossary text labels side vs vertex clearly", () => {
+  const entry = glossary.get("curriculum-de3686967d");
+  assert.ok(entry);
+  assert.match(entry.short, /צלע:/);
+  assert.match(entry.short, /קודקוד \(פינה\):/);
+  assert.match(entry.detail, /קודקוד \(פינה\) הוא הנקודה/);
+  assert.match(entry.detail, /לא הקו עצמו/);
+  assert.ok(glossary.findTerms("באיזה פינה", 8).some((m) => m.id === "curriculum-de3686967d"));
+});
+
 test("Hebrew word boundaries avoid highlighting a term inside an unrelated word", () => {
   assert.equal(glossary.findTerms("הריבועית", 9, 6).some(match => match.id === "square"), false);
   assert.equal(glossary.findTerms("ריבוע", 9, 6)[0].id, "square");
