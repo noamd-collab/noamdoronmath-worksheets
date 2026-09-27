@@ -2183,8 +2183,8 @@ textarea:focus{
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20260921-constructions1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
-<script src="noam-glossary-curriculum.js?v=20260927-concepts2"></script>
-<script src="noam-glossary.js?v=20260927-concepts2"></script>
+<script src="noam-glossary-curriculum.js?v=20260927-concepts3"></script>
+<script src="noam-glossary.js?v=20260927-concepts3"></script>
 <script>
 (function(){
 
@@ -5718,6 +5718,37 @@ function noamGeometryContext(text){
   return /גאומטר|גיאומטר|משולש|מרובע|זווית|מקביל|מאונך|חפיפ|דמיון|פיתגורס|טרפז|מעוין|מלבן|ריבוע/i.test(String(text||""));
 }
 
+function noamSignedNumberContext(text){
+  return /מספר(?:ים)?\s+מכוונ|ערך\s+מוחלט|סימנים\s+שונים|מספר(?:ים)?\s+שלילי|חיבור\s+(?:וחיסור\s+)?מספרים|ישר\s+המספרים|ציר\s+המספרים/i.test(String(text||""));
+}
+
+/* Focused rewrite for ambiguous different-sign addition language.
+   Does NOT blanket-replace גדול/קטן outside this signed-add rule phrasing. */
+function noamClarifySignedAddLanguage(answer){
+  var text=String(answer||"");
+  if (!text){return text;}
+  var ruleCue=/סימנים\s+שונים|חיבור\s+(?:של\s+)?מספרים|מספרים\s+(?:בעלי\s+)?סימנים|הערך\s+הקטן\s+מהגדול|הסימן\s+של\s+הגדול/i.test(text);
+  if (!ruleCue){return text;}
+  if (/ערך(?:ים)?\s+מוחלט|\|/i.test(text)){return text;}
+  text=text.replace(
+    /חסר(?:ים)?\s+את\s+הערך\s+הקטן\s+מהגדול(?:\s+יותר)?/gi,
+    "מחסרים את הערך המוחלט הקטן מהגדול"
+  );
+  text=text.replace(
+    /שמור(?:ו|י)?\s+על\s+הסימן\s+של\s+הגדול(?:\s+יותר)?/gi,
+    "לוקחים את הסימן של המספר בעל הערך המוחלט הגדול"
+  );
+  text=text.replace(
+    /(?:^|[^\u0590-\u05FF])הסימן\s+של\s+הגדול(?:\s+יותר)?(?!\s+ערך)/gi,
+    function(match){
+      var prefix=match.charAt(0);
+      var he=/[\u0590-\u05FF]/.test(prefix)?"":prefix;
+      return he+"הסימן של המספר בעל הערך המוחלט הגדול";
+    }
+  );
+  return text;
+}
+
 function noamVisualNeed(studentMessage,answer,helpKind,hintIndex,topic){
   var local=window.NoamLocalVisual;
   if (!local){return false;}
@@ -6064,14 +6095,23 @@ function noamDidacticResponse(exercise,helpKind,hintIndex,studentMessage,progres
   }
 }
 
-function noamSolverMessage(studentMessage,thread,topic,guidePrompt){
+function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis){
   var budget=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
   var current=String(studentMessage||"").trim();
-  var geometry=noamGeometryContext(topic+" "+current+" "+noamRecentThreadText(thread,220));
+  var recent=noamRecentThreadText(thread,220);
+  var analysisText=[
+    analysis&&analysis.transcription,
+    analysis&&analysis.problem_statement,
+    analysis&&analysis.math_content
+  ].filter(Boolean).join(" ");
+  var geometry=noamGeometryContext(topic+" "+current+" "+recent);
+  var signed=noamSignedNumberContext(topic+" "+current+" "+recent+" "+analysisText);
   var visual=window.NoamLocalVisual&&window.NoamLocalVisual.wantsVisualSupport&&window.NoamLocalVisual.wantsVisualSupport(current);
   var generalGuard=geometry
     ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך. אל תערבב זוויות מתחלפות עם זוויות מתאימות — בדוק באיזה צד של החותך נמצאת כל זווית. ברמז ראשון כוון לחשיבה בלי לחשוף את הצעד המרכזי; ברמזים הבאים הוסף צעד קטן בלי פתרון מלא ובלי נתונים מומצאים."
-    : "";
+    : (signed
+      ? "בחיבור מספרים בעלי סימנים שונים השוו ערכים מוחלטים במפורש — לא 'הגדול/הקטן' כמספרים על הציר. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול. אל תחשפו את התוצאה המספרית."
+      : "");
   var verified=String(guidePrompt||"");
   var guard=verified||generalGuard;
   if (visual){guard+=verified?" ציין בדיוק מה לסמן בשרטוט.":" התלמיד מתקשה בזיהוי חזותי. ציין מה לסמן; אל תבקש ממנו לנחש. האתר יציג שרטוט לצד התשובה, לכן אל תאמר שאינך יכול לצייר.";}
@@ -6490,7 +6530,7 @@ function askNoam(helpKind,studentMessage){
   getExerciseAnalysis(exercise)
     .then(function(analysis){
       requestAnalysis=analysis;
-      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt);
+      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt,analysis);
       requestPayload={
         exerciseId:exercise.id,
         grade:g,
@@ -6509,6 +6549,7 @@ function askNoam(helpKind,studentMessage){
     })
     .then(function(result){
       if (!result||!result.ok||!result.answer){ throw new Error((result&&result.error)||"נועם AI לא זמין כרגע."); }
+      if (result&&result.answer){result.answer=noamClarifySignedAddLanguage(result.answer);}
       var elapsed=Date.now()-started;
       return new Promise(function(resolve){setTimeout(function(){resolve(result);},Math.max(0,MIN_WAIT-elapsed));});
     })
