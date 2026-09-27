@@ -1930,6 +1930,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             {Array.from({ length: 10 }, (_, c) => (
               <rect class="cl-fill-a" x={201 + c * 14} y="81" width="12" height="12" />
             ))}
+            <path class="cl-line" d="M202 82 H338 V92" />
             <text class="cl-t cl-num" x="348" y="92">1/10</text>
           </g>
           <rect class="cl-stroke-a" data-el="cell" x="200" y="80" width="14" height="14" style="fill:none;opacity:0" />
@@ -1944,8 +1945,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <text class="cl-t cl-num" x="90" y="196" text-anchor="middle">0</text>
           <text class="cl-t cl-num" x="450" y="196" text-anchor="middle">1</text>
           <g data-el="quarters" style="opacity:0">
-            <line class="cl-stroke-a" x1="180" y1="150" x2="180" y2="190" />
-            <line class="cl-stroke-a" x1="360" y1="150" x2="360" y2="190" />
+            <line class="cl-stroke-a" x1="180" y1="158" x2="180" y2="182" />
+            <line class="cl-stroke-a" x1="360" y1="158" x2="360" y2="182" />
             <text class="cl-t cl-num cl-small" x="180" y="142" text-anchor="middle">1/4</text>
             <text class="cl-t cl-num cl-small" x="360" y="142" text-anchor="middle">3/4</text>
           </g>
@@ -1996,6 +1997,12 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <circle data-el="c2" cx="280" cy="210" r="4" fill="#1e3a5f" />
           <circle cx="180" cy="110" r="4" fill="#1e3a5f" />
           <circle cx="180" cy="210" r="4" fill="#1e3a5f" />
+          <g data-el="sides" style="opacity:0">
+            <text class="cl-t cl-num" x="270" y="100" text-anchor="middle">1</text>
+            <text class="cl-t cl-num" x="372" y="164">2</text>
+            <text class="cl-t cl-num" x="270" y="228" text-anchor="middle">3</text>
+            <text class="cl-t cl-num" x="168" y="164" text-anchor="end">4</text>
+          </g>
         </svg>
       )
     }
@@ -2003,7 +2010,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'area-x4' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <rect class="cl-line" data-el="sq" x="180" y="90" width="56" height="56" />
-          <rect class="cl-stroke-a" x="180" y="90" width="56" height="56" style="fill:none" />
+          <rect class="cl-dash-strong" x="180" y="90" width="56" height="56" />
           <line class="cl-line" data-el="mv" x1="236" y1="90" x2="236" y2="202" style="opacity:0" />
           <line class="cl-line" data-el="mh" x1="180" y1="146" x2="292" y2="146" style="opacity:0" />
           <text class="cl-t cl-num" data-el="n1" x="208" y="124" text-anchor="middle">1</text>
@@ -2577,7 +2584,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'cyl-stack' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">V = B·h = 4πr²</span>
+          <span data-fx="0">V = B·h = 4B</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2616,8 +2623,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
     {
       variant === 'area-x4' && (
-        <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0"><span dir="rtl">צלע</span><span class="cl-num"> × 2</span><span dir="rtl">, שטח</span><span class="cl-num"> × 4</span></span>
+        <p class="concept-loop__formula" dir="rtl">
+          <span data-fx="0">צלע × <span class="cl-num" dir="ltr">2</span>, שטח × <span class="cl-num" dir="ltr">4</span></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
