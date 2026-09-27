@@ -2052,10 +2052,13 @@ const MAX_LAPS = 4;
 
 function motionOff(): boolean {
   const html = document.documentElement;
+  const motionAttr = html.getAttribute('data-motion');
   return (
     window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
     html.classList.contains('noam-a11y-motion') ||
-    html.classList.contains('nd-motion-off')
+    html.classList.contains('nd-motion-off') ||
+    motionAttr === 'כבוי' ||
+    motionAttr === 'off'
   );
 }
 

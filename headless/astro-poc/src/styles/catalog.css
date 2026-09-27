@@ -4261,6 +4261,7 @@ body {
   opacity: 0;
 }
 
+@media (min-width: 1100px) {
   .home-hero {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: 36px;
