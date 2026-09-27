@@ -27,7 +27,13 @@ const homeJsonLd = homePageJsonLd();
 
     <section class="home-hero" aria-labelledby="home-title">
       <HeroIllustrations />
-      <div class="home-hero__copy">
+      {/* Demo column: keep HeroLoop + ConceptLoop pool; pastel frame per design. */}
+      <div class="home-hero__demo" data-pop="80">
+        <div class="home-hero__demo-panel">
+          <HeroLoop />
+        </div>
+      </div>
+      <div class="home-hero__copy" data-pop="0">
         <p class="home-hero__eyebrow">{home.hero.eyebrow}</p>
         <h1 class="home-hero__title" id="home-title">
           <span class="home-hero__title-line">{home.hero.titleLine}</span>
@@ -42,13 +48,11 @@ const homeJsonLd = homePageJsonLd();
           >
             {home.hero.searchCta.label}
           </a>
-          <a class="cta cta--elem" href="/worksheets?grade=1">יסודי א׳–ו׳</a>
-          <a class="cta cta--mid" href="/worksheets?grade=7">חטיבה ז׳–ט׳</a>
+          <a class="cta cta--elem" href="/worksheets?grade=1" data-peek="elem">יסודי א׳–ו׳</a>
+          <a class="cta cta--mid" href="/worksheets?grade=7" data-peek="mid">חטיבה ז׳–ט׳</a>
         </div>
       </div>
-      {/* Hero film: SSR default triangle; pre-paint client swap from pool (no server random). */}
-      <HeroLoop />
-      {/* Absolute edge marginalia — never a flex strip. */}
+      {/* Absolute edge marginalia — never a flex strip. Keep PlaneFlight + doodles. */}
       <HomeSectionDoodle
         seed="home-hero"
         preferred={['kite', 'curious-cat', 'snail', 'cube-plant']}
@@ -74,7 +78,13 @@ const homeJsonLd = homePageJsonLd();
         {
           home.grades.map((g) => (
             <li>
-              <a class="home-grade" href={g.href} data-home-grade={g.grade}>
+              <a
+                class="home-grade"
+                href={g.href}
+                data-home-grade={g.grade}
+                data-peek={`g:${g.grade}`}
+                data-pop={String(40 + g.grade * 40)}
+              >
                 <span class="home-grade__label">{g.label}</span>
                 {g.ai && g.aiLabel && (
                   <span class="home-grade__ai">{g.aiLabel}</span>
