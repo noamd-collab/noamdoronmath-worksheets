@@ -1,9 +1,12 @@
 ---
 import '../styles/catalog.css';
+import '../styles/design-v2.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteDoodles from '../components/SiteDoodles.astro';
 import DoodleRandomize from '../components/DoodleRandomize.astro';
 import PocMotion from '../components/PocMotion.astro';
+import RevealBoot from '../components/RevealBoot.astro';
+import LinkPeek from '../components/LinkPeek.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { loadHomePage } from '../lib/homePage';
 import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
@@ -60,7 +63,7 @@ const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap"
       rel="stylesheet"
     />
     {/* Hide absolute doodles until client layout pick — no CLS */}
@@ -79,6 +82,8 @@ const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
         hover re-draw; honors prefers-reduced-motion, the accessibility
         menu's noam-a11y-motion class, and fine-pointer devices. */}
     <PocMotion />
+    <RevealBoot />
+    <LinkPeek />
     <!-- Production entry-gate copy (ndGate); privacy → combined a11y page. No invented legal text. -->
     <script src="/nd-site-gate.js" defer></script>
     <script src="/noam-accessibility.js" defer></script>

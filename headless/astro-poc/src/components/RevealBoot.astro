@@ -1,0 +1,12 @@
+---
+/**
+ * Early js-anim flag + reveal scanner. SSR content stays visible without JS.
+ */
+---
+<script is:inline>
+  document.documentElement.classList.add('js-anim');
+</script>
+<script>
+  import { initReveal } from '../lib/reveal';
+  initReveal();
+</script>

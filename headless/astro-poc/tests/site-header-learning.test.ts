@@ -14,7 +14,9 @@ describe('site header learning link (HEADLESS-MIGRATION-15)', () => {
     const html = readFileSync(join(src, 'components', 'SiteHeader.astro'), 'utf8');
     assert.ok(html.includes('href="/learning.html"'));
     assert.ok(html.includes('הלמידה שלי'));
-    assert.ok(html.includes("navProps('learning')"));
+    // Design v2: dedicated learning CTA (desktop) + mobile nav twin; not navProps('learning').
+    assert.ok(html.includes('site-header__learn') || html.includes("navProps('learning')"));
+    assert.ok(html.includes("active === 'learning'") || html.includes("navProps('learning')"));
   });
 
   it('SiteHeader retains worksheets + expanded Harmony nav targets', () => {

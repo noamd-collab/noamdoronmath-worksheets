@@ -1,0 +1,10 @@
+---
+/**
+ * Client-only link peeks (role=tooltip). Not in SSR HTML body content.
+ * No DevNotice / ScrollDoodle (conflict decisions).
+ */
+---
+<script>
+  import { initLinkPeek } from '../lib/linkPeek';
+  initLinkPeek();
+</script>

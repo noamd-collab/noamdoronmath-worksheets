@@ -1,26 +1,27 @@
 /* Astro POC — clean premium notebook + toy-brick accents */
 
 :root {
-  --ink: #1a2b4a;
-  --navy: #1a2b4a;
-  --cobalt: #1e88e5;
-  --cobalt-dark: #1565c0;
-  --red: #e53935;
-  --red-dark: #c62828;
-  --yellow: #fdd835;
-  --green: #43a047;
+  /* Design v2 baseline tokens (design-v2.css may refine). WCAG AA for text on paper. */
+  --ink: #22305a;
+  --navy: #22305a;
+  --cobalt: #2a7c7a;
+  --cobalt-dark: #1e605e;
+  --red: #e5735c;
+  --red-dark: #a84434;
+  --yellow: #e6a534;
+  --green: #2e9d57;
   --accent: var(--cobalt);
   --accent-dark: var(--cobalt-dark);
-  --tint: #e8f3fc;
-  --paper: #f7f9fc;
-  /* Soft teal-warm notebook lines (not cool blue) — quiet texture on white cards */
-  --grid-soft: rgba(110, 132, 124, 0.11);
-  --muted: #5a6b82;
-  --ph: #8a9bb0;
+  --tint: #eaf4f3;
+  --paper: #fbfaf5;
+  --grid-soft: rgba(34, 48, 90, 0.065);
+  --muted: #4a5478;
+  --ph: #5a6588;
   --on-accent: #fff;
   --r-card: 18px;
-  --shadow-soft: 0 8px 24px rgba(26, 43, 74, 0.08);
-  --shadow-ink: transparent;
+  --shadow-soft: 4px 4px 0 rgba(34, 48, 90, 0.08);
+  --shadow-ink: 4px 4px 0 #e6a534;
+  --shell-max: 1200px;
 }
 
 /* Elementary: warmer playful accents */
@@ -3946,19 +3947,12 @@ body {
   }
 }
 
-/* Wide screens: use the width, and keep the header on the content grid */
+/* Wide screens: design v2 shell max 1200 */
 @media (min-width: 1600px) {
-  .site-header__inner {
-    max-width: 1320px;
-  }
-  .home-shell {
-    max-width: 1320px;
-  }
-  .site-footer {
-    max-width: 1320px;
-  }
+  .site-header__inner,
+  .home-shell,
   .wrap {
-    max-width: 1180px;
+    max-width: var(--shell-max, 1200px);
   }
 }
 

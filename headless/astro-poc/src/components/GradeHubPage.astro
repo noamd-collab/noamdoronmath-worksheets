@@ -90,6 +90,7 @@ const loopVariant =
             class:list={['grade-tab', s.grade === grade && 'is-current']}
             href={s.href}
             aria-current={s.grade === grade ? 'page' : undefined}
+            data-peek={`g:${s.grade}`}
           >
             כיתה {s.label}
           </a>
@@ -101,7 +102,7 @@ const loopVariant =
       <span class="grade-hub__siblings-label">{otherFamilyLabel}:</span>
       {
         otherFamilySiblings.map((s) => (
-          <a class="grade-tab" href={s.href}>
+          <a class="grade-tab" href={s.href} data-peek={`g:${s.grade}`}>
             כיתה {s.label}
           </a>
         ))
@@ -136,7 +137,13 @@ const loopVariant =
           )
         }
       </div>
-      {loopVariant && <ConceptLoop variant={loopVariant} />}
+      {
+        loopVariant && (
+          <div class="grade-hub__demo home-hero__demo-panel" data-pop="120">
+            <ConceptLoop variant={loopVariant} />
+          </div>
+        )
+      }
     </header>
     <LineArtDoodles variant="hub" />
 

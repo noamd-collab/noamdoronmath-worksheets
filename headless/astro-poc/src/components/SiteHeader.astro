@@ -20,6 +20,8 @@ function navProps(key: ActiveNavKey) {
     'aria-current': isActive ? ('page' as const) : undefined,
   };
 }
+
+const learnActive = active === 'learning';
 ---
 <div class="basad" lang="he" data-basad>בס״ד</div>
 <header class="site-header">
@@ -38,16 +40,31 @@ function navProps(key: ActiveNavKey) {
       <span class="nav-toggle__label">תפריט</span>
     </button>
     <nav class="site-nav" id="primary-nav" aria-label="ניווט ראשי" data-nav-panel>
-      <a {...navProps('home')} href="/">בית</a>
-      <a {...navProps('about')} href="/aboutus">אודותינו</a>
-      <a {...navProps('worksheets')} href="/worksheets">דפי עבודה</a>
-      <a {...navProps('blog')} href="/blog">בלוג</a>
-      <a {...navProps('tools')} href="/math-tools">תוספים</a>
-      <a {...navProps('highschool')} href="/high-school-math">
+      <a {...navProps('home')} href="/" data-peek="home">בית</a>
+      <a {...navProps('about')} href="/aboutus" data-peek="about">אודותינו</a>
+      <a {...navProps('worksheets')} href="/worksheets" data-peek="ws">דפי עבודה</a>
+      <a {...navProps('blog')} href="/blog" data-peek="blog">בלוג</a>
+      <a {...navProps('tools')} href="/math-tools" data-peek="tools">תוספים</a>
+      <a {...navProps('highschool')} href="/high-school-math" data-peek="hs">
         מתמטיקה לתיכון (חיצוני)
       </a>
-      <a {...navProps('learning')} href="/learning.html">הלמידה שלי</a>
+      <a
+        class:list={['site-nav__link', 'site-nav__learn-mobile', learnActive && 'is-active']}
+        href="/learning.html"
+        data-peek="learn"
+        aria-current={learnActive ? 'page' : undefined}
+      >
+        הלמידה שלי
+      </a>
     </nav>
+    <a
+      class:list={['site-header__learn', learnActive && 'is-active']}
+      href="/learning.html"
+      data-peek="learn"
+      aria-current={learnActive ? 'page' : undefined}
+    >
+      הלמידה שלי
+    </a>
   </div>
 </header>
 
@@ -80,5 +97,36 @@ function navProps(key: ActiveNavKey) {
     (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(function (e) {
       if (e.matches && isOpen()) setOpen(false);
     });
+  })();
+
+  // Logo land + periodic wiggle (honors motion-off flags).
+  (function () {
+    var brand = document.querySelector('.site-brand');
+    if (!brand) return;
+    function motionOk() {
+      var html = document.documentElement;
+      return (
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        !html.classList.contains('noam-a11y-motion') &&
+        !html.classList.contains('nd-motion-off') &&
+        !document.hidden
+      );
+    }
+    if (motionOk()) {
+      brand.classList.add('is-landing');
+      setTimeout(function () { brand.classList.remove('is-landing'); }, 950);
+    }
+    function wiggle() {
+      if (!motionOk()) return;
+      brand.classList.remove('is-wiggling');
+      void brand.offsetWidth;
+      brand.classList.add('is-wiggling');
+      setTimeout(function () { brand.classList.remove('is-wiggling'); }, 850);
+    }
+    setInterval(wiggle, 7000);
+    brand.addEventListener('mouseenter', function () {
+      if (window.matchMedia('(hover: hover)').matches) wiggle();
+    });
+    brand.addEventListener('click', wiggle);
   })();
 </script>
