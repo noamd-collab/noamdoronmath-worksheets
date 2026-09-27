@@ -1992,12 +1992,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'sq-stretch' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={ariaLabels[variant]}>
           <rect class="cl-line" data-el="box" x="180" y="110" width="100" height="100" />
-          <g data-el="sides" style="opacity:0">
-            <text class="cl-t cl-num" x="270" y="100" text-anchor="middle">1</text>
-            <text class="cl-t cl-num" x="372" y="164">2</text>
-            <text class="cl-t cl-num" x="270" y="228" text-anchor="middle">3</text>
-            <text class="cl-t cl-num" x="168" y="164" text-anchor="end">4</text>
-          </g>
+          <circle data-el="c1" cx="280" cy="110" r="4" fill="#1e3a5f" />
+          <circle data-el="c2" cx="280" cy="210" r="4" fill="#1e3a5f" />
+          <circle cx="180" cy="110" r="4" fill="#1e3a5f" />
+          <circle cx="180" cy="210" r="4" fill="#1e3a5f" />
         </svg>
       )
     }
@@ -2618,8 +2616,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
     {
       variant === 'area-x4' && (
-        <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">2 × 2 = 4</span>
+        <p class="concept-loop__formula" dir="ltr">
+          <span data-fx="0"><span dir="rtl">צלע</span><span class="cl-num"> × 2</span><span dir="rtl">, שטח</span><span class="cl-num"> × 4</span></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
