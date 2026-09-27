@@ -1405,8 +1405,9 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <polygon class="cl-line cl-fill-a" points="140,230 356,230 284,122 212,122" />
           <text class="cl-t cl-num" x="248" y="252" text-anchor="middle">6</text>
           <text class="cl-t cl-num" x="248" y="112" text-anchor="middle">2</text>
-          <line class="cl-dash" x1="140" y1="230" x2="140" y2="122" />
-          <text class="cl-t cl-num" data-el="lbl-h" x="112" y="180">3</text>
+          <line class="cl-dash" x1="212" y1="122" x2="212" y2="230" />
+          <path class="cl-line" d="M212 214 L228 214 L228 230" />
+          <text class="cl-t cl-num" data-el="lbl-h" x="224" y="208">3</text>
           <line class="cl-line cl-stroke-a" data-el="mid" x1="176" y1="176" x2="320" y2="176" pathLength="1" style="opacity:0" />
           <text class="cl-t cl-num cl-ok" data-el="lbl-m" x="330" y="180" style="opacity:0">4</text>
         </svg>
@@ -1438,16 +1439,16 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
               <path class="cl-stroke-a" d="M12 -2 L24 2 L12 6 Z" fill="#1e3a5f" />
             </g>
           ))}
-          <g data-el="b4" transform="translate(340 200)">
+          <g data-el="b4" transform="translate(380 200)">
             <ellipse class="cl-fill-c cl-line" cx="0" cy="0" rx="16" ry="11" />
             <path class="cl-line" d="M12 -2 L24 2 L12 6 Z" fill="#9a3412" />
           </g>
-          <g data-el="b5" transform="translate(410 200)">
+          <g data-el="b5" transform="translate(450 200)">
             <ellipse class="cl-fill-c cl-line" cx="0" cy="0" rx="16" ry="11" />
             <path class="cl-line" d="M12 -2 L24 2 L12 6 Z" fill="#9a3412" />
           </g>
           <text class="cl-t cl-num cl-ok" data-el="stay" x="180" y="270" style="opacity:0">4</text>
-          <text class="cl-t cl-num" data-el="gone" x="430" y="100" style="opacity:0">2</text>
+          <text class="cl-t cl-num" data-el="gone" x="470" y="96" text-anchor="middle" style="opacity:0">2</text>
         </svg>
       )
     }
