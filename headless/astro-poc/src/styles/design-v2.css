@@ -141,7 +141,7 @@ h3,
 }
 
 .site-nav {
-  display: flex;
+  /* Do not set display here — catalog owns mobile drawer display:none / [data-open]. */
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 6px;
@@ -225,10 +225,15 @@ h3,
   }
 
   .site-nav {
+    display: none; /* keep hamburger drawer closed until [data-open] */
     background: var(--paper);
     border: 2px solid var(--ink);
     border-radius: var(--r-card-lg);
     box-shadow: 6px 6px 0 rgba(34, 48, 90, 0.12);
+  }
+
+  .site-nav[data-open] {
+    display: flex;
   }
 
   .site-nav__link {
