@@ -1,0 +1,6 @@
+<script>
+  import { initExactReferenceMotion } from '../lib/exactReferenceMotion.js';
+  let motion = initExactReferenceMotion();
+  document.addEventListener('astro:before-swap', () => motion.destroy());
+  document.addEventListener('astro:page-load', () => { motion = initExactReferenceMotion(); });
+</script>

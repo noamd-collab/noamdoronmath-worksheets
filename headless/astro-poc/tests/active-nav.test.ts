@@ -4,6 +4,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { readFileSync } from 'node:fs';
+import { parse } from '@astrojs/compiler';
 import { normalizeNavPath, resolveActiveNav } from '../src/lib/activeNav';
 
 describe('M37 resolveActiveNav', () => {
@@ -49,12 +50,34 @@ describe('M37 resolveActiveNav', () => {
     assert.equal(resolveActiveNav('/worksheet-viewer-noam.html'), null);
   });
 
-  it('SiteHeader sets aria-current=page from active key (not hardcoded home)', () => {
+  it('SiteHeader sets aria-current=page only on the matching destination', async () => {
     const html = readFileSync('src/components/SiteHeader.astro', 'utf8');
     assert.ok(html.includes("resolveActiveNav"));
-    assert.ok(html.includes("'aria-current'"));
-    assert.ok(html.includes("navProps('about')"));
     assert.ok(!html.includes('activeNav="home"'));
+    const { ast } = await parse(html);
+    const anchors: any[] = [];
+    const visit = (node: any) => {
+      if (node.type === 'element' && node.name === 'a') anchors.push(node);
+      for (const child of node.children ?? []) visit(child);
+    };
+    visit(ast);
+    const destinations = {
+      home: '/', about: '/aboutus', worksheets: '/worksheets', blog: '/blog',
+      tools: '/math-tools', highschool: '/high-school-math', learning: '/learning.html',
+    };
+    for (const [key, href] of Object.entries(destinations)) {
+      const anchor = anchors.find(node =>
+        node.attributes.some((attr: any) => attr.name === 'href' && attr.value === href) &&
+        node.attributes.some((attr: any) => attr.name === 'aria-current'));
+      assert.ok(anchor, `missing route-aware anchor: ${href}`);
+      const current = anchor.attributes.find((attr: any) => attr.name === 'aria-current');
+      assert.equal(current.kind, 'expression');
+      const evaluate = new Function('active', `return (${current.value});`);
+      for (const active of [...Object.keys(destinations), null]) {
+        assert.equal(evaluate(active), active === key ? 'page' : undefined,
+          `${href} with active=${active}`);
+      }
+    }
   });
 
   it('SitePage / blog shells no longer force activeNav=home', () => {

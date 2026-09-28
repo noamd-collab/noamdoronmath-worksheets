@@ -14,9 +14,12 @@ describe('site header learning link (HEADLESS-MIGRATION-15)', () => {
     const html = readFileSync(join(src, 'components', 'SiteHeader.astro'), 'utf8');
     assert.ok(html.includes('href="/learning.html"'));
     assert.ok(html.includes('הלמידה שלי'));
-    // Design v2: dedicated learning CTA (desktop) + mobile nav twin; not navProps('learning').
-    assert.ok(html.includes('site-header__learn') || html.includes("navProps('learning')"));
-    assert.ok(html.includes("active === 'learning'") || html.includes("navProps('learning')"));
+    // Test the destination, accessible active state and label, not an old skin's
+    // CSS class/helper name. Active-state expressions are exercised in active-nav.
+    const learning = html.match(/<a\b([^>]*\bhref="\/learning\.html"[^>]*)>([\s\S]*?)<\/a>/);
+    assert.ok(learning, 'learning CTA is an anchor to the existing destination');
+    assert.match(learning[1], /aria-current=\{[^}]*active\s*===\s*'learning'[^}]*\}/);
+    assert.ok(learning[2].includes('הלמידה שלי'));
   });
 
   it('SiteHeader retains worksheets + expanded Harmony nav targets', () => {

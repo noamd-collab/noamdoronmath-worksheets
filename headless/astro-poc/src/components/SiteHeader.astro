@@ -1,132 +1,22 @@
 ---
-import SiteBrand from './SiteBrand.astro';
 import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
-
-interface Props {
-  /** Optional override; default derives from the request pathname. */
-  active?: ActiveNavKey | null;
-  compactBrand?: boolean;
-}
-
-const pathname = Astro.url.pathname;
-const active: ActiveNavKey | null =
-  Astro.props.active !== undefined ? Astro.props.active : resolveActiveNav(pathname);
-const { compactBrand = false } = Astro.props;
-
-function navProps(key: ActiveNavKey) {
-  const isActive = active === key;
-  return {
-    class: ['site-nav__link', isActive ? 'is-active' : undefined].filter(Boolean).join(' '),
-    'aria-current': isActive ? ('page' as const) : undefined,
-  };
-}
-
-const learnActive = active === 'learning';
+interface Props { active?: ActiveNavKey | null; compactBrand?: boolean; }
+const active=Astro.props.active !== undefined ? Astro.props.active : resolveActiveNav(Astro.url.pathname);
 ---
-<div class="basad" lang="he" data-basad>בס״ד</div>
-<header class="site-header">
-  <div class="site-header__inner">
-    <div class="site-header__brand">
-      <SiteBrand href="/" compact={compactBrand} />
+  <header class="exact-header" style="position:sticky;top:0;z-index:20;background:rgba(251,250,245,.92);backdrop-filter:blur(6px);border-bottom:2px solid #22305a;">
+    <div style="max-width:1200px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+      <a href="/" style="display:flex;align-items:center;gap:10px;">
+        <img data-exact-logo src="/design-exact/assets/logo.png" alt="נועם דורון מתמטיקה" style="height:68px;width:auto;display:block;transform-origin:30% 80%;">
+      </a>
+      <nav aria-label="ניווט ראשי" style="display:flex;gap:4px;flex-wrap:wrap;flex:1;font-weight:500;font-size:15px;">
+        <a aria-current={active === 'home' ? 'page' : undefined} data-peek="home" href="/" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-13">בית</a>
+        <a aria-current={active === 'about' ? 'page' : undefined} data-peek="about" href="/aboutus" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-14">אודותינו</a>
+        <a aria-current={active === 'worksheets' ? 'page' : undefined} data-peek="ws" href="/worksheets" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-15">דפי עבודה</a>
+        <a aria-current={active === 'blog' ? 'page' : undefined} data-peek="blog" href="/blog" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-16">בלוג</a>
+        <a aria-current={active === 'tools' ? 'page' : undefined} data-peek="tools" href="/math-tools" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-17">תוספים</a>
+        <a aria-current={active === 'highschool' ? 'page' : undefined} data-peek="hs" href="/high-school-math" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-18">מתמטיקה לתיכון ↗</a>
+      </nav>
+      <a aria-current={active === 'learning' ? 'page' : undefined} data-peek="learn" href="/learning.html" style="display:flex;align-items:center;gap:8px;padding:9px 18px;background:#fff;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:3px 3px 0 #22305a;color:#22305a;font-weight:700;font-size:15px;" data-exact-hover="exact-hover-19">הלמידה שלי</a>
+      <span style="font-size:12px;color:#5a6588;">בס״ד</span>
     </div>
-    <button
-      class="nav-toggle"
-      type="button"
-      aria-expanded="false"
-      aria-controls="primary-nav"
-      data-nav-toggle
-    >
-      <span class="nav-toggle__bars" aria-hidden="true"></span>
-      <span class="nav-toggle__label">תפריט</span>
-    </button>
-    <nav class="site-nav" id="primary-nav" aria-label="ניווט ראשי" data-nav-panel>
-      <a {...navProps('home')} href="/" data-peek="home">בית</a>
-      <a {...navProps('about')} href="/aboutus" data-peek="about">אודותינו</a>
-      <a {...navProps('worksheets')} href="/worksheets" data-peek="ws">דפי עבודה</a>
-      <a {...navProps('blog')} href="/blog" data-peek="blog">בלוג</a>
-      <a {...navProps('tools')} href="/math-tools" data-peek="tools">תוספים</a>
-      <a {...navProps('highschool')} href="/high-school-math" data-peek="hs">
-        מתמטיקה לתיכון (חיצוני)
-      </a>
-      <a
-        class:list={['site-nav__link', 'site-nav__learn-mobile', learnActive && 'is-active']}
-        href="/learning.html"
-        data-peek="learn"
-        aria-current={learnActive ? 'page' : undefined}
-      >
-        הלמידה שלי
-      </a>
-    </nav>
-    <a
-      class:list={['site-header__learn', learnActive && 'is-active']}
-      href="/learning.html"
-      data-peek="learn"
-      aria-current={learnActive ? 'page' : undefined}
-    >
-      הלמידה שלי
-    </a>
-  </div>
-</header>
-
-<script>
-  // Mobile nav toggle: aria-expanded, Esc/outside/resize close, focus moves.
-  (function () {
-    var toggle = document.querySelector('[data-nav-toggle]');
-    var panel = document.getElementById('primary-nav');
-    if (!toggle || !panel) return;
-    function isOpen() { return panel.hasAttribute('data-open'); }
-    function setOpen(open) {
-      toggle.setAttribute('aria-expanded', String(open));
-      if (open) {
-        panel.setAttribute('data-open', '');
-        var first = panel.querySelector('a');
-        if (first) first.focus();
-      } else {
-        panel.removeAttribute('data-open');
-        if (document.activeElement && panel.contains(document.activeElement)) toggle.focus();
-      }
-    }
-    toggle.addEventListener('click', function () { setOpen(!isOpen()); });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && isOpen()) setOpen(false);
-    });
-    document.addEventListener('click', function (e) {
-      if (isOpen() && !e.target.closest('.site-header')) setOpen(false);
-    });
-    var mq = window.matchMedia('(min-width: 768px)');
-    (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(function (e) {
-      if (e.matches && isOpen()) setOpen(false);
-    });
-  })();
-
-  // Logo land + periodic wiggle (honors motion-off flags).
-  (function () {
-    var brand = document.querySelector('.site-brand');
-    if (!brand) return;
-    function motionOk() {
-      var html = document.documentElement;
-      return (
-        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
-        !html.classList.contains('noam-a11y-motion') &&
-        !html.classList.contains('nd-motion-off') &&
-        !document.hidden
-      );
-    }
-    if (motionOk()) {
-      brand.classList.add('is-landing');
-      setTimeout(function () { brand.classList.remove('is-landing'); }, 950);
-    }
-    function wiggle() {
-      if (!motionOk()) return;
-      brand.classList.remove('is-wiggling');
-      void brand.offsetWidth;
-      brand.classList.add('is-wiggling');
-      setTimeout(function () { brand.classList.remove('is-wiggling'); }, 850);
-    }
-    setInterval(wiggle, 7000);
-    brand.addEventListener('mouseenter', function () {
-      if (window.matchMedia('(hover: hover)').matches) wiggle();
-    });
-    brand.addEventListener('click', wiggle);
-  })();
-</script>
+  </header>

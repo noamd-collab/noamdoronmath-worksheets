@@ -60,6 +60,7 @@ function TabRow(props: {
               className="grade-tab"
               aria-selected={selected}
               aria-controls={listId}
+              aria-label={gradeNames[String(g)] || `כיתה ${g}`}
               tabIndex={selected ? 0 : -1}
               data-grade={g}
               onKeyDown={(e) => onKeyNav(g, e)}
@@ -67,7 +68,7 @@ function TabRow(props: {
               {showEmojis ? (
                 <span aria-hidden="true">{gradeEmojis[String(g)] || ''} </span>
               ) : null}
-              {gradeNames[String(g)] || `כיתה ${g}`}
+              {(gradeNames[String(g)] || `כיתה ${g}`).replace(/^כיתה\s+/, '')}
             </a>
           );
         })}

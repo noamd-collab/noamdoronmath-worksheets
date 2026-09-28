@@ -132,10 +132,12 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
       'href="/high-school-math"',
       'href="/learning.html"',
       'תוספים',
-      'מתמטיקה לתיכון (חיצוני)',
+      'מתמטיקה לתיכון',
     ]) {
       assert.ok(html.includes(needle), `missing ${needle}`);
     }
+    assert.match(html, /href="\/high-school-math"[^>]*>\s*מתמטיקה לתיכון\s*(?:↗|\(חיצוני\))\s*<\/a>/,
+      'high-school destination retains its visible external indicator');
   });
 
   it('required href set is complete for gate scripts', () => {
@@ -151,4 +153,3 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.ok(hrefs.includes('mailto:noamd@noamdoronmath.co.il'));
   });
 });
-

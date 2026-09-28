@@ -2008,7 +2008,303 @@ textarea:focus{
 <link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1">
 </head>
 
-<body>
+<body class="exact-viewer">
+
+<!-- Presentation-only mapping of Student Worksheet Preview.dc.html.
+     Keep this outside head: the released metadata, PDF engine, and AI scripts
+     below remain unchanged. Real PDF content and its controls are retained. -->
+<style id="exact-viewer-presentation">
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap');
+body.exact-viewer{
+  --ink:#22305a;--accent:#22305a;--accent-dark:#1e605e;--on-accent:#fff;
+  --tint:#eaf4f3;--paper:#fbfaf5;--grid:rgba(34,48,90,.065);--muted:#5a6588;
+  font-family:Heebo,sans-serif;color:#22305a;background:#fbfaf5;
+  height:100vh;display:flex;flex-direction:column;overflow:hidden;
+}
+.exact-viewer :where(button,textarea,input){font-family:inherit}
+.exact-viewer :where(a,button,input,textarea,[tabindex]):focus-visible{
+  outline:3px solid #e6a534;outline-offset:2px;
+}
+.exact-viewer textarea::placeholder{color:#6b7594}
+.exact-viewer .exact-viewer-header{
+  flex:none;display:flex;align-items:center;gap:18px;padding:8px 22px;
+  border-bottom:2px solid #22305a;background:#fbfaf5;
+}
+.exact-viewer-header img{height:44px;width:auto;display:block}
+.exact-viewer-header nav{display:flex;gap:4px;font-weight:500;font-size:15px}
+.exact-viewer-header a{color:#22305a;text-decoration:none}
+.exact-viewer-header nav a{padding:10px 12px;border-radius:999px}
+.exact-viewer-header nav a[aria-current="page"]{background:#eaf4f3}
+.exact-viewer-header nav a:hover{background:#eaf4f3}
+.exact-viewer .bar{
+  gap:14px;padding:8px 22px;border-bottom:1.5px dashed #b8c0d4;background:#fff;
+}
+.exact-viewer .bar h1{font:400 14px Heebo,sans-serif;color:#5a6588;gap:0}
+.exact-viewer #emoji{display:none}
+.exact-viewer .context-chips{gap:8px}
+.exact-viewer .chip{border:0;background:none;padding:0;font:400 14px Heebo,sans-serif;color:#5a6588}
+.exact-viewer .level-link{
+  border:1.5px solid #22305a;border-radius:10px 4px 11px 5px;
+  font:700 13px Heebo,sans-serif;box-shadow:none;transition:none;
+}
+.exact-viewer .level-link:hover{transform:none;background:#eaf4f3;box-shadow:none}
+.exact-viewer .level-link[aria-current="page"]{background:#22305a;color:#fff;box-shadow:none}
+.exact-viewer .header-actions{gap:14px}
+.exact-viewer .btn,.exact-viewer .pdf-tool,.exact-viewer .pdf-tool-link,
+.exact-viewer .panel-back,.exact-viewer .noam-action,.exact-viewer .noam-preview-toggle{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  min-height:44px;padding:6px 14px;border:2px solid #22305a;
+  border-radius:12px 5px 13px 6px;background:#fff;color:#22305a;
+  font:700 14px Heebo,sans-serif;box-shadow:none;
+}
+.exact-viewer .btn:hover,.exact-viewer .pdf-tool:hover,.exact-viewer .pdf-tool-link:hover,
+.exact-viewer .panel-back:hover,.exact-viewer .noam-action:hover,.exact-viewer .noam-preview-toggle:hover{
+  transform:none;background:#eaf4f3;
+}
+.exact-viewer .stage{overflow:hidden}
+.exact-viewer .pdfwrap{padding:0;display:flex;flex-direction:column;min-height:0}
+.exact-viewer .pdf-surface{flex:1;border:0;border-radius:0;box-shadow:none;background:#fbfaf5}
+.exact-viewer .pdf-scroll{
+  /* The released renderer reserves 34px for desktop scroll padding/gutter.
+     Keep that geometry contract; the worksheet itself is the real PDF. */
+  padding:28px 10px 48px;background-color:#fbfaf5;
+  background-image:linear-gradient(rgba(34,48,90,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(34,48,90,.065) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.exact-viewer .pdf-page{box-shadow:0 3px 0 rgba(34,48,90,.08);outline:1.5px solid #c9cfdc}
+.exact-viewer .pdf-status{background:#fbfaf5;font-weight:700}
+.exact-viewer .pdf-tools{border:2px solid #22305a;border-radius:12px 5px 13px 6px;box-shadow:none}
+.exact-viewer .panel{
+  width:clamp(360px,32vw,460px);max-width:none;padding:0;
+  border-right:2px solid #22305a;background:#fff;
+}
+.exact-viewer .panel-in{border:0;border-radius:0;box-shadow:none;background:#fff}
+.exact-viewer .panel-head{gap:10px;padding:8px 12px;background:#eaf4f3;border-bottom:2px solid #22305a}
+.exact-viewer .exact-ramzi-avatar{width:44px;height:44px;display:block;flex:none}
+.exact-viewer .exact-ramzi-avatar svg{display:block;width:100%;height:100%;overflow:visible}
+.exact-viewer .exact-ramzi-title{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.exact-viewer .exact-ramzi-name{display:flex;align-items:center;gap:8px}
+.exact-viewer .panel-head b{font:400 22px/1.1 'Secular One',sans-serif}
+.exact-viewer .panel-badge{
+  font:700 12px Heebo,sans-serif;background:#fff;border:1.5px solid #22305a;
+  border-radius:999px;padding:0 8px;min-height:0;color:#22305a;
+}
+.exact-viewer .exact-ramzi-status{font-size:13px;color:#3d4870}
+.exact-viewer .panel-close{
+  width:44px;height:44px;min-width:44px;padding:0;border:2px solid #22305a;
+  border-radius:12px 5px 13px 6px;background:#fff;color:#22305a;font-size:22px;
+}
+.exact-viewer .panel-close:hover{background:#cfe6e4}
+.exact-viewer .panel-body{padding:8px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.exact-viewer .panel-body>*{flex-shrink:0}
+.exact-viewer .panel-body.is-chat{overflow:hidden}
+.exact-viewer .step-title{font:400 21px 'Secular One',sans-serif}
+.exact-viewer .noam-manifest-note{font-weight:400;border:1.5px solid #22305a;background:#eaf4f3}
+.exact-viewer .noam-question-list{gap:4px}
+.exact-viewer .noam-question-list button{
+  border:2px solid #22305a;border-radius:10px 4px 11px 5px;
+  font:700 15px Heebo,sans-serif;background:#fff;color:#22305a;
+}
+.exact-viewer .noam-question-list button:hover{background:#eaf4f3}
+.exact-viewer .noam-picked{
+  padding:8px 12px;margin:0;background:#fdf3de;border:1.5px solid #22305a;
+  border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
+}
+.exact-viewer .noam-picked-label{font:700 14px Heebo,sans-serif;color:#22305a}
+.exact-viewer .noam-picked-text{font-size:14px;line-height:1.5;color:#3d4870}
+.exact-viewer .noam-picked-preview{border:1.5px solid #c9cfdc;border-radius:0}
+.exact-viewer .noam-thread-tools{margin:0;gap:8px}
+.exact-viewer .noam-link-button{font:700 13px Heebo,sans-serif;color:#1e605e;text-decoration:none;padding:0 10px;border-radius:10px}
+.exact-viewer .noam-link-button:hover{background:#eaf4f3}
+.exact-viewer .noam-transcript{flex:1;min-height:48px;max-height:none;gap:12px;padding:12px 2px;scroll-behavior:auto}
+.exact-viewer .noam-transcript.is-empty{flex:1;min-height:48px;max-height:none;padding:12px 2px}
+.exact-viewer .noam-row.user{justify-content:flex-end}
+.exact-viewer .noam-row.assistant{justify-content:flex-start}
+.exact-viewer .noam-bubble{font-size:16px;line-height:1.7;text-wrap:pretty;box-shadow:none}
+.exact-viewer .noam-row.user .noam-bubble{
+  max-width:84%;background:#22305a;color:#fff;padding:9px 14px;
+  border:0;border-radius:16px 16px 16px 4px;line-height:1.65;
+}
+.exact-viewer .noam-row.assistant .noam-bubble{
+  max-width:90%;background:#fff;color:#22305a;padding:10px 14px;
+  border:2px solid #22305a;border-radius:16px 16px 4px 16px;
+}
+.exact-viewer .noam-kind{font:700 13px Heebo,sans-serif;color:#1e605e}
+.exact-viewer .noam-term{
+  font-weight:700;color:#1e605e;background:#eaf4f3;border:0;
+  border-bottom:2px dotted #2a7c7a;border-radius:4px 4px 0 0;
+  padding:0 .2em;margin:0 .05em;text-decoration:none;
+}
+.exact-viewer .noam-term:hover{background:#cfe6e4;color:#1e605e}
+.exact-viewer .noam-glossary-popover{
+  border:2px solid #2a7c7a;border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
+  box-shadow:5px 5px 0 rgba(42,124,122,.18);padding:12px 14px;font-family:Heebo,sans-serif;
+}
+.exact-viewer .noam-glossary-popover-title{font:700 16px Heebo,sans-serif;color:#1e605e}
+.exact-viewer .noam-glossary-popover-text{font-size:15px;line-height:1.65}
+.exact-viewer .noam-glossary-more{font:700 14px Heebo,sans-serif;border:1.5px solid #2a7c7a;border-radius:999px;color:#1e605e;padding:4px 12px}
+.exact-viewer .noam-compose{flex:none;padding:8px 0 0;border-top:1.5px dashed #b8c0d4;background:#fff}
+.exact-viewer .noam-input-shell{padding:5px;background:#fff;border:2px solid #22305a;border-radius:14px 6px 16px 7px / 7px 16px 6px 14px}
+.exact-viewer .noam-input-shell:focus-within{outline:3px solid #e6a534;outline-offset:2px;box-shadow:none}
+.exact-viewer .noam-input-actions{gap:6px;flex-wrap:wrap}
+.exact-viewer .noam-input-actions .noam-action{font-size:15px;min-height:44px;padding:6px 14px;border-width:2px}
+.exact-viewer #noamHint{background:#e6a534;color:#22305a;font-weight:800}
+.exact-viewer #noamHint:hover{background:#f0bb5a}
+.exact-viewer .noam-compose textarea{font:16px/1.55 Heebo,sans-serif;color:#22305a;padding:10px 6px;border-radius:8px;min-height:48px}
+.exact-viewer .noam-math-toggle,.exact-viewer .noam-attach-button{
+  height:44px;min-width:44px;border:0;border-radius:10px;background:#eaf4f3;
+  color:#22305a;font:700 15px Heebo,sans-serif;
+}
+.exact-viewer .noam-math-toggle:hover,.exact-viewer .noam-attach-button:hover{background:#cfe6e4}
+.exact-viewer .noam-math-keys{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:4px;padding-bottom:2px}
+.exact-viewer .noam-math-keys[hidden]{display:none}
+.exact-viewer .noam-math-key{
+  flex:none;min-width:44px;height:44px;padding:0 8px;border:1.5px solid #22305a;
+  border-radius:9px 4px 10px 5px;background:#fbfaf5;color:#22305a;font:700 17px Heebo,sans-serif;
+}
+.exact-viewer .noam-compose-help{font-size:12px;color:#5a6588}
+.exact-viewer .noam-send{min-height:44px;border:2px solid #22305a;border-radius:12px 5px 13px 6px;background:#1e605e;color:#fff;font:700 15px Heebo,sans-serif;box-shadow:none}
+.exact-viewer .noam-send:hover{background:#174b49}
+.exact-viewer .noam-ai-feedback{font-family:Heebo,sans-serif}
+.exact-viewer .fab{
+  display:inline-flex;align-items:center;gap:8px;min-height:44px;
+  padding:4px 16px 4px 6px;border:2px solid #22305a;border-radius:999px;
+  background:#22305a;color:#fff;font:700 15px Heebo,sans-serif;box-shadow:none;
+}
+.exact-viewer .fab:hover{background:#2d3d70}
+.exact-viewer .fab img{width:36px;height:36px;border-radius:50%;background:#fff}
+.exact-viewer .exact-fab-avatar{display:inline-flex;width:36px;height:36px;flex:none;border-radius:50%;background:#fff;padding:3px}
+.exact-viewer .fab.hidden,.exact-viewer .panel.hidden{display:none}
+@media(max-width:999px){
+  .exact-viewer .exact-viewer-header{gap:8px;padding:6px 12px}
+  .exact-viewer-header img{height:34px}
+  .exact-viewer-header nav{margin-inline-start:auto}
+  .exact-viewer-header nav a{padding:10px 8px;font-size:13px}
+}
+@media(max-width:900px){
+  body.exact-viewer{height:100dvh}
+  .exact-viewer.noam-panel-open .exact-viewer-header{display:none}
+  .exact-viewer .bar{gap:6px 8px;padding:6px 12px 8px}
+  .exact-viewer .bar h1{font-size:14px}
+  .exact-viewer .header-actions{gap:6px}
+  .exact-viewer .header-actions .btn{padding:6px;font-size:12px}
+  .exact-viewer .level-link{min-height:44px}
+  .exact-viewer .mobile-hint{color:#5a6588}
+  /* 12px total is part of getPdfPageWidth's existing phone fit calculation. */
+  .exact-viewer .pdf-scroll{padding:12px 6px 48px}
+  .exact-viewer .pdf-tools{border:0;border-top:1.5px dashed #b8c0d4;border-radius:0}
+  .exact-viewer .panel{width:100%;height:var(--noam-viewport-height,100dvh);padding:0;border:0;background:#fff}
+  .exact-viewer .panel-head{gap:10px;padding:8px 12px;min-height:0}
+  .exact-viewer .panel-close{width:44px;height:44px;padding:0}
+  .exact-viewer .mobile-close-label{display:none}
+  .exact-viewer .panel-body{gap:8px;padding:8px 12px 12px}
+  .exact-viewer .noam-transcript{flex:1;min-height:48px;max-height:none}
+  .exact-viewer .noam-input-actions .noam-action{font-size:14px;padding:6px 10px}
+  .exact-viewer .panel.is-short .panel-head{padding:4px 12px}
+  .exact-viewer .panel.is-short .panel-body{padding:5px 12px;gap:3px}
+  .exact-viewer .panel.is-short .noam-transcript{min-height:32px}
+  .exact-viewer .panel.is-typing .exact-ramzi-status{display:none}
+  .exact-viewer.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+}
+.exact-viewer .exact-motion{
+  flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;
+  border:2px solid #22305a;border-radius:999px;background:#fff;color:#22305a;
+  font:700 14px Heebo,sans-serif;cursor:pointer;margin-inline-start:auto;
+}
+.exact-viewer .exact-motion:hover{background:#eaf4f3}
+.exact-viewer .exact-mobile-tabs{display:none}
+.exact-viewer .exact-hint-row{
+  flex:none;display:flex;align-items:center;gap:8px;padding:8px 12px;
+  border-top:2px solid #22305a;background:#fff;
+}
+.exact-viewer .exact-question-strip{
+  flex:none;padding:8px 12px 10px;border-bottom:1.5px dashed #b8c0d4;
+  display:flex;align-items:center;gap:4px;overflow-x:auto;background:#fff;
+}
+.exact-viewer .exact-question-strip[hidden]{display:none}
+.exact-question-strip>span{font-size:13px;font-weight:700;color:#5a6588;white-space:nowrap}
+.exact-question-strip>span.exact-part-label{margin-right:8px}
+.exact-question-strip>div{display:flex;gap:4px}
+.exact-question-strip button{
+  flex:none;min-width:40px;height:40px;padding:0 8px;border-radius:10px 4px 11px 5px;
+  border:2px solid #22305a;background:#fff;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;
+}
+.exact-question-strip button[aria-pressed="true"]{background:#22305a;color:#fff}
+.exact-question-strip button:not([aria-pressed="true"]):hover{background:#eaf4f3}
+.exact-viewer .panel-body[data-exact-full-picker="true"] .noam-question-list{display:none}
+.exact-viewer .exact-hint-row #noamHint{flex:1;min-width:0;padding:4px 12px;white-space:nowrap;font-size:15px}
+.exact-viewer .exact-hint-row #noamOverview{white-space:nowrap;font-size:15px}
+.exact-viewer .exact-hint-ladder{display:flex;align-items:center;flex:none}
+.exact-hint-ladder i{
+  width:26px;height:26px;border-radius:50%;background:#fff;border:2px dashed #8a93aa;
+  color:#5a6588;display:inline-flex;align-items:center;justify-content:center;font:800 13px Heebo,sans-serif;
+}
+.exact-hint-ladder i[data-open="true"]{background:#e6a534;border:2px solid #22305a;color:#22305a}
+.exact-hint-ladder em{width:8px;height:2px;background:#22305a}
+.exact-viewer .noam-compose.exact-compose{display:flex;flex-direction:column;padding:0;margin:0 -12px;border:0}
+.exact-viewer .exact-compose .noam-input-shell{border:0;border-top:1.5px dashed #b8c0d4;border-radius:0;padding:8px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.exact-viewer .exact-compose .noam-input-shell:focus-within{outline:0}
+.exact-viewer .exact-compose .noam-input-actions{margin:0}
+.exact-viewer .exact-compose .noam-input-actions:not(:has(>button:not([hidden]))){display:none}
+.exact-viewer .exact-compose .noam-input-spacer{display:none}
+.exact-viewer .exact-message-row{
+  display:flex;align-items:flex-end;gap:6px;border:2px solid #22305a;
+  border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;padding:5px;background:#fff;
+}
+.exact-viewer .exact-message-row:focus-within{outline:3px solid #e6a534;outline-offset:2px}
+.exact-viewer .exact-message-row textarea{
+  flex:1;min-width:0;width:auto;resize:none;border:0;border-radius:8px;
+  font:16px/1.55 Heebo,sans-serif;color:#22305a;background:transparent;padding:10px 6px;
+  min-height:44px;max-height:120px;margin:0;
+}
+.exact-viewer .exact-message-row .noam-send{
+  width:44px;height:44px;min-width:44px;flex:none;display:inline-flex;align-items:center;
+  justify-content:center;margin:0;padding:0;border:2px solid #22305a;
+  border-radius:12px 5px 13px 6px;background:#1e605e;color:#fff;
+}
+.exact-viewer .exact-message-row .noam-send:hover{background:#174b49}
+.exact-viewer .exact-compose .noam-compose-help{margin:0;padding:0 12px 8px;font-size:12px}
+.exact-viewer.exact-narrow .exact-viewer-header{display:flex;gap:8px;padding:6px 12px;flex:none}
+.exact-viewer.exact-narrow .exact-viewer-header img{height:34px}
+.exact-viewer.exact-narrow .exact-viewer-header nav{display:none}
+.exact-viewer.exact-narrow .exact-motion{width:44px;justify-content:center;padding:0}
+.exact-viewer.exact-narrow .exact-motion span{display:none}
+.exact-viewer.exact-narrow .exact-mobile-tabs{
+  flex:none;display:flex;gap:6px;padding:8px 10px;border-bottom:1.5px dashed #b8c0d4;background:#fff;
+}
+.exact-mobile-tabs button{
+  flex:1;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:2px solid #22305a;border-radius:12px 5px 13px 6px;
+  background:#fff;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;
+}
+.exact-mobile-tabs button[aria-selected="true"]{background:#22305a;color:#fff}
+.exact-mobile-tabs button:not([aria-selected="true"]):hover{background:#eaf4f3}
+.exact-mobile-tabs button:disabled{opacity:.45;cursor:wait}
+.exact-viewer.exact-narrow .fab{display:none}
+.exact-viewer.exact-narrow .panel{
+  position:fixed;z-index:50;inset-inline:0;top:var(--noam-viewport-top,0px);
+  height:var(--noam-viewport-height,100dvh);width:100%;max-width:none;padding:0;
+  border:0;background:#fff;
+}
+.exact-viewer.exact-narrow .panel-in{border:0;border-radius:0;box-shadow:none}
+.exact-viewer.exact-narrow .panel-head{gap:10px;padding:8px 12px;border-bottom:2px solid #22305a}
+.exact-viewer.exact-narrow .panel-close{width:44px;height:44px;padding:0}
+.exact-viewer.exact-narrow .mobile-close-label{display:none}
+.exact-viewer.exact-narrow.exact-help-active>.bar{display:none}
+.exact-viewer.exact-narrow.exact-help-active .pdfwrap{visibility:hidden}
+.exact-viewer.exact-narrow.exact-help-active #noam-accessibility,
+.exact-viewer.exact-narrow.exact-help-active .nl-viewer-progress{visibility:hidden;pointer-events:none}
+.exact-viewer.exact-narrow.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+.exact-viewer .panel.is-short .noam-compose.exact-compose{display:flex;gap:0}
+.exact-viewer .panel.is-short .exact-message-row textarea{height:44px;min-height:44px}
+.exact-viewer .panel.is-short .exact-hint-row{padding-block:4px}
+html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-behavior:auto!important}
+</style>
+
+<header class="exact-viewer-header">
+  <a href="https://www.noamdoronmath.co.il/" aria-label="נועם דורון מתמטיקה — בית"><img src="design-exact/assets/logo.png" alt="נועם דורון מתמטיקה"></a>
+  <nav aria-label="ראשי"><a href="https://www.noamdoronmath.co.il/">בית</a><a href="https://www.noamdoronmath.co.il/worksheets" aria-current="page">דפי עבודה</a><a href="https://www.noamdoronmath.co.il/learning.html">הלמידה שלי</a></nav>
+</header>
 
 <div class="bar">
 
@@ -2116,14 +2412,11 @@ textarea:focus{
 
       <div class="panel-head">
 
-        <span aria-hidden="true">🤖</span>
-
-        <b id="noamPanelTitle">
-          נועם AI
-        </b>
-
-        <span class="panel-badge">רמזים בלבד</span>
-        <span class="panel-head-spacer"></span>
+        <img class="exact-ramzi-avatar" src="design-exact/assets/avatar/ramzi-A-idle.svg" alt="">
+        <div class="exact-ramzi-title">
+          <div class="exact-ramzi-name"><b id="noamPanelTitle">רמזי</b><span class="panel-badge">נועם AI</span></div>
+          <span class="exact-ramzi-status">רמזים והסברים במתמטיקה</span>
+        </div>
 
         <button
           class="panel-back"
@@ -2166,7 +2459,7 @@ textarea:focus{
   aria-controls="panel"
   aria-expanded="false"
 >
-  🤖 נועם AI
+  <img src="design-exact/assets/avatar/ramzi-A-idle.svg" alt=""><span>עזרה מרמזי</span>
 </button>
 
 <dialog class="noam-feedback-dialog" id="noamFeedbackDialog" aria-labelledby="noamFeedbackTitle">
@@ -7141,5 +7434,285 @@ function esc(s){
 
 <script src="noam-learning-core.js?v=20260908-1" defer></script>
 <script src="noam-learning-boot.js?v=20260908-1" defer></script>
+<script id="exact-viewer-adapter">
+/* Presentation adapter only. The preceding released scripts retain ownership
+   of question selection, answers, PDF rendering, storage, and request timing. */
+(function(){
+  'use strict';
+  var body=document.body, html=document.documentElement;
+  var panel=document.getElementById('panel'), panelIn=panel.querySelector('.panel-in');
+  var panelBody=document.getElementById('panelBody'), paper=document.querySelector('.pdfwrap');
+  var bar=document.querySelector('.bar'), header=document.querySelector('.exact-viewer-header');
+  var fab=document.getElementById('fab'), close=document.getElementById('closePanel');
+  var status=header&&panel.querySelector('.exact-ramzi-status');
+  if(!panel||!panelIn||!panelBody||!paper||!header||!fab||!close){return;}
+
+  var homeAnchor=document.createComment('exact viewer header and tabs home');
+  header.before(homeAnchor);
+  var tabs=document.createElement('div');
+  tabs.className='exact-mobile-tabs';tabs.setAttribute('role','tablist');
+  tabs.setAttribute('aria-label','מעבר בין הדף לעזרה');
+  tabs.innerHTML='<button type="button" role="tab" id="exactPaperTab" aria-controls="exactPaperPane" aria-selected="true">דף העבודה</button>'+
+    '<button type="button" role="tab" id="exactHelpTab" aria-controls="exactHelpPane" aria-selected="false" tabindex="-1">עזרה מרמזי</button>';
+  header.after(tabs);
+  var pageTab=tabs.children[0],helpTab=tabs.children[1];
+  paper.id='exactPaperPane';paper.setAttribute('role','tabpanel');paper.setAttribute('aria-labelledby','exactPaperTab');
+  panelIn.id='exactHelpPane';panelIn.setAttribute('role','tabpanel');panelIn.setAttribute('aria-labelledby','exactHelpTab');
+  var narrow=false,open=false,previousOpen=false,initialWideOpened=false,helpReadyObserved=false,scheduled=false;
+  var previousMood='',previousMotion='';
+  var hintCounts=new WeakMap(), avatarCache=new Map(),avatars=[];
+  var actualChoices=new Map(),hasFullPicker=false,choiceSignature='';
+  var choices=document.createElement('div');choices.className='exact-question-strip';choices.hidden=true;
+  panel.querySelector('.panel-head').after(choices);
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function setAttr(el,name,value){if(el.getAttribute(name)!==String(value)){el.setAttribute(name,String(value));}}
+  function text(el,value){if(el&&el.textContent!==value){el.textContent=value;}}
+  function motionMode(){
+    if(document.hidden||reduced.matches||html.classList.contains('nd-motion-off')||html.classList.contains('noam-a11y-motion')){return 'off';}
+    var mode=html.getAttribute('data-nd-motion')||html.getAttribute('data-motion')||'full';
+    return mode==='relaxed'||mode==='רגוע'?'relaxed':mode==='off'||mode==='כבוי'?'off':'full';
+  }
+  var motion=document.createElement('button');
+  motion.type='button';motion.className='exact-motion';
+  header.appendChild(motion);
+  function syncMotionButton(){
+    var off=motionMode()==='off', label=off?'הפעלת אנימציות':'עצירת אנימציות';
+    setAttr(motion,'aria-label',label);setAttr(motion,'title',label);setAttr(motion,'aria-pressed',off);
+    if(motion.dataset.off!==String(off)){
+      motion.dataset.off=String(off);
+      motion.innerHTML='<svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">'+
+        (off?'<path d="M7 4.5 L15.5 10 L7 15.5 Z" fill="currentColor"></path>':'<path d="M7 5 V15 M13 5 V15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"></path>')+
+        '</svg><span>'+label+'</span>';
+    }
+  }
+  motion.addEventListener('click',function(){
+    var accessibility=document.getElementById('noam-accessibility');
+    var existing=accessibility&&accessibility.shadowRoot&&accessibility.shadowRoot.querySelector('[data-pref="motion"]');
+    if(existing){
+      if(html.classList.contains('nd-motion-off')&&!html.classList.contains('noam-a11y-motion')){html.classList.remove('nd-motion-off');}
+      else{existing.click();}
+    }else{html.classList.toggle('nd-motion-off');}
+    window.dispatchEvent(new CustomEvent('nd:motion-off',{detail:{off:motionMode()==='off'}}));
+    schedule();
+  });
+
+  function pickPage(){if(!panel.classList.contains('hidden')){close.click();}sync();pageTab.focus({preventScroll:true});}
+  function pickHelp(){if(panel.classList.contains('hidden')&&!helpTab.disabled){fab.click();}sync();helpTab.focus({preventScroll:true});}
+  pageTab.addEventListener('click',pickPage);helpTab.addEventListener('click',pickHelp);
+  tabs.addEventListener('keydown',function(event){
+    if(event.key==='ArrowLeft'||event.key==='ArrowRight'||event.key==='Home'||event.key==='End'){
+      event.preventDefault();
+      if(event.key==='Home'||(event.key!=='End'&&document.activeElement===helpTab)){pickPage();}
+      else{pickHelp();}
+    }
+  });
+  function visibleControls(){return Array.from(panel.querySelectorAll('button:not([disabled]),textarea:not([disabled]),a[href]')).filter(function(el){return el.getClientRects().length>0;});}
+  panel.addEventListener('keydown',function(event){
+    // The released script owns the <=900px trap. Extend it only to the
+    // reference's additional narrow widths / short desktop windows.
+    if(!narrow||!open||window.matchMedia('(max-width:900px)').matches||event.key!=='Tab'){return;}
+    var controls=visibleControls(),first=controls[0],last=controls[controls.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();if(last){last.focus();}}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();if(first){first.focus();}}
+  });
+
+  function releasedHintCount(button){
+    var value={'רמז':0,'רמז נוסף':1,'רמז אחרון':2,'3 רמזים ניתנו':3}[button.textContent.trim()];
+    if(value!==undefined){hintCounts.set(button,value);}
+    return hintCounts.has(button)?hintCounts.get(button):null;
+  }
+  function adaptQuestionChoices(){
+    var list=panelBody.querySelector('.noam-question-list');
+    var full=!!(list&&panelBody.querySelector('.step-title')&&!panelBody.querySelector('.noam-manifest-note'));
+    setAttr(panelBody,'data-exact-full-picker',full);
+    if(full){
+      hasFullPicker=true;
+      Array.from(list.querySelectorAll('button[data-exercise-id]')).forEach(function(button){
+        var label=button.getAttribute('aria-label')||'',parts=label.match(/^שאלה\s+(\S+)(?:\s+·\s+סעיף\s+(.+))?$/);
+        if(parts){actualChoices.set(button.dataset.exerciseId,{id:button.dataset.exerciseId,q:parts[1],part:parts[2]||'',label:label,button:button});}
+      });
+    }
+    // Only a complete, already-rendered real picker is a source of choices.
+    // Never infer a manifest from lazy PDF pins or make up missing questions.
+    var hideChoices=!hasFullPicker||!actualChoices.size;
+    if(choices.hidden!==hideChoices){choices.hidden=hideChoices;}
+    if(choices.hidden){return;}
+    var picked=panelBody.querySelector('.noam-picked-label');
+    var selection=picked&&picked.textContent.match(/^שאלה\s+(\S+)(?:\s+·\s+סעיף\s+(.+))?$/);
+    var q=selection?selection[1]:'',part=selection?selection[2]||'':'';
+    var signature=Array.from(actualChoices.keys()).join('|')+'::'+q+'::'+part;
+    if(signature===choiceSignature){return;}choiceSignature=signature;
+    var focus=choices.contains(document.activeElement)&&document.activeElement.dataset.exactChoice;
+    choices.replaceChildren();
+    var label=document.createElement('span');label.textContent='שאלה';choices.appendChild(label);
+    var questions=document.createElement('div');questions.setAttribute('role','group');questions.setAttribute('aria-label','בחירת שאלה');choices.appendChild(questions);
+    var byQuestion=new Map();actualChoices.forEach(function(choice){if(!byQuestion.has(choice.q)){byQuestion.set(choice.q,[]);}byQuestion.get(choice.q).push(choice);});
+    function chip(choice,caption,selected,key){
+      var button=document.createElement('button');button.type='button';button.textContent=caption;
+      button.dataset.exactChoice=key;button.setAttribute('aria-pressed',String(selected));button.setAttribute('aria-label',choice.label);
+      button.addEventListener('click',function(){
+        // Call the original live picker node's handler, retaining all guards.
+        var current=actualChoices.get(choice.id);if(current){current.button.click();}
+      });return button;
+    }
+    byQuestion.forEach(function(items,number){questions.appendChild(chip(items[0],number,number===q,'q:'+number));});
+    var parts=byQuestion.get(q)||[];
+    if(parts.length>1){
+      var partLabel=document.createElement('span');partLabel.className='exact-part-label';partLabel.textContent='סעיף';choices.appendChild(partLabel);
+      var sections=document.createElement('div');sections.setAttribute('role','group');sections.setAttribute('aria-label','בחירת סעיף');choices.appendChild(sections);
+      parts.forEach(function(choice){sections.appendChild(chip(choice,choice.part||choice.q,choice.part===part,'p:'+choice.id));});
+    }
+    if(focus){var target=Array.from(choices.querySelectorAll('button')).find(function(button){return button.dataset.exactChoice===focus;});if(target){target.focus({preventScroll:true});}}
+  }
+  function adaptComposer(){
+    var compose=panelBody.querySelector('.noam-compose'),hint=document.getElementById('noamHint');
+    if(!compose||!hint){return;}
+    var count=releasedHintCount(hint);
+    if(!compose.classList.contains('exact-compose')){
+      var shell=compose.querySelector('.noam-input-shell'),input=document.getElementById('noamQuestion');
+      var send=document.getElementById('noamSend'),overview=document.getElementById('noamOverview');
+      if(!shell||!input||!send||!overview){return;}
+      compose.classList.add('exact-compose');
+      var hintRow=document.createElement('div');hintRow.className='exact-hint-row';
+      var ladder=document.createElement('span');ladder.className='exact-hint-ladder';ladder.setAttribute('role','img');
+      ladder.innerHTML='<i>1</i><em></em><i>2</i><em></em><i>3</i>';
+      hintRow.append(ladder,hint,overview);compose.prepend(hintRow);
+      var row=document.createElement('div');row.className='exact-message-row';
+      var math=document.getElementById('noamMathToggle'),attach=document.getElementById('noamAttachButton');
+      if(math){row.appendChild(math);}
+      row.appendChild(input);if(attach){row.appendChild(attach);}row.appendChild(send);shell.appendChild(row);
+      input.rows=1;input.placeholder='כתבו מה ניסיתם, או שאלו את רמזי…';
+      send.setAttribute('aria-label','שליחה');
+      send.innerHTML='<svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M16 10 H4 M9 5 L4 10 L9 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
+    }
+    var ladder=compose.querySelector('.exact-hint-ladder');
+    if(count!==null&&ladder){
+      setAttr(ladder,'aria-label','נפתחו '+count+' מתוך 3 רמזים');
+      Array.from(ladder.querySelectorAll('i')).forEach(function(dot,index){setAttr(dot,'data-open',index<count);});
+      // Cosmetic label only, derived from the released button's existing state.
+      text(hint,count<3?'רמז '+(count+1)+' מתוך 3':'שלושת הרמזים נפתחו');
+    }
+  }
+
+  function stopAvatar(avatar){clearTimeout(avatar.timer);avatar.animations.forEach(function(a){a.cancel();});avatar.animations=[];}
+  function animateAvatar(avatar,mood,mode){
+    stopAvatar(avatar);
+    avatar.timer=setTimeout(function(){
+      var r=avatar.host,full=mode==='full';
+      if(!r.isConnected||mode==='off'||!r.animate){return;}
+      function q(s){return Array.from(r.querySelectorAll(s));}
+      function A(el,kf,options){
+        if(!el.isConnected){return;}
+        try{el.style.transformBox='fill-box';el.style.transformOrigin=options.origin||'center';avatar.animations.push(el.animate(kf,options));}catch(error){/* Static supplied artwork remains usable. */}
+      }
+      // Timings and keyframes copied directly from Avatar.dc.html.
+      q('[data-eyes]').forEach(function(e){A(e,[{transform:'scaleY(1)'},{transform:'scaleY(1)',offset:.92},{transform:'scaleY(.1)',offset:.96},{transform:'scaleY(1)'}],{duration:full?4200:7400,iterations:Infinity,delay:Math.random()*1500});});
+      if(full){q('[data-bob]').forEach(function(e){A(e,[{transform:'translateY(0)'},{transform:'translateY(-1.6px)'}],{duration:1500,iterations:Infinity,direction:'alternate',easing:'ease-in-out'});});}
+      if(full&&mood==='thinking'){q('[data-hat]').forEach(function(e){A(e,[{transform:'rotate(0)'},{transform:'rotate(-5deg)'}],{duration:900,iterations:Infinity,direction:'alternate',easing:'ease-in-out',origin:'center bottom'});});}
+      if(full&&mood==='success'){q('[data-hat]').forEach(function(e){A(e,[{transform:'translateY(0)'},{transform:'translateY(-5px) rotate(8deg)',offset:.4},{transform:'translateY(0)'}],{duration:650,iterations:2,origin:'center bottom'});});}
+      q('[data-dot]').forEach(function(e,i){A(e,[{opacity:.2},{opacity:1},{opacity:.2}],{duration:full?1100:2400,iterations:Infinity,delay:i*(full?180:380)});});
+      q('[data-ray]').forEach(function(e,i){A(e,full?[{opacity:.25},{opacity:1}]:[{opacity:.65},{opacity:1}],{duration:full?700:1800,iterations:Infinity,direction:'alternate',delay:i*90});});
+      q('[data-spark]').forEach(function(e,i){A(e,full?[{transform:'scale(0) rotate(0)',opacity:0},{transform:'scale(1.25) rotate(45deg)',opacity:1,offset:.55},{transform:'scale(1) rotate(90deg)',opacity:1}]:[{opacity:0},{opacity:1}],{duration:full?700:400,delay:i*150,fill:'backwards'});});
+      if(full){q('[data-shake="1"]').forEach(function(e){A(e,[{transform:'translateX(0)'},{transform:'translateX(-2px)'},{transform:'translateX(2px)'},{transform:'translateX(0)'}],{duration:340,iterations:2});});}
+    },30);
+  }
+  function avatarSvg(mood){
+    if(!avatarCache.has(mood)){
+      avatarCache.set(mood,fetch('design-exact/assets/avatar/ramzi-A-'+mood+'.svg').then(function(response){
+        if(!response.ok){throw new Error('Avatar unavailable');}return response.text();
+      }).then(function(source){
+        var svg=new DOMParser().parseFromString(source,'image/svg+xml').documentElement;
+        if(svg.localName!=='svg'||svg.querySelector('script,foreignObject')){throw new Error('Invalid avatar');}
+        return svg;
+      }));
+    }
+    return avatarCache.get(mood);
+  }
+  Array.from(document.querySelectorAll('img.exact-ramzi-avatar,.fab img')).forEach(function(img){
+    var host=document.createElement('span');host.className=img.className||'exact-fab-avatar';host.setAttribute('aria-hidden','true');
+    img.replaceWith(host);host.appendChild(img);
+    avatars.push({host:host,animations:[],mood:null,mode:null,timer:0,version:0});
+  });
+  function updateAvatar(avatar,mood,mode){
+    if(avatar.mood===mood&&avatar.mode===mode){return;}
+    avatar.mode=mode;
+    if(avatar.mood===mood){animateAvatar(avatar,mood,mode);return;}
+    avatar.mood=mood;var version=++avatar.version;stopAvatar(avatar);
+    avatarSvg(mood).then(function(svg){
+      if(version!==avatar.version||!avatar.host.isConnected){return;}
+      var clone=document.importNode(svg,true);clone.setAttribute('aria-hidden','true');clone.removeAttribute('aria-label');
+      clone.style.cssText='display:block;width:100%;height:100%;overflow:visible';
+      avatar.host.replaceChildren(clone);animateAvatar(avatar,mood,avatar.mode);
+    }).catch(function(){/* Keep the exact static idle fallback if an asset cannot load. */});
+  }
+  function currentMood(){
+    if(panelBody.querySelector('.noam-bubble.thinking')){return 'thinking';}
+    var replies=panelBody.querySelectorAll('.noam-row.assistant'),last=replies[replies.length-1];
+    if(last&&last.querySelector('.noam-retry-action')){return 'error';}
+    var questions=panelBody.querySelectorAll('.noam-row.user'),question=questions[questions.length-1];
+    var kind=question&&question.querySelector('.noam-kind');
+    if(last&&kind&&/^רמז\s+[123]/.test(kind.textContent)){return 'hint';}
+    // No success judgement is inferred from model text: the released runtime
+    // has no verified success flag, so the neutral pose remains authoritative.
+    return 'idle';
+  }
+  function sync(){
+    scheduled=false;
+    narrow=window.innerWidth<1000||window.innerHeight<640;
+    open=!panel.classList.contains('hidden')&&panel.style.display!=='none';
+    body.classList.toggle('exact-narrow',narrow);body.classList.toggle('exact-help-active',narrow&&open);
+    var helpDisabled=panel.style.display==='none'||(!open&&fab.classList.contains('hidden'));
+    if(helpTab.disabled!==helpDisabled){helpTab.disabled=helpDisabled;}
+    setAttr(pageTab,'aria-selected',!open);setAttr(helpTab,'aria-selected',open);
+    pageTab.tabIndex=open?-1:0;helpTab.tabIndex=open?0:-1;
+    if(narrow&&open){
+      if(header.parentNode!==panelIn){panelIn.prepend(header,tabs);}
+      bar.inert=true;paper.inert=true;
+      setAttr(panel,'role','dialog');setAttr(panel,'aria-modal','true');
+      setAttr(panel,'aria-label','רמזי — עזרה בדף העבודה');
+      ['.nl-viewer-progress','#noam-accessibility'].forEach(function(selector){var el=document.querySelector(selector);if(el){el.inert=true;}});
+    }else{
+      if(header.parentNode!==body){homeAnchor.after(header,tabs);}
+      bar.inert=false;paper.inert=false;
+      if(!narrow){panel.removeAttribute('role');panel.removeAttribute('aria-modal');panel.removeAttribute('aria-label');}
+      ['.nl-viewer-progress','#noam-accessibility'].forEach(function(selector){var el=document.querySelector(selector);if(el){el.inert=false;}});
+      if(narrow&&previousOpen&&(document.activeElement===body||panel.contains(document.activeElement))){pageTab.focus({preventScroll:true});}
+    }
+    previousOpen=open;
+    adaptQuestionChoices();adaptComposer();
+    var mood=currentMood(),mode=motionMode();
+    text(status,mood==='thinking'?'רמזי חושב…':'רמזים והסברים במתמטיקה');
+    if(mood!==previousMood||mode!==previousMotion){
+      previousMood=mood;previousMotion=mode;
+      avatars.forEach(function(avatar,index){updateAvatar(avatar,index===0?mood:'idle',mode);});
+    }
+    syncMotionButton();
+    if(!narrow&&!initialWideOpened&&helpReadyObserved&&!helpTab.disabled){initialWideOpened=true;if(!open){fab.click();}}
+  }
+  function schedule(){if(!scheduled){scheduled=true;queueMicrotask(sync);}}
+  function observeHelpAvailability(records){
+    // The released script exposes fab before its async manifest resolves. It
+    // removes "hidden" again only after accepting the manifest. This observer
+    // starts after that script, so the initial visible state is not readiness.
+    // Keep the original runtime as the sole owner of loading and selection.
+    if(records.some(function(record){return record.target===fab&&record.attributeName==='class';})&&!fab.classList.contains('hidden')){
+      helpReadyObserved=true;
+    }
+    schedule();
+  }
+  // A manual open consumes the one automatic opening, including on mobile.
+  fab.addEventListener('click',function(){initialWideOpened=true;});
+  var observer=new MutationObserver(observeHelpAvailability);
+  observer.observe(panel,{childList:true,subtree:true,attributes:true,attributeFilter:['class','disabled','hidden']});
+  observer.observe(fab,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(schedule).observe(html,{attributes:true,attributeFilter:['class','data-nd-motion','data-motion']});
+  window.addEventListener('resize',schedule);panel.addEventListener('focusin',schedule);panel.addEventListener('focusout',schedule);
+  document.addEventListener('visibilitychange',schedule);window.addEventListener('nd:motion-off',schedule);
+  if(reduced.addEventListener){reduced.addEventListener('change',schedule);}else{reduced.addListener(schedule);}
+  window.addEventListener('pagehide',function(){avatars.forEach(stopAvatar);});
+  sync();
+})();
+</script>
 </body>
 </html>
