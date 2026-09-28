@@ -5,7 +5,12 @@
  * browser Back/Forward and viewer `back=` restore the same catalog view.
  * No topic-specific exceptions.
  */
-import { isGradeNum, type GradeNum } from './grades';
+import {
+  defaultGradeForLevel,
+  isGradeNum,
+  parseLevelParam,
+  type GradeNum,
+} from './grades';
 
 export type TrackMode = 'reg' | 'red';
 
@@ -61,16 +66,20 @@ function parseCross(raw: string | null | undefined): boolean {
 
 /**
  * Read catalog state from URLSearchParams.
- * `grade` falls back to 7 when absent (same as parseGradeParam default).
+ * Explicit `grade` wins; else `level=ysodi|hatzava` picks band default;
+ * else `fallbackGrade` (default 7, same as parseGradeParam).
  */
 export function parseWorksheetsUrlState(
   params: URLSearchParams,
   fallbackGrade: GradeNum = 7
 ): WorksheetsUrlState {
   const gradeRaw = params.get('grade');
+  const level = parseLevelParam(params.get('level'));
   let grade: GradeNum = fallbackGrade;
   if (gradeRaw != null && /^[1-9]$/.test(gradeRaw) && isGradeNum(Number(gradeRaw))) {
     grade = Number(gradeRaw) as GradeNum;
+  } else if (level) {
+    grade = defaultGradeForLevel(level);
   }
   return {
     grade,

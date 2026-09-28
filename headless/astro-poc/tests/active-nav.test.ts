@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { readFileSync } from 'node:fs';
-import { normalizeNavPath, resolveActiveNav } from '../src/lib/activeNav';
+import { normalizeNavPath, resolveActiveNav, resolveWorksheetsNavBand } from '../src/lib/activeNav';
 
 describe('M37 resolveActiveNav', () => {
   it('home is exact / only (trailing slash normalized)', () => {
@@ -35,6 +35,36 @@ describe('M37 resolveActiveNav', () => {
     assert.notEqual(resolveActiveNav('/grade-7'), 'home');
   });
 
+  it('worksheets band: level / grade / hubs — at most one of ysodi|hatzava', () => {
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('level=ysodi')),
+      'ysodi'
+    );
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('level=hatzava')),
+      'hatzava'
+    );
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('grade=3')),
+      'ysodi'
+    );
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('grade=8')),
+      'hatzava'
+    );
+    // Explicit grade wins over level for band highlight.
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('level=ysodi&grade=8')),
+      'hatzava'
+    );
+    assert.equal(resolveWorksheetsNavBand('/grade-2'), 'ysodi');
+    assert.equal(resolveWorksheetsNavBand('/grade-9'), 'hatzava');
+    assert.equal(resolveWorksheetsNavBand('/equations-grade-7'), 'hatzava');
+    assert.equal(resolveWorksheetsNavBand('/worksheets'), 'hatzava');
+    assert.equal(resolveWorksheetsNavBand('/aboutus'), null);
+    assert.equal(resolveWorksheetsNavBand('/'), null);
+  });
+
   it('maps blog archives and posts', () => {
     assert.equal(resolveActiveNav('/blog'), 'blog');
     assert.equal(resolveActiveNav('/blog/'), 'blog');
@@ -51,9 +81,12 @@ describe('M37 resolveActiveNav', () => {
 
   it('SiteHeader sets aria-current=page from active key (not hardcoded home)', () => {
     const html = readFileSync('src/components/SiteHeader.astro', 'utf8');
-    assert.ok(html.includes("resolveActiveNav"));
+    assert.ok(html.includes('resolveActiveNav'));
+    assert.ok(html.includes('resolveWorksheetsNavBand'));
+    assert.ok(html.includes('worksheetsNavProps'));
     assert.ok(html.includes("'aria-current'"));
     assert.ok(html.includes("navProps('about')"));
+    assert.equal(html.includes("navProps('worksheets')"), false);
     assert.ok(!html.includes('activeNav="home"'));
   });
 

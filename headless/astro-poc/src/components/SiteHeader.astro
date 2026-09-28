@@ -1,6 +1,11 @@
 ---
 import SiteBrand from './SiteBrand.astro';
-import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
+import {
+  resolveActiveNav,
+  resolveWorksheetsNavBand,
+  type ActiveNavKey,
+  type WorksheetsNavBand,
+} from '../lib/activeNav';
 
 interface Props {
   /** Optional override; default derives from the request pathname. */
@@ -12,9 +17,21 @@ const pathname = Astro.url.pathname;
 const active: ActiveNavKey | null =
   Astro.props.active !== undefined ? Astro.props.active : resolveActiveNav(pathname);
 const { compactBrand = false } = Astro.props;
+const worksheetsBand: WorksheetsNavBand | null =
+  active === 'worksheets'
+    ? resolveWorksheetsNavBand(pathname, Astro.url.searchParams)
+    : null;
 
 function navProps(key: ActiveNavKey) {
   const isActive = active === key;
+  return {
+    class: ['site-nav__link', isActive ? 'is-active' : undefined].filter(Boolean).join(' '),
+    'aria-current': isActive ? ('page' as const) : undefined,
+  };
+}
+
+function worksheetsNavProps(band: WorksheetsNavBand) {
+  const isActive = worksheetsBand === band;
   return {
     class: ['site-nav__link', isActive ? 'is-active' : undefined].filter(Boolean).join(' '),
     'aria-current': isActive ? ('page' as const) : undefined,
@@ -42,7 +59,12 @@ const learnActive = active === 'learning';
     <nav class="site-nav" id="primary-nav" aria-label="ניווט ראשי" data-nav-panel>
       <a {...navProps('home')} href="/" data-peek="home">בית</a>
       <a {...navProps('about')} href="/aboutus" data-peek="about">אודותינו</a>
-      <a {...navProps('worksheets')} href="/worksheets" data-peek="ws">דפי עבודה</a>
+      <a {...worksheetsNavProps('ysodi')} href="/worksheets?level=ysodi" data-peek="ws-ysodi">
+        דפי עבודה ליסודי
+      </a>
+      <a {...worksheetsNavProps('hatzava')} href="/worksheets?level=hatzava" data-peek="ws-hatzava">
+        דפי עבודה לחטיבת הביניים
+      </a>
       <a {...navProps('blog')} href="/blog" data-peek="blog">בלוג</a>
       <a {...navProps('tools')} href="/math-tools" data-peek="tools">תוספים</a>
       <a {...navProps('highschool')} href="/high-school-math" data-peek="hs">

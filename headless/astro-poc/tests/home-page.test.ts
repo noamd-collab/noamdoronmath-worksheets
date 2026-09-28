@@ -126,7 +126,10 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     for (const needle of [
       'href="/"',
       'href="/aboutus"',
-      'href="/worksheets"',
+      'href="/worksheets?level=ysodi"',
+      'href="/worksheets?level=hatzava"',
+      'דפי עבודה ליסודי',
+      'דפי עבודה לחטיבת הביניים',
       'href="/blog"',
       'href="/math-tools"',
       'href="/high-school-math"',
@@ -136,6 +139,12 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     ]) {
       assert.ok(html.includes(needle), `missing ${needle}`);
     }
+    assert.equal(html.includes('הביינים'), false, 'must use הביניים spelling');
+    assert.equal(
+      html.includes('href="/worksheets" data-peek="ws">דפי עבודה<'),
+      false,
+      'single worksheets nav item must be split'
+    );
   });
 
   it('required href set is complete for gate scripts', () => {
