@@ -42,7 +42,12 @@ const learnActive = active === 'learning';
     <nav class="site-nav" id="primary-nav" aria-label="ניווט ראשי" data-nav-panel>
       <a {...navProps('home')} href="/" data-peek="home">בית</a>
       <a {...navProps('about')} href="/aboutus" data-peek="about">אודותינו</a>
-      <a {...navProps('worksheets')} href="/worksheets" data-peek="ws">דפי עבודה</a>
+      <a {...navProps('worksheets')} href="/worksheets?level=ysodi" data-peek="ws-ysodi">
+        דפי עבודה ליסודי
+      </a>
+      <a {...navProps('worksheets')} href="/worksheets?level=hatzava" data-peek="ws-hatzava">
+        דפי עבודה לחטיבת הביניים
+      </a>
       <a {...navProps('blog')} href="/blog" data-peek="blog">בלוג</a>
       <a {...navProps('tools')} href="/math-tools" data-peek="tools">תוספים</a>
       <a {...navProps('highschool')} href="/high-school-math" data-peek="hs">

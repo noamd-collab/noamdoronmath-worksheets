@@ -2,13 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { WorksheetsClient } from '../components/WorksheetsClient';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
-import { familyOf, parseGradeParam, worksheetsHref, type GradeNum } from '../lib/grades';
+import { familyOf, resolveWorksheetsGrade, worksheetsHref, type GradeNum } from '../lib/grades';
 import { parseWorksheetsUrlState } from '../lib/worksheetsUrlState';
 
 export const prerender = false;
 
 const catalog = loadCatalog();
-const parsed = parseGradeParam(Astro.url.searchParams.get('grade'));
+const parsed = resolveWorksheetsGrade({
+  grade: Astro.url.searchParams.get('grade'),
+  level: Astro.url.searchParams.get('level'),
+});
 const invalid = parsed.invalid || !parsed.grade;
 const grade = parsed.grade;
 const gradeEntry = !invalid && grade ? catalog.grades.find((g) => g.grade === grade) : undefined;

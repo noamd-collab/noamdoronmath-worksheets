@@ -21,7 +21,11 @@ describe('site header learning link (HEADLESS-MIGRATION-15)', () => {
 
   it('SiteHeader retains worksheets + expanded Harmony nav targets', () => {
     const html = readFileSync(join(src, 'components', 'SiteHeader.astro'), 'utf8');
-    assert.ok(html.includes('href="/worksheets"'));
+    assert.ok(html.includes('href="/worksheets?level=ysodi"'));
+    assert.ok(html.includes('href="/worksheets?level=hatzava"'));
+    assert.ok(html.includes('דפי עבודה ליסודי'));
+    assert.ok(html.includes('דפי עבודה לחטיבת הביניים'));
+    assert.equal(html.includes('הביינים'), false);
     assert.ok(html.includes('href="/blog"'));
     assert.ok(html.includes('href="/math-tools"'));
   });
