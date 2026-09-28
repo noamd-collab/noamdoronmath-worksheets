@@ -350,8 +350,9 @@
     grid-row: auto;
   }
 
-  .exact-grade .exact-grade__player .concept-loop__top { order: 0; }
-  .exact-grade .exact-grade__player .concept-loop__formula { order: 1; }
-  .exact-grade .exact-grade__player .concept-loop__caption { order: 2; }
-  .exact-grade .exact-grade__player .concept-loop__svg { order: 3; }
+  /* Mobile: the player (diagram) first, its text after. */
+  .exact-grade .exact-grade__player .concept-loop__svg { order: 0; }
+  .exact-grade .exact-grade__player .concept-loop__top { order: 1; }
+  .exact-grade .exact-grade__player .concept-loop__formula { order: 2; }
+  .exact-grade .exact-grade__player .concept-loop__caption { order: 3; }
 }

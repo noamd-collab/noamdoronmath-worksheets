@@ -16,6 +16,9 @@ export interface GradeLoopEntry {
   variant: string;
   label: string;
   href: string;
+  domain: string;
+  /** Completed-frame time in seconds; see GRADE_LOOP_HOLD_S. */
+  hold?: number;
 }
 
 interface MappedLoop {
@@ -130,6 +133,61 @@ const LOOPS: readonly MappedLoop[] = [
   { source: 'L46', variant: 'half-eq', grade: 9, label: 'משולש 30°–60°–90°', topic: '/triangle-30-60-90-grade-9' },
 ];
 
+/** Curriculum domain shown above each loop's title in the player text block. */
+const DOMAINS: Record<string, readonly string[]> = {
+  'מספרים ופעולות': [
+    'tenframes', 'add-within', 'apples-5', 'birds-sub', 'neighbors',
+    'sticks', 'coins-12', 'odd-pair', 'baseten', 'place-123',
+    'bars', 'cookies', 'share-12', 'jumps-4', 'numberline', 'mark-250',
+    'prime-rect', 'order-ops', 'signed-jump', 'signed-ops', 'cube-8',
+  ],
+  'שברים ועשרוניים': ['unit-frac', 'fraction', 'equiv-half', 'quarter-12', 'tenth-cell', 'frac-product'],
+  'מדידה וזמן': ['clock-3', 'ruler', 'clock-span'],
+  'גאומטריה': [
+    'polygon', 'quad-gate', 'two-diag',
+    'triangle', 'peri-rect', 'obtuse-ht', 'sup-angles', 'box-vol', 'angle-sum',
+    'sq-stretch', 'rect-count', 'l-split', 'trap-area', 'para-rect', 'angle-kinds',
+    'pythagoras', 'circ-unroll', 'corr-angles', 'exterior', 'sas-snap', 'para-perp',
+    'similar', 'cyl-stack', 'quad-tree', 'transform', 'area-x4', 'half-eq',
+  ],
+  'אלגברה': ['balance', 'pattern', 'coord-walk', 'slope', 'area-model', 'diff-sq', 'parab'],
+  'יחס וקנה מידה': ['ratio-beads', 'map-scale'],
+  'נתונים והסתברות': ['data', 'mean-cols', 'two-coins'],
+};
+
+const DOMAIN_BY_VARIANT = new Map(
+  Object.entries(DOMAINS).flatMap(([domain, variants]) => variants.map((v) => [v, domain] as const))
+);
+
+export function gradeLoopDomain(variant: string): string {
+  return DOMAIN_BY_VARIANT.get(variant) ?? 'הדגמה מתמטית';
+}
+
+/** The fixed explanation line under each title; no per-loop copy is invented. */
+export const GRADE_LOOP_EXPLANATION = 'הדגמה קצרה של רעיון מרכזי בנושא, מתוך דפי העבודה במאגר.';
+
+/**
+ * Completed-frame time in seconds (SPECS[variant].hold in conceptLoops.ts):
+ * the frame the engine parks on and shows for reduced motion. The protected
+ * engine does not expose it, so it is mirrored here; a test keeps it in sync.
+ */
+export const GRADE_LOOP_HOLD_S: Record<string, number> = {
+  tenframes: 6.5, 'add-within': 5.2, 'apples-5': 5.0, 'birds-sub': 5.0, neighbors: 4.8, 'clock-3': 5.2,
+  sticks: 6.5, 'coins-12': 5.0, polygon: 5.2, 'odd-pair': 5.4, baseten: 6.2, 'place-123': 5.2,
+  bars: 6.2, ruler: 5.0, 'clock-span': 5.0, cookies: 6.2, 'share-12': 5.8, 'jumps-4': 5.0, 'unit-frac': 5.0,
+  numberline: 6.5, data: 7.0, fraction: 6.4, 'mark-250': 4.8, 'equiv-half': 5.2, 'quad-gate': 5.0,
+  balance: 6.0, 'quarter-12': 4.8, 'tenth-cell': 5.0,
+  pattern: 6.0, 'two-diag': 5.2, 'frac-product': 5.8, 'prime-rect': 5.4,
+  triangle: 7.8, 'order-ops': 6.2, 'peri-rect': 6.2, 'obtuse-ht': 5.2, 'sup-angles': 5.4, 'ratio-beads': 5.2,
+  'signed-jump': 5.2, 'coord-walk': 5.2, 'cube-8': 5.2, 'box-vol': 5.6, 'signed-ops': 5.2, 'angle-sum': 6.2,
+  'map-scale': 5.2, 'sq-stretch': 5.0, 'rect-count': 5.8, 'l-split': 5.0, 'trap-area': 5.2, 'para-rect': 5.4,
+  'angle-kinds': 6.2,
+  pythagoras: 7.6, 'mean-cols': 5.2, 'circ-unroll': 5.4, 'corr-angles': 5.6, exterior: 5.2, 'sas-snap': 5.2,
+  'para-perp': 5.2, similar: 5.4, 'cyl-stack': 5.2, slope: 6.2,
+  'area-model': 7.5, 'quad-tree': 5.4, transform: 6.8, 'area-x4': 5.2, 'two-coins': 5.2, 'diff-sq': 5.4,
+  parab: 5.2, 'half-eq': 5.2,
+};
+
 export function gradeLoopMap(): readonly MappedLoop[] {
   return LOOPS;
 }
@@ -141,6 +199,8 @@ export function buildGradeLoopPool(grade: GradeHubGrade): GradeLoopEntry[] {
     variant: loop.variant,
     label: loop.label,
     href: loop.topic ?? fallback,
+    domain: gradeLoopDomain(loop.variant),
+    hold: GRADE_LOOP_HOLD_S[loop.variant],
   }));
   const defaultVariant = GRADE_LOOP_DEFAULTS[grade];
   return [

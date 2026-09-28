@@ -1,8 +1,13 @@
 ---
 import ConceptLoop from './ConceptLoop.astro';
 import type { Props as ConceptLoopProps } from './ConceptLoop.astro';
-import type { GradeHubGrade } from '../lib/gradeHubs';
-import type { GradeLoopEntry } from '../lib/gradeLoopPools';
+import { gradeHubLabel, type GradeHubGrade } from '../lib/gradeHubs';
+import {
+  GRADE_LOOP_EXPLANATION,
+  GRADE_LOOP_HOLD_S,
+  gradeLoopDomain,
+  type GradeLoopEntry,
+} from '../lib/gradeLoopPools';
 
 interface Props {
   grade: GradeHubGrade;
@@ -12,20 +17,28 @@ interface Props {
 type Variant = ConceptLoopProps['variant'];
 
 const { grade, pool, defaultVariant } = Astro.props;
-const defaultEntry = pool.find((entry) => entry.variant === defaultVariant) ?? {
+const gradeLabel = gradeHubLabel(grade);
+const gradeTag = `הדגמה · כיתה ${gradeLabel}`;
+const defaultEntry: GradeLoopEntry = pool.find((entry) => entry.variant === defaultVariant) ?? {
   variant: defaultVariant,
   label: 'הדגמה מתמטית',
   href: `/worksheets?grade=${grade}`,
+  domain: gradeLoopDomain(defaultVariant),
+  hold: GRADE_LOOP_HOLD_S[defaultVariant],
 };
 const others = pool.filter((entry) => entry.variant !== defaultVariant);
 const isCatalog = defaultEntry.href.startsWith('/worksheets');
 ---
-{/* No-JS/SEO render the same default loop as before; later variants stay inert
-    in templates. Mobile (390px) keeps the player in place under the heading;
-    auto-scrolling it into view is an open item for a later stage. */}
-<div class="grade-loop" data-grade-loop>
+{/* No-JS/SEO render the same default loop as before, plus the static grade
+    tag; later variants stay inert in templates. Auto-scrolling the player into
+    view on mobile is an open item for a later stage. */}
+<div class="grade-loop" data-grade-loop role="group" aria-label={gradeTag}>
+  <p class="grade-loop__grade" data-grade-loop-grade>{gradeTag}</p>
   <div data-grade-loop-current>
     <ConceptLoop variant={defaultVariant as Variant} />
+  </div>
+  <div class="grade-loop__progress" data-grade-loop-progress aria-hidden="true" hidden>
+    <span class="grade-loop__progress-fill" data-grade-loop-progress-fill></span>
   </div>
   {
     others.map((entry) => (
@@ -36,28 +49,48 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
   }
   <script type="application/json" data-grade-loop-pool set:html={JSON.stringify(pool)} />
   <div class="grade-loop__bar">
-    <p class="grade-loop__text" data-grade-loop-text aria-live="polite">
-      <span class="grade-loop__label" data-grade-loop-label>{defaultEntry.label}</span>
+    <div class="grade-loop__text" data-grade-loop-text aria-live="polite">
+      <p class="grade-loop__domain" data-grade-loop-domain>{defaultEntry.domain}</p>
+      <p class="grade-loop__title" data-grade-loop-label>{defaultEntry.label}</p>
+      <p class="grade-loop__explain">{GRADE_LOOP_EXPLANATION}</p>
       <a
         class="grade-loop__link"
         data-grade-loop-link
         href={defaultEntry.href}
         data-peek={isCatalog ? 'ws' : 'topic'}
       >
-        {isCatalog ? 'למאגר התרגול ←' : 'לדף הנושא ←'}
+        לדפי העבודה בנושא ←
       </a>
-    </p>
+    </div>
     {
       others.length > 0 && (
-        <button
-          type="button"
-          class="grade-loop__next"
-          data-grade-loop-next
-          aria-label="מעבר להמחשה הבאה"
-          hidden
-        >
-          ללולאה הבאה ←
-        </button>
+        <div class="grade-loop__controls">
+          <button
+            type="button"
+            class="grade-loop__pause"
+            data-grade-loop-pause
+            data-state="playing"
+            aria-label="השהיית ההדגמות"
+            hidden
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <g class="grade-loop__ic-pause">
+                <rect x="3" y="2.5" width="3.4" height="11" rx="1.2" />
+                <rect x="9.6" y="2.5" width="3.4" height="11" rx="1.2" />
+              </g>
+              <path class="grade-loop__ic-play" d="M4 2.2 L13.4 8 L4 13.8 Z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="grade-loop__next"
+            data-grade-loop-next
+            aria-label="ללולאה הבאה"
+            hidden
+          >
+            ללולאה הבאה ←
+          </button>
+        </div>
       )
     }
   </div>
@@ -69,17 +102,21 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 
   type LoopState = { playing: boolean; done: boolean; static: boolean };
   type Loop = HTMLElement & {
-    __loop?: { pause(): void; play(): void; state(): LoopState };
+    __loop?: { seek(t: number): void; pause(): void; play(): void; state(): LoopState };
   };
-  type Entry = { variant: string; label: string; href: string };
+  type Entry = { variant: string; label: string; href: string; domain: string; hold?: number };
 
   const TICK_MS = 500;
 
   function bootGradeLoop(root: HTMLElement) {
     if (root.dataset.gradeLoopReady === 'ready') return;
     const current = root.querySelector<HTMLElement>('[data-grade-loop-current]');
+    const domain = root.querySelector<HTMLElement>('[data-grade-loop-domain]');
     const label = root.querySelector<HTMLElement>('[data-grade-loop-label]');
     const link = root.querySelector<HTMLAnchorElement>('[data-grade-loop-link]');
+    const progress = root.querySelector<HTMLElement>('[data-grade-loop-progress]');
+    const fill = root.querySelector<HTMLElement>('[data-grade-loop-progress-fill]');
+    const pauseButton = root.querySelector<HTMLButtonElement>('[data-grade-loop-pause]');
     const nextButton = root.querySelector<HTMLButtonElement>('[data-grade-loop-next]');
     const initial = current?.querySelector<Loop>('[data-loop]');
     let pool: Entry[] = [];
@@ -122,12 +159,11 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
     function describe(variant: string) {
       const entry = entries.get(variant);
       if (!entry) return;
-      const isCatalog = entry.href.startsWith('/worksheets');
+      if (domain) domain.textContent = entry.domain;
       if (label) label.textContent = entry.label;
       if (link) {
         link.href = entry.href;
-        link.textContent = isCatalog ? 'למאגר התרגול ←' : 'לדף הנושא ←';
-        link.dataset.peek = isCatalog ? 'ws' : 'topic';
+        link.dataset.peek = entry.href.startsWith('/worksheets') ? 'ws' : 'topic';
       }
     }
 
@@ -140,11 +176,16 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       toggle.click();
     }
 
-    // A revisited loop that already parked replays from the start.
-    function replayParked(loop: Loop) {
+    // A revisited loop starts again from zero; a parked one replays.
+    function restartLoop(loop: Loop) {
       const state = loop.__loop?.state();
-      if (!state?.done || state.static || manuallyPaused(loop)) return;
-      loop.querySelector<HTMLButtonElement>('[data-el="toggle"]')?.click();
+      if (!state || state.static || manuallyPaused(loop)) return;
+      if (state.done) {
+        loop.querySelector<HTMLButtonElement>('[data-el="toggle"]')?.click();
+        return;
+      }
+      loop.__loop?.seek(0);
+      loop.__loop?.play();
     }
 
     function syncActiveCard() {
@@ -200,6 +241,14 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       }, { threshold: 0.35 }).observe(root);
     }
 
+    function resetProgress() {
+      if (!fill) return;
+      fill.style.transition = 'none';
+      fill.style.transform = 'scaleX(0)';
+      void fill.offsetWidth;
+      fill.style.transition = '';
+    }
+
     const rotation = createGradeLoopRotation(
       {
         inView: () => inView,
@@ -221,34 +270,90 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
           // The engine has no destroy API. Each variant is initialized once
           // and kept connected, hidden and paused while inactive.
           const prior = activeLoop();
+          const hadFocus = !!prior?.contains(document.activeElement);
           prior?.__loop?.pause();
           if (prior) cache.append(prior);
           current.append(next);
           if (firstVisit) initConceptLoops();
           restoreManualPause(next);
-          replayParked(next);
+          if (!firstVisit) restartLoop(next);
           wasStatic.set(next, next.__loop?.state().static || false);
           describe(variant);
+          resetProgress();
           syncActiveCard();
+          syncControls();
+          if (hadFocus) next.querySelector<HTMLElement>('[data-pause-card]')?.focus();
+        },
+        // Spec proposed seek(duration - 0.2), but every lap has faded out by
+        // then (a near-blank frame). The engine's own completed frame is
+        // SPECS.hold — where it parks and what reduced motion shows. Without a
+        // known hold time the loop simply swaps at 15 s (approved fallback).
+        hold(variant) {
+          const loop = mounted.get(variant);
+          const hold = entries.get(variant)?.hold;
+          if (!loop?.__loop || typeof hold !== 'number') return;
+          loop.__loop.seek(hold);
+          loop.__loop.pause();
         },
       },
       pool.map((entry) => entry.variant),
       initial.dataset.loop
     );
 
+    function syncControls() {
+      const loop = activeLoop();
+      const state = loop?.__loop?.state();
+      const isStatic = !state || state.static;
+      root.toggleAttribute('data-grade-loop-static', isStatic);
+      if (progress) progress.hidden = isStatic;
+      if (fill) fill.style.transform = `scaleX(${rotation.progress()})`;
+      if (pauseButton) {
+        pauseButton.hidden = isStatic;
+        const paused = !!loop && !!state &&
+          (manuallyPaused(loop) || (!state.playing && !state.done && !rotation.held()));
+        pauseButton.dataset.state = paused ? 'paused' : 'playing';
+        pauseButton.setAttribute('aria-label', paused ? 'הפעלת ההדגמות' : 'השהיית ההדגמות');
+      }
+    }
+
+    // Reduced motion shows the static completed frame with no rotation. A
+    // one-shot ▶ replay there needs engine support (it refuses to play static).
+    pauseButton?.addEventListener('click', () => {
+      const loop = activeLoop();
+      const card = loop?.querySelector<HTMLElement>('[data-pause-card]');
+      const state = loop?.__loop?.state();
+      if (!loop || !card || !state || state.static) return;
+      // A held loop is paused by the player, so release it first; the second
+      // click is then a real, remembered user pause.
+      if (rotation.held() && !manuallyPaused(loop)) card.click();
+      card.click();
+      syncControls();
+    });
+
     if (nextButton) {
       nextButton.hidden = false;
       nextButton.addEventListener('click', () => rotation.next());
     }
+    // RTL: the "next" arrow points left.
+    root.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowLeft' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      event.preventDefault();
+      rotation.next();
+    });
 
-    const queueSync = () => queueMicrotask(syncActiveCard);
+    const queueSync = () => queueMicrotask(() => {
+      syncActiveCard();
+      syncControls();
+    });
     new MutationObserver(queueSync).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', queueSync);
     window.addEventListener('nd:motion-off', queueSync);
-    // One timer drives both the rotation clock and the active card's ARIA.
+    syncControls();
+    // One timer drives the rotation clock, the progress bar and the card's ARIA.
     window.setInterval(() => {
       syncActiveCard();
       rotation.tick(TICK_MS);
+      syncControls();
     }, TICK_MS);
   }
 
@@ -265,36 +370,92 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 </script>
 
 <style>
-  .grade-loop__bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    margin-block-start: 14px;
-  }
-
-  .grade-loop__text {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    flex: 1 1 auto;
-    min-width: 0;
-    margin: 0;
-  }
-
-  .grade-loop__label {
+  .grade-loop__grade {
+    display: inline-block;
+    margin: 0 0 14px;
     background: #fff;
     border: 1.5px solid #22305a;
     border-radius: 999px;
     padding: 4px 12px;
     font-size: 14px;
     font-weight: 700;
+    line-height: 1.4;
     color: #22305a;
   }
 
-  .grade-loop__link {
+  .grade-loop__progress {
+    margin-block-start: 14px;
+    block-size: 4px;
+    background: rgba(42, 124, 122, .15);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .grade-loop__progress[hidden] {
+    display: none;
+  }
+
+  /* RTL: the bar fills from the inline start (right). */
+  .grade-loop__progress-fill {
+    display: block;
+    block-size: 100%;
+    background: #2a7c7a;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 500ms linear;
+  }
+
+  .grade-loop__progress-fill:dir(ltr) {
+    transform-origin: left center;
+  }
+
+  .grade-loop__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px 20px;
+    margin-block-start: 16px;
+  }
+
+  .grade-loop__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    flex: 1 1 280px;
+    min-width: 0;
+  }
+
+  .grade-loop__text p {
+    margin: 0;
+  }
+
+  .grade-loop__domain {
     font-size: 14px;
+    font-weight: 700;
+    color: #5a6588;
+  }
+
+  .grade-loop__title {
+    font-family: 'Secular One', sans-serif;
+    font-weight: 400;
+    font-size: clamp(26px, 2.6vw, 32px);
+    line-height: 1.2;
+    color: #22305a;
+  }
+
+  .grade-loop__explain {
+    font-size: 19px;
+    line-height: 1.5;
+    color: #3d4870;
+  }
+
+  /* 19px bold is large text, so the coral hover (3:1) still meets AA. */
+  .grade-loop__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+    font-size: 19px;
     font-weight: 700;
     color: #1e605e;
     text-decoration: underline;
@@ -302,31 +463,69 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
   }
 
   .grade-loop__link:hover {
-    color: #a84434;
+    color: #e5735c;
   }
 
+  .grade-loop__controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .grade-loop__pause,
   .grade-loop__next {
-    min-height: 44px;
-    border: 1.5px solid #22305a;
+    min-block-size: 44px;
+    border: 2px solid #22305a;
+    border-radius: 12px;
     background: #fff;
-    border-radius: 999px;
-    padding: 6px 14px;
-    font: 700 14px Heebo, sans-serif;
+    font: 700 16px Heebo, sans-serif;
     color: #22305a;
     cursor: pointer;
   }
 
+  .grade-loop__next {
+    padding-block: 8px;
+    padding-inline: 16px;
+  }
+
+  .grade-loop__pause {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 44px;
+    padding: 0;
+  }
+
+  .grade-loop__pause svg {
+    inline-size: 16px;
+    block-size: 16px;
+    fill: currentColor;
+  }
+
+  .grade-loop__pause[data-state='playing'] .grade-loop__ic-play,
+  .grade-loop__pause[data-state='paused'] .grade-loop__ic-pause {
+    display: none;
+  }
+
+  .grade-loop__pause:hover,
   .grade-loop__next:hover {
     background: #fdf1d8;
   }
 
+  .grade-loop__pause:focus-visible,
   .grade-loop__next:focus-visible,
   .grade-loop__link:focus-visible {
     outline: 3px solid #2a7c7a;
     outline-offset: 2px;
   }
 
+  .grade-loop__pause[hidden],
   .grade-loop__next[hidden] {
     display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .grade-loop__progress-fill {
+      transition: none;
+    }
   }
 </style>
