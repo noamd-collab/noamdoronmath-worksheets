@@ -1,0 +1,332 @@
+---
+import ConceptLoop from './ConceptLoop.astro';
+import type { Props as ConceptLoopProps } from './ConceptLoop.astro';
+import type { GradeHubGrade } from '../lib/gradeHubs';
+import type { GradeLoopEntry } from '../lib/gradeLoopPools';
+
+interface Props {
+  grade: GradeHubGrade;
+  pool: GradeLoopEntry[];
+  defaultVariant: string;
+}
+type Variant = ConceptLoopProps['variant'];
+
+const { grade, pool, defaultVariant } = Astro.props;
+const defaultEntry = pool.find((entry) => entry.variant === defaultVariant) ?? {
+  variant: defaultVariant,
+  label: 'הדגמה מתמטית',
+  href: `/worksheets?grade=${grade}`,
+};
+const others = pool.filter((entry) => entry.variant !== defaultVariant);
+const isCatalog = defaultEntry.href.startsWith('/worksheets');
+---
+{/* No-JS/SEO render the same default loop as before; later variants stay inert
+    in templates. Mobile (390px) keeps the player in place under the heading;
+    auto-scrolling it into view is an open item for a later stage. */}
+<div class="grade-loop" data-grade-loop>
+  <div data-grade-loop-current>
+    <ConceptLoop variant={defaultVariant as Variant} />
+  </div>
+  {
+    others.map((entry) => (
+      <template data-grade-loop-variant={entry.variant}>
+        <ConceptLoop variant={entry.variant as Variant} />
+      </template>
+    ))
+  }
+  <script type="application/json" data-grade-loop-pool set:html={JSON.stringify(pool)} />
+  <div class="grade-loop__bar">
+    <p class="grade-loop__text" data-grade-loop-text aria-live="polite">
+      <span class="grade-loop__label" data-grade-loop-label>{defaultEntry.label}</span>
+      <a
+        class="grade-loop__link"
+        data-grade-loop-link
+        href={defaultEntry.href}
+        data-peek={isCatalog ? 'ws' : 'topic'}
+      >
+        {isCatalog ? 'למאגר התרגול ←' : 'לדף הנושא ←'}
+      </a>
+    </p>
+    {
+      others.length > 0 && (
+        <button
+          type="button"
+          class="grade-loop__next"
+          data-grade-loop-next
+          aria-label="מעבר להמחשה הבאה"
+          hidden
+        >
+          ללולאה הבאה ←
+        </button>
+      )
+    }
+  </div>
+</div>
+
+<script>
+  import { initConceptLoops } from '../lib/conceptLoops';
+  import { createGradeLoopRotation } from '../lib/gradeLoopRotation';
+
+  type LoopState = { playing: boolean; done: boolean; static: boolean };
+  type Loop = HTMLElement & {
+    __loop?: { pause(): void; play(): void; state(): LoopState };
+  };
+  type Entry = { variant: string; label: string; href: string };
+
+  const TICK_MS = 500;
+
+  function bootGradeLoop(root: HTMLElement) {
+    if (root.dataset.gradeLoopReady === 'ready') return;
+    const current = root.querySelector<HTMLElement>('[data-grade-loop-current]');
+    const label = root.querySelector<HTMLElement>('[data-grade-loop-label]');
+    const link = root.querySelector<HTMLAnchorElement>('[data-grade-loop-link]');
+    const nextButton = root.querySelector<HTMLButtonElement>('[data-grade-loop-next]');
+    const initial = current?.querySelector<Loop>('[data-loop]');
+    let pool: Entry[] = [];
+    try {
+      pool = JSON.parse(root.querySelector('[data-grade-loop-pool]')?.textContent || '[]');
+    } catch { /* A broken pool keeps the static default loop. */ }
+    if (!current || !initial?.dataset.loop || pool.length < 2) return;
+    root.dataset.gradeLoopReady = 'ready';
+
+    const entries = new Map(pool.map((entry) => [entry.variant, entry] as const));
+    const originals = new Map<string, HTMLElement>();
+    const mounted = new Map<string, Loop>([[initial.dataset.loop, initial]]);
+    const adapted = new WeakSet<Loop>();
+    const wasStatic = new WeakMap<Loop, boolean>();
+    const cache = document.createElement('div');
+    cache.hidden = true;
+    cache.style.display = 'none';
+    cache.setAttribute('aria-hidden', 'true');
+    cache.dataset.gradeLoopCache = '';
+    root.append(cache);
+
+    root.querySelectorAll<HTMLTemplateElement>('template[data-grade-loop-variant]').forEach((template) => {
+      const variant = template.dataset.gradeLoopVariant;
+      const source = template.content.querySelector<HTMLElement>('[data-loop]');
+      if (variant && source) originals.set(variant, source);
+    });
+
+    const activeLoop = () => current.querySelector<Loop>('[data-loop]');
+    const pauseKey = (loop: Loop) => `k3-pause:${loop.dataset.loop || ''}`;
+    const manuallyPaused = (loop: Loop) => {
+      try { return sessionStorage.getItem(pauseKey(loop)) === '1'; } catch { return false; }
+    };
+    function rememberPause(loop: Loop, paused: boolean) {
+      try {
+        if (paused) sessionStorage.setItem(pauseKey(loop), '1');
+        else sessionStorage.removeItem(pauseKey(loop));
+      } catch { /* Session storage is optional, as in the existing pause card. */ }
+    }
+
+    function describe(variant: string) {
+      const entry = entries.get(variant);
+      if (!entry) return;
+      const isCatalog = entry.href.startsWith('/worksheets');
+      if (label) label.textContent = entry.label;
+      if (link) {
+        link.href = entry.href;
+        link.textContent = isCatalog ? 'למאגר התרגול ←' : 'לדף הנושא ←';
+        link.dataset.peek = isCatalog ? 'ws' : 'topic';
+      }
+    }
+
+    // Use the unchanged engine's toggle, not a second animation clock.
+    function restoreManualPause(loop: Loop) {
+      const state = loop.__loop?.state();
+      const toggle = loop.querySelector<HTMLButtonElement>('[data-el="toggle"]');
+      if (!state || state.static || !toggle || !manuallyPaused(loop)) return;
+      if (!state.playing) toggle.click();
+      toggle.click();
+    }
+
+    // A revisited loop that already parked replays from the start.
+    function replayParked(loop: Loop) {
+      const state = loop.__loop?.state();
+      if (!state?.done || state.static || manuallyPaused(loop)) return;
+      loop.querySelector<HTMLButtonElement>('[data-el="toggle"]')?.click();
+    }
+
+    function syncActiveCard() {
+      const loop = activeLoop();
+      if (!loop || !adapted.has(loop)) return; // Initial card keeps its original adapter.
+      const card = loop.querySelector<HTMLElement>('[data-pause-card]');
+      const state = loop.__loop?.state();
+      if (!card || !state) return;
+      const motionResumed = wasStatic.get(loop) && !state.static;
+      wasStatic.set(loop, state.static);
+      if (motionResumed) restoreManualPause(loop);
+      const paused = !loop.__loop?.state().playing && !state.static;
+      card.classList.toggle('is-paused', paused);
+      card.setAttribute('aria-pressed', String(paused));
+      card.setAttribute('aria-label', paused ? 'הפעלת הנפשה' : 'השהיית הנפשה');
+      card.setAttribute('aria-disabled', String(state.static));
+      card.tabIndex = state.static ? -1 : 0;
+    }
+
+    function activateCard(loop: Loop) {
+      const state = loop.__loop?.state();
+      if (!state || state.static) return;
+      loop.querySelector<HTMLButtonElement>('[data-el="toggle"]')?.click();
+      rememberPause(loop, !loop.__loop?.state().playing);
+      syncActiveCard();
+    }
+
+    // One delegated adapter for later template mounts only. The initial
+    // ConceptLoop already owns its click, keyboard and session logic.
+    current.addEventListener('click', (event) => {
+      const loop = activeLoop();
+      const target = event.target instanceof Element ? event.target : null;
+      if (!loop || !adapted.has(loop) || !target?.closest('[data-pause-card]')) return;
+      if (target.closest('[data-el="toggle"]')) {
+        rememberPause(loop, !loop.__loop?.state().playing);
+        syncActiveCard();
+      } else activateCard(loop);
+    });
+    current.addEventListener('keydown', (event) => {
+      const loop = activeLoop();
+      const target = event.target instanceof Element ? event.target : null;
+      if (!loop || !adapted.has(loop) || !target?.closest('[data-pause-card]')) return;
+      if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+        event.preventDefault();
+        activateCard(loop);
+      }
+    });
+
+    let inView = !('IntersectionObserver' in window);
+    if (!inView) {
+      new IntersectionObserver((records) => {
+        inView = records[0].isIntersecting;
+      }, { threshold: 0.35 }).observe(root);
+    }
+
+    const rotation = createGradeLoopRotation(
+      {
+        inView: () => inView,
+        pageHidden: () => document.hidden,
+        state: (variant) => mounted.get(variant)?.__loop?.state(),
+        manuallyPaused: (variant) => {
+          const loop = mounted.get(variant);
+          return loop ? manuallyPaused(loop) : false;
+        },
+        mount(variant, firstVisit) {
+          let next = mounted.get(variant);
+          if (!next) {
+            const source = originals.get(variant);
+            if (!source) return;
+            next = source.cloneNode(true) as Loop;
+            mounted.set(variant, next);
+            adapted.add(next);
+          }
+          // The engine has no destroy API. Each variant is initialized once
+          // and kept connected, hidden and paused while inactive.
+          const prior = activeLoop();
+          prior?.__loop?.pause();
+          if (prior) cache.append(prior);
+          current.append(next);
+          if (firstVisit) initConceptLoops();
+          restoreManualPause(next);
+          replayParked(next);
+          wasStatic.set(next, next.__loop?.state().static || false);
+          describe(variant);
+          syncActiveCard();
+        },
+      },
+      pool.map((entry) => entry.variant),
+      initial.dataset.loop
+    );
+
+    if (nextButton) {
+      nextButton.hidden = false;
+      nextButton.addEventListener('click', () => rotation.next());
+    }
+
+    const queueSync = () => queueMicrotask(syncActiveCard);
+    new MutationObserver(queueSync).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', queueSync);
+    window.addEventListener('nd:motion-off', queueSync);
+    // One timer drives both the rotation clock and the active card's ARIA.
+    window.setInterval(() => {
+      syncActiveCard();
+      rotation.tick(TICK_MS);
+    }, TICK_MS);
+  }
+
+  // After ConceptLoop's own pause-card setup (DOMContentLoaded + one frame),
+  // so no cloned card can receive that adapter as well as this one.
+  function boot() {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.querySelectorAll<HTMLElement>('[data-grade-loop]').forEach(bootGradeLoop);
+    }));
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else boot();
+</script>
+
+<style>
+  .grade-loop__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-block-start: 14px;
+  }
+
+  .grade-loop__text {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .grade-loop__label {
+    background: #fff;
+    border: 1.5px solid #22305a;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #22305a;
+  }
+
+  .grade-loop__link {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e605e;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .grade-loop__link:hover {
+    color: #a84434;
+  }
+
+  .grade-loop__next {
+    min-height: 44px;
+    border: 1.5px solid #22305a;
+    background: #fff;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font: 700 14px Heebo, sans-serif;
+    color: #22305a;
+    cursor: pointer;
+  }
+
+  .grade-loop__next:hover {
+    background: #fdf1d8;
+  }
+
+  .grade-loop__next:focus-visible,
+  .grade-loop__link:focus-visible {
+    outline: 3px solid #2a7c7a;
+    outline-offset: 2px;
+  }
+
+  .grade-loop__next[hidden] {
+    display: none;
+  }
+</style>
