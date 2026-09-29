@@ -288,9 +288,14 @@ try {
   var catalogRoot = new URL('./', location.href);
   var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
   var liveHost = /(?:^|\\.)noamdoronmath\\.co\\.il$/i.test(location.hostname);
+  var previewHost = /\\.wix-site-host\\.com$/i.test(location.hostname);
+  var onHeadlessHost = liveHost || previewHost;
+  var worksheetsCatalogOrigin = onHeadlessHost
+    ? location.origin
+    : "https://www.noamdoronmath.co.il";
   var returnPath = navigationParams.get('back');
   function worksheetsHrefFromReturn(urlObj, gradeNum, topicId){
-    var out = new URL("/worksheets", location.origin);
+    var out = new URL("/worksheets", worksheetsCatalogOrigin);
     if (urlObj && urlObj.searchParams){
       urlObj.searchParams.forEach(function(value, key){
         out.searchParams.set(key, value);
@@ -300,7 +305,7 @@ try {
       out.searchParams.set("grade", String(gradeNum));
     }
     if (topicId){ out.searchParams.set("topic", String(topicId)); }
-    return out.pathname + out.search;
+    return onHeadlessHost ? out.pathname + out.search : out.href;
   }
   if (returnPath) {
     var catalogReturn;
@@ -326,14 +331,18 @@ try {
       catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\\/$/, "")) === 0;
     if (sameOriginCatalog || legacyCatalog) {
       var backHref;
-      if (liveHost || catalogReturn.pathname.indexOf("/worksheets") === 0){
+      if (onHeadlessHost || catalogReturn.pathname.indexOf("/worksheets") === 0){
         backHref = worksheetsHrefFromReturn(
-          catalogReturn.pathname.indexOf("/worksheets") === 0 ? catalogReturn : new URL("/worksheets"+catalogReturn.search, location.origin),
+          catalogReturn.pathname.indexOf("/worksheets") === 0 ? catalogReturn : new URL("/worksheets"+catalogReturn.search, worksheetsCatalogOrigin),
           okGrade ? g : null,
           null
         );
-      } else if (!liveHost && legacyCatalog){
-        backHref = catalogReturn.href;
+      } else if (!onHeadlessHost && legacyCatalog){
+        backHref = worksheetsHrefFromReturn(
+          new URL("/worksheets" + catalogReturn.search, worksheetsCatalogOrigin),
+          okGrade ? g : null,
+          null
+        );
       } else {
         backHref = worksheetsHrefFromReturn(catalogReturn, okGrade ? g : null, null);
       }
