@@ -1,0 +1,358 @@
+/* Exact grade presentation. Dimensions, colors and decorative shapes are from
+   Noam Math Site.dc.html (grade screen) and Grade Page Players.dc.html.
+   ConceptLoop's SVG, per-grade math, controls and animation engine stay intact. */
+.grade-hub.exact-grade {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 36px 24px 72px;
+  overflow-x: clip;
+  color: #22305a;
+}
+
+.exact-grade h1,
+.exact-grade h2,
+.exact-grade p {
+  letter-spacing: normal;
+}
+
+.exact-grade .grade-hub__siblings {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0 0 28px;
+}
+
+.exact-grade .grade-hub__siblings .grade-tab {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 2px solid rgba(34, 48, 90, .3);
+  background: #fff;
+  color: #22305a;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: normal;
+  text-decoration: none;
+  box-shadow: none;
+  transform: none;
+  cursor: pointer;
+}
+
+.exact-grade .grade-hub__siblings .grade-tab.is-current,
+.exact-grade .grade-hub__siblings .grade-tab[aria-current='page'] {
+  border-color: #22305a;
+  background: #22305a;
+  color: #fbfaf5;
+  font-weight: 700;
+}
+
+.exact-grade .grade-hub__header {
+  margin: 0 0 40px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.exact-grade .grade-hub__header-main {
+  position: relative;
+}
+
+.grade-hub.exact-grade h1 {
+  font-family: 'Secular One', sans-serif;
+  font-weight: 400;
+  font-size: clamp(32px, 4.4vw, 52px);
+  line-height: 1.1;
+  margin: 0 0 12px;
+  color: #22305a;
+  text-wrap: balance;
+}
+
+.exact-grade .grade-hub__header .grade-hub__intro,
+.exact-grade .grade-hub__header .grade-hub__lead {
+  max-width: 60ch;
+  margin: 0 0 40px;
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #3d4870;
+}
+
+.exact-grade .grade-hub__cta-wrap {
+  margin: 0;
+}
+
+.exact-grade .grade-hub__cta {
+  display: inline-block;
+  padding: 14px 26px;
+  max-width: 100%;
+  background: #22305a;
+  color: #fbfaf5;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: normal;
+  border: 2px solid #22305a;
+  border-radius: 18px 6px 20px 8px / 8px 20px 6px 18px;
+  box-shadow: 4px 4px 0 #e6a534;
+  text-decoration: none;
+}
+
+.exact-grade .grade-hub__cta:hover {
+  color: #fff;
+  box-shadow: 6px 6px 0 #e5735c;
+}
+
+.exact-grade__walker {
+  margin-top: 28px;
+  width: 140px;
+}
+
+.exact-grade__walker > div {
+  overflow: hidden;
+  aspect-ratio: .75;
+}
+
+.exact-grade__walker img {
+  width: 200%;
+  max-width: none;
+  display: block;
+  cursor: pointer;
+}
+
+.exact-grade__players {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.exact-grade__players > h2 {
+  margin: 0;
+  font-family: 'Secular One', sans-serif;
+  font-weight: 400;
+  font-size: clamp(26px, 3vw, 34px);
+  color: #22305a;
+}
+
+.exact-grade__player-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.exact-grade__pencil {
+  position: absolute;
+  top: -50px;
+  right: -24px;
+  width: 100px;
+  z-index: 3;
+}
+
+.exact-grade__pencil img {
+  width: 100%;
+  display: block;
+  mix-blend-mode: multiply;
+  cursor: pointer;
+}
+
+.exact-grade__player {
+  background: #fff;
+  border: 2px solid #22305a;
+  border-radius: 22px 8px 26px 10px / 10px 26px 8px 22px;
+  box-shadow: 6px 6px 0 rgba(34, 48, 90, .1);
+  padding: 24px;
+}
+
+/* Place the real loop's existing text and diagram into the reference's two
+   panes without cloning/replacing its nodes or touching its animation hooks.
+   The 300/420 flex bases and 1/1.35 growth match the player reference. */
+.exact-grade .exact-grade__player .concept-loop__card {
+  display: grid;
+  grid-template-columns: minmax(0, calc((100% - 752px) / 2.35 + 300px)) minmax(0, 1fr);
+  grid-template-rows: min-content 1fr min-content;
+  gap: 10px 32px;
+  min-height: 250px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.exact-grade .exact-grade__player .concept-loop__top {
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0;
+  padding-inline: 0;
+  text-align: start;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.exact-grade .exact-grade__player .concept-loop__svg {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  align-self: start;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 420 / 260;
+  background: #f8ebe0;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.exact-grade .exact-grade__player .concept-loop__formula {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: end;
+  margin: 0;
+  min-width: 0;
+  padding: 10px 14px;
+  background: #eaf4f3;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 800;
+  text-align: start;
+}
+
+.exact-grade .exact-grade__player .concept-loop__caption {
+  grid-column: 1;
+  grid-row: 3;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.7;
+  text-align: start;
+}
+
+.exact-grade .grade-hub__topics {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin: 56px 0 0;
+}
+
+.exact-grade .grade-hub__section-title,
+.exact-grade .grade-hub__faq h2 {
+  font-family: 'Secular One', sans-serif;
+  font-weight: 400;
+  font-size: 30px;
+  margin: 0 0 16px;
+  color: #22305a;
+}
+
+.exact-grade .grade-hub__topic-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exact-grade .grade-hub__topic-list > li {
+  min-width: 0;
+}
+
+.exact-grade .grade-hub__topic-list a {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  padding: 18px 20px;
+  background: #fff;
+  border: 2px solid #22305a;
+  border-radius: 16px 6px 18px 8px / 8px 18px 6px 16px;
+  color: #22305a;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.exact-grade .grade-hub__topic-list a:hover {
+  transform: translateY(-3px);
+  box-shadow: 5px 5px 0 #e6a534;
+  color: #22305a;
+}
+
+/* The live grade copy, FAQ, and supplemental links are retained verbatim.
+   These functional sections have no replacement content in the mockup. */
+.exact-grade .grade-hub__intro-fold,
+.exact-grade .grade-hub__faq {
+  margin-top: 56px;
+}
+
+.exact-grade .grade-hub__whatsapp {
+  margin: 72px 0 0;
+  background: #eaf4f3;
+  border: 2px solid #22305a;
+  border-radius: 8px 22px 10px 26px / 26px 10px 22px 8px;
+  padding: 28px 32px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.exact-grade .grade-hub__whatsapp h2 {
+  margin: 0 0 6px;
+}
+
+.exact-grade .grade-hub__whatsapp p {
+  margin: 0;
+  color: #3d4870;
+  font-weight: 400;
+}
+
+.exact-grade .grade-hub__whatsapp > a {
+  padding: 12px 22px;
+  background: #2a7c7a;
+  color: #fff;
+  font-weight: 700;
+  border: 2px solid #22305a;
+  border-radius: 18px 6px 20px 8px / 8px 20px 6px 18px;
+  box-shadow: 3px 3px 0 #22305a;
+  text-decoration: none;
+}
+
+.exact-grade .grade-hub__whatsapp > a:hover {
+  color: #fff;
+  box-shadow: 5px 5px 0 #22305a;
+}
+
+.exact-grade a:focus-visible,
+.exact-grade button:focus-visible,
+.exact-grade summary:focus-visible {
+  outline: 3px solid #e6a534;
+  outline-offset: 2px;
+}
+
+/* The reference player wraps when its 300px + 420px panes plus 32px gap
+   no longer fit inside the 48px main and 52px card horizontal insets. */
+@media (max-width: 851.98px) {
+  .exact-grade .exact-grade__player .concept-loop__card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: 12px;
+  }
+
+  .exact-grade .exact-grade__player .concept-loop__top,
+  .exact-grade .exact-grade__player .concept-loop__formula,
+  .exact-grade .exact-grade__player .concept-loop__caption,
+  .exact-grade .exact-grade__player .concept-loop__svg {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  /* Mobile: the player (diagram) first, its text after. */
+  .exact-grade .exact-grade__player .concept-loop__svg { order: 0; }
+  .exact-grade .exact-grade__player .concept-loop__top { order: 1; }
+  .exact-grade .exact-grade__player .concept-loop__formula { order: 2; }
+  .exact-grade .exact-grade__player .concept-loop__caption { order: 3; }
+}

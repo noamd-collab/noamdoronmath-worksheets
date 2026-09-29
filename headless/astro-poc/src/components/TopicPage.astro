@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import LineArtDoodles from './LineArtDoodles.astro';
-import MobileNotebookCorners from './MobileNotebookCorners.astro';
+import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
+import { loadCatalog } from '../lib/catalog/loadCatalog';
+import { buildWorksheetHref } from '../lib/worksheetLinks';
 import topicFamilies from '../data/topicFamilies.json';
 import {
   loadTopicPage,
@@ -113,10 +114,27 @@ const loopVariant =
   slug !== 'triangle-area-grade-7' && family
     ? FAMILY_LOOP[family as keyof typeof FAMILY_LOOP]
     : undefined;
-// pair the card with the intro paragraph (pulled out of the body flow)
-const loopIntro =
-  loopVariant && bodyUnits[0]?.kind === 'intro' ? bodyUnits[0].text : null;
-const flowUnits = loopIntro ? bodyUnits.slice(1) : bodyUnits;
+// Keep the existing instructional engine. Only its placement and surrounding
+// presentation change to the supplied topic screen; no demo data is imported.
+const hasDemo = !!loopVariant || slug === 'triangle-area-grade-7';
+const bodyStart = bodyUnits.findIndex((unit) => unit.kind !== 'intro' && unit.kind !== 'cta');
+const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
+const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
+const flowUnits = hasDemo ? bodyUnits.slice(heroEnd) : bodyUnits;
+const catalog = loadCatalog();
+const catalogTopic = catalog.grades.find((entry) => entry.grade === page.grade)
+  ?.topics.find((topic) => topic.id === topicId);
+const topicLevels = catalogTopic?.levels.map((level) => ({
+  key: level.key,
+  label: level.label,
+  href: buildWorksheetHref({
+    catalog,
+    grade: page.grade,
+    topic: catalogTopic,
+    levelKey: level.key,
+    backPath: resolveSiteHrefString(page.catalogCta.href),
+  }),
+})) || [];
 
 function faqHeadingId(groupIndex: number) {
   return groupIndex === 0 ? 'topic-faq-heading' : `topic-faq-heading-${groupIndex}`;
@@ -132,17 +150,11 @@ function faqHeadingId(groupIndex: number) {
   <script type="application/ld+json" set:html={JSON.stringify(page.jsonLd)} />
 
   <main
-    class="topic-page wrap topic-page--nb"
+    class="topic-page exact-topic"
     data-grade={String(page.grade)}
     id="topic-page-main"
     data-topic-slug={page.slug}
   >
-    {/* Edge marginalia over the page band; SiteDoodles adds full-page gutters */}
-    <MobileNotebookCorners
-      seed={`topic-${page.slug}`}
-      preferred={['orbit-pencil', 'geometry-fish', 'eye-spiral', 'telescope', 'kite']}
-      count={3}
-    />
     <nav class="topic-page__crumbs" aria-label="מיקום">
       <a href="/">בית</a>
       <span aria-hidden="true">/</span>
@@ -150,7 +162,9 @@ function faqHeadingId(groupIndex: number) {
       <span aria-hidden="true">/</span>
       <span aria-current="page">{page.h1}</span>
     </nav>
-    <LineArtDoodles variant="topic" />
+    <div data-doodle="pencil" class="exact-topic-pencil">
+      <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" />
+    </div>
 
     {
       (page.preH1Ctas || []).map((cta) => (
@@ -168,28 +182,44 @@ function faqHeadingId(groupIndex: number) {
       ))
     }
 
-    <header class="topic-page__header banner topic-page__header--nb">
+    <header class="topic-page__header">
       <h1>{page.h1}</h1>
     </header>
 
-    {/* K3: hands-on demo for the triangle-area topic — drag the apex along a
-        line parallel to the base; the area stays 12. */}
-    {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
-
-    {/* FAMILIES-B1: family loop card beside the intro (text right, card
-        left in RTL; stacks below the text on mobile) */}
-    {loopVariant && (
-      <div class="topic-loop-row">
-        {loopIntro && (
-          <p class="topic-page__intro topic-loop-row__text" data-flow="paragraph" data-role="intro">
-            {loopIntro}
-          </p>
-        )}
-        <ConceptLoop variant={loopVariant} />
-      </div>
-    )}
-
-    <div class="topic-page__body" data-body-flow>
+    <div data-body-flow>
+      {hasDemo && (
+        <div class="exact-topic-hero">
+          <div class="exact-topic-demo" style={`background:${page.grade >= 7 ? '#e3f1ec' : '#f8ebe0'}`}>
+            {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
+            {loopVariant && <ConceptLoop variant={loopVariant} />}
+          </div>
+          <div class="exact-topic-copy">
+            {heroUnits.map((unit) => {
+              if (unit.kind === 'intro') return (
+                <p class="topic-page__intro" data-flow="paragraph" data-role="intro">{unit.text}</p>
+              );
+              if (unit.kind === 'cta') return (
+                <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
+                  <a
+                    class="cta cta--mid topic-page__cta"
+                    href={resolveSiteHrefString(unit.item.href)}
+                    data-catalog-topic={unit.item.catalogTopicId != null ? String(unit.item.catalogTopicId) : undefined}
+                  >{unit.item.label}</a>
+                </p>
+              );
+              return null;
+            })}
+            {topicLevels.length > 0 && (
+              <div class="exact-topic-levels">
+                {topicLevels.map((level) => (
+                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer">{level.label}</a>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      <div class="topic-page__body">
       {
         flowUnits.map((unit) => {
           if (unit.kind === 'intro') {
@@ -278,6 +308,7 @@ function faqHeadingId(groupIndex: number) {
           return null;
         })
       }
+      </div>
     </div>
 
     {

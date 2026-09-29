@@ -1,0 +1,257 @@
+---
+import ConceptLoop from './ConceptLoop.astro';
+
+// Short presentation labels follow the existing loop QA inventory. Topic links
+// name existing pages for the mathematical idea; other variants intentionally
+// open the catalog, without inventing a grade placement or pedagogical copy.
+const topics = {
+  triangle: ['שטח משולש', '/triangle-area-grade-7'],
+  pythagoras: ['משפט פיתגורס', '/pythagorean-theorem-grade-8'],
+  'area-model': ['כפל ביטויים ופתיחת סוגריים', '/distributive-law-grade-9'],
+  sticks: ['עשרות ויחידות', '/worksheets?grade=2'],
+  numberline: ['ישר המספרים · עיגול', '/worksheets?grade=4'],
+  tenframes: ['מסגרת עשר', '/worksheets?grade=1'],
+  balance: ['משוואות ומאזניים', '/worksheets?grade=5'],
+  pattern: ['חוקיות', '/worksheets?grade=6'],
+  bars: ['בעיות מילוליות · מודל פסים', '/worksheets?grade=3'],
+  ruler: ['מדידה ויחידות', '/worksheets'],
+  array: ['כפל במערך', '/worksheets'],
+  polygon: ['צורות ומצולעים', '/worksheets'],
+  data: ['הצגת נתונים', '/worksheets'],
+  baseten: ['חיבור רב־ספרתי', '/worksheets'],
+  cookies: ['חילוק עם שארית', '/worksheets'],
+  fraction: ['שבר כחלק משלם', '/worksheets'],
+  transform: ['שיקוף, סיבוב והזזה', '/worksheets'],
+  'angle-sum': ['סכום זוויות במשולש', '/triangle-quadrilateral-angle-sum-grade-7'],
+  'para-rect': ['שטח מקבילית', '/area-parallelogram-trapezoid-composite-grade-7'],
+  'angle-kinds': ['סוגי זוויות', '/angles-introduction-measurement-grade-7'],
+  'frac-product': ['כפל שברים', '/worksheets'],
+  slope: ['שיפוע', '/linear-function-grade-8'],
+  'add-within': ['חיבור בתחום העשר', '/worksheets'],
+  similar: ['דמיון משולשים', '/similar-triangles-grade-8'],
+  'order-ops': ['סדר פעולות חשבון', '/worksheets'],
+  'sup-angles': ['זוויות צמודות', '/adjacent-vertical-angles-grade-7'],
+  'share-12': ['חילוק לקבוצות שוות', '/worksheets'],
+  'corr-angles': ['זוויות בין מקבילים', '/parallel-lines-angles-grade-8'],
+  'mean-cols': ['ממוצע', '/statistics-grade-8'],
+  'pct-25': ['אחוזים', '/percentage-problems-grade-8'],
+  'diff-sq': ['הפרש ריבועים', '/difference-of-squares-grade-9'],
+  'clock-3': ['קריאת שעון · שעה שלמה', '/worksheets'],
+  'peri-rect': ['היקף מלבן', '/area-rectangle-perimeter-grade-7'],
+  'signed-jump': ['חיבור מספרים מכוונים', '/signed-numbers-grade-7'],
+  'prime-rect': ['מספרים ראשוניים', '/worksheets'],
+  'sas-snap': ['חפיפה · צלע־זווית־צלע', '/congruence-theorems-grade-8'],
+  'obtuse-ht': ['גובה מחוץ למשולש', '/triangle-area-grade-7'],
+  'box-vol': ['נפח תיבה', '/solids-box-cube-prism-grade-7'],
+  'trap-area': ['שטח טרפז', '/area-parallelogram-trapezoid-composite-grade-7'],
+  'odd-pair': ['מספרים זוגיים ואי־זוגיים', '/worksheets'],
+  'birds-sub': ['חיסור בתחום העשר', '/worksheets'],
+  'circ-unroll': ['היקף מעגל', '/circle-area-circumference-grade-8'],
+  'rect-count': ['שטח והיקף מלבן', '/area-rectangle-perimeter-grade-7'],
+  'l-split': ['שטח צורה מורכבת', '/area-parallelogram-trapezoid-composite-grade-7'],
+  'quad-tree': ['משפחת המרובעים', '/worksheets'],
+  'tri-sort': ['מיון משולשים', '/worksheets'],
+  parab: ['קודקוד הפרבולה', '/quadratic-function-grade-9'],
+  'ratio-beads': ['יחס', '/worksheets'],
+  neighbors: ['מספרים שכנים', '/worksheets'],
+  'signed-ops': ['סדר פעולות במספרים מכוונים', '/order-of-operations-signed-numbers-grade-7'],
+  'clock-span': ['חישוב משך זמן', '/worksheets'],
+  exterior: ['זווית חיצונית למשולש', '/exterior-angle-triangle-grade-8'],
+  'para-perp': ['מקבילים ומאונכים', '/worksheets'],
+  'quarter-12': ['חלק מכמות', '/worksheets'],
+  'two-coins': ['הסתברות · שני מטבעות', '/probability-grade-9'],
+  'map-scale': ['קנה מידה', '/worksheets'],
+  'unit-frac': ['השוואת שברי יחידה', '/worksheets'],
+  'coord-walk': ['נקודה במערכת הצירים', '/coordinate-plane-quadrants-grade-7'],
+  'coins-12': ['מטבעות וסכומים', '/worksheets'],
+  'cyl-stack': ['נפח גליל', '/cylinder-volume-grade-8'],
+  'tenth-cell': ['עשיריות ומאיות', '/worksheets'],
+  'equiv-half': ['שברים שווים על הישר', '/worksheets'],
+  'half-eq': ['משולש 30°–60°–90°', '/triangle-30-60-90-grade-9'],
+  'sq-stretch': ['ריבוע ומלבן', '/worksheets'],
+  'area-x4': ['הגדלה ושטח', '/worksheets'],
+  'cube-8': ['חזקה שלישית', '/powers-grade-7'],
+  'place-123': ['מאות, עשרות ויחידות', '/worksheets'],
+  'jumps-4': ['כפל כקפיצות שוות', '/worksheets'],
+  'apples-5': ['חילופיות בחיבור', '/worksheets'],
+  'topic-card': ['השלמת סדרה', '/worksheets'],
+  'mark-250': ['מספרים על הישר', '/worksheets'],
+  'quad-gate': ['זיהוי מרובעים', '/worksheets'],
+  'two-diag': ['אלכסונים במרובע', '/worksheets'],
+};
+---
+<script type="application/json" data-exact-hero-topics set:html={JSON.stringify(topics)} />
+{/* The initial random replacement removes HeroLoop's only triangle node.
+    Preserve a pristine template here, without changing the protected component. */}
+<template data-exact-hero-default="triangle"><ConceptLoop variant="triangle" /></template>
+<script>
+  import { initConceptLoops } from '../lib/conceptLoops';
+
+  type LoopState = { playing: boolean; done: boolean; static: boolean };
+  type Loop = HTMLElement & {
+    __loop?: { pause(): void; play(): void; state(): LoopState };
+  };
+  type TopicMap = Record<string, [string, string]>;
+
+  function bootHeroControls() {
+    const hero = document.querySelector<HTMLElement>('[data-hero-loop]');
+    const current = hero?.querySelector<HTMLElement>('[data-hero-loop-current]');
+    const button = document.querySelector<HTMLButtonElement>('[data-exact-shuffle]');
+    const label = document.querySelector<HTMLElement>('[data-exact-hero-label]');
+    const link = document.querySelector<HTMLAnchorElement>('[data-exact-hero-topic]');
+    if (!hero || !current || !button || hero.dataset.exactControls === 'ready') return;
+    hero.dataset.exactControls = 'ready';
+
+    let topics: TopicMap = {};
+    try {
+      topics = JSON.parse(document.querySelector('[data-exact-hero-topics]')?.textContent || '{}');
+    } catch { /* Unknown metadata keeps the short generic label and catalog link. */ }
+
+    const originals = new Map<string, HTMLElement>();
+    const mounted = new Map<string, Loop>();
+    const adapted = new WeakSet<Loop>();
+    const wasStatic = new WeakMap<Loop, boolean>();
+    const cache = document.createElement('div');
+    cache.hidden = true;
+    cache.style.display = 'none';
+    cache.setAttribute('aria-hidden', 'true');
+    cache.dataset.exactHeroCache = '';
+    hero.append(cache);
+
+    hero.querySelectorAll<HTMLTemplateElement>('template[data-hero-loop-variant]').forEach((template) => {
+      const variant = template.dataset.heroLoopVariant;
+      const source = template.content.querySelector<HTMLElement>('[data-loop]');
+      if (variant && source) originals.set(variant, source);
+    });
+    const defaultTemplate = document.querySelector<HTMLTemplateElement>('template[data-exact-hero-default]');
+    const defaultSource = defaultTemplate?.content.querySelector<HTMLElement>('[data-loop]');
+    if (defaultSource) originals.set('triangle', defaultSource);
+
+    const initial = current.querySelector<Loop>('[data-loop]');
+    if (initial?.dataset.loop) {
+      mounted.set(initial.dataset.loop, initial);
+      if (!originals.has(initial.dataset.loop)) originals.set(initial.dataset.loop, initial.cloneNode(true) as HTMLElement);
+    }
+
+    const activeLoop = () => current.querySelector<Loop>('[data-loop]');
+    const pauseKey = (loop: Loop) => `k3-pause:${loop.dataset.loop || ''}`;
+    const manuallyPaused = (loop: Loop) => {
+      try { return sessionStorage.getItem(pauseKey(loop)) === '1'; } catch { return false; }
+    };
+    function rememberPause(loop: Loop, paused: boolean) {
+      try {
+        if (paused) sessionStorage.setItem(pauseKey(loop), '1');
+        else sessionStorage.removeItem(pauseKey(loop));
+      } catch { /* Session storage is optional, as in the existing pause card. */ }
+    }
+
+    function describe() {
+      const loop = activeLoop();
+      if (!loop) return;
+      const info = topics[loop.dataset.loop || ''];
+      const href = info?.[1] || '/worksheets';
+      const isCatalog = href === '/worksheets' || href.startsWith('/worksheets?');
+      if (label) label.textContent = info?.[0] || 'הדגמה מתמטית';
+      if (link) {
+        link.href = href;
+        link.textContent = isCatalog ? 'למאגר התרגול ←' : 'לדף הנושא ←';
+        link.dataset.peek = isCatalog ? 'ws' : 'topic';
+      }
+    }
+
+    // Use the unchanged engine's toggle, not a second animation clock. This
+    // restores its internal userPaused flag before an in-view callback.
+    function restoreManualPause(loop: Loop) {
+      const state = loop.__loop?.state();
+      const toggle = loop.querySelector<HTMLButtonElement>('[data-el="toggle"]');
+      if (!state || state.static || !toggle || !manuallyPaused(loop)) return;
+      if (!state.playing) toggle.click();
+      toggle.click();
+    }
+
+    function syncActiveCard() {
+      const loop = activeLoop();
+      if (!loop || !adapted.has(loop)) return; // Initial card keeps its original adapter.
+      const card = loop.querySelector<HTMLElement>('[data-pause-card]');
+      const state = loop.__loop?.state();
+      if (!card || !state) return;
+      const motionResumed = wasStatic.get(loop) && !state.static;
+      wasStatic.set(loop, state.static);
+      if (motionResumed) restoreManualPause(loop);
+      const paused = !loop.__loop?.state().playing && !state.static;
+      card.classList.toggle('is-paused', paused);
+      card.setAttribute('aria-pressed', String(paused));
+      card.setAttribute('aria-label', paused ? 'הפעלת הנפשה' : 'השהיית הנפשה');
+      card.setAttribute('aria-disabled', String(state.static));
+      card.tabIndex = state.static ? -1 : 0;
+    }
+
+    function activateCard(loop: Loop) {
+      const state = loop.__loop?.state();
+      if (!state || state.static) return;
+      loop.querySelector<HTMLButtonElement>('[data-el="toggle"]')?.click();
+      rememberPause(loop, !loop.__loop?.state().playing);
+      syncActiveCard();
+    }
+
+    // A single delegated adapter handles only later template mounts. The
+    // initial ConceptLoop already owns its click, keyboard and session logic.
+    current.addEventListener('click', (event) => {
+      const loop = activeLoop();
+      const target = event.target instanceof Element ? event.target : null;
+      if (!loop || !adapted.has(loop) || !target?.closest('[data-pause-card]')) return;
+      if (target.closest('[data-el="toggle"]')) {
+        rememberPause(loop, !loop.__loop?.state().playing);
+        syncActiveCard();
+      } else activateCard(loop);
+    });
+    current.addEventListener('keydown', (event) => {
+      const loop = activeLoop();
+      const target = event.target instanceof Element ? event.target : null;
+      if (!loop || !adapted.has(loop) || !target?.closest('[data-pause-card]')) return;
+      if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+        event.preventDefault();
+        activateCard(loop);
+      }
+    });
+
+    button.addEventListener('click', () => {
+      const prior = activeLoop();
+      const candidates = [...originals.keys()].filter((variant) => variant !== prior?.dataset.loop);
+      const variant = candidates[Math.floor(Math.random() * candidates.length)];
+      if (!variant) return;
+      let next = mounted.get(variant);
+      if (!next) {
+        next = originals.get(variant)!.cloneNode(true) as Loop;
+        mounted.set(variant, next);
+        adapted.add(next);
+      }
+      // The engine has no destroy API. Reuse each initialized node at most
+      // once per variant and keep inactive nodes connected, hidden and paused.
+      // No fresh observer/RAF graph is abandoned on repeated shuffle clicks.
+      prior?.__loop?.pause();
+      if (prior) cache.append(prior);
+      current.append(next);
+      initConceptLoops();
+      restoreManualPause(next);
+      wasStatic.set(next, next.__loop?.state().static || false);
+      try { sessionStorage.setItem('nd_hero_loop_last', variant); } catch { /* Optional. */ }
+      describe();
+      syncActiveCard();
+    });
+
+    describe();
+    const queueSync = () => queueMicrotask(syncActiveCard);
+    const preferenceObserver = new MutationObserver(queueSync);
+    preferenceObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', queueSync);
+    window.addEventListener('nd:motion-off', queueSync);
+    // Match the original card's ARIA synchronization, with one active-card
+    // timer rather than adding a timer or observer for every shuffle.
+    window.setInterval(syncActiveCard, 500);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootHeroControls, { once: true });
+  } else bootHeroControls();
+</script>

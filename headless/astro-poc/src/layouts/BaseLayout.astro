@@ -1,11 +1,11 @@
 ---
 import '../styles/catalog.css';
 import '../styles/design-v2.css';
+import '../styles/exact-site.css';
+import '../styles/exact-reference-hover.css';
 import SiteHeader from '../components/SiteHeader.astro';
-import SiteDoodles from '../components/SiteDoodles.astro';
-import DoodleRandomize from '../components/DoodleRandomize.astro';
-import PocMotion from '../components/PocMotion.astro';
-import RevealBoot from '../components/RevealBoot.astro';
+import SiteDevelopmentNotice from '../components/SiteDevelopmentNotice.astro';
+import ExactMotion from '../components/ExactMotion.astro';
 import LinkPeek from '../components/LinkPeek.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { loadHomePage } from '../lib/homePage';
@@ -14,6 +14,7 @@ import {
   DEFAULT_SITE_DESCRIPTION,
   DEFAULT_SITE_TITLE,
   canonicalUrl,
+  isPreviewHost,
   robotsContent,
 } from '../lib/siteSeo';
 
@@ -41,6 +42,7 @@ const resolvedNav: ActiveNavKey | null =
 const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
 const robots = robotsContent(Astro.url.hostname);
 const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
+const showPreviewNote = isPreviewHost(Astro.url.hostname);
 ---
 <!doctype html>
 <html lang="he" dir="rtl">
@@ -56,6 +58,40 @@ const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="he_IL" />
     {ogImage && <meta property="og:image" content={ogImage} />}
+    {/* Wix injects parallel [wix-seo-tag] title/canonical/og:title (often
+        "… | Noam Math Astro POC"). Keep our Hebrew tags; drop the duplicates. */}
+    <script is:inline>
+      (function () {
+        function stripWixSeoDupes() {
+          var nodes = document.querySelectorAll('[wix-seo-tag="true"]');
+          for (var i = 0; i < nodes.length; i++) {
+            var el = nodes[i];
+            var tag = el.tagName.toLowerCase();
+            if (tag === 'title') {
+              el.parentNode && el.parentNode.removeChild(el);
+              continue;
+            }
+            if (tag === 'link' && String(el.getAttribute('rel') || '').toLowerCase() === 'canonical') {
+              el.parentNode && el.parentNode.removeChild(el);
+              continue;
+            }
+            if (
+              tag === 'meta' &&
+              String(el.getAttribute('property') || '').toLowerCase() === 'og:title'
+            ) {
+              el.parentNode && el.parentNode.removeChild(el);
+            }
+          }
+        }
+        stripWixSeoDupes();
+        if (typeof MutationObserver === 'function') {
+          new MutationObserver(stripWixSeoDupes).observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+          });
+        }
+      })();
+    </script>
     {/* Wix-documented slot for item-page SEO (<SEO.Tags slot="seo-tags">).
         Blog item pages fill this; main pages use props above as the single
         title/meta source (no "Astro POC" / "Home | …" duplicates). */}
@@ -71,21 +107,20 @@ const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
       document.documentElement.classList.add('doodles-pending');
     </script>
   </head>
-  <body>
+  <body class="exact-site">
+    <div class="exact-frame">
     <a class="skip-link" href={skipHref}>דילוג לתוכן</a>
     <SiteHeader active={resolvedNav} compactBrand={useCompactBrand} />
-    <SiteDoodles />
-    <DoodleRandomize />
+    <SiteDevelopmentNotice />
     <slot />
-    <SiteFooter footer={footer} />
+    <SiteFooter footer={footer} showPreviewNote={showPreviewNote} />
     {/* POC motion system (branch poc-animations-fix): scroll reveal +
         hover re-draw; honors prefers-reduced-motion, the accessibility
         menu's noam-a11y-motion class, and fine-pointer devices. */}
-    <PocMotion />
-    <RevealBoot />
+    <ExactMotion />
     <LinkPeek />
-    <!-- Production entry-gate copy (ndGate); privacy → combined a11y page. No invented legal text. -->
-    <script src="/nd-site-gate.js" defer></script>
+    <!-- The development notice is non-blocking; legal links remain in the footer. -->
     <script src="/noam-accessibility.js" defer></script>
+    </div>
   </body>
 </html>

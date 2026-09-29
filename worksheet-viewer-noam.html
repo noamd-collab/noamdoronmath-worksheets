@@ -1540,6 +1540,22 @@ textarea:focus{
   opacity:.72;
 }
 .noam-draw-error{display:block;margin-top:7px;color:#a42828;font:600 13px/1.4 Assistant,sans-serif}
+.noam-retry-action{
+  display:inline-block;
+  margin-block-start:10px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid color-mix(in srgb, var(--accent, #1a7a9c) 45%, #fff);
+  background:#fff;
+  color:var(--accent-dark, #0b4f6c);
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+}
+.noam-retry-action:focus-visible{
+  outline:2px solid var(--accent, #1a7a9c);
+  outline-offset:2px;
+}
 .noam-bubble.thinking{
   display:flex;
   align-items:center;
@@ -1926,7 +1942,7 @@ textarea:focus{
   .noam-picked-heading{display:flex;align-items:center;justify-content:space-between;gap:6px}
   .noam-picked-label{font-size:12px;margin:0;min-width:0}
   .noam-preview-toggle{display:block;flex:none;min-height:44px;padding:6px 10px;color:var(--ink);background:#fff;border:1px solid var(--ink);border-radius:10px;font:700 12px 'Assistant',sans-serif;cursor:pointer}
-  .noam-picked-preview,.noam-picked-preview img{max-height:96px}
+  .noam-picked-preview,.noam-picked-preview img{max-height:160px}
   .noam-picked-text{font-size:14px;max-height:60px;overflow:auto}
   .noam-actions{gap:6px;margin:0}
   .noam-action{min-height:44px;padding:7px 12px;box-shadow:none}
@@ -1962,8 +1978,10 @@ textarea:focus{
   .panel-body.is-previewing>:not(.noam-picked){display:none}
   .panel-body.is-previewing>.noam-picked{display:block;flex:1;min-height:0;max-height:none;overflow:auto;padding:0 6px 6px}
   .panel-body.is-previewing .noam-picked-heading{position:sticky;top:0;background:var(--tint);z-index:1;padding:4px 0}
-  .panel-body.is-previewing .noam-picked-preview,.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
-  .panel-body.is-previewing .noam-picked-text{display:block;max-height:none}
+  .panel-body.is-previewing .noam-picked-preview:not([hidden]),.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
+  .panel-body.is-previewing .noam-picked-preview:not([hidden]){direction:rtl}
+  .panel-body.is-previewing .noam-picked-preview img{width:720px;max-width:none}
+  .panel-body.is-previewing .noam-picked-text:not([hidden]){display:block;max-height:none}
   body.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
   body.noam-panel-open .grecaptcha-badge{z-index:60;bottom:calc(var(--noam-keyboard-gap,0px) + env(safe-area-inset-bottom) + 4px)!important}
 }
@@ -1990,7 +2008,303 @@ textarea:focus{
 <link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1">
 </head>
 
-<body>
+<body class="exact-viewer">
+
+<!-- Presentation-only mapping of Student Worksheet Preview.dc.html.
+     Keep this outside head: the released metadata, PDF engine, and AI scripts
+     below remain unchanged. Real PDF content and its controls are retained. -->
+<style id="exact-viewer-presentation">
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap');
+body.exact-viewer{
+  --ink:#22305a;--accent:#22305a;--accent-dark:#1e605e;--on-accent:#fff;
+  --tint:#eaf4f3;--paper:#fbfaf5;--grid:rgba(34,48,90,.065);--muted:#5a6588;
+  font-family:Heebo,sans-serif;color:#22305a;background:#fbfaf5;
+  height:100vh;display:flex;flex-direction:column;overflow:hidden;
+}
+.exact-viewer :where(button,textarea,input){font-family:inherit}
+.exact-viewer :where(a,button,input,textarea,[tabindex]):focus-visible{
+  outline:3px solid #e6a534;outline-offset:2px;
+}
+.exact-viewer textarea::placeholder{color:#6b7594}
+.exact-viewer .exact-viewer-header{
+  flex:none;display:flex;align-items:center;gap:18px;padding:8px 22px;
+  border-bottom:2px solid #22305a;background:#fbfaf5;
+}
+.exact-viewer-header img{height:44px;width:auto;display:block}
+.exact-viewer-header nav{display:flex;gap:4px;font-weight:500;font-size:15px}
+.exact-viewer-header a{color:#22305a;text-decoration:none}
+.exact-viewer-header nav a{padding:10px 12px;border-radius:999px}
+.exact-viewer-header nav a[aria-current="page"]{background:#eaf4f3}
+.exact-viewer-header nav a:hover{background:#eaf4f3}
+.exact-viewer .bar{
+  gap:14px;padding:8px 22px;border-bottom:1.5px dashed #b8c0d4;background:#fff;
+}
+.exact-viewer .bar h1{font:400 14px Heebo,sans-serif;color:#5a6588;gap:0}
+.exact-viewer #emoji{display:none}
+.exact-viewer .context-chips{gap:8px}
+.exact-viewer .chip{border:0;background:none;padding:0;font:400 14px Heebo,sans-serif;color:#5a6588}
+.exact-viewer .level-link{
+  border:1.5px solid #22305a;border-radius:10px 4px 11px 5px;
+  font:700 13px Heebo,sans-serif;box-shadow:none;transition:none;
+}
+.exact-viewer .level-link:hover{transform:none;background:#eaf4f3;box-shadow:none}
+.exact-viewer .level-link[aria-current="page"]{background:#22305a;color:#fff;box-shadow:none}
+.exact-viewer .header-actions{gap:14px}
+.exact-viewer .btn,.exact-viewer .pdf-tool,.exact-viewer .pdf-tool-link,
+.exact-viewer .panel-back,.exact-viewer .noam-action,.exact-viewer .noam-preview-toggle{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  min-height:44px;padding:6px 14px;border:2px solid #22305a;
+  border-radius:12px 5px 13px 6px;background:#fff;color:#22305a;
+  font:700 14px Heebo,sans-serif;box-shadow:none;
+}
+.exact-viewer .btn:hover,.exact-viewer .pdf-tool:hover,.exact-viewer .pdf-tool-link:hover,
+.exact-viewer .panel-back:hover,.exact-viewer .noam-action:hover,.exact-viewer .noam-preview-toggle:hover{
+  transform:none;background:#eaf4f3;
+}
+.exact-viewer .stage{overflow:hidden}
+.exact-viewer .pdfwrap{padding:0;display:flex;flex-direction:column;min-height:0}
+.exact-viewer .pdf-surface{flex:1;border:0;border-radius:0;box-shadow:none;background:#fbfaf5}
+.exact-viewer .pdf-scroll{
+  /* The released renderer reserves 34px for desktop scroll padding/gutter.
+     Keep that geometry contract; the worksheet itself is the real PDF. */
+  padding:28px 10px 48px;background-color:#fbfaf5;
+  background-image:linear-gradient(rgba(34,48,90,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(34,48,90,.065) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.exact-viewer .pdf-page{box-shadow:0 3px 0 rgba(34,48,90,.08);outline:1.5px solid #c9cfdc}
+.exact-viewer .pdf-status{background:#fbfaf5;font-weight:700}
+.exact-viewer .pdf-tools{border:2px solid #22305a;border-radius:12px 5px 13px 6px;box-shadow:none}
+.exact-viewer .panel{
+  width:clamp(360px,32vw,460px);max-width:none;padding:0;
+  border-right:2px solid #22305a;background:#fff;
+}
+.exact-viewer .panel-in{border:0;border-radius:0;box-shadow:none;background:#fff}
+.exact-viewer .panel-head{gap:10px;padding:8px 12px;background:#eaf4f3;border-bottom:2px solid #22305a}
+.exact-viewer .exact-ramzi-avatar{width:44px;height:44px;display:block;flex:none}
+.exact-viewer .exact-ramzi-avatar svg{display:block;width:100%;height:100%;overflow:visible}
+.exact-viewer .exact-ramzi-title{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.exact-viewer .exact-ramzi-name{display:flex;align-items:center;gap:8px}
+.exact-viewer .panel-head b{font:400 22px/1.1 'Secular One',sans-serif}
+.exact-viewer .panel-badge{
+  font:700 12px Heebo,sans-serif;background:#fff;border:1.5px solid #22305a;
+  border-radius:999px;padding:0 8px;min-height:0;color:#22305a;
+}
+.exact-viewer .exact-ramzi-status{font-size:13px;color:#3d4870}
+.exact-viewer .panel-close{
+  width:44px;height:44px;min-width:44px;padding:0;border:2px solid #22305a;
+  border-radius:12px 5px 13px 6px;background:#fff;color:#22305a;font-size:22px;
+}
+.exact-viewer .panel-close:hover{background:#cfe6e4}
+.exact-viewer .panel-body{padding:8px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.exact-viewer .panel-body>*{flex-shrink:0}
+.exact-viewer .panel-body.is-chat{overflow:hidden}
+.exact-viewer .step-title{font:400 21px 'Secular One',sans-serif}
+.exact-viewer .noam-manifest-note{font-weight:400;border:1.5px solid #22305a;background:#eaf4f3}
+.exact-viewer .noam-question-list{gap:4px}
+.exact-viewer .noam-question-list button{
+  border:2px solid #22305a;border-radius:10px 4px 11px 5px;
+  font:700 15px Heebo,sans-serif;background:#fff;color:#22305a;
+}
+.exact-viewer .noam-question-list button:hover{background:#eaf4f3}
+.exact-viewer .noam-picked{
+  padding:8px 12px;margin:0;background:#fdf3de;border:1.5px solid #22305a;
+  border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
+}
+.exact-viewer .noam-picked-label{font:700 14px Heebo,sans-serif;color:#22305a}
+.exact-viewer .noam-picked-text{font-size:14px;line-height:1.5;color:#3d4870}
+.exact-viewer .noam-picked-preview{border:1.5px solid #c9cfdc;border-radius:0}
+.exact-viewer .noam-thread-tools{margin:0;gap:8px}
+.exact-viewer .noam-link-button{font:700 13px Heebo,sans-serif;color:#1e605e;text-decoration:none;padding:0 10px;border-radius:10px}
+.exact-viewer .noam-link-button:hover{background:#eaf4f3}
+.exact-viewer .noam-transcript{flex:1;min-height:48px;max-height:none;gap:12px;padding:12px 2px;scroll-behavior:auto}
+.exact-viewer .noam-transcript.is-empty{flex:1;min-height:48px;max-height:none;padding:12px 2px}
+.exact-viewer .noam-row.user{justify-content:flex-end}
+.exact-viewer .noam-row.assistant{justify-content:flex-start}
+.exact-viewer .noam-bubble{font-size:16px;line-height:1.7;text-wrap:pretty;box-shadow:none}
+.exact-viewer .noam-row.user .noam-bubble{
+  max-width:84%;background:#22305a;color:#fff;padding:9px 14px;
+  border:0;border-radius:16px 16px 16px 4px;line-height:1.65;
+}
+.exact-viewer .noam-row.assistant .noam-bubble{
+  max-width:90%;background:#fff;color:#22305a;padding:10px 14px;
+  border:2px solid #22305a;border-radius:16px 16px 4px 16px;
+}
+.exact-viewer .noam-kind{font:700 13px Heebo,sans-serif;color:#1e605e}
+.exact-viewer .noam-term{
+  font-weight:700;color:#1e605e;background:#eaf4f3;border:0;
+  border-bottom:2px dotted #2a7c7a;border-radius:4px 4px 0 0;
+  padding:0 .2em;margin:0 .05em;text-decoration:none;
+}
+.exact-viewer .noam-term:hover{background:#cfe6e4;color:#1e605e}
+.exact-viewer .noam-glossary-popover{
+  border:2px solid #2a7c7a;border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
+  box-shadow:5px 5px 0 rgba(42,124,122,.18);padding:12px 14px;font-family:Heebo,sans-serif;
+}
+.exact-viewer .noam-glossary-popover-title{font:700 16px Heebo,sans-serif;color:#1e605e}
+.exact-viewer .noam-glossary-popover-text{font-size:15px;line-height:1.65}
+.exact-viewer .noam-glossary-more{font:700 14px Heebo,sans-serif;border:1.5px solid #2a7c7a;border-radius:999px;color:#1e605e;padding:4px 12px}
+.exact-viewer .noam-compose{flex:none;padding:8px 0 0;border-top:1.5px dashed #b8c0d4;background:#fff}
+.exact-viewer .noam-input-shell{padding:5px;background:#fff;border:2px solid #22305a;border-radius:14px 6px 16px 7px / 7px 16px 6px 14px}
+.exact-viewer .noam-input-shell:focus-within{outline:3px solid #e6a534;outline-offset:2px;box-shadow:none}
+.exact-viewer .noam-input-actions{gap:6px;flex-wrap:wrap}
+.exact-viewer .noam-input-actions .noam-action{font-size:15px;min-height:44px;padding:6px 14px;border-width:2px}
+.exact-viewer #noamHint{background:#e6a534;color:#22305a;font-weight:800}
+.exact-viewer #noamHint:hover{background:#f0bb5a}
+.exact-viewer .noam-compose textarea{font:16px/1.55 Heebo,sans-serif;color:#22305a;padding:10px 6px;border-radius:8px;min-height:48px}
+.exact-viewer .noam-math-toggle,.exact-viewer .noam-attach-button{
+  height:44px;min-width:44px;border:0;border-radius:10px;background:#eaf4f3;
+  color:#22305a;font:700 15px Heebo,sans-serif;
+}
+.exact-viewer .noam-math-toggle:hover,.exact-viewer .noam-attach-button:hover{background:#cfe6e4}
+.exact-viewer .noam-math-keys{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:4px;padding-bottom:2px}
+.exact-viewer .noam-math-keys[hidden]{display:none}
+.exact-viewer .noam-math-key{
+  flex:none;min-width:44px;height:44px;padding:0 8px;border:1.5px solid #22305a;
+  border-radius:9px 4px 10px 5px;background:#fbfaf5;color:#22305a;font:700 17px Heebo,sans-serif;
+}
+.exact-viewer .noam-compose-help{font-size:12px;color:#5a6588}
+.exact-viewer .noam-send{min-height:44px;border:2px solid #22305a;border-radius:12px 5px 13px 6px;background:#1e605e;color:#fff;font:700 15px Heebo,sans-serif;box-shadow:none}
+.exact-viewer .noam-send:hover{background:#174b49}
+.exact-viewer .noam-ai-feedback{font-family:Heebo,sans-serif}
+.exact-viewer .fab{
+  display:inline-flex;align-items:center;gap:8px;min-height:44px;
+  padding:4px 16px 4px 6px;border:2px solid #22305a;border-radius:999px;
+  background:#22305a;color:#fff;font:700 15px Heebo,sans-serif;box-shadow:none;
+}
+.exact-viewer .fab:hover{background:#2d3d70}
+.exact-viewer .fab img{width:36px;height:36px;border-radius:50%;background:#fff}
+.exact-viewer .exact-fab-avatar{display:inline-flex;width:36px;height:36px;flex:none;border-radius:50%;background:#fff;padding:3px}
+.exact-viewer .fab.hidden,.exact-viewer .panel.hidden{display:none}
+@media(max-width:999px){
+  .exact-viewer .exact-viewer-header{gap:8px;padding:6px 12px}
+  .exact-viewer-header img{height:34px}
+  .exact-viewer-header nav{margin-inline-start:auto}
+  .exact-viewer-header nav a{padding:10px 8px;font-size:13px}
+}
+@media(max-width:900px){
+  body.exact-viewer{height:100dvh}
+  .exact-viewer.noam-panel-open .exact-viewer-header{display:none}
+  .exact-viewer .bar{gap:6px 8px;padding:6px 12px 8px}
+  .exact-viewer .bar h1{font-size:14px}
+  .exact-viewer .header-actions{gap:6px}
+  .exact-viewer .header-actions .btn{padding:6px;font-size:12px}
+  .exact-viewer .level-link{min-height:44px}
+  .exact-viewer .mobile-hint{color:#5a6588}
+  /* 12px total is part of getPdfPageWidth's existing phone fit calculation. */
+  .exact-viewer .pdf-scroll{padding:12px 6px 48px}
+  .exact-viewer .pdf-tools{border:0;border-top:1.5px dashed #b8c0d4;border-radius:0}
+  .exact-viewer .panel{width:100%;height:var(--noam-viewport-height,100dvh);padding:0;border:0;background:#fff}
+  .exact-viewer .panel-head{gap:10px;padding:8px 12px;min-height:0}
+  .exact-viewer .panel-close{width:44px;height:44px;padding:0}
+  .exact-viewer .mobile-close-label{display:none}
+  .exact-viewer .panel-body{gap:8px;padding:8px 12px 12px}
+  .exact-viewer .noam-transcript{flex:1;min-height:48px;max-height:none}
+  .exact-viewer .noam-input-actions .noam-action{font-size:14px;padding:6px 10px}
+  .exact-viewer .panel.is-short .panel-head{padding:4px 12px}
+  .exact-viewer .panel.is-short .panel-body{padding:5px 12px;gap:3px}
+  .exact-viewer .panel.is-short .noam-transcript{min-height:32px}
+  .exact-viewer .panel.is-typing .exact-ramzi-status{display:none}
+  .exact-viewer.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+}
+.exact-viewer .exact-motion{
+  flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;
+  border:2px solid #22305a;border-radius:999px;background:#fff;color:#22305a;
+  font:700 14px Heebo,sans-serif;cursor:pointer;margin-inline-start:auto;
+}
+.exact-viewer .exact-motion:hover{background:#eaf4f3}
+.exact-viewer .exact-mobile-tabs{display:none}
+.exact-viewer .exact-hint-row{
+  flex:none;display:flex;align-items:center;gap:8px;padding:8px 12px;
+  border-top:2px solid #22305a;background:#fff;
+}
+.exact-viewer .exact-question-strip{
+  flex:none;padding:8px 12px 10px;border-bottom:1.5px dashed #b8c0d4;
+  display:flex;align-items:center;gap:4px;overflow-x:auto;background:#fff;
+}
+.exact-viewer .exact-question-strip[hidden]{display:none}
+.exact-question-strip>span{font-size:13px;font-weight:700;color:#5a6588;white-space:nowrap}
+.exact-question-strip>span.exact-part-label{margin-right:8px}
+.exact-question-strip>div{display:flex;gap:4px}
+.exact-question-strip button{
+  flex:none;min-width:40px;height:40px;padding:0 8px;border-radius:10px 4px 11px 5px;
+  border:2px solid #22305a;background:#fff;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;
+}
+.exact-question-strip button[aria-pressed="true"]{background:#22305a;color:#fff}
+.exact-question-strip button:not([aria-pressed="true"]):hover{background:#eaf4f3}
+.exact-viewer .panel-body[data-exact-full-picker="true"] .noam-question-list{display:none}
+.exact-viewer .exact-hint-row #noamHint{flex:1;min-width:0;padding:4px 12px;white-space:nowrap;font-size:15px}
+.exact-viewer .exact-hint-row #noamOverview{white-space:nowrap;font-size:15px}
+.exact-viewer .exact-hint-ladder{display:flex;align-items:center;flex:none}
+.exact-hint-ladder i{
+  width:26px;height:26px;border-radius:50%;background:#fff;border:2px dashed #8a93aa;
+  color:#5a6588;display:inline-flex;align-items:center;justify-content:center;font:800 13px Heebo,sans-serif;
+}
+.exact-hint-ladder i[data-open="true"]{background:#e6a534;border:2px solid #22305a;color:#22305a}
+.exact-hint-ladder em{width:8px;height:2px;background:#22305a}
+.exact-viewer .noam-compose.exact-compose{display:flex;flex-direction:column;padding:0;margin:0 -12px;border:0}
+.exact-viewer .exact-compose .noam-input-shell{border:0;border-top:1.5px dashed #b8c0d4;border-radius:0;padding:8px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.exact-viewer .exact-compose .noam-input-shell:focus-within{outline:0}
+.exact-viewer .exact-compose .noam-input-actions{margin:0}
+.exact-viewer .exact-compose .noam-input-actions:not(:has(>button:not([hidden]))){display:none}
+.exact-viewer .exact-compose .noam-input-spacer{display:none}
+.exact-viewer .exact-message-row{
+  display:flex;align-items:flex-end;gap:6px;border:2px solid #22305a;
+  border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;padding:5px;background:#fff;
+}
+.exact-viewer .exact-message-row:focus-within{outline:3px solid #e6a534;outline-offset:2px}
+.exact-viewer .exact-message-row textarea{
+  flex:1;min-width:0;width:auto;resize:none;border:0;border-radius:8px;
+  font:16px/1.55 Heebo,sans-serif;color:#22305a;background:transparent;padding:10px 6px;
+  min-height:44px;max-height:120px;margin:0;
+}
+.exact-viewer .exact-message-row .noam-send{
+  width:44px;height:44px;min-width:44px;flex:none;display:inline-flex;align-items:center;
+  justify-content:center;margin:0;padding:0;border:2px solid #22305a;
+  border-radius:12px 5px 13px 6px;background:#1e605e;color:#fff;
+}
+.exact-viewer .exact-message-row .noam-send:hover{background:#174b49}
+.exact-viewer .exact-compose .noam-compose-help{margin:0;padding:0 12px 8px;font-size:12px}
+.exact-viewer.exact-narrow .exact-viewer-header{display:flex;gap:8px;padding:6px 12px;flex:none}
+.exact-viewer.exact-narrow .exact-viewer-header img{height:34px}
+.exact-viewer.exact-narrow .exact-viewer-header nav{display:none}
+.exact-viewer.exact-narrow .exact-motion{width:44px;justify-content:center;padding:0}
+.exact-viewer.exact-narrow .exact-motion span{display:none}
+.exact-viewer.exact-narrow .exact-mobile-tabs{
+  flex:none;display:flex;gap:6px;padding:8px 10px;border-bottom:1.5px dashed #b8c0d4;background:#fff;
+}
+.exact-mobile-tabs button{
+  flex:1;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:2px solid #22305a;border-radius:12px 5px 13px 6px;
+  background:#fff;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;
+}
+.exact-mobile-tabs button[aria-selected="true"]{background:#22305a;color:#fff}
+.exact-mobile-tabs button:not([aria-selected="true"]):hover{background:#eaf4f3}
+.exact-mobile-tabs button:disabled{opacity:.45;cursor:wait}
+.exact-viewer.exact-narrow .fab{display:none}
+.exact-viewer.exact-narrow .panel{
+  position:fixed;z-index:50;inset-inline:0;top:var(--noam-viewport-top,0px);
+  height:var(--noam-viewport-height,100dvh);width:100%;max-width:none;padding:0;
+  border:0;background:#fff;
+}
+.exact-viewer.exact-narrow .panel-in{border:0;border-radius:0;box-shadow:none}
+.exact-viewer.exact-narrow .panel-head{gap:10px;padding:8px 12px;border-bottom:2px solid #22305a}
+.exact-viewer.exact-narrow .panel-close{width:44px;height:44px;padding:0}
+.exact-viewer.exact-narrow .mobile-close-label{display:none}
+.exact-viewer.exact-narrow.exact-help-active>.bar{display:none}
+.exact-viewer.exact-narrow.exact-help-active .pdfwrap{visibility:hidden}
+.exact-viewer.exact-narrow.exact-help-active #noam-accessibility,
+.exact-viewer.exact-narrow.exact-help-active .nl-viewer-progress{visibility:hidden;pointer-events:none}
+.exact-viewer.exact-narrow.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+.exact-viewer .panel.is-short .noam-compose.exact-compose{display:flex;gap:0}
+.exact-viewer .panel.is-short .exact-message-row textarea{height:44px;min-height:44px}
+.exact-viewer .panel.is-short .exact-hint-row{padding-block:4px}
+html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-behavior:auto!important}
+</style>
+
+<header class="exact-viewer-header">
+  <a href="https://www.noamdoronmath.co.il/" aria-label="נועם דורון מתמטיקה — בית"><img src="design-exact/assets/logo.png" alt="נועם דורון מתמטיקה"></a>
+  <nav aria-label="ראשי"><a href="https://www.noamdoronmath.co.il/">בית</a><a href="https://www.noamdoronmath.co.il/worksheets" aria-current="page">דפי עבודה</a><a href="https://www.noamdoronmath.co.il/learning.html">הלמידה שלי</a></nav>
+</header>
 
 <div class="bar">
 
@@ -2098,14 +2412,11 @@ textarea:focus{
 
       <div class="panel-head">
 
-        <span aria-hidden="true">🤖</span>
-
-        <b id="noamPanelTitle">
-          נועם AI
-        </b>
-
-        <span class="panel-badge">רמזים בלבד</span>
-        <span class="panel-head-spacer"></span>
+        <img class="exact-ramzi-avatar" src="design-exact/assets/avatar/ramzi-A-idle.svg" alt="">
+        <div class="exact-ramzi-title">
+          <div class="exact-ramzi-name"><b id="noamPanelTitle">רמזי</b><span class="panel-badge">נועם AI</span></div>
+          <span class="exact-ramzi-status">רמזים והסברים במתמטיקה</span>
+        </div>
 
         <button
           class="panel-back"
@@ -2148,7 +2459,7 @@ textarea:focus{
   aria-controls="panel"
   aria-expanded="false"
 >
-  🤖 נועם AI
+  <img src="design-exact/assets/avatar/ramzi-A-idle.svg" alt=""><span>עזרה מרמזי</span>
 </button>
 
 <dialog class="noam-feedback-dialog" id="noamFeedbackDialog" aria-labelledby="noamFeedbackTitle">
@@ -2160,13 +2471,13 @@ textarea:focus{
   </div>
 </dialog>
 
-<script src="noam-didactic-guides.js?v=20260920-3"></script>
+<script src="noam-didactic-guides.js?v=20260927-hints1"></script>
 <script src="noam-geometry.js?v=20260921-aux1"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20260921-constructions1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
-<script src="noam-glossary-curriculum.js?v=20260920-1"></script>
-<script src="noam-glossary.js?v=20260921-2"></script>
+<script src="noam-glossary-curriculum.js?v=20260927-concepts2"></script>
+<script src="noam-glossary.js?v=20260927-concepts2"></script>
 <script>
 (function(){
 
@@ -2176,11 +2487,25 @@ var mobileLayout = window.matchMedia("(max-width:900px)");
 
 /* CONFIG */
 
+/* M36: domain-independent Wix Media CDN (same ugd bytes as /_files/ugd/…). */
 var BASE =
-  "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_";
+  "https://static.wixstatic.com/ugd/d8e7ad_";
 
 var API =
   "https://amiramnoam.wixstudio.com/my-site-2/_functions";
+
+/* HEADLESS-MIGRATION-11/13 adapters (reversible): keep UI identical; only path bases change.
+   Manifests: same-origin public/noam-ai/manifests when HEADLESS_USE_LOCAL_MANIFESTS is true
+   (rollback: set false to fetch GitHub Pages). PDFs stay on Wix Media. */
+var HEADLESS_LEGACY_PAGES =
+  "https://noamd-collab.github.io/noamdoronmath-worksheets/";
+var HEADLESS_USE_LOCAL_MANIFESTS = true;
+var HEADLESS_MANIFEST_BASE = HEADLESS_USE_LOCAL_MANIFESTS
+  ? "./noam-ai/manifests/"
+  : HEADLESS_LEGACY_PAGES + "noam-ai/manifests/";
+var HEADLESS_LEGACY_INDEX = HEADLESS_USE_LOCAL_MANIFESTS
+  ? "./legacy-github/index.html"
+  : HEADLESS_LEGACY_PAGES + "index.html";
 
 // The public config and Google key domains were verified before activation.
 // This release flag cannot be changed by a query parameter or browser storage.
@@ -2461,7 +2786,7 @@ if (!okPdf){
 
     'הקישור אינו תקין. ' +
 
-    '<a href="./">' +
+    '<a href="/worksheets">' +
     'חזרה לדפי העבודה' +
     '</a>' +
 
@@ -2830,7 +3155,7 @@ function discoverSiblingLevels(){
   );
 
   fetch(
-    "./index.html",
+    HEADLESS_LEGACY_INDEX,
     {
       cache:"default"
     }
@@ -2946,6 +3271,11 @@ var pdfZoomSlider = document.getElementById("pdfZoomSlider");
 var pdfZoomRenderTimer = 0;
 
 var pdfDocument =
+  null;
+
+/* Crop/vision must keep a PDF.js document even when the clean canvas UI falls
+   back to the native PDF viewer. A failed clean-view paint must not block hints. */
+var pdfCropLoadPromise =
   null;
 
 var pdfObserver =
@@ -3116,6 +3446,70 @@ function showPdfFallback(
     );
 
   setNativePdfMode(true);
+
+  /* Native display is fine for reading; still load PDF.js bytes for Noam crops. */
+  ensurePdfDocumentForCrop().catch(function(error){
+    console.warn("PDF CROP DOCUMENT:", error);
+  });
+}
+
+function pdfJsGetDocumentOptions(source){
+  var options = {
+    withCredentials:false,
+    cMapUrl:PDFJS_CMAP_URL,
+    cMapPacked:true,
+    standardFontDataUrl:PDFJS_STD_FONT_URL,
+    disableFontFace:true,
+    useSystemFonts:false
+  };
+  if (source instanceof ArrayBuffer || ArrayBuffer.isView(source)){
+    options.data = source instanceof ArrayBuffer ? new Uint8Array(source) : source;
+  }else{
+    options.url = source || pdfUrl;
+  }
+  return options;
+}
+
+/** Resolve a PDF.js document for cropping, independent of clean-view UI success. */
+function ensurePdfDocumentForCrop(){
+  if (pdfDocument){ return Promise.resolve(pdfDocument); }
+  if (pdfCropLoadPromise){ return pdfCropLoadPromise; }
+  if (!window.pdfjsLib || typeof window.pdfjsLib.getDocument !== "function"){
+    return Promise.reject(new Error("מנוע התצוגה של ה-PDF אינו זמין לחיתוך השאלה."));
+  }
+  try{
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      PDFJS_BASE + "build/pdf.worker.min.js";
+  }catch(e){}
+
+  pdfCropLoadPromise = fetch(pdfUrl, {
+    method:"GET",
+    mode:"cors",
+    credentials:"omit",
+    cache:"force-cache"
+  }).then(function(response){
+    if (!response.ok){
+      throw new Error("טעינת קובץ ה-PDF לחיתוך נכשלה (" + response.status + ").");
+    }
+    return response.arrayBuffer();
+  }).then(function(buffer){
+    return window.pdfjsLib.getDocument(pdfJsGetDocumentOptions(buffer)).promise;
+  }).then(function(doc){
+    pdfDocument = doc;
+    return doc;
+  }).catch(function(error){
+    /* URL load as second chance when arraybuffer fetch is blocked. */
+    return window.pdfjsLib.getDocument(pdfJsGetDocumentOptions(pdfUrl)).promise
+      .then(function(doc){
+        pdfDocument = doc;
+        return doc;
+      }, function(){
+        pdfCropLoadPromise = null;
+        throw error;
+      });
+  });
+
+  return pdfCropLoadPromise;
 }
 
 function createPdfPageShells(
@@ -3218,7 +3612,7 @@ function renderPdfPage(
         var pixelRatio =
           Math.min(
             window.devicePixelRatio || 1,
-            2
+            mobileLayout.matches ? 3 : 2
           );
 
         var canvas =
@@ -3423,8 +3817,12 @@ function observePdfPages(){
 }
 
 function getPdfPageWidth(){
-  // Reserve the fixed button gutter before scaling the document; gutter itself never scales.
-  return Math.max(120,pdfScroll.clientWidth - (mobileLayout.matches ? 116 : 78)) * pdfZoom;
+  // Match live GitHub viewer: on phones, 70% zoom is the width that fits
+  // beside the fixed button gutter. Scale only the PDF from there.
+  if (mobileLayout.matches){
+    return Math.max(120,pdfScroll.clientWidth - 116) * pdfZoom / .7;
+  }
+  return Math.max(120,pdfScroll.clientWidth - 78) * pdfZoom;
 }
 
 // Keep the same point on the current page when rotation or zoom changes page sizes.
@@ -3585,6 +3983,9 @@ function initPdfExperience(){
       false;
     setNativePdfMode(true);
     setPdfStatus("",false);
+    ensurePdfDocumentForCrop().catch(function(error){
+      console.warn("PDF CROP DOCUMENT:", error);
+    });
     return;
   }
 
@@ -3609,15 +4010,7 @@ function initPdfExperience(){
 
   var loadTask =
     window.pdfjsLib
-      .getDocument({
-        url:pdfUrl,
-        withCredentials:false,
-        cMapUrl:PDFJS_CMAP_URL,
-        cMapPacked:true,
-        standardFontDataUrl:PDFJS_STD_FONT_URL,
-        disableFontFace:true,
-        useSystemFonts:false
-      });
+      .getDocument(pdfJsGetDocumentOptions(pdfUrl));
 
   loadTask.promise
     .then(
@@ -3625,6 +4018,8 @@ function initPdfExperience(){
 
         pdfDocument =
           doc;
+        pdfCropLoadPromise =
+          Promise.resolve(doc);
 
         pdfCleanAvailable =
           true;
@@ -3634,41 +4029,52 @@ function initPdfExperience(){
             "hidden"
           );
 
-        createPdfPageShells(
-          doc
-        );
-
-        pdfRenderVersion += 1;
-        pdfLastWidth =
-          Math.round(
-            pdfScroll.clientWidth
+        try{
+          createPdfPageShells(
+            doc
           );
 
-        setPdfStatus(
-          "",
-          false
-        );
-
-        observePdfPages();
-
-        /* The static manifest pins live on the clean page layer. */
-        setNativePdfMode(pdfNativeActive);
-
-        if (
-          "ResizeObserver" in window
-        ){
-          pdfResizeObserver =
-            new ResizeObserver(
-              schedulePdfResize
+          pdfRenderVersion += 1;
+          pdfLastWidth =
+            Math.round(
+              pdfScroll.clientWidth
             );
 
-          pdfResizeObserver.observe(
-            pdfScroll
+          setPdfStatus(
+            "",
+            false
           );
-        }else{
-          window.addEventListener(
-            "resize",
-            schedulePdfResize
+
+          observePdfPages();
+
+          /* The static manifest pins live on the clean page layer. */
+          setNativePdfMode(pdfNativeActive);
+
+          if (
+            "ResizeObserver" in window
+          ){
+            pdfResizeObserver =
+              new ResizeObserver(
+                schedulePdfResize
+              );
+
+            pdfResizeObserver.observe(
+              pdfScroll
+            );
+          }else{
+            window.addEventListener(
+              "resize",
+              schedulePdfResize
+            );
+          }
+        }catch(uiError){
+          console.warn(
+            "CLEAN PDF UI:",
+            uiError
+          );
+          /* Keep pdfDocument for crops; fall back only for on-page pins/canvas. */
+          showPdfFallback(
+            "התצוגה הנקייה נחסמה בדפדפן; הוצגה תצוגת ה-PDF המלאה."
           );
         }
       }
@@ -3815,37 +4221,90 @@ loadNoamAsset("script",PDFJS_BASE+"build/pdf.min.js")
   .then(initPdfExperience)
   .catch(function(){showPdfFallback("לא ניתן לטעון את התצוגה הנקייה. הוצגה תצוגת ה-PDF המלאה.");});
 
-/* BACK */
+/* BACK — prefer live /worksheets catalog; preserve search/topic from `back=`. */
 
 if (okGrade){
 
   document
     .getElementById("backBtn")
     .href =
-    "./?grade=" +
+    "/worksheets?grade=" +
     g;
 }
 
 /* PANEL — STATIC MANIFEST / NO SUPABASE CONTENT */
 
-// Only accept a return path to this catalog, never an arbitrary redirect.
+// Accept same-origin /worksheets returns. On the live domain, never send the
+// student to the legacy GitHub Pages catalog — map those URLs to /worksheets.
 try {
   var navigationParams = new URL(location.href).searchParams;
   var catalogRoot = new URL('./', location.href);
+  var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
+  var liveHost = /(?:^|\.)noamdoronmath\.co\.il$/i.test(location.hostname);
   var returnPath = navigationParams.get('back');
+  function worksheetsHrefFromReturn(urlObj, gradeNum, topicId){
+    var out = new URL("/worksheets", location.origin);
+    if (urlObj && urlObj.searchParams){
+      urlObj.searchParams.forEach(function(value, key){
+        out.searchParams.set(key, value);
+      });
+    }
+    if (gradeNum && !out.searchParams.get("grade")){
+      out.searchParams.set("grade", String(gradeNum));
+    }
+    if (topicId){ out.searchParams.set("topic", String(topicId)); }
+    return out.pathname + out.search;
+  }
   if (returnPath) {
-    var catalogReturn = new URL(returnPath, location.href);
-    if (catalogReturn.origin === location.origin &&
-        (catalogReturn.pathname === catalogRoot.pathname || catalogReturn.pathname === catalogRoot.pathname + 'index.html')) {
-      document.getElementById('backBtn').href = catalogReturn.href;
+    var catalogReturn;
+    if (/^https?:\/\//i.test(returnPath)) {
+      catalogReturn = new URL(returnPath);
+    } else if (returnPath.indexOf("/noamdoronmath-worksheets") === 0) {
+      catalogReturn = new URL(returnPath, legacyRoot.origin);
+    } else if (returnPath.indexOf("/worksheets") === 0) {
+      catalogReturn = new URL(returnPath, location.href);
+    } else {
+      catalogReturn = new URL(returnPath, location.href);
+    }
+    var sameOriginCatalog =
+      catalogReturn.origin === location.origin &&
+      (catalogReturn.pathname === catalogRoot.pathname ||
+       catalogReturn.pathname === catalogRoot.pathname + "index.html" ||
+       catalogReturn.pathname === "/" ||
+       catalogReturn.pathname === "/learning.html" ||
+       catalogReturn.pathname === "/worksheets" ||
+       catalogReturn.pathname.indexOf("/worksheets") === 0);
+    var legacyCatalog =
+      catalogReturn.origin === legacyRoot.origin &&
+      catalogReturn.pathname.indexOf(legacyRoot.pathname.replace(/\/$/, "")) === 0;
+    if (sameOriginCatalog || legacyCatalog) {
+      var backHref;
+      if (liveHost || catalogReturn.pathname.indexOf("/worksheets") === 0){
+        backHref = worksheetsHrefFromReturn(
+          catalogReturn.pathname.indexOf("/worksheets") === 0 ? catalogReturn : new URL("/worksheets"+catalogReturn.search, location.origin),
+          okGrade ? g : null,
+          null
+        );
+      } else if (!liveHost && legacyCatalog){
+        backHref = catalogReturn.href;
+      } else {
+        backHref = worksheetsHrefFromReturn(catalogReturn, okGrade ? g : null, null);
+      }
+      document.getElementById("backBtn").href = backHref;
     }
   }
-  if (/^\d+$/.test(navigationParams.get('topic') || '') && okGrade) {
-    var topicBack = document.createElement('a');
-    topicBack.className = 'btn topic-back';
-    topicBack.textContent = 'חזרה לנושא';
-    topicBack.href = './?grade=' + g + '&topic=' + navigationParams.get('topic');
-    document.getElementById('backBtn').after(topicBack);
+  if (/^\d+$/.test(navigationParams.get("topic") || "") && okGrade) {
+    var topicBack = document.createElement("a");
+    topicBack.className = "btn topic-back";
+    topicBack.textContent = "חזרה לנושא";
+    var topicId = navigationParams.get("topic");
+    var backForTopic = document.getElementById("backBtn").getAttribute("href") || "";
+    if (backForTopic.indexOf("/worksheets") === 0 || /^https?:\/\/[^/]+\/worksheets/i.test(backForTopic)){
+      topicBack.href = worksheetsHrefFromReturn(new URL(backForTopic, location.origin), g, topicId);
+    } else {
+      topicBack.href = worksheetsHrefFromReturn(null, g, topicId);
+    }
+    document.getElementById("backBtn").after(topicBack);
   }
 } catch (navigationError) { /* The default grade link remains available. */ }
 
@@ -3960,7 +4419,7 @@ var mathKeyboardOpen = false;
 var analysisCache = {};
 var exercisePreviewCache = {};
 var exercisePreviewOrder = [];
-var MANIFEST_PATH = "./noam-ai/manifests/" + pdf + ".json?v=20260920-geometry";
+var MANIFEST_PATH = HEADLESS_MANIFEST_BASE + pdf + ".json?v=20260920-geometry";
 var THREAD_STORAGE_KEY = "noam-static-threads-v1:" + pdf;
 var ANALYSIS_STORAGE_KEY = "noam-static-analysis-v1:" + pdf;
 var threads = {};
@@ -4445,8 +4904,16 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   speaker.className = "noam-sr-only";
   speaker.textContent = role === "user" ? "השאלה שלך: " : "נועם AI: ";
   bubble.appendChild(speaker);
-  content.textContent = text;
+  content.textContent = role === "assistant" ? noamStripMarkdownEmphasis(text) : text;
   bubble.appendChild(content);
+  if (message && message.answerError){
+    var retry=document.createElement("button");
+    retry.type="button";
+    retry.className="noam-retry-action";
+    retry.textContent=noamRetryActionLabel(message);
+    retry.addEventListener("click",function(){ retryLastNoamHelp(); });
+    bubble.appendChild(retry);
+  }
   // Source crops belong only in the selected-question preview. This also
   // suppresses old saved replies that predate the diagram mechanism.
   if (visual&&visual.type==="question-image"){visual=null;}
@@ -4552,6 +5019,13 @@ function showNoamGlossaryPopover(trigger,entry,keyboardOpen){
   if (keyboardOpen){more.focus({preventScroll:true});}
 }
 
+function noamStripMarkdownEmphasis(text){
+  // Keep math asterisks like 2*3; only unwrap common emphasis wrappers.
+  return String(text||"")
+    .replace(/\*\*([^*]+)\*\*/g,"$1")
+    .replace(/(^|[\s(„"'])\*([^*\n]+)\*(?=[\s).,;:!?״"']|$)/g,"$1$2");
+}
+
 function makeNoamGlossaryTerm(match){
   var button=document.createElement("button");
   button.type="button";
@@ -4582,15 +5056,23 @@ function enhanceNoamGlossary(root){
   }
   nodes.forEach(function(node){
     var matches=window.NoamGlossary.findTerms(node.nodeValue,g,6);
-    if (!matches.length){return;}
+    if (!matches.length){
+      var cleanedAlone=noamStripMarkdownEmphasis(node.nodeValue);
+      if (cleanedAlone!==node.nodeValue){node.nodeValue=cleanedAlone;}
+      return;
+    }
     var fragment=document.createDocumentFragment();
     var cursor=0;
     matches.forEach(function(match){
-      if (match.start>cursor){fragment.appendChild(document.createTextNode(node.nodeValue.slice(cursor,match.start)));}
+      if (match.start>cursor){
+        fragment.appendChild(document.createTextNode(noamStripMarkdownEmphasis(node.nodeValue.slice(cursor,match.start))));
+      }
       fragment.appendChild(makeNoamGlossaryTerm(match));
       cursor=match.end;
     });
-    if (cursor<node.nodeValue.length){fragment.appendChild(document.createTextNode(node.nodeValue.slice(cursor)));}
+    if (cursor<node.nodeValue.length){
+      fragment.appendChild(document.createTextNode(noamStripMarkdownEmphasis(node.nodeValue.slice(cursor))));
+    }
     node.parentNode.replaceChild(fragment,node);
   });
 }
@@ -4664,7 +5146,7 @@ function renderNoamChat(){
     '<div class="noam-picked'+(showQuestionPreview?'':' noam-picked-compact')+'">' +
       '<div class="noam-picked-heading"><div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
       (showQuestionPreview?'<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הגדלת השאלה')+'</button>':'')+'</div>' +
-      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText">' + esc(text) + '</div>':'') +
+      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText" role="status">טוען את השאלה מתוך ה־PDF…</div>':'') +
     '</div>' +
     '<div class="noam-thread-tools">' +
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
@@ -4947,6 +5429,229 @@ function syntheticAnalysis(exercise){
     uncertain_parts:[],
     complexity:exercise.needsVision ? "medium" : "easy",
     complexity_reasons:["static worksheet manifest"]
+  };
+}
+
+/* Bad static OCR that leaked later parts (ב/ג/ד) into one exercise blob, or
+   signed-arithmetic token soup — must not be sent to the model as ground truth. */
+function noamManifestOcrUnreliable(exercise){
+  var text=String((exercise&&(exercise.text||exercise.prompt))||"");
+  if (!text){return false;}
+  if (/(?:^|[\s−\-\d.+])ב\s*\.[\s\S]{0,80}?ג\s*\./.test(text)){return true;}
+  if (/[−\-]\s+\d+\s+[+＋]\s+\d+\s+[−\-]\s+ב\s*\./.test(text)){return true;}
+  return false;
+}
+
+function noamExerciseSectionLabel(exercise){
+  var q=exercise&&exercise.q!=null?String(exercise.q):"";
+  var part=exercise&&exercise.part?String(exercise.part):"";
+  if (q&&part){return "שאלה "+q+" סעיף "+part;}
+  if (q){return "שאלה "+q;}
+  return String(exercise&&exercise.id||"התרגיל הנבחר");
+}
+
+function noamScopedExerciseSemantic(exercise){
+  if (!noamManifestOcrUnreliable(exercise)){
+    return String(exercise&&exercise.prompt||"");
+  }
+  return "התרגיל שנבחר הוא "+noamExerciseSectionLabel(exercise)+
+    ". קראו מתמונת השאלה רק את הביטוי של הסעיף הנבחר. אם מופיעים סעיפים נוספים באותה תמונה — התעלמו מהם. אל תשחזרו טקסט OCR משובש כנתון.";
+}
+
+function noamExerciseNeedsLiveVision(exercise){
+  return !!(exercise&&(exercise.requiresVision||exercise.needsVision||noamManifestOcrUnreliable(exercise)));
+}
+
+/* Hebrew section markers א–ד (and finals) used as worksheet part labels. */
+function noamIsPartLabelToken(text){
+  return /^[א-ת]$/.test(String(text||"").trim());
+}
+
+/* Merge a detached unary minus glyph with the digit immediately to its right.
+   PDF text layers (and RTL worksheets) often emit "−" as its own item left of 7. */
+function noamAssociateUnaryMinusTokens(tokens){
+  var sorted=(tokens||[]).slice().sort(function(a,b){
+    return (a.x-b.x)||(a.y-b.y);
+  });
+  var out=[];
+  for (var i=0;i<sorted.length;i++){
+    var tok=sorted[i];
+    var next=sorted[i+1];
+    var minus=/^[−\-\u2212–]$/.test(String(tok.text||"").trim());
+    if (minus&&next&&/^\d+$/.test(String(next.text||"").trim())){
+      var gap=(Number(next.x0)!=null?next.x0:next.x)-(Number(tok.x1)!=null?tok.x1:tok.x);
+      if (!(gap>0.03)){
+        out.push({
+          text:"−"+String(next.text).trim(),
+          x:(tok.x+next.x)/2,
+          y:(tok.y+next.y)/2,
+          x0:tok.x0!=null?tok.x0:tok.x,
+          x1:next.x1!=null?next.x1:next.x,
+          y0:Math.min(tok.y0!=null?tok.y0:tok.y,next.y0!=null?next.y0:next.y),
+          y1:Math.max(tok.y1!=null?tok.y1:tok.y,next.y1!=null?next.y1:next.y)
+        });
+        i+=1;
+        continue;
+      }
+    }
+    out.push(tok);
+  }
+  return out;
+}
+
+/* Pure rebuild of one part's arithmetic expression from normalized page tokens.
+   tokens: [{text,x,y,x0,x1,y0,y1}] with x/y in 0..1, origin top-left. */
+function noamRebuildPartExpressionFromTokens(tokens, partLabel, crop){
+  var part=String(partLabel||"").trim();
+  if (!part||!tokens||!tokens.length){return null;}
+  var cx=Number(crop&&crop.x)||0;
+  var cy=Number(crop&&crop.y)||0;
+  var cw=Number(crop&&crop.w)||1;
+  var ch=Number(crop&&crop.h)||1;
+  var inCrop=tokens.filter(function(tok){
+    return tok.x>=cx-0.02&&tok.x<=cx+cw+0.02&&tok.y>=cy-0.02&&tok.y<=cy+ch+0.02;
+  });
+  var label=null;
+  inCrop.forEach(function(tok){
+    if (String(tok.text||"").trim()!==part){return;}
+    if (!label||tok.x>label.x){label=tok;}
+  });
+  if (!label){return null;}
+  var line=inCrop.filter(function(tok){
+    return Math.abs(tok.y-label.y)<0.014&&tok.x<=label.x+0.015;
+  });
+  var merged=noamAssociateUnaryMinusTokens(line);
+  var pieces=[];
+  merged.forEach(function(tok){
+    var t=String(tok.text||"").trim();
+    if (!t||t===part){return;}
+    if (t==="."||t==="·"){return;}
+    pieces.push(t);
+  });
+  if (pieces.length<3){return null;}
+  var expression=pieces.join(" ").replace(/\s+/g," ").trim();
+  // Require a signed/operator form so we never promote heading words as math.
+  if (!/(?:[−\-\u2212]\s*\d|\d\s*[+＋−\-\u2212])/.test(expression)){return null;}
+  if (!/\d/.test(expression)){return null;}
+  // Space binary operators only; keep unary minus glued to its digit (−7 not − 7).
+  expression=expression
+    .replace(/\s*([+＋])\s*/g," $1 ")
+    .replace(/(\d)\s*([−\-\u2212])\s*(?=\d)/g,"$1 $2 ")
+    .replace(/\s+/g," ")
+    .trim();
+  return expression;
+}
+
+/* Vertical band covering the selected part (and the question heading for part א). */
+function noamPartBandCropFromTokens(tokens, partLabel, crop){
+  var base=crop||{};
+  var part=String(partLabel||"").trim();
+  if (!part){return null;}
+  var cx=Number(base.x)||0;
+  var cy=Number(base.y)||0;
+  var cw=Number(base.w)||1;
+  var ch=Number(base.h)||1;
+  var labels=[];
+  (tokens||[]).forEach(function(tok){
+    var t=String(tok.text||"").trim();
+    if (!noamIsPartLabelToken(t)){return;}
+    if (tok.x<cx-0.02||tok.x>cx+cw+0.02||tok.y<cy-0.02||tok.y>cy+ch+0.02){return;}
+    labels.push(tok);
+  });
+  labels.sort(function(a,b){return a.y-b.y;});
+  var idx=-1;
+  for (var i=0;i<labels.length;i++){
+    if (String(labels[i].text).trim()===part){idx=i;break;}
+  }
+  if (idx<0){return null;}
+  var y0=idx===0?cy:(labels[idx-1].y+labels[idx].y)/2;
+  var y1=idx===labels.length-1?(cy+ch):(labels[idx].y+labels[idx+1].y)/2;
+  var pad=0.006;
+  y0=Math.max(cy,y0-pad);
+  y1=Math.min(cy+ch,y1+pad);
+  if (!(y1-y0>0.02)){return null;}
+  return {
+    page:Number(base.page)||1,
+    x:cx,
+    y:y0,
+    w:cw,
+    h:y1-y0
+  };
+}
+
+function noamNormalizePdfJsTextItems(items, viewport){
+  var width=viewport.width||1;
+  var height=viewport.height||1;
+  var out=[];
+  (items||[]).forEach(function(item){
+    var raw=String(item&&item.str||"").replace(/\u00a0/g," ");
+    if (!raw.trim()){return;}
+    var transform=item.transform||[1,0,0,1,0,0];
+    var pt=viewport.convertToViewportPoint
+      ? viewport.convertToViewportPoint(transform[4],transform[5])
+      : [transform[4], height-transform[5]];
+    var x=pt[0]/width;
+    var y=pt[1]/height;
+    var w=(Number(item.width)||0)/width;
+    var h=(Number(item.height)||Math.abs(transform[3])||0)/height;
+    // Split runs like "7 + 4" or "א." so a detached "−" can attach to its digit.
+    var chunks=raw.trim().split(/\s+/).filter(Boolean);
+    var step=chunks.length?w/chunks.length:w;
+    chunks.forEach(function(chunk,index){
+      var x0=x+step*index;
+      var x1=x+step*(index+1);
+      var mx=(x0+x1)/2;
+      if (/^[א-ת]\.$/.test(chunk)){
+        out.push({text:chunk.charAt(0),x:mx,y:y,x0:x0,x1:x1,y0:y,y1:y+h});
+        return;
+      }
+      out.push({text:chunk,x:mx,y:y,x0:x0,x1:x1,y0:y,y1:y+h});
+    });
+  });
+  return out;
+}
+
+function noamRebuildSelectedPartExpression(exercise){
+  if (!exercise||!exercise.part||!exercise.crop){return Promise.resolve(null);}
+  if (typeof pdfDocument==="undefined"||!pdfDocument){return Promise.resolve(null);}
+  var pageNumber=Number(exercise.crop.page||0);
+  if (!(pageNumber>=1)){return Promise.resolve(null);}
+  return pdfDocument.getPage(pageNumber).then(function(page){
+    var viewport=page.getViewport({scale:1});
+    return page.getTextContent().then(function(content){
+      var tokens=noamNormalizePdfJsTextItems(content&&content.items||[],viewport);
+      var expression=noamRebuildPartExpressionFromTokens(tokens,exercise.part,exercise.crop);
+      if (!expression){return null;}
+      var tight=noamPartBandCropFromTokens(tokens,exercise.part,exercise.crop);
+      return {
+        expression:expression,
+        crop:tight||exercise.crop,
+        source:"pdf_text_layer"
+      };
+    });
+  }).catch(function(){return null;});
+}
+
+function noamAnalysisFromPartExpression(exercise,rebuild){
+  var expression=String(rebuild&&rebuild.expression||"").trim();
+  var label=noamExerciseSectionLabel(exercise);
+  var statement=label+": "+expression;
+  return {
+    readable:true,
+    readability_confidence:0.95,
+    content_type:"pdf_part_expression_rebuild",
+    transcription:statement,
+    math_content:expression,
+    problem_statement:statement,
+    diagram_description:"",
+    student_work:"",
+    extracted_entities:{numbers:[],expressions:[expression],labels:[String(exercise.part||="")],units:[]},
+    uncertain_parts:[],
+    complexity:"easy",
+    complexity_reasons:["pdf text-layer rebuild of selected part"],
+    selected_part_expression:expression,
+    manifest_ocr_unreliable:true,
+    pdf_part_rebuild:true
   };
 }
 
@@ -5252,27 +5957,50 @@ function stitchCropSegments(segments){
   return target;
 }
 
+function showExercisePreviewFailure(exercise){
+  var fallback=document.getElementById("noamPickedText");
+  if (!fallback||!selectedExercise||selectedExercise.id!==exercise.id){return;}
+  var link=document.createElement("a");
+  link.href=pdfUrl;
+  link.target="_blank";
+  link.rel="noopener noreferrer";
+  link.textContent="פתחו את השאלה בדף ה־PDF";
+  fallback.replaceChildren(link);
+}
+
 function cropExerciseCanvasFromPdf(exercise){
-  var crops = Array.isArray(exercise.crops) && exercise.crops.length ? exercise.crops : [exercise.crop||{}];
-  if (crops.length > 12){ return Promise.reject(new Error("יותר מדי עמודים לשאלה אחת.")); }
-  return crops.reduce(function(chain, crop){
-    return chain.then(function(segments){
-      return cropExerciseSegment(crop).then(function(segment){
-        segments.push(segment);
-        return segments;
+  var baseCrops = Array.isArray(exercise.crops) && exercise.crops.length ? exercise.crops : [exercise.crop||{}];
+  if (baseCrops.length > 12){ return Promise.reject(new Error("יותר מדי עמודים לשאלה אחת.")); }
+  var cropPromise=Promise.resolve(baseCrops);
+  if (noamManifestOcrUnreliable(exercise)&&exercise.part&&baseCrops.length===1){
+    cropPromise=noamRebuildSelectedPartExpression(exercise).then(function(rebuild){
+      return (rebuild&&rebuild.crop)?[rebuild.crop]:baseCrops;
+    }).catch(function(){ return baseCrops; });
+  }
+  return cropPromise.then(function(crops){
+    return crops.reduce(function(chain, crop){
+      return chain.then(function(segments){
+        return cropExerciseSegment(crop).then(function(segment){
+          segments.push(segment);
+          return segments;
+        });
       });
-    });
-  }, Promise.resolve([])).then(stitchCropSegments);
+    }, Promise.resolve([])).then(stitchCropSegments);
+  });
 }
 
 function cropExerciseCanvas(exercise){
-  if (typeof pdfDocument !== "undefined" && pdfDocument && typeof cropExerciseCanvasFromPdf === "function"){
-    return cropExerciseCanvasFromPdf(exercise).catch(function(error){
-      console.warn("NOAM CROP HIGH RES FALLBACK:", error);
+  return ensurePdfDocumentForCrop()
+    .catch(function(){ return null; })
+    .then(function(){
+      if (typeof pdfDocument !== "undefined" && pdfDocument && typeof cropExerciseCanvasFromPdf === "function"){
+        return cropExerciseCanvasFromPdf(exercise).catch(function(error){
+          console.warn("NOAM CROP HIGH RES FALLBACK:", error);
+          return cropExerciseCanvasFromView(exercise);
+        });
+      }
       return cropExerciseCanvasFromView(exercise);
     });
-  }
-  return cropExerciseCanvasFromView(exercise);
 }
 
 function cropExerciseCanvasFromView(exercise){
@@ -5386,7 +6114,11 @@ function showExercisePreview(exercise,dataUrl){
   if (!preview||!fallback||!selectedExercise||selectedExercise.id!==exercise.id){return;}
   var image=document.createElement("img");
   image.src=dataUrl;
-  image.alt=exerciseLabel(exercise)+" — "+String(exercise.text||exercise.prompt||"").slice(0,500);
+  image.alt=exerciseLabel(exercise)+" — "+(
+    noamManifestOcrUnreliable(exercise)
+      ? noamExerciseSectionLabel(exercise)
+      : String(exercise.text||exercise.prompt||"")
+  ).slice(0,500);
   preview.replaceChildren(image);
   preview.hidden=false;
   fallback.hidden=true;
@@ -5431,39 +6163,109 @@ function getExerciseAnalysis(exercise){
         if (!result||!result.ok||!result.analysis){ throw new Error("לא הצלחנו לקרוא את הקבצים שצורפו. נסו שוב."); }
         var analysis=result.analysis;
         if (analysis.readable!==true){ throw new Error("לא הצלחנו לקרוא את הקבצים שצורפו בבירור. נסו צילום ברור יותר."); }
-        var semantic=exercise.prompt||"";
+        var semantic=noamScopedExerciseSemantic(exercise);
         analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
         analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
         return analysis;
       });
   }
-  if (analysisCache[exercise.id]){ return Promise.resolve(analysisCache[exercise.id]); }
+  var ocrUnreliable=noamManifestOcrUnreliable(exercise);
+  if (analysisCache[exercise.id]){
+    var cachedAnalysis=analysisCache[exercise.id];
+    // Drop stale synthetic / vision-without-expression caches for unreliable OCR.
+    if (ocrUnreliable&&cachedAnalysis&&(
+      cachedAnalysis.content_type==="static_manifest_exercise"||
+      (cachedAnalysis.content_type==="vision_over_unreliable_ocr"&&!cachedAnalysis.selected_part_expression)
+    )){
+      delete analysisCache[exercise.id];
+    }else{
+      return Promise.resolve(cachedAnalysis);
+    }
+  }
   var fallback=syntheticAnalysis(exercise);
-  if (!exercise.needsVision&&!exercise.requiresVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
+  var forceVision=noamExerciseNeedsLiveVision(exercise);
+  if (!forceVision){ analysisCache[exercise.id]=fallback;saveNoamState();return Promise.resolve(fallback); }
 
-  // New manifests share a complete question image across its sections.
-  // This cache is already scoped to the PDF, and stores unmodified analysis.
-  var imageKey=exercise.requiresVision?"image:"+JSON.stringify(exercise.crops||[exercise.crop]):null;
+  // Unreliable multi-part OCR: prefer PDF text-layer rebuild of the selected part
+  // (reattach detached minus glyphs). Tall-crop vision has dropped the leading
+  // minus and leaked ב/ג/ד into the solve payload.
+  function analysisFromPdfRebuild(){
+    return ensurePdfDocumentForCrop()
+      .catch(function(){ return null; })
+      .then(function(){ return noamRebuildSelectedPartExpression(exercise); })
+      .then(function(rebuild){
+        if (!rebuild||!rebuild.expression){return null;}
+        var analysis=noamAnalysisFromPartExpression(exercise,rebuild);
+        analysisCache[exercise.id]=analysis;saveNoamState();
+        return analysis;
+      });
+  }
+
+  // Cache key includes part so a shared-question crop cannot poison siblings.
+  var imageKey=forceVision?"image:"+String(exercise.part||"")+":"+JSON.stringify(exercise.crops||[exercise.crop]):null;
   var cachedImage=imageKey&&analysisCache[imageKey];
-  var request=cachedImage?Promise.resolve({ok:true,analysis:cachedImage}):cropExerciseImage(exercise)
-    .then(function(imageDataUrl){
-      return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
-    });
-  return request
+  function requestVisionAnalysis(allowCachedImage){
+    return ensurePdfDocumentForCrop()
+      .catch(function(){ return null; })
+      .then(function(){
+        if (allowCachedImage && cachedImage){
+          return {ok:true,analysis:cachedImage};
+        }
+        return noamRebuildSelectedPartExpression(exercise).then(function(rebuild){
+          var cropExercise=exercise;
+          if (rebuild&&rebuild.crop&&ocrUnreliable){
+            cropExercise=Object.assign({},exercise,{crop:rebuild.crop,crops:null});
+          }
+          return cropExerciseImage(cropExercise).then(function(imageDataUrl){
+            return postJson(API+"/noamImageAnalyze",{imageDataUrl:imageDataUrl,clientRequestId:"manifest-"+Date.now().toString(36)});
+          }).then(function(result){
+            if (result&&result.analysis&&rebuild&&rebuild.expression){
+              result.analysis.selected_part_expression=rebuild.expression;
+              result.analysis.math_content=rebuild.expression;
+              var pinned="ביטוי הסעיף הנבחר: "+rebuild.expression;
+              result.analysis.transcription=[pinned,result.analysis.transcription||""].filter(Boolean).join("\n");
+              result.analysis.problem_statement=[pinned,result.analysis.problem_statement||""].filter(Boolean).join("\n");
+            }
+            return result;
+          });
+        });
+      });
+  }
+  var rebuildFirst=ocrUnreliable?analysisFromPdfRebuild():Promise.resolve(null);
+  return rebuildFirst.then(function(rebuilt){
+    if (rebuilt){return rebuilt;}
+    return requestVisionAnalysis(true)
+    .catch(function(error){
+      if (isBotProtectionError(error)){ throw error; }
+      // One recovery pass after ensuring the crop document (covers clean-view races).
+      console.warn("NOAM VISION RETRY AFTER CROP DOC:", exercise.id, error);
+      cachedImage=null;
+      pdfCropLoadPromise=null;
+      return requestVisionAnalysis(false);
+    })
     .then(function(result){
       if (!result||!result.ok||!result.analysis){ throw new Error("vision unavailable"); }
       var analysis=result.analysis;
-      if (exercise.requiresVision && analysis.readable!==true){throw new Error("לא הצלחנו לקרוא את השאלה בבירור. נסו שוב.");}
-      if (exercise.requiresVision && !["transcription","math_content","problem_statement","diagram_description"].some(function(key){return typeof analysis[key]==="string"&&analysis[key].trim();})){
+      var strictVision=!!(exercise.requiresVision||ocrUnreliable);
+      if (strictVision && analysis.readable!==true){throw new Error("לא הצלחנו לקרוא את השאלה בבירור. נסו שוב.");}
+      if (strictVision && !["transcription","math_content","problem_statement","diagram_description"].some(function(key){return typeof analysis[key]==="string"&&analysis[key].trim();})){
         throw new Error("לא התקבל תוכן קריא מתמונת השאלה.");
       }
       if (imageKey){
         analysisCache[imageKey]=analysis;
         analysis=JSON.parse(JSON.stringify(analysis));
       }
-      var semantic=exercise.prompt||"";
-      analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
-      analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
+      var semantic=noamScopedExerciseSemantic(exercise);
+      if (!analysis.selected_part_expression){
+        analysis.transcription=[semantic,analysis.transcription||""].filter(Boolean).join("\n");
+        analysis.problem_statement=[semantic,analysis.problem_statement||""].filter(Boolean).join("\n");
+      }
+      if (ocrUnreliable){
+        analysis.content_type=analysis.selected_part_expression
+          ? "vision_with_pdf_part_expression"
+          : "vision_over_unreliable_ocr";
+        analysis.manifest_ocr_unreliable=true;
+      }
       analysisCache[exercise.id]=analysis;saveNoamState();return analysis;
     })
     .catch(function(error){
@@ -5471,15 +6273,133 @@ function getExerciseAnalysis(exercise){
       // synthetic-analysis fallback. Preserve them for the chat error message.
       if (isBotProtectionError(error)){ throw error; }
       // These manifests deliberately carry no guessed OCR transcription.
-      // The solver must receive the actual worksheet image analysis.
-      if (exercise.requiresVision){throw new Error("לא הצלחנו לקרוא את תמונת השאלה. נסו שוב בעוד רגע.");}
+      // Unreliable OCR must not fall back to the garbled static text either.
+      if (exercise.requiresVision||ocrUnreliable){
+        var visionError=new Error(
+          "לא הצלחנו לקרוא את תמונת השאלה. אפשר לנסות שוב — בלי לנחש את תוכן השאלה."
+        );
+        visionError.code="QUESTION_IMAGE_UNREADABLE";
+        visionError.cause=error;
+        throw visionError;
+      }
       console.warn("NOAM VISION FALLBACK:",exercise.id,error);
       analysisCache[exercise.id]=fallback;saveNoamState();return fallback;
     });
+  });
+}
+
+function clearExerciseVisionCache(exercise){
+  if (!exercise){ return; }
+  delete analysisCache[exercise.id];
+  var imageKey=noamExerciseNeedsLiveVision(exercise)
+    ?"image:"+String(exercise.part||"")+":"+JSON.stringify(exercise.crops||[exercise.crop])
+    :null;
+  if (imageKey){ delete analysisCache[imageKey]; }
+  delete exercisePreviewCache[exercise.id];
+  pdfCropLoadPromise=null;
+}
+
+function retryLastNoamHelp(){
+  if (!selectedExercise||busy){ return; }
+  var thread=exerciseThread(selectedExercise.id);
+  // Drop failed assistant + matching user turn so retry does not stack dead-ends.
+  if (thread.messages.length&&thread.messages[thread.messages.length-1].answerError){
+    thread.messages.pop();
+  }
+  var lastUser=null;
+  if (thread.messages.length&&thread.messages[thread.messages.length-1].role==="user"){
+    lastUser=thread.messages.pop();
+  }
+  if (!lastUser){ return; }
+  clearExerciseVisionCache(selectedExercise);
+  var kind=lastUser.kind||"";
+  if (/^רמז/.test(kind)){
+    thread.hintIndex=Math.max(0, thread.hintIndex-1);
+    saveNoamState();
+    askNoam("hint","תן לי רמז אחד בלבד. אל תגלה את התשובה הסופית, ואל תבצע את הצעד במקומי.");
+    return;
+  }
+  if (kind==="הסבר כללי"){
+    saveNoamState();
+    askNoam("overview","תן לי הסבר כללי קצר על הרעיון הדרוש כאן, בלי לפתור ובלי לגלות את התשובה.");
+    return;
+  }
+  saveNoamState();
+  askNoam("free_question", String(lastUser.text||"").trim());
 }
 
 function noamGeometryContext(text){
   return /גאומטר|גיאומטר|משולש|מרובע|זווית|מקביל|מאונך|חפיפ|דמיון|פיתגורס|טרפז|מעוין|מלבן|ריבוע/i.test(String(text||""));
+}
+
+function noamSignedNumberContext(text){
+  var source=String(text||"");
+  if (/מספר(?:ים)?\s+מכוונ|ערך\s+מוחלט|סימנים\s+שונים|מספר(?:ים)?\s+שלילי|חיבור\s+(?:וחיסור\s+)?מספרים|ישר\s+המספרים|ציר\s+המספרים/i.test(source)){
+    return true;
+  }
+  // Mixed-sign arithmetic cues such as −7+4 or 5+(−3), without requiring topic keywords.
+  if (/(?:^|[^\d])[−\-]\s*\d+(?:\s*[,،]\s*[−\-]?\d+)*\s*(?:\+|[\u2212\-])\s*[−\-]?\d+/.test(source)){
+    return true;
+  }
+  if (/\d+\s*(?:\+|[\u2212\-])\s*[(\[]?\s*[−\-]\s*\d+/.test(source)){return true;}
+  return false;
+}
+
+/* Focused rewrite for ambiguous different-sign addition language.
+   Does NOT blanket-replace גדול/קטן outside this signed-add rule phrasing. */
+function noamClarifySignedAddLanguage(answer){
+  var text=String(answer||"");
+  if (!text){return text;}
+  var ruleCue=/סימנים\s+שונים|חיבור\s+(?:של\s+)?מספרים|מספרים\s+(?:בעלי\s+)?סימנים|הערך\s+הקטן\s+מהגדול|הסימן\s+של\s+הגדול/i.test(text);
+  if (!ruleCue){return text;}
+  if (/ערך(?:ים)?\s+מוחלט|\|/i.test(text)){return text;}
+  text=text.replace(
+    /חסר(?:ים)?\s+את\s+הערך\s+הקטן\s+מהגדול(?:\s+יותר)?/gi,
+    "מחסרים את הערך המוחלט הקטן מהגדול"
+  );
+  text=text.replace(
+    /שמור(?:ו|י)?\s+על\s+הסימן\s+של\s+הגדול(?:\s+יותר)?/gi,
+    "לוקחים את הסימן של המספר בעל הערך המוחלט הגדול"
+  );
+  text=text.replace(
+    /(?:^|[^\u0590-\u05FF])הסימן\s+של\s+הגדול(?:\s+יותר)?(?!\s+ערך)/gi,
+    function(match){
+      var prefix=match.charAt(0);
+      var he=/[\u0590-\u05FF]/.test(prefix)?"":prefix;
+      return he+"הסימן של המספר בעל הערך המוחלט הגדול";
+    }
+  );
+  return text;
+}
+
+function noamMixedSignAddExpression(text){
+  var source=String(text||"");
+  return /[−\-]\s*\d+\s*\+\s*(?![−\-])\d+/.test(source) ||
+    /\d+\s*\+\s*[−\-]\s*\d+/.test(source) ||
+    /\d+\s*\+\s*\(\s*[−\-]\s*\d+/.test(source);
+}
+
+/* Wrong rule family for a mixed-sign sum: both-negatives OR same-sign add rules. */
+function noamWrongSignedAddRuleIssue(answer,analysis){
+  var source=[
+    analysis&&analysis.selected_part_expression,
+    analysis&&analysis.transcription,
+    analysis&&analysis.math_content,
+    analysis&&analysis.problem_statement
+  ].filter(Boolean).join("\n");
+  if (!noamMixedSignAddExpression(source)){return null;}
+  var text=String(answer||"");
+  if (/(?:לחבר|חיבור)\s+מספרים\s+שליליים|שני(?:ם)?\s+מספרים\s+שליליים|שני\s+השליליים|חבר(?:ו|י)?\s+את\s+הערכים\s+המוחלטים[\s\S]{0,60}סימן\s+מינוס/i.test(text)){
+    return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים, לא שני מספרים שליליים. השתמשו בכלל הסימנים השונים עם ערכים מוחלטים, בלי לחשוף את התוצאה המספרית.";
+  }
+  // Same-sign rule applied to −a+b (user S10: "אותו סימן" / "אותו צד של אפס" / unsigned 4 ו-7).
+  if (/(?:בעלי\s+)?אותו\s+סימן|סימנים?\s+זהים|אותו\s+צד\s+של\s+אפס|שני\s+המספרים\s+\d+\s+ו[־\-]?\s*\d+/i.test(text)){
+    return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים (יש מינוס לפני אחד מהמספרים). אל תשתמשו בכלל אותו סימן; השתמשו בכלל הסימנים השונים עם ערכים מוחלטים, בלי לחשוף את התוצאה המספרית.";
+  }
+  if (/כאשר\s+מחברים\s+שני\s+מספרים[\s\S]{0,40}אותו\s+סימן|סכום\s+הערכים\s+המוחלטים\s+הוא\s+גודל/i.test(text)){
+    return "הביטוי הנבחר הוא חיבור של מספרים בעלי סימנים שונים. אל תחברו ערכים מוחלטים כאילו הסימנים זהים; מחסרים את הקטן מהגדול בערך מוחלט ולוקחים את סימן הגדול בערך מוחלט — בלי לחשוף את התוצאה.";
+  }
+  return null;
 }
 
 function noamVisualNeed(studentMessage,answer,helpKind,hintIndex,topic){
@@ -5634,12 +6554,21 @@ function noamAngleParallelRole(angle,pair){
 }
 
 function noamAlternateAngleIssue(answer,source){
+  var text=String(answer||"");
+  // Specific known mislabel: ∠BMN with ∠BAC on transversal AB are corresponding, not alternate.
+  if (/מתחלפ(?:ת|ות|ים)?/i.test(text) &&
+      /(?:∠\s*)?BMN/i.test(text) &&
+      /(?:∠\s*)?BAC/i.test(text) &&
+      !/(?:בדקו|האם|מתאימות\s+או)/i.test(text)){
+    return "∠BMN ו־∠BAC אינן זוויות מתחלפות בזיהוי הזה; הן זוויות מתאימות ביחס לחותך AB.";
+  }
   var pairs=noamParallelPairs(source);
   if (!pairs.length){return null;}
-  var text=String(answer||"");
   var relation=/(?:מתחלפ(?:ת|ות|ים)?|מתאימ(?:ה|ות|ים)?)/gi;
   var match;
   while ((match=relation.exec(text))){
+    var word=String(match[0]||"");
+    var isAlternate=/מתחלפ/i.test(word);
     var windowText=text.slice(Math.max(0,match.index-170),Math.min(text.length,relation.lastIndex+170));
     var offset=Math.max(0,match.index-170);
     var angles=noamAnglesClaimedByRelation(windowText,match.index-offset,relation.lastIndex-offset);
@@ -5653,17 +6582,17 @@ function noamAlternateAngleIssue(answer,source){
     for (var left=0;left<angles.length;left+=1){
       for (var right=left+1;right<angles.length;right+=1){
         if (angles[left].vertex===angles[right].vertex){
-          return "זוג הזוויות שנקרא מתחלף חולק אותו קודקוד. זוויות מתחלפות של ישר חותך נמצאות בשתי נקודות חיתוך שונות.";
+          return "זוג הזוויות שנקרא "+(isAlternate?"מתחלף":"מתאים")+" חולק אותו קודקוד. זוויות של ישר חותך נמצאות בשתי נקודות חיתוך שונות.";
         }
         var sharedPairs=pairs.filter(function(pair){
           var leftRole=noamAngleParallelRole(angles[left],pair);
           var rightRole=noamAngleParallelRole(angles[right],pair);
           return leftRole!==-1&&rightRole!==-1;
         });
-        if (sharedPairs.length&&sharedPairs.every(function(pair){
+        if (isAlternate&&sharedPairs.length&&sharedPairs.every(function(pair){
           return noamAngleParallelRole(angles[left],pair)===noamAngleParallelRole(angles[right],pair);
         })){
-          return "שתי הזוויות שנקראו מתחלפות נשענות על אותו ישר מקביל; צריך זווית אחת בכל אחת משתי נקודות החיתוך של החותך.";
+          return "שתי הזוויות שנקראו מתחלפות נשענות על אותו ישר מקביל; צריך זווית אחת בכל אחת משתי נקודות החיתוך של החותך. בדקו אם מדובר בזוויות מתאימות.";
         }
       }
     }
@@ -5758,6 +6687,34 @@ function noamGuardGeometryResult(result,payload,analysis,studentMessage,guide,gu
   });
 }
 
+function noamSignedAddRepairMessage(studentMessage,issue){
+  var instruction="טיוטת התשובה נפסלה בבדיקת כלל סימנים מקומית. "+String(issue||"")+
+    " פתרו מחדש לפי הביטוי של הסעיף הנבחר בלבד. אל תחשפו את התוצאה. אל תזכירו את הטיוטה. שאלת התלמיד: "+String(studentMessage||"").trim();
+  var room=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
+  return instruction.slice(0,room)+MATH_OUTPUT_INSTRUCTION;
+}
+
+function noamGuardSignedAddResult(result,payload,analysis,studentMessage){
+  if (!result||!result.ok||!result.answer){return Promise.resolve(result);}
+  var issue=noamWrongSignedAddRuleIssue(result.answer,analysis);
+  if (!issue){return Promise.resolve(result);}
+  var retryPayload=Object.assign({},payload,{studentMessage:noamSignedAddRepairMessage(studentMessage,issue)});
+  return postJson(API+"/noamImageSolve",retryPayload).then(function(retry){
+    if (retry&&retry.ok&&retry.answer&&!noamWrongSignedAddRuleIssue(retry.answer,analysis)){return retry;}
+    return {
+      ok:true,
+      answer:"בביטוי הנבחר יש סימנים שונים. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול — בלי לחשוף את התוצאה כאן.",
+      signedAddGuarded:true
+    };
+  },function(){
+    return {
+      ok:true,
+      answer:"בביטוי הנבחר יש סימנים שונים. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול — בלי לחשוף את התוצאה כאן.",
+      signedAddGuarded:true
+    };
+  });
+}
+
 function noamDidacticVisualSelection(exerciseId,options){
   var guides=window.NoamDidacticGuides;
   if (!exerciseId||!guides||typeof guides.resolveVisual!=="function"){return null;}
@@ -5819,14 +6776,29 @@ function noamDidacticResponse(exercise,helpKind,hintIndex,studentMessage,progres
   }
 }
 
-function noamSolverMessage(studentMessage,thread,topic,guidePrompt){
+function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis){
   var budget=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
   var current=String(studentMessage||"").trim();
-  var geometry=noamGeometryContext(topic+" "+current+" "+noamRecentThreadText(thread,220));
+  var recent=noamRecentThreadText(thread,220);
+  var pinnedExpr=String(analysis&&analysis.selected_part_expression||"").trim();
+  var analysisText=[
+    pinnedExpr,
+    analysis&&analysis.transcription,
+    analysis&&analysis.problem_statement,
+    analysis&&analysis.math_content
+  ].filter(Boolean).join(" ");
+  var geometry=noamGeometryContext(topic+" "+current+" "+recent);
+  var signed=noamSignedNumberContext(topic+" "+current+" "+recent+" "+analysisText);
+  var mixed=noamMixedSignAddExpression(analysisText);
   var visual=window.NoamLocalVisual&&window.NoamLocalVisual.wantsVisualSupport&&window.NoamLocalVisual.wantsVisualSupport(current);
+  var signedGuard=mixed
+    ? "הביטוי של הסעיף הנבחר הוא "+(pinnedExpr||"חיבור עם סימנים שונים")+". זה סימנים שונים — לא אותו סימן ולא שני שליליים. השוו ערכים מוחלטים במפורש; מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול. אל תחשפו את התוצאה המספרית."
+    : (signed
+      ? "בחיבור מספרים בעלי סימנים שונים השוו ערכים מוחלטים במפורש — לא 'הגדול/הקטן' כמספרים על הציר. מחסרים את הערך המוחלט הקטן מהגדול ולוקחים את הסימן של המספר בעל הערך המוחלט הגדול. אל תחשפו את התוצאה המספרית."
+      : "");
   var generalGuard=geometry
-    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך."
-    : "";
+    ? "בדיקת דיוק בגאומטריה: הפרד בין הנתונים לבין מה שצריך להוכיח. אסור להשתמש במסקנה כנתון או לאשר טענה קודמת בלי לבדוק אותה. בשוויון זוויות בדוק קודקוד ושתי קרניים. חוצה זווית מחלק זווית; אל תבלבל אותו עם ישר חותך. אל תערבב זוויות מתחלפות עם זוויות מתאימות — בדוק באיזה צד של החותך נמצאת כל זווית. ברמז ראשון כוון לחשיבה בלי לחשוף את הצעד המרכזי; ברמזים הבאים הוסף צעד קטן בלי פתרון מלא ובלי נתונים מומצאים."
+    : signedGuard;
   var verified=String(guidePrompt||"");
   var guard=verified||generalGuard;
   if (visual){guard+=verified?" ציין בדיוק מה לסמן בשרטוט.":" התלמיד מתקשה בזיהוי חזותי. ציין מה לסמן; אל תבקש ממנו לנחש. האתר יציג שרטוט לצד התשובה, לכן אל תאמר שאינך יכול לצייר.";}
@@ -6245,7 +7217,7 @@ function askNoam(helpKind,studentMessage){
   getExerciseAnalysis(exercise)
     .then(function(analysis){
       requestAnalysis=analysis;
-      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt);
+      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt,analysis);
       requestPayload={
         exerciseId:exercise.id,
         grade:g,
@@ -6263,7 +7235,11 @@ function askNoam(helpKind,studentMessage){
       return noamGuardGeometryResult(result,requestPayload,requestAnalysis,studentMessage,guide,guidePrompt);
     })
     .then(function(result){
+      return noamGuardSignedAddResult(result,requestPayload,requestAnalysis,studentMessage);
+    })
+    .then(function(result){
       if (!result||!result.ok||!result.answer){ throw new Error((result&&result.error)||"נועם AI לא זמין כרגע."); }
+      if (result&&result.answer){result.answer=noamClarifySignedAddLanguage(result.answer);}
       var elapsed=Date.now()-started;
       return new Promise(function(resolve){setTimeout(function(){resolve(result);},Math.max(0,MIN_WAIT-elapsed));});
     })
@@ -6282,10 +7258,33 @@ function askNoam(helpKind,studentMessage){
     })
     .catch(function(error){
       var errorMessage=String(error&&error.message||"לא הצלחנו לקבל תשובה כרגע.");
-      thread.messages.push({role:"assistant",text:errorMessage,kind:"",answerError:true});
+      thread.messages.push({
+        role:"assistant",
+        text:errorMessage,
+        kind:"",
+        answerError:true,
+        answerErrorCode:String(error&&error.code||"")
+      });
       saveNoamState();setNoamBusy(false);renderNoamChat();
       announceNoam(exerciseLabel(exercise) + ". " + errorMessage);
     });
+}
+
+function noamRetryActionLabel(message){
+  var code=String(message&&message.answerErrorCode||"");
+  var text=String(message&&message.text||"");
+  // Match the retry CTA to the failure that was shown — never imply a crop/read
+  // problem when bot verification (or another non-vision refusal) was the cause.
+  if (isBotProtectionError({code:code,message:text}) || /בדיקת האבטחה|לאמת את הבקשה/.test(text)){
+    return "נסו שוב את בדיקת האבטחה";
+  }
+  if (code==="QUESTION_IMAGE_UNREADABLE" || /תמונת השאלה|לקרוא את השאלה|לקרוא את הקבצים/.test(text)){
+    return "נסו שוב לקרוא את השאלה";
+  }
+  if (code==="NETWORK_UNAVAILABLE" || /החיבור לנועם AI נקטע/.test(text)){
+    return "נסו שוב להתחבר";
+  }
+  return "נסו שוב";
 }
 
 function postJson(endpoint,payload){
@@ -6435,5 +7434,285 @@ function esc(s){
 
 <script src="noam-learning-core.js?v=20260908-1" defer></script>
 <script src="noam-learning-boot.js?v=20260908-1" defer></script>
+<script id="exact-viewer-adapter">
+/* Presentation adapter only. The preceding released scripts retain ownership
+   of question selection, answers, PDF rendering, storage, and request timing. */
+(function(){
+  'use strict';
+  var body=document.body, html=document.documentElement;
+  var panel=document.getElementById('panel'), panelIn=panel.querySelector('.panel-in');
+  var panelBody=document.getElementById('panelBody'), paper=document.querySelector('.pdfwrap');
+  var bar=document.querySelector('.bar'), header=document.querySelector('.exact-viewer-header');
+  var fab=document.getElementById('fab'), close=document.getElementById('closePanel');
+  var status=header&&panel.querySelector('.exact-ramzi-status');
+  if(!panel||!panelIn||!panelBody||!paper||!header||!fab||!close){return;}
+
+  var homeAnchor=document.createComment('exact viewer header and tabs home');
+  header.before(homeAnchor);
+  var tabs=document.createElement('div');
+  tabs.className='exact-mobile-tabs';tabs.setAttribute('role','tablist');
+  tabs.setAttribute('aria-label','מעבר בין הדף לעזרה');
+  tabs.innerHTML='<button type="button" role="tab" id="exactPaperTab" aria-controls="exactPaperPane" aria-selected="true">דף העבודה</button>'+
+    '<button type="button" role="tab" id="exactHelpTab" aria-controls="exactHelpPane" aria-selected="false" tabindex="-1">עזרה מרמזי</button>';
+  header.after(tabs);
+  var pageTab=tabs.children[0],helpTab=tabs.children[1];
+  paper.id='exactPaperPane';paper.setAttribute('role','tabpanel');paper.setAttribute('aria-labelledby','exactPaperTab');
+  panelIn.id='exactHelpPane';panelIn.setAttribute('role','tabpanel');panelIn.setAttribute('aria-labelledby','exactHelpTab');
+  var narrow=false,open=false,previousOpen=false,initialWideOpened=false,helpReadyObserved=false,scheduled=false;
+  var previousMood='',previousMotion='';
+  var hintCounts=new WeakMap(), avatarCache=new Map(),avatars=[];
+  var actualChoices=new Map(),hasFullPicker=false,choiceSignature='';
+  var choices=document.createElement('div');choices.className='exact-question-strip';choices.hidden=true;
+  panel.querySelector('.panel-head').after(choices);
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function setAttr(el,name,value){if(el.getAttribute(name)!==String(value)){el.setAttribute(name,String(value));}}
+  function text(el,value){if(el&&el.textContent!==value){el.textContent=value;}}
+  function motionMode(){
+    if(document.hidden||reduced.matches||html.classList.contains('nd-motion-off')||html.classList.contains('noam-a11y-motion')){return 'off';}
+    var mode=html.getAttribute('data-nd-motion')||html.getAttribute('data-motion')||'full';
+    return mode==='relaxed'||mode==='רגוע'?'relaxed':mode==='off'||mode==='כבוי'?'off':'full';
+  }
+  var motion=document.createElement('button');
+  motion.type='button';motion.className='exact-motion';
+  header.appendChild(motion);
+  function syncMotionButton(){
+    var off=motionMode()==='off', label=off?'הפעלת אנימציות':'עצירת אנימציות';
+    setAttr(motion,'aria-label',label);setAttr(motion,'title',label);setAttr(motion,'aria-pressed',off);
+    if(motion.dataset.off!==String(off)){
+      motion.dataset.off=String(off);
+      motion.innerHTML='<svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">'+
+        (off?'<path d="M7 4.5 L15.5 10 L7 15.5 Z" fill="currentColor"></path>':'<path d="M7 5 V15 M13 5 V15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"></path>')+
+        '</svg><span>'+label+'</span>';
+    }
+  }
+  motion.addEventListener('click',function(){
+    var accessibility=document.getElementById('noam-accessibility');
+    var existing=accessibility&&accessibility.shadowRoot&&accessibility.shadowRoot.querySelector('[data-pref="motion"]');
+    if(existing){
+      if(html.classList.contains('nd-motion-off')&&!html.classList.contains('noam-a11y-motion')){html.classList.remove('nd-motion-off');}
+      else{existing.click();}
+    }else{html.classList.toggle('nd-motion-off');}
+    window.dispatchEvent(new CustomEvent('nd:motion-off',{detail:{off:motionMode()==='off'}}));
+    schedule();
+  });
+
+  function pickPage(){if(!panel.classList.contains('hidden')){close.click();}sync();pageTab.focus({preventScroll:true});}
+  function pickHelp(){if(panel.classList.contains('hidden')&&!helpTab.disabled){fab.click();}sync();helpTab.focus({preventScroll:true});}
+  pageTab.addEventListener('click',pickPage);helpTab.addEventListener('click',pickHelp);
+  tabs.addEventListener('keydown',function(event){
+    if(event.key==='ArrowLeft'||event.key==='ArrowRight'||event.key==='Home'||event.key==='End'){
+      event.preventDefault();
+      if(event.key==='Home'||(event.key!=='End'&&document.activeElement===helpTab)){pickPage();}
+      else{pickHelp();}
+    }
+  });
+  function visibleControls(){return Array.from(panel.querySelectorAll('button:not([disabled]),textarea:not([disabled]),a[href]')).filter(function(el){return el.getClientRects().length>0;});}
+  panel.addEventListener('keydown',function(event){
+    // The released script owns the <=900px trap. Extend it only to the
+    // reference's additional narrow widths / short desktop windows.
+    if(!narrow||!open||window.matchMedia('(max-width:900px)').matches||event.key!=='Tab'){return;}
+    var controls=visibleControls(),first=controls[0],last=controls[controls.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();if(last){last.focus();}}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();if(first){first.focus();}}
+  });
+
+  function releasedHintCount(button){
+    var value={'רמז':0,'רמז נוסף':1,'רמז אחרון':2,'3 רמזים ניתנו':3}[button.textContent.trim()];
+    if(value!==undefined){hintCounts.set(button,value);}
+    return hintCounts.has(button)?hintCounts.get(button):null;
+  }
+  function adaptQuestionChoices(){
+    var list=panelBody.querySelector('.noam-question-list');
+    var full=!!(list&&panelBody.querySelector('.step-title')&&!panelBody.querySelector('.noam-manifest-note'));
+    setAttr(panelBody,'data-exact-full-picker',full);
+    if(full){
+      hasFullPicker=true;
+      Array.from(list.querySelectorAll('button[data-exercise-id]')).forEach(function(button){
+        var label=button.getAttribute('aria-label')||'',parts=label.match(/^שאלה\s+(\S+)(?:\s+·\s+סעיף\s+(.+))?$/);
+        if(parts){actualChoices.set(button.dataset.exerciseId,{id:button.dataset.exerciseId,q:parts[1],part:parts[2]||'',label:label,button:button});}
+      });
+    }
+    // Only a complete, already-rendered real picker is a source of choices.
+    // Never infer a manifest from lazy PDF pins or make up missing questions.
+    var hideChoices=!hasFullPicker||!actualChoices.size;
+    if(choices.hidden!==hideChoices){choices.hidden=hideChoices;}
+    if(choices.hidden){return;}
+    var picked=panelBody.querySelector('.noam-picked-label');
+    var selection=picked&&picked.textContent.match(/^שאלה\s+(\S+)(?:\s+·\s+סעיף\s+(.+))?$/);
+    var q=selection?selection[1]:'',part=selection?selection[2]||'':'';
+    var signature=Array.from(actualChoices.keys()).join('|')+'::'+q+'::'+part;
+    if(signature===choiceSignature){return;}choiceSignature=signature;
+    var focus=choices.contains(document.activeElement)&&document.activeElement.dataset.exactChoice;
+    choices.replaceChildren();
+    var label=document.createElement('span');label.textContent='שאלה';choices.appendChild(label);
+    var questions=document.createElement('div');questions.setAttribute('role','group');questions.setAttribute('aria-label','בחירת שאלה');choices.appendChild(questions);
+    var byQuestion=new Map();actualChoices.forEach(function(choice){if(!byQuestion.has(choice.q)){byQuestion.set(choice.q,[]);}byQuestion.get(choice.q).push(choice);});
+    function chip(choice,caption,selected,key){
+      var button=document.createElement('button');button.type='button';button.textContent=caption;
+      button.dataset.exactChoice=key;button.setAttribute('aria-pressed',String(selected));button.setAttribute('aria-label',choice.label);
+      button.addEventListener('click',function(){
+        // Call the original live picker node's handler, retaining all guards.
+        var current=actualChoices.get(choice.id);if(current){current.button.click();}
+      });return button;
+    }
+    byQuestion.forEach(function(items,number){questions.appendChild(chip(items[0],number,number===q,'q:'+number));});
+    var parts=byQuestion.get(q)||[];
+    if(parts.length>1){
+      var partLabel=document.createElement('span');partLabel.className='exact-part-label';partLabel.textContent='סעיף';choices.appendChild(partLabel);
+      var sections=document.createElement('div');sections.setAttribute('role','group');sections.setAttribute('aria-label','בחירת סעיף');choices.appendChild(sections);
+      parts.forEach(function(choice){sections.appendChild(chip(choice,choice.part||choice.q,choice.part===part,'p:'+choice.id));});
+    }
+    if(focus){var target=Array.from(choices.querySelectorAll('button')).find(function(button){return button.dataset.exactChoice===focus;});if(target){target.focus({preventScroll:true});}}
+  }
+  function adaptComposer(){
+    var compose=panelBody.querySelector('.noam-compose'),hint=document.getElementById('noamHint');
+    if(!compose||!hint){return;}
+    var count=releasedHintCount(hint);
+    if(!compose.classList.contains('exact-compose')){
+      var shell=compose.querySelector('.noam-input-shell'),input=document.getElementById('noamQuestion');
+      var send=document.getElementById('noamSend'),overview=document.getElementById('noamOverview');
+      if(!shell||!input||!send||!overview){return;}
+      compose.classList.add('exact-compose');
+      var hintRow=document.createElement('div');hintRow.className='exact-hint-row';
+      var ladder=document.createElement('span');ladder.className='exact-hint-ladder';ladder.setAttribute('role','img');
+      ladder.innerHTML='<i>1</i><em></em><i>2</i><em></em><i>3</i>';
+      hintRow.append(ladder,hint,overview);compose.prepend(hintRow);
+      var row=document.createElement('div');row.className='exact-message-row';
+      var math=document.getElementById('noamMathToggle'),attach=document.getElementById('noamAttachButton');
+      if(math){row.appendChild(math);}
+      row.appendChild(input);if(attach){row.appendChild(attach);}row.appendChild(send);shell.appendChild(row);
+      input.rows=1;input.placeholder='כתבו מה ניסיתם, או שאלו את רמזי…';
+      send.setAttribute('aria-label','שליחה');
+      send.innerHTML='<svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M16 10 H4 M9 5 L4 10 L9 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
+    }
+    var ladder=compose.querySelector('.exact-hint-ladder');
+    if(count!==null&&ladder){
+      setAttr(ladder,'aria-label','נפתחו '+count+' מתוך 3 רמזים');
+      Array.from(ladder.querySelectorAll('i')).forEach(function(dot,index){setAttr(dot,'data-open',index<count);});
+      // Cosmetic label only, derived from the released button's existing state.
+      text(hint,count<3?'רמז '+(count+1)+' מתוך 3':'שלושת הרמזים נפתחו');
+    }
+  }
+
+  function stopAvatar(avatar){clearTimeout(avatar.timer);avatar.animations.forEach(function(a){a.cancel();});avatar.animations=[];}
+  function animateAvatar(avatar,mood,mode){
+    stopAvatar(avatar);
+    avatar.timer=setTimeout(function(){
+      var r=avatar.host,full=mode==='full';
+      if(!r.isConnected||mode==='off'||!r.animate){return;}
+      function q(s){return Array.from(r.querySelectorAll(s));}
+      function A(el,kf,options){
+        if(!el.isConnected){return;}
+        try{el.style.transformBox='fill-box';el.style.transformOrigin=options.origin||'center';avatar.animations.push(el.animate(kf,options));}catch(error){/* Static supplied artwork remains usable. */}
+      }
+      // Timings and keyframes copied directly from Avatar.dc.html.
+      q('[data-eyes]').forEach(function(e){A(e,[{transform:'scaleY(1)'},{transform:'scaleY(1)',offset:.92},{transform:'scaleY(.1)',offset:.96},{transform:'scaleY(1)'}],{duration:full?4200:7400,iterations:Infinity,delay:Math.random()*1500});});
+      if(full){q('[data-bob]').forEach(function(e){A(e,[{transform:'translateY(0)'},{transform:'translateY(-1.6px)'}],{duration:1500,iterations:Infinity,direction:'alternate',easing:'ease-in-out'});});}
+      if(full&&mood==='thinking'){q('[data-hat]').forEach(function(e){A(e,[{transform:'rotate(0)'},{transform:'rotate(-5deg)'}],{duration:900,iterations:Infinity,direction:'alternate',easing:'ease-in-out',origin:'center bottom'});});}
+      if(full&&mood==='success'){q('[data-hat]').forEach(function(e){A(e,[{transform:'translateY(0)'},{transform:'translateY(-5px) rotate(8deg)',offset:.4},{transform:'translateY(0)'}],{duration:650,iterations:2,origin:'center bottom'});});}
+      q('[data-dot]').forEach(function(e,i){A(e,[{opacity:.2},{opacity:1},{opacity:.2}],{duration:full?1100:2400,iterations:Infinity,delay:i*(full?180:380)});});
+      q('[data-ray]').forEach(function(e,i){A(e,full?[{opacity:.25},{opacity:1}]:[{opacity:.65},{opacity:1}],{duration:full?700:1800,iterations:Infinity,direction:'alternate',delay:i*90});});
+      q('[data-spark]').forEach(function(e,i){A(e,full?[{transform:'scale(0) rotate(0)',opacity:0},{transform:'scale(1.25) rotate(45deg)',opacity:1,offset:.55},{transform:'scale(1) rotate(90deg)',opacity:1}]:[{opacity:0},{opacity:1}],{duration:full?700:400,delay:i*150,fill:'backwards'});});
+      if(full){q('[data-shake="1"]').forEach(function(e){A(e,[{transform:'translateX(0)'},{transform:'translateX(-2px)'},{transform:'translateX(2px)'},{transform:'translateX(0)'}],{duration:340,iterations:2});});}
+    },30);
+  }
+  function avatarSvg(mood){
+    if(!avatarCache.has(mood)){
+      avatarCache.set(mood,fetch('design-exact/assets/avatar/ramzi-A-'+mood+'.svg').then(function(response){
+        if(!response.ok){throw new Error('Avatar unavailable');}return response.text();
+      }).then(function(source){
+        var svg=new DOMParser().parseFromString(source,'image/svg+xml').documentElement;
+        if(svg.localName!=='svg'||svg.querySelector('script,foreignObject')){throw new Error('Invalid avatar');}
+        return svg;
+      }));
+    }
+    return avatarCache.get(mood);
+  }
+  Array.from(document.querySelectorAll('img.exact-ramzi-avatar,.fab img')).forEach(function(img){
+    var host=document.createElement('span');host.className=img.className||'exact-fab-avatar';host.setAttribute('aria-hidden','true');
+    img.replaceWith(host);host.appendChild(img);
+    avatars.push({host:host,animations:[],mood:null,mode:null,timer:0,version:0});
+  });
+  function updateAvatar(avatar,mood,mode){
+    if(avatar.mood===mood&&avatar.mode===mode){return;}
+    avatar.mode=mode;
+    if(avatar.mood===mood){animateAvatar(avatar,mood,mode);return;}
+    avatar.mood=mood;var version=++avatar.version;stopAvatar(avatar);
+    avatarSvg(mood).then(function(svg){
+      if(version!==avatar.version||!avatar.host.isConnected){return;}
+      var clone=document.importNode(svg,true);clone.setAttribute('aria-hidden','true');clone.removeAttribute('aria-label');
+      clone.style.cssText='display:block;width:100%;height:100%;overflow:visible';
+      avatar.host.replaceChildren(clone);animateAvatar(avatar,mood,avatar.mode);
+    }).catch(function(){/* Keep the exact static idle fallback if an asset cannot load. */});
+  }
+  function currentMood(){
+    if(panelBody.querySelector('.noam-bubble.thinking')){return 'thinking';}
+    var replies=panelBody.querySelectorAll('.noam-row.assistant'),last=replies[replies.length-1];
+    if(last&&last.querySelector('.noam-retry-action')){return 'error';}
+    var questions=panelBody.querySelectorAll('.noam-row.user'),question=questions[questions.length-1];
+    var kind=question&&question.querySelector('.noam-kind');
+    if(last&&kind&&/^רמז\s+[123]/.test(kind.textContent)){return 'hint';}
+    // No success judgement is inferred from model text: the released runtime
+    // has no verified success flag, so the neutral pose remains authoritative.
+    return 'idle';
+  }
+  function sync(){
+    scheduled=false;
+    narrow=window.innerWidth<1000||window.innerHeight<640;
+    open=!panel.classList.contains('hidden')&&panel.style.display!=='none';
+    body.classList.toggle('exact-narrow',narrow);body.classList.toggle('exact-help-active',narrow&&open);
+    var helpDisabled=panel.style.display==='none'||(!open&&fab.classList.contains('hidden'));
+    if(helpTab.disabled!==helpDisabled){helpTab.disabled=helpDisabled;}
+    setAttr(pageTab,'aria-selected',!open);setAttr(helpTab,'aria-selected',open);
+    pageTab.tabIndex=open?-1:0;helpTab.tabIndex=open?0:-1;
+    if(narrow&&open){
+      if(header.parentNode!==panelIn){panelIn.prepend(header,tabs);}
+      bar.inert=true;paper.inert=true;
+      setAttr(panel,'role','dialog');setAttr(panel,'aria-modal','true');
+      setAttr(panel,'aria-label','רמזי — עזרה בדף העבודה');
+      ['.nl-viewer-progress','#noam-accessibility'].forEach(function(selector){var el=document.querySelector(selector);if(el){el.inert=true;}});
+    }else{
+      if(header.parentNode!==body){homeAnchor.after(header,tabs);}
+      bar.inert=false;paper.inert=false;
+      if(!narrow){panel.removeAttribute('role');panel.removeAttribute('aria-modal');panel.removeAttribute('aria-label');}
+      ['.nl-viewer-progress','#noam-accessibility'].forEach(function(selector){var el=document.querySelector(selector);if(el){el.inert=false;}});
+      if(narrow&&previousOpen&&(document.activeElement===body||panel.contains(document.activeElement))){pageTab.focus({preventScroll:true});}
+    }
+    previousOpen=open;
+    adaptQuestionChoices();adaptComposer();
+    var mood=currentMood(),mode=motionMode();
+    text(status,mood==='thinking'?'רמזי חושב…':'רמזים והסברים במתמטיקה');
+    if(mood!==previousMood||mode!==previousMotion){
+      previousMood=mood;previousMotion=mode;
+      avatars.forEach(function(avatar,index){updateAvatar(avatar,index===0?mood:'idle',mode);});
+    }
+    syncMotionButton();
+    if(!narrow&&!initialWideOpened&&helpReadyObserved&&!helpTab.disabled){initialWideOpened=true;if(!open){fab.click();}}
+  }
+  function schedule(){if(!scheduled){scheduled=true;queueMicrotask(sync);}}
+  function observeHelpAvailability(records){
+    // The released script exposes fab before its async manifest resolves. It
+    // removes "hidden" again only after accepting the manifest. This observer
+    // starts after that script, so the initial visible state is not readiness.
+    // Keep the original runtime as the sole owner of loading and selection.
+    if(records.some(function(record){return record.target===fab&&record.attributeName==='class';})&&!fab.classList.contains('hidden')){
+      helpReadyObserved=true;
+    }
+    schedule();
+  }
+  // A manual open consumes the one automatic opening, including on mobile.
+  fab.addEventListener('click',function(){initialWideOpened=true;});
+  var observer=new MutationObserver(observeHelpAvailability);
+  observer.observe(panel,{childList:true,subtree:true,attributes:true,attributeFilter:['class','disabled','hidden']});
+  observer.observe(fab,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(schedule).observe(html,{attributes:true,attributeFilter:['class','data-nd-motion','data-motion']});
+  window.addEventListener('resize',schedule);panel.addEventListener('focusin',schedule);panel.addEventListener('focusout',schedule);
+  document.addEventListener('visibilitychange',schedule);window.addEventListener('nd:motion-off',schedule);
+  if(reduced.addEventListener){reduced.addEventListener('change',schedule);}else{reduced.addListener(schedule);}
+  window.addEventListener('pagehide',function(){avatars.forEach(stopAvatar);});
+  sync();
+})();
+</script>
 </body>
 </html>

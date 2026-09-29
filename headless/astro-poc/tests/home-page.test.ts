@@ -135,16 +135,18 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
       'href="/high-school-math"',
       'href="/learning.html"',
       'תוספים',
-      'מתמטיקה לתיכון (חיצוני)',
+      'מתמטיקה לתיכון',
     ]) {
       assert.ok(html.includes(needle), `missing ${needle}`);
     }
+    assert.match(html, /href="\/high-school-math"[^>]*>\s*מתמטיקה לתיכון\s*(?:↗|\(חיצוני\))\s*<\/a>/,
+      'high-school destination retains its visible external indicator');
     assert.equal(html.includes('הביינים'), false, 'must use הביניים spelling');
-    assert.equal(
-      html.includes('href="/worksheets" data-peek="ws">דפי עבודה<'),
-      false,
-      'single worksheets nav item must be split'
-    );
+    assert.doesNotMatch(html, /href="\/worksheets"[^>]*>\s*דפי עבודה\s*</,
+      'single worksheets nav item must be split');
+    assert.match(html, /<button[^>]*aria-controls="primary-nav"[^>]*data-nav-toggle/,
+      'mobile menu button is present');
+    assert.match(html, /<nav id="primary-nav"[^>]*data-nav-panel/);
   });
 
   it('required href set is complete for gate scripts', () => {
@@ -160,4 +162,3 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.ok(hrefs.includes('mailto:noamd@noamdoronmath.co.il'));
   });
 });
-

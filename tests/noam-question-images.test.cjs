@@ -6,7 +6,13 @@ const path = require("node:path");
 const vm = require("node:vm");
 const html = fs.readFileSync(path.join(__dirname, "../worksheet-viewer-noam.html"), "utf8");
 const cropSource = html.slice(html.indexOf("function cropExerciseCanvas(exercise){"), html.indexOf("function cacheExercisePreview("));
-const analysisSource = html.slice(html.indexOf("function getExerciseAnalysis(exercise){"), html.indexOf("function askNoam("));
+const ocrHelperSource = html.slice(
+  html.indexOf("function syntheticAnalysis(exercise){"),
+  html.indexOf("/* STUDENT ATTACHMENTS")
+);
+const analysisSource =
+  ocrHelperSource +
+  html.slice(html.indexOf("function getExerciseAnalysis(exercise){"), html.indexOf("function askNoam("));
 
 function cropFixture(states = ["ready"], encode = () => "data:image/jpeg;base64,abc") {
   const drawCalls = [], renders = [], qualities = [];
@@ -17,6 +23,9 @@ function cropFixture(states = ["ready"], encode = () => "data:image/jpeg;base64,
   }));
   const ctx = {
     pdfRenderVersion: 1,
+    pdfDocument: null,
+    ensurePdfDocumentForCrop: () => Promise.resolve(null),
+    console: { warn() {} },
     pdfPages: { querySelector(selector) { return pages[Number(selector.match(/data-page="(\d+)"/)[1]) - 1]; } },
     renderPdfPage(n) { renders.push(n); pages[n - 1].state = "ready"; },
     setTimeout(fn) { queueMicrotask(fn); },
@@ -77,14 +86,16 @@ function analysisFixture(result, cropFailure = null) {
   const calls = [];
   const ctx = {
     analysisCache: {}, API: "/test", console: { warn() {} },
-    syntheticAnalysis: () => ({ readable: true, problem_statement: "selector only" }),
     saveNoamState() {},
+    ensurePdfDocumentForCrop: () => Promise.resolve(null),
     cropExerciseImage: () => cropFailure ? Promise.reject(cropFailure) : Promise.resolve("image"),
     postJson: async (...args) => { calls.push(args); return result; },
     isBotProtectionError: error => error && error.bot === true
   };
   vm.createContext(ctx);
   vm.runInContext(analysisSource, ctx);
+  // Keep a controllable synthetic fallback for legacy needsVision paths.
+  ctx.syntheticAnalysis = () => ({ readable: true, problem_statement: "selector only" });
   return { ctx, calls };
 }
 

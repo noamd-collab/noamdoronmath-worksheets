@@ -1,10 +1,73 @@
 ---
-/**
- * Client-only link peeks (role=tooltip). Not in SSR HTML body content.
- * No DevNotice / ScrollDoodle (conflict decisions).
- */
+import { loadCatalog } from '../lib/catalog/loadCatalog';
+import learningGaps from '../data/blog-posts/learning-gaps-math.json';
+import readingGraphs from '../data/blog-posts/reading-graphs-for-kids.json';
+// Reference preview layouts, populated from the unchanged real content sources.
+// Only tiny title samples reach the client, never another worksheet catalog.
+const grades = loadCatalog().grades;
+const letters = ['', 'א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ז׳', 'ח׳', 'ט׳'];
+const peekData = {
+  topics: grades.flatMap(g => g.topics.slice(0, 2).map(t => ({ grade: letters[g.grade], title: t.title }))),
+  posts: [learningGaps.h1, readingGraphs.h1],
+  gradeCounts: Object.fromEntries(grades.map(g => [g.grade, g.topics.length])),
+};
 ---
+<script is:inline type="application/json" data-exact-peek-data set:html={JSON.stringify(peekData).replace(/</g, '\\u003c')} />
 <script>
-  import { initLinkPeek } from '../lib/linkPeek';
-  initLinkPeek();
+  import { initExactLinkPeek, type PeekLiveData } from '../lib/exactLinkPeek';
+  let cleanup = () => {};
+  function boot() {
+    cleanup();
+    const source = document.querySelector('[data-exact-peek-data]');
+    if (!source) return;
+    try { cleanup = initExactLinkPeek(JSON.parse(source.textContent || '{}') as PeekLiveData); }
+    catch { /* A missing preview never changes or blocks the actual link. */ }
+  }
+  boot();
+  document.addEventListener('astro:before-swap', () => cleanup());
+  document.addEventListener('astro:page-load', boot);
 </script>
+<style is:global>
+  /* Values from the reference tooltip, not the superseded schematic skin. */
+  .exact-link-peek{position:fixed;z-index:60;width:300px;max-width:calc(100vw - 24px);box-sizing:border-box;background:#fff;border:2px solid #22305a;border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;box-shadow:5px 6px 0 rgba(34,48,90,.14);padding:12px;font-family:Heebo,sans-serif;color:#22305a;line-height:normal;}
+  .exact-link-peek[hidden]{display:none}
+  .exact-peek-preview{position:relative;height:150px;border-radius:10px;overflow:hidden;background-color:#f7f8fb;background-image:linear-gradient(rgba(34,48,90,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(34,48,90,.05) 1px,transparent 1px);background-size:12px 12px;border:1.5px solid #e3e6ee;}
+  .exact-peek-heading{display:flex;align-items:baseline;gap:8px;margin-top:10px;}
+  .exact-peek-heading strong{font-size:16px;}
+  .exact-peek-heading span{font-size:12px;color:#5a6588;}
+  .exact-link-peek>p{margin:4px 0 0;font-size:14px;line-height:1.5;color:#3d4870;}
+  .exact-peek-calc{position:absolute;inset:0;background:#f7f8fb;padding:8px 10px;display:flex;flex-direction:column;gap:6px;}
+  .exact-peek-screen{background:#22305a;border-radius:6px;padding:4px 8px;height:34px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;font-family:Heebo;}
+  .exact-peek-screen [data-live=expr]{font-size:11px;color:#c3c9dc;min-height:13px;}
+  .exact-peek-screen [data-live=res]{font-size:15px;font-weight:800;color:#f2c46b;min-height:17px;}
+  .exact-peek-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;}
+  .exact-peek-keys span{display:flex;align-items:center;justify-content:center;height:18px;border-radius:4px;background:#e3e7f0;border:1px solid #d5dae5;font:700 10px Heebo;color:#22305a;}
+  .exact-peek-keys [data-kind=number]{background:#fff;}
+  .exact-peek-keys [data-kind=equals]{background:#e6a534;}
+  .exact-peek-rows{position:absolute;inset:0;background:#f7f8fb;padding:10px;display:flex;flex-direction:column;gap:6px;overflow:hidden;}
+  .exact-peek-rows [data-live=row]{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #22305a;border-radius:8px;padding:6px 8px;height:38px;flex-shrink:0;}
+  .exact-peek-rows [data-live=g]{flex:none;font:800 11px Heebo;color:#fff;background:#2a7c7a;border-radius:5px;padding:1px 6px;}
+  .exact-peek-rows [data-live=t]{flex:1;font:700 12px Heebo;color:#22305a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .exact-peek-levels{flex:none;display:flex;gap:2px;}
+  .exact-peek-levels i{width:14px;height:6px;border-radius:2px;background:#cfe6e4;}
+  .exact-peek-levels i:nth-child(2){background:#fdf1d8;}.exact-peek-levels i:nth-child(3){background:#22305a;}
+  .exact-peek-about{position:absolute;inset:0;background:#f7f8fb;display:flex;align-items:center;justify-content:center;gap:12px;padding:12px;}
+  .exact-peek-about img{height:64px;width:auto;}.exact-peek-about>div{display:flex;flex-direction:column;gap:4px;}
+  .exact-peek-about strong{font:400 18px 'Secular One';color:#22305a;}.exact-peek-about svg{width:90px;height:8px;overflow:visible;}
+  .exact-peek-about span{font:500 11px Heebo;color:#4a5478;max-width:14ch;line-height:1.4;}
+  .exact-peek-blog{position:absolute;inset:0;background:#f7f8fb;display:flex;align-items:center;justify-content:center;padding:10px;}
+  .exact-peek-blog>div{position:relative;width:100%;height:100%;background:#fff;border:2px solid #22305a;border-radius:8px;padding:10px 14px 10px 12px;display:flex;flex-direction:column;gap:7px;overflow:hidden;}
+  .exact-peek-margin{position:absolute;top:0;bottom:0;right:8px;width:1.5px;background:#f6c9bd;}
+  .exact-peek-blog [data-live=bnum]{font:700 10px Heebo;color:#2a7c7a;}
+  .exact-peek-headline{font:800 14px/1.35 Heebo;color:#22305a;min-height:38px;}
+  .exact-peek-blog [data-live=caret]{display:inline-block;width:2px;height:14px;background:#e5735c;vertical-align:-2px;margin-right:1px;}
+  .exact-peek-blog [data-live=bar]{height:5px;border-radius:3px;background:#dde2ec;transform-origin:right center;flex-shrink:0;}
+  .exact-peek-ai{display:flex;align-items:center;gap:10px;margin-top:10px;padding:8px 10px;background:#eaf4f3;border-radius:12px;}
+  .exact-peek-ai-icon{position:relative;width:28px;height:28px;flex:none;}
+  .exact-peek-ai-icon [data-ai=ring]{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#2a7c7a,#e6a534,#e5735c,#2a7c7a);}
+  .exact-peek-ai-icon>span:last-child{position:absolute;inset:3px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font:800 11px Heebo;color:#1e605e;}
+  .exact-peek-ai-copy{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;}.exact-peek-ai-copy strong{font-size:13px;color:#1e605e;}
+  .exact-peek-ai-copy>span{display:flex;align-items:center;gap:6px;font-size:12px;color:#3d4870;}
+  .exact-peek-ai-copy [data-ai=type]{white-space:nowrap;overflow:hidden;}.exact-peek-dots{display:inline-flex;gap:3px;}
+  .exact-peek-dots i{width:5px;height:5px;border-radius:50%;background:#2a7c7a;}
+</style>

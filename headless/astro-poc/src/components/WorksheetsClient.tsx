@@ -1,4 +1,5 @@
 import { useMemo, useState, useId, useCallback, useEffect, useRef } from 'react';
+import '../styles/exact-catalog.css';
 import type { CatalogGrade, CatalogGroup, CatalogTopic, CatalogV1 } from '../lib/catalog/types';
 import {
   familyOf,
@@ -68,16 +69,28 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   const [group, setGroup] = useState(boot.group);
   const [track, setTrack] = useState<TrackMode>(boot.track);
   const [cross, setCross] = useState(boot.cross);
+  // Client-owned topic pin so "נקה" / URL edits can drop landing ?topic= without reload.
+  const [topicPin, setTopicPin] = useState<number | null>(highlightTopicId);
   const searchId = useId();
   const statusId = useId();
   const listId = 'topic-list';
   const crossId = useId();
   const skipUrlWrite = useRef(false);
+  const presentationRoot = useRef<HTMLDivElement>(null);
+
+  // Astro's hydrate event may precede React's concurrent commit. Decorative
+  // DOM effects must wait until this component has actually finished hydration.
+  useEffect(() => {
+    const root = presentationRoot.current;
+    if (!root) return;
+    root.setAttribute('data-exact-motion-ready', '');
+    root.dispatchEvent(new CustomEvent('nd:exact-hydrated', { bubbles: true }));
+    return () => root.removeAttribute('data-exact-motion-ready');
+  }, []);
 
   const gradeNames = catalog.config.gradeNames;
   const gradeEmojis = catalog.config.gradeEmojis;
   const gradeLabel = gradeEntry.label;
-  const gradeEmoji = gradeEntry.emoji || gradeEmojis[String(grade)] || '';
 
   const showTrack = grade === 9;
 
@@ -88,9 +101,9 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       group,
       cross,
       track: showTrack ? track : 'reg',
-      topic: highlightTopicId,
+      topic: topicPin,
     }),
-    [grade, q, group, cross, track, showTrack, highlightTopicId]
+    [grade, q, group, cross, track, showTrack, topicPin]
   );
 
   const gradeHref = useCallback(
@@ -125,6 +138,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       setQ(s.q);
       setGroup(s.group);
       setCross(s.cross);
+      setTopicPin(s.topic);
       if (showTrack) setTrack(s.track);
     };
     window.addEventListener('popstate', onPop);
@@ -132,12 +146,12 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   }, [grade, showTrack]);
 
   useEffect(() => {
-    if (highlightTopicId == null) return;
-    const el = document.querySelector(`[data-topic-id="${highlightTopicId}"]`);
+    if (topicPin == null) return;
+    const el = document.querySelector(`[data-topic-id="${topicPin}"]`);
     if (!(el instanceof HTMLElement)) return;
     el.classList.add('is-topic-target');
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, [highlightTopicId, grade]);
+  }, [topicPin, grade]);
 
   const activeGroups = useMemo(() => {
     if (!showTrack) return gradeEntry.groups;
@@ -227,10 +241,13 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       query: string
     ): CatalogTopic[] => {
       const hay = haystacksByGrade.get(gEntry.grade) || new Map();
+      const pin = !query.trim() && topicPin != null ? topicPin : null;
       return gEntry.topics.filter((t) => {
         if (t.parent !== undefined) return false;
         if (!topicAllowedByTrack(gEntry.grade, t, mode)) return false;
         if (useGroup && group !== 'all' && t.group !== group) return false;
+        // Landing CTAs pass ?topic=N — filter to that topic when search is empty.
+        if (pin != null && t.id !== pin) return false;
         return topicMatchesQuery(hay.get(t.id) || [], query);
       });
     };
@@ -254,6 +271,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     group,
     haystacksByGrade,
     topicAllowedByTrack,
+    topicPin,
   ]);
 
   const visibleCount = visibleBlocks.reduce((n, b) => n + b.topics.length, 0);
@@ -282,6 +300,11 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       if (crossActive) return `${visibleCount} נושאים תואמים בחיפוש בין כיתות השכבה`;
       return `${visibleCount} נושאים תואמים לחיפוש`;
     }
+    if (topicPin != null && !q.trim() && visibleCount) {
+      return visibleCount === 1
+        ? 'מוצג הנושא שנבחר מדף הנחיתה'
+        : `${visibleCount} נושאים לפי בחירה מכתובת הנושא`;
+    }
     if (group === 'all') return `${visibleCount} נושאים בכיתה זו`;
     return `${visibleCount} נושאים בקבוצה שנבחרה`;
   })();
@@ -290,6 +313,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     setQ('');
     setGroup('all');
     setCross(false);
+    setTopicPin(null);
     if (showTrack) setTrack('reg');
   }
 
@@ -327,8 +351,9 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   function renderTopicCard(topic: CatalogTopic, gEntry: CatalogGrade) {
     const childrenMap = childrenByParentByGrade.get(gEntry.grade) || new Map<number, CatalogTopic[]>();
     const children: CatalogTopic[] = childrenMap.get(topic.id) || [];
-    const icons = catalog.icons;
-    const ico = icons[topic.icon] || icons.star || '';
+    // Display the existing catalog identifier, not the prototype's sample data.
+    const topicCode = topic.noamTopicId?.match(/T\d+$/)?.[0];
+    const badgeColor = ({ m09: '#2a7c7a', m10: '#e5735c', m11: '#c98a1a' } as Record<string, string>)[topic.group] || '#22305a';
     return (
       <article
         key={`${gEntry.grade}-${topic.id}`}
@@ -336,19 +361,15 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         data-g={topic.group}
         data-topic-id={topic.id}
       >
-        <div className="card-main">
-          <span className="tico" aria-hidden="true">
-            <svg viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: ico }} />
-          </span>
-          <div className="card-text">
-            <h3>{topic.title}</h3>
-            {topic.description ? <p>{topic.description}</p> : null}
-            {topic.note ? <p className="note">{topic.note}</p> : null}
-            {topic.routing.aiHintShown ? (
-              <span className="aihint">נועם AI זמין בדף הזה</span>
-            ) : null}
-          </div>
+        <div className="exact-card-heading">
+          <h3>{topic.title}</h3>
+          {topicCode ? <span className="exact-topic-code" style={{ background: badgeColor }}>{topicCode}</span> : null}
         </div>
+        {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}
+        {topic.note ? <p className="note">{topic.note}</p> : null}
+        {topic.routing.aiHintShown ? (
+          <span className="aihint">✦ נועם AI זמין בדף הזה</span>
+        ) : null}
         <div className={`levels${children.length ? ' levels--bundle' : ''}`}>
           {children.length ? (
             <>
@@ -389,11 +410,13 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         >
           <div className="group-head">
             <h2 id={`group-${gEntry.grade}-${g.key}`}>
-              {g.label} <span className="count">({listTopics.length})</span>
+              {g.label}
             </h2>
-            <span className="rule" aria-hidden="true" />
+            <span className="count">{listTopics.length} נושאים</span>
           </div>
-          {listTopics.map((topic) => renderTopicCard(topic, gEntry))}
+          <div className="exact-topic-grid">
+            {listTopics.map((topic) => renderTopicCard(topic, gEntry))}
+          </div>
         </section>
       ));
   }
@@ -403,11 +426,12 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   const searchFamilyLabel = familySearchLabel(grade);
   const topLevelCount = gradeEntry.topics.filter((t) => t.parent === undefined).length;
   const family = schoolFamilyOf(grade);
-  const showEmojiAccent = family === 'elementary';
 
   return (
     <div
-      className={`wrap wrap--${family}`}
+      ref={presentationRoot}
+      className="exact-catalog"
+      data-exact-hydration="react"
       data-grade={grade}
       data-family={family}
       data-catalog-q={q}
@@ -419,19 +443,19 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         gradeNames={gradeNames}
         gradeEmojis={gradeEmojis}
         listId={listId}
-        showEmojis={showEmojiAccent}
+        showEmojis={false}
         hrefForGrade={gradeHref}
       />
 
-      <header className="banner">
-        <h1>
-          {showEmojiAccent ? <span aria-hidden="true">{gradeEmoji} </span> : null}
-          דפי עבודה ל{gradeLabel}
-        </h1>
-        <p>
+      <header className="exact-catalog-heading">
+        <div data-doodle="fish" className="exact-catalog-fish">
+          <img src="/design-exact/assets/doodles/geometry-fish.webp" alt="" />
+        </div>
+        <h1 data-pop="0">דפי עבודה ל{gradeLabel}</h1>
+        <p data-pop="100">
           {topLevelCount} נושאים לפי תכנית הלימודים. בחרו דף והוא ייפתח בלשונית חדשה.
         </p>
-        <p className="proto-note">
+        <p className="proto-note" data-pop="160">
           {family === 'elementary'
             ? 'יסודי — דפי עבודה, תרגול והסברים בדרך מהנה וברורה.'
             : 'חטיבה — דפי עבודה וצופה (כולל נועם AI) במראה רגוע וברור.'}
@@ -440,6 +464,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
 
       <div className="toolbar">
         <div className="search">
+          <span className="exact-search-icon" aria-hidden="true">⌕</span>
           <label className="sr-only" htmlFor={searchId}>
             חיפוש נושאים
           </label>
@@ -448,16 +473,12 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="חיפוש נושא, למשל משוואות או שברים…"
+            placeholder="חיפוש נושאים"
             autoComplete="off"
             aria-controls={listId}
             aria-describedby={statusId}
             data-catalog-search
           />
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="10.5" cy="10.5" r="6" />
-            <path d="M15 15l6 6" />
-          </svg>
         </div>
 
         {showTrack ? (
@@ -541,7 +562,8 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       <div id={listId} role="tabpanel" aria-labelledby={`grade-tab-${grade}`} tabIndex={0}>
         {visibleCount === 0 ? (
           <div className="empty" role="status">
-            <h2>לא נמצאו נושאים</h2>
+            <img src="/design-exact/assets/doodles/snail.webp" alt="" />
+            <h2>לא מצאנו נושא כזה</h2>
             <p>נסו מילה אחרת, או נקו את החיפוש והסינון כדי לראות את כל הנושאים.</p>
             <button type="button" onClick={clearSearch}>
               ניקוי חיפוש וסינון

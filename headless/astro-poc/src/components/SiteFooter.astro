@@ -3,8 +3,10 @@ import type { HomePageContent } from '../lib/homePage';
 
 interface Props {
   footer: HomePageContent['footer'];
+  /** Preview hosts only — never claim “preview only” on the live domain. */
+  showPreviewNote?: boolean;
 }
-const { footer } = Astro.props;
+const { footer, showPreviewNote = false } = Astro.props;
 
 /**
  * Brand social URLs — verified only (do not invent):
@@ -32,17 +34,23 @@ const socialLinks = [
   },
 ];
 ---
-<footer class="site-footer" data-home-footer>
-  <div class="site-footer__inner">
-    <div class="site-footer__brand">
-      <p class="site-footer__brand-name">{footer.brandName}</p>
-      <p class="site-footer__brand-blurb">{footer.brandBlurb}</p>
-      <ul class="site-footer__social" aria-label="רשתות חברתיות">
+<footer class="exact-footer" data-home-footer style="background:#22305a;color:#e8ebf3;margin-top:24px;position:relative;">
+ <div style="max-width:1200px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;">
+  <div>
+   <strong style="font-family:'Secular One',sans-serif;font-weight:400;font-size:22px;color:#fff;">{footer.brandName}</strong>
+   <p style="margin:10px 0 0;line-height:1.6;font-size:15px;color:#c3c9dc;">{footer.brandBlurb}</p>
+  </div>
+  <div>
+   <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">{footer.contactHeading}</h3>
+   <p style="margin:0 0 6px;font-size:15px;color:#c3c9dc;">{footer.contactBody}</p>
+   <a href={'mailto:'+footer.email} style="color:#f2c46b;font-size:15px;">{footer.email}</a>
+   {/* Keep verified real social destinations. Supplied YouTube/LinkedIn are placeholders, not new URLs. */}
+      <ul style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;list-style:none;padding:0;" aria-label="רשתות חברתיות">
         {
           socialLinks.map((item) => (
             <li>
               <a
-                href={item.href}
+                class="exact-social" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1.5px solid rgba(255,255,255,.3);color:#fff;" href={item.href}
                 target="_blank"
                 rel="noopener"
                 aria-label={item.label}
@@ -93,76 +101,21 @@ const socialLinks = [
           ))
         }
       </ul>
-    </div>
-
-    <div class="site-footer__contact">
-      <h2 class="site-footer__heading">{footer.contactHeading}</h2>
-      <p>{footer.contactBody}</p>
-      <a class="site-footer__email" href={`mailto:${footer.email}`}>{footer.email}</a>
-    </div>
-
-    <nav class="site-footer__quick" aria-label={footer.quickNavHeading}>
-      <h2 class="site-footer__heading">{footer.quickNavHeading}</h2>
-      <ul>
-        {
-          footer.quickNav.map((item) => (
-            <li>
-              <a href={item.href}>{item.label}</a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-
-    <nav class="site-footer__legal" aria-label="מידע נוסף">
-      <h2 class="site-footer__heading">מידע נוסף</h2>
-      <ul>
-        {
-          footer.legal.map((item) => (
-            <li>
-              {item.href ? (
-                <a href={item.href}>{item.label}</a>
-              ) : (
-                <span
-                  class="site-footer__legal-gap"
-                  data-legal-gap={item.knownGap ? 'privacy' : undefined}
-                >
-                  {item.label}
-                  {item.knownGap && (
-                    <span class="site-footer__gap-mark"> (פער ידוע — אין יעד תקף בתצוגה)</span>
-                  )}
-                </span>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
   </div>
-
-  <div class="site-footer__meta">
-    <p>{footer.copyright}</p>
-    <p class="site-footer__disclaimer">{footer.disclaimer}</p>
-    <p class="site-footer__privacy-note">{footer.privacyNote}</p>
-    <p class="home-foot">{footer.previewNote}</p>
-  </div>
+  <nav aria-label={footer.quickNavHeading}>
+   <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">{footer.quickNavHeading}</h3>
+   <div style="display:flex;flex-direction:column;gap:6px;font-size:15px;">
+    {footer.quickNav.map(item=>(<a href={item.href} style="color:#c3c9dc;">{item.label}</a>))}
+   </div>
+  </nav>
+  <nav aria-label="מידע נוסף">
+   <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">מידע נוסף</h3>
+   <div style="display:flex;flex-direction:column;gap:6px;font-size:15px;">
+    {footer.legal.map(item=>item.href?(<a href={item.href} style="color:#c3c9dc;">{item.label}</a>):(<span>{item.label}</span>))}
+   </div>
+  </nav>
+ </div>
+ <div style="max-width:1200px;margin:0 auto;padding:18px 24px 28px;border-top:1px solid rgba(255,255,255,.15);font-size:13px;color:#a9b0c8;">{footer.copyright}
+  {showPreviewNote && footer.previewNote && <p class="home-foot">{footer.previewNote}</p>}
+ </div>
 </footer>
-
-<style>
-  .site-footer__quick a,
-  .site-footer__legal a,
-  .site-footer__email {
-    display: inline-block;
-    box-sizing: border-box;
-    min-height: 44px;
-    min-width: 44px;
-    max-width: 100%;
-    padding-block: 12px;
-    overflow-wrap: anywhere;
-  }
-
-  .site-footer__social a:focus-visible {
-    outline: 3px solid var(--ink);
-    outline-offset: 4px;
-  }
-</style>
