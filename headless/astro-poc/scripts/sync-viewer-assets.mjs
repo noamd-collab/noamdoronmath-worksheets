@@ -289,7 +289,8 @@ try {
   var legacyRoot = new URL(HEADLESS_LEGACY_PAGES);
   var liveHost = /(?:^|\\.)noamdoronmath\\.co\\.il$/i.test(location.hostname);
   var previewHost = /\\.wix-site-host\\.com$/i.test(location.hostname);
-  var onHeadlessHost = liveHost || previewHost;
+  var localPreview = /^(localhost|127\\.0\\.0\\.1)$/i.test(location.hostname);
+  var onHeadlessHost = liveHost || previewHost || localPreview;
   var worksheetsCatalogOrigin = onHeadlessHost
     ? location.origin
     : "https://www.noamdoronmath.co.il";

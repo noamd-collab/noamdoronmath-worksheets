@@ -67,7 +67,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.equal(scripts.at(-1), adapters[0], 'The adapter must follow, not replace/interleave, the released scripts');
     const releasedScripts = scripts.slice(0, -1);
     assert.equal(releasedScripts.length, 13);
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '37e0eb7a17bdec8ac101a17c84c117fcf9e2a0c401d23ba203615e1cb8474e37');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'a0df2e9dd1f304cd4c93b1e460d03daf4ce049fef307bc3b39b0b63f148337ff');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
