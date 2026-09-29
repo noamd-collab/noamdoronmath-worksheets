@@ -70,7 +70,7 @@
     {
       "from": "/special-triangles-grade-7",
       "to": "/special-triangles-grade-7-new",
-      "note": "fix 404: only -new page exists in Headless"
+      "note": "fix 404: only -new page exists in Headless. OPEN (Noam): keep -new as the served slug, or rename to the clean slug and flip this 301."
     },
     {
       "from": "/advanced-pythagoras-grade-8-worksheet",
@@ -146,6 +146,11 @@
       "from": "/page",
       "to": "/terms",
       "note": "live 301 → terms; middleware only"
+    },
+    {
+      "from": "/privacy",
+      "to": "/accessibilityadaptation",
+      "note": "SEO closure: classic Wix 301'd /privacy to the combined accessibility+privacy page (section #privacy-policy)"
     }
   ],
   "flaggedDoNotAutoRedirect": [

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
 import { loadSitePage, localizeSiteHref, type SitePageBlock } from '../lib/sitePages';
+import { SITE_CANONICAL_ORIGIN } from '../lib/siteSeo';
 
 interface Props {
   slug: string;
@@ -48,8 +49,41 @@ function renderUnits(blocks: SitePageBlock[], slug: string): RenderUnit[] {
 }
 
 const units = renderUnits(page.blocks, page.slug);
+const isAbout = page.slug === 'aboutus';
+/* Same @id the 91 topic pages use for their author, so the graph joins here. */
+const personJsonLd = isAbout
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      '@id': `${SITE_CANONICAL_ORIGIN}/aboutus#noam-doron`,
+      name: 'נועם דורון',
+      jobTitle: 'מורה למתמטיקה',
+      description: page.description,
+      url: `${SITE_CANONICAL_ORIGIN}/aboutus`,
+      knowsAbout: ['מתמטיקה', 'הוראת מתמטיקה', 'דפי עבודה במתמטיקה לכיתות א׳–ט׳'],
+      knowsLanguage: 'he',
+      sameAs: [
+        'https://www.instagram.com/noamdoronmath/',
+        'https://www.facebook.com/profile.php?id=61593749281930',
+      ],
+    }
+  : null;
+/* Draft about-page expansion (spec §13) — PENDING NOAM APPROVAL. Kept off until
+   Noam signs the wording; facts here must come from Noam, never invented. */
+const ABOUT_EXPANSION_APPROVED = false;
+const aboutExpansionDraft = [
+  { heading: 'הניסיון שלי', text: 'עשר שנים של הוראת מתמטיקה בבית הספר ובשיעורים פרטיים, מכיתה א׳ ועד כיתה ט׳.' },
+  { heading: 'איך נבנים דפי העבודה', text: 'כל דף נכתב לפי תוכנית הלימודים של משרד החינוך, בשלוש רמות, ונבדק מול שאלות אמיתיות מהכיתה.' },
+  { heading: 'למה בחינם', text: 'כדי שכל תלמיד, הורה ומורה יוכלו להדפיס ולתרגל בלי הרשמה ובלי תשלום.' },
+];
 ---
-<BaseLayout title={page.title} description={page.description} skipHref="#site-page-main">
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  skipHref="#site-page-main"
+  breadcrumbs={[{ name: page.h1, path: `/${page.slug}` }]}
+>
+  {personJsonLd && <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />}
   <main id="site-page-main" class="wrap site-page" data-site-page={page.slug}>
     <nav class="site-page__crumbs" aria-label="מיקום">
       <a href="/">בית</a>
@@ -58,7 +92,7 @@ const units = renderUnits(page.blocks, page.slug);
     </nav>
 
     <header class="banner site-page__header">
-      <h1>{page.h1}</h1>
+      <h1 id={isAbout ? 'noam-doron' : undefined}>{page.h1}</h1>
     </header>
     {slug === 'math-tools' && <LineArtDoodles variant="tools" />}
 
@@ -252,9 +286,7 @@ const units = renderUnits(page.blocks, page.slug);
                   <button type="submit">שליחה</button>
                 </form>
                 <p class="site-page__contact-status" data-contact-status role="status" aria-live="polite" />
-                <p class="site-page__contact-note">
-                  בתצוגה זו הטופס במצב בדיקה בלבד וההודעה אינה נמסרת לבעל האתר. אפשר גם לפנות ישירות:
-                </p>
+                <p class="site-page__contact-note">אפשר גם לפנות ישירות:</p>
                 <p>
                   <a href={block.mailto}>{block.mailtoLabel}</a>
                 </p>
@@ -266,6 +298,19 @@ const units = renderUnits(page.blocks, page.slug);
         })
       }
     </div>
+
+    {
+      isAbout && ABOUT_EXPANSION_APPROVED && (
+        <section class="site-page__body" data-about-expansion>
+          {aboutExpansionDraft.map((part) => (
+            <>
+              <h2>{part.heading}</h2>
+              <p>{part.text}</p>
+            </>
+          ))}
+        </section>
+      )
+    }
 
     <nav class="site-page__footer-links" aria-label="קישורים נוספים">
       <ul>

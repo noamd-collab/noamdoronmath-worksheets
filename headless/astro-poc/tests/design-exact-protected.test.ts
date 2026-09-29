@@ -48,7 +48,7 @@ describe('exact-design protected live-baseline boundaries', () => {
   it('preserves the shared head exactly, including SEO, canonical, fonts and robots', () => {
     const head = read('src/layouts/BaseLayout.astro').match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'BaseLayout must retain its head');
-    assert.equal(sha256(head), '6fcaeb8bbb0578337e586eec203abc60ac23a080e33ef29c0b4b57a9a03bafca');
+    assert.equal(sha256(head), '65f5e584cd17c5628aca4bed33df42e6c13c5936ed4dba36e6a48a437329539e');
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {

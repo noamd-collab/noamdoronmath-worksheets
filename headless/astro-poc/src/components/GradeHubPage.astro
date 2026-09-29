@@ -11,6 +11,7 @@ import {
 } from '../lib/gradeHubs';
 import { localizeSiteHref } from '../lib/sitePages';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import { SITE_CANONICAL_ORIGIN } from '../lib/siteSeo';
 
 interface Props {
   grade: GradeHubGrade;
@@ -75,13 +76,31 @@ const loopVariant =
                     ? 'pattern'
                     : null;
 const gradePool = buildGradeLoopPool(grade);
+const hubUrl = `${SITE_CANONICAL_ORIGIN}/grade-${grade}`;
+/* Grades 1–6 have no visible FAQ, so no FAQPage (never invent one); every hub
+   gets a WebPage block tied to the author and the site. */
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${hubUrl}#webpage`,
+  url: hubUrl,
+  name: hub.h1,
+  description: hub.description,
+  inLanguage: 'he',
+  isPartOf: { '@type': 'WebSite', url: `${SITE_CANONICAL_ORIGIN}/` },
+  author: { '@id': `${SITE_CANONICAL_ORIGIN}/aboutus#noam-doron` },
+  educationalLevel: `כיתה ${gradeLabel ?? grade}`,
+  isAccessibleForFree: true,
+};
 ---
 <BaseLayout
   title={hub.title}
   description={hub.description}
   activeNav="worksheets"
   skipHref="#grade-hub-main"
+  breadcrumbs={[{ name: `כיתה ${gradeLabel ?? grade}`, path: `/grade-${grade}` }]}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(webPageJsonLd)} />
   {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
   <main class="grade-hub wrap exact-grade" data-grade={String(grade)} id="grade-hub-main">
     <nav class="grade-hub__siblings" aria-label="כיתות">
@@ -126,7 +145,7 @@ const gradePool = buildGradeLoopPool(grade);
         }
         <div class="exact-grade__walker" data-doodle="walker" dir="ltr">
           <div>
-            <img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" />
+            <img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="900" height="600" decoding="async" />
           </div>
         </div>
       </div>
@@ -138,7 +157,7 @@ const gradePool = buildGradeLoopPool(grade);
           <h2 id="grade-demos-heading">המחשות לכיתה {gradeLabel}</h2>
           <div class="exact-grade__player-wrap">
             <div class="exact-grade__pencil" data-doodle="pencil">
-              <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" />
+              <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" width="512" height="512" loading="lazy" decoding="async" />
             </div>
             {/* The protected runtime supplies the real question, diagram and result.
                 Do not invent a playlist from the grade-four design sample. */}
@@ -244,7 +263,7 @@ const gradePool = buildGradeLoopPool(grade);
           <ul>
             {hub.footerLinks.map((link) => (
               <li>
-                <a href={localizeSiteHref(link.href)} rel="noopener noreferrer">
+                <a href={resolveSiteHrefString(link.href)} rel="noopener noreferrer">
                   {link.label}
                 </a>
               </li>

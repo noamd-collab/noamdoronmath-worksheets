@@ -11,11 +11,19 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { loadHomePage } from '../lib/homePage';
 import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
 import {
+  DEFAULT_OG_IMAGE,
   DEFAULT_SITE_DESCRIPTION,
   DEFAULT_SITE_TITLE,
-  canonicalUrl,
+  HOME_CRUMB,
+  SITE_NAME_HE,
+  breadcrumbJsonLd,
+  formatPageTitle,
   isPreviewHost,
-  robotsContent,
+  isWorksheetsVariant,
+  pageCanonicalUrl,
+  robotsForRequest,
+  titleTopic,
+  type Crumb,
 } from '../lib/siteSeo';
 
 interface Props {
@@ -26,6 +34,10 @@ interface Props {
   activeNav?: ActiveNavKey | null;
   compactBrand?: boolean;
   skipHref?: string;
+  /** 404 / dev pages: robots noindex and no BreadcrumbList. */
+  noindex?: boolean;
+  /** BreadcrumbList trail after "בית". Default: the page itself; false = none. */
+  breadcrumbs?: Crumb[] | false;
 }
 const {
   title = DEFAULT_SITE_TITLE,
@@ -34,14 +46,25 @@ const {
   activeNav,
   compactBrand = false,
   skipHref = '#topic-list',
+  noindex = false,
+  breadcrumbs,
 } = Astro.props;
 
 const { footer } = loadHomePage();
 const resolvedNav: ActiveNavKey | null =
   activeNav !== undefined ? activeNav : resolveActiveNav(Astro.url.pathname);
 const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
-const robots = robotsContent(Astro.url.hostname);
-const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
+const pathname = Astro.url.pathname;
+const robots = robotsForRequest(Astro.url.hostname, pathname, Astro.url.search, noindex);
+const canonical = pageCanonicalUrl(pathname);
+const pageTitle = formatPageTitle(title);
+const socialImage = ogImage || DEFAULT_OG_IMAGE;
+const isHome = pathname === '/' || pathname === '';
+const trail: Crumb[] | null =
+  noindex || isHome || breadcrumbs === false || isWorksheetsVariant(pathname, Astro.url.search)
+    ? null
+    : [HOME_CRUMB, ...(breadcrumbs || [{ name: titleTopic(title), path: pathname }])];
+const breadcrumbLd = trail ? JSON.stringify(breadcrumbJsonLd(trail)) : null;
 const showPreviewNote = isPreviewHost(Astro.url.hostname);
 ---
 <!doctype html>
@@ -51,17 +74,23 @@ const showPreviewNote = isPreviewHost(Astro.url.hostname);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
-    <title>{title}</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="he_IL" />
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    {/* Wix injects parallel [wix-seo-tag] title/canonical/og:title (often
-        "… | Noam Math Astro POC"). Keep our Hebrew tags; drop the duplicates. */}
+    <meta property="og:site_name" content={SITE_NAME_HE} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:title" content={pageTitle} />
+    {breadcrumbLd && <script type="application/ld+json" set:html={breadcrumbLd} />}
+    {/* Wix injects parallel [wix-seo-tag] title/canonical/og:* / twitter:title
+        (often "… | Noam Math Astro POC"). middleware.ts removes them from the
+        HTML Astro serves; this is the net for tags added after Astro (edge). */}
     <script is:inline>
       (function () {
+        var POC = 'Astro POC';
+        var OURS = { 'og:site_name': 1, 'og:url': 1, 'twitter:title': 1 };
         function stripWixSeoDupes() {
           var nodes = document.querySelectorAll('[wix-seo-tag="true"]');
           for (var i = 0; i < nodes.length; i++) {
@@ -75,12 +104,15 @@ const showPreviewNote = isPreviewHost(Astro.url.hostname);
               el.parentNode && el.parentNode.removeChild(el);
               continue;
             }
-            if (
-              tag === 'meta' &&
-              String(el.getAttribute('property') || '').toLowerCase() === 'og:title'
-            ) {
+            if (tag !== 'meta') continue;
+            var key = String(el.getAttribute('property') || el.getAttribute('name') || '').toLowerCase();
+            if (key === 'og:title' || OURS[key] || String(el.getAttribute('content') || '').indexOf(POC) >= 0) {
               el.parentNode && el.parentNode.removeChild(el);
             }
+          }
+          var ld = document.querySelectorAll('head script[type="application/ld+json"]');
+          for (var j = 0; j < ld.length; j++) {
+            if ((ld[j].textContent || '').indexOf(POC) >= 0) ld[j].parentNode.removeChild(ld[j]);
           }
         }
         stripWixSeoDupes();
@@ -98,6 +130,12 @@ const showPreviewNote = isPreviewHost(Astro.url.hostname);
     <slot name="seo-tags" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    {/* Secular One (headings) lives in this sheet; its woff2 URL is versioned by Google, so preload the sheet. */}
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap"
       rel="stylesheet"
@@ -111,7 +149,7 @@ const showPreviewNote = isPreviewHost(Astro.url.hostname);
     <div class="exact-frame">
     <a class="skip-link" href={skipHref}>דילוג לתוכן</a>
     <SiteHeader active={resolvedNav} compactBrand={useCompactBrand} />
-    <SiteDevelopmentNotice />
+    <SiteDevelopmentNotice show={false} />
     <slot />
     <SiteFooter footer={footer} showPreviewNote={showPreviewNote} />
     {/* POC motion system (branch poc-animations-fix): scroll reveal +

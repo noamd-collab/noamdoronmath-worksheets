@@ -117,6 +117,7 @@
 
 .exact-grade__walker img {
   width: 200%;
+  height: auto;
   max-width: none;
   display: block;
   cursor: pointer;
@@ -151,6 +152,7 @@
 
 .exact-grade__pencil img {
   width: 100%;
+  height: auto;
   display: block;
   mix-blend-mode: multiply;
   cursor: pointer;

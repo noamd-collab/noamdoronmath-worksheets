@@ -225,8 +225,9 @@ describe('non-blocking site-development notice', () => {
     assert.deepEqual(effects, [], 'Dismissal must never be interpreted as legal consent');
   });
 
-  it('mounts the notice with normal content and leaves legal destinations in the shared footer', () => {
-    assert.match(layout, /<SiteDevelopmentNotice\s*\/>\s*<slot\s*\/>\s*<SiteFooter\s+footer=\{footer\}/);
+  it('keeps the notice slot (switched off for SEO closure) and legal destinations in the shared footer', () => {
+    assert.match(layout, /<SiteDevelopmentNotice\s+show=\{false\}\s*\/>\s*<slot\s*\/>\s*<SiteFooter\s+footer=\{footer\}/);
+    assert.match(notice, /\{show && \(/);
     assert.doesNotMatch(layout, /<script\b[^>]*src=['"]\/nd-site-gate\.js['"]/);
     const byLabel = Object.fromEntries(loadHomePage().footer.legal.map((entry) => [entry.label, entry.href]));
     assert.equal(byLabel['תקנון שימוש בדפי עבודה חינמיים'], '/conditionforfreeworksheets');

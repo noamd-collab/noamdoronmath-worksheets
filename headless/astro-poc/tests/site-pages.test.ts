@@ -56,7 +56,10 @@ describe('M24 site / policy pages', () => {
     assert.ok(tpl.includes('nd-contact-form.js'));
     assert.ok(existsSync('public/nd-contact-form.js'));
     // Client POSTs to /api/contact-form (server dry-run); copy must not claim "no server send".
-    assert.ok(tpl.includes('מצב בדיקה בלבד וההודעה אינה נמסרת לבעל האתר'));
+    // SEO closure: no static test-mode banner on the page; the dry-run result is
+    // still reported honestly in the status line after submit.
+    assert.ok(!tpl.includes('מצב בדיקה בלבד וההודעה אינה נמסרת לבעל האתר'));
+    assert.ok(readFileSync('public/nd-contact-form.js', 'utf8').includes('ההודעה לא נמסרה לבעל האתר'));
     assert.ok(!tpl.includes('אינו שולח הודעה לשרת'));
     const client = readFileSync('public/nd-contact-form.js', 'utf8');
     assert.ok(client.includes("fetch('/api/contact-form'"));

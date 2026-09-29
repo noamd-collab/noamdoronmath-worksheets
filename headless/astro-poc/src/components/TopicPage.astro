@@ -15,6 +15,8 @@ import {
 import { localizeSiteHref } from '../lib/sitePages';
 import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import { SITE_CANONICAL_ORIGIN } from '../lib/siteSeo';
+import { topicH1, topicTitle } from '../lib/topicSeoOverrides';
 
 interface Props {
   slug: string;
@@ -139,15 +141,40 @@ const topicLevels = catalogTopic?.levels.map((level) => ({
 function faqHeadingId(groupIndex: number) {
   return groupIndex === 0 ? 'topic-faq-heading' : `topic-faq-heading-${groupIndex}`;
 }
+
+const h1 = topicH1(page);
+const pageTitle = topicTitle(page);
+const pageUrl = `${SITE_CANONICAL_ORIGIN}${page.path}`;
+const graph = (page.jsonLd['@graph'] as Array<{ '@type'?: string }> | undefined) || [];
+const learningResourceLd = graph.some((node) => node['@type'] === 'LearningResource')
+  ? null
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'LearningResource',
+      '@id': `${pageUrl}#learning-resource`,
+      name: h1,
+      url: pageUrl,
+      description: page.description,
+      educationalLevel: gradeCrumbLabel,
+      learningResourceType: 'דפי עבודה',
+      isAccessibleForFree: true,
+      inLanguage: 'he',
+      author: { '@id': `${SITE_CANONICAL_ORIGIN}/aboutus#noam-doron` },
+    };
 ---
 <BaseLayout
-  title={page.title}
+  title={pageTitle}
   description={page.description}
   ogImage={page.ogImage || undefined}
   activeNav="worksheets"
   skipHref="#topic-page-main"
+  breadcrumbs={[
+    { name: gradeCrumbLabel, path: page.gradeHubHref },
+    { name: h1, path: page.path },
+  ]}
 >
   <script type="application/ld+json" set:html={JSON.stringify(page.jsonLd)} />
+  {learningResourceLd && <script type="application/ld+json" set:html={JSON.stringify(learningResourceLd)} />}
 
   <main
     class="topic-page exact-topic"
@@ -160,10 +187,10 @@ function faqHeadingId(groupIndex: number) {
       <span aria-hidden="true">/</span>
       <a href={page.gradeHubHref}>{gradeCrumbLabel}</a>
       <span aria-hidden="true">/</span>
-      <span aria-current="page">{page.h1}</span>
+      <span aria-current="page">{h1}</span>
     </nav>
     <div data-doodle="pencil" class="exact-topic-pencil">
-      <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" />
+      <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" width="512" height="512" decoding="async" />
     </div>
 
     {
@@ -183,7 +210,7 @@ function faqHeadingId(groupIndex: number) {
     }
 
     <header class="topic-page__header">
-      <h1>{page.h1}</h1>
+      <h1>{h1}</h1>
     </header>
 
     <div data-body-flow>
@@ -315,7 +342,7 @@ function faqHeadingId(groupIndex: number) {
       contentImages.length > 0 && (
         <figure class="topic-page__figure">
           {contentImages.map((img) => (
-            <img src={img.src} alt={img.alt || page.h1} loading="lazy" />
+            <img src={img.src} alt={img.alt || h1} loading="lazy" decoding="async" />
           ))}
         </figure>
       )

@@ -1,7 +1,16 @@
+---
+interface Props {
+  /** Off on production pages (SEO closure); the component stays for a future notice. */
+  show?: boolean;
+}
+const { show = true } = Astro.props;
+---
+{show && (
 <aside class="exact-development-notice" aria-label="הודעת פיתוח" data-development-notice>
   <p><strong>האתר נמצא כרגע בתהליכי פיתוח</strong> — ייתכנו שיבושים זמניים בפעילות הגלישה והקישורים.</p>
   <button type="button" aria-label="סגירת הודעת הפיתוח">הבנתי</button>
 </aside>
+)}
 <style>
   /* Non-blocking adaptation requested by Noam. Colors/type come from the
      reference notice; the compact placement is documented for approval. */

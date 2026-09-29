@@ -17,6 +17,14 @@ const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
   description={archive.description}
   ogImage={archive.ogImage}
   skipHref="#blog-archive-main"
+  breadcrumbs={
+    archive.kind === 'category'
+      ? [
+          { name: 'בלוג', path: '/blog' },
+          { name: archive.h1, path: archive.path },
+        ]
+      : [{ name: archive.h1, path: archive.path }]
+  }
 >
   <BlogSeoTags slot="seo-tags" description={archive.description} image={archive.ogImage} jsonLd={archive.jsonLd} />
   {

@@ -6,7 +6,8 @@
  * (even as a fallback), or the Worker chunk may fail to load.
  */
 import redirectsMap from '../data/redirects.json';
-import { BLOG_SITEMAP_PATH } from './blogSitemap';
+import { BLOG_SITEMAP_PATH, listBlogSitemapEntries } from './blogSitemap';
+import { latestDay, pageLastmod, pageLastmodMap } from './pageLastmod';
 import { REDIRECT_RULES } from './redirects';
 import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 
@@ -45,24 +46,28 @@ export function listMainPagePaths(pageModuleKeys: readonly string[]): string[] {
   return pathsFromAstroModuleKeys(pageModuleKeys);
 }
 
+const lastmodTag = (day: string | null) => (day ? `<lastmod>${day}</lastmod>` : '');
+
+/** lastmod comes from the page JSON (lib/pageLastmod.ts); omitted when unknown, never "today". */
 export function renderPagesSitemapXml(pageModuleKeys: readonly string[]): string {
-  const today = new Date().toISOString().slice(0, 10);
   const urls = listMainPagePaths(pageModuleKeys)
     .map(
       (path) =>
-        `  <url><loc>${SITE_CANONICAL_ORIGIN}${path === '/' ? '/' : path}</loc><lastmod>${today}</lastmod></url>`
+        `  <url><loc>${SITE_CANONICAL_ORIGIN}${path === '/' ? '/' : path}</loc>${lastmodTag(pageLastmod(path))}</url>`
     )
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
+/** Each child's lastmod is the newest lastmod inside it. */
 export function renderSitemapIndexXml(): string {
-  const today = new Date().toISOString().slice(0, 10);
-  const children = ['/sitemap-pages.xml', BLOG_SITEMAP_PATH];
+  const children: Array<[string, string | null]> = [
+    ['/sitemap-pages.xml', latestDay(pageLastmodMap().values())],
+    [BLOG_SITEMAP_PATH, latestDay(listBlogSitemapEntries().map((e) => e.lastmod))],
+  ];
   const body = children
     .map(
-      (p) =>
-        `  <sitemap><loc>${SITE_CANONICAL_ORIGIN}${p}</loc><lastmod>${today}</lastmod></sitemap>`
+      ([p, day]) => `  <sitemap><loc>${SITE_CANONICAL_ORIGIN}${p}</loc>${lastmodTag(day)}</sitemap>`
     )
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</sitemapindex>\n`;
