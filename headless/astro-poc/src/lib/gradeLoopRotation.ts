@@ -6,16 +6,17 @@
  * every later cycle is reshuffled so that its first loop is never the one that
  * was just shown.
  *
- * Pace: a loop is shown for GRADE_LOOP_DWELL_MS. At GRADE_LOOP_HOLD_AT_MS the
- * host freezes it on its completed frame until the swap. The clock runs only
- * while the player is in view in a visible tab; a manual session pause
- * (k3-pause:<variant>), any other paused state, or a static frame (reduced
- * motion / nd-motion-off / noam-a11y-motion) freezes it, and a static frame
- * never rotates.
+ * Pace: a loop is shown for GRADE_LOOP_DWELL_MS. When its slowed animation
+ * reaches the completed frame, the host calls hold() and the loop stays frozen
+ * there until the swap. The clock runs only while the player is in view in a
+ * visible tab; a manual session pause (k3-pause:<variant>), any other paused
+ * state, or a static frame (reduced motion / nd-motion-off / noam-a11y-motion)
+ * freezes it, and a static frame never rotates.
  *
- * Slowing the animation itself (×1.8) is not possible from here: the engine
- * (conceptLoops.ts, protected) has no playback-speed control. It needs a
- * future speed option in the engine.
+ * Slowdown (×1.8): the engine (conceptLoops.ts, protected) has no speed
+ * option, only __loop.seek(t). createGradeLoopSlowClock maps player time to
+ * engine time, t_engine = t_real / GRADE_LOOP_SLOWDOWN, and the host seeks the
+ * engine to it every frame.
  */
 export interface GradeLoopState {
   playing: boolean;
@@ -36,14 +37,57 @@ export interface GradeLoopRotationHost {
 
 export interface GradeLoopRotationOptions {
   dwellMs?: number;
-  /** `null` swaps at the dwell time with no hold phase (approved fallback). */
-  holdAtMs?: number | null;
   random?: () => number;
 }
 
 /** Calibration range 8–45 s per loop. */
 export const GRADE_LOOP_DWELL_MS = 15_000;
-export const GRADE_LOOP_HOLD_AT_MS = 12_000;
+/** Real seconds per engine second. */
+export const GRADE_LOOP_SLOWDOWN = 1.8;
+/**
+ * End point when a loop's completed-frame time is unknown: every engine lap
+ * is 10–11 s, so ×1.8 never reaches it within the dwell and the loop swaps at
+ * 15 s with no hold phase (the approved v2 fallback).
+ */
+export const GRADE_LOOP_FALLBACK_END_S = 10;
+/** Same cap as the engine's own frame step, so a stalled frame never jumps. */
+const MAX_FRAME_MS = 50;
+
+export interface GradeLoopSlowClockHost {
+  /** The engine is playing the current loop (in view, not paused, not static, not held). */
+  running(): boolean;
+  seek(t: number): void;
+  /** The slowed loop reached its end point. */
+  ended(): void;
+}
+
+export function createGradeLoopSlowClock(host: GradeLoopSlowClockHost, slowdown = GRADE_LOOP_SLOWDOWN) {
+  let realMs = 0;
+  let endS = GRADE_LOOP_FALLBACK_END_S;
+  let ended = false;
+  const engineTime = () => Math.min(realMs / 1000 / slowdown, endS);
+
+  return {
+    /** Start a (re)mounted loop from zero; `end` is its completed-frame time. */
+    reset(end: number = GRADE_LOOP_FALLBACK_END_S) {
+      realMs = 0;
+      endS = end;
+      ended = false;
+    },
+    frame(dtMs: number) {
+      if (ended || !host.running()) return;
+      realMs += Math.min(MAX_FRAME_MS, Math.max(0, dtMs));
+      const t = engineTime();
+      host.seek(t);
+      if (t >= endS) {
+        ended = true;
+        host.ended();
+      }
+    },
+    engineTime,
+    ended: () => ended,
+  };
+}
 
 export function shuffleLoops<T>(items: readonly T[], random: () => number = Math.random): T[] {
   const out = [...items];
@@ -61,7 +105,6 @@ export function createGradeLoopRotation(
   options: GradeLoopRotationOptions = {}
 ) {
   const dwellMs = options.dwellMs ?? GRADE_LOOP_DWELL_MS;
-  const holdAtMs = options.holdAtMs === undefined ? GRADE_LOOP_HOLD_AT_MS : options.holdAtMs;
   const random = options.random ?? Math.random;
   const first = variants.includes(initial) ? initial : variants[0];
 
@@ -105,15 +148,19 @@ export function createGradeLoopRotation(
     // A held loop is paused on purpose; any other pause stops the clock.
     if (!held && !state.playing && !state.done) return false;
     elapsed += dtMs;
-    if (!held && holdAtMs !== null && elapsed >= holdAtMs && elapsed < dwellMs) {
-      held = true;
-      host.hold(variant);
-    }
     return elapsed >= dwellMs ? advance() : false;
+  }
+
+  /** Freeze the current loop on its completed frame until the swap, once. */
+  function hold(): void {
+    if (held || variants.length < 2) return;
+    held = true;
+    host.hold(order[index]);
   }
 
   return {
     tick,
+    hold,
     next: advance,
     current: () => order[index],
     elapsed: () => elapsed,

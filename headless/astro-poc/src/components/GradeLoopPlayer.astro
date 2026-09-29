@@ -3,9 +3,9 @@ import ConceptLoop from './ConceptLoop.astro';
 import type { Props as ConceptLoopProps } from './ConceptLoop.astro';
 import { gradeHubLabel, type GradeHubGrade } from '../lib/gradeHubs';
 import {
-  GRADE_LOOP_EXPLANATION,
   GRADE_LOOP_HOLD_S,
-  gradeLoopDomain,
+  gradeLoopCopy,
+  gradeLoopMathParts,
   type GradeLoopEntry,
 } from '../lib/gradeLoopPools';
 
@@ -23,9 +23,10 @@ const defaultEntry: GradeLoopEntry = pool.find((entry) => entry.variant === defa
   variant: defaultVariant,
   label: 'הדגמה מתמטית',
   href: `/worksheets?grade=${grade}`,
-  domain: gradeLoopDomain(defaultVariant),
+  ...gradeLoopCopy(defaultVariant),
   hold: GRADE_LOOP_HOLD_S[defaultVariant],
 };
+const mathParts = gradeLoopMathParts(defaultEntry.mathLine);
 const others = pool.filter((entry) => entry.variant !== defaultVariant);
 const isCatalog = defaultEntry.href.startsWith('/worksheets');
 ---
@@ -51,8 +52,11 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
   <div class="grade-loop__bar">
     <div class="grade-loop__text" data-grade-loop-text aria-live="polite">
       <p class="grade-loop__domain" data-grade-loop-domain>{defaultEntry.domain}</p>
-      <p class="grade-loop__title" data-grade-loop-label>{defaultEntry.label}</p>
-      <p class="grade-loop__explain">{GRADE_LOOP_EXPLANATION}</p>
+      <p class="grade-loop__title" data-grade-loop-label>{defaultEntry.claim}</p>
+      <p class="grade-loop__math" data-grade-loop-math>
+        {mathParts.map((part) => (part.math ? <span dir="ltr">{part.text}</span> : part.text))}
+      </p>
+      <p class="grade-loop__explain" data-grade-loop-explain>{defaultEntry.explain}</p>
       <a
         class="grade-loop__link"
         data-grade-loop-link
@@ -98,13 +102,17 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 
 <script>
   import { initConceptLoops } from '../lib/conceptLoops';
-  import { createGradeLoopRotation } from '../lib/gradeLoopRotation';
+  import { gradeLoopMathParts, type GradeLoopEntry as Entry } from '../lib/gradeLoopPools';
+  import {
+    GRADE_LOOP_FALLBACK_END_S,
+    createGradeLoopRotation,
+    createGradeLoopSlowClock,
+  } from '../lib/gradeLoopRotation';
 
   type LoopState = { playing: boolean; done: boolean; static: boolean };
   type Loop = HTMLElement & {
     __loop?: { seek(t: number): void; pause(): void; play(): void; state(): LoopState };
   };
-  type Entry = { variant: string; label: string; href: string; domain: string; hold?: number };
 
   const TICK_MS = 500;
 
@@ -113,6 +121,8 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
     const current = root.querySelector<HTMLElement>('[data-grade-loop-current]');
     const domain = root.querySelector<HTMLElement>('[data-grade-loop-domain]');
     const label = root.querySelector<HTMLElement>('[data-grade-loop-label]');
+    const math = root.querySelector<HTMLElement>('[data-grade-loop-math]');
+    const explain = root.querySelector<HTMLElement>('[data-grade-loop-explain]');
     const link = root.querySelector<HTMLAnchorElement>('[data-grade-loop-link]');
     const progress = root.querySelector<HTMLElement>('[data-grade-loop-progress]');
     const fill = root.querySelector<HTMLElement>('[data-grade-loop-progress-fill]');
@@ -160,7 +170,18 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       const entry = entries.get(variant);
       if (!entry) return;
       if (domain) domain.textContent = entry.domain;
-      if (label) label.textContent = entry.label;
+      if (label) label.textContent = entry.claim;
+      if (math) {
+        math.textContent = '';
+        math.append(...gradeLoopMathParts(entry.mathLine).map((part) => {
+          if (!part.math) return part.text;
+          const run = document.createElement('span');
+          run.dir = 'ltr';
+          run.textContent = part.text;
+          return run;
+        }));
+      }
+      if (explain) explain.textContent = entry.explain;
       if (link) {
         link.href = entry.href;
         link.dataset.peek = entry.href.startsWith('/worksheets') ? 'ws' : 'topic';
@@ -277,6 +298,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
           if (firstVisit) initConceptLoops();
           restoreManualPause(next);
           if (!firstVisit) restartLoop(next);
+          slow.reset(endOf(variant));
           wasStatic.set(next, next.__loop?.state().static || false);
           describe(variant);
           resetProgress();
@@ -284,10 +306,10 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
           syncControls();
           if (hadFocus) next.querySelector<HTMLElement>('[data-pause-card]')?.focus();
         },
-        // Spec proposed seek(duration - 0.2), but every lap has faded out by
-        // then (a near-blank frame). The engine's own completed frame is
-        // SPECS.hold — where it parks and what reduced motion shows. Without a
-        // known hold time the loop simply swaps at 15 s (approved fallback).
+        // The slowed loop ends on SPECS.hold, the engine's own completed frame
+        // (where it parks and what reduced motion shows); by duration every
+        // lap has faded out. Without a known hold time the loop simply swaps
+        // at 15 s (approved fallback).
         hold(variant) {
           const loop = mounted.get(variant);
           const hold = entries.get(variant)?.hold;
@@ -299,6 +321,45 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       pool.map((entry) => entry.variant),
       initial.dataset.loop
     );
+
+    // ×1.8 without touching the engine: it keeps playing (so its state, pause
+    // card and off-screen stop are unchanged), and this frame loop re-seeks it
+    // to t_real / 1.8 after each engine frame. Its lap never reaches duration,
+    // so it never parks; at the completed frame the rotation holds it to 15 s.
+    const endOf = (variant: string) => entries.get(variant)?.hold ?? GRADE_LOOP_FALLBACK_END_S;
+    const slow = createGradeLoopSlowClock({
+      running() {
+        const loop = activeLoop();
+        const state = loop?.__loop?.state();
+        return !!loop && !!state && state.playing && !state.static && !rotation.held() && !manuallyPaused(loop);
+      },
+      seek: (t) => activeLoop()?.__loop?.seek(t),
+      ended: () => rotation.hold(),
+    });
+    slow.reset(endOf(initial.dataset.loop));
+
+    // Reduced motion: no frame loop and no seek, only the static frame.
+    let frameId = 0;
+    let lastFrame = 0;
+    function slowFrame(now: number) {
+      const state = activeLoop()?.__loop?.state();
+      if (!state || state.static) {
+        frameId = 0;
+        // When motion comes back the engine restarts from zero; so does this clock.
+        const variant = activeLoop()?.dataset.loop;
+        if (variant) slow.reset(endOf(variant));
+        return;
+      }
+      slow.frame(now - lastFrame);
+      lastFrame = now;
+      frameId = requestAnimationFrame(slowFrame);
+    }
+    function runSlowClock() {
+      const state = activeLoop()?.__loop?.state();
+      if (frameId || !state || state.static) return;
+      lastFrame = performance.now();
+      frameId = requestAnimationFrame(slowFrame);
+    }
 
     function syncControls() {
       const loop = activeLoop();
@@ -314,10 +375,13 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
         pauseButton.dataset.state = paused ? 'paused' : 'playing';
         pauseButton.setAttribute('aria-label', paused ? 'הפעלת ההדגמות' : 'השהיית ההדגמות');
       }
+      runSlowClock();
     }
 
-    // Reduced motion shows the static completed frame with no rotation. A
-    // one-shot ▶ replay there needs engine support (it refuses to play static).
+    // Reduced motion shows the static completed frame with no rotation and no
+    // ▶ (hidden in CSS); "ללולאה הבאה" still steps between completed frames.
+    // A one-shot "▶ פעם אחת" is deferred until the engine supports it (it
+    // refuses to play while static).
     pauseButton?.addEventListener('click', () => {
       const loop = activeLoop();
       const card = loop?.querySelector<HTMLElement>('[data-pause-card]');
@@ -444,6 +508,19 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
     color: #22305a;
   }
 
+  .grade-loop__math {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #22305a;
+  }
+
+  /* :global — swaps rebuild these runs in the script, without the scope attribute. */
+  .grade-loop__math :global(span) {
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
+  }
+
   .grade-loop__explain {
     font-size: 19px;
     line-height: 1.5;
@@ -523,9 +600,23 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
     display: none;
   }
 
+  /* Reduced motion: no ▶ at all, neither the engine's corner toggle nor the
+     pause button; "ללולאה הבאה" stays. */
   @media (prefers-reduced-motion: reduce) {
     .grade-loop__progress-fill {
       transition: none;
     }
+
+    .grade-loop :global([data-el='toggle']),
+    .grade-loop__pause {
+      display: none !important;
+    }
+  }
+
+  :global(html.nd-motion-off) .grade-loop :global([data-el='toggle']),
+  :global(html.noam-a11y-motion) .grade-loop :global([data-el='toggle']),
+  :global(html.nd-motion-off) .grade-loop__pause,
+  :global(html.noam-a11y-motion) .grade-loop__pause {
+    display: none !important;
   }
 </style>

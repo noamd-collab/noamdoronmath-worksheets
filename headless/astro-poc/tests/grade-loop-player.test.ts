@@ -4,23 +4,28 @@
  * under node:test mock timers; the DOM adapter is checked as a source contract.
  */
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, it, mock } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { GRADE_HUB_GRADES, type GradeHubGrade } from '../src/lib/gradeHubs.ts';
 import {
   EXCLUDED_GRADE_LOOPS,
+  GRADE_LOOP_COPY,
   GRADE_LOOP_DEFAULTS,
   GRADE_LOOP_HOLD_S,
   buildGradeLoopPool,
+  gradeLoopCopy,
   gradeLoopDomain,
   gradeLoopMap,
+  gradeLoopMathParts,
 } from '../src/lib/gradeLoopPools.ts';
 import {
   GRADE_LOOP_DWELL_MS,
-  GRADE_LOOP_HOLD_AT_MS,
+  GRADE_LOOP_FALLBACK_END_S,
+  GRADE_LOOP_SLOWDOWN,
   createGradeLoopRotation,
+  createGradeLoopSlowClock,
   shuffleLoops,
   type GradeLoopRotationOptions,
   type GradeLoopState,
@@ -56,6 +61,38 @@ function seeded(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+/** LOOPS_MAP_73_v2.csv rows by key; quoted fields may hold commas. */
+function loopsMap(file: string): Map<string, Record<string, string>> {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = '';
+  let quoted = false;
+  const text = readFileSync(file, 'utf8').replace(/^\uFEFF/, '');
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (quoted) {
+      if (ch === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (ch === '"') quoted = false;
+      else field += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === ',') { row.push(field); field = ''; }
+    else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(field); field = '';
+      if (row.some((cell) => cell.length > 0)) rows.push(row);
+      row = [];
+    } else field += ch;
+  }
+  if (field || row.length) rows.push([...row, field]);
+  const [header, ...body] = rows;
+  return new Map(body.map((cells) => {
+    const record = Object.fromEntries(header.map((name, i) => [name, cells[i] ?? '']));
+    return [record['מפתח (key)'], record] as const;
+  }));
+}
+
+const numbers = (text: string) => text.match(/\d+/g) ?? [];
 
 function specsKeys(): Set<string> {
   const source = read('src/lib/conceptLoops.ts');
@@ -121,21 +158,92 @@ describe('grade loop pools (LOOPS_MAP_73_v2)', () => {
     for (const loop of gradeLoopMap()) assert.equal(loop.label, labels[loop.variant], loop.variant);
   });
 
-  it('every pooled loop has a curriculum domain for the text block', () => {
+  it('copy covers exactly the pooled loops (no copy for excluded variants)', () => {
+    assert.deepEqual(
+      Object.keys(GRADE_LOOP_COPY).sort(),
+      gradeLoopMap().map((loop) => loop.variant).sort()
+    );
+  });
+
+  for (const grade of GRADE_HUB_GRADES) {
+    it(`grade ${grade}: every variant has the 4-line copy (domain, claim, mathLine, explain)`, () => {
+      for (const entry of buildGradeLoopPool(grade)) {
+        const { variant, domain, claim, mathLine, explain } = entry;
+        assert.deepEqual({ domain, claim, mathLine, explain }, GRADE_LOOP_COPY[variant], `${variant}: pool copy`);
+        assert.equal(domain, gradeLoopDomain(variant));
+        // 1. "תחום · נושא"
+        assert.match(domain, /^[^·]+ · [^·]+$/, `${variant}: domain must be "תחום · נושא"`);
+        assert.ok(domain.length <= 40, `${variant}: domain too long`);
+        // 2. the claim in one sentence
+        assert.ok(claim.length >= 8 && claim.length <= 44, `${variant}: claim length ${claim.length}`);
+        assert.doesNotMatch(claim, /[.?!]/, `${variant}: claim is one sentence, no end punctuation`);
+        // 3. one short action; formula runs isolated LTR
+        assert.ok(mathLine.trim().length > 0 && mathLine.length <= 48, `${variant}: mathLine length`);
+        // 4. 2–3 sentences, ending on the result
+        const sentences = explain.split(/(?<=\.)\s+/);
+        assert.ok(sentences.length >= 2 && sentences.length <= 3, `${variant}: ${sentences.length} sentences`);
+        assert.ok(sentences.every((s) => s.endsWith('.')), `${variant}: each sentence ends with a period`);
+        assert.doesNotMatch(explain, /[−=×÷]/, `${variant}: signed numbers and formulas belong in mathLine`);
+        assert.notEqual(claim, domain.split(' · ')[0], `${variant}: claim must say more than the domain`);
+      }
+    });
+  }
+
+  it("uses Claude's binding examples verbatim (L08, L45)", () => {
+    const l08 = gradeLoopCopy('order-ops');
+    assert.equal(l08.domain, 'סדר פעולות חשבון · כפל לפני חיבור');
+    assert.equal(l08.claim, 'קודם כפל, אחר כך חיבור');
+    assert.equal(l08.mathLine, 'קודם כפל: 3 × 4 = 12, ואז 2 + 12 = 14');
+    assert.match(l08.explain, /14\.$/, 'the explanation ends on the result');
+    const l45 = gradeLoopCopy('equiv-half');
+    assert.match(l45.domain, /^שברים שקולים · /);
+    assert.equal(l45.claim, 'חצי, שני רבעים ושלוש שישיות');
+    assert.equal(l45.mathLine, 'אותו מקום על הישר: 1/2 = 2/4 = 3/6');
+  });
+
+  const mapCsv = join(root, '..', '..', 'LOOPS_MAP_73_v2.csv');
+  it('copy follows the map: every loop is a map row, and an equation question keeps its numbers', {
+    skip: !existsSync(mapCsv) && 'LOOPS_MAP_73_v2.csv is not in this checkout',
+  }, () => {
+    const map = loopsMap(mapCsv);
     for (const loop of gradeLoopMap()) {
-      assert.notEqual(gradeLoopDomain(loop.variant), 'הדגמה מתמטית', `${loop.variant}: no domain`);
-    }
-    for (const grade of GRADE_HUB_GRADES) {
-      for (const entry of buildGradeLoopPool(grade)) assert.equal(entry.domain, gradeLoopDomain(entry.variant));
+      const row = map.get(loop.variant);
+      assert.ok(row, `${loop.variant}: missing from LOOPS_MAP_73_v2.csv`);
+      assert.equal(row['מספר'] === 'ישן' ? loop.variant : row['מספר'], loop.source, `${loop.variant}: map row id`);
+      const question = row['שאלה/כותרת (מהקוד)'];
+      if (!/^[\d(−□].*(= \?|= \d+)$/.test(question)) continue;
+      const shown = numbers(GRADE_LOOP_COPY[loop.variant].mathLine);
+      for (const n of numbers(question)) {
+        assert.ok(shown.includes(n), `${loop.variant}: "${question}" but mathLine lacks ${n}`);
+      }
     }
   });
 
-  it('hold times mirror the engine SPECS exactly (completed frame, before the 12 s hold)', () => {
+  it('math line splits into RTL prose and isolated LTR formula runs', () => {
+    assert.deepEqual(gradeLoopMathParts('קודם כפל: 3 × 4 = 12, ואז 2 + 12 = 14'), [
+      { text: 'קודם כפל: ', math: false },
+      { text: '3 × 4 = 12', math: true },
+      { text: ', ואז ', math: false },
+      { text: '2 + 12 = 14', math: true },
+    ]);
+    assert.deepEqual(gradeLoopMathParts('(−3) + 8 = 5'), [{ text: '(−3) + 8 = 5', math: true }]);
+    assert.deepEqual(gradeLoopMathParts('(3, 2)'), [{ text: '(3, 2)', math: true }]);
+    for (const [variant, { mathLine }] of Object.entries(GRADE_LOOP_COPY)) {
+      const parts = gradeLoopMathParts(mathLine);
+      assert.equal(parts.map((p) => p.text).join(''), mathLine, `${variant}: split must be lossless`);
+      for (const part of parts) {
+        if (part.math) assert.doesNotMatch(part.text, /[\u0590-\u05ff]/, `${variant}: Hebrew inside an LTR run`);
+        else assert.doesNotMatch(part.text, /\d/, `${variant}: a number outside its LTR run`);
+      }
+    }
+  });
+
+  it('hold times mirror the engine SPECS exactly; slowed ×1.8 they still land before the 15 s swap', () => {
     const holds = engineHolds();
     assert.equal(Object.keys(GRADE_LOOP_HOLD_S).length, gradeLoopMap().length);
     for (const loop of gradeLoopMap()) {
       assert.equal(GRADE_LOOP_HOLD_S[loop.variant], holds[loop.variant], `${loop.variant}: hold drifted from engine`);
-      assert.ok(holds[loop.variant]! < GRADE_LOOP_HOLD_AT_MS / 1000);
+      assert.ok(holds[loop.variant]! * GRADE_LOOP_SLOWDOWN < GRADE_LOOP_DWELL_MS / 1000, `${loop.variant}: never holds`);
     }
     for (const grade of GRADE_HUB_GRADES) {
       for (const entry of buildGradeLoopPool(grade)) assert.equal(entry.hold, holds[entry.variant]);
@@ -184,8 +292,15 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(player, /data-grade-loop-text aria-live="polite"/);
     assert.match(
       player,
-      /data-grade-loop-domain>\{defaultEntry\.domain\}<\/p>\s*<p class="grade-loop__title" data-grade-loop-label>\{defaultEntry\.label\}<\/p>\s*<p class="grade-loop__explain">\{GRADE_LOOP_EXPLANATION\}<\/p>\s*<a/
+      /data-grade-loop-domain>\{defaultEntry\.domain\}<\/p>\s*<p class="grade-loop__title" data-grade-loop-label>\{defaultEntry\.claim\}<\/p>\s*<p class="grade-loop__math" data-grade-loop-math>\s*\{mathParts\.map\(\(part\) => \(part\.math \? <span dir="ltr">\{part\.text\}<\/span> : part\.text\)\)\}\s*<\/p>\s*<p class="grade-loop__explain" data-grade-loop-explain>\{defaultEntry\.explain\}<\/p>\s*<a/
     );
+    assert.match(player, /const mathParts = gradeLoopMathParts\(defaultEntry\.mathLine\)/);
+    // A swap rewrites all four lines from the pool entry.
+    const script = player.split('<script>')[1];
+    assert.match(script, /domain\.textContent = entry\.domain/);
+    assert.match(script, /label\.textContent = entry\.claim/);
+    assert.match(script, /gradeLoopMathParts\(entry\.mathLine\)[\s\S]*?run\.dir = 'ltr'/);
+    assert.match(script, /explain\.textContent = entry\.explain/);
     assert.match(player, /href=\{defaultEntry\.href\}[\s\S]*?>\s*לדפי העבודה בנושא ←\s*<\/a>/);
     assert.match(player, /<button\s+type="button"[\s\S]*?data-grade-loop-next[\s\S]*?aria-label="ללולאה הבאה"/);
     assert.match(player, /data-grade-loop-pause[\s\S]*?aria-label="השהיית ההדגמות"/);
@@ -209,6 +324,7 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(rule('.grade-loop__domain'), /font-size: 14px;[\s\S]*color: #5a6588;/);
     assert.match(rule('.grade-loop__title'), /font-family: 'Secular One'[\s\S]*font-size: clamp\(26px, 2\.6vw, 32px\);/);
     assert.match(rule('.grade-loop__explain'), /font-size: 19px;/);
+    assert.match(rule('.grade-loop__math :global(span)'), /unicode-bidi: isolate;/);
     assert.match(rule('.grade-loop__link'), /min-block-size: 44px;[\s\S]*color: #1e605e;/);
     assert.match(rule('.grade-loop__link:hover'), /color: #e5735c;/);
     assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\.grade-loop__progress-fill \{\s*transition: none;/);
@@ -225,13 +341,47 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(gradeCss.split('@media')[0], /\.concept-loop__svg \{\s*grid-column: 2;\s*grid-row: 1 \/ 4;/);
   });
 
+  it('reduced motion hides ▶ (engine toggle and pause button) in player CSS only; next stays', () => {
+    const css = player.split('<style>')[1];
+    assert.match(
+      css,
+      /@media \(prefers-reduced-motion: reduce\) \{[\s\S]*?\.grade-loop :global\(\[data-el='toggle'\]\),\s*\.grade-loop__pause \{\s*display: none !important;\s*\}\s*\}/
+    );
+    for (const motionOff of ['nd-motion-off', 'noam-a11y-motion']) {
+      assert.match(css, new RegExp(`:global\\(html\\.${motionOff}\\) \\.grade-loop :global\\(\\[data-el='toggle'\\]\\)`));
+      assert.match(css, new RegExp(`:global\\(html\\.${motionOff}\\) \\.grade-loop__pause`));
+    }
+    // Hidden only under motion-off: every toggle-hiding selector is inside the media query or behind an html class.
+    const hides = [...css.matchAll(/^\s*(.*):global\(\[data-el='toggle'\]\)/gm)].map((m) => m[1]);
+    assert.equal(hides.length, 3);
+    assert.equal(hides.filter((prefix) => /html\.(nd-motion-off|noam-a11y-motion)/.test(prefix)).length, 2);
+    assert.doesNotMatch(css, /grade-loop__next(?!\[hidden\])[^{]*\{[^}]*display: none/, 'ללולאה הבאה stays visible');
+    assert.match(player, /"▶ פעם אחת" is deferred until the engine supports it/);
+    assert.doesNotMatch(css.split('@media')[0], /\.grade-loop__pause \{[^}]*display: none/);
+  });
+
   it('hold phase freezes on the engine completed frame via __loop.seek + pause', () => {
     assert.match(
       player,
       /hold\(variant\) \{\s*const loop = mounted\.get\(variant\);\s*const hold = entries\.get\(variant\)\?\.hold;\s*if \(!loop\?\.__loop \|\| typeof hold !== 'number'\) return;\s*loop\.__loop\.seek\(hold\);\s*loop\.__loop\.pause\(\);/
     );
     assert.match(player, /approved fallback/);
-    assert.match(read('src/lib/gradeLoopRotation.ts'), /future speed option in the engine/);
+  });
+
+  it('slows the unchanged engine ×1.8 from the player: frame loop + __loop.seek, pause at the end', () => {
+    assert.match(read('src/lib/gradeLoopRotation.ts'), /t_engine = t_real \/ GRADE_LOOP_SLOWDOWN/);
+    assert.doesNotMatch(read('src/lib/conceptLoops.ts'), /slowdown|GRADE_LOOP|speed/i, 'engine untouched');
+    const script = player.split('<script>')[1];
+    assert.match(script, /const slow = createGradeLoopSlowClock\(\{/);
+    assert.match(script, /state\.playing && !state\.static && !rotation\.held\(\) && !manuallyPaused\(loop\)/);
+    assert.match(script, /seek: \(t\) => activeLoop\(\)\?\.__loop\?\.seek\(t\)/);
+    assert.match(script, /ended: \(\) => rotation\.hold\(\)/);
+    assert.match(script, /entries\.get\(variant\)\?\.hold \?\? GRADE_LOOP_FALLBACK_END_S/);
+    assert.match(script, /slow\.reset\(endOf\(variant\)\);\s*wasStatic\.set/, 'each mount restarts the slow clock');
+    // Reduced motion: no frame loop and no seek.
+    assert.match(script, /function slowFrame\(now: number\) \{\s*const state = activeLoop\(\)\?\.__loop\?\.state\(\);\s*if \(!state \|\| state\.static\) \{\s*frameId = 0;/);
+    assert.match(script, /function runSlowClock\(\) \{\s*const state = activeLoop\(\)\?\.__loop\?\.state\(\);\s*if \(frameId \|\| !state \|\| state\.static\) return;/);
+    assert.equal((script.match(/requestAnimationFrame\(slowFrame\)/g) || []).length, 2);
   });
 
   it('is mounted inside the existing player shell with the grade pool', () => {
@@ -304,7 +454,6 @@ describe('grade loop rotation policy', () => {
 
   it('swaps every 15 s (calibration 8–45 s), without waiting for the 4-lap park', () => {
     assert.equal(GRADE_LOOP_DWELL_MS, 15_000);
-    assert.equal(GRADE_LOOP_HOLD_AT_MS, 12_000);
     assert.match(read('src/lib/gradeLoopRotation.ts'), /Calibration range 8–45 s per loop/);
     const t = setup();
     try {
@@ -322,19 +471,19 @@ describe('grade loop rotation policy', () => {
     }
   });
 
-  it('at 12 s holds the completed frame (seek + pause) until the 15 s swap', () => {
+  it('hold() freezes the completed frame (seek + pause) once, until the 15 s swap', () => {
     const t = setup();
     try {
-      t.advance(GRADE_LOOP_HOLD_AT_MS - 500);
-      assert.deepEqual(t.calls, []);
-      assert.equal(t.rotation.held(), false);
-      t.advance(500);
+      t.advance(10_000);
+      assert.deepEqual(t.calls, [], 'no fixed-time hold any more');
+      t.rotation.hold();
       assert.deepEqual(t.calls, [`a:seek(${GRADE_LOOP_HOLD_S.a ?? 5})`, 'a:pause']);
       assert.equal(t.rotation.held(), true);
-      // The held loop is paused, yet the clock keeps running to the swap.
-      t.advance(GRADE_LOOP_DWELL_MS - GRADE_LOOP_HOLD_AT_MS - 500);
-      assert.equal(t.rotation.current(), 'a');
+      t.rotation.hold();
       assert.equal(t.calls.length, 2, 'hold is applied once');
+      // The held loop is paused, yet the clock keeps running to the swap.
+      t.advance(GRADE_LOOP_DWELL_MS - 10_000 - 500);
+      assert.equal(t.rotation.current(), 'a');
       t.advance(500);
       assert.notEqual(t.rotation.current(), 'a');
       assert.equal(t.rotation.held(), false);
@@ -344,8 +493,8 @@ describe('grade loop rotation policy', () => {
     }
   });
 
-  it('approved fallback: holdAtMs null swaps at 15 s with no hold phase', () => {
-    const t = setup(['a', 'b', 'c'], { holdAtMs: null });
+  it('approved fallback: with no hold() (unknown completed frame) it swaps at 15 s with no hold phase', () => {
+    const t = setup();
     try {
       t.advance(GRADE_LOOP_DWELL_MS);
       assert.deepEqual(t.calls, []);
@@ -494,6 +643,143 @@ describe('grade loop rotation policy', () => {
       assert.deepEqual(t.mounts, []);
     } finally {
       t.done();
+    }
+  });
+
+  it('×1.8 end to end: the slowed loop reaches its completed frame, pauses, and holds to the 15 s swap', () => {
+    const t = setup(['triangle', 'pythagoras', 'area-model']);
+    const seeks: number[] = [];
+    const slow = createGradeLoopSlowClock({
+      running: () => {
+        const s = t.loops.get(t.rotation.current())!;
+        return s.playing && !s.static && !s.paused && !t.rotation.held();
+      },
+      seek: (tt) => seeks.push(tt),
+      ended: () => t.rotation.hold(),
+    });
+    const endS = GRADE_LOOP_HOLD_S.triangle;
+    slow.reset(endS);
+    const frames = setInterval(() => slow.frame(20), 20);
+    try {
+      const endMs = Math.round(endS * GRADE_LOOP_SLOWDOWN * 1000); // 14 040 ms
+      t.advance(endMs - 40);
+      assert.equal(t.rotation.held(), false);
+      assert.ok(Math.abs(seeks.at(-1)! - (endMs - 40) / 1000 / GRADE_LOOP_SLOWDOWN) < 1e-9, 'engine time = real / 1.8');
+      t.advance(80);
+      assert.equal(t.rotation.held(), true);
+      assert.equal(seeks.at(-1), endS, 'never seeks past the completed frame');
+      assert.deepEqual(t.calls, [`triangle:seek(${endS})`, 'triangle:pause']);
+      const seekCount = seeks.length;
+      t.advance(GRADE_LOOP_DWELL_MS - endMs - 60);
+      assert.equal(t.rotation.current(), 'triangle', 'held until the swap');
+      assert.equal(seeks.length, seekCount, 'no seeks while held');
+      t.advance(40);
+      assert.notEqual(t.rotation.current(), 'triangle');
+    } finally {
+      clearInterval(frames);
+      t.done();
+    }
+  });
+});
+
+describe('×1.8 slow clock (player time → engine time via __loop.seek)', () => {
+  function setupClock(endS?: number) {
+    const env = { running: true };
+    const seeks: number[] = [];
+    let ended = 0;
+    const slow = createGradeLoopSlowClock({
+      running: () => env.running,
+      seek: (t) => seeks.push(t),
+      ended: () => { ended += 1; },
+    });
+    slow.reset(endS);
+    mock.timers.enable({ apis: ['setInterval'] });
+    const timer = setInterval(() => slow.frame(16), 16);
+    return {
+      env,
+      seeks,
+      slow,
+      ended: () => ended,
+      advance: (ms: number) => mock.timers.tick(ms),
+      done: () => {
+        clearInterval(timer);
+        mock.timers.reset();
+      },
+    };
+  }
+  const near = (a: number, b: number) => Math.abs(a - b) < 1e-9;
+
+  it('feeds the engine t_real / 1.8, frame by frame', () => {
+    assert.equal(GRADE_LOOP_SLOWDOWN, 1.8);
+    const c = setupClock(7.8);
+    try {
+      c.advance(1600);
+      assert.ok(near(c.slow.engineTime(), 1.6 / 1.8));
+      assert.ok(near(c.seeks.at(-1)!, 1.6 / 1.8));
+      assert.equal(c.seeks.length, 100);
+      assert.ok(c.seeks.every((t, i) => i === 0 || t > c.seeks[i - 1]), 'monotonic');
+      c.advance(8000);
+      assert.ok(near(c.slow.engineTime(), 9.6 / 1.8), 'the same step takes 1.8× as long');
+    } finally {
+      c.done();
+    }
+  });
+
+  it('stops at the completed frame and reports the end once', () => {
+    const c = setupClock(5);
+    try {
+      c.advance(8_960); // 8.96 s real = 4.978 s engine
+      assert.equal(c.ended(), 0);
+      c.advance(64);
+      assert.equal(c.ended(), 1);
+      assert.equal(c.seeks.at(-1), 5);
+      const n = c.seeks.length;
+      c.advance(5_000);
+      assert.equal(c.seeks.length, n, 'frozen after the end');
+      assert.equal(c.ended(), 1);
+    } finally {
+      c.done();
+    }
+  });
+
+  it('freezes while the engine is not running (user pause, off-screen) and resumes from the same point', () => {
+    const c = setupClock(7.8);
+    try {
+      c.advance(1_600);
+      const at = c.slow.engineTime();
+      c.env.running = false;
+      c.advance(5_000);
+      assert.equal(c.slow.engineTime(), at);
+      c.env.running = true;
+      c.advance(16);
+      assert.ok(near(c.slow.engineTime(), at + 0.016 / 1.8));
+    } finally {
+      c.done();
+    }
+  });
+
+  it('caps a stalled frame at 50 ms and restarts from zero on reset', () => {
+    const seeks: number[] = [];
+    const slow = createGradeLoopSlowClock({ running: () => true, seek: (t) => seeks.push(t), ended: () => {} });
+    slow.reset(7.8);
+    slow.frame(2_000);
+    assert.ok(near(seeks[0], 0.05 / 1.8));
+    slow.frame(-10);
+    assert.ok(near(seeks[1], 0.05 / 1.8), 'negative steps never rewind');
+    slow.reset(5.2);
+    assert.equal(slow.engineTime(), 0);
+    assert.equal(slow.ended(), false);
+  });
+
+  it('fallback end (10 s) is never reached inside the 15 s dwell: no hold, swap at 15 s', () => {
+    assert.equal(GRADE_LOOP_FALLBACK_END_S, 10);
+    const c = setupClock();
+    try {
+      c.advance(GRADE_LOOP_DWELL_MS);
+      assert.equal(c.ended(), 0);
+      assert.ok(c.slow.engineTime() < GRADE_LOOP_FALLBACK_END_S);
+    } finally {
+      c.done();
     }
   });
 });

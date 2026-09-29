@@ -9,14 +9,29 @@
  * `topic` is set only when the map names an existing topic page for that same
  * grade; otherwise the link falls back to /worksheets?grade=N. No page is
  * invented. Labels are the short QA'd chips from ExactHeroControls.astro.
+ *
+ * Text block copy (GRADE_LOOP_COPY) follows Claude's 4-line template. Topic
+ * and claim come from the map's "נושא" and "שאלה/כותרת" columns; the math line
+ * and the steps come from the loop card itself (its formula strip and
+ * ariaLabels in ConceptLoop.astro), so no content is invented.
  */
 import type { GradeHubGrade } from './gradeHubs';
 
-export interface GradeLoopEntry {
+export interface GradeLoopCopy {
+  /** Line 1: "תחום · נושא". */
+  domain: string;
+  /** Line 2 (Secular One): the loop's claim in one sentence. */
+  claim: string;
+  /** Line 3: one action in short; its formula runs render dir="ltr" (gradeLoopMathParts). */
+  mathLine: string;
+  /** Line 4: 2–3 sentences in the order of the animation, ending with the result. */
+  explain: string;
+}
+
+export interface GradeLoopEntry extends GradeLoopCopy {
   variant: string;
   label: string;
   href: string;
-  domain: string;
   /** Completed-frame time in seconds; see GRADE_LOOP_HOLD_S. */
   hold?: number;
 }
@@ -133,38 +148,472 @@ const LOOPS: readonly MappedLoop[] = [
   { source: 'L46', variant: 'half-eq', grade: 9, label: 'משולש 30°–60°–90°', topic: '/triangle-30-60-90-grade-9' },
 ];
 
-/** Curriculum domain shown above each loop's title in the player text block. */
-const DOMAINS: Record<string, readonly string[]> = {
-  'מספרים ופעולות': [
-    'tenframes', 'add-within', 'apples-5', 'birds-sub', 'neighbors',
-    'sticks', 'coins-12', 'odd-pair', 'baseten', 'place-123',
-    'bars', 'cookies', 'share-12', 'jumps-4', 'numberline', 'mark-250',
-    'prime-rect', 'order-ops', 'signed-jump', 'signed-ops', 'cube-8',
-  ],
-  'שברים ועשרוניים': ['unit-frac', 'fraction', 'equiv-half', 'quarter-12', 'tenth-cell', 'frac-product'],
-  'מדידה וזמן': ['clock-3', 'ruler', 'clock-span'],
-  'גאומטריה': [
-    'polygon', 'quad-gate', 'two-diag',
-    'triangle', 'peri-rect', 'obtuse-ht', 'sup-angles', 'box-vol', 'angle-sum',
-    'sq-stretch', 'rect-count', 'l-split', 'trap-area', 'para-rect', 'angle-kinds',
-    'pythagoras', 'circ-unroll', 'corr-angles', 'exterior', 'sas-snap', 'para-perp',
-    'similar', 'cyl-stack', 'quad-tree', 'transform', 'area-x4', 'half-eq',
-  ],
-  'אלגברה': ['balance', 'pattern', 'coord-walk', 'slope', 'area-model', 'diff-sq', 'parab'],
-  'יחס וקנה מידה': ['ratio-beads', 'map-scale'],
-  'נתונים והסתברות': ['data', 'mean-cols', 'two-coins'],
+/**
+ * The player's 4-line text block per pooled loop. Signed numbers and
+ * formulas stay out of `explain` (plain RTL prose); they live in `mathLine`,
+ * where each formula run is isolated LTR.
+ */
+export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
+  // ── grade 1 ──
+  tenframes: {
+    domain: 'חיבור בתוך 20 · השלמה לעשר',
+    claim: 'משלימים לעשר, ואז מוסיפים את השאר',
+    mathLine: '7 + 5 = 7 + 3 + 2 = 10 + 2 = 12',
+    explain: 'במסגרת העשר יש 7 נקודות, ומגיעות עוד 5. שלוש מהן משלימות את המסגרת לעשר, ושתיים עוברות למסגרת השנייה. עשר ועוד שתיים הם 12.',
+  },
+  'add-within': {
+    domain: 'חיבור בתוך 10 · צירוף קבוצות',
+    claim: 'מצרפים שתי קבוצות וסופרים את כולן',
+    mathLine: '3 + 4 = 7',
+    explain: 'יש קבוצה של 3 וקבוצה של 4. הקבוצה של 3 מצטרפת לקבוצה של 4. יחד יש 7.',
+  },
+  'apples-5': {
+    domain: 'חיבור בתוך 10 · חילופיות',
+    claim: 'סדר המחוברים לא משנה את הסכום',
+    mathLine: '2 + 3 = 3 + 2 = 5',
+    explain: 'שני תפוחים ושלושה תפוחים עומדים זה לצד זה. הקבוצות מחליפות מקום, והסדר משתנה. הסכום נשאר 5.',
+  },
+  'birds-sub': {
+    domain: 'חיסור בתוך 10 · מה נשאר',
+    claim: 'בחיסור בודקים כמה נשארו',
+    mathLine: '6 − 2 = 4',
+    explain: 'יש 6 ציפורים. 2 מהן עפות משם. נשארות 4 ציפורים.',
+  },
+  neighbors: {
+    domain: 'סדר מספרים · שכנים בישר',
+    claim: 'לכל מספר יש שכן לפניו ושכן אחריו',
+    mathLine: '7 < 8 < 9',
+    explain: 'המספר 8 מסומן על ישר המספרים. לידו מסומנים שני השכנים שלו: 7 לפניו ו־9 אחריו. השכנים של 8 הם 7 ו־9.',
+  },
+  'clock-3': {
+    domain: 'שעון · שעה שלמה',
+    claim: 'בשעה שלמה המחוג הגדול מצביע על 12',
+    mathLine: '3:00',
+    explain: 'המחוגים של השעון זזים ונעצרים. המחוג הגדול מצביע על 12 והמחוג הקטן על 3. השעה היא 3:00, שעה שלמה.',
+  },
+  // ── grade 2 ──
+  sticks: {
+    domain: 'מקום וספרות · אגודות עשר',
+    claim: 'כל עשרה מקלות הם עשרת אחת',
+    mathLine: '34 = 30 + 4',
+    explain: 'יש 34 מקלות מפוזרים. הם נאספים לשלוש אגודות של עשר, וארבעה נשארים בודדים. 34 הם 30 ועוד 4.',
+  },
+  'coins-12': {
+    domain: 'פירוק מספר · מטבעות',
+    claim: 'מטבע של 10 ושני מטבעות של 1 הם 12',
+    mathLine: '10 + 1 + 1 = 12',
+    explain: 'מופיע מטבע של 10. אחריו מצטרפים שני מטבעות של 1. יחד הם שווים 12.',
+  },
+  polygon: {
+    domain: 'מצולעים · צלעות וקודקודים',
+    claim: 'במצולע יש אותו מספר צלעות וקודקודים',
+    mathLine: 'מחומש: 5 צלעות, 5 קודקודים',
+    explain: 'מחומש נבנה צלע אחר צלע. בכל צלע חדשה המונים של הצלעות ושל הקודקודים עולים יחד. בסוף יש 5 צלעות ו־5 קודקודים.',
+  },
+  'odd-pair': {
+    domain: 'זוגי ואי־זוגי · סידור בזוגות',
+    claim: 'אם נשארת נקודה בלי זוג, המספר אי־זוגי',
+    mathLine: '7 = 3 × 2 + 1',
+    explain: 'שבע נקודות נכנסות לזוגות. נוצרים 3 זוגות, ונקודה אחת נשארת לבד. לכן 7 הוא מספר אי־זוגי.',
+  },
+  baseten: {
+    domain: 'חיבור רב־ספרתי · חציית עשר',
+    claim: 'עשר יחידות מתאחדות לעשרת אחת',
+    mathLine: '38 + 25 = 60 + 3 = 63',
+    explain: '38 ו־25 מוצגים בקוביות בסיס עשר. 8 ועוד 5 הם 13 יחידות, ועשר מהן מתאחדות למוט של עשרת. מתקבל 63.',
+  },
+  'place-123': {
+    domain: 'מקום וספרות · מאות, עשרות ויחידות',
+    claim: 'כל ספרה אומרת כמה יש מכל סוג',
+    mathLine: '100 + 20 + 3 = 123',
+    explain: 'מופיעה מאה אחת. אחריה מצטרפות שתי עשרות ושלוש יחידות. יחד הן מרכיבות את 123.',
+  },
+  // ── grade 3 ──
+  bars: {
+    domain: 'בעיות מילוליות · מודל פסים',
+    claim: 'פס לכל ילד מראה מה מחברים',
+    mathLine: '12 + 5 = 17 → 12 + 17 = 29',
+    explain: 'לדנה יש פס של 12 מדבקות. לרון יש פס של 12 ועוד 5, כלומר 17. יחד יש להם 29 מדבקות.',
+  },
+  ruler: {
+    domain: 'מדידה ויחידות · מטר וסנטימטר',
+    claim: 'במטר אחד יש 100 סנטימטרים',
+    mathLine: '1 m = 100 cm',
+    explain: 'מופיע סרגל באורך מטר אחד. הוא מתחלק לעשרה קטעים של 10 ס״מ כל אחד. עשרה קטעים של 10 ס״מ הם 100 ס״מ.',
+  },
+  'clock-span': {
+    domain: 'שעון · פרק זמן',
+    claim: 'משך הזמן הוא ההפרש בין שתי השעות',
+    mathLine: '4 − 2 = 2',
+    explain: 'השעון מראה את השעה 2. המחוגים זזים עד השעה 4. עברו שעתיים.',
+  },
+  cookies: {
+    domain: 'חילוק · חילוק עם שארית',
+    claim: 'מה שלא מתחלק שווה נשאר כשארית',
+    mathLine: '14 = 4 × 3 + 2',
+    explain: '14 עוגיות מחולקות ל־4 צלחות, אחת לכל צלחת בתורה. כל צלחת מקבלת 3 עוגיות, ו־2 עוגיות נשארות. זו השארית.',
+  },
+  'share-12': {
+    domain: 'חילוק · חלוקה שווה',
+    claim: 'בחלוקה שווה כל קבוצה מקבלת אותו מספר',
+    mathLine: '12 = 3 × 4',
+    explain: 'יש 12 עצמים. הם נכנסים שווה בשווה ל־3 קבוצות. בכל קבוצה יש 4.',
+  },
+  'jumps-4': {
+    domain: 'כפל · קפיצות שוות בישר',
+    claim: 'כפל הוא קפיצות שוות על הישר',
+    mathLine: '4 × 3 = 12',
+    explain: 'על ישר המספרים קופצים ארבע קפיצות שוות. כל קפיצה באורך 3. מגיעים אל 12.',
+  },
+  'unit-frac': {
+    domain: 'שברים יסודיים · השוואה',
+    claim: 'ככל שהמכנה גדול יותר, החלק קטן יותר',
+    mathLine: '1/2 > 1/3 > 1/4',
+    explain: 'חצי, שליש ורבע מוצגים זה לצד זה. ככל שמחלקים את השלם ליותר חלקים, כל חלק קטן יותר. החצי הוא החלק הגדול ביותר.',
+  },
+  // ── grade 4 ──
+  numberline: {
+    domain: 'ישר המספרים · השוואה ועיגול',
+    claim: 'מעגלים לעשרת הקרובה יותר',
+    mathLine: '47 < 52 → 47 ≈ 50',
+    explain: '47 ו־52 מסומנים על ישר המספרים, ו־47 קטן מ־52. 47 רחוק 3 מ־50 ו־7 מ־40. לכן 47 מעוגל ל־50.',
+  },
+  data: {
+    domain: 'נתונים · שלושה ייצוגים',
+    claim: 'אותם נתונים בטבלה, בעמודות ובעוגה',
+    mathLine: '8 + 5 + 3 = 16',
+    explain: 'סימני ספירה בטבלה סופרים 8 תפוחים, 5 בננות ו־3 ענבים. הם הופכים לעמודות ואחר כך לדיאגרמת עוגה. בכל שלושת הייצוגים יש אותם 16 נתונים.',
+  },
+  fraction: {
+    domain: 'שברים · שבר כחלק משלם',
+    claim: 'רבע הוא חלק אחד מארבעה חלקים שווים',
+    mathLine: 'אותו רבע בשלוש צורות: 1/4',
+    explain: 'עוגה נחתכת לארבעה חלקים שווים, וחלק אחד נצבע. אותו רבע מופיע גם על פס וגם על ישר המספרים. החלק הצבוע הוא רבע.',
+  },
+  'mark-250': {
+    domain: 'ישר המספרים · מיקום עד 1000',
+    claim: '250 נמצא באמצע בין 200 ל־300',
+    mathLine: '200 < 250 < 300',
+    explain: 'על ישר המספרים מסומנים 200 ו־300. הנקודה 250 מסומנת ביניהם. 250 גדול מ־200 וקטן מ־300.',
+  },
+  'equiv-half': {
+    domain: 'שברים שקולים · חצי על הישר',
+    claim: 'חצי, שני רבעים ושלוש שישיות',
+    mathLine: 'אותו מקום על הישר: 1/2 = 2/4 = 3/6',
+    explain: 'חצי, שני רבעים ושלוש שישיות מסומנים על ישר המספרים. שלושתם יושבים על אותה נקודה. לכן הם שברים שקולים.',
+  },
+  'quad-gate': {
+    domain: 'סיווג מצולעים · מרובע מול משולש',
+    claim: 'מרובע הוא צורה עם 4 צלעות',
+    mathLine: '4 צלעות — מרובע',
+    explain: 'צורה עם 4 צלעות נכנסת לסל המרובעים. משולש, עם 3 צלעות בלבד, נשאר בחוץ. רק הצורה עם 4 הצלעות היא מרובע.',
+  },
+  // ── grade 5 ──
+  balance: {
+    domain: 'משוואה פשוטה · מאזניים',
+    claim: 'מה שמורידים מצד אחד מורידים גם מהשני',
+    mathLine: '□ = 8 − 3 = 5',
+    explain: 'על המאזניים 3 ועוד ריבוע ריק מול 8. מורידים 3 משני הצדדים, והמאזניים מתייצבים. בריבוע יש 5.',
+  },
+  'quarter-12': {
+    domain: 'שברים · שבר של מספר',
+    claim: 'רבע מכמות הוא חלק אחד מארבעה',
+    mathLine: '1/4 × 12 = 3',
+    explain: 'יש 12 נקודות. רבע מהן מסומנות — חלק אחד מתוך ארבעה חלקים שווים. רבע מ־12 הוא 3.',
+  },
+  'tenth-cell': {
+    domain: 'שברים עשרוניים · עשירית ומאית',
+    claim: 'עשירית אחת היא עשר מאיות',
+    mathLine: '1/10 = 10 × 1/100',
+    explain: 'פס אחד מסומן, והוא עשירית מהשלם. משבצת אחת בתוך הפס היא מאית. בעשירית אחת יש 10 מאיות.',
+  },
+  // ── grade 6 ──
+  pattern: {
+    domain: 'תבניות וסדרות · גדילה קבועה',
+    claim: 'בכל שלב נוספים 3 ריבועים',
+    mathLine: '11 + 3 = 14',
+    explain: 'בשלבים הראשונים יש 2, 5, 8 ו־11 ריבועים. בכל שלב נוספת עמודה של 3 ריבועים. בשלב החמישי יש 14 ריבועים.',
+  },
+  'two-diag': {
+    domain: 'מרובעים · אלכסונים',
+    claim: 'במרובע יש שני אלכסונים',
+    mathLine: '2 אלכסונים',
+    explain: 'אלכסון ראשון נמתח בין שני קודקודים נגדיים. אחר כך נמתח האלכסון השני. במרובע יש 2 אלכסונים.',
+  },
+  'frac-product': {
+    domain: 'שברים · כפל שברים',
+    claim: 'חצי של שליש הוא שישית',
+    mathLine: '1/2 × 1/3 = 1/6',
+    explain: 'שליש וחצי נצבעים על אותו שלם, זה על זה. החפיפה ביניהם היא חצי מהשליש. זה חלק אחד מתוך שישה — שישית.',
+  },
+  'prime-rect': {
+    domain: 'מספרים ראשוניים · סידור במלבן',
+    claim: 'מספר ראשוני אי אפשר לסדר במלבן',
+    mathLine: '2 × 3 = 6, ול־7 אין מלבן',
+    explain: '6 נקודות מסתדרות במלבן של 2 על 3. 7 נקודות לא נכנסות לשום מלבן. לכן 7 הוא מספר ראשוני.',
+  },
+  // ── grade 7 ──
+  triangle: {
+    domain: 'שטח משולש · חצי מלבן',
+    claim: 'שטח משולש הוא חצי מהמלבן שסביבו',
+    mathLine: 'S = a·h/2 = 6·4/2 = 12',
+    explain: 'מלבן 6 על 4 שטחו 24, ואלכסון מראה שהמשולש הוא חצי ממנו. הקודקוד מחליק על קו מקביל לבסיס, והגובה לא משתנה. השטח נשאר 12.',
+  },
+  'order-ops': {
+    domain: 'סדר פעולות חשבון · כפל לפני חיבור',
+    claim: 'קודם כפל, אחר כך חיבור',
+    mathLine: 'קודם כפל: 3 × 4 = 12, ואז 2 + 12 = 14',
+    explain: 'בתרגיל מחשבים קודם את הכפל: 3 כפול 4 הם 12. אחר כך מוסיפים 2 ומקבלים 14. עם סוגריים סביב החיבור היה יוצא 20, ולכן התשובה היא 14.',
+  },
+  'peri-rect': {
+    domain: 'היקף · היקף מלבן',
+    claim: 'היקף הוא סכום כל הצלעות',
+    mathLine: '6 + 4 + 6 + 4 = 20',
+    explain: 'הולכים לאורך השפה של מלבן 6 על 4. כל צלע שעוברים נוספת לסכום. ההיקף הוא 20.',
+  },
+  'obtuse-ht': {
+    domain: 'משולשים · גובה במשולש קהה־זווית',
+    claim: 'במשולש קהה הגובה יכול ליפול מחוץ לו',
+    mathLine: 'הגובה פוגש את המשך הבסיס ב־90°',
+    explain: 'במשולש קהה־זווית יורד גובה אל הבסיס. הגובה עובר מחוץ לצורה. הוא פוגש את המשך הבסיס בזווית ישרה.',
+  },
+  'sup-angles': {
+    domain: 'זוויות · זוויות צמודות',
+    claim: 'זוויות צמודות משלימות ל־180°',
+    mathLine: '60° + 120° = 180°',
+    explain: 'זווית של 60° וזווית של 120° נצמדות זו לזו. יחד הן יוצרות קו ישר. הסכום שלהן 180°.',
+  },
+  'ratio-beads': {
+    domain: 'יחס · הכפלה בשלם',
+    claim: 'הכפלת שני חלקי היחס שומרת עליו',
+    mathLine: '2 : 3 = 4 : 6',
+    explain: 'יש 2 חרוזים מול 3 חרוזים. שני הצדדים מוכפלים פי 2, ומתקבלים 4 מול 6. היחס נשאר אותו יחס.',
+  },
+  'signed-jump': {
+    domain: 'מספרים מכוונים · חיבור על הישר',
+    claim: 'חיבור מספר חיובי הוא קפיצה ימינה',
+    mathLine: '−2 + 5 = 3',
+    explain: 'מתחילים במינוס 2 על ישר המספרים. קופצים 5 צעדים ימינה ועוברים דרך 0. מגיעים אל 3.',
+  },
+  'coord-walk': {
+    domain: 'מערכת צירים · קואורדינטות',
+    claim: 'קודם צועדים לאורך x, אחר כך לאורך y',
+    mathLine: '(3, 2)',
+    explain: 'נקודה יוצאת מראשית הצירים. היא צועדת 3 יחידות ימינה ואז 2 יחידות למעלה. היא מגיעה לנקודה שבה x הוא 3 ו־y הוא 2.',
+  },
+  'cube-8': {
+    domain: 'נפח קובייה · חזקה שלישית',
+    claim: 'קובייה שצלעה 2 בנויה מ־8 קוביות',
+    mathLine: '2³ = 2 × 2 × 2 = 8',
+    explain: 'קובייה שצלעה 2 נבנית מקוביות יחידה. בכל שכבה 2 על 2 קוביות, ויש 2 שכבות. יחד 8 קוביות.',
+  },
+  'box-vol': {
+    domain: 'נפח · תיבה בקוביות יחידה',
+    claim: 'נפח תיבה הוא אורך כפול רוחב כפול גובה',
+    mathLine: '3 × 2 × 2 = 12',
+    explain: 'קוביות יחידה ממלאות תיבה באורך 3, ברוחב 2 ובגובה 2. סופרים את כל הקוביות. נפח התיבה הוא 12.',
+  },
+  'signed-ops': {
+    domain: 'סדר פעולות · מספרים מכוונים',
+    claim: 'גם עם מספרים שליליים — כפל לפני חיבור',
+    mathLine: 'קודם כפל: 2 × 4 = 8, ואז (−3) + 8 = 5',
+    explain: 'גם כאן מחשבים קודם את הכפל: 2 כפול 4 הם 8. אחר כך מחברים מינוס 3 ועוד 8. התוצאה היא 5.',
+  },
+  'angle-sum': {
+    domain: 'זוויות · סכום זוויות במשולש',
+    claim: 'סכום הזוויות במשולש הוא 180°',
+    mathLine: '∠ + ∠ + ∠ = 180°',
+    explain: 'שלוש הזוויות של המשולש נפרדות ממנו. הן נצמדות זו לזו על קו ישר. הסכום שלהן 180°.',
+  },
+  'map-scale': {
+    domain: 'קנה מידה · מהמפה למציאות',
+    claim: 'מכפילים את האורך במפה בקנה המידה',
+    mathLine: '4 × 5 = 20',
+    explain: 'על המפה מסומן קטע באורך 4. הוא מוכפל לפי קנה המידה, פי 5. האורך במציאות הוא 20.',
+  },
+  'sq-stretch': {
+    domain: 'מרובעים · ריבוע ומלבן',
+    claim: 'ריבוע שנמתח למלבן נשאר עם 4 צלעות',
+    mathLine: '4 צלעות',
+    explain: 'ריבוע נמתח והופך למלבן. הצלעות משנות אורך, אבל אף צלע לא נוספת ולא נעלמת. למלבן יש 4 צלעות, כמו לריבוע.',
+  },
+  'rect-count': {
+    domain: 'שטח והיקף · מלבן',
+    claim: 'שטח סופרים בפנים, היקף סופרים על השפה',
+    mathLine: '4 × 3 = 12, P = 14',
+    explain: 'במלבן 4 על 3 סופרים את המשבצות שבפנים: יש 12, וזה השטח. אחר כך סופרים את השפה סביבו: 14 יחידות, וזה ההיקף.',
+  },
+  'l-split': {
+    domain: 'שטח · צורה מורכבת',
+    claim: 'מפרקים צורה מורכבת למלבנים ומחברים',
+    mathLine: '12 + 4 = 16',
+    explain: 'צורת L נפרדת לשני מלבנים, של 12 ושל 4. החלקים חוזרים למקומם. השטח של כל הצורה הוא 16.',
+  },
+  'trap-area': {
+    domain: 'שטח · טרפז',
+    claim: 'שטח טרפז: ממוצע הבסיסים כפול הגובה',
+    mathLine: '(6 + 2) / 2 × 3 = 12',
+    explain: 'לטרפז בסיסים באורך 6 ו־2 וגובה 3. ממוצע הבסיסים הוא 4. 4 כפול הגובה 3 נותן שטח 12.',
+  },
+  'para-rect': {
+    domain: 'שטח · מקבילית ומלבן',
+    claim: 'מקבילית שהופכת למלבן שומרת על שטחה',
+    mathLine: 'הגובה נשאר, השטח נשאר',
+    explain: 'מקבילית נמתחת והופכת למלבן. הגובה שלה נשאר אותו גובה. לכן השטח לא משתנה.',
+  },
+  'angle-kinds': {
+    domain: 'זוויות · חדה, ישרה וקהה',
+    claim: 'ב־90° הזווית ישרה, ומעבר לזה קהה',
+    mathLine: 'חדה: פחות מ־90°, ישרה: 90°, קהה: יותר מ־90°',
+    explain: 'זווית חדה מתחילה להיפתח. ב־90° מופיע סימן הריבוע, וזו זווית ישרה. הפתיחה ממשיכה, והזווית הופכת לקהה.',
+  },
+  // ── grade 8 ──
+  pythagoras: {
+    domain: 'משפט פיתגורס · ריבועי הצלעות',
+    claim: 'ריבועי הניצבים ממלאים את ריבוע היתר',
+    mathLine: 'c² = 9 + 16 = 25 → c = 5',
+    explain: 'על הניצבים 3 ו־4 של משולש ישר־זווית בנויים ריבועים של 9 ו־16 משבצות. המשבצות עוברות וממלאות בדיוק את הריבוע שעל היתר. יש בו 25 משבצות, ולכן היתר הוא 5.',
+  },
+  'mean-cols': {
+    domain: 'סטטיסטיקה · ממוצע',
+    claim: 'הממוצע הוא הגובה שבו העמודות מתאזנות',
+    mathLine: '(2 + 4 + 6) / 3 = 4',
+    explain: 'יש שלוש עמודות בגובה 2, 4 ו־6. העמודות מתאזנות — מה שעודף בגבוהה עובר לנמוכה. כל אחת נעצרת על 4, הממוצע.',
+  },
+  'circ-unroll': {
+    domain: 'מעגל · היקף',
+    claim: 'היקף המעגל הוא קצת יותר משלושה קטרים',
+    mathLine: 'C = πd ≈ 3.14d',
+    explain: 'היקף המעגל נפרש לקו ישר. משווים את הקו לקוטר. הקו ארוך קצת משלושה קטרים — פי פאי.',
+  },
+  'corr-angles': {
+    domain: 'ישרים מקבילים · זוויות מתאימות',
+    claim: 'זוויות מתאימות בין ישרים מקבילים שוות',
+    mathLine: 'זוויות מתאימות שוות',
+    explain: 'חותך עובר דרך שני ישרים מקבילים. בכל נקודת חיתוך מסומנת זווית באותו מקום. שתי הזוויות המתאימות שוות.',
+  },
+  exterior: {
+    domain: 'משולשים · זווית חיצונית',
+    claim: 'זווית חיצונית שווה לשתי הפנימיות הרחוקות',
+    mathLine: '90° + 60° = 150°',
+    explain: 'המשך של צלע יוצר זווית חיצונית למשולש. שתי הזוויות הפנימיות שאינן צמודות לה הן 90° ו־60°. הזווית החיצונית שווה לסכומן, 150°.',
+  },
+  'sas-snap': {
+    domain: 'חפיפת משולשים · צלע־זווית־צלע',
+    claim: 'שתי צלעות והזווית שביניהן קובעות משולש',
+    mathLine: 'צלע־זווית־צלע',
+    explain: 'בשני משולשים מסומנות אותן שתי צלעות ואותה זווית שביניהן. משולש אחד זז ונצמד לשני. הם מתלכדים, ולכן המשולשים חופפים.',
+  },
+  'para-perp': {
+    domain: 'ישרים · מקבילים ומאונכים',
+    claim: 'מקבילים לא נפגשים, מאונכים נפגשים ב־90°',
+    mathLine: 'מרחק שווה · 90°',
+    explain: 'שני ישרים נשארים באותו מרחק זה מזה, ולכן הם מקבילים. שני ישרים אחרים נפגשים בזווית ישרה. הם מאונכים.',
+  },
+  similar: {
+    domain: 'דמיון משולשים · הכפלת צלעות',
+    claim: 'במשולשים דומים הזוויות נשארות שוות',
+    mathLine: 'פי 2, אותן זוויות',
+    explain: 'משולש גדל פי 2, וכל הצלעות שלו מוכפלות. סימני הזוויות נשארים זהים. המשולשים דומים.',
+  },
+  'cyl-stack': {
+    domain: 'נפח · גליל בשכבות',
+    claim: 'נפח גליל הוא שטח הבסיס כפול הגובה',
+    mathLine: 'V = B·h = 4B',
+    explain: 'ארבע שכבות שוות נערמות וממלאות את הגליל. כל שכבה בגובה יחידה אחת, והגובה של הגליל הוא 4. הנפח הוא 4 פעמים שטח הבסיס.',
+  },
+  slope: {
+    domain: 'פונקציה קווית · שיפוע',
+    claim: 'שיפוע הוא כמה עולים בכל צעד ימינה',
+    mathLine: 'rise / run = 2',
+    explain: 'על הישר עושים צעד אחד ימינה ושניים למעלה. אותו צעד חוזר לאורך הישר. השיפוע הוא 2.',
+  },
+  // ── grade 9 ──
+  'area-model': {
+    domain: 'כפל אלגברי · מודל שטח',
+    claim: 'כל איבר כפול כל איבר — ארבעה תאים',
+    mathLine: '(x+3)(x+2) = x² + 5x + 6',
+    explain: 'מלבן שצלעותיו x ועוד 3 ו־x ועוד 2 מתחלק לארבעה תאים: x בריבוע, 2x, 3x ו־6. מאחדים את 2x ו־3x ל־5x. מתקבל x בריבוע ועוד 5x ועוד 6.',
+  },
+  'quad-tree': {
+    domain: 'מרובעים · משפחת המרובעים',
+    claim: 'ריבוע הוא גם מלבן וגם מעוין',
+    mathLine: 'ריבוע יורש מלבן ומעוין',
+    explain: 'בעץ המרובעים, המלבן והמעוין נמצאים מעל הריבוע. הריבוע יורש את התכונות של שניהם. לכן ריבוע הוא גם מלבן וגם מעוין.',
+  },
+  transform: {
+    domain: 'טרנספורמציות · שיקוף, סיבוב והזזה',
+    claim: 'שיקוף, סיבוב והזזה לא משנים את הצורה',
+    mathLine: 'שיקוף, סיבוב ב־90° והזזה',
+    explain: 'משולש משתקף סביב ישר. אחר כך הוא מסתובב 90° סביב נקודה, ולבסוף מוזז. בכל שלב הצורה נשארת חופפת למקור.',
+  },
+  'area-x4': {
+    domain: 'שטח · הגדלה פי 2',
+    claim: 'צלע כפולה נותנת שטח גדול פי 4',
+    mathLine: 'צלע × 2, שטח × 4',
+    explain: 'הצלע של הריבוע מוכפלת. בריבוע הגדול נכנסים ארבעה ריבועים כמו המקורי. השטח גדל פי 4.',
+  },
+  'two-coins': {
+    domain: 'הסתברות · מרחב מדגם',
+    claim: 'לשתי הטלות מטבע יש ארבע תוצאות שוות',
+    mathLine: 'עץ־עץ: 1 מתוך 4 = 1/4',
+    explain: 'מטילים מטבע הוגן פעמיים. יש ארבע תוצאות שוות־הסתברות, ועץ־עץ היא אחת מהן. ההסתברות לשני עצים היא רבע.',
+  },
+  'diff-sq': {
+    domain: 'אלגברה · הפרש ריבועים',
+    claim: 'הפרש ריבועים נפרש למלבן אחד',
+    mathLine: '5² − 3² = 25 − 9 = 16',
+    explain: 'מריבוע של 25 משבצות מוציאים ריבוע של 9. מה שנשאר נפרש למלבן אחד. השטח נשמר: 16.',
+  },
+  parab: {
+    domain: 'פונקציה ריבועית · הזזה אנכית',
+    claim: 'המספר שמוסיפים ל־x² מזיז את הקודקוד',
+    mathLine: 'y = x² + 3',
+    explain: 'הפרבולה זזה לאורך ציר y, והקודקוד זז איתה. המספר שליד הקודקוד מראה את הגובה שלו. כשמוסיפים 3, ה־y של הקודקוד הוא 3.',
+  },
+  'half-eq': {
+    domain: 'משולשים מיוחדים · 30°–60°–90°',
+    claim: 'מול זווית של 30° נמצא חצי מהיתר',
+    mathLine: '80 = 160 / 2',
+    explain: 'משולש שווה־צלעות נחצה לשניים. כל חצי הוא משולש של 30°, 60° ו־90°. הצלע שמול 30° היא חצי מהיתר: 80 מתוך 160.',
+  },
 };
 
-const DOMAIN_BY_VARIANT = new Map(
-  Object.entries(DOMAINS).flatMap(([domain, variants]) => variants.map((v) => [v, domain] as const))
-);
+const FALLBACK_COPY: GradeLoopCopy = {
+  domain: 'הדגמה מתמטית',
+  claim: 'הדגמה מתמטית',
+  mathLine: '',
+  explain: 'הדגמה קצרה של רעיון מרכזי בנושא, מתוך דפי העבודה במאגר.',
+};
 
-export function gradeLoopDomain(variant: string): string {
-  return DOMAIN_BY_VARIANT.get(variant) ?? 'הדגמה מתמטית';
+export function gradeLoopCopy(variant: string): GradeLoopCopy {
+  return GRADE_LOOP_COPY[variant] ?? FALLBACK_COPY;
 }
 
-/** The fixed explanation line under each title; no per-loop copy is invented. */
-export const GRADE_LOOP_EXPLANATION = 'הדגמה קצרה של רעיון מרכזי בנושא, מתוך דפי העבודה במאגר.';
+export function gradeLoopDomain(variant: string): string {
+  return gradeLoopCopy(variant).domain;
+}
+
+/** A formula run: starts and ends on a number, symbol or Latin letter, never on Hebrew. */
+const MATH_RUN = /[\d(−\-a-zA-Z□∠√π][\d\sa-zA-Z×÷+\-−=<>≈≠·.,/()²³°□∠√π:→%]*[\d)a-zA-Z²³°□%]|\d/g;
+
+/**
+ * Splits a caption into prose and formula runs. Formula runs render as
+ * dir="ltr" isolates, so a Hebrew caption keeps RTL order and each formula
+ * keeps its own order.
+ */
+export function gradeLoopMathParts(line: string): Array<{ text: string; math: boolean }> {
+  const parts: Array<{ text: string; math: boolean }> = [];
+  let at = 0;
+  for (const match of line.matchAll(MATH_RUN)) {
+    const start = match.index ?? 0;
+    if (start > at) parts.push({ text: line.slice(at, start), math: false });
+    parts.push({ text: match[0], math: true });
+    at = start + match[0].length;
+  }
+  if (at < line.length) parts.push({ text: line.slice(at), math: false });
+  return parts;
+}
 
 /**
  * Completed-frame time in seconds (SPECS[variant].hold in conceptLoops.ts):
@@ -199,7 +648,7 @@ export function buildGradeLoopPool(grade: GradeHubGrade): GradeLoopEntry[] {
     variant: loop.variant,
     label: loop.label,
     href: loop.topic ?? fallback,
-    domain: gradeLoopDomain(loop.variant),
+    ...gradeLoopCopy(loop.variant),
     hold: GRADE_LOOP_HOLD_S[loop.variant],
   }));
   const defaultVariant = GRADE_LOOP_DEFAULTS[grade];
