@@ -17,20 +17,31 @@ export const CALCULATOR_PREVIEW = [
   [['π','×','5','x²'], 'π×5²', '78.54'],
 ] as const;
 
+const WS_BAND_GRADES: Record<string, readonly string[]> = {
+  'ws-ysodi': ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳'],
+  'ws-hatzava': ['ז׳', 'ח׳', 'ט׳'],
+};
+const isWorksheetsKey = (key: string) => key === 'ws' || key in WS_BAND_GRADES;
+export function worksheetsPeekTopics(key: string, data: PeekLiveData): PeekLiveData['topics'] {
+  const band = WS_BAND_GRADES[key];
+  return band ? data.topics.filter(t => band.includes(t.grade)) : data.topics;
+}
+
 export function resolveExactPeek(key: string, data: PeekLiveData = EMPTY_DATA): PeekEntry | null {
   const current = resolvePeek(key === 'google' ? 'learn' : key, data.gradeCounts);
   if (!current) return null;
   return {
     ...current,
     ...(key === 'google' ? { title: 'התחברות עם Google', tag: 'הלמידה שלי' } : {}),
-    blocks: EXACT_PEEK_BLOCKS[key] || current.blocks,
+    blocks: EXACT_PEEK_BLOCKS[key] || (isWorksheetsKey(key) ? EXACT_PEEK_BLOCKS.ws : undefined) || current.blocks,
   };
 }
 
 function specialPreview(key: string, data: PeekLiveData): string {
   if (key === 'tools') return `<div class="exact-peek-calc"><div class="exact-peek-screen"><span data-live="expr">√144 =</span><span data-live="res">12</span></div><div class="exact-peek-keys">${CALCULATOR_KEYS.map(k => `<span data-key="${escape(k)}" data-kind="${k === '=' ? 'equals' : /^[0-9.]$/.test(k) ? 'number' : 'function'}">${escape(k)}</span>`).join('')}</div></div>`;
-  if (key === 'ws' && data.topics.length) return `<div class="exact-peek-rows" dir="rtl">${[0,1,2].map(i => {
-    const topic = data.topics[i % data.topics.length];
+  const wsTopics = isWorksheetsKey(key) ? worksheetsPeekTopics(key, data) : [];
+  if (wsTopics.length) return `<div class="exact-peek-rows" dir="rtl">${[0,1,2].map(i => {
+    const topic = wsTopics[i % wsTopics.length];
     return `<div data-live="row"><span data-live="g">${escape(topic.grade)}</span><span data-live="t">${escape(topic.title)}</span><span class="exact-peek-levels"><i></i><i></i><i></i></span></div>`;
   }).join('')}</div>`;
   if (key === 'about') return `<div class="exact-peek-about" dir="rtl"><img data-live="logo" src="/design-exact/assets/logo.png" alt=""><div><strong>נועם דורון</strong><svg viewBox="0 0 100 10"><path data-live="uline" pathLength="1" d="M2 6 C 30 1, 60 9, 98 4" fill="none" stroke="#e5735c" stroke-width="3" stroke-linecap="round" stroke-dasharray="1"></path></svg><span>דפי עבודה במתמטיקה לכיתות א׳–ט׳</span></div></div>`;
@@ -108,9 +119,10 @@ export function initExactLinkPeek(data: PeekLiveData = EMPTY_DATA): () => void {
       const flash=(k:string)=>{const el=p.querySelector(`[data-key="${k}"]`);if(el)animate(el,[{transform:'scale(1)',background:'#f2c46b'},{transform:'scale(.88)',background:'#f2c46b',offset:.3},{transform:'scale(1)'}],{duration:300});};
       liveTimer=window.setInterval(()=>{if(blocked())return;const [ks,display,result]=CALCULATOR_PREVIEW[si];if(ki<ks.length){flash(ks[ki]);ki++;ex.textContent=display.slice(0,Math.ceil(display.length*ki/ks.length));rs.textContent='';}else if(ki===ks.length){flash('=');ex.textContent=display+' =';rs.textContent=result;animate(rs,[{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'none'}],{duration:250});ki++;}else if(ki<ks.length+4)ki++;else{flash('C');ex.textContent=rs.textContent='';ki=0;si=(si+1)%CALCULATOR_PREVIEW.length;}},330);
     }
-    if(key==='ws'&&data.topics.length){
+    const wsTopics=isWorksheetsKey(key)?worksheetsPeekTopics(key,data):[];
+    if(wsTopics.length){
       let off=0;const rows=qa('row');
-      const fill=()=>rows.forEach((row,i)=>{const topic=data.topics[(off+i)%data.topics.length];row.querySelector('[data-live="g"]')!.textContent=topic.grade;row.querySelector('[data-live="t"]')!.textContent=topic.title;});fill();
+      const fill=()=>rows.forEach((row,i)=>{const topic=wsTopics[(off+i)%wsTopics.length];row.querySelector('[data-live="g"]')!.textContent=topic.grade;row.querySelector('[data-live="t"]')!.textContent=topic.title;});fill();
       liveTimer=window.setInterval(()=>{if(blocked())return;rows.forEach((row,i)=>{const a=animate(row,[{transform:'none',opacity:1},{transform:'translateY(-44px)',opacity:i?1:0}],{duration:380,easing:'cubic-bezier(.5,0,.3,1)'});if(a&&i===rows.length-1)a.onfinish=()=>{if(version!==revision||blocked())return;off++;fill();animate(row,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:260});};});},1700);
     }
     if(key==='about'){

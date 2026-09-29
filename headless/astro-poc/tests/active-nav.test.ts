@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { readFileSync } from 'node:fs';
 import { parse } from '@astrojs/compiler';
-import { normalizeNavPath, resolveActiveNav } from '../src/lib/activeNav';
+import { normalizeNavPath, resolveActiveNav, resolveWorksheetsNavBand } from '../src/lib/activeNav';
 
 describe('M37 resolveActiveNav', () => {
   it('home is exact / only (trailing slash normalized)', () => {
@@ -36,6 +36,36 @@ describe('M37 resolveActiveNav', () => {
     assert.notEqual(resolveActiveNav('/grade-7'), 'home');
   });
 
+  it('worksheets band: level / grade / hubs — at most one of ysodi|hatzava', () => {
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('level=ysodi')),
+      'ysodi'
+    );
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('level=hatzava')),
+      'hatzava'
+    );
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('grade=3')),
+      'ysodi'
+    );
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('grade=8')),
+      'hatzava'
+    );
+    // Explicit grade wins over level for band highlight.
+    assert.equal(
+      resolveWorksheetsNavBand('/worksheets', new URLSearchParams('level=ysodi&grade=8')),
+      'hatzava'
+    );
+    assert.equal(resolveWorksheetsNavBand('/grade-2'), 'ysodi');
+    assert.equal(resolveWorksheetsNavBand('/grade-9'), 'hatzava');
+    assert.equal(resolveWorksheetsNavBand('/equations-grade-7'), 'hatzava');
+    assert.equal(resolveWorksheetsNavBand('/worksheets'), 'hatzava');
+    assert.equal(resolveWorksheetsNavBand('/aboutus'), null);
+    assert.equal(resolveWorksheetsNavBand('/'), null);
+  });
+
   it('maps blog archives and posts', () => {
     assert.equal(resolveActiveNav('/blog'), 'blog');
     assert.equal(resolveActiveNav('/blog/'), 'blog');
@@ -52,7 +82,9 @@ describe('M37 resolveActiveNav', () => {
 
   it('SiteHeader sets aria-current=page only on the matching destination', async () => {
     const html = readFileSync('src/components/SiteHeader.astro', 'utf8');
-    assert.ok(html.includes("resolveActiveNav"));
+    assert.ok(html.includes('resolveActiveNav'));
+    assert.ok(html.includes('resolveWorksheetsNavBand'));
+    assert.equal(html.includes('href="/worksheets"'), false, 'single worksheets nav item must be split');
     assert.ok(!html.includes('activeNav="home"'));
     const { ast } = await parse(html);
     const anchors: any[] = [];
@@ -61,21 +93,37 @@ describe('M37 resolveActiveNav', () => {
       for (const child of node.children ?? []) visit(child);
     };
     visit(ast);
+    const currentExpr = (href: string) => {
+      const matches = anchors.filter(node =>
+        node.attributes.some((attr: any) => attr.name === 'href' && attr.value === href) &&
+        node.attributes.some((attr: any) => attr.name === 'aria-current'));
+      assert.ok(matches.length, `missing route-aware anchor: ${href}`);
+      return matches.map(node => {
+        const current = node.attributes.find((attr: any) => attr.name === 'aria-current');
+        assert.equal(current.kind, 'expression');
+        return current.value as string;
+      });
+    };
     const destinations = {
-      home: '/', about: '/aboutus', worksheets: '/worksheets', blog: '/blog',
+      home: '/', about: '/aboutus', blog: '/blog',
       tools: '/math-tools', highschool: '/high-school-math', learning: '/learning.html',
     };
     for (const [key, href] of Object.entries(destinations)) {
-      const anchor = anchors.find(node =>
-        node.attributes.some((attr: any) => attr.name === 'href' && attr.value === href) &&
-        node.attributes.some((attr: any) => attr.name === 'aria-current'));
-      assert.ok(anchor, `missing route-aware anchor: ${href}`);
-      const current = anchor.attributes.find((attr: any) => attr.name === 'aria-current');
-      assert.equal(current.kind, 'expression');
-      const evaluate = new Function('active', `return (${current.value});`);
-      for (const active of [...Object.keys(destinations), null]) {
-        assert.equal(evaluate(active), active === key ? 'page' : undefined,
-          `${href} with active=${active}`);
+      for (const expr of currentExpr(href)) {
+        const evaluate = new Function('active', 'worksheetsBand', `return (${expr});`);
+        for (const active of [...Object.keys(destinations), 'worksheets', null]) {
+          assert.equal(evaluate(active, null), active === key ? 'page' : undefined,
+            `${href} with active=${active}`);
+        }
+      }
+    }
+    const bands = { ysodi: '/worksheets?level=ysodi', hatzava: '/worksheets?level=hatzava' };
+    for (const [band, href] of Object.entries(bands)) {
+      const [expr] = currentExpr(href);
+      const evaluate = new Function('active', 'worksheetsBand', `return (${expr});`);
+      for (const other of [...Object.keys(bands), null]) {
+        assert.equal(evaluate('worksheets', other), other === band ? 'page' : undefined,
+          `${href} with worksheetsBand=${other}`);
       }
     }
   });

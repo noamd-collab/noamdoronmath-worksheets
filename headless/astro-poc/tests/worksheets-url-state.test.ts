@@ -12,6 +12,7 @@ import {
   worksheetsSearchParams,
   worksheetsStateEqual,
 } from '../src/lib/worksheetsUrlState.ts';
+import { resolveWorksheetsGrade } from '../src/lib/grades.ts';
 
 describe('worksheetsUrlState contract (M32)', () => {
   it('round-trips grade + q + group + cross + track', () => {
@@ -143,5 +144,25 @@ describe('worksheetsUrlState contract (M32)', () => {
       src,
       /topicBack\.href =\s*"\/worksheets\?grade=" \+\s*g \+\s*"&topic="/
     );
+  });
+
+  it('level=ysodi|hatzava picks band default grade when grade is absent', () => {
+    const ysodi = parseWorksheetsUrlState(new URLSearchParams('level=ysodi'));
+    assert.equal(ysodi.grade, 1);
+    const hatzava = parseWorksheetsUrlState(new URLSearchParams('level=hatzava'));
+    assert.equal(hatzava.grade, 7);
+  });
+
+  it('explicit grade wins over level param', () => {
+    const parsed = parseWorksheetsUrlState(new URLSearchParams('level=ysodi&grade=8'));
+    assert.equal(parsed.grade, 8);
+  });
+
+  it('resolveWorksheetsGrade mirrors level defaults for SSR', () => {
+    assert.equal(resolveWorksheetsGrade({ grade: null, level: 'ysodi' }).grade, 1);
+    assert.equal(resolveWorksheetsGrade({ grade: null, level: 'hatzava' }).grade, 7);
+    assert.equal(resolveWorksheetsGrade({ grade: null, level: null }).grade, 7);
+    assert.equal(resolveWorksheetsGrade({ grade: '3', level: 'hatzava' }).grade, 3);
+    assert.equal(resolveWorksheetsGrade({ grade: 'x', level: 'ysodi' }).invalid, true);
   });
 });

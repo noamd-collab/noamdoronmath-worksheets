@@ -25,6 +25,18 @@ test('worksheet and blog previews use supplied real data, never reference TP sam
   assert.doesNotMatch(renderExactPeek('ws',{...live,topics:[]})!,/data-live="row"/);
 });
 
+test('split worksheets nav previews reuse the exact live rows, filtered to their school band', () => {
+  const ysodi=renderExactPeek('ws-ysodi',live)!;
+  assert.match(ysodi,/תרגול אמיתי/);
+  assert.doesNotMatch(ysodi,/נתון אמיתי/);
+  assert.match(ysodi,/דפי עבודה ליסודי/);
+  const hatzava=renderExactPeek('ws-hatzava',live)!;
+  assert.match(hatzava,/נתון אמיתי/);
+  assert.doesNotMatch(hatzava,/תרגול אמיתי/);
+  assert.match(hatzava,/דפי עבודה לחטיבת הביניים/);
+  assert.equal(resolveExactPeek('ws-hatzava',live)!.blocks,EXACT_PEEK_BLOCKS.ws);
+});
+
 test('actual grade counts survive and unknown keys do not reuse a previous tooltip', () => {
   assert.match(resolveExactPeek('g:7',live)!.tag,/43 נושאים/);
   assert.equal(resolveExactPeek('g:42',live),null);
