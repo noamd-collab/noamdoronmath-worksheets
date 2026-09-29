@@ -139,7 +139,10 @@ describe('worksheetsUrlState contract (M32)', () => {
     const src = readFileSync('public/worksheet-viewer-noam.html', 'utf8');
     assert.match(src, /worksheetsHrefFromReturn/);
     assert.match(src, /liveHost/);
+    assert.match(src, /onHeadlessHost/);
+    assert.match(src, /worksheetsCatalogOrigin/);
     assert.match(src, /prefer live \/worksheets catalog/);
+    assert.match(src, /www\.noamdoronmath\.co\.il/);
     assert.doesNotMatch(
       src,
       /topicBack\.href =\s*"\/worksheets\?grade=" \+\s*g \+\s*"&topic="/
