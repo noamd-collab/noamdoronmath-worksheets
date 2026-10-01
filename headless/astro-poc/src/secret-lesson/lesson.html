@@ -299,7 +299,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
   }
 
   const app = {
-    state: { idx: 0, split: 150, dragged: false, dragging: false, done: false, wrong: [], hint: 0, fb: null, mood: 'idle', trans: null, msg: '', msgId: 0, typing: false, attn: false, flash: null, flashN: 0, sound: true, target: 'home', below: false, res: {}, retry: false, demo: null, demoJoined: false, demoDone: false, revealed: [] },
+    state: { idx: 0, split: 150, dragged: false, dragging: false, done: false, wrong: [], hint: 0, fb: null, mood: 'idle', trans: null, msg: '', msgId: 0, typing: false, attn: false, flash: null, flashN: 0, sound: true, target: 'home', below: false, above: false, res: {}, retry: false, demo: null, demoJoined: false, demoDone: false, revealed: [] },
     props: { startStep: 1, idleNudgeSec: 9, objectFeedback: true, bubbleShape: 'cycle', wordsPerLine: 4 },
     timers: [], anims: [], demoAnims: [], wrongN: 0, px: null, py: null, rv: null, _vb: null, _lbl: {},
     get rm() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); },
@@ -393,18 +393,22 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       }, this.rm ? 0 : 380);
     },
     place(anim) {
+      if (this._placing) return;
       const card = $('card'), u = $('float'), bb = $('bubble'); if (!card || !u || !bb) return;
       const c = card.getBoundingClientRect(), tg = this.state.target;
       let el = tg === 'hint' ? this.q('[data-hintbtn]') : tg === 'handle' ? this.q('[data-handle]') : tg === 'demo' ? this.q('[data-demo-anchor]') : null;
       if (el && !el.getBoundingClientRect().width) el = null;
       let x, y, below = false;
       if (!el) {
-        const s = $('home'); if (!s) return; const r = s.getBoundingClientRect();
-        if (r.width < 160) return;
-        bb.style.maxWidth = Math.max(140, Math.min(340, r.width - 88)) + 'px';
+        const s = $('home'); if (!s) return;
+        const r0 = s.getBoundingClientRect();
+        if (r0.width < 160) return;
+        bb.style.maxWidth = Math.max(140, Math.min(340, r0.width - 88)) + 'px';
         const uw = bb.offsetWidth + 88, uh = Math.max(bb.offsetHeight, 78);
-        if (s.style.height !== uh + 'px') s.style.height = uh + 'px';
-        x = r.right - c.left - uw; y = r.top - c.top;
+        const need = uh + 24;
+        if (Math.abs(s.offsetHeight - need) > 1) s.style.height = need + 'px';
+        const r = s.getBoundingClientRect();
+        x = r.right - c.left - uw; y = r.bottom - c.top - uh - 4;
       } else {
         const t = el.getBoundingClientRect(), pw = 30, avail = t.left - c.left - 6 - 88 - pw - 4;
         if (avail >= 150) {
@@ -419,8 +423,22 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         const uw = bb.offsetWidth + 88 + pw, uh = Math.max(bb.offsetHeight, 78);
         x = Math.max(6, Math.min(c.width - uw - 6, x)); y = Math.max(6, Math.min(c.height - uh - 6, y));
       }
-      y = this.clearOfCopy(x, y, c);
-      if (below !== this.state.below) this.setState({ below });
+      let fit = this.fitFloat(x, y, c);
+      if (!fit.clear) {
+        const wide = bb.style.maxWidth;
+        bb.style.maxWidth = '168px';
+        const tight = this.fitFloat(x, y, c);
+        if (tight.clear) fit = tight;
+        else bb.style.maxWidth = wide;
+      }
+      x = fit.x; y = fit.y;
+      if (fit.above) below = false;
+      else if (fit.below) below = true;
+      if (below !== this.state.below || !!fit.above !== !!this.state.above) {
+        this._placing = true;
+        this.setState({ below, above: !!fit.above });
+        this._placing = false;
+      }
       const first = this.px == null, dx = first ? 0 : x - this.px, dy = first ? 0 : y - this.py;
       if (!first && Math.abs(dx) < .5 && Math.abs(dy) < .5) return;
       u.style.transition = (!anim || first || this.rm) ? 'none' : '';
@@ -432,28 +450,75 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       }
       this.px = x; this.py = y;
     },
-    clearOfCopy(x, y, c) {
-      const u = $('float'); if (!u) return y;
-      const fh = u.offsetHeight || 78, fw = u.offsetWidth || 160;
-      let top = c.top + y, bottom = top + fh, left = c.left + x, right = left + fw;
-      const blockers = [$('title'), $('sub'), $('next')].concat([...u.ownerDocument.querySelectorAll('#opts .opt')]);
-      blockers.forEach((el) => {
-        if (!el || el.hidden) return;
-        const range = document.createRange();
-        range.selectNodeContents(el);
-        const rects = range.getClientRects();
-        const list = rects.length ? rects : [el.getBoundingClientRect()];
-        for (const tr of list) {
-          if (tr.width < 2 || tr.height < 2) continue;
-          const ox = Math.min(right, tr.right) - Math.max(left, tr.left);
-          const oy = Math.min(bottom, tr.bottom) - Math.max(top, tr.top);
-          if (ox > 2 && oy > 2) {
-            const lift = oy + 8;
-            y -= lift; top -= lift; bottom -= lift;
-          }
-        }
+    shown(el) {
+      for (let n = el; n && n !== document.body; n = n.parentElement) {
+        if (n.hidden) return false;
+        const s = getComputedStyle(n);
+        if (s.display === 'none' || s.visibility === 'hidden' || parseFloat(s.opacity) === 0) return false;
+      }
+      const r = el.getBoundingClientRect();
+      return r.width > 2 && r.height > 2;
+    },
+    blockedRects() {
+      const out = [];
+      const add = (el) => { if (el && this.shown(el)) out.push(el.getBoundingClientRect()); };
+      ['hintBox', 'title', 'sub', 'next', 'cue', 'fb', 'stepLabel', 'scoreChip', 'soundBtn', 'square', 'slots'].forEach((id) => add($(id)));
+      const track = $('app').querySelector('.track'); add(track);
+      const head = $('app').querySelector('.head'); add(head);
+      $('app').querySelectorAll('#opts .opt').forEach(add);
+      $('app').querySelectorAll('#square [id^="pill-"]').forEach(add);
+      return out;
+    },
+    floatHits(x, y, fw, fh, c, blocks) {
+      const L = c.left + x - 4, T = c.top + y - 20, R = c.left + x + fw + 4, B = c.top + y + fh + 4;
+      return blocks.some((r) => {
+        const ox = Math.min(R, r.right) - Math.max(L, r.left);
+        const oy = Math.min(B, r.bottom) - Math.max(T, r.top);
+        return ox > 2 && oy > 2;
       });
-      return Math.max(6, y);
+    },
+    fitFloat(x, y, c) {
+      const u = $('float'); if (!u) return { x, y, above: false, below: false, clear: true };
+      const blocks = this.blockedRects();
+      const fw = u.offsetWidth || 160, fh = u.offsetHeight || 78;
+      const svg = $('square') && $('square').getBoundingClientRect();
+      const clamp = (px, py) => ({
+        x: Math.max(6, Math.min(c.width - fw - 6, px)),
+        y: Math.max(10, Math.min(c.height - fh - 6, py))
+      });
+      const pose = (px, py) => {
+        const above = !!(svg && c.top + py + fh <= svg.top - 4);
+        const below = !!(svg && !above && c.top + py >= svg.bottom - 4);
+        return { x: px, y: py, above, below, clear: true };
+      };
+      const ok = (px, py) => px >= 6 && py >= 10 && px + fw <= c.width - 6 && py + fh <= c.height - 6 && !this.floatHits(px, py, fw, fh, c, blocks);
+      if (ok(x, y)) return pose(x, y);
+      const spots = [];
+      if (svg && svg.width > 20) {
+        const top = svg.top - c.top - fh - 12;
+        spots.push({ x: svg.right - c.left - fw, y: top });
+        spots.push({ x: svg.left - c.left + (svg.width - fw) / 2, y: top });
+        spots.push({ x: svg.left - c.left, y: top });
+      }
+      const home = $('home');
+      if (home) {
+        const hr = home.getBoundingClientRect();
+        if (hr.width > 80 && hr.height > 40) {
+          const hx = hr.right - c.left - fw;
+          const hy = hr.bottom - c.top - fh - 4;
+          for (let dy = 0; dy <= 30; dy += 6) spots.push({ x: hx, y: hy - dy });
+        }
+      }
+      for (let y2 = y - 12; y2 >= 10; y2 -= 12) spots.push({ x, y: y2 });
+      for (let x2 = x - 16; x2 >= 6; x2 -= 16) spots.push({ x: x2, y });
+      for (let x2 = x + 16; x2 + fw <= c.width - 6; x2 += 16) spots.push({ x: x2, y });
+      for (const s of spots) {
+        const p = clamp(s.x, s.y);
+        if (Math.abs(p.x - s.x) > 28 || Math.abs(p.y - s.y) > 24) continue;
+        if (ok(p.x, p.y)) return pose(p.x, p.y);
+      }
+      const fallback = clamp(x, Math.max(10, y - 24));
+      return { x: fallback.x, y: fallback.y, above: false, below: false, clear: false };
     },
     bez(t) {
       const x1 = .45, y1 = 0, x2 = .25, y2 = 1;
@@ -1040,7 +1105,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       ptr.style.width = home ? '0px' : '30px';
       ptr.style.opacity = home ? '0' : '1';
       ptr.style.marginInlineStart = home ? '-8px' : '0px';
-      ptr.style.transform = st.below ? 'rotate(-90deg)' : 'none';
+      ptr.style.transform = st.above ? 'rotate(90deg)' : (st.below ? 'rotate(-90deg)' : 'none');
       const box = $('bubbleText');
       if (st.typing) box.innerHTML = '<div class="dots"><i></i><i></i><i></i></div>';
       else {
@@ -1054,7 +1119,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       if (this._enter) { this._enter = false; try { this.enterFx(); } catch (e) {} }
       try { this.applyRivo(); this.syncLabels(); if (!this.drag && !this.easeRaf && !this.tDrag) this.place(true); } catch (e) {}
       if (prev && prev.target !== this.state.target && this.state.target !== 'home') {
-        const rot = this.state.below ? 'rotate(-90deg) ' : '';
+        const rot = this.state.above ? 'rotate(90deg) ' : (this.state.below ? 'rotate(-90deg) ' : '');
         this.an($('pointer'), [{ transform: rot + 'translateX(0)' }, { transform: rot + 'translateX(6px)' }, { transform: rot + 'translateX(0)' }], { duration: 420, delay: 850, iterations: 4, easing: 'ease-in-out' });
       }
       if (prev && prev.idx !== this.state.idx) this.an($('shape'), [{ transform: 'scale(.6) rotate(-8deg)', opacity: .2 }, { transform: 'scale(1.06) rotate(2deg)', opacity: 1, offset: .65 }, { transform: 'scale(1) rotate(0)', opacity: 1 }], { duration: 420, easing: 'cubic-bezier(.34,1.56,.64,1)' });
