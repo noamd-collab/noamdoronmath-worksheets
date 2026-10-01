@@ -22,6 +22,7 @@ describe('M37 resolveActiveNav', () => {
   it('maps about / tools / highschool / learning', () => {
     assert.equal(resolveActiveNav('/aboutus'), 'about');
     assert.equal(resolveActiveNav('/math-tools'), 'tools');
+    assert.equal(resolveActiveNav('/games/kefel-mekutsar-2'), 'tools');
     assert.equal(resolveActiveNav('/high-school-math'), 'highschool');
     assert.equal(resolveActiveNav('/high-school-math-1'), 'highschool');
     assert.equal(resolveActiveNav('/learning.html'), 'learning');

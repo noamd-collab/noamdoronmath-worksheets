@@ -1,12 +1,15 @@
 ---
 import {
+  normalizeNavPath,
   resolveActiveNav,
   resolveWorksheetsNavBand,
   type ActiveNavKey,
   type WorksheetsNavBand,
 } from '../lib/activeNav';
+import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
 interface Props { active?: ActiveNavKey | null; compactBrand?: boolean; }
 const active=Astro.props.active !== undefined ? Astro.props.active : resolveActiveNav(Astro.url.pathname);
+const onGame = normalizeNavPath(Astro.url.pathname) === PUBLIC_LESSON_PATH;
 const worksheetsBand: WorksheetsNavBand | null =
   active === 'worksheets' ? resolveWorksheetsNavBand(Astro.url.pathname, Astro.url.searchParams) : null;
 ---
@@ -25,7 +28,10 @@ const worksheetsBand: WorksheetsNavBand | null =
         <a aria-current={worksheetsBand === 'ysodi' ? 'page' : undefined} data-peek="ws-ysodi" href="/worksheets?level=ysodi" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-15">דפי עבודה ליסודי</a>
         <a aria-current={worksheetsBand === 'hatzava' ? 'page' : undefined} data-peek="ws-hatzava" href="/worksheets?level=hatzava" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-15">דפי עבודה לחטיבת הביניים</a>
         <a aria-current={active === 'blog' ? 'page' : undefined} data-peek="blog" href="/blog" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-16">בלוג</a>
-        <a aria-current={active === 'tools' ? 'page' : undefined} data-peek="tools" href="/math-tools" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-17">תוספים</a>
+        <div class="exact-nav-tools">
+          <a aria-current={active === 'tools' ? 'page' : undefined} data-peek="tools" href="/math-tools" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-17">תוספים</a>
+          <a class="exact-nav-game" aria-current={onGame ? 'page' : undefined} href={PUBLIC_LESSON_PATH}>משחק נוסחה כפל מקוצר שנייה (beta)</a>
+        </div>
         <a aria-current={active === 'highschool' ? 'page' : undefined} data-peek="hs" href="/high-school-math" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-18">מתמטיקה לתיכון ↗</a>
         <a class="exact-nav-learn-mobile" aria-current={active === 'learning' ? 'page' : undefined} data-peek="learn" href="/learning.html" style="padding:8px 12px;border-radius:999px;color:#22305a;font-weight:700;" data-exact-hover="exact-hover-13">הלמידה שלי</a>
       </nav>
