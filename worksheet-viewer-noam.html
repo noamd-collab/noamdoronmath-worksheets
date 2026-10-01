@@ -2317,6 +2317,11 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 }
 .exact-viewer .noam-transcript{min-height:160px}
 .exact-viewer .panel.is-short .noam-transcript{min-height:160px}
+.exact-viewer .panel-body.is-chat>.noam-transcript{
+  flex:1 1 auto;
+  min-height:160px;
+  overflow-y:auto;
+}
 .exact-viewer .exact-compose{padding-bottom:env(safe-area-inset-bottom)}
 .exact-viewer .header-actions{display:flex;align-items:center;flex-wrap:wrap}
 .exact-viewer .header-actions .fab{position:static;inset:auto;z-index:auto;margin:0}
@@ -4433,14 +4438,13 @@ function syncMobilePanel(){
     var background = document.querySelector(selector);
     if (background){ background.inert = modal; }
   });
+  panel.setAttribute("aria-label","רמזי, עזרה בדף העבודה");
   if (modal){
     panel.setAttribute("role","dialog");
     panel.setAttribute("aria-modal","true");
-    panel.setAttribute("aria-label","נועם AI — עזרה בשאלה");
   }else{
     panel.removeAttribute("role");
     panel.removeAttribute("aria-modal");
-    panel.removeAttribute("aria-label");
   }
   closePanelButton.setAttribute("aria-label",mobileLayout.matches ? "חזרה לדף העבודה" : "סגירה");
   var viewport = window.visualViewport;
@@ -7708,7 +7712,7 @@ function esc(s){
       var kindEl=row.querySelector('.noam-kind');
       var label=kindEl?kindEl.textContent.trim():'';
       var next=rows[index+1];
-      if(!next||!next.classList.contains('assistant')){return;}
+      if(!next||!next.classList.contains('assistant')||next.querySelector('.noam-bubble.thinking')){return;}
       var hintMatch=label.match(/^רמז\s+([123])$/);
       if(hintMatch&&!next.querySelector('.noam-retry-action')&&!next.querySelector('.exact-hint-head')){
         next.classList.add('exact-hint');
@@ -7718,14 +7722,14 @@ function esc(s){
         var bubble=next.querySelector('.noam-bubble');
         if(bubble){bubble.prepend(head);}
       }
-      if(label==='הסבר כללי'){next.classList.add('exact-overview');}
-      if(next.dataset.ramziConfirmed==='1'){next.classList.add('exact-success');}
+      if(label==='הסבר כללי'&&!next.classList.contains('exact-overview')){next.classList.add('exact-overview');}
+      if(next.dataset.ramziConfirmed==='1'&&!next.classList.contains('exact-success')){next.classList.add('exact-success');}
     });
     transcript.querySelectorAll('.noam-row.assistant').forEach(function(row){
       var retry=row.querySelector('.noam-retry-action');
       if(!retry){return;}
-      row.classList.add('exact-error');
-      row.setAttribute('role','alert');
+      if(!row.classList.contains('exact-error')){row.classList.add('exact-error');}
+      if(row.getAttribute('role')!=='alert'){row.setAttribute('role','alert');}
       var bubble=row.querySelector('.noam-bubble');
       if(bubble&&!bubble.querySelector('.exact-error-title')){
         var title=document.createElement('strong');
@@ -7822,7 +7826,7 @@ function esc(s){
         label.textContent='עזרה';
         button.append(avatar,label);
       }
-      avatar.setAttribute('size',String(size));
+      if(avatar.getAttribute('size')!==String(size)){avatar.setAttribute('size',String(size));}
     });
   }
 

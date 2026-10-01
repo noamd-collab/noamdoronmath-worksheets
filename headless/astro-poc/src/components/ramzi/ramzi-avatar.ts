@@ -173,8 +173,8 @@ export class RamziAvatarElement extends HTMLElement {
     this.cancel();
   }
 
-  attributeChangedCallback() {
-    if (!this.isConnected) return;
+  attributeChangedCallback(_name: string, oldValue: string | null, newValue: string | null) {
+    if (!this.isConnected || oldValue === newValue) return;
     this.applySize();
     void this.render();
   }
@@ -234,7 +234,10 @@ export class RamziAvatarElement extends HTMLElement {
     svg.style.cssText = 'display:block;width:100%;height:100%;overflow:visible';
     this.replaceChildren(svg);
     const off = readBrowserMotionOff(this.eventOff);
-    this.cancel = animateRamzi(svg, mood, off);
+    const size = Number(this.getAttribute('size') || '44');
+    // Question markers are 28–30px and can number in the dozens. A still
+    // drawing keeps phones smooth; the console avatar still animates.
+    this.cancel = animateRamzi(svg, mood, off || (Number.isFinite(size) && size <= 30));
   }
 }
 
