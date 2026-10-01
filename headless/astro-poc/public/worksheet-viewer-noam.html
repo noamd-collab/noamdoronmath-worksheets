@@ -2080,7 +2080,7 @@ body.exact-viewer{
 .exact-viewer .pdf-status{background:#fbfaf5;font-weight:700}
 .exact-viewer .pdf-tools{border:2px solid #22305a;border-radius:12px 5px 13px 6px;box-shadow:none}
 .exact-viewer .panel{
-  width:clamp(360px,32vw,460px);max-width:none;padding:0;
+  width:clamp(420px,36vw,560px);max-width:none;padding:0;
   border-right:2px solid #22305a;background:#fff;
 }
 .exact-viewer .panel-in{border:0;border-radius:0;box-shadow:none;background:#fff}
@@ -2223,15 +2223,17 @@ body.exact-viewer{
   border-top:2px solid #22305a;background:#fff;
 }
 .exact-viewer .exact-question-strip{
-  flex:none;padding:8px 12px 10px;border-bottom:1.5px dashed #b8c0d4;
-  display:flex;align-items:center;gap:4px;overflow-x:auto;background:#fff;
+  flex:none;min-width:0;max-width:100%;box-sizing:border-box;
+  padding:8px 12px 10px;border-bottom:1.5px dashed #b8c0d4;
+  display:flex;align-items:center;align-content:flex-start;gap:4px;flex-wrap:wrap;
+  overflow:visible;background:#fff;
 }
 .exact-viewer .exact-question-strip[hidden]{display:none}
 .exact-question-strip>span{font-size:13px;font-weight:700;color:#5a6588;white-space:nowrap}
-.exact-question-strip>span.exact-part-label{margin-right:8px}
-.exact-question-strip>div{display:flex;gap:4px}
+.exact-question-strip>span.exact-part-label{margin-inline-start:8px}
+.exact-question-strip>div{display:flex;flex-wrap:wrap;gap:4px;min-width:0}
 .exact-question-strip button{
-  flex:none;min-width:40px;height:40px;padding:0 8px;border-radius:10px 4px 11px 5px;
+  flex:none;min-width:36px;height:36px;padding:0 8px;border-radius:10px 4px 11px 5px;
   border:2px solid #22305a;background:#fff;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;
 }
 .exact-question-strip button[aria-pressed="true"]{background:#22305a;color:#fff}
@@ -2317,24 +2319,33 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 }
 .exact-viewer .noam-transcript{min-height:160px}
 .exact-viewer .panel.is-short .noam-transcript{min-height:160px}
+.exact-viewer .panel-body.is-chat:not(.is-previewing)>.noam-picked{
+  flex:0 1 auto;min-height:0;max-height:88px;overflow:auto;
+}
+.exact-viewer .panel-body.is-chat>.noam-compose{flex-shrink:0}
+.exact-viewer .panel-body:not(.is-previewing) .noam-picked-preview{display:none}
 .exact-viewer .panel-body.is-chat>.noam-transcript{
   flex:1 1 auto;
-  min-height:160px;
+  min-height:120px;
   overflow-y:auto;
 }
 .exact-viewer .exact-compose{padding-bottom:env(safe-area-inset-bottom)}
 .exact-viewer .header-actions{display:flex;align-items:center;flex-wrap:wrap}
 .exact-viewer .header-actions .fab{position:static;inset:auto;z-index:auto;margin:0}
 .exact-viewer .pdf-page .noam-exercise-pin{
-  width:auto;height:36px;min-height:36px;padding:2px 8px 2px 2px;gap:4px;
-  border-radius:999px;display:inline-flex;align-items:center;justify-content:center;
-  font-size:13px;box-shadow:3px 3px 0 rgba(34,48,90,.18);
+  width:24px;height:24px;min-width:24px;min-height:24px;padding:0;gap:0;
+  border-radius:50%;display:grid;place-items:center;
+  font-size:0;line-height:1;box-shadow:none;background:#fff;
 }
-.exact-viewer .pdf-page .noam-exercise-pin .exact-pin-label{font:700 13px Heebo,sans-serif;color:#22305a}
+.exact-viewer .pdf-page .noam-exercise-pin::before{
+  content:"?";
+  font:700 13px/1 Heebo,sans-serif;color:#22305a;
+}
+.exact-viewer .pdf-page .noam-exercise-pin .exact-pin-label{display:none}
 .exact-viewer .pdf-page .noam-exercise-pin.is-active{
-  background:#e6a534;color:#22305a;box-shadow:3px 3px 0 #22305a;
+  background:#e6a534;color:#22305a;box-shadow:none;
 }
-.exact-viewer .pdf-page .noam-exercise-pin.is-active .exact-pin-label{color:#22305a}
+.exact-viewer .pdf-page .noam-exercise-pin.is-active::before{color:#22305a}
 .exact-viewer .exact-empty{
   flex:1;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:12px;text-align:center;padding:16px 8px;
@@ -2379,7 +2390,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
   border:2px solid #22305a;border-radius:12px 5px 13px 6px;box-shadow:4px 4px 0 rgba(34,48,90,.12);
 }
 @media(max-width:999px),(max-height:639px){
-  .exact-viewer .pdf-page .noam-exercise-pin{width:44px;height:44px;min-width:44px;padding:0;border-radius:999px}
+  .exact-viewer .pdf-page .noam-exercise-pin{width:26px;height:26px;min-width:26px;min-height:26px;padding:0;border-radius:50%}
   .exact-viewer .pdf-page .noam-exercise-pin .exact-pin-label{display:none}
 }
 </style>
@@ -7827,16 +7838,41 @@ function esc(s){
   function decoratePins(){
     document.querySelectorAll('.noam-exercise-pin').forEach(function(button){
       var avatar=button.querySelector('ramzi-avatar');
-      var size=narrow?30:28;
-      if(!avatar){
+      if(avatar){avatar.remove();}
+      var label=button.querySelector('.exact-pin-label');
+      if(label){label.remove();}
+      if(button.dataset.exactQuiet!=='1'){
+        button.dataset.exactQuiet='1';
         button.textContent='';
-        avatar=makeAvatar(size,'idle');
-        var label=document.createElement('span');
-        label.className='exact-pin-label';
-        label.textContent='עזרה';
-        button.append(avatar,label);
       }
-      if(avatar.getAttribute('size')!==String(size)){avatar.setAttribute('size',String(size));}
+    });
+    layoutQuietPins();
+  }
+  function layoutQuietPins(){
+    document.querySelectorAll('.pdf-page').forEach(function(page){
+      var pins=Array.from(page.querySelectorAll('.noam-exercise-pin'));
+      if(!pins.length){return;}
+      pins.forEach(function(pin){
+        if(!pin.dataset.exactAnchorTop){
+          pin.dataset.exactAnchorTop=String(Math.round(pin.offsetTop));
+        }
+      });
+      var ordered=pins.slice().sort(function(a,b){
+        return Number(a.dataset.exactAnchorTop)-Number(b.dataset.exactAnchorTop);
+      });
+      var gap=28,last=-gap;
+      ordered.forEach(function(pin){
+        var top=Math.max(Number(pin.dataset.exactAnchorTop)||0,last+gap);
+        last=top;
+        if(pin.style.top!==top+'px'){pin.style.top=top+'px';}
+        var id=pin.dataset.exerciseId;
+        if(!id){return;}
+        Array.from(page.querySelectorAll('.noam-report-pin')).forEach(function(report){
+          if(report.dataset.exerciseId===id&&report.style.top!==pin.style.top){
+            report.style.top=pin.style.top;
+          }
+        });
+      });
     });
   }
 
@@ -7866,6 +7902,15 @@ function esc(s){
     }
     previousOpen=open;
     adaptQuestionChoices();adaptComposer();decorateConversation();decoratePins();
+    var preview=document.getElementById('noamPickedPreview');
+    if(preview){
+      var expanded=panelBody.classList.contains('is-previewing');
+      if(expanded){
+        if(preview.querySelector('img')&&preview.hidden){preview.hidden=false;}
+      }else if(!preview.hidden){
+        preview.hidden=true;
+      }
+    }
     var locate=document.getElementById('noamLocate');
     if(locate){text(locate,narrow?'לראות בדף':'בדף');}
     var label=document.querySelector('label[for="noamQuestion"]');
