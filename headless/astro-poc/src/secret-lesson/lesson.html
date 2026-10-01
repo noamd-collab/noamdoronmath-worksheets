@@ -433,12 +433,12 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       this.px = x; this.py = y;
     },
     clearOfCopy(x, y, c) {
-      const u = $('float'), bb = $('bubble'); if (!u || !bb) return y;
-      const bubbleH = bb.offsetHeight, bubbleW = bb.offsetWidth;
-      const topInset = Math.max(0, ((u.offsetHeight || bubbleH) - bubbleH) / 2);
-      let top = c.top + y + topInset, bottom = top + bubbleH, left = c.left + x, right = left + bubbleW;
-      ['title', 'sub', 'next'].forEach((id) => {
-        const el = $(id); if (!el) return;
+      const u = $('float'); if (!u) return y;
+      const fh = u.offsetHeight || 78, fw = u.offsetWidth || 160;
+      let top = c.top + y, bottom = top + fh, left = c.left + x, right = left + fw;
+      const blockers = [$('title'), $('sub'), $('next')].concat([...u.ownerDocument.querySelectorAll('#opts .opt')]);
+      blockers.forEach((el) => {
+        if (!el || el.hidden) return;
         const range = document.createRange();
         range.selectNodeContents(el);
         const rects = range.getClientRects();
@@ -454,6 +454,61 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         }
       });
       return Math.max(6, y);
+    },
+    bez(t) {
+      const x1 = .45, y1 = 0, x2 = .25, y2 = 1;
+      const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+      const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+      const sx = (u) => ((ax * u + bx) * u + cx) * u;
+      const sy = (u) => ((ay * u + by) * u + cy) * u;
+      const dx = (u) => (3 * ax * u + 2 * bx) * u + cx;
+      let u = t;
+      for (let i = 0; i < 6; i++) { const z = sx(u) - t; const d = dx(u); if (Math.abs(d) < 1e-5) break; u -= z / d; }
+      return sy(Math.max(0, Math.min(1, u)));
+    },
+    /* Move a tile in SVG user units, rotating around its own center. CSS px transforms follow the viewBox origin and fling strips off the card when the diagram is scaled. */
+    tileMotion(g, dx, dy, rot, opts) {
+      const rect = g.querySelector('rect'), tx = g.querySelector('text');
+      const cx = +rect.getAttribute('x') + +rect.getAttribute('width') / 2;
+      const cy = +rect.getAttribute('y') + +rect.getAttribute('height') / 2;
+      const apply = (p) => {
+        const x = dx * p, y = dy * p, r = rot * p;
+        if (Math.hypot(x, y) < .04 && Math.abs(r) < .04) g.removeAttribute('transform');
+        else g.setAttribute('transform', 'translate(' + (cx + x).toFixed(3) + ' ' + (cy + y).toFixed(3) + ') rotate(' + r.toFixed(3) + ') translate(' + (-cx).toFixed(3) + ' ' + (-cy).toFixed(3) + ')');
+        if (!tx) return;
+        if (Math.abs(r) < .04) tx.removeAttribute('transform');
+        else tx.setAttribute('transform', 'rotate(' + (-r).toFixed(3) + ' ' + tx.getAttribute('x') + ' ' + tx.getAttribute('y') + ')');
+      };
+      let raf = 0, stopped = false, p = 0;
+      const dur = Math.max(1, opts.duration || 1), delay = opts.delay || 0, t0 = performance.now() + delay;
+      const arm = (from, to, ms) => {
+        const start = performance.now();
+        const frame = (now) => {
+          if (stopped) return;
+          const lin = Math.min(1, (now - start) / Math.max(1, ms));
+          const e = this.bez(lin);
+          p = from + (to - from) * e;
+          apply(p);
+          if (lin < 1) raf = requestAnimationFrame(frame);
+          else if (handle.onfinish) handle.onfinish();
+        };
+        raf = requestAnimationFrame(frame);
+      };
+      const handle = {
+        onfinish: null,
+        cancel() { stopped = true; cancelAnimationFrame(raf); apply(0); p = 0; },
+        reverse() {
+          stopped = true; cancelAnimationFrame(raf); stopped = false;
+          arm(p, 0, Math.max(1, dur * Math.max(p, .15)));
+        }
+      };
+      const wait = () => {
+        if (stopped) return;
+        if (performance.now() < t0) { raf = requestAnimationFrame(wait); return; }
+        arm(0, 1, dur);
+      };
+      raf = requestAnimationFrame(wait);
+      return handle;
     },
     point(t, text) {
       clearTimeout(this.homeT);
@@ -661,12 +716,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       this.demoAnims.forEach((a) => { try { a.cancel(); } catch (e) {} }); this.demoAnims = [];
       this.setState({ demo: kind, demoJoined: false, demoDone: false });
       this.point('demo', kind === 'ask' ? 'רגע, אני מוציא את שני המלבנים…' : 'זוכר? מוציאים את שני המלבנים…');
-      const o = { duration: this.rm ? 1 : 1800, delay: this.rm ? 0 : 500, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards' };
-      const mv = (g, d, r) => {
-        if (g.animate) this.demoAnims.push(g.animate([{ transform: 'translate(0px,0px) rotate(0deg)' }, { transform: 'translate(' + d[0] + 'px,' + d[1] + 'px) rotate(' + r + 'deg)' }], o));
-        const tx = g.querySelector('text');
-        if (r && tx && tx.animate) this.demoAnims.push(tx.animate([{ transform: 'rotate(0deg)' }, { transform: 'rotate(' + (-r) + 'deg)' }], o));
-      };
+      const o = { duration: this.rm ? 1 : 1800, delay: this.rm ? 0 : 500 };
+      const mv = (g, d, r) => { if (g) this.demoAnims.push(this.tileMotion(g, d[0], d[1], r, o)); };
       mv(g1, d1, r1); mv(g2, d2, r2);
       this.later(() => {
         this.setState({ demoJoined: true });
@@ -680,11 +731,11 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       this.demoAnims.forEach((a) => { try { a.cancel(); } catch (e) {} }); this.demoAnims = [];
       this.setState({ demo: 'full', demoJoined: false, demoDone: false, revealed: [] });
       this.point('demo', 'בוא נפרק את כל הריבוע…');
-      const o = { duration: this.rm ? 1 : 1400, delay: this.rm ? 0 : 600, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards' };
+      const o = { duration: this.rm ? 1 : 1400, delay: this.rm ? 0 : 600 };
       Object.keys(D).forEach((id) => {
-        const g = this.q('[data-tile="' + id + '"]'); if (!g || !g.animate) return;
+        const g = this.q('[data-tile="' + id + '"]'); if (!g) return;
         const dx = D[id][0] * gp / 2, dy = D[id][1] * gp / 2 + sy;
-        this.demoAnims.push(g.animate([{ transform: 'translate(0px,0px)' }, { transform: 'translate(' + dx + 'px,' + dy + 'px)' }], o));
+        this.demoAnims.push(this.tileMotion(g, dx, dy, 0, o));
       });
       this.later(() => { this.setState({ demoJoined: true }); this.say('גרור כל חלק למקום שלו למטה.', { attn: true, mood: 'think' }); }, this.rm ? 50 : 2000);
     },
