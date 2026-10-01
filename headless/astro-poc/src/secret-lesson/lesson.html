@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>למה (a + b)² ≠ a² + b²?</title>
+<meta property="og:title" content="למה (a + b)² ≠ a² + b²?">
+<meta property="og:description" content="שיעור קצר עם אליהו: מגלים למה (a + b)² = a² + 2ab + b².">
+<meta property="og:image" content="__OG_IMAGE__">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="שיעור נוסחאות כפל מקוצר עם אליהו">
+<meta property="og:locale" content="he_IL">
+<meta property="og:type" content="article">
+<meta property="og:url" content="__OG_URL__">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0}
+body{min-height:100dvh;font-family:Heebo,system-ui,sans-serif;color:#17233f;background:linear-gradient(160deg,#eef6f4,#f5f4ef 55%,#f7f0ea);-webkit-tap-highlight-color:transparent}
+button{font:inherit;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid #1a8a80;outline-offset:3px}
+button[data-primary]:focus-visible{outline-color:#f0b429}
+#app{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px}
+#card{position:relative;overflow:hidden;width:min(1080px,100%);background:#fff;border-radius:24px;box-shadow:0 16px 40px rgba(23,35,63,.1);padding:14px 20px 18px;display:flex;flex-direction:column;gap:12px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.step-chip{flex:none;white-space:nowrap;font-size:12.5px;font-weight:700;background:#f1f5f9;border-radius:999px;padding:6px 12px;color:#17233f}
+.score-chip{display:flex;align-items:center;gap:5px;background:#fef8eb;border:1.5px solid #f0d48a;border-radius:999px;padding:4px 12px;font-family:"Secular One",sans-serif;font-size:14px;color:#8a5a00}
+#soundBtn{width:40px;height:40px;border-radius:12px;border:0;background:transparent;font-size:20px;cursor:pointer;display:grid;place-items:center}
+@media (hover:hover){#soundBtn:hover{background:#f1f5f9}}
+.track{height:5px;background:#e2e8f0;border-radius:5px;overflow:hidden}
+#progressFill{height:100%;width:0;background:linear-gradient(90deg,#32b5a7,#1a8a80);border-radius:5px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
+#grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px 26px;align-items:center}
+.col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.panel{background:#faf9f6;border:1.5px solid #e8e5db;border-radius:16px}
+#panelIntro{padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+#panelSquare{padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:10px}
+#square{width:min(320px,100%);height:auto;display:block;overflow:visible;user-select:none;-webkit-user-select:none}
+#strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;background:#fff;border:1.5px solid #e8e5db;border-radius:14px;padding:10px 6px;text-align:center}
+#strip b{display:block;font-size:11.5px;font-weight:700;color:#64748b;font-style:normal}
+#strip span{font-family:"Secular One",sans-serif;font-size:17px;display:inline-block}
+#synth{background:linear-gradient(135deg,#e6f6f4,#fef8eb);border:1.5px solid #9ad4c8;border-radius:14px;padding:10px 14px;font-weight:700;font-size:14px;line-height:1.6;color:#17233f;text-wrap:pretty}
+#panelNumeric,#panelFinish{padding:18px 16px;display:flex;flex-direction:column;gap:12px}
+.numbox{background:#fff;border:1.5px solid #e8e5db;border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.numok{background:#eafaf1;border:1.5px solid #9fe0bf;border-radius:12px;padding:10px 14px;text-align:center;font-weight:800;color:#146c43;font-size:15px}
+h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp(17px,4.6vw,22px);line-height:1.35;color:#17233f;text-wrap:balance;text-align:center}
+#sub{font-size:clamp(13px,3.5vw,15px);color:#64748b;text-align:center}
+#opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.opt{font-family:"Secular One",sans-serif;font-size:19px;min-height:52px;padding:10px 12px;border-radius:14px;border:2px solid #e8e5db;background:#fff;color:#17233f;cursor:pointer;box-shadow:0 2px 0 #e8e5db;direction:ltr;transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
+#hintBtn{align-self:flex-start;font-family:"Secular One",sans-serif;font-size:15px;padding:8px 20px;border-radius:50px;cursor:pointer;background:#f0b429;color:#17233f;border:2px solid #d4930d;box-shadow:0 3px 0 #d4930d}
+#hintBox{background:#fef8eb;border:1.5px solid #e0b84a;border-radius:12px;padding:9px 14px;font-size:14px;font-weight:700;line-height:1.55;color:#6b4a00;text-wrap:pretty}
+#fb{border-radius:12px;padding:9px 14px;font-weight:700;font-size:14.5px;line-height:1.5}
+#home{min-height:86px}
+#cue{border-radius:12px;padding:7px 12px;font-weight:700;font-size:13.5px;text-align:center;transition:background .3s,border-color .3s,color .3s}
+#next{width:100%;font-family:"Secular One",sans-serif;font-size:15.5px;border:0;border-radius:50px;padding:13px 20px;transition:background .25s,color .25s,box-shadow .25s}
+#float{position:absolute;top:0;left:0;z-index:60;pointer-events:none;will-change:transform;transition:transform .85s cubic-bezier(.5,0,.2,1.12)}
+#tilt{transform-origin:70% 60%}
+#drift{display:flex;align-items:center;gap:8px}
+#bubble{position:relative;flex:0 1 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;pointer-events:none}
+#shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#bubbleName{position:relative;font-weight:800;font-size:13px;color:#1a8a80}
+#bubbleText{position:relative;min-height:24px;font-size:14.5px;line-height:1.5;color:#17233f;transform-origin:right center;text-wrap:pretty}
+#rivoBox{flex:none;width:72px;height:78px;transform-origin:center bottom;transition:transform .45s cubic-bezier(.34,1.56,.64,1)}
+#rivoHost{width:72px;height:78px}
+#pointer{flex:none;width:0;margin-inline-start:-8px;overflow:hidden;font-size:26px;line-height:1;text-align:center;opacity:0;transition:width .3s,opacity .3s,margin .3s}
+#conf{position:absolute;inset:0;z-index:99;pointer-events:none;overflow:hidden}
+.dots{display:flex;gap:5px;align-items:center;height:24px;justify-content:center}
+.dots i{width:7px;height:7px;border-radius:50%;background:#1a8a80;display:block;animation:dotB 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}
+.dots i:nth-child(3){animation-delay:.3s}
+#slots{display:flex;align-items:flex-start;justify-content:center;gap:6px;flex-wrap:wrap;font-family:"Secular One",sans-serif;width:100%}
+.slot{min-width:46px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 8px;border-radius:10px}
+.plus{font-size:18px;color:#64748b;padding-top:8px}
+.sumbox{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:right;align-self:stretch}
+.skill{background:#fff;border:1.5px solid #e8e5db;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;text-align:right}
+.bar{height:8px;background:#eef2f6;border-radius:8px;overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:8px;transform-origin:right center}
+.retry{align-self:flex-start;font-family:"Secular One",sans-serif;font-size:13.5px;padding:6px 16px;border-radius:50px;border:2px solid #1a8a80;background:#fff;color:#1a8a80;cursor:pointer}
+.formula{background:#fff;border:2.5px solid #1a8a80;border-radius:16px;padding:14px 20px;font-family:"Secular One",sans-serif;font-size:clamp(20px,5.4vw,26px);color:#17233f;box-shadow:0 8px 20px rgba(26,138,128,.12);text-align:center}
+.puzzle{font-size:44px;line-height:1;animation:floatY 3.2s ease-in-out infinite}
+.mini{display:grid;grid-template-columns:44px 28px;grid-template-rows:44px 28px;gap:3px;padding:3px;background:#fff;border-radius:8px}
+.mini div{display:grid;place-items:center;border-radius:5px;font-family:"Secular One",sans-serif}
+@keyframes hlPulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes ringPulse{0%{transform:scale(1);opacity:.75}100%{transform:scale(2);opacity:0}}
+@keyframes dotB{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-4px);opacity:1}}
+@keyframes floatY{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-6px) rotate(5deg)}}
+@keyframes qPulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.08);opacity:1}}
+@keyframes flashA{0%{opacity:0}15%,70%{opacity:1}100%{opacity:0}}
+@keyframes flashB{0%{opacity:0}15%,70%{opacity:1}100%{opacity:0}}
+@media (min-width:900px){
+  #card{max-height:min(100dvh - 16px,780px)}
+  #square{width:min(300px,34vw)}
+}
+@media (max-height:760px) and (min-width:900px){
+  #app{padding:6px}
+  #card{padding:8px 14px 10px;gap:8px}
+  #square{width:min(240px,30vh)}
+  #panelIntro{padding:14px 12px;gap:8px}
+  .puzzle{font-size:32px}
+  #home{min-height:72px}
+  h1{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div id="app" data-lesson="kefel-mekutsar" dir="rtl" lang="he">
+  <div id="card" data-screen-label="01 intro">
+    <div class="head">
+      <div id="stepLabel" class="step-chip">שלב 1 מתוך 7</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div id="scoreChip" class="score-chip" data-score-chip dir="ltr" aria-label="ניקוד"><span style="color:#f0b429;font-size:15px">★</span><span id="scoreTotal">0</span></div>
+        <button id="soundBtn" type="button" aria-label="השתק צלילים">🔊</button>
+      </div>
+    </div>
+    <div class="track" aria-hidden="true"><div id="progressFill"></div></div>
+    <div id="grid">
+      <div class="col" id="colVisual">
+        <div id="panelIntro" class="panel" data-enter>
+          <div class="puzzle" aria-hidden="true">🧩</div>
+          <div dir="ltr" style="font-family:'Secular One',sans-serif;font-size:22px;color:#c04a2d">(a + b)² ≠ a² + b²</div>
+          <div class="mini" dir="ltr" aria-hidden="true">
+            <div style="background:#1a8a80;color:#fff;font-size:14px">a²</div>
+            <div style="border:2px dashed #d4930d;background:#fef8eb;color:#8a5a00;font-size:14px;animation:qPulse 1.6s ease-in-out infinite">?</div>
+            <div style="border:2px dashed #d4930d;background:#fef8eb;color:#8a5a00;font-size:14px;animation:qPulse 1.6s ease-in-out .3s infinite">?</div>
+            <div style="background:#e8684a;color:#fff;font-size:12px">b²</div>
+          </div>
+          <div style="color:#475569;font-size:15px;line-height:1.6">חסר חלק באמצע.<br>כאן נגלה אותו בעיניים.</div>
+        </div>
+        <div id="panelSquare" class="panel">
+          <svg id="square" viewBox="0 0 402 322" dir="ltr" role="img" aria-label="ריבוע (a+b) מחולק לארבעה חלקים"></svg>
+          <div id="slots" data-full dir="ltr" hidden></div>
+        </div>
+        <div id="strip" data-enter dir="ltr" hidden></div>
+        <div id="synth" data-enter role="status" aria-live="polite" hidden></div>
+        <div id="panelNumeric" class="panel" hidden>
+          <div data-num dir="ltr" style="font-family:'Secular One',sans-serif;font-size:20px;color:#1a8a80;text-align:center">a = 3 , b = 2</div>
+          <div data-num class="numbox">
+            <div style="font-size:13px;font-weight:700;color:#64748b">דרך 1</div>
+            <div dir="ltr" style="font-family:'Secular One',sans-serif;font-size:clamp(17px,4.6vw,21px)">(3 + 2)² = 5² = <span style="color:#1a8a80">25</span></div>
+          </div>
+          <div data-num class="numbox">
+            <div style="font-size:13px;font-weight:700;color:#64748b">דרך 2</div>
+            <div dir="ltr" style="font-family:'Secular One',sans-serif;font-size:clamp(16px,4.4vw,21px);display:flex;flex-wrap:wrap;gap:0 6px;align-items:baseline">
+              <span data-term style="color:#1a8a80">3²</span><span data-term>+</span><span data-term style="color:#b7791f">2·3·2</span><span data-term>+</span><span data-term style="color:#e8684a">2²</span><span data-term>=</span><span data-term>9 + 12 + 4</span><span data-term>=</span><span data-term style="color:#1a8a80">25</span>
+            </div>
+          </div>
+          <div data-num class="numok">שתי הדרכים = 25 ✓</div>
+        </div>
+        <div id="panelFinish" class="panel" data-enter hidden>
+          <div style="display:flex;align-items:center;gap:14px;justify-content:center">
+            <div id="trophy" data-trophy style="font-size:44px;line-height:1">🏆</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div style="font-size:12.5px;font-weight:700;color:#64748b">הניקוד שלך</div>
+              <div dir="ltr" style="font-family:'Secular One',sans-serif;font-size:40px;line-height:1"><span id="scoreBig" data-score>0</span><span style="font-size:18px;color:#94a3b8"> / 300</span></div>
+            </div>
+          </div>
+          <div id="stars" dir="ltr" style="display:flex;gap:6px;justify-content:center"></div>
+          <div class="sumbox">
+            <div style="background:#eafaf1;border:1.5px solid #9fe0bf;border-radius:12px;padding:8px 12px"><div style="font-size:12px;font-weight:700;color:#146c43">💪 חזק ב־</div><div id="strongText" style="font-weight:800;font-size:14px;line-height:1.4"></div></div>
+            <div style="background:#fff1ec;border:1.5px solid #f6b9a6;border-radius:12px;padding:8px 12px"><div style="font-size:12px;font-weight:700;color:#b23a1f">🎯 כדאי לחזק</div><div id="weakText" style="font-weight:800;font-size:14px;line-height:1.4"></div></div>
+          </div>
+          <div id="skillRows" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div style="font-weight:700;color:#475569;font-size:15px;text-align:center">הנוסחה שלך:</div>
+          <div class="formula" dir="ltr">(a + b)² = <span style="color:#1a8a80">a²</span> + <span style="color:#d4930d">2ab</span> + <span style="color:#e8684a">b²</span></div>
+        </div>
+      </div>
+      <div class="col" id="colControls">
+        <div data-enter>
+          <h1 id="title"></h1>
+          <div id="sub"></div>
+        </div>
+        <div id="quiz" data-enter hidden>
+          <div id="opts"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:stretch">
+            <button id="hintBtn" data-hintbtn type="button">💡 רמז</button>
+            <div id="hintBox" data-hintbox role="status" aria-live="polite" hidden></div>
+          </div>
+        </div>
+        <div id="fb" role="status" aria-live="polite" hidden></div>
+        <div id="home" aria-hidden="true"></div>
+        <div id="cue" data-cue></div>
+        <button id="next" data-primary type="button"></button>
+      </div>
+    </div>
+    <div id="float" dir="ltr">
+      <div id="tilt">
+        <div id="drift">
+          <div id="bubble" dir="rtl">
+            <svg id="shape" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path id="shapePath" style="fill:#dff7f2;stroke:#5cbcad;stroke-width:2;vector-effect:non-scaling-stroke;stroke-linejoin:round"></path></svg>
+            <div style="position:absolute;right:-5px;top:calc(50% + 4px);width:9px;height:9px;border-radius:50%;background:#dff7f2;border:2px solid #5cbcad"></div>
+            <div style="position:absolute;right:-12px;top:calc(50% + 14px);width:6px;height:6px;border-radius:50%;background:#dff7f2;border:1.5px solid #5cbcad"></div>
+            <div id="bubbleName">אליהו</div>
+            <div id="bubbleText" aria-live="polite"></div>
+          </div>
+          <div id="rivoBox"><div id="rivoHost"></div></div>
+          <div id="pointer" aria-hidden="true">👉</div>
+        </div>
+      </div>
+    </div>
+    <div id="conf" aria-hidden="true"></div>
+  </div>
+</div>
+<template id="rivo-tpl"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 190" width="820" height="190" xmlns:c2pa="http://c2pa.org/manifest"><style>.rv *{transform-box:fill-box;transform-origin:center}
+@keyframes rvBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes rvBlink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}
+@keyframes rvGlance{0%,35%{transform:translate(0,0)}42%,58%{transform:translate(-3px,1px)}65%,82%{transform:translate(3px,0)}90%,100%{transform:translate(0,0)}}
+@keyframes rvTalk{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+@keyframes rvHop{0%,100%{transform:translateY(0)}25%{transform:translateY(-9px)}50%{transform:translateY(0)}}
+@keyframes rvTilt{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes rvTwinkle{0%,100%{opacity:.25;transform:scale(.6)}50%{opacity:1;transform:scale(1)}}
+.rv-bob{animation:rvBob 2.8s ease-in-out infinite}
+.rv-blink{animation:rvBlink 4.6s ease-in-out infinite}
+.rv-glance{animation:rvGlance 6s ease-in-out infinite}
+.rv-talk{animation:rvTalk .22s ease-in-out infinite alternate}
+.rv-hop{animation:rvHop 1.1s ease-out infinite}
+.rv-tilt{animation:rvTilt 2.4s ease-in-out infinite}
+.rv-twinkle{animation:rvTwinkle 1.4s ease-in-out infinite}
+.rv-twinkle2{animation:rvTwinkle 1.4s ease-in-out .5s infinite}
+.rv text{display:none}
+@media (prefers-reduced-motion:reduce){.rv *{animation:none!important}}</style>
+
+
+<g id="rivo-idle" class="rv" transform="translate(20 20)"><title>ריבו — רגיל</title><ellipse cx="60" cy="123" rx="30" ry="5" fill="#1F2A37" opacity="0.12"></ellipse><g class="rv-bob"><rect x="35" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><rect x="68" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><clipPath id="clip-idle"><rect x="16" y="14" width="88" height="88" rx="24"></rect></clipPath><g clip-path="url(#clip-idle)"><rect x="16" y="14" width="55" height="55" fill="#6EDDD0"></rect><rect x="71" y="14" width="33" height="55" fill="#FFD84D"></rect><rect x="16" y="69" width="55" height="33" fill="#FFD84D"></rect><rect x="71" y="69" width="33" height="33" fill="#FF9B7D"></rect><path d="M71 14V102M16 69H104" stroke="#FFFFFF" stroke-width="2" opacity="0.8"></path></g><rect x="16" y="14" width="88" height="88" rx="24" fill="none" stroke="#1F2A37" stroke-width="4"></rect><ellipse cx="30" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><ellipse cx="92" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><g class="rv-blink"><ellipse cx="45" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><ellipse cx="77" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><g><g class="rv-glance"><circle cx="46" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="78" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="48.5" cy="47" r="2.2" fill="#FFFFFF"></circle><circle cx="80.5" cy="47" r="2.2" fill="#FFFFFF"></circle></g></g></g><path d="M52 79Q61 87 70 79" fill="none" stroke="#1F2A37" stroke-width="4" stroke-linecap="round"></path></g><text x="60" y="160" text-anchor="middle" font-family="Rubik, sans-serif" font-size="15" font-weight="700" fill="#1F2A37">רגיל · idle</text></g>
+<g id="rivo-blink" class="rv" transform="translate(180 20)"><title>ריבו — ממצמץ</title><ellipse cx="60" cy="123" rx="30" ry="5" fill="#1F2A37" opacity="0.12"></ellipse><g><rect x="35" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><rect x="68" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><clipPath id="clip-blink"><rect x="16" y="14" width="88" height="88" rx="24"></rect></clipPath><g clip-path="url(#clip-blink)"><rect x="16" y="14" width="55" height="55" fill="#6EDDD0"></rect><rect x="71" y="14" width="33" height="55" fill="#FFD84D"></rect><rect x="16" y="69" width="55" height="33" fill="#FFD84D"></rect><rect x="71" y="69" width="33" height="33" fill="#FF9B7D"></rect><path d="M71 14V102M16 69H104" stroke="#FFFFFF" stroke-width="2" opacity="0.8"></path></g><rect x="16" y="14" width="88" height="88" rx="24" fill="none" stroke="#1F2A37" stroke-width="4"></rect><ellipse cx="30" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><ellipse cx="92" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><path d="M33 49Q45 57 57 49M65 49Q77 57 89 49" fill="none" stroke="#1F2A37" stroke-width="4" stroke-linecap="round"></path><path d="M52 79Q61 87 70 79" fill="none" stroke="#1F2A37" stroke-width="4" stroke-linecap="round"></path></g><text x="60" y="160" text-anchor="middle" font-family="Rubik, sans-serif" font-size="15" font-weight="700" fill="#1F2A37">ממצמץ · blink</text></g>
+<g id="rivo-happy" class="rv" transform="translate(340 20)"><title>ריבו — שמח</title><ellipse cx="60" cy="123" rx="30" ry="5" fill="#1F2A37" opacity="0.12"></ellipse><g class="rv-hop"><rect x="35" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><rect x="68" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><clipPath id="clip-happy"><rect x="16" y="14" width="88" height="88" rx="24"></rect></clipPath><g clip-path="url(#clip-happy)"><rect x="16" y="14" width="55" height="55" fill="#6EDDD0"></rect><rect x="71" y="14" width="33" height="55" fill="#FFD84D"></rect><rect x="16" y="69" width="55" height="33" fill="#FFD84D"></rect><rect x="71" y="69" width="33" height="33" fill="#FF9B7D"></rect><path d="M71 14V102M16 69H104" stroke="#FFFFFF" stroke-width="2" opacity="0.8"></path></g><rect x="16" y="14" width="88" height="88" rx="24" fill="none" stroke="#1F2A37" stroke-width="4"></rect><ellipse cx="30" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><ellipse cx="92" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><path d="M34 53Q45 38 56 53M66 53Q77 38 88 53" fill="none" stroke="#1F2A37" stroke-width="4.5" stroke-linecap="round"></path><path d="M47 76Q61 98 75 76Z" fill="#1F2A37" stroke="#1F2A37" stroke-width="3" stroke-linejoin="round"></path><ellipse cx="61" cy="87" rx="6" ry="3.2" fill="#FF6B7A"></ellipse></g><path class="rv-twinkle" d="M10 15L12 20L17 22L12 24L10 29L8 24L3 22L8 20Z" fill="#F5B800"></path><path class="rv-twinkle2" d="M110 9L112 14L117 16L112 18L110 23L108 18L103 16L108 14Z" fill="#4338CA"></path><path class="rv-twinkle" d="M112 53L114 58L119 60L114 62L112 67L110 62L105 60L110 58Z" fill="#B53A0B"></path><text x="60" y="160" text-anchor="middle" font-family="Rubik, sans-serif" font-size="15" font-weight="700" fill="#1F2A37">שמח · happy</text></g>
+<g id="rivo-think" class="rv" transform="translate(500 20)"><title>ריבו — מתלבט</title><ellipse cx="60" cy="123" rx="30" ry="5" fill="#1F2A37" opacity="0.12"></ellipse><g class="rv-tilt"><rect x="35" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><rect x="68" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><clipPath id="clip-think"><rect x="16" y="14" width="88" height="88" rx="24"></rect></clipPath><g clip-path="url(#clip-think)"><rect x="16" y="14" width="55" height="55" fill="#6EDDD0"></rect><rect x="71" y="14" width="33" height="55" fill="#FFD84D"></rect><rect x="16" y="69" width="55" height="33" fill="#FFD84D"></rect><rect x="71" y="69" width="33" height="33" fill="#FF9B7D"></rect><path d="M71 14V102M16 69H104" stroke="#FFFFFF" stroke-width="2" opacity="0.8"></path></g><rect x="16" y="14" width="88" height="88" rx="24" fill="none" stroke="#1F2A37" stroke-width="4"></rect><g><ellipse cx="45" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><ellipse cx="77" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><g transform="translate(3 -4)"><g><circle cx="46" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="78" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="48.5" cy="47" r="2.2" fill="#FFFFFF"></circle><circle cx="80.5" cy="47" r="2.2" fill="#FFFFFF"></circle></g></g></g><path d="M34 30L55 30M67 28L88 22" fill="none" stroke="#1F2A37" stroke-width="4" stroke-linecap="round"></path><path d="M49 84Q53 79 57 84T65 84T73 84" fill="none" stroke="#1F2A37" stroke-width="4" stroke-linecap="round"></path></g><g class="rv-twinkle"><circle cx="108" cy="14" r="11" fill="#4338CA"></circle><path d="M104.5 10.5Q104.5 6.5 108 6.5Q111.5 6.5 111.5 10Q111.5 12.5 108 14V16" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"></path><circle cx="108" cy="20" r="1.6" fill="#FFFFFF"></circle></g><text x="60" y="160" text-anchor="middle" font-family="Rubik, sans-serif" font-size="15" font-weight="700" fill="#1F2A37">מתלבט · think</text></g>
+<g id="rivo-talk" class="rv" transform="translate(660 20)"><title>ריבו — מדבר</title><ellipse cx="60" cy="123" rx="30" ry="5" fill="#1F2A37" opacity="0.12"></ellipse><g class="rv-bob"><rect x="35" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><rect x="68" y="98" width="17" height="18" rx="8.5" fill="#1F2A37"></rect><clipPath id="clip-talk"><rect x="16" y="14" width="88" height="88" rx="24"></rect></clipPath><g clip-path="url(#clip-talk)"><rect x="16" y="14" width="55" height="55" fill="#6EDDD0"></rect><rect x="71" y="14" width="33" height="55" fill="#FFD84D"></rect><rect x="16" y="69" width="55" height="33" fill="#FFD84D"></rect><rect x="71" y="69" width="33" height="33" fill="#FF9B7D"></rect><path d="M71 14V102M16 69H104" stroke="#FFFFFF" stroke-width="2" opacity="0.8"></path></g><rect x="16" y="14" width="88" height="88" rx="24" fill="none" stroke="#1F2A37" stroke-width="4"></rect><ellipse cx="30" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><ellipse cx="92" cy="72" rx="6" ry="4" fill="#FF5C8A" opacity="0.35"></ellipse><g class="rv-blink"><ellipse cx="45" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><ellipse cx="77" cy="48" rx="12.5" ry="14.5" fill="#FFFFFF" stroke="#1F2A37" stroke-width="3"></ellipse><g><g class="rv-glance"><circle cx="46" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="78" cy="50" r="6.5" fill="#1F2A37"></circle><circle cx="48.5" cy="47" r="2.2" fill="#FFFFFF"></circle><circle cx="80.5" cy="47" r="2.2" fill="#FFFFFF"></circle></g></g></g><ellipse class="rv-talk" cx="61" cy="82" rx="7" ry="6.5" fill="#1F2A37"></ellipse></g><text x="60" y="160" text-anchor="middle" font-family="Rubik, sans-serif" font-size="15" font-weight="700" fill="#1F2A37">מדבר · talk</text></g>
+</svg></template>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+(function () {
+  const LRI = '\u2066', PDI = '\u2069';
+  const m = (s) => LRI + s + PDI;
+  const T = '#1a8a80', C = '#e8684a', G = '#f0b429';
+  const PL = 92, PT = 56, N = 250;
+  const VB = { idle: '20 20 120 130', blink: '180 20 120 130', happy: '340 20 120 130', think: '500 20 120 130', talk: '660 20 120 130' };
+  const WRONG = ['אופס! הריבוע לא מסכים.', 'כמעט. בוא נסתכל שוב על הציור.', 'טעות טובה. ממנה לומדים.'];
+  const STEPS = [
+    { mode: 'intro', tA: 'למה ', tM: '(a + b)² ≠ a² + b²', tB: '?', sub: 'זו הטעות הכי נפוצה.', tip: 'הרבה חושבים שרק מעלים בריבוע. בוא נראה למה זה לא נכון.', btn: 'בוא נחקור ←', cue: 'לחץ כדי להתחיל' },
+    { mode: 'explore', tA: 'בנה את הריבוע', sub: 'גרור את העיגול. שנה את a ו־b.', tip: 'הצלע כולה היא ' + m('a + b') + '. שים לב לשני המלבנים הצהובים.', btn: 'הבנתי ←', cue: 'גרור את העיגול כדי להמשיך', cueDone: 'כל הכבוד! אפשר להמשיך ←' },
+    { mode: 'quiz', tA: 'מה שטח הריבוע הטורקיז?', sub: 'החלק למעלה־שמאל.', tip: 'צלע a לאורך ולרוחב. מה השטח?', hl: ['a2'], btn: 'המשך ←', win: 'יש! צלע כפול צלע.',
+      opts: [
+        { t: 'a²', c: true, f: 'נכון! ' + m('a · a = a²') + '.' },
+        { t: '2a', f: m('2a') + ' זה סכום. שטח הוא מכפלה.', show: { sides: true } },
+        { t: 'a + a', f: 'זה לא שטח. שטח = ' + m('a · a') + '.', show: { sides: true } },
+        { t: 'b²', f: 'כאן הצלע היא a, לא b.', show: { tiles: ['b2'] } }],
+      hints: ['הסתכל על צלעות הריבוע הטורקיז — לאורך ולרוחב.', 'שתי הצלעות שוות, ושתיהן a. שטח ריבוע הוא מכפלת הצלעות.'] },
+    { mode: 'quiz', tA: 'מה שטח שני המלבנים?', sub: 'שני החלקים הצהובים.', tip: 'לכל מלבן יש צלע a וצלע b. יש שניים כאלה.', hl: ['ab1', 'ab2'], btn: 'המשך ←', win: 'מעולה. שני מלבנים, לא אחד.',
+      opts: [
+        { t: '2ab', c: true, f: 'מעולה! ' + m('ab + ab = 2ab') + '.' },
+        { t: 'ab', f: 'זה מלבן אחד. יש שניים.', show: { tiles: ['ab1'] } },
+        { t: 'a² + b²', f: 'אלו הריבועים, לא המלבנים.', show: { tiles: ['a2', 'b2'] } },
+        { t: '2(a + b)', f: 'זה היקף, לא שטח.', show: { perim: true } }],
+      hints: ['כל מלבן צהוב בנוי מצלע a וצלע b.', 'יש שני מלבנים זהים. חבר את שני השטחים — בלי לשכוח אף אחד.'] },
+    { mode: 'quiz', tA: 'מהו ', tM: '(a + b)²', tB: '?', sub: 'חבר את ארבעת החלקים.', tip: 'צלע גדולה = ' + m('a + b') + '. שטח = ' + m('(a + b)²') + '. זה סכום ארבעת החלקים.', hl: ['a2', 'ab1', 'ab2', 'b2'], synth: true, btn: 'בדיקה במספרים ←', win: 'בינגו! זה ה־' + m('2ab') + ' שכולם שוכחים.',
+      opts: [
+        { t: 'a² + 2ab + b²', c: true, f: 'בינגו! ' + m('a² + 2ab + b²') + '.' },
+        { t: 'a² + b²', f: 'חסרים שני המלבנים (' + m('2ab') + ').', show: { tiles: ['ab1', 'ab2'], kind: 'miss' } },
+        { t: '(a+b) · 2', f: 'שטח ריבוע הוא צלע בריבוע.', show: { perim: true } },
+        { t: 'ab²', f: 'אין לנו שטח כזה.' }],
+      hints: ['צלע הריבוע הגדול היא ' + m('a + b') + '. השטח הוא צלע בריבוע — חבר את ארבעת החלקים.', 'יש ריבוע של a, ריבוע של b, ושני מלבנים זהים באמצע. חבר את כולם.'] },
+    { mode: 'numeric', tA: 'בדיקה עם מספרים', sub: m('a = 3') + ' ו־' + m('b = 2') + '.', tip: m('(3+2)² = 25') + '. גם הנוסחה נותנת 25. זה עובד!', btn: 'סיום 🏆', cue: 'קרא ולחץ להמשך' },
+    { mode: 'finish', tA: 'כל הכבוד! 🏆', sub: 'פיצחת את הנוסחה.', tip: 'אל תשכח את ' + m('2ab') + ' באמצע. מוכן ל־' + m('(a−b)²') + '?', btn: 'התחל מחדש 🔄', cue: 'סיימת! אפשר להתחיל מחדש' }
+  ];
+  const SHAPES = {
+    cloud: { d: 'M18,30 C18,12 38,6 48,16 C56,4 78,6 82,22 C98,22 100,44 90,52 C100,64 90,84 74,80 C68,96 44,98 38,86 C24,96 4,86 10,70 C-2,62 2,40 18,30 Z', pad: '20px 30px', min: 170 },
+    circle: { d: 'M50,1 A49,49 0 1,1 49.9,1 Z', pad: '22px 34px', min: 180 },
+    square: { d: 'M8,0 H92 Q100,0 100,8 V92 Q100,100 92,100 H8 Q0,100 0,92 V8 Q0,0 8,0 Z', pad: '10px 16px', min: 130 },
+    trapezoid: { d: 'M16,0 H84 Q88,0 89,4 L100,94 Q100,100 94,100 H6 Q0,100 0,94 L11,4 Q12,0 16,0 Z', pad: '12px 36px', min: 170 },
+    triangle: { d: 'M47,3 Q50,-1 53,3 L99,94 Q100,100 94,100 H6 Q0,100 1,94 Z', pad: '50px 64px 12px', min: 240 },
+    rhombus: { d: 'M50,0 L100,50 L50,100 L0,50 Z', pad: '30px 66px', min: 240 }
+  };
+  const SHAPE_CYCLE = ['cloud', 'circle', 'square', 'trapezoid', 'triangle', 'rhombus'];
+  const SK = [{ i: 2, name: 'שטח ריבוע', math: 'a²' }, { i: 3, name: 'שני המלבנים', math: '2ab' }, { i: 4, name: 'הנוסחה המלאה', math: '(a + b)²' }];
+  const SYNTH_A = 'צלע הריבוע הגדול היא ' + m('(a + b)') + '. לכן השטח הוא ' + m('(a + b)²') + '. חבר את ארבעת החלקים.';
+  const SYNTH_B = 'זה שווה לסכום ארבעת החלקים: ' + m('a² + ab + ba + b²') + ' (= ' + m('a² + 2ab + b²') + ').';
+  const $ = (id) => document.getElementById(id);
+  const NS = 'http://www.w3.org/2000/svg';
+
+  function toLines(s, n) {
+    const w = []; let cur = '', d = 0;
+    for (const ch of s || '') {
+      if (ch === LRI) d++; else if (ch === PDI) d = Math.max(0, d - 1);
+      if (ch === ' ' && d === 0) { if (cur) w.push(cur); cur = ''; } else cur += ch;
+    }
+    if (cur) w.push(cur);
+    const out = [];
+    for (let i = 0; i < w.length; i += n) out.push(w.slice(i, i + n).join(' '));
+    return out.length ? out : [''];
+  }
+
+  const app = {
+    state: { idx: 0, split: 150, dragged: false, dragging: false, done: false, wrong: [], hint: 0, fb: null, mood: 'idle', trans: null, msg: '', msgId: 0, typing: false, attn: false, flash: null, flashN: 0, sound: true, target: 'home', below: false, res: {}, retry: false, demo: null, demoJoined: false, demoDone: false, revealed: [] },
+    props: { startStep: 1, idleNudgeSec: 9, objectFeedback: true, bubbleShape: 'cycle', wordsPerLine: 4 },
+    timers: [], anims: [], demoAnims: [], wrongN: 0, px: null, py: null, rv: null, _vb: null, _lbl: {},
+    get rm() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); },
+    later(fn, ms) { const t = setTimeout(fn, this.rm ? Math.min(ms, 40) : ms); this.timers.push(t); return t; },
+    q(sel) { return $('app').querySelector(sel); },
+    an(el, k, o) {
+      if (!el || !el.animate || this.rm) return null;
+      try { const a = el.animate(k, o); this.anims.push(a); return a; } catch (e) { return null; }
+    },
+    setState(patch) {
+      const prev = this.state;
+      const partial = typeof patch === 'function' ? patch(this.state) : patch;
+      this.state = Object.assign({}, this.state, partial);
+      this.paint();
+      this.afterPaint(prev);
+    },
+    clearCelebration() {
+      this.anims.forEach((a) => { try { a.cancel(); } catch (e) {} });
+      this.anims = [];
+      const L = $('conf');
+      if (L) {
+        if (typeof gsap !== 'undefined') L.querySelectorAll('[data-cf]').forEach((n) => gsap.killTweensOf(n));
+        L.innerHTML = '';
+      }
+      document.querySelectorAll('[data-cf]').forEach((n) => n.remove());
+    },
+    clearAll() {
+      this.timers.forEach(clearTimeout); this.timers = [];
+      cancelAnimationFrame(this.raf); cancelAnimationFrame(this.easeRaf); cancelAnimationFrame(this.moveRaf);
+      this.easeRaf = this.moveRaf = this.raf = null;
+      (this.demoAnims || []).forEach((a) => { try { a.cancel(); } catch (e) {} });
+      this.demoAnims = [];
+      [this.sayT, this.talkT, this.attnT, this.nudgeT, this.homeT].forEach(clearTimeout);
+      this.clearCelebration();
+      this.counting = false;
+    },
+    mountRivo() {
+      const host = $('rivoHost');
+      const tpl = $('rivo-tpl');
+      if (!host || !tpl) return;
+      host.appendChild(tpl.content.cloneNode(true));
+      const svg = host.querySelector('svg');
+      if (!svg) return;
+      svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%'); svg.setAttribute('aria-hidden', 'true');
+      this.rv = svg; this.applyRivo();
+    },
+    rivoFace() {
+      const s = this.state;
+      if (this.rm) return 'idle';
+      if (s.dragging) return 'idle';
+      if (s.mood !== 'idle') return s.mood;
+      return s.trans || 'idle';
+    },
+    applyRivo() {
+      const f = this.rivoFace();
+      if (this.rv && this._vb !== f) { this.rv.setAttribute('viewBox', VB[f]); this._vb = f; }
+    },
+    blinkLoop() {
+      this.blinkT = setTimeout(() => {
+        if (!this.rm && this.state.mood === 'idle' && !this.state.trans && !this.state.dragging) {
+          this.setState({ trans: 'blink' });
+          setTimeout(() => { if (this.state.trans === 'blink') this.setState({ trans: null }); }, 280);
+        }
+        this.blinkLoop();
+      }, 4200 + Math.random() * 1600);
+    },
+    setGaze(dx, dy) {
+      if (!this.rv) return;
+      ['rivo-idle', 'rivo-talk'].forEach((id) => {
+        const g = this.rv.querySelector('#' + id + ' .rv-glance'); const p = g && g.parentNode; if (!p) return;
+        if (dx || dy) p.setAttribute('transform', 'translate(' + dx.toFixed(2) + ' ' + dy.toFixed(2) + ')');
+        else p.removeAttribute('transform');
+      });
+    },
+    gazeAt(el) {
+      const b = $('rivoBox'); if (!b || !el) return;
+      const r = b.getBoundingClientRect(), t = el.getBoundingClientRect();
+      const vx = t.left + t.width / 2 - (r.left + r.width / 2), vy = t.top + t.height / 2 - (r.top + r.height / 2);
+      const L = Math.hypot(vx, vy) || 1; this.setGaze(vx / L * 4, vy / L * 3.5);
+    },
+    say(text, o) {
+      o = o || {};
+      clearTimeout(this.sayT); clearTimeout(this.talkT); clearTimeout(this.attnT);
+      const patch = { typing: true }; if (o.mood) patch.mood = o.mood; if (o.attn) patch.attn = true;
+      this.setState(patch);
+      this.sayT = setTimeout(() => {
+        if (this.drift && !this.rm) { try { this.drift.currentTime = 0; this.drift.play(); } catch (e) {} }
+        this.setState((s) => ({ typing: false, msg: text, msgId: s.msgId + 1, trans: s.mood === 'idle' ? 'talk' : s.trans }));
+        this.talkT = setTimeout(() => { if (this.state.trans === 'talk') this.setState({ trans: null }); }, 1600);
+        if (o.attn) this.attnT = setTimeout(() => this.setState({ attn: false }), 1800);
+      }, this.rm ? 0 : 380);
+    },
+    place(anim) {
+      const card = $('card'), u = $('float'), bb = $('bubble'); if (!card || !u || !bb) return;
+      const c = card.getBoundingClientRect(), tg = this.state.target;
+      let el = tg === 'hint' ? this.q('[data-hintbtn]') : tg === 'handle' ? this.q('[data-handle]') : tg === 'demo' ? this.q('[data-demo-anchor]') : null;
+      if (el && !el.getBoundingClientRect().width) el = null;
+      let x, y, below = false;
+      if (!el) {
+        const s = $('home'); if (!s) return; const r = s.getBoundingClientRect();
+        if (r.width < 160) return;
+        bb.style.maxWidth = Math.max(140, Math.min(340, r.width - 88)) + 'px';
+        const uw = bb.offsetWidth + 88, uh = Math.max(bb.offsetHeight, 78);
+        if (s.style.height !== uh + 'px') s.style.height = uh + 'px';
+        x = r.right - c.left - uw; y = r.top - c.top;
+      } else {
+        const t = el.getBoundingClientRect(), pw = 30, avail = t.left - c.left - 6 - 88 - pw - 4;
+        if (avail >= 150) {
+          bb.style.maxWidth = Math.min(250, avail) + 'px';
+          const uw = bb.offsetWidth + 88 + pw, uh = Math.max(bb.offsetHeight, 78);
+          x = t.left - c.left - uw - 2; y = t.top - c.top + t.height / 2 - uh / 2;
+        } else {
+          below = true; bb.style.maxWidth = Math.max(140, Math.min(250, c.width - 12 - 88 - pw)) + 'px';
+          const uw = bb.offsetWidth + 88 + pw;
+          x = t.left + t.width / 2 - c.left - (uw - pw / 2); y = t.bottom - c.top + 2;
+        }
+        const uw = bb.offsetWidth + 88 + pw, uh = Math.max(bb.offsetHeight, 78);
+        x = Math.max(6, Math.min(c.width - uw - 6, x)); y = Math.max(6, Math.min(c.height - uh - 6, y));
+      }
+      y = this.clearOfCopy(x, y, c);
+      if (below !== this.state.below) this.setState({ below });
+      const first = this.px == null, dx = first ? 0 : x - this.px, dy = first ? 0 : y - this.py;
+      if (!first && Math.abs(dx) < .5 && Math.abs(dy) < .5) return;
+      u.style.transition = (!anim || first || this.rm) ? 'none' : '';
+      u.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      if (u.style.transition === 'none') { void u.offsetWidth; u.style.transition = ''; }
+      if (anim && !first && Math.hypot(dx, dy) > 40) {
+        this.an($('tilt'), [{ transform: 'rotate(0deg)' }, { transform: 'rotate(' + (dx > 0 ? 9 : -9) + 'deg) translateY(-14px)', offset: .35 }, { transform: 'rotate(0deg)' }], { duration: 850, easing: 'ease-in-out' });
+        this.later(() => this.an($('rivoHost'), [{ transform: 'scale(1)' }, { transform: 'scale(1.12,.88)' }, { transform: 'scale(.96,1.04)' }, { transform: 'scale(1)' }], { duration: 360, easing: 'ease-out' }), 780);
+      }
+      this.px = x; this.py = y;
+    },
+    clearOfCopy(x, y, c) {
+      const u = $('float'), bb = $('bubble'); if (!u || !bb) return y;
+      const bubbleH = bb.offsetHeight, bubbleW = bb.offsetWidth;
+      const topInset = Math.max(0, ((u.offsetHeight || bubbleH) - bubbleH) / 2);
+      let top = c.top + y + topInset, bottom = top + bubbleH, left = c.left + x, right = left + bubbleW;
+      ['title', 'sub', 'next'].forEach((id) => {
+        const el = $(id); if (!el) return;
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        const rects = range.getClientRects();
+        const list = rects.length ? rects : [el.getBoundingClientRect()];
+        for (const tr of list) {
+          if (tr.width < 2 || tr.height < 2) continue;
+          const ox = Math.min(right, tr.right) - Math.max(left, tr.left);
+          const oy = Math.min(bottom, tr.bottom) - Math.max(top, tr.top);
+          if (ox > 2 && oy > 2) {
+            const lift = oy + 8;
+            y -= lift; top -= lift; bottom -= lift;
+          }
+        }
+      });
+      return Math.max(6, y);
+    },
+    point(t, text) {
+      clearTimeout(this.homeT);
+      this.setState({ target: t }); this.say(text, { attn: true, mood: 'think' });
+      this.later(() => { const el = this.q(t === 'hint' ? '[data-hintbtn]' : t === 'demo' ? '[data-demo-anchor]' : '[data-handle]'); this.gazeAt(el); }, 900);
+      this.homeT = setTimeout(() => { this.goHome(); this.setState({ mood: 'idle' }); this.setGaze(0, 0); }, 7000);
+    },
+    goHome() { clearTimeout(this.homeT); if (this.state.target !== 'home') this.setState({ target: 'home' }); },
+    burst(n, big) {
+      if (this.rm) return; const L = $('conf'); if (!L) return;
+      const W = L.clientWidth || 320, H = L.clientHeight || 400;
+      const cols = ['#1a8a80', '#e8684a', '#f0b429', '#32b5a7'].concat(big ? ['#17233f'] : []);
+      for (let k = 0; k < n; k++) {
+        const d = document.createElement('div'); d.setAttribute('data-cf', '');
+        const x = big ? Math.random() * W : W * (0.4 + Math.random() * 0.4), y = big ? -12 : H * 0.2;
+        d.style.cssText = 'position:absolute;left:' + x + 'px;top:' + y + 'px;width:8px;height:8px;border-radius:2px;background:' + cols[k % cols.length] + ';will-change:transform,opacity';
+        L.appendChild(d);
+        const dy = big ? 120 + Math.random() * 500 : 180 + Math.random() * 120, dx = (Math.random() * 2 - 1) * (big ? 120 : 80);
+        const rot = (Math.random() * 2 - 1) * (big ? 720 : 360), dur = big ? 1100 + Math.random() * 2000 : 900 + Math.random() * 500;
+        const delay = big ? Math.random() * 250 : 0;
+        if (typeof gsap !== 'undefined') {
+          gsap.fromTo(d, { x: 0, y: 0, rotation: 0, opacity: 1 }, { x: dx, y: dy, rotation: rot, opacity: 0, duration: dur / 1000, delay: delay / 1000, ease: 'power2.out', onComplete: () => d.remove() });
+        } else {
+          const a = d.animate([{ transform: 'translate(0,0) rotate(0deg)', opacity: 1 }, { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg)', opacity: 0 }], { duration: dur, delay: delay, easing: 'cubic-bezier(.2,.7,.4,1)', fill: 'forwards' });
+          a.onfinish = () => d.remove(); this.anims.push(a);
+        }
+      }
+    },
+    sfx(k) {
+      if (!this.state.sound) return;
+      try {
+        const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+        const c = this.ac || (this.ac = new AC()); if (c.state === 'suspended') c.resume();
+        const tone = (type, f1, f2, dur, t0, v) => {
+          t0 = t0 || 0; v = v || .12;
+          const o = c.createOscillator(), g = c.createGain(), t = c.currentTime + t0;
+          o.type = type; o.frequency.setValueAtTime(f1, t); if (f2) o.frequency.linearRampToValueAtTime(f2, t + dur);
+          g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+          o.connect(g); g.connect(c.destination); o.start(t); o.stop(t + dur + .02);
+        };
+        if (k === 'click') tone('sine', 440, 0, .08, 0, .07);
+        else if (k === 'tick') tone('sine', 700, 0, .04, 0, .03);
+        else if (k === 'correct') tone('triangle', 659, 880, .35);
+        else if (k === 'error') tone('sawtooth', 220, 196, .25, 0, .05);
+        else if (k === 'win') [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone('triangle', f, 0, .24, i * .11, .1));
+      } catch (e) {}
+    },
+    report() {
+      const res = this.state.res || {}; let total = 0;
+      const rows = SK.map((k) => {
+        const r = res[k.i], pts = r ? r.pts : 0; total += pts;
+        const lv = !r ? 'none' : pts >= 80 ? 'strong' : pts >= 50 ? 'ok' : 'weak';
+        const B = { strong: ['חזק', '#eafaf1', '#146c43', '#9fe0bf'], ok: ['בסדר', '#fef8eb', '#8a5a00', '#e0b84a'], weak: ['כדאי לחזק', '#fff1ec', '#b23a1f', '#f6b9a6'], none: ['לא נענה', '#f1f5f9', '#64748b', '#cbd5e1'] }[lv];
+        const barC = { strong: '#1f9d61', ok: '#f0b429', weak: '#e8684a', none: '#cbd5e1' }[lv];
+        const S = STEPS[k.i], w = r ? r.wrong : [];
+        return { i: k.i, name: k.name, math: k.math, lv, pts, badge: B[0], badgeBg: B[1], badgeFg: B[2], badgeBd: B[3], barC, detail: r ? (r.tries === 1 ? 'ניסיון ראשון' : r.tries + ' ניסיונות') + ' · ' + (r.hints === 0 ? 'בלי רמז' : r.hints === 1 ? 'רמז אחד' : '2 רמזים') : 'לא נענה', hasWrong: w.length > 0, wrongText: w.length ? 'בחרת ' + m(S.opts[w[0]].t) + ' — ' + S.opts[w[0]].f : '', canRetry: lv !== 'strong' };
+      });
+      return { rows, total, stars: total >= 270 ? 3 : total >= 180 ? 2 : total > 0 ? 1 : 0 };
+    },
+    finishTip() {
+      const weak = this.report().rows.filter((r) => r.lv === 'ok' || r.lv === 'weak').sort((a, b) => a.pts - b.pts);
+      if (!weak.length) return STEPS[6].tip;
+      return 'יפה! הנקודה לחיזוק: ' + weak[0].name + ' (' + m(weak[0].math) + '). לחץ "תרגל שוב".';
+    },
+    goStep(i) {
+      this.clearAll(); this._enter = true; this.wrongN = 0; this.saidDrag = false; this.drag = null; this.tDrag = null; this.setGaze(0, 0);
+      this.px = null;
+      this.setState(Object.assign({ idx: i, dragged: false, dragging: false, done: false, wrong: [], hint: 0, fb: null, mood: 'idle', trans: null, flash: null, attn: false, typing: false, msg: '', target: 'home', demo: null, demoJoined: false, demoDone: false, revealed: [] }, i === 0 ? { split: 150, res: {}, retry: false } : {}, (i === 6 ? { retry: false } : {})));
+    },
+    enterFx() {
+      const S = STEPS[this.state.idx], root = $('app'); if (!root) return;
+      this.say(S.mode === 'finish' ? this.finishTip() : S.tip, { attn: true });
+      const useGsap = typeof gsap !== 'undefined' && !this.rm;
+      root.querySelectorAll('[data-enter]').forEach((el, k) => {
+        if (useGsap) gsap.fromTo(el, { x: 18, opacity: 0 }, { x: 0, opacity: 1, duration: .32, delay: k * .06, ease: 'power2.out', clearProps: 'transform' });
+        else this.an(el, [{ transform: 'translateX(18px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 320, delay: k * 60, easing: 'cubic-bezier(.25,.46,.45,.94)', fill: 'backwards' });
+      });
+      root.querySelectorAll('[data-tile]').forEach((el, k) => {
+        if (useGsap) gsap.fromTo(el, { scale: .92, opacity: .5 }, { scale: 1, opacity: 1, duration: .4, delay: k * .05, ease: 'back.out(1.4)', clearProps: 'transform' });
+        else this.an(el, [{ transform: 'scale(.92)', opacity: .5 }, { transform: 'scale(1)', opacity: 1 }], { duration: 400, delay: k * 50, easing: 'cubic-bezier(.34,1.56,.64,1)', fill: 'backwards' });
+      });
+      root.querySelectorAll('[data-num]').forEach((el, k) => this.an(el, [{ transform: 'translateY(10px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 380, delay: 150 + k * 450, easing: 'cubic-bezier(.34,1.4,.64,1)', fill: 'backwards' }));
+      root.querySelectorAll('[data-term]').forEach((el, k) => this.an(el, [{ transform: 'scale(.5)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }], { duration: 280, delay: 1100 + k * 130, easing: 'cubic-bezier(.34,1.56,.64,1)', fill: 'backwards' }));
+      const sq = $('square'); if (sq) { this.later(() => this.gazeAt(sq), 50); this.later(() => { if (!this.drag) this.setGaze(0, 0); }, 1900); }
+      if (S.mode === 'finish') {
+        this.sfx('win'); this.counting = true; this.setState({ mood: 'happy' }); this.burst(50, true);
+        const sc = $('scoreBig'), tot = this.report().total;
+        if (sc && !this.rm) {
+          const t0 = performance.now(), D = 1300;
+          const tick = (now) => { const p = Math.min(1, (now - t0) / D); sc.textContent = String(Math.round(tot * (1 - Math.pow(1 - p, 3)))); if (p < 1) this.raf = requestAnimationFrame(tick); else this.counting = false; };
+          this.raf = requestAnimationFrame(tick);
+        } else if (sc) { sc.textContent = String(tot); this.counting = false; }
+        root.querySelectorAll('[data-star]').forEach((s, k) => this.an(s, [{ transform: 'scale(0) rotate(-40deg)', opacity: 0 }, { transform: 'scale(1.3) rotate(10deg)', opacity: 1, offset: .6 }, { transform: 'scale(1)', opacity: 1 }], { duration: 500, delay: 1000 + k * 220, easing: 'ease-out', fill: 'backwards' }));
+        root.querySelectorAll('[data-row]').forEach((r, k) => this.an(r, [{ transform: 'translateY(12px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 380, delay: 400 + k * 160, easing: 'ease-out', fill: 'backwards' }));
+        root.querySelectorAll('[data-bar]').forEach((b, k) => this.an(b, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 700, delay: 650 + k * 160, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' }));
+        this.an($('trophy'), [{ transform: 'scale(.3) rotate(-25deg)', opacity: 0 }, { transform: 'scale(1.2) rotate(8deg)', opacity: 1, offset: .6 }, { transform: 'scale(1) rotate(0)', opacity: 1 }], { duration: 750, easing: 'ease-out' });
+      }
+      if (this.state.idx === 4) this.later(() => this.runDemo('full'), this.rm ? 600 : 2600);
+      this.armNudge();
+    },
+    armNudge() {
+      clearTimeout(this.nudgeT);
+      const S = STEPS[this.state.idx]; if (S.mode !== 'explore' && S.mode !== 'quiz') return;
+      this.nudgeT = setTimeout(() => {
+        const st = this.state, S2 = STEPS[st.idx];
+        if (S2.mode === 'explore' && !st.dragged) this.point('handle', 'העיגול הלבן מחכה לך. נסה לגרור אותו.');
+        else if (S2.mode === 'quiz' && !st.done) {
+          if (st.hint < 2) this.point('hint', 'אולי אתה רוצה רמז?');
+          else this.say('חבר את מה שהרמזים אמרו. אתה קרוב.', { attn: true, mood: 'think' });
+        }
+      }, (this.props.idleNudgeSec || 9) * 1000);
+    },
+    canNext() { const st = this.state, md = STEPS[st.idx].mode; return md === 'explore' ? st.dragged : md === 'quiz' ? st.done : true; },
+    next() {
+      if (!this.canNext()) { this.an($('cue'), [{ transform: 'translateX(0)' }, { transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' }], { duration: 320 }); return; }
+      this.sfx('click');
+      const md = STEPS[this.state.idx].mode;
+      this.goStep(md === 'finish' ? 0 : (this.state.retry && md === 'quiz') ? 6 : this.state.idx + 1);
+    },
+    pick(i) {
+      const st = this.state, S = STEPS[st.idx]; if (st.done || st.wrong.includes(i)) return;
+      const o = S.opts[i], btn = $('opt' + i); this.armNudge(); this.goHome();
+      if (o.c) {
+        clearTimeout(this.nudgeT);
+        const tries = this.wrongN + 1, pts = Math.max(20, (tries === 1 ? 100 : tries === 2 ? 60 : 30) - 20 * st.hint);
+        const prev = st.res[st.idx], rec = { tries, hints: st.hint, pts, wrong: st.wrong.slice() };
+        this.setState({ done: true, fb: { ok: true, text: o.f }, mood: 'happy', flash: null, res: Object.assign({}, st.res, { [st.idx]: prev && prev.pts >= pts ? prev : rec }) });
+        this.sfx('correct'); this.burst(18); this.floatPts(btn, pts);
+        if (st.demo === 'ask' || st.demo === 'full') { this.setState({ demoDone: true }); this.later(() => this.returnDemo(), st.demo === 'full' ? 2800 : 2200); }
+        this.an(btn, [{ transform: 'scale(1)' }, { transform: 'scale(1.08)' }, { transform: 'scale(.97)' }, { transform: 'scale(1)' }], { duration: 400, easing: 'ease-out' });
+        this.later(() => this.an($('next'), [{ transform: 'scale(.95)' }, { transform: 'scale(1.04)' }, { transform: 'scale(1)' }], { duration: 450, easing: 'cubic-bezier(.34,1.56,.64,1)' }), 60);
+        this.say(S.win, { attn: true });
+      } else {
+        const n = this.wrongN++, show = this.props.objectFeedback ? (o.show || null) : null;
+        this.setState((s) => ({ wrong: s.wrong.concat(i), fb: { ok: false, text: o.f }, mood: 'think', flash: show, flashN: s.flashN + 1 }));
+        this.sfx('error');
+        this.an(btn, [{ transform: 'translateX(0)' }, { transform: 'translateX(-7px)' }, { transform: 'translateX(7px)' }, { transform: 'translateX(-4px)' }, { transform: 'translateX(0)' }], { duration: 400 });
+        this.say(WRONG[n % WRONG.length] + (show ? ' סימנתי לך בריבוע.' : ''));
+        if (show) this.later(() => this.setState({ flash: null }), 1750);
+        if (this.wrongN >= 2 && this.state.hint < 2) this.later(() => { if (!this.state.done && this.state.hint < 2) this.point('hint', 'אולי אתה רוצה רמז?'); }, 1900);
+      }
+    },
+    hint() {
+      const st = this.state; if (st.done) return;
+      this.sfx('click'); this.armNudge(); this.goHome(); this.setGaze(0, 0);
+      this.setState({ hint: Math.min(2, st.hint + 1), mood: 'think' });
+      if (st.idx === 3 && st.hint === 0) { this.later(() => this.runDemo('ask'), 300); return; }
+      this.say('הנה כיוון. את התשובה תמצא לבד.');
+    },
+    floatPts(el, pts) {
+      const L = $('conf'), c = $('card'); if (!L || !el || !c) return;
+      const r = el.getBoundingClientRect(), cr = c.getBoundingClientRect(), d = document.createElement('div');
+      d.setAttribute('data-cf', ''); d.textContent = '+' + pts; d.dir = 'ltr';
+      d.style.cssText = 'position:absolute;left:' + (r.left - cr.left + r.width / 2) + 'px;top:' + (r.top - cr.top - 6) + 'px;transform:translate(-50%,0);font-family:"Secular One",sans-serif;font-size:26px;color:#1f9d61;text-shadow:0 2px 0 #fff;pointer-events:none';
+      L.appendChild(d);
+      if (this.rm || typeof gsap === 'undefined') { this.later(() => d.remove(), 900); return; }
+      gsap.fromTo(d, { y: 0, scale: .6, opacity: 0 }, { y: -64, scale: 1, opacity: 0, duration: 1.2, ease: 'power2.out', onComplete: () => d.remove() });
+    },
+    onDown(e) {
+      if (STEPS[this.state.idx].mode !== 'explore') return;
+      const svg = $('square'); try { svg.setPointerCapture(e.pointerId); } catch (_) {}
+      e.preventDefault();
+      this.drag = { x: e.clientX, y: e.clientY, moved: false };
+      this.setState({ dragging: true }); this.armNudge(); this.goHome();
+      if (!this.saidDrag) { this.saidDrag = true; this.say('יפה! כל ארבעת החלקים זזים יחד.'); }
+    },
+    onMove(e) {
+      if (!this.drag) return;
+      const svg = $('square'); const ctm = svg && svg.getScreenCTM(); if (!ctm) return;
+      const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const q = p.matrixTransform(ctm.inverse());
+      const raw = Math.max(50, Math.min(200, ((q.x - PL) + (q.y - PT)) / 2));
+      this.tgt = raw;
+      if (this.easeRaf) { cancelAnimationFrame(this.easeRaf); this.easeRaf = null; }
+      if (!this.moveRaf) this.moveRaf = requestAnimationFrame(() => { this.moveRaf = null; if (this.drag) this.setState({ split: this.tgt }); });
+      if (!this.drag.moved && Math.hypot(e.clientX - this.drag.x, e.clientY - this.drag.y) > 3) {
+        this.drag.moved = true;
+        if (!this.state.dragged) { this.setState({ dragged: true, mood: 'happy' }); this.sfx('correct'); this.burst(18); this.later(() => this.an($('next'), [{ transform: 'scale(.95)' }, { transform: 'scale(1.04)' }, { transform: 'scale(1)' }], { duration: 450 }), 30); }
+      }
+      const h = svg.querySelector('[data-handle]'); if (h) this.gazeAt(h);
+    },
+    onUp() {
+      if (!this.drag) return; const moved = this.drag.moved; this.drag = null;
+      this.setState({ dragging: false }); this.setGaze(0, 0); this.armNudge();
+      this.tgt = Math.round((this.tgt != null ? this.tgt : this.state.split) / 25) * 25; this.ease();
+      if (moved) { const a = Math.round(this.tgt / 25), b = 10 - a; this.say(m(a * a + ' + ' + (2 * a * b) + ' + ' + (b * b) + ' = 100') + '. תמיד 100, כי ' + m('10² = 100') + '.'); }
+    },
+    ease() {
+      if (this.easeRaf) return;
+      const step = () => {
+        const cur = this.state.split, t = this.tgt;
+        let nx = this.rm ? t : cur + (t - cur) * .45;
+        if (Math.abs(t - nx) < .25) nx = t;
+        if (nx !== cur) this.setState({ split: nx });
+        if (nx === t && !this.drag) { this.easeRaf = null; return; }
+        this.easeRaf = requestAnimationFrame(step);
+      };
+      this.easeRaf = requestAnimationFrame(step);
+    },
+    runDemo(kind) {
+      if (kind === 'full') return this.runFull();
+      const g1 = this.q('[data-tile="ab1"]'), g2 = this.q('[data-tile="ab2"]'); if (!g1 || !g2) return;
+      const s = this.state.split, b = N - s, cx = PL + N / 2, cy = PT + N / 2, sm = Math.min(s, b), rot2 = b <= s;
+      const d1 = [cx + sm / 2 - (PL + s + b / 2), cy - (PT + s / 2)], d2 = [cx - sm / 2 - (PL + s / 2), cy - (PT + s + b / 2)];
+      const r1 = rot2 ? 0 : -90, r2 = rot2 ? -90 : 0;
+      this.demoAnims.forEach((a) => { try { a.cancel(); } catch (e) {} }); this.demoAnims = [];
+      this.setState({ demo: kind, demoJoined: false, demoDone: false });
+      this.point('demo', kind === 'ask' ? 'רגע, אני מוציא את שני המלבנים…' : 'זוכר? מוציאים את שני המלבנים…');
+      const o = { duration: this.rm ? 1 : 1800, delay: this.rm ? 0 : 500, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards' };
+      const mv = (g, d, r) => {
+        if (g.animate) this.demoAnims.push(g.animate([{ transform: 'translate(0px,0px) rotate(0deg)' }, { transform: 'translate(' + d[0] + 'px,' + d[1] + 'px) rotate(' + r + 'deg)' }], o));
+        const tx = g.querySelector('text');
+        if (r && tx && tx.animate) this.demoAnims.push(tx.animate([{ transform: 'rotate(0deg)' }, { transform: 'rotate(' + (-r) + 'deg)' }], o));
+      };
+      mv(g1, d1, r1); mv(g2, d2, r2);
+      this.later(() => {
+        this.setState({ demoJoined: true });
+        this.say(kind === 'ask' ? 'נוווו… כמה זה יוצא?' : 'שני המלבנים יחד = ' + m('2ab') + '.', { attn: true, mood: 'think' });
+        if (kind === 'show') this.later(() => this.returnDemo(), 2800);
+      }, this.rm ? 50 : 2350);
+    },
+    runFull() {
+      if (this.state.done) return;
+      const gp = 34, sy = -6, D = { a2: [-1, -1], ab1: [1, -1], ab2: [-1, 1], b2: [1, 1] };
+      this.demoAnims.forEach((a) => { try { a.cancel(); } catch (e) {} }); this.demoAnims = [];
+      this.setState({ demo: 'full', demoJoined: false, demoDone: false, revealed: [] });
+      this.point('demo', 'בוא נפרק את כל הריבוע…');
+      const o = { duration: this.rm ? 1 : 1400, delay: this.rm ? 0 : 600, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards' };
+      Object.keys(D).forEach((id) => {
+        const g = this.q('[data-tile="' + id + '"]'); if (!g || !g.animate) return;
+        const dx = D[id][0] * gp / 2, dy = D[id][1] * gp / 2 + sy;
+        this.demoAnims.push(g.animate([{ transform: 'translate(0px,0px)' }, { transform: 'translate(' + dx + 'px,' + dy + 'px)' }], o));
+      });
+      this.later(() => { this.setState({ demoJoined: true }); this.say('גרור כל חלק למקום שלו למטה.', { attn: true, mood: 'think' }); }, this.rm ? 50 : 2000);
+    },
+    returnDemo() {
+      const as = this.demoAnims; this.demoAnims = [];
+      this.setState({ demoJoined: false });
+      if (this.rm || !as.length) { as.forEach((a) => a.cancel()); this.setState({ demo: null }); return; }
+      as.forEach((a) => { a.onfinish = () => a.cancel(); try { a.reverse(); } catch (e) { a.cancel(); } });
+      this.later(() => this.setState({ demo: null }), 1850);
+    },
+    dragTile(id, e) {
+      const st = this.state; if (st.demo !== 'full' || !st.demoJoined || (st.revealed || []).includes(id) || this.tDrag) return;
+      const g = this.q('[data-tile="' + id + '"]'), card = $('card'), L = $('conf'); if (!g || !card || !L) return;
+      e.preventDefault(); e.stopPropagation();
+      const r = g.getBoundingClientRect(), c = card.getBoundingClientRect();
+      const COL = { a2: [T, '#fff', 'a²'], ab1: [G, '#222e44', 'ba'], ab2: [G, '#222e44', 'ab'], b2: [C, '#fff', 'b²'] }[id];
+      const el = document.createElement('div'); el.setAttribute('data-cf', '');
+      el.style.cssText = 'position:absolute;left:' + (r.left - c.left) + 'px;top:' + (r.top - c.top) + 'px;width:' + r.width + 'px;height:' + r.height + 'px;border-radius:7px;background:' + COL[0] + ';color:' + COL[1] + ';display:grid;place-items:center;font-family:"Secular One",sans-serif;font-size:' + (Math.min(r.width, r.height) < 60 ? 13 : 18) + 'px;box-shadow:0 12px 24px rgba(23,35,63,.25);z-index:5;touch-action:none';
+      el.textContent = COL[2]; L.appendChild(el); g.style.opacity = '.25';
+      const d = { id, el, g, ox: r.left - c.left, oy: r.top - c.top, sx: e.clientX, sy: e.clientY, moved: false };
+      this.tDrag = d; this.sfx('tick');
+      const move = (ev) => { const dx = ev.clientX - d.sx, dy = ev.clientY - d.sy; if (Math.hypot(dx, dy) > 4) d.moved = true; el.style.left = (d.ox + dx) + 'px'; el.style.top = (d.oy + dy) + 'px'; };
+      const up = (ev) => {
+        window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up);
+        this.tDrag = null;
+        let hit = null;
+        $('app').querySelectorAll('[data-term-slot]').forEach((s) => { const q = s.getBoundingClientRect(); if (ev.clientX > q.left - 14 && ev.clientX < q.right + 14 && ev.clientY > q.top - 14 && ev.clientY < q.bottom + 14) hit = s; });
+        const back = () => { const fin = () => { el.remove(); g.style.opacity = ''; }; if (el.animate && !this.rm) { const a = el.animate([{ left: el.style.left, top: el.style.top }, { left: d.ox + 'px', top: d.oy + 'px' }], { duration: 380, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards' }); a.onfinish = fin; } else fin(); };
+        if (!d.moved) { back(); this.say('גרור אותי למקום הנכון.', { mood: 'think' }); return; }
+        if (hit && hit.getAttribute('data-term-slot') === id) {
+          const q = hit.getBoundingClientRect(), tx = q.left - c.left + q.width / 2 - r.width / 2, ty = q.top - c.top + q.height / 2 - r.height / 2;
+          const fin = () => { el.remove(); g.style.opacity = ''; this.tapTile(id); };
+          if (el.animate && !this.rm) { const a = el.animate([{ left: el.style.left, top: el.style.top, opacity: 1 }, { left: tx + 'px', top: ty + 'px', opacity: 0 }], { duration: 320, easing: 'ease-in', fill: 'forwards' }); a.onfinish = fin; } else fin();
+        } else {
+          back(); this.sfx('error');
+          if (hit) this.an(hit, [{ transform: 'translateX(0)' }, { transform: 'translateX(-5px)' }, { transform: 'translateX(5px)' }, { transform: 'translateX(0)' }], { duration: 300 });
+          this.say(hit ? 'לא שם. נסה מקום אחר.' : 'גרור עד המשבצת למטה.', { mood: 'think' });
+        }
+      };
+      window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+    },
+    tapTile(id) {
+      const st = this.state; if (st.demo !== 'full' || !st.demoJoined || (st.revealed || []).includes(id)) return;
+      const rv = (st.revealed || []).concat(id); this.setState({ revealed: rv }); this.sfx('tick');
+      if (rv.length === 4) this.later(() => this.say('נוווו… כמה זה יוצא ביחד?', { attn: true, mood: 'think' }), 400);
+    },
+    retry(i) { this.sfx('click'); this.goStep(i); this.setState({ retry: true }); },
+    buildSquare() {
+      const svg = $('square');
+      const ids = ['a2', 'ab1', 'ab2', 'b2'];
+      let h = '<rect id="bgRect" x="90" y="54" width="254" height="254" rx="9" fill="#fff"></rect>';
+      ids.forEach((id) => { h += '<rect id="hole-' + id + '" rx="6"></rect>'; });
+      ids.forEach((id) => { h += '<g id="tile-' + id + '" data-tile="' + id + '"><rect rx="6"></rect><text data-lbl="t_' + id + '" text-anchor="middle" dominant-baseline="central"></text></g>'; });
+      ids.forEach((id) => { h += '<rect id="hl-' + id + '" rx="6" fill="none" style="pointer-events:none"></rect>'; });
+      ids.forEach((id) => { h += '<rect id="fx-' + id + '" rx="6" style="pointer-events:none"></rect>'; });
+      h += '<rect id="perim" x="86" y="50" width="262" height="262" rx="11" fill="none" style="pointer-events:none"></rect>';
+      h += '<rect id="sideH" x="92" y="52" height="6" rx="3" style="pointer-events:none"></rect><rect id="sideV" x="88" y="56" width="6" rx="3" style="pointer-events:none"></rect>';
+      h += '<g id="brackets">';
+      [['top', 92, 18, 342, 18], ['tickL', 92, 13, 92, 23], ['tickR', 342, 13, 342, 23]].forEach(() => {});
+      h += '<line id="brTop" x1="92" y1="18" x2="342" y2="18" stroke="#334155" stroke-width="1.6"></line>';
+      h += '<line x1="92" y1="13" x2="92" y2="23" stroke="#334155" stroke-width="1.6"></line><line x1="342" y1="13" x2="342" y2="23" stroke="#334155" stroke-width="1.6"></line>';
+      h += '<line id="brA" y1="42" y2="42" stroke="#1a8a80" stroke-width="2"></line><line id="brB" y1="42" y2="42" stroke="#e8684a" stroke-width="2"></line>';
+      h += '<line id="tkA1" y1="37" y2="47" stroke="#1a8a80" stroke-width="2"></line><line id="tkM" y1="37" y2="47" stroke="#334155" stroke-width="2"></line><line x1="342" y1="37" x2="342" y2="47" stroke="#e8684a" stroke-width="2"></line><line x1="92" y1="37" x2="92" y2="47" stroke="#1a8a80" stroke-width="2"></line>';
+      h += '<line x1="28" y1="56" x2="28" y2="306" stroke="#334155" stroke-width="1.6"></line><line x1="23" y1="56" x2="33" y2="56" stroke="#334155" stroke-width="1.6"></line><line x1="23" y1="306" x2="33" y2="306" stroke="#334155" stroke-width="1.6"></line>';
+      h += '<line id="brLa" x1="70" stroke="#1a8a80" stroke-width="2"></line><line id="brLb" x1="70" x2="70" stroke="#e8684a" stroke-width="2"></line>';
+      h += '<line x1="65" y1="56" x2="75" y2="56" stroke="#1a8a80" stroke-width="2"></line><line id="tkLy" x1="65" x2="75" stroke="#334155" stroke-width="2"></line><line x1="65" y1="306" x2="75" y2="306" stroke="#e8684a" stroke-width="2"></line>';
+      ['lTop', 'lTa', 'lTb', 'lL', 'lLa', 'lLb'].forEach((k) => { h += '<rect id="pill-' + k + '" height="18" rx="6" fill="#faf9f6"></rect><text id="lbl-' + k + '" data-lbl="' + k + '" text-anchor="middle" dominant-baseline="central"></text>'; });
+      h += '</g>';
+      h += '<rect id="demoAnchor" data-demo-anchor fill="transparent" style="pointer-events:none"></rect>';
+      h += '<g id="demoPill" style="pointer-events:none"><rect id="demoPillRect" width="210" height="30" rx="12"></rect><text id="demoText" data-lbl="demo" text-anchor="middle" dominant-baseline="central"></text></g>';
+      h += '<g id="handle" data-handle="1"><circle id="ring" r="15" fill="none" stroke="#1a8a80" stroke-width="3"></circle><circle id="shadow" r="16" fill="rgba(23,35,63,.2)"></circle><circle id="knob" r="15" fill="#fff" stroke="#17233f" stroke-width="4"></circle><circle r="5" fill="#1a8a80" id="dot"></circle><circle r="30" fill="transparent"></circle></g>';
+      svg.innerHTML = h;
+      svg.addEventListener('pointermove', (e) => app.onMove(e));
+      svg.addEventListener('pointerup', () => app.onUp());
+      svg.addEventListener('pointercancel', () => app.onUp());
+      $('handle').addEventListener('pointerdown', (e) => app.onDown(e));
+      ids.forEach((id) => { $('tile-' + id).addEventListener('pointerdown', (e) => app.dragTile(id, e)); });
+    },
+    show(el, on) { if (!el) return; el.hidden = !on; },
+    paint() {
+      const st = this.state, S = STEPS[st.idx], md = S.mode;
+      const isQuiz = md === 'quiz', isExp = md === 'explore', done = st.done;
+      const s = st.split, a = Math.round(s / 25), b = 10 - a;
+      $('card').setAttribute('data-screen-label', String(st.idx + 1).padStart(2, '0') + ' ' + md);
+      $('stepLabel').textContent = 'שלב ' + (st.idx + 1) + ' מתוך 7';
+      $('scoreTotal').textContent = String(this.report().total);
+      $('progressFill').style.width = ((st.idx + 1) / 7 * 100) + '%';
+      $('soundBtn').textContent = st.sound ? '🔊' : '🔇';
+      $('soundBtn').setAttribute('aria-label', st.sound ? 'השתק צלילים' : 'הפעל צלילים');
+      this.show($('panelIntro'), md === 'intro');
+      this.show($('panelSquare'), isExp || isQuiz);
+      this.show($('strip'), isExp);
+      this.show($('synth'), !!S.synth);
+      this.show($('panelNumeric'), md === 'numeric');
+      this.show($('panelFinish'), md === 'finish');
+      this.show($('quiz'), isQuiz);
+      const title = $('title');
+      title.textContent = '';
+      title.append(document.createTextNode(S.tA || ''));
+      if (S.tM) { const sp = document.createElement('span'); sp.dir = 'ltr'; sp.style.unicodeBidi = 'isolate'; sp.style.whiteSpace = 'nowrap'; sp.textContent = S.tM; title.append(sp); }
+      if (S.tB) title.append(document.createTextNode(S.tB));
+      $('sub').textContent = S.sub || '';
+      const ready = this.canNext();
+      let cue = S.cue || '';
+      if (isExp) cue = st.dragged ? S.cueDone : S.cue;
+      if (isQuiz) cue = done ? 'תשובה נכונה — אפשר להמשיך ←' : 'בחר תשובה נכונה כדי להמשיך';
+      $('cue').textContent = cue;
+      $('cue').style.background = ready ? '#e6f6f4' : '#fef8eb';
+      $('cue').style.border = ready ? '1.5px solid #9ad4c8' : '1.5px dashed #e0b84a';
+      $('cue').style.color = ready ? '#1a8a80' : '#8a5a00';
+      const btn = $('next');
+      btn.textContent = st.retry && isQuiz ? 'חזרה לסיכום ←' : S.btn;
+      btn.setAttribute('aria-disabled', String(!ready));
+      btn.style.background = ready ? '#1a8a80' : '#cbd5e1';
+      btn.style.color = ready ? '#fff' : '#64748b';
+      btn.style.boxShadow = ready ? '0 6px 16px rgba(26,138,128,.3)' : 'none';
+      btn.style.cursor = ready ? 'pointer' : 'not-allowed';
+      const fb = $('fb');
+      if (st.fb) {
+        fb.hidden = false;
+        const prefix = st.fb.ok ? (String(st.fb.text).startsWith('נכון') ? '' : 'נכון! ') : 'נסה שוב: ';
+        fb.textContent = prefix + st.fb.text;
+        fb.style.background = st.fb.ok ? '#eafaf1' : '#ffe4e6';
+        fb.style.border = st.fb.ok ? '1.5px solid #9fe0bf' : '1.5px solid #fda4af';
+        fb.style.color = st.fb.ok ? '#146c43' : '#be123c';
+      } else fb.hidden = true;
+      if (S.synth) {
+        $('synth').textContent = '';
+        const d1 = document.createElement('div'); d1.textContent = SYNTH_A; $('synth').append(d1);
+        if (done) { const d2 = document.createElement('div'); d2.dataset.synth = ''; d2.style.color = '#146c43'; d2.textContent = SYNTH_B; $('synth').append(d2); }
+      }
+      if (isExp) {
+        const cells = [['צלע a', 'a = ' + a, T], ['צלע b', 'b = ' + b, C], ['a + b', '10', '#17233f'], ['a²', String(a * a), T], ['2ab', String(2 * a * b), '#b7791f'], ['b²', String(b * b), C]];
+        $('strip').innerHTML = cells.map((c, i) => '<div><b dir="rtl">' + c[0] + '</b><span data-val style="color:' + c[2] + '">' + c[1] + '</span></div>').join('');
+      }
+      this.paintQuiz(S, st, done);
+      this.paintSquare(st, S, a, b, s, done);
+      this.paintFinish();
+      this.paintBubble();
+    },
+    paintQuiz(S, st, done) {
+      const box = $('opts');
+      if (!S.opts) { box.innerHTML = ''; return; }
+      if (box.childElementCount !== 4) {
+        box.innerHTML = '';
+        S.opts.forEach((o, i) => {
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = 'opt'; b.id = 'opt' + i; b.dataset.opt = String(i); b.dir = 'ltr';
+          b.addEventListener('click', () => app.pick(i));
+          box.append(b);
+        });
+      }
+      S.opts.forEach((o, i) => {
+        const b = $('opt' + i), isW = st.wrong.includes(i), isC = done && o.c, locked = done && !o.c && !isW;
+        b.textContent = o.t; b.disabled = done || isW; b.setAttribute('aria-disabled', String(done || isW));
+        b.style.opacity = isW ? '.85' : '1';
+        if (isC) { b.style.background = '#eafaf1'; b.style.borderColor = '#1f9d61'; b.style.color = '#1f9d61'; b.style.boxShadow = '0 2px 0 #1f9d61'; }
+        else if (isW) { b.style.background = '#ffe4e6'; b.style.borderColor = '#e11d48'; b.style.color = '#e11d48'; b.style.boxShadow = 'none'; }
+        else if (locked) { b.style.background = '#f1f5f9'; b.style.borderColor = '#cbd5e1'; b.style.color = '#64748b'; b.style.boxShadow = 'none'; }
+        else { b.style.background = '#fff'; b.style.borderColor = '#e8e5db'; b.style.color = '#17233f'; b.style.boxShadow = '0 2px 0 #e8e5db'; }
+      });
+      const hb = $('hintBtn');
+      hb.disabled = done; hb.setAttribute('aria-disabled', String(done));
+      hb.style.background = done ? '#e2e8f0' : '#f0b429';
+      hb.style.color = done ? '#64748b' : '#17233f';
+      hb.style.borderColor = done ? '#cbd5e1' : '#d4930d';
+      hb.style.boxShadow = done ? 'none' : '0 3px 0 #d4930d';
+      const boxH = $('hintBox');
+      if (st.hint > 0 && S.hints) { boxH.hidden = false; boxH.textContent = '💡 ' + S.hints[Math.min(st.hint, S.hints.length) - 1]; }
+      else boxH.hidden = true;
+    },
+    paintSquare(st, S, a, b, s, done) {
+      const isQuiz = S.mode === 'quiz', isExp = S.mode === 'explore';
+      const hl = isQuiz ? (S.hl || []) : [];
+      const TL = {
+        a2: { x: PL, y: PT, w: s, h: s, f: T, lc: '#fff', lab: 'a²' },
+        ab1: { x: PL + s, y: PT, w: N - s, h: s, f: G, lc: '#222e44', lab: 'ba' },
+        ab2: { x: PL, y: PT + s, w: s, h: N - s, f: G, lc: '#222e44', lab: 'ab' },
+        b2: { x: PL + s, y: PT + s, w: N - s, h: N - s, f: C, lc: '#fff', lab: 'b²' }
+      };
+      const fl = st.flash, flName = st.flashN % 2 ? 'flashA' : 'flashB';
+      const isFull = st.demo === 'full';
+      $('bgRect').style.opacity = isFull ? '0' : '1';
+      $('brackets').style.opacity = isFull ? '0' : '1';
+      $('square').style.touchAction = (isExp || isFull) ? 'none' : 'auto';
+      const labels = {};
+      Object.keys(TL).forEach((id) => {
+        const t = TL[id];
+        const x = t.x + 1.5, y = t.y + 1.5, w = Math.max(0, t.w - 3), h = Math.max(0, t.h - 3);
+        const g = $('tile-' + id), rect = g.querySelector('rect'), text = g.querySelector('text');
+        const on = hl.includes(id);
+        const dim = (isQuiz && !done && hl.length < 4 && !on) || (st.demo === 'ask' && (id === 'a2' || id === 'b2'));
+        const revealed = (st.revealed || []).includes(id);
+        rect.setAttribute('x', x); rect.setAttribute('y', y); rect.setAttribute('width', w); rect.setAttribute('height', h); rect.setAttribute('fill', t.f);
+        text.setAttribute('x', t.x + t.w / 2); text.setAttribute('y', t.y + t.h / 2);
+        text.style.fill = t.lc; text.style.fontFamily = '"Secular One",sans-serif';
+        text.style.fontSize = Math.min(t.w, t.h) < 62 ? '12px' : Math.min(t.w, t.h) < 90 ? '14px' : '18px';
+        if (!(this.tDrag && this.tDrag.id === id)) g.style.opacity = isFull && revealed ? '.3' : dim ? (st.demo ? '.22' : '.42') : '1';
+        g.style.cursor = isFull && st.demoJoined && !revealed ? 'grab' : 'inherit';
+        g.style.touchAction = 'none';
+        const hole = $('hole-' + id);
+        hole.setAttribute('x', x); hole.setAttribute('y', y); hole.setAttribute('width', w); hole.setAttribute('height', h);
+        const holeOn = st.demo && st.demo !== 'full' && (id === 'ab1' || id === 'ab2');
+        hole.style.display = holeOn ? 'inline' : 'none';
+        hole.setAttribute('fill', '#fef8eb'); hole.setAttribute('stroke', '#d4930d'); hole.setAttribute('stroke-width', '2'); hole.setAttribute('stroke-dasharray', '6 4');
+        const hr = $('hl-' + id);
+        hr.setAttribute('x', x); hr.setAttribute('y', y); hr.setAttribute('width', w); hr.setAttribute('height', h);
+        hr.style.display = on && !done && !st.demo ? 'inline' : 'none';
+        hr.style.stroke = id === 'a2' ? '#0f5f58' : id === 'b2' ? '#a8391f' : '#9a6408';
+        hr.style.strokeWidth = '3.5'; hr.style.animation = 'hlPulse 1.6s ease-in-out infinite';
+        const fOn = !!(fl && fl.tiles && fl.tiles.includes(id)), miss = !!(fl && fl.kind === 'miss');
+        const fx = $('fx-' + id);
+        fx.setAttribute('x', x); fx.setAttribute('y', y); fx.setAttribute('width', w); fx.setAttribute('height', h);
+        fx.style.display = fOn ? 'inline' : 'none';
+        fx.style.fill = miss ? 'rgba(240,180,41,.3)' : 'rgba(225,29,72,.2)';
+        fx.style.stroke = miss ? '#d4930d' : '#e11d48';
+        fx.style.strokeWidth = '3'; fx.style.strokeDasharray = '7 5';
+        fx.style.animation = flName + ' 1.7s ease forwards';
+        labels['t_' + id] = isFull ? t.lab : (t.lab + ' = ' + (id === 'a2' ? a * a : id === 'b2' ? b * b : a * b));
+      });
+      const xs = PL + s, ys = PT + s;
+      const setLine = (id, x1, y1, x2, y2) => { const n = $(id); if (!n) return; n.setAttribute('x1', x1); n.setAttribute('y1', y1); n.setAttribute('x2', x2); n.setAttribute('y2', y2); };
+      setLine('brA', 92, 42, xs, 42); setLine('brB', xs, 42, 342, 42);
+      setLine('tkA1', 92, 37, 92, 47); setLine('tkM', xs, 37, xs, 47);
+      setLine('brLa', 70, 56, 70, ys); setLine('brLb', 70, ys, 70, 306);
+      const tk = $('tkLy'); if (tk) { tk.setAttribute('y1', ys); tk.setAttribute('y2', ys); }
+      const tA = isExp ? 'a=' + a : 'a', tB = isExp ? 'b=' + b : 'b', tAB = isExp ? 'a+b=10' : 'a + b';
+      const lab = (cx, cy, t) => { const w = Math.max(28, t.length * 7.4 + 12); let x = cx; if (x - w / 2 < 2) x = 2 + w / 2; if (x + w / 2 > 400) x = 400 - w / 2; return { x, y: cy, w, px: x - w / 2, py: cy - 9 }; };
+      const labs = { lTop: lab(PL + N / 2, 18, tAB), lTa: lab(PL + s / 2, 42, tA), lTb: lab(PL + s + (N - s) / 2, 42, tB), lL: lab(28, PT + N / 2, tAB), lLa: lab(70, PT + s / 2, tA), lLb: lab(70, PT + s + (N - s) / 2, tB) };
+      const texts = { lTop: tAB, lTa: tA, lTb: tB, lL: tAB, lLa: tA, lLb: tB };
+      const colors = { lTop: '#334155', lTa: T, lTb: C, lL: '#334155', lLa: T, lLb: C };
+      Object.keys(labs).forEach((k) => {
+        const L = labs[k], pill = $('pill-' + k), tx = $('lbl-' + k);
+        pill.setAttribute('x', L.px); pill.setAttribute('y', L.py); pill.setAttribute('width', L.w);
+        tx.setAttribute('x', L.x); tx.setAttribute('y', L.y); tx.style.fill = colors[k]; tx.style.fontFamily = '"Secular One",sans-serif'; tx.style.fontSize = '12px';
+        labels[k] = texts[k];
+      });
+      const solved = st.demoDone || st.demo === 'show';
+      labels.demo = solved ? 'ab + ba = 2ab = ' + (2 * a * b) : 'ab + ba = ?';
+      const dSm = Math.min(s, N - s), dBg = Math.max(s, N - s), dpy = Math.min(288, PT + N / 2 + dBg / 2 + 8);
+      const anchor = $('demoAnchor');
+      anchor.setAttribute('x', PL + N / 2 - dSm); anchor.setAttribute('y', PT + N / 2 - dBg / 2); anchor.setAttribute('width', 2 * dSm); anchor.setAttribute('height', dBg);
+      const pill = $('demoPill'); pill.style.display = st.demoJoined && st.demo === 'ask' ? 'inline' : 'none';
+      const pr = $('demoPillRect'); pr.setAttribute('x', 112); pr.setAttribute('y', dpy); pr.setAttribute('fill', solved ? '#eafaf1' : '#fff'); pr.setAttribute('stroke', solved ? '#1f9d61' : '#d4930d'); pr.setAttribute('stroke-width', '2');
+      const dt = $('demoText'); dt.setAttribute('x', 217); dt.setAttribute('y', dpy + 15); dt.style.fill = solved ? '#146c43' : '#8a5a00'; dt.style.fontFamily = '"Secular One",sans-serif'; dt.style.fontSize = '16px';
+      const per = $('perim'); per.style.display = fl && fl.perim ? 'inline' : 'none'; per.style.stroke = '#e11d48'; per.style.strokeWidth = '4'; per.style.strokeDasharray = '10 6'; per.style.animation = flName + ' 1.7s ease forwards';
+      const sideH = $('sideH'), sideV = $('sideV');
+      sideH.setAttribute('width', s); sideV.setAttribute('height', s);
+      sideH.style.display = sideV.style.display = fl && fl.sides ? 'inline' : 'none';
+      sideH.style.fill = sideV.style.fill = '#e11d48';
+      sideH.style.animation = sideV.style.animation = flName + ' 1.7s ease forwards';
+      const handle = $('handle'); handle.style.display = isExp ? 'inline' : 'none'; handle.style.cursor = st.dragging ? 'grabbing' : 'grab';
+      ['ring', 'shadow', 'knob', 'dot'].forEach((id) => { const n = $(id); n.setAttribute('cx', PL + s); n.setAttribute('cy', id === 'shadow' ? PT + s + 2.5 : PT + s); });
+      $('knob').setAttribute('r', st.dragging ? 17 : 15);
+      $('ring').style.display = st.dragged ? 'none' : 'inline';
+      $('ring').style.animation = 'ringPulse 1.2s ease-out infinite';
+      $('ring').style.transformBox = 'fill-box'; $('ring').style.transformOrigin = 'center';
+      this._lbl = labels;
+      const slots = $('slots');
+      const showSlots = isFull && st.demoJoined;
+      slots.hidden = !showSlots;
+      if (showSlots) {
+        const order = ['a2', 'ab2', 'ab1', 'b2'];
+        const TS = { a2: ['a²', a * a, T], ab2: ['ab', a * b, '#b7791f'], ab1: ['ba', a * b, '#b7791f'], b2: ['b²', b * b, C] };
+        const rv = st.revealed || [];
+        slots.innerHTML = order.map((id, k) => {
+          const on = rv.includes(id);
+          return '<div style="display:flex;align-items:flex-start;gap:6px"><div class="slot" data-term-slot="' + id + '" style="border:1.5px ' + (on ? 'solid transparent' : 'dashed #cbd5e1') + ';background:' + (on ? 'transparent' : '#fff') + '"><span style="font-size:18px;color:' + (on ? TS[id][2] : '#cbd5e1') + '">' + TS[id][0] + '</span><span style="font-size:14px;color:#475569">' + (on ? TS[id][1] : '\u00a0') + '</span></div>' + (k < 3 ? '<div class="plus">+</div>' : '') + '</div>';
+        }).join('') + '<div class="plus">=</div><div class="slot" style="min-width:56px;font-size:18px;color:' + (st.demoDone ? '#1f9d61' : '#b7791f') + ';border:1.5px ' + (st.demoDone ? 'solid #9fe0bf' : 'dashed #e0b84a') + ';background:' + (st.demoDone ? '#eafaf1' : '#fef8eb') + '"><span>' + (st.demoDone ? '(a+b)²' : '??') + '</span><span style="font-size:14px">' + (st.demoDone ? '100' : (rv.length === 4 ? '??' : '\u00a0')) + '</span></div>';
+      }
+      this.syncLabels();
+    },
+    syncLabels() {
+      const L = this._lbl; if (!L) return;
+      $('app').querySelectorAll('[data-lbl]').forEach((el) => { const t = L[el.getAttribute('data-lbl')]; if (t != null && el.textContent !== t) el.textContent = t; });
+    },
+    paintFinish() {
+      const R = this.report();
+      if (!this.counting) $('scoreBig').textContent = String(R.total);
+      const stars = $('stars');
+      if (stars.childElementCount !== 3) { stars.innerHTML = '<span data-star>★</span><span data-star>★</span><span data-star>★</span>'; }
+      [...stars.children].forEach((el, k) => { el.style.fontSize = '30px'; el.style.color = k < R.stars ? '#f0b429' : '#e2e8f0'; });
+      const strong = R.rows.filter((r) => r.lv === 'strong').map((r) => r.name);
+      const weak = R.rows.filter((r) => r.lv !== 'strong').map((r) => r.name);
+      $('strongText').textContent = strong.join(' · ') || 'עוד לא. נסה שוב!';
+      $('weakText').textContent = weak.join(' · ') || 'אין. הכל חזק!';
+      const wrap = $('skillRows');
+      wrap.innerHTML = R.rows.map((r) => '<div class="skill" data-row><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="font-weight:800;font-size:14.5px"><span>' + r.name + '</span> <span dir="ltr" style="font-family:Secular One,sans-serif;font-weight:400;color:#1a8a80">' + r.math + '</span></div><div style="font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;background:' + r.badgeBg + ';color:' + r.badgeFg + ';border:1.5px solid ' + r.badgeBd + '">' + r.badge + '</div></div><div class="bar"><i data-bar style="width:' + r.pts + '%;background:' + r.barC + '"></i></div><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><div style="font-size:12.5px;color:#64748b">' + r.detail + '</div><div dir="ltr" style="font-family:Secular One,sans-serif;font-size:14px">' + r.pts + ' / 100</div></div>' + (r.hasWrong ? '<div style="font-size:12.5px;line-height:1.5;color:#be123c">' + r.wrongText + '</div>' : '') + (r.canRetry ? '<button type="button" class="retry" data-retry="' + r.i + '">תרגל שוב ↻</button>' : '') + '</div>').join('');
+      wrap.querySelectorAll('[data-retry]').forEach((b) => b.addEventListener('click', () => app.retry(Number(b.getAttribute('data-retry')))));
+    },
+    paintBubble() {
+      const st = this.state;
+      const name = this.props.bubbleShape === 'cycle' ? SHAPE_CYCLE[st.idx % SHAPE_CYCLE.length] : this.props.bubbleShape;
+      const SH = SHAPES[name] || SHAPES.cloud;
+      $('shapePath').setAttribute('d', SH.d);
+      const bubble = $('bubble');
+      bubble.style.padding = SH.pad; bubble.style.minWidth = SH.min + 'px';
+      $('shape').style.filter = st.attn ? 'drop-shadow(0 0 6px rgba(92,188,173,.55)) drop-shadow(0 8px 14px rgba(26,138,128,.2))' : 'drop-shadow(0 6px 10px rgba(26,138,128,.14))';
+      $('rivoBox').style.transform = st.attn ? 'scale(1.16) translateY(-3px)' : 'scale(1)';
+      const ptr = $('pointer');
+      const home = st.target === 'home';
+      ptr.style.width = home ? '0px' : '30px';
+      ptr.style.opacity = home ? '0' : '1';
+      ptr.style.marginInlineStart = home ? '-8px' : '0px';
+      ptr.style.transform = st.below ? 'rotate(-90deg)' : 'none';
+      const box = $('bubbleText');
+      if (st.typing) box.innerHTML = '<div class="dots"><i></i><i></i><i></i></div>';
+      else {
+        box.innerHTML = '';
+        const wrap = document.createElement('div'); wrap.style.display = 'flex'; wrap.style.flexDirection = 'column'; wrap.style.alignItems = 'center';
+        toLines(st.msg, this.props.wordsPerLine).forEach((ln) => { const d = document.createElement('div'); d.style.whiteSpace = 'nowrap'; d.textContent = ln; wrap.append(d); });
+        box.append(wrap);
+      }
+    },
+    afterPaint(prev) {
+      if (this._enter) { this._enter = false; try { this.enterFx(); } catch (e) {} }
+      try { this.applyRivo(); this.syncLabels(); if (!this.drag && !this.easeRaf && !this.tDrag) this.place(true); } catch (e) {}
+      if (prev && prev.target !== this.state.target && this.state.target !== 'home') {
+        const rot = this.state.below ? 'rotate(-90deg) ' : '';
+        this.an($('pointer'), [{ transform: rot + 'translateX(0)' }, { transform: rot + 'translateX(6px)' }, { transform: rot + 'translateX(0)' }], { duration: 420, delay: 850, iterations: 4, easing: 'ease-in-out' });
+      }
+      if (prev && prev.idx !== this.state.idx) this.an($('shape'), [{ transform: 'scale(.6) rotate(-8deg)', opacity: .2 }, { transform: 'scale(1.06) rotate(2deg)', opacity: 1, offset: .65 }, { transform: 'scale(1) rotate(0)', opacity: 1 }], { duration: 420, easing: 'cubic-bezier(.34,1.56,.64,1)' });
+      if (prev && prev.msgId !== this.state.msgId) this.an($('bubbleText'), [{ transform: 'scale(.85)', opacity: .3 }, { transform: 'scale(1)', opacity: 1 }], { duration: 350, easing: 'cubic-bezier(.34,1.56,.64,1)' });
+      if (prev && Math.round(prev.split / 25) !== Math.round(this.state.split / 25)) {
+        $('app').querySelectorAll('[data-val]').forEach((el) => this.an(el, [{ transform: 'scale(1.25)' }, { transform: 'scale(1)' }], { duration: 220 }));
+      }
+    },
+    boot() {
+      this.buildSquare();
+      this.mountRivo();
+      $('soundBtn').addEventListener('click', () => { this.sfx('click'); this.setState((x) => ({ sound: !x.sound })); });
+      $('next').addEventListener('click', () => this.next());
+      $('hintBtn').addEventListener('click', () => this.hint());
+      this.blinkLoop();
+      if (window.ResizeObserver) {
+        this.ro = new ResizeObserver(() => { cancelAnimationFrame(this.roRaf); this.roRaf = requestAnimationFrame(() => { if (!this.drag) this.place(false); }); });
+        ['card', 'bubble', 'home'].forEach((id) => { const n = $(id); if (n) this.ro.observe(n); });
+      }
+      window.addEventListener('resize', () => this.place(false));
+      this.goStep(Math.min(6, Math.max(0, (this.props.startStep || 1) - 1)));
+      const driftEl = $('drift');
+      if (driftEl && driftEl.animate && !this.rm) {
+        this.drift = driftEl.animate([{ transform: 'translate(0,0) rotate(0deg)' }, { transform: 'translate(6px,-9px) rotate(2deg)' }, { transform: 'translate(-5px,-4px) rotate(-2deg)' }, { transform: 'translate(0,0) rotate(0deg)' }], { duration: 4200, iterations: 1, easing: 'ease-in-out' });
+      }
+      requestAnimationFrame(() => this.place(false));
+      this.later(() => this.place(false), 300);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.place(false));
+    }
+  };
+  window.__lesson = app;
+  app.boot();
+})();
+</script>
+</body>
+</html>
