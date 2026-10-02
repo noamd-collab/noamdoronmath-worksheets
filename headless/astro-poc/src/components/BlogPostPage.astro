@@ -61,6 +61,7 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
   ogImage={post.ogImage || post.coverImage}
   ogType="article"
   crumbs={postCrumbs}
+  seoPath={post.path}
   skipHref="#blog-post-main"
 >
   <BlogSeoTags slot="seo-tags" description={post.description} image={post.ogImage || post.coverImage} jsonLd={post.jsonLd} />

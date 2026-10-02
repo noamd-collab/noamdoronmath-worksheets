@@ -21,6 +21,7 @@ import {
   type OgType,
 } from '../lib/siteSeo';
 import { breadcrumbList, type Crumb } from '../lib/structuredData';
+import { approvedSeoProposal } from '../lib/seoProposals';
 
 interface Props {
   title?: string;
@@ -30,6 +31,8 @@ interface Props {
   ogType?: OgType;
   /** Visible trail. Defaults to בית, then the page title. */
   crumbs?: Crumb[];
+  /** Lookup key in data/seo-proposals.json. Applied only when approved is true. */
+  seoPath?: string;
   /** Optional override; default is pathname-derived (M37). */
   activeNav?: ActiveNavKey | null;
   compactBrand?: boolean;
@@ -41,6 +44,7 @@ const {
   ogImage,
   ogType = 'website',
   crumbs,
+  seoPath,
   activeNav,
   compactBrand = false,
   skipHref = '#topic-list',
@@ -50,12 +54,15 @@ const { footer } = loadHomePage();
 const resolvedNav: ActiveNavKey | null =
   activeNav !== undefined ? activeNav : resolveActiveNav(Astro.url.pathname);
 const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
+const approvedCopy = approvedSeoProposal(seoPath);
+const resolvedTitle = approvedCopy?.title || title;
+const resolvedDescription = approvedCopy?.description || description;
 const robots = robotsContent(Astro.url.hostname);
 const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
 const showPreviewNote = isPreviewHost(Astro.url.hostname);
 const social = buildSocialMeta({
-  title,
-  description,
+  title: resolvedTitle,
+  description: resolvedDescription,
   url: canonical,
   image: ogImage,
   type: ogType,
@@ -67,7 +74,7 @@ const crumbItems: Crumb[] =
       ? [{ name: 'בית', path: '/' }]
       : [
           { name: 'בית', path: '/' },
-          { name: title, path: `${Astro.url.pathname}${Astro.url.search}` },
+          { name: resolvedTitle, path: `${Astro.url.pathname}${Astro.url.search}` },
         ];
 const breadcrumbLd = breadcrumbList(crumbItems);
 ---
@@ -83,8 +90,8 @@ const breadcrumbLd = breadcrumbList(crumbItems);
     <meta name="theme-color" content="#fbfaf5" />
     <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <title>{resolvedTitle}</title>
+    <meta name="description" content={resolvedDescription} />
     {social.map((tag) =>
       tag.property ? (
         <meta property={tag.property} content={tag.content} />

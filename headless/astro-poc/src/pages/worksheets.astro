@@ -79,6 +79,11 @@ const initialUrlState = {
         { name: 'דפי עבודה', path: '/worksheets' },
         { name: gradeEntry!.label, path: `/worksheets?grade=${grade}` },
       ]}
+      seoPath={
+        highlightTopicId
+          ? `/worksheets?grade=${grade}&topic=${highlightTopicId}`
+          : `/worksheets?grade=${grade}`
+      }
       activeNav="worksheets"
       compactBrand={true}
     >
