@@ -10,8 +10,10 @@ import { SITE_PAGE_M24_REDIRECTS } from '../src/lib/sitePages';
 import { TOPIC_PAGE_M30_REDIRECTS } from '../src/lib/topicPages';
 import { resolveSiteHref } from '../src/lib/resolveSiteHref';
 
-const pageExists = (p: string) =>
-  p === '/' || existsSync(new URL(`../src/pages${p}.astro`, import.meta.url));
+const pageExists = (p: string) => {
+  const path = p.split('#')[0]?.split('?')[0] || p;
+  return path === '/' || existsSync(new URL(`../src/pages${path}.astro`, import.meta.url));
+};
 
 describe('OPEN-15 redirects', () => {
   it('maps the representative legacy paths to their decided targets', () => {
@@ -34,6 +36,8 @@ describe('OPEN-15 redirects', () => {
       ['/equations-grade-7', '/equations-basics-grade-7'],
       ['/equations-both-sides-word-problems-grade-7-1', '/equations-both-sides-word-problems-grade-7'],
       ['/inequalities-grade-8-1', '/inequalities-grade-8'],
+      ['/privacy', '/accessibilityadaptation#privacy-policy'],
+      ['/privacy/', '/accessibilityadaptation#privacy-policy'],
     ];
     for (const [from, to] of cases) assert.equal(resolveRedirect(from), to, from);
   });
@@ -115,6 +119,7 @@ describe('OPEN-15 redirects', () => {
       ['https://www.noamdoronmath.co.il/coordinate-plane-intro-grade-7#x', '/coordinate-plane-scale-grade-7#x'],
       ['https://www.noamdoronmath.co.il/worksheetsfor7thgrade', '/grade-7'],
       ['https://www.noamdoronmath.co.il/triangle-area-grade-7-worksheets', '/triangle-area-grade-7'],
+      ['https://www.noamdoronmath.co.il/privacy', '/accessibilityadaptation#privacy-policy'],
     ];
     for (const [href, want] of cases) {
       const r = resolveSiteHref(href);
