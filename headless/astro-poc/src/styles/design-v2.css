@@ -58,7 +58,7 @@
 }
 
 body {
-  font-family: 'Assistant', 'Heebo', 'Arial Hebrew', Arial, sans-serif;
+  font-family: 'Assistant', 'Assistant Fallback', 'Heebo', 'Heebo Fallback', 'Arial Hebrew', Arial, sans-serif;
   color: var(--ink);
   background-color: var(--paper);
   background-image:
@@ -77,7 +77,7 @@ h3,
 .site-footer__brand-name,
 .grade-hub__title,
 .topic-page__title {
-  font-family: 'Secular One', 'Heebo', Arial, sans-serif;
+  font-family: 'Secular One', 'Secular One Fallback', 'Heebo', 'Heebo Fallback', Arial, sans-serif;
   font-weight: 400;
 }
 
@@ -282,7 +282,7 @@ h3,
 .site-footer__heading,
 .site-footer__brand-name {
   color: var(--footer-text-bright);
-  font-family: 'Secular One', 'Heebo', Arial, sans-serif;
+  font-family: 'Secular One', 'Secular One Fallback', 'Heebo', 'Heebo Fallback', Arial, sans-serif;
   font-weight: 400;
 }
 
@@ -390,7 +390,7 @@ h3,
 }
 
 .nd-gate-box h2 {
-  font-family: 'Secular One', 'Heebo', Arial, sans-serif;
+  font-family: 'Secular One', 'Secular One Fallback', 'Heebo', 'Heebo Fallback', Arial, sans-serif;
   font-weight: 400;
   color: var(--ink);
 }
@@ -782,7 +782,7 @@ html.js-anim .home-hero__title-em.is-underline::after {
 }
 
 .home-grade__label {
-  font-family: 'Secular One', 'Heebo', Arial, sans-serif;
+  font-family: 'Secular One', 'Secular One Fallback', 'Heebo', 'Heebo Fallback', Arial, sans-serif;
   font-size: 1.35rem;
   font-weight: 400;
   color: var(--ink);

@@ -18,9 +18,9 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
       <!-- HERO -->
       <section style="position:relative;max-width:1200px;margin:0 auto;padding:64px 24px 80px;display:flex;flex-direction:row-reverse;flex-wrap:wrap;gap:48px;align-items:center;">
 
-        <div data-doodle="kite" style="position:absolute;top:18px;left:47%;width:120px;pointer-events:none;z-index:1;"><img src="/design-exact/assets/doodles/kite.webp" alt="" style="width:100%;display:block;mix-blend-mode:multiply;pointer-events:auto;cursor:pointer;"></div>
+        <div data-doodle="kite" style="position:absolute;top:18px;left:47%;width:120px;pointer-events:none;z-index:1;"><img src="/design-exact/assets/doodles/kite.webp" alt="" width="400" height="400" loading="eager" fetchpriority="high" decoding="async" style="width:100%;height:auto;display:block;mix-blend-mode:multiply;pointer-events:auto;cursor:pointer;"></div>
         <div data-trail="snail" aria-hidden="true" style="position:absolute;bottom:14px;right:calc(30% - 4px);width:98px;height:7px;z-index:0;pointer-events:none;transform-origin:left center;transform:scaleX(0);border-radius:6px 999px 999px 6px;background:linear-gradient(180deg,rgba(255,255,255,.75) 0 25%,rgba(168,214,140,.55) 45%,rgba(112,178,98,.45) 100%);box-shadow:0 0 0 1px rgba(112,178,98,.25),0 1px 3px rgba(112,178,98,.35);filter:blur(.3px);"></div>
-        <div data-doodle="snail" style="position:absolute;bottom:8px;right:30%;width:110px;z-index:1;"><img src="/design-exact/assets/doodles/snail.webp" alt="" style="width:100%;display:block;mix-blend-mode:multiply;cursor:pointer;"></div>
+        <div data-doodle="snail" style="position:absolute;bottom:8px;right:30%;width:110px;z-index:1;"><img src="/design-exact/assets/doodles/snail.webp" alt="" width="400" height="400" loading="eager" decoding="async" style="width:100%;height:auto;display:block;mix-blend-mode:multiply;cursor:pointer;"></div>
 
         <div style="position:relative;z-index:2;flex:1 1 440px;min-width:0;">
           <div data-exact-hero-panel style={`background:${heroPanel(HERO_DEFAULT.gradeNum)};border-radius:28px;padding:56px 28px 20px;`}>
@@ -35,8 +35,8 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
         </div>
 
         <div style="position:relative;z-index:2;flex:1 1 360px;min-width:0;">
-          <div data-pop="0" style="font-family:'Amatic SC',cursive;font-size:30px;color:#2a7c7a;margin-bottom:4px;">מאגר המשימות של נועם דורון</div>
-          <h1 data-pop="120" style="font-family:'Secular One',sans-serif;font-weight:400;font-size:clamp(40px,5.4vw,68px);line-height:1.05;margin:0 0 20px;text-wrap:balance;">דפי עבודה שעושים <span style="position:relative;display:inline-block;">חשק<svg viewBox="0 0 200 20" preserveAspectRatio="none" style="position:absolute;right:-4%;bottom:-10px;width:108%;height:16px;overflow:visible;"><path data-draw="700" data-dur="700" pathLength="1" d="M4 12 C 50 4, 120 18, 196 8" fill="none" stroke="#e5735c" stroke-width="5" stroke-linecap="round" stroke-dasharray="1"></path></svg></span> לפתור</h1>
+          <div data-pop="0" style="font-family:'Amatic SC','Amatic SC Fallback',cursive;font-size:30px;color:#2a7c7a;margin-bottom:4px;">מאגר המשימות של נועם דורון</div>
+          <h1 data-pop="120" data-lcp style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:clamp(40px,5.4vw,68px);line-height:1.05;margin:0 0 20px;text-wrap:balance;">דפי עבודה שעושים <span style="position:relative;display:inline-block;">חשק<svg viewBox="0 0 200 20" preserveAspectRatio="none" style="position:absolute;right:-4%;bottom:-10px;width:108%;height:16px;overflow:visible;"><path data-draw="700" data-dur="700" pathLength="1" d="M4 12 C 50 4, 120 18, 196 8" fill="none" stroke="#e5735c" stroke-width="5" stroke-linecap="round" stroke-dasharray="1"></path></svg></span> לפתור</h1>
           <p data-pop="240" style="font-size:20px;line-height:1.55;color:#3d4870;margin:0 0 32px;max-width:32ch;">מתרגלים עכשיו ומשפרים את הישגי המתמטיקה בקלות ובצורה חופשית</p>
           <div data-pop="360" style="display:flex;gap:12px;flex-wrap:wrap;">
             <a data-home-search-cta href={home.hero.searchCta.href} data-peek="ws"  style="padding:14px 26px;background:#22305a;color:#fbfaf5;font-weight:700;font-size:17px;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:4px 4px 0 #e6a534;" data-exact-hover="exact-hover-2">למציאת משימת תרגול</a>
@@ -51,18 +51,18 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
 
       <!-- GRADES -->
       <section data-home-grades style="position:relative;max-width:1200px;margin:0 auto;padding:56px 24px 72px;">
-        <div data-doodle="cat" style="position:absolute;top:-20px;left:36%;width:120px;height:90px;"><img src="/design-exact/assets/doodles/sleeping-cat.svg" alt="" style="position:absolute;left:0;bottom:0;width:120px;display:block;cursor:pointer;"><span data-zzz="0" style="position:absolute;left:86px;top:6px;font:700 18px 'Amatic SC',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span><span data-zzz="1" style="position:absolute;left:98px;top:-10px;font:700 24px 'Amatic SC',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span><span data-zzz="2" style="position:absolute;left:112px;top:-30px;font:700 30px 'Amatic SC',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span></div>
+        <div data-doodle="cat" style="position:absolute;top:-20px;left:36%;width:120px;height:90px;"><img src="/design-exact/assets/doodles/sleeping-cat.svg" alt="" width="140" height="92" loading="lazy" decoding="async" style="position:absolute;left:0;bottom:0;width:120px;height:auto;display:block;cursor:pointer;"><span data-zzz="0" style="position:absolute;left:86px;top:6px;font:700 18px 'Amatic SC','Amatic SC Fallback',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span><span data-zzz="1" style="position:absolute;left:98px;top:-10px;font:700 24px 'Amatic SC','Amatic SC Fallback',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span><span data-zzz="2" style="position:absolute;left:112px;top:-30px;font:700 30px 'Amatic SC','Amatic SC Fallback',cursive;color:#2a7c7a;opacity:0;pointer-events:none;">Z</span></div>
         <div style="margin-bottom:28px;">
-          <h2 data-pop="0" style="font-family:'Secular One',sans-serif;font-weight:400;font-size:clamp(30px,3.6vw,44px);margin:0 0 6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .28em;"><span style="display:inline-block;transform:rotate(-3deg) translateY(2px);">בחרו</span><span style="display:inline-block;transform:rotate(2deg) translateY(-3px);color:#2a7c7a;">כיתה</span><span style="display:inline-block;transform:rotate(-1.5deg);">והתחילו</span><span style="position:relative;display:inline-block;transform:rotate(3deg) translateY(-2px);color:#e5735c;">לתרגל<svg viewBox="0 0 120 16" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;right:-4%;bottom:-8px;width:108%;height:12px;overflow:visible;"><path data-draw="500" data-dur="700" pathLength="1" d="M3 9 Q 18 2, 33 9 T 63 9 T 93 9 T 117 7" fill="none" stroke="#e6a534" stroke-width="4" stroke-linecap="round" stroke-dasharray="1"></path></svg></span><span style="display:inline-block;transform:rotate(-8deg) translateY(-6px);color:#e6a534;font-size:.8em;">!</span></h2>
+          <h2 data-pop="0" style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:clamp(30px,3.6vw,44px);margin:0 0 6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .28em;"><span style="display:inline-block;transform:rotate(-3deg) translateY(2px);">בחרו</span><span style="display:inline-block;transform:rotate(2deg) translateY(-3px);color:#2a7c7a;">כיתה</span><span style="display:inline-block;transform:rotate(-1.5deg);">והתחילו</span><span style="position:relative;display:inline-block;transform:rotate(3deg) translateY(-2px);color:#e5735c;">לתרגל<svg viewBox="0 0 120 16" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;right:-4%;bottom:-8px;width:108%;height:12px;overflow:visible;"><path data-draw="500" data-dur="700" pathLength="1" d="M3 9 Q 18 2, 33 9 T 63 9 T 93 9 T 117 7" fill="none" stroke="#e6a534" stroke-width="4" stroke-linecap="round" stroke-dasharray="1"></path></svg></span><span style="display:inline-block;transform:rotate(-8deg) translateY(-6px);color:#e6a534;font-size:.8em;">!</span></h2>
           <p data-pop="100" style="margin:0;font-size:18px;color:#4a5478;">דפי עבודה בחינם לכיתות א׳–ט׳</p>
         </div>
-        <div style="font-family:'Amatic SC',cursive;font-size:26px;color:#2a7c7a;margin-bottom:8px;">יסודי</div>
+        <div style="font-family:'Amatic SC','Amatic SC Fallback',cursive;font-size:26px;color:#2a7c7a;margin-bottom:8px;">יסודי</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(max(190px,calc((100% - 28px) / 3)),1fr));gap:14px;margin-bottom:28px;">
           {elemGrades.map(g => (
             <a href={g.href} data-peek="elem" data-tl={g.l}  data-pop={g.delay} style="position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:18px 18px 16px;background:#fff;border:2px solid #22305a;border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;color:#22305a;min-height:140px;transition:transform .2s,box-shadow .2s;" data-exact-hover="exact-hover-5">
               <span style="font-size:14px;color:#5a6588;">כיתה</span>
-              <span style="font-family:'Secular One',sans-serif;font-size:44px;line-height:1;">{g.l}</span>
-              <span data-tileimg="1" aria-hidden="true" style={`position:absolute;left:4px;bottom:4px;width:112px;mix-blend-mode:multiply;opacity:.9;display:block;height:112px;background:url(${g.img}) center/contain no-repeat;`}>
+              <span style="font-family:'Secular One','Secular One Fallback',sans-serif;font-size:44px;line-height:1;">{g.l}</span>
+              <span data-tileimg="1" aria-hidden="true" style="position:absolute;left:4px;bottom:4px;width:112px;height:112px;mix-blend-mode:multiply;opacity:.9;display:block;"><img src={g.img} alt="" width="400" height="400" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
                 {g.isSnail && (<span data-wink="1" style="position:absolute;left:calc(67.6% - 6px);top:calc(28.3% - 6px);width:12px;height:12px;border-radius:50%;background:#f6ead4;box-shadow:inset 0 -2px 0 #22305a;transform:scaleY(0);transform-origin:center top;"></span>)}
                 {g.isBoat && (
                   <span data-water="1" style="position:absolute;left:8%;right:6%;top:73%;height:14%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);">
@@ -95,11 +95,11 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
             </a>
           ))}
         </div>
-        <div style="font-family:'Amatic SC',cursive;font-size:26px;color:#2a7c7a;margin-bottom:8px;">חטיבת ביניים</div>
+        <div style="font-family:'Amatic SC','Amatic SC Fallback',cursive;font-size:26px;color:#2a7c7a;margin-bottom:8px;">חטיבת ביניים</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">
           {midGrades.map(g => (
             <a href={g.href} data-peek="mid" data-tl="mid"  data-pop={g.delay} style="display:flex;align-items:center;gap:16px;padding:18px 20px;background:#22305a;color:#fbfaf5;border:2px solid #22305a;border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;transition:transform .2s,box-shadow .2s;" data-exact-hover="exact-hover-6">
-              <span style="font-family:'Secular One',sans-serif;font-size:44px;line-height:1;">{g.l}</span>
+              <span style="font-family:'Secular One','Secular One Fallback',sans-serif;font-size:44px;line-height:1;">{g.l}</span>
               <span style="display:flex;flex-direction:column;gap:6px;">
                 <span style="font-weight:700;font-size:17px;">חטיבה {g.l}</span>
                 <span data-lamp="1" style="position:relative;display:inline-flex;align-self:flex-start;background:#e6a534;color:#22305a;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;">עם עוזר בינה מלאכותית<svg data-genie="1" viewBox="0 0 64 80" aria-hidden="true" style="position:absolute;left:50%;bottom:70%;width:60px;height:75px;margin-left:-30px;overflow:visible;pointer-events:none;z-index:3;">
@@ -124,33 +124,33 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
       <!-- LEVELS -->
       <section data-home-values style="background:#fff;border-top:2px solid #22305a;border-bottom:2px solid #22305a;">
         <div style="max-width:1200px;margin:0 auto;padding:72px 24px;">
-          <h2 data-pop="0" style="font-family:'Secular One',sans-serif;font-weight:400;font-size:clamp(30px,3.6vw,44px);margin:0 0 40px;text-wrap:balance;">תרגול מתמטיקה מותאם אישית לכל רמה</h2>
+          <h2 data-pop="0" style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:clamp(30px,3.6vw,44px);margin:0 0 40px;text-wrap:balance;">תרגול מתמטיקה מותאם אישית לכל רמה</h2>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:28px;">
             <a href={home.valueSections.items[0].href}  style="display:flex;flex-direction:column;gap:10px;color:#22305a;" data-exact-hover="exact-hover-7">
-              <div data-doodle="owl" style="height:200px;display:flex;justify-content:center;background:#f4f7fb;border-radius:20px 8px 24px 10px / 10px 24px 8px 20px;"><img src="/design-exact/assets/doodles/sleepy-owl.webp" alt="" style="height:100%;mix-blend-mode:multiply;cursor:pointer;"></div>
+              <div data-doodle="owl" style="height:200px;display:flex;justify-content:center;background:#f4f7fb;border-radius:20px 8px 24px 10px / 10px 24px 8px 20px;"><img src="/design-exact/assets/doodles/sleepy-owl.webp" alt="" width="400" height="400" loading="lazy" decoding="async" style="height:100%;width:auto;mix-blend-mode:multiply;cursor:pointer;"></div>
               <strong style="font-size:22px;margin-top:6px;">חטיבת ביניים</strong>
               <span style="font-size:17px;line-height:1.55;color:#4a5478;">תרגול מקיף המכין את תלמידי כיתות ז׳-ט׳ למבחנים ולתיכון</span>
             </a>
             <a href={home.valueSections.items[1].href}  style="display:flex;flex-direction:column;gap:10px;color:#22305a;" data-exact-hover="exact-hover-8">
-              <div data-doodle="cube" style="height:200px;display:flex;justify-content:center;background:#fdf6e8;border-radius:8px 20px 10px 24px / 24px 10px 20px 8px;"><img src="/design-exact/assets/doodles/cube-plant.webp" alt="" style="height:100%;mix-blend-mode:multiply;cursor:pointer;"></div>
+              <div data-doodle="cube" style="height:200px;display:flex;justify-content:center;background:#fdf6e8;border-radius:8px 20px 10px 24px / 24px 10px 20px 8px;"><img src="/design-exact/assets/doodles/cube-plant.webp" alt="" width="400" height="400" loading="lazy" decoding="async" style="height:100%;width:auto;mix-blend-mode:multiply;cursor:pointer;"></div>
               <strong style="font-size:22px;margin-top:6px;">יסודי ומוכנות</strong>
               <span style="font-size:17px;line-height:1.55;color:#4a5478;">דפי עבודה חווייתיים לבניית בסיס מתמטי איתן</span>
             </a>
             <a href={home.valueSections.items[2].href}  style="display:flex;flex-direction:column;gap:10px;color:#22305a;" data-exact-hover="exact-hover-9">
-              <div data-doodle="telescope" style="height:200px;display:flex;justify-content:center;background:#fcefeb;border-radius:20px 8px 24px 10px / 10px 24px 8px 20px;"><img src="/design-exact/assets/doodles/telescope.webp" alt="" style="height:100%;mix-blend-mode:multiply;cursor:pointer;"></div>
+              <div data-doodle="telescope" style="height:200px;display:flex;justify-content:center;background:#fcefeb;border-radius:20px 8px 24px 10px / 10px 24px 8px 20px;"><img src="/design-exact/assets/doodles/telescope.webp" alt="" width="400" height="400" loading="lazy" decoding="async" style="height:100%;width:auto;mix-blend-mode:multiply;cursor:pointer;"></div>
               <strong style="font-size:22px;margin-top:6px;">אתגר והעשרה</strong>
               <span style="font-size:17px;line-height:1.55;color:#4a5478;">משימות חקר ופתרון בעיות מעמיק לתלמידים סקרנים</span>
             </a>
           </div>
-          <p style="margin:40px 0 0;font-family:'Amatic SC',cursive;font-size:30px;color:#2a7c7a;">הצטרפו למאות תלמידים שכבר מצליחים.</p>
+          <p style="margin:40px 0 0;font-family:'Amatic SC','Amatic SC Fallback',cursive;font-size:30px;color:#2a7c7a;">הצטרפו למאות תלמידים שכבר מצליחים.</p>
         </div>
       </section>
 
       <!-- LEARNING + WHATSAPP -->
       <section style="max-width:1200px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px;">
         <div style="position:relative;background:#fff;border:2px solid #22305a;border-radius:22px 8px 26px 10px / 10px 26px 8px 22px;padding:32px;overflow:hidden;">
-          <div data-doodle="robot" dir="ltr" style="position:absolute;left:8px;bottom:-6px;width:150px;"><div style="position:relative;overflow:hidden;aspect-ratio:.75;"><img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" style="width:200%;max-width:none;display:block;margin-left:-100%;cursor:pointer;"><span aria-hidden="true" style="position:absolute;left:96px;top:20px;width:54px;height:44px;background:#fff;"></span></div><span data-plane="1" aria-hidden="true" style="position:absolute;left:95px;top:25px;width:49px;height:33px;background:url(/design-exact/assets/doodles/notebook-doodles-v1.webp) -245.1px -25.4px / 300px 200px no-repeat;pointer-events:none;"></span></div>
-          <h2 data-home-learning style="font-family:'Secular One',sans-serif;font-weight:400;font-size:34px;margin:0 0 18px;">הלמידה שלי</h2>
+          <div data-doodle="robot" dir="ltr" style="position:absolute;left:8px;bottom:-6px;width:150px;"><div style="position:relative;overflow:hidden;aspect-ratio:.75;"><img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" style="width:200%;height:auto;max-width:none;display:block;margin-left:-100%;cursor:pointer;"><span aria-hidden="true" style="position:absolute;left:96px;top:20px;width:54px;height:44px;background:#fff;"></span></div><span data-plane="1" aria-hidden="true" style="position:absolute;left:95px;top:25px;width:49px;height:33px;overflow:hidden;pointer-events:none;"><img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" style="position:absolute;left:-245.1px;top:-25.4px;width:300px;height:200px;max-width:none;"></span></div>
+          <h2 data-home-learning style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:34px;margin:0 0 18px;">הלמידה שלי</h2>
           <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;position:relative;z-index:1;">
             <a data-peek="google" href={home.learning.googleHref} style="display:flex;align-items:center;gap:10px;padding:12px 20px;background:#fff;border:2px solid #22305a;border-radius:999px;color:#22305a;font-weight:700;" data-exact-hover="exact-hover-10"><span style="width:22px;height:22px;border-radius:50%;background:conic-gradient(#e5735c 0 25%,#e6a534 0 50%,#2a7c7a 0 75%,#22305a 0);display:inline-block;"></span>התחברות עם Google</a>
             <a data-peek="learn" href={home.learning.learningHref} style="font-weight:700;color:#2a7c7a;text-decoration:underline;text-underline-offset:4px;" data-exact-hover="exact-hover-11">הלמידה שלי — מעקב עבודה אישי</a>
@@ -159,16 +159,16 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
         </div>
         <div style="position:relative;background:#eaf4f3;border:2px solid #22305a;border-radius:8px 22px 10px 26px / 26px 10px 22px 8px;padding:32px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;overflow:hidden;">
           <div style="position:relative;z-index:1;">
-            <h2 style="font-family:'Secular One',sans-serif;font-weight:400;font-size:34px;margin:0 0 10px;">נפגשים גם בוואטסאפ</h2>
+            <h2 style="font-family:'Secular One','Secular One Fallback',sans-serif;font-weight:400;font-size:34px;margin:0 0 10px;">נפגשים גם בוואטסאפ</h2>
             <p style="margin:0 0 20px;color:#3d4870;font-size:16px;line-height:1.6;">הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.</p>
             <a data-home-whatsapp data-home-whatsapp-cta data-peek="whatsapp" href={home.whatsapp.ctaHref} rel="noopener noreferrer" style="display:inline-block;padding:12px 22px;background:#2a7c7a;color:#fff;font-weight:700;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:3px 3px 0 #22305a;" data-exact-hover="exact-hover-12">להצטרפות לקבוצת הוואטסאפ</a>
             <p style="margin:16px 0 0;font-size:13px;color:#4a5478;">ההצטרפות לבחירתכם. כל דפי העבודה פתוחים גם בלי להצטרף.</p>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-            <img src="/design-exact/assets/whatsapp-group-qr.png" alt="קוד QR להזמנה לקבוצת הוואטסאפ של נועם דורון מתמטיקה" style="width:120px;height:120px;background:#fff;border:2px solid #22305a;border-radius:10px;padding:6px;">
-            <em style="font-family:'Amatic SC',cursive;font-style:normal;font-size:22px;">אפשר גם לסרוק ולהצטרף</em>
+            <img src="/design-exact/assets/whatsapp-group-qr.png" alt="קוד QR להזמנה לקבוצת הוואטסאפ של נועם דורון מתמטיקה" width="120" height="120" loading="lazy" decoding="async" style="width:120px;height:120px;background:#fff;border:2px solid #22305a;border-radius:10px;padding:6px;">
+            <em style="font-family:'Amatic SC','Amatic SC Fallback',cursive;font-style:normal;font-size:22px;">אפשר גם לסרוק ולהצטרף</em>
           </div>
-          <div data-doodle="boat" style="position:absolute;left:4%;bottom:-24px;width:130px;opacity:.9;"><img src="/design-exact/assets/doodles/paper-boat.webp" alt="" style="width:100%;display:block;mix-blend-mode:multiply;cursor:pointer;"></div>
+          <div data-doodle="boat" style="position:absolute;left:4%;bottom:-24px;width:130px;opacity:.9;"><img src="/design-exact/assets/doodles/paper-boat.webp" alt="" width="400" height="400" loading="lazy" decoding="async" style="width:100%;height:auto;display:block;mix-blend-mode:multiply;cursor:pointer;"></div>
         </div>
       </section>
     </main>

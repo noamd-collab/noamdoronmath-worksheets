@@ -58,63 +58,63 @@
   "hashReport": [
     {
       "file": "telescope.webp",
-      "sha256": "3cc624771299e02c57a7e702f6e3d84be93c1441e9ebbccc10b697dc4f896b1d",
+      "sha256": "ea31e45d0480c22329999610d8ac3b534ddb10a8e23659128ebd60f4201c29dc",
       "verified": true,
-      "bytes": 500368
+      "bytes": 24096
     },
     {
       "file": "kite.webp",
-      "sha256": "207c2b01354b6b9d98bb9f3435fce0fc9db59275eb47361e5853b92c3302c64e",
+      "sha256": "5e2089996f0dd1b7a6a43c398e04ebfcf50cb36da3bdc9a576dccb35a5cb5978",
       "verified": true,
-      "bytes": 350374
+      "bytes": 22988
     },
     {
       "file": "curious-cat.webp",
-      "sha256": "99c4840015086b5320ed19d6852daee620520992718f4d76ce483d76dbefe48a",
+      "sha256": "cf07fccc9bfb1887cd645b7795ffdcb5b912fb4b0e198246e203b38d77c745ab",
       "verified": true,
-      "bytes": 633610
+      "bytes": 28748
     },
     {
       "file": "snail.webp",
-      "sha256": "b15439f14da1d761372c4a322e1070afbd9c1dd288a118720c2a859ce9f43bdc",
+      "sha256": "1ac8097d75a52456e60dfd04d54b0fa9d1a34ddc1c4360003ffaea6e07fc1415",
       "verified": true,
-      "bytes": 721542
+      "bytes": 28230
     },
     {
       "file": "cube-plant.webp",
-      "sha256": "104c6824f71a2263e42836988ae4bb656dec8f4bfaade08ccced92658101e7fd",
+      "sha256": "f331a06368b0037ea9b353345c2ae4f0022b18e9eab00af1ec4abb4c14b63853",
       "verified": true,
-      "bytes": 367964
+      "bytes": 26208
     },
     {
       "file": "orbit-pencil.webp",
-      "sha256": "96ed307da1099a69b9380474ddcc015de0c3f18e6b87ab1f1f48c932c8fb3b95",
+      "sha256": "5cba2366a60d5bfa0b42bfeddc0947fda2492e55d7f368d09c44e2e577fea287",
       "verified": true,
-      "bytes": 490664
+      "bytes": 19928
     },
     {
       "file": "sleepy-owl.webp",
-      "sha256": "ec89b57d2aa0e1e736fdd54046959aeda8b9a2ff20e8752858ec78d5c697b848",
+      "sha256": "0570561cf4af4190f782dba4c076c34b4d3605180fd8f2cf79e6b5d01a3b520b",
       "verified": true,
-      "bytes": 700188
+      "bytes": 23926
     },
     {
       "file": "geometry-fish.webp",
-      "sha256": "a5b6e578ca32825c17153bc39898636671315bc2dbede0ca1533dcbb3d03493a",
+      "sha256": "26bce1459299e8d23b0b6f52cf0a67f358a8d77688417b5621b638a355913616",
       "verified": true,
-      "bytes": 415654
+      "bytes": 27450
     },
     {
       "file": "eye-spiral.webp",
-      "sha256": "0aecbaa268f8ae60fc4f1f038717b2441ae0bf000ed38d87a22bf06c847b855f",
+      "sha256": "c689890ce0b295ce0b2a8f0eccbe812c73448fb644478e900b1a5676cbd59815",
       "verified": true,
-      "bytes": 396892
+      "bytes": 26844
     },
     {
       "file": "paper-boat.webp",
-      "sha256": "4b91569fb4e7b37bde441d86a8a4f845957047f374546e83cc5b9f43977a3a1f",
+      "sha256": "c0c9ee87833931665ed3f760fbdf46daed452fe5fd0d2ec3327f6c9810879ff2",
       "verified": true,
-      "bytes": 359674
+      "bytes": 16258
     }
   ]
 }
