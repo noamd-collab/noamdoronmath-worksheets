@@ -1,19 +1,38 @@
+<script is:inline>
+  try {
+    if (localStorage.getItem('noam-dev-notice-seen') === '1') {
+      document.documentElement.classList.add('nd-notice-seen');
+    }
+  } catch (e) {}
+</script>
 <aside class="exact-development-notice" aria-label="הודעת פיתוח" data-development-notice>
   <p><strong>האתר נמצא כרגע בתהליכי פיתוח</strong> — ייתכנו שיבושים זמניים בפעילות הגלישה והקישורים.</p>
   <button type="button" aria-label="סגירת הודעת הפיתוח">הבנתי</button>
 </aside>
 <style>
   /* Noam, 2 Oct 2026: keep this bar. Tokens stay #fdf1d8, 14px, underlined הבנתי.
-     The FINAL file's modal is not the notice. Do not restore it. */
+     The FINAL file's modal is not the notice. Do not restore it.
+     Dismissal uses the file's key, noam-dev-notice-seen. */
+  html.nd-notice-seen .exact-development-notice{display:none!important;}
   .exact-development-notice{display:flex;align-items:center;justify-content:center;gap:12px;padding:4px 20px;border-bottom:2px solid #22305a;background:#fdf1d8;color:#22305a;font-family:'Heebo',sans-serif;font-size:14px;line-height:1.6;}
   .exact-development-notice p{margin:0;}
   .exact-development-notice strong{font-weight:800;}
   .exact-development-notice button{flex:none;min-width:44px;min-height:44px;border:0;background:transparent;color:#22305a;font:inherit;font-weight:800;cursor:pointer;text-decoration:underline;}
 </style>
 <script>
-  // Dismiss only the informational UI: no terms acceptance, learning state,
-  // consent flag, or existing storage value is written by this component.
-  document.querySelectorAll('[data-development-notice]').forEach((notice) => {
-    notice.querySelector('button')?.addEventListener('click', () => notice.remove());
-  });
+  // Remember הבנתי the way the design file does (noam-dev-notice-seen).
+  // No other storage key is written.
+  function initDevelopmentNotice() {
+    document.querySelectorAll('[data-development-notice]').forEach((notice) => {
+      if (notice.dataset.noticeReady) return;
+      notice.dataset.noticeReady = '1';
+      notice.querySelector('button')?.addEventListener('click', () => {
+        try { localStorage.setItem('noam-dev-notice-seen', '1'); } catch (e) {}
+        document.documentElement.classList.add('nd-notice-seen');
+        notice.remove();
+      });
+    });
+  }
+  initDevelopmentNotice();
+  document.addEventListener('astro:page-load', initDevelopmentNotice);
 </script>
