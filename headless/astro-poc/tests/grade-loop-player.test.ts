@@ -20,6 +20,7 @@ import {
   gradeLoopMap,
   gradeLoopMathParts,
 } from '../src/lib/gradeLoopPools.ts';
+import { splitSupFractions } from '../src/lib/stackedFraction.ts';
 import {
   GRADE_LOOP_DWELL_MS,
   GRADE_LOOP_FALLBACK_END_S,
@@ -239,6 +240,29 @@ describe('grade loop pools (LOOPS_MAP_73_v2)', () => {
     assert.deepEqual(gradeLoopMathParts('מרחק שווה, זווית של 90°'), [
       { text: 'מרחק שווה, זווית של ', math: false },
       { text: '90°', math: true },
+    ]);
+    // "4 = ¼" must not be one LTR run: that paints the fraction beside מתוך.
+    assert.deepEqual(gradeLoopMathParts('עץ־עץ: 1 מתוך 4 שווה ¼'), [
+      { text: 'עץ־עץ: ', math: false },
+      { text: '1', math: true },
+      { text: ' מתוך ', math: false },
+      { text: '4', math: true },
+      { text: ' שווה ', math: false },
+      { text: '¼', math: true },
+    ]);
+    assert.deepEqual(splitSupFractions('½ = ²⁄₄ = ³⁄₆'), [
+      { kind: 'frac', n: '1', d: '2' },
+      { kind: 'text', text: ' = ' },
+      { kind: 'frac', n: '2', d: '4' },
+      { kind: 'text', text: ' = ' },
+      { kind: 'frac', n: '3', d: '6' },
+    ]);
+    assert.deepEqual(splitSupFractions('½ × ⅓ = ⅙'), [
+      { kind: 'frac', n: '1', d: '2' },
+      { kind: 'text', text: ' × ' },
+      { kind: 'frac', n: '1', d: '3' },
+      { kind: 'text', text: ' = ' },
+      { kind: 'frac', n: '1', d: '6' },
     ]);
     for (const [variant, { mathLine }] of Object.entries(GRADE_LOOP_COPY)) {
       const parts = gradeLoopMathParts(mathLine);

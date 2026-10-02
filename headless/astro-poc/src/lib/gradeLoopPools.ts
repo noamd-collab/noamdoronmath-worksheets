@@ -453,7 +453,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
     domain: 'שטח · טרפז',
     claim: 'שטח טרפז: ממוצע הבסיסים כפול הגובה',
     mathLine: 'S = (6 + 2) : 2 × 3 = 12',
-    explain: 'לטרפז בסיסים 6 ו־2 וגובה 3. קטע האמצעים שווה לממוצע הבסיסים, 4. השטח הוא 4 × 3 = 12.',
+    explain: 'לטרפז בסיסים 6 ו־2 וגובה 3. קטע האמצעים שווה לממוצע הבסיסים, 4. כשכופלים אותו בגובה 3 מתקבל שטח 12.',
   },
   'para-rect': {
     domain: 'שטח · מקבילית ומלבן',
@@ -539,7 +539,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
     domain: 'מרובעים · משפחת המרובעים',
     claim: 'ריבוע הוא גם מלבן וגם מעוין',
     mathLine: 'ריבוע הוא גם מלבן וגם מעוין',
-    explain: 'ריבוע הוא מקרה פרטי של מלבן וגם של מעוין: יש לו ארבע זוויות ישרות כמו למלבן, וארבע צלעות שוות כמו למעוין.',
+    explain: 'לריבוע יש ארבע זוויות ישרות, כמו למלבן, וארבע צלעות שוות, כמו למעוין. לכן ריבוע הוא גם מלבן וגם מעוין.',
   },
   transform: {
     domain: 'טרנספורמציות · שיקוף, סיבוב והזזה',
@@ -556,7 +556,8 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'two-coins': {
     domain: 'הסתברות · מרחב מדגם',
     claim: 'לשתי הטלות מטבע יש ארבע תוצאות שוות',
-    mathLine: 'עץ־עץ: 1 מתוך 4 = ¼',
+    // "4 = ¼" as one LTR run sits with the fraction beside מתוך. The word between them keeps reading order 4 then the fraction.
+    mathLine: 'עץ־עץ: 1 מתוך 4 שווה ¼',
     explain: 'מטילים מטבע הוגן פעמיים. יש ארבע תוצאות שוות־הסתברות, ועץ־עץ היא אחת מהן. ההסתברות לשני עצים היא רבע.',
   },
   'diff-sq': {

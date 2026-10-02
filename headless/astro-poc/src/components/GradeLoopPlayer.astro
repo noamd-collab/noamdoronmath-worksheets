@@ -60,7 +60,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
             <bdi dir="ltr">
               {splitSupFractions(part.text).map((piece) =>
                 piece.kind === 'frac' ? (
-                  <span class="cl-frac">
+                  <span class:list={['cl-frac', defaultEntry.variant === 'tenth-cell' && 'cl-frac--tight']}>
                     <span class="cl-frac__n">{piece.n}</span>
                     <span class="cl-frac__d">{piece.d}</span>
                   </span>
@@ -202,7 +202,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
               continue;
             }
             const frac = document.createElement('span');
-            frac.className = 'cl-frac';
+            frac.className = entry.variant === 'tenth-cell' ? 'cl-frac cl-frac--tight' : 'cl-frac';
             const num = document.createElement('span');
             num.className = 'cl-frac__n';
             num.textContent = piece.n;

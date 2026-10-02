@@ -236,7 +236,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'clock-span': { text: 'כמה שעות עברו?' },
   exterior: { text: 'מה גודל הזווית החיצונית?' },
   'para-perp': { text: 'מקביל או מאונך?' },
-  'quarter-12': { text: '¼ מ־12 = ?' },
+  'quarter-12': { text: 'רבע מ־12 = ?' },
   'two-coins': { text: 'מה ההסתברות לשני עצים?' },
   'map-scale': { text: 'קנה המידה 1:5. מה האורך במציאות?' },
   'unit-frac': { text: 'איזה חלק הכי גדול?' },
@@ -469,7 +469,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       /* families F01–F06: fixed problem strip that never moves */
       variant === 'quarter-12' ? (
         <p class="concept-loop__top">
-          <span class="cl-num">¼</span>
+          <StackedFraction n="1" d="4" />
           {' מ־'}
           <span class="cl-num">12</span>
           {' = '}
@@ -1148,7 +1148,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <line class="cl-line-thin" data-el="cut-h" x1="90" y1="140" x2="230" y2="140" pathLength="1" />
           {/* one quarter shaded */}
           <path data-el="q-shade" class="cl-fill-a" d="M160 140 L160 70 A70 70 0 0 1 230 140 Z" />
-          <text class="cl-t cl-num" data-el="q-lbl" x="252" y="122">¼</text>
+          <StackedFraction n="1" d="4" x={252} y={122} el="q-lbl" />
 
           {/* bar: same 1/4 */}
           <rect class="cl-line-thin" data-el="bar-o" x={FR_BAR.x} y={FR_BAR.y} width={FR_BAR.w} height={FR_BAR.h} pathLength="1" />
@@ -1156,14 +1156,14 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           {[1, 2, 3].map((k) => (
             <line class="cl-line-thin" data-el={`bar-d${k}`} x1={FR_BAR.x + k * 45} y1={FR_BAR.y} x2={FR_BAR.x + k * 45} y2={FR_BAR.y + FR_BAR.h} pathLength="1" />
           ))}
-          <text class="cl-t cl-num" data-el="bar-lbl" x="352" y="172">¼</text>
+          <StackedFraction n="1" d="4" x={352} y={186} el="bar-lbl" />
 
           {/* number line 0–1: point at 1/4 */}
           <line class="cl-line-thin" data-el="nl" x1="330" y1="230" x2="510" y2="230" pathLength="1" />
           <text class="cl-t cl-num cl-small" data-el="nl0" x="330" y="252" text-anchor="middle">0</text>
           <text class="cl-t cl-num cl-small" data-el="nl1" x="510" y="252" text-anchor="middle">1</text>
           <circle class="cl-pt cl-pt-a" data-el="nl-pt" cx="375" cy="230" r="7" />
-          <text class="cl-t cl-num" data-el="nl-lbl" x="375" y="212" text-anchor="middle">¼</text>
+          <StackedFraction n="1" d="4" x={375} y={212} anchor="middle" el="nl-lbl" />
         </svg>
       )
     }
@@ -1235,9 +1235,9 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <rect class="cl-fill-a" data-el="half" x="150" y="70" width="240" height="75" style="opacity:0" />
           <rect class="cl-fill-b" data-el="third" x="150" y="70" width="80" height="150" style="opacity:0" />
           <rect class="cl-fill-c" data-el="overlap" x="150" y="70" width="80" height="75" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="lbl-half" x="410" y="112" style="opacity:0">½</text>
-          <text class="cl-t cl-num" data-el="lbl-third" x="168" y="244" style="opacity:0">⅓</text>
-          <text class="cl-t cl-num cl-ok" data-el="lbl-sixth" x="158" y="112" style="opacity:0">⅙</text>
+          <StackedFraction n="1" d="2" x={410} y={112} el="lbl-half" hidden />
+          <StackedFraction n="1" d="3" x={168} y={252} el="lbl-third" hidden />
+          <StackedFraction n="1" d="6" x={158} y={112} el="lbl-sixth" hidden ok />
         </svg>
       )
     }
@@ -1820,7 +1820,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <circle class="cl-fill-a cl-stroke-a" cx="142" cy="140" r="11" />
             <path class="cl-line" d="M54 154 V168 H158 V154" />
           </g>
-          <text class="cl-t cl-num" data-el="count" x="106" y="190" text-anchor="middle" style="opacity:0">¼ × 12 = 3</text>
+          <g data-el="count" style="opacity:0">
+            <StackedFraction n="1" d="4" x={75} y={204} anchor="start" />
+            <text class="cl-t cl-num" x={91} y="204">× 12 = 3</text>
+          </g>
         </svg>
       )
     }
@@ -1842,7 +1845,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <text class="cl-t cl-num" x="433" y="180" text-anchor="middle">פפ</text>
           </g>
           <rect class="cl-stroke-a" data-el="pick" x="70" y="140" width="90" height="70" fill="none" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="pick-lbl" x="115" y="232" text-anchor="middle" style="opacity:0">¼</text>
+          <StackedFraction n="1" d="4" x={115} y={248} anchor="middle" el="pick-lbl" hidden />
         </svg>
       )
     }
@@ -1875,9 +1878,9 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <rect class="cl-fill-b" data-el="t" x="120" y="140" width="60" height="36" style="opacity:0" />
           <rect class="cl-fill-c" data-el="q" x="120" y="210" width="45" height="36" style="opacity:0" />
           <g data-el="labs" style="opacity:0">
-            <text class="cl-t cl-num" x="320" y="94">½</text>
-            <text class="cl-t cl-num" x="320" y="164">⅓</text>
-            <text class="cl-t cl-num" x="320" y="234">¼</text>
+            <StackedFraction n="1" d="2" x={320} y={94} />
+            <StackedFraction n="1" d="3" x={320} y={164} />
+            <StackedFraction n="1" d="4" x={320} y={234} />
           </g>
         </svg>
       )
@@ -1957,10 +1960,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
               <rect class="cl-fill-a" x={201 + c * 14} y="81" width="12" height="12" />
             ))}
             <path class="cl-line" d="M202 82 H338 V92" />
-            <StackedFraction n="1" d="10" x={348} y={92} anchor="start" />
+            <StackedFraction n="1" d="10" x={340} y={92} anchor="start" tight />
           </g>
           <rect class="cl-stroke-a" data-el="cell" x="200" y="80" width="14" height="14" style="fill:none;opacity:0" />
-          <StackedFraction n="1" d="100" x={207} y={74} anchor="middle" small el="hun" hidden />
+          <StackedFraction n="1" d="100" x={207} y={74} anchor="middle" small el="hun" hidden tight />
         </svg>
       )
     }
@@ -2466,7 +2469,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'frac-product' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">½ × ⅓ = ⅙</span>
+          <span data-fx="0"><StackedFraction n="1" d="2" /> × <StackedFraction n="1" d="3" /> = <StackedFraction n="1" d="6" /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2730,7 +2733,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'quarter-12' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">¼ × 12 = 3</span>
+          <span data-fx="0"><StackedFraction n="1" d="4" /> × 12 = 3</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2738,7 +2741,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'two-coins' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">¼</span>
+          <span data-fx="0"><StackedFraction n="1" d="4" /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2754,7 +2757,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'unit-frac' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">½ &gt; ⅓ &gt; ¼</span>
+          <span data-fx="0"><StackedFraction n="1" d="2" /> &gt; <StackedFraction n="1" d="3" /> &gt; <StackedFraction n="1" d="4" /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2786,7 +2789,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'tenth-cell' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0"><StackedFraction n="1" d="10" /> = 10 × <StackedFraction n="1" d="100" /></span>
+          <span data-fx="0"><StackedFraction n="1" d="10" tight /> = 10 × <StackedFraction n="1" d="100" tight /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
