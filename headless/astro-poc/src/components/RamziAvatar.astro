@@ -1,0 +1,29 @@
+---
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+export interface Props {
+  mood?: 'idle' | 'thinking' | 'hint' | 'success' | 'error';
+  size?: number;
+}
+
+const { mood = 'idle', size = 44 } = Astro.props;
+const px = Number.isFinite(size) && size > 0 ? size : 44;
+const file = join(process.cwd(), 'public/design-exact/assets/avatar', `ramzi-A-${mood}.svg`);
+const svg = readFileSync(file, 'utf8').replace(/<metadata>[\s\S]*?<\/metadata>/, '');
+---
+
+<ramzi-avatar
+  mood={mood}
+  size={px}
+  asset-base="/design-exact/assets/avatar"
+  aria-hidden="true"
+  style={`width:${px}px;height:${px}px;flex:none;display:inline-flex`}
+>
+  <Fragment set:html={svg} />
+</ramzi-avatar>
+
+<script>
+  import { defineRamziAvatar } from './ramzi/ramzi-avatar';
+  defineRamziAvatar();
+</script>

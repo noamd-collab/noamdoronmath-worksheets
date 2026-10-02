@@ -2006,6 +2006,11 @@ textarea:focus{
 
 </style>
 <link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#fbfaf5">
 </head>
 
 <body class="exact-viewer">
@@ -2075,7 +2080,7 @@ body.exact-viewer{
 .exact-viewer .pdf-status{background:#fbfaf5;font-weight:700}
 .exact-viewer .pdf-tools{border:2px solid #22305a;border-radius:12px 5px 13px 6px;box-shadow:none}
 .exact-viewer .panel{
-  width:clamp(360px,32vw,460px);max-width:none;padding:0;
+  width:clamp(420px,36vw,560px);max-width:none;padding:0;
   border-right:2px solid #22305a;background:#fff;
 }
 .exact-viewer .panel-in{border:0;border-radius:0;box-shadow:none;background:#fff}
@@ -2110,7 +2115,9 @@ body.exact-viewer{
   padding:8px 12px;margin:0;background:#fdf3de;border:1.5px solid #22305a;
   border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
 }
-.exact-viewer .noam-picked-label{font:700 14px Heebo,sans-serif;color:#22305a}
+.exact-viewer .noam-picked{overflow:visible}
+.exact-viewer .noam-picked-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.exact-viewer .noam-picked-label{flex:1 1 auto;min-width:0;font:700 14px/1.35 Heebo,sans-serif;color:#22305a;overflow:visible;white-space:normal}
 .exact-viewer .noam-picked-text{font-size:14px;line-height:1.5;color:#3d4870}
 .exact-viewer .noam-picked-preview{border:1.5px solid #c9cfdc;border-radius:0}
 .exact-viewer .noam-thread-tools{margin:0;gap:8px}
@@ -2218,19 +2225,44 @@ body.exact-viewer{
   border-top:2px solid #22305a;background:#fff;
 }
 .exact-viewer .exact-question-strip{
-  flex:none;padding:8px 12px 10px;border-bottom:1.5px dashed #b8c0d4;
-  display:flex;align-items:center;gap:4px;overflow-x:auto;background:#fff;
+  flex:none;min-width:0;width:100%;max-width:100%;box-sizing:border-box;
+  padding:4px 8px;border-bottom:1.5px dashed #b8c0d4;
+  display:flex;align-items:center;gap:6px;flex-wrap:nowrap;
+  overflow:hidden;background:#fff;
 }
 .exact-viewer .exact-question-strip[hidden]{display:none}
-.exact-question-strip>span{font-size:13px;font-weight:700;color:#5a6588;white-space:nowrap}
-.exact-question-strip>span.exact-part-label{margin-right:8px}
-.exact-question-strip>div{display:flex;gap:4px}
-.exact-question-strip button{
-  flex:none;min-width:40px;height:40px;padding:0 8px;border-radius:10px 4px 11px 5px;
-  border:2px solid #22305a;background:#fff;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;
+.exact-question-strip>span{font:700 12px Heebo,sans-serif;color:#5a6588;white-space:nowrap;flex:none}
+.exact-question-strip>span.exact-part-label{margin-inline-start:2px}
+.exact-q-scroll{flex:1 1 auto;min-width:64px;display:flex;align-items:center;gap:0}
+.exact-q-track{
+  flex:1;min-width:0;display:flex;gap:3px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;
 }
+.exact-q-track::-webkit-scrollbar{height:0}
+.exact-q-track.can-end{
+  -webkit-mask-image:linear-gradient(to left,transparent,#000 14px);
+  mask-image:linear-gradient(to left,transparent,#000 14px);
+}
+.exact-q-track.can-start{
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 14px);
+  mask-image:linear-gradient(to right,transparent,#000 14px);
+}
+.exact-q-track.can-start.can-end{
+  -webkit-mask-image:linear-gradient(to left,transparent,#000 14px,#000 calc(100% - 14px),transparent);
+  mask-image:linear-gradient(to left,transparent,#000 14px,#000 calc(100% - 14px),transparent);
+}
+.exact-question-strip button:not(.exact-q-arrow){
+  flex:none;min-width:28px;height:28px;padding:0 6px;border-radius:8px 4px 9px 4px;
+  border:1.5px solid #22305a;background:#fff;color:#22305a;font:700 13px Heebo,sans-serif;cursor:pointer;
+}
+.exact-q-arrow{
+  flex:none;width:22px;height:28px;min-width:22px;padding:0;border:0;border-radius:6px;
+  background:transparent;color:#22305a;font:700 18px/1 Heebo,sans-serif;cursor:pointer;
+}
+.exact-q-arrow:disabled{opacity:.28;cursor:default}
+.exact-parts{display:flex;flex:none;gap:3px;min-width:0;max-width:46%;overflow-x:auto;scrollbar-width:none}
+.exact-parts::-webkit-scrollbar{height:0}
 .exact-question-strip button[aria-pressed="true"]{background:#22305a;color:#fff}
-.exact-question-strip button:not([aria-pressed="true"]):hover{background:#eaf4f3}
+.exact-question-strip button:not(.exact-q-arrow):not([aria-pressed="true"]):hover{background:#eaf4f3}
 .exact-viewer .panel-body[data-exact-full-picker="true"] .noam-question-list{display:none}
 .exact-viewer .exact-hint-row #noamHint{flex:1;min-width:0;padding:4px 12px;white-space:nowrap;font-size:15px}
 .exact-viewer .exact-hint-row #noamOverview{white-space:nowrap;font-size:15px}
@@ -2299,6 +2331,116 @@ body.exact-viewer{
 .exact-viewer .panel.is-short .exact-message-row textarea{height:44px;min-height:44px}
 .exact-viewer .panel.is-short .exact-hint-row{padding-block:4px}
 html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-behavior:auto!important}
+
+.exact-viewer .panel-head{min-height:62px;box-sizing:border-box}
+.exact-viewer .btn,.exact-viewer .pdf-tool,.exact-viewer .pdf-tool-link,
+.exact-viewer .panel-back,.exact-viewer .noam-action,.exact-viewer .noam-preview-toggle,
+.exact-viewer .panel-close,.exact-viewer .noam-send,.exact-viewer .fab{
+  box-shadow:4px 4px 0 rgba(34,48,90,.18);
+}
+.exact-viewer .noam-picked,.exact-viewer .noam-glossary-popover,.exact-viewer .noam-input-shell,
+.exact-viewer .exact-message-row{
+  box-shadow:4px 4px 0 rgba(34,48,90,.12);
+}
+.exact-viewer .noam-transcript{min-height:160px}
+.exact-viewer .panel.is-short .noam-transcript{min-height:160px}
+.exact-viewer .panel-body.is-chat:not(.is-previewing)>.noam-picked{
+  flex:none;max-height:none;overflow:visible;
+}
+.exact-viewer .panel-body.is-chat>.noam-compose{flex-shrink:0}
+.exact-viewer .panel-body:not(.is-previewing) .noam-picked-preview{display:none}
+.exact-viewer .panel-body.is-chat>.noam-transcript{
+  flex:1 1 auto;
+  min-height:120px;
+  overflow-y:auto;
+}
+.exact-viewer .exact-compose{padding-bottom:env(safe-area-inset-bottom)}
+.exact-viewer .header-actions{display:flex;align-items:center;flex-wrap:wrap}
+.exact-viewer .header-actions .fab{position:static;inset:auto;z-index:auto;margin:0}
+.exact-viewer .pdf-page .noam-exercise-pin{
+  width:24px;height:24px;min-width:24px;min-height:24px;padding:0;gap:0;
+  border-radius:50%;display:grid;place-items:center;
+  font-size:0;line-height:1;box-shadow:none;background:#fff;
+}
+.exact-viewer .pdf-page .noam-exercise-pin::before{
+  content:"?";
+  font:700 13px/1 Heebo,sans-serif;color:#22305a;
+}
+.exact-viewer .pdf-page .noam-exercise-pin .exact-pin-label{display:none}
+.exact-viewer .pdf-page .noam-exercise-pin.is-active{
+  background:#e6a534;color:#22305a;box-shadow:none;
+}
+.exact-viewer .pdf-page .noam-exercise-pin.is-active::before{color:#22305a}
+.exact-viewer .exact-empty{
+  flex:1;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;text-align:center;padding:16px 8px;
+}
+.exact-viewer .exact-empty-title{margin:0;font:400 22px/1.3 'Secular One',sans-serif;color:#22305a}
+.exact-viewer .exact-empty-hint{
+  min-height:44px;padding:6px 14px;border:2px solid #22305a;border-radius:12px 5px 13px 6px;
+  background:#e6a534;color:#22305a;font:800 15px Heebo,sans-serif;box-shadow:4px 4px 0 rgba(34,48,90,.18);cursor:pointer;
+}
+.exact-viewer .exact-hint-badge{
+  display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:999px;
+  background:#e6a534;color:#22305a;font:800 12px Heebo,sans-serif;
+}
+.exact-viewer .noam-row.exact-hint .noam-bubble{padding:0;overflow:hidden}
+.exact-viewer .exact-hint-head{
+  background:#e6a534;color:#22305a;font:800 13px Heebo,sans-serif;padding:6px 12px;
+}
+.exact-viewer .noam-row.exact-overview .noam-bubble{
+  background:#eaf4f3;border-color:#22305a;
+}
+.exact-viewer .noam-row.exact-success .noam-bubble{
+  background:#e8f5ec;border:2px solid #237a44;color:#22305a;
+}
+.exact-viewer .noam-row.exact-error{align-self:stretch}
+.exact-viewer .noam-row.exact-error .noam-bubble{
+  max-width:none;display:flex;flex-direction:column;gap:6px;align-items:stretch;
+  border:2px solid #a84434;border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
+  box-shadow:4px 4px 0 rgba(229,115,92,.2);background:#fff;color:#22305a;
+}
+.exact-viewer .exact-error-title{font:700 16px Heebo,sans-serif;color:#a84434}
+.exact-viewer .exact-error-dismiss{
+  min-height:44px;padding:6px 14px;border:2px solid #22305a;border-radius:12px 5px 13px 6px;
+  background:#fff;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;
+}
+.exact-viewer .noam-row.exact-error.is-dismissed .exact-error-title,
+.exact-viewer .noam-row.exact-error.is-dismissed .exact-error-dismiss,
+.exact-viewer .noam-row.exact-error.is-dismissed .noam-retry-action{display:none}
+.exact-viewer .noam-bubble.thinking{display:flex;align-items:center;gap:8px}
+.exact-viewer .exact-frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin-inline:0.15em}
+.exact-viewer .exact-frac-bar{display:block;width:100%;height:2px;background:#22305a;margin:1px 0}
+.exact-viewer .noam-attach-item{
+  border:2px solid #22305a;border-radius:12px 5px 13px 6px;box-shadow:4px 4px 0 rgba(34,48,90,.12);
+}
+.exact-viewer .pdf-page .noam-report-pin{
+  width:26px;height:26px;min-width:26px;min-height:26px;padding:0;
+  font-size:0;line-height:0;background:transparent;color:inherit;
+  border:0;border-radius:50%;overflow:visible;box-shadow:none;outline:none;
+}
+.exact-viewer .pdf-page .noam-report-pin::before{
+  content:"";position:absolute;inset:-4px;
+}
+.exact-viewer .pdf-page .noam-report-pin .exact-ramzi-pin{
+  width:100%;height:100%;display:block;object-fit:contain;pointer-events:none;
+  filter:drop-shadow(0 1px 1px rgba(34,48,90,.22));
+}
+.exact-viewer .pdf-page .noam-report-pin:hover,
+.exact-viewer .pdf-page .noam-report-pin:focus-visible{
+  background:transparent;color:inherit;border-color:transparent;
+  box-shadow:none;outline:none;
+}
+.exact-viewer .pdf-page .noam-report-pin:focus-visible{
+  box-shadow:0 0 0 2px #22305a;
+}
+@media(max-width:999px),(max-height:639px){
+  .exact-viewer .pdf-page .noam-exercise-pin{width:26px;height:26px;min-width:26px;min-height:26px;padding:0;border-radius:50%}
+  .exact-viewer .pdf-page .noam-exercise-pin .exact-pin-label{display:none}
+  .exact-viewer .pdf-page .noam-report-pin{width:26px;height:26px;min-width:26px;min-height:26px}
+  .exact-question-strip button:not(.exact-q-arrow){min-width:32px;height:32px;font-size:14px}
+  .exact-q-arrow{width:28px;height:32px;min-width:28px}
+}
 </style>
 
 <header class="exact-viewer-header">
@@ -2405,7 +2547,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
   <aside
     class="panel hidden"
     id="panel"
-    aria-labelledby="noamPanelTitle"
+    aria-label="רמזי, עזרה בדף העבודה"
   >
 
     <div class="panel-in">
@@ -4365,14 +4507,13 @@ function syncMobilePanel(){
     var background = document.querySelector(selector);
     if (background){ background.inert = modal; }
   });
+  panel.setAttribute("aria-label","רמזי, עזרה בדף העבודה");
   if (modal){
     panel.setAttribute("role","dialog");
     panel.setAttribute("aria-modal","true");
-    panel.setAttribute("aria-label","נועם AI — עזרה בשאלה");
   }else{
     panel.removeAttribute("role");
     panel.removeAttribute("aria-modal");
-    panel.removeAttribute("aria-label");
   }
   closePanelButton.setAttribute("aria-label",mobileLayout.matches ? "חזרה לדף העבודה" : "סגירה");
   var viewport = window.visualViewport;
@@ -4802,7 +4943,14 @@ function renderManifestPins(){
     var report = document.createElement("button");
     report.type = "button";
     report.className = "noam-report-pin" + (group.reportBefore ? " noam-report-before" : "");
-    report.textContent = "!";
+    report.textContent = "";
+    var ramziMark = document.createElement("img");
+    ramziMark.className = "exact-ramzi-pin";
+    ramziMark.src = "design-exact/assets/avatar/ramzi-A-idle.svg";
+    ramziMark.alt = "";
+    ramziMark.setAttribute("aria-hidden", "true");
+    ramziMark.draggable = false;
+    report.appendChild(ramziMark);
     report.style.left = narrow
       ? "calc(100% + 76px)"
       : "calc(" + pinLeft + (group.reportBefore ? " - 40px)" : " + 40px)");
@@ -4901,6 +5049,7 @@ function setNoamDiagramButtonLabel(button,label,showBeta){
 function addTranscriptBubble(container, role, text, kind, visual, message, thread){
   var row = document.createElement("div");
   row.className = "noam-row " + role;
+  if (message && message.confirmed){ row.dataset.ramziConfirmed = "1"; }
   var bubble = document.createElement("div");
   bubble.className = "noam-bubble";
   if (kind && role === "user"){
@@ -5162,7 +5311,7 @@ function renderNoamChat(){
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
       '<button type="button" class="noam-link-button" id="noamLocate">הצג בדף</button>' +
     '</div>' +
-    '<div class="noam-transcript" id="noamTranscript" role="region" aria-label="השיחה עם נועם AI" tabindex="-1"></div>' +
+    '<div class="noam-transcript" id="noamTranscript" role="log" aria-label="השיחה עם רמזי" tabindex="-1"></div>' +
     '<div class="noam-compose">' +
       '<div class="noam-input-shell">' +
         '<div class="noam-input-actions" role="group" aria-label="עזרה מהירה">' +
@@ -5187,7 +5336,7 @@ function renderNoamChat(){
         '</div>' +
         '<div class="noam-attach-list" id="noamAttachList"></div>' +
         '<div class="noam-attach-note" id="noamAttachNote" role="status" aria-live="polite" hidden></div>' +
-        '<label class="noam-sr-only" for="noamQuestion">יש לי שאלה</label>' +
+        '<label class="noam-sr-only" for="noamQuestion">הודעה לרמזי</label>' +
         '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp">'+esc(noamDrafts[selectedExercise.id]||"")+'</textarea>' +
       '</div>' +
       '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
@@ -5241,7 +5390,7 @@ function renderNoamChat(){
   if (!thread.messages.length&&!busy){ transcript.classList.add("is-empty"); }
   if (busy){
     var thinkingText=pendingExerciseId===selectedExercise.id
-      ? "נועם AI חושב…"
+      ? "רמזי חושב…"
       : "נועם AI עדיין חושב על הסעיף הקודם…";
     var thinking=addTranscriptBubble(transcript,"assistant",thinkingText,"");
     var thinkingBubble=thinking.querySelector(".noam-bubble");
@@ -7257,7 +7406,7 @@ function askNoam(helpKind,studentMessage){
       var answer=String(result.answer||"").trim();
       var visual=noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintIndex,requestAnalysis);
       answer=noamVisualAnswer(studentMessage,answer,visual);
-      thread.messages.push({role:"assistant",text:answer,kind:"",visual:visual});
+      thread.messages.push({role:"assistant",text:answer,kind:"",visual:visual,confirmed:result.correct===true||result.confirmed===true||result.studentCorrect===true});
       thread.history.push({role:"user",content:historyQuestion},{role:"assistant",content:answer});
       thread.history=thread.history.slice(-8);
       thread.messages=thread.messages.slice(-60);
@@ -7444,6 +7593,7 @@ function esc(s){
 
 <script src="noam-learning-core.js?v=20260908-1" defer></script>
 <script src="noam-learning-boot.js?v=20260908-1" defer></script>
+<script src="ramzi/ramzi-avatar.js"></script>
 <script id="exact-viewer-adapter">
 /* Presentation adapter only. The preceding released scripts retain ownership
    of question selection, answers, PDF rendering, storage, and request timing. */
@@ -7474,38 +7624,23 @@ function esc(s){
   var actualChoices=new Map(),hasFullPicker=false,choiceSignature='';
   var choices=document.createElement('div');choices.className='exact-question-strip';choices.hidden=true;
   panel.querySelector('.panel-head').after(choices);
-  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var motionEventOff=false;
   function setAttr(el,name,value){if(el.getAttribute(name)!==String(value)){el.setAttribute(name,String(value));}}
   function text(el,value){if(el&&el.textContent!==value){el.textContent=value;}}
+
   function motionMode(){
-    if(document.hidden||reduced.matches||html.classList.contains('nd-motion-off')||html.classList.contains('noam-a11y-motion')){return 'off';}
-    var mode=html.getAttribute('data-nd-motion')||html.getAttribute('data-motion')||'full';
-    return mode==='relaxed'||mode==='רגוע'?'relaxed':mode==='off'||mode==='כבוי'?'off':'full';
+    var stored=false;
+    try{
+      var direct=localStorage.getItem('noam-a11y-motion');
+      if(direct==='off'||direct==='0'||direct==='false'){stored=true;}
+      var saved=JSON.parse(localStorage.getItem('noam-accessibility-v1')||'{}');
+      if(saved&&(saved.motion===true||saved.stopAnim===true)){stored=true;}
+    }catch(error){/* The class and media triggers still apply. */}
+    if(reduced.matches||motionEventOff||stored||html.classList.contains('nd-motion-off')||html.classList.contains('noam-a11y-motion')){return 'off';}
+    return 'full';
   }
-  var motion=document.createElement('button');
-  motion.type='button';motion.className='exact-motion';
-  header.appendChild(motion);
-  function syncMotionButton(){
-    var off=motionMode()==='off', label=off?'הפעלת אנימציות':'עצירת אנימציות';
-    setAttr(motion,'aria-label',label);setAttr(motion,'title',label);setAttr(motion,'aria-pressed',off);
-    if(motion.dataset.off!==String(off)){
-      motion.dataset.off=String(off);
-      motion.innerHTML='<svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">'+
-        (off?'<path d="M7 4.5 L15.5 10 L7 15.5 Z" fill="currentColor"></path>':'<path d="M7 5 V15 M13 5 V15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"></path>')+
-        '</svg><span>'+label+'</span>';
-    }
-  }
-  motion.addEventListener('click',function(){
-    var accessibility=document.getElementById('noam-accessibility');
-    var existing=accessibility&&accessibility.shadowRoot&&accessibility.shadowRoot.querySelector('[data-pref="motion"]');
-    if(existing){
-      if(html.classList.contains('nd-motion-off')&&!html.classList.contains('noam-a11y-motion')){html.classList.remove('nd-motion-off');}
-      else{existing.click();}
-    }else{html.classList.toggle('nd-motion-off');}
-    window.dispatchEvent(new CustomEvent('nd:motion-off',{detail:{off:motionMode()==='off'}}));
-    schedule();
-  });
 
   function pickPage(){if(!panel.classList.contains('hidden')){close.click();}sync();pageTab.focus({preventScroll:true});}
   function pickHelp(){if(panel.classList.contains('hidden')&&!helpTab.disabled){fab.click();}sync();helpTab.focus({preventScroll:true});}
@@ -7519,8 +7654,6 @@ function esc(s){
   });
   function visibleControls(){return Array.from(panel.querySelectorAll('button:not([disabled]),textarea:not([disabled]),a[href]')).filter(function(el){return el.getClientRects().length>0;});}
   panel.addEventListener('keydown',function(event){
-    // The released script owns the <=900px trap. Extend it only to the
-    // reference's additional narrow widths / short desktop windows.
     if(!narrow||!open||window.matchMedia('(max-width:900px)').matches||event.key!=='Tab'){return;}
     var controls=visibleControls(),first=controls[0],last=controls[controls.length-1];
     if(event.shiftKey&&document.activeElement===first){event.preventDefault();if(last){last.focus();}}
@@ -7543,8 +7676,6 @@ function esc(s){
         if(parts){actualChoices.set(button.dataset.exerciseId,{id:button.dataset.exerciseId,q:parts[1],part:parts[2]||'',label:label,button:button});}
       });
     }
-    // Only a complete, already-rendered real picker is a source of choices.
-    // Never infer a manifest from lazy PDF pins or make up missing questions.
     var hideChoices=!hasFullPicker||!actualChoices.size;
     if(choices.hidden!==hideChoices){choices.hidden=hideChoices;}
     if(choices.hidden){return;}
@@ -7556,24 +7687,96 @@ function esc(s){
     var focus=choices.contains(document.activeElement)&&document.activeElement.dataset.exactChoice;
     choices.replaceChildren();
     var label=document.createElement('span');label.textContent='שאלה';choices.appendChild(label);
-    var questions=document.createElement('div');questions.setAttribute('role','group');questions.setAttribute('aria-label','בחירת שאלה');choices.appendChild(questions);
+    var scroll=document.createElement('div');scroll.className='exact-q-scroll';
+    var track=document.createElement('div');
+    track.className='exact-q-track';track.setAttribute('role','group');track.setAttribute('aria-label','בחירת שאלה');
+    function arrow(which,glyph,aria){
+      var button=document.createElement('button');button.type='button';button.className='exact-q-arrow exact-q-'+which;
+      button.dir='ltr';button.textContent=glyph;button.setAttribute('aria-label',aria);button.tabIndex=-1;
+      return button;
+    }
+    var prev=arrow('prev','›','שאלות קודמות');
+    var next=arrow('next','‹','שאלות נוספות');
+    scroll.append(prev,track,next);choices.appendChild(scroll);
     var byQuestion=new Map();actualChoices.forEach(function(choice){if(!byQuestion.has(choice.q)){byQuestion.set(choice.q,[]);}byQuestion.get(choice.q).push(choice);});
     function chip(choice,caption,selected,key){
       var button=document.createElement('button');button.type='button';button.textContent=caption;
       button.dataset.exactChoice=key;button.setAttribute('aria-pressed',String(selected));button.setAttribute('aria-label',choice.label);
       button.addEventListener('click',function(){
-        // Call the original live picker node's handler, retaining all guards.
         var current=actualChoices.get(choice.id);if(current){current.button.click();}
       });return button;
     }
-    byQuestion.forEach(function(items,number){questions.appendChild(chip(items[0],number,number===q,'q:'+number));});
+    byQuestion.forEach(function(items,number){track.appendChild(chip(items[0],number,number===q,'q:'+number));});
     var parts=byQuestion.get(q)||[];
     if(parts.length>1){
       var partLabel=document.createElement('span');partLabel.className='exact-part-label';partLabel.textContent='סעיף';choices.appendChild(partLabel);
-      var sections=document.createElement('div');sections.setAttribute('role','group');sections.setAttribute('aria-label','בחירת סעיף');choices.appendChild(sections);
+      var sections=document.createElement('div');sections.className='exact-parts';sections.setAttribute('role','group');sections.setAttribute('aria-label','בחירת סעיף');choices.appendChild(sections);
       parts.forEach(function(choice){sections.appendChild(chip(choice,choice.part||choice.q,choice.part===part,'p:'+choice.id));});
     }
+    function step(towardEnd){
+      var probe=track.querySelector('button');if(!probe){return;}
+      var before=probe.getBoundingClientRect().left;
+      track.scrollBy({left:1});
+      var moved=probe.getBoundingClientRect().left-before;
+      track.scrollBy({left:-1});
+      var sign=moved<0?1:-1;
+      var amount=Math.max(72,Math.round(track.clientWidth*0.72));
+      track.scrollBy({left:(towardEnd?sign:-sign)*amount,behavior:'smooth'});
+    }
+    prev.addEventListener('click',function(){step(false);});
+    next.addEventListener('click',function(){step(true);});
+    track.addEventListener('scroll',function(){updateQuestionScroller();},{passive:true});
+    track.addEventListener('scrollend',function(){updateQuestionScroller();});
     if(focus){var target=Array.from(choices.querySelectorAll('button')).find(function(button){return button.dataset.exactChoice===focus;});if(target){target.focus({preventScroll:true});}}
+    function centerActiveChip(attempt){
+      requestAnimationFrame(function(){
+        if(!track.isConnected){return;}
+        var current=track.querySelector('[aria-pressed="true"]');
+        if(!current||track.clientWidth<8){
+          if(attempt<8){centerActiveChip(attempt+1);}
+          else{updateQuestionScroller();}
+          return;
+        }
+        var box=track.getBoundingClientRect(),r=current.getBoundingClientRect();
+        var delta=((r.left+r.right)/2)-((box.left+box.right)/2);
+        if(Math.abs(delta)>1){
+          var saved=track.style.scrollBehavior;
+          track.style.scrollBehavior='auto';
+          var before=current.getBoundingClientRect().left;
+          track.scrollBy({left:1});
+          var plus=current.getBoundingClientRect().left-before;
+          if(plus){track.scrollBy({left:-1});}
+          else{
+            track.scrollBy({left:-1});
+            var neg=current.getBoundingClientRect().left-before;
+            if(neg){track.scrollBy({left:1});plus=-neg;}
+          }
+          track.style.scrollBehavior=saved;
+          if(plus){
+            track.scrollBy({left:-delta/plus,behavior:motionMode()==='off'?'auto':'smooth'});
+          }
+        }
+        updateQuestionScroller();
+      });
+    }
+    centerActiveChip(0);
+  }
+  function updateQuestionScroller(){
+    var track=choices.querySelector('.exact-q-track');
+    var prev=choices.querySelector('.exact-q-prev');
+    var next=choices.querySelector('.exact-q-next');
+    if(!track||!prev||!next){return;}
+    var chips=track.querySelectorAll('button');
+    if(!chips.length){return;}
+    var box=track.getBoundingClientRect();
+    var first=chips[0].getBoundingClientRect();
+    var last=chips[chips.length-1].getBoundingClientRect();
+    var startHidden=first.right>box.right+2;
+    var endHidden=last.left<box.left-2;
+    if(prev.disabled===startHidden){prev.disabled=!startHidden;}
+    if(next.disabled===endHidden){next.disabled=!endHidden;}
+    track.classList.toggle('can-start',startHidden);
+    track.classList.toggle('can-end',endHidden);
   }
   function adaptComposer(){
     var compose=panelBody.querySelector('.noam-compose'),hint=document.getElementById('noamHint');
@@ -7600,73 +7803,248 @@ function esc(s){
     if(count!==null&&ladder){
       setAttr(ladder,'aria-label','נפתחו '+count+' מתוך 3 רמזים');
       Array.from(ladder.querySelectorAll('i')).forEach(function(dot,index){setAttr(dot,'data-open',index<count);});
-      // Cosmetic label only, derived from the released button's existing state.
       text(hint,count<3?'רמז '+(count+1)+' מתוך 3':'שלושת הרמזים נפתחו');
     }
+    var badge=helpTab.querySelector('.exact-hint-badge');
+    if(count&&count>0){
+      if(!badge){badge=document.createElement('span');badge.className='exact-hint-badge';helpTab.appendChild(badge);}
+      text(badge,'רמז '+Math.min(count,3));
+    }else if(badge){badge.remove();}
   }
 
-  function stopAvatar(avatar){clearTimeout(avatar.timer);avatar.animations.forEach(function(a){a.cancel();});avatar.animations=[];}
-  function animateAvatar(avatar,mood,mode){
-    stopAvatar(avatar);
-    avatar.timer=setTimeout(function(){
-      var r=avatar.host,full=mode==='full';
-      if(!r.isConnected||mode==='off'||!r.animate){return;}
-      function q(s){return Array.from(r.querySelectorAll(s));}
-      function A(el,kf,options){
-        if(!el.isConnected){return;}
-        try{el.style.transformBox='fill-box';el.style.transformOrigin=options.origin||'center';avatar.animations.push(el.animate(kf,options));}catch(error){/* Static supplied artwork remains usable. */}
-      }
-      // Timings and keyframes copied directly from Avatar.dc.html.
-      q('[data-eyes]').forEach(function(e){A(e,[{transform:'scaleY(1)'},{transform:'scaleY(1)',offset:.92},{transform:'scaleY(.1)',offset:.96},{transform:'scaleY(1)'}],{duration:full?4200:7400,iterations:Infinity,delay:Math.random()*1500});});
-      if(full){q('[data-bob]').forEach(function(e){A(e,[{transform:'translateY(0)'},{transform:'translateY(-1.6px)'}],{duration:1500,iterations:Infinity,direction:'alternate',easing:'ease-in-out'});});}
-      if(full&&mood==='thinking'){q('[data-hat]').forEach(function(e){A(e,[{transform:'rotate(0)'},{transform:'rotate(-5deg)'}],{duration:900,iterations:Infinity,direction:'alternate',easing:'ease-in-out',origin:'center bottom'});});}
-      if(full&&mood==='success'){q('[data-hat]').forEach(function(e){A(e,[{transform:'translateY(0)'},{transform:'translateY(-5px) rotate(8deg)',offset:.4},{transform:'translateY(0)'}],{duration:650,iterations:2,origin:'center bottom'});});}
-      q('[data-dot]').forEach(function(e,i){A(e,[{opacity:.2},{opacity:1},{opacity:.2}],{duration:full?1100:2400,iterations:Infinity,delay:i*(full?180:380)});});
-      q('[data-ray]').forEach(function(e,i){A(e,full?[{opacity:.25},{opacity:1}]:[{opacity:.65},{opacity:1}],{duration:full?700:1800,iterations:Infinity,direction:'alternate',delay:i*90});});
-      q('[data-spark]').forEach(function(e,i){A(e,full?[{transform:'scale(0) rotate(0)',opacity:0},{transform:'scale(1.25) rotate(45deg)',opacity:1,offset:.55},{transform:'scale(1) rotate(90deg)',opacity:1}]:[{opacity:0},{opacity:1}],{duration:full?700:400,delay:i*150,fill:'backwards'});});
-      if(full){q('[data-shake="1"]').forEach(function(e){A(e,[{transform:'translateX(0)'},{transform:'translateX(-2px)'},{transform:'translateX(2px)'},{transform:'translateX(0)'}],{duration:340,iterations:2});});}
-    },30);
+  function makeAvatar(size,mood){
+    var el=document.createElement('ramzi-avatar');
+    el.setAttribute('asset-base','design-exact/assets/avatar');
+    el.setAttribute('aria-hidden','true');
+    el.setAttribute('size',String(size));
+    el.setAttribute('mood',mood||'idle');
+    return el;
   }
-  function avatarSvg(mood){
-    if(!avatarCache.has(mood)){
-      avatarCache.set(mood,fetch('design-exact/assets/avatar/ramzi-A-'+mood+'.svg').then(function(response){
-        if(!response.ok){throw new Error('Avatar unavailable');}return response.text();
-      }).then(function(source){
-        var svg=new DOMParser().parseFromString(source,'image/svg+xml').documentElement;
-        if(svg.localName!=='svg'||svg.querySelector('script,foreignObject')){throw new Error('Invalid avatar');}
-        return svg;
-      }));
-    }
-    return avatarCache.get(mood);
-  }
-  Array.from(document.querySelectorAll('img.exact-ramzi-avatar,.fab img')).forEach(function(img){
-    var host=document.createElement('span');host.className=img.className||'exact-fab-avatar';host.setAttribute('aria-hidden','true');
-    img.replaceWith(host);host.appendChild(img);
-    avatars.push({host:host,animations:[],mood:null,mode:null,timer:0,version:0});
-  });
-  function updateAvatar(avatar,mood,mode){
-    if(avatar.mood===mood&&avatar.mode===mode){return;}
-    avatar.mode=mode;
-    if(avatar.mood===mood){animateAvatar(avatar,mood,mode);return;}
-    avatar.mood=mood;var version=++avatar.version;stopAvatar(avatar);
-    avatarSvg(mood).then(function(svg){
-      if(version!==avatar.version||!avatar.host.isConnected){return;}
-      var clone=document.importNode(svg,true);clone.setAttribute('aria-hidden','true');clone.removeAttribute('aria-label');
-      clone.style.cssText='display:block;width:100%;height:100%;overflow:visible';
-      avatar.host.replaceChildren(clone);animateAvatar(avatar,mood,avatar.mode);
-    }).catch(function(){/* Keep the exact static idle fallback if an asset cannot load. */});
+  function mountAvatar(img,size){
+    if(!img||img.dataset.ramziMounted==='1'){return img&&img.parentNode&&img.parentNode.querySelector('ramzi-avatar');}
+    var host=document.createElement('span');
+    host.className=img.classList.contains('exact-ramzi-avatar')?'exact-ramzi-avatar':'exact-fab-avatar';
+    host.setAttribute('aria-hidden','true');
+    host.style.flex='none';
+    img.dataset.ramziMounted='1';
+    img.replaceWith(host);
+    host.appendChild(makeAvatar(size,'idle'));
+    return host.querySelector('ramzi-avatar');
   }
   function currentMood(){
-    if(panelBody.querySelector('.noam-bubble.thinking')){return 'thinking';}
+    var thinking=!!panelBody.querySelector('.noam-bubble.thinking');
     var replies=panelBody.querySelectorAll('.noam-row.assistant'),last=replies[replies.length-1];
-    if(last&&last.querySelector('.noam-retry-action')){return 'error';}
+    var error=!!(last&&last.querySelector('.noam-retry-action')&&!last.classList.contains('is-dismissed'));
     var questions=panelBody.querySelectorAll('.noam-row.user'),question=questions[questions.length-1];
     var kind=question&&question.querySelector('.noam-kind');
-    if(last&&kind&&/^רמז\s+[123]/.test(kind.textContent)){return 'hint';}
-    // No success judgement is inferred from model text: the released runtime
-    // has no verified success flag, so the neutral pose remains authoritative.
+    var hint=!!(last&&!error&&kind&&/^רמז\s+[123]/.test(kind.textContent||''));
+    var confirmed=!!(last&&last.dataset.ramziConfirmed==='1'&&!error);
+    var input={thinking:thinking,error:error,hintDelivered:hint,confirmed:confirmed};
+    if(window.RamziAvatar&&typeof window.RamziAvatar.consoleMood==='function'){return window.RamziAvatar.consoleMood(input);}
+    if(thinking){return 'thinking';}
+    if(error){return 'error';}
+    if(confirmed){return 'success';}
+    if(hint){return 'hint';}
     return 'idle';
   }
+  function decorateConversation(){
+    var transcript=document.getElementById('noamTranscript');
+    if(!transcript){return;}
+    transcript.querySelectorAll('.noam-bubble.thinking').forEach(function(bubble){
+      if(!bubble.querySelector('ramzi-avatar')){bubble.prepend(makeAvatar(32,'thinking'));}
+      var content=bubble.querySelector('span:not(.noam-sr-only):not(.noam-thinking-dots)');
+      if(content&&content.textContent==='נועם AI חושב…'){content.textContent='רמזי חושב…';}
+    });
+    var rows=Array.from(transcript.querySelectorAll('.noam-row'));
+    rows.forEach(function(row,index){
+      if(!row.classList.contains('user')){return;}
+      var kindEl=row.querySelector('.noam-kind');
+      var label=kindEl?kindEl.textContent.trim():'';
+      var next=rows[index+1];
+      if(!next||!next.classList.contains('assistant')||next.querySelector('.noam-bubble.thinking')){return;}
+      var hintMatch=label.match(/^רמז\s+([123])$/);
+      if(hintMatch&&!next.querySelector('.noam-retry-action')&&!next.querySelector('.exact-hint-head')){
+        next.classList.add('exact-hint');
+        var head=document.createElement('div');
+        head.className='exact-hint-head';
+        head.textContent='רמז '+hintMatch[1]+' מתוך 3';
+        var bubble=next.querySelector('.noam-bubble');
+        if(bubble){bubble.prepend(head);}
+      }
+      if(label==='הסבר כללי'&&!next.classList.contains('exact-overview')){next.classList.add('exact-overview');}
+      if(next.dataset.ramziConfirmed==='1'&&!next.classList.contains('exact-success')){next.classList.add('exact-success');}
+    });
+    transcript.querySelectorAll('.noam-row.assistant').forEach(function(row){
+      var retry=row.querySelector('.noam-retry-action');
+      if(!retry){return;}
+      if(!row.classList.contains('exact-error')){row.classList.add('exact-error');}
+      if(row.getAttribute('role')!=='alert'){row.setAttribute('role','alert');}
+      var bubble=row.querySelector('.noam-bubble');
+      if(bubble&&!bubble.querySelector('.exact-error-title')){
+        var title=document.createElement('strong');
+        title.className='exact-error-title';
+        title.textContent='לא הצלחתי לקבל תשובה';
+        bubble.prepend(title);
+      }
+      if(!row.querySelector('.exact-error-dismiss')){
+        var dismiss=document.createElement('button');
+        dismiss.type='button';
+        dismiss.className='exact-error-dismiss';
+        dismiss.textContent='לא עכשיו';
+        dismiss.addEventListener('click',function(){row.classList.add('is-dismissed');schedule();});
+        retry.after(dismiss);
+      }
+    });
+    isolateMath(transcript);
+    var empty=transcript.classList.contains('is-empty')&&!transcript.querySelector('.noam-bubble');
+    var box=transcript.querySelector('.exact-empty');
+    if(!empty){if(box){box.remove();}return;}
+    if(box){return;}
+    var picked=panelBody.querySelector('.noam-picked-label');
+    var name=picked?picked.textContent.trim():'';
+    box=document.createElement('div');
+    box.className='exact-empty';
+    var title=document.createElement('p');
+    title.className='exact-empty-title';
+    title.textContent='על מה נעבוד ב'+(name||'שאלה')+'?';
+    var button=document.createElement('button');
+    button.type='button';
+    button.className='exact-empty-hint';
+    button.textContent='אפשר רמז ראשון?';
+    button.addEventListener('click',function(){
+      var hint=document.getElementById('noamHint');
+      if(hint&&!hint.disabled){hint.click();}
+    });
+    box.append(makeAvatar(80,'idle'),title,button);
+    transcript.appendChild(box);
+  }
+  function isolateMath(root){
+    if(!root||root.dataset.mathIsolated==='1'){return;}
+    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    var nodes=[];
+    while(walker.nextNode()){
+      var node=walker.currentNode;
+      var parent=node.parentElement;
+      if(!parent||!/[0-9]/.test(node.nodeValue||'')){continue;}
+      if(parent.closest('button,a,svg,.noam-sr-only,.exact-hint-head,.exact-error-title,.exact-frac')){continue;}
+      nodes.push(node);
+    }
+    var mathRe=/([0-9]+\/[0-9]+|(?:[0-9]+(?:\.[0-9]+)?)(?:\s*[+\-−×÷=<>≤≥()]+\s*(?:[0-9]+(?:\.[0-9]+)?))+)/g;
+    nodes.forEach(function(node){
+      var text=node.nodeValue||'';
+      mathRe.lastIndex=0;
+      if(!mathRe.test(text)){return;}
+      mathRe.lastIndex=0;
+      var frag=document.createDocumentFragment();
+      var last=0,match;
+      while((match=mathRe.exec(text))){
+        if(match.index>last){frag.appendChild(document.createTextNode(text.slice(last,match.index)));}
+        var span=document.createElement('span');
+        span.dir='ltr';
+        span.style.unicodeBidi='isolate';
+        span.style.whiteSpace='nowrap';
+        var frac=/^([0-9]+)\/([0-9]+)$/.exec(match[1]);
+        if(frac){
+          span.className='exact-frac';
+          span.appendChild(document.createTextNode(frac[1]));
+          var bar=document.createElement('span');
+          bar.className='exact-frac-bar';
+          bar.setAttribute('aria-hidden','true');
+          span.appendChild(bar);
+          span.appendChild(document.createTextNode(frac[2]));
+        }else{
+          span.textContent=match[1].replace(/-/g,'−');
+        }
+        frag.appendChild(span);
+        last=match.index+match[1].length;
+      }
+      if(last<text.length){frag.appendChild(document.createTextNode(text.slice(last)));}
+      node.parentNode.replaceChild(frag,node);
+    });
+    root.dataset.mathIsolated='1';
+  }
+  function decoratePins(){
+    document.querySelectorAll('.noam-exercise-pin').forEach(function(button){
+      var avatar=button.querySelector('ramzi-avatar');
+      if(avatar){avatar.remove();}
+      var label=button.querySelector('.exact-pin-label');
+      if(label){label.remove();}
+      if(button.dataset.exactQuiet!=='1'){
+        button.dataset.exactQuiet='1';
+        button.textContent='';
+      }
+    });
+    layoutQuietPins();
+  }
+  function layoutQuietPins(){
+    function reportPin(page,pin){
+      var id=pin.dataset.exerciseId;
+      if(!id){return null;}
+      var reports=page.querySelectorAll('.noam-report-pin');
+      for(var i=0;i<reports.length;i++){
+        if(reports[i].dataset.exerciseId===id){return reports[i];}
+      }
+      return null;
+    }
+    function snapPinColumns(page,pins){
+      var pageW=page.clientWidth;
+      if(!pageW){return;}
+      var inside=pins.filter(function(pin){return pin.offsetWidth>=20&&pin.offsetLeft>8&&pin.offsetLeft<=pageW;});
+      if(!inside.length){return;}
+      var sorted=inside.slice().sort(function(a,b){return a.offsetLeft-b.offsetLeft;});
+      var columns=[];
+      sorted.forEach(function(pin){
+        var col=columns[columns.length-1];
+        if(col&&pin.offsetLeft-col[0].offsetLeft<=18){col.push(pin);}
+        else{columns.push([pin]);}
+      });
+      columns.forEach(function(col){
+        var pairs=col.map(function(pin){
+          var report=reportPin(page,pin);
+          return {pin:pin,report:report,gap:report?report.offsetLeft-pin.offsetLeft:0};
+        });
+        var lefts=pairs.map(function(pair){return pair.pin.offsetLeft;}).sort(function(a,b){return a-b;});
+        var anchor=lefts[Math.floor((lefts.length-1)/2)];
+        var maxRight=anchor;
+        pairs.forEach(function(pair){
+          var reach=pair.report?anchor+pair.gap+pair.report.offsetWidth/2:anchor+pair.pin.offsetWidth/2;
+          if(reach>maxRight){maxRight=reach;}
+        });
+        if(maxRight>pageW){anchor-=maxRight-pageW;}
+        anchor=Math.floor(anchor);
+        pairs.forEach(function(pair){
+          var next=anchor+'px';
+          if(pair.pin.style.left!==next){pair.pin.style.left=next;}
+          if(pair.report){
+            var reportLeft=Math.round(anchor+pair.gap)+'px';
+            if(pair.report.style.left!==reportLeft){pair.report.style.left=reportLeft;}
+          }
+        });
+      });
+    }
+    document.querySelectorAll('.pdf-page').forEach(function(page){
+      var pins=Array.from(page.querySelectorAll('.noam-exercise-pin'));
+      if(!pins.length){return;}
+      pins.forEach(function(pin){
+        if(!pin.dataset.exactAnchorTop){
+          pin.dataset.exactAnchorTop=String(Math.round(pin.offsetTop));
+        }
+      });
+      var ordered=pins.slice().sort(function(a,b){
+        return Number(a.dataset.exactAnchorTop)-Number(b.dataset.exactAnchorTop);
+      });
+      var gap=28,last=-gap;
+      ordered.forEach(function(pin){
+        var top=Math.max(Number(pin.dataset.exactAnchorTop)||0,last+gap);
+        last=top;
+        if(pin.style.top!==top+'px'){pin.style.top=top+'px';}
+        var report=reportPin(page,pin);
+        if(report&&report.style.top!==pin.style.top){report.style.top=pin.style.top;}
+      });
+      snapPinColumns(page,pins);
+    });
+  }
+
   function sync(){
     scheduled=false;
     narrow=window.innerWidth<1000||window.innerHeight<640;
@@ -7676,52 +8054,77 @@ function esc(s){
     if(helpTab.disabled!==helpDisabled){helpTab.disabled=helpDisabled;}
     setAttr(pageTab,'aria-selected',!open);setAttr(helpTab,'aria-selected',open);
     pageTab.tabIndex=open?-1:0;helpTab.tabIndex=open?0:-1;
+    var actions=document.querySelector('.header-actions');
+    if(actions&&fab.parentNode!==actions){actions.prepend(fab);}
     if(narrow&&open){
       if(header.parentNode!==panelIn){panelIn.prepend(header,tabs);}
       bar.inert=true;paper.inert=true;
-      setAttr(panel,'role','dialog');setAttr(panel,'aria-modal','true');
-      setAttr(panel,'aria-label','רמזי — עזרה בדף העבודה');
+      setAttr(panel,'aria-label','רמזי, עזרה בדף העבודה');
       ['.nl-viewer-progress','#noam-accessibility'].forEach(function(selector){var el=document.querySelector(selector);if(el){el.inert=true;}});
     }else{
       if(header.parentNode!==body){homeAnchor.after(header,tabs);}
       bar.inert=false;paper.inert=false;
-      if(!narrow){panel.removeAttribute('role');panel.removeAttribute('aria-modal');panel.removeAttribute('aria-label');}
+      setAttr(panel,'aria-label','רמזי, עזרה בדף העבודה');
+      if(!narrow){panel.removeAttribute('role');panel.removeAttribute('aria-modal');}
       ['.nl-viewer-progress','#noam-accessibility'].forEach(function(selector){var el=document.querySelector(selector);if(el){el.inert=false;}});
       if(narrow&&previousOpen&&(document.activeElement===body||panel.contains(document.activeElement))){pageTab.focus({preventScroll:true});}
     }
     previousOpen=open;
-    adaptQuestionChoices();adaptComposer();
-    var mood=currentMood(),mode=motionMode();
-    text(status,mood==='thinking'?'רמזי חושב…':'רמזים והסברים במתמטיקה');
-    if(mood!==previousMood||mode!==previousMotion){
-      previousMood=mood;previousMotion=mode;
-      avatars.forEach(function(avatar,index){updateAvatar(avatar,index===0?mood:'idle',mode);});
+    adaptQuestionChoices();adaptComposer();decorateConversation();decoratePins();
+    updateQuestionScroller();
+    var preview=document.getElementById('noamPickedPreview');
+    if(preview){
+      var expanded=panelBody.classList.contains('is-previewing');
+      if(expanded){
+        if(preview.querySelector('img')&&preview.hidden){preview.hidden=false;}
+      }else if(!preview.hidden){
+        preview.hidden=true;
+      }
     }
-    syncMotionButton();
+    var locate=document.getElementById('noamLocate');
+    if(locate){text(locate,narrow?'לראות בדף':'בדף');}
+    var label=document.querySelector('label[for="noamQuestion"]');
+    if(label){text(label,'הודעה לרמזי');}
+    var mood=currentMood(),mode=motionMode();
+    text(status,mood==='thinking'?'רמזי חושב…':mood==='error'?'לא הצלחתי לקבל תשובה':mood==='hint'?'יש רמז חדש':mood==='success'?'התשובה נכונה':'רמזים והסברים במתמטיקה');
+    document.querySelectorAll('.exact-ramzi-avatar ramzi-avatar, .panel-head ramzi-avatar').forEach(function(avatar){
+      if(avatar.getAttribute('mood')!==mood){avatar.setAttribute('mood',mood);}
+      var headerSize=narrow?36:44;
+      if(avatar.closest('.panel-head')&&avatar.getAttribute('size')!==String(headerSize)){avatar.setAttribute('size',String(headerSize));}
+    });
+    if(mood!==previousMood||mode!==previousMotion){previousMood=mood;previousMotion=mode;}
     if(!narrow&&!initialWideOpened&&helpReadyObserved&&!helpTab.disabled){initialWideOpened=true;if(!open){fab.click();}}
   }
   function schedule(){if(!scheduled){scheduled=true;queueMicrotask(sync);}}
   function observeHelpAvailability(records){
-    // The released script exposes fab before its async manifest resolves. It
-    // removes "hidden" again only after accepting the manifest. This observer
-    // starts after that script, so the initial visible state is not readiness.
-    // Keep the original runtime as the sole owner of loading and selection.
     if(records.some(function(record){return record.target===fab&&record.attributeName==='class';})&&!fab.classList.contains('hidden')){
       helpReadyObserved=true;
     }
     schedule();
   }
-  // A manual open consumes the one automatic opening, including on mobile.
   fab.addEventListener('click',function(){initialWideOpened=true;});
   var observer=new MutationObserver(observeHelpAvailability);
   observer.observe(panel,{childList:true,subtree:true,attributes:true,attributeFilter:['class','disabled','hidden']});
   observer.observe(fab,{attributes:true,attributeFilter:['class']});
+  if(typeof pdfPages!=='undefined'&&pdfPages){
+    var pinTimer=0;
+    new MutationObserver(function(){
+      clearTimeout(pinTimer);
+      pinTimer=setTimeout(decoratePins,80);
+    }).observe(pdfPages,{childList:true,subtree:true});
+  }
   new MutationObserver(schedule).observe(html,{attributes:true,attributeFilter:['class','data-nd-motion','data-motion']});
   window.addEventListener('resize',schedule);panel.addEventListener('focusin',schedule);panel.addEventListener('focusout',schedule);
-  document.addEventListener('visibilitychange',schedule);window.addEventListener('nd:motion-off',schedule);
+  document.addEventListener('visibilitychange',schedule);window.addEventListener('storage',schedule);
+  window.addEventListener('nd:motion-off',function(event){
+    var off=event&&event.detail&&typeof event.detail.off==='boolean'?event.detail.off:true;
+    motionEventOff=off;schedule();
+  });
   if(reduced.addEventListener){reduced.addEventListener('change',schedule);}else{reduced.addListener(schedule);}
-  window.addEventListener('pagehide',function(){avatars.forEach(stopAvatar);});
+  Array.from(document.querySelectorAll('img.exact-ramzi-avatar')).forEach(function(img){mountAvatar(img,44);});
+  var fabImg=fab.querySelector('img');if(fabImg){mountAvatar(fabImg,36);}
   sync();
+
 })();
 </script>
 </body>
