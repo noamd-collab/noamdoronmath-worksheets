@@ -15,6 +15,7 @@ import {
 import { localizeSiteHref } from '../lib/sitePages';
 import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import { nextGradeRelatedTopics } from '../lib/topicFamilies';
 import {
   educationalLevelForGrade,
   jsonLdTypes,
@@ -95,6 +96,7 @@ const topicCrumbs = [
   { name: gradeCrumbLabel, path: page.gradeHubHref },
   { name: page.h1, path: page.path },
 ];
+const nextGradeTopics = nextGradeRelatedTopics(page.slug, page.grade);
 const topicJsonLdExtras = jsonLdTypes(page.jsonLd).includes('LearningResource')
   ? []
   : [
@@ -340,7 +342,7 @@ function faqHeadingId(groupIndex: number) {
       contentImages.length > 0 && (
         <figure class="topic-page__figure">
           {contentImages.map((img) => (
-            <img src={img.src} alt={img.alt || page.h1} loading="lazy" />
+            <img src={img.src} alt={img.alt || page.h1} loading="lazy" decoding="async" />
           ))}
         </figure>
       )
@@ -408,6 +410,23 @@ function faqHeadingId(groupIndex: number) {
                   rel="noopener noreferrer"
                   data-topic-path={rel.path}
                 >
+                  {rel.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    {
+      nextGradeTopics.length > 0 && (
+        <nav class="topic-page__related topic-page__next-grade" aria-label="בכיתה הבאה">
+          <h2 class="topic-page__related-title">בכיתה הבאה</h2>
+          <ul>
+            {nextGradeTopics.map((rel) => (
+              <li>
+                <a href={resolveSiteHrefString(rel.productionHref || rel.path)} rel="noopener noreferrer">
                   {rel.label}
                 </a>
               </li>

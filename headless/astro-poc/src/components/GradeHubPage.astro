@@ -98,6 +98,11 @@ const gradePool = buildGradeLoopPool(grade);
   <script type="application/ld+json" set:html={JSON.stringify(gradeResourceLd)} />
   {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
   <main class="grade-hub wrap exact-grade" data-grade={String(grade)} id="grade-hub-main">
+    <nav class="grade-hub__crumbs" aria-label="מיקום">
+      <a href="/">בית</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">כיתה {gradeLabel}</span>
+    </nav>
     <nav class="grade-hub__siblings" aria-label="כיתות">
       {
         gradeTabs.map((s) => (
