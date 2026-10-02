@@ -60,7 +60,12 @@ export function renderRobotsTxt(indexable: boolean): string {
   const lines = indexable
     ? ['User-agent: *', 'Allow: /', 'Disallow: /dev-loops', 'Disallow: /hero-loops/']
     : ['User-agent: *', 'Disallow: /'];
-  lines.push('', `Sitemap: ${SITE_CANONICAL_ORIGIN}/sitemap.xml`, '');
+  lines.push(
+    '',
+    `Sitemap: ${SITE_CANONICAL_ORIGIN}/sitemap.xml`,
+    `# ${SITE_CANONICAL_ORIGIN}/llms.txt`,
+    '',
+  );
   return lines.join('\n');
 }
 

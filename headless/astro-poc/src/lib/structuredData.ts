@@ -104,6 +104,36 @@ export function jsonLdTypes(value: unknown): string[] {
   return types;
 }
 
+/**
+ * Walk a JSON-LD document. Nodes inside `@graph` inherit the parent `@context`.
+ */
+export function validateJsonLdDocument(value: unknown): string[] {
+  const errors: string[] = [];
+  const visit = (node: unknown, inheritedContext: boolean) => {
+    if (!node || typeof node !== 'object') return;
+    if (Array.isArray(node)) {
+      for (const child of node) visit(child, inheritedContext);
+      return;
+    }
+    const record = node as Record<string, unknown>;
+    const hasContext =
+      typeof record['@context'] === 'string' && String(record['@context']).includes('schema.org');
+    if (Array.isArray(record['@graph'])) {
+      if (!hasContext && !inheritedContext) errors.push('graph missing @context');
+      for (const child of record['@graph']) visit(child, hasContext || inheritedContext);
+      return;
+    }
+    if (typeof record['@type'] !== 'string' || !record['@type']) return;
+    const check =
+      hasContext || inheritedContext
+        ? { ...record, '@context': record['@context'] || 'https://schema.org' }
+        : record;
+    errors.push(...validateJsonLdNode(check));
+  };
+  visit(value, false);
+  return errors;
+}
+
 export function validateJsonLdNode(node: Record<string, unknown>): string[] {
   const errors: string[] = [];
   if (typeof node['@context'] !== 'string' || !String(node['@context']).includes('schema.org')) {
