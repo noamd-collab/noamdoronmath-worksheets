@@ -2078,15 +2078,15 @@ body.exact-viewer{
 .exact-viewer .pdf-page{box-shadow:0 3px 0 rgba(34,48,90,.08);outline:1.5px solid #c9cfdc;aspect-ratio:210 / 297}
 @media(min-width:901px){
   .pdf-page--reserve{display:none}
-  /* Reserve the 136px tools column before has-pdf-tools, so the PDF and
-     the loading overlay do not jump sideways when the tools appear. */
-  .exact-viewer .pdf-surface{grid-template-columns:var(--pdf-tools-width) minmax(0,1fr)}
-  .exact-viewer .pdf-surface .pdf-scroll,
-  .exact-viewer .pdf-surface .pdf-native{grid-column:2}
-  .exact-viewer .pdf-surface .pdf-status{inset-inline-start:var(--pdf-tools-width)}
+  /* Reserve the tools column only until they first open, so load does not
+     jump, and closing כלי PDF still lets the page widen. */
+  .exact-viewer .pdf-surface:not([data-tools-settled]){grid-template-columns:var(--pdf-tools-width) minmax(0,1fr)}
+  .exact-viewer .pdf-surface:not([data-tools-settled]) .pdf-scroll,
+  .exact-viewer .pdf-surface:not([data-tools-settled]) .pdf-native{grid-column:2}
+  .exact-viewer .pdf-surface:not([data-tools-settled]) .pdf-status{inset-inline-start:var(--pdf-tools-width)}
 }
 @media(max-width:900px){
-  .exact-viewer .pdf-page{min-height:calc((100vw - 128px) * 297 / 210)}
+  .exact-viewer .pdf-page--reserve{min-height:calc((100vw - 128px) * 297 / 210)}
 }
 .exact-viewer .pdf-status{background:#fbfaf5;font-weight:700}
 .exact-viewer .pdf-tools{border:2px solid #22305a;border-radius:12px 5px 13px 6px;box-shadow:none}
@@ -7617,6 +7617,12 @@ function esc(s){
   var fab=document.getElementById('fab'), close=document.getElementById('closePanel');
   var status=header&&panel.querySelector('.exact-ramzi-status');
   if(!panel||!panelIn||!panelBody||!paper||!header||!fab||!close){return;}
+  var pdfSurface=document.getElementById('pdfSurface');
+  if(pdfSurface&&window.MutationObserver){
+    var markTools=function(){if(pdfSurface.classList.contains('has-pdf-tools')){pdfSurface.dataset.toolsSettled='1';}};
+    markTools();
+    new MutationObserver(markTools).observe(pdfSurface,{attributes:true,attributeFilter:['class']});
+  }
 
   var homeAnchor=document.createComment('exact viewer header and tabs home');
   header.before(homeAnchor);

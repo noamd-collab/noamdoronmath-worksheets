@@ -131,7 +131,12 @@
  }
  function adoptClient(next){if(!next)return;client=next;engine=Core.create({catalog:catalog,storage:storage,client:client});engine.subscribe(update);wireAuth();update();}
  engine.subscribe(update);update();
- window.addEventListener('storage',function(e){if(e.key===Core.storageKey)engine.storageChanged();});
+ window.addEventListener('storage',function(e){
+  if(e.key===Core.storageKey)engine.storageChanged();
+  if(!client&&e.key&&e.key.indexOf('noam-learning-auth-v1')!==-1&&window.NoamEnsureSupabase){
+   window.NoamEnsureSupabase(function(){adoptClient(makeClient());});
+  }
+ });
  window.addEventListener('pageshow',function(e){if(e.persisted&&signInPending){signInPending=false;renderAuth();}});
  wireAuth();
 })();

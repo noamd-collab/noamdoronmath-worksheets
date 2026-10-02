@@ -32,7 +32,7 @@ const protectedFiles: Record<string, string> = {
   'public/noam-learning-config.js': '90228359e65a99300b7d5017ddc58edce650b0b1a403a13b40c22608330f4ca7',
   // Lazy Supabase: guest learning no longer downloads the SDK. Google sign-in
   // and an existing session still load it, then recreate the engine.
-  'public/noam-learning.js': 'ac602af5ee45b5190c62bae1df1e6a3eb9abfeea93ae4f65653574d117f786d8',
+  'public/noam-learning.js': '50866c6d2e8824b8dd89e5e8b00c2e55c0f1636d4a56dbed2e73928c7eef9a18',
   'public/noam-learning-boot.js': '8a4976b19a32a4e1820b4c8aa391004973988a3126337fe2b3355406220d8cd1',
   'public/noam-learning-auth-redirect.js': '8fcd0ee6ef88a5816bb220b5a23b63821b65d0b3574dbcbfdcda6fc73cc34147',
   'public/noam-learning-core.js': 'dcdf50b7448ca7e106ae6e433787018dab7ba9c55fe4d4118dfb71f85584f0b7',
