@@ -14,15 +14,19 @@ import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
 import {
   DEFAULT_SITE_DESCRIPTION,
   DEFAULT_SITE_TITLE,
+  buildSocialMeta,
   canonicalUrl,
   isPreviewHost,
   robotsContent,
+  type OgType,
 } from '../lib/siteSeo';
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  /** website for hubs and tools; article for blog posts. */
+  ogType?: OgType;
   /** Optional override; default is pathname-derived (M37). */
   activeNav?: ActiveNavKey | null;
   compactBrand?: boolean;
@@ -32,6 +36,7 @@ const {
   title = DEFAULT_SITE_TITLE,
   description = DEFAULT_SITE_DESCRIPTION,
   ogImage,
+  ogType = 'website',
   activeNav,
   compactBrand = false,
   skipHref = '#topic-list',
@@ -44,6 +49,13 @@ const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
 const robots = robotsContent(Astro.url.hostname);
 const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
 const showPreviewNote = isPreviewHost(Astro.url.hostname);
+const social = buildSocialMeta({
+  title,
+  description,
+  url: canonical,
+  image: ogImage,
+  type: ogType,
+});
 ---
 <!doctype html>
 <html lang="he" dir="rtl">
@@ -59,13 +71,16 @@ const showPreviewNote = isPreviewHost(Astro.url.hostname);
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content="he_IL" />
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    {/* Wix injects parallel [wix-seo-tag] title/canonical/og:title (often
-        "… | Noam Math Astro POC"). Keep our Hebrew tags; drop the duplicates. */}
+    {social.map((tag) =>
+      tag.property ? (
+        <meta property={tag.property} content={tag.content} />
+      ) : (
+        <meta name={tag.name} content={tag.content} />
+      )
+    )}
+    {/* Wix injects a second title, description, canonical, robots, og:* and
+        twitter:* (often the preview host and "… | Noam Math Astro POC").
+        Keep the tags above; drop the Wix copies. */}
     <script is:inline>
       (function () {
         function stripWixSeoDupes() {
@@ -81,9 +96,14 @@ const showPreviewNote = isPreviewHost(Astro.url.hostname);
               el.parentNode && el.parentNode.removeChild(el);
               continue;
             }
+            if (tag !== 'meta') continue;
+            var name = String(el.getAttribute('name') || '').toLowerCase();
+            var prop = String(el.getAttribute('property') || '').toLowerCase();
             if (
-              tag === 'meta' &&
-              String(el.getAttribute('property') || '').toLowerCase() === 'og:title'
+              name === 'description' ||
+              name === 'robots' ||
+              name.indexOf('twitter:') === 0 ||
+              prop.indexOf('og:') === 0
             ) {
               el.parentNode && el.parentNode.removeChild(el);
             }
