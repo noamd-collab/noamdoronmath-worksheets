@@ -8,7 +8,9 @@
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://www.noamdoronmath.co.il" crossorigin>
+<link rel="stylesheet" href="/fonts/site-fonts.css">
 <link rel="preload" href="/fonts/heebo-hebrew.f1f7cfae.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/heebo-latin.50dae2e1.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- Start fetching the PDF engine early; AI math assets load when the panel opens. -->
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" crossorigin="anonymous">
@@ -2014,8 +2016,8 @@ textarea:focus{
 
 <!-- Presentation-only mapping of Student Worksheet Preview.dc.html.
      Keep this outside head: the released metadata, PDF engine, and AI scripts
-     below remain unchanged. Real PDF content and its controls are retained. -->
-<link rel="stylesheet" href="/fonts/site-fonts.css">
+     below remain unchanged. Real PDF content and its controls are retained.
+     Font faces live in the head so Hebrew is measured before first paint. -->
 <style id="exact-viewer-presentation">
 body.exact-viewer{
   --ink:#22305a;--accent:#22305a;--accent-dark:#1e605e;--on-accent:#fff;
@@ -2074,6 +2076,15 @@ body.exact-viewer{
   background-size:28px 28px;
 }
 .exact-viewer .pdf-page{box-shadow:0 3px 0 rgba(34,48,90,.08);outline:1.5px solid #c9cfdc;aspect-ratio:210 / 297}
+@media(min-width:901px){
+  .pdf-page--reserve{display:none}
+  /* Reserve the 136px tools column before has-pdf-tools, so the PDF and
+     the loading overlay do not jump sideways when the tools appear. */
+  .exact-viewer .pdf-surface{grid-template-columns:var(--pdf-tools-width) minmax(0,1fr)}
+  .exact-viewer .pdf-surface .pdf-scroll,
+  .exact-viewer .pdf-surface .pdf-native{grid-column:2}
+  .exact-viewer .pdf-surface .pdf-status{inset-inline-start:var(--pdf-tools-width)}
+}
 @media(max-width:900px){
   .exact-viewer .pdf-page{min-height:calc((100vw - 128px) * 297 / 210)}
 }

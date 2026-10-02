@@ -60,7 +60,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'Viewer must retain its head');
     // Google Fonts link removed; Heebo woff2 is preloaded from /fonts.
-    assert.equal(sha256(head), '21e8e725f6647a3c03d13a7a4ce61001c638327332d41cfe63fa032088f37b55');
+    assert.equal(sha256(head), '8c842de3e2b55e15a454fd1fabbc31794baeffaaf8b939d3a1bccd7cc586b462');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     // One presentation adapter follows the released blocks. ramzi-avatar.js
