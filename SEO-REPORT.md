@@ -69,7 +69,7 @@
 8. שני דפי נושא חולקים מזהה קטלוג עם דף אחר: `adjacent-vertical-angles-grade-7` ו-`coordinate-plane-four-quadrants-grade-7`.
 9. 328 הוא מספר נושאי הקטלוג. דפי נושא ייעודיים: 95. השאר מקבלים הצעת מטא בלי URL ייעודי.
 10. Organization נוסף בבית לצד EducationalOrganization שכבר קיים. אם זה כפול מדי, אפשר להוריד את Organization.
-11. התווית `ready-for-cursor-review` לא קיימת בריפו. אם הוספת התווית נכשלה, צריך ליצור אותה ידנית.
+11. התווית `ready-for-cursor-review` נוספה ל-PR-ים #43–#49. היא לא הייתה קיימת לפני כן.
 
 ## בדיקות אחרי חיבור הדומיין
 
