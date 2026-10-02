@@ -3307,6 +3307,52 @@ html.noam-a11y-motion .hero-draw {
   direction: ltr;
   unicode-bidi: isolate;
 }
+/* Mixed Hebrew+number labels. direction on the node is not enough: .cl-num
+   above forces LTR, which lays "1 מטר" out as מטר-then-1. text-anchor="end"
+   keeps the same left edge as the old LTR start anchor. */
+.concept-loop .cl-num.cl-rtl {
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+.concept-loop .cl-sfrac-bar {
+  stroke: var(--navy);
+  stroke-width: 1.25;
+}
+.concept-loop .cl-sfrac.cl-ok .cl-t { fill: var(--green); }
+.concept-loop .cl-sfrac.cl-ok .cl-sfrac-bar { stroke: var(--green); }
+.cl-frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  line-height: 1;
+  font-size: 1em;
+  direction: ltr;
+  unicode-bidi: isolate;
+  margin-inline: 0.08em;
+}
+/* tenth-cell only: the stack was floating in the gap beside the grid */
+.concept-loop[data-loop='tenth-cell'] .cl-frac,
+.cl-frac--tight {
+  margin-inline: 0;
+}
+.cl-frac__n,
+.cl-frac__d {
+  padding-inline: 0.16em;
+}
+.concept-loop[data-loop='tenth-cell'] .cl-frac__n,
+.concept-loop[data-loop='tenth-cell'] .cl-frac__d,
+.cl-frac--tight .cl-frac__n,
+.cl-frac--tight .cl-frac__d {
+  padding-inline: 0.04em;
+}
+.cl-frac__n {
+  border-bottom: 0.08em solid currentColor;
+  padding-bottom: 0.05em;
+}
+.cl-frac__d {
+  padding-top: 0.05em;
+}
 .concept-loop .cl-term {
   font-size: 19px;
   font-weight: 800;

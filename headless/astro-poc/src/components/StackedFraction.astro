@@ -1,0 +1,54 @@
+---
+/**
+ * Stacked fraction: numerator, horizontal bar, denominator.
+ * SVG mode pins the denominator baseline to `y` and grows upward,
+ * so the anchor stays where the old single-line label sat.
+ * HTML mode is an inline stack for formula rows and the grade player.
+ */
+interface Props {
+  n: string;
+  d: string;
+  x?: number;
+  y?: number;
+  anchor?: 'start' | 'middle' | 'end';
+  small?: boolean;
+  el?: string;
+  hidden?: boolean;
+  /** Answer label, green like the old cl-ok glyph. */
+  ok?: boolean;
+  /** Narrower bar. Used only by tenth-cell, where the stack sits in a tight gap. */
+  tight?: boolean;
+}
+
+const { n, d, x, y, anchor = 'start', small = false, el, hidden = false, ok = false, tight = false } = Astro.props;
+const svg = x != null && y != null;
+const font = small ? 12 : 15;
+const charW = (ch: string) => (ch === '1' ? 0.56 : 0.62) * font;
+const width = Math.max(
+  [...n].reduce((sum, ch) => sum + charW(ch), 0),
+  [...d].reduce((sum, ch) => sum + charW(ch), 0),
+) + font * (tight ? 0.08 : 0.35);
+const left =
+  anchor === 'middle' ? Number(x) - width / 2 :
+  anchor === 'end' ? Number(x) - width :
+  Number(x);
+const cx = left + width / 2;
+const denY = Number(y);
+const barY = denY - font * 0.82;
+const numY = barY - 1.5;
+---
+
+{
+  svg ? (
+    <g class:list={['cl-sfrac', ok && 'cl-ok']} data-el={el} style={hidden ? 'opacity:0' : undefined}>
+      <text class:list={['cl-t', 'cl-num', small && 'cl-small']} x={cx} y={numY} text-anchor="middle">{n}</text>
+      <line class="cl-sfrac-bar" x1={left} y1={barY} x2={left + width} y2={barY} />
+      <text class:list={['cl-t', 'cl-num', small && 'cl-small']} x={cx} y={denY} text-anchor="middle">{d}</text>
+    </g>
+  ) : (
+    <span class:list={['cl-frac', tight && 'cl-frac--tight']} dir="ltr">
+      <span class="cl-frac__n">{n}</span>
+      <span class="cl-frac__d">{d}</span>
+    </span>
+  )
+}

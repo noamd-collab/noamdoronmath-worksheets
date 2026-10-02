@@ -8,6 +8,7 @@ import {
   gradeLoopMathParts,
   type GradeLoopEntry,
 } from '../lib/gradeLoopPools';
+import { splitSupFractions } from '../lib/stackedFraction';
 
 interface Props {
   grade: GradeHubGrade;
@@ -54,7 +55,24 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       <p class="grade-loop__domain" data-grade-loop-domain>{defaultEntry.domain}</p>
       <p class="grade-loop__title" data-grade-loop-label>{defaultEntry.claim}</p>
       <p class="grade-loop__math" data-grade-loop-math>
-        {mathParts.map((part) => (part.math ? <span dir="ltr">{part.text}</span> : part.text))}
+        {mathParts.map((part) =>
+          part.math ? (
+            <bdi dir="ltr">
+              {splitSupFractions(part.text).map((piece) =>
+                piece.kind === 'frac' ? (
+                  <span class:list={['cl-frac', defaultEntry.variant === 'tenth-cell' && 'cl-frac--tight']}>
+                    <span class="cl-frac__n">{piece.n}</span>
+                    <span class="cl-frac__d">{piece.d}</span>
+                  </span>
+                ) : (
+                  piece.text
+                )
+              )}
+            </bdi>
+          ) : (
+            part.text
+          )
+        )}
       </p>
       <p class="grade-loop__explain" data-grade-loop-explain>{defaultEntry.explain}</p>
       <a
@@ -103,6 +121,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 <script>
   import { initConceptLoops } from '../lib/conceptLoops';
   import { gradeLoopMathParts, type GradeLoopEntry as Entry } from '../lib/gradeLoopPools';
+  import { splitSupFractions } from '../lib/stackedFraction';
   import {
     GRADE_LOOP_FALLBACK_END_S,
     createGradeLoopRotation,
@@ -175,9 +194,24 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
         math.textContent = '';
         math.append(...gradeLoopMathParts(entry.mathLine).map((part) => {
           if (!part.math) return part.text;
-          const run = document.createElement('span');
+          const run = document.createElement('bdi');
           run.dir = 'ltr';
-          run.textContent = part.text;
+          for (const piece of splitSupFractions(part.text)) {
+            if (piece.kind === 'text') {
+              run.append(piece.text);
+              continue;
+            }
+            const frac = document.createElement('span');
+            frac.className = entry.variant === 'tenth-cell' ? 'cl-frac cl-frac--tight' : 'cl-frac';
+            const num = document.createElement('span');
+            num.className = 'cl-frac__n';
+            num.textContent = piece.n;
+            const den = document.createElement('span');
+            den.className = 'cl-frac__d';
+            den.textContent = piece.d;
+            frac.append(num, den);
+            run.append(frac);
+          }
           return run;
         }));
       }
@@ -516,7 +550,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
   }
 
   /* :global — swaps rebuild these runs in the script, without the scope attribute. */
-  .grade-loop__math :global(span) {
+  .grade-loop__math :global(bdi) {
     unicode-bidi: isolate;
     font-variant-numeric: tabular-nums;
   }
