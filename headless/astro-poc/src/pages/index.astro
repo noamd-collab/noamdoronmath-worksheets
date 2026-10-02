@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroLoop from '../components/HeroLoop.astro';
 import ExactHeroControls from '../components/ExactHeroControls.astro';
+import { HERO_DEFAULT, heroChip, heroPanel } from '../lib/heroRotation';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 const home = loadHomePage();
 const homeJsonLd = homePageJsonLd();
@@ -22,13 +23,13 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
         <div data-doodle="snail" style="position:absolute;bottom:8px;right:30%;width:110px;z-index:1;"><img src="/design-exact/assets/doodles/snail.webp" alt="" style="width:100%;display:block;mix-blend-mode:multiply;cursor:pointer;"></div>
 
         <div style="position:relative;z-index:2;flex:1 1 440px;min-width:0;">
-          <div style="background:#e3f1ec;border-radius:28px;padding:56px 28px 20px;">
+          <div data-exact-hero-panel style={`background:${heroPanel(HERO_DEFAULT.gradeNum)};border-radius:28px;padding:56px 28px 20px;`}>
             <HeroLoop />
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;">
-              <span data-exact-hero-label style="background:#fff;border:1.5px solid #22305a;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:700;">הדגמה מתמטית</span>
+              <span data-exact-hero-label style="background:#fff;border:1.5px solid #22305a;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:700;">{heroChip(HERO_DEFAULT)}</span>
               <span style="flex:1;"></span>
-              <button data-exact-shuffle style="border:1.5px solid #22305a;background:#fff;border-radius:999px;padding:6px 14px;font:700 14px Heebo;color:#22305a;cursor:pointer;" data-exact-hover="exact-hover-0">↻ נושא אחר</button>
-              <a href="/triangle-area-grade-7" data-peek="topic" data-exact-hero-topic style="font-weight:700;font-size:14px;color:#1e605e;text-decoration:underline;text-underline-offset:4px;" data-exact-hover="exact-hover-1">לדף הנושא ←</a>
+              <button type="button" data-exact-shuffle style="border:1.5px solid #22305a;background:#fff;border-radius:999px;padding:6px 14px;font:700 14px Heebo;color:#22305a;cursor:pointer;" data-exact-hover="exact-hover-0">↻ נושא אחר</button>
+              <a href={HERO_DEFAULT.href} data-peek="topic" data-exact-hero-topic style="font-weight:700;font-size:14px;color:#1e605e;text-decoration:underline;text-underline-offset:4px;" data-exact-hover="exact-hover-1">לדף הנושא ←</a>
             </div>
           </div>
         </div>

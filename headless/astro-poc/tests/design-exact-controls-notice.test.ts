@@ -106,19 +106,15 @@ describe('exact hero presentation adapter inventory', () => {
     assert.match(wrapper, /info\?\.\[1\]\s*\|\|\s*'\/worksheets'/);
   });
 
-  it('retains a pristine triangle template for every possible initial random pick', () => {
-    assert.match(wrapper, /<template\s+data-exact-hero-default="triangle">\s*<ConceptLoop\s+variant="triangle"\s*\/>\s*<\/template>/);
+  it('renders only the triangle on the homepage and fetches the rest of the rotation', () => {
+    assert.match(hero, /<ConceptLoop\s+variant=\{DEFAULT\}\s*\/>/);
+    assert.equal((hero.match(/<ConceptLoop\b/g) || []).length, 1);
+    assert.doesNotMatch(hero, /data-hero-loop-variant|data-pending/);
+    assert.match(wrapper, /fetch\('\/hero-loops\/'/);
     assert.match(wrapper, /originals\.set\('triangle', defaultSource\)/);
-    const pool = strings(initializer(frontmatter(hero), 'HERO_POOL'));
-    for (const initial of pool) {
-      // Mirror only the inventory union, not the rendering/animation engine.
-      const available = new Set(pool.filter((variant) => variant !== 'triangle'));
-      available.add('triangle');
-      available.add(initial);
-      assert.equal(available.size, 73);
-      assert.ok(available.has('triangle'), `triangle lost after initial ${initial}`);
-      assert.equal([...available].filter((variant) => variant !== initial).length, 72);
-    }
+    assert.doesNotMatch(wrapper, /<ConceptLoop\b/);
+    assert.match(wrapper, /כיתה \$\{spin\.grade\} · \$\{spin\.label\}/);
+    assert.match(wrapper, /data-exact-hero-panel/);
   });
 
   it('reuses initialized nodes in a hidden connected cache instead of discarding them', () => {
@@ -148,7 +144,8 @@ describe('protected math sources remain byte-identical to verified live 8a098020
   // Read independently with git show from live-base commit
   // 8a098020ca33f374224338b8ac3fd08faa8ad5f1, not regenerated from this candidate.
   const expected = {
-    'src/components/HeroLoop.astro': '486aec832d80a8a27df4a120b5e97dc09cc41d37791989662bf5448261ffaa75',
+    // HeroLoop.astro is the homepage shell. It may stop inlining every loop.
+    // The diagram engine stays byte-identical.
     'src/components/ConceptLoop.astro': '12c0ec36ecf290acec5f3a20c5fd74532de522c0d9edd6711322d209851218f6',
     'src/lib/conceptLoops.ts': 'b9e5a864e93b08e70fa7257dcf9d7fedae7dcb4cd5798996b7325d98575be53d',
   };
