@@ -198,7 +198,7 @@ describe('grade loop pools (LOOPS_MAP_73_v2)', () => {
     const l45 = gradeLoopCopy('equiv-half');
     assert.match(l45.domain, /^שברים שקולים · /);
     assert.equal(l45.claim, 'חצי, שני רבעים ושלוש שישיות');
-    assert.equal(l45.mathLine, 'אותו מקום על הישר: 1/2 = 2/4 = 3/6');
+    assert.equal(l45.mathLine, 'אותו מקום על הישר: ½ = ²⁄₄ = ³⁄₆');
   });
 
   const mapCsv = join(root, '..', '..', 'LOOPS_MAP_73_v2.csv');
@@ -228,6 +228,18 @@ describe('grade loop pools (LOOPS_MAP_73_v2)', () => {
     ]);
     assert.deepEqual(gradeLoopMathParts('(−3) + 8 = 5'), [{ text: '(−3) + 8 = 5', math: true }]);
     assert.deepEqual(gradeLoopMathParts('(3, 2)'), [{ text: '(3, 2)', math: true }]);
+    assert.deepEqual(gradeLoopMathParts('½ × ⅓ = ⅙'), [{ text: '½ × ⅓ = ⅙', math: true }]);
+    assert.deepEqual(gradeLoopMathParts('½ > ⅓ > ¼'), [{ text: '½ > ⅓ > ¼', math: true }]);
+    assert.deepEqual(gradeLoopMathParts('¹⁄₁₀ = 10 × ¹⁄₁₀₀'), [{ text: '¹⁄₁₀ = 10 × ¹⁄₁₀₀', math: true }]);
+    assert.deepEqual(gradeLoopMathParts('¼ × 12 = 3'), [{ text: '¼ × 12 = 3', math: true }]);
+    assert.deepEqual(gradeLoopMathParts('אותו מקום על הישר: ½ = ²⁄₄ = ³⁄₆'), [
+      { text: 'אותו מקום על הישר: ', math: false },
+      { text: '½ = ²⁄₄ = ³⁄₆', math: true },
+    ]);
+    assert.deepEqual(gradeLoopMathParts('מרחק שווה, זווית של 90°'), [
+      { text: 'מרחק שווה, זווית של ', math: false },
+      { text: '90°', math: true },
+    ]);
     for (const [variant, { mathLine }] of Object.entries(GRADE_LOOP_COPY)) {
       const parts = gradeLoopMathParts(mathLine);
       assert.equal(parts.map((p) => p.text).join(''), mathLine, `${variant}: split must be lossless`);
@@ -290,16 +302,17 @@ describe('GradeLoopPlayer render contract', () => {
 
   it('server-renders the 4-line text block, with accessible controls', () => {
     assert.match(player, /data-grade-loop-text aria-live="polite"/);
-    assert.match(
-      player,
-      /data-grade-loop-domain>\{defaultEntry\.domain\}<\/p>\s*<p class="grade-loop__title" data-grade-loop-label>\{defaultEntry\.claim\}<\/p>\s*<p class="grade-loop__math" data-grade-loop-math>\s*\{mathParts\.map\(\(part\) => \(part\.math \? <span dir="ltr">\{part\.text\}<\/span> : part\.text\)\)\}\s*<\/p>\s*<p class="grade-loop__explain" data-grade-loop-explain>\{defaultEntry\.explain\}<\/p>\s*<a/
-    );
+    assert.match(player, /data-grade-loop-domain>\{defaultEntry\.domain\}<\/p>/);
+    assert.match(player, /data-grade-loop-math/);
+    assert.match(player, /<bdi dir="ltr">/);
+    assert.match(player, /splitSupFractions\(part\.text\)/);
     assert.match(player, /const mathParts = gradeLoopMathParts\(defaultEntry\.mathLine\)/);
     // A swap rewrites all four lines from the pool entry.
     const script = player.split('<script>')[1];
     assert.match(script, /domain\.textContent = entry\.domain/);
     assert.match(script, /label\.textContent = entry\.claim/);
-    assert.match(script, /gradeLoopMathParts\(entry\.mathLine\)[\s\S]*?run\.dir = 'ltr'/);
+    assert.match(script, /gradeLoopMathParts\(entry\.mathLine\)[\s\S]*?createElement\('bdi'\)[\s\S]*?run\.dir = 'ltr'/);
+    assert.match(script, /splitSupFractions\(part\.text\)/);
     assert.match(script, /explain\.textContent = entry\.explain/);
     assert.match(player, /href=\{defaultEntry\.href\}[\s\S]*?>\s*לדפי העבודה בנושא ←\s*<\/a>/);
     assert.match(player, /<button\s+type="button"[\s\S]*?data-grade-loop-next[\s\S]*?aria-label="ללולאה הבאה"/);
@@ -324,7 +337,7 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(rule('.grade-loop__domain'), /font-size: 14px;[\s\S]*color: #5a6588;/);
     assert.match(rule('.grade-loop__title'), /font-family: 'Secular One'[\s\S]*font-size: clamp\(26px, 2\.6vw, 32px\);/);
     assert.match(rule('.grade-loop__explain'), /font-size: 19px;/);
-    assert.match(rule('.grade-loop__math :global(span)'), /unicode-bidi: isolate;/);
+    assert.match(rule('.grade-loop__math :global(bdi)'), /unicode-bidi: isolate;/);
     assert.match(rule('.grade-loop__link'), /min-block-size: 44px;[\s\S]*color: #1e605e;/);
     assert.match(rule('.grade-loop__link:hover'), /color: #e5735c;/);
     assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\.grade-loop__progress-fill \{\s*transition: none;/);

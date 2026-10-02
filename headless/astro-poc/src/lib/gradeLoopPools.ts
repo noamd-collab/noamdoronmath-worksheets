@@ -268,7 +268,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'unit-frac': {
     domain: 'שברים יסודיים · השוואה',
     claim: 'ככל שהמכנה גדול יותר, החלק קטן יותר',
-    mathLine: '1/2 > 1/3 > 1/4',
+    mathLine: '½ > ⅓ > ¼',
     explain: 'חצי, שליש ורבע מוצגים זה לצד זה. ככל שמחלקים את השלם ליותר חלקים, כל חלק קטן יותר. החצי הוא החלק הגדול ביותר.',
   },
   // ── grade 4 ──
@@ -299,7 +299,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'equiv-half': {
     domain: 'שברים שקולים · חצי על הישר',
     claim: 'חצי, שני רבעים ושלוש שישיות',
-    mathLine: 'אותו מקום על הישר: 1/2 = 2/4 = 3/6',
+    mathLine: 'אותו מקום על הישר: ½ = ²⁄₄ = ³⁄₆',
     explain: 'חצי, שני רבעים ושלוש שישיות מסומנים על ישר המספרים. שלושתם יושבים על אותה נקודה. לכן הם שברים שקולים.',
   },
   'quad-gate': {
@@ -318,13 +318,13 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'quarter-12': {
     domain: 'שברים · שבר של מספר',
     claim: 'רבע מכמות הוא חלק אחד מארבעה',
-    mathLine: '1/4 × 12 = 3',
+    mathLine: '¼ × 12 = 3',
     explain: 'יש 12 נקודות. רבע מהן מסומנות — חלק אחד מתוך ארבעה חלקים שווים. רבע מ־12 הוא 3.',
   },
   'tenth-cell': {
     domain: 'שברים עשרוניים · עשירית ומאית',
     claim: 'עשירית אחת היא עשר מאיות',
-    mathLine: '1/10 = 10 × 1/100',
+    mathLine: '¹⁄₁₀ = 10 × ¹⁄₁₀₀',
     explain: 'פס אחד מסומן, והוא עשירית מהשלם. משבצת אחת בתוך הפס היא מאית. בעשירית אחת יש 10 מאיות.',
   },
   // ── grade 6 ──
@@ -343,7 +343,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'frac-product': {
     domain: 'שברים · כפל שברים',
     claim: 'חצי של שליש הוא שישית',
-    mathLine: '1/2 × 1/3 = 1/6',
+    mathLine: '½ × ⅓ = ⅙',
     explain: 'שליש וחצי נצבעים על אותו שלם, זה על זה. החפיפה ביניהם היא חצי מהשליש. זה חלק אחד מתוך שישה — שישית.',
   },
   'prime-rect': {
@@ -507,7 +507,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'para-perp': {
     domain: 'ישרים · מקבילים ומאונכים',
     claim: 'מקבילים לא נפגשים, מאונכים נפגשים ב־90°',
-    mathLine: 'מרחק שווה · 90°',
+    mathLine: 'מרחק שווה, זווית של 90°',
     explain: 'שני ישרים נשארים באותו מרחק זה מזה, ולכן הם מקבילים. שני ישרים אחרים נפגשים בזווית ישרה. הם מאונכים.',
   },
   similar: {
@@ -594,8 +594,17 @@ export function gradeLoopDomain(variant: string): string {
   return gradeLoopCopy(variant).domain;
 }
 
-/** A formula run: starts and ends on a number, symbol or Latin letter, never on Hebrew. */
-const MATH_RUN = /[\d(−\-a-zA-Z□∠√π][\d\sa-zA-Z×÷+\-−=<>≈≠·.,/()²³°□∠√π:→%]*[\d)a-zA-Z²³°□%]|\d/g;
+/**
+ * A formula run: starts and ends on a number, fraction, symbol or Latin letter,
+ * never on Hebrew. Vulgar fractions and superscript/subscript digits count as
+ * numbers, so a neutral-only string like "½ × ⅓ = ⅙" stays one LTR isolate
+ * instead of taking the paragraph's RTL order.
+ */
+const MATH_ATOM = '\\d\\u00b9\\u00b2\\u00b3\\u00bc-\\u00be\\u2070\\u2074-\\u2079\\u2080-\\u2089\\u2150-\\u215e';
+const MATH_RUN = new RegExp(
+  `[${MATH_ATOM}(−\\-a-zA-Z□∠√π][${MATH_ATOM}\\sa-zA-Z×÷+\\-−=<>≈≠·.,/()°□∠√π:→%\\u2044]*[${MATH_ATOM})a-zA-Z°□%]|[${MATH_ATOM}]`,
+  'g',
+);
 
 /**
  * Splits a caption into prose and formula runs. Formula runs render as

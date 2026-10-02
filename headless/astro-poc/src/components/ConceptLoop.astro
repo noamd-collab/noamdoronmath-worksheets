@@ -1,4 +1,5 @@
 ---
+import StackedFraction from './StackedFraction.astro';
 /**
  * KIMI-LOOPS-K3 — Brilliant-style self-playing math film loops.
  *
@@ -946,7 +947,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={ariaLabels[variant]}>
           {/* persistent: the meter bar outline + its label */}
           <rect class="cl-line" x="60" y="110" width="440" height="30" pathLength="1" />
-          <text class="cl-t cl-num" x="66" y="100">1 מטר</text>
+          <text class="cl-t cl-num cl-rtl" x="66" y="100" text-anchor="end" direction="rtl" unicode-bidi="isolate">1 מטר</text>
           {/* nine dividers split it into ten 10-cm segments */}
           {RUL_SEG.slice(0, 9).map((s, i) => (
             <line class="cl-line" data-el={`div-${i}`} x1={s.x + 44} y1="110" x2={s.x + 44} y2="140" pathLength="1" />
@@ -959,7 +960,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           ))}
           {/* brace over the first segment: 10 cm */}
           <path data-el="brace" class="cl-arc" pathLength="1" d="M60 78 L60 86 L104 86 L104 78" />
-          <text data-el="ten" class="cl-t cl-num" x="82" y="70" text-anchor="middle">10 ס״מ</text>
+          <text data-el="ten" class="cl-t cl-num cl-rtl" x="82" y="70" text-anchor="middle" direction="rtl" unicode-bidi="isolate">10 ס״מ</text>
         </svg>
       )
     }
@@ -1764,7 +1765,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <text class="cl-t cl-num" x="270" y="232" text-anchor="middle">6</text>
           <line class="cl-line cl-stroke-a" data-el="hour" x1="270" y1="156" x2="309.8" y2="133" />
           <path class="cl-line cl-stroke-a" data-el="arc" d="M320.2 127 A58 58 0 0 1 320.2 185" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="hrs" x="378" y="164" style="opacity:0">2 שעות</text>
+          <text class="cl-t cl-num cl-rtl" data-el="hrs" x="378" y="164" text-anchor="end" direction="rtl" unicode-bidi="isolate" style="opacity:0">2 שעות</text>
           <circle cx="270" cy="156" r="4" fill="#1e3a5f" />
         </svg>
       )
@@ -1956,10 +1957,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
               <rect class="cl-fill-a" x={201 + c * 14} y="81" width="12" height="12" />
             ))}
             <path class="cl-line" d="M202 82 H338 V92" />
-            <text class="cl-t cl-num" x="348" y="92">¹⁄₁₀</text>
+            <StackedFraction n="1" d="10" x={348} y={92} anchor="start" />
           </g>
           <rect class="cl-stroke-a" data-el="cell" x="200" y="80" width="14" height="14" style="fill:none;opacity:0" />
-          <text class="cl-t cl-num cl-small" data-el="hun" x="207" y="74" text-anchor="middle" style="opacity:0">¹⁄₁₀₀</text>
+          <StackedFraction n="1" d="100" x={207} y={74} anchor="middle" small el="hun" hidden />
         </svg>
       )
     }
@@ -1972,24 +1973,24 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <g data-el="quarters" style="opacity:0">
             <line class="cl-stroke-a" x1="180" y1="158" x2="180" y2="182" />
             <line class="cl-stroke-a" x1="360" y1="158" x2="360" y2="182" />
-            <text class="cl-t cl-num cl-small" x="180" y="142" text-anchor="middle">¹⁄₄</text>
-            <text class="cl-t cl-num cl-small" x="360" y="142" text-anchor="middle">³⁄₄</text>
+            <StackedFraction n="1" d="4" x={180} y={142} anchor="middle" small />
+            <StackedFraction n="3" d="4" x={360} y={142} anchor="middle" small />
           </g>
           <g data-el="sixths" style="opacity:0">
             <line class="cl-line" x1="150" y1="170" x2="150" y2="186" />
             <line class="cl-line" x1="210" y1="170" x2="210" y2="186" />
             <line class="cl-line" x1="330" y1="170" x2="330" y2="186" />
             <line class="cl-line" x1="390" y1="170" x2="390" y2="186" />
-            <text class="cl-t cl-num cl-small" x="150" y="204" text-anchor="middle">¹⁄₆</text>
-            <text class="cl-t cl-num cl-small" x="210" y="204" text-anchor="middle">²⁄₆</text>
-            <text class="cl-t cl-num cl-small" x="330" y="204" text-anchor="middle">⁴⁄₆</text>
-            <text class="cl-t cl-num cl-small" x="390" y="204" text-anchor="middle">⁵⁄₆</text>
+            <StackedFraction n="1" d="6" x={150} y={204} anchor="middle" small />
+            <StackedFraction n="2" d="6" x={210} y={204} anchor="middle" small />
+            <StackedFraction n="4" d="6" x={330} y={204} anchor="middle" small />
+            <StackedFraction n="5" d="6" x={390} y={204} anchor="middle" small />
           </g>
           <line class="cl-stroke-a" data-el="guide" x1="270" y1="118" x2="270" y2="248" style="opacity:0" />
           <circle cx="270" cy="170" r="6" fill="#1e3a5f" />
-          <text class="cl-t cl-num" data-el="h" x="282" y="124" style="opacity:0">¹⁄₂</text>
-          <text class="cl-t cl-num" data-el="q" x="282" y="206" style="opacity:0">²⁄₄</text>
-          <text class="cl-t cl-num" data-el="s" x="282" y="248" style="opacity:0">³⁄₆</text>
+          <StackedFraction n="1" d="2" x={282} y={124} anchor="start" el="h" hidden />
+          <StackedFraction n="2" d="4" x={282} y={206} anchor="start" el="q" hidden />
+          <StackedFraction n="3" d="6" x={282} y={248} anchor="start" el="s" hidden />
         </svg>
       )
     }
@@ -2537,7 +2538,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'pct-25' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">²⁵⁄₁₀₀ = 25%</span>
+          <span data-fx="0"><StackedFraction n="25" d="100" /> = 25%</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2785,7 +2786,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'tenth-cell' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">¹⁄₁₀ = 10 × ¹⁄₁₀₀</span>
+          <span data-fx="0"><StackedFraction n="1" d="10" /> = 10 × <StackedFraction n="1" d="100" /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2793,7 +2794,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'equiv-half' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">¹⁄₂ = ²⁄₄ = ³⁄₆</span>
+          <span data-fx="0"><StackedFraction n="1" d="2" /> = <StackedFraction n="2" d="4" /> = <StackedFraction n="3" d="6" /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )

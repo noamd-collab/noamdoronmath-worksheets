@@ -3307,6 +3307,39 @@ html.noam-a11y-motion .hero-draw {
   direction: ltr;
   unicode-bidi: isolate;
 }
+/* Mixed Hebrew+number labels. direction on the node is not enough: .cl-num
+   above forces LTR, which lays "1 מטר" out as מטר-then-1. text-anchor="end"
+   keeps the same left edge as the old LTR start anchor. */
+.concept-loop .cl-num.cl-rtl {
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+.concept-loop .cl-sfrac-bar {
+  stroke: var(--navy);
+  stroke-width: 1.25;
+}
+.cl-frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  line-height: 1;
+  font-size: 0.92em;
+  direction: ltr;
+  unicode-bidi: isolate;
+  margin-inline: 0.08em;
+}
+.cl-frac__n,
+.cl-frac__d {
+  padding-inline: 0.16em;
+}
+.cl-frac__n {
+  border-bottom: 0.08em solid currentColor;
+  padding-bottom: 0.05em;
+}
+.cl-frac__d {
+  padding-top: 0.05em;
+}
 .concept-loop .cl-term {
   font-size: 19px;
   font-weight: 800;
