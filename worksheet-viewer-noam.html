@@ -7713,23 +7713,40 @@ function esc(s){
     prev.addEventListener('click',function(){step(false);});
     next.addEventListener('click',function(){step(true);});
     track.addEventListener('scroll',function(){updateQuestionScroller();},{passive:true});
+    track.addEventListener('scrollend',function(){updateQuestionScroller();});
     if(focus){var target=Array.from(choices.querySelectorAll('button')).find(function(button){return button.dataset.exactChoice===focus;});if(target){target.focus({preventScroll:true});}}
-    requestAnimationFrame(function(){
-      var current=track.querySelector('[aria-pressed="true"]');
-      if(current){
-        var box=track.getBoundingClientRect(),r=current.getBoundingClientRect();
-        if(r.left<box.left-1||r.right>box.right+1){
-          var before=r.left;
-          track.scrollBy({left:1});
-          var moved=current.getBoundingClientRect().left-before;
-          track.scrollBy({left:-1});
-          var sign=moved<0?1:-1;
-          var visual=r.left<box.left?(box.left-r.left+8):-(r.right-box.right+8);
-          track.scrollBy({left:-sign*visual});
+    function centerActiveChip(attempt){
+      requestAnimationFrame(function(){
+        if(!track.isConnected){return;}
+        var current=track.querySelector('[aria-pressed="true"]');
+        if(!current||track.clientWidth<8){
+          if(attempt<8){centerActiveChip(attempt+1);}
+          else{updateQuestionScroller();}
+          return;
         }
-      }
-      updateQuestionScroller();
-    });
+        var box=track.getBoundingClientRect(),r=current.getBoundingClientRect();
+        var delta=((r.left+r.right)/2)-((box.left+box.right)/2);
+        if(Math.abs(delta)>1){
+          var saved=track.style.scrollBehavior;
+          track.style.scrollBehavior='auto';
+          var before=current.getBoundingClientRect().left;
+          track.scrollBy({left:1});
+          var plus=current.getBoundingClientRect().left-before;
+          if(plus){track.scrollBy({left:-1});}
+          else{
+            track.scrollBy({left:-1});
+            var neg=current.getBoundingClientRect().left-before;
+            if(neg){track.scrollBy({left:1});plus=-neg;}
+          }
+          track.style.scrollBehavior=saved;
+          if(plus){
+            track.scrollBy({left:-delta/plus,behavior:motionMode()==='off'?'auto':'smooth'});
+          }
+        }
+        updateQuestionScroller();
+      });
+    }
+    centerActiveChip(0);
   }
   function updateQuestionScroller(){
     var track=choices.querySelector('.exact-q-track');
