@@ -22,7 +22,6 @@ export default defineConfig({
   env: {
     schema: {
       BLOG_AUDIO_FUNCTIONS_BASE: envField.string({ context: 'server', access: 'public', optional: true }),
-      SECRET_LESSON_START: envField.string({ context: 'server', access: 'public', optional: true }),
     },
   },
 });

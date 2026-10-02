@@ -1,9 +1,9 @@
 /**
- * Public lesson. Permanent, no token, no 72-hour gate.
+ * Public lesson. Permanent page, no token.
  * Markup is the shared lesson.html file, with public title, description, and OG.
  */
 import type { APIRoute } from 'astro';
-import lessonHtml from '../../../secret-lesson/lesson.html?raw';
+import lessonHtml from '../../../public-lesson/lesson.html?raw';
 import { renderPublicLesson } from '../../../lib/publicLesson';
 
 export const prerender = false;

@@ -13,11 +13,8 @@ import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 
 /**
  * Non-public / noise slugs — never appear in /sitemap-pages.xml.
- * `l` is the unlisted social-lesson prefix (/l/<token>). Do not list it.
- * The token itself is a dynamic route under src/pages/l/ and is not part of
- * the top-level `./*.astro` glob; this skip is a second lock.
  */
-const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops', 'l']);
+const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops']);
 
 function excludePath(path: string): boolean {
   if (path !== '/' && REDIRECT_RULES.some((r) => r.from === path)) return true;
@@ -35,7 +32,6 @@ export function pathsFromAstroModuleKeys(moduleKeys: readonly string[]): string[
     const slug = file.replace(/\.astro$/, '');
     if (!slug || SKIP_SLUGS.has(slug) || slug.startsWith('_') || slug.includes('[')) continue;
     const path = `/${slug}`;
-    if (path === '/l' || path.startsWith('/l/')) continue;
     if (!excludePath(path)) out.add(path);
   }
   return [...out].sort((a, b) => a.localeCompare(b));

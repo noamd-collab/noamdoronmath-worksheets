@@ -1,6 +1,5 @@
 /**
- * Permanent public copy of the unlisted lesson.
- * Same lesson.html, no token and no 72-hour gate.
+ * Permanent public lesson.
  *
  * Path: /games/kefel-mekutsar-2
  * `/games/` keeps interactive extras next to, but not inside, the calculator

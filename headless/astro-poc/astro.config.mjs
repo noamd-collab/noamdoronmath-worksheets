@@ -29,9 +29,6 @@ export default defineConfig({
   env: {
     schema: {
       BLOG_AUDIO_FUNCTIONS_BASE: envField.string({ context: 'server', access: 'public', optional: true }),
-      // ISO-8601 publication instant for the unlisted lesson. Empty = not live.
-      // Set at go-live with: wix env set --key=SECRET_LESSON_START --value=<ISO>
-      SECRET_LESSON_START: envField.string({ context: 'server', access: 'public', optional: true }),
     },
   },
 });

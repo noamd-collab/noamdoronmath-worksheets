@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroLoop from '../components/HeroLoop.astro';
 import ExactHeroControls from '../components/ExactHeroControls.astro';
+import GamePromoCard from '../components/GamePromoCard.astro';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 const home = loadHomePage();
 const homeJsonLd = homePageJsonLd();
@@ -47,6 +48,8 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
   </div>
         </div>
       </section>
+
+      <GamePromoCard />
 
       <!-- GRADES -->
       <section data-home-grades style="position:relative;max-width:1200px;margin:0 auto;padding:56px 24px 72px;">

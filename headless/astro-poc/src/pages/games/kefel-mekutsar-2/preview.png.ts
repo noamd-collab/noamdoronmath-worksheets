@@ -1,9 +1,16 @@
 /**
- * OG image for the public lesson. Same bundled PNG as the unlisted link, always available.
+ * OG image for the public lesson.
  */
 import type { APIRoute } from 'astro';
-import { PREVIEW_PNG_BASE64 } from '../../../secret-lesson/previewPng';
-import { decodeBase64Bytes } from '../../../lib/secretLessonPage';
+import { PREVIEW_PNG_BASE64 } from '../../../public-lesson/previewPng';
+
+function decodeBase64Bytes(b64: string): Uint8Array {
+  const clean = b64.replace(/\s+/g, '');
+  const bin = atob(clean);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
 
 export const prerender = false;
 

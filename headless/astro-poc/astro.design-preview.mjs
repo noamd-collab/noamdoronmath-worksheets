@@ -8,6 +8,6 @@ export default defineConfig({
   server:{host:'127.0.0.1',port:4328},
   cacheDir:'./.astro-design-preview',
   image:{domains:['static.wixstatic.com']},
-  env:{schema:{BLOG_AUDIO_FUNCTIONS_BASE:envField.string({context:'server',access:'public',optional:true}),SECRET_LESSON_START:envField.string({context:'server',access:'public',optional:true})}},
+  env:{schema:{BLOG_AUDIO_FUNCTIONS_BASE:envField.string({context:'server',access:'public',optional:true})}},
   vite:{cacheDir:'./.vite-design-preview'},
 });
