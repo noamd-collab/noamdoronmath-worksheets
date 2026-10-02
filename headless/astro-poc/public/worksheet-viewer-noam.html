@@ -2417,19 +2417,22 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 .exact-viewer .pdf-page .noam-report-pin{
   width:26px;height:26px;min-width:26px;min-height:26px;padding:0;
   font-size:0;line-height:0;background:transparent;color:inherit;
-  border:0;border-radius:0;overflow:visible;box-shadow:none;
-  outline:2px solid #e6a534;outline-offset:0;
+  border:0;border-radius:50%;overflow:visible;box-shadow:none;outline:none;
 }
 .exact-viewer .pdf-page .noam-report-pin::before{
   content:"";position:absolute;inset:-4px;
 }
 .exact-viewer .pdf-page .noam-report-pin .exact-ramzi-pin{
   width:100%;height:100%;display:block;object-fit:contain;pointer-events:none;
+  filter:drop-shadow(0 1px 1px rgba(34,48,90,.22));
 }
 .exact-viewer .pdf-page .noam-report-pin:hover,
 .exact-viewer .pdf-page .noam-report-pin:focus-visible{
   background:transparent;color:inherit;border-color:transparent;
-  box-shadow:none;outline:2px solid #22305a;outline-offset:1px;
+  box-shadow:none;outline:none;
+}
+.exact-viewer .pdf-page .noam-report-pin:focus-visible{
+  box-shadow:0 0 0 2px #22305a;
 }
 @media(max-width:999px),(max-height:639px){
   .exact-viewer .pdf-page .noam-exercise-pin{width:26px;height:26px;min-width:26px;min-height:26px;padding:0;border-radius:50%}
@@ -7974,6 +7977,51 @@ function esc(s){
     layoutQuietPins();
   }
   function layoutQuietPins(){
+    function reportPin(page,pin){
+      var id=pin.dataset.exerciseId;
+      if(!id){return null;}
+      var reports=page.querySelectorAll('.noam-report-pin');
+      for(var i=0;i<reports.length;i++){
+        if(reports[i].dataset.exerciseId===id){return reports[i];}
+      }
+      return null;
+    }
+    function snapPinColumns(page,pins){
+      var pageW=page.clientWidth;
+      if(!pageW){return;}
+      var inside=pins.filter(function(pin){return pin.offsetWidth>=20&&pin.offsetLeft>8&&pin.offsetLeft<=pageW;});
+      if(!inside.length){return;}
+      var sorted=inside.slice().sort(function(a,b){return a.offsetLeft-b.offsetLeft;});
+      var columns=[];
+      sorted.forEach(function(pin){
+        var col=columns[columns.length-1];
+        if(col&&pin.offsetLeft-col[0].offsetLeft<=18){col.push(pin);}
+        else{columns.push([pin]);}
+      });
+      columns.forEach(function(col){
+        var pairs=col.map(function(pin){
+          var report=reportPin(page,pin);
+          return {pin:pin,report:report,gap:report?report.offsetLeft-pin.offsetLeft:0};
+        });
+        var lefts=pairs.map(function(pair){return pair.pin.offsetLeft;}).sort(function(a,b){return a-b;});
+        var anchor=lefts[Math.floor((lefts.length-1)/2)];
+        var maxRight=anchor;
+        pairs.forEach(function(pair){
+          var reach=pair.report?anchor+pair.gap+pair.report.offsetWidth/2:anchor+pair.pin.offsetWidth/2;
+          if(reach>maxRight){maxRight=reach;}
+        });
+        if(maxRight>pageW){anchor-=maxRight-pageW;}
+        anchor=Math.floor(anchor);
+        pairs.forEach(function(pair){
+          var next=anchor+'px';
+          if(pair.pin.style.left!==next){pair.pin.style.left=next;}
+          if(pair.report){
+            var reportLeft=Math.round(anchor+pair.gap)+'px';
+            if(pair.report.style.left!==reportLeft){pair.report.style.left=reportLeft;}
+          }
+        });
+      });
+    }
     document.querySelectorAll('.pdf-page').forEach(function(page){
       var pins=Array.from(page.querySelectorAll('.noam-exercise-pin'));
       if(!pins.length){return;}
@@ -7990,14 +8038,10 @@ function esc(s){
         var top=Math.max(Number(pin.dataset.exactAnchorTop)||0,last+gap);
         last=top;
         if(pin.style.top!==top+'px'){pin.style.top=top+'px';}
-        var id=pin.dataset.exerciseId;
-        if(!id){return;}
-        Array.from(page.querySelectorAll('.noam-report-pin')).forEach(function(report){
-          if(report.dataset.exerciseId===id&&report.style.top!==pin.style.top){
-            report.style.top=pin.style.top;
-          }
-        });
+        var report=reportPin(page,pin);
+        if(report&&report.style.top!==pin.style.top){report.style.top=pin.style.top;}
       });
+      snapPinColumns(page,pins);
     });
   }
 
