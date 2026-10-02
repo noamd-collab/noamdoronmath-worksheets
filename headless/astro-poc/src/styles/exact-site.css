@@ -18,6 +18,32 @@ body.exact-site {
 .exact-home p,.exact-home h1,.exact-home h2 {letter-spacing:normal;}
 .exact-header nav {display:flex;}
 .exact-header nav a {white-space:normal;}
+.exact-header nav {align-items:center;}
+.exact-nav-tools {position:relative;display:flex;align-items:center;}
+.exact-nav-tools__btn {
+  padding:8px 12px;border:0;border-radius:999px;background:transparent;color:#22305a;
+  font:inherit;font-weight:500;cursor:pointer;white-space:nowrap;
+}
+.exact-nav-tools__btn:focus-visible {outline:3px solid #2a7c7a;outline-offset:2px;}
+.exact-nav-drop {
+  position:absolute;z-index:40;top:100%;inset-inline-start:0;min-width:max-content;
+  display:flex;flex-direction:column;gap:2px;padding:8px;background:#fbfaf5;
+  border:2px solid #22305a;border-radius:14px 6px 16px 8px / 8px 16px 6px 14px;
+  box-shadow:4px 4px 0 rgba(34,48,90,.12);
+  opacity:0;visibility:hidden;pointer-events:none;
+}
+.exact-header .exact-nav-drop a {
+  padding:8px 12px;border-radius:10px;color:#22305a;font-size:15px;font-weight:500;
+  line-height:1.3;text-align:start;white-space:nowrap;
+}
+.exact-nav-drop a:hover {background:rgba(42,124,122,.1);}
+.exact-nav-drop a:focus-visible {outline:3px solid #2a7c7a;outline-offset:2px;}
+@media (hover:hover) {
+  .exact-nav-tools:hover:not([data-shut]) .exact-nav-drop {opacity:1;visibility:visible;pointer-events:auto;}
+}
+.exact-nav-tools:focus-within:not([data-shut]) .exact-nav-drop,
+.exact-nav-tools[data-open]:not([data-shut]) .exact-nav-drop {opacity:1;visibility:visible;pointer-events:auto;}
+.exact-nav-tools[data-shut] .exact-nav-drop {opacity:0;visibility:hidden;pointer-events:none;}
 .exact-nav-toggle,.exact-nav-learn-mobile {display:none!important;}
 @media(max-width:767px){
   .exact-header__row {flex-wrap:nowrap!important;gap:10px!important;padding:8px 14px!important;position:relative;}
@@ -38,6 +64,17 @@ body.exact-site {
   .exact-header nav[data-nav-panel][data-open] {display:flex;}
   .exact-header nav[data-nav-panel] a {padding:10px 12px!important;border-radius:10px!important;}
   .exact-header nav[data-nav-panel] .exact-nav-learn-mobile {display:block!important;}
+  .exact-nav-tools {display:block;}
+  .exact-nav-tools__btn {display:none!important;}
+  .exact-nav-drop {
+    position:static;opacity:1;visibility:visible;pointer-events:auto;
+    min-width:0;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent;
+  }
+  .exact-nav-tools[data-shut] .exact-nav-drop {opacity:1;visibility:visible;pointer-events:auto;}
+  .exact-header nav[data-nav-panel] .exact-nav-drop a {white-space:normal;}
+  .exact-header nav[data-nav-panel] .exact-nav-game {
+    margin-inline-start:18px;text-align:start;
+  }
 }
 .exact-site [data-doodle] {visibility:visible;}
 .exact-site [data-doodle] img {max-width:none;}
