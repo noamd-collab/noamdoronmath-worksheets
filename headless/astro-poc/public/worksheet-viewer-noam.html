@@ -6,12 +6,9 @@
 
 <title>דף עבודה · מתמטיקה · נועם דורון</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://www.noamdoronmath.co.il" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link rel="preload" href="/fonts/heebo-hebrew.f1f7cfae.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- Start fetching the PDF engine early; AI math assets load when the panel opens. -->
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" crossorigin="anonymous">
@@ -2018,12 +2015,12 @@ textarea:focus{
 <!-- Presentation-only mapping of Student Worksheet Preview.dc.html.
      Keep this outside head: the released metadata, PDF engine, and AI scripts
      below remain unchanged. Real PDF content and its controls are retained. -->
+<link rel="stylesheet" href="/fonts/site-fonts.css">
 <style id="exact-viewer-presentation">
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap');
 body.exact-viewer{
   --ink:#22305a;--accent:#22305a;--accent-dark:#1e605e;--on-accent:#fff;
   --tint:#eaf4f3;--paper:#fbfaf5;--grid:rgba(34,48,90,.065);--muted:#5a6588;
-  font-family:Heebo,sans-serif;color:#22305a;background:#fbfaf5;
+  font-family:Heebo,'Heebo Fallback',sans-serif;color:#22305a;background:#fbfaf5;
   height:100vh;display:flex;flex-direction:column;overflow:hidden;
 }
 .exact-viewer :where(button,textarea,input){font-family:inherit}
@@ -2044,13 +2041,13 @@ body.exact-viewer{
 .exact-viewer .bar{
   gap:14px;padding:8px 22px;border-bottom:1.5px dashed #b8c0d4;background:#fff;
 }
-.exact-viewer .bar h1{font:400 14px Heebo,sans-serif;color:#5a6588;gap:0}
+.exact-viewer .bar h1{font:400 14px Heebo,'Heebo Fallback',sans-serif;color:#5a6588;gap:0}
 .exact-viewer #emoji{display:none}
 .exact-viewer .context-chips{gap:8px}
-.exact-viewer .chip{border:0;background:none;padding:0;font:400 14px Heebo,sans-serif;color:#5a6588}
+.exact-viewer .chip{border:0;background:none;padding:0;font:400 14px Heebo,'Heebo Fallback',sans-serif;color:#5a6588}
 .exact-viewer .level-link{
   border:1.5px solid #22305a;border-radius:10px 4px 11px 5px;
-  font:700 13px Heebo,sans-serif;box-shadow:none;transition:none;
+  font:700 13px Heebo,'Heebo Fallback',sans-serif;box-shadow:none;transition:none;
 }
 .exact-viewer .level-link:hover{transform:none;background:#eaf4f3;box-shadow:none}
 .exact-viewer .level-link[aria-current="page"]{background:#22305a;color:#fff;box-shadow:none}
@@ -2060,7 +2057,7 @@ body.exact-viewer{
   display:inline-flex;align-items:center;justify-content:center;gap:6px;
   min-height:44px;padding:6px 14px;border:2px solid #22305a;
   border-radius:12px 5px 13px 6px;background:#fff;color:#22305a;
-  font:700 14px Heebo,sans-serif;box-shadow:none;
+  font:700 14px Heebo,'Heebo Fallback',sans-serif;box-shadow:none;
 }
 .exact-viewer .btn:hover,.exact-viewer .pdf-tool:hover,.exact-viewer .pdf-tool-link:hover,
 .exact-viewer .panel-back:hover,.exact-viewer .noam-action:hover,.exact-viewer .noam-preview-toggle:hover{
@@ -2076,7 +2073,10 @@ body.exact-viewer{
   background-image:linear-gradient(rgba(34,48,90,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(34,48,90,.065) 1px,transparent 1px);
   background-size:28px 28px;
 }
-.exact-viewer .pdf-page{box-shadow:0 3px 0 rgba(34,48,90,.08);outline:1.5px solid #c9cfdc}
+.exact-viewer .pdf-page{box-shadow:0 3px 0 rgba(34,48,90,.08);outline:1.5px solid #c9cfdc;aspect-ratio:210 / 297}
+@media(max-width:900px){
+  .exact-viewer .pdf-page{min-height:calc((100vw - 128px) * 297 / 210)}
+}
 .exact-viewer .pdf-status{background:#fbfaf5;font-weight:700}
 .exact-viewer .pdf-tools{border:2px solid #22305a;border-radius:12px 5px 13px 6px;box-shadow:none}
 .exact-viewer .panel{
@@ -2091,7 +2091,7 @@ body.exact-viewer{
 .exact-viewer .exact-ramzi-name{display:flex;align-items:center;gap:8px}
 .exact-viewer .panel-head b{font:400 22px/1.1 'Secular One',sans-serif}
 .exact-viewer .panel-badge{
-  font:700 12px Heebo,sans-serif;background:#fff;border:1.5px solid #22305a;
+  font:700 12px Heebo,'Heebo Fallback',sans-serif;background:#fff;border:1.5px solid #22305a;
   border-radius:999px;padding:0 8px;min-height:0;color:#22305a;
 }
 .exact-viewer .exact-ramzi-status{font-size:13px;color:#3d4870}
@@ -2108,7 +2108,7 @@ body.exact-viewer{
 .exact-viewer .noam-question-list{gap:4px}
 .exact-viewer .noam-question-list button{
   border:2px solid #22305a;border-radius:10px 4px 11px 5px;
-  font:700 15px Heebo,sans-serif;background:#fff;color:#22305a;
+  font:700 15px Heebo,'Heebo Fallback',sans-serif;background:#fff;color:#22305a;
 }
 .exact-viewer .noam-question-list button:hover{background:#eaf4f3}
 .exact-viewer .noam-picked{
@@ -2117,11 +2117,11 @@ body.exact-viewer{
 }
 .exact-viewer .noam-picked{overflow:visible}
 .exact-viewer .noam-picked-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
-.exact-viewer .noam-picked-label{flex:1 1 auto;min-width:0;font:700 14px/1.35 Heebo,sans-serif;color:#22305a;overflow:visible;white-space:normal}
+.exact-viewer .noam-picked-label{flex:1 1 auto;min-width:0;font:700 14px/1.35 Heebo,'Heebo Fallback',sans-serif;color:#22305a;overflow:visible;white-space:normal}
 .exact-viewer .noam-picked-text{font-size:14px;line-height:1.5;color:#3d4870}
 .exact-viewer .noam-picked-preview{border:1.5px solid #c9cfdc;border-radius:0}
 .exact-viewer .noam-thread-tools{margin:0;gap:8px}
-.exact-viewer .noam-link-button{font:700 13px Heebo,sans-serif;color:#1e605e;text-decoration:none;padding:0 10px;border-radius:10px}
+.exact-viewer .noam-link-button{font:700 13px Heebo,'Heebo Fallback',sans-serif;color:#1e605e;text-decoration:none;padding:0 10px;border-radius:10px}
 .exact-viewer .noam-link-button:hover{background:#eaf4f3}
 .exact-viewer .noam-transcript{flex:1;min-height:48px;max-height:none;gap:12px;padding:12px 2px;scroll-behavior:auto}
 .exact-viewer .noam-transcript.is-empty{flex:1;min-height:48px;max-height:none;padding:12px 2px}
@@ -2136,7 +2136,7 @@ body.exact-viewer{
   max-width:90%;background:#fff;color:#22305a;padding:10px 14px;
   border:2px solid #22305a;border-radius:16px 16px 4px 16px;
 }
-.exact-viewer .noam-kind{font:700 13px Heebo,sans-serif;color:#1e605e}
+.exact-viewer .noam-kind{font:700 13px Heebo,'Heebo Fallback',sans-serif;color:#1e605e}
 .exact-viewer .noam-term{
   font-weight:700;color:#1e605e;background:#eaf4f3;border:0;
   border-bottom:2px dotted #2a7c7a;border-radius:4px 4px 0 0;
@@ -2145,11 +2145,11 @@ body.exact-viewer{
 .exact-viewer .noam-term:hover{background:#cfe6e4;color:#1e605e}
 .exact-viewer .noam-glossary-popover{
   border:2px solid #2a7c7a;border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
-  box-shadow:5px 5px 0 rgba(42,124,122,.18);padding:12px 14px;font-family:Heebo,sans-serif;
+  box-shadow:5px 5px 0 rgba(42,124,122,.18);padding:12px 14px;font-family:Heebo,'Heebo Fallback',sans-serif;
 }
-.exact-viewer .noam-glossary-popover-title{font:700 16px Heebo,sans-serif;color:#1e605e}
+.exact-viewer .noam-glossary-popover-title{font:700 16px Heebo,'Heebo Fallback',sans-serif;color:#1e605e}
 .exact-viewer .noam-glossary-popover-text{font-size:15px;line-height:1.65}
-.exact-viewer .noam-glossary-more{font:700 14px Heebo,sans-serif;border:1.5px solid #2a7c7a;border-radius:999px;color:#1e605e;padding:4px 12px}
+.exact-viewer .noam-glossary-more{font:700 14px Heebo,'Heebo Fallback',sans-serif;border:1.5px solid #2a7c7a;border-radius:999px;color:#1e605e;padding:4px 12px}
 .exact-viewer .noam-compose{flex:none;padding:8px 0 0;border-top:1.5px dashed #b8c0d4;background:#fff}
 .exact-viewer .noam-input-shell{padding:5px;background:#fff;border:2px solid #22305a;border-radius:14px 6px 16px 7px / 7px 16px 6px 14px}
 .exact-viewer .noam-input-shell:focus-within{outline:3px solid #e6a534;outline-offset:2px;box-shadow:none}
@@ -2157,26 +2157,26 @@ body.exact-viewer{
 .exact-viewer .noam-input-actions .noam-action{font-size:15px;min-height:44px;padding:6px 14px;border-width:2px}
 .exact-viewer #noamHint{background:#e6a534;color:#22305a;font-weight:800}
 .exact-viewer #noamHint:hover{background:#f0bb5a}
-.exact-viewer .noam-compose textarea{font:16px/1.55 Heebo,sans-serif;color:#22305a;padding:10px 6px;border-radius:8px;min-height:48px}
+.exact-viewer .noam-compose textarea{font:16px/1.55 Heebo,'Heebo Fallback',sans-serif;color:#22305a;padding:10px 6px;border-radius:8px;min-height:48px}
 .exact-viewer .noam-math-toggle,.exact-viewer .noam-attach-button{
   height:44px;min-width:44px;border:0;border-radius:10px;background:#eaf4f3;
-  color:#22305a;font:700 15px Heebo,sans-serif;
+  color:#22305a;font:700 15px Heebo,'Heebo Fallback',sans-serif;
 }
 .exact-viewer .noam-math-toggle:hover,.exact-viewer .noam-attach-button:hover{background:#cfe6e4}
 .exact-viewer .noam-math-keys{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:4px;padding-bottom:2px}
 .exact-viewer .noam-math-keys[hidden]{display:none}
 .exact-viewer .noam-math-key{
   flex:none;min-width:44px;height:44px;padding:0 8px;border:1.5px solid #22305a;
-  border-radius:9px 4px 10px 5px;background:#fbfaf5;color:#22305a;font:700 17px Heebo,sans-serif;
+  border-radius:9px 4px 10px 5px;background:#fbfaf5;color:#22305a;font:700 17px Heebo,'Heebo Fallback',sans-serif;
 }
 .exact-viewer .noam-compose-help{font-size:12px;color:#5a6588}
-.exact-viewer .noam-send{min-height:44px;border:2px solid #22305a;border-radius:12px 5px 13px 6px;background:#1e605e;color:#fff;font:700 15px Heebo,sans-serif;box-shadow:none}
+.exact-viewer .noam-send{min-height:44px;border:2px solid #22305a;border-radius:12px 5px 13px 6px;background:#1e605e;color:#fff;font:700 15px Heebo,'Heebo Fallback',sans-serif;box-shadow:none}
 .exact-viewer .noam-send:hover{background:#174b49}
-.exact-viewer .noam-ai-feedback{font-family:Heebo,sans-serif}
+.exact-viewer .noam-ai-feedback{font-family:Heebo,'Heebo Fallback',sans-serif}
 .exact-viewer .fab{
   display:inline-flex;align-items:center;gap:8px;min-height:44px;
   padding:4px 16px 4px 6px;border:2px solid #22305a;border-radius:999px;
-  background:#22305a;color:#fff;font:700 15px Heebo,sans-serif;box-shadow:none;
+  background:#22305a;color:#fff;font:700 15px Heebo,'Heebo Fallback',sans-serif;box-shadow:none;
 }
 .exact-viewer .fab:hover{background:#2d3d70}
 .exact-viewer .fab img{width:36px;height:36px;border-radius:50%;background:#fff}
@@ -2216,7 +2216,7 @@ body.exact-viewer{
 .exact-viewer .exact-motion{
   flex:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;
   border:2px solid #22305a;border-radius:999px;background:#fff;color:#22305a;
-  font:700 14px Heebo,sans-serif;cursor:pointer;margin-inline-start:auto;
+  font:700 14px Heebo,'Heebo Fallback',sans-serif;cursor:pointer;margin-inline-start:auto;
 }
 .exact-viewer .exact-motion:hover{background:#eaf4f3}
 .exact-viewer .exact-mobile-tabs{display:none}
@@ -2231,7 +2231,7 @@ body.exact-viewer{
   overflow:hidden;background:#fff;
 }
 .exact-viewer .exact-question-strip[hidden]{display:none}
-.exact-question-strip>span{font:700 12px Heebo,sans-serif;color:#5a6588;white-space:nowrap;flex:none}
+.exact-question-strip>span{font:700 12px Heebo,'Heebo Fallback',sans-serif;color:#5a6588;white-space:nowrap;flex:none}
 .exact-question-strip>span.exact-part-label{margin-inline-start:2px}
 .exact-q-scroll{flex:1 1 auto;min-width:64px;display:flex;align-items:center;gap:0}
 .exact-q-track{
@@ -2252,11 +2252,11 @@ body.exact-viewer{
 }
 .exact-question-strip button:not(.exact-q-arrow){
   flex:none;min-width:28px;height:28px;padding:0 6px;border-radius:8px 4px 9px 4px;
-  border:1.5px solid #22305a;background:#fff;color:#22305a;font:700 13px Heebo,sans-serif;cursor:pointer;
+  border:1.5px solid #22305a;background:#fff;color:#22305a;font:700 13px Heebo,'Heebo Fallback',sans-serif;cursor:pointer;
 }
 .exact-q-arrow{
   flex:none;width:22px;height:28px;min-width:22px;padding:0;border:0;border-radius:6px;
-  background:transparent;color:#22305a;font:700 18px/1 Heebo,sans-serif;cursor:pointer;
+  background:transparent;color:#22305a;font:700 18px/1 Heebo,'Heebo Fallback',sans-serif;cursor:pointer;
 }
 .exact-q-arrow:disabled{opacity:.28;cursor:default}
 .exact-parts{display:flex;flex:none;gap:3px;min-width:0;max-width:46%;overflow-x:auto;scrollbar-width:none}
@@ -2269,7 +2269,7 @@ body.exact-viewer{
 .exact-viewer .exact-hint-ladder{display:flex;align-items:center;flex:none}
 .exact-hint-ladder i{
   width:26px;height:26px;border-radius:50%;background:#fff;border:2px dashed #8a93aa;
-  color:#5a6588;display:inline-flex;align-items:center;justify-content:center;font:800 13px Heebo,sans-serif;
+  color:#5a6588;display:inline-flex;align-items:center;justify-content:center;font:800 13px Heebo,'Heebo Fallback',sans-serif;
 }
 .exact-hint-ladder i[data-open="true"]{background:#e6a534;border:2px solid #22305a;color:#22305a}
 .exact-hint-ladder em{width:8px;height:2px;background:#22305a}
@@ -2286,7 +2286,7 @@ body.exact-viewer{
 .exact-viewer .exact-message-row:focus-within{outline:3px solid #e6a534;outline-offset:2px}
 .exact-viewer .exact-message-row textarea{
   flex:1;min-width:0;width:auto;resize:none;border:0;border-radius:8px;
-  font:16px/1.55 Heebo,sans-serif;color:#22305a;background:transparent;padding:10px 6px;
+  font:16px/1.55 Heebo,'Heebo Fallback',sans-serif;color:#22305a;background:transparent;padding:10px 6px;
   min-height:44px;max-height:120px;margin:0;
 }
 .exact-viewer .exact-message-row .noam-send{
@@ -2307,7 +2307,7 @@ body.exact-viewer{
 .exact-mobile-tabs button{
   flex:1;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;
   border:2px solid #22305a;border-radius:12px 5px 13px 6px;
-  background:#fff;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;
+  background:#fff;color:#22305a;font:700 15px Heebo,'Heebo Fallback',sans-serif;cursor:pointer;
 }
 .exact-mobile-tabs button[aria-selected="true"]{background:#22305a;color:#fff}
 .exact-mobile-tabs button:not([aria-selected="true"]):hover{background:#eaf4f3}
@@ -2364,7 +2364,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 }
 .exact-viewer .pdf-page .noam-exercise-pin::before{
   content:"?";
-  font:700 13px/1 Heebo,sans-serif;color:#22305a;
+  font:700 13px/1 Heebo,'Heebo Fallback',sans-serif;color:#22305a;
 }
 .exact-viewer .pdf-page .noam-exercise-pin .exact-pin-label{display:none}
 .exact-viewer .pdf-page .noam-exercise-pin.is-active{
@@ -2378,15 +2378,15 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 .exact-viewer .exact-empty-title{margin:0;font:400 22px/1.3 'Secular One',sans-serif;color:#22305a}
 .exact-viewer .exact-empty-hint{
   min-height:44px;padding:6px 14px;border:2px solid #22305a;border-radius:12px 5px 13px 6px;
-  background:#e6a534;color:#22305a;font:800 15px Heebo,sans-serif;box-shadow:4px 4px 0 rgba(34,48,90,.18);cursor:pointer;
+  background:#e6a534;color:#22305a;font:800 15px Heebo,'Heebo Fallback',sans-serif;box-shadow:4px 4px 0 rgba(34,48,90,.18);cursor:pointer;
 }
 .exact-viewer .exact-hint-badge{
   display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:999px;
-  background:#e6a534;color:#22305a;font:800 12px Heebo,sans-serif;
+  background:#e6a534;color:#22305a;font:800 12px Heebo,'Heebo Fallback',sans-serif;
 }
 .exact-viewer .noam-row.exact-hint .noam-bubble{padding:0;overflow:hidden}
 .exact-viewer .exact-hint-head{
-  background:#e6a534;color:#22305a;font:800 13px Heebo,sans-serif;padding:6px 12px;
+  background:#e6a534;color:#22305a;font:800 13px Heebo,'Heebo Fallback',sans-serif;padding:6px 12px;
 }
 .exact-viewer .noam-row.exact-overview .noam-bubble{
   background:#eaf4f3;border-color:#22305a;
@@ -2400,10 +2400,10 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
   border:2px solid #a84434;border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
   box-shadow:4px 4px 0 rgba(229,115,92,.2);background:#fff;color:#22305a;
 }
-.exact-viewer .exact-error-title{font:700 16px Heebo,sans-serif;color:#a84434}
+.exact-viewer .exact-error-title{font:700 16px Heebo,'Heebo Fallback',sans-serif;color:#a84434}
 .exact-viewer .exact-error-dismiss{
   min-height:44px;padding:6px 14px;border:2px solid #22305a;border-radius:12px 5px 13px 6px;
-  background:#fff;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;
+  background:#fff;color:#22305a;font:700 15px Heebo,'Heebo Fallback',sans-serif;cursor:pointer;
 }
 .exact-viewer .noam-row.exact-error.is-dismissed .exact-error-title,
 .exact-viewer .noam-row.exact-error.is-dismissed .exact-error-dismiss,
@@ -2444,7 +2444,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 </style>
 
 <header class="exact-viewer-header">
-  <a href="/" aria-label="נועם דורון מתמטיקה — בית"><img src="design-exact/assets/logo.png" alt="נועם דורון מתמטיקה"></a>
+  <a href="/" aria-label="נועם דורון מתמטיקה — בית"><img src="design-exact/assets/logo.webp" alt="נועם דורון מתמטיקה" width="320" height="136" decoding="async"></a>
   <nav aria-label="ראשי"><a href="/">בית</a><a href="/worksheets" aria-current="page">דפי עבודה</a><a href="/learning.html">הלמידה שלי</a></nav>
 </header>
 
@@ -2507,7 +2507,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
         role="region"
         aria-label="דף העבודה"
       >
-        <div class="pdf-pages" id="pdfPages"></div>
+        <div class="pdf-pages" id="pdfPages"><div class="pdf-page pdf-page--reserve" aria-hidden="true"></div></div>
       </div>
 
       <iframe
@@ -2554,7 +2554,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 
       <div class="panel-head">
 
-        <img class="exact-ramzi-avatar" src="design-exact/assets/avatar/ramzi-A-idle.svg" alt="">
+        <img class="exact-ramzi-avatar" src="design-exact/assets/avatar/ramzi-A-idle.svg" alt="" width="44" height="44" decoding="async">
         <div class="exact-ramzi-title">
           <div class="exact-ramzi-name"><b id="noamPanelTitle">רמזי</b><span class="panel-badge">נועם AI</span></div>
           <span class="exact-ramzi-status">רמזים והסברים במתמטיקה</span>
@@ -2601,7 +2601,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
   aria-controls="panel"
   aria-expanded="false"
 >
-  <img src="design-exact/assets/avatar/ramzi-A-idle.svg" alt=""><span>עזרה מרמזי</span>
+  <img src="design-exact/assets/avatar/ramzi-A-idle.svg" alt="" width="36" height="36" decoding="async"><span>עזרה מרמזי</span>
 </button>
 
 <dialog class="noam-feedback-dialog" id="noamFeedbackDialog" aria-labelledby="noamFeedbackTitle">
@@ -7592,7 +7592,7 @@ function esc(s){
 <script src="noam-learning-config.js?v=20260908-1" defer></script>
 
 <script src="noam-learning-core.js?v=20260908-1" defer></script>
-<script src="noam-learning-boot.js?v=20260908-1" defer></script>
+<script src="noam-learning-boot.js?v=20261002-lazy-supabase" defer></script>
 <script src="ramzi/ramzi-avatar.js"></script>
 <script id="exact-viewer-adapter">
 /* Presentation adapter only. The preceding released scripts retain ownership

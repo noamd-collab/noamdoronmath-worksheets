@@ -13,7 +13,8 @@
   entryUrl.searchParams.delete('signin');history.replaceState(null,'',entryUrl.pathname+entryUrl.search+entryUrl.hash);
  }
  var storage;try{storage=localStorage;}catch(e){storage={getItem:function(){throw e;},setItem:function(){throw e;},removeItem:function(){throw e;}};}
- if(cfg.googleEnabled&&window.supabase&&!embedded){try{client=window.supabase.createClient(cfg.url,cfg.key,{auth:{flowType:'pkce',storageKey:'noam-learning-auth-v1',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});}catch(e){client=null;}}
+ function makeClient(){if(!(cfg.googleEnabled&&window.supabase&&!embedded))return null;try{return window.supabase.createClient(cfg.url,cfg.key,{auth:{flowType:'pkce',storageKey:'noam-learning-auth-v1',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});}catch(e){return null;}}
+ client=makeClient();
  engine=Core.create({catalog:catalog,storage:storage,client:client});
  var message=document.createElement('p');message.className='nl-message';message.setAttribute('role','status');message.setAttribute('aria-live','polite');
  function el(tag,text,cls){var e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
@@ -22,7 +23,18 @@
  function tell(text){message.textContent=text;}
  function fail(){tell('השינוי לא נשמר. בדקו את החיבור ונסו שוב. אפשר להמשיך לפתוח ולתרגל את כל הדפים.');}
  async function signInWithGoogle(){
-  if(!client||signInPending||engine.snapshot().user)return;
+  if(!client){
+   if(signInPending||!window.NoamEnsureSupabase)return;
+   signInPending=true;renderAuth();
+   window.NoamEnsureSupabase(function(){
+    signInPending=false;
+    adoptClient(makeClient());
+    if(!client){renderAuth();tell('חיבור Google אינו זמין כרגע. אפשר להמשיך במעקב המקומי ולנסות שוב לאחר רענון.');return;}
+    signInWithGoogle();
+   });
+   return;
+  }
+  if(signInPending||engine.snapshot().user)return;
   signInPending=true;renderAuth();
   try{
    var resolved=AuthRedirect&&AuthRedirect.resolveAuthRedirectTo
@@ -57,7 +69,7 @@
    authBox.append(el('strong','אפשר לעבוד כאן בלי להתחבר.'));
    authBox.append(el('p','סימוני העבודה נשמרים בדפדפן הזה. במחשב משותף כדאי למחוק אותם בסיום.'));
    if(embedded){var a=link('פתיחת הלמידה שלי בחלון מלא',portal);a.target='_blank';a.rel='noopener';authBox.append(a);}
-   else if(client){var b=button(signInPending?'פותחים את הכניסה עם Google…':'המשך עם Google',signInWithGoogle,'nl-google');b.disabled=signInPending;authBox.append(b,el('small','הכניסה אופציונלית ומאפשרת שמירה בין מכשירים. שם, כתובת דוא״ל ומזהה חשבון משמשים לזיהוי. איננו מבקשים גישה ל־Gmail או ל־Drive.'));}
+   else if(client||(cfg.googleEnabled&&!embedded&&window.NoamEnsureSupabase)){var b=button(signInPending?'פותחים את הכניסה עם Google…':'המשך עם Google',signInWithGoogle,'nl-google');b.disabled=signInPending;authBox.append(b,el('small','הכניסה אופציונלית ומאפשרת שמירה בין מכשירים. שם, כתובת דוא״ל ומזהה חשבון משמשים לזיהוי. איננו מבקשים גישה ל־Gmail או ל־Drive.'));}
    else authBox.append(el('small',cfg.googleEnabled?'חיבור Google אינו זמין כרגע. אפשר להמשיך במעקב המקומי ולנסות שוב לאחר רענון.':'שמירה בין מכשירים עם Google נמצאת בהכנה. המעקב במכשיר כבר זמין ללא כניסה.'));
   }
  }
@@ -103,13 +115,12 @@
   if(nav){var a=link('הלמידה שלי',portal);a.className='nl-viewer-link';nav.append(a);}
   if(item){var holder=el('details',undefined,'nl-viewer-progress');holder.append(el('summary','מצב העבודה שלי'),controls(item),authBox,message);var main=document.querySelector('main');main.before(holder);}
  }
- function update(){var active=document.activeElement,box=active&&active.closest('[data-learning-id]'),id=box&&box.dataset.learningId,status=active&&active.dataset.status;renderAuth();renderPortal();refreshControls();if(id&&status!==undefined){var target=document.querySelector('[data-learning-id="'+id+'"] button[data-status="'+status+'"]');if(target&&!target.disabled&&!target.hidden)target.focus({preventScroll:true});}}engine.subscribe(update);update();
- window.addEventListener('storage',function(e){if(e.key===Core.storageKey)engine.storageChanged();});
- window.addEventListener('pageshow',function(e){if(e.persisted&&signInPending){signInPending=false;renderAuth();}});
- if(client){client.auth.onAuthStateChange(function(event,session){setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);});
+ function update(){var active=document.activeElement,box=active&&active.closest('[data-learning-id]'),id=box&&box.dataset.learningId,status=active&&active.dataset.status;renderAuth();renderPortal();refreshControls();if(id&&status!==undefined){var target=document.querySelector('[data-learning-id="'+id+'"] button[data-status="'+status+'"]');if(target&&!target.disabled&&!target.hidden)target.focus({preventScroll:true});}}
+ var authWired=false;
+ function wireAuth(){if(!client||authWired)return;authWired=true;
+  client.auth.onAuthStateChange(function(event,session){setTimeout(function(){engine.setUser(session&&session.user).catch(fail);},0);});
   client.auth.getSession().then(async function(r){if(r.error){tell('החיבור לחשבון אינו זמין. נסו לרענן את הדף.');}await engine.setUser(r.data&&r.data.session&&r.data.session.user);if(signInRequested&&!r.error)await signInWithGoogle();}).catch(fail);
   if(new URL(location.href).searchParams.has('code')){
-   // Exchange happens via detectSessionInUrl + same-origin PKCE storage; strip code from address bar (never leave tokens in URL).
    client.auth.getSession().finally(function(){
     var u=new URL(location.href);
     u.searchParams.delete('code');
@@ -118,4 +129,9 @@
    });
   }
  }
+ function adoptClient(next){if(!next)return;client=next;engine=Core.create({catalog:catalog,storage:storage,client:client});engine.subscribe(update);wireAuth();update();}
+ engine.subscribe(update);update();
+ window.addEventListener('storage',function(e){if(e.key===Core.storageKey)engine.storageChanged();});
+ window.addEventListener('pageshow',function(e){if(e.persisted&&signInPending){signInPending=false;renderAuth();}});
+ wireAuth();
 })();

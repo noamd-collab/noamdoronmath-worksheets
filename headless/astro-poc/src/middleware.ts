@@ -37,5 +37,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
       },
     });
   }
-  return next();
+  const response = await next();
+  // Hashed Astro bundles and self-hosted font files. Wix may serve public
+  // files at the edge before this middleware; the header still applies when
+  // Astro handles the request (local preview and any pass-through).
+  const versionedFont = /^\/fonts\/[^/]+\.[a-f0-9]{8}\.woff2$/.test(path);
+  if (path.startsWith('/_astro/') || versionedFont) {
+    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+  }
+  return response;
 });
