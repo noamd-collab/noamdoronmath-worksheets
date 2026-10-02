@@ -11,11 +11,17 @@ interface Props {
 }
 const { archive } = Astro.props;
 const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
+const archiveCrumbs = [
+  { name: 'בית', path: '/' },
+  { name: 'בלוג', path: '/blog' },
+  ...(archive.path === '/blog' ? [] : [{ name: archive.h1 || archive.title, path: archive.path }]),
+];
 ---
 <BaseLayout
   title={archive.title}
   description={archive.description}
   ogImage={archive.ogImage}
+  crumbs={archiveCrumbs}
   skipHref="#blog-archive-main"
 >
   <BlogSeoTags slot="seo-tags" description={archive.description} image={archive.ogImage} jsonLd={archive.jsonLd} />

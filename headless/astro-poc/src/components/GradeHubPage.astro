@@ -11,6 +11,7 @@ import {
 } from '../lib/gradeHubs';
 import { localizeSiteHref } from '../lib/sitePages';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import { educationalLevelForGrade, learningResourceJsonLd } from '../lib/structuredData';
 
 interface Props {
   grade: GradeHubGrade;
@@ -36,6 +37,17 @@ const grade1Groups = (grade1Catalog?.groups ?? [])
     ),
   }))
   .filter((group) => group.topics.length > 0);
+const gradeCrumbs = [
+  { name: 'בית', path: '/' },
+  { name: gradeLabel || hub.h1, path: hub.path },
+];
+const gradeResourceLd = learningResourceJsonLd({
+  name: hub.h1,
+  path: hub.path,
+  description: hub.description,
+  educationalLevel: educationalLevelForGrade(grade),
+  learningResourceType: 'דפי עבודה לפי כיתה',
+});
 const faqJsonLd = hasFaq
   ? {
       '@context': 'https://schema.org',
@@ -79,9 +91,11 @@ const gradePool = buildGradeLoopPool(grade);
 <BaseLayout
   title={hub.title}
   description={hub.description}
+  crumbs={gradeCrumbs}
   activeNav="worksheets"
   skipHref="#grade-hub-main"
 >
+  <script type="application/ld+json" set:html={JSON.stringify(gradeResourceLd)} />
   {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
   <main class="grade-hub wrap exact-grade" data-grade={String(grade)} id="grade-hub-main">
     <nav class="grade-hub__siblings" aria-label="כיתות">
