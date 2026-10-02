@@ -8,6 +8,7 @@ import {
   type BlogPostContent,
 } from '../lib/blogPosts';
 import { isolateBlogPostDisplay } from '../lib/mathDirection';
+import { articleJsonLd, jsonLdTypes } from '../lib/structuredData';
 
 interface Props {
   post: BlogPostContent;
@@ -18,6 +19,22 @@ const { audioSlug } = Astro.props;
 const post = isolateBlogPostDisplay(Astro.props.post);
 
 const jsonLdScripts = Array.isArray(post.jsonLd) ? post.jsonLd : [];
+const postTypes = jsonLdTypes(jsonLdScripts);
+const articleFallback =
+  postTypes.includes('Article') || postTypes.includes('BlogPosting')
+    ? null
+    : articleJsonLd({
+        headline: post.h1,
+        path: post.path,
+        description: post.description,
+        datePublished: post.datePublished,
+        dateModified: post.dateModified,
+      });
+const postCrumbs = [
+  { name: 'בית', path: '/' },
+  { name: 'בלוג', path: '/blog' },
+  { name: post.h1, path: post.path },
+];
 
 const ae = post.authorEditor;
 const aboutHref = ae?.aboutHref ? localizeBlogHref(ae.aboutHref) : null;
@@ -43,6 +60,7 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
   description={post.description}
   ogImage={post.ogImage || post.coverImage}
   ogType="article"
+  crumbs={postCrumbs}
   skipHref="#blog-post-main"
 >
   <BlogSeoTags slot="seo-tags" description={post.description} image={post.ogImage || post.coverImage} jsonLd={post.jsonLd} />
@@ -51,6 +69,7 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
       <script type="application/ld+json" set:html={JSON.stringify(ld)} />
     ))
   }
+  {articleFallback && <script type="application/ld+json" set:html={JSON.stringify(articleFallback)} />}
   <main
     id="blog-post-main"
     class="wrap blog-post"

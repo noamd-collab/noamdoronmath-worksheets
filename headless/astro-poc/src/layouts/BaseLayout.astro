@@ -20,6 +20,7 @@ import {
   robotsContent,
   type OgType,
 } from '../lib/siteSeo';
+import { breadcrumbList, type Crumb } from '../lib/structuredData';
 
 interface Props {
   title?: string;
@@ -27,6 +28,8 @@ interface Props {
   ogImage?: string;
   /** website for hubs and tools; article for blog posts. */
   ogType?: OgType;
+  /** Visible trail. Defaults to בית, then the page title. */
+  crumbs?: Crumb[];
   /** Optional override; default is pathname-derived (M37). */
   activeNav?: ActiveNavKey | null;
   compactBrand?: boolean;
@@ -37,6 +40,7 @@ const {
   description = DEFAULT_SITE_DESCRIPTION,
   ogImage,
   ogType = 'website',
+  crumbs,
   activeNav,
   compactBrand = false,
   skipHref = '#topic-list',
@@ -56,6 +60,16 @@ const social = buildSocialMeta({
   image: ogImage,
   type: ogType,
 });
+const crumbItems: Crumb[] =
+  crumbs && crumbs.length > 0
+    ? crumbs
+    : Astro.url.pathname === '/'
+      ? [{ name: 'בית', path: '/' }]
+      : [
+          { name: 'בית', path: '/' },
+          { name: title, path: `${Astro.url.pathname}${Astro.url.search}` },
+        ];
+const breadcrumbLd = breadcrumbList(crumbItems);
 ---
 <!doctype html>
 <html lang="he" dir="rtl">
@@ -142,6 +156,7 @@ const social = buildSocialMeta({
     </script>
   </head>
   <body class="exact-site">
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
     <div class="exact-frame">
     <a class="skip-link" href={skipHref}>דילוג לתוכן</a>
     <SiteHeader active={resolvedNav} compactBrand={useCompactBrand} />
