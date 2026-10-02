@@ -131,8 +131,11 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     assert.match(pageSource, /max-age=3600/);
     assert.doesNotMatch(pageSource, /Astro\.url/);
     assert.doesNotMatch(pageSource, /wixsite/);
+    // Static robots.txt stays absent. Cut-over issue requires /sitemap.xml (index)
+    // and /robots.txt.ts. The blog child stays /sitemap-blog.xml.
     assert.equal(existsSync(fromTest('../src/pages/robots.txt')), false);
-    assert.equal(existsSync(fromTest('../src/pages/sitemap.xml.ts')), false);
+    assert.equal(existsSync(fromTest('../src/pages/sitemap.xml.ts')), true);
+    assert.equal(existsSync(fromTest('../src/pages/robots.txt.ts')), true);
 
     const xml = renderBlogSitemapXml();
     assertWellFormedXml(xml);
