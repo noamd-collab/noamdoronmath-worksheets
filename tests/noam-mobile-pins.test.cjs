@@ -22,7 +22,18 @@ function button() {
   item.addEventListener = (name, callback) => { item.listeners[name] = callback; };
   item.click = () => item.listeners.click({ preventDefault() {}, stopPropagation() {} });
   item.remove = () => { item.parent.children = item.parent.children.filter(child => child !== item); };
+  item.marks = [];
+  item.appendChild = child => { assert.equal(child.tag, "img"); item.marks.push(child); };
   return item;
+}
+
+// 394fe07 "Replace worksheet ! pins with the רמזי mark." (PR #34, approved by Noam
+// 2.10.2026) gives each report button a decorative <img class="exact-ramzi-pin">
+// instead of "!". Only that mark may be created besides buttons.
+function ramziMark() {
+  const mark = { tag: "img", attributes: {} };
+  mark.setAttribute = (name, value) => { mark.attributes[name] = value; };
+  return mark;
 }
 
 function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false, pageWidth = 550) {
@@ -53,6 +64,7 @@ function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false
       return media;
     } },
     document: { createElement: tag => {
+      if (tag === "img") return ramziMark();
       assert.equal(tag, "button");
       const item = button();
       item.focus = () => { ctx.document.activeElement = item; };
@@ -124,6 +136,17 @@ test("every Noam AI target gets a separate feedback target", () => {
   assert.equal(f.reports()[2].attributes["aria-label"], "דיווח על שאלה 2");
   f.reports()[0].click();
   assert.deepEqual([...reports[0]], ["q1a", "q1b"]);
+  for (const report of f.reports()) {
+    assert.equal(report.textContent, "");
+    assert.equal(report.marks.length, 1);
+    const [mark] = report.marks;
+    assert.equal(mark.className, "exact-ramzi-pin");
+    assert.equal(mark.src, "design-exact/assets/avatar/ramzi-A-idle.svg");
+    assert.equal(mark.alt, "");
+    assert.equal(mark.attributes["aria-hidden"], "true");
+    assert.equal(mark.draggable, false);
+  }
+  assert.ok(f.pins().every(pin => pin.marks.length === 0));
 });
 
 test("two-column questions keep one clearly paired report target when the rendered page is narrow", () => {
