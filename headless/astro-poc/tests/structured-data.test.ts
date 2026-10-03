@@ -40,7 +40,7 @@ describe('structured data builders', () => {
       dateModified: '2026-01-02',
     });
     for (const node of [crumbs, resource, article, organizationJsonLd()]) {
-      assert.deepEqual(validateJsonLdNode(node), [], node['@type']);
+      assert.deepEqual(validateJsonLdNode(node), [], String(node['@type']));
     }
     assert.equal(resource.inLanguage, 'he');
     assert.equal(resource.educationalLevel, 'כיתה ז׳');

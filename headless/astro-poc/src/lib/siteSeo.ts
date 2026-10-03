@@ -32,7 +32,16 @@ export function isProductionHost(hostname: string): boolean {
   return h === 'www.noamdoronmath.co.il' || h === 'noamdoronmath.co.il';
 }
 
-export function readSiteIndexEnv(env: SiteIndexEnv | NodeJS.ProcessEnv = process.env): SiteIndexEnv {
+/**
+ * Wix hosting runs on Cloudflare Workers, where `process` may not exist (see blogAudio.ts).
+ * A bare `process.env` default would throw a ReferenceError in BaseLayout on every page.
+ */
+function processEnv(): SiteIndexEnv {
+  const proc = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process;
+  return proc?.env ?? {};
+}
+
+export function readSiteIndexEnv(env: SiteIndexEnv = processEnv()): SiteIndexEnv {
   return { SITE_INDEXABLE: env.SITE_INDEXABLE };
 }
 
@@ -97,8 +106,24 @@ export function buildSocialMeta(input: {
 }
 
 /** Canonical URL on the main production domain (path + search preserved; hash dropped). */
+/**
+ * Query params that change what a page shows. Everything else (utm_*, fbclid, popup,
+ * search/filter UI state, param order) points at the same canonical URL.
+ */
+const CANONICAL_PARAMS: Record<string, readonly string[]> = {
+  '/worksheets': ['grade', 'topic'],
+};
+
 export function canonicalUrl(pathname: string, search = ''): string {
   const path = pathname.startsWith('/') ? pathname : `/${pathname}`;
   const normalized = path === '/' ? '/' : path.replace(/\/+$/, '');
-  return `${SITE_CANONICAL_ORIGIN}${normalized}${search || ''}`;
+  const keep = CANONICAL_PARAMS[normalized] || [];
+  const from = new URLSearchParams(search || '');
+  const out = new URLSearchParams();
+  for (const key of keep) {
+    const value = (from.get(key) || '').trim();
+    if (/^\d{1,3}$/.test(value)) out.set(key, value);
+  }
+  const query = out.toString();
+  return `${SITE_CANONICAL_ORIGIN}${normalized}${query ? `?${query}` : ''}`;
 }
