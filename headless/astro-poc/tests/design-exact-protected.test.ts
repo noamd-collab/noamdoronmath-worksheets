@@ -51,8 +51,11 @@ describe('exact-design protected live-baseline boundaries', () => {
   it('preserves the shared head exactly, including SEO, canonical, fonts and robots', () => {
     const head = read('src/layouts/BaseLayout.astro').match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'BaseLayout must retain its head');
-    // Self-hosted Heebo + Secular One preloads replace the Google Fonts stylesheet.
-    assert.equal(sha256(head), '6426393d0bb12eba064470d7016f44154fd0d02ff5f2164a4a071069c32fa798');
+    // SEO cut-over (issue): one title/description/canonical, full OG+Twitter,
+    // and a wider Wix-duplicate strip. Reviewed on purpose; not a design tweak.
+    // SEO stage 4: title/description/OG/breadcrumb read approvedSeoProposal(seoPath)
+    // (only rows with approved: true). Reviewed on purpose; not a design tweak.
+    assert.equal(sha256(head), '97ad7597489241c3478c4e978ee84dc0d3ca081fc5488e06eb43aba838ae9435');
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {
