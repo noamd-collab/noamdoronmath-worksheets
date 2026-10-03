@@ -346,7 +346,8 @@ export class ExactReferenceMotion {
     // Run here, rather than only at init, so deferred hydrated islands receive
     // keyboard support exactly once without changing their SSR attributes.
     this.elements('[data-doodle] img').forEach(img => {
-      if (img.closest('a,button') || this.keyboardImages.has(img)) return;
+      // Decorative copies inside aria-hidden (e.g. the flying plane) must not take focus.
+      if (img.closest('a,button,[aria-hidden="true"]') || this.keyboardImages.has(img)) return;
       this.keyboardImages.add(img);
       img.tabIndex = 0;
       img.setAttribute('role', 'button');

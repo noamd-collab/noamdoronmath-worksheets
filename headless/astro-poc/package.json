@@ -12,9 +12,11 @@
     "preview": "wix preview",
     "astro": "astro",
     "typecheck": "astro check",
+    "typecheck:tests": "tsc -p tsconfig.tests.json",
     "test": "node scripts/run-tests.mjs",
     "test:unit": "node scripts/run-tests.mjs --unit",
     "test:live-ssr": "node scripts/run-tests.mjs --live-ssr",
+    "test:journeys": "node scripts/run-journeys.mjs",
     "refresh:catalog": "node scripts/refresh-catalog-snapshot.mjs refresh",
     "check:catalog": "node scripts/refresh-catalog-snapshot.mjs check",
     "refresh:content": "node scripts/content-refresh.mjs",
@@ -45,10 +47,14 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@emnapi/runtime": "^1.11.3",
+    "@types/node": "^22.20.5",
     "@wix/astro": "^2.39.0",
     "@wix/astro-pages": "^2.0.4",
     "@wix/astro-wix-hosting-adapter": "^2.0.0",
     "@wix/cli": "^1.1.92",
+    "pdfjs-dist": "3.11.174",
+    "puppeteer-core": "^25.12.0",
     "tsx": "^4.23.15"
   },
   "allowScripts": {

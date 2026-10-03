@@ -120,7 +120,7 @@ function buildMarginSlots(
   rng: () => number,
   count: number
 ): Array<{ side: 'start' | 'end'; inlineInsetPct: number; yPct: number; xPct: number }> {
-  const yOrder = shuffleIndices(rng, PHI_POINTS.length).map((i) => PHI_POINTS[i]);
+  const yOrder: number[] = shuffleIndices(rng, PHI_POINTS.length).map((i) => PHI_POINTS[i]);
   // Extra Y bands if count > 4
   while (yOrder.length < count) {
     const last = yOrder[yOrder.length - 1] ?? 38.2;

@@ -22,13 +22,17 @@ const protectedFiles: Record<string, string> = {
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   'src/lib/worksheetLinks.ts': '1f9a5fdf234997fc8ba7593d1ef0066f082586816770eefc45da40035a825eaf',
   'src/lib/conceptLoops.ts': 'b9e5a864e93b08e70fa7257dcf9d7fedae7dcb4cd5798996b7325d98575be53d',
-  'src/components/ConceptLoop.astro': '12c0ec36ecf290acec5f3a20c5fd74532de522c0d9edd6711322d209851218f6',
+  // Fence reviewed 2026-10-03 against merged, approved PRs (not regenerated blindly):
+  // ConceptLoop copy/labels/fractions from PR #41 (incl. PR #40) and PR #50.
+  'src/components/ConceptLoop.astro': '4fc2e8948eed7e32714c32382602d511e7d1e06742e129bca7b413183d841199',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
-  'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',
+  // One readout line only: S = (a · h) : 2 school notation, PR #40 via PR #41.
+  'src/components/TriangleAreaExplorer.astro': 'b2760424b5735dcf4340e5fe95aa306d19e2dd7043e841c5d12092c0fa6a01b6',
   'src/lib/homePage.ts': '26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb',
   'src/data/home-page.json': 'af14191d863d623cfb95e65f28ca258663d4b8be01a1ef07d520c8b1e47ff73b',
-  'public/learning.html': 'ced06f94814182e633bc9b356a8262ecebd14513c5b74c7e2515e4e09ee62524',
+  // Head only: favicon/manifest/theme-color tags (b7eab08), merged with PR #34 (approved).
+  'public/learning.html': 'c6f64d45c20c27ab642fe429eaea38a353dd0a68cf27a48b40237d0c98bfe3f9',
   'public/noam-learning-config.js': '90228359e65a99300b7d5017ddc58edce650b0b1a403a13b40c22608330f4ca7',
   // Lazy Supabase: guest learning no longer downloads the SDK. Google sign-in
   // and an existing session still load it, then recreate the engine.
