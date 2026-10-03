@@ -56,6 +56,7 @@ export interface TitlePart {
 }
 
 export interface LevelLink {
+  key: string;
   label: string;
   href: string;
   /** Sub-topic title when the card bundles sub-topics. */

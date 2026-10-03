@@ -10,7 +10,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { CatalogV1 } from '../src/lib/catalog/types';
+import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { collectBlogPostHrefs, listServedBlogPosts } from '../src/lib/blogPosts';
 import { loadAllTopicPages } from '../src/lib/topicPages';
 import { buildIndex, type TermsDecision } from '../src/lib/siteSearch/buildIndex';
@@ -19,7 +19,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p: string) => JSON.parse(readFileSync(join(root, p), 'utf8'));
 
 export function buildFromRepo() {
-  const catalog: CatalogV1 = read('src/data/catalog.v1.json');
+  // The site's catalog loader (PDF links on the Wix Media CDN, as the catalog page uses).
+  const catalog = loadCatalog();
   const review: { decisions: TermsDecision[] } = read('src/data/search-terms-review.json');
   const pages = loadAllTopicPages().map((p) => {
     const ctas = p.catalogCtas?.length ? p.catalogCtas : p.catalogCta ? [p.catalogCta] : [];

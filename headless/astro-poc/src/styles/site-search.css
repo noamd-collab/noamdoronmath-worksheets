@@ -1,0 +1,134 @@
+/* Site search page (/search). Builds on the catalog's design (exact-catalog.css):
+   same search box, chips, cards and level buttons; only search-specific pieces here. */
+.site-search .search { max-width: 640px; }
+.site-search__submit {
+  flex: none;
+  padding: 6px 14px;
+  border: 2px solid #22305a;
+  border-radius: 10px;
+  background: #22305a;
+  color: #fbfaf5;
+  font: 700 15px/normal Heebo, 'Heebo Fallback', sans-serif;
+  cursor: pointer;
+}
+.site-search__submit:hover { background: #e5735c; border-color: #e5735c; }
+.site-search__submit:focus-visible,
+.site-search a:focus-visible {
+  outline: 3px solid #e5735c;
+  outline-offset: 2px;
+}
+/* The box shows focus for its input (the input itself has no frame). */
+.site-search .search input:focus-visible { outline: none; }
+.site-search .search:focus-within { outline: 3px solid #e5735c; outline-offset: 2px; }
+.site-search__hint { margin: 0; font-size: 14px; color: #5a6588; }
+.site-search .chips a.chip {
+  display: inline-block;
+  border: 2px solid #22305a;
+  color: #22305a;
+  background: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.site-search .chips a.chip[aria-current='page'] { background: #22305a; color: #fbfaf5; }
+.site-search .status { margin-bottom: 20px; }
+.site-search__note { color: #5a6588; }
+.site-search__notice {
+  margin: 0 0 20px;
+  padding: 10px 14px;
+  border: 2px dashed #c98a1a;
+  border-radius: 10px;
+  background: #fdf6e8;
+  color: #22305a;
+  font-size: 15px;
+}
+.site-search__results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-search__results > li { display: flex; min-width: 0; }
+.site-search__results .card { flex: 1; }
+.site-search__card h3 {
+  margin: 0;
+  font: 700 19px/1.35 Heebo, 'Heebo Fallback', sans-serif;
+}
+.site-search__card h3 a { color: #22305a; text-decoration: none; }
+.site-search__card h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.site-search mark {
+  background: #fdf1d8;
+  color: inherit;
+  border-radius: 4px;
+  padding: 0 2px;
+}
+.site-search__meta { display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; }
+.site-search__kind,
+.site-search__grade,
+.site-search__group {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.site-search__kind--topic { background: #eaf4f3; color: #1e605e; }
+.site-search__kind--page { background: #fdf1d8; color: #7a520f; }
+.site-search__kind--post { background: #f3e9f7; color: #5b2a73; }
+.site-search__grade { background: #22305a; color: #fbfaf5; }
+.site-search__group { background: #f1f2f6; color: #4a5478; font-weight: 500; }
+.site-search__bundle { display: flex; flex-direction: column; gap: 10px; }
+.site-search__subtitle { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 700; }
+.site-search__action { margin: 0; }
+.site-search__action a,
+.site-search__related a,
+.site-search__start a:not(.chip) {
+  color: #0d47a1;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.site-search__related {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 4px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px dashed #c4c8d6;
+  list-style: none;
+  font-size: 14px;
+}
+.site-search__related .site-search__kind { font-size: 12px; }
+.site-search__suggest {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+.site-search__start .site-search__suggest { justify-content: flex-start; }
+.site-search__suggest a.chip,
+.site-search__other a.chip {
+  display: inline-block;
+  padding: 6px 14px;
+  border: 2px solid #22305a;
+  border-radius: 999px;
+  background: #fff;
+  color: #22305a;
+  font-size: 14px;
+  text-decoration: none;
+}
+.site-search__other { margin-top: 32px; }
+.site-search__other h2 { margin: 0 0 10px; font: 700 18px/normal Heebo, 'Heebo Fallback', sans-serif; }
+.site-search__other p { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.site-search__empty .site-search__other { margin-top: 8px; text-align: center; }
+.site-search__empty .site-search__other p { justify-content: center; }
+.site-catalog-sitewide { margin: 0; font-size: 14px; }
+.exact-catalog .site-catalog-sitewide-link { margin-inline-start: 12px; color: #0d47a1; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.site-catalog-sitewide a { color: #0d47a1; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 480px) {
+  .site-search { padding-left: 16px; padding-right: 16px; }
+  .site-search__submit { padding: 6px 10px; }
+}

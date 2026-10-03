@@ -251,6 +251,7 @@ function levelLinks(doc: SearchDoc, p: PreparedIndex): LevelLink[] {
   const grade = doc.grade;
   const links = (topic: CatalogTopic, of?: string): LevelLink[] =>
     topic.levels.map((l) => ({
+      key: l.key,
       label: l.label,
       href: buildWorksheetHref({ catalog: p.catalogShell, grade, topic, levelKey: l.key }),
       ...(of ? { of } : {}),
@@ -386,11 +387,16 @@ export function search(p: PreparedIndex, rawQuery: string, opts: SearchOptions =
   return base;
 }
 
-/** Topic ids of one grade that match (catalog page filter); null when the query is empty. */
+/**
+ * Topic ids of one grade that match (catalog page filter); null when the query is
+ * empty. A query naming another grade ("שברים כיתה ה" on grade 7) matches nothing here.
+ */
 export function matchingTopicIds(p: PreparedIndex, rawQuery: string, grade: number, live = true): Set<number> | null {
-  const tokens = tokenize(rawQuery);
-  if (!tokens.length) return null;
-  const { scored } = scoreAll(p, tokens, live && !/\s$/.test(rawQuery), []);
+  const parsed = parseQuery(rawQuery);
+  if (!parsed.tokens.length && !parsed.grade) return null;
+  if (parsed.grade && parsed.grade !== grade) return new Set();
+  if (!parsed.tokens.length) return null;
+  const { scored } = scoreAll(p, parsed.tokens, live && !/\s$/.test(rawQuery), []);
   const out = new Set<number>();
   for (const s of scored) if (s.doc.kind === 'topic' && s.doc.grade === grade && s.doc.topic) out.add(s.doc.topic.id);
   return out;

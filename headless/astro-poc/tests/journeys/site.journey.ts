@@ -519,3 +519,139 @@ describe('journey: search, no results, browser back and URL parameters', () => {
     });
   }
 });
+
+/** The search island is interactive. */
+async function searchReady(tab: Tab) {
+  await tab.page.waitForSelector('astro-island[component-export="SiteSearch"]:not([ssr])', { timeout: 15000 });
+}
+const searchStatus = (tab: Tab) => tab.page.$eval('[data-site-search-status]', (el) => el.textContent?.trim() || '');
+const resultKeys = (tab: Tab) =>
+  tab.page.$$eval('[data-site-search-results] [data-result-key]', (els) => els.map((el) => el.getAttribute('data-result-key') || ''));
+const resultGrades = async (tab: Tab) => (await resultKeys(tab)).map((k) => Number(k.split(':')[1]));
+const urlParams = (tab: Tab) => new URL(tab.page.url()).searchParams;
+
+describe('journey: site search', () => {
+  for (const viewport of viewports) {
+    it(`keyboard search, binding grade, worksheet and back on ${viewport}`, async () => {
+      const tab = await openTab(viewport);
+      try {
+        await go(tab, '/search');
+        await searchReady(tab);
+        await assertHebrewRtl(tab, `${viewport} search start`);
+        // Keyboard only: focus the box, type, Enter.
+        await tab.page.focus('[data-site-search-input]');
+        await tab.page.keyboard.type('שברים כיתה ה');
+        await tab.page.keyboard.press('Enter');
+        await tab.page.waitForFunction(() => new URL(location.href).searchParams.get('q') === 'שברים כיתה ה');
+        await tab.page.waitForFunction(() => /^נמצאו \d+ תוצאות בכיתה ה׳/.test(document.querySelector('[data-site-search-status]')?.textContent?.trim() || ''));
+        const grades = await resultGrades(tab);
+        assert.ok(grades.length > 0 && grades.every((g) => g === 5), `${viewport}: only grade 5, got ${grades}`);
+        await assertHebrewRtl(tab, `${viewport} search results`);
+
+        // A worksheet from the first card is the PDF of that topic.
+        const [g, t] = (await resultKeys(tab))[0].split(':').slice(1).map(Number);
+        const links = await viewerLinks(tab, '[data-site-search-results] li:first-child', { grade: g, topic: t });
+        assert.ok(links.length > 0, `${viewport}: first result has worksheet links`);
+        await openWorksheet(tab, links[0], `${viewport} search worksheet`);
+        await back(tab, `${viewport} worksheet`);
+        await searchReady(tab);
+        assert.equal(urlParams(tab).get('q'), 'שברים כיתה ה');
+        assert.equal(await tab.page.$eval('[data-site-search-input]', (el) => (el as HTMLInputElement).value), 'שברים כיתה ה');
+        assert.deepEqual(await resultGrades(tab), grades);
+
+        // Another grade from the chips (keyboard), then back to grade 5.
+        const chip = await tab.page.$$('nav[aria-label="סינון לפי כיתה"] a');
+        await chip[6].focus(); // כיתה ו׳
+        await tab.page.keyboard.press('Enter');
+        await tab.page.waitForFunction(() => new URL(location.href).searchParams.get('grade') === '6');
+        assert.equal(urlParams(tab).get('q'), 'שברים', 'the grade written in the query gives way to the chip');
+        await tab.page.waitForFunction(() => /בכיתה ו׳/.test(document.querySelector('[data-site-search-status]')?.textContent || ''));
+        assert.ok((await resultGrades(tab)).every((x) => x === 6));
+        await back(tab, `${viewport} grade chip`);
+        await tab.page.waitForFunction(() => /בכיתה ה׳/.test(document.querySelector('[data-site-search-status]')?.textContent || ''));
+        assert.equal(urlParams(tab).get('q'), 'שברים כיתה ה');
+        assert.equal(urlParams(tab).has('grade'), false);
+      } finally {
+        await tab.page.close();
+      }
+    });
+
+    it(`spelling guess, no results and clearing on ${viewport}`, async () => {
+      const tab = await openTab(viewport);
+      try {
+        await go(tab, '/search');
+        await searchReady(tab);
+        await tab.page.type('[data-site-search-input]', 'פיטגורס');
+        await tab.page.waitForSelector('[data-site-search-correction]');
+        assert.match(await tab.page.$eval('[data-site-search-correction]', (el) => el.textContent || ''), /ייתכן שלזה התכוונתם/);
+        assert.ok((await resultKeys(tab)).length > 0);
+
+        await tab.page.$eval('[data-site-search-input]', (el) => (el as HTMLInputElement).select());
+        await tab.page.type('[data-site-search-input]', 'שטח כדור');
+        await tab.page.keyboard.press('Enter');
+        await tab.page.waitForSelector('[data-site-search-empty]');
+        assert.equal(await searchStatus(tab), 'לא נמצאו תוצאות');
+        const suggestions = await tab.page.$$eval('[data-site-search-empty] a.chip', (as) => as.map((a) => a.textContent?.trim() || ''));
+        assert.ok(suggestions.some((s) => s.startsWith('שטח (')), `${viewport}: suggests "שטח": ${suggestions}`);
+        await assertHebrewRtl(tab, `${viewport} no results`);
+
+        const clear = await tab.page.$$('[data-site-search-empty] a.chip');
+        const labels = await Promise.all(clear.map((a) => a.evaluate((el) => el.textContent?.trim())));
+        await clear[labels.indexOf('ניקוי החיפוש')].click();
+        await tab.page.waitForFunction(() => !new URL(location.href).searchParams.has('q'));
+        assert.equal(await tab.page.$eval('[data-site-search-input]', (el) => (el as HTMLInputElement).value), '');
+      } finally {
+        await tab.page.close();
+      }
+    });
+  }
+
+  it('works without JavaScript', async () => {
+    const tab = await openTab('desktop');
+    try {
+      await tab.page.setJavaScriptEnabled(false);
+      await go(tab, '/search');
+      await tab.page.type('[data-site-search-input]', 'פיתגורס');
+      await Promise.all([tab.page.waitForNavigation({ waitUntil: 'domcontentloaded' }), tab.page.keyboard.press('Enter')]);
+      assert.equal(urlParams(tab).get('q'), 'פיתגורס');
+      assert.equal((await resultKeys(tab))[0], 'topic:8:11');
+      const chips = await tab.page.$$('nav[aria-label="סינון לפי כיתה"] a');
+      await Promise.all([tab.page.waitForNavigation({ waitUntil: 'domcontentloaded' }), chips[7].evaluate((el) => (el as HTMLElement).click())]); // כיתה ז׳
+      assert.equal(urlParams(tab).get('grade'), '7');
+      assert.ok((await resultGrades(tab)).every((g) => g === 7));
+    } finally {
+      await tab.page.close();
+    }
+  });
+
+  it('a query is text, never markup', async () => {
+    const tab = await openTab('desktop');
+    try {
+      const q = '"><img src=x onerror="window.__xss=1">שברים';
+      await go(tab, `/search?q=${encodeURIComponent(q)}`);
+      await searchReady(tab);
+      assert.equal(await tab.page.$$eval('main img[src="x"], head img', (els) => els.length), 0);
+      assert.equal(await tab.page.evaluate(() => (window as unknown as { __xss?: number }).__xss), undefined);
+      assert.equal(await tab.page.$eval('[data-site-search-input]', (el) => (el as HTMLInputElement).value), q);
+    } finally {
+      await tab.page.close();
+    }
+  });
+
+  it('the catalog search points to the site search when nothing matches', async () => {
+    const tab = await openTab('desktop');
+    try {
+      await go(tab, '/worksheets?grade=7');
+      await hydrated(tab);
+      await tab.page.type('input[type=search]', 'שברים כיתה ה');
+      await tab.page.waitForSelector('#topic-list .empty');
+      const href = await tab.page.$eval('[data-catalog-sitewide]', (a) => (a as HTMLAnchorElement).getAttribute('href') || '');
+      assert.equal(new URL(href, BASE).searchParams.get('q'), 'שברים כיתה ה');
+      await Promise.all([tab.page.waitForNavigation({ waitUntil: 'domcontentloaded' }), tab.page.click('[data-catalog-sitewide]')]);
+      assert.equal(new URL(tab.page.url()).pathname, '/search');
+      assert.ok((await resultGrades(tab)).every((g) => g === 5));
+    } finally {
+      await tab.page.close();
+    }
+  });
+});
