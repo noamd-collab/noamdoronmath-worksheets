@@ -8,6 +8,11 @@ const html=fs.readFileSync(path.join(__dirname,"../worksheet-viewer-noam.html"),
 const helpers=html.slice(html.indexOf("function noamGeometryContext(text){"),html.indexOf("function postJson(endpoint,payload){"));
 const local=html.slice(html.indexOf("function tryNoamLocalVisual(studentMessage){"),html.indexOf("function insertNoamMath(kind){"));
 const drawing=html.slice(html.indexOf("function setNoamDiagramButtonLabel("),html.indexOf("function ensureNoamGlossaryPopover("));
+// 8a09802 (restore PR26 AI fix) made addTranscriptBubble, inside the drawing
+// slice above, render assistant text through noamStripMarkdownEmphasis, which is
+// declared later in the same viewer script; noam-hints-concepts-matrix.test.cjs
+// asserts that helper. Load it from the viewer instead of stubbing it.
+const markdown=html.slice(html.indexOf("function noamStripMarkdownEmphasis(text){"),html.indexOf("function makeNoamGlossaryTerm(match){"));
 const plan={version:1,status:"ok",points:{A:[0,0],B:[4,0],C:[1,3]},
   segments:[["A","B"],["B","C"],["C","A"]],highlights:[{from:"A",to:"B",color:"blue",label:"AB"}],
   angles:[],equalGroups:[],rightAngles:[],evidence:[]};
@@ -35,7 +40,7 @@ function fixture(){
   vm.createContext(context);
   for(const name of ["noam-geometry.js","noam-diagram-plan.js"]){vm.runInContext(fs.readFileSync(path.join(__dirname,"..",name),"utf8"),context);}
   context.NoamLocalVisual={wantsDrawing:()=>true,wantsVisualSupport:()=>true,parseFactoredQuadraticInequality:()=>null,render:()=>null};
-  vm.runInContext(helpers+local+drawing,context);
+  vm.runInContext(helpers+local+drawing+markdown,context);
   context.pollNoamDiagramJob=async jobId=>{statusCalls.push(jobId);return {ok:true,plan};};
   // Mock HTTP JSON deserialization inside the same realm as the browser.
   const inspect=context.NoamDiagramPlan.inspect,compile=context.NoamDiagramPlan.compile;
