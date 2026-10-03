@@ -15,6 +15,11 @@ import {
 import { localizeSiteHref } from '../lib/sitePages';
 import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import {
+  educationalLevelForGrade,
+  jsonLdTypes,
+  learningResourceJsonLd,
+} from '../lib/structuredData';
 
 interface Props {
   slug: string;
@@ -85,6 +90,21 @@ const bodyUnits = groupBodyFlow(bodyFlow);
 const gradeCrumbLabel = isGradeHubGrade(page.grade)
   ? `כיתה ${gradeHubLabel(page.grade)}`
   : `כיתה ${page.grade}`;
+const topicCrumbs = [
+  { name: 'בית', path: '/' },
+  { name: gradeCrumbLabel, path: page.gradeHubHref },
+  { name: page.h1, path: page.path },
+];
+const topicJsonLdExtras = jsonLdTypes(page.jsonLd).includes('LearningResource')
+  ? []
+  : [
+      learningResourceJsonLd({
+        name: page.h1,
+        path: page.path,
+        description: page.description,
+        educationalLevel: educationalLevelForGrade(page.grade),
+      }),
+    ];
 
 /* FAMILIES-B1: every topic page in a family that has a loop shows it in a
    card beside the intro text. Family comes from topicFamilies.json via the
@@ -144,10 +164,14 @@ function faqHeadingId(groupIndex: number) {
   title={page.title}
   description={page.description}
   ogImage={page.ogImage || undefined}
+  crumbs={topicCrumbs}
   activeNav="worksheets"
   skipHref="#topic-page-main"
 >
   <script type="application/ld+json" set:html={JSON.stringify(page.jsonLd)} />
+  {topicJsonLdExtras.map((node) => (
+    <script type="application/ld+json" set:html={JSON.stringify(node)} />
+  ))}
 
   <main
     class="topic-page exact-topic"

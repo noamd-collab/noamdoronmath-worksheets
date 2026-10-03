@@ -4,6 +4,7 @@ import { WorksheetsClient } from '../components/WorksheetsClient';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { familyOf, resolveWorksheetsGrade, worksheetsHref, type GradeNum } from '../lib/grades';
 import { parseWorksheetsUrlState } from '../lib/worksheetsUrlState';
+import { educationalLevelForGrade, learningResourceJsonLd } from '../lib/structuredData';
 
 export const prerender = false;
 
@@ -73,9 +74,25 @@ const initialUrlState = {
   ) : (
     <BaseLayout
       title={`דפי עבודה · ${gradeEntry!.label}`}
+      crumbs={[
+        { name: 'בית', path: '/' },
+        { name: 'דפי עבודה', path: '/worksheets' },
+        { name: gradeEntry!.label, path: `/worksheets?grade=${grade}` },
+      ]}
       activeNav="worksheets"
       compactBrand={true}
     >
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(
+          learningResourceJsonLd({
+            name: `דפי עבודה · ${gradeEntry!.label}`,
+            path: `/worksheets?grade=${grade}`,
+            description: `דפי עבודה במתמטיקה ל${gradeEntry!.label}, בחינם וללא הרשמה.`,
+            educationalLevel: educationalLevelForGrade(grade!),
+          })
+        )}
+      />
       <main>
         <WorksheetsClient
           client:load

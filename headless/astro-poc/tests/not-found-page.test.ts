@@ -11,6 +11,7 @@ describe('404 page', () => {
     assert.equal(existsSync(path), true);
     const src = readFileSync(path, 'utf8');
     assert.match(src, /export const prerender = false/);
+    assert.match(src, /Astro\.response\.status = 404/);
     assert.match(src, /import BaseLayout from '\.\.\/layouts\/BaseLayout\.astro'/);
     // Footer now comes from BaseLayout on every page (r6); must not be doubled here.
     assert.doesNotMatch(src, /<SiteFooter/);
