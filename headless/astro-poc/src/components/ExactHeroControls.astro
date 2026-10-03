@@ -94,11 +94,14 @@ const topics = {
 
   function bootHeroControls() {
     const hero = document.querySelector<HTMLElement>('[data-hero-loop]');
-    const current = hero?.querySelector<HTMLElement>('[data-hero-loop-current]');
+    const currentHost = hero?.querySelector<HTMLElement>('[data-hero-loop-current]');
     const button = document.querySelector<HTMLButtonElement>('[data-exact-shuffle]');
     const label = document.querySelector<HTMLElement>('[data-exact-hero-label]');
     const link = document.querySelector<HTMLAnchorElement>('[data-exact-hero-topic]');
-    if (!hero || !current || !button || hero.dataset.exactControls === 'ready') return;
+    if (!hero || !currentHost || !button || hero.dataset.exactControls === 'ready') return;
+    // Typed as checked: the hoisted function declarations below do not inherit
+    // TypeScript's narrowing of the null check above.
+    const current: HTMLElement = currentHost;
     hero.dataset.exactControls = 'ready';
 
     let topics: TopicMap = {};

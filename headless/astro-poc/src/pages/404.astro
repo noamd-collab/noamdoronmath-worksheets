@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 export const prerender = false;
+
+Astro.response.status = 404;
+Astro.response.statusText = 'Not Found';
 ---
 <BaseLayout
   title="העמוד לא נמצא | נועם דורון מתמטיקה"

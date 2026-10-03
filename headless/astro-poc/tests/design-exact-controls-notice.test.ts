@@ -146,7 +146,11 @@ describe('protected math sources remain byte-identical to verified live 8a098020
   const expected = {
     // HeroLoop.astro is the homepage shell. It may stop inlining every loop.
     // The diagram engine stays byte-identical.
-    'src/components/ConceptLoop.astro': '12c0ec36ecf290acec5f3a20c5fd74532de522c0d9edd6711322d209851218f6',
+    // Reviewed 2026-10-03: the only changes since 8a098020 are the loop copy,
+    // RTL unit labels and stacked fractions merged in PR #41 (approved, includes
+    // PR #40 per the PR #37 audit) and the hidden-label alignment in PR #50.
+    // The engine (src/lib/conceptLoops.ts, next entry) is still the live bytes.
+    'src/components/ConceptLoop.astro': '4fc2e8948eed7e32714c32382602d511e7d1e06742e129bca7b413183d841199',
     'src/lib/conceptLoops.ts': 'b9e5a864e93b08e70fa7257dcf9d7fedae7dcb4cd5798996b7325d98575be53d',
   };
   for (const [file, digest] of Object.entries(expected)) {
@@ -159,7 +163,8 @@ describe('protected math sources remain byte-identical to verified live 8a098020
 describe('non-blocking site-development notice', () => {
   it('is an in-flow aside, not a dialog, overlay, consent form or focus trap', () => {
     assert.match(notice, /<aside[^>]*data-development-notice/);
-    assert.match(notice, /<button\s+type="button"\s+aria-label="סגירת הודעת הפיתוח"/);
+    // The accessible name starts with the visible text "הבנתי" (WCAG 2.5.3 label in name).
+    assert.match(notice, /<button\s+type="button"\s+aria-label="הבנתי – סגירת הודעת הפיתוח">הבנתי<\/button>/);
     assert.match(notice, /min-width:44px;min-height:44px/);
     assert.doesNotMatch(notice, /<dialog\b|aria-modal\s*=|role\s*=\s*['"](?:dialog|alertdialog)['"]|\bautofocus\b|\binert\b|type\s*=\s*['"]checkbox['"]/i);
     assert.doesNotMatch(notice, /position\s*:\s*(?:fixed|absolute)|overflow(?:-[xy])?\s*:\s*(?:hidden|clip)|overscroll-behavior\s*:\s*none/i);

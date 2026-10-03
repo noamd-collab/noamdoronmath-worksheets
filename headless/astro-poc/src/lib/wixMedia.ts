@@ -217,3 +217,16 @@ export function redirectTargetForSiteUgdPath(
   }
   return out.href;
 }
+
+/**
+ * Delivered size of a Wix Media "fill" URL (…/v1/fill/w_603,h_337,…). Wix crops the
+ * image to exactly that size, so width/height can reserve layout space before it loads.
+ * Returns null for any other URL (no size is guessed).
+ */
+export function wixFillSize(src: string | undefined): { width: number; height: number } | null {
+  const m = /\/v1\/fill\/w_(\d{1,5}),h_(\d{1,5})(?:,|\/)/.exec(src || '');
+  if (!m) return null;
+  const width = Number(m[1]);
+  const height = Number(m[2]);
+  return width > 0 && height > 0 ? { width, height } : null;
+}
