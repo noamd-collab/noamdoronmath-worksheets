@@ -3,6 +3,8 @@
 תאריך: 3.10.2026  
 ענף: `cursor/seo-cutover-integration-9e0a`  
 בסיס: `headless/astro-poc-baseline` ב-`1be6a0da7bbc8e708eacff4f3d0cead2be195525`  
+HEAD לפני תיקון M33/M25: `f10dd3e6b8bd54e1a6d86647c3d5ec74f0ac0ab2`  
+HEAD אחרי התיקון: רשום בגוף PR #60 אחרי הדחיפה של קומיט התיקון.  
 לא מוזג. ענפי המקור לא שונו. אין release, DNS, או פריסה לייצור.
 
 הבסיס התקדם מאז שנפתחו שלבי ה-SEO: נכללים בו כבר מיזוג #41 (לופים) ומיזוג #50 (תוויות נגישות). הם לא חלק מ-15 ה-PR-ים, והם כבר ב-ancestry.
@@ -69,24 +71,40 @@
 | --- | --- |
 | יצירת הצעות SEO | 0 diff. 390 שורות, 0 מאושרות, 3 `needsDecision` |
 | שורש `node --test tests/*.cjs` | 405/405 |
-| `npm run test:unit` | 449 עברו, 2 נכשלו, 1 דולג. לא ירוק |
+| `npm run test:unit` לפני תיקון M33/M25 | 449 עברו, 2 נכשלו, 1 דולג. לא ירוק |
+| `npm run test:unit` אחרי התיקון | 452 בדיקות: 451 עברו, 0 נכשלו, 1 דולג |
 | `npm run typecheck:tests` | 0 |
-| `npx tsc -p tsconfig.json --noEmit` אחרי `astro check` | 0 |
-| `npm run typecheck` (`astro check`) עם `WIX_CLIENT_ID` מקומי בלבד | 7 שגיאות, כולן ב-`ConceptLoop.astro` המוגן |
+| `npx tsc -p tsconfig.json --noEmit` אחרי `astro check` | 0, גם אחרי התיקון |
+| `npm run typecheck` (`astro check`) עם `WIX_CLIENT_ID` מקומי בלבד | 7 שגיאות, כולן ב-`ConceptLoop.astro` המוגן. לא נגעתי בקובץ |
 | `npm run check:catalog` | עבר. hash `3a4f0d943333…` |
 | `npm run check:content` | עבר. CMS הוא snapshot בלבד (`missingExternalInput=yes`) |
 | `npm run check:static` | עבר. 449 manifests |
 | `node tools/catalog-audit.cjs` | יציאה 0. 0 שגיאות, 18 אזהרות, 8 לבדיקה, 2 מידע |
-| `npx astro build --config astro.config.preview.mjs` | עבר. adapter מקומי של Node, בלי Wix |
+| `npx astro build --config astro.config.preview.mjs` | עבר, גם אחרי התיקון. adapter מקומי של Node, בלי Wix |
 | `npm run test:journeys` | 46/46. כ-23 שניות |
 | סריקת HTML מקומית | כיתות א׳–ט׳, נושאים, דפי עבודה, בלוג, 404: title אחד, description אחד, canonical ל-www, `he`/`rtl` |
 | Tab בדף הבית, 360 ו-1280 | המוקד הראשון הוא «דילוג לתוכן». אין גלילה אופקית |
 
+### תיקון M33 ו-M25 (לפני החלטת מיזוג)
+
+נועם אישר ב-3.10.2026 13:44 לתקן את שני כשלי היחידה בלבד. אין מיזוג, release, או DNS.
+
+- **M33.** הסיבה: «בס״ד» היה פריט אחרון בשורת flex. תחת `dir=rtl` הפריט האחרון יושב בשמאל הפיזי. הכלל `.basad` ב-`catalog.css` כבר משתמש ב-`right`/`top` הפיזיים, בלי `inset-inline-end`. ב-`SiteHeader.astro` הסימון עבר ל-`<span class="basad" data-basad lang="he">`, מחוץ לזרימת ה-flex, על ה-header הדביק (`position: sticky`), עם `padding-top: 28px` כדי שלא יכסה את הלוגו. הבדיקה לא נמחקה ולא דולגה.
+- **M25.** הסיבה: `tests/blog-posts.test.ts` קורא את `reports/m25-blog/pilot-manifest.txt`, והתיקייה `reports/` ב-gitignore. בקופה נקייה הקובץ חסר (`ENOENT`). תבנית `scripts/m25-capture-blog-posts.mjs` גם לא כללה את המחרוזות `aboutus contact mailto-only` ו-`terms`, אז הרצה חוזרת של הסקריפט לא הייתה מספיקה לבדיקה. נוסף מניפסט מסווג לפי שמונת נתיבי `BLOG_POST_M25_PILOT_PATHS` וקבצי ה-JSON הקיימים: 63 כתובות = אינדקס 1 + 3 קטגוריות + 59 פוסטים, פיילוט 8, והשאר נדחה ב-M25. אחר כך M26–M29 ו-OPEN-07 מגישים 60 פוסטים + 4 ארכיונים, ו-`BLOG_M25_DEFERRED` ריק. יצירת הקשר באודותינו היא mailto בלבד (`mailto:noamd@noamdoronmath.co.il`, טופס Wix ב-`dry-run`). `terms` הוא עמוד אתר נפרד, לא אחד מ-63 כתובות הבלוג. הקובץ נכנס לגיט למרות ה-gitignore. הבדיקה לא נמחקה ולא דולגה, והטענות בה לא נחלשו.
+
+`astro check` אחרי התיקון, עם `WIX_CLIENT_ID=local-typecheck` בלבד (לא סוד, לא בקוד): 7 שגיאות, 0 אזהרות, 83 hints. כולן ב-`ConceptLoop.astro` המוגן, והקובץ לא נערך:
+
+1. שורה 2992, עמודה 43 — `ts(2339)` ל-`e.detail.off` על `Event`
+2. שורה 2992, עמודה 31 — `ts(2339)` ל-`e.detail` על `Event`
+3. שורה 2984 — `ts(7006)` הפרמטר `off` הוא `any` מרומז
+4. שורה 2976 — `ts(7006)` הפרמטר `e` ב-`keydown` הוא `any` מרומז
+5. שורה 2972 — `ts(7006)` הפרמטר `e` ב-`click` הוא `any` מרומז
+6. שורה 2931 — `ts(7006)` הפרמטר `card` הוא `any` מרומז
+7. שורה 2919 — `ts(7006)` הפרמטר `fn` הוא `any` מרומז
+
 ### כשלים שנשארו, לא הוסתרו
 
-- `tests/basad-position.test.ts`: חסר `[data-basad]` או המחרוזת ב-`SiteHeader`. הכלל `.basad` עדיין `right`/`top`. זה כשל קיים (M33), לא תוקן כדי לא לנחש החלטת עיצוב.
-- `tests/blog-posts.test.ts`: חסר `reports/m25-blog/pilot-manifest.txt` (M25). הקובץ לא חלק מהחבילה.
-- `astro check`: 7 שגיאות סוג ב-`ConceptLoop.astro`. הקובץ מוגן ולא נערך.
+- `astro check`: 7 השגיאות למעלה ב-`ConceptLoop.astro`. הקובץ מוגן ולא נערך.
 - `tsc` בלי types של Astro נכשל על `astro:env/server` (`BLOG_AUDIO_FUNCTIONS_BASE`). אחרי `astro check` התוצאה 0. `astro sync` לבד נכשל כי אין `wix env pull`.
 - בקרת הקטלוג: 18 אזהרות `SEARCH_TERMS_MISPLACED`. מצב PDF בכלי הוא `off`: 956 מזהים, 0 אומתו כקבצים אמיתיים.
 - מסעות הדפדפן מחליפים PDF של Wix Media ב-stub של עמוד אחד. נבדק איזה קובץ הצופה ביקש, לא שהקובץ האמיתי קיים.
@@ -116,7 +134,7 @@
 3. `SITE_INDEXABLE=true` רק בייצור, אחרי החלטה. preview נשאר noindex.
 4. לאשר שורות ב-`seo-proposals.json`. עד אז הן לא מוצגות. שלושת נושאי כיתה א׳ (4, 19, 23) דורשים הבחנה או איחוד.
 5. אחרי חיבור: Search Console, robots על www, sitemap, ו-301 של שטח המשולש.
-6. 18 אזהרות מילות חיפוש בקטלוג, ו-7 שגיאות הסוג ב-ConceptLoop, נשארות מחוץ לחבילה הזו.
+6. 18 אזהרות מילות חיפוש בקטלוג, ו-7 שגיאות הסוג ב-ConceptLoop, נשארות מחוץ לחבילה הזו. M33 ו-M25 תוקנו בענף הזה לפני החלטת המיזוג.
 
 ## הטמעה ו-rollback
 
