@@ -1,0 +1,26 @@
+{
+  "about": "Decisions on catalog SEARCH_TERMS (index.html) that sit on the wrong topic. Applied only by the site search index (src/lib/siteSearch); index.html and catalog.v1.json are not changed. A decision applies only while the topic still carries exactly these terms. move = the terms restate the target topic's own title or description and the target is the only such topic in the grade; exclude = the terms do not describe the topic they sit on and no single target is certain (kept out of the search index, waiting for a decision); keep = the terms fit the topic they sit on. Source: PR 59 finding SEARCH_TERMS_MISPLACED (18) plus 3 cases of the same kind found while building the search (7:47, 9:5, 9:8).",
+  "decisions": [
+    { "grade": 1, "topic": 10, "terms": "סדרה חוקיות דפוס המשך תבנית", "decision": "move", "to": 11, "evidence": "1:11 is titled \"דפוסים וסדרות\"; 1:10 \"שוויון נעלם והשוואת תרגילים\" shares no word." },
+    { "grade": 1, "topic": 13, "terms": "שוויון נעלם משוואה איזון", "decision": "move", "to": 10, "evidence": "1:10 is titled \"שוויון נעלם והשוואת תרגילים\"; 1:13 \"שרשראות ופירמידות מספרים\" shares no word." },
+    { "grade": 2, "topic": 3, "terms": "מאות עשרות יחידות ערך מקום", "decision": "move", "to": 13, "evidence": "2:13 is titled \"מאות עשרות ויחידות\"; 2:3 \"סדר השוואה וישר מספרים\" shares no word." },
+    { "grade": 4, "topic": 7, "terms": "כפל מאונך בטור דו ספרתי", "decision": "move", "to": 9, "evidence": "4:9 is titled \"כפל רב ספרתי\" (its own terms belong to 4:10); 4:7 \"סדר פעולות חשבון\" shares no word." },
+    { "grade": 4, "topic": 9, "terms": "חילוק ארוך שארית", "decision": "move", "to": 10, "evidence": "4:10 is titled \"חילוק ארוך ושארית\"." },
+    { "grade": 4, "topic": 27, "terms": "זווית ישרה חדה קהה שטוחה מקבילים מאונכים", "decision": "keep", "evidence": "4:27 is \"זוויות וקווים במישור\": angle types and parallel/perpendicular lines. The audit flagged it because זווית/זוויות were compared without plurals." },
+    { "grade": 6, "topic": 2, "terms": "מכנה משותף שברים חיבור חיסור", "decision": "exclude", "evidence": "6:2 \"כפל כחלק מכמות ושטח\" is multiplication; grade 6 has no topic on adding fractions (5:10, 5:11 do). Waiting for Noam." },
+    { "grade": 7, "topic": 13, "terms": "צמודות קודקודיות משלימות", "decision": "keep", "evidence": "7:13 is the angles review sheet; its description says \"חזרה על כל יחסי הזוויות\"." },
+    { "grade": 7, "topic": 41, "terms": "משפט פיתגורס ניצב יתר", "decision": "move", "to": 42, "evidence": "7:42 description: \"משפט פיתגורס, ניצבים ויתר\"; 7:41 is word problems with equations. Grade 7 shift: 41→42, 43→44, 44→45, 46→47, 47→48, 48→21." },
+    { "grade": 7, "topic": 43, "terms": "היקף מצולעים", "decision": "move", "to": 44, "evidence": "7:44 description: \"היקף מצולעים מורכבים\"." },
+    { "grade": 7, "topic": 44, "terms": "טרפז מקבילית בסיס גובה שטח", "decision": "move", "to": 45, "evidence": "7:45 description: \"נוסחאות שטח מקבילית וטרפז, זיהוי הגובה\"; 7:44 is perimeter." },
+    { "grade": 7, "topic": 46, "terms": "מנסרה נפח בסיס משולש", "decision": "move", "to": 47, "evidence": "7:47 \"מנסרה משולשת חלק 1 — מבנה ונפח\"." },
+    { "grade": 7, "topic": 47, "terms": "מנסרה שטח פנים מעטפת פריסה", "decision": "move", "to": 48, "evidence": "Same shift, not flagged by the audit because \"מנסרה\" overlaps: 7:48 description \"פריסת המנסרה, שטח המעטפת … ושטח הפנים\"; 7:47 is volume. Left in place, a search for surface area returns the volume sheet." },
+    { "grade": 7, "topic": 48, "terms": "סדרה סדרות דפוס תבנית איבר כללי המשך הסדרה כלל חוקיות", "decision": "move", "to": 21, "evidence": "7:21 \"חוקיות\": \"זיהוי חוקיות בסדרות ובתבניות … מציאת איבר כללי והמשך הסדרה\"." },
+    { "grade": 8, "topic": 28, "terms": "פיזור ערכים קיצוניים", "decision": "move", "to": 22, "evidence": "8:22 \"טווח הנתונים\": \"זיהוי ערכים קיצוניים ומשמעות הפיזור\"." },
+    { "grade": 9, "topic": 6, "terms": "פרבולה קודקוד ציר סימטריה נקודות אפס", "decision": "move", "to": 5, "evidence": "9:5 \"הפונקציה הריבועית\": \"הצגות הפרבולה, קודקוד וציר סימטריה, נקודות אפס\"." },
+    { "grade": 9, "topic": 5, "terms": "רדיקל תחום הגדרה", "decision": "move", "to": 17, "evidence": "Found while building the search: 9:17 \"שורשים\": \"תחום הגדרה\" (radical = root sign). 9:5 is the quadratic function." },
+    { "grade": 9, "topic": 8, "terms": "שיפוע מרחק אמצע קטע משוואת ישר", "decision": "move", "to": 15, "evidence": "Found while building the search: 9:15 \"גיאומטריה אנליטית\": \"מרחק ואמצע קטע, שיפוע ומשוואת ישר\". 9:8 is quadratic inequalities." },
+    { "grade": 9, "topic": 13, "terms": "הכנה לתיכון יחידות לימוד 4 5 חזרה", "decision": "move", "to": 20, "evidence": "9:20 \"מעבר לחטיבה העליונה\": \"חזרה ממוקדת … כהכנה ללימוד ברמת 4–5 יח״ל\"." },
+    { "grade": 9, "topic": 20, "terms": "מקביליות צלעות נגדיות אלכסונים", "decision": "exclude", "evidence": "Not about 9:20. The audit pointed to 9:11 \"המלבן\", but \"מקביליות\" names the parallelogram topic (the parallelogram page links to 9:7) and the rectangle is also a parallelogram: two candidates. Waiting for Noam." },
+    { "grade": 9, "topic": 22, "terms": "מעוינים אלכסונים מאונכים", "decision": "move", "to": 13, "evidence": "9:13 \"המעוין\": \"אלכסונים מאונכים\"." }
+  ]
+}
