@@ -169,3 +169,25 @@ describe('worksheetsUrlState contract (M32)', () => {
     assert.equal(resolveWorksheetsGrade({ grade: 'x', level: 'ysodi' }).invalid, true);
   });
 });
+
+describe('grade 9 topic pins open on the topic’s own track', async () => {
+  const { trackForPinnedTopic } = await import('../src/lib/worksheetsUrlState.ts');
+  const { readFileSync } = await import('node:fs');
+  const catalog = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+  const g9 = catalog.grades.find((g: { grade: number }) => g.grade === 9);
+  const state = (topic: number | null, track: 'reg' | 'red' = 'reg') =>
+    ({ grade: 9, q: '', group: 'all', cross: false, track, topic }) as const;
+
+  it('reduced-program topics (33, 34, 35, 36) switch to the reduced track', () => {
+    for (const id of [33, 34, 35, 36]) assert.equal(trackForPinnedTopic(state(id), g9), 'red', `topic ${id}`);
+  });
+  it('regular topics stay on (or return to) the regular track', () => {
+    assert.equal(trackForPinnedTopic(state(12), g9), 'reg');
+    assert.equal(trackForPinnedTopic(state(12, 'red'), g9), 'reg');
+  });
+  it('no pin, unknown topic or another grade keeps the URL track', () => {
+    assert.equal(trackForPinnedTopic(state(null, 'red'), g9), 'red');
+    assert.equal(trackForPinnedTopic(state(999), g9), 'reg');
+    assert.equal(trackForPinnedTopic({ ...state(33), grade: 8 } as never, g9), 'reg');
+  });
+});

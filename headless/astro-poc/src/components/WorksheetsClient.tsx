@@ -18,6 +18,7 @@ import { buildWorksheetHref } from '../lib/worksheetLinks';
 import {
   buildWorksheetsHref,
   parseWorksheetsUrlState,
+  trackForPinnedTopic,
   worksheetsBackPath,
   worksheetsHrefForGrade,
   type TrackMode,
@@ -139,11 +140,11 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       setGroup(s.group);
       setCross(s.cross);
       setTopicPin(s.topic);
-      if (showTrack) setTrack(s.track);
+      if (showTrack) setTrack(trackForPinnedTopic(s, gradeEntry));
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
-  }, [grade, showTrack]);
+  }, [grade, showTrack, gradeEntry]);
 
   useEffect(() => {
     if (topicPin == null) return;

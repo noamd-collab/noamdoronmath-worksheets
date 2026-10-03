@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { WorksheetsClient } from '../components/WorksheetsClient';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { familyOf, resolveWorksheetsGrade, worksheetsHref, type GradeNum } from '../lib/grades';
-import { parseWorksheetsUrlState } from '../lib/worksheetsUrlState';
+import { parseWorksheetsUrlState, trackForPinnedTopic } from '../lib/worksheetsUrlState';
 
 export const prerender = false;
 
@@ -30,7 +30,7 @@ const initialUrlState = {
   q: urlState.q,
   group: urlState.group,
   cross: urlState.cross,
-  track: urlState.track,
+  track: trackForPinnedTopic(urlState, gradeEntry),
 };
 ---
 
