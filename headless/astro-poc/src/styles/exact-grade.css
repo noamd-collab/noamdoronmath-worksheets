@@ -358,3 +358,15 @@
   .exact-grade .exact-grade__player .concept-loop__formula { order: 2; }
   .exact-grade .exact-grade__player .concept-loop__caption { order: 3; }
 }
+
+.grade-hub__crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 12px 4px;
+  font-size: 14px;
+}
+.grade-hub__crumbs a {
+  color: #0d47a1;
+  font-weight: 800;
+}
