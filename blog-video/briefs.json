@@ -1,0 +1,1028 @@
+{
+  "note": "",
+  "posts": {
+    "fractions-practice-grade-4": {
+      "readStatus": "read-full",
+      "url": "https://www.noamdoronmath.co.il/post/תרגול-שברים-לכיתה-ד-שמחזק-הבנה-וביטחון",
+      "audience": {
+        "value": "parents",
+        "evidence": [
+          {
+            "block": "b8",
+            "quote": "מפגש תרגול קצר בבית"
+          },
+          {
+            "block": "b9",
+            "quote": "תחילה בקשו מהילד להסביר מהו השלם"
+          },
+          {
+            "block": "cats",
+            "quote": "מורים והורים"
+          }
+        ]
+      },
+      "grade": {
+        "value": "ד׳",
+        "evidence": {
+          "block": "title",
+          "quote": "תרגול שברים לכיתה ד׳"
+        }
+      },
+      "mainIdea": "חצי, שני רבעים וארבע שמיניות הם אותו חלק מאותו שלם – השם משתנה אבל השטח הצבוע נשאר זהה.",
+      "hook": {
+        "block": "b0",
+        "quote": "מהו השלם, ולכמה חלקים שווים חילקנו אותו?"
+      },
+      "example": {
+        "block": "b2",
+        "text": "צובעים חצי ממלבן ... החלק הצבוע הוא שני רבעים ... הוא ארבע שמיניות",
+        "expr": "1/2 = 2/4 = 4/8"
+      },
+      "ctaTarget": {
+        "primary": "post",
+        "links": [],
+        "note": "The dump has no href in any body block (only the canonical URL in the header). Link-label blocks exist as plain text without a visible URL; links must be taken from the live page, not invented. Link-label blocks: b5, b6, b7 (worksheet topics), b14 (לכל דפי העבודה לכיתה ד׳)."
+      },
+      "fitsShort": true,
+      "ifShortOmit": null,
+      "followUp": null,
+      "hardTerms": [
+        "מכנה",
+        "מונה",
+        "שקולים",
+        "שמיניות",
+        "רבעים",
+        "ישר המספרים",
+        "מרווחים"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b2",
+          "expr": "1/2 = 2/4 = 4/8",
+          "result": "ok",
+          "note": "2/4 = 0.5, 4/8 = 0.5."
+        },
+        {
+          "ref": "b4",
+          "expr": "1/4 > 1/8 (same numerator)",
+          "result": "ok",
+          "note": "0.25 > 0.125."
+        },
+        {
+          "ref": "b4",
+          "expr": "3/8 > 2/8 (same denominator)",
+          "result": "ok",
+          "note": "0.375 > 0.25."
+        },
+        {
+          "ref": "b11",
+          "expr": "on number line count equal intervals between 0 and 1, not tick marks",
+          "result": "ok",
+          "note": "n equal intervals use n+1 tick marks; correct warning."
+        },
+        {
+          "ref": "b13",
+          "expr": "4/8 = 1/2",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b13",
+          "expr": "2/8 = 1/4",
+          "result": "ok",
+          "note": ""
+        }
+      ],
+      "sourceIssues": [],
+      "notes": [
+        "b0: practice based on existing grade-4 worksheets, ללא הרשמה.",
+        "b15: footer עודכן 8.9.2026.",
+        "Header categories list יסודי and חטיבת הביניים although post is grade ד׳."
+      ],
+      "readBy": "reading agent A2; findings spot-checked by Claude"
+    },
+    "free-worksheets-all-grades-ai": {
+      "readStatus": "read-full",
+      "url": "https://www.noamdoronmath.co.il/post/דפי-עבודה-במתמטיקה-בחינם-לכיתות-א-ט-לבית-ובקרוב-גם-סוכן-ai-תומך",
+      "audience": {
+        "value": "mixed",
+        "evidence": [
+          {
+            "block": "b11",
+            "quote": "להורים ולמורים"
+          },
+          {
+            "block": "cats",
+            "quote": "מורים והורים"
+          }
+        ]
+      },
+      "grade": {
+        "value": "א׳–ט׳",
+        "evidence": {
+          "block": "title",
+          "quote": "לכיתות א׳–ט׳"
+        }
+      },
+      "mainIdea": "כל דפי העבודה לכיתות א׳–ט׳ במקום אחד, בחינם וללא הרשמה, ובדפי חטיבת הביניים יש גם עזרת נועם AI לרמז או הסבר.",
+      "hook": {
+        "block": "b0",
+        "quote": "כל הגישה לדפים נשארת חינמית וללא הרשמה"
+      },
+      "example": {
+        "block": "b8",
+        "text": "בתרגול אלגברה אפשר להתמקד בכפל כל איבר בסוגריים הראשונים בכל איבר בשניים, ולבדוק את הפיתוח בהצבת מספר."
+      },
+      "ctaTarget": {
+        "primary": "post",
+        "links": [],
+        "note": "The dump has no href in any body block (only the canonical URL in the header). Link-label blocks exist as plain text without a visible URL; links must be taken from the live page, not invented. Link-label blocks: b3–b6 (topic pages), b13 (בחירת כיתה וכל דפי העבודה), b14 (איך משתמשים בנועם AI)."
+      },
+      "fitsShort": true,
+      "ifShortOmit": null,
+      "followUp": null,
+      "hardTerms": [
+        "חוק הפילוג המורחב",
+        "איבר",
+        "הצבת",
+        "נפח תיבה",
+        "גאומטריה",
+        "הרשמה",
+        "רמז"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b8",
+          "expr": "1/2 = 2/4",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b8",
+          "expr": "extended distributive law: multiply each term of first bracket by each term of second; verify by substitution",
+          "result": "ok",
+          "note": "Correct method, e.g. (a+b)(c+d)=ac+ad+bc+bd. Substitution check is a valid (not conclusive for a single value but useful) check; no numbers given."
+        }
+      ],
+      "sourceIssues": [
+        "URL slug says ובקרוב-גם-סוכן-ai-תומך (AI coming soon) while title/b0 say נועם AI כבר זמין – slug is outdated; do not quote the slug in the video."
+      ],
+      "notes": [
+        "b0: חינמית וללא הרשמה; נועם AI already available in the grades ז׳–ט׳ viewer alongside PDF.",
+        "b10: viewer has zoom, PDF tools, נועם AI; post explicitly says availability does not guarantee the AI solves every question without error – script must not promise accuracy.",
+        "b12: no student account, no student roster needed.",
+        "b15: עודכן 8.9.2026."
+      ],
+      "readBy": "reading agent A2; findings spot-checked by Claude"
+    },
+    "functions-grade-9-graphs": {
+      "readStatus": "read-full",
+      "url": "https://www.noamdoronmath.co.il/post/פונקציות-לכיתה-ט-להבין-גרפים-ולפתור-נכון",
+      "audience": {
+        "value": "mixed",
+        "evidence": [
+          {
+            "block": "cats",
+            "quote": "מורים והורים"
+          },
+          {
+            "block": "b38",
+            "quote": "בחרו תרגיל אחד שמתאים לרמה שלכם"
+          },
+          {
+            "block": "b1",
+            "quote": "תלמיד או תלמידה שמבינים פונקציה"
+          }
+        ]
+      },
+      "grade": {
+        "value": "ט׳",
+        "evidence": {
+          "block": "title",
+          "quote": "פונקציות לכיתה ט׳"
+        }
+      },
+      "mainIdea": "פונקציה היא קשר בין שני גדלים, והטבלה, הביטוי האלגברי והגרף מספרים את אותו סיפור.",
+      "hook": {
+        "block": "b0",
+        "quote": "אחרים נבהלים כבר מהסימון y=f(x)"
+      },
+      "example": {
+        "block": "b9",
+        "text": "ניקח את הפונקציה y = 2x - 1 ... (0,-1), (1,1), (2,3)",
+        "expr": "y = 2x - 1"
+      },
+      "ctaTarget": {
+        "primary": "post",
+        "links": [],
+        "note": "The dump has no href in any body block (only the canonical URL in the header). Link-label blocks exist as plain text without a visible URL; links must be taken from the live page, not invented. b31 mentions the מאגר but has no link label."
+      },
+      "fitsShort": false,
+      "ifShortOmit": "b12–b15 (תחום הצבה), b16–b20 (קריאת גרף ושיפוע, y = -4x + 10), b21–b27 (ארבע טעויות), b28–b34 (מסלול תרגול ורמת אתגר), b35–b37 (הכנה למבחן).",
+      "followUp": "תחום הצבה: לא כל מספר תמיד מתאים",
+      "hardTerms": [
+        "שיפוע",
+        "מקדם",
+        "האיבר החופשי",
+        "תחום הצבה",
+        "תחום ההגדרה",
+        "הצבה",
+        "מכנה",
+        "ייצוגים",
+        "חותך",
+        "חיתוכים",
+        "אנליטית",
+        "קווית"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b3/b5",
+          "expr": "price = 8 + 3 per km -> y = 3x + 8",
+          "result": "ok",
+          "note": "Matches the story."
+        },
+        {
+          "ref": "b6",
+          "expr": "3 = increase per km, 8 = price at x=0",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b9",
+          "expr": "y=2x-1 at x=0,1,2",
+          "result": "ok",
+          "note": "-1, 1, 3; points (0,-1),(1,1),(2,3) correct."
+        },
+        {
+          "ref": "b10",
+          "expr": "increasing; y-intercept -1",
+          "result": "ok",
+          "note": "Slope 2 > 0; y(0) = -1."
+        },
+        {
+          "ref": "b14",
+          "expr": "y = 5x + 2 defined for every number",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b15",
+          "expr": "exclude x making the denominator zero",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b19",
+          "expr": "slope >0 rising, <0 falling, 0 constant",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b20",
+          "expr": "y = -4x + 10: +1 in x -> y decreases by 4",
+          "result": "ok",
+          "note": "y(x+1) - y(x) = -4."
+        },
+        {
+          "ref": "b3",
+          "expr": "function: each x gives exactly one y",
+          "result": "ok",
+          "note": "Correct definition (for x in the domain)."
+        }
+      ],
+      "sourceIssues": [],
+      "notes": [
+        "b31: download practice sheets בחינם וללא הרשמה; levels רמה א׳, רמה ב׳, רמת אתגר.",
+        "b30: stop after every 4–5 exercises (advice, not a statistic).",
+        "No update date/footer in this dump."
+      ],
+      "readBy": "reading agent A2; findings spot-checked by Claude",
+      "dismissedIssues": [
+        {
+          "issue": "b23–b26: all four list items are numbered 1. in the dump (ordered list rendered as 1,1,1,1) while b22 says ארבע טעויות – renumber 1–4 if shown on screen.",
+          "dismissedBecause": "artifact of the reading dump (each item is its own ul block in the source); not in the post"
+        }
+      ]
+    },
+    "geometry-grade-6-exams": {
+      "readStatus": "read-full",
+      "url": "https://www.noamdoronmath.co.il/post/איך-לתרגל-גאומטריה-לכיתה-ו-ולהצליח-במבחנים",
+      "audience": {
+        "value": "mixed",
+        "evidence": [
+          {
+            "block": "cats",
+            "quote": "מורים והורים"
+          },
+          {
+            "block": "b10",
+            "quote": "בכל מפגש בחרו כמה שאלות מאותו נושא"
+          }
+        ]
+      },
+      "grade": {
+        "value": "ו׳",
+        "evidence": {
+          "block": "title",
+          "quote": "גאומטריה לכיתה ו׳"
+        }
+      },
+      "mainIdea": "אותן מידות של תיבה נותנות שתי תשובות שונות – נפח ושטח פנים – כי נשאלו שתי שאלות שונות.",
+      "hook": {
+        "block": "b0",
+        "quote": "לפני שמתחילים לפתור, בודקים מה נכלל במבחן"
+      },
+      "example": {
+        "block": "b4",
+        "text": "תיבה 5×3×2 ס״מ: נפח 30 סמ״ק; שטח פנים פעמיים 15, פעמיים 10 ופעמיים 6, בסך הכול 62 סמ״ר",
+        "expr": "V = 5·3·2 = 30; S = 2(15+10+6) = 62"
+      },
+      "ctaTarget": {
+        "primary": "post",
+        "links": [],
+        "note": "The dump has no href in any body block (only the canonical URL in the header). Link-label blocks exist as plain text without a visible URL; links must be taken from the live page, not invented. Link-label blocks: b6–b9 (worksheet topics), b15 (לכל דפי העבודה לכיתה ו׳)."
+      },
+      "fitsShort": true,
+      "ifShortOmit": null,
+      "followUp": null,
+      "hardTerms": [
+        "שטח פנים",
+        "נפח",
+        "פאות",
+        "מקצועות",
+        "קודקודים",
+        "פריסות",
+        "תיבה",
+        "סמ״ר",
+        "סמ״ק",
+        "ס״מ",
+        "גאומטריה"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b4",
+          "expr": "base 5×3 = 15 cm²",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b4",
+          "expr": "volume = 15 × 2 = 30 cm³ (two 1-cm layers)",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b4",
+          "expr": "surface = 2·15 + 2·10 + 2·6 = 62 cm²",
+          "result": "ok",
+          "note": "5×3=15, 5×2=10, 3×2=6; 30+20+12=62."
+        },
+        {
+          "ref": "b14",
+          "expr": "4×3×2 = 24 cm³",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b14",
+          "expr": "height doubled to 4 -> 48 cm³",
+          "result": "ok",
+          "note": "4×3×4 = 48 = 2×24, assuming the height is the 2 cm edge (post does not say which edge is height; see sourceIssues)."
+        }
+      ],
+      "sourceIssues": [
+        "b14: dimensions given as 4, 3 ו־2 without naming which is the height; הגובה מוכפל ל־4 ס״מ implies height = 2. On screen, label the 2 cm edge as height to avoid confusion with the existing 4 cm edge."
+      ],
+      "notes": [
+        "b0: every sheet opens בחינם וללא הרשמה.",
+        "b10: level letter alone is not a diagnosis of the student.",
+        "מקצועות in b6 means edges (not professions) – TTS/viewer ambiguity.",
+        "b16: עודכן 8.9.2026."
+      ],
+      "readBy": "reading agent A2; findings spot-checked by Claude"
+    },
+    "grade-1-worksheets-confidence": {
+      "readStatus": "read-full",
+      "url": "https://www.noamdoronmath.co.il/post/דפי-עבודה-לכיתה-א-שמחזקים-ביטחון-במתמטיקה",
+      "audience": {
+        "value": "parents",
+        "evidence": [
+          {
+            "block": "b4",
+            "quote": "קיבלתם מידע חשוב"
+          },
+          {
+            "block": "b29",
+            "quote": "שבו ליד הילד לדקות הראשונות"
+          },
+          {
+            "block": "b25",
+            "quote": "תרגול זמין להורים, למורים ולתלמידים"
+          }
+        ]
+      },
+      "grade": {
+        "value": "א׳",
+        "evidence": {
+          "block": "title",
+          "quote": "דפי עבודה לכיתה א׳"
+        }
+      },
+      "mainIdea": "בכיתה א׳ קודם מבינים את הרעיון עם חפצים וסיפור קטן, ורק אחר כך עוברים לדף עבודה קצר וממוקד.",
+      "hook": {
+        "block": "b0",
+        "quote": "הילד כבר יודע לספור עד 20, אבל כשמבקשים ממנו לכתוב את המספר שאחרי 16 או לפתור תרגיל חיבור קטן, הוא נעצר?"
+      },
+      "example": {
+        "block": "b8",
+        "text": "לפעמים הוא צריך קודם לראות תשעה עיגולים, למחוק שלושה מהם ולספור כמה נשארו.",
+        "expr": "9 - 3"
+      },
+      "ctaTarget": {
+        "primary": "post",
+        "links": [],
+        "note": "The dump has no href in any body block (only the canonical URL in the header). Link-label blocks exist as plain text without a visible URL; links must be taken from the live page, not invented."
+      },
+      "fitsShort": false,
+      "ifShortOmit": "b13–b16 (בחירת רמה א׳/ב׳/אתגר), b17–b20 (שגרה ביתית 10–15 דקות), b21–b24 (קושי מתמשך), b26–b28 (שימוש למורים, הרשמה, הדפסה).",
+      "followUp": "שגרת תרגול ביתית לכיתה א׳ שלא מעמיסה",
+      "hardTerms": [
+        "הכוונה",
+        "הקניה",
+        "המחשה",
+        "מחנכת",
+        "הנדסיות",
+        "מוחשי",
+        "סדרות"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b0",
+          "expr": "number after 16",
+          "result": "ok",
+          "note": "Answer not stated; it is 17."
+        },
+        {
+          "ref": "b8",
+          "expr": "9 - 3 via nine circles, erase three",
+          "result": "ok",
+          "note": "Result not stated; 6. Model (take-away) is correct."
+        },
+        {
+          "ref": "b12",
+          "expr": "6 + 4 (six stickers plus four)",
+          "result": "ok",
+          "note": "Result not stated; 10. Story matches the expression."
+        },
+        {
+          "ref": "b5",
+          "expr": "7 + 5",
+          "result": "ok",
+          "note": "Only mentioned, not solved; 12."
+        }
+      ],
+      "sourceIssues": [],
+      "notes": [
+        "b27: free, no registration; Google sign-in is optional only for saving/tracking progress, not required to open sheets.",
+        "b27: written in the spirit of the curriculum but not official Ministry of Education approval – do not imply approval.",
+        "b18: 10–15 minutes, 2–3 short sessions a week is advice, not a study result.",
+        "b24: mentions a step-by-step help tool without naming it."
+      ],
+      "readBy": "reading agent A2; findings spot-checked by Claude"
+    },
+    "homework-worksheets": {
+      "readStatus": "read-full",
+      "url": "https://www.noamdoronmath.co.il/post/דפי-עבודה-לשיעורי-בית-במתמטיקה-שמקדמים-ביטחון",
+      "audience": {
+        "value": "mixed",
+        "evidence": [
+          {
+            "block": "b1",
+            "quote": "כשמשפחה חיה בארה״ב ולומדת לפי התוכנית הישראלית"
+          },
+          {
+            "block": "b1",
+            "quote": "גם למורים, מורות ומורים פרטיים"
+          },
+          {
+            "block": "b22",
+            "quote": "להורים אין צורך להיות מורים למתמטיקה כדי לעזור"
+          }
+        ]
+      },
+      "grade": null,
+      "mainIdea": "דף שיעורי בית טוב ממוקד בנושא אחד, ברמה שמתאימה לילד ובכמות שאפשר באמת לסיים ולהבין.",
+      "hook": {
+        "block": "b0",
+        "quote": "יכולים להסתיים בעשר דקות של תרגול טוב, או להפוך לשעה של תסכול סביב שאלה אחת"
+      },
+      "example": null,
+      "ctaTarget": {
+        "primary": "post",
+        "links": [],
+        "note": "The dump has no href in any body block (only the canonical URL in the header). Link-label blocks exist as plain text without a visible URL; links must be taken from the live page, not invented."
+      },
+      "fitsShort": false,
+      "ifShortOmit": "b10–b13 (שלוש רמות), b14–b18 (הפיכת הדף ללמידה: שיחה, שאלות מנחות, טיפול בטעות), b19–b22 (פיצול הדף, תפקיד ההורה), b25–b26.",
+      "followUp": "איך עוזרים בשיעורי בית בלי לפתור במקום הילד",
+      "hardTerms": [
+        "הכוונה",
+        "הקניה",
+        "מכנה",
+        "ארה״ב",
+        "רב־שלביות",
+        "חילוק ארוך",
+        "שכבה"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b20",
+          "expr": "twenty exercises with the same mistake vs six done slowly",
+          "result": "ok",
+          "note": "Pedagogical claim, no computation."
+        }
+      ],
+      "sourceIssues": [],
+      "notes": [
+        "No worked math example anywhere in the post.",
+        "b1: explicitly targets families living in the USA learning the Israeli curriculum.",
+        "b24: free, no registration; written in the spirit of the Israeli curriculum but no official Ministry of Education approval.",
+        "b8: grade ד׳ appears only as an example (ילדה בכיתה ד׳), not as the post grade.",
+        "b26: step-by-step guidance mentioned without naming a tool."
+      ],
+      "readBy": "reading agent A2; findings spot-checked by Claude"
+    },
+    "learning-gaps-math": {
+      "readStatus": "read-full",
+      "audience": {
+        "value": "parents",
+        "evidence": "b29: \"התפקיד של הורים ומורים\"; b30: \"הורים אינם צריכים להיות מורים למתמטיקה כדי לעזור\"; category מורים והורים"
+      },
+      "grade": null,
+      "mainIdea": "פער לימודי במתמטיקה הוא צילום מצב ולא תווית: מזהים אותו בכמה תרגילים קצרים ובהסבר בקול, וסוגרים אותו בתרגול מדורג ולא בדף קשה מדי.",
+      "hook": {
+        "ref": "b0",
+        "text": "ילד או ילדה יכולים לפתור דף שלם נכון, ועדיין להיתקע בשאלה מעט שונה במבחן."
+      },
+      "example": null,
+      "ctaTarget": [
+        "post"
+      ],
+      "fitsShort": false,
+      "ifShortOmit": [
+        "b3–b4",
+        "b7–b12",
+        "b19–b24",
+        "b25–b28",
+        "b29–b32",
+        "b33–b35"
+      ],
+      "followUp": "שגרת תרגול של 15–25 דקות שסוגרת פער",
+      "hardTerms": [
+        "שלם (דף שלם)",
+        "הובן",
+        "הכוונה"
+      ],
+      "mathCheck": [],
+      "sourceIssues": [],
+      "notes": "b26 ממליץ על 15–25 דקות, שלוש או ארבע פעמים בשבוע; struggling-students-practice b11 ממליץ על 10–15 דקות. אם שני הסרטונים יפורסמו, ההבדל ייראה.",
+      "readBy": "Claude (main session)"
+    },
+    "math-for-kids-confidence-practice": {
+      "readStatus": "read-full",
+      "url": "https://www.noamdoronmath.co.il/post/מתמטיקה-לילדים-שבונה-ביטחון-ותרגול-נכון",
+      "audience": {
+        "value": "mixed",
+        "evidence": [
+          {
+            "block": "b1",
+            "quote": "להורים, למורים ולתלמידים יש בדרך כלל מטרה פשוטה"
+          },
+          {
+            "block": "cats",
+            "quote": "מורים והורים"
+          }
+        ]
+      },
+      "grade": null,
+      "mainIdea": "ביטחון במתמטיקה נבנה מתרגול מדורג וקצר ברמה הנכונה, שבו הילד פותר לבד גם אם רק כמה שאלות.",
+      "hook": {
+        "block": "b0",
+        "quote": "ילד שיודע לפתור תרגיל אחד לבד לא רק מתקדם בחומר – הוא מתחיל להאמין שהוא מסוגל."
+      },
+      "example": {
+        "block": "b9",
+        "text": "תשובה של 48 במקום 84 יכולה להעיד על היפוך ספרות או על חוסר תשומת לב."
+      },
+      "ctaTarget": {
+        "primary": "post",
+        "links": [],
+        "note": "The dump has no href in any body block (only the canonical URL in the header). Link-label blocks exist as plain text without a visible URL; links must be taken from the live page, not invented."
+      },
+      "fitsShort": false,
+      "ifShortOmit": "b6–b9 (אבחון קטן ואופי הטעות), b14–b17 (מתי לחזור לרמה בסיסית / להוסיף אתגר), b22–b25 (לעזור בלי לפתור), b26–b29 (לפי כיתה ונושא), b30–b32 (לקראת מבחן).",
+      "followUp": "איך לעזור לילד במתמטיקה בלי לפתור במקומו",
+      "hardTerms": [
+        "משוואות",
+        "הכוונה",
+        "הקניה",
+        "עשרוניים",
+        "במאונך",
+        "אחוזים",
+        "גאומטריה",
+        "ציר מספרים"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b9",
+          "expr": "48 vs 84 as digit reversal",
+          "result": "ok",
+          "note": "Digits 4,8 swapped."
+        },
+        {
+          "ref": "b4",
+          "expr": "multiplication = equal groups; check by drawing, table or repeated addition",
+          "result": "ok",
+          "note": ""
+        }
+      ],
+      "sourceIssues": [
+        "Header detector says aud=students, but b1 addresses parents, teachers and students and b13/b19 are home-routine advice for parents; treat audience as mixed."
+      ],
+      "notes": [
+        "b12: three levels (רמה א׳, רמה ב׳, רמת אתגר) at נועם דורון מתמטיקה.",
+        "b19: 15–20 minutes, 3–4 times a week is advice, not a statistic.",
+        "No explicit free/no-registration claim in this post.",
+        "b29: material written in the spirit of the curriculum (no approval claim)."
+      ],
+      "readBy": "reading agent A2; findings spot-checked by Claude"
+    },
+    "math-thinking-practice": {
+      "readStatus": "read-full",
+      "url": "https://www.noamdoronmath.co.il/post/תרגול-חשיבה-מתמטית-לילדים-שבונה-ביטחון",
+      "audience": {
+        "value": "parents",
+        "evidence": [
+          {
+            "block": "b17",
+            "quote": "ההורה אינו צריך להיות מורה למתמטיקה כדי לעזור"
+          },
+          {
+            "block": "b26",
+            "quote": "תנו לילד זמן לחשוב"
+          },
+          {
+            "block": "b22",
+            "quote": "להורים, למורים ולמורים פרטיים"
+          }
+        ]
+      },
+      "grade": null,
+      "mainIdea": "חשיבה מתמטית היא לא רק להגיע לתשובה אלא להסביר איך ידעת ולבדוק אם התשובה הגיונית.",
+      "hook": {
+        "block": "b0",
+        "quote": "ילד שמסיים דף תרגילים עם כל התשובות הנכונות לא תמיד הבין את הדרך."
+      },
+      "example": {
+        "block": "b12",
+        "text": "48 ועוד 27 ... 48 ועוד 20, ואז ועוד 7 ... יעגל ל-50, יחבר 27 ויוריד 2",
+        "expr": "48 + 27 = 75"
+      },
+      "ctaTarget": {
+        "primary": "post",
+        "links": [],
+        "note": "The dump has no href in any body block (only the canonical URL in the header). Link-label blocks exist as plain text without a visible URL; links must be taken from the live page, not invented."
+      },
+      "fitsShort": false,
+      "ifShortOmit": "b6–b9 (שלוש רמות), b13–b14 (בעיות מילוליות וטעות כמידע), b15–b18 (שיחה קצרה, תפקיד ההורה, המחשה), b19–b22 (תרגול ממוקד מול אתגר), b23–b25 (סימנים שהתרגול עובד).",
+      "followUp": "7 שקיות ו-13 תפוחים: איך מלמדים ילד לבדוק אם התשובה הגיונית",
+      "hardTerms": [
+        "הכוונה",
+        "הקניה",
+        "היקף",
+        "במאונך",
+        "חוקיות",
+        "אסטרטגיה",
+        "הצדקה"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b1",
+          "expr": "8 stickers, how many more to 10",
+          "result": "ok",
+          "note": "Answer not stated; 2."
+        },
+        {
+          "ref": "b4",
+          "expr": "7 bags × 6 apples; wrong answer 13",
+          "result": "ok",
+          "note": "Correct total 7×6 = 42 (not stated in post); 13 = 7+6, so presented as an error correctly; much larger than 13 is true."
+        },
+        {
+          "ref": "b12",
+          "expr": "48 + 27 via 48+20+7",
+          "result": "ok",
+          "note": "68 + 7 = 75 (final answer not stated in post)."
+        },
+        {
+          "ref": "b12",
+          "expr": "48 + 27 via 50 + 27 - 2",
+          "result": "ok",
+          "note": "77 - 2 = 75."
+        },
+        {
+          "ref": "b21",
+          "expr": "create an exercise whose answer is 36",
+          "result": "ok",
+          "note": "Open task, no claim."
+        }
+      ],
+      "sourceIssues": [
+        "Header detector says aud=students, but body addresses parents (b17, b26) and b22 names parents, teachers and private tutors; students are not addressed directly.",
+        "b4 and b12 never state the correct results (42, 75); a video must add them explicitly if shown."
+      ],
+      "notes": [
+        "b22: free, no registration, levels רמה א׳, רמה ב׳, רמת אתגר.",
+        "b16: 15–20 minutes several times a week is advice."
+      ],
+      "readBy": "reading agent A2; findings spot-checked by Claude"
+    },
+    "multiplication-table-worksheets": {
+      "readStatus": "read-full",
+      "url": "https://www.noamdoronmath.co.il/post/דפי-עבודה-ללוח-הכפל-לתרגול-נכון-בבית",
+      "audience": {
+        "value": "parents",
+        "evidence": [
+          {
+            "block": "title",
+            "quote": "לתרגול נכון בבית"
+          },
+          {
+            "block": "b8",
+            "quote": "אם הילד עדיין סופר כל פריט בנפרד"
+          },
+          {
+            "block": "cats",
+            "quote": "מורים והורים"
+          }
+        ]
+      },
+      "grade": {
+        "value": "ב׳–ג׳",
+        "evidence": {
+          "block": "b0",
+          "quote": "דפי העבודה הקיימים בכיתות ב׳ וג׳"
+        }
+      },
+      "mainIdea": "לוח הכפל נעשה מובן כשמחברים כל עובדה לקבוצות שוות ומפרקים אותה לעובדות שכבר מכירים.",
+      "hook": {
+        "block": "b0",
+        "quote": "לוח הכפל נעשה מובן יותר כשמחברים בין עובדת הכפל לבין קבוצות שוות."
+      },
+      "example": {
+        "block": "b2",
+        "text": "מחמש פעמים שמונה, שהן 40, ולהוסיף עוד פעמיים שמונה, שהן 16. יחד מתקבל 56.",
+        "expr": "7×8 = 5×8 + 2×8 = 40 + 16 = 56"
+      },
+      "ctaTarget": {
+        "primary": "post",
+        "links": [],
+        "note": "The dump has no href in any body block (only the canonical URL in the header). Link-label blocks exist as plain text without a visible URL; links must be taken from the live page, not invented. Link-label blocks: b4–b7 (grade ב׳/ג׳ topics), b15 (למאגר כיתה ג׳)."
+      },
+      "fitsShort": true,
+      "ifShortOmit": null,
+      "followUp": null,
+      "hardTerms": [
+        "גורמים",
+        "מכפלה",
+        "מערך",
+        "שליפה",
+        "עובדת הכפל",
+        "מוחשי"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b0",
+          "expr": "4 × 6 = 24",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b2",
+          "expr": "5×8 + 2×8 = 40 + 16 = 56 = 7×8",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b10",
+          "expr": "6×7 = 42 -> 42 : 6 = 7",
+          "result": "ok",
+          "note": ""
+        },
+        {
+          "ref": "b12",
+          "expr": "7 + 8 ≠ 7 × 8",
+          "result": "ok",
+          "note": "15 vs 56."
+        },
+        {
+          "ref": "b14",
+          "expr": "5×7 + 2×7 = 35 + 14 = 49 = 7×7",
+          "result": "ok",
+          "note": ""
+        }
+      ],
+      "sourceIssues": [],
+      "notes": [
+        "b0: all sheets open בחינם.",
+        "b10: link to topic can be saved on device בלי חשבון.",
+        "b8: no need to time every question.",
+        "b16: עודכן 8.9.2026."
+      ],
+      "readBy": "reading agent A2; findings spot-checked by Claude"
+    },
+    "order-of-operations-guide": {
+      "readStatus": "read-full",
+      "audience": {
+        "value": "mixed",
+        "evidence": "תיאור: \"מדריך פשוט לתלמידים ולהורים\"; b55: \"איך הורים ומורים יכולים לעזור\""
+      },
+      "grade": null,
+      "mainIdea": "בתרגיל 8 + 2 × 3 התשובה היא 14 ולא 30, כי יש סדר פעולות קבוע, ופעולות מאותה דרגה עושים משמאל לימין.",
+      "hook": {
+        "ref": "b0",
+        "text": "התרגיל 8 + 2 × 3 נראה קצר, אבל הוא יכול להוביל לשתי תשובות שונות: 30 או 14."
+      },
+      "example": {
+        "ref": "b10–b12",
+        "text": "8 + 2 × 3 → 2 × 3 = 6 → 8 + 6 = 14"
+      },
+      "ctaTarget": [
+        "post"
+      ],
+      "fitsShort": false,
+      "ifShortOmit": [
+        "b20–b23",
+        "b26–b30",
+        "b34–b40",
+        "b42–b50",
+        "b52–b63"
+      ],
+      "followUp": "24 : 4 × 3 — למה כפל לא תמיד קודם לחילוק",
+      "hardTerms": [
+        "כפל",
+        "שמחשב",
+        "חושבו",
+        "עשרה (במספרי 11–19)",
+        "שלמה"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b0",
+          "expr": "8 + 2 × 3 = 14; (8 + 2) × 3 = 30",
+          "result": "ok"
+        },
+        {
+          "ref": "b16–b18",
+          "expr": "5 × (7 − 3) = 20",
+          "result": "ok"
+        },
+        {
+          "ref": "b21–b23",
+          "expr": "18 − [2 × (6 − 4)] = 14",
+          "result": "ok"
+        },
+        {
+          "ref": "b27–b29",
+          "expr": "3 + 2² × 4 = 19",
+          "result": "ok"
+        },
+        {
+          "ref": "b30",
+          "expr": "2² × 4 = 16; (2 × 4)² = 64",
+          "result": "ok"
+        },
+        {
+          "ref": "b34–b36",
+          "expr": "24 : 4 × 3 = 18; 24 : 12 = 2",
+          "result": "ok"
+        },
+        {
+          "ref": "b38–b40",
+          "expr": "15 − 6 + 2 = 11; 15 − (6 + 2) = 7",
+          "result": "ok"
+        },
+        {
+          "ref": "b45–b49",
+          "expr": "36 : (8 − 2) + 5 × 2 = 16",
+          "result": "ok"
+        }
+      ],
+      "sourceIssues": [],
+      "notes": "בסיס התוכן הוא גרסת PR 54: חילוק בנקודתיים ומינוס U+2212. בבסיס הישן (לפני PR 54) מופיע ÷.",
+      "readBy": "Claude (main session)"
+    },
+    "powers-roots-middle-guide": {
+      "readStatus": "read-full",
+      "audience": {
+        "value": "unclear",
+        "evidence": "אין פנייה מפורשת לקהל; categories: יסודי, חטיבת הביניים, מורים והורים"
+      },
+      "grade": null,
+      "mainIdea": "חזקה היא קיצור לכפל חוזר: המעריך אומר כמה פעמים הבסיס מופיע בכפל, ולכן 3⁴ אינו 3 × 4.",
+      "hook": {
+        "ref": "b8–b9",
+        "text": "טעות נפוצה היא לחשוב שהביטוי הבא שווה לכפל בין הבסיס למעריך: 3⁴ = 3 × 4"
+      },
+      "example": {
+        "ref": "b7",
+        "text": "3⁴ = 3 × 3 × 3 × 3 = 81"
+      },
+      "ctaTarget": [
+        "post"
+      ],
+      "fitsShort": false,
+      "ifShortOmit": [
+        "b16–b27",
+        "b28–b49",
+        "b50–b60",
+        "b61–b84",
+        "b85–b128"
+      ],
+      "followUp": "√25 = 5, אבל ל־x² = 25 יש שני פתרונות",
+      "hardTerms": [
+        "חזקה",
+        "בחזקת",
+        "מעריך",
+        "בסיס",
+        "בריבוע",
+        "ריבועי",
+        "שורש",
+        "מועלה",
+        "ממשי"
+      ],
+      "mathCheck": [
+        {
+          "ref": "b7, b14",
+          "expr": "3⁴ = 81; 2⁵ = 32",
+          "result": "ok"
+        },
+        {
+          "ref": "b18–b27",
+          "expr": "8¹ = 8; 12⁰ = 1; 2⁴…2⁰ = 16, 8, 4, 2, 1",
+          "result": "ok"
+        },
+        {
+          "ref": "b31, b40, b44",
+          "expr": "5² × 5³ = 5⁵; 7⁵ : 7² = 7³; (4²)³ = 4⁶",
+          "result": "ok"
+        },
+        {
+          "ref": "b34–b38",
+          "expr": "2³ × 3³ = 216 = 6³ ≠ 6⁶",
+          "result": "ok"
+        },
+        {
+          "ref": "b53, b59",
+          "expr": "(−3)² = 9; −3² = −9",
+          "result": "ok"
+        },
+        {
+          "ref": "b64, b72, b74–b76",
+          "expr": "√49 = 7; √25 = 5; x² = 25 ⇒ x = ±5",
+          "result": "ok"
+        },
+        {
+          "ref": "b83",
+          "expr": "√20 = 2√5",
+          "result": "ok"
+        },
+        {
+          "ref": "b88–b95",
+          "expr": "2 + 3² × √16 = 38",
+          "result": "ok"
+        },
+        {
+          "ref": "b101–b103",
+          "expr": "2³ + 2⁴ = 24 ≠ 2⁷ = 128",
+          "result": "ok"
+        },
+        {
+          "ref": "b110–b112",
+          "expr": "(2 + 3)² = 25; 2² + 3² = 13",
+          "result": "ok"
+        },
+        {
+          "ref": "b115–b116",
+          "expr": "√(−9) אין ערך ממשי",
+          "result": "ok"
+        }
+      ],
+      "sourceIssues": [
+        "b54–b57: הטקסט מתאר את −3² (\"פירושו ההפך של החזקה… שמים מינוס לפניה\"), אבל הבלוק שמוצג אחרי b54 הוא 3² בלי מינוס, ו־−3² מופיע רק ב־b57. הסדר מבלבל; b59 נכון. התסריט נשען על b59. לא שונה באתר (מחוץ להיקף)."
+      ],
+      "notes": "כותרת ה־H1 בבסיס הישן הסתיימה בנקודה; PR 54 הסיר אותה.",
+      "readBy": "Claude (main session)"
+    }
+  }
+}

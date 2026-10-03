@@ -40,3 +40,16 @@ test('narration strips to the unpointed script, captions carry no niqqud', () =>
     if (p.endsWith('captions.he.txt')) assert.doesNotMatch(content, /[ְ-ׇּׁׂ]/);
   }
 });
+
+import { loadBriefs } from '../lib/inventory.mjs';
+test('every brief belongs to a real post and cites existing blocks', async () => {
+  const { loadPosts, sourceBlocks } = await import('../lib/source.mjs');
+  const posts = new Map(loadPosts().map(({ post }) => [post.fileSlug, new Set(sourceBlocks(post).map((b) => b.id))]));
+  for (const [id, b] of Object.entries(loadBriefs().posts)) {
+    assert.ok(posts.has(id), `brief for unknown post ${id}`);
+    assert.equal(b.readStatus, 'read-full', id);
+    for (const m of b.mathCheck || []) {
+      for (const ref of String(m.ref).match(/b\d+/g) || []) assert.ok(posts.get(id).has(ref), `${id}: ${ref} not in post`);
+    }
+  }
+});

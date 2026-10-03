@@ -1,235 +1,235 @@
 {
-  "policy": "Targeted niqqud: only the tokens listed here are pointed in narration.he.niqqud.txt. A token is listed when an unpointed reading is ambiguous or easy to mispronounce. Every other word stays unpointed on purpose; pointing every word adds marks that a voice engine may read worse, and errors in full niqqud are hard to review. No entry is verified as audio: only listening to Noam's chosen HeyGen voice can confirm it.",
+  "policy": "ניקוד ממוקד: רק המילים שברשימה מנוקדות בקובץ narration.he.niqqud.txt. מילה נכנסת לרשימה כשקריאתה בלי ניקוד דו־משמעית או קלה לשיבוש. שאר המילים נשארות בלי ניקוד בכוונה: ניקוד מלא מוסיף סימנים שמנוע קול עלול לקרוא גרוע יותר, וקשה לבדוק טעויות בניקוד מלא. אף ערך לא אומת באודיו; רק האזנה לקול שנועם בחר יכולה לאמת.",
   "statusValues": {
-    "text-checked": "Pointing checked against standard Hebrew grammar for this context; still needs listening.",
-    "needs-listening-priority": "A real alternative pronunciation exists, or a TTS engine is likely to pick the wrong one. Listen to this word first."
+    "text-checked": "הניקוד נבדק מול דקדוק עברי תקני בהקשר הזה; עדיין צריך האזנה.",
+    "needs-listening-priority": "יש הגייה חלופית אמיתית, או שמנוע קול עלול לבחור בה. להאזין למילה הזו ראשונה."
   },
   "entries": [
     {
       "token": "חזקה",
       "niqqud": "חֶזְקָה",
       "say": "khezka",
-      "rationale": "Power (exponent). Unpointed it can be read khazaka, 'strong' (fem.).",
+      "rationale": "חזקה במובן מתמטי. בלי ניקוד אפשר לקרוא חֲזָקָה (\"חזקה\", כמו כוח).",
       "status": "needs-listening-priority"
     },
     {
       "token": "החזקה",
       "niqqud": "הַחֶזְקָה",
       "say": "ha-khezka",
-      "rationale": "As חזקה, with the article.",
+      "rationale": "כמו חזקה, עם ה״א הידיעה.",
       "status": "needs-listening-priority"
     },
     {
       "token": "בחזקת",
       "niqqud": "בְּחֶזְקַת",
       "say": "be-khezkat",
-      "rationale": "Construct form used to read powers aloud: 'three be-khezkat four'.",
+      "rationale": "צורת הסמיכות שבה קוראים חזקה בקול: \"שלוש בחזקת ארבע\".",
       "status": "needs-listening-priority"
     },
     {
       "token": "חזקות",
       "niqqud": "חֲזָקוֹת",
       "say": "khazakot",
-      "rationale": "Plural of חֶזְקָה. Same sound as 'strong' (fem. pl.), so meaning comes from context; pointed for consistency with the singular.",
+      "rationale": "רבים של חֶזְקָה. נשמע כמו \"חזקות\" (רבות כוח), ולכן ההקשר קובע. מנוקד לעקביות עם היחיד.",
       "status": "text-checked"
     },
     {
       "token": "המעריך",
       "niqqud": "הַמַּעֲרִיךְ",
       "say": "ha-ma'arikh",
-      "rationale": "Exponent. Standard term is מַעֲרִיךְ (ma'arikh). Speakers and engines also say me'arekh; check that the voice says ma'arikh.",
+      "rationale": "המונח המקובל הוא מַעֲרִיךְ (ma'arikh). דוברים ומנועי קול אומרים לפעמים me'arekh. לוודא שהקול אומר ma'arikh.",
       "status": "needs-listening-priority"
     },
     {
       "token": "למעריך",
       "niqqud": "לַמַּעֲרִיךְ",
       "say": "la-ma'arikh",
-      "rationale": "As המעריך, with ל + article.",
+      "rationale": "כמו המעריך, עם ל׳ וה״א הידיעה.",
       "status": "needs-listening-priority"
     },
     {
       "token": "הבסיס",
       "niqqud": "הַבָּסִיס",
       "say": "ha-basis",
-      "rationale": "Base of a power. Unambiguous, pointed because it is the paired term to מעריך in the same sentence.",
+      "rationale": "הבסיס של חזקה. אין דו־משמעות; מנוקד כי הוא בא יחד עם \"מעריך\" באותו משפט.",
       "status": "text-checked"
     },
     {
       "token": "בריבוע",
       "niqqud": "בְּרִיבּוּעַ",
       "say": "be-ribua",
-      "rationale": "'Squared'. Ktiv male keeps the י (hiriq male), so stripping the marks gives the post's spelling. Furtive patah under the final ע so the ending is -ua.",
+      "rationale": "\"בריבוע\". בכתיב מלא נשארת היו״ד, ולכן הסרת הניקוד מחזירה את הכתיב שבפוסט. פתח גנובה בעי״ן: הסיומת נשמעת -ua.",
       "status": "needs-listening-priority"
     },
     {
       "token": "ריבועי",
       "niqqud": "רִיבּוּעִי",
       "say": "ribu'i",
-      "rationale": "As in שורש ריבועי, 'square root'. Ktiv male keeps the י.",
+      "rationale": "כמו ב\"שורש ריבועי\". בכתיב מלא נשארת היו״ד.",
       "status": "text-checked"
     },
     {
       "token": "שורש",
       "niqqud": "שׁוֹרֶשׁ",
       "say": "shoresh",
-      "rationale": "Root. Spelled with ו (ktiv male) in the post, so the holam is on the ו and stripping the marks gives the same letters.",
+      "rationale": "בפוסט נכתב בווי״ו (כתיב מלא), ולכן החולם על הווי״ו, והסרת הניקוד מחזירה את אותן אותיות.",
       "status": "text-checked"
     },
     {
       "token": "השורש",
       "niqqud": "הַשּׁוֹרֶשׁ",
       "say": "ha-shoresh",
-      "rationale": "As שורש, with the article (dagesh in ש).",
+      "rationale": "כמו שורש, עם ה״א הידיעה (דגש בשי״ן).",
       "status": "text-checked"
     },
     {
       "token": "מועלה",
       "niqqud": "מוּעֲלֶה",
       "say": "mu'ale",
-      "rationale": "'Is raised' (to a power), hof'al participle. Unpointed it can be read ma'ale ('raises').",
+      "rationale": "\"מועלה בחזקה\" (בינוני הופעל). בלי ניקוד אפשר לקרוא מַעֲלֶה.",
       "status": "needs-listening-priority"
     },
     {
       "token": "כפל",
       "niqqud": "כֶּפֶל",
       "say": "kefel",
-      "rationale": "Multiplication (noun). Unpointed it can be read kafal, 'he doubled'.",
+      "rationale": "שם הפעולה. בלי ניקוד אפשר לקרוא כָּפַל (פועל).",
       "status": "text-checked"
     },
     {
       "token": "בכפל",
       "niqqud": "בַּכֶּפֶל",
       "say": "ba-kefel",
-      "rationale": "'With the multiplication' (definite, as in מתחילים בכפל).",
+      "rationale": "\"מתחילים בַּכֶּפֶל\": בכפל המסוים.",
       "status": "text-checked"
     },
     {
       "token": "שכפל",
       "niqqud": "שֶׁכֶּפֶל",
       "say": "she-kefel",
-      "rationale": "'That multiplication…'.",
+      "rationale": "\"שֶׁכֶּפֶל תמיד קודם…\".",
       "status": "text-checked"
     },
     {
       "token": "שמחשב",
       "niqqud": "שֶׁמְּחַשֵּׁב",
       "say": "she-mekhashev",
-      "rationale": "'Who calculates'. Unpointed it can be read she-makhshev, 'that a computer'.",
+      "rationale": "\"מי שמחשב\". בלי ניקוד אפשר לקרוא \"שמַחשב\" (מחשב, המכשיר).",
       "status": "needs-listening-priority"
     },
     {
       "token": "עשרה",
       "niqqud": "עֶשְׂרֵה",
       "say": "esre",
-      "rationale": "Teen numbers (ארבע עשרה, חמש עשרה, שמונה עשרה). The scripts never use עשרה for 10 (asara); if one ever does, use a per-segment override.",
+      "rationale": "במספרי 11–19 (ארבע עשרה, חמש עשרה, שמונה עשרה). התסריטים אינם משתמשים ב\"עשרה\" במובן 10 (עֲשָׂרָה); אם יידרש, להגדיר עקיפה במקטע.",
       "status": "needs-listening-priority"
     },
     {
       "token": "שלמה",
       "niqqud": "שְׁלֵמָה",
       "say": "shlema",
-      "rationale": "'Whole' (fem.). Unpointed it can be read as the name Shlomo.",
+      "rationale": "\"טעות שלמה\". בלי ניקוד אפשר לקרוא את השם שלמה.",
       "status": "needs-listening-priority"
     },
     {
       "token": "שלם",
       "niqqud": "שָׁלֵם",
       "say": "shalem",
-      "rationale": "'Whole' (a whole page). Unpointed it can be read shilem, 'paid'.",
+      "rationale": "\"דף שלם\". בלי ניקוד אפשר לקרוא שִׁלֵּם (שילם).",
       "status": "text-checked"
     },
     {
       "token": "חושבו",
       "niqqud": "חוּשְּׁבוּ",
       "say": "khushvu",
-      "rationale": "'Were calculated' (pu'al). Unpointed it can be read khoshvu, 'think'.",
+      "rationale": "\"חוּשְּׁבוּ\" (פֻּעַל). בלי ניקוד אפשר לקרוא חוֹשְׁבוּ.",
       "status": "needs-listening-priority"
     },
     {
       "token": "הובן",
       "niqqud": "הוּבַן",
       "say": "huvan",
-      "rationale": "'Was understood' (huf'al).",
+      "rationale": "\"הוּבַן\" (הֻפְעַל).",
       "status": "text-checked"
     },
     {
       "token": "בחזקה",
       "niqqud": "בְּחֶזְקָה",
       "say": "be-khezka",
-      "rationale": "'To the power' (מועלה בחזקה, בחזקה זוגית). Unpointed it can be read be-khozka, 'by force'.",
+      "rationale": "\"מועלה בחזקה\", \"בחזקה זוגית\". בלי ניקוד אפשר לקרוא בְּחָזְקָה (\"בכוח\").",
       "status": "needs-listening-priority"
     },
     {
       "token": "ובחזקה",
       "niqqud": "וּבְחֶזְקָה",
       "say": "u-ve-khezka",
-      "rationale": "As בחזקה with ו (shuruk before ב).",
+      "rationale": "כמו בחזקה, עם ו׳ (שורוק לפני בי״ת).",
       "status": "needs-listening-priority"
     },
     {
       "token": "לחזקה",
       "niqqud": "לְחֶזְקָה",
       "say": "le-khezka",
-      "rationale": "As in 'the inverse of the second power'.",
+      "rationale": "\"ההפוכה לחזקה שנייה\".",
       "status": "needs-listening-priority"
     },
     {
       "token": "החזקות",
       "niqqud": "הַחֲזָקוֹת",
       "say": "ha-khazakot",
-      "rationale": "Plural with the article (חוקי החזקות).",
+      "rationale": "רבים עם ה״א הידיעה (\"חוקי החזקות\").",
       "status": "text-checked"
     },
     {
       "token": "הכפל",
       "niqqud": "הַכֶּפֶל",
       "say": "ha-kefel",
-      "rationale": "As כפל, with the article.",
+      "rationale": "כמו כפל, עם ה״א הידיעה.",
       "status": "text-checked"
     },
     {
       "token": "לכפל",
       "niqqud": "לְכֶפֶל",
       "say": "le-kefel",
-      "rationale": "As in קיצור לכפל חוזר.",
+      "rationale": "\"קיצור לכפל חוזר\".",
       "status": "text-checked"
     },
     {
       "token": "ושורש",
       "niqqud": "וְשׁוֹרֶשׁ",
       "say": "ve-shoresh",
-      "rationale": "As שורש with ו.",
+      "rationale": "כמו שורש, עם ו׳.",
       "status": "text-checked"
     },
     {
       "token": "שהבסיס",
       "niqqud": "שֶׁהַבָּסִיס",
       "say": "she-ha-basis",
-      "rationale": "As הבסיס with ש.",
+      "rationale": "כמו הבסיס, עם ש׳.",
       "status": "text-checked"
     },
     {
       "token": "ריבוע",
       "niqqud": "רִיבּוּעַ",
       "say": "ribua",
-      "rationale": "'Square' (ריבוע מושלם). Ktiv male keeps the י.",
+      "rationale": "\"ריבוע מושלם\". בכתיב מלא נשארת היו״ד.",
       "status": "text-checked"
     }
   ],
   "rejected": [
     {
       "token": "שווה",
-      "reason": "Ktiv male spells it with two ו; the pointed form שָׁוֶה has one, so pointing it changes the letters. Left unpointed (normally read shave). Listen for it."
+      "reason": "בכתיב מלא נכתבת בשתי ווי״ו, ובצורה המנוקדת שָׁוֶה יש אחת, כך שהניקוד משנה אותיות. נשארה בלי ניקוד (בדרך כלל נקראת shave). להאזין לה."
     },
     {
       "token": "הכוונה",
-      "reason": "Ktiv male spells it with two ו; the pointed form הַכְוָנָה has one. The scripts say הדרכה ('guidance') instead, which has a single clear reading."
+      "reason": "בכתיב מלא נכתבת בשתי ווי״ו, ובצורה המנוקדת הַכְוָנָה יש אחת. בתסריטים נאמר \"הדרכה\", שיש לה קריאה אחת ברורה."
     }
   ],
   "unpointedOk": [
     {
       "token": "מושלם",
-      "reason": "Shares letters with שלם after prefix stripping, but מושלם (mushlam, 'perfect') has one reading."
+      "reason": "אחרי הסרת תחיליות יש לה אותן אותיות כמו \"שלם\", אבל למילה מושלם יש קריאה אחת."
     }
   ]
 }
