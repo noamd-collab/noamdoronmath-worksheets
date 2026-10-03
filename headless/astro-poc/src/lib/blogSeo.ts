@@ -9,17 +9,15 @@
  *    <title>, canonical, og:title, og:url, og:type, og:site_name, twitter:card,
  *    twitter:title. It can't be switched off from code.
  *
- * So this module adds only what neither source provides, which keeps every tag single:
- *  - og:description, when BaseLayout skipped it (no image);
- *  - twitter:description, always;
- *  - twitter:image, when there is an image;
+ * BaseLayout now owns one title, description, canonical (production host),
+ * robots, and the Open Graph / Twitter set. A client script removes the matching
+ * Wix [wix-seo-tag] copies, including ones that pointed at the preview host.
+ *
+ * This module adds only image dimensions Wix and BaseLayout never emit:
  *  - og:image:width and og:image:height, only when the blog JSON stores both on the
- *    ImageObject for that image. Neither BaseLayout nor the Wix injection emits them.
- *    If the JSON has no dimensions, those two tags are skipped. The `w_…,h_…` segment
- *    of a Wix media URL is a resize transform, not a stored size, and is never parsed.
- * canonical, og:url and og:type are deliberately NOT emitted here: Wix injects them
- * per path, and after the domain moves its canonical is https://www.noamdoronmath.co.il/…
- * A second canonical from code would be worse than none.
+ *    ImageObject for that image. If the JSON has no dimensions, those two tags are
+ *    skipped. The `w_…,h_…` segment of a Wix media URL is a resize transform, not a
+ *    stored size, and is never parsed.
  */
 
 export type SeoMetaTag = { property?: string; name?: string; content: string };
@@ -34,8 +32,6 @@ export type BlogSeoInput = {
    */
   jsonLd?: unknown;
 };
-
-const clean = (s: string | undefined) => (s || '').replace(/\s+/g, ' ').trim();
 
 export function isHttpsUrl(v: string | undefined): v is string {
   if (!v) return false;
@@ -84,18 +80,13 @@ export function storedImageDimensions(
   return undefined;
 }
 
-/** Tags that complete the blog <head> without duplicating BaseLayout or the Wix injection. */
+/** Image dimensions only. Title, description, canonical, and social tags live in BaseLayout. */
 export function buildBlogSeoComplement(input: BlogSeoInput): SeoMetaTag[] {
-  const description = clean(input.description);
   const image = isHttpsUrl(input.image) ? input.image : undefined;
-  const tags: SeoMetaTag[] = [];
-  if (description && !image) tags.push({ property: 'og:description', content: description });
-  if (description) tags.push({ name: 'twitter:description', content: description });
-  if (image) tags.push({ name: 'twitter:image', content: image });
   const size = image ? storedImageDimensions(input.jsonLd, image) : undefined;
-  if (size) {
-    tags.push({ property: 'og:image:width', content: String(size.width) });
-    tags.push({ property: 'og:image:height', content: String(size.height) });
-  }
-  return tags;
+  if (!size) return [];
+  return [
+    { property: 'og:image:width', content: String(size.width) },
+    { property: 'og:image:height', content: String(size.height) },
+  ];
 }
