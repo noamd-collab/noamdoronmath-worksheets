@@ -19,6 +19,7 @@ import {
   buildWorksheetsHref,
   parseWorksheetsUrlState,
   trackForPinnedTopic,
+  pinnedCardTopicId,
   worksheetsBackPath,
   worksheetsHrefForGrade,
   type TrackMode,
@@ -72,6 +73,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   const [cross, setCross] = useState(boot.cross);
   // Client-owned topic pin so "נקה" / URL edits can drop landing ?topic= without reload.
   const [topicPin, setTopicPin] = useState<number | null>(highlightTopicId);
+  const pinnedCard = useMemo(() => pinnedCardTopicId(topicPin, gradeEntry), [topicPin, gradeEntry]);
   const searchId = useId();
   const statusId = useId();
   const listId = 'topic-list';
@@ -147,12 +149,12 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   }, [grade, showTrack, gradeEntry]);
 
   useEffect(() => {
-    if (topicPin == null) return;
-    const el = document.querySelector(`[data-topic-id="${topicPin}"]`);
+    if (pinnedCard == null) return;
+    const el = document.querySelector(`[data-topic-id="${pinnedCard}"]`);
     if (!(el instanceof HTMLElement)) return;
     el.classList.add('is-topic-target');
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, [topicPin, grade]);
+  }, [pinnedCard, grade]);
 
   const activeGroups = useMemo(() => {
     if (!showTrack) return gradeEntry.groups;
@@ -242,7 +244,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       query: string
     ): CatalogTopic[] => {
       const hay = haystacksByGrade.get(gEntry.grade) || new Map();
-      const pin = !query.trim() && topicPin != null ? topicPin : null;
+      const pin = !query.trim() && pinnedCard != null ? pinnedCard : null;
       return gEntry.topics.filter((t) => {
         if (t.parent !== undefined) return false;
         if (!topicAllowedByTrack(gEntry.grade, t, mode)) return false;
@@ -272,7 +274,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     group,
     haystacksByGrade,
     topicAllowedByTrack,
-    topicPin,
+    pinnedCard,
   ]);
 
   const visibleCount = visibleBlocks.reduce((n, b) => n + b.topics.length, 0);

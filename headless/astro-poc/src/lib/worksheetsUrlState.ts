@@ -171,3 +171,17 @@ export function trackForPinnedTopic(state: WorksheetsUrlState, catalogGrade: Tra
   const group = catalogGrade.groups.find((g) => g.key === topic.group);
   return group?.reducedProgram ? 'red' : 'reg';
 }
+
+/**
+ * Subtopics (catalog `parent`) are listed inside their parent's card, never as a
+ * card of their own, so a pinned subtopic (`?topic=41` in grade 9) shows the
+ * parent card instead of an empty list.
+ */
+export function pinnedCardTopicId(
+  topicId: number | null,
+  catalogGrade: { topics: ReadonlyArray<{ id: number; parent?: number }> } | undefined
+): number | null {
+  if (topicId == null || !catalogGrade) return topicId;
+  const topic = catalogGrade.topics.find((t) => t.id === topicId);
+  return topic?.parent ?? topicId;
+}

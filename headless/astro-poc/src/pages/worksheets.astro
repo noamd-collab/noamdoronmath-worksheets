@@ -16,6 +16,8 @@ const invalid = parsed.invalid || !parsed.grade;
 const grade = parsed.grade;
 const gradeEntry = !invalid && grade ? catalog.grades.find((g) => g.grade === grade) : undefined;
 const missingEntry = !invalid && !!grade && !gradeEntry;
+// The explicit error page keeps its copy, but answers 404 so `?grade=12` is not a soft 404.
+if (invalid || missingEntry) Astro.response.status = 404;
 const familyGrades =
   gradeEntry && grade
     ? familyOf(grade).map((g) => {

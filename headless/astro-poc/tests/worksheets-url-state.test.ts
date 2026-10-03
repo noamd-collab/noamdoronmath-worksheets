@@ -172,11 +172,18 @@ describe('worksheetsUrlState contract (M32)', () => {
 
 describe('grade 9 topic pins open on the topic’s own track', async () => {
   const { trackForPinnedTopic } = await import('../src/lib/worksheetsUrlState.ts');
+  type UrlState = import('../src/lib/worksheetsUrlState.ts').WorksheetsUrlState;
   const { readFileSync } = await import('node:fs');
   const catalog = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
   const g9 = catalog.grades.find((g: { grade: number }) => g.grade === 9);
-  const state = (topic: number | null, track: 'reg' | 'red' = 'reg') =>
-    ({ grade: 9, q: '', group: 'all', cross: false, track, topic }) as const;
+  const state = (topic: number | null, track: 'reg' | 'red' = 'reg'): UrlState => ({
+    grade: 9,
+    q: '',
+    group: 'all',
+    cross: false,
+    track,
+    topic,
+  });
 
   it('reduced-program topics (33, 34, 35, 36) switch to the reduced track', () => {
     for (const id of [33, 34, 35, 36]) assert.equal(trackForPinnedTopic(state(id), g9), 'red', `topic ${id}`);
@@ -188,6 +195,22 @@ describe('grade 9 topic pins open on the topic’s own track', async () => {
   it('no pin, unknown topic or another grade keeps the URL track', () => {
     assert.equal(trackForPinnedTopic(state(null, 'red'), g9), 'red');
     assert.equal(trackForPinnedTopic(state(999), g9), 'reg');
-    assert.equal(trackForPinnedTopic({ ...state(33), grade: 8 } as never, g9), 'reg');
+    assert.equal(trackForPinnedTopic({ ...state(33), grade: 8 }, g9), 'reg');
+  });
+});
+
+describe('a pinned subtopic shows its parent card', async () => {
+  const { pinnedCardTopicId } = await import('../src/lib/worksheetsUrlState.ts');
+  const catalog = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+  const grade = (n: number) => catalog.grades.find((g: { grade: number }) => g.grade === n);
+
+  it('grade 9 subtopics 41, 42 and 43 resolve to their parent 2', () => {
+    for (const id of [41, 42, 43]) assert.equal(pinnedCardTopicId(id, grade(9)), 2, `topic ${id}`);
+  });
+  it('top-level, unknown and absent pins are unchanged', () => {
+    assert.equal(pinnedCardTopicId(2, grade(9)), 2);
+    assert.equal(pinnedCardTopicId(41, grade(8)), 41, 'grade 8 topic 41 is a top-level topic');
+    assert.equal(pinnedCardTopicId(999, grade(9)), 999);
+    assert.equal(pinnedCardTopicId(null, grade(9)), null);
   });
 });
