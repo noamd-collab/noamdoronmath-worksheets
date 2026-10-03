@@ -46,7 +46,11 @@ function engineHolds(): Record<string, number> {
   );
   return Object.fromEntries(
     [...source.matchAll(/^\s+'?([a-z0-9-]+)'?:\s*\{ duration: [\d.]+, hold: ([A-Z0-9_]+), render/gm)].map(
-      (m) => [m[1], consts.get(m[2])]
+      (m) => {
+        const hold = consts.get(m[2]);
+        assert.ok(hold !== undefined, `${m[1]}: hold constant ${m[2]} is not defined`);
+        return [m[1], hold];
+      }
     )
   );
 }
@@ -93,7 +97,7 @@ function loopsMap(file: string): Map<string, Record<string, string>> {
   }));
 }
 
-const numbers = (text: string) => text.match(/\d+/g) ?? [];
+const numbers = (text: string): string[] => text.match(/\d+/g) ?? [];
 
 function specsKeys(): Set<string> {
   const source = read('src/lib/conceptLoops.ts');
