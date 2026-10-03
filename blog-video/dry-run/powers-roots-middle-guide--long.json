@@ -1,0 +1,30 @@
+{
+  "dryRun": true,
+  "sent": false,
+  "contractVerified": false,
+  "narrationText": "niqqud (default for dry run; not decided)",
+  "request": {
+    "method": "POST",
+    "url": "https://api.heygen.com/v3/video-agents",
+    "headers": {
+      "X-Api-Key": "<HEYGEN_API_KEY from environment, never stored>",
+      "content-type": "application/json"
+    },
+    "body": {
+      "mode": "generate",
+      "avatar_id": "MISSING: Noam's own avatar look ID",
+      "voice_id": "MISSING: Noam's own voice ID",
+      "orientation": "portrait",
+      "prompt": "Present this Hebrew narration word for word, exactly as written, with no rewording, additions or omissions. Do not add on-screen text that is not given.\n\nחֲזָקוֹת ושורשים נראים פשוטים בשיעור הראשון. ואז מגיעה טעות נפוצה: לחשוב ששלוש בְּחֶזְקַת ארבע שווה לשלוש כפול ארבע.\nבביטוי שלוש בְּחֶזְקַת ארבע, המספר שלוש הוא הַבָּסִיס, והמספר ארבע הוא הַמַּעֲרִיךְ.\nחֶזְקָה היא קיצור לְכֶפֶל חוזר. הַמַּעֲרִיךְ אומר כמה פעמים הַבָּסִיס מופיע בַּכֶּפֶל: שלוש כפול שלוש כפול שלוש כפול שלוש, וזה שמונים ואחת. כלומר הַחֶזְקָה היא לא כֶּפֶל בין הַבָּסִיס לַמַּעֲרִיךְ.\nעוד דוגמה: שתיים בְּחֶזְקַת חמש. כותבים את הַכֶּפֶל המלא: שתיים כפול שתיים כפול שתיים כפול שתיים כפול שתיים, וזה שלושים ושתיים. רק אחרי שהמשמעות ברורה, עוברים לחוקים שמקצרים את הדרך.\nועכשיו מקום שבו טעות קטנה משנה את כל התשובה: מינוס וסוגריים.\nכשהמינוס בתוך הסוגריים, מינוס שלוש כולו מוּעֲלֶה בְּרִיבּוּעַ: מינוס שלוש כפול מינוס שלוש, וזה תשע.\nאבל כשאין סוגריים, קודם מחשבים את הַחֶזְקָה, ורק אחר כך מתייחסים למינוס שלפניה. שלוש בְּרִיבּוּעַ זה תשע, ולכן התוצאה היא מינוס תשע.\nהסוגריים אינם קישוט. הם מגדירים מה בדיוק מוּעֲלֶה בְּחֶזְקָה.\nועוד כלל שעוזר לבדוק: מספר שלילי בְּחֶזְקָה זוגית נותן תוצאה חיובית, וּבְחֶזְקָה אי־זוגית התוצאה נשארת שלילית.\nוְשׁוֹרֶשׁ רִיבּוּעִי הוא הפעולה ההפוכה לְחֶזְקָה שנייה. הוא שואל: איזה מספר, כשנכפול אותו בעצמו, ייתן את המספר הנתון? הַשּׁוֹרֶשׁ של ארבעים ותשע הוא שבע, כי שבע בְּרִיבּוּעַ זה ארבעים ותשע.\nוכדאי להכיר היטב את הריבועים של המספרים אחת עד חמש עֶשְׂרֵה לפחות. זה חוסך זמן, ועוזר לזהות מהר רִיבּוּעַ מושלם.\nוכשתרגיל נראה מסובך, כתבו כל שלב בשורה נפרדת. כך רואים בדיוק היכן התחלפה פעולה או נשמטו סוגריים.\nבפוסט המלא תמצאו את חוקי הַחֲזָקוֹת, ותרגילים בשלוש דרגות. הקישור בתיאור."
+    }
+  },
+  "blockers": [
+    "content not approved by Noam (status: awaiting-noam-review)",
+    "series is on hold until Noam approves a sample video; this video is not in pilot.videos",
+    "Noam's own avatar ID is missing or not confirmed as his (heygen.avatarId + avatarOwnerConfirmed)",
+    "Noam's own voice ID is missing or not confirmed as his (heygen.voiceId + voiceOwnerConfirmed)",
+    "heygen.narrationText not chosen (\"niqqud\" or \"unpointed\"); decide after a listening test",
+    "HeyGen quota/cost not checked (heygen.quotaChecked)",
+    "heygen.contract.json is not filled from official docs (verifiedFromDocs !== true)"
+  ]
+}

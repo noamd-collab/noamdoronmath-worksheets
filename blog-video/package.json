@@ -1,0 +1,11 @@
+{
+  "name": "blog-video",
+  "private": true,
+  "type": "module",
+  "description": "Blog post → short HeyGen video scripts, checks and gated production tooling. No dependencies.",
+  "scripts": {
+    "build": "node bin/build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "plan": "node bin/produce.mjs plan"
+  }
+}
