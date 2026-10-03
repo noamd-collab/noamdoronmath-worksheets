@@ -5,7 +5,8 @@
 בסיס: `headless/astro-poc-baseline` ב-`1be6a0da7bbc8e708eacff4f3d0cead2be195525`  
 HEAD לפני תיקון M33/M25: `f10dd3e6b8bd54e1a6d86647c3d5ec74f0ac0ab2`  
 קומיט התיקון (M33, מניפסט M25, והרצת הבדיקות): `0acbf139f33286544385b996b5d9c86dfe3cc8bc`  
-HEAD של הענף אחרי שורת ה-SHA הזו רשום בגוף PR #60.  
+HEAD אחרי רישום ה-SHA: `c6f9168fbbf1feec633354aed418ee3328461677`  
+הקומיט שמוסיף את מדידת המיקום הוא HEAD העדכני, וה-SHA המלא שלו רשום בגוף PR #60.  
 לא מוזג. ענפי המקור לא שונו. אין release, DNS, או פריסה לייצור.
 
 הבסיס התקדם מאז שנפתחו שלבי ה-SEO: נכללים בו כבר מיזוג #41 (לופים) ומיזוג #50 (תוויות נגישות). הם לא חלק מ-15 ה-PR-ים, והם כבר ב-ancestry.
@@ -90,7 +91,7 @@ HEAD של הענף אחרי שורת ה-SHA הזו רשום בגוף PR #60.
 
 נועם אישר ב-3.10.2026 13:44 לתקן את שני כשלי היחידה בלבד. אין מיזוג, release, או DNS.
 
-- **M33.** הסיבה: «בס״ד» היה פריט אחרון בשורת flex. תחת `dir=rtl` הפריט האחרון יושב בשמאל הפיזי. הכלל `.basad` ב-`catalog.css` כבר משתמש ב-`right`/`top` הפיזיים, בלי `inset-inline-end`. ב-`SiteHeader.astro` הסימון עבר ל-`<span class="basad" data-basad lang="he">`, מחוץ לזרימת ה-flex, על ה-header הדביק (`position: sticky`), עם `padding-top: 28px` כדי שלא יכסה את הלוגו. הבדיקה לא נמחקה ולא דולגה.
+- **M33.** הסיבה: «בס״ד» היה פריט אחרון בשורת flex. תחת `dir=rtl` הפריט האחרון יושב בשמאל הפיזי. הכלל `.basad` ב-`catalog.css` כבר משתמש ב-`right`/`top` הפיזיים, בלי `inset-inline-end`. ב-`SiteHeader.astro` הסימון עבר ל-`<span class="basad" data-basad lang="he">`, מחוץ לזרימת ה-flex, על ה-header הדביק (`position: sticky`), עם `padding-top: 28px` כדי שלא יכסה את הלוגו. הבדיקה לא נמחקה ולא דולגה. על השרת המקומי, בדף הבית: ב-1280 הסימון ב-`top: 12px` והקצה הימני 18px משולי החלון, בלי חפיפה ללוגו. ב-390 אותו מיקום פיזי, גם כן בלי חפיפה.
 - **M25.** הסיבה: `tests/blog-posts.test.ts` קורא את `reports/m25-blog/pilot-manifest.txt`, והתיקייה `reports/` ב-gitignore. בקופה נקייה הקובץ חסר (`ENOENT`). תבנית `scripts/m25-capture-blog-posts.mjs` גם לא כללה את המחרוזות `aboutus contact mailto-only` ו-`terms`, אז הרצה חוזרת של הסקריפט לא הייתה מספיקה לבדיקה. נוסף מניפסט מסווג לפי שמונת נתיבי `BLOG_POST_M25_PILOT_PATHS` וקבצי ה-JSON הקיימים: 63 כתובות = אינדקס 1 + 3 קטגוריות + 59 פוסטים, פיילוט 8, והשאר נדחה ב-M25. אחר כך M26–M29 ו-OPEN-07 מגישים 60 פוסטים + 4 ארכיונים, ו-`BLOG_M25_DEFERRED` ריק. יצירת הקשר באודותינו היא mailto בלבד (`mailto:noamd@noamdoronmath.co.il`, טופס Wix ב-`dry-run`). `terms` הוא עמוד אתר נפרד, לא אחד מ-63 כתובות הבלוג. הקובץ נכנס לגיט למרות ה-gitignore. הבדיקה לא נמחקה ולא דולגה, והטענות בה לא נחלשו.
 
 `astro check` אחרי התיקון, עם `WIX_CLIENT_ID=local-typecheck` בלבד (לא סוד, לא בקוד): 7 שגיאות, 0 אזהרות, 83 hints. כולן ב-`ConceptLoop.astro` המוגן, והקובץ לא נערך:
