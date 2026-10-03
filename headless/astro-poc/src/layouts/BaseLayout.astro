@@ -74,7 +74,8 @@ const crumbItems: Crumb[] =
       ? [{ name: 'בית', path: '/' }]
       : [
           { name: 'בית', path: '/' },
-          { name: resolvedTitle, path: `${Astro.url.pathname}${Astro.url.search}` },
+          // Same URL as the canonical, so utm/fbclid never reach the JSON-LD.
+          { name: resolvedTitle, path: `${new URL(canonical).pathname}${new URL(canonical).search}` },
         ];
 const breadcrumbLd = breadcrumbList(crumbItems);
 ---

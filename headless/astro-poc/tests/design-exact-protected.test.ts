@@ -53,7 +53,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.ok(head, 'BaseLayout must retain its head');
     // SEO cut-over (issue): one title/description/canonical, full OG+Twitter,
     // and a wider Wix-duplicate strip. Reviewed on purpose; not a design tweak.
-    assert.equal(sha256(head), 'a45f17779ad3e7270a995c9655cd252f193da079d57db7bd6ce24ab831a97b00');
+    // SEO stage 4: title/description/OG/breadcrumb read approvedSeoProposal(seoPath)
+    // (only rows with approved: true). Reviewed on purpose; not a design tweak.
+    assert.equal(sha256(head), '97ad7597489241c3478c4e978ee84dc0d3ca081fc5488e06eb43aba838ae9435');
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {

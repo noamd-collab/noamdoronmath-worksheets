@@ -75,10 +75,8 @@ describe('siteSeo preview vs production', () => {
   it('builds canonicals on the main domain', () => {
     assert.equal(canonicalUrl('/grade-7'), 'https://www.noamdoronmath.co.il/grade-7');
     assert.equal(canonicalUrl('/'), 'https://www.noamdoronmath.co.il/');
-    assert.equal(
-      canonicalUrl('/grade-2', '?popup=ai3zi'),
-      'https://www.noamdoronmath.co.il/grade-2?popup=ai3zi'
-    );
+    // popup is client-side only (redirects.json), so it is the same page as /grade-2.
+    assert.equal(canonicalUrl('/grade-2', '?popup=ai3zi'), 'https://www.noamdoronmath.co.il/grade-2');
   });
 
   it('default title/description are Hebrew and not Astro POC / Home dupes', () => {

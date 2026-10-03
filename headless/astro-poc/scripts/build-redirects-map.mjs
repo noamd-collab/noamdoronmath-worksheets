@@ -48,11 +48,14 @@ function abs(path) {
   return `${ORIGIN}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
+/** Pages that exist only under `astro dev` (gated by import.meta.env.DEV) and 404 in production. */
+const DEV_ONLY = new Set(['/dev-loops']);
+
 const astroPages = new Set(['/']);
 for (const name of readdirSync(join(root, 'src/pages'))) {
   if (!name.endsWith('.astro') || name.includes('[')) continue;
   const slug = name.replace(/\.astro$/, '');
-  if (slug === 'index' || slug.startsWith('_')) continue;
+  if (slug === 'index' || slug.startsWith('_') || DEV_ONLY.has(`/${slug}`)) continue;
   astroPages.add(`/${slug}`);
 }
 
@@ -100,6 +103,10 @@ for (const from of flagged) {
 const redirectedFrom = new Set(rules.map((rule) => rule.from));
 for (const path of [...livePaths].sort((a, b) => a.localeCompare(b))) {
   if (redirectedFrom.has(path) || flagged.has(path)) continue;
+  if (DEV_ONLY.has(path)) {
+    rows.push({ oldUrl: abs(path), newUrl: '', status: '404-מכוון', confidence: 'גבוה' });
+    continue;
+  }
   if (served.has(path) || path.startsWith('/post/')) {
     rows.push({ oldUrl: abs(path), newUrl: abs(path), status: '200', confidence: 'גבוה' });
     continue;
