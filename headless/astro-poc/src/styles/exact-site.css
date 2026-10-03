@@ -16,7 +16,7 @@ body.exact-site {
 .exact-home p,.exact-home h1,.exact-home h2 {letter-spacing:normal;}
 .exact-header nav {display:flex;}
 .exact-header nav a {white-space:normal;}
-.exact-nav-toggle,.exact-nav-learn-mobile {display:none!important;}
+.exact-nav-toggle,.exact-nav-learn-mobile,.exact-nav-search-mobile {display:none!important;}
 @media(max-width:767px){
   .exact-header__row {flex-wrap:nowrap!important;gap:10px!important;padding:8px 14px!important;position:relative;}
   .exact-header [data-exact-logo] {height:52px!important;}
@@ -35,7 +35,7 @@ body.exact-site {
   .exact-header nav[data-nav-panel] {display:none;position:absolute;top:calc(100% + 6px);inset-inline:14px;flex-direction:column;flex-wrap:nowrap!important;gap:2px!important;padding:10px;background:#fbfaf5;border:2px solid #22305a;border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;box-shadow:5px 6px 0 rgba(34,48,90,.14);}
   .exact-header nav[data-nav-panel][data-open] {display:flex;}
   .exact-header nav[data-nav-panel] a {padding:10px 12px!important;border-radius:10px!important;}
-  .exact-header nav[data-nav-panel] .exact-nav-learn-mobile {display:block!important;}
+  .exact-header nav[data-nav-panel] .exact-nav-learn-mobile,.exact-header nav[data-nav-panel] .exact-nav-search-mobile {display:block!important;}
 }
 .exact-site [data-doodle] {visibility:visible;}
 .exact-site [data-doodle] img {max-width:none;}

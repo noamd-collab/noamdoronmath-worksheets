@@ -1,0 +1,1439 @@
+{
+  "associations": [
+    {
+      "key": "page:/signed-numbers-grade-7",
+      "title": "חיבור וחיסור מספרים מכוונים לכיתה ז׳",
+      "linkedTopic": "topic:7:2",
+      "linkedTitle": "חיבור וחיסור מספרים מכוונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/pythagorean-theorem-grade-8",
+      "title": "משפט פיתגורס לכיתה ח׳",
+      "linkedTopic": "topic:8:11",
+      "linkedTitle": "פיתגורס",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/quadratic-function-grade-9",
+      "title": "הפונקציה הריבועית לכיתה ט׳",
+      "linkedTopic": "topic:9:5",
+      "linkedTitle": "הפונקציה הריבועית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equations-basics-grade-7",
+      "title": "מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳",
+      "linkedTopic": "topic:7:23",
+      "linkedTitle": "הצבה בביטויים אלגבריים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "page:/equations-basics-grade-7",
+      "title": "מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳",
+      "linkedTopic": "topic:7:34",
+      "linkedTitle": "משוואות חד־שלביות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equations-basics-grade-7",
+      "title": "מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳",
+      "linkedTopic": "topic:7:32",
+      "linkedTitle": "מהו פתרון של משוואה",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/coordinate-plane-quadrants-grade-7",
+      "title": "ארבעת הרביעים במערכת הצירים לכיתה ז׳",
+      "linkedTopic": "topic:7:9",
+      "linkedTitle": "הרחבת מערכת הצירים חלק 1",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/linear-function-grade-8",
+      "title": "פונקציה קווית לכיתה ח׳",
+      "linkedTopic": "topic:8:29",
+      "linkedTitle": "פונקציה קווית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-congruence-grade-8",
+      "title": "חפיפת משולשים לכיתה ח׳",
+      "linkedTopic": "topic:8:36",
+      "linkedTitle": "חפיפת משולשים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/quadratic-equations-grade-9",
+      "title": "משוואות ריבועיות לכיתה ט׳",
+      "linkedTopic": "topic:9:6",
+      "linkedTitle": "משוואות ריבועיות ונוסחת השורשים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/rectangle-grade-9",
+      "title": "מלבן לכיתה ט׳",
+      "linkedTopic": "topic:9:11",
+      "linkedTitle": "המלבן",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/pythagorean-theorem-grade-7",
+      "title": "משפט פיתגורס לכיתה ז׳",
+      "linkedTopic": "topic:7:42",
+      "linkedTitle": "פיתגורס חלק 1 — היכרות וחישוב",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/algebraic-expressions-grade-7",
+      "title": "ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳",
+      "linkedTopic": "topic:7:30",
+      "linkedTitle": "שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/algebraic-expressions-grade-7",
+      "title": "ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳",
+      "linkedTopic": "topic:7:23",
+      "linkedTitle": "הצבה בביטויים אלגבריים",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/algebraic-expressions-grade-7",
+      "title": "ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳",
+      "linkedTopic": "topic:7:22",
+      "linkedTitle": "משתנים וביטויים אלגבריים — שפה ומידול",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/powers-grade-7",
+      "title": "חזקות לכיתה ז׳",
+      "linkedTopic": "topic:7:6",
+      "linkedTitle": "חזקות עם מעריך טבעי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/systems-of-equations-grade-8",
+      "title": "מערכות משוואות לכיתה ח׳",
+      "linkedTopic": "topic:8:47",
+      "linkedTitle": "מערכות — חיתוך גרפי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/statistics-grade-8",
+      "title": "סטטיסטיקה לכיתה ח׳",
+      "linkedTopic": "topic:8:16",
+      "linkedTitle": "ארגון נתונים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "page:/geometric-proof-grade-8",
+      "title": "הוכחה גאומטרית לכיתה ח׳",
+      "linkedTopic": "topic:8:38",
+      "linkedTitle": "הוכחה גאומטרית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/similar-triangles-grade-8",
+      "title": "דמיון משולשים לכיתה ח׳",
+      "linkedTopic": "topic:8:43",
+      "linkedTitle": "דמיון משולשים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/factoring-grade-9",
+      "title": "פירוק לגורמים לכיתה ט׳",
+      "linkedTopic": "topic:9:2",
+      "linkedTitle": "פירוק לגורמים פירוק לגורמים 1 — הוצאת גורם משותף פירוק לגורמים 2 — נוסחאות הכפל המקוצר וטרינום פירוק לגורמים 3 — פירוק מלא, משוואות ושברים אלגבריים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/linear-function-grade-9",
+      "title": "פונקציה קווית לכיתה ט׳",
+      "linkedTopic": "topic:9:34",
+      "linkedTitle": "פונקציה קווית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/parallelogram-grade-9",
+      "title": "מקבילית לכיתה ט׳",
+      "linkedTopic": "topic:9:7",
+      "linkedTitle": "המקבילית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/square-grade-9",
+      "title": "ריבוע לכיתה ט׳",
+      "linkedTopic": "topic:9:14",
+      "linkedTitle": "הריבוע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/combining-like-terms-grade-7",
+      "title": "כינוס איברים וחוק הפילוג לכיתה ז׳",
+      "linkedTopic": "topic:7:29",
+      "linkedTitle": "שוויון ביטויים חלק 1 — כינוס ופילוג",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/multiplying-signed-numbers-grade-7",
+      "title": "כפל מספרים מכוונים לכיתה ז׳",
+      "linkedTopic": "topic:7:3",
+      "linkedTitle": "כפל מספרים מכוונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/dividing-signed-numbers-grade-7",
+      "title": "חילוק מספרים מכוונים לכיתה ז׳",
+      "linkedTopic": "topic:7:4",
+      "linkedTitle": "חילוק מספרים מכוונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/order-of-operations-signed-numbers-grade-7",
+      "title": "סדר פעולות החשבון במספרים מכוונים לכיתה ז׳",
+      "linkedTopic": "topic:7:5",
+      "linkedTitle": "סדר פעולות החשבון במספרים מכוונים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/number-line-absolute-value-grade-7",
+      "title": "ישר המספרים וערך מוחלט לכיתה ז׳",
+      "linkedTopic": "topic:7:1",
+      "linkedTitle": "מספרים מכוונים — ישר המספרים וערך מוחלט",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/square-root-grade-7",
+      "title": "שורש ריבועי לכיתה ז׳",
+      "linkedTopic": "topic:7:7",
+      "linkedTitle": "שורש ריבועי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/angles-introduction-measurement-grade-7",
+      "title": "זוויות לכיתה ז׳ — היכרות, סימון ומדידה",
+      "linkedTopic": "topic:7:11",
+      "linkedTitle": "זוויות חלק 1 — היכרות, סימון ומדידה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/adjacent-vertical-angles-grade-7",
+      "title": "זוויות צמודות וקודקודיות לכיתה ז׳",
+      "linkedTopic": "topic:7:12",
+      "linkedTitle": "זוויות חלק 2 — יחסים ופעולות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/linear-equations-grade-8",
+      "title": "משוואות ליניאריות לכיתה ח׳",
+      "linkedTopic": "topic:8:2",
+      "linkedTitle": "משוואות ליניאריות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/inequalities-grade-8",
+      "title": "אי־שוויונות לכיתה ח׳",
+      "linkedTopic": "topic:8:52",
+      "linkedTitle": "אי־שוויון",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/percentage-problems-grade-8",
+      "title": "בעיות אחוזים לכיתה ח׳",
+      "linkedTopic": "topic:8:7",
+      "linkedTitle": "בעיות אחוזים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/coordinate-plane-grade-8",
+      "title": "מערכת צירים לכיתה ח׳",
+      "linkedTopic": "topic:8:55",
+      "linkedTitle": "סינתזה גאומטרית",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "page:/congruence-theorems-grade-8",
+      "title": "משפטי חפיפה לכיתה ח׳",
+      "linkedTopic": "topic:8:37",
+      "linkedTitle": "משפטי חפיפה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-congruence-proofs-grade-8",
+      "title": "הוכחות בחפיפת משולשים לכיתה ח׳",
+      "linkedTopic": "topic:8:65",
+      "linkedTitle": "הוכחות בחפיפת משולשים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/exterior-angle-triangle-grade-8",
+      "title": "זווית חיצונית לכיתה ח׳",
+      "linkedTopic": "topic:8:39",
+      "linkedTitle": "זווית חיצונית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/isosceles-triangle-properties-grade-8",
+      "title": "משולש שווה שוקיים לכיתה ח׳",
+      "linkedTopic": "topic:8:40",
+      "linkedTitle": "משולש שווה שוקיים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/distributive-law-grade-9",
+      "title": "חוק הפילוג המורחב לכיתה ט׳",
+      "linkedTopic": "topic:9:1",
+      "linkedTitle": "חוק הפילוג המורחב",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/quadratic-inequalities-systems-grade-9",
+      "title": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳",
+      "linkedTopic": "topic:9:8",
+      "linkedTitle": "אי־שוויונות ריבועיים ומערכות משוואות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/exponent-rules-grade-9",
+      "title": "חוקי חזקות לכיתה ט׳",
+      "linkedTopic": "topic:9:16",
+      "linkedTitle": "חוקי חזקות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/square-roots-grade-9",
+      "title": "שורשים לכיתה ט׳",
+      "linkedTopic": "topic:9:17",
+      "linkedTitle": "שורשים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/word-problems-grade-9",
+      "title": "בעיות מילוליות לכיתה ט׳",
+      "linkedTopic": "topic:9:18",
+      "linkedTitle": "בעיות מילוליות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/binomial-square-grade-9",
+      "title": "דו־איבר בריבוע לכיתה ט׳",
+      "linkedTopic": "topic:9:44",
+      "linkedTitle": "דו איבר בריבוע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/difference-of-squares-grade-9",
+      "title": "הפרש ריבועים לכיתה ט׳",
+      "linkedTopic": "topic:9:45",
+      "linkedTitle": "הפרש ריבועים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/algebraic-fractions-grade-9",
+      "title": "צמצום שברים אלגבריים לכיתה ט׳",
+      "linkedTopic": "topic:9:3",
+      "linkedTitle": "צמצום שברים אלגבריים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/angles-review-grade-7",
+      "title": "זוויות לכיתה ז׳ — דף חזרה מסכם",
+      "linkedTopic": "topic:7:13",
+      "linkedTitle": "זוויות — דף חזרה מסכם",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-quadrilateral-angle-sum-grade-7",
+      "title": "סכום הזוויות במשולש ובמרובע לכיתה ז׳",
+      "linkedTopic": "topic:7:14",
+      "linkedTitle": "סכום הזוויות במשולש ובמרובע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/coordinate-plane-four-quadrants-grade-7",
+      "title": "מערכת צירים — ארבעת הרביעים לכיתה ז׳",
+      "linkedTopic": "topic:7:9",
+      "linkedTitle": "הרחבת מערכת הצירים חלק 1",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/coordinate-plane-scale-grade-7",
+      "title": "מערכת צירים וקנה מידה לכיתה ז׳",
+      "linkedTopic": "topic:7:8",
+      "linkedTitle": "מערכת צירים — היכרות וקנה מידה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/coordinate-plane-applications-grade-7",
+      "title": "מערכת צירים — מרחקים, היקף ושטח לכיתה ז׳",
+      "linkedTopic": "topic:7:10",
+      "linkedTitle": "הרחבת מערכת הצירים חלק 2 — יישום והעמקה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equations-advanced-grade-7",
+      "title": "פישוט, סוגריים וחוק הפילוג במשוואות לכיתה ז׳",
+      "linkedTopic": "topic:7:38",
+      "linkedTitle": "סוגריים וחוק הפילוג",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equations-advanced-grade-7",
+      "title": "פישוט, סוגריים וחוק הפילוג במשוואות לכיתה ז׳",
+      "linkedTopic": "topic:7:23",
+      "linkedTitle": "הצבה בביטויים אלגבריים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "page:/equations-advanced-grade-7",
+      "title": "פישוט, סוגריים וחוק הפילוג במשוואות לכיתה ז׳",
+      "linkedTopic": "topic:7:37",
+      "linkedTitle": "משוואות ופתרונן חלק 2 — סוגריים ושקילות",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/equations-advanced-grade-7",
+      "title": "פישוט, סוגריים וחוק הפילוג במשוואות לכיתה ז׳",
+      "linkedTopic": "topic:7:36",
+      "linkedTitle": "מפשטים ואז פותרים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "page:/equations-both-sides-word-problems-grade-7",
+      "title": "נעלם בשני האגפים, ייצוגים ושאלות מילוליות לכיתה ז׳",
+      "linkedTopic": "topic:7:41",
+      "linkedTitle": "שאלות מילוליות באמצעות משוואות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equations-both-sides-word-problems-grade-7",
+      "title": "נעלם בשני האגפים, ייצוגים ושאלות מילוליות לכיתה ז׳",
+      "linkedTopic": "topic:7:40",
+      "linkedTitle": "שלושה ייצוגים לפתרון משוואה",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/equations-both-sides-word-problems-grade-7",
+      "title": "נעלם בשני האגפים, ייצוגים ושאלות מילוליות לכיתה ז׳",
+      "linkedTopic": "topic:7:39",
+      "linkedTitle": "הנעלם בשני האגפים",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/pythagoras-applications-grade-7",
+      "title": "פיתגורס — שימושים לכיתה ז׳",
+      "linkedTopic": "topic:7:43",
+      "linkedTitle": "פיתגורס חלק 2 — שימושים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/isosceles-triangle-grade-8",
+      "title": "משולש שווה־שוקיים לכיתה ח׳",
+      "linkedTopic": "topic:8:41",
+      "linkedTitle": "הוכחה — שווה שוקיים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-median-grade-8",
+      "title": "התיכון במשולש לכיתה ח׳",
+      "linkedTopic": "topic:8:42",
+      "linkedTitle": "התיכון במשולש",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/parallel-lines-angles-grade-8",
+      "title": "זוויות בין ישרים מקבילים לכיתה ח׳",
+      "linkedTopic": "topic:8:62",
+      "linkedTitle": "זוויות בין ישרים מקבילים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-similarity-proof-grade-8",
+      "title": "הוכחת דמיון משולשים לכיתה ח׳",
+      "linkedTopic": "topic:8:44",
+      "linkedTitle": "הוכחת דמיון",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/similar-triangles-area-ratio-grade-8",
+      "title": "יחסי שטחים במשולשים דומים לכיתה ח׳",
+      "linkedTopic": "topic:8:45",
+      "linkedTitle": "יחס שטחים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/advanced-pythagoras-grade-8",
+      "title": "פיתגורס מורכב לכיתה ח׳",
+      "linkedTopic": "topic:8:12",
+      "linkedTitle": "פיתגורס מורכב",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/pythagoras-in-space-grade-8",
+      "title": "פיתגורס במרחב לכיתה ח׳",
+      "linkedTopic": "topic:8:54",
+      "linkedTitle": "פיתגורס במרחב",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/circle-area-circumference-grade-8",
+      "title": "מעגל ועיגול — היקף ושטח לכיתה ח׳",
+      "linkedTopic": "topic:8:63",
+      "linkedTitle": "מעגל ועיגול — היקף ושטח",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/precalculus-functions-graphs-grade-9",
+      "title": "קדם אנליזה — פונקציות וגרפים לכיתה ט׳",
+      "linkedTopic": "topic:9:12",
+      "linkedTitle": "קדם אנליזה — מפונקציות לגרפים ובחזרה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/reading-graphs-grade-9",
+      "title": "קריאת גרפים לכיתה ט׳",
+      "linkedTopic": "topic:9:36",
+      "linkedTitle": "קריאת גרפים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/analytic-geometry-grade-9",
+      "title": "גאומטריה אנליטית לכיתה ט׳",
+      "linkedTopic": "topic:9:15",
+      "linkedTitle": "גיאומטריה אנליטית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/coordinate-plane-applications-grade-9",
+      "title": "מערכת הצירים — יישום והעמקה לכיתה ט׳",
+      "linkedTopic": "topic:9:32",
+      "linkedTitle": "הרחבת מערכת הצירים חלק 2 — יישום והעמקה — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/rhombus-grade-9",
+      "title": "מעוין לכיתה ט׳",
+      "linkedTopic": "topic:9:13",
+      "linkedTitle": "המעוין",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/trapezoid-grade-9",
+      "title": "טרפז לכיתה ט׳",
+      "linkedTopic": "topic:9:39",
+      "linkedTitle": "הטרפז",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/similar-triangles-grade-9",
+      "title": "דמיון משולשים לכיתה ט׳",
+      "linkedTopic": "topic:9:19",
+      "linkedTitle": "דמיון משולשים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-30-60-90-grade-9",
+      "title": "משולש ישר־זווית ⁦30–60–90⁩ לכיתה ט׳",
+      "linkedTopic": "topic:9:37",
+      "linkedTitle": "משולש ישר זווית 30-60-90",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/angles-grade-7",
+      "title": "זוויות צמודות וקודקודיות לכיתה ז׳",
+      "linkedTopic": "topic:7:12",
+      "linkedTitle": "זוויות חלק 2 — יחסים ופעולות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/area-parallelogram-trapezoid-composite-grade-7",
+      "title": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳",
+      "linkedTopic": "topic:7:46",
+      "linkedTitle": "שטחים ב׳ חלק 2 — מצולעים מורכבים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/area-parallelogram-trapezoid-composite-grade-7",
+      "title": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳",
+      "linkedTopic": "topic:7:45",
+      "linkedTitle": "שטחים ב׳ חלק 1 — מקבילית וטרפז",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/area-rectangle-perimeter-grade-7",
+      "title": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳",
+      "linkedTopic": "topic:7:44",
+      "linkedTitle": "חישובי היקף — צורות מורכבות ואלגברה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/area-rectangle-perimeter-grade-7",
+      "title": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳",
+      "linkedTopic": "topic:7:18",
+      "linkedTitle": "שטח מלבן וריבוע — העמקה",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/composite-polygons-area-grade-9",
+      "title": "שטחים ב׳ חלק ⁦2⁩ — מצולעים מורכבים — לכיתה ט׳",
+      "linkedTopic": "topic:9:29",
+      "linkedTitle": "שטחים ב׳ חלק 2 — מצולעים מורכבים — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/cone-grade-8",
+      "title": "חרוט לכיתה ח׳",
+      "linkedTopic": "topic:8:15",
+      "linkedTitle": "חרוט",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/congruent-polygons-transformations-grade-9",
+      "title": "טרנספורמציות וצורות חופפות לכיתה ט׳",
+      "linkedTopic": "topic:9:23",
+      "linkedTitle": "מצולעים חופפים וטרנספורמציות — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/cylinder-surface-area-grade-8",
+      "title": "גליל — שטח פנים לכיתה ח׳",
+      "linkedTopic": "topic:8:13",
+      "linkedTitle": "גליל — שטח פנים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/cylinder-volume-grade-8",
+      "title": "גליל — נפח לכיתה ח׳",
+      "linkedTopic": "topic:8:14",
+      "linkedTitle": "גליל — נפח",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/isosceles-triangle-grade-9",
+      "title": "משולש שווה־שוקיים לכיתה ט׳",
+      "linkedTopic": "topic:9:4",
+      "linkedTitle": "משולש שווה שוקיים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/parallelogram-trapezoid-area-grade-9",
+      "title": "שטחים ב׳ חלק ⁦1⁩ — מקבילית וטרפז — לכיתה ט׳",
+      "linkedTopic": "topic:9:28",
+      "linkedTitle": "שטחים ב׳ חלק 1 — מקבילית וטרפז — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/probability-grade-9",
+      "title": "הסתברות לכיתה ט׳",
+      "linkedTopic": "topic:9:10",
+      "linkedTitle": "הסתברות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/pythagoras-applications-grade-9",
+      "title": "פיתגורס חלק ⁦2⁩ — שימושים לכיתה ט׳",
+      "linkedTopic": "topic:9:25",
+      "linkedTitle": "פיתגורס חלק 2 — שימושים — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/pythagoras-basics-grade-9",
+      "title": "משפט פיתגורס לכיתה ט׳ — היכרות וחישוב",
+      "linkedTopic": "topic:9:24",
+      "linkedTitle": "פיתגורס חלק 1 — היכרות וחישוב — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/pythagorean-theorem-grade-9",
+      "title": "משפט פיתגורס לכיתה ט׳",
+      "linkedTopic": "topic:9:35",
+      "linkedTitle": "משפט פיתגורס",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/rectangle-square-area-grade-9",
+      "title": "שטח מלבן וריבוע — העמקה — לכיתה ט׳",
+      "linkedTopic": "topic:9:26",
+      "linkedTitle": "שטח מלבן וריבוע — העמקה — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/solids-box-cube-prism-grade-7",
+      "title": "תיבה, קובייה ומנסרה משולשת לכיתה ז׳",
+      "linkedTopic": "topic:7:48",
+      "linkedTitle": "מנסרה משולשת חלק 2 — שטח פנים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/solids-box-cube-prism-grade-7",
+      "title": "תיבה, קובייה ומנסרה משולשת לכיתה ז׳",
+      "linkedTopic": "topic:7:47",
+      "linkedTitle": "מנסרה משולשת חלק 1 — מבנה ונפח",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/solids-box-cube-prism-grade-7",
+      "title": "תיבה, קובייה ומנסרה משולשת לכיתה ז׳",
+      "linkedTopic": "topic:7:20",
+      "linkedTitle": "תיבה וקובייה",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "page:/statistics-grade-9",
+      "title": "סטטיסטיקה לכיתה ט׳",
+      "linkedTopic": "topic:9:9",
+      "linkedTitle": "סטטיסטיקה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/transition-to-high-school-grade-9",
+      "title": "מעבר לחטיבה העליונה",
+      "linkedTopic": "topic:9:20",
+      "linkedTitle": "מעבר לחטיבה העליונה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-area-grade-9",
+      "title": "שטח משולש — העמקה — לכיתה ט׳",
+      "linkedTopic": "topic:9:27",
+      "linkedTitle": "שטח משולש — העמקה — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-calculations-grade-9",
+      "title": "חישובים במשולשים לכיתה ט׳",
+      "linkedTopic": "topic:9:33",
+      "linkedTitle": "גיאומטריה חישובית — משולש",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-sides-angles-grade-9",
+      "title": "יחסי צלעות וזוויות במשולש לכיתה ט׳",
+      "linkedTopic": "topic:9:38",
+      "linkedTitle": "יחסי צלעות וזוויות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangular-prism-surface-area-grade-9",
+      "title": "שטח פנים של מנסרה משולשת לכיתה ט׳",
+      "linkedTopic": "topic:9:31",
+      "linkedTitle": "מנסרה משולשת חלק 2 — שטח פנים — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangular-prism-volume-grade-9",
+      "title": "מנסרה משולשת חלק ⁦1⁩ — מבנה ונפח לכיתה ט׳",
+      "linkedTopic": "topic:9:30",
+      "linkedTitle": "מנסרה משולשת חלק 1 — מבנה ונפח — לכיתה ט׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-area-grade-7",
+      "title": "שטח משולש לכיתה ז׳",
+      "linkedTopic": "topic:7:19",
+      "linkedTitle": "שטח משולש — העמקה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangle-similarity-aa-grade-9",
+      "title": "דמיון משולשים — משפט ז.ז וחישובים לכיתה ט׳",
+      "linkedTopic": "topic:9:40",
+      "linkedTitle": "דמיון משולשים — משפט ז.ז וחישובים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/special-triangles-grade-7-new",
+      "title": "משולשים מיוחדים לכיתה ז׳",
+      "linkedTopic": "topic:7:15",
+      "linkedTitle": "משולשים מיוחדים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/patterns-and-graphs-grade-7",
+      "title": "חוקיות ונקודות על גרף לכיתה ז׳",
+      "linkedTopic": "topic:7:31",
+      "linkedTitle": "נקודות על גרף ברביע הראשון",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/patterns-and-graphs-grade-7",
+      "title": "חוקיות ונקודות על גרף לכיתה ז׳",
+      "linkedTopic": "topic:7:21",
+      "linkedTitle": "חוקיות",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "post:annual-review-grade-7",
+      "title": "חזרה שנתית לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:49",
+      "linkedTitle": "חזרה שנתית",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:geometry-grade-6-exams",
+      "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+      "linkedTopic": "topic:6:11",
+      "linkedTitle": "חקר גופים ותכונותיהם",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:geometry-grade-6-exams",
+      "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+      "linkedTopic": "topic:6:12",
+      "linkedTitle": "תיבות ופריסות מעבר בין דו ממד לתלת ממד",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:geometry-grade-6-exams",
+      "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+      "linkedTopic": "topic:6:13",
+      "linkedTitle": "שטח פנים של תיבה",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:geometry-grade-6-exams",
+      "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+      "linkedTopic": "topic:6:14",
+      "linkedTitle": "נפח תיבה ומבנים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:multiplication-table-worksheets",
+      "title": "דפי עבודה ללוח הכפל לתרגול נכון בבית",
+      "linkedTopic": "",
+      "linkedTitle": "",
+      "verified": false,
+      "reason": "post for no single grade links to several grades"
+    },
+    {
+      "key": "post:worksheets-for-teachers",
+      "title": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור",
+      "linkedTopic": "",
+      "linkedTitle": "",
+      "verified": false,
+      "reason": "post for no single grade links to several grades"
+    },
+    {
+      "key": "post:exam-prep-grade-5-7-days",
+      "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+      "linkedTopic": "topic:5:1",
+      "linkedTitle": "תובנה מספרית כפל וחילוק בעשרות ומאות",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:exam-prep-grade-5-7-days",
+      "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+      "linkedTopic": "topic:5:9",
+      "linkedTitle": "הרחבה וצמצום שברים שקולים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:exam-prep-grade-5-7-days",
+      "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+      "linkedTopic": "topic:5:11",
+      "linkedTitle": "חיבור וחיסור שברים במכנים שונים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:exam-prep-grade-5-7-days",
+      "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+      "linkedTopic": "topic:5:28",
+      "linkedTitle": "מספרים עשרוניים ערך מקום וייצוגים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:exam-prep-grade-5-7-days",
+      "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+      "linkedTopic": "topic:5:25",
+      "linkedTitle": "שטח והיקף של מלבנים וריבועים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:exam-prep-grade-5-7-days",
+      "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+      "linkedTopic": "topic:5:16",
+      "linkedTitle": "קריאת טבלאות וחישוב נתונים",
+      "verified": false,
+      "reason": "titles share no topic word"
+    },
+    {
+      "key": "post:fractions-practice-grade-4",
+      "title": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+      "linkedTopic": "topic:4:11",
+      "linkedTitle": "שבר ייצוגים ושמות שקולים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:fractions-practice-grade-4",
+      "title": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+      "linkedTopic": "topic:4:12",
+      "linkedTitle": "שברים על ישר והשוואה",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "post:fractions-practice-grade-4",
+      "title": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+      "linkedTopic": "topic:4:13",
+      "linkedTitle": "שברים שקולים ייצוגים השוואה וישר מספרים",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
+      "key": "post:box-and-cube-grade-7",
+      "title": "תיבה וקובייה לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:20",
+      "linkedTitle": "תיבה וקובייה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:equations-parentheses-equivalence-grade-7",
+      "title": "משוואות עם סוגריים ושקילות לכיתה ז׳ | דפי עבודה",
+      "linkedTopic": "topic:7:37",
+      "linkedTitle": "משוואות ופתרונן חלק 2 — סוגריים ושקילות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:first-quadrant-graph-points-grade-7",
+      "title": "נקודות על גרף ברביע הראשון לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:31",
+      "linkedTitle": "נקודות על גרף ברביע הראשון",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:unknown-on-both-sides-grade-7",
+      "title": "הנעלם בשני האגפים לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:39",
+      "linkedTitle": "הנעלם בשני האגפים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:variables-and-algebraic-modeling-grade-7",
+      "title": "משתנים וביטויים אלגבריים לכיתה ז׳ | דפי עבודה",
+      "linkedTopic": "topic:7:22",
+      "linkedTitle": "משתנים וביטויים אלגבריים — שפה ומידול",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:assessment-1-grade-7",
+      "title": "משימת הערכה 1 לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:50",
+      "linkedTitle": "משימת הערכה 1",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:common-factor-and-minus-parentheses-grade-7",
+      "title": "גורם משותף ומינוס לפני סוגריים לכיתה ז׳ | דפי עבודה",
+      "linkedTopic": "topic:7:30",
+      "linkedTitle": "שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:composite-polygons-area-grade-7",
+      "title": "שטחים ב׳ חלק 2 — מצולעים מורכבים לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:46",
+      "linkedTitle": "שטחים ב׳ חלק 2 — מצולעים מורכבים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:congruent-polygons-transformations-grade-7",
+      "title": "מצולעים חופפים וטרנספורמציות לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:17",
+      "linkedTitle": "מצולעים חופפים וטרנספורמציות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:data-collection-reading-grade-7",
+      "title": "איסוף וקריאת מידע לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:24",
+      "linkedTitle": "איסוף וקריאת מידע",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:distributive-property-parentheses-grade-7",
+      "title": "סוגריים וחוק הפילוג לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:38",
+      "linkedTitle": "סוגריים וחוק הפילוג",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:free-worksheets-all-grades-ai",
+      "title": "דפי עבודה במתמטיקה בחינם לכיתות א׳–ט׳, עם נועם AI בחטיבה",
+      "linkedTopic": "",
+      "linkedTitle": "",
+      "verified": false,
+      "reason": "post for no single grade links to several grades"
+    },
+    {
+      "key": "post:noam-ai-worksheets-how-to-start",
+      "title": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים",
+      "linkedTopic": "",
+      "linkedTitle": "",
+      "verified": false,
+      "reason": "post for no single grade links to several grades"
+    },
+    {
+      "key": "post:one-step-equations-grade-7",
+      "title": "משוואות חד־שלביות לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:34",
+      "linkedTitle": "משוואות חד־שלביות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:simplify-then-solve-equations-grade-7",
+      "title": "מפשטים ואז פותרים לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:36",
+      "linkedTitle": "מפשטים ואז פותרים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:equilateral-triangle-advanced-grade-7",
+      "title": "משולש שווה־צלעות — העמקה ורשות לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:16",
+      "linkedTitle": "משולש שווה־צלעות — העמקה ורשות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:frequency-tables-grade-7",
+      "title": "שכיחות לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:25",
+      "linkedTitle": "שכיחות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:parallelogram-trapezoid-area-grade-7",
+      "title": "שטחים ב׳ חלק 1 — מקבילית וטרפז לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:45",
+      "linkedTitle": "שטחים ב׳ חלק 1 — מקבילית וטרפז",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:patterns-grade-7",
+      "title": "חוקיות לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:21",
+      "linkedTitle": "חוקיות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:perimeter-complex-shapes-algebra-grade-7",
+      "title": "היקף צורות מורכבות ואלגברה לכיתה ז׳ | דפי עבודה",
+      "linkedTopic": "topic:7:44",
+      "linkedTitle": "חישובי היקף — צורות מורכבות ואלגברה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:probability-introduction-grade-7",
+      "title": "הסתברות — היכרות לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:28",
+      "linkedTitle": "הסתברות — היכרות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:rectangle-square-area-advanced-grade-7",
+      "title": "שטח מלבן וריבוע — העמקה לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:18",
+      "linkedTitle": "שטח מלבן וריבוע — העמקה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:relative-frequency-experiments-grade-7",
+      "title": "שכיחות יחסית בניסויים לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:27",
+      "linkedTitle": "שכיחות יחסית חלק 2 — ניסויים ויציבות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:relative-frequency-introduction-grade-7",
+      "title": "שכיחות יחסית חלק 1 — היכרות לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:26",
+      "linkedTitle": "שכיחות יחסית חלק 1 — היכרות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:substitution-in-algebraic-expressions-grade-7",
+      "title": "הצבה בביטויים אלגבריים לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:23",
+      "linkedTitle": "הצבה בביטויים אלגבריים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:three-representations-equation-solution-grade-7",
+      "title": "שלושה ייצוגים לפתרון משוואה לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:40",
+      "linkedTitle": "שלושה ייצוגים לפתרון משוואה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:triangular-prism-surface-area-grade-7",
+      "title": "מנסרה משולשת חלק 2 — שטח פנים לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:48",
+      "linkedTitle": "מנסרה משולשת חלק 2 — שטח פנים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:triangular-prism-volume-grade-7",
+      "title": "מנסרה משולשת חלק 1 — מבנה ונפח לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:47",
+      "linkedTitle": "מנסרה משולשת חלק 1 — מבנה ונפח",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:two-step-equations-grade-7",
+      "title": "משוואות דו־שלביות לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:35",
+      "linkedTitle": "משוואות דו־שלביות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:what-is-an-equation-solution-grade-7",
+      "title": "מהו פתרון של משוואה לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:32",
+      "linkedTitle": "מהו פתרון של משוואה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "post:word-problems-with-equations-grade-7",
+      "title": "שאלות מילוליות באמצעות משוואות לכיתה ז׳ | דפי עבודה חינם",
+      "linkedTopic": "topic:7:41",
+      "linkedTitle": "שאלות מילוליות באמצעות משוואות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    }
+  ],
+  "termsApplied": [
+    {
+      "grade": 1,
+      "topic": 10,
+      "terms": "סדרה חוקיות דפוס המשך תבנית",
+      "decision": "move",
+      "to": 11,
+      "evidence": "1:11 is titled \"דפוסים וסדרות\"; 1:10 \"שוויון נעלם והשוואת תרגילים\" shares no word.",
+      "applied": true
+    },
+    {
+      "grade": 1,
+      "topic": 13,
+      "terms": "שוויון נעלם משוואה איזון",
+      "decision": "move",
+      "to": 10,
+      "evidence": "1:10 is titled \"שוויון נעלם והשוואת תרגילים\"; 1:13 \"שרשראות ופירמידות מספרים\" shares no word.",
+      "applied": true
+    },
+    {
+      "grade": 2,
+      "topic": 3,
+      "terms": "מאות עשרות יחידות ערך מקום",
+      "decision": "move",
+      "to": 13,
+      "evidence": "2:13 is titled \"מאות עשרות ויחידות\"; 2:3 \"סדר השוואה וישר מספרים\" shares no word.",
+      "applied": true
+    },
+    {
+      "grade": 4,
+      "topic": 7,
+      "terms": "כפל מאונך בטור דו ספרתי",
+      "decision": "move",
+      "to": 9,
+      "evidence": "4:9 is titled \"כפל רב ספרתי\" (its own terms belong to 4:10); 4:7 \"סדר פעולות חשבון\" shares no word.",
+      "applied": true
+    },
+    {
+      "grade": 4,
+      "topic": 9,
+      "terms": "חילוק ארוך שארית",
+      "decision": "move",
+      "to": 10,
+      "evidence": "4:10 is titled \"חילוק ארוך ושארית\".",
+      "applied": true
+    },
+    {
+      "grade": 4,
+      "topic": 27,
+      "terms": "זווית ישרה חדה קהה שטוחה מקבילים מאונכים",
+      "decision": "keep",
+      "evidence": "4:27 is \"זוויות וקווים במישור\": angle types and parallel/perpendicular lines. The audit flagged it because זווית/זוויות were compared without plurals.",
+      "applied": true
+    },
+    {
+      "grade": 6,
+      "topic": 2,
+      "terms": "מכנה משותף שברים חיבור חיסור",
+      "decision": "exclude",
+      "evidence": "6:2 \"כפל כחלק מכמות ושטח\" is multiplication; grade 6 has no topic on adding fractions (5:10, 5:11 do). Waiting for Noam.",
+      "applied": true
+    },
+    {
+      "grade": 7,
+      "topic": 13,
+      "terms": "צמודות קודקודיות משלימות",
+      "decision": "keep",
+      "evidence": "7:13 is the angles review sheet; its description says \"חזרה על כל יחסי הזוויות\".",
+      "applied": true
+    },
+    {
+      "grade": 7,
+      "topic": 41,
+      "terms": "משפט פיתגורס ניצב יתר",
+      "decision": "move",
+      "to": 42,
+      "evidence": "7:42 description: \"משפט פיתגורס, ניצבים ויתר\"; 7:41 is word problems with equations. Grade 7 shift: 41→42, 43→44, 44→45, 46→47, 47→48, 48→21.",
+      "applied": true
+    },
+    {
+      "grade": 7,
+      "topic": 43,
+      "terms": "היקף מצולעים",
+      "decision": "move",
+      "to": 44,
+      "evidence": "7:44 description: \"היקף מצולעים מורכבים\".",
+      "applied": true
+    },
+    {
+      "grade": 7,
+      "topic": 44,
+      "terms": "טרפז מקבילית בסיס גובה שטח",
+      "decision": "move",
+      "to": 45,
+      "evidence": "7:45 description: \"נוסחאות שטח מקבילית וטרפז, זיהוי הגובה\"; 7:44 is perimeter.",
+      "applied": true
+    },
+    {
+      "grade": 7,
+      "topic": 46,
+      "terms": "מנסרה נפח בסיס משולש",
+      "decision": "move",
+      "to": 47,
+      "evidence": "7:47 \"מנסרה משולשת חלק 1 — מבנה ונפח\".",
+      "applied": true
+    },
+    {
+      "grade": 7,
+      "topic": 47,
+      "terms": "מנסרה שטח פנים מעטפת פריסה",
+      "decision": "move",
+      "to": 48,
+      "evidence": "Same shift, not flagged by the audit because \"מנסרה\" overlaps: 7:48 description \"פריסת המנסרה, שטח המעטפת … ושטח הפנים\"; 7:47 is volume. Left in place, a search for surface area returns the volume sheet.",
+      "applied": true
+    },
+    {
+      "grade": 7,
+      "topic": 48,
+      "terms": "סדרה סדרות דפוס תבנית איבר כללי המשך הסדרה כלל חוקיות",
+      "decision": "move",
+      "to": 21,
+      "evidence": "7:21 \"חוקיות\": \"זיהוי חוקיות בסדרות ובתבניות … מציאת איבר כללי והמשך הסדרה\".",
+      "applied": true
+    },
+    {
+      "grade": 8,
+      "topic": 28,
+      "terms": "פיזור ערכים קיצוניים",
+      "decision": "move",
+      "to": 22,
+      "evidence": "8:22 \"טווח הנתונים\": \"זיהוי ערכים קיצוניים ומשמעות הפיזור\".",
+      "applied": true
+    },
+    {
+      "grade": 9,
+      "topic": 6,
+      "terms": "פרבולה קודקוד ציר סימטריה נקודות אפס",
+      "decision": "move",
+      "to": 5,
+      "evidence": "9:5 \"הפונקציה הריבועית\": \"הצגות הפרבולה, קודקוד וציר סימטריה, נקודות אפס\".",
+      "applied": true
+    },
+    {
+      "grade": 9,
+      "topic": 5,
+      "terms": "רדיקל תחום הגדרה",
+      "decision": "move",
+      "to": 17,
+      "evidence": "Found while building the search: 9:17 \"שורשים\": \"תחום הגדרה\" (radical = root sign). 9:5 is the quadratic function.",
+      "applied": true
+    },
+    {
+      "grade": 9,
+      "topic": 8,
+      "terms": "שיפוע מרחק אמצע קטע משוואת ישר",
+      "decision": "move",
+      "to": 15,
+      "evidence": "Found while building the search: 9:15 \"גיאומטריה אנליטית\": \"מרחק ואמצע קטע, שיפוע ומשוואת ישר\". 9:8 is quadratic inequalities.",
+      "applied": true
+    },
+    {
+      "grade": 9,
+      "topic": 13,
+      "terms": "הכנה לתיכון יחידות לימוד 4 5 חזרה",
+      "decision": "move",
+      "to": 20,
+      "evidence": "9:20 \"מעבר לחטיבה העליונה\": \"חזרה ממוקדת … כהכנה ללימוד ברמת 4–5 יח״ל\".",
+      "applied": true
+    },
+    {
+      "grade": 9,
+      "topic": 20,
+      "terms": "מקביליות צלעות נגדיות אלכסונים",
+      "decision": "exclude",
+      "evidence": "Not about 9:20. The audit pointed to 9:11 \"המלבן\", but \"מקביליות\" names the parallelogram topic (the parallelogram page links to 9:7) and the rectangle is also a parallelogram: two candidates. Waiting for Noam.",
+      "applied": true
+    },
+    {
+      "grade": 9,
+      "topic": 22,
+      "terms": "מעוינים אלכסונים מאונכים",
+      "decision": "move",
+      "to": 13,
+      "evidence": "9:13 \"המעוין\": \"אלכסונים מאונכים\".",
+      "applied": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "old-A": {
+    "all": {
+      "queries": 133,
+      "answerable": 125,
+      "hit3": 22,
+      "noResults": 90,
+      "wrongGradeOf": 40,
+      "wrongGrade": 0,
+      "misleading": 18,
+      "noAnswerShown": 0
+    },
+    "dev": {
+      "queries": 67,
+      "answerable": 63,
+      "hit3": 12,
+      "noResults": 44,
+      "wrongGradeOf": 21,
+      "wrongGrade": 0,
+      "misleading": 9,
+      "noAnswerShown": 0
+    },
+    "validation": {
+      "queries": 66,
+      "answerable": 62,
+      "hit3": 10,
+      "noResults": 46,
+      "wrongGradeOf": 19,
+      "wrongGrade": 0,
+      "misleading": 9,
+      "noAnswerShown": 0
+    }
+  },
+  "old-B": {
+    "all": {
+      "queries": 133,
+      "answerable": 125,
+      "hit3": 96,
+      "noResults": 10,
+      "wrongGradeOf": 40,
+      "wrongGrade": 29,
+      "misleading": 47,
+      "noAnswerShown": 3
+    },
+    "dev": {
+      "queries": 67,
+      "answerable": 63,
+      "hit3": 49,
+      "noResults": 4,
+      "wrongGradeOf": 21,
+      "wrongGrade": 16,
+      "misleading": 24,
+      "noAnswerShown": 2
+    },
+    "validation": {
+      "queries": 66,
+      "answerable": 62,
+      "hit3": 47,
+      "noResults": 6,
+      "wrongGradeOf": 19,
+      "wrongGrade": 13,
+      "misleading": 23,
+      "noAnswerShown": 1
+    }
+  },
+  "new": {
+    "all": {
+      "queries": 133,
+      "answerable": 125,
+      "hit3": 125,
+      "noResults": 0,
+      "wrongGradeOf": 40,
+      "wrongGrade": 0,
+      "misleading": 1,
+      "noAnswerShown": 0
+    },
+    "dev": {
+      "queries": 67,
+      "answerable": 63,
+      "hit3": 63,
+      "noResults": 0,
+      "wrongGradeOf": 21,
+      "wrongGrade": 0,
+      "misleading": 0,
+      "noAnswerShown": 0
+    },
+    "validation": {
+      "queries": 66,
+      "answerable": 62,
+      "hit3": 62,
+      "noResults": 0,
+      "wrongGradeOf": 19,
+      "wrongGrade": 0,
+      "misleading": 1,
+      "noAnswerShown": 0
+    }
+  }
+}
