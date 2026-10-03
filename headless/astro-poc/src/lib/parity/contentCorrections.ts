@@ -35,8 +35,28 @@ function mapStrings<T>(value: T, fn: (s: string) => string): T {
   return value;
 }
 
-/** Apply corrections to every string in a snapshot (longest `before` first, swaps last). */
+/**
+ * Head meta is SEO copy: it changes only through approved SEO proposals, never through
+ * content corrections, so these top-level fields keep their captured production text.
+ */
+export const META_FIELDS = ['title', 'description', 'ogTitle', 'ogDescription'] as const;
+
+function withoutMeta<T>(value: T, fn: (v: T) => T): T {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return fn(value);
+  const record = value as Record<string, unknown>;
+  const meta = Object.fromEntries(META_FIELDS.filter((k) => k in record).map((k) => [k, record[k]]));
+  return { ...(fn(value) as Record<string, unknown>), ...meta } as T;
+}
+
+/**
+ * Apply corrections to every string in a snapshot except head meta
+ * (longest `before` first, swaps last).
+ */
 export function applyContentCorrections<T>(value: T, list: ContentCorrection[]): T {
+  return withoutMeta(value, (v) => applyToStrings(v, list));
+}
+
+function applyToStrings<T>(value: T, list: ContentCorrection[]): T {
   let out = value;
   const replaces = list
     .filter((c): c is Extract<ContentCorrection, { before: string }> => 'before' in c)

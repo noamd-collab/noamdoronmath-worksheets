@@ -6,8 +6,10 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import corrections from '../src/data/content-corrections.json';
+import { META_FIELDS, applyContentCorrections, topicPageCorrections } from '../src/lib/parity/contentCorrections.ts';
 
-type Fix = { before?: string; after?: string; swap?: [string, string]; reason: string };
+type Fix = { before?: string; after?: string; swap?: string[]; reason: string };
+const byKind: Record<'topicPages' | 'blogPosts' | 'gradeHubs', Record<string, Fix[]>> = corrections;
 const dir = (kind: string) => new URL(`../src/data/${kind}/`, import.meta.url);
 const read = (kind: string, slug: string) => readFileSync(new URL(`${slug}.json`, dir(kind)), 'utf8');
 const all = (kind: string) =>
@@ -22,9 +24,12 @@ describe('documented content corrections are applied', () => {
     ['grade-hubs', 'gradeHubs'],
   ] as const) {
     it(`${kind}: every "after" is present and every "before" is gone`, () => {
-      const map = (corrections as Record<string, Record<string, Fix[]>>)[key];
+      const map = byKind[key];
       for (const [slug, fixes] of Object.entries(map)) {
-        const text = JSON.parse(read(kind, slug)) && read(kind, slug);
+        // Head meta is SEO copy and is not corrected here (see META_FIELDS).
+        const page = JSON.parse(read(kind, slug)) as Record<string, unknown>;
+        for (const field of META_FIELDS) delete page[field];
+        const text = JSON.stringify(page);
         for (const fix of fixes) {
           assert.ok(fix.reason, `${slug}: correction needs a reason`);
           if (fix.swap) continue;
@@ -65,10 +70,26 @@ describe('stored content keeps school notation', () => {
     }
   });
 
-  it('triangle-area-grade-7 meta names its own topic and grade', () => {
-    const page = JSON.parse(read('topic-pages', 'triangle-area-grade-7'));
-    assert.match(page.title, /^שטח משולש לכיתה ז׳/);
-    assert.doesNotMatch(`${page.title} ${page.description}`, /מפשטים ואז פותרים|לכיתה ז(?!׳)/);
+  it('head meta still matches production: meta changes belong to the approved SEO proposals', () => {
+    const fixtures = new URL('./fixtures/topic-parity/', import.meta.url);
+    const slugs = readdirSync(fixtures)
+      .filter((f) => f.endsWith('.production.json'))
+      .map((f) => f.replace('.production.json', ''));
+    assert.ok(slugs.length >= 90, `only ${slugs.length} production fixtures`);
+    for (const slug of slugs) {
+      const production = JSON.parse(readFileSync(new URL(`${slug}.production.json`, fixtures), 'utf8'));
+      const page = JSON.parse(read('topic-pages', slug));
+      assert.equal(page.title, production.title, `${slug}: title`);
+      assert.equal(page.description, production.description, `${slug}: description`);
+    }
+  });
+
+  it('applying corrections never rewrites head meta', () => {
+    const snapshot = { title: 'בסיס × גובה ÷ 2', description: 'בסיס × גובה ÷ 2', h1: 'בסיס × גובה ÷ 2' };
+    const out = applyContentCorrections(snapshot, topicPageCorrections('triangle-area-grade-7'));
+    assert.equal(out.title, snapshot.title);
+    assert.equal(out.description, snapshot.description);
+    assert.equal(out.h1, 'בסיס × גובה : 2');
   });
 
   it('adjacent angles always sum to 180° (no "only when" wording)', () => {
