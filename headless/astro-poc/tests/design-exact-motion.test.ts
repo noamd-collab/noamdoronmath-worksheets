@@ -58,7 +58,7 @@ function withIsland(check: (fixture: any) => void) {
   motion.io = { observe: () => {}, unobserve: () => {} };
   try { check({ motion, state, fish, img }); }
   finally {
-    clearTimeout(motion.fallback);
+    if (motion.fallback) clearTimeout(motion.fallback);
     motion.listeners.forEach((remove: () => void) => remove());
     for (const [key, descriptor] of prior) {
       if (descriptor) Object.defineProperty(globalThis, key, descriptor);
