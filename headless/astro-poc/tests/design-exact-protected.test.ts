@@ -17,7 +17,9 @@ const sha256 = (value: string | Buffer) => createHash('sha256').update(value).di
 const read = (file: string) => readFileSync(join(root, file), 'utf8');
 
 const protectedFiles: Record<string, string> = {
-  'astro.config.mjs': 'f85dead2ee638d8010de960290886eb4801b2ea9d86388fee11ceaea00e937a3',
+  // wix({ robots: false }): Wix's injected /robots.txt was replacing ours and
+  // warning at build. Reviewed for the cut-over; ConceptLoop is untouched.
+  'astro.config.mjs': '7a49cbd017186da8c011dcf7daa7f4bb7c52c693e04232f8923602c61b81729a',
   // Regenerated from index.html after 24 topic-title spelling fixes (ס״מ, סמ״ק, מ״ק, maqaf, geresh).
   'src/data/catalog.v1.json': '3a4f0d943333a90ca7c0ccdc1b94c01414c16eaa333936a6481d2b5d2d0439a7',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',

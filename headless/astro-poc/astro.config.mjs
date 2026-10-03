@@ -10,7 +10,10 @@ import wixHosting from '@wix/astro-wix-hosting-adapter';
  * Adapter: Wix hosting (replaced local @astrojs/node after headless link).
  */
 export default defineConfig({
-  integrations: [react(), wix(), wixPages()],
+  // robots: false — do not register Wix's /robots.txt. That route overwrites
+  // src/pages/robots.txt.ts and Astro warns about the collision. Our route
+  // allows www and disallows preview hosts.
+  integrations: [react(), wix({ robots: false }), wixPages()],
   output: 'server',
   adapter: wixHosting(),
 

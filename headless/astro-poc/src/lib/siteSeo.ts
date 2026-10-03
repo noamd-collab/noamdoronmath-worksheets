@@ -64,14 +64,18 @@ export function robotsContent(hostname: string, env: SiteIndexEnv = readSiteInde
   return isProductionHost(hostname) ? 'index,follow' : 'noindex,nofollow';
 }
 
-/** robots.txt body. Sitemap always points at the production origin. */
+/**
+ * robots.txt body. Sitemap always points at the production origin.
+ * Wix reserves /sitemap.xml (generatedBy="WIX", preview host on preview).
+ * The index this app serves, on www, is /sitemap-index.xml.
+ */
 export function renderRobotsTxt(indexable: boolean): string {
   const lines = indexable
     ? ['User-agent: *', 'Allow: /', 'Disallow: /dev-loops', 'Disallow: /hero-loops/']
     : ['User-agent: *', 'Disallow: /'];
   lines.push(
     '',
-    `Sitemap: ${SITE_CANONICAL_ORIGIN}/sitemap.xml`,
+    `Sitemap: ${SITE_CANONICAL_ORIGIN}/sitemap-index.xml`,
     `# ${SITE_CANONICAL_ORIGIN}/llms.txt`,
     '',
   );

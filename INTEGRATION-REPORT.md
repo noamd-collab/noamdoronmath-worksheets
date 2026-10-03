@@ -6,7 +6,8 @@
 HEAD לפני תיקון M33/M25: `f10dd3e6b8bd54e1a6d86647c3d5ec74f0ac0ab2`  
 קומיט התיקון (M33, מניפסט M25, והרצת הבדיקות): `0acbf139f33286544385b996b5d9c86dfe3cc8bc`  
 HEAD אחרי רישום ה-SHA: `c6f9168fbbf1feec633354aed418ee3328461677`  
-הקומיט שמוסיף את מדידת המיקום הוא HEAD העדכני, וה-SHA המלא שלו רשום בגוף PR #60.  
+HEAD אחרי מדידת בס״ד: `7fe57a0c374389c7c0d321da46e42bc064df0aa5`  
+HEAD אחרי תיקון robots/sitemap: רשום בגוף PR #60.  
 לא מוזג. ענפי המקור לא שונו. אין release, DNS, או פריסה לייצור.
 
 הבסיס התקדם מאז שנפתחו שלבי ה-SEO: נכללים בו כבר מיזוג #41 (לופים) ומיזוג #50 (תוויות נגישות). הם לא חלק מ-15 ה-PR-ים, והם כבר ב-ancestry.
@@ -137,6 +138,17 @@ HEAD אחרי רישום ה-SHA: `c6f9168fbbf1feec633354aed418ee3328461677`
 4. לאשר שורות ב-`seo-proposals.json`. עד אז הן לא מוצגות. שלושת נושאי כיתה א׳ (4, 19, 23) דורשים הבחנה או איחוד.
 5. אחרי חיבור: Search Console, robots על www, sitemap, ו-301 של שטח המשולש.
 6. 18 אזהרות מילות חיפוש בקטלוג, ו-7 שגיאות הסוג ב-ConceptLoop, נשארות מחוץ לחבילה הזו. M33 ו-M25 תוקנו בענף הזה לפני החלטת המיזוג.
+
+## robots.txt ו-sitemap על Wix (אחרי 7fe57a0)
+
+בפריוויו של `7fe57a0` נבדק: `/robots.txt` הוא קובץ Wix (`Allow: /`, `Sitemap` אל מארח ה-preview, «Auto generated»). `/sitemap.xml` הוא אינדקס `generatedBy="WIX"` אל `pages-sitemap.xml` (115 כתובות במארח ה-preview). `/sitemap-index.xml`, `/sitemap-pages.xml` ו-`/sitemap-blog.xml` הם של ה-PR.
+
+לפי התיעוד של Wix ל-Astro המנוהל ([Reserved URL Paths](https://dev.wix.com/docs/go-headless/wix-managed-headless/full-integration-astro/development/reserved-url-paths-for-the-astro-integration.md), [About Sitemaps](https://dev.wix.com/docs/go-headless/wix-managed-headless/full-integration-astro/feature-guides/seo/about-sitemaps-in-the-astro-integration.md)):
+
+- `/robots.txt` נרשם על ידי `wix()` (ברירת מחדל `robots: true`) ומחליף את `src/pages/robots.txt.ts`. Astro מזהיר על התנגשות. התיקון הרשמי: `wix({ robots: false })`. אז רק הקובץ שלנו מוגש. ב-www: `Allow: /` (בלי `/dev-loops` ו-`/hero-loops/`). ב-preview: `Disallow: /`. שורת `Sitemap` תמיד אל `https://www.noamdoronmath.co.il/sitemap-index.xml`.
+- `/sitemap.xml` וכל נתיב שמסתיים ב-`-sitemap.xml` שמורים ל-Wix. אין דגל ב-adapter שמכבה את זה. הנתיב לא מגיע ל-route שלנו. האינדקס שהאפליקציה מגישה, ושה-robots מפרסם, הוא `/sitemap-index.xml` (ילדים: `/sitemap-pages.xml` ו-`/sitemap-blog.xml`, כולם www).
+
+אין צעד בדשבורד. לא לערוך את SEO Tools > Robots.txt Editor: אחרי `robots: false` העורך לא קובע את הקובץ. לא לכבות אינדוקס של האתר: זה מחזיר 404 על `/sitemap.xml` של Wix, ולא מחליף אותו בתוכן שלנו.
 
 ## הטמעה ו-rollback
 
