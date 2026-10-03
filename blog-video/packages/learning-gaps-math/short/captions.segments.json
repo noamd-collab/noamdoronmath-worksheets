@@ -1,0 +1,160 @@
+{
+  "timing": "ESTIMATE ONLY — spread by word count over an unmeasured duration. Not a final SRT. Re-time against the rendered video before upload.",
+  "estTotalSeconds": 52,
+  "segments": [
+    {
+      "id": "hook",
+      "estStart": 0,
+      "estEnd": 5.7,
+      "cues": [
+        {
+          "text": "ילד או ילדה יכולים לפתור דף שלם נכון,",
+          "estStart": 0,
+          "estEnd": 3.3
+        },
+        {
+          "text": "ועדיין להיתקע בשאלה מעט שונה במבחן.",
+          "estStart": 3.3,
+          "estEnd": 5.7
+        }
+      ]
+    },
+    {
+      "id": "gap",
+      "estStart": 5.7,
+      "estEnd": 14.2,
+      "cues": [
+        {
+          "text": "במקרים רבים זה הסימן הראשון לפער לימודי.",
+          "estStart": 5.7,
+          "estEnd": 8.5
+        },
+        {
+          "text": "לא בהכרח חוסר רצון להשקיע, אלא שלב בסיסי",
+          "estStart": 8.5,
+          "estEnd": 11.8
+        },
+        {
+          "text": "שלא הובן עד הסוף, ונשאר מאחור.",
+          "estStart": 11.8,
+          "estEnd": 14.2
+        }
+      ]
+    },
+    {
+      "id": "not-label",
+      "estStart": 14.2,
+      "estEnd": 17.1,
+      "cues": [
+        {
+          "text": "ופער הוא לא תווית. הוא צילום מצב.",
+          "estStart": 14.2,
+          "estEnd": 17.1
+        }
+      ]
+    },
+    {
+      "id": "relief",
+      "estStart": 17.1,
+      "estEnd": 25.6,
+      "cues": [
+        {
+          "text": "והחדשות הטובות: לא צריך להתחיל הכול מחדש.",
+          "estStart": 17.1,
+          "estEnd": 19.9
+        },
+        {
+          "text": "אפשר לזהות את נקודת הקושי, לבחור תרגול",
+          "estStart": 19.9,
+          "estEnd": 22.8
+        },
+        {
+          "text": "מדויק וברמה נכונה, ולהתקדם בצעדים קטנים",
+          "estStart": 22.8,
+          "estEnd": 25.2
+        },
+        {
+          "text": "ועקביים.",
+          "estStart": 25.2,
+          "estEnd": 25.6
+        }
+      ]
+    },
+    {
+      "id": "diagnose",
+      "estStart": 25.6,
+      "estEnd": 37,
+      "cues": [
+        {
+          "text": "איך מזהים? נותנים כמה תרגילים קצרים מאותו",
+          "estStart": 25.6,
+          "estEnd": 28.4
+        },
+        {
+          "text": "נושא, מהקל אל המורכב, ומבקשים להסביר בקול",
+          "estStart": 28.4,
+          "estEnd": 31.3
+        },
+        {
+          "text": "מה עושים. לא צריך לבחון.",
+          "estStart": 31.3,
+          "estEnd": 33.3
+        },
+        {
+          "text": "אפשר לומר: בוא נראה יחד איפה זה מתחיל",
+          "estStart": 33.3,
+          "estEnd": 36.6
+        },
+        {
+          "text": "להסתבך.",
+          "estStart": 36.6,
+          "estEnd": 37
+        }
+      ]
+    },
+    {
+      "id": "graded",
+      "estStart": 37,
+      "estEnd": 48.3,
+      "cues": [
+        {
+          "text": "ולא סוגרים פער עם דף קשה מדי.",
+          "estStart": 37,
+          "estEnd": 39.8
+        },
+        {
+          "text": "רצף של כישלונות רק מחזק את התחושה שמתמטיקה",
+          "estStart": 39.8,
+          "estEnd": 43.1
+        },
+        {
+          "text": "מאיימת. מתחילים ברמה שבה אפשר להצליח עם",
+          "estStart": 43.1,
+          "estEnd": 45.9
+        },
+        {
+          "text": "מעט הדרכה, ומתקדמים צעד אחרי צעד.",
+          "estStart": 45.9,
+          "estEnd": 48.3
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "estStart": 48.3,
+      "estEnd": 52,
+      "cues": [
+        {
+          "text": "בפוסט המלא יש דוגמאות, ושגרת תרגול קצרה.",
+          "estStart": 48.3,
+          "estEnd": 51.2
+        },
+        {
+          "text": "הקישור בתיאור.",
+          "estStart": 51.2,
+          "estEnd": 52
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "policy": "ניקוד ממוקד: רק המילים שברשימה מנוקדות בקובץ narration.he.niqqud.txt. מילה נכנסת לרשימה כשקריאתה בלי ניקוד דו־משמעית או קלה לשיבוש. שאר המילים נשארות בלי ניקוד בכוונה: ניקוד מלא מוסיף סימנים שמנוע קול עלול לקרוא גרוע יותר, וקשה לבדוק טעויות בניקוד מלא. אף ערך לא אומת באודיו; רק האזנה לקול שנועם בחר יכולה לאמת.",
+  "statusValues": {
+    "text-checked": "הניקוד נבדק מול דקדוק עברי תקני בהקשר הזה; עדיין צריך האזנה.",
+    "needs-listening-priority": "יש הגייה חלופית אמיתית, או שמנוע קול עלול לבחור בה. להאזין למילה הזו ראשונה."
+  },
+  "entries": [
+    {
+      "token": "חזקה",
+      "niqqud": "חֶזְקָה",
+      "say": "khezka",
+      "rationale": "חזקה במובן מתמטי. בלי ניקוד אפשר לקרוא חֲזָקָה (\"חזקה\", כמו כוח).",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "החזקה",
+      "niqqud": "הַחֶזְקָה",
+      "say": "ha-khezka",
+      "rationale": "כמו חזקה, עם ה״א הידיעה.",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "בחזקת",
+      "niqqud": "בְּחֶזְקַת",
+      "say": "be-khezkat",
+      "rationale": "צורת הסמיכות שבה קוראים חזקה בקול: \"שלוש בחזקת ארבע\".",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "חזקות",
+      "niqqud": "חֲזָקוֹת",
+      "say": "khazakot",
+      "rationale": "רבים של חֶזְקָה. נשמע כמו \"חזקות\" (רבות כוח), ולכן ההקשר קובע. מנוקד לעקביות עם היחיד.",
+      "status": "text-checked"
+    },
+    {
+      "token": "המעריך",
+      "niqqud": "הַמַּעֲרִיךְ",
+      "say": "ha-ma'arikh",
+      "rationale": "המונח המקובל הוא מַעֲרִיךְ (ma'arikh). דוברים ומנועי קול אומרים לפעמים me'arekh. לוודא שהקול אומר ma'arikh.",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "למעריך",
+      "niqqud": "לַמַּעֲרִיךְ",
+      "say": "la-ma'arikh",
+      "rationale": "כמו המעריך, עם ל׳ וה״א הידיעה.",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "הבסיס",
+      "niqqud": "הַבָּסִיס",
+      "say": "ha-basis",
+      "rationale": "הבסיס של חזקה. אין דו־משמעות; מנוקד כי הוא בא יחד עם \"מעריך\" באותו משפט.",
+      "status": "text-checked"
+    },
+    {
+      "token": "בריבוע",
+      "niqqud": "בְּרִיבּוּעַ",
+      "say": "be-ribua",
+      "rationale": "\"בריבוע\". בכתיב מלא נשארת היו״ד, ולכן הסרת הניקוד מחזירה את הכתיב שבפוסט. פתח גנובה בעי״ן: הסיומת נשמעת -ua.",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "ריבועי",
+      "niqqud": "רִיבּוּעִי",
+      "say": "ribu'i",
+      "rationale": "כמו ב\"שורש ריבועי\". בכתיב מלא נשארת היו״ד.",
+      "status": "text-checked"
+    },
+    {
+      "token": "שורש",
+      "niqqud": "שׁוֹרֶשׁ",
+      "say": "shoresh",
+      "rationale": "בפוסט נכתב בווי״ו (כתיב מלא), ולכן החולם על הווי״ו, והסרת הניקוד מחזירה את אותן אותיות.",
+      "status": "text-checked"
+    },
+    {
+      "token": "השורש",
+      "niqqud": "הַשּׁוֹרֶשׁ",
+      "say": "ha-shoresh",
+      "rationale": "כמו שורש, עם ה״א הידיעה (דגש בשי״ן).",
+      "status": "text-checked"
+    },
+    {
+      "token": "מועלה",
+      "niqqud": "מוּעֲלֶה",
+      "say": "mu'ale",
+      "rationale": "\"מועלה בחזקה\" (בינוני הופעל). בלי ניקוד אפשר לקרוא מַעֲלֶה.",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "כפל",
+      "niqqud": "כֶּפֶל",
+      "say": "kefel",
+      "rationale": "שם הפעולה. בלי ניקוד אפשר לקרוא כָּפַל (פועל).",
+      "status": "text-checked"
+    },
+    {
+      "token": "בכפל",
+      "niqqud": "בַּכֶּפֶל",
+      "say": "ba-kefel",
+      "rationale": "\"מתחילים בַּכֶּפֶל\": בכפל המסוים.",
+      "status": "text-checked"
+    },
+    {
+      "token": "שכפל",
+      "niqqud": "שֶׁכֶּפֶל",
+      "say": "she-kefel",
+      "rationale": "\"שֶׁכֶּפֶל תמיד קודם…\".",
+      "status": "text-checked"
+    },
+    {
+      "token": "שמחשב",
+      "niqqud": "שֶׁמְּחַשֵּׁב",
+      "say": "she-mekhashev",
+      "rationale": "\"מי שמחשב\". בלי ניקוד אפשר לקרוא \"שמַחשב\" (מחשב, המכשיר).",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "עשרה",
+      "niqqud": "עֶשְׂרֵה",
+      "say": "esre",
+      "rationale": "במספרי 11–19 (ארבע עשרה, חמש עשרה, שמונה עשרה). התסריטים אינם משתמשים ב\"עשרה\" במובן 10 (עֲשָׂרָה); אם יידרש, להגדיר עקיפה במקטע.",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "שלמה",
+      "niqqud": "שְׁלֵמָה",
+      "say": "shlema",
+      "rationale": "\"טעות שלמה\". בלי ניקוד אפשר לקרוא את השם שלמה.",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "שלם",
+      "niqqud": "שָׁלֵם",
+      "say": "shalem",
+      "rationale": "\"דף שלם\". בלי ניקוד אפשר לקרוא שִׁלֵּם (שילם).",
+      "status": "text-checked"
+    },
+    {
+      "token": "חושבו",
+      "niqqud": "חוּשְּׁבוּ",
+      "say": "khushvu",
+      "rationale": "\"חוּשְּׁבוּ\" (פֻּעַל). בלי ניקוד אפשר לקרוא חוֹשְׁבוּ.",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "הובן",
+      "niqqud": "הוּבַן",
+      "say": "huvan",
+      "rationale": "\"הוּבַן\" (הֻפְעַל).",
+      "status": "text-checked"
+    },
+    {
+      "token": "בחזקה",
+      "niqqud": "בְּחֶזְקָה",
+      "say": "be-khezka",
+      "rationale": "\"מועלה בחזקה\", \"בחזקה זוגית\". בלי ניקוד אפשר לקרוא בְּחָזְקָה (\"בכוח\").",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "ובחזקה",
+      "niqqud": "וּבְחֶזְקָה",
+      "say": "u-ve-khezka",
+      "rationale": "כמו בחזקה, עם ו׳ (שורוק לפני בי״ת).",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "לחזקה",
+      "niqqud": "לְחֶזְקָה",
+      "say": "le-khezka",
+      "rationale": "\"ההפוכה לחזקה שנייה\".",
+      "status": "needs-listening-priority"
+    },
+    {
+      "token": "החזקות",
+      "niqqud": "הַחֲזָקוֹת",
+      "say": "ha-khazakot",
+      "rationale": "רבים עם ה״א הידיעה (\"חוקי החזקות\").",
+      "status": "text-checked"
+    },
+    {
+      "token": "הכפל",
+      "niqqud": "הַכֶּפֶל",
+      "say": "ha-kefel",
+      "rationale": "כמו כפל, עם ה״א הידיעה.",
+      "status": "text-checked"
+    },
+    {
+      "token": "לכפל",
+      "niqqud": "לְכֶפֶל",
+      "say": "le-kefel",
+      "rationale": "\"קיצור לכפל חוזר\".",
+      "status": "text-checked"
+    },
+    {
+      "token": "ושורש",
+      "niqqud": "וְשׁוֹרֶשׁ",
+      "say": "ve-shoresh",
+      "rationale": "כמו שורש, עם ו׳.",
+      "status": "text-checked"
+    },
+    {
+      "token": "שהבסיס",
+      "niqqud": "שֶׁהַבָּסִיס",
+      "say": "she-ha-basis",
+      "rationale": "כמו הבסיס, עם ש׳.",
+      "status": "text-checked"
+    },
+    {
+      "token": "ריבוע",
+      "niqqud": "רִיבּוּעַ",
+      "say": "ribua",
+      "rationale": "\"ריבוע מושלם\". בכתיב מלא נשארת היו״ד.",
+      "status": "text-checked"
+    }
+  ],
+  "rejected": [
+    {
+      "token": "שווה",
+      "reason": "בכתיב מלא נכתבת בשתי ווי״ו, ובצורה המנוקדת שָׁוֶה יש אחת, כך שהניקוד משנה אותיות. נשארה בלי ניקוד (בדרך כלל נקראת shave). להאזין לה."
+    },
+    {
+      "token": "הכוונה",
+      "reason": "בכתיב מלא נכתבת בשתי ווי״ו, ובצורה המנוקדת הַכְוָנָה יש אחת. בתסריטים נאמר \"הדרכה\", שיש לה קריאה אחת ברורה."
+    }
+  ],
+  "unpointedOk": [
+    {
+      "token": "מושלם",
+      "reason": "אחרי הסרת תחיליות יש לה אותן אותיות כמו \"שלם\", אבל למילה מושלם יש קריאה אחת."
+    }
+  ]
+}

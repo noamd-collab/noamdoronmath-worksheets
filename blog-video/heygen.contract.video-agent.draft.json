@@ -1,0 +1,38 @@
+{
+  "README": "DRAFT. Values relayed by the user on 2026-10-03 from https://developers.heygen.com/docs/video-agent (the user read the page; this environment cannot reach HeyGen's docs). Not verified here. Before use: confirm every field, the exact body nesting, the status values, and whether Video Agent speaks the narration word for word (see openQuestions), then save as heygen.contract.json with verifiedFromDocs: true.",
+  "verifiedFromDocs": false,
+  "source": { "relayedBy": "user (session message)", "on": "2026-10-03", "docsUrls": ["https://developers.heygen.com/docs/video-agent"] },
+  "auth": { "header": "X-Api-Key" },
+  "create": {
+    "method": "POST",
+    "url": "https://api.heygen.com/v3/video-agents",
+    "body": {
+      "mode": "generate",
+      "avatar_id": "{{avatarId}}",
+      "voice_id": "{{voiceId}}",
+      "orientation": "portrait",
+      "prompt": "Present this Hebrew narration word for word, exactly as written, with no rewording, additions or omissions. Do not add on-screen text that is not given.\n\n{{narration}}"
+    },
+    "idPath": "session_id"
+  },
+  "resolve": { "method": "GET", "url": "https://api.heygen.com/v3/video-agents/{{jobId}}", "videoIdPath": "video_id" },
+  "status": {
+    "method": "GET",
+    "url": "https://api.heygen.com/v3/videos/{{videoId}}",
+    "statusPath": "status",
+    "doneValues": [],
+    "failedValues": [],
+    "durationPath": null,
+    "videoUrlPath": "video_url",
+    "captionedVideoUrlPath": "captioned_video_url",
+    "subtitleUrlPath": "subtitle_url"
+  },
+  "openQuestions": [
+    "Are the response fields top-level (session_id, video_id, status, video_url) or nested under a data object? The paths above assume top-level.",
+    "Which status values mean done and failed? Left empty, so the tool never marks a video rendered on a guess.",
+    "Does Video Agent speak the prompt's narration verbatim, or rewrite it? Video Agent is prompt-driven; if it paraphrases, the reviewed script is not what Noam says. Check with compare-subtitles on the pilot before any series run.",
+    "brand_glossary_id: what format does a glossary take, and is one already set up in Noam's account? Not used until an ID exists.",
+    "Is there a duration control? None is set here; duration is measured from the rendered video, never requested.",
+    "Is mode 'generate' right for a one-shot render, versus 'chat'?"
+  ]
+}

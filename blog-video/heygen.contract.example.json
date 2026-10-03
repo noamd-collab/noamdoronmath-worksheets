@@ -1,0 +1,12 @@
+{
+  "README": "Copy to heygen.contract.json and fill every null from HeyGen's official, current API documentation. Do not guess. Set verifiedFromDocs to true only after checking each field against the docs, and list the pages used. Never put an API key in this file: the key is read from the HEYGEN_API_KEY environment variable. See heygen.contract.video-agent.draft.json for the values relayed so far.",
+  "verifiedFromDocs": false,
+  "verifiedBy": null,
+  "verifiedOn": null,
+  "docsUrls": [],
+  "auth": { "header": null },
+  "create": { "method": null, "url": null, "body": null, "idPath": null },
+  "resolve": { "method": null, "url": null, "videoIdPath": null },
+  "status": { "method": null, "url": null, "statusPath": null, "doneValues": [], "failedValues": [], "durationPath": null, "videoUrlPath": null, "captionedVideoUrlPath": null, "subtitleUrlPath": null },
+  "placeholders": "body: {{avatarId}} {{voiceId}} {{narration}} {{title}} {{callbackId}} {{brandGlossaryId}}; resolve.url: {{jobId}}; status.url: {{videoId}}"
+}
