@@ -46,7 +46,7 @@
         },
         {
           "type": "paragraph",
-          "text": "תשובה: 68°, כי שתי זוויות הבסיס שוות וסכום הזוויות במשולש הוא 180°: (180°−44°)÷2=68°.",
+          "text": "תשובה: 68°, כי שתי זוויות הבסיס שוות וסכום הזוויות במשולש הוא 180°: (180°−44°):2=68°.",
           "links": []
         }
       ]
@@ -98,7 +98,7 @@
     },
     {
       "type": "paragraph",
-      "text": "תשובה: 68°, כי שתי זוויות הבסיס שוות וסכום הזוויות במשולש הוא 180°: (180°−44°)÷2=68°.",
+      "text": "תשובה: 68°, כי שתי זוויות הבסיס שוות וסכום הזוויות במשולש הוא 180°: (180°−44°):2=68°.",
       "role": "body"
     }
   ],
@@ -171,7 +171,7 @@
     "source": "production-github-cta",
     "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=41",
     "catalogTopicId": 41,
-    "catalogTopicTitle": "הוכחה — שווה שוקיים"
+    "catalogTopicTitle": "הוכחה — שווה־שוקיים"
   },
   "catalogCtas": [
     {
@@ -180,7 +180,7 @@
       "source": "production-github-cta",
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=41",
       "catalogTopicId": 41,
-      "catalogTopicTitle": "הוכחה — שווה שוקיים"
+      "catalogTopicTitle": "הוכחה — שווה־שוקיים"
     }
   ],
   "gradeHubHref": "/grade-8",
