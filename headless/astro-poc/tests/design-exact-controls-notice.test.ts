@@ -163,7 +163,8 @@ describe('protected math sources remain byte-identical to verified live 8a098020
 describe('non-blocking site-development notice', () => {
   it('is an in-flow aside, not a dialog, overlay, consent form or focus trap', () => {
     assert.match(notice, /<aside[^>]*data-development-notice/);
-    assert.match(notice, /<button\s+type="button"\s+aria-label="סגירת הודעת הפיתוח"/);
+    // The accessible name starts with the visible text "הבנתי" (WCAG 2.5.3 label in name).
+    assert.match(notice, /<button\s+type="button"\s+aria-label="הבנתי – סגירת הודעת הפיתוח">הבנתי<\/button>/);
     assert.match(notice, /min-width:44px;min-height:44px/);
     assert.doesNotMatch(notice, /<dialog\b|aria-modal\s*=|role\s*=\s*['"](?:dialog|alertdialog)['"]|\bautofocus\b|\binert\b|type\s*=\s*['"]checkbox['"]/i);
     assert.doesNotMatch(notice, /position\s*:\s*(?:fixed|absolute)|overflow(?:-[xy])?\s*:\s*(?:hidden|clip)|overscroll-behavior\s*:\s*none/i);
