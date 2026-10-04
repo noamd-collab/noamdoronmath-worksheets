@@ -44,7 +44,7 @@ function specialPreview(key: string, data: PeekLiveData): string {
     const topic = wsTopics[i % wsTopics.length];
     return `<div data-live="row"><span data-live="g">${escape(topic.grade)}</span><span data-live="t">${escape(topic.title)}</span><span class="exact-peek-levels"><i></i><i></i><i></i></span></div>`;
   }).join('')}</div>`;
-  if (key === 'about') return `<div class="exact-peek-about" dir="rtl"><img data-live="logo" src="/design-exact/assets/logo.png" alt=""><div><strong>נועם דורון</strong><svg viewBox="0 0 100 10"><path data-live="uline" pathLength="1" d="M2 6 C 30 1, 60 9, 98 4" fill="none" stroke="#e5735c" stroke-width="3" stroke-linecap="round" stroke-dasharray="1"></path></svg><span>דפי עבודה במתמטיקה לכיתות א׳–ט׳</span></div></div>`;
+  if (key === 'about') return `<div class="exact-peek-about" dir="rtl"><img data-live="logo" src="/design-exact/assets/logo.webp" alt="" width="320" height="136" decoding="async"><div><strong>נועם דורון</strong><svg viewBox="0 0 100 10"><path data-live="uline" pathLength="1" d="M2 6 C 30 1, 60 9, 98 4" fill="none" stroke="#e5735c" stroke-width="3" stroke-linecap="round" stroke-dasharray="1"></path></svg><span>דפי עבודה במתמטיקה לכיתות א׳–ט׳</span></div></div>`;
   if (key === 'blog' && data.posts.length) return `<div class="exact-peek-blog" dir="rtl"><div><span class="exact-peek-margin"></span><span data-live="bnum">פוסט 1 מתוך ${data.posts.length}</span><span class="exact-peek-headline"><span data-live="btitle">${escape(data.posts[0])}</span><span data-live="caret"></span></span>${[92,78,60].map(width => `<span data-live="bar" style="width:${width}%"></span>`).join('')}</div></div>`;
   return '';
 }

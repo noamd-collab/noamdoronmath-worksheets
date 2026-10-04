@@ -238,13 +238,13 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   ruler: {
     domain: 'מדידה ויחידות · מטר וסנטימטר',
     claim: 'במטר אחד יש 100 סנטימטרים',
-    mathLine: '1 m = 100 cm',
+    mathLine: '1 מטר = 100 ס״מ',
     explain: 'מופיע סרגל באורך מטר אחד. הוא מתחלק לעשרה קטעים של 10 ס״מ כל אחד. עשרה קטעים של 10 ס״מ הם 100 ס״מ.',
   },
   'clock-span': {
     domain: 'שעון · פרק זמן',
     claim: 'משך הזמן הוא ההפרש בין שתי השעות',
-    mathLine: '4 − 2 = 2',
+    mathLine: 'מ־2:00 עד 4:00 עברו שעתיים',
     explain: 'השעון מראה את השעה 2. המחוגים זזים עד השעה 4. עברו שעתיים.',
   },
   cookies: {
@@ -268,7 +268,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'unit-frac': {
     domain: 'שברים יסודיים · השוואה',
     claim: 'ככל שהמכנה גדול יותר, החלק קטן יותר',
-    mathLine: '1/2 > 1/3 > 1/4',
+    mathLine: '½ > ⅓ > ¼',
     explain: 'חצי, שליש ורבע מוצגים זה לצד זה. ככל שמחלקים את השלם ליותר חלקים, כל חלק קטן יותר. החצי הוא החלק הגדול ביותר.',
   },
   // ── grade 4 ──
@@ -287,7 +287,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   fraction: {
     domain: 'שברים · שבר כחלק משלם',
     claim: 'רבע הוא חלק אחד מארבעה חלקים שווים',
-    mathLine: 'אותו רבע בשלוש צורות: 1/4',
+    mathLine: 'אותו רבע בשלוש צורות: ¼',
     explain: 'עוגה נחתכת לארבעה חלקים שווים, וחלק אחד נצבע. אותו רבע מופיע גם על פס וגם על ישר המספרים. החלק הצבוע הוא רבע.',
   },
   'mark-250': {
@@ -299,7 +299,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'equiv-half': {
     domain: 'שברים שקולים · חצי על הישר',
     claim: 'חצי, שני רבעים ושלוש שישיות',
-    mathLine: 'אותו מקום על הישר: 1/2 = 2/4 = 3/6',
+    mathLine: 'אותו מקום על הישר: ½ = ²⁄₄ = ³⁄₆',
     explain: 'חצי, שני רבעים ושלוש שישיות מסומנים על ישר המספרים. שלושתם יושבים על אותה נקודה. לכן הם שברים שקולים.',
   },
   'quad-gate': {
@@ -318,13 +318,13 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'quarter-12': {
     domain: 'שברים · שבר של מספר',
     claim: 'רבע מכמות הוא חלק אחד מארבעה',
-    mathLine: '1/4 × 12 = 3',
+    mathLine: '¼ × 12 = 3',
     explain: 'יש 12 נקודות. רבע מהן מסומנות — חלק אחד מתוך ארבעה חלקים שווים. רבע מ־12 הוא 3.',
   },
   'tenth-cell': {
     domain: 'שברים עשרוניים · עשירית ומאית',
     claim: 'עשירית אחת היא עשר מאיות',
-    mathLine: '1/10 = 10 × 1/100',
+    mathLine: '¹⁄₁₀ = 10 × ¹⁄₁₀₀',
     explain: 'פס אחד מסומן, והוא עשירית מהשלם. משבצת אחת בתוך הפס היא מאית. בעשירית אחת יש 10 מאיות.',
   },
   // ── grade 6 ──
@@ -343,7 +343,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'frac-product': {
     domain: 'שברים · כפל שברים',
     claim: 'חצי של שליש הוא שישית',
-    mathLine: '1/2 × 1/3 = 1/6',
+    mathLine: '½ × ⅓ = ⅙',
     explain: 'שליש וחצי נצבעים על אותו שלם, זה על זה. החפיפה ביניהם היא חצי מהשליש. זה חלק אחד מתוך שישה — שישית.',
   },
   'prime-rect': {
@@ -356,7 +356,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   triangle: {
     domain: 'שטח משולש · חצי מלבן',
     claim: 'שטח משולש הוא חצי מהמלבן שסביבו',
-    mathLine: 'S = a·h/2 = 6·4/2 = 12',
+    mathLine: 'S = (a · h) : 2 = (6 × 4) : 2 = 12',
     explain: 'מלבן 6 על 4 שטחו 24, ואלכסון מראה שהמשולש הוא חצי ממנו. הקודקוד מחליק על קו מקביל לבסיס, והגובה לא משתנה. השטח נשאר 12.',
   },
   'order-ops': {
@@ -440,7 +440,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'rect-count': {
     domain: 'שטח והיקף · מלבן',
     claim: 'שטח סופרים בפנים, היקף סופרים על השפה',
-    mathLine: '4 × 3 = 12, P = 14',
+    mathLine: 'S = 4 × 3 = 12, P = 2 × (4 + 3) = 14',
     explain: 'במלבן 4 על 3 סופרים את המשבצות שבפנים: יש 12, וזה השטח. אחר כך סופרים את השפה סביבו: 14 יחידות, וזה ההיקף.',
   },
   'l-split': {
@@ -452,13 +452,13 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'trap-area': {
     domain: 'שטח · טרפז',
     claim: 'שטח טרפז: ממוצע הבסיסים כפול הגובה',
-    mathLine: '(6 + 2) / 2 × 3 = 12',
-    explain: 'לטרפז בסיסים באורך 6 ו־2 וגובה 3. ממוצע הבסיסים הוא 4. 4 כפול הגובה 3 נותן שטח 12.',
+    mathLine: 'S = (6 + 2) : 2 × 3 = 12',
+    explain: 'לטרפז בסיסים 6 ו־2 וגובה 3. קטע האמצעים שווה לממוצע הבסיסים, 4. כשכופלים אותו בגובה 3 מתקבל שטח 12.',
   },
   'para-rect': {
     domain: 'שטח · מקבילית ומלבן',
     claim: 'מקבילית שהופכת למלבן שומרת על שטחה',
-    mathLine: 'הגובה נשאר, השטח נשאר',
+    mathLine: 'הבסיס והגובה לא משתנים, ולכן השטח לא משתנה',
     explain: 'מקבילית נמתחת והופכת למלבן. הגובה שלה נשאר אותו גובה. לכן השטח לא משתנה.',
   },
   'angle-kinds': {
@@ -471,19 +471,19 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   pythagoras: {
     domain: 'משפט פיתגורס · ריבועי הצלעות',
     claim: 'ריבועי הניצבים ממלאים את ריבוע היתר',
-    mathLine: 'c² = 9 + 16 = 25 → c = 5',
+    mathLine: 'c² = 3² + 4² = 9 + 16 = 25, c = 5',
     explain: 'על הניצבים 3 ו־4 של משולש ישר־זווית בנויים ריבועים של 9 ו־16 משבצות. המשבצות עוברות וממלאות בדיוק את הריבוע שעל היתר. יש בו 25 משבצות, ולכן היתר הוא 5.',
   },
   'mean-cols': {
     domain: 'סטטיסטיקה · ממוצע',
     claim: 'הממוצע הוא הגובה שבו העמודות מתאזנות',
-    mathLine: '(2 + 4 + 6) / 3 = 4',
+    mathLine: '(2 + 4 + 6) : 3 = 4',
     explain: 'יש שלוש עמודות בגובה 2, 4 ו־6. העמודות מתאזנות — מה שעודף בגבוהה עובר לנמוכה. כל אחת נעצרת על 4, הממוצע.',
   },
   'circ-unroll': {
     domain: 'מעגל · היקף',
     claim: 'היקף המעגל הוא קצת יותר משלושה קטרים',
-    mathLine: 'C = πd ≈ 3.14d',
+    mathLine: 'P = πd ≈ 3.14d',
     explain: 'היקף המעגל נפרש לקו ישר. משווים את הקו לקוטר. הקו ארוך קצת משלושה קטרים — פי פאי.',
   },
   'corr-angles': {
@@ -507,13 +507,13 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'para-perp': {
     domain: 'ישרים · מקבילים ומאונכים',
     claim: 'מקבילים לא נפגשים, מאונכים נפגשים ב־90°',
-    mathLine: 'מרחק שווה · 90°',
+    mathLine: 'מרחק שווה, זווית של 90°',
     explain: 'שני ישרים נשארים באותו מרחק זה מזה, ולכן הם מקבילים. שני ישרים אחרים נפגשים בזווית ישרה. הם מאונכים.',
   },
   similar: {
     domain: 'דמיון משולשים · הכפלת צלעות',
     claim: 'במשולשים דומים הזוויות נשארות שוות',
-    mathLine: 'פי 2, אותן זוויות',
+    mathLine: 'הצלעות גדלו פי 2, הזוויות לא השתנו',
     explain: 'משולש גדל פי 2, וכל הצלעות שלו מוכפלות. סימני הזוויות נשארים זהים. המשולשים דומים.',
   },
   'cyl-stack': {
@@ -525,7 +525,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   slope: {
     domain: 'פונקציה קווית · שיפוע',
     claim: 'שיפוע הוא כמה עולים בכל צעד ימינה',
-    mathLine: 'rise / run = 2',
+    mathLine: 'm = 2 : 1 = 2',
     explain: 'על הישר עושים צעד אחד ימינה ושניים למעלה. אותו צעד חוזר לאורך הישר. השיפוע הוא 2.',
   },
   // ── grade 9 ──
@@ -538,8 +538,8 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'quad-tree': {
     domain: 'מרובעים · משפחת המרובעים',
     claim: 'ריבוע הוא גם מלבן וגם מעוין',
-    mathLine: 'ריבוע יורש מלבן ומעוין',
-    explain: 'בעץ המרובעים, המלבן והמעוין נמצאים מעל הריבוע. הריבוע יורש את התכונות של שניהם. לכן ריבוע הוא גם מלבן וגם מעוין.',
+    mathLine: 'ריבוע הוא גם מלבן וגם מעוין',
+    explain: 'לריבוע יש ארבע זוויות ישרות, כמו למלבן, וארבע צלעות שוות, כמו למעוין. לכן ריבוע הוא גם מלבן וגם מעוין.',
   },
   transform: {
     domain: 'טרנספורמציות · שיקוף, סיבוב והזזה',
@@ -556,7 +556,8 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'two-coins': {
     domain: 'הסתברות · מרחב מדגם',
     claim: 'לשתי הטלות מטבע יש ארבע תוצאות שוות',
-    mathLine: 'עץ־עץ: 1 מתוך 4 = 1/4',
+    // "4 = ¼" as one LTR run sits with the fraction beside מתוך. The word between them keeps reading order 4 then the fraction.
+    mathLine: 'עץ־עץ: 1 מתוך 4 שווה ¼',
     explain: 'מטילים מטבע הוגן פעמיים. יש ארבע תוצאות שוות־הסתברות, ועץ־עץ היא אחת מהן. ההסתברות לשני עצים היא רבע.',
   },
   'diff-sq': {
@@ -574,7 +575,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   'half-eq': {
     domain: 'משולשים מיוחדים · 30°–60°–90°',
     claim: 'מול זווית של 30° נמצא חצי מהיתר',
-    mathLine: '80 = 160 / 2',
+    mathLine: '80 = 160 : 2',
     explain: 'משולש שווה־צלעות נחצה לשניים. כל חצי הוא משולש של 30°, 60° ו־90°. הצלע שמול 30° היא חצי מהיתר: 80 מתוך 160.',
   },
 };
@@ -594,8 +595,17 @@ export function gradeLoopDomain(variant: string): string {
   return gradeLoopCopy(variant).domain;
 }
 
-/** A formula run: starts and ends on a number, symbol or Latin letter, never on Hebrew. */
-const MATH_RUN = /[\d(−\-a-zA-Z□∠√π][\d\sa-zA-Z×÷+\-−=<>≈≠·.,/()²³°□∠√π:→%]*[\d)a-zA-Z²³°□%]|\d/g;
+/**
+ * A formula run: starts and ends on a number, fraction, symbol or Latin letter,
+ * never on Hebrew. Vulgar fractions and superscript/subscript digits count as
+ * numbers, so a neutral-only string like "½ × ⅓ = ⅙" stays one LTR isolate
+ * instead of taking the paragraph's RTL order.
+ */
+const MATH_ATOM = '\\d\\u00b9\\u00b2\\u00b3\\u00bc-\\u00be\\u2070\\u2074-\\u2079\\u2080-\\u2089\\u2150-\\u215e';
+const MATH_RUN = new RegExp(
+  `[${MATH_ATOM}(−\\-a-zA-Z□∠√π][${MATH_ATOM}\\sa-zA-Z×÷+\\-−=<>≈≠·.,/()°□∠√π:→%\\u2044]*[${MATH_ATOM})a-zA-Z°□%]|[${MATH_ATOM}]`,
+  'g',
+);
 
 /**
  * Splits a caption into prose and formula runs. Formula runs render as

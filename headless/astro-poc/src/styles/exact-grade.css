@@ -62,7 +62,7 @@
 }
 
 .grade-hub.exact-grade h1 {
-  font-family: 'Secular One', sans-serif;
+  font-family: 'Secular One', 'Secular One Fallback', sans-serif;
   font-weight: 400;
   font-size: clamp(32px, 4.4vw, 52px);
   line-height: 1.1;
@@ -117,6 +117,7 @@
 
 .exact-grade__walker img {
   width: 200%;
+  height: auto;
   max-width: none;
   display: block;
   cursor: pointer;
@@ -130,7 +131,7 @@
 
 .exact-grade__players > h2 {
   margin: 0;
-  font-family: 'Secular One', sans-serif;
+  font-family: 'Secular One', 'Secular One Fallback', sans-serif;
   font-weight: 400;
   font-size: clamp(26px, 3vw, 34px);
   color: #22305a;
@@ -151,6 +152,7 @@
 
 .exact-grade__pencil img {
   width: 100%;
+  height: auto;
   display: block;
   mix-blend-mode: multiply;
   cursor: pointer;
@@ -235,7 +237,7 @@
 
 .exact-grade .grade-hub__section-title,
 .exact-grade .grade-hub__faq h2 {
-  font-family: 'Secular One', sans-serif;
+  font-family: 'Secular One', 'Secular One Fallback', sans-serif;
   font-weight: 400;
   font-size: 30px;
   margin: 0 0 16px;

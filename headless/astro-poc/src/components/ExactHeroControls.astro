@@ -1,5 +1,5 @@
 ---
-import ConceptLoop from './ConceptLoop.astro';
+import { HERO_ROTATION } from '../lib/heroRotation';
 
 // Short presentation labels follow the existing loop QA inventory. Topic links
 // name existing pages for the mathematical idea; other variants intentionally
@@ -81,9 +81,7 @@ const topics = {
 };
 ---
 <script type="application/json" data-exact-hero-topics set:html={JSON.stringify(topics)} />
-{/* The initial random replacement removes HeroLoop's only triangle node.
-    Preserve a pristine template here, without changing the protected component. */}
-<template data-exact-hero-default="triangle"><ConceptLoop variant="triangle" /></template>
+<script type="application/json" data-hero-rotation set:html={JSON.stringify(HERO_ROTATION)} />
 <script>
   import { initConceptLoops } from '../lib/conceptLoops';
 
@@ -92,6 +90,7 @@ const topics = {
     __loop?: { pause(): void; play(): void; state(): LoopState };
   };
   type TopicMap = Record<string, [string, string]>;
+  type RotationEntry = { variant: string; grade: string; label: string; href: string; panel: string };
 
   function bootHeroControls() {
     const hero = document.querySelector<HTMLElement>('[data-hero-loop]');
@@ -106,6 +105,10 @@ const topics = {
     try {
       topics = JSON.parse(document.querySelector('[data-exact-hero-topics]')?.textContent || '{}');
     } catch { /* Unknown metadata keeps the short generic label and catalog link. */ }
+    let rotation: RotationEntry[] = [];
+    try {
+      rotation = JSON.parse(document.querySelector('[data-hero-rotation]')?.textContent || '[]');
+    } catch { /* An empty rotation leaves the server-rendered triangle in place. */ }
 
     const originals = new Map<string, HTMLElement>();
     const mounted = new Map<string, Loop>();
@@ -145,18 +148,39 @@ const topics = {
       } catch { /* Session storage is optional, as in the existing pause card. */ }
     }
 
+    async function fetchLoop(variant: string): Promise<HTMLElement> {
+      const response = await fetch('/hero-loops/' + encodeURIComponent(variant), {
+        credentials: 'same-origin',
+        headers: { Accept: 'text/html' },
+      });
+      if (!response.ok) throw new Error('hero loop');
+      const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+      doc.querySelectorAll('style').forEach((style) => {
+        const text = style.textContent || '';
+        if (!text) return;
+        const already = [...document.querySelectorAll('style')].some((existing) => existing.textContent === text);
+        if (!already) document.head.append(document.importNode(style, true));
+      });
+      const node = doc.querySelector<HTMLElement>('[data-loop]');
+      if (!node || node.dataset.loop !== variant) throw new Error('hero loop');
+      return document.importNode(node, true) as HTMLElement;
+    }
+
     function describe() {
       const loop = activeLoop();
       if (!loop) return;
       const info = topics[loop.dataset.loop || ''];
-      const href = info?.[1] || '/worksheets';
+      const spin = rotation.find((entry) => entry.variant === (loop.dataset.loop || ''));
+      const href = spin?.href || info?.[1] || '/worksheets';
       const isCatalog = href === '/worksheets' || href.startsWith('/worksheets?');
-      if (label) label.textContent = info?.[0] || 'הדגמה מתמטית';
+      if (label) label.textContent = spin ? `כיתה ${spin.grade} · ${spin.label}` : (info?.[0] || 'הדגמה מתמטית');
       if (link) {
         link.href = href;
         link.textContent = isCatalog ? 'למאגר התרגול ←' : 'לדף הנושא ←';
         link.dataset.peek = isCatalog ? 'ws' : 'topic';
       }
+      const panel = document.querySelector<HTMLElement>('[data-exact-hero-panel]');
+      if (panel && spin?.panel) panel.style.background = spin.panel;
     }
 
     // Use the unchanged engine's toggle, not a second animation clock. This
@@ -215,13 +239,15 @@ const topics = {
       }
     });
 
-    button.addEventListener('click', () => {
-      const prior = activeLoop();
-      const candidates = [...originals.keys()].filter((variant) => variant !== prior?.dataset.loop);
-      const variant = candidates[Math.floor(Math.random() * candidates.length)];
-      if (!variant) return;
+    let busy = false;
+    async function showVariant(variant: string, prior: Loop | null) {
       let next = mounted.get(variant);
       if (!next) {
+        try {
+          if (!originals.has(variant)) originals.set(variant, await fetchLoop(variant));
+        } catch {
+          return;
+        }
         next = originals.get(variant)!.cloneNode(true) as Loop;
         mounted.set(variant, next);
         adapted.add(next);
@@ -238,6 +264,22 @@ const topics = {
       try { sessionStorage.setItem('nd_hero_loop_last', variant); } catch { /* Optional. */ }
       describe();
       syncActiveCard();
+    }
+
+    button.addEventListener('click', () => {
+      if (busy) return;
+      const prior = activeLoop();
+      const candidates = rotation
+        .map((entry) => entry.variant)
+        .filter((variant) => variant !== prior?.dataset.loop);
+      const variant = candidates[Math.floor(Math.random() * candidates.length)];
+      if (!variant) return;
+      busy = true;
+      button.setAttribute('aria-busy', 'true');
+      void showVariant(variant, prior).finally(() => {
+        busy = false;
+        button.removeAttribute('aria-busy');
+      });
     });
 
     describe();

@@ -372,7 +372,9 @@ export class ExactReferenceMotion {
       const d = el.dataset;
       const ease = 'cubic-bezier(.55,.1,.25,1)';
       if (d.draw !== undefined) el.__a.push(this.animate(el, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: +d.dur || 900, delay: +d.draw || 0, fill: 'both', easing: ease }));
-      if (d.pop !== undefined) el.__a.push(this.animate(el, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 520, delay: +d.pop || 0, fill: 'both', easing: 'cubic-bezier(.2,.8,.3,1.2)' }));
+      /* data-lcp is the homepage h1. A CSS animation moves it; hiding it
+         until this module runs made the LCP text invisible. */
+      if (d.pop !== undefined && d.lcp === undefined) el.__a.push(this.animate(el, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 520, delay: +d.pop || 0, fill: 'both', easing: 'cubic-bezier(.2,.8,.3,1.2)' }));
       if (d.grow !== undefined) el.__a.push(this.animate(el, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 600, delay: +d.grow || 0, fill: 'both', easing: 'cubic-bezier(.3,1.3,.5,1)' }));
       if (d.fly !== undefined) el.__a.push(this.animate(el, [{ opacity: 0, transform: `translate(${d.dx || 0}px,${d.dy || 0}px)` }, { opacity: 1, transform: 'none' }], { duration: 700, delay: +d.fly || 0, fill: 'both', easing: 'cubic-bezier(.3,1.25,.5,1)' }));
       if (d.out !== undefined) el.__a.push(this.animate(el, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-36px)' }], { duration: 600, delay: +d.out || 0, fill: 'forwards', easing: 'ease-in' }));

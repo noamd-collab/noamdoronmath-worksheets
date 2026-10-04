@@ -1,4 +1,5 @@
 ---
+import StackedFraction from './StackedFraction.astro';
 /**
  * KIMI-LOOPS-K3 — Brilliant-style self-playing math film loops.
  *
@@ -97,7 +98,7 @@ const { variant } = Astro.props;
 
 const ariaLabels: Record<string, string> = {
   triangle:
-    'הדגמה: מלבן 6×4 שווה 24; אלכסון מראה שהמשולש הוא חצי ממנו — S = a·h/2 = 12. הקודקוד מחליק על קו מקביל לבסיס, והשטח נשאר 12.',
+    'הדגמה: מלבן 6×4 שווה 24; אלכסון מראה שהמשולש הוא חצי ממנו — S = (a · h) : 2 = (6 × 4) : 2 = 12. הקודקוד מחליק על קו מקביל לבסיס, והשטח נשאר 12.',
   pythagoras:
     'הדגמה: משולש ישר-זווית 3-4-5. הריבועונים של a² ושל b² עוברים וממלאים את הריבוע של c². c = 5.',
   'area-model':
@@ -114,7 +115,7 @@ const ariaLabels: Record<string, string> = {
     'הדגמה: תבנית הריבועים 2, 5, 8, 11 גדלה ב־3 בכל שלב. השלב החמישי הוא 14.',
   bars:
     'הדגמה: מודל פסים — פס של 12 לדנה, פס של 12 ועוד 5 לרון, ויחד 12 + 17 = 29.',
-  ruler: 'הדגמה: סרגל של מטר אחד מתחלק לעשרה קטעים של 10 ס״מ — 1 m = 100 cm.',
+  ruler: 'הדגמה: סרגל של מטר אחד מתחלק לעשרה קטעים של 10 ס״מ — 1 מטר = 100 ס״מ.',
   array:
     'הדגמה: 4 קבוצות של 3 נקודות מתיישרות למערך 4 × 3, המערך מסתובב ל־3 × 4 — אותן 12 נקודות.',
   polygon: 'הדגמה: מחומש נבנה צלע אחר צלע, והמונים מראים שמספר הצלעות שווה למספר הקודקודים.',
@@ -154,7 +155,7 @@ const ariaLabels: Record<string, string> = {
   'circ-unroll': 'הדגמה: היקף המעגל נפרש לקו, והקו ארוך קצת משלושה קטרים.',
   'rect-count': 'הדגמה: במלבן סופרים משבצות לשטח, ובנפרד את השפה להיקף.',
   'l-split': 'הדגמה: צורת L נפרדת לשני מלבנים, 12 ועוד 4 שווה 16, והחלקים חוזרים.',
-  'quad-tree': 'הדגמה: מעץ המרובעים, ריבוע יורש גם מלבן וגם מעוין.',
+  'quad-tree': 'הדגמה: ריבוע הוא גם מלבן וגם מעוין.',
   'tri-sort': 'הדגמה: שלושה משולשים ממוינים לפי אורך הצלעות לשלושה סלים.',
   parab: 'הדגמה: קודקוד הפרבולה זז, והמספר שלידו מראה את גובה הנקודה.',
   'ratio-beads': 'הדגמה: 2 מול 3 מוכפלים ל־4 מול 6, והיחס נשאר אותו דבר.',
@@ -192,14 +193,14 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   tenframes: { text: '7 + 5 = ?', ltr: true },
   balance: { text: '3 + □ = 8', ltr: true },
   pattern: { text: 'מה מספר הריבועים בשלב 5?' },
-  bars: { text: 'לדנה 12 מדבקות. לרון 5 מדבקות יותר מלדנה. כמה מדבקות יש להם יחד?' },
+  bars: { text: 'לדנה יש 12 מדבקות. לרון יש 5 מדבקות יותר מלדנה. כמה מדבקות יש להם יחד?' },
   ruler: { text: 'כמה ס״מ יש במטר?' },
   array: { text: '4 קבוצות של 3 — כמה נקודות?' },
   polygon: { text: 'כמה צלעות וכמה קודקודים?' },
   baseten: { text: '38 + 25 = ?', ltr: true },
   cookies: { text: 'כמה עוגיות בכל צלחת? ומה נשאר?' },
   fraction: { text: 'איזה חלק של העוגה צבוע?' },
-  'angle-sum': { text: 'כמה זה סכום הזוויות?' },
+  'angle-sum': { text: 'מהו סכום הזוויות במשולש?' },
   'para-rect': { text: 'האם השטח משתנה?' },
   'angle-kinds': { text: 'איזו זווית זו?' },
   'frac-product': { text: 'חצי של שליש — כמה?' },
@@ -212,7 +213,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'corr-angles': { text: 'האם הזוויות שוות?' },
   'mean-cols': { text: 'מה הממוצע של 2, 4 ו־6?' },
   'pct-25': { text: 'כמה זה 25 מתוך 100?' },
-  'diff-sq': { text: '25 − 9 = ?', ltr: true },
+  'diff-sq': { text: '5² − 3² = ?', ltr: true },
   'clock-3': { text: 'איזו שעה שלמה?' },
   'peri-rect': { text: 'מה היקף המלבן?' },
   'signed-jump': { text: '−2 + 5 = ?', ltr: true },
@@ -220,37 +221,37 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'sas-snap': { text: 'האם הסימנים זהים?' },
   'obtuse-ht': { text: 'איפה פוגש הגובה?' },
   'box-vol': { text: '3 × 2 × 2 = ?', ltr: true },
-  'trap-area': { text: 'מה שטח הטרפז?' },
+  'trap-area': { text: 'מהו שטח הטרפז?' },
   'odd-pair': { text: 'האם נשארה נקודה?' },
   'birds-sub': { text: '6 − 2 = ?', ltr: true },
   'circ-unroll': { text: 'כמה קטרים בהיקף?' },
   'rect-count': { text: 'שטח או היקף?' },
-  'l-split': { text: '12 + 4 = ?', ltr: true },
-  'quad-tree': { text: 'מה יורש הריבוע?' },
+  'l-split': { text: 'מהו שטח הצורה?' },
+  'quad-tree': { text: 'ריבוע — מלבן או מעוין?' },
   'tri-sort': { text: 'לאיזה סל?' },
   parab: { text: 'מה ה־y של הקודקוד?' },
   'ratio-beads': { text: '2 : 3 = ?', ltr: true },
   neighbors: { text: 'מי השכנים של 8?' },
   'signed-ops': { text: '(−3) + 2 × 4 = ?', ltr: true },
   'clock-span': { text: 'כמה שעות עברו?' },
-  exterior: { text: 'כמה הזווית החיצונית?' },
+  exterior: { text: 'מה גודל הזווית החיצונית?' },
   'para-perp': { text: 'מקביל או מאונך?' },
-  'quarter-12': { text: '¼ מ־12 = ?' },
+  'quarter-12': { text: 'רבע מ־12 = ?' },
   'two-coins': { text: 'מה ההסתברות לשני עצים?' },
-  'map-scale': { text: '4 × 5 = ?', ltr: true },
+  'map-scale': { text: 'קנה המידה 1:5. מה האורך במציאות?' },
   'unit-frac': { text: 'איזה חלק הכי גדול?' },
-  'coord-walk': { text: '(3, 2) = ?', ltr: true },
+  'coord-walk': { text: 'מהם שיעורי הנקודה?' },
   'coins-12': { text: '10 + 1 + 1 = ?', ltr: true },
   'cyl-stack': { text: 'כמה שכבות בגובה?' },
   'tenth-cell': { text: 'מה זו משבצת אחת?' },
   'equiv-half': { text: 'איפה יושב החצי?' },
-  'half-eq': { text: 'מה מול הזווית של 30°?' },
+  'half-eq': { text: 'מה מול זווית בת 30°?' },
   'sq-stretch': { text: 'כמה צלעות?' },
   'area-x4': { text: 'פי כמה גדל השטח?' },
   'cube-8': { text: '2 × 2 × 2 = ?', ltr: true },
   'place-123': { text: '100 + 20 + 3 = ?', ltr: true },
   'jumps-4': { text: '4 × 3 = ?', ltr: true },
-  'apples-5': { text: '2 + 3 או 3 + 2?', ltr: true },
+  'apples-5': { text: '2 + 3 = 3 + 2?', ltr: true },
   'topic-card': { text: 'מה המספר החסר?' },
   'mark-250': { text: '200 < ? < 300', ltr: true },
   'quad-gate': { text: 'איזו צורה נכנסת?' },
@@ -468,7 +469,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       /* families F01–F06: fixed problem strip that never moves */
       variant === 'quarter-12' ? (
         <p class="concept-loop__top">
-          <span class="cl-num">1/4</span>
+          <StackedFraction n="1" d="4" />
           {' מ־'}
           <span class="cl-num">12</span>
           {' = '}
@@ -507,10 +508,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       /* transform: one question per transformation phase */
       variant === 'transform' && (
         <p class="concept-loop__top cl-topswap">
-          <span class="cl-topsz" aria-hidden="true">ומה זו הזזה?</span>
-          <span class="cl-tops" data-el="top0">מה זה שיקוף?</span>
-          <span class="cl-tops" data-el="top1">ומה זה סיבוב?</span>
-          <span class="cl-tops" data-el="top2">ומה זו הזזה?</span>
+          <span class="cl-topsz" aria-hidden="true">ומהי הזזה?</span>
+          <span class="cl-tops" data-el="top0">מהו שיקוף?</span>
+          <span class="cl-tops" data-el="top1">ומהו סיבוב?</span>
+          <span class="cl-tops" data-el="top2">ומהי הזזה?</span>
         </p>
       )
     }
@@ -540,7 +541,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
 
           {/* the half-story: "6·4 = 24", then a diagonal cuts the rectangle */}
           <text data-el="lbl24" class="cl-t cl-num cl-big" x="195" y="135" text-anchor="middle">
-            6·4 = 24
+            6 × 4 = 24
           </text>
           <line data-el="diag" class="cl-line" x1="132" y1="262" x2="408" y2="78" pathLength="1" />
 
@@ -946,7 +947,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={ariaLabels[variant]}>
           {/* persistent: the meter bar outline + its label */}
           <rect class="cl-line" x="60" y="110" width="440" height="30" pathLength="1" />
-          <text class="cl-t cl-num" x="66" y="100">1 m</text>
+          <text class="cl-t cl-num cl-rtl" x="66" y="100" text-anchor="end" direction="rtl" unicode-bidi="isolate">1 מטר</text>
           {/* nine dividers split it into ten 10-cm segments */}
           {RUL_SEG.slice(0, 9).map((s, i) => (
             <line class="cl-line" data-el={`div-${i}`} x1={s.x + 44} y1="110" x2={s.x + 44} y2="140" pathLength="1" />
@@ -959,7 +960,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           ))}
           {/* brace over the first segment: 10 cm */}
           <path data-el="brace" class="cl-arc" pathLength="1" d="M60 78 L60 86 L104 86 L104 78" />
-          <text data-el="ten" class="cl-t cl-num" x="82" y="70" text-anchor="middle">10 cm</text>
+          <text data-el="ten" class="cl-t cl-num cl-rtl" x="82" y="70" text-anchor="middle" direction="rtl" unicode-bidi="isolate">10 ס״מ</text>
         </svg>
       )
     }
@@ -1147,7 +1148,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <line class="cl-line-thin" data-el="cut-h" x1="90" y1="140" x2="230" y2="140" pathLength="1" />
           {/* one quarter shaded */}
           <path data-el="q-shade" class="cl-fill-a" d="M160 140 L160 70 A70 70 0 0 1 230 140 Z" />
-          <text class="cl-t cl-num" data-el="q-lbl" x="252" y="122">1/4</text>
+          <StackedFraction n="1" d="4" x={252} y={122} el="q-lbl" />
 
           {/* bar: same 1/4 */}
           <rect class="cl-line-thin" data-el="bar-o" x={FR_BAR.x} y={FR_BAR.y} width={FR_BAR.w} height={FR_BAR.h} pathLength="1" />
@@ -1155,14 +1156,14 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           {[1, 2, 3].map((k) => (
             <line class="cl-line-thin" data-el={`bar-d${k}`} x1={FR_BAR.x + k * 45} y1={FR_BAR.y} x2={FR_BAR.x + k * 45} y2={FR_BAR.y + FR_BAR.h} pathLength="1" />
           ))}
-          <text class="cl-t cl-num" data-el="bar-lbl" x="352" y="172">1/4</text>
+          <StackedFraction n="1" d="4" x={352} y={186} el="bar-lbl" />
 
           {/* number line 0–1: point at 1/4 */}
           <line class="cl-line-thin" data-el="nl" x1="330" y1="230" x2="510" y2="230" pathLength="1" />
           <text class="cl-t cl-num cl-small" data-el="nl0" x="330" y="252" text-anchor="middle">0</text>
           <text class="cl-t cl-num cl-small" data-el="nl1" x="510" y="252" text-anchor="middle">1</text>
           <circle class="cl-pt cl-pt-a" data-el="nl-pt" cx="375" cy="230" r="7" />
-          <text class="cl-t cl-num" data-el="nl-lbl" x="375" y="212" text-anchor="middle">1/4</text>
+          <StackedFraction n="1" d="4" x={375} y={276} anchor="middle" el="nl-lbl" />
         </svg>
       )
     }
@@ -1234,9 +1235,9 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <rect class="cl-fill-a" data-el="half" x="150" y="70" width="240" height="75" style="opacity:0" />
           <rect class="cl-fill-b" data-el="third" x="150" y="70" width="80" height="150" style="opacity:0" />
           <rect class="cl-fill-c" data-el="overlap" x="150" y="70" width="80" height="75" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="lbl-half" x="410" y="112" style="opacity:0">1/2</text>
-          <text class="cl-t cl-num" data-el="lbl-third" x="168" y="244" style="opacity:0">1/3</text>
-          <text class="cl-t cl-num cl-ok" data-el="lbl-sixth" x="158" y="112" style="opacity:0">1/6</text>
+          <StackedFraction n="1" d="2" x={410} y={112} el="lbl-half" hidden />
+          <StackedFraction n="1" d="3" x={168} y={252} el="lbl-third" hidden />
+          <StackedFraction n="1" d="6" x={158} y={112} el="lbl-sixth" hidden ok />
         </svg>
       )
     }
@@ -1509,13 +1510,13 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'trap-area' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <polygon class="cl-line cl-fill-a" points="140,230 356,230 284,122 212,122" />
-          <text class="cl-t cl-num" x="248" y="252" text-anchor="middle">6</text>
-          <text class="cl-t cl-num" x="248" y="112" text-anchor="middle">2</text>
+          <text class="cl-t cl-num" x="248" y="252" text-anchor="middle">a = 6</text>
+          <text class="cl-t cl-num" x="248" y="112" text-anchor="middle">b = 2</text>
           <line class="cl-dash" x1="212" y1="122" x2="212" y2="230" />
           <path class="cl-line" d="M212 214 L228 214 L228 230" />
-          <text class="cl-t cl-num" data-el="lbl-h" x="224" y="208">3</text>
+          <text class="cl-t cl-num" data-el="lbl-h" x="224" y="208">h = 3</text>
           <line class="cl-line cl-stroke-a" data-el="mid" x1="176" y1="176" x2="320" y2="176" pathLength="1" style="opacity:0" />
-          <text class="cl-t cl-num cl-ok" data-el="lbl-m" x="330" y="180" style="opacity:0">4</text>
+          <text class="cl-t cl-num cl-ok" data-el="lbl-m" x="330" y="180" style="opacity:0">m = 4</text>
         </svg>
       )
     }
@@ -1639,7 +1640,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         <svg class="concept-loop__svg" viewBox="0 0 560 360" role="img" aria-label={ariaLabels[variant]}>
           <text class="cl-t" x="90" y="188" text-anchor="middle">שווה צלעות</text>
           <text class="cl-t" x="270" y="188" text-anchor="middle">שווה שוקיים</text>
-          <text class="cl-t" x="450" y="188" text-anchor="middle">צלעות שונות</text>
+          <text class="cl-t" x="450" y="188" text-anchor="middle">שונה צלעות</text>
           <rect class="cl-line" x="20" y="198" width="150" height="120" />
           <rect class="cl-line" x="190" y="198" width="160" height="120" />
           <rect class="cl-line" x="370" y="198" width="160" height="120" />
@@ -1764,7 +1765,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <text class="cl-t cl-num" x="270" y="232" text-anchor="middle">6</text>
           <line class="cl-line cl-stroke-a" data-el="hour" x1="270" y1="156" x2="309.8" y2="133" />
           <path class="cl-line cl-stroke-a" data-el="arc" d="M320.2 127 A58 58 0 0 1 320.2 185" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="hrs" x="378" y="164" style="opacity:0">2 שעות</text>
+          <text class="cl-t cl-num cl-rtl" data-el="hrs" x="378" y="164" text-anchor="end" direction="rtl" unicode-bidi="isolate" style="opacity:0">2 שעות</text>
           <circle cx="270" cy="156" r="4" fill="#1e3a5f" />
         </svg>
       )
@@ -1795,8 +1796,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <g data-el="gaps" style="opacity:0">
             <line class="cl-dash" x1="110" y1="80" x2="110" y2="160" />
             <line class="cl-dash" x1="210" y1="80" x2="210" y2="160" />
-            <text class="cl-t cl-num cl-small" x="122" y="124">80</text>
-            <text class="cl-t cl-num cl-small" x="222" y="124">80</text>
+            <text class="cl-t cl-num cl-small" x="122" y="124">d</text>
+            <text class="cl-t cl-num cl-small" x="222" y="124">d</text>
           </g>
           <g data-el="cross" style="opacity:0">
             <line class="cl-line" x1="360" y1="230" x2="520" y2="230" />
@@ -1819,7 +1820,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <circle class="cl-fill-a cl-stroke-a" cx="142" cy="140" r="11" />
             <path class="cl-line" d="M54 154 V168 H158 V154" />
           </g>
-          <text class="cl-t cl-num" data-el="count" x="106" y="190" text-anchor="middle" style="opacity:0">¼ × 12 = 3</text>
+          <g data-el="count" style="opacity:0">
+            <StackedFraction n="1" d="4" x={75} y={204} anchor="start" />
+            <text class="cl-t cl-num" x={91} y="204">× 12 = 3</text>
+          </g>
         </svg>
       )
     }
@@ -1841,7 +1845,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <text class="cl-t cl-num" x="433" y="180" text-anchor="middle">פפ</text>
           </g>
           <rect class="cl-stroke-a" data-el="pick" x="70" y="140" width="90" height="70" fill="none" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="pick-lbl" x="115" y="232" text-anchor="middle" style="opacity:0">P(עע) = 1/4</text>
+          <StackedFraction n="1" d="4" x={115} y={248} anchor="middle" el="pick-lbl" hidden />
         </svg>
       )
     }
@@ -1851,7 +1855,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <text class="cl-t" x="70" y="78">מפה</text>
           <rect class="cl-line cl-stroke-a" x="140" y="60" width="40" height="18" />
           <text class="cl-t cl-num" x="190" y="74">4</text>
-          <text class="cl-t cl-num" x="250" y="74">× 5</text>
+          <text class="cl-t cl-num" x="250" y="74">פי 5</text>
           <text class="cl-t" x="70" y="168">במציאות</text>
           <rect class="cl-fill-a cl-line" data-el="real" x="140" y="150" width="0" height="18" />
           <g data-el="ticks" style="opacity:0">
@@ -1874,9 +1878,9 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <rect class="cl-fill-b" data-el="t" x="120" y="140" width="60" height="36" style="opacity:0" />
           <rect class="cl-fill-c" data-el="q" x="120" y="210" width="45" height="36" style="opacity:0" />
           <g data-el="labs" style="opacity:0">
-            <text class="cl-t cl-num" x="320" y="94">1/2</text>
-            <text class="cl-t cl-num" x="320" y="164">1/3</text>
-            <text class="cl-t cl-num" x="320" y="234">1/4</text>
+            <StackedFraction n="1" d="2" x={320} y={94} />
+            <StackedFraction n="1" d="3" x={320} y={164} />
+            <StackedFraction n="1" d="4" x={320} y={234} />
           </g>
         </svg>
       )
@@ -1956,10 +1960,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
               <rect class="cl-fill-a" x={201 + c * 14} y="81" width="12" height="12" />
             ))}
             <path class="cl-line" d="M202 82 H338 V92" />
-            <text class="cl-t cl-num" x="348" y="92">1/10</text>
+            <StackedFraction n="1" d="10" x={348} y={92} anchor="start" tight />
           </g>
           <rect class="cl-stroke-a" data-el="cell" x="200" y="80" width="14" height="14" style="fill:none;opacity:0" />
-          <text class="cl-t cl-num cl-small" data-el="hun" x="207" y="74" text-anchor="middle" style="opacity:0">1/100</text>
+          <StackedFraction n="1" d="100" x={207} y={74} anchor="middle" small el="hun" hidden tight />
         </svg>
       )
     }
@@ -1972,24 +1976,24 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <g data-el="quarters" style="opacity:0">
             <line class="cl-stroke-a" x1="180" y1="158" x2="180" y2="182" />
             <line class="cl-stroke-a" x1="360" y1="158" x2="360" y2="182" />
-            <text class="cl-t cl-num cl-small" x="180" y="142" text-anchor="middle">1/4</text>
-            <text class="cl-t cl-num cl-small" x="360" y="142" text-anchor="middle">3/4</text>
+            <StackedFraction n="1" d="4" x={180} y={142} anchor="middle" small />
+            <StackedFraction n="3" d="4" x={360} y={142} anchor="middle" small />
           </g>
           <g data-el="sixths" style="opacity:0">
             <line class="cl-line" x1="150" y1="170" x2="150" y2="186" />
             <line class="cl-line" x1="210" y1="170" x2="210" y2="186" />
             <line class="cl-line" x1="330" y1="170" x2="330" y2="186" />
             <line class="cl-line" x1="390" y1="170" x2="390" y2="186" />
-            <text class="cl-t cl-num cl-small" x="150" y="204" text-anchor="middle">1/6</text>
-            <text class="cl-t cl-num cl-small" x="210" y="204" text-anchor="middle">2/6</text>
-            <text class="cl-t cl-num cl-small" x="330" y="204" text-anchor="middle">4/6</text>
-            <text class="cl-t cl-num cl-small" x="390" y="204" text-anchor="middle">5/6</text>
+            <StackedFraction n="1" d="6" x={150} y={216} anchor="middle" small />
+            <StackedFraction n="2" d="6" x={210} y={216} anchor="middle" small />
+            <StackedFraction n="4" d="6" x={330} y={216} anchor="middle" small />
+            <StackedFraction n="5" d="6" x={390} y={216} anchor="middle" small />
           </g>
           <line class="cl-stroke-a" data-el="guide" x1="270" y1="118" x2="270" y2="248" style="opacity:0" />
           <circle cx="270" cy="170" r="6" fill="#1e3a5f" />
-          <text class="cl-t cl-num" data-el="h" x="282" y="124" style="opacity:0">1/2</text>
-          <text class="cl-t cl-num" data-el="q" x="282" y="206" style="opacity:0">2/4</text>
-          <text class="cl-t cl-num" data-el="s" x="282" y="248" style="opacity:0">3/6</text>
+          <StackedFraction n="1" d="2" x={282} y={124} anchor="start" el="h" hidden />
+          <StackedFraction n="2" d="4" x={282} y={206} anchor="start" el="q" hidden />
+          <StackedFraction n="3" d="6" x={282} y={248} anchor="start" el="s" hidden />
         </svg>
       )
     }
@@ -2027,10 +2031,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <line class="cl-line-thin" x1="360" y1="160" x2="370" y2="160" />
             <line class="cl-line-thin" x1="270" y1="210" x2="270" y2="222" />
             <line class="cl-line-thin" x1="180" y1="160" x2="170" y2="160" />
-            <text class="cl-t cl-num" x="270" y="94" text-anchor="middle">1</text>
-            <text class="cl-t cl-num" x="376" y="164">2</text>
-            <text class="cl-t cl-num" x="270" y="236" text-anchor="middle">3</text>
-            <text class="cl-t cl-num" x="164" y="164" text-anchor="end">4</text>
+            <text class="cl-t cl-num" x="270" y="94" text-anchor="middle">א</text>
+            <text class="cl-t cl-num" x="376" y="164">ב</text>
+            <text class="cl-t cl-num" x="270" y="236" text-anchor="middle">ג</text>
+            <text class="cl-t cl-num" x="164" y="164" text-anchor="end">ד</text>
           </g>
         </svg>
       )
@@ -2218,14 +2222,14 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'triangle' && (
         <>
           <p class="concept-loop__formula" dir="ltr">
-            <span data-fx="0">S = a·h/2</span>
-            <span data-fx="1">= 6·4/2</span>
+            <span data-fx="0">S = (a · h) : 2</span>
+            <span data-fx="1">= (6 × 4) : 2</span>
             <span data-fx="2">
               = <b>12</b>
             </span>
           </p>
           <p class="concept-loop__caption" data-el="caption">
-            אותו שטח: <bdi class="cl-ok">12</bdi>
+            השטח נשמר <bdi class="cl-ok">12</bdi>
             <span class="cl-check" data-el="check" aria-hidden="true">✓</span>
           </p>
         </>
@@ -2235,8 +2239,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'pythagoras' && (
         <>
           <p class="concept-loop__formula" dir="ltr">
-            <span data-fx="0">c² =</span>
-            <span data-fx="1">9 + 16</span>
+            <span data-fx="0">c² = 3² + 4²</span>
+            <span data-fx="1">= 9 + 16</span>
             <span data-fx="2">
               = <b>25</b>
             </span>
@@ -2348,10 +2352,10 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
     {
       variant === 'ruler' && (
-        <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">1 m =</span>
+        <p class="concept-loop__formula">
+          <span data-fx="0">1 מטר =</span>
           <span data-fx="1">
-            <b class="cl-ok">100</b> cm
+            <b class="cl-ok">100</b> ס״מ
           </span>
           <span data-fx="2" class="cl-check" aria-hidden="true">
             ✓
@@ -2421,7 +2425,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'fraction' && (
         <p class="concept-loop__formula">
-          <span data-fx="0">אותו חלק בשלוש צורות: עוגה, פס וישר</span>
+          <span data-fx="0">אותו רבע: עוגה, פס וישר</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">
             ✓
           </span>
@@ -2449,7 +2453,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'para-rect' && (
         <p class="concept-loop__formula">
-          <span data-fx="0">הגובה נשאר, השטח נשאר</span>
+          <span data-fx="0">הבסיס והגובה לא משתנים, ולכן השטח לא משתנה</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2457,7 +2461,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'angle-kinds' && (
         <p class="concept-loop__formula">
-          <span data-fx="0">חדה, ישרה, ואז קהה</span>
+          <span data-fx="0">חדה, ישרה, קהה</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2465,7 +2469,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'frac-product' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">1/2 × 1/3 = 1/6</span>
+          <span data-fx="0"><StackedFraction n="1" d="2" /> × <StackedFraction n="1" d="3" /> = <StackedFraction n="1" d="6" /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2473,7 +2477,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'slope' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">rise / run = 2</span>
+          <span data-fx="0">m = 2 : 1 = 2</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2488,8 +2492,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
     {
       variant === 'similar' && (
-        <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">פי 2, אותן זוויות</span>
+        <p class="concept-loop__formula">
+          <span data-fx="0">הצלעות גדלו פי 2, הזוויות לא השתנו</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2497,7 +2501,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'order-ops' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">14 ≠ 20</span>
+          <span data-fx="0">2 + 3 × 4 = 2 + 12 = 14</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2529,7 +2533,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'mean-cols' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">(2 + 4 + 6) / 3 = 4</span>
+          <span data-fx="0">(2 + 4 + 6) : 3 = 4</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2537,7 +2541,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'pct-25' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">25/100 = 25%</span>
+          <span data-fx="0"><StackedFraction n="25" d="100" /> = 25%</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2545,7 +2549,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'diff-sq' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">25 − 9 = 16</span>
+          <span data-fx="0">5² − 3² = 25 − 9 = 16</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2577,7 +2581,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'prime-rect' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">6 = 2×3, 7 ≠ □</span>
+          <span data-fx="0">6 = 2 × 3, 7 = 1 × 7</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2609,7 +2613,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'trap-area' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">(6 + 2) / 2 × 3 = 12</span>
+          <span data-fx="0">S = (6 + 2) : 2 × 3 = 12</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2633,7 +2637,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'circ-unroll' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">C = πd ≈ 3.14d</span>
+          <span data-fx="0">P = πd ≈ 3.14d</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2641,7 +2645,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'rect-count' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">4×3 = 12, P = 14</span>
+          <span data-fx="0">S = 4 × 3 = 12, P = 2 × (4 + 3) = 14</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2657,7 +2661,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'quad-tree' && (
         <p class="concept-loop__formula">
-          <span data-fx="0">ריבוע יורש מלבן ומעוין</span>
+          <span data-fx="0">ריבוע הוא גם מלבן וגם מעוין</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2721,7 +2725,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'para-perp' && (
         <p class="concept-loop__formula">
-          <span data-fx="0">מרחק שווה · <span class="cl-num">90°</span></span>
+          <span data-fx="0">מרחק שווה, זווית של <span class="cl-num">90°</span></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2729,7 +2733,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'quarter-12' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">1/4 × 12 = 3</span>
+          <span data-fx="0"><StackedFraction n="1" d="4" /> × 12 = 3</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2737,7 +2741,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'two-coins' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">P(עע) = 1/4</span>
+          <span data-fx="0"><StackedFraction n="1" d="4" /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2753,7 +2757,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'unit-frac' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">1/2 &gt; 1/3 &gt; 1/4</span>
+          <span data-fx="0"><StackedFraction n="1" d="2" /> &gt; <StackedFraction n="1" d="3" /> &gt; <StackedFraction n="1" d="4" /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2785,7 +2789,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'tenth-cell' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">1/10 = 10 × 1/100</span>
+          <span data-fx="0"><StackedFraction n="1" d="10" tight /> = 10 × <StackedFraction n="1" d="100" tight /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2793,7 +2797,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'equiv-half' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">1/2 = 2/4 = 3/6</span>
+          <span data-fx="0"><StackedFraction n="1" d="2" /> = <StackedFraction n="2" d="4" /> = <StackedFraction n="3" d="6" /></span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2801,7 +2805,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'half-eq' && (
         <p class="concept-loop__formula cl-num" dir="ltr">
-          <span data-fx="0">80 = 160 / 2</span>
+          <span data-fx="0">80 = 160 : 2</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )

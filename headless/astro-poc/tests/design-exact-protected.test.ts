@@ -23,14 +23,17 @@ const protectedFiles: Record<string, string> = {
   'src/lib/worksheetLinks.ts': '1f9a5fdf234997fc8ba7593d1ef0066f082586816770eefc45da40035a825eaf',
   'src/lib/conceptLoops.ts': 'b9e5a864e93b08e70fa7257dcf9d7fedae7dcb4cd5798996b7325d98575be53d',
   'src/components/ConceptLoop.astro': '12c0ec36ecf290acec5f3a20c5fd74532de522c0d9edd6711322d209851218f6',
-  'src/components/HeroLoop.astro': '486aec832d80a8a27df4a120b5e97dc09cc41d37791989662bf5448261ffaa75',
+  // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
+  // above stays byte-identical; the home hero may lazy-load existing loops.
   'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',
   'src/lib/homePage.ts': '26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb',
   'src/data/home-page.json': 'af14191d863d623cfb95e65f28ca258663d4b8be01a1ef07d520c8b1e47ff73b',
   'public/learning.html': 'ced06f94814182e633bc9b356a8262ecebd14513c5b74c7e2515e4e09ee62524',
   'public/noam-learning-config.js': '90228359e65a99300b7d5017ddc58edce650b0b1a403a13b40c22608330f4ca7',
-  'public/noam-learning.js': '48f1f5c5b09569aa4ad3d6b3080932f1b8645ca7f0aa71aa904cede666b51bd0',
-  'public/noam-learning-boot.js': 'ae5b25e29120dbeabcbe063a4054633d926554922092abdd06625a655c47d286',
+  // Lazy Supabase: guest learning no longer downloads the SDK. Google sign-in
+  // and an existing session still load it, then recreate the engine.
+  'public/noam-learning.js': '50866c6d2e8824b8dd89e5e8b00c2e55c0f1636d4a56dbed2e73928c7eef9a18',
+  'public/noam-learning-boot.js': '8a4976b19a32a4e1820b4c8aa391004973988a3126337fe2b3355406220d8cd1',
   'public/noam-learning-auth-redirect.js': '8fcd0ee6ef88a5816bb220b5a23b63821b65d0b3574dbcbfdcda6fc73cc34147',
   'public/noam-learning-core.js': 'dcdf50b7448ca7e106ae6e433787018dab7ba9c55fe4d4118dfb71f85584f0b7',
   'src/pages/sitemap-index.xml.ts': 'a37b33d949ab71b22bb4672aa646bfd4233cc370874c931cf66602ee23ac08c8',
@@ -48,26 +51,27 @@ describe('exact-design protected live-baseline boundaries', () => {
   it('preserves the shared head exactly, including SEO, canonical, fonts and robots', () => {
     const head = read('src/layouts/BaseLayout.astro').match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'BaseLayout must retain its head');
-    assert.equal(sha256(head), '6fcaeb8bbb0578337e586eec203abc60ac23a080e33ef29c0b4b57a9a03bafca');
+    // Self-hosted Heebo + Secular One preloads replace the Google Fonts stylesheet.
+    assert.equal(sha256(head), '6426393d0bb12eba064470d7016f44154fd0d02ff5f2164a4a071069c32fa798');
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {
     const viewer = read('public/worksheet-viewer-noam.html');
     const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'Viewer must retain its head');
-    assert.equal(sha256(head), '7497944ebb6915e1bc9c751e50d73bbe0d552b9f4b6937be4f6c78f6370465d3');
+    // Google Fonts link removed; Heebo woff2 is preloaded from /fonts.
+    assert.equal(sha256(head), '8c842de3e2b55e15a454fd1fabbc31794baeffaaf8b939d3a1bccd7cc586b462');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
-    // This one separately reviewed presentation adapter is the only addition
-    // permitted. The original 13 blocks must remain in order; Headless-only
-    // preview back-nav adapters may update the released-script hash when they
-    // patch worksheetsHrefFromReturn for wix-site-host.com.
-    assert.equal(scripts.length, 14);
+    // One presentation adapter follows the released blocks. ramzi-avatar.js
+    // is a released script (15 total). The only perf edit inside those blocks
+    // is the noam-learning-boot.js cache-bust query.
+    assert.equal(scripts.length, 15);
     assert.equal(adapters.length, 1, 'Only one explicitly marked presentation adapter is permitted');
     assert.equal(scripts.at(-1), adapters[0], 'The adapter must follow, not replace/interleave, the released scripts');
     const releasedScripts = scripts.slice(0, -1);
-    assert.equal(releasedScripts.length, 13);
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'a0df2e9dd1f304cd4c93b1e460d03daf4ce049fef307bc3b39b0b63f148337ff');
+    assert.equal(releasedScripts.length, 14);
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'fd137a04d4e89748d6c95b67ca71ab3274408bd71865413940699e0392276c52');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

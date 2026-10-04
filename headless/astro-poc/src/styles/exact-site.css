@@ -1,13 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap');
-
 /* Exact reference's root defaults. Existing functional/page styles remain loaded. */
 body.exact-site {
-  margin:0;padding:0;background:#fbfaf5;font-family:Heebo,sans-serif;
+  margin:0;padding:0;background:#fbfaf5;font-family:Heebo,'Heebo Fallback',sans-serif;
   font-size:16px;line-height:normal;-webkit-font-smoothing:auto;
   background-image:none;background-attachment:scroll;
 }
 .exact-frame {
-  position:relative;z-index:0;isolation:isolate;font-family:Heebo,sans-serif;
+  position:relative;z-index:0;isolation:isolate;font-family:Heebo,'Heebo Fallback',sans-serif;
   color:#22305a;min-height:100vh;background-color:#fbfaf5;
   background-image:linear-gradient(rgba(34,48,90,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(34,48,90,.065) 1px,transparent 1px);
   background-size:28px 28px;overflow-x:hidden;
@@ -49,7 +47,7 @@ body.exact-site {
   .exact-header__row {flex-wrap:nowrap!important;gap:10px!important;padding:8px 14px!important;position:relative;}
   .exact-header [data-exact-logo] {height:52px!important;}
   .exact-header__learn {display:none!important;}
-  .exact-nav-toggle {display:inline-flex!important;align-items:center;gap:8px;margin-inline-start:auto;padding:8px 14px;background:#fff;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:3px 3px 0 #22305a;color:#22305a;font:700 15px Heebo,sans-serif;cursor:pointer;}
+  .exact-nav-toggle {display:inline-flex!important;align-items:center;gap:8px;margin-inline-start:auto;padding:8px 14px;background:#fff;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:3px 3px 0 #22305a;color:#22305a;font:700 15px Heebo,'Heebo Fallback',sans-serif;cursor:pointer;}
   .exact-nav-toggle[aria-expanded='true'] {box-shadow:3px 3px 0 #e5735c;}
   .exact-nav-toggle:focus-visible {outline:3px solid #2a7c7a;outline-offset:2px;}
   .exact-nav-toggle__bars,.exact-nav-toggle__bars::before,.exact-nav-toggle__bars::after {display:block;width:18px;height:2px;background:#22305a;border-radius:2px;}
@@ -80,7 +78,23 @@ body.exact-site {
 .exact-site [data-doodle] img {max-width:none;}
 .exact-home .hero-loop {width:100%;}
 .exact-site .exact-footer {max-width:none;margin:24px 0 0;padding:0;}
-.exact-footer h3 {font-family:Heebo,sans-serif;font-weight:700;}
+.exact-footer h3 {font-family:Heebo,'Heebo Fallback',sans-serif;font-weight:700;}
+/* Hero LCP stays painted without waiting for the motion module.
+   Transform-only so the heading is visible on first paint. */
+@keyframes exact-lcp-rise {
+  from { transform: translateY(8px); }
+  to { transform: none; }
+}
+.exact-home h1[data-lcp] {
+  animation: exact-lcp-rise 520ms cubic-bezier(.2,.8,.3,1.2) 120ms both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .exact-home h1[data-lcp] { animation: none; }
+}
+html.nd-motion-off .exact-home h1[data-lcp],
+html.noam-a11y-motion .exact-home h1[data-lcp] {
+  animation: none;
+}
 .exact-footer ul {list-style:none;margin:0;padding:0;}
 .exact-footer a:hover {color:#fff!important;}
 .exact-footer .exact-social:hover {background:#fff!important;color:#22305a!important;}

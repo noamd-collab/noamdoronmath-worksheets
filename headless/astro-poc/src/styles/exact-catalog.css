@@ -7,7 +7,7 @@
   margin: 0 auto;
   padding: 40px 24px 80px;
   color: #22305a;
-  font: 400 16px/normal Heebo, sans-serif;
+  font: 400 16px/normal Heebo, 'Heebo Fallback', sans-serif;
 }
 .exact-catalog .grades {
   display: flex;
@@ -33,7 +33,7 @@
 }
 .exact-catalog .tabrow-label {
   margin: 0;
-  font: 400 13px/normal Heebo, sans-serif;
+  font: 400 13px/normal Heebo, 'Heebo Fallback', sans-serif;
   color: #5a6588;
   opacity: 1;
   text-align: right;
@@ -54,7 +54,7 @@
   border-radius: 10px !important;
   background: #fff;
   color: #22305a;
-  font: 500 15px/normal Heebo, sans-serif;
+  font: 500 15px/normal Heebo, 'Heebo Fallback', sans-serif;
   text-decoration: none;
   box-shadow: none;
   transform: none;
@@ -236,7 +236,7 @@
 }
 .exact-catalog .exact-card-heading h3 {
   margin: 0;
-  font: 700 19px/1.35 Heebo, sans-serif;
+  font: 700 19px/1.35 Heebo, 'Heebo Fallback', sans-serif;
   color: #22305a;
 }
 .exact-catalog .exact-topic-code {
@@ -289,7 +289,7 @@
   border-radius: 10px !important;
   background: transparent;
   color: #22305a;
-  font: 700 14px/normal Heebo, sans-serif;
+  font: 700 14px/normal Heebo, 'Heebo Fallback', sans-serif;
   box-shadow: none;
   transform: none;
   transition: none;
@@ -326,7 +326,7 @@
   box-shadow: none;
 }
 .exact-catalog .empty img { width: 140px; mix-blend-mode: multiply; }
-.exact-catalog .empty h2 { margin: 0; font: 700 20px/normal Heebo, sans-serif; }
+.exact-catalog .empty h2 { margin: 0; font: 700 20px/normal Heebo, 'Heebo Fallback', sans-serif; }
 .exact-catalog .empty p { margin: 0; color: #4a5478; }
 /* Existing production features absent from the sample remain visible. */
 .exact-catalog .cross { margin: 0 0 14px; font-size: 14px; color: #5a6588; }
