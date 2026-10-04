@@ -52,7 +52,7 @@ export function resolveActiveNav(pathname: string): ActiveNavKey | null {
 
   if (path === '/') return 'home';
   if (path === '/aboutus') return 'about';
-  if (path === '/math-tools') return 'tools';
+  if (path === '/math-tools' || path === '/games/kefel-mekutsar-2') return 'tools';
   if (path === '/high-school-math' || path === '/high-school-math-1') {
     return 'highschool';
   }

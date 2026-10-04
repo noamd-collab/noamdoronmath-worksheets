@@ -1,12 +1,15 @@
 ---
 import {
+  normalizeNavPath,
   resolveActiveNav,
   resolveWorksheetsNavBand,
   type ActiveNavKey,
   type WorksheetsNavBand,
 } from '../lib/activeNav';
+import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
 interface Props { active?: ActiveNavKey | null; compactBrand?: boolean; }
 const active=Astro.props.active !== undefined ? Astro.props.active : resolveActiveNav(Astro.url.pathname);
+const onGame = normalizeNavPath(Astro.url.pathname) === PUBLIC_LESSON_PATH;
 const worksheetsBand: WorksheetsNavBand | null =
   active === 'worksheets' ? resolveWorksheetsNavBand(Astro.url.pathname, Astro.url.searchParams) : null;
 ---
@@ -25,7 +28,13 @@ const worksheetsBand: WorksheetsNavBand | null =
         <a aria-current={worksheetsBand === 'ysodi' ? 'page' : undefined} data-peek="ws-ysodi" href="/worksheets?level=ysodi" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-15">דפי עבודה ליסודי</a>
         <a aria-current={worksheetsBand === 'hatzava' ? 'page' : undefined} data-peek="ws-hatzava" href="/worksheets?level=hatzava" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-15">דפי עבודה לחטיבת הביניים</a>
         <a aria-current={active === 'blog' ? 'page' : undefined} data-peek="blog" href="/blog" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-16">בלוג</a>
-        <a aria-current={active === 'tools' ? 'page' : undefined} data-peek="tools" href="/math-tools" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-17">תוספים</a>
+        <div class="exact-nav-tools">
+          <button type="button" class="exact-nav-tools__btn" data-tools-toggle data-exact-hover="exact-hover-17" aria-expanded="false" aria-controls="extras-menu" aria-haspopup="true" aria-current={active === 'tools' ? 'page' : undefined}>תוספים</button>
+          <div id="extras-menu" class="exact-nav-drop">
+            <a aria-current={active === 'tools' ? 'page' : undefined} href="/math-tools">תוספים</a>
+            <a class="exact-nav-game" aria-current={onGame ? 'page' : undefined} href={PUBLIC_LESSON_PATH}>משחק נוסחה כפל מקוצר שנייה&nbsp;(beta)</a>
+          </div>
+        </div>
         <a aria-current={active === 'highschool' ? 'page' : undefined} data-peek="hs" href="/high-school-math" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-18">מתמטיקה לתיכון ↗</a>
         <a class="exact-nav-learn-mobile" aria-current={active === 'learning' ? 'page' : undefined} data-peek="learn" href="/learning.html" style="padding:8px 12px;border-radius:999px;color:#22305a;font-weight:700;" data-exact-hover="exact-hover-13">הלמידה שלי</a>
       </nav>
@@ -66,4 +75,59 @@ const worksheetsBand: WorksheetsNavBand | null =
   }
   initExactNavToggle();
   document.addEventListener('astro:page-load', initExactNavToggle);
+
+  function initExtrasMenu() {
+    const root = document.querySelector<HTMLElement>('.exact-nav-tools');
+    const toggle = root?.querySelector<HTMLButtonElement>('[data-tools-toggle]');
+    if (!root || !toggle || toggle.dataset.toolsReady) return;
+    toggle.dataset.toolsReady = '1';
+    const desktop = () => window.matchMedia('(min-width: 768px)').matches;
+    const visuallyOpen = () =>
+      desktop() &&
+      !root.hasAttribute('data-shut') &&
+      (root.hasAttribute('data-open') || root.matches(':hover') || root.matches(':focus-within'));
+    const syncExpanded = () => toggle.setAttribute('aria-expanded', String(visuallyOpen()));
+    const closeMenu = () => {
+      root.removeAttribute('data-open');
+      if (desktop() && root.matches(':focus-within')) root.setAttribute('data-shut', '');
+      else root.removeAttribute('data-shut');
+      syncExpanded();
+    };
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (root.hasAttribute('data-open')) closeMenu();
+      else {
+        root.removeAttribute('data-shut');
+        root.setAttribute('data-open', '');
+        syncExpanded();
+      }
+    });
+    root.addEventListener('mouseenter', () => {
+      if (!desktop()) return;
+      root.removeAttribute('data-shut');
+      syncExpanded();
+    });
+    root.addEventListener('mouseleave', syncExpanded);
+    root.addEventListener('focusin', syncExpanded);
+    root.addEventListener('focusout', (e) => {
+      const next = e.relatedTarget;
+      if (next instanceof Node && root.contains(next)) return;
+      root.removeAttribute('data-open');
+      root.removeAttribute('data-shut');
+      syncExpanded();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || !desktop() || !visuallyOpen()) return;
+      closeMenu();
+      toggle.focus();
+    });
+    document.addEventListener('click', (e) => {
+      if (root.contains(e.target as Node | null)) return;
+      root.removeAttribute('data-open');
+      root.removeAttribute('data-shut');
+      syncExpanded();
+    });
+  }
+  initExtrasMenu();
+  document.addEventListener('astro:page-load', initExtrasMenu);
 </script>

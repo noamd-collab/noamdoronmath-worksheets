@@ -7,10 +7,13 @@
  */
 import redirectsMap from '../data/redirects.json';
 import { BLOG_SITEMAP_PATH } from './blogSitemap';
+import { PUBLIC_LESSON_PATH } from './publicLesson';
 import { REDIRECT_RULES } from './redirects';
 import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 
-/** Non-public / noise slugs — never appear in /sitemap-pages.xml. */
+/**
+ * Non-public / noise slugs — never appear in /sitemap-pages.xml.
+ */
 const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops']);
 
 function excludePath(path: string): boolean {
@@ -42,7 +45,11 @@ export function listMainPagePaths(pageModuleKeys: readonly string[]): string[] {
   if (!pageModuleKeys.length) {
     throw new Error('listMainPagePaths requires Vite glob module keys (no filesystem on Workers)');
   }
-  return pathsFromAstroModuleKeys(pageModuleKeys);
+  const paths = pathsFromAstroModuleKeys(pageModuleKeys);
+  // Nested routes are outside the top-level pages glob. /math-tools is in that
+  // glob; the public lesson lives under it in the menu, so it is listed too.
+  if (!paths.includes(PUBLIC_LESSON_PATH)) paths.push(PUBLIC_LESSON_PATH);
+  return paths.sort((a, b) => a.localeCompare(b));
 }
 
 export function renderPagesSitemapXml(pageModuleKeys: readonly string[]): string {

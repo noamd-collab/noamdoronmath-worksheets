@@ -1,0 +1,67 @@
+---
+import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
+---
+<section class="exact-game-promo">
+  <a class="exact-game-promo__card" href={PUBLIC_LESSON_PATH} data-home-game-promo>
+    <span class="exact-game-promo__shot">
+      <img
+        src="/games/kefel-mekutsar-card.webp"
+        width="960"
+        height="508"
+        alt="ריבוע (a+b) מהמשחק, מחולק ל־a² בירוק, b² באדום ושני מלבני ab צהובים"
+      />
+    </span>
+    <span class="exact-game-promo__copy">
+      <span class="exact-game-promo__badge">חדש!</span>
+      <h2 class="exact-game-promo__title">נסו את המשחק החדש!</h2>
+      <p class="exact-game-promo__text">נוסחת הכפל המקוצר השנייה, עם אליהו. אהבתם?</p>
+      <span class="exact-game-promo__go">למשחק</span>
+    </span>
+  </a>
+</section>
+<style>
+  .exact-game-promo{max-width:1200px;margin:0 auto;padding:0 24px 64px;}
+  .exact-game-promo__card{
+    display:flex;align-items:stretch;gap:0;background:#fff;color:#22305a;text-decoration:none;
+    border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;
+    box-shadow:4px 4px 0 #e6a534;overflow:hidden;
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .exact-game-promo__card:hover{transform:translateY(-3px);box-shadow:6px 6px 0 #e5735c;}
+  .exact-game-promo__card:focus-visible{outline:3px solid #2a7c7a;outline-offset:3px;}
+  .exact-game-promo__shot{
+    flex:1 1 46%;min-width:0;display:flex;align-items:center;background:#f7f6f2;
+    border-inline-end:2px solid #22305a;
+  }
+  .exact-game-promo__shot img{display:block;width:100%;height:auto;}
+  .exact-game-promo__copy{
+    flex:1 1 54%;min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+    gap:10px;padding:28px 28px 24px;
+  }
+  .exact-game-promo__badge{
+    display:inline-block;background:#e6a534;color:#22305a;border:1.5px solid #22305a;border-radius:999px;
+    padding:4px 12px;font-weight:800;font-size:15px;line-height:1.4;transform:rotate(-2deg);
+  }
+  .exact-game-promo__title{
+    margin:0;font-family:'Secular One',sans-serif;font-weight:400;font-size:clamp(28px,3.2vw,40px);line-height:1.15;
+  }
+  .exact-game-promo__text{margin:0;font-size:18px;line-height:1.55;color:#3d4870;max-width:28ch;}
+  .exact-game-promo__go{
+    margin-top:6px;font-weight:700;font-size:16px;color:#1e605e;text-decoration:underline;text-underline-offset:4px;
+  }
+  @media(max-width:700px){
+    .exact-game-promo{padding:0 14px 40px;}
+    .exact-game-promo__card{flex-direction:column;}
+    .exact-game-promo__shot{border-inline-end:0;border-bottom:2px solid #22305a;}
+    .exact-game-promo__copy{padding:18px 16px 20px;}
+    .exact-game-promo__text{font-size:17px;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .exact-game-promo__card{transition:none;}
+    .exact-game-promo__card:hover{transform:none;}
+  }
+  html.nd-motion-off .exact-game-promo__card,
+  html.noam-a11y-motion .exact-game-promo__card{transition:none;}
+  html.nd-motion-off .exact-game-promo__card:hover,
+  html.noam-a11y-motion .exact-game-promo__card:hover{transform:none;}
+</style>
