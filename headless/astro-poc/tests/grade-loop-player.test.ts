@@ -421,6 +421,26 @@ describe('GradeLoopPlayer render contract', () => {
     assert.equal((script.match(/requestAnimationFrame\(slowFrame\)/g) || []).length, 2);
   });
 
+  it('boots even when the a11y switch holds rAF, so «ללולאה הבאה» appears under stopped motion', () => {
+    // Reproduced live 2026-10-04: motion off from page load makes
+    // noam-accessibility.js hold every requestAnimationFrame callback, so the
+    // old frames-only boot never ran and the next button kept its hidden
+    // attribute for the whole session. The boot must stay one-shot but gain a
+    // macrotask backstop that runs the same DOM work without a frame.
+    const script = player.split('<script>')[1];
+    assert.match(
+      script,
+      /const start = \(\) => \{\s*if \(started\) return;\s*started = true;\s*document\.querySelectorAll<HTMLElement>\('\[data-grade-loop\]'\)\.forEach\(bootGradeLoop\);/,
+      'one-shot start that runs the real boot'
+    );
+    assert.match(
+      script,
+      /requestAnimationFrame\(\(\) => requestAnimationFrame\(start\)\);\s*setTimeout\(start, 120\);/,
+      'frames first, macrotask backstop for a frozen rAF'
+    );
+    assert.doesNotMatch(script, /requestAnimationFrame\(\(\) => requestAnimationFrame\(\(\) => \{/, 'no inline double-rAF boot left');
+  });
+
   it('is mounted inside the existing player shell with the grade pool', () => {
     assert.match(hubPage, /const gradePool = buildGradeLoopPool\(grade\)/);
     assert.match(
