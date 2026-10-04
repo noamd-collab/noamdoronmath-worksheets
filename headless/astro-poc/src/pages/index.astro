@@ -172,5 +172,20 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
         </div>
       </section>
     </main>
+  <style>
+    /*
+     * Mobile: the 150px robot scene lands on the card's link + note text.
+     * zoom shrinks the fixed-px sprite/mask/plane together (a transform
+     * would fight the idle WAAPI rotation); park it beside the title.
+     */
+    @media (max-width: 560px) {
+      [data-doodle='robot'] {
+        zoom: 0.45;
+        inset-inline-start: 2px !important; /* inline style: left:8px */
+        inset-block-start: 0;
+        inset-block-end: auto !important; /* inline style: bottom:-6px */
+      }
+    }
+  </style>
   <ExactHeroControls />
 </BaseLayout>
