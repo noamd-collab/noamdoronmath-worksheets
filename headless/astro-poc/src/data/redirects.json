@@ -146,6 +146,26 @@
       "from": "/page",
       "to": "/terms",
       "note": "live 301 → terms; middleware only"
+    },
+    {
+      "from": "/about",
+      "to": "/aboutus",
+      "note": "ZCode 2026-10-04: /about 404s on Headless and on the classic site; the about page is /aboutus"
+    },
+    {
+      "from": "/contact",
+      "to": "/aboutus",
+      "note": "ZCode 2026-10-04: no /contact page exists anywhere; /aboutus carries the contact form and details"
+    },
+    {
+      "from": "/learning",
+      "to": "/learning.html",
+      "note": "ZCode 2026-10-04: the learning environment ships as public/learning.html (200 live); no Astro route"
+    },
+    {
+      "from": "/worksheet-viewer",
+      "to": "/worksheet-viewer-noam.html",
+      "note": "ZCode 2026-10-04: the shipped viewer is public/worksheet-viewer-noam.html (200 live); no Astro route"
     }
   ],
   "flaggedDoNotAutoRedirect": [
