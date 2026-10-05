@@ -2467,6 +2467,157 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
   .exact-question-strip button:not(.exact-q-arrow){min-width:32px;height:32px;font-size:14px}
   .exact-q-arrow{width:28px;height:32px;min-width:28px}
 }
+
+/* Clean printable worksheet until the teacher opts into Noam AI.
+   Printing is the primary action; Noam AI stays secondary. */
+.exact-viewer .noam-ai-entry{
+  flex:none;display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding-block:8px 6px;padding-inline:16px;background:#fbfaf5;
+}
+.exact-viewer .noam-print-callout{
+  width:min(100%,560px);display:flex;flex-direction:column;align-items:center;gap:0;
+}
+.exact-viewer .noam-print-arrow{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin:0 0 2px;color:#9a3412;
+  font:800 16px/1 Heebo,'Heebo Fallback',sans-serif;
+}
+.exact-viewer .noam-print-arrow-icon{
+  display:block;flex:none;
+  animation:noam-print-nudge 1.35s ease-in-out infinite;
+}
+@keyframes noam-print-nudge{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(6px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .exact-viewer .noam-print-arrow-icon{animation:none}
+}
+html.nd-motion-off .exact-viewer .noam-print-arrow-icon,
+html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
+.exact-viewer a.noam-print-primary{
+  width:100%;min-height:64px;padding:12px 22px;
+  border:3px solid #14213d;
+  border-radius:16px 7px 18px 8px / 8px 18px 7px 16px;
+  background:#14213d;color:#fff;
+  font:800 22px/1.2 Heebo,'Heebo Fallback',sans-serif;
+  box-shadow:5px 5px 0 #e6a534;text-decoration:none;
+}
+.exact-viewer a.noam-print-primary:hover,
+.exact-viewer a.noam-print-primary:focus-visible{background:#22305a;color:#fff}
+.exact-viewer .noam-ai-toggle{
+  width:min(100%,560px);min-height:44px;padding:8px 16px;
+  border:2px solid #22305a;
+  border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;
+  background:#fff;color:#22305a;
+  font:700 15px/1.3 Heebo,'Heebo Fallback',sans-serif;
+  box-shadow:none;cursor:pointer;
+}
+.exact-viewer .noam-ai-toggle:hover{background:#eaf4f3}
+.exact-viewer.noam-ai-on .noam-print-arrow{display:none}
+.exact-viewer.noam-ai-on .noam-ai-entry{padding-block:6px 2px;padding-inline:12px;gap:6px}
+.exact-viewer.noam-ai-on .noam-print-callout,
+.exact-viewer.noam-ai-on .noam-ai-toggle{width:min(100%,420px)}
+.exact-viewer.noam-ai-on a.noam-print-primary{
+  min-height:44px;padding:8px 16px;border-width:2px;
+  font-size:16px;box-shadow:3px 3px 0 rgba(34,48,90,.18);
+}
+.exact-viewer.noam-ai-on .noam-ai-toggle{
+  min-height:44px;background:#fff;font-size:15px;font-weight:700;
+}
+.exact-viewer:not(.noam-ai-on) .fab,
+.exact-viewer:not(.noam-ai-on) .panel,
+.exact-viewer:not(.noam-ai-on) .exact-mobile-tabs,
+.exact-viewer:not(.noam-ai-on) .mobile-hint,
+.exact-viewer:not(.noam-ai-on) .exact-question-strip{
+  display:none !important;
+}
+.exact-viewer:not(.noam-ai-on) .pdf-page .noam-exercise-pin,
+.exact-viewer:not(.noam-ai-on) .pdf-page .noam-report-pin{
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+.exact-viewer:not(.noam-ai-on) .pdf-page{margin-right:0;overflow:hidden}
+@media(max-width:900px){
+  .exact-viewer .noam-ai-entry{padding-block:6px 4px;padding-inline:10px;gap:6px}
+  .exact-viewer .noam-print-callout,
+  .exact-viewer .noam-ai-toggle,
+  .exact-viewer.noam-ai-on .noam-print-callout,
+  .exact-viewer.noam-ai-on .noam-ai-toggle{width:100%}
+  .exact-viewer a.noam-print-primary{min-height:56px;font-size:20px}
+  .exact-viewer .noam-ai-toggle,
+  .exact-viewer.noam-ai-on .noam-ai-toggle{font-size:15px}
+  .exact-viewer.noam-ai-on a.noam-print-primary{min-height:44px;font-size:16px}
+}
+@media print{
+  .exact-viewer .exact-viewer-header,
+  .exact-viewer .bar,
+  .exact-viewer .exact-mobile-tabs,
+  .exact-viewer .mobile-hint,
+  .exact-viewer .noam-ai-entry,
+  .exact-viewer .noam-print-arrow,
+  .exact-viewer .noam-print-primary,
+  .exact-viewer .noam-ai-toggle,
+  .exact-viewer .fab,
+  .exact-viewer .panel,
+  .exact-viewer .pdf-tools,
+  .exact-viewer .pdf-status,
+  .exact-viewer .pdf-fallback-message,
+  .exact-viewer #noam-accessibility,
+  .exact-viewer .nl-viewer-progress,
+  .exact-viewer .noam-feedback-dialog,
+  .exact-viewer .grecaptcha-badge,
+  .exact-viewer .pdf-page .noam-exercise-pin,
+  .exact-viewer .pdf-page .noam-report-pin{
+    display:none !important;
+    visibility:hidden !important;
+  }
+  body.exact-viewer,
+  .exact-viewer .stage,
+  .exact-viewer .pdfwrap,
+  .exact-viewer .pdf-surface,
+  .exact-viewer .pdf-scroll,
+  .exact-viewer .pdf-pages{
+    display:block !important;
+    height:auto !important;
+    max-height:none !important;
+    overflow:visible !important;
+    background:#fff !important;
+    background-image:none !important;
+    position:static !important;
+    border:0 !important;
+    box-shadow:none !important;
+    padding:0 !important;
+  }
+  .exact-viewer .pdf-page{
+    width:100% !important;
+    max-width:190mm !important;
+    margin:0 auto 8mm !important;
+    box-shadow:none !important;
+    outline:none !important;
+    overflow:hidden !important;
+    break-inside:avoid;
+    break-after:page;
+    page-break-after:always;
+  }
+  .exact-viewer .pdf-page:last-child{break-after:auto;page-break-after:auto}
+  .exact-viewer .pdf-page canvas{width:100% !important;height:auto !important}
+}
+/* beforeprint runs even if a browser snapshots before print media applies. */
+.exact-viewer.noam-printing .noam-ai-entry,
+.exact-viewer.noam-printing .noam-print-arrow,
+.exact-viewer.noam-printing .noam-print-primary,
+.exact-viewer.noam-printing .noam-ai-toggle,
+.exact-viewer.noam-printing .fab,
+.exact-viewer.noam-printing .panel,
+.exact-viewer.noam-printing .exact-mobile-tabs,
+.exact-viewer.noam-printing .mobile-hint,
+.exact-viewer.noam-printing .noam-feedback-dialog,
+.exact-viewer.noam-printing .pdf-page .noam-exercise-pin,
+.exact-viewer.noam-printing .pdf-page .noam-report-pin{
+  display:none !important;
+  visibility:hidden !important;
+}
 </style>
 
 <header class="exact-viewer-header">
@@ -2518,6 +2669,27 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 
 </div>
 
+<div class="noam-ai-entry" id="noamAiEntry">
+  <div class="noam-print-callout">
+    <div class="noam-print-arrow" aria-hidden="true">
+      <span class="noam-print-arrow-label">להדפסה</span>
+      <svg class="noam-print-arrow-icon" viewBox="0 0 24 24" width="26" height="26" focusable="false" aria-hidden="true">
+        <path d="M12 3v13M6 12l6 7 6-7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    <a
+      class="pdf-tool-link noam-print-primary"
+      id="pdfOpenFull"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      הורדה / הדפסה
+    </a>
+  </div>
+  <button type="button" id="noamAiToggle" class="noam-ai-toggle" aria-pressed="false">פתרו באמצעות Noam AI</button>
+</div>
+
 <main class="stage" id="worksheetMain" tabindex="-1" aria-labelledby="title">
 
   <div class="pdfwrap">
@@ -2553,15 +2725,6 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
         <button class="pdf-tool" id="pdfZoomIn" type="button" aria-label="הגדלת הדף באחוז אחד">+</button>
         <button class="pdf-tool" id="pdfFit" type="button">התאם לרוחב</button>
         <button class="pdf-tool primary" id="pdfNativeMode" type="button">תצוגת PDF מלאה</button>
-        <a
-          class="pdf-tool-link"
-          id="pdfOpenFull"
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          הורדה / הדפסה
-        </a>
       </div>
 
       <div class="pdf-fallback-message hidden" id="pdfFallbackMessage"></div>
@@ -7651,6 +7814,35 @@ function esc(s){
   paper.id='exactPaperPane';paper.setAttribute('role','tabpanel');paper.setAttribute('aria-labelledby','exactPaperTab');
   panelIn.id='exactHelpPane';panelIn.setAttribute('role','tabpanel');panelIn.setAttribute('aria-labelledby','exactHelpTab');
   var narrow=false,open=false,previousOpen=false,initialWideOpened=false,helpReadyObserved=false,scheduled=false;
+  var aiToggle=document.getElementById('noamAiToggle');
+  function setAiMode(on){
+    var next=!!on;
+    body.classList.toggle('noam-ai-on',next);
+    if(aiToggle){
+      aiToggle.setAttribute('aria-pressed',next?'true':'false');
+      aiToggle.textContent=next?'חזרה לדף הנקי':'פתרו באמצעות Noam AI';
+    }
+    if(next){
+      /* Pins and the help controls appear. The side panel stays closed until a pin or עזרה מרמזי. */
+      initialWideOpened=true;
+    }else if(!panel.classList.contains('hidden')){
+      close.click();
+    }
+    if(!next){
+      var feedback=document.getElementById('noamFeedbackDialog');
+      if(feedback&&feedback.open&&typeof feedback.close==='function'){feedback.close();}
+    }
+    schedule();
+  }
+  if(aiToggle){
+    aiToggle.addEventListener('click',function(){
+      var turningOff=body.classList.contains('noam-ai-on');
+      setAiMode(!turningOff);
+      if(turningOff){aiToggle.focus({preventScroll:true});}
+    });
+  }
+  window.addEventListener('beforeprint',function(){body.classList.add('noam-printing');});
+  window.addEventListener('afterprint',function(){body.classList.remove('noam-printing');});
   var previousMood='',previousMotion='';
   var hintCounts=new WeakMap(), avatarCache=new Map(),avatars=[];
   var actualChoices=new Map(),hasFullPicker=false,choiceSignature='';
@@ -8024,6 +8216,16 @@ function esc(s){
       if(report.textContent!==''){report.textContent='';}
       setAttr(report,'aria-label','דיווח');
     });
+    var pinsHidden=!body.classList.contains('noam-ai-on');
+    document.querySelectorAll('.noam-exercise-pin, .noam-report-pin').forEach(function(pin){
+      if(pinsHidden){
+        pin.setAttribute('aria-hidden','true');
+        pin.tabIndex=-1;
+      }else{
+        pin.removeAttribute('aria-hidden');
+        if(pin.tabIndex===-1){pin.tabIndex=0;}
+      }
+    });
     layoutQuietPins();
   }
   function layoutQuietPins(){
@@ -8153,7 +8355,7 @@ function esc(s){
       if(avatar.closest('.panel-head')&&avatar.getAttribute('size')!==String(headerSize)){avatar.setAttribute('size',String(headerSize));}
     });
     if(mood!==previousMood||mode!==previousMotion){previousMood=mood;previousMotion=mode;}
-    if(!narrow&&!initialWideOpened&&helpReadyObserved&&!helpTab.disabled){initialWideOpened=true;if(!open){fab.click();}}
+    if(body.classList.contains('noam-ai-on')&&!narrow&&!initialWideOpened&&helpReadyObserved&&!helpTab.disabled){initialWideOpened=true;if(!open){fab.click();}}
   }
   function schedule(){if(!scheduled){scheduled=true;queueMicrotask(sync);}}
   function observeHelpAvailability(records){
