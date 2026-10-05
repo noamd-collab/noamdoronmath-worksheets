@@ -43,7 +43,81 @@ function modalityTokens(list, modality) {
  * @returns {Promise<{pcm: Buffer, sampleRate: number, channels: number, mimeType: string,
  *                    usage: {inputTextTokens:number, outputAudioTokens:number, totalInput:number, totalOutput:number}}>}
  */
-export async function speakChunk({ text, model, voice, language, styleInstruction, timeoutMs }) {
+export async function speakChunk(opts) {
+  if (opts.provider === 'elevenlabs') return speakChunkEleven(opts);
+  return speakChunkGemini(opts);
+}
+
+const ELEVEN_BASE = 'https://api.elevenlabs.io';
+
+/**
+ * ElevenLabs Text to Speech (POST /v1/text-to-speech/{voice_id}), raw PCM out.
+ * https://elevenlabs.io/docs/api-reference/text-to-speech/convert
+ *  - auth: xi-api-key header, key from ELEVENLABS_API_KEY (never logged);
+ *  - output_format=pcm_24000 returns headerless signed 16-bit mono PCM at 24 kHz,
+ *    the same format the rest of the pipeline already stitches and encodes;
+ *  - the response header `character-cost` carries the credits actually used.
+ * There is no style instruction: the model reads exactly the text it is given.
+ */
+async function speakChunkEleven({ text, model, voice, language, elevenlabs = {}, timeoutMs }) {
+  if (!text || !text.trim()) throw new Error('empty chunk');
+  const key = getSecret('ELEVENLABS_API_KEY');
+  const format = elevenlabs.outputFormat || 'pcm_24000';
+  const body = {
+    text,
+    model_id: model,
+    voice_settings: {
+      stability: elevenlabs.stability ?? 0.5,
+      similarity_boost: elevenlabs.similarityBoost ?? 0.8,
+    },
+  };
+  if (language) body.language_code = language;
+
+  const controller = new AbortController();
+  const timer = timeoutMs ? setTimeout(() => controller.abort(), timeoutMs) : null;
+  let res;
+  try {
+    res = await fetch(`${ELEVEN_BASE}/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=${encodeURIComponent(format)}`, {
+      method: 'POST',
+      headers: { 'xi-api-key': key, 'content-type': 'application/json', accept: 'application/octet-stream' },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+      redirect: 'error',
+    });
+  } catch (e) {
+    if (controller.signal.aborted) throw new Error(`tts request timed out after ${timeoutMs}ms`);
+    throw new Error(redact(`fetch failed: ${e.message}`));
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+
+  if (!res.ok) {
+    let detail = '';
+    try { detail = (await res.text()).slice(0, 300); } catch { /* body unreadable */ }
+    const err = new Error(redact(`ElevenLabs HTTP ${res.status}: ${detail}`));
+    err.status = res.status;
+    throw err;
+  }
+
+  const pcm = Buffer.from(await res.arrayBuffer());
+  if (!pcm.length || pcm.length % 2) throw new Error(`ElevenLabs returned ${pcm.length} bytes, not whole 16-bit samples`);
+  const credits = Number(res.headers.get('character-cost'));
+  return {
+    pcm,
+    sampleRate: 24000,
+    channels: 1,
+    mimeType: `audio/${format}`,
+    usage: {
+      inputTextTokens: 0,
+      outputAudioTokens: 0,
+      totalInput: 0,
+      totalOutput: 0,
+      characters: Number.isFinite(credits) && credits > 0 ? credits : text.length,
+    },
+  };
+}
+
+async function speakChunkGemini({ text, model, voice, language, styleInstruction, timeoutMs }) {
   if (!text || !text.trim()) throw new Error('empty chunk');
 
   // The style instruction is prepended, never mixed into the article text, and it
@@ -98,6 +172,7 @@ function withTimeout(promise, ms, label) {
 export function isRetryable(err) {
   const s = String(err?.message || err);
   if (/timed out/i.test(s)) return true;
+  // ElevenLabs: 429 is also "too many concurrent requests"; 401/402/403/422 are not transient.
   const code = Number(err?.status || err?.code || (s.match(/\b(4\d\d|5\d\d)\b/) || [])[1]);
   if ([408, 409, 425, 429, 500, 502, 503, 504].includes(code)) return true;
   return /RESOURCE_EXHAUSTED|UNAVAILABLE|INTERNAL|DEADLINE_EXCEEDED|ECONNRESET|ETIMEDOUT|EAI_AGAIN|socket hang up|fetch failed/i.test(s);

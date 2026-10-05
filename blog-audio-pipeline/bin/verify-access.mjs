@@ -14,11 +14,23 @@ let problems = 0;
 const ok = (m) => log(`  ✓ ${m}`);
 const bad = (m) => { problems++; log(`  ✗ ${m}`); };
 
-log('\n== 1. Secrets ==');
+const useEleven = cfg.tts.provider === 'elevenlabs';
+log(`\n== 1. Secrets (tts provider: ${cfg.tts.provider || 'gemini-api'}) ==`);
+let elevenKey = null;
+if (useEleven) {
+  try {
+    elevenKey = getSecret('ELEVENLABS_API_KEY');
+    ok(`ELEVENLABS_API_KEY found (length ${elevenKey.length}, value not shown)`);
+  } catch (e) {
+    bad(e.message.split('\n')[0]);
+    log(`     store it with:  security add-generic-password -s ${KEYCHAIN.service} -a ELEVENLABS_API_KEY -w`);
+  }
+}
 let key = null;
 try {
-  key = getSecret('GEMINI_API_KEY');
-  ok(`GEMINI_API_KEY found (length ${key.length}, value not shown)`);
+  key = getSecret('GEMINI_API_KEY', { required: !useEleven });
+  if (key) ok(`GEMINI_API_KEY found (length ${key.length}, value not shown)${useEleven ? ' - used only by the optional transcription check' : ''}`);
+  else log('  - GEMINI_API_KEY not set: fine with ElevenLabs, only bin/verify-audio.mjs (transcription check) needs it');
 } catch (e) {
   bad(e.message.split('\n')[0]);
   log(`     store it with:  security add-generic-password -s ${KEYCHAIN.service} -a GEMINI_API_KEY -w`);
@@ -32,12 +44,42 @@ log('\n== 2. Local tooling ==');
 const ff = ffmpegPath();
 ff ? ok(`ffmpeg at ${ff}`) : bad('ffmpeg missing - run:  brew install ffmpeg');
 
-log('\n== 3. Gemini account: which API and which models ==');
-if (key) {
+if (useEleven) {
+  log('\n== 3a. ElevenLabs account: key, model, voice ==');
+  if (elevenKey) {
+    const headers = { 'xi-api-key': elevenKey };
+    try {
+      // Read-only calls: no speech is generated and no credits are spent.
+      const m = await fetch('https://api.elevenlabs.io/v1/models', { headers });
+      if (!m.ok) throw new Error(`HTTP ${m.status}`);
+      const models = await m.json();
+      const hit = models.find((x) => x.model_id === cfg.tts.model);
+      hit ? ok(`${cfg.tts.model} available to this key (can_do_text_to_speech=${hit.can_do_text_to_speech})`) : bad(`${cfg.tts.model} NOT in this account's model list`);
+      const hebrew = hit && (hit.languages || []).some((l) => ['he', 'heb', 'hebrew'].includes(String(l.language_id || l.name || l).toLowerCase()));
+      hit && (hebrew ? ok('model lists Hebrew') : log('     (model list did not name Hebrew explicitly; the docs list Hebrew for eleven_v3)'));
+      const v = await fetch(`https://api.elevenlabs.io/v1/voices/${encodeURIComponent(cfg.tts.voice)}`, { headers });
+      v.ok ? ok(`voice ${cfg.tts.voice} found in the account`) : bad(`voice ${cfg.tts.voice} not usable (HTTP ${v.status})`);
+      const s = await fetch('https://api.elevenlabs.io/v1/user/subscription', { headers });
+      if (s.ok) {
+        const sub = await s.json();
+        ok(`plan ${sub.tier}: ${sub.character_count} of ${sub.character_limit} credits used this period`);
+      } else log(`     (subscription not readable: HTTP ${s.status}; the key may lack the user_read permission)`);
+    } catch (e) {
+      bad(`ElevenLabs check failed: ${String(e.message).slice(0, 160)}`);
+    }
+  } else {
+    log('  - skipped (no key)');
+  }
+}
+
+log(`\n== 3${useEleven ? 'b' : ''}. Gemini account: which API and which models ==`);
+if (useEleven && !key) {
+  log('  - skipped (optional with ElevenLabs)');
+} else if (key) {
   try {
     const models = await listAvailableModels();
     ok(`Gemini API (generativelanguage.googleapis.com) answered: ${models.length} models visible for this key`);
-    const wanted = [cfg.tts.model, ...cfg.tts.modelAlternatives, cfg.verify.asrModel];
+    const wanted = useEleven ? [cfg.verify.asrModel] : [cfg.tts.model, ...cfg.tts.modelAlternatives, cfg.verify.asrModel];
     for (const w of wanted) {
       const hit = models.find((m) => m.name === w);
       hit ? ok(`${w} available`) : bad(`${w} NOT available to this key`);

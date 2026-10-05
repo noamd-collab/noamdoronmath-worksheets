@@ -58,6 +58,20 @@ cd ~/Desktop/noam-blog-audio && npm install
 
 אל תשלח את המפתח בצ׳אט ואל תדביק אותו לקובץ בפרויקט.
 
+### 4.0 מפתח ElevenLabs (ההקראה עצמה)
+
+ספק ההקראה הוא ElevenLabs (`config.json` ← `tts.provider`). המפתח נקרא מ-`ELEVENLABS_API_KEY`:
+
+```bash
+# על המחשב, ל-verify-access ול-eleven-sample (הפקודה שואלת את הערך, לא מדפיסה אותו):
+security add-generic-password -s noam-blog-audio -a ELEVENLABS_API_KEY -w
+
+# ב-GitHub Actions (הפקודה שואלת את הערך):
+gh secret set ELEVENLABS_API_KEY -R noamd-collab/noamdoronmath-worksheets
+```
+
+בדיקה לפני הפקה: `npm run verify-access` (קריאות קריאה בלבד: מודל, קול ויתרת קרדיטים) ואז `npm run sample`, שמפיק משפט אחד בעברית לקובץ מקומי ועולה כ-60 קרדיטים. מפתח Gemini נדרש רק לבדיקת התמלול הידנית (`verify-audio`), והמסלול של Gemini נשאר זמין בהחלפת `tts.provider`.
+
 ### 4.1 מפתח Gemini
 
 צור מפתח ב-Google AI Studio (`https://aistudio.google.com/apikey`), ואז הרץ בטרמינל:
