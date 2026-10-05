@@ -140,3 +140,37 @@ export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' |
 export function marketingLandingLoop(slug: string): CssLoopVariant | undefined {
   return MARKETING_LANDING_LOOPS[slug as keyof typeof MARKETING_LANDING_LOOPS];
 }
+
+/** Unicode minus. Hyphen-minus reads as a dash and sits too wide in these formulas. */
+export const MINUS = '\u2212';
+
+export type LoopFormula = {
+  /** Glyphs immediately before an exponent. No trailing whitespace. */
+  base: string;
+  sup?: string;
+  rest?: string;
+};
+
+/**
+ * Displayed loop formulas. An exponent is `<sup>` glued to the base
+ * (`(−3)<sup>2</sup>`), never a second text node with its own x.
+ */
+export const LOOP_FORMULAS = {
+  powers: { base: `(${MINUS}3)`, sup: '2', rest: ' = 9' },
+  powersExpand: { base: `(${MINUS}3) × (${MINUS}3)` },
+  signed: { base: `${MINUS}2 + 5 = 3` },
+  circleArea: { base: 'S = πr', sup: '2' },
+  cylinder: { base: 'V = πr', sup: '2', rest: 'h' },
+  parabola: { base: 'y = x', sup: '2' },
+  toolsCube: { base: '2', sup: '3', rest: ' = 8' },
+} as const satisfies Record<string, LoopFormula>;
+
+export function signedLabel(n: number): string {
+  return n < 0 ? `${MINUS}${Math.abs(n)}` : String(n);
+}
+
+/** The exponent tag starts on the next character after the base. */
+export function formulaMarkup(formula: LoopFormula): string {
+  const sup = formula.sup ? `<sup>${formula.sup}</sup>` : '';
+  return `${formula.base}${sup}${formula.rest ?? ''}`;
+}

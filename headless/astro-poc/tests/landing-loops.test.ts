@@ -10,9 +10,13 @@ import { fileURLToPath } from 'node:url';
 import {
   CSS_LOOP_VARIANTS,
   GRADE_CONCEPT_LOOP,
+  LOOP_FORMULAS,
   MARKETING_LANDING_LOOPS,
+  MINUS,
   NON_LANDING_SITE_SLUGS,
+  formulaMarkup,
   marketingLandingLoop,
+  signedLabel,
   topicLandingLoop,
 } from '../src/lib/landingLoops.ts';
 import { GRADE_HUB_GRADES } from '../src/lib/gradeHubs.ts';
@@ -109,6 +113,34 @@ describe('landing loop coverage', () => {
     for (const variant of CSS_LOOP_VARIANTS) {
       assert.ok(loop.includes(`variant === '${variant}'`), `missing scene ${variant}`);
     }
+  });
+
+  it('glues exponents to the base and uses a real minus', () => {
+    assert.equal(MINUS, '\u2212');
+    assert.equal(formulaMarkup(LOOP_FORMULAS.powers), `(${MINUS}3)<sup>2</sup> = 9`);
+    assert.equal(formulaMarkup(LOOP_FORMULAS.powersExpand), `(${MINUS}3) × (${MINUS}3)`);
+    assert.equal(formulaMarkup(LOOP_FORMULAS.signed), `${MINUS}2 + 5 = 3`);
+    assert.equal(formulaMarkup(LOOP_FORMULAS.circleArea), 'S = πr<sup>2</sup>');
+    assert.equal(formulaMarkup(LOOP_FORMULAS.cylinder), 'V = πr<sup>2</sup>h');
+    assert.equal(formulaMarkup(LOOP_FORMULAS.parabola), 'y = x<sup>2</sup>');
+    assert.equal(formulaMarkup(LOOP_FORMULAS.toolsCube), '2<sup>3</sup> = 8');
+    assert.equal(signedLabel(-2), `${MINUS}2`);
+    assert.equal(signedLabel(4), '4');
+
+    for (const [name, formula] of Object.entries(LOOP_FORMULAS)) {
+      const html = formulaMarkup(formula);
+      assert.equal(html.includes('-'), false, `${name} uses hyphen-minus`);
+      assert.equal(/\s<sup>/.test(html), false, `${name} has space before <sup>`);
+      if (formula.sup) assert.match(html, /[^\s]<sup>/, name);
+    }
+
+    const loop = read('src/components/LandingLoop.astro');
+    assert.match(loop, /\{LOOP_FORMULAS\.powers\.base\}<sup class="ll-sup">/);
+    assert.match(loop, /\{LOOP_FORMULAS\.circleArea\.base\}<sup>/);
+    assert.match(loop, /\{LOOP_FORMULAS\.cylinder\.base\}<sup>/);
+    assert.match(loop, /\{LOOP_FORMULAS\.parabola\.base\}<sup>/);
+    assert.match(loop, /\{LOOP_FORMULAS\.toolsCube\.base\}<sup>/);
+    assert.doesNotMatch(loop, /\(-3\)|πr²|x²|2³|>-2 /);
   });
 
   it('fails when a page file is not classified as a landing or a non-landing', () => {

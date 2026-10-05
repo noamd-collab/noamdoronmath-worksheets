@@ -6,7 +6,7 @@
  * Reduced motion, html.nd-motion-off, and html.noam-a11y-motion hold the
  * finished frame. A tiny observer pauses the loop while it is off-screen.
  */
-import type { CssLoopVariant } from '../lib/landingLoops';
+import { LOOP_FORMULAS, signedLabel, type CssLoopVariant } from '../lib/landingLoops';
 
 interface Props {
   variant: CssLoopVariant;
@@ -29,10 +29,7 @@ const areaCells = grid(15, 5, 248, 58, 34, 6);
 
     {variant === 'powers' && (
       <>
-        <text class="ll-math" x="36" y="132" font-size="42">(-3)</text>
-        <text class="ll-math ll-sup" x="128" y="104" font-size="22">2</text>
-        <text class="ll-math ll-answer" x="152" y="132" font-size="42">= 9</text>
-        <text class="ll-he" x="36" y="178" text-anchor="start">(-3) × (-3)</text>
+        <text class="ll-he" x="36" y="178" text-anchor="start">{LOOP_FORMULAS.powersExpand.base}</text>
         {powersCells.map((cell) => (
           <rect class="ll-cell" style={`--i:${cell.i}`} x={cell.x} y={cell.y} width="42" height="42" rx="8"></rect>
         ))}
@@ -57,14 +54,14 @@ const areaCells = grid(15, 5, 248, 58, 34, 6);
         {[-4, -2, 0, 2, 4].map((n) => (
           <g>
             <line class="ll-ink" x1={240 + n * 40} y1="142" x2={240 + n * 40} y2="158"></line>
-            <text class="ll-math" x={240 + n * 40} y="188" font-size="16" text-anchor="middle">{n}</text>
+            <text class="ll-math" x={240 + n * 40} y="188" font-size="16" text-anchor="middle">{signedLabel(n)}</text>
           </g>
         ))}
         <g class="ll-dot">
           <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
           <circle cx="160" cy="150" r="11"></circle>
         </g>
-        <text class="ll-math ll-answer" x="240" y="78" font-size="32" text-anchor="middle">-2 + 5 = 3</text>
+        <text class="ll-math ll-answer" x="240" y="78" font-size="32" text-anchor="middle">{LOOP_FORMULAS.signed.base}</text>
       </>
     )}
 
@@ -159,7 +156,6 @@ const areaCells = grid(15, 5, 248, 58, 34, 6);
           <circle cx="246" cy="132" r="6" fill="#e6a534" stroke="#22305a" stroke-width="2"></circle>
         </g>
         <text class="ll-math" x="300" y="120" font-size="28">C = 2πr</text>
-        <text class="ll-math ll-answer" x="300" y="168" font-size="28">S = πr²</text>
       </>
     )}
 
@@ -170,7 +166,6 @@ const areaCells = grid(15, 5, 248, 58, 34, 6);
         <line class="ll-ink" x1="238" y1="78" x2="238" y2="190"></line>
         <ellipse class="ll-ring" cx="168" cy="190" rx="70" ry="22"></ellipse>
         <ellipse class="ll-disc" cx="168" cy="140" rx="52" ry="16"></ellipse>
-        <text class="ll-math" x="292" y="130" font-size="26">V = πr²h</text>
         <text class="ll-he" x="292" y="176" direction="rtl" unicode-bidi="isolate">גליל</text>
       </>
     )}
@@ -225,7 +220,6 @@ const areaCells = grid(15, 5, 248, 58, 34, 6);
           <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
           <circle cx="0" cy="0" r="8"></circle>
         </g>
-        <text class="ll-math" x="300" y="64" font-size="28">y = x²</text>
       </>
     )}
 
@@ -293,10 +287,24 @@ const areaCells = grid(15, 5, 248, 58, 34, 6);
         <rect x="70" y="48" width="340" height="170" rx="22" fill="#22305a"></rect>
         <text class="ll-tool ll-tool-a" x="240" y="148" font-size="40" text-anchor="middle">12 ÷ 3 = 4</text>
         <text class="ll-tool ll-tool-b" x="240" y="148" font-size="40" text-anchor="middle">√16 = 4</text>
-        <text class="ll-tool ll-tool-c" x="240" y="148" font-size="40" text-anchor="middle">2³ = 8</text>
       </>
     )}
   </svg>
+  {variant === 'powers' && (
+    <span class="ll-formula ll-formula--powers">{LOOP_FORMULAS.powers.base}<sup class="ll-sup">{LOOP_FORMULAS.powers.sup}</sup><span class="ll-answer">{LOOP_FORMULAS.powers.rest}</span></span>
+  )}
+  {variant === 'circle' && (
+    <span class="ll-formula ll-formula--circle ll-answer">{LOOP_FORMULAS.circleArea.base}<sup>{LOOP_FORMULAS.circleArea.sup}</sup></span>
+  )}
+  {variant === 'round-solid' && (
+    <span class="ll-formula ll-formula--cylinder">{LOOP_FORMULAS.cylinder.base}<sup>{LOOP_FORMULAS.cylinder.sup}</sup>{LOOP_FORMULAS.cylinder.rest}</span>
+  )}
+  {variant === 'parabola' && (
+    <span class="ll-formula ll-formula--parabola">{LOOP_FORMULAS.parabola.base}<sup>{LOOP_FORMULAS.parabola.sup}</sup></span>
+  )}
+  {variant === 'tools' && (
+    <span class="ll-formula ll-formula--tools ll-tool ll-tool-c">{LOOP_FORMULAS.toolsCube.base}<sup>{LOOP_FORMULAS.toolsCube.sup}</sup>{LOOP_FORMULAS.toolsCube.rest}</span>
+  )}
 </div>
 
 <script>
@@ -324,6 +332,38 @@ const areaCells = grid(15, 5, 248, 58, 34, 6);
     margin-inline: auto;
     pointer-events: none;
     contain: layout;
+    position: relative;
+    container-type: inline-size;
+  }
+  .ll-formula {
+    position: absolute;
+    margin: 0;
+    white-space: nowrap;
+    line-height: 1;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-weight: 800;
+    color: #22305a;
+  }
+  .ll-formula sup {
+    display: inline-block;
+    font-size: 0.55em;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.58em;
+  }
+  .ll-formula--powers { inset-inline-start: 7.5%; top: 32%; font-size: 8.75cqi; }
+  .ll-formula--circle { inset-inline-start: 62.5%; top: 50%; font-size: 5.833cqi; }
+  .ll-formula--cylinder { inset-inline-start: 60.8%; top: 37%; font-size: 5.417cqi; }
+  .ll-formula--parabola { inset-inline-start: 62.5%; top: 12.5%; font-size: 5.833cqi; }
+  .ll-formula--tools {
+    inset-inline-start: 50%;
+    top: 38.5%;
+    font-size: 8.333cqi;
+    color: #fbfaf5;
+    transform: translateX(-50%);
   }
   .ll svg {
     display: block;
