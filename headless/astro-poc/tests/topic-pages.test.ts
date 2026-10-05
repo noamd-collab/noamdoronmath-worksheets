@@ -306,9 +306,10 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
       page.catalogCtas.map((c) => c.catalogTopicId),
       [30, 23, 22]
     );
-    // Awkward production wording kept after whitespace normalization (no invented polish).
-    assert.equal(page.catalogCtas[0].label, 'גורם משותף ומינוס לפני וגריים — בחירת דף ורמה');
-    assert.equal(page.catalogCtas[1].label, 'הצבה בביטויים אגבריים — בחירת דף ורמה');
+    // Production wording kept after whitespace normalization; only the two typos from
+    // production ("וגריים", "אגבריים") are fixed, as listed in content-corrections.json.
+    assert.equal(page.catalogCtas[0].label, 'גורם משותף ומינוס לפני סוגריים — בחירת דף ורמה');
+    assert.equal(page.catalogCtas[1].label, 'הצבה בביטויים אלגבריים — בחירת דף ורמה');
     assert.equal(page.catalogCtas[2].label, 'משתנים וביטויים אלגבריים — בחירת דף ורמה');
     for (const cta of page.catalogCtas) {
       assert.ok(!/\s{2,}|\n/.test(cta.label), `CTA label not whitespace-normalized: ${cta.label}`);
