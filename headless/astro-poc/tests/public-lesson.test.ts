@@ -76,4 +76,13 @@ describe('public lesson menu page', () => {
     assert.equal(lesson.includes("(' + m('2ab') + ')"), false);
     assert.match(lesson, /#numEq2\{display:flex;flex-wrap:nowrap/);
   });
+
+  it('scales the square diagram with its frame instead of a fixed pixel cap', () => {
+    assert.match(lesson, /#squareFrame\{width:100%;max-width:100%;min-width:0;aspect-ratio:402\/322/);
+    assert.match(lesson, /#square\{position:absolute;inset:0;width:100%;height:100%/);
+    assert.match(lesson, /viewBox="0 0 402 322"/);
+    assert.equal(lesson.includes('#square{width:min(240px,30vh)}'), false);
+    assert.equal(lesson.includes('#square{width:min(300px,34vw)}'), false);
+    assert.match(lesson, /legible\(userPx\)/);
+  });
 });

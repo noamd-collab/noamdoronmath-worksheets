@@ -41,8 +41,9 @@ button[data-primary]:focus-visible{outline-color:#f0b429}
 .col{display:flex;flex-direction:column;gap:10px;min-width:0}
 .panel{background:#faf9f6;border:1.5px solid #e8e5db;border-radius:16px}
 #panelIntro{padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
-#panelSquare{padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:10px}
-#square{width:min(320px,100%);height:auto;display:block;overflow:visible;user-select:none;-webkit-user-select:none}
+#panelSquare{padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;min-width:0}
+#squareFrame{width:100%;max-width:100%;min-width:0;aspect-ratio:402/322;position:relative;align-self:stretch}
+#square{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible;user-select:none;-webkit-user-select:none}
 #strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;background:#fff;border:1.5px solid #e8e5db;border-radius:14px;padding:10px 6px;text-align:center}
 #strip b{display:block;font-size:11.5px;font-weight:700;color:#64748b;font-style:normal}
 #strip span{font-family:"Secular One",sans-serif;font-size:17px;display:inline-block}
@@ -104,12 +105,10 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 @keyframes flashB{0%{opacity:0}15%,70%{opacity:1}100%{opacity:0}}
 @media (min-width:900px){
   #card{max-height:min(100dvh - 16px,780px)}
-  #square{width:min(300px,34vw)}
 }
 @media (max-height:760px) and (min-width:900px){
   #app{padding:6px}
   #card{padding:8px 14px 10px;gap:8px}
-  #square{width:min(240px,30vh)}
   #panelIntro{padding:14px 12px;gap:8px}
   .puzzle{font-size:32px}
   #home{min-height:72px}
@@ -145,7 +144,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
           <div style="color:#475569;font-size:15px;line-height:1.6">חסר חלק באמצע.<br>כאן נגלה אותו בעיניים.</div>
         </div>
         <div id="panelSquare" class="panel">
-          <svg id="square" viewBox="0 0 402 322" dir="ltr" role="img" aria-label="ריבוע (a+b) מחולק לארבעה חלקים"></svg>
+          <div id="squareFrame"><svg id="square" viewBox="0 0 402 322" preserveAspectRatio="xMidYMid meet" dir="ltr" role="img" aria-label="ריבוע (a+b) מחולק לארבעה חלקים"></svg></div>
           <div id="slots" data-full dir="ltr" hidden></div>
         </div>
         <div id="strip" data-enter dir="ltr" hidden></div>
@@ -1008,6 +1007,16 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const need = Math.max(range.getBoundingClientRect().width, el.scrollWidth - pad);
       if (need > avail + 1) el.style.fontSize = Math.max(12, max * avail / need) + 'px';
     },
+    svgScale() {
+      const svg = $('square');
+      const w = svg ? svg.getBoundingClientRect().width : 0;
+      return w > 8 ? w / 402 : 1;
+    },
+    /* User-unit type that stays at least 11 CSS px once the diagram is scaled. */
+    legible(userPx) {
+      const scale = this.svgScale();
+      return userPx * scale >= 11 ? userPx : 11 / scale;
+    },
     fitMath() {
       ['heroEq', 'numLead', 'numEq1', 'numEq2', 'finalEq'].forEach((id) => this.fitBox($(id)));
       const root = $('app'); if (!root) return;
@@ -1075,7 +1084,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         rect.setAttribute('x', x); rect.setAttribute('y', y); rect.setAttribute('width', w); rect.setAttribute('height', h); rect.setAttribute('fill', t.f);
         text.setAttribute('x', t.x + t.w / 2); text.setAttribute('y', t.y + t.h / 2);
         text.style.fill = t.lc; text.style.fontFamily = '"Secular One",sans-serif';
-        text.style.fontSize = Math.min(t.w, t.h) < 62 ? '12px' : Math.min(t.w, t.h) < 90 ? '14px' : '18px';
+        const tileFs = Math.min(t.w, t.h) < 62 ? 12 : Math.min(t.w, t.h) < 90 ? 14 : 18;
+        text.style.fontSize = this.legible(tileFs) + 'px';
         if (!(this.tDrag && this.tDrag.id === id)) g.style.opacity = isFull && revealed ? '.3' : dim ? (st.demo ? '.22' : '.42') : '1';
         g.style.cursor = isFull && st.demoJoined && !revealed ? 'grab' : 'inherit';
         g.style.touchAction = 'none';
@@ -1106,14 +1116,15 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       setLine('brLa', 70, 56, 70, ys); setLine('brLb', 70, ys, 70, 306);
       const tk = $('tkLy'); if (tk) { tk.setAttribute('y1', ys); tk.setAttribute('y2', ys); }
       const tA = isExp ? 'a=' + a : 'a', tB = isExp ? 'b=' + b : 'b', tAB = isExp ? 'a+b=10' : 'a + b';
-      const lab = (cx, cy, t) => { const w = Math.max(28, t.length * 7.4 + 12); let x = cx; if (x - w / 2 < 2) x = 2 + w / 2; if (x + w / 2 > 400) x = 400 - w / 2; return { x, y: cy, w, px: x - w / 2, py: cy - 9 }; };
+      const bracketFs = this.legible(12), bk = bracketFs / 12;
+      const lab = (cx, cy, t) => { const w = Math.max(28, (t.length * 7.4 + 12) * bk); const h = 18 * bk; let x = cx; if (x - w / 2 < 2) x = 2 + w / 2; if (x + w / 2 > 400) x = 400 - w / 2; return { x, y: cy, w, h, px: x - w / 2, py: cy - h / 2 }; };
       const labs = { lTop: lab(PL + N / 2, 18, tAB), lTa: lab(PL + s / 2, 42, tA), lTb: lab(PL + s + (N - s) / 2, 42, tB), lL: lab(28, PT + N / 2, tAB), lLa: lab(70, PT + s / 2, tA), lLb: lab(70, PT + s + (N - s) / 2, tB) };
       const texts = { lTop: tAB, lTa: tA, lTb: tB, lL: tAB, lLa: tA, lLb: tB };
       const colors = { lTop: '#334155', lTa: T, lTb: C, lL: '#334155', lLa: T, lLb: C };
       Object.keys(labs).forEach((k) => {
         const L = labs[k], pill = $('pill-' + k), tx = $('lbl-' + k);
-        pill.setAttribute('x', L.px); pill.setAttribute('y', L.py); pill.setAttribute('width', L.w);
-        tx.setAttribute('x', L.x); tx.setAttribute('y', L.y); tx.style.fill = colors[k]; tx.style.fontFamily = '"Secular One",sans-serif'; tx.style.fontSize = '12px';
+        pill.setAttribute('x', L.px); pill.setAttribute('y', L.py); pill.setAttribute('width', L.w); pill.setAttribute('height', L.h);
+        tx.setAttribute('x', L.x); tx.setAttribute('y', L.y); tx.style.fill = colors[k]; tx.style.fontFamily = '"Secular One",sans-serif'; tx.style.fontSize = bracketFs + 'px';
         labels[k] = texts[k];
       });
       const solved = st.demoDone || st.demo === 'show';
@@ -1123,7 +1134,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       anchor.setAttribute('x', PL + N / 2 - dSm); anchor.setAttribute('y', PT + N / 2 - dBg / 2); anchor.setAttribute('width', 2 * dSm); anchor.setAttribute('height', dBg);
       const pill = $('demoPill'); pill.style.display = st.demoJoined && st.demo === 'ask' ? 'inline' : 'none';
       const pr = $('demoPillRect'); pr.setAttribute('x', 112); pr.setAttribute('y', dpy); pr.setAttribute('fill', solved ? '#eafaf1' : '#fff'); pr.setAttribute('stroke', solved ? '#1f9d61' : '#d4930d'); pr.setAttribute('stroke-width', '2');
-      const dt = $('demoText'); dt.setAttribute('x', 217); dt.setAttribute('y', dpy + 15); dt.style.fill = solved ? '#146c43' : '#8a5a00'; dt.style.fontFamily = '"Secular One",sans-serif'; dt.style.fontSize = '16px';
+      const demoFs = this.legible(16);
+      const dt = $('demoText'); dt.setAttribute('x', 217); dt.setAttribute('y', dpy + 15); dt.style.fill = solved ? '#146c43' : '#8a5a00'; dt.style.fontFamily = '"Secular One",sans-serif'; dt.style.fontSize = demoFs + 'px';
       const per = $('perim'); per.style.display = fl && fl.perim ? 'inline' : 'none'; per.style.stroke = '#e11d48'; per.style.strokeWidth = '4'; per.style.strokeDasharray = '10 6'; per.style.animation = flName + ' 1.7s ease forwards';
       const sideH = $('sideH'), sideV = $('sideV');
       sideH.setAttribute('width', s); sideV.setAttribute('height', s);
@@ -1217,7 +1229,17 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         this.ro = new ResizeObserver(() => { cancelAnimationFrame(this.roRaf); this.roRaf = requestAnimationFrame(() => { if (!this.drag) this.place(false); }); });
         ['card', 'bubble', 'home'].forEach((id) => { const n = $(id); if (n) this.ro.observe(n); });
       }
-      window.addEventListener('resize', () => { this.fitMath(); this.place(false); });
+      const refit = () => {
+        this.fitMath();
+        const S = STEPS[this.state.idx];
+        if (!this.drag && !this.tDrag && (S.mode === 'explore' || S.mode === 'quiz')) {
+          const s = this.state.split, a = Math.round(s / 25), b = 10 - a;
+          this.paintSquare(this.state, S, a, b, s, this.state.done);
+        }
+        this.place(false);
+      };
+      window.addEventListener('resize', refit);
+      if (window.visualViewport) window.visualViewport.addEventListener('resize', refit);
       this.goStep(Math.min(6, Math.max(0, (this.props.startStep || 1) - 1)));
       const driftEl = $('drift');
       if (driftEl && driftEl.animate && !this.rm) {
