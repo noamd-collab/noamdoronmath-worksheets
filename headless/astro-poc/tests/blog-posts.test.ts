@@ -114,7 +114,7 @@ describe('M25 blog pilot', () => {
         assert.ok(/blog\/categories/.test(post.postCategory?.href || ''));
       }
       if (baseline.recentPosts) {
-        assert.ok(post.recentPosts?.items?.length >= 3);
+        assert.ok((post.recentPosts?.items?.length ?? 0) >= 3);
         for (const item of post.recentPosts!.items) {
           assert.ok(item.title.length > 5);
           assert.ok(/\/post\//.test(item.href));

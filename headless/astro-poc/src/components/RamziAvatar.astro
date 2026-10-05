@@ -1,6 +1,11 @@
 ---
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+// Bundled at build time: Wix hosting runs on Cloudflare Workers, where node:fs
+// and process.cwd() are not available at request time.
+const avatarSvgs = import.meta.glob<string>('../../public/design-exact/assets/avatar/ramzi-A-*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
 
 export interface Props {
   mood?: 'idle' | 'thinking' | 'hint' | 'success' | 'error';
@@ -9,8 +14,9 @@ export interface Props {
 
 const { mood = 'idle', size = 44 } = Astro.props;
 const px = Number.isFinite(size) && size > 0 ? size : 44;
-const file = join(process.cwd(), 'public/design-exact/assets/avatar', `ramzi-A-${mood}.svg`);
-const svg = readFileSync(file, 'utf8').replace(/<metadata>[\s\S]*?<\/metadata>/, '');
+const raw = avatarSvgs[`../../public/design-exact/assets/avatar/ramzi-A-${mood}.svg`];
+if (raw === undefined) throw new Error(`RamziAvatar: no avatar for mood "${mood}"`);
+const svg = raw.replace(/<metadata>[\s\S]*?<\/metadata>/, '');
 ---
 
 <ramzi-avatar

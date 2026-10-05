@@ -332,7 +332,7 @@ describe('triangle-area-grade-7 LD FAQ visibility correction (M30)', () => {
       preview.faqGroups[0].items[0].question,
       'האם דפי העבודה בנושא שטח משולש לכיתה ז׳ מתאימים לכיתה ז׳?'
     );
-    assertJsonLdFaqVisible(preview);
+    assertJsonLdFaqVisible(preview, 'triangle-area-m30');
     const diffs = diffTopicParity(source, preview).filter((d) => d.field !== 'images');
     assertNoParityErrors(diffs, 'triangle-area-m30');
   });
@@ -419,7 +419,7 @@ describe('M30 closes remaining topic-SEO gaps', () => {
         (d) => d.field !== 'images'
       );
       assertNoParityErrors(diffs, `m30-${slug}`);
-      assertJsonLdFaqVisible(contentToParitySnapshot(page, 'preview'));
+      assertJsonLdFaqVisible(contentToParitySnapshot(page, 'preview'), `m30-${slug}`);
     }
     assert.deepEqual(TOPIC_PAGE_M30_REDIRECTS, [
       { from: 'equations-grade-7', to: '/equations-basics-grade-7' },

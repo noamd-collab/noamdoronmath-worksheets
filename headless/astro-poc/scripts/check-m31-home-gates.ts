@@ -19,12 +19,55 @@ const browser = await puppeteer.launch({
   args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
 });
 
+type HomeSnap = {
+  title: string;
+  h1: string;
+  hasDev: boolean;
+  hasSearch: boolean;
+  grades: (string | null)[];
+  aiCount: number;
+  hasGoogle: boolean;
+  hasLearning: boolean;
+  hasValues: boolean;
+  hasWhatsapp: boolean;
+  hasFooter: boolean;
+  hrefs: (string | null)[];
+  bodyHasEmail: boolean;
+  ssrVisible: Record<string, boolean>;
+  scrollWidth: number;
+  clientWidth: number;
+};
+
+/** The snapshot comes from the page under test, so check its shape before trusting it. */
+function asHomeSnap(value: unknown): HomeSnap {
+  const v = value as Record<string, unknown> | null;
+  const isStrOrNullArray = (x: unknown) =>
+    Array.isArray(x) && x.every((item) => item === null || typeof item === 'string');
+  const ok =
+    !!v &&
+    typeof v.title === 'string' &&
+    typeof v.h1 === 'string' &&
+    typeof v.aiCount === 'number' &&
+    typeof v.scrollWidth === 'number' &&
+    typeof v.clientWidth === 'number' &&
+    isStrOrNullArray(v.grades) &&
+    isStrOrNullArray(v.hrefs) &&
+    ['hasDev', 'hasSearch', 'hasGoogle', 'hasLearning', 'hasValues', 'hasWhatsapp', 'hasFooter', 'bodyHasEmail'].every(
+      (k) => typeof v[k] === 'boolean'
+    ) &&
+    !!v.ssrVisible &&
+    typeof v.ssrVisible === 'object' &&
+    Object.values(v.ssrVisible as Record<string, unknown>).every((x) => typeof x === 'boolean');
+  if (!ok) throw new Error('home snapshot has an unexpected shape: ' + JSON.stringify(value).slice(0, 300));
+  return v as unknown as HomeSnap;
+}
+
 async function checkViewport(label: string, width: number, height: number) {
   const page = await browser.newPage();
   await page.setViewport({ width, height, deviceScaleFactor: 1 });
   const resp = await page.goto(`${PREVIEW}/`, { waitUntil: 'networkidle2', timeout: 90000 });
   await new Promise((r) => setTimeout(r, 1200));
-  const snap = await page.evaluate(`(() => {
+  const snap = asHomeSnap(await page.evaluate(`(() => {
     const text = (el) => ((el && el.innerText) || '').replace(/\\s+/g, ' ').trim();
     const hrefs = [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href'));
     return {
@@ -75,10 +118,10 @@ async function checkViewport(label: string, width: number, height: number) {
       scrollWidth: document.documentElement.scrollWidth,
       clientWidth: document.documentElement.clientWidth,
     };
-  })()`);
+  })()`));
 
   const internal = [
-    ...new Set((snap.hrefs || []).filter((h): h is string => !!h && h.startsWith('/'))),
+    ...new Set(snap.hrefs.filter((h): h is string => !!h && h.startsWith('/'))),
   ];
   const linkResults: { path: string; fetchPath: string; status: number; ok: boolean }[] = [];
   const fetched = new Map<string, number>();
