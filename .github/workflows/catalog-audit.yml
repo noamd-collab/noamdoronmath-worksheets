@@ -1,0 +1,46 @@
+name: catalog-audit
+
+# Data-quality gate for the worksheet catalog, the topic pages and the PDF links.
+# Runs only local checks: no npm install, no network access (PDFs stay "not verified").
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'noam-learning-catalog.js'
+      - 'learning/catalog-seed.sql'
+      - 'noam-ai/manifests/**'
+      - 'headless/catalog/**'
+      - 'headless/astro-poc/src/data/**'
+      - 'headless/astro-poc/public/legacy-github/index.html'
+      - 'headless/astro-poc/public/noam-learning-catalog.js'
+      - 'headless/astro-poc/public/noam-ai/manifests/**'
+      - 'tests/fixtures/middle-school-levels.json'
+      - 'scripts/lib/headless-catalog.cjs'
+      - 'tools/catalog-audit.cjs'
+      - 'tests/catalog-audit.test.cjs'
+      - '.github/workflows/catalog-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Audit tool regression tests (deliberately broken fixtures)
+        run: node --test tests/catalog-audit.test.cjs
+      - name: Audit the catalog, topic pages and worksheet links (offline)
+        run: node tools/catalog-audit.cjs --out catalog-audit-report
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-audit-report
+          path: catalog-audit-report/
