@@ -143,8 +143,8 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">כמה משבצות יש בריבוע של 3 על 3?</span>
-          <span class="cl-tops" data-el="top0">כמה משבצות יש בריבוע של <bdi dir="ltr" class="cl-num">3</bdi> על <bdi dir="ltr" class="cl-num">3</bdi>?</span>
-          <span class="cl-tops" data-el="top1" style="opacity:0">אז מהו <bdi dir="ltr" class="cl-num">√9</bdi>?</span>
+          <span class="cl-tops" data-el="top0">כמה משבצות יש בריבוע של&nbsp;<bdi dir="ltr" class="ll-math">3</bdi>&nbsp;על&nbsp;<bdi dir="ltr" class="ll-math">3</bdi>?</span>
+          <span class="cl-tops" data-el="top1" style="opacity:0">אז מהו <bdi dir="ltr" class="ll-math">√9</bdi>?</span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 280" role="img" aria-label={aria.roots}>
           {Array.from({ length: 9 }, (_, i) => (
@@ -163,8 +163,8 @@ const aria: Record<string, string> = {
             <text class="cl-t cl-num lf-big" x="144" y="232" text-anchor="middle">3</text>
           </g>
           <text class="cl-t cl-num lf-big" data-el="eq-sq" x="390" y="108" text-anchor="middle" style="opacity:0">3² = 9</text>
-          <path class="cl-stroke-a" data-el="rad-path" d="M300 196 L322 228 L354 146 L500 146" pathLength="1" fill="none" stroke-dashoffset="1" />
-          <text class="cl-t cl-num lf-big" data-el="rad" x="420" y="196" text-anchor="middle" style="opacity:0">9</text>
+          <path class="cl-stroke-a" data-el="rad-path" d="M250 176 L274 206 L304 148 L332 148" pathLength="1" fill="none" stroke-dashoffset="1" />
+          <text class="cl-t cl-num lf-big" data-el="rad" x="308" y="174" text-anchor="start" style="opacity:0">9</text>
           <text class="cl-t cl-num lf-big cl-ok" data-el="eq-root" x="400" y="258" text-anchor="middle" style="opacity:0">√9 = 3</text>
         </svg>
       </>
@@ -172,8 +172,8 @@ const aria: Record<string, string> = {
 
     {showIneq && (
       <>
-        <p class="concept-loop__top">איפה <bdi dir="ltr" class="cl-num">x &gt; 2</bdi> על הישר?</p>
-        <p class="lf-note" data-el="note" style="opacity:0">עיגול ריק: <bdi dir="ltr" class="cl-num">2</bdi> לא כלול</p>
+        <p class="concept-loop__top">איפה <bdi dir="ltr" class="ll-math">x &gt; 2</bdi> על הישר?</p>
+        <p class="lf-note" data-el="note" style="opacity:0">עיגול ריק: <bdi dir="ltr" class="ll-math">2</bdi>&nbsp;לא כלול</p>
         <svg class="concept-loop__svg" viewBox="0 0 560 230" role="img" aria-label={aria.ineq}>
           <line class="cl-line" x1="48" y1="150" x2="520" y2="150" />
           {[0, 1, 2, 3, 4, 5, 6].map((n) => (
@@ -186,23 +186,39 @@ const aria: Record<string, string> = {
           <path data-el="ray" d="M228 150 H488" pathLength="1" fill="none" stroke="#2a7c7a" stroke-width="5" stroke-linecap="round" stroke-dashoffset="1" style="opacity:0" />
           <polygon data-el="head" points="488,140 512,150 488,160" fill="#2a7c7a" style="opacity:0" />
         </svg>
-        <p class="lf-answer cl-ok" data-el="eq" style="opacity:0"><bdi dir="ltr" class="cl-num">x &gt; 2</bdi></p>
+        <p class="lf-answer cl-ok" data-el="eq" style="opacity:0"><bdi dir="ltr" class="ll-math">x &gt; 2</bdi></p>
       </>
     )}
 
     {showExp && (
       <>
         <p class="concept-loop__top cl-topswap">
-          <span class="cl-topsz" aria-hidden="true">כמה גורמים של 2 יש במכפלה?</span>
-          <span class="cl-tops" data-el="top0">כמה גורמים של <bdi dir="ltr" class="cl-num">2</bdi> יש במכפלה?</span>
-          <span class="cl-tops" data-el="top1" style="opacity:0">סופרים אותם אחד־אחד</span>
-          <span class="cl-tops" data-el="top2" style="opacity:0">אז מהו המעריך?</span>
+          <span class="cl-topsz" aria-hidden="true">הקבוצות נפגשות למכפלה אחת של חמישה גורמים</span>
+          <span class="cl-tops" data-el="top0">איך נפתחים <bdi dir="ltr" class="ll-math">2²</bdi> ו־<bdi dir="ltr" class="ll-math">2³</bdi> לגורמים?</span>
+          <span class="cl-tops" data-el="top1" style="opacity:0">הקבוצות נפגשות למכפלה אחת</span>
+          <span class="cl-tops" data-el="top2" style="opacity:0">לכן <bdi dir="ltr" class="ll-math">2² × 2³ = 2⁵</bdi></span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 280" role="img" aria-label={aria['exp-rules']}>
-          <text class="cl-t cl-num lf-big" data-el="expr" x="280" y="78" text-anchor="middle">2² × 2³</text>
+          <text class="cl-t cl-num lf-big cl-tc-a" data-el="powL" x="110" y="62" text-anchor="middle">2²</text>
+          <text class="cl-t cl-num lf-big cl-tc-b" data-el="powR" x="420" y="62" text-anchor="middle">2³</text>
+          {['pL0', 'pL1'].map((name) => (
+            <g data-el={name} class="cl-tc-a" style="opacity:0">
+              <text class="cl-t cl-num lf-big cl-tc-a" text-anchor="middle" dominant-baseline="central">{name === 'pL0' ? '(' : ')'}</text>
+            </g>
+          ))}
+          {['pR0', 'pR1'].map((name) => (
+            <g data-el={name} class="cl-tc-b" style="opacity:0">
+              <text class="cl-t cl-num lf-big cl-tc-b" text-anchor="middle" dominant-baseline="central">{name === 'pR0' ? '(' : ')'}</text>
+            </g>
+          ))}
           {['2', '2', '2', '2', '2'].map((digit, i) => (
             <g data-el={`f${i}`} style="opacity:0">
-              <text class="cl-t cl-num lf-big" text-anchor="middle" dominant-baseline="central">{digit}</text>
+              <text class:list={['cl-t', 'cl-num', 'lf-big', i < 2 ? 'cl-tc-a' : 'cl-tc-b']} text-anchor="middle" dominant-baseline="central">{digit}</text>
+            </g>
+          ))}
+          {[0, 1, 2, 3].map((i) => (
+            <g data-el={`m${i}`} style="opacity:0">
+              <text class:list={['cl-t', 'cl-num', 'lf-mid', i === 0 ? 'cl-tc-a' : i >= 2 ? 'cl-tc-b' : '']} text-anchor="middle" dominant-baseline="central">×</text>
             </g>
           ))}
           {['1', '2', '3', '4', '5'].map((digit, i) => (
@@ -211,7 +227,7 @@ const aria: Record<string, string> = {
             </g>
           ))}
           <text class="cl-t cl-num lf-big" data-el="plus" x="280" y="214" text-anchor="middle" style="opacity:0">2 + 3 = 5</text>
-          <text class="cl-t cl-num lf-big cl-ok" data-el="result" x="280" y="258" text-anchor="middle" style="opacity:0">2⁵</text>
+          <text class="cl-t cl-num lf-big cl-ok" data-el="result" x="280" y="258" text-anchor="middle" style="opacity:0">2² × 2³ = 2⁵</text>
         </svg>
       </>
     )}
@@ -220,9 +236,9 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">מה ההבדל בין סוגריים לבין המינוס בחוץ?</span>
-          <span class="cl-tops" data-el="top0">מהו <bdi dir="ltr" class="cl-num">({MINUS}3)²</bdi>?</span>
-          <span class="cl-tops" data-el="top1" style="opacity:0">ומהו <bdi dir="ltr" class="cl-num">{MINUS}3²</bdi> בלי סוגריים?</span>
-          <span class="cl-tops" data-el="top2" style="opacity:0">ומהו <bdi dir="ltr" class="cl-num">({MINUS}3)³</bdi>?</span>
+          <span class="cl-tops" data-el="top0">מהו <bdi dir="ltr" class="ll-math">({MINUS}3)²</bdi>?</span>
+          <span class="cl-tops" data-el="top1" style="opacity:0">ומהו <bdi dir="ltr" class="ll-math">{MINUS}3²</bdi> בלי סוגריים?</span>
+          <span class="cl-tops" data-el="top2" style="opacity:0">ומהו <bdi dir="ltr" class="ll-math">({MINUS}3)³</bdi>?</span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 280" role="img" aria-label={aria.powers}>
           <g data-el="row-0" style="opacity:0">
@@ -279,7 +295,7 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">מה האורכים, ומה השטח?</span>
-          <span class="cl-tops" data-el="top0">איפה <bdi dir="ltr" class="cl-num">A({MINUS}3, 1)</bdi> <bdi dir="ltr" class="cl-num">B(2, 1)</bdi> <bdi dir="ltr" class="cl-num">C(2, 4)</bdi>?</span>
+          <span class="cl-tops" data-el="top0">איפה <bdi dir="ltr" class="ll-math">A({MINUS}3, 1), B(2, 1), C(2, 4)</bdi>?</span>
           <span class="cl-tops" data-el="top1" style="opacity:0">סופרים יחידות על הניצבים</span>
           <span class="cl-tops" data-el="top2" style="opacity:0">מה השטח?</span>
         </p>
@@ -300,7 +316,7 @@ const aria: Record<string, string> = {
           <text class="cl-t cl-num" x="228" y="70" text-anchor="end">4</text>
           <path data-el="ab" d="M142 174 H322" class="cl-stroke-a" pathLength="1" fill="none" stroke-dashoffset="1" style="opacity:0" />
           <path data-el="bc" d="M322 174 V66" class="cl-stroke-a" pathLength="1" fill="none" stroke-dashoffset="1" style="opacity:0" />
-          <path data-el="ca" d="M322 66 L142 174" class="cl-stroke-b" pathLength="1" fill="none" stroke-dashoffset="1" style="opacity:0" />
+          <path data-el="ca" d="M322 66 L142 174" class="cl-line" pathLength="1" stroke-dashoffset="1" style="opacity:0" />
           <path d="M310 174 H322 V162" fill="none" stroke="#22305a" stroke-width="2" />
           {[1, 2, 3, 4, 5].map((n) => (
             <text class="cl-t cl-num" data-el={`ab-${n}`} x={142 + (n - 0.5) * 36} y="158" text-anchor="middle" style="opacity:0">{n}</text>
@@ -308,8 +324,8 @@ const aria: Record<string, string> = {
           {[1, 2, 3].map((n) => (
             <text class="cl-t cl-num" data-el={`bc-${n}`} x="346" y={174 - (n - 0.5) * 36} text-anchor="start" dominant-baseline="central" style="opacity:0">{n}</text>
           ))}
-          <text class="cl-t cl-num lf-big cl-ok" data-el="lenAB" x="232" y="132" text-anchor="middle" style="opacity:0">5</text>
-          <text class="cl-t cl-num lf-big cl-ok" data-el="lenBC" x="392" y="120" text-anchor="middle" style="opacity:0">3</text>
+          <text class="cl-t cl-num lf-big cl-ok" data-el="lenAB" x="232" y="198" text-anchor="middle" style="opacity:0">5</text>
+          <text class="cl-t cl-num lf-big cl-ok" data-el="lenBC" x="404" y="120" text-anchor="middle" style="opacity:0">3</text>
           <circle data-el="ptA" cx="142" cy="174" r="6" class="cl-pt-a" style="opacity:0" />
           <circle data-el="ptB" cx="322" cy="174" r="6" class="cl-pt-b" style="opacity:0" />
           <circle data-el="ptC" cx="322" cy="66" r="6" class="cl-pt-a" style="opacity:0" />
@@ -317,7 +333,7 @@ const aria: Record<string, string> = {
           <text class="cl-t cl-num" data-el="lblB" x="308" y="198" text-anchor="end" style="opacity:0">B(2, 1)</text>
           <text class="cl-t cl-num" data-el="lblC" x="336" y="54" text-anchor="start" style="opacity:0">C(2, 4)</text>
         </svg>
-        <p class="lf-answer cl-ok" data-el="area" style="opacity:0">שטח = <bdi dir="ltr" class="cl-num">7.5</bdi></p>
+        <p class="lf-answer cl-ok" data-el="area" style="opacity:0">שטח <bdi dir="ltr" class="ll-math">5 × 3 : 2 = 7.5</bdi></p>
       </>
     )}
 
@@ -343,12 +359,12 @@ const aria: Record<string, string> = {
           <text class="cl-t" x="500" y="292" text-anchor="end" direction="rtl">שע׳</text>
           <text class="cl-t cl-num" x="62" y="164" text-anchor="end">30</text>
           <g data-el="readout" style="opacity:0">
-            <text class="cl-t cl-num lf-mid" data-el="clock" x="360" y="100" direction="rtl"></text>
-            <text class="cl-t cl-num lf-mid" data-el="dist" x="360" y="128" direction="rtl"></text>
-            <text class="cl-t cl-num lf-mid" data-el="speed" x="360" y="156" direction="rtl"></text>
+            <text class="cl-t cl-num lf-mid" data-el="clock" x="360" y="100"></text>
+            <text class="cl-t cl-num lf-mid" data-el="dist" x="360" y="128"></text>
+            <text class="cl-t cl-num lf-mid" data-el="speed" x="360" y="156"></text>
           </g>
         </svg>
-        <p class="lf-answer cl-ok" data-el="sum" style="opacity:0">המהירויות <bdi dir="ltr" class="cl-num">15</bdi>, <bdi dir="ltr" class="cl-num">0</bdi>, <bdi dir="ltr" class="cl-num">15</bdi></p>
+        <p class="lf-answer cl-ok" data-el="sum" style="opacity:0">המהירויות <bdi dir="ltr" class="ll-math">15</bdi>, <bdi dir="ltr" class="ll-math">0</bdi>, <bdi dir="ltr" class="ll-math">15</bdi></p>
       </>
     )}
 
@@ -397,7 +413,7 @@ const aria: Record<string, string> = {
           </g>
           <path data-el="sector" d={sector} class="cl-stroke-b" pathLength="1" fill="none" stroke-dashoffset="1" style="opacity:0" />
         </svg>
-        <p class="lf-answer" data-el="formula" style="opacity:0"><bdi dir="ltr" class="cl-num">V = ⅓πr²h</bdi></p>
+        <p class="lf-answer" data-el="formula" style="opacity:0"><bdi dir="ltr" class="ll-math">V = ⅓πr²h</bdi></p>
         <p class="lf-note" data-el="net-lbl" style="opacity:0">פריסה: עיגול וגזרה</p>
       </>
     )}
@@ -418,7 +434,7 @@ const aria: Record<string, string> = {
           <circle data-el="c1" cx="125" cy="88" r="26" fill="#fff" stroke="#2a7c7a" stroke-width="2.5" />
           <circle data-el="c2" cx="125" cy="228" r="26" fill="#fff" stroke="#7c3aed" stroke-width="2.5" />
         </svg>
-        <p class="lf-answer cl-ok" data-el="formula" style="opacity:0"><bdi dir="ltr" class="cl-num">2πr² + 2πrh</bdi></p>
+        <p class="lf-answer cl-ok" data-el="formula" style="opacity:0"><bdi dir="ltr" class="ll-math">2πr² + 2πrh</bdi></p>
       </>
     )}
 
@@ -452,8 +468,8 @@ const aria: Record<string, string> = {
             <path d="M172 214 H186 V200" fill="none" stroke="#22305a" stroke-width="1.5" />
           </g>
         </svg>
-        <p class="lf-note" data-el="area" style="opacity:0">שטח הבסיס = <bdi dir="ltr" class="cl-num">6</bdi></p>
-        <p class="lf-answer cl-ok" data-el="vol" style="opacity:0">נפח = <bdi dir="ltr" class="cl-num">6 × 5 = 30</bdi></p>
+        <p class="lf-note" data-el="area" style="opacity:0">שטח הבסיס <bdi dir="ltr" class="ll-math">= 6</bdi></p>
+        <p class="lf-answer cl-ok" data-el="vol" style="opacity:0">נפח <bdi dir="ltr" class="ll-math">6 × 5 = 30</bdi></p>
       </>
     )}
 
@@ -461,7 +477,7 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">מה קורה כשגם השני שלילי?</span>
-          <span class="cl-tops" data-el="top0">לאן מגיעים <bdi dir="ltr" class="cl-num">3</bdi> קפיצות של <bdi dir="ltr" class="cl-num">{MINUS}2</bdi>?</span>
+          <span class="cl-tops" data-el="top0">לאן מגיעים&nbsp;<bdi dir="ltr" class="ll-math">3</bdi>&nbsp;קפיצות של&nbsp;<bdi dir="ltr" class="ll-math">{MINUS}2</bdi>?</span>
           <span class="cl-tops" data-el="top1" style="opacity:0">ומה אם גם המספר השני שלילי?</span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 250" role="img" aria-label={aria['signed-mul']}>
@@ -482,8 +498,8 @@ const aria: Record<string, string> = {
         </svg>
         <div class="lf-swap">
           <span class="lf-swap__sizer" aria-hidden="true">({MINUS}2) × ({MINUS}3) = 6</span>
-          <span class="lf-swap__item cl-ok" data-el="eq1" style="opacity:0"><bdi dir="ltr" class="cl-num">({MINUS}2) × 3 = {MINUS}6</bdi></span>
-          <span class="lf-swap__item cl-ok" data-el="eq2" style="opacity:0"><bdi dir="ltr" class="cl-num">({MINUS}2) × ({MINUS}3) = 6</bdi></span>
+          <span class="lf-swap__item cl-ok" data-el="eq1" style="opacity:0"><bdi dir="ltr" class="ll-math">({MINUS}2) × 3 = {MINUS}6</bdi></span>
+          <span class="lf-swap__item cl-ok" data-el="eq2" style="opacity:0"><bdi dir="ltr" class="ll-math">({MINUS}2) × ({MINUS}3) = 6</bdi></span>
         </div>
       </>
     )}
@@ -492,7 +508,7 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">ומה אם מחלקים במספר חיובי?</span>
-          <span class="cl-tops" data-el="top0">כמה פעמים <bdi dir="ltr" class="cl-num">{MINUS}2</bdi> נכנס ב־<bdi dir="ltr" class="cl-num">{MINUS}8</bdi>?</span>
+          <span class="cl-tops" data-el="top0">כמה פעמים <bdi dir="ltr" class="ll-math">{MINUS}2</bdi> נכנס ב־<bdi dir="ltr" class="ll-math">{MINUS}8</bdi>?</span>
           <span class="cl-tops" data-el="top1" style="opacity:0">אותן קפיצות, והפעם המחלק חיובי</span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 260" role="img" aria-label={aria['signed-div']}>
@@ -514,10 +530,10 @@ const aria: Record<string, string> = {
         <div class="lf-swap">
           <span class="lf-swap__sizer" aria-hidden="true">שווה 4</span>
           <span class="lf-swap__item cl-ok" data-el="eq1" style="opacity:0">
-            <bdi dir="ltr" class="cl-num"><span class="cl-frac"><span class="cl-frac__n">{MINUS}8</span><span class="cl-frac__d">{MINUS}2</span></span> = 4</bdi>
+            <bdi dir="ltr" class="ll-math"><span class="cl-frac"><span class="cl-frac__n">{MINUS}8</span><span class="cl-frac__d">{MINUS}2</span></span> = 4</bdi>
           </span>
           <span class="lf-swap__item cl-ok" data-el="eq2" style="opacity:0">
-            <bdi dir="ltr" class="cl-num"><span class="cl-frac"><span class="cl-frac__n">{MINUS}8</span><span class="cl-frac__d">2</span></span> = {MINUS}4</bdi>
+            <bdi dir="ltr" class="ll-math"><span class="cl-frac"><span class="cl-frac__n">{MINUS}8</span><span class="cl-frac__d">2</span></span> = {MINUS}4</bdi>
           </span>
         </div>
       </>
@@ -527,7 +543,7 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">איפה הפרבולה חותכת את ציר x?</span>
-          <span class="cl-tops" data-el="top0">איפה הפרבולה חותכת את ציר <bdi dir="ltr" class="cl-num">x</bdi>?</span>
+          <span class="cl-tops" data-el="top0">איפה הפרבולה חותכת את ציר <bdi dir="ltr" class="ll-math">x</bdi>?</span>
           <span class="cl-tops" data-el="top1" style="opacity:0">מפרקים, ואז פותרים</span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={aria['quad-eq']}>
@@ -544,9 +560,9 @@ const aria: Record<string, string> = {
           </g>
           <text class="cl-t cl-num" x="300" y="48" text-anchor="middle">y = (x {MINUS} 2)(x {MINUS} 3)</text>
         </svg>
-        <p class="lf-note" data-el="roots" style="opacity:0"><bdi dir="ltr" class="cl-num">x = 2</bdi> או <bdi dir="ltr" class="cl-num">x = 3</bdi></p>
-        <p class="lf-note" data-el="fact" style="opacity:0"><bdi dir="ltr" class="cl-num">(x {MINUS} 2)(x {MINUS} 3) = x² {MINUS} 5x + 6</bdi></p>
-        <p class="lf-answer cl-ok" data-el="solve" style="opacity:0"><bdi dir="ltr" class="cl-num">x = 2</bdi> או <bdi dir="ltr" class="cl-num">x = 3</bdi></p>
+        <p class="lf-note" data-el="roots" style="opacity:0"><bdi dir="ltr" class="ll-math">x = 2</bdi> או <bdi dir="ltr" class="ll-math">x = 3</bdi></p>
+        <p class="lf-note" data-el="fact" style="opacity:0"><bdi dir="ltr" class="ll-math">(x {MINUS} 2)(x {MINUS} 3) = x² {MINUS} 5x + 6</bdi></p>
+        <p class="lf-answer cl-ok" data-el="solve" style="opacity:0"><bdi dir="ltr" class="ll-math">x = 2</bdi> או <bdi dir="ltr" class="ll-math">x = 3</bdi></p>
       </>
     )}
 
@@ -554,7 +570,7 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">איפה x בריבוע גדול מ־9?</span>
-          <span class="cl-tops" data-el="top0">איפה <bdi dir="ltr" class="cl-num">x² &gt; 9</bdi>?</span>
+          <span class="cl-tops" data-el="top0">איפה <bdi dir="ltr" class="ll-math">x² &gt; 9</bdi>?</span>
           <span class="cl-tops" data-el="top1" style="opacity:0">מחוץ לשורשים, לא ביניהם</span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={aria['quad-ineq']}>
@@ -575,7 +591,7 @@ const aria: Record<string, string> = {
           </g>
           <text class="cl-t cl-num" data-el="mid" x="280" y="228" text-anchor="middle" style="opacity:0">x² &lt; 9</text>
         </svg>
-        <p class="lf-answer cl-ok" data-el="answer" style="opacity:0"><bdi dir="ltr" class="cl-num">x &lt; {MINUS}3</bdi> או <bdi dir="ltr" class="cl-num">x &gt; 3</bdi></p>
+        <p class="lf-answer cl-ok" data-el="answer" style="opacity:0"><bdi dir="ltr" class="ll-math">x &lt; {MINUS}3</bdi> או <bdi dir="ltr" class="ll-math">x &gt; 3</bdi></p>
       </>
     )}
 
@@ -583,7 +599,7 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">מה אורך שני האלכסונים?</span>
-          <span class="cl-tops" data-el="top0">מה הזוויות במלבן <bdi dir="ltr" class="cl-num">6</bdi> על <bdi dir="ltr" class="cl-num">8</bdi>?</span>
+          <span class="cl-tops" data-el="top0">מה הזוויות במלבן&nbsp;<bdi dir="ltr" class="ll-math">6</bdi>&nbsp;על&nbsp;<bdi dir="ltr" class="ll-math">8</bdi>?</span>
           <span class="cl-tops" data-el="top1" style="opacity:0">ומה אורך האלכסונים?</span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 280" role="img" aria-label={aria.rect}>
@@ -597,7 +613,7 @@ const aria: Record<string, string> = {
           <path data-el="d1" d="M160 64 L352 208" class="cl-stroke-b" pathLength="1" fill="none" stroke-dashoffset="1" style="opacity:0" />
           <path data-el="d2" d="M160 208 L352 64" class="cl-stroke-b" pathLength="1" fill="none" stroke-dashoffset="1" style="opacity:0" />
         </svg>
-        <p class="lf-answer cl-ok" data-el="eq" style="opacity:0">שני האלכסונים = <bdi dir="ltr" class="cl-num">10</bdi></p>
+        <p class="lf-answer cl-ok" data-el="eq" style="opacity:0">שני האלכסונים <bdi dir="ltr" class="ll-math">= 10</bdi></p>
       </>
     )}
 
@@ -605,7 +621,7 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top">הקודקוד זז. הקשתות והמעלות חיות. מה קורה לסכום?</p>
         <svg class="concept-loop__svg" viewBox="0 0 560 300" role="img" aria-label={aria.triangles}>
-          <polygon data-el="tri" points="280,48 110,236 450,236" class="cl-fill-a" stroke="#22305a" stroke-width="2.5" />
+          <polygon data-el="tri" points="280,36 110,236 450,236" class="cl-fill-a" stroke="#22305a" stroke-width="2.5" />
           <path data-el="arcA" class="cl-stroke-a lf-arc" fill="none" />
           <path data-el="arcB" class="cl-stroke-b lf-arc" fill="none" />
           <path data-el="arcC" class="lf-stroke-c lf-arc" fill="none" />
@@ -613,7 +629,7 @@ const aria: Record<string, string> = {
           <text data-el="degB" class="cl-t cl-num" text-anchor="middle"></text>
           <text data-el="degC" class="cl-t cl-num" text-anchor="middle"></text>
         </svg>
-        <p class="lf-answer cl-ok" data-el="sum"><bdi dir="ltr" class="cl-num">180°</bdi></p>
+        <p class="lf-answer cl-ok ll-math" data-el="sum" dir="ltr">180°</p>
       </>
     )}
 
@@ -640,11 +656,12 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">זוויות חד־צדדיות פנימיות</span>
-          <span class="cl-tops" data-el="cap0">זוויות מתחלפות פנימיות</span>
-          <span class="cl-tops" data-el="cap1" style="opacity:0">זוויות מתחלפות חיצוניות</span>
-          <span class="cl-tops" data-el="cap2" style="opacity:0">זוויות חד־צדדיות פנימיות</span>
-          <span class="cl-tops" data-el="cap3" style="opacity:0">זוויות קודקודיות</span>
-          <span class="cl-tops" data-el="cap4" style="opacity:0">זוויות צמודות</span>
+          <span class="cl-tops" data-el="cap0">זוויות מתאימות</span>
+          <span class="cl-tops" data-el="cap1" style="opacity:0">זוויות מתחלפות פנימיות</span>
+          <span class="cl-tops" data-el="cap2" style="opacity:0">זוויות מתחלפות חיצוניות</span>
+          <span class="cl-tops" data-el="cap3" style="opacity:0">זוויות חד־צדדיות פנימיות</span>
+          <span class="cl-tops" data-el="cap4" style="opacity:0">זוויות קודקודיות</span>
+          <span class="cl-tops" data-el="cap5" style="opacity:0">זוויות צמודות</span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={aria['parallel-more']}>
           <line class="cl-line" x1="36" y1="108" x2="524" y2="108" />
@@ -657,7 +674,7 @@ const aria: Record<string, string> = {
           <text data-el="degA" class="cl-t cl-num" text-anchor="middle"></text>
           <text data-el="degB" class="cl-t cl-num" text-anchor="middle"></text>
         </svg>
-        <p class="lf-answer cl-ok" data-el="sumline" style="opacity:0"><bdi dir="ltr" class="cl-num">45° + 135° = 180°</bdi></p>
+        <p class="lf-answer cl-ok ll-math" data-el="sumline" dir="ltr" style="opacity:0">45° = 45°</p>
       </>
     )}
   </div>
@@ -671,7 +688,16 @@ const aria: Record<string, string> = {
 </script>
 
 <style>
-  .cl-tops { display: flex; align-items: center; justify-content: center; text-align: center; }
+  .cl-tops { display: block; text-align: center; line-height: 1.45; }
+  .ll-math {
+    display: inline-block;
+    direction: ltr;
+    unicode-bidi: isolate;
+    white-space: nowrap;
+  }
+  .cl-t.cl-tc-a { fill: #2a7c7a; }
+  .cl-t.cl-tc-b { fill: #7c3aed; }
+  .cl-t.cl-ok { fill: #1f8a4c; }
   .lf-note,
   .lf-answer {
     margin: 2px 0 0;
