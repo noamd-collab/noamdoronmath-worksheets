@@ -136,7 +136,6 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'triangular-prism-volume-grade-9': 'prism-vol',
   'patterns-and-graphs-grade-7': 'pattern-graph',
   'coordinate-plane-scale-grade-7': 'scale',
-  'analytic-geometry-grade-9': 'distance',
   'coordinate-plane-applications-grade-7': 'distance',
   'coordinate-plane-applications-grade-9': 'distance',
   'quadratic-equations-grade-9': 'quad-eq',
@@ -181,9 +180,23 @@ export const NON_LANDING_SITE_SLUGS = [
   'conditionforfreeworksheets',
 ] as const;
 
+/**
+ * One authored film replaces the CSS loop on a single landing.
+ * The file is a static asset; TopicPage mounts it instead of LandingLoop.
+ */
+export const FILM_LANDING_LOOPS = {
+  'analytic-geometry-grade-9': {
+    marker: 'distance-between-points',
+    src: '/loops/distance-between-points.html',
+  },
+} as const;
+
+export type FilmLandingSlug = keyof typeof FILM_LANDING_LOOPS;
+
 export type LandingLoop =
   | { kind: 'concept'; variant: ConceptLoopVariant; marker: string }
-  | { kind: 'css'; variant: CssLoopVariant; marker: string };
+  | { kind: 'css'; variant: CssLoopVariant; marker: string }
+  | { kind: 'film'; marker: string; src: string };
 
 function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string | undefined {
   const topicId = page.catalogCta?.catalogTopicId ?? null;
@@ -192,6 +205,8 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
 }
 
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
+  const film = FILM_LANDING_LOOPS[page.slug as FilmLandingSlug];
+  if (film) return { kind: 'film', marker: film.marker, src: film.src };
   const override = SLUG_CSS_OVERRIDE[page.slug];
   if (override) return { kind: 'css', variant: override, marker: override };
   const family = familyOf(page);
