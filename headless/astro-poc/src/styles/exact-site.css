@@ -60,7 +60,10 @@ body.exact-site {
   .exact-nav-toggle[aria-expanded='true'] .exact-nav-toggle__bars::after {top:0;transform:rotate(-45deg);}
   .exact-header nav[data-nav-panel] {display:none;position:absolute;top:calc(100% + 6px);inset-inline:14px;flex-direction:column;flex-wrap:nowrap!important;gap:2px!important;padding:10px;background:#fbfaf5;border:2px solid #22305a;border-radius:16px 6px 18px 8px / 8px 18px 6px 16px;box-shadow:5px 6px 0 rgba(34,48,90,.14);}
   .exact-header nav[data-nav-panel][data-open] {display:flex;}
-  .exact-header nav[data-nav-panel] a {padding:10px 12px!important;border-radius:10px!important;}
+  /* Column flex inherits align-items:center from the desktop rule, which centers
+     each link on its own width. Stretch the rows and start-align the text (RTL = right). */
+  .exact-header nav[data-nav-panel] {align-items:stretch;}
+  .exact-header nav[data-nav-panel] a {padding:10px 12px!important;border-radius:10px!important;text-align:start;}
   .exact-header nav[data-nav-panel] .exact-nav-learn-mobile {display:block!important;}
   .exact-nav-tools {display:block;}
   .exact-nav-tools__btn {display:none!important;}
