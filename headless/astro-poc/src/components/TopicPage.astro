@@ -4,6 +4,7 @@ import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
 import LandingLoop from './LandingLoop.astro';
+import DistancePointsLoop from './DistancePointsLoop.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import { topicLandingLoop } from '../lib/landingLoops';
@@ -89,11 +90,13 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
 
 /* A matching old ConceptLoop film (K3, F01–F14, L01–L56) is the card.
    Pages with no film keep the CSS LandingLoop. triangle-area-grade-7 still
-   mounts its explorer beside the film — the explorer glides once. */
+   mounts its explorer beside the film — the explorer glides once.
+   analytic-geometry-grade-9 mounts DistancePointsLoop in this same slot. */
 const landingLoop = topicLandingLoop(page);
 const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
 const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
-const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css';
+const filmLoop = landingLoop.kind === 'film';
+const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css' || filmLoop;
 const bodyStart = bodyUnits.findIndex((unit) => unit.kind !== 'intro' && unit.kind !== 'cta');
 const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
 const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
@@ -180,6 +183,7 @@ function faqHeadingId(groupIndex: number) {
               </div>
             )}
             {cssVariant && <LandingLoop variant={cssVariant} />}
+            {landingLoop.kind === 'film' && <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />}
           </div>
           <div class="exact-topic-copy">
             {heroUnits.map((unit) => {

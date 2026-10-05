@@ -51,7 +51,7 @@ function astroPages(dir: string): string[] {
 
 describe('landing loop coverage', () => {
   it('resolves a loop for every topic landing', () => {
-    const counts = { concept: 0, css: 0 };
+    const counts = { concept: 0, css: 0, film: 0 };
     for (const slug of TOPIC_PAGE_SLUGS) {
       const loop = topicLandingLoop(loadTopicPage(slug));
       assert.ok(loop.marker, slug);
@@ -60,8 +60,14 @@ describe('landing loop coverage', () => {
       if (loop.kind === 'css') {
         assert.ok(CSS_LOOP_VARIANTS.includes(loop.variant), `${slug} variant ${loop.variant}`);
       }
+      if (loop.kind === 'film') {
+        assert.equal(slug, 'analytic-geometry-grade-9');
+        assert.equal(loop.src, '/loops/distance-between-points.html');
+        assert.equal(loop.marker, 'distance-between-points');
+      }
     }
-    assert.equal(counts.concept + counts.css, TOPIC_PAGE_SLUGS.length);
+    assert.equal(counts.concept + counts.css + counts.film, TOPIC_PAGE_SLUGS.length);
+    assert.equal(counts.film, 1);
     assert.ok(counts.css > 0);
     assert.ok(counts.concept > 0);
   });
@@ -112,6 +118,7 @@ describe('landing loop coverage', () => {
     assert.match(topic, /data-landing-loop=\{loopVariant \? landingLoop\.marker : undefined\}/);
     assert.match(topic, /\{cssVariant && <LandingLoop variant=\{cssVariant\} \/>\}/);
     assert.match(topic, /\{loopVariant && <ConceptLoop variant=\{loopVariant\} \/>\}/);
+    assert.match(topic, /landingLoop\.kind === 'film' && <DistancePointsLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
     assert.match(loop, /data-landing-loop=\{variant\}/);
     assert.match(hub, /data-landing-loop=\{`grade-\$\{grade\}`\}/);
     assert.match(home, /data-landing-loop="hero"/);
@@ -213,12 +220,12 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 26);
+    assert.equal(cssPages, 25);
     const absolute = topicLandingLoop(loadTopicPage('number-line-absolute-value-grade-7'));
     assert.equal(absolute.kind, 'css');
     assert.equal(absolute.variant, 'absolute');
     assert.equal(SLUG_FILM['number-line-absolute-value-grade-7'], undefined);
-    assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).variant, 'distance');
+    assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(topicLandingLoop(loadTopicPage('coordinate-plane-applications-grade-7')).variant, 'coord-app');
     assert.equal(topicLandingLoop(loadTopicPage('coordinate-plane-applications-grade-9')).variant, 'coord-app');
     assert.equal(topicLandingLoop(loadTopicPage('parallel-lines-angles-grade-8')).variant, 'corr-angles');
