@@ -68,10 +68,13 @@ describe('public lesson menu page', () => {
     assert.equal(existsSync(fromTest('../src/lib/secretLesson.ts')), false);
   });
 
-  it('keeps game formulas on one LTR line and a trailing question mark inside the math run', () => {
+  it('keeps game formulas on one LTR line and a trailing question mark outside the math run', () => {
     assert.match(lesson, /\.math\{direction:ltr;unicode-bidi:isolate;white-space:nowrap\}/);
     assert.match(lesson, /id="heroEq" class="math-line"/);
-    assert.match(lesson, /title\.append\(mathNode\(S\.tM \+ \(S\.tB \|\| ''\)\)\)/);
+    assert.match(lesson, /if \(S\.tM\) title\.append\(mathNode\(S\.tM\)\);/);
+    assert.match(lesson, /if \(S\.tB\) title\.append\(document\.createTextNode\(S\.tB\)\);/);
+    assert.equal(lesson.includes("math += '?'"), false);
+    assert.equal(lesson.includes('mathNode(S.tM + '), false);
     assert.match(lesson, /m\('\(2ab\)'\)/);
     assert.equal(lesson.includes("(' + m('2ab') + ')"), false);
     assert.match(lesson, /#numEq2\{display:flex;flex-wrap:nowrap/);
