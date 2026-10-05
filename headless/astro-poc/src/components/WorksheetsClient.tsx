@@ -1,5 +1,6 @@
 import { useMemo, useState, useId, useCallback, useEffect, useRef } from 'react';
 import '../styles/exact-catalog.css';
+import '../styles/site-search.css';
 import type { CatalogGrade, CatalogGroup, CatalogTopic, CatalogV1 } from '../lib/catalog/types';
 import {
   familyOf,
@@ -10,10 +11,8 @@ import {
   type GradeNum,
 } from '../lib/grades';
 import { GradeNav } from './GradeNav';
-import {
-  buildTopicHaystack,
-  topicMatchesQuery,
-} from '../lib/search';
+import { catalogSearch, matchingTopicIds } from '../lib/siteSearch/catalogFilter';
+import { searchHref } from '../lib/siteSearch/url';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import {
   buildWorksheetsHref,
@@ -171,16 +170,6 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     }
   }, [activeGroups, group]);
 
-  const groupLabelMaps = useMemo(() => {
-    const maps = new Map<number, Map<string, string>>();
-    for (const g of familyGrades) {
-      const m = new Map<string, string>();
-      for (const gr of g.groups) m.set(gr.key, gr.label);
-      maps.set(g.grade, m);
-    }
-    return maps;
-  }, [familyGrades]);
-
   const childrenByParentByGrade = useMemo(() => {
     const out = new Map<number, Map<number, CatalogTopic[]>>();
     for (const g of familyGrades) {
@@ -196,31 +185,13 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     return out;
   }, [familyGrades]);
 
-  const haystacksByGrade = useMemo(() => {
-    const out = new Map<number, Map<number, string[]>>();
-    for (const g of familyGrades) {
-      const searchTerms = catalog.searchTerms[String(g.grade)] || {};
-      const childrenMap = childrenByParentByGrade.get(g.grade) || new Map();
-      const labels = groupLabelMaps.get(g.grade) || new Map();
-      const m = new Map<number, string[]>();
-      for (const t of g.topics) {
-        if (t.parent !== undefined) continue;
-        const children: CatalogTopic[] = childrenMap.get(t.id) || [];
-        const childTexts = children.map((c: CatalogTopic) => c.title + ' ' + (c.description || ''));
-        m.set(
-          t.id,
-          buildTopicHaystack(
-            t,
-            labels.get(t.group) || '',
-            searchTerms[String(t.id)] || '',
-            childTexts
-          )
-        );
-      }
-      out.set(g.grade, m);
-    }
+  // Same Hebrew matching as the site search (src/lib/siteSearch), over the catalog only.
+  const searchIndex = useMemo(() => catalogSearch(catalog), [catalog]);
+  const matchesByGrade = useMemo(() => {
+    const out = new Map<number, Set<number> | null>();
+    for (const g of familyGrades) out.set(g.grade, matchingTopicIds(searchIndex, q, g.grade));
     return out;
-  }, [familyGrades, catalog.searchTerms, childrenByParentByGrade, groupLabelMaps]);
+  }, [searchIndex, q, familyGrades]);
 
   const topicAllowedByTrack = useCallback(
     (gNum: number, topic: CatalogTopic, mode: TrackMode): boolean => {
@@ -243,7 +214,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       mode: TrackMode,
       query: string
     ): CatalogTopic[] => {
-      const hay = haystacksByGrade.get(gEntry.grade) || new Map();
+      const matches = query === q ? matchesByGrade.get(gEntry.grade) : matchingTopicIds(searchIndex, query, gEntry.grade);
       const pin = !query.trim() && pinnedCard != null ? pinnedCard : null;
       return gEntry.topics.filter((t) => {
         if (t.parent !== undefined) return false;
@@ -251,7 +222,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         if (useGroup && group !== 'all' && t.group !== group) return false;
         // Landing CTAs pass ?topic=N — filter to that topic when search is empty.
         if (pin != null && t.id !== pin) return false;
-        return topicMatchesQuery(hay.get(t.id) || [], query);
+        return !matches || matches.has(t.id);
       });
     };
 
@@ -272,7 +243,8 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
     track,
     q,
     group,
-    haystacksByGrade,
+    matchesByGrade,
+    searchIndex,
     topicAllowedByTrack,
     pinnedCard,
   ]);
@@ -286,16 +258,16 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
       if (g === grade) continue;
       const entry = familyGrades.find((x) => x.grade === g);
       if (!entry) continue;
-      const hay = haystacksByGrade.get(entry.grade) || new Map();
+      const matches = matchesByGrade.get(entry.grade);
       const mode: TrackMode = g === 9 ? track : 'reg';
       other += entry.topics.filter((t) => {
         if (t.parent !== undefined) return false;
         if (!topicAllowedByTrack(entry.grade, t, mode)) return false;
-        return topicMatchesQuery(hay.get(t.id) || [], q);
+        return !matches || matches.has(t.id);
       }).length;
     }
     return other ? `יש עוד ${other} תוצאות בכיתות אחרות באותה שכבה` : '';
-  }, [q, crossActive, grade, familyGrades, track, haystacksByGrade, topicAllowedByTrack]);
+  }, [q, crossActive, grade, familyGrades, track, matchesByGrade, topicAllowedByTrack]);
 
   const statusText = (() => {
     if (q.trim()) {
@@ -551,6 +523,11 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           {searchFamilyLabel}
         </label>
         {otherFamilyHint ? <span className="crosshint">{otherFamilyHint}</span> : null}
+        {q.trim() ? (
+          <a className="crosshint site-catalog-sitewide-link" href={searchHref({ q, grade: null })} data-catalog-sitewide-inline>
+            חיפוש בכל האתר ←
+          </a>
+        ) : null}
         {crossActive ? (
           <span id="results-scope" className="crosshint">
             תוצאות מוגבלות לשכבת בית הספר הפעילה — לא לכל תשע הכיתות
@@ -571,6 +548,13 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
             <button type="button" onClick={clearSearch}>
               ניקוי חיפוש וסינון
             </button>
+            {q.trim() ? (
+              <p className="site-catalog-sitewide">
+                <a href={searchHref({ q, grade: null })} data-catalog-sitewide>
+                  חיפוש „{q.trim()}” בכל האתר ובכל הכיתות
+                </a>
+              </p>
+            ) : null}
           </div>
         ) : (
           visibleBlocks.map(({ gradeEntry: gEntry, topics: list }) => (
