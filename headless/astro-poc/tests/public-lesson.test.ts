@@ -67,4 +67,22 @@ describe('public lesson menu page', () => {
     assert.equal(existsSync(fromTest('../src/pages/l')), false);
     assert.equal(existsSync(fromTest('../src/lib/secretLesson.ts')), false);
   });
+
+  it('keeps game formulas on one LTR line and a trailing question mark inside the math run', () => {
+    assert.match(lesson, /\.math\{direction:ltr;unicode-bidi:isolate;white-space:nowrap\}/);
+    assert.match(lesson, /id="heroEq" class="math-line"/);
+    assert.match(lesson, /title\.append\(mathNode\(S\.tM \+ \(S\.tB \|\| ''\)\)\)/);
+    assert.match(lesson, /m\('\(2ab\)'\)/);
+    assert.equal(lesson.includes("(' + m('2ab') + ')"), false);
+    assert.match(lesson, /#numEq2\{display:flex;flex-wrap:nowrap/);
+  });
+
+  it('scales the square diagram with its frame instead of a fixed pixel cap', () => {
+    assert.match(lesson, /#squareFrame\{width:100%;max-width:100%;min-width:0;aspect-ratio:402\/322/);
+    assert.match(lesson, /#square\{position:absolute;inset:0;width:100%;height:100%/);
+    assert.match(lesson, /viewBox="0 0 402 322"/);
+    assert.equal(lesson.includes('#square{width:min(240px,30vh)}'), false);
+    assert.equal(lesson.includes('#square{width:min(300px,34vw)}'), false);
+    assert.match(lesson, /legible\(userPx\)/);
+  });
 });
