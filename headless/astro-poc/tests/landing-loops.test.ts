@@ -212,7 +212,11 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 25);
+    assert.equal(cssPages, 26);
+    const absolute = topicLandingLoop(loadTopicPage('number-line-absolute-value-grade-7'));
+    assert.equal(absolute.kind, 'css');
+    assert.equal(absolute.variant, 'absolute');
+    assert.equal(SLUG_FILM['number-line-absolute-value-grade-7'], undefined);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);
     assert.equal(CSS_LOOP_IDEAS.stats.includes('16/3'), false);

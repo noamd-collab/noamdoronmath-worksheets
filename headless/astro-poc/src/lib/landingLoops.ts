@@ -104,7 +104,6 @@ export const SLUG_FILM: Record<string, FilmVariant> = {
   'precalculus-functions-graphs-grade-9': 'parab',
   'statistics-grade-8': 'mean-cols',
   'statistics-grade-9': 'mean-cols',
-  'number-line-absolute-value-grade-7': 'numberline',
   'congruent-polygons-transformations-grade-9': 'transform',
   'triangle-area-grade-7': 'triangle',
   'triangle-quadrilateral-angle-sum-grade-7': 'angle-sum',

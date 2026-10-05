@@ -46,25 +46,6 @@ const quadSigns = [
       </>
     )}
 
-    {variant === 'absolute' && (
-      <>
-        <line class="sk-ink" x1="36" y1="120" x2="444" y2="120"></line>
-        {[-4, 0, 4].map((n) => (
-          <g>
-            <line class="sk-ink" x1={240 + n * 36} y1="112" x2={240 + n * 36} y2="128"></line>
-            <text class="sk-math" x={240 + n * 36} y="156" font-size="18" text-anchor="middle">{signedLabel(n)}</text>
-          </g>
-        ))}
-        <path class="sk-gold sk-in" d="M96 96 H240"></path>
-        <path class="sk-gold sk-in sk-d1" d="M240 96 H384"></path>
-        <text class="sk-math" x="168" y="84" font-size="16" text-anchor="middle">4</text>
-        <text class="sk-math" x="312" y="84" font-size="16" text-anchor="middle">4</text>
-        <circle cx="96" cy="120" r="9" class="sk-dot"></circle>
-        <circle cx="384" cy="120" r="9" class="sk-dot"></circle>
-        <text class="sk-math" x="240" y="200" font-size="28" text-anchor="middle">|{MINUS}4| = 4</text>
-      </>
-    )}
-
     {variant === 'percent' && (
       <>
         <rect class="sk-track" x="48" y="96" width="384" height="48" rx="16"></rect>

@@ -5,6 +5,7 @@
  * Reduced motion, html.nd-motion-off, and html.noam-a11y-motion hold a
  * finished frame. A tiny observer pauses the loop while it is off-screen.
  */
+import AbsoluteValueFilm from './AbsoluteValueFilm.astro';
 import LoopFormula from './LoopFormula.astro';
 import LoopSketch from './LoopSketch.astro';
 import {
@@ -20,6 +21,9 @@ const { variant } = Astro.props;
 const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
 ---
 
+{variant === 'absolute' ? (
+  <AbsoluteValueFilm />
+) : (
 <div
   class:list={['ll', `ll--${variant}`]}
   dir="ltr"
@@ -30,6 +34,7 @@ const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
 >
   {formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}
 </div>
+)}
 
 <script>
   const root = document.documentElement;

@@ -1,0 +1,270 @@
+---
+/**
+ * Absolute value on the number line.
+ * F02 numberline is rounding (47 < 52). L17 signed-jump is −2 + 5 = 3.
+ * Neither teaches distance from 0, so this page has its own film.
+ */
+import { MINUS, signedLabel } from '../lib/landingLoops';
+
+const ticks = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+const xOf = (n: number) => 280 + n * 40;
+const labeled = new Set([-4, -2, 0, 2, 4]);
+---
+
+<div class="concept-loop" data-abs-film>
+  <div
+    class="concept-loop__card"
+    role="button"
+    tabindex="0"
+    aria-label="השהיית הנפשה"
+    aria-pressed="false"
+    data-pause-card
+  >
+    <button
+      type="button"
+      class="concept-loop__toggle"
+      data-el="toggle"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <g data-el="ic-pause">
+          <rect x="3" y="2.5" width="3.4" height="11" rx="1.2"></rect>
+          <rect x="9.6" y="2.5" width="3.4" height="11" rx="1.2"></rect>
+        </g>
+        <path data-el="ic-play" d="M4 2.2 L13.4 8 L4 13.8 Z" style="display:none"></path>
+      </svg>
+    </button>
+    <p class="concept-loop__top">מה המרחק מאפס?</p>
+    <svg
+      class="concept-loop__svg"
+      viewBox="0 0 560 250"
+      role="img"
+      aria-label={`הדגמה: המרחק של ${MINUS}4 ושל 4 מאפס הוא 4`}
+    >
+      <line class="cl-line" x1="56" y1="148" x2="504" y2="148" />
+      {ticks.map((n) => (
+        <g>
+          <line class="cl-line-thin" x1={xOf(n)} y1="140" x2={xOf(n)} y2="156" />
+          {labeled.has(n) && (
+            <text class="cl-t cl-num cl-small" x={xOf(n)} y="178" text-anchor="middle">{signedLabel(n)}</text>
+          )}
+        </g>
+      ))}
+      <circle cx={xOf(0)} cy="148" r="5" fill="#22305a" />
+      <path
+        class="cl-line cl-stroke-a av-arc"
+        data-el="arc-neg"
+        pathLength="1"
+        d={`M${xOf(-4)} 144 Q${(xOf(-4) + xOf(0)) / 2} 78 ${xOf(0)} 144`}
+        style="opacity:0"
+      />
+      <path
+        class="cl-line cl-stroke-b av-arc"
+        data-el="arc-pos"
+        pathLength="1"
+        d={`M${xOf(4)} 144 Q${(xOf(4) + xOf(0)) / 2} 78 ${xOf(0)} 144`}
+        style="opacity:0"
+      />
+      <text class="cl-t cl-num" data-el="lbl-neg" x={(xOf(-4) + xOf(0)) / 2} y="92" text-anchor="middle" style="opacity:0">4</text>
+      <text class="cl-t cl-num" data-el="lbl-pos" x={(xOf(4) + xOf(0)) / 2} y="92" text-anchor="middle" style="opacity:0">4</text>
+      <circle data-el="pt-neg" class="cl-pt-a" cx={xOf(-4)} cy="148" r="9" style="opacity:0" />
+      <circle data-el="pt-pos" class="cl-pt-b" cx={xOf(4)} cy="148" r="9" style="opacity:0" />
+    </svg>
+    <p class="concept-loop__formula av-eqs" dir="ltr">
+      <span class="cl-num cl-ok" data-el="eq-neg" style="opacity:0">|{MINUS}4| = 4</span>
+      <span class="cl-num cl-ok" data-el="eq-pos" style="opacity:0">|4| = 4</span>
+    </p>
+  </div>
+</div>
+
+<script>
+  import { ph } from '../lib/conceptLoops';
+
+  const DURATION = 12;
+  const HOLD = 8.2;
+  const MAX_LAPS = 4;
+
+  type Root = HTMLElement & {
+    __loop?: {
+      seek: (t: number) => void;
+      pause: () => void;
+      play: () => void;
+      state: () => { t: number; playing: boolean; laps: number; done: boolean; static: boolean };
+    };
+  };
+
+  const q = (root: Root, name: string) => root.querySelector(`[data-el="${name}"]`) as HTMLElement | SVGElement | null;
+  const op = (el: HTMLElement | SVGElement | null, v: number) => {
+    if (el) el.style.opacity = String(Math.round(Math.min(1, Math.max(0, v)) * 100) / 100);
+  };
+  const draw = (el: HTMLElement | SVGElement | null, p: number) => {
+    if (el) el.style.strokeDashoffset = String(Math.round((1 - Math.min(1, Math.max(0, p))) * 100) / 100);
+  };
+
+  function motionOff() {
+    const root = document.documentElement;
+    return (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      root.classList.contains('nd-motion-off') ||
+      root.classList.contains('noam-a11y-motion')
+    );
+  }
+
+  function render(root: Root, t: number) {
+    const fade = 1 - ph(t, 10.4, 11.5);
+    op(q(root, 'pt-neg'), ph(t, 0.4, 0.9) * fade);
+    op(q(root, 'arc-neg'), ph(t, 1.05, 1.35) * fade);
+    draw(q(root, 'arc-neg'), ph(t, 1.15, 2.35));
+    op(q(root, 'lbl-neg'), ph(t, 2.15, 2.6) * fade);
+    op(q(root, 'pt-pos'), ph(t, 2.9, 3.4) * fade);
+    op(q(root, 'arc-pos'), ph(t, 3.55, 3.9) * fade);
+    draw(q(root, 'arc-pos'), ph(t, 3.65, 4.85));
+    op(q(root, 'lbl-pos'), ph(t, 4.65, 5.1) * fade);
+    op(q(root, 'eq-neg'), ph(t, 5.5, 6.2) * fade);
+    op(q(root, 'eq-pos'), ph(t, 6.5, 7.2) * fade);
+  }
+
+  function setup(root: Root) {
+    if (root.__loop) return;
+    const card = root.querySelector('[data-pause-card]') as HTMLElement | null;
+    const toggle = q(root, 'toggle') as HTMLElement | null;
+    const icPlay = q(root, 'ic-play') as SVGElement | null;
+    const icPause = q(root, 'ic-pause') as SVGElement | null;
+    let t = 0;
+    let lap = 1;
+    let playing = false;
+    let userPaused = false;
+    let done = false;
+    let inView = false;
+    let isStatic = false;
+    let raf = 0;
+    let last = 0;
+
+    const setToggle = (label: string, showPlay: boolean) => {
+      card?.setAttribute('aria-label', label);
+      if (icPlay) icPlay.style.display = showPlay ? '' : 'none';
+      if (icPause) icPause.style.display = showPlay ? 'none' : '';
+      card?.setAttribute('aria-pressed', playing ? 'true' : 'false');
+    };
+
+    const tick = (now: number) => {
+      if (!playing) return;
+      const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
+      last = now;
+      t += dt;
+      if (t >= DURATION) {
+        t -= DURATION;
+        lap += 1;
+      }
+      if (lap >= MAX_LAPS && t >= HOLD) {
+        t = HOLD;
+        render(root, t);
+        playing = false;
+        done = true;
+        setToggle('הפעלת ההדגמה מחדש', true);
+        return;
+      }
+      render(root, t);
+      raf = requestAnimationFrame(tick);
+    };
+
+    const play = () => {
+      if (playing || isStatic) return;
+      playing = true;
+      last = performance.now();
+      raf = requestAnimationFrame(tick);
+      setToggle('השהיית הנפשה', false);
+    };
+    const pause = () => {
+      playing = false;
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+      if (!isStatic) setToggle(done ? 'הפעלת ההדגמה מחדש' : 'הפעלת ההדגמה', true);
+    };
+
+    const applyMotion = () => {
+      if (motionOff()) {
+        isStatic = true;
+        playing = false;
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+        t = HOLD;
+        render(root, t);
+        if (toggle) toggle.style.display = 'none';
+      } else if (isStatic) {
+        isStatic = false;
+        t = 0;
+        lap = 1;
+        done = false;
+        userPaused = false;
+        render(root, 0);
+        if (toggle) toggle.style.display = '';
+        if (inView) play();
+        else setToggle('הפעלת ההדגמה', true);
+      }
+    };
+
+    render(root, 0);
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          inView = entries[0].isIntersecting;
+          if (isStatic) return;
+          if (inView && !userPaused && !done) play();
+          else if (!inView && playing) pause();
+        },
+        { threshold: 0.35 },
+      );
+      io.observe(root);
+    }
+    const onToggle = () => {
+      if (isStatic) return;
+      if (done) {
+        done = false;
+        lap = 1;
+        t = 0;
+        userPaused = false;
+        play();
+      } else if (playing) {
+        userPaused = true;
+        pause();
+      } else {
+        userPaused = false;
+        play();
+      }
+    };
+    card?.addEventListener('click', onToggle);
+    card?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        onToggle();
+      }
+    });
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applyMotion);
+    new MutationObserver(applyMotion).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    applyMotion();
+    if (!isStatic && !playing) setToggle('הפעלת ההדגמה', true);
+    root.__loop = {
+      seek(tt: number) {
+        t = Math.min(Math.max(tt, 0), DURATION);
+        render(root, t);
+      },
+      pause,
+      play,
+      state: () => ({ t, playing, laps: lap, done, static: isStatic }),
+    };
+  }
+
+  const boot = () => document.querySelectorAll<Root>('[data-abs-film]').forEach(setup);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
+</script>
+
+<style>
+  .av-arc { stroke-width: 3.5; fill: none; }
+  .av-eqs { display: flex; justify-content: center; gap: 28px; font-size: 1.35rem; }
+</style>
