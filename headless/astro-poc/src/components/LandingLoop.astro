@@ -1,310 +1,34 @@
 ---
 /**
- * One reusable CSS/SVG loop for landing pages that do not already mount
- * ConceptLoop. Transform and opacity only (compositor-friendly).
- * Dimensions come from the SVG viewBox, so the slot does not shift.
- * Reduced motion, html.nd-motion-off, and html.noam-a11y-motion hold the
+ * One reusable loop for landing pages that do not already mount ConceptLoop.
+ * The card size comes from aspect-ratio, so the slot does not shift.
+ * Reduced motion, html.nd-motion-off, and html.noam-a11y-motion hold a
  * finished frame. A tiny observer pauses the loop while it is off-screen.
  */
-import { LOOP_FORMULAS, signedLabel, type CssLoopVariant } from '../lib/landingLoops';
+import LoopFormula from './LoopFormula.astro';
+import LoopSketch from './LoopSketch.astro';
+import {
+  CSS_LOOP_IDEAS,
+  FORMULA_LOOP_VARIANTS,
+  type CssLoopVariant,
+} from '../lib/landingLoops';
 
 interface Props {
   variant: CssLoopVariant;
 }
 const { variant } = Astro.props;
-
-const grid = (count: number, cols: number, x: number, y: number, size: number, gap: number) =>
-  Array.from({ length: count }, (_, i) => ({
-    i,
-    x: x + (i % cols) * (size + gap),
-    y: y + Math.floor(i / cols) * (size + gap),
-  }));
-const powersCells = grid(9, 3, 292, 48, 42, 8);
-const areaCells = grid(15, 5, 248, 58, 34, 6);
+const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
 ---
 
-<div class:list={['ll', `ll--${variant}`]} dir="ltr" data-landing-loop={variant} data-css-loop aria-hidden="true">
-  <svg viewBox="0 0 480 280" focusable="false">
-    <rect class="ll-card" x="8" y="8" width="464" height="264" rx="24"></rect>
-
-    {variant === 'powers' && (
-      <>
-        <text class="ll-he" x="36" y="178" text-anchor="start">{LOOP_FORMULAS.powersExpand.base}</text>
-        {powersCells.map((cell) => (
-          <rect class="ll-cell" style={`--i:${cell.i}`} x={cell.x} y={cell.y} width="42" height="42" rx="8"></rect>
-        ))}
-      </>
-    )}
-
-    {variant === 'roots' && (
-      <>
-        <path class="ll-ink" d="M36 164 H74 L104 208 L150 124 H236"></path>
-        <text class="ll-math" x="193" y="172" font-size="36" text-anchor="middle">9</text>
-        <text class="ll-math ll-answer" x="252" y="172" font-size="36">= 3</text>
-        {grid(9, 3, 300, 56, 40, 8).map((cell) => (
-          <rect class="ll-cell ll-cell--teal" style={`--i:${8 - cell.i}`} x={cell.x} y={cell.y} width="40" height="40" rx="8"></rect>
-        ))}
-      </>
-    )}
-
-    {variant === 'signed' && (
-      <>
-        <line class="ll-ink" x1="36" y1="150" x2="444" y2="150"></line>
-        <path class="ll-ink" d="M432 142 L448 150 L432 158"></path>
-        {[-4, -2, 0, 2, 4].map((n) => (
-          <g>
-            <line class="ll-ink" x1={240 + n * 40} y1="142" x2={240 + n * 40} y2="158"></line>
-            <text class="ll-math" x={240 + n * 40} y="188" font-size="16" text-anchor="middle">{signedLabel(n)}</text>
-          </g>
-        ))}
-        <g class="ll-dot">
-          <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
-          <circle cx="160" cy="150" r="11"></circle>
-        </g>
-        <text class="ll-math ll-answer" x="240" y="78" font-size="32" text-anchor="middle">{LOOP_FORMULAS.signed.base}</text>
-      </>
-    )}
-
-    {variant === 'order' && (
-      <>
-        <rect class="ll-highlight" x="168" y="78" width="132" height="52" rx="12"></rect>
-        <text class="ll-math" x="240" y="118" font-size="40" text-anchor="middle">2 + 3 × 4</text>
-        <text class="ll-math ll-answer" x="240" y="190" font-size="36" text-anchor="middle">2 + 12 = 14</text>
-        <text class="ll-he" x="240" y="230" text-anchor="middle" direction="rtl" unicode-bidi="isolate">כפל קודם</text>
-      </>
-    )}
-
-    {variant === 'percent' && (
-      <>
-        <rect class="ll-track" x="48" y="118" width="384" height="36" rx="18"></rect>
-        <rect class="ll-fill" x="48" y="118" width="96" height="36" rx="18"></rect>
-        <text class="ll-math ll-answer" x="240" y="86" font-size="40" text-anchor="middle">25% = 1/4</text>
-        <text class="ll-he" x="240" y="200" text-anchor="middle" direction="rtl" unicode-bidi="isolate">רבע מהשלם</text>
-      </>
-    )}
-
-    {variant === 'angles' && (
-      <>
-        <line class="ll-ink" x1="90" y1="196" x2="400" y2="196"></line>
-        <g class="ll-sweep" style="--ox:18.75%;--oy:70%">
-          <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
-          <line class="ll-ink ll-ink--gold" x1="90" y1="196" x2="300" y2="196"></line>
-        </g>
-        <path class="ll-arc ll-fade" d="M150 196 A60 60 0 0 1 120 144"></path>
-        <text class="ll-math ll-answer" x="168" y="168" font-size="28">50°</text>
-        <text class="ll-he" x="400" y="84" text-anchor="end" direction="rtl" unicode-bidi="isolate">זווית</text>
-      </>
-    )}
-
-    {variant === 'area' && (
-      <>
-        <text class="ll-math" x="36" y="120" font-size="36">5 × 3</text>
-        <text class="ll-math ll-answer" x="36" y="176" font-size="36">= 15</text>
-        {areaCells.map((cell) => (
-          <rect class="ll-cell ll-cell--teal" style={`--i:${cell.i}`} x={cell.x} y={cell.y} width="34" height="34" rx="6"></rect>
-        ))}
-      </>
-    )}
-
-    {variant === 'quads' && (
-      <>
-        <g class="ll-shear">
-          <rect x="150" y="64" width="200" height="120" rx="6" fill="#d7efe8" stroke="#22305a" stroke-width="3"></rect>
-        </g>
-        <text class="ll-he" x="240" y="230" text-anchor="middle" direction="rtl" unicode-bidi="isolate">מלבן נגזר למקבילית</text>
-      </>
-    )}
-
-    {variant === 'triangles' && (
-      <>
-        <polygon class="ll-shape" points="240,48 392,206 88,206"></polygon>
-        <text class="ll-math ll-fade" x="118" y="196" font-size="18">60°</text>
-        <text class="ll-math ll-fade ll-d1" x="332" y="196" font-size="18">60°</text>
-        <text class="ll-math ll-fade ll-d2" x="240" y="86" font-size="18" text-anchor="middle">60°</text>
-        <text class="ll-math ll-answer" x="240" y="248" font-size="28" text-anchor="middle">α + β + γ = 180°</text>
-      </>
-    )}
-
-    {variant === 'similar' && (
-      <>
-        <polygon class="ll-ghost" points="250,46 420,214 80,214"></polygon>
-        <g class="ll-scale">
-          <polygon class="ll-shape" points="250,46 420,214 80,214"></polygon>
-        </g>
-        <text class="ll-math ll-answer" x="240" y="252" font-size="26" text-anchor="middle">k = 2</text>
-      </>
-    )}
-
-    {variant === 'congruence' && (
-      <>
-        <polygon class="ll-shape" points="70,70 190,200 40,200"></polygon>
-        <g class="ll-join">
-          <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
-          <polygon class="ll-shape ll-shape--gold" points="250,70 370,200 220,200"></polygon>
-        </g>
-        <text class="ll-math ll-answer" x="240" y="248" font-size="32" text-anchor="middle">≅</text>
-      </>
-    )}
-
-    {variant === 'circle' && (
-      <>
-        <circle class="ll-ring" cx="168" cy="132" r="78"></circle>
-        <circle class="ll-ink-dot" cx="168" cy="132" r="5"></circle>
-        <g class="ll-orbit" style="--ox:35%;--oy:47.1%">
-          <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
-          <line class="ll-ink ll-ink--gold" x1="168" y1="132" x2="246" y2="132"></line>
-          <circle cx="246" cy="132" r="6" fill="#e6a534" stroke="#22305a" stroke-width="2"></circle>
-        </g>
-        <text class="ll-math" x="300" y="120" font-size="28">C = 2πr</text>
-      </>
-    )}
-
-    {variant === 'round-solid' && (
-      <>
-        <ellipse class="ll-ring" cx="168" cy="78" rx="70" ry="22"></ellipse>
-        <line class="ll-ink" x1="98" y1="78" x2="98" y2="190"></line>
-        <line class="ll-ink" x1="238" y1="78" x2="238" y2="190"></line>
-        <ellipse class="ll-ring" cx="168" cy="190" rx="70" ry="22"></ellipse>
-        <ellipse class="ll-disc" cx="168" cy="140" rx="52" ry="16"></ellipse>
-        <text class="ll-he" x="292" y="176" direction="rtl" unicode-bidi="isolate">גליל</text>
-      </>
-    )}
-
-    {variant === 'solids' && (
-      <>
-        <g class="ll-pulse">
-          <polygon class="ll-shape" points="70,120 190,70 310,120 190,170"></polygon>
-          <polygon class="ll-shape" points="70,120 190,170 190,240 70,190"></polygon>
-          <polygon class="ll-shape ll-shape--gold" points="190,170 310,120 310,190 190,240"></polygon>
-        </g>
-        <text class="ll-math ll-answer" x="340" y="160" font-size="26">V = a·b·c</text>
-      </>
-    )}
-
-    {variant === 'coords' && (
-      <>
-        <line class="ll-ink" x1="40" y1="140" x2="440" y2="140"></line>
-        <line class="ll-ink" x1="240" y1="250" x2="240" y2="36"></line>
-        <text class="ll-math" x="424" y="132" font-size="16">x</text>
-        <text class="ll-math" x="250" y="32" font-size="16">y</text>
-        <text class="ll-math" x="360" y="100" font-size="18" text-anchor="middle">I</text>
-        <text class="ll-math" x="120" y="100" font-size="18" text-anchor="middle">II</text>
-        <text class="ll-math" x="120" y="210" font-size="18" text-anchor="middle">III</text>
-        <text class="ll-math" x="360" y="210" font-size="18" text-anchor="middle">IV</text>
-        <g class="ll-quad">
-          <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
-          <circle cx="0" cy="0" r="9"></circle>
-        </g>
-      </>
-    )}
-
-    {variant === 'linear' && (
-      <>
-        <line class="ll-ink" x1="48" y1="230" x2="432" y2="230"></line>
-        <line class="ll-ink" x1="72" y1="250" x2="72" y2="36"></line>
-        <line class="ll-ink ll-ink--coral" x1="72" y1="210" x2="400" y2="46"></line>
-        <g class="ll-line-dot">
-          <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
-          <circle cx="0" cy="0" r="8"></circle>
-        </g>
-        <text class="ll-math ll-answer" x="250" y="70" font-size="32">y = 2x</text>
-      </>
-    )}
-
-    {variant === 'parabola' && (
-      <>
-        <line class="ll-ink" x1="36" y1="210" x2="444" y2="210"></line>
-        <line class="ll-ink" x1="240" y1="250" x2="240" y2="28"></line>
-        <path class="ll-ink ll-ink--coral" d="M80 200 Q240 20 400 200" fill="none"></path>
-        <g class="ll-para">
-          <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
-          <circle cx="0" cy="0" r="8"></circle>
-        </g>
-      </>
-    )}
-
-    {variant === 'systems' && (
-      <>
-        <line class="ll-ink" x1="40" y1="220" x2="430" y2="220"></line>
-        <line class="ll-ink" x1="70" y1="250" x2="70" y2="30"></line>
-        <line class="ll-ink ll-ink--coral" x1="70" y1="200" x2="400" y2="50"></line>
-        <g class="ll-cross">
-          <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
-          <line class="ll-ink ll-ink--gold" x1="90" y1="60" x2="400" y2="200"></line>
-        </g>
-        <circle class="ll-answer-dot" cx="214" cy="132" r="7"></circle>
-        <text class="ll-math ll-answer" x="250" y="118" font-size="22">(x, y)</text>
-      </>
-    )}
-
-    {variant === 'stats' && (
-      <>
-        <line class="ll-ink" x1="56" y1="210" x2="300" y2="210"></line>
-        <rect class="ll-bar" style="--i:0" x="78" y="120" width="42" height="90" rx="8"></rect>
-        <rect class="ll-bar ll-bar--gold" style="--i:1" x="142" y="70" width="42" height="140" rx="8"></rect>
-        <rect class="ll-bar ll-bar--coral" style="--i:2" x="206" y="96" width="42" height="114" rx="8"></rect>
-        <text class="ll-math" x="99" y="238" font-size="16" text-anchor="middle">4</text>
-        <text class="ll-math" x="163" y="238" font-size="16" text-anchor="middle">7</text>
-        <text class="ll-math" x="227" y="238" font-size="16" text-anchor="middle">5</text>
-        <text class="ll-he" x="400" y="120" text-anchor="end" direction="rtl" unicode-bidi="isolate">ממוצע</text>
-        <text class="ll-math ll-answer" x="400" y="160" font-size="28" text-anchor="end">5.3</text>
-      </>
-    )}
-
-    {variant === 'probability' && (
-      <>
-        <circle class="ll-ring" cx="150" cy="130" r="72"></circle>
-        <text class="ll-math ll-face" x="150" y="140" font-size="32" text-anchor="middle" direction="rtl" unicode-bidi="isolate">עץ</text>
-        <text class="ll-math ll-face ll-face--back" x="150" y="140" font-size="32" text-anchor="middle" direction="rtl" unicode-bidi="isolate">פלי</text>
-        <text class="ll-math ll-answer" x="300" y="140" font-size="36">P = 1/2</text>
-      </>
-    )}
-
-    {variant === 'transform' && (
-      <>
-        <polygon class="ll-ghost" points="70,80 170,200 40,200"></polygon>
-        <g class="ll-move">
-          <rect class="ll-stage" x="0" y="0" width="480" height="280"></rect>
-          <polygon class="ll-shape" points="70,80 170,200 40,200"></polygon>
-        </g>
-        <text class="ll-he ll-answer" x="400" y="140" text-anchor="end" direction="rtl" unicode-bidi="isolate">הזזה</text>
-      </>
-    )}
-
-    {variant === 'triangle-area' && (
-      <>
-        <polygon class="ll-shape" points="90,200 310,200 200,70"></polygon>
-        <line class="ll-ink ll-ink--gold ll-fade" x1="200" y1="200" x2="200" y2="70"></line>
-        <text class="ll-math" x="200" y="228" font-size="16" text-anchor="middle">a = 6</text>
-        <text class="ll-math ll-fade" x="214" y="140" font-size="16">h = 4</text>
-        <text class="ll-math ll-answer" x="360" y="130" font-size="26">S = ah/2</text>
-        <text class="ll-math ll-answer" x="360" y="172" font-size="26">= 12</text>
-      </>
-    )}
-
-    {variant === 'tools' && (
-      <>
-        <rect x="70" y="48" width="340" height="170" rx="22" fill="#22305a"></rect>
-        <text class="ll-tool ll-tool-a" x="240" y="148" font-size="40" text-anchor="middle">12 ÷ 3 = 4</text>
-        <text class="ll-tool ll-tool-b" x="240" y="148" font-size="40" text-anchor="middle">√16 = 4</text>
-      </>
-    )}
-  </svg>
-  {variant === 'powers' && (
-    <span class="ll-formula ll-formula--powers">{LOOP_FORMULAS.powers.base}<sup class="ll-sup">{LOOP_FORMULAS.powers.sup}</sup><span class="ll-answer">{LOOP_FORMULAS.powers.rest}</span></span>
-  )}
-  {variant === 'circle' && (
-    <span class="ll-formula ll-formula--circle ll-answer">{LOOP_FORMULAS.circleArea.base}<sup>{LOOP_FORMULAS.circleArea.sup}</sup></span>
-  )}
-  {variant === 'round-solid' && (
-    <span class="ll-formula ll-formula--cylinder">{LOOP_FORMULAS.cylinder.base}<sup>{LOOP_FORMULAS.cylinder.sup}</sup>{LOOP_FORMULAS.cylinder.rest}</span>
-  )}
-  {variant === 'parabola' && (
-    <span class="ll-formula ll-formula--parabola">{LOOP_FORMULAS.parabola.base}<sup>{LOOP_FORMULAS.parabola.sup}</sup></span>
-  )}
-  {variant === 'tools' && (
-    <span class="ll-formula ll-formula--tools ll-tool ll-tool-c">{LOOP_FORMULAS.toolsCube.base}<sup>{LOOP_FORMULAS.toolsCube.sup}</sup>{LOOP_FORMULAS.toolsCube.rest}</span>
-  )}
+<div
+  class:list={['ll', `ll--${variant}`]}
+  dir="ltr"
+  data-landing-loop={variant}
+  data-css-loop
+  data-loop-idea={CSS_LOOP_IDEAS[variant]}
+  aria-hidden="true"
+>
+  {formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}
 </div>
 
 <script>
@@ -330,223 +54,28 @@ const areaCells = grid(15, 5, 248, 58, 34, 6);
     width: 100%;
     max-width: 520px;
     margin-inline: auto;
-    pointer-events: none;
-    contain: layout;
+    aspect-ratio: 480 / 280;
     position: relative;
     container-type: inline-size;
+    contain: layout;
+    pointer-events: none;
+    direction: ltr;
+    background: #fff;
+    border: 2.5px solid #22305a;
+    border-radius: 24px;
+    overflow: hidden;
   }
-  .ll-formula {
-    position: absolute;
-    margin: 0;
-    white-space: nowrap;
-    line-height: 1;
-    font-family: Heebo, 'Heebo Fallback', sans-serif;
-    font-weight: 800;
-    color: #22305a;
-  }
-  .ll-formula sup {
-    display: inline-block;
-    font-size: 0.55em;
-    line-height: 1;
-    margin: 0;
-    padding: 0;
-    vertical-align: baseline;
-    position: relative;
-    top: -0.58em;
-  }
-  .ll-formula--powers { inset-inline-start: 7.5%; top: 32%; font-size: 8.75cqi; }
-  .ll-formula--circle { inset-inline-start: 62.5%; top: 50%; font-size: 5.833cqi; }
-  .ll-formula--cylinder { inset-inline-start: 60.8%; top: 37%; font-size: 5.417cqi; }
-  .ll-formula--parabola { inset-inline-start: 62.5%; top: 12.5%; font-size: 5.833cqi; }
-  .ll-formula--tools {
-    inset-inline-start: 50%;
-    top: 38.5%;
-    font-size: 8.333cqi;
-    color: #fbfaf5;
-    transform: translateX(-50%);
-  }
-  .ll svg {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  .ll-card { fill: #fff; stroke: #22305a; stroke-width: 2.5; }
-  .ll-math, .ll-he, .ll-tool {
-    font-family: Heebo, 'Heebo Fallback', sans-serif;
-    font-weight: 800;
-    fill: #22305a;
-  }
-  .ll-he { font-weight: 700; font-size: 18px; fill: #5a6588; }
-  .ll-ink { stroke: #22305a; stroke-width: 3; stroke-linecap: round; fill: none; }
-  .ll-ink--gold { stroke: #e6a534; stroke-width: 4; }
-  .ll-ink--coral { stroke: #e5735c; stroke-width: 4; }
-  .ll-ink-dot { fill: #22305a; }
-  .ll-ring { fill: #fff; stroke: #22305a; stroke-width: 3; }
-  .ll-shape { fill: #d7efe8; stroke: #22305a; stroke-width: 3; stroke-linejoin: round; }
-  .ll-shape--gold { fill: #fdf1d8; }
-  .ll-ghost { fill: none; stroke: #22305a; stroke-width: 2.5; stroke-dasharray: 6 6; opacity: 0.7; }
-  .ll-cell { fill: #e5735c; }
-  .ll-cell--teal { fill: #1e605e; }
-  .ll-track { fill: #e7eef8; }
-  .ll-fill { fill: #e6a534; }
-  .ll-dot, .ll-quad, .ll-line-dot, .ll-para, .ll-answer-dot { fill: #e5735c; stroke: #22305a; stroke-width: 2; }
-  .ll-highlight { fill: #fdf1d8; opacity: 0.95; }
-  .ll-arc { fill: none; stroke: #e5735c; stroke-width: 4; stroke-linecap: round; }
-  .ll-tool { fill: #fbfaf5; }
-  .ll-stage { fill: transparent; }
-  .ll-disc { fill: #e6a534; stroke: #22305a; stroke-width: 2; }
-
-  .ll-cell, .ll-sup, .ll-answer, .ll-fade, .ll-bar, .ll-fill, .ll-scale, .ll-shear, .ll-dot, .ll-quad, .ll-line-dot, .ll-para, .ll-sweep, .ll-orbit, .ll-join, .ll-cross, .ll-move, .ll-face, .ll-highlight, .ll-tool, .ll-answer-dot {
-    transform-box: fill-box;
-    transform-origin: center;
-  }
-  .ll-cell, .ll-answer, .ll-fade, .ll-face, .ll-highlight, .ll-tool, .ll-answer-dot { opacity: 1; }
-  .ll-bar {
-    transform-box: fill-box;
-    transform-origin: center bottom;
-    transform: scaleY(1);
-  }
-  .ll-shear { transform: skewX(-18deg); }
-  .ll-scale, .ll-pulse, .ll-disc { transform-box: fill-box; transform-origin: center; transform: scale(1); }
-  .ll-scale { transform-origin: 50% 100%; }
-  .ll-sweep, .ll-orbit, .ll-join, .ll-cross, .ll-move, .ll-dot, .ll-quad, .ll-line-dot, .ll-para {
-    transform-box: fill-box;
-    transform-origin: 0 0;
-  }
-  .ll-sweep, .ll-orbit { transform-origin: var(--ox) var(--oy); }
-  .ll-sweep { transform: rotate(-48deg); }
-  .ll-move { transform: translate(38%, 4%); }
-  .ll-quad { transform: translate(66.7%, 28.6%); }
-  .ll-line-dot { transform: translate(50%, 42%); }
-  .ll-para { transform: translate(50%, 18%); }
-  .ll-tool-b, .ll-tool-c, .ll-face--back { opacity: 0; }
-
-  .ll .ll-cell { animation: ll-pop 8s ease-in-out infinite; animation-delay: calc(var(--i) * 0.1s); }
-  .ll .ll-sup { animation: ll-pop 8s ease-in-out infinite; animation-delay: 0.35s; }
-  .ll .ll-answer, .ll .ll-answer-dot { animation: ll-in 8s ease-in-out infinite; animation-delay: 0.85s; }
-  .ll .ll-fade { animation: ll-in 8s ease-in-out infinite; }
-  .ll .ll-d1 { animation-delay: 0.35s; }
-  .ll .ll-d2 { animation-delay: 0.7s; }
-  .ll .ll-bar {
-    animation: ll-grow 7s ease-in-out infinite;
-    animation-delay: calc(var(--i, 0) * 0.2s);
-  }
-  .ll .ll-pulse, .ll .ll-disc { animation: ll-pulse 7s ease-in-out infinite; }
-  .ll .ll-fill:not(.ll-fill--cylinder):not(.ll-fill--box) {
-    transform-box: fill-box;
-    transform-origin: left center;
-    animation: ll-grow-x 7s ease-in-out infinite;
-  }
-  .ll .ll-dot { animation: ll-hop 7s ease-in-out infinite; }
-  .ll .ll-quad { animation: ll-quad 8s linear infinite; }
-  .ll .ll-line-dot { animation: ll-line 7s ease-in-out infinite; }
-  .ll .ll-para { animation: ll-para 7s ease-in-out infinite; }
-  .ll .ll-sweep { animation: ll-sweep 6.5s ease-in-out infinite; }
-  .ll .ll-orbit { animation: ll-spin 8s linear infinite; }
-  .ll .ll-join { animation: ll-join 7s ease-in-out infinite; }
-  .ll .ll-cross { animation: ll-cross 7s ease-in-out infinite; }
-  .ll .ll-move { animation: ll-move 7s ease-in-out infinite; }
-  .ll .ll-scale { animation: ll-scale 7s ease-in-out infinite; }
-  .ll .ll-shear { animation: ll-shear 7s ease-in-out infinite; }
-  .ll .ll-highlight { animation: ll-in 8s ease-in-out infinite; }
-  .ll .ll-face { animation: ll-face 4s ease-in-out infinite; }
-  .ll .ll-face--back { animation-delay: -2s; }
-  .ll .ll-tool-a { animation: ll-cycle 9s ease-in-out infinite; }
-  .ll .ll-tool-b { animation: ll-cycle 9s ease-in-out infinite; animation-delay: -3s; }
-  .ll .ll-tool-c { animation: ll-cycle 9s ease-in-out infinite; animation-delay: -6s; }
-
-  @keyframes ll-pop {
-    0%, 10% { opacity: 0; transform: scale(0.5); }
-    24%, 78% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.5); }
-  }
-  @keyframes ll-in {
-    0%, 28% { opacity: 0; transform: scale(0.86); }
-    42%, 80% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.86); }
-  }
-  @keyframes ll-grow {
-    0%, 100% { transform: scaleY(0.12); }
-    40%, 72% { transform: scaleY(1); }
-  }
-  @keyframes ll-grow-x {
-    0%, 100% { transform: scaleX(0.08); }
-    40%, 72% { transform: scaleX(1); }
-  }
-  @keyframes ll-hop {
-    0%, 14% { transform: translateX(0); }
-    46%, 70% { transform: translateX(41.6%); }
-    100% { transform: translateX(0); }
-  }
-  @keyframes ll-quad {
-    0%, 10% { transform: translate(66.7%, 28.6%); }
-    28% { transform: translate(33.3%, 28.6%); }
-    50% { transform: translate(33.3%, 71.4%); }
-    72% { transform: translate(66.7%, 71.4%); }
-    100% { transform: translate(66.7%, 28.6%); }
-  }
-  @keyframes ll-line {
-    0%, 100% { transform: translate(16%, 74%); }
-    50% { transform: translate(78%, 22%); }
-  }
-  @keyframes ll-para {
-    0%, 100% { transform: translate(18%, 70%); }
-    22% { transform: translate(32%, 38%); }
-    50% { transform: translate(50%, 18%); }
-    78% { transform: translate(68%, 38%); }
-  }
-  @keyframes ll-sweep {
-    0%, 100% { transform: rotate(-6deg); }
-    50% { transform: rotate(-56deg); }
-  }
-  @keyframes ll-spin { to { transform: rotate(360deg); } }
-  @keyframes ll-join {
-    0%, 16% { transform: translateX(0); }
-    48%, 76% { transform: translateX(-32%); }
-    100% { transform: translateX(0); }
-  }
-  @keyframes ll-cross {
-    0%, 100% { transform: translateY(-18%); opacity: 0; }
-    40%, 75% { transform: translateY(0); opacity: 1; }
-  }
-  @keyframes ll-move {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(38%, 4%); }
-  }
-  @keyframes ll-scale {
-    0%, 100% { transform: scale(0.5); }
-    45%, 72% { transform: scale(1); }
-  }
-  @keyframes ll-shear {
-    0%, 100% { transform: skewX(0deg); }
-    45%, 70% { transform: skewX(-18deg); }
-  }
-  @keyframes ll-face {
-    0%, 8% { opacity: 0; }
-    16%, 42% { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
-  @keyframes ll-pulse {
-    0%, 100% { transform: scale(0.9); }
-    50% { transform: scale(1); }
-  }
-  @keyframes ll-cycle {
-    0%, 6% { opacity: 0; }
-    12%, 28% { opacity: 1; }
-    34%, 100% { opacity: 0; }
-  }
-
   .ll--off,
-  .ll--off * { animation-play-state: paused !important; }
+  .ll--off :global(*) { animation-play-state: paused !important; }
 
   @media (prefers-reduced-motion: reduce) {
     .ll,
-    .ll * { animation: none !important; }
+    .ll :global(*) { animation: none !important; }
   }
   :global(html.nd-motion-off) .ll,
-  :global(html.nd-motion-off) .ll *,
+  :global(html.nd-motion-off) .ll :global(*),
   :global(html.noam-a11y-motion) .ll,
-  :global(html.noam-a11y-motion) .ll * {
+  :global(html.noam-a11y-motion) .ll :global(*) {
     animation: none !important;
   }
 </style>

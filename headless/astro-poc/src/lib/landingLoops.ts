@@ -28,27 +28,57 @@ export type ConceptLoopVariant = (typeof FAMILY_CONCEPT_LOOP)[keyof typeof FAMIL
 /** CSS/SVG loops. Transform and opacity only. */
 export const CSS_LOOP_VARIANTS = [
   'powers',
+  'exp-rules',
   'roots',
   'signed',
+  'signed-mul',
+  'signed-div',
+  'absolute',
   'order',
   'percent',
   'angles',
+  'measure',
+  'parallel',
   'area',
+  'area-para',
+  'area-split',
   'quads',
-  'triangles',
-  'similar',
-  'congruence',
+  'rect',
+  'rhombus',
+  'square',
+  'trapezoid',
   'circle',
   'round-solid',
+  'cone',
+  'cyl-area',
   'solids',
+  'prism-area',
+  'prism-vol',
   'coords',
+  'pattern-graph',
+  'scale',
+  'distance',
   'linear',
   'parabola',
+  'quad-eq',
+  'read-graph',
   'systems',
+  'ineq',
+  'quad-ineq',
   'stats',
   'probability',
   'transform',
   'triangle-area',
+  'triangles',
+  'exterior',
+  'isosceles',
+  'median',
+  't306090',
+  'side-angle',
+  'congruence',
+  'similar',
+  'similar-area',
+  'similar-aa',
   'tools',
 ] as const;
 
@@ -83,10 +113,44 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'triangle-area-grade-7': 'triangle-area',
   'square-root-grade-7': 'roots',
   'square-roots-grade-9': 'roots',
-  'cone-grade-8': 'round-solid',
-  'cylinder-surface-area-grade-8': 'round-solid',
   'cylinder-volume-grade-8': 'round-solid',
   'transition-to-high-school-grade-9': 'parabola',
+  'exponent-rules-grade-9': 'exp-rules',
+  'multiplying-signed-numbers-grade-7': 'signed-mul',
+  'dividing-signed-numbers-grade-7': 'signed-div',
+  'number-line-absolute-value-grade-7': 'absolute',
+  'angles-introduction-measurement-grade-7': 'measure',
+  'parallel-lines-angles-grade-8': 'parallel',
+  'area-parallelogram-trapezoid-composite-grade-7': 'area-para',
+  'composite-polygons-area-grade-9': 'area-split',
+  'rectangle-grade-9': 'rect',
+  'rhombus-grade-9': 'rhombus',
+  'square-grade-9': 'square',
+  'trapezoid-grade-9': 'trapezoid',
+  'cone-grade-8': 'cone',
+  'cylinder-surface-area-grade-8': 'cyl-area',
+  'triangular-prism-surface-area-grade-9': 'prism-area',
+  'triangular-prism-volume-grade-9': 'prism-vol',
+  'patterns-and-graphs-grade-7': 'pattern-graph',
+  'coordinate-plane-scale-grade-7': 'scale',
+  'analytic-geometry-grade-9': 'distance',
+  'coordinate-plane-applications-grade-7': 'distance',
+  'coordinate-plane-applications-grade-9': 'distance',
+  'quadratic-equations-grade-9': 'quad-eq',
+  'reading-graphs-grade-9': 'read-graph',
+  'inequalities-grade-8': 'ineq',
+  'quadratic-inequalities-systems-grade-9': 'quad-ineq',
+  'isosceles-triangle-grade-8': 'isosceles',
+  'isosceles-triangle-grade-9': 'isosceles',
+  'isosceles-triangle-properties-grade-8': 'isosceles',
+  'special-triangles-grade-7-new': 'isosceles',
+  'exterior-angle-triangle-grade-8': 'exterior',
+  'triangle-30-60-90-grade-9': 't306090',
+  'triangle-median-grade-8': 'median',
+  'triangle-sides-angles-grade-9': 'side-angle',
+  'similar-triangles-area-ratio-grade-8': 'similar-area',
+  'triangle-similarity-aa-grade-9': 'similar-aa',
+  'triangle-similarity-proof-grade-8': 'similar-aa',
 };
 
 export const GRADE_CONCEPT_LOOP = {
@@ -144,33 +208,122 @@ export function marketingLandingLoop(slug: string): CssLoopVariant | undefined {
 /** Unicode minus. Hyphen-minus reads as a dash and sits too wide in these formulas. */
 export const MINUS = '\u2212';
 
-export type LoopFormula = {
-  /** Glyphs immediately before an exponent. No trailing whitespace. */
-  base: string;
-  sup?: string;
-  rest?: string;
-};
-
-/**
- * Displayed loop formulas. An exponent is `<sup>` glued to the base
- * (`(−3)<sup>2</sup>`), never a second text node with its own x.
- */
-export const LOOP_FORMULAS = {
-  powers: { base: `(${MINUS}3)`, sup: '2', rest: ' = 9' },
-  powersExpand: { base: `(${MINUS}3) × (${MINUS}3)` },
-  signed: { base: `${MINUS}2 + 5 = 3` },
-  circleArea: { base: 'S = πr', sup: '2' },
-  cylinder: { base: 'V = πr', sup: '2', rest: 'h' },
-  parabola: { base: 'y = x', sup: '2' },
-  toolsCube: { base: '2', sup: '3', rest: ' = 8' },
-} as const satisfies Record<string, LoopFormula>;
-
 export function signedLabel(n: number): string {
   return n < 0 ? `${MINUS}${Math.abs(n)}` : String(n);
 }
 
-/** The exponent tag starts on the next character after the base. */
-export function formulaMarkup(formula: LoopFormula): string {
-  const sup = formula.sup ? `<sup>${formula.sup}</sup>` : '';
-  return `${formula.base}${sup}${formula.rest ?? ''}`;
+/** One powers comparison. `<sup>` is glued to `base` with no whitespace. */
+export type PowerRow = {
+  base: string;
+  sup: string;
+  result: string;
+  expand: string;
+  caption: string;
+  hi: 'parens' | 'sign';
+};
+
+export const POWERS_ROWS: readonly PowerRow[] = [
+  {
+    base: `(${MINUS}3)`,
+    sup: '2',
+    result: '9',
+    expand: `(${MINUS}3) × (${MINUS}3)`,
+    caption: 'המינוס בתוך הסוגריים',
+    hi: 'parens',
+  },
+  {
+    base: `${MINUS}3`,
+    sup: '2',
+    result: `${MINUS}9`,
+    expand: `${MINUS}(3 × 3)`,
+    caption: 'בלי סוגריים: קודם החזקה',
+    hi: 'sign',
+  },
+  {
+    base: `(${MINUS}3)`,
+    sup: '3',
+    result: `${MINUS}27`,
+    expand: `(${MINUS}3) × (${MINUS}3) × (${MINUS}3)`,
+    caption: 'חזקה אי־זוגית: הסימן נשאר',
+    hi: 'parens',
+  },
+];
+
+/** `(−3)<sup>2</sup> = 9` with the exponent tag hard against the base. */
+export function powerMarkup(row: PowerRow): string {
+  return `${row.base}<sup>${row.sup}</sup> = ${row.result}`;
+}
+
+/**
+ * The one idea each new loop teaches. One Hebrew line, shown on the card
+ * and listed in the pull request.
+ */
+export const CSS_LOOP_IDEAS = {
+  powers: `סוגריים קובעים את הסימן: (${MINUS}3)² = 9, בלי סוגריים ${MINUS}3² = ${MINUS}9, וחזקה אי־זוגית (${MINUS}3)³ = ${MINUS}27`,
+  'exp-rules': 'בכפל חזקות עם אותו בסיס מחברים מעריכים: 2³ × 2² = 2⁵',
+  roots: 'השורש שואל איזה מספר בריבוע נותן את זה: 3² = 9 ולכן √9 = 3',
+  signed: `על ישר המספרים מתחילים ב־${MINUS}2 ומוסיפים 5 ימינה, ומגיעים ל־3`,
+  'signed-mul': 'מינוס כפול מינוס נותן פלוס, ומינוס כפול פלוס נותן מינוס',
+  'signed-div': 'בחילוק, סימנים זהים נותנים פלוס וסימנים שונים נותנים מינוס',
+  absolute: `ערך מוחלט הוא המרחק מאפס, ולכן |${MINUS}4| ו־|4| שניהם 4`,
+  order: `קודם כופלים 3 × (${MINUS}4), ורק אחר כך מחברים ל־${MINUS}2`,
+  percent: 'רבע מהשלם הוא 25%, והחלק הצבוע הוא אחד מארבעה',
+  angles: 'זוויות קודקודיות שוות, וצמודות משלימות ל־180°',
+  measure: 'מודדים זווית לפי פתיחת הקרן: כאן הקרן נפתחת עד 60°',
+  parallel: 'חותך בין ישרים מקבילים יוצר זוויות מתאימות שוות',
+  area: 'שטח המלבן הוא מספר המשבצות: 5 שורות של 3, כלומר 15',
+  'area-para': 'שטח מקבילית הוא בסיס כפול הגובה המאונך, לא הצלע האלכסונית',
+  'area-split': 'מצולע מורכב נחתך למלבנים, והשטחים מחוברים',
+  quads: 'גזירת מלבן נותנת מקבילית בלי לשנות את השטח',
+  rect: 'במלבן כל הזוויות ישרות, והאלכסונים שווים זה לזה',
+  rhombus: 'במעוין כל ארבע הצלעות שוות',
+  square: 'בריבוע כל הצלעות שוות ויש זווית ישרה',
+  trapezoid: 'בטרפז יש בדיוק זוג אחד של צלעות מקבילות',
+  circle: 'הקוטר הוא שני רדיוסים, ההיקף 2πr והשטח πr²',
+  'round-solid': 'נפח גליל: עיגול הבסיס נערם לגובה, V = πr²h',
+  cone: 'נפח חרוט הוא שליש מנפח גליל עם אותו בסיס ואותו גובה',
+  'cyl-area': 'מעטפת הגליל נפרסת למלבן שרוחבו היקף הבסיס',
+  solids: 'נפח תיבה מתקבל מאורך כפול רוחב כפול גובה',
+  'prism-area': 'שטח פנים של מנסרה: שני בסיסים משולשים ועוד שלושה מלבנים',
+  'prism-vol': 'נפח מנסרה הוא שטח בסיס המשולש כפול האורך',
+  coords: 'הנקודה עוברת בין הרביעים, ובכל רביע סימני x ו־y מתחלפים',
+  'pattern-graph': 'הנקודות על הגרף מקיימות את אותה חוקיות, כאן y = 2x',
+  scale: 'יחידה אחת על הציר מייצגת 5, ולכן שתי יחידות הן 10',
+  distance: 'המרחק בין שתי נקודות הוא אלכסון של הפרש ה־x והפרש ה־y',
+  linear: 'שיפוע 2: על כל צעד ימינה עולים שני צעדים',
+  parabola: `לפרבולה y = x² יש סימטריה: ל־x ול־${MINUS}x אותו y`,
+  'quad-eq': 'פתרונות המשוואה הריבועית הם נקודות החיתוך עם ציר x',
+  'read-graph': 'קוראים מהגרף: ב־x = 2 מתקבל y = 4',
+  systems: 'נקודת החיתוך מקיימת את שתי המשוואות יחד',
+  ineq: 'אי־שוויון x > 2 הוא קרן פתוחה ימינה על ישר המספרים',
+  'quad-ineq': `x² > 9 מתקיים מחוץ לשורשים: x < ${MINUS}3 או x > 3`,
+  stats: 'הממוצע של 4, 7 ו־5 הוא 16/3, הגובה שהיה שומר על אותו סכום',
+  probability: 'למטבע שתי תוצאות שוות סיכוי, ולכן ההסתברות לחצי',
+  transform: 'הזזה מזיזה את המשולש בלי לשנות את גודלו או את צורתו',
+  'triangle-area': 'משולש עם אותו בסיס וגובה הוא חצי מהמלבן',
+  triangles: 'שלוש זוויות המשולש נפרסות לקו ישר, ולכן סכומן 180°',
+  exterior: 'הזווית החיצונית שווה לסכום שתי הזוויות הפנימיות הרחוקות',
+  isosceles: 'במשולש שווה־שוקיים זוויות הבסיס שוות',
+  median: 'התיכון יוצא מהקודקוד וחוצה את הצלע שמולו לשני חלקים שווים',
+  t306090: 'במשולש 30, 60, 90 הצלע שמול 30 היא חצי מהמיתר',
+  'side-angle': 'מול הצלע הארוכה יותר נמצאת הזווית הגדולה יותר',
+  congruence: 'התאמת צלעות וזוויות מביאה את שני המשולשים לחפיפה',
+  similar: 'בדמיון הזוויות נשמרות והצלעות גדלות באותו יחס',
+  'similar-area': 'כשהצלעות גדלות פי 2, השטח גדל פי 4',
+  'similar-aa': 'שתי זוויות שוות מספיקות כדי לקבוע דמיון',
+  tools: 'המחשבון פותח קודם סוגריים: 2 × (3 + 1) הופך ל־2 × 4 = 8',
+} as const satisfies Record<CssLoopVariant, string>;
+
+export const FORMULA_LOOP_VARIANTS = [
+  'powers',
+  'exp-rules',
+  'roots',
+  'order',
+  'signed-mul',
+  'signed-div',
+  'tools',
+] as const satisfies readonly CssLoopVariant[];
+
+export function cssLoopIdea(variant: CssLoopVariant): string {
+  return CSS_LOOP_IDEAS[variant];
 }

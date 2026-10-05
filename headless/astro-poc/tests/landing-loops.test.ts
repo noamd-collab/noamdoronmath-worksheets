@@ -8,15 +8,15 @@ import { dirname, join, relative } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import {
+  CSS_LOOP_IDEAS,
   CSS_LOOP_VARIANTS,
   GRADE_CONCEPT_LOOP,
-  LOOP_FORMULAS,
   MARKETING_LANDING_LOOPS,
   MINUS,
   NON_LANDING_SITE_SLUGS,
-  formulaMarkup,
+  POWERS_ROWS,
   marketingLandingLoop,
-  signedLabel,
+  powerMarkup,
   topicLandingLoop,
 } from '../src/lib/landingLoops.ts';
 import { GRADE_HUB_GRADES } from '../src/lib/gradeHubs.ts';
@@ -72,7 +72,9 @@ describe('landing loop coverage', () => {
     assert.equal(topicLandingLoop(loadTopicPage('pythagorean-theorem-grade-8')).variant, 'pythagoras');
     assert.equal(topicLandingLoop(loadTopicPage('triangle-area-grade-7')).variant, 'triangle-area');
     assert.equal(topicLandingLoop(loadTopicPage('square-root-grade-7')).variant, 'roots');
-    assert.equal(topicLandingLoop(loadTopicPage('exponent-rules-grade-9')).variant, 'powers');
+    assert.equal(topicLandingLoop(loadTopicPage('exponent-rules-grade-9')).variant, 'exp-rules');
+    assert.equal(topicLandingLoop(loadTopicPage('multiplying-signed-numbers-grade-7')).variant, 'signed-mul');
+    assert.equal(topicLandingLoop(loadTopicPage('parallel-lines-angles-grade-8')).variant, 'parallel');
   });
 
   it('topic, grade, home, and marketing templates emit data-landing-loop', () => {
@@ -103,44 +105,74 @@ describe('landing loop coverage', () => {
 
   it('css loops are transform/opacity, pause off-screen, and honor motion-off', () => {
     const loop = read('src/components/LandingLoop.astro');
+    const scenes = [
+      loop,
+      read('src/components/LoopFormula.astro'),
+      read('src/components/LoopSketch.astro'),
+    ].join('\n');
     assert.match(loop, /prefers-reduced-motion:\s*reduce/);
     assert.match(loop, /html\.nd-motion-off/);
     assert.match(loop, /html\.noam-a11y-motion/);
     assert.match(loop, /IntersectionObserver/);
     assert.match(loop, /ll--off/);
     assert.match(loop, /animation-play-state:\s*paused/);
-    assert.doesNotMatch(loop, /<video\b|lottie|gsap|bodymovin/i);
+    assert.doesNotMatch(scenes, /<video\b|lottie|gsap|bodymovin/i);
     for (const variant of CSS_LOOP_VARIANTS) {
-      assert.ok(loop.includes(`variant === '${variant}'`), `missing scene ${variant}`);
+      assert.ok(scenes.includes(`variant === '${variant}'`), `missing scene ${variant}`);
     }
   });
 
   it('glues exponents to the base and uses a real minus', () => {
     assert.equal(MINUS, '\u2212');
-    assert.equal(formulaMarkup(LOOP_FORMULAS.powers), `(${MINUS}3)<sup>2</sup> = 9`);
-    assert.equal(formulaMarkup(LOOP_FORMULAS.powersExpand), `(${MINUS}3) × (${MINUS}3)`);
-    assert.equal(formulaMarkup(LOOP_FORMULAS.signed), `${MINUS}2 + 5 = 3`);
-    assert.equal(formulaMarkup(LOOP_FORMULAS.circleArea), 'S = πr<sup>2</sup>');
-    assert.equal(formulaMarkup(LOOP_FORMULAS.cylinder), 'V = πr<sup>2</sup>h');
-    assert.equal(formulaMarkup(LOOP_FORMULAS.parabola), 'y = x<sup>2</sup>');
-    assert.equal(formulaMarkup(LOOP_FORMULAS.toolsCube), '2<sup>3</sup> = 8');
-    assert.equal(signedLabel(-2), `${MINUS}2`);
-    assert.equal(signedLabel(4), '4');
+    assert.equal(powerMarkup(POWERS_ROWS[0]), `(${MINUS}3)<sup>2</sup> = 9`);
+    assert.equal(powerMarkup(POWERS_ROWS[1]), `${MINUS}3<sup>2</sup> = ${MINUS}9`);
+    assert.equal(powerMarkup(POWERS_ROWS[2]), `(${MINUS}3)<sup>3</sup> = ${MINUS}27`);
+    assert.equal(POWERS_ROWS[0].expand, `(${MINUS}3) × (${MINUS}3)`);
+    assert.equal(POWERS_ROWS[1].expand, `${MINUS}(3 × 3)`);
+    assert.equal(POWERS_ROWS[2].expand, `(${MINUS}3) × (${MINUS}3) × (${MINUS}3)`);
 
-    for (const [name, formula] of Object.entries(LOOP_FORMULAS)) {
-      const html = formulaMarkup(formula);
-      assert.equal(html.includes('-'), false, `${name} uses hyphen-minus`);
-      assert.equal(/\s<sup>/.test(html), false, `${name} has space before <sup>`);
-      if (formula.sup) assert.match(html, /[^\s]<sup>/, name);
+    for (const row of POWERS_ROWS) {
+      const html = powerMarkup(row);
+      assert.equal(html.includes('-'), false, html);
+      assert.equal(/\s<sup>/.test(html), false, html);
+      assert.match(html, /[^\s]<sup>/);
     }
 
-    const loop = read('src/components/LandingLoop.astro');
-    assert.match(loop, /\{LOOP_FORMULAS\.powers\.base\}<sup class="ll-sup">/);
-    assert.match(loop, /\{LOOP_FORMULAS\.circleArea\.base\}<sup>/);
-    assert.match(loop, /\{LOOP_FORMULAS\.cylinder\.base\}<sup>/);
-    assert.match(loop, /\{LOOP_FORMULAS\.parabola\.base\}<sup>/);
-    assert.match(loop, /\{LOOP_FORMULAS\.toolsCube\.base\}<sup>/);
-    assert.doesNotMatch(loop, /\(-3\)|πr²|x²|2³|>-2 /);
+    const formula = read('src/components/LoopFormula.astro');
+    const sketch = read('src/components/LoopSketch.astro');
+    assert.match(formula, /<span class="ll-parens">\{even\.base\}<\/span><sup>\{even\.sup\}<\/sup>/);
+    assert.match(formula, /<span class="ll-parens">\{odd\.base\}<\/span><sup>\{odd\.sup\}<\/sup>/);
+    assert.match(formula, /<span class="ll-sign">\{MINUS\}<\/span>3<sup>2<\/sup>/);
+    assert.match(formula, /2<sup class="ll-hot">3<\/sup> × 2<sup/);
+    assert.match(sketch, /S = πr<sup>2<\/sup>/);
+    assert.match(sketch, /V = πr<sup>2<\/sup>h/);
+    assert.match(formula, /dir="ltr"/);
+    assert.match(formula, /unicode-bidi:\s*isolate/);
+  });
+
+  it('every new loop states one Hebrew idea', () => {
+    assert.deepEqual(Object.keys(CSS_LOOP_IDEAS).sort(), [...CSS_LOOP_VARIANTS].sort());
+    const hebrew = /[\u0590-\u05FF]/;
+    for (const variant of CSS_LOOP_VARIANTS) {
+      const idea = CSS_LOOP_IDEAS[variant];
+      assert.equal(hebrew.test(idea), true, variant);
+      assert.equal(idea.includes('\n'), false, variant);
+      assert.equal(idea.includes('-'), false, `${variant} uses hyphen-minus`);
+    }
+    let cssPages = 0;
+    for (const slug of TOPIC_PAGE_SLUGS) {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      if (loop.kind !== 'css') continue;
+      cssPages += 1;
+      assert.equal(hebrew.test(CSS_LOOP_IDEAS[loop.variant]), true, slug);
+    }
+    for (const slug of Object.keys(MARKETING_LANDING_LOOPS)) {
+      cssPages += 1;
+      const variant = marketingLandingLoop(slug);
+      assert.ok(variant, slug);
+      assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
+    }
+    assert.equal(cssPages, 75);
   });
 
   it('fails when a page file is not classified as a landing or a non-landing', () => {

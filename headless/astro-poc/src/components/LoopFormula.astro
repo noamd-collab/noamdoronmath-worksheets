@@ -1,0 +1,229 @@
+---
+/**
+ * Formula loops. Each exponent sits in <sup> immediately after its base.
+ * Formulas are LTR-isolated so an RTL page cannot pull the superscript away.
+ */
+import { CSS_LOOP_IDEAS, MINUS, POWERS_ROWS, type CssLoopVariant } from '../lib/landingLoops';
+
+interface Props {
+  variant: CssLoopVariant;
+}
+const { variant } = Astro.props;
+const even = POWERS_ROWS[0];
+const plain = POWERS_ROWS[1];
+const odd = POWERS_ROWS[2];
+---
+
+<div class="lf">
+  {variant === 'powers' && (
+    <div class="ll-compare">
+      <div class="ll-row ll-row-0">
+        <p class="ll-eq" dir="ltr"><span class="ll-parens">{even.base}</span><sup>{even.sup}</sup>{` = ${even.result}`}</p>
+        <p class="ll-expn" dir="ltr">{even.expand}</p>
+        <p class="ll-cap" dir="rtl">{even.caption}</p>
+      </div>
+      <div class="ll-row ll-row-1">
+        <p class="ll-eq" dir="ltr"><span class="ll-sign">{MINUS}</span>3<sup>2</sup> = <span class="ll-sign">{MINUS}</span>9</p>
+        <p class="ll-expn" dir="ltr"><span class="ll-sign">{MINUS}</span>(3 × 3)</p>
+        <p class="ll-cap" dir="rtl">{plain.caption}</p>
+      </div>
+      <div class="ll-row ll-row-2">
+        <p class="ll-eq" dir="ltr"><span class="ll-parens">{odd.base}</span><sup>{odd.sup}</sup>{` = ${odd.result}`}</p>
+        <p class="ll-expn" dir="ltr">{odd.expand}</p>
+        <p class="ll-cap" dir="rtl">{odd.caption}</p>
+      </div>
+    </div>
+  )}
+
+  {variant === 'exp-rules' && (
+    <div class="ll-stack">
+      <p class="ll-eq" dir="ltr">2<sup class="ll-hot">3</sup> × 2<sup class="ll-hot ll-d1">2</sup> = 2<sup class="ll-hot ll-d2">5</sup></p>
+      <p class="ll-expn" dir="ltr">3 + 2 = 5</p>
+      <p class="ll-cap" dir="rtl">{CSS_LOOP_IDEAS['exp-rules']}</p>
+    </div>
+  )}
+
+  {variant === 'roots' && (
+    <div class="ll-stack">
+      <div class="ll-cells" aria-hidden="true">
+        {Array.from({ length: 9 }, (_, i) => <i class="ll-cell" style={`--i:${i}`}></i>)}
+      </div>
+      <p class="ll-eq" dir="ltr">3<sup>2</sup> = 9</p>
+      <p class="ll-eq ll-late" dir="ltr">√9 = 3</p>
+      <p class="ll-cap" dir="rtl">{CSS_LOOP_IDEAS.roots}</p>
+    </div>
+  )}
+
+  {variant === 'order' && (
+    <div class="ll-stack">
+      <p class="ll-eq" dir="ltr">{MINUS}2 + <span class="ll-hot">3 × ({MINUS}4)</span></p>
+      <p class="ll-eq ll-late" dir="ltr">{MINUS}2 + ({MINUS}12) = {MINUS}14</p>
+      <p class="ll-cap" dir="rtl">{CSS_LOOP_IDEAS.order}</p>
+    </div>
+  )}
+
+  {variant === 'signed-mul' && (
+    <div class="ll-compare ll-compare--two">
+      <div class="ll-row ll-row-0">
+        <p class="ll-eq" dir="ltr">({MINUS}2) × ({MINUS}3) = 6</p>
+        <p class="ll-cap" dir="rtl">שני מינוסים נותנים פלוס</p>
+      </div>
+      <div class="ll-row ll-row-1">
+        <p class="ll-eq" dir="ltr">({MINUS}2) × 3 = {MINUS}6</p>
+        <p class="ll-cap" dir="rtl">סימנים שונים נותנים מינוס</p>
+      </div>
+    </div>
+  )}
+
+  {variant === 'signed-div' && (
+    <div class="ll-compare ll-compare--two">
+      <div class="ll-row ll-row-0">
+        <p class="ll-eq" dir="ltr">({MINUS}8) ÷ ({MINUS}2) = 4</p>
+        <p class="ll-cap" dir="rtl">סימנים זהים נותנים פלוס</p>
+      </div>
+      <div class="ll-row ll-row-1">
+        <p class="ll-eq" dir="ltr">({MINUS}8) ÷ 2 = {MINUS}4</p>
+        <p class="ll-cap" dir="rtl">סימנים שונים נותנים מינוס</p>
+      </div>
+    </div>
+  )}
+
+  {variant === 'tools' && (
+    <div class="ll-screen">
+      <p class="ll-eq ll-on-dark" dir="ltr">2 × <span class="ll-parens">(3 + 1)</span></p>
+      <p class="ll-eq ll-on-dark ll-late" dir="ltr">2 × 4 = 8</p>
+      <p class="ll-cap ll-cap--light" dir="rtl">{CSS_LOOP_IDEAS.tools}</p>
+    </div>
+  )}
+</div>
+
+<style>
+  .lf {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ll-compare, .ll-stack, .ll-screen {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5%;
+    padding: 5% 6% 4%;
+  }
+  .ll-row { opacity: 0.4; }
+  .ll-eq, .ll-expn, .ll-cap {
+    margin: 0;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    line-height: 1.15;
+  }
+  .ll-eq, .ll-expn {
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: start;
+  }
+  .ll-eq {
+    font-size: 6.4cqi;
+    font-weight: 800;
+    color: #22305a;
+  }
+  .ll-expn {
+    font-size: 4.3cqi;
+    font-weight: 700;
+    color: #1e605e;
+  }
+  .ll-cap {
+    direction: rtl;
+    unicode-bidi: isolate;
+    text-align: start;
+    font-size: 3.5cqi;
+    font-weight: 700;
+    color: #5a6588;
+  }
+  .ll-eq sup {
+    display: inline-block;
+    font-size: 0.55em;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.55em;
+  }
+  .ll-parens, .ll-sign, .ll-hot {
+    background: #fdf1d8;
+    border-radius: 0.28em;
+  }
+  .ll-sign { background: #fde4df; }
+  .ll-cells {
+    display: grid;
+    grid-template-columns: repeat(3, 7cqi);
+    gap: 1cqi;
+    margin-bottom: 1%;
+  }
+  .ll-cell {
+    display: block;
+    width: 7cqi;
+    height: 7cqi;
+    border-radius: 0.4cqi;
+    background: #e5735c;
+    opacity: 1;
+  }
+  .ll-screen {
+    margin: 5%;
+    width: auto;
+    height: auto;
+    border-radius: 8cqi;
+    background: #22305a;
+  }
+  .ll-on-dark { color: #fbfaf5; }
+  .ll-cap--light { color: #d7efe8; }
+  .ll-screen .ll-parens { background: #3d4d78; }
+
+  .ll-row-0 { animation: ll-focus 12s ease-in-out infinite; }
+  .ll-row-1 { animation: ll-focus 12s ease-in-out infinite; animation-delay: 4s; }
+  .ll-row-2 { animation: ll-focus 12s ease-in-out infinite; animation-delay: 8s; }
+  .ll-compare--two .ll-row-0,
+  .ll-compare--two .ll-row-1 { animation-duration: 8s; }
+  .ll-compare--two .ll-row-1 { animation-delay: 4s; }
+
+  .ll-hot { animation: ll-pop 8s ease-in-out infinite; }
+  .ll-d1 { animation-delay: 0.6s; }
+  .ll-d2 { animation-delay: 1.4s; }
+  .ll-late { opacity: 1; animation: ll-in 8s ease-in-out infinite; }
+  .ll-cell { animation: ll-pop 8s ease-in-out infinite; animation-delay: calc(var(--i) * 0.12s); }
+
+  @keyframes ll-focus {
+    0%, 28% { opacity: 1; }
+    34%, 100% { opacity: 0.38; }
+  }
+  @keyframes ll-pop {
+    0%, 12% { opacity: 0.35; }
+    28%, 78% { opacity: 1; }
+    100% { opacity: 0.35; }
+  }
+  @keyframes ll-in {
+    0%, 36% { opacity: 0.25; }
+    48%, 82% { opacity: 1; }
+    100% { opacity: 0.25; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ll-row, .ll-late, .ll-hot, .ll-cell { opacity: 1 !important; animation: none !important; }
+  }
+  :global(html.nd-motion-off) .ll-row,
+  :global(html.nd-motion-off) .ll-late,
+  :global(html.nd-motion-off) .ll-hot,
+  :global(html.nd-motion-off) .ll-cell,
+  :global(html.noam-a11y-motion) .ll-row,
+  :global(html.noam-a11y-motion) .ll-late,
+  :global(html.noam-a11y-motion) .ll-hot,
+  :global(html.noam-a11y-motion) .ll-cell {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+</style>

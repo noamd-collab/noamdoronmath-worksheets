@@ -1,0 +1,751 @@
+---
+/**
+ * Geometric loops. One transformation or comparison per topic.
+ * Motion is transform/opacity only. The caption is the idea.
+ */
+import { CSS_LOOP_IDEAS, MINUS, signedLabel, type CssLoopVariant } from '../lib/landingLoops';
+
+interface Props {
+  variant: CssLoopVariant;
+}
+const { variant } = Astro.props;
+const idea = CSS_LOOP_IDEAS[variant];
+const areaCells = Array.from({ length: 15 }, (_, i) => ({
+  i,
+  x: 260 + (i % 3) * 36,
+  y: 18 + Math.floor(i / 3) * 36,
+}));
+const quadSigns = [
+  { t: `(+, +)`, x: 330, y: 78 },
+  { t: `(${MINUS}, +)`, x: 70, y: 78 },
+  { t: `(${MINUS}, ${MINUS})`, x: 70, y: 168 },
+  { t: `(+, ${MINUS})`, x: 330, y: 168 },
+];
+---
+
+<div class="sk">
+  <svg viewBox="0 0 480 280" focusable="false">
+    {variant === 'signed' && (
+      <>
+        <line class="sk-ink" x1="36" y1="118" x2="444" y2="118"></line>
+        <path class="sk-ink" d="M432 110 L448 118 L432 126"></path>
+        {[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((n) => (
+          <g>
+            <line class="sk-ink" x1={240 + n * 40} y1="110" x2={240 + n * 40} y2="126"></line>
+            <text class="sk-math" x={240 + n * 40} y="150" font-size="14" text-anchor="middle">{signedLabel(n)}</text>
+          </g>
+        ))}
+        <line class="sk-gold" x1="160" y1="86" x2="360" y2="86"></line>
+        <path class="sk-gold" d="M348 78 L364 86 L348 94"></path>
+        <text class="sk-math" x="250" y="74" font-size="18" text-anchor="middle">+5</text>
+        <g class="sk-hop">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <circle cx="160" cy="118" r="11"></circle>
+        </g>
+        <text class="sk-math" x="240" y="196" font-size="28" text-anchor="middle">{MINUS}2 + 5 = 3</text>
+      </>
+    )}
+
+    {variant === 'absolute' && (
+      <>
+        <line class="sk-ink" x1="36" y1="120" x2="444" y2="120"></line>
+        {[-4, 0, 4].map((n) => (
+          <g>
+            <line class="sk-ink" x1={240 + n * 36} y1="112" x2={240 + n * 36} y2="128"></line>
+            <text class="sk-math" x={240 + n * 36} y="156" font-size="18" text-anchor="middle">{signedLabel(n)}</text>
+          </g>
+        ))}
+        <path class="sk-gold sk-in" d="M96 96 H240"></path>
+        <path class="sk-gold sk-in sk-d1" d="M240 96 H384"></path>
+        <text class="sk-math" x="168" y="84" font-size="16" text-anchor="middle">4</text>
+        <text class="sk-math" x="312" y="84" font-size="16" text-anchor="middle">4</text>
+        <circle cx="96" cy="120" r="9" class="sk-dot"></circle>
+        <circle cx="384" cy="120" r="9" class="sk-dot"></circle>
+        <text class="sk-math" x="240" y="200" font-size="28" text-anchor="middle">|{MINUS}4| = 4</text>
+      </>
+    )}
+
+    {variant === 'percent' && (
+      <>
+        <rect class="sk-track" x="48" y="96" width="384" height="48" rx="16"></rect>
+        <rect class="sk-fill" x="48" y="96" width="96" height="48" rx="16"></rect>
+        <line class="sk-ink" x1="144" y1="96" x2="144" y2="144"></line>
+        <line class="sk-ink" x1="240" y1="96" x2="240" y2="144"></line>
+        <line class="sk-ink" x1="336" y1="96" x2="336" y2="144"></line>
+        <text class="sk-math" x="240" y="72" font-size="32" text-anchor="middle">25% = 1/4</text>
+      </>
+    )}
+
+    {variant === 'angles' && (
+      <>
+        <line class="sk-ink" x1="70" y1="130" x2="410" y2="130"></line>
+        <line class="sk-ink" x1="140" y1="40" x2="340" y2="210"></line>
+        <polygon class="sk-wedge" points="246,130 292,130 273,154"></polygon>
+        <polygon class="sk-wedge" points="246,130 200,130 219,106"></polygon>
+        <polygon class="sk-wedge sk-wedge--coral sk-in" points="246,130 292,130 273,106"></polygon>
+        <text class="sk-math" x="300" y="168" font-size="18">α = α</text>
+        <text class="sk-math" x="300" y="78" font-size="18">α + β = 180°</text>
+      </>
+    )}
+
+    {variant === 'measure' && (
+      <>
+        <line class="sk-ink" x1="90" y1="190" x2="280" y2="190"></line>
+        <g class="sk-sweep" style="--ox:18.75%;--oy:67.86%">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <line class="sk-gold" x1="90" y1="190" x2="250" y2="190"></line>
+        </g>
+        <path class="sk-coral sk-in" d="M150 190 A60 60 0 0 1 120 138"></path>
+        <text class="sk-math sk-in" x="168" y="168" font-size="28">60°</text>
+      </>
+    )}
+
+    {variant === 'parallel' && (
+      <>
+        <line class="sk-ink" x1="40" y1="80" x2="440" y2="80"></line>
+        <line class="sk-ink" x1="40" y1="180" x2="440" y2="180"></line>
+        <line class="sk-ink" x1="160" y1="30" x2="280" y2="230"></line>
+        <polygon class="sk-wedge" points="190,80 226,80 204,104"></polygon>
+        <polygon class="sk-wedge" points="250,180 286,180 264,204"></polygon>
+        <text class="sk-math" x="340" y="140" font-size="22">α = α</text>
+      </>
+    )}
+
+    {variant === 'area' && (
+      <>
+        <text class="sk-math" x="36" y="90" font-size="32">5 × 3</text>
+        <text class="sk-math sk-in" x="36" y="140" font-size="32">= 15</text>
+        {areaCells.map((cell) => (
+          <rect class="sk-cell" style={`--i:${cell.i}`} x={cell.x} y={cell.y} width="34" height="34" rx="6"></rect>
+        ))}
+      </>
+    )}
+
+    {variant === 'area-para' && (
+      <>
+        <g class="sk-shear">
+          <rect x="130" y="48" width="220" height="110" rx="4"></rect>
+        </g>
+        <line class="sk-gold sk-in" x1="168" y1="48" x2="168" y2="158"></line>
+        <text class="sk-math" x="150" y="196" font-size="20">b</text>
+        <text class="sk-math" x="176" y="110" font-size="20">h</text>
+        <text class="sk-math sk-in" x="300" y="196" font-size="24">S = b × h</text>
+      </>
+    )}
+
+    {variant === 'area-split' && (
+      <>
+        <rect class="sk-box" x="60" y="48" width="180" height="120"></rect>
+        <rect class="sk-box sk-box--gold sk-in" x="240" y="48" width="120" height="120"></rect>
+        <text class="sk-math" x="150" y="116" font-size="28" text-anchor="middle">6</text>
+        <text class="sk-math sk-in" x="300" y="116" font-size="28" text-anchor="middle">4</text>
+        <text class="sk-math sk-in sk-d2" x="240" y="206" font-size="28" text-anchor="middle">6 + 4 = 10</text>
+      </>
+    )}
+
+    {variant === 'quads' && (
+      <>
+        <rect class="sk-ghost-box" x="140" y="52" width="200" height="110"></rect>
+        <g class="sk-shear">
+          <rect x="140" y="52" width="200" height="110" rx="4"></rect>
+        </g>
+      </>
+    )}
+
+    {variant === 'rect' && (
+      <>
+        <rect class="sk-box" x="90" y="40" width="280" height="140"></rect>
+        <path class="sk-gold sk-in" d="M90 70 V40 H120"></path>
+        <path class="sk-gold sk-in" d="M370 70 V40 H340"></path>
+        <path class="sk-gold sk-in" d="M90 150 V180 H120"></path>
+        <path class="sk-gold sk-in" d="M370 150 V180 H340"></path>
+        <line class="sk-coral sk-in sk-d2" x1="90" y1="40" x2="370" y2="180"></line>
+        <line class="sk-coral sk-in sk-d2" x1="370" y1="40" x2="90" y2="180"></line>
+      </>
+    )}
+
+    {variant === 'rhombus' && (
+      <>
+        <polygon class="sk-box" points="240,34 380,114 240,194 100,114"></polygon>
+        <line class="sk-gold" x1="304" y1="84" x2="316" y2="64"></line>
+        <line class="sk-gold" x1="304" y1="144" x2="316" y2="164"></line>
+        <line class="sk-gold" x1="164" y1="164" x2="176" y2="144"></line>
+        <line class="sk-gold" x1="164" y1="84" x2="176" y2="64"></line>
+      </>
+    )}
+
+    {variant === 'square' && (
+      <>
+        <rect class="sk-box" x="150" y="28" width="160" height="160"></rect>
+        <path class="sk-gold" d="M150 58 V28 H180"></path>
+        <line class="sk-coral" x1="176" y1="108" x2="194" y2="96"></line>
+        <line class="sk-coral" x1="266" y1="96" x2="284" y2="108"></line>
+        <line class="sk-coral" x1="266" y1="148" x2="284" y2="136"></line>
+        <line class="sk-coral" x1="176" y1="136" x2="194" y2="148"></line>
+      </>
+    )}
+
+    {variant === 'trapezoid' && (
+      <>
+        <polygon class="sk-box" points="150,56 330,56 400,176 80,176"></polygon>
+        <path class="sk-gold" d="M168 44 H300"></path>
+        <path class="sk-gold" d="M292 44 L300 40 L300 48"></path>
+        <path class="sk-gold" d="M110 196 H390"></path>
+        <path class="sk-gold" d="M382 196 L390 192 L390 200"></path>
+      </>
+    )}
+
+    {variant === 'circle' && (
+      <>
+        <circle class="sk-ring" cx="150" cy="110" r="72"></circle>
+        <line class="sk-gold" x1="78" y1="110" x2="222" y2="110"></line>
+        <circle cx="150" cy="110" r="4" class="sk-ink-dot"></circle>
+        <text class="sk-math" x="168" y="100" font-size="16">r</text>
+        <text class="sk-math" x="300" y="84" font-size="22">d = 2r</text>
+        <text class="sk-math" x="300" y="122" font-size="22">C = 2πr</text>
+      </>
+    )}
+
+    {variant === 'round-solid' && (
+      <>
+        <ellipse class="sk-ring" cx="150" cy="56" rx="70" ry="18"></ellipse>
+        <line class="sk-ink" x1="80" y1="56" x2="80" y2="176"></line>
+        <line class="sk-ink" x1="220" y1="56" x2="220" y2="176"></line>
+        <ellipse class="sk-ring" cx="150" cy="176" rx="70" ry="18"></ellipse>
+        <ellipse class="sk-disc" cx="150" cy="146" rx="64" ry="14"></ellipse>
+        <ellipse class="sk-disc" cx="150" cy="116" rx="64" ry="14"></ellipse>
+        <ellipse class="sk-disc" cx="150" cy="86" rx="64" ry="14"></ellipse>
+        <g class="sk-stack">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <ellipse class="sk-disc" cx="150" cy="176" rx="64" ry="14"></ellipse>
+        </g>
+      </>
+    )}
+
+    {variant === 'cone' && (
+      <>
+        <path class="sk-box" d="M160 52 L226 176 L94 176 Z"></path>
+        <ellipse class="sk-ring" cx="160" cy="56" rx="74" ry="16"></ellipse>
+        <line class="sk-ink" x1="86" y1="56" x2="86" y2="176"></line>
+        <line class="sk-ink" x1="234" y1="56" x2="234" y2="176"></line>
+        <ellipse class="sk-ring" cx="160" cy="176" rx="74" ry="16"></ellipse>
+        <text class="sk-math" x="300" y="120" font-size="28">⅓</text>
+      </>
+    )}
+
+    {variant === 'cyl-area' && (
+      <>
+        <ellipse class="sk-ring" cx="110" cy="110" rx="46" ry="16"></ellipse>
+        <line class="sk-ink" x1="64" y1="110" x2="64" y2="180"></line>
+        <line class="sk-ink" x1="156" y1="110" x2="156" y2="180"></line>
+        <ellipse class="sk-ring" cx="110" cy="180" rx="46" ry="16"></ellipse>
+        <g class="sk-unroll">
+          <rect x="210" y="70" width="200" height="90" rx="6"></rect>
+        </g>
+        <text class="sk-math" x="310" y="122" font-size="18" text-anchor="middle">2πr × h</text>
+      </>
+    )}
+
+    {variant === 'solids' && (
+      <>
+        <polygon class="sk-box" points="70,110 180,60 300,110 180,160"></polygon>
+        <polygon class="sk-box" points="70,110 180,160 180,220 70,170"></polygon>
+        <polygon class="sk-box sk-box--gold" points="180,160 300,110 300,170 180,220"></polygon>
+        <line class="sk-coral sk-edge" x1="70" y1="110" x2="180" y2="160"></line>
+        <line class="sk-gold sk-edge sk-d1" x1="180" y1="160" x2="300" y2="110"></line>
+        <line class="sk-teal sk-edge sk-d2" x1="180" y1="160" x2="180" y2="220"></line>
+        <text class="sk-math" x="330" y="150" font-size="22">a × b × c</text>
+      </>
+    )}
+
+    {variant === 'prism-area' && (
+      <>
+        <polygon class="sk-box sk-in" points="40,80 90,50 90,120"></polygon>
+        <rect class="sk-box sk-in sk-d1" x="90" y="50" width="70" height="70"></rect>
+        <rect class="sk-box sk-box--gold sk-in sk-d1" x="160" y="50" width="70" height="70"></rect>
+        <rect class="sk-box sk-in sk-d1" x="230" y="50" width="70" height="70"></rect>
+        <polygon class="sk-box sk-in sk-d2" points="300,50 350,80 300,120"></polygon>
+      </>
+    )}
+
+    {variant === 'prism-vol' && (
+      <>
+        <polygon class="sk-box" points="70,150 150,70 230,150"></polygon>
+        <g class="sk-extrude">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <polygon class="sk-box sk-box--gold" points="70,150 150,70 230,150"></polygon>
+        </g>
+        <text class="sk-math" x="300" y="120" font-size="22">V = S × ℓ</text>
+      </>
+    )}
+
+    {variant === 'coords' && (
+      <>
+        <line class="sk-ink" x1="40" y1="120" x2="440" y2="120"></line>
+        <line class="sk-ink" x1="240" y1="220" x2="240" y2="28"></line>
+        {quadSigns.map((q) => (
+          <text class="sk-math" x={q.x} y={q.y} font-size="18">{q.t}</text>
+        ))}
+        <g class="sk-quad">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <circle cx="0" cy="0" r="9"></circle>
+        </g>
+      </>
+    )}
+
+    {variant === 'pattern-graph' && (
+      <>
+        <line class="sk-ink" x1="70" y1="210" x2="400" y2="210"></line>
+        <line class="sk-ink" x1="80" y1="220" x2="80" y2="20"></line>
+        <line class="sk-coral" x1="80" y1="210" x2="200" y2="30"></line>
+        <circle class="sk-dot sk-in" cx="140" cy="120" r="7"></circle>
+        <circle class="sk-dot sk-in sk-d1" cx="200" cy="30" r="7"></circle>
+        <text class="sk-math" x="230" y="100" font-size="20">(1, 2) (2, 4)</text>
+        <text class="sk-math" x="230" y="132" font-size="20">y = 2x</text>
+      </>
+    )}
+
+    {variant === 'scale' && (
+      <>
+        <line class="sk-ink" x1="60" y1="120" x2="420" y2="120"></line>
+        {[0, 1, 2].map((n) => (
+          <g>
+            <line class="sk-ink" x1={100 + n * 120} y1="108" x2={100 + n * 120} y2="132"></line>
+            <text class="sk-math" x={100 + n * 120} y="160" font-size="20" text-anchor="middle">{n}</text>
+          </g>
+        ))}
+        <path class="sk-gold" d="M100 88 H220"></path>
+        <text class="sk-math" x="160" y="76" font-size="18" text-anchor="middle">= 5</text>
+        <path class="sk-coral sk-in" d="M100 48 H340"></path>
+        <text class="sk-math sk-in" x="220" y="36" font-size="20" text-anchor="middle">= 10</text>
+      </>
+    )}
+
+    {variant === 'distance' && (
+      <>
+        <line class="sk-ink" x1="80" y1="200" x2="360" y2="200"></line>
+        <line class="sk-ink" x1="80" y1="200" x2="80" y2="40"></line>
+        <line class="sk-gold" x1="80" y1="200" x2="200" y2="200"></line>
+        <line class="sk-gold" x1="200" y1="200" x2="200" y2="40"></line>
+        <line class="sk-coral" x1="80" y1="200" x2="200" y2="40"></line>
+        <text class="sk-math" x="140" y="224" font-size="18" text-anchor="middle">3</text>
+        <text class="sk-math" x="216" y="120" font-size="18">4</text>
+        <text class="sk-math" x="120" y="110" font-size="18">5</text>
+      </>
+    )}
+
+    {variant === 'linear' && (
+      <>
+        <line class="sk-ink" x1="40" y1="200" x2="430" y2="200"></line>
+        <line class="sk-ink" x1="110" y1="230" x2="110" y2="16"></line>
+        <line class="sk-coral" x1="110" y1="200" x2="200" y2="20"></line>
+        <path class="sk-gold" d="M110 200 H150 V120"></path>
+        <text class="sk-math" x="130" y="220" font-size="16" text-anchor="middle">1</text>
+        <text class="sk-math" x="162" y="164" font-size="16">2</text>
+        <text class="sk-math" x="214" y="48" font-size="22">y = 2x</text>
+      </>
+    )}
+
+    {variant === 'parabola' && (
+      <>
+        <line class="sk-ink" x1="40" y1="200" x2="440" y2="200"></line>
+        <line class="sk-ink" x1="240" y1="230" x2="240" y2="24"></line>
+        <path class="sk-coral" d="M80 190 Q240 -23 400 190" fill="none"></path>
+        <line class="sk-gold sk-in" x1="160" y1="110" x2="320" y2="110"></line>
+        <circle class="sk-dot" cx="160" cy="110" r="7"></circle>
+        <circle class="sk-dot" cx="320" cy="110" r="7"></circle>
+        <text class="sk-math" x="150" y="100" font-size="16" text-anchor="end">{MINUS}2</text>
+        <text class="sk-math" x="332" y="100" font-size="16">2</text>
+      </>
+    )}
+
+    {variant === 'quad-eq' && (
+      <>
+        <line class="sk-ink" x1="40" y1="160" x2="440" y2="160"></line>
+        <line class="sk-ink" x1="240" y1="230" x2="240" y2="30"></line>
+        <path class="sk-coral" d="M150 160 Q240 -80 330 160" fill="none"></path>
+        <circle class="sk-dot sk-in" cx="150" cy="160" r="8"></circle>
+        <circle class="sk-dot sk-in" cx="330" cy="160" r="8"></circle>
+        <text class="sk-math" x="150" y="190" font-size="18" text-anchor="middle">x = {MINUS}2</text>
+        <text class="sk-math" x="330" y="190" font-size="18" text-anchor="middle">x = 2</text>
+      </>
+    )}
+
+    {variant === 'read-graph' && (
+      <>
+        <line class="sk-ink" x1="60" y1="200" x2="420" y2="200"></line>
+        <line class="sk-ink" x1="100" y1="220" x2="100" y2="24"></line>
+        <path class="sk-coral" d="M100 200 Q220 -40 340 200" fill="none"></path>
+        <line class="sk-gold sk-in" x1="220" y1="200" x2="220" y2="80"></line>
+        <line class="sk-gold sk-in sk-d1" x1="100" y1="80" x2="220" y2="80"></line>
+        <circle class="sk-dot" cx="220" cy="80" r="7"></circle>
+        <text class="sk-math" x="236" y="188" font-size="16">2</text>
+        <text class="sk-math" x="88" y="76" font-size="16" text-anchor="end">4</text>
+      </>
+    )}
+
+    {variant === 'systems' && (
+      <>
+        <line class="sk-ink" x1="40" y1="200" x2="430" y2="200"></line>
+        <line class="sk-ink" x1="80" y1="230" x2="80" y2="24"></line>
+        <line class="sk-coral" x1="80" y1="200" x2="250" y2="30"></line>
+        <line class="sk-gold" x1="80" y1="40" x2="240" y2="200"></line>
+        <circle class="sk-dot sk-in" cx="160" cy="120" r="8"></circle>
+        <text class="sk-math" x="176" y="108" font-size="20">(2, 2)</text>
+      </>
+    )}
+
+    {variant === 'ineq' && (
+      <>
+        <line class="sk-ink" x1="40" y1="120" x2="440" y2="120"></line>
+        <path class="sk-ink" d="M428 112 L444 120 L428 128"></path>
+        <line class="sk-ray" x1="250" y1="120" x2="420" y2="120"></line>
+        <circle class="sk-open" cx="250" cy="120" r="8"></circle>
+        <text class="sk-math" x="250" y="160" font-size="18" text-anchor="middle">2</text>
+        <text class="sk-math" x="240" y="70" font-size="28" text-anchor="middle">x &gt; 2</text>
+      </>
+    )}
+
+    {variant === 'quad-ineq' && (
+      <>
+        <line class="sk-ink" x1="40" y1="120" x2="440" y2="120"></line>
+        <line class="sk-ray sk-ray--left" x1="40" y1="120" x2="160" y2="120"></line>
+        <line class="sk-ray" x1="320" y1="120" x2="430" y2="120"></line>
+        <circle class="sk-open" cx="160" cy="120" r="8"></circle>
+        <circle class="sk-open" cx="320" cy="120" r="8"></circle>
+        <text class="sk-math" x="160" y="158" font-size="18" text-anchor="middle">{MINUS}3</text>
+        <text class="sk-math" x="320" y="158" font-size="18" text-anchor="middle">3</text>
+        <text class="sk-math" x="240" y="64" font-size="24" text-anchor="middle">x² &gt; 9</text>
+      </>
+    )}
+
+    {variant === 'stats' && (
+      <>
+        <line class="sk-ink" x1="50" y1="190" x2="280" y2="190"></line>
+        <rect class="sk-bar" x="70" y="110" width="40" height="80" rx="6"></rect>
+        <rect class="sk-bar sk-bar--gold" x="130" y="50" width="40" height="140" rx="6"></rect>
+        <rect class="sk-bar sk-bar--coral" x="190" y="90" width="40" height="100" rx="6"></rect>
+        <line class="sk-teal sk-in" x1="60" y1="83" x2="250" y2="83"></line>
+        <text class="sk-math" x="90" y="214" font-size="16" text-anchor="middle">4</text>
+        <text class="sk-math" x="150" y="214" font-size="16" text-anchor="middle">7</text>
+        <text class="sk-math" x="210" y="214" font-size="16" text-anchor="middle">5</text>
+        <text class="sk-math sk-in" x="300" y="90" font-size="22">16/3</text>
+      </>
+    )}
+
+    {variant === 'probability' && (
+      <>
+        <circle class="sk-ring" cx="150" cy="110" r="70"></circle>
+        <line class="sk-ink" x1="80" y1="110" x2="220" y2="110"></line>
+        <text class="sk-math" x="150" y="96" font-size="22" text-anchor="middle" direction="rtl" unicode-bidi="isolate">עץ</text>
+        <text class="sk-math" x="150" y="140" font-size="22" text-anchor="middle" direction="rtl" unicode-bidi="isolate">פלי</text>
+        <text class="sk-math" x="300" y="120" font-size="32">P = 1/2</text>
+      </>
+    )}
+
+    {variant === 'transform' && (
+      <>
+        <polygon class="sk-ghost" points="60,70 150,180 36,180"></polygon>
+        <g class="sk-move">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <polygon class="sk-box" points="60,70 150,180 36,180"></polygon>
+        </g>
+      </>
+    )}
+
+    {variant === 'triangle-area' && (
+      <>
+        <rect class="sk-ghost-box" x="90" y="50" width="180" height="120"></rect>
+        <polygon class="sk-box" points="90,170 270,170 270,50"></polygon>
+        <text class="sk-math" x="180" y="196" font-size="16" text-anchor="middle">6</text>
+        <text class="sk-math" x="286" y="116" font-size="16">4</text>
+        <text class="sk-math sk-in" x="310" y="70" font-size="20">½ × 24 = 12</text>
+      </>
+    )}
+
+    {variant === 'triangles' && (
+      <>
+        <polygon class="sk-box" points="240,28 360,150 120,150"></polygon>
+        <path class="sk-coral sk-out" d="M240 58 A24 24 0 0 1 258 70"></path>
+        <path class="sk-gold sk-out" d="M142 140 A22 22 0 0 1 128 124"></path>
+        <path class="sk-teal sk-out" d="M338 140 A22 22 0 0 0 352 124"></path>
+        <line class="sk-ink" x1="80" y1="196" x2="400" y2="196"></line>
+        <path class="sk-coral sk-in" d="M120 196 A18 18 0 0 1 156 196"></path>
+        <path class="sk-gold sk-in sk-d1" d="M170 196 A18 18 0 0 1 206 196"></path>
+        <path class="sk-teal sk-in sk-d2" d="M220 196 A18 18 0 0 1 256 196"></path>
+        <text class="sk-math sk-in sk-d2" x="300" y="188" font-size="18">180°</text>
+      </>
+    )}
+
+    {variant === 'exterior' && (
+      <>
+        <polygon class="sk-box" points="80,180 180,180 157,47"></polygon>
+        <line class="sk-ink" x1="180" y1="180" x2="320" y2="180"></line>
+        <text class="sk-math" x="92" y="164" font-size="16">60°</text>
+        <text class="sk-math" x="132" y="64" font-size="16">40°</text>
+        <text class="sk-math" x="196" y="168" font-size="16">100°</text>
+        <text class="sk-math" x="230" y="90" font-size="20">40° + 60° = 100°</text>
+      </>
+    )}
+
+    {variant === 'isosceles' && (
+      <>
+        <polygon class="sk-box" points="240,30 370,180 110,180"></polygon>
+        <line class="sk-gold" x1="176" y1="96" x2="196" y2="86"></line>
+        <line class="sk-gold" x1="284" y1="86" x2="304" y2="96"></line>
+        <path class="sk-coral sk-in" d="M150 168 A22 22 0 0 1 136 148"></path>
+        <path class="sk-coral sk-in" d="M330 168 A22 22 0 0 0 344 148"></path>
+        <text class="sk-math" x="150" y="150" font-size="16">α</text>
+        <text class="sk-math" x="312" y="150" font-size="16">α</text>
+      </>
+    )}
+
+    {variant === 'median' && (
+      <>
+        <polygon class="sk-box" points="240,28 390,180 90,180"></polygon>
+        <line class="sk-gold sk-in" x1="240" y1="28" x2="240" y2="180"></line>
+        <line class="sk-coral" x1="200" y1="168" x2="200" y2="180"></line>
+        <line class="sk-coral" x1="280" y1="168" x2="280" y2="180"></line>
+        <text class="sk-math" x="165" y="204" font-size="16" text-anchor="middle">½</text>
+        <text class="sk-math" x="315" y="204" font-size="16" text-anchor="middle">½</text>
+      </>
+    )}
+
+    {variant === 't306090' && (
+      <>
+        <polygon class="sk-box" points="120,110 120,190 258,190"></polygon>
+        <path class="sk-ink" d="M120 174 H136 V190"></path>
+        <text class="sk-math" x="96" y="156" font-size="16" text-anchor="end">x</text>
+        <text class="sk-math" x="188" y="212" font-size="16" text-anchor="middle">x√3</text>
+        <text class="sk-math" x="210" y="140" font-size="16">2x</text>
+        <text class="sk-math" x="268" y="186" font-size="16">30°</text>
+        <text class="sk-math" x="108" y="100" font-size="16" text-anchor="end">60°</text>
+      </>
+    )}
+
+    {variant === 'side-angle' && (
+      <>
+        <polygon class="sk-box" points="70,170 360,170 200,50"></polygon>
+        <line class="sk-coral" x1="70" y1="170" x2="360" y2="170"></line>
+        <path class="sk-coral sk-in" d="M200 86 A22 22 0 0 1 222 96"></path>
+      </>
+    )}
+
+    {variant === 'congruence' && (
+      <>
+        <polygon class="sk-box" points="50,60 160,180 30,180"></polygon>
+        <line class="sk-gold" x1="78" y1="112" x2="96" y2="100"></line>
+        <g class="sk-join">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <polygon class="sk-box sk-box--gold" points="250,60 360,180 220,180"></polygon>
+          <line class="sk-coral" x1="278" y1="112" x2="296" y2="100"></line>
+        </g>
+        <text class="sk-math" x="200" y="210" font-size="28" text-anchor="middle">≅</text>
+      </>
+    )}
+
+    {variant === 'similar' && (
+      <>
+        <polygon class="sk-ghost" points="250,36 430,200 70,200"></polygon>
+        <g class="sk-scale">
+          <polygon class="sk-box" points="250,36 430,200 70,200"></polygon>
+        </g>
+        <text class="sk-math sk-in" x="240" y="48" font-size="20" text-anchor="middle">k = 2</text>
+      </>
+    )}
+
+    {variant === 'similar-area' && (
+      <>
+        <polygon class="sk-ghost" points="250,36 430,200 70,200"></polygon>
+        <polygon class="sk-box" points="250,118 340,200 160,200"></polygon>
+        <text class="sk-math" x="70" y="48" font-size="22">×2</text>
+        <text class="sk-math sk-in" x="250" y="48" font-size="22">×4</text>
+      </>
+    )}
+
+    {variant === 'similar-aa' && (
+      <>
+        <polygon class="sk-box" points="70,170 190,170 110,70"></polygon>
+        <polygon class="sk-box sk-box--gold" points="250,180 430,180 310,50"></polygon>
+        <path class="sk-coral sk-in" d="M96 100 A16 16 0 0 1 112 90"></path>
+        <path class="sk-coral sk-in" d="M300 86 A18 18 0 0 1 320 74"></path>
+        <path class="sk-gold sk-in sk-d1" d="M150 158 A16 16 0 0 0 168 146"></path>
+        <path class="sk-gold sk-in sk-d1" d="M360 166 A18 18 0 0 0 382 150"></path>
+        <text class="sk-math sk-in sk-d2" x="220" y="50" font-size="28">∼</text>
+      </>
+    )}
+  </svg>
+  {variant === 'circle' && <p class="sk-eq sk-eq--circle" dir="ltr">S = πr<sup>2</sup></p>}
+  {variant === 'round-solid' && <p class="sk-eq sk-eq--cyl" dir="ltr">V = πr<sup>2</sup>h</p>}
+  <p class="sk-cap" dir="rtl">{idea}</p>
+</div>
+
+<style>
+  .sk { position: absolute; inset: 0; }
+  .sk svg { display: block; width: 100%; height: 100%; }
+  .sk-cap {
+    position: absolute;
+    inset-inline: 5%;
+    bottom: 3.5%;
+    margin: 0;
+    text-align: center;
+    direction: rtl;
+    unicode-bidi: isolate;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-weight: 700;
+    font-size: 3.6cqi;
+    line-height: 1.25;
+    color: #5a6588;
+  }
+  .sk-math {
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-weight: 800;
+    fill: #22305a;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  .sk-ink { stroke: #22305a; stroke-width: 3; fill: none; stroke-linecap: round; }
+  .sk-gold { stroke: #e6a534; stroke-width: 4; fill: none; stroke-linecap: round; }
+  .sk-coral { stroke: #e5735c; stroke-width: 4; fill: none; stroke-linecap: round; }
+  .sk-teal { stroke: #1e605e; stroke-width: 4; fill: none; }
+  .sk-ink-dot { fill: #22305a; }
+  .sk-dot { fill: #e5735c; stroke: #22305a; stroke-width: 2; }
+  .sk-open { fill: #fff; stroke: #22305a; stroke-width: 3; }
+  .sk-ring { fill: #fff; stroke: #22305a; stroke-width: 3; }
+  .sk-box { fill: #d7efe8; stroke: #22305a; stroke-width: 3; stroke-linejoin: round; }
+  .sk-box--gold { fill: #fdf1d8; }
+  .sk-wedge { fill: #e6a534; opacity: 0.85; }
+  .sk-wedge--coral { fill: #e5735c; }
+  .sk-ghost, .sk-ghost-box { fill: none; stroke: #22305a; stroke-width: 2.5; stroke-dasharray: 6 6; opacity: 0.7; }
+  .sk-track { fill: #e7eef8; }
+  .sk-fill { fill: #e6a534; }
+  .sk-cell { fill: #1e605e; opacity: 1; }
+  .sk-stage { fill: transparent; }
+  .sk-disc { fill: #e6a534; stroke: #22305a; stroke-width: 2; }
+  .sk-eq {
+    position: absolute;
+    margin: 0;
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-weight: 800;
+    font-size: 4.6cqi;
+    color: #22305a;
+  }
+  .sk-eq sup {
+    display: inline-block;
+    font-size: 0.55em;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    top: -0.55em;
+  }
+  .sk-eq--circle { inset-inline-start: 62%; top: 52%; }
+  .sk-eq--cyl { inset-inline-start: 56%; top: 34%; }
+  .sk-stack { transform-box: fill-box; transform-origin: 0 0; transform: translateY(0); }
+  .sk-bar { fill: #1e605e; }
+  .sk-bar--gold { fill: #e6a534; }
+  .sk-bar--coral { fill: #e5735c; }
+  .sk-edge { stroke-width: 6; }
+
+  .sk-hop, .sk-quad, .sk-move, .sk-join, .sk-extrude, .sk-sweep, .sk-scale, .sk-shear, .sk-unroll, .sk-ray {
+    transform-box: fill-box;
+  }
+  .sk-hop, .sk-quad, .sk-move, .sk-join, .sk-extrude { transform-origin: 0 0; }
+  .sk-sweep { transform-origin: var(--ox) var(--oy); transform: rotate(-60deg); }
+  .sk-scale { transform-origin: 50% 100%; transform: scale(0.5); }
+  .sk-shear { transform-origin: center bottom; transform: skewX(-16deg); }
+  .sk-unroll { transform-origin: left center; transform: scaleX(1); }
+  .sk-ray { transform-origin: left center; transform: scaleX(1); }
+  .sk-ray--left { transform-origin: right center; }
+  .sk-hop { transform: translateX(41.67%); }
+  .sk-quad { transform: translate(66%, 28%); }
+  .sk-move { transform: translate(42%, 6%); }
+  .sk-join { transform: translateX(-28%); }
+  .sk-extrude { transform: translate(28%, -8%); }
+  .sk-in, .sk-out, .sk-cell, .sk-edge { opacity: 1; }
+
+  .sk .sk-hop { animation: sk-hop 7s ease-in-out infinite; }
+  .sk .sk-quad { animation: sk-quad 8s linear infinite; }
+  .sk .sk-move { animation: sk-move 7s ease-in-out infinite; }
+  .sk .sk-join { animation: sk-join 7s ease-in-out infinite; }
+  .sk .sk-extrude { animation: sk-extrude 7s ease-in-out infinite; }
+  .sk .sk-sweep { animation: sk-sweep 6.5s ease-in-out infinite; }
+  .sk .sk-scale { animation: sk-scale 7s ease-in-out infinite; }
+  .sk .sk-shear { animation: sk-shear 7s ease-in-out infinite; }
+  .sk .sk-unroll { animation: sk-unroll 7s ease-in-out infinite; }
+  .sk .sk-ray { animation: sk-ray 7s ease-in-out infinite; }
+  .sk .sk-stack { animation: sk-stack 7s ease-in-out infinite; }
+  .sk .sk-in { animation: sk-in 7s ease-in-out infinite; }
+  .sk .sk-out { animation: sk-out 7s ease-in-out infinite; }
+  .sk .sk-cell { animation: sk-in 8s ease-in-out infinite; animation-delay: calc(var(--i) * 0.08s); }
+  .sk .sk-edge { animation: sk-in 7.5s ease-in-out infinite; }
+  .sk .sk-d1 { animation-delay: 0.45s; }
+  .sk .sk-d2 { animation-delay: 0.9s; }
+  .sk .sk-bar { transform-box: fill-box; transform-origin: center bottom; animation: sk-grow 7s ease-in-out infinite; }
+
+  @keyframes sk-hop {
+    0%, 18% { transform: translateX(0); }
+    48%, 78% { transform: translateX(41.67%); }
+    100% { transform: translateX(0); }
+  }
+  @keyframes sk-quad {
+    0%, 12% { transform: translate(66%, 28%); }
+    32% { transform: translate(30%, 28%); }
+    52% { transform: translate(30%, 62%); }
+    74% { transform: translate(66%, 62%); }
+    100% { transform: translate(66%, 28%); }
+  }
+  @keyframes sk-move {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(42%, 6%); }
+  }
+  @keyframes sk-join {
+    0%, 20% { transform: translateX(0); }
+    50%, 78% { transform: translateX(-28%); }
+    100% { transform: translateX(0); }
+  }
+  @keyframes sk-extrude {
+    0%, 100% { transform: translate(0, 0); }
+    45%, 75% { transform: translate(28%, -8%); }
+  }
+  @keyframes sk-sweep {
+    0%, 100% { transform: rotate(0deg); }
+    48%, 76% { transform: rotate(-60deg); }
+  }
+  @keyframes sk-scale {
+    0%, 100% { transform: scale(0.5); }
+    45%, 75% { transform: scale(1); }
+  }
+  @keyframes sk-shear {
+    0%, 100% { transform: skewX(0deg); }
+    45%, 72% { transform: skewX(-16deg); }
+  }
+  @keyframes sk-unroll {
+    0%, 100% { transform: scaleX(0.12); }
+    42%, 74% { transform: scaleX(1); }
+  }
+  @keyframes sk-ray {
+    0%, 100% { transform: scaleX(0.12); }
+    42%, 74% { transform: scaleX(1); }
+  }
+  @keyframes sk-stack {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-43%); }
+  }
+  @keyframes sk-in {
+    0%, 18% { opacity: 0; }
+    36%, 80% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes sk-out {
+    0%, 20% { opacity: 1; }
+    42%, 70% { opacity: 0.15; }
+    100% { opacity: 1; }
+  }
+  @keyframes sk-grow {
+    0%, 100% { transform: scaleY(0.15); }
+    40%, 74% { transform: scaleY(1); }
+  }
+</style>
