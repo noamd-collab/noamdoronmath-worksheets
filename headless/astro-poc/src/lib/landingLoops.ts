@@ -312,7 +312,7 @@ export const CSS_LOOP_IDEAS = {
   t306090: 'במשולש 30, 60, 90 הצלע שמול 30 היא חצי מהיתר',
   'side-angle': 'מול הצלע הארוכה יותר נמצאת הזווית הגדולה יותר',
   congruence: 'התאמת צלעות וזוויות מביאה את שני המשולשים לחפיפה',
-  proof: 'בהוכחה: נתון שצמודות שוות, נימוק שהן משלימות ל־180°, ולכן כל אחת 90°',
+  proof: 'בהוכחה: נתון שצמודות שוות, הנימוק הוא זוויות צמודות ולכן הסכום 180°, וכל אחת 90°',
   similar: 'בדמיון הזוויות נשמרות והצלעות גדלות באותו יחס',
   'similar-area': 'כשהצלעות גדלות פי 2, השטח גדל פי 4',
   'similar-aa': 'שתי זוויות שוות מספיקות כדי לקבוע דמיון',
@@ -341,4 +341,85 @@ export const LOOP_TABLE_NOTES = {
 
 export function cssLoopIdea(variant: CssLoopVariant): string {
   return CSS_LOOP_IDEAS[variant];
+}
+
+const CAPTION_CORE = /[0-9A-Za-z⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿ₀₁₂₃₄₅₆₇₈₉π°]/;
+const CAPTION_OPERATORS = '−+×÷=≠<>≤≥±√∞%*';
+const CAPTION_MARKS = '()[]{}|∥⊥∠^/~·∙′″⁄–—+';
+
+function captionIsCore(ch: string): boolean {
+  return CAPTION_CORE.test(ch) || CAPTION_OPERATORS.includes(ch);
+}
+
+function captionIsSymbol(ch: string): boolean {
+  return captionIsCore(ch) || CAPTION_MARKS.includes(ch) || ch === '-';
+}
+
+function captionIsGlue(ch: string): boolean {
+  return ch === ' ' || ch === '\t' || ch === '\n' || ch === '\u00a0' || ch === ',';
+}
+
+function captionIsDecimalPoint(text: string, i: number): boolean {
+  return (
+    text[i] === '.' &&
+    i > 0 &&
+    i + 1 < text.length &&
+    /[0-9]/.test(text[i - 1]!) &&
+    /[0-9]/.test(text[i + 1]!)
+  );
+}
+
+function captionIsMathAt(text: string, i: number): boolean {
+  return captionIsSymbol(text[i]!) || captionIsDecimalPoint(text, i);
+}
+
+function captionSpanEnd(text: string, start: number): number {
+  let j = start;
+  while (j < text.length) {
+    if (captionIsMathAt(text, j)) {
+      j += 1;
+      continue;
+    }
+    if (captionIsGlue(text[j]!) || text[j] === ':') {
+      let k = j;
+      while (k < text.length && (captionIsGlue(text[k]!) || text[k] === ':')) k += 1;
+      if (k < text.length && captionIsMathAt(text, k)) {
+        j = k;
+        continue;
+      }
+    }
+    break;
+  }
+  return j;
+}
+
+function captionEscape(text: string): string {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/**
+ * Wrap every math fragment of a Hebrew caption in an LTR isolate.
+ * A prefix such as ל־ or ב־ stays outside the isolate; the number that
+ * follows it is inside. The isolate is unbreakable via `.ll-math`.
+ */
+export function captionMathHtml(input: string): string {
+  let out = '';
+  let i = 0;
+  while (i < input.length) {
+    if (!captionIsMathAt(input, i)) {
+      out += captionEscape(input[i]!);
+      i += 1;
+      continue;
+    }
+    const end = captionSpanEnd(input, i);
+    const slice = input.slice(i, end);
+    const escaped = captionEscape(slice);
+    if ([...slice].some(captionIsCore)) {
+      out += `<bdi dir="ltr" class="ll-math">${escaped}</bdi>`;
+    } else {
+      out += escaped;
+    }
+    i = end;
+  }
+  return out;
 }

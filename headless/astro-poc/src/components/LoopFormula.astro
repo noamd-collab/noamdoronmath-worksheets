@@ -3,7 +3,7 @@
  * Formula loops. Each exponent sits in <sup> immediately after its base.
  * Formulas are LTR-isolated so an RTL page cannot pull the superscript away.
  */
-import { CSS_LOOP_IDEAS, MINUS, POWERS_ROWS, type CssLoopVariant } from '../lib/landingLoops';
+import { CSS_LOOP_IDEAS, MINUS, POWERS_ROWS, captionMathHtml, type CssLoopVariant } from '../lib/landingLoops';
 
 interface Props {
   variant: CssLoopVariant;
@@ -20,17 +20,17 @@ const odd = POWERS_ROWS[2];
       <div class="ll-row ll-row-0">
         <p class="ll-eq" dir="ltr"><span class="ll-parens">{even.base}</span><sup>{even.sup}</sup>{` = ${even.result}`}</p>
         <p class="ll-expn" dir="ltr">{even.expand}</p>
-        <p class="ll-cap" dir="rtl">{even.caption}</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml(even.caption)}></p>
       </div>
       <div class="ll-row ll-row-1">
         <p class="ll-eq" dir="ltr"><span class="ll-sign">{MINUS}</span>3<sup>2</sup> = <span class="ll-sign">{MINUS}</span>9</p>
         <p class="ll-expn" dir="ltr"><span class="ll-sign">{MINUS}</span>(3 × 3)</p>
-        <p class="ll-cap" dir="rtl">{plain.caption}</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml(plain.caption)}></p>
       </div>
       <div class="ll-row ll-row-2">
         <p class="ll-eq" dir="ltr"><span class="ll-parens">{odd.base}</span><sup>{odd.sup}</sup>{` = ${odd.result}`}</p>
         <p class="ll-expn" dir="ltr">{odd.expand}</p>
-        <p class="ll-cap" dir="rtl">{odd.caption}</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml(odd.caption)}></p>
       </div>
     </div>
   )}
@@ -39,7 +39,7 @@ const odd = POWERS_ROWS[2];
     <div class="ll-stack">
       <p class="ll-eq" dir="ltr">2<sup class="ll-hot">3</sup> × 2<sup class="ll-hot ll-d1">2</sup> = 2<sup class="ll-hot ll-d2">5</sup></p>
       <p class="ll-expn" dir="ltr">3 + 2 = 5</p>
-      <p class="ll-cap" dir="rtl">{CSS_LOOP_IDEAS['exp-rules']}</p>
+      <p class="ll-cap" dir="rtl" set:html={captionMathHtml(CSS_LOOP_IDEAS['exp-rules'])}></p>
     </div>
   )}
 
@@ -50,7 +50,7 @@ const odd = POWERS_ROWS[2];
       </div>
       <p class="ll-eq" dir="ltr">3<sup>2</sup> = 9</p>
       <p class="ll-eq ll-late" dir="ltr">√9 = 3</p>
-      <p class="ll-cap" dir="rtl">{CSS_LOOP_IDEAS.roots}</p>
+      <p class="ll-cap" dir="rtl" set:html={captionMathHtml(CSS_LOOP_IDEAS.roots)}></p>
     </div>
   )}
 
@@ -58,7 +58,7 @@ const odd = POWERS_ROWS[2];
     <div class="ll-stack">
       <p class="ll-eq" dir="ltr">{MINUS}2 + <span class="ll-hot">3 × ({MINUS}4)</span></p>
       <p class="ll-eq ll-late" dir="ltr">{MINUS}2 + ({MINUS}12) = {MINUS}14</p>
-      <p class="ll-cap" dir="rtl">{CSS_LOOP_IDEAS.order}</p>
+      <p class="ll-cap" dir="rtl" set:html={captionMathHtml(CSS_LOOP_IDEAS.order)}></p>
     </div>
   )}
 
@@ -66,11 +66,11 @@ const odd = POWERS_ROWS[2];
     <div class="ll-compare ll-compare--two">
       <div class="ll-row ll-row-0">
         <p class="ll-eq" dir="ltr">({MINUS}2) × ({MINUS}3) = 6</p>
-        <p class="ll-cap" dir="rtl">שני מינוסים נותנים פלוס</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('שני מינוסים נותנים פלוס')}></p>
       </div>
       <div class="ll-row ll-row-1">
         <p class="ll-eq" dir="ltr">({MINUS}2) × 3 = {MINUS}6</p>
-        <p class="ll-cap" dir="rtl">סימנים שונים נותנים מינוס</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('סימנים שונים נותנים מינוס')}></p>
       </div>
     </div>
   )}
@@ -79,11 +79,11 @@ const odd = POWERS_ROWS[2];
     <div class="ll-compare ll-compare--two">
       <div class="ll-row ll-row-0">
         <p class="ll-eq" dir="ltr">({MINUS}8) : ({MINUS}2) = 4</p>
-        <p class="ll-cap" dir="rtl">סימנים זהים נותנים פלוס</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('סימנים זהים נותנים פלוס')}></p>
       </div>
       <div class="ll-row ll-row-1">
         <p class="ll-eq" dir="ltr">({MINUS}8) : 2 = {MINUS}4</p>
-        <p class="ll-cap" dir="rtl">סימנים שונים נותנים מינוס</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('סימנים שונים נותנים מינוס')}></p>
       </div>
     </div>
   )}
@@ -91,19 +91,19 @@ const odd = POWERS_ROWS[2];
   {variant === 'proof' && (
     <div class="ll-compare">
       <div class="ll-row ll-row-0">
-        <p class="ll-cap" dir="rtl">נתון</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('נתון')}></p>
         <p class="ll-eq" dir="ltr">α = β</p>
-        <p class="ll-cap" dir="rtl">שתי זוויות צמודות שוות</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('שתי זוויות צמודות שוות')}></p>
       </div>
       <div class="ll-row ll-row-1">
-        <p class="ll-cap" dir="rtl">נימוק</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('נימוק')}></p>
         <p class="ll-eq" dir="ltr">α + β = 180°</p>
-        <p class="ll-cap" dir="rtl">צמודות משלימות לזווית שטוחה</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('זוויות צמודות')}></p>
       </div>
       <div class="ll-row ll-row-2">
-        <p class="ll-cap" dir="rtl">לכן</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('לכן')}></p>
         <p class="ll-eq" dir="ltr">α = β = 90°</p>
-        <p class="ll-cap" dir="rtl">כל אחת מהן ישרה</p>
+        <p class="ll-cap" dir="rtl" set:html={captionMathHtml('כל אחת מהן ישרה')}></p>
       </div>
     </div>
   )}
@@ -113,7 +113,7 @@ const odd = POWERS_ROWS[2];
       <p class="ll-eq" dir="ltr">x<sup>2</sup> {MINUS} 5x + 6 = 0</p>
       <p class="ll-eq ll-late" dir="ltr">(x {MINUS} 2) × (x {MINUS} 3) = 0</p>
       <p class="ll-eq ll-late" dir="ltr">x = 2 , x = 3</p>
-      <p class="ll-cap" dir="rtl">{CSS_LOOP_IDEAS['quad-factor']}</p>
+      <p class="ll-cap" dir="rtl" set:html={captionMathHtml(CSS_LOOP_IDEAS['quad-factor'])}></p>
     </div>
   )}
 
@@ -121,7 +121,7 @@ const odd = POWERS_ROWS[2];
     <div class="ll-screen">
       <p class="ll-eq ll-on-dark" dir="ltr">2 × <span class="ll-parens">(3 + 1)</span></p>
       <p class="ll-eq ll-on-dark ll-late" dir="ltr">2 × 4 = 8</p>
-      <p class="ll-cap ll-cap--light" dir="rtl">{CSS_LOOP_IDEAS.tools}</p>
+      <p class="ll-cap ll-cap--light" dir="rtl" set:html={captionMathHtml(CSS_LOOP_IDEAS.tools)}></p>
     </div>
   )}
 </div>

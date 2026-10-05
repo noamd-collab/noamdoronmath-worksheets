@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import {
   CSS_LOOP_IDEAS,
   CSS_LOOP_VARIANTS,
+  captionMathHtml,
   GRADE_CONCEPT_LOOP,
   LOOP_TABLE_NOTES,
   MARKETING_LANDING_LOOPS,
@@ -192,6 +193,50 @@ describe('landing loop coverage', () => {
     assert.equal(shown.includes('∙'), false);
     assert.equal(shown.includes('⋅'), false);
     assert.equal(/\d\/\d/.test(shown), false);
+  });
+
+  it('isolates every math fragment inside a Hebrew loop caption', () => {
+    const mathCore = /[0-9A-Za-z⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿ₀₁₂₃₄₅₆₇₈₉π°−+×÷=≠<>≤≥±√∞%*]/;
+    const decode = (html: string) =>
+      html.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&');
+    for (const variant of CSS_LOOP_VARIANTS) {
+      const idea = CSS_LOOP_IDEAS[variant];
+      const html = captionMathHtml(idea);
+      const plain = decode(html.replace(/<bdi dir="ltr" class="ll-math">/g, '').replace(/<\/bdi>/g, ''));
+      assert.equal(plain, idea, variant);
+      const outside = html.replace(/<bdi dir="ltr" class="ll-math">[\s\S]*?<\/bdi>/g, '');
+      assert.equal(mathCore.test(outside), false, `${variant} left math outside an isolate: ${outside}`);
+      for (const fragment of html.match(/<bdi dir="ltr" class="ll-math">[\s\S]*?<\/bdi>/g) ?? []) {
+        assert.equal(fragment.includes('־'), false, `${variant} pulled a Hebrew prefix into ${fragment}`);
+      }
+    }
+    assert.match(captionMathHtml(CSS_LOOP_IDEAS.order), /ל־<bdi dir="ltr" class="ll-math">−2<\/bdi>/);
+    assert.match(captionMathHtml(CSS_LOOP_IDEAS.signed), /ב־<bdi dir="ltr" class="ll-math">−2<\/bdi>/);
+    assert.match(
+      captionMathHtml(CSS_LOOP_IDEAS['exp-rules']),
+      /: <bdi dir="ltr" class="ll-math">2³ × 2² = 2⁵<\/bdi>/,
+    );
+    const quad = captionMathHtml(CSS_LOOP_IDEAS['quad-ineq']);
+    assert.match(quad, /<bdi dir="ltr" class="ll-math">x² &gt; 9<\/bdi>/);
+    assert.match(quad, /<bdi dir="ltr" class="ll-math">x &lt; −3<\/bdi>/);
+    assert.match(quad, /<bdi dir="ltr" class="ll-math">x &gt; 3<\/bdi>/);
+    assert.match(captionMathHtml(CSS_LOOP_IDEAS['quad-factor']), /<bdi dir="ltr" class="ll-math">x = 3<\/bdi>/);
+    assert.match(captionMathHtml('12 : 4'), /<bdi dir="ltr" class="ll-math">12 : 4<\/bdi>/);
+    assert.match(captionMathHtml(CSS_LOOP_IDEAS.circle), /<bdi dir="ltr" class="ll-math">2πr<\/bdi>/);
+    assert.match(captionMathHtml(CSS_LOOP_IDEAS.angles), /ל־<bdi dir="ltr" class="ll-math">180°<\/bdi>/);
+
+    const formula = read('src/components/LoopFormula.astro');
+    const sketch = read('src/components/LoopSketch.astro');
+    const shell = read('src/components/LandingLoop.astro');
+    assert.match(formula, /set:html=\{captionMathHtml\(/);
+    assert.match(sketch, /set:html=\{captionMathHtml\(/);
+    assert.equal(formula.includes('צמודות משלימות לזווית שטוחה'), false);
+    assert.match(formula, /captionMathHtml\('זוויות צמודות'\)/);
+    assert.match(sketch, /sk-ray--left/);
+    assert.match(sketch, /\.sk-ray\s*\{[^}]*stroke:\s*#e6a534/);
+    assert.match(shell, /\.ll :global\(\.ll-math\)\s*\{[^}]*unicode-bidi:\s*isolate/);
+    assert.match(shell, /\.ll :global\(\.ll-math\)\s*\{[^}]*direction:\s*ltr/);
+    assert.match(shell, /\.ll :global\(\.ll-math\)\s*\{[^}]*white-space:\s*nowrap/);
   });
 
   it('fails when a page file is not classified as a landing or a non-landing', () => {

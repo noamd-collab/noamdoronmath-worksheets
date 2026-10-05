@@ -65,6 +65,11 @@ const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
     border-radius: 24px;
     overflow: hidden;
   }
+  .ll :global(.ll-math) {
+    unicode-bidi: isolate;
+    direction: ltr;
+    white-space: nowrap;
+  }
   .ll--off,
   .ll--off :global(*) { animation-play-state: paused !important; }
 
