@@ -142,7 +142,7 @@ const gradePool = buildGradeLoopPool(grade);
             </div>
             {/* The protected runtime supplies the real question, diagram and result.
                 Do not invent a playlist from the grade-four design sample. */}
-            <article class="exact-grade__player" role="region" aria-roledescription="נגן המחשות" aria-label={`המחשה לכיתה ${gradeLabel}`}>
+            <article class="exact-grade__player" data-landing-loop={`grade-${grade}`} role="region" aria-roledescription="נגן המחשות" aria-label={`המחשה לכיתה ${gradeLabel}`}>
               <GradeLoopPlayer grade={grade} pool={gradePool} defaultVariant={loopVariant} />
             </article>
           </div>
