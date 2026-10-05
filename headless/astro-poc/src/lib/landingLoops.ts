@@ -25,6 +25,98 @@ export const FAMILY_CONCEPT_LOOP = {
 
 export type ConceptLoopVariant = (typeof FAMILY_CONCEPT_LOOP)[keyof typeof FAMILY_CONCEPT_LOOP];
 
+/**
+ * Old ConceptLoop films (Kimi K3, F01–F14, L01–L56). Specs stay in
+ * conceptLoops.ts. A slug here mounts that film instead of the PR71 CSS loop.
+ */
+export const EXTRA_FILMS = [
+  'signed-jump',
+  'coord-walk',
+  'slope',
+  'similar',
+  'sas-snap',
+  'quad-tree',
+  'trap-area',
+  'pct-25',
+  'two-coins',
+  'exterior',
+  'corr-angles',
+  'sup-angles',
+  'angle-kinds',
+  'circ-unroll',
+  'cyl-stack',
+  'half-eq',
+  'parab',
+  'mean-cols',
+  'transform',
+  'angle-sum',
+  'para-rect',
+  'area-x4',
+  'map-scale',
+  'l-split',
+  'rect-count',
+  'box-vol',
+  'signed-ops',
+  'tri-sort',
+  'pattern',
+] as const;
+
+export type FilmVariant = ConceptLoopVariant | (typeof EXTRA_FILMS)[number];
+
+/** Topic page → old film. Pages absent from this map keep their CSS loop. */
+export const SLUG_FILM: Record<string, FilmVariant> = {
+  'signed-numbers-grade-7': 'signed-jump',
+  'coordinate-plane-quadrants-grade-7': 'coord-walk',
+  'coordinate-plane-four-quadrants-grade-7': 'coord-walk',
+  'coordinate-plane-grade-8': 'coord-walk',
+  'coordinate-plane-scale-grade-7': 'map-scale',
+  'linear-function-grade-8': 'slope',
+  'linear-function-grade-9': 'slope',
+  'similar-triangles-grade-8': 'similar',
+  'similar-triangles-grade-9': 'similar',
+  'triangle-similarity-proof-grade-8': 'similar',
+  'triangle-similarity-aa-grade-9': 'similar',
+  'similar-triangles-area-ratio-grade-8': 'area-x4',
+  'geometric-proof-grade-8': 'sas-snap',
+  'triangle-congruence-grade-8': 'sas-snap',
+  'congruence-theorems-grade-8': 'sas-snap',
+  'triangle-congruence-proofs-grade-8': 'sas-snap',
+  'square-grade-9': 'quad-tree',
+  'rhombus-grade-9': 'quad-tree',
+  'parallelogram-grade-9': 'quad-tree',
+  'trapezoid-grade-9': 'trap-area',
+  'area-parallelogram-trapezoid-composite-grade-7': 'para-rect',
+  'percentage-problems-grade-8': 'pct-25',
+  'probability-grade-9': 'two-coins',
+  'exterior-angle-triangle-grade-8': 'exterior',
+  'parallel-lines-angles-grade-8': 'corr-angles',
+  'adjacent-vertical-angles-grade-7': 'sup-angles',
+  'angles-review-grade-7': 'sup-angles',
+  'angles-grade-7': 'sup-angles',
+  'angles-introduction-measurement-grade-7': 'angle-kinds',
+  'circle-area-circumference-grade-8': 'circ-unroll',
+  'cylinder-volume-grade-8': 'cyl-stack',
+  'triangle-30-60-90-grade-9': 'half-eq',
+  'isosceles-triangle-grade-8': 'half-eq',
+  'isosceles-triangle-grade-9': 'half-eq',
+  'isosceles-triangle-properties-grade-8': 'half-eq',
+  'quadratic-function-grade-9': 'parab',
+  'precalculus-functions-graphs-grade-9': 'parab',
+  'statistics-grade-8': 'mean-cols',
+  'statistics-grade-9': 'mean-cols',
+  'number-line-absolute-value-grade-7': 'numberline',
+  'congruent-polygons-transformations-grade-9': 'transform',
+  'triangle-area-grade-7': 'triangle',
+  'triangle-quadrilateral-angle-sum-grade-7': 'angle-sum',
+  'order-of-operations-signed-numbers-grade-7': 'signed-ops',
+  'composite-polygons-area-grade-9': 'l-split',
+  'area-rectangle-perimeter-grade-7': 'rect-count',
+  'rectangle-square-area-grade-9': 'rect-count',
+  'solids-box-cube-prism-grade-7': 'box-vol',
+  'special-triangles-grade-7-new': 'tri-sort',
+  'patterns-and-graphs-grade-7': 'pattern',
+};
+
 /** CSS/SVG loops. Transform and opacity only. */
 export const CSS_LOOP_VARIANTS = [
   'powers',
@@ -182,7 +274,7 @@ export const NON_LANDING_SITE_SLUGS = [
 ] as const;
 
 export type LandingLoop =
-  | { kind: 'concept'; variant: ConceptLoopVariant; marker: string }
+  | { kind: 'concept'; variant: FilmVariant; marker: string }
   | { kind: 'css'; variant: CssLoopVariant; marker: string };
 
 function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string | undefined {
@@ -191,7 +283,19 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
   return (topicFamilies as Record<string, string>)[`g${page.grade}-t${topicId}`];
 }
 
+/** The PR71 CSS loop for this page, even when a film now replaces it on the page. */
+export function topicCssVariant(
+  page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>,
+): CssLoopVariant | undefined {
+  const override = SLUG_CSS_OVERRIDE[page.slug];
+  if (override) return override;
+  const family = familyOf(page);
+  return family ? FAMILY_CSS_LOOP[family] : undefined;
+}
+
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
+  const film = SLUG_FILM[page.slug];
+  if (film) return { kind: 'concept', variant: film, marker: `concept-${film}` };
   const override = SLUG_CSS_OVERRIDE[page.slug];
   if (override) return { kind: 'css', variant: override, marker: override };
   const family = familyOf(page);

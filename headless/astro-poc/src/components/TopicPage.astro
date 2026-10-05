@@ -87,10 +87,9 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
   ? `כיתה ${gradeHubLabel(page.grade)}`
   : `כיתה ${page.grade}`;
 
-/* FAMILIES-B1: a family ConceptLoop (F01–F06, F21, F26, F38) stays in the
-   card beside the intro. Other families get a CSS LandingLoop. F07–F14 film
-   variants stay off topic pages (KIMI-ANIM-6). triangle-area-grade-7 keeps
-   its explorer and also gets a CSS loop — the explorer glides once. */
+/* A matching old ConceptLoop film (K3, F01–F14, L01–L56) is the card.
+   Pages with no film keep the CSS LandingLoop. triangle-area-grade-7 still
+   mounts its explorer beside the film — the explorer glides once. */
 const landingLoop = topicLandingLoop(page);
 const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
 const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
