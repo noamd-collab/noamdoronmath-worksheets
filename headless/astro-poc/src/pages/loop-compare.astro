@@ -6,7 +6,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ConceptLoop from '../components/ConceptLoop.astro';
 import LandingLoop from '../components/LandingLoop.astro';
-import { SLUG_FILM, topicCssVariant, type FilmVariant } from '../lib/landingLoops';
+import { topicCssVariant, topicLandingLoop, type FilmVariant } from '../lib/landingLoops';
 import { TOPIC_PAGE_SLUGS, loadTopicPage } from '../lib/topicPages';
 
 export const prerender = false;
@@ -14,13 +14,18 @@ export const prerender = false;
 Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
 
 const pairs = TOPIC_PAGE_SLUGS.flatMap((slug) => {
-  const film = SLUG_FILM[slug];
-  if (!film) return [];
   const page = loadTopicPage(slug);
-  return [{ slug, path: page.path, film, css: topicCssVariant(page) }];
+  const loop = topicLandingLoop(page);
+  if (loop.kind !== 'concept') return [];
+  return [{ slug, path: page.path, film: loop.variant, css: topicCssVariant(page) }];
 });
 
-const keptCss = TOPIC_PAGE_SLUGS.filter((slug) => !SLUG_FILM[slug]);
+const keptCss = TOPIC_PAGE_SLUGS.flatMap((slug) => {
+  const page = loadTopicPage(slug);
+  const loop = topicLandingLoop(page);
+  if (loop.kind !== 'css') return [];
+  return [{ slug, path: page.path, variant: loop.variant }];
+});
 ---
 
 <BaseLayout
@@ -45,15 +50,22 @@ const keptCss = TOPIC_PAGE_SLUGS.filter((slug) => !SLUG_FILM[slug]);
             {pair.css && <LandingLoop variant={pair.css} />}
           </figure>
         </div>
+        {pair.slug === 'parallel-lines-angles-grade-8' && (
+          <figure>
+            <figcaption>סרט שני · parallel-more</figcaption>
+            <LandingLoop variant="parallel-more" />
+          </figure>
+        )}
       </section>
     ))}
-    <h2>ערך מוחלט — סרט חדש</h2>
-    <p class="cmp-lead">סופרים 4 צעדים מ־−4 עד 0, ואז 4 צעדים מ־4 עד 0. הערך המוחלט של שניהם הוא 4.</p>
-    <LandingLoop variant="absolute" />
-    <h2>נשארו על לולאת CSS — אין סרט ישן מתאים</h2>
-    <ul>
-      {keptCss.map((slug) => <li><a href={`/${slug}`}>{slug}</a></li>)}
-    </ul>
+    <h2>סרטים חדשים — אין סרט ישן מתאים</h2>
+    <p class="cmp-lead">כל עמוד למטה מציג את הסרט שרץ גם בעמוד עצמו. גאומטריה אנליטית נשארת על לולאת המרחק הדקה.</p>
+    {keptCss.map((item) => (
+      <section class="cmp-pair" id={item.slug}>
+        <h2><a href={item.path}>{item.path}</a> · {item.variant}</h2>
+        <LandingLoop variant={item.variant} />
+      </section>
+    ))}
   </main>
 </BaseLayout>
 

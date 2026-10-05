@@ -133,6 +133,7 @@ describe('landing loop coverage', () => {
       loop,
       read('src/components/LoopFormula.astro'),
       read('src/components/LoopSketch.astro'),
+      read('src/components/LessonFilm.astro'),
     ].join('\n');
     assert.match(loop, /prefers-reduced-motion:\s*reduce/);
     assert.match(loop, /html\.nd-motion-off/);
@@ -217,6 +218,11 @@ describe('landing loop coverage', () => {
     assert.equal(absolute.kind, 'css');
     assert.equal(absolute.variant, 'absolute');
     assert.equal(SLUG_FILM['number-line-absolute-value-grade-7'], undefined);
+    assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).variant, 'distance');
+    assert.equal(topicLandingLoop(loadTopicPage('coordinate-plane-applications-grade-7')).variant, 'coord-app');
+    assert.equal(topicLandingLoop(loadTopicPage('coordinate-plane-applications-grade-9')).variant, 'coord-app');
+    assert.equal(topicLandingLoop(loadTopicPage('parallel-lines-angles-grade-8')).variant, 'corr-angles');
+    assert.match(read('src/components/TopicPage.astro'), /parallel-more/);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);
     assert.equal(CSS_LOOP_IDEAS.stats.includes('16/3'), false);
@@ -253,7 +259,7 @@ describe('landing loop coverage', () => {
     assert.match(captionMathHtml(CSS_LOOP_IDEAS.signed), /ב־<bdi dir="ltr" class="ll-math">−2<\/bdi>/);
     assert.match(
       captionMathHtml(CSS_LOOP_IDEAS['exp-rules']),
-      /: <bdi dir="ltr" class="ll-math">2³ × 2² = 2⁵<\/bdi>/,
+      /: <bdi dir="ltr" class="ll-math">2² × 2³ = 2⁵<\/bdi>/,
     );
     const quad = captionMathHtml(CSS_LOOP_IDEAS['quad-ineq']);
     assert.match(quad, /<bdi dir="ltr" class="ll-math">x² &gt; 9<\/bdi>/);
