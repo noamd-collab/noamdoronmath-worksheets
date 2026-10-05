@@ -28,8 +28,22 @@ describe('clean worksheet before Noam AI', () => {
     assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.pdf-page \.noam-report-pin/);
     assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.panel/);
     assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.fab/);
-    assert.match(viewer, /@media print\{[\s\S]*\.noam-exercise-pin[\s\S]*\.noam-report-pin[\s\S]*\.noam-ai-entry/);
+    assert.match(viewer, /@media print\{[\s\S]*\.noam-print-arrow[\s\S]*\.noam-print-primary[\s\S]*\.noam-ai-toggle/);
     assert.match(viewer, /חזרה לדף הנקי/);
+  });
+
+  it('makes download/print the primary clean-view action and points at it', () => {
+    const entry = viewer.match(/<div class="noam-ai-entry"[\s\S]*?<\/div>\s*<main/)?.[0] || '';
+    assert.match(entry, /id="pdfOpenFull"[\s\S]*הורדה \/ הדפסה/);
+    assert.match(entry, /להדפסה/);
+    assert.match(entry, /class="noam-print-arrow"/);
+    const printAt = entry.indexOf('id="pdfOpenFull"');
+    const aiAt = entry.indexOf('id="noamAiToggle"');
+    assert.ok(printAt > -1 && aiAt > printAt, 'print action comes before the Noam AI button');
+    assert.match(viewer, /@media \(prefers-reduced-motion:reduce\)\{[\s\S]*\.noam-print-arrow-icon\{animation:none\}/);
+    assert.match(viewer, /html\.nd-motion-off \.exact-viewer \.noam-print-arrow-icon/);
+    assert.match(viewer, /background:#14213d;color:#fff/);
+    assert.match(viewer, /\.exact-viewer \.noam-ai-toggle\{[\s\S]*background:#fff/);
   });
 
   it('does not auto-open the help panel before the teacher opts in', () => {
