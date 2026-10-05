@@ -61,6 +61,7 @@ export const CSS_LOOP_VARIANTS = [
   'linear',
   'parabola',
   'quad-eq',
+  'quad-factor',
   'read-graph',
   'systems',
   'ineq',
@@ -76,6 +77,7 @@ export const CSS_LOOP_VARIANTS = [
   't306090',
   'side-angle',
   'congruence',
+  'proof',
   'similar',
   'similar-area',
   'similar-aa',
@@ -114,7 +116,8 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'square-root-grade-7': 'roots',
   'square-roots-grade-9': 'roots',
   'cylinder-volume-grade-8': 'round-solid',
-  'transition-to-high-school-grade-9': 'parabola',
+  'transition-to-high-school-grade-9': 'quad-factor',
+  'geometric-proof-grade-8': 'proof',
   'exponent-rules-grade-9': 'exp-rules',
   'multiplying-signed-numbers-grade-7': 'signed-mul',
   'dividing-signed-numbers-grade-7': 'signed-div',
@@ -293,11 +296,12 @@ export const CSS_LOOP_IDEAS = {
   linear: 'שיפוע 2: על כל צעד ימינה עולים שני צעדים',
   parabola: `לפרבולה y = x² יש סימטריה: ל־x ול־${MINUS}x אותו y`,
   'quad-eq': 'פתרונות המשוואה הריבועית הם נקודות החיתוך עם ציר x',
+  'quad-factor': `מפרקים x² ${MINUS} 5x + 6 ל־(x ${MINUS} 2) × (x ${MINUS} 3) = 0, ולכן x = 2 או x = 3`,
   'read-graph': 'קוראים מהגרף: ב־x = 2 מתקבל y = 4',
   systems: 'נקודת החיתוך מקיימת את שתי המשוואות יחד',
   ineq: 'אי־שוויון x > 2 הוא קרן פתוחה ימינה על ישר המספרים',
   'quad-ineq': `x² > 9 מתקיים מחוץ לשורשים: x < ${MINUS}3 או x > 3`,
-  stats: 'הממוצע של 4, 7 ו־5 הוא 16/3, הגובה שהיה שומר על אותו סכום',
+  stats: 'הממוצע של 4, 6 ו־8 הוא 6: השמונה נותנת 2 לארבע, והכול מתיישר',
   probability: 'למטבע שתי תוצאות שוות סיכוי, ולכן ההסתברות לחצי',
   transform: 'הזזה מזיזה את המשולש בלי לשנות את גודלו או את צורתו',
   'triangle-area': 'משולש עם אותו בסיס וגובה הוא חצי מהמלבן',
@@ -305,9 +309,10 @@ export const CSS_LOOP_IDEAS = {
   exterior: 'הזווית החיצונית שווה לסכום שתי הזוויות הפנימיות הרחוקות',
   isosceles: 'במשולש שווה־שוקיים זוויות הבסיס שוות',
   median: 'התיכון יוצא מהקודקוד וחוצה את הצלע שמולו לשני חלקים שווים',
-  t306090: 'במשולש 30, 60, 90 הצלע שמול 30 היא חצי מהמיתר',
+  t306090: 'במשולש 30, 60, 90 הצלע שמול 30 היא חצי מהיתר',
   'side-angle': 'מול הצלע הארוכה יותר נמצאת הזווית הגדולה יותר',
   congruence: 'התאמת צלעות וזוויות מביאה את שני המשולשים לחפיפה',
+  proof: 'בהוכחה: נתון שצמודות שוות, נימוק שהן משלימות ל־180°, ולכן כל אחת 90°',
   similar: 'בדמיון הזוויות נשמרות והצלעות גדלות באותו יחס',
   'similar-area': 'כשהצלעות גדלות פי 2, השטח גדל פי 4',
   'similar-aa': 'שתי זוויות שוות מספיקות כדי לקבוע דמיון',
@@ -322,7 +327,17 @@ export const FORMULA_LOOP_VARIANTS = [
   'signed-mul',
   'signed-div',
   'tools',
+  'proof',
+  'quad-factor',
 ] as const satisfies readonly CssLoopVariant[];
+
+/**
+ * Why a shared picture stays on a page that is not that one topic.
+ * The card still shows the variant's idea. The pull-request table adds this note.
+ */
+export const LOOP_TABLE_NOTES = {
+  'high-school-math': 'עמוד קישורים לחומרי תיכון בלי תרגיל אחד, ולכן נשארת סימטריית הפרבולה',
+} as const satisfies Record<string, string>;
 
 export function cssLoopIdea(variant: CssLoopVariant): string {
   return CSS_LOOP_IDEAS[variant];

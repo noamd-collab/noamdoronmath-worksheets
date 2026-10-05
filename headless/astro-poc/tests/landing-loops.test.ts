@@ -11,6 +11,7 @@ import {
   CSS_LOOP_IDEAS,
   CSS_LOOP_VARIANTS,
   GRADE_CONCEPT_LOOP,
+  LOOP_TABLE_NOTES,
   MARKETING_LANDING_LOOPS,
   MINUS,
   NON_LANDING_SITE_SLUGS,
@@ -75,6 +76,9 @@ describe('landing loop coverage', () => {
     assert.equal(topicLandingLoop(loadTopicPage('exponent-rules-grade-9')).variant, 'exp-rules');
     assert.equal(topicLandingLoop(loadTopicPage('multiplying-signed-numbers-grade-7')).variant, 'signed-mul');
     assert.equal(topicLandingLoop(loadTopicPage('parallel-lines-angles-grade-8')).variant, 'parallel');
+    assert.equal(topicLandingLoop(loadTopicPage('geometric-proof-grade-8')).variant, 'proof');
+    assert.equal(topicLandingLoop(loadTopicPage('transition-to-high-school-grade-9')).variant, 'quad-factor');
+    assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
   });
 
   it('topic, grade, home, and marketing templates emit data-landing-loop', () => {
@@ -173,6 +177,21 @@ describe('landing loop coverage', () => {
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
     assert.equal(cssPages, 75);
+    assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
+    assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);
+    assert.equal(CSS_LOOP_IDEAS.stats.includes('16/3'), false);
+    assert.match(CSS_LOOP_IDEAS.stats, /4, 6 ו־8 הוא 6/);
+    assert.match(LOOP_TABLE_NOTES['high-school-math'], /פרבולה/);
+    const shown = [
+      read('src/components/LoopFormula.astro'),
+      read('src/components/LoopSketch.astro'),
+      ...Object.values(CSS_LOOP_IDEAS),
+    ].join('\n');
+    assert.equal(shown.includes('÷'), false);
+    assert.equal(shown.includes('·'), false);
+    assert.equal(shown.includes('∙'), false);
+    assert.equal(shown.includes('⋅'), false);
+    assert.equal(/\d\/\d/.test(shown), false);
   });
 
   it('fails when a page file is not classified as a landing or a non-landing', () => {

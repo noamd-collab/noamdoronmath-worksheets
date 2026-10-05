@@ -78,13 +78,42 @@ const odd = POWERS_ROWS[2];
   {variant === 'signed-div' && (
     <div class="ll-compare ll-compare--two">
       <div class="ll-row ll-row-0">
-        <p class="ll-eq" dir="ltr">({MINUS}8) ÷ ({MINUS}2) = 4</p>
+        <p class="ll-eq" dir="ltr">({MINUS}8) : ({MINUS}2) = 4</p>
         <p class="ll-cap" dir="rtl">סימנים זהים נותנים פלוס</p>
       </div>
       <div class="ll-row ll-row-1">
-        <p class="ll-eq" dir="ltr">({MINUS}8) ÷ 2 = {MINUS}4</p>
+        <p class="ll-eq" dir="ltr">({MINUS}8) : 2 = {MINUS}4</p>
         <p class="ll-cap" dir="rtl">סימנים שונים נותנים מינוס</p>
       </div>
+    </div>
+  )}
+
+  {variant === 'proof' && (
+    <div class="ll-compare">
+      <div class="ll-row ll-row-0">
+        <p class="ll-cap" dir="rtl">נתון</p>
+        <p class="ll-eq" dir="ltr">α = β</p>
+        <p class="ll-cap" dir="rtl">שתי זוויות צמודות שוות</p>
+      </div>
+      <div class="ll-row ll-row-1">
+        <p class="ll-cap" dir="rtl">נימוק</p>
+        <p class="ll-eq" dir="ltr">α + β = 180°</p>
+        <p class="ll-cap" dir="rtl">צמודות משלימות לזווית שטוחה</p>
+      </div>
+      <div class="ll-row ll-row-2">
+        <p class="ll-cap" dir="rtl">לכן</p>
+        <p class="ll-eq" dir="ltr">α = β = 90°</p>
+        <p class="ll-cap" dir="rtl">כל אחת מהן ישרה</p>
+      </div>
+    </div>
+  )}
+
+  {variant === 'quad-factor' && (
+    <div class="ll-stack">
+      <p class="ll-eq" dir="ltr">x<sup>2</sup> {MINUS} 5x + 6 = 0</p>
+      <p class="ll-eq ll-late" dir="ltr">(x {MINUS} 2) × (x {MINUS} 3) = 0</p>
+      <p class="ll-eq ll-late" dir="ltr">x = 2 , x = 3</p>
+      <p class="ll-cap" dir="rtl">{CSS_LOOP_IDEAS['quad-factor']}</p>
     </div>
   )}
 
