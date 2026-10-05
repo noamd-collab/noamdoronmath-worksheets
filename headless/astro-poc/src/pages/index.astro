@@ -24,7 +24,7 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
         <div data-doodle="snail" style="position:absolute;bottom:8px;right:30%;width:110px;z-index:1;"><img src="/design-exact/assets/doodles/snail.webp" alt="" width="400" height="400" loading="eager" decoding="async" style="width:100%;height:auto;display:block;mix-blend-mode:multiply;cursor:pointer;"></div>
 
         <div style="position:relative;z-index:2;flex:1 1 440px;min-width:0;">
-          <div data-exact-hero-panel style={`background:${heroPanel(HERO_DEFAULT.gradeNum)};border-radius:28px;padding:56px 28px 20px;`}>
+          <div data-exact-hero-panel data-landing-loop="hero" style={`background:${heroPanel(HERO_DEFAULT.gradeNum)};border-radius:28px;padding:56px 28px 20px;`}>
             <HeroLoop />
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;">
               <span data-exact-hero-label style="background:#fff;border:1.5px solid #22305a;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:700;">{heroChip(HERO_DEFAULT)}</span>

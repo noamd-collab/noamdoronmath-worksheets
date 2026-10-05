@@ -3,9 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
+import LandingLoop from './LandingLoop.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
-import topicFamilies from '../data/topicFamilies.json';
+import { topicLandingLoop } from '../lib/landingLoops';
 import {
   loadTopicPage,
   synthesizeBodyFlow,
@@ -86,42 +87,20 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
   ? `כיתה ${gradeHubLabel(page.grade)}`
   : `כיתה ${page.grade}`;
 
-/* FAMILIES-B1: every topic page in a family that has a loop shows it in a
-   card beside the intro text. Family comes from topicFamilies.json via the
-   page's own catalog topic id (g{grade}-t{id}). triangle-area-grade-7 keeps
-   its hands-on explorer instead. */
-/* F07–F14 loop variants exist in ConceptLoop/conceptLoops and /dev-loops (QA),
-   but are NOT mounted on topic pages — they replaced the quiet doodle/LineArt
-   intro look with thin film cards (KIMI-ANIM-6 regression). Keep F01–F06 +
-   F21/F26/F38 only, matching pre-#13 TopicPage wiring. */
-const FAMILY_LOOP = {
-  F01: 'sticks',
-  F02: 'numberline',
-  F03: 'tenframes',
-  F04: 'balance',
-  F05: 'pattern',
-  F06: 'bars',
-  F21: 'area-model',
-  F26: 'triangle',
-  F38: 'pythagoras',
-} as const;
-const topicId = page.catalogCta?.catalogTopicId ?? null;
-const family =
-  topicId != null
-    ? (topicFamilies as Record<string, string>)[`g${page.grade}-t${topicId}`]
-    : undefined;
-const loopVariant =
-  slug !== 'triangle-area-grade-7' && family
-    ? FAMILY_LOOP[family as keyof typeof FAMILY_LOOP]
-    : undefined;
-// Keep the existing instructional engine. Only its placement and surrounding
-// presentation change to the supplied topic screen; no demo data is imported.
-const hasDemo = !!loopVariant || slug === 'triangle-area-grade-7';
+/* FAMILIES-B1: a family ConceptLoop (F01–F06, F21, F26, F38) stays in the
+   card beside the intro. Other families get a CSS LandingLoop. F07–F14 film
+   variants stay off topic pages (KIMI-ANIM-6). triangle-area-grade-7 keeps
+   its explorer and also gets a CSS loop — the explorer glides once. */
+const landingLoop = topicLandingLoop(page);
+const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
+const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
+const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css';
 const bodyStart = bodyUnits.findIndex((unit) => unit.kind !== 'intro' && unit.kind !== 'cta');
 const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
 const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
 const flowUnits = hasDemo ? bodyUnits.slice(heroEnd) : bodyUnits;
 const catalog = loadCatalog();
+const topicId = page.catalogCta?.catalogTopicId ?? null;
 const catalogTopic = catalog.grades.find((entry) => entry.grade === page.grade)
   ?.topics.find((topic) => topic.id === topicId);
 const topicLevels = catalogTopic?.levels.map((level) => ({
@@ -189,9 +168,14 @@ function faqHeadingId(groupIndex: number) {
     <div data-body-flow>
       {hasDemo && (
         <div class="exact-topic-hero">
-          <div class="exact-topic-demo" style={`background:${page.grade >= 7 ? '#e3f1ec' : '#f8ebe0'}`}>
+          <div
+            class="exact-topic-demo"
+            data-landing-loop={loopVariant ? landingLoop.marker : undefined}
+            style={`background:${page.grade >= 7 ? '#e3f1ec' : '#f8ebe0'}`}
+          >
             {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
             {loopVariant && <ConceptLoop variant={loopVariant} />}
+            {cssVariant && <LandingLoop variant={cssVariant} />}
           </div>
           <div class="exact-topic-copy">
             {heroUnits.map((unit) => {
