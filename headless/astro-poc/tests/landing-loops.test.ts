@@ -239,6 +239,27 @@ describe('landing loop coverage', () => {
     assert.match(shell, /\.ll :global\(\.ll-math\)\s*\{[^}]*white-space:\s*nowrap/);
   });
 
+  it('draws y = x² opening upward and never leaves a shape fill unset', () => {
+    const sketch = read('src/components/LoopSketch.astro');
+    assert.match(sketch, /d="M160 88 Q240 312 320 88"/);
+    assert.match(sketch, /\(\{MINUS\}2, 4\)/);
+    assert.match(sketch, /\(2, 4\)/);
+    assert.match(sketch, /class="sk-box" points="250,118 340,200 160,200"/);
+    assert.match(sketch, /24%, 86% \{ transform: scale\(1\); \}/);
+    assert.match(sketch, /V = S × ℓ/);
+    assert.equal(sketch.includes('y="120" font-size="22">V = S'), false);
+
+    const fillClass =
+      /sk-stage|sk-dot|sk-ink-dot|sk-open|sk-ring|sk-box|sk-wedge|sk-ghost-box|sk-ghost|sk-track|sk-fill|sk-cell|sk-disc|sk-col|sk-gift|sk-ink|sk-gold|sk-coral|sk-teal|sk-arrow|sk-ray|sk-bar/;
+    const shapes = sketch.match(/<(?:rect|polygon|circle|ellipse|path)\b[^>]*>/g) ?? [];
+    assert.ok(shapes.length > 20);
+    for (const tag of shapes) {
+      const named = tag.match(/class="([^"]*)"/);
+      const painted = (named && fillClass.test(named[1])) || /fill="/.test(tag);
+      assert.equal(painted, true, tag);
+    }
+  });
+
   it('fails when a page file is not classified as a landing or a non-landing', () => {
     const pagesRoot = join(root, 'src/pages');
     for (const abs of astroPages(pagesRoot)) {

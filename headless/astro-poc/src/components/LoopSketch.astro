@@ -40,7 +40,7 @@ const quadSigns = [
         <text class="sk-math" x="250" y="74" font-size="18" text-anchor="middle">+5</text>
         <g class="sk-hop">
           <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
-          <circle cx="160" cy="118" r="11"></circle>
+          <circle class="sk-dot" cx="160" cy="118" r="11"></circle>
         </g>
         <text class="sk-math" x="240" y="196" font-size="28" text-anchor="middle">{MINUS}2 + 5 = 3</text>
       </>
@@ -123,7 +123,7 @@ const quadSigns = [
     {variant === 'area-para' && (
       <>
         <g class="sk-shear">
-          <rect x="130" y="48" width="220" height="110" rx="4"></rect>
+          <rect class="sk-box" x="130" y="48" width="220" height="110" rx="4"></rect>
         </g>
         <line class="sk-gold sk-in" x1="168" y1="48" x2="168" y2="158"></line>
         <text class="sk-math" x="150" y="196" font-size="20">b</text>
@@ -146,7 +146,7 @@ const quadSigns = [
       <>
         <rect class="sk-ghost-box" x="140" y="52" width="200" height="110"></rect>
         <g class="sk-shear">
-          <rect x="140" y="52" width="200" height="110" rx="4"></rect>
+          <rect class="sk-box" x="140" y="52" width="200" height="110" rx="4"></rect>
         </g>
       </>
     )}
@@ -238,7 +238,7 @@ const quadSigns = [
         <line class="sk-ink" x1="156" y1="110" x2="156" y2="180"></line>
         <ellipse class="sk-ring" cx="110" cy="180" rx="46" ry="16"></ellipse>
         <g class="sk-unroll">
-          <rect x="210" y="70" width="200" height="90" rx="6"></rect>
+          <rect class="sk-box" x="210" y="70" width="200" height="90" rx="6"></rect>
         </g>
         <text class="sk-math" x="310" y="122" font-size="18" text-anchor="middle">2πr × h</text>
       </>
@@ -273,7 +273,7 @@ const quadSigns = [
           <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
           <polygon class="sk-box sk-box--gold" points="70,150 150,70 230,150"></polygon>
         </g>
-        <text class="sk-math" x="300" y="120" font-size="22">V = S × ℓ</text>
+        <text class="sk-math" x="300" y="214" font-size="22">V = S × ℓ</text>
       </>
     )}
 
@@ -286,7 +286,7 @@ const quadSigns = [
         ))}
         <g class="sk-quad">
           <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
-          <circle cx="0" cy="0" r="9"></circle>
+          <circle class="sk-dot" cx="0" cy="0" r="9"></circle>
         </g>
       </>
     )}
@@ -348,12 +348,13 @@ const quadSigns = [
       <>
         <line class="sk-ink" x1="40" y1="200" x2="440" y2="200"></line>
         <line class="sk-ink" x1="240" y1="230" x2="240" y2="24"></line>
-        <path class="sk-coral" d="M80 190 Q240 -23 400 190" fill="none"></path>
-        <line class="sk-gold sk-in" x1="160" y1="110" x2="320" y2="110"></line>
-        <circle class="sk-dot" cx="160" cy="110" r="7"></circle>
-        <circle class="sk-dot" cx="320" cy="110" r="7"></circle>
-        <text class="sk-math" x="150" y="100" font-size="16" text-anchor="end">{MINUS}2</text>
-        <text class="sk-math" x="332" y="100" font-size="16">2</text>
+        <path class="sk-coral" d="M160 88 Q240 312 320 88" fill="none"></path>
+        <line class="sk-gold sk-in" x1="160" y1="88" x2="320" y2="88"></line>
+        <circle class="sk-dot" cx="160" cy="88" r="7"></circle>
+        <circle class="sk-ink-dot" cx="240" cy="200" r="4"></circle>
+        <circle class="sk-dot" cx="320" cy="88" r="7"></circle>
+        <text class="sk-math" x="160" y="72" font-size="16" text-anchor="middle">({MINUS}2, 4)</text>
+        <text class="sk-math" x="320" y="72" font-size="16" text-anchor="middle">(2, 4)</text>
       </>
     )}
 
@@ -555,11 +556,11 @@ const quadSigns = [
 
     {variant === 'similar' && (
       <>
-        <polygon class="sk-ghost" points="250,36 430,200 70,200"></polygon>
         <g class="sk-scale">
-          <polygon class="sk-box" points="250,36 430,200 70,200"></polygon>
+          <polygon class="sk-box sk-box--gold" points="250,36 430,200 70,200"></polygon>
         </g>
-        <text class="sk-math sk-in" x="240" y="48" font-size="20" text-anchor="middle">k = 2</text>
+        <polygon class="sk-box" points="250,118 340,200 160,200"></polygon>
+        <text class="sk-math" x="348" y="52" font-size="22">k = 2</text>
       </>
     )}
 
@@ -690,7 +691,7 @@ const quadSigns = [
   }
   .sk-hop, .sk-quad, .sk-move, .sk-join, .sk-extrude, .sk-give { transform-origin: 0 0; }
   .sk-sweep { transform-origin: var(--ox) var(--oy); transform: rotate(-60deg); }
-  .sk-scale { transform-origin: 50% 100%; transform: scale(0.5); }
+  .sk-scale { transform-origin: 50% 100%; transform: scale(1); }
   .sk-shear { transform-origin: center bottom; transform: skewX(-16deg); }
   .sk-unroll { transform-origin: left center; transform: scaleX(1); }
   .sk-ray {
@@ -772,8 +773,9 @@ const quadSigns = [
     48%, 76% { transform: rotate(-60deg); }
   }
   @keyframes sk-scale {
-    0%, 100% { transform: scale(0.5); }
-    45%, 75% { transform: scale(1); }
+    0%, 10% { transform: scale(0.5); }
+    24%, 86% { transform: scale(1); }
+    100% { transform: scale(0.5); }
   }
   @keyframes sk-shear {
     0%, 100% { transform: skewX(0deg); }
