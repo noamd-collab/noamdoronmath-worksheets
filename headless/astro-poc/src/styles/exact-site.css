@@ -73,9 +73,6 @@ body.exact-site {
   }
   .exact-nav-tools[data-shut] .exact-nav-drop {opacity:1;visibility:visible;pointer-events:auto;}
   .exact-header nav[data-nav-panel] .exact-nav-drop a {white-space:normal;}
-  .exact-header nav[data-nav-panel] .exact-nav-game {
-    margin-inline-start:18px;text-align:start;
-  }
 }
 .exact-site [data-doodle] {visibility:visible;}
 .exact-site [data-doodle] img {max-width:none;}
