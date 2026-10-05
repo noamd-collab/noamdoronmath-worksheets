@@ -457,10 +457,20 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 
   // After ConceptLoop's own pause-card setup (DOMContentLoaded + one frame),
   // so no cloned card can receive that adapter as well as this one.
+  // Reproduced 2026-10-04: with motion stopped from page load, the a11y script
+  // (noam-accessibility.js) holds requestAnimationFrame callbacks until the
+  // option is turned off, so a frames-only boot never ran — the player stayed
+  // unadapted and «ללולאה הבאה» stayed hidden. One-shot start + a macrotask
+  // backstop boots the same DOM work even when the frames never fire.
   function boot() {
-    requestAnimationFrame(() => requestAnimationFrame(() => {
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
       document.querySelectorAll<HTMLElement>('[data-grade-loop]').forEach(bootGradeLoop);
-    }));
+    };
+    requestAnimationFrame(() => requestAnimationFrame(start));
+    setTimeout(start, 120);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot, { once: true });
