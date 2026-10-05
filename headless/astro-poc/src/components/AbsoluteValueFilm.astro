@@ -1,14 +1,42 @@
 ---
 /**
- * Absolute value on the number line.
- * F02 numberline is rounding (47 < 52). L17 signed-jump is −2 + 5 = 3.
- * Neither teaches distance from 0, so this page has its own film.
+ * Absolute value: distance from 0, counted in unit steps.
+ * F02 is rounding. L17 is −2 + 5. This film is the lesson.
  */
 import { MINUS, signedLabel } from '../lib/landingLoops';
 
-const ticks = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
 const xOf = (n: number) => 280 + n * 40;
-const labeled = new Set([-4, -2, 0, 2, 4]);
+const ticks = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+const lineY = 198;
+
+function hop(from: number, to: number) {
+  const x1 = xOf(from);
+  const x2 = xOf(to);
+  const mid = (x1 + x2) / 2;
+  return {
+    from,
+    to,
+    seg: { x1, x2 },
+    d: `M${x1} ${lineY - 4} Q${mid} ${lineY - 52} ${x2} ${lineY - 4}`,
+    lx: mid,
+    ly: lineY - 64,
+  };
+}
+
+const leftHops = [-4, -3, -2, -1].map((n) => hop(n, n + 1));
+const rightHops = [4, 3, 2, 1].map((n) => hop(n, n - 1));
+const sum = (from: number, to: number) => {
+  const x1 = xOf(from);
+  const x2 = xOf(to);
+  const mid = (x1 + x2) / 2;
+  return {
+    d: `M${x1} ${lineY - 6} Q${mid} ${lineY - 108} ${x2} ${lineY - 6}`,
+    lx: mid,
+    ly: lineY - 78,
+  };
+};
+const sumNeg = sum(-4, 0);
+const sumPos = sum(4, 0);
 ---
 
 <div class="concept-loop" data-abs-film>
@@ -35,55 +63,90 @@ const labeled = new Set([-4, -2, 0, 2, 4]);
         <path data-el="ic-play" d="M4 2.2 L13.4 8 L4 13.8 Z" style="display:none"></path>
       </svg>
     </button>
-    <p class="concept-loop__top">מה המרחק מאפס?</p>
+    <p class="concept-loop__top cl-topswap">
+      <span class="cl-topsz" aria-hidden="true">כמה צעדים מ־{MINUS}4 עד 0?</span>
+      <span class="cl-tops" data-el="top0">כמה צעדים מ־<bdi dir="ltr" class="cl-num">{MINUS}4</bdi> עד 0?</span>
+      <span class="cl-tops" data-el="top1" style="opacity:0">ומ־<bdi dir="ltr" class="cl-num">4</bdi> עד 0?</span>
+      <span class="cl-tops" data-el="top2" style="opacity:0">מהו הערך המוחלט?</span>
+    </p>
     <svg
       class="concept-loop__svg"
-      viewBox="0 0 560 250"
+      viewBox="0 0 560 268"
       role="img"
-      aria-label={`הדגמה: המרחק של ${MINUS}4 ושל 4 מאפס הוא 4`}
+      aria-label={`הדגמה: מ־${MINUS}4 עד 0 יש 4 צעדים, ומ־4 עד 0 יש 4 צעדים, לכן הערך המוחלט של שניהם הוא 4`}
     >
-      <line class="cl-line" x1="56" y1="148" x2="504" y2="148" />
+      <line class="cl-line" x1="52" y1={lineY} x2="508" y2={lineY} />
       {ticks.map((n) => (
         <g>
-          <line class="cl-line-thin" x1={xOf(n)} y1="140" x2={xOf(n)} y2="156" />
-          {labeled.has(n) && (
-            <text class="cl-t cl-num cl-small" x={xOf(n)} y="178" text-anchor="middle">{signedLabel(n)}</text>
+          <line class="cl-line-thin" x1={xOf(n)} y1={lineY - 8} x2={xOf(n)} y2={lineY + 8} />
+          {n >= -4 && n <= 4 && (
+            <text class="cl-t cl-num av-tick" x={xOf(n)} y={lineY + 30} text-anchor="middle">{signedLabel(n)}</text>
           )}
         </g>
       ))}
-      <circle cx={xOf(0)} cy="148" r="5" fill="#22305a" />
-      <path
-        class="cl-line cl-stroke-a av-arc"
-        data-el="arc-neg"
-        pathLength="1"
-        d={`M${xOf(-4)} 144 Q${(xOf(-4) + xOf(0)) / 2} 78 ${xOf(0)} 144`}
-        style="opacity:0"
-      />
-      <path
-        class="cl-line cl-stroke-b av-arc"
-        data-el="arc-pos"
-        pathLength="1"
-        d={`M${xOf(4)} 144 Q${(xOf(4) + xOf(0)) / 2} 78 ${xOf(0)} 144`}
-        style="opacity:0"
-      />
-      <text class="cl-t cl-num" data-el="lbl-neg" x={(xOf(-4) + xOf(0)) / 2} y="92" text-anchor="middle" style="opacity:0">4</text>
-      <text class="cl-t cl-num" data-el="lbl-pos" x={(xOf(4) + xOf(0)) / 2} y="92" text-anchor="middle" style="opacity:0">4</text>
-      <circle data-el="pt-neg" class="cl-pt-a" cx={xOf(-4)} cy="148" r="9" style="opacity:0" />
-      <circle data-el="pt-pos" class="cl-pt-b" cx={xOf(4)} cy="148" r="9" style="opacity:0" />
+      <circle cx={xOf(0)} cy={lineY} r="5.5" fill="#22305a" />
+      {leftHops.map((h, i) => (
+        <g>
+          <line
+            class="cl-stroke-a av-seg"
+            data-el={`seg-neg-${i}`}
+            x1={h.seg.x1}
+            y1={lineY}
+            x2={h.seg.x2}
+            y2={lineY}
+            pathLength="1"
+            style="opacity:0"
+          />
+          <path class="cl-stroke-a av-hop" data-el={`hop-neg-${i}`} pathLength="1" fill="none" d={h.d} style="opacity:0" />
+          <text class="cl-t cl-num av-count" data-el={`n-neg-${i}`} x={h.lx} y={h.ly} text-anchor="middle" style="opacity:0">{i + 1}</text>
+        </g>
+      ))}
+      {rightHops.map((h, i) => (
+        <g>
+          <line
+            class="cl-stroke-b av-seg"
+            data-el={`seg-pos-${i}`}
+            x1={h.seg.x1}
+            y1={lineY}
+            x2={h.seg.x2}
+            y2={lineY}
+            pathLength="1"
+            style="opacity:0"
+          />
+          <path class="cl-stroke-b av-hop" data-el={`hop-pos-${i}`} pathLength="1" fill="none" d={h.d} style="opacity:0" />
+          <text class="cl-t cl-num av-count" data-el={`n-pos-${i}`} x={h.lx} y={h.ly} text-anchor="middle" style="opacity:0">{i + 1}</text>
+        </g>
+      ))}
+      <path class="cl-stroke-a av-sum" data-el="arc-neg" pathLength="1" fill="none" d={sumNeg.d} style="opacity:0" />
+      <path class="cl-stroke-b av-sum" data-el="arc-pos" pathLength="1" fill="none" d={sumPos.d} style="opacity:0" />
+      <text class="cl-t cl-num av-total" data-el="lbl-neg" x={sumNeg.lx} y={sumNeg.ly} text-anchor="middle" style="opacity:0">4</text>
+      <text class="cl-t cl-num av-total" data-el="lbl-pos" x={sumPos.lx} y={sumPos.ly} text-anchor="middle" style="opacity:0">4</text>
+      <circle data-el="pt-neg" class="cl-pt-a" cx={xOf(-4)} cy={lineY} r="8" style="opacity:0" />
+      <circle data-el="pt-pos" class="cl-pt-b" cx={xOf(4)} cy={lineY} r="8" style="opacity:0" />
+      <circle data-el="bead-neg" class="cl-pt-a av-bead" cx={xOf(-4)} cy={lineY} r="6" style="opacity:0" />
+      <circle data-el="bead-pos" class="cl-pt-b av-bead" cx={xOf(4)} cy={lineY} r="6" style="opacity:0" />
     </svg>
     <p class="concept-loop__formula av-eqs" dir="ltr">
       <span class="cl-num cl-ok" data-el="eq-neg" style="opacity:0">|{MINUS}4| = 4</span>
       <span class="cl-num cl-ok" data-el="eq-pos" style="opacity:0">|4| = 4</span>
     </p>
+    <p class="concept-loop__caption" data-el="why" style="opacity:0">המרחק מאפס תמיד חיובי</p>
   </div>
 </div>
 
 <script>
   import { ph } from '../lib/conceptLoops';
 
-  const DURATION = 12;
-  const HOLD = 8.2;
+  const DURATION = 18;
+  const HOLD = 14.2;
   const MAX_LAPS = 4;
+  const X0 = 280;
+  const UNIT = 40;
+  const LEFT = [-4, -3, -2, -1, 0];
+  const RIGHT = [4, 3, 2, 1, 0];
+  const LEFT_AT = [1.15, 1.95, 2.75, 3.55];
+  const RIGHT_AT = [6.7, 7.5, 8.3, 9.1];
+  const HOP = 0.58;
 
   type Root = HTMLElement & {
     __loop?: {
@@ -101,6 +164,7 @@ const labeled = new Set([-4, -2, 0, 2, 4]);
   const draw = (el: HTMLElement | SVGElement | null, p: number) => {
     if (el) el.style.strokeDashoffset = String(Math.round((1 - Math.min(1, Math.max(0, p))) * 100) / 100);
   };
+  const xOf = (n: number) => X0 + n * UNIT;
 
   function motionOff() {
     const root = document.documentElement;
@@ -111,18 +175,61 @@ const labeled = new Set([-4, -2, 0, 2, 4]);
     );
   }
 
+  function walk(el: HTMLElement | SVGElement | null, t: number, times: number[], stops: number[], fadeAt: number, alive: number) {
+    if (!el) return;
+    let x = xOf(stops[0]);
+    let seen = 0;
+    for (let i = 0; i < times.length; i++) {
+      const p = ph(t, times[i], times[i] + HOP);
+      if (t >= times[i]) {
+        x = xOf(stops[i]) + (xOf(stops[i + 1]) - xOf(stops[i])) * p;
+        seen = 1;
+      }
+    }
+    el.setAttribute('cx', String(Math.round(x * 100) / 100));
+    const fade = 1 - ph(t, fadeAt, fadeAt + 0.35);
+    op(el, seen * fade * alive);
+  }
+
+  function side(
+    root: Root,
+    t: number,
+    name: 'neg' | 'pos',
+    times: number[],
+    alive: number,
+    summaryAt: number,
+  ) {
+    const dim = 1 - ph(t, summaryAt, summaryAt + 0.45);
+    for (let i = 0; i < 4; i++) {
+      const p = ph(t, times[i], times[i] + HOP);
+      const on = ph(t, times[i], times[i] + 0.12) * alive;
+      op(q(root, `seg-${name}-${i}`), on);
+      draw(q(root, `seg-${name}-${i}`), p);
+      op(q(root, `hop-${name}-${i}`), on * (0.35 + 0.65 * dim));
+      draw(q(root, `hop-${name}-${i}`), p);
+      op(q(root, `n-${name}-${i}`), ph(t, times[i] + 0.32, times[i] + 0.55) * dim * alive);
+    }
+    const sum = ph(t, summaryAt, summaryAt + 0.7);
+    op(q(root, `arc-${name}`), ph(t, summaryAt, summaryAt + 0.2) * alive);
+    draw(q(root, `arc-${name}`), sum);
+    op(q(root, `lbl-${name}`), ph(t, summaryAt + 0.45, summaryAt + 0.8) * alive);
+  }
+
   function render(root: Root, t: number) {
-    const fade = 1 - ph(t, 10.4, 11.5);
-    op(q(root, 'pt-neg'), ph(t, 0.4, 0.9) * fade);
-    op(q(root, 'arc-neg'), ph(t, 1.05, 1.35) * fade);
-    draw(q(root, 'arc-neg'), ph(t, 1.15, 2.35));
-    op(q(root, 'lbl-neg'), ph(t, 2.15, 2.6) * fade);
-    op(q(root, 'pt-pos'), ph(t, 2.9, 3.4) * fade);
-    op(q(root, 'arc-pos'), ph(t, 3.55, 3.9) * fade);
-    draw(q(root, 'arc-pos'), ph(t, 3.65, 4.85));
-    op(q(root, 'lbl-pos'), ph(t, 4.65, 5.1) * fade);
-    op(q(root, 'eq-neg'), ph(t, 5.5, 6.2) * fade);
-    op(q(root, 'eq-pos'), ph(t, 6.5, 7.2) * fade);
+    const ending = ph(t, 16.4, 17.5);
+    const alive = 1 - ending;
+    op(q(root, 'pt-neg'), ph(t, 0.35, 0.75) * alive);
+    op(q(root, 'pt-pos'), ph(t, 6.15, 6.55) * alive);
+    side(root, t, 'neg', LEFT_AT, alive, 4.55);
+    side(root, t, 'pos', RIGHT_AT, alive, 10.05);
+    walk(q(root, 'bead-neg'), t, LEFT_AT, LEFT, 4.45, alive);
+    walk(q(root, 'bead-pos'), t, RIGHT_AT, RIGHT, 9.95, alive);
+    op(q(root, 'eq-neg'), ph(t, 11.35, 11.9) * alive);
+    op(q(root, 'eq-pos'), ph(t, 12.15, 12.7) * alive);
+    op(q(root, 'why'), ph(t, 12.9, 13.45) * alive);
+    op(q(root, 'top0'), (1 - ph(t, 5.5, 6.0)) * alive + ending);
+    op(q(root, 'top1'), ph(t, 5.7, 6.2) * (1 - ph(t, 10.7, 11.2)) * alive);
+    op(q(root, 'top2'), ph(t, 11.0, 11.5) * alive);
   }
 
   function setup(root: Root) {
@@ -259,12 +366,22 @@ const labeled = new Set([-4, -2, 0, 2, 4]);
     };
   }
 
-  const boot = () => document.querySelectorAll<Root>('[data-abs-film]').forEach(setup);
+  const boot = () => document.querySelectorAll<Root>('[data-abs-film]').forEach((node) => {
+    delete node.__loop;
+    setup(node);
+  });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
 </script>
 
 <style>
-  .av-arc { stroke-width: 3.5; fill: none; }
-  .av-eqs { display: flex; justify-content: center; gap: 28px; font-size: 1.35rem; }
+  .av-seg { stroke-width: 7; stroke-linecap: butt; fill: none; }
+  .av-hop { stroke-width: 2.25; fill: none; }
+  .av-sum { stroke-width: 3.25; fill: none; }
+  .av-count { font-size: 22px; font-weight: 800; }
+  .av-total { font-size: 32px; font-weight: 800; }
+  .av-tick { font-size: 18px; }
+  .av-bead { stroke: #fff; stroke-width: 2; }
+  .av-eqs { display: flex; justify-content: center; gap: 28px; font-size: 1.45rem; }
+  .cl-tops { display: flex; align-items: center; justify-content: center; }
 </style>
