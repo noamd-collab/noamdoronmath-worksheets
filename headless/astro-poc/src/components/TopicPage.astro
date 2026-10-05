@@ -4,6 +4,7 @@ import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
 import LandingLoop from './LandingLoop.astro';
+import DistancePointsLoop from './DistancePointsLoop.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import { topicLandingLoop } from '../lib/landingLoops';
@@ -90,11 +91,13 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
 /* FAMILIES-B1: a family ConceptLoop (F01–F06, F21, F26, F38) stays in the
    card beside the intro. Other families get a CSS LandingLoop. F07–F14 film
    variants stay off topic pages (KIMI-ANIM-6). triangle-area-grade-7 keeps
-   its explorer and also gets a CSS loop — the explorer glides once. */
+   its explorer and also gets a CSS loop — the explorer glides once.
+   analytic-geometry-grade-9 mounts DistancePointsLoop in this same slot. */
 const landingLoop = topicLandingLoop(page);
 const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
 const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
-const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css';
+const filmLoop = landingLoop.kind === 'film';
+const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css' || filmLoop;
 const bodyStart = bodyUnits.findIndex((unit) => unit.kind !== 'intro' && unit.kind !== 'cta');
 const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
 const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
@@ -176,6 +179,7 @@ function faqHeadingId(groupIndex: number) {
             {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
             {loopVariant && <ConceptLoop variant={loopVariant} />}
             {cssVariant && <LandingLoop variant={cssVariant} />}
+            {landingLoop.kind === 'film' && <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />}
           </div>
           <div class="exact-topic-copy">
             {heroUnits.map((unit) => {
