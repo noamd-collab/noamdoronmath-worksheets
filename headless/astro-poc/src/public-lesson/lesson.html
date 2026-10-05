@@ -23,6 +23,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none !important}
 html,body{margin:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{min-height:100dvh;font-family:Heebo,system-ui,sans-serif;color:#17233f;background:linear-gradient(160deg,#eef6f4,#f5f4ef 55%,#f7f0ea);-webkit-tap-highlight-color:transparent}
 button{font:inherit;-webkit-tap-highlight-color:transparent}
 button:focus-visible{outline:3px solid #1a8a80;outline-offset:3px}
@@ -52,7 +53,7 @@ button[data-primary]:focus-visible{outline-color:#f0b429}
 h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp(17px,4.6vw,22px);line-height:1.35;color:#17233f;text-wrap:balance;text-align:center}
 #sub{font-size:clamp(13px,3.5vw,15px);color:#64748b;text-align:center}
 #opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.opt{font-family:"Secular One",sans-serif;font-size:19px;min-height:52px;padding:10px 12px;border-radius:14px;border:2px solid #e8e5db;background:#fff;color:#17233f;cursor:pointer;box-shadow:0 2px 0 #e8e5db;direction:ltr;transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
+.opt{font-family:"Secular One",sans-serif;font-size:19px;min-height:52px;padding:10px 12px;border-radius:14px;border:2px solid #e8e5db;background:#fff;color:#17233f;cursor:pointer;box-shadow:0 2px 0 #e8e5db;direction:ltr;unicode-bidi:isolate;white-space:nowrap;transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
 #hintBtn{align-self:flex-start;font-family:"Secular One",sans-serif;font-size:15px;padding:8px 20px;border-radius:50px;cursor:pointer;background:#f0b429;color:#17233f;border:2px solid #d4930d;box-shadow:0 3px 0 #d4930d}
 #hintBox{background:#fef8eb;border:1.5px solid #e0b84a;border-radius:12px;padding:9px 14px;font-size:14px;font-weight:700;line-height:1.55;color:#6b4a00;text-wrap:pretty}
 #fb{border-radius:12px;padding:9px 14px;font-weight:700;font-size:14.5px;line-height:1.5}
@@ -83,6 +84,14 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 .bar>i{display:block;height:100%;border-radius:8px;transform-origin:right center}
 .retry{align-self:flex-start;font-family:"Secular One",sans-serif;font-size:13.5px;padding:6px 16px;border-radius:50px;border:2px solid #1a8a80;background:#fff;color:#1a8a80;cursor:pointer}
 .formula{background:#fff;border:2.5px solid #1a8a80;border-radius:16px;padding:14px 20px;font-family:"Secular One",sans-serif;font-size:clamp(20px,5.4vw,26px);color:#17233f;box-shadow:0 8px 20px rgba(26,138,128,.12);text-align:center}
+/* Inline math stays one LTR run. A trailing ? lives inside the run so it
+   does not jump to the left of the opening parenthesis. */
+.math{direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+.math-line{display:block;width:100%;max-width:100%;min-width:0;align-self:stretch;direction:ltr;unicode-bidi:isolate;white-space:nowrap;text-align:center}
+#heroEq{font-family:"Secular One",sans-serif;font-size:22px;color:#c04a2d}
+#numLead{font-family:"Secular One",sans-serif;font-size:20px;color:#1a8a80}
+#numEq1{font-family:"Secular One",sans-serif;font-size:clamp(17px,4.6vw,21px)}
+#numEq2{display:flex;flex-wrap:nowrap;justify-content:center;align-items:baseline;gap:0 6px;font-family:"Secular One",sans-serif;font-size:clamp(16px,4.4vw,21px)}
 .puzzle{font-size:44px;line-height:1;animation:floatY 3.2s ease-in-out infinite}
 .mini{display:grid;grid-template-columns:44px 28px;grid-template-rows:44px 28px;gap:3px;padding:3px;background:#fff;border-radius:8px}
 .mini div{display:grid;place-items:center;border-radius:5px;font-family:"Secular One",sans-serif}
@@ -126,7 +135,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       <div class="col" id="colVisual">
         <div id="panelIntro" class="panel" data-enter>
           <div class="puzzle" aria-hidden="true">🧩</div>
-          <div dir="ltr" style="font-family:'Secular One',sans-serif;font-size:22px;color:#c04a2d">(a + b)² ≠ a² + b²</div>
+          <div id="heroEq" class="math-line">(a + b)² ≠ a² + b²</div>
           <div class="mini" dir="ltr" aria-hidden="true">
             <div style="background:#1a8a80;color:#fff;font-size:14px">a²</div>
             <div style="border:2px dashed #d4930d;background:#fef8eb;color:#8a5a00;font-size:14px;animation:qPulse 1.6s ease-in-out infinite">?</div>
@@ -142,14 +151,14 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         <div id="strip" data-enter dir="ltr" hidden></div>
         <div id="synth" data-enter role="status" aria-live="polite" hidden></div>
         <div id="panelNumeric" class="panel" hidden>
-          <div data-num dir="ltr" style="font-family:'Secular One',sans-serif;font-size:20px;color:#1a8a80;text-align:center">a = 3 , b = 2</div>
+          <div id="numLead" class="math-line" data-num>a = 3 , b = 2</div>
           <div data-num class="numbox">
             <div style="font-size:13px;font-weight:700;color:#64748b">דרך 1</div>
-            <div dir="ltr" style="font-family:'Secular One',sans-serif;font-size:clamp(17px,4.6vw,21px)">(3 + 2)² = 5² = <span style="color:#1a8a80">25</span></div>
+            <div id="numEq1" class="math-line">(3 + 2)² = 5² = <span style="color:#1a8a80">25</span></div>
           </div>
           <div data-num class="numbox">
             <div style="font-size:13px;font-weight:700;color:#64748b">דרך 2</div>
-            <div dir="ltr" style="font-family:'Secular One',sans-serif;font-size:clamp(16px,4.4vw,21px);display:flex;flex-wrap:wrap;gap:0 6px;align-items:baseline">
+            <div id="numEq2" class="math-line">
               <span data-term style="color:#1a8a80">3²</span><span data-term>+</span><span data-term style="color:#b7791f">2·3·2</span><span data-term>+</span><span data-term style="color:#e8684a">2²</span><span data-term>=</span><span data-term>9 + 12 + 4</span><span data-term>=</span><span data-term style="color:#1a8a80">25</span>
             </div>
           </div>
@@ -170,7 +179,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
           </div>
           <div id="skillRows" style="display:flex;flex-direction:column;gap:8px"></div>
           <div style="font-weight:700;color:#475569;font-size:15px;text-align:center">הנוסחה שלך:</div>
-          <div class="formula" dir="ltr">(a + b)² = <span style="color:#1a8a80">a²</span> + <span style="color:#d4930d">2ab</span> + <span style="color:#e8684a">b²</span></div>
+          <div id="finalEq" class="formula math-line">(a + b)² = <span style="color:#1a8a80">a²</span> + <span style="color:#d4930d">2ab</span> + <span style="color:#e8684a">b²</span></div>
         </div>
       </div>
       <div class="col" id="colControls">
@@ -246,28 +255,28 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
   const WRONG = ['אופס! הריבוע לא מסכים.', 'כמעט. בוא נסתכל שוב על הציור.', 'טעות טובה. ממנה לומדים.'];
   const STEPS = [
     { mode: 'intro', tA: 'למה ', tM: '(a + b)² ≠ a² + b²', tB: '?', sub: 'זו הטעות הכי נפוצה.', tip: 'הרבה חושבים שרק מעלים בריבוע. בוא נראה למה זה לא נכון.', btn: 'בוא נחקור ←', cue: 'לחץ כדי להתחיל' },
-    { mode: 'explore', tA: 'בנה את הריבוע', sub: 'גרור את העיגול. שנה את a ו־b.', tip: 'הצלע כולה היא ' + m('a + b') + '. שים לב לשני המלבנים הצהובים.', btn: 'הבנתי ←', cue: 'גרור את העיגול כדי להמשיך', cueDone: 'כל הכבוד! אפשר להמשיך ←' },
-    { mode: 'quiz', tA: 'מה שטח הריבוע הטורקיז?', sub: 'החלק למעלה־שמאל.', tip: 'צלע a לאורך ולרוחב. מה השטח?', hl: ['a2'], btn: 'המשך ←', win: 'יש! צלע כפול צלע.',
+    { mode: 'explore', tA: 'בנה את הריבוע', sub: 'גרור את העיגול. שנה את ' + m('a') + ' ו־' + m('b') + '.', tip: 'הצלע כולה היא ' + m('a + b') + '. שים לב לשני המלבנים הצהובים.', btn: 'הבנתי ←', cue: 'גרור את העיגול כדי להמשיך', cueDone: 'כל הכבוד! אפשר להמשיך ←' },
+    { mode: 'quiz', tA: 'מה שטח הריבוע הטורקיז?', sub: 'החלק למעלה־שמאל.', tip: 'צלע ' + m('a') + ' לאורך ולרוחב. מה השטח?', hl: ['a2'], btn: 'המשך ←', win: 'יש! צלע כפול צלע.',
       opts: [
         { t: 'a²', c: true, f: 'נכון! ' + m('a · a = a²') + '.' },
         { t: '2a', f: m('2a') + ' זה סכום. שטח הוא מכפלה.', show: { sides: true } },
         { t: 'a + a', f: 'זה לא שטח. שטח = ' + m('a · a') + '.', show: { sides: true } },
-        { t: 'b²', f: 'כאן הצלע היא a, לא b.', show: { tiles: ['b2'] } }],
-      hints: ['הסתכל על צלעות הריבוע הטורקיז — לאורך ולרוחב.', 'שתי הצלעות שוות, ושתיהן a. שטח ריבוע הוא מכפלת הצלעות.'] },
-    { mode: 'quiz', tA: 'מה שטח שני המלבנים?', sub: 'שני החלקים הצהובים.', tip: 'לכל מלבן יש צלע a וצלע b. יש שניים כאלה.', hl: ['ab1', 'ab2'], btn: 'המשך ←', win: 'מעולה. שני מלבנים, לא אחד.',
+        { t: 'b²', f: 'כאן הצלע היא ' + m('a') + ', לא ' + m('b') + '.', show: { tiles: ['b2'] } }],
+      hints: ['הסתכל על צלעות הריבוע הטורקיז — לאורך ולרוחב.', 'שתי הצלעות שוות, ושתיהן ' + m('a') + '. שטח ריבוע הוא מכפלת הצלעות.'] },
+    { mode: 'quiz', tA: 'מה שטח שני המלבנים?', sub: 'שני החלקים הצהובים.', tip: 'לכל מלבן יש צלע ' + m('a') + ' וצלע ' + m('b') + '. יש שניים כאלה.', hl: ['ab1', 'ab2'], btn: 'המשך ←', win: 'מעולה. שני מלבנים, לא אחד.',
       opts: [
         { t: '2ab', c: true, f: 'מעולה! ' + m('ab + ab = 2ab') + '.' },
         { t: 'ab', f: 'זה מלבן אחד. יש שניים.', show: { tiles: ['ab1'] } },
         { t: 'a² + b²', f: 'אלו הריבועים, לא המלבנים.', show: { tiles: ['a2', 'b2'] } },
         { t: '2(a + b)', f: 'זה היקף, לא שטח.', show: { perim: true } }],
-      hints: ['כל מלבן צהוב בנוי מצלע a וצלע b.', 'יש שני מלבנים זהים. חבר את שני השטחים — בלי לשכוח אף אחד.'] },
+      hints: ['כל מלבן צהוב בנוי מצלע ' + m('a') + ' וצלע ' + m('b') + '.', 'יש שני מלבנים זהים. חבר את שני השטחים — בלי לשכוח אף אחד.'] },
     { mode: 'quiz', tA: 'מהו ', tM: '(a + b)²', tB: '?', sub: 'חבר את ארבעת החלקים.', tip: 'צלע גדולה = ' + m('a + b') + '. שטח = ' + m('(a + b)²') + '. זה סכום ארבעת החלקים.', hl: ['a2', 'ab1', 'ab2', 'b2'], synth: true, btn: 'בדיקה במספרים ←', win: 'בינגו! זה ה־' + m('2ab') + ' שכולם שוכחים.',
       opts: [
         { t: 'a² + 2ab + b²', c: true, f: 'בינגו! ' + m('a² + 2ab + b²') + '.' },
-        { t: 'a² + b²', f: 'חסרים שני המלבנים (' + m('2ab') + ').', show: { tiles: ['ab1', 'ab2'], kind: 'miss' } },
+        { t: 'a² + b²', f: 'חסרים שני המלבנים ' + m('(2ab)') + '.', show: { tiles: ['ab1', 'ab2'], kind: 'miss' } },
         { t: '(a+b) · 2', f: 'שטח ריבוע הוא צלע בריבוע.', show: { perim: true } },
         { t: 'ab²', f: 'אין לנו שטח כזה.' }],
-      hints: ['צלע הריבוע הגדול היא ' + m('a + b') + '. השטח הוא צלע בריבוע — חבר את ארבעת החלקים.', 'יש ריבוע של a, ריבוע של b, ושני מלבנים זהים באמצע. חבר את כולם.'] },
+      hints: ['צלע הריבוע הגדול היא ' + m('a + b') + '. השטח הוא צלע בריבוע — חבר את ארבעת החלקים.', 'יש ריבוע של ' + m('a') + ', ריבוע של ' + m('b') + ', ושני מלבנים זהים באמצע. חבר את כולם.'] },
     { mode: 'numeric', tA: 'בדיקה עם מספרים', sub: m('a = 3') + ' ו־' + m('b = 2') + '.', tip: m('(3+2)² = 25') + '. גם הנוסחה נותנת 25. זה עובד!', btn: 'סיום 🏆', cue: 'קרא ולחץ להמשך' },
     { mode: 'finish', tA: 'כל הכבוד! 🏆', sub: 'פיצחת את הנוסחה.', tip: 'אל תשכח את ' + m('2ab') + ' באמצע. מוכן ל־' + m('(a−b)²') + '?', btn: 'התחל מחדש 🔄', cue: 'סיימת! אפשר להתחיל מחדש' }
   ];
@@ -282,8 +291,47 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
   const SHAPE_CYCLE = ['cloud', 'circle', 'square', 'trapezoid', 'triangle', 'rhombus'];
   const SK = [{ i: 2, name: 'שטח ריבוע', math: 'a²' }, { i: 3, name: 'שני המלבנים', math: '2ab' }, { i: 4, name: 'הנוסחה המלאה', math: '(a + b)²' }];
   const SYNTH_A = 'צלע הריבוע הגדול היא ' + m('(a + b)') + '. לכן השטח הוא ' + m('(a + b)²') + '. חבר את ארבעת החלקים.';
-  const SYNTH_B = 'זה שווה לסכום ארבעת החלקים: ' + m('a² + ab + ba + b²') + ' (= ' + m('a² + 2ab + b²') + ').';
+  const SYNTH_B = 'זה שווה לסכום ארבעת החלקים: ' + m('a² + ab + ba + b²') + ' ' + m('(= a² + 2ab + b²)') + '.';
   const $ = (id) => document.getElementById(id);
+  function mathNode(text) {
+    const bd = document.createElement('bdi');
+    bd.className = 'math'; bd.dir = 'ltr'; bd.textContent = text;
+    return bd;
+  }
+  /* LRI/PDI runs become <bdi class="math">. A final ? stays inside that run. */
+  function fillRich(el, text) {
+    el.replaceChildren();
+    const s = String(text || '');
+    let i = 0;
+    while (i < s.length) {
+      const a = s.indexOf(LRI, i);
+      if (a < 0) { el.append(s.slice(i)); break; }
+      if (a > i) el.append(s.slice(i, a));
+      const b = s.indexOf(PDI, a + 1);
+      if (b < 0) { el.append(s.slice(a + 1)); break; }
+      let math = s.slice(a + 1, b), j = b + 1;
+      if (s[j] === '?') { math += '?'; j += 1; }
+      el.append(mathNode(math));
+      i = j;
+    }
+  }
+  function escHtml(s) { return s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
+  function richHtml(text) {
+    const s = String(text || '');
+    let i = 0, html = '';
+    while (i < s.length) {
+      const a = s.indexOf(LRI, i);
+      if (a < 0) { html += escHtml(s.slice(i)); break; }
+      if (a > i) html += escHtml(s.slice(i, a));
+      const b = s.indexOf(PDI, a + 1);
+      if (b < 0) { html += escHtml(s.slice(a + 1)); break; }
+      let math = s.slice(a + 1, b), j = b + 1;
+      if (s[j] === '?') { math += '?'; j += 1; }
+      html += '<bdi class="math" dir="ltr">' + escHtml(math) + '</bdi>';
+      i = j;
+    }
+    return html;
+  }
   const NS = 'http://www.w3.org/2000/svg';
 
   function toLines(s, n) {
@@ -636,7 +684,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     finishTip() {
       const weak = this.report().rows.filter((r) => r.lv === 'ok' || r.lv === 'weak').sort((a, b) => a.pts - b.pts);
       if (!weak.length) return STEPS[6].tip;
-      return 'יפה! הנקודה לחיזוק: ' + weak[0].name + ' (' + m(weak[0].math) + '). לחץ "תרגל שוב".';
+      return 'יפה! הנקודה לחיזוק: ' + weak[0].name + ' ' + m('(' + weak[0].math + ')') + '. לחץ "תרגל שוב".';
     },
     goStep(i) {
       this.clearAll(); this._enter = true; this.wrongN = 0; this.saidDrag = false; this.drag = null; this.tDrag = null; this.setGaze(0, 0);
@@ -900,9 +948,9 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const title = $('title');
       title.textContent = '';
       title.append(document.createTextNode(S.tA || ''));
-      if (S.tM) { const sp = document.createElement('span'); sp.dir = 'ltr'; sp.style.unicodeBidi = 'isolate'; sp.style.whiteSpace = 'nowrap'; sp.textContent = S.tM; title.append(sp); }
-      if (S.tB) title.append(document.createTextNode(S.tB));
-      $('sub').textContent = S.sub || '';
+      if (S.tM) title.append(mathNode(S.tM + (S.tB || '')));
+      else if (S.tB) title.append(document.createTextNode(S.tB));
+      fillRich($('sub'), S.sub || '');
       const ready = this.canNext();
       let cue = S.cue || '';
       if (isExp) cue = st.dragged ? S.cueDone : S.cue;
@@ -922,24 +970,54 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       if (st.fb) {
         fb.hidden = false;
         const prefix = st.fb.ok ? (String(st.fb.text).startsWith('נכון') ? '' : 'נכון! ') : 'נסה שוב: ';
-        fb.textContent = prefix + st.fb.text;
+        fillRich(fb, prefix + st.fb.text);
         fb.style.background = st.fb.ok ? '#eafaf1' : '#ffe4e6';
         fb.style.border = st.fb.ok ? '1.5px solid #9fe0bf' : '1.5px solid #fda4af';
         fb.style.color = st.fb.ok ? '#146c43' : '#be123c';
       } else fb.hidden = true;
       if (S.synth) {
         $('synth').textContent = '';
-        const d1 = document.createElement('div'); d1.textContent = SYNTH_A; $('synth').append(d1);
-        if (done) { const d2 = document.createElement('div'); d2.dataset.synth = ''; d2.style.color = '#146c43'; d2.textContent = SYNTH_B; $('synth').append(d2); }
+        const d1 = document.createElement('div'); fillRich(d1, SYNTH_A); $('synth').append(d1);
+        if (done) { const d2 = document.createElement('div'); d2.dataset.synth = ''; d2.style.color = '#146c43'; fillRich(d2, SYNTH_B); $('synth').append(d2); }
       }
       if (isExp) {
         const cells = [['צלע a', 'a = ' + a, T], ['צלע b', 'b = ' + b, C], ['a + b', '10', '#17233f'], ['a²', String(a * a), T], ['2ab', String(2 * a * b), '#b7791f'], ['b²', String(b * b), C]];
-        $('strip').innerHTML = cells.map((c, i) => '<div><b dir="rtl">' + c[0] + '</b><span data-val style="color:' + c[2] + '">' + c[1] + '</span></div>').join('');
+        $('strip').innerHTML = cells.map((c) => {
+          const label = /[א-ת]/.test(c[0])
+            ? c[0].replace(/[ab]/g, (ch) => '<bdi class="math" dir="ltr">' + ch + '</bdi>')
+            : '<bdi class="math" dir="ltr">' + c[0] + '</bdi>';
+          return '<div><b dir="rtl">' + label + '</b><span data-val class="math" style="color:' + c[2] + '">' + c[1] + '</span></div>';
+        }).join('');
       }
       this.paintQuiz(S, st, done);
       this.paintSquare(st, S, a, b, s, done);
       this.paintFinish();
       this.paintBubble();
+      this.fitMath();
+    },
+    fitBox(el) {
+      if (!el || el.clientWidth < 8) return;
+      el.style.fontSize = '';
+      const cs = getComputedStyle(el);
+      const max = parseFloat(cs.fontSize);
+      const pad = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+      const avail = el.clientWidth - pad;
+      if (!(max > 0) || avail < 8) return;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const need = Math.max(range.getBoundingClientRect().width, el.scrollWidth - pad);
+      if (need > avail + 1) el.style.fontSize = Math.max(12, max * avail / need) + 'px';
+    },
+    fitMath() {
+      ['heroEq', 'numLead', 'numEq1', 'numEq2', 'finalEq'].forEach((id) => this.fitBox($(id)));
+      const root = $('app'); if (!root) return;
+      root.querySelectorAll('.opt').forEach((el) => this.fitBox(el));
+      const title = $('title'), tm = title && title.querySelector('.math');
+      if (tm && title.clientWidth > 8) {
+        tm.style.fontSize = '';
+        const max = parseFloat(getComputedStyle(title).fontSize);
+        if (tm.scrollWidth > title.clientWidth + 1) tm.style.fontSize = Math.max(12, max * title.clientWidth / tm.scrollWidth) + 'px';
+      }
     },
     paintQuiz(S, st, done) {
       const box = $('opts');
@@ -969,7 +1047,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       hb.style.borderColor = done ? '#cbd5e1' : '#d4930d';
       hb.style.boxShadow = done ? 'none' : '0 3px 0 #d4930d';
       const boxH = $('hintBox');
-      if (st.hint > 0 && S.hints) { boxH.hidden = false; boxH.textContent = '💡 ' + S.hints[Math.min(st.hint, S.hints.length) - 1]; }
+      if (st.hint > 0 && S.hints) { boxH.hidden = false; fillRich(boxH, '💡 ' + S.hints[Math.min(st.hint, S.hints.length) - 1]); }
       else boxH.hidden = true;
     },
     paintSquare(st, S, a, b, s, done) {
@@ -1088,7 +1166,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       $('strongText').textContent = strong.join(' · ') || 'עוד לא. נסה שוב!';
       $('weakText').textContent = weak.join(' · ') || 'אין. הכל חזק!';
       const wrap = $('skillRows');
-      wrap.innerHTML = R.rows.map((r) => '<div class="skill" data-row><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="font-weight:800;font-size:14.5px"><span>' + r.name + '</span> <span dir="ltr" style="font-family:Secular One,sans-serif;font-weight:400;color:#1a8a80">' + r.math + '</span></div><div style="font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;background:' + r.badgeBg + ';color:' + r.badgeFg + ';border:1.5px solid ' + r.badgeBd + '">' + r.badge + '</div></div><div class="bar"><i data-bar style="width:' + r.pts + '%;background:' + r.barC + '"></i></div><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><div style="font-size:12.5px;color:#64748b">' + r.detail + '</div><div dir="ltr" style="font-family:Secular One,sans-serif;font-size:14px">' + r.pts + ' / 100</div></div>' + (r.hasWrong ? '<div style="font-size:12.5px;line-height:1.5;color:#be123c">' + r.wrongText + '</div>' : '') + (r.canRetry ? '<button type="button" class="retry" data-retry="' + r.i + '">תרגל שוב ↻</button>' : '') + '</div>').join('');
+      wrap.innerHTML = R.rows.map((r) => '<div class="skill" data-row><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap"><div style="font-weight:800;font-size:14.5px"><span>' + r.name + '</span> <bdi class="math" dir="ltr" style="font-family:Secular One,sans-serif;font-weight:400;color:#1a8a80">' + r.math + '</bdi></div><div style="font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;background:' + r.badgeBg + ';color:' + r.badgeFg + ';border:1.5px solid ' + r.badgeBd + ';white-space:nowrap">' + r.badge + '</div></div><div class="bar"><i data-bar style="width:' + r.pts + '%;background:' + r.barC + '"></i></div><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><div style="font-size:12.5px;color:#64748b">' + r.detail + '</div><bdi class="math" dir="ltr" style="font-family:Secular One,sans-serif;font-size:14px">' + r.pts + ' / 100</bdi></div>' + (r.hasWrong ? '<div style="font-size:12.5px;line-height:1.5;color:#be123c">' + richHtml(r.wrongText) + '</div>' : '') + (r.canRetry ? '<button type="button" class="retry" data-retry="' + r.i + '">תרגל שוב ↻</button>' : '') + '</div>').join('');
       wrap.querySelectorAll('[data-retry]').forEach((b) => b.addEventListener('click', () => app.retry(Number(b.getAttribute('data-retry')))));
     },
     paintBubble() {
@@ -1111,7 +1189,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       else {
         box.innerHTML = '';
         const wrap = document.createElement('div'); wrap.style.display = 'flex'; wrap.style.flexDirection = 'column'; wrap.style.alignItems = 'center';
-        toLines(st.msg, this.props.wordsPerLine).forEach((ln) => { const d = document.createElement('div'); d.style.whiteSpace = 'nowrap'; d.textContent = ln; wrap.append(d); });
+        toLines(st.msg, this.props.wordsPerLine).forEach((ln) => { const d = document.createElement('div'); d.style.whiteSpace = 'nowrap'; fillRich(d, ln); wrap.append(d); });
         box.append(wrap);
       }
     },
@@ -1139,7 +1217,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         this.ro = new ResizeObserver(() => { cancelAnimationFrame(this.roRaf); this.roRaf = requestAnimationFrame(() => { if (!this.drag) this.place(false); }); });
         ['card', 'bubble', 'home'].forEach((id) => { const n = $(id); if (n) this.ro.observe(n); });
       }
-      window.addEventListener('resize', () => this.place(false));
+      window.addEventListener('resize', () => { this.fitMath(); this.place(false); });
       this.goStep(Math.min(6, Math.max(0, (this.props.startStep || 1) - 1)));
       const driftEl = $('drift');
       if (driftEl && driftEl.animate && !this.rm) {
@@ -1147,7 +1225,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       }
       requestAnimationFrame(() => this.place(false));
       this.later(() => this.place(false), 300);
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.place(false));
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { this.fitMath(); this.place(false); });
     }
   };
   window.__lesson = app;
