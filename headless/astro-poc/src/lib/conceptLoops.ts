@@ -1187,7 +1187,7 @@ function renderClock3(root: LoopRoot, t: number) {
   const hour = q(root, 'hour');
   if (hour) {
     hour.setAttribute('x2', String(r2(280 + 52 * Math.sin(ang))));
-    hour.setAttribute('y2', String(r2(168 - 52 * Math.cos(rad))));
+    hour.setAttribute('y2', String(r2(168 - 52 * Math.cos(ang))));
   }
   op(q(root, 'lbl-time'), ph(t, 2.6, 3.1) * (1 - ph(t, 8.0, 8.6)));
   const fxs = qa(root, '[data-fx]');
@@ -1998,3 +1998,201 @@ const SPECS = {
   'sas-snap': { duration: 10, hold: SAS_SNAP_HOLD, render: renderSasSnap },
   'obtuse-ht': { duration: 10, hold: OBTUSE_HT_HOLD, render: renderObtuseHt },
   'box-vol': { duration: 10, hold: BOX_VOL_HOLD, render: renderBoxVol },
+  'trap-area': { duration: 10, hold: TRAP_AREA_HOLD, render: renderTrapArea },
+  'odd-pair': { duration: 10, hold: ODD_PAIR_HOLD, render: renderOddPair },
+  'birds-sub': { duration: 10, hold: BIRDS_SUB_HOLD, render: renderBirdsSub },
+  'circ-unroll': { duration: 10, hold: CIRC_UNROLL_HOLD, render: renderCircUnroll },
+  'rect-count': { duration: 10, hold: RECT_COUNT_HOLD, render: renderRectCount },
+  'l-split': { duration: 10, hold: L_SPLIT_HOLD, render: renderLSplit },
+  'quad-tree': { duration: 10, hold: QUAD_TREE_HOLD, render: renderQuadTree },
+  'tri-sort': { duration: 10, hold: TRI_SORT_HOLD, render: renderTriSort },
+  parab: { duration: 10, hold: PARAB_HOLD, render: renderParab },
+  'ratio-beads': { duration: 10, hold: RATIO_BEADS_HOLD, render: renderRatioBeads },
+  neighbors: { duration: 10, hold: NEIGHBORS_HOLD, render: renderNeighbors },
+  'signed-ops': { duration: 10, hold: SIGNED_OPS_HOLD, render: renderSignedOps },
+  'clock-span': { duration: 10, hold: CLOCK_SPAN_HOLD, render: renderClockSpan },
+  exterior: { duration: 10, hold: EXTERIOR_HOLD, render: renderExterior },
+  'para-perp': { duration: 10, hold: PARA_PERP_HOLD, render: renderParaPerp },
+  'quarter-12': { duration: 10, hold: QUARTER12_HOLD, render: renderQuarter12 },
+  'two-coins': { duration: 10, hold: TWO_COINS_HOLD, render: renderTwoCoins },
+  'map-scale': { duration: 10, hold: MAP_SCALE_HOLD, render: renderMapScale },
+  'unit-frac': { duration: 10, hold: UNIT_FRAC_HOLD, render: renderUnitFrac },
+  'coord-walk': { duration: 10, hold: COORD_WALK_HOLD, render: renderCoordWalk },
+  'coins-12': { duration: 10, hold: COINS12_HOLD, render: renderCoins12 },
+  'cyl-stack': { duration: 10, hold: CYL_STACK_HOLD, render: renderCylStack },
+  'tenth-cell': { duration: 10, hold: TENTH_CELL_HOLD, render: renderTenthCell },
+  'equiv-half': { duration: 10, hold: EQUIV_HALF_HOLD, render: renderEquivHalf },
+  'half-eq': { duration: 10, hold: HALF_EQ_HOLD, render: renderHalfEq },
+  'sq-stretch': { duration: 10, hold: SQ_STRETCH_HOLD, render: renderSqStretch },
+  'area-x4': { duration: 10, hold: AREA_X4_HOLD, render: renderAreaX4 },
+  'cube-8': { duration: 10, hold: CUBE8_HOLD, render: renderCube8 },
+  'place-123': { duration: 10, hold: PLACE123_HOLD, render: renderPlace123 },
+  'jumps-4': { duration: 10, hold: JUMPS4_HOLD, render: renderJumps4 },
+  'apples-5': { duration: 10, hold: APPLES5_HOLD, render: renderApples5 },
+  'topic-card': { duration: 10, hold: TOPIC_CARD_HOLD, render: renderTopicCard },
+  'mark-250': { duration: 10, hold: MARK250_HOLD, render: renderMark250 },
+  'quad-gate': { duration: 10, hold: QUAD_GATE_HOLD, render: renderQuadGate },
+  'two-diag': { duration: 10, hold: TWO_DIAG_HOLD, render: renderTwoDiag },
+} as const;
+
+const MAX_LAPS = 4;
+
+function motionOff(): boolean {
+  const html = document.documentElement;
+  // Only an explicit menu choice parks the film. OS reduced motion used to
+  // take this same path and left every grade demo on the final frame.
+  return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off');
+}
+
+function setupLoop(root: LoopRoot) {
+  const variant = root.dataset.loop as keyof typeof SPECS;
+  const spec = SPECS[variant];
+  if (!spec) return;
+
+  const toggle = q(root, 'toggle') as HTMLButtonElement | null;
+  const icPlay = q(root, 'ic-play') as unknown as SVGElement;
+  const icPause = q(root, 'ic-pause') as unknown as SVGElement;
+
+  let t = 0;
+  let lap = 1;
+  let playing = false;
+  let userPaused = false;
+  let done = false;
+  let inView = false;
+  let isStatic = false;
+  let raf = 0;
+  let last = 0;
+
+  const drawFrame = () => spec.render(root, t);
+
+  function setToggle(label: string, showPlay: boolean) {
+    if (!toggle) return;
+    toggle.setAttribute('aria-label', label);
+    if (icPlay) icPlay.style.display = showPlay ? '' : 'none';
+    if (icPause) icPause.style.display = showPlay ? 'none' : '';
+  }
+
+  function tick(now: number) {
+    if (!playing) return;
+    const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
+    last = now;
+    t += dt;
+    if (t >= spec.duration) {
+      t -= spec.duration;
+      lap += 1;
+    }
+    if (lap >= MAX_LAPS && t >= spec.hold) {
+      // park on the completed state after the 4th lap
+      t = spec.hold;
+      drawFrame();
+      playing = false;
+      done = true;
+      setToggle('הפעלת ההדגמה מחדש', true);
+      return;
+    }
+    drawFrame();
+    raf = requestAnimationFrame(tick);
+  }
+
+  function play() {
+    if (playing || isStatic) return;
+    playing = true;
+    last = performance.now();
+    raf = requestAnimationFrame(tick);
+    setToggle('השהיית ההדגמה', false);
+  }
+
+  function pause() {
+    playing = false;
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+    if (!isStatic) setToggle(done ? 'הפעלת ההדגמה מחדש' : 'הפעלת ההדגמה', true);
+  }
+
+  function applyMotionPrefs() {
+    if (motionOff()) {
+      // static completed frame, no motion at all
+      isStatic = true;
+      playing = false;
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+      t = spec.hold;
+      drawFrame();
+      if (toggle) toggle.style.display = 'none';
+    } else if (isStatic) {
+      // motion re-enabled: reset to rest state, resume normal behaviour
+      isStatic = false;
+      t = 0;
+      lap = 1;
+      done = false;
+      userPaused = false;
+      drawFrame();
+      if (toggle) toggle.style.display = '';
+      if (inView) play();
+      else setToggle('הפעלת ההדגמה', true);
+    }
+  }
+
+  // in-view autoplay; off-screen pause (resume from the same point)
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        inView = entries[0].isIntersecting;
+        if (isStatic) return;
+        if (inView && !userPaused && !done) play();
+        else if (!inView && playing) pause();
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(root);
+  }
+
+  toggle?.addEventListener('click', () => {
+    if (isStatic) return;
+    if (done) {
+      done = false;
+      lap = 1;
+      t = 0;
+      userPaused = false;
+      play();
+    } else if (playing) {
+      userPaused = true;
+      pause();
+    } else {
+      userPaused = false;
+      play();
+    }
+  });
+
+  // react to the site's accessibility menu toggle (class on <html>)
+  new MutationObserver(applyMotionPrefs).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
+
+  applyMotionPrefs();
+  if (!isStatic) setToggle('השהיית ההדגמה', false);
+
+  // deterministic hook for automated checks / report screenshots
+  root.__loop = {
+    seek(tt: number) {
+      t = Math.min(Math.max(tt, 0), spec.duration);
+      drawFrame();
+    },
+    pause,
+    play,
+    state: () => ({ t, playing, laps: lap, done, static: isStatic }),
+  };
+}
+
+export function initConceptLoops() {
+  const boot = () =>
+    document.querySelectorAll<LoopRoot>('[data-loop]').forEach((root) => {
+      if (!root.__loop) setupLoop(root);
+    });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+}
