@@ -6,12 +6,15 @@
  * every later cycle is reshuffled so that its first loop is never the one that
  * was just shown.
  *
- * Pace: a loop is shown for GRADE_LOOP_DWELL_MS. When its slowed animation
- * reaches the completed frame, the host calls hold() and the loop stays frozen
- * there until the swap. The clock runs only while the player is in view in a
- * visible tab; a manual session pause (k3-pause:<variant>), any other paused
- * state, or a static frame (reduced motion / nd-motion-off / noam-a11y-motion)
- * freezes it, and a static frame never rotates.
+ * Pace: a loop is shown for GRADE_LOOP_DWELL_MS, then the player swaps.
+ * When the slowed animation reaches the completed frame, the grade player
+ * rests there briefly and restarts the same loop from zero, so the answer
+ * does not stay frozen until the swap. hold() is still a one-shot freeze
+ * (seek to the completed frame, then pause) for a host that wants it.
+ * The clock runs only while the player is in view in a visible tab; a manual
+ * session pause (k3-pause:<variant>), any other paused state, or a static
+ * frame (reduced motion / nd-motion-off / noam-a11y-motion) freezes it, and
+ * a static frame never rotates.
  *
  * Slowdown (×1.8): the engine (conceptLoops.ts, protected) has no speed
  * option, only __loop.seek(t). createGradeLoopSlowClock maps player time to
