@@ -798,3 +798,203 @@ function renderFraction(root: LoopRoot, t: number) {
     op(d, ph(t, 3.1, 3.3) * (1 - ph(t, 8.0, 8.5)));
     draw(d, ph(t, 3.1 + k * 0.06, 3.35 + k * 0.06));
   }
+  op(q(root, 'bar-shade'), ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.5)));
+  op(q(root, 'bar-lbl'), ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.5)));
+
+  const nl = q(root, 'nl');
+  op(nl, ph(t, 3.5, 3.7) * (1 - ph(t, 8.0, 8.5)));
+  draw(nl, ph(t, 3.6, 4.0));
+  op(q(root, 'nl0'), ph(t, 3.8, 4.0) * (1 - ph(t, 8.0, 8.5)));
+  op(q(root, 'nl1'), ph(t, 3.8, 4.0) * (1 - ph(t, 8.0, 8.5)));
+  op(q(root, 'nl-pt'), ph(t, 4.0, 4.4) * (1 - ph(t, 8.0, 8.5)));
+  op(q(root, 'nl-lbl'), ph(t, 4.2, 4.6) * (1 - ph(t, 8.0, 8.5)));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * OUT);
+  op(fxs[1], ph(t, 5.0, 5.4) * OUT);
+}
+const FRAC_HOLD = 6.4;
+
+/* ═══════════════ F14 — transform: reflect, rotate, translate (D = 11 s) ═══════════════ */
+
+function renderTransform(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.2, 7.8);
+
+  // top question per phase
+  op(q(root, 'top0'), 1 - ph(t, 2.2, 2.5));
+  op(q(root, 'top1'), ph(t, 2.2, 2.5) * (1 - ph(t, 3.6, 3.9)));
+  op(q(root, 'top2'), ph(t, 3.6, 3.9));
+
+  const AXIS = 260;
+  const PIV = { x: 400, y: 90 };
+  const MOVE = { dx: 40, dy: 60 };
+  const GHOST = [
+    { x: 120, y: 90 },
+    { x: 60, y: 190 },
+    { x: 190, y: 190 },
+  ];
+
+  const rp = ph(t, 1.1, 2.1) - ph(t, 9.2, 9.8); // reflect
+  const th = (Math.PI / 2) * (ph(t, 2.5, 3.5) - ph(t, 8.6, 9.2)); // rotate 90° cw
+  const tp = ph(t, 3.6, 4.2) - ph(t, 8.0, 8.6); // translate
+  const cos = Math.cos(th);
+  const sin = Math.sin(th);
+
+  const pts = GHOST.map((v) => {
+    const mx = lerp(v.x, 2 * AXIS - v.x, rp); // mirror across the axis
+    const my = v.y;
+    const dx = mx - PIV.x;
+    const dy = my - PIV.y;
+    const rx = PIV.x + dx * cos + dy * sin; // cw in screen coords
+    const ry = PIV.y - dx * sin + dy * cos;
+    return `${r2(rx + MOVE.dx * tp)},${r2(ry + MOVE.dy * tp)}`;
+  }).join(' ');
+
+  const cp = q(root, 'copy');
+  cp.setAttribute('points', pts);
+  op(cp, ph(t, 0.6, 0.8) * (1 - ph(t, 9.8, 10.2)));
+  const cf = q(root, 'copy-fill');
+  cf.setAttribute('points', pts);
+  op(cf, ph(t, 0.7, 1.0) * (1 - ph(t, 9.8, 10.2)));
+
+  op(q(root, 'axis'), ph(t, 0.8, 1.0) * (1 - ph(t, 9.6, 10.0)));
+  op(q(root, 'pivot'), ph(t, 2.2, 2.5) * (1 - ph(t, 8.4, 8.9)));
+
+  // translation vector from the rotated position to the final one
+  const vec = q(root, 'vec');
+  const vh = q(root, 'vec-head');
+  if (t >= 3.6 && t < 9.2) {
+    const cx = 466.7 + MOVE.dx * tp;
+    const cy = 93.3 + MOVE.dy * tp;
+    const fx2 = 466.7 + MOVE.dx;
+    const fy2 = 93.3 + MOVE.dy;
+    vec.setAttribute('x1', String(r2(cx)));
+    vec.setAttribute('y1', String(r2(cy)));
+    vec.setAttribute('x2', String(r2(fx2)));
+    vec.setAttribute('y2', String(r2(fy2)));
+    vh.setAttribute('d', `M${r2(fx2)} ${r2(fy2)} l -10 -1 l 4 9 Z`);
+  }
+  const vecOp = ph(t, 3.6, 3.9) * (1 - ph(t, 4.6, 5.0));
+  op(vec, vecOp);
+  op(vh, vecOp);
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * OUT);
+  op(fxs[1], ph(t, 5.0, 5.4) * OUT);
+}
+const TRANS_HOLD = 6.8;
+
+/* ═══════════════ L01 — angle-sum: three wedges join a straight line (D = 10 s) ═══════════════ */
+
+function renderAngleSum(root: LoopRoot, t: number) {
+  const moveP = ph(t, 2.0, 3.5) - ph(t, 8.2, 9.4);
+  const homes = [
+    { x: 168, y: 236 },
+    { x: 392, y: 236 },
+    { x: 280, y: 118 },
+  ];
+  const targets = [
+    { x: 168, y: 300 },
+    { x: 248, y: 300 },
+    { x: 328, y: 300 },
+  ];
+  for (let i = 0; i < 3; i++) {
+    const g = q(root, `ang${i}`);
+    const x = lerp(homes[i].x, targets[i].x, moveP);
+    const y = lerp(homes[i].y, targets[i].y, moveP);
+    if (g) g.setAttribute('transform', `translate(${r2(x)} ${r2(y)})`);
+    op(g, ph(t, 0.7, 1.1) * (1 - ph(t, 9.4, 9.8)));
+  }
+  const line = q(root, 'straight');
+  op(line, ph(t, 3.2, 3.6) * (1 - ph(t, 8.4, 9.0)));
+  draw(line, ph(t, 3.3, 4.0));
+  op(q(root, 'lbl180'), ph(t, 4.0, 4.4) * (1 - ph(t, 8.2, 8.8)));
+  const fxs = qa(root, '[data-fx]');
+  const show = ph(t, 4.5, 4.9) * (1 - ph(t, 8.0, 8.6));
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 4.9, 5.3) * (1 - ph(t, 8.0, 8.6)));
+}
+const ANGLE_SUM_HOLD = 6.2;
+
+/* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════ */
+
+function renderParaRect(root: LoopRoot, t: number) {
+  const flat = ph(t, 1.3, 2.7) - ph(t, 8.1, 9.3);
+  const s = 72 * (1 - flat);
+  const shape = q(root, 'shape');
+  if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(160 + s)},128`);
+  op(q(root, 'height'), 1);
+  op(q(root, 'lbl-h'), ph(t, 0.6, 1.0));
+  op(q(root, 'lbl-same'), ph(t, 2.8, 3.3) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
+}
+const PARA_RECT_HOLD = 5.4;
+
+/* ═══════════════ L03 — angle-kinds: acute, right, obtuse (D = 10 s) ═══════════════ */
+
+function renderAngleKinds(root: LoopRoot, t: number) {
+  const toAcute = ph(t, 0.5, 1.5);
+  const toRight = ph(t, 2.1, 3.1);
+  const toObtuse = ph(t, 3.7, 4.8);
+  const back = ph(t, 8.2, 9.4);
+  let deg = lerp(26, 42, toAcute);
+  deg = lerp(deg, 90, toRight);
+  deg = lerp(deg, 128, toObtuse);
+  deg = lerp(deg, 26, back);
+  const rad = (deg * Math.PI) / 180;
+  const ray = q(root, 'ray');
+  if (ray) {
+    ray.setAttribute('x2', String(r2(180 + 160 * Math.cos(rad))));
+    ray.setAttribute('y2', String(r2(230 - 160 * Math.sin(rad))));
+  }
+  const nearRight = deg > 78 && deg < 102 && back < 0.15 ? 1 : 0;
+  op(q(root, 'square'), nearRight * (1 - toObtuse));
+  op(q(root, 'lbl-acute'), (deg < 70 && toRight < 0.4 && back < 0.2 ? 1 : 0));
+  op(q(root, 'lbl-right'), nearRight * (1 - ph(t, 3.5, 3.9)));
+  op(q(root, 'lbl-obtuse'), (deg > 108 && back < 0.25 ? 1 : 0) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.9, 5.3) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 5.3, 5.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const ANGLE_KINDS_HOLD = 6.2;
+
+/* ═══════════════ L04 — frac-product: half of a third is a sixth (D = 10 s) ═══════════════ */
+
+function renderFracProduct(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'half'), ph(t, 0.8, 1.4) * fade);
+  op(q(root, 'third'), ph(t, 1.8, 2.4) * fade);
+  op(q(root, 'overlap'), ph(t, 2.8, 3.4) * fade);
+  op(q(root, 'lbl-half'), ph(t, 1.2, 1.6) * fade);
+  op(q(root, 'lbl-third'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'lbl-sixth'), ph(t, 3.3, 3.8) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.8, 4.2) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 4.2, 4.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const FRAC_PRODUCT_HOLD = 5.8;
+
+/* ═══════════════ L05 — slope: rise 2, run 1, twice (D = 10 s) ═══════════════ */
+
+function renderSlope(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const line = q(root, 'line');
+  op(line, ph(t, 0.5, 0.8) * fade);
+  draw(line, ph(t, 0.6, 1.8));
+  op(q(root, 'tri1'), ph(t, 2.0, 2.6) * fade);
+  op(q(root, 'run1'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'rise1'), ph(t, 2.6, 3.1) * fade);
+  op(q(root, 'tri2'), ph(t, 3.3, 3.9) * fade);
+  op(q(root, 'run2'), ph(t, 3.5, 3.9) * fade);
+  op(q(root, 'rise2'), ph(t, 3.9, 4.3) * fade);
+  op(q(root, 'lbl2'), ph(t, 4.3, 4.7) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 5.0, 5.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const SLOPE_HOLD = 6.2;
+
+/* ═══════════════ L06 — add-within: 3 dots join 4 dots (D = 10 s) ═══════════════ */
+
