@@ -428,7 +428,9 @@ export class ExactReferenceMotion {
   prepDoodle(el) {
     const img = el.querySelector('img'); if (!img || img.closest('[aria-hidden="true"]')) return;
     const name = el.dataset.doodle;
-    const hit = img.closest('button,a') || img;
+    // A doodle inside a link stays a decorative image. A button there would be
+    // nested interactive content and would activate the link.
+    const hit = img.closest('button') || img;
     const enter = this.animate(img, [
       { clipPath: 'inset(0 0 0 100%)', transform: 'rotate(-6deg) scale(.9)' },
       { clipPath: 'inset(0 0 0 0%)', transform: 'none' }
