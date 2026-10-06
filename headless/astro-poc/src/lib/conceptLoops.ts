@@ -1398,3 +1398,203 @@ const ODD_PAIR_HOLD = 5.4;
 /* ═══════════════ L24 — birds-sub: 6 − 2 = 4 (D = 10 s) ═══════════════ */
 
 function renderBirdsSub(root: LoopRoot, t: number) {
+  const p = ph(t, 1.2, 2.4) - ph(t, 8.2, 9.2);
+  const fly = [
+    { id: 'b4', x: 380, y: 200, dx: 36 },
+    { id: 'b5', x: 450, y: 200, dx: 50 },
+  ];
+  for (const bird of fly) {
+    const g = q(root, bird.id);
+    if (g) g.setAttribute('transform', `translate(${r2(bird.x + bird.dx * p)} ${r2(bird.y - 78 * p)})`);
+  }
+  const show = ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'stay'), show);
+  op(q(root, 'gone'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const BIRDS_SUB_HOLD = 5.0;
+
+/* ═══════════════ L25 — circ-unroll: circumference = πd (D = 10 s) ═══════════════
+   Scale: diameter = 70 px. Three full diameters are 210 px, then πd − 3d ≈ 9.9 px. */
+
+function renderCircUnroll(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  for (let i = 0; i < 3; i++) {
+    const seg = q(root, `seg${i}`);
+    op(seg, ph(t, 1.0 + i * 0.55, 1.3 + i * 0.55) * fade);
+    draw(seg, ph(t, 1.1 + i * 0.55, 1.7 + i * 0.55));
+    op(q(root, `sd${i}`), ph(t, 1.6 + i * 0.55, 2.0 + i * 0.55) * fade);
+  }
+  const extra = q(root, 'extra');
+  op(extra, ph(t, 2.6, 3.0) * fade);
+  draw(extra, ph(t, 2.7, 3.1));
+  op(q(root, 'extra-lbl'), ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const CIRC_UNROLL_HOLD = 5.4;
+
+/* ═══════════════ L26 — rect-count: 4×3 cells = 12, perimeter = 14 (D = 10 s) ═══════════════
+   Scale: 32 px per unit. Grid is 4×32 by 3×32. */
+
+function renderRectCount(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.3, 9.1);
+  for (let i = 0; i < 12; i++) {
+    const start = 0.5 + (i / 12) * 1.8;
+    op(q(root, `cell${i}`), ph(t, start, start + 0.2) * fade);
+  }
+  op(q(root, 'area'), ph(t, 2.5, 2.9) * fade);
+  op(q(root, 'rim'), ph(t, 3.1, 3.5) * fade);
+  op(q(root, 'side4'), ph(t, 3.3, 3.6) * fade);
+  op(q(root, 'side3'), ph(t, 3.4, 3.7) * fade);
+  const show = ph(t, 3.8, 4.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 4.2, 4.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const RECT_COUNT_HOLD = 5.8;
+
+/* ═══════════════ L27 — l-split: 4×3 and 2×2 leave the L, then return (D = 10 s) ═══════════════
+   Scale: 22 px per unit. 4×3 = 88×66 (area 12). 2×2 = 44×44 (area 4). */
+
+function renderLSplit(root: LoopRoot, t: number) {
+  const split = ph(t, 1.2, 2.4) - ph(t, 8.2, 9.3);
+  const part = q(root, 'part4');
+  if (part) part.setAttribute('transform', `translate(${r2(130 * split)} ${r2(8 * split)})`);
+  const show = ph(t, 2.5, 2.9) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'n12'), show);
+  op(q(root, 'n4'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6)));
+}
+const L_SPLIT_HOLD = 5.0;
+
+/* ═══════════════ L28 — quad-tree: parallelogram → rectangle and rhombus → square (D = 10 s) ═══════════════ */
+
+function renderQuadTree(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'arms'), ph(t, 1.0, 1.4) * fade);
+  op(q(root, 'kids'), ph(t, 1.4, 1.9) * fade);
+  op(q(root, 'down'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'sq'), ph(t, 2.6, 3.1) * fade);
+  const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const QUAD_TREE_HOLD = 5.4;
+
+/* ═══════════════ L29 — tri-sort: three triangles drop into labeled baskets (D = 10 s) ═══════════════ */
+
+function renderTriSort(root: LoopRoot, t: number) {
+  const drop = ph(t, 1.1, 2.6) - ph(t, 8.2, 9.3);
+  for (let i = 0; i < 3; i++) {
+    const g = q(root, `tri${i}`);
+    if (g) g.setAttribute('transform', `translate(0 ${r2(-150 * (1 - drop))})`);
+  }
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const TRI_SORT_HOLD = 5.2;
+
+/* ═══════════════ L30 — parab: vertex rises 3 units, shape stays (D = 10 s) ═══════════════
+   Scale: 26 px per unit. Vertex moves from y=0 to y=3. */
+
+function renderParab(root: LoopRoot, t: number) {
+  const p = ph(t, 1.1, 2.8) - ph(t, 8.2, 9.3);
+  const g = q(root, 'curve');
+  if (g) g.setAttribute('transform', `translate(0 ${r2(-78 * p)})`);
+  const yv = Math.round(p * 3);
+  const lab = q(root, 'yval');
+  if (lab) {
+    lab.textContent = `y = ${yv}`;
+    lab.setAttribute('y', String(r2(246 - 78 * p)));
+  }
+  const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+}
+const PARAB_HOLD = 5.2;
+
+/* ═══════════════ L31 — ratio-beads: 2:3 doubles to 4:6 (D = 10 s) ═══════════════
+   Bead step 36 px, radius 12. Second row is a copy, not a recolor. */
+
+function renderRatioBeads(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'row2'), ph(t, 1.3, 2.2) * fade);
+  op(q(root, 'tag2'), ph(t, 2.2, 2.6) * fade);
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const RATIO_BEADS_HOLD = 5.2;
+
+/* ═══════════════ L32 — neighbors: 8 lights up between 7 and 9 (D = 10 s) ═══════════════
+   Ticks at x = 160, 280, 400. Spacing 120 px. */
+
+function renderNeighbors(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const on = ph(t, 1.2, 1.8) * fade;
+  op(q(root, 'glow'), on);
+  op(q(root, 'nbr'), ph(t, 1.8, 2.3) * fade);
+  const show = ph(t, 2.5, 2.9) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6)));
+}
+const NEIGHBORS_HOLD = 4.8;
+
+/* ═══════════════ L33 — signed-ops: (−3) + 2×4 = 5 (D = 10 s) ═══════════════ */
+
+function renderSignedOps(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'box'), ph(t, 0.7, 1.1) * fade);
+  op(q(root, 'eight'), ph(t, 1.5, 2.1) * (1 - ph(t, 8.0, 8.6)));
+  op(q(root, 'sum'), ph(t, 2.6, 3.2) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const SIGNED_OPS_HOLD = 5.2;
+
+/* ═══════════════ L34 — clock-span: hour hand from 2 to 4 (D = 10 s) ═══════════════ */
+
+function renderClockSpan(root: LoopRoot, t: number) {
+  const p = ph(t, 1.0, 2.6) - ph(t, 8.2, 9.3);
+  const rad = ((60 + 60 * p) * Math.PI) / 180;
+  const hour = q(root, 'hour');
+  if (hour) {
+    hour.setAttribute('x2', String(r2(270 + 46 * Math.sin(rad))));
+    hour.setAttribute('y2', String(r2(156 - 46 * Math.cos(rad))));
+  }
+  const show = ph(t, 2.7, 3.1) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'arc'), show);
+  op(q(root, 'hrs'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.1, 3.5) * (1 - ph(t, 8.0, 8.6)));
+}
+const CLOCK_SPAN_HOLD = 5.0;
+
+/* ═══════════════ L35 — exterior: 90° + 60° = 150° (D = 10 s) ═══════════════
+   30-60-90 triangle. Exterior at the 30° vertex is exactly 150°. */
+
+function renderExterior(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'w90'), ph(t, 1.2, 1.8) * fade);
+  op(q(root, 'w60'), ph(t, 1.9, 2.5) * fade);
+  op(q(root, 'a90'), ph(t, 1.5, 1.9) * fade);
+  op(q(root, 'a60'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'a150'), ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
