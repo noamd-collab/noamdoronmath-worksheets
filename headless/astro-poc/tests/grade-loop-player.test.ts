@@ -339,7 +339,7 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(script, /splitSupFractions\(part\.text\)/);
     assert.match(script, /explain\.textContent = entry\.explain/);
     assert.match(player, /href=\{defaultEntry\.href\}[\s\S]*?>\s*לדפי העבודה בנושא ←\s*<\/a>/);
-    assert.match(player, /<button\s+type="button"[\s\S]*?data-grade-loop-next[\s\S]*?aria-label="ללואה הבאה"/);
+    assert.match(player, /<button\s+type="button"[\s\S]*?data-grade-loop-next[\s\S]*?aria-label="ללולאה הבאה"/);
     assert.match(player, /data-grade-loop-pause[\s\S]*?aria-label="השהיית ההדגמות"/);
     assert.match(player, /event\.key !== 'ArrowLeft'/);
   });
@@ -391,7 +391,7 @@ describe('GradeLoopPlayer render contract', () => {
     const hides = [...css.matchAll(/^\s*(.*):global\(\[data-el='toggle'\]\)/gm)].map((m) => m[1]);
     assert.equal(hides.length, 2);
     assert.equal(hides.filter((prefix) => /html\.(nd-motion-off|noam-a11y-motion)/.test(prefix)).length, 2);
-    assert.doesNotMatch(css, /grade-loop__next(?!\[hidden\])[^{]*\{[^}]*display: none/, 'ללואה הבאה stays visible');
+    assert.doesNotMatch(css, /grade-loop__next(?!\[hidden\])[^{]*\{[^}]*display: none/, 'ללולאה הבאה stays visible');
     assert.match(player, /"▶ פעם אחת" stays deferred/);
     assert.doesNotMatch(css.split('@media')[0], /\.grade-loop__pause \{[^}]*display: none/);
     const engine = read('src/lib/conceptLoops.ts');
