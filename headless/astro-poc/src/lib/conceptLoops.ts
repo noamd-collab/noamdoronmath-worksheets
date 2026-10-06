@@ -198,3 +198,203 @@ function renderPythagoras(root: LoopRoot, t: number) {
   );
   qa(root, '[data-el="tiles-b"] rect').forEach((el, k) =>
     tileFlight(el, t, 2.5 + k * 0.04, 5.1 + k * 0.06, 8.9 + k * 0.04)
+  );
+
+  // c label: "c = ?" → green "c = 5" once the equation completes
+  const lc = q(root, 'lbl-c');
+  const solved = t >= 7.05 && t < 9.3;
+  const want = solved ? 'c = 5' : 'c = ?';
+  if (lc.textContent !== want) lc.textContent = want;
+  lc.classList.toggle('cl-ok', solved);
+  op(lc, ph(t, 3.3, 3.5) * SQ_OUT);
+
+  // formula c² = 9 + 16 = 25, caption "ולכן c = 5" + check
+  const fxT = [6.4, 6.6, 6.8];
+  qa(root, '[data-fx]').forEach((el, i) => {
+    const p = ph(t, fxT[i] ?? 9, (fxT[i] ?? 9) + 0.25);
+    op(el, p * FX_OUT);
+    (el as HTMLElement).style.transform = `translateY(${r2((1 - p) * 5)}px)`;
+  });
+  op(q(root, 'caption'), ph(t, 7.1, 7.5) * FX_OUT);
+  const ck = q(root, 'check') as HTMLElement;
+  const cp = ph(t, 7.3, 7.7);
+  op(ck, cp * FX_OUT);
+  if (ck) ck.style.transform = `scale(${r2(0.5 + 0.5 * cp)})`;
+}
+const PYT_HOLD = 7.6;
+
+/* ═══════════════ variant C — area model (D = 11 s) ═══════════════ */
+
+function renderAreaModel(root: LoopRoot, t: number) {
+  const out = (a: number, b: number) => 1 - ph(t, a, b);
+
+  // split lines draw in
+  const sv = q(root, 'split-v');
+  op(sv, ph(t, 0.5, 0.7) * out(10.5, 11.0));
+  draw(sv, ph(t, 0.6, 1.0));
+  const sh = q(root, 'split-h');
+  op(sh, ph(t, 1.1, 1.3) * out(10.5, 11.0));
+  draw(sh, ph(t, 1.2, 1.6));
+
+  // four cells fill (x² blue, 2x purple, 3x orange, 6 gray + minis)
+  op(q(root, 'cell-x2'), ph(t, 1.8, 2.2) * out(10.5, 10.9));
+  op(q(root, 'term-x2'), ph(t, 2.0, 2.3) * out(10.5, 10.9));
+  op(q(root, 'cell-2x'), ph(t, 2.5, 2.9) * out(10.0, 10.4));
+  op(q(root, 'cell-3x'), ph(t, 3.1, 3.5) * out(9.5, 9.9));
+  op(q(root, 'cell-6'), ph(t, 3.7, 4.0) * out(9.0, 9.4));
+  qa(root, '[data-el="minis"] rect').forEach((el, k) =>
+    // minis count in, then dim so the big "6" reads clearly on top
+    op(el, ph(t, 3.8 + k * 0.1, 4.0 + k * 0.1) * (1 - 0.68 * ph(t, 4.5, 4.8)) * out(9.0, 9.3))
+  );
+  op(q(root, 'term-6'), ph(t, 4.2, 4.5) * out(9.0, 9.4));
+
+  // merge: 2x and 3x labels converge and become 5x
+  const m = ph(t, 5.8, 6.3);
+  const t2 = q(root, 'term-2x');
+  const t3 = q(root, 'term-3x');
+  op(t2, ph(t, 2.7, 3.0) * (1 - ph(t, 6.2, 6.5)));
+  op(t3, ph(t, 3.3, 3.6) * (1 - ph(t, 6.2, 6.5)));
+  shift(t2, lerp(0, -47, m), lerp(0, 56, m)); // (318,122) → (271,178)
+  shift(t3, lerp(0, 46, m), lerp(0, -56, m)); // (225,234) → (271,178)
+  op(q(root, 'hl-2x'), ph(t, 5.6, 5.9) * (1 - ph(t, 6.4, 6.8)));
+  op(q(root, 'hl-3x'), ph(t, 5.6, 5.9) * (1 - ph(t, 6.4, 6.8)));
+  const m5 = ph(t, 6.3, 6.6) * out(9.7, 10.1);
+  op(q(root, 'chip-5x'), m5);
+  op(q(root, 'term-5x'), m5);
+
+  // formula: full expansion, then collapses to the final result + check
+  const fxT = [4.5, 4.7, 4.9, 5.1, 5.3];
+  qa(root, '[data-fx]').forEach((el, i) => {
+    let o: number;
+    if (i <= 4) {
+      o = ph(t, fxT[i], fxT[i] + 0.25);
+      if (i >= 1 && i <= 4) o *= 1 - ph(t, 6.6, 7.0); // expansion steps fade for the result
+    } else if (i === 5) {
+      o = ph(t, 6.8, 7.2);
+    } else {
+      o = ph(t, 7.1, 7.5); // check
+    }
+    op(el, o * out(10.4, 10.9));
+  });
+  op(q(root, 'caption'), ph(t, 6.0, 6.4) * out(10.4, 10.9));
+}
+const AREA_HOLD = 7.5;
+
+/* ═══════════════ F01 — sticks: 34 = 30 + 4 (D = 10 s) ═══════════════ */
+
+function renderSticks(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.5, 8.1);
+
+  qa(root, '[data-stick]').forEach((el) => {
+    const i = Number(el.getAttribute('data-stick'));
+    const home = (el.getAttribute('data-h') || '0,0,0,0').split(',').map(Number);
+    const target = (el.getAttribute('data-t') || '0,0,0,0').split(',').map(Number);
+    const grp = i < 30 ? Math.floor(i / 10) : 3; // bundles 0–2, singles 3
+    const j = i % 10;
+    const hlAt = grp < 3 ? 0.6 + grp * 1.0 : 3.6; // highlight beat in the grid
+    const flyStart = grp < 3 ? 0.7 + grp * 1.0 + j * 0.04 : 3.7 + (i - 30) * 0.05;
+    const flyDur = grp < 3 ? 0.7 : 0.5;
+    const retStart = grp < 3 ? 8.0 + grp * 0.3 + j * 0.03 : 8.6 + (i - 30) * 0.05;
+
+    let p: number; // 0 = grid home, 1 = bundle/ones target
+    if (t < flyStart) p = 0;
+    else if (t < retStart) p = ph(t, flyStart, flyStart + flyDur);
+    else p = 1 - ph(t, retStart, retStart + 0.7);
+
+    const se = el as SVGRectElement;
+    se.setAttribute('x', String(r2(lerp(home[0], target[0], p))));
+    se.setAttribute('y', String(r2(lerp(home[1], target[1], p))));
+    se.setAttribute('width', String(r2(lerp(home[2], target[2], p))));
+    se.setAttribute('height', String(r2(lerp(home[3], target[3], p))));
+    // colour: navy at rest, accent blue in bundles, purple singles (CSS smooths fill)
+    const fill =
+      t < hlAt || t >= retStart ? 'var(--navy)' : grp < 3 ? 'var(--cobalt)' : '#7c3aed';
+    if (se.style.fill !== fill) se.style.fill = fill;
+  });
+
+  for (let k = 0; k < 3; k++) {
+    op(q(root, `band-${k}`), ph(t, 1.5 + k, 1.8 + k) * (1 - ph(t, 7.9 + k * 0.15, 8.3 + k * 0.15)));
+    op(q(root, `blbl-${k}`), ph(t, 1.6 + k, 1.9 + k) * (1 - ph(t, 7.9, 8.3)));
+  }
+  op(q(root, 'digit-4'), ph(t, 3.9, 4.2) * (1 - ph(t, 7.8, 8.4)));
+  op(q(root, 'digit-3'), ph(t, 4.4, 4.8) * (1 - ph(t, 7.8, 8.4)));
+
+  const fxT = [5.0, 5.3, 5.6];
+  qa(root, '[data-fx]').forEach((el, i) => op(el, ph(t, fxT[i] ?? 9, (fxT[i] ?? 9) + 0.3) * OUT));
+}
+const STICKS_HOLD = 6.5;
+
+/* ═══════════════ F02 — number line: 47 < 52, 47 ≈ 50 (D = 10 s) ═══════════════ */
+
+function renderNumberline(root: LoopRoot, t: number) {
+  const X47 = 266.8;
+  const X50 = 280;
+
+  // blue point: drops onto 47, later slides to 50 (0.6 s), comes back
+  const pt = q(root, 'pt47');
+  const cy = lerp(108, 150, ph(t, 0.6, 1.2));
+  const cx = t < 3.8 ? X47 : t < 8.0 ? lerp(X47, X50, ph(t, 3.8, 4.4)) : lerp(X50, X47, ph(t, 8.0, 8.6));
+  pt.setAttribute('cx', String(r2(cx)));
+  pt.setAttribute('cy', String(r2(cy)));
+  op(pt, ph(t, 0.6, 0.9) * (1 - ph(t, 8.8, 9.4)));
+  const l47 = q(root, 'lbl47');
+  l47.setAttribute('x', String(r2(cx)));
+  op(l47, ph(t, 0.9, 1.2) * (1 - ph(t, 8.8, 9.4)));
+  op(q(root, 'tick47'), ph(t, 0.6, 0.8) * (1 - ph(t, 8.8, 9.2)));
+
+  // purple point on 52: drops, later fades to an outline; its label retires
+  // once the rounding story begins (it would crowd the sliding 47 label)
+  const p52 = q(root, 'pt52');
+  p52.setAttribute('cy', String(r2(lerp(108, 150, ph(t, 1.4, 2.0)))));
+  (p52 as SVGElement).style.fillOpacity = String(r2(1 - ph(t, 3.0, 3.8)));
+  op(p52, ph(t, 1.4, 1.7) * (1 - ph(t, 8.2, 8.8)));
+  op(q(root, 'lbl52'), ph(t, 1.7, 2.0) * (1 - ph(t, 3.6, 4.0)));
+
+  // the top question follows the phase: comparison first, then rounding
+  op(q(root, 'topa'), 1 - ph(t, 3.6, 4.0));
+  op(q(root, 'topb'), ph(t, 3.6, 4.0));
+
+  // the comparison scene (arrow, then distance arcs) closes as the slide
+  // to 50 begins — keeps the area around 50 uncluttered
+  op(q(root, 'arrow'), ph(t, 2.2, 2.6) * (1 - ph(t, 3.7, 4.2)));
+  ['arc40', 'arc50', 'd40', 'd50'].forEach((n) =>
+    op(q(root, n), ph(t, 3.0, 3.4) * (1 - ph(t, 3.8, 4.3)))
+  );
+
+  // bottom bar: "47 < 52" gives way to "47 ≈ 50" + ✓
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 2.6, 3.0) * (1 - ph(t, 3.9, 4.3)));
+  op(fxs[1], ph(t, 4.8, 5.2) * (1 - ph(t, 7.4, 8.0)));
+  op(fxs[2], ph(t, 5.1, 5.5) * (1 - ph(t, 7.4, 8.0)));
+}
+const NL_HOLD = 6.5;
+
+/* ═══════════════ F03 — ten frames: 7 + 5 = 12 (D = 10 s) ═══════════════ */
+
+function renderTenframes(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.4, 8.0);
+  const GONE = 1 - ph(t, 9.0, 9.6);
+
+  qa(root, '[data-blue]').forEach((el) => {
+    const i = Number(el.getAttribute('data-blue'));
+    op(el, ph(t, 0.6 + i * 0.08, 0.85 + i * 0.08) * GONE);
+    el.setAttribute('r', String(r2(lerp(6, 12, ph(t, 0.6 + i * 0.08, 0.9 + i * 0.08)))));
+  });
+
+  qa(root, '[data-purp]').forEach((el) => {
+    const k = Number(el.getAttribute('data-purp'));
+    const home = (el.getAttribute('data-h') || '0,0').split(',').map(Number);
+    const target = (el.getAttribute('data-t') || '0,0').split(',').map(Number);
+    const flyStart = k < 3 ? 2.2 + k * 0.12 : 3.2 + (k - 3) * 0.12;
+    const retStart = 7.8 + k * 0.08;
+    let cx: number, cyv: number;
+    if (t < flyStart) [cx, cyv] = home;
+    else if (t < retStart) {
+      const p = ph(t, flyStart, flyStart + 0.5);
+      [cx, cyv] = [lerp(home[0], target[0], p), lerp(home[1], target[1], p)];
+    } else {
+      const p = ph(t, retStart, retStart + 0.6);
+      [cx, cyv] = [lerp(target[0], home[0], p), lerp(target[1], home[1], p)];
+    }
+    el.setAttribute('cx', String(r2(cx)));
+    el.setAttribute('cy', String(r2(cyv)));
