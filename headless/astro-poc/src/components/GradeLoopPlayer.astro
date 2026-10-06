@@ -289,14 +289,14 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       }
     });
 
-    // The diagram card starts its own loop at 35% of its box. That card sits
-    // under the player label, so the taller player is only ~27% on screen when
-    // the diagram is already playing. A 0.35 threshold on the player left the
-    // rotation clock frozen. 0.15 stays under that coupling. The player also
-    // starts the engine itself: a card that never crosses its own 0.35, or
-    // that has already parked on the answer, would otherwise sit still.
+    // The diagram sits below the fold on a normal laptop (heading ~732px,
+    // card top ~840px, viewport ~813px), so a threshold that waits for a
+    // visible slice never fires until the user scrolls. Start as in view
+    // and correct on the first observer sample. One viewport of rootMargin
+    // counts a card just under the fold as on screen. After that sample,
+    // a card that is truly off-screen pauses.
     const REPLAY_PAUSE_MS = 1600;
-    let inView = !('IntersectionObserver' in window);
+    let inView = true;
     let resting = false;
     let replayPending = false;
     let replayTimer = 0;
@@ -306,11 +306,12 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       window.clearTimeout(replayTimer);
       replayTimer = 0;
     }
-    if (!inView) {
+    if ('IntersectionObserver' in window) {
       new IntersectionObserver((records) => {
-        inView = records[0].isIntersecting;
+        inView = !!records[0]?.isIntersecting;
         if (inView) ensurePlaying();
-      }, { threshold: 0.15 }).observe(root);
+        else if (!resting) activeLoop()?.__loop?.pause();
+      }, { threshold: 0, rootMargin: '0px 0px 100% 0px' }).observe(root);
     }
 
     function resetProgress() {
@@ -520,6 +521,18 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', queueSync);
     window.addEventListener('nd:motion-off', queueSync);
     syncControls();
+    // The initial card used to wait for ConceptLoop's own module and for
+    // its 0.35 observer. Attach the engine here, then start the first paint
+    // even when the card is still below the fold.
+    initConceptLoops();
+    ensurePlaying();
+    runSlowClock();
+    // The engine's own 0.35 observer can pause a card that is only near the
+    // fold. Start again after that callback, while this player still says in view.
+    requestAnimationFrame(() => {
+      ensurePlaying();
+      runSlowClock();
+    });
     // One timer drives the rotation clock, the progress bar and the card's ARIA.
     window.setInterval(() => {
       syncActiveCard();
