@@ -598,3 +598,203 @@ function renderPolygon(root: LoopRoot, t: number) {
     if (built && !gone) sides++;
     if (i < 4 && built && !gone) verts++; // closing side adds no new vertex
     const s = q(root, `side-${i}`);
+    op(s, ph(t, 0.9 + i * 0.7, 1.0 + i * 0.7) * (1 - ph(t, 7.4 + (4 - i) * 0.24, 7.4 + (4 - i) * 0.24 + 0.3)));
+    draw(s, ph(t, 0.9 + i * 0.7, 1.4 + i * 0.7));
+    const v = q(root, `vert-${i}`);
+    const vBuilt = i === 0 ? t >= 0.7 : t >= 1.4 + (i - 1) * 0.7;
+    const vGone = t >= 8.2 + (5 - i) * 0.12;
+    op(v, vBuilt ? (vGone ? 1 - ph(t, 8.2 + (5 - i) * 0.12, 8.2 + (5 - i) * 0.12 + 0.2) : 1) : 0);
+  }
+  op(q(root, 'pent-fill'), ph(t, 4.2, 4.7) * (1 - ph(t, 7.0, 7.5)));
+
+  const cs = q(root, 'cnt-side');
+  const cv = q(root, 'cnt-vert');
+  const sideTxt = String(sides);
+  const vertTxt = String(verts);
+  if (cs.textContent !== sideTxt) cs.textContent = sideTxt;
+  if (cv.textContent !== vertTxt) cv.textContent = vertTxt;
+  const done = t >= 4.8 && t < 6.8;
+  cs.classList.toggle('cl-ok', done);
+  cv.classList.toggle('cl-ok', done);
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.8, 5.2) * OUT);
+  op(fxs[1], ph(t, 5.0, 5.4) * OUT);
+}
+const POLY_HOLD = 5.2;
+
+/* ═══════════════ F10 — data: tally → bars → pie (D = 11 s) ═══════════════ */
+
+function renderData(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.6, 8.2);
+
+  // top question per representation phase
+  op(q(root, 'top0'), 1 - ph(t, 2.4, 2.8));
+  op(q(root, 'top1'), ph(t, 2.4, 2.8) * (1 - ph(t, 3.8, 4.2)));
+  op(q(root, 'top2'), ph(t, 3.8, 4.2));
+
+  const vals = [8, 5, 3];
+  qa(root, '[data-tally]').forEach((el) => {
+    const [ri, m] = (el.getAttribute('data-tally') || '0-0').split('-').map(Number);
+    op(el, ph(t, 0.6 + ri * 0.3 + m * 0.1, 0.8 + ri * 0.3 + m * 0.1) * (1 - ph(t, 9.4, 10.0)));
+  });
+  qa(root, '[data-bar]').forEach((el) => {
+    const ri = Number(el.getAttribute('data-bar'));
+    const p = ph(t, 2.2 + ri * 0.3, 2.9 + ri * 0.3) - ph(t, 8.8 + ri * 0.15, 9.3 + ri * 0.15);
+    const h = Math.max(0, vals[ri] * 18 * p);
+    el.setAttribute('height', String(r2(h)));
+    el.setAttribute('y', String(r2(260 - h)));
+    op(el, ph(t, 2.2 + ri * 0.3, 2.4 + ri * 0.3) * (1 - ph(t, 9.0 + ri * 0.15, 9.4 + ri * 0.15)));
+  });
+  qa(root, '[data-barlbl]').forEach((el, i) =>
+    op(el, ph(t, 2.7 + i * 0.3, 3.0 + i * 0.3) * (1 - ph(t, 8.6, 9.2)))
+  );
+  qa(root, '[data-slice]').forEach((el, i) =>
+    op(el, ph(t, 3.6 + i * 0.3, 4.0 + i * 0.3) * (1 - ph(t, 8.2, 8.8)))
+  );
+  qa(root, '[data-slicelbl]').forEach((el, i) =>
+    op(el, ph(t, 4.2 + i * 0.3, 4.5 + i * 0.3) * (1 - ph(t, 8.2, 8.8)))
+  );
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 5.4, 5.8) * OUT);
+  op(fxs[1], ph(t, 5.8, 6.2) * OUT);
+  op(fxs[2], ph(t, 6.0, 6.4) * OUT);
+}
+const DATA_HOLD = 7.0;
+
+/* ═══════════════ F11 — base-ten: 38 + 25 = 63 (D = 10 s) ═══════════════ */
+
+function renderBaseten(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.2, 7.6);
+  const GONE = 1 - ph(t, 9.4, 9.9);
+  const ROD = { x: 340, y: 150 }; // merge target (new rod)
+  const rodCx = ROD.x + 7;
+  const rodCy = ROD.y + 45;
+
+  qa(root, '[data-rod38]').forEach((el, i) => op(el, ph(t, 0.6 + i * 0.12, 0.85 + i * 0.12) * (1 - ph(t, 9.2, 9.7))));
+  qa(root, '[data-rod25]').forEach((el, i) => op(el, ph(t, 1.4 + i * 0.12, 1.65 + i * 0.12) * (1 - ph(t, 9.2, 9.7))));
+  op(q(root, 'lbl38'), ph(t, 1.0, 1.3) * (1 - ph(t, 9.2, 9.7)));
+  op(q(root, 'lbl25'), ph(t, 1.8, 2.1) * (1 - ph(t, 9.2, 9.7)));
+
+  const flyOne = (el: El, k: number, merged: boolean, appearAt: number, flyAt: number) => {
+    const home = (el.getAttribute('data-h') || '0,0').split(',').map(Number);
+    const gather = (el.getAttribute('data-t') || '0,0').split(',').map(Number);
+    let x = home[0], y = home[1], vis = ph(t, appearAt, appearAt + 0.2) * GONE;
+    if (merged) {
+      if (t < flyAt) [x, y] = home;
+      else if (t < 3.4) {
+        const p = ph(t, flyAt, flyAt + 0.5);
+        [x, y] = [lerp(home[0], gather[0], p), lerp(home[1], gather[1], p)];
+      } else if (t < 3.9) {
+        const p = ph(t, 3.4, 3.9);
+        [x, y] = [lerp(gather[0], rodCx - 7.5, p), lerp(gather[1], rodCy - 7.5, p)];
+        vis *= 1 - ph(t, 3.7, 3.9);
+      } else if (t < 7.8) {
+        vis = 0; // consumed into the rod
+        [x, y] = [rodCx - 7.5, rodCy - 7.5];
+      } else if (t < 8.3) {
+        [x, y] = [rodCx - 7.5, rodCy - 7.5];
+        vis = ph(t, 7.8, 8.3) * GONE;
+      } else if (t < 8.8) {
+        const p = ph(t, 8.3, 8.8);
+        [x, y] = [lerp(rodCx - 7.5, gather[0], p), lerp(rodCy - 7.5, gather[1], p)];
+      } else if (t < 9.4) {
+        const p = ph(t, 8.8, 9.4);
+        [x, y] = [lerp(gather[0], home[0], p), lerp(gather[1], home[1], p)];
+      }
+    } else {
+      if (t < flyAt) [x, y] = home;
+      else if (t < 8.8) {
+        const p = ph(t, flyAt, flyAt + 0.5);
+        [x, y] = [lerp(home[0], gather[0], p), lerp(home[1], gather[1], p)];
+      } else {
+        const p = ph(t, 8.8, 9.4);
+        [x, y] = [lerp(gather[0], home[0], p), lerp(gather[1], home[1], p)];
+      }
+    }
+    el.setAttribute('x', String(r2(x)));
+    el.setAttribute('y', String(r2(y)));
+    op(el, vis);
+  };
+  qa(root, '[data-one38]').forEach((el) => {
+    const i = Number(el.getAttribute('data-one38'));
+    flyOne(el, i, true, 0.8 + i * 0.06, 2.2 + i * 0.05);
+  });
+  qa(root, '[data-one25]').forEach((el) => {
+    const i = Number(el.getAttribute('data-one25'));
+    flyOne(el, i, i < 2, 1.6 + i * 0.06, 2.5 + i * 0.05);
+  });
+
+  op(q(root, 'merge-ol-a'), ph(t, 3.0, 3.3) * (1 - ph(t, 3.7, 4.0)));
+  op(q(root, 'merge-ol-b'), ph(t, 3.0, 3.3) * (1 - ph(t, 3.7, 4.0)));
+  op(q(root, 'newrod'), ph(t, 3.9, 4.4) * (1 - ph(t, 7.8, 8.3)));
+  op(q(root, 'lbl63'), ph(t, 4.4, 4.7) * (1 - ph(t, 7.8, 8.2)));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * OUT);
+  op(fxs[1], ph(t, 5.0, 5.4) * OUT);
+  op(fxs[2], ph(t, 5.2, 5.6) * OUT);
+}
+const BT_HOLD = 6.2;
+
+/* ═══════════════ F12 — cookies: 14 = 4 × 3 + 2 (D = 10 s) ═══════════════ */
+
+function renderCookies(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 6.8, 7.4);
+
+  qa(root, '[data-cookie]').forEach((el) => {
+    const i = Number(el.getAttribute('data-cookie'));
+    const home = (el.getAttribute('data-h') || '0,0').split(',').map(Number);
+    const target = (el.getAttribute('data-t') || '0,0').split(',').map(Number);
+    const flyAt = 1.3 + i * 0.16;
+    const retAt = 7.6 + i * 0.1;
+    let x = home[0], y = home[1];
+    if (i < 12) {
+      if (t < flyAt) [x, y] = home;
+      else if (t < retAt) {
+        const p = ph(t, flyAt, flyAt + 0.45);
+        [x, y] = [lerp(home[0], target[0], p), lerp(home[1], target[1], p)];
+      } else {
+        const p = ph(t, retAt, retAt + 0.5);
+        [x, y] = [lerp(target[0], home[0], p), lerp(target[1], home[1], p)];
+      }
+    }
+    el.setAttribute('cx', String(r2(x)));
+    el.setAttribute('cy', String(r2(y)));
+    op(el, ph(t, 0.6 + i * 0.05, 0.8 + i * 0.05));
+  });
+
+  op(q(root, 'left-12'), ph(t, 3.4, 3.8) * (1 - ph(t, 7.2, 7.6)));
+  op(q(root, 'left-13'), ph(t, 3.4, 3.8) * (1 - ph(t, 7.2, 7.6)));
+  op(q(root, 'lbl-left'), ph(t, 3.6, 4.0) * (1 - ph(t, 7.2, 7.6)));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.0, 4.4) * OUT);
+  op(fxs[1], ph(t, 4.4, 4.8) * OUT);
+}
+const CK_HOLD = 6.2;
+
+/* ═══════════════ F13 — fraction: 1/4 three ways (D = 10 s) ═══════════════ */
+
+function renderFraction(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.4, 8.0);
+  const FADE = 1 - ph(t, 8.2, 8.8);
+
+  const cv = q(root, 'cut-v');
+  op(cv, ph(t, 0.9, 1.1) * FADE);
+  draw(cv, ph(t, 1.0, 1.4));
+  const ch = q(root, 'cut-h');
+  op(ch, ph(t, 1.1, 1.3) * FADE);
+  draw(ch, ph(t, 1.2, 1.6));
+  op(q(root, 'q-shade'), ph(t, 1.5, 2.0) * (1 - ph(t, 8.0, 8.6)));
+  op(q(root, 'q-lbl'), ph(t, 2.0, 2.4) * (1 - ph(t, 8.0, 8.5)));
+
+  const bo = q(root, 'bar-o');
+  op(bo, ph(t, 2.5, 2.7) * (1 - ph(t, 8.0, 8.5)));
+  draw(bo, ph(t, 2.6, 3.1));
+  for (let k = 1; k <= 3; k++) {
+    const d = q(root, `bar-d${k}`);
+    op(d, ph(t, 3.1, 3.3) * (1 - ph(t, 8.0, 8.5)));
+    draw(d, ph(t, 3.1 + k * 0.06, 3.35 + k * 0.06));
+  }
