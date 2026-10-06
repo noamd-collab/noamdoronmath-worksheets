@@ -1187,7 +1187,7 @@ function renderClock3(root: LoopRoot, t: number) {
   const hour = q(root, 'hour');
   if (hour) {
     hour.setAttribute('x2', String(r2(280 + 52 * Math.sin(ang))));
-    hour.setAttribute('y2', String(r2(168 - 52 * Math.cos(ang))));
+    hour.setAttribute('y2', String(r2(168 - 52 * Math.cos(rad))));
   }
   op(q(root, 'lbl-time'), ph(t, 2.6, 3.1) * (1 - ph(t, 8.0, 8.6)));
   const fxs = qa(root, '[data-fx]');
@@ -1798,3 +1798,203 @@ function renderHalfEq(root: LoopRoot, t: number) {
   const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], show);
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const HALF_EQ_HOLD = 5.2;
+
+/* ═══════════════ L47 — sq-stretch: square 100×100 becomes a 180×100 rectangle ═══════════════ */
+
+function renderSqStretch(root: LoopRoot, t: number) {
+  const p = ph(t, 1.1, 2.5) - ph(t, 8.2, 9.3);
+  const w = r2(100 + 80 * p);
+  const box = q(root, 'box');
+  if (box) box.setAttribute('width', String(w));
+  const x = r2(280 + 80 * p);
+  const c1 = q(root, 'c1');
+  const c2 = q(root, 'c2');
+  if (c1) c1.setAttribute('cx', String(x));
+  if (c2) c2.setAttribute('cx', String(x));
+  const show = ph(t, 2.7, 3.1) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'sides'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.1, 3.5) * (1 - ph(t, 8.0, 8.6)));
+}
+const SQ_STRETCH_HOLD = 5.0;
+
+/* ═══════════════ L48 — area-x4: side 56 → 112, four equal 56×56 cells ═══════════════ */
+
+function renderAreaX4(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const g = ph(t, 1.0, 2.4) - ph(t, 8.2, 9.2);
+  const sq = q(root, 'sq');
+  const s = r2(56 + 56 * g);
+  if (sq) {
+    sq.setAttribute('width', String(s));
+    sq.setAttribute('height', String(s));
+  }
+  const grid = ph(t, 2.5, 2.9) * fade;
+  op(q(root, 'mv'), grid);
+  op(q(root, 'mh'), grid);
+  op(q(root, 'n2'), grid);
+  op(q(root, 'n3'), grid);
+  op(q(root, 'n4'), grid);
+  const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+}
+const AREA_X4_HOLD = 5.2;
+
+/* ═══════════════ L49 — cube-8: two layers of 2×2, eight cells (D = 10 s) ═══════════════ */
+
+function renderCube8(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'cube'), ph(t, 0.7, 1.6) * fade);
+  op(q(root, 'edges'), ph(t, 1.8, 2.3) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+}
+const CUBE8_HOLD = 5.2;
+
+/* ═══════════════ L50 — place-123: 100 + two 10s + three 1s (D = 10 s) ═══════════════ */
+
+function renderPlace123(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'flat'), ph(t, 0.6, 1.2) * fade);
+  op(q(root, 'rods'), ph(t, 1.4, 2.0) * fade);
+  op(q(root, 'ones'), ph(t, 2.2, 2.7) * fade);
+  op(q(root, 'tot'), ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const PLACE123_HOLD = 5.2;
+
+/* ═══════════════ L51 — jumps-4: four arcs of 3, landing on 12 (D = 10 s) ═══════════════
+   Unit is 32 px. Each jump is 96 px: 70, 166, 262, 358, 454. */
+
+function renderJumps4(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  for (let i = 0; i < 4; i++) op(q(root, `j${i}`), ph(t, 0.7 + i * 0.5, 1.1 + i * 0.5) * fade);
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const JUMPS4_HOLD = 5.0;
+
+/* ═══════════════ L52 — apples-5: 2 + 3 = 3 + 2 = 5 (D = 10 s) ═══════════════ */
+
+function renderApples5(root: LoopRoot, t: number) {
+  const p = ph(t, 1.0, 2.2) - ph(t, 8.2, 9.2);
+  // The two groups swap places: order changes, but the total does not.
+  shift(q(root, 'a2'), 204 * p, 0);
+  shift(q(root, 'a3'), -206 * p, 0);
+  const show = ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'five'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const APPLES5_HOLD = 5.0;
+
+/* ═══════════════ L53 — topic-card: complete 2, 4, 6, 8 (D = 10 s) ═══════════════ */
+
+function renderTopicCard(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'solid'), ph(t, 1.2, 1.8) * fade);
+  op(q(root, 'ok'), ph(t, 1.8, 2.3) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+}
+const TOPIC_CARD_HOLD = 4.8;
+
+/* ═══════════════ L54 — mark-250: 250 is midway from 200 to 300 on a 0–1000 line ═══════════════
+   400 px = 1000, so 250 is x = 160, exactly between 140 and 180. */
+
+function renderMark250(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const on = ph(t, 1.2, 1.8) * fade;
+  op(q(root, 'dot'), on);
+  op(q(root, 'lab'), ph(t, 1.6, 2.1) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 2.2, 2.6) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
+}
+const MARK250_HOLD = 4.8;
+
+/* ═══════════════ L55 — quad-gate: the 4-side square enters, the triangle stays out ═══════════════ */
+
+function renderQuadGate(root: LoopRoot, t: number) {
+  const p = ph(t, 1.1, 2.4) - ph(t, 8.2, 9.2);
+  shift(q(root, 'sq'), lerp(340, 100, p), lerp(70, 190, p));
+  const show = ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const QUAD_GATE_HOLD = 5.0;
+
+/* ═══════════════ L56 — two-diag: a quadrilateral gets two diagonals (D = 10 s) ═══════════════ */
+
+function renderTwoDiag(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'd1'), ph(t, 0.8, 1.4) * fade);
+  op(q(root, 'n1'), ph(t, 1.3, 1.7) * fade);
+  op(q(root, 'd2'), ph(t, 1.9, 2.5) * fade);
+  op(q(root, 'n2'), ph(t, 2.4, 2.8) * fade);
+  const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const TWO_DIAG_HOLD = 5.2;
+
+/* ═══════════════ engine ═══════════════ */
+
+const SPECS = {
+  triangle: { duration: 10, hold: TRI_HOLD, render: renderTriangle },
+  pythagoras: { duration: 10, hold: PYT_HOLD, render: renderPythagoras },
+  'area-model': { duration: 11, hold: AREA_HOLD, render: renderAreaModel },
+  sticks: { duration: 10, hold: STICKS_HOLD, render: renderSticks },
+  numberline: { duration: 10, hold: NL_HOLD, render: renderNumberline },
+  tenframes: { duration: 10, hold: TF_HOLD, render: renderTenframes },
+  balance: { duration: 11, hold: BAL_HOLD, render: renderBalance },
+  pattern: { duration: 11, hold: PAT_HOLD, render: renderPattern },
+  bars: { duration: 11, hold: BARS_HOLD, render: renderBars },
+  ruler: { duration: 10, hold: RULER_HOLD, render: renderRuler },
+  array: { duration: 10, hold: ARRAY_HOLD, render: renderArray },
+  polygon: { duration: 10, hold: POLY_HOLD, render: renderPolygon },
+  data: { duration: 11, hold: DATA_HOLD, render: renderData },
+  baseten: { duration: 10, hold: BT_HOLD, render: renderBaseten },
+  cookies: { duration: 10, hold: CK_HOLD, render: renderCookies },
+  fraction: { duration: 10, hold: FRAC_HOLD, render: renderFraction },
+  transform: { duration: 11, hold: TRANS_HOLD, render: renderTransform },
+  'angle-sum': { duration: 10, hold: ANGLE_SUM_HOLD, render: renderAngleSum },
+  'para-rect': { duration: 10, hold: PARA_RECT_HOLD, render: renderParaRect },
+  'angle-kinds': { duration: 10, hold: ANGLE_KINDS_HOLD, render: renderAngleKinds },
+  'frac-product': { duration: 10, hold: FRAC_PRODUCT_HOLD, render: renderFracProduct },
+  slope: { duration: 10, hold: SLOPE_HOLD, render: renderSlope },
+  'add-within': { duration: 10, hold: ADD_WITHIN_HOLD, render: renderAddWithin },
+  similar: { duration: 10, hold: SIMILAR_HOLD, render: renderSimilar },
+  'order-ops': { duration: 10, hold: ORDER_OPS_HOLD, render: renderOrderOps },
+  'sup-angles': { duration: 10, hold: SUP_ANGLES_HOLD, render: renderSupAngles },
+  'share-12': { duration: 10, hold: SHARE12_HOLD, render: renderShare12 },
+  'corr-angles': { duration: 10, hold: CORR_ANGLES_HOLD, render: renderCorrAngles },
+  'mean-cols': { duration: 10, hold: MEAN_COLS_HOLD, render: renderMeanCols },
+  'pct-25': { duration: 10, hold: PCT25_HOLD, render: renderPct25 },
+  'diff-sq': { duration: 10, hold: DIFF_SQ_HOLD, render: renderDiffSq },
+  'clock-3': { duration: 10, hold: CLOCK3_HOLD, render: renderClock3 },
+  'peri-rect': { duration: 10, hold: PERI_RECT_HOLD, render: renderPeriRect },
+  'signed-jump': { duration: 10, hold: SIGNED_JUMP_HOLD, render: renderSignedJump },
+  'prime-rect': { duration: 10, hold: PRIME_RECT_HOLD, render: renderPrimeRect },
+  'sas-snap': { duration: 10, hold: SAS_SNAP_HOLD, render: renderSasSnap },
+  'obtuse-ht': { duration: 10, hold: OBTUSE_HT_HOLD, render: renderObtuseHt },
+  'box-vol': { duration: 10, hold: BOX_VOL_HOLD, render: renderBoxVol },
