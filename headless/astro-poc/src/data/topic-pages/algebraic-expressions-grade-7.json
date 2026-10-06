@@ -16,7 +16,7 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "ביטוי אברי וא תיאור מספרי עם נעלמם. בהצבה מחליפם כל נעלם במספר ומחשבם. בפישוט מכונסים איברי דומים, ולפעמי מוציאים גורם משותף או פותים סוגריים אחרי מינוס.",
+          "text": "ביטוי אלגברי הוא תיאור מספרי עם נעלמים. בהצבה מחליפים כל נעלם במספר ומחשבים. בפישוט מכנסים איברים דומים, ולפעמים מוציאים גורם משותף או פותחים סוגריים אחרי מינוס.",
           "links": []
         },
         {
@@ -26,7 +26,7 @@
         },
         {
           "type": "paragraph",
-          "text": "בביטוי מתקבל x=2 אם מצבים את הערך 3 × 2 + 5 = 11 ערך הביטוי הוא 11 x=2 לכן כאשר דוגמה 2: פישוט ביטוי נפשט את הביטוי: ‭2(x + 3) - x = 2x + 6 - x = x + 6‬",
+          "text": "אם מציבים את הערך x=2 בביטוי, מתקבל 3 × 2 + 5 = 11. לכן כאשר x=2, ערך הביטוי הוא 11. דוגמה 2: פישוט ביטוי נפשט את הביטוי: ‭2(x + 3) − x = 2x + 6 − x = x + 6‬",
           "links": []
         }
       ]
@@ -36,7 +36,7 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "טעות נפוצה היא לשכח לפתח את המינוס לפני הסוגריים, או להציב רק בחלק מהאיברים. כתבו את ההצבה שלב־שלב ובדקו יחידות/סימנים.",
+          "text": "טעות נפוצה היא לשכוח לפתח את המינוס לפני הסוגריים, או להציב רק בחלק מהאיברים. כתבו את ההצבה שלב־שלב ובדקו יחידות/סימנים.",
           "links": []
         }
       ]
@@ -46,17 +46,17 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "דוגמה: פישוט ביטוי נפשט את הביטוי 4x * 2(x-3)",
+          "text": "דוגמה: פישוט ביטוי נפשט את הביטוי 4x · 2(x − 3)",
           "links": []
         },
         {
           "type": "paragraph",
-          "text": "4x * 2(x-3) = 8x(x-3) = 8x^2 - 24x",
+          "text": "4x · 2(x − 3) = 8x(x − 3) = 8x² − 24x",
           "links": []
         },
         {
           "type": "paragraph",
-          "text": "תשובה: 8x^2 - 24x",
+          "text": "תשובה: 8x² − 24x",
           "links": []
         }
       ]
@@ -126,7 +126,7 @@
     }
   ],
   "catalogCta": {
-    "label": "גורם משותף ומינוס לפני וגריים — בחירת דף ורמה",
+    "label": "גורם משותף ומינוס לפני סוגריים — בחירת דף ורמה",
     "href": "/worksheets?grade=7&topic=30",
     "source": "production-github-cta",
     "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=30",
@@ -135,7 +135,7 @@
   },
   "catalogCtas": [
     {
-      "label": "גורם משותף ומינוס לפני וגריים — בחירת דף ורמה",
+      "label": "גורם משותף ומינוס לפני סוגריים — בחירת דף ורמה",
       "href": "/worksheets?grade=7&topic=30",
       "source": "production-github-cta",
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=30",
@@ -143,7 +143,7 @@
       "catalogTopicTitle": "שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים"
     },
     {
-      "label": "הצבה בביטויים אגבריים — בחירת דף ורמה",
+      "label": "הצבה בביטויים אלגבריים — בחירת דף ורמה",
       "href": "/worksheets?grade=7&topic=23",
       "source": "production-github-cta",
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=23",
@@ -168,7 +168,7 @@
         "@id": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7#webpage",
         "url": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7",
         "name": "ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳ | דפי עבודה חינם",
-        "description": "מתרגלים ביטויים אלגבריים, הצבת ערכים חיוביים ושליליים, ולהמשיך לפישוט עם גורם משותף ומינוס לפני סוגריים. דפי התרגול ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
+        "description": "מתרגלים ביטויים אלגבריים, הצבת ערכים חיוביים ושליליים, וממשיכים לפישוט עם גורם משותף ומינוס לפני סוגריים. דפי התרגול ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
         "inLanguage": "he",
         "author": {
           "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
@@ -182,7 +182,7 @@
         "@id": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7#learning-resource",
         "name": "ביטויים אלגבריים, הצבה וגורם משותף לכיתה ז׳",
         "url": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7",
-        "description": "מתרגלים ביטויים אלגבריים, הצבת ערכים חיוביים ושליליים, ולהמשיך לפישוט עם גורם משותף ומינוס לפני סוגריים. דפי התרגול ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
+        "description": "מתרגלים ביטויים אלגבריים, הצבת ערכים חיוביים ושליליים, וממשיכים לפישוט עם גורם משותף ומינוס לפני סוגריים. דפי התרגול ברמות א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
         "educationalLevel": "כיתה ז׳",
         "learningResourceType": "דפי עבודה",
         "isAccessibleForFree": true,

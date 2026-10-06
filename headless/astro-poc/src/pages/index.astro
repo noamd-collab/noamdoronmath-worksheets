@@ -5,14 +5,15 @@ import ExactHeroControls from '../components/ExactHeroControls.astro';
 import GamePromoCard from '../components/GamePromoCard.astro';
 import { HERO_DEFAULT, heroChip, heroPanel } from '../lib/heroRotation';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
+import { organizationJsonLd } from '../lib/structuredData';
 const home = loadHomePage();
-const homeJsonLd = homePageJsonLd();
+const homeJsonLd = [...homePageJsonLd(), organizationJsonLd()];
 const images = ['paper-boat','snail','curious-cat','kite','geometry-fish','cube-plant'];
 const letters = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ז׳','ח׳','ט׳'];
 const elemGrades = home.grades.slice(0,6).map((grade,i)=>({ ...grade,l:letters[i],img:'/design-exact/assets/doodles/'+images[i]+'.webp',delay:i*70,isSnail:i===1,isCat:i===2,isFish:i===4,isBoat:i===0,isCube:i===5 }));
 const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],delay:420+i*70}));
 ---
-<BaseLayout title={home.title} description={home.description} activeNav="home" skipHref="#home-main">
+<BaseLayout title={home.title} description={home.description} crumbs={[{ name: 'בית', path: '/' }]} activeNav="home" skipHref="#home-main">
   {homeJsonLd.map(block=>(<script type="application/ld+json" set:html={JSON.stringify(block)} />))}
     <main id="home-main" class="exact-home" data-family="home" data-home-page data-screen-label="בית">
 

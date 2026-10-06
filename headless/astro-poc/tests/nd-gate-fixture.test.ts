@@ -31,8 +31,10 @@ describe('M35 ndGate fixture-only', () => {
 <style>${readFileSync(join(root, 'src/styles/catalog.css'), 'utf8').match(/#ndGateOverlay[\s\S]*?\.nd-gate-foot[\s\S]*?}/)?.[0] || ''}</style>
 </head><body><main>fixture</main><script>${gateJs}</script></body></html>`
     );
-    const chrome = ['/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'].find(existsSync);
-    assert.ok(chrome);
+    const chrome = [process.env.CHROME_PATH, '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome'].find(
+      (path): path is string => !!path && existsSync(path)
+    );
+    assert.ok(chrome, 'no Chrome/Chromium found: set CHROME_PATH');
     const browser = await puppeteer.launch({
       executablePath: chrome,
       headless: true,

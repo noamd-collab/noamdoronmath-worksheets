@@ -1,4 +1,5 @@
 ---
+import { wixFillSize } from '../lib/wixMedia';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogSeoTags from './BlogSeoTags.astro';
 import {
@@ -11,11 +12,17 @@ interface Props {
 }
 const { archive } = Astro.props;
 const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
+const archiveCrumbs = [
+  { name: 'בית', path: '/' },
+  { name: 'בלוג', path: '/blog' },
+  ...(archive.path === '/blog' ? [] : [{ name: archive.h1 || archive.title, path: archive.path }]),
+];
 ---
 <BaseLayout
   title={archive.title}
   description={archive.description}
   ogImage={archive.ogImage}
+  crumbs={archiveCrumbs}
   skipHref="#blog-archive-main"
 >
   <BlogSeoTags slot="seo-tags" description={archive.description} image={archive.ogImage} jsonLd={archive.jsonLd} />
@@ -73,7 +80,7 @@ const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
 
     <section class="blog-archive__list" aria-label="פוסטים" data-blog-archive-list>
       {
-        archive.cards.map((card) => (
+        archive.cards.map((card, cardIndex) => (
           <article class="blog-archive__card" data-blog-archive-card>
             {
               card.imageSrc && (
@@ -87,7 +94,9 @@ const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
                   <img
                     src={card.imageSrc}
                     alt={card.imageAlt || card.title}
-                    loading="lazy"
+                    loading={cardIndex === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={cardIndex === 0 ? 'high' : undefined}
+                    {...(wixFillSize(card.imageSrc) || {})}
                     data-blog-archive-card-img
                   />
                 </a>
