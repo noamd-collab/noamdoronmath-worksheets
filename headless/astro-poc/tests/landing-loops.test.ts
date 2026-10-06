@@ -59,13 +59,25 @@ describe('landing loop coverage', () => {
         assert.ok(CSS_LOOP_VARIANTS.includes(loop.variant), `${slug} variant ${loop.variant}`);
       }
       if (loop.kind === 'film') {
-        assert.equal(slug, 'analytic-geometry-grade-9');
-        assert.equal(loop.src, '/loops/distance-between-points.html');
-        assert.equal(loop.marker, 'distance-between-points');
+        const films = {
+          'analytic-geometry-grade-9': {
+            src: '/loops/distance-between-points.html',
+            marker: 'distance-between-points',
+          },
+          'triangle-quadrilateral-angle-sum-grade-7': {
+            src: '/loops/triangle-angle-sum-vertex-descent.html',
+            marker: 'triangle-angle-sum-vertex-descent',
+          },
+        };
+        assert.deepEqual(
+          { src: loop.src, marker: loop.marker },
+          films[slug as keyof typeof films],
+          slug,
+        );
       }
     }
     assert.equal(counts.concept + counts.css + counts.film, TOPIC_PAGE_SLUGS.length);
-    assert.equal(counts.film, 1);
+    assert.equal(counts.film, 2);
     assert.ok(counts.css > 0);
     assert.ok(counts.concept > 0);
   });
@@ -99,7 +111,9 @@ describe('landing loop coverage', () => {
     assert.match(topic, /data-landing-loop=\{loopVariant \? landingLoop\.marker : undefined\}/);
     assert.match(topic, /\{cssVariant && <LandingLoop variant=\{cssVariant\} \/>\}/);
     assert.match(topic, /\{loopVariant && <ConceptLoop variant=\{loopVariant\} \/>\}/);
-    assert.match(topic, /landingLoop\.kind === 'film' && <DistancePointsLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /landingLoop\.kind === 'film' && landingLoop\.marker === 'distance-between-points'/);
+    assert.match(topic, /<DistancePointsLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /<TriangleAngleSumLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
     assert.match(loop, /data-landing-loop=\{variant\}/);
     assert.match(hub, /data-landing-loop=\{`grade-\$\{grade\}`\}/);
     assert.match(home, /data-landing-loop="hero"/);
@@ -184,7 +198,7 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 74);
+    assert.equal(cssPages, 73);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);

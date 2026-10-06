@@ -68,6 +68,10 @@
   border-radius: 28px;
   padding: 56px 28px 28px;
 }
+.exact-topic .exact-topic-demo--bare {
+  padding: 0;
+  overflow: hidden;
+}
 .exact-topic .exact-topic-copy { flex: 1 1 320px; min-width: 0; }
 .exact-topic .topic-page__intro {
   margin: 0 0 24px;

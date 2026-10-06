@@ -189,6 +189,10 @@ export const FILM_LANDING_LOOPS = {
     marker: 'distance-between-points',
     src: '/loops/distance-between-points.html',
   },
+  'triangle-quadrilateral-angle-sum-grade-7': {
+    marker: 'triangle-angle-sum-vertex-descent',
+    src: '/loops/triangle-angle-sum-vertex-descent.html',
+  },
 } as const;
 
 export type FilmLandingSlug = keyof typeof FILM_LANDING_LOOPS;

@@ -1,0 +1,89 @@
+---
+/**
+ * Grade 7 triangle angle-sum film.
+ * The SVG, math, and controls stay in public/loops/triangle-angle-sum-vertex-descent.html.
+ * This wrapper only frames that file so its readouts and play/pause/seek stay usable.
+ */
+interface Props {
+  src: string;
+  marker: string;
+}
+const { src, marker } = Astro.props;
+---
+
+<div class="angle-sum-loop" data-angle-sum-loop data-landing-loop={marker}>
+  <iframe
+    class="angle-sum-loop__frame"
+    src={src}
+    title="הקודקוד יורד והזוויות משתנות"
+    loading="eager"
+    data-angle-sum-frame
+  ></iframe>
+</div>
+
+<script>
+  function boot(root) {
+    const frame = root.querySelector('[data-angle-sum-frame]');
+    if (!frame) return;
+
+    function fit() {
+      let doc;
+      try { doc = frame.contentDocument; } catch { return; }
+      const main = doc?.querySelector('main');
+      if (!main) return;
+      const h = Math.ceil(main.getBoundingClientRect().height);
+      if (h > 200 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
+    }
+
+    function motionOff() {
+      const html = document.documentElement;
+      return html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion');
+    }
+
+    function holdStill() {
+      if (!motionOff()) return;
+      let demo;
+      try { demo = frame.contentWindow?.triangleDemo; } catch { return; }
+      if (demo?.getState?.().playing) demo.pause();
+    }
+
+    let watching = false;
+    function onReady() {
+      let doc;
+      try { doc = frame.contentDocument; } catch { return; }
+      if (!doc?.querySelector('main')) return;
+      fit();
+      holdStill();
+      if (watching || !('ResizeObserver' in window)) return;
+      watching = true;
+      const observer = new ResizeObserver(fit);
+      observer.observe(frame);
+      if (doc.body) observer.observe(doc.body);
+    }
+
+    frame.addEventListener('load', onReady);
+    onReady();
+
+    new MutationObserver(holdStill).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  }
+
+  document.querySelectorAll('[data-angle-sum-loop]').forEach(boot);
+</script>
+
+<style>
+  .angle-sum-loop {
+    display: block;
+    width: 100%;
+    background: #fbfaf5;
+  }
+  .angle-sum-loop__frame {
+    display: block;
+    width: 100%;
+    height: 760px;
+    border: 0;
+    background: #fbfaf5;
+  }
+</style>
