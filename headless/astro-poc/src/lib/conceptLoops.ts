@@ -598,3 +598,403 @@ function renderPolygon(root: LoopRoot, t: number) {
     if (built && !gone) sides++;
     if (i < 4 && built && !gone) verts++; // closing side adds no new vertex
     const s = q(root, `side-${i}`);
+    op(s, ph(t, 0.9 + i * 0.7, 1.0 + i * 0.7) * (1 - ph(t, 7.4 + (4 - i) * 0.24, 7.4 + (4 - i) * 0.24 + 0.3)));
+    draw(s, ph(t, 0.9 + i * 0.7, 1.4 + i * 0.7));
+    const v = q(root, `vert-${i}`);
+    const vBuilt = i === 0 ? t >= 0.7 : t >= 1.4 + (i - 1) * 0.7;
+    const vGone = t >= 8.2 + (5 - i) * 0.12;
+    op(v, vBuilt ? (vGone ? 1 - ph(t, 8.2 + (5 - i) * 0.12, 8.2 + (5 - i) * 0.12 + 0.2) : 1) : 0);
+  }
+  op(q(root, 'pent-fill'), ph(t, 4.2, 4.7) * (1 - ph(t, 7.0, 7.5)));
+
+  const cs = q(root, 'cnt-side');
+  const cv = q(root, 'cnt-vert');
+  const sideTxt = String(sides);
+  const vertTxt = String(verts);
+  if (cs.textContent !== sideTxt) cs.textContent = sideTxt;
+  if (cv.textContent !== vertTxt) cv.textContent = vertTxt;
+  const done = t >= 4.8 && t < 6.8;
+  cs.classList.toggle('cl-ok', done);
+  cv.classList.toggle('cl-ok', done);
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.8, 5.2) * OUT);
+  op(fxs[1], ph(t, 5.0, 5.4) * OUT);
+}
+const POLY_HOLD = 5.2;
+
+/* ═══════════════ F10 — data: tally → bars → pie (D = 11 s) ═══════════════ */
+
+function renderData(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.6, 8.2);
+
+  // top question per representation phase
+  op(q(root, 'top0'), 1 - ph(t, 2.4, 2.8));
+  op(q(root, 'top1'), ph(t, 2.4, 2.8) * (1 - ph(t, 3.8, 4.2)));
+  op(q(root, 'top2'), ph(t, 3.8, 4.2));
+
+  const vals = [8, 5, 3];
+  qa(root, '[data-tally]').forEach((el) => {
+    const [ri, m] = (el.getAttribute('data-tally') || '0-0').split('-').map(Number);
+    op(el, ph(t, 0.6 + ri * 0.3 + m * 0.1, 0.8 + ri * 0.3 + m * 0.1) * (1 - ph(t, 9.4, 10.0)));
+  });
+  qa(root, '[data-bar]').forEach((el) => {
+    const ri = Number(el.getAttribute('data-bar'));
+    const p = ph(t, 2.2 + ri * 0.3, 2.9 + ri * 0.3) - ph(t, 8.8 + ri * 0.15, 9.3 + ri * 0.15);
+    const h = Math.max(0, vals[ri] * 18 * p);
+    el.setAttribute('height', String(r2(h)));
+    el.setAttribute('y', String(r2(260 - h)));
+    op(el, ph(t, 2.2 + ri * 0.3, 2.4 + ri * 0.3) * (1 - ph(t, 9.0 + ri * 0.15, 9.4 + ri * 0.15)));
+  });
+  qa(root, '[data-barlbl]').forEach((el, i) =>
+    op(el, ph(t, 2.7 + i * 0.3, 3.0 + i * 0.3) * (1 - ph(t, 8.6, 9.2)))
+  );
+  qa(root, '[data-slice]').forEach((el, i) =>
+    op(el, ph(t, 3.6 + i * 0.3, 4.0 + i * 0.3) * (1 - ph(t, 8.2, 8.8)))
+  );
+  qa(root, '[data-slicelbl]').forEach((el, i) =>
+    op(el, ph(t, 4.2 + i * 0.3, 4.5 + i * 0.3) * (1 - ph(t, 8.2, 8.8)))
+  );
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 5.4, 5.8) * OUT);
+  op(fxs[1], ph(t, 5.8, 6.2) * OUT);
+  op(fxs[2], ph(t, 6.0, 6.4) * OUT);
+}
+const DATA_HOLD = 7.0;
+
+/* ═══════════════ F11 — base-ten: 38 + 25 = 63 (D = 10 s) ═══════════════ */
+
+function renderBaseten(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.2, 7.6);
+  const GONE = 1 - ph(t, 9.4, 9.9);
+  const ROD = { x: 340, y: 150 }; // merge target (new rod)
+  const rodCx = ROD.x + 7;
+  const rodCy = ROD.y + 45;
+
+  qa(root, '[data-rod38]').forEach((el, i) => op(el, ph(t, 0.6 + i * 0.12, 0.85 + i * 0.12) * (1 - ph(t, 9.2, 9.7))));
+  qa(root, '[data-rod25]').forEach((el, i) => op(el, ph(t, 1.4 + i * 0.12, 1.65 + i * 0.12) * (1 - ph(t, 9.2, 9.7))));
+  op(q(root, 'lbl38'), ph(t, 1.0, 1.3) * (1 - ph(t, 9.2, 9.7)));
+  op(q(root, 'lbl25'), ph(t, 1.8, 2.1) * (1 - ph(t, 9.2, 9.7)));
+
+  const flyOne = (el: El, k: number, merged: boolean, appearAt: number, flyAt: number) => {
+    const home = (el.getAttribute('data-h') || '0,0').split(',').map(Number);
+    const gather = (el.getAttribute('data-t') || '0,0').split(',').map(Number);
+    let x = home[0], y = home[1], vis = ph(t, appearAt, appearAt + 0.2) * GONE;
+    if (merged) {
+      if (t < flyAt) [x, y] = home;
+      else if (t < 3.4) {
+        const p = ph(t, flyAt, flyAt + 0.5);
+        [x, y] = [lerp(home[0], gather[0], p), lerp(home[1], gather[1], p)];
+      } else if (t < 3.9) {
+        const p = ph(t, 3.4, 3.9);
+        [x, y] = [lerp(gather[0], rodCx - 7.5, p), lerp(gather[1], rodCy - 7.5, p)];
+        vis *= 1 - ph(t, 3.7, 3.9);
+      } else if (t < 7.8) {
+        vis = 0; // consumed into the rod
+        [x, y] = [rodCx - 7.5, rodCy - 7.5];
+      } else if (t < 8.3) {
+        [x, y] = [rodCx - 7.5, rodCy - 7.5];
+        vis = ph(t, 7.8, 8.3) * GONE;
+      } else if (t < 8.8) {
+        const p = ph(t, 8.3, 8.8);
+        [x, y] = [lerp(rodCx - 7.5, gather[0], p), lerp(rodCy - 7.5, gather[1], p)];
+      } else if (t < 9.4) {
+        const p = ph(t, 8.8, 9.4);
+        [x, y] = [lerp(gather[0], home[0], p), lerp(gather[1], home[1], p)];
+      }
+    } else {
+      if (t < flyAt) [x, y] = home;
+      else if (t < 8.8) {
+        const p = ph(t, flyAt, flyAt + 0.5);
+        [x, y] = [lerp(home[0], gather[0], p), lerp(home[1], gather[1], p)];
+      } else {
+        const p = ph(t, 8.8, 9.4);
+        [x, y] = [lerp(gather[0], home[0], p), lerp(gather[1], home[1], p)];
+      }
+    }
+    el.setAttribute('x', String(r2(x)));
+    el.setAttribute('y', String(r2(y)));
+    op(el, vis);
+  };
+  qa(root, '[data-one38]').forEach((el) => {
+    const i = Number(el.getAttribute('data-one38'));
+    flyOne(el, i, true, 0.8 + i * 0.06, 2.2 + i * 0.05);
+  });
+  qa(root, '[data-one25]').forEach((el) => {
+    const i = Number(el.getAttribute('data-one25'));
+    flyOne(el, i, i < 2, 1.6 + i * 0.06, 2.5 + i * 0.05);
+  });
+
+  op(q(root, 'merge-ol-a'), ph(t, 3.0, 3.3) * (1 - ph(t, 3.7, 4.0)));
+  op(q(root, 'merge-ol-b'), ph(t, 3.0, 3.3) * (1 - ph(t, 3.7, 4.0)));
+  op(q(root, 'newrod'), ph(t, 3.9, 4.4) * (1 - ph(t, 7.8, 8.3)));
+  op(q(root, 'lbl63'), ph(t, 4.4, 4.7) * (1 - ph(t, 7.8, 8.2)));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * OUT);
+  op(fxs[1], ph(t, 5.0, 5.4) * OUT);
+  op(fxs[2], ph(t, 5.2, 5.6) * OUT);
+}
+const BT_HOLD = 6.2;
+
+/* ═══════════════ F12 — cookies: 14 = 4 × 3 + 2 (D = 10 s) ═══════════════ */
+
+function renderCookies(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 6.8, 7.4);
+
+  qa(root, '[data-cookie]').forEach((el) => {
+    const i = Number(el.getAttribute('data-cookie'));
+    const home = (el.getAttribute('data-h') || '0,0').split(',').map(Number);
+    const target = (el.getAttribute('data-t') || '0,0').split(',').map(Number);
+    const flyAt = 1.3 + i * 0.16;
+    const retAt = 7.6 + i * 0.1;
+    let x = home[0], y = home[1];
+    if (i < 12) {
+      if (t < flyAt) [x, y] = home;
+      else if (t < retAt) {
+        const p = ph(t, flyAt, flyAt + 0.45);
+        [x, y] = [lerp(home[0], target[0], p), lerp(home[1], target[1], p)];
+      } else {
+        const p = ph(t, retAt, retAt + 0.5);
+        [x, y] = [lerp(target[0], home[0], p), lerp(target[1], home[1], p)];
+      }
+    }
+    el.setAttribute('cx', String(r2(x)));
+    el.setAttribute('cy', String(r2(y)));
+    op(el, ph(t, 0.6 + i * 0.05, 0.8 + i * 0.05));
+  });
+
+  op(q(root, 'left-12'), ph(t, 3.4, 3.8) * (1 - ph(t, 7.2, 7.6)));
+  op(q(root, 'left-13'), ph(t, 3.4, 3.8) * (1 - ph(t, 7.2, 7.6)));
+  op(q(root, 'lbl-left'), ph(t, 3.6, 4.0) * (1 - ph(t, 7.2, 7.6)));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.0, 4.4) * OUT);
+  op(fxs[1], ph(t, 4.4, 4.8) * OUT);
+}
+const CK_HOLD = 6.2;
+
+/* ═══════════════ F13 — fraction: 1/4 three ways (D = 10 s) ═══════════════ */
+
+function renderFraction(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.4, 8.0);
+  const FADE = 1 - ph(t, 8.2, 8.8);
+
+  const cv = q(root, 'cut-v');
+  op(cv, ph(t, 0.9, 1.1) * FADE);
+  draw(cv, ph(t, 1.0, 1.4));
+  const ch = q(root, 'cut-h');
+  op(ch, ph(t, 1.1, 1.3) * FADE);
+  draw(ch, ph(t, 1.2, 1.6));
+  op(q(root, 'q-shade'), ph(t, 1.5, 2.0) * (1 - ph(t, 8.0, 8.6)));
+  op(q(root, 'q-lbl'), ph(t, 2.0, 2.4) * (1 - ph(t, 8.0, 8.5)));
+
+  const bo = q(root, 'bar-o');
+  op(bo, ph(t, 2.5, 2.7) * (1 - ph(t, 8.0, 8.5)));
+  draw(bo, ph(t, 2.6, 3.1));
+  for (let k = 1; k <= 3; k++) {
+    const d = q(root, `bar-d${k}`);
+    op(d, ph(t, 3.1, 3.3) * (1 - ph(t, 8.0, 8.5)));
+    draw(d, ph(t, 3.1 + k * 0.06, 3.35 + k * 0.06));
+  }
+  op(q(root, 'bar-shade'), ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.5)));
+  op(q(root, 'bar-lbl'), ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.5)));
+
+  const nl = q(root, 'nl');
+  op(nl, ph(t, 3.5, 3.7) * (1 - ph(t, 8.0, 8.5)));
+  draw(nl, ph(t, 3.6, 4.0));
+  op(q(root, 'nl0'), ph(t, 3.8, 4.0) * (1 - ph(t, 8.0, 8.5)));
+  op(q(root, 'nl1'), ph(t, 3.8, 4.0) * (1 - ph(t, 8.0, 8.5)));
+  op(q(root, 'nl-pt'), ph(t, 4.0, 4.4) * (1 - ph(t, 8.0, 8.5)));
+  op(q(root, 'nl-lbl'), ph(t, 4.2, 4.6) * (1 - ph(t, 8.0, 8.5)));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * OUT);
+  op(fxs[1], ph(t, 5.0, 5.4) * OUT);
+}
+const FRAC_HOLD = 6.4;
+
+/* ═══════════════ F14 — transform: reflect, rotate, translate (D = 11 s) ═══════════════ */
+
+function renderTransform(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.2, 7.8);
+
+  // top question per phase
+  op(q(root, 'top0'), 1 - ph(t, 2.2, 2.5));
+  op(q(root, 'top1'), ph(t, 2.2, 2.5) * (1 - ph(t, 3.6, 3.9)));
+  op(q(root, 'top2'), ph(t, 3.6, 3.9));
+
+  const AXIS = 260;
+  const PIV = { x: 400, y: 90 };
+  const MOVE = { dx: 40, dy: 60 };
+  const GHOST = [
+    { x: 120, y: 90 },
+    { x: 60, y: 190 },
+    { x: 190, y: 190 },
+  ];
+
+  const rp = ph(t, 1.1, 2.1) - ph(t, 9.2, 9.8); // reflect
+  const th = (Math.PI / 2) * (ph(t, 2.5, 3.5) - ph(t, 8.6, 9.2)); // rotate 90° cw
+  const tp = ph(t, 3.6, 4.2) - ph(t, 8.0, 8.6); // translate
+  const cos = Math.cos(th);
+  const sin = Math.sin(th);
+
+  const pts = GHOST.map((v) => {
+    const mx = lerp(v.x, 2 * AXIS - v.x, rp); // mirror across the axis
+    const my = v.y;
+    const dx = mx - PIV.x;
+    const dy = my - PIV.y;
+    const rx = PIV.x + dx * cos + dy * sin; // cw in screen coords
+    const ry = PIV.y - dx * sin + dy * cos;
+    return `${r2(rx + MOVE.dx * tp)},${r2(ry + MOVE.dy * tp)}`;
+  }).join(' ');
+
+  const cp = q(root, 'copy');
+  cp.setAttribute('points', pts);
+  op(cp, ph(t, 0.6, 0.8) * (1 - ph(t, 9.8, 10.2)));
+  const cf = q(root, 'copy-fill');
+  cf.setAttribute('points', pts);
+  op(cf, ph(t, 0.7, 1.0) * (1 - ph(t, 9.8, 10.2)));
+
+  op(q(root, 'axis'), ph(t, 0.8, 1.0) * (1 - ph(t, 9.6, 10.0)));
+  op(q(root, 'pivot'), ph(t, 2.2, 2.5) * (1 - ph(t, 8.4, 8.9)));
+
+  // translation vector from the rotated position to the final one
+  const vec = q(root, 'vec');
+  const vh = q(root, 'vec-head');
+  if (t >= 3.6 && t < 9.2) {
+    const cx = 466.7 + MOVE.dx * tp;
+    const cy = 93.3 + MOVE.dy * tp;
+    const fx2 = 466.7 + MOVE.dx;
+    const fy2 = 93.3 + MOVE.dy;
+    vec.setAttribute('x1', String(r2(cx)));
+    vec.setAttribute('y1', String(r2(cy)));
+    vec.setAttribute('x2', String(r2(fx2)));
+    vec.setAttribute('y2', String(r2(fy2)));
+    vh.setAttribute('d', `M${r2(fx2)} ${r2(fy2)} l -10 -1 l 4 9 Z`);
+  }
+  const vecOp = ph(t, 3.6, 3.9) * (1 - ph(t, 4.6, 5.0));
+  op(vec, vecOp);
+  op(vh, vecOp);
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * OUT);
+  op(fxs[1], ph(t, 5.0, 5.4) * OUT);
+}
+const TRANS_HOLD = 6.8;
+
+/* ═══════════════ L01 — angle-sum: three wedges join a straight line (D = 10 s) ═══════════════ */
+
+function renderAngleSum(root: LoopRoot, t: number) {
+  const moveP = ph(t, 2.0, 3.5) - ph(t, 8.2, 9.4);
+  const homes = [
+    { x: 168, y: 236 },
+    { x: 392, y: 236 },
+    { x: 280, y: 118 },
+  ];
+  const targets = [
+    { x: 168, y: 300 },
+    { x: 248, y: 300 },
+    { x: 328, y: 300 },
+  ];
+  for (let i = 0; i < 3; i++) {
+    const g = q(root, `ang${i}`);
+    const x = lerp(homes[i].x, targets[i].x, moveP);
+    const y = lerp(homes[i].y, targets[i].y, moveP);
+    if (g) g.setAttribute('transform', `translate(${r2(x)} ${r2(y)})`);
+    op(g, ph(t, 0.7, 1.1) * (1 - ph(t, 9.4, 9.8)));
+  }
+  const line = q(root, 'straight');
+  op(line, ph(t, 3.2, 3.6) * (1 - ph(t, 8.4, 9.0)));
+  draw(line, ph(t, 3.3, 4.0));
+  op(q(root, 'lbl180'), ph(t, 4.0, 4.4) * (1 - ph(t, 8.2, 8.8)));
+  const fxs = qa(root, '[data-fx]');
+  const show = ph(t, 4.5, 4.9) * (1 - ph(t, 8.0, 8.6));
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 4.9, 5.3) * (1 - ph(t, 8.0, 8.6)));
+}
+const ANGLE_SUM_HOLD = 6.2;
+
+/* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════ */
+
+function renderParaRect(root: LoopRoot, t: number) {
+  const flat = ph(t, 1.3, 2.7) - ph(t, 8.1, 9.3);
+  const s = 72 * (1 - flat);
+  const shape = q(root, 'shape');
+  if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(160 + s)},128`);
+  op(q(root, 'height'), 1);
+  op(q(root, 'lbl-h'), ph(t, 0.6, 1.0));
+  op(q(root, 'lbl-same'), ph(t, 2.8, 3.3) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
+}
+const PARA_RECT_HOLD = 5.4;
+
+/* ═══════════════ L03 — angle-kinds: acute, right, obtuse (D = 10 s) ═══════════════ */
+
+function renderAngleKinds(root: LoopRoot, t: number) {
+  const toAcute = ph(t, 0.5, 1.5);
+  const toRight = ph(t, 2.1, 3.1);
+  const toObtuse = ph(t, 3.7, 4.8);
+  const back = ph(t, 8.2, 9.4);
+  let deg = lerp(26, 42, toAcute);
+  deg = lerp(deg, 90, toRight);
+  deg = lerp(deg, 128, toObtuse);
+  deg = lerp(deg, 26, back);
+  const rad = (deg * Math.PI) / 180;
+  const ray = q(root, 'ray');
+  if (ray) {
+    ray.setAttribute('x2', String(r2(180 + 160 * Math.cos(rad))));
+    ray.setAttribute('y2', String(r2(230 - 160 * Math.sin(rad))));
+  }
+  const nearRight = deg > 78 && deg < 102 && back < 0.15 ? 1 : 0;
+  op(q(root, 'square'), nearRight * (1 - toObtuse));
+  op(q(root, 'lbl-acute'), (deg < 70 && toRight < 0.4 && back < 0.2 ? 1 : 0));
+  op(q(root, 'lbl-right'), nearRight * (1 - ph(t, 3.5, 3.9)));
+  op(q(root, 'lbl-obtuse'), (deg > 108 && back < 0.25 ? 1 : 0) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.9, 5.3) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 5.3, 5.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const ANGLE_KINDS_HOLD = 6.2;
+
+/* ═══════════════ L04 — frac-product: half of a third is a sixth (D = 10 s) ═══════════════ */
+
+function renderFracProduct(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'half'), ph(t, 0.8, 1.4) * fade);
+  op(q(root, 'third'), ph(t, 1.8, 2.4) * fade);
+  op(q(root, 'overlap'), ph(t, 2.8, 3.4) * fade);
+  op(q(root, 'lbl-half'), ph(t, 1.2, 1.6) * fade);
+  op(q(root, 'lbl-third'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'lbl-sixth'), ph(t, 3.3, 3.8) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.8, 4.2) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 4.2, 4.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const FRAC_PRODUCT_HOLD = 5.8;
+
+/* ═══════════════ L05 — slope: rise 2, run 1, twice (D = 10 s) ═══════════════ */
+
+function renderSlope(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const line = q(root, 'line');
+  op(line, ph(t, 0.5, 0.8) * fade);
+  draw(line, ph(t, 0.6, 1.8));
+  op(q(root, 'tri1'), ph(t, 2.0, 2.6) * fade);
+  op(q(root, 'run1'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'rise1'), ph(t, 2.6, 3.1) * fade);
+  op(q(root, 'tri2'), ph(t, 3.3, 3.9) * fade);
+  op(q(root, 'run2'), ph(t, 3.5, 3.9) * fade);
+  op(q(root, 'rise2'), ph(t, 3.9, 4.3) * fade);
+  op(q(root, 'lbl2'), ph(t, 4.3, 4.7) * (1 - ph(t, 8.0, 8.6)));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.6, 5.0) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 5.0, 5.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const SLOPE_HOLD = 6.2;
+
+/* ═══════════════ L06 — add-within: 3 dots join 4 dots (D = 10 s) ═══════════════ */
+
