@@ -87,4 +87,114 @@ const shift = (el: El | null, dx: number, dy: number) => {
 function renderTriangle(root: LoopRoot, t: number) {
   const OUT = ph(t, 8.8, 9.4); // formula/caption outro
   const keep = 1 - OUT;
-  const TRI_HOLD_PLACEHOLDER = 0;
+  const TRI_OUT = 1 - ph(t, 8.6, 9.2); // triangle pieces outro
+
+  // apex x on the rail: corner → left inside → beyond the right edge → settle
+  const ax =
+    t < 4.4
+      ? 408
+      : t < 5.4
+        ? lerp(408, 170, ph(t, 4.4, 5.4))
+        : t < 6.2
+          ? lerp(170, 452, ph(t, 5.4, 6.2))
+          : lerp(452, 290, ph(t, 6.2, 6.8));
+
+  // the half story: "6·4 = 24" in the rectangle, then the diagonal cut
+  op(q(root, 'lbl24'), ph(t, 0.8, 1.1) * (1 - ph(t, 2.6, 3.0)));
+  const dg = q(root, 'diag');
+  op(dg, ph(t, 1.3, 1.5) * (1 - ph(t, 4.4, 4.9)));
+  draw(dg, ph(t, 1.4, 2.0));
+
+  // the triangle: right half of the rectangle, then shears along the rail
+  const fill = q(root, 'tri-fill');
+  const ll = q(root, 'tri-line-l');
+  const lr = q(root, 'tri-line-r');
+  fill.setAttribute('d', `M132 262 L408 262 L${r2(ax)} 78 Z`);
+  ll.setAttribute('x2', String(r2(ax)));
+  lr.setAttribute('x2', String(r2(ax)));
+  op(fill, ph(t, 2.3, 2.7) * TRI_OUT);
+  op(ll, ph(t, 2.0, 2.2) * TRI_OUT);
+  draw(ll, ph(t, 2.0, 2.6));
+  op(lr, ph(t, 2.0, 2.2) * TRI_OUT);
+  draw(lr, ph(t, 2.0, 2.6));
+
+  // base-line extension guide + apex dot appear for the slide
+  op(q(root, 'basext'), ph(t, 4.4, 4.8) * TRI_OUT);
+  const ad = q(root, 'apex-dot');
+  ad.setAttribute('cx', String(r2(ax)));
+  op(ad, ph(t, 4.3, 4.6) * TRI_OUT);
+
+  // height follows the apex (also outside the base's width); it parks back
+  // at its home corner while invisible, so the loop seam has no jump
+  const h = q(root, 'height');
+  const lh = q(root, 'lbl-h');
+  const hx = t < 9.15 ? ax : 408;
+  const hop = t < 8.6 ? 1 : t < 9.2 ? 1 - ph(t, 8.6, 9.2) : ph(t, 9.3, 9.8);
+  h.setAttribute('x1', String(r2(hx)));
+  h.setAttribute('x2', String(r2(hx)));
+  lh.setAttribute('x', String(r2(hx + 12)));
+  op(h, hop);
+  op(lh, hop);
+
+  // formula S = a·h/2 = 6·4/2 = 12 — constant through the slide
+  const fxT = [2.6, 3.0, 3.4];
+  qa(root, '[data-fx]').forEach((el, i) => {
+    const p = ph(t, fxT[i] ?? 9, (fxT[i] ?? 9) + 0.3);
+    op(el, p * keep);
+    (el as HTMLElement).style.transform = `translateY(${r2((1 - p) * 5)}px)`;
+  });
+
+  // green + check only at the very end
+  op(q(root, 'caption'), ph(t, 7.0, 7.5) * keep);
+  const ck = q(root, 'check') as HTMLElement;
+  const cp = ph(t, 7.3, 7.7);
+  op(ck, cp * keep);
+  if (ck) ck.style.transform = `scale(${r2(0.5 + 0.5 * cp)})`;
+}
+const TRI_HOLD = 7.8;
+
+/* ═══════════════ variant B — pythagoras (D = 10 s) ═══════════════ */
+
+function tileFlight(el: El, t: number, popAt: number, flyAt: number, retAt: number) {
+  const home = (el.getAttribute('data-home') || '0,0').split(',').map(Number);
+  const target = (el.getAttribute('data-target') || '0,0').split(',').map(Number);
+  const rot = Number(el.getAttribute('data-rot') || 0);
+  const FLY = 0.5;
+  const RET = 0.45;
+
+  const vis = ph(t, popAt, popAt + 0.25) * (1 - ph(t, retAt + RET, retAt + RET + 0.15));
+  let x: number, y: number, r: number;
+  if (t < flyAt) {
+    [x, y, r] = [home[0], home[1], 0];
+  } else if (t < retAt) {
+    const p = ph(t, flyAt, flyAt + FLY);
+    [x, y, r] = [lerp(home[0], target[0], p), lerp(home[1], target[1], p), rot * p];
+  } else {
+    const p = ph(t, retAt, retAt + RET);
+    [x, y, r] = [lerp(target[0], home[0], p), lerp(target[1], home[1], p), rot * (1 - p)];
+  }
+  op(el, vis);
+  move(el, x, y, r);
+}
+
+function renderPythagoras(root: LoopRoot, t: number) {
+  const SQ_OUT = 1 - ph(t, 9.3, 9.9);
+  const FX_OUT = 1 - ph(t, 8.9, 9.5);
+
+  // squares on the legs + dashed target square on the hypotenuse
+  const sqA = q(root, 'sq-a');
+  op(sqA, ph(t, 0.5, 0.7) * SQ_OUT);
+  draw(sqA, ph(t, 0.6, 1.0));
+  const sqB = q(root, 'sq-b');
+  op(sqB, ph(t, 1.8, 2.0) * SQ_OUT);
+  draw(sqB, ph(t, 1.9, 2.3));
+  const sqC = q(root, 'sq-c');
+  // dashed target square: fades in (a dash-draw would fight its dashed style)
+  op(sqC, ph(t, 3.3, 3.9) * SQ_OUT);
+
+  // tiles: 9 blue then 16 purple migrate into the c-square
+  qa(root, '[data-el="tiles-a"] rect').forEach((el, k) =>
+    tileFlight(el, t, 1.2 + k * 0.055, 4.0 + k * 0.09, 8.4 + k * 0.05)
+  );
+  qa(root, '[data-el="tiles-b"] rect').forEach((el, k) =>
+    tileFlight(el, t, 2.5 + k * 0.04, 5.1 + k * 0.06, 8.9 + k * 0.04)
