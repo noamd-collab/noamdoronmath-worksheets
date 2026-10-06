@@ -9,12 +9,13 @@ interface Props {
   marker: string;
 }
 const { src, marker } = Astro.props;
+const frameSrc = `${src}?embed=1`;
 ---
 
 <div class="angle-sum-loop" data-angle-sum-loop data-landing-loop={marker}>
   <iframe
     class="angle-sum-loop__frame"
-    src={src}
+    src={frameSrc}
     title="הקודקוד יורד והזוויות משתנות"
     loading="eager"
     data-angle-sum-frame
@@ -82,7 +83,7 @@ const { src, marker } = Astro.props;
   .angle-sum-loop__frame {
     display: block;
     width: 100%;
-    height: 760px;
+    height: 600px;
     border: 0;
     background: #fbfaf5;
   }
