@@ -76,6 +76,47 @@ body.exact-site {
 }
 .exact-site [data-doodle] {visibility:visible;}
 .exact-site [data-doodle] img {max-width:none;}
+/* Click-to-animate doodles are real buttons. Reset UA chrome so the image
+   box stays the same size as the bare img it replaced. */
+button.exact-doodle-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+  line-height: 0;
+  box-shadow: none;
+  border-radius: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  text-align: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+  overflow: visible;
+  box-sizing: border-box;
+}
+button.exact-doodle-btn::-moz-focus-inner {border:0;padding:0;}
+/* Owl / cube / telescope: the doodle box is a flex row that centers the image. */
+button.exact-doodle-btn--flex {
+  width: auto;
+  height: 100%;
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+/* Cat: the image is absolutely positioned inside a fixed box. */
+button.exact-doodle-btn--fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
 .exact-home .hero-loop {width:100%;}
 .exact-site .exact-footer {max-width:none;margin:24px 0 0;padding:0;}
 .exact-footer h3 {font-family:Heebo,'Heebo Fallback',sans-serif;font-weight:700;}

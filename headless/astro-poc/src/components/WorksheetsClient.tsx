@@ -449,7 +449,9 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
 
       <header className="exact-catalog-heading">
         <div data-doodle="fish" className="exact-catalog-fish">
-          <img src="/design-exact/assets/doodles/geometry-fish.webp" alt="" />
+          <button type="button" className="exact-doodle-btn" aria-label="הנפשת השרבוט">
+            <img src="/design-exact/assets/doodles/geometry-fish.webp" alt="" />
+          </button>
         </div>
         <h1 data-pop="0">דפי עבודה ל{gradeLabel}</h1>
         <p data-pop="100">

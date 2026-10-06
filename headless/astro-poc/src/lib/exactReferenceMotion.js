@@ -343,17 +343,13 @@ export class ExactReferenceMotion {
   scan() {
     const r = this.rootRef.current; if (!r) return;
     const off = this.blocked();
-    // Run here, rather than only at init, so deferred hydrated islands receive
-    // keyboard support exactly once without changing their SSR attributes.
+    // Interactive doodles are real <button>s. A presentational img (alt="")
+    // must not also be tabindex=0 / role=button, and a sprite inside
+    // aria-hidden must not become focusable.
     this.elements('[data-doodle] img').forEach(img => {
-      if (img.closest('a,button') || this.keyboardImages.has(img)) return;
+      if (this.keyboardImages.has(img) || img.closest('[aria-hidden="true"]')) return;
       this.keyboardImages.add(img);
-      img.tabIndex = 0;
-      img.setAttribute('role', 'button');
-      img.setAttribute('aria-label', 'הנפשת השרבוט');
-      this.listen(img, 'keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); img.click(); }
-      });
+      this.ensureDoodleControl(img);
     });
     this.elements('[data-zzz]').forEach(zz => {
       if (zz.__z || off) return; zz.__z = true;
@@ -401,20 +397,49 @@ export class ExactReferenceMotion {
     });
   }
 
+  ensureDoodleControl(img) {
+    img.removeAttribute('role');
+    img.removeAttribute('aria-label');
+    img.removeAttribute('tabindex');
+    const host = img.closest('a,button');
+    if (host) {
+      if (host.tagName === 'BUTTON' && !host.getAttribute('aria-label')) host.setAttribute('aria-label', 'הנפשת השרבוט');
+      return host;
+    }
+    if (!img.parentNode) return img;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'exact-doodle-btn';
+    button.setAttribute('type', 'button');
+    button.setAttribute('aria-label', 'הנפשת השרבוט');
+    const pos = img.style?.position || '';
+    let display = '';
+    if (typeof getComputedStyle === 'function') {
+      try { display = getComputedStyle(img.parentNode).display || ''; } catch (_) {}
+    }
+    if (!display) display = img.parentNode.style?.display || '';
+    if (pos === 'absolute') button.classList.add('exact-doodle-btn--fill');
+    else if (display === 'flex' || display === 'inline-flex') button.classList.add('exact-doodle-btn--flex');
+    img.parentNode.insertBefore(button, img);
+    button.appendChild(img);
+    return button;
+  }
+
   prepDoodle(el) {
-    const img = el.querySelector('img'); if (!img) return;
+    const img = el.querySelector('img'); if (!img || img.closest('[aria-hidden="true"]')) return;
     const name = el.dataset.doodle;
+    const hit = img.closest('button,a') || img;
     const enter = this.animate(img, [
       { clipPath: 'inset(0 0 0 100%)', transform: 'rotate(-6deg) scale(.9)' },
       { clipPath: 'inset(0 0 0 0%)', transform: 'none' }
     ], { duration: 1200, delay: Math.random() * 400, fill: 'both', easing: 'cubic-bezier(.6,.05,.3,1)' });
     enter.onfinish = () => this.startIdle(el, name);
     el.__a.push(enter);
-    this.listen(img, 'mouseenter', () => {
+    this.listen(hit, 'mouseenter', () => {
       if (this.blocked() || img.__busy) return;
       this.animate(img, [{ transform: 'rotate(0)' }, { transform: 'rotate(-8deg) scale(1.06)' }, { transform: 'rotate(6deg) scale(1.06)' }, { transform: 'rotate(0)' }], { duration: 520, easing: 'ease-in-out', composite: 'add' });
     });
-    this.listen(img, 'click', () => {
+    this.listen(hit, 'click', () => {
       if (this.blocked() || img.__busy) return;
       const kf = this.SPECIAL[name]; if (!kf) return;
       img.__busy = true;
