@@ -1598,3 +1598,203 @@ function renderExterior(root: LoopRoot, t: number) {
   op(q(root, 'a150'), ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
   const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
   const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const EXTERIOR_HOLD = 5.2;
+
+/* ═══════════════ L36 — para-perp: equal gaps of 80, and a right angle (D = 10 s) ═══════════════ */
+
+function renderParaPerp(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'gaps'), ph(t, 0.8, 1.4) * fade);
+  op(q(root, 'cross'), ph(t, 1.8, 2.3) * fade);
+  op(q(root, 'sq'), ph(t, 2.3, 2.7) * fade);
+  const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const PARA_PERP_HOLD = 5.2;
+
+/* ═══════════════ L37 — quarter-12: 1/4 of 12 is 3 (D = 10 s) ═══════════════
+   12 dots, step 36 px, radius 11. The first three are one quarter. */
+
+function renderQuarter12(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'mark'), ph(t, 1.2, 1.8) * fade);
+  op(q(root, 'count'), ph(t, 1.8, 2.2) * fade);
+  const show = ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6)));
+}
+const QUARTER12_HOLD = 4.8;
+
+/* ═══════════════ L38 — two-coins: 4 equally likely outcomes (D = 10 s) ═══════════════ */
+
+function renderTwoCoins(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'grid'), ph(t, 1.2, 1.8) * fade);
+  op(q(root, 'pick'), ph(t, 2.2, 2.7) * fade);
+  op(q(root, 'pick-lbl'), ph(t, 2.4, 2.8) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const TWO_COINS_HOLD = 5.2;
+
+/* ═══════════════ L39 — map-scale: 4 × 5 = 20 (D = 10 s) ═══════════════
+   Map bar is 40 px. Real bar is 5 copies, 200 px. */
+
+function renderMapScale(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const bar = q(root, 'real');
+  const grow = ph(t, 1.2, 2.6) * (1 - ph(t, 8.2, 9.0));
+  if (bar) bar.setAttribute('width', String(r2(200 * grow)));
+  op(bar, ph(t, 1.1, 1.3) * fade);
+  op(q(root, 'ticks'), ph(t, 2.4, 2.8) * fade);
+  op(q(root, 'real-lbl'), ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.4, 3.8) * (1 - ph(t, 8.0, 8.6)));
+}
+const MAP_SCALE_HOLD = 5.2;
+
+/* ═══════════════ L40 — unit-frac: equal wholes, 1/2 > 1/3 > 1/4 (D = 10 s) ═══════════════
+   Each bar is 180 px. Shaded widths are 90, 60 and 45. */
+
+function renderUnitFrac(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'h'), ph(t, 0.6, 1.1) * fade);
+  op(q(root, 't'), ph(t, 1.2, 1.7) * fade);
+  op(q(root, 'q'), ph(t, 1.8, 2.3) * fade);
+  op(q(root, 'labs'), ph(t, 2.2, 2.6) * fade);
+  const show = ph(t, 2.8, 3.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.2, 3.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const UNIT_FRAC_HOLD = 5.0;
+
+/* ═══════════════ L41 — coord-walk: 3 right, then 2 up, to (3,2) ═══════════════
+   Origin (170, 250). One unit is 36 px, so (3,2) is (278, 178). */
+
+function renderCoordWalk(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const right = ph(t, 0.8, 2.2) - ph(t, 8.2, 9.0);
+  const up = ph(t, 2.4, 3.6) - ph(t, 8.4, 9.2);
+  const hseg = q(root, 'hseg');
+  if (hseg) hseg.setAttribute('x2', String(r2(170 + 108 * right)));
+  const vseg = q(root, 'vseg');
+  if (vseg) vseg.setAttribute('y2', String(r2(250 - 72 * up)));
+  op(vseg, ph(t, 2.3, 2.5) * fade);
+  const pt = q(root, 'pt');
+  if (pt) pt.setAttribute('transform', `translate(${r2(108 * right)} ${r2(-72 * up)})`);
+  op(q(root, 'lbl'), ph(t, 3.6, 4.0) * (1 - ph(t, 8.0, 8.6)));
+  const show = ph(t, 3.8, 4.2) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 4.2, 4.6) * (1 - ph(t, 8.0, 8.6)));
+}
+const COORD_WALK_HOLD = 5.2;
+
+/* ═══════════════ L42 — coins-12: 10 + 1 + 1 = 12 ═══════════════ */
+
+function renderCoins12(root: LoopRoot, t: number) {
+  const p = ph(t, 1.0, 2.2) - ph(t, 8.2, 9.2);
+  shift(q(root, 'c10'), 40 * p, 0);
+  shift(q(root, 'c1a'), -44 * p, 0);
+  shift(q(root, 'c1b'), -66 * p, 0);
+  const show = ph(t, 2.5, 2.9) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'sum'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
+}
+const COINS12_HOLD = 5.0;
+
+/* ═══════════════ L43 — cyl-stack: 4 unit layers, height = 4 ═══════════════
+   Five boundaries at 28 px intervals enclose four equal layers. */
+
+function renderCylStack(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  let slabs = 0;
+  for (let i = 0; i < 5; i++) {
+    const p = ph(t, 0.5 + i * 0.4, 0.85 + i * 0.4);
+    op(q(root, `e${i}`), p * fade);
+    if (i > 0) {
+      op(q(root, `n${i - 1}`), p * fade);
+      slabs += p;
+    }
+  }
+  // Once the drawing has faded out, restore the collapsed geometry too. This
+  // makes the restart frame identical to the initial frame, not merely blank.
+  const y2 = r2(fade ? 250 - 28 * slabs : 250);
+  const left = q(root, 'sideL');
+  const right = q(root, 'sideR');
+  if (left) left.setAttribute('y2', String(y2));
+  if (right) right.setAttribute('y2', String(y2));
+  const side = slabs > 0 ? fade : 0;
+  op(left, side);
+  op(right, side);
+  const show = ph(t, 2.6, 3.0) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'base'), show);
+  op(q(root, 'hlbl'), show);
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.0, 3.4) * (1 - ph(t, 8.0, 8.6)));
+}
+const CYL_STACK_HOLD = 5.2;
+
+/* ═══════════════ L44 — tenth-cell: 10×10, one row, one cell ═══════════════ */
+
+function renderTenthCell(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  op(q(root, 'row'), ph(t, 0.8, 1.4) * fade);
+  const mark = ph(t, 1.8, 2.3) * (1 - ph(t, 8.0, 8.6));
+  op(q(root, 'cell'), mark);
+  op(q(root, 'hun'), mark);
+  const show = ph(t, 2.5, 2.9) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6)));
+}
+const TENTH_CELL_HOLD = 5.0;
+
+/* ═══════════════ L45 — equiv-half: 1/2 = 2/4 = 3/6 on one point ═══════════════
+   The line is 360 px. Half, the second quarter and the third sixth are all x = 270. */
+
+function renderEquivHalf(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const guide = ph(t, 0.7, 1.1) * fade;
+  op(q(root, 'guide'), guide);
+  op(q(root, 'h'), guide);
+  op(q(root, 'quarters'), ph(t, 1.5, 2.0) * fade);
+  op(q(root, 'q'), ph(t, 1.8, 2.2) * fade);
+  op(q(root, 'sixths'), ph(t, 2.5, 3.0) * fade);
+  op(q(root, 's'), ph(t, 2.8, 3.2) * fade);
+  const show = ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
+  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
+}
+const EQUIV_HALF_HOLD = 5.2;
+
+/* ═══════════════ L46 — half-eq: equilateral cut, 80 opposite 30°, hypotenuse 160 ═══════════════ */
+
+function renderHalfEq(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 8.2, 9.0);
+  const cut = ph(t, 1.0, 1.6) * fade;
+  op(q(root, 'alt'), cut);
+  op(q(root, 'sq'), ph(t, 1.6, 2.0) * fade);
+  op(q(root, 'a30'), ph(t, 1.8, 2.2) * fade);
+  op(q(root, 'a30t'), ph(t, 1.8, 2.2) * fade);
+  op(q(root, 'a60'), ph(t, 2.0, 2.4) * fade);
+  op(q(root, 'a60t'), ph(t, 2.0, 2.4) * fade);
+  op(q(root, 'dims'), ph(t, 2.3, 2.8) * fade);
+  const show = ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6));
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], show);
