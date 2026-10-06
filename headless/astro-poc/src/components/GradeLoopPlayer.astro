@@ -289,11 +289,17 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       }
     });
 
+    // The diagram card starts its own loop at 35% of its box. That card sits
+    // under the player label, so the taller player is only ~27% on screen when
+    // the diagram is already playing. A 0.35 threshold on the player left the
+    // rotation clock frozen: the slow clock still ran the demo to its hold
+    // frame, then nothing advanced. 0.15 stays under that coupling, on every
+    // grade landing that uses this player.
     let inView = !('IntersectionObserver' in window);
     if (!inView) {
       new IntersectionObserver((records) => {
         inView = records[0].isIntersecting;
-      }, { threshold: 0.35 }).observe(root);
+      }, { threshold: 0.15 }).observe(root);
     }
 
     function resetProgress() {
@@ -365,7 +371,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       running() {
         const loop = activeLoop();
         const state = loop?.__loop?.state();
-        return !!loop && !!state && state.playing && !state.static && !rotation.held() && !manuallyPaused(loop);
+        return !!loop && !!state && state.playing && !state.static && !rotation.held() && !manuallyPaused(loop) && inView;
       },
       seek: (t) => activeLoop()?.__loop?.seek(t),
       ended: () => rotation.hold(),
@@ -457,10 +463,18 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 
   // After ConceptLoop's own pause-card setup (DOMContentLoaded + one frame),
   // so no cloned card can receive that adapter as well as this one.
+  // noam-accessibility.js holds requestAnimationFrame while animations are
+  // stopped, so a frames-only boot never ran and the player stayed unadapted.
+  // The same start() also runs from a macrotask if those frames never fire.
   function boot() {
-    requestAnimationFrame(() => requestAnimationFrame(() => {
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
       document.querySelectorAll<HTMLElement>('[data-grade-loop]').forEach(bootGradeLoop);
-    }));
+    };
+    requestAnimationFrame(() => requestAnimationFrame(start));
+    setTimeout(start, 120);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot, { once: true });
