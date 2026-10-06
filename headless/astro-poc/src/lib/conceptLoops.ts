@@ -398,3 +398,203 @@ function renderTenframes(root: LoopRoot, t: number) {
     }
     el.setAttribute('cx', String(r2(cx)));
     el.setAttribute('cy', String(r2(cyv)));
+    op(el, ph(t, 1.4 + k * 0.08, 1.6 + k * 0.08) * GONE);
+  });
+
+  op(q(root, 'lbl7'), ph(t, 1.0, 1.3) * (1 - ph(t, 2.9, 3.2)));
+  op(q(root, 'lbl10'), ph(t, 2.9, 3.2) * (1 - ph(t, 8.8, 9.3)));
+  op(q(root, 'lbl2'), ph(t, 3.7, 4.0) * (1 - ph(t, 8.8, 9.3)));
+  op(q(root, 'lbl5'), ph(t, 1.8, 2.1) * (1 - ph(t, 4.0, 4.4))); // the outside row empties once the 5 move in
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.0, 4.4) * OUT);
+  op(fxs[1], ph(t, 4.8, 5.2) * OUT);
+  op(fxs[2], ph(t, 5.1, 5.5) * OUT);
+}
+const TF_HOLD = 6.5;
+
+/* ═══════════════ F04 — balance: 3 + □ = 8 (D = 11 s) ═══════════════ */
+
+function renderBalance(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.2, 7.8);
+
+  // beam tips 5° right when the left 3 cubes leave, level again when the
+  // right 3 leave too (both pans give up the same weight)
+  const deg = 5 * (ph(t, 1.8, 2.1) - ph(t, 3.0, 3.4));
+  q(root, 'beam').setAttribute('transform', `rotate(${r2(deg)} 280 150)`);
+
+  const riseL = q(root, 'rise-l');
+  riseL.setAttribute('transform', `translate(0 ${r2(-34 * (ph(t, 1.5, 2.0) - ph(t, 8.2, 8.8)))})`);
+  op(riseL, 1 - ph(t, 1.9, 2.3) + ph(t, 7.8, 8.2));
+  const oll = q(root, 'oll');
+  oll.setAttribute('transform', `translate(0 ${r2(-34 * (ph(t, 1.5, 2.0) - ph(t, 8.2, 8.8)))})`);
+  op(oll, ph(t, 0.6, 0.9) * (1 - ph(t, 1.8, 2.1)));
+
+  const riseR = q(root, 'rise-r');
+  riseR.setAttribute('transform', `translate(0 ${r2(-34 * (ph(t, 2.7, 3.2) - ph(t, 9.2, 9.8)))})`);
+  op(riseR, 1 - ph(t, 3.0, 3.4) + ph(t, 8.8, 9.2));
+  const olr = q(root, 'olr');
+  olr.setAttribute('transform', `translate(0 ${r2(-34 * (ph(t, 2.7, 3.2) - ph(t, 9.2, 9.8)))})`);
+  op(olr, ph(t, 2.4, 2.7) * (1 - ph(t, 3.1, 3.4)));
+
+  // the unknown box turns transparent: 5 cubes inside
+  (q(root, 'box') as SVGElement).style.fillOpacity = String(r2(1 - 0.75 * ph(t, 4.2, 4.8) + 0.75 * ph(t, 7.0, 7.6)));
+  op(q(root, 'boxq'), 1 - ph(t, 4.2, 4.6) + ph(t, 7.2, 7.6));
+  qa(root, '[data-mini2]').forEach((el) => op(el, ph(t, 4.2, 4.6) * (1 - ph(t, 7.0, 7.5))));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.4, 3.8) * (1 - ph(t, 4.6, 5.0)));
+  op(fxs[1], ph(t, 4.9, 5.3) * OUT);
+  op(fxs[2], ph(t, 5.1, 5.5) * OUT);
+}
+const BAL_HOLD = 6.0;
+
+/* ═══════════════ F05 — pattern: 2, 5, 8, 11, 14 (D = 11 s) ═══════════════ */
+
+function renderPattern(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.0, 7.6);
+
+  for (let k = 2; k <= 4; k++) {
+    op(q(root, `hl${k}`), ph(t, 0.6 + (k - 2) * 0.8, 0.9 + (k - 2) * 0.8) * (1 - ph(t, 7.6, 8.1)));
+  }
+  for (let k = 1; k <= 3; k++) {
+    const o = ph(t, 0.9 + (k - 1) * 0.8, 1.2 + (k - 1) * 0.8) * (1 - ph(t, 7.4, 7.9));
+    op(q(root, `arc${k}`), o);
+    op(q(root, `arcl${k}`), o);
+  }
+
+  // stage 5: copy of stage 4 slides into the dashed slot; orange column grows
+  const s5 = q(root, 's5copy');
+  s5.setAttribute('transform', `translate(${r2(100 * (ph(t, 3.0, 3.6) - ph(t, 8.6, 9.2)))} 0)`);
+  op(s5, ph(t, 3.0, 3.3) * (1 - ph(t, 8.4, 9.0)));
+  const s5n = q(root, 's5new');
+  s5n.setAttribute('transform', `translate(0 ${r2(18 * (1 - ph(t, 3.6, 4.2)) + 18 * ph(t, 7.2, 7.8))})`);
+  op(s5n, ph(t, 3.6, 3.9) * (1 - ph(t, 7.2, 7.8)));
+
+  op(q(root, 'q5'), 1 - ph(t, 4.2, 4.6) + ph(t, 7.0, 7.4));
+  op(q(root, 'n14'), ph(t, 4.4, 4.8) * (1 - ph(t, 7.0, 7.5)));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.4, 4.8) * OUT);
+  op(fxs[1], ph(t, 4.8, 5.2) * OUT);
+}
+const PAT_HOLD = 6.0;
+
+/* ═══════════════ F06 — bar model: 12 + 17 = 29 (D = 11 s) ═══════════════ */
+
+function renderBars(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 7.2, 7.8);
+
+  // Dana's bar grows right→left (width 0→192), shrinks back on the seam
+  const wd = Math.max(0, 192 * (ph(t, 0.6, 1.4) - ph(t, 9.2, 10.0)));
+  const bd = q(root, 'bar-d');
+  bd.setAttribute('width', String(r2(wd)));
+  bd.setAttribute('x', String(r2(460 - wd)));
+  op(q(root, 'ld1'), ph(t, 1.2, 1.5) * (1 - ph(t, 9.0, 9.5)));
+
+  // Ron's bar: a copy of Dana's slides down from her row
+  const br = q(root, 'bar-r');
+  br.setAttribute('transform', `translate(0 ${r2(-70 * (1 - ph(t, 1.4, 2.0)) - 70 * ph(t, 8.6, 9.2))})`);
+  op(br, ph(t, 1.4, 1.7) * (1 - ph(t, 8.6, 9.2)));
+  op(q(root, 'lr1'), ph(t, 1.8, 2.1) * (1 - ph(t, 8.4, 8.9)));
+
+  // orange +5 extension continues Ron's bar
+  const we = Math.max(0, 80 * (ph(t, 2.0, 2.6) - ph(t, 8.0, 8.6)));
+  const be = q(root, 'bar-ext');
+  be.setAttribute('width', String(r2(we)));
+  be.setAttribute('x', String(r2(268 - we)));
+  op(q(root, 'l5'), ph(t, 2.4, 2.7) * (1 - ph(t, 7.8, 8.3)));
+
+  // brackets + their labels
+  const brk = q(root, 'brk');
+  op(brk, ph(t, 2.5, 2.7) * (1 - ph(t, 7.6, 8.1)));
+  draw(brk, ph(t, 2.6, 3.2));
+  op(q(root, 'lbl17'), ph(t, 3.0, 3.4) * (1 - ph(t, 7.6, 8.1)));
+  const bv = q(root, 'brkv');
+  op(bv, ph(t, 3.3, 3.5) * (1 - ph(t, 7.4, 7.9)));
+  draw(bv, ph(t, 3.4, 4.0));
+  op(q(root, 'q29'), ph(t, 3.8, 4.1) * (1 - ph(t, 4.4, 4.8)));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 4.4, 4.8) * OUT);
+  op(fxs[1], ph(t, 4.8, 5.2) * OUT);
+}
+const BARS_HOLD = 6.2;
+
+/* ═══════════════ F07 — ruler: 1 m = 100 cm (D = 10 s) ═══════════════ */
+
+function renderRuler(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 6.4, 7.0);
+
+  for (let i = 0; i < 9; i++) {
+    const d = q(root, `div-${i}`);
+    op(d, ph(t, 1.2 + i * 0.12, 1.35 + i * 0.12) * (1 - ph(t, 7.2, 7.8)));
+    draw(d, ph(t, 1.2 + i * 0.12, 1.5 + i * 0.12));
+  }
+  for (let i = 0; i < 10; i++) {
+    op(q(root, `rcnt-${i}`), ph(t, 1.4 + i * 0.12, 1.7 + i * 0.12) * (1 - ph(t, 6.8, 7.4)));
+  }
+  const br = q(root, 'brace');
+  op(br, ph(t, 2.5, 2.7) * (1 - ph(t, 6.6, 7.0)));
+  draw(br, ph(t, 2.6, 3.0));
+  op(q(root, 'ten'), ph(t, 2.8, 3.1) * (1 - ph(t, 6.6, 7.0)));
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 3.4, 3.7) * OUT);
+  op(fxs[1], ph(t, 3.8, 4.2) * OUT);
+  op(fxs[2], ph(t, 4.0, 4.4) * OUT);
+}
+const RULER_HOLD = 5.0;
+
+/* ═══════════════ F08 — array: 4 × 3 = 3 × 4 = 12 (D = 10 s) ═══════════════ */
+
+function renderArray(root: LoopRoot, t: number) {
+  // the whole array group rotates 90° about its centre, then back
+  const deg = 90 * (ph(t, 3.4, 4.0) - ph(t, 7.0, 7.6));
+  q(root, 'arrgroup').setAttribute('transform', `rotate(${r2(deg)} 251 258)`);
+
+  qa(root, '[data-arr]').forEach((el) => {
+    const i = Number(el.getAttribute('data-arr'));
+    const home = (el.getAttribute('data-h') || '0,0').split(',').map(Number);
+    const target = (el.getAttribute('data-t') || '0,0').split(',').map(Number);
+    const popAt = 0.6 + Math.floor(i / 3) * 0.15;
+    const flyAt = 1.7 + i * 0.06;
+    const retAt = 7.8 + i * 0.05;
+    let x: number, y: number;
+    if (t < flyAt) [x, y] = home;
+    else if (t < retAt) {
+      const p = ph(t, flyAt, flyAt + 0.5);
+      [x, y] = [lerp(home[0], target[0], p), lerp(home[1], target[1], p)];
+    } else {
+      const p = ph(t, retAt, retAt + 0.5);
+      [x, y] = [lerp(target[0], home[0], p), lerp(target[1], home[1], p)];
+    }
+    el.setAttribute('cx', String(r2(x)));
+    el.setAttribute('cy', String(r2(y)));
+    op(el, ph(t, popAt, popAt + 0.2));
+  });
+  for (let k = 0; k < 4; k++) {
+    op(q(root, `clbl-${k}`), ph(t, 0.8 + k * 0.15, 1.1 + k * 0.15) * (1 - ph(t, 1.7, 2.1)) + ph(t, 8.6, 9.0));
+  }
+
+  const fxs = qa(root, '[data-fx]');
+  op(fxs[0], ph(t, 2.8, 3.2) * (1 - ph(t, 3.6, 4.0)));
+  op(fxs[1], ph(t, 4.2, 4.6) * (1 - ph(t, 6.6, 7.2)));
+  op(fxs[2], ph(t, 4.6, 5.0) * (1 - ph(t, 6.6, 7.2)));
+}
+const ARRAY_HOLD = 6.4;
+
+/* ═══════════════ F09 — polygon: sides = vertices (D = 10 s) ═══════════════ */
+
+function renderPolygon(root: LoopRoot, t: number) {
+  const OUT = 1 - ph(t, 6.6, 7.0);
+
+  // side i completes at 1.4+i*0.7; sides fade (reverse order) at 7.4+(4-i)*0.24
+  let sides = 0;
+  let verts = t >= 0.7 ? 1 : 0;
+  for (let i = 0; i < 5; i++) {
+    const built = t >= 1.4 + i * 0.7;
+    const gone = t >= 7.4 + (4 - i) * 0.24 + 0.2;
+    if (built && !gone) sides++;
+    if (i < 4 && built && !gone) verts++; // closing side adds no new vertex
+    const s = q(root, `side-${i}`);
