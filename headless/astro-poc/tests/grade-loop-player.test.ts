@@ -378,23 +378,28 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(gradeCss.split('@media')[0], /\.concept-loop__svg \{\s*grid-column: 2;\s*grid-row: 1 \/ 4;/);
   });
 
-  it('reduced motion hides ▶ (engine toggle and pause button) in player CSS only; next stays', () => {
+  it('OS reduced motion does not hide ▶; only an explicit a11y class does', () => {
     const css = player.split('<style>')[1];
-    assert.match(
-      css,
-      /@media \(prefers-reduced-motion: reduce\) \{[\s\S]*?\.grade-loop :global\(\[data-el='toggle'\]\),\s*\.grade-loop__pause \{\s*display: none !important;\s*\}\s*\}/
-    );
+    const media = css.match(/@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n  \}/);
+    assert.ok(media, 'reduced-motion block');
+    assert.match(media[1], /\.grade-loop__progress-fill \{\s*transition: none;/);
+    assert.doesNotMatch(media[1], /display:\s*none/, 'OS reduced motion must not hide the demo controls');
     for (const motionOff of ['nd-motion-off', 'noam-a11y-motion']) {
       assert.match(css, new RegExp(`:global\\(html\\.${motionOff}\\) \\.grade-loop :global\\(\\[data-el='toggle'\\]\\)`));
       assert.match(css, new RegExp(`:global\\(html\\.${motionOff}\\) \\.grade-loop__pause`));
     }
-    // Hidden only under motion-off: every toggle-hiding selector is inside the media query or behind an html class.
     const hides = [...css.matchAll(/^\s*(.*):global\(\[data-el='toggle'\]\)/gm)].map((m) => m[1]);
-    assert.equal(hides.length, 3);
+    assert.equal(hides.length, 2);
     assert.equal(hides.filter((prefix) => /html\.(nd-motion-off|noam-a11y-motion)/.test(prefix)).length, 2);
     assert.doesNotMatch(css, /grade-loop__next(?!\[hidden\])[^{]*\{[^}]*display: none/, 'ללולאה הבאה stays visible');
-    assert.match(player, /"▶ פעם אחת" is deferred until the engine supports it/);
+    assert.match(player, /"▶ פעם אחת" stays deferred/);
     assert.doesNotMatch(css.split('@media')[0], /\.grade-loop__pause \{[^}]*display: none/);
+    const engine = read('src/lib/conceptLoops.ts');
+    assert.doesNotMatch(engine, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+    assert.match(engine, /classList\.contains\('nd-motion-off'\)/);
+    const a11y = read('public/noam-accessibility.js');
+    assert.doesNotMatch(a11y, /stopAnim:\s*reduceQuery\.matches/);
+    assert.match(a11y, /stopAnim:\s*false/);
   });
 
   it('hold phase freezes on the engine completed frame via __loop.seek + pause', () => {
@@ -410,9 +415,11 @@ describe('GradeLoopPlayer render contract', () => {
     assert.doesNotMatch(read('src/lib/conceptLoops.ts'), /slowdown|GRADE_LOOP|speed/i, 'engine untouched');
     const script = player.split('<script>')[1];
     assert.match(script, /const slow = createGradeLoopSlowClock\(\{/);
-    assert.match(script, /state\.playing && !state\.static && !rotation\.held\(\) && !manuallyPaused\(loop\)/);
+    assert.match(script, /state\.playing && !state\.static && !resting && !rotation\.held\(\) && !manuallyPaused\(loop\)/);
     assert.match(script, /seek: \(t\) => activeLoop\(\)\?\.__loop\?\.seek\(t\)/);
-    assert.match(script, /ended: \(\) => rotation\.hold\(\)/);
+    assert.match(script, /ended: \(\) => restThenReplay\(\)/);
+    assert.match(script, /REPLAY_PAUSE_MS = 1600/);
+    assert.match(script, /function ensurePlaying\(\)/);
     assert.match(script, /entries\.get\(variant\)\?\.hold \?\? GRADE_LOOP_FALLBACK_END_S/);
     assert.match(script, /slow\.reset\(endOf\(variant\)\);\s*wasStatic\.set/, 'each mount restarts the slow clock');
     // Reduced motion: no frame loop and no seek.
@@ -434,7 +441,7 @@ describe('GradeLoopPlayer render contract', () => {
   it('swaps like ExactHeroControls: cached nodes, one init per variant, one timer', () => {
     assert.match(player, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) cache\.append\(prior\);\s*current\.append\(next\)/);
     assert.match(player, /if \(firstVisit\) initConceptLoops\(\)/);
-    assert.equal((player.match(/initConceptLoops\(\)/g) || []).length, 1);
+    assert.equal((player.match(/initConceptLoops\(\)/g) || []).length, 2);
     assert.match(player, /cache\.hidden = true/);
     assert.doesNotMatch(player, /replaceChildren|prior\??\.remove\(/);
     assert.equal((player.match(/window\.setInterval\(/g) || []).length, 1);
@@ -442,6 +449,11 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(player, /!adapted\.has\(loop\)/);
     assert.match(player, /event\.key === 'Enter' \|\| event\.key === ' ' \|\| event\.key === 'Spacebar'/);
     assert.match(player, /new IntersectionObserver\(/);
+    assert.match(player, /let inView = true/);
+    assert.match(player, /rootMargin: '0px 0px 100% 0px'/);
+    assert.match(player, /threshold: 0/);
+    assert.match(player, /initConceptLoops\(\);\s*ensurePlaying\(\);\s*runSlowClock\(\)/);
+    assert.match(player, /setTimeout\(start, 120\)/);
   });
 });
 

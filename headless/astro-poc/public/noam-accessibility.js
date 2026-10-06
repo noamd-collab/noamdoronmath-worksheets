@@ -15,8 +15,10 @@
   function init() {
     if (document.getElementById('noam-accessibility')) return;
     const defaults = { text: 100, contrast: false, links: false, motion: false };
-    const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let prefs = { ...defaults, stopAnim: reduceQuery.matches, stopAnimChosen: false };
+    // OS prefers-reduced-motion must not flip "עצירת אנימציות" on. Grade
+    // demos (and every other rAF loop) keep playing until the visitor
+    // presses that control. A saved choice still wins.
+    let prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
     try {
       const saved = JSON.parse(localStorage.getItem('noam-accessibility-v1') || '{}');
       prefs.text = [100,110,120,130,140,150].includes(saved.text) ? saved.text : 100;
@@ -347,13 +349,8 @@
       apply(true);
     });
     root.getElementById('reset').addEventListener('click', () => {
-      prefs = { ...defaults, stopAnim: reduceQuery.matches, stopAnimChosen: false };
+      prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
       apply(true);
-    });
-    reduceQuery.addEventListener('change', () => {
-      if (prefs.stopAnimChosen) return;
-      prefs.stopAnim = reduceQuery.matches;
-      apply(false);
     });
     let scheduled = false;
     new MutationObserver(() => {

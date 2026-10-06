@@ -10,8 +10,9 @@
  *   - 0.5–1.5 s still holds between moves
  *   - green is reserved for the "correct" result, once per lap
  *   - after 4 laps the loop parks on the completed state
- *   - prefers-reduced-motion / html.noam-a11y-motion: completed state,
- *     fully static, toggle hidden
+ *   - explicit site a11y (html.nd-motion-off / html.noam-a11y-motion):
+ *     completed state, fully static, toggle hidden. OS
+ *     prefers-reduced-motion does not park the loop.
  */
 
 type LoopRoot = HTMLElement & { __loop?: LoopDebug };
@@ -2038,11 +2039,9 @@ const MAX_LAPS = 4;
 
 function motionOff(): boolean {
   const html = document.documentElement;
-  return (
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-    html.classList.contains('noam-a11y-motion') ||
-    html.classList.contains('nd-motion-off')
-  );
+  // Only an explicit menu choice parks the film. OS reduced motion used to
+  // take this same path and left every grade demo on the final frame.
+  return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off');
 }
 
 function setupLoop(root: LoopRoot) {
@@ -2165,8 +2164,7 @@ function setupLoop(root: LoopRoot) {
     }
   });
 
-  // react to OS-level changes and to the site's accessibility menu toggle
-  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applyMotionPrefs);
+  // react to the site's accessibility menu toggle (class on <html>)
   new MutationObserver(applyMotionPrefs).observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['class'],

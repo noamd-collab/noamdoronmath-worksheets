@@ -289,11 +289,29 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       }
     });
 
-    let inView = !('IntersectionObserver' in window);
-    if (!inView) {
+    // The diagram sits below the fold on a normal laptop (heading ~732px,
+    // card top ~840px, viewport ~813px), so a threshold that waits for a
+    // visible slice never fires until the user scrolls. Start as in view
+    // and correct on the first observer sample. One viewport of rootMargin
+    // counts a card just under the fold as on screen. After that sample,
+    // a card that is truly off-screen pauses.
+    const REPLAY_PAUSE_MS = 1600;
+    let inView = true;
+    let resting = false;
+    let replayPending = false;
+    let replayTimer = 0;
+    function cancelReplay() {
+      resting = false;
+      replayPending = false;
+      window.clearTimeout(replayTimer);
+      replayTimer = 0;
+    }
+    if ('IntersectionObserver' in window) {
       new IntersectionObserver((records) => {
-        inView = records[0].isIntersecting;
-      }, { threshold: 0.35 }).observe(root);
+        inView = !!records[0]?.isIntersecting;
+        if (inView) ensurePlaying();
+        else if (!resting) activeLoop()?.__loop?.pause();
+      }, { threshold: 0, rootMargin: '0px 0px 100% 0px' }).observe(root);
     }
 
     function resetProgress() {
@@ -314,6 +332,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
           return loop ? manuallyPaused(loop) : false;
         },
         mount(variant, firstVisit) {
+          cancelReplay();
           let next = mounted.get(variant);
           if (!next) {
             const source = originals.get(variant);
@@ -359,18 +378,72 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
     // ×1.8 without touching the engine: it keeps playing (so its state, pause
     // card and off-screen stop are unchanged), and this frame loop re-seeks it
     // to t_real / 1.8 after each engine frame. Its lap never reaches duration,
-    // so it never parks; at the completed frame the rotation holds it to 15 s.
+    // so it never parks. At the completed frame it rests, then starts again
+    // from zero. The 15 s rotation still swaps to the next loop.
     const endOf = (variant: string) => entries.get(variant)?.hold ?? GRADE_LOOP_FALLBACK_END_S;
     const slow = createGradeLoopSlowClock({
       running() {
         const loop = activeLoop();
         const state = loop?.__loop?.state();
-        return !!loop && !!state && state.playing && !state.static && !rotation.held() && !manuallyPaused(loop);
+        return !!loop && !!state && state.playing && !state.static && !resting && !rotation.held() && !manuallyPaused(loop) && inView;
       },
       seek: (t) => activeLoop()?.__loop?.seek(t),
-      ended: () => rotation.hold(),
+      ended: () => restThenReplay(),
     });
     slow.reset(endOf(initial.dataset.loop));
+
+    function replayFromStart() {
+      const loop = activeLoop();
+      if (!loop?.__loop || manuallyPaused(loop)) return;
+      const state = loop.__loop.state();
+      if (state.static) return;
+      slow.reset(endOf(loop.dataset.loop || ''));
+      if (state.done) loop.querySelector<HTMLButtonElement>('[data-el="toggle"]')?.click();
+      else {
+        loop.__loop.seek(0);
+        loop.__loop.play();
+      }
+      runSlowClock();
+    }
+
+    // Show the answer, then teach it again. A card that parked before the
+    // player woke up (or never crossed its own 35% observer) is started here.
+    function restThenReplay() {
+      const loop = activeLoop();
+      const hold = loop?.dataset.loop ? entries.get(loop.dataset.loop)?.hold : undefined;
+      resting = true;
+      replayPending = false;
+      if (loop?.__loop && typeof hold === 'number') {
+        loop.__loop.seek(hold);
+        loop.__loop.pause();
+      }
+      window.clearTimeout(replayTimer);
+      replayTimer = window.setTimeout(() => {
+        resting = false;
+        replayTimer = 0;
+        const current = activeLoop();
+        if (!current?.__loop || manuallyPaused(current) || current.__loop.state().static) return;
+        if (!inView || document.hidden) {
+          replayPending = true;
+          return;
+        }
+        replayFromStart();
+      }, REPLAY_PAUSE_MS);
+    }
+
+    function ensurePlaying() {
+      if (resting) return;
+      const loop = activeLoop();
+      if (!inView || !loop?.__loop || manuallyPaused(loop)) return;
+      const state = loop.__loop.state();
+      if (state.static) return;
+      if (replayPending || state.done) {
+        replayPending = false;
+        replayFromStart();
+        return;
+      }
+      if (!state.playing) loop.__loop.play();
+    }
 
     // Reduced motion: no frame loop and no seek, only the static frame.
     let frameId = 0;
@@ -412,17 +485,18 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
       runSlowClock();
     }
 
-    // Reduced motion shows the static completed frame with no rotation and no
-    // ▶ (hidden in CSS); "ללולאה הבאה" still steps between completed frames.
-    // A one-shot "▶ פעם אחת" is deferred until the engine supports it (it
-    // refuses to play while static).
+    // Explicit site a11y ("עצירת אנימציות" / "הפחתת תנועה") shows the static
+    // completed frame; "ללולאה הבאה" still steps between those frames. OS
+    // prefers-reduced-motion does not. A one-shot "▶ פעם אחת" stays deferred
+    // until the engine can play while static.
     pauseButton?.addEventListener('click', () => {
       const loop = activeLoop();
       const card = loop?.querySelector<HTMLElement>('[data-pause-card]');
       const state = loop?.__loop?.state();
       if (!loop || !card || !state || state.static) return;
-      // A held loop is paused by the player, so release it first; the second
-      // click is then a real, remembered user pause.
+      // A held or resting loop is paused by the player, so release it first;
+      // the second click is then a real, remembered user pause.
+      if (resting) cancelReplay();
       if (rotation.held() && !manuallyPaused(loop)) card.click();
       card.click();
       syncControls();
@@ -447,9 +521,22 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', queueSync);
     window.addEventListener('nd:motion-off', queueSync);
     syncControls();
+    // The initial card used to wait for ConceptLoop's own module and for
+    // its 0.35 observer. Attach the engine here, then start the first paint
+    // even when the card is still below the fold.
+    initConceptLoops();
+    ensurePlaying();
+    runSlowClock();
+    // The engine's own 0.35 observer can pause a card that is only near the
+    // fold. Start again after that callback, while this player still says in view.
+    requestAnimationFrame(() => {
+      ensurePlaying();
+      runSlowClock();
+    });
     // One timer drives the rotation clock, the progress bar and the card's ARIA.
     window.setInterval(() => {
       syncActiveCard();
+      ensurePlaying();
       rotation.tick(TICK_MS);
       syncControls();
     }, TICK_MS);
@@ -457,10 +544,18 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 
   // After ConceptLoop's own pause-card setup (DOMContentLoaded + one frame),
   // so no cloned card can receive that adapter as well as this one.
+  // noam-accessibility.js holds requestAnimationFrame while animations are
+  // stopped, so a frames-only boot never ran and the player stayed unadapted.
+  // The same start() also runs from a macrotask if those frames never fire.
   function boot() {
-    requestAnimationFrame(() => requestAnimationFrame(() => {
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
       document.querySelectorAll<HTMLElement>('[data-grade-loop]').forEach(bootGradeLoop);
-    }));
+    };
+    requestAnimationFrame(() => requestAnimationFrame(start));
+    setTimeout(start, 120);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot, { once: true });
@@ -634,16 +729,11 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
     display: none;
   }
 
-  /* Reduced motion: no ▶ at all, neither the engine's corner toggle nor the
-     pause button; "ללולאה הבאה" stays. */
+  /* OS reduced motion only drops the progress-bar transition. The demo
+     still autoplays; pause stays available. Explicit a11y classes hide ▶. */
   @media (prefers-reduced-motion: reduce) {
     .grade-loop__progress-fill {
       transition: none;
-    }
-
-    .grade-loop :global([data-el='toggle']),
-    .grade-loop__pause {
-      display: none !important;
     }
   }
 
