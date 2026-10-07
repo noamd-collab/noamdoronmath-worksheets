@@ -2027,7 +2027,7 @@ body.exact-viewer{
 }
 .exact-viewer :where(button,textarea,input){font-family:inherit}
 .exact-viewer :where(a,button,input,textarea,[tabindex]):focus-visible{
-  outline:3px solid #e6a534;outline-offset:2px;
+  outline:3px solid #22305a;outline-offset:2px;
 }
 .exact-viewer textarea::placeholder{color:#6b7594}
 .exact-viewer .exact-viewer-header{
@@ -2168,7 +2168,7 @@ body.exact-viewer{
 .exact-viewer .noam-glossary-more{font:700 14px Heebo,'Heebo Fallback',sans-serif;border:1.5px solid #2a7c7a;border-radius:999px;color:#1e605e;padding:4px 12px}
 .exact-viewer .noam-compose{flex:none;padding:8px 0 0;border-top:1.5px dashed #b8c0d4;background:#fff}
 .exact-viewer .noam-input-shell{padding:5px;background:#fff;border:2px solid #22305a;border-radius:14px 6px 16px 7px / 7px 16px 6px 14px}
-.exact-viewer .noam-input-shell:focus-within{outline:3px solid #e6a534;outline-offset:2px;box-shadow:none}
+.exact-viewer .noam-input-shell:focus-within{outline:3px solid #22305a;outline-offset:2px;box-shadow:none}
 .exact-viewer .noam-input-actions{gap:6px;flex-wrap:wrap}
 .exact-viewer .noam-input-actions .noam-action{font-size:15px;min-height:44px;padding:6px 14px;border-width:2px}
 .exact-viewer #noamHint{background:#e6a534;color:#22305a;font-weight:800}
@@ -2299,7 +2299,7 @@ body.exact-viewer{
   display:flex;align-items:flex-end;gap:6px;border:2px solid #22305a;
   border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;padding:5px;background:#fff;
 }
-.exact-viewer .exact-message-row:focus-within{outline:3px solid #e6a534;outline-offset:2px}
+.exact-viewer .exact-message-row:focus-within{outline:3px solid #22305a;outline-offset:2px}
 .exact-viewer .exact-message-row textarea{
   flex:1;min-width:0;width:auto;resize:none;border:0;border-radius:8px;
   font:16px/1.55 Heebo,'Heebo Fallback',sans-serif;color:#22305a;background:transparent;padding:10px 6px;
@@ -2681,6 +2681,7 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
 .exact-viewer .noam-picked-label{font:700 14px/1.4 Heebo,'Heebo Fallback',sans-serif;color:#22305a}
 .exact-viewer .noam-picked-text{font:400 16px/1.5 Heebo,'Heebo Fallback',sans-serif;color:#22305a;max-height:none}
 .exact-viewer .noam-thread-tools{gap:4px}
+.exact-viewer .panel.is-short .noam-thread-tools{display:flex;min-height:0;margin:0}
 .exact-viewer .noam-transcript,
 .exact-viewer .panel.is-short .noam-transcript,
 .exact-viewer .panel-body.is-chat>.noam-transcript{
@@ -2725,7 +2726,7 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
 .exact-viewer .exact-message-row{
   border:1px solid #d5dbe6;border-radius:12px;box-shadow:none;padding:4px;background:#fff;
 }
-.exact-viewer .exact-message-row:focus-within{outline:3px solid #e6a534;outline-offset:2px}
+.exact-viewer .exact-message-row:focus-within{outline:3px solid #22305a;outline-offset:2px}
 .exact-viewer .exact-message-row textarea,
 .exact-viewer .panel.is-short .exact-message-row textarea{
   height:auto;min-height:44px;max-height:8em;overflow:auto;
@@ -2742,7 +2743,7 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
 .exact-viewer .exact-question-hit:focus-visible,
 .exact-viewer .pdf-page .noam-exercise-pin:focus-visible,
 .exact-viewer .pdf-page .noam-report-pin:focus-visible{
-  outline:3px solid #e6a534;outline-offset:2px;
+  outline:3px solid #22305a;outline-offset:2px;
 }
 .exact-viewer .pdf-page .noam-exercise-pin{
   width:44px;height:44px;min-width:44px;min-height:44px;padding:0;
@@ -2771,16 +2772,18 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
 .exact-viewer .pdf-page .noam-report-pin:hover::before,
 .exact-viewer .pdf-page .noam-report-pin:focus-visible::before{color:#22305a}
 .exact-viewer .exact-question-hit{
-  position:absolute;z-index:3;left:8px;right:8px;margin:0;padding:0;
+  position:absolute;z-index:3;margin:0;padding:0;
   border:0;border-radius:12px;background:transparent;cursor:pointer;
-  touch-action:pan-x pan-y pinch-zoom;
 }
 .exact-viewer .exact-question-hit:focus-visible{background:rgba(230,165,52,.12)}
 .exact-viewer.exact-narrow.exact-help-active .exact-viewer-header{display:none}
 @media(max-width:999px),(max-height:639px){
   .exact-viewer .pdf-page .noam-exercise-pin{width:44px;height:44px;min-width:44px;min-height:44px}
   .exact-viewer .pdf-page .noam-exercise-pin .exact-ramzi-pin{width:26px;height:26px}
-  .exact-viewer .exact-empty{display:none}
+  .exact-viewer .exact-empty{display:flex;min-height:0;padding:2px 4px 6px;gap:0}
+  .exact-viewer .exact-empty ramzi-avatar,
+  .exact-viewer .exact-empty-title{display:none}
+  .exact-viewer .exact-empty-note{font-size:14px;line-height:1.4}
   .exact-viewer .noam-compose-help{display:none}
   .exact-viewer .exact-hint-row{padding-block:4px}
   .exact-viewer .panel-head{padding:4px 8px}
@@ -8201,9 +8204,15 @@ function esc(s){
       var math=document.getElementById('noamMathToggle'),attach=document.getElementById('noamAttachButton');
       if(math){row.appendChild(math);}
       row.appendChild(input);if(attach){row.appendChild(attach);}row.appendChild(send);shell.appendChild(row);
-      input.rows=1;input.placeholder='כתבו מה ניסיתם, או שאלו את רמזי…';
+      input.rows=1;
       send.setAttribute('aria-label','שליחה');
       send.innerHTML='<svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M16 10 H4 M9 5 L4 10 L9 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
+    }
+    var field=document.getElementById('noamQuestion');
+    if(field){
+      var narrowField=window.innerWidth<520||(field.clientWidth>0&&field.clientWidth<260);
+      var placeholder=narrowField?'כתבו לרמזי…':'כתבו מה ניסיתם, או שאלו את רמזי…';
+      if(field.placeholder!==placeholder){field.placeholder=placeholder;}
     }
     var ladder=compose.querySelector('.exact-hint-ladder');
     if(count!==null&&ladder){
@@ -8387,21 +8396,47 @@ function esc(s){
         mark.draggable=false;
         button.appendChild(mark);
       }
-      setAttr(button,'aria-label','רמז');
     });
     /* The round "!" button on the right keeps opening the report form. */
     document.querySelectorAll('.noam-report-pin').forEach(function(report){
       var mark=report.querySelector('.exact-ramzi-pin');
       if(mark){mark.remove();}
       if(report.textContent!==''){report.textContent='';}
-      setAttr(report,'aria-label','דיווח');
     });
+    /* One tab stop per question (the hit). Pins stay clickable, and report
+       is offered from the panel so the page is not a tab flood. */
     document.querySelectorAll('.noam-exercise-pin, .noam-report-pin').forEach(function(pin){
-      pin.removeAttribute('aria-hidden');
-      if(pin.tabIndex===-1){pin.tabIndex=0;}
+      pin.tabIndex=-1;
+      pin.setAttribute('aria-hidden','true');
     });
     layoutQuietPins();
     layoutQuestionHits();
+  }
+  function questionHitName(pin){
+    var raw=(pin&&pin.dataset.label)||'';
+    var match=raw.match(/שאלה\s+(\S+)(?:\s*·\s*סעיף\s+([^·]+))?/);
+    if(!match){return 'פתיחת רמזי לשאלה';}
+    var name='פתיחת רמזי לשאלה '+match[1].replace(/[·,]+$/,'').trim();
+    if(match[2]){name+=' סעיף '+match[2].trim();}
+    return name;
+  }
+  function ensureReportControl(){
+    var tools=panelBody.querySelector('.noam-thread-tools');
+    if(!tools||tools.querySelector('.exact-report')){return;}
+    var button=document.createElement('button');
+    button.type='button';
+    button.className='noam-link-button exact-report';
+    button.textContent='דיווח';
+    button.addEventListener('click',function(){
+      var active=document.querySelector('.noam-exercise-pin.is-active');
+      var id=active&&active.dataset.exerciseId;
+      if(!id){return;}
+      var reports=document.querySelectorAll('.noam-report-pin');
+      for(var i=0;i<reports.length;i++){
+        if(reports[i].dataset.exerciseId===id){reports[i].click();return;}
+      }
+    });
+    tools.appendChild(button);
   }
   function layoutQuestionHits(){
     document.querySelectorAll('.pdf-page').forEach(function(page){
@@ -8412,56 +8447,100 @@ function esc(s){
         return;
       }
       var pageBox=page.getBoundingClientRect();
+      var pageW=page.clientWidth||pageBox.width||0;
+      var pageH=page.clientHeight||pageBox.height||0;
+      var gutter=Math.max(12,pageW*0.08);
       var centers=pins.map(function(pin){
         var rect=pin.getBoundingClientRect();
-        return {pin:pin,y:((rect.top+rect.bottom)/2)-pageBox.top};
-      }).sort(function(a,b){return a.y-b.y;});
-      var pageH=page.clientHeight||pageBox.height||0;
-      centers.forEach(function(item,index){
-        var id=item.pin.dataset.exerciseId||('q'+index);
-        keep[id]=true;
-        var top=index===0?0:(centers[index-1].y+item.y)/2;
-        var bottom=index===centers.length-1?pageH:(item.y+centers[index+1].y)/2;
-        if(bottom<top+8){bottom=top+8;}
-        var hit=null;
-        page.querySelectorAll('.exact-question-hit').forEach(function(candidate){
-          if(candidate.dataset.exerciseId===id){hit=candidate;}
-        });
-        if(!hit){
-          hit=document.createElement('button');
-          hit.type='button';
-          hit.className='exact-question-hit';
-          hit.dataset.exerciseId=id;
-          page.appendChild(hit);
-          hit.addEventListener('pointerdown',function(event){
-            hit.dataset.exactX=String(event.clientX);
-            hit.dataset.exactY=String(event.clientY);
-            hit.dataset.exactDrag='';
+        return {
+          pin:pin,
+          x:((rect.left+rect.right)/2)-pageBox.left,
+          y:((rect.top+rect.bottom)/2)-pageBox.top
+        };
+      });
+      var columns=[];
+      centers.slice().sort(function(a,b){return a.x-b.x;}).forEach(function(item){
+        var col=columns[columns.length-1];
+        if(col&&item.x-col.anchor<=80){
+          col.items.push(item);
+          col.anchor=(col.anchor*(col.items.length-1)+item.x)/col.items.length;
+        }else{
+          columns.push({anchor:item.x,items:[item]});
+        }
+      });
+      columns.forEach(function(col,colIndex){
+        var prev=columns[colIndex-1],next=columns[colIndex+1];
+        var left=prev?(prev.anchor+col.anchor)/2:gutter;
+        var right=next?(col.anchor+next.anchor)/2:Math.max(left+24,pageW-gutter);
+        if(col.anchor>pageW-4){
+          left=gutter;
+          right=Math.max(left+24,pageW-gutter);
+        }
+        if(right<left+24){right=left+24;}
+        var items=col.items.slice().sort(function(a,b){return a.y-b.y;});
+        var gaps=[];
+        for(var gapIndex=1;gapIndex<items.length;gapIndex++){gaps.push(items[gapIndex].y-items[gapIndex-1].y);}
+        var median=80;
+        if(gaps.length){
+          var sorted=gaps.slice().sort(function(a,b){return a-b;});
+          var mid=Math.floor(sorted.length/2);
+          median=sorted.length%2?sorted[mid]:(sorted[mid-1]+sorted[mid])/2;
+        }
+        var tail=Math.min(120,Math.max(36,median*0.85));
+        items.forEach(function(item,index){
+          var id=item.pin.dataset.exerciseId||('q'+colIndex+'-'+index);
+          keep[id]=true;
+          var top=index===0?item.y-28:(items[index-1].y+item.y)/2;
+          var bottom=index===items.length-1?item.y+tail:(item.y+items[index+1].y)/2;
+          top=Math.max(0,top);
+          bottom=Math.min(pageH,Math.max(top+8,bottom));
+          var hit=null;
+          page.querySelectorAll('.exact-question-hit').forEach(function(candidate){
+            if(candidate.dataset.exerciseId===id){hit=candidate;}
           });
-          hit.addEventListener('pointermove',function(event){
-            var dx=event.clientX-Number(hit.dataset.exactX||0);
-            var dy=event.clientY-Number(hit.dataset.exactY||0);
-            if((dx*dx)+(dy*dy)>100){hit.dataset.exactDrag='1';}
-          });
-          hit.addEventListener('click',function(event){
-            if(hit.dataset.exactDrag==='1'){
+          if(!hit){
+            hit=document.createElement('button');
+            hit.type='button';
+            hit.className='exact-question-hit';
+            hit.dataset.exerciseId=id;
+            page.appendChild(hit);
+            hit.addEventListener('pointerdown',function(event){
+              hit.dataset.exactX=String(event.clientX);
+              hit.dataset.exactY=String(event.clientY);
               hit.dataset.exactDrag='';
+            });
+            hit.addEventListener('pointermove',function(event){
+              if(event.pointerType==='mouse'&&!event.buttons){
+                hit.dataset.exactDrag='';
+                return;
+              }
+              var dx=event.clientX-Number(hit.dataset.exactX||0);
+              var dy=event.clientY-Number(hit.dataset.exactY||0);
+              if((dx*dx)+(dy*dy)>100){hit.dataset.exactDrag='1';}
+            });
+            hit.addEventListener('click',function(event){
+              if(event.detail!==0&&hit.dataset.exactDrag==='1'){
+                hit.dataset.exactDrag='';
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+              }
               event.preventDefault();
               event.stopPropagation();
-              return;
-            }
-            event.preventDefault();
-            event.stopPropagation();
-            var target=hit._exactPin;
-            setAiMode(true);
-            if(target&&target.isConnected){target.click();}
-          });
-        }
-        hit._exactPin=item.pin;
-        var label=item.pin.dataset.label||item.pin.getAttribute('aria-label')||'פתיחת רמזי לשאלה';
-        if(hit.getAttribute('aria-label')!==label){hit.setAttribute('aria-label',label);}
-        hit.style.top=Math.max(0,Math.round(top))+'px';
-        hit.style.height=Math.max(8,Math.round(bottom-top))+'px';
+              var target=hit._exactPin;
+              setAiMode(true);
+              if(target&&target.isConnected){target.click();}
+            });
+          }
+          hit._exactPin=item.pin;
+          var label=questionHitName(item.pin);
+          if(hit.getAttribute('aria-label')!==label){hit.setAttribute('aria-label',label);}
+          hit.style.right='auto';
+          hit.style.left=Math.round(left)+'px';
+          hit.style.width=Math.max(24,Math.round(right-left))+'px';
+          hit.style.top=Math.round(top)+'px';
+          hit.style.height=Math.round(bottom-top)+'px';
+        });
       });
       page.querySelectorAll('.exact-question-hit').forEach(function(hit){
         if(!keep[hit.dataset.exerciseId]){hit.remove();}
@@ -8572,7 +8651,7 @@ function esc(s){
       if(narrow&&previousOpen&&(document.activeElement===body||panel.contains(document.activeElement))){pageTab.focus({preventScroll:true});}
     }
     previousOpen=open;
-    adaptQuestionChoices();adaptComposer();decorateConversation();decoratePins();
+    adaptQuestionChoices();adaptComposer();decorateConversation();decoratePins();ensureReportControl();
     updateQuestionScroller();
     var preview=document.getElementById('noamPickedPreview');
     if(preview){

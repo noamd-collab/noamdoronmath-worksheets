@@ -1,6 +1,6 @@
 /**
- * Worksheet viewer opens on the clean printable page. Noam AI (Ramzi, report
- * pins, side panel) stays off until "פתרו באמצעות Noam AI".
+ * Worksheet viewer opens on the clean printable page. The side panel stays off
+ * until "פתרו באמצעות Noam AI". Question pins stay visible in that clean view.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -23,13 +23,33 @@ describe('clean worksheet before Noam AI', () => {
     assert.match(viewer, /aria-pressed="false"/);
   });
 
-  it('keeps Ramzi and report pins out of the clean view, print, and the side panel', () => {
-    assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.pdf-page \.noam-exercise-pin/);
-    assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.pdf-page \.noam-report-pin/);
-    assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.panel/);
-    assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.fab/);
+  it('shows Ramzi and report pins in the clean view and keeps the side panel closed', () => {
+    const pinRule = viewer.match(
+      /\.exact-viewer:not\(\.noam-ai-on\) \.pdf-page \.noam-exercise-pin,\s*\.exact-viewer:not\(\.noam-ai-on\) \.pdf-page \.noam-report-pin\{[^}]+\}/
+    );
+    assert.ok(pinRule, 'clean-view pin rule');
+    assert.match(pinRule[0], /visibility:\s*visible/);
+    assert.match(pinRule[0], /pointer-events:\s*auto/);
+    assert.doesNotMatch(pinRule[0], /visibility:\s*hidden/);
+    const chromeRule = viewer.match(
+      /\.exact-viewer:not\(\.noam-ai-on\) \.fab,\s*\.exact-viewer:not\(\.noam-ai-on\) \.panel,[\s\S]*?\{[^}]+\}/
+    );
+    assert.ok(chromeRule, 'clean-view panel rule');
+    assert.match(chromeRule[0], /display:\s*none\s*!important/);
     assert.match(viewer, /@media print\{[\s\S]*\.noam-print-arrow[\s\S]*\.noam-print-primary[\s\S]*\.noam-ai-toggle/);
     assert.match(viewer, /חזרה לדף הנקי/);
+  });
+
+  it('uses one named question stop, a dark focus ring, and no page-wide touch-action lock', () => {
+    assert.ok(adapter);
+    assert.match(adapter, /פתיחת רמזי לשאלה/);
+    assert.match(adapter, /pin\.tabIndex=-1/);
+    assert.match(adapter, /event\.detail!==0/);
+    assert.match(adapter, /pointerType==='mouse'&&!event\.buttons/);
+    assert.match(viewer, /outline:3px solid #22305a/);
+    assert.doesNotMatch(viewer, /touch-action:\s*manipulation/);
+    assert.doesNotMatch(viewer, /touch-action:\s*pan-x/);
+    assert.match(adapter, /className='noam-link-button exact-report'/);
   });
 
   it('makes download/print the primary clean-view action and points at it', () => {
