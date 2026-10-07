@@ -1,6 +1,5 @@
-/* LCD workflows for fx-991ES PLUS (2nd edition) functions.
- * Independent calculator implementation; no Casio firmware or external requests.
- * Reference: https://support.casio.com/global/en/calc/manual/fx-570ESPLUS_991ESPLUS_en/
+/* LCD workflows for the natural-display scientific calculator.
+ * Independent calculator implementation; no firmware or external requests.
  * The device controller owns drawing, editable fields and numbered menu keys.
  */
 (function (root) {
@@ -41,7 +40,7 @@
       else numeric(field.label, field.initial ?? 0, submit);
     }
 
-    // STAT: CASIO limits are 80 X rows, 40 X/FREQ or X/Y, 26 X/Y/FREQ.
+    // STAT row limits: 80 X rows, 40 X/FREQ or X/Y, 26 X/Y/FREQ.
     const types = [['1-VAR','one'],['A+BX','linear'],['_+CX²','quadratic'],['ln X','log'],['e^X','exp'],['A·B^X','ab'],['A·X^B','power'],['1/X','inverse']];
     const stats = () => {
       const s = state();

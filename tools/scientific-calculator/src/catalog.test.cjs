@@ -16,15 +16,15 @@ function close(actual, expected, label, tolerance = 1e-12) {
     `${label}: expected ${expected}, got ${actual}`);
 }
 
-test('both PLUS catalogues are complete, uniquely indexed and sourced', () => {
+test('both catalogues are complete, uniquely indexed and sourced', () => {
   const expectedIDs = Array.from({ length: 40 }, (_, i) => String(i + 1).padStart(2, '0'));
   assert.deepEqual(SCIENTIFIC_CONSTANTS.map(item => item.id), expectedIDs);
   assert.deepEqual(UNIT_CONVERSIONS.map(item => item.id), expectedIDs);
-  assert.match(SCIENTIFIC_CATALOG_EDITION, /PLUS 2nd edition.*2014.*2008/);
+  assert.match(SCIENTIFIC_CATALOG_EDITION, /CODATA 2014.*NIST SP 811 \(2008\)/);
   for (const item of SCIENTIFIC_CONSTANTS) {
     assert.ok(Number.isFinite(item.value), `constant ${item.id}`);
     assert.ok(item.nameHe && item.symbol && typeof item.unit === 'string');
-    assert.match(item.source, /fx-570ESPLUS_991ESPLUS_EN\.pdf#page=/);
+    assert.match(item.source, /nist\.gov/);
     assert.match(item.valuesSource, /nist\.gov.*2014/);
     assert.match(item.edition, /2014/);
   }
@@ -32,13 +32,12 @@ test('both PLUS catalogues are complete, uniquely indexed and sourced', () => {
     assert.ok(item.from && item.to && item.label, `conversion ${item.id}`);
     assert.ok(item.factor > 0 && Number.isFinite(item.factor));
     assert.ok(Number.isFinite(item.offset));
-    assert.match(item.source, /fx-570ESPLUS_991ESPLUS_EN\.pdf#page=/);
+    assert.match(item.source, /nist\.gov/);
   }
 });
 
 test('CODATA2014 constants retain device edition, signs and magnitude', () => {
-  // NIST CODATA2014 anchors; the PLUS manual specifies this edition rather
-  // than the original ES1998 catalogue or the redefined SI2019 constants.
+  // NIST CODATA 2014 anchors, not the redefined SI 2019 constants.
   const anchors = [
     ['01', 1.672621898e-27], ['06', 6.626070040e-34],
     ['08', 9.274009994e-24], ['19', -9.284764620e-24],
@@ -71,7 +70,7 @@ test('20 conversion pairs invert each other for positive, negative and zero inpu
 });
 
 test('independent reference cases catch unit, scale, calorie and temperature errors', () => {
-  // PLUS manual p43–44 / NIST SP8112008 factors. The manual's 100 g -> oz
+  // NIST SP 811 (2008) factors. The 100 g -> oz
   // is 3.527396584, demonstrating that the device uses the rounded factor.
   const cases = [
     [5, '02', 5 / 2.54], [3, '03', 0.9144],

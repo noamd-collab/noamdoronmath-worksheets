@@ -5,14 +5,14 @@ const math=require('mathjs');
 const {createEngine}=require('./core.js');
 const {createAlgorithms}=require('./algorithms.js');
 const {createDeviceModes}=require('./modes.js');
-const {createCasioDevice}=require('./device.js');
+const {createScientificDevice}=require('./device.js');
 const catalog=require('./catalog.js');
 
 function fixture(){
  const keys='shift alpha up down left right mode on calc integral inverse logbase fraction sqrt square power log ln negative dms hyp sin cos tan rcl eng lparen rparen sd mplus 7 8 9 del ac 4 5 6 mul div 1 2 3 add sub 0 dot exp ans equals'.split(' ');
- const dom=new JSDOM('<main id="casio-calc"><div id="lcd-status"></div><div id="lcd-expression"></div><input id="lcd-input"><div id="lcd-result"></div><div id="lcd-menu"></div><div id="calc-announcer" role="status"></div>'+keys.map(k=>'<button data-key="'+k+'">'+k+'</button>').join('')+'</main>',{url:'https://example.test/'});
- const root=dom.window.document.getElementById('casio-calc');
- const d=createCasioDevice({root,math,engine:createEngine(math),alg:createAlgorithms(math),modesFactory:createDeviceModes,constants:catalog.SCIENTIFIC_CONSTANTS,conversions:catalog.UNIT_CONVERSIONS,convert:catalog.convertScientificUnit,storage:null,noAutoOff:true});
+ const dom=new JSDOM('<main id="sci-calc"><div id="lcd-status"></div><div id="lcd-expression"></div><input id="lcd-input"><div id="lcd-result"></div><div id="lcd-menu"></div><div id="calc-announcer" role="status"></div>'+keys.map(k=>'<button data-key="'+k+'">'+k+'</button>').join('')+'</main>',{url:'https://example.test/'});
+ const root=dom.window.document.getElementById('sci-calc');
+ const d=createScientificDevice({root,math,engine:createEngine(math),alg:createAlgorithms(math),modesFactory:createDeviceModes,constants:catalog.SCIENTIFIC_CONSTANTS,conversions:catalog.UNIT_CONVERSIONS,convert:catalog.convertScientificUnit,storage:null,noAutoOff:true});
  const p=(...keys)=>{keys.forEach(k=>d.press(k));if(d.error)throw d.error;};
  const set=s=>d.setExpression(s),el=id=>root.querySelector('#'+id);
  const finish=()=>{d.destroy();dom.window.close();};

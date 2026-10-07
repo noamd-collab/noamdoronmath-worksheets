@@ -6,7 +6,7 @@ const engine=createEngine(math);
 const close=(actual,expected,tolerance=1e-11)=>assert.ok(Math.abs(actual-expected)<=tolerance*Math.max(1,Math.abs(expected)),`${actual} ≠ ${expected}`);
 const evaluate=(expression,options)=>engine.evaluate(expression,options);
 
-test('PLUS multiplication precedence, unary minus, percentages and parentheses',()=>{
+test('multiplication precedence, unary minus, percentages and parentheses',()=>{
   close(evaluate('2(5+4)-2*(-3)'),24);
   close(evaluate('2sin(30)+3pi'),1+3*Math.PI);
   close(evaluate('-2^2'),-4);close(evaluate('(-2)^2'),4);
@@ -46,7 +46,7 @@ test('scientific functions and all three angle units',()=>{
   close(evaluate('Rnd(200/7)',{format:'sci',digits:3}),28.6);
 });
 
-test('PLUS negative-base powers use proven odd-denominator fractions in COMP',()=>{
+test('negative-base powers use proven odd-denominator fractions in COMP',()=>{
   const cases={
     '(-8)^(1/3)':-2,'(-8)^(2/3)':4,'(-8)^(-1/3)':-.5,
     '(-8)^(2/6)':-2,'(-32)^(1/5)':-2,'(-32)^(2/5)':4,
@@ -172,7 +172,7 @@ test('exact rational, surd and pi algebra never guesses from decimal answers',()
   assert.equal(engine.exact('1/2X',{scope:{X:4}}),'1/8');
 });
 
-test('PLUS RanInt includes both signed endpoints and rejects invalid ranges',()=>{
+test('RanInt includes both signed endpoints and rejects invalid ranges',()=>{
   const original=Math.random;
   try{
     Math.random=()=>0;
@@ -187,7 +187,7 @@ test('PLUS RanInt includes both signed endpoints and rejects invalid ranges',()=
   for(const input of ['RanInt#(5,5)','RanInt#(2,1)','RanInt#(0.5,2)','RanInt#(-10000000000,0)','RanInt#(0,10000000000)','RanInt#(-9999999999,1)'])assert.throws(()=>evaluate(input));
 });
 
-test('exact CMPLX display covers the PLUS manual rectangular/polar examples',()=>{
+test('exact CMPLX display covers rectangular and polar examples',()=>{
   const options={mode:'CMPLX'};
   assert.equal(engine.exact('(2+6i)/(2i)',options),'3 − i');
   assert.equal(engine.exact('sqrt(2)+sqrt(2)i',options),'√2 + √2i');
