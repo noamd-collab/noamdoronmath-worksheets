@@ -1,14 +1,14 @@
-/* fx-991ES PLUS 2nd edition catalogue. Numeric data, not firmware.
- * Casio specifies CODATA 2014; values are checked against NIST's 2014 archive,
+/* Scientific constant catalogue. Numeric data, not firmware.
+ * CODATA 2014 values are checked against NIST's 2014 archive,
  * not the revised post-2019 SI. Exact pre-2019 electromagnetic constants use
- * their defining equations. Casio's rounded NIST SP 811 (2008) conversion
- * factors are retained: the manual's 100 g -> oz example is 3.527396584.
+ * their defining equations. Rounded NIST SP 811 (2008) conversion
+ * factors are retained: 100 g -> oz is 3.527396584.
  * Every conversion computes output = input * factor + offset.
  * Both catalogues are local data; no network request is made at runtime.
  */
-const SCIENTIFIC_CATALOG_SOURCE = 'https://www.casio.com/content/dam/casio/global/support/manuals/calculators/pdf/004-en/f/fx-570ESPLUS_991ESPLUS_EN.pdf';
+const SCIENTIFIC_CATALOG_SOURCE = 'https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_2014.txt';
 const SCIENTIFIC_CONSTANT_VALUES_SOURCE = 'https://physics.nist.gov/cuu/Constants/ArchiveASCII/allascii_2014.txt';
-const SCIENTIFIC_CATALOG_EDITION = 'fx-991ES PLUS 2nd edition; CODATA 2014; NIST SP 811 (2008)';
+const SCIENTIFIC_CATALOG_EDITION = 'CODATA 2014; NIST SP 811 (2008)';
 const SCIENTIFIC_CONSTANTS = [
   { id:'01', symbol:'mₚ', nameHe:'מסת הפרוטון', unit:'kg', value:1.672621898e-27 },
   { id:'02', symbol:'mₙ', nameHe:'מסת הנייטרון', unit:'kg', value:1.674927471e-27 },
@@ -50,7 +50,7 @@ const SCIENTIFIC_CONSTANTS = [
   { id:'38', symbol:'t', nameHe:'אפס מעלות צלזיוס בקלווין', unit:'K', value:273.15 },
   { id:'39', symbol:'G', nameHe:'קבוע הכבידה הניוטוני', unit:'m³·kg⁻¹·s⁻²', value:6.67408e-11 },
   { id:'40', symbol:'atm', nameHe:'לחץ אטמוספרי תקני', unit:'Pa', value:101325 }
-].map(entry => Object.freeze({ ...entry, source: SCIENTIFIC_CATALOG_SOURCE + '#page=' + (Number(entry.id) <= 6 ? 42 : 43), valuesSource:SCIENTIFIC_CONSTANT_VALUES_SOURCE, edition:'CODATA 2014 (PLUS 2nd edition)' }));
+].map(entry => Object.freeze({ ...entry, source: SCIENTIFIC_CATALOG_SOURCE, valuesSource:SCIENTIFIC_CONSTANT_VALUES_SOURCE, edition:'CODATA 2014' }));
 
 const UNIT_CONVERSIONS = [
   { id:'01', label:'אינץ׳ ← סנטימטר', from:'in', to:'cm', factor:2.54 },
@@ -93,7 +93,7 @@ const UNIT_CONVERSIONS = [
   { id:'38', label:'צלזיוס ← פרנהייט', from:'°C', to:'°F', factor:1.8, offset:32 },
   { id:'39', label:'ג׳אול ← קלוריה (15°C)', from:'J', to:'cal₁₅', factor:1/4.1858 },
   { id:'40', label:'קלוריה (15°C) ← ג׳אול', from:'cal₁₅', to:'J', factor:4.1858 }
-].map(entry => Object.freeze({ offset:0, ...entry, source:SCIENTIFIC_CATALOG_SOURCE + '#page=' + (Number(entry.id) <= 16 ? 44 : 45), edition:'NIST SP 811 (2008), Casio conversion factors' }));
+].map(entry => Object.freeze({ offset:0, ...entry, source:'https://www.nist.gov/pml/special-publication-811', edition:'NIST SP 811 (2008)' }));
 
 function convertScientificUnit(value, id) {
   const item = UNIT_CONVERSIONS.find(entry => entry.id === String(id).padStart(2, '0'));
