@@ -92,6 +92,23 @@ describe('clean worksheet before Noam AI', () => {
     assert.match(viewer, /\.exact-viewer \.noam-ai-toggle\{[\s\S]*background:#fff/);
   });
 
+  it('folds secondary phone tools into one menu and leaves the desktop bar rules in place', () => {
+    assert.match(viewer, /<details class="phone-tools" id="phoneTools">/);
+    assert.match(viewer, /id="phoneToolsMenu"/);
+    assert.match(viewer, /\.exact-viewer \.phone-tools\{display:none\}/);
+    const phone = viewer.match(/@media \(max-width:430px\)\{([\s\S]*)\n\}\n<\/style>/);
+    assert.ok(phone, 'phone block is the last rule in the presentation style');
+    assert.match(phone[1], /\.exact-viewer \.phone-tools\{display:block/);
+    assert.match(phone[1], /min-height:44px/);
+    assert.match(phone[1], /\.exact-viewer \.header-actions\{display:none\}/);
+    assert.match(phone[1], /grid-row:5/);
+    assert.match(viewer, /\.exact-viewer \.bar\{\s*gap:8px;padding:4px 16px;/);
+    assert.ok(adapter);
+    assert.match(adapter, /phoneToolsMenu/);
+    assert.match(adapter, /max-width: 430px/);
+    assert.match(adapter, /'backBtn','topic-back','pdfToolsToggle','nl-viewer-link','nl-viewer-progress'/);
+  });
+
   it('does not auto-open the help panel before the teacher opts in', () => {
     assert.ok(adapter);
     assert.match(
