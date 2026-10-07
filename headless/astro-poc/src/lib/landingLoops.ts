@@ -123,7 +123,6 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'dividing-signed-numbers-grade-7': 'signed-div',
   'number-line-absolute-value-grade-7': 'absolute',
   'angles-introduction-measurement-grade-7': 'measure',
-  'parallel-lines-angles-grade-8': 'parallel',
   'area-parallelogram-trapezoid-composite-grade-7': 'area-para',
   'composite-polygons-area-grade-9': 'area-split',
   'rectangle-grade-9': 'rect',
@@ -192,6 +191,10 @@ export const FILM_LANDING_LOOPS = {
   'triangle-quadrilateral-angle-sum-grade-7': {
     marker: 'triangle-angle-sum-vertex-descent',
     src: '/loops/triangle-angle-sum-vertex-descent.html',
+  },
+  'parallel-lines-angles-grade-8': {
+    marker: 'parallel-cointerior-angles',
+    src: '/loops/parallel-cointerior-angles.html',
   },
 } as const;
 

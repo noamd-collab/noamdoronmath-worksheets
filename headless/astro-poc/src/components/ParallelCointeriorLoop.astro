@@ -1,0 +1,123 @@
+---
+/**
+ * Grade 8 parallel-lines film: co-interior angles.
+ * The player, the 90s clock, and the explore slider stay in
+ * public/loops/parallel-cointerior-angles.html.
+ * This wrapper only frames that file.
+ */
+interface Props {
+  src: string;
+  marker: string;
+}
+const { src, marker } = Astro.props;
+const frameSrc = `${src}?embed=1`;
+---
+
+<div class="cointerior-loop" data-cointerior-loop data-landing-loop={marker}>
+  <iframe
+    class="cointerior-loop__frame"
+    src={frameSrc}
+    title="הקבלה וסכום זוויות"
+    loading="lazy"
+    scrolling="no"
+    data-cointerior-frame
+  ></iframe>
+</div>
+
+<script>
+  function boot(root) {
+    const frame = root.querySelector('[data-cointerior-frame]');
+    if (!frame) return;
+
+    function fit() {
+      let doc;
+      try { doc = frame.contentDocument; } catch { return; }
+      const main = doc?.querySelector('main');
+      if (!main) return;
+      const h = Math.ceil(main.getBoundingClientRect().height);
+      if (h > 200 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
+    }
+
+    function motionOff() {
+      const html = document.documentElement;
+      return html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion');
+    }
+
+    function holdStill() {
+      if (!motionOff()) return;
+      try {
+        const player = frame.contentWindow;
+        const s = player?.mathScene
+          ?? frame.contentDocument?.getElementById('film')?.contentWindow?.mathScene;
+        if (s?.isPlaying?.()) s.pause();
+      } catch { return; }
+    }
+
+    let watching = false;
+    function onReady() {
+      let doc;
+      try { doc = frame.contentDocument; } catch { return; }
+      if (!doc?.querySelector('main')) return;
+      fit();
+      holdStill();
+      if (watching || !('ResizeObserver' in window)) return;
+      watching = true;
+      const observer = new ResizeObserver(fit);
+      observer.observe(frame);
+      if (doc.body) observer.observe(doc.body);
+    }
+
+    frame.addEventListener('load', onReady);
+    onReady();
+
+    new MutationObserver(holdStill).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  }
+
+  document.querySelectorAll('[data-cointerior-loop]').forEach(boot);
+</script>
+
+<style>
+  .cointerior-loop {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    container-type: inline-size;
+    background: #fbfaf5;
+  }
+  .cointerior-loop__frame {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: #fbfaf5;
+    /* 16:9 stage inside 12px page padding and the player's 1px border,
+       plus one control row. Two extra pixels keep a scrollbar from
+       narrowing the stage. The pixel height is the fallback when
+       container units are unavailable. */
+    height: 450px;
+    height: calc((100cqi - 26px) * 9 / 16 + 140px);
+    min-height: 300px;
+    overflow: hidden;
+  }
+  /* Desktop padding inside the film starts above 700px and needs 4px more. */
+  @container (width > 700px) {
+    .cointerior-loop__frame {
+      height: calc((100cqi - 26px) * 9 / 16 + 144px);
+    }
+  }
+  /* The button row wraps below 360px, and again while the replay label
+     is back but does not yet fit: wider than 410px, narrower than 428px. */
+  @container (max-width: 354px) {
+    .cointerior-loop__frame {
+      height: calc((100cqi - 26px) * 9 / 16 + 192px);
+    }
+  }
+  @container (410px < width < 428px) {
+    .cointerior-loop__frame {
+      height: calc((100cqi - 26px) * 9 / 16 + 192px);
+    }
+  }
+</style>

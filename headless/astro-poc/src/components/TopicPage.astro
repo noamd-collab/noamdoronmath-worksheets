@@ -6,6 +6,7 @@ import ConceptLoop from './ConceptLoop.astro';
 import LandingLoop from './LandingLoop.astro';
 import DistancePointsLoop from './DistancePointsLoop.astro';
 import TriangleAngleSumLoop from './TriangleAngleSumLoop.astro';
+import ParallelCointeriorLoop from './ParallelCointeriorLoop.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import { topicLandingLoop } from '../lib/landingLoops';
@@ -95,12 +96,16 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
    its explorer and also gets a CSS loop — the explorer glides once.
    analytic-geometry-grade-9 mounts DistancePointsLoop in this same slot.
    triangle-quadrilateral-angle-sum-grade-7 mounts the provided HTML film
-   (its own controls and angle readouts stay inside the iframe). */
+   (its own controls and angle readouts stay inside the iframe).
+   parallel-lines-angles-grade-8 mounts the co-interior angles film. */
 const landingLoop = topicLandingLoop(page);
 const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
 const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
 const filmLoop = landingLoop.kind === 'film';
-const bareFilm = filmLoop && landingLoop.marker === 'triangle-angle-sum-vertex-descent';
+const bareFilm =
+  filmLoop &&
+  (landingLoop.marker === 'triangle-angle-sum-vertex-descent' ||
+    landingLoop.marker === 'parallel-cointerior-angles');
 const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css' || filmLoop;
 const bodyStart = bodyUnits.findIndex((unit) => unit.kind !== 'intro' && unit.kind !== 'cta');
 const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
@@ -188,7 +193,12 @@ function faqHeadingId(groupIndex: number) {
             {landingLoop.kind === 'film' && landingLoop.marker === 'distance-between-points' && (
               <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />
             )}
-            {bareFilm && <TriangleAngleSumLoop src={landingLoop.src} marker={landingLoop.marker} />}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'triangle-angle-sum-vertex-descent' && (
+              <TriangleAngleSumLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'parallel-cointerior-angles' && (
+              <ParallelCointeriorLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
           </div>
           <div class="exact-topic-copy">
             {heroUnits.map((unit) => {
