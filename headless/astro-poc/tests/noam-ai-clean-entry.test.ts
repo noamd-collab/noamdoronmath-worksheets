@@ -40,6 +40,31 @@ describe('clean worksheet before Noam AI', () => {
     assert.match(viewer, /חזרה לדף הנקי/);
   });
 
+  it('names a merged phone pin by its questions and keeps report focus on the band', () => {
+    assert.ok(adapter);
+    const fn = adapter.match(/function questionHitName\(pin\)\{[\s\S]*?\n  \}/)?.[0];
+    assert.ok(fn, 'questionHitName');
+    const context: { result?: string[] } = {};
+    vm.createContext(context);
+    vm.runInContext(
+      `${fn}\nresult = [\n` +
+        `questionHitName({dataset:{label:'שאלות 1, 2 · בחירת שאלה וסעיף · נועם AI'}}),\n` +
+        `questionHitName({dataset:{label:'שאלה 1 · סעיף א · העזר בנועם AI'}}),\n` +
+        `questionHitName({dataset:{label:'שאלה 3 · בחירת שאלה וסעיף · נועם AI'}})\n` +
+        `];`,
+      context
+    );
+    assert.deepEqual(JSON.parse(JSON.stringify(context.result)), [
+      'פתיחת רמזי לשאלות 1, 2',
+      'פתיחת רמזי לשאלה 1 סעיף א',
+      'פתיחת רמזי לשאלה 3',
+    ]);
+    assert.match(adapter, /button\.hidden=!document\.querySelector\('\.noam-exercise-pin\.is-active'\)/);
+    assert.match(adapter, /selectManifestExercise=function\(exercise,pin\)/);
+    assert.match(adapter, /feedbackDialog\.addEventListener\('close'/);
+    assert.match(adapter, /restoreQuestionFocus\(\)/);
+  });
+
   it('uses one named question stop, a dark focus ring, and no page-wide touch-action lock', () => {
     assert.ok(adapter);
     assert.match(adapter, /פתיחת רמזי לשאלה/);

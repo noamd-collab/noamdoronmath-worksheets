@@ -8414,29 +8414,50 @@ function esc(s){
   }
   function questionHitName(pin){
     var raw=(pin&&pin.dataset.label)||'';
-    var match=raw.match(/שאלה\s+(\S+)(?:\s*·\s*סעיף\s+([^·]+))?/);
+    var match=raw.match(/(שאלה|שאלות)\s+(\d[\d,\s]*?)(?=\s*·|$)(?:\s*·\s*סעיף\s+([^·]+))?/);
     if(!match){return 'פתיחת רמזי לשאלה';}
-    var name='פתיחת רמזי לשאלה '+match[1].replace(/[·,]+$/,'').trim();
-    if(match[2]){name+=' סעיף '+match[2].trim();}
+    var name='פתיחת רמזי ל'+match[1]+' '+match[2].replace(/[\s,]+$/,'').trim();
+    if(match[3]){name+=' סעיף '+match[3].trim();}
     return name;
+  }
+  function focusQuestionBand(source){
+    var id=source&&source.dataset&&source.dataset.exerciseId;
+    if(!id){return;}
+    var hits=document.querySelectorAll('.exact-question-hit');
+    for(var i=0;i<hits.length;i++){
+      if(hits[i].dataset.exerciseId===id){
+        hits[i].focus({preventScroll:true});
+        return;
+      }
+    }
+  }
+  function restoreQuestionFocus(){
+    var focused=document.activeElement;
+    if(!focused||!focused.classList){return;}
+    if(!focused.classList.contains('noam-exercise-pin')&&!focused.classList.contains('noam-report-pin')){return;}
+    focusQuestionBand(focused);
   }
   function ensureReportControl(){
     var tools=panelBody.querySelector('.noam-thread-tools');
-    if(!tools||tools.querySelector('.exact-report')){return;}
-    var button=document.createElement('button');
-    button.type='button';
-    button.className='noam-link-button exact-report';
-    button.textContent='דיווח';
-    button.addEventListener('click',function(){
-      var active=document.querySelector('.noam-exercise-pin.is-active');
-      var id=active&&active.dataset.exerciseId;
-      if(!id){return;}
-      var reports=document.querySelectorAll('.noam-report-pin');
-      for(var i=0;i<reports.length;i++){
-        if(reports[i].dataset.exerciseId===id){reports[i].click();return;}
-      }
-    });
-    tools.appendChild(button);
+    if(!tools){return;}
+    var button=tools.querySelector('.exact-report');
+    if(!button){
+      button=document.createElement('button');
+      button.type='button';
+      button.className='noam-link-button exact-report';
+      button.textContent='דיווח';
+      button.addEventListener('click',function(){
+        var active=document.querySelector('.noam-exercise-pin.is-active');
+        var id=active&&active.dataset.exerciseId;
+        if(!id){return;}
+        var reports=document.querySelectorAll('.noam-report-pin');
+        for(var i=0;i<reports.length;i++){
+          if(reports[i].dataset.exerciseId===id){reports[i].click();return;}
+        }
+      });
+      tools.appendChild(button);
+    }
+    button.hidden=!document.querySelector('.noam-exercise-pin.is-active');
   }
   function layoutQuestionHits(){
     document.querySelectorAll('.pdf-page').forEach(function(page){
@@ -8546,6 +8567,7 @@ function esc(s){
         if(!keep[hit.dataset.exerciseId]){hit.remove();}
       });
     });
+    restoreQuestionFocus();
   }
   function layoutQuietPins(){
     function reportPin(page,pin){
@@ -8709,6 +8731,22 @@ function esc(s){
   if(reduced.addEventListener){reduced.addEventListener('change',schedule);}else{reduced.addListener(schedule);}
   Array.from(document.querySelectorAll('img.exact-ramzi-avatar')).forEach(function(img){mountAvatar(img,44);});
   var fabImg=fab.querySelector('img');if(fabImg){mountAvatar(fabImg,36);}
+  /* The released picker calls selectManifestExercise(exercise, null). Attach
+     the pin here so the panel report control has an active marker. */
+  if(typeof selectManifestExercise==='function'){
+    var releasedSelectManifestExercise=selectManifestExercise;
+    selectManifestExercise=function(exercise,pin){
+      if(!pin&&exercise&&typeof pdfPages!=='undefined'&&pdfPages){
+        pin=Array.from(pdfPages.querySelectorAll('.noam-exercise-pin')).find(function(item){
+          return (item.dataset.exerciseIds||'').split(' ').indexOf(exercise.id)!==-1;
+        })||null;
+      }
+      return releasedSelectManifestExercise(exercise,pin);
+    };
+  }
+  if(typeof feedbackDialog!=='undefined'&&feedbackDialog){
+    feedbackDialog.addEventListener('close',function(){restoreQuestionFocus();});
+  }
   sync();
 
 })();
