@@ -8731,22 +8731,33 @@ function esc(s){
   if(reduced.addEventListener){reduced.addEventListener('change',schedule);}else{reduced.addListener(schedule);}
   Array.from(document.querySelectorAll('img.exact-ramzi-avatar')).forEach(function(img){mountAvatar(img,44);});
   var fabImg=fab.querySelector('img');if(fabImg){mountAvatar(fabImg,36);}
-  /* The released picker calls selectManifestExercise(exercise, null). Attach
-     the pin here so the panel report control has an active marker. */
-  if(typeof selectManifestExercise==='function'){
-    var releasedSelectManifestExercise=selectManifestExercise;
-    selectManifestExercise=function(exercise,pin){
-      if(!pin&&exercise&&typeof pdfPages!=='undefined'&&pdfPages){
-        pin=Array.from(pdfPages.querySelectorAll('.noam-exercise-pin')).find(function(item){
-          return (item.dataset.exerciseIds||'').split(' ').indexOf(exercise.id)!==-1;
-        })||null;
-      }
-      return releasedSelectManifestExercise(exercise,pin);
-    };
-  }
-  if(typeof feedbackDialog!=='undefined'&&feedbackDialog){
-    feedbackDialog.addEventListener('close',function(){restoreQuestionFocus();});
-  }
+  /* Released scripts keep selectManifestExercise and the report dialog inside
+     their own function. A list choice passes no pin, so mark the matching pin
+     after that click. A re-render or a closed dialog focuses the hidden pin;
+     move that focus to the question band. */
+  document.addEventListener('focusin',function(event){
+    var el=event.target;
+    if(!el||!el.classList){return;}
+    if(!el.classList.contains('noam-exercise-pin')&&!el.classList.contains('noam-report-pin')){return;}
+    focusQuestionBand(el);
+  },true);
+  panelBody.addEventListener('click',function(event){
+    var choice=event.target&&event.target.closest&&event.target.closest('[data-exercise-id]');
+    if(!choice){return;}
+    var id=choice.getAttribute('data-exercise-id');
+    if(!id){return;}
+    var pins=document.querySelectorAll('.noam-exercise-pin');
+    var match=null;
+    for(var i=0;i<pins.length;i++){
+      if((pins[i].dataset.exerciseIds||'').split(' ').indexOf(id)!==-1){match=pins[i];break;}
+    }
+    if(!match){return;}
+    for(var j=0;j<pins.length;j++){
+      if(pins[j]!==match){pins[j].classList.remove('is-active');}
+    }
+    match.classList.add('is-active');
+    ensureReportControl();
+  });
   sync();
 
 })();
