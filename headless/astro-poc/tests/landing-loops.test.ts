@@ -68,6 +68,10 @@ describe('landing loop coverage', () => {
             src: '/loops/triangle-angle-sum-vertex-descent.html',
             marker: 'triangle-angle-sum-vertex-descent',
           },
+          'parallel-lines-angles-grade-8': {
+            src: '/loops/parallel-cointerior-angles.html',
+            marker: 'parallel-cointerior-angles',
+          },
         };
         assert.deepEqual(
           { src: loop.src, marker: loop.marker },
@@ -77,7 +81,7 @@ describe('landing loop coverage', () => {
       }
     }
     assert.equal(counts.concept + counts.css + counts.film, TOPIC_PAGE_SLUGS.length);
-    assert.equal(counts.film, 2);
+    assert.equal(counts.film, 3);
     assert.ok(counts.css > 0);
     assert.ok(counts.concept > 0);
   });
@@ -94,7 +98,11 @@ describe('landing loop coverage', () => {
     assert.equal(topicLandingLoop(loadTopicPage('square-root-grade-7')).variant, 'roots');
     assert.equal(topicLandingLoop(loadTopicPage('exponent-rules-grade-9')).variant, 'exp-rules');
     assert.equal(topicLandingLoop(loadTopicPage('multiplying-signed-numbers-grade-7')).variant, 'signed-mul');
-    assert.equal(topicLandingLoop(loadTopicPage('parallel-lines-angles-grade-8')).variant, 'parallel');
+    assert.deepEqual(topicLandingLoop(loadTopicPage('parallel-lines-angles-grade-8')), {
+      kind: 'film',
+      marker: 'parallel-cointerior-angles',
+      src: '/loops/parallel-cointerior-angles.html',
+    });
     assert.equal(topicLandingLoop(loadTopicPage('geometric-proof-grade-8')).variant, 'proof');
     assert.equal(topicLandingLoop(loadTopicPage('transition-to-high-school-grade-9')).variant, 'quad-factor');
     assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
@@ -114,6 +122,7 @@ describe('landing loop coverage', () => {
     assert.match(topic, /landingLoop\.kind === 'film' && landingLoop\.marker === 'distance-between-points'/);
     assert.match(topic, /<DistancePointsLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
     assert.match(topic, /<TriangleAngleSumLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /<ParallelCointeriorLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
     assert.match(loop, /data-landing-loop=\{variant\}/);
     assert.match(hub, /data-landing-loop=\{`grade-\$\{grade\}`\}/);
     assert.match(home, /data-landing-loop="hero"/);
@@ -198,7 +207,7 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 73);
+    assert.equal(cssPages, 72);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);

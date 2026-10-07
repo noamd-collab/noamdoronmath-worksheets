@@ -1,0 +1,101 @@
+---
+/**
+ * Grade 8 parallel-lines film: co-interior angles.
+ * The player, the 90s clock, and the explore slider stay in
+ * public/loops/parallel-cointerior-angles.html.
+ * This wrapper only frames that file.
+ */
+interface Props {
+  src: string;
+  marker: string;
+}
+const { src, marker } = Astro.props;
+const frameSrc = `${src}?embed=1`;
+---
+
+<div class="cointerior-loop" data-cointerior-loop data-landing-loop={marker}>
+  <iframe
+    class="cointerior-loop__frame"
+    src={frameSrc}
+    title="הקבלה וסכום זוויות"
+    loading="lazy"
+    data-cointerior-frame
+  ></iframe>
+</div>
+
+<script>
+  function boot(root) {
+    const frame = root.querySelector('[data-cointerior-frame]');
+    if (!frame) return;
+
+    function fit() {
+      let doc;
+      try { doc = frame.contentDocument; } catch { return; }
+      const main = doc?.querySelector('main');
+      if (!main) return;
+      const h = Math.ceil(main.getBoundingClientRect().height);
+      if (h > 200 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
+    }
+
+    function motionOff() {
+      const html = document.documentElement;
+      return html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion');
+    }
+
+    function holdStill() {
+      if (!motionOff()) return;
+      let doc;
+      try { doc = frame.contentDocument; } catch { return; }
+      const play = doc?.getElementById('play');
+      if (!play || play.disabled) return;
+      const label = play.getAttribute('aria-label') || '';
+      if (label.includes('השהי')) play.click();
+    }
+
+    let watching = false;
+    function onReady() {
+      let doc;
+      try { doc = frame.contentDocument; } catch { return; }
+      if (!doc?.querySelector('main')) return;
+      fit();
+      holdStill();
+      if (watching || !('ResizeObserver' in window)) return;
+      watching = true;
+      const observer = new ResizeObserver(fit);
+      observer.observe(frame);
+      if (doc.body) observer.observe(doc.body);
+    }
+
+    frame.addEventListener('load', onReady);
+    onReady();
+
+    new MutationObserver(holdStill).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  }
+
+  document.querySelectorAll('[data-cointerior-loop]').forEach(boot);
+</script>
+
+<style>
+  .cointerior-loop {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    container-type: inline-size;
+    background: #fbfaf5;
+  }
+  .cointerior-loop__frame {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: #fbfaf5;
+    /* 16:9 stage inside 12px page padding, plus the control panel.
+       The pixel height is the fallback when container units are unavailable. */
+    height: 560px;
+    height: calc((100cqi - 24px) * 0.5625 + 188px);
+    min-height: 320px;
+  }
+</style>
