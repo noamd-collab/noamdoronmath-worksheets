@@ -2824,7 +2824,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
   .exact-viewer.exact-narrow .exact-viewer-header,
   .exact-viewer .exact-viewer-header{
     grid-column:1;grid-row:1;align-self:stretch;justify-self:start;
-    gap:0;padding:0;padding-inline-start:max(8px,env(safe-area-inset-inline-start));
+    gap:0;padding-block:0;padding-inline:12px 8px;
     border-bottom:0;background:transparent;min-height:0;
   }
   .exact-viewer.exact-narrow .exact-viewer-header img,
@@ -2841,7 +2841,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
   }
   .exact-viewer .chip{
     grid-column:3;grid-row:1;align-self:center;justify-self:end;
-    min-height:0;margin-inline-end:max(8px,env(safe-area-inset-inline-end));
+    min-height:0;margin-inline:8px 12px;
     font-size:13px;
   }
   .exact-viewer .bar .spacer,
@@ -2849,7 +2849,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
   body.exact-viewer>.nl-viewer-progress{display:none}
   .exact-viewer .level-switch{
     grid-column:1/-1;grid-row:2;display:flex;flex-wrap:nowrap;gap:4px;
-    min-width:0;padding:2px max(8px,env(safe-area-inset-inline-end)) 2px max(8px,env(safe-area-inset-inline-start));
+    min-width:0;padding-block:0;padding-inline:12px;
   }
   .exact-viewer .level-link{
     flex:1 1 0;min-width:0;min-height:44px;padding:4px 6px;font-size:13px;
@@ -2858,7 +2858,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
   .exact-viewer.noam-ai-on .noam-ai-entry{
     grid-column:1/-1;grid-row:3;
     display:flex;flex-wrap:nowrap;align-items:stretch;gap:4px;
-    padding:2px max(8px,env(safe-area-inset-inline-end)) 4px max(8px,env(safe-area-inset-inline-start));
+    padding-block:0;padding-inline:12px;
     border-bottom:1px solid #d5dbe6;background:#fbfaf5;
   }
   .exact-viewer .noam-print-callout,
@@ -2899,6 +2899,9 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
     display:block;padding:0;border:0;background:transparent;max-height:none;
   }
   .exact-viewer .phone-tools-menu .nl-viewer-progress>summary{padding:0 8px}
+  .exact-viewer .phone-tools-menu .nl-viewer-progress>summary:focus-visible{
+    outline:3px solid #22305a;outline-offset:2px;
+  }
   /* Author display rules would otherwise paint the closed progress body. */
   .exact-viewer .phone-tools-menu .nl-viewer-progress:not([open])>:not(summary){display:none}
   .exact-viewer .exact-mobile-tabs{grid-column:1/-1;grid-row:4}
@@ -8941,10 +8944,11 @@ function esc(s){
       var actionable=event.target.closest&&event.target.closest('a.btn, #pdfToolsToggle, a.nl-viewer-link');
       if(actionable){phoneTools.open=false;}
     });
+    /* Capture: question hits and report pins stopPropagation, so a bubble listener never runs. */
     document.addEventListener('click',function(event){
       if(!phoneTools.open||phoneTools.contains(event.target)){return;}
       phoneTools.open=false;
-    });
+    },true);
     document.addEventListener('keydown',function(event){
       if(event.key!=='Escape'||!phoneTools.open){return;}
       phoneTools.open=false;
