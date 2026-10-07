@@ -170,8 +170,8 @@
     function syncPlaybackButton(playing) {
       if (playing === wasPlaying) return;
       wasPlaying = playing;
-      byId('play-icon').hidden = playing;
-      byId('pause-icon').hidden = !playing;
+      byId('play-icon').toggleAttribute('hidden', playing);
+      byId('pause-icon').toggleAttribute('hidden', !playing);
       byId('play-label').textContent = playing ? 'השהיה' : 'נגינה';
       playButton.setAttribute('aria-label', playing ? 'השהיית הסרטון' : 'הפעלת הסרטון');
     }

@@ -35,6 +35,10 @@ describe('parallel co-interior angles film', () => {
     assert.match(film, /<option value="0\.75">0\.75×<\/option>/);
     assert.match(film, /<option value="1">1×<\/option>/);
     assert.match(film, /<option value="1\.25">1\.25×<\/option>/);
+    assert.match(film, /byId\('play-icon'\)\.toggleAttribute\('hidden', playing\)/);
+    assert.match(film, /byId\('pause-icon'\)\.toggleAttribute\('hidden', !playing\)/);
+    assert.equal(film.includes("play-icon').hidden"), false);
+    assert.equal(film.includes("pause-icon').hidden"), false);
     assert.match(film, /id="seek"/);
     assert.match(film, /id="explore"/);
     assert.match(film, /id="tilt"/);
