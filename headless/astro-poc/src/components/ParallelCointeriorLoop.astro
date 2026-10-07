@@ -45,12 +45,12 @@ const frameSrc = `${src}?embed=1`;
 
     function holdStill() {
       if (!motionOff()) return;
-      let doc;
-      try { doc = frame.contentDocument; } catch { return; }
-      const play = doc?.getElementById('play');
-      if (!play || play.disabled) return;
-      const label = play.getAttribute('aria-label') || '';
-      if (label.includes('השהי')) play.click();
+      try {
+        const player = frame.contentWindow;
+        const s = player?.mathScene
+          ?? frame.contentDocument?.getElementById('film')?.contentWindow?.mathScene;
+        if (s?.isPlaying?.()) s.pause();
+      } catch { return; }
     }
 
     let watching = false;
@@ -98,18 +98,18 @@ const frameSrc = `${src}?embed=1`;
        narrowing the stage. The pixel height is the fallback when
        container units are unavailable. */
     height: 450px;
-    height: calc((100cqi - 26px) * 9 / 16 + 140px);
+    height: calc((100cqi - 26px) * 9 / 16 + 144px);
     min-height: 300px;
     overflow: hidden;
   }
-  /* The button row wraps below 360px, and again from the film's 410px
-     breakpoint until the replay label fits back on one row. */
+  /* The button row wraps below 360px, and again from 410px through 426px,
+     where the replay label is back and does not yet fit on one row. */
   @container (max-width: 354px) {
     .cointerior-loop__frame {
       height: calc((100cqi - 26px) * 9 / 16 + 192px);
     }
   }
-  @container (min-width: 410px) and (max-width: 428px) {
+  @container (min-width: 410px) and (max-width: 426px) {
     .cointerior-loop__frame {
       height: calc((100cqi - 26px) * 9 / 16 + 192px);
     }
