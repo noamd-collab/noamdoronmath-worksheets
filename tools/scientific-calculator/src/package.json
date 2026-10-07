@@ -2,7 +2,7 @@
   "name": "noam-scientific-calculator",
   "private": true,
   "version": "0.3.0",
-  "description": "Independent natural-display learning calculator",
+  "description": "Independent math-display learning calculator",
   "dependencies": {
     "mathjs": "15.2.0"
   },

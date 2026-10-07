@@ -47,7 +47,7 @@ function key([id,label,shift='',alpha='',extra='',base='']){
 const definitions=`<svg class="device-defs" aria-hidden="true" width="0" height="0"><defs><linearGradient id="cap-science" x2="0" y2="1"><stop offset="0" stop-color="#35373b"/><stop offset=".18" stop-color="#292b30"/><stop offset=".68" stop-color="#1d1f24"/><stop offset="1" stop-color="#0d0f13"/></linearGradient><linearGradient id="cap-ivory" x2="0" y2="1"><stop offset="0" stop-color="#f5f8fb"/><stop offset=".6" stop-color="#e7eef3"/><stop offset="1" stop-color="#c9d5de"/></linearGradient><linearGradient id="cap-orange" x2="0" y2="1"><stop offset="0" stop-color="#d4537a"/><stop offset=".55" stop-color="#b83a62"/><stop offset="1" stop-color="#8c2348"/></linearGradient></defs></svg>`;
 const html=`<style>${fs.readFileSync(path.join(__dirname,'device.css'),'utf8')}</style>
 <main class="calculator-page" aria-label="מחשבון מדעי">
-<div class="device-stage"><section id="sci-calc" class="device-shell" dir="ltr" aria-label="מחשבון מדעי דמוי סטנדרטית">
+<div class="device-stage"><section id="sci-calc" class="device-shell" dir="ltr" aria-label="מחשבון מדעי מתקדם">
  ${definitions}
  <header class="device-brand"><div class="brand-name">noamdoronmath</div></header>
  <div class="lcd-bezel"><div class="lcd" aria-label="מסך המחשבון"><div id="lcd-status" aria-live="off">D <span>Math</span></div><input id="lcd-input" type="text" inputmode="none" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="ביטוי לחישוב" dir="ltr"><div id="lcd-expression" aria-label="ביטוי מתמטי"></div><div id="lcd-result" aria-label="תוצאה">0</div><div id="lcd-menu" hidden></div></div></div>
@@ -55,7 +55,7 @@ const html=`<style>${fs.readFileSync(path.join(__dirname,'device.css'),'utf8')}<
  <div class="science-keypad" role="group" aria-label="מקשי מדע וזיכרון">${keys.map(key).join('')}</div>
  <div class="number-keypad" role="group" aria-label="מקשי ספרות וחשבון">${numbers.map(key).join('')}</div>
 </section></div>
-<p class="device-caption" dir="rtl">מחשבון מדעי דמוי סטנדרטית · נועם דורון</p>
+<p class="device-caption" dir="rtl">מחשבון מדעי מתקדם · נועם דורון</p>
 <details class="device-help" dir="rtl"><summary>עזרה בהפעלה</summary><p>לחצו על המקשים כמו במחשבון מדעי: SHIFT לפעולות המשניות, ALPHA לאותיות, MODE לבחירת מצב ו־SHIFT ואז MODE להגדרות. אפשר גם להקליד מהמקלדת ולחשב עם Enter.</p><p>זהו כלי תרגול עצמאי בדפדפן. החיצים מזיזים את הסמן בתוך הביטוי ומחזירים חישובים קודמים. F↔D מחליף בין תצוגה מדויקת לעשרונית.</p></details>
 <div id="calc-announcer" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
 </main>`;

@@ -1,6 +1,6 @@
 # Scientific calculator
 
-Independent educational browser calculator for Noam Doron Math. The shell is a generic natural-display layout: a teal case, a short wordmark, and ordinary scientific keys. It is not a copy of any commercial product, and it does not include firmware, a ROM, or brand artwork.
+Independent educational browser calculator for Noam Doron Math. The shell is a generic math-display layout: a teal case, a short wordmark, and ordinary scientific keys. It is not a copy of any commercial product, and it does not include firmware, a ROM, or brand artwork.
 
 ## Use and maintenance
 
