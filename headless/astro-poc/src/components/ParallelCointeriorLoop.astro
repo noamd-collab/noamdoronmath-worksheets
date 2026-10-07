@@ -98,18 +98,24 @@ const frameSrc = `${src}?embed=1`;
        narrowing the stage. The pixel height is the fallback when
        container units are unavailable. */
     height: 450px;
-    height: calc((100cqi - 26px) * 9 / 16 + 144px);
+    height: calc((100cqi - 26px) * 9 / 16 + 140px);
     min-height: 300px;
     overflow: hidden;
   }
-  /* The button row wraps below 360px, and again from 410px through 426px,
-     where the replay label is back and does not yet fit on one row. */
+  /* Desktop padding inside the film starts above 700px and needs 4px more. */
+  @container (width > 700px) {
+    .cointerior-loop__frame {
+      height: calc((100cqi - 26px) * 9 / 16 + 144px);
+    }
+  }
+  /* The button row wraps below 360px, and again while the replay label
+     is back but does not yet fit: wider than 410px, narrower than 428px. */
   @container (max-width: 354px) {
     .cointerior-loop__frame {
       height: calc((100cqi - 26px) * 9 / 16 + 192px);
     }
   }
-  @container (min-width: 410px) and (max-width: 426px) {
+  @container (410px < width < 428px) {
     .cointerior-loop__frame {
       height: calc((100cqi - 26px) * 9 / 16 + 192px);
     }
