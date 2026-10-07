@@ -1,5 +1,5 @@
-/* Independent fx-82MS 2nd edition practice model. No Casio firmware or assets.
- * Input precedence and key sequences: official S-V.P.A.M. User's Guide (2018/2024).
+/* Independent two-line scientific practice model. No firmware or brand assets.
+ * Input precedence follows ordinary scientific-calculator conventions.
  */
 function createMS82(engine, algorithms, saved) {
   'use strict';

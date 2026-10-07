@@ -10,7 +10,7 @@
       "public/worksheet-viewer-noam.html — exercise viewer; no BaseLayout",
       "public/learning.html and learning UI — no BaseLayout doodle injection",
       "Printed PDFs / @media print — site doodles display:none",
-      "Static tools under public/ (fx-82ms etc.) — outside Astro shell"
+      "Static tools under public/ — outside Astro shell"
     ]
   },
   "motifs": [

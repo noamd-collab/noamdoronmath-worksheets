@@ -1,6 +1,5 @@
-/* Physical-key controller for the independent ES PLUS-style web calculator.
+/* Physical-key controller for the independent math-display web calculator.
  * No firmware is used. Arithmetic lives in core.js; mode flows in modes.js.
- * Reference: Casio fx-570ES PLUS / fx-991ES PLUS (2nd edition) User's Guide.
  */
 (function (global) {
   'use strict';
@@ -71,7 +70,7 @@
     } catch (_) { return '<span class="lcd-linear">'+(cursorPosition>=0?escape(original.slice(0,cursorPosition))+'<span class="lcd-cursor">▏</span>'+escape(original.slice(cursorPosition)):escape(original))+'</span>'; }
   }
 
-  function createCasioDevice(options) {
+  function createScientificDevice(options) {
     const root = options.root, doc = root.ownerDocument, win = doc.defaultView || global;
     const $ = id => root.querySelector('#'+id);
     const math = options.math || global.math;
@@ -87,7 +86,7 @@
     let fitFrame=null,fitObserver=null,destroyed=false;
     const fitOriginalStyles=new WeakMap();
     const storage = options.storage === undefined ? (()=>{try{return win.localStorage;}catch(_){return null;}})() : options.storage;
-    const storageKey = 'noam-casio-esplus-v1';
+    const storageKey = 'noam-sci-calc-v1';
     function persist() {
       if (!storage) return;
       try {storage.setItem(storageKey,JSON.stringify({settings:Object.fromEntries(Object.keys(DEFAULTS).map(k=>[k,state[k]])),scope:state.scope}));}catch(_){}
@@ -330,7 +329,7 @@
       const setDisplay=(display,mathOutput)=>{if(display!==state.display&&modes&&modes.resetTable)modes.resetTable();state.display=display;state.mathOutput=mathOutput;closeMenu();render();persist();};
       if(page===1){showMenu('SETUP ▼',[{label:'ab/c',action:set('mixed',true)},{label:'d/c',action:set('mixed',false)},{label:'CMPLX',action:()=>showMenu('CMPLX',[{label:'a+bi',action:set('complex','rect')},{label:'r∠θ',action:set('complex','polar')}])},{label:'STAT',action:()=>showMenu('FREQ',[{label:'ON',action:set('freq',true)},{label:'OFF',action:set('freq',false)}])},{label:'Disp',action:()=>showMenu('Decimal',[{label:'Dot',action:set('decimal','dot')},{label:'Comma',action:set('decimal','comma')}])},{label:'◀ CONT ▶',action:()=>{menu={type:'contrast',title:'Contrast'};menuEl.innerHTML='<div class="lcd-menu-title">Contrast</div><div class="lcd-prompt-help">◀ Light · Dark ▶ · AC</div>';renderStatus();}}]);menu.setupPage=1;return;}
       function digits(kind){showInput(kind+' 0–9','',v=>{if(!/^\d$/.test(v))throw new Error('Enter one digit from 0 to 9.');state.format=kind.toLowerCase();state.digits=+v||(kind==='Sci'?10:0);closeMenu();render();persist();});menu.autoDigits=1;}
-      showMenu('SETUP',[{label:'MthIO',action:()=>setDisplay('math',true)},{label:'LineIO',action:()=>setDisplay('line',false)},{label:'Deg',action:set('angle','deg')},{label:'Rad',action:set('angle','rad')},{label:'Gra',action:set('angle','gra')},{label:'Fix',action:()=>digits('Fix')},{label:'Sci',action:()=>digits('Sci')},{label:'Norm',action:()=>showMenu('Norm',[{label:'Norm 1',action:set('format','norm')},{label:'Norm 2',action:set('format','norm2')}])}]);menu.setupPage=0;
+      showMenu('SETUP',[{label:'Math',action:()=>setDisplay('math',true)},{label:'Line',action:()=>setDisplay('line',false)},{label:'Deg',action:set('angle','deg')},{label:'Rad',action:set('angle','rad')},{label:'Gra',action:set('angle','gra')},{label:'Fix',action:()=>digits('Fix')},{label:'Sci',action:()=>digits('Sci')},{label:'Norm',action:()=>showMenu('Norm',[{label:'Norm 1',action:set('format','norm')},{label:'Norm 2',action:set('format','norm2')}])}]);menu.setupPage=0;
     }
     function resetMenu(){showMenu('CLR',[{label:'Setup',action:()=>confirmReset('Setup')},{label:'Memory',action:()=>confirmReset('Memory')},{label:'All',action:()=>confirmReset('All')}]);}
     function confirmReset(kind){showInput('Reset '+kind+'? = Yes','',()=>{if(kind==='Setup'||kind==='All'){Object.assign(state,DEFAULTS);if(modes&&modes.resetTable)modes.resetTable();}if(kind==='Memory'||kind==='All'){state.scope={A:0,B:0,C:0,D:0,E:0,F:0,X:0,Y:0,M:0,Ans:0};state.stats=null;state.baseResult=null;}state.history=[];if(modes)modes.exit();clear();persist();announce('Reset '+kind);});}
@@ -446,8 +445,8 @@
     input.addEventListener('select',renderNatural);input.setAttribute('autocomplete','off');input.setAttribute('spellcheck','false');input.setAttribute('maxlength','1000');input.setAttribute('dir','ltr');
     input.value='';render();touch();
     const device={press:key=>protect(()=>keyPress(String(key))),state,engine,alg,natural,setExpression,calculate:()=>protect(calculate),showMenu,showInput,showValue,render,fitExpression,mathMarkup:source=>mathMarkup(math,engine,source),get menu(){return menu;},get error(){return errorState&&errorState.error;},destroy(){destroyed=true;if(autoOff)win.clearTimeout(autoOff);if(fitFrame!==null&&win.cancelAnimationFrame)win.cancelAnimationFrame(fitFrame);if(fitObserver)fitObserver.disconnect();else win.removeEventListener('resize',scheduleExpressionFit);root.removeEventListener('click',click);root.removeEventListener('keydown',keyboard);persist();}};
-    root.casioDevice=device;return device;
+    root.sciDevice=device;return device;
   }
-  if(typeof module!=='undefined'&&module.exports)module.exports={createCasioDevice,mathMarkup};
-  else {global.createCasioDevice=createCasioDevice;const boot=()=>{const root=global.document.getElementById('casio-calc');if(root&&!root.casioDevice)global.casioDevice=createCasioDevice({root});};if(global.document.readyState==='loading')global.document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();}
+  if(typeof module!=='undefined'&&module.exports)module.exports={createScientificDevice,mathMarkup};
+  else {global.createScientificDevice=createScientificDevice;const boot=()=>{const root=global.document.getElementById('sci-calc');if(root&&!root.sciDevice)global.sciDevice=createScientificDevice({root});};if(global.document.readyState==='loading')global.document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();}
 })(typeof window!=='undefined'?window:globalThis);
