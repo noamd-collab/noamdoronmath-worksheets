@@ -135,7 +135,7 @@ training('manual repeated immediate square does not add a second exponent',({dev
  press('2','square','square','equals');assert.equal(device.state.last,4);
 });
 
-training('natural display selects MthIO directly from SETUP',({device,press})=>{
+training('math display selects Math directly from SETUP',({device,press})=>{
  press('shift','mode','2');assert.equal(device.state.display,'line');
  press('shift','mode','1');assert.equal(device.menu,null);assert.equal(device.state.display,'math');
 });

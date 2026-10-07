@@ -1,6 +1,6 @@
 # Two-line scientific practice calculator
 
-A second, independent calculator for the Noam Doron math-tools page. The selector in `../scientific-calculator/calculators.html` keeps the natural-display calculator as its default. Each calculator lives in its own iframe; changing tabs retains the current expressions, results and memories without reloading either one.
+A second, independent calculator for the Noam Doron math-tools page. The selector in `../scientific-calculator/calculators.html` keeps the math-display calculator as its default. Each calculator lives in its own iframe; changing tabs retains the current expressions, results and memories without reloading either one.
 
 The public folder name is unchanged so existing links keep working. That folder name still contains a retired model token. It is called out in the cleanup report so it can be renamed later with a redirect.
 
@@ -16,7 +16,7 @@ The public folder name is unchanged so existing links keep working. That folder 
 - MODE/CLR, Deg/Rad/Gra, Fix/Sci/Norm, fraction format, decimal separator, contrast and OFF/ON.
 - Accessible tabs, keyboard operation, visible focus, reduced motion, screen-reader output and Hebrew help.
 
-The two-line controller uses its own input model and explicit precedence. It does not reuse the natural-display editor or its mode menus. The restricted arithmetic engine and statistics algorithms are reused as numerical primitives.
+The two-line controller uses its own input model and explicit precedence. It does not reuse the math-display editor or its mode menus. The restricted arithmetic engine and statistics algorithms are reused as numerical primitives.
 
 ## Reproduce
 

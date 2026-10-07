@@ -27,6 +27,11 @@ const patterns = [
   /two\s*way\s*power/i,
   /natural-v/i,
   /s-v\.p/i,
+  /natural[-\s]?display/i,
+  /natural[-\s]?textbook/i,
+  /דמוי סטנדרטית/,
+  /mthio/i,
+  /lineio/i,
 ];
 
 function scrubPathToken(text) {

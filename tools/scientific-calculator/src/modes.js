@@ -1,4 +1,4 @@
-/* LCD workflows for the natural-display scientific calculator.
+/* LCD workflows for the math-display scientific calculator.
  * Independent calculator implementation; no firmware or external requests.
  * The device controller owns drawing, editable fields and numbered menu keys.
  */
