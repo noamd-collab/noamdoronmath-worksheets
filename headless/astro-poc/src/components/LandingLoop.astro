@@ -5,11 +5,14 @@
  * Reduced motion, html.nd-motion-off, and html.noam-a11y-motion hold a
  * finished frame. A tiny observer pauses the loop while it is off-screen.
  */
+import AbsoluteValueFilm from './AbsoluteValueFilm.astro';
+import LessonFilm from './LessonFilm.astro';
 import LoopFormula from './LoopFormula.astro';
 import LoopSketch from './LoopSketch.astro';
 import {
   CSS_LOOP_IDEAS,
   FORMULA_LOOP_VARIANTS,
+  LESSON_LOOP_VARIANTS,
   type CssLoopVariant,
 } from '../lib/landingLoops';
 
@@ -18,8 +21,14 @@ interface Props {
 }
 const { variant } = Astro.props;
 const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
+const isLesson = (LESSON_LOOP_VARIANTS as readonly string[]).includes(variant);
 ---
 
+{variant === 'absolute' ? (
+  <AbsoluteValueFilm />
+) : isLesson ? (
+  <LessonFilm variant={variant} />
+) : (
 <div
   class:list={['ll', `ll--${variant}`]}
   dir="ltr"
@@ -30,6 +39,7 @@ const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
 >
   {formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}
 </div>
+)}
 
 <script>
   const root = document.documentElement;

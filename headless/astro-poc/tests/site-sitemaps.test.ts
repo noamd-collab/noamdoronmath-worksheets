@@ -88,6 +88,7 @@ describe('site sitemaps /sitemap-pages.xml + /sitemap-index.xml', () => {
     const paths = listMainPagePaths(keys);
     assert.equal(paths.includes('/404'), false);
     assert.equal(paths.includes('/dev-loops'), false);
+    assert.equal(paths.includes('/loop-compare'), false);
     assert.equal(paths.filter((p) => p === '/').length, 1);
   });
 
