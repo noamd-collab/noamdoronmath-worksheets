@@ -82,6 +82,9 @@ describe('parallel co-interior angles film', () => {
     assert.match(shell, /min-width:\s*0/);
     assert.match(shell, /width:\s*100%/);
     assert.match(shell, /title="הקבלה וסכום זוויות"/);
+    assert.match(shell, /scrolling="no"/);
+    assert.match(shell, /calc\(\(100cqi - 26px\) \* 9 \/ 16 \+ 140px\)/);
+    assert.match(shell, /@container \(max-width: 354px\)/);
     assert.equal(shell.includes('display:none'), false);
     assert.equal(shell.includes('.controls'), false);
     assert.equal(shell.includes('capture=1'), false);

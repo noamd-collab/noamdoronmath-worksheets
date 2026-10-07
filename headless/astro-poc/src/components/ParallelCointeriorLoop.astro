@@ -19,6 +19,7 @@ const frameSrc = `${src}?embed=1`;
     src={frameSrc}
     title="הקבלה וסכום זוויות"
     loading="lazy"
+    scrolling="no"
     data-cointerior-frame
   ></iframe>
 </div>
@@ -92,10 +93,25 @@ const frameSrc = `${src}?embed=1`;
     max-width: 100%;
     border: 0;
     background: #fbfaf5;
-    /* 16:9 stage inside 12px page padding, plus the control panel.
-       The pixel height is the fallback when container units are unavailable. */
-    height: 560px;
-    height: calc((100cqi - 24px) * 0.5625 + 188px);
-    min-height: 320px;
+    /* 16:9 stage inside 12px page padding and the player's 1px border,
+       plus one control row. Two extra pixels keep a scrollbar from
+       narrowing the stage. The pixel height is the fallback when
+       container units are unavailable. */
+    height: 450px;
+    height: calc((100cqi - 26px) * 9 / 16 + 140px);
+    min-height: 300px;
+    overflow: hidden;
+  }
+  /* The button row wraps below 360px, and again from the film's 410px
+     breakpoint until the replay label fits back on one row. */
+  @container (max-width: 354px) {
+    .cointerior-loop__frame {
+      height: calc((100cqi - 26px) * 9 / 16 + 192px);
+    }
+  }
+  @container (min-width: 410px) and (max-width: 428px) {
+    .cointerior-loop__frame {
+      height: calc((100cqi - 26px) * 9 / 16 + 192px);
+    }
   }
 </style>
