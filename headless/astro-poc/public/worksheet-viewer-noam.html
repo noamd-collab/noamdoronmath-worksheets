@@ -2296,14 +2296,13 @@ body.exact-viewer{
 .exact-viewer .exact-compose .noam-input-actions:not(:has(>button:not([hidden]))){display:none}
 .exact-viewer .exact-compose .noam-input-spacer{display:none}
 .exact-viewer .exact-message-row{
-  display:flex;align-items:flex-end;gap:6px;border:2px solid #22305a;
-  border-radius:14px 6px 16px 7px / 7px 16px 6px 14px;padding:5px;background:#fff;
+  display:flex;align-items:center;gap:8px;border:0;border-radius:0;padding:0;background:transparent;box-shadow:none;
 }
-.exact-viewer .exact-message-row:focus-within{outline:3px solid #22305a;outline-offset:2px}
+.exact-viewer .exact-message-row:focus-within{outline:0}
 .exact-viewer .exact-message-row textarea{
-  flex:1;min-width:0;width:auto;resize:none;border:0;border-radius:8px;
-  font:16px/1.55 Heebo,'Heebo Fallback',sans-serif;color:#22305a;background:transparent;padding:10px 6px;
-  min-height:44px;max-height:120px;margin:0;
+  flex:1;min-width:0;width:auto;resize:none;border:2px solid #22305a;border-radius:12px;
+  font:16px/1.55 Heebo,'Heebo Fallback',sans-serif;color:#22305a;background:#fffaf3;padding:10px 12px;
+  min-height:52px;max-height:120px;margin:0;box-shadow:none;
 }
 .exact-viewer .exact-message-row .noam-send{
   width:44px;height:44px;min-width:44px;flex:none;display:inline-flex;align-items:center;
@@ -2344,7 +2343,7 @@ body.exact-viewer{
 .exact-viewer.exact-narrow.exact-help-active .nl-viewer-progress{visibility:hidden;pointer-events:none}
 .exact-viewer.exact-narrow.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
 .exact-viewer .panel.is-short .noam-compose.exact-compose{display:flex;gap:0}
-.exact-viewer .panel.is-short .exact-message-row textarea{height:44px;min-height:44px}
+.exact-viewer .panel.is-short .exact-message-row textarea{height:auto;min-height:48px}
 .exact-viewer .panel.is-short .exact-hint-row{padding-block:4px}
 html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-behavior:auto!important}
 
@@ -2724,13 +2723,20 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
   border:0;border-top:1px solid #d5dbe6;border-radius:0;padding:8px 12px 8px;box-shadow:none;
 }
 .exact-viewer .exact-message-row{
-  border:1px solid #d5dbe6;border-radius:12px;box-shadow:none;padding:4px;background:#fff;
+  border:0;border-radius:0;box-shadow:none;padding:0;background:transparent;align-items:center;gap:8px;
 }
-.exact-viewer .exact-message-row:focus-within{outline:3px solid #22305a;outline-offset:2px}
+.exact-viewer .exact-message-row:focus-within{outline:0}
 .exact-viewer .exact-message-row textarea,
 .exact-viewer .panel.is-short .exact-message-row textarea{
-  height:auto;min-height:44px;max-height:8em;overflow:auto;
+  height:auto;min-height:52px;max-height:8em;overflow:auto;
+  border:2px solid #22305a;border-radius:12px;background:#fffaf3;padding:10px 12px;box-shadow:none;
   font:400 16px/1.5 Heebo,'Heebo Fallback',sans-serif;color:#22305a;
+}
+.exact-viewer .panel.is-short .exact-message-row textarea{min-height:48px}
+.exact-viewer .exact-message-row textarea::placeholder{color:#3d4870;opacity:1}
+.exact-viewer .exact-message-row textarea:focus,
+.exact-viewer .exact-message-row textarea:focus-visible{
+  outline:3px solid #22305a;outline-offset:2px;box-shadow:none;
 }
 .exact-viewer .exact-message-row .noam-send{
   width:44px;height:44px;border:0;border-radius:12px;background:#1e605e;color:#fff;box-shadow:none;
