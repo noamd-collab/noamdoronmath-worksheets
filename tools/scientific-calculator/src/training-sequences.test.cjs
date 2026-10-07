@@ -8,7 +8,7 @@ const os=require('node:os');
 const path=require('node:path');
 const {execFileSync}=require('node:child_process');
 const {JSDOM}=require('jsdom');
-const buildDir=fs.mkdtempSync(path.join(os.tmpdir(),'casio-training-'));
+const buildDir=fs.mkdtempSync(path.join(os.tmpdir(),'sci-training-'));
 execFileSync(process.execPath,[path.join(__dirname,'build.cjs'),buildDir]);
 const html=fs.readFileSync(path.join(buildDir,'index.html'),'utf8');
 test.after(()=>fs.rmSync(buildDir,{recursive:true,force:true}));
@@ -18,13 +18,13 @@ async function training(name,run){
   const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://calculator.test/',pretendToBeVisual:true});
   try{
    if(dom.window.document.readyState==='loading')await new Promise(resolve=>dom.window.document.addEventListener('DOMContentLoaded',resolve,{once:true}));
-   const doc=dom.window.document,device=dom.window.casioDevice;
+   const doc=dom.window.document,device=dom.window.sciDevice;
    assert.ok(device,'The published bundle must initialize');
    const press=(...keys)=>{for(const key of keys){const button=doc.querySelector('[data-key="'+key+'"]');assert.ok(button,'Physical key '+key);button.click();assert.equal(device.error,null,'No calculator error after '+key);}};
    const caret=()=>doc.querySelector('#lcd-expression [data-caret]');
    const visibleResult=()=>{const result=doc.querySelector('#lcd-result');return !result.hidden&&dom.window.getComputedStyle(result).visibility!=='hidden'&&dom.window.getComputedStyle(result).display!=='none';};
    await run({doc,device,press,caret,visibleResult});
-  }finally{dom.window.casioDevice?.destroy();dom.window.close();}
+  }finally{dom.window.sciDevice?.destroy();dom.window.close();}
  });
 }
 
@@ -135,7 +135,7 @@ training('manual repeated immediate square does not add a second exponent',({dev
  press('2','square','square','equals');assert.equal(device.state.last,4);
 });
 
-training('original silver PLUS selects MthIO directly from SETUP',({device,press})=>{
+training('natural display selects MthIO directly from SETUP',({device,press})=>{
  press('shift','mode','2');assert.equal(device.state.display,'line');
  press('shift','mode','1');assert.equal(device.menu,null);assert.equal(device.state.display,'math');
 });

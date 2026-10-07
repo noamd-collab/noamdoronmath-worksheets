@@ -1,6 +1,5 @@
-/* Physical-key controller for the independent ES PLUS-style web calculator.
+/* Physical-key controller for the independent natural-display web calculator.
  * No firmware is used. Arithmetic lives in core.js; mode flows in modes.js.
- * Reference: Casio fx-570ES PLUS / fx-991ES PLUS (2nd edition) User's Guide.
  */
 (function (global) {
   'use strict';
@@ -71,7 +70,7 @@
     } catch (_) { return '<span class="lcd-linear">'+(cursorPosition>=0?escape(original.slice(0,cursorPosition))+'<span class="lcd-cursor">▏</span>'+escape(original.slice(cursorPosition)):escape(original))+'</span>'; }
   }
 
-  function createCasioDevice(options) {
+  function createScientificDevice(options) {
     const root = options.root, doc = root.ownerDocument, win = doc.defaultView || global;
     const $ = id => root.querySelector('#'+id);
     const math = options.math || global.math;
@@ -87,7 +86,7 @@
     let fitFrame=null,fitObserver=null,destroyed=false;
     const fitOriginalStyles=new WeakMap();
     const storage = options.storage === undefined ? (()=>{try{return win.localStorage;}catch(_){return null;}})() : options.storage;
-    const storageKey = 'noam-casio-esplus-v1';
+    const storageKey = 'noam-sci-calc-v1';
     function persist() {
       if (!storage) return;
       try {storage.setItem(storageKey,JSON.stringify({settings:Object.fromEntries(Object.keys(DEFAULTS).map(k=>[k,state[k]])),scope:state.scope}));}catch(_){}
@@ -446,8 +445,8 @@
     input.addEventListener('select',renderNatural);input.setAttribute('autocomplete','off');input.setAttribute('spellcheck','false');input.setAttribute('maxlength','1000');input.setAttribute('dir','ltr');
     input.value='';render();touch();
     const device={press:key=>protect(()=>keyPress(String(key))),state,engine,alg,natural,setExpression,calculate:()=>protect(calculate),showMenu,showInput,showValue,render,fitExpression,mathMarkup:source=>mathMarkup(math,engine,source),get menu(){return menu;},get error(){return errorState&&errorState.error;},destroy(){destroyed=true;if(autoOff)win.clearTimeout(autoOff);if(fitFrame!==null&&win.cancelAnimationFrame)win.cancelAnimationFrame(fitFrame);if(fitObserver)fitObserver.disconnect();else win.removeEventListener('resize',scheduleExpressionFit);root.removeEventListener('click',click);root.removeEventListener('keydown',keyboard);persist();}};
-    root.casioDevice=device;return device;
+    root.sciDevice=device;return device;
   }
-  if(typeof module!=='undefined'&&module.exports)module.exports={createCasioDevice,mathMarkup};
-  else {global.createCasioDevice=createCasioDevice;const boot=()=>{const root=global.document.getElementById('casio-calc');if(root&&!root.casioDevice)global.casioDevice=createCasioDevice({root});};if(global.document.readyState==='loading')global.document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();}
+  if(typeof module!=='undefined'&&module.exports)module.exports={createScientificDevice,mathMarkup};
+  else {global.createScientificDevice=createScientificDevice;const boot=()=>{const root=global.document.getElementById('sci-calc');if(root&&!root.sciDevice)global.sciDevice=createScientificDevice({root});};if(global.document.readyState==='loading')global.document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();}
 })(typeof window!=='undefined'?window:globalThis);
