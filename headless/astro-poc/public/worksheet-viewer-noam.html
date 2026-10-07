@@ -2474,8 +2474,11 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 }
 
 /* Compact toolbar. Download and Noam AI stay reachable, but the worksheet
-   is the first thing on screen. AI pins and the help panel open only after
-   the student uses the AI button, a question, or עזרה מרמזי. */
+   is the first thing on screen. AI mode starts only from the AI button.
+   Pins and עזרה מרמזי appear after that. The help panel opens from
+   עזרה מרמזי or a question pin; tapping a question does not turn AI mode
+   on. On phones the controls stay visually compact, with a 44px minimum
+   tap height. */
 .exact-viewer .noam-ai-entry{
   flex:none;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:6px;
   padding-block:2px 4px;padding-inline:16px;background:#fbfaf5;
@@ -2552,10 +2555,20 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
   .exact-viewer .noam-ai-toggle,
   .exact-viewer.noam-ai-on .noam-print-callout,
   .exact-viewer.noam-ai-on .noam-ai-toggle{width:auto}
-  .exact-viewer a.noam-print-primary{min-height:36px;font-size:13px}
+  .exact-viewer .bar .btn,
+  .exact-viewer .bar .level-link,
+  .exact-viewer .header-actions .btn,
+  .exact-viewer .header-actions .nl-viewer-link,
+  .exact-viewer a.noam-print-primary,
+  .exact-viewer .noam-ai-toggle,
+  .exact-viewer.noam-ai-on a.noam-print-primary,
+  .exact-viewer.noam-ai-on .noam-ai-toggle{
+    min-height:44px;
+  }
+  .exact-viewer a.noam-print-primary,
+  .exact-viewer.noam-ai-on a.noam-print-primary{font-size:13px}
   .exact-viewer .noam-ai-toggle,
   .exact-viewer.noam-ai-on .noam-ai-toggle{font-size:13px}
-  .exact-viewer.noam-ai-on a.noam-print-primary{min-height:36px;font-size:13px}
 }
 @media print{
   .exact-viewer .exact-viewer-header,
