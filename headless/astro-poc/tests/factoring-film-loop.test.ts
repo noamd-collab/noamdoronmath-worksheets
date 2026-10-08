@@ -48,6 +48,20 @@ describe('common-factor grade 9 film', () => {
     assert.equal(film.includes('font-size:11px'), false);
   });
 
+  it('follows the visible caption instead of the first .caption', () => {
+    assert.equal(film.includes("querySelector('.caption')"), false);
+    assert.match(film, /doc\.querySelectorAll\('\.caption'\)/);
+    assert.match(film, /doc\.querySelectorAll\('\.caption-stage'\)/);
+    assert.match(film, /let best = 0\.05/);
+    assert.match(film, /if \(opacity > best\)/);
+    assert.match(film, /if \(active\) shownCaption = active/);
+    assert.match(film, /const cap = active \|\| shownCaption/);
+    assert.match(film, /bar\.dataset\.text !== cap\.textContent/);
+    assert.match(film, /function tick\(\) \{[\s\S]*?fitReadability\(\)/);
+    assert.match(film, /stageEl\.style\.visibility = tooSmall \? 'hidden' : ''/);
+    assert.match(film, /node\.style\.visibility = tooSmall \? 'hidden' : ''/);
+  });
+
   it('mounts as the fourth full player, only on the factoring topic page', () => {
     assert.equal(Object.keys(FILM_LANDING_LOOPS).length, 5);
     assert.deepEqual(topicLandingLoop(loadTopicPage('factoring-grade-9')), {

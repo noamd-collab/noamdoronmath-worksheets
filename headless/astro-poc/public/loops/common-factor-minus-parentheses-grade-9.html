@@ -140,6 +140,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
     let initialized = false;
     let wasPlaying = null;
     let currentChapter = -2;
+    let shownCaption = null;
 
     function resizeFrame() {
       frame.style.transform = `scale(${stage.clientWidth / 1920})`;
@@ -159,12 +160,21 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       if (!doc || !stage.clientWidth) return;
       const scale = stage.clientWidth / 1920;
       const bar = byId('live-caption');
-      const cap = doc.querySelector('.caption');
-      const capStage = doc.querySelector('.caption-stage');
       const tooSmall = 36 * scale < 14;
+      doc.querySelectorAll('.caption-stage').forEach((stageEl) => {
+        stageEl.style.visibility = tooSmall ? 'hidden' : '';
+        stageEl.style.height = tooSmall ? '12px' : '';
+      });
+      let active = null;
+      let best = 0.05;
+      doc.querySelectorAll('.caption').forEach((node) => {
+        node.style.visibility = tooSmall ? 'hidden' : '';
+        const opacity = Number(getComputedStyle(node).opacity);
+        if (opacity > best) { best = opacity; active = node; }
+      });
+      if (active) shownCaption = active;
+      const cap = active || shownCaption;
       if (bar) bar.hidden = !tooSmall;
-      if (cap) cap.style.visibility = tooSmall ? 'hidden' : '';
-      if (capStage) capStage.style.height = tooSmall ? '12px' : '';
       if (tooSmall && cap && bar && bar.dataset.text !== cap.textContent) {
         bar.dataset.text = cap.textContent || '';
         bar.replaceChildren(...Array.from(cap.childNodes, (node) => document.importNode(node, true)));
