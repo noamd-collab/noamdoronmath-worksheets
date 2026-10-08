@@ -37,5 +37,33 @@ describe('grade 9 factoring marked source', () => {
     assert.match(page, /-webkit-print-color-adjust:\s*exact/);
     assert.match(page, /integrity="sha384-/);
     assert.match(page, /\.print-area \.source-mark\{[^}]*background:\s*transparent/);
+    assert.match(printer, /globalCompositeOperation = 'multiply'/);
+    assert.match(printer, /clearPreparedPrint/);
+    assert.match(page, /print-unprepared/);
+    assert.match(page, /כדי להדפיס, פותחים קודם את תצוגת ההדפסה/);
+  });
+
+  it('shows every picked item and does not leave a bare digit after a letter', () => {
+    assert.match(printer, /function shownQuestions/);
+    const byId = Object.fromEntries(source.questions.map((question: { id: string; text: string }) => [question.id, question.text]));
+    assert.equal(byId['2ב'], 'x² + 5x');
+    assert.equal(byId['2ג'], '8a³ − 12a²');
+    assert.equal(byId['4א'], '6x + 8 = 2(3x + 4)');
+    assert.equal(byId['12א'], '37 × 12 + 37 × 8');
+    assert.match(printer, /<bdi dir="ltr">/);
+    for (const question of source.questions) {
+      assert.equal(/[a-z]\d/.test(question.text), false, question.id + ' ' + question.text);
+    }
+  });
+
+  it('serves a noindex preview route that is outside the page sitemap', () => {
+    const route = readFileSync(new URL('../src/pages/teachers-demo-preview.ts', import.meta.url), 'utf8');
+    const preview = readFileSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url), 'utf8');
+    const sitemap = readFileSync(new URL('../src/pages/sitemap-pages.xml.ts', import.meta.url), 'utf8');
+    assert.match(route, /x-robots-tag': 'noindex, nofollow'/);
+    assert.match(preview, /noindex, nofollow/);
+    assert.match(preview, /\/teachers-demo-preview\/teacher-factoring-print\.js/);
+    assert.match(sitemap, /import\.meta\.glob\('\.\/\*\.astro'\)/);
+    assert.equal(route.includes('src/pages/teachers-demo-preview.astro'), false);
   });
 });
