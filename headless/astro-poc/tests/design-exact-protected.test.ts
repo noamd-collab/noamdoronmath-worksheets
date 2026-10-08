@@ -63,13 +63,16 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.equal(sha256(head), '8c842de3e2b55e15a454fd1fabbc31794baeffaaf8b939d3a1bccd7cc586b462');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
+    const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
     // One presentation adapter follows the released blocks. ramzi-avatar.js
-    // is a released script (15 total). The only perf edit inside those blocks
-    // is the noam-learning-boot.js cache-bust query.
-    assert.equal(scripts.length, 15);
+    // is a released script. The site companion is one extra external script
+    // after that adapter, so the released blocks stay byte-identical.
+    assert.equal(scripts.length, 16);
     assert.equal(adapters.length, 1, 'Only one explicitly marked presentation adapter is permitted');
-    assert.equal(scripts.at(-1), adapters[0], 'The adapter must follow, not replace/interleave, the released scripts');
-    const releasedScripts = scripts.slice(0, -1);
+    assert.equal(companion.length, 1, 'The site companion is the one added launcher script');
+    assert.equal(scripts.at(-2), adapters[0], 'The adapter must follow, not replace/interleave, the released scripts');
+    assert.equal(scripts.at(-1), companion[0], 'The companion script follows the adapter and does not replace it');
+    const releasedScripts = scripts.slice(0, -2);
     assert.equal(releasedScripts.length, 14);
     assert.equal(sha256(JSON.stringify(releasedScripts)), 'fd137a04d4e89748d6c95b67ca71ab3274408bd71865413940699e0392276c52');
   });
