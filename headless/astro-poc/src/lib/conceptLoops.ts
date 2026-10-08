@@ -980,24 +980,23 @@ const FRAC_PRODUCT_HOLD = 5.8;
 
 function renderSlope(root: LoopRoot, t: number) {
   const fade = 1 - ph(t, 8.2, 9.0);
-  // Grid and axes are the stage. Then the points, the line through them,
-  // the steps between those points, and only then the slope.
-  const points = ph(t, 0.45, 1.15) * fade;
-  op(q(root, 'pts'), points);
-  op(q(root, 'pairs'), points);
   const line = q(root, 'line');
-  op(line, ph(t, 1.45, 1.8) * fade);
-  draw(line, ph(t, 1.55, 2.75));
-  op(q(root, 'tri1'), ph(t, 3.05, 3.5) * fade);
-  op(q(root, 'run1'), ph(t, 3.25, 3.6) * fade);
-  op(q(root, 'rise1'), ph(t, 3.55, 3.95) * fade);
-  op(q(root, 'tri2'), ph(t, 4.1, 4.5) * fade);
-  op(q(root, 'run2'), ph(t, 4.25, 4.6) * fade);
-  op(q(root, 'rise2'), ph(t, 4.55, 4.9) * fade);
-  op(q(root, 'lbl2'), ph(t, 5.15, 5.55) * (1 - ph(t, 8.0, 8.6)));
+  op(line, ph(t, 0.5, 0.8) * fade);
+  draw(line, ph(t, 0.6, 1.8));
+  op(q(root, 'tri1'), ph(t, 2.0, 2.6) * fade);
+  op(q(root, 'run1'), ph(t, 2.2, 2.6) * fade);
+  op(q(root, 'rise1'), ph(t, 2.6, 3.1) * fade);
+  op(q(root, 'tri2'), ph(t, 3.3, 3.9) * fade);
+  op(q(root, 'run2'), ph(t, 3.5, 3.9) * fade);
+  op(q(root, 'rise2'), ph(t, 3.9, 4.3) * fade);
+  op(q(root, 'lbl2'), ph(t, 4.3, 4.7) * (1 - ph(t, 8.0, 8.6)));
   const fxs = qa(root, '[data-fx]');
-  op(fxs[0], ph(t, 5.25, 5.65) * (1 - ph(t, 8.0, 8.6)));
-  op(fxs[1], ph(t, 5.45, 5.85) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[0], ph(t, 4.6, 5.0) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[1], ph(t, 5.0, 5.4) * (1 - ph(t, 8.0, 8.6)));
+  // Grid, ticks, dots and pairs are added on the existing drawing.
+  // They are on screen from the start and leave with the same fade.
+  op(q(root, 'pts'), fade);
+  op(q(root, 'pairs'), fade);
 }
 const SLOPE_HOLD = 6.2;
 
