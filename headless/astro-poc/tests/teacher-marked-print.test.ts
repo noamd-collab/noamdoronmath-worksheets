@@ -50,10 +50,31 @@ describe('grade 9 factoring marked source', () => {
     assert.equal(byId['2ג'], '8a³ − 12a²');
     assert.equal(byId['4א'], 'נכון או לא נכון? בדקו בפתיחת סוגריים, ותקנו את השגוי. 6x + 8 = 2(3x + 4)');
     assert.equal(byId['12א'], '37 × 12 + 37 × 8');
-    assert.match(printer, /<bdi dir="ltr">/);
+    assert.match(printer, /<bdi dir="ltr" class="math">/);
+    assert.match(page, /\.q-desc bdi\.math\{white-space:nowrap\}/);
+    const previewJs = readFileSync(new URL('../public/teachers-demo-preview/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const previewPage = readFileSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url), 'utf8');
+    assert.equal(previewJs, printer);
+    assert.match(previewPage, /\.q-desc bdi\.math\{white-space:nowrap\}/);
+    const questionTextHTML = new Function(
+      `${printer.slice(printer.indexOf('function escapeHTML'), printer.indexOf('function selectionKey'))} return questionTextHTML;`,
+    )() as (text: string) => string;
     for (const question of source.questions) {
       assert.equal(/[a-z]\d/.test(question.text), false, question.id + ' ' + question.text);
+      const html = questionTextHTML(question.text);
+      assert.equal(html.replace(/<[^>]+>/g, ''), question.text, question.id);
+      for (const inner of html.matchAll(/<bdi dir="ltr" class="math">([^<]*)<\/bdi>/g)) {
+        assert.match(inner[1], /[A-Za-z0-9]/, question.id);
+        assert.equal(/^[\s.,?!:;]|[\s.,?!:;]$/.test(inner[1]), false, question.id + ' ' + inner[1]);
+      }
     }
+    const card4 = questionTextHTML(byId['4א']);
+    assert.match(card4, /נכון\? בדקו/);
+    assert.match(card4, /סוגריים, ותקנו/);
+    assert.match(card4, /השגוי\. <bdi dir="ltr" class="math">6x \+ 8 = 2\(3x \+ 4\)<\/bdi>/);
+    assert.equal(card4.includes('<bdi dir="ltr" class="math">?'), false);
+    assert.equal(card4.includes('<bdi dir="ltr" class="math">,'), false);
+    assert.equal(card4.includes('<bdi dir="ltr" class="math">.'), false);
   });
 
   it('keeps the original question instruction on the true/false and partial-factor cards', () => {

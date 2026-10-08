@@ -181,8 +181,9 @@ function shownQuestions(pool) {
 function questionTextHTML(text) {
   return String(text || '').split(/([^\u0590-\u05FF]+)/).map((part) => {
     if (!part) return '';
-    if (/[\u0590-\u05FF]/.test(part) || !part.trim()) return escapeHTML(part);
-    return `<bdi dir="ltr">${escapeHTML(part)}</bdi>`;
+    if (/[\u0590-\u05FF]/.test(part) || !/[A-Za-z0-9]/.test(part)) return escapeHTML(part);
+    const [, lead, core, tail] = part.match(/^([\s.,?!:;]*)([\s\S]*?)([\s.,?!:;]*)$/);
+    return escapeHTML(lead) + `<bdi dir="ltr" class="math">${escapeHTML(core)}</bdi>` + escapeHTML(tail);
   }).join('');
 }
 
