@@ -30,6 +30,12 @@ describe('grade 9 factoring marked source', () => {
     assert.equal(page.includes('mishbetzet'), false);
     assert.match(printer, /source-mark/);
     assert.match(printer, /SOURCE\.pdfUrl/);
+    assert.match(printer, /isEvalSupported:\s*false/);
+    assert.match(printer, /bakeMarks/);
     assert.equal(printer.includes('plan-list'), false);
+    assert.match(page, /print-color-adjust:\s*exact/);
+    assert.match(page, /-webkit-print-color-adjust:\s*exact/);
+    assert.match(page, /integrity="sha384-/);
+    assert.match(page, /\.print-area \.source-mark\{[^}]*background:\s*transparent/);
   });
 });

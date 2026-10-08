@@ -220,6 +220,8 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('#noam-site-companion-answer{font-size:16px;-webkit-line-clamp:1;min-height:0;box-sizing:border-box;padding-inline-end:46px}'));
     assert.ok(client.includes('אחר'));
     assert.ok(client.includes('noam-teacher-option'));
+    assert.ok(client.includes('document.querySelector("dialog[open]")'));
+    assert.equal(client.includes('input.focus();\n          engage("typing")'), false);
     assert.equal(client.includes('סימון וחיתוך של דף המקור עדיין לא ממומשים'), false);
   });
 });

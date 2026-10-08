@@ -183,7 +183,7 @@ async function loadPdf() {
     throw new Error('PDF_LIB');
   }
   window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
-  pdfDoc = await window.pdfjsLib.getDocument({ url: SOURCE.pdfUrl, withCredentials: false }).promise;
+  pdfDoc = await window.pdfjsLib.getDocument({ url: SOURCE.pdfUrl, withCredentials: false, isEvalSupported: false }).promise;
   return pdfDoc;
 }
 
@@ -196,7 +196,26 @@ function sheetHTML(pageNumber, questions) {
   return `<figure class="source-sheet"><div class="source-stage" data-page="${pageNumber}"><canvas></canvas>${marks}</div><figcaption>עמוד ${pageNumber} מתוך ${SOURCE.pageCount} · מסומנים: ${escapeHTML(names)}</figcaption></figure>`;
 }
 
-async function paintSheets(root) {
+function bakeMarks(canvas, stage) {
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+  stage.querySelectorAll('.source-mark').forEach((mark) => {
+    const x = (parseFloat(mark.style.left) / 100) * width;
+    const y = (parseFloat(mark.style.top) / 100) * height;
+    const w = (parseFloat(mark.style.width) / 100) * width;
+    const h = (parseFloat(mark.style.height) / 100) * height;
+    ctx.save();
+    ctx.fillStyle = 'rgba(255,214,90,0.42)';
+    ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = '#c47d00';
+    ctx.lineWidth = Math.max(2, width * 0.0025);
+    ctx.strokeRect(x, y, w, h);
+    ctx.restore();
+  });
+}
+
+async function paintSheets(root, bake) {
   const pdf = await loadPdf();
   const stages = root.querySelectorAll('.source-stage');
   for (const stage of stages) {
@@ -208,6 +227,7 @@ async function paintSheets(root) {
     canvas.width = Math.floor(viewport.width);
     canvas.height = Math.floor(viewport.height);
     await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+    if (bake) bakeMarks(canvas, stage);
   }
 }
 
@@ -240,9 +260,9 @@ async function updatePrint() {
   const foot = `<p class="print-source">מקור: ${escapeHTML(SOURCE.title)} · ${escapeHTML(SOURCE.pdfUrl)}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
   const html = head + sheets + foot;
   plan.innerHTML = html;
-  printArea.innerHTML = `<h1>דף מקור מסומן</h1><p class="print-subtitle">${chosen.length} סעיפים סומנו על ${pages.length} עמודים</p>` + html;
-  await paintSheets(plan);
-  await paintSheets(printArea);
+  printArea.innerHTML = sheets;
+  await paintSheets(plan, false);
+  await paintSheets(printArea, true);
 }
 
 async function prepare() {

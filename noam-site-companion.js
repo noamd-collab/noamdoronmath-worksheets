@@ -284,10 +284,6 @@
       button.textContent = item.label;
       button.addEventListener("click", function () {
         document.dispatchEvent(new CustomEvent("noam-teacher-option", { detail: { goal: item.goal } }));
-        if (item.goal === "other") {
-          input.focus();
-          engage("typing");
-        }
       });
       chipsEl.appendChild(button);
       return;
@@ -634,6 +630,7 @@
   });
   document.addEventListener("keydown", function (event) {
     if (event.key !== "Escape" || mode === "closed") return;
+    if (document.querySelector("dialog[open]")) return;
     event.preventDefault();
     if (mode === "engaged") compact();
     else setMode("closed");

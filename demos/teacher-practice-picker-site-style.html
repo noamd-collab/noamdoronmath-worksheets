@@ -331,21 +331,21 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 }
 .source-sheet{margin:0 0 18px}
 .source-stage{position:relative;direction:ltr;background:#fff}
-.source-stage canvas{display:block;width:100%;height:auto}
-.source-mark{position:absolute;box-sizing:border-box;background:rgba(255,214,90,.42);outline:3px solid #c47d00;border-radius:4px;pointer-events:none}
+.source-stage canvas{display:block;width:100%;height:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.source-mark{position:absolute;box-sizing:border-box;background:rgba(255,214,90,.42);outline:3px solid #c47d00;border-radius:4px;pointer-events:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .source-sheet figcaption{direction:rtl;font-size:13px;margin-top:6px;color:#3d4870}
 @media print{
-  @page{size:A4;margin:10mm}
-  body{background:#fff;color:#22305a;font-size:12px}
-  .app,.toast,#noam-site-companion{display:none!important}
-  dialog{display:none!important}
+  @page{size:A4;margin:8mm}
+  html,html.noam-ai-engaged,body{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important;background:#fff;color:#22305a}
+  .app,.toast,#noam-site-companion,dialog{display:none!important}
   .print-area{display:block!important}
-  .print-area h1{font-family:'Secular One',Heebo,sans-serif;font-size:28px;font-weight:400;margin-bottom:4px}
-  .print-area .print-subtitle{font-size:13px;color:#3d4870;margin-bottom:14px}
-  .print-area .plan-list li{grid-template-columns:90px 1fr 90px;padding:8px 0;font-size:12px}
-  .print-area .plan-notice{background:#fff;border:1px solid #22305a}
-  .print-area a{color:#22305a}
-  .print-area .print-footer{margin-top:18px;font-size:11px;border-top:1px solid #22305a;padding-top:8px;color:#4a5478}
+  .print-area h1,.print-area .print-subtitle,.print-area .plan-notice,.print-area .plan-meta,.print-area .print-source,.print-area .plan-notes{display:none!important}
+  .print-area .source-sheet{box-sizing:border-box;width:194mm;height:281mm;max-height:281mm;margin:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always}
+  .print-area .source-sheet:last-child{break-after:auto;page-break-after:auto}
+  .print-area .source-stage{width:180mm;height:254mm;flex:0 0 auto;background:transparent}
+  .print-area .source-stage canvas{width:180mm;height:254mm}
+  .print-area .source-mark{background:transparent;outline:none;border:2px solid #c47d00;border-radius:0}
+  .print-area figcaption{width:180mm;margin:2mm 0 0;font-size:10px;line-height:1.3}
 }
 
 </style>
@@ -430,7 +430,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
 <script type="module" src="./teacher-factoring-print.js"></script>
 
 <script src="../headless/astro-poc/public/noam-site-companion.js" defer data-avatar="../headless/astro-poc/public/design-exact/assets/avatar/ramzi-A-idle.svg"></script>
