@@ -174,6 +174,8 @@
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-answer{font-size:16px;-webkit-line-clamp:1;min-height:0;box-sizing:border-box;padding-inline-end:46px}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-input,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form button,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-primary,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-ramzi{font-size:16px}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form{width:100%;gap:4px;box-sizing:border-box;padding-inline-end:46px}",
+    "#noam-site-companion-panel.is-compact.is-xtight #noam-site-companion-form{padding-inline-end:0}",
+    "#noam-site-companion-panel.is-compact.is-tight.has-answer #noam-site-companion-form{padding-inline-end:0}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form button{padding:0 6px}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-primary,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-ramzi{padding-inline-end:48px}",
     "#noam-site-companion-panel.is-compact.is-xtight{padding:0;gap:0}",

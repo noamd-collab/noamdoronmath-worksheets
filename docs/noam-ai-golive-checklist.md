@@ -29,7 +29,7 @@ Do not copy `noam-site-companion.js` from the website folder. The website file a
 
 The page list is already inside `noam-site-catalog.js`. Do not empty it and do not edit it.
 
-`noam-site-catalog.js` is about 406 KB. That size is expected. Copy it by hand: open the file, select everything, copy, create the backend file with the same name, paste, and save. Do not shorten it.
+`noam-site-catalog.js` is about 406 KB. That size is expected. On the file in GitHub, click **Copy raw file**, then in the Wix backend create a file with the same name, paste, and save. Do not select-all in the browser, and do not shorten the file.
 
 If the Wix editor is slow, freezes, or the paste comes out shorter than the original, wait until it finishes and check that the file still ends with `};`. If the ending is missing or the editor will not take the whole file, stop. Do not publish, and do not delete lines to make it fit. Tell Grok Bot.
 
@@ -76,7 +76,7 @@ The server also refuses a message longer than 700 characters, and more than 12 r
 
 ## 6. Look at the secret names, then publish
 
-Before you publish, open the Wix Secrets Manager. That is the list of secret names in the editor (a lock icon in the code sidebar). Look only.
+Before you publish, open Secrets Manager. The path is **Code sidebar > Developer Tools > Security > Secrets Manager**, or **Dashboard > Developer Tools > Secrets Manager**. Look only.
 
 You should see both of these names, spelled exactly like this:
 
@@ -101,7 +101,7 @@ Use the browser on the live site, `https://www.noamdoronmath.co.il`.
 
 1. Press F12, open the Console tab, paste this line, and press Enter.
 
-Chrome will refuse the paste the first time. It asks you to type `allow pasting` and press Enter. Type that, then paste the line again.
+Chrome may refuse the paste and ask you to type `allow pasting` and press Enter. If it does, type that, then paste the line again.
 
 ```js
 fetch("https://amiramnoam.wixstudio.com/my-site-2/_functions/noamSiteCompanion", {method:"OPTIONS"}).then(r => console.log("from live site:", r.status))
