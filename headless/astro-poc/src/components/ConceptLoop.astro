@@ -1244,16 +1244,39 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'slope' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
-          <line class="cl-line-thin" x1="80" y1="300" x2="500" y2="300" />
-          <line class="cl-line-thin" x1="120" y1="320" x2="120" y2="40" />
-          <line class="cl-line cl-stroke-a" data-el="line" x1="150" y1="280" x2="270" y2="40" pathLength="1" style="opacity:0" />
-          <path class="cl-line" data-el="tri1" d="M150 280 L210 280 L210 160" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="run1" x="168" y="296" style="opacity:0">1</text>
-          <text class="cl-t cl-num" data-el="rise1" x="218" y="226" style="opacity:0">2</text>
-          <path class="cl-line" data-el="tri2" d="M210 160 L270 160 L270 40" style="opacity:0" />
-          <text class="cl-t cl-num" data-el="run2" x="228" y="176" style="opacity:0">1</text>
-          <text class="cl-t cl-num" data-el="rise2" x="278" y="106" style="opacity:0">2</text>
-          <text class="cl-t cl-num cl-ok" data-el="lbl2" x="300" y="70" style="opacity:0">2</text>
+          <g aria-hidden="true">
+            {[0, 1, 2, 3, 4, 5].map((n) => (
+              <line stroke="#d5dce8" stroke-width="1.25" x1="176" y1={292 - n * 46} x2="314" y2={292 - n * 46} />
+            ))}
+            {[0, 1, 2, 3].map((n) => (
+              <line stroke="#d5dce8" stroke-width="1.25" x1={176 + n * 46} y1="292" x2={176 + n * 46} y2="62" />
+            ))}
+          </g>
+          <line class="cl-line" x1="128" y1="292" x2="348" y2="292" />
+          <polygon points="356,292 342,286 342,298" fill="var(--navy)" />
+          <line class="cl-line" x1="176" y1="312" x2="176" y2="40" />
+          <polygon points="176,28 170,44 182,44" fill="var(--navy)" />
+          <text class="cl-t cl-num" dir="ltr" x="164" y="310" text-anchor="end">0</text>
+          <text class="cl-t cl-num" dir="ltr" x="222" y="310" text-anchor="middle">1</text>
+          <text class="cl-t cl-num" dir="ltr" x="268" y="310" text-anchor="middle">2</text>
+          <text class="cl-t cl-num" dir="ltr" x="314" y="310" text-anchor="middle">3</text>
+          {[1, 2, 3, 4, 5].map((n) => (
+            <text class="cl-t cl-num" dir="ltr" x="164" y={292 - n * 46 + 5} text-anchor="end">{n}</text>
+          ))}
+          <path class="cl-line" data-el="tri1" d="M176 246 L222 246 L222 154" style="opacity:0" />
+          <text class="cl-t cl-num" dir="ltr" data-el="run1" x="199" y="262" text-anchor="middle" style="opacity:0;paint-order:stroke;stroke:#fff;stroke-width:4px">1</text>
+          <text class="cl-t cl-num" dir="ltr" data-el="rise1" x="230" y="204" text-anchor="start" style="opacity:0;paint-order:stroke;stroke:#fff;stroke-width:4px">2</text>
+          <path class="cl-line" data-el="tri2" d="M222 154 L268 154 L268 62" style="opacity:0" />
+          <text class="cl-t cl-num" dir="ltr" data-el="run2" x="245" y="170" text-anchor="middle" style="opacity:0;paint-order:stroke;stroke:#fff;stroke-width:4px">1</text>
+          <text class="cl-t cl-num" dir="ltr" data-el="rise2" x="276" y="112" text-anchor="start" style="opacity:0;paint-order:stroke;stroke:#fff;stroke-width:4px">2</text>
+          <line class="cl-line cl-stroke-a" data-el="line" x1="161" y1="276" x2="283" y2="32" pathLength="1" style="opacity:0" />
+          <circle class="cl-pt-a" cx="176" cy="246" r="6.5" />
+          <circle class="cl-pt-a" cx="222" cy="154" r="6.5" />
+          <circle class="cl-pt-a" cx="268" cy="62" r="6.5" />
+          <text class="cl-t cl-num" dir="ltr" x="186" y="234" text-anchor="start" style="font-weight:800;paint-order:stroke;stroke:#fff;stroke-width:5px">(0,1)</text>
+          <text class="cl-t cl-num" dir="ltr" x="210" y="142" text-anchor="end" style="font-weight:800;paint-order:stroke;stroke:#fff;stroke-width:5px">(1,3)</text>
+          <text class="cl-t cl-num" dir="ltr" x="256" y="48" text-anchor="middle" style="font-weight:800;paint-order:stroke;stroke:#fff;stroke-width:5px">(2,5)</text>
+          <text class="cl-t cl-num cl-ok" dir="ltr" data-el="lbl2" x="336" y="168" text-anchor="start" style="opacity:0;font-weight:800">2/1 = 2</text>
         </svg>
       )
     }
@@ -2477,7 +2500,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'slope' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">m = 2 : 1 = 2</span>
+          <span data-fx="0"><span dir="rtl">שיפוע</span> = 2/1 = 2</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
