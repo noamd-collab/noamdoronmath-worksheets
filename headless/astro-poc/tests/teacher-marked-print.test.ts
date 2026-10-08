@@ -48,11 +48,35 @@ describe('grade 9 factoring marked source', () => {
     const byId = Object.fromEntries(source.questions.map((question: { id: string; text: string }) => [question.id, question.text]));
     assert.equal(byId['2ב'], 'x² + 5x');
     assert.equal(byId['2ג'], '8a³ − 12a²');
-    assert.equal(byId['4א'], '6x + 8 = 2(3x + 4)');
+    assert.equal(byId['4א'], 'נכון או לא נכון? בדקו בפתיחת סוגריים, ותקנו את השגוי. 6x + 8 = 2(3x + 4)');
     assert.equal(byId['12א'], '37 × 12 + 37 × 8');
     assert.match(printer, /<bdi dir="ltr">/);
     for (const question of source.questions) {
       assert.equal(/[a-z]\d/.test(question.text), false, question.id + ' ' + question.text);
+    }
+  });
+
+  it('keeps the original question instruction on the true/false and partial-factor cards', () => {
+    const publicSource = JSON.parse(readFileSync(new URL('../public/teachers-demo-preview/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
+    assert.deepEqual(publicSource, source);
+    const byId = Object.fromEntries(source.questions.map((question: { id: string; text: string }) => [question.id, question.text]));
+    const q4Stem = 'נכון או לא נכון? בדקו בפתיחת סוגריים, ותקנו את השגוי.';
+    const q14Stem = 'בכל סעיף הוצאו גורם משותף חלקי בלבד. פרקו מחדש והוציאו את הגורם המשותף הגדול ביותר.';
+    const equations: Record<string, string> = {
+      '4א': '6x + 8 = 2(3x + 4)',
+      '4ב': '5a² − 10a = 5a(a − 10)',
+      '4ג': '12y − 18 = 6(2y − 3)',
+      '14א': '12x² + 18x = 2(6x² + 9x)',
+      '14ב': '20a³ − 30a² = 5(4a³ − 6a²)',
+      '14ג': '16m⁴ + 24m² = 4(4m⁴ + 6m²)',
+    };
+    for (const id of ['4א', '4ב', '4ג']) {
+      assert.equal(byId[id].includes('נכון או לא נכון'), true, id);
+      assert.equal(byId[id], q4Stem + ' ' + equations[id]);
+    }
+    for (const id of ['14א', '14ב', '14ג']) {
+      assert.equal(byId[id].includes('נכון או לא נכון'), false, id + ' is a partial-factor item, not a true/false item');
+      assert.equal(byId[id], q14Stem + ' ' + equations[id]);
     }
   });
 
