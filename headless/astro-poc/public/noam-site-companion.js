@@ -166,14 +166,22 @@
     "#noam-site-companion-panel.is-compact #noam-site-companion-chips{order:4}",
     "#noam-site-companion-panel.is-compact #noam-site-companion-more{order:5}",
     ".compact-dropped{display:none!important}",
-    "@media (max-width:767px){",
-    "#noam-site-companion-panel.is-compact{font-size:14px}",
-    "#noam-site-companion-panel.is-compact #noam-site-companion-answer{font-size:14px;-webkit-line-clamp:1}",
-    "#noam-site-companion-panel.is-compact #noam-site-companion-input,#noam-site-companion-panel.is-compact #noam-site-companion-form button{font-size:14px}",
-    "#noam-site-companion-panel.is-compact header img{display:none}",
-    "#noam-site-companion-panel.is-compact #noam-ai-expand{width:44px;padding:0;font-size:0;line-height:0}",
-    "#noam-site-companion-panel.is-compact #noam-ai-expand::before{content:'⤢';font-size:16px;line-height:44px}",
-    "}",
+    "#noam-site-companion-panel.is-compact.is-tight{padding:2px;gap:2px;font-size:16px}",
+    "#noam-site-companion-panel.is-compact.is-tight header{position:relative;min-height:22px;padding-inline-end:46px}",
+    "#noam-site-companion-panel.is-compact.is-tight header img,#noam-site-companion-panel.is-compact.is-tight #noam-ai-expand{display:none!important}",
+    "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-close{position:absolute;inset-inline-end:0;top:0}",
+    "#noam-site-companion-panel.is-compact.is-tight h2{font-size:16px;line-height:1.3}",
+    "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-answer{font-size:16px;-webkit-line-clamp:1;min-height:0}",
+    "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-input,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form button,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-primary,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-ramzi{font-size:16px}",
+    "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form{width:100%;gap:4px}",
+    "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form button{padding:0 6px}",
+    "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-primary,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-ramzi{padding-inline-end:48px}",
+    "#noam-site-companion-panel.is-compact.is-xtight{padding:0;gap:0}",
+    "#noam-site-companion-panel.is-compact.is-xtight header{min-height:44px;padding-inline-end:0}",
+    "#noam-site-companion-panel.is-compact.is-xtight #noam-site-companion-close{position:static}",
+    "#noam-site-companion-panel.is-compact.is-xtight.has-answer header{min-height:22px;padding-inline-end:46px}",
+    "#noam-site-companion-panel.is-compact.is-xtight.has-answer #noam-site-companion-close{position:absolute;inset-inline-end:0;top:0}",
+    "#noam-site-companion-panel.is-compact.is-xtight.has-answer #noam-site-companion-answer{padding-inline-end:46px}",
     "html.noam-ai-engaged{display:grid;direction:rtl;grid-template-columns:360px minmax(0,1fr);grid-template-rows:minmax(0,100dvh);height:100dvh;overflow:hidden}",
     "html.noam-ai-engaged body{direction:rtl;grid-column:2;grid-row:1;min-width:0;min-height:0;height:auto!important;max-height:100%!important;overflow:auto!important}",
     "html.noam-ai-engaged #noam-site-companion-panel{direction:rtl;grid-column:1;grid-row:1;position:relative;right:auto;bottom:auto;width:auto;height:auto;max-height:100dvh;border-radius:0;box-shadow:none}",
@@ -221,7 +229,7 @@
     '<p id="noam-site-companion-details" hidden tabindex="0"></p>' +
     '<form id="noam-site-companion-form"><label for="noam-site-companion-input" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">מה אתם מחפשים?</label>' +
     '<input id="noam-site-companion-input" type="text" maxlength="700" autocomplete="off" aria-label="מה אתם מחפשים?">' +
-    '<button type="submit">שליחה</button></form>';
+    '<button type="submit" aria-label="שליחה">שליחה</button></form>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
 
@@ -240,7 +248,9 @@
   function ramziCoversPage() {
     if (pageKind() !== "worksheet") return false;
     var ramzi = document.getElementById("panel");
-    return !!(ramzi && !ramzi.classList.contains("hidden"));
+    if (!ramzi || ramzi.classList.contains("hidden")) return false;
+    var box = ramzi.getBoundingClientRect();
+    return box.width > 8 && box.height > 8;
   }
 
   function lift() {
@@ -343,13 +353,16 @@
     undrop(moreEl);
     undrop(primaryEl);
     undrop(ramziEl);
+    undrop(answerEl);
     var links = chipsEl.querySelectorAll("a");
     for (var i = 0; i < links.length; i++) undrop(links[i]);
   }
 
   function fitCompact() {
     clearCompactDrops();
-    var wide = window.innerWidth >= 768;
+    panel.classList.toggle("has-answer", hasAnswer);
+    var tight = panel.classList.contains("is-tight");
+    var wide = !tight && window.innerWidth >= 768;
     var links = chipsEl.querySelectorAll("a");
     var visibleChips = 0;
     for (var i = 0; i < links.length; i++) {
@@ -357,7 +370,10 @@
       else visibleChips += 1;
     }
     if (!wide || visibleChips === 0) drop(chipsEl);
-    var order = [moreEl, chipsEl, primaryEl, ramziEl];
+    if (tight && !hasAnswer) drop(answerEl);
+    var order = tight && hasAnswer
+      ? [primaryEl, ramziEl, moreEl, chipsEl]
+      : [moreEl, chipsEl, primaryEl, ramziEl];
     for (var n = 0; n < order.length; n++) {
       if (panel.scrollHeight <= panel.clientHeight + 1) return;
       drop(order[n]);
@@ -389,6 +405,8 @@
     mountPanel(root, force);
     panel.classList.add("is-compact");
     var size = panelSize(window.innerWidth, window.innerHeight);
+    panel.classList.toggle("is-tight", size.height < 160);
+    panel.classList.toggle("is-xtight", size.height < 110);
     var bottom = lift();
     var avail = window.innerHeight - bottom - 8;
     var height = Math.min(size.height, Math.max(72, avail));
@@ -405,6 +423,8 @@
     panel.dataset.maxArea = String(Math.floor(size.maxArea));
     expandEl.hidden = false;
     collapseEl.hidden = true;
+    var sendBtn = form.querySelector("button");
+    if (sendBtn) sendBtn.textContent = panel.classList.contains("is-tight") ? "שלח" : "שליחה";
     expandEl.setAttribute("aria-expanded", "false");
     fitCompact();
   }
@@ -414,7 +434,11 @@
     clearInline();
     mountPanel(document.documentElement, force);
     panel.classList.remove("is-compact");
+    panel.classList.remove("is-tight");
+    panel.classList.remove("is-xtight");
     clearCompactDrops();
+    var sendBtn = form.querySelector("button");
+    if (sendBtn) sendBtn.textContent = "שליחה";
     document.documentElement.classList.add("noam-ai-engaged");
     expandEl.hidden = true;
     collapseEl.hidden = false;
@@ -440,6 +464,8 @@
       document.documentElement.classList.remove("noam-ai-engaged");
       clearInline();
       panel.classList.remove("is-compact");
+      panel.classList.remove("is-tight");
+      panel.classList.remove("is-xtight");
       placeLauncher();
     }
   }
@@ -469,7 +495,8 @@
   function openCompact() {
     if (!hasAnswer) showIdle();
     setMode("compact");
-    expandEl.focus();
+    if (expandEl.offsetWidth > 0) expandEl.focus();
+    else closer.focus();
   }
 
   launch.addEventListener("click", openCompact);
@@ -485,9 +512,25 @@
   });
   input.addEventListener("focus", function () { engage("input-focus"); });
   input.addEventListener("input", function () { engage("typing"); });
-  ramziEl.addEventListener("click", function () {
+  function openRamzi() {
+    var body = document.body;
+    var toggle = document.getElementById("noamAiToggle");
+    var modeOn = !!(body && body.classList.contains("noam-ai-on"));
+    if (!modeOn && toggle) toggle.click();
+    var help = document.getElementById("exactHelpTab");
     var fab = document.getElementById("fab");
-    if (fab) fab.click();
+    var narrow = window.innerWidth < 1000 || window.innerHeight < 640;
+    if (narrow && help && !help.disabled) help.click();
+    else if (fab) fab.click();
+    var ramziPanel = document.getElementById("panel");
+    if (!ramziPanel) return;
+    var box = ramziPanel.getBoundingClientRect();
+    if ((box.width < 8 || box.height < 8) && fab) fab.click();
+  }
+
+  ramziEl.addEventListener("click", function () {
+    openRamzi();
+    paintChrome(true);
   });
   function botClientSrc() {
     var nodes = document.getElementsByTagName("script");

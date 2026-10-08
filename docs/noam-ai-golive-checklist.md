@@ -1,79 +1,155 @@
-# Noam AI companion: backend go-live checklist
+# Noam AI companion: go-live checklist
 
-This is for Noam. It turns on the live `qwen3.8-flash` call for the site companion.
+This is for Noam. Follow the steps in order. You copy files and paste one ready-made block. You do not change any code, and you do not create or rename a secret.
+
 An agent must not run `wix release`, must not merge, and must not create or change secrets.
 
-The Astro site and this Velo backend are separate. Publishing the website does not publish `my-site-2` http functions.
+Two different publishes are involved:
 
-## 1. Copy these files into the my-site-2 backend
+- The **website** (the button visitors see) reaches the live site only after this pull request is merged **and** the website is published.
+- The **AI call** is a separate backend on the Wix site `my-site-2`. You can publish that backend before the website. Until the website is merged and published, visitors still see the current site, and the new button is not there yet.
 
-Open the private Wix backend for `amiramnoam.wixstudio.com/my-site-2`.
-Copy each file to the name on the right. Keep the `.js` imports next to each other.
+## 1. Copy the backend folder
 
-| Copy from this repo | Save in the backend as |
+1. Open the Wix editor for `amiramnoam.wixstudio.com/my-site-2`.
+2. Open the Backend section.
+3. Copy these files from `noam-ai/site-companion/DEPLOY_WIX/backend/` into that Backend section. Keep each file name exactly as it is.
+
+| File you copy | Where it goes |
 | --- | --- |
-| `noam-ai/site-companion/wix-post-noamSiteCompanion.js` | `backend/wix-post-noamSiteCompanion.js` |
-| `noam-ai/site-companion/companion.js` | `backend/companion.js` |
-| `noam-ai/site-companion/retrieve.js` | `backend/retrieve.js` |
-| `noam-ai/site-companion/bot-guard.js` | `backend/bot-guard.js` |
-| `headless/astro-poc/src/data/catalog.v1.json` | `backend/noam-site-catalog.v1.json` |
+| `noam-site-companion.js` | Backend / `noam-site-companion.js` |
+| `noam-site-companion-core.js` | Backend / `noam-site-companion-core.js` |
+| `noam-site-companion-retrieve.js` | Backend / `noam-site-companion-retrieve.js` |
+| `noam-site-companion-guard.js` | Backend / `noam-site-companion-guard.js` |
+| `noam-site-catalog.js` | Backend / `noam-site-catalog.js` |
 
-Do not copy `noam-site-companion.js` or `noam-bot-client.js` into the backend. Those stay on the website.
+Do not copy `PASTE-AT-END-OF-http-functions.js` as its own backend file. That one is only the text in step 2.
 
-## 2. Export the two functions from http-functions.js
+Do not copy `noam-site-companion.js` from the website folder. The website file and the backend file have the same name and different jobs.
 
-In `backend/http-functions.js`, add this line with the other exports:
+The page list is already inside `noam-site-catalog.js`. Do not empty it and do not edit it.
 
-```js
-export { options_noamSiteCompanion, post_noamSiteCompanion } from "./wix-post-noamSiteCompanion.js";
-```
+## 2. Paste the two routes into the existing http-functions file
 
-The public routes are then:
+1. In the same Backend section, open the file that is already named `http-functions.js`.
+2. Scroll to the **bottom**. Do not delete anything that is already there.
+3. Open `noam-ai/site-companion/DEPLOY_WIX/backend/PASTE-AT-END-OF-http-functions.js` from this repo.
+4. Select the whole file and paste it at the bottom of `http-functions.js`.
+5. Save.
 
-- `OPTIONS /_functions/noamSiteCompanion`
-- `POST /_functions/noamSiteCompanion`
+The pasted block already names the routes. You do not look for other names and you do not edit the paste.
 
-## 3. Check the Qwen secret name against the existing AI function
+## 3. Qwen secret
 
-1. Open the existing `noamDiagramPlan` backend code.
-2. Find the `getSecret("...")` call that loads the QwenCloud key.
-3. The companion calls `getSecret("QWEN_API_KEY")` in `wix-post-noamSiteCompanion.js`.
-4. If the existing function uses that same name, leave it.
-5. If the existing function uses a different name, change only the string in the companion so it reads that existing secret.
-6. Do not create a new secret, and do not paste the key into git or into the browser.
+The files you copied already read the existing secret named **QWEN_API_KEY**.
 
-## 4. Use the same site allowlist
+- Do not create a secret.
+- Do not rename it.
+- Do not open another backend file to compare names.
 
-1. In the existing `noamDiagramPlan` or `noamBotConfig` code, copy the exact origin allowlist.
-2. Compare it with `SITE_ORIGINS` in `backend/bot-guard.js`.
-3. Make the two lists identical, including `https://www.noamdoronmath.co.il`.
-4. Do not use `*` and do not add a pattern such as `*.wix-site-host.com`.
-5. A Wix preview origin is rejected today, same as the existing AI routes. Add a preview origin only if you add that same origin to the existing allowlist too.
+## 4. Allowed sites
 
-`options_noamSiteCompanion` returns 204 only for an allowed origin, and 403 otherwise.
-The response origin header is that one site, never `*`.
+Already checked. No checking is needed.
 
-## 5. Use the same reCAPTCHA check
+The list is exactly these two addresses, and it already matches the live AI routes:
 
-1. In the existing AI function, find the reCAPTCHA secret name, the score threshold, and the verify call.
-2. `bot-guard.js` uses `getSecret("RECAPTCHA_SECRET_KEY")`, action `noam_site_companion`, and a minimum score of `0.5`, then calls Google `siteverify`.
-3. If the existing function uses another secret name or another threshold, change `RECAPTCHA_SECRET_NAME` and `RECAPTCHA_MIN_SCORE` to those values.
-4. Do not create a second reCAPTCHA secret if one already exists.
-5. The browser already sends the token through `noam-bot-client.js` as `botVerification: { provider: "recaptcha-v3", token }`.
-6. A missing token, a low score, or a wrong action is rejected before any model call.
+- `https://www.noamdoronmath.co.il`
+- `https://noamdoronmath.co.il`
 
-The server also refuses a message longer than 700 characters, and more than 12 requests per minute per site-and-IP.
+There is no `*`. A preview address is refused, same as the live AI routes.
+
+## 5. reCAPTCHA
+
+The files you copied already use these values. Do not change them and do not create a secret.
+
+- Secret name: **RECAPTCHA_SECRET_KEY**
+- Lowest accepted score: **0.5**
+- Check name: **noam_site_companion**
+
+The website already sends the check through the existing bot client. A missing check, a score below 0.5, or the wrong check name is refused before any AI call.
+
+The server also refuses a message longer than 700 characters, and more than 12 requests per minute from the same visitor address. That address is the one Wix records (`request.ip`). A visitor cannot pick a different address by sending a header.
 
 ## 6. Publish the backend yourself
 
-Publish the my-site-2 Velo backend from the Wix editor when you want the live call.
+When you want the live AI call, publish `my-site-2` from the Wix editor.
+
+Publishing that site also publishes **any other changes still waiting in the editor** on `my-site-2`, not only these new files. Look through the editor first so you are not publishing something else by accident.
+
 Do not ask an agent to run `wix release`.
-Merging the website PR is a separate decision and does not deploy this function.
 
-## 7. Check that it is really guarded
+Merging the website pull request does not publish this backend. Publishing this backend does not put the new button on the website. The button reaches visitors only after the pull request is merged and the website is published.
 
-1. From `https://www.noamdoronmath.co.il`, OPTIONS returns 204 and a real question returns a catalog link.
-2. From any other origin, OPTIONS returns 403.
-3. A POST without `botVerification` returns 403 and does not call Qwen.
-4. A message longer than 700 characters returns 400.
-5. On a worksheet page, a question about solving the exercise points to Ramzi even when this function is down.
+## 7. Run these checks
+
+Use the browser on the live site, `https://www.noamdoronmath.co.il`.
+
+1. Press F12, open the Console tab, paste this line, and press Enter:
+
+```js
+fetch("https://amiramnoam.wixstudio.com/my-site-2/_functions/noamSiteCompanion", {method:"OPTIONS"}).then(r => console.log("from live site:", r.status))
+```
+
+2. What the number means:
+
+| What you see | Meaning |
+| --- | --- |
+| `404` | The backend is not published yet. |
+| `from live site: 204` | The live site is allowed. This part is working. |
+| `403` | The address was refused. |
+| `500` | The backend hit an error. Look in the Wix editor under **Logs** (Developer / Monitoring / Logs) for `noamSiteCompanion`. |
+
+3. Check that a foreign address is refused. On your computer, in a terminal, run:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" -X OPTIONS \
+  -H "Origin: https://example.com" \
+  "https://amiramnoam.wixstudio.com/my-site-2/_functions/noamSiteCompanion"
+```
+
+`403` means a foreign address is refused. `404` means the backend is not published yet.
+
+4. Check that a call with no security token is refused. Run:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" -X POST \
+  -H "Origin: https://www.noamdoronmath.co.il" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"פירוק לגורמים"}' \
+  "https://amiramnoam.wixstudio.com/my-site-2/_functions/noamSiteCompanion"
+```
+
+`403` means the missing security check was refused and the model was not called. `404` means the backend is not published yet.
+
+5. Check a too-long message. Run:
+
+```bash
+python3 - <<'PY'
+import json, urllib.request
+body = json.dumps({"message": "א" * 701, "botVerification": {"provider": "recaptcha-v3", "token": "x"}}).encode()
+req = urllib.request.Request(
+    "https://amiramnoam.wixstudio.com/my-site-2/_functions/noamSiteCompanion",
+    data=body,
+    headers={"Origin": "https://www.noamdoronmath.co.il", "Content-Type": "application/json"},
+    method="POST",
+)
+try:
+    print(urllib.request.urlopen(req).status)
+except Exception as error:
+    print(getattr(error, "code", error))
+PY
+```
+
+`400` means the long message was refused. `404` means the backend is not published yet.
+
+6. On a worksheet page, after the **website** is merged and published, ask in Noam AI: `איך פותרים את שאלה 3?` The answer should point to Ramzi even if the backend is down. Then click **עזרה מרמזי**. Ramzi's panel should open on the page. This website check cannot pass before the merge and the website publish.
+
+## 8. If something breaks, switch Noam AI off
+
+1. Open Backend / `http-functions.js` on `my-site-2`.
+2. Delete only the block you pasted in step 2 (the lines that mention `noamSiteCompanion`). Leave every older line in place.
+3. Publish `my-site-2` again.
+
+The button on the website, once that website is published, will stop reaching the model and will show the safe "not available" message. Ramzi is unchanged.
+
+If a check returns 500, open the Wix editor and look at **Logs**. The useful lines mention `noamSiteCompanion`.

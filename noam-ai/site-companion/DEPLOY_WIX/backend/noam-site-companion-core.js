@@ -3,7 +3,7 @@
  * Retrieval is limited to the verified catalog. The model may only rank and explain those records.
  * qwen3.8-flash is called server-side. This module never reads a key from the browser.
  */
-import { retrieveRecords } from "./retrieve.js";
+import { retrieveRecords } from 'backend/noam-site-companion-retrieve';
 
 export const QWEN_CHAT_URL =
   "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions";

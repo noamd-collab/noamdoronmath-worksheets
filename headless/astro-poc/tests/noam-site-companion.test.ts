@@ -5,6 +5,9 @@ import { companionPanelSize } from '../../../noam-ai/site-companion/panel-size.j
 import { retrieveRecords } from '../../../noam-ai/site-companion/retrieve.js';
 import {
   FALLBACK_TEXT,
+  MAX_PAGE_PATH_CHARS,
+  MAX_PAGE_TITLE_CHARS,
+  MAX_TEACHER_NOTE_CHARS,
   QWEN_MODEL,
   SOLVE_REQUEST_SOURCE,
   SYSTEM_PROMPT,
@@ -14,9 +17,11 @@ import {
 } from '../../../noam-ai/site-companion/companion.js';
 import {
   SITE_ORIGINS,
+  clientKey,
   corsHeadersFor,
   guardCompanionRequest,
   isAllowedOrigin,
+  pruneRateStore,
 } from '../../../noam-ai/site-companion/bot-guard.js';
 import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
 
@@ -83,6 +88,23 @@ describe('Noam AI model role', () => {
     assert.equal(body.messages[0].content, SYSTEM_PROMPT);
     assert.match(SYSTEM_PROMPT, /אתה לא רמזי/);
     assert.match(SYSTEM_PROMPT, /אסור לך לתת רמז/);
+    const huge = 'א'.repeat(5000);
+    const capped = qwenRequestBody(
+      {
+        message: 'איפה הדף?',
+        page: { kind: 'teachers', path: huge, title: huge },
+        teacher: { note: huge, topicLabel: 'פירוק לגורמים' },
+      },
+      records
+    );
+    const prompt = capped.messages[1].content;
+    assert.equal(prompt.includes(huge), false);
+    const titleLine = prompt.split('\n')[0];
+    const parts = titleLine.split(' ');
+    assert.equal(parts[parts.length - 1].length, MAX_PAGE_TITLE_CHARS);
+    assert.equal(parts[parts.length - 2].length, MAX_PAGE_PATH_CHARS);
+    assert.ok(prompt.includes('א'.repeat(MAX_TEACHER_NOTE_CHARS)));
+    assert.equal(prompt.includes('א'.repeat(MAX_TEACHER_NOTE_CHARS + 1)), false);
   });
 
   it('keeps only catalog links from the model and leaves essentials unmarked', async () => {
@@ -187,6 +209,10 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('panel.parentNode === parent'));
     assert.ok(client.includes('panelFocused()'));
     assert.ok(client.includes('noam_site_companion') === false);
+    assert.ok(client.includes('if (!modeOn && toggle) toggle.click()'));
+    assert.ok(client.includes('exactHelpTab'));
+    assert.ok(client.includes('getBoundingClientRect()'));
+    assert.equal(client.includes('font-size:14px'), false);
   });
 });
 
@@ -204,7 +230,7 @@ describe('Noam AI bot guard', () => {
     const okFetch = async () => ({ ok: true, json: async () => ({ success: true, score: 0.9, action: 'noam_site_companion' }) });
     const base = {
       origin: 'https://www.noamdoronmath.co.il',
-      forwardedFor: '203.0.113.8',
+      clientIp: '203.0.113.8',
       message: 'פירוק לגורמים',
       botVerification: { provider: 'recaptcha-v3', token: 'token' },
       now: 1_000,
@@ -214,19 +240,49 @@ describe('Noam AI bot guard', () => {
     const foreign = await guardCompanionRequest({ ...base, origin: 'https://evil.example' }, { store, secret: 'secret', fetch: okFetch });
     assert.equal(foreign.status, 403);
     assert.equal(foreign.code, 'ORIGIN_NOT_ALLOWED');
-    const long = await guardCompanionRequest({ ...base, message: 'א'.repeat(701), forwardedFor: '203.0.113.9' }, { store, secret: 'secret', fetch: okFetch });
+    const long = await guardCompanionRequest({ ...base, message: 'א'.repeat(701), clientIp: '203.0.113.9' }, { store, secret: 'secret', fetch: okFetch });
     assert.equal(long.status, 400);
     const low = await guardCompanionRequest(
-      { ...base, forwardedFor: '203.0.113.10' },
+      { ...base, clientIp: '203.0.113.10' },
       { store, secret: 'secret', fetch: async () => ({ ok: true, json: async () => ({ success: true, score: 0.1, action: 'noam_site_companion' }) }) }
     );
     assert.equal(low.status, 403);
     assert.equal(low.code, 'BOT_VERIFICATION_FAILED');
     for (let i = 0; i < 12; i += 1) {
-      const slot = await guardCompanionRequest({ ...base, now: 2_000, forwardedFor: '203.0.113.11' }, { store, secret: 'secret', fetch: okFetch });
+      const slot = await guardCompanionRequest({ ...base, now: 2_000, clientIp: '203.0.113.11' }, { store, secret: 'secret', fetch: okFetch });
       assert.equal(slot.ok, true);
     }
-    const blocked = await guardCompanionRequest({ ...base, now: 2_000, forwardedFor: '203.0.113.11' }, { store, secret: 'secret', fetch: okFetch });
+    const blocked = await guardCompanionRequest(
+      { ...base, now: 2_000, clientIp: '203.0.113.11', forwardedFor: '198.51.100.77' },
+      { store, secret: 'secret', fetch: okFetch }
+    );
     assert.equal(blocked.status, 429);
+    const otherIp = await guardCompanionRequest({ ...base, now: 2_000, clientIp: '203.0.113.12' }, { store, secret: 'secret', fetch: okFetch });
+    assert.equal(otherIp.ok, true);
+    assert.equal(clientKey('203.0.113.11, 198.51.100.9'), 'untrusted');
+    const stale = new Map<string, number[]>([['gone', [1]], ['kept', [3_000]]]);
+    pruneRateStore(stale, 2_000 + 60_000);
+    assert.equal(stale.has('gone'), false);
+    assert.equal(stale.has('kept'), true);
+  });
+
+  it('ships a paste-ready Wix folder with backend imports and the real catalog', () => {
+    const dir = new URL('../../../noam-ai/site-companion/DEPLOY_WIX/backend/', import.meta.url);
+    const read = (name: string) => readFileSync(new URL(name, dir), 'utf8');
+    const handler = read('noam-site-companion.js');
+    const core = read('noam-site-companion-core.js');
+    const paste = read('PASTE-AT-END-OF-http-functions.js');
+    const catalogJs = read('noam-site-catalog.js');
+    assert.match(handler, /from 'wix-fetch'/);
+    assert.match(handler, /from 'backend\/noam-site-companion-core'/);
+    assert.match(handler, /request\.ip/);
+    assert.equal(handler.includes('X-Forwarded-For'), false);
+    assert.match(core, /from 'backend\/noam-site-companion-retrieve'/);
+    assert.equal(core.includes('./retrieve'), false);
+    assert.match(paste, /from 'backend\/noam-site-companion'/);
+    assert.match(paste, /export function post_noamSiteCompanion/);
+    assert.match(catalogJs, /export const catalog =/);
+    assert.match(catalogJs, /6a37fe7160324a17ad107b3dbe43c1db/);
+    assert.equal(catalogJs.includes('export const catalog = []') || catalogJs.includes('export const catalog =[];'), false);
   });
 });
