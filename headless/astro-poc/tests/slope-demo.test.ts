@@ -38,9 +38,9 @@ describe('slope coordinate demo', () => {
   const svg = slopeSvg();
   const points = PAIRS.map(([x, y]) => screen(x, y));
 
-  it('keeps the original line, axes, steps, and slope label', () => {
-    assert.match(svg, /class="cl-line-thin" x1="80" y1="300" x2="500" y2="300"/);
-    assert.match(svg, /class="cl-line-thin" x1="120" y1="320" x2="120" y2="40"/);
+  it('keeps the original line and steps, with the axes through the origin', () => {
+    assert.match(svg, /class="cl-line-thin" x1="144" y1="280" x2="500" y2="280"/);
+    assert.match(svg, /class="cl-line-thin" x1="150" y1="292" x2="150" y2="40"/);
     assert.match(svg, /data-el="line" x1="150" y1="280" x2="270" y2="40"/);
     assert.match(svg, /data-el="tri1" d="M150 280 L210 280 L210 160"/);
     assert.match(svg, /data-el="tri2" d="M210 160 L270 160 L270 40"/);
@@ -48,15 +48,15 @@ describe('slope coordinate demo', () => {
     assert.match(svg, /data-el="rise1" x="218" y="226"[^>]*>2</);
     assert.match(svg, /data-el="run2" x="228" y="176"[^>]*>1</);
     assert.match(svg, /data-el="rise2" x="278" y="106"[^>]*>2</);
-    assert.match(svg, /data-el="lbl2" x="300" y="70"[^>]*>2</);
+    assert.doesNotMatch(svg, /data-el="lbl2"/);
     assert.match(film, /m = 2 : 1 = 2/);
   });
 
   it('draws a square grid whose ticks match the step', () => {
     assert.match(svg, /stroke="#c5d0e2"/);
     for (const n of [0, 1, 2]) {
-      assert.match(svg, new RegExp(`x1="${OX + n * U}" y1="40" x2="${OX + n * U}" y2="300"`));
-      assert.match(svg, new RegExp(`x="${OX + n * U}" y="322" text-anchor="middle">${n}</text>`));
+      assert.match(svg, new RegExp(`x1="${OX + n * U}" y1="40" x2="${OX + n * U}" y2="280"`));
+      assert.match(svg, new RegExp(`x="${OX + n * U}" y="318" text-anchor="middle">${n}</text>`));
     }
     for (const n of [0, 1, 2, 3, 4]) {
       const y = OY - n * U;
