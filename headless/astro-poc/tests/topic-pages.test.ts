@@ -75,7 +75,7 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
     assert.equal(TOPIC_PAGE_M20_SLUGS.length, 11);
     assert.equal(TOPIC_PAGE_M21_SLUGS.length, 24);
     assert.equal(TOPIC_PAGE_M22_SLUGS.length, 24);
-    assert.equal(TOPIC_PAGE_M23_SLUGS.length, 23);
+    assert.equal(TOPIC_PAGE_M23_SLUGS.length, 22);
     assert.equal(TOPIC_PAGE_M30_SLUGS.length, 4);
     assert.deepEqual([...TOPIC_PAGE_M20_UNMIGRATED], []);
     assert.deepEqual([...TOPIC_PAGE_M21_UNMIGRATED], []);

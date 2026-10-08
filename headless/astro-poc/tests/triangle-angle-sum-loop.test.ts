@@ -98,7 +98,6 @@ describe('triangle angle-sum vertex descent film', () => {
       src: '/loops/triangle-angle-sum-vertex-descent.html',
     });
     for (const slug of [
-      'angles-grade-7',
       'angles-introduction-measurement-grade-7',
       'adjacent-vertical-angles-grade-7',
       'triangle-area-grade-7',
