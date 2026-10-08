@@ -1246,37 +1246,46 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <g aria-hidden="true">
             {[0, 1, 2, 3, 4, 5].map((n) => (
-              <line stroke="#d5dce8" stroke-width="1.25" x1="176" y1={292 - n * 46} x2="314" y2={292 - n * 46} />
+              <line stroke="#c5d0e2" stroke-width="1.6" x1="210" y1={296 - n * 46} x2="302" y2={296 - n * 46} />
             ))}
-            {[0, 1, 2, 3].map((n) => (
-              <line stroke="#d5dce8" stroke-width="1.25" x1={176 + n * 46} y1="292" x2={176 + n * 46} y2="62" />
+            {[0, 1, 2].map((n) => (
+              <line stroke="#c5d0e2" stroke-width="1.6" x1={210 + n * 46} y1="296" x2={210 + n * 46} y2="66" />
             ))}
           </g>
-          <line class="cl-line" x1="128" y1="292" x2="348" y2="292" />
-          <polygon points="356,292 342,286 342,298" fill="var(--navy)" />
-          <line class="cl-line" x1="176" y1="312" x2="176" y2="40" />
-          <polygon points="176,28 170,44 182,44" fill="var(--navy)" />
-          <text class="cl-t cl-num" dir="ltr" x="164" y="310" text-anchor="end">0</text>
-          <text class="cl-t cl-num" dir="ltr" x="222" y="310" text-anchor="middle">1</text>
-          <text class="cl-t cl-num" dir="ltr" x="268" y="310" text-anchor="middle">2</text>
-          <text class="cl-t cl-num" dir="ltr" x="314" y="310" text-anchor="middle">3</text>
+          <line class="cl-line" x1="164" y1="296" x2="338" y2="296" />
+          <polygon points="350,296 336,290 336,302" fill="var(--navy)" />
+          <line class="cl-line" x1="210" y1="296" x2="210" y2="36" />
+          <polygon points="210,22 204,38 216,38" fill="var(--navy)" />
+          <text class="cl-t cl-num cl-slope-tick" dir="ltr" x="210" y="326" text-anchor="middle">0</text>
+          <text class="cl-t cl-num cl-slope-tick" dir="ltr" x="256" y="326" text-anchor="middle">1</text>
+          <text class="cl-t cl-num cl-slope-tick" dir="ltr" x="302" y="326" text-anchor="middle">2</text>
           {[1, 2, 3, 4, 5].map((n) => (
-            <text class="cl-t cl-num" dir="ltr" x="164" y={292 - n * 46 + 5} text-anchor="end">{n}</text>
+            <text class="cl-t cl-num cl-slope-tick" dir="ltr" x="128" y={296 - n * 46 + 5} text-anchor="end">{n}</text>
           ))}
-          <path class="cl-line" data-el="tri1" d="M176 246 L222 246 L222 154" style="opacity:0" />
-          <text class="cl-t cl-num" dir="ltr" data-el="run1" x="199" y="262" text-anchor="middle" style="opacity:0;paint-order:stroke;stroke:#fff;stroke-width:4px">1</text>
-          <text class="cl-t cl-num" dir="ltr" data-el="rise1" x="230" y="204" text-anchor="start" style="opacity:0;paint-order:stroke;stroke:#fff;stroke-width:4px">2</text>
-          <path class="cl-line" data-el="tri2" d="M222 154 L268 154 L268 62" style="opacity:0" />
-          <text class="cl-t cl-num" dir="ltr" data-el="run2" x="245" y="170" text-anchor="middle" style="opacity:0;paint-order:stroke;stroke:#fff;stroke-width:4px">1</text>
-          <text class="cl-t cl-num" dir="ltr" data-el="rise2" x="276" y="112" text-anchor="start" style="opacity:0;paint-order:stroke;stroke:#fff;stroke-width:4px">2</text>
-          <line class="cl-line cl-stroke-a" data-el="line" x1="161" y1="276" x2="283" y2="32" pathLength="1" style="opacity:0" />
-          <circle class="cl-pt-a" cx="176" cy="246" r="6.5" />
-          <circle class="cl-pt-a" cx="222" cy="154" r="6.5" />
-          <circle class="cl-pt-a" cx="268" cy="62" r="6.5" />
-          <text class="cl-t cl-num" dir="ltr" x="186" y="234" text-anchor="start" style="font-weight:800;paint-order:stroke;stroke:#fff;stroke-width:5px">(0,1)</text>
-          <text class="cl-t cl-num" dir="ltr" x="210" y="142" text-anchor="end" style="font-weight:800;paint-order:stroke;stroke:#fff;stroke-width:5px">(1,3)</text>
-          <text class="cl-t cl-num" dir="ltr" x="256" y="48" text-anchor="middle" style="font-weight:800;paint-order:stroke;stroke:#fff;stroke-width:5px">(2,5)</text>
-          <text class="cl-t cl-num cl-ok" dir="ltr" data-el="lbl2" x="336" y="168" text-anchor="start" style="opacity:0;font-weight:800">2/1 = 2</text>
+          <g data-el="tri1" style="opacity:0">
+            <path class="cl-line" d="M210 250 L256 250 L256 158" />
+            <path class="cl-line" d="M244 250 L244 238 L256 238" />
+          </g>
+          <text class="cl-t cl-num cl-slope-step" dir="ltr" data-el="run1" x="233" y="280" text-anchor="middle" style="opacity:0">1</text>
+          <text class="cl-t cl-num cl-slope-step" dir="ltr" data-el="rise1" x="270" y="230" text-anchor="start" style="opacity:0">2</text>
+          <g data-el="tri2" style="opacity:0">
+            <path class="cl-line" d="M256 158 L302 158 L302 66" />
+            <path class="cl-line" d="M290 158 L290 146 L302 146" />
+          </g>
+          <text class="cl-t cl-num cl-slope-step" dir="ltr" data-el="run2" x="279" y="190" text-anchor="middle" style="opacity:0">1</text>
+          <text class="cl-t cl-num cl-slope-step" dir="ltr" data-el="rise2" x="316" y="116" text-anchor="start" style="opacity:0">2</text>
+          <line class="cl-line cl-stroke-a" data-el="line" x1="206" y1="258" x2="308" y2="54" pathLength="1" style="opacity:0" />
+          <g data-el="pts" style="opacity:0">
+            <circle class="cl-pt-a" cx="210" cy="250" r="6.5" />
+            <circle class="cl-pt-a" cx="256" cy="158" r="6.5" />
+            <circle class="cl-pt-a" cx="302" cy="66" r="6.5" />
+          </g>
+          <g data-el="pairs" style="opacity:0">
+            <text class="cl-t cl-num cl-slope-pair" dir="ltr" x="196" y="260" text-anchor="end">(0,1)</text>
+            <text class="cl-t cl-num cl-slope-pair" dir="ltr" x="196" y="168" text-anchor="end">(1,3)</text>
+            <text class="cl-t cl-num cl-slope-pair" dir="ltr" x="322" y="76" text-anchor="start">(2,5)</text>
+          </g>
+          <text class="cl-t cl-num cl-ok cl-slope-pair" dir="ltr" data-el="lbl2" x="400" y="210" text-anchor="start" style="opacity:0">2/1 = 2</text>
         </svg>
       )
     }

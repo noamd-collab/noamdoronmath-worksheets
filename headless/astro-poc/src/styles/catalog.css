@@ -3314,6 +3314,26 @@ html.noam-a11y-motion .hero-draw {
   direction: rtl;
   unicode-bidi: isolate;
 }
+/* Slope card only: ticks, step numbers, and ordered pairs need enough size
+   to stay readable once the 560-wide drawing is fitted into the phone card. */
+.concept-loop[data-loop='slope'] .cl-slope-tick {
+  font-size: 20px;
+  font-weight: 700;
+}
+.concept-loop[data-loop='slope'] .cl-slope-step {
+  font-size: 22px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 5px;
+}
+.concept-loop[data-loop='slope'] .cl-slope-pair {
+  font-size: 26px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 6px;
+}
 .concept-loop .cl-sfrac-bar {
   stroke: var(--navy);
   stroke-width: 1.25;
