@@ -7,6 +7,8 @@ import LandingLoop from './LandingLoop.astro';
 import DistancePointsLoop from './DistancePointsLoop.astro';
 import TriangleAngleSumLoop from './TriangleAngleSumLoop.astro';
 import ParallelCointeriorLoop from './ParallelCointeriorLoop.astro';
+import AlgebraicSubstitutionLoop from './AlgebraicSubstitutionLoop.astro';
+import FactoringFilmLoop from './FactoringFilmLoop.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import { topicLandingLoop } from '../lib/landingLoops';
@@ -97,7 +99,9 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
    analytic-geometry-grade-9 mounts DistancePointsLoop in this same slot.
    triangle-quadrilateral-angle-sum-grade-7 mounts the provided HTML film
    (its own controls and angle readouts stay inside the iframe).
-   parallel-lines-angles-grade-8 mounts the co-interior angles film. */
+   parallel-lines-angles-grade-8 mounts the co-interior angles film.
+   algebraic-expressions-grade-7 mounts the substitution lesson.
+   factoring-grade-9 mounts the common-factor film. */
 const landingLoop = topicLandingLoop(page);
 const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
 const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
@@ -105,7 +109,9 @@ const filmLoop = landingLoop.kind === 'film';
 const bareFilm =
   filmLoop &&
   (landingLoop.marker === 'triangle-angle-sum-vertex-descent' ||
-    landingLoop.marker === 'parallel-cointerior-angles');
+    landingLoop.marker === 'parallel-cointerior-angles' ||
+    landingLoop.marker === 'algebraic-substitution-grade-7' ||
+    landingLoop.marker === 'common-factor-minus-parentheses');
 const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css' || filmLoop;
 const bodyStart = bodyUnits.findIndex((unit) => unit.kind !== 'intro' && unit.kind !== 'cta');
 const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
@@ -198,6 +204,12 @@ function faqHeadingId(groupIndex: number) {
             )}
             {landingLoop.kind === 'film' && landingLoop.marker === 'parallel-cointerior-angles' && (
               <ParallelCointeriorLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'algebraic-substitution-grade-7' && (
+              <AlgebraicSubstitutionLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'common-factor-minus-parentheses' && (
+              <FactoringFilmLoop src={landingLoop.src} marker={landingLoop.marker} />
             )}
           </div>
           <div class="exact-topic-copy">

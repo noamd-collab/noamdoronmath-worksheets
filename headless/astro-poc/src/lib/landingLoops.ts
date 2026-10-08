@@ -196,6 +196,14 @@ export const FILM_LANDING_LOOPS = {
     marker: 'parallel-cointerior-angles',
     src: '/loops/parallel-cointerior-angles.html',
   },
+  'algebraic-expressions-grade-7': {
+    marker: 'algebraic-substitution-grade-7',
+    src: '/loops/algebraic-substitution-grade-7.html',
+  },
+  'factoring-grade-9': {
+    marker: 'common-factor-minus-parentheses',
+    src: '/loops/common-factor-minus-parentheses-grade-9.html',
+  },
 } as const;
 
 export type FilmLandingSlug = keyof typeof FILM_LANDING_LOOPS;
