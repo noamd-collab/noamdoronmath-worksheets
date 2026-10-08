@@ -29,6 +29,10 @@ Do not copy `noam-site-companion.js` from the website folder. The website file a
 
 The page list is already inside `noam-site-catalog.js`. Do not empty it and do not edit it.
 
+`noam-site-catalog.js` is about 406 KB. That size is expected. Copy it by hand: open the file, select everything, copy, create the backend file with the same name, paste, and save. Do not shorten it.
+
+If the Wix editor is slow, freezes, or the paste comes out shorter than the original, wait until it finishes and check that the file still ends with `};`. If the ending is missing or the editor will not take the whole file, stop. Do not publish, and do not delete lines to make it fit. Tell Grok Bot.
+
 ## 2. Paste the two routes into the existing http-functions file
 
 1. In the same Backend section, open the file that is already named `http-functions.js`.
@@ -70,9 +74,20 @@ The website already sends the check through the existing bot client. A missing c
 
 The server also refuses a message longer than 700 characters, and more than 12 requests per minute from the same visitor address. That address is the one Wix records (`request.ip`). A visitor cannot pick a different address by sending a header.
 
-## 6. Publish the backend yourself
+## 6. Look at the secret names, then publish
 
-When you want the live AI call, publish `my-site-2` from the Wix editor.
+Before you publish, open the Wix Secrets Manager. That is the list of secret names in the editor (a lock icon in the code sidebar). Look only.
+
+You should see both of these names, spelled exactly like this:
+
+- `QWEN_API_KEY`
+- `RECAPTCHA_SECRET_KEY`
+
+Do not open a secret, do not copy its value, and do not create, rename, or change anything.
+
+If either name is missing, or it is spelled differently, stop. Do not publish. Tell Grok Bot which name is missing.
+
+When both names are there and you want the live AI call, publish `my-site-2` from the Wix editor.
 
 Publishing that site also publishes **any other changes still waiting in the editor** on `my-site-2`, not only these new files. Look through the editor first so you are not publishing something else by accident.
 
@@ -84,20 +99,24 @@ Merging the website pull request does not publish this backend. Publishing this 
 
 Use the browser on the live site, `https://www.noamdoronmath.co.il`.
 
-1. Press F12, open the Console tab, paste this line, and press Enter:
+1. Press F12, open the Console tab, paste this line, and press Enter.
+
+Chrome will refuse the paste the first time. It asks you to type `allow pasting` and press Enter. Type that, then paste the line again.
 
 ```js
 fetch("https://amiramnoam.wixstudio.com/my-site-2/_functions/noamSiteCompanion", {method:"OPTIONS"}).then(r => console.log("from live site:", r.status))
 ```
 
-2. What the number means:
+2. What you see:
 
-| What you see | Meaning |
+On this live site, the console prints a number only when the result is 204. If the backend is not published yet, if the call is refused, or if the server has an error, Chrome shows the same red message and does not print 404, 403, or 500.
+
+| What you see | What it means |
 | --- | --- |
-| `404` | The backend is not published yet. |
-| `from live site: 204` | The live site is allowed. This part is working. |
-| `403` | The address was refused. |
-| `500` | The backend hit an error. Look in the Wix editor under **Logs** (Developer / Monitoring / Logs) for `noamSiteCompanion`. |
+| The line `from live site: 204` | The live site is allowed and the backend answered. This check passed. |
+| A red message that says `blocked by CORS policy` or `Failed to fetch`, and no number | This check did not pass. That same red message is what you see when the backend is not published yet, when the call is refused, and when the server has an error. The console will not show 404. |
+
+To tell those failures apart, use the terminal checks in items 3, 4, and 5 below. A server error also shows up in the Wix editor under **Logs** (Developer / Monitoring / Logs) for `noamSiteCompanion`.
 
 3. Check that a foreign address is refused. On your computer, in a terminal, run:
 
@@ -121,7 +140,7 @@ curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 
 `403` means the missing security check was refused and the model was not called. `404` means the backend is not published yet.
 
-5. Check a too-long message. Run:
+5. Check a too-long message. On a Mac, the first time you run `python3` the Mac may ask to install the Apple developer tools. That install is a normal Mac prompt. Both of Noam's computers are MacBooks, so allow the install if it asks, then run the command again. Run:
 
 ```bash
 python3 - <<'PY'
