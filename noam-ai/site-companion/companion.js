@@ -27,8 +27,8 @@ export const SYSTEM_PROMPT = [
   "התפקיד שלך: להבין צורך, לבחור רק מתוך הרשומות שסופקו, להסביר איפה ללחוץ, ולכוון לדפים קיימים.",
   "אסור להמציא דף, שאלה, מספר סעיף או כתובת. אם אין רשומה מתאימה, אמור שהנתון חסר.",
   "החזר JSON בלבד בלי טקסט מסביב:",
-  '{"text":"עברית קצרה","optionRecordIds":["id"],"linkRecordIds":["id"]}',
-  "עד שלושה optionRecordIds. בלי כתובות URL. אל תמציא סעיפים חיוניים.",
+  '{"answer":"משפט קצר","details":"פירוט קצר","primaryRecordId":"id","chipRecordIds":["id"]}',
+  "answer הוא משפט ניווט אחד. chipRecordIds מכיל לכל היותר שניים. בלי כתובות URL. אל תמציא סעיפים חיוניים.",
 ].join("\n");
 
 const SOLVE_REQUEST =
@@ -67,16 +67,22 @@ function linkOf(record) {
 }
 
 function emptyResult(source, text, input, extra) {
+  const teacher = input && input.page && input.page.kind === "teachers";
+  const details = [text, teacher ? QUESTION_GAP : "", teacher ? EXPORT_NOTE : ""].filter(Boolean).join("\n");
   return Object.assign(
     {
       ok: source !== "fallback",
       source,
       model: null,
+      answer: text,
       text,
+      details,
+      primary: source === "ramzi-redirect" ? { label: "עזרה מרמזי", action: "ramzi" } : null,
+      chips: [],
       options: [],
       links: [],
       essential: [],
-      essentialNote: input && input.page && input.page.kind === "teachers" ? QUESTION_GAP : "",
+      essentialNote: teacher ? QUESTION_GAP : "",
       exportNote: exportNoteFor(input),
     },
     extra || {}
@@ -123,38 +129,51 @@ function stripUnknownUrls(text, allowed) {
   });
 }
 
+function actionFrom(record) {
+  return {
+    id: record.id,
+    label: record.gradeLabel + " · " + record.title,
+    href: record.href,
+  };
+}
+
 export function groundModelPayload(parsed, records, input) {
   const byId = new Map(records.map((record) => [record.id, record]));
   const allowed = new Set(records.map((record) => record.href));
-  const optionIds = Array.isArray(parsed.optionRecordIds) ? parsed.optionRecordIds : [];
-  const linkIds = Array.isArray(parsed.linkRecordIds) ? parsed.linkRecordIds : optionIds;
-  const options = [];
-  for (const id of optionIds) {
+  const legacy = Array.isArray(parsed.optionRecordIds) ? parsed.optionRecordIds.map(String) : [];
+  const primaryRecord = byId.get(String(parsed.primaryRecordId || legacy[0] || ""));
+  const chipSource = Array.isArray(parsed.chipRecordIds) ? parsed.chipRecordIds : legacy.slice(1);
+  const chips = [];
+  for (const id of chipSource) {
     const record = byId.get(String(id));
-    if (!record || options.length >= 3) continue;
-    options.push({
-      id: record.id,
-      label: record.gradeLabel + " · " + record.title,
-      href: record.href,
-    });
+    if (!record || chips.length >= 2) continue;
+    if (primaryRecord && record.id === primaryRecord.id) continue;
+    chips.push(actionFrom(record));
   }
+  const teacher = input && input.page && input.page.kind === "teachers";
+  const answer = stripUnknownUrls(parsed.answer || parsed.text, allowed).trim() || "אלה הדפים שנמצאו בקטלוג. לחצו על הקישור.";
+  const detailBody = stripUnknownUrls(parsed.details || "", allowed).trim();
+  const details = [detailBody, teacher ? QUESTION_GAP : "", teacher ? EXPORT_NOTE : ""].filter(Boolean).join("\n");
+  const primary = primaryRecord ? actionFrom(primaryRecord) : null;
   const links = [];
-  const seen = new Set();
-  for (const id of linkIds) {
-    const record = byId.get(String(id));
-    if (!record || seen.has(record.id)) continue;
-    seen.add(record.id);
-    links.push(linkOf(record));
+  if (primary) links.push(linkOf(primaryRecord));
+  for (const chip of chips) {
+    const record = byId.get(chip.id);
+    if (record) links.push(linkOf(record));
   }
   return {
     ok: true,
     source: "model",
     model: QWEN_MODEL,
-    text: stripUnknownUrls(parsed.text, allowed).trim() || "אלה הדפים שנמצאו בקטלוג. לחצו על הקישור.",
-    options,
+    answer,
+    text: answer,
+    details,
+    primary,
+    chips,
+    options: chips,
     links,
     essential: [],
-    essentialNote: input && input.page && input.page.kind === "teachers" ? QUESTION_GAP : "",
+    essentialNote: teacher ? QUESTION_GAP : "",
     exportNote: exportNoteFor(input),
   };
 }

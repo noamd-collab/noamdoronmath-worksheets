@@ -102,9 +102,10 @@ describe('Noam AI model role', () => {
               choices: [{
                 message: {
                   content: JSON.stringify({
-                    text: 'לחצו על הקישור. המצאה https://evil.example/sheet ושאלות 1א 9ב',
-                    optionRecordIds: [allowed.id, 'invented-sheet'],
-                    linkRecordIds: [allowed.id, 'invented-sheet'],
+                    answer: 'לחצו על הקישור. המצאה https://evil.example/sheet',
+                    details: 'שאלות 1א 9ב לא קיימות בקטלוג',
+                    primaryRecordId: allowed.id,
+                    chipRecordIds: [records[1].id, records[2].id, 'invented-sheet', records[3].id],
                   }),
                 },
               }],
@@ -116,13 +117,13 @@ describe('Noam AI model role', () => {
     assert.equal(called, 1);
     assert.equal(result.source, 'model');
     assert.equal(result.model, 'qwen3.8-flash');
-    assert.equal(result.links.length, 1);
-    assert.equal(result.links[0].href, allowed.href);
-    assert.equal(result.options.length, 1);
+    assert.equal(result.primary.href, allowed.href);
+    assert.equal(result.chips.length, 2);
+    assert.equal(result.links.length, 3);
     assert.equal(result.essential.length, 0);
     assert.match(result.essentialNote, /אי אפשר לסמן/);
-    assert.match(result.exportNote, /עדיין לא ממומשים/);
-    assert.equal(result.text.includes('evil.example'), false);
+    assert.match(result.details, /עדיין לא ממומשים/);
+    assert.equal(result.answer.includes('evil.example'), false);
   });
 
   it('points a worksheet solve request to Ramzi and does not call the model', async () => {
@@ -135,7 +136,9 @@ describe('Noam AI model role', () => {
     );
     assert.equal(called, 0);
     assert.equal(result.source, 'ramzi-redirect');
-    assert.match(result.text, /רמזי/);
+    assert.match(result.answer, /רמזי/);
+    assert.equal(result.primary.action, 'ramzi');
+    assert.equal(result.chips.length, 0);
     assert.equal(result.links.length, 0);
   });
 
@@ -146,7 +149,9 @@ describe('Noam AI model role', () => {
     );
     assert.equal(result.ok, false);
     assert.equal(result.source, 'fallback');
-    assert.equal(result.text, FALLBACK_TEXT);
+    assert.equal(result.answer, FALLBACK_TEXT);
+    assert.equal(result.primary, null);
+    assert.equal(result.chips.length, 0);
     assert.equal(result.links.length, 0);
   });
 });
