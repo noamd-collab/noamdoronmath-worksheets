@@ -297,6 +297,7 @@ body.embed .long-example .formula-stage{min-height:64px}
   const state = {index: 0, x: examples[0].defaultX, timeline: null, phase: -1,
     completed: false, history: examples.map(() => []), stepTimes: [0, 7.2, 13.8, 20.4],
     suppressCommit: false, ready: false};
+  let userPaused = false;
   let resizeFrame = 0;
 
   const current = () => examples[state.index];
@@ -611,9 +612,9 @@ body.embed .long-example .formula-stage{min-height:64px}
     $('play').addEventListener('click', () => {
       if (motionOff()) { seekStep(state.phase === 3 ? 0 : Math.min(state.phase + 1, 3)); return; }
       const tl = state.timeline;
-      if (!tl.paused() && tl.progress() < 1) tl.pause();
-      else if (tl.progress() >= 1) { state.completed = false; tl.restart(); }
-      else tl.play();
+      if (!tl.paused() && tl.progress() < 1) { userPaused = true; tl.pause(); }
+      else if (tl.progress() >= 1) { userPaused = false; state.completed = false; tl.restart(); }
+      else { userPaused = false; tl.play(); }
       updatePlay();
     });
     $('next-step').addEventListener('click', () => seekStep(Math.min(state.phase + 1, 3)));
@@ -646,9 +647,25 @@ body.embed .long-example .formula-stage{min-height:64px}
     try { if (window.parent && window.parent !== window) watchMotion(window.parent.document.documentElement); } catch { /* cross-origin parent */ }
   }
 
+  function startIfVisible(visible) {
+    if (!visible || userPaused || motionOff() || !state.timeline) return;
+    if (state.timeline.progress() >= 1) return;
+    if (!state.timeline.paused()) return;
+    state.timeline.play();
+    updatePlay();
+  }
+  function watchInView() {
+    const target = document.querySelector('main') || document.body;
+    if (!('IntersectionObserver' in window)) { startIfVisible(true); return; }
+    new IntersectionObserver((entries) => {
+      const visible = entries.some((entry) => entry.isIntersecting);
+      if (visible) startIfVisible(visible);
+    }, { threshold: 0.15 }).observe(target);
+  }
+
   async function init() {
     await document.fonts.ready;
-    bindControls(); selectExample(0, false); state.ready = true;
+    bindControls(); selectExample(0, false); watchInView(); state.ready = true;
     document.documentElement.dataset.ready = 'true';
   }
 

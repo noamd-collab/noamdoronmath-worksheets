@@ -1,6 +1,6 @@
 /**
  * The grade-7 substitution lesson replaces only that page's area-model loop.
- * Embed mode hides the lesson chrome. It does not play on load.
+ * Embed mode hides the lesson chrome. It plays when it scrolls into view.
  * Each of the four sequences is about 6.5 seconds.
  */
 import assert from 'node:assert/strict';
@@ -20,7 +20,7 @@ describe('algebraic substitution grade 7 film', () => {
   const topic = read('src/components/TopicPage.astro');
   const worksheets = read('src/pages/worksheets.astro');
 
-  it('stands alone, paces slowly, and does not play on load', () => {
+  it('stands alone, paces slowly, and plays when it scrolls into view', () => {
     assert.equal(film.includes('ממשיכים מהסרטון'), false);
     assert.equal(film.includes('מהסרטון'), false);
     assert.match(film, /<strong>פתיחה וכינוס<\/strong><small>שלושה מופעים של x<\/small>/);
@@ -28,7 +28,14 @@ describe('algebraic substitution grade 7 film', () => {
     assert.match(film, /stepTimes: \[0, 7\.2, 13\.8, 20\.4\]/);
     assert.match(film, /time < 6\.5 \? 0 : time < 13 \? 1 : time < 19\.5 \? 2 : 3/);
     assert.match(film, /duration: 5\.2, ease: 'none'\}, 20\.8\)/);
-    assert.match(film, /selectExample\(0, false\)/);
+    assert.match(film, /selectExample\(0, false\); watchInView\(\)/);
+    assert.match(film, /function startIfVisible\(visible\)/);
+    assert.match(film, /if \(!visible \|\| userPaused \|\| motionOff\(\) \|\| !state\.timeline\) return/);
+    assert.match(film, /new IntersectionObserver\(\(entries\) => \{/);
+    assert.match(film, /if \(visible\) startIfVisible\(visible\)/);
+    assert.match(film, /\{ threshold: 0\.15 \}\)/);
+    assert.match(film, /userPaused = true; tl\.pause\(\)/);
+    assert.match(film, /else \{ userPaused = false; tl\.play\(\); \}/);
     assert.match(film, /function motionOff\(\)/);
     assert.match(film, /nd-motion-off/);
     assert.match(film, /noam-a11y-motion/);

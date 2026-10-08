@@ -4,7 +4,8 @@
  * The examples, pacing, and controls stay in
  * public/loops/algebraic-substitution-grade-7.html.
  * This wrapper only frames that file in the topic demo slot.
- * It does not press Play: the lesson stays paused until the student starts it.
+ * The lesson starts itself when it scrolls into view.
+ * This wrapper pauses it when motion is off.
  */
 interface Props {
   src: string;
