@@ -61,8 +61,8 @@
     @media(max-width:410px){.masthead{display:block}.lesson-name{max-width:none;margin-top:4px;text-align:right}.button-row{gap:10px}.button.quiet{padding-inline:8px}.button.quiet .replay-text{display:none}.button.chapters{padding-inline:10px}.button-row .extras{gap:7px}.speed-label select{padding-inline:3px}.clock{font-size:13px;min-width:96px}.chapter-button{gap:5px;padding-inline:10px}.chapter-panel{gap:8px}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
-.live-caption{margin:0 0 12px;text-align:center;font-size:16px;line-height:1.45;color:var(--ink)}
-.live-caption:empty{display:none}
+.live-caption{margin:0 0 12px;text-align:center;font-size:16px;line-height:1.45;color:var(--ink);min-height:calc(16px * 1.45)}
+@media(max-width:520px){.live-caption{min-height:calc(16px * 1.45 * 2)}}
 .live-caption strong{font-weight:800;color:var(--teal-dark)}
 .live-caption .negative{color:#c64a0b;font-weight:700}
 .live-caption .math-inline{display:inline-block;direction:ltr;unicode-bidi:isolate;font-family:Assistant,Arial,sans-serif;font-weight:800}
@@ -154,6 +154,24 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       } catch { /* cross-origin parent */ }
       return roots.some((html) => html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion'));
     }
+    function scheduledCaption(doc, time) {
+      const nodes = [...doc.querySelectorAll('.caption')];
+      const lesson = doc.defaultView && doc.defaultView.algebraLesson;
+      const list = lesson && lesson.captions;
+      if (list && list.length && Number.isFinite(time)) {
+        if (time < list[0][0]) return nodes[0] || null;
+        for (let i = 0; i < list.length; i++) {
+          if (time >= list[i][0] && time < list[i][1]) return nodes[i] || null;
+        }
+        let scheduled = null;
+        for (let i = 0; i < list.length; i++) {
+          if (list[i][0] <= time) scheduled = nodes[i] || scheduled;
+        }
+        return scheduled;
+      }
+      if (Number.isFinite(time) && time < 0.8) return nodes[0] || null;
+      return null;
+    }
     function fitReadability() {
       let doc;
       try { doc = frame.contentDocument; } catch { return; }
@@ -172,8 +190,11 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
         const opacity = Number(getComputedStyle(node).opacity);
         if (opacity > best) { best = opacity; active = node; }
       });
-      if (active) shownCaption = active;
-      const cap = active || shownCaption;
+      const time = api ? Number(api.getTime()) : 0;
+      const scheduled = scheduledCaption(doc, time);
+      if (scheduled) shownCaption = scheduled;
+      else if (active) shownCaption = active;
+      const cap = scheduled || active || (Number.isFinite(time) && time < 0.8 ? null : shownCaption);
       if (bar) bar.hidden = !tooSmall;
       if (tooSmall && cap && bar && bar.dataset.text !== cap.textContent) {
         bar.dataset.text = cap.textContent || '';
@@ -285,7 +306,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       if (!api) return;
       if (api.isPlaying()) api.pause();
       else {
-        if (api.getTime() >= duration - .02) api.seek(0);
+        if (api.getTime() >= duration - .02) { api.seek(0); fitReadability(); }
         applySpeed();
         api.play();
       }
@@ -319,6 +340,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       if (!api) return;
       api.pause();
       api.seek(0);
+      fitReadability();
       applySpeed();
       api.play();
       showTime(0);
@@ -332,6 +354,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
         const time = Number(button.dataset.time);
         api.pause();
         api.seek(time);
+        fitReadability();
         applySpeed();
         api.play();
         showTime(time);
@@ -353,6 +376,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       beginSeek();
       const t = Number(seek.value);
       api.seek(t);
+      fitReadability();
       showTime(t);
     });
     seek.addEventListener('keyup', event => {
@@ -409,6 +433,7 @@ body.embed .masthead,body.embed .footer-note{display:none}body.embed .page{paddi
       byId('total').textContent = formatTime(duration);
       api.pause();
       api.seek(0);
+      fitReadability();
       applySpeed();
       byId('loading').hidden = true;
       [playButton,replayButton,seek,speed,chaptersButton].forEach(control => { control.disabled = false; });

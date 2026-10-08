@@ -40,6 +40,9 @@ describe('common-factor grade 9 film', () => {
     assert.match(film, /get\('embed'\)==='1'\)document\.body\.classList\.add\('embed'\)/);
     assert.match(film, /id="live-caption" class="live-caption"/);
     assert.match(film, /\.live-caption\{[^}]*font-size:16px/);
+    assert.match(film, /\.live-caption\{[^}]*min-height:calc\(16px \* 1\.45\)/);
+    assert.match(film, /@media\(max-width:520px\)\{\.live-caption\{min-height:calc\(16px \* 1\.45 \* 2\)\}\}/);
+    assert.equal(film.includes('.live-caption:empty'), false);
     assert.match(film, /const floor = isNote \? 13 : 15/);
     assert.match(film, /@media\(max-width:410px\)/);
     assert.match(film, /\.clock\{font-size:13px/);
@@ -54,12 +57,18 @@ describe('common-factor grade 9 film', () => {
     assert.match(film, /doc\.querySelectorAll\('\.caption-stage'\)/);
     assert.match(film, /let best = 0\.05/);
     assert.match(film, /if \(opacity > best\)/);
-    assert.match(film, /if \(active\) shownCaption = active/);
-    assert.match(film, /const cap = active \|\| shownCaption/);
+    assert.match(film, /function scheduledCaption\(doc, time\)/);
+    assert.match(film, /doc\.defaultView\.algebraLesson/);
+    assert.match(film, /if \(time < list\[0\]\[0\]\) return nodes\[0\]/);
+    assert.match(film, /const cap = scheduled \|\| active \|\| \(Number\.isFinite\(time\) && time < 0\.8 \? null : shownCaption\)/);
     assert.match(film, /bar\.dataset\.text !== cap\.textContent/);
     assert.match(film, /function tick\(\) \{[\s\S]*?fitReadability\(\)/);
     assert.match(film, /stageEl\.style\.visibility = tooSmall \? 'hidden' : ''/);
     assert.match(film, /node\.style\.visibility = tooSmall \? 'hidden' : ''/);
+    assert.match(film, /api\.seek\(0\);\n\s*fitReadability\(\)/);
+    assert.match(film, /api\.seek\(time\);\n\s*fitReadability\(\)/);
+    assert.match(film, /api\.seek\(t\);\n\s*fitReadability\(\)/);
+    assert.match(film, /api\.seek\(0\); fitReadability\(\)/);
   });
 
   it('mounts as the fourth full player, only on the factoring topic page', () => {
