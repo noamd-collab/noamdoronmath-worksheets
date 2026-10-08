@@ -229,6 +229,12 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .primary svg{width:18px;height:18px}
 .prepare-hint{font-size:13px;color:var(--quiet);margin:8px 24px 16px}
 .foot{background:var(--ink);color:#e8ebf3;margin-top:8px;width:100vw;margin-inline:calc(50% - 50vw)}
+html.noam-ai-engaged .intro,html.noam-ai-engaged .foot{width:auto;max-width:100%;margin-inline:0}
+html.noam-ai-engaged .intro{padding-inline:24px}
+html.noam-ai-engaged .app,html.noam-ai-engaged .wrap,html.noam-ai-engaged .topline,html.noam-ai-engaged .workspace{min-width:0;max-width:100%}
+html.noam-ai-engaged .workspace{grid-template-columns:minmax(0,1fr)}
+html.noam-ai-engaged .question-list,html.noam-ai-engaged .future-modes{grid-template-columns:minmax(0,1fr)}
+
 .foot-grid{max-width:var(--shell);margin:0 auto;padding:48px 24px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px}
 .foot-brand{font-size:22px;color:#fff;display:block}
 .foot p,.foot a,.foot h3{font-family:Heebo,sans-serif}

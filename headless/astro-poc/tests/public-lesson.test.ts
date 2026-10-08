@@ -33,6 +33,7 @@ describe('public lesson menu page', () => {
     assert.match(html, /property="og:locale" content="he_IL"/);
     assert.match(html, /id="bubbleName">אליהו</);
     assert.match(html, /בוא נחקור ←/);
+    assert.match(html, /<script src="\/noam-site-companion\.js" defer><\/script>/);
     assert.equal(html.includes('__OG_'), false);
     assert.equal(html.includes('noindex'), false);
   });

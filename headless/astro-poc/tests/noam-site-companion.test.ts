@@ -6,11 +6,19 @@ import { retrieveRecords } from '../../../noam-ai/site-companion/retrieve.js';
 import {
   FALLBACK_TEXT,
   QWEN_MODEL,
+  SOLVE_REQUEST_SOURCE,
   SYSTEM_PROMPT,
   handleCompanionTurn,
   isWorksheetSolveRequest,
   qwenRequestBody,
 } from '../../../noam-ai/site-companion/companion.js';
+import {
+  SITE_ORIGINS,
+  corsHeadersFor,
+  guardCompanionRequest,
+  isAllowedOrigin,
+} from '../../../noam-ai/site-companion/bot-guard.js';
+import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
 
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
@@ -140,6 +148,8 @@ describe('Noam AI model role', () => {
     assert.equal(result.primary.action, 'ramzi');
     assert.equal(result.chips.length, 0);
     assert.equal(result.links.length, 0);
+    assert.equal(isWorksheetSolveRequest('worksheet', 'יש דף פתרונות לכיתה ה?'), false);
+    assert.equal(isWorksheetSolveRequest('worksheet', 'איך פותרים את שאלה 3?'), true);
   });
 
   it('returns the safe fallback when the model call fails', async () => {
@@ -153,5 +163,70 @@ describe('Noam AI model role', () => {
     assert.equal(result.primary, null);
     assert.equal(result.chips.length, 0);
     assert.equal(result.links.length, 0);
+  });
+});
+
+describe('Noam AI starters and client guard', () => {
+  it('does not offer the current page, and home does not offer בית', () => {
+    const home = starterLinksFor('home', '/', (path) => path);
+    assert.equal(home.some((item) => item.label === 'בית' || item.href === '/'), false);
+    assert.ok(home.some((item) => item.href === '/worksheets'));
+    const topic = starterLinksFor('topic', '/factoring-grade-9', (path) => path);
+    assert.equal(topic.some((item) => item.href === '/factoring-grade-9'), false);
+    assert.ok(topic.some((item) => item.href === '/grade-9' && item.label === 'כיתה ט׳'));
+  });
+
+  it('checks a solve request in the browser before the network call', () => {
+    const client = readFileSync(new URL('../public/noam-site-companion.js', import.meta.url), 'utf8');
+    assert.ok(client.includes(SOLVE_REQUEST_SOURCE));
+    assert.ok(client.includes('isLocalSolve(message)'));
+    const solveAt = client.indexOf('isLocalSolve(message)');
+    const postAt = client.indexOf('client.postJson(API');
+    assert.ok(solveAt > 0 && postAt > solveAt);
+    assert.equal(client.includes('found.length < 3'), false);
+    assert.ok(client.includes('panel.parentNode === parent'));
+    assert.ok(client.includes('panelFocused()'));
+    assert.ok(client.includes('noam_site_companion') === false);
+  });
+});
+
+describe('Noam AI bot guard', () => {
+  it('rejects a wildcard and any origin outside the site allowlist', () => {
+    assert.equal(corsHeadersFor('https://www.noamdoronmath.co.il')?.['Access-Control-Allow-Origin'], 'https://www.noamdoronmath.co.il');
+    assert.equal(corsHeadersFor('*'), null);
+    assert.equal(corsHeadersFor('https://evil.example'), null);
+    assert.equal(isAllowedOrigin('https://preview.wix-site-host.com'), false);
+    assert.ok(SITE_ORIGINS.includes('https://www.noamdoronmath.co.il'));
+  });
+
+  it('caps the message, rate-limits, and requires a passing reCAPTCHA token', async () => {
+    const store = new Map();
+    const okFetch = async () => ({ ok: true, json: async () => ({ success: true, score: 0.9, action: 'noam_site_companion' }) });
+    const base = {
+      origin: 'https://www.noamdoronmath.co.il',
+      forwardedFor: '203.0.113.8',
+      message: 'פירוק לגורמים',
+      botVerification: { provider: 'recaptcha-v3', token: 'token' },
+      now: 1_000,
+    };
+    const passed = await guardCompanionRequest(base, { store, secret: 'secret', fetch: okFetch });
+    assert.equal(passed.ok, true);
+    const foreign = await guardCompanionRequest({ ...base, origin: 'https://evil.example' }, { store, secret: 'secret', fetch: okFetch });
+    assert.equal(foreign.status, 403);
+    assert.equal(foreign.code, 'ORIGIN_NOT_ALLOWED');
+    const long = await guardCompanionRequest({ ...base, message: 'א'.repeat(701), forwardedFor: '203.0.113.9' }, { store, secret: 'secret', fetch: okFetch });
+    assert.equal(long.status, 400);
+    const low = await guardCompanionRequest(
+      { ...base, forwardedFor: '203.0.113.10' },
+      { store, secret: 'secret', fetch: async () => ({ ok: true, json: async () => ({ success: true, score: 0.1, action: 'noam_site_companion' }) }) }
+    );
+    assert.equal(low.status, 403);
+    assert.equal(low.code, 'BOT_VERIFICATION_FAILED');
+    for (let i = 0; i < 12; i += 1) {
+      const slot = await guardCompanionRequest({ ...base, now: 2_000, forwardedFor: '203.0.113.11' }, { store, secret: 'secret', fetch: okFetch });
+      assert.equal(slot.ok, true);
+    }
+    const blocked = await guardCompanionRequest({ ...base, now: 2_000, forwardedFor: '203.0.113.11' }, { store, secret: 'secret', fetch: okFetch });
+    assert.equal(blocked.status, 429);
   });
 });

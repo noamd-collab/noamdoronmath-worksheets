@@ -6,9 +6,13 @@
   if (window.__noamSiteCompanion) return;
   window.__noamSiteCompanion = true;
 
-  var API = "https://amiramnoam.wixstudio.com/my-site-2/_functions/noamSiteCompanion";
+  var API_BASE = "https://amiramnoam.wixstudio.com/my-site-2/_functions";
+  var API = API_BASE + "/noamSiteCompanion";
   var FALLBACK = "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
   var EXPORT_NOTE = "סימון וחיתוך של דף המקור עדיין לא ממומשים. אין כאן ייצוא מזויף.";
+  var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
+  var SOLVE_REQUEST = /רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
+  var botClientPromise = null;
   var script = document.currentScript;
   var avatarSrc = (script && script.getAttribute("data-avatar")) || "/design-exact/assets/avatar/ramzi-A-idle.svg";
   var mode = "closed";
@@ -76,30 +80,59 @@
     return "https://www.noamdoronmath.co.il" + path;
   }
 
+  function pathOf(href) {
+    try {
+      return new URL(href, location.href).pathname.replace(/\/$/, "") || "/";
+    } catch (error) {
+      return "";
+    }
+  }
+
   function starterLinks() {
+    var kind = pageKind();
+    var here = (location.pathname || "/").replace(/\/$/, "") || "/";
+    var grades = { "7": "ז׳", "8": "ח׳", "9": "ט׳" };
+    var catalog = [
+      { label: "דפי עבודה", href: siteHref("/worksheets") },
+      { label: "כיתה ט׳", href: siteHref("/grade-9") },
+      { label: "בלוג", href: siteHref("/blog") },
+    ];
+    if (kind === "topic") {
+      var grade = ((location.pathname || "").match(/grade-(\d+)/) || [])[1];
+      catalog = [{ label: "דפי עבודה", href: siteHref("/worksheets") }];
+      if (grade && grades[grade]) catalog.push({ label: "כיתה " + grades[grade], href: siteHref("/grade-" + grade) });
+    } else if (kind === "worksheet") {
+      catalog = [
+        { label: "דפי עבודה", href: siteHref("/worksheets") },
+        { label: "בית", href: siteHref("/") },
+      ];
+    } else if (kind === "teachers") {
+      catalog = [
+        { label: "דפי עבודה", href: siteHref("/worksheets") },
+        { label: "כיתה ט׳", href: siteHref("/grade-9") },
+      ];
+    } else if (kind !== "home") {
+      catalog = [
+        { label: "דפי עבודה", href: siteHref("/worksheets") },
+        { label: "בית", href: siteHref("/") },
+      ];
+    }
     var found = [];
     var seen = {};
-    var nodes = document.querySelectorAll("a[href]");
-    for (var i = 0; i < nodes.length && found.length < 3; i++) {
-      var anchor = nodes[i];
-      if (anchor.closest("#noam-site-companion,#noam-site-companion-panel")) continue;
-      var href = anchor.getAttribute("href") || "";
-      if (!href || href.charAt(0) === "#" || href.indexOf("mailto:") === 0) continue;
-      var label = anchor.textContent.replace(/\s+/g, " ").trim();
-      if (label.length < 2 || label.length > 32) continue;
-      var abs = anchor.href;
-      if (seen[abs]) continue;
-      seen[abs] = true;
-      found.push({ label: label, href: abs });
+    for (var i = 0; i < catalog.length; i++) {
+      var item = catalog[i];
+      if (!item || seen[item.href]) continue;
+      var itemPath = pathOf(item.href);
+      if (itemPath === here) continue;
+      if (kind === "home" && (item.label === "בית" || itemPath === "/")) continue;
+      seen[item.href] = true;
+      found.push(item);
     }
-    var extras = [
-      { label: "דפי עבודה", href: siteHref("/worksheets") },
-      { label: "בית", href: siteHref("/") },
-    ];
-    for (var j = 0; j < extras.length && found.length < 3; j++) {
-      if (!seen[extras[j].href]) found.push(extras[j]);
-    }
-    return found;
+    return found.slice(0, 3);
+  }
+
+  function isLocalSolve(message) {
+    return pageKind() === "worksheet" && SOLVE_REQUEST.test(String(message || ""));
   }
 
   var style = document.createElement("style");
@@ -112,10 +145,11 @@
     "#noam-site-companion-panel[hidden]{display:none!important}",
     "#noam-site-companion-panel header{display:flex;align-items:center;gap:6px;flex:none}",
     "#noam-site-companion-panel header img{width:24px;height:24px;flex:none;border-radius:50%;background:#fff}",
-    "#noam-site-companion-panel h2{margin:0;flex:1;min-width:0;font:700 16px/1.3 Heebo,Arial,sans-serif}",
+    "#noam-site-companion-panel h2{margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 16px/1.3 Heebo,Arial,sans-serif}",
     "#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input{font:700 16px/1.3 Heebo,Arial,sans-serif}",
-    "#noam-site-companion-close,#noam-ai-expand,#noam-ai-collapse{min-height:44px;border:2px solid #22305a;border-radius:10px;background:#fff;color:#22305a;padding:4px 8px;cursor:pointer}",
-    "#noam-site-companion-answer{margin:0;font-size:16px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}",
+    "#noam-site-companion-close,#noam-ai-expand,#noam-ai-collapse{box-sizing:border-box;min-width:44px;min-height:44px;height:44px;border:2px solid #22305a;border-radius:10px;background:#fff;color:#22305a;padding:4px 8px;cursor:pointer}",
+    "#noam-site-companion-close{width:44px;padding:0;flex:none}",
+    "#noam-site-companion-answer{margin:0;flex:none;font-size:16px;line-height:1.35;min-height:1.35em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}",
     "#noam-site-companion-primary,#noam-site-companion-ramzi{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;border-radius:10px;background:#2a7c7a;color:#fff;text-decoration:none;border:2px solid #22305a;cursor:pointer}",
     "#noam-site-companion-primary[hidden],#noam-site-companion-ramzi[hidden],#noam-ai-expand[hidden],#noam-ai-collapse[hidden],#noam-site-companion-details[hidden],#noam-site-companion-more[hidden]{display:none!important}",
     "#noam-site-companion-chips{display:flex;flex-wrap:wrap;gap:6px}",
@@ -123,7 +157,23 @@
     "#noam-site-companion-details{margin:0;font-size:16px;font-weight:500;line-height:1.35;overflow:auto;white-space:pre-wrap}",
     "#noam-site-companion-form{display:flex;gap:6px;flex:none}",
     "#noam-site-companion-input{flex:1;min-width:0;height:44px;border:2px solid #22305a;border-radius:10px;padding:4px 8px;font-weight:500}",
-    "#noam-site-companion-form button{min-height:44px;border:2px solid #22305a;border-radius:10px;background:#22305a;color:#fff;padding:4px 8px;cursor:pointer}",
+    "#noam-site-companion-form button{min-height:44px;min-width:44px;border:2px solid #22305a;border-radius:10px;background:#22305a;color:#fff;padding:4px 8px;cursor:pointer;flex:none}",
+    "#noam-site-companion-panel.is-compact{overflow:hidden;padding:3px;gap:1px}",
+    "#noam-site-companion-panel.is-compact header,#noam-site-companion-panel.is-compact #noam-site-companion-form{flex:none}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-answer{order:1}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-form{order:2}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-primary,#noam-site-companion-panel.is-compact #noam-site-companion-ramzi{order:3}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-chips{order:4}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-more{order:5}",
+    ".compact-dropped{display:none!important}",
+    "@media (max-width:767px){",
+    "#noam-site-companion-panel.is-compact{font-size:14px}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-answer{font-size:14px;-webkit-line-clamp:1}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-input,#noam-site-companion-panel.is-compact #noam-site-companion-form button{font-size:14px}",
+    "#noam-site-companion-panel.is-compact header img{display:none}",
+    "#noam-site-companion-panel.is-compact #noam-ai-expand{width:44px;padding:0;font-size:0;line-height:0}",
+    "#noam-site-companion-panel.is-compact #noam-ai-expand::before{content:'⤢';font-size:16px;line-height:44px}",
+    "}",
     "html.noam-ai-engaged{display:grid;direction:rtl;grid-template-columns:360px minmax(0,1fr);grid-template-rows:minmax(0,100dvh);height:100dvh;overflow:hidden}",
     "html.noam-ai-engaged body{direction:rtl;grid-column:2;grid-row:1;min-width:0;min-height:0;height:auto!important;max-height:100%!important;overflow:auto!important}",
     "html.noam-ai-engaged #noam-site-companion-panel{direction:rtl;grid-column:1;grid-row:1;position:relative;right:auto;bottom:auto;width:auto;height:auto;max-height:100dvh;border-radius:0;box-shadow:none}",
@@ -160,7 +210,7 @@
   panel.setAttribute("aria-labelledby", "noam-site-companion-title");
   panel.innerHTML =
     '<header><img alt="" width="24" height="24"><h2 id="noam-site-companion-title">נועם AI</h2>' +
-    '<button type="button" id="noam-ai-expand" aria-expanded="false">הרחבה</button>' +
+    '<button type="button" id="noam-ai-expand" aria-expanded="false" aria-label="הרחבה">הרחבה</button>' +
     '<button type="button" id="noam-ai-collapse" hidden>צמצום</button>' +
     '<button type="button" id="noam-site-companion-close" aria-label="סגירת נועם AI">×</button></header>' +
     '<p id="noam-site-companion-answer" aria-live="polite"></p>' +
@@ -220,13 +270,19 @@
     hasAnswer = false;
     var links = starterLinks();
     answerEl.textContent = "מה לחפש באתר?";
-    primaryEl.hidden = !links[0];
-    ramziEl.hidden = true;
-    if (links[0]) {
-      primaryEl.href = links[0].href;
-      primaryEl.textContent = links[0].label;
+    if (pageKind() === "worksheet") {
+      primaryEl.hidden = true;
+      ramziEl.hidden = false;
+      setChips(links.slice(0, 2));
+    } else {
+      ramziEl.hidden = true;
+      primaryEl.hidden = !links[0];
+      if (links[0]) {
+        primaryEl.href = links[0].href;
+        primaryEl.textContent = links[0].label;
+      }
+      setChips(links.slice(1, 3));
     }
-    setChips(links.slice(1, 3));
     var details = "נועם AI מכוון לדפים קיימים. עזרה בפתרון שאלה נמצאת אצל רמזי.";
     if (pageKind() === "teachers") details += "\n" + EXPORT_NOTE;
     detailsEl.textContent = details;
@@ -252,6 +308,7 @@
     setChips((result && result.chips) || []);
     detailsEl.textContent = (result && result.details) || answerEl.textContent;
     moreEl.hidden = !detailsEl.textContent;
+    if (mode === "compact") fitCompact();
   }
 
   function clearInline() {
@@ -262,10 +319,75 @@
     panel.style.height = "";
   }
 
-  function layoutCompact() {
+  function panelFocused() {
+    var active = document.activeElement;
+    return !!(active && panel.contains(active));
+  }
+
+  function mountPanel(parent, force) {
+    if (panel.parentNode === parent) return;
+    if (!force && panelFocused()) return;
+    parent.appendChild(panel);
+  }
+
+  function undrop(el) {
+    if (el) el.classList.remove("compact-dropped");
+  }
+
+  function drop(el) {
+    if (el) el.classList.add("compact-dropped");
+  }
+
+  function clearCompactDrops() {
+    undrop(chipsEl);
+    undrop(moreEl);
+    undrop(primaryEl);
+    undrop(ramziEl);
+    var links = chipsEl.querySelectorAll("a");
+    for (var i = 0; i < links.length; i++) undrop(links[i]);
+  }
+
+  function fitCompact() {
+    clearCompactDrops();
+    var wide = window.innerWidth >= 768;
+    var links = chipsEl.querySelectorAll("a");
+    var visibleChips = 0;
+    for (var i = 0; i < links.length; i++) {
+      if (!wide || i > 0) drop(links[i]);
+      else visibleChips += 1;
+    }
+    if (!wide || visibleChips === 0) drop(chipsEl);
+    var order = [moreEl, chipsEl, primaryEl, ramziEl];
+    for (var n = 0; n < order.length; n++) {
+      if (panel.scrollHeight <= panel.clientHeight + 1) return;
+      drop(order[n]);
+    }
+  }
+
+  function rectsOverlap(a, b) {
+    return a.width > 0 && b.width > 0 && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+  }
+
+  function placeLauncher() {
+    root.style.right = "8px";
+    root.style.left = "auto";
+    root.style.bottom = "8px";
+    var a11y = document.getElementById("noam-accessibility");
+    if (!a11y) return;
+    var box = a11y.getBoundingClientRect();
+    var mine = root.getBoundingClientRect();
+    if (!rectsOverlap(mine, box)) return;
+    root.style.bottom = Math.round(window.innerHeight - box.top + 8) + "px";
+    mine = root.getBoundingClientRect();
+    if (!rectsOverlap(mine, box)) return;
+    root.style.right = Math.round(window.innerWidth - box.left + 8) + "px";
+  }
+
+  function layoutCompact(force) {
     if (ramziCoversPage()) return;
     document.documentElement.classList.remove("noam-ai-engaged");
-    if (panel.parentNode !== root) root.appendChild(panel);
+    mountPanel(root, force);
+    panel.classList.add("is-compact");
     var size = panelSize(window.innerWidth, window.innerHeight);
     var bottom = lift();
     var avail = window.innerHeight - bottom - 8;
@@ -284,12 +406,15 @@
     expandEl.hidden = false;
     collapseEl.hidden = true;
     expandEl.setAttribute("aria-expanded", "false");
+    fitCompact();
   }
 
-  function layoutEngaged() {
+  function layoutEngaged(force) {
     if (ramziCoversPage()) return;
     clearInline();
-    document.documentElement.appendChild(panel);
+    mountPanel(document.documentElement, force);
+    panel.classList.remove("is-compact");
+    clearCompactDrops();
     document.documentElement.classList.add("noam-ai-engaged");
     expandEl.hidden = true;
     collapseEl.hidden = false;
@@ -297,7 +422,8 @@
     panel.dataset.mode = "engaged";
   }
 
-  function paintChrome() {
+  function paintChrome(force) {
+    if (!force && (panelFocused() || streaming)) return;
     var covered = ramziCoversPage();
     root.hidden = covered;
     panel.hidden = covered || mode === "closed";
@@ -308,18 +434,20 @@
       document.documentElement.classList.remove("noam-ai-engaged");
       return;
     }
-    if (mode === "compact") layoutCompact();
-    if (mode === "engaged") layoutEngaged();
+    if (mode === "compact") layoutCompact(force);
+    if (mode === "engaged") layoutEngaged(force);
     if (mode === "closed") {
       document.documentElement.classList.remove("noam-ai-engaged");
       clearInline();
+      panel.classList.remove("is-compact");
+      placeLauncher();
     }
   }
 
   function setMode(next) {
     mode = next;
     panel.dataset.mode = next;
-    paintChrome();
+    paintChrome(true);
   }
 
   function engage(reason) {
@@ -329,7 +457,7 @@
       panel.dataset.engageReason = reason || "";
       setMode("engaged");
     }
-    if (keepInput) input.focus();
+    if (keepInput && document.activeElement !== input) input.focus();
   }
 
   function compact() {
@@ -361,29 +489,62 @@
     var fab = document.getElementById("fab");
     if (fab) fab.click();
   });
+  function botClientSrc() {
+    var nodes = document.getElementsByTagName("script");
+    for (var i = 0; i < nodes.length; i++) {
+      var src = nodes[i].getAttribute("src") || "";
+      if (src.indexOf("noam-site-companion.js") !== -1) return src.replace("noam-site-companion.js", "noam-bot-client.js");
+    }
+    return "/noam-bot-client.js";
+  }
+
+  function ensureBotClient() {
+    if (botClientPromise) return botClientPromise;
+    botClientPromise = new Promise(function (resolve, reject) {
+      function finish(ok) {
+        if (ok && window.NoamBotClient && typeof window.NoamBotClient.create === "function") {
+          resolve(window.NoamBotClient.create({ api: API_BASE, enabled: true, modelTimeoutMs: 20000 }));
+          return;
+        }
+        reject(new Error(FALLBACK));
+      }
+      if (window.NoamBotClient) { finish(true); return; }
+      var loader = document.createElement("script");
+      loader.src = botClientSrc();
+      loader.async = true;
+      loader.onload = function () { finish(true); };
+      loader.onerror = function () { finish(false); };
+      document.head.appendChild(loader);
+    }).catch(function (error) {
+      botClientPromise = null;
+      throw error;
+    });
+    return botClientPromise;
+  }
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     var message = input.value.trim();
     if (!message || streaming) return;
+    if (isLocalSolve(message)) {
+      showResult({ answer: RAMZI_TEXT, details: RAMZI_TEXT, primary: { action: "ramzi", label: "עזרה מרמזי" }, chips: [] });
+      return;
+    }
     streaming = true;
     answerEl.textContent = "בודק בקטלוג המאומת…";
-    fetch(API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    ensureBotClient().then(function (client) {
+      return client.postJson(API, {
         message: message.slice(0, 700),
         page: { kind: pageKind(), path: location.pathname + location.search, title: document.title },
         teacher: teacherContext(),
-      }),
-    }).then(function (response) {
-      if (!response.ok) throw new Error("HTTP");
-      return response.json();
+      });
     }).then(function (result) {
       streaming = false;
       showResult(result);
-    }).catch(function () {
+    }).catch(function (error) {
       streaming = false;
-      showResult({ answer: FALLBACK, details: FALLBACK, primary: null, chips: [] });
+      var text = (error && error.message) || FALLBACK;
+      showResult({ answer: text, details: text, primary: null, chips: [] });
     });
   });
   document.addEventListener("keydown", function (event) {
@@ -392,7 +553,13 @@
     if (mode === "engaged") compact();
     else setMode("closed");
   });
-  window.addEventListener("resize", function () { if (mode === "compact") layoutCompact(); });
-  window.setInterval(paintChrome, 1000);
+  window.addEventListener("resize", function () {
+    if (panelFocused() || streaming) return;
+    if (mode === "compact") layoutCompact(false);
+    if (mode === "closed") placeLauncher();
+  });
+  window.setInterval(function () { paintChrome(false); }, 1000);
   showIdle();
+  placeLauncher();
+  window.requestAnimationFrame(placeLauncher);
 })();

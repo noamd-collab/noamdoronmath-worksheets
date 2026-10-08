@@ -31,8 +31,9 @@ export const SYSTEM_PROMPT = [
   "answer הוא משפט ניווט אחד. chipRecordIds מכיל לכל היותר שניים. בלי כתובות URL. אל תמציא סעיפים חיוניים.",
 ].join("\n");
 
-const SOLVE_REQUEST =
-  /רמז|לפתור|תפתור|פתרון|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
+export const SOLVE_REQUEST_SOURCE =
+  "רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\\bhint\\b|\\bsolve\\b|the answer";
+const SOLVE_REQUEST = new RegExp(SOLVE_REQUEST_SOURCE, "i");
 
 export function isWorksheetSolveRequest(pageKind, message) {
   return pageKind === "worksheet" && SOLVE_REQUEST.test(String(message || ""));
