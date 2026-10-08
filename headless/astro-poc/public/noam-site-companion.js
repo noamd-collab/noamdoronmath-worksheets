@@ -9,7 +9,7 @@
   var API_BASE = "https://amiramnoam.wixstudio.com/my-site-2/_functions";
   var API = API_BASE + "/noamSiteCompanion";
   var FALLBACK = "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
-  var EXPORT_NOTE = "סימון וחיתוך של דף המקור עדיין לא ממומשים. אין כאן ייצוא מזויף.";
+  var EXPORT_NOTE = "במקרה פירוק לגורמים לכיתה ט׳ רמה א׳, ההדפסה מסמנת את השאלות שנבחרו על דף המקור המלא. חיתוך לדף קצר עדיין לא ממומש.";
   var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
   var SOLVE_REQUEST = /רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
   var botClientPromise = null;
@@ -153,7 +153,7 @@
     "#noam-site-companion-primary,#noam-site-companion-ramzi{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;border-radius:10px;background:#2a7c7a;color:#fff;text-decoration:none;border:2px solid #22305a;cursor:pointer}",
     "#noam-site-companion-primary[hidden],#noam-site-companion-ramzi[hidden],#noam-ai-expand[hidden],#noam-ai-collapse[hidden],#noam-site-companion-details[hidden],#noam-site-companion-more[hidden]{display:none!important}",
     "#noam-site-companion-chips{display:flex;flex-wrap:wrap;gap:6px}",
-    "#noam-site-companion-chips a{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;border:2px solid #22305a;border-radius:999px;background:#fff;color:#22305a;text-decoration:none}",
+    "#noam-site-companion-chips a,#noam-site-companion-chips button{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;border:2px solid #22305a;border-radius:999px;background:#fff;color:#22305a;text-decoration:none;cursor:pointer}",
     "#noam-site-companion-details{margin:0;font-size:16px;font-weight:500;line-height:1.35;overflow:auto;white-space:pre-wrap}",
     "#noam-site-companion-form{display:flex;gap:6px;flex:none}",
     "#noam-site-companion-input{flex:1;min-width:0;height:44px;border:2px solid #22305a;border-radius:10px;padding:4px 8px;font-weight:500}",
@@ -171,6 +171,7 @@
     "#noam-site-companion-panel.is-compact.is-tight header img,#noam-site-companion-panel.is-compact.is-tight #noam-ai-expand{display:none!important}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-close{position:absolute;inset-inline-end:0;top:0}",
     "#noam-site-companion-panel.is-compact.is-tight h2{font-size:16px;line-height:1.3}",
+    "#noam-site-companion-panel.is-compact.is-teacher #noam-site-companion-answer{-webkit-line-clamp:1}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-answer{font-size:16px;-webkit-line-clamp:1;min-height:0;box-sizing:border-box;padding-inline-end:46px}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-input,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form button,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-primary,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-ramzi{font-size:16px}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form{width:100%;gap:4px;box-sizing:border-box;padding-inline-end:46px}",
@@ -267,21 +268,49 @@
     return extra;
   }
 
+  function teacherGoalChips() {
+    return [
+      { label: "מפגש ראשון", goal: "first" },
+      { label: "תרגול וביסוס", goal: "practice" },
+      { label: "אחר", goal: "other" },
+    ];
+  }
+
+  function appendChip(item) {
+    if (!item) return;
+    if (item.goal) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.textContent = item.label;
+      button.addEventListener("click", function () {
+        document.dispatchEvent(new CustomEvent("noam-teacher-option", { detail: { goal: item.goal } }));
+        if (item.goal === "other") {
+          input.focus();
+          engage("typing");
+        }
+      });
+      chipsEl.appendChild(button);
+      return;
+    }
+    if (!item.href) return;
+    var link = document.createElement("a");
+    link.href = item.href;
+    link.textContent = item.label;
+    chipsEl.appendChild(link);
+  }
+
   function setChips(items) {
     chipsEl.textContent = "";
-    (items || []).slice(0, 2).forEach(function (item) {
-      if (!item || !item.href) return;
-      var link = document.createElement("a");
-      link.href = item.href;
-      link.textContent = item.label;
-      chipsEl.appendChild(link);
-    });
+    (items || []).slice(0, 2).forEach(appendChip);
+    if (pageKind() === "teachers") teacherGoalChips().forEach(appendChip);
   }
 
   function showIdle() {
     hasAnswer = false;
     var links = starterLinks();
-    answerEl.textContent = "מה לחפש באתר?";
+    answerEl.textContent = pageKind() === "teachers"
+      ? "אפשר להתחיל ממפגש ראשון בפירוק לגורמים לכיתה ט׳, לבחור שאלות קיימות, ולסמן אותן על דף המקור."
+      : "מה לחפש באתר?";
     if (pageKind() === "worksheet") {
       primaryEl.hidden = true;
       ramziEl.hidden = false;
@@ -356,7 +385,7 @@
     undrop(primaryEl);
     undrop(ramziEl);
     undrop(answerEl);
-    var links = chipsEl.querySelectorAll("a");
+    var links = chipsEl.querySelectorAll("a, button");
     for (var i = 0; i < links.length; i++) undrop(links[i]);
   }
 
@@ -365,17 +394,21 @@
     panel.classList.toggle("has-answer", hasAnswer);
     var tight = panel.classList.contains("is-tight");
     var wide = !tight && window.innerWidth >= 768;
-    var links = chipsEl.querySelectorAll("a");
+    var teacher = pageKind() === "teachers";
+    var links = chipsEl.querySelectorAll("a, button");
     var visibleChips = 0;
     for (var i = 0; i < links.length; i++) {
-      if (!wide || i > 0) drop(links[i]);
+      var keep = teacher ? i === links.length - 1 : wide && i === 0;
+      if (!keep) drop(links[i]);
       else visibleChips += 1;
     }
-    if (!wide || visibleChips === 0) drop(chipsEl);
+    if (visibleChips === 0 || (!wide && !teacher)) drop(chipsEl);
     if (tight && !hasAnswer) drop(answerEl);
-    var order = tight && hasAnswer
-      ? [primaryEl, ramziEl, moreEl, chipsEl]
-      : [moreEl, chipsEl, primaryEl, ramziEl];
+    var order = teacher
+      ? [primaryEl, ramziEl, moreEl, answerEl]
+      : tight && hasAnswer
+        ? [primaryEl, ramziEl, moreEl, chipsEl]
+        : [moreEl, chipsEl, primaryEl, ramziEl];
     for (var n = 0; n < order.length; n++) {
       if (panel.scrollHeight <= panel.clientHeight + 1) return;
       drop(order[n]);
@@ -406,6 +439,7 @@
     document.documentElement.classList.remove("noam-ai-engaged");
     mountPanel(root, force);
     panel.classList.add("is-compact");
+    panel.classList.toggle("is-teacher", pageKind() === "teachers");
     var size = panelSize(window.innerWidth, window.innerHeight);
     panel.classList.toggle("is-tight", size.height < 160);
     panel.classList.toggle("is-xtight", size.height < 110);
@@ -589,7 +623,13 @@
     }).catch(function (error) {
       streaming = false;
       var text = (error && error.message) || FALLBACK;
-      showResult({ answer: text, details: text, primary: null, chips: [] });
+      var teacher = pageKind() === "teachers";
+      showResult({
+        answer: text,
+        details: teacher ? text + "\n" + EXPORT_NOTE : text,
+        primary: teacher ? { href: siteHref("/factoring-grade-9"), label: "פירוק לגורמים ט׳" } : null,
+        chips: teacher ? [{ label: "דפי עבודה", href: siteHref("/worksheets?grade=9&topic=2") }] : [],
+      });
     });
   });
   document.addEventListener("keydown", function (event) {

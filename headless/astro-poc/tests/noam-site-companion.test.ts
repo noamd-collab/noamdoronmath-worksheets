@@ -151,8 +151,9 @@ describe('Noam AI model role', () => {
     assert.equal(result.chips.length, 2);
     assert.equal(result.links.length, 3);
     assert.equal(result.essential.length, 0);
-    assert.match(result.essentialNote, /אי אפשר לסמן/);
-    assert.match(result.details, /עדיין לא ממומשים/);
+    assert.match(result.essentialNote, /לא ממציא שאלות/);
+    assert.match(result.details, /מסמנת את השאלות שנבחרו/);
+    assert.match(result.details, /חיתוך לדף קצר עדיין לא ממומש/);
     assert.equal(result.answer.includes('evil.example'), false);
   });
 
@@ -217,6 +218,9 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-xtight #noam-site-companion-form{padding-inline-end:0}'));
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-tight.has-answer #noam-site-companion-form{padding-inline-end:0}'));
     assert.ok(client.includes('#noam-site-companion-answer{font-size:16px;-webkit-line-clamp:1;min-height:0;box-sizing:border-box;padding-inline-end:46px}'));
+    assert.ok(client.includes('אחר'));
+    assert.ok(client.includes('noam-teacher-option'));
+    assert.equal(client.includes('סימון וחיתוך של דף המקור עדיין לא ממומשים'), false);
   });
 });
 
