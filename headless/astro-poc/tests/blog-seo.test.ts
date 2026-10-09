@@ -51,12 +51,12 @@ describe('blog SEO complement', () => {
     }
   });
 
-  it('all 60 posts + 4 archives: every tag exactly once with BaseLayout + Wix injection', () => {
+  it('all 68 posts + 4 archives: every tag exactly once with BaseLayout + Wix injection', () => {
     const pages = [
       ...listServedBlogPosts().map((p) => ({ id: p.fileSlug, description: p.description, image: p.ogImage || p.coverImage, jsonLd: p.jsonLd })),
       ...listBlogArchives().map((a) => ({ id: a.path, description: a.description, image: a.ogImage, jsonLd: a.jsonLd })),
     ];
-    assert.equal(pages.length, 64);
+    assert.equal(pages.length, 72);
     for (const pg of pages) {
       const all = [
         ...baseLayoutTags(pg.image),

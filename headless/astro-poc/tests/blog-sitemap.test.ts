@@ -60,11 +60,11 @@ function assertWellFormedXml(xml: string): void {
 }
 
 describe('blog sitemap /sitemap-blog.xml', () => {
-  it('lists 64 production URLs: 60 posts and 4 archives, no duplicates', () => {
+  it('lists 72 production URLs: 68 posts and 4 archives, no duplicates', () => {
     const entries = listBlogSitemapEntries();
     const locs = entries.map((entry) => entry.loc);
-    assert.equal(entries.length, 64);
-    assert.equal(new Set(locs).size, 64);
+    assert.equal(entries.length, 72);
+    assert.equal(new Set(locs).size, 72);
 
     assert.deepEqual(locs.slice(0, 4), ARCHIVE_LOCS);
     assert.deepEqual(
@@ -75,11 +75,11 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     const postLocs = BLOG_POST_SERVED_PATHS.map(
       (path) => `${BLOG_SITEMAP_ORIGIN}${decodeURIComponent(path)}`
     );
-    assert.equal(postLocs.length, 60);
+    assert.equal(postLocs.length, 68);
     assert.deepEqual(locs.slice(4), postLocs);
 
     const posts = listServedBlogPosts();
-    assert.equal(posts.length, 60);
+    assert.equal(posts.length, 68);
     for (const post of posts) {
       const loc = `${BLOG_SITEMAP_ORIGIN}${decodeURIComponent(post.path)}`;
       const entry = entries.find((item) => item.loc === loc);
@@ -101,7 +101,7 @@ describe('blog sitemap /sitemap-blog.xml', () => {
   it('uses only the production host and unencoded Hebrew slugs', () => {
     const entries = listBlogSitemapEntries();
     const hebrew = entries.filter((entry) => /[\u0590-\u05FF]/.test(entry.loc));
-    assert.equal(hebrew.length, 30);
+    assert.equal(hebrew.length, 38);
     for (const entry of entries) {
       const url = new URL(entry.loc);
       assert.equal(url.protocol, 'https:');
@@ -112,7 +112,7 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     }
   });
 
-  it('renders valid XML with 64 locs and rejects a reserved sitemap filename', () => {
+  it('renders valid XML with 72 locs and rejects a reserved sitemap filename', () => {
     assert.equal(BLOG_SITEMAP_PATH, '/sitemap-blog.xml');
     assert.equal(BLOG_SITEMAP_PATH.endsWith('-sitemap.xml'), false);
     assert.notEqual(BLOG_SITEMAP_PATH, '/sitemap.xml');
@@ -137,11 +137,11 @@ describe('blog sitemap /sitemap-blog.xml', () => {
     const xml = renderBlogSitemapXml();
     assertWellFormedXml(xml);
     const locs = [...xml.matchAll(/<loc>([^<]*)<\/loc>/g)].map((match) => match[1]);
-    assert.equal(locs.length, 64);
-    assert.equal(new Set(locs).size, 64);
+    assert.equal(locs.length, 72);
+    assert.equal(new Set(locs).size, 72);
     assert.equal(locs.every((loc) => loc.startsWith(`${BLOG_SITEMAP_ORIGIN}/`)), true);
-    assert.equal((xml.match(/<url>/g) || []).length, 64);
-    assert.equal((xml.match(/<lastmod>/g) || []).length, 64);
+    assert.equal((xml.match(/<url>/g) || []).length, 72);
+    assert.equal((xml.match(/<lastmod>/g) || []).length, 72);
   });
 
   it('GET returns the same XML as application/xml', async () => {

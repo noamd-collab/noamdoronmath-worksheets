@@ -24,9 +24,9 @@ describe('M29 blog batch (remaining 18 → all 59)', () => {
     assert.equal(BLOG_POST_M27_PATHS.length, 15);
     assert.equal(BLOG_POST_M28_PATHS.length, 18);
     assert.equal(BLOG_POST_M29_PATHS.length, 18);
-    assert.equal(BLOG_POST_SERVED_PATHS.length, 60);
+    assert.equal(BLOG_POST_SERVED_PATHS.length, 68);
     assert.equal(listM29BlogPosts().length, 18);
-    assert.equal(listServedBlogPosts().length, 60);
+    assert.equal(listServedBlogPosts().length, 68);
   });
 
   it('each M29 post has ordered body, author, schema, avatar', () => {
@@ -47,7 +47,7 @@ describe('M29 blog batch (remaining 18 → all 59)', () => {
     }
   });
 
-  it('all 60 served posts have LIVE_CHROME_BASELINE entries', () => {
+  it('all 68 served posts have LIVE_CHROME_BASELINE entries', () => {
     for (const post of listServedBlogPosts()) {
       assert.ok(LIVE_CHROME_BASELINE[post.fileSlug], post.fileSlug);
       assert.deepEqual(expectedChromeFlags(post), LIVE_CHROME_BASELINE[post.fileSlug], post.fileSlug);
