@@ -156,3 +156,95 @@ describe('grade 9 factoring marked source', () => {
     assert.match(served, /\.print-area \.crop-sheet\.has-teacher-note\{[^}]*height:281mm[^}]*overflow:hidden/);
   });
 });
+
+describe('teacher catalog picker', () => {
+  const catalog = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+  const index = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
+  const page = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+  const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+
+  function catalogSheets() {
+    const sheets = [];
+    for (const grade of catalog.grades) {
+      for (const topic of grade.topics) {
+        for (const level of topic.levels) {
+          sheets.push({ grade: grade.grade, topicId: topic.id, pdfId: level.pdfId, level: level.key });
+        }
+      }
+    }
+    return sheets;
+  }
+
+  function indexSheets() {
+    const sheets = [];
+    for (const grade of index.grades) {
+      for (const topic of grade.topics) {
+        for (const sheet of topic.sheets) {
+          sheets.push({ grade: grade.grade, topicId: topic.id, pdfId: sheet.pdfId, level: sheet.level, mode: sheet.mode, band: grade.band });
+        }
+      }
+    }
+    return sheets;
+  }
+
+  it('reaches every catalog sheet for every grade in the picker', () => {
+    const fromCatalog = catalogSheets();
+    const fromPicker = indexSheets();
+    assert.deepEqual(fromPicker.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId]), fromCatalog.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId]));
+    assert.deepEqual(index.grades.map((grade) => grade.grade), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    for (const grade of [1, 2, 3, 4, 5, 6]) {
+      assert.equal(index.grades.find((item) => item.grade === grade).band, 'elementary');
+    }
+    for (const grade of [7, 8, 9]) {
+      assert.equal(index.grades.find((item) => item.grade === grade).band, 'middle');
+    }
+    for (const sheet of fromPicker) {
+      if (sheet.grade <= 6) assert.equal(sheet.mode, 'sheet');
+      else assert.equal(sheet.mode, 'exercise');
+    }
+    assert.match(page, /<option value="1">כיתה א׳<\/option>/);
+    assert.match(page, /<option value="2">כיתה ב׳<\/option>/);
+    assert.match(page, /<option value="8">כיתה ח׳<\/option>/);
+    assert.match(page, /<option value="9" selected>כיתה ט׳<\/option>/);
+    assert.match(page, /name="level" value="a"/);
+    assert.match(page, /name="level" value="b"/);
+    assert.match(page, /name="level" value="c"/);
+    assert.match(printer, /teacher-catalog\.json/);
+    assert.match(printer, /CATALOG\.grades/);
+    assert.match(printer, /data-sheet/);
+    assert.match(printer, /data-question/);
+    assert.equal(page.includes('teachers-demo-preview'), false);
+  });
+
+  it('keeps middle-school exercise files inside the existing manifests', () => {
+    const rich = JSON.parse(readFileSync(new URL('../public/teachers/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
+    const copied = JSON.parse(readFileSync(new URL('../public/teachers/sheets/' + rich.pdfId + '.json', import.meta.url), 'utf8'));
+    assert.deepEqual(copied, rich);
+    for (const sheet of indexSheets()) {
+      if (sheet.mode !== 'exercise') {
+        assert.equal(existsSync(new URL('../public/teachers/sheets/' + sheet.pdfId + '.json', import.meta.url)), false);
+        continue;
+      }
+      const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/' + sheet.pdfId + '.json', import.meta.url), 'utf8'));
+      const source = JSON.parse(readFileSync(new URL('../public/teachers/sheets/' + sheet.pdfId + '.json', import.meta.url), 'utf8'));
+      assert.equal(source.pdfId, sheet.pdfId);
+      assert.equal(source.questions.length, manifest.exercises.length);
+      const manifestIds = manifest.exercises.map((exercise: { q: number; part: string }) => String(exercise.q) + (exercise.part || ''));
+      assert.deepEqual(source.questions.map((question: { id: string }) => question.id), manifestIds);
+      for (const question of source.questions) {
+        assert.ok(question.box.w > 0 && question.box.h > 0);
+        assert.ok(question.row.w > 0 && question.row.h > 0);
+      }
+    }
+  });
+
+  it('leaves Noam AI exercise suggestions disabled', () => {
+    assert.match(printer, /NoamTeacherSuggest/);
+    assert.match(printer, /enabled:\s*false/);
+    assert.match(printer, /classifier:\s*'qwen-flash'/);
+    assert.equal(/fetch\([^)]*(qwen|dashscope|compatible-mode)/.test(printer), false);
+    assert.match(page, /data-noam-teacher-suggest="off"/);
+    assert.match(page, /הצעות נועם AI כבויות/);
+    assert.equal(printer.includes('worksheet-viewer-noam'), false);
+  });
+});
