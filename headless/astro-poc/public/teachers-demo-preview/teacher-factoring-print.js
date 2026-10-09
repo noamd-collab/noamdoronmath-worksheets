@@ -1,6 +1,6 @@
 /* Grade 9 factoring, level A: pick questions that exist on the published
-   worksheet, then print the original page with those questions marked.
-   Cropping a short sheet is not part of this case. */
+   worksheet. Print either the original page with those questions marked,
+   or a short sheet cropped from that same PDF. */
 'use strict';
 
 const SOURCE_URL = new URL('./factoring-grade-9-a-source.json', import.meta.url);
@@ -81,6 +81,8 @@ let state = {
 };
 let history = [];
 let rendering = false;
+let printMode = 'marked';
+const pageBitmaps = new Map();
 
 function available() {
   return state.grade === '9' && state.topic === 'factoring' && SOURCE;
@@ -264,6 +266,96 @@ async function paintSheets(root, bake) {
   }
 }
 
+async function pageBitmap(pageNumber) {
+  if (pageBitmaps.has(pageNumber)) return pageBitmaps.get(pageNumber);
+  const pdf = await loadPdf();
+  const page = await pdf.getPage(pageNumber);
+  const base = page.getViewport({ scale: 1 });
+  const viewport = page.getViewport({ scale: 1100 / base.width });
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.floor(viewport.width);
+  canvas.height = Math.floor(viewport.height);
+  await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+  pageBitmaps.set(pageNumber, canvas);
+  return canvas;
+}
+
+function shortSlices(chosen) {
+  const ordered = chosen.slice().sort((a, b) => (
+    a.page - b.page || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
+  ));
+  const slices = [{ page: SOURCE.headerCrop.page, box: SOURCE.headerCrop, gap: 14 }];
+  let lastQuestion = null;
+  ordered.forEach((question) => {
+    if (question.q !== lastQuestion) {
+      if (question.stem) slices.push({ page: question.page, box: question.stem, gap: 10 });
+      lastQuestion = question.q;
+    }
+    slices.push({ page: question.page, box: question.row, gap: 4 });
+  });
+  slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16 });
+  return slices;
+}
+
+async function paintShort(root, slices) {
+  const OUT_W = 1000;
+  const LIMIT = 1420;
+  const measured = [];
+  for (const slice of slices) {
+    const bitmap = await pageBitmap(slice.page);
+    const sw = slice.box.w * bitmap.width;
+    const sh = slice.box.h * bitmap.height;
+    measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(OUT_W * sh / sw)) });
+  }
+  const packs = [];
+  let pack = [];
+  let used = 0;
+  measured.forEach((item) => {
+    const gap = pack.length ? item.slice.gap : 0;
+    if (pack.length && used + gap + item.dh > LIMIT) {
+      packs.push(pack);
+      pack = [];
+      used = 0;
+    }
+    const gapNow = pack.length ? item.slice.gap : 0;
+    pack.push(item);
+    used += gapNow + item.dh;
+  });
+  if (pack.length) packs.push(pack);
+  root.innerHTML = packs.map((_, index) => (
+    `<figure class="crop-sheet"><canvas></canvas><figcaption>דף מצומצם ${index + 1} מתוך ${packs.length} · ${escapeHTML(SOURCE.title)}</figcaption></figure>`
+  )).join('');
+  const canvases = root.querySelectorAll('canvas');
+  packs.forEach((items, index) => {
+    let height = 0;
+    items.forEach((item, itemIndex) => { height += (itemIndex ? item.slice.gap : 0) + item.dh; });
+    const canvas = canvases[index];
+    canvas.width = OUT_W;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, OUT_W, height);
+    let y = 0;
+    items.forEach((item, itemIndex) => {
+      if (itemIndex) y += item.slice.gap;
+      const sx = item.slice.box.x * item.bitmap.width;
+      const sy = item.slice.box.y * item.bitmap.height;
+      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
+      y += item.dh;
+    });
+  });
+}
+
+async function updateShortPrint(plan, printArea, chosen, note, cfg) {
+  const head = `<p class="plan-notice">דף מצומצם. כל קטע נחתך מדף המקור, עם ההוראה, הנוסח והתרשים המקוריים.</p><div class="plan-meta"><span>כיתה ט׳</span><span>פירוק לגורמים</span><span>רמה א׳</span><span>${printMode === 'short' && state.scenario === 'other' ? 'אחר' : escapeHTML(cfg.label)}</span></div>`;
+  const foot = `<p class="print-source">מקור: ${escapeHTML(SOURCE.title)} · ${escapeHTML(SOURCE.pdfUrl)}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
+  const slices = shortSlices(chosen);
+  plan.innerHTML = head + '<div class="crop-preview"></div>' + foot;
+  printArea.innerHTML = '';
+  await paintShort(plan.querySelector('.crop-preview'), slices);
+  await paintShort(printArea, slices);
+}
+
 async function updatePrint() {
   const plan = $('dialog-plan');
   const printArea = $('print-area');
@@ -286,7 +378,11 @@ async function updatePrint() {
   const pages = [...byPage.keys()].sort((a, b) => a - b);
   const note = state.scenario === 'other' ? $('teacher-note').value.trim() : '';
   const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
-  const head = `<p class="plan-notice">דף המקור המלא. השאלות שנבחרו מסומנות על העמוד. זה אינו דף חתוך.</p><div class="plan-meta"><span>כיתה ט׳</span><span>פירוק לגורמים</span><span>רמה א׳</span><span>${state.scenario === 'other' ? 'אחר' : escapeHTML(cfg.label)}</span></div>`;
+  if (printMode === 'short') {
+    await updateShortPrint(plan, printArea, chosen, note, cfg);
+    return;
+  }
+  const head = `<p class="plan-notice">דף המקור המלא. השאלות שנבחרו מסומנות על העמוד.</p><div class="plan-meta"><span>כיתה ט׳</span><span>פירוק לגורמים</span><span>רמה א׳</span><span>${state.scenario === 'other' ? 'אחר' : escapeHTML(cfg.label)}</span></div>`;
   const sheets = pages.map((page) => sheetHTML(page, byPage.get(page))).join('');
   const foot = `<p class="print-source">מקור: ${escapeHTML(SOURCE.title)} · ${escapeHTML(SOURCE.pdfUrl)}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
   const html = head + sheets + foot;
@@ -296,27 +392,38 @@ async function updatePrint() {
   await paintSheets(printArea, true);
 }
 
-async function prepare() {
+async function prepare(mode) {
   if (rendering) return;
   if (!state.selected.length) {
     announce('עדיין לא נבחרו שאלות.');
     return;
   }
+  printMode = mode;
   rendering = true;
   $('prepare').disabled = true;
+  if ($('prepare-short')) $('prepare-short').disabled = true;
   try {
     await updatePrint();
-    if (!$('dialog-plan').querySelector('.source-mark')) {
-      announce('לא נוצר סימון. לא הוצגה רשימת קישורים במקום.');
+    const ready = mode === 'short'
+      ? $('dialog-plan').querySelector('.crop-sheet canvas')
+      : $('dialog-plan').querySelector('.source-mark');
+    if (!ready) {
+      announce(mode === 'short' ? 'לא נוצר דף מצומצם. לא הוצגה רשימת קישורים במקום.' : 'לא נוצר סימון. לא הוצגה רשימת קישורים במקום.');
       return;
     }
+    $('print-title').textContent = mode === 'short' ? 'דף מצומצם מהמקור' : 'דף המקור עם סימון';
+    $('print-lead').textContent = mode === 'short'
+      ? 'קטעים שנחתכו מדף המקור, עם ההוראה והנוסח המקוריים.'
+      : 'העמוד המלא, והשאלות שנבחרו מסומנות עליו.';
+    $('print').lastChild.textContent = mode === 'short' ? 'הדפסת הדף המצומצם' : 'הדפסת הדף המסומן';
     $('print-dialog').showModal();
   } catch (error) {
-    $('dialog-plan').innerHTML = '<p>דף המקור לא נטען, ולכן אין סימון. לא הוצג דף חלופי.</p>';
+    $('dialog-plan').innerHTML = '<p>דף המקור לא נטען, ולכן אין הדפסה. לא הוצג דף חלופי.</p>';
     announce('דף המקור לא נטען.');
   } finally {
     rendering = false;
     $('prepare').disabled = false;
+    if ($('prepare-short')) $('prepare-short').disabled = false;
   }
 }
 
@@ -372,7 +479,8 @@ async function start() {
     if (cfg && cfg.suggestion) selectQuestion(cfg.suggestion, true);
   });
   $('return-demo').addEventListener('click', () => { state.grade = '9'; state.topic = 'factoring'; render(); });
-  $('prepare').addEventListener('click', prepare);
+  $('prepare').addEventListener('click', () => prepare('marked'));
+  $('prepare-short').addEventListener('click', () => prepare('short'));
   ['close-dialog', 'back-edit'].forEach((id) => $(id).addEventListener('click', () => { $('print-dialog').close(); $('prepare').focus(); }));
   $('print').addEventListener('click', async () => {
     try { await updatePrint(); } catch (error) { announce('דף המקור לא נטען.'); return; }

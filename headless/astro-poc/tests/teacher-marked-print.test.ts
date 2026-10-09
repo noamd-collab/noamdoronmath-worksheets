@@ -41,6 +41,18 @@ describe('grade 9 factoring marked source', () => {
     assert.match(printer, /clearPreparedPrint/);
     assert.match(page, /print-unprepared/);
     assert.match(page, /כדי להדפיס, פותחים קודם את תצוגת ההדפסה/);
+    assert.match(page, /הצגת הדף המצומצם/);
+    assert.match(printer, /crop-sheet/);
+    assert.match(printer, /drawImage/);
+    assert.equal(page.includes('עדיין לא ממומש'), false);
+    for (const question of source.questions) {
+      assert.ok(question.row && question.row.w > 0.5 && question.row.h > 0);
+      assert.ok(question.box.y >= question.row.y - 0.02);
+      assert.ok(question.box.y + question.box.h <= question.row.y + question.row.h + 0.02);
+      if (question.stem) assert.ok(question.stem.y + question.stem.h <= question.row.y + 0.02);
+    }
+    assert.equal(source.headerCrop.page, 1);
+    assert.equal(source.footerCrop.page, 1);
   });
 
   it('shows every picked item and does not leave a bare digit after a letter', () => {

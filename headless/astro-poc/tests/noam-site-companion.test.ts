@@ -152,8 +152,8 @@ describe('Noam AI model role', () => {
     assert.equal(result.links.length, 3);
     assert.equal(result.essential.length, 0);
     assert.match(result.essentialNote, /לא ממציא שאלות/);
-    assert.match(result.details, /מסמנת את השאלות שנבחרו/);
-    assert.match(result.details, /חיתוך לדף קצר עדיין לא ממומש/);
+    assert.match(result.details, /לסמן את השאלות שנבחרו/);
+    assert.match(result.details, /דף מצומצם שנחתך מאותו מקור/);
     assert.equal(result.answer.includes('evil.example'), false);
   });
 

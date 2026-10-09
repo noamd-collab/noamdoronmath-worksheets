@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>בוחרים מה לתרגל | הדגמת כלי למורה</title>
-<meta name="description" content="מרחב למורה: בחירת שאלות קיימות מפירוק לגורמים לכיתה ט׳, וסימון שלהן על דף המקור המלא. חיתוך לדף קצר עדיין לא ממומש.">
+<meta name="description" content="מרחב למורה: בחירת שאלות קיימות מפירוק לגורמים לכיתה ט׳, סימון על דף המקור המלא, או דף מצומצם שנחתך מהמקור.">
 <meta name="robots" content="noindex, nofollow">
 <!--
 Concept demo only. Not linked from the site.
@@ -335,7 +335,9 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .source-stage canvas{display:block;width:100%;height:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .source-mark{position:absolute;box-sizing:border-box;background:rgba(255,214,90,.55);outline:3px solid #c47d00;border-radius:4px;pointer-events:none;mix-blend-mode:multiply;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .print-unprepared{margin:0;font:16px/1.4 Heebo,Arial,sans-serif}
-.source-sheet figcaption{direction:rtl;font-size:13px;margin-top:6px;color:#3d4870}
+.source-sheet figcaption,.crop-sheet figcaption{direction:rtl;font-size:13px;margin-top:6px;color:#3d4870}
+.crop-sheet{margin:0 0 18px}
+.crop-sheet canvas{display:block;width:100%;height:auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 @media print{
   @page{size:A4;margin:8mm}
   html,html.noam-ai-engaged,body{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important;background:#fff;color:#22305a}
@@ -343,7 +345,9 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
   .print-area{display:block!important}
   .print-area h1,.print-area .print-subtitle,.print-area .plan-notice,.print-area .plan-meta,.print-area .print-source,.print-area .plan-notes{display:none!important}
   .print-area .source-sheet{box-sizing:border-box;width:194mm;height:281mm;max-height:281mm;margin:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always}
-  .print-area .source-sheet:last-child{break-after:auto;page-break-after:auto}
+  .print-area .source-sheet:last-child,.print-area .crop-sheet:last-child{break-after:auto;page-break-after:auto}
+  .print-area .crop-sheet{box-sizing:border-box;width:194mm;height:281mm;max-height:281mm;margin:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always}
+  .print-area .crop-sheet canvas{width:180mm;height:auto;max-height:262mm}
   .print-area .source-stage{width:180mm;height:254mm;flex:0 0 auto;background:transparent}
   .print-area .source-stage canvas{width:180mm;height:254mm}
   .print-area .source-mark{background:transparent;outline:none;border:2px solid #c47d00;border-radius:0;mix-blend-mode:normal}
@@ -377,7 +381,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 </div>
 </header>
 <main class="wrap">
-<div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן אפשר לבחור שאלות קיימות ולהדפיס את דף המקור עם סימון.</p><p class="head-meta"><span>מהדף הקיים, לשיעור שלכם</span><span class="demo-tag">אב־טיפוס אינטראקטיבי</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">המקרה הזה הוא דף אחד: פירוק לגורמים לכיתה ט׳, רמה א׳.<br>נועם AI בפינה הימנית מחפש בקטלוג המאומת. ההדפסה מסמנת על דף המקור המלא.</p></div>
+<div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן אפשר לבחור שאלות קיימות ולהדפיס את דף המקור עם סימון.</p><p class="head-meta"><span>מהדף הקיים, לשיעור שלכם</span><span class="demo-tag">אב־טיפוס אינטראקטיבי</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">המקרה הזה הוא דף אחד: פירוק לגורמים לכיתה ט׳, רמה א׳.<br>נועם AI בפינה הימנית מחפש בקטלוג המאומת. ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור.</p></div>
 <div class="workspace">
 <aside class="panel setup" aria-label="הגדרות השיעור">
 <h2 class="step-title"><span class="step-num">1</span> מתחילים מהכיתה</h2>
@@ -405,14 +409,14 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <div class="question-list" id="questions"></div><button class="text-btn show-more" id="show-more">הצגת שאלות נוספות <span class="count-dot" id="more-count"></span></button>
 <div class="suggestion" id="suggestion"><svg aria-hidden="true"><use href="#i-bulb"/></svg><div class="suggestion-copy"><strong>נשאר מקום לעוד צעד?</strong><p id="suggestion-text">אפשר להוסיף סעיף עם שלושה איברים.</p></div><button type="button" id="add-suggestion">הוספה לבחירה</button></div>
 <details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">חיוני = בסיס לרצף המוצע; נוסף = חיזוק לבחירתכם; העמקה = אתגר אפשרי. אלו תיוגים פדגוגיים של ההדגמה, לא תיוגי המחבר.</p><p style="margin-top:8px">ההפניות מתארות בקצרה שאלות קיימות. בעבודה עם המקור יש לשמור על הוראות משותפות, סעיפים תלויים, נוסח ותרשימים.</p></div></details>
-<details class="details"><summary>ומה לגבי הדפסת דף התלמיד?</summary><div class="details-body"><p>שתי דרכי הדפסה. במקרה הזה פועלת רק הראשונה:</p><div class="future-modes"><div class="future-mode"><b>הדף המלא, עם סימון</b><span>השאלות שנבחרו מסומנות על גבי דף המקור.</span><br><span class="future-label">המקרה הזה</span></div><div class="future-mode"><b>דף מצומצם מהמקור</b><span>רק הבחירה שלכם, עם הנוסח, התרשימים וההוראות הנדרשות.</span><br><span class="future-label">עדיין לא ממומש</span></div></div><p>ההדפסה מציגה את עמוד המקור המלא, עם סימון על השאלות שנבחרו. אין כאן חיתוך לדף קצר.</p></div></details>
-<div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button></div><p class="prepare-hint">דף המקור המלא, עם סימון · לא דף חתוך</p></div>
+<details class="details"><summary>ומה לגבי הדפסת דף התלמיד?</summary><div class="details-body"><p>שתי דרכי הדפסה, שתיהן מתוך דף המקור:</p><div class="future-modes"><div class="future-mode"><b>הדף המלא, עם סימון</b><span>השאלות שנבחרו מסומנות על גבי דף המקור.</span><br><span class="future-label">המקרה הזה</span></div><div class="future-mode"><b>דף מצומצם מהמקור</b><span>רק הבחירה שלכם, חתוכה מהמקור עם ההוראה, הנוסח והתרשים.</span><br><span class="future-label">המקרה הזה</span></div></div><p>הדף המצומצם אינו ניסוח חדש. כל קטע הוא חיתוך של דף המקור.</p></div></details>
+<div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המצומצם</button></div><p class="prepare-hint">דף מלא עם סימון, או דף מצומצם שנחתך מהמקור</p></div>
 <div id="unavailable" class="empty" hidden><h3>הנושא הזה עדיין לא כלול בהדגמה</h3><p style="margin-top:8px">אפשר לנסות את דף הפירוק לגורמים לכיתה ט׳.</p><button type="button" class="text-btn" id="return-demo">חזרה לדף ההדגמה</button></div>
 </section></div>
 <footer class="foot"><div class="foot-grid"><div><strong class="foot-brand">נועם דורון - מתמטיקה</strong><p>דפי עבודה במתמטיקה להורדה בחינם לכיתות א׳–ט׳. תשתית למידה איכותית לכל תלמיד.</p></div><div><h3>צור קשר</h3><p>מורים והורים, נשמח לעזור בכל שאלה.</p><a class="foot-mail" href="mailto:noamd@noamdoronmath.co.il">noamd@noamdoronmath.co.il</a></div><nav aria-label="ניווט מהיר"><h3>ניווט מהיר</h3><a href="https://www.noamdoronmath.co.il/">בית</a><a href="https://www.noamdoronmath.co.il/worksheets">דפי עבודה</a><a href="https://www.noamdoronmath.co.il/aboutus">אודותינו</a><a href="https://www.noamdoronmath.co.il/blog">בלוג</a></nav></div><div class="foot-bottom"><span>השאלות הן הסעיפים שכבר מודפסים בדף רמה א׳. חיפוש בנועם AI נשלח לאותו שירות של האתר. ההערות נשארות בעמוד הפתוח ומתאפסות ברענון.</span><span class="footer-source">מקור: דף העבודה של האתר · רמה א׳</span><span>© 2026 נועם דורון מתמטיקה. כל הזכויות שמורות.</span></div></footer>
 </main></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-<dialog id="print-dialog" aria-labelledby="print-title"><div class="dialog-head"><div><p class="overline">תצוגה מקדימה להדפסה</p><h2 id="print-title">דף המקור עם סימון</h2><p>העמוד המלא, והשאלות שנבחרו מסומנות עליו.</p></div><button class="icon-btn" id="close-dialog" aria-label="סגירת התצוגה המקדימה"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div><div class="dialog-body" id="dialog-plan"></div><div class="dialog-actions"><button class="text-btn" id="back-edit">חזרה לעריכת הבחירה</button><button class="primary" id="print"><svg aria-hidden="true"><use href="#i-print"/></svg>הדפסת הדף המסומן</button></div></dialog>
+<dialog id="print-dialog" aria-labelledby="print-title"><div class="dialog-head"><div><p class="overline">תצוגה מקדימה להדפסה</p><h2 id="print-title">דף המקור עם סימון</h2><p id="print-lead">העמוד המלא, והשאלות שנבחרו מסומנות עליו.</p></div><button class="icon-btn" id="close-dialog" aria-label="סגירת התצוגה המקדימה"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div><div class="dialog-body" id="dialog-plan"></div><div class="dialog-actions"><button class="text-btn" id="back-edit">חזרה לעריכת הבחירה</button><button class="primary" id="print"><svg aria-hidden="true"><use href="#i-print"/></svg>הדפסת הדף המסומן</button></div></dialog>
 <section class="print-area" id="print-area" aria-label="דף מקור מסומן להדפסה"><p class="print-unprepared">כדי להדפיס, פותחים קודם את תצוגת ההדפסה.</p></section>
 <noscript><p style="padding:30px">יש להפעיל JavaScript כדי להשתמש באב־הטיפוס. <a href="https://static.wixstatic.com/ugd/d8e7ad_6a37fe7160324a17ad107b3dbe43c1db.pdf">פתיחת דף המקור</a></p></noscript>
 
