@@ -226,9 +226,15 @@ function teacherNoteHTML(note) {
   return `<aside class="teacher-print-note" dir="rtl"><strong>הערת המורה</strong><p>${escapeHTML(text)}</p></aside>`;
 }
 
-function noteBandMm(note) {
+async function noteBandMm(note) {
   const text = String(note || '').trim();
   if (!text) return 0;
+  if (document.fonts && document.fonts.load) {
+    try {
+      await document.fonts.load('11px Heebo');
+      await document.fonts.load('12px Heebo');
+    } catch (error) {}
+  }
   const probe = document.createElement('div');
   probe.style.cssText = 'position:fixed;inset-inline-start:0;top:0;visibility:hidden;box-sizing:border-box;width:180mm;font:11px/1.35 Heebo,Arial,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;direction:rtl';
   probe.innerHTML = `<strong style="display:block;font-size:12px;margin:0 0 1mm">הערת המורה</strong><p style="margin:0">${escapeHTML(text)}</p>`;
@@ -238,13 +244,13 @@ function noteBandMm(note) {
   return Math.min(78, Math.ceil(mm + 4));
 }
 
-function attachTeacherNote(root, note) {
+async function attachTeacherNote(root, note) {
   const html = teacherNoteHTML(note);
   if (!html) return;
   const sheet = root.querySelector('.crop-sheet:last-of-type') || root.querySelector('.source-sheet:last-of-type');
   if (!sheet) return;
   sheet.classList.add('has-teacher-note');
-  sheet.style.setProperty('--note-h', noteBandMm(note) + 'mm');
+  sheet.style.setProperty('--note-h', (await noteBandMm(note)) + 'mm');
   sheet.insertAdjacentHTML('beforeend', html);
 }
 
@@ -443,7 +449,7 @@ async function updateShortPrint(plan, printArea, chosen, note, cfg) {
   printArea.innerHTML = '';
   await paintShort(plan.querySelector('.crop-preview'), slices);
   await paintShort(printArea, slices);
-  attachTeacherNote(printArea, note);
+  await attachTeacherNote(printArea, note);
 }
 
 async function updatePrint() {
@@ -480,7 +486,7 @@ async function updatePrint() {
   printArea.innerHTML = sheets;
   await paintSheets(plan, false);
   await paintSheets(printArea, true);
-  attachTeacherNote(printArea, note);
+  await attachTeacherNote(printArea, note);
 }
 
 async function prepare(mode) {
