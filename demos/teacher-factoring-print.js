@@ -220,6 +220,30 @@ async function loadPdf() {
   return pdfDoc;
 }
 
+function teacherNoteHTML(note) {
+  const text = String(note || '').trim();
+  if (!text) return '';
+  return `<aside class="teacher-print-note" dir="rtl"><strong>הערת המורה</strong><p>${escapeHTML(text)}</p></aside>`;
+}
+
+function noteBandMm(note) {
+  const text = String(note || '').trim();
+  if (!text) return 0;
+  const charsPerLine = 64;
+  const wrapped = text.split('\n').reduce((sum, line) => sum + Math.max(1, Math.ceil(line.length / charsPerLine)), 0);
+  return Math.min(58, 6 + (wrapped + 1) * 4.6);
+}
+
+function attachTeacherNote(root, note) {
+  const html = teacherNoteHTML(note);
+  if (!html) return;
+  const sheet = root.querySelector('.crop-sheet:last-of-type') || root.querySelector('.source-sheet:last-of-type');
+  if (!sheet) return;
+  sheet.classList.add('has-teacher-note');
+  sheet.style.setProperty('--note-h', noteBandMm(note) + 'mm');
+  sheet.insertAdjacentHTML('beforeend', html);
+}
+
 function sheetHTML(pageNumber, questions) {
   const marks = questions.map((question) => {
     const box = question.box;
@@ -415,6 +439,7 @@ async function updateShortPrint(plan, printArea, chosen, note, cfg) {
   printArea.innerHTML = '';
   await paintShort(plan.querySelector('.crop-preview'), slices);
   await paintShort(printArea, slices);
+  attachTeacherNote(printArea, note);
 }
 
 async function updatePrint() {
@@ -451,6 +476,7 @@ async function updatePrint() {
   printArea.innerHTML = sheets;
   await paintSheets(plan, false);
   await paintSheets(printArea, true);
+  attachTeacherNote(printArea, note);
 }
 
 async function prepare(mode) {

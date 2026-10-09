@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 
 const source = JSON.parse(readFileSync(new URL('../../../demos/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
@@ -58,7 +58,7 @@ describe('grade 9 factoring marked source', () => {
     assert.match(printer, /printOpener/);
     assert.match(printer, /packShort/);
     assert.match(page, /rel="icon"/);
-    assert.match(readFileSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url), 'utf8'), /rel="icon"/);
+    assert.match(readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8'), /rel="icon"/);
   });
 
   it('shows every picked item and does not leave a bare digit after a letter', () => {
@@ -70,8 +70,8 @@ describe('grade 9 factoring marked source', () => {
     assert.equal(byId['12א'], '37 × 12 + 37 × 8');
     assert.match(printer, /<bdi dir="ltr" class="math">/);
     assert.match(page, /\.q-desc bdi\.math\{white-space:nowrap\}/);
-    const previewJs = readFileSync(new URL('../public/teachers-demo-preview/teacher-factoring-print.js', import.meta.url), 'utf8');
-    const previewPage = readFileSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url), 'utf8');
+    const previewJs = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const previewPage = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.equal(previewJs, printer);
     assert.match(previewPage, /\.q-desc bdi\.math\{white-space:nowrap\}/);
     const questionTextHTML = new Function(
@@ -96,7 +96,7 @@ describe('grade 9 factoring marked source', () => {
   });
 
   it('keeps the original question instruction on the true/false and partial-factor cards', () => {
-    const publicSource = JSON.parse(readFileSync(new URL('../public/teachers-demo-preview/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
+    const publicSource = JSON.parse(readFileSync(new URL('../public/teachers/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
     assert.deepEqual(publicSource, source);
     const byId = Object.fromEntries(source.questions.map((question: { id: string; text: string }) => [question.id, question.text]));
     const q4Stem = 'נכון או לא נכון? בדקו בפתיחת סוגריים, ותקנו את השגוי.';
@@ -119,14 +119,36 @@ describe('grade 9 factoring marked source', () => {
     }
   });
 
-  it('serves a noindex preview route that is outside the page sitemap', () => {
-    const route = readFileSync(new URL('../src/pages/teachers-demo-preview.ts', import.meta.url), 'utf8');
-    const preview = readFileSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url), 'utf8');
+  it('serves /teachers and does not keep the temporary demo preview route', () => {
+    assert.equal(existsSync(new URL('../src/pages/teachers-demo-preview.ts', import.meta.url)), false);
+    assert.equal(existsSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url)), false);
+    const route = readFileSync(new URL('../src/pages/teachers.ts', import.meta.url), 'utf8');
+    const preview = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     const sitemap = readFileSync(new URL('../src/pages/sitemap-pages.xml.ts', import.meta.url), 'utf8');
+    const sitemapLib = readFileSync(new URL('../src/lib/siteSitemaps.ts', import.meta.url), 'utf8');
     assert.match(route, /x-robots-tag': 'noindex, nofollow'/);
     assert.match(preview, /noindex, nofollow/);
-    assert.match(preview, /\/teachers-demo-preview\/teacher-factoring-print\.js/);
+    assert.match(preview, /\/teachers\/teacher-factoring-print\.js/);
+    assert.equal(preview.includes('teachers-demo-preview'), false);
+    assert.equal(route.includes('teachers-demo-preview'), false);
+    assert.equal(sitemap.includes('teachers-demo-preview'), false);
+    assert.equal(sitemapLib.includes('teachers-demo-preview'), false);
     assert.match(sitemap, /import\.meta\.glob\('\.\/\*\.astro'\)/);
-    assert.equal(route.includes('src/pages/teachers-demo-preview.astro'), false);
+    assert.equal(route.includes('teachers.astro'), false);
+  });
+
+  it('includes the teacher note in print and keeps the short sheet on one A4', () => {
+    assert.match(printer, /function attachTeacherNote/);
+    assert.match(printer, /class="teacher-print-note" dir="rtl"/);
+    assert.equal(printer.split('attachTeacherNote(printArea, note)').length - 1, 2);
+    assert.match(page, /\.print-area \.teacher-print-note\{[^}]*direction:rtl/);
+    assert.match(page, /\.plan-notes\{display:none!important\}/);
+    assert.match(page, /\.print-area \.crop-sheet\.has-teacher-note\{[^}]*height:281mm[^}]*overflow:hidden/);
+    assert.match(page, /\.print-area \.crop-sheet\.has-teacher-note canvas\{[^}]*max-height:calc\(246mm - var\(--note-h, 0mm\)\)/);
+    assert.match(page, /\.print-area \.source-sheet\.has-teacher-note\{[^}]*overflow:visible/);
+    assert.match(page, /\.print-area \.source-sheet\{[^}]*height:281mm/);
+    const served = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    assert.match(served, /\.print-area \.teacher-print-note\{[^}]*direction:rtl/);
+    assert.match(served, /\.print-area \.crop-sheet\.has-teacher-note\{[^}]*height:281mm[^}]*overflow:hidden/);
   });
 });
