@@ -27,11 +27,12 @@ afterEach(() => { globalThis.fetch = realFetch; });
 describe('config', () => {
   it('selects ElevenLabs with a Hebrew-capable model and a priced entry', () => {
     assert.equal(cfg.tts.provider, 'elevenlabs');
-    assert.ok(['eleven_v3', 'eleven_v4'].includes(cfg.tts.model), 'eleven_multilingual_v2 has no Hebrew');
-    assert.equal(cfg.tts.language, 'he');
+    assert.equal(cfg.tts.model, 'eleven_v4');
+    assert.equal(cfg.tts.language, 'heb');
     assert.ok(cfg.pricing[cfg.tts.model].usdPer1kChars > 0);
     assert.equal(cfg.audio.pcmSampleRate, 24000);
-    assert.ok(cfg.tts.chunkMaxChars <= 4500, 'under the 5,000-character eleven_v3 request limit');
+    assert.equal(cfg.tts.elevenlabs.outputFormat, 'pcm_24000');
+    assert.ok(cfg.tts.chunkMaxChars <= 10000, 'under the 10,000-character eleven_v4 request limit');
   });
 });
 
@@ -46,8 +47,8 @@ describe('speakChunk (ElevenLabs)', () => {
     assert.equal(init.headers['xi-api-key'], KEY);
     const body = JSON.parse(init.body);
     assert.equal(body.text, 'שלום עולם');
-    assert.equal(body.model_id, cfg.tts.model);
-    assert.equal(body.language_code, 'he');
+    assert.equal(body.model_id, 'eleven_v4');
+    assert.equal(body.language_code, 'heb');
     assert.deepEqual(body.voice_settings, { stability: 0.5, similarity_boost: 0.8 });
     assert.ok(!('style' in body) && !JSON.stringify(body).includes('הקרא את הטקסט'), 'no style instruction is sent');
     assert.equal(r.pcm.length, 48000);
@@ -89,6 +90,25 @@ describe('speakChunk (ElevenLabs)', () => {
     const err = await run({ timeoutMs: 20 }).catch((e) => e);
     assert.match(err.message, /timed out/);
     assert.ok(isRetryable(err));
+  });
+
+  it('keeps the timeout through the body read and treats that abort as retryable', async () => {
+    globalThis.fetch = (url, init) => Promise.resolve({
+      ok: true,
+      status: 200,
+      headers: { get() { return null; } },
+      arrayBuffer() {
+        return new Promise((_, rej) => {
+          const fail = () => rej(Object.assign(new Error('aborted'), { name: 'AbortError' }));
+          if (init.signal.aborted) fail();
+          else init.signal.addEventListener('abort', fail, { once: true });
+        });
+      },
+    });
+    const err = await run({ timeoutMs: 30 }).catch((e) => e);
+    assert.match(err.message, /timed out/);
+    assert.ok(isRetryable(err));
+    assert.equal(err.status, undefined);
   });
 
   it('fails clearly without a key and sends nothing', async () => {

@@ -7,13 +7,13 @@
   },
   "tts": {
     "provider": "elevenlabs",
-    "model": "eleven_v3",
+    "model": "eleven_v4",
     "modelAlternatives": [
-      "eleven_v4",
+      "eleven_v3",
       "eleven_multilingual_v2"
     ],
     "voice": "TxvUy8tvDazkNBlnGcpU",
-    "language": "he",
+    "language": "heb",
     "styleInstruction": "הקרא את הטקסט בעברית ישראלית טבעית וברורה, בקצב נינוח, עם הפסקות מתאימות בין משפטים ופסקאות. הקרא את הטקסט במלואו, בלי לסכם, להוסיף פתיח או להקריא את הוראות הסגנון.",
     "chunkTargetChars": 1200,
     "chunkMaxChars": 1800,
@@ -22,7 +22,7 @@
       "outputFormat": "pcm_24000",
       "stability": 0.5,
       "similarityBoost": 0.8,
-      "note": "ElevenLabs. voice = the Hebrew voice id already used by the browser extension (\"Oren\"). eleven_v3 supports Hebrew; v3 accepts 5,000 characters per request, chunkMaxChars is 1,800. eleven_multilingual_v2 does NOT list Hebrew. Gemini stays available: set provider to gemini-api, model to gemini-2.5-flash-preview-tts, voice to Charon, language to null."
+      "note": "ElevenLabs. voice = the Hebrew voice id already used by the browser extension (\"Oren\"). eleven_v4 is a Text to Speech model on the same POST /v1/text-to-speech/{voice_id} endpoint, with the same output_format=pcm_24000. The models page lists Hebrew as heb (the convert API text still says language_code is ISO 639-1 and that an unsupported code is ignored). v4 accepts 10,000 characters per request; chunkMaxChars stays 1,800. eleven_multilingual_v2 does NOT list Hebrew. Gemini stays available: set provider to gemini-api, model to gemini-2.5-flash-preview-tts, voice to Charon, language to null."
     }
   },
   "audio": {
@@ -67,7 +67,7 @@
     },
     "eleven_v4": {
       "usdPer1kChars": 0.22,
-      "note": "ESTIMATE, same as eleven_v3; v4 credit cost per character is not documented on the models page."
+      "note": "ESTIMATE for the selected model. The models page documents a 10,000 character limit for eleven_v4 and does not document a credit cost per character, so this stays the same 0.22 USD per 1,000 characters estimate as eleven_v3. On a monthly plan the real limit is the credit balance."
     }
   },
   "limits": {

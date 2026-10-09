@@ -53,11 +53,15 @@ const ELEVEN_BASE = 'https://api.elevenlabs.io';
 /**
  * ElevenLabs Text to Speech (POST /v1/text-to-speech/{voice_id}), raw PCM out.
  * https://elevenlabs.io/docs/api-reference/text-to-speech/convert
+ * eleven_v4 is a Text to Speech model (same endpoint, same output_format query).
+ * The models page lists Hebrew as heb; language_code is sent as configured.
+ * The convert schema still calls the similarity control similarity_boost.
  *  - auth: xi-api-key header, key from ELEVENLABS_API_KEY (never logged);
  *  - output_format=pcm_24000 returns headerless signed 16-bit mono PCM at 24 kHz,
  *    the same format the rest of the pipeline already stitches and encodes;
  *  - the response header `character-cost` carries the credits actually used.
  * There is no style instruction: the model reads exactly the text it is given.
+ * The abort timer covers the response body as well as the headers.
  */
 async function speakChunkEleven({ text, model, voice, language, elevenlabs = {}, timeoutMs }) {
   if (!text || !text.trim()) throw new Error('empty chunk');
@@ -75,46 +79,57 @@ async function speakChunkEleven({ text, model, voice, language, elevenlabs = {},
 
   const controller = new AbortController();
   const timer = timeoutMs ? setTimeout(() => controller.abort(), timeoutMs) : null;
-  let res;
+  const timedOut = (e) => controller.signal.aborted || e?.name === 'AbortError';
   try {
-    res = await fetch(`${ELEVEN_BASE}/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=${encodeURIComponent(format)}`, {
-      method: 'POST',
-      headers: { 'xi-api-key': key, 'content-type': 'application/json', accept: 'application/octet-stream' },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-      redirect: 'error',
-    });
-  } catch (e) {
-    if (controller.signal.aborted) throw new Error(`tts request timed out after ${timeoutMs}ms`);
-    throw new Error(redact(`fetch failed: ${e.message}`));
+    let res;
+    try {
+      res = await fetch(`${ELEVEN_BASE}/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=${encodeURIComponent(format)}`, {
+        method: 'POST',
+        headers: { 'xi-api-key': key, 'content-type': 'application/json', accept: 'application/octet-stream' },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+        redirect: 'error',
+      });
+    } catch (e) {
+      if (timedOut(e)) throw new Error(`tts request timed out after ${timeoutMs}ms`);
+      throw new Error(redact(`fetch failed: ${e.message}`));
+    }
+
+    if (!res.ok) {
+      let detail = '';
+      try { detail = (await res.text()).slice(0, 300); } catch (e) {
+        if (timedOut(e)) throw new Error(`tts request timed out after ${timeoutMs}ms`);
+      }
+      const err = new Error(redact(`ElevenLabs HTTP ${res.status}: ${detail}`));
+      err.status = res.status;
+      throw err;
+    }
+
+    let pcm;
+    try {
+      pcm = Buffer.from(await res.arrayBuffer());
+    } catch (e) {
+      if (timedOut(e)) throw new Error(`tts request timed out after ${timeoutMs}ms`);
+      throw new Error(redact(`fetch failed: ${e.message}`));
+    }
+    if (!pcm.length || pcm.length % 2) throw new Error(`ElevenLabs returned ${pcm.length} bytes, not whole 16-bit samples`);
+    const credits = Number(res.headers.get('character-cost'));
+    return {
+      pcm,
+      sampleRate: 24000,
+      channels: 1,
+      mimeType: `audio/${format}`,
+      usage: {
+        inputTextTokens: 0,
+        outputAudioTokens: 0,
+        totalInput: 0,
+        totalOutput: 0,
+        characters: Number.isFinite(credits) && credits > 0 ? credits : text.length,
+      },
+    };
   } finally {
     if (timer) clearTimeout(timer);
   }
-
-  if (!res.ok) {
-    let detail = '';
-    try { detail = (await res.text()).slice(0, 300); } catch { /* body unreadable */ }
-    const err = new Error(redact(`ElevenLabs HTTP ${res.status}: ${detail}`));
-    err.status = res.status;
-    throw err;
-  }
-
-  const pcm = Buffer.from(await res.arrayBuffer());
-  if (!pcm.length || pcm.length % 2) throw new Error(`ElevenLabs returned ${pcm.length} bytes, not whole 16-bit samples`);
-  const credits = Number(res.headers.get('character-cost'));
-  return {
-    pcm,
-    sampleRate: 24000,
-    channels: 1,
-    mimeType: `audio/${format}`,
-    usage: {
-      inputTextTokens: 0,
-      outputAudioTokens: 0,
-      totalInput: 0,
-      totalOutput: 0,
-      characters: Number.isFinite(credits) && credits > 0 ? credits : text.length,
-    },
-  };
 }
 
 async function speakChunkGemini({ text, model, voice, language, styleInstruction, timeoutMs }) {

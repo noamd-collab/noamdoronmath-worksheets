@@ -56,7 +56,7 @@ if (useEleven) {
       const hit = models.find((x) => x.model_id === cfg.tts.model);
       hit ? ok(`${cfg.tts.model} available to this key (can_do_text_to_speech=${hit.can_do_text_to_speech})`) : bad(`${cfg.tts.model} NOT in this account's model list`);
       const hebrew = hit && (hit.languages || []).some((l) => ['he', 'heb', 'hebrew'].includes(String(l.language_id || l.name || l).toLowerCase()));
-      hit && (hebrew ? ok('model lists Hebrew') : log('     (model list did not name Hebrew explicitly; the docs list Hebrew for eleven_v3)'));
+      hit && (hebrew ? ok('model lists Hebrew') : log('     (model list did not name Hebrew explicitly; the models page lists Hebrew as heb for eleven_v4)'));
       const v = await fetch(`https://api.elevenlabs.io/v1/voices/${encodeURIComponent(cfg.tts.voice)}`, { headers });
       v.ok ? ok(`voice ${cfg.tts.voice} found in the account`) : bad(`voice ${cfg.tts.voice} not usable (HTTP ${v.status})`);
       const s = await fetch('https://api.elevenlabs.io/v1/user/subscription', { headers });
