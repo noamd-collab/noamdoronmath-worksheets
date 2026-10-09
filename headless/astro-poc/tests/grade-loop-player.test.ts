@@ -453,7 +453,7 @@ describe('GradeLoopPlayer render contract', () => {
   });
 
   it('swaps like ExactHeroControls: cached nodes, one init per variant, one timer', () => {
-    assert.match(player, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) cache\.append\(prior\);\s*current\.append\(next\)/);
+    assert.match(player, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) \{\s*parkAngleSumFilm\(prior\);\s*cache\.append\(prior\);\s*\}\s*current\.append\(next\);\s*resumeAngleSumFilm\(next\)/);
     assert.match(player, /if \(firstVisit\) initConceptLoops\(\)/);
     assert.equal((player.match(/initConceptLoops\(\)/g) || []).length, 2);
     assert.match(player, /cache\.hidden = true/);

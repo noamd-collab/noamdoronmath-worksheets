@@ -37,6 +37,9 @@ describe('triangle angle-sum vertex descent film', () => {
     assert.match(film, /const aD=a\.toFixed\(precision\),bD=b\.toFixed\(precision\),cD=\(180-Number\(aD\)-Number\(bD\)\)\.toFixed\(precision\)/);
     assert.match(film, /el\['a-arc'\]\.setAttribute\('d',arc\(G\.ax,G\.baseY,78,-ar,0\)\)/);
     assert.match(film, /body\.embed \.heading,body\.embed \.footnote\{display:none\}/);
+    assert.match(film, /@media\(max-width:640px\)\{[\s\S]*body\.card \.vertex-label\{font-size:30px\}/);
+    assert.match(film, /@media\(max-width:640px\)\{[\s\S]*body\.card \.seek-wrap\{flex:1 1 140px;min-width:0\}/);
+    assert.doesNotMatch(film, /body\.card \.vertex-label\{font-size:16px\}/);
     assert.match(film, /get\('embed'\)==='1'\)document\.body\.classList\.add\('embed'\)/);
     assert.match(film, /id="play"/);
     assert.match(film, /id="restart"/);
@@ -123,5 +126,11 @@ describe('triangle angle-sum vertex descent film', () => {
     assert.doesNotMatch(dev, /angle-sum/);
     assert.doesNotMatch(read('src/components/ConceptLoop.astro'), /angle-sum/);
     assert.doesNotMatch(read('src/lib/conceptLoops.ts'), /renderAngleSum|angle-sum/);
+    const filmBoot = read('src/lib/angleSumFilm.ts');
+    assert.match(filmBoot, /querySelectorAll<HTMLElement>\('\[data-hero-loop\], \[data-grade-loop\]'\)/);
+    assert.doesNotMatch(filmBoot, /observe\(document\.body/);
+    assert.match(filmBoot, /frame\.setAttribute\('src', 'about:blank'\)/);
+    assert.match(read('src/components/ExactHeroControls.astro'), /parkAngleSumFilm\(prior\)/);
+    assert.match(grade, /parkAngleSumFilm\(prior\)/);
   });
 });

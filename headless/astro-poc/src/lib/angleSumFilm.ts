@@ -78,6 +78,7 @@ export function bootAngleSumFilm(root: HTMLElement): void {
 
   let watching = false;
   function onReady() {
+    if (!demoOf(frame)) return;
     const pending = queued.splice(0);
     for (const fn of pending) fn();
     fit();
@@ -108,13 +109,42 @@ export function bootAngleSumFilm(root: HTMLElement): void {
   });
 }
 
+/** Stop a hidden film. Blanking the frame keeps a cached iframe from reloading and playing. */
+export function parkAngleSumFilm(root: HTMLElement): void {
+  if (!root.hasAttribute('data-angle-sum-loop')) return;
+  const frame = root.querySelector<HTMLIFrameElement>('[data-angle-sum-frame]');
+  if (!frame) return;
+  try { demoOf(frame)?.pause(); } catch { /* The frame is about to unload. */ }
+  const src = frame.getAttribute('src') || '';
+  if (!src || src === 'about:blank') return;
+  frame.dataset.angleSumSrc = src;
+  frame.setAttribute('src', 'about:blank');
+}
+
+/** Restore a parked film when its card is shown again. */
+export function resumeAngleSumFilm(root: HTMLElement): void {
+  if (!root.hasAttribute('data-angle-sum-loop')) return;
+  const frame = root.querySelector<HTMLIFrameElement>('[data-angle-sum-frame]');
+  const saved = frame?.dataset.angleSumSrc;
+  if (!frame || !saved) return;
+  const src = frame.getAttribute('src') || '';
+  if (src === 'about:blank' || src === '') frame.setAttribute('src', saved);
+}
+
 let watching = false;
 export function watchAngleSumFilms(): void {
   if (watching || typeof document === 'undefined') return;
   watching = true;
-  const bootAll = () => {
-    document.querySelectorAll<HTMLElement>('[data-angle-sum-loop]').forEach(bootAngleSumFilm);
+  document.querySelectorAll<HTMLElement>('[data-angle-sum-loop]').forEach(bootAngleSumFilm);
+  const hosts = document.querySelectorAll<HTMLElement>('[data-hero-loop], [data-grade-loop]');
+  if (!hosts.length) return;
+  const bootNode = (node: Node) => {
+    if (!(node instanceof HTMLElement)) return;
+    if (node.matches('[data-angle-sum-loop]')) bootAngleSumFilm(node);
+    node.querySelectorAll<HTMLElement>('[data-angle-sum-loop]').forEach(bootAngleSumFilm);
   };
-  bootAll();
-  new MutationObserver(bootAll).observe(document.documentElement, { childList: true, subtree: true });
+  const observer = new MutationObserver((records) => {
+    for (const record of records) record.addedNodes.forEach(bootNode);
+  });
+  hosts.forEach((host) => observer.observe(host, { childList: true, subtree: true }));
 }

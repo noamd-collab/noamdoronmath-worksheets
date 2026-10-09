@@ -129,7 +129,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 </div>
 
 <script>
-  import { bootAngleSumFilm } from '../lib/angleSumFilm';
+  import { bootAngleSumFilm, parkAngleSumFilm, resumeAngleSumFilm } from '../lib/angleSumFilm';
   import { initConceptLoops } from '../lib/conceptLoops';
   import { gradeLoopMathParts, type GradeLoopEntry as Entry } from '../lib/gradeLoopPools';
   import { splitSupFractions } from '../lib/stackedFraction';
@@ -357,8 +357,12 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
           const prior = activeLoop();
           const hadFocus = !!prior?.contains(document.activeElement);
           prior?.__loop?.pause();
-          if (prior) cache.append(prior);
+          if (prior) {
+            parkAngleSumFilm(prior);
+            cache.append(prior);
+          }
           current.append(next);
+          resumeAngleSumFilm(next);
           if (firstVisit) initConceptLoops();
           bootAngleSumFilm(next);
           if (manuallyPaused(next) && next.__loop && !next.__loop.state().static) next.__loop.pause();

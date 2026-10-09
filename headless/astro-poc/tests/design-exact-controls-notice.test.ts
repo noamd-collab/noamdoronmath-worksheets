@@ -123,7 +123,7 @@ describe('exact hero presentation adapter inventory', () => {
     assert.match(wrapper, /cache\.hidden = true/);
     assert.match(wrapper, /cache\.style\.display = 'none'/);
     assert.match(wrapper, /hero\.append\(cache\)/);
-    assert.match(wrapper, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) cache\.append\(prior\);\s*current\.append\(next\)/);
+    assert.match(wrapper, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) \{\s*parkAngleSumFilm\(prior\);\s*cache\.append\(prior\);\s*\}\s*current\.append\(next\);\s*resumeAngleSumFilm\(next\)/);
     assert.doesNotMatch(wrapper, /current\.replaceChildren|prior\??\.remove\(/);
     assert.equal((wrapper.match(/window\.setInterval\(/g) || []).length, 1, 'One shared ARIA timer, not one per shuffle');
   });
