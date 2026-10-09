@@ -4,6 +4,8 @@
  * explicitly out-of-scope behavior/content while permitting presentation edits.
  * A future intentional content/engine migration must review this fence rather
  * than silently regenerate it to make a design-only change pass.
+ * conceptLoops.ts and ConceptLoop.astro moved when L01 angle-sum was removed
+ * and replaced by the vertex-descent film. That was an explicit content change.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -21,8 +23,8 @@ const protectedFiles: Record<string, string> = {
   'src/data/catalog.v1.json': '86748683d96c1364403c019832393c97b0e632de221bda3f7c16b80e2762b6fc',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   'src/lib/worksheetLinks.ts': '1f9a5fdf234997fc8ba7593d1ef0066f082586816770eefc45da40035a825eaf',
-  'src/lib/conceptLoops.ts': 'b9e5a864e93b08e70fa7257dcf9d7fedae7dcb4cd5798996b7325d98575be53d',
-  'src/components/ConceptLoop.astro': '12c0ec36ecf290acec5f3a20c5fd74532de522c0d9edd6711322d209851218f6',
+  'src/lib/conceptLoops.ts': 'b78a1945395cd9239942952c806014f16138accf47a2768f5e8acf73e38e03a1',
+  'src/components/ConceptLoop.astro': '37c06f29131a44c5b3c670cd1ad28206d4f5e850ff39f5b3cd3ab63df59ca391',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',

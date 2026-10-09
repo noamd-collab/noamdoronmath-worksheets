@@ -1,6 +1,7 @@
 ---
 import ConceptLoop from './ConceptLoop.astro';
 import type { Props as ConceptLoopProps } from './ConceptLoop.astro';
+import TriangleAngleSumLoop from './TriangleAngleSumLoop.astro';
 import { gradeHubLabel, type GradeHubGrade } from '../lib/gradeHubs';
 import {
   GRADE_LOOP_HOLD_S,
@@ -45,7 +46,16 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
   {
     others.map((entry) => (
       <template data-grade-loop-variant={entry.variant}>
-        <ConceptLoop variant={entry.variant as Variant} />
+        {entry.variant === 'angle-sum' ? (
+          <TriangleAngleSumLoop
+            src="/loops/triangle-angle-sum-vertex-descent.html"
+            marker="triangle-angle-sum-vertex-descent"
+            variant="angle-sum"
+            card
+          />
+        ) : (
+          <ConceptLoop variant={entry.variant as Variant} />
+        )}
       </template>
     ))
   }
@@ -119,6 +129,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
 </div>
 
 <script>
+  import { bootAngleSumFilm } from '../lib/angleSumFilm';
   import { initConceptLoops } from '../lib/conceptLoops';
   import { gradeLoopMathParts, type GradeLoopEntry as Entry } from '../lib/gradeLoopPools';
   import { splitSupFractions } from '../lib/stackedFraction';
@@ -349,6 +360,8 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
           if (prior) cache.append(prior);
           current.append(next);
           if (firstVisit) initConceptLoops();
+          bootAngleSumFilm(next);
+          if (manuallyPaused(next) && next.__loop && !next.__loop.state().static) next.__loop.pause();
           restoreManualPause(next);
           if (!firstVisit) restartLoop(next);
           slow.reset(endOf(variant));

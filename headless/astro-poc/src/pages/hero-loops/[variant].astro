@@ -1,11 +1,13 @@
 ---
 /**
- * One existing ConceptLoop, fetched when ↻ נושא אחר needs it.
+ * One existing hero loop, fetched when ↻ נושא אחר needs it.
+ * angle-sum is the vertex-descent film, not a ConceptLoop drawing.
  * Not a site page: no layout, noindex, and absent from the page sitemap
  * (that glob is only src/pages/*.astro).
  */
 import ConceptLoop from '../../components/ConceptLoop.astro';
 import type { Props as ConceptLoopProps } from '../../components/ConceptLoop.astro';
+import TriangleAngleSumLoop from '../../components/TriangleAngleSumLoop.astro';
 import { heroRotationVariant } from '../../lib/heroRotation';
 
 export const prerender = false;
@@ -26,4 +28,15 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex');
 Astro.response.headers.set('Cache-Control', 'public, max-age=86400');
 const loopVariant = variant as ConceptLoopProps['variant'];
 ---
-<ConceptLoop variant={loopVariant} />
+{
+  variant === 'angle-sum' ? (
+    <TriangleAngleSumLoop
+      src="/loops/triangle-angle-sum-vertex-descent.html"
+      marker="triangle-angle-sum-vertex-descent"
+      variant="angle-sum"
+      card
+    />
+  ) : (
+    <ConceptLoop variant={loopVariant} />
+  )
+}

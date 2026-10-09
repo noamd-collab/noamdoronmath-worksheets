@@ -1,7 +1,7 @@
 /**
  * The grade-7 angle-sum film stays the provided geometry,
  * with display rounding, a live sum, embed mode, and a 20s clock.
- * It mounts only on the triangle/quadrilateral angle-sum topic page.
+ * The topic page mounts it, and so do the home hero and the grade-7 player.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -90,7 +90,7 @@ describe('triangle angle-sum vertex descent film', () => {
     }
   });
 
-  it('mounts that file only on the grade-7 angle-sum topic page', () => {
+  it('mounts that file on the grade-7 angle-sum topic page', () => {
     const loop = topicLandingLoop(loadTopicPage('triangle-quadrilateral-angle-sum-grade-7'));
     assert.deepEqual(loop, {
       kind: 'film',
@@ -107,8 +107,21 @@ describe('triangle angle-sum vertex descent film', () => {
     }
     assert.match(topic, /TriangleAngleSumLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\}/);
     assert.match(shell, /\$\{src\}\?embed=1/);
+    assert.match(shell, /\$\{src\}\?embed=1&loop=1&card=1/);
     assert.equal(shell.includes('capture=1'), false);
     assert.equal(shell.includes('display:none'), false);
     assert.equal(shell.includes('.controls'), false);
+    assert.equal(shell.includes('reel.mp4'), false);
+    const hero = read('src/pages/hero-loops/[variant].astro');
+    const grade = read('src/components/GradeLoopPlayer.astro');
+    const dev = read('src/pages/dev-loops.astro');
+    assert.match(hero, /TriangleAngleSumLoop/);
+    assert.match(hero, /\/loops\/triangle-angle-sum-vertex-descent\.html/);
+    assert.doesNotMatch(hero, /reel\.mp4/);
+    assert.match(grade, /TriangleAngleSumLoop/);
+    assert.match(grade, /\/loops\/triangle-angle-sum-vertex-descent\.html/);
+    assert.doesNotMatch(dev, /angle-sum/);
+    assert.doesNotMatch(read('src/components/ConceptLoop.astro'), /angle-sum/);
+    assert.doesNotMatch(read('src/lib/conceptLoops.ts'), /renderAngleSum|angle-sum/);
   });
 });

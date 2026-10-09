@@ -37,7 +37,6 @@ export interface Props {
     | 'cookies'
     | 'fraction'
     | 'transform'
-    | 'angle-sum'
     | 'para-rect'
     | 'angle-kinds'
     | 'frac-product'
@@ -126,8 +125,6 @@ const ariaLabels: Record<string, string> = {
   fraction: 'הדגמה: עוגה נחתכת לארבעה חלקים שווים ואחד נצבע — אותו רבע מופיע גם על פס וגם על ישר.',
   transform:
     'הדגמה: משולש משתקף סביב ישר, מסתובב 90 מעלות סביב נקודה ומוזז — הצורה נשארת חופפת.',
-  'angle-sum':
-    'הדגמה: שלוש הזוויות של משולש נפרדות ונצמדות לקו ישר, והסכום 180 מעלות.',
   'para-rect': 'הדגמה: מקבילית נמתחת למלבן, הגובה נשאר, והשטח לא משתנה.',
   'angle-kinds':
     'הדגמה: זווית נפתחת, סימן הריבוע מופיע ב־90 מעלות, והפתיחה ממשיכה לזווית קהה.',
@@ -200,7 +197,6 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   baseten: { text: '38 + 25 = ?', ltr: true },
   cookies: { text: 'כמה עוגיות בכל צלחת? ומה נשאר?' },
   fraction: { text: 'איזה חלק של העוגה צבוע?' },
-  'angle-sum': { text: 'מהו סכום הזוויות במשולש?' },
   'para-rect': { text: 'האם השטח משתנה?' },
   'angle-kinds': { text: 'איזו זווית זו?' },
   'frac-product': { text: 'חצי של שליש — כמה?' },
@@ -1188,24 +1184,6 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       )
     }
 
-    {
-      variant === 'angle-sum' && (
-        <svg class="concept-loop__svg" viewBox="0 0 560 360" role="img" aria-label={ariaLabels[variant]}>
-          <polygon class="cl-line" points="150,248 430,248 280,92" />
-          <g data-el="ang0" style="opacity:0">
-            <path class="cl-fill-a cl-stroke-a" d="M0 0 L26 0 A26 26 0 0 0 18 -18 Z" />
-          </g>
-          <g data-el="ang1" style="opacity:0">
-            <path class="cl-fill-b cl-stroke-b" d="M0 0 L-26 0 A26 26 0 0 1 -18 -18 Z" />
-          </g>
-          <g data-el="ang2" style="opacity:0">
-            <path class="cl-fill-c cl-line" d="M0 0 L16 16 A26 26 0 0 1 -16 16 Z" />
-          </g>
-          <line class="cl-line" data-el="straight" x1="130" y1="312" x2="400" y2="312" pathLength="1" style="opacity:0" />
-          <text class="cl-t cl-num cl-ok" data-el="lbl180" x="418" y="318" style="opacity:0">180°</text>
-        </svg>
-      )
-    }
     {
       variant === 'para-rect' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
@@ -2439,14 +2417,6 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
           <span data-fx="1" class="cl-check" aria-hidden="true">
             ✓
           </span>
-        </p>
-      )
-    }
-    {
-      variant === 'angle-sum' && (
-        <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">∠ + ∠ + ∠ = 180°</span>
-          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
     }

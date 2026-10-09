@@ -83,6 +83,7 @@ const topics = {
 <script type="application/json" data-exact-hero-topics set:html={JSON.stringify(topics)} />
 <script type="application/json" data-hero-rotation set:html={JSON.stringify(HERO_ROTATION)} />
 <script>
+  import { bootAngleSumFilm } from '../lib/angleSumFilm';
   import { initConceptLoops } from '../lib/conceptLoops';
 
   type LoopState = { playing: boolean; done: boolean; static: boolean };
@@ -259,6 +260,8 @@ const topics = {
       if (prior) cache.append(prior);
       current.append(next);
       initConceptLoops();
+      bootAngleSumFilm(next);
+      if (manuallyPaused(next) && next.__loop && !next.__loop.state().static) next.__loop.pause();
       restoreManualPause(next);
       wasStatic.set(next, next.__loop?.state().static || false);
       try { sessionStorage.setItem('nd_hero_loop_last', variant); } catch { /* Optional. */ }
