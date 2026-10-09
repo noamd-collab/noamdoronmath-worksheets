@@ -42,6 +42,7 @@ const hasRecent = !!(post.recentPosts?.items && post.recentPosts.items.length > 
   title={post.title}
   description={post.description}
   ogImage={post.ogImage || post.coverImage}
+  ogType="article"
   skipHref="#blog-post-main"
 >
   <BlogSeoTags slot="seo-tags" description={post.description} image={post.ogImage || post.coverImage} jsonLd={post.jsonLd} />
