@@ -884,38 +884,6 @@ function renderTransform(root: LoopRoot, t: number) {
 }
 const TRANS_HOLD = 6.8;
 
-/* ═══════════════ L01 — angle-sum: three wedges join a straight line (D = 10 s) ═══════════════ */
-
-function renderAngleSum(root: LoopRoot, t: number) {
-  const moveP = ph(t, 2.0, 3.5) - ph(t, 8.2, 9.4);
-  const homes = [
-    { x: 168, y: 236 },
-    { x: 392, y: 236 },
-    { x: 280, y: 118 },
-  ];
-  const targets = [
-    { x: 168, y: 300 },
-    { x: 248, y: 300 },
-    { x: 328, y: 300 },
-  ];
-  for (let i = 0; i < 3; i++) {
-    const g = q(root, `ang${i}`);
-    const x = lerp(homes[i].x, targets[i].x, moveP);
-    const y = lerp(homes[i].y, targets[i].y, moveP);
-    if (g) g.setAttribute('transform', `translate(${r2(x)} ${r2(y)})`);
-    op(g, ph(t, 0.7, 1.1) * (1 - ph(t, 9.4, 9.8)));
-  }
-  const line = q(root, 'straight');
-  op(line, ph(t, 3.2, 3.6) * (1 - ph(t, 8.4, 9.0)));
-  draw(line, ph(t, 3.3, 4.0));
-  op(q(root, 'lbl180'), ph(t, 4.0, 4.4) * (1 - ph(t, 8.2, 8.8)));
-  const fxs = qa(root, '[data-fx]');
-  const show = ph(t, 4.5, 4.9) * (1 - ph(t, 8.0, 8.6));
-  op(fxs[0], show);
-  op(fxs[1], ph(t, 4.9, 5.3) * (1 - ph(t, 8.0, 8.6)));
-}
-const ANGLE_SUM_HOLD = 6.2;
-
 /* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════ */
 
 function renderParaRect(root: LoopRoot, t: number) {
@@ -1977,7 +1945,6 @@ const SPECS = {
   cookies: { duration: 10, hold: CK_HOLD, render: renderCookies },
   fraction: { duration: 10, hold: FRAC_HOLD, render: renderFraction },
   transform: { duration: 11, hold: TRANS_HOLD, render: renderTransform },
-  'angle-sum': { duration: 10, hold: ANGLE_SUM_HOLD, render: renderAngleSum },
   'para-rect': { duration: 10, hold: PARA_RECT_HOLD, render: renderParaRect },
   'angle-kinds': { duration: 10, hold: ANGLE_KINDS_HOLD, render: renderAngleKinds },
   'frac-product': { duration: 10, hold: FRAC_PRODUCT_HOLD, render: renderFracProduct },

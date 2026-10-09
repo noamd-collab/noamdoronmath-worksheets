@@ -83,6 +83,7 @@ const topics = {
 <script type="application/json" data-exact-hero-topics set:html={JSON.stringify(topics)} />
 <script type="application/json" data-hero-rotation set:html={JSON.stringify(HERO_ROTATION)} />
 <script>
+  import { bootAngleSumFilm, parkAngleSumFilm, resumeAngleSumFilm } from '../lib/angleSumFilm';
   import { initConceptLoops } from '../lib/conceptLoops';
 
   type LoopState = { playing: boolean; done: boolean; static: boolean };
@@ -256,9 +257,15 @@ const topics = {
       // once per variant and keep inactive nodes connected, hidden and paused.
       // No fresh observer/RAF graph is abandoned on repeated shuffle clicks.
       prior?.__loop?.pause();
-      if (prior) cache.append(prior);
+      if (prior) {
+        parkAngleSumFilm(prior);
+        cache.append(prior);
+      }
       current.append(next);
+      resumeAngleSumFilm(next);
       initConceptLoops();
+      bootAngleSumFilm(next);
+      if (manuallyPaused(next) && next.__loop && !next.__loop.state().static) next.__loop.pause();
       restoreManualPause(next);
       wasStatic.set(next, next.__loop?.state().static || false);
       try { sessionStorage.setItem('nd_hero_loop_last', variant); } catch { /* Optional. */ }

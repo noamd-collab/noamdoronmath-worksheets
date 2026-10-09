@@ -123,7 +123,7 @@ describe('exact hero presentation adapter inventory', () => {
     assert.match(wrapper, /cache\.hidden = true/);
     assert.match(wrapper, /cache\.style\.display = 'none'/);
     assert.match(wrapper, /hero\.append\(cache\)/);
-    assert.match(wrapper, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) cache\.append\(prior\);\s*current\.append\(next\)/);
+    assert.match(wrapper, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) \{\s*parkAngleSumFilm\(prior\);\s*cache\.append\(prior\);\s*\}\s*current\.append\(next\);\s*resumeAngleSumFilm\(next\)/);
     assert.doesNotMatch(wrapper, /current\.replaceChildren|prior\??\.remove\(/);
     assert.equal((wrapper.match(/window\.setInterval\(/g) || []).length, 1, 'One shared ARIA timer, not one per shuffle');
   });
@@ -140,14 +140,12 @@ describe('exact hero presentation adapter inventory', () => {
   });
 });
 
-describe('protected math sources remain byte-identical to verified live 8a098020', () => {
-  // Read independently with git show from live-base commit
-  // 8a098020ca33f374224338b8ac3fd08faa8ad5f1, not regenerated from this candidate.
+describe('protected math sources stay pinned after the L01 removal', () => {
+  // Hashes moved off live-base 8a098020 because L01 angle-sum was deleted
+  // and replaced by the vertex-descent film. Not a silent design regen.
   const expected = {
-    // HeroLoop.astro is the homepage shell. It may stop inlining every loop.
-    // The diagram engine stays byte-identical.
-    'src/components/ConceptLoop.astro': '12c0ec36ecf290acec5f3a20c5fd74532de522c0d9edd6711322d209851218f6',
-    'src/lib/conceptLoops.ts': 'b9e5a864e93b08e70fa7257dcf9d7fedae7dcb4cd5798996b7325d98575be53d',
+    'src/components/ConceptLoop.astro': '37c06f29131a44c5b3c670cd1ad28206d4f5e850ff39f5b3cd3ab63df59ca391',
+    'src/lib/conceptLoops.ts': 'b78a1945395cd9239942952c806014f16138accf47a2768f5e8acf73e38e03a1',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {

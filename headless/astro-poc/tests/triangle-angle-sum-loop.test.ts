@@ -1,7 +1,7 @@
 /**
  * The grade-7 angle-sum film stays the provided geometry,
  * with display rounding, a live sum, embed mode, and a 20s clock.
- * It mounts only on the triangle/quadrilateral angle-sum topic page.
+ * The topic page mounts it, and so do the home hero and the grade-7 player.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -37,6 +37,9 @@ describe('triangle angle-sum vertex descent film', () => {
     assert.match(film, /const aD=a\.toFixed\(precision\),bD=b\.toFixed\(precision\),cD=\(180-Number\(aD\)-Number\(bD\)\)\.toFixed\(precision\)/);
     assert.match(film, /el\['a-arc'\]\.setAttribute\('d',arc\(G\.ax,G\.baseY,78,-ar,0\)\)/);
     assert.match(film, /body\.embed \.heading,body\.embed \.footnote\{display:none\}/);
+    assert.match(film, /@media\(max-width:640px\)\{[\s\S]*body\.card \.vertex-label\{font-size:30px\}/);
+    assert.match(film, /@media\(max-width:640px\)\{[\s\S]*body\.card \.seek-wrap\{flex:1 1 140px;min-width:0\}/);
+    assert.doesNotMatch(film, /body\.card \.vertex-label\{font-size:16px\}/);
     assert.match(film, /get\('embed'\)==='1'\)document\.body\.classList\.add\('embed'\)/);
     assert.match(film, /id="play"/);
     assert.match(film, /id="restart"/);
@@ -90,7 +93,7 @@ describe('triangle angle-sum vertex descent film', () => {
     }
   });
 
-  it('mounts that file only on the grade-7 angle-sum topic page', () => {
+  it('mounts that file on the grade-7 angle-sum topic page', () => {
     const loop = topicLandingLoop(loadTopicPage('triangle-quadrilateral-angle-sum-grade-7'));
     assert.deepEqual(loop, {
       kind: 'film',
@@ -107,8 +110,27 @@ describe('triangle angle-sum vertex descent film', () => {
     }
     assert.match(topic, /TriangleAngleSumLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\}/);
     assert.match(shell, /\$\{src\}\?embed=1/);
+    assert.match(shell, /\$\{src\}\?embed=1&loop=1&card=1/);
     assert.equal(shell.includes('capture=1'), false);
     assert.equal(shell.includes('display:none'), false);
     assert.equal(shell.includes('.controls'), false);
+    assert.equal(shell.includes('reel.mp4'), false);
+    const hero = read('src/pages/hero-loops/[variant].astro');
+    const grade = read('src/components/GradeLoopPlayer.astro');
+    const dev = read('src/pages/dev-loops.astro');
+    assert.match(hero, /TriangleAngleSumLoop/);
+    assert.match(hero, /\/loops\/triangle-angle-sum-vertex-descent\.html/);
+    assert.doesNotMatch(hero, /reel\.mp4/);
+    assert.match(grade, /TriangleAngleSumLoop/);
+    assert.match(grade, /\/loops\/triangle-angle-sum-vertex-descent\.html/);
+    assert.doesNotMatch(dev, /angle-sum/);
+    assert.doesNotMatch(read('src/components/ConceptLoop.astro'), /angle-sum/);
+    assert.doesNotMatch(read('src/lib/conceptLoops.ts'), /renderAngleSum|angle-sum/);
+    const filmBoot = read('src/lib/angleSumFilm.ts');
+    assert.match(filmBoot, /querySelectorAll<HTMLElement>\('\[data-hero-loop\], \[data-grade-loop\]'\)/);
+    assert.doesNotMatch(filmBoot, /observe\(document\.body/);
+    assert.match(filmBoot, /frame\.setAttribute\('src', 'about:blank'\)/);
+    assert.match(read('src/components/ExactHeroControls.astro'), /parkAngleSumFilm\(prior\)/);
+    assert.match(grade, /parkAngleSumFilm\(prior\)/);
   });
 });

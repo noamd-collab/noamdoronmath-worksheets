@@ -46,7 +46,11 @@ describe('home hero rotation', () => {
     assert.ok(grades.has(7) && grades.has(8) && grades.has(9));
     for (const entry of HERO_ROTATION) {
       assert.ok(pool.includes(entry.variant), `${entry.variant} is not an existing hero loop`);
-      assert.ok(specs.has(entry.variant), `${entry.variant} is not in the engine`);
+      if (entry.variant === 'angle-sum') {
+        assert.equal(specs.has(entry.variant), false, 'angle-sum is the vertex-descent film, not an engine drawing');
+      } else {
+        assert.ok(specs.has(entry.variant), `${entry.variant} is not in the engine`);
+      }
       assert.equal(entry.panel, heroPanel(entry.gradeNum));
       assert.equal(heroChip(entry), `כיתה ${entry.grade} · ${entry.label}`);
       assert.match(entry.href, /^\/[a-z0-9-]+$/);
@@ -71,6 +75,8 @@ describe('home hero rotation', () => {
     assert.match(endpoint, /heroRotationVariant/);
     assert.match(endpoint, /x-robots-tag': 'noindex'/);
     assert.doesNotMatch(endpoint, /BaseLayout/);
+    assert.match(endpoint, /variant === 'angle-sum'[\s\S]*TriangleAngleSumLoop[\s\S]*src="\/loops\/triangle-angle-sum-vertex-descent\.html"[\s\S]*marker="triangle-angle-sum-vertex-descent"/);
+    assert.doesNotMatch(endpoint, /reel\.mp4/);
     assert.equal(read('src/lib/conceptLoops.ts').includes('HERO_ROTATION'), false);
   });
 });

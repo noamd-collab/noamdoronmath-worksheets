@@ -1,6 +1,6 @@
 /**
- * Home-hero rotation. Existing ConceptLoop variants only — the diagram
- * contract in conceptLoops.ts / ConceptLoop.astro is not rewritten here.
+ * Home-hero rotation. ConceptLoop variants, plus the angle-sum
+ * vertex-descent film (not an engine drawing).
  *
  * Every entry has a topic page that is already served. Grades א׳–ו׳ have
  * working loops (tenframes, sticks, bars, numberline, balance, pattern, …)
