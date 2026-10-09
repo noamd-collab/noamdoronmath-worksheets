@@ -53,6 +53,12 @@ describe('grade 9 factoring marked source', () => {
     }
     assert.equal(source.headerCrop.page, 1);
     assert.equal(source.footerCrop.page, 1);
+    assert.ok(source.headerCrop.mask && source.headerCrop.mask.h > 0);
+    assert.ok(source.footerCrop.mask && source.footerCrop.mask.w > 0);
+    assert.match(printer, /printOpener/);
+    assert.match(printer, /packShort/);
+    assert.match(page, /rel="icon"/);
+    assert.match(readFileSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url), 'utf8'), /rel="icon"/);
   });
 
   it('shows every picked item and does not leave a bare digit after a letter', () => {

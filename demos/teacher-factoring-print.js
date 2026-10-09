@@ -82,6 +82,7 @@ let state = {
 let history = [];
 let rendering = false;
 let printMode = 'marked';
+let printOpener = null;
 const pageBitmaps = new Map();
 
 function available() {
@@ -284,22 +285,91 @@ function shortSlices(chosen) {
   const ordered = chosen.slice().sort((a, b) => (
     a.page - b.page || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
   ));
-  const slices = [{ page: SOURCE.headerCrop.page, box: SOURCE.headerCrop, gap: 14 }];
+  const slices = [{ page: SOURCE.headerCrop.page, box: SOURCE.headerCrop, gap: 14, block: 'header', kind: 'header' }];
   let lastQuestion = null;
   ordered.forEach((question) => {
+    const block = 'q' + question.q;
     if (question.q !== lastQuestion) {
-      if (question.stem) slices.push({ page: question.page, box: question.stem, gap: 10 });
+      if (question.stem) slices.push({ page: question.page, box: question.stem, gap: 10, block, kind: 'stem' });
       lastQuestion = question.q;
     }
-    slices.push({ page: question.page, box: question.row, gap: 4 });
+    slices.push({ page: question.page, box: question.row, gap: 4, block, kind: 'row' });
   });
-  slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16 });
+  slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16, block: 'footer', kind: 'footer' });
   return slices;
+}
+
+function contentHeight(items) {
+  return items.reduce((sum, item, index) => sum + (index ? item.slice.gap : 0) + item.dh, 0);
+}
+
+function shrinkTo(items, limit) {
+  const height = contentHeight(items);
+  if (height <= limit) return items;
+  const factor = limit / height;
+  const scaled = items.map((item) => ({
+    ...item,
+    dh: Math.max(1, Math.round(item.dh * factor)),
+    slice: { ...item.slice, gap: Math.max(1, Math.round(item.slice.gap * factor)) },
+  }));
+  const extra = contentHeight(scaled) - limit;
+  if (extra > 0) scaled[scaled.length - 1].dh = Math.max(1, scaled[scaled.length - 1].dh - extra);
+  return scaled;
+}
+
+function splitQuestion(items, limit) {
+  const stem = items.filter((item) => item.slice.kind === 'stem');
+  const rows = items.filter((item) => item.slice.kind === 'row');
+  if (rows.length < 2) return [shrinkTo(items, limit)];
+  const chunks = [];
+  let current = [];
+  rows.forEach((row) => {
+    const trial = stem.concat(current, [row]);
+    if (current.length >= 2 && contentHeight(trial) > limit) {
+      chunks.push(stem.concat(current));
+      current = [row];
+    } else {
+      current.push(row);
+    }
+  });
+  if (current.length === 1 && chunks.length) chunks[chunks.length - 1].push(current[0]);
+  else if (current.length) chunks.push(stem.concat(current));
+  return chunks.map((chunk) => (contentHeight(chunk) > limit ? shrinkTo(chunk, limit) : chunk));
+}
+
+function packShort(measured) {
+  const PAGE_H = 1440;
+  if (contentHeight(measured) <= PAGE_H || PAGE_H / contentHeight(measured) >= 0.85) {
+    return [shrinkTo(measured, PAGE_H)];
+  }
+  const blocks = [];
+  measured.forEach((item) => {
+    if (item.slice.block === 'footer') return;
+    const last = blocks[blocks.length - 1];
+    if (last && last.id === item.slice.block) last.items.push(item);
+    else blocks.push({ id: item.slice.block, items: [item] });
+  });
+  const pages = [];
+  let page = [];
+  blocks.forEach((block) => {
+    const parts = contentHeight(block.items) > PAGE_H ? splitQuestion(block.items, PAGE_H) : [block.items];
+    parts.forEach((part) => {
+      if (page.length && contentHeight(page.concat(part)) > PAGE_H) {
+        pages.push(page);
+        page = [];
+      }
+      page = page.concat(part);
+    });
+  });
+  if (page.length) pages.push(page);
+  const footer = measured.filter((item) => item.slice.block === 'footer');
+  if (!pages.length) pages.push([]);
+  pages[pages.length - 1] = shrinkTo(pages[pages.length - 1].concat(footer), PAGE_H);
+  return pages;
 }
 
 async function paintShort(root, slices) {
   const OUT_W = 1000;
-  const LIMIT = 1420;
   const measured = [];
   for (const slice of slices) {
     const bitmap = await pageBitmap(slice.page);
@@ -307,21 +377,7 @@ async function paintShort(root, slices) {
     const sh = slice.box.h * bitmap.height;
     measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(OUT_W * sh / sw)) });
   }
-  const packs = [];
-  let pack = [];
-  let used = 0;
-  measured.forEach((item) => {
-    const gap = pack.length ? item.slice.gap : 0;
-    if (pack.length && used + gap + item.dh > LIMIT) {
-      packs.push(pack);
-      pack = [];
-      used = 0;
-    }
-    const gapNow = pack.length ? item.slice.gap : 0;
-    pack.push(item);
-    used += gapNow + item.dh;
-  });
-  if (pack.length) packs.push(pack);
+  const packs = packShort(measured);
   root.innerHTML = packs.map((_, index) => (
     `<figure class="crop-sheet"><canvas></canvas><figcaption>דף מצומצם ${index + 1} מתוך ${packs.length} · ${escapeHTML(SOURCE.title)}</figcaption></figure>`
   )).join('');
@@ -341,6 +397,11 @@ async function paintShort(root, slices) {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
       ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
+      const mask = item.slice.box.mask;
+      if (mask) {
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(mask.x * OUT_W, y + mask.y * item.dh, mask.w * OUT_W, mask.h * item.dh);
+      }
       y += item.dh;
     });
   });
@@ -416,6 +477,7 @@ async function prepare(mode) {
       ? 'קטעים שנחתכו מדף המקור, עם ההוראה והנוסח המקוריים.'
       : 'העמוד המלא, והשאלות שנבחרו מסומנות עליו.';
     $('print').lastChild.textContent = mode === 'short' ? 'הדפסת הדף המצומצם' : 'הדפסת הדף המסומן';
+    printOpener = mode === 'short' ? $('prepare-short') : $('prepare');
     $('print-dialog').showModal();
   } catch (error) {
     $('dialog-plan').innerHTML = '<p>דף המקור לא נטען, ולכן אין הדפסה. לא הוצג דף חלופי.</p>';
@@ -481,7 +543,8 @@ async function start() {
   $('return-demo').addEventListener('click', () => { state.grade = '9'; state.topic = 'factoring'; render(); });
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
-  ['close-dialog', 'back-edit'].forEach((id) => $(id).addEventListener('click', () => { $('print-dialog').close(); $('prepare').focus(); }));
+  $('print-dialog').addEventListener('close', () => { if (printOpener) printOpener.focus(); });
+  ['close-dialog', 'back-edit'].forEach((id) => $(id).addEventListener('click', () => $('print-dialog').close()));
   $('print').addEventListener('click', async () => {
     try { await updatePrint(); } catch (error) { announce('דף המקור לא נטען.'); return; }
     window.print();
