@@ -345,10 +345,18 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
   .app,.toast,#noam-site-companion,dialog{display:none!important}
   .print-area{display:block!important}
   .print-area h1,.print-area .print-subtitle,.print-area .plan-notice,.print-area .plan-meta,.print-area .print-source,.print-area .plan-notes{display:none!important}
+  .print-area .teacher-print-note{display:block!important;box-sizing:border-box;width:180mm;margin:2mm 0 0;direction:rtl;text-align:start;color:#22305a;font:11px/1.35 Heebo,Arial,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;break-inside:avoid;page-break-inside:avoid}
+  .print-area .teacher-print-note strong{display:block;font-size:12px;margin:0 0 1mm}
+  .print-area .teacher-print-note p{margin:0}
   .print-area .source-sheet{box-sizing:border-box;width:194mm;height:281mm;max-height:281mm;margin:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always}
+  .print-area .source-sheet.has-teacher-note{height:auto;max-height:none;overflow:visible;break-inside:auto;page-break-inside:auto}
+  .print-area .source-sheet.has-teacher-note .source-stage{break-inside:avoid;page-break-inside:avoid}
   .print-area .source-sheet:last-child,.print-area .crop-sheet:last-child{break-after:auto;page-break-after:auto}
   .print-area .crop-sheet{box-sizing:border-box;width:194mm;height:281mm;max-height:281mm;margin:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always}
+  .print-area .crop-sheet.has-teacher-note{height:281mm;max-height:281mm;overflow:hidden}
   .print-area .crop-sheet canvas{width:180mm;height:auto;max-height:262mm}
+  .print-area .crop-sheet.has-teacher-note canvas{width:auto;height:auto;max-width:180mm;max-height:calc(246mm - var(--note-h, 0mm));flex:0 0 auto}
+  .print-area .crop-sheet.has-teacher-note .teacher-print-note{flex:0 0 auto;overflow:visible}
   .print-area .source-stage{width:180mm;height:254mm;flex:0 0 auto;background:transparent}
   .print-area .source-stage canvas{width:180mm;height:254mm}
   .print-area .source-mark{background:transparent;outline:none;border:2px solid #c47d00;border-radius:0;mix-blend-mode:normal}
@@ -394,7 +402,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <label class="scenario"><input type="radio" name="scenario" value="spiral"><span><span class="scenario-title">חזרה ספירלית</span><span class="scenario-desc">נזכרים ומחברים לידע קודם</span></span></label>
 <label class="scenario"><input type="radio" name="scenario" value="practice"><span><span class="scenario-title">תרגול וביסוס</span><span class="scenario-desc">מחזקים דיוק ועצמאות</span></span></label>
 </div><details class="more-scenarios"><summary>עוד מצבים לשיעור</summary><label class="scenario"><input type="radio" name="scenario" value="exam"><span><span class="scenario-title">לקראת מבחן</span><span class="scenario-desc">בוחרים דרך פתרון בין כמה סוגים</span></span></label><label class="scenario"><input type="radio" name="scenario" value="other"><span><span class="scenario-title">אחר</span><span class="scenario-desc">מוסיפים צורך או רעיון משלכם</span></span></label></details></fieldset>
-<div class="other-field" id="other-field" hidden><label for="teacher-note">מה חשוב לכם בשיעור?</label><textarea id="teacher-note" maxlength="600" placeholder="למשל: קבוצה שצריכה עוד חיזוק בסימנים"></textarea><small>הטקסט נשלח לנועם AI בפינה כשמבקשים הכוונה. הוא אינו משנה את רשימת ההמחשה בעמוד.</small></div>
+<div class="other-field" id="other-field" hidden><label for="teacher-note">מה חשוב לכם בשיעור?</label><textarea id="teacher-note" maxlength="600" placeholder="למשל: קבוצה שצריכה עוד חיזוק בסימנים"></textarea><small>ההערה מודפסת על הדף, ונשלחת לנועם AI כשמבקשים הכוונה. היא לא משנה את רשימת ההמחשה.</small></div>
 <div class="divider"></div>
 <fieldset style="border:0;padding:0;margin:0"><legend class="style-label">איך ניגשים לתרגול?</legend><div class="segmented"><label><input type="radio" name="style" value="scaffold" checked>מדורגת</label><label><input type="radio" name="style" value="creative">יצירתית</label><label><input type="radio" name="style" value="blended">משולבת</label></div></fieldset>
 <p class="style-help" id="style-help">מתחילים יחד, ואז עוברים בהדרגה לעבודה עצמאית.</p>
