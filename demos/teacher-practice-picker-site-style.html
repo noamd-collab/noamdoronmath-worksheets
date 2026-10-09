@@ -66,6 +66,8 @@ p{text-wrap:pretty}
 .nav-toggle{display:none}
 nav[data-nav-panel]{display:flex;align-items:center;gap:4px;flex-wrap:wrap;flex:1;font-weight:500;font-size:15px}
 nav[data-nav-panel] a{padding:8px 12px;border-radius:999px;color:var(--ink);text-decoration:none}
+.nav-teachers{display:inline-flex;align-items:center}
+.nav-new{display:inline-block;margin-inline-start:6px;padding:0 6px;border-radius:999px;background:#e8f4f3;color:#1f6462;border:1px solid #8fbfbd;font-size:11px;font-weight:700;line-height:1.65}
 nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .nav-learn-mobile{display:none}
 .learn-btn{
@@ -307,6 +309,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
   }
   nav[data-nav-panel][data-open]{display:flex}
   nav[data-nav-panel] a{text-align:start;padding:10px 12px;min-height:44px}
+  nav[data-nav-panel] a.nav-teachers{display:flex}
   .nav-learn-mobile{display:block;font-weight:700}
   .intro{padding:22px 16px 20px}
   .intro h1{font-size:36px}
@@ -385,6 +388,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <a href="https://www.noamdoronmath.co.il/blog">בלוג</a>
 <a href="https://www.noamdoronmath.co.il/math-tools">תוספים</a>
 <a href="https://www.noamdoronmath.co.il/high-school-math">מתמטיקה לתיכון ↗</a>
+<a class="nav-teachers" aria-current="page" aria-label="למורים, חדש" href="/teachers">למורים<span class="nav-new" aria-hidden="true">חדש</span></a>
 <a class="nav-learn-mobile" href="https://www.noamdoronmath.co.il/learning.html">הלמידה שלי</a>
 </nav>
 <a class="learn-btn" href="https://www.noamdoronmath.co.il/learning.html">הלמידה שלי</a>
