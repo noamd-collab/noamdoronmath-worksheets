@@ -23,6 +23,8 @@ export function audioSignature({ postId, script, cfg }) {
     v: 1,
     postId,
     script,
+    provider: cfg.tts.provider || 'gemini-api',
+    elevenlabs: cfg.tts.provider === 'elevenlabs' ? cfg.tts.elevenlabs : undefined,
     model: cfg.tts.model,
     voice: cfg.tts.voice,
     language: cfg.tts.language ?? null,
@@ -123,13 +125,14 @@ export function readLedger() {
   try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return { spentUsd: 0, calls: 0, retries: 0, byModel: {}, updated: null }; }
 }
 
-export function addSpend({ model, inputTextTokens = 0, outputAudioTokens = 0, usd, retry = false }) {
+export function addSpend({ model, inputTextTokens = 0, outputAudioTokens = 0, characters = 0, usd, retry = false }) {
   const l = readLedger();
   l.spentUsd = Number(((l.spentUsd || 0) + usd).toFixed(6));
   l.calls = (l.calls || 0) + 1;
   if (retry) l.retries = (l.retries || 0) + 1;
   const m = (l.byModel[model] = l.byModel[model] || { calls: 0, inputTextTokens: 0, outputAudioTokens: 0, usd: 0 });
   m.calls += 1;
+  if (characters) m.characters = (m.characters || 0) + characters;
   m.inputTextTokens += inputTextTokens;
   m.outputAudioTokens += outputAudioTokens;
   m.usd = Number((m.usd + usd).toFixed(6));

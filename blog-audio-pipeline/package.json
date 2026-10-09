@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Hebrew audio narration pipeline for the noamdoronmath.co.il Wix blog (Gemini TTS -> MP3 -> Wix Media Manager).",
+  "description": "Hebrew audio narration pipeline for the noamdoronmath.co.il Wix blog (ElevenLabs TTS -> MP3 -> GitHub Pages; Gemini kept as an optional provider and for the transcription check).",
   "scripts": {
     "verify-access": "node bin/verify-access.mjs",
     "map": "node bin/map.mjs",
@@ -11,6 +11,8 @@
     "verify-audio": "node bin/verify-audio.mjs",
     "status": "node bin/status.mjs",
     "selftest": "node bin/selftest.mjs",
+    "test:tts": "node --test test/tts-elevenlabs.test.mjs",
+    "sample": "node bin/eleven-sample.mjs",
     "test:latex": "node --test test/text-latex.test.mjs test/latex-renderer.test.mjs && node --check site/noam-latex-renderer.js"
   },
   "dependencies": {

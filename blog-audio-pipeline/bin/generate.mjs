@@ -32,6 +32,7 @@ import { parseArgs, log, fail } from '../src/cli.mjs';
 const args = parseArgs();
 const cfg = readConfig();
 if (args.model) cfg.tts.model = String(args.model);
+const eleven = cfg.tts.provider === 'elevenlabs';
 const source = args.source || 'sitemap';
 const dev = !!args.dev;
 const dryRun = !!args['dry-run'];
@@ -65,7 +66,7 @@ if (args['retry-failed']) {
 }
 if (args.limit) posts = posts.slice(0, Number(args.limit));
 
-log(`\nmodel ${cfg.tts.model}  voice ${cfg.tts.voice}  source ${source}  storage ${storageBackend(cfg)}  posts ${posts.length}${dryRun ? '  [DRY RUN]' : ''}`);
+log(`\nprovider ${cfg.tts.provider || 'gemini-api'}  model ${cfg.tts.model}  voice ${cfg.tts.voice}  source ${source}  storage ${storageBackend(cfg)}  posts ${posts.length}${dryRun ? '  [DRY RUN]' : ''}`);
 log(`ledger so far: ${fmtUsd(readLedger().spentUsd)} of ${fmtUsd(cfg.limits.spendLimitUsd)} limit\n`);
 
 const results = { done: [], skipped: [], failed: [] };
@@ -104,6 +105,7 @@ for (const stub of posts) {
     title: full.title,
     url: full.url,
     signature,
+    provider: cfg.tts.provider || 'gemini-api',
     model: cfg.tts.model,
     voice: cfg.tts.voice,
     language: cfg.tts.language ?? null,
@@ -146,6 +148,8 @@ for (const stub of posts) {
           try {
             const res = await speakChunk({
               text,
+              provider: cfg.tts.provider,
+              elevenlabs: cfg.tts.elevenlabs,
               model: cfg.tts.model,
               voice: cfg.tts.voice,
               language: cfg.tts.language,
@@ -171,12 +175,13 @@ for (const stub of posts) {
             addSpend({ model: cfg.tts.model, ...res.usage, usd, retry: attempt > 1 });
             state.usage.inputTextTokens += res.usage.inputTextTokens;
             state.usage.outputAudioTokens += res.usage.outputAudioTokens;
+            state.usage.characters = (state.usage.characters || 0) + (res.usage.characters || 0);
             state.usage.usd = Number((state.usage.usd + usd).toFixed(6));
             if (attempt > 1) state.usage.retries += attempt - 1;
 
             pcm = res.pcm;
             writeChunk(signature, i, text, pcm);
-            log(`         [${i + 1}/${chunks.length}] ${fmtDuration(secs)}  ${res.usage.outputAudioTokens} audio tokens  ${fmtUsd(usd)}${attempt > 1 ? `  (attempt ${attempt})` : ''}`);
+            log(`         [${i + 1}/${chunks.length}] ${fmtDuration(secs)}  ${eleven ? `${res.usage.characters} credits` : `${res.usage.outputAudioTokens} audio tokens`}  ${fmtUsd(usd)}${attempt > 1 ? `  (attempt ${attempt})` : ''}`);
             lastErr = null;
             break;
           } catch (e) {

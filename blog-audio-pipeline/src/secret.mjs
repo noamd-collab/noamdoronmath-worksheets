@@ -1,10 +1,14 @@
-// Secret loading. The Gemini API key is never printed, never written to state,
-// never passed on a command line and never sent anywhere except generativelanguage.googleapis.com.
+// Secret loading. API keys are never printed, never written to state, never passed
+// on a command line and never sent anywhere except their own provider:
+//   ELEVENLABS_API_KEY -> api.elevenlabs.io (text to speech)
+//   GEMINI_API_KEY     -> generativelanguage.googleapis.com (only the optional
+//                         transcription check in bin/verify-audio.mjs, or the
+//                         gemini-api TTS provider if config.tts.provider selects it)
 //
-// Resolution order:
-//   1. macOS Keychain item  service="noam-blog-audio"  account="GEMINI_API_KEY"
-//   2. Environment variable GEMINI_API_KEY
-//   3. File <project>/.env  (chmod 600, gitignored) with a line GEMINI_API_KEY=...
+// Resolution order, per secret name:
+//   1. macOS Keychain item  service="noam-blog-audio"  account="<NAME>"
+//   2. Environment variable <NAME>  (GitHub Actions passes repository secrets this way)
+//   3. File <project>/.env  (chmod 600, gitignored) with a line <NAME>=...
 //
 // See README.md, section "הזנת המפתח".
 
@@ -60,6 +64,8 @@ export function redact(text) {
     .replace(/AIza[0-9A-Za-z_\-]{10,}/g, '[REDACTED_KEY]')
     .replace(/(key=)[^&\s"']+/gi, '$1[REDACTED]')
     .replace(/(x-goog-api-key\s*[:=]\s*)\S+/gi, '$1[REDACTED]')
+    .replace(/(xi-api-key\s*[:=]\s*)\S+/gi, '$1[REDACTED]')
+    .replace(/\bsk_[0-9a-f]{16,}\b/gi, '[REDACTED_KEY]')
     .replace(/(Bearer\s+)[A-Za-z0-9._\-]+/g, '$1[REDACTED]');
 }
 

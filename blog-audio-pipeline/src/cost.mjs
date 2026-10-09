@@ -9,6 +9,8 @@ export function priceFor(cfg, model) {
 
 export function actualCostUsd(cfg, model, usage) {
   const pr = priceFor(cfg, model);
+  // Character-priced providers (ElevenLabs): credits used x the plan's price per 1,000.
+  if (pr.usdPer1kChars != null) return Number((((usage.characters || 0) / 1000) * pr.usdPer1kChars).toFixed(6));
   const inUsd = ((usage.inputTextTokens || 0) / 1e6) * (pr.inputTextPerMTok || 0);
   const outUsd = ((usage.outputAudioTokens || 0) / 1e6) * (pr.outputAudioPerMTok || 0);
   return Number((inUsd + outUsd).toFixed(6));
@@ -20,6 +22,16 @@ export function estimateForChars(cfg, chars, { model = cfg.tts.model, chunks = 1
   const pr = priceFor(cfg, model);
   const a = cfg.pricing;
   const seconds = chars / a.assumedHebrewCharsPerSecond;
+  if (pr.usdPer1kChars != null) {
+    return {
+      model,
+      chars,
+      chunks,
+      estSeconds: Math.round(seconds),
+      estCredits: chars,
+      estUsd: Number(((chars / 1000) * pr.usdPer1kChars).toFixed(4)),
+    };
+  }
   const audioTokens = seconds * a.assumedAudioTokensPerSecond;
   const styleTokens = (cfg.tts.styleInstruction.length / a.assumedHebrewCharsPerToken) * chunks;
   const textTokens = chars / a.assumedHebrewCharsPerToken + styleTokens;

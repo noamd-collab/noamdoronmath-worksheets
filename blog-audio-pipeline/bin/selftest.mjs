@@ -196,7 +196,13 @@ check('actual cost uses the reported token counts', () => {
 
 check('the archive estimate is in the expected range', () => {
   const est = estimateForChars(cfg, 79827, { chunks: 90 });
-  assert(est.estUsd > 2 && est.estUsd < 6, `estimate out of range: ${est.estUsd}`);
+  const per1k = cfg.pricing[cfg.tts.model].usdPer1kChars;
+  if (per1k != null) {
+    // Character-priced provider (ElevenLabs): the estimate is exactly characters x price.
+    eq(est.estUsd, Number(((79827 / 1000) * per1k).toFixed(4)), 'characters x usdPer1kChars');
+  } else {
+    assert(est.estUsd > 2 && est.estUsd < 6, `estimate out of range: ${est.estUsd}`);
+  }
 });
 
 log('\n== audio assembly ==');

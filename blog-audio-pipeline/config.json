@@ -1,22 +1,29 @@
 {
   "site": {
     "baseUrl": "https://www.noamdoronmath.co.il",
-    "functionsBase": "https://www.noamdoronmath.co.il/_functions",
-    "functionsBaseDev": "https://www.noamdoronmath.co.il/_functions-dev"
+    "functionsBase": "https://amiramnoam.wixsite.com/my-site/_functions",
+    "functionsBaseDev": "https://amiramnoam.wixsite.com/my-site/_functions-dev",
+    "note": "The classic site answers /_functions only at its free wixsite.com address since www.noamdoronmath.co.il moved to the Headless project (which has no Velo code). baseUrl stays the public domain."
   },
   "tts": {
-    "provider": "gemini-api",
-    "model": "gemini-2.5-flash-preview-tts",
+    "provider": "elevenlabs",
+    "model": "eleven_v4",
     "modelAlternatives": [
-      "gemini-3.1-flash-tts-preview",
-      "gemini-2.5-pro-preview-tts"
+      "eleven_v3",
+      "eleven_multilingual_v2"
     ],
-    "voice": "Charon",
-    "language": null,
+    "voice": "TxvUy8tvDazkNBlnGcpU",
+    "language": "he",
     "styleInstruction": "הקרא את הטקסט בעברית ישראלית טבעית וברורה, בקצב נינוח, עם הפסקות מתאימות בין משפטים ופסקאות. הקרא את הטקסט במלואו, בלי לסכם, להוסיף פתיח או להקריא את הוראות הסגנון.",
     "chunkTargetChars": 1200,
     "chunkMaxChars": 1800,
-    "interChunkSilenceMs": 350
+    "interChunkSilenceMs": 350,
+    "elevenlabs": {
+      "outputFormat": "pcm_24000",
+      "stability": 0.5,
+      "similarityBoost": 0.8,
+      "note": "ElevenLabs. voice = the Hebrew voice id already used by the browser extension (\"Oren\"). eleven_v4 is a Text to Speech model on the same POST /v1/text-to-speech/{voice_id} endpoint, with the same output_format=pcm_24000. language_code is he, the ISO 639-1 code the convert API and help center require. The models page label heb is display only and would be ignored. v4 accepts 10,000 characters per request; chunkMaxChars stays 1,800. eleven_multilingual_v2 does NOT list Hebrew. Gemini stays available: set provider to gemini-api, model to gemini-2.5-flash-preview-tts, voice to Charon, language to null."
+    }
   },
   "audio": {
     "pcmSampleRate": 24000,
@@ -53,6 +60,14 @@
       "outputTextPerMTok": 2.5,
       "inputAudioPerMTok": 1,
       "note": "assumed same as gemini-2.5-flash; not confirmed against the pricing page"
+    },
+    "eleven_v3": {
+      "usdPer1kChars": 0.22,
+      "note": "ESTIMATE. ElevenLabs bills credits (1 per character on eleven_v3), and the dollar price depends on the subscription plan: 0.22 USD per 1,000 characters is about the Creator plan (22 USD for 100,000 credits). On a monthly plan the credits are already paid for, so the real limit is the credit balance (bin/verify-access.mjs prints it); this ledger only guards against runaway spending. If a run stops with 'spend limit reached', raise limits.spendLimitUsd."
+    },
+    "eleven_v4": {
+      "usdPer1kChars": 0.22,
+      "note": "ESTIMATE for the selected model. The models page documents a 10,000 character limit for eleven_v4 and does not document a credit cost per character, so this stays the same 0.22 USD per 1,000 characters estimate as eleven_v3. On a monthly plan the real limit is the credit balance."
     }
   },
   "limits": {
