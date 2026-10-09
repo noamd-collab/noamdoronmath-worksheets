@@ -12,7 +12,10 @@
       "eleven_v3",
       "eleven_multilingual_v2"
     ],
-    "voice": "TxvUy8tvDazkNBlnGcpU",
+    "voice": "TX3LPaxmHKxFdv7VOQHJ",
+    "voiceName": "Liam",
+    "completedVoicesKept": ["TxvUy8tvDazkNBlnGcpU"],
+    "voiceNote": "Narration voice is Liam (TX3LPaxmHKxFdv7VOQHJ), model eleven_v4, language_code he. Finished recordings on a voice in completedVoicesKept (Oren, TxvUy8tvDazkNBlnGcpU) stay as-is: map does not mark them stale and generate does not re-render them. Do not edit tts.elevenlabs: that object is part of the audio signature, so editing it would invalidate those recordings.",
     "language": "he",
     "styleInstruction": "הקרא את הטקסט בעברית ישראלית טבעית וברורה, בקצב נינוח, עם הפסקות מתאימות בין משפטים ופסקאות. הקרא את הטקסט במלואו, בלי לסכם, להוסיף פתיח או להקריא את הוראות הסגנון.",
     "chunkTargetChars": 1200,

@@ -1,9 +1,14 @@
 // Job state, deduplication, locking and the spend ledger.
 //
-// Identity of an audio version = sha256 over the post id, the exact narration
-// script, the model, the voice, the language, the style instruction and the audio
-// format. Any change to any of those produces a new signature and therefore a new
-// render; nothing else does. A completed signature is never rendered twice.
+// Identity of a newly rendered audio version = sha256 over the post id, the exact
+// narration script, the model, the voice, the language, the style instruction and
+// the audio format. A completed signature is never rendered twice.
+//
+// A finished recording whose voice is listed in tts.completedVoicesKept stays
+// current when config.tts.voice changes and every other signature input is
+// unchanged. map does not mark it stale and generate does not re-render it.
+// Chunk files stay keyed by the full signature, including voice, so a later
+// render never reuses PCM from another voice.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -34,6 +39,25 @@ export function audioSignature({ postId, script, cfg }) {
     silenceMs: cfg.tts.interChunkSilenceMs,
     audio: cfg.audio,
   });
+}
+
+// True when a finished recording should be left alone: the signature still
+// matches, or the only drift is the configured voice and the recording's voice
+// is listed in tts.completedVoicesKept.
+export function completedRecordingCurrent(state, { postId, script, cfg }) {
+  if (!state?.completed || !state.signature) return false;
+  if (state.signature === audioSignature({ postId, script, cfg })) return true;
+  const kept = cfg.tts?.completedVoicesKept;
+  if (!Array.isArray(kept) || !state.voice || state.voice === cfg.tts.voice || !kept.includes(state.voice)) return false;
+  const asRecorded = { ...cfg, tts: { ...cfg.tts, voice: state.voice } };
+  return state.signature === audioSignature({ postId, script, cfg: asRecorded });
+}
+
+export function recordingLabel(state, ctx) {
+  if (!state) return 'missing';
+  if (completedRecordingCurrent(state, ctx)) return 'done';
+  if (state.completed) return 'stale';
+  return state.status || 'partial';
 }
 
 const safe = (s) => String(s).replace(/[^A-Za-z0-9_.-]/g, '_').slice(0, 80);
