@@ -7,7 +7,7 @@ import { readConfig, ensureDir, p } from '../src/paths.mjs';
 import { speakChunk, isRetryable } from '../src/tts.mjs';
 import { actualCostUsd, estimateForChars } from '../src/cost.mjs';
 import { redact } from '../src/secret.mjs';
-import { audioSignature, addSpend } from '../src/store.mjs';
+import { audioSignature, addSpend, completedRecordingCurrent, recordingLabel } from '../src/store.mjs';
 
 const KEY = 'sk_' + '0123456789abcdef'.repeat(3);
 const cfg = readConfig();
@@ -29,6 +29,9 @@ describe('config', () => {
     assert.equal(cfg.tts.provider, 'elevenlabs');
     assert.equal(cfg.tts.model, 'eleven_v4');
     assert.equal(cfg.tts.language, 'he');
+    assert.equal(cfg.tts.voice, 'TX3LPaxmHKxFdv7VOQHJ');
+    assert.equal(cfg.tts.voiceName, 'Liam');
+    assert.deepEqual(cfg.tts.completedVoicesKept, ['TxvUy8tvDazkNBlnGcpU']);
     assert.ok(cfg.pricing[cfg.tts.model].usdPer1kChars > 0);
     assert.equal(cfg.audio.pcmSampleRate, 24000);
     assert.equal(cfg.tts.elevenlabs.outputFormat, 'pcm_24000');
@@ -141,6 +144,23 @@ describe('cost and ledger', () => {
     assert.notEqual(base, audioSignature({ postId: 'p', script: 's', cfg: gem }));
     assert.notEqual(base, audioSignature({ postId: 'p', script: 's', cfg: voice }));
     assert.equal(base, audioSignature({ postId: 'p', script: 's', cfg }));
+  });
+
+  it('keeps a finished Oren recording current and does not mark it stale', () => {
+    const oren = structuredClone(cfg);
+    oren.tts.voice = 'TxvUy8tvDazkNBlnGcpU';
+    const signature = audioSignature({ postId: 'p', script: 's', cfg: oren });
+    const state = { completed: true, signature, voice: 'TxvUy8tvDazkNBlnGcpU', status: 'done' };
+    const ctx = { postId: 'p', script: 's', cfg };
+    assert.notEqual(signature, audioSignature(ctx));
+    assert.equal(completedRecordingCurrent(state, ctx), true);
+    assert.equal(recordingLabel(state, ctx), 'done');
+    assert.equal(recordingLabel({ completed: false, signature, voice: state.voice }, ctx), 'partial');
+    assert.equal(completedRecordingCurrent(state, { ...ctx, script: 's.' }), false);
+    assert.equal(recordingLabel(state, { ...ctx, script: 's.' }), 'stale');
+    const otherVoice = { ...state, voice: 'TX3LPaxmHKxFdv7VOQHJ' };
+    assert.equal(completedRecordingCurrent(otherVoice, ctx), false);
+    assert.equal(recordingLabel(null, ctx), 'missing');
   });
 
   it('addSpend records characters per model', () => {

@@ -23,7 +23,7 @@ import { buildScript, chunkScript } from '../src/text.mjs';
 import { speakChunk, isRetryable } from '../src/tts.mjs';
 import { encodePcmToMp3, probeMp3, silencePcm, pcmDurationSec, requireFfmpeg } from '../src/mp3.mjs';
 import {
-  audioSignature, readState, writeState, readChunk, writeChunk, clearWork,
+  audioSignature, completedRecordingCurrent, readState, writeState, readChunk, writeChunk, clearWork,
   acquireLock, addSpend, readLedger, assertCanSpend, sha256,
 } from '../src/store.mjs';
 import { actualCostUsd, estimateForChars, fmtUsd, fmtDuration } from '../src/cost.mjs';
@@ -80,9 +80,10 @@ for (const stub of posts) {
   const est = estimateForChars(cfg, script.length, { chunks: chunks.length });
 
   const prior = readState(postId);
-  if (prior && prior.completed && prior.signature === signature && !args.force) {
-    log(`= skip  ${full.title}  (already rendered, signature ${signature.slice(0, 12)})`);
-    results.skipped.push({ postId, slug: full.slug, reason: 'signature unchanged' });
+  if (prior && completedRecordingCurrent(prior, { postId, script, cfg }) && !args.force) {
+    const voiceKept = prior.voice && prior.voice !== cfg.tts.voice;
+    log(`= skip  ${full.title}  (already rendered${voiceKept ? '; configured voice changed, recording kept' : ''}, signature ${(prior.signature || signature).slice(0, 12)})`);
+    results.skipped.push({ postId, slug: full.slug, reason: voiceKept ? 'completed voice kept' : 'signature unchanged' });
     continue;
   }
 

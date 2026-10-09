@@ -17,7 +17,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import { readConfig, p } from '../src/paths.mjs';
 import { normalizeForSpeech, buildScript, chunkScript, richContentToText } from '../src/text.mjs';
-import { audioSignature, acquireLock, assertCanSpend, readLedger, sha256 } from '../src/store.mjs';
+import { audioSignature, completedRecordingCurrent, recordingLabel, acquireLock, assertCanSpend, readLedger, sha256 } from '../src/store.mjs';
 import { isRetryable } from '../src/tts.mjs';
 import { ffmpegPath, encodePcmToMp3, probeMp3, silencePcm, pcmDurationSec } from '../src/mp3.mjs';
 import { compareCoverage, styleLeak, duplicateChunks } from '../src/asr.mjs';
@@ -132,6 +132,17 @@ check('changing the voice changes the signature', () => {
   const other = JSON.parse(JSON.stringify(cfg));
   other.tts.voice = 'Kore';
   assert(a !== audioSignature({ postId: 'post-1', script, cfg: other }), 'voice change did not change signature');
+});
+
+check('a finished Oren recording stays current after the switch to Liam', () => {
+  const oren = JSON.parse(JSON.stringify(cfg));
+  oren.tts.voice = 'TxvUy8tvDazkNBlnGcpU';
+  const signature = audioSignature({ postId: 'post-1', script, cfg: oren });
+  const state = { completed: true, signature, voice: 'TxvUy8tvDazkNBlnGcpU' };
+  assert(signature !== audioSignature({ postId: 'post-1', script, cfg }), 'Liam signature should differ');
+  assert(completedRecordingCurrent(state, { postId: 'post-1', script, cfg }), 'Oren recording was not kept');
+  eq(recordingLabel(state, { postId: 'post-1', script, cfg }), 'done', 'Oren recording was marked stale');
+  assert(!completedRecordingCurrent(state, { postId: 'post-1', script: script + '.', cfg }), 'text change should still invalidate');
 });
 
 check('changing the style instruction changes the signature', () => {

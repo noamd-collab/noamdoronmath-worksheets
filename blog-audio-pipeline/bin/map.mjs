@@ -11,7 +11,7 @@ import { readConfig, p } from '../src/paths.mjs';
 import { listPosts, getPost } from '../src/wix.mjs';
 import { buildScript, chunkScript } from '../src/text.mjs';
 import { estimateForChars, fmtUsd, fmtDuration } from '../src/cost.mjs';
-import { readState, audioSignature } from '../src/store.mjs';
+import { readState, audioSignature, recordingLabel } from '../src/store.mjs';
 import { parseArgs, log } from '../src/cli.mjs';
 
 const args = parseArgs();
@@ -26,8 +26,10 @@ for (const post of posts) {
   const script = buildScript({ title: full.title, body: full.body || full.contentText || '' });
   const chunks = chunkScript(script, cfg.tts);
   const est = estimateForChars(cfg, script.length, { chunks: chunks.length });
-  const sig = audioSignature({ postId: full.id || full.slug, script, cfg });
-  const st = readState(full.id || full.slug);
+  const postId = full.id || full.slug;
+  const sig = audioSignature({ postId, script, cfg });
+  const st = readState(postId);
+  const label = recordingLabel(st, { postId, script, cfg });
   rows.push({
     slug: full.slug,
     title: full.title,
@@ -40,8 +42,8 @@ for (const post of posts) {
     chunks: chunks.length,
     estSeconds: est.estSeconds,
     estUsd: est.estUsd,
-    signature: sig.slice(0, 16),
-    state: st ? (st.signature === sig && st.completed ? 'done' : st.completed ? 'stale' : st.status || 'partial') : 'missing',
+    signature: (st && label === 'done' ? st.signature : sig).slice(0, 16),
+    state: label,
   });
   if (!args.json) log(`  ${String(rows.length).padStart(2)}. ${fmtDuration(est.estSeconds).padStart(5)}  ${String(rows[rows.length - 1].scriptChars).padStart(5)} ch  ${String(rows[rows.length - 1].chunks).padStart(2)} chunks  ${fmtUsd(est.estUsd)}  [${rows[rows.length - 1].state}]  ${full.title}`);
 }
