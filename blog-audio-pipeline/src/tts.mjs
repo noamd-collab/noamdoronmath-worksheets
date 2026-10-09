@@ -54,7 +54,7 @@ const ELEVEN_BASE = 'https://api.elevenlabs.io';
  * ElevenLabs Text to Speech (POST /v1/text-to-speech/{voice_id}), raw PCM out.
  * https://elevenlabs.io/docs/api-reference/text-to-speech/convert
  * eleven_v4 is a Text to Speech model (same endpoint, same output_format query).
- * The models page lists Hebrew as heb; language_code is sent as configured.
+ * language_code is ISO 639-1 (he for Hebrew). The models-page label heb is display only.
  * The convert schema still calls the similarity control similarity_boost.
  *  - auth: xi-api-key header, key from ELEVENLABS_API_KEY (never logged);
  *  - output_format=pcm_24000 returns headerless signed 16-bit mono PCM at 24 kHz,

@@ -13,7 +13,7 @@
       "eleven_multilingual_v2"
     ],
     "voice": "TxvUy8tvDazkNBlnGcpU",
-    "language": "heb",
+    "language": "he",
     "styleInstruction": "הקרא את הטקסט בעברית ישראלית טבעית וברורה, בקצב נינוח, עם הפסקות מתאימות בין משפטים ופסקאות. הקרא את הטקסט במלואו, בלי לסכם, להוסיף פתיח או להקריא את הוראות הסגנון.",
     "chunkTargetChars": 1200,
     "chunkMaxChars": 1800,
@@ -22,7 +22,7 @@
       "outputFormat": "pcm_24000",
       "stability": 0.5,
       "similarityBoost": 0.8,
-      "note": "ElevenLabs. voice = the Hebrew voice id already used by the browser extension (\"Oren\"). eleven_v4 is a Text to Speech model on the same POST /v1/text-to-speech/{voice_id} endpoint, with the same output_format=pcm_24000. The models page lists Hebrew as heb (the convert API text still says language_code is ISO 639-1 and that an unsupported code is ignored). v4 accepts 10,000 characters per request; chunkMaxChars stays 1,800. eleven_multilingual_v2 does NOT list Hebrew. Gemini stays available: set provider to gemini-api, model to gemini-2.5-flash-preview-tts, voice to Charon, language to null."
+      "note": "ElevenLabs. voice = the Hebrew voice id already used by the browser extension (\"Oren\"). eleven_v4 is a Text to Speech model on the same POST /v1/text-to-speech/{voice_id} endpoint, with the same output_format=pcm_24000. language_code is he, the ISO 639-1 code the convert API and help center require. The models page label heb is display only and would be ignored. v4 accepts 10,000 characters per request; chunkMaxChars stays 1,800. eleven_multilingual_v2 does NOT list Hebrew. Gemini stays available: set provider to gemini-api, model to gemini-2.5-flash-preview-tts, voice to Charon, language to null."
     }
   },
   "audio": {

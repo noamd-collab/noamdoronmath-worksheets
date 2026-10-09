@@ -28,7 +28,7 @@ describe('config', () => {
   it('selects ElevenLabs with a Hebrew-capable model and a priced entry', () => {
     assert.equal(cfg.tts.provider, 'elevenlabs');
     assert.equal(cfg.tts.model, 'eleven_v4');
-    assert.equal(cfg.tts.language, 'heb');
+    assert.equal(cfg.tts.language, 'he');
     assert.ok(cfg.pricing[cfg.tts.model].usdPer1kChars > 0);
     assert.equal(cfg.audio.pcmSampleRate, 24000);
     assert.equal(cfg.tts.elevenlabs.outputFormat, 'pcm_24000');
@@ -48,7 +48,7 @@ describe('speakChunk (ElevenLabs)', () => {
     const body = JSON.parse(init.body);
     assert.equal(body.text, 'שלום עולם');
     assert.equal(body.model_id, 'eleven_v4');
-    assert.equal(body.language_code, 'heb');
+    assert.equal(body.language_code, 'he');
     assert.deepEqual(body.voice_settings, { stability: 0.5, similarity_boost: 0.8 });
     assert.ok(!('style' in body) && !JSON.stringify(body).includes('הקרא את הטקסט'), 'no style instruction is sent');
     assert.equal(r.pcm.length, 48000);
