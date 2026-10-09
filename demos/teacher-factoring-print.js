@@ -543,7 +543,11 @@ async function start() {
   $('return-demo').addEventListener('click', () => { state.grade = '9'; state.topic = 'factoring'; render(); });
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
-  $('print-dialog').addEventListener('close', () => { if (printOpener) printOpener.focus(); });
+  $('print-dialog').addEventListener('close', () => {
+    const opener = printOpener;
+    if (!opener) return;
+    window.setTimeout(() => opener.focus(), 0);
+  });
   ['close-dialog', 'back-edit'].forEach((id) => $(id).addEventListener('click', () => $('print-dialog').close()));
   $('print').addEventListener('click', async () => {
     try { await updatePrint(); } catch (error) { announce('דף המקור לא נטען.'); return; }
