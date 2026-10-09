@@ -16,6 +16,8 @@ describe('OPEN-07-FIX live blog sitemap parity', () => {
     const live = [...(await res.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => norm(m[1]));
     assert.ok(live.length >= 60, `live sitemap has ${live.length} posts`);
     const served = new Set(BLOG_POST_SERVED_PATHS.map(norm));
+    // Classic-site posts this POC already serves, which are not in the published
+    // production blog-posts-sitemap.xml until the next release.
     const allowedAhead = new Set(BLOG_POST_CLASSIC_GAP_PATHS.map(norm));
     const missing = live.filter((p) => !served.has(p));
     const extra = [...served].filter((p) => !live.includes(p));

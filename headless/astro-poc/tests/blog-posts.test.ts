@@ -323,7 +323,7 @@ describe('M25 blog pilot', () => {
     assert.ok(tpl.includes('authorAvatar'));
   });
 
-  it('newest learning-gaps post resolves encoded and decoded and leads /blog', () => {
+  it('learning-gaps post resolves encoded and decoded and stays listed on /blog', () => {
     const slug = 'פערים-לימודיים-במתמטיקה-כך-סוגרים-אותם-נכון';
     const encoded = encodeURIComponent(slug);
     const variants = [`/post/${slug}`, `/post/${encoded}`, `/post/${encodeURI(slug)}`];
@@ -336,8 +336,12 @@ describe('M25 blog pilot', () => {
     }
     const archive = loadBlogArchiveByPath('/blog');
     assert.ok(archive);
-    assert.equal(archive.cards[0]?.title, 'פערים לימודיים במתמטיקה: כך סוגרים אותם נכון');
-    assert.ok(archive.cards[0]?.href.includes(encoded));
+    const card = archive.cards.find(
+      (c) => c.title === 'פערים לימודיים במתמטיקה: כך סוגרים אותם נכון'
+    );
+    assert.ok(card);
+    assert.ok(card.href.includes(encoded));
+    assert.equal(archive.cards[0]?.title, 'איך מסבירים היקף ושטח בלי לבלבל בין השניים');
   });
 
   it('manifest file documents classification + pilot (no bulk 63)', () => {

@@ -32,6 +32,110 @@
   ],
   "cards": [
     {
+      "title": "איך מסבירים היקף ושטח בלי לבלבל בין השניים",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%A1%D7%91%D7%99%D7%A8%D7%99%D7%9D-%D7%94%D7%99%D7%A7%D7%A3-%D7%95%D7%A9%D7%98%D7%97-%D7%91%D7%9C%D7%99-%D7%9C%D7%91%D7%9C%D7%91%D7%9C-%D7%91%D7%99%D7%9F-%D7%94%D7%A9%D7%A0%D7%99%D7%99%D7%9D",
+      "excerpt": "איך מסבירים היקף ושטח לילדים? מדריך פשוט להבדיל בין קו מסביב למקום שבתוך הצורה, עם דוגמאות, שאלות ותרגול מדורג לבית ולכיתה ובקצב שמתאים לילד.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני יומיים (2)",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_354a8e32d7eb4402944415de52fe4386~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_354a8e32d7eb4402944415de52fe4386~mv2.webp",
+      "imageAlt": "איך מסבירים היקף ושטח בלי לבלבל בין השניים"
+    },
+    {
+      "title": "איך מלמדים חילוק ארוך לילדים בלי לנחש בדרך",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%9C%D7%9E%D7%93%D7%99%D7%9D-%D7%97%D7%99%D7%9C%D7%95%D7%A7-%D7%90%D7%A8%D7%95%D7%9A-%D7%9C%D7%99%D7%9C%D7%93%D7%99%D7%9D-%D7%91%D7%9C%D7%99-%D7%9C%D7%A0%D7%97%D7%A9-%D7%91%D7%93%D7%A8%D7%9A",
+      "excerpt": "איך מלמדים חילוק ארוך לילדים בצורה ברורה? מדריך מעשי להורים ולמורים: הכנה נכונה, ארבעת שלבי הפתרון, טעויות שכיחות ותרגול קצר שבונה ביטחון אמיתי לילד.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 4 ימים",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_8df9fa91b6b241228f5db9ada2348b25~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_8df9fa91b6b241228f5db9ada2348b25~mv2.webp",
+      "imageAlt": "איך מלמדים חילוק ארוך לילדים בלי לנחש בדרך"
+    },
+    {
+      "title": "למידה אדפטיבית במתמטיקה שמקדמת כל תלמיד",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9C%D7%9E%D7%99%D7%93%D7%94-%D7%90%D7%93%D7%A4%D7%98%D7%99%D7%91%D7%99%D7%AA-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A7%D7%93%D7%9E%D7%AA-%D7%9B%D7%9C-%D7%AA%D7%9C%D7%9E%D7%99%D7%93",
+      "excerpt": "למידה אדפטיבית במתמטיקה עוזרת לזהות פערים, לבחור רמת תרגול מתאימה ולהתקדם בקצב אישי בבית ובכיתה, בלי לוותר על אתגר, משוב והבנה אמיתית.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "לפני 6 ימים",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_0a4e33a9cb874247b08422478ecb118f~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_0a4e33a9cb874247b08422478ecb118f~mv2.webp",
+      "imageAlt": "למידה אדפטיבית במתמטיקה שמקדמת כל תלמיד"
+    },
+    {
+      "title": "מהו סדר פעולות ואיך פותרים תרגילים בלי להתבלבל",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%94%D7%95-%D7%A1%D7%93%D7%A8-%D7%A4%D7%A2%D7%95%D7%9C%D7%95%D7%AA-%D7%95%D7%90%D7%99%D7%9A-%D7%A4%D7%95%D7%AA%D7%A8%D7%99%D7%9D-%D7%AA%D7%A8%D7%92%D7%99%D7%9C%D7%99%D7%9D-%D7%91%D7%9C%D7%99-%D7%9C%D7%94%D7%AA%D7%91%D7%9C%D7%91%D7%9C",
+      "excerpt": "מהו סדר פעולות בחשבון? הסבר ברור על סוגריים, חזקות, כפל, חילוק, חיבור וחיסור, עם דוגמאות, טעויות נפוצות ודרך תרגול שעוזרת לפתור תרגילים בביטחון רב יותר.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "2 באוק׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_30d330aeee954023a6a73366e3bf938e~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_30d330aeee954023a6a73366e3bf938e~mv2.webp",
+      "imageAlt": "מהו סדר פעולות ואיך פותרים תרגילים בלי להתבלבל"
+    },
+    {
+      "title": "איך משתמשים בעוזר מתמטי חכם בלי לוותר על החשיבה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%A9%D7%AA%D7%9E%D7%A9%D7%99%D7%9D-%D7%91%D7%A2%D7%95%D7%96%D7%A8-%D7%9E%D7%AA%D7%9E%D7%98%D7%99-%D7%97%D7%9B%D7%9D-%D7%91%D7%9C%D7%99-%D7%9C%D7%95%D7%95%D7%AA%D7%A8-%D7%A2%D7%9C-%D7%94%D7%97%D7%A9%D7%99%D7%91%D7%94",
+      "excerpt": "איך משתמשים בעוזר מתמטי חכם כדי להבין תרגילים, לקבל רמזים מדויקים ולבנות ביטחון? מדריך פשוט לתלמידים, להורים ולמורים: שואלים נכון, בודקים תשובות ומתרגלים.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "30 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_7d083cebeced47f18317ca2e6b8504fe~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_7d083cebeced47f18317ca2e6b8504fe~mv2.webp",
+      "imageAlt": "איך משתמשים בעוזר מתמטי חכם בלי לוותר על החשיבה"
+    },
+    {
+      "title": "איך מתרגלים כפל בעזרת משחקים בבית ובכיתה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%AA%D7%A8%D7%92%D7%9C%D7%99%D7%9D-%D7%9B%D7%A4%D7%9C-%D7%91%D7%A2%D7%96%D7%A8%D7%AA-%D7%9E%D7%A9%D7%97%D7%A7%D7%99%D7%9D-%D7%91%D7%91%D7%99%D7%AA-%D7%95%D7%91%D7%9B%D7%99%D7%AA%D7%94",
+      "excerpt": "איך מתרגלים כפל בעזרת משחקים בצורה שמחזקת הבנה, שטף וביטחון? רעיונות פשוטים לבית ולכיתה, לפי רמת התלמיד וללא הכנה מסובכת. נוחה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "28 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_9da049f2528d45d082096429fba7c68c~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_9da049f2528d45d082096429fba7c68c~mv2.webp",
+      "imageAlt": "איך מתרגלים כפל בעזרת משחקים בבית ובכיתה"
+    },
+    {
+      "title": "פתרון מפשטים לכיתה ז",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%A4%D7%AA%D7%A8%D7%95%D7%9F-%D7%9E%D7%A4%D7%A9%D7%98%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%96",
+      "excerpt": "כשמתחילים ללמוד מתמטיקה בכיתה ז&#x27;, אחד האתגרים הגדולים הוא להבין איך לפשט ביטויים ולפתור משוואות בצורה נכונה. זה לא סתם עוד נושא – זה הבסיס לכל מה שיבוא אחר כך. לכן, חשוב ללמוד את זה בצורה פשוטה, ברורה ומעשית. במאמר הזה אני הולך לפרק את הנושא לשלב אחר שלב, להסביר איך עושים את זה נכון, ולתת כלים שיעזרו לכם להרגיש בטוחים יותר. פתרון מפשטים לכיתה ז לפשט ביטוי מתמטי זה בעצם להפוך אותו לפשוט יותר, בלי לשנות את הערך שלו. זה כמו לסדר את החדר – כשיש סדר, קל יותר למצוא את מה שצריך. בפש",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "27 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_42e8e4b86e3340feb100a4d664c2268e~mv2.png/v1/fill/w_305,h_229,fp_0.50_0.50,q_95,enc_avif,quality_auto/d8e7ad_42e8e4b86e3340feb100a4d664c2268e~mv2.webp",
+      "imageAlt": "פתרון מפשטים לכיתה ז"
+    },
+    {
+      "title": "תוצאות מתרגול עקבי במתמטיקה שמרגישים בכיתה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%95%D7%A6%D7%90%D7%95%D7%AA-%D7%9E%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A2%D7%A7%D7%91%D7%99-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A8%D7%92%D7%99%D7%A9%D7%99%D7%9D-%D7%91%D7%9B%D7%99%D7%AA%D7%94",
+      "excerpt": "תוצאות מתרגול עקבי במתמטיקה נבנות בצעדים קטנים: כך בוחרים רמה, קובעים שגרה ומחזקים ביטחון, דיוק ויכולת פתרון בעיות לאורך השנה בבית ובכיתה בכל יום גם",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "27 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_38b153384181487ca9151e9a9c3d26d9~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_38b153384181487ca9151e9a9c3d26d9~mv2.webp",
+      "imageAlt": "תוצאות מתרגול עקבי במתמטיקה שמרגישים בכיתה"
+    },
+    {
       "title": "פערים לימודיים במתמטיקה: כך סוגרים אותם נכון",
       "href": "https://www.noamdoronmath.co.il/post/%D7%A4%D7%A2%D7%A8%D7%99%D7%9D-%D7%9C%D7%99%D7%9E%D7%95%D7%93%D7%99%D7%99%D7%9D-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9B%D7%9A-%D7%A1%D7%95%D7%92%D7%A8%D7%99%D7%9D-%D7%90%D7%95%D7%AA%D7%9D-%D7%A0%D7%9B%D7%95%D7%9F",
       "excerpt": "פערים לימודיים במתמטיקה אינם גזירת גורל: כך מזהים את נקודת הקושי, בונים תרגול מדורג ומחזירים לתלמידים ביטחון, ידע והרגלי למידה יציבים בבית ובכיתה בכל יום.",
@@ -40,8 +144,8 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 7 שעות",
-      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_e35e70cf0a5e4abf8dc4ad8deb71925e~mv2.webp/v1/fit/w_1000,h_1000,al_c,q_80/file.png",
+      "date": "25 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_e35e70cf0a5e4abf8dc4ad8deb71925e~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_e35e70cf0a5e4abf8dc4ad8deb71925e~mv2.webp",
       "imageAlt": "פערים לימודיים במתמטיקה: כך סוגרים אותם נכון"
     },
     {
@@ -53,8 +157,8 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 19 שעות",
-      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_6c5aebcd5120432a8b5d0f69cba1b196~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_6c5aebcd5120432a8b5d0f69cba1b196~mv2.webp",
+      "date": "23 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_6c5aebcd5120432a8b5d0f69cba1b196~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_6c5aebcd5120432a8b5d0f69cba1b196~mv2.webp",
       "imageAlt": "מדריך לקריאת גרפים לילדים בצורה פשוטה"
     },
     {
@@ -66,8 +170,8 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני יומיים (2)",
-      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_27b08c36de8b40f8a512d90f0452144e~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_27b08c36de8b40f8a512d90f0452144e~mv2.webp",
+      "date": "22 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_27b08c36de8b40f8a512d90f0452144e~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_27b08c36de8b40f8a512d90f0452144e~mv2.webp",
       "imageAlt": "איך פותרים סדר פעולות חשבון בלי להתבלבל?"
     },
     {
@@ -79,8 +183,8 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 3 ימים",
-      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_9bcecc5035c649daadd4db7d8e331559~mv2.webp/v1/fill/w_332,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_9bcecc5035c649daadd4db7d8e331559~mv2.webp",
+      "date": "21 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_9bcecc5035c649daadd4db7d8e331559~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_9bcecc5035c649daadd4db7d8e331559~mv2.webp",
       "imageAlt": "מדריך לתרגול צירים קואורדינטות שמתחיל נכון"
     },
     {
@@ -92,8 +196,8 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים",
-      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_e332be39f4d146eaa0e7dfcc60f3ea6b~mv2.webp/v1/fill/w_333,h_249,al_c,q_90,enc_avif,quality_auto/d8e7ad_e332be39f4d146eaa0e7dfcc60f3ea6b~mv2.webp",
+      "date": "20 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_e332be39f4d146eaa0e7dfcc60f3ea6b~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_e332be39f4d146eaa0e7dfcc60f3ea6b~mv2.webp",
       "imageAlt": "בינה חינוכית שמקדמת כל תלמיד במתמטיקה"
     },
     {
@@ -105,7 +209,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים לכיתה ז׳ — דפי עבודה",
@@ -116,7 +220,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "מפשטים ואז פותרים לכיתה ז׳ — דפי עבודה",
@@ -127,7 +231,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "שלושה ייצוגים לפתרון משוואה לכיתה ז׳ — דפי עבודה",
@@ -138,7 +242,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "מהו פתרון של משוואה לכיתה ז׳ — דפי עבודה",
@@ -149,7 +253,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "מנסרה משולשת חלק 1 — מבנה ונפח לכיתה ז׳ — דפי עבודה",
@@ -160,7 +264,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "מנסרה משולשת חלק 2 — שטח פנים לכיתה ז׳ — דפי עבודה",
@@ -171,7 +275,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "חוקיות לכיתה ז׳ — דפי עבודה",
@@ -182,7 +286,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "שאלות מילוליות באמצעות משוואות לכיתה ז׳ — דפי עבודה",
@@ -193,7 +297,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "חישובי היקף — צורות מורכבות ואלגברה לכיתה ז׳ — דפי עבודה",
@@ -204,7 +308,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "שטחים ב׳ חלק 1 — מקבילית וטרפז לכיתה ז׳ — דפי עבודה",
@@ -215,7 +319,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "משוואות ופתרונן חלק 2 — סוגריים ושקילות לכיתה ז׳ — דפי עבודה",
@@ -226,7 +330,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "משוואות חד־שלביות לכיתה ז׳ — דפי עבודה",
@@ -237,7 +341,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "תיבה וקובייה לכיתה ז׳ — דפי עבודה",
@@ -248,7 +352,7 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
     },
     {
       "title": "שטח מלבן וריבוע — העמקה לכיתה ז׳ — דפי עבודה",
@@ -259,15 +363,505 @@
         "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
       },
       "author": "נועם דורון מתמטיקה",
-      "date": "לפני 4 ימים"
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "שטחים ב׳ חלק 2 — מצולעים מורכבים לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/composite-polygons-area-grade-7",
+      "excerpt": "דפי עבודה בשטחים ב׳ חלק 2 — מצולעים מורכבים לכיתה ז׳: פירוק לצורות מוכרות, חיסור שטחים ושאלות משולבות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "נקודות על גרף ברביע הראשון לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/first-quadrant-graph-points-grade-7",
+      "excerpt": "דפי עבודה בנקודות על גרף ברביע הראשון לכיתה ז׳: סימון נקודות, מעבר בין טבלה לגרף, קריאת גרף ותיאור תהליכים. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "משתנים וביטויים אלגבריים — שפה ומידול לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/variables-and-algebraic-modeling-grade-7",
+      "excerpt": "דפי עבודה במשתנים ובביטויים אלגבריים לכיתה ז׳: מעבר מתיאור מילולי לביטוי, משמעות המשתנה ומידול. שלוש רמות, חינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "סוגריים וחוק הפילוג לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/distributive-property-parentheses-grade-7",
+      "excerpt": "דפי עבודה בסוגריים וחוק הפילוג לכיתה ז׳: פתיחת סוגריים בחוק הפילוג, מינוס לפני סוגריים ופתרון משוואות מלאות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "הנעלם בשני האגפים לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/unknown-on-both-sides-grade-7",
+      "excerpt": "דפי עבודה במשוואות עם נעלם בשני האגפים לכיתה ז׳: העברת נעלמים ומספרים, כינוס ומקרים מיוחדים. שלוש רמות, חינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "איסוף וקריאת מידע לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/data-collection-reading-grade-7",
+      "excerpt": "דפי עבודה באיסוף וקריאת מידע לכיתה ז׳: איסוף נתונים, ארגון בטבלה, קריאת דיאגרמות והסקת מסקנות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "שכיחות יחסית חלק 1 — היכרות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/relative-frequency-introduction-grade-7",
+      "excerpt": "דפי עבודה בשכיחות יחסית חלק 1 — היכרות לכיתה ז׳: חישוב שכיחות יחסית בשבר, בעשרוני ובאחוזים והשוואה בין קבוצות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "הסתברות — היכרות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/probability-introduction-grade-7",
+      "excerpt": "דפי עבודה בהסתברות — היכרות לכיתה ז׳: מרחב התוצאות, מאורע ודאי ובלתי אפשרי, חישוב הסתברות בסיסית והוגנות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "שכיחות יחסית חלק 2 — ניסויים ויציבות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/relative-frequency-experiments-grade-7",
+      "excerpt": "דפי עבודה בשכיחות יחסית חלק 2 — ניסויים ויציבות לכיתה ז׳: ניסויים חוזרים, התייצבות השכיחות היחסית והקשר להסתברות. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "משימת הערכה 1 לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/assessment-1-grade-7",
+      "excerpt": "משימת הערכה 1 במתמטיקה לכיתה ז׳ בשלוש רמות, לתרגול ולבדיקת שליטה בנושאי תחילת השנה, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "חזרה שנתית לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/annual-review-grade-7",
+      "excerpt": "דפי עבודה לחזרה שנתית בכיתה ז׳: חזרה מסכמת על נושאי השנה בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "משולש שווה־צלעות — העמקה ורשות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/equilateral-triangle-advanced-grade-7",
+      "excerpt": "דפי עבודה במשולש שווה־צלעות — העמקה ורשות לכיתה ז׳: תכונות וסימטריה, גובה ותיכון ושאלות אתגר ורשות. דף העמקה ורשות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "מצולעים חופפים וטרנספורמציות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/congruent-polygons-transformations-grade-7",
+      "excerpt": "דפי עבודה במצולעים חופפים וטרנספורמציות לכיתה ז׳: הזזה, שיקוף וסיבוב, זיהוי מצולעים חופפים והתאמת קודקודים. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "שכיחות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/frequency-tables-grade-7",
+      "excerpt": "דפי עבודה בשכיחות לכיתה ז׳: טבלת שכיחות, השכיח, קריאת נתונים והצגתם בדיאגרמה. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "משוואות דו־שלביות לכיתה ז׳ — דפי עבודה",
+      "href": "https://www.noamdoronmath.co.il/post/two-step-equations-grade-7",
+      "excerpt": "דפי עבודה במשוואות דו־שלביות לכיתה ז׳: פתרון בשני שלבים, סדר פעולות הפוך, בידוד הנעלם ובדיקת הפתרון. תרגול בשלוש רמות, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "20 בספט׳"
+    },
+    {
+      "title": "מדריך לחזקות ושורשים בחטיבה לתרגול בטוח.",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%93%D7%A8%D7%99%D7%9A-%D7%9C%D7%97%D7%96%D7%A7%D7%95%D7%AA-%D7%95%D7%A9%D7%95%D7%A8%D7%A9%D7%99%D7%9D-%D7%91%D7%97%D7%98%D7%99%D7%91%D7%94-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%91%D7%98%D7%95%D7%97",
+      "excerpt": "מדריך לחזקות ושורשים בחטיבה: הסבר פשוט על חוקי חזקות, שורשים, סדר פעולות וטעויות נפוצות, עם דרך מסודרת לתרגול בבית ולהכנה למבחן בכיתה ובחזרה עצמאית.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "19 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_a71583ad15b64a9da7d1b26b786115f3~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_a71583ad15b64a9da7d1b26b786115f3~mv2.webp",
+      "imageAlt": "מדריך לחזקות ושורשים בחטיבה לתרגול בטוח."
+    },
+    {
+      "title": "חוברות חשבון מול דפי תרגול - מה מתאים לילד?",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%97%D7%95%D7%91%D7%A8%D7%95%D7%AA-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%9C-%D7%93%D7%A4%D7%99-%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%9E%D7%94-%D7%9E%D7%AA%D7%90%D7%99%D7%9D-%D7%9C%D7%99%D7%9C%D7%93",
+      "excerpt": "חוברות חשבון מול דפי תרגול: כך בוחרים תרגול מתמטי מדויק לפי כיתה, נושא ורמת קושי, כדי לחזק הבנה, ביטחון והתקדמות בבית ובכיתה. בחינם וללא הרשמה כבר היום.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "17 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_374733b1991447fab8d25de789efa62d~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_374733b1991447fab8d25de789efa62d~mv2.webp",
+      "imageAlt": "חוברות חשבון מול דפי תרגול - מה מתאים לילד?"
+    },
+    {
+      "title": "מתי לומדים אחוזים ואיך בונים הבנה נכונה בכיתה ו׳",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%AA%D7%99-%D7%9C%D7%95%D7%9E%D7%93%D7%99%D7%9D-%D7%90%D7%97%D7%95%D7%96%D7%99%D7%9D-%D7%95%D7%90%D7%99%D7%9A-%D7%91%D7%95%D7%A0%D7%99%D7%9D-%D7%94%D7%91%D7%A0%D7%94-%D7%A0%D7%9B%D7%95%D7%A0%D7%94-%D7%91%D7%9B%D7%99%D7%AA%D7%94-%D7%95",
+      "excerpt": "מתי לומדים אחוזים בבית הספר, מה מצופה בכל שלב ואיך אפשר לתרגל בבית בלי לשנן נוסחאות. מדריך ברור להורים, לתלמידים ולמורים, עם טעויות נפוצות ודרכי חיזוק טובות",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "15 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_f1bb3ea67ca34fcf82e1ab9ace8ab671~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_f1bb3ea67ca34fcf82e1ab9ace8ab671~mv2.webp",
+      "imageAlt": "מתי לומדים אחוזים ואיך בונים הבנה נכונה בכיתה ו׳"
+    },
+    {
+      "title": "דפי עבודה לכיתה א׳ שמחזקים ביטחון במתמטיקה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%90-%D7%A9%D7%9E%D7%97%D7%96%D7%A7%D7%99%D7%9D-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94",
+      "excerpt": "דפי עבודה לכיתה א׳ מאפשרים לתרגל מספרים, חיבור וחיסור בקצב שמתאים לילד. כך בוחרים רמה, בונים שגרה קצרה ומחזקים ביטחון במתמטיקה בבית ובכיתה בנחת ובשמחה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "14 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_539a0997437b41cfab6e3d3e93f23f98~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_539a0997437b41cfab6e3d3e93f23f98~mv2.webp",
+      "imageAlt": "דפי עבודה לכיתה א׳ שמחזקים ביטחון במתמטיקה"
+    },
+    {
+      "title": "משוואות לכיתה ח׳: תרגול שמסדר את הדרך",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%A9%D7%95%D7%95%D7%90%D7%95%D7%AA-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%97-%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A9%D7%9E%D7%A1%D7%93%D7%A8-%D7%90%D7%AA-%D7%94%D7%93%D7%A8%D7%9A",
+      "excerpt": "משוואות לכיתה ח׳ מתרגלים נכון: מזהים סוג משוואה, עובדים בשלבים, בודקים תשובה ובוחרים רמת קושי מתאימה לחיזוק לפני מבחן. בבית ובכיתה, בלי לחץ מיותר ובקצב אישי.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "13 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_99c9d16796a147e1a4ba6ca55fbf9042~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_99c9d16796a147e1a4ba6ca55fbf9042~mv2.webp",
+      "imageAlt": "משוואות לכיתה ח׳: תרגול שמסדר את הדרך"
+    },
+    {
+      "title": "חזרה ממוקדת במתמטיקה אונליין שמקדמת באמת",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%97%D7%96%D7%A8%D7%94-%D7%9E%D7%9E%D7%95%D7%A7%D7%93%D7%AA-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%90%D7%95%D7%A0%D7%9C%D7%99%D7%99%D7%9F-%D7%A9%D7%9E%D7%A7%D7%93%D7%9E%D7%AA-%D7%91%D7%90%D7%9E%D7%AA",
+      "excerpt": "חזרה ממוקדת במתמטיקה אונליין עוזרת לבחור נושא, רמת קושי וקצב נכון. כך בונים תרגול קצר, מזהים פערים ומתקדמים בביטחון לקראת המבחן ובשיעור ובצורה מסודרת מאוד.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "12 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_74d53aab5fe14195b8cdb65d571d7c90~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_74d53aab5fe14195b8cdb65d571d7c90~mv2.webp",
+      "imageAlt": "חזרה ממוקדת במתמטיקה אונליין שמקדמת באמת"
+    },
+    {
+      "title": "מתמטיקה לילדים שבונה ביטחון ותרגול נכון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%99%D7%9C%D7%93%D7%99%D7%9D-%D7%A9%D7%91%D7%95%D7%A0%D7%94-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F-%D7%95%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F",
+      "excerpt": "מתמטיקה לילדים מתחילה בתרגול קצר ומדויק. כך בוחרים רמה, מזהים פערים ובונים ביטחון בבית בעזרת דפי עבודה לפי כיתה ונושא, בחינם וללא הרשמה ובצורה ברורה ונעימה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "11 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_e05082d1e6924020a8f011d77e4aaeda~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_e05082d1e6924020a8f011d77e4aaeda~mv2.webp",
+      "imageAlt": "מתמטיקה לילדים שבונה ביטחון ותרגול נכון"
+    },
+    {
+      "title": "פונקציות לכיתה ט׳ - להבין גרפים ולפתור נכון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%A4%D7%95%D7%A0%D7%A7%D7%A6%D7%99%D7%95%D7%AA-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%98-%D7%9C%D7%94%D7%91%D7%99%D7%9F-%D7%92%D7%A8%D7%A4%D7%99%D7%9D-%D7%95%D7%9C%D7%A4%D7%AA%D7%95%D7%A8-%D7%A0%D7%9B%D7%95%D7%9F",
+      "excerpt": "פונקציות לכיתה ט׳: כך מתרגלים טבלאות, גרפים, תחום הצבה וקצב שינוי, מבינים טעויות נפוצות ומתכוננים למבחן בביטחון - בחינם וללא הרשמה. בצורה ברורה. לכל אחד.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "10 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_eef216fae24941e693ec4ebe45e8f0ef~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_eef216fae24941e693ec4ebe45e8f0ef~mv2.webp",
+      "imageAlt": "פונקציות לכיתה ט׳ - להבין גרפים ולפתור נכון"
+    },
+    {
+      "title": "סוכן AI לתרגילים כמו מורה פרטי, והכול בחינם",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%A1%D7%95%D7%9B%D7%9F-ai-%D7%9C%D7%AA%D7%A8%D7%92%D7%99%D7%9C%D7%99%D7%9D-%D7%9B%D7%9E%D7%95-%D7%9E%D7%95%D7%A8%D7%94-%D7%A4%D7%A8%D7%98%D7%99-%D7%95%D7%94%D7%9B%D7%95%D7%9C-%D7%91%D7%97%D7%99%D7%A0%D7%9D",
+      "excerpt": "סוכן AI לתרגילים שיעזור לכם כמו מורה פרטי והכול בחינם: הסברים צעד אחר צעד, תרגול מותאם לכיתות א׳-ט׳ ובחירת רמת קושי, ללא הרשמה, לילדים, להורים ולמורים.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "9 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_b96bd74b38c14eedbfbd570c22ddd7a6~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_b96bd74b38c14eedbfbd570c22ddd7a6~mv2.webp",
+      "imageAlt": "סוכן AI לתרגילים כמו מורה פרטי, והכול בחינם"
+    },
+    {
+      "title": "תרגילי אחוזים לכיתה ז׳ לתרגול בטוח ומדויק",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%99%D7%9C%D7%99-%D7%90%D7%97%D7%95%D7%96%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%96-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%91%D7%98%D7%95%D7%97-%D7%95%D7%9E%D7%93%D7%95%D7%99%D7%A7",
+      "excerpt": "תרגילי אחוזים לכיתה ז׳ עוזרים להבין הנחות, עליות ונתונים בטבלאות. למדו דרך פשוטה לתרגל, לבדוק טעויות ולבחור רמת קושי מתאימה בבית ובכיתה. בכל קצב לימוד נוח.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "8 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_b8e7f20a795b4cddbad2b0c715bc4cf9~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_b8e7f20a795b4cddbad2b0c715bc4cf9~mv2.webp",
+      "imageAlt": "תרגילי אחוזים לכיתה ז׳ לתרגול בטוח ומדויק"
+    },
+    {
+      "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%90%D7%99%D7%9A-%D7%9C%D7%AA%D7%A8%D7%92%D7%9C-%D7%92%D7%90%D7%95%D7%9E%D7%98%D7%A8%D7%99%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%95-%D7%95%D7%9C%D7%94%D7%A6%D7%9C%D7%99%D7%97-%D7%91%D7%9E%D7%91%D7%97%D7%A0%D7%99%D7%9D",
+      "excerpt": "מסלול תרגול בגאומטריה לכיתה ו׳: גופים, פריסות, שטח פנים ונפח, עם דוגמה פתורה וקישורים לדפי העבודה הקיימים בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "7 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_017c6cbd2f4d4a0290d84f4f922e8f3d~mv2.webp",
+      "imageAlt": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים"
+    },
+    {
+      "title": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A9%D7%91%D7%A8%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%93-%D7%A9%D7%9E%D7%97%D7%96%D7%A7-%D7%94%D7%91%D7%A0%D7%94-%D7%95%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+      "excerpt": "שברים לכיתה ד׳ דרך שלם, חלקים שווים וישר המספרים. דוגמאות, בדיקה עצמית ושלושה נושאי תרגול קיימים בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "6 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp",
+      "imageAlt": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון"
+    },
+    {
+      "title": "בעיות מילוליות במתמטיקה פותרים שלב אחר שלב",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%91%D7%A2%D7%99%D7%95%D7%AA-%D7%9E%D7%99%D7%9C%D7%95%D7%9C%D7%99%D7%95%D7%AA-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A4%D7%95%D7%AA%D7%A8%D7%99%D7%9D-%D7%A9%D7%9C%D7%91-%D7%90%D7%97%D7%A8-%D7%A9%D7%9C%D7%91",
+      "excerpt": "בעיות מילוליות במתמטיקה נפתרות כשקוראים נכון, מזהים נתונים, בוחרים פעולה ובודקים תשובה. מדריך מעשי לתלמידים, הורים ומורים עם דוגמאות ותרגול מדורג בכיתה ובבית.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "5 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_75820f7521c642cc995fd943abd7839c~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_75820f7521c642cc995fd943abd7839c~mv2.webp",
+      "imageAlt": "בעיות מילוליות במתמטיקה פותרים שלב אחר שלב"
+    },
+    {
+      "title": "תרגול חשיבה מתמטית לילדים שבונה ביטחון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%97%D7%A9%D7%99%D7%91%D7%94-%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%AA-%D7%9C%D7%99%D7%9C%D7%93%D7%99%D7%9D-%D7%A9%D7%91%D7%95%D7%A0%D7%94-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+      "excerpt": "תרגול חשיבה מתמטית לילדים בבית: איך בוחרים שאלות לפי כיתה ורמה, מחזקים הבנה ולא רק תשובות, ויוצרים הרגל קצר שמקדם ביטחון ופתרון בעיות.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "4 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_220aa6f3b7c34cbcaa128f90697497ac~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_220aa6f3b7c34cbcaa128f90697497ac~mv2.webp",
+      "imageAlt": "תרגול חשיבה מתמטית לילדים שבונה ביטחון"
+    },
+    {
+      "title": "דפי עבודה לשיעורי בית במתמטיקה שמקדמים ביטחון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%A9%D7%99%D7%A2%D7%95%D7%A8%D7%99-%D7%91%D7%99%D7%AA-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A7%D7%93%D7%9E%D7%99%D7%9D-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+      "excerpt": "דפי עבודה לשיעורי בית במתמטיקה לכיתות א׳-ט׳: בוחרים נושא ורמה, מורידים ומדפיסים בחינם לתרגול ממוקד, חזרה למבחן והתקדמות בטוחה בבית.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "3 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_09b7494662ca4f328aecfd41d00daec2~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_09b7494662ca4f328aecfd41d00daec2~mv2.webp",
+      "imageAlt": "דפי עבודה לשיעורי בית במתמטיקה שמקדמים ביטחון"
+    },
+    {
+      "title": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9E%D7%95%D7%A8%D7%99%D7%9D-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A7%D7%A6%D7%A8%D7%99%D7%9D-%D7%94%D7%9B%D7%A0%D7%94-%D7%9C%D7%A9%D7%99%D7%A2%D7%95%D7%A8",
+      "excerpt": "בונים שיעור מתוך הדפים שכבר קיימים: מגדירים מטרה, בוחרים שאלות ורמות, ומסיימים בבדיקה קצרה. קישורי תרגול ישירים וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "2 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp",
+      "imageAlt": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור"
+    },
+    {
+      "title": "תרגול מתמטיקה לתלמידים מתקשים שמקדם ביטחון",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%AA%D7%9C%D7%9E%D7%99%D7%93%D7%99%D7%9D-%D7%9E%D7%AA%D7%A7%D7%A9%D7%99%D7%9D-%D7%A9%D7%9E%D7%A7%D7%93%D7%9D-%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+      "excerpt": "תרגול מתמטיקה לתלמידים מתקשים מתחיל בזיהוי הפער, בחירה ברמת קושי נכונה וחזרה קצרה ועקבית. כך בונים הבנה, ביטחון והתקדמות בבית ובכיתה. בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "1 בספט׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_dfcaa5d0c0cf4813ba0b989fa054ae51~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_dfcaa5d0c0cf4813ba0b989fa054ae51~mv2.webp",
+      "imageAlt": "תרגול מתמטיקה לתלמידים מתקשים שמקדם ביטחון"
+    },
+    {
+      "title": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%99%D7%9C%D7%99-%D7%90%D7%AA%D7%92%D7%A8-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%93-%D7%A9%D7%9E%D7%A7%D7%93%D7%9E%D7%99%D7%9D-%D7%97%D7%A9%D7%99%D7%91%D7%94",
+      "excerpt": "תרגילי אתגר במתמטיקה לכיתה ד׳ מחזקים חשיבה, דיוק והתמדה. כך בוחרים משימות מתאימות, מלווים את הילד ובודקים שהאתגר מקדם ולא מתסכל גם בבית ובכיתה בקלות.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "31 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_52b78088839f4bbbbecacaa694510d53~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_52b78088839f4bbbbecacaa694510d53~mv2.webp",
+      "imageAlt": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה"
+    },
+    {
+      "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%94%D7%9B%D7%A0%D7%94-%D7%9C%D7%9E%D7%91%D7%97%D7%9F-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%94-%D7%91-7-%D7%99%D7%9E%D7%99%D7%9D",
+      "excerpt": "תוכנית שבועית גמישה לכיתה ה׳, עם קישורים לדפי העבודה הקיימים. בוחרים רק נושאים שנכללים במבחן ומתרגלים בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "30 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_87d186f5e1124c238365864b9b2cda03~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_87d186f5e1124c238365864b9b2cda03~mv2.webp",
+      "imageAlt": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים"
+    },
+    {
+      "title": "תרגול מספרים עשרוניים לכיתה ו׳ בבית ובכיתה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%9E%D7%A1%D7%A4%D7%A8%D7%99%D7%9D-%D7%A2%D7%A9%D7%A8%D7%95%D7%A0%D7%99%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%95-%D7%91%D7%91%D7%99%D7%AA-%D7%95%D7%91%D7%9B%D7%99%D7%AA%D7%94",
+      "excerpt": "תרגול מספרים עשרוניים לכיתה ו׳: כך בונים ביטחון בחיבור, חיסור, כפל, חילוק ובעיות מילוליות, עם סדר פעולות ברור, רמות קושי והתקדמות אמיתית לכל תלמיד בקלות.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "29 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_598cdb38812e463999d566f851719596~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_598cdb38812e463999d566f851719596~mv2.webp",
+      "imageAlt": "תרגול מספרים עשרוניים לכיתה ו׳ בבית ובכיתה"
+    },
+    {
+      "title": "דפי עבודה ללוח הכפל לתרגול נכון בבית",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9C%D7%95%D7%97-%D7%94%D7%9B%D7%A4%D7%9C-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F-%D7%91%D7%91%D7%99%D7%AA",
+      "excerpt": "תרגול כפל בכיתות ב׳–ג׳ מתוך דפים קיימים: קבוצות שוות, מערכים, עובדות כפל ובדיקה בחילוק. חינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "28 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_df5407958cc14caca12d63e8476b6f31~mv2.webp",
+      "imageAlt": "דפי עבודה ללוח הכפל לתרגול נכון בבית"
+    },
+    {
+      "title": "תרגילי חיבור וחיסור לכיתה א׳ לתרגול נכון בבית",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%99%D7%9C%D7%99-%D7%97%D7%99%D7%91%D7%95%D7%A8-%D7%95%D7%97%D7%99%D7%A1%D7%95%D7%A8-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%90-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A0%D7%9B%D7%95%D7%9F-%D7%91%D7%91%D7%99%D7%AA",
+      "excerpt": "תרגילי חיבור וחיסור לכיתה א׳ עוזרים לבסס הבנת מספרים. כך בוחרים דפי עבודה לפי רמה, מתרגלים בבית בנחת ומתקדמים בביטחון, בקצב שמתאים לילד, בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "27 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_a735e3e34cce4ac7bbaa26404d54220e~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_a735e3e34cce4ac7bbaa26404d54220e~mv2.webp",
+      "imageAlt": "תרגילי חיבור וחיסור לכיתה א׳ לתרגול נכון בבית"
+    },
+    {
+      "title": "דפי עבודה במתמטיקה ללא הרשמה לכל כיתה ונושא",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9C%D7%9C%D7%90-%D7%94%D7%A8%D7%A9%D7%9E%D7%94-%D7%9C%D7%9B%D7%9C-%D7%9B%D7%99%D7%AA%D7%94-%D7%95%D7%A0%D7%95%D7%A9%D7%90",
+      "excerpt": "דפי עבודה במתמטיקה ללא הרשמה לכיתות א׳–ט׳: בוחרים כיתה ונושא, מורידים בחינם ומקבלים תרגול מדורג לבית, לכיתה ולהכנה ממוקדת למבחן בלי עלות ובלי תהליך טכני.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "26 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_b9e2ab89c32b4865aa39f2acb07cd199~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_b9e2ab89c32b4865aa39f2acb07cd199~mv2.webp",
+      "imageAlt": "דפי עבודה במתמטיקה ללא הרשמה לכל כיתה ונושא"
+    },
+    {
+      "title": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%91%D7%A7%D7%A8%D7%95%D7%91-%D7%A1%D7%95%D7%9B%D7%9F-%D7%91%D7%99%D7%A0%D7%94-%D7%9E%D7%9C%D7%90%D7%9B%D7%95%D7%AA%D7%99%D7%AA-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94",
+      "excerpt": "נועם AI זמין במציג דפי העבודה של חטיבת הביניים. כך פותחים דף, מבקשים רמז וחוזרים לתרגול עצמאי — בחינם וללא הרשמה.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "25 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_560fea189b6648b492e264b5191c05db~mv2.webp/v1/fill/w_305,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_560fea189b6648b492e264b5191c05db~mv2.webp",
+      "imageAlt": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים"
+    },
+    {
+      "title": "דפי עבודה במתמטיקה בחינם לכיתות א׳–ט׳, עם נועם AI בחטיבה",
+      "href": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%91%D7%97%D7%99%D7%A0%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%95%D7%AA-%D7%90-%D7%98-%D7%9C%D7%91%D7%99%D7%AA-%D7%95%D7%91%D7%A7%D7%A8%D7%95%D7%91-%D7%92%D7%9D-%D7%A1%D7%95%D7%9B%D7%9F-ai-%D7%AA%D7%95%D7%9E%D7%9A",
+      "excerpt": "מוצאים דף לפי כיתה, נושא ורמה, פותחים ומתרגלים ללא הרשמה. נועם AI זמין בדפי חטיבת הביניים במציג.",
+      "authorAvatar": {
+        "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+        "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+      },
+      "author": "נועם דורון מתמטיקה",
+      "date": "24 באוג׳",
+      "imageSrc": "https://static.wixstatic.com/media/d8e7ad_a51e9a9007344814b193bb5655eeb75a~mv2.webp/v1/fill/w_306,h_229,al_c,q_90,enc_avif,quality_auto/d8e7ad_a51e9a9007344814b193bb5655eeb75a~mv2.webp",
+      "imageAlt": "דפי עבודה במתמטיקה בחינם לכיתות א׳–ט׳, עם נועם AI בחטיבה"
     }
   ],
   "pagination": null,
   "loadMore": null,
   "source": {
-    "liveUrl": "https://www.noamdoronmath.co.il/blog",
-    "capturedAt": "2026-09-23T21:21:34.923Z",
-    "cardCount": 20,
+    "liveUrl": "https://amiramnoam.wixsite.com/my-site/blog",
+    "capturedAt": "2026-10-09T22:03:01.400Z",
+    "cardCount": 68,
     "captureMethod": "ssr-html"
   }
 }
