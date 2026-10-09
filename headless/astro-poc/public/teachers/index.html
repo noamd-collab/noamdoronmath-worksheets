@@ -355,8 +355,8 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
   .print-area .crop-sheet{box-sizing:border-box;width:194mm;height:281mm;max-height:281mm;margin:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always}
   .print-area .crop-sheet.has-teacher-note{height:281mm;max-height:281mm;overflow:hidden}
   .print-area .crop-sheet canvas{width:180mm;height:auto;max-height:262mm}
-  .print-area .crop-sheet.has-teacher-note canvas{width:auto;height:auto;max-width:180mm;max-height:calc(246mm - var(--note-h, 0mm))}
-  .print-area .crop-sheet.has-teacher-note .teacher-print-note{flex:0 0 auto;max-height:var(--note-h, 40mm);overflow:hidden}
+  .print-area .crop-sheet.has-teacher-note canvas{width:180mm;height:auto;max-width:180mm;max-height:calc(246mm - var(--note-h, 0mm));flex:0 0 auto}
+  .print-area .crop-sheet.has-teacher-note .teacher-print-note{flex:0 0 auto;overflow:visible}
   .print-area .source-stage{width:180mm;height:254mm;flex:0 0 auto;background:transparent}
   .print-area .source-stage canvas{width:180mm;height:254mm}
   .print-area .source-mark{background:transparent;outline:none;border:2px solid #c47d00;border-radius:0;mix-blend-mode:normal}

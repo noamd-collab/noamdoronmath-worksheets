@@ -229,9 +229,13 @@ function teacherNoteHTML(note) {
 function noteBandMm(note) {
   const text = String(note || '').trim();
   if (!text) return 0;
-  const charsPerLine = 64;
-  const wrapped = text.split('\n').reduce((sum, line) => sum + Math.max(1, Math.ceil(line.length / charsPerLine)), 0);
-  return Math.min(58, 6 + (wrapped + 1) * 4.6);
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;inset-inline-start:0;top:0;visibility:hidden;box-sizing:border-box;width:180mm;font:11px/1.35 Heebo,Arial,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;direction:rtl';
+  probe.innerHTML = `<strong style="display:block;font-size:12px;margin:0 0 1mm">הערת המורה</strong><p style="margin:0">${escapeHTML(text)}</p>`;
+  document.body.appendChild(probe);
+  const mm = probe.getBoundingClientRect().height * 25.4 / 96;
+  probe.remove();
+  return Math.min(78, Math.ceil(mm + 4));
 }
 
 function attachTeacherNote(root, note) {
