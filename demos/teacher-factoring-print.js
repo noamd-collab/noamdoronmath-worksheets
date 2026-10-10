@@ -2503,29 +2503,53 @@ function packWorksheet(measured, noteHeight) {
   const CONT_TOP = 48;
   const heading = (item) => item && (item.slice.kind === 'stem' || item.slice.kind === 'level' || item.slice.kind === 'answers-head');
   const heightOf = (items, top) => top + FOOT + contentHeight(items);
+  const pieceKey = (item) => {
+    const slice = item && item.slice;
+    if (!slice || (slice.kind !== 'stem' && slice.kind !== 'row') || !slice.block) return '';
+    const pdf = slice.source && slice.source.pdfId ? String(slice.source.pdfId) : '';
+    return pdf + '\n' + slice.block;
+  };
+  const scalePiece = (items, limit) => {
+    const height = contentHeight(items);
+    if (height <= limit || height <= 0) return items;
+    const factor = limit / height;
+    const scaled = items.map((item) => ({
+      ...item,
+      dh: Math.max(1, Math.round(item.dh * factor)),
+      slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
+    }));
+    const extra = contentHeight(scaled) - limit;
+    if (extra > 0) scaled[scaled.length - 1].dh = Math.max(1, scaled[scaled.length - 1].dh - extra);
+    return scaled;
+  };
+  const groups = [];
+  measured.forEach((item) => {
+    const key = pieceKey(item);
+    const last = groups[groups.length - 1];
+    if (key && last && last.key === key) last.items.push(item);
+    else groups.push({ key, items: [item] });
+  });
+  const fits = (items, chunk, at) => heightOf(items.concat(chunk), at) <= PAGE_H;
   const pages = [];
   let page = [];
   let top = FIRST_TOP;
-  measured.forEach((item) => {
-    const body = PAGE_H - top - FOOT;
-    let next = item;
-    if (next.dh > body && !page.length) {
-      const factor = body / next.dh;
-      next = { ...next, dh: Math.max(1, Math.round(next.dh * factor)), slice: { ...next.slice, gap: scaledGap(next.slice.gap, factor) } };
-    }
-    if (page.length && heightOf(page.concat([next]), top) > PAGE_H) {
+  groups.forEach((group) => {
+    let chunk = group.items;
+    if (page.length && !fits(page, chunk, top)) {
       const last = page[page.length - 1];
-      if (heading(last)) page.pop();
+      const carry = heading(last);
+      if (carry) page.pop();
       if (page.length) pages.push({ top, items: page });
-      page = heading(last) && last !== next ? [last] : [];
+      page = carry ? [last] : [];
       top = CONT_TOP;
-      const room = PAGE_H - top - FOOT;
-      if (next.dh > room) {
-        const factor = room / next.dh;
-        next = { ...next, dh: Math.max(1, Math.round(next.dh * factor)), slice: { ...next.slice, gap: scaledGap(next.slice.gap, factor) } };
-      }
     }
-    page.push(next);
+    if (!page.length && top > CONT_TOP && !fits(page, chunk, top) && fits(page, chunk, CONT_TOP)) top = CONT_TOP;
+    if (!fits(page, chunk, top)) {
+      const lead = page.length && chunk.length ? (chunk[0].slice.gap || 0) : 0;
+      const room = PAGE_H - top - FOOT - contentHeight(page) - lead;
+      chunk = scalePiece(chunk, Math.max(1, room));
+    }
+    page = page.concat(chunk);
   });
   if (page.length) pages.push({ top, items: page });
   if (!pages.length) pages.push({ top: FIRST_TOP, items: [] });
@@ -3372,6 +3396,20 @@ function paintSelectCards(selectId, gridId) {
   if (selectId === 'topic' && empty) empty.hidden = !q || options.length > 0;
 }
 
+function aiConfirmLanding(model) {
+  const next = wizardReduce(model, { type: 'jump', step: 'pick' });
+  return {
+    route: 'guided',
+    step: next.step,
+    how: 'push',
+    grade: next.grade,
+    topic: next.topic,
+    level: next.level,
+    selected: next.selected.slice(),
+    output: next.output,
+  };
+}
+
 function wizardHandle(model, action) {
   const kind = action && action.type;
   if (kind === 'chip' || kind === 'jump') {
@@ -3817,6 +3855,18 @@ function releaseHold(message) {
   if (piece.output) delete teacherChat.hold.output;
 }
 
+function confirmLevel(brief, pick) {
+  const named = brief && Array.isArray(brief.levels) ? brief.levels.filter((level) => level === 'a' || level === 'b' || level === 'c') : [];
+  if (named.length === 1) return named[0];
+  if (named.length > 1) return 'all';
+  const found = [];
+  ((pick && pick.sheets) || []).forEach((sheet) => {
+    const level = sheet && sheet.level;
+    if ((level === 'a' || level === 'b' || level === 'c') && found.indexOf(level) === -1) found.push(level);
+  });
+  return found.length === 1 ? found[0] : 'all';
+}
+
 function confirmTeacherPick() {
   const pick = teacherChat.pick;
   const brief = teacherChat.brief || chatBrief();
@@ -3829,6 +3879,8 @@ function confirmTeacherPick() {
       btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
   }
+  state.level = confirmLevel(brief, pick);
+  document.querySelectorAll('[name=level]').forEach((el) => { el.checked = el.value === state.level; });
   const applied = applySuggestIds((pick.exerciseIds || []).concat(pick.sheetIds || []));
   teacherChat.phase = 'ask';
   showChat({
@@ -3838,6 +3890,7 @@ function confirmTeacherPick() {
     details: '',
     chips: [],
   });
+  if (applied) openRoute('guided', 'push', aiConfirmLanding(currentWizardModel()).step);
 }
 
 function teacherChatTurn(message) {

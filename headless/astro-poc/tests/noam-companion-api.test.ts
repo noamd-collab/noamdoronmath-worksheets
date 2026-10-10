@@ -16,6 +16,9 @@ import { FALLBACK_TEXT, QWEN_MODEL, QWEN_TIMEOUT_MS } from '../../../noam-ai/sit
 import { RECAPTCHA_TIMEOUT_MS } from '../../../noam-ai/site-companion/bot-guard.js';
 import { parseClassifier, selectTeacherPicks } from '../../../noam-ai/site-companion/teacher-pick.js';
 import {
+  blankBrief,
+  clarifyTeacherQuestion,
+  describeSelection,
   nextTeacherQuestion,
   partLabelsInText,
   readTeacherBrief,
@@ -491,7 +494,7 @@ describe('teacher brief selection', () => {
     levelLabel: 'רמה ב׳',
     questions: ['1א', '1ב', '1ג', '1ד', '2א', '2ב', '2ג', '2ד', '3א', '3ב', '3ג', '3ד', '4א', '4ב', '4ג', '4ד', '5א', '5ב', '5ג', '5ד'],
   };
-  const levelC = { ...levelB, pdfId: 'cccccccccccccccccccccccccccccccc', level: 'c', levelLabel: 'רמה ג׳', questions: ['8א', '8ב', '8ג', '8ד'] };
+  const levelC = { ...levelB, pdfId: 'cccccccccccccccccccccccccccccccc', level: 'c', levelLabel: 'מצוינות', questions: ['8א', '8ב', '8ג', '8ד'] };
 
   it('asks in order, then picks at least 16 parts and 4 questions from level B', () => {
     const seed = { grade: 9, topicId: '2', levels: [] as string[] };
@@ -529,5 +532,36 @@ describe('teacher brief selection', () => {
     }, null);
     assert.deepEqual(pick.exerciseIds, []);
     assert.equal(pick.ask && pick.ask.id, 'strength');
+  });
+
+  it('names level C מצוינות and never says רמה ג׳', () => {
+    const briefSrc = readFileSync(new URL('../public/teachers/teacher-brief.js', import.meta.url), 'utf8');
+    const demoBrief = readFileSync(new URL('../../../demos/teacher-brief.js', import.meta.url), 'utf8');
+    const printer = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const page = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    assert.equal(demoBrief, briefSrc);
+    for (const src of [briefSrc, printer, page]) assert.equal(src.includes('רמה ג'), false);
+    const levelAsk = nextTeacherQuestion({ ...blankBrief(), minParts: 8 });
+    const chipLabels = (levelAsk?.chips || []).map((chip) => chip.label);
+    assert.deepEqual(chipLabels, ['רמה א׳', 'רמה ב׳', 'מצוינות']);
+    const clarify = clarifyTeacherQuestion([levelC], { ...blankBrief(), grade: 9, topicId: '2', levels: ['a'], minParts: 4 });
+    const clarifyLabels = (clarify.chips || []).map((chip) => chip.label);
+    assert.ok(clarifyLabels.includes('מצוינות'));
+    assert.equal(clarifyLabels.some((label) => label.includes('רמה ג')), false);
+    const summary = describeSelection(
+      { ...blankBrief(), levels: ['c'], strength: 'strong', duration: 'lesson', progressive: true, output: 'short' },
+      { band: 'middle', exerciseIds: ['ex:cccccccccccccccccccccccccccccccc:8א'], sheets: [levelC], shortfall: false },
+    );
+    assert.match(summary, /מצוינות/);
+    assert.equal(summary.includes('רמה ג'), false);
+    assert.equal(summary.includes('רמה מצוינות'), false);
+    const named = [summary, ...chipLabels, ...clarifyLabels].join('\n');
+    assert.equal(named.includes('רמה ג'), false);
+    assert.deepEqual(readTeacherBrief('מצוינות', blankBrief()).levels, ['c']);
+    const excluded = readTeacherBrief('לא מצוינות', blankBrief());
+    assert.deepEqual(excluded.levels, []);
+    assert.equal(excluded.excludeExcellence, true);
+    assert.deepEqual(readTeacherBrief('רמה א׳', blankBrief()).levels, ['a']);
+    assert.deepEqual(readTeacherBrief('רמה ב׳', blankBrief()).levels, ['b']);
   });
 });

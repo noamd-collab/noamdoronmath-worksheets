@@ -717,6 +717,30 @@ describe('teacher catalog picker', () => {
     assert.equal(natural.length, 1);
     const row = natural[0].items.find((item) => item.slice.kind === 'answer-row');
     assert.ok(row && row.cells && row.cells.length === 3);
+    const moved = pack.packWorksheet([
+      { slice: { kind: 'row', gap: 4, block: 'other' }, dh: 1100 },
+      { slice: { kind: 'row', gap: 4, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 160 },
+      { slice: { kind: 'row', gap: -2, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 80 },
+    ], 0);
+    assert.equal(moved.length, 2);
+    assert.equal(moved[0].items.length, 1);
+    assert.equal(moved[1].items.length, 2);
+    assert.equal(moved[1].items[0].slice.block, 'q6');
+    assert.equal(moved[1].items[1].slice.block, 'q6');
+    const tall = pack.packWorksheet([
+      { slice: { kind: 'stem', gap: 10, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 2000 },
+      { slice: { kind: 'row', gap: 4, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 800 },
+    ], 0);
+    assert.equal(tall.length, 1);
+    assert.equal(tall[0].items.length, 2);
+    assert.ok(tall[0].items[0].dh < 2000);
+    assert.ok(tall[0].items[1].dh < 800);
+    const together = pack.packWorksheet([
+      { slice: { kind: 'row', gap: 4, block: 'q1', source: { pdfId: 'a' } }, dh: 400 },
+      { slice: { kind: 'row', gap: 4, block: 'q2', source: { pdfId: 'a' } }, dh: 100 },
+      { slice: { kind: 'row', gap: -2, block: 'q2', source: { pdfId: 'a' } }, dh: 40 },
+    ], 0);
+    assert.equal(together.length, 1);
     for (const file of ['0d548ce76eb74a1ab10385cdaf1f77ca.json', '050b9cc226cd4326931adfb3c0775a05.json']) {
       const sheet = JSON.parse(readFileSync(new URL(`../public/teachers/sheets/${file}`, import.meta.url), 'utf8'));
       const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number } }[];
@@ -735,6 +759,83 @@ describe('teacher catalog picker', () => {
         }
       });
     }
+  });
+
+  it('keeps each packed piece on one page across middle-school sheets', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const demo = readFileSync(new URL('../../../demos/teacher-factoring-print.js', import.meta.url), 'utf8');
+    assert.equal(demo, preview);
+    const body = preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'));
+    const pack = new Function(`${preview.slice(preview.indexOf('function contentHeight'), preview.indexOf('function scaledGap'))}${preview.slice(preview.indexOf('function scaledGap'), preview.indexOf('function shrinkTo'))}${preview.slice(preview.indexOf('function flowAnswers'), preview.indexOf('function paintWorksheetPage'))} return packWorksheet;`)() as (measured: { dh: number; slice: { kind: string; gap: number; block?: string; page?: number; source?: { pdfId: string }; box?: { y: number; h: number; w: number } } }[], noteHeight: number) => { top: number; items: { dh: number; slice: { kind: string; gap: number; block?: string; source?: { pdfId: string } } }[] }[];
+    const aspect = 842 / 595;
+    const dhOf = (box: { h: number; w?: number }) => Math.max(1, Math.round(1000 * (box.h * aspect) / (box.w && box.w > 0 ? box.w : 1)));
+    const PAGE_LIMIT = 1440 - 36;
+    let packs = 0;
+    let seed = 0xC0FFEE;
+    const rnd = () => {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      return seed / 4294967296;
+    };
+    const dir = new URL('../public/teachers/sheets/', import.meta.url);
+    const files = readdirSync(dir).filter((name) => name.endsWith('.json')).sort();
+    const sheets = files.map((file) => JSON.parse(readFileSync(new URL(file, dir), 'utf8'))).filter((sheet) => sheet && sheet.grade >= 7 && Array.isArray(sheet.questions) && sheet.questions.length);
+    const slicesFor = (sheet: { pdfId: string; questions: { id: string; q: number; rows?: { page?: number }[] }[] }, ids: string[]) => {
+      const byId = Object.fromEntries(sheet.questions.map((question: { id: string }) => [question.id, question]));
+      const shortSlices = new Function('SOURCE', `${body} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; gap: number; block?: string; page: number; box?: { y: number; h: number; w: number } }[];
+      return shortSlices(ids.map((id) => byId[id])).flatMap((slice) => {
+        if (slice.kind !== 'stem' && slice.kind !== 'row') return [];
+        const box = slice.box;
+        if (!box) return [];
+        if (box.y < 0.05 && box.y + box.h < 0.075) return [];
+        return [{ slice: { ...slice, source: { pdfId: sheet.pdfId } }, dh: dhOf(box) }];
+      });
+    };
+    const assertOnePage = (measured: { dh: number; slice: { kind: string; gap: number; block?: string; source?: { pdfId: string } } }[], label: string) => {
+      const pages = pack(measured, 0);
+      packs += 1;
+      const seen = new Map<string, number>();
+      pages.forEach((page, pageIndex) => {
+        let y = page.top;
+        page.items.forEach((item, index) => {
+          if (index) y += item.slice.gap || 0;
+          const end = y + item.dh;
+          assert.ok(end <= PAGE_LIMIT + 0.01, `${label} page ${pageIndex} ends at ${end}`);
+          if ((item.slice.kind === 'stem' || item.slice.kind === 'row') && item.slice.block) {
+            const key = (item.slice.source && item.slice.source.pdfId ? item.slice.source.pdfId : '') + ':' + item.slice.block;
+            const previous = seen.get(key);
+            if (previous == null) seen.set(key, pageIndex);
+            else assert.equal(previous, pageIndex, `${label} ${key} crosses pages`);
+          }
+          y = end;
+        });
+      });
+    };
+    sheets.forEach((sheet, sheetIndex) => {
+      const ids = sheet.questions.map((question: { id: string }) => question.id);
+      const windows = [ids.slice(0, Math.min(6, ids.length))];
+      if (ids.length > 6) {
+        const start = Math.floor(rnd() * (ids.length - 5));
+        windows.push(ids.slice(start, start + 5));
+      }
+      const crossing = sheet.questions.find((question: { id: string; rows?: { page?: number }[] }) => {
+        const pages = new Set((question.rows || []).map((row) => row.page).filter(Boolean));
+        return pages.size > 1;
+      });
+      if (crossing) {
+        const at = ids.indexOf(crossing.id);
+        windows.push(ids.slice(Math.max(0, at - 1), at + 2));
+      }
+      windows.forEach((window, windowIndex) => {
+        if (!window.length) return;
+        assertOnePage(slicesFor(sheet, window), `${sheet.pdfId} ${windowIndex}`);
+      });
+      const other = sheets[(sheetIndex + 17) % sheets.length];
+      if (other && other.pdfId !== sheet.pdfId) {
+        const mixed = slicesFor(sheet, ids.slice(0, 3)).concat(slicesFor(other, other.questions.slice(0, 3).map((question: { id: string }) => question.id)));
+        assertOnePage(mixed, `${sheet.pdfId}+${other.pdfId}`);
+      }
+    });
+    assert.ok(packs > 400, String(packs));
   });
 
   it('prints only the picked part label on every middle-school sheet', () => {
@@ -1108,6 +1209,37 @@ describe('teacher catalog picker', () => {
     assert.match(demoPage, /id="fast-selected"/);
     assert.match(page, /\.fast-selected button \.chip-x/);
     assert.match(demoPage, /\.fast-selected button \.chip-x/);
+    const landingApi = new Function(`${src} return { aiConfirmLanding, wizardReduce };`)() as {
+      aiConfirmLanding: (model: { step: string; grade: string; topic: string; level: string; selected: string[]; output: string }) => { route: string; step: string; how: string; grade: string; topic: string; level: string; selected: string[]; output: string };
+      wizardReduce: (model: { step: string; grade: string; topic: string; level: string; selected: string[]; output: string }, action: { type: string }) => { step: string; grade: string; topic: string; level: string; selected: string[]; output: string };
+    };
+    const filled = { step: 'grade', grade: '9', topic: '12', level: 'b', selected: ['ex:pythagoras:7א'], output: 'short' };
+    const landed = landingApi.aiConfirmLanding(filled);
+    assert.equal(landed.route, 'guided');
+    assert.equal(landed.step, 'pick');
+    assert.equal(landed.how, 'push');
+    assert.equal(landed.grade, '9');
+    assert.equal(landed.topic, '12');
+    assert.equal(landed.level, 'b');
+    assert.equal(landed.output, 'short');
+    assert.deepEqual(landed.selected, ['ex:pythagoras:7א']);
+    filled.selected.push('ex:pythagoras:7ב');
+    assert.deepEqual(landed.selected, ['ex:pythagoras:7א']);
+    const atLevel = landingApi.wizardReduce(landed, { type: 'back' });
+    assert.equal(atLevel.step, 'level');
+    assert.equal(atLevel.level, 'b');
+    assert.equal(atLevel.grade, '9');
+    assert.deepEqual(atLevel.selected, ['ex:pythagoras:7א']);
+    const atTopic = landingApi.wizardReduce(atLevel, { type: 'back' });
+    assert.equal(atTopic.step, 'topic');
+    assert.equal(atTopic.topic, '12');
+    const atGrade = landingApi.wizardReduce(atTopic, { type: 'back' });
+    assert.equal(atGrade.step, 'grade');
+    assert.equal(atGrade.grade, '9');
+    assert.deepEqual(atGrade.selected, ['ex:pythagoras:7א']);
+    const confirmSrc = preview.slice(preview.indexOf('function confirmTeacherPick'), preview.indexOf('function teacherChatTurn'));
+    assert.ok(confirmSrc.indexOf('state.level = confirmLevel') < confirmSrc.indexOf('applySuggestIds'));
+    assert.match(confirmSrc, /openRoute\('guided', 'push', aiConfirmLanding\(currentWizardModel\(\)\)\.step\)/);
     assert.match(page, /#wizard\.is-fast #wizard-next\{display:flex\}/);
     assert.match(demoPage, /#wizard\.is-fast #wizard-next\{display:flex\}/);
   });

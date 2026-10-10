@@ -8,6 +8,12 @@ export const MAX_PICKED_PARTS = 48;
 
 const LEVEL_CHAR = { a: "a", b: "b", c: "c", א: "a", ב: "b", ג: "c" };
 const LEVEL_LABEL = { a: "א׳", b: "ב׳", c: "ג׳" };
+
+function levelName(level) {
+  if (level === "c") return "מצוינות";
+  const label = LEVEL_LABEL[level];
+  return label ? "רמה " + label : String(level || "");
+}
 const PART_RE = /(\d{1,2})\s*([אבגדהו])(?![\u0590-\u05FF])/g;
 
 export function blankBrief() {
@@ -64,6 +70,7 @@ export function readTeacherBrief(text, base) {
     addLevel(brief, match[1] || match[2]);
   }
   if (/לא\s*מצוינות|לא\s*הצטיינות|not excellence/i.test(source)) brief.excludeExcellence = true;
+  if (/(?<!לא\s*)מצוינות/.test(source)) addLevel(brief, "c");
   if (/חלש|weak/i.test(source)) brief.strength = "weak";
   else if (/מעורב|בינונ|mixed/i.test(source)) brief.strength = "mixed";
   else if (/כיתה חזקה|תלמידים חזקים|strong class/i.test(source)) brief.strength = "strong";
@@ -93,7 +100,7 @@ export function nextTeacherQuestion(brief) {
   }
   if (!fact.levels.length) {
     const levels = [chip("רמה א׳"), chip("רמה ב׳")];
-    if (!fact.excludeExcellence) levels.push(chip("רמה ג׳"));
+    if (!fact.excludeExcellence) levels.push(chip("מצוינות"));
     return { id: "level", prompt: "באיזו רמה?", chips: levels };
   }
   if (!fact.strength) {
@@ -177,7 +184,7 @@ export function clarifyTeacherQuestion(index, brief) {
     return {
       id: "level",
       prompt: "ברמה הזו אין שאלות בקטלוג. איזו רמה כן?",
-      chips: levels.map((level) => chip("רמה " + (LEVEL_LABEL[level] || level))),
+      chips: levels.map((level) => chip(levelName(level))),
     };
   }
   return {
@@ -244,7 +251,7 @@ export function describeSelection(brief, pick) {
   const questions = new Set(labels.map(questionKey));
   const levels = (fact.levels.length ? fact.levels : sheets.map((sheet) => sheet.level))
     .filter((level, index, list) => level && list.indexOf(level) === index)
-    .map((level) => LEVEL_LABEL[level] || level)
+    .map((level) => levelName(level))
     .join(" ו");
   const strength = { weak: "כיתה חלשה", mixed: "כיתה מעורבת", strong: "כיתה חזקה" }[fact.strength] || "";
   const duration = { short: "רבע שעה", lesson: "שיעור", double: "שיעור כפול" }[fact.duration] || "";
@@ -252,7 +259,7 @@ export function describeSelection(brief, pick) {
   const order = fact.progressive ? "מהקל לכבד" : "בלי דירוג";
   const bits = [
     labels.length + " סעיפים ב־" + questions.size + " שאלות",
-    levels ? "רמה " + levels : "",
+    levels,
     strength,
     duration,
     order,
