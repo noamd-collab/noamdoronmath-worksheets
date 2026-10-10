@@ -230,6 +230,22 @@
       });
     }
 
+    function devGuardLog(code) {
+      var host = "";
+      try { host = String(win.location && win.location.hostname || ""); } catch (error) { host = ""; }
+      var preview = host === "localhost" || host === "127.0.0.1" ||
+        host.indexOf("noam-math-astro-poc") !== -1;
+      if (!preview || !win.console || typeof win.console.warn !== "function") return;
+      var safe = /^[A-Z0-9_]{1,80}$/.test(String(code || "")) ? String(code) : "UNKNOWN";
+      win.console.warn("NOAM_GUARD", safe);
+    }
+
+    function retryGuard(error) {
+      var status = error && (error.status || error.httpStatus);
+      var code = String(error && error.code || "");
+      return status === 403 && (code === "LOW_SCORE" || code === "BOT_VERIFICATION_FAILED" || code === "HTTP_ERROR_BODY_UNREADABLE");
+    }
+
     function postJson(endpoint, payload) {
       var route = typeof endpoint === "string" ? endpoint.slice(api.length + 1) : "";
       var action = typeof endpoint === "string" && endpoint.indexOf(api + "/") === 0 &&
@@ -244,7 +260,13 @@
           return send(endpoint, body);
         });
       }
-      return attempt().catch(function (error) {
+      var tried = false;
+      function once(error) {
+        devGuardLog(error && error.code);
+        if (!tried && retryGuard(error)) {
+          tried = true;
+          return attempt();
+        }
         if (!isTransientNetworkError(error)) { throw error; }
         return new Promise(function (resolve) {
           setTimeout(resolve, networkRetryDelay);
@@ -252,7 +274,8 @@
           if (!isTransientNetworkError(retryError)) { throw retryError; }
           throw makeError(VERIFY_MESSAGE, "NETWORK_UNAVAILABLE");
         });
-      });
+      }
+      return attempt().catch(once);
     }
 
     return { postJson: postJson };

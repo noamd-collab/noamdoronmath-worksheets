@@ -288,14 +288,24 @@
     ];
   }
 
+  function sendChip(label) {
+    if (pageKind() === "teachers" && window.NoamTeacherChat && typeof window.NoamTeacherChat.turn === "function") {
+      window.NoamTeacherChat.turn(label);
+      return;
+    }
+  }
+
   function appendChip(item) {
     if (!item) return;
-    if (item.goal) {
+    if (item.goal || item.reply || (!item.href && item.label)) {
       var button = document.createElement("button");
       button.type = "button";
       button.textContent = item.label;
       button.addEventListener("click", function () {
-        document.dispatchEvent(new CustomEvent("noam-teacher-option", { detail: { goal: item.goal } }));
+        if (item.goal) {
+          document.dispatchEvent(new CustomEvent("noam-teacher-option", { detail: { goal: item.goal } }));
+        }
+        if (pageKind() === "teachers") sendChip(item.label);
       });
       chipsEl.appendChild(button);
       return;
@@ -307,10 +317,10 @@
     chipsEl.appendChild(link);
   }
 
-  function setChips(items) {
+  function setChips(items, extras) {
     chipsEl.textContent = "";
-    (items || []).slice(0, 2).forEach(appendChip);
-    if (pageKind() === "teachers") teacherGoalChips().forEach(appendChip);
+    (items || []).slice(0, 6).forEach(appendChip);
+    (extras || []).forEach(appendChip);
     forceSiteFont(panel);
   }
 
@@ -331,7 +341,7 @@
         primaryEl.href = links[0].href;
         primaryEl.textContent = links[0].label;
       }
-      setChips(links.slice(1, 3));
+      setChips(links.slice(1, 3), pageKind() === "teachers" ? teacherGoalChips() : []);
     }
     var details = "נועם AI מכוון לדפים קיימים. עזרה בפתרון שאלה נמצאת אצל רמזי.";
     if (pageKind() === "teachers") details += "\n" + EXPORT_NOTE;
@@ -356,8 +366,13 @@
       ramziEl.hidden = true;
     }
     setChips((result && result.chips) || []);
-    detailsEl.textContent = (result && result.details) || answerEl.textContent;
-    moreEl.hidden = !detailsEl.textContent;
+    var details = result && typeof result.details === "string" ? result.details : "";
+    if (answerEl.textContent && details.indexOf(answerEl.textContent) === 0) {
+      details = details.slice(answerEl.textContent.length).replace(/^\s+/, "");
+    }
+    if (details === answerEl.textContent) details = "";
+    detailsEl.textContent = details;
+    moreEl.hidden = !details;
     if (mode === "compact") fitCompact();
   }
 
@@ -610,10 +625,39 @@
     return botClientPromise;
   }
 
+  function showTurn(result) {
+    if (mode === "closed") setMode("compact");
+    engage("teacher");
+    showResult(result);
+    input.value = "";
+  }
+
+  function askTeachers(message) {
+    if (window.NoamTeacherChat && typeof window.NoamTeacherChat.turn === "function") {
+      window.NoamTeacherChat.turn(message);
+      return true;
+    }
+    return false;
+  }
+
+  document.addEventListener("noam-companion-ask", function (event) {
+    var message = event.detail && event.detail.message;
+    if (!message || pageKind() !== "teachers") return;
+    if (mode === "closed") setMode("compact");
+    engage("teacher");
+    askTeachers(message);
+  });
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     var message = input.value.trim();
     if (!message || streaming) return;
+    if (pageKind() === "teachers" && askTeachers(message)) {
+      input.value = "";
+      if (mode === "closed") setMode("compact");
+      engage("teacher");
+      return;
+    }
     if (isLocalSolve(message)) {
       showResult({ answer: RAMZI_TEXT, details: RAMZI_TEXT, primary: { action: "ramzi", label: "עזרה מרמזי" }, chips: [] });
       return;
@@ -661,4 +705,5 @@
   showIdle();
   placeLauncher();
   window.requestAnimationFrame(placeLauncher);
+  window.NoamSiteCompanion = { show: showTurn };
 })();

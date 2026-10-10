@@ -14,6 +14,8 @@ export const SITE_ORIGINS = [
 export const RECAPTCHA_SECRET_NAME = "RECAPTCHA_SECRET_KEY";
 export const RECAPTCHA_ACTION = "noam_site_companion";
 export const RECAPTCHA_MIN_SCORE = 0.5;
+/** Teachers type on a school network. A slightly lower floor still rejects bots. */
+export const RECAPTCHA_MIN_SCORE_TEACHERS = 0.3;
 export const RECAPTCHA_TIMEOUT_MS = 5_000;
 export const MAX_MESSAGE_CHARS = 700;
 export const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -142,8 +144,9 @@ export function takeRateSlot(key, now, store, max) {
   return true;
 }
 
-export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs }) {
-  if (!secret || typeof token !== "string" || !token || token.length > 8192) return false;
+export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs, minScore }) {
+  if (!secret) return { ok: false, code: "SECRET_MISMATCH" };
+  if (typeof token !== "string" || !token || token.length > 8192) return { ok: false, code: "BOT_VERIFICATION_FAILED" };
   const body = new URLSearchParams({ secret: secret, response: token });
   let response;
   try {
@@ -154,15 +157,22 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
     }, typeof timeoutMs === "number" ? timeoutMs : RECAPTCHA_TIMEOUT_MS);
   } catch (error) {
     if (isOutboundTimeout(error)) throw error;
-    return false;
+    return { ok: false, code: "BOT_VERIFICATION_FAILED" };
   }
-  if (!response || !response.ok) return false;
+  if (!response || !response.ok) return { ok: false, code: "BOT_VERIFICATION_FAILED" };
   const data = await response.json();
-  if (!data || data.success !== true) return false;
-  if (data.action !== (action || RECAPTCHA_ACTION)) return false;
-  if (typeof data.score !== "number" || data.score < RECAPTCHA_MIN_SCORE) return false;
-  if (!isAllowedRecaptchaHostname(data.hostname)) return false;
-  return true;
+  const errors = data && Array.isArray(data["error-codes"]) ? data["error-codes"] : [];
+  if (!data || data.success !== true) {
+    if (errors.indexOf("invalid-input-secret") !== -1 || errors.indexOf("missing-input-secret") !== -1) {
+      return { ok: false, code: "SECRET_MISMATCH" };
+    }
+    return { ok: false, code: "BOT_VERIFICATION_FAILED" };
+  }
+  if (data.action !== (action || RECAPTCHA_ACTION)) return { ok: false, code: "BOT_VERIFICATION_FAILED" };
+  const floor = typeof minScore === "number" ? minScore : RECAPTCHA_MIN_SCORE;
+  if (typeof data.score !== "number" || data.score < floor) return { ok: false, code: "LOW_SCORE" };
+  if (!isAllowedRecaptchaHostname(data.hostname)) return { ok: false, code: "BOT_VERIFICATION_FAILED" };
+  return { ok: true, code: "" };
 }
 
 export async function guardCompanionRequest(input, deps) {
@@ -189,19 +199,20 @@ export async function guardCompanionRequest(input, deps) {
   if (typeof message !== "string" || !message.trim() || message.length > MAX_MESSAGE_CHARS) {
     return { ok: false, status: 400, code: "MESSAGE_LENGTH" };
   }
-  let passed = false;
+  let verdict = { ok: false, code: "BOT_VERIFICATION_FAILED" };
   try {
-    passed = await verifyRecaptcha({
+    verdict = await verifyRecaptcha({
       token: token,
       secret: deps.secret,
       fetch: deps.fetch,
       action: RECAPTCHA_ACTION,
       timeoutMs: deps.recaptchaTimeoutMs,
+      minScore: deps.minScore,
     });
   } catch (error) {
     if (isOutboundTimeout(error)) return { ok: false, status: 200, code: "UNAVAILABLE" };
     return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
   }
-  if (!passed) return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
+  if (!verdict.ok) return { ok: false, status: 403, code: verdict.code || "BOT_VERIFICATION_FAILED" };
   return { ok: true, status: 200 };
 }

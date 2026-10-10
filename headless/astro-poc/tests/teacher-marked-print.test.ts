@@ -1124,7 +1124,7 @@ describe('teacher catalog picker', () => {
     assert.equal(printer.includes('נועם AI לא זמין כרגע. אפשר להמשיך לבחור ולהדפיס.'), false);
     assert.equal(/fetch\([^)]*(qwen|dashscope|compatible-mode)/.test(printer), false);
     assert.match(page, /data-noam-teacher-suggest="off"/);
-    assert.match(page, /הצעות נועם AI כבויות/);
+    assert.match(page, /השיחה עם נועם AI היא בפאנל/);
     assert.equal(printer.includes('worksheet-viewer-noam'), false);
   });
 });

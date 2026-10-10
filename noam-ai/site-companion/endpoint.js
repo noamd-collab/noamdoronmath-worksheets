@@ -14,6 +14,8 @@ import {
   isWorksheetSolveRequest,
 } from "./companion.js";
 import {
+  RECAPTCHA_MIN_SCORE,
+  RECAPTCHA_MIN_SCORE_TEACHERS,
   corsHeadersFor,
   guardCompanionRequest,
   isAllowedOrigin,
@@ -26,6 +28,7 @@ import {
   hrefForSheet,
   selectTeacherPicks,
 } from "./teacher-pick.js";
+import { confirmChips, partLabelsInText } from "../../headless/astro-poc/public/teachers/teacher-brief.js";
 
 export const QWEN_SECRET_NAME = "QWEN_API_KEY";
 export const NOAM_RECAPTCHA_SECRET_NAME = "NOAM_RECAPTCHA_SECRET_KEY";
@@ -99,6 +102,7 @@ function teacherAnswer(pick, catalog) {
   const primary = links[0]
     ? { id: links[0].recordId, label: links[0].title, href: links[0].href }
     : null;
+  const proposal = !(pick.exerciseIds || []).length || (pick.exerciseIds || []).length > 1;
   return {
     ok: true,
     active: true,
@@ -106,17 +110,42 @@ function teacherAnswer(pick, catalog) {
     model: QWEN_MODEL,
     answer,
     text: answer,
-    details: [answer, QUESTION_GAP, EXPORT_NOTE].filter(Boolean).join("\n"),
+    details: "",
     primary,
-    chips,
-    options: chips,
+    chips: proposal ? confirmChips() : chips,
+    options: proposal ? confirmChips() : chips,
     links,
     essential: [],
-    essentialNote: QUESTION_GAP,
-    exportNote: EXPORT_NOTE,
+    essentialNote: "",
+    exportNote: "",
     exerciseIds: pick.exerciseIds,
     sheetIds: pick.sheetIds,
   };
+}
+
+function askBody(ask) {
+  const prompt = ask && ask.prompt ? ask.prompt : "איזה נושא לכיתה הזו? אפשר לבחור נושא במסך, ואז להמשיך כאן.";
+  const chips = ask && ask.chips ? ask.chips : [];
+  return withIds(
+    {
+      ok: true,
+      active: true,
+      source: "question",
+      model: null,
+      answer: prompt,
+      text: prompt,
+      details: "",
+      primary: null,
+      chips: chips,
+      options: chips,
+      links: [],
+      essential: [],
+      essentialNote: "",
+      exportNote: "",
+    },
+    [],
+    []
+  );
 }
 
 function missingTeacher() {
@@ -168,19 +197,23 @@ export async function runCompanionTurn(payload, deps) {
     );
   }
   if (page.kind === "teachers") {
+    const named = partLabelsInText(message);
     let classification = null;
-    try {
-      classification = await classifyTeacherRequest(payload, {
-        apiKey: settings.qwenKey,
-        fetch: settings.fetch,
-        timeoutMs: settings.qwenTimeoutMs,
-      });
-    } catch (error) {
-      if (isOutboundTimeout(error)) throw error;
-      classification = null;
+    if (named.length) {
+      try {
+        classification = await classifyTeacherRequest(payload, {
+          apiKey: settings.qwenKey,
+          fetch: settings.fetch,
+          timeoutMs: settings.qwenTimeoutMs,
+        });
+      } catch (error) {
+        if (isOutboundTimeout(error)) throw error;
+        classification = null;
+      }
     }
     const pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
-    if (!pick.sheets.length) return missingTeacher();
+    if (pick.ask) return askBody(pick.ask);
+    if (!pick.sheets.length) return askBody(pick.ask);
     const body = teacherAnswer(pick, settings.catalog);
     if (!classification) {
       body.model = null;
@@ -306,6 +339,7 @@ export async function handleNoamSiteCompanion(request, deps) {
       payload = {};
     }
   }
+  const pageKind = payload.page && payload.page.kind;
   const guard = await guardCompanionRequest(
     {
       origin,
@@ -321,12 +355,14 @@ export async function handleNoamSiteCompanion(request, deps) {
       extraOrigins: isHeadlessPreviewOrigin(origin) ? [origin] : [],
       recaptchaTimeoutMs: settings.recaptchaTimeoutMs,
       noIpGlobalMax: settings.noIpGlobalMax,
+      minScore: pageKind === "teachers" ? RECAPTCHA_MIN_SCORE_TEACHERS : RECAPTCHA_MIN_SCORE,
     }
   );
   if (!guard.ok && guard.code === "UNAVAILABLE") {
     return jsonResponse(200, unavailableBody(), origin);
   }
   if (!guard.ok) {
+    console.warn("NOAM_GUARD", guard.code);
     const fail = withIds(
       {
         ok: false,
@@ -343,9 +379,9 @@ export async function handleNoamSiteCompanion(request, deps) {
       [],
       []
     );
-    const cors = corsHeadersFor(origin);
-    if (!cors) return { status: 403, headers: { Vary: "Origin" }, body: "" };
-    return { status: guard.status, headers: cors, body: fail };
+    const preview = isHeadlessPreviewOrigin(origin);
+    if (!corsHeadersFor(origin) && !preview) return { status: 403, headers: { Vary: "Origin" }, body: "" };
+    return { status: guard.status, headers: responseHeaders(origin), body: fail };
   }
   try {
     const result = await runCompanionTurn(payload, settings);

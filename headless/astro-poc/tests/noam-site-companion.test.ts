@@ -277,7 +277,7 @@ describe('Noam AI bot guard', () => {
       { store, secret: 'secret', fetch: async () => ({ ok: true, json: async () => ({ success: true, score: 0.1, action: 'noam_site_companion' }) }) }
     );
     assert.equal(low.status, 403);
-    assert.equal(low.code, 'BOT_VERIFICATION_FAILED');
+    assert.equal(low.code, 'LOW_SCORE');
     for (let i = 0; i < 12; i += 1) {
       const slot = await guardCompanionRequest({ ...base, now: 2_000, clientIp: '203.0.113.11' }, { store, secret: 'secret', fetch: okFetch });
       assert.equal(slot.ok, true);
@@ -363,5 +363,44 @@ describe('Noam AI calm failure text', () => {
     }, { enabled: true });
     assert.equal(inactive.message, CALM_MESSAGE);
     assert.equal(inactive.code, 'NOT_ACTIVE');
+  });
+
+  it('retries one fresh token after a low score, then still shows the calm sentence', async () => {
+    const posts: string[] = [];
+    const client = createBotClient({
+      api: '/api',
+      enabled: true,
+      networkRetryDelayMs: 0,
+      modelTimeoutMs: 1000,
+      window: { location: { hostname: 'localhost' } },
+      loadRecaptcha: async () => ({
+        ready: (fn: () => void) => fn(),
+        execute: async () => 'token-' + posts.length,
+      }),
+      fetch: async (url: string) => {
+        const href = String(url);
+        if (href.includes('noamBotConfig')) {
+          return { ok: true, status: 200, json: async () => ({ ok: true, active: true, provider: 'recaptcha-v3', siteKey: 'abcdefghij1234', mode: 'enforce' }) };
+        }
+        posts.push(href);
+        if (posts.length === 1) return { ok: false, status: 403, json: async () => ({ code: 'LOW_SCORE' }) };
+        return { ok: true, status: 200, json: async () => ({ ok: true, answer: 'המשך' }) };
+      },
+    });
+    const result = await client.postJson('/api/noamSiteCompanion', { message: 'שלום' }) as { answer: string };
+    assert.equal(posts.length, 2);
+    assert.equal(result.answer, 'המשך');
+    const denied = createBotClient({
+      api: '/api',
+      enabled: false,
+      networkRetryDelayMs: 0,
+      modelTimeoutMs: 1000,
+      window: { location: { hostname: 'localhost' } },
+      fetch: async () => ({ ok: false, status: 403, json: async () => ({ code: 'SECRET_MISMATCH' }) }),
+    });
+    await assert.rejects(
+      () => denied.postJson('/api/noamSiteCompanion', { message: 'שלום' }),
+      (error: { message: string; code?: string }) => error.message === CALM_MESSAGE && error.code === 'SECRET_MISMATCH'
+    );
   });
 });

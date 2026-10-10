@@ -1,3 +1,13 @@
+import {
+  blankBrief,
+  confirmChips,
+  describeSelection,
+  editChips,
+  nextTeacherQuestion,
+  readTeacherBrief,
+  selectByBrief,
+} from './teacher-brief.js';
+
 /* Teacher picker for every catalog sheet.
    Grades 7–9: choose existing exercises across sheets.
    Grades 1–6: choose a sheet by topic and level.
@@ -188,7 +198,7 @@ function installSuggest() {
     },
   };
   const status = $('ai-suggest-status');
-  if (status) status.textContent = 'הצעות נועם AI כבויות. ההערה נכנסת להדפסה בלבד.';
+  if (status) status.textContent = 'השיחה עם נועם AI היא בפאנל. הבחירה רק מתוך השאלות שכבר בדף.';
 }
 
 function gradeRecord(grade) {
@@ -3093,9 +3103,9 @@ function bind() {
   document.addEventListener('noam-teacher-option', (event) => {
     const goal = event.detail && event.detail.goal;
     const input = document.querySelector('input[name="scenario"][value="' + goal + '"]');
-    if (!input) return;
+    if (!input || !SCENARIOS[goal]) return;
     input.checked = true;
-    applyScenario(goal);
+    state.scenario = goal;
   });
 }
 
@@ -3749,27 +3759,145 @@ function applySuggestIds(ids) {
   return true;
 }
 
-async function askTeacherNeed(message) {
-  const status = $('teacher-need-status');
-  const button = document.querySelector('#teacher-need button');
-  if (button) button.disabled = true;
-  if (status) status.textContent = 'בודקים בקטלוג…';
-  try {
-    const api = window.NoamTeacherSuggest;
-    const result = api && typeof api.suggest === 'function'
-      ? await api.suggest(message)
-      : { enabled: false, exerciseIds: [], sheetIds: [] };
-    const outcome = suggestOutcome(result);
-    if (!outcome.apply || !applySuggestIds(outcome.ids)) {
-      if (status) status.textContent = TEACHER_QUIET;
-      return;
-    }
-    if (status) status.textContent = 'ההצעה סומנה. אפשר לשנות אותה לפני ההדפסה.';
-  } catch (error) {
-    if (status) status.textContent = TEACHER_QUIET;
-  } finally {
-    if (button) button.disabled = false;
+const GOAL_LABELS = { 'מפגש ראשון': 'first', 'תרגול וביסוס': 'practice', 'אחר': 'other' };
+const EDIT_SLOTS = { 'המספר': 'count', 'הרמה': 'level', 'הכיתה': 'strength', 'הזמן': 'duration', 'הדירוג': 'progressive', 'סוג הדף': 'output' };
+let teacherChat = { text: '', hold: {}, phase: 'ask', pick: null, brief: null };
+
+function formBrief() {
+  const level = state.level === 'a' || state.level === 'b' || state.level === 'c' ? [state.level] : [];
+  return { grade: Number(state.grade) || null, topicId: String(state.topic || ''), levels: level };
+}
+
+function chatBrief() {
+  const brief = readTeacherBrief(teacherChat.text, formBrief());
+  if (teacherChat.hold.count) {
+    brief.minParts = null;
+    brief.minQuestions = null;
   }
+  if (teacherChat.hold.level) brief.levels = [];
+  if (teacherChat.hold.strength) brief.strength = null;
+  if (teacherChat.hold.duration) brief.duration = null;
+  if (teacherChat.hold.progressive) brief.progressive = null;
+  if (teacherChat.hold.output) brief.output = null;
+  return brief;
+}
+
+function chatIndex() {
+  const topic = currentTopic();
+  if (!topic) return [];
+  const grade = gradeRecord(state.grade);
+  return topic.sheets.map((meta) => {
+    const source = sheets.get(meta.pdfId);
+    return {
+      pdfId: meta.pdfId,
+      grade: Number(state.grade),
+      gradeLabel: grade ? grade.label : '',
+      band: band(),
+      topicId: String(state.topic),
+      topic: topic.title,
+      level: meta.level,
+      levelLabel: meta.levelLabel || (source && source.levelLabel) || '',
+      questions: source && source.questions ? source.questions.map((question) => question.id) : [],
+    };
+  });
+}
+
+function showChat(result) {
+  const panel = window.NoamSiteCompanion;
+  if (panel && typeof panel.show === 'function') panel.show(result);
+}
+
+function releaseHold(message) {
+  const piece = readTeacherBrief(message, blankBrief());
+  if (piece.minParts != null || piece.minQuestions != null) delete teacherChat.hold.count;
+  if (piece.levels.length) delete teacherChat.hold.level;
+  if (piece.strength) delete teacherChat.hold.strength;
+  if (piece.duration) delete teacherChat.hold.duration;
+  if (piece.progressive != null) delete teacherChat.hold.progressive;
+  if (piece.output) delete teacherChat.hold.output;
+}
+
+function confirmTeacherPick() {
+  const pick = teacherChat.pick;
+  const brief = teacherChat.brief || chatBrief();
+  if (!pick) return;
+  if (brief.output === 'short' || brief.output === 'marked') {
+    printMode = brief.output;
+    document.querySelectorAll('[data-output]').forEach((btn) => {
+      const on = btn.dataset.output === printMode;
+      btn.classList.toggle('is-on', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  const applied = applySuggestIds((pick.exerciseIds || []).concat(pick.sheetIds || []));
+  teacherChat.phase = 'ask';
+  showChat({
+    answer: applied
+      ? 'סומן על הדף. אפשר לשנות את הסימון לפני ההדפסה.'
+      : 'השאלות האלה לא נטענו בדף הזה. בחרו את הנושא במסך ונמשיך.',
+    details: '',
+    chips: [],
+  });
+}
+
+function teacherChatTurn(message) {
+  const text = String(message || '').trim();
+  if (!text) return;
+  if (GOAL_LABELS[text]) {
+    state.scenario = GOAL_LABELS[text];
+    const input = document.querySelector('input[name="scenario"][value="' + GOAL_LABELS[text] + '"]');
+    if (input) input.checked = true;
+  }
+  if (teacherChat.phase === 'confirm' && text === 'לאשר') {
+    confirmTeacherPick();
+    return;
+  }
+  if (teacherChat.phase === 'confirm' && text === 'לשנות') {
+    teacherChat.phase = 'edit';
+    showChat({ answer: 'מה לשנות?', details: '', chips: editChips() });
+    return;
+  }
+  if (teacherChat.phase === 'edit' && EDIT_SLOTS[text]) {
+    teacherChat.hold[EDIT_SLOTS[text]] = true;
+    teacherChat.phase = 'ask';
+    teacherChat.pick = null;
+    const again = nextTeacherQuestion(chatBrief());
+    showChat({ answer: again ? again.prompt : 'מה לשנות?', details: '', chips: again ? again.chips : editChips() });
+    return;
+  }
+  releaseHold(text);
+  teacherChat.text = (teacherChat.text + ' ' + text).trim();
+  teacherChat.phase = 'ask';
+  const brief = chatBrief();
+  teacherChat.brief = brief;
+  const question = nextTeacherQuestion(brief);
+  if (question) {
+    const lead = GOAL_LABELS[text] ? text + '. ' : '';
+    showChat({ answer: lead + question.prompt, details: '', chips: question.chips });
+    return;
+  }
+  const pick = selectByBrief(chatIndex(), brief);
+  if (!pick.sheets.length) {
+    showChat({
+      answer: 'ברמה הזו אין שאלות בקטלוג. איזו רמה כן?',
+      details: '',
+      chips: [{ label: 'רמה א׳', reply: true }, { label: 'רמה ב׳', reply: true }],
+    });
+    return;
+  }
+  teacherChat.phase = 'confirm';
+  teacherChat.pick = pick;
+  showChat({ answer: describeSelection(brief, pick), details: '', chips: confirmChips() });
+}
+
+window.NoamTeacherChat = { turn: teacherChatTurn };
+
+function askTeacherNeed(message) {
+  const status = $('teacher-need-status');
+  if (status) status.textContent = '';
+  const field = $('teacher-need-text');
+  if (field) field.value = '';
+  teacherChatTurn(message);
 }
 
 function routeRequestFrom(btn) {
