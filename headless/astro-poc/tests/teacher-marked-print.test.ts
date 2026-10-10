@@ -151,7 +151,12 @@ describe('grade 9 factoring marked source', () => {
   it('includes the teacher note in print and keeps the short sheet on one A4', () => {
     assert.match(printer, /function attachTeacherNote/);
     assert.match(printer, /class="teacher-print-note" dir="rtl"/);
-    assert.equal(printer.split('attachTeacherNote(printArea, note)').length - 1, 2);
+    assert.equal(printer.split('attachTeacherNote(printArea, note)').length - 1, 1);
+    assert.match(printer, /paintAllShort\(printArea, chosen, note\)/);
+    const worksheetPaint = printer.slice(printer.indexOf('async function paintWorksheet'), printer.indexOf('async function paintAllShort'));
+    assert.equal(worksheetPaint.includes('figcaption'), false);
+    assert.match(worksheetPaint, /measureNote\(note\)/);
+    assert.match(printer, /הערת המורה/);
     assert.match(page, /\.print-area \.teacher-print-note\{[^}]*direction:rtl[^}]*break-inside:avoid;page-break-inside:avoid/);
     assert.match(page, /ההערה מודפסת על הדף/);
     assert.match(printer, /fonts\.load\('11px Heebo'\)/);
@@ -442,6 +447,52 @@ describe('teacher catalog picker', () => {
     assert.ok(wrapped.x < 440 && wrapped.x + wrapped.w > 430);
     assert.ok(wrapped.y < 342 && wrapped.y + wrapped.h > 340);
     assert.equal(answerBox([{ str: '(3)', x: 100, y: 40, w: 12 }], 9, 'א'), null);
+    const split = answerBox([
+      { str: '(5)', x: 720, y: 261.4, w: 16 },
+      { str: 'א', x: 680, y: 261.4, w: 8 },
+      { str: '.', x: 680, y: 261.4, w: 4 },
+      { str: '3', x: 640, y: 261.4, w: 8 },
+      { str: 'ו', x: 235.4, y: 261.4, w: 8 },
+      { str: '.', x: 235.4, y: 261.4, w: 4 },
+      { str: '−7 = −7.0', x: 177.3, y: 261.4, w: 50 },
+      { str: 'ב', x: 500, y: 263.1, w: 8 },
+      { str: '.', x: 500, y: 263.1, w: 4 },
+      { str: '4', x: 470, y: 261.4, w: 8 },
+    ], 5, 'ו');
+    assert.ok(split);
+    assert.ok(split.x < 180 && split.x + split.w > 177);
+    assert.ok(split.x + split.w < 235);
+    const combined = answerBox([
+      { str: '(5)', x: 720, y: 261.4, w: 16 },
+      { str: 'ו. −7 = −7.0', x: 177.3, y: 261.4, w: 70 },
+    ], 5, 'ו');
+    assert.ok(combined);
+    assert.ok(combined.x < 180 && combined.x + combined.w > 240);
+    const trimApi = new Function(`${preview.slice(preview.indexOf('function sliceInkRows'), preview.indexOf('async function measureWorksheet'))} return { trimPieceBox };`)() as {
+      trimPieceBox: (slice: { kind: string; page: number; box: { x: number; y: number; w: number; h: number }; source?: { footerCrop?: { page: number; y: number } } }, bitmap: { width: number; height: number; getContext: (kind: string) => { getImageData: (x: number, y: number, w: number, h: number) => { data: Uint8ClampedArray } } }) => { box: { y: number; h: number } };
+    };
+    const trimW = 40;
+    const trimH = 400;
+    const trimData = new Uint8ClampedArray(trimW * trimH * 4);
+    trimData.fill(255);
+    const ink = (x0: number, x1: number, y0: number, y1: number) => {
+      for (let y = y0; y < y1; y += 1) {
+        for (let x = x0; x < x1; x += 1) {
+          const i = (y * trimW + x) * 4;
+          trimData[i] = trimData[i + 1] = trimData[i + 2] = 0;
+          trimData[i + 3] = 255;
+        }
+      }
+    };
+    ink(4, 36, 30, 48);
+    ink(8, 20, 370, 378);
+    const trimBitmap = { width: trimW, height: trimH, getContext: () => ({ getImageData: () => ({ data: trimData }) }) };
+    const trimmed = trimApi.trimPieceBox({ kind: 'row', page: 11, box: { x: 0, y: 0, w: 1, h: 1 }, source: { footerCrop: { page: 10, y: 0.9667 } } }, trimBitmap);
+    assert.ok(trimmed.box.y < 0.08, String(trimmed.box.y));
+    assert.ok(trimmed.box.y + trimmed.box.h < 0.2, String(trimmed.box.y + trimmed.box.h));
+    ink(4, 36, 4, 8);
+    const answerTrim = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.2 } }, trimBitmap);
+    assert.ok(answerTrim.box.y > 0.05, String(answerTrim.box.y));
     const sheet = preview.slice(preview.indexOf('async function paintAllShort'), preview.indexOf('function markedHTML'));
     assert.equal(sheet.includes('headerCrop'), false);
     assert.match(sheet, /paintWorksheet/);

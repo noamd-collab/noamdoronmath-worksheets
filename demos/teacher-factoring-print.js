@@ -602,6 +602,20 @@ function thumbContent(bitmap, question, row) {
     cluster.span = bot - top;
     if (!best || cluster.span > best.span || (cluster.span === best.span && cluster.n > best.n)) best = cluster;
   });
+  let unionLeft = best.x;
+  let unionRight = best.x + best.w;
+  let unionTop = best.top;
+  let unionBot = best.bot;
+  clusters.forEach((cluster) => {
+    if (cluster === best || cluster.top < 0 || cluster.n < 24) return;
+    const overlap = Math.min(cluster.bot, best.bot) - Math.max(cluster.top, best.top);
+    if (overlap <= 3) return;
+    unionLeft = Math.min(unionLeft, cluster.x);
+    unionRight = Math.max(unionRight, cluster.x + cluster.w);
+    unionTop = Math.min(unionTop, cluster.top);
+    unionBot = Math.max(unionBot, cluster.bot);
+  });
+  best = { x: unionLeft, w: unionRight - unionLeft, top: unionTop, bot: unionBot, n: best.n, span: best.span };
   const lineFrac = question.line > 0 ? question.line : 0.02;
   const gapY = Math.max(4, Math.round(lineFrac * bitmap.height * 0.28));
   const minBand = Math.max(5, Math.round(bitmap.height * 0.0035));
@@ -631,6 +645,11 @@ function thumbContent(bitmap, question, row) {
   }
   const tall = bands.filter((band) => band.h >= minBand);
   const kept = tall.length ? bands.filter((band) => band.h >= minBand || tall.some((item) => Math.abs(band.y - (item.y + item.h)) < gapY || Math.abs(item.y - (band.y + band.h)) < gapY)) : [bands.reduce((bestBand, band) => (band.h > bestBand.h ? band : bestBand))];
+  if (kept.length > 1) {
+    const last = kept[kept.length - 1];
+    const prev = kept[kept.length - 2];
+    if (last.h < prev.h * 0.55 && last.y - (prev.y + prev.h) > 2) kept.pop();
+  }
   if (!kept.length) return windowRect;
   let top = kept[0].y;
   let bot = kept[0].y + kept[0].h;
@@ -678,7 +697,7 @@ async function paintThumb(canvas) {
   const question = library.get(canvas.dataset.thumb);
   if (!question || !question.row || !levelAllows(question.source)) return;
   const rows = questionRows(question);
-  const pieces = [];
+  let pieces = [];
   for (let index = 0; index < rows.length; index++) {
     const row = rows[index];
     const bitmap = await pageBitmap(row.page || question.page, question.source);
@@ -691,8 +710,25 @@ async function paintThumb(canvas) {
   const edge = 8;
   const gutter = 6;
   const maxH = 180;
+  const fitted = [];
+  pieces.forEach((piece) => {
+    const slice = piece.slice;
+    const target = cardW - edge * 2;
+    const fit = target / Math.max(1, slice.srcW);
+    const displayH = slice.srcH * fit;
+    if (displayH >= 22 || slice.srcW < slice.srcH * 8) {
+      fitted.push(piece);
+      return;
+    }
+    const cut = Math.floor(slice.srcW / 2);
+    const rightW = slice.srcW - cut;
+    fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcX: slice.srcX + cut, srcW: rightW } });
+    fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcW: cut } });
+  });
+  pieces = fitted;
   let scale = cardW - edge * 2;
   pieces.forEach((piece) => { scale = Math.min(scale, (cardW - edge * 2) / piece.slice.srcW); });
+  scale = Math.min(scale, 1.5);
   let body = pieces.reduce((sum, piece) => sum + piece.slice.srcH * scale, 0);
   const gaps = gutter * Math.max(0, pieces.length - 1);
   if (body + gaps + edge * 2 > maxH) scale *= (maxH - gaps - edge * 2) / body;
@@ -1228,17 +1264,31 @@ function answerBox(items, questionNumber, part) {
     .sort((a, b) => b.y - a.y)[0];
   const bandTop = marker.y + 8;
   const bandBottom = next ? next.y + 8 : marker.y - 40;
-  const labels = items
-    .filter((item) => sameSheet(item) && /^[אבגדהו]\.$/.test(String(item.str || '').trim()) && item.y <= bandTop && item.y >= bandBottom)
-    .sort((a, b) => b.y - a.y || b.x - a.x);
+  const labels = [];
+  items.forEach((item) => {
+    if (!sameSheet(item) || item.y > bandTop || item.y < bandBottom) return;
+    const found = answerPart(item, items);
+    if (!found) return;
+    if (labels.some((label) => label.part === found.part && Math.abs(label.y - item.y) <= 4)) return;
+    labels.push({ str: found.part + '.', x: item.x, y: item.y, w: item.w, h: item.h, page: item.page, part: found.part, rest: found.rest });
+  });
+  labels.sort((a, b) => (Math.abs(a.y - b.y) > 4 ? b.y - a.y : b.x - a.x));
   let left = 28;
   let right = marker.x - 4;
   let top = marker.y + 16;
   let bottom = next ? next.y + 8 : marker.y - 16;
   if (part) {
-    const index = labels.findIndex((item) => String(item.str).trim().startsWith(part));
+    const index = labels.findIndex((item) => item.part === part);
     if (index < 0) return null;
     const label = labels[index];
+    if (label.rest) {
+      const glyphTop = label.y + Math.max(label.h || 8, 8) + 2;
+      const glyphBottom = label.y - 3;
+      const glyphLeft = label.x - 3;
+      const glyphRight = label.x + Math.max(label.w || 0, 4) + 3;
+      if (glyphRight - glyphLeft < 6 || glyphTop - glyphBottom < 8) return null;
+      return { page: marker.page, x: glyphLeft, y: glyphBottom, w: glyphRight - glyphLeft, h: glyphTop - glyphBottom };
+    }
     const follower = labels[index + 1];
     const nextOnLine = follower && Math.abs(follower.y - label.y) <= 6 ? follower : null;
     right = label.x - 1;
@@ -1255,6 +1305,7 @@ function answerBox(items, questionNumber, part) {
     && item.y >= bottom - 2
     && item.x >= left - 1
     && item.x < right
+    && !answerPart(item, items)
     && !/^[אבגדהו]\.$/.test(String(item.str || '').trim())
     && !/^\(\d+\)$/.test(String(item.str || '').trim())
   ));
@@ -1269,6 +1320,22 @@ function answerBox(items, questionNumber, part) {
   bottom = Math.max(bottom, glyphBottom);
   if (right - left < 6) return null;
   return { page: marker.page, x: left, y: bottom, w: right - left, h: top - bottom };
+}
+
+function answerPart(item, items) {
+  const text = String(item.str || '').trim();
+  const combined = text.match(/^([אבגדהו])\.\s*(.*)$/);
+  if (combined) return { part: combined[1], rest: combined[2] };
+  if (/^[אבגדהו]$/.test(text)) {
+    const dot = items.some((other) => (
+      other !== item
+      && String(other.str || '').trim() === '.'
+      && Math.abs((other.y || 0) - (item.y || 0)) <= 3
+      && Math.abs((other.x || 0) - (item.x || 0)) <= 16
+    ));
+    if (dot) return { part: text, rest: '' };
+  }
+  return null;
 }
 
 function exerciseSlices(chosen) {
@@ -1412,6 +1479,100 @@ function sheetTitle(chosen) {
   return topic;
 }
 
+function sliceInkRows(bitmap, box) {
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const x0 = Math.max(0, Math.floor(box.x * width));
+  const y0 = Math.max(0, Math.floor(box.y * height));
+  const x1 = Math.min(width, Math.ceil((box.x + box.w) * width));
+  const y1 = Math.min(height, Math.ceil((box.y + box.h) * height));
+  if (x1 - x0 < 2 || y1 - y0 < 2) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(x0, y0, x1 - x0, y1 - y0);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = x1 - x0;
+  const rh = y1 - y0;
+  const bands = [];
+  let start = -1;
+  let blank = 0;
+  for (let y = 0; y <= rh; y += 1) {
+    let n = 0;
+    if (y < rh) {
+      for (let x = 0; x < rw; x += 1) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
+      }
+    }
+    if (n > 2) {
+      if (start < 0) start = y;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (y === rh || blank > 2) {
+        const end = y - blank;
+        bands.push({ y: start, h: end - start + 1 });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  return { bands, y0, height };
+}
+
+function trimPieceBox(slice, bitmap) {
+  const box = slice.box;
+  if (!box || !bitmap) return slice;
+  const source = slice.source;
+  let y2 = box.y + box.h;
+  const footer = source && source.footerCrop;
+  if (footer && Number(footer.page) === Number(slice.page) && footer.y < y2) y2 = footer.y;
+  const clipped = y2 < box.y + box.h - 0.0001 ? { ...box, h: Math.max(0.004, y2 - box.y) } : box;
+  const ink = sliceInkRows(bitmap, clipped);
+  if (!ink || !ink.bands.length) return slice;
+  const bands = ink.bands.slice();
+  const pageH = ink.height;
+  if (slice.kind === 'answer') {
+    if (bands.length > 1) {
+      const first = bands[0];
+      const next = bands[1];
+      if (first.h < next.h * 0.55 && next.y - (first.y + first.h) > 2) bands.shift();
+    }
+    if (bands.length > 1) {
+      const last = bands[bands.length - 1];
+      const prev = bands[bands.length - 2];
+      if (last.h < prev.h * 0.55 && last.y - (prev.y + prev.h) > 2) bands.pop();
+    }
+  } else {
+    while (bands.length > 1) {
+      const last = bands[bands.length - 1];
+      const prev = bands[bands.length - 2];
+      const gap = last.y - (prev.y + prev.h);
+      if (last.h < pageH * 0.04 && gap > Math.max(pageH * 0.03, last.h * 2.5)) bands.pop();
+      else break;
+    }
+  }
+  if (!bands.length) return slice;
+  const pad = Math.max(2, Math.round(pageH * 0.003));
+  const top = Math.max(0, ink.y0 + bands[0].y - pad);
+  const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
+  const y = top / pageH;
+  const h = Math.max(0.004, (bot - top) / pageH);
+  const next = { ...box, y, h };
+  if (box.mask && box.h > 0) {
+    const absTop = box.y + box.mask.y * box.h;
+    const absBot = absTop + box.mask.h * box.h;
+    const maskTop = Math.max(absTop, y);
+    const maskBot = Math.min(absBot, y + h);
+    if (maskBot - maskTop < 0.0015) delete next.mask;
+    else next.mask = { x: box.mask.x, w: box.mask.w, y: (maskTop - y) / h, h: (maskBot - maskTop) / h };
+  }
+  return { ...slice, box: next };
+}
+
 async function measureWorksheet(slices) {
   const OUT_W = 1000;
   const measured = [];
@@ -1423,31 +1584,60 @@ async function measureWorksheet(slices) {
       measured.push({ slice, dh: 26 });
     } else if (slice.kind === 'answer' || slice.kind === 'row' || slice.kind === 'stem') {
       const bitmap = await pageBitmap(slice.page, slice.source);
-      const sw = slice.box.w * bitmap.width;
-      const sh = slice.box.h * bitmap.height;
-      const imageH = Math.max(1, Math.round(OUT_W * sh / sw));
-      if (slice.kind === 'answer') {
-        const naturalW = Math.max(1, OUT_W * slice.box.w);
-        const naturalH = Math.max(1, naturalW * sh / sw);
+      const piece = trimPieceBox(slice, bitmap);
+      const sw = piece.box.w * bitmap.width;
+      const sh = piece.box.h * bitmap.height;
+      const imageH = Math.max(1, Math.round(OUT_W * sh / Math.max(1, sw)));
+      if (piece.kind === 'answer') {
+        const naturalW = Math.max(1, OUT_W * piece.box.w);
+        const naturalH = Math.max(1, naturalW * sh / Math.max(1, sw));
         const maxW = OUT_W - 56;
         let scale = 72 / naturalH;
         if (naturalW * scale > maxW) scale = maxW / naturalW;
         scale = Math.max(1, scale);
         const dw = Math.max(48, Math.round(naturalW * scale));
         const dh = Math.round(naturalH * scale) + 24;
-        measured.push({ slice, bitmap, sw, sh, dw, dh });
+        measured.push({ slice: piece, bitmap, sw, sh, dw, dh });
       } else {
-        measured.push({ slice, bitmap, sw, sh, dh: imageH });
+        measured.push({ slice: piece, bitmap, sw, sh, dh: imageH });
       }
     }
   }
   return measured;
 }
 
-function packWorksheet(measured) {
+function measureNote(note) {
+  const text = String(note || '').trim();
+  if (!text) return null;
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const maxW = 1000 - 56;
+  ctx.font = '16px Heebo, Arial, sans-serif';
+  const lines = [];
+  text.split(/\n/).forEach((paragraph) => {
+    const words = paragraph.split(/\s+/).filter(Boolean);
+    if (!words.length) {
+      lines.push('');
+      return;
+    }
+    let line = '';
+    words.forEach((word) => {
+      const trial = line ? line + ' ' + word : word;
+      if (line && ctx.measureText(trial).width > maxW) {
+        lines.push(line);
+        line = word;
+      } else line = trial;
+    });
+    if (line) lines.push(line);
+  });
+  const lineH = 22;
+  return { lines, lineH, height: 36 + lines.length * lineH };
+}
+
+function packWorksheet(measured, noteHeight) {
   const PAGE_H = 1440;
   const FOOT = 36;
-  const FIRST_TOP = 118;
+  const FIRST_TOP = 118 + Math.max(0, noteHeight || 0);
   const CONT_TOP = 48;
   const heading = (item) => item && (item.slice.kind === 'stem' || item.slice.kind === 'level' || item.slice.kind === 'answers-head');
   const heightOf = (items, top) => top + FOOT + contentHeight(items);
@@ -1480,7 +1670,7 @@ function packWorksheet(measured) {
   return pages;
 }
 
-function paintWorksheetPage(canvas, page, index, count, title) {
+function paintWorksheetPage(canvas, page, index, count, title, note) {
   const OUT_W = 1000;
   const PAGE_H = 1440;
   canvas.width = OUT_W;
@@ -1500,6 +1690,16 @@ function paintWorksheetPage(canvas, page, index, count, title) {
     ctx.font = '18px Heebo, Arial, sans-serif';
     ctx.textAlign = 'right';
     ctx.fillText('שם ______________    כיתה ________    תאריך __________', OUT_W - 28, 104);
+    if (note && note.lines && note.lines.length) {
+      ctx.font = '700 16px Heebo, Arial, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.direction = 'rtl';
+      ctx.fillText('הערת המורה', OUT_W - 28, 128);
+      ctx.font = '16px Heebo, Arial, sans-serif';
+      note.lines.forEach((line, lineIndex) => {
+        ctx.fillText(line, OUT_W - 28, 128 + 22 + lineIndex * (note.lineH || 22));
+      });
+    }
   }
   let y = page.top;
   page.items.forEach((item, itemIndex) => {
@@ -1554,7 +1754,7 @@ function paintWorksheetPage(canvas, page, index, count, title) {
   ctx.fillText('עמוד ' + (index + 1) + ' מתוך ' + count, OUT_W / 2, PAGE_H - 12);
 }
 
-async function paintWorksheet(root, chosen) {
+async function paintWorksheet(root, chosen, note) {
   if (document.fonts && document.fonts.load) {
     try {
       await document.fonts.load('700 28px Heebo');
@@ -1564,23 +1764,23 @@ async function paintWorksheet(root, chosen) {
   }
   const exercises = exerciseSlices(chosen);
   const answers = await answerSlices(chosen);
+  const noteBox = measureNote(note);
   const measured = await measureWorksheet(exercises.concat(answers.slices));
-  const pages = packWorksheet(measured);
+  const pages = packWorksheet(measured, noteBox ? noteBox.height : 0);
   const title = sheetTitle(chosen);
   root.dataset.missingAnswers = answers.missing.join(' | ');
-  root.innerHTML = pages.map((_, index) => (
-    `<figure class="crop-sheet"><canvas></canvas><figcaption>דף מצומצם ${index + 1} מתוך ${pages.length}</figcaption></figure>`
-  )).join('');
+  root.innerHTML = pages.map(() => '<figure class="crop-sheet"><canvas></canvas></figure>').join('');
   const canvases = root.querySelectorAll('canvas');
-  pages.forEach((page, index) => paintWorksheetPage(canvases[index], page, index, pages.length, title));
+  pages.forEach((page, index) => paintWorksheetPage(canvases[index], page, index, pages.length, title, noteBox));
 }
 
-async function paintAllShort(root, chosen) {
+async function paintAllShort(root, chosen, note) {
   if (chosen.length && chosen.every((question) => question.source && question.source.mode === 'sheet')) {
     await paintGroupedShort(root, chosen);
+    await attachTeacherNote(root, note);
     return;
   }
-  await paintWorksheet(root, chosen.filter((question) => !question.source || question.source.mode !== 'sheet'));
+  await paintWorksheet(root, chosen.filter((question) => !question.source || question.source.mode !== 'sheet'), note);
 }
 
 function markedHTML(chosen) {
@@ -1615,9 +1815,8 @@ async function updateShortPrint(plan, printArea, chosen, note, cfg) {
   const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
   plan.innerHTML = head + '<div class="crop-preview"></div>' + foot;
   printArea.innerHTML = '';
-  await paintAllShort(plan.querySelector('.crop-preview'), chosen);
-  await paintAllShort(printArea, chosen);
-  await attachTeacherNote(printArea, note);
+  await paintAllShort(plan.querySelector('.crop-preview'), chosen, note);
+  await paintAllShort(printArea, chosen, note);
 }
 
 function elementarySource(meta, pageCount) {
