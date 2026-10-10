@@ -3,12 +3,14 @@
  * Retrieval is limited to the verified catalog. The model may only rank and explain those records.
  * qwen3.8-flash is called server-side. This module never reads a key from the browser.
  */
+import { fetchWithTimeout } from "./bot-guard.js";
 import { retrieveRecords } from "./retrieve.js";
 
 export const QWEN_CHAT_URL =
   "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions";
 export const QWEN_MODEL = "qwen3.8-flash";
 export const MAX_OUTPUT_TOKENS = 800;
+export const QWEN_TIMEOUT_MS = 12_000;
 
 export const FALLBACK_TEXT =
   "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
@@ -246,21 +248,21 @@ export async function handleCompanionTurn(input, options) {
     return emptyResult("catalog-gap", MISSING_TEXT, safe);
   }
   if (!settings.apiKey) {
-    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false });
+    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false, error: FALLBACK_TEXT });
   }
   const fetcher = settings.fetch;
   if (typeof fetcher !== "function") {
-    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false });
+    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false, error: FALLBACK_TEXT });
   }
   try {
-    const response = await fetcher(QWEN_CHAT_URL, {
+    const response = await fetchWithTimeout(fetcher, QWEN_CHAT_URL, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + settings.apiKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(qwenRequestBody(safe, records)),
-    });
+    }, typeof settings.timeoutMs === "number" ? settings.timeoutMs : QWEN_TIMEOUT_MS);
     if (!response || !response.ok) throw new Error("QWEN_HTTP");
     const data = await response.json();
     const content =
@@ -271,6 +273,6 @@ export async function handleCompanionTurn(input, options) {
       data.choices[0].message.content;
     return groundModelPayload(parseModelJson(content), records, safe);
   } catch (error) {
-    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false });
+    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false, error: FALLBACK_TEXT });
   }
 }

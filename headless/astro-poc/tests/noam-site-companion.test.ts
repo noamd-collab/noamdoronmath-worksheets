@@ -248,7 +248,7 @@ describe('Noam AI bot guard', () => {
 
   it('caps the message, rate-limits, and requires a passing reCAPTCHA token', async () => {
     const store = new Map();
-    const okFetch = async () => ({ ok: true, json: async () => ({ success: true, score: 0.9, action: 'noam_site_companion' }) });
+    const okFetch = async () => ({ ok: true, json: async () => ({ success: true, score: 0.9, action: 'noam_site_companion', hostname: 'www.noamdoronmath.co.il' }) });
     const base = {
       origin: 'https://www.noamdoronmath.co.il',
       clientIp: '203.0.113.8',
