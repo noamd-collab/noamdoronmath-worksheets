@@ -544,7 +544,7 @@ describe('teacher catalog picker', () => {
     const demo = readFileSync(new URL('../../../demos/teacher-factoring-print.js', import.meta.url), 'utf8');
     assert.equal(demo, preview);
     const src = preview.slice(preview.indexOf('function wizardSteps'), preview.indexOf('function wizardPaint'));
-    const api = new Function(`${src} return { wizardSteps, wizardIndex, wizardNeighbor, wizardStepFromHash, wizardHash, wizardReduce, wizardHandle, routeFromHash, routeReduce, suggestOutcome, topicHits };`)() as {
+    const api = new Function(`${src} return { wizardSteps, wizardIndex, wizardNeighbor, wizardStepFromHash, wizardHash, wizardReduce, wizardHandle, settleRouteTap, routeFromHash, routeReduce, suggestOutcome, topicHits };`)() as {
       wizardSteps: () => string[];
       wizardIndex: (step: string) => number;
       wizardNeighbor: (step: string, delta: number) => string;
@@ -552,6 +552,7 @@ describe('teacher catalog picker', () => {
       wizardHash: (step: string) => string;
       wizardReduce: (model: { step: string; grade: string; topic: string; level: string; selected: string[]; output: string }, action: { type: string; hash?: string; step?: string; grade?: string; topic?: string; level?: string; selected?: string[]; output?: string }) => { step: string; grade: string; topic: string; level: string; selected: string[]; output: string };
       wizardHandle: (model: { step: string; grade: string; topic: string; level: string; selected: string[]; output: string }, action: { type: string; step?: string }) => { step: string; how: string; selected: string[] };
+      settleRouteTap: (ready: boolean, pending: { route: string; step?: string } | null, request: { route: string; step?: string } | null) => { pending: { route: string; step?: string } | null; opened: { route: string; step?: string } | null };
       routeFromHash: (hash: string) => string;
       routeReduce: (model: { route: string; step: string; grade: string; topic: string; level: string; selected: string[]; output: string }, action: { type: string; route?: string; step?: string; hash?: string }) => { route: string; step: string; grade: string; topic: string; level: string; selected: string[]; output: string };
       suggestOutcome: (result: { enabled?: boolean; exerciseIds?: string[]; sheetIds?: string[] } | null) => { apply: boolean; ids: string[] };
@@ -643,6 +644,25 @@ describe('teacher catalog picker', () => {
     assert.equal(hits.length, 1);
     assert.equal(hits[0].topic, '2');
     assert.equal(api.topicHits({ grades: [] }, 'פ').length, 0);
+    const queued = api.settleRouteTap(false, null, { route: 'fast' });
+    assert.equal(queued.opened, null);
+    assert.equal(queued.pending && queued.pending.route, 'fast');
+    const replaced = api.settleRouteTap(false, queued.pending, { route: 'guided', step: 'grade' });
+    assert.equal(replaced.opened, null);
+    assert.equal(replaced.pending && replaced.pending.route, 'guided');
+    assert.equal(replaced.pending && replaced.pending.step, 'grade');
+    const flushed = api.settleRouteTap(true, replaced.pending, null);
+    assert.equal(flushed.pending, null);
+    assert.equal(flushed.opened && flushed.opened.route, 'guided');
+    assert.equal(flushed.opened && flushed.opened.step, 'grade');
+    const direct = api.settleRouteTap(true, null, { route: 'fast' });
+    assert.equal(direct.pending, null);
+    assert.equal(direct.opened && direct.opened.route, 'fast');
+    assert.match(preview, /new AbortController\(\)/);
+    assert.match(preview, /setTimeout\(\(\) => controller\.abort\(\), 10000\)/);
+    assert.match(preview, /signal: controller\.signal/);
+    assert.match(preview, /לא מופיעים בחיפוש וייכנסו להדפסה/);
+    assert.match(preview, /נבחרו ולא מופיעים בחיפוש/);
     assert.match(preview, /window\.history\.pushState/);
     assert.match(preview, /addEventListener\('popstate'/);
     assert.match(preview, /printMode = btn\.dataset\.output/);
@@ -650,6 +670,9 @@ describe('teacher catalog picker', () => {
     assert.match(preview, /sessionStorage/);
     const boot = preview.slice(preview.indexOf('async function start'), preview.indexOf('start().catch'));
     assert.ok(boot.indexOf('applyScenario') >= 0 && boot.indexOf('applyScenario') < boot.indexOf('restoreWizardSelection'));
+    assert.match(boot, /settleRouteTap\(true, pendingRoute, null\)/);
+    assert.ok(boot.indexOf('initWizard') < boot.indexOf('settleRouteTap'));
+    assert.match(preview, /if \(!catalogReady\)/);
     const backHandler = preview.slice(preview.indexOf("$('wizard-back').addEventListener"), preview.indexOf("$('wizard-next').addEventListener"));
     assert.equal(backHandler.includes('history.back'), false);
     assert.match(backHandler, /wizardHandle\(currentWizardModel\(\), \{ type: 'back' \}\)/);
@@ -682,6 +705,14 @@ describe('teacher catalog picker', () => {
     assert.match(demoPage, /id="topic-filter"/);
     assert.match(page, /bottom:132px/);
     assert.match(page, /is-summary .summary-actions button/);
+    assert.match(page, /\.route-gate\{padding:22px 18px 12px\}/);
+    assert.match(demoPage, /\.route-gate\{padding:22px 18px 12px\}/);
+    assert.match(page, /id="route-loading"/);
+    assert.match(demoPage, /id="route-loading"/);
+    assert.match(page, /id="fast-selected"/);
+    assert.match(demoPage, /id="fast-selected"/);
+    assert.match(page, /#wizard\.is-fast #wizard-next\{display:flex\}/);
+    assert.match(demoPage, /#wizard\.is-fast #wizard-next\{display:flex\}/);
   });
 
   it('leaves Noam AI exercise suggestions disabled', () => {

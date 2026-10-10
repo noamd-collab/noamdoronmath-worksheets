@@ -114,10 +114,13 @@ function installSuggest() {
       return { enabled: false, intent: null };
     },
     async suggest(message) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 10000);
       try {
         const response = await fetch(TEACHER_SUGGEST_ENDPOINT, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
+          signal: controller.signal,
           body: JSON.stringify({
             message: String(message || '').slice(0, 700),
             page: { kind: 'teachers', path: location.pathname, title: document.title },
@@ -128,6 +131,8 @@ function installSuggest() {
         return normalizeSuggest(await response.json());
       } catch (error) {
         return { enabled: false, exerciseIds: [], sheetIds: [], answer: '' };
+      } finally {
+        clearTimeout(timer);
       }
     },
   };
@@ -338,7 +343,9 @@ function render() {
     $('available-count').textContent = topicSheets().length + ' דפים';
     $('questions').innerHTML = pool.length
       ? pool.map(sheetCard).join('')
-      : '<p class="empty">אין דף ברמה הזו. אפשר לחזור ל״הכל״.</p>';
+      : (queryLimitsList() && state.selected.length
+        ? '<p class="empty">אין התאמה בחיפוש. מה שנבחר ולא מופיע כאן נשאר להדפסה.</p>'
+        : '<p class="empty">אין דף ברמה הזו. אפשר לחזור ל״הכל״.</p>');
     $('show-more').hidden = true;
     $('suggestion').hidden = true;
   } else {
@@ -350,7 +357,9 @@ function render() {
     $('available-count').textContent = currentExercises().length + ' סעיפים בדפי הנושא';
     $('questions').innerHTML = visible.length
       ? visible.map(exerciseCard).join('')
-      : '<p class="empty">עדיין לא נבחרו שאלות. אפשר לעבור ל״כל ההצעות״ ולסמן.</p>';
+      : (queryLimitsList() && state.selected.length
+        ? '<p class="empty">אין התאמה בחיפוש. מה שנבחר ולא מופיע כאן נשאר להדפסה.</p>'
+        : '<p class="empty">עדיין לא נבחרו שאלות. אפשר לעבור ל״כל ההצעות״ ולסמן.</p>');
     const hidden = Math.max(0, ordered.length - visible.length);
     $('show-more').hidden = hidden === 0;
     $('more-count').textContent = hidden ? String(hidden) : '';
@@ -360,9 +369,15 @@ function render() {
     $('suggestion').hidden = !showSuggestion;
     $('suggestion-text').textContent = showSuggestion ? `${suggestion.label}: ${cfg.suggestionText}` : '';
   }
+  const hiddenBySearch = searchHiddenSelected();
   $('selection-count').textContent = state.selected.length + ' נבחרו';
   const pdfs = new Set(state.selected.map((key) => key.split(':')[1]).filter(Boolean));
-  $('selection-composition').textContent = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
+  let composition = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
+  if (hiddenBySearch.length) {
+    const aside = hiddenBySearch.length + ' לא מופיעים בחיפוש וייכנסו להדפסה';
+    composition = composition ? aside + ' · ' + composition : aside;
+  }
+  $('selection-composition').textContent = composition;
   $('undo').disabled = history.length === 0;
   paintSourceLine();
   if (!elementary) paintThumbs();
@@ -494,6 +509,47 @@ function clearPreparedPrint() {
   const area = $('print-area');
   if (!area || area.querySelector('.print-unprepared')) return;
   area.innerHTML = PRINT_UNPREPARED;
+}
+
+function selectionChipLabel(key) {
+  const question = library.get(key);
+  if (question && question.label) return question.label;
+  if (String(key).startsWith('sheet:')) {
+    const meta = byPdf.get(String(key).slice(6));
+    if (meta) return meta.levelLabel || meta.title || key;
+  }
+  return String(key);
+}
+
+function searchHiddenSelected() {
+  if (!queryLimitsList()) return [];
+  const shown = new Set();
+  if (band() === 'elementary') {
+    topicSheets().forEach((meta) => {
+      if (matchesQuery([meta.title, meta.topic, meta.levelLabel])) shown.add(sheetKey(meta.pdfId));
+    });
+  } else {
+    currentExercises().forEach((question) => {
+      if (matchesQuery([question.label, question.text, question.id])) shown.add(exKey(question.source.pdfId, question.id));
+    });
+  }
+  return state.selected.filter((key) => !shown.has(key));
+}
+
+function paintSearchKept() {
+  const box = $('fast-selected');
+  if (!box) return;
+  const hidden = searchHiddenSelected();
+  if (!hidden.length) {
+    box.hidden = true;
+    box.innerHTML = '';
+    return;
+  }
+  box.hidden = false;
+  box.innerHTML = `<p>${hidden.length} נבחרו ולא מופיעים בחיפוש. הם ייכנסו להדפסה.</p><div class="fast-selected-row">${hidden.map((key) => {
+    const label = selectionChipLabel(key);
+    return `<button type="button" data-keep-key="${escapeHTML(key)}" aria-label="הסרת ${escapeHTML(label)} מההדפסה">${escapeHTML(label)}</button>`;
+  }).join('')}</div>`;
 }
 
 function selectKey(key, on) {
@@ -1360,11 +1416,24 @@ async function start() {
   restoreWizardSelection(saved);
   wizardPersist = true;
   rememberWizard();
+  catalogReady = true;
   initWizard();
+  const settled = settleRouteTap(true, pendingRoute, null);
+  pendingRoute = settled.pending;
+  clearRouteWait();
+  if (settled.opened) openRequestedRoute(settled.opened, 'push');
 }
 
 start().catch(() => {
-  $('result-summary').textContent = 'רשימת דפי הקטלוג לא נטענה.';
+  catalogReady = true;
+  pendingRoute = null;
+  const note = $('route-loading');
+  if (note) {
+    note.hidden = false;
+    note.textContent = 'רשימת דפי הקטלוג לא נטענה.';
+  }
+  if ($('wizard')) $('wizard').removeAttribute('aria-busy');
+  if ($('result-summary')) $('result-summary').textContent = 'רשימת דפי הקטלוג לא נטענה.';
 });
 
 // Wizard navigation. `history` above is the undo stack, so browser history is window.history.
@@ -1372,6 +1441,8 @@ let wizardStepId = 'grade';
 let wizardRoute = 'gate';
 let wizardDepth = 0;
 let wizardBound = false;
+let catalogReady = false;
+let pendingRoute = null;
 
 function wizardSteps() {
   return ['grade', 'topic', 'level', 'pick', 'output', 'summary'];
@@ -1548,6 +1619,11 @@ function wizardHandle(model, action) {
   return { step: next.step, how: 'push', selected: next.selected };
 }
 
+function settleRouteTap(ready, pending, request) {
+  if (!ready) return { pending: request, opened: null };
+  return { pending: null, opened: request || pending || null };
+}
+
 function chipText(step) {
   if (step === 'grade') return $('grade') && $('grade').selectedOptions[0] ? $('grade').selectedOptions[0].textContent : '';
   if (step === 'topic') return $('topic') && $('topic').selectedOptions[0] ? $('topic').selectedOptions[0].textContent : '';
@@ -1586,8 +1662,9 @@ function paintWizardChrome() {
   const next = $('wizard-next');
   if (next) {
     const onSummary = wizardRoute === 'guided' && wizardStepId === 'summary';
-    next.hidden = wizardRoute !== 'guided';
-    next.textContent = onSummary ? (printMode === 'short' ? 'הצגת הדף המצומצם' : 'הצגת הדף המסומן') : 'המשך';
+    const printing = onSummary || wizardRoute === 'fast';
+    next.hidden = wizardRoute === 'gate';
+    next.textContent = printing ? (printMode === 'short' ? 'הצגת הדף המצומצם' : 'הצגת הדף המסומן') : 'המשך';
   }
   const recap = $('wizard-recap');
   if (recap && wizardStepId === 'summary') {
@@ -1741,6 +1818,7 @@ function syncWizardChrome() {
   const pickLead = $('pick-lead');
   if (pickLead) pickLead.textContent = elementary ? 'בוחרים דף שלם לפי הרמה.' : 'בוחרים סעיפים. אפשר מכמה דפים.';
   paintFastHits();
+  paintSearchKept();
   paintWizardChrome();
 }
 
@@ -1784,6 +1862,10 @@ function initWizard() {
     wizardGo(handled.step, handled.how);
   });
   $('wizard-next').addEventListener('click', () => {
+    if (wizardRoute === 'fast') {
+      prepare(printMode);
+      return;
+    }
     const step = wizardCurrent();
     if (wizardRoute !== 'guided') return;
     if (step === 'summary') {
@@ -1797,17 +1879,16 @@ function initWizard() {
     const following = wizardHandle(currentWizardModel(), { type: 'next' });
     wizardGo(following.step, following.how);
   });
-  document.querySelectorAll('[data-open-route]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const route = btn.dataset.openRoute;
-      if (route === 'guided' && btn.id === 'route-guided') openRoute('guided', 'push', 'grade');
-      else openRoute(route, 'push');
-    });
-  });
   const search = $('fast-search');
   if (search) search.addEventListener('input', () => {
     state.query = search.value;
     render();
+  });
+  const kept = $('fast-selected');
+  if (kept) kept.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-keep-key]');
+    if (!btn) return;
+    selectKey(btn.dataset.keepKey, false);
   });
   const hits = $('fast-hits');
   if (hits) hits.addEventListener('click', (event) => {
@@ -1933,3 +2014,53 @@ async function askTeacherNeed(message) {
     if (button) button.disabled = false;
   }
 }
+
+function routeRequestFrom(btn) {
+  const route = btn.dataset.openRoute;
+  const step = route === 'guided' && btn.id === 'route-guided' ? 'grade' : undefined;
+  return { route, step };
+}
+
+function showRouteWait(id) {
+  const note = $('route-loading');
+  if (note) {
+    note.hidden = false;
+    note.textContent = 'טוענים את הקטלוג…';
+  }
+  document.querySelectorAll('[data-open-route]').forEach((btn) => {
+    btn.classList.toggle('is-waiting', btn.id === id);
+  });
+  if ($('wizard')) $('wizard').setAttribute('aria-busy', 'true');
+}
+
+function clearRouteWait() {
+  const note = $('route-loading');
+  if (note) note.hidden = true;
+  document.querySelectorAll('[data-open-route]').forEach((btn) => btn.classList.remove('is-waiting'));
+  if ($('wizard')) $('wizard').removeAttribute('aria-busy');
+}
+
+function openRequestedRoute(request, how) {
+  if (!request || !request.route) return;
+  if (request.route === 'guided' && request.step) openRoute('guided', how || 'push', request.step);
+  else openRoute(request.route, how || 'push');
+}
+
+function bindRouteCards() {
+  if (bindRouteCards.done || !$('wizard')) return;
+  bindRouteCards.done = true;
+  document.querySelectorAll('[data-open-route]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const request = routeRequestFrom(btn);
+      const settled = settleRouteTap(catalogReady, pendingRoute, request);
+      pendingRoute = settled.pending;
+      if (!catalogReady) {
+        showRouteWait(btn.id);
+        return;
+      }
+      if (settled.opened) openRequestedRoute(settled.opened, 'push');
+    });
+  });
+}
+
+bindRouteCards();

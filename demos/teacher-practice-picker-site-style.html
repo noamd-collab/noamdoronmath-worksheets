@@ -474,7 +474,9 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .teacher-need button{min-height:52px;justify-self:start;padding:8px 16px}
 #teacher-need-status{margin:0;color:var(--muted);font-size:15px}
 #teacher-need-status:empty{display:none}
-.route-gate{padding:8px 0 12px}
+.route-gate{padding:22px 18px 12px}
+.route-loading{margin:0 0 12px;font-weight:700;color:var(--teal-dark)}
+.route-card.is-waiting{cursor:progress}
 .route-grid{display:grid;gap:12px}
 .route-card{display:flex;flex-direction:column;gap:12px;width:100%;text-align:right;min-height:220px;padding:12px;background:#fff;color:var(--ink);border:2px solid var(--ink);cursor:pointer;border-radius:18px 8px 20px 10px / 10px 20px 8px 18px}
 .route-card:hover{background:var(--mint)}
@@ -503,6 +505,11 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .fast-hits{display:grid;gap:8px;margin-top:10px}
 .fast-hits[hidden]{display:none}
 .fast-hits button{min-height:48px;text-align:right;padding:8px 12px;background:#fff;border:2px solid var(--ink);border-radius:12px;font-weight:700}
+.fast-selected{display:grid;gap:8px;margin-top:12px}
+.fast-selected[hidden]{display:none}
+.fast-selected p{margin:0;font-size:15px;font-weight:700}
+.fast-selected-row{display:flex;flex-wrap:wrap;gap:8px}
+.fast-selected button{min-height:44px;padding:6px 12px;border-radius:999px;border:1.5px solid var(--ink);background:var(--mint);font-weight:700}
 #wizard.is-gate .wizard-progress,#wizard.is-gate .wizard-chips,#wizard.is-gate .route-switch-row,#wizard.is-gate #teacher-need-wrap,#wizard.is-gate .wizard-actions,#wizard.is-gate [data-wizard-step],#wizard.is-gate #fast-screen{display:none}
 #wizard.is-guided #route-gate,#wizard.is-guided #fast-screen,#wizard.is-guided #switch-guided,#wizard.is-fast #route-gate,#wizard.is-fast #switch-fast,#wizard.is-fast .wizard-progress,#wizard.is-fast .wizard-chips,#wizard.is-fast #wizard-next{display:none}
 #wizard.is-fast{display:flex;flex-direction:column}
@@ -520,6 +527,13 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 #wizard.is-summary .summary-actions button{display:none}
 #wizard.is-fast #teacher-need-wrap{display:block}
 #wizard.is-fast #teacher-need-wrap summary{display:none}
+@media(max-width:767px){
+  #wizard.is-fast .wizard-viewport{padding-bottom:104px}
+  #wizard.is-fast .wizard-actions{order:4;position:sticky;bottom:0;z-index:5;background:linear-gradient(transparent,var(--paper) 30%);padding:14px 0 18px;padding-inline-start:64px}
+  #wizard.is-fast #wizard-next{display:flex}
+  #wizard.is-fast #wizard-back{flex:0 0 auto;width:auto;min-height:56px;padding:8px 16px}
+  #wizard.is-fast .summary-actions button{display:none}
+}
 @keyframes mini-type{to{width:11em}}
 @keyframes mini-pop{to{opacity:1}}
 @keyframes mini-grade{0%,30%{opacity:1}38%,100%{opacity:0}}
@@ -572,6 +586,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <section class="route-gate panel" id="route-gate" aria-labelledby="route-question">
 <h2 class="wizard-question" id="route-question" tabindex="-1">איך מתחילים?</h2>
 <p class="wizard-lead">שני מסלולים. הבחירה נשמרת במעבר ביניהם.</p>
+<p id="route-loading" class="route-loading" hidden>טוענים את הקטלוג…</p>
 <div class="route-grid">
 <button type="button" class="route-card" id="route-fast" data-open-route="fast"><span class="route-preview" aria-hidden="true"><span class="mini-ui mini-fast"><span class="mini-search"><span class="mini-type">פירוק לגורמים</span></span><span class="mini-thumbs"><span class="mini-thumb"></span><span class="mini-thumb"></span><span class="mini-thumb is-mark"></span></span></span></span><span class="route-copy"><strong>אני יודע מה אני מחפש</strong><span>חיפוש וכל הסינונים במסך אחד.</span></span></button>
 <button type="button" class="route-card" id="route-guided" data-open-route="guided"><span class="route-preview" aria-hidden="true"><span class="mini-ui mini-guided"><span class="mini-stage mini-grade"><i>כיתה ט׳</i></span><span class="mini-stage mini-topic"><i>פירוק לגורמים</i></span><span class="mini-stage mini-sheet"><b></b><b class="is-mark"></b><b class="is-mark"></b><b></b></span></span></span><span class="route-copy"><strong>עזרו לי לבחור</strong><span>שאלה אחת בכל מסך.</span></span></button>
@@ -583,6 +598,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <label class="fast-label" for="fast-search">חיפוש</label>
 <input id="fast-search" type="search" placeholder="למשל: פירוק לגורמים" autocomplete="off" enterkeyhint="search">
 <div id="fast-hits" class="fast-hits" hidden></div>
+<div id="fast-selected" class="fast-selected" hidden></div>
 </section>
 <section class="wizard-step panel" data-wizard-step="grade" aria-labelledby="grade-question" hidden>
 <h2 class="wizard-question" id="grade-question" tabindex="-1">איזו כיתה?</h2>
