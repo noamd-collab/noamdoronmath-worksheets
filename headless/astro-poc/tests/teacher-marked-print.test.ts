@@ -724,9 +724,9 @@ describe('teacher catalog picker', () => {
     const direct = api.settleRouteTap(true, null, { route: 'fast' });
     assert.equal(direct.pending, null);
     assert.equal(direct.opened && direct.opened.route, 'fast');
-    assert.match(preview, /new AbortController\(\)/);
-    assert.match(preview, /setTimeout\(\(\) => controller\.abort\(\), 10000\)/);
-    assert.match(preview, /signal: controller\.signal/);
+    assert.match(preview, /modelTimeoutMs: 10000/);
+    assert.match(preview, /NoamBotClient/);
+    assert.equal(preview.includes('new AbortController()'), false);
     assert.match(preview, /לא מופיעים בחיפוש וייכנסו להדפסה/);
     assert.match(preview, /נבחרו ולא מופיעים בחיפוש/);
     assert.match(preview, /class="chip-x">×</);
@@ -796,8 +796,12 @@ describe('teacher catalog picker', () => {
     assert.match(printer, /NoamTeacherSuggest/);
     assert.match(printer, /enabled:\s*false/);
     assert.match(printer, /classifier:\s*'qwen-flash'/);
-    assert.match(printer, /TEACHER_SUGGEST_ENDPOINT/);
-    assert.match(printer, /noamSiteCompanion/);
+    assert.match(printer, /TEACHER_SUGGEST_ENDPOINT = '\/api\/noamSiteCompanion'/);
+    assert.equal(printer.includes('my-site-2'), false);
+    assert.match(printer, /postJson\(TEACHER_SUGGEST_ENDPOINT/);
+    assert.match(printer, /api: '\/api'/);
+    assert.match(printer, /נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס./);
+    assert.equal(printer.includes('נועם AI לא זמין כרגע. אפשר להמשיך לבחור ולהדפיס.'), false);
     assert.equal(/fetch\([^)]*(qwen|dashscope|compatible-mode)/.test(printer), false);
     assert.match(page, /data-noam-teacher-suggest="off"/);
     assert.match(page, /הצעות נועם AI כבויות/);

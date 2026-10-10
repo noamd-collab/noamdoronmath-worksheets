@@ -103,7 +103,70 @@ function sheetKey(pdfId) {
   return 'sheet:' + pdfId;
 }
 
-const TEACHER_SUGGEST_ENDPOINT = 'https://amiramnoam.wixstudio.com/my-site-2/_functions/noamSiteCompanion';
+const TEACHER_SUGGEST_ENDPOINT = '/api/noamSiteCompanion';
+const TEACHER_QUIET = 'נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס.';
+const TEACHER_QUIET_RESULT = { enabled: false, exerciseIds: [], sheetIds: [], answer: '' };
+let teacherBotPromise = null;
+
+function suggestPayload(message) {
+  const grade = gradeRecord(state.grade);
+  const topic = currentTopic();
+  return {
+    message: String(message || '').slice(0, 700),
+    page: { kind: 'teachers', path: location.pathname, title: document.title },
+    teacher: {
+      grade: state.grade,
+      gradeLabel: grade ? grade.label : '',
+      topic: state.topic,
+      topicLabel: topic ? topic.title : '',
+      level: state.level,
+      note: $('teacher-note') ? $('teacher-note').value : '',
+    },
+  };
+}
+
+function loadNoamBotClient() {
+  if (window.NoamBotClient && typeof window.NoamBotClient.create === 'function') {
+    return Promise.resolve(window.NoamBotClient);
+  }
+  if (!loadNoamBotClient.pending) {
+    loadNoamBotClient.pending = new Promise((resolve, reject) => {
+      const loader = document.createElement('script');
+      loader.src = '/noam-bot-client.js';
+      loader.async = true;
+      loader.onload = () => {
+        if (window.NoamBotClient && typeof window.NoamBotClient.create === 'function') resolve(window.NoamBotClient);
+        else reject(new Error('BOT_CLIENT_UNAVAILABLE'));
+      };
+      loader.onerror = () => reject(new Error('BOT_CLIENT_UNAVAILABLE'));
+      document.head.appendChild(loader);
+    }).catch((error) => {
+      loadNoamBotClient.pending = null;
+      throw error;
+    });
+  }
+  return loadNoamBotClient.pending;
+}
+
+function teacherBot() {
+  if (!teacherBotPromise) {
+    teacherBotPromise = loadNoamBotClient().then((Bot) => Bot.create({
+      api: '/api',
+      enabled: true,
+      modelTimeoutMs: 10000,
+    })).catch((error) => {
+      teacherBotPromise = null;
+      throw error;
+    });
+  }
+  return teacherBotPromise;
+}
+
+function quietSuggest(error) {
+  const reason = (error && (error.code || error.message)) || 'UNKNOWN';
+  if (typeof console !== 'undefined' && console.warn) console.warn('NOAM_TEACHER_SUGGEST_FAILED', String(reason).slice(0, 160));
+  return TEACHER_QUIET_RESULT;
+}
 
 function installSuggest() {
   window.NoamTeacherSuggest = {
@@ -114,25 +177,13 @@ function installSuggest() {
       return { enabled: false, intent: null };
     },
     async suggest(message) {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 10000);
       try {
-        const response = await fetch(TEACHER_SUGGEST_ENDPOINT, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          signal: controller.signal,
-          body: JSON.stringify({
-            message: String(message || '').slice(0, 700),
-            page: { kind: 'teachers', path: location.pathname, title: document.title },
-            teacher: { grade: state.grade, topic: state.topic, level: state.level, note: $('teacher-note') ? $('teacher-note').value : '' },
-          }),
-        });
-        if (!response.ok) return { enabled: false, exerciseIds: [], sheetIds: [], answer: '' };
-        return normalizeSuggest(await response.json());
+        const client = await teacherBot();
+        const data = await client.postJson(TEACHER_SUGGEST_ENDPOINT, suggestPayload(message));
+        if (!data || data.ok === false || data.active === false || data.code === 'NOT_ACTIVE') return TEACHER_QUIET_RESULT;
+        return normalizeSuggest(data);
       } catch (error) {
-        return { enabled: false, exerciseIds: [], sheetIds: [], answer: '' };
-      } finally {
-        clearTimeout(timer);
+        return quietSuggest(error);
       }
     },
   };
@@ -2544,12 +2595,12 @@ async function askTeacherNeed(message) {
       : { enabled: false, exerciseIds: [], sheetIds: [] };
     const outcome = suggestOutcome(result);
     if (!outcome.apply || !applySuggestIds(outcome.ids)) {
-      if (status) status.textContent = 'נועם AI לא זמין כרגע. אפשר להמשיך לבחור ולהדפיס.';
+      if (status) status.textContent = TEACHER_QUIET;
       return;
     }
     if (status) status.textContent = 'ההצעה סומנה. אפשר לשנות אותה לפני ההדפסה.';
   } catch (error) {
-    if (status) status.textContent = 'נועם AI לא זמין כרגע. אפשר להמשיך לבחור ולהדפיס.';
+    if (status) status.textContent = TEACHER_QUIET;
   } finally {
     if (button) button.disabled = false;
   }
