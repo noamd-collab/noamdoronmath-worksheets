@@ -521,8 +521,17 @@ function selectionChipLabel(key) {
   return String(key);
 }
 
+let searchHiddenCache = [];
+let searchHiddenKey = '';
+
 function searchHiddenSelected() {
-  if (!queryLimitsList()) return [];
+  const key = [queryText(), state.selected.join('\n'), state.grade, state.topic, state.level, sheets.size, catalogReady ? 1 : 0].join('\u0001');
+  if (key === searchHiddenKey) return searchHiddenCache;
+  searchHiddenKey = key;
+  if (!queryLimitsList()) {
+    searchHiddenCache = [];
+    return searchHiddenCache;
+  }
   const shown = new Set();
   if (band() === 'elementary') {
     topicSheets().forEach((meta) => {
@@ -533,22 +542,26 @@ function searchHiddenSelected() {
       if (matchesQuery([question.label, question.text, question.id])) shown.add(exKey(question.source.pdfId, question.id));
     });
   }
-  return state.selected.filter((key) => !shown.has(key));
+  searchHiddenCache = state.selected.filter((item) => !shown.has(item));
+  return searchHiddenCache;
 }
 
 function paintSearchKept() {
   const box = $('fast-selected');
   if (!box) return;
   const hidden = searchHiddenSelected();
+  const stamp = hidden.map((item) => item + '\t' + selectionChipLabel(item)).join('\n');
+  if (box.dataset.stamp === stamp) return;
+  box.dataset.stamp = stamp;
   if (!hidden.length) {
     box.hidden = true;
     box.innerHTML = '';
     return;
   }
   box.hidden = false;
-  box.innerHTML = `<p>${hidden.length} נבחרו ולא מופיעים בחיפוש. הם ייכנסו להדפסה.</p><div class="fast-selected-row">${hidden.map((key) => {
-    const label = selectionChipLabel(key);
-    return `<button type="button" data-keep-key="${escapeHTML(key)}" aria-label="הסרת ${escapeHTML(label)} מההדפסה">${escapeHTML(label)}</button>`;
+  box.innerHTML = `<p>${hidden.length} נבחרו ולא מופיעים בחיפוש. הם ייכנסו להדפסה.</p><div class="fast-selected-row">${hidden.map((item) => {
+    const label = selectionChipLabel(item);
+    return `<button type="button" data-keep-key="${escapeHTML(item)}" aria-label="הסרת ${escapeHTML(label)} מההדפסה">${escapeHTML(label)}<span class="chip-x">×</span></button>`;
   }).join('')}</div>`;
 }
 

@@ -663,6 +663,8 @@ describe('teacher catalog picker', () => {
     assert.match(preview, /signal: controller\.signal/);
     assert.match(preview, /לא מופיעים בחיפוש וייכנסו להדפסה/);
     assert.match(preview, /נבחרו ולא מופיעים בחיפוש/);
+    assert.match(preview, /class="chip-x">×</);
+    assert.match(preview, /if \(key === searchHiddenKey\) return searchHiddenCache/);
     assert.match(preview, /window\.history\.pushState/);
     assert.match(preview, /addEventListener\('popstate'/);
     assert.match(preview, /printMode = btn\.dataset\.output/);
@@ -718,6 +720,8 @@ describe('teacher catalog picker', () => {
     assert.match(demoPage, /id="route-loading"/);
     assert.match(page, /id="fast-selected"/);
     assert.match(demoPage, /id="fast-selected"/);
+    assert.match(page, /\.fast-selected button \.chip-x/);
+    assert.match(demoPage, /\.fast-selected button \.chip-x/);
     assert.match(page, /#wizard\.is-fast #wizard-next\{display:flex\}/);
     assert.match(demoPage, /#wizard\.is-fast #wizard-next\{display:flex\}/);
   });

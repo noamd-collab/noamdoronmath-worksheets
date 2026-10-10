@@ -494,7 +494,8 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .fast-selected[hidden]{display:none}
 .fast-selected p{margin:0;font-size:15px;font-weight:700}
 .fast-selected-row{display:flex;flex-wrap:wrap;gap:8px}
-.fast-selected button{min-height:44px;padding:6px 12px;border-radius:999px;border:1.5px solid var(--ink);background:var(--mint);font-weight:700}
+.fast-selected button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 12px;border-radius:999px;border:1.5px solid var(--ink);background:var(--mint);font-weight:700}
+.fast-selected button .chip-x{font-weight:700;line-height:1}
 #wizard.is-gate .wizard-progress,#wizard.is-gate .wizard-chips,#wizard.is-gate .route-switch-row,#wizard.is-gate #teacher-need-wrap,#wizard.is-gate .wizard-actions,#wizard.is-gate [data-wizard-step],#wizard.is-gate #fast-screen{display:none}
 #wizard.is-guided #route-gate,#wizard.is-guided #fast-screen,#wizard.is-guided #switch-guided,#wizard.is-fast #route-gate,#wizard.is-fast #switch-fast,#wizard.is-fast .wizard-progress,#wizard.is-fast .wizard-chips,#wizard.is-fast #wizard-next{display:none}
 #wizard.is-fast{display:flex;flex-direction:column}
