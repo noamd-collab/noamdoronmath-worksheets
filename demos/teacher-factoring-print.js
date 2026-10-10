@@ -308,6 +308,7 @@ function render() {
   if (prepareHint) prepareHint.textContent = elementary ? 'הדף המלא מהמקור, בלי סימון.' : 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
   if (!ok) {
     paintSourceLine();
+    syncWizardChrome();
     return;
   }
   if (elementary) {
@@ -344,6 +345,7 @@ function render() {
   $('undo').disabled = history.length === 0;
   paintSourceLine();
   if (!elementary) paintThumbs();
+  syncWizardChrome();
 }
 
 function paintSourceLine() {
@@ -1269,8 +1271,282 @@ async function start() {
   bind();
   await loadCurrentTopic();
   applyScenario(state.scenario, { quiet: true });
+  initWizard();
 }
 
 start().catch(() => {
   $('result-summary').textContent = 'רשימת דפי הקטלוג לא נטענה.';
 });
+
+// Wizard navigation. `history` above is the undo stack, so browser history is window.history.
+let wizardStepId = 'grade';
+let wizardDepth = 0;
+let wizardBound = false;
+
+function wizardSteps() {
+  return ['grade', 'topic', 'level', 'pick', 'output', 'summary'];
+}
+
+function wizardIndex(step) {
+  const index = wizardSteps().indexOf(String(step || ''));
+  return index < 0 ? 0 : index;
+}
+
+function wizardNeighbor(step, delta) {
+  const steps = wizardSteps();
+  const index = Math.min(steps.length - 1, Math.max(0, wizardIndex(step) + delta));
+  return steps[index];
+}
+
+function wizardStepFromHash(hash) {
+  const id = String(hash || '').replace(/^#/, '');
+  if (id === 'selection') return 'pick';
+  return wizardSteps().includes(id) ? id : 'grade';
+}
+
+function wizardHash(step) {
+  return '#' + wizardSteps()[wizardIndex(step)];
+}
+
+function wizardReduce(model, action) {
+  const next = {
+    step: model.step,
+    grade: model.grade,
+    topic: model.topic,
+    level: model.level,
+    selected: model.selected.slice(),
+    output: model.output,
+  };
+  if (action.type === 'next') next.step = wizardNeighbor(model.step, 1);
+  else if (action.type === 'back') next.step = wizardNeighbor(model.step, -1);
+  else if (action.type === 'hash') next.step = wizardStepFromHash(action.hash);
+  else if (action.type === 'jump') next.step = wizardSteps().includes(action.step) ? action.step : model.step;
+  else if (action.type === 'set') {
+    if (action.grade != null) next.grade = action.grade;
+    if (action.topic != null) next.topic = action.topic;
+    if (action.level != null) next.level = action.level;
+    if (action.selected) next.selected = action.selected.slice();
+    if (action.output != null) next.output = action.output;
+  }
+  return next;
+}
+
+const WIZARD_LABELS = {
+  grade: 'כיתה',
+  topic: 'נושא',
+  level: 'רמה',
+  pick: 'בחירה',
+  output: 'הדפסה',
+  summary: 'סיום',
+};
+
+function wizardCurrent() {
+  return wizardSteps()[wizardIndex(wizardStepId)];
+}
+
+function paintSelectCards(selectId, gridId) {
+  const select = $(selectId);
+  const grid = $(gridId);
+  if (!select || !grid) return;
+  grid.innerHTML = [...select.options].map((opt) => {
+    const on = opt.value === select.value;
+    return `<button type="button" class="choice-card${on ? ' is-on' : ''}" data-value="${escapeHTML(opt.value)}" aria-pressed="${on ? 'true' : 'false'}">${escapeHTML(opt.textContent || '')}</button>`;
+  }).join('');
+}
+
+function chipText(step) {
+  if (step === 'grade') return $('grade') && $('grade').selectedOptions[0] ? $('grade').selectedOptions[0].textContent : '';
+  if (step === 'topic') return $('topic') && $('topic').selectedOptions[0] ? $('topic').selectedOptions[0].textContent : '';
+  if (step === 'level') {
+    const picked = document.querySelector('[name=level]:checked');
+    return picked ? picked.parentElement.textContent.trim() : '';
+  }
+  if (step === 'pick') return state.selected.length ? state.selected.length + ' נבחרו' : '';
+  if (step === 'output') return printMode === 'short' ? 'דף מצומצם' : 'דף מסומן';
+  return '';
+}
+
+function paintWizardChrome() {
+  const steps = wizardSteps();
+  const index = wizardIndex(wizardStepId);
+  const count = $('wizard-count');
+  if (count) count.textContent = 'שלב ' + (index + 1) + ' מתוך ' + steps.length;
+  const meter = $('wizard-meter');
+  if (meter) {
+    meter.innerHTML = steps.map((step, stepIndex) => {
+      const cls = stepIndex < index ? 'is-done' : (stepIndex === index ? 'is-on' : '');
+      const disabled = stepIndex > index ? ' disabled' : '';
+      return `<button type="button" class="${cls}" data-wizard-jump="${step}"${disabled} aria-current="${stepIndex === index ? 'step' : 'false'}" aria-label="שלב ${stepIndex + 1} מתוך ${steps.length}: ${WIZARD_LABELS[step]}"><i></i>${WIZARD_LABELS[step]}</button>`;
+    }).join('');
+  }
+  const chips = $('wizard-chips');
+  if (chips) {
+    chips.innerHTML = steps.slice(0, index).map((step) => {
+      const text = chipText(step);
+      if (!text) return '';
+      return `<button type="button" data-wizard-jump="${step}">${escapeHTML(text)}</button>`;
+    }).join('');
+  }
+  const back = $('wizard-back');
+  if (back) back.disabled = index === 0;
+  const next = $('wizard-next');
+  if (next) next.hidden = wizardStepId === 'summary';
+  const recap = $('wizard-recap');
+  if (recap && wizardStepId === 'summary') {
+    recap.innerHTML = steps.slice(0, 5).map((step) => {
+      const text = chipText(step);
+      if (!text) return '';
+      return `<div><span>${WIZARD_LABELS[step]}</span><b>${escapeHTML(text)}</b></div>`;
+    }).join('');
+  }
+}
+
+function wizardPaint(step, how) {
+  if (!$('wizard')) return;
+  const id = wizardSteps()[wizardIndex(step)];
+  const prevIndex = wizardIndex(wizardStepId);
+  const nextIndex = wizardIndex(id);
+  wizardStepId = id;
+  document.querySelectorAll('[data-wizard-step]').forEach((el) => {
+    const on = el.getAttribute('data-wizard-step') === id;
+    el.classList.toggle('is-on', on);
+    el.hidden = !on;
+  });
+  const viewport = $('wizard-viewport');
+  if (viewport && how !== 'init' && how !== 'silent') {
+    viewport.dataset.dir = nextIndex >= prevIndex ? 'forward' : 'back';
+    viewport.classList.remove('is-sliding');
+    void viewport.offsetWidth;
+    viewport.classList.add('is-sliding');
+    const active = viewport.querySelector('.wizard-step.is-on');
+    if (active) {
+      active.classList.remove('is-on');
+      void active.offsetWidth;
+      active.classList.add('is-on');
+    }
+  }
+  const elementary = band() === 'elementary';
+  const pickTitle = $('pick-question');
+  if (pickTitle) pickTitle.textContent = elementary ? 'איזה דף?' : 'אילו סעיפים?';
+  const pickLead = $('pick-lead');
+  if (pickLead) pickLead.textContent = elementary ? 'בוחרים דף שלם לפי הרמה.' : 'בוחרים סעיפים. אפשר מכמה דפים.';
+  paintWizardChrome();
+  if (how !== 'init' && how !== 'silent') {
+    const head = document.querySelector('[data-wizard-step="' + id + '"] .wizard-question');
+    if (head) head.focus();
+  }
+}
+
+function wizardGo(step, how) {
+  const id = wizardSteps()[wizardIndex(step)];
+  if (how === 'push') {
+    wizardDepth += 1;
+    window.history.pushState({ wizard: id, wizardDepth }, '', wizardHash(id));
+  } else if (how === 'replace') {
+    window.history.replaceState({ wizard: id, wizardDepth }, '', wizardHash(id));
+  }
+  wizardPaint(id, how === 'replace' && wizardDepth === 0 ? 'init' : how);
+}
+
+function wizardOnHistory() {
+  const step = wizardStepFromHash(location.hash);
+  if (step === wizardStepId) return;
+  const entry = window.history.state;
+  wizardDepth = entry && Number.isFinite(entry.wizardDepth) ? entry.wizardDepth : Math.max(0, wizardDepth - 1);
+  wizardPaint(step, 'pop');
+}
+
+function syncWizardChrome() {
+  if (!$('wizard')) return;
+  paintSelectCards('grade', 'grade-choices');
+  paintSelectCards('topic', 'topic-choices');
+  if (band() === 'elementary' && printMode === 'short') printMode = 'marked';
+  const elementary = band() === 'elementary';
+  const shortChoice = $('output-short');
+  if (shortChoice) shortChoice.hidden = elementary;
+  document.querySelectorAll('[data-output]').forEach((btn) => {
+    const on = btn.dataset.output === printMode;
+    btn.classList.toggle('is-on', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  const shortBtn = $('prepare-short');
+  if (shortBtn) shortBtn.hidden = elementary || printMode !== 'short';
+  const prepare = $('prepare');
+  if (prepare) prepare.hidden = printMode === 'short' && !elementary;
+  if (prepare) prepare.classList.toggle('primary', printMode !== 'short');
+  if (shortBtn) {
+    shortBtn.classList.toggle('primary', printMode === 'short' && !elementary);
+    shortBtn.classList.toggle('text-btn', printMode !== 'short' || elementary);
+  }
+  const pickTitle = $('pick-question');
+  if (pickTitle) pickTitle.textContent = elementary ? 'איזה דף?' : 'אילו סעיפים?';
+  const pickLead = $('pick-lead');
+  if (pickLead) pickLead.textContent = elementary ? 'בוחרים דף שלם לפי הרמה.' : 'בוחרים סעיפים. אפשר מכמה דפים.';
+  paintWizardChrome();
+}
+
+function initWizard() {
+  if (!$('wizard') || wizardBound) return;
+  wizardBound = true;
+  const gradeGrid = $('grade-choices');
+  const topicGrid = $('topic-choices');
+  if (gradeGrid) gradeGrid.addEventListener('click', (event) => chooseSelectCard(event, 'grade', 'grade'));
+  if (topicGrid) topicGrid.addEventListener('click', (event) => chooseSelectCard(event, 'topic', 'topic'));
+  const levelFilter = $('level-filter');
+  if (levelFilter) levelFilter.addEventListener('click', (event) => {
+    const input = event.target.closest('label') && event.target.closest('label').querySelector('input');
+    if (!input || wizardCurrent() !== 'level') return;
+    window.setTimeout(() => {
+      if (wizardCurrent() === 'level') wizardGo(wizardNeighbor('level', 1), 'push');
+    }, 0);
+  });
+  const outputChoices = $('output-choices');
+  if (outputChoices) outputChoices.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-output]');
+    if (!btn || btn.hidden) return;
+    printMode = btn.dataset.output;
+    syncWizardChrome();
+    wizardGo('summary', 'push');
+  });
+  const chips = $('wizard-chips');
+  if (chips) chips.addEventListener('click', (event) => jumpWizard(event));
+  const meter = $('wizard-meter');
+  if (meter) meter.addEventListener('click', (event) => jumpWizard(event));
+  $('wizard-back').addEventListener('click', () => {
+    if (wizardIndex(wizardCurrent()) === 0) return;
+    if (wizardDepth > 0) window.history.back();
+    else wizardGo(wizardNeighbor(wizardCurrent(), -1), 'push');
+  });
+  $('wizard-next').addEventListener('click', () => {
+    const step = wizardCurrent();
+    if (step === 'summary') return;
+    if (step === 'pick' && !state.selected.length) {
+      announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
+      return;
+    }
+    wizardGo(wizardNeighbor(step, 1), 'push');
+  });
+  window.addEventListener('popstate', wizardOnHistory);
+  window.addEventListener('hashchange', wizardOnHistory);
+  wizardDepth = 0;
+  wizardGo(wizardStepFromHash(location.hash), 'replace');
+}
+
+function chooseSelectCard(event, selectId, step) {
+  const btn = event.target.closest('[data-value]');
+  if (!btn) return;
+  const select = $(selectId);
+  if (select && select.value !== btn.dataset.value) {
+    select.value = btn.dataset.value;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  wizardGo(wizardNeighbor(step, 1), 'push');
+}
+
+function jumpWizard(event) {
+  const btn = event.target.closest('[data-wizard-jump]');
+  if (!btn || btn.disabled) return;
+  const step = btn.dataset.wizardJump;
+  if (wizardIndex(step) > wizardIndex(wizardCurrent())) return;
+  wizardGo(step, 'push');
+}

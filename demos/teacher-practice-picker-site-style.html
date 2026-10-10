@@ -393,6 +393,72 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
   .print-area figcaption{width:180mm;margin:2mm 0 0;font-size:10px;line-height:1.3}
 }
 
+
+.wizard{max-width:720px;margin-inline:auto}
+.workspace{display:block;padding-top:4px}
+.intro{width:auto;margin-inline:0;padding:8px 0 0;background:transparent;display:block}
+.intro .eyebrow,.intro .subtitle,.intro .head-meta{display:none}
+.intro h1{font-size:22px;line-height:1.2}
+.wizard-progress{margin:4px 0 12px}
+.wizard-count{font-size:14px;font-weight:700;color:var(--teal-dark);margin-bottom:8px}
+.wizard-meter{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.wizard-meter button{min-height:44px;border:0;background:transparent;padding:0 0 2px;color:var(--quiet);font-size:12px;font-weight:700;line-height:1.2}
+.wizard-meter button i{display:block;height:6px;border-radius:999px;background:#d5dbe8;margin-bottom:6px;font-style:normal}
+.wizard-meter button.is-done i,.wizard-meter button.is-on i{background:var(--teal)}
+.wizard-meter button.is-on{color:var(--ink)}
+.wizard-meter button:disabled{opacity:.5}
+.wizard-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.wizard-chips:empty{display:none}
+.wizard-chips button{min-height:44px;padding:6px 12px;border-radius:999px;border:1.5px solid var(--ink);background:#fff;font-size:14px;font-weight:700;color:var(--ink)}
+.wizard-chips button:hover{background:var(--mint)}
+.wizard-viewport{overflow:hidden}
+.wizard-step.panel{padding:22px 18px 8px}
+.wizard-question{font-size:clamp(32px,7vw,46px);line-height:1.12;margin:0 0 6px}
+.wizard-question:focus{outline:none}
+.wizard-lead{color:var(--muted);font-size:17px;margin:0 0 16px}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#topic-choices{grid-template-columns:1fr}
+.choice-card,.output-card{
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  min-height:76px;padding:14px 12px;font-size:20px;font-weight:700;line-height:1.25;
+  background:#fff;color:var(--ink);border:2px solid var(--ink);cursor:pointer;
+  border-radius:18px 8px 20px 10px / 10px 20px 8px 18px;
+}
+.choice-card:hover,.output-card:hover{background:var(--mint)}
+.choice-card.is-on,.output-card.is-on{background:var(--ink);color:#fbfaf5;box-shadow:var(--shadow-y)}
+.output-list{display:flex;flex-direction:column;gap:10px}
+.wizard-step[data-wizard-step="level"] .segmented{flex-direction:column}
+.wizard-step[data-wizard-step="level"] .segmented label{min-height:76px;font-size:22px;border-radius:18px 8px 20px 10px / 10px 20px 8px 18px}
+.wizard-native{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.wizard-step[data-wizard-step="pick"]{padding-top:18px}
+.wizard-step[data-wizard-step="pick"] .wizard-question,.wizard-step[data-wizard-step="pick"] .wizard-lead{margin-inline:24px}
+.wizard .results-head{display:none}
+.wizard-recap{display:grid;gap:8px;margin:0 0 16px}
+.wizard-recap div{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;background:var(--warm);border:2px solid var(--ink);border-radius:12px 5px 14px 6px;font-weight:700}
+.wizard-recap span{font-weight:500;color:var(--muted)}
+.wizard-optional{margin-top:8px}
+.wizard-actions{position:sticky;bottom:0;display:flex;gap:10px;padding:14px 0 18px;background:linear-gradient(transparent,var(--paper) 30%);z-index:5}
+#wizard-back{flex:1;min-height:56px;background:#fff;border:2px solid var(--ink);border-radius:var(--r-cta);font-size:18px;font-weight:700;color:var(--ink)}
+#wizard-next{flex:1.4;min-height:56px;font-size:18px}
+.summary-actions .primary,.summary-actions .text-btn.primary{width:100%;margin-top:8px}
+@media(min-width:900px){
+  #grade-choices{grid-template-columns:1fr 1fr 1fr}
+  #topic-choices{grid-template-columns:1fr 1fr}
+  .wizard-step.panel{padding:28px 28px 12px}
+}
+@media(max-width:767px){
+  .wizard-step[data-wizard-step="pick"] .wizard-question,.wizard-step[data-wizard-step="pick"] .wizard-lead{margin-inline:16px}
+  .choice-card,.output-card{font-size:18px;min-height:72px}
+  .wizard-meter button{font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  .wizard-viewport.is-sliding .wizard-step.is-on{animation:none}
+}
+.wizard-viewport.is-sliding[data-dir="forward"] .wizard-step.is-on{animation:wizard-forward .28s ease}
+.wizard-viewport.is-sliding[data-dir="back"] .wizard-step.is-on{animation:wizard-back .28s ease}
+@keyframes wizard-forward{from{transform:translateX(-28px);opacity:.2}to{transform:none;opacity:1}}
+@keyframes wizard-back{from{transform:translateX(28px);opacity:.2}to{transform:none;opacity:1}}
+
 </style>
 </head>
 <body data-noam-companion="teacher" data-noam-teacher-suggest="off">
@@ -420,29 +486,33 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 </div>
 </header>
 <main class="wrap">
-<div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן בוחרים דפים וסעיפים שכבר באתר, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">יסודי: בחירה לפי דף, נושא ורמה. חטיבת ביניים: בחירת סעיפים מתוך הדפים.<br>ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור. הצעות נועם AI כבויות.</p></div>
-<div class="workspace">
-<aside class="panel setup" aria-label="הגדרות השיעור">
-<h2 class="step-title"><span class="step-num">1</span> מתחילים מהכיתה</h2>
-<div class="setup-fields"><div class="field"><label for="grade">כיתה</label><select id="grade"><option value="1">כיתה א׳</option><option value="2">כיתה ב׳</option><option value="3">כיתה ג׳</option><option value="4">כיתה ד׳</option><option value="5">כיתה ה׳</option><option value="6">כיתה ו׳</option><option value="7">כיתה ז׳</option><option value="8">כיתה ח׳</option><option value="9" selected>כיתה ט׳</option></select></div><div class="field"><label for="topic">נושא</label><select id="topic"><option value="2">פירוק לגורמים</option></select></div></div>
+<div class="intro"><div><p class="eyebrow">מרחב למורה</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">שאלה אחת בכל מסך. בסוף מדפיסים את דף המקור.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div></div>
+<div class="workspace wizard" id="wizard">
+<div class="wizard-progress"><p class="wizard-count" id="wizard-count">שלב 1 מתוך 6</p><div class="wizard-meter" id="wizard-meter" role="group" aria-label="התקדמות"></div></div>
+<div class="wizard-chips" id="wizard-chips"></div>
+<div class="wizard-viewport" id="wizard-viewport">
+<section class="wizard-step panel is-on" data-wizard-step="grade" aria-labelledby="grade-question">
+<h2 class="wizard-question" id="grade-question" tabindex="-1">איזו כיתה?</h2>
+<p class="wizard-lead">מכיתה א׳ עד כיתה ט׳.</p>
+<div class="choice-grid" id="grade-choices"></div>
+<div class="wizard-native"><label for="grade">כיתה</label><select id="grade" tabindex="-1"><option value="1">כיתה א׳</option><option value="2">כיתה ב׳</option><option value="3">כיתה ג׳</option><option value="4">כיתה ד׳</option><option value="5">כיתה ה׳</option><option value="6">כיתה ו׳</option><option value="7">כיתה ז׳</option><option value="8">כיתה ח׳</option><option value="9" selected>כיתה ט׳</option></select></div>
+</section>
+<section class="wizard-step panel" data-wizard-step="topic" aria-labelledby="topic-question" hidden>
+<h2 class="wizard-question" id="topic-question" tabindex="-1">איזה נושא?</h2>
+<p class="wizard-lead">הנושאים שכבר יש להם דף באתר.</p>
+<div class="choice-grid" id="topic-choices"></div>
+<div class="wizard-native"><label for="topic">נושא</label><select id="topic" tabindex="-1"><option value="2">פירוק לגורמים</option></select></div>
+</section>
+<section class="wizard-step panel" data-wizard-step="level" aria-labelledby="level-question" hidden>
+<h2 class="wizard-question" id="level-question" tabindex="-1">באיזו רמה?</h2>
+<p class="wizard-lead">אפשר גם להשאיר את כל הרמות.</p>
 <div class="level-field"><span class="style-label" id="level-label">רמה</span><div class="segmented" id="level-filter"><label><input type="radio" name="level" value="all" checked>הכל</label><label><input type="radio" name="level" value="a">רמה א׳</label><label><input type="radio" name="level" value="b">רמה ב׳</label><label><input type="radio" name="level" value="c">מצוינות</label></div></div>
+</section>
+<section class="wizard-step panel results" id="selection" data-wizard-step="pick" aria-labelledby="pick-question" tabindex="-1" hidden>
+<h2 class="wizard-question" id="pick-question" tabindex="-1">אילו סעיפים?</h2>
+<p class="wizard-lead" id="pick-lead">בחטיבה בוחרים סעיפים. ביסודי בוחרים דף.</p>
 <p class="source-mini" id="scope-hint">הבחירה נטענת מקטלוג הדפים של האתר.</p>
-<p class="source-mini" id="ai-suggest-status">הצעות נועם AI כבויות.</p>
-<div class="divider"></div>
-<fieldset style="border:0;padding:0;margin:0"><legend class="step-title"><span class="step-num">2</span> מה קורה בשיעור?</legend><div class="scenario-list">
-<label class="scenario"><input type="radio" name="scenario" value="first" checked><span><span class="scenario-title">מפגש ראשון</span><span class="scenario-desc">בונים את הרעיון, שלב־שלב</span></span></label>
-<label class="scenario"><input type="radio" name="scenario" value="spiral"><span><span class="scenario-title">חזרה ספירלית</span><span class="scenario-desc">נזכרים ומחברים לידע קודם</span></span></label>
-<label class="scenario"><input type="radio" name="scenario" value="practice"><span><span class="scenario-title">תרגול וביסוס</span><span class="scenario-desc">מחזקים דיוק ועצמאות</span></span></label>
-</div><details class="more-scenarios"><summary>עוד מצבים לשיעור</summary><label class="scenario"><input type="radio" name="scenario" value="exam"><span><span class="scenario-title">לקראת מבחן</span><span class="scenario-desc">בוחרים דרך פתרון בין כמה סוגים</span></span></label><label class="scenario"><input type="radio" name="scenario" value="other"><span><span class="scenario-title">אחר</span><span class="scenario-desc">מוסיפים צורך או רעיון משלכם</span></span></label></details></fieldset>
-<div class="other-field" id="other-field"><label for="teacher-note">הערת המורה</label><textarea id="teacher-note" maxlength="600" placeholder="למשל: קבוצה שצריכה עוד חיזוק בסימנים"></textarea><small>ההערה מודפסת על הדף. היא לא שולחת בקשה למודל, ולא יוצרת תרגילים חדשים.</small></div>
-<div class="divider"></div>
-<fieldset style="border:0;padding:0;margin:0"><legend class="style-label">איך ניגשים לתרגול?</legend><div class="segmented"><label><input type="radio" name="style" value="scaffold" checked>מדורגת</label><label><input type="radio" name="style" value="creative">יצירתית</label><label><input type="radio" name="style" value="blended">משולבת</label></div></fieldset>
-<p class="style-help" id="style-help">מתחילים יחד, ואז עוברים בהדרגה לעבודה עצמאית.</p>
-<div class="setup-bottom"><svg aria-hidden="true"><use href="#i-info"/></svg><span>כל הצעה היא נקודת פתיחה.<br>הבחירה הסופית תמיד שלכם.</span></div>
-</aside>
-<section class="panel results" id="selection" aria-labelledby="result-title" tabindex="-1">
 <div class="results-head"><div><p class="overline">הצעה לבחירה מתוך הדף הקיים</p><h2 id="result-title">מתחילים מגורם משותף</h2><p class="result-summary" id="result-summary">רצף קצר למפגש ראשון עם פירוק לגורמים.</p></div><span class="mini-icon"><svg aria-hidden="true"><use href="#i-list"/></svg></span></div>
-<div class="source-line"><span>פירוק לגורמים · כיתה ט׳ · רמה א׳</span><a href="https://static.wixstatic.com/ugd/d8e7ad_6a37fe7160324a17ad107b3dbe43c1db.pdf" target="_blank" rel="noopener noreferrer">פתיחת דף המקור ↗</a></div>
 <div id="available-content"><p class="logic-note"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span id="rationale">תחילה גורם מספרי, אחר כך סימנים וגורם משתנה. אין צורך להתחיל מכל הדף.</span></p>
 <div class="other-note-banner" id="other-banner" hidden><strong>בחירה ידנית עם הערת מורה</strong><p>הרצף האחרון נשאר כפי שהוא. אפשר לבחור שאלות ולצרף את ההערה לתוכנית.</p></div>
 <div class="toolbar"><h3>הפניות לשאלות <span class="toolbar-meta" id="available-count"></span></h3><button class="text-btn" id="undo" disabled><svg aria-hidden="true"><use href="#i-undo"/></svg>ביטול שינוי</button></div>
@@ -451,9 +521,37 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <div class="suggestion" id="suggestion"><svg aria-hidden="true"><use href="#i-bulb"/></svg><div class="suggestion-copy"><strong>נשאר מקום לעוד צעד?</strong><p id="suggestion-text">אפשר להוסיף סעיף עם שלושה איברים.</p></div><button type="button" id="add-suggestion">הוספה לבחירה</button></div>
 <details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">חיוני = בסיס לרצף המוצע; נוסף = חיזוק לבחירתכם; העמקה = אתגר אפשרי. אלו תיוגים פדגוגיים של ההדגמה, לא תיוגי המחבר.</p><p style="margin-top:8px">ההפניות מתארות בקצרה שאלות קיימות. בעבודה עם המקור יש לשמור על הוראות משותפות, סעיפים תלויים, נוסח ותרשימים.</p></div></details>
 <details class="details"><summary>ומה לגבי הדפסת דף התלמיד?</summary><div class="details-body"><p>שתי דרכי הדפסה, שתיהן מתוך דף המקור:</p><div class="future-modes"><div class="future-mode"><b>הדף המלא, עם סימון</b><span>השאלות שנבחרו מסומנות על גבי דף המקור.</span><br><span class="future-label">המקרה הזה</span></div><div class="future-mode"><b>דף מצומצם מהמקור</b><span>רק הבחירה שלכם, חתוכה מהמקור עם ההוראה, הנוסח והתרשים.</span><br><span class="future-label">המקרה הזה</span></div></div><p>הדף המצומצם אינו ניסוח חדש. כל קטע הוא חיתוך של דף המקור.</p></div></details>
-<div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המצומצם</button></div><p class="prepare-hint" id="prepare-hint">דף מלא עם סימון, או דף מצומצם שנחתך מהמקור</p></div>
+</div>
 <div id="unavailable" class="empty" hidden><h3>אין דפים להצגה בכיתה הזו</h3><p style="margin-top:8px">אפשר לחזור לפירוק לגורמים לכיתה ט׳.</p><button type="button" class="text-btn" id="return-demo">חזרה לפירוק לגורמים</button></div>
-</section></div>
+</section>
+<section class="wizard-step panel" data-wizard-step="output" aria-labelledby="output-question" hidden>
+<h2 class="wizard-question" id="output-question" tabindex="-1">איך מדפיסים?</h2>
+<p class="wizard-lead">שתי הדרכים נחתכות מדף המקור. לא נוצר דף חדש.</p>
+<div class="output-list" id="output-choices"><button type="button" class="output-card is-on" data-output="marked" aria-pressed="true">הדף המלא, עם סימון</button><button type="button" class="output-card" id="output-short" data-output="short" aria-pressed="false">דף מצומצם מהמקור</button></div>
+<p class="prepare-hint" id="prepare-hint">דף מלא עם סימון, או דף מצומצם שנחתך מהמקור</p>
+</section>
+<section class="wizard-step panel" data-wizard-step="summary" aria-labelledby="summary-question" hidden>
+<h2 class="wizard-question" id="summary-question" tabindex="-1">מוכנים להדפסה</h2>
+<p class="wizard-lead">התצוגה נפתחת רק כאן.</p>
+<div class="wizard-recap" id="wizard-recap"></div>
+<div class="source-line"><span>פירוק לגורמים · כיתה ט׳ · רמה א׳</span><a href="https://static.wixstatic.com/ugd/d8e7ad_6a37fe7160324a17ad107b3dbe43c1db.pdf" target="_blank" rel="noopener noreferrer">פתיחת דף המקור ↗</a></div>
+<div class="other-field" id="other-field"><label for="teacher-note">הערת המורה</label><textarea id="teacher-note" maxlength="600" placeholder="למשל: קבוצה שצריכה עוד חיזוק בסימנים"></textarea><small>ההערה מודפסת על הדף. היא לא שולחת בקשה למודל, ולא יוצרת תרגילים חדשים.</small></div>
+<details class="details wizard-optional"><summary>עוד על השיעור</summary><div class="details-body">
+<fieldset style="border:0;padding:0;margin:0"><legend class="step-title"><span class="step-num">2</span> מה קורה בשיעור?</legend><div class="scenario-list">
+<label class="scenario"><input type="radio" name="scenario" value="first" checked><span><span class="scenario-title">מפגש ראשון</span><span class="scenario-desc">בונים את הרעיון, שלב־שלב</span></span></label>
+<label class="scenario"><input type="radio" name="scenario" value="spiral"><span><span class="scenario-title">חזרה ספירלית</span><span class="scenario-desc">נזכרים ומחברים לידע קודם</span></span></label>
+<label class="scenario"><input type="radio" name="scenario" value="practice"><span><span class="scenario-title">תרגול וביסוס</span><span class="scenario-desc">מחזקים דיוק ועצמאות</span></span></label>
+</div><details class="more-scenarios"><summary>עוד מצבים לשיעור</summary><label class="scenario"><input type="radio" name="scenario" value="exam"><span><span class="scenario-title">לקראת מבחן</span><span class="scenario-desc">בוחרים דרך פתרון בין כמה סוגים</span></span></label><label class="scenario"><input type="radio" name="scenario" value="other"><span><span class="scenario-title">אחר</span><span class="scenario-desc">מוסיפים צורך או רעיון משלכם</span></span></label></details></fieldset>
+<fieldset style="border:0;padding:0;margin:16px 0 0"><legend class="style-label">איך ניגשים לתרגול?</legend><div class="segmented"><label><input type="radio" name="style" value="scaffold" checked>מדורגת</label><label><input type="radio" name="style" value="creative">יצירתית</label><label><input type="radio" name="style" value="blended">משולבת</label></div></fieldset>
+<p class="style-help" id="style-help">מתחילים יחד, ואז עוברים בהדרגה לעבודה עצמאית.</p>
+<p class="source-mini" id="ai-suggest-status">הצעות נועם AI כבויות.</p>
+<div class="setup-bottom"><svg aria-hidden="true"><use href="#i-info"/></svg><span>כל הצעה היא נקודת פתיחה.<br>הבחירה הסופית תמיד שלכם.</span></div>
+</div></details>
+<div class="prepare-bar summary-actions"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המצומצם</button></div>
+</section>
+</div>
+<div class="wizard-actions"><button type="button" id="wizard-back">חזרה</button><button type="button" class="primary" id="wizard-next">המשך</button></div>
+</div>
 <footer class="foot"><div class="foot-grid"><div><strong class="foot-brand">נועם דורון - מתמטיקה</strong><p>דפי עבודה במתמטיקה להורדה בחינם לכיתות א׳–ט׳. תשתית למידה איכותית לכל תלמיד.</p></div><div><h3>צור קשר</h3><p>מורים והורים, נשמח לעזור בכל שאלה.</p><a class="foot-mail" href="mailto:noamd@noamdoronmath.co.il">noamd@noamdoronmath.co.il</a></div><nav aria-label="ניווט מהיר"><h3>ניווט מהיר</h3><a href="https://www.noamdoronmath.co.il/">בית</a><a href="https://www.noamdoronmath.co.il/worksheets">דפי עבודה</a><a href="https://www.noamdoronmath.co.il/aboutus">אודותינו</a><a href="https://www.noamdoronmath.co.il/blog">בלוג</a></nav></div><div class="foot-bottom"><span>רק דפים וסעיפים שכבר בקטלוג. הצעות נועם AI כבויות. ההערה נשארת בעמוד ונכנסת להדפסה.</span><span class="footer-source">מקור: דפי העבודה של האתר · כיתות א׳–ט׳</span><span>© 2026 נועם דורון מתמטיקה. כל הזכויות שמורות.</span></div></footer>
 </main></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
