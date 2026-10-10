@@ -137,6 +137,7 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
     GRADE_LOOP_FALLBACK_END_S,
     createGradeLoopRotation,
     createGradeLoopSlowClock,
+    gradeLoopDwellMs,
   } from '../lib/gradeLoopRotation';
 
   type LoopState = { playing: boolean; done: boolean; static: boolean };
@@ -389,7 +390,8 @@ const isCatalog = defaultEntry.href.startsWith('/worksheets');
         },
       },
       pool.map((entry) => entry.variant),
-      initial.dataset.loop
+      initial.dataset.loop,
+      { dwellFor: (variant) => gradeLoopDwellMs(entries.get(variant)?.hold) }
     );
 
     // ×1.8 without touching the engine: it keeps playing (so its state, pause

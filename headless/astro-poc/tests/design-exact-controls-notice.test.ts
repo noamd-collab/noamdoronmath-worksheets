@@ -143,9 +143,10 @@ describe('exact hero presentation adapter inventory', () => {
 describe('protected math sources stay pinned after the L01 removal', () => {
   // Hashes moved off live-base 8a098020 because L01 angle-sum was deleted
   // and replaced by the vertex-descent film. Not a silent design regen.
+  // Moved again for Noam's approved Kimi L14 diff-sq v6 film.
   const expected = {
-    'src/components/ConceptLoop.astro': '37c06f29131a44c5b3c670cd1ad28206d4f5e850ff39f5b3cd3ab63df59ca391',
-    'src/lib/conceptLoops.ts': 'b78a1945395cd9239942952c806014f16138accf47a2768f5e8acf73e38e03a1',
+    'src/components/ConceptLoop.astro': '7a53ec85a1b9fb039cb6363e799b1e2d36f78d82f7d407738d18a3136c47b229',
+    'src/lib/conceptLoops.ts': '10601a87ba90387e8459658a9990e4f3a255a037a293e93fac1d8b6f97aa588c',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {
