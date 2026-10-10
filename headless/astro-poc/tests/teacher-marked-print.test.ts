@@ -1,7 +1,17 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
-import { cropEdgeInk, ensureWorksheetPdf, labelAscent, labelLineBox, labelLineHeight, measureExerciseGaps, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
+import { fileURLToPath } from 'node:url';
+import { labelAscent, labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
+
+function servedGaps(questions: { id: string; inkTop: number | null; inkBottom?: number }[]) {
+  return Object.fromEntries(questions.map((question) => (
+    question.inkBottom == null
+      ? [question.id, question.inkTop]
+      : [question.id, { y: question.inkTop, bottom: question.inkBottom }]
+  )));
+}
 
 const source = JSON.parse(readFileSync(new URL('../../../demos/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
 const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/6a37fe7160324a17ad107b3dbe43c1db.json', import.meta.url), 'utf8'));
@@ -276,7 +286,7 @@ describe('teacher catalog picker', () => {
     assert.ok(oneB.row.y + oneB.row.h <= oneC.row.y + 0.002);
     assert.ok(built.headerCrop.h > 0.2 && built.headerCrop.h < 0.3);
     const served = JSON.parse(readFileSync(new URL('../public/teachers/sheets/22303ba02b3b46c3ae2529e347cbce2b.json', import.meta.url), 'utf8'));
-    const gaps = Object.fromEntries(served.questions.map((question: { id: string; inkTop: number | null }) => [question.id, question.inkTop]));
+    const gaps = servedGaps(served.questions);
     const measured = sheetFromManifest({
       grade: 7, topicId: 1, level: 'a', levelLabel: 'רמה א׳', pdfId: manifest.pdfHash, pdfUrl: 'https://example.invalid/a.pdf', title: 'מספרים מכוונים', topic: 'מספרים מכוונים',
     }, manifest, gaps);
@@ -292,7 +302,7 @@ describe('teacher catalog picker', () => {
   it('stops a grade-8 last part before the next section header and images only scrambled manifest text', () => {
     const average = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/82a5285c2446440f8ab8ef4aad7b6cd3.json', import.meta.url), 'utf8'));
     const servedAverage = JSON.parse(readFileSync(new URL('../public/teachers/sheets/82a5285c2446440f8ab8ef4aad7b6cd3.json', import.meta.url), 'utf8'));
-    const averageGaps = Object.fromEntries(servedAverage.questions.map((question: { id: string; inkTop: number | null }) => [question.id, question.inkTop]));
+    const averageGaps = servedGaps(servedAverage.questions);
     const built = sheetFromManifest({
       grade: 8, topicId: 23, level: 'b', levelLabel: 'רמה ב׳', pdfId: average.pdfHash, pdfUrl: 'https://example.invalid/a.pdf', title: 'הממוצע', topic: 'הממוצע',
     }, average, averageGaps);
@@ -369,29 +379,54 @@ describe('teacher catalog picker', () => {
     assert.match(css, /\.exact-header nav\[data-nav-panel\] \{flex-wrap:nowrap!important/);
     assert.match(css, /@media \(min-width: 900px\) and \(max-width: 1279px\)/);
     assert.match(css, /@media \(max-width: 899\.98px\)/);
+    assert.match(css, /@media \(min-width: 900px\) and \(max-width: 1023\.98px\)[\s\S]*?font-size:12px!important/);
+    assert.match(html, /@media\(min-width:900px\) and \(max-width:1023\.98px\)\{[\s\S]*?font-size:12px/);
   });
 
-  it('renders label crops from a white pixel row, with no clipped top and no next-label sliver', async () => {
-    const pdfId = '22303ba02b3b46c3ae2529e347cbce2b';
-    const sheetManifest = JSON.parse(readFileSync(new URL(`../../../noam-ai/manifests/${pdfId}.json`, import.meta.url), 'utf8'));
-    const served = JSON.parse(readFileSync(new URL(`../public/teachers/sheets/${pdfId}.json`, import.meta.url), 'utf8'));
-    const pdfPath = await ensureWorksheetPdf(pdfId);
-    const gaps = measureExerciseGaps(pdfPath, sheetManifest.exercises);
-    const ids = ['1ב', '3ב', '3ג'];
-    for (const id of ids) {
-      const question = served.questions.find((item: { id: string }) => item.id === id);
-      assert.equal(question.inkTop, gaps[id], id);
-      assert.equal(typeof question.inkTop, 'number', id);
+  it('measures a committed label page without downloading a worksheet', (t) => {
+    const probe = spawnSync('python3', ['-c', 'import pymupdf, numpy'], { encoding: 'utf8' });
+    if (probe.status !== 0) {
+      t.skip('pymupdf is not installed');
+      return;
     }
-    const edges = cropEdgeInk(pdfPath, ids.map((id) => {
-      const question = served.questions.find((item: { id: string }) => item.id === id);
-      return { id, page: question.row.page, y: question.row.y, h: question.row.h };
-    }));
-    for (const edge of edges) {
-      assert.equal(edge.topDark, 0, JSON.stringify(edge));
-      assert.equal(edge.botDark, 0, JSON.stringify(edge));
-      assert.ok(edge.midDark > 20, JSON.stringify(edge));
-    }
+    const pdfPath = fileURLToPath(new URL('./fixtures/label-gap-page.pdf', import.meta.url));
+    const script = fileURLToPath(new URL('../scripts/measure-label-gaps.py', import.meta.url));
+    const measured = spawnSync('python3', [script], {
+      input: JSON.stringify([{
+        id: 'fixture',
+        pdf: pdfPath,
+        pages: [{ page: 1, pins: [
+          { id: '1ב', y: 0.545, line: 0.0675, q: 1 },
+          { id: '1ג', y: 0.680, line: 0.0675, q: 1 },
+        ] }],
+      }]),
+      encoding: 'utf8',
+      maxBuffer: 8 * 1024 * 1024,
+    });
+    assert.equal(measured.status, 0, measured.stderr);
+    const gaps = JSON.parse(measured.stdout)[0].gaps;
+    const top = gaps['1ב'];
+    const next = gaps['1ג'];
+    assert.equal(typeof top, 'number');
+    assert.equal(typeof next, 'number');
+    // Above the dashed rule (y 0.356) and above the triangle (y 0.416), so the whole triangle is inside.
+    assert.ok(top > 0.37 && top < 0.416, String(top));
+    // Just above the next label ink (y 0.665), so that label stays out.
+    assert.ok(next > 0.64 && next < 0.665, String(next));
+    const edges = spawnSync('python3', [script], {
+      input: JSON.stringify({
+        cmd: 'edges',
+        pdf: pdfPath,
+        crops: [{ id: '1ב', page: 1, y: top, h: next - top }],
+      }),
+      encoding: 'utf8',
+      maxBuffer: 8 * 1024 * 1024,
+    });
+    assert.equal(edges.status, 0, edges.stderr);
+    const edge = JSON.parse(edges.stdout)[0];
+    assert.equal(edge.topDark, 0, JSON.stringify(edge));
+    assert.equal(edge.botDark, 0, JSON.stringify(edge));
+    assert.ok(edge.midDark > 20, JSON.stringify(edge));
   });
 
   it('leaves Noam AI exercise suggestions disabled', () => {

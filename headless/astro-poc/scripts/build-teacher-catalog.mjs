@@ -7,6 +7,7 @@
  */
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -19,7 +20,8 @@ const outDir = join(scriptDir, '../public/teachers');
 const sheetDir = join(outDir, 'sheets');
 const PDF_BASE = 'https://static.wixstatic.com/ugd/d8e7ad_';
 const measureScript = join(scriptDir, 'measure-label-gaps.py');
-const pdfCacheDir = '/tmp/pdfs/catalog';
+// Worksheet PDFs downloaded while measuring crops. Override with TEACHER_PDF_CACHE.
+const pdfCacheDir = process.env.TEACHER_PDF_CACHE || join(tmpdir(), 'noam-teacher-pdfs');
 
 function round(value) {
   return Math.round(Number(value) * 10000) / 10000;
@@ -126,19 +128,32 @@ function sectionHeaderEnd(exercise, cropBottom, top, line, nextPinY) {
   return cut;
 }
 
+function splitGap(raw) {
+  if (typeof raw === 'number' && Number.isFinite(raw)) return { y: raw, bottom: null };
+  if (raw && typeof raw === 'object') {
+    const y = typeof raw.y === 'number' && Number.isFinite(raw.y) ? raw.y : null;
+    const bottom = typeof raw.bottom === 'number' && Number.isFinite(raw.bottom) ? raw.bottom : null;
+    return { y, bottom };
+  }
+  return { y: null, bottom: null };
+}
+
 /** One crop per chosen part: from the top of its label line to the top of the next label line. */
-export function partRows(exercises, index, lineHeight, gaps) {
+export function partRows(exercises, index, lineHeight, gaps, bottoms) {
   const exercise = exercises[index];
   const pin = exercise.pin;
   const line = lineHeight || labelLineHeight(exercises);
-  const top = labelTop(pin, line, gaps && gaps[exerciseId(exercise)]);
+  const id = exerciseId(exercise);
+  const top = labelTop(pin, line, gaps && gaps[id]);
   const slices = exercise.crops && exercise.crops.length ? exercise.crops : [exercise.crop];
   const here = slices.find((slice) => slice.page === pin.page) || exercise.crop || { x: 0, w: 1, y: pin.y, h: 0.04 };
   const nextPart = exercises.slice(index + 1).find((item) => (
     item.q === exercise.q && item.pin && item.pin.page === pin.page && item.pin.y > pin.y + 0.004
   ));
+  const extraBottom = bottoms && bottoms[id];
   if (nextPart) {
-    const end = labelTop(nextPart.pin, line, gaps && gaps[exerciseId(nextPart)]);
+    let end = labelTop(nextPart.pin, line, gaps && gaps[exerciseId(nextPart)]);
+    if (typeof extraBottom === 'number' && extraBottom > end && extraBottom < 0.995) end = extraBottom;
     return [cropBox(pin.page, here.x, top, here.w, Math.max(line * 0.5, end - top))];
   }
   const nextOnPage = exercises.slice(index + 1).find((item) => (
@@ -146,6 +161,9 @@ export function partRows(exercises, index, lineHeight, gaps) {
   ));
   let end = here.page === pin.page ? here.y + here.h : top + line;
   if (nextOnPage) end = Math.min(end, labelTop(nextOnPage.pin, line, gaps && gaps[exerciseId(nextOnPage)]));
+  if (typeof extraBottom === 'number' && extraBottom > end && extraBottom < 0.995) end = extraBottom;
+  // A lifted figure top can sit above a short manifest crop that ends before the label.
+  if (end < pin.y + 0.008) end = pin.y + Math.min(0.02, Math.max(line * 0.45, 0.012));
   const headerEnd = here.page === pin.page
     ? sectionHeaderEnd(exercise, here.y + here.h, top, line, nextOnPage ? nextOnPage.pin.y : null)
     : null;
@@ -190,12 +208,15 @@ export function sheetFromManifest(meta, manifest, gaps) {
   const footerY = end > 0.97 ? 0.985 : Math.max(end, 0.94);
   const line = labelLineHeight(exercises);
   const tops = {};
+  const bottoms = {};
   if (gaps) {
     for (const exercise of exercises) {
       const key = exerciseId(exercise);
-      const raw = gaps[key];
-      const measured = typeof raw === 'number' && Number.isFinite(raw) ? round(raw) : null;
+      const split = splitGap(gaps[key]);
+      const measured = split.y == null ? null : round(split.y);
       tops[key] = measured != null && measured >= 0 && measured < exercise.pin.y ? measured : null;
+      const bottom = split.bottom == null ? null : round(split.bottom);
+      if (bottom != null && bottom > exercise.pin.y && bottom < 0.995) bottoms[key] = bottom;
     }
   }
   const questions = exercises.map((exercise, index) => {
@@ -203,7 +224,8 @@ export function sheetFromManifest(meta, manifest, gaps) {
     const id = String(exercise.q) + part;
     const label = part ? `שאלה ${exercise.q} סעיף ${part}` : `שאלה ${exercise.q}`;
     const inkTop = gaps ? tops[id] : null;
-    const rows = partRows(exercises, index, line, gaps ? tops : undefined);
+    const inkBottom = gaps ? bottoms[id] : null;
+    const rows = partRows(exercises, index, line, gaps ? tops : undefined, gaps ? bottoms : undefined);
     const stem = stemBox(exercises, exercise, line, gaps ? tops : undefined);
     const labelLine = { page: exercise.pin.page, y: rows[0].y, h: line };
     const text = exercise.text || label;
@@ -219,6 +241,7 @@ export function sheetFromManifest(meta, manifest, gaps) {
       box: markBox(exercise.pin),
       line: round(line),
       inkTop,
+      ...(inkBottom != null ? { inkBottom } : {}),
       labelLine: { page: labelLine.page, y: round(labelLine.y), h: round(labelLine.h) },
       row: rows[0],
       rows,
@@ -291,14 +314,8 @@ export function catalogSheets(index) {
 }
 
 function cachedPdf(pdfId) {
-  const candidates = [
-    join(pdfCacheDir, `${pdfId}.pdf`),
-    join('/tmp/pdfs', `${pdfId}.pdf`),
-    join('/tmp/pdfs/g8', `${pdfId}.pdf`),
-  ];
-  for (const path of candidates) {
-    if (existsSync(path) && statSync(path).size > 1000) return path;
-  }
+  const path = join(pdfCacheDir, `${pdfId}.pdf`);
+  if (existsSync(path) && statSync(path).size > 1000) return path;
   return null;
 }
 
@@ -347,7 +364,7 @@ export function measureExerciseGaps(pdfPath, exercises) {
   for (const exercise of exercises) {
     const page = exercise.pin.page;
     if (!pages.has(page)) pages.set(page, []);
-    pages.get(page).push({ id: exerciseId(exercise), y: exercise.pin.y, line });
+    pages.get(page).push({ id: exerciseId(exercise), y: exercise.pin.y, line, q: exercise.q });
   }
   const [measured] = measureJobs([{
     id: 'one',
@@ -397,7 +414,7 @@ async function writeOutputs() {
     for (const exercise of manifest.exercises || []) {
       const page = exercise.pin.page;
       if (!pages.has(page)) pages.set(page, []);
-      pages.get(page).push({ id: exerciseId(exercise), y: exercise.pin.y, line });
+      pages.get(page).push({ id: exerciseId(exercise), y: exercise.pin.y, line, q: exercise.q });
     }
     return {
       id: sheet.pdfId,
@@ -415,8 +432,9 @@ async function writeOutputs() {
   for (const job of jobs) {
     const gaps = byId.get(job.id) || {};
     for (const value of Object.values(gaps)) {
-      if (typeof value === 'number') measuredTops += 1;
-      else fallbacks += 1;
+      const split = splitGap(value);
+      if (split.y == null && split.bottom == null) fallbacks += 1;
+      else measuredTops += 1;
     }
     const source = sheetFromManifest(job.sheet, job.manifest, gaps);
     questions += source.questions.length;
