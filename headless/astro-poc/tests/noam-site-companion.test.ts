@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { describe, it } from 'node:test';
 import { companionPanelSize } from '../../../noam-ai/site-companion/panel-size.js';
 import { retrieveRecords } from '../../../noam-ai/site-companion/retrieve.js';
@@ -24,6 +25,10 @@ import {
   pruneRateStore,
 } from '../../../noam-ai/site-companion/bot-guard.js';
 import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
+
+const require = createRequire(import.meta.url);
+const { create: createBotClient } = require('../public/noam-bot-client.js') as { create: (options: Record<string, unknown>) => { postJson: (endpoint: string, payload: unknown) => Promise<unknown> } };
+const CALM_MESSAGE = 'נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס.';
 
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
@@ -214,6 +219,21 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('exactHelpTab'));
     assert.ok(client.includes('getBoundingClientRect()'));
     assert.equal(client.includes('font-size:14px'), false);
+    assert.equal(client.includes('Heebo,Arial,sans-serif'), false);
+    assert.equal(client.includes('font-family:inherit'), false);
+    assert.ok(client.includes('var SITE_FONT = "Heebo,\'Arial Hebrew\',Arial,sans-serif"'));
+    assert.ok(client.includes('font-family:" + SITE_FONT + "'));
+    assert.ok(client.includes('#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}"'));
+    assert.ok(client.includes('#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + "!important}"'));
+    assert.ok(client.includes('setProperty("font-family", SITE_FONT, "important")'));
+    assert.ok(client.includes('var API_BASE = "/api"'));
+    assert.equal(client.includes('my-site-2'), false);
+    assert.ok(client.includes('client.postJson(API'));
+    assert.ok(client.includes('var TEACHER_QUIET = "נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס."'));
+    assert.ok(client.includes('NOAM_PANEL_FAILED'));
+    assert.ok(client.includes('var text = TEACHER_QUIET;'));
+    assert.equal(client.includes('teacher ? TEACHER_QUIET'), false);
+    assert.equal(client.includes('לא הצלחנו להשלים את בדיקת האבטחה'), false);
     assert.ok(client.includes('#noam-site-companion-form{width:100%;gap:4px;box-sizing:border-box;padding-inline-end:46px}'));
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-xtight #noam-site-companion-form{padding-inline-end:0}'));
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-tight.has-answer #noam-site-companion-form{padding-inline-end:0}'));
@@ -257,7 +277,7 @@ describe('Noam AI bot guard', () => {
       { store, secret: 'secret', fetch: async () => ({ ok: true, json: async () => ({ success: true, score: 0.1, action: 'noam_site_companion' }) }) }
     );
     assert.equal(low.status, 403);
-    assert.equal(low.code, 'BOT_VERIFICATION_FAILED');
+    assert.equal(low.code, 'LOW_SCORE');
     for (let i = 0; i < 12; i += 1) {
       const slot = await guardCompanionRequest({ ...base, now: 2_000, clientIp: '203.0.113.11' }, { store, secret: 'secret', fetch: okFetch });
       assert.equal(slot.ok, true);
@@ -294,5 +314,93 @@ describe('Noam AI bot guard', () => {
     assert.match(catalogJs, /export const catalog =/);
     assert.match(catalogJs, /6a37fe7160324a17ad107b3dbe43c1db/);
     assert.equal(catalogJs.includes('export const catalog = []') || catalogJs.includes('export const catalog =[];'), false);
+  });
+});
+
+describe('Noam AI calm failure text', () => {
+  async function failure(fetchImpl: (url: string) => Promise<unknown>, extra: Record<string, unknown> = {}) {
+    const client = createBotClient({
+      api: '/api',
+      enabled: extra.enabled === true,
+      networkRetryDelayMs: 0,
+      modelTimeoutMs: 30,
+      fetch: fetchImpl,
+      window: {},
+    });
+    try {
+      await client.postJson('/api/noamSiteCompanion', { message: 'שלום' });
+    } catch (error) {
+      return error as { message: string; code?: string; status?: number };
+    }
+    assert.fail('expected a failure');
+  }
+
+  it('shows one calm sentence for recaptcha, 403, timeout, network, and 5xx', async () => {
+    const bot = readFileSync(new URL('../public/noam-bot-client.js', import.meta.url), 'utf8');
+    assert.equal(bot.includes('לא הצלחנו להשלים את בדיקת האבטחה'), false);
+    assert.equal(bot.includes('לא זמין כרגע'), false);
+    assert.equal(bot.includes('התשובה מתעכבת'), false);
+    assert.equal(bot.includes('החיבור לנועם AI נקטע'), false);
+    assert.ok(bot.includes(`var VERIFY_MESSAGE = "${CALM_MESSAGE}"`));
+    const denied = await failure(async () => ({
+      ok: false,
+      status: 403,
+      json: async () => ({ error: 'לא הצלחנו להשלים את בדיקת האבטחה. נסו שוב בעוד רגע.', code: 'BOT_VERIFICATION_FAILED' }),
+    }));
+    assert.equal(denied.message, CALM_MESSAGE);
+    assert.equal(denied.status, 403);
+    const server = await failure(async () => ({ ok: false, status: 500, json: async () => ({ error: 'internal' }) }));
+    assert.equal(server.message, CALM_MESSAGE);
+    const down = await failure(async () => { throw new TypeError('Failed to fetch'); });
+    assert.equal(down.message, CALM_MESSAGE);
+    assert.equal(down.code, 'NETWORK_UNAVAILABLE');
+    const slow = await failure(() => new Promise(() => {}));
+    assert.equal(slow.message, CALM_MESSAGE);
+    assert.equal(slow.code, 'REQUEST_TIMEOUT');
+    const inactive = await failure(async (url) => {
+      if (String(url).includes('noamBotConfig')) return { ok: true, status: 200, json: async () => ({ active: false, error: 'secret missing' }) };
+      return { ok: false, status: 500, json: async () => ({}) };
+    }, { enabled: true });
+    assert.equal(inactive.message, CALM_MESSAGE);
+    assert.equal(inactive.code, 'NOT_ACTIVE');
+  });
+
+  it('retries one fresh token after a low score, then still shows the calm sentence', async () => {
+    const posts: string[] = [];
+    const client = createBotClient({
+      api: '/api',
+      enabled: true,
+      networkRetryDelayMs: 0,
+      modelTimeoutMs: 1000,
+      window: { location: { hostname: 'localhost' } },
+      loadRecaptcha: async () => ({
+        ready: (fn: () => void) => fn(),
+        execute: async () => 'token-' + posts.length,
+      }),
+      fetch: async (url: string) => {
+        const href = String(url);
+        if (href.includes('noamBotConfig')) {
+          return { ok: true, status: 200, json: async () => ({ ok: true, active: true, provider: 'recaptcha-v3', siteKey: 'abcdefghij1234', mode: 'enforce' }) };
+        }
+        posts.push(href);
+        if (posts.length === 1) return { ok: false, status: 403, json: async () => ({ code: 'LOW_SCORE' }) };
+        return { ok: true, status: 200, json: async () => ({ ok: true, answer: 'המשך' }) };
+      },
+    });
+    const result = await client.postJson('/api/noamSiteCompanion', { message: 'שלום' }) as { answer: string };
+    assert.equal(posts.length, 2);
+    assert.equal(result.answer, 'המשך');
+    const denied = createBotClient({
+      api: '/api',
+      enabled: false,
+      networkRetryDelayMs: 0,
+      modelTimeoutMs: 1000,
+      window: { location: { hostname: 'localhost' } },
+      fetch: async () => ({ ok: false, status: 403, json: async () => ({ code: 'SECRET_MISMATCH' }) }),
+    });
+    await assert.rejects(
+      () => denied.postJson('/api/noamSiteCompanion', { message: 'שלום' }),
+      (error: { message: string; code?: string }) => error.message === CALM_MESSAGE && error.code === 'SECRET_MISMATCH'
+    );
   });
 });

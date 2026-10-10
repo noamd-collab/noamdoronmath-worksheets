@@ -1,3 +1,13 @@
+import {
+  blankBrief,
+  confirmChips,
+  describeSelection,
+  editChips,
+  nextTeacherQuestion,
+  readTeacherBrief,
+  selectByBrief,
+} from './teacher-brief.js';
+
 /* Teacher picker for every catalog sheet.
    Grades 7–9: choose existing exercises across sheets.
    Grades 1–6: choose a sheet by topic and level.
@@ -87,6 +97,7 @@ let state = {
   grade: '9',
   topic: '2',
   level: 'all',
+  query: '',
 };
 let history = [];
 let rendering = false;
@@ -102,19 +113,92 @@ function sheetKey(pdfId) {
   return 'sheet:' + pdfId;
 }
 
+const TEACHER_SUGGEST_ENDPOINT = '/api/noamSiteCompanion';
+const TEACHER_QUIET = 'נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס.';
+const TEACHER_QUIET_RESULT = { enabled: false, exerciseIds: [], sheetIds: [], answer: '' };
+let teacherBotPromise = null;
+
+function suggestPayload(message) {
+  const grade = gradeRecord(state.grade);
+  const topic = currentTopic();
+  return {
+    message: String(message || '').slice(0, 700),
+    page: { kind: 'teachers', path: location.pathname, title: document.title },
+    teacher: {
+      grade: state.grade,
+      gradeLabel: grade ? grade.label : '',
+      topic: state.topic,
+      topicLabel: topic ? topic.title : '',
+      level: state.level,
+      note: $('teacher-note') ? $('teacher-note').value : '',
+    },
+  };
+}
+
+function loadNoamBotClient() {
+  if (window.NoamBotClient && typeof window.NoamBotClient.create === 'function') {
+    return Promise.resolve(window.NoamBotClient);
+  }
+  if (!loadNoamBotClient.pending) {
+    loadNoamBotClient.pending = new Promise((resolve, reject) => {
+      const loader = document.createElement('script');
+      loader.src = '/noam-bot-client.js';
+      loader.async = true;
+      loader.onload = () => {
+        if (window.NoamBotClient && typeof window.NoamBotClient.create === 'function') resolve(window.NoamBotClient);
+        else reject(new Error('BOT_CLIENT_UNAVAILABLE'));
+      };
+      loader.onerror = () => reject(new Error('BOT_CLIENT_UNAVAILABLE'));
+      document.head.appendChild(loader);
+    }).catch((error) => {
+      loadNoamBotClient.pending = null;
+      throw error;
+    });
+  }
+  return loadNoamBotClient.pending;
+}
+
+function teacherBot() {
+  if (!teacherBotPromise) {
+    teacherBotPromise = loadNoamBotClient().then((Bot) => Bot.create({
+      api: '/api',
+      enabled: true,
+      modelTimeoutMs: 10000,
+    })).catch((error) => {
+      teacherBotPromise = null;
+      throw error;
+    });
+  }
+  return teacherBotPromise;
+}
+
+function quietSuggest(error) {
+  const reason = (error && (error.code || error.message)) || 'UNKNOWN';
+  if (typeof console !== 'undefined' && console.warn) console.warn('NOAM_TEACHER_SUGGEST_FAILED', String(reason).slice(0, 160));
+  return TEACHER_QUIET_RESULT;
+}
+
 function installSuggest() {
   window.NoamTeacherSuggest = {
     enabled: false,
     classifier: 'qwen-flash',
+    endpoint: TEACHER_SUGGEST_ENDPOINT,
     async classifyRequest() {
       return { enabled: false, intent: null };
     },
-    async suggest() {
-      return { enabled: false, exerciseIds: [], sheetIds: [] };
+    async suggest(message) {
+      try {
+        const client = await teacherBot();
+        const data = await client.postJson(TEACHER_SUGGEST_ENDPOINT, suggestPayload(message));
+        if (!data || data.ok === false || data.active === false || data.code === 'NOT_ACTIVE') return TEACHER_QUIET_RESULT;
+        return normalizeSuggest(data);
+      } catch (error) {
+        return quietSuggest(error);
+      }
     },
   };
   const status = $('ai-suggest-status');
-  if (status) status.textContent = 'הצעות נועם AI כבויות. ההערה נכנסת להדפסה בלבד.';
+  if (status) status.textContent = 'השיחה עם נועם AI היא בפאנל. הבחירה רק מתוך השאלות שכבר בדף.';
 }
 
 function gradeRecord(grade) {
@@ -265,7 +349,7 @@ function exerciseCard(question) {
   const level = question.source.levelLabel ? `<span class="q-page" style="display:block">${escapeHTML(question.source.levelLabel)} · עמוד ${question.page}</span>` : `<span class="q-page" style="display:block">עמוד ${question.page} בדף המקור</span>`;
   const badge = pilotOn() ? `<span class="badge ${tier(question)}">${TIERS[tier(question)]}</span>` : '';
   const body = needsThumb(question)
-    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(key)}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
+    ? `<canvas class="q-thumb" width="1" height="1" data-thumb="${escapeHTML(key)}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
     : `<span class="q-desc" dir="rtl">${questionTextHTML(question.text)}</span>`;
   return `<label class="q-card"><input type="checkbox" data-question="${escapeHTML(key)}" ${state.selected.includes(key) ? 'checked' : ''} aria-label="בחירת ${escapeHTML(question.label)}"><span class="q-content"><span class="q-title-line"><span class="q-title">${escapeHTML(question.label)}</span>${badge}</span>${body}${level}</span></label>`;
 }
@@ -308,27 +392,35 @@ function render() {
   if (prepareHint) prepareHint.textContent = elementary ? 'הדף המלא מהמקור, בלי סימון.' : 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
   if (!ok) {
     paintSourceLine();
+    syncWizardChrome();
+    rememberWizard();
     return;
   }
   if (elementary) {
-    const pool = state.filter === 'selected'
+    let pool = state.filter === 'selected'
       ? state.selected.filter((key) => key.startsWith('sheet:')).map((key) => byPdf.get(key.slice(6))).filter(Boolean)
       : topicSheets();
+    if (queryLimitsList()) pool = pool.filter((meta) => matchesQuery([meta.title, meta.topic, meta.levelLabel]));
     $('available-count').textContent = topicSheets().length + ' דפים';
     $('questions').innerHTML = pool.length
       ? pool.map(sheetCard).join('')
-      : '<p class="empty">אין דף ברמה הזו. אפשר לחזור ל״הכל״.</p>';
+      : (queryLimitsList() && state.selected.length
+        ? '<p class="empty">אין התאמה בחיפוש. מה שנבחר ולא מופיע כאן נשאר להדפסה.</p>'
+        : '<p class="empty">אין דף ברמה הזו. אפשר לחזור ל״הכל״.</p>');
     $('show-more').hidden = true;
     $('suggestion').hidden = true;
   } else {
-    const ordered = state.filter === 'selected'
+    let ordered = state.filter === 'selected'
       ? state.selected.map((key) => library.get(key)).filter(Boolean)
       : orderedQuestions();
+    if (queryLimitsList()) ordered = ordered.filter((question) => matchesQuery([question.label, question.text, question.id]));
     const visible = shownQuestions(ordered);
     $('available-count').textContent = currentExercises().length + ' סעיפים בדפי הנושא';
     $('questions').innerHTML = visible.length
       ? visible.map(exerciseCard).join('')
-      : '<p class="empty">עדיין לא נבחרו שאלות. אפשר לעבור ל״כל ההצעות״ ולסמן.</p>';
+      : (queryLimitsList() && state.selected.length
+        ? '<p class="empty">אין התאמה בחיפוש. מה שנבחר ולא מופיע כאן נשאר להדפסה.</p>'
+        : '<p class="empty">עדיין לא נבחרו שאלות. אפשר לעבור ל״כל ההצעות״ ולסמן.</p>');
     const hidden = Math.max(0, ordered.length - visible.length);
     $('show-more').hidden = hidden === 0;
     $('more-count').textContent = hidden ? String(hidden) : '';
@@ -338,12 +430,20 @@ function render() {
     $('suggestion').hidden = !showSuggestion;
     $('suggestion-text').textContent = showSuggestion ? `${suggestion.label}: ${cfg.suggestionText}` : '';
   }
+  const hiddenBySearch = searchHiddenSelected();
   $('selection-count').textContent = state.selected.length + ' נבחרו';
   const pdfs = new Set(state.selected.map((key) => key.split(':')[1]).filter(Boolean));
-  $('selection-composition').textContent = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
+  let composition = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
+  if (hiddenBySearch.length) {
+    const aside = hiddenBySearch.length + ' לא מופיעים בחיפוש וייכנסו להדפסה';
+    composition = composition ? aside + ' · ' + composition : aside;
+  }
+  $('selection-composition').textContent = composition;
   $('undo').disabled = history.length === 0;
   paintSourceLine();
   if (!elementary) paintThumbs();
+  syncWizardChrome();
+  rememberWizard();
 }
 
 function paintSourceLine() {
@@ -417,37 +517,646 @@ function paintSeen(nodes, token) {
 }
 
 function thumbSlice(question, bitmap) {
-  const row = question.row;
-  const line = question.line > 0 ? question.line : Math.min(row.h || 0.03, 0.03);
-  const glyph = Math.max(8, line * 0.52 * bitmap.height);
-  const right = Math.min(0.98, (row.x || 0) + (row.w || 1));
-  const left = Math.max(row.x || 0, Math.min(0.45, right - 0.12));
-  const srcX = left * bitmap.width;
-  const srcW = Math.max(8, (right - left) * bitmap.width);
-  const band = Math.max(line * 1.8, line * 0.7 * 5.2);
-  const shown = Math.min(row.h, band);
-  const padTop = row.h > band ? line * 0.2 : Math.min(line * 0.08, 0.0015);
-  const padBottom = line * 0.2;
-  const y0 = Math.max(0, row.y - padTop);
-  const y1 = Math.min(1, row.y + shown + padBottom);
-  const srcY = y0 * bitmap.height;
-  const srcH = Math.max(8, (y1 - y0) * bitmap.height);
-  return { glyph, srcX, srcY, srcW, srcH };
+  const row = question.row || {};
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const srcX = Math.max(0, Math.floor((row.x || 0) * width));
+  const srcY = Math.max(0, Math.floor((row.y || 0) * height));
+  const srcW = Math.max(1, Math.min(width - srcX, Math.ceil((row.w || 1) * width)));
+  const srcH = Math.max(1, Math.min(height - srcY, Math.ceil((row.h || 0.03) * height)));
+  return { srcX, srcY, srcW, srcH, page: row.page || question.page };
+}
+
+function thumbRowsOf(item) {
+  if (!item) return [];
+  return item.rows && item.rows.length ? item.rows : (item.row ? [item.row] : []);
+}
+
+function thumbNeighborY(question, row, bitmapHeight) {
+  const page = row.page || question.page;
+  let above = 0;
+  let below = bitmapHeight;
+  const list = question.source && question.source.questions;
+  if (!list) return { above, below };
+  const thisTop = Math.floor((row.y || 0) * bitmapHeight);
+  const thisBot = Math.ceil(((row.y || 0) + (row.h || 0)) * bitmapHeight);
+  const linePx = Math.max(8, Math.round((question.line || 0.02) * bitmapHeight));
+  list.forEach((other) => {
+    if (!other || other === question) return;
+    thumbRowsOf(other).forEach((otherRow) => {
+      if ((otherRow.page || other.page) !== page) return;
+      const top = Math.floor((otherRow.y || 0) * bitmapHeight);
+      const bot = Math.ceil(((otherRow.y || 0) + (otherRow.h || 0)) * bitmapHeight);
+      if (bot <= thisTop && bot > above) above = bot;
+      if (top >= thisBot && top < below) below = top;
+    });
+    const pin = other.box;
+    if (!pin || (pin.page || other.page) !== page) return;
+    const pinTop = Math.floor((pin.y || 0) * bitmapHeight);
+    // The stored row can start inside the next label. Stop at the label pin when the overlap is only a sliver.
+    if (pinTop > thisTop + linePx && pinTop < below && thisBot - pinTop < linePx * 1.4) below = pinTop;
+  });
+  return { above, below };
+}
+
+function thumbContent(bitmap, question, row) {
+  const windowRect = thumbSlice({ row, page: row.page || question.page, line: question.line }, bitmap);
+  const ctx = bitmap.getContext('2d');
+  let image;
+  try {
+    image = ctx.getImageData(windowRect.srcX, windowRect.srcY, windowRect.srcW, windowRect.srcH);
+  } catch (error) {
+    return windowRect;
+  }
+  const data = image.data;
+  const rw = windowRect.srcW;
+  const rh = windowRect.srcH;
+  const col = new Uint32Array(rw);
+  for (let y = 0; y < rh; y++) {
+    for (let x = 0; x < rw; x++) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) col[x] += 1;
+    }
+  }
+  const gapX = Math.max(8, Math.round(bitmap.width * 0.03));
+  const clusters = [];
+  let start = -1;
+  let blank = 0;
+  for (let x = 0; x <= rw; x++) {
+    if (x < rw && col[x]) {
+      if (start < 0) start = x;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (x === rw || blank > gapX) {
+        const end = x - blank;
+        clusters.push({ x: start, w: end - start + 1 });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  if (!clusters.length) return windowRect;
+  let best = null;
+  clusters.forEach((cluster) => {
+    let top = -1;
+    let bot = -1;
+    let n = 0;
+    for (let y = 0; y < rh; y++) {
+      for (let x = cluster.x; x < cluster.x + cluster.w; x++) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          n += 1;
+          if (top < 0) top = y;
+          bot = y;
+        }
+      }
+    }
+    cluster.top = top;
+    cluster.bot = bot;
+    cluster.n = n;
+    cluster.span = bot - top;
+    if (!best || cluster.span > best.span || (cluster.span === best.span && cluster.n > best.n)) best = cluster;
+  });
+  const lineFrac = question.line > 0 ? question.line : 0.02;
+  const linePxEarly = Math.max(8, Math.round(lineFrac * bitmap.height));
+  let unionLeft = best.x;
+  let unionRight = best.x + best.w;
+  let unionTop = best.top;
+  let unionBot = best.bot;
+  clusters.forEach((cluster) => {
+    if (cluster === best || cluster.top < 0 || cluster.n < 8) return;
+    const overlap = Math.min(cluster.bot, best.bot) - Math.max(cluster.top, best.top);
+    const above = best.top - cluster.bot < linePxEarly && cluster.bot >= best.top - linePxEarly * 2.4;
+    const labelSide = cluster.x > rw * 0.62;
+    if (overlap <= 3 && !above && !labelSide) return;
+    unionLeft = Math.min(unionLeft, cluster.x);
+    unionRight = Math.max(unionRight, cluster.x + cluster.w);
+    unionTop = Math.min(unionTop, cluster.top);
+    unionBot = Math.max(unionBot, cluster.bot);
+  });
+  best = { x: unionLeft, w: unionRight - unionLeft, top: unionTop, bot: unionBot, n: best.n, span: best.span };
+  const gapY = Math.max(4, Math.round(lineFrac * bitmap.height * 0.28));
+  const minBand = Math.max(5, Math.round(bitmap.height * 0.0035));
+  const bands = [];
+  let bandStart = -1;
+  let bandBlank = 0;
+  for (let y = best.top; y <= best.bot + 1; y++) {
+    let n = 0;
+    if (y <= best.bot) {
+      for (let x = best.x; x < best.x + best.w; x++) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
+      }
+    }
+    if (n) {
+      if (bandStart < 0) bandStart = y;
+      bandBlank = 0;
+    } else if (bandStart >= 0) {
+      bandBlank += 1;
+      if (y > best.bot || bandBlank > gapY) {
+        const end = y - bandBlank;
+        bands.push({ y: bandStart, h: end - bandStart + 1 });
+        bandStart = -1;
+        bandBlank = 0;
+      }
+    }
+  }
+  const bandWidth = (band) => {
+    let maxSpan = 0;
+    for (let y = band.y; y < band.y + band.h; y += 1) {
+      let left = -1;
+      let right = -1;
+      for (let x = best.x; x < best.x + best.w; x += 1) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          if (left < 0) left = x;
+          right = x;
+        }
+      }
+      if (left >= 0) maxSpan = Math.max(maxSpan, right - left + 1);
+    }
+    return maxSpan;
+  };
+  const tall = bands.filter((band) => band.h >= minBand);
+  const kept = tall.length ? bands.filter((band) => band.h >= minBand || tall.some((item) => Math.abs(band.y - (item.y + item.h)) < gapY || Math.abs(item.y - (band.y + band.h)) < gapY) || (band.h >= 1 && bandWidth(band) > best.w * 0.22 && tall.some((item) => Math.abs(band.y - (item.y + item.h)) < linePxEarly))) : [bands.reduce((bestBand, band) => (band.h > bestBand.h ? band : bestBand))];
+  while (kept.length > 1) {
+    const first = kept[0];
+    const second = kept[1];
+    const topGap = second.y - (first.y + first.h);
+    // The bottom of the previous line, not this part.
+    if (topGap > 2 && first.h < linePxEarly * 0.55 && bandWidth(first) < best.w * 0.35) {
+      kept.shift();
+      continue;
+    }
+    break;
+  }
+  while (kept.length > 1) {
+    const last = kept[kept.length - 1];
+    const prev = kept[kept.length - 2];
+    const gap = last.y - (prev.y + prev.h);
+    // A distant short line under a tall crop is the closing greeting, not the drawing.
+    if (gap > linePxEarly * 1.4 && last.h < linePxEarly && windowRect.srcH > bitmap.height * 0.22) {
+      kept.pop();
+      continue;
+    }
+    if (last.h < prev.h * 0.75 && gap > 1 && bandWidth(last) < best.w * 0.45) {
+      kept.pop();
+      continue;
+    }
+    // A short band at the bottom, separated from the drawing, is a sliced neighbour letter.
+    if (gap > 2 && last.h < linePxEarly * 0.55 && bandWidth(last) < best.w * 0.62) {
+      kept.pop();
+      continue;
+    }
+    break;
+  }
+  if (!kept.length) return windowRect;
+  let top = kept[0].y;
+  let bot = kept[0].y + kept[0].h;
+  kept.forEach((band) => {
+    top = Math.min(top, band.y);
+    bot = Math.max(bot, band.y + band.h);
+  });
+  const rowStats = [];
+  for (let y = top; y < bot; y++) {
+    let n = 0;
+    let rowLeft = best.x + best.w;
+    let rowRight = best.x - 1;
+    for (let x = best.x; x < best.x + best.w; x++) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+        n += 1;
+        if (x < rowLeft) rowLeft = x;
+        if (x > rowRight) rowRight = x;
+      }
+    }
+    if (n) rowStats.push({ left: rowLeft, right: rowRight, span: rowRight - rowLeft + 1 });
+  }
+  const spans = rowStats.map((row) => row.span).sort((a, b) => a - b);
+  const median = spans.length ? spans[Math.floor(spans.length / 2)] : 0;
+  const contentRows = rowStats.filter((row) => row.span <= median * 1.5 + 12);
+  const usedRows = contentRows.length ? contentRows : rowStats;
+  let left = best.x + best.w;
+  let right = best.x;
+  usedRows.forEach((row) => {
+    if (row.left < left) left = row.left;
+  });
+  // The part letter and a leading blank sit on the right. A full-width rule must not pull the left edge out.
+  rowStats.forEach((row) => {
+    if (row.right > right) right = row.right;
+  });
+  if (right < left) return windowRect;
+  const line = question.line > 0 ? question.line : 0.02;
+  const pad = Math.max(3, Math.min(10, Math.round(line * bitmap.height * 0.18)));
+  const limits = thumbNeighborY(question, row, bitmap.height);
+  const srcX = Math.max(0, windowRect.srcX + left - pad);
+  const srcX2 = Math.min(bitmap.width, windowRect.srcX + right + 1 + pad);
+  // Pad through white only. Entering the line above or below slices a letter.
+  const whiteRun = (absEdge, dir) => {
+    const span = Math.max(1, srcX2 - srcX);
+    let used = 0;
+    for (let step = 1; step <= pad; step += 1) {
+      const y = absEdge + dir * step;
+      if (y < 0 || y >= bitmap.height) break;
+      let n = 0;
+      let rowData = null;
+      try {
+        const rowImage = ctx.getImageData(srcX, y, span, 1);
+        rowData = rowImage && rowImage.data;
+      } catch (error) {
+        break;
+      }
+      if (!rowData) break;
+      if (rowData.length <= span * 4 + 8) {
+        for (let i = 0; i < rowData.length; i += 4) {
+          if (rowData[i] < 242 || rowData[i + 1] < 242 || rowData[i + 2] < 242) n += 1;
+        }
+      } else if (rowData.length >= bitmap.width * bitmap.height * 4) {
+        for (let x = srcX; x < srcX2 && x < bitmap.width; x += 1) {
+          const i = (y * bitmap.width + x) * 4;
+          if (rowData[i] < 242 || rowData[i + 1] < 242 || rowData[i + 2] < 242) n += 1;
+        }
+      } else break;
+      if (n > 2) break;
+      used = step;
+    }
+    return used;
+  };
+  const topAbs = windowRect.srcY + top;
+  const botAbs = windowRect.srcY + bot;
+  const srcY = Math.max(limits.above, topAbs - whiteRun(topAbs, -1));
+  // Stop short of the next row so a sliver of its first line is not in the card.
+  const belowLimit = limits.below < bitmap.height ? Math.max(srcY + 4, limits.below - 2) : limits.below;
+  const srcY2 = Math.min(belowLimit, botAbs + whiteRun(botAbs, 1));
+  return { srcX, srcY, srcW: Math.max(1, srcX2 - srcX), srcH: Math.max(1, srcY2 - srcY), page: windowRect.page };
+}
+
+async function clipThumbRow(question, row) {
+  let y2 = (row.y || 0) + (row.h || 0.03);
+  if (y2 > 0.958) y2 = 0.958;
+  try {
+    const items = await pageTextItems(row.page || question.page, question.source);
+    items.forEach((item) => {
+      if (!String(item.str || '').includes('בהצלחה')) return;
+      if (item.y > (row.y || 0) + 0.008 && item.y < y2) y2 = Math.min(y2, item.y - 0.006);
+    });
+  } catch (error) {}
+  const cap = 0.34;
+  if (y2 - (row.y || 0) > cap) y2 = (row.y || 0) + cap;
+  return { ...row, h: Math.max(0.02, y2 - (row.y || 0)) };
+}
+
+function wordGapCut(bitmap, slice, loose) {
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(slice.srcX, slice.srcY, slice.srcW, slice.srcH);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = slice.srcW;
+  const rh = slice.srcH;
+  const col = new Uint16Array(rw);
+  for (let y = 0; y < rh; y += 1) {
+    for (let x = 0; x < rw; x += 1) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) col[x] += 1;
+    }
+  }
+  let best = null;
+  let run = 0;
+  const mid = rw / 2;
+  const fromFrac = loose ? 0.12 : 0.28;
+  const toFrac = loose ? 0.88 : 0.72;
+  for (let x = Math.floor(rw * fromFrac); x <= Math.ceil(rw * toFrac); x += 1) {
+    if (x < rw && col[x] === 0) {
+      run += 1;
+    } else if (run >= 3) {
+      const gapX = x - run;
+      const center = gapX + run / 2;
+      const score = Math.abs(center - mid);
+      if (!best || score < best.score) best = { x: gapX, w: run, score };
+      run = 0;
+    } else {
+      run = 0;
+    }
+  }
+  if (!best || best.w < 4) return null;
+  return best.x + Math.floor(best.w / 2);
+}
+
+function captionSplit(bitmap, slice) {
+  if (!slice || slice.srcH < 40 || slice.srcW < 40) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(slice.srcX, slice.srcY, slice.srcW, slice.srcH);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = slice.srcW;
+  const rh = slice.srcH;
+  const bands = [];
+  let start = -1;
+  let blank = 0;
+  const gap = Math.max(3, Math.round(rh * 0.015));
+  for (let y = 0; y <= rh; y += 1) {
+    let n = 0;
+    if (y < rh) {
+      for (let x = 0; x < rw; x += 4) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
+      }
+    }
+    if (n > 1) {
+      if (start < 0) start = y;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (y === rh || blank > gap) {
+        bands.push({ y: start, h: y - blank - start + 1 });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  if (bands.length < 2) return null;
+  const lineCap = Math.max(14, Math.round(rh * 0.16));
+  let textEnd = 0;
+  while (textEnd < bands.length && bands[textEnd].h <= lineCap) textEnd += 1;
+  if (!textEnd || textEnd >= bands.length) return null;
+  const draw = bands[textEnd];
+  if (draw.h < rh * 0.32 || draw.h < bands[0].h * 2) return null;
+  const textTop = Math.max(0, bands[0].y - 2);
+  const textBot = bands[textEnd - 1].y + bands[textEnd - 1].h + 2;
+  const drawTop = Math.max(0, draw.y - 2);
+  const drawBot = Math.min(rh, bands[bands.length - 1].y + bands[bands.length - 1].h + 2);
+  if (textBot >= drawTop || textBot - textTop < 6 || drawBot - drawTop < 20) return null;
+  return {
+    text: { ...slice, srcY: slice.srcY + textTop, srcH: Math.max(1, textBot - textTop) },
+    drawing: { ...slice, srcY: slice.srcY + drawTop, srcH: Math.max(1, drawBot - drawTop) },
+  };
+}
+
+function besideSplit(bitmap, slice) {
+  if (!slice || slice.srcH < 36 || slice.srcW < 80) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(slice.srcX, slice.srcY, slice.srcW, slice.srcH);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = slice.srcW;
+  const rh = slice.srcH;
+  const col = new Uint16Array(rw);
+  for (let y = 0; y < rh; y += 1) {
+    for (let x = 0; x < rw; x += 1) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) col[x] += 1;
+    }
+  }
+  let gapStart = -1;
+  let bestGap = null;
+  const from = Math.floor(rw * 0.16);
+  const to = Math.floor(rw * 0.88);
+  for (let x = from; x <= to; x += 1) {
+    if (x < rw && col[x] === 0) {
+      if (gapStart < 0) gapStart = x;
+    } else if (gapStart >= 0) {
+      const width = x - gapStart;
+      if (width >= 6 && (!bestGap || width > bestGap.w)) bestGap = { x: gapStart, w: width };
+      gapStart = -1;
+    }
+  }
+  if (!bestGap) {
+    // Text can sit beside a drawing with no empty column. The right columns are only a line tall.
+    const span = new Int16Array(rw);
+    const topOf = new Int16Array(rw);
+    topOf.fill(-1);
+    for (let y = 0; y < rh; y += 1) {
+      for (let x = 0; x < rw; x += 1) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          if (topOf[x] < 0) topOf[x] = y;
+          span[x] = y;
+        }
+      }
+    }
+    let boundary = rw;
+    for (let x = rw - 1; x >= Math.floor(rw * 0.28); x -= 1) {
+      const height = topOf[x] < 0 ? 0 : span[x] - topOf[x] + 1;
+      if (height > rh * 0.42) {
+        boundary = x + 1;
+        break;
+      }
+    }
+    if (boundary < rw - 20 && boundary > rw * 0.28) {
+      let leftTall = 0;
+      for (let x = 0; x < boundary; x += 1) {
+        const height = topOf[x] < 0 ? 0 : span[x] - topOf[x] + 1;
+        if (height > leftTall) leftTall = height;
+      }
+      if (leftTall > rh * 0.45) bestGap = { x: boundary, w: 0 };
+    }
+  }
+  if (!bestGap) return null;
+  const cut = bestGap.x + Math.floor(bestGap.w / 2);
+  if (cut < 24 || rw - cut < 16) return null;
+  const inkSpan = (x0, x1) => {
+    let top = -1;
+    let bot = -1;
+    for (let y = 0; y < rh; y += 1) {
+      for (let x = x0; x < x1; x += 2) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          if (top < 0) top = y;
+          bot = y;
+          break;
+        }
+      }
+    }
+    return top < 0 ? 0 : bot - top + 1;
+  };
+  const textH = inkSpan(cut, rw);
+  const drawH = inkSpan(0, cut);
+  if (textH < 8 || drawH < rh * 0.35) return null;
+  // A wide empty column is the gutter between the sentence and the figure.
+  // A narrow gap is inside the figure unless the right side is only the caption.
+  if (bestGap.w < 32 && textH > drawH * 0.72) return null;
+  const trimY = (x0, x1) => {
+    let top = rh;
+    let bot = 0;
+    for (let y = 0; y < rh; y += 1) {
+      for (let x = x0; x < x1; x += 2) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          if (y < top) top = y;
+          if (y > bot) bot = y;
+          break;
+        }
+      }
+    }
+    if (bot < top) return { y: 0, h: rh };
+    return { y: Math.max(0, top - 2), h: Math.max(1, Math.min(rh, bot + 3) - Math.max(0, top - 2)) };
+  };
+  const textBand = trimY(cut, rw);
+  const drawBand = trimY(0, cut);
+  return {
+    text: { ...slice, srcX: slice.srcX + cut, srcY: slice.srcY + textBand.y, srcW: rw - cut, srcH: textBand.h },
+    drawing: { ...slice, srcY: slice.srcY + drawBand.y, srcW: cut, srcH: drawBand.h },
+  };
+}
+
+function topLineSplit(bitmap, slice) {
+  if (!slice || slice.srcH < 36 || slice.srcW < 40) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(slice.srcX, slice.srcY, slice.srcW, slice.srcH);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = slice.srcW;
+  const rh = slice.srcH;
+  const bands = [];
+  let start = -1;
+  let blank = 0;
+  for (let y = 0; y <= rh; y += 1) {
+    let n = 0;
+    if (y < rh) {
+      for (let x = 0; x < rw; x += 3) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
+      }
+    }
+    if (n > 1) {
+      if (start < 0) start = y;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (y === rh || blank > 3) {
+        bands.push({ y: start, h: y - blank - start + 1 });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  if (bands.length < 2 || bands[0].h > rh * 0.22) return null;
+  let textEnd = 1;
+  const lineCap = Math.max(bands[0].h + 2, 12);
+  while (textEnd < bands.length && bands[textEnd].h <= lineCap) {
+    const gap = bands[textEnd].y - (bands[textEnd - 1].y + bands[textEnd - 1].h);
+    if (gap > Math.max(6, bands[0].h)) break;
+    textEnd += 1;
+  }
+  if (textEnd >= bands.length) return null;
+  const gap = bands[textEnd].y - (bands[textEnd - 1].y + bands[textEnd - 1].h);
+  const restH = bands[bands.length - 1].y + bands[bands.length - 1].h - bands[textEnd].y;
+  if (gap < 4 || restH < bands[0].h * 2) return null;
+  const textTop = Math.max(0, bands[0].y - 1);
+  const textBot = bands[textEnd - 1].y + bands[textEnd - 1].h + 1;
+  const drawTop = Math.max(0, bands[textEnd].y - 1);
+  const drawBot = Math.min(rh, bands[bands.length - 1].y + bands[bands.length - 1].h + 2);
+  return {
+    text: { ...slice, srcY: slice.srcY + textTop, srcH: Math.max(1, textBot - textTop) },
+    drawing: { ...slice, srcY: slice.srcY + drawTop, srcH: Math.max(1, drawBot - drawTop) },
+  };
 }
 
 async function paintThumb(canvas) {
   const question = library.get(canvas.dataset.thumb);
-  const row = question && question.row;
-  if (!row || !levelAllows(question.source)) return;
-  const bitmap = await pageBitmap(row.page || question.page, question.source);
-  const slice = thumbSlice(question, bitmap);
+  if (!question || !question.row || !levelAllows(question.source)) return;
+  const rows = questionRows(question);
+  let pieces = [];
+  for (let index = 0; index < rows.length; index++) {
+    const row = await clipThumbRow(question, rows[index]);
+    const bitmap = await pageBitmap(row.page || question.page, question.source);
+    const slice = thumbContent(bitmap, question, row);
+    if (slice && slice.srcW > 2 && slice.srcH > 2) pieces.push({ bitmap, slice });
+  }
+  if (!pieces.length) return;
   const card = canvas.parentElement ? canvas.parentElement.clientWidth : 0;
   const cardW = Math.max(180, Math.min(card || 320, 520));
-  let scale = cardW / slice.srcW;
-  if (slice.srcH * scale > 120) scale = 120 / slice.srcH;
+  const edge = 8;
+  const gutter = 6;
+  const maxH = 180;
+  const laid = [];
+  pieces.forEach((piece) => {
+    const split = besideSplit(piece.bitmap, piece.slice) || captionSplit(piece.bitmap, piece.slice) || topLineSplit(piece.bitmap, piece.slice);
+    if (!split) laid.push(piece);
+    else {
+      laid.push({ bitmap: piece.bitmap, slice: split.text, role: 'text' });
+      laid.push({ bitmap: piece.bitmap, slice: split.drawing, role: 'drawing' });
+    }
+  });
+  const fitted = [];
+  const wrapPiece = (piece, depth) => {
+    const slice = piece.slice;
+    const target = cardW - edge * 2;
+    const fit = target / Math.max(1, slice.srcW);
+    const displayH = slice.srcH * fit;
+    const textTooSmall = piece.role === 'text' && displayH < 16;
+    // The figure stays one piece. Only a short text line may break on a word gap.
+    if (piece.role === 'drawing' || (!textTooSmall && displayH >= 22) || slice.srcW < slice.srcH * 8 || depth > 3) {
+      fitted.push(piece);
+      return;
+    }
+    const cut = wordGapCut(piece.bitmap, slice, piece.role === 'text');
+    if (cut == null || cut < 8 || slice.srcW - cut < 8) {
+      fitted.push(piece);
+      return;
+    }
+    const rightW = slice.srcW - cut;
+    wrapPiece({ bitmap: piece.bitmap, slice: { ...slice, srcX: slice.srcX + cut, srcW: rightW }, role: piece.role }, depth + 1);
+    wrapPiece({ bitmap: piece.bitmap, slice: { ...slice, srcW: cut }, role: piece.role }, depth + 1);
+  };
+  laid.forEach((piece) => wrapPiece(piece, 0));
+  pieces = fitted;
+  const target = cardW - edge * 2;
+  const scales = pieces.map((piece) => Math.min(1.5, target / Math.max(1, piece.slice.srcW)));
+  const gaps = gutter * Math.max(0, pieces.length - 1);
+  const limit = maxH - gaps - edge * 2;
+  let body = pieces.reduce((sum, piece, index) => sum + piece.slice.srcH * scales[index], 0);
+  if (body > limit && body > 0) {
+    let over = body - limit;
+    const drawingIdx = [];
+    pieces.forEach((piece, index) => { if (piece.role === 'drawing') drawingIdx.push(index); });
+    (drawingIdx.length ? drawingIdx : pieces.map((_, index) => index)).forEach((index) => {
+      if (over <= 0) return;
+      const height = pieces[index].slice.srcH * scales[index];
+      const floor = Math.min(height, pieces[index].slice.srcH * 0.35);
+      const cut = Math.min(over, Math.max(0, height - floor));
+      if (height > cut) scales[index] *= (height - cut) / height;
+      over -= cut;
+    });
+    if (over > 0) {
+      pieces.forEach((piece, index) => {
+        if (over <= 0 || piece.role === 'text') return;
+        const height = piece.slice.srcH * scales[index];
+        const floor = Math.min(height, 24);
+        const cut = Math.min(over, Math.max(0, height - floor));
+        if (height > cut && height > 0) scales[index] *= (height - cut) / height;
+        over -= cut;
+      });
+    }
+    if (over > 0) {
+      const nextBody = pieces.reduce((sum, piece, index) => sum + piece.slice.srcH * scales[index], 0);
+      const factor = limit / Math.max(1, nextBody);
+      scales.forEach((_, index) => { scales[index] *= factor; });
+    }
+  }
   const dpr = window.devicePixelRatio || 1;
-  const dw = Math.max(1, Math.round(slice.srcW * scale));
-  const dh = Math.max(1, Math.round(slice.srcH * scale));
+  let dh = edge * 2 + gaps;
+  const drawn = pieces.map((piece, index) => {
+    const sw = Math.max(1, Math.round(piece.slice.srcW * scales[index]));
+    const sh = Math.max(1, Math.round(piece.slice.srcH * scales[index]));
+    return { piece, sw, sh };
+  });
+  drawn.forEach((item) => { dh += item.sh; });
+  const usedW = drawn.reduce((max, item) => Math.max(max, item.sw), 1) + edge * 2;
+  const dw = Math.max(1, Math.min(cardW, Math.round(usedW)));
   canvas.width = Math.max(1, Math.round(dw * dpr));
   canvas.height = Math.max(1, Math.round(dh * dpr));
   canvas.style.width = dw + 'px';
@@ -457,7 +1166,13 @@ async function paintThumb(canvas) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, dw, dh);
-  ctx.drawImage(bitmap, slice.srcX, slice.srcY, slice.srcW, slice.srcH, 0, 0, dw, dh);
+  let y = edge;
+  drawn.forEach((item, index) => {
+    if (index) y += gutter;
+    const x = Math.max(edge, Math.round((dw - item.sw) / 2));
+    ctx.drawImage(item.piece.bitmap, item.piece.slice.srcX, item.piece.slice.srcY, item.piece.slice.srcW, item.piece.slice.srcH, x, y, item.sw, item.sh);
+    y += item.sh;
+  });
 }
 
 function levelAllows(source) {
@@ -470,6 +1185,60 @@ function clearPreparedPrint() {
   const area = $('print-area');
   if (!area || area.querySelector('.print-unprepared')) return;
   area.innerHTML = PRINT_UNPREPARED;
+}
+
+function selectionChipLabel(key) {
+  const question = library.get(key);
+  if (question && question.label) return question.label;
+  if (String(key).startsWith('sheet:')) {
+    const meta = byPdf.get(String(key).slice(6));
+    if (meta) return meta.levelLabel || meta.title || key;
+  }
+  return String(key);
+}
+
+let searchHiddenCache = [];
+let searchHiddenKey = '';
+
+function searchHiddenSelected() {
+  const key = [queryText(), state.selected.join('\n'), state.grade, state.topic, state.level, sheets.size, catalogReady ? 1 : 0].join('\u0001');
+  if (key === searchHiddenKey) return searchHiddenCache;
+  searchHiddenKey = key;
+  if (!queryLimitsList()) {
+    searchHiddenCache = [];
+    return searchHiddenCache;
+  }
+  const shown = new Set();
+  if (band() === 'elementary') {
+    topicSheets().forEach((meta) => {
+      if (matchesQuery([meta.title, meta.topic, meta.levelLabel])) shown.add(sheetKey(meta.pdfId));
+    });
+  } else {
+    currentExercises().forEach((question) => {
+      if (matchesQuery([question.label, question.text, question.id])) shown.add(exKey(question.source.pdfId, question.id));
+    });
+  }
+  searchHiddenCache = state.selected.filter((item) => !shown.has(item));
+  return searchHiddenCache;
+}
+
+function paintSearchKept() {
+  const box = $('fast-selected');
+  if (!box) return;
+  const hidden = searchHiddenSelected();
+  const stamp = hidden.map((item) => item + '\t' + selectionChipLabel(item)).join('\n');
+  if (box.dataset.stamp === stamp) return;
+  box.dataset.stamp = stamp;
+  if (!hidden.length) {
+    box.hidden = true;
+    box.innerHTML = '';
+    return;
+  }
+  box.hidden = false;
+  box.innerHTML = `<p>${hidden.length} נבחרו ולא מופיעים בחיפוש. הם ייכנסו להדפסה.</p><div class="fast-selected-row">${hidden.map((item) => {
+    const label = selectionChipLabel(item);
+    return `<button type="button" data-keep-key="${escapeHTML(item)}" aria-label="הסרת ${escapeHTML(label)} מההדפסה">${escapeHTML(label)}<span class="chip-x">×</span></button>`;
+  }).join('')}</div>`;
 }
 
 function selectKey(key, on) {
@@ -671,14 +1440,16 @@ function clearDrawingStroke(question, box) {
 }
 
 /**
- * A part printed alone still includes the whole shared drawing: an earlier
- * overlapping crop, or a figure whose top sits above this part (the house roof).
- * The crop starts on a white row, so a label beside the roof is not cut in half.
- * A drawing that sticks a little past the next label stays, and that label is masked.
+ * A part printed alone keeps its own label. An earlier row that happens to
+ * overlap is not pulled in: that overlap is how the previous part was reprinted.
+ * A tagged shared figure (the house) still expands to the whole drawing.
+ * figure.y0 can sit halfway through the first label, so the top may rise by
+ * one line onto that label's white row, and no further.
  */
 function coverSharedFigure(question, box, laterSelected) {
   const page = box.page || question.page;
   const originalEnd = boxEnd(box);
+  const line = question.line > 0 ? question.line : 0.026;
   let top = box.y;
   let end = originalEnd;
   const masks = [];
@@ -688,11 +1459,6 @@ function coverSharedFigure(question, box, laterSelected) {
     if (!item || item.q !== question.q || item.id === question.id) return;
     questionRows(item).forEach((other) => {
       if (!other || (other.page || item.page) !== page) return;
-      const otherEnd = boxEnd(other);
-      if (other.y < top - 0.003 && otherEnd > top + 0.003) {
-        top = Math.min(top, other.y);
-        end = Math.max(end, otherEnd);
-      }
       const mask = absoluteMask(other);
       if (mask) masks.push(mask);
     });
@@ -707,13 +1473,12 @@ function coverSharedFigure(question, box, laterSelected) {
   if (ownFigure && question.page === page && ownFigure.y1 > box.y + 0.003 && ownFigure.y0 < originalEnd + 0.02) {
     if (ownFigure.y0 < top - 0.003) top = ownFigure.y0;
   }
-  // figure.y0 can sit halfway through the first part's label. Start on that part's white row.
   let lineTop = top;
   (SOURCE.questions || []).forEach((item) => {
     if (!item || item.q !== question.q) return;
     questionRows(item).forEach((other) => {
       if (!other || (other.page || item.page) !== page) return;
-      if (other.y < top - 0.0004 && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
+      if (other.y < top - 0.0004 && top - other.y <= line && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
     });
   });
   top = lineTop;
@@ -733,6 +1498,40 @@ function coverSharedFigure(question, box, laterSelected) {
   return withSpan({ ...box, page }, top, end, masks);
 }
 
+function nextPartLabel(question, page, y) {
+  let best = null;
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || item === question || item.q !== question.q) return;
+    const marks = [];
+    if (item.box && (item.box.page || item.page) === page) marks.push(item.box.y);
+    if (item.labelLine && (item.labelLine.page || item.page) === page) marks.push(item.labelLine.y);
+    marks.forEach((boundary) => {
+      if (boundary <= y + 0.008) return;
+      if (best == null || boundary < best) best = boundary;
+    });
+  });
+  return best;
+}
+
+/**
+ * A measured row can start inside its own label and run through the next one.
+ * Lift the top to the pin when that pin still sits on this label, and stop at
+ * the next part's label. The pin of the next part can sit inside this drawing,
+ * so the label line is the boundary, not the pin.
+ */
+function alignLabelCrop(question, box) {
+  const page = box.page || question.page;
+  const mark = question.box;
+  const line = question.line > 0 ? question.line : 0.026;
+  let y = box.y;
+  let end = box.y + box.h;
+  if (mark && (mark.page || question.page) === page && mark.y < y && y - mark.y <= line * 0.65) y = mark.y;
+  const nextLabel = nextPartLabel(question, page, y);
+  if (nextLabel != null && nextLabel > y + 0.012 && nextLabel < end) end = nextLabel;
+  if (end - y < 0.012) return box;
+  return end === box.y + box.h && y === box.y ? box : { ...box, y, h: end - y };
+}
+
 function shortSlices(chosen) {
   const ordered = chosen.slice().sort((a, b) => (
     a.page - b.page || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
@@ -742,13 +1541,16 @@ function shortSlices(chosen) {
   ordered.forEach((question) => {
     const block = 'q' + question.q;
     if (question.q !== lastQuestion) {
-      if (question.stem) slices.push({ page: question.stem.page || question.page, box: question.stem, gap: 10, block, kind: 'stem' });
+      const stem = question.stem;
+      const line = question.line > 0 ? question.line : 0.026;
+      // A stem shorter than half a line is the clipped top of the first label, not the question text.
+      if (stem && stem.h >= line * 0.5) slices.push({ page: stem.page || question.page, box: stem, gap: 10, block, kind: 'stem' });
       lastQuestion = question.q;
     }
     const rows = question.rows && question.rows.length ? question.rows : [question.row];
     rows.forEach((box) => {
       const page = box.page || question.page;
-      let next = { ...box, page };
+      let next = alignLabelCrop(question, { ...box, page });
       const prev = previousQuestionRow(slices, block, page);
       const laterSelected = ordered.some((other) => (
         other !== question && other.q === question.q && other.row
@@ -889,6 +1691,357 @@ async function paintShort(root, slices) {
   });
 }
 
+function worksheetOrder(chosen) {
+  const PART_ORDER = { '': 0, 'א': 1, 'ב': 2, 'ג': 3, 'ד': 4, 'ה': 5, 'ו': 6, 'ז': 7, 'ח': 8, 'ט': 9 };
+  const LEVEL_ORDER = { a: 0, b: 1, c: 2, one: 3 };
+  return chosen.slice().sort((a, b) => {
+    const levelA = LEVEL_ORDER[a.source && a.source.level] ?? 9;
+    const levelB = LEVEL_ORDER[b.source && b.source.level] ?? 9;
+    const partA = PART_ORDER[a.part || ''] ?? 20;
+    const partB = PART_ORDER[b.part || ''] ?? 20;
+    return levelA - levelB || (Number(a.q) || 0) - (Number(b.q) || 0) || partA - partB || String(a.id || '').localeCompare(String(b.id || ''), 'he');
+  });
+}
+
+function answerBox(items, questionNumber, part) {
+  const markers = [];
+  items.forEach((item) => {
+    const n = markerNumber(item, items);
+    if (n == null) return;
+    markers.push(item);
+  });
+  if (!markers.length) return null;
+  const rightEdge = Math.max.apply(null, markers.map((item) => item.x || 0));
+  const column = markers.filter((item) => (item.x || 0) >= rightEdge - 36);
+  const marker = column.find((item) => markerNumber(item, items) === Number(questionNumber));
+  if (!marker) return null;
+  const sameSheet = (item) => item.page == null || marker.page == null || item.page === marker.page;
+  const next = column
+    .filter((item) => sameSheet(item) && item !== marker && item.y < marker.y - 4)
+    .sort((a, b) => b.y - a.y)[0];
+  const bandTop = marker.y + 8;
+  const bandBottom = next ? next.y + 8 : marker.y - 40;
+  const labels = [];
+  items.forEach((item) => {
+    if (!sameSheet(item) || item.y > bandTop || item.y < bandBottom) return;
+    const foundLabels = answerLabels(item);
+    const found = foundLabels.length ? foundLabels : [answerPart(item, items)].filter(Boolean).map((one) => ({
+      ...one,
+      x: item.x,
+      y: item.y,
+      w: item.w,
+      h: item.h,
+      page: item.page,
+    }));
+    found.forEach((label) => {
+      if (labels.some((have) => have.part === label.part && Math.abs(have.y - (label.y || item.y)) <= 4)) return;
+      labels.push({
+        str: label.part + '.',
+        x: label.x,
+        y: label.y,
+        w: label.w,
+        h: label.h,
+        page: label.page,
+        part: label.part,
+        rest: label.rest,
+        embedded: !!label.embedded,
+      });
+    });
+  });
+  labels.sort((a, b) => (Math.abs(a.y - b.y) > 4 ? b.y - a.y : b.x - a.x));
+  // PDF y grows upward. Stop above the next glyph top so the next row is not in the window.
+  const aboveGlyphs = (token) => token.y + Math.max(token.h || 0, 11) + 2;
+  let left = 28;
+  let right = marker.x - 4;
+  let top = marker.y + Math.max(marker.h || 0, 12) + 4;
+  let bottom = next ? aboveGlyphs(next) : marker.y - 28;
+  if (part) {
+    const index = labels.findIndex((item) => item.part === part);
+    if (index >= 0) {
+      const label = labels[index];
+      const follower = labels[index + 1];
+      const nextOnLine = follower && Math.abs(follower.y - label.y) <= 6 ? follower : null;
+      const after = (token) => token.x + Math.max(token.w || 0, 8) + 2;
+      if (label.embedded && !label.rest) right = label.x - 1;
+      else if (label.rest) right = label.x + Math.max(label.w || 0, 4) + 3;
+      else right = label.x - 1;
+      left = nextOnLine ? after(nextOnLine) : 28;
+      if (label.rest) left = Math.min(left, label.x - 3);
+      top = label.y + Math.max(label.h || 0, 11) + 3;
+      const nextInk = nextOnLine ? null : (follower ? aboveGlyphs(follower) : (next ? aboveGlyphs(next) : null));
+      if (nextOnLine) bottom = label.y - 6;
+      else if (nextInk != null) bottom = nextInk;
+      else bottom = label.y - 28;
+      // Keep the label's own ink, but do not step down into the next part.
+      if (bottom > label.y - 4) bottom = nextInk != null ? Math.max(label.y - 6, nextInk) : label.y - 6;
+    } else if (labels.length) {
+      const mentioned = items.some((item) => (
+        sameSheet(item)
+        && item.y <= bandTop
+        && item.y >= bandBottom
+        && new RegExp('(?:^|[\\s·•.])' + part + '(?:$|[\\s.·•—])').test(String(item.str || ''))
+      ));
+      if (!mentioned) return null;
+    }
+  }
+  if (top - bottom < 8 || right - left < 6) return null;
+  return { page: marker.page, x: left, y: bottom, w: right - left, h: top - bottom };
+}
+
+function markerNumber(item, items) {
+  const text = String(item.str || '').trim();
+  let match = text.match(/^\((\d{1,2})\)$/) || text.match(/^\)(\d{1,2})\($/);
+  if (match) return Number(match[1]);
+  match = text.match(/^(\d{1,2})\.$/);
+  if (match) return Number(match[1]);
+  if (!/^\d{1,2}$/.test(text)) return null;
+  const dotted = items.some((other) => (
+    other !== item
+    && String(other.str || '').trim() === '.'
+    && Math.abs((other.y || 0) - (item.y || 0)) <= 3
+    && other.x < item.x
+    && item.x - other.x <= 16
+  ));
+  return dotted ? Number(text) : null;
+}
+
+function answerLabels(item) {
+  const text = String(item.str || '');
+  const marks = [];
+  const re = /(?:^|[·•])\s*([אבגדהו])\./g;
+  let match;
+  while ((match = re.exec(text))) {
+    const embedded = match.index > 0 || text[match.index] === '·' || text[match.index] === '•';
+    marks.push({ part: match[1], index: match.index, end: match.index + match[0].length, embedded });
+  }
+  if (!marks.length) return [];
+  const len = text.length || 1;
+  const width = item.w || 0;
+  const rtl = item.dir === 'rtl' || (item.dir !== 'ltr' && marks.length > 1);
+  if (marks.length === 1 && item.dir !== 'rtl') {
+    return [{
+      part: marks[0].part,
+      rest: text.slice(marks[0].end).trim(),
+      embedded: marks[0].embedded,
+      x: item.x,
+      y: item.y,
+      w: item.w,
+      h: item.h,
+      page: item.page,
+    }];
+  }
+  return marks.map((mark) => {
+    const span = Math.max(1, mark.end - mark.index);
+    let x = item.x;
+    let w = Math.max(item.w || 0, 8);
+    if (width > 0) {
+      if (rtl) {
+        const rightEdge = item.x + width - (mark.index / len) * width;
+        const leftEdge = item.x + width - (mark.end / len) * width;
+        x = leftEdge;
+        w = Math.max(4, rightEdge - leftEdge);
+      } else {
+        x = item.x + (mark.index / len) * width;
+        w = Math.max(4, (span / len) * width);
+      }
+    }
+    return { part: mark.part, rest: '', embedded: true, x, y: item.y, w, h: item.h, page: item.page };
+  });
+}
+
+function answerPart(item, items) {
+  const text = String(item.str || '').trim();
+  const combined = text.match(/^([אבגדהו])\.\s*(.*)$/) || text.match(/^\.\s*([אבגדהו])\s*(.*)$/);
+  if (combined) return { part: combined[1], rest: combined[2], embedded: false };
+  const embedded = text.match(/[·•]\s*([אבגדהו])\.\s*(.*)$/);
+  if (embedded) return { part: embedded[1], rest: embedded[2], embedded: true };
+  if (/^[אבגדהו]$/.test(text)) {
+    const dot = items.some((other) => (
+      other !== item
+      && String(other.str || '').trim() === '.'
+      && Math.abs((other.y || 0) - (item.y || 0)) <= 3
+      && Math.abs((other.x || 0) - (item.x || 0)) <= 16
+    ));
+    if (dot) return { part: text, rest: '' };
+  }
+  return null;
+}
+
+function answerRegions(pages) {
+  const found = [];
+  let open = false;
+  (pages || []).forEach((sheet) => {
+    const items = sheet.items || [];
+    const title = items.find((item) => String(item.str || '').includes('תשובות סופיות'));
+    if (title) {
+      open = true;
+      found.push({ ...sheet, items: items.filter((item) => (item.y || 0) <= title.y + 12) });
+    } else if (open) found.push(sheet);
+  });
+  return found;
+}
+
+function exerciseSlices(chosen) {
+  const ordered = worksheetOrder(chosen);
+  const groups = [];
+  ordered.forEach((question) => {
+    const source = question.source;
+    const last = groups[groups.length - 1];
+    if (last && source && last.source.pdfId === source.pdfId) last.questions.push(question);
+    else groups.push({ source, questions: [question] });
+  });
+  const saved = SOURCE;
+  const slices = [];
+  try {
+    groups.forEach((entry, index) => {
+      if (groups.length > 1 && entry.source && entry.source.levelLabel) {
+        slices.push({ kind: 'level', text: entry.source.levelLabel, gap: index ? 18 : 8, block: 'level-' + entry.source.pdfId, source: entry.source });
+      }
+      SOURCE = entry.source;
+      shortSlices(entry.questions).forEach((slice) => {
+        if (slice.kind === 'header' || slice.kind === 'footer') return;
+        const box = slice.box;
+        // A continuation page stores the running header as its own row.
+        if (box && box.y < 0.05 && box.y + box.h < 0.075) return;
+        slices.push({ ...slice, source: entry.source });
+      });
+    });
+  } finally {
+    SOURCE = saved;
+  }
+  return slices;
+}
+
+async function answerPages(source) {
+  const pdf = await loadPdf(source);
+  const found = [];
+  for (let number = 1; number <= pdf.numPages; number += 1) {
+    const page = await pdf.getPage(number);
+    const text = await page.getTextContent();
+    const items = text.items.filter((item) => item.str && String(item.str).trim()).map((item) => ({
+      str: item.str,
+      x: item.transform[4],
+      y: item.transform[5],
+      w: item.width || 0,
+      h: item.height || 0,
+      dir: item.dir || '',
+      page: number,
+    }));
+    const viewport = page.getViewport({ scale: 1 });
+    found.push({ page: number, width: viewport.width, height: viewport.height, items });
+  }
+  return answerRegions(found);
+}
+
+function partLabelToken(text) {
+  const token = String(text || '').trim();
+  if (/^[אבגדהו]\.?$/.test(token) || /^\.[אבגדהו]$/.test(token)) return true;
+  if (/^\(\d{1,2}\)$/.test(token) || /^\)\d{1,2}\($/.test(token) || /^\d{1,2}\.$/.test(token)) return true;
+  return false;
+}
+
+function clipForeignLabels(items, box, part) {
+  let x0 = box.x;
+  let y0 = box.y;
+  let x1 = box.x + box.w;
+  let y1 = box.y + box.h;
+  (items || []).forEach((item) => {
+    const token = String(item.str || '').trim();
+    const match = token.match(/^([אבגדהו])\.$/) || token.match(/^\.([אבגדהו])$/);
+    if (!match || match[1] === part) return;
+    const gx = item.x || 0;
+    const gy = item.y || 0;
+    const right = gx + Math.max(item.w || 0, 6);
+    const top = gy + Math.max(item.h || 0, 8);
+    const overlapX = Math.min(x1, right) - Math.max(x0, gx);
+    const overlapY = Math.min(y1, top) - Math.max(y0, gy);
+    if (overlapX < 0.4 || overlapY < 0.4) return;
+    const sameLine = gy >= y1 - 18;
+    if (sameLine && right < x1 - 4) x0 = Math.max(x0, right + 1.2);
+    else if (sameLine && gx > x0 + 8 && gx < x1) x1 = Math.min(x1, gx - 1.2);
+    else if (!sameLine && top < y1 - 4) y0 = Math.max(y0, top + 1.2);
+  });
+  if (x1 - x0 < 4 || y1 - y0 < 6) return box;
+  return { ...box, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+
+function answerSliceFor(pages, question) {
+  const part = question.part || '';
+  for (let index = 0; index < pages.length; index += 1) {
+    const sheet = pages[index];
+    const raw = answerBox(sheet.items, question.q, part);
+    if (!raw || raw.page !== sheet.page) continue;
+    const box = clipForeignLabels(sheet.items, raw, part);
+    const pad = 2;
+    const gap = 1.2;
+    let x0 = Math.max(0, box.x - pad);
+    let y0 = Math.max(0, box.y - pad);
+    let x1 = Math.min(sheet.width, box.x + box.w + pad);
+    let y1 = Math.min(sheet.height, box.y + box.h + pad);
+    (sheet.items || []).forEach((item) => {
+      if (!partLabelToken(item.str)) return;
+      const gx = item.x || 0;
+      const gy = item.y || 0;
+      const gw = Math.max(item.w || 0, 6);
+      const gh = Math.max(item.h || 0, 8);
+      const right = gx + gw;
+      const top = gy + gh;
+      const crossesY = top > y0 && gy < y1;
+      const crossesX = right > x0 && gx < x1;
+      // The next part sits to the left in RTL. Do not pad across its label.
+      if (crossesY && right <= box.x + 0.8) x0 = Math.max(x0, Math.min(box.x, right + gap));
+      if (crossesY && gx >= box.x + box.w - 0.8) x1 = Math.min(x1, Math.max(box.x + box.w, gx - gap));
+      if (crossesX && gy >= box.y + box.h - 0.8) y1 = Math.min(y1, Math.max(box.y + box.h, gy - gap));
+      if (crossesX && top <= box.y + 0.8) y0 = Math.max(y0, Math.min(box.y, top + gap));
+    });
+    if (x1 - x0 < 4 || y1 - y0 < 6) {
+      x0 = box.x;
+      y0 = box.y;
+      x1 = box.x + box.w;
+      y1 = box.y + box.h;
+    }
+    return {
+      page: sheet.page,
+      box: {
+        x: x0 / sheet.width,
+        y: (sheet.height - y1) / sheet.height,
+        w: (x1 - x0) / sheet.width,
+        h: (y1 - y0) / sheet.height,
+      },
+    };
+  }
+  return null;
+}
+
+async function answerSlices(chosen) {
+  const ordered = worksheetOrder(chosen);
+  const slices = [{ kind: 'answers-head', text: 'תשובות', gap: 20, block: 'answers' }];
+  const missing = [];
+  const cache = new Map();
+  for (let index = 0; index < ordered.length; index += 1) {
+    const question = ordered[index];
+    const source = question.source;
+    const label = (source && source.levelLabel ? source.levelLabel + ' · ' : '') + (question.label || ('שאלה ' + question.q));
+    let pages = source ? cache.get(source.pdfId) : [];
+    if (source && !cache.has(source.pdfId)) {
+      pages = await answerPages(source);
+      cache.set(source.pdfId, pages);
+    }
+    const found = pages && pages.length ? answerSliceFor(pages, question) : null;
+    if (!found) {
+      missing.push(label);
+      const pageNo = pages && pages.length ? pages[0].page : 0;
+      const note = pageNo
+        ? label + ' — ראו דף התשובות במקור, עמוד ' + pageNo
+        : label + ' — אין תשובה במקור';
+      slices.push({ kind: 'missing', text: note, gap: 6, block: 'answers', source });
+    } else {
+      slices.push({ kind: 'answer', text: label, page: found.page, box: found.box, gap: 8, block: 'answers', source });
+    }
+  }
+  return { slices, missing };
+}
+
 function groupsOf(chosen) {
   const groups = [];
   chosen.forEach((question) => {
@@ -901,15 +2054,710 @@ function groupsOf(chosen) {
   return groups;
 }
 
-async function paintAllShort(root, chosen) {
+async function paintGroupedShort(root, chosen) {
   const holder = document.createElement('div');
-  for (const group of groupsOf(chosen)) {
-    SOURCE = group.source;
-    const part = document.createElement('div');
-    await paintShort(part, shortSlices(group.questions));
-    while (part.firstChild) holder.appendChild(part.firstChild);
+  const saved = SOURCE;
+  try {
+    for (const group of groupsOf(chosen)) {
+      SOURCE = group.source;
+      const part = document.createElement('div');
+      await paintShort(part, shortSlices(group.questions));
+      while (part.firstChild) holder.appendChild(part.firstChild);
+    }
+  } finally {
+    SOURCE = saved;
   }
   root.replaceChildren(...holder.childNodes);
+}
+
+function sheetTitle(chosen) {
+  const topics = [];
+  const levels = [];
+  chosen.forEach((question) => {
+    const source = question.source;
+    if (!source) return;
+    const topic = source.topic || '';
+    if (topic && topics.indexOf(topic) < 0) topics.push(topic);
+    if (source.levelLabel && levels.indexOf(source.levelLabel) < 0) levels.push(source.levelLabel);
+  });
+  const topic = topics.join(' · ') || 'דף תרגול';
+  if (levels.length === 1) return topic + ' · ' + levels[0];
+  return topic;
+}
+
+const pageTextCache = new Map();
+
+async function pageTextItems(pageNumber, source) {
+  const active = source || SOURCE;
+  const key = (active && active.pdfId ? active.pdfId : '') + ':' + pageNumber;
+  if (pageTextCache.has(key)) return pageTextCache.get(key);
+  const pdf = await loadPdf(active);
+  const page = await pdf.getPage(pageNumber);
+  const viewport = page.getViewport({ scale: 1 });
+  const text = await page.getTextContent();
+  const items = text.items.filter((item) => item.str && String(item.str).trim()).map((item) => {
+    const height = item.height || Math.abs(item.transform[3]) || 8;
+    return {
+      str: String(item.str),
+      y: (viewport.height - item.transform[5] - height) / viewport.height,
+      h: height / viewport.height,
+    };
+  });
+  pageTextCache.set(key, items);
+  return items;
+}
+
+async function clipClosingLine(slice) {
+  const box = slice.box;
+  if (!box || slice.kind === 'answer') return slice;
+  let items = [];
+  try {
+    items = await pageTextItems(slice.page, slice.source);
+  } catch (error) {
+    return slice;
+  }
+  let cut = box.y + box.h;
+  items.forEach((item) => {
+    if (!item.str.includes('בהצלחה')) return;
+    if (item.y <= box.y + 0.008 || item.y >= box.y + box.h) return;
+    cut = Math.min(cut, item.y - 0.004);
+  });
+  if (cut >= box.y + box.h - 0.0005) return slice;
+  const h = Math.max(0.004, cut - box.y);
+  return { ...slice, box: { ...box, h } };
+}
+
+function sliceInkRows(bitmap, box) {
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const x0 = Math.max(0, Math.floor(box.x * width));
+  const y0 = Math.max(0, Math.floor(box.y * height));
+  const x1 = Math.min(width, Math.ceil((box.x + box.w) * width));
+  const y1 = Math.min(height, Math.ceil((box.y + box.h) * height));
+  if (x1 - x0 < 2 || y1 - y0 < 2) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(x0, y0, x1 - x0, y1 - y0);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = x1 - x0;
+  const rh = y1 - y0;
+  const bands = [];
+  let start = -1;
+  let blank = 0;
+  let minX = rw;
+  let maxX = 0;
+  let bandMin = rw;
+  let bandMax = 0;
+  for (let y = 0; y <= rh; y += 1) {
+    let n = 0;
+    let rowMin = rw;
+    let rowMax = 0;
+    if (y < rh) {
+      for (let x = 0; x < rw; x += 1) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          n += 1;
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (x < rowMin) rowMin = x;
+          if (x > rowMax) rowMax = x;
+        }
+      }
+    }
+    if (n > 2) {
+      if (start < 0) {
+        start = y;
+        bandMin = rowMin;
+        bandMax = rowMax;
+      } else {
+        if (rowMin < bandMin) bandMin = rowMin;
+        if (rowMax > bandMax) bandMax = rowMax;
+      }
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (y === rh || blank > 2) {
+        const end = y - blank;
+        bands.push({ y: start, h: end - start + 1, minX: bandMin, maxX: bandMax });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  return { bands, y0, height, x0, minX, maxX, width, rh };
+}
+
+function placedBox(box, y, h) {
+  const next = { ...box, y, h };
+  if (!box.mask || !(box.h > 0)) return next;
+  const absTop = box.y + box.mask.y * box.h;
+  const absBot = absTop + box.mask.h * box.h;
+  const maskTop = Math.max(absTop, y);
+  const maskBot = Math.min(absBot, y + h);
+  if (maskBot - maskTop < 0.0015) delete next.mask;
+  else next.mask = { x: box.mask.x, w: box.mask.w, y: (maskTop - y) / h, h: (maskBot - maskTop) / h };
+  return next;
+}
+
+function answerEdgeSpan(bitmap, box, yTop, yBot) {
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const x0 = Math.max(0, Math.floor(box.x * width));
+  const y0 = Math.max(0, Math.floor(box.y * height));
+  const x1 = Math.min(width, Math.ceil((box.x + box.w) * width));
+  const y1 = Math.min(height, Math.ceil((box.y + box.h) * height));
+  const rw = x1 - x0;
+  const rh = y1 - y0;
+  if (rw < 4 || rh < 2) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(x0, y0, rw, rh);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  if (!data || data.length < rw * rh * 4) return null;
+  const top = Math.max(0, yTop - y0);
+  const bot = Math.min(rh, yBot - y0);
+  const cols = new Uint16Array(rw);
+  for (let y = top; y < bot; y += 1) {
+    for (let x = 0; x < rw; x += 1) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) cols[x] += 1;
+    }
+  }
+  const clusters = [];
+  let start = -1;
+  let blank = 0;
+  for (let x = 0; x <= rw; x += 1) {
+    if (x < rw && cols[x]) {
+      if (start < 0) start = x;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (x === rw || blank >= 3) {
+        clusters.push({ x: start, w: x - blank - start + 1 });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  if (clusters.length < 2) return null;
+  const kept = clusters.filter((cluster) => {
+    const touches = cluster.x <= 1 || cluster.x + cluster.w >= rw - 1;
+    return !(touches && cluster.w <= 30);
+  });
+  const use = kept.length ? kept : clusters;
+  let minX = use[0].x;
+  let maxX = use[0].x + use[0].w;
+  use.forEach((cluster) => {
+    if (cluster.x < minX) minX = cluster.x;
+    if (cluster.x + cluster.w > maxX) maxX = cluster.x + cluster.w;
+  });
+  return { minX, maxX };
+}
+
+function trimPieceBox(slice, bitmap) {
+  const box = slice.box;
+  if (!box || !bitmap) return slice;
+  let y = box.y;
+  let y2 = box.y + box.h;
+  const source = slice.source;
+  const footer = source && source.footerCrop;
+  const header = source && source.headerCrop;
+  if (slice.kind !== 'answer') {
+    if (footer && Number(footer.page) === Number(slice.page) && footer.y < y2) y2 = footer.y;
+    // A part box that starts in the page-1 title block still holds the name line. Begin under it.
+    if (header && Number(header.page) === Number(slice.page)) {
+      const headerBottom = (header.y || 0) + (header.h || 0);
+      if (y < 0.12 && y < headerBottom - 0.008 && y2 > headerBottom + 0.012) y = headerBottom;
+    }
+    // Running header (בס״ד) and the source footer line, on every page.
+    if (y < 0.046 && y2 > y + 0.03) y = 0.046;
+    if (y2 > 0.945 && y < 0.92) y2 = 0.945;
+  }
+  if (y2 - y < 0.004) return slice;
+  const clipped = y === box.y && Math.abs(y2 - (box.y + box.h)) < 0.0001 ? box : placedBox(box, y, y2 - y);
+  const ink = sliceInkRows(bitmap, clipped);
+  if (!ink || !ink.bands.length) return { ...slice, box: clipped };
+  const pageH = ink.height;
+  const pad = Math.max(2, Math.round(pageH * 0.003));
+  if (slice.kind === 'answer') {
+    const winTop = ink.y0;
+    const winBot = Math.min(pageH, ink.y0 + (ink.rh || 0));
+    const mid = (winTop + winBot) / 2;
+    // A neighbour that leaked in touches an edge and does not cross this label's midline.
+    const inner = ink.bands.filter((band) => {
+      const topPx = ink.y0 + band.y;
+      const botPx = topPx + band.h;
+      const touches = topPx <= winTop + 1 || botPx >= winBot - 1;
+      const ownsLine = topPx <= mid && botPx >= mid;
+      if (touches && !ownsLine) return false;
+      return true;
+    });
+    const bands = inner.length ? inner : ink.bands;
+    const top = Math.max(0, ink.y0 + bands[0].y - pad);
+    const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
+    const pageW = ink.width;
+    let inkMin = bands[0].minX == null ? ink.minX : bands[0].minX;
+    let inkMax = bands[0].maxX == null ? ink.maxX : bands[0].maxX;
+    bands.forEach((band) => {
+      if (band.minX == null) return;
+      if (band.minX < inkMin) inkMin = band.minX;
+      if (band.maxX > inkMax) inkMax = band.maxX;
+    });
+    const edge = answerEdgeSpan(bitmap, clipped, top, bot);
+    if (edge) {
+      inkMin = edge.minX;
+      inkMax = edge.maxX;
+    }
+    // One pixel of antialiasing. Do not grow back across the label the window already excluded.
+    const hPad = 1;
+    const boundLeft = Math.max(0, Math.floor(clipped.x * pageW));
+    const boundRight = Math.min(pageW, Math.ceil((clipped.x + clipped.w) * pageW));
+    const left = Math.max(boundLeft, ink.x0 + inkMin - hPad);
+    const right = Math.min(boundRight, ink.x0 + inkMax + 1 + hPad);
+    const next = placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH));
+    if (right - left > 4) {
+      next.x = left / pageW;
+      next.w = (right - left) / pageW;
+    }
+    return { ...slice, box: next };
+  }
+  // Keep the original writing space. Cut only past one third of a page below the last ink.
+  const last = ink.bands[ink.bands.length - 1];
+  const inkBot = ink.y0 + last.y + last.h + pad;
+  const origBot = Math.min(pageH, (clipped.y + clipped.h) * pageH);
+  const capped = Math.min(origBot, inkBot + pageH / 3);
+  if (capped >= origBot - 1) return { ...slice, box: clipped };
+  return { ...slice, box: placedBox(clipped, clipped.y, Math.max(0.004, capped / pageH - clipped.y)) };
+}
+
+function sealOverlaps(measured) {
+  for (let i = 0; i < measured.length; i += 1) {
+    const earlier = measured[i];
+    if (!earlier.slice || (earlier.slice.kind !== 'row' && earlier.slice.kind !== 'stem')) continue;
+    const earlierPdf = earlier.slice.source && earlier.slice.source.pdfId;
+    for (let j = i + 1; j < measured.length; j += 1) {
+      const later = measured[j];
+      const box = earlier.slice.box;
+      const other = later.slice && later.slice.box;
+      if (!box || !other || later.slice.page !== earlier.slice.page) continue;
+      if (later.slice.kind !== 'row' && later.slice.kind !== 'stem') continue;
+      const laterPdf = later.slice.source && later.slice.source.pdfId;
+      // Page 1 of two worksheets is not the same page. Never white out either part.
+      if (!earlierPdf || earlierPdf !== laterPdf) continue;
+      const top = Math.max(box.y, other.y);
+      const bot = Math.min(box.y + box.h, other.y + other.h);
+      if (bot - top < 0.016) continue;
+      const laterEnd = other.y + other.h;
+      const newY = Math.max(other.y, box.y + box.h);
+      const newH = laterEnd - newY;
+      // Leave the later part alone when the trim would eat its own first line.
+      if (newH < 0.016) continue;
+      later.slice = { ...later.slice, box: placedBox(other, newY, newH) };
+    }
+  }
+}
+
+function answerDisplayScale(naturalW, naturalH) {
+  const maxW = 1000 - 56;
+  let scale = 1;
+  if (naturalW > maxW) scale = maxW / naturalW;
+  if (naturalH > maxW) scale = Math.min(scale, 1);
+  return Math.min(1.3, Math.max(0.05, scale));
+}
+
+function answerCellSize(text, naturalW, naturalH) {
+  const scale = answerDisplayScale(naturalW, naturalH);
+  const imageW = Math.max(1, Math.round(naturalW * scale));
+  const imageH = Math.max(1, Math.round(naturalH * scale));
+  let labelW = Math.min(420, Math.ceil(String(text || '').length * 7.5));
+  if (typeof document !== 'undefined') {
+    try {
+      const ctx = document.createElement('canvas').getContext('2d');
+      ctx.font = '15px Heebo, Arial, sans-serif';
+      labelW = Math.ceil(ctx.measureText(String(text || '')).width);
+    } catch (error) {}
+  }
+  const maxW = 1000 - 56;
+  const gap = 8;
+  let stack = false;
+  let dw = labelW + gap + imageW;
+  let dh = Math.max(22, imageH + 2);
+  if (dw > maxW * 0.72) {
+    stack = true;
+    dw = Math.min(maxW, Math.max(labelW, imageW));
+    dh = 18 + imageH;
+  }
+  return { scale, imageW, imageH, labelW, dw, dh, stack };
+}
+
+async function measureWorksheet(slices) {
+  const OUT_W = 1000;
+  const measured = [];
+  for (let index = 0; index < slices.length; index += 1) {
+    const slice = slices[index];
+    if (slice.kind === 'level' || slice.kind === 'answers-head') {
+      measured.push({ slice, dh: 34 });
+    } else if (slice.kind === 'missing') {
+      measured.push({ slice, dh: 26 });
+    } else if (slice.kind === 'answer' || slice.kind === 'row' || slice.kind === 'stem') {
+      const bitmap = await pageBitmap(slice.page, slice.source);
+      const piece = trimPieceBox(await clipClosingLine(slice), bitmap);
+      const sw = piece.box.w * bitmap.width;
+      const sh = piece.box.h * bitmap.height;
+      const imageH = Math.max(1, Math.round(OUT_W * sh / Math.max(1, sw)));
+      if (piece.kind === 'answer') {
+        const naturalW = Math.max(1, OUT_W * piece.box.w);
+        const naturalH = Math.max(1, naturalW * sh / Math.max(1, sw));
+        const cell = answerCellSize(piece.text, naturalW, naturalH);
+        measured.push({
+          slice: piece,
+          bitmap,
+          sw,
+          sh,
+          dw: cell.dw,
+          dh: cell.dh,
+          imageW: cell.imageW,
+          imageH: cell.imageH,
+          labelW: cell.labelW,
+          stack: cell.stack,
+        });
+      } else {
+        measured.push({ slice: piece, bitmap, sw, sh, dh: imageH });
+      }
+    }
+  }
+  sealOverlaps(measured);
+  return measured;
+}
+
+function measureNote(note) {
+  const text = String(note || '').trim();
+  if (!text) return null;
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const maxW = 1000 - 56;
+  ctx.font = '16px Heebo, Arial, sans-serif';
+  const lines = [];
+  text.split(/\n/).forEach((paragraph) => {
+    const words = paragraph.split(/\s+/).filter(Boolean);
+    if (!words.length) {
+      lines.push('');
+      return;
+    }
+    let line = '';
+    words.forEach((word) => {
+      const trial = line ? line + ' ' + word : word;
+      if (line && ctx.measureText(trial).width > maxW) {
+        lines.push(line);
+        line = word;
+      } else line = trial;
+    });
+    if (line) lines.push(line);
+  });
+  const lineH = 22;
+  return { lines, lineH, height: 36 + lines.length * lineH };
+}
+
+function flowAnswers(items) {
+  const maxW = 1000 - 56;
+  const gutter = 14;
+  const out = [];
+  let index = 0;
+  while (index < items.length) {
+    const item = items[index];
+    if (!item.slice || item.slice.kind !== 'answer' || !(item.dw > 0)) {
+      out.push(item);
+      index += 1;
+      continue;
+    }
+    const cells = [];
+    let used = 0;
+    while (index < items.length && items[index].slice && items[index].slice.kind === 'answer' && items[index].dw > 0) {
+      const next = items[index];
+      const add = (cells.length ? gutter : 0) + next.dw;
+      if (cells.length && used + add > maxW) break;
+      cells.push(next);
+      used += add;
+      index += 1;
+    }
+    out.push({
+      slice: { kind: 'answer-row', gap: 4, block: 'answers' },
+      dh: Math.max.apply(null, cells.map((cell) => cell.dh)),
+      cells,
+    });
+  }
+  return out;
+}
+
+function packWorksheet(measured, noteHeight) {
+  measured = flowAnswers(measured);
+  const PAGE_H = 1440;
+  const FOOT = 36;
+  const FIRST_TOP = 118 + Math.max(0, noteHeight || 0);
+  const CONT_TOP = 48;
+  const heading = (item) => item && (item.slice.kind === 'stem' || item.slice.kind === 'level' || item.slice.kind === 'answers-head');
+  const heightOf = (items, top) => top + FOOT + contentHeight(items);
+  const pages = [];
+  let page = [];
+  let top = FIRST_TOP;
+  measured.forEach((item) => {
+    const body = PAGE_H - top - FOOT;
+    let next = item;
+    if (next.dh > body && !page.length) {
+      const factor = body / next.dh;
+      next = { ...next, dh: Math.max(1, Math.round(next.dh * factor)), slice: { ...next.slice, gap: scaledGap(next.slice.gap, factor) } };
+    }
+    if (page.length && heightOf(page.concat([next]), top) > PAGE_H) {
+      const last = page[page.length - 1];
+      if (heading(last)) page.pop();
+      if (page.length) pages.push({ top, items: page });
+      page = heading(last) && last !== next ? [last] : [];
+      top = CONT_TOP;
+      const room = PAGE_H - top - FOOT;
+      if (next.dh > room) {
+        const factor = room / next.dh;
+        next = { ...next, dh: Math.max(1, Math.round(next.dh * factor)), slice: { ...next.slice, gap: scaledGap(next.slice.gap, factor) } };
+      }
+    }
+    page.push(next);
+  });
+  if (page.length) pages.push({ top, items: page });
+  if (!pages.length) pages.push({ top: FIRST_TOP, items: [] });
+  // A leftover page that holds one answer goes back onto the previous page.
+  while (pages.length > 1) {
+    const last = pages[pages.length - 1];
+    const answerish = (item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head' || item.slice.kind === 'answer-row');
+    const answerCount = (item) => {
+      if (!item.slice) return 0;
+      if (item.slice.kind === 'answer-row') return (item.cells || []).length;
+      if (item.slice.kind === 'answer' || item.slice.kind === 'missing') return 1;
+      return 0;
+    };
+    if (!last.items.length || !last.items.every(answerish)) break;
+    const count = last.items.reduce((sum, item) => sum + answerCount(item), 0);
+    if (count !== 1) break;
+    const prev = pages[pages.length - 2];
+    const room = PAGE_H - heightOf(prev.items, prev.top);
+    if (room < 36) break;
+    let extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
+    const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
+    const need = leadGap + contentHeight(extra);
+    if (need > room) {
+      const factor = room / need;
+      if (factor < 0.45) break;
+      extra = extra.map((item) => ({
+        ...item,
+        dh: Math.max(1, Math.round(item.dh * factor)),
+        slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
+      }));
+    }
+    const overflow = heightOf(prev.items.concat(extra), prev.top) - PAGE_H;
+    if (overflow > 0) extra[extra.length - 1].dh = Math.max(1, extra[extra.length - 1].dh - overflow);
+    if (heightOf(prev.items.concat(extra), prev.top) > PAGE_H) break;
+    prev.items = prev.items.concat(extra);
+    pages.pop();
+  }
+  return pages;
+}
+
+function clearGreyRules(ctx, width, height) {
+  let image;
+  try {
+    image = ctx.getImageData(0, 0, width, height);
+  } catch (error) {
+    return;
+  }
+  const data = image && image.data;
+  if (!data || data.length < width * height * 4) return;
+  const rule = new Uint8Array(height);
+  for (let y = 0; y < height; y += 1) {
+    let grey = 0;
+    let dark = 0;
+    for (let x = 0; x < width; x += 1) {
+      const i = (y * width + x) * 4;
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const max = r > g ? (r > b ? r : b) : (g > b ? g : b);
+      const min = r < g ? (r < b ? r : b) : (g < b ? g : b);
+      const lum = (r + g + b) / 3;
+      if (max - min < 28 && lum >= 145 && lum <= 228) grey += 1;
+      else if (lum < 90) dark += 1;
+    }
+    if (grey > width * 0.45 && dark < Math.max(3, width * 0.12)) rule[y] = 1;
+  }
+  let changed = false;
+  for (let y = 0; y < height; y += 1) {
+    if (!rule[y]) continue;
+    let run = 0;
+    for (let row = y; row < height && rule[row]; row += 1) run += 1;
+    if (run > 3) {
+      y += run - 1;
+      continue;
+    }
+    for (let x = 0; x < width; x += 1) {
+      const i = (y * width + x) * 4;
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const max = r > g ? (r > b ? r : b) : (g > b ? g : b);
+      const min = r < g ? (r < b ? r : b) : (g < b ? g : b);
+      const lum = (r + g + b) / 3;
+      if (max - min < 28 && lum >= 145 && lum <= 228) {
+        data[i] = data[i + 1] = data[i + 2] = 255;
+        changed = true;
+      }
+    }
+  }
+  if (changed) ctx.putImageData(image, 0, 0);
+}
+
+function answerInkCanvas(bitmap, sx, sy, sw, sh) {
+  const w = Math.max(1, Math.ceil(sw));
+  const h = Math.max(1, Math.ceil(sh));
+  const cut = document.createElement('canvas');
+  cut.width = w;
+  cut.height = h;
+  const ctx = cut.getContext('2d');
+  ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, w, h);
+  clearGreyRules(ctx, w, h);
+  return cut;
+}
+
+function paintWorksheetPage(canvas, page, index, count, title, note) {
+  const OUT_W = 1000;
+  const PAGE_H = 1440;
+  canvas.width = OUT_W;
+  canvas.height = PAGE_H;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, OUT_W, PAGE_H);
+  ctx.fillStyle = '#1a2744';
+  ctx.direction = 'rtl';
+  ctx.font = '700 22px Heebo, Arial, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('בס״ד', OUT_W - 28, 32);
+  if (index === 0) {
+    ctx.font = '700 28px Heebo, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(title, OUT_W / 2, 70);
+    ctx.font = '18px Heebo, Arial, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('שם ______________    כיתה ________    תאריך __________', OUT_W - 28, 104);
+    if (note && note.lines && note.lines.length) {
+      ctx.font = '700 16px Heebo, Arial, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.direction = 'rtl';
+      ctx.fillText('הערת המורה', OUT_W - 28, 128);
+      ctx.font = '16px Heebo, Arial, sans-serif';
+      note.lines.forEach((line, lineIndex) => {
+        ctx.fillText(line, OUT_W - 28, 128 + 22 + lineIndex * (note.lineH || 22));
+      });
+    }
+  }
+  let y = page.top;
+  page.items.forEach((item, itemIndex) => {
+    if (itemIndex) y += item.slice.gap;
+    const kind = item.slice.kind;
+    if (kind === 'level' || kind === 'answers-head') {
+      ctx.fillStyle = '#1a2744';
+      ctx.font = kind === 'answers-head' ? '700 24px Heebo, Arial, sans-serif' : '700 18px Heebo, Arial, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.direction = 'rtl';
+      ctx.fillText(item.slice.text, OUT_W - 28, y + (kind === 'answers-head' ? 26 : 24));
+    } else if (kind === 'missing') {
+      ctx.fillStyle = '#1a2744';
+      ctx.font = '16px Heebo, Arial, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.direction = 'rtl';
+      ctx.fillText(item.slice.text, OUT_W - 28, y + 18);
+    } else if (kind === 'answer' || kind === 'answer-row') {
+      const cells = kind === 'answer-row' ? item.cells : [item];
+      let right = OUT_W - 28;
+      cells.forEach((cell) => {
+        const labelW = cell.labelW || 0;
+        const imageW = cell.imageW || Math.max(1, (cell.dw || 40) - labelW - 8);
+        const imageH = cell.imageH || Math.max(1, cell.dh - (cell.stack ? 18 : 2));
+        ctx.fillStyle = '#1a2744';
+        ctx.font = '15px Heebo, Arial, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.direction = 'rtl';
+        if (cell.stack) {
+          ctx.fillText(cell.slice.text, right, y + 14);
+          const sx = cell.slice.box.x * cell.bitmap.width;
+          const sy = cell.slice.box.y * cell.bitmap.height;
+          const ink = answerInkCanvas(cell.bitmap, sx, sy, cell.sw, cell.sh);
+          ctx.drawImage(ink, 0, 0, ink.width, ink.height, right - imageW, y + 18, imageW, imageH);
+        } else {
+          const textY = y + Math.max(14, Math.round((item.dh + 10) / 2));
+          ctx.fillText(cell.slice.text, right, textY);
+          const sx = cell.slice.box.x * cell.bitmap.width;
+          const sy = cell.slice.box.y * cell.bitmap.height;
+          const imageX = right - labelW - 8 - imageW;
+          const imageY = y + Math.max(0, Math.round((item.dh - imageH) / 2));
+          const ink = answerInkCanvas(cell.bitmap, sx, sy, cell.sw, cell.sh);
+          ctx.drawImage(ink, 0, 0, ink.width, ink.height, imageX, imageY, imageW, imageH);
+        }
+        right -= (cell.dw || imageW) + 14;
+      });
+    } else {
+      const sx = item.slice.box.x * item.bitmap.width;
+      const sy = item.slice.box.y * item.bitmap.height;
+      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
+      const mask = item.slice.box.mask;
+      if (mask) {
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(mask.x * OUT_W, y + mask.y * item.dh, mask.w * OUT_W, mask.h * item.dh);
+      }
+    }
+    y += item.dh;
+  });
+  ctx.strokeStyle = '#d5dae5';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(28, PAGE_H - 28);
+  ctx.lineTo(OUT_W - 28, PAGE_H - 28);
+  ctx.stroke();
+  ctx.fillStyle = '#1a2744';
+  ctx.font = '14px Heebo, Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.direction = 'rtl';
+  ctx.fillText('עמוד ' + (index + 1) + ' מתוך ' + count, OUT_W / 2, PAGE_H - 12);
+}
+
+async function paintWorksheet(root, chosen, note) {
+  if (document.fonts && document.fonts.load) {
+    try {
+      await document.fonts.load('700 28px Heebo');
+      await document.fonts.load('18px Heebo');
+      await document.fonts.load('16px Heebo');
+    } catch (error) {}
+  }
+  const exercises = exerciseSlices(chosen);
+  const answers = await answerSlices(chosen);
+  const noteBox = measureNote(note);
+  const measured = await measureWorksheet(exercises.concat(answers.slices));
+  const pages = packWorksheet(measured, noteBox ? noteBox.height : 0);
+  const title = sheetTitle(chosen);
+  root.dataset.missingAnswers = answers.missing.join(' | ');
+  root.innerHTML = pages.map(() => '<figure class="crop-sheet"><canvas></canvas></figure>').join('');
+  const canvases = root.querySelectorAll('canvas');
+  pages.forEach((page, index) => paintWorksheetPage(canvases[index], page, index, pages.length, title, noteBox));
+}
+
+async function paintAllShort(root, chosen, note) {
+  if (chosen.length && chosen.every((question) => question.source && question.source.mode === 'sheet')) {
+    await paintGroupedShort(root, chosen);
+    await attachTeacherNote(root, note);
+    return;
+  }
+  await paintWorksheet(root, chosen.filter((question) => !question.source || question.source.mode !== 'sheet'), note);
 }
 
 function markedHTML(chosen) {
@@ -940,13 +2788,12 @@ function metaHTML(chosen, cfg) {
 }
 
 async function updateShortPrint(plan, printArea, chosen, note, cfg) {
-  const head = `<p class="plan-notice">דף מצומצם. כל קטע נחתך מדף המקור, עם ההוראה, הנוסח והתרשים המקוריים.</p>${metaHTML(chosen, cfg)}`;
+  const head = `<p class="plan-notice">דף מצומצם אחד. הסעיפים לפי רמה ומספר, והתשובות הסופיות בסוף.</p>${metaHTML(chosen, cfg)}`;
   const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
   plan.innerHTML = head + '<div class="crop-preview"></div>' + foot;
   printArea.innerHTML = '';
-  await paintAllShort(plan.querySelector('.crop-preview'), chosen);
-  await paintAllShort(printArea, chosen);
-  await attachTeacherNote(printArea, note);
+  await paintAllShort(plan.querySelector('.crop-preview'), chosen, note);
+  await paintAllShort(printArea, chosen, note);
 }
 
 function elementarySource(meta, pageCount) {
@@ -1055,7 +2902,7 @@ async function prepare(mode) {
     }
     $('print-title').textContent = mode === 'short' ? 'דף מצומצם מהמקור' : 'דף המקור עם סימון';
     $('print-lead').textContent = mode === 'short'
-      ? 'קטעים שנחתכו מדף המקור, עם ההוראה והנוסח המקוריים.'
+      ? 'דף אחד: כותרת אחת, הסעיפים לפי רמה ומספר, ותשובות סופיות בסוף.'
       : 'העמוד המלא, ומה שנבחר מסומן עליו.';
     $('print').lastChild.textContent = mode === 'short' ? 'הדפסת הדף המצומצם' : 'הדפסת הדף המסומן';
     printOpener = mode === 'short' ? $('prepare-short') : $('prepare');
@@ -1201,6 +3048,7 @@ function bind() {
     fillTopics();
     await loadCurrentTopic();
     applyScenario(state.scenario === 'other' ? 'first' : state.scenario);
+    document.dispatchEvent(new CustomEvent('teachers-grade-ready'));
   });
   $('topic').addEventListener('change', async () => {
     state.topic = $('topic').value;
@@ -1236,7 +3084,10 @@ function bind() {
     await loadCurrentTopic();
     applyScenario('first');
   });
-  $('teacher-note').addEventListener('input', () => clearPreparedPrint());
+  $('teacher-note').addEventListener('input', () => {
+    clearPreparedPrint();
+    rememberWizard();
+  });
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
   $('print-dialog').addEventListener('close', () => {
@@ -1252,10 +3103,68 @@ function bind() {
   document.addEventListener('noam-teacher-option', (event) => {
     const goal = event.detail && event.detail.goal;
     const input = document.querySelector('input[name="scenario"][value="' + goal + '"]');
-    if (!input) return;
+    if (!input || !SCENARIOS[goal]) return;
     input.checked = true;
-    applyScenario(goal);
+    state.scenario = goal;
   });
+}
+
+const WIZARD_SESSION_KEY = 'teachers-wizard';
+let wizardPersist = false;
+
+function readWizardSession() {
+  try {
+    const raw = sessionStorage.getItem(WIZARD_SESSION_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    return data && typeof data === 'object' ? data : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function rememberWizard() {
+  if (!wizardPersist) return;
+  try {
+    const note = $('teacher-note');
+    sessionStorage.setItem(WIZARD_SESSION_KEY, JSON.stringify({
+      grade: state.grade,
+      topic: state.topic,
+      level: state.level,
+      scenario: state.scenario,
+      style: state.style,
+      selected: state.selected.slice(),
+      output: printMode,
+      query: state.query || '',
+      note: note ? note.value : '',
+    }));
+  } catch (error) {
+    return;
+  }
+}
+
+function primeWizardSession(saved) {
+  if (!saved || !CATALOG) return;
+  const grades = CATALOG.grades.map((grade) => String(grade.grade));
+  if (saved.grade != null && grades.includes(String(saved.grade))) state.grade = String(saved.grade);
+  const grade = gradeRecord(state.grade);
+  const topics = grade && grade.topics ? grade.topics.map((topic) => String(topic.id)) : [];
+  if (saved.topic != null && topics.includes(String(saved.topic))) state.topic = String(saved.topic);
+  if (saved.level === 'all' || saved.level === 'a' || saved.level === 'b' || saved.level === 'c') state.level = saved.level;
+  if (saved.scenario && SCENARIOS[saved.scenario]) state.scenario = saved.scenario;
+  if (saved.style && STYLES[saved.style]) state.style = saved.style;
+  if (saved.output === 'marked' || saved.output === 'short') printMode = saved.output;
+  if (typeof saved.query === 'string') state.query = saved.query.slice(0, 80);
+}
+
+function restoreWizardSelection(saved) {
+  if (!saved || !Array.isArray(saved.selected)) return;
+  state.selected = keepVisible(saved.selected.map((key) => String(key)), visibleSelectionKeys());
+  const note = $('teacher-note');
+  if (note && typeof saved.note === 'string') note.value = saved.note.slice(0, 600);
+  const search = $('fast-search');
+  if (search) search.value = state.query || '';
+  render();
 }
 
 async function start() {
@@ -1264,13 +3173,779 @@ async function start() {
   if (!response.ok) throw new Error('CATALOG');
   CATALOG = await response.json();
   indexCatalog();
+  const saved = readWizardSession();
+  primeWizardSession(saved);
   fillGrades();
   fillTopics();
   bind();
   await loadCurrentTopic();
   applyScenario(state.scenario, { quiet: true });
+  restoreWizardSelection(saved);
+  wizardPersist = true;
+  rememberWizard();
+  catalogReady = true;
+  initWizard();
+  const settled = settleRouteTap(true, pendingRoute, null);
+  pendingRoute = settled.pending;
+  clearRouteWait();
+  if (settled.opened) openRequestedRoute(settled.opened, 'push');
 }
 
 start().catch(() => {
-  $('result-summary').textContent = 'רשימת דפי הקטלוג לא נטענה.';
+  catalogReady = true;
+  pendingRoute = null;
+  const note = $('route-loading');
+  if (note) {
+    note.hidden = false;
+    note.textContent = 'רשימת דפי הקטלוג לא נטענה.';
+  }
+  if ($('wizard')) $('wizard').removeAttribute('aria-busy');
+  if ($('result-summary')) $('result-summary').textContent = 'רשימת דפי הקטלוג לא נטענה.';
 });
+
+// Wizard navigation. `history` above is the undo stack, so browser history is window.history.
+let wizardStepId = 'grade';
+let wizardRoute = 'gate';
+let wizardDepth = 0;
+let wizardBound = false;
+let catalogReady = false;
+let pendingRoute = null;
+
+function wizardSteps() {
+  return ['grade', 'topic', 'level', 'pick', 'output', 'summary'];
+}
+
+function wizardIndex(step) {
+  const index = wizardSteps().indexOf(String(step || ''));
+  return index < 0 ? 0 : index;
+}
+
+function wizardNeighbor(step, delta) {
+  const steps = wizardSteps();
+  const index = Math.min(steps.length - 1, Math.max(0, wizardIndex(step) + delta));
+  return steps[index];
+}
+
+function wizardStepFromHash(hash) {
+  const id = String(hash || '').replace(/^#/, '');
+  if (id === 'selection') return 'pick';
+  return wizardSteps().includes(id) ? id : 'grade';
+}
+
+function wizardHash(step) {
+  return '#' + wizardSteps()[wizardIndex(step)];
+}
+
+function wizardReduce(model, action) {
+  const next = {
+    step: model.step,
+    grade: model.grade,
+    topic: model.topic,
+    level: model.level,
+    selected: model.selected.slice(),
+    output: model.output,
+  };
+  if (action.type === 'next') next.step = wizardNeighbor(model.step, 1);
+  else if (action.type === 'back') next.step = wizardNeighbor(model.step, -1);
+  else if (action.type === 'hash') next.step = wizardStepFromHash(action.hash);
+  else if (action.type === 'jump') next.step = wizardSteps().includes(action.step) ? action.step : model.step;
+  else if (action.type === 'set') {
+    if (action.grade != null) next.grade = action.grade;
+    if (action.topic != null) next.topic = action.topic;
+    if (action.level != null) next.level = action.level;
+    if (action.selected) next.selected = action.selected.slice();
+    if (action.output != null) next.output = action.output;
+  }
+  return next;
+}
+
+function routeFromHash(hash) {
+  const id = String(hash || '').replace(/^#/, '');
+  if (id === 'fast') return 'fast';
+  if (id === 'gate' || id === 'start' || !id) return 'gate';
+  return 'guided';
+}
+
+function routeReduce(model, action) {
+  const next = {
+    route: model.route,
+    step: model.step,
+    grade: model.grade,
+    topic: model.topic,
+    level: model.level,
+    selected: model.selected.slice(),
+    output: model.output,
+  };
+  if (action.type === 'route') {
+    next.route = action.route === 'fast' || action.route === 'guided' || action.route === 'gate' ? action.route : model.route;
+    if (next.route === 'guided' && action.step && wizardSteps().includes(action.step)) next.step = action.step;
+  } else if (action.type === 'hash') {
+    next.route = routeFromHash(action.hash);
+    if (next.route === 'guided') next.step = wizardStepFromHash(action.hash);
+  }
+  return next;
+}
+
+function suggestOutcome(result) {
+  if (!result || result.enabled === false) return { apply: false, ids: [] };
+  const ids = []
+    .concat(Array.isArray(result.exerciseIds) ? result.exerciseIds : [])
+    .concat(Array.isArray(result.sheetIds) ? result.sheetIds : [])
+    .map((id) => String(id))
+    .filter(Boolean);
+  if (!ids.length) return { apply: false, ids: [] };
+  return { apply: true, ids: ids.slice() };
+}
+
+function normalizeSuggest(data) {
+  const exerciseIds = Array.isArray(data && data.exerciseIds) ? data.exerciseIds.map((id) => String(id)) : [];
+  const sheetIds = Array.isArray(data && data.sheetIds) ? data.sheetIds.map((id) => String(id)) : [];
+  const answer = data && typeof data.answer === 'string' ? data.answer : '';
+  return { enabled: exerciseIds.length + sheetIds.length > 0, exerciseIds, sheetIds, answer };
+}
+
+function topicHits(catalog, query) {
+  const q = String(query || '').trim();
+  if (q.length < 2 || !catalog || !catalog.grades) return [];
+  const hits = [];
+  catalog.grades.forEach((grade) => {
+    (grade.topics || []).forEach((topic) => {
+      if (String(topic.title || '').includes(q)) {
+        hits.push({ grade: String(grade.grade), topic: String(topic.id), title: topic.title, gradeLabel: grade.label });
+      }
+    });
+  });
+  return hits.slice(0, 6);
+}
+
+function queryText() {
+  return String(state.query || '').trim();
+}
+
+function matchesQuery(parts) {
+  const q = queryText();
+  if (!q) return true;
+  return parts.filter(Boolean).join(' ').includes(q);
+}
+
+function queryLimitsList() {
+  const q = queryText();
+  if (!q) return false;
+  const topic = currentTopic();
+  if (topic && String(topic.title || '').includes(q)) return false;
+  const grade = gradeRecord(state.grade);
+  if (grade && String(grade.label || '').includes(q)) return false;
+  return true;
+}
+
+const WIZARD_LABELS = {
+  grade: 'כיתה',
+  topic: 'נושא',
+  level: 'רמה',
+  pick: 'בחירה',
+  output: 'הדפסה',
+  summary: 'סיום',
+};
+
+function wizardCurrent() {
+  return wizardSteps()[wizardIndex(wizardStepId)];
+}
+
+function topicFilterText() {
+  const input = $('topic-filter');
+  return input ? String(input.value || '').trim() : '';
+}
+
+function paintSelectCards(selectId, gridId) {
+  const select = $(selectId);
+  const grid = $(gridId);
+  if (!select || !grid) return;
+  const q = selectId === 'topic' ? topicFilterText() : '';
+  const options = [...select.options].filter((opt) => !q || String(opt.textContent || '').includes(q));
+  grid.innerHTML = options.map((opt) => {
+    const on = opt.value === select.value;
+    return `<button type="button" class="choice-card${on ? ' is-on' : ''}" data-value="${escapeHTML(opt.value)}" aria-pressed="${on ? 'true' : 'false'}">${escapeHTML(opt.textContent || '')}</button>`;
+  }).join('');
+  const meta = $('topic-filter-meta');
+  const empty = $('topic-filter-empty');
+  if (selectId === 'topic' && meta) meta.textContent = q ? options.length + ' מתוך ' + select.options.length : select.options.length + ' נושאים';
+  if (selectId === 'topic' && empty) empty.hidden = !q || options.length > 0;
+}
+
+function wizardHandle(model, action) {
+  const kind = action && action.type;
+  if (kind === 'chip' || kind === 'jump') {
+    const next = wizardReduce(model, { type: 'jump', step: action.step });
+    return { step: next.step, how: 'replace', selected: next.selected };
+  }
+  if (kind === 'next') {
+    const next = wizardReduce(model, { type: 'next' });
+    return { step: next.step, how: 'push', selected: next.selected };
+  }
+  const next = wizardReduce(model, { type: 'back' });
+  return { step: next.step, how: 'push', selected: next.selected };
+}
+
+function settleRouteTap(ready, pending, request) {
+  if (!ready) return { pending: request, opened: null };
+  return { pending: null, opened: request || pending || null };
+}
+
+function chipText(step) {
+  if (step === 'grade') return $('grade') && $('grade').selectedOptions[0] ? $('grade').selectedOptions[0].textContent : '';
+  if (step === 'topic') return $('topic') && $('topic').selectedOptions[0] ? $('topic').selectedOptions[0].textContent : '';
+  if (step === 'level') {
+    const picked = document.querySelector('[name=level]:checked');
+    return picked ? picked.parentElement.textContent.trim() : '';
+  }
+  if (step === 'pick') return state.selected.length ? state.selected.length + ' נבחרו' : '';
+  if (step === 'output') return printMode === 'short' ? 'דף מצומצם' : 'דף מסומן';
+  return '';
+}
+
+function paintWizardChrome() {
+  const steps = wizardSteps();
+  const index = wizardIndex(wizardStepId);
+  const count = $('wizard-count');
+  if (count) count.textContent = 'שלב ' + (index + 1) + ' מתוך ' + steps.length;
+  const meter = $('wizard-meter');
+  if (meter) {
+    meter.innerHTML = steps.map((step, stepIndex) => {
+      const cls = stepIndex < index ? 'is-done' : (stepIndex === index ? 'is-on' : '');
+      const disabled = stepIndex > index ? ' disabled' : '';
+      return `<button type="button" class="${cls}" data-wizard-jump="${step}"${disabled} aria-current="${stepIndex === index ? 'step' : 'false'}" aria-label="שלב ${stepIndex + 1} מתוך ${steps.length}: ${WIZARD_LABELS[step]}"><i></i>${WIZARD_LABELS[step]}</button>`;
+    }).join('');
+  }
+  const chips = $('wizard-chips');
+  if (chips) {
+    chips.innerHTML = steps.slice(0, index).map((step) => {
+      const text = chipText(step);
+      if (!text) return '';
+      return `<button type="button" data-wizard-jump="${step}">${escapeHTML(text)}</button>`;
+    }).join('');
+  }
+  const back = $('wizard-back');
+  if (back) back.disabled = wizardRoute === 'gate';
+  const next = $('wizard-next');
+  if (next) {
+    const onSummary = wizardRoute === 'guided' && wizardStepId === 'summary';
+    const printing = onSummary || wizardRoute === 'fast';
+    next.hidden = wizardRoute === 'gate';
+    next.textContent = printing ? (printMode === 'short' ? 'הצגת הדף המצומצם' : 'הצגת הדף המסומן') : 'המשך';
+  }
+  const recap = $('wizard-recap');
+  if (recap && wizardStepId === 'summary') {
+    recap.innerHTML = steps.slice(0, 5).map((step) => {
+      const text = chipText(step);
+      if (!text) return '';
+      return `<div><span>${WIZARD_LABELS[step]}</span><b>${escapeHTML(text)}</b></div>`;
+    }).join('');
+  }
+}
+
+function wizardPaint(step, how) {
+  if (!$('wizard')) return;
+  const id = wizardSteps()[wizardIndex(step)];
+  const prevIndex = wizardIndex(wizardStepId);
+  const nextIndex = wizardIndex(id);
+  wizardStepId = id;
+  const guided = wizardRoute === 'guided';
+  document.querySelectorAll('[data-wizard-step]').forEach((el) => {
+    const on = el.getAttribute('data-wizard-step') === id;
+    el.classList.toggle('is-on', guided && on);
+    el.hidden = guided ? !on : wizardRoute === 'gate';
+  });
+  const gate = $('route-gate');
+  const fast = $('fast-screen');
+  if (gate) gate.hidden = wizardRoute !== 'gate';
+  if (fast) fast.hidden = wizardRoute !== 'fast';
+  const need = $('teacher-need-wrap');
+  if (need) {
+    need.hidden = wizardRoute === 'gate';
+    if (wizardRoute === 'fast') need.open = true;
+  }
+  placeTeacherNeed();
+  $('wizard').classList.toggle('is-gate', wizardRoute === 'gate');
+  $('wizard').classList.toggle('is-fast', wizardRoute === 'fast');
+  $('wizard').classList.toggle('is-guided', wizardRoute === 'guided');
+  $('wizard').classList.toggle('is-summary', guided && id === 'summary');
+  const viewport = $('wizard-viewport');
+  if (viewport && how !== 'init' && how !== 'silent') {
+    viewport.dataset.dir = wizardRoute === 'guided' && nextIndex >= prevIndex ? 'forward' : 'back';
+    viewport.classList.remove('is-sliding');
+    void viewport.offsetWidth;
+    viewport.classList.add('is-sliding');
+    const active = viewport.querySelector('.wizard-step.is-on, #route-gate:not([hidden]), #fast-screen:not([hidden])');
+    if (active) {
+      active.classList.remove('is-on');
+      void active.offsetWidth;
+      active.classList.add('is-on');
+    }
+  }
+  const elementary = band() === 'elementary';
+  const pickTitle = $('pick-question');
+  if (pickTitle) pickTitle.textContent = elementary ? 'איזה דף?' : 'אילו סעיפים?';
+  const pickLead = $('pick-lead');
+  if (pickLead) pickLead.textContent = elementary ? 'בוחרים דף שלם לפי הרמה.' : 'בוחרים סעיפים. אפשר מכמה דפים.';
+  paintWizardChrome();
+  paintFastHits();
+  if (how !== 'silent' && how !== 'init') {
+    const head = wizardRoute === 'gate' ? $('route-question')
+      : wizardRoute === 'fast' ? $('fast-question')
+      : document.querySelector('[data-wizard-step="' + id + '"] .wizard-question');
+    if (head) {
+      try { head.focus({ preventScroll: true }); }
+      catch (error) { head.focus(); }
+    }
+    scrollWizardTop();
+  }
+}
+
+function scrollWizardTop() {
+  const node = $('wizard-progress') || $('wizard');
+  if (!node || typeof node.getBoundingClientRect !== 'function') return;
+  const bar = document.querySelector('.topbar');
+  const offset = bar ? bar.getBoundingClientRect().height : 0;
+  const top = window.scrollY + node.getBoundingClientRect().top - offset - 8;
+  window.scrollTo(0, Math.max(0, top));
+}
+
+function currentWizardModel() {
+  return {
+    route: wizardRoute,
+    step: wizardStepId,
+    grade: state.grade,
+    topic: state.topic,
+    level: state.level,
+    selected: state.selected,
+    output: printMode,
+  };
+}
+
+function writeWizardHistory(step, how) {
+  const url = wizardRoute === 'fast' ? '#fast' : wizardRoute === 'guided' ? wizardHash(step) : '#gate';
+  if (how === 'push') {
+    wizardDepth += 1;
+    window.history.pushState({ wizard: step, wizardDepth, route: wizardRoute }, '', url);
+  } else if (how === 'replace') {
+    window.history.replaceState({ wizard: step, wizardDepth, route: wizardRoute }, '', url);
+  }
+}
+
+function wizardGo(step, how) {
+  const jumped = wizardReduce(currentWizardModel(), { type: 'jump', step });
+  const next = routeReduce(jumped, { type: 'route', route: 'guided', step: jumped.step });
+  wizardRoute = next.route;
+  writeWizardHistory(next.step, how);
+  wizardPaint(next.step, how === 'replace' && wizardDepth === 0 ? 'init' : how);
+}
+
+function openRoute(route, how, step) {
+  const next = routeReduce(currentWizardModel(), { type: 'route', route, step });
+  const leavingFast = wizardRoute === 'fast' && next.route !== 'fast';
+  wizardRoute = next.route;
+  if (leavingFast && $('teacher-need-wrap')) $('teacher-need-wrap').open = false;
+  writeWizardHistory(next.step, how);
+  wizardPaint(next.route === 'guided' ? next.step : wizardStepId, how === 'replace' && wizardDepth === 0 ? 'init' : how);
+}
+
+function wizardOnHistory() {
+  const next = routeReduce(currentWizardModel(), { type: 'hash', hash: location.hash });
+  if (next.route === wizardRoute && (next.route !== 'guided' || next.step === wizardStepId)) return;
+  const entry = window.history.state;
+  wizardDepth = entry && Number.isFinite(entry.wizardDepth) ? entry.wizardDepth : Math.max(0, wizardDepth - 1);
+  wizardRoute = next.route;
+  wizardPaint(next.route === 'guided' ? next.step : wizardStepId, 'pop');
+}
+
+function syncWizardChrome() {
+  if (!$('wizard')) return;
+  paintSelectCards('grade', 'grade-choices');
+  paintSelectCards('topic', 'topic-choices');
+  if (band() === 'elementary' && printMode === 'short') printMode = 'marked';
+  const elementary = band() === 'elementary';
+  const shortChoice = $('output-short');
+  if (shortChoice) shortChoice.hidden = elementary;
+  document.querySelectorAll('[data-output]').forEach((btn) => {
+    const on = btn.dataset.output === printMode;
+    btn.classList.toggle('is-on', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  const shortBtn = $('prepare-short');
+  if (shortBtn) shortBtn.hidden = elementary || printMode !== 'short';
+  const prepare = $('prepare');
+  if (prepare) prepare.hidden = printMode === 'short' && !elementary;
+  if (prepare) prepare.classList.toggle('primary', printMode !== 'short');
+  if (shortBtn) {
+    shortBtn.classList.toggle('primary', printMode === 'short' && !elementary);
+    shortBtn.classList.toggle('text-btn', printMode !== 'short' || elementary);
+  }
+  const pickTitle = $('pick-question');
+  if (pickTitle) pickTitle.textContent = elementary ? 'איזה דף?' : 'אילו סעיפים?';
+  const pickLead = $('pick-lead');
+  if (pickLead) pickLead.textContent = elementary ? 'בוחרים דף שלם לפי הרמה.' : 'בוחרים סעיפים. אפשר מכמה דפים.';
+  paintFastHits();
+  paintSearchKept();
+  paintWizardChrome();
+}
+
+function initWizard() {
+  if (!$('wizard') || wizardBound) return;
+  wizardBound = true;
+  const gradeGrid = $('grade-choices');
+  const topicGrid = $('topic-choices');
+  if (gradeGrid) gradeGrid.addEventListener('click', (event) => chooseSelectCard(event, 'grade', 'grade'));
+  if (topicGrid) topicGrid.addEventListener('click', (event) => chooseSelectCard(event, 'topic', 'topic'));
+  const levelFilter = $('level-filter');
+  if (levelFilter) levelFilter.addEventListener('click', (event) => {
+    const input = event.target.closest('label') && event.target.closest('label').querySelector('input');
+    if (!input || wizardRoute !== 'guided' || wizardCurrent() !== 'level') return;
+    window.setTimeout(() => {
+      if (wizardRoute === 'guided' && wizardCurrent() === 'level') wizardGo(wizardNeighbor('level', 1), 'push');
+    }, 0);
+  });
+  const outputChoices = $('output-choices');
+  if (outputChoices) outputChoices.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-output]');
+    if (!btn || btn.hidden) return;
+    printMode = btn.dataset.output;
+    syncWizardChrome();
+    rememberWizard();
+    if (wizardRoute === 'guided') wizardGo('summary', 'push');
+  });
+  const chips = $('wizard-chips');
+  if (chips) chips.addEventListener('click', (event) => jumpWizard(event));
+  const meter = $('wizard-meter');
+  if (meter) meter.addEventListener('click', (event) => jumpWizard(event));
+  const topicFilter = $('topic-filter');
+  if (topicFilter) topicFilter.addEventListener('input', () => paintSelectCards('topic', 'topic-choices'));
+  $('wizard-back').addEventListener('click', () => {
+    if (wizardRoute === 'gate') return;
+    if (wizardRoute !== 'guided' || wizardIndex(wizardCurrent()) === 0) {
+      openRoute('gate', 'push');
+      return;
+    }
+    const handled = wizardHandle(currentWizardModel(), { type: 'back' });
+    wizardGo(handled.step, handled.how);
+  });
+  $('wizard-next').addEventListener('click', () => {
+    if (wizardRoute === 'fast') {
+      prepare(printMode);
+      return;
+    }
+    const step = wizardCurrent();
+    if (wizardRoute !== 'guided') return;
+    if (step === 'summary') {
+      prepare(printMode);
+      return;
+    }
+    if (step === 'pick' && !state.selected.length) {
+      announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
+      return;
+    }
+    const following = wizardHandle(currentWizardModel(), { type: 'next' });
+    wizardGo(following.step, following.how);
+  });
+  const search = $('fast-search');
+  if (search) search.addEventListener('input', () => {
+    state.query = search.value;
+    render();
+  });
+  const kept = $('fast-selected');
+  if (kept) kept.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-keep-key]');
+    if (!btn) return;
+    selectKey(btn.dataset.keepKey, false);
+  });
+  const hits = $('fast-hits');
+  if (hits) hits.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-hit-topic]');
+    if (!btn) return;
+    chooseCatalogTopic(btn.dataset.hitGrade, btn.dataset.hitTopic);
+  });
+  const needForm = $('teacher-need');
+  if (needForm) needForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const text = $('teacher-need-text') ? $('teacher-need-text').value.trim() : '';
+    if (!text) return;
+    askTeacherNeed(text);
+  });
+  window.addEventListener('popstate', wizardOnHistory);
+  window.addEventListener('hashchange', wizardOnHistory);
+  wizardDepth = 0;
+  const opened = routeReduce(currentWizardModel(), { type: 'hash', hash: location.hash });
+  wizardRoute = opened.route;
+  if (opened.route === 'guided') wizardGo(opened.step, 'replace');
+  else openRoute(opened.route, 'replace');
+}
+
+function chooseSelectCard(event, selectId, step) {
+  const btn = event.target.closest('[data-value]');
+  if (!btn) return;
+  const select = $(selectId);
+  if (select && select.value !== btn.dataset.value) {
+    select.value = btn.dataset.value;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (wizardRoute === 'guided') wizardGo(wizardNeighbor(step, 1), 'push');
+}
+
+function jumpWizard(event) {
+  const btn = event.target.closest('[data-wizard-jump]');
+  if (!btn || btn.disabled) return;
+  const step = btn.dataset.wizardJump;
+  if (wizardIndex(step) > wizardIndex(wizardCurrent())) return;
+  const handled = wizardHandle(currentWizardModel(), { type: 'chip', step });
+  wizardGo(handled.step, handled.how);
+}
+
+function placeTeacherNeed() {
+  const wrap = $('teacher-need-wrap');
+  if (!wrap) return;
+  if (wizardRoute === 'fast') {
+    const level = document.querySelector('[data-wizard-step="level"]');
+    if (level && wrap.previousElementSibling !== level) level.insertAdjacentElement('afterend', wrap);
+    return;
+  }
+  const row = document.querySelector('.route-switch-row');
+  if (row && wrap.previousElementSibling !== row) row.insertAdjacentElement('afterend', wrap);
+}
+
+function paintFastHits() {
+  const box = $('fast-hits');
+  if (!box) return;
+  const hits = topicHits(CATALOG, queryText());
+  if (!hits.length) {
+    box.hidden = true;
+    box.innerHTML = '';
+    return;
+  }
+  box.hidden = false;
+  box.innerHTML = hits.map((hit) => `<button type="button" data-hit-grade="${escapeHTML(hit.grade)}" data-hit-topic="${escapeHTML(hit.topic)}">${escapeHTML(hit.title)} · ${escapeHTML(hit.gradeLabel)}</button>`).join('');
+}
+
+async function chooseCatalogTopic(grade, topic) {
+  if (String(state.grade) !== String(grade)) {
+    await new Promise((resolve) => {
+      document.addEventListener('teachers-grade-ready', resolve, { once: true });
+      $('grade').value = String(grade);
+      $('grade').dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  }
+  if (String(state.topic) !== String(topic)) {
+    $('topic').value = String(topic);
+    $('topic').dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  const search = $('fast-search');
+  if (search) search.value = '';
+  state.query = '';
+  render();
+}
+
+function applySuggestIds(ids) {
+  const keys = [];
+  ids.forEach((id) => {
+    if (library.has(id)) keys.push(id);
+    else if (String(id).startsWith('sheet:') && byPdf.has(String(id).slice(6))) keys.push(String(id));
+    else if (byPdf.has(id)) keys.push(sheetKey(id));
+    else if (library.has(exKey(FACTORING_PDF, id))) keys.push(exKey(FACTORING_PDF, id));
+  });
+  const visible = keepVisible(keys, visibleSelectionKeys());
+  if (!visible.length) return false;
+  snapshot();
+  state.selected = visible;
+  clearPreparedPrint();
+  render();
+  return true;
+}
+
+const GOAL_LABELS = { 'מפגש ראשון': 'first', 'תרגול וביסוס': 'practice', 'אחר': 'other' };
+const EDIT_SLOTS = { 'המספר': 'count', 'הרמה': 'level', 'הכיתה': 'strength', 'הזמן': 'duration', 'הדירוג': 'progressive', 'סוג הדף': 'output' };
+let teacherChat = { text: '', hold: {}, phase: 'ask', pick: null, brief: null };
+
+function formBrief() {
+  const level = state.level === 'a' || state.level === 'b' || state.level === 'c' ? [state.level] : [];
+  return { grade: Number(state.grade) || null, topicId: String(state.topic || ''), levels: level };
+}
+
+function chatBrief() {
+  const brief = readTeacherBrief(teacherChat.text, formBrief());
+  if (teacherChat.hold.count) {
+    brief.minParts = null;
+    brief.minQuestions = null;
+  }
+  if (teacherChat.hold.level) brief.levels = [];
+  if (teacherChat.hold.strength) brief.strength = null;
+  if (teacherChat.hold.duration) brief.duration = null;
+  if (teacherChat.hold.progressive) brief.progressive = null;
+  if (teacherChat.hold.output) brief.output = null;
+  return brief;
+}
+
+function chatIndex() {
+  const topic = currentTopic();
+  if (!topic) return [];
+  const grade = gradeRecord(state.grade);
+  return topic.sheets.map((meta) => {
+    const source = sheets.get(meta.pdfId);
+    return {
+      pdfId: meta.pdfId,
+      grade: Number(state.grade),
+      gradeLabel: grade ? grade.label : '',
+      band: band(),
+      topicId: String(state.topic),
+      topic: topic.title,
+      level: meta.level,
+      levelLabel: meta.levelLabel || (source && source.levelLabel) || '',
+      questions: source && source.questions ? source.questions.map((question) => question.id) : [],
+    };
+  });
+}
+
+function showChat(result) {
+  const panel = window.NoamSiteCompanion;
+  if (panel && typeof panel.show === 'function') panel.show(result);
+}
+
+function releaseHold(message) {
+  const piece = readTeacherBrief(message, blankBrief());
+  if (piece.minParts != null || piece.minQuestions != null) delete teacherChat.hold.count;
+  if (piece.levels.length) delete teacherChat.hold.level;
+  if (piece.strength) delete teacherChat.hold.strength;
+  if (piece.duration) delete teacherChat.hold.duration;
+  if (piece.progressive != null) delete teacherChat.hold.progressive;
+  if (piece.output) delete teacherChat.hold.output;
+}
+
+function confirmTeacherPick() {
+  const pick = teacherChat.pick;
+  const brief = teacherChat.brief || chatBrief();
+  if (!pick) return;
+  if (brief.output === 'short' || brief.output === 'marked') {
+    printMode = brief.output;
+    document.querySelectorAll('[data-output]').forEach((btn) => {
+      const on = btn.dataset.output === printMode;
+      btn.classList.toggle('is-on', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  const applied = applySuggestIds((pick.exerciseIds || []).concat(pick.sheetIds || []));
+  teacherChat.phase = 'ask';
+  showChat({
+    answer: applied
+      ? 'סומן על הדף. אפשר לשנות את הסימון לפני ההדפסה.'
+      : 'השאלות האלה לא נטענו בדף הזה. בחרו את הנושא במסך ונמשיך.',
+    details: '',
+    chips: [],
+  });
+}
+
+function teacherChatTurn(message) {
+  const text = String(message || '').trim();
+  if (!text) return;
+  if (GOAL_LABELS[text]) {
+    state.scenario = GOAL_LABELS[text];
+    const input = document.querySelector('input[name="scenario"][value="' + GOAL_LABELS[text] + '"]');
+    if (input) input.checked = true;
+  }
+  if (teacherChat.phase === 'confirm' && text === 'לאשר') {
+    confirmTeacherPick();
+    return;
+  }
+  if (teacherChat.phase === 'confirm' && text === 'לשנות') {
+    teacherChat.phase = 'edit';
+    showChat({ answer: 'מה לשנות?', details: '', chips: editChips() });
+    return;
+  }
+  if (teacherChat.phase === 'edit' && EDIT_SLOTS[text]) {
+    teacherChat.hold[EDIT_SLOTS[text]] = true;
+    teacherChat.phase = 'ask';
+    teacherChat.pick = null;
+    const again = nextTeacherQuestion(chatBrief());
+    showChat({ answer: again ? again.prompt : 'מה לשנות?', details: '', chips: again ? again.chips : editChips() });
+    return;
+  }
+  releaseHold(text);
+  teacherChat.text = (teacherChat.text + ' ' + text).trim();
+  teacherChat.phase = 'ask';
+  const brief = chatBrief();
+  teacherChat.brief = brief;
+  const question = nextTeacherQuestion(brief);
+  if (question) {
+    const lead = GOAL_LABELS[text] ? text + '. ' : '';
+    showChat({ answer: lead + question.prompt, details: '', chips: question.chips });
+    return;
+  }
+  const pick = selectByBrief(chatIndex(), brief);
+  if (!pick.sheets.length) {
+    showChat({
+      answer: 'ברמה הזו אין שאלות בקטלוג. איזו רמה כן?',
+      details: '',
+      chips: [{ label: 'רמה א׳', reply: true }, { label: 'רמה ב׳', reply: true }],
+    });
+    return;
+  }
+  teacherChat.phase = 'confirm';
+  teacherChat.pick = pick;
+  showChat({ answer: describeSelection(brief, pick), details: '', chips: confirmChips() });
+}
+
+window.NoamTeacherChat = { turn: teacherChatTurn };
+
+function askTeacherNeed(message) {
+  const status = $('teacher-need-status');
+  if (status) status.textContent = '';
+  const field = $('teacher-need-text');
+  if (field) field.value = '';
+  teacherChatTurn(message);
+}
+
+function routeRequestFrom(btn) {
+  const route = btn.dataset.openRoute;
+  const step = route === 'guided' && btn.id === 'route-guided' ? 'grade' : undefined;
+  return { route, step };
+}
+
+function showRouteWait(id) {
+  const note = $('route-loading');
+  if (note) {
+    note.hidden = false;
+    note.textContent = 'טוענים את הקטלוג…';
+  }
+  document.querySelectorAll('[data-open-route]').forEach((btn) => {
+    btn.classList.toggle('is-waiting', btn.id === id);
+  });
+  if ($('wizard')) $('wizard').setAttribute('aria-busy', 'true');
+}
+
+function clearRouteWait() {
+  const note = $('route-loading');
+  if (note) note.hidden = true;
+  document.querySelectorAll('[data-open-route]').forEach((btn) => btn.classList.remove('is-waiting'));
+  if ($('wizard')) $('wizard').removeAttribute('aria-busy');
+}
+
+function openRequestedRoute(request, how) {
+  if (!request || !request.route) return;
+  if (request.route === 'guided' && request.step) openRoute('guided', how || 'push', request.step);
+  else openRoute(request.route, how || 'push');
+}
+
+function bindRouteCards() {
+  if (bindRouteCards.done || !$('wizard')) return;
+  bindRouteCards.done = true;
+  document.querySelectorAll('[data-open-route]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const request = routeRequestFrom(btn);
+      const settled = settleRouteTap(catalogReady, pendingRoute, request);
+      pendingRoute = settled.pending;
+      if (!catalogReady) {
+        showRouteWait(btn.id);
+        return;
+      }
+      if (settled.opened) openRequestedRoute(settled.opened, 'push');
+    });
+  });
+}
+
+bindRouteCards();

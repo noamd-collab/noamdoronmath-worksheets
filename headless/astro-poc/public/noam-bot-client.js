@@ -9,7 +9,7 @@
 }(typeof window !== "undefined" ? window : this, function () {
   "use strict";
 
-  var VERIFY_MESSAGE = "לא הצלחנו להשלים את בדיקת האבטחה. נסו שוב בעוד רגע.";
+  var VERIFY_MESSAGE = "נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס.";
   var ACTIONS = {
     noamImageAnalyze: "noam_image_analyze",
     noamImageSolve: "noam_image_solve",
@@ -46,9 +46,8 @@
 
   function responseError(response, data) {
     var detail = data && data.error;
-    var message = typeof detail === "string" ? detail : detail && detail.message;
     var code = data && (data.code || data.errorCode || (detail && detail.code));
-    return makeError(message || "נועם AI לא זמין כרגע. נסו שוב בעוד רגע.",
+    return makeError(VERIFY_MESSAGE,
       code || (data ? "HTTP_ERROR" : "HTTP_ERROR_BODY_UNREADABLE"), response.status);
   }
 
@@ -105,7 +104,7 @@
           return response.json();
         }).then(function (config) {
           if (config && config.active === false) {
-            throw makeError(config.error || "נועם AI לא פעיל כרגע.", "NOT_ACTIVE");
+            throw makeError(VERIFY_MESSAGE, "NOT_ACTIVE");
           }
           if (!config || config.ok !== true || config.provider !== "recaptcha-v3" ||
               typeof config.siteKey !== "string" || !/^[A-Za-z0-9_-]{10,200}$/.test(config.siteKey) ||
@@ -207,7 +206,7 @@
             return data;
           });
         });
-      }, modelTimeout, "REQUEST_TIMEOUT", "התשובה מתעכבת. נסו שוב בעוד רגע.").catch(function (error) {
+      }, modelTimeout, "REQUEST_TIMEOUT", VERIFY_MESSAGE).catch(function (error) {
         if (error && error.code === "REQUEST_TIMEOUT" && typeof responseStatus === "number") {
           error.status = responseStatus;
           error.httpStatus = responseStatus;
@@ -231,6 +230,22 @@
       });
     }
 
+    function devGuardLog(code) {
+      var host = "";
+      try { host = String(win.location && win.location.hostname || ""); } catch (error) { host = ""; }
+      var preview = host === "localhost" || host === "127.0.0.1" ||
+        host.indexOf("noam-math-astro-poc") !== -1;
+      if (!preview || !win.console || typeof win.console.warn !== "function") return;
+      var safe = /^[A-Z0-9_]{1,80}$/.test(String(code || "")) ? String(code) : "UNKNOWN";
+      win.console.warn("NOAM_GUARD", safe);
+    }
+
+    function retryGuard(error) {
+      var status = error && (error.status || error.httpStatus);
+      var code = String(error && error.code || "");
+      return status === 403 && (code === "LOW_SCORE" || code === "BOT_VERIFICATION_FAILED" || code === "HTTP_ERROR_BODY_UNREADABLE");
+    }
+
     function postJson(endpoint, payload) {
       var route = typeof endpoint === "string" ? endpoint.slice(api.length + 1) : "";
       var action = typeof endpoint === "string" && endpoint.indexOf(api + "/") === 0 &&
@@ -245,16 +260,22 @@
           return send(endpoint, body);
         });
       }
-      return attempt().catch(function (error) {
+      var tried = false;
+      function once(error) {
+        devGuardLog(error && error.code);
+        if (!tried && retryGuard(error)) {
+          tried = true;
+          return attempt();
+        }
         if (!isTransientNetworkError(error)) { throw error; }
         return new Promise(function (resolve) {
           setTimeout(resolve, networkRetryDelay);
         }).then(attempt).catch(function (retryError) {
           if (!isTransientNetworkError(retryError)) { throw retryError; }
-          throw makeError("החיבור לנועם AI נקטע. בדקו את החיבור ונסו שוב בעוד רגע.",
-            "NETWORK_UNAVAILABLE");
+          throw makeError(VERIFY_MESSAGE, "NETWORK_UNAVAILABLE");
         });
-      });
+      }
+      return attempt().catch(once);
     }
 
     return { postJson: postJson };

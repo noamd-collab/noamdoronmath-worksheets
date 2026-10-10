@@ -15,6 +15,12 @@ import {
 import { FALLBACK_TEXT, QWEN_MODEL, QWEN_TIMEOUT_MS } from '../../../noam-ai/site-companion/companion.js';
 import { RECAPTCHA_TIMEOUT_MS } from '../../../noam-ai/site-companion/bot-guard.js';
 import { parseClassifier, selectTeacherPicks } from '../../../noam-ai/site-companion/teacher-pick.js';
+import {
+  nextTeacherQuestion,
+  partLabelsInText,
+  readTeacherBrief,
+  selectByBrief,
+} from '../public/teachers/teacher-brief.js';
 
 const QWEN = 'qwen-test-key-xyz';
 const RECAPTCHA = 'recaptcha-test-secret-xyz';
@@ -401,5 +407,127 @@ describe('Noam AI headless endpoint', () => {
       },
     });
     assert.equal(capped.status, 429);
+  });
+
+  it('asks one missing fact and does not pick until the brief is complete', async () => {
+    let qwen = 0;
+    const result = await post({
+      fetch: async (url: string) => {
+        if (String(url).includes('chat/completions')) qwen += 1;
+        return { ok: true, json: async () => ({ success: true, score: 0.9, action: 'noam_site_companion', hostname: 'www.noamdoronmath.co.il' }) };
+      },
+      payload: {
+        message: 'כיתה חלשה, קושי עולה, רמה ב׳, לא מצוינות, לפחות 4 שאלות ו־16 סעיפים',
+        page: { kind: 'teachers', path: '/teachers', title: 'למורים' },
+        teacher: { grade: '9', topic: '2', level: 'all', note: '' },
+        botVerification: { provider: 'recaptcha-v3', token: 'token' },
+      },
+    });
+    assert.equal(qwen, 0);
+    assert.equal(result.status, 200);
+    const body = result.body as { answer: string; details: string; exerciseIds: string[]; chips: { label: string }[] };
+    assert.equal(body.exerciseIds.length, 0);
+    assert.match(body.answer, /כמה זמן/);
+    assert.equal(body.details, '');
+    assert.equal(body.answer.includes(body.answer + body.answer), false);
+    assert.ok(body.chips.some((chip) => chip.label === 'שיעור'));
+    assert.deepEqual(partLabelsInText(body.answer), []);
+  });
+
+  it('keeps a teachers score of 0.35 and names a low score on preview', async () => {
+    const pass = await post({
+      fetch: async () => ({
+        ok: true,
+        json: async () => ({ success: true, score: 0.35, action: 'noam_site_companion', hostname: 'www.noamdoronmath.co.il' }),
+      }),
+      payload: {
+        message: 'שלום',
+        page: { kind: 'teachers', path: '/teachers', title: 'למורים' },
+        teacher: { grade: '9', topic: '2', level: 'all', note: '' },
+        botVerification: { provider: 'recaptcha-v3', token: 'token' },
+      },
+    });
+    assert.equal(pass.status, 200);
+    const home = await post({
+      origin: 'https://jrxwre-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com',
+      fetch: async () => ({
+        ok: true,
+        json: async () => ({
+          success: true,
+          score: 0.35,
+          action: 'noam_site_companion',
+          hostname: 'jrxwre-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com',
+          'error-codes': ['invalid-input-secret'],
+        }),
+      }),
+      payload: {
+        message: 'שלום',
+        page: { kind: 'home', path: '/', title: 'בית' },
+        botVerification: { provider: 'recaptcha-v3', token: 'token-home' },
+      },
+    });
+    assert.equal(home.status, 403);
+    assert.equal(typeof home.body, 'object');
+    assert.equal((home.body as { code: string }).code, 'LOW_SCORE');
+    const secret = await post({
+      fetch: async () => ({
+        ok: true,
+        json: async () => ({ success: false, 'error-codes': ['invalid-input-secret'] }),
+      }),
+    });
+    assert.equal((secret.body as { code: string }).code, 'SECRET_MISMATCH');
+  });
+});
+
+describe('teacher brief selection', () => {
+  const levelB = {
+    pdfId: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+    grade: 9,
+    gradeLabel: 'כיתה ט׳',
+    band: 'middle',
+    topicId: '2',
+    topic: 'פירוק לגורמים',
+    level: 'b',
+    levelLabel: 'רמה ב׳',
+    questions: ['1א', '1ב', '1ג', '1ד', '2א', '2ב', '2ג', '2ד', '3א', '3ב', '3ג', '3ד', '4א', '4ב', '4ג', '4ד', '5א', '5ב', '5ג', '5ד'],
+  };
+  const levelC = { ...levelB, pdfId: 'cccccccccccccccccccccccccccccccc', level: 'c', levelLabel: 'רמה ג׳', questions: ['8א', '8ב', '8ג', '8ד'] };
+
+  it('asks in order, then picks at least 16 parts and 4 questions from level B', () => {
+    const seed = { grade: 9, topicId: '2', levels: [] as string[] };
+    let text = 'כיתה של תלמידים חלשים, קושי עולה, רמה ב׳ לא מצוינות, לפחות 4 שאלות / 16 סעיפים';
+    let brief = readTeacherBrief(text, seed);
+    assert.equal(partLabelsInText(text).length, 0);
+    assert.equal(nextTeacherQuestion(brief)?.id, 'duration');
+    text += ' שיעור';
+    brief = readTeacherBrief(text, seed);
+    assert.equal(nextTeacherQuestion(brief)?.id, 'output');
+    text += ' דף מצומצם';
+    brief = readTeacherBrief(text, seed);
+    assert.equal(nextTeacherQuestion(brief), null);
+    assert.equal(brief.strength, 'weak');
+    assert.equal(brief.progressive, true);
+    assert.deepEqual(brief.levels, ['b']);
+    assert.equal(brief.excludeExcellence, true);
+    assert.equal(brief.minQuestions, 4);
+    assert.equal(brief.minParts, 16);
+    assert.equal(brief.output, 'short');
+    const pick = selectByBrief([levelC, levelB], brief);
+    assert.ok(pick.exerciseIds.length >= 16);
+    const questions = new Set(pick.exerciseIds.map((id) => String(id).split(':').pop()?.replace(/[^\d]/g, '')));
+    assert.ok(questions.size >= 4);
+    assert.equal(pick.exerciseIds.some((id) => id.includes('cccccccc')), false);
+    assert.equal(pick.exerciseIds[0].endsWith(':1א'), true);
+    const numbers = pick.exerciseIds.map((id) => Number(String(id).split(':').pop()?.replace(/[^\d]/g, '')));
+    assert.deepEqual(numbers, numbers.slice().sort((a, b) => a - b));
+  });
+
+  it('does not treat a count as a neighbouring part label', () => {
+    const pick = selectTeacherPicks(index, {
+      message: '4 שאלות ברמה א׳',
+      teacher: { grade: '9', topic: '2', level: 'all', note: '' },
+    }, null);
+    assert.deepEqual(pick.exerciseIds, []);
+    assert.equal(pick.ask && pick.ask.id, 'strength');
   });
 });
