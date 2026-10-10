@@ -9,6 +9,8 @@
   var API_BASE = "https://amiramnoam.wixstudio.com/my-site-2/_functions";
   var API = API_BASE + "/noamSiteCompanion";
   var FALLBACK = "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
+  var TEACHER_QUIET = "נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס.";
+  var SITE_FONT = "Heebo,'Arial Hebrew',Arial,sans-serif";
   var EXPORT_NOTE = "במקרה פירוק לגורמים לכיתה ט׳ רמה א׳, אפשר לסמן את השאלות שנבחרו על דף המקור המלא, או להדפיס דף מצומצם שנחתך מאותו מקור עם ההוראה והנוסח המקוריים.";
   var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
   var SOLVE_REQUEST = /רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
@@ -137,16 +139,16 @@
 
   var style = document.createElement("style");
   style.textContent = [
-    "#noam-site-companion{position:fixed;z-index:9990;right:8px;bottom:8px;left:auto;font-family:inherit;color:#22305a}",
+    "#noam-site-companion{position:fixed;z-index:9990;right:8px;bottom:8px;left:auto;font-family:" + SITE_FONT + ";color:#22305a}",
     "#noam-site-companion-launch{width:48px;height:48px;padding:4px;border:2px solid #22305a;border-radius:16px 6px 18px 7px;background:#2a7c7a;box-shadow:3px 3px 0 #e6a534;cursor:pointer}",
     "#noam-site-companion-launch img{width:32px;height:32px;display:block;border-radius:50%;background:#fff}",
     "#noam-site-companion-panel :focus-visible{outline:3px solid #1e605e;outline-offset:2px}",
-    "#noam-site-companion-panel{display:flex;flex-direction:column;gap:6px;box-sizing:border-box;overflow:auto;background:#fbfaf5;color:#22305a;border:2px solid #22305a;border-radius:16px 6px 18px 7px;box-shadow:3px 3px 0 #e6a534;padding:8px;font-size:16px;line-height:1.35;font-family:inherit;direction:rtl;text-align:right}",
+    "#noam-site-companion-panel{display:flex;flex-direction:column;gap:6px;box-sizing:border-box;overflow:auto;background:#fbfaf5;color:#22305a;border:2px solid #22305a;border-radius:16px 6px 18px 7px;box-shadow:3px 3px 0 #e6a534;padding:8px;font-size:16px;line-height:1.35;font-family:" + SITE_FONT + ";direction:rtl;text-align:right}",
     "#noam-site-companion-panel[hidden]{display:none!important}",
     "#noam-site-companion-panel header{display:flex;align-items:center;gap:6px;flex:none}",
     "#noam-site-companion-panel header img{width:24px;height:24px;flex:none;border-radius:50%;background:#fff}",
-    "#noam-site-companion-panel h2{margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;font-size:16px;line-height:1.3;font-family:inherit}",
-    "#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input,#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:inherit}",
+    "#noam-site-companion-panel h2{margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;font-size:16px;line-height:1.3;font-family:" + SITE_FONT + "}",
+    "#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input,#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}",
     "#noam-site-companion-panel h2,#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input{font-weight:700;font-size:16px;line-height:1.3}",
     "#noam-site-companion-close,#noam-ai-expand,#noam-ai-collapse{box-sizing:border-box;min-width:44px;min-height:44px;height:44px;border:2px solid #22305a;border-radius:10px;background:#fff;color:#22305a;padding:4px 8px;cursor:pointer}",
     "#noam-site-companion-close{width:44px;padding:0;flex:none}",
@@ -619,8 +621,12 @@
       showResult(result);
     }).catch(function (error) {
       streaming = false;
-      var text = (error && error.message) || FALLBACK;
       var teacher = pageKind() === "teachers";
+      var reason = (error && (error.code || error.message)) || "UNKNOWN";
+      if (window.console && typeof window.console.warn === "function") {
+        window.console.warn("NOAM_PANEL_FAILED", String(reason).slice(0, 160));
+      }
+      var text = teacher ? TEACHER_QUIET : ((error && error.message) || FALLBACK);
       showResult({
         answer: text,
         details: teacher ? text + "\n" + EXPORT_NOTE : text,
