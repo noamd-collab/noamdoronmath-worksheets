@@ -327,6 +327,7 @@ function render() {
   if (!ok) {
     paintSourceLine();
     syncWizardChrome();
+    rememberWizard();
     return;
   }
   if (elementary) {
@@ -366,6 +367,7 @@ function render() {
   paintSourceLine();
   if (!elementary) paintThumbs();
   syncWizardChrome();
+  rememberWizard();
 }
 
 function paintSourceLine() {
@@ -1259,7 +1261,10 @@ function bind() {
     await loadCurrentTopic();
     applyScenario('first');
   });
-  $('teacher-note').addEventListener('input', () => clearPreparedPrint());
+  $('teacher-note').addEventListener('input', () => {
+    clearPreparedPrint();
+    rememberWizard();
+  });
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
   $('print-dialog').addEventListener('close', () => {
@@ -1281,17 +1286,80 @@ function bind() {
   });
 }
 
+const WIZARD_SESSION_KEY = 'teachers-wizard';
+let wizardPersist = false;
+
+function readWizardSession() {
+  try {
+    const raw = sessionStorage.getItem(WIZARD_SESSION_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    return data && typeof data === 'object' ? data : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function rememberWizard() {
+  if (!wizardPersist) return;
+  try {
+    const note = $('teacher-note');
+    sessionStorage.setItem(WIZARD_SESSION_KEY, JSON.stringify({
+      grade: state.grade,
+      topic: state.topic,
+      level: state.level,
+      scenario: state.scenario,
+      style: state.style,
+      selected: state.selected.slice(),
+      output: printMode,
+      query: state.query || '',
+      note: note ? note.value : '',
+    }));
+  } catch (error) {
+    return;
+  }
+}
+
+function primeWizardSession(saved) {
+  if (!saved || !CATALOG) return;
+  const grades = CATALOG.grades.map((grade) => String(grade.grade));
+  if (saved.grade != null && grades.includes(String(saved.grade))) state.grade = String(saved.grade);
+  const grade = gradeRecord(state.grade);
+  const topics = grade && grade.topics ? grade.topics.map((topic) => String(topic.id)) : [];
+  if (saved.topic != null && topics.includes(String(saved.topic))) state.topic = String(saved.topic);
+  if (saved.level === 'all' || saved.level === 'a' || saved.level === 'b' || saved.level === 'c') state.level = saved.level;
+  if (saved.scenario && SCENARIOS[saved.scenario]) state.scenario = saved.scenario;
+  if (saved.style && STYLES[saved.style]) state.style = saved.style;
+  if (saved.output === 'marked' || saved.output === 'short') printMode = saved.output;
+  if (typeof saved.query === 'string') state.query = saved.query.slice(0, 80);
+}
+
+function restoreWizardSelection(saved) {
+  if (!saved || !Array.isArray(saved.selected)) return;
+  state.selected = keepVisible(saved.selected.map((key) => String(key)), visibleSelectionKeys());
+  const note = $('teacher-note');
+  if (note && typeof saved.note === 'string') note.value = saved.note.slice(0, 600);
+  const search = $('fast-search');
+  if (search) search.value = state.query || '';
+  render();
+}
+
 async function start() {
   installSuggest();
   const response = await fetch(CATALOG_URL);
   if (!response.ok) throw new Error('CATALOG');
   CATALOG = await response.json();
   indexCatalog();
+  const saved = readWizardSession();
+  primeWizardSession(saved);
   fillGrades();
   fillTopics();
   bind();
   await loadCurrentTopic();
   applyScenario(state.scenario, { quiet: true });
+  restoreWizardSelection(saved);
+  wizardPersist = true;
+  rememberWizard();
   initWizard();
 }
 
@@ -1445,14 +1513,39 @@ function wizardCurrent() {
   return wizardSteps()[wizardIndex(wizardStepId)];
 }
 
+function topicFilterText() {
+  const input = $('topic-filter');
+  return input ? String(input.value || '').trim() : '';
+}
+
 function paintSelectCards(selectId, gridId) {
   const select = $(selectId);
   const grid = $(gridId);
   if (!select || !grid) return;
-  grid.innerHTML = [...select.options].map((opt) => {
+  const q = selectId === 'topic' ? topicFilterText() : '';
+  const options = [...select.options].filter((opt) => !q || String(opt.textContent || '').includes(q));
+  grid.innerHTML = options.map((opt) => {
     const on = opt.value === select.value;
     return `<button type="button" class="choice-card${on ? ' is-on' : ''}" data-value="${escapeHTML(opt.value)}" aria-pressed="${on ? 'true' : 'false'}">${escapeHTML(opt.textContent || '')}</button>`;
   }).join('');
+  const meta = $('topic-filter-meta');
+  const empty = $('topic-filter-empty');
+  if (selectId === 'topic' && meta) meta.textContent = q ? options.length + ' מתוך ' + select.options.length : select.options.length + ' נושאים';
+  if (selectId === 'topic' && empty) empty.hidden = !q || options.length > 0;
+}
+
+function wizardHandle(model, action) {
+  const kind = action && action.type;
+  if (kind === 'chip' || kind === 'jump') {
+    const next = wizardReduce(model, { type: 'jump', step: action.step });
+    return { step: next.step, how: 'replace', selected: next.selected };
+  }
+  if (kind === 'next') {
+    const next = wizardReduce(model, { type: 'next' });
+    return { step: next.step, how: 'push', selected: next.selected };
+  }
+  const next = wizardReduce(model, { type: 'back' });
+  return { step: next.step, how: 'push', selected: next.selected };
 }
 
 function chipText(step) {
@@ -1552,14 +1645,25 @@ function wizardPaint(step, how) {
   if (pickLead) pickLead.textContent = elementary ? 'בוחרים דף שלם לפי הרמה.' : 'בוחרים סעיפים. אפשר מכמה דפים.';
   paintWizardChrome();
   paintFastHits();
-  if (how !== 'silent') {
-    const node = $('wizard');
-    if (node && how !== 'init' && typeof node.scrollIntoView === 'function') node.scrollIntoView({ block: 'start' });
+  if (how !== 'silent' && how !== 'init') {
     const head = wizardRoute === 'gate' ? $('route-question')
       : wizardRoute === 'fast' ? $('fast-question')
       : document.querySelector('[data-wizard-step="' + id + '"] .wizard-question');
-    if (head && how !== 'init') head.focus();
+    if (head) {
+      try { head.focus({ preventScroll: true }); }
+      catch (error) { head.focus(); }
+    }
+    scrollWizardTop();
   }
+}
+
+function scrollWizardTop() {
+  const node = $('wizard-progress') || $('wizard');
+  if (!node || typeof node.getBoundingClientRect !== 'function') return;
+  const bar = document.querySelector('.topbar');
+  const offset = bar ? bar.getBoundingClientRect().height : 0;
+  const top = window.scrollY + node.getBoundingClientRect().top - offset - 8;
+  window.scrollTo(0, Math.max(0, top));
 }
 
 function currentWizardModel() {
@@ -1661,20 +1765,23 @@ function initWizard() {
     if (!btn || btn.hidden) return;
     printMode = btn.dataset.output;
     syncWizardChrome();
+    rememberWizard();
     if (wizardRoute === 'guided') wizardGo('summary', 'push');
   });
   const chips = $('wizard-chips');
   if (chips) chips.addEventListener('click', (event) => jumpWizard(event));
   const meter = $('wizard-meter');
   if (meter) meter.addEventListener('click', (event) => jumpWizard(event));
+  const topicFilter = $('topic-filter');
+  if (topicFilter) topicFilter.addEventListener('input', () => paintSelectCards('topic', 'topic-choices'));
   $('wizard-back').addEventListener('click', () => {
     if (wizardRoute === 'gate') return;
     if (wizardRoute !== 'guided' || wizardIndex(wizardCurrent()) === 0) {
       openRoute('gate', 'push');
       return;
     }
-    const previous = wizardReduce(currentWizardModel(), { type: 'back' });
-    wizardGo(previous.step, 'push');
+    const handled = wizardHandle(currentWizardModel(), { type: 'back' });
+    wizardGo(handled.step, handled.how);
   });
   $('wizard-next').addEventListener('click', () => {
     const step = wizardCurrent();
@@ -1687,8 +1794,8 @@ function initWizard() {
       announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
       return;
     }
-    const following = wizardReduce(currentWizardModel(), { type: 'next' });
-    wizardGo(following.step, 'push');
+    const following = wizardHandle(currentWizardModel(), { type: 'next' });
+    wizardGo(following.step, following.how);
   });
   document.querySelectorAll('[data-open-route]').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -1740,7 +1847,8 @@ function jumpWizard(event) {
   if (!btn || btn.disabled) return;
   const step = btn.dataset.wizardJump;
   if (wizardIndex(step) > wizardIndex(wizardCurrent())) return;
-  wizardGo(step, 'push');
+  const handled = wizardHandle(currentWizardModel(), { type: 'chip', step });
+  wizardGo(handled.step, handled.how);
 }
 
 function placeTeacherNeed() {

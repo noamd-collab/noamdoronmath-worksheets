@@ -544,13 +544,14 @@ describe('teacher catalog picker', () => {
     const demo = readFileSync(new URL('../../../demos/teacher-factoring-print.js', import.meta.url), 'utf8');
     assert.equal(demo, preview);
     const src = preview.slice(preview.indexOf('function wizardSteps'), preview.indexOf('function wizardPaint'));
-    const api = new Function(`${src} return { wizardSteps, wizardIndex, wizardNeighbor, wizardStepFromHash, wizardHash, wizardReduce, routeFromHash, routeReduce, suggestOutcome, topicHits };`)() as {
+    const api = new Function(`${src} return { wizardSteps, wizardIndex, wizardNeighbor, wizardStepFromHash, wizardHash, wizardReduce, wizardHandle, routeFromHash, routeReduce, suggestOutcome, topicHits };`)() as {
       wizardSteps: () => string[];
       wizardIndex: (step: string) => number;
       wizardNeighbor: (step: string, delta: number) => string;
       wizardStepFromHash: (hash: string) => string;
       wizardHash: (step: string) => string;
       wizardReduce: (model: { step: string; grade: string; topic: string; level: string; selected: string[]; output: string }, action: { type: string; hash?: string; step?: string; grade?: string; topic?: string; level?: string; selected?: string[]; output?: string }) => { step: string; grade: string; topic: string; level: string; selected: string[]; output: string };
+      wizardHandle: (model: { step: string; grade: string; topic: string; level: string; selected: string[]; output: string }, action: { type: string; step?: string }) => { step: string; how: string; selected: string[] };
       routeFromHash: (hash: string) => string;
       routeReduce: (model: { route: string; step: string; grade: string; topic: string; level: string; selected: string[]; output: string }, action: { type: string; route?: string; step?: string; hash?: string }) => { route: string; step: string; grade: string; topic: string; level: string; selected: string[]; output: string };
       suggestOutcome: (result: { enabled?: boolean; exerciseIds?: string[]; sheetIds?: string[] } | null) => { apply: boolean; ids: string[] };
@@ -593,6 +594,19 @@ describe('teacher catalog picker', () => {
     const jumpedBack = api.wizardReduce(api.wizardReduce(model, { type: 'jump', step: 'topic' }), { type: 'back' });
     assert.equal(jumpedBack.step, 'grade');
     assert.deepEqual(jumpedBack.selected, ['ex:sheet:1א', 'ex:sheet:1ב', 'ex:sheet:1ג']);
+    const summary = { step: 'summary', grade: '9', topic: '2', level: 'a', selected: ['ex:sheet:1א', 'ex:sheet:1ב'], output: 'marked' };
+    const chipped = api.wizardHandle(summary, { type: 'chip', step: 'topic' });
+    assert.equal(chipped.step, 'topic');
+    assert.equal(chipped.how, 'replace');
+    assert.deepEqual(chipped.selected, ['ex:sheet:1א', 'ex:sheet:1ב']);
+    summary.selected.push('ex:sheet:1ג');
+    assert.deepEqual(chipped.selected, ['ex:sheet:1א', 'ex:sheet:1ב']);
+    const afterChip = api.wizardHandle({ step: 'topic', grade: '9', topic: '2', level: 'a', selected: chipped.selected, output: 'marked' }, { type: 'back' });
+    assert.equal(afterChip.step, 'grade');
+    assert.notEqual(afterChip.step, 'summary');
+    assert.equal(afterChip.how, 'push');
+    assert.deepEqual(afterChip.selected, chipped.selected);
+    assert.equal(api.wizardNeighbor('topic', -1), afterChip.step);
     assert.equal(api.routeFromHash(''), 'gate');
     assert.equal(api.routeFromHash('#fast'), 'fast');
     assert.equal(api.routeFromHash('#grade'), 'guided');
@@ -632,9 +646,18 @@ describe('teacher catalog picker', () => {
     assert.match(preview, /window\.history\.pushState/);
     assert.match(preview, /addEventListener\('popstate'/);
     assert.match(preview, /printMode = btn\.dataset\.output/);
-    assert.match(preview, /wizardReduce\(currentWizardModel\(\), \{ type: 'back' \}\)/);
+    assert.match(preview, /wizardReduce\(model, \{ type: 'back' \}\)/);
+    assert.match(preview, /sessionStorage/);
+    const boot = preview.slice(preview.indexOf('async function start'), preview.indexOf('start().catch'));
+    assert.ok(boot.indexOf('applyScenario') >= 0 && boot.indexOf('applyScenario') < boot.indexOf('restoreWizardSelection'));
     const backHandler = preview.slice(preview.indexOf("$('wizard-back').addEventListener"), preview.indexOf("$('wizard-next').addEventListener"));
     assert.equal(backHandler.includes('history.back'), false);
+    assert.match(backHandler, /wizardHandle\(currentWizardModel\(\), \{ type: 'back' \}\)/);
+    assert.match(backHandler, /wizardGo\(handled\.step, handled\.how\)/);
+    const jumpSrc = preview.slice(preview.indexOf('function jumpWizard'), preview.indexOf('function placeTeacherNeed'));
+    assert.match(jumpSrc, /wizardHandle\(currentWizardModel\(\), \{ type: 'chip', step \}\)/);
+    assert.match(jumpSrc, /wizardGo\(handled\.step, handled\.how\)/);
+    assert.equal(/wizardGo\(step,\s*'push'\)/.test(jumpSrc), false);
     const page = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     const demoPage = readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html', import.meta.url), 'utf8');
     for (const step of api.wizardSteps()) {
@@ -655,6 +678,10 @@ describe('teacher catalog picker', () => {
     assert.match(demoPage, /אני יודע מה אני מחפש/);
     assert.match(demoPage, /id="fast-search"/);
     assert.match(demoPage, /id="teacher-need"/);
+    assert.match(page, /id="topic-filter"/);
+    assert.match(demoPage, /id="topic-filter"/);
+    assert.match(page, /bottom:132px/);
+    assert.match(page, /is-summary .summary-actions button/);
   });
 
   it('leaves Noam AI exercise suggestions disabled', () => {

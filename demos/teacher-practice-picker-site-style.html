@@ -253,7 +253,7 @@ html.noam-ai-engaged .question-list,html.noam-ai-engaged .future-modes{grid-temp
 .foot-bottom{max-width:var(--shell);margin:0 auto;padding:16px 24px 28px;border-top:1px solid rgba(255,255,255,.15);font-size:13px;color:#a9b0c8;display:flex;flex-direction:column;gap:6px}
 .footer-source{color:#e8ebf3}
 .toast{
-  position:fixed;bottom:96px;left:50%;transform:translateX(-50%);
+  position:fixed;bottom:132px;left:50%;transform:translateX(-50%);
   background:var(--ink);color:#fff;border:2px solid var(--ink);border-radius:999px;
   box-shadow:4px 4px 0 var(--yellow);padding:12px 18px;font-size:15px;font-weight:700;z-index:40;max-width:calc(100% - 32px);text-align:center;
 }
@@ -418,6 +418,11 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .wizard-lead{color:var(--muted);font-size:17px;margin:0 0 16px}
 .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 #topic-choices{grid-template-columns:1fr}
+.topic-filter{display:grid;gap:6px;margin:0 0 12px}
+.topic-filter label{font-size:15px;font-weight:700}
+.topic-filter input{width:100%;box-sizing:border-box;border:2px solid var(--ink);border-radius:12px;background:#fff;font:500 18px/1.4 Heebo,Arial,sans-serif;padding:10px 12px;color:var(--ink);min-height:52px}
+.topic-filter-meta{margin:0;color:var(--muted);font-size:14px;font-weight:700}
+.topic-filter-empty{margin:0;color:var(--muted)}
 .choice-card,.output-card{
   display:flex;align-items:center;justify-content:center;text-align:center;
   min-height:76px;padding:14px 12px;font-size:20px;font-weight:700;line-height:1.25;
@@ -438,8 +443,8 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .wizard-recap span{font-weight:500;color:var(--muted)}
 .wizard-optional{margin-top:8px}
 .wizard-actions{position:sticky;bottom:0;display:flex;gap:10px;padding:14px 0 18px;background:linear-gradient(transparent,var(--paper) 30%);z-index:5}
-#wizard-back{flex:1;min-height:56px;background:#fff;border:2px solid var(--ink);border-radius:var(--r-cta);font-size:18px;font-weight:700;color:var(--ink)}
-#wizard-next{flex:1.4;min-height:56px;font-size:18px}
+#wizard-back{flex:0 0 auto;min-height:56px;padding:8px 16px;background:#fff;border:2px solid var(--ink);border-radius:var(--r-cta);font-size:18px;font-weight:700;color:var(--ink)}
+#wizard-next{flex:1;min-height:56px;font-size:17px;line-height:1.2;padding:8px 12px;white-space:normal}
 .summary-actions .primary,.summary-actions .text-btn.primary{width:100%;margin-top:8px}
 @media(min-width:900px){
   #grade-choices{grid-template-columns:1fr 1fr 1fr}
@@ -450,6 +455,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
   .wizard-step[data-wizard-step="pick"] .wizard-question,.wizard-step[data-wizard-step="pick"] .wizard-lead{margin-inline:16px}
   .choice-card,.output-card{font-size:18px;min-height:72px}
   .wizard-meter button{font-size:11px}
+  .wizard-actions{padding-inline-start:64px}
 }
 @media(prefers-reduced-motion:reduce){
   .wizard-viewport.is-sliding .wizard-step.is-on{animation:none}
@@ -505,7 +511,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 #wizard.is-fast .wizard-viewport{order:3}
 #wizard.is-fast #wizard-back{flex:none;width:auto;min-height:44px;padding:0 16px}
 #wizard.is-fast [data-wizard-step]{display:block}
-#wizard.is-fast .choice-grid,#wizard.is-fast [data-wizard-step="grade"] .wizard-question,#wizard.is-fast [data-wizard-step="grade"] .wizard-lead,#wizard.is-fast [data-wizard-step="topic"] .wizard-question,#wizard.is-fast [data-wizard-step="topic"] .wizard-lead,#wizard.is-fast [data-wizard-step="level"] .wizard-question,#wizard.is-fast [data-wizard-step="level"] .wizard-lead,#wizard.is-fast [data-wizard-step="pick"] .wizard-question,#wizard.is-fast [data-wizard-step="pick"] .wizard-lead,#wizard.is-fast [data-wizard-step="summary"] .wizard-question,#wizard.is-fast [data-wizard-step="summary"] .wizard-lead,#wizard.is-fast [data-wizard-step="summary"] .wizard-recap,#wizard.is-fast [data-wizard-step="summary"] .wizard-optional,#wizard.is-fast [data-wizard-step="summary"] .source-line,#wizard.is-fast .logic-note,#wizard.is-fast .details,#wizard.is-fast #suggestion{display:none}
+#wizard.is-fast .topic-filter,#wizard.is-fast .choice-grid,#wizard.is-fast [data-wizard-step="grade"] .wizard-question,#wizard.is-fast [data-wizard-step="grade"] .wizard-lead,#wizard.is-fast [data-wizard-step="topic"] .wizard-question,#wizard.is-fast [data-wizard-step="topic"] .wizard-lead,#wizard.is-fast [data-wizard-step="level"] .wizard-question,#wizard.is-fast [data-wizard-step="level"] .wizard-lead,#wizard.is-fast [data-wizard-step="pick"] .wizard-question,#wizard.is-fast [data-wizard-step="pick"] .wizard-lead,#wizard.is-fast [data-wizard-step="summary"] .wizard-question,#wizard.is-fast [data-wizard-step="summary"] .wizard-lead,#wizard.is-fast [data-wizard-step="summary"] .wizard-recap,#wizard.is-fast [data-wizard-step="summary"] .wizard-optional,#wizard.is-fast [data-wizard-step="summary"] .source-line,#wizard.is-fast .logic-note,#wizard.is-fast .details,#wizard.is-fast #suggestion{display:none}
 #wizard.is-fast .wizard-step.panel{padding:4px 0}
 #wizard.is-fast .wizard-native{position:static;width:auto;height:auto;margin:0 0 8px;overflow:visible;clip:auto;white-space:normal}
 #wizard.is-fast .wizard-native select{width:100%;min-height:56px;font:700 18px/1.3 Heebo,Arial,sans-serif;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:8px 12px;color:var(--ink)}
@@ -587,6 +593,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <section class="wizard-step panel" data-wizard-step="topic" aria-labelledby="topic-question" hidden>
 <h2 class="wizard-question" id="topic-question" tabindex="-1">איזה נושא?</h2>
 <p class="wizard-lead">הנושאים שכבר יש להם דף באתר.</p>
+<div class="topic-filter"><label for="topic-filter">סינון נושאים</label><input id="topic-filter" type="search" placeholder="למשל: שברים" autocomplete="off" enterkeyhint="search"><p class="topic-filter-meta" id="topic-filter-meta"></p><p class="topic-filter-empty" id="topic-filter-empty" hidden>אין נושא בשם הזה.</p></div>
 <div class="choice-grid" id="topic-choices"></div>
 <div class="wizard-native"><label for="topic">נושא</label><select id="topic" tabindex="-1"><option value="2">פירוק לגורמים</option></select></div>
 </section>
