@@ -633,7 +633,7 @@ function withSpan(box, y, end, masks) {
     const top = Math.max(mask.y, y);
     const bot = Math.min(mask.y2, y + height);
     const span = bot - top;
-    if (span < 0.003) return;
+    if (span < 0.0015) return;
     if (!best || span > best.span) best = { mask, top, bot, span };
   });
   if (!best) {
@@ -650,9 +650,31 @@ function withSpan(box, y, end, masks) {
 }
 
 /**
+ * A right-column mask is stored on the figure's right edge, which is the
+ * wall stroke itself. Move it just past that stroke so the line stays.
+ */
+function clearDrawingStroke(question, box) {
+  if (!box || !box.mask) return box;
+  const page = box.page || question.page;
+  const figures = [];
+  (SOURCE.questions || []).forEach((item) => {
+    if (item && item.q === question.q && item.figure && item.page === page) figures.push(item.figure);
+  });
+  let mask = box.mask;
+  figures.forEach((figure) => {
+    if (Math.abs(mask.x - figure.x1) < 0.01 && mask.w > 0.15) {
+      const shift = 0.008;
+      mask = { ...mask, x: mask.x + shift, w: Math.max(0.05, mask.w - shift) };
+    }
+  });
+  return mask === box.mask ? box : { ...box, mask };
+}
+
+/**
  * A part printed alone still includes the whole shared drawing: an earlier
  * overlapping crop, or a figure whose top sits above this part (the house roof).
- * A few thousandths past the next label is the next line, and is trimmed off.
+ * The crop starts on a white row, so a label beside the roof is not cut in half.
+ * A drawing that sticks a little past the next label stays, and that label is masked.
  */
 function coverSharedFigure(question, box, laterSelected) {
   const page = box.page || question.page;
@@ -685,6 +707,16 @@ function coverSharedFigure(question, box, laterSelected) {
   if (ownFigure && question.page === page && ownFigure.y1 > box.y + 0.003 && ownFigure.y0 < originalEnd + 0.02) {
     if (ownFigure.y0 < top - 0.003) top = ownFigure.y0;
   }
+  // figure.y0 can sit halfway through the first part's label. Start on that part's white row.
+  let lineTop = top;
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || item.q !== question.q) return;
+    questionRows(item).forEach((other) => {
+      if (!other || (other.page || item.page) !== page) return;
+      if (other.y < top - 0.0004 && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
+    });
+  });
+  top = lineTop;
   if (end > originalEnd + 0.0005) {
     let nextTop = null;
     (SOURCE.questions || []).forEach((item) => {
@@ -692,9 +724,12 @@ function coverSharedFigure(question, box, laterSelected) {
       if ((item.row.page || item.page) !== page) return;
       if (item.row.y >= originalEnd - 0.004 && (nextTop == null || item.row.y < nextTop)) nextTop = item.row.y;
     });
-    if (nextTop != null && end > nextTop - 0.001 && end - nextTop < 0.008) end = Math.min(end, nextTop - 0.0015);
+    // A small step past the next label is the rest of the drawing, plus that label's text.
+    if (nextTop != null && end > nextTop - 0.001 && end - nextTop < 0.008) {
+      masks.push({ x: 0.45, w: 0.55, y: nextTop, y2: Math.max(end, nextTop + 0.004) });
+    }
   }
-  if (Math.abs(top - box.y) < 0.0001 && Math.abs(end - originalEnd) < 0.0001) return box;
+  if (Math.abs(top - box.y) < 0.0001 && Math.abs(end - originalEnd) < 0.0001 && masks.length === (ownMask ? 1 : 0)) return box;
   return withSpan({ ...box, page }, top, end, masks);
 }
 
@@ -733,7 +768,7 @@ function shortSlices(chosen) {
       const dup = last && last.kind === 'row' && last.page === page && last.box.x === next.x && last.box.y === next.y && last.box.w === next.w && last.box.h === next.h;
       // Abutting rows overlap by 2px so the join is not a white seam.
       const gap = prev && next.y <= boxEnd(prev.box) + 0.006 ? -2 : 4;
-      if (!dup) slices.push({ page, box: next, gap, block, kind: 'row' });
+      if (!dup) slices.push({ page, box: clearDrawingStroke(question, next), gap, block, kind: 'row' });
     });
   });
   slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16, block: 'footer', kind: 'footer' });
