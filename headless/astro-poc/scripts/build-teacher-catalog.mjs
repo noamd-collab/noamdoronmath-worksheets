@@ -129,13 +129,64 @@ function sectionHeaderEnd(exercise, cropBottom, top, line, nextPinY) {
 }
 
 function splitGap(raw) {
-  if (typeof raw === 'number' && Number.isFinite(raw)) return { y: raw, bottom: null };
+  if (typeof raw === 'number' && Number.isFinite(raw)) return { y: raw, bottom: null, figure: null };
   if (raw && typeof raw === 'object') {
     const y = typeof raw.y === 'number' && Number.isFinite(raw.y) ? raw.y : null;
     const bottom = typeof raw.bottom === 'number' && Number.isFinite(raw.bottom) ? raw.bottom : null;
-    return { y, bottom };
+    const figure = raw.figure;
+    const box = figure && [figure.x0, figure.y0, figure.x1, figure.y1].every((value) => typeof value === 'number' && Number.isFinite(value))
+      ? { x0: figure.x0, y0: figure.y0, x1: figure.x1, y1: figure.y1 }
+      : null;
+    return { y, bottom, figure: box };
   }
-  return { y: null, bottom: null };
+  return { y: null, bottom: null, figure: null };
+}
+
+/**
+ * A drawing that continues into the next question is kept on the earlier
+ * question's last part. The right-hand text of the next question is masked
+ * out of that crop, and the drawing is masked out of the next question, so
+ * each region is printed once.
+ */
+function maskCrossingFigures(questions, figures) {
+  questions.forEach((question) => {
+    const figure = figures[question.id];
+    if (!figure) return;
+    const later = questions.filter((item) => item.page === question.page && item.q > question.q);
+    const next = later[0];
+    if (!next) return;
+    const boundary = next.stem ? next.stem.y : next.row.y;
+    question.rows.forEach((box) => {
+      if ((box.page || question.page) !== question.page) return;
+      const end = box.y + box.h;
+      if (boundary < box.y + 0.004 || boundary > end - 0.004) return;
+      const y = (boundary - box.y) / box.h;
+      box.mask = {
+        x: round(Math.min(0.92, Math.max(0.2, figure.x1))),
+        y: round(y),
+        w: round(Math.max(0.04, 1 - Math.min(0.92, Math.max(0.2, figure.x1)))),
+        h: round(Math.max(0.02, 1 - y)),
+      };
+    });
+    const figureEnd = figure.y1 + 0.004;
+    later.forEach((item) => {
+      const start = item.stem ? item.stem.y : item.row.y;
+      if (start > figureEnd) return;
+      maskFigureColumn(item.stem, figure, figureEnd);
+      item.rows.forEach((box) => maskFigureColumn(box, figure, figureEnd));
+    });
+  });
+}
+
+function maskFigureColumn(box, figure, figureEnd) {
+  if (!box || !(box.h > 0)) return;
+  const overlapTop = Math.max(box.y, figure.y0);
+  const overlapBot = Math.min(box.y + box.h, figureEnd);
+  if (overlapBot - overlapTop < 0.003) return;
+  const y = (overlapTop - box.y) / box.h;
+  const h = (overlapBot - overlapTop) / box.h;
+  const x1 = Math.min(0.7, figure.x1 + 0.02);
+  box.mask = { x: 0, y: round(y), w: round(Math.max(0.05, x1)), h: round(Math.min(1, h)) };
 }
 
 /** One crop per chosen part: from the top of its label line to the top of the next label line. */
@@ -209,6 +260,7 @@ export function sheetFromManifest(meta, manifest, gaps) {
   const line = labelLineHeight(exercises);
   const tops = {};
   const bottoms = {};
+  const figures = {};
   if (gaps) {
     for (const exercise of exercises) {
       const key = exerciseId(exercise);
@@ -217,6 +269,7 @@ export function sheetFromManifest(meta, manifest, gaps) {
       tops[key] = measured != null && measured >= 0 && measured < exercise.pin.y ? measured : null;
       const bottom = split.bottom == null ? null : round(split.bottom);
       if (bottom != null && bottom > exercise.pin.y && bottom < 0.995) bottoms[key] = bottom;
+      if (split.figure && bottoms[key] != null) figures[key] = split.figure;
     }
   }
   const questions = exercises.map((exercise, index) => {
@@ -248,6 +301,7 @@ export function sheetFromManifest(meta, manifest, gaps) {
       ...(stem ? { stem } : {}),
     };
   });
+  maskCrossingFigures(questions, figures);
   return {
     case: `catalog-${meta.grade}-${meta.topicId}-${meta.level}`,
     grade: meta.grade,

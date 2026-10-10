@@ -324,7 +324,7 @@ describe('teacher catalog picker', () => {
 
   it('prints only the checked part crops and drops hidden selections', () => {
     const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function shortSlices'), preview.indexOf('function contentHeight'))} return shortSlices;`)({
+    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)({
       headerCrop: { page: 1, x: 0, y: 0, w: 1, h: 0.2 },
       footerCrop: { page: 2, x: 0, y: 0.96, w: 1, h: 0.03 },
       questions: [],
@@ -381,6 +381,56 @@ describe('teacher catalog picker', () => {
     assert.match(css, /@media \(max-width: 899\.98px\)/);
     assert.match(css, /@media \(min-width: 900px\) and \(max-width: 1023\.98px\)[\s\S]*?font-size:12px!important/);
     assert.match(html, /@media\(min-width:900px\) and \(max-width:1023\.98px\)\{[\s\S]*?font-size:12px/);
+  });
+
+  it('prints one crop when consecutive parts share a drawing', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const sheet = JSON.parse(readFileSync(new URL('../public/teachers/sheets/0d548ce76eb74a1ab10385cdaf1f77ca.json', import.meta.url), 'utf8'));
+    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number } }[];
+    const byId = Object.fromEntries(sheet.questions.map((question: { id: string; row: { y: number; h: number } }) => [question.id, question]));
+    const rowsOf = (ids: string[]) => shortSlices(ids.map((id) => byId[id])).filter((slice) => slice.kind === 'row' && slice.page === 4);
+    const covered = (rows: { box: { y: number; h: number } }[], y: number) => rows.filter((slice) => slice.box.y <= y && slice.box.y + slice.box.h > y).length;
+    const disjoint = (rows: { box: { y: number; h: number } }[]) => {
+      const ordered = rows.slice().sort((a, b) => a.box.y - b.box.y);
+      for (let index = 1; index < ordered.length; index += 1) {
+        const previous = ordered[index - 1].box;
+        assert.ok(previous.y + previous.h <= ordered[index].box.y + 0.004, JSON.stringify(ordered.map((slice) => slice.box)));
+      }
+    };
+    const aleph = byId['9א'];
+    const bet = byId['9ב'];
+    const gimel = byId['9ג'];
+    const pair = rowsOf(['9א', '9ב']);
+    disjoint(pair);
+    assert.equal(covered(pair, aleph.row.y + 0.01), 1);
+    assert.equal(covered(pair, bet.row.y + 0.01), 1);
+    assert.equal(pair.length, 1);
+    const triple = rowsOf(['9א', '9ב', '9ג']);
+    disjoint(triple);
+    assert.equal(covered(triple, bet.row.y + 0.01), 1);
+    assert.equal(covered(triple, gimel.row.y + gimel.row.h * 0.5), 1);
+    assert.ok(triple.some((slice) => slice.box.y + slice.box.h >= gimel.row.y + gimel.row.h - 0.004));
+    const onlyBet = rowsOf(['9ב']);
+    assert.equal(onlyBet.length, 1);
+    assert.ok(onlyBet[0].box.y <= aleph.row.y + 0.002, JSON.stringify(onlyBet[0].box));
+    assert.ok(onlyBet[0].box.y + onlyBet[0].box.h >= aleph.row.y + aleph.row.h - 0.004, JSON.stringify(onlyBet[0].box));
+    const onlyAleph = rowsOf(['9א']);
+    assert.equal(onlyAleph.length, 1);
+    assert.ok(Math.abs(onlyAleph[0].box.y - aleph.row.y) < 0.0001);
+    assert.ok(Math.abs(onlyAleph[0].box.h - aleph.row.h) < 0.0001);
+  });
+
+  it('assigns the grade-9 house drawing to question 8', () => {
+    const sheet = JSON.parse(readFileSync(new URL('../public/teachers/sheets/871fe90d52a04673a7d30fc039e4bf2e.json', import.meta.url), 'utf8'));
+    const last = sheet.questions.find((question: { id: string }) => question.id === '8ד');
+    const next = sheet.questions.find((question: { id: string }) => question.id === '9א');
+    const end = last.row.y + last.row.h;
+    assert.ok(last.row.y < 0.2, JSON.stringify(last.row));
+    assert.ok(end >= 0.268 && end <= 0.28, JSON.stringify(last.row));
+    assert.ok(last.row.mask && last.row.mask.x >= 0.35 && last.row.mask.y > 0.3 && last.row.mask.w > 0.4);
+    assert.ok(next.stem && next.stem.mask && next.stem.mask.x === 0 && next.stem.mask.w > 0.3 && next.stem.mask.w < 0.55);
+    assert.ok(next.row.mask && next.row.mask.x === 0 && next.row.mask.h < 0.5 && next.row.mask.w < 0.55);
+    assert.ok(next.row.y < 0.27, JSON.stringify(next.row));
   });
 
   it('measures a committed label page without downloading a worksheet', (t) => {

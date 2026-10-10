@@ -595,6 +595,41 @@ async function pageBitmap(pageNumber, source) {
   return canvas;
 }
 
+function boxEnd(box) {
+  return box.y + box.h;
+}
+
+function previousQuestionRow(slices, block, page) {
+  for (let index = slices.length - 1; index >= 0; index -= 1) {
+    const slice = slices[index];
+    if (slice.kind !== 'row') continue;
+    if (slice.block === block && slice.page === page) return slice;
+    return null;
+  }
+  return null;
+}
+
+/** A later part printed alone still includes a drawing shared with an earlier part. */
+function coverSharedFigure(question, box) {
+  const page = box.page || question.page;
+  let top = box.y;
+  let end = boxEnd(box);
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || item.q !== question.q || item.id === question.id) return;
+    const rows = item.rows && item.rows.length ? item.rows : (item.row ? [item.row] : []);
+    rows.forEach((other) => {
+      if (!other || (other.page || item.page) !== page) return;
+      const otherEnd = boxEnd(other);
+      if (other.y < top - 0.003 && otherEnd > top + 0.003) {
+        top = Math.min(top, other.y);
+        end = Math.max(end, otherEnd);
+      }
+    });
+  });
+  if (top === box.y && end === boxEnd(box)) return box;
+  return { ...box, page, y: top, h: Math.max(0.004, end - top) };
+}
+
 function shortSlices(chosen) {
   const ordered = chosen.slice().sort((a, b) => (
     a.page - b.page || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
@@ -610,9 +645,21 @@ function shortSlices(chosen) {
     const rows = question.rows && question.rows.length ? question.rows : [question.row];
     rows.forEach((box) => {
       const page = box.page || question.page;
-      const prev = slices[slices.length - 1];
-      const dup = prev && prev.kind === 'row' && prev.page === page && prev.box.x === box.x && prev.box.y === box.y && prev.box.w === box.w && prev.box.h === box.h;
-      if (!dup) slices.push({ page, box, gap: 4, block, kind: 'row' });
+      let next = { ...box, page };
+      const prev = previousQuestionRow(slices, block, page);
+      // The first selected part of this question can still own a shared drawing.
+      if (!prev) next = coverSharedFigure(question, next);
+      if (prev && next.y < boxEnd(prev.box) - 0.003) {
+        const prevEnd = boxEnd(prev.box);
+        // Fully covered by the previous part: printing it again repeats its text.
+        if (boxEnd(next) <= prevEnd + 0.004) return;
+        const height = boxEnd(next) - prevEnd;
+        if (height < 0.004) return;
+        next = { ...next, y: prevEnd, h: height };
+      }
+      const last = slices[slices.length - 1];
+      const dup = last && last.kind === 'row' && last.page === page && last.box.x === next.x && last.box.y === next.y && last.box.w === next.w && last.box.h === next.h;
+      if (!dup) slices.push({ page, box: next, gap: 4, block, kind: 'row' });
     });
   });
   slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16, block: 'footer', kind: 'footer' });

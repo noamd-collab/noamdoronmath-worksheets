@@ -146,12 +146,78 @@ def cluster_boxes(boxes, gap=0.014):
     return [tuple(box) for box in pending]
 
 
-def pack_gap(y_value, bottom):
+def pack_gap(y_value, bottom, figure=None):
     y_value = round4(y_value) if y_value is not None else None
     bottom = round4(bottom) if bottom is not None else None
     if bottom is not None and (y_value is None or bottom > y_value + 0.008):
-        return {'y': y_value, 'bottom': bottom}
+        packed = {'y': y_value, 'bottom': bottom}
+        if figure is not None:
+            packed['figure'] = {
+                'x0': round4(figure[0]),
+                'y0': round4(figure[1]),
+                'x1': round4(figure[2]),
+                'y1': round4(figure[3]),
+            }
+        return packed
     return y_value
+
+
+def gap_top(value):
+    if isinstance(value, dict):
+        top = value.get('y')
+        return top if isinstance(top, (int, float)) else None
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return value
+    return None
+
+
+def gap_bottom(value):
+    if isinstance(value, dict) and isinstance(value.get('bottom'), (int, float)):
+        return value['bottom']
+    return None
+
+
+def assign_crossing_figures(ordered, edges, figures, gaps):
+    """A drawing that starts in one question and runs into the next belongs to the earlier question.
+
+    The last part's crop grows to the bottom of the drawing. The builder masks
+    the other question's text column so the two crops do not print the same words.
+    """
+    groups = []
+    for index, pin in enumerate(ordered):
+        question = pin.get('q')
+        if not groups or groups[-1][0] != question:
+            groups.append((question, [index]))
+        else:
+            groups[-1][1].append(index)
+    for group_index, (_question, indexes) in enumerate(groups):
+        if group_index + 1 >= len(groups):
+            break
+        next_edge = edges[groups[group_index + 1][1][0]]
+        first_edge = edges[indexes[0]]
+        last_pin_y = float(ordered[indexes[-1]]['y'])
+        best = None
+        for figure in figures:
+            if figure[2] - figure[0] < 0.08 or figure[3] - figure[1] < 0.04:
+                continue
+            # Starts beside this question, not down in the next question's own drawing.
+            if figure[1] > last_pin_y + 0.02 or figure[1] < first_edge - 0.03:
+                continue
+            if figure[3] <= next_edge - 0.012:
+                continue
+            if best is None or figure[3] > best[3]:
+                best = figure
+        if best is None:
+            continue
+        pin = ordered[indexes[-1]]
+        bottom = round4(min(0.99, best[3] + 0.003))
+        current = gaps.get(pin['id'])
+        if gap_bottom(current) is not None and gap_bottom(current) >= bottom - 0.001:
+            continue
+        y_value = gap_top(current)
+        if y_value is None:
+            y_value = edges[indexes[-1]]
+        gaps[pin['id']] = pack_gap(y_value, bottom, best)
 
 
 def measure_pins(pins, full_flags, text_flags, pix, figures):
@@ -220,6 +286,7 @@ def measure_pins(pins, full_flags, text_flags, pix, figures):
         if y_value is not None and y_value >= float(pin['y']):
             y_value = None
         gaps[pin['id']] = pack_gap(y_value, bottom)
+    assign_crossing_figures(ordered, edges, figures, gaps)
     return gaps
 
 
@@ -245,11 +312,9 @@ def measure_job(job):
         pix = page.get_pixmap(matrix=pymupdf.Matrix(ZOOM, ZOOM), alpha=False)
         full_flags = white_rows(pix, X0, X1)
         text_flags = white_rows(pix, TEXT_X0, TEXT_X1)
-        needs_figure = any(
-            white_top(full_flags, float(pin['y']), float(pin.get('line') or 0)) is None
-            for pin in pins
-        )
-        figures = page_figures(page) if needs_figure else []
+        # Figures are needed even when every label has a full-width white row:
+        # a drawing can still run from this question into the next one.
+        figures = page_figures(page)
         gaps.update(measure_pins(pins, full_flags, text_flags, pix, figures))
     doc.close()
     return {'id': job.get('id'), 'gaps': gaps}
