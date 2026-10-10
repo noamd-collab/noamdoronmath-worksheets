@@ -251,12 +251,13 @@ function labelOnly(question) {
   return !text || /^שאלה\s+\d+/.test(text);
 }
 
-function hasHebrew(text) {
-  return /[\u0590-\u05FF]/.test(String(text || ''));
+function needsThumb(question) {
+  return labelOnly(question) || question.scrambled === true;
 }
 
-function needsThumb(question) {
-  return labelOnly(question) || hasHebrew(question.text);
+function thumbAria(question) {
+  if (question.scrambled) return question.label;
+  return String(question.text || question.label || '');
 }
 
 function exerciseCard(question) {
@@ -264,7 +265,7 @@ function exerciseCard(question) {
   const level = question.source.levelLabel ? `<span class="q-page" style="display:block">${escapeHTML(question.source.levelLabel)} · עמוד ${question.page}</span>` : `<span class="q-page" style="display:block">עמוד ${question.page} בדף המקור</span>`;
   const badge = pilotOn() ? `<span class="badge ${tier(question)}">${TIERS[tier(question)]}</span>` : '';
   const body = needsThumb(question)
-    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(key)}" aria-hidden="true"></canvas>`
+    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(key)}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
     : `<span class="q-desc" dir="rtl">${questionTextHTML(question.text)}</span>`;
   return `<label class="q-card"><input type="checkbox" data-question="${escapeHTML(key)}" ${state.selected.includes(key) ? 'checked' : ''} aria-label="בחירת ${escapeHTML(question.label)}"><span class="q-content"><span class="q-title-line"><span class="q-title">${escapeHTML(question.label)}</span>${badge}</span>${body}${level}</span></label>`;
 }
@@ -374,51 +375,6 @@ function paintSourceLine() {
 let thumbToken = 0;
 let thumbObserver = null;
 
-function readingOrder(items, box, view) {
-  const mapped = [];
-  for (const item of items) {
-    if (!item.str || !String(item.str).trim()) continue;
-    const height = item.height / view.height;
-    const y = 1 - (item.transform[5] + item.height) / view.height;
-    const x = item.transform[4] / view.width;
-    const width = (item.width || 0) / view.width;
-    if (y + height < box.y - 0.004 || y > box.y + box.h + 0.004) continue;
-    if (x > box.x + box.w + 0.02 || x + Math.max(width, 0.01) < box.x - 0.02) continue;
-    mapped.push({ s: item.str, x, y, h: height });
-  }
-  mapped.sort((a, b) => a.y - b.y || a.x - b.x);
-  const lines = [];
-  for (const item of mapped) {
-    const last = lines[lines.length - 1];
-    if (!last || item.y > last.y + Math.max(last.h, item.h) * 0.65) lines.push({ y: item.y, h: item.h, items: [item] });
-    else {
-      last.items.push(item);
-      last.h = Math.max(last.h, item.h);
-    }
-  }
-  return lines.map((line) => lineHtml(line.items)).filter(Boolean).join('<br>');
-}
-
-function lineHtml(items) {
-  const rtl = items.slice().sort((a, b) => b.x - a.x);
-  let html = '';
-  let math = [];
-  const flush = () => {
-    if (!math.length) return;
-    const text = math.slice().reverse().map((item) => item.s).join('').replace(/\s+/g, ' ').trim();
-    if (text) html += `<bdi dir="ltr" class="math">${escapeHTML(text)}</bdi>`;
-    math = [];
-  };
-  rtl.forEach((item) => {
-    if (/[\u0590-\u05FF]/.test(item.s)) {
-      flush();
-      html += escapeHTML(item.s);
-    } else math.push(item);
-  });
-  flush();
-  return html;
-}
-
 async function mapPool(items, limit, task) {
   let cursor = 0;
   const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
@@ -433,7 +389,7 @@ async function mapPool(items, limit, task) {
 
 function paintThumbs() {
   const token = ++thumbToken;
-  const nodes = [...document.querySelectorAll('.q-thumb, .q-extract')];
+  const nodes = [...document.querySelectorAll('.q-thumb')];
   if (typeof IntersectionObserver !== 'function') {
     paintSeen(nodes, token);
     return;
@@ -452,24 +408,12 @@ function paintSeen(nodes, token) {
   mapPool(pending, 4, async (node) => {
     if (token !== thumbToken) return;
     try {
-      if (node.classList.contains('q-extract')) await paintExtract(node);
-      else await paintThumb(node);
+      await paintThumb(node);
       if (token === thumbToken) node.dataset.painted = '1';
     } catch (error) {
       node.dataset.painting = '';
     }
   });
-}
-
-async function paintExtract(node) {
-  const question = library.get(node.dataset.extract);
-  const row = question && question.row;
-  if (!row) return;
-  const pdf = await loadPdf(question.source);
-  const page = await pdf.getPage(row.page || question.page);
-  const content = await page.getTextContent();
-  const view = page.getViewport({ scale: 1 });
-  node.innerHTML = readingOrder(content.items, row, view) || escapeHTML(question.text || '');
 }
 
 function thumbSlice(question, bitmap) {
@@ -480,9 +424,14 @@ function thumbSlice(question, bitmap) {
   const left = Math.max(row.x || 0, Math.min(0.45, right - 0.12));
   const srcX = left * bitmap.width;
   const srcW = Math.max(8, (right - left) * bitmap.width);
-  const srcY = row.y * bitmap.height;
-  const band = Math.max(line * 1.15, line * 0.52 * 4.2);
-  const srcH = Math.max(8, Math.min(row.h, band) * bitmap.height);
+  const band = Math.max(line * 1.8, line * 0.7 * 5.2);
+  const shown = Math.min(row.h, band);
+  const padTop = row.h > band ? line * 0.2 : Math.min(line * 0.08, 0.0015);
+  const padBottom = line * 0.2;
+  const y0 = Math.max(0, row.y - padTop);
+  const y1 = Math.min(1, row.y + shown + padBottom);
+  const srcY = y0 * bitmap.height;
+  const srcH = Math.max(8, (y1 - y0) * bitmap.height);
   return { glyph, srcX, srcY, srcW, srcH };
 }
 

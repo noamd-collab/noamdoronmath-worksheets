@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
-import { labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
+import { labelAscent, labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
 
 const source = JSON.parse(readFileSync(new URL('../../../demos/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
 const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/6a37fe7160324a17ad107b3dbe43c1db.json', import.meta.url), 'utf8'));
@@ -257,7 +257,7 @@ describe('teacher catalog picker', () => {
     assert.equal(partB.row.page, 2);
     assert.ok(partB.row.y < pinB.y, JSON.stringify({ row: partB.row, pin: pinB, line }));
     assert.ok(Math.abs(partB.row.y - lineB.y) < 0.002, JSON.stringify({ row: partB.row, line: lineB }));
-    assert.ok(Math.abs((pinB.y - lineB.y) - line / 2) < 0.0001);
+    assert.ok(Math.abs((pinB.y - lineB.y) - labelAscent(line)) < 0.0001);
     assert.ok(partB.row.y + partB.row.h <= lineC.y + 0.002, JSON.stringify(partB.row));
     assert.equal(partB.rows.some((row: { page: number }) => row.page === 1), false);
     assert.ok(partB.row.y + partB.row.h <= partC.row.y + 0.002);
@@ -276,6 +276,28 @@ describe('teacher catalog picker', () => {
     const served = JSON.parse(readFileSync(new URL('../public/teachers/sheets/22303ba02b3b46c3ae2529e347cbce2b.json', import.meta.url), 'utf8'));
     assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '3ב').row, partB.row);
     assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '3א').rows, partA.rows);
+  });
+
+  it('stops a grade-8 last part before the next section header and images only scrambled manifest text', () => {
+    const average = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/82a5285c2446440f8ab8ef4aad7b6cd3.json', import.meta.url), 'utf8'));
+    const built = sheetFromManifest({
+      grade: 8, topicId: 23, level: 'b', levelLabel: 'רמה ב׳', pdfId: average.pdfHash, pdfUrl: 'https://example.invalid/a.pdf', title: 'הממוצע', topic: 'הממוצע',
+    }, average);
+    const part = built.questions.find((question: { id: string }) => question.id === '4ד');
+    const exercise = average.exercises.find((item: { q: number; part: string }) => item.q === 4 && item.part === 'ד');
+    const cropBottom = exercise.crop.y + exercise.crop.h;
+    assert.ok(part.row.y < exercise.pin.y);
+    assert.ok(part.row.y + part.row.h <= cropBottom - 0.05, JSON.stringify({ row: part.row, cropBottom }));
+    assert.ok(part.row.y + part.row.h > exercise.pin.y + 0.02);
+    assert.equal(part.scrambled, undefined);
+    const served = JSON.parse(readFileSync(new URL('../public/teachers/sheets/82a5285c2446440f8ab8ef4aad7b6cd3.json', import.meta.url), 'utf8'));
+    assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '4ד').row, part.row);
+    const diagnosis = JSON.parse(readFileSync(new URL('../public/teachers/sheets/114ce88ff3514961b13a830c90608953.json', import.meta.url), 'utf8'));
+    const fraction = diagnosis.questions.find((question: { id: string }) => question.id === '2א');
+    assert.equal(fraction.scrambled, true);
+    for (const question of source.questions) assert.equal(question.scrambled, undefined);
+    const hebrew = source.questions.find((question: { text?: string }) => /[\u0590-\u05FF]/.test(String(question.text || '')));
+    assert.ok(hebrew);
   });
 
   it('prints only the checked part crops and drops hidden selections', () => {
@@ -309,17 +331,30 @@ describe('teacher catalog picker', () => {
     assert.match(html, /unicode-bidi:isolate/);
     assert.match(preview, /function needsThumb/);
     assert.match(preview, /function levelAllows/);
-    assert.match(preview, /hasHebrew\(question\.text\)/);
+    assert.match(preview, /question\.scrambled === true/);
+    assert.match(preview, /aria-label="\$\{escapeHTML\(thumbAria\(question\)\)\}"/);
+    assert.equal(preview.includes('aria-hidden="true"'), false);
+    assert.equal(preview.includes('function readingOrder'), false);
+    assert.equal(preview.includes('function paintExtract'), false);
+    assert.equal(preview.includes('function hasHebrew'), false);
     assert.match(html, /@media\(min-width:768px\)\{\s*\.topbar\{height:90px/);
+    assert.match(html, /@media\(min-width:768px\) and \(max-width:1279px\)/);
     assert.match(preview, /class="q-thumb"/);
     assert.match(preview, /paintSourceLine/);
     assert.match(preview, /IntersectionObserver/);
-    assert.match(preview, /function readingOrder/);
     assert.match(preview, /dir="rtl"/);
     assert.match(preview, /mapPool/);
+    const thumbSlice = new Function(`${preview.slice(preview.indexOf('function thumbSlice'), preview.indexOf('async function paintThumb'))} return thumbSlice;`)() as (question: { row: { x: number; y: number; w: number; h: number }; line: number }, bitmap: { width: number; height: number }) => { srcY: number; srcH: number };
+    const fraction = thumbSlice({ row: { x: 0, y: 0.397, w: 1, h: 0.2128 }, line: 0.0131 }, { width: 1000, height: 1000 });
+    assert.ok(fraction.srcY / 1000 < 0.397);
+    assert.ok(fraction.srcY / 1000 + fraction.srcH / 1000 > 0.44);
+    assert.ok(fraction.srcY / 1000 + fraction.srcH / 1000 < 0.47);
+    const tight = thumbSlice({ row: { x: 0, y: 0.5, w: 1, h: 0.02 }, line: 0.025 }, { width: 1000, height: 1000 });
+    assert.ok(0.5 - tight.srcY / 1000 < 0.002);
     const css = readFileSync(new URL('../src/styles/exact-site.css', import.meta.url), 'utf8');
     assert.match(css, /@media \(min-width: 768px\) \{\s*\.exact-header \{height:90px/);
     assert.match(css, /\.exact-header nav\[data-nav-panel\] \{flex-wrap:nowrap!important/);
+    assert.match(css, /@media \(min-width: 768px\) and \(max-width: 1279px\)/);
   });
 
   it('leaves Noam AI exercise suggestions disabled', () => {

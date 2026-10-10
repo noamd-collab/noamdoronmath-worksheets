@@ -63,15 +63,55 @@ export function labelLineHeight(exercises) {
   return gaps[0] / 2;
 }
 
-/** Label line box. The pin is the anchor; the top is half a line above it. */
+/**
+ * How far above the pin the crop starts.
+ * Half a line clears the label, but on a tall pitch that also catches the
+ * previous part's dashed answer rule. Cap the ascent so that rule stays out.
+ */
+export function labelAscent(lineHeight) {
+  const line = lineHeight > 0 ? lineHeight : 0.026;
+  return Math.min(line / 2, 0.0042);
+}
+
+/** Label line box. The pin is the anchor; the top sits just above the label ink. */
 export function labelLineBox(pin, lineHeight) {
   const height = lineHeight > 0 ? lineHeight : 0.026;
-  const y = Math.max(0, pin.y - height / 2);
+  const y = Math.max(0, pin.y - labelAscent(height));
   return { page: pin.page, y, h: height };
 }
 
 function labelTop(pin, lineHeight) {
   return labelLineBox(pin, lineHeight).y;
+}
+
+/** Manifest Hebrew is extractor order, not a readable string. Synthetic labels are not. */
+function manifestScrambled(text) {
+  const value = String(text || '').trim();
+  if (!value || /^שאלה\s+\d+/.test(value)) return false;
+  return /[\u0590-\u05FF]/.test(value);
+}
+
+/** A boxed section title such as "חלק ב׳ — …" appended by the manifest extractor. */
+function trailingSectionHeader(text) {
+  return /חלק\s+[\u0590-\u05FF]\s*[׳']?\s*[—–-]/.test(String(text || ''));
+}
+
+/**
+ * The question crop ends at the next question and includes the section-header
+ * box in its last ~0.04. Stop just above that box, and never above the label.
+ * Catalog sheets store only "שאלה N, סעיף X", so the box is also recognized
+ * when the crop ends well before the next question and the cut still leaves
+ * the label line.
+ */
+function sectionHeaderEnd(exercise, cropBottom, top, line, nextPinY) {
+  const cut = cropBottom - 0.052;
+  const floor = top + Math.max(line * 0.9, 0.012);
+  if (!(cut > floor) || !(cropBottom < 0.92)) return null;
+  const textHit = trailingSectionHeader(exercise.text);
+  const gapNext = nextPinY == null ? Infinity : nextPinY - cropBottom;
+  const geometric = cut > exercise.pin.y + 0.02 && gapNext >= 0.03;
+  if (!textHit && !geometric) return null;
+  return cut;
 }
 
 /** One crop per chosen part: from the top of its label line to the top of the next label line. */
@@ -94,6 +134,10 @@ export function partRows(exercises, index, lineHeight) {
   ));
   let end = here.page === pin.page ? here.y + here.h : top + line;
   if (nextOnPage) end = Math.min(end, labelTop(nextOnPage.pin, line));
+  const headerEnd = here.page === pin.page
+    ? sectionHeaderEnd(exercise, here.y + here.h, top, line, nextOnPage ? nextOnPage.pin.y : null)
+    : null;
+  if (headerEnd != null) end = Math.min(end, headerEnd);
   const rows = [cropBox(pin.page, here.x, top, here.w, Math.max(line * 0.5, end - top))];
   const next = exercises[index + 1];
   if (!next || next.q !== exercise.q || !next.pin || next.pin.page <= pin.page) return rows;
@@ -140,13 +184,16 @@ export function sheetFromManifest(meta, manifest) {
     const rows = partRows(exercises, index, line);
     const stem = stemBox(exercises, exercise, line);
     const labelLine = labelLineBox(exercise.pin, line);
+    const text = exercise.text || label;
+    const scrambled = manifestScrambled(exercise.text);
     return {
       id,
       q: exercise.q,
       part,
       page: exercise.pin.page,
       label,
-      text: exercise.text || label,
+      text,
+      ...(scrambled ? { scrambled: true } : {}),
       box: markBox(exercise.pin),
       line: round(line),
       labelLine: { page: labelLine.page, y: round(labelLine.y), h: round(labelLine.h) },
