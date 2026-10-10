@@ -530,6 +530,7 @@ function thumbNeighborY(question, row, bitmapHeight) {
   if (!list) return { above, below };
   const thisTop = Math.floor((row.y || 0) * bitmapHeight);
   const thisBot = Math.ceil(((row.y || 0) + (row.h || 0)) * bitmapHeight);
+  const linePx = Math.max(8, Math.round((question.line || 0.02) * bitmapHeight));
   list.forEach((other) => {
     if (!other || other === question) return;
     thumbRowsOf(other).forEach((otherRow) => {
@@ -539,6 +540,11 @@ function thumbNeighborY(question, row, bitmapHeight) {
       if (bot <= thisTop && bot > above) above = bot;
       if (top >= thisBot && top < below) below = top;
     });
+    const pin = other.box;
+    if (!pin || (pin.page || other.page) !== page) return;
+    const pinTop = Math.floor((pin.y || 0) * bitmapHeight);
+    // The stored row can start inside the next label. Stop at the label pin when the overlap is only a sliver.
+    if (pinTop > thisTop + linePx && pinTop < below && thisBot - pinTop < linePx * 1.4) below = pinTop;
   });
   return { above, below };
 }
@@ -677,6 +683,11 @@ function thumbContent(bitmap, question, row) {
       kept.pop();
       continue;
     }
+    // A short band at the bottom, separated from the drawing, is a sliced neighbour letter.
+    if (gap > 2 && last.h < linePxEarly * 0.55 && bandWidth(last) < best.w * 0.62) {
+      kept.pop();
+      continue;
+    }
     break;
   }
   if (!kept.length) return windowRect;
@@ -742,7 +753,7 @@ async function clipThumbRow(question, row) {
   return { ...row, h: Math.max(0.02, y2 - (row.y || 0)) };
 }
 
-function wordGapCut(bitmap, slice) {
+function wordGapCut(bitmap, slice, loose) {
   let image;
   try {
     image = bitmap.getContext('2d').getImageData(slice.srcX, slice.srcY, slice.srcW, slice.srcH);
@@ -762,10 +773,12 @@ function wordGapCut(bitmap, slice) {
   let best = null;
   let run = 0;
   const mid = rw / 2;
-  for (let x = Math.floor(rw * 0.28); x <= Math.ceil(rw * 0.72); x += 1) {
+  const fromFrac = loose ? 0.12 : 0.28;
+  const toFrac = loose ? 0.88 : 0.72;
+  for (let x = Math.floor(rw * fromFrac); x <= Math.ceil(rw * toFrac); x += 1) {
     if (x < rw && col[x] === 0) {
       run += 1;
-    } else if (run >= 4) {
+    } else if (run >= 3) {
       const gapX = x - run;
       const center = gapX + run / 2;
       const score = Math.abs(center - mid);
@@ -832,6 +845,169 @@ function captionSplit(bitmap, slice) {
   };
 }
 
+function besideSplit(bitmap, slice) {
+  if (!slice || slice.srcH < 36 || slice.srcW < 80) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(slice.srcX, slice.srcY, slice.srcW, slice.srcH);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = slice.srcW;
+  const rh = slice.srcH;
+  const col = new Uint16Array(rw);
+  for (let y = 0; y < rh; y += 1) {
+    for (let x = 0; x < rw; x += 1) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) col[x] += 1;
+    }
+  }
+  let gapStart = -1;
+  let bestGap = null;
+  const from = Math.floor(rw * 0.32);
+  const to = Math.floor(rw * 0.84);
+  for (let x = from; x <= to; x += 1) {
+    if (x < rw && col[x] === 0) {
+      if (gapStart < 0) gapStart = x;
+    } else if (gapStart >= 0) {
+      const width = x - gapStart;
+      if (width >= 6 && (!bestGap || width > bestGap.w)) bestGap = { x: gapStart, w: width };
+      gapStart = -1;
+    }
+  }
+  if (!bestGap) {
+    // Text can sit beside a drawing with no empty column. The right columns are only a line tall.
+    const span = new Int16Array(rw);
+    const topOf = new Int16Array(rw);
+    topOf.fill(-1);
+    for (let y = 0; y < rh; y += 1) {
+      for (let x = 0; x < rw; x += 1) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          if (topOf[x] < 0) topOf[x] = y;
+          span[x] = y;
+        }
+      }
+    }
+    let boundary = rw;
+    for (let x = rw - 1; x >= Math.floor(rw * 0.28); x -= 1) {
+      const height = topOf[x] < 0 ? 0 : span[x] - topOf[x] + 1;
+      if (height > rh * 0.42) {
+        boundary = x + 1;
+        break;
+      }
+    }
+    if (boundary < rw - 20 && boundary > rw * 0.28) {
+      let leftTall = 0;
+      for (let x = 0; x < boundary; x += 1) {
+        const height = topOf[x] < 0 ? 0 : span[x] - topOf[x] + 1;
+        if (height > leftTall) leftTall = height;
+      }
+      if (leftTall > rh * 0.45) bestGap = { x: boundary, w: 0 };
+    }
+  }
+  if (!bestGap) return null;
+  const cut = bestGap.x + Math.floor(bestGap.w / 2);
+  if (cut < 24 || rw - cut < 16) return null;
+  const inkSpan = (x0, x1) => {
+    let top = -1;
+    let bot = -1;
+    for (let y = 0; y < rh; y += 1) {
+      for (let x = x0; x < x1; x += 2) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          if (top < 0) top = y;
+          bot = y;
+          break;
+        }
+      }
+    }
+    return top < 0 ? 0 : bot - top + 1;
+  };
+  const textH = inkSpan(cut, rw);
+  const drawH = inkSpan(0, cut);
+  if (textH < 8 || drawH < rh * 0.35 || textH > drawH * 0.72) return null;
+  const trimY = (x0, x1) => {
+    let top = rh;
+    let bot = 0;
+    for (let y = 0; y < rh; y += 1) {
+      for (let x = x0; x < x1; x += 2) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          if (y < top) top = y;
+          if (y > bot) bot = y;
+          break;
+        }
+      }
+    }
+    if (bot < top) return { y: 0, h: rh };
+    return { y: Math.max(0, top - 2), h: Math.max(1, Math.min(rh, bot + 3) - Math.max(0, top - 2)) };
+  };
+  const textBand = trimY(cut, rw);
+  const drawBand = trimY(0, cut);
+  return {
+    text: { ...slice, srcX: slice.srcX + cut, srcY: slice.srcY + textBand.y, srcW: rw - cut, srcH: textBand.h },
+    drawing: { ...slice, srcY: slice.srcY + drawBand.y, srcW: cut, srcH: drawBand.h },
+  };
+}
+
+function topLineSplit(bitmap, slice) {
+  if (!slice || slice.srcH < 36 || slice.srcW < 40) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(slice.srcX, slice.srcY, slice.srcW, slice.srcH);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = slice.srcW;
+  const rh = slice.srcH;
+  const bands = [];
+  let start = -1;
+  let blank = 0;
+  for (let y = 0; y <= rh; y += 1) {
+    let n = 0;
+    if (y < rh) {
+      for (let x = 0; x < rw; x += 3) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
+      }
+    }
+    if (n > 1) {
+      if (start < 0) start = y;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (y === rh || blank > 3) {
+        bands.push({ y: start, h: y - blank - start + 1 });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  if (bands.length < 2 || bands[0].h > rh * 0.22) return null;
+  let textEnd = 1;
+  const lineCap = Math.max(bands[0].h + 2, 12);
+  while (textEnd < bands.length && bands[textEnd].h <= lineCap) {
+    const gap = bands[textEnd].y - (bands[textEnd - 1].y + bands[textEnd - 1].h);
+    if (gap > Math.max(6, bands[0].h)) break;
+    textEnd += 1;
+  }
+  if (textEnd >= bands.length) return null;
+  const gap = bands[textEnd].y - (bands[textEnd - 1].y + bands[textEnd - 1].h);
+  const restH = bands[bands.length - 1].y + bands[bands.length - 1].h - bands[textEnd].y;
+  if (gap < 4 || restH < bands[0].h * 2) return null;
+  const textTop = Math.max(0, bands[0].y - 1);
+  const textBot = bands[textEnd - 1].y + bands[textEnd - 1].h + 1;
+  const drawTop = Math.max(0, bands[textEnd].y - 1);
+  const drawBot = Math.min(rh, bands[bands.length - 1].y + bands[bands.length - 1].h + 2);
+  return {
+    text: { ...slice, srcY: slice.srcY + textTop, srcH: Math.max(1, textBot - textTop) },
+    drawing: { ...slice, srcY: slice.srcY + drawTop, srcH: Math.max(1, drawBot - drawTop) },
+  };
+}
+
 async function paintThumb(canvas) {
   const question = library.get(canvas.dataset.thumb);
   if (!question || !question.row || !levelAllows(question.source)) return;
@@ -851,7 +1027,7 @@ async function paintThumb(canvas) {
   const maxH = 180;
   const laid = [];
   pieces.forEach((piece) => {
-    const split = captionSplit(piece.bitmap, piece.slice);
+    const split = besideSplit(piece.bitmap, piece.slice) || captionSplit(piece.bitmap, piece.slice) || topLineSplit(piece.bitmap, piece.slice);
     if (!split) laid.push(piece);
     else {
       laid.push({ bitmap: piece.bitmap, slice: split.text, role: 'text' });
@@ -859,24 +1035,26 @@ async function paintThumb(canvas) {
     }
   });
   const fitted = [];
-  laid.forEach((piece) => {
+  const wrapPiece = (piece, depth) => {
     const slice = piece.slice;
     const target = cardW - edge * 2;
     const fit = target / Math.max(1, slice.srcW);
     const displayH = slice.srcH * fit;
-    if (displayH >= 22 || slice.srcW < slice.srcH * 8) {
+    const textTooSmall = piece.role === 'text' && displayH < 16;
+    if ((!textTooSmall && displayH >= 22) || slice.srcW < slice.srcH * 8 || depth > 3) {
       fitted.push(piece);
       return;
     }
-    const cut = wordGapCut(piece.bitmap, slice);
+    const cut = wordGapCut(piece.bitmap, slice, piece.role === 'text');
     if (cut == null || cut < 8 || slice.srcW - cut < 8) {
       fitted.push(piece);
       return;
     }
     const rightW = slice.srcW - cut;
-    fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcX: slice.srcX + cut, srcW: rightW }, role: piece.role });
-    fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcW: cut }, role: piece.role });
-  });
+    wrapPiece({ bitmap: piece.bitmap, slice: { ...slice, srcX: slice.srcX + cut, srcW: rightW }, role: piece.role }, depth + 1);
+    wrapPiece({ bitmap: piece.bitmap, slice: { ...slice, srcW: cut }, role: piece.role }, depth + 1);
+  };
+  laid.forEach((piece) => wrapPiece(piece, 0));
   pieces = fitted;
   const target = cardW - edge * 2;
   const scales = pieces.map((piece) => Math.min(1.5, target / Math.max(1, piece.slice.srcW)));
@@ -895,6 +1073,16 @@ async function paintThumb(canvas) {
       if (height > cut) scales[index] *= (height - cut) / height;
       over -= cut;
     });
+    if (over > 0) {
+      pieces.forEach((piece, index) => {
+        if (over <= 0 || piece.role === 'text') return;
+        const height = piece.slice.srcH * scales[index];
+        const floor = Math.min(height, 24);
+        const cut = Math.min(over, Math.max(0, height - floor));
+        if (height > cut && height > 0) scales[index] *= (height - cut) / height;
+        over -= cut;
+      });
+    }
     if (over > 0) {
       const nextBody = pieces.reduce((sum, piece, index) => sum + piece.slice.srcH * scales[index], 0);
       const factor = limit / Math.max(1, nextBody);
@@ -1256,6 +1444,35 @@ function coverSharedFigure(question, box, laterSelected) {
   return withSpan({ ...box, page }, top, end, masks);
 }
 
+function nextPartPin(question, page, y) {
+  let best = null;
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || item === question || item.q !== question.q || !item.box) return;
+    const pinPage = item.box.page || item.page;
+    if (pinPage !== page || item.box.y <= y + 0.004) return;
+    if (best == null || item.box.y < best) best = item.box.y;
+  });
+  return best;
+}
+
+/**
+ * A measured row can start inside its own label and end inside the next one.
+ * Lift the top to the pin when that pin still sits on this label, and stop a
+ * one-line overlap at the next pin. A crop that runs much further is a drawing.
+ */
+function alignLabelCrop(question, box) {
+  const page = box.page || question.page;
+  const mark = question.box;
+  const line = question.line > 0 ? question.line : 0.026;
+  let y = box.y;
+  let end = box.y + box.h;
+  if (mark && (mark.page || question.page) === page && mark.y < y && y - mark.y <= line * 0.65) y = mark.y;
+  const nextTop = nextPartPin(question, page, y);
+  if (nextTop != null && nextTop > y + line * 0.4 && nextTop < end && end - nextTop <= line * 0.85) end = nextTop;
+  if (end - y < 0.012) return box;
+  return end === box.y + box.h && y === box.y ? box : { ...box, y, h: end - y };
+}
+
 function shortSlices(chosen) {
   const ordered = chosen.slice().sort((a, b) => (
     a.page - b.page || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
@@ -1265,13 +1482,16 @@ function shortSlices(chosen) {
   ordered.forEach((question) => {
     const block = 'q' + question.q;
     if (question.q !== lastQuestion) {
-      if (question.stem) slices.push({ page: question.stem.page || question.page, box: question.stem, gap: 10, block, kind: 'stem' });
+      const stem = question.stem;
+      const line = question.line > 0 ? question.line : 0.026;
+      // A stem shorter than half a line is the clipped top of the first label, not the question text.
+      if (stem && stem.h >= line * 0.5) slices.push({ page: stem.page || question.page, box: stem, gap: 10, block, kind: 'stem' });
       lastQuestion = question.q;
     }
     const rows = question.rows && question.rows.length ? question.rows : [question.row];
     rows.forEach((box) => {
       const page = box.page || question.page;
-      let next = { ...box, page };
+      let next = alignLabelCrop(question, { ...box, page });
       const prev = previousQuestionRow(slices, block, page);
       const laterSelected = ordered.some((other) => (
         other !== question && other.q === question.q && other.row
@@ -1495,8 +1715,13 @@ function answerBox(items, questionNumber, part) {
       else bottom = label.y - 28;
       if (bottom > label.y - 4) bottom = label.y - 6;
     } else if (labels.length) {
-      // The letter is not its own label. The whole band would print a neighbour's answer.
-      return null;
+      const mentioned = items.some((item) => (
+        sameSheet(item)
+        && item.y <= bandTop
+        && item.y >= bandBottom
+        && new RegExp('(?:^|[\\s·•.])' + part + '(?:$|[\\s.·•—])').test(String(item.str || ''))
+      ));
+      if (!mentioned) return null;
     }
   }
   if (top - bottom < 8 || right - left < 6) return null;
@@ -1861,6 +2086,64 @@ function placedBox(box, y, h) {
   return next;
 }
 
+function answerEdgeSpan(bitmap, box, yTop, yBot) {
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const x0 = Math.max(0, Math.floor(box.x * width));
+  const y0 = Math.max(0, Math.floor(box.y * height));
+  const x1 = Math.min(width, Math.ceil((box.x + box.w) * width));
+  const y1 = Math.min(height, Math.ceil((box.y + box.h) * height));
+  const rw = x1 - x0;
+  const rh = y1 - y0;
+  if (rw < 4 || rh < 2) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(x0, y0, rw, rh);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  if (!data || data.length < rw * rh * 4) return null;
+  const top = Math.max(0, yTop - y0);
+  const bot = Math.min(rh, yBot - y0);
+  const cols = new Uint16Array(rw);
+  for (let y = top; y < bot; y += 1) {
+    for (let x = 0; x < rw; x += 1) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) cols[x] += 1;
+    }
+  }
+  const clusters = [];
+  let start = -1;
+  let blank = 0;
+  for (let x = 0; x <= rw; x += 1) {
+    if (x < rw && cols[x]) {
+      if (start < 0) start = x;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (x === rw || blank >= 3) {
+        clusters.push({ x: start, w: x - blank - start + 1 });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  if (clusters.length < 2) return null;
+  const kept = clusters.filter((cluster) => {
+    const touches = cluster.x <= 1 || cluster.x + cluster.w >= rw - 1;
+    return !(touches && cluster.w <= 22);
+  });
+  const use = kept.length ? kept : clusters;
+  let minX = use[0].x;
+  let maxX = use[0].x + use[0].w;
+  use.forEach((cluster) => {
+    if (cluster.x < minX) minX = cluster.x;
+    if (cluster.x + cluster.w > maxX) maxX = cluster.x + cluster.w;
+  });
+  return { minX, maxX };
+}
+
 function trimPieceBox(slice, bitmap) {
   const box = slice.box;
   if (!box || !bitmap) return slice;
@@ -1910,6 +2193,11 @@ function trimPieceBox(slice, bitmap) {
       if (band.minX < inkMin) inkMin = band.minX;
       if (band.maxX > inkMax) inkMax = band.maxX;
     });
+    const edge = answerEdgeSpan(bitmap, clipped, top, bot);
+    if (edge) {
+      inkMin = edge.minX;
+      inkMax = edge.maxX;
+    }
     const left = Math.max(0, ink.x0 + inkMin - pad);
     const right = Math.min(pageW, ink.x0 + inkMax + 1 + pad);
     const next = placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH));
@@ -1955,6 +2243,39 @@ function sealOverlaps(measured) {
   }
 }
 
+function answerDisplayScale(naturalW, naturalH) {
+  const maxW = 1000 - 56;
+  let scale = 1;
+  if (naturalW > maxW) scale = maxW / naturalW;
+  if (naturalH > maxW) scale = Math.min(scale, 1);
+  return Math.min(1.3, Math.max(0.05, scale));
+}
+
+function answerCellSize(text, naturalW, naturalH) {
+  const scale = answerDisplayScale(naturalW, naturalH);
+  const imageW = Math.max(1, Math.round(naturalW * scale));
+  const imageH = Math.max(1, Math.round(naturalH * scale));
+  let labelW = Math.min(420, Math.ceil(String(text || '').length * 7.5));
+  if (typeof document !== 'undefined') {
+    try {
+      const ctx = document.createElement('canvas').getContext('2d');
+      ctx.font = '15px Heebo, Arial, sans-serif';
+      labelW = Math.ceil(ctx.measureText(String(text || '')).width);
+    } catch (error) {}
+  }
+  const maxW = 1000 - 56;
+  const gap = 8;
+  let stack = false;
+  let dw = labelW + gap + imageW;
+  let dh = Math.max(22, imageH + 2);
+  if (dw > maxW * 0.72) {
+    stack = true;
+    dw = Math.min(maxW, Math.max(labelW, imageW));
+    dh = 18 + imageH;
+  }
+  return { scale, imageW, imageH, labelW, dw, dh, stack };
+}
+
 async function measureWorksheet(slices) {
   const OUT_W = 1000;
   const measured = [];
@@ -1973,13 +2294,19 @@ async function measureWorksheet(slices) {
       if (piece.kind === 'answer') {
         const naturalW = Math.max(1, OUT_W * piece.box.w);
         const naturalH = Math.max(1, naturalW * sh / Math.max(1, sw));
-        const maxW = OUT_W - 56;
-        let scale = 72 / naturalH;
-        if (naturalW * scale > maxW) scale = maxW / naturalW;
-        scale = Math.max(1, scale);
-        const dw = Math.max(48, Math.round(naturalW * scale));
-        const dh = Math.round(naturalH * scale) + 24;
-        measured.push({ slice: piece, bitmap, sw, sh, dw, dh });
+        const cell = answerCellSize(piece.text, naturalW, naturalH);
+        measured.push({
+          slice: piece,
+          bitmap,
+          sw,
+          sh,
+          dw: cell.dw,
+          dh: cell.dh,
+          imageW: cell.imageW,
+          imageH: cell.imageH,
+          labelW: cell.labelW,
+          stack: cell.stack,
+        });
       } else {
         measured.push({ slice: piece, bitmap, sw, sh, dh: imageH });
       }
@@ -2017,7 +2344,39 @@ function measureNote(note) {
   return { lines, lineH, height: 36 + lines.length * lineH };
 }
 
+function flowAnswers(items) {
+  const maxW = 1000 - 56;
+  const gutter = 14;
+  const out = [];
+  let index = 0;
+  while (index < items.length) {
+    const item = items[index];
+    if (!item.slice || item.slice.kind !== 'answer' || !(item.dw > 0)) {
+      out.push(item);
+      index += 1;
+      continue;
+    }
+    const cells = [];
+    let used = 0;
+    while (index < items.length && items[index].slice && items[index].slice.kind === 'answer' && items[index].dw > 0) {
+      const next = items[index];
+      const add = (cells.length ? gutter : 0) + next.dw;
+      if (cells.length && used + add > maxW) break;
+      cells.push(next);
+      used += add;
+      index += 1;
+    }
+    out.push({
+      slice: { kind: 'answer-row', gap: 4, block: 'answers' },
+      dh: Math.max.apply(null, cells.map((cell) => cell.dh)),
+      cells,
+    });
+  }
+  return out;
+}
+
 function packWorksheet(measured, noteHeight) {
+  measured = flowAnswers(measured);
   const PAGE_H = 1440;
   const FOOT = 36;
   const FIRST_TOP = 118 + Math.max(0, noteHeight || 0);
@@ -2053,9 +2412,15 @@ function packWorksheet(measured, noteHeight) {
   // A leftover page that holds one answer goes back onto the previous page.
   while (pages.length > 1) {
     const last = pages[pages.length - 1];
-    const answerish = (item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head');
+    const answerish = (item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head' || item.slice.kind === 'answer-row');
+    const answerCount = (item) => {
+      if (!item.slice) return 0;
+      if (item.slice.kind === 'answer-row') return (item.cells || []).length;
+      if (item.slice.kind === 'answer' || item.slice.kind === 'missing') return 1;
+      return 0;
+    };
     if (!last.items.length || !last.items.every(answerish)) break;
-    const count = last.items.filter((item) => item.slice.kind === 'answer' || item.slice.kind === 'missing').length;
+    const count = last.items.reduce((sum, item) => sum + answerCount(item), 0);
     if (count !== 1) break;
     const prev = pages[pages.length - 2];
     const room = PAGE_H - heightOf(prev.items, prev.top);
@@ -2128,18 +2493,33 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
       ctx.textAlign = 'right';
       ctx.direction = 'rtl';
       ctx.fillText(item.slice.text, OUT_W - 28, y + 18);
-    } else if (kind === 'answer') {
-      ctx.fillStyle = '#1a2744';
-      ctx.font = '15px Heebo, Arial, sans-serif';
-      ctx.textAlign = 'right';
-      ctx.direction = 'rtl';
-      ctx.fillText(item.slice.text, OUT_W - 28, y + 16);
-      const imageY = y + 22;
-      const imageH = item.dh - 22;
-      const imageW = item.dw || Math.min(OUT_W - 56, imageH * item.sw / item.sh);
-      const sx = item.slice.box.x * item.bitmap.width;
-      const sy = item.slice.box.y * item.bitmap.height;
-      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, OUT_W - 28 - imageW, imageY, imageW, imageH);
+    } else if (kind === 'answer' || kind === 'answer-row') {
+      const cells = kind === 'answer-row' ? item.cells : [item];
+      let right = OUT_W - 28;
+      cells.forEach((cell) => {
+        const labelW = cell.labelW || 0;
+        const imageW = cell.imageW || Math.max(1, (cell.dw || 40) - labelW - 8);
+        const imageH = cell.imageH || Math.max(1, cell.dh - (cell.stack ? 18 : 2));
+        ctx.fillStyle = '#1a2744';
+        ctx.font = '15px Heebo, Arial, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.direction = 'rtl';
+        if (cell.stack) {
+          ctx.fillText(cell.slice.text, right, y + 14);
+          const sx = cell.slice.box.x * cell.bitmap.width;
+          const sy = cell.slice.box.y * cell.bitmap.height;
+          ctx.drawImage(cell.bitmap, sx, sy, cell.sw, cell.sh, right - imageW, y + 18, imageW, imageH);
+        } else {
+          const textY = y + Math.max(14, Math.round((item.dh + 10) / 2));
+          ctx.fillText(cell.slice.text, right, textY);
+          const sx = cell.slice.box.x * cell.bitmap.width;
+          const sy = cell.slice.box.y * cell.bitmap.height;
+          const imageX = right - labelW - 8 - imageW;
+          const imageY = y + Math.max(0, Math.round((item.dh - imageH) / 2));
+          ctx.drawImage(cell.bitmap, sx, sy, cell.sw, cell.sh, imageX, imageY, imageW, imageH);
+        }
+        right -= (cell.dw || imageW) + 14;
+      });
     } else {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;

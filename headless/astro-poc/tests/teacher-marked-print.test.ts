@@ -524,8 +524,9 @@ describe('teacher catalog picker', () => {
       { str: '13.', x: 528, y: 507, w: 12 },
       { str: 'שטח 36 · ג. 6 אפשרויות · ד— 8 · ב .א', x: 150, y: 507, w: 360, dir: 'ltr' },
       { str: '14.', x: 528, y: 470, w: 12 },
-    ], 13, 'א');
-    assert.equal(reversed, null);
+    ], 13, 'א') as { y: number; h: number } | null;
+    assert.ok(reversed, 'a mentioned part letter still uses the question band');
+    assert.ok(reversed.y > 478, JSON.stringify(reversed));
     const nextRow = answerBox([
       { str: '(4)', x: 540, y: 500, w: 16, h: 12 },
       { str: 'א.', x: 500, y: 500, w: 14, h: 12 },
@@ -586,6 +587,22 @@ describe('teacher catalog picker', () => {
       source: { headerCrop: { page: 1, y: 0, h: 0.27 }, footerCrop: { page: 9, y: 0.97 } },
     }, trimBitmap);
     assert.ok(headerTrim.box.y >= 0.26 && headerTrim.box.y < 0.32, String(headerTrim.box.y));
+    const edgeData = new Uint8ClampedArray(trimW * trimH * 4);
+    edgeData.fill(255);
+    const edgeInk = (x0: number, x1: number, y0: number, y1: number) => {
+      for (let y = y0; y < y1; y += 1) {
+        for (let x = x0; x < x1; x += 1) {
+          const i = (y * trimW + x) * 4;
+          edgeData[i] = edgeData[i + 1] = edgeData[i + 2] = 0;
+          edgeData[i + 3] = 255;
+        }
+      }
+    };
+    edgeInk(0, 5, 30, 46);
+    edgeInk(14, 36, 30, 46);
+    const edgeBitmap = { width: trimW, height: trimH, getContext: () => ({ getImageData: () => ({ data: edgeData }) }) };
+    const noLetter = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.2 } }, edgeBitmap);
+    assert.ok(noLetter.box.x > 0.1, String(noLetter.box.x));
     const sheet = preview.slice(preview.indexOf('async function paintAllShort'), preview.indexOf('function markedHTML'));
     assert.equal(sheet.includes('headerCrop'), false);
     assert.match(sheet, /paintWorksheet/);
@@ -624,23 +641,54 @@ describe('teacher catalog picker', () => {
     overlapApi.sealOverlaps(house);
     assert.equal(house[1].slice.box.y, 0.2634);
     assert.ok(Math.abs(house[1].slice.box.h - 0.0305) < 0.0001);
-    const pack = new Function(`${preview.slice(preview.indexOf('function contentHeight'), preview.indexOf('function scaledGap'))}${preview.slice(preview.indexOf('function scaledGap'), preview.indexOf('function shrinkTo'))}${preview.slice(preview.indexOf('function packWorksheet'), preview.indexOf('function paintWorksheetPage'))} return packWorksheet;`)() as (measured: { dh: number; slice: { kind: string; gap: number } }[], noteHeight: number) => { items: { slice: { kind: string } }[] }[];
-    const packed = pack([
+    const pack = new Function(`${preview.slice(preview.indexOf('function contentHeight'), preview.indexOf('function scaledGap'))}${preview.slice(preview.indexOf('function scaledGap'), preview.indexOf('function shrinkTo'))}${preview.slice(preview.indexOf('function flowAnswers'), preview.indexOf('function paintWorksheetPage'))} return { packWorksheet, flowAnswers, answerDisplayScale: (typeof answerDisplayScale === 'function' ? answerDisplayScale : null) };`)() as { packWorksheet: (measured: { dh: number; dw?: number; slice: { kind: string; gap: number } }[], noteHeight: number) => { items: { slice: { kind: string }; cells?: unknown[]; dh: number }[] }[]; flowAnswers: (items: { dh: number; dw?: number; slice: { kind: string } }[]) => { slice: { kind: string }; cells?: { dw: number }[]; dh: number }[] };
+    const packed = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 400 },
     ], 0);
     assert.equal(packed.length, 1);
     assert.equal(packed[0].items.filter((item) => item.slice.kind === 'answer').length, 1);
+    const scale = new Function(`${preview.slice(preview.indexOf('function answerDisplayScale'), preview.indexOf('function answerCellSize'))} return answerDisplayScale;`)() as (naturalW: number, naturalH: number) => number;
+    assert.equal(scale(180, 16), 1);
+    assert.ok(scale(2000, 40) < 1, String(scale(2000, 40)));
+    assert.ok(scale(40, 12) <= 1.3);
+    assert.ok(Math.abs(scale(40, 12) - 72 / 12) > 1);
+    const flowed = pack.flowAnswers([
+      { slice: { kind: 'answer' }, dh: 28, dw: 220 },
+      { slice: { kind: 'answer' }, dh: 30, dw: 240 },
+      { slice: { kind: 'answer' }, dh: 26, dw: 200 },
+      { slice: { kind: 'answer' }, dh: 40, dw: 800 },
+    ]);
+    assert.equal(flowed[0].slice.kind, 'answer-row');
+    assert.equal(flowed[0].cells && flowed[0].cells.length, 3);
+    assert.equal(flowed[0].dh, 30);
+    assert.equal(flowed[1].cells && flowed[1].cells.length, 1);
+    const natural = pack.packWorksheet([
+      { slice: { kind: 'row', gap: 4 }, dh: 1200 },
+      { slice: { kind: 'answers-head', gap: 8 }, dh: 34 },
+      { slice: { kind: 'answer', gap: 4 }, dh: 28, dw: 220 },
+      { slice: { kind: 'answer', gap: 4 }, dh: 30, dw: 240 },
+      { slice: { kind: 'answer', gap: 4 }, dh: 26, dw: 200 },
+    ], 0);
+    assert.equal(natural.length, 1);
+    const row = natural[0].items.find((item) => item.slice.kind === 'answer-row');
+    assert.ok(row && row.cells && row.cells.length === 3);
     for (const file of ['0d548ce76eb74a1ab10385cdaf1f77ca.json', '050b9cc226cd4326931adfb3c0775a05.json']) {
       const sheet = JSON.parse(readFileSync(new URL(`../public/teachers/sheets/${file}`, import.meta.url), 'utf8'));
       const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number } }[];
-      const byId = Object.fromEntries(sheet.questions.map((question: { id: string }) => [question.id, question]));
+      const byId = Object.fromEntries(sheet.questions.map((question: { id: string; box?: { y: number }; row: { page?: number; y: number; h: number } }) => [question.id, question]));
       const rows = shortSlices(['3א', '3ב', '3ג'].map((id) => byId[id])).filter((slice) => slice.kind === 'row');
-      for (const id of ['3א', '3ב', '3ג']) {
-        const row = byId[id].row;
-        const hit = rows.some((slice) => slice.page === (row.page || byId[id].page) && slice.box.y <= row.y + 0.01 && slice.box.y + slice.box.h >= row.y + row.h - 0.004);
-        assert.equal(hit, true, `${file} ${id}`);
-      }
+      const ids = ['3א', '3ב', '3ג'];
+      ids.forEach((id, index) => {
+        const question = byId[id];
+        const pin = question.box ? question.box.y : question.row.y;
+        const hit = rows.find((slice) => slice.box.y <= pin + 0.004 && slice.box.y + slice.box.h > pin + 0.008);
+        assert.ok(hit, `${file} ${id}`);
+        const next = byId[ids[index + 1]];
+        if (next && next.box) {
+          assert.ok(hit.box.y + hit.box.h <= next.box.y + 0.004, `${file} ${id} spills ${hit.box.y + hit.box.h} into ${next.box.y}`);
+        }
+      });
     }
   });
 
