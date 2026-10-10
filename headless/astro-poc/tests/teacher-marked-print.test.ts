@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { labelAscent, labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
@@ -685,11 +685,44 @@ describe('teacher catalog picker', () => {
         const hit = rows.find((slice) => slice.box.y <= pin + 0.004 && slice.box.y + slice.box.h > pin + 0.008);
         assert.ok(hit, `${file} ${id}`);
         const next = byId[ids[index + 1]];
-        if (next && next.box) {
-          assert.ok(hit.box.y + hit.box.h <= next.box.y + 0.004, `${file} ${id} spills ${hit.box.y + hit.box.h} into ${next.box.y}`);
+        if (next) {
+          const bound = next.labelLine ? next.labelLine.y : (next.box ? next.box.y : next.row.y);
+          assert.ok(hit.box.y + hit.box.h <= bound + 0.004, `${file} ${id} spills ${hit.box.y + hit.box.h} into ${bound}`);
         }
       });
     }
+  });
+
+  it('prints only the picked part label on every middle-school sheet', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const body = preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'));
+    const dir = new URL('../public/teachers/sheets/', import.meta.url);
+    let parts = 0;
+    for (const file of readdirSync(dir).filter((name) => name.endsWith('.json'))) {
+      const sheet = JSON.parse(readFileSync(new URL(file, dir), 'utf8'));
+      if (!sheet || !(sheet.grade >= 7) || !Array.isArray(sheet.questions)) continue;
+      const shortSlices = new Function('SOURCE', `${body} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number } }[];
+      const byId = Object.fromEntries(sheet.questions.map((question: { id: string }) => [question.id, question]));
+      for (const question of sheet.questions) {
+        if (!question.row) continue;
+        parts += 1;
+        const rows = shortSlices([byId[question.id]]).filter((slice) => slice.kind === 'row');
+        const labelY = question.labelLine ? question.labelLine.y : question.row.y;
+        const owns = rows.some((slice) => slice.page === (question.row.page || question.page) && slice.box.y <= labelY + 0.008 && slice.box.y + slice.box.h > labelY + 0.004);
+        assert.ok(owns, `${file} ${question.id} misses its own label`);
+        for (const other of sheet.questions) {
+          if (other === question || other.q !== question.q || !other.row) continue;
+          const y = other.labelLine ? other.labelLine.y : other.row.y;
+          const page = other.row.page || other.page;
+          const inside = rows.some((slice) => slice.page === page && slice.box.y + 0.004 < y && y < slice.box.y + slice.box.h - 0.004);
+          if (!inside) continue;
+          const figure = sheet.questions.find((item: { q: number; figure?: { y0: number; y1: number } }) => item.q === question.q && item.figure);
+          const sharedFigure = Boolean(figure && figure.figure && y >= figure.figure.y0 - 0.004 && y <= figure.figure.y1 + 0.004);
+          assert.ok(sharedFigure, `${file} ${question.id} also prints ${other.id}`);
+        }
+      }
+    }
+    assert.ok(parts > 20000, String(parts));
   });
 
   it('prints one crop when consecutive parts share a drawing', () => {
@@ -709,24 +742,27 @@ describe('teacher catalog picker', () => {
     const aleph = byId['9א'];
     const bet = byId['9ב'];
     const gimel = byId['9ג'];
+    const labelOf = (question: { labelLine?: { y: number }; row: { y: number } }) => question.labelLine ? question.labelLine.y : question.row.y;
     const pair = rowsOf(['9א', '9ב']);
     disjoint(pair);
-    assert.equal(covered(pair, aleph.row.y + 0.01), 1);
-    assert.equal(covered(pair, bet.row.y + 0.01), 1);
-    assert.equal(pair.length, 1);
+    assert.equal(covered(pair, labelOf(aleph) + 0.004), 1);
+    assert.equal(covered(pair, labelOf(bet) + 0.004), 1);
+    assert.equal(pair.length, 2);
     const triple = rowsOf(['9א', '9ב', '9ג']);
     disjoint(triple);
-    assert.equal(covered(triple, bet.row.y + 0.01), 1);
-    assert.equal(covered(triple, gimel.row.y + gimel.row.h * 0.5), 1);
+    assert.equal(covered(triple, labelOf(bet) + 0.004), 1);
+    assert.equal(covered(triple, labelOf(gimel) + 0.004), 1);
     assert.ok(triple.some((slice) => slice.box.y + slice.box.h >= gimel.row.y + gimel.row.h - 0.004));
     const onlyBet = rowsOf(['9ב']);
     assert.equal(onlyBet.length, 1);
-    assert.ok(onlyBet[0].box.y <= aleph.row.y + 0.002, JSON.stringify(onlyBet[0].box));
-    assert.ok(onlyBet[0].box.y + onlyBet[0].box.h >= aleph.row.y + aleph.row.h - 0.004, JSON.stringify(onlyBet[0].box));
+    assert.ok(onlyBet[0].box.y <= labelOf(bet) + 0.002, JSON.stringify(onlyBet[0].box));
+    assert.ok(onlyBet[0].box.y > labelOf(aleph) + 0.02, JSON.stringify(onlyBet[0].box));
+    assert.ok(onlyBet[0].box.y + onlyBet[0].box.h <= labelOf(gimel) + 0.004, JSON.stringify(onlyBet[0].box));
     const onlyAleph = rowsOf(['9א']);
     assert.equal(onlyAleph.length, 1);
     assert.ok(Math.abs(onlyAleph[0].box.y - aleph.row.y) < 0.0001);
-    assert.ok(Math.abs(onlyAleph[0].box.h - aleph.row.h) < 0.0001);
+    assert.ok(onlyAleph[0].box.y + onlyAleph[0].box.h <= labelOf(bet) + 0.004, JSON.stringify(onlyAleph[0].box));
+    assert.ok(onlyAleph[0].box.y + onlyAleph[0].box.h > labelOf(aleph) + 0.02);
   });
 
   it('assigns the grade-9 house drawing to question 8', () => {
@@ -791,15 +827,12 @@ describe('teacher catalog picker', () => {
     assert.equal(rows.length, 1);
     const box = rows[0].box;
     const end = box.y + box.h;
-    // The rectangle sketch continues just past 9ד's label row. Keep it, and cover 9ד's text.
-    assert.ok(end >= 0.3114, String(end));
+    // The rectangle sketch fills 9ג and stops before 9ד. The next pin sits inside the last line of the sketch.
+    assert.ok(end >= 0.30, String(end));
     assert.ok(end > byId['9ג'].row.y + 0.03, String(end));
     assert.ok(box.y <= byId['9ג'].row.y);
-    assert.ok(box.mask && box.mask.x >= 0.4 && box.mask.x < 0.6, JSON.stringify(box.mask));
-    const maskTop = box.y + box.mask.y * box.h;
-    const maskBottom = maskTop + box.mask.h * box.h;
-    assert.ok(maskTop <= byId['9ד'].row.y + 0.001, String(maskTop));
-    assert.ok(maskBottom >= end - 0.002, String(maskBottom));
+    const dalet = byId['9ד'].labelLine ? byId['9ד'].labelLine.y : byId['9ד'].row.y;
+    assert.ok(end <= dalet + 0.004, `${end} includes ${dalet}`);
   });
 
   it('measures a committed label page without downloading a worksheet', (t) => {

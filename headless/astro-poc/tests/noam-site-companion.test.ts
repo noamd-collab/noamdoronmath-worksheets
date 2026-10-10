@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { describe, it } from 'node:test';
 import { companionPanelSize } from '../../../noam-ai/site-companion/panel-size.js';
 import { retrieveRecords } from '../../../noam-ai/site-companion/retrieve.js';
@@ -24,6 +25,10 @@ import {
   pruneRateStore,
 } from '../../../noam-ai/site-companion/bot-guard.js';
 import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
+
+const require = createRequire(import.meta.url);
+const { create: createBotClient } = require('../public/noam-bot-client.js') as { create: (options: Record<string, unknown>) => { postJson: (endpoint: string, payload: unknown) => Promise<unknown> } };
+const CALM_MESSAGE = 'נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס.';
 
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
@@ -226,7 +231,9 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('client.postJson(API'));
     assert.ok(client.includes('var TEACHER_QUIET = "נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס."'));
     assert.ok(client.includes('NOAM_PANEL_FAILED'));
-    assert.ok(client.includes('var text = teacher ? TEACHER_QUIET : ((error && error.message) || FALLBACK)'));
+    assert.ok(client.includes('var text = TEACHER_QUIET;'));
+    assert.equal(client.includes('teacher ? TEACHER_QUIET'), false);
+    assert.equal(client.includes('לא הצלחנו להשלים את בדיקת האבטחה'), false);
     assert.ok(client.includes('#noam-site-companion-form{width:100%;gap:4px;box-sizing:border-box;padding-inline-end:46px}'));
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-xtight #noam-site-companion-form{padding-inline-end:0}'));
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-tight.has-answer #noam-site-companion-form{padding-inline-end:0}'));
@@ -307,5 +314,54 @@ describe('Noam AI bot guard', () => {
     assert.match(catalogJs, /export const catalog =/);
     assert.match(catalogJs, /6a37fe7160324a17ad107b3dbe43c1db/);
     assert.equal(catalogJs.includes('export const catalog = []') || catalogJs.includes('export const catalog =[];'), false);
+  });
+});
+
+describe('Noam AI calm failure text', () => {
+  async function failure(fetchImpl: (url: string) => Promise<unknown>, extra: Record<string, unknown> = {}) {
+    const client = createBotClient({
+      api: '/api',
+      enabled: extra.enabled === true,
+      networkRetryDelayMs: 0,
+      modelTimeoutMs: 30,
+      fetch: fetchImpl,
+      window: {},
+    });
+    try {
+      await client.postJson('/api/noamSiteCompanion', { message: 'שלום' });
+    } catch (error) {
+      return error as { message: string; code?: string; status?: number };
+    }
+    assert.fail('expected a failure');
+  }
+
+  it('shows one calm sentence for recaptcha, 403, timeout, network, and 5xx', async () => {
+    const bot = readFileSync(new URL('../public/noam-bot-client.js', import.meta.url), 'utf8');
+    assert.equal(bot.includes('לא הצלחנו להשלים את בדיקת האבטחה'), false);
+    assert.equal(bot.includes('לא זמין כרגע'), false);
+    assert.equal(bot.includes('התשובה מתעכבת'), false);
+    assert.equal(bot.includes('החיבור לנועם AI נקטע'), false);
+    assert.ok(bot.includes(`var VERIFY_MESSAGE = "${CALM_MESSAGE}"`));
+    const denied = await failure(async () => ({
+      ok: false,
+      status: 403,
+      json: async () => ({ error: 'לא הצלחנו להשלים את בדיקת האבטחה. נסו שוב בעוד רגע.', code: 'BOT_VERIFICATION_FAILED' }),
+    }));
+    assert.equal(denied.message, CALM_MESSAGE);
+    assert.equal(denied.status, 403);
+    const server = await failure(async () => ({ ok: false, status: 500, json: async () => ({ error: 'internal' }) }));
+    assert.equal(server.message, CALM_MESSAGE);
+    const down = await failure(async () => { throw new TypeError('Failed to fetch'); });
+    assert.equal(down.message, CALM_MESSAGE);
+    assert.equal(down.code, 'NETWORK_UNAVAILABLE');
+    const slow = await failure(() => new Promise(() => {}));
+    assert.equal(slow.message, CALM_MESSAGE);
+    assert.equal(slow.code, 'REQUEST_TIMEOUT');
+    const inactive = await failure(async (url) => {
+      if (String(url).includes('noamBotConfig')) return { ok: true, status: 200, json: async () => ({ active: false, error: 'secret missing' }) };
+      return { ok: false, status: 500, json: async () => ({}) };
+    }, { enabled: true });
+    assert.equal(inactive.message, CALM_MESSAGE);
+    assert.equal(inactive.code, 'NOT_ACTIVE');
   });
 });

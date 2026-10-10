@@ -1382,14 +1382,16 @@ function clearDrawingStroke(question, box) {
 }
 
 /**
- * A part printed alone still includes the whole shared drawing: an earlier
- * overlapping crop, or a figure whose top sits above this part (the house roof).
- * The crop starts on a white row, so a label beside the roof is not cut in half.
- * A drawing that sticks a little past the next label stays, and that label is masked.
+ * A part printed alone keeps its own label. An earlier row that happens to
+ * overlap is not pulled in: that overlap is how the previous part was reprinted.
+ * A tagged shared figure (the house) still expands to the whole drawing.
+ * figure.y0 can sit halfway through the first label, so the top may rise by
+ * one line onto that label's white row, and no further.
  */
 function coverSharedFigure(question, box, laterSelected) {
   const page = box.page || question.page;
   const originalEnd = boxEnd(box);
+  const line = question.line > 0 ? question.line : 0.026;
   let top = box.y;
   let end = originalEnd;
   const masks = [];
@@ -1399,11 +1401,6 @@ function coverSharedFigure(question, box, laterSelected) {
     if (!item || item.q !== question.q || item.id === question.id) return;
     questionRows(item).forEach((other) => {
       if (!other || (other.page || item.page) !== page) return;
-      const otherEnd = boxEnd(other);
-      if (other.y < top - 0.003 && otherEnd > top + 0.003) {
-        top = Math.min(top, other.y);
-        end = Math.max(end, otherEnd);
-      }
       const mask = absoluteMask(other);
       if (mask) masks.push(mask);
     });
@@ -1418,13 +1415,12 @@ function coverSharedFigure(question, box, laterSelected) {
   if (ownFigure && question.page === page && ownFigure.y1 > box.y + 0.003 && ownFigure.y0 < originalEnd + 0.02) {
     if (ownFigure.y0 < top - 0.003) top = ownFigure.y0;
   }
-  // figure.y0 can sit halfway through the first part's label. Start on that part's white row.
   let lineTop = top;
   (SOURCE.questions || []).forEach((item) => {
     if (!item || item.q !== question.q) return;
     questionRows(item).forEach((other) => {
       if (!other || (other.page || item.page) !== page) return;
-      if (other.y < top - 0.0004 && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
+      if (other.y < top - 0.0004 && top - other.y <= line && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
     });
   });
   top = lineTop;
@@ -1444,21 +1440,26 @@ function coverSharedFigure(question, box, laterSelected) {
   return withSpan({ ...box, page }, top, end, masks);
 }
 
-function nextPartPin(question, page, y) {
+function nextPartLabel(question, page, y) {
   let best = null;
   (SOURCE.questions || []).forEach((item) => {
-    if (!item || item === question || item.q !== question.q || !item.box) return;
-    const pinPage = item.box.page || item.page;
-    if (pinPage !== page || item.box.y <= y + 0.004) return;
-    if (best == null || item.box.y < best) best = item.box.y;
+    if (!item || item === question || item.q !== question.q) return;
+    const marks = [];
+    if (item.box && (item.box.page || item.page) === page) marks.push(item.box.y);
+    if (item.labelLine && (item.labelLine.page || item.page) === page) marks.push(item.labelLine.y);
+    marks.forEach((boundary) => {
+      if (boundary <= y + 0.008) return;
+      if (best == null || boundary < best) best = boundary;
+    });
   });
   return best;
 }
 
 /**
- * A measured row can start inside its own label and end inside the next one.
- * Lift the top to the pin when that pin still sits on this label, and stop a
- * one-line overlap at the next pin. A crop that runs much further is a drawing.
+ * A measured row can start inside its own label and run through the next one.
+ * Lift the top to the pin when that pin still sits on this label, and stop at
+ * the next part's label. The pin of the next part can sit inside this drawing,
+ * so the label line is the boundary, not the pin.
  */
 function alignLabelCrop(question, box) {
   const page = box.page || question.page;
@@ -1467,8 +1468,8 @@ function alignLabelCrop(question, box) {
   let y = box.y;
   let end = box.y + box.h;
   if (mark && (mark.page || question.page) === page && mark.y < y && y - mark.y <= line * 0.65) y = mark.y;
-  const nextTop = nextPartPin(question, page, y);
-  if (nextTop != null && nextTop > y + line * 0.4 && nextTop < end && end - nextTop <= line * 0.85) end = nextTop;
+  const nextLabel = nextPartLabel(question, page, y);
+  if (nextLabel != null && nextLabel > y + 0.012 && nextLabel < end) end = nextLabel;
   if (end - y < 0.012) return box;
   return end === box.y + box.h && y === box.y ? box : { ...box, y, h: end - y };
 }

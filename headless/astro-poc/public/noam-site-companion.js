@@ -636,7 +636,7 @@
       if (window.console && typeof window.console.warn === "function") {
         window.console.warn("NOAM_PANEL_FAILED", String(reason).slice(0, 160));
       }
-      var text = teacher ? TEACHER_QUIET : ((error && error.message) || FALLBACK);
+      var text = TEACHER_QUIET;
       showResult({
         answer: text,
         details: teacher ? text + "\n" + EXPORT_NOTE : text,
