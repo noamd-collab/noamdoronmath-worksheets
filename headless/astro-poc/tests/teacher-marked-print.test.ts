@@ -544,13 +544,17 @@ describe('teacher catalog picker', () => {
     const demo = readFileSync(new URL('../../../demos/teacher-factoring-print.js', import.meta.url), 'utf8');
     assert.equal(demo, preview);
     const src = preview.slice(preview.indexOf('function wizardSteps'), preview.indexOf('function wizardPaint'));
-    const api = new Function(`${src} return { wizardSteps, wizardIndex, wizardNeighbor, wizardStepFromHash, wizardHash, wizardReduce };`)() as {
+    const api = new Function(`${src} return { wizardSteps, wizardIndex, wizardNeighbor, wizardStepFromHash, wizardHash, wizardReduce, routeFromHash, routeReduce, suggestOutcome, topicHits };`)() as {
       wizardSteps: () => string[];
       wizardIndex: (step: string) => number;
       wizardNeighbor: (step: string, delta: number) => string;
       wizardStepFromHash: (hash: string) => string;
       wizardHash: (step: string) => string;
       wizardReduce: (model: { step: string; grade: string; topic: string; level: string; selected: string[]; output: string }, action: { type: string; hash?: string; step?: string; grade?: string; topic?: string; level?: string; selected?: string[]; output?: string }) => { step: string; grade: string; topic: string; level: string; selected: string[]; output: string };
+      routeFromHash: (hash: string) => string;
+      routeReduce: (model: { route: string; step: string; grade: string; topic: string; level: string; selected: string[]; output: string }, action: { type: string; route?: string; step?: string; hash?: string }) => { route: string; step: string; grade: string; topic: string; level: string; selected: string[]; output: string };
+      suggestOutcome: (result: { enabled?: boolean; exerciseIds?: string[]; sheetIds?: string[] } | null) => { apply: boolean; ids: string[] };
+      topicHits: (catalog: { grades: { grade: number; label: string; topics: { id: number; title: string }[] }[] }, query: string) => { grade: string; topic: string; title: string }[];
     };
     assert.deepEqual(api.wizardSteps(), ['grade', 'topic', 'level', 'pick', 'output', 'summary']);
     assert.equal(api.wizardNeighbor('grade', -1), 'grade');
@@ -586,9 +590,51 @@ describe('teacher catalog picker', () => {
     const forward = api.wizardReduce(edited, { type: 'next' });
     assert.equal(forward.step, 'output');
     assert.deepEqual(forward.selected, edited.selected);
+    const jumpedBack = api.wizardReduce(api.wizardReduce(model, { type: 'jump', step: 'topic' }), { type: 'back' });
+    assert.equal(jumpedBack.step, 'grade');
+    assert.deepEqual(jumpedBack.selected, ['ex:sheet:1א', 'ex:sheet:1ב', 'ex:sheet:1ג']);
+    assert.equal(api.routeFromHash(''), 'gate');
+    assert.equal(api.routeFromHash('#fast'), 'fast');
+    assert.equal(api.routeFromHash('#grade'), 'guided');
+    assert.equal(api.routeFromHash('#selection'), 'guided');
+    const routed = {
+      route: 'guided',
+      step: 'summary',
+      grade: model.grade,
+      topic: model.topic,
+      level: model.level,
+      selected: model.selected.slice(0, 2),
+      output: 'marked',
+    };
+    const toFast = api.routeReduce(routed, { type: 'route', route: 'fast' });
+    assert.equal(toFast.route, 'fast');
+    assert.equal(toFast.step, 'summary');
+    assert.deepEqual(toFast.selected, routed.selected);
+    routed.selected.push('ex:sheet:9א');
+    assert.deepEqual(toFast.selected, ['ex:sheet:1א', 'ex:sheet:1ב']);
+    const backToGuided = api.routeReduce(toFast, { type: 'route', route: 'guided' });
+    assert.equal(backToGuided.route, 'guided');
+    assert.equal(backToGuided.step, 'summary');
+    assert.deepEqual(backToGuided.selected, toFast.selected);
+    const viaGate = api.routeReduce(toFast, { type: 'hash', hash: '' });
+    assert.equal(viaGate.route, 'gate');
+    assert.deepEqual(viaGate.selected, toFast.selected);
+    assert.deepEqual(api.suggestOutcome(null), { apply: false, ids: [] });
+    assert.deepEqual(api.suggestOutcome({ enabled: false, exerciseIds: ['1א'], sheetIds: [] }), { apply: false, ids: [] });
+    assert.deepEqual(api.suggestOutcome({ enabled: true, exerciseIds: [], sheetIds: [] }), { apply: false, ids: [] });
+    const suggested = api.suggestOutcome({ enabled: true, exerciseIds: ['1א'], sheetIds: ['sheet:a'] });
+    assert.equal(suggested.apply, true);
+    assert.deepEqual(suggested.ids, ['1א', 'sheet:a']);
+    const hits = api.topicHits({ grades: [{ grade: 9, label: 'כיתה ט׳', topics: [{ id: 2, title: 'פירוק לגורמים' }, { id: 1, title: 'חוק הפילוג המורחב' }] }] }, 'פירוק');
+    assert.equal(hits.length, 1);
+    assert.equal(hits[0].topic, '2');
+    assert.equal(api.topicHits({ grades: [] }, 'פ').length, 0);
     assert.match(preview, /window\.history\.pushState/);
     assert.match(preview, /addEventListener\('popstate'/);
     assert.match(preview, /printMode = btn\.dataset\.output/);
+    assert.match(preview, /wizardReduce\(currentWizardModel\(\), \{ type: 'back' \}\)/);
+    const backHandler = preview.slice(preview.indexOf("$('wizard-back').addEventListener"), preview.indexOf("$('wizard-next').addEventListener"));
+    assert.equal(backHandler.includes('history.back'), false);
     const page = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     const demoPage = readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html', import.meta.url), 'utf8');
     for (const step of api.wizardSteps()) {
@@ -599,12 +645,24 @@ describe('teacher catalog picker', () => {
     assert.match(page, /id="wizard-next"/);
     assert.match(page, /id="wizard-chips"/);
     assert.match(page, /id="output-short"/);
+    assert.match(page, /אני יודע מה אני מחפש/);
+    assert.match(page, /עזרו לי לבחור/);
+    assert.match(page, /id="fast-search"/);
+    assert.match(page, /id="teacher-need"/);
+    assert.match(page, /id="route-fast"/);
+    assert.match(page, /id="route-guided"/);
+    assert.match(page, /prefers-reduced-motion:reduce/);
+    assert.match(demoPage, /אני יודע מה אני מחפש/);
+    assert.match(demoPage, /id="fast-search"/);
+    assert.match(demoPage, /id="teacher-need"/);
   });
 
   it('leaves Noam AI exercise suggestions disabled', () => {
     assert.match(printer, /NoamTeacherSuggest/);
     assert.match(printer, /enabled:\s*false/);
     assert.match(printer, /classifier:\s*'qwen-flash'/);
+    assert.match(printer, /TEACHER_SUGGEST_ENDPOINT/);
+    assert.match(printer, /noamSiteCompanion/);
     assert.equal(/fetch\([^)]*(qwen|dashscope|compatible-mode)/.test(printer), false);
     assert.match(page, /data-noam-teacher-suggest="off"/);
     assert.match(page, /הצעות נועם AI כבויות/);

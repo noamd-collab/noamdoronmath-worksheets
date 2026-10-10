@@ -87,6 +87,7 @@ let state = {
   grade: '9',
   topic: '2',
   level: 'all',
+  query: '',
 };
 let history = [];
 let rendering = false;
@@ -102,15 +103,32 @@ function sheetKey(pdfId) {
   return 'sheet:' + pdfId;
 }
 
+const TEACHER_SUGGEST_ENDPOINT = 'https://amiramnoam.wixstudio.com/my-site-2/_functions/noamSiteCompanion';
+
 function installSuggest() {
   window.NoamTeacherSuggest = {
     enabled: false,
     classifier: 'qwen-flash',
+    endpoint: TEACHER_SUGGEST_ENDPOINT,
     async classifyRequest() {
       return { enabled: false, intent: null };
     },
-    async suggest() {
-      return { enabled: false, exerciseIds: [], sheetIds: [] };
+    async suggest(message) {
+      try {
+        const response = await fetch(TEACHER_SUGGEST_ENDPOINT, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            message: String(message || '').slice(0, 700),
+            page: { kind: 'teachers', path: location.pathname, title: document.title },
+            teacher: { grade: state.grade, topic: state.topic, level: state.level, note: $('teacher-note') ? $('teacher-note').value : '' },
+          }),
+        });
+        if (!response.ok) return { enabled: false, exerciseIds: [], sheetIds: [], answer: '' };
+        return normalizeSuggest(await response.json());
+      } catch (error) {
+        return { enabled: false, exerciseIds: [], sheetIds: [], answer: '' };
+      }
     },
   };
   const status = $('ai-suggest-status');
@@ -312,9 +330,10 @@ function render() {
     return;
   }
   if (elementary) {
-    const pool = state.filter === 'selected'
+    let pool = state.filter === 'selected'
       ? state.selected.filter((key) => key.startsWith('sheet:')).map((key) => byPdf.get(key.slice(6))).filter(Boolean)
       : topicSheets();
+    if (queryLimitsList()) pool = pool.filter((meta) => matchesQuery([meta.title, meta.topic, meta.levelLabel]));
     $('available-count').textContent = topicSheets().length + ' דפים';
     $('questions').innerHTML = pool.length
       ? pool.map(sheetCard).join('')
@@ -322,9 +341,10 @@ function render() {
     $('show-more').hidden = true;
     $('suggestion').hidden = true;
   } else {
-    const ordered = state.filter === 'selected'
+    let ordered = state.filter === 'selected'
       ? state.selected.map((key) => library.get(key)).filter(Boolean)
       : orderedQuestions();
+    if (queryLimitsList()) ordered = ordered.filter((question) => matchesQuery([question.label, question.text, question.id]));
     const visible = shownQuestions(ordered);
     $('available-count').textContent = currentExercises().length + ' סעיפים בדפי הנושא';
     $('questions').innerHTML = visible.length
@@ -1203,6 +1223,7 @@ function bind() {
     fillTopics();
     await loadCurrentTopic();
     applyScenario(state.scenario === 'other' ? 'first' : state.scenario);
+    document.dispatchEvent(new CustomEvent('teachers-grade-ready'));
   });
   $('topic').addEventListener('change', async () => {
     state.topic = $('topic').value;
@@ -1280,6 +1301,7 @@ start().catch(() => {
 
 // Wizard navigation. `history` above is the undo stack, so browser history is window.history.
 let wizardStepId = 'grade';
+let wizardRoute = 'gate';
 let wizardDepth = 0;
 let wizardBound = false;
 
@@ -1329,6 +1351,85 @@ function wizardReduce(model, action) {
     if (action.output != null) next.output = action.output;
   }
   return next;
+}
+
+function routeFromHash(hash) {
+  const id = String(hash || '').replace(/^#/, '');
+  if (id === 'fast') return 'fast';
+  if (id === 'gate' || id === 'start' || !id) return 'gate';
+  return 'guided';
+}
+
+function routeReduce(model, action) {
+  const next = {
+    route: model.route,
+    step: model.step,
+    grade: model.grade,
+    topic: model.topic,
+    level: model.level,
+    selected: model.selected.slice(),
+    output: model.output,
+  };
+  if (action.type === 'route') {
+    next.route = action.route === 'fast' || action.route === 'guided' || action.route === 'gate' ? action.route : model.route;
+    if (next.route === 'guided' && action.step && wizardSteps().includes(action.step)) next.step = action.step;
+  } else if (action.type === 'hash') {
+    next.route = routeFromHash(action.hash);
+    if (next.route === 'guided') next.step = wizardStepFromHash(action.hash);
+  }
+  return next;
+}
+
+function suggestOutcome(result) {
+  if (!result || result.enabled === false) return { apply: false, ids: [] };
+  const ids = []
+    .concat(Array.isArray(result.exerciseIds) ? result.exerciseIds : [])
+    .concat(Array.isArray(result.sheetIds) ? result.sheetIds : [])
+    .map((id) => String(id))
+    .filter(Boolean);
+  if (!ids.length) return { apply: false, ids: [] };
+  return { apply: true, ids: ids.slice() };
+}
+
+function normalizeSuggest(data) {
+  const exerciseIds = Array.isArray(data && data.exerciseIds) ? data.exerciseIds.map((id) => String(id)) : [];
+  const sheetIds = Array.isArray(data && data.sheetIds) ? data.sheetIds.map((id) => String(id)) : [];
+  const answer = data && typeof data.answer === 'string' ? data.answer : '';
+  return { enabled: exerciseIds.length + sheetIds.length > 0, exerciseIds, sheetIds, answer };
+}
+
+function topicHits(catalog, query) {
+  const q = String(query || '').trim();
+  if (q.length < 2 || !catalog || !catalog.grades) return [];
+  const hits = [];
+  catalog.grades.forEach((grade) => {
+    (grade.topics || []).forEach((topic) => {
+      if (String(topic.title || '').includes(q)) {
+        hits.push({ grade: String(grade.grade), topic: String(topic.id), title: topic.title, gradeLabel: grade.label });
+      }
+    });
+  });
+  return hits.slice(0, 6);
+}
+
+function queryText() {
+  return String(state.query || '').trim();
+}
+
+function matchesQuery(parts) {
+  const q = queryText();
+  if (!q) return true;
+  return parts.filter(Boolean).join(' ').includes(q);
+}
+
+function queryLimitsList() {
+  const q = queryText();
+  if (!q) return false;
+  const topic = currentTopic();
+  if (topic && String(topic.title || '').includes(q)) return false;
+  const grade = gradeRecord(state.grade);
+  if (grade && String(grade.label || '').includes(q)) return false;
+  return true;
 }
 
 const WIZARD_LABELS = {
@@ -1388,9 +1489,13 @@ function paintWizardChrome() {
     }).join('');
   }
   const back = $('wizard-back');
-  if (back) back.disabled = index === 0;
+  if (back) back.disabled = wizardRoute === 'gate';
   const next = $('wizard-next');
-  if (next) next.hidden = wizardStepId === 'summary';
+  if (next) {
+    const onSummary = wizardRoute === 'guided' && wizardStepId === 'summary';
+    next.hidden = wizardRoute !== 'guided';
+    next.textContent = onSummary ? (printMode === 'short' ? 'הצגת הדף המצומצם' : 'הצגת הדף המסומן') : 'המשך';
+  }
   const recap = $('wizard-recap');
   if (recap && wizardStepId === 'summary') {
     recap.innerHTML = steps.slice(0, 5).map((step) => {
@@ -1407,18 +1512,32 @@ function wizardPaint(step, how) {
   const prevIndex = wizardIndex(wizardStepId);
   const nextIndex = wizardIndex(id);
   wizardStepId = id;
+  const guided = wizardRoute === 'guided';
   document.querySelectorAll('[data-wizard-step]').forEach((el) => {
     const on = el.getAttribute('data-wizard-step') === id;
-    el.classList.toggle('is-on', on);
-    el.hidden = !on;
+    el.classList.toggle('is-on', guided && on);
+    el.hidden = guided ? !on : wizardRoute === 'gate';
   });
+  const gate = $('route-gate');
+  const fast = $('fast-screen');
+  if (gate) gate.hidden = wizardRoute !== 'gate';
+  if (fast) fast.hidden = wizardRoute !== 'fast';
+  const need = $('teacher-need-wrap');
+  if (need) {
+    need.hidden = wizardRoute === 'gate';
+    if (wizardRoute === 'fast') need.open = true;
+  }
+  $('wizard').classList.toggle('is-gate', wizardRoute === 'gate');
+  $('wizard').classList.toggle('is-fast', wizardRoute === 'fast');
+  $('wizard').classList.toggle('is-guided', wizardRoute === 'guided');
+  $('wizard').classList.toggle('is-summary', guided && id === 'summary');
   const viewport = $('wizard-viewport');
   if (viewport && how !== 'init' && how !== 'silent') {
-    viewport.dataset.dir = nextIndex >= prevIndex ? 'forward' : 'back';
+    viewport.dataset.dir = wizardRoute === 'guided' && nextIndex >= prevIndex ? 'forward' : 'back';
     viewport.classList.remove('is-sliding');
     void viewport.offsetWidth;
     viewport.classList.add('is-sliding');
-    const active = viewport.querySelector('.wizard-step.is-on');
+    const active = viewport.querySelector('.wizard-step.is-on, #route-gate:not([hidden]), #fast-screen:not([hidden])');
     if (active) {
       active.classList.remove('is-on');
       void active.offsetWidth;
@@ -1431,29 +1550,63 @@ function wizardPaint(step, how) {
   const pickLead = $('pick-lead');
   if (pickLead) pickLead.textContent = elementary ? 'בוחרים דף שלם לפי הרמה.' : 'בוחרים סעיפים. אפשר מכמה דפים.';
   paintWizardChrome();
-  if (how !== 'init' && how !== 'silent') {
-    const head = document.querySelector('[data-wizard-step="' + id + '"] .wizard-question');
-    if (head) head.focus();
+  paintFastHits();
+  if (how !== 'silent') {
+    const node = $('wizard');
+    if (node && how !== 'init' && typeof node.scrollIntoView === 'function') node.scrollIntoView({ block: 'start' });
+    const head = wizardRoute === 'gate' ? $('route-question')
+      : wizardRoute === 'fast' ? $('fast-question')
+      : document.querySelector('[data-wizard-step="' + id + '"] .wizard-question');
+    if (head && how !== 'init') head.focus();
+  }
+}
+
+function currentWizardModel() {
+  return {
+    route: wizardRoute,
+    step: wizardStepId,
+    grade: state.grade,
+    topic: state.topic,
+    level: state.level,
+    selected: state.selected,
+    output: printMode,
+  };
+}
+
+function writeWizardHistory(step, how) {
+  const url = wizardRoute === 'fast' ? '#fast' : wizardRoute === 'guided' ? wizardHash(step) : '#gate';
+  if (how === 'push') {
+    wizardDepth += 1;
+    window.history.pushState({ wizard: step, wizardDepth, route: wizardRoute }, '', url);
+  } else if (how === 'replace') {
+    window.history.replaceState({ wizard: step, wizardDepth, route: wizardRoute }, '', url);
   }
 }
 
 function wizardGo(step, how) {
-  const id = wizardSteps()[wizardIndex(step)];
-  if (how === 'push') {
-    wizardDepth += 1;
-    window.history.pushState({ wizard: id, wizardDepth }, '', wizardHash(id));
-  } else if (how === 'replace') {
-    window.history.replaceState({ wizard: id, wizardDepth }, '', wizardHash(id));
-  }
-  wizardPaint(id, how === 'replace' && wizardDepth === 0 ? 'init' : how);
+  const jumped = wizardReduce(currentWizardModel(), { type: 'jump', step });
+  const next = routeReduce(jumped, { type: 'route', route: 'guided', step: jumped.step });
+  wizardRoute = next.route;
+  writeWizardHistory(next.step, how);
+  wizardPaint(next.step, how === 'replace' && wizardDepth === 0 ? 'init' : how);
+}
+
+function openRoute(route, how, step) {
+  const next = routeReduce(currentWizardModel(), { type: 'route', route, step });
+  const leavingFast = wizardRoute === 'fast' && next.route !== 'fast';
+  wizardRoute = next.route;
+  if (leavingFast && $('teacher-need-wrap')) $('teacher-need-wrap').open = false;
+  writeWizardHistory(next.step, how);
+  wizardPaint(next.route === 'guided' ? next.step : wizardStepId, how === 'replace' && wizardDepth === 0 ? 'init' : how);
 }
 
 function wizardOnHistory() {
-  const step = wizardStepFromHash(location.hash);
-  if (step === wizardStepId) return;
+  const next = routeReduce(currentWizardModel(), { type: 'hash', hash: location.hash });
+  if (next.route === wizardRoute && (next.route !== 'guided' || next.step === wizardStepId)) return;
   const entry = window.history.state;
   wizardDepth = entry && Number.isFinite(entry.wizardDepth) ? entry.wizardDepth : Math.max(0, wizardDepth - 1);
-  wizardPaint(step, 'pop');
+  wizardRoute = next.route;
+  wizardPaint(next.route === 'guided' ? next.step : wizardStepId, 'pop');
 }
 
 function syncWizardChrome() {
@@ -1482,6 +1635,7 @@ function syncWizardChrome() {
   if (pickTitle) pickTitle.textContent = elementary ? 'איזה דף?' : 'אילו סעיפים?';
   const pickLead = $('pick-lead');
   if (pickLead) pickLead.textContent = elementary ? 'בוחרים דף שלם לפי הרמה.' : 'בוחרים סעיפים. אפשר מכמה דפים.';
+  paintFastHits();
   paintWizardChrome();
 }
 
@@ -1495,9 +1649,9 @@ function initWizard() {
   const levelFilter = $('level-filter');
   if (levelFilter) levelFilter.addEventListener('click', (event) => {
     const input = event.target.closest('label') && event.target.closest('label').querySelector('input');
-    if (!input || wizardCurrent() !== 'level') return;
+    if (!input || wizardRoute !== 'guided' || wizardCurrent() !== 'level') return;
     window.setTimeout(() => {
-      if (wizardCurrent() === 'level') wizardGo(wizardNeighbor('level', 1), 'push');
+      if (wizardRoute === 'guided' && wizardCurrent() === 'level') wizardGo(wizardNeighbor('level', 1), 'push');
     }, 0);
   });
   const outputChoices = $('output-choices');
@@ -1506,30 +1660,67 @@ function initWizard() {
     if (!btn || btn.hidden) return;
     printMode = btn.dataset.output;
     syncWizardChrome();
-    wizardGo('summary', 'push');
+    if (wizardRoute === 'guided') wizardGo('summary', 'push');
   });
   const chips = $('wizard-chips');
   if (chips) chips.addEventListener('click', (event) => jumpWizard(event));
   const meter = $('wizard-meter');
   if (meter) meter.addEventListener('click', (event) => jumpWizard(event));
   $('wizard-back').addEventListener('click', () => {
-    if (wizardIndex(wizardCurrent()) === 0) return;
-    if (wizardDepth > 0) window.history.back();
-    else wizardGo(wizardNeighbor(wizardCurrent(), -1), 'push');
+    if (wizardRoute === 'gate') return;
+    if (wizardRoute !== 'guided' || wizardIndex(wizardCurrent()) === 0) {
+      openRoute('gate', 'push');
+      return;
+    }
+    const previous = wizardReduce(currentWizardModel(), { type: 'back' });
+    wizardGo(previous.step, 'push');
   });
   $('wizard-next').addEventListener('click', () => {
     const step = wizardCurrent();
-    if (step === 'summary') return;
+    if (wizardRoute !== 'guided') return;
+    if (step === 'summary') {
+      prepare(printMode);
+      return;
+    }
     if (step === 'pick' && !state.selected.length) {
       announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
       return;
     }
-    wizardGo(wizardNeighbor(step, 1), 'push');
+    const following = wizardReduce(currentWizardModel(), { type: 'next' });
+    wizardGo(following.step, 'push');
+  });
+  document.querySelectorAll('[data-open-route]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const route = btn.dataset.openRoute;
+      if (route === 'guided' && btn.id === 'route-guided') openRoute('guided', 'push', 'grade');
+      else openRoute(route, 'push');
+    });
+  });
+  const search = $('fast-search');
+  if (search) search.addEventListener('input', () => {
+    state.query = search.value;
+    render();
+  });
+  const hits = $('fast-hits');
+  if (hits) hits.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-hit-topic]');
+    if (!btn) return;
+    chooseCatalogTopic(btn.dataset.hitGrade, btn.dataset.hitTopic);
+  });
+  const needForm = $('teacher-need');
+  if (needForm) needForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const text = $('teacher-need-text') ? $('teacher-need-text').value.trim() : '';
+    if (!text) return;
+    askTeacherNeed(text);
   });
   window.addEventListener('popstate', wizardOnHistory);
   window.addEventListener('hashchange', wizardOnHistory);
   wizardDepth = 0;
-  wizardGo(wizardStepFromHash(location.hash), 'replace');
+  const opened = routeReduce(currentWizardModel(), { type: 'hash', hash: location.hash });
+  wizardRoute = opened.route;
+  if (opened.route === 'guided') wizardGo(opened.step, 'replace');
+  else openRoute(opened.route, 'replace');
 }
 
 function chooseSelectCard(event, selectId, step) {
@@ -1540,7 +1731,7 @@ function chooseSelectCard(event, selectId, step) {
     select.value = btn.dataset.value;
     select.dispatchEvent(new Event('change', { bubbles: true }));
   }
-  wizardGo(wizardNeighbor(step, 1), 'push');
+  if (wizardRoute === 'guided') wizardGo(wizardNeighbor(step, 1), 'push');
 }
 
 function jumpWizard(event) {
@@ -1549,4 +1740,75 @@ function jumpWizard(event) {
   const step = btn.dataset.wizardJump;
   if (wizardIndex(step) > wizardIndex(wizardCurrent())) return;
   wizardGo(step, 'push');
+}
+
+function paintFastHits() {
+  const box = $('fast-hits');
+  if (!box) return;
+  const hits = topicHits(CATALOG, queryText());
+  if (!hits.length) {
+    box.hidden = true;
+    box.innerHTML = '';
+    return;
+  }
+  box.hidden = false;
+  box.innerHTML = hits.map((hit) => `<button type="button" data-hit-grade="${escapeHTML(hit.grade)}" data-hit-topic="${escapeHTML(hit.topic)}">${escapeHTML(hit.title)} · ${escapeHTML(hit.gradeLabel)}</button>`).join('');
+}
+
+async function chooseCatalogTopic(grade, topic) {
+  if (String(state.grade) !== String(grade)) {
+    await new Promise((resolve) => {
+      document.addEventListener('teachers-grade-ready', resolve, { once: true });
+      $('grade').value = String(grade);
+      $('grade').dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  }
+  if (String(state.topic) !== String(topic)) {
+    $('topic').value = String(topic);
+    $('topic').dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  const search = $('fast-search');
+  if (search) search.value = '';
+  state.query = '';
+  render();
+}
+
+function applySuggestIds(ids) {
+  const keys = [];
+  ids.forEach((id) => {
+    if (library.has(id)) keys.push(id);
+    else if (String(id).startsWith('sheet:') && byPdf.has(String(id).slice(6))) keys.push(String(id));
+    else if (byPdf.has(id)) keys.push(sheetKey(id));
+    else if (library.has(exKey(FACTORING_PDF, id))) keys.push(exKey(FACTORING_PDF, id));
+  });
+  const visible = keepVisible(keys, visibleSelectionKeys());
+  if (!visible.length) return false;
+  snapshot();
+  state.selected = visible;
+  clearPreparedPrint();
+  render();
+  return true;
+}
+
+async function askTeacherNeed(message) {
+  const status = $('teacher-need-status');
+  const button = document.querySelector('#teacher-need button');
+  if (button) button.disabled = true;
+  if (status) status.textContent = 'בודקים בקטלוג…';
+  try {
+    const api = window.NoamTeacherSuggest;
+    const result = api && typeof api.suggest === 'function'
+      ? await api.suggest(message)
+      : { enabled: false, exerciseIds: [], sheetIds: [] };
+    const outcome = suggestOutcome(result);
+    if (!outcome.apply || !applySuggestIds(outcome.ids)) {
+      if (status) status.textContent = 'נועם AI לא זמין כרגע. אפשר להמשיך לבחור ולהדפיס.';
+      return;
+    }
+    if (status) status.textContent = 'ההצעה סומנה. אפשר לשנות אותה לפני ההדפסה.';
+  } catch (error) {
+    if (status) status.textContent = 'נועם AI לא זמין כרגע. אפשר להמשיך לבחור ולהדפיס.';
+  } finally {
+    if (button) button.disabled = false;
+  }
 }
