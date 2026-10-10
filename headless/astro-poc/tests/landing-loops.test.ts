@@ -72,6 +72,14 @@ describe('landing loop coverage', () => {
             src: '/loops/parallel-cointerior-angles.html',
             marker: 'parallel-cointerior-angles',
           },
+          'algebraic-expressions-grade-7': {
+            src: '/loops/algebraic-substitution-grade-7.html',
+            marker: 'algebraic-substitution-grade-7',
+          },
+          'factoring-grade-9': {
+            src: '/loops/common-factor-minus-parentheses-grade-9.html',
+            marker: 'common-factor-minus-parentheses',
+          },
         };
         assert.deepEqual(
           { src: loop.src, marker: loop.marker },
@@ -81,7 +89,7 @@ describe('landing loop coverage', () => {
       }
     }
     assert.equal(counts.concept + counts.css + counts.film, TOPIC_PAGE_SLUGS.length);
-    assert.equal(counts.film, 3);
+    assert.equal(counts.film, 5);
     assert.ok(counts.css > 0);
     assert.ok(counts.concept > 0);
   });
@@ -123,6 +131,8 @@ describe('landing loop coverage', () => {
     assert.match(topic, /<DistancePointsLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
     assert.match(topic, /<TriangleAngleSumLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
     assert.match(topic, /<ParallelCointeriorLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /<AlgebraicSubstitutionLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /<FactoringFilmLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
     assert.match(loop, /data-landing-loop=\{variant\}/);
     assert.match(hub, /data-landing-loop=\{`grade-\$\{grade\}`\}/);
     assert.match(home, /data-landing-loop="hero"/);

@@ -961,6 +961,10 @@ function renderSlope(root: LoopRoot, t: number) {
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], ph(t, 4.6, 5.0) * (1 - ph(t, 8.0, 8.6)));
   op(fxs[1], ph(t, 5.0, 5.4) * (1 - ph(t, 8.0, 8.6)));
+  // Grid, ticks, dots and pairs are added on the existing drawing.
+  // They are on screen from the start and leave with the same fade.
+  op(q(root, 'pts'), fade);
+  op(q(root, 'pairs'), fade);
 }
 const SLOPE_HOLD = 6.2;
 
