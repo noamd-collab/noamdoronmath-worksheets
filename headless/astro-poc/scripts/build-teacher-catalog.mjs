@@ -40,36 +40,82 @@ function cropBox(page, x, y, w, h) {
   return { page, x: round(left), y: round(top), w: round(width), h: round(height) };
 }
 
-/** One crop per chosen part: from this pin to the next part on the same page. */
-export function partRows(exercises, index) {
+/**
+ * Text-line pitch from the pins. The tight gaps that are clearly shorter than
+ * the typical part step are one line (baseline to baseline). When every step
+ * is a taller part, that part is the label line plus the exercise line, so
+ * the label line is half the tightest step.
+ */
+export function labelLineHeight(exercises) {
+  const gaps = [];
+  for (let i = 1; i < exercises.length; i += 1) {
+    const previous = exercises[i - 1] && exercises[i - 1].pin;
+    const next = exercises[i] && exercises[i].pin;
+    if (!previous || !next || previous.page !== next.page) continue;
+    const gap = next.y - previous.y;
+    if (gap > 0.012 && gap < 0.25) gaps.push(gap);
+  }
+  if (!gaps.length) return 0.026;
+  gaps.sort((a, b) => a - b);
+  const median = gaps[Math.floor((gaps.length - 1) / 2)];
+  const single = gaps.filter((gap) => gap <= median * 0.6);
+  if (single.length) return single[Math.floor((single.length - 1) / 2)];
+  return gaps[0] / 2;
+}
+
+/** Label line box. The pin is the anchor; the top is half a line above it. */
+export function labelLineBox(pin, lineHeight) {
+  const height = lineHeight > 0 ? lineHeight : 0.026;
+  const y = Math.max(0, pin.y - height / 2);
+  return { page: pin.page, y, h: height };
+}
+
+function labelTop(pin, lineHeight) {
+  return labelLineBox(pin, lineHeight).y;
+}
+
+/** One crop per chosen part: from the top of its label line to the top of the next label line. */
+export function partRows(exercises, index, lineHeight) {
   const exercise = exercises[index];
   const pin = exercise.pin;
+  const line = lineHeight || labelLineHeight(exercises);
+  const top = labelTop(pin, line);
   const slices = exercise.crops && exercise.crops.length ? exercise.crops : [exercise.crop];
   const here = slices.find((slice) => slice.page === pin.page) || exercise.crop || { x: 0, w: 1, y: pin.y, h: 0.04 };
   const nextPart = exercises.slice(index + 1).find((item) => (
     item.q === exercise.q && item.pin && item.pin.page === pin.page && item.pin.y > pin.y + 0.004
   ));
-  if (nextPart) return [cropBox(pin.page, here.x, pin.y, here.w, nextPart.pin.y - pin.y)];
-  const end = here.page === pin.page ? here.y + here.h : pin.y + 0.04;
-  const rows = [cropBox(pin.page, here.x, pin.y, here.w, Math.max(0.012, end - pin.y))];
+  if (nextPart) {
+    const end = labelTop(nextPart.pin, line);
+    return [cropBox(pin.page, here.x, top, here.w, Math.max(line * 0.5, end - top))];
+  }
+  const nextOnPage = exercises.slice(index + 1).find((item) => (
+    item.pin && item.pin.page === pin.page && item.pin.y > pin.y + 0.004
+  ));
+  let end = here.page === pin.page ? here.y + here.h : top + line;
+  if (nextOnPage) end = Math.min(end, labelTop(nextOnPage.pin, line));
+  const rows = [cropBox(pin.page, here.x, top, here.w, Math.max(line * 0.5, end - top))];
   const next = exercises[index + 1];
   if (!next || next.q !== exercise.q || !next.pin || next.pin.page <= pin.page) return rows;
   for (const slice of slices) {
     if (slice.page <= pin.page) continue;
     if (slice.page < next.pin.page) rows.push(cropBox(slice.page, slice.x, slice.y, slice.w, slice.h));
-    else if (slice.page === next.pin.page && next.pin.y > slice.y + 0.008) {
-      rows.push(cropBox(slice.page, slice.x, slice.y, slice.w, Math.min(slice.h, next.pin.y - slice.y)));
+    else if (slice.page === next.pin.page) {
+      const clip = labelTop(next.pin, line);
+      if (clip > slice.y + line * 0.35) {
+        rows.push(cropBox(slice.page, slice.x, slice.y, slice.w, Math.min(slice.h, clip - slice.y)));
+      }
     }
   }
   return rows;
 }
 
-function stemBox(exercises, exercise) {
+function stemBox(exercises, exercise, lineHeight) {
   const first = exercises.find((item) => item.q === exercise.q);
   const crop = first && first.crop;
   if (!first || !crop || crop.page !== first.pin.page) return null;
-  const height = first.pin.y - crop.y;
-  if (height < 0.012) return null;
+  const height = labelTop(first.pin, lineHeight) - crop.y;
+  if (height < 0.008) return null;
   return { page: crop.page, x: round(crop.x || 0), y: round(crop.y), w: round(crop.w || 1), h: round(height) };
 }
 
@@ -86,12 +132,14 @@ export function sheetFromManifest(meta, manifest) {
     : 0.08;
   const end = last ? last.crop.y + last.crop.h : 0.94;
   const footerY = end > 0.97 ? 0.985 : Math.max(end, 0.94);
+  const line = labelLineHeight(exercises);
   const questions = exercises.map((exercise, index) => {
     const part = exercise.part || '';
     const id = String(exercise.q) + part;
     const label = part ? `שאלה ${exercise.q} סעיף ${part}` : `שאלה ${exercise.q}`;
-    const rows = partRows(exercises, index);
-    const stem = stemBox(exercises, exercise);
+    const rows = partRows(exercises, index, line);
+    const stem = stemBox(exercises, exercise, line);
+    const labelLine = labelLineBox(exercise.pin, line);
     return {
       id,
       q: exercise.q,
@@ -100,6 +148,8 @@ export function sheetFromManifest(meta, manifest) {
       label,
       text: exercise.text || label,
       box: markBox(exercise.pin),
+      line: round(line),
+      labelLine: { page: labelLine.page, y: round(labelLine.y), h: round(labelLine.h) },
       row: rows[0],
       rows,
       ...(stem ? { stem } : {}),

@@ -49,6 +49,14 @@ body.exact-site {
   font-size:11px;font-weight:700;line-height:1.65;letter-spacing:0;
 }
 .exact-nav-toggle,.exact-nav-learn-mobile {display:none!important;}
+@media (min-width: 768px) {
+  .exact-header {height:90px;box-sizing:border-box;}
+  .exact-header__row {flex-wrap:nowrap!important;gap:8px!important;height:100%;box-sizing:border-box;padding-top:0!important;padding-bottom:0!important;padding-inline:12px!important;}
+  .exact-header nav[data-nav-panel] {flex-wrap:nowrap!important;gap:0!important;min-width:0;font-size:14px;}
+  .exact-header nav[data-nav-panel] > a,
+  .exact-nav-tools__btn {padding:6px 7px!important;white-space:nowrap;}
+  .exact-header__learn {padding:8px 12px!important;font-size:14px!important;white-space:nowrap;}
+}
 @media(max-width:767px){
   .exact-header__row {flex-wrap:nowrap!important;gap:10px!important;padding:8px 14px!important;position:relative;}
   .exact-header [data-exact-logo] {height:52px!important;}

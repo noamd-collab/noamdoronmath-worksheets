@@ -187,8 +187,8 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .badge.essential{color:var(--teal-dark);background:var(--mint)}
 .badge.additional{color:var(--ink);background:var(--cream)}
 .badge.deepen{color:#fff;background:var(--ink)}
-.q-desc{font-size:15px;line-height:1.5;color:var(--muted);margin-top:4px}.q-desc bdi.math{white-space:nowrap}
-.q-thumb{display:block;width:100%;height:auto;max-height:96px;margin-top:6px;background:#fff;border:1px solid #d5dae5;border-radius:6px}
+.q-desc{font-size:15px;line-height:1.5;color:var(--muted);margin-top:4px;direction:rtl;unicode-bidi:isolate}.q-desc bdi.math{white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+.q-thumb{display:block;width:auto;max-width:100%;height:auto;max-height:120px;margin-top:6px;background:#fff;border:1px solid #d5dae5;border-radius:6px}
 .q-page{font-size:13px;color:var(--quiet);margin-top:4px}
 .empty{padding:28px 16px;text-align:center;color:var(--muted)}
 #unavailable.empty{margin:8px 24px 20px;padding:28px 16px;border:2px dashed rgba(34,48,90,.35);border-radius:var(--r-card)}
@@ -278,6 +278,13 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .print-source{font-size:13px;color:var(--quiet);margin-top:16px;overflow-wrap:anywhere;line-height:1.55}
 .dialog-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 24px;border-top:2px solid var(--ink);position:sticky;bottom:0;background:#fff}
 .print-area{display:none}
+@media(min-width:768px){
+  .topbar{height:90px;box-sizing:border-box}
+  .topline{flex-wrap:nowrap;gap:8px;height:100%;box-sizing:border-box;padding:0 12px}
+  nav[data-nav-panel]{flex-wrap:nowrap;gap:0;min-width:0;font-size:14px}
+  nav[data-nav-panel] a{padding:6px 7px;white-space:nowrap}
+  .learn-btn{padding:8px 12px;font-size:14px}
+}
 @media(max-width:980px){
   .workspace{grid-template-columns:1fr}
   .intro{align-items:stretch;flex-direction:column}

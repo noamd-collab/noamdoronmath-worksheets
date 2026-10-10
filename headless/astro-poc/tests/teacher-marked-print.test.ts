@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
-import { sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
+import { labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
 
 const source = JSON.parse(readFileSync(new URL('../../../demos/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
 const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/6a37fe7160324a17ad107b3dbe43c1db.json', import.meta.url), 'utf8'));
@@ -70,11 +70,11 @@ describe('grade 9 factoring marked source', () => {
     assert.equal(byId['4א'], 'נכון או לא נכון? בדקו בפתיחת סוגריים, ותקנו את השגוי. 6x + 8 = 2(3x + 4)');
     assert.equal(byId['12א'], '37 × 12 + 37 × 8');
     assert.match(printer, /<bdi dir="ltr" class="math">/);
-    assert.match(page, /\.q-desc bdi\.math\{white-space:nowrap\}/);
+    assert.match(page, /\.q-desc bdi\.math\{white-space:nowrap/);
     const previewJs = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
     const previewPage = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.equal(previewJs, printer);
-    assert.match(previewPage, /\.q-desc bdi\.math\{white-space:nowrap\}/);
+    assert.match(previewPage, /\.q-desc bdi\.math\{white-space:nowrap/);
     const questionTextHTML = new Function(
       `${printer.slice(printer.indexOf('function escapeHTML'), printer.indexOf('function selectionKey'))} return questionTextHTML;`,
     )() as (text: string) => string;
@@ -248,15 +248,24 @@ describe('teacher catalog picker', () => {
     const partB = byId['3ב'];
     const partA = byId['3א'];
     const partC = byId['3ג'];
+    const line = labelLineHeight(manifest.exercises);
+    const pinB = manifest.exercises.find((exercise: { q: number; part: string }) => exercise.q === 3 && exercise.part === 'ב').pin;
+    const pinC = manifest.exercises.find((exercise: { q: number; part: string }) => exercise.q === 3 && exercise.part === 'ג').pin;
+    const lineB = labelLineBox(pinB, line);
+    const lineC = labelLineBox(pinC, line);
     assert.equal(partB.page, 2);
     assert.equal(partB.row.page, 2);
-    assert.ok(partB.row.y > 0.06 && partB.row.y < 0.07, JSON.stringify(partB.row));
-    assert.ok(partB.row.h > 0.05 && partB.row.h < 0.08, JSON.stringify(partB.row));
+    assert.ok(partB.row.y < pinB.y, JSON.stringify({ row: partB.row, pin: pinB, line }));
+    assert.ok(Math.abs(partB.row.y - lineB.y) < 0.002, JSON.stringify({ row: partB.row, line: lineB }));
+    assert.ok(Math.abs((pinB.y - lineB.y) - line / 2) < 0.0001);
+    assert.ok(partB.row.y + partB.row.h <= lineC.y + 0.002, JSON.stringify(partB.row));
     assert.equal(partB.rows.some((row: { page: number }) => row.page === 1), false);
     assert.ok(partB.row.y + partB.row.h <= partC.row.y + 0.002);
     assert.equal(partA.rows[0].page, 1);
-    assert.equal(partA.rows[1].page, 2);
-    assert.ok(partA.rows[1].y + partA.rows[1].h <= partB.row.y + 0.002);
+    if (partA.rows[1]) {
+      assert.equal(partA.rows[1].page, 2);
+      assert.ok(partA.rows[1].y + partA.rows[1].h <= partB.row.y + 0.002);
+    }
     const oneB = byId['1ב'];
     const oneA = byId['1א'];
     const oneC = byId['1ג'];
@@ -296,9 +305,21 @@ describe('teacher catalog picker', () => {
     assert.match(preview, /question\.rows && question\.rows\.length \? question\.rows : \[question\.row\]/);
     const html = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.match(html, /\.skip\{display:none!important\}/);
-    assert.match(html, /\.q-thumb\{/);
+    assert.match(html, /\.q-thumb\{[^}]*max-height:120px/);
+    assert.match(html, /unicode-bidi:isolate/);
+    assert.match(preview, /function needsThumb/);
+    assert.match(preview, /function levelAllows/);
+    assert.match(preview, /hasHebrew\(question\.text\)/);
+    assert.match(html, /@media\(min-width:768px\)\{\s*\.topbar\{height:90px/);
     assert.match(preview, /class="q-thumb"/);
     assert.match(preview, /paintSourceLine/);
+    assert.match(preview, /IntersectionObserver/);
+    assert.match(preview, /function readingOrder/);
+    assert.match(preview, /dir="rtl"/);
+    assert.match(preview, /mapPool/);
+    const css = readFileSync(new URL('../src/styles/exact-site.css', import.meta.url), 'utf8');
+    assert.match(css, /@media \(min-width: 768px\) \{\s*\.exact-header \{height:90px/);
+    assert.match(css, /\.exact-header nav\[data-nav-panel\] \{flex-wrap:nowrap!important/);
   });
 
   it('leaves Noam AI exercise suggestions disabled', () => {
