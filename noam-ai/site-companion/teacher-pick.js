@@ -4,7 +4,8 @@
  * Middle school (grades 7–9) returns individual exercises that already exist.
  * Elementary returns the matching sheet, topic, and level — not single items.
  */
-import { QWEN_CHAT_URL, QWEN_MODEL } from "./companion.js";
+import { fetchWithTimeout } from "./bot-guard.js";
+import { QWEN_CHAT_URL, QWEN_MODEL, QWEN_TIMEOUT_MS } from "./companion.js";
 import { buildCatalogRecords } from "./retrieve.js";
 
 export const CLASSIFIER_MAX_TOKENS = 300;
@@ -229,14 +230,14 @@ export async function classifyTeacherRequest(input, options) {
   const settings = options || {};
   const fetcher = settings.fetch;
   if (!settings.apiKey || typeof fetcher !== "function") return null;
-  const response = await fetcher(QWEN_CHAT_URL, {
+  const response = await fetchWithTimeout(fetcher, QWEN_CHAT_URL, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + settings.apiKey,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(classifierRequestBody(input)),
-  });
+  }, typeof settings.timeoutMs === "number" ? settings.timeoutMs : QWEN_TIMEOUT_MS);
   if (!response || !response.ok) throw new Error("QWEN_HTTP");
   const data = await response.json();
   const content =

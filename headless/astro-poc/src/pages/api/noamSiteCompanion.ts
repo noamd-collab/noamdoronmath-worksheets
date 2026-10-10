@@ -12,6 +12,7 @@ import {
   NOAM_RECAPTCHA_SECRET_NAME,
   QWEN_SECRET_NAME,
   handleNoamSiteCompanion,
+  visitorIpFrom,
 } from '../../../../../noam-ai/site-companion/endpoint.js';
 import { secretFromEnv } from '../../lib/noamSecrets';
 
@@ -24,12 +25,16 @@ function keys() {
   };
 }
 
-function clientIpOf(context: { clientAddress?: string }): string {
+function clientIpOf(context: { clientAddress?: string; request: Request }): string {
+  // clientAddress on this adapter is cf-connecting-ip (see visitorIpFrom).
+  // A missing address must stay empty so the guard does not share one bucket.
+  let address = '';
   try {
-    return String(context.clientAddress || '');
+    address = String(context.clientAddress || '');
   } catch {
-    return '';
+    address = '';
   }
+  return visitorIpFrom(address, context.request.headers);
 }
 
 function send(result: { status: number; headers: Record<string, string>; body: unknown }): Response {

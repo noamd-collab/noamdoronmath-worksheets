@@ -13,7 +13,13 @@ import {
   handleCompanionTurn,
   isWorksheetSolveRequest,
 } from "./companion.js";
-import { corsHeadersFor, guardCompanionRequest, isAllowedOrigin } from "./bot-guard.js";
+import {
+  corsHeadersFor,
+  guardCompanionRequest,
+  isAllowedOrigin,
+  isHeadlessPreviewHost,
+  isOutboundTimeout,
+} from "./bot-guard.js";
 import {
   classifyTeacherRequest,
   describePicks,
@@ -167,8 +173,10 @@ export async function runCompanionTurn(payload, deps) {
       classification = await classifyTeacherRequest(payload, {
         apiKey: settings.qwenKey,
         fetch: settings.fetch,
+        timeoutMs: settings.qwenTimeoutMs,
       });
     } catch (error) {
+      if (isOutboundTimeout(error)) throw error;
       classification = null;
     }
     const pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
@@ -184,6 +192,7 @@ export async function runCompanionTurn(payload, deps) {
     catalog: settings.catalog,
     apiKey: settings.qwenKey,
     fetch: settings.fetch,
+    timeoutMs: settings.qwenTimeoutMs,
   });
   return withIds(Object.assign({ active: true }, result), [], []);
 }
@@ -192,12 +201,63 @@ export function isHeadlessPreviewOrigin(origin) {
   if (typeof origin !== "string" || !origin) return false;
   try {
     const url = new URL(origin);
-    return url.protocol === "https:" &&
-      url.hostname.endsWith(".wix-site-host.com") &&
-      /noam-math-astro-poc|noamdoronmath/i.test(url.hostname);
+    return url.protocol === "https:" && isHeadlessPreviewHost(url.hostname);
   } catch (error) {
     return false;
   }
+}
+
+/**
+ * Visitor IP for the rate limit.
+ * Wix hosting runs this route through @astrojs/cloudflare. That handler sets
+ * Astro clientAddress from the cf-connecting-ip header and does not read
+ * x-forwarded-for. Cloudflare overwrites cf-connecting-ip with the visitor.
+ * x-forwarded-for is ignored here because a caller can prepend it.
+ * An empty result means "no visitor IP": the guard then keys by the
+ * reCAPTCHA token and a higher per-isolate cap, not one shared 12/min bucket.
+ */
+export function visitorIpFrom(clientAddress, headers) {
+  const direct = oneAddress(clientAddress);
+  if (direct) return direct;
+  const cf = oneAddress(readHeader(headers, "cf-connecting-ip"));
+  if (cf) return cf;
+  return "";
+}
+
+function readHeader(headers, name) {
+  if (!headers) return "";
+  if (typeof headers.get === "function") return headers.get(name) || "";
+  const value = headers[name] || headers[name.toLowerCase()] || "";
+  return Array.isArray(value) ? value[0] : String(value || "");
+}
+
+function oneAddress(value) {
+  const ip = String(value || "").trim();
+  if (!ip || ip === "null" || ip.length > 64 || /[\s,]/.test(ip)) return "";
+  return ip;
+}
+
+function unavailableBody() {
+  return withIds(
+    {
+      ok: false,
+      active: true,
+      code: "UNAVAILABLE",
+      source: "fallback",
+      error: FALLBACK_TEXT,
+      text: FALLBACK_TEXT,
+      answer: FALLBACK_TEXT,
+      details: FALLBACK_TEXT,
+      model: null,
+      primary: null,
+      chips: [],
+      options: [],
+      links: [],
+      essential: [],
+    },
+    [],
+    []
+  );
 }
 
 function responseHeaders(origin) {
@@ -261,8 +321,13 @@ export async function handleNoamSiteCompanion(request, deps) {
       secret: settings.recaptchaSecret,
       fetch: settings.fetch,
       extraOrigins: isHeadlessPreviewOrigin(origin) ? [origin] : [],
+      recaptchaTimeoutMs: settings.recaptchaTimeoutMs,
+      noIpGlobalMax: settings.noIpGlobalMax,
     }
   );
+  if (!guard.ok && guard.code === "UNAVAILABLE") {
+    return jsonResponse(200, unavailableBody(), origin);
+  }
   if (!guard.ok) {
     const fail = withIds(
       {
@@ -284,7 +349,12 @@ export async function handleNoamSiteCompanion(request, deps) {
     if (!cors) return { status: 403, headers: { Vary: "Origin" }, body: "" };
     return { status: guard.status, headers: cors, body: fail };
   }
-  const result = await runCompanionTurn(payload, settings);
-  return jsonResponse(200, result, origin);
+  try {
+    const result = await runCompanionTurn(payload, settings);
+    return jsonResponse(200, result, origin);
+  } catch (error) {
+    if (!isOutboundTimeout(error)) throw error;
+    return jsonResponse(200, unavailableBody(), origin);
+  }
 }
 

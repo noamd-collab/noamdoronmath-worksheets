@@ -8,9 +8,12 @@ import {
   QWEN_SECRET_NAME,
   botConfigBody,
   handleNoamSiteCompanion,
+  isHeadlessPreviewOrigin,
   secretsReady,
+  visitorIpFrom,
 } from '../../../noam-ai/site-companion/endpoint.js';
-import { QWEN_MODEL } from '../../../noam-ai/site-companion/companion.js';
+import { FALLBACK_TEXT, QWEN_MODEL, QWEN_TIMEOUT_MS } from '../../../noam-ai/site-companion/companion.js';
+import { RECAPTCHA_TIMEOUT_MS } from '../../../noam-ai/site-companion/bot-guard.js';
 import { parseClassifier, selectTeacherPicks } from '../../../noam-ai/site-companion/teacher-pick.js';
 
 const QWEN = 'qwen-test-key-xyz';
@@ -62,7 +65,15 @@ function mockFetch(classifier: unknown, calls: { url: string; body: string }[]) 
   return async (url: string, init?: { body?: string }) => {
     calls.push({ url: String(url), body: String(init && init.body || '') });
     if (String(url).includes('siteverify')) {
-      return { ok: true, json: async () => ({ success: true, score: 0.9, action: 'noam_site_companion' }) };
+      return {
+        ok: true,
+        json: async () => ({
+          success: true,
+          score: 0.9,
+          action: 'noam_site_companion',
+          hostname: 'www.noamdoronmath.co.il',
+        }),
+      };
     }
     return qwenJson(classifier);
   };
@@ -223,5 +234,159 @@ describe('Noam AI headless endpoint', () => {
     assert.equal(ready.ok, true);
     assert.equal(ready.siteKey, PUBLIC_RECAPTCHA_SITE_KEY);
     assert.equal(JSON.stringify(ready).includes(RECAPTCHA), false);
+  });
+
+  it('rejects a reCAPTCHA token minted for another host', async () => {
+    let qwen = 0;
+    const result = await post({
+      fetch: async (url: string) => {
+        if (String(url).includes('chat/completions')) qwen += 1;
+        return { ok: true, json: async () => ({ success: true, score: 0.9, action: 'noam_site_companion', hostname: 'evil.example' }) };
+      },
+    });
+    assert.equal(qwen, 0);
+    assert.equal(result.status, 403);
+    assert.equal((result.body as { code: string }).code, 'BOT_VERIFICATION_FAILED');
+  });
+
+  it('accepts the pinned headless preview host and no broader wix host', async () => {
+    const preview = 'https://jrxwre-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com';
+    assert.equal(isHeadlessPreviewOrigin(preview), true);
+    assert.equal(isHeadlessPreviewOrigin('https://preview.wix-site-host.com'), false);
+    assert.equal(isHeadlessPreviewOrigin('https://noamdoronmath.example.wix-site-host.com'), false);
+    assert.equal(isHeadlessPreviewOrigin('http://jrxwre-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com'), false);
+    const result = await post({
+      origin: preview,
+      fetch: async (url: string) => {
+        if (String(url).includes('siteverify')) {
+          return {
+            ok: true,
+            json: async () => ({
+              success: true,
+              score: 0.9,
+              action: 'noam_site_companion',
+              hostname: 'jrxwre-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com',
+            }),
+          };
+        }
+        return qwenJson({ grade: 9, topicQuery: 'פירוק', level: 'a', exerciseLabels: ['1א'], wantsSheet: false });
+      },
+    });
+    assert.equal(result.status, 200);
+    assert.equal((result.body as { ok: boolean }).ok, true);
+  });
+
+  it('returns the calm unavailable text when reCAPTCHA or Qwen times out', async () => {
+    assert.equal(RECAPTCHA_TIMEOUT_MS, 5_000);
+    assert.equal(QWEN_TIMEOUT_MS, 12_000);
+    const hang = (_url: string, init?: { signal?: AbortSignal }) => new Promise(() => {
+      // Stays pending. The timeout aborts the signal and wins the race.
+      void init;
+    });
+    const recaptcha = await post({
+      fetch: hang,
+      recaptchaTimeoutMs: 20,
+    });
+    assert.equal(recaptcha.status, 200);
+    const recaptchaBody = recaptcha.body as { code: string; answer: string; ok: boolean };
+    assert.equal(recaptchaBody.ok, false);
+    assert.equal(recaptchaBody.code, 'UNAVAILABLE');
+    assert.equal(recaptchaBody.answer, FALLBACK_TEXT);
+    const qwen = await post({
+      qwenTimeoutMs: 20,
+      fetch: async (url: string, init?: { signal?: AbortSignal }) => {
+        if (String(url).includes('siteverify')) {
+          return {
+            ok: true,
+            json: async () => ({
+              success: true,
+              score: 0.9,
+              action: 'noam_site_companion',
+              hostname: 'www.noamdoronmath.co.il',
+            }),
+          };
+        }
+        return hang(url, init);
+      },
+    });
+    assert.equal(qwen.status, 200);
+    const qwenBody = qwen.body as { code: string; answer: string; exerciseIds: string[] };
+    assert.equal(qwenBody.code, 'UNAVAILABLE');
+    assert.equal(qwenBody.answer, FALLBACK_TEXT);
+    assert.deepEqual(qwenBody.exerciseIds, []);
+  });
+
+  it('does not put visitors without an IP into one 12-per-minute bucket', async () => {
+    assert.equal(visitorIpFrom('203.0.113.8', new Headers({ 'x-forwarded-for': '198.51.100.9' })), '203.0.113.8');
+    assert.equal(visitorIpFrom('', new Headers({ 'cf-connecting-ip': '203.0.113.50' })), '203.0.113.50');
+    assert.equal(visitorIpFrom('', new Headers({ 'x-forwarded-for': '198.51.100.9' })), '');
+    assert.equal(visitorIpFrom('203.0.113.1, 198.51.100.2', new Headers()), '');
+    const store = new Map();
+    const fetch = async () => ({
+      ok: true,
+      json: async () => ({ success: true, score: 0.9, action: 'noam_site_companion', hostname: 'www.noamdoronmath.co.il' }),
+    });
+    for (let i = 0; i < 12; i += 1) {
+      const result = await post({
+        clientIp: '',
+        store,
+        fetch,
+        payload: {
+          message: 'שלום',
+          page: { kind: 'home', path: '/', title: 'בית' },
+          botVerification: { provider: 'recaptcha-v3', token: 'same-token' },
+        },
+      });
+      assert.equal(result.status, 200, 'token bucket ' + i);
+    }
+    const blocked = await post({
+      clientIp: '',
+      store,
+      fetch,
+      payload: {
+        message: 'שלום',
+        page: { kind: 'home', path: '/', title: 'בית' },
+        botVerification: { provider: 'recaptcha-v3', token: 'same-token' },
+      },
+    });
+    assert.equal(blocked.status, 429);
+    const other = await post({
+      clientIp: '',
+      store,
+      fetch,
+      payload: {
+        message: 'שלום',
+        page: { kind: 'home', path: '/', title: 'בית' },
+        botVerification: { provider: 'recaptcha-v3', token: 'other-token' },
+      },
+    });
+    assert.equal(other.status, 200);
+    const tight = new Map();
+    for (let i = 0; i < 3; i += 1) {
+      const result = await post({
+        clientIp: '',
+        store: tight,
+        fetch,
+        noIpGlobalMax: 3,
+        payload: {
+          message: 'שלום',
+          page: { kind: 'home', path: '/', title: 'בית' },
+          botVerification: { provider: 'recaptcha-v3', token: 'global-' + i },
+        },
+      });
+      assert.equal(result.status, 200);
+    }
+    const capped = await post({
+      clientIp: '',
+      store: tight,
+      fetch,
+      noIpGlobalMax: 3,
+      payload: {
+        message: 'שלום',
+        page: { kind: 'home', path: '/', title: 'בית' },
+        botVerification: { provider: 'recaptcha-v3', token: 'global-next' },
+      },
+    });
+    assert.equal(capped.status, 429);
   });
 });
