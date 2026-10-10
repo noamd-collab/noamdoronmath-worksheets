@@ -288,7 +288,7 @@ function exerciseCard(question) {
   const level = question.source.levelLabel ? `<span class="q-page" style="display:block">${escapeHTML(question.source.levelLabel)} · עמוד ${question.page}</span>` : `<span class="q-page" style="display:block">עמוד ${question.page} בדף המקור</span>`;
   const badge = pilotOn() ? `<span class="badge ${tier(question)}">${TIERS[tier(question)]}</span>` : '';
   const body = needsThumb(question)
-    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(key)}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
+    ? `<canvas class="q-thumb" width="1" height="1" data-thumb="${escapeHTML(key)}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
     : `<span class="q-desc" dir="rtl">${questionTextHTML(question.text)}</span>`;
   return `<label class="q-card"><input type="checkbox" data-question="${escapeHTML(key)}" ${state.selected.includes(key) ? 'checked' : ''} aria-label="בחירת ${escapeHTML(question.label)}"><span class="q-content"><span class="q-title-line"><span class="q-title">${escapeHTML(question.label)}</span>${badge}</span>${body}${level}</span></label>`;
 }
@@ -456,37 +456,205 @@ function paintSeen(nodes, token) {
 }
 
 function thumbSlice(question, bitmap) {
-  const row = question.row;
-  const line = question.line > 0 ? question.line : Math.min(row.h || 0.03, 0.03);
-  const glyph = Math.max(8, line * 0.52 * bitmap.height);
-  const right = Math.min(0.98, (row.x || 0) + (row.w || 1));
-  const left = Math.max(row.x || 0, Math.min(0.45, right - 0.12));
-  const srcX = left * bitmap.width;
-  const srcW = Math.max(8, (right - left) * bitmap.width);
-  const band = Math.max(line * 1.8, line * 0.7 * 5.2);
-  const shown = Math.min(row.h, band);
-  const padTop = row.h > band ? line * 0.2 : Math.min(line * 0.08, 0.0015);
-  const padBottom = line * 0.2;
-  const y0 = Math.max(0, row.y - padTop);
-  const y1 = Math.min(1, row.y + shown + padBottom);
-  const srcY = y0 * bitmap.height;
-  const srcH = Math.max(8, (y1 - y0) * bitmap.height);
-  return { glyph, srcX, srcY, srcW, srcH };
+  const row = question.row || {};
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const srcX = Math.max(0, Math.floor((row.x || 0) * width));
+  const srcY = Math.max(0, Math.floor((row.y || 0) * height));
+  const srcW = Math.max(1, Math.min(width - srcX, Math.ceil((row.w || 1) * width)));
+  const srcH = Math.max(1, Math.min(height - srcY, Math.ceil((row.h || 0.03) * height)));
+  return { srcX, srcY, srcW, srcH, page: row.page || question.page };
+}
+
+function thumbRowsOf(item) {
+  if (!item) return [];
+  return item.rows && item.rows.length ? item.rows : (item.row ? [item.row] : []);
+}
+
+function thumbNeighborY(question, row, bitmapHeight) {
+  const page = row.page || question.page;
+  let above = 0;
+  let below = bitmapHeight;
+  const list = question.source && question.source.questions;
+  if (!list) return { above, below };
+  const thisTop = Math.floor((row.y || 0) * bitmapHeight);
+  const thisBot = Math.ceil(((row.y || 0) + (row.h || 0)) * bitmapHeight);
+  list.forEach((other) => {
+    if (!other || other === question) return;
+    thumbRowsOf(other).forEach((otherRow) => {
+      if ((otherRow.page || other.page) !== page) return;
+      const top = Math.floor((otherRow.y || 0) * bitmapHeight);
+      const bot = Math.ceil(((otherRow.y || 0) + (otherRow.h || 0)) * bitmapHeight);
+      if (bot <= thisTop && bot > above) above = bot;
+      if (top >= thisBot && top < below) below = top;
+    });
+  });
+  return { above, below };
+}
+
+function thumbContent(bitmap, question, row) {
+  const windowRect = thumbSlice({ row, page: row.page || question.page, line: question.line }, bitmap);
+  const ctx = bitmap.getContext('2d');
+  let image;
+  try {
+    image = ctx.getImageData(windowRect.srcX, windowRect.srcY, windowRect.srcW, windowRect.srcH);
+  } catch (error) {
+    return windowRect;
+  }
+  const data = image.data;
+  const rw = windowRect.srcW;
+  const rh = windowRect.srcH;
+  const col = new Uint32Array(rw);
+  for (let y = 0; y < rh; y++) {
+    for (let x = 0; x < rw; x++) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) col[x] += 1;
+    }
+  }
+  const gapX = Math.max(8, Math.round(bitmap.width * 0.03));
+  const clusters = [];
+  let start = -1;
+  let blank = 0;
+  for (let x = 0; x <= rw; x++) {
+    if (x < rw && col[x]) {
+      if (start < 0) start = x;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (x === rw || blank > gapX) {
+        const end = x - blank;
+        clusters.push({ x: start, w: end - start + 1 });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  if (!clusters.length) return windowRect;
+  let best = null;
+  clusters.forEach((cluster) => {
+    let top = -1;
+    let bot = -1;
+    let n = 0;
+    for (let y = 0; y < rh; y++) {
+      for (let x = cluster.x; x < cluster.x + cluster.w; x++) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          n += 1;
+          if (top < 0) top = y;
+          bot = y;
+        }
+      }
+    }
+    cluster.top = top;
+    cluster.bot = bot;
+    cluster.n = n;
+    cluster.span = bot - top;
+    if (!best || cluster.span > best.span || (cluster.span === best.span && cluster.n > best.n)) best = cluster;
+  });
+  const lineFrac = question.line > 0 ? question.line : 0.02;
+  const gapY = Math.max(4, Math.round(lineFrac * bitmap.height * 0.28));
+  const minBand = Math.max(5, Math.round(bitmap.height * 0.0035));
+  const bands = [];
+  let bandStart = -1;
+  let bandBlank = 0;
+  for (let y = best.top; y <= best.bot + 1; y++) {
+    let n = 0;
+    if (y <= best.bot) {
+      for (let x = best.x; x < best.x + best.w; x++) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
+      }
+    }
+    if (n) {
+      if (bandStart < 0) bandStart = y;
+      bandBlank = 0;
+    } else if (bandStart >= 0) {
+      bandBlank += 1;
+      if (y > best.bot || bandBlank > gapY) {
+        const end = y - bandBlank;
+        bands.push({ y: bandStart, h: end - bandStart + 1 });
+        bandStart = -1;
+        bandBlank = 0;
+      }
+    }
+  }
+  const tall = bands.filter((band) => band.h >= minBand);
+  const kept = tall.length ? bands.filter((band) => band.h >= minBand || tall.some((item) => Math.abs(band.y - (item.y + item.h)) < gapY || Math.abs(item.y - (band.y + band.h)) < gapY)) : [bands.reduce((bestBand, band) => (band.h > bestBand.h ? band : bestBand))];
+  if (!kept.length) return windowRect;
+  let top = kept[0].y;
+  let bot = kept[0].y + kept[0].h;
+  kept.forEach((band) => {
+    top = Math.min(top, band.y);
+    bot = Math.max(bot, band.y + band.h);
+  });
+  const rowStats = [];
+  for (let y = top; y < bot; y++) {
+    let n = 0;
+    let rowLeft = best.x + best.w;
+    let rowRight = best.x - 1;
+    for (let x = best.x; x < best.x + best.w; x++) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+        n += 1;
+        if (x < rowLeft) rowLeft = x;
+        if (x > rowRight) rowRight = x;
+      }
+    }
+    if (n) rowStats.push({ left: rowLeft, right: rowRight, span: rowRight - rowLeft + 1 });
+  }
+  const spans = rowStats.map((row) => row.span).sort((a, b) => a - b);
+  const median = spans.length ? spans[Math.floor(spans.length / 2)] : 0;
+  const contentRows = rowStats.filter((row) => row.span <= median * 1.5 + 12);
+  const usedRows = contentRows.length ? contentRows : rowStats;
+  let left = best.x + best.w;
+  let right = best.x;
+  usedRows.forEach((row) => {
+    if (row.left < left) left = row.left;
+    if (row.right > right) right = row.right;
+  });
+  if (right < left) return windowRect;
+  const line = question.line > 0 ? question.line : 0.02;
+  const pad = Math.max(3, Math.min(10, Math.round(line * bitmap.height * 0.18)));
+  const limits = thumbNeighborY(question, row, bitmap.height);
+  const srcX = Math.max(0, windowRect.srcX + left - pad);
+  const srcY = Math.max(limits.above, windowRect.srcY + top - pad);
+  const srcX2 = Math.min(bitmap.width, windowRect.srcX + right + 1 + pad);
+  const srcY2 = Math.min(limits.below, windowRect.srcY + bot + pad);
+  return { srcX, srcY, srcW: Math.max(1, srcX2 - srcX), srcH: Math.max(1, srcY2 - srcY), page: windowRect.page };
 }
 
 async function paintThumb(canvas) {
   const question = library.get(canvas.dataset.thumb);
-  const row = question && question.row;
-  if (!row || !levelAllows(question.source)) return;
-  const bitmap = await pageBitmap(row.page || question.page, question.source);
-  const slice = thumbSlice(question, bitmap);
+  if (!question || !question.row || !levelAllows(question.source)) return;
+  const rows = questionRows(question);
+  const pieces = [];
+  for (let index = 0; index < rows.length; index++) {
+    const row = rows[index];
+    const bitmap = await pageBitmap(row.page || question.page, question.source);
+    const slice = thumbContent(bitmap, question, row);
+    if (slice && slice.srcW > 2 && slice.srcH > 2) pieces.push({ bitmap, slice });
+  }
+  if (!pieces.length) return;
   const card = canvas.parentElement ? canvas.parentElement.clientWidth : 0;
   const cardW = Math.max(180, Math.min(card || 320, 520));
-  let scale = cardW / slice.srcW;
-  if (slice.srcH * scale > 120) scale = 120 / slice.srcH;
+  const edge = 8;
+  const gutter = 6;
+  const maxH = 180;
+  let scale = cardW - edge * 2;
+  pieces.forEach((piece) => { scale = Math.min(scale, (cardW - edge * 2) / piece.slice.srcW); });
+  let body = pieces.reduce((sum, piece) => sum + piece.slice.srcH * scale, 0);
+  const gaps = gutter * Math.max(0, pieces.length - 1);
+  if (body + gaps + edge * 2 > maxH) scale *= (maxH - gaps - edge * 2) / body;
   const dpr = window.devicePixelRatio || 1;
-  const dw = Math.max(1, Math.round(slice.srcW * scale));
-  const dh = Math.max(1, Math.round(slice.srcH * scale));
+  let dh = edge * 2 + gaps;
+  const drawn = pieces.map((piece) => {
+    const sw = Math.max(1, Math.round(piece.slice.srcW * scale));
+    const sh = Math.max(1, Math.round(piece.slice.srcH * scale));
+    return { piece, sw, sh };
+  });
+  drawn.forEach((item) => { dh += item.sh; });
+  const usedW = drawn.reduce((max, item) => Math.max(max, item.sw), 1) + edge * 2;
+  const dw = Math.max(1, Math.min(cardW, Math.round(usedW)));
   canvas.width = Math.max(1, Math.round(dw * dpr));
   canvas.height = Math.max(1, Math.round(dh * dpr));
   canvas.style.width = dw + 'px';
@@ -496,7 +664,13 @@ async function paintThumb(canvas) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, dw, dh);
-  ctx.drawImage(bitmap, slice.srcX, slice.srcY, slice.srcW, slice.srcH, 0, 0, dw, dh);
+  let y = edge;
+  drawn.forEach((item, index) => {
+    if (index) y += gutter;
+    const x = Math.max(edge, Math.round((dw - item.sw) / 2));
+    ctx.drawImage(item.piece.bitmap, item.piece.slice.srcX, item.piece.slice.srcY, item.piece.slice.srcW, item.piece.slice.srcH, x, y, item.sw, item.sh);
+    y += item.sh;
+  });
 }
 
 function levelAllows(source) {
