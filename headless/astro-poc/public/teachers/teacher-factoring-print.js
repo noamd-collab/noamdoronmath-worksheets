@@ -602,21 +602,24 @@ function thumbContent(bitmap, question, row) {
     cluster.span = bot - top;
     if (!best || cluster.span > best.span || (cluster.span === best.span && cluster.n > best.n)) best = cluster;
   });
+  const lineFrac = question.line > 0 ? question.line : 0.02;
+  const linePxEarly = Math.max(8, Math.round(lineFrac * bitmap.height));
   let unionLeft = best.x;
   let unionRight = best.x + best.w;
   let unionTop = best.top;
   let unionBot = best.bot;
   clusters.forEach((cluster) => {
-    if (cluster === best || cluster.top < 0 || cluster.n < 24) return;
+    if (cluster === best || cluster.top < 0 || cluster.n < 8) return;
     const overlap = Math.min(cluster.bot, best.bot) - Math.max(cluster.top, best.top);
-    if (overlap <= 3) return;
+    const above = best.top - cluster.bot < linePxEarly && cluster.bot >= best.top - linePxEarly * 2.4;
+    const labelSide = cluster.x > rw * 0.62;
+    if (overlap <= 3 && !above && !labelSide) return;
     unionLeft = Math.min(unionLeft, cluster.x);
     unionRight = Math.max(unionRight, cluster.x + cluster.w);
     unionTop = Math.min(unionTop, cluster.top);
     unionBot = Math.max(unionBot, cluster.bot);
   });
   best = { x: unionLeft, w: unionRight - unionLeft, top: unionTop, bot: unionBot, n: best.n, span: best.span };
-  const lineFrac = question.line > 0 ? question.line : 0.02;
   const gapY = Math.max(4, Math.round(lineFrac * bitmap.height * 0.28));
   const minBand = Math.max(5, Math.round(bitmap.height * 0.0035));
   const bands = [];
@@ -643,12 +646,38 @@ function thumbContent(bitmap, question, row) {
       }
     }
   }
+  const bandWidth = (band) => {
+    let maxSpan = 0;
+    for (let y = band.y; y < band.y + band.h; y += 1) {
+      let left = -1;
+      let right = -1;
+      for (let x = best.x; x < best.x + best.w; x += 1) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          if (left < 0) left = x;
+          right = x;
+        }
+      }
+      if (left >= 0) maxSpan = Math.max(maxSpan, right - left + 1);
+    }
+    return maxSpan;
+  };
   const tall = bands.filter((band) => band.h >= minBand);
-  const kept = tall.length ? bands.filter((band) => band.h >= minBand || tall.some((item) => Math.abs(band.y - (item.y + item.h)) < gapY || Math.abs(item.y - (band.y + band.h)) < gapY)) : [bands.reduce((bestBand, band) => (band.h > bestBand.h ? band : bestBand))];
-  if (kept.length > 1) {
+  const kept = tall.length ? bands.filter((band) => band.h >= minBand || tall.some((item) => Math.abs(band.y - (item.y + item.h)) < gapY || Math.abs(item.y - (band.y + band.h)) < gapY) || (band.h >= 1 && bandWidth(band) > best.w * 0.22 && tall.some((item) => Math.abs(band.y - (item.y + item.h)) < linePxEarly))) : [bands.reduce((bestBand, band) => (band.h > bestBand.h ? band : bestBand))];
+  while (kept.length > 1) {
     const last = kept[kept.length - 1];
     const prev = kept[kept.length - 2];
-    if (last.h < prev.h * 0.75 && last.y - (prev.y + prev.h) > 1) kept.pop();
+    const gap = last.y - (prev.y + prev.h);
+    // A distant short line under a tall crop is the closing greeting, not the drawing.
+    if (gap > linePxEarly * 1.4 && last.h < linePxEarly && windowRect.srcH > bitmap.height * 0.22) {
+      kept.pop();
+      continue;
+    }
+    if (last.h < prev.h * 0.75 && gap > 1 && bandWidth(last) < best.w * 0.45) {
+      kept.pop();
+      continue;
+    }
+    break;
   }
   if (!kept.length) return windowRect;
   let top = kept[0].y;
@@ -657,26 +686,6 @@ function thumbContent(bitmap, question, row) {
     top = Math.min(top, band.y);
     bot = Math.max(bot, band.y + band.h);
   });
-  const linePx = Math.max(8, Math.round(lineFrac * bitmap.height));
-  const counts = new Uint16Array(Math.max(1, bot - top));
-  let peak = 0;
-  for (let y = top; y < bot; y += 1) {
-    let n = 0;
-    for (let x = best.x; x < best.x + best.w; x += 1) {
-      const i = (y * rw + x) * 4;
-      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
-    }
-    counts[y - top] = n;
-    if (n > peak) peak = n;
-  }
-  if (peak > 20) {
-    let cut = bot;
-    for (let y = bot - 1; y > top; y -= 1) {
-      if (counts[y - top] > peak * 0.45) break;
-      cut = y;
-    }
-    if (bot - cut > 2 && bot - cut < linePx * 0.85 && cut - top > linePx * 0.5) bot = cut;
-  }
   const rowStats = [];
   for (let y = top; y < bot; y++) {
     let n = 0;
@@ -700,6 +709,9 @@ function thumbContent(bitmap, question, row) {
   let right = best.x;
   usedRows.forEach((row) => {
     if (row.left < left) left = row.left;
+  });
+  // The part letter and a leading blank sit on the right. A full-width rule must not pull the left edge out.
+  rowStats.forEach((row) => {
     if (row.right > right) right = row.right;
   });
   if (right < left) return windowRect;
@@ -713,13 +725,65 @@ function thumbContent(bitmap, question, row) {
   return { srcX, srcY, srcW: Math.max(1, srcX2 - srcX), srcH: Math.max(1, srcY2 - srcY), page: windowRect.page };
 }
 
+async function clipThumbRow(question, row) {
+  let y2 = (row.y || 0) + (row.h || 0.03);
+  if (y2 > 0.958) y2 = 0.958;
+  try {
+    const items = await pageTextItems(row.page || question.page, question.source);
+    items.forEach((item) => {
+      if (!String(item.str || '').includes('בהצלחה')) return;
+      if (item.y > (row.y || 0) + 0.008 && item.y < y2) y2 = Math.min(y2, item.y - 0.006);
+    });
+  } catch (error) {}
+  const cap = 0.34;
+  if (y2 - (row.y || 0) > cap) y2 = (row.y || 0) + cap;
+  return { ...row, h: Math.max(0.02, y2 - (row.y || 0)) };
+}
+
+function wordGapCut(bitmap, slice) {
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(slice.srcX, slice.srcY, slice.srcW, slice.srcH);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = slice.srcW;
+  const rh = slice.srcH;
+  const col = new Uint16Array(rw);
+  for (let y = 0; y < rh; y += 1) {
+    for (let x = 0; x < rw; x += 1) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) col[x] += 1;
+    }
+  }
+  let best = null;
+  let run = 0;
+  const mid = rw / 2;
+  for (let x = Math.floor(rw * 0.28); x <= Math.ceil(rw * 0.72); x += 1) {
+    if (x < rw && col[x] === 0) {
+      run += 1;
+    } else if (run >= 4) {
+      const gapX = x - run;
+      const center = gapX + run / 2;
+      const score = Math.abs(center - mid);
+      if (!best || score < best.score) best = { x: gapX, w: run, score };
+      run = 0;
+    } else {
+      run = 0;
+    }
+  }
+  if (!best || best.w < 4) return null;
+  return best.x + Math.floor(best.w / 2);
+}
+
 async function paintThumb(canvas) {
   const question = library.get(canvas.dataset.thumb);
   if (!question || !question.row || !levelAllows(question.source)) return;
   const rows = questionRows(question);
   let pieces = [];
   for (let index = 0; index < rows.length; index++) {
-    const row = rows[index];
+    const row = await clipThumbRow(question, rows[index]);
     const bitmap = await pageBitmap(row.page || question.page, question.source);
     const slice = thumbContent(bitmap, question, row);
     if (slice && slice.srcW > 2 && slice.srcH > 2) pieces.push({ bitmap, slice });
@@ -740,7 +804,11 @@ async function paintThumb(canvas) {
       fitted.push(piece);
       return;
     }
-    const cut = Math.floor(slice.srcW / 2);
+    const cut = wordGapCut(piece.bitmap, slice);
+    if (cut == null || cut < 8 || slice.srcW - cut < 8) {
+      fitted.push(piece);
+      return;
+    }
     const rightW = slice.srcW - cut;
     fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcX: slice.srcX + cut, srcW: rightW } });
     fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcW: cut } });
@@ -1276,11 +1344,20 @@ function worksheetOrder(chosen) {
 }
 
 function answerBox(items, questionNumber, part) {
-  const marker = items.find((item) => String(item.str || '').trim() === '(' + questionNumber + ')');
+  const markers = [];
+  items.forEach((item) => {
+    const n = markerNumber(item, items);
+    if (n == null) return;
+    markers.push(item);
+  });
+  if (!markers.length) return null;
+  const rightEdge = Math.max.apply(null, markers.map((item) => item.x || 0));
+  const column = markers.filter((item) => (item.x || 0) >= rightEdge - 36);
+  const marker = column.find((item) => markerNumber(item, items) === Number(questionNumber));
   if (!marker) return null;
   const sameSheet = (item) => item.page == null || marker.page == null || item.page === marker.page;
-  const next = items
-    .filter((item) => sameSheet(item) && /^\(\d+\)$/.test(String(item.str || '').trim()) && item.y < marker.y - 4)
+  const next = column
+    .filter((item) => sameSheet(item) && item !== marker && item.y < marker.y - 4)
     .sort((a, b) => b.y - a.y)[0];
   const bandTop = marker.y + 8;
   const bandBottom = next ? next.y + 8 : marker.y - 40;
@@ -1301,50 +1378,40 @@ function answerBox(items, questionNumber, part) {
     const index = labels.findIndex((item) => item.part === part);
     if (index < 0) return null;
     const label = labels[index];
-    if (label.rest) {
-      const glyphTop = label.y + Math.max(label.h || 8, 8) + 2;
-      const glyphBottom = label.y - 3;
-      const glyphLeft = label.x - 3;
-      const glyphRight = label.x + Math.max(label.w || 0, 4) + 3;
-      if (glyphRight - glyphLeft < 6 || glyphTop - glyphBottom < 8) return null;
-      return { page: marker.page, x: glyphLeft, y: glyphBottom, w: glyphRight - glyphLeft, h: glyphTop - glyphBottom };
-    }
     const follower = labels[index + 1];
     const nextOnLine = follower && Math.abs(follower.y - label.y) <= 6 ? follower : null;
-    right = label.x - 1;
+    right = label.rest ? label.x + Math.max(label.w || 0, 4) + 3 : label.x - 1;
     left = nextOnLine ? nextOnLine.x + Math.max(nextOnLine.w || 0, 8) + 2 : 28;
-    top = label.y + 16;
-    if (nextOnLine) bottom = label.y - 12;
-    else if (follower) bottom = follower.y + 12;
-    else bottom = next ? Math.max(next.y + 8, label.y - 30) : label.y - 14;
+    if (label.rest) left = Math.min(left, label.x - 3);
+    top = label.y + 18;
+    if (nextOnLine) bottom = label.y - 14;
+    else if (follower) bottom = follower.y + 14;
+    else bottom = next ? Math.max(next.y + 8, label.y - 36) : label.y - 16;
   }
-  if (top - bottom < 8) return null;
-  const glyphs = items.filter((item) => (
-    sameSheet(item)
-    && item.y <= top
-    && item.y >= bottom - 2
-    && item.x >= left - 1
-    && item.x < right
-    && !answerPart(item, items)
-    && !/^[אבגדהו]\.$/.test(String(item.str || '').trim())
-    && !/^\(\d+\)$/.test(String(item.str || '').trim())
-  ));
-  if (!glyphs.length) return null;
-  const glyphLeft = Math.min.apply(null, glyphs.map((item) => item.x)) - 3;
-  const glyphRight = Math.max.apply(null, glyphs.map((item) => item.x + Math.max(item.w || 0, 4))) + 3;
-  const glyphTop = Math.max.apply(null, glyphs.map((item) => item.y + Math.max(item.h || 8, 8))) + 2;
-  const glyphBottom = Math.min.apply(null, glyphs.map((item) => item.y)) - 3;
-  left = Math.max(left, glyphLeft);
-  right = Math.min(right, glyphRight);
-  top = Math.min(top, glyphTop);
-  bottom = Math.max(bottom, glyphBottom);
-  if (right - left < 6) return null;
+  if (top - bottom < 8 || right - left < 6) return null;
   return { page: marker.page, x: left, y: bottom, w: right - left, h: top - bottom };
+}
+
+function markerNumber(item, items) {
+  const text = String(item.str || '').trim();
+  let match = text.match(/^\((\d{1,2})\)$/);
+  if (match) return Number(match[1]);
+  match = text.match(/^(\d{1,2})\.$/);
+  if (match) return Number(match[1]);
+  if (!/^\d{1,2}$/.test(text)) return null;
+  const dotted = items.some((other) => (
+    other !== item
+    && String(other.str || '').trim() === '.'
+    && Math.abs((other.y || 0) - (item.y || 0)) <= 3
+    && other.x < item.x
+    && item.x - other.x <= 16
+  ));
+  return dotted ? Number(text) : null;
 }
 
 function answerPart(item, items) {
   const text = String(item.str || '').trim();
-  const combined = text.match(/^([אבגדהו])\.\s*(.*)$/);
+  const combined = text.match(/^([אבגדהו])\.\s*(.*)$/) || text.match(/^\.\s*([אבגדהו])\s*(.*)$/);
   if (combined) return { part: combined[1], rest: combined[2] };
   if (/^[אבגדהו]$/.test(text)) {
     const dot = items.some((other) => (
@@ -1448,7 +1515,11 @@ async function answerSlices(chosen) {
     const found = pages && pages.length ? answerSliceFor(pages, question) : null;
     if (!found) {
       missing.push(label);
-      slices.push({ kind: 'missing', text: label + ' — אין תשובה במקור', gap: 6, block: 'answers', source });
+      const pageNo = pages && pages.length ? pages[0].page : 0;
+      const note = pageNo
+        ? label + ' — ראו דף התשובות במקור, עמוד ' + pageNo
+        : label + ' — אין תשובה במקור';
+      slices.push({ kind: 'missing', text: note, gap: 6, block: 'answers', source });
     } else {
       slices.push({ kind: 'answer', text: label, page: found.page, box: found.box, gap: 8, block: 'answers', source });
     }
@@ -1585,54 +1656,92 @@ function sliceInkRows(bitmap, box) {
   return { bands, y0, height };
 }
 
+function placedBox(box, y, h) {
+  const next = { ...box, y, h };
+  if (!box.mask || !(box.h > 0)) return next;
+  const absTop = box.y + box.mask.y * box.h;
+  const absBot = absTop + box.mask.h * box.h;
+  const maskTop = Math.max(absTop, y);
+  const maskBot = Math.min(absBot, y + h);
+  if (maskBot - maskTop < 0.0015) delete next.mask;
+  else next.mask = { x: box.mask.x, w: box.mask.w, y: (maskTop - y) / h, h: (maskBot - maskTop) / h };
+  return next;
+}
+
 function trimPieceBox(slice, bitmap) {
   const box = slice.box;
   if (!box || !bitmap) return slice;
-  const source = slice.source;
+  let y = box.y;
   let y2 = box.y + box.h;
+  const source = slice.source;
   const footer = source && source.footerCrop;
-  if (footer && Number(footer.page) === Number(slice.page) && footer.y < y2) y2 = footer.y;
-  const clipped = y2 < box.y + box.h - 0.0001 ? { ...box, h: Math.max(0.004, y2 - box.y) } : box;
+  if (slice.kind !== 'answer') {
+    if (footer && Number(footer.page) === Number(slice.page) && footer.y < y2) y2 = footer.y;
+    // Running header (בס״ד) and the source footer line, on every page.
+    if (y < 0.046 && y2 > y + 0.03) y = 0.046;
+    if (y2 > 0.958 && y < 0.93) y2 = 0.958;
+  }
+  if (y2 - y < 0.004) return slice;
+  const clipped = y === box.y && Math.abs(y2 - (box.y + box.h)) < 0.0001 ? box : placedBox(box, y, y2 - y);
   const ink = sliceInkRows(bitmap, clipped);
-  if (!ink || !ink.bands.length) return slice;
-  const bands = ink.bands.slice();
+  if (!ink || !ink.bands.length) return { ...slice, box: clipped };
   const pageH = ink.height;
-  if (slice.kind === 'answer') {
-    if (bands.length > 1) {
-      const first = bands[0];
-      const next = bands[1];
-      if (first.h < Math.max(6, next.h * 0.75) && next.y - (first.y + first.h) > 1) bands.shift();
-    }
-    if (bands.length > 1) {
-      const last = bands[bands.length - 1];
-      const prev = bands[bands.length - 2];
-      if (last.h < Math.max(6, prev.h * 0.75) && last.y - (prev.y + prev.h) > 1) bands.pop();
-    }
-  } else {
-    while (bands.length > 1) {
-      const last = bands[bands.length - 1];
-      const prev = bands[bands.length - 2];
-      const gap = last.y - (prev.y + prev.h);
-      if (last.h < pageH * 0.04 && gap > Math.max(pageH * 0.03, last.h * 2.5)) bands.pop();
-      else break;
-    }
-  }
-  if (!bands.length) return slice;
   const pad = Math.max(2, Math.round(pageH * 0.003));
-  const top = Math.max(0, ink.y0 + bands[0].y - pad);
-  const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
-  const y = top / pageH;
-  const h = Math.max(0.004, (bot - top) / pageH);
-  const next = { ...box, y, h };
-  if (box.mask && box.h > 0) {
-    const absTop = box.y + box.mask.y * box.h;
-    const absBot = absTop + box.mask.h * box.h;
-    const maskTop = Math.max(absTop, y);
-    const maskBot = Math.min(absBot, y + h);
-    if (maskBot - maskTop < 0.0015) delete next.mask;
-    else next.mask = { x: box.mask.x, w: box.mask.w, y: (maskTop - y) / h, h: (maskBot - maskTop) / h };
+  if (slice.kind === 'answer') {
+    const bands = ink.bands;
+    const top = Math.max(0, ink.y0 + bands[0].y - pad);
+    const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
+    return { ...slice, box: placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH)) };
   }
-  return { ...slice, box: next };
+  // Keep the original writing space. Cut only past one third of a page below the last ink.
+  const last = ink.bands[ink.bands.length - 1];
+  const inkBot = ink.y0 + last.y + last.h + pad;
+  const origBot = Math.min(pageH, (clipped.y + clipped.h) * pageH);
+  const capped = Math.min(origBot, inkBot + pageH / 3);
+  if (capped >= origBot - 1) return { ...slice, box: clipped };
+  return { ...slice, box: placedBox(clipped, clipped.y, Math.max(0.004, capped / pageH - clipped.y)) };
+}
+
+function sealOverlaps(measured) {
+  for (let i = 0; i < measured.length; i += 1) {
+    const earlier = measured[i];
+    if (!earlier.slice || (earlier.slice.kind !== 'row' && earlier.slice.kind !== 'stem')) continue;
+    for (let j = i + 1; j < measured.length; j += 1) {
+      const later = measured[j];
+      const box = earlier.slice.box;
+      const other = later.slice && later.slice.box;
+      if (!box || !other || later.slice.page !== earlier.slice.page) continue;
+      if (later.slice.kind !== 'row' && later.slice.kind !== 'stem') continue;
+      const top = Math.max(box.y, other.y);
+      const bot = Math.min(box.y + box.h, other.y + other.h);
+      if (bot - top < 0.004) continue;
+      const mask = box.mask;
+      const maskTop = mask ? box.y + mask.y * box.h : 0;
+      const maskBot = mask ? maskTop + mask.h * box.h : 0;
+      const covered = mask && mask.x <= 0.46 && mask.x + mask.w >= 0.98 && maskTop <= top + 0.003 && maskBot >= bot - 0.003;
+      if (covered) continue;
+      const abs = [];
+      if (mask && box.h > 0) abs.push({ x: mask.x, w: mask.w, y: maskTop, y2: maskBot });
+      abs.push({ x: 0.42, w: 0.58, y: top, y2: bot });
+      let best = abs[0];
+      abs.forEach((item) => {
+        if (item.y2 - item.y > best.y2 - best.y) best = item;
+      });
+      const height = box.h;
+      earlier.slice = {
+        ...earlier.slice,
+        box: {
+          ...box,
+          mask: {
+            x: best.x,
+            w: best.w,
+            y: Math.max(0, (Math.max(best.y, box.y) - box.y) / height),
+            h: Math.max(0.01, (Math.min(best.y2, box.y + height) - Math.max(best.y, box.y)) / height),
+          },
+        },
+      };
+    }
+  }
 }
 
 async function measureWorksheet(slices) {
@@ -1665,6 +1774,7 @@ async function measureWorksheet(slices) {
       }
     }
   }
+  sealOverlaps(measured);
   return measured;
 }
 

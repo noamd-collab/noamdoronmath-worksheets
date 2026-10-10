@@ -468,6 +468,24 @@ describe('teacher catalog picker', () => {
     ], 5, 'ו');
     assert.ok(combined);
     assert.ok(combined.x < 180 && combined.x + combined.w > 240);
+    const dotted = answerBox([
+      { str: '8.', x: 540, y: 400, w: 16 },
+      { str: 'א.', x: 510, y: 400, w: 12 },
+      { str: '12', x: 470, y: 400, w: 16 },
+      { str: '9.', x: 540, y: 370, w: 16 },
+    ], 8, 'א');
+    assert.ok(dotted);
+    assert.ok(dotted.x <= 482 && dotted.x + dotted.w >= 486);
+    assert.ok(dotted.x + dotted.w < 510);
+    const symbolOnly = answerBox([
+      { str: '(4)', x: 540, y: 500, w: 16 },
+      { str: 'ב.', x: 500, y: 500, w: 12 },
+      { str: 'א.', x: 200, y: 500, w: 12 },
+      { str: '(5)', x: 540, y: 470, w: 16 },
+    ], 4, 'ב');
+    assert.ok(symbolOnly);
+    assert.ok(symbolOnly.x > 200 && symbolOnly.x < 230);
+    assert.ok(symbolOnly.x + symbolOnly.w > 490 && symbolOnly.x + symbolOnly.w < 500);
     const trimApi = new Function(`${preview.slice(preview.indexOf('function sliceInkRows'), preview.indexOf('async function measureWorksheet'))} return { trimPieceBox };`)() as {
       trimPieceBox: (slice: { kind: string; page: number; box: { x: number; y: number; w: number; h: number }; source?: { footerCrop?: { page: number; y: number } } }, bitmap: { width: number; height: number; getContext: (kind: string) => { getImageData: (x: number, y: number, w: number, h: number) => { data: Uint8ClampedArray } } }) => { box: { y: number; h: number } };
     };
@@ -485,14 +503,19 @@ describe('teacher catalog picker', () => {
       }
     };
     ink(4, 36, 30, 48);
-    ink(8, 20, 370, 378);
     const trimBitmap = { width: trimW, height: trimH, getContext: () => ({ getImageData: () => ({ data: trimData }) }) };
-    const trimmed = trimApi.trimPieceBox({ kind: 'row', page: 11, box: { x: 0, y: 0, w: 1, h: 1 }, source: { footerCrop: { page: 10, y: 0.9667 } } }, trimBitmap);
-    assert.ok(trimmed.box.y < 0.08, String(trimmed.box.y));
-    assert.ok(trimmed.box.y + trimmed.box.h < 0.2, String(trimmed.box.y + trimmed.box.h));
+    const kept = trimApi.trimPieceBox({ kind: 'row', page: 2, box: { x: 0, y: 0, w: 1, h: 0.15 }, source: { footerCrop: { page: 10, y: 0.9667 } } }, trimBitmap);
+    assert.ok(kept.box.y < 0.05, String(kept.box.y));
+    assert.ok(kept.box.y + kept.box.h > 0.14, String(kept.box.y + kept.box.h));
+    const capped = trimApi.trimPieceBox({ kind: 'row', page: 11, box: { x: 0, y: 0, w: 1, h: 1 }, source: { footerCrop: { page: 10, y: 0.9667 } } }, trimBitmap);
+    assert.ok(capped.box.y < 0.06, String(capped.box.y));
+    const capEnd = capped.box.y + capped.box.h;
+    assert.ok(capEnd > 0.4 && capEnd < 0.55, String(capEnd));
     ink(4, 36, 4, 8);
     const answerTrim = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.2 } }, trimBitmap);
-    assert.ok(answerTrim.box.y > 0.05, String(answerTrim.box.y));
+    assert.ok(answerTrim.box.y < 0.03, String(answerTrim.box.y));
+    const answerEnd = answerTrim.box.y + answerTrim.box.h;
+    assert.ok(answerEnd > 0.1 && answerEnd < 0.16, String(answerEnd));
     const sheet = preview.slice(preview.indexOf('async function paintAllShort'), preview.indexOf('function markedHTML'));
     assert.equal(sheet.includes('headerCrop'), false);
     assert.match(sheet, /paintWorksheet/);
