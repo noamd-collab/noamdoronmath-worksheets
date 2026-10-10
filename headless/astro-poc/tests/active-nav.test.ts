@@ -79,6 +79,8 @@ describe('M37 resolveActiveNav', () => {
     assert.equal(resolveActiveNav('/accessibilityadaptation'), null);
     assert.equal(resolveActiveNav('/conditionforfreeworksheets'), null);
     assert.equal(resolveActiveNav('/worksheet-viewer-noam.html'), null);
+    assert.equal(resolveActiveNav('/teachers'), 'teachers');
+    assert.notEqual(resolveActiveNav('/teachers'), 'home');
   });
 
   it('SiteHeader sets aria-current=page only on the matching destination', async () => {
@@ -108,6 +110,7 @@ describe('M37 resolveActiveNav', () => {
     const destinations = {
       home: '/', about: '/aboutus', blog: '/blog',
       tools: '/math-tools', highschool: '/high-school-math', learning: '/learning.html',
+      teachers: '/teachers',
     };
     for (const [key, href] of Object.entries(destinations)) {
       for (const expr of currentExpr(href)) {

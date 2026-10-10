@@ -42,12 +42,41 @@ body.exact-site {
 .exact-nav-tools:focus-within:not([data-shut]) .exact-nav-drop,
 .exact-nav-tools[data-open]:not([data-shut]) .exact-nav-drop {opacity:1;visibility:visible;pointer-events:auto;}
 .exact-nav-tools[data-shut] .exact-nav-drop {opacity:0;visibility:hidden;pointer-events:none;}
+.exact-nav-teachers {display:inline-flex;align-items:center;}
+.exact-nav-new {
+  display:inline-block;margin-inline-start:6px;padding:0 6px;border-radius:999px;
+  background:#e8f4f3;color:#1f6462;border:1px solid #8fbfbd;
+  font-size:11px;font-weight:700;line-height:1.65;letter-spacing:0;
+}
 .exact-nav-toggle,.exact-nav-learn-mobile {display:none!important;}
-@media(max-width:767px){
+@media (min-width: 900px) {
+  .exact-header {height:90px;box-sizing:border-box;}
+  .exact-header__row {flex-wrap:nowrap!important;gap:8px!important;height:100%;box-sizing:border-box;padding-top:0!important;padding-bottom:0!important;padding-inline:12px!important;}
+  .exact-header nav[data-nav-panel] {flex-wrap:nowrap!important;gap:0!important;min-width:0;font-size:14px;}
+  .exact-header nav[data-nav-panel] > a,
+  .exact-nav-tools__btn {padding:6px 7px!important;white-space:nowrap;}
+  .exact-header__learn {padding:8px 12px!important;font-size:14px!important;white-space:nowrap;}
+}
+@media (min-width: 900px) and (max-width: 1279px) {
+  .exact-header__row {gap:6px!important;padding-inline:8px!important;}
+  .exact-header nav[data-nav-panel] {font-size:13px!important;}
+  .exact-header nav[data-nav-panel] > a,
+  .exact-nav-tools__btn {padding:6px 3px!important;}
+  .exact-header__learn {padding:8px 8px!important;font-size:13px!important;}
+  .exact-nav-new {margin-inline-start:4px;padding:0 4px;}
+}
+@media (min-width: 900px) and (max-width: 1023.98px) {
+  .exact-header__row {gap:6px!important;padding-inline:6px!important;}
+  .exact-header nav[data-nav-panel] {font-size:12px!important;}
+  .exact-header nav[data-nav-panel] > a,
+  .exact-nav-tools__btn {padding:6px 5px!important;}
+  .exact-header__learn {padding:8px 8px!important;font-size:12px!important;}
+}
+@media (max-width: 899.98px) {
   .exact-header__row {flex-wrap:nowrap!important;gap:10px!important;padding:8px 14px!important;position:relative;}
   .exact-header [data-exact-logo] {height:52px!important;}
   .exact-header__learn {display:none!important;}
-  .exact-nav-toggle {display:inline-flex!important;align-items:center;gap:8px;margin-inline-start:auto;padding:8px 14px;background:#fff;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:3px 3px 0 #22305a;color:#22305a;font:700 15px Heebo,'Heebo Fallback',sans-serif;cursor:pointer;}
+  .exact-nav-toggle {display:inline-flex!important;align-items:center;gap:8px;margin-inline-start:auto;box-sizing:border-box;min-height:44px;padding:8px 14px;background:#fff;border:2px solid #22305a;border-radius:18px 6px 20px 8px / 8px 20px 6px 18px;box-shadow:3px 3px 0 #22305a;color:#22305a;font:700 15px Heebo,'Heebo Fallback',sans-serif;cursor:pointer;}
   .exact-nav-toggle[aria-expanded='true'] {box-shadow:3px 3px 0 #e5735c;}
   .exact-nav-toggle:focus-visible {outline:3px solid #2a7c7a;outline-offset:2px;}
   .exact-nav-toggle__bars,.exact-nav-toggle__bars::before,.exact-nav-toggle__bars::after {display:block;width:18px;height:2px;background:#22305a;border-radius:2px;}
@@ -63,7 +92,8 @@ body.exact-site {
   /* Column flex inherits align-items:center from the desktop rule, which centers
      each link on its own width. Stretch the rows and start-align the text (RTL = right). */
   .exact-header nav[data-nav-panel] {align-items:stretch;}
-  .exact-header nav[data-nav-panel] a {padding:10px 12px!important;border-radius:10px!important;text-align:start;}
+  .exact-header nav[data-nav-panel] a {box-sizing:border-box;min-height:44px;padding:10px 12px!important;border-radius:10px!important;text-align:start;}
+  .exact-header nav[data-nav-panel] a.exact-nav-teachers {display:flex;}
   .exact-header nav[data-nav-panel] .exact-nav-learn-mobile {display:block!important;}
   .exact-nav-tools {display:block;}
   .exact-nav-tools__btn {display:none!important;}

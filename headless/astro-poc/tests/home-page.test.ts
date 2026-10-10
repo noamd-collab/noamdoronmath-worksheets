@@ -136,6 +136,11 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
       'href="/learning.html"',
       'תוספים',
       'מתמטיקה לתיכון',
+      'href="/teachers"',
+      'למורים',
+      'aria-label="למורים, חדש"',
+      'data-peek="teachers"',
+      'חדש',
     ]) {
       assert.ok(html.includes(needle), `missing ${needle}`);
     }

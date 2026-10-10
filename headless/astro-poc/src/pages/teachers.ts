@@ -1,5 +1,5 @@
 /**
- * Teachers page: grade-9 factoring picker.
+ * Teachers page: every catalog grade and sheet.
  * Static assets live under public/teachers/. This route is not an .astro
  * page, so it stays out of the pages sitemap glob.
  * Not linked from the menu. Preview hosts stay noindex.
