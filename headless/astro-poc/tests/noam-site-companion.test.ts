@@ -219,6 +219,9 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('var SITE_FONT = "Heebo,\'Arial Hebrew\',Arial,sans-serif"'));
     assert.ok(client.includes('font-family:" + SITE_FONT + "'));
     assert.ok(client.includes('#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}"'));
+    assert.ok(client.includes('var API_BASE = "/api"'));
+    assert.equal(client.includes('my-site-2'), false);
+    assert.ok(client.includes('client.postJson(API'));
     assert.ok(client.includes('var TEACHER_QUIET = "נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס."'));
     assert.ok(client.includes('NOAM_PANEL_FAILED'));
     assert.ok(client.includes('var text = teacher ? TEACHER_QUIET : ((error && error.message) || FALLBACK)'));

@@ -6,7 +6,7 @@
   if (window.__noamSiteCompanion) return;
   window.__noamSiteCompanion = true;
 
-  var API_BASE = "https://amiramnoam.wixstudio.com/my-site-2/_functions";
+  var API_BASE = "/api";
   var API = API_BASE + "/noamSiteCompanion";
   var FALLBACK = "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
   var TEACHER_QUIET = "נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס.";
