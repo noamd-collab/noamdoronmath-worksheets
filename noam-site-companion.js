@@ -137,6 +137,13 @@
     return pageKind() === "worksheet" && SOLVE_REQUEST.test(String(message || ""));
   }
 
+  function forceSiteFont(scope) {
+    if (!scope || !scope.style) return;
+    scope.style.setProperty("font-family", SITE_FONT, "important");
+    var nodes = scope.querySelectorAll("*");
+    for (var i = 0; i < nodes.length; i++) nodes[i].style.setProperty("font-family", SITE_FONT, "important");
+  }
+
   var style = document.createElement("style");
   style.textContent = [
     "#noam-site-companion{position:fixed;z-index:9990;right:8px;bottom:8px;left:auto;font-family:" + SITE_FONT + ";color:#22305a}",
@@ -206,6 +213,7 @@
     "html.noam-ai-engaged,html.noam-ai-engaged body,#noam-site-companion-panel{scroll-behavior:auto;transition:none;animation:none}",
     "}",
     "@media print{#noam-site-companion,#noam-site-companion-panel{display:none!important}html.noam-ai-engaged{display:block!important;height:auto!important;overflow:visible!important}html.noam-ai-engaged body{max-height:none!important;overflow:visible!important}}",
+    "#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + "!important}",
   ].join("");
   document.head.appendChild(style);
 
@@ -238,6 +246,7 @@
     '<button type="submit" aria-label="שליחה">שליחה</button></form>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
+  forceSiteFont(root);
 
   var answerEl = document.getElementById("noam-site-companion-answer");
   var primaryEl = document.getElementById("noam-site-companion-primary");
@@ -302,6 +311,7 @@
     chipsEl.textContent = "";
     (items || []).slice(0, 2).forEach(appendChip);
     if (pageKind() === "teachers") teacherGoalChips().forEach(appendChip);
+    forceSiteFont(panel);
   }
 
   function showIdle() {
