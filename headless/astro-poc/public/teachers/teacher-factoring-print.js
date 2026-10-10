@@ -1156,6 +1156,168 @@ async function paintShort(root, slices) {
   });
 }
 
+function worksheetOrder(chosen) {
+  const PART_ORDER = { '': 0, 'א': 1, 'ב': 2, 'ג': 3, 'ד': 4, 'ה': 5, 'ו': 6, 'ז': 7, 'ח': 8, 'ט': 9 };
+  const LEVEL_ORDER = { a: 0, b: 1, c: 2, one: 3 };
+  return chosen.slice().sort((a, b) => {
+    const levelA = LEVEL_ORDER[a.source && a.source.level] ?? 9;
+    const levelB = LEVEL_ORDER[b.source && b.source.level] ?? 9;
+    const partA = PART_ORDER[a.part || ''] ?? 20;
+    const partB = PART_ORDER[b.part || ''] ?? 20;
+    return levelA - levelB || (Number(a.q) || 0) - (Number(b.q) || 0) || partA - partB || String(a.id || '').localeCompare(String(b.id || ''), 'he');
+  });
+}
+
+function answerBox(items, questionNumber, part) {
+  const marker = items.find((item) => String(item.str || '').trim() === '(' + questionNumber + ')');
+  if (!marker) return null;
+  const sameSheet = (item) => item.page == null || marker.page == null || item.page === marker.page;
+  const next = items
+    .filter((item) => sameSheet(item) && /^\(\d+\)$/.test(String(item.str || '').trim()) && item.y < marker.y - 4)
+    .sort((a, b) => b.y - a.y)[0];
+  const bandTop = marker.y + 8;
+  const bandBottom = next ? next.y + 8 : marker.y - 40;
+  const labels = items
+    .filter((item) => sameSheet(item) && /^[אבגדהו]\.$/.test(String(item.str || '').trim()) && item.y <= bandTop && item.y >= bandBottom)
+    .sort((a, b) => b.y - a.y || b.x - a.x);
+  let left = 28;
+  let right = marker.x - 4;
+  let top = marker.y + 16;
+  let bottom = next ? next.y + 8 : marker.y - 16;
+  if (part) {
+    const index = labels.findIndex((item) => String(item.str).trim().startsWith(part));
+    if (index < 0) return null;
+    const label = labels[index];
+    const follower = labels[index + 1];
+    const nextOnLine = follower && Math.abs(follower.y - label.y) <= 6 ? follower : null;
+    right = label.x - 1;
+    left = nextOnLine ? nextOnLine.x + Math.max(nextOnLine.w || 0, 8) + 2 : 28;
+    top = label.y + 16;
+    if (nextOnLine) bottom = label.y - 12;
+    else if (follower) bottom = follower.y + 12;
+    else bottom = next ? Math.max(next.y + 8, label.y - 30) : label.y - 14;
+  }
+  if (top - bottom < 8) return null;
+  const glyphs = items.filter((item) => (
+    sameSheet(item)
+    && item.y <= top
+    && item.y >= bottom - 2
+    && item.x >= left - 1
+    && item.x < right
+    && !/^[אבגדהו]\.$/.test(String(item.str || '').trim())
+    && !/^\(\d+\)$/.test(String(item.str || '').trim())
+  ));
+  if (!glyphs.length) return null;
+  const glyphLeft = Math.min.apply(null, glyphs.map((item) => item.x)) - 3;
+  const glyphRight = Math.max.apply(null, glyphs.map((item) => item.x + Math.max(item.w || 0, 4))) + 3;
+  const glyphTop = Math.max.apply(null, glyphs.map((item) => item.y + Math.max(item.h || 8, 8))) + 2;
+  const glyphBottom = Math.min.apply(null, glyphs.map((item) => item.y)) - 3;
+  left = Math.max(left, glyphLeft);
+  right = Math.min(right, glyphRight);
+  top = Math.min(top, glyphTop);
+  bottom = Math.max(bottom, glyphBottom);
+  if (right - left < 6) return null;
+  return { page: marker.page, x: left, y: bottom, w: right - left, h: top - bottom };
+}
+
+function exerciseSlices(chosen) {
+  const ordered = worksheetOrder(chosen);
+  const groups = [];
+  ordered.forEach((question) => {
+    const source = question.source;
+    const last = groups[groups.length - 1];
+    if (last && source && last.source.pdfId === source.pdfId) last.questions.push(question);
+    else groups.push({ source, questions: [question] });
+  });
+  const saved = SOURCE;
+  const slices = [];
+  try {
+    groups.forEach((entry, index) => {
+      if (groups.length > 1 && entry.source && entry.source.levelLabel) {
+        slices.push({ kind: 'level', text: entry.source.levelLabel, gap: index ? 18 : 8, block: 'level-' + entry.source.pdfId, source: entry.source });
+      }
+      SOURCE = entry.source;
+      shortSlices(entry.questions).forEach((slice) => {
+        if (slice.kind === 'header' || slice.kind === 'footer') return;
+        slices.push({ ...slice, source: entry.source });
+      });
+    });
+  } finally {
+    SOURCE = saved;
+  }
+  return slices;
+}
+
+async function answerPages(source) {
+  const pdf = await loadPdf(source);
+  const found = [];
+  for (let number = 1; number <= pdf.numPages; number += 1) {
+    const page = await pdf.getPage(number);
+    const text = await page.getTextContent();
+    const items = text.items.filter((item) => item.str && String(item.str).trim()).map((item) => ({
+      str: item.str,
+      x: item.transform[4],
+      y: item.transform[5],
+      w: item.width || 0,
+      h: item.height || 0,
+      page: number,
+    }));
+    if (!items.some((item) => item.str.includes('תשובות סופיות'))) continue;
+    const viewport = page.getViewport({ scale: 1 });
+    found.push({ page: number, width: viewport.width, height: viewport.height, items });
+  }
+  return found;
+}
+
+function answerSliceFor(pages, question) {
+  const part = question.part || '';
+  for (let index = 0; index < pages.length; index += 1) {
+    const sheet = pages[index];
+    const box = answerBox(sheet.items, question.q, part);
+    if (!box || box.page !== sheet.page) continue;
+    const pad = 2;
+    const x = Math.max(0, box.x - pad);
+    const y = Math.max(0, box.y - pad);
+    const w = Math.min(sheet.width - x, box.w + pad * 2);
+    const h = Math.min(sheet.height - y, box.h + pad * 2);
+    return {
+      page: sheet.page,
+      box: {
+        x: x / sheet.width,
+        y: (sheet.height - y - h) / sheet.height,
+        w: w / sheet.width,
+        h: h / sheet.height,
+      },
+    };
+  }
+  return null;
+}
+
+async function answerSlices(chosen) {
+  const ordered = worksheetOrder(chosen);
+  const slices = [{ kind: 'answers-head', text: 'תשובות', gap: 20, block: 'answers' }];
+  const missing = [];
+  const cache = new Map();
+  for (let index = 0; index < ordered.length; index += 1) {
+    const question = ordered[index];
+    const source = question.source;
+    const label = (source && source.levelLabel ? source.levelLabel + ' · ' : '') + (question.label || ('שאלה ' + question.q));
+    let pages = source ? cache.get(source.pdfId) : [];
+    if (source && !cache.has(source.pdfId)) {
+      pages = await answerPages(source);
+      cache.set(source.pdfId, pages);
+    }
+    const found = pages && pages.length ? answerSliceFor(pages, question) : null;
+    if (!found) {
+      missing.push(label);
+      slices.push({ kind: 'missing', text: label + ' — אין תשובה במקור', gap: 6, block: 'answers', source });
+    } else {
+      slices.push({ kind: 'answer', text: label, page: found.page, box: found.box, gap: 8, block: 'answers', source });
+    }
+  }
+  return { slices, missing };
+}
+
 function groupsOf(chosen) {
   const groups = [];
   chosen.forEach((question) => {
@@ -1168,15 +1330,206 @@ function groupsOf(chosen) {
   return groups;
 }
 
-async function paintAllShort(root, chosen) {
+async function paintGroupedShort(root, chosen) {
   const holder = document.createElement('div');
-  for (const group of groupsOf(chosen)) {
-    SOURCE = group.source;
-    const part = document.createElement('div');
-    await paintShort(part, shortSlices(group.questions));
-    while (part.firstChild) holder.appendChild(part.firstChild);
+  const saved = SOURCE;
+  try {
+    for (const group of groupsOf(chosen)) {
+      SOURCE = group.source;
+      const part = document.createElement('div');
+      await paintShort(part, shortSlices(group.questions));
+      while (part.firstChild) holder.appendChild(part.firstChild);
+    }
+  } finally {
+    SOURCE = saved;
   }
   root.replaceChildren(...holder.childNodes);
+}
+
+function sheetTitle(chosen) {
+  const topics = [];
+  const levels = [];
+  chosen.forEach((question) => {
+    const source = question.source;
+    if (!source) return;
+    const topic = source.topic || '';
+    if (topic && topics.indexOf(topic) < 0) topics.push(topic);
+    if (source.levelLabel && levels.indexOf(source.levelLabel) < 0) levels.push(source.levelLabel);
+  });
+  const topic = topics.join(' · ') || 'דף תרגול';
+  if (levels.length === 1) return topic + ' · ' + levels[0];
+  return topic;
+}
+
+async function measureWorksheet(slices) {
+  const OUT_W = 1000;
+  const measured = [];
+  for (let index = 0; index < slices.length; index += 1) {
+    const slice = slices[index];
+    if (slice.kind === 'level' || slice.kind === 'answers-head') {
+      measured.push({ slice, dh: 34 });
+    } else if (slice.kind === 'missing') {
+      measured.push({ slice, dh: 26 });
+    } else if (slice.kind === 'answer' || slice.kind === 'row' || slice.kind === 'stem') {
+      const bitmap = await pageBitmap(slice.page, slice.source);
+      const sw = slice.box.w * bitmap.width;
+      const sh = slice.box.h * bitmap.height;
+      const imageH = Math.max(1, Math.round(OUT_W * sh / sw));
+      if (slice.kind === 'answer') {
+        const naturalW = Math.max(1, OUT_W * slice.box.w);
+        const naturalH = Math.max(1, naturalW * sh / sw);
+        const maxW = OUT_W - 56;
+        let scale = 72 / naturalH;
+        if (naturalW * scale > maxW) scale = maxW / naturalW;
+        scale = Math.max(1, scale);
+        const dw = Math.max(48, Math.round(naturalW * scale));
+        const dh = Math.round(naturalH * scale) + 24;
+        measured.push({ slice, bitmap, sw, sh, dw, dh });
+      } else {
+        measured.push({ slice, bitmap, sw, sh, dh: imageH });
+      }
+    }
+  }
+  return measured;
+}
+
+function packWorksheet(measured) {
+  const PAGE_H = 1440;
+  const FOOT = 36;
+  const FIRST_TOP = 118;
+  const CONT_TOP = 48;
+  const heading = (item) => item && (item.slice.kind === 'stem' || item.slice.kind === 'level' || item.slice.kind === 'answers-head');
+  const heightOf = (items, top) => top + FOOT + contentHeight(items);
+  const pages = [];
+  let page = [];
+  let top = FIRST_TOP;
+  measured.forEach((item) => {
+    const body = PAGE_H - top - FOOT;
+    let next = item;
+    if (next.dh > body && !page.length) {
+      const factor = body / next.dh;
+      next = { ...next, dh: Math.max(1, Math.round(next.dh * factor)), slice: { ...next.slice, gap: scaledGap(next.slice.gap, factor) } };
+    }
+    if (page.length && heightOf(page.concat([next]), top) > PAGE_H) {
+      const last = page[page.length - 1];
+      if (heading(last)) page.pop();
+      if (page.length) pages.push({ top, items: page });
+      page = heading(last) && last !== next ? [last] : [];
+      top = CONT_TOP;
+      const room = PAGE_H - top - FOOT;
+      if (next.dh > room) {
+        const factor = room / next.dh;
+        next = { ...next, dh: Math.max(1, Math.round(next.dh * factor)), slice: { ...next.slice, gap: scaledGap(next.slice.gap, factor) } };
+      }
+    }
+    page.push(next);
+  });
+  if (page.length) pages.push({ top, items: page });
+  if (!pages.length) pages.push({ top: FIRST_TOP, items: [] });
+  return pages;
+}
+
+function paintWorksheetPage(canvas, page, index, count, title) {
+  const OUT_W = 1000;
+  const PAGE_H = 1440;
+  canvas.width = OUT_W;
+  canvas.height = PAGE_H;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, OUT_W, PAGE_H);
+  ctx.fillStyle = '#1a2744';
+  ctx.direction = 'rtl';
+  ctx.font = '700 22px Heebo, Arial, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('בס״ד', OUT_W - 28, 32);
+  if (index === 0) {
+    ctx.font = '700 28px Heebo, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(title, OUT_W / 2, 70);
+    ctx.font = '18px Heebo, Arial, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('שם ______________    כיתה ________    תאריך __________', OUT_W - 28, 104);
+  }
+  let y = page.top;
+  page.items.forEach((item, itemIndex) => {
+    if (itemIndex) y += item.slice.gap;
+    const kind = item.slice.kind;
+    if (kind === 'level' || kind === 'answers-head') {
+      ctx.fillStyle = '#1a2744';
+      ctx.font = kind === 'answers-head' ? '700 24px Heebo, Arial, sans-serif' : '700 18px Heebo, Arial, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.direction = 'rtl';
+      ctx.fillText(item.slice.text, OUT_W - 28, y + (kind === 'answers-head' ? 26 : 24));
+    } else if (kind === 'missing') {
+      ctx.fillStyle = '#1a2744';
+      ctx.font = '16px Heebo, Arial, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.direction = 'rtl';
+      ctx.fillText(item.slice.text, OUT_W - 28, y + 18);
+    } else if (kind === 'answer') {
+      ctx.fillStyle = '#1a2744';
+      ctx.font = '15px Heebo, Arial, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.direction = 'rtl';
+      ctx.fillText(item.slice.text, OUT_W - 28, y + 16);
+      const imageY = y + 22;
+      const imageH = item.dh - 22;
+      const imageW = item.dw || Math.min(OUT_W - 56, imageH * item.sw / item.sh);
+      const sx = item.slice.box.x * item.bitmap.width;
+      const sy = item.slice.box.y * item.bitmap.height;
+      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, OUT_W - 28 - imageW, imageY, imageW, imageH);
+    } else {
+      const sx = item.slice.box.x * item.bitmap.width;
+      const sy = item.slice.box.y * item.bitmap.height;
+      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
+      const mask = item.slice.box.mask;
+      if (mask) {
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(mask.x * OUT_W, y + mask.y * item.dh, mask.w * OUT_W, mask.h * item.dh);
+      }
+    }
+    y += item.dh;
+  });
+  ctx.strokeStyle = '#d5dae5';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(28, PAGE_H - 28);
+  ctx.lineTo(OUT_W - 28, PAGE_H - 28);
+  ctx.stroke();
+  ctx.fillStyle = '#1a2744';
+  ctx.font = '14px Heebo, Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.direction = 'rtl';
+  ctx.fillText('עמוד ' + (index + 1) + ' מתוך ' + count, OUT_W / 2, PAGE_H - 12);
+}
+
+async function paintWorksheet(root, chosen) {
+  if (document.fonts && document.fonts.load) {
+    try {
+      await document.fonts.load('700 28px Heebo');
+      await document.fonts.load('18px Heebo');
+      await document.fonts.load('16px Heebo');
+    } catch (error) {}
+  }
+  const exercises = exerciseSlices(chosen);
+  const answers = await answerSlices(chosen);
+  const measured = await measureWorksheet(exercises.concat(answers.slices));
+  const pages = packWorksheet(measured);
+  const title = sheetTitle(chosen);
+  root.dataset.missingAnswers = answers.missing.join(' | ');
+  root.innerHTML = pages.map((_, index) => (
+    `<figure class="crop-sheet"><canvas></canvas><figcaption>דף מצומצם ${index + 1} מתוך ${pages.length}</figcaption></figure>`
+  )).join('');
+  const canvases = root.querySelectorAll('canvas');
+  pages.forEach((page, index) => paintWorksheetPage(canvases[index], page, index, pages.length, title));
+}
+
+async function paintAllShort(root, chosen) {
+  if (chosen.length && chosen.every((question) => question.source && question.source.mode === 'sheet')) {
+    await paintGroupedShort(root, chosen);
+    return;
+  }
+  await paintWorksheet(root, chosen.filter((question) => !question.source || question.source.mode !== 'sheet'));
 }
 
 function markedHTML(chosen) {
@@ -1207,7 +1560,7 @@ function metaHTML(chosen, cfg) {
 }
 
 async function updateShortPrint(plan, printArea, chosen, note, cfg) {
-  const head = `<p class="plan-notice">דף מצומצם. כל קטע נחתך מדף המקור, עם ההוראה, הנוסח והתרשים המקוריים.</p>${metaHTML(chosen, cfg)}`;
+  const head = `<p class="plan-notice">דף מצומצם אחד. הסעיפים לפי רמה ומספר, והתשובות הסופיות בסוף.</p>${metaHTML(chosen, cfg)}`;
   const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
   plan.innerHTML = head + '<div class="crop-preview"></div>' + foot;
   printArea.innerHTML = '';
@@ -1322,7 +1675,7 @@ async function prepare(mode) {
     }
     $('print-title').textContent = mode === 'short' ? 'דף מצומצם מהמקור' : 'דף המקור עם סימון';
     $('print-lead').textContent = mode === 'short'
-      ? 'קטעים שנחתכו מדף המקור, עם ההוראה והנוסח המקוריים.'
+      ? 'דף אחד: כותרת אחת, הסעיפים לפי רמה ומספר, ותשובות סופיות בסוף.'
       : 'העמוד המלא, ומה שנבחר מסומן עליו.';
     $('print').lastChild.textContent = mode === 'short' ? 'הדפסת הדף המצומצם' : 'הדפסת הדף המסומן';
     printOpener = mode === 'short' ? $('prepare-short') : $('prepare');

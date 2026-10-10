@@ -408,6 +408,47 @@ describe('teacher catalog picker', () => {
     assert.match(html, /@media\(min-width:900px\) and \(max-width:1023\.98px\)\{[\s\S]*?font-size:12px/);
   });
 
+  it('orders a mixed short sheet by level and reads the answer line', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const worksheetOrder = new Function(`${preview.slice(preview.indexOf('function worksheetOrder'), preview.indexOf('function answerBox'))} return worksheetOrder;`)() as (chosen: { id: string; q: number; part: string; source: { level: string } }[]) => { id: string; source: { level: string } }[];
+    const ordered = worksheetOrder([
+      { id: '20ב', q: 20, part: 'ב', source: { level: 'a' } },
+      { id: '1א', q: 1, part: 'א', source: { level: 'b' } },
+      { id: '18א', q: 18, part: 'א', source: { level: 'a' } },
+      { id: '19ב', q: 19, part: 'ב', source: { level: 'a' } },
+    ]);
+    assert.deepEqual(ordered.map((question) => question.source.level + question.id), ['a18א', 'a19ב', 'a20ב', 'b1א']);
+    const answerBox = new Function(`${preview.slice(preview.indexOf('function answerBox'), preview.indexOf('function exerciseSlices'))} return answerBox;`)() as (items: { str: string; x: number; y: number; w: number }[], questionNumber: number, part: string) => { x: number; w: number } | null;
+    const box = answerBox([
+      { str: '(1)', x: 540, y: 727, w: 16 },
+      { str: 'א.', x: 515, y: 727, w: 12 },
+      { str: '6', x: 508, y: 727, w: 8 },
+      { str: 'ב.', x: 489, y: 727, w: 12 },
+      { str: '5', x: 482, y: 727, w: 8 },
+      { str: '(2)', x: 540, y: 706, w: 16 },
+    ], 1, 'א');
+    assert.ok(box);
+    assert.ok(box.x < 510 && box.x + box.w > 508);
+    assert.ok(box.x > 489);
+    const wrapped = answerBox([
+      { str: '(19)', x: 535, y: 357, w: 18 },
+      { str: 'א.', x: 515, y: 358, w: 12 },
+      { str: '5(2n + 3)', x: 430, y: 358, w: 70 },
+      { str: 'ג.', x: 500, y: 340, w: 12 },
+      { str: 'מכפלה', x: 430, y: 340, w: 40 },
+      { str: '(20)', x: 535, y: 319, w: 18 },
+    ], 19, 'ג');
+    assert.ok(wrapped);
+    assert.ok(wrapped.x < 440 && wrapped.x + wrapped.w > 430);
+    assert.ok(wrapped.y < 342 && wrapped.y + wrapped.h > 340);
+    assert.equal(answerBox([{ str: '(3)', x: 100, y: 40, w: 12 }], 9, 'א'), null);
+    const sheet = preview.slice(preview.indexOf('async function paintAllShort'), preview.indexOf('function markedHTML'));
+    assert.equal(sheet.includes('headerCrop'), false);
+    assert.match(sheet, /paintWorksheet/);
+    assert.match(preview, /בס״ד/);
+    assert.match(preview, /תשובות/);
+  });
+
   it('prints one crop when consecutive parts share a drawing', () => {
     const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
     const sheet = JSON.parse(readFileSync(new URL('../public/teachers/sheets/0d548ce76eb74a1ab10385cdaf1f77ca.json', import.meta.url), 'utf8'));
