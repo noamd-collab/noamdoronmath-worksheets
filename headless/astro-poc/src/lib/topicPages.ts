@@ -72,7 +72,6 @@ import trapezoidGrade9 from '../data/topic-pages/trapezoid-grade-9.json';
 import similarTrianglesGrade9 from '../data/topic-pages/similar-triangles-grade-9.json';
 import triangle306090Grade9 from '../data/topic-pages/triangle-30-60-90-grade-9.json';
 
-import anglesGrade7 from '../data/topic-pages/angles-grade-7.json';
 import areaParallelogramTrapezoidCompositeGrade7 from '../data/topic-pages/area-parallelogram-trapezoid-composite-grade-7.json';
 import areaRectanglePerimeterGrade7 from '../data/topic-pages/area-rectangle-perimeter-grade-7.json';
 import compositePolygonsAreaGrade9 from '../data/topic-pages/composite-polygons-area-grade-9.json';
@@ -203,7 +202,6 @@ export const TOPIC_PAGE_M22_UNMIGRATED = [] as const;
 
 /** M23 batch — remaining audited live topic-SEO (25; see UNMIGRATED). */
 export const TOPIC_PAGE_M23_SLUGS = [
-  'angles-grade-7',
   'area-parallelogram-trapezoid-composite-grade-7',
   'area-rectangle-perimeter-grade-7',
   'composite-polygons-area-grade-9',
@@ -440,7 +438,6 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'trapezoid-grade-9': trapezoidGrade9 as TopicPageContent,
   'similar-triangles-grade-9': similarTrianglesGrade9 as TopicPageContent,
   'triangle-30-60-90-grade-9': triangle306090Grade9 as TopicPageContent,
-  'angles-grade-7': anglesGrade7 as TopicPageContent,
   'area-parallelogram-trapezoid-composite-grade-7': areaParallelogramTrapezoidCompositeGrade7 as TopicPageContent,
   'area-rectangle-perimeter-grade-7': areaRectanglePerimeterGrade7 as TopicPageContent,
   'composite-polygons-area-grade-9': compositePolygonsAreaGrade9 as TopicPageContent,

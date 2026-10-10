@@ -81,7 +81,6 @@ describe('parallel co-interior angles film', () => {
       'exterior-angle-triangle-grade-8',
       'geometric-proof-grade-8',
       'isosceles-triangle-grade-8',
-      'angles-grade-7',
     ]) {
       assert.notEqual(topicLandingLoop(loadTopicPage(slug)).marker, 'parallel-cointerior-angles', slug);
     }
