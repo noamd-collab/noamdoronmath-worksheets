@@ -78,7 +78,8 @@ export async function verifyRecaptcha({ token, secret, fetch, action }) {
 
 export async function guardCompanionRequest(input, deps) {
   const origin = input && input.origin ? String(input.origin) : "";
-  if (!isAllowedOrigin(origin)) {
+  const extra = deps && Array.isArray(deps.extraOrigins) ? deps.extraOrigins : [];
+  if (!isAllowedOrigin(origin) && extra.indexOf(origin) === -1) {
     return { ok: false, status: 403, code: "ORIGIN_NOT_ALLOWED" };
   }
   const store = deps && deps.store;

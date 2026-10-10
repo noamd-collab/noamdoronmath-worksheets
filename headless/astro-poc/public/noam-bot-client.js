@@ -104,6 +104,9 @@
           if (!response.ok) { throw makeError(VERIFY_MESSAGE, "BOT_CONFIG_UNAVAILABLE", response.status); }
           return response.json();
         }).then(function (config) {
+          if (config && config.active === false) {
+            throw makeError(config.error || "נועם AI לא פעיל כרגע.", "NOT_ACTIVE");
+          }
           if (!config || config.ok !== true || config.provider !== "recaptcha-v3" ||
               typeof config.siteKey !== "string" || !/^[A-Za-z0-9_-]{10,200}$/.test(config.siteKey) ||
               (config.mode !== "observe" && config.mode !== "enforce")) {
@@ -113,7 +116,7 @@
           return { siteKey: config.siteKey };
         }).catch(function (error) {
           configPromise = null;
-          if (isProtectionError(error)) { throw error; }
+          if (isProtectionError(error) || (error && error.code === "NOT_ACTIVE")) { throw error; }
           throw makeError(VERIFY_MESSAGE, "BOT_CONFIG_UNAVAILABLE");
         });
       }
@@ -185,7 +188,7 @@
         // A fetch implementation may not honor abort. Allow a later user action
         // to fetch config again instead of retaining an unresolved promise.
         if (error && error.code === "BOT_VERIFICATION_TIMEOUT") { configPromise = null; }
-        if (isProtectionError(error)) { throw error; }
+        if (isProtectionError(error) || (error && error.code === "NOT_ACTIVE")) { throw error; }
         throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
       });
     }
