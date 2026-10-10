@@ -6,7 +6,7 @@
   if (window.__noamSiteCompanion) return;
   window.__noamSiteCompanion = true;
 
-  var API_BASE = "https://amiramnoam.wixstudio.com/my-site-2/_functions";
+  var API_BASE = "/api";
   var API = API_BASE + "/noamSiteCompanion";
   var FALLBACK = "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
   var EXPORT_NOTE = "במקרה פירוק לגורמים לכיתה ט׳ רמה א׳, אפשר לסמן את השאלות שנבחרו על דף המקור המלא, או להדפיס דף מצומצם שנחתך מאותו מקור עם ההוראה והנוסח המקוריים.";

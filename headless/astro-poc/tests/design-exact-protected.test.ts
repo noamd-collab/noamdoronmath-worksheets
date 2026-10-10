@@ -19,7 +19,11 @@ const sha256 = (value: string | Buffer) => createHash('sha256').update(value).di
 const read = (file: string) => readFileSync(join(root, file), 'utf8');
 
 const protectedFiles: Record<string, string> = {
-  'astro.config.mjs': 'f85dead2ee638d8010de960290886eb4801b2ea9d86388fee11ceaea00e937a3',
+  // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
+  // added so the headless Noam AI route can read Wix Secrets Manager.
+  // Adapter, output, and integrations are unchanged. The other two Astro
+  // configs (preview, open07-verify) are not in this fence.
+  'astro.config.mjs': 'c63c0e1646e6198757b32ca085cda16091a3168adf0017ce9e3ce74b91b8f451',
   'src/data/catalog.v1.json': '86748683d96c1364403c019832393c97b0e632de221bda3f7c16b80e2762b6fc',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   'src/lib/worksheetLinks.ts': '1f9a5fdf234997fc8ba7593d1ef0066f082586816770eefc45da40035a825eaf',
