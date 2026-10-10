@@ -648,7 +648,7 @@ function thumbContent(bitmap, question, row) {
   if (kept.length > 1) {
     const last = kept[kept.length - 1];
     const prev = kept[kept.length - 2];
-    if (last.h < prev.h * 0.55 && last.y - (prev.y + prev.h) > 2) kept.pop();
+    if (last.h < prev.h * 0.75 && last.y - (prev.y + prev.h) > 1) kept.pop();
   }
   if (!kept.length) return windowRect;
   let top = kept[0].y;
@@ -657,6 +657,26 @@ function thumbContent(bitmap, question, row) {
     top = Math.min(top, band.y);
     bot = Math.max(bot, band.y + band.h);
   });
+  const linePx = Math.max(8, Math.round(lineFrac * bitmap.height));
+  const counts = new Uint16Array(Math.max(1, bot - top));
+  let peak = 0;
+  for (let y = top; y < bot; y += 1) {
+    let n = 0;
+    for (let x = best.x; x < best.x + best.w; x += 1) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
+    }
+    counts[y - top] = n;
+    if (n > peak) peak = n;
+  }
+  if (peak > 20) {
+    let cut = bot;
+    for (let y = bot - 1; y > top; y -= 1) {
+      if (counts[y - top] > peak * 0.45) break;
+      cut = y;
+    }
+    if (bot - cut > 2 && bot - cut < linePx * 0.85 && cut - top > linePx * 0.5) bot = cut;
+  }
   const rowStats = [];
   for (let y = top; y < bot; y++) {
     let n = 0;
@@ -1479,6 +1499,48 @@ function sheetTitle(chosen) {
   return topic;
 }
 
+const pageTextCache = new Map();
+
+async function pageTextItems(pageNumber, source) {
+  const active = source || SOURCE;
+  const key = (active && active.pdfId ? active.pdfId : '') + ':' + pageNumber;
+  if (pageTextCache.has(key)) return pageTextCache.get(key);
+  const pdf = await loadPdf(active);
+  const page = await pdf.getPage(pageNumber);
+  const viewport = page.getViewport({ scale: 1 });
+  const text = await page.getTextContent();
+  const items = text.items.filter((item) => item.str && String(item.str).trim()).map((item) => {
+    const height = item.height || Math.abs(item.transform[3]) || 8;
+    return {
+      str: String(item.str),
+      y: (viewport.height - item.transform[5] - height) / viewport.height,
+      h: height / viewport.height,
+    };
+  });
+  pageTextCache.set(key, items);
+  return items;
+}
+
+async function clipClosingLine(slice) {
+  const box = slice.box;
+  if (!box || slice.kind === 'answer') return slice;
+  let items = [];
+  try {
+    items = await pageTextItems(slice.page, slice.source);
+  } catch (error) {
+    return slice;
+  }
+  let cut = box.y + box.h;
+  items.forEach((item) => {
+    if (!item.str.includes('בהצלחה')) return;
+    if (item.y <= box.y + 0.008 || item.y >= box.y + box.h) return;
+    cut = Math.min(cut, item.y - 0.004);
+  });
+  if (cut >= box.y + box.h - 0.0005) return slice;
+  const h = Math.max(0.004, cut - box.y);
+  return { ...slice, box: { ...box, h } };
+}
+
 function sliceInkRows(bitmap, box) {
   const width = bitmap.width;
   const height = bitmap.height;
@@ -1539,12 +1601,12 @@ function trimPieceBox(slice, bitmap) {
     if (bands.length > 1) {
       const first = bands[0];
       const next = bands[1];
-      if (first.h < next.h * 0.55 && next.y - (first.y + first.h) > 2) bands.shift();
+      if (first.h < Math.max(6, next.h * 0.75) && next.y - (first.y + first.h) > 1) bands.shift();
     }
     if (bands.length > 1) {
       const last = bands[bands.length - 1];
       const prev = bands[bands.length - 2];
-      if (last.h < prev.h * 0.55 && last.y - (prev.y + prev.h) > 2) bands.pop();
+      if (last.h < Math.max(6, prev.h * 0.75) && last.y - (prev.y + prev.h) > 1) bands.pop();
     }
   } else {
     while (bands.length > 1) {
@@ -1584,7 +1646,7 @@ async function measureWorksheet(slices) {
       measured.push({ slice, dh: 26 });
     } else if (slice.kind === 'answer' || slice.kind === 'row' || slice.kind === 'stem') {
       const bitmap = await pageBitmap(slice.page, slice.source);
-      const piece = trimPieceBox(slice, bitmap);
+      const piece = trimPieceBox(await clipClosingLine(slice), bitmap);
       const sw = piece.box.w * bitmap.width;
       const sh = piece.box.h * bitmap.height;
       const imageH = Math.max(1, Math.round(OUT_W * sh / Math.max(1, sw)));
