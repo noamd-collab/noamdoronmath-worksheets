@@ -693,6 +693,13 @@ describe('teacher catalog picker', () => {
     assert.match(page, /id="output-short"/);
     assert.match(page, /אני יודע מה אני מחפש/);
     assert.match(page, /עזרו לי לבחור/);
+    assert.match(page, /חיפוש מהיר וכל הסינונים במסך אחד/);
+    assert.match(page, /שאלה אחת בכל מסך, ובסוף דף מוכן להדפסה/);
+    assert.match(demoPage, /חיפוש מהיר וכל הסינונים במסך אחד/);
+    assert.match(demoPage, /שאלה אחת בכל מסך, ובסוף דף מוכן להדפסה/);
+    assert.equal(page.includes('mini-ui'), false);
+    assert.equal(demoPage.includes('mini-ui'), false);
+    assert.equal(page.includes('route-preview'), false);
     assert.match(page, /id="fast-search"/);
     assert.match(page, /id="teacher-need"/);
     assert.match(page, /id="route-fast"/);
