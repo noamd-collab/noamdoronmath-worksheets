@@ -608,6 +608,50 @@ describe('teacher catalog picker', () => {
     assert.match(sheet, /paintWorksheet/);
     assert.match(preview, /בס״ד/);
     assert.match(preview, /תשובות/);
+    const sliceApi = new Function(`${preview.slice(preview.indexOf('function answerBox'), preview.indexOf('async function answerSlices'))} return { answerSliceFor };`)() as {
+      answerSliceFor: (pages: { page: number; width: number; height: number; items: { str: string; x: number; y: number; w: number; h: number; page: number }[] }[], question: { q: number; part: string }) => { box: { x: number; y: number; w: number; h: number } } | null;
+    };
+    const answerSheet = {
+      page: 8,
+      width: 595,
+      height: 842,
+      items: [
+        { str: '(2)', x: 540, y: 720, w: 16, h: 12, page: 8 },
+        { str: 'א.', x: 515, y: 706, w: 12, h: 12, page: 8 },
+        { str: '3', x: 508, y: 706, w: 5, h: 12, page: 8 },
+        { str: 'ב.', x: 489, y: 706, w: 8, h: 12, page: 8 },
+        { str: '(3)', x: 540, y: 680, w: 16, h: 12, page: 8 },
+      ],
+    };
+    const aleph = sliceApi.answerSliceFor([answerSheet], { q: 2, part: 'א' });
+    assert.ok(aleph);
+    const cropLeft = aleph.box.x * answerSheet.width;
+    const cropRight = cropLeft + aleph.box.w * answerSheet.width;
+    assert.ok(cropLeft > 497, `2א starts ${cropLeft} on top of ב.`);
+    assert.ok(cropLeft < 508 && cropRight > 508);
+    const clearGreyRules = new Function(`${preview.slice(preview.indexOf('function clearGreyRules'), preview.indexOf('function answerInkCanvas'))} return clearGreyRules;`)() as (ctx: { getImageData: (x: number, y: number, w: number, h: number) => { data: Uint8ClampedArray }; putImageData: (image: { data: Uint8ClampedArray }, x: number, y: number) => void }, width: number, height: number) => void;
+    const ruleW = 40;
+    const ruleH = 10;
+    const ruleData = new Uint8ClampedArray(ruleW * ruleH * 4);
+    ruleData.fill(255);
+    for (let x = 4; x < 24; x += 1) {
+      const i = (5 * ruleW + x) * 4;
+      ruleData[i] = ruleData[i + 1] = ruleData[i + 2] = 0;
+    }
+    for (let x = 0; x < ruleW; x += 1) {
+      const i = (6 * ruleW + x) * 4;
+      ruleData[i] = ruleData[i + 1] = ruleData[i + 2] = 190;
+    }
+    for (let y = 0; y < 4; y += 1) {
+      for (let x = 0; x < ruleW; x += 1) {
+        const i = (y * ruleW + x) * 4;
+        ruleData[i] = ruleData[i + 1] = ruleData[i + 2] = 180;
+      }
+    }
+    clearGreyRules({ getImageData: () => ({ data: ruleData }), putImageData: () => {} }, ruleW, ruleH);
+    assert.equal(ruleData[(5 * ruleW + 8) * 4], 0);
+    assert.equal(ruleData[(6 * ruleW + 8) * 4], 255);
+    assert.equal(ruleData[(1 * ruleW + 8) * 4], 180);
   });
 
   it('keeps every picked part\'s ink and packs a lone answer', () => {

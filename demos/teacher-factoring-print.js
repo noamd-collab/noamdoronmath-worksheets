@@ -671,6 +671,17 @@ function thumbContent(bitmap, question, row) {
   const tall = bands.filter((band) => band.h >= minBand);
   const kept = tall.length ? bands.filter((band) => band.h >= minBand || tall.some((item) => Math.abs(band.y - (item.y + item.h)) < gapY || Math.abs(item.y - (band.y + band.h)) < gapY) || (band.h >= 1 && bandWidth(band) > best.w * 0.22 && tall.some((item) => Math.abs(band.y - (item.y + item.h)) < linePxEarly))) : [bands.reduce((bestBand, band) => (band.h > bestBand.h ? band : bestBand))];
   while (kept.length > 1) {
+    const first = kept[0];
+    const second = kept[1];
+    const topGap = second.y - (first.y + first.h);
+    // The bottom of the previous line, not this part.
+    if (topGap > 2 && first.h < linePxEarly * 0.55 && bandWidth(first) < best.w * 0.35) {
+      kept.shift();
+      continue;
+    }
+    break;
+  }
+  while (kept.length > 1) {
     const last = kept[kept.length - 1];
     const prev = kept[kept.length - 2];
     const gap = last.y - (prev.y + prev.h);
@@ -730,11 +741,44 @@ function thumbContent(bitmap, question, row) {
   const pad = Math.max(3, Math.min(10, Math.round(line * bitmap.height * 0.18)));
   const limits = thumbNeighborY(question, row, bitmap.height);
   const srcX = Math.max(0, windowRect.srcX + left - pad);
-  const srcY = Math.max(limits.above, windowRect.srcY + top - pad);
   const srcX2 = Math.min(bitmap.width, windowRect.srcX + right + 1 + pad);
+  // Pad through white only. Entering the line above or below slices a letter.
+  const whiteRun = (absEdge, dir) => {
+    const span = Math.max(1, srcX2 - srcX);
+    let used = 0;
+    for (let step = 1; step <= pad; step += 1) {
+      const y = absEdge + dir * step;
+      if (y < 0 || y >= bitmap.height) break;
+      let n = 0;
+      let rowData = null;
+      try {
+        const rowImage = ctx.getImageData(srcX, y, span, 1);
+        rowData = rowImage && rowImage.data;
+      } catch (error) {
+        break;
+      }
+      if (!rowData) break;
+      if (rowData.length <= span * 4 + 8) {
+        for (let i = 0; i < rowData.length; i += 4) {
+          if (rowData[i] < 242 || rowData[i + 1] < 242 || rowData[i + 2] < 242) n += 1;
+        }
+      } else if (rowData.length >= bitmap.width * bitmap.height * 4) {
+        for (let x = srcX; x < srcX2 && x < bitmap.width; x += 1) {
+          const i = (y * bitmap.width + x) * 4;
+          if (rowData[i] < 242 || rowData[i + 1] < 242 || rowData[i + 2] < 242) n += 1;
+        }
+      } else break;
+      if (n > 2) break;
+      used = step;
+    }
+    return used;
+  };
+  const topAbs = windowRect.srcY + top;
+  const botAbs = windowRect.srcY + bot;
+  const srcY = Math.max(limits.above, topAbs - whiteRun(topAbs, -1));
   // Stop short of the next row so a sliver of its first line is not in the card.
   const belowLimit = limits.below < bitmap.height ? Math.max(srcY + 4, limits.below - 2) : limits.below;
-  const srcY2 = Math.min(belowLimit, windowRect.srcY + bot + pad);
+  const srcY2 = Math.min(belowLimit, botAbs + whiteRun(botAbs, 1));
   return { srcX, srcY, srcW: Math.max(1, srcX2 - srcX), srcH: Math.max(1, srcY2 - srcY), page: windowRect.page };
 }
 
@@ -865,8 +909,8 @@ function besideSplit(bitmap, slice) {
   }
   let gapStart = -1;
   let bestGap = null;
-  const from = Math.floor(rw * 0.32);
-  const to = Math.floor(rw * 0.84);
+  const from = Math.floor(rw * 0.16);
+  const to = Math.floor(rw * 0.88);
   for (let x = from; x <= to; x += 1) {
     if (x < rw && col[x] === 0) {
       if (gapStart < 0) gapStart = x;
@@ -927,7 +971,10 @@ function besideSplit(bitmap, slice) {
   };
   const textH = inkSpan(cut, rw);
   const drawH = inkSpan(0, cut);
-  if (textH < 8 || drawH < rh * 0.35 || textH > drawH * 0.72) return null;
+  if (textH < 8 || drawH < rh * 0.35) return null;
+  // A wide empty column is the gutter between the sentence and the figure.
+  // A narrow gap is inside the figure unless the right side is only the caption.
+  if (bestGap.w < 32 && textH > drawH * 0.72) return null;
   const trimY = (x0, x1) => {
     let top = rh;
     let bot = 0;
@@ -1041,7 +1088,8 @@ async function paintThumb(canvas) {
     const fit = target / Math.max(1, slice.srcW);
     const displayH = slice.srcH * fit;
     const textTooSmall = piece.role === 'text' && displayH < 16;
-    if ((!textTooSmall && displayH >= 22) || slice.srcW < slice.srcH * 8 || depth > 3) {
+    // The figure stays one piece. Only a short text line may break on a word gap.
+    if (piece.role === 'drawing' || (!textTooSmall && displayH >= 22) || slice.srcW < slice.srcH * 8 || depth > 3) {
       fitted.push(piece);
       return;
     }
@@ -1710,11 +1758,12 @@ function answerBox(items, questionNumber, part) {
       left = nextOnLine ? after(nextOnLine) : 28;
       if (label.rest) left = Math.min(left, label.x - 3);
       top = label.y + Math.max(label.h || 0, 11) + 3;
+      const nextInk = nextOnLine ? null : (follower ? aboveGlyphs(follower) : (next ? aboveGlyphs(next) : null));
       if (nextOnLine) bottom = label.y - 6;
-      else if (follower) bottom = aboveGlyphs(follower);
-      else if (next) bottom = aboveGlyphs(next);
+      else if (nextInk != null) bottom = nextInk;
       else bottom = label.y - 28;
-      if (bottom > label.y - 4) bottom = label.y - 6;
+      // Keep the label's own ink, but do not step down into the next part.
+      if (bottom > label.y - 4) bottom = nextInk != null ? Math.max(label.y - 6, nextInk) : label.y - 6;
     } else if (labels.length) {
       const mentioned = items.some((item) => (
         sameSheet(item)
@@ -1874,24 +1923,80 @@ async function answerPages(source) {
   return answerRegions(found);
 }
 
+function partLabelToken(text) {
+  const token = String(text || '').trim();
+  if (/^[אבגדהו]\.?$/.test(token) || /^\.[אבגדהו]$/.test(token)) return true;
+  if (/^\(\d{1,2}\)$/.test(token) || /^\)\d{1,2}\($/.test(token) || /^\d{1,2}\.$/.test(token)) return true;
+  return false;
+}
+
+function clipForeignLabels(items, box, part) {
+  let x0 = box.x;
+  let y0 = box.y;
+  let x1 = box.x + box.w;
+  let y1 = box.y + box.h;
+  (items || []).forEach((item) => {
+    const token = String(item.str || '').trim();
+    const match = token.match(/^([אבגדהו])\.$/) || token.match(/^\.([אבגדהו])$/);
+    if (!match || match[1] === part) return;
+    const gx = item.x || 0;
+    const gy = item.y || 0;
+    const right = gx + Math.max(item.w || 0, 6);
+    const top = gy + Math.max(item.h || 0, 8);
+    const overlapX = Math.min(x1, right) - Math.max(x0, gx);
+    const overlapY = Math.min(y1, top) - Math.max(y0, gy);
+    if (overlapX < 0.4 || overlapY < 0.4) return;
+    const sameLine = gy >= y1 - 18;
+    if (sameLine && right < x1 - 4) x0 = Math.max(x0, right + 1.2);
+    else if (sameLine && gx > x0 + 8 && gx < x1) x1 = Math.min(x1, gx - 1.2);
+    else if (!sameLine && top < y1 - 4) y0 = Math.max(y0, top + 1.2);
+  });
+  if (x1 - x0 < 4 || y1 - y0 < 6) return box;
+  return { ...box, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+
 function answerSliceFor(pages, question) {
   const part = question.part || '';
   for (let index = 0; index < pages.length; index += 1) {
     const sheet = pages[index];
-    const box = answerBox(sheet.items, question.q, part);
-    if (!box || box.page !== sheet.page) continue;
+    const raw = answerBox(sheet.items, question.q, part);
+    if (!raw || raw.page !== sheet.page) continue;
+    const box = clipForeignLabels(sheet.items, raw, part);
     const pad = 2;
-    const x = Math.max(0, box.x - pad);
-    const y = Math.max(0, box.y - pad);
-    const w = Math.min(sheet.width - x, box.w + pad * 2);
-    const h = Math.min(sheet.height - y, box.h + pad * 2);
+    const gap = 1.2;
+    let x0 = Math.max(0, box.x - pad);
+    let y0 = Math.max(0, box.y - pad);
+    let x1 = Math.min(sheet.width, box.x + box.w + pad);
+    let y1 = Math.min(sheet.height, box.y + box.h + pad);
+    (sheet.items || []).forEach((item) => {
+      if (!partLabelToken(item.str)) return;
+      const gx = item.x || 0;
+      const gy = item.y || 0;
+      const gw = Math.max(item.w || 0, 6);
+      const gh = Math.max(item.h || 0, 8);
+      const right = gx + gw;
+      const top = gy + gh;
+      const crossesY = top > y0 && gy < y1;
+      const crossesX = right > x0 && gx < x1;
+      // The next part sits to the left in RTL. Do not pad across its label.
+      if (crossesY && right <= box.x + 0.8) x0 = Math.max(x0, Math.min(box.x, right + gap));
+      if (crossesY && gx >= box.x + box.w - 0.8) x1 = Math.min(x1, Math.max(box.x + box.w, gx - gap));
+      if (crossesX && gy >= box.y + box.h - 0.8) y1 = Math.min(y1, Math.max(box.y + box.h, gy - gap));
+      if (crossesX && top <= box.y + 0.8) y0 = Math.max(y0, Math.min(box.y, top + gap));
+    });
+    if (x1 - x0 < 4 || y1 - y0 < 6) {
+      x0 = box.x;
+      y0 = box.y;
+      x1 = box.x + box.w;
+      y1 = box.y + box.h;
+    }
     return {
       page: sheet.page,
       box: {
-        x: x / sheet.width,
-        y: (sheet.height - y - h) / sheet.height,
-        w: w / sheet.width,
-        h: h / sheet.height,
+        x: x0 / sheet.width,
+        y: (sheet.height - y1) / sheet.height,
+        w: (x1 - x0) / sheet.width,
+        h: (y1 - y0) / sheet.height,
       },
     };
   }
@@ -2133,7 +2238,7 @@ function answerEdgeSpan(bitmap, box, yTop, yBot) {
   if (clusters.length < 2) return null;
   const kept = clusters.filter((cluster) => {
     const touches = cluster.x <= 1 || cluster.x + cluster.w >= rw - 1;
-    return !(touches && cluster.w <= 22);
+    return !(touches && cluster.w <= 30);
   });
   const use = kept.length ? kept : clusters;
   let minX = use[0].x;
@@ -2199,8 +2304,12 @@ function trimPieceBox(slice, bitmap) {
       inkMin = edge.minX;
       inkMax = edge.maxX;
     }
-    const left = Math.max(0, ink.x0 + inkMin - pad);
-    const right = Math.min(pageW, ink.x0 + inkMax + 1 + pad);
+    // One pixel of antialiasing. Do not grow back across the label the window already excluded.
+    const hPad = 1;
+    const boundLeft = Math.max(0, Math.floor(clipped.x * pageW));
+    const boundRight = Math.min(pageW, Math.ceil((clipped.x + clipped.w) * pageW));
+    const left = Math.max(boundLeft, ink.x0 + inkMin - hPad);
+    const right = Math.min(boundRight, ink.x0 + inkMax + 1 + hPad);
     const next = placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH));
     if (right - left > 4) {
       next.x = left / pageW;
@@ -2447,6 +2556,70 @@ function packWorksheet(measured, noteHeight) {
   return pages;
 }
 
+function clearGreyRules(ctx, width, height) {
+  let image;
+  try {
+    image = ctx.getImageData(0, 0, width, height);
+  } catch (error) {
+    return;
+  }
+  const data = image && image.data;
+  if (!data || data.length < width * height * 4) return;
+  const rule = new Uint8Array(height);
+  for (let y = 0; y < height; y += 1) {
+    let grey = 0;
+    let dark = 0;
+    for (let x = 0; x < width; x += 1) {
+      const i = (y * width + x) * 4;
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const max = r > g ? (r > b ? r : b) : (g > b ? g : b);
+      const min = r < g ? (r < b ? r : b) : (g < b ? g : b);
+      const lum = (r + g + b) / 3;
+      if (max - min < 28 && lum >= 145 && lum <= 228) grey += 1;
+      else if (lum < 90) dark += 1;
+    }
+    if (grey > width * 0.45 && dark < Math.max(3, width * 0.12)) rule[y] = 1;
+  }
+  let changed = false;
+  for (let y = 0; y < height; y += 1) {
+    if (!rule[y]) continue;
+    let run = 0;
+    for (let row = y; row < height && rule[row]; row += 1) run += 1;
+    if (run > 3) {
+      y += run - 1;
+      continue;
+    }
+    for (let x = 0; x < width; x += 1) {
+      const i = (y * width + x) * 4;
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const max = r > g ? (r > b ? r : b) : (g > b ? g : b);
+      const min = r < g ? (r < b ? r : b) : (g < b ? g : b);
+      const lum = (r + g + b) / 3;
+      if (max - min < 28 && lum >= 145 && lum <= 228) {
+        data[i] = data[i + 1] = data[i + 2] = 255;
+        changed = true;
+      }
+    }
+  }
+  if (changed) ctx.putImageData(image, 0, 0);
+}
+
+function answerInkCanvas(bitmap, sx, sy, sw, sh) {
+  const w = Math.max(1, Math.ceil(sw));
+  const h = Math.max(1, Math.ceil(sh));
+  const cut = document.createElement('canvas');
+  cut.width = w;
+  cut.height = h;
+  const ctx = cut.getContext('2d');
+  ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, w, h);
+  clearGreyRules(ctx, w, h);
+  return cut;
+}
+
 function paintWorksheetPage(canvas, page, index, count, title, note) {
   const OUT_W = 1000;
   const PAGE_H = 1440;
@@ -2509,7 +2682,8 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
           ctx.fillText(cell.slice.text, right, y + 14);
           const sx = cell.slice.box.x * cell.bitmap.width;
           const sy = cell.slice.box.y * cell.bitmap.height;
-          ctx.drawImage(cell.bitmap, sx, sy, cell.sw, cell.sh, right - imageW, y + 18, imageW, imageH);
+          const ink = answerInkCanvas(cell.bitmap, sx, sy, cell.sw, cell.sh);
+          ctx.drawImage(ink, 0, 0, ink.width, ink.height, right - imageW, y + 18, imageW, imageH);
         } else {
           const textY = y + Math.max(14, Math.round((item.dh + 10) / 2));
           ctx.fillText(cell.slice.text, right, textY);
@@ -2517,7 +2691,8 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
           const sy = cell.slice.box.y * cell.bitmap.height;
           const imageX = right - labelW - 8 - imageW;
           const imageY = y + Math.max(0, Math.round((item.dh - imageH) / 2));
-          ctx.drawImage(cell.bitmap, sx, sy, cell.sw, cell.sh, imageX, imageY, imageW, imageH);
+          const ink = answerInkCanvas(cell.bitmap, sx, sy, cell.sw, cell.sh);
+          ctx.drawImage(ink, 0, 0, ink.width, ink.height, imageX, imageY, imageW, imageH);
         }
         right -= (cell.dw || imageW) + 14;
       });
