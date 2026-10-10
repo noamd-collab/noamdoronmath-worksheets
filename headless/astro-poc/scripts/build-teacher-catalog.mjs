@@ -22,10 +22,6 @@ function round(value) {
   return Math.round(Number(value) * 10000) / 10000;
 }
 
-function box(raw) {
-  return { x: round(raw.x), y: round(raw.y), w: round(raw.w), h: round(raw.h) };
-}
-
 function markBox(pin) {
   const w = 0.16;
   const h = 0.028;
@@ -36,6 +32,47 @@ function markBox(pin) {
   return { x: round(x), y: round(y), w, h };
 }
 
+function cropBox(page, x, y, w, h) {
+  const left = Math.max(0, Math.min(0.2, Number(x) || 0));
+  const width = Math.max(0.5, Math.min(1 - left, Number(w) || 1));
+  const top = Math.max(0, Math.min(0.98, Number(y) || 0));
+  const height = Math.max(0.008, Math.min(0.995 - top, Number(h) || 0.008));
+  return { page, x: round(left), y: round(top), w: round(width), h: round(height) };
+}
+
+/** One crop per chosen part: from this pin to the next part on the same page. */
+export function partRows(exercises, index) {
+  const exercise = exercises[index];
+  const pin = exercise.pin;
+  const slices = exercise.crops && exercise.crops.length ? exercise.crops : [exercise.crop];
+  const here = slices.find((slice) => slice.page === pin.page) || exercise.crop || { x: 0, w: 1, y: pin.y, h: 0.04 };
+  const nextPart = exercises.slice(index + 1).find((item) => (
+    item.q === exercise.q && item.pin && item.pin.page === pin.page && item.pin.y > pin.y + 0.004
+  ));
+  if (nextPart) return [cropBox(pin.page, here.x, pin.y, here.w, nextPart.pin.y - pin.y)];
+  const end = here.page === pin.page ? here.y + here.h : pin.y + 0.04;
+  const rows = [cropBox(pin.page, here.x, pin.y, here.w, Math.max(0.012, end - pin.y))];
+  const next = exercises[index + 1];
+  if (!next || next.q !== exercise.q || !next.pin || next.pin.page <= pin.page) return rows;
+  for (const slice of slices) {
+    if (slice.page <= pin.page) continue;
+    if (slice.page < next.pin.page) rows.push(cropBox(slice.page, slice.x, slice.y, slice.w, slice.h));
+    else if (slice.page === next.pin.page && next.pin.y > slice.y + 0.008) {
+      rows.push(cropBox(slice.page, slice.x, slice.y, slice.w, Math.min(slice.h, next.pin.y - slice.y)));
+    }
+  }
+  return rows;
+}
+
+function stemBox(exercises, exercise) {
+  const first = exercises.find((item) => item.q === exercise.q);
+  const crop = first && first.crop;
+  if (!first || !crop || crop.page !== first.pin.page) return null;
+  const height = first.pin.y - crop.y;
+  if (height < 0.012) return null;
+  return { page: crop.page, x: round(crop.x || 0), y: round(crop.y), w: round(crop.w || 1), h: round(height) };
+}
+
 export function pdfUrl(pdfId) {
   return PDF_BASE + pdfId + '.pdf';
 }
@@ -44,14 +81,17 @@ export function sheetFromManifest(meta, manifest) {
   const exercises = manifest.exercises || [];
   const first = exercises[0];
   const last = exercises[exercises.length - 1];
-  const headerH = first ? Math.min(0.14, Math.max(0.03, first.crop.y)) : 0.06;
+  const headerH = first && first.crop && first.crop.page === 1
+    ? Math.min(0.42, Math.max(0.04, first.crop.y))
+    : 0.08;
   const end = last ? last.crop.y + last.crop.h : 0.94;
   const footerY = end > 0.97 ? 0.985 : Math.max(end, 0.94);
-  const questions = exercises.map((exercise) => {
-    const crop = exercise.crop;
+  const questions = exercises.map((exercise, index) => {
     const part = exercise.part || '';
     const id = String(exercise.q) + part;
     const label = part ? `שאלה ${exercise.q} סעיף ${part}` : `שאלה ${exercise.q}`;
+    const rows = partRows(exercises, index);
+    const stem = stemBox(exercises, exercise);
     return {
       id,
       q: exercise.q,
@@ -60,7 +100,9 @@ export function sheetFromManifest(meta, manifest) {
       label,
       text: exercise.text || label,
       box: markBox(exercise.pin),
-      row: { page: crop.page, ...box(crop) },
+      row: rows[0],
+      rows,
+      ...(stem ? { stem } : {}),
     };
   });
   return {

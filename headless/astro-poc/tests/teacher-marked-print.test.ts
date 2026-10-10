@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
+import { sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
 
 const source = JSON.parse(readFileSync(new URL('../../../demos/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
 const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/6a37fe7160324a17ad107b3dbe43c1db.json', import.meta.url), 'utf8'));
@@ -236,6 +237,68 @@ describe('teacher catalog picker', () => {
         assert.ok(question.row.w > 0 && question.row.h > 0);
       }
     }
+  });
+
+  it('crops each middle-school part from its pin to the next pin on the pin page', () => {
+    const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/22303ba02b3b46c3ae2529e347cbce2b.json', import.meta.url), 'utf8'));
+    const built = sheetFromManifest({
+      grade: 7, topicId: 1, level: 'a', levelLabel: 'רמה א׳', pdfId: manifest.pdfHash, pdfUrl: 'https://example.invalid/a.pdf', title: 'מספרים מכוונים', topic: 'מספרים מכוונים',
+    }, manifest);
+    const byId = Object.fromEntries(built.questions.map((question: { id: string }) => [question.id, question]));
+    const partB = byId['3ב'];
+    const partA = byId['3א'];
+    const partC = byId['3ג'];
+    assert.equal(partB.page, 2);
+    assert.equal(partB.row.page, 2);
+    assert.ok(partB.row.y > 0.06 && partB.row.y < 0.07, JSON.stringify(partB.row));
+    assert.ok(partB.row.h > 0.05 && partB.row.h < 0.08, JSON.stringify(partB.row));
+    assert.equal(partB.rows.some((row: { page: number }) => row.page === 1), false);
+    assert.ok(partB.row.y + partB.row.h <= partC.row.y + 0.002);
+    assert.equal(partA.rows[0].page, 1);
+    assert.equal(partA.rows[1].page, 2);
+    assert.ok(partA.rows[1].y + partA.rows[1].h <= partB.row.y + 0.002);
+    const oneB = byId['1ב'];
+    const oneA = byId['1א'];
+    const oneC = byId['1ג'];
+    assert.equal(oneB.row.page, 1);
+    assert.ok(oneB.row.y >= oneA.row.y + oneA.row.h - 0.002);
+    assert.ok(oneB.row.y + oneB.row.h <= oneC.row.y + 0.002);
+    assert.ok(built.headerCrop.h > 0.2 && built.headerCrop.h < 0.3);
+    const served = JSON.parse(readFileSync(new URL('../public/teachers/sheets/22303ba02b3b46c3ae2529e347cbce2b.json', import.meta.url), 'utf8'));
+    assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '3ב').row, partB.row);
+    assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '3א').rows, partA.rows);
+  });
+
+  it('prints only the checked part crops and drops hidden selections', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function shortSlices'), preview.indexOf('function contentHeight'))} return shortSlices;`)({
+      headerCrop: { page: 1, x: 0, y: 0, w: 1, h: 0.2 },
+      footerCrop: { page: 2, x: 0, y: 0.96, w: 1, h: 0.03 },
+      questions: [],
+    });
+    const chosen = [
+      { id: '3ב', q: 3, page: 2, row: { page: 2, x: 0, y: 0.0662, w: 1, h: 0.0648 }, rows: [{ page: 2, x: 0, y: 0.0662, w: 1, h: 0.0648 }] },
+    ];
+    const slices = shortSlices(chosen).filter((slice: { kind: string }) => slice.kind === 'row');
+    assert.deepEqual(slices.map((slice: { page: number }) => slice.page), [2]);
+    assert.equal(slices[0].box.y, 0.0662);
+    const keepVisible = new Function(`${preview.slice(preview.indexOf('function keepVisible'), preview.indexOf('function currentExercises'))} return keepVisible;`)() as (selected: string[], visible: string[]) => string[];
+    assert.deepEqual(keepVisible(['ex:a:1ב', 'ex:b:3ב', 'sheet:c'], ['ex:b:3ב']), ['ex:b:3ב']);
+    const topicHandler = preview.slice(preview.indexOf("$('topic').addEventListener"), preview.indexOf("$('filter-all')"));
+    assert.match(topicHandler, /state\.selected = \[\]/);
+    assert.match(topicHandler, /applyScenario/);
+    const levelHandler = preview.slice(preview.indexOf("document.querySelectorAll('[name=level]')"), preview.indexOf("$('grade').addEventListener"));
+    assert.match(levelHandler, /keepVisible\(state\.selected, visibleSelectionKeys\(\)\)/);
+    const resolve = preview.slice(preview.indexOf('async function resolveChosen'), preview.indexOf('async function updatePrint'));
+    assert.match(resolve, /if \(!allow\.has\(key\)\) continue/);
+    assert.match(preview, /box: null/);
+    assert.match(preview, /mode === 'short' && band\(\) === 'elementary'/);
+    assert.match(preview, /question\.rows && question\.rows\.length \? question\.rows : \[question\.row\]/);
+    const html = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    assert.match(html, /\.skip\{display:none!important\}/);
+    assert.match(html, /\.q-thumb\{/);
+    assert.match(preview, /class="q-thumb"/);
+    assert.match(preview, /paintSourceLine/);
   });
 
   it('leaves Noam AI exercise suggestions disabled', () => {

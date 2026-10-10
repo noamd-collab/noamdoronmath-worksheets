@@ -188,6 +188,7 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .badge.additional{color:var(--ink);background:var(--cream)}
 .badge.deepen{color:#fff;background:var(--ink)}
 .q-desc{font-size:15px;line-height:1.5;color:var(--muted);margin-top:4px}.q-desc bdi.math{white-space:nowrap}
+.q-thumb{display:block;width:100%;height:auto;max-height:96px;margin-top:6px;background:#fff;border:1px solid #d5dae5;border-radius:6px}
 .q-page{font-size:13px;color:var(--quiet);margin-top:4px}
 .empty{padding:28px 16px;text-align:center;color:var(--muted)}
 #unavailable.empty{margin:8px 24px 20px;padding:28px 16px;border:2px dashed rgba(34,48,90,.35);border-radius:var(--r-card)}
@@ -345,6 +346,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .crop-sheet{margin:0 0 18px}
 .crop-sheet canvas{display:block;width:100%;height:auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 @media print{
+  .skip{display:none!important}
   @page{size:A4;margin:8mm}
   html,html.noam-ai-engaged,body{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important;background:#fff;color:#22305a}
   .app,.toast,#noam-site-companion,dialog{display:none!important}
@@ -427,7 +429,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <div class="suggestion" id="suggestion"><svg aria-hidden="true"><use href="#i-bulb"/></svg><div class="suggestion-copy"><strong>נשאר מקום לעוד צעד?</strong><p id="suggestion-text">אפשר להוסיף סעיף עם שלושה איברים.</p></div><button type="button" id="add-suggestion">הוספה לבחירה</button></div>
 <details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">חיוני = בסיס לרצף המוצע; נוסף = חיזוק לבחירתכם; העמקה = אתגר אפשרי. אלו תיוגים פדגוגיים של ההדגמה, לא תיוגי המחבר.</p><p style="margin-top:8px">ההפניות מתארות בקצרה שאלות קיימות. בעבודה עם המקור יש לשמור על הוראות משותפות, סעיפים תלויים, נוסח ותרשימים.</p></div></details>
 <details class="details"><summary>ומה לגבי הדפסת דף התלמיד?</summary><div class="details-body"><p>שתי דרכי הדפסה, שתיהן מתוך דף המקור:</p><div class="future-modes"><div class="future-mode"><b>הדף המלא, עם סימון</b><span>השאלות שנבחרו מסומנות על גבי דף המקור.</span><br><span class="future-label">המקרה הזה</span></div><div class="future-mode"><b>דף מצומצם מהמקור</b><span>רק הבחירה שלכם, חתוכה מהמקור עם ההוראה, הנוסח והתרשים.</span><br><span class="future-label">המקרה הזה</span></div></div><p>הדף המצומצם אינו ניסוח חדש. כל קטע הוא חיתוך של דף המקור.</p></div></details>
-<div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המצומצם</button></div><p class="prepare-hint">דף מלא עם סימון, או דף מצומצם שנחתך מהמקור</p></div>
+<div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המצומצם</button></div><p class="prepare-hint" id="prepare-hint">דף מלא עם סימון, או דף מצומצם שנחתך מהמקור</p></div>
 <div id="unavailable" class="empty" hidden><h3>אין דפים להצגה בכיתה הזו</h3><p style="margin-top:8px">אפשר לחזור לפירוק לגורמים לכיתה ט׳.</p><button type="button" class="text-btn" id="return-demo">חזרה לפירוק לגורמים</button></div>
 </section></div>
 <footer class="foot"><div class="foot-grid"><div><strong class="foot-brand">נועם דורון - מתמטיקה</strong><p>דפי עבודה במתמטיקה להורדה בחינם לכיתות א׳–ט׳. תשתית למידה איכותית לכל תלמיד.</p></div><div><h3>צור קשר</h3><p>מורים והורים, נשמח לעזור בכל שאלה.</p><a class="foot-mail" href="mailto:noamd@noamdoronmath.co.il">noamd@noamdoronmath.co.il</a></div><nav aria-label="ניווט מהיר"><h3>ניווט מהיר</h3><a href="https://www.noamdoronmath.co.il/">בית</a><a href="https://www.noamdoronmath.co.il/worksheets">דפי עבודה</a><a href="https://www.noamdoronmath.co.il/aboutus">אודותינו</a><a href="https://www.noamdoronmath.co.il/blog">בלוג</a></nav></div><div class="foot-bottom"><span>רק דפים וסעיפים שכבר בקטלוג. הצעות נועם AI כבויות. ההערה נשארת בעמוד ונכנסת להדפסה.</span><span class="footer-source">מקור: דפי העבודה של האתר · כיתות א׳–ט׳</span><span>© 2026 נועם דורון מתמטיקה. כל הזכויות שמורות.</span></div></footer>

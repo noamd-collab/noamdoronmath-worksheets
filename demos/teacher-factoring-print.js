@@ -143,6 +143,16 @@ function topicSheets() {
   return topic.sheets.filter((sheet) => state.level === 'all' || sheet.level === state.level);
 }
 
+function visibleSelectionKeys() {
+  if (band() === 'elementary') return topicSheets().map((meta) => sheetKey(meta.pdfId));
+  return currentExercises().map((question) => exKey(question.source.pdfId, question.id));
+}
+
+function keepVisible(selected, visible) {
+  const allow = new Set(visible);
+  return selected.filter((key) => allow.has(key));
+}
+
 function currentExercises() {
   const list = [];
   topicSheets().forEach((meta) => {
@@ -236,11 +246,19 @@ function shownQuestions(pool) {
   return pool.filter((question) => shown.has(exKey(question.source.pdfId, question.id)));
 }
 
+function labelOnly(question) {
+  const text = String(question.text || '').trim();
+  return !text || /^שאלה\s+\d+/.test(text);
+}
+
 function exerciseCard(question) {
   const key = exKey(question.source.pdfId, question.id);
   const level = question.source.levelLabel ? `<span class="q-page" style="display:block">${escapeHTML(question.source.levelLabel)} · עמוד ${question.page}</span>` : `<span class="q-page" style="display:block">עמוד ${question.page} בדף המקור</span>`;
   const badge = pilotOn() ? `<span class="badge ${tier(question)}">${TIERS[tier(question)]}</span>` : '';
-  return `<label class="q-card"><input type="checkbox" data-question="${escapeHTML(key)}" ${state.selected.includes(key) ? 'checked' : ''} aria-label="בחירת ${escapeHTML(question.label)}"><span class="q-content"><span class="q-title-line"><span class="q-title">${escapeHTML(question.label)}</span>${badge}</span><span class="q-desc" style="display:block">${questionTextHTML(question.text)}</span>${level}</span></label>`;
+  const body = labelOnly(question)
+    ? `<canvas class="q-thumb" data-thumb="${escapeHTML(key)}" width="320" height="72" aria-hidden="true"></canvas>`
+    : `<span class="q-desc" style="display:block">${questionTextHTML(question.text)}</span>`;
+  return `<label class="q-card"><input type="checkbox" data-question="${escapeHTML(key)}" ${state.selected.includes(key) ? 'checked' : ''} aria-label="בחירת ${escapeHTML(question.label)}"><span class="q-content"><span class="q-title-line"><span class="q-title">${escapeHTML(question.label)}</span>${badge}</span>${body}${level}</span></label>`;
 }
 
 function sheetCard(meta) {
@@ -257,10 +275,10 @@ function render() {
   const elementary = band() === 'elementary';
   $('result-title').textContent = ok ? (state.scenario === 'other' ? 'מרכיבים את הבחירה שלכם' : (pilotOn() ? cfg.title : cfg.label)) : 'בוחרים כיתה ונושא';
   $('result-summary').textContent = ok
-    ? (pilotOn() ? cfg.summary : (elementary ? 'בחירה לפי דף, נושא ורמה. הסימון והחיתוך נלקחים מדף המקור.' : 'סעיפים שכבר קיימים בדפי הנושא. אפשר לבחור מכמה דפים.'))
+    ? (pilotOn() ? cfg.summary : (elementary ? 'בחירה לפי דף, נושא ורמה. ההדפסה מציגה את עמודי המקור כמו שהם.' : 'סעיפים שכבר קיימים בדפי הנושא. אפשר לבחור מכמה דפים.'))
     : 'בוחרים כיתה ונושא מתוך הקטלוג.';
   $('rationale').textContent = ok ? (pilotOn() ? cfg.rationale : (elementary ? 'ביסודי בוחרים דף שלם לפי נושא ורמה.' : 'בחטיבה בוחרים סעיפים מתוך הדפים שכבר באתר.')) : '';
-  $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.') : '';
+  $('pedagogy-details').textContent = ok ? (pilotOn() ? cfg.details : (elementary ? 'ההדפסה מציגה את עמודי המקור, בלי מסגרת על הכותרת.' : 'ההדפסה מסמנת על עמוד המקור, או חותכת ממנו דף מצומצם. לא מנוסח דף חדש.')) : '';
   $('style-help').textContent = STYLES[state.style].help;
   $('other-banner').hidden = state.scenario !== 'other';
   $('grade').value = String(state.grade);
@@ -275,7 +293,14 @@ function render() {
       ? `${gradeRecord(state.grade).label} · ${topic.title}. בוחרים דף לפי רמה.`
       : `${gradeRecord(state.grade).label} · ${topic.title}. ${currentExercises().length} סעיפים בדפי הנושא.`;
   }
-  if (!ok) return;
+  const shortBtn = $('prepare-short');
+  if (shortBtn) shortBtn.hidden = elementary;
+  const prepareHint = $('prepare-hint');
+  if (prepareHint) prepareHint.textContent = elementary ? 'הדף המלא מהמקור, בלי סימון.' : 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
+  if (!ok) {
+    paintSourceLine();
+    return;
+  }
   if (elementary) {
     const pool = state.filter === 'selected'
       ? state.selected.filter((key) => key.startsWith('sheet:')).map((key) => byPdf.get(key.slice(6))).filter(Boolean)
@@ -308,6 +333,60 @@ function render() {
   const pdfs = new Set(state.selected.map((key) => key.split(':')[1]).filter(Boolean));
   $('selection-composition').textContent = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
   $('undo').disabled = history.length === 0;
+  paintSourceLine();
+  if (!elementary) paintThumbs();
+}
+
+function paintSourceLine() {
+  const line = document.querySelector('.source-line');
+  if (!line) return;
+  const chosen = [];
+  const seen = new Set();
+  const pool = state.selected.length
+    ? state.selected.map((key) => byPdf.get(key.split(':')[1])).filter(Boolean)
+    : topicSheets();
+  pool.forEach((meta) => {
+    if (!meta || seen.has(meta.pdfId)) return;
+    seen.add(meta.pdfId);
+    chosen.push(meta);
+  });
+  if (!chosen.length) {
+    line.hidden = true;
+    return;
+  }
+  line.hidden = false;
+  const grade = gradeRecord(state.grade);
+  const topic = currentTopic();
+  const levels = [...new Set(chosen.map((meta) => meta.levelLabel))].join(' · ');
+  const title = `${topic ? topic.title : ''} · ${grade ? grade.label : ''} · ${levels}`;
+  const links = chosen.map((meta) => `<a href="${escapeHTML(meta.pdfUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(chosen.length > 1 ? meta.levelLabel : 'פתיחת דף המקור')} ↗</a>`).join('');
+  line.innerHTML = `<span>${escapeHTML(title)}</span>${links}`;
+}
+
+let thumbToken = 0;
+async function paintThumbs() {
+  const token = ++thumbToken;
+  const canvases = [...document.querySelectorAll('.q-thumb')];
+  for (const canvas of canvases) {
+    if (token !== thumbToken) return;
+    const question = library.get(canvas.dataset.thumb);
+    const row = question && question.row;
+    if (!row) continue;
+    try {
+      const bitmap = await pageBitmap(row.page || question.page, question.source);
+      if (token !== thumbToken) return;
+      const sw = Math.max(1, row.w * bitmap.width);
+      const sh = Math.max(1, row.h * bitmap.height);
+      const dw = 320;
+      const dh = Math.max(36, Math.min(96, Math.round(dw * sh / sw)));
+      canvas.width = dw;
+      canvas.height = dh;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, dw, dh);
+      ctx.drawImage(bitmap, row.x * bitmap.width, row.y * bitmap.height, sw, sh, 0, 0, dw, dh);
+    } catch (error) {}
+  }
 }
 
 function clearPreparedPrint() {
@@ -372,12 +451,16 @@ async function attachTeacherNote(root, note) {
 }
 
 function sheetHTML(pageNumber, questions) {
-  const marks = questions.map((question) => {
+  const marked = questions.filter((question) => question.box);
+  const marks = marked.map((question) => {
     const box = question.box;
     return `<span class="source-mark" data-question="${escapeHTML(question.id)}" style="left:${box.x * 100}%;top:${box.y * 100}%;width:${box.w * 100}%;height:${box.h * 100}%" title="${escapeHTML(question.label)}"></span>`;
   }).join('');
-  const names = questions.map((question) => question.label).join(' · ');
-  return `<figure class="source-sheet"><div class="source-stage" data-pdf="${escapeHTML(SOURCE.pdfId)}" data-page="${pageNumber}"><canvas></canvas>${marks}</div><figcaption>עמוד ${pageNumber} מתוך ${SOURCE.pageCount} · ${escapeHTML(SOURCE.title)} · מסומנים: ${escapeHTML(names)}</figcaption></figure>`;
+  const names = marked.map((question) => question.label).join(' · ');
+  const caption = names
+    ? `עמוד ${pageNumber} מתוך ${SOURCE.pageCount} · ${SOURCE.title} · מסומנים: ${names}`
+    : `עמוד ${pageNumber} מתוך ${SOURCE.pageCount} · ${SOURCE.title}`;
+  return `<figure class="source-sheet"><div class="source-stage" data-pdf="${escapeHTML(SOURCE.pdfId)}" data-page="${pageNumber}"><canvas></canvas>${marks}</div><figcaption>${escapeHTML(caption)}</figcaption></figure>`;
 }
 
 function bakeMarks(canvas, stage) {
@@ -419,10 +502,11 @@ async function paintSheets(root, bake) {
   }
 }
 
-async function pageBitmap(pageNumber) {
-  const key = SOURCE.pdfId + ':' + pageNumber;
+async function pageBitmap(pageNumber, source) {
+  const active = source || SOURCE;
+  const key = active.pdfId + ':' + pageNumber;
   if (pageBitmaps.has(key)) return pageBitmaps.get(key);
-  const pdf = await loadPdf(SOURCE);
+  const pdf = await loadPdf(active);
   const page = await pdf.getPage(pageNumber);
   const base = page.getViewport({ scale: 1 });
   const viewport = page.getViewport({ scale: 1100 / base.width });
@@ -446,11 +530,13 @@ function shortSlices(chosen) {
       if (question.stem) slices.push({ page: question.stem.page || question.page, box: question.stem, gap: 10, block, kind: 'stem' });
       lastQuestion = question.q;
     }
-    const page = question.row.page || question.page;
-    const prev = slices[slices.length - 1];
-    const box = question.row;
-    const dup = prev && prev.kind === 'row' && prev.page === page && prev.box.x === box.x && prev.box.y === box.y && prev.box.w === box.w && prev.box.h === box.h;
-    if (!dup) slices.push({ page, box, gap: 4, block, kind: 'row' });
+    const rows = question.rows && question.rows.length ? question.rows : [question.row];
+    rows.forEach((box) => {
+      const page = box.page || question.page;
+      const prev = slices[slices.length - 1];
+      const dup = prev && prev.kind === 'row' && prev.page === page && prev.box.x === box.x && prev.box.y === box.y && prev.box.w === box.w && prev.box.h === box.h;
+      if (!dup) slices.push({ page, box, gap: 4, block, kind: 'row' });
+    });
   });
   slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16, block: 'footer', kind: 'footer' });
   return slices;
@@ -634,8 +720,8 @@ function elementarySource(meta, pageCount) {
       page,
       label: meta.levelLabel + ' · עמוד ' + page,
       text: meta.title,
-      box: { x: 0.08, y: 0.055, w: 0.84, h: 0.04 },
-      row: { x: 0.03, y: 0.05, w: 0.94, h: 0.9 },
+      box: null,
+      row: { page, x: 0.03, y: 0.04, w: 0.94, h: 0.92 },
     });
   }
   const source = {
@@ -663,7 +749,9 @@ async function materializeElementary(pdfId) {
 
 async function resolveChosen() {
   const chosen = [];
+  const allow = new Set(visibleSelectionKeys());
   for (const key of state.selected) {
+    if (!allow.has(key)) continue;
     if (key.startsWith('sheet:')) {
       const source = await materializeElementary(key.slice(6));
       if (source) source.questions.forEach((question) => chosen.push(question));
@@ -708,6 +796,7 @@ async function updatePrint() {
 
 async function prepare(mode) {
   if (rendering) return;
+  if (mode === 'short' && band() === 'elementary') return;
   if (!state.selected.length) {
     announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
     return;
@@ -720,7 +809,7 @@ async function prepare(mode) {
     await updatePrint();
     const ready = mode === 'short'
       ? $('dialog-plan').querySelector('.crop-sheet canvas')
-      : $('dialog-plan').querySelector('.source-mark');
+      : $('dialog-plan').querySelector('.source-stage canvas');
     if (!ready) {
       announce(mode === 'short' ? 'לא נוצר דף מצומצם. לא הוצגה רשימת קישורים במקום.' : 'לא נוצר סימון. לא הוצגה רשימת קישורים במקום.');
       return;
@@ -854,6 +943,12 @@ function bind() {
     if (!el.checked) return;
     state.level = el.value;
     state.expanded = false;
+    const next = keepVisible(state.selected, visibleSelectionKeys());
+    if (next.join('\n') !== selectionKey()) {
+      snapshot();
+      state.selected = next;
+      clearPreparedPrint();
+    }
     render();
   }));
   $('grade').addEventListener('change', async () => {
@@ -871,8 +966,12 @@ function bind() {
   $('topic').addEventListener('change', async () => {
     state.topic = $('topic').value;
     state.expanded = false;
+    state.selected = [];
+    history = [];
+    clearPreparedPrint();
     await loadCurrentTopic();
-    render();
+    if (state.scenario === 'other') render();
+    else applyScenario(state.scenario, { quiet: true });
   });
   $('filter-all').addEventListener('click', () => { state.filter = 'all'; $('filter-all').setAttribute('aria-pressed', 'true'); $('filter-selected').setAttribute('aria-pressed', 'false'); render(); });
   $('filter-selected').addEventListener('click', () => { state.filter = 'selected'; $('filter-selected').setAttribute('aria-pressed', 'true'); $('filter-all').setAttribute('aria-pressed', 'false'); render(); });
