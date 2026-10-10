@@ -138,7 +138,8 @@ const ariaLabels: Record<string, string> = {
   'corr-angles': 'הדגמה: חותך עובר בין שני ישרים מקבילים, ושתי זוויות מתאימות שוות.',
   'mean-cols': 'הדגמה: העמודות 2, 4 ו־6 מתאזנות, וכל אחת נעצרת על הממוצע 4.',
   'pct-25': 'הדגמה: 25 משבצות מתוך 100 נצבעות, וזה 25 אחוז.',
-  'diff-sq': 'הדגמה: ההפרש בין שני ריבועים נפרש למלבן אחד, והשטח נשמר.',
+  'diff-sq':
+    'הדגמה: ריבוע שהצלע שלו x — השטח הוא x בריבוע. מסמנים בקו מקווקו ריבוע שהצלע שלו y ומורידים אותו. נשארת צורת ר׳ הפוכה; היא נחתכת, הרצועה מסתובבת ומשלימה מלבן של (x + y) על (x − y) — לכן x² − y² = (x − y) · (x + y).',
   'clock-3': 'הדגמה: השעון נעצר על השעה 3:00, שעה שלמה.',
   'peri-rect': 'הדגמה: הליכה על שפת המלבן סוכמת את ארבע הצלעות להיקף.',
   'signed-jump': 'הדגמה: על הישר, קפיצה של 5 מ־2− מגיעה אל 3.',
@@ -209,7 +210,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'corr-angles': { text: 'האם הזוויות שוות?' },
   'mean-cols': { text: 'מה הממוצע של 2, 4 ו־6?' },
   'pct-25': { text: 'כמה זה 25 מתוך 100?' },
-  'diff-sq': { text: '5² − 3² = ?', ltr: true },
+  'diff-sq': { text: 'x² − y² = ?', ltr: true },
   'clock-3': { text: 'איזו שעה שלמה?' },
   'peri-rect': { text: 'מה היקף המלבן?' },
   'signed-jump': { text: '−2 + 5 = ?', ltr: true },
@@ -1366,14 +1367,53 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'diff-sq' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
-          <rect class="cl-fill-a cl-stroke-a" x="50" y="70" width="150" height="150" />
-          <rect class="cl-line" x="50" y="70" width="90" height="90" fill="#fff" />
-          <text class="cl-t cl-num" x="95" y="122" text-anchor="middle">9</text>
-          <text class="cl-t cl-num" x="150" y="200" text-anchor="middle">16</text>
-          <g data-el="rect16" style="opacity:0">
-            <rect class="cl-fill-c cl-line" x="250" y="150" width="220" height="55" />
-            <text class="cl-t cl-num" data-el="lbl16" x="360" y="184" text-anchor="middle" style="opacity:0">16</text>
+          {/* scene 1 — the x×x square: trace left edge → x, bottom edge → x;
+              x · x → x². The bottom-edge x never moves again */}
+          <rect data-el="fill-big" class="cl-fill-a" x="144" y="55" width="170" height="170" style="opacity:0" />
+          <rect data-el="sq-big" class="cl-line cl-stroke-a" x="144" y="55" width="170" height="170" pathLength="1" style="opacity:0" />
+          <line data-el="eXl" class="cl-line" x1="144" y1="225" x2="144" y2="55" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblXl" class="cl-t cl-num" x="132" y="146" text-anchor="end" style="opacity:0">x</text>
+          <line data-el="eXb" class="cl-line" x1="144" y1="225" x2="314" y2="225" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblXb" class="cl-t cl-num" x="229" y="250" text-anchor="middle" style="opacity:0">x</text>
+          <text data-el="mulX" class="cl-t cl-num cl-big" x="229" y="196" text-anchor="middle" style="opacity:0">x · x</text>
+          <text data-el="powX" class="cl-t cl-num cl-big" x="229" y="196" text-anchor="middle" style="opacity:0">x²</text>
+          {/* scene 2 — the dashed y×y square joins: trace its top edge → y; y · y → y² */}
+          <g data-el="g-small" style="opacity:0">
+            <rect class="cl-dash" x="144" y="55" width="102" height="102" fill="#fff" />
+            <text data-el="mulY" class="cl-t cl-num" x="195" y="111" text-anchor="middle" style="opacity:0">y · y</text>
+            <text data-el="powY" class="cl-t cl-num cl-big" x="195" y="111" text-anchor="middle" style="opacity:0">y²</text>
           </g>
+          <line data-el="eYt" class="cl-line" x1="144" y1="55" x2="246" y2="55" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblYt" class="cl-t cl-num" x="195" y="44" text-anchor="middle" style="opacity:0">y</text>
+          {/* scene 3 — subtraction: the y² square turns gray, almost transparent, never gone */}
+          <g data-el="g-ghost" stroke="#9ca3af" fill="none" style="opacity:0">
+            <rect x="144" y="55" width="102" height="102" stroke-width="1.5" stroke-dasharray="5 5" />
+          </g>
+          {/* the inverted-Resh (L) traces itself; outer sides traced + numbered */}
+          <path data-el="l-outline" class="cl-line cl-stroke-a" d="M246 157 L246 55 L314 55 L314 225 L144 225 L144 157 Z" pathLength="1" style="opacity:0" />
+          <g data-el="l-bot" style="opacity:0">
+            <rect class="cl-fill-a cl-stroke-a" x="144" y="157" width="170" height="68" />
+            <text data-el="lbl-bot" class="cl-t cl-num" x="229" y="197" text-anchor="middle" stroke="#fff" stroke-width="3" paint-order="stroke" style="opacity:0">x · (x − y)</text>
+          </g>
+          <g data-el="l-top" style="opacity:0">
+            <rect class="cl-fill-b cl-stroke-b" x="246" y="55" width="68" height="102" />
+          </g>
+          <line data-el="eXYr" class="cl-line" x1="314" y1="225" x2="314" y2="157" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblXYr" class="cl-t cl-num" x="328" y="196" style="opacity:0">x − y</text>
+          <line data-el="eYr" class="cl-line" x1="314" y1="157" x2="314" y2="55" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblYr" class="cl-t cl-num" x="328" y="111" style="opacity:0">y</text>
+          <line data-el="eXYt" class="cl-line" x1="246" y1="55" x2="314" y2="55" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblXYt" class="cl-t cl-num" x="280" y="44" text-anchor="middle" style="opacity:0">x − y</text>
+          {/* scene 4 — the cut, the dashed target slot, the slow rotation */}
+          <line data-el="cut" class="cl-dash" x1="246" y1="157" x2="314" y2="157" stroke="#ea580c" stroke-width="2.5" style="opacity:0" />
+          <rect data-el="slot" class="cl-dash" x="314" y="157" width="102" height="68" style="opacity:0" />
+          {/* scene 5 — one rectangle (x + y) × (x − y) = x² − y² */}
+          <rect data-el="rect-merge" class="cl-line cl-stroke-a" x="144" y="157" width="272" height="68" pathLength="1" style="opacity:0" />
+          <line data-el="eYh" class="cl-line" x1="314" y1="225" x2="416" y2="225" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblYh" class="cl-t cl-num" x="365" y="250" text-anchor="middle" style="opacity:0">y</text>
+          <text data-el="dimSum" class="cl-t cl-num" x="280" y="250" text-anchor="middle" style="opacity:0">x + y</text>
+          <text data-el="dimDiff" class="cl-t cl-num" x="430" y="196" style="opacity:0">x − y</text>
+          <text data-el="lblRes" class="cl-t cl-num cl-big" x="280" y="200" text-anchor="middle" stroke="#fff" stroke-width="3" paint-order="stroke" style="opacity:0">x² − y²</text>
         </svg>
       )
     }
@@ -2519,7 +2559,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'diff-sq' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">5² − 3² = 25 − 9 = 16</span>
+          <span data-fx="0">x² − y² = (x − y) · (x + y)</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )

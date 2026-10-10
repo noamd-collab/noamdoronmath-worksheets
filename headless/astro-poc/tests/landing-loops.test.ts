@@ -108,6 +108,19 @@ describe('landing loop coverage', () => {
     assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
   });
 
+  it('difference-of-squares-grade-9 gets its own L14 diff-sq film; other F21 pages keep area-model', () => {
+    assert.deepEqual(topicLandingLoop(loadTopicPage('difference-of-squares-grade-9')), {
+      kind: 'concept',
+      variant: 'diff-sq',
+      marker: 'concept-diff-sq',
+    });
+    for (const slug of TOPIC_PAGE_SLUGS) {
+      if (slug === 'difference-of-squares-grade-9') continue;
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      assert.notEqual(loop.kind === 'concept' ? loop.variant : '', 'diff-sq', slug);
+    }
+  });
+
   it('topic, grade, home, and marketing templates emit data-landing-loop', () => {
     const topic = read('src/components/TopicPage.astro');
     const loop = read('src/components/LandingLoop.astro');
