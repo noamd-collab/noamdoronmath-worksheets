@@ -455,7 +455,8 @@ describe('teacher catalog picker', () => {
         const end = box.y + box.h;
         assert.ok(box.y <= figure.y0 + 0.004, `${file} ${id} top ${JSON.stringify(box)}`);
         assert.ok(end >= figure.y1 - 0.01, `${file} ${id} end ${JSON.stringify(box)}`);
-        assert.ok(box.mask && Math.abs(box.mask.x - storedMask.x) < 0.001, `${file} ${id} mask ${JSON.stringify(box.mask)}`);
+        assert.ok(box.y <= byId['8א'].row.y + 0.0001, `${file} ${id} half line ${JSON.stringify(box)}`);
+        assert.ok(box.mask && box.mask.x >= storedMask.x + 0.004 && box.mask.x <= storedMask.x + 0.012, `${file} ${id} mask ${JSON.stringify(box.mask)}`);
         const maskBottom = box.y + (box.mask.y + box.mask.h) * box.h;
         assert.ok(maskBottom >= end - 0.004, `${file} ${id} mask bottom ${maskBottom}`);
       }
@@ -472,17 +473,24 @@ describe('teacher catalog picker', () => {
     }
   });
 
-  it('trims the next-line sliver when grade-9 9ג is printed alone', () => {
+  it('keeps the grade-9 9ג sketch and hides the next line when printed alone', () => {
     const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
     const sheet = JSON.parse(readFileSync(new URL('../public/teachers/sheets/2056de6d71e14c98aa5efe856d2e1bcf.json', import.meta.url), 'utf8'));
-    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number } }[];
+    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number; mask?: { x: number; y: number; h: number } } }[];
     const byId = Object.fromEntries(sheet.questions.map((question: { id: string }) => [question.id, question]));
     const rows = shortSlices([byId['9ג']]).filter((slice) => slice.kind === 'row' && slice.page === 4);
     assert.equal(rows.length, 1);
-    const end = rows[0].box.y + rows[0].box.h;
-    assert.ok(end <= byId['9ד'].row.y - 0.0005, String(end));
+    const box = rows[0].box;
+    const end = box.y + box.h;
+    // The rectangle sketch continues just past 9ד's label row. Keep it, and cover 9ד's text.
+    assert.ok(end >= 0.3114, String(end));
     assert.ok(end > byId['9ג'].row.y + 0.03, String(end));
-    assert.ok(rows[0].box.y <= byId['9ג'].row.y);
+    assert.ok(box.y <= byId['9ג'].row.y);
+    assert.ok(box.mask && box.mask.x >= 0.4 && box.mask.x < 0.6, JSON.stringify(box.mask));
+    const maskTop = box.y + box.mask.y * box.h;
+    const maskBottom = maskTop + box.mask.h * box.h;
+    assert.ok(maskTop <= byId['9ד'].row.y + 0.001, String(maskTop));
+    assert.ok(maskBottom >= end - 0.002, String(maskBottom));
   });
 
   it('measures a committed label page without downloading a worksheet', (t) => {
