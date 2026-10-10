@@ -316,11 +316,24 @@ describe('Noam AI headless endpoint', () => {
     assert.deepEqual(qwenBody.exerciseIds, []);
   });
 
+  it('rates by true-client-ip and ignores a spoofed cf-connecting-ip', () => {
+    const route = readFileSync(new URL('../src/pages/api/noamSiteCompanion.ts', import.meta.url), 'utf8');
+    assert.equal(route.includes('clientAddress'), false);
+    const spoofed = new Headers({
+      'cf-connecting-ip': '198.51.100.9',
+      'x-real-ip': '198.51.100.8',
+      'x-forwarded-for': '198.51.100.7',
+      'true-client-ip': '203.0.113.50',
+    });
+    assert.equal(visitorIpFrom(spoofed), '203.0.113.50');
+    assert.equal(visitorIpFrom(new Headers({ 'cf-connecting-ip': '198.51.100.9' })), '');
+    assert.equal(visitorIpFrom(new Headers({ 'x-real-ip': '198.51.100.8' })), '');
+    assert.equal(visitorIpFrom(new Headers({ 'x-forwarded-for': '203.0.113.1, 198.51.100.2' })), '');
+    assert.equal(visitorIpFrom(new Headers({ 'true-client-ip': '203.0.113.1, 198.51.100.2' })), '');
+  });
+
   it('does not put visitors without an IP into one 12-per-minute bucket', async () => {
-    assert.equal(visitorIpFrom('203.0.113.8', new Headers({ 'x-forwarded-for': '198.51.100.9' })), '203.0.113.8');
-    assert.equal(visitorIpFrom('', new Headers({ 'cf-connecting-ip': '203.0.113.50' })), '203.0.113.50');
-    assert.equal(visitorIpFrom('', new Headers({ 'x-forwarded-for': '198.51.100.9' })), '');
-    assert.equal(visitorIpFrom('203.0.113.1, 198.51.100.2', new Headers()), '');
+    assert.equal(visitorIpFrom(new Headers()), '');
     const store = new Map();
     const fetch = async () => ({
       ok: true,

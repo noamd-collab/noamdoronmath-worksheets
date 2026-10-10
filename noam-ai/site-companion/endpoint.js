@@ -209,19 +209,17 @@ export function isHeadlessPreviewOrigin(origin) {
 
 /**
  * Visitor IP for the rate limit.
- * Wix hosting runs this route through @astrojs/cloudflare. That handler sets
- * Astro clientAddress from the cf-connecting-ip header and does not read
- * x-forwarded-for. Cloudflare overwrites cf-connecting-ip with the visitor.
- * x-forwarded-for is ignored here because a caller can prepend it.
- * An empty result means "no visitor IP": the guard then keys by the
- * reCAPTCHA token and a higher per-isolate cap, not one shared 12/min bucket.
+ * Probed on the live Wix preview (2026-10-10): Wix does not set
+ * cf-connecting-ip, and a client-supplied value is forwarded unchanged.
+ * Astro context.clientAddress throws on that host, so callers must not read it.
+ * true-client-ip is written by the Wix edge, which replaces a spoofed value.
+ * x-real-ip is forwarded from the client. x-forwarded-for is replaced by the
+ * edge too, and is still not a key. Only true-client-ip is.
+ * An empty result means no visitor IP: the guard keys by the reCAPTCHA token
+ * and a higher per-isolate cap, not one shared 12/min bucket.
  */
-export function visitorIpFrom(clientAddress, headers) {
-  const direct = oneAddress(clientAddress);
-  if (direct) return direct;
-  const cf = oneAddress(readHeader(headers, "cf-connecting-ip"));
-  if (cf) return cf;
-  return "";
+export function visitorIpFrom(headers) {
+  return oneAddress(readHeader(headers, "true-client-ip"));
 }
 
 function readHeader(headers, name) {

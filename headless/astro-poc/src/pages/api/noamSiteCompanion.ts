@@ -25,16 +25,8 @@ function keys() {
   };
 }
 
-function clientIpOf(context: { clientAddress?: string; request: Request }): string {
-  // clientAddress on this adapter is cf-connecting-ip (see visitorIpFrom).
-  // A missing address must stay empty so the guard does not share one bucket.
-  let address = '';
-  try {
-    address = String(context.clientAddress || '');
-  } catch {
-    address = '';
-  }
-  return visitorIpFrom(address, context.request.headers);
+function clientIpOf(context: { request: Request }): string {
+  return visitorIpFrom(context.request.headers);
 }
 
 function send(result: { status: number; headers: Record<string, string>; body: unknown }): Response {

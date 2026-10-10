@@ -101,11 +101,10 @@ export function isAllowedRecaptchaHostname(hostname) {
 /**
  * Rate-limit identity.
  * A real visitor IP (one address, no spaces or commas) is its own 12/min key.
- * On the headless site that IP is Cloudflare's cf-connecting-ip, which the
- * Wix Astro adapter copies into clientAddress. x-forwarded-for is not a key:
- * the client can prepend it. When the IP is missing, the key is a hash of
- * the reCAPTCHA token plus the higher global cap above. "untrusted" is not
- * used as a shared bucket.
+ * The headless route passes only the true-client-ip header. Wix's edge
+ * overwrites that header. cf-connecting-ip and x-real-ip are not keys.
+ * When the IP is missing, the key is a hash of the reCAPTCHA token plus the
+ * higher global cap above. "untrusted" is not used as a shared bucket.
  */
 export function tokenRateKey(token) {
   const value = typeof token === "string" ? token : "";
