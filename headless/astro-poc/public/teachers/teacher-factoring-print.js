@@ -1527,6 +1527,7 @@ function wizardPaint(step, how) {
     need.hidden = wizardRoute === 'gate';
     if (wizardRoute === 'fast') need.open = true;
   }
+  placeTeacherNeed();
   $('wizard').classList.toggle('is-gate', wizardRoute === 'gate');
   $('wizard').classList.toggle('is-fast', wizardRoute === 'fast');
   $('wizard').classList.toggle('is-guided', wizardRoute === 'guided');
@@ -1740,6 +1741,18 @@ function jumpWizard(event) {
   const step = btn.dataset.wizardJump;
   if (wizardIndex(step) > wizardIndex(wizardCurrent())) return;
   wizardGo(step, 'push');
+}
+
+function placeTeacherNeed() {
+  const wrap = $('teacher-need-wrap');
+  if (!wrap) return;
+  if (wizardRoute === 'fast') {
+    const level = document.querySelector('[data-wizard-step="level"]');
+    if (level && wrap.previousElementSibling !== level) level.insertAdjacentElement('afterend', wrap);
+    return;
+  }
+  const row = document.querySelector('.route-switch-row');
+  if (row && wrap.previousElementSibling !== row) row.insertAdjacentElement('afterend', wrap);
 }
 
 function paintFastHits() {
