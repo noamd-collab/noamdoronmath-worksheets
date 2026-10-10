@@ -721,7 +721,9 @@ function thumbContent(bitmap, question, row) {
   const srcX = Math.max(0, windowRect.srcX + left - pad);
   const srcY = Math.max(limits.above, windowRect.srcY + top - pad);
   const srcX2 = Math.min(bitmap.width, windowRect.srcX + right + 1 + pad);
-  const srcY2 = Math.min(limits.below, windowRect.srcY + bot + pad);
+  // Stop short of the next row so a sliver of its first line is not in the card.
+  const belowLimit = limits.below < bitmap.height ? Math.max(srcY + 4, limits.below - 2) : limits.below;
+  const srcY2 = Math.min(belowLimit, windowRect.srcY + bot + pad);
   return { srcX, srcY, srcW: Math.max(1, srcX2 - srcX), srcH: Math.max(1, srcY2 - srcY), page: windowRect.page };
 }
 
@@ -777,6 +779,59 @@ function wordGapCut(bitmap, slice) {
   return best.x + Math.floor(best.w / 2);
 }
 
+function captionSplit(bitmap, slice) {
+  if (!slice || slice.srcH < 40 || slice.srcW < 40) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(slice.srcX, slice.srcY, slice.srcW, slice.srcH);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = slice.srcW;
+  const rh = slice.srcH;
+  const bands = [];
+  let start = -1;
+  let blank = 0;
+  const gap = Math.max(3, Math.round(rh * 0.015));
+  for (let y = 0; y <= rh; y += 1) {
+    let n = 0;
+    if (y < rh) {
+      for (let x = 0; x < rw; x += 4) {
+        const i = (y * rw + x) * 4;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
+      }
+    }
+    if (n > 1) {
+      if (start < 0) start = y;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (y === rh || blank > gap) {
+        bands.push({ y: start, h: y - blank - start + 1 });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  if (bands.length < 2) return null;
+  const lineCap = Math.max(14, Math.round(rh * 0.16));
+  let textEnd = 0;
+  while (textEnd < bands.length && bands[textEnd].h <= lineCap) textEnd += 1;
+  if (!textEnd || textEnd >= bands.length) return null;
+  const draw = bands[textEnd];
+  if (draw.h < rh * 0.32 || draw.h < bands[0].h * 2) return null;
+  const textTop = Math.max(0, bands[0].y - 2);
+  const textBot = bands[textEnd - 1].y + bands[textEnd - 1].h + 2;
+  const drawTop = Math.max(0, draw.y - 2);
+  const drawBot = Math.min(rh, bands[bands.length - 1].y + bands[bands.length - 1].h + 2);
+  if (textBot >= drawTop || textBot - textTop < 6 || drawBot - drawTop < 20) return null;
+  return {
+    text: { ...slice, srcY: slice.srcY + textTop, srcH: Math.max(1, textBot - textTop) },
+    drawing: { ...slice, srcY: slice.srcY + drawTop, srcH: Math.max(1, drawBot - drawTop) },
+  };
+}
+
 async function paintThumb(canvas) {
   const question = library.get(canvas.dataset.thumb);
   if (!question || !question.row || !levelAllows(question.source)) return;
@@ -794,8 +849,17 @@ async function paintThumb(canvas) {
   const edge = 8;
   const gutter = 6;
   const maxH = 180;
-  const fitted = [];
+  const laid = [];
   pieces.forEach((piece) => {
+    const split = captionSplit(piece.bitmap, piece.slice);
+    if (!split) laid.push(piece);
+    else {
+      laid.push({ bitmap: piece.bitmap, slice: split.text, role: 'text' });
+      laid.push({ bitmap: piece.bitmap, slice: split.drawing, role: 'drawing' });
+    }
+  });
+  const fitted = [];
+  laid.forEach((piece) => {
     const slice = piece.slice;
     const target = cardW - edge * 2;
     const fit = target / Math.max(1, slice.srcW);
@@ -810,21 +874,38 @@ async function paintThumb(canvas) {
       return;
     }
     const rightW = slice.srcW - cut;
-    fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcX: slice.srcX + cut, srcW: rightW } });
-    fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcW: cut } });
+    fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcX: slice.srcX + cut, srcW: rightW }, role: piece.role });
+    fitted.push({ bitmap: piece.bitmap, slice: { ...slice, srcW: cut }, role: piece.role });
   });
   pieces = fitted;
-  let scale = cardW - edge * 2;
-  pieces.forEach((piece) => { scale = Math.min(scale, (cardW - edge * 2) / piece.slice.srcW); });
-  scale = Math.min(scale, 1.5);
-  let body = pieces.reduce((sum, piece) => sum + piece.slice.srcH * scale, 0);
+  const target = cardW - edge * 2;
+  const scales = pieces.map((piece) => Math.min(1.5, target / Math.max(1, piece.slice.srcW)));
   const gaps = gutter * Math.max(0, pieces.length - 1);
-  if (body + gaps + edge * 2 > maxH) scale *= (maxH - gaps - edge * 2) / body;
+  const limit = maxH - gaps - edge * 2;
+  let body = pieces.reduce((sum, piece, index) => sum + piece.slice.srcH * scales[index], 0);
+  if (body > limit && body > 0) {
+    let over = body - limit;
+    const drawingIdx = [];
+    pieces.forEach((piece, index) => { if (piece.role === 'drawing') drawingIdx.push(index); });
+    (drawingIdx.length ? drawingIdx : pieces.map((_, index) => index)).forEach((index) => {
+      if (over <= 0) return;
+      const height = pieces[index].slice.srcH * scales[index];
+      const floor = Math.min(height, pieces[index].slice.srcH * 0.35);
+      const cut = Math.min(over, Math.max(0, height - floor));
+      if (height > cut) scales[index] *= (height - cut) / height;
+      over -= cut;
+    });
+    if (over > 0) {
+      const nextBody = pieces.reduce((sum, piece, index) => sum + piece.slice.srcH * scales[index], 0);
+      const factor = limit / Math.max(1, nextBody);
+      scales.forEach((_, index) => { scales[index] *= factor; });
+    }
+  }
   const dpr = window.devicePixelRatio || 1;
   let dh = edge * 2 + gaps;
-  const drawn = pieces.map((piece) => {
-    const sw = Math.max(1, Math.round(piece.slice.srcW * scale));
-    const sh = Math.max(1, Math.round(piece.slice.srcH * scale));
+  const drawn = pieces.map((piece, index) => {
+    const sw = Math.max(1, Math.round(piece.slice.srcW * scales[index]));
+    const sh = Math.max(1, Math.round(piece.slice.srcH * scales[index]));
     return { piece, sw, sh };
   });
   drawn.forEach((item) => { dh += item.sh; });
@@ -1389,10 +1470,12 @@ function answerBox(items, questionNumber, part) {
     });
   });
   labels.sort((a, b) => (Math.abs(a.y - b.y) > 4 ? b.y - a.y : b.x - a.x));
+  // PDF y grows upward. Stop above the next glyph top so the next row is not in the window.
+  const aboveGlyphs = (token) => token.y + Math.max(token.h || 0, 11) + 2;
   let left = 28;
   let right = marker.x - 4;
-  let top = marker.y + 16;
-  let bottom = next ? next.y + 8 : marker.y - 16;
+  let top = marker.y + Math.max(marker.h || 0, 12) + 4;
+  let bottom = next ? aboveGlyphs(next) : marker.y - 28;
   if (part) {
     const index = labels.findIndex((item) => item.part === part);
     if (index >= 0) {
@@ -1405,18 +1488,15 @@ function answerBox(items, questionNumber, part) {
       else right = label.x - 1;
       left = nextOnLine ? after(nextOnLine) : 28;
       if (label.rest) left = Math.min(left, label.x - 3);
-      top = label.y + 18;
-      if (nextOnLine) bottom = label.y - 14;
-      else if (follower) bottom = follower.y + 14;
-      else bottom = next ? Math.max(next.y + 8, label.y - 36) : label.y - 16;
+      top = label.y + Math.max(label.h || 0, 11) + 3;
+      if (nextOnLine) bottom = label.y - 6;
+      else if (follower) bottom = aboveGlyphs(follower);
+      else if (next) bottom = aboveGlyphs(next);
+      else bottom = label.y - 28;
+      if (bottom > label.y - 4) bottom = label.y - 6;
     } else if (labels.length) {
-      const mentioned = items.some((item) => (
-        sameSheet(item)
-        && item.y <= bandTop
-        && item.y >= bandBottom
-        && new RegExp('(?:^|[\\s·•.])' + part + '(?:$|[\\s.·•—])').test(String(item.str || ''))
-      ));
-      if (!mentioned) return null;
+      // The letter is not its own label. The whole band would print a neighbour's answer.
+      return null;
     }
   }
   if (top - bottom < 8 || right - left < 6) return null;
@@ -1728,8 +1808,12 @@ function sliceInkRows(bitmap, box) {
   let blank = 0;
   let minX = rw;
   let maxX = 0;
+  let bandMin = rw;
+  let bandMax = 0;
   for (let y = 0; y <= rh; y += 1) {
     let n = 0;
+    let rowMin = rw;
+    let rowMax = 0;
     if (y < rh) {
       for (let x = 0; x < rw; x += 1) {
         const i = (y * rw + x) * 4;
@@ -1737,23 +1821,32 @@ function sliceInkRows(bitmap, box) {
           n += 1;
           if (x < minX) minX = x;
           if (x > maxX) maxX = x;
+          if (x < rowMin) rowMin = x;
+          if (x > rowMax) rowMax = x;
         }
       }
     }
     if (n > 2) {
-      if (start < 0) start = y;
+      if (start < 0) {
+        start = y;
+        bandMin = rowMin;
+        bandMax = rowMax;
+      } else {
+        if (rowMin < bandMin) bandMin = rowMin;
+        if (rowMax > bandMax) bandMax = rowMax;
+      }
       blank = 0;
     } else if (start >= 0) {
       blank += 1;
       if (y === rh || blank > 2) {
         const end = y - blank;
-        bands.push({ y: start, h: end - start + 1 });
+        bands.push({ y: start, h: end - start + 1, minX: bandMin, maxX: bandMax });
         start = -1;
         blank = 0;
       }
     }
   }
-  return { bands, y0, height, x0, minX, maxX, width };
+  return { bands, y0, height, x0, minX, maxX, width, rh };
 }
 
 function placedBox(box, y, h) {
@@ -1775,8 +1868,14 @@ function trimPieceBox(slice, bitmap) {
   let y2 = box.y + box.h;
   const source = slice.source;
   const footer = source && source.footerCrop;
+  const header = source && source.headerCrop;
   if (slice.kind !== 'answer') {
     if (footer && Number(footer.page) === Number(slice.page) && footer.y < y2) y2 = footer.y;
+    // A part box that starts in the page-1 title block still holds the name line. Begin under it.
+    if (header && Number(header.page) === Number(slice.page)) {
+      const headerBottom = (header.y || 0) + (header.h || 0);
+      if (y < 0.12 && y < headerBottom - 0.008 && y2 > headerBottom + 0.012) y = headerBottom;
+    }
     // Running header (בס״ד) and the source footer line, on every page.
     if (y < 0.046 && y2 > y + 0.03) y = 0.046;
     if (y2 > 0.945 && y < 0.92) y2 = 0.945;
@@ -1788,12 +1887,31 @@ function trimPieceBox(slice, bitmap) {
   const pageH = ink.height;
   const pad = Math.max(2, Math.round(pageH * 0.003));
   if (slice.kind === 'answer') {
-    const bands = ink.bands;
+    const winTop = ink.y0;
+    const winBot = Math.min(pageH, ink.y0 + (ink.rh || 0));
+    const mid = (winTop + winBot) / 2;
+    // A neighbour that leaked in touches an edge and does not cross this label's midline.
+    const inner = ink.bands.filter((band) => {
+      const topPx = ink.y0 + band.y;
+      const botPx = topPx + band.h;
+      const touches = topPx <= winTop + 1 || botPx >= winBot - 1;
+      const ownsLine = topPx <= mid && botPx >= mid;
+      if (touches && !ownsLine) return false;
+      return true;
+    });
+    const bands = inner.length ? inner : ink.bands;
     const top = Math.max(0, ink.y0 + bands[0].y - pad);
     const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
     const pageW = ink.width;
-    const left = Math.max(0, ink.x0 + ink.minX - pad);
-    const right = Math.min(pageW, ink.x0 + ink.maxX + 1 + pad);
+    let inkMin = bands[0].minX == null ? ink.minX : bands[0].minX;
+    let inkMax = bands[0].maxX == null ? ink.maxX : bands[0].maxX;
+    bands.forEach((band) => {
+      if (band.minX == null) return;
+      if (band.minX < inkMin) inkMin = band.minX;
+      if (band.maxX > inkMax) inkMax = band.maxX;
+    });
+    const left = Math.max(0, ink.x0 + inkMin - pad);
+    const right = Math.min(pageW, ink.x0 + inkMax + 1 + pad);
     const next = placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH));
     if (right - left > 4) {
       next.x = left / pageW;
@@ -1814,40 +1932,25 @@ function sealOverlaps(measured) {
   for (let i = 0; i < measured.length; i += 1) {
     const earlier = measured[i];
     if (!earlier.slice || (earlier.slice.kind !== 'row' && earlier.slice.kind !== 'stem')) continue;
+    const earlierPdf = earlier.slice.source && earlier.slice.source.pdfId;
     for (let j = i + 1; j < measured.length; j += 1) {
       const later = measured[j];
       const box = earlier.slice.box;
       const other = later.slice && later.slice.box;
       if (!box || !other || later.slice.page !== earlier.slice.page) continue;
       if (later.slice.kind !== 'row' && later.slice.kind !== 'stem') continue;
+      const laterPdf = later.slice.source && later.slice.source.pdfId;
+      // Page 1 of two worksheets is not the same page. Never white out either part.
+      if (!earlierPdf || earlierPdf !== laterPdf) continue;
       const top = Math.max(box.y, other.y);
       const bot = Math.min(box.y + box.h, other.y + other.h);
-      if (bot - top < 0.004) continue;
-      const mask = box.mask;
-      const maskTop = mask ? box.y + mask.y * box.h : 0;
-      const maskBot = mask ? maskTop + mask.h * box.h : 0;
-      const covered = mask && mask.x <= 0.46 && mask.x + mask.w >= 0.98 && maskTop <= top + 0.003 && maskBot >= bot - 0.003;
-      if (covered) continue;
-      const abs = [];
-      if (mask && box.h > 0) abs.push({ x: mask.x, w: mask.w, y: maskTop, y2: maskBot });
-      abs.push({ x: 0.42, w: 0.58, y: top, y2: bot });
-      let best = abs[0];
-      abs.forEach((item) => {
-        if (item.y2 - item.y > best.y2 - best.y) best = item;
-      });
-      const height = box.h;
-      earlier.slice = {
-        ...earlier.slice,
-        box: {
-          ...box,
-          mask: {
-            x: best.x,
-            w: best.w,
-            y: Math.max(0, (Math.max(best.y, box.y) - box.y) / height),
-            h: Math.max(0.01, (Math.min(best.y2, box.y + height) - Math.max(best.y, box.y)) / height),
-          },
-        },
-      };
+      if (bot - top < 0.016) continue;
+      const laterEnd = other.y + other.h;
+      const newY = Math.max(other.y, box.y + box.h);
+      const newH = laterEnd - newY;
+      // Leave the later part alone when the trim would eat its own first line.
+      if (newH < 0.016) continue;
+      later.slice = { ...later.slice, box: placedBox(other, newY, newH) };
     }
   }
 }
@@ -1947,6 +2050,34 @@ function packWorksheet(measured, noteHeight) {
   });
   if (page.length) pages.push({ top, items: page });
   if (!pages.length) pages.push({ top: FIRST_TOP, items: [] });
+  // A leftover page that holds one answer goes back onto the previous page.
+  while (pages.length > 1) {
+    const last = pages[pages.length - 1];
+    const answerish = (item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head');
+    if (!last.items.length || !last.items.every(answerish)) break;
+    const count = last.items.filter((item) => item.slice.kind === 'answer' || item.slice.kind === 'missing').length;
+    if (count !== 1) break;
+    const prev = pages[pages.length - 2];
+    const room = PAGE_H - heightOf(prev.items, prev.top);
+    if (room < 36) break;
+    let extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
+    const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
+    const need = leadGap + contentHeight(extra);
+    if (need > room) {
+      const factor = room / need;
+      if (factor < 0.45) break;
+      extra = extra.map((item) => ({
+        ...item,
+        dh: Math.max(1, Math.round(item.dh * factor)),
+        slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
+      }));
+    }
+    const overflow = heightOf(prev.items.concat(extra), prev.top) - PAGE_H;
+    if (overflow > 0) extra[extra.length - 1].dh = Math.max(1, extra[extra.length - 1].dh - overflow);
+    if (heightOf(prev.items.concat(extra), prev.top) > PAGE_H) break;
+    prev.items = prev.items.concat(extra);
+    pages.pop();
+  }
   return pages;
 }
 
