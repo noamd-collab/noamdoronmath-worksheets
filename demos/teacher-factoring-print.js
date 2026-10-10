@@ -1364,10 +1364,29 @@ function answerBox(items, questionNumber, part) {
   const labels = [];
   items.forEach((item) => {
     if (!sameSheet(item) || item.y > bandTop || item.y < bandBottom) return;
-    const found = answerPart(item, items);
-    if (!found) return;
-    if (labels.some((label) => label.part === found.part && Math.abs(label.y - item.y) <= 4)) return;
-    labels.push({ str: found.part + '.', x: item.x, y: item.y, w: item.w, h: item.h, page: item.page, part: found.part, rest: found.rest });
+    const foundLabels = answerLabels(item);
+    const found = foundLabels.length ? foundLabels : [answerPart(item, items)].filter(Boolean).map((one) => ({
+      ...one,
+      x: item.x,
+      y: item.y,
+      w: item.w,
+      h: item.h,
+      page: item.page,
+    }));
+    found.forEach((label) => {
+      if (labels.some((have) => have.part === label.part && Math.abs(have.y - (label.y || item.y)) <= 4)) return;
+      labels.push({
+        str: label.part + '.',
+        x: label.x,
+        y: label.y,
+        w: label.w,
+        h: label.h,
+        page: label.page,
+        part: label.part,
+        rest: label.rest,
+        embedded: !!label.embedded,
+      });
+    });
   });
   labels.sort((a, b) => (Math.abs(a.y - b.y) > 4 ? b.y - a.y : b.x - a.x));
   let left = 28;
@@ -1376,17 +1395,29 @@ function answerBox(items, questionNumber, part) {
   let bottom = next ? next.y + 8 : marker.y - 16;
   if (part) {
     const index = labels.findIndex((item) => item.part === part);
-    if (index < 0) return null;
-    const label = labels[index];
-    const follower = labels[index + 1];
-    const nextOnLine = follower && Math.abs(follower.y - label.y) <= 6 ? follower : null;
-    right = label.rest ? label.x + Math.max(label.w || 0, 4) + 3 : label.x - 1;
-    left = nextOnLine ? nextOnLine.x + Math.max(nextOnLine.w || 0, 8) + 2 : 28;
-    if (label.rest) left = Math.min(left, label.x - 3);
-    top = label.y + 18;
-    if (nextOnLine) bottom = label.y - 14;
-    else if (follower) bottom = follower.y + 14;
-    else bottom = next ? Math.max(next.y + 8, label.y - 36) : label.y - 16;
+    if (index >= 0) {
+      const label = labels[index];
+      const follower = labels[index + 1];
+      const nextOnLine = follower && Math.abs(follower.y - label.y) <= 6 ? follower : null;
+      const after = (token) => token.x + Math.max(token.w || 0, 8) + 2;
+      if (label.embedded && !label.rest) right = label.x - 1;
+      else if (label.rest) right = label.x + Math.max(label.w || 0, 4) + 3;
+      else right = label.x - 1;
+      left = nextOnLine ? after(nextOnLine) : 28;
+      if (label.rest) left = Math.min(left, label.x - 3);
+      top = label.y + 18;
+      if (nextOnLine) bottom = label.y - 14;
+      else if (follower) bottom = follower.y + 14;
+      else bottom = next ? Math.max(next.y + 8, label.y - 36) : label.y - 16;
+    } else if (labels.length) {
+      const mentioned = items.some((item) => (
+        sameSheet(item)
+        && item.y <= bandTop
+        && item.y >= bandBottom
+        && new RegExp('(?:^|[\\s·•.])' + part + '(?:$|[\\s.·•—])').test(String(item.str || ''))
+      ));
+      if (!mentioned) return null;
+    }
   }
   if (top - bottom < 8 || right - left < 6) return null;
   return { page: marker.page, x: left, y: bottom, w: right - left, h: top - bottom };
@@ -1394,7 +1425,7 @@ function answerBox(items, questionNumber, part) {
 
 function markerNumber(item, items) {
   const text = String(item.str || '').trim();
-  let match = text.match(/^\((\d{1,2})\)$/);
+  let match = text.match(/^\((\d{1,2})\)$/) || text.match(/^\)(\d{1,2})\($/);
   if (match) return Number(match[1]);
   match = text.match(/^(\d{1,2})\.$/);
   if (match) return Number(match[1]);
@@ -1409,10 +1440,56 @@ function markerNumber(item, items) {
   return dotted ? Number(text) : null;
 }
 
+function answerLabels(item) {
+  const text = String(item.str || '');
+  const marks = [];
+  const re = /(?:^|[·•])\s*([אבגדהו])\./g;
+  let match;
+  while ((match = re.exec(text))) {
+    const embedded = match.index > 0 || text[match.index] === '·' || text[match.index] === '•';
+    marks.push({ part: match[1], index: match.index, end: match.index + match[0].length, embedded });
+  }
+  if (!marks.length) return [];
+  const len = text.length || 1;
+  const width = item.w || 0;
+  const rtl = item.dir === 'rtl' || (item.dir !== 'ltr' && marks.length > 1);
+  if (marks.length === 1 && item.dir !== 'rtl') {
+    return [{
+      part: marks[0].part,
+      rest: text.slice(marks[0].end).trim(),
+      embedded: marks[0].embedded,
+      x: item.x,
+      y: item.y,
+      w: item.w,
+      h: item.h,
+      page: item.page,
+    }];
+  }
+  return marks.map((mark) => {
+    const span = Math.max(1, mark.end - mark.index);
+    let x = item.x;
+    let w = Math.max(item.w || 0, 8);
+    if (width > 0) {
+      if (rtl) {
+        const rightEdge = item.x + width - (mark.index / len) * width;
+        const leftEdge = item.x + width - (mark.end / len) * width;
+        x = leftEdge;
+        w = Math.max(4, rightEdge - leftEdge);
+      } else {
+        x = item.x + (mark.index / len) * width;
+        w = Math.max(4, (span / len) * width);
+      }
+    }
+    return { part: mark.part, rest: '', embedded: true, x, y: item.y, w, h: item.h, page: item.page };
+  });
+}
+
 function answerPart(item, items) {
   const text = String(item.str || '').trim();
   const combined = text.match(/^([אבגדהו])\.\s*(.*)$/) || text.match(/^\.\s*([אבגדהו])\s*(.*)$/);
-  if (combined) return { part: combined[1], rest: combined[2] };
+  if (combined) return { part: combined[1], rest: combined[2], embedded: false };
+  const embedded = text.match(/[·•]\s*([אבגדהו])\.\s*(.*)$/);
+  if (embedded) return { part: embedded[1], rest: embedded[2], embedded: true };
   if (/^[אבגדהו]$/.test(text)) {
     const dot = items.some((other) => (
       other !== item
@@ -1423,6 +1500,20 @@ function answerPart(item, items) {
     if (dot) return { part: text, rest: '' };
   }
   return null;
+}
+
+function answerRegions(pages) {
+  const found = [];
+  let open = false;
+  (pages || []).forEach((sheet) => {
+    const items = sheet.items || [];
+    const title = items.find((item) => String(item.str || '').includes('תשובות סופיות'));
+    if (title) {
+      open = true;
+      found.push({ ...sheet, items: items.filter((item) => (item.y || 0) <= title.y + 12) });
+    } else if (open) found.push(sheet);
+  });
+  return found;
 }
 
 function exerciseSlices(chosen) {
@@ -1444,6 +1535,9 @@ function exerciseSlices(chosen) {
       SOURCE = entry.source;
       shortSlices(entry.questions).forEach((slice) => {
         if (slice.kind === 'header' || slice.kind === 'footer') return;
+        const box = slice.box;
+        // A continuation page stores the running header as its own row.
+        if (box && box.y < 0.05 && box.y + box.h < 0.075) return;
         slices.push({ ...slice, source: entry.source });
       });
     });
@@ -1465,13 +1559,13 @@ async function answerPages(source) {
       y: item.transform[5],
       w: item.width || 0,
       h: item.height || 0,
+      dir: item.dir || '',
       page: number,
     }));
-    if (!items.some((item) => item.str.includes('תשובות סופיות'))) continue;
     const viewport = page.getViewport({ scale: 1 });
     found.push({ page: number, width: viewport.width, height: viewport.height, items });
   }
-  return found;
+  return answerRegions(found);
 }
 
 function answerSliceFor(pages, question) {
@@ -1632,12 +1726,18 @@ function sliceInkRows(bitmap, box) {
   const bands = [];
   let start = -1;
   let blank = 0;
+  let minX = rw;
+  let maxX = 0;
   for (let y = 0; y <= rh; y += 1) {
     let n = 0;
     if (y < rh) {
       for (let x = 0; x < rw; x += 1) {
         const i = (y * rw + x) * 4;
-        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) n += 1;
+        if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) {
+          n += 1;
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+        }
       }
     }
     if (n > 2) {
@@ -1653,7 +1753,7 @@ function sliceInkRows(bitmap, box) {
       }
     }
   }
-  return { bands, y0, height };
+  return { bands, y0, height, x0, minX, maxX, width };
 }
 
 function placedBox(box, y, h) {
@@ -1679,7 +1779,7 @@ function trimPieceBox(slice, bitmap) {
     if (footer && Number(footer.page) === Number(slice.page) && footer.y < y2) y2 = footer.y;
     // Running header (בס״ד) and the source footer line, on every page.
     if (y < 0.046 && y2 > y + 0.03) y = 0.046;
-    if (y2 > 0.958 && y < 0.93) y2 = 0.958;
+    if (y2 > 0.945 && y < 0.92) y2 = 0.945;
   }
   if (y2 - y < 0.004) return slice;
   const clipped = y === box.y && Math.abs(y2 - (box.y + box.h)) < 0.0001 ? box : placedBox(box, y, y2 - y);
@@ -1691,7 +1791,15 @@ function trimPieceBox(slice, bitmap) {
     const bands = ink.bands;
     const top = Math.max(0, ink.y0 + bands[0].y - pad);
     const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
-    return { ...slice, box: placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH)) };
+    const pageW = ink.width;
+    const left = Math.max(0, ink.x0 + ink.minX - pad);
+    const right = Math.min(pageW, ink.x0 + ink.maxX + 1 + pad);
+    const next = placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH));
+    if (right - left > 4) {
+      next.x = left / pageW;
+      next.w = (right - left) / pageW;
+    }
+    return { ...slice, box: next };
   }
   // Keep the original writing space. Cut only past one third of a page below the last ink.
   const last = ink.bands[ink.bands.length - 1];

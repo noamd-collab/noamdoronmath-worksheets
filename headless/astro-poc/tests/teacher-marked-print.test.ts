@@ -486,6 +486,53 @@ describe('teacher catalog picker', () => {
     assert.ok(symbolOnly);
     assert.ok(symbolOnly.x > 200 && symbolOnly.x < 230);
     assert.ok(symbolOnly.x + symbolOnly.w > 490 && symbolOnly.x + symbolOnly.w < 500);
+    const glued = 'א. )1( אינה נכונה; )2( אינה נכונה · ב. לדוגמה הפרשים';
+    const gluedBet = answerBox([
+      { str: '2.', x: 547.7, y: 294, w: 7.9 },
+      { str: glued, x: 307.8, y: 294, w: 215.8, dir: 'rtl' },
+      { str: '1', x: 300.5, y: 294, w: 5.2 },
+      { str: '3.', x: 547.7, y: 244, w: 7.9 },
+    ], 2, 'ב');
+    assert.ok(gluedBet, 'part ב inside one answer token');
+    assert.ok(gluedBet.x < 305, JSON.stringify(gluedBet));
+    assert.ok(gluedBet.x + gluedBet.w < 470, JSON.stringify(gluedBet));
+    const gluedAlef = answerBox([
+      { str: '2.', x: 547.7, y: 294, w: 7.9 },
+      { str: glued, x: 307.8, y: 294, w: 215.8, dir: 'rtl' },
+      { str: '3.', x: 547.7, y: 244, w: 7.9 },
+    ], 2, 'א');
+    assert.ok(gluedAlef);
+    assert.ok(gluedAlef.x > 370, JSON.stringify(gluedAlef));
+    assert.ok(gluedAlef.x + gluedAlef.w > 500 && gluedAlef.x + gluedAlef.w < 548, JSON.stringify(gluedAlef));
+    const unlabeled = answerBox([
+      { str: '(1)', x: 540, y: 711, w: 16 },
+      { str: 'f(x) = (x + 2)(x - 6)', x: 300, y: 710, w: 180 },
+      { str: '(2)', x: 540, y: 690, w: 16 },
+    ], 1, 'א');
+    assert.ok(unlabeled, 'a part letter is optional when the answer line has none');
+    assert.ok(unlabeled.x < 320 && unlabeled.x + unlabeled.w > 470);
+    const answerRegions = new Function(`${preview.slice(preview.indexOf('function answerBox'), preview.indexOf('function exerciseSlices'))} return answerRegions;`)() as (pages: { page: number; items: { str: string; y: number }[] }[]) => { page: number; items: { str: string }[] }[];
+    const regions = answerRegions([
+      { page: 3, items: [{ str: '1.', y: 700 }] },
+      { page: 7, items: [{ str: '19.', y: 791 }, { str: 'תשובות סופיות', y: 379 }, { str: '1.', y: 327 }] },
+      { page: 8, items: [{ str: '8.', y: 790 }] },
+    ]);
+    assert.deepEqual(regions.map((region) => region.page), [7, 8]);
+    assert.equal(regions[0].items.some((item) => item.str === '19.'), false);
+    assert.equal(regions[0].items.some((item) => item.str === '1.'), true);
+    const reversed = answerBox([
+      { str: '13.', x: 528, y: 507, w: 12 },
+      { str: 'שטח 36 · ג. 6 אפשרויות · ד— 8 · ב .א', x: 150, y: 507, w: 360, dir: 'ltr' },
+      { str: '14.', x: 528, y: 470, w: 12 },
+    ], 13, 'א');
+    assert.ok(reversed, 'a reversed .א still keeps the answer line');
+    assert.ok(reversed.w > 300, JSON.stringify(reversed));
+    const noSuchPart = answerBox([
+      { str: '10.', x: 540, y: 720, w: 12 },
+      { str: 'א. יתר 40 · ב. כן · ג. 19.2', x: 200, y: 720, w: 300, dir: 'rtl' },
+      { str: '11.', x: 540, y: 680, w: 12 },
+    ], 10, 'ד');
+    assert.equal(noSuchPart, null);
     const trimApi = new Function(`${preview.slice(preview.indexOf('function sliceInkRows'), preview.indexOf('async function measureWorksheet'))} return { trimPieceBox };`)() as {
       trimPieceBox: (slice: { kind: string; page: number; box: { x: number; y: number; w: number; h: number }; source?: { footerCrop?: { page: number; y: number } } }, bitmap: { width: number; height: number; getContext: (kind: string) => { getImageData: (x: number, y: number, w: number, h: number) => { data: Uint8ClampedArray } } }) => { box: { y: number; h: number } };
     };
