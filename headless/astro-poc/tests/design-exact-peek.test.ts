@@ -42,6 +42,12 @@ test('actual grade counts survive and unknown keys do not reuse a previous toolt
   assert.equal(resolveExactPeek('g:42',live),null);
   assert.equal(renderExactPeek('nonexistent',live),null);
   assert.equal(resolveExactPeek('google',live)!.title,'התחברות עם Google');
+  const teachers=renderExactPeek('teachers',live)!;
+  assert.match(teachers,/למורים/);
+  assert.match(teachers,/מרחב למורה/);
+  assert.equal(resolveExactPeek('teachers',live)!.blocks,EXACT_PEEK_BLOCKS.teachers);
+  assert.ok(EXACT_PEEK_BLOCKS.teachers.some((block)=>block[4]==='o'&&block[2]>=4));
+  assert.ok(EXACT_PEEK_BLOCKS.teachers.filter((block)=>block[4]==='l').length>=3);
 });
 
 test('calculator is the exact four decorative reference frames, never an input or solver', () => {
