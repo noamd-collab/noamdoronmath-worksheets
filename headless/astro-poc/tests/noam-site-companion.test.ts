@@ -214,6 +214,9 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('exactHelpTab'));
     assert.ok(client.includes('getBoundingClientRect()'));
     assert.equal(client.includes('font-size:14px'), false);
+    assert.equal(client.includes('Heebo,Arial,sans-serif'), false);
+    assert.ok(client.includes('font-family:inherit'));
+    assert.ok(client.includes('#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:inherit}'));
     assert.ok(client.includes('#noam-site-companion-form{width:100%;gap:4px;box-sizing:border-box;padding-inline-end:46px}'));
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-xtight #noam-site-companion-form{padding-inline-end:0}'));
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-tight.has-answer #noam-site-companion-form{padding-inline-end:0}'));
