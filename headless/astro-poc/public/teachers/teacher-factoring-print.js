@@ -2336,6 +2336,174 @@ function trimPieceBox(slice, bitmap) {
   return { ...slice, box: placedBox(clipped, clipped.y, Math.max(0.004, capped / pageH - clipped.y)) };
 }
 
+function syncSliceMetrics(item) {
+  const box = item && item.slice && item.slice.box;
+  const bitmap = item && item.bitmap;
+  if (!box || !bitmap || !(bitmap.width > 0)) return;
+  item.sw = box.w * bitmap.width;
+  item.sh = box.h * bitmap.height;
+  if (item.slice.kind === 'answer') return;
+  item.dh = Math.max(1, Math.round(1000 * item.sh / Math.max(1, item.sw)));
+}
+
+/**
+ * A drawing that starts inside a part can continue past the dashed writing
+ * line: the rectangle's bottom edge and its label. Follow that ink, including
+ * a short label in the same columns, and stop before the next question.
+ */
+function extendDrawingBox(bitmap, box, limitY) {
+  if (!bitmap || !box || !(box.h > 0) || typeof bitmap.getContext !== 'function') return null;
+  const width = bitmap.width;
+  const height = bitmap.height;
+  if (!(width > 8) || !(height > 8)) return null;
+  let data;
+  try {
+    data = bitmap.getContext('2d').getImageData(0, 0, width, height).data;
+  } catch (error) {
+    return null;
+  }
+  if (!data || data.length < width * height * 4) return null;
+  const end = box.y + box.h;
+  const limit = Math.min(0.945, typeof limitY === 'number' ? limitY - 0.004 : end + 0.08);
+  if (!(limit > end + 0.008)) return null;
+  const y0 = Math.max(0, Math.floor(box.y * height));
+  const y1 = Math.min(height - 1, Math.round(end * height));
+  const yLimit = Math.min(height - 1, Math.round(limit * height));
+  if (y1 - y0 < 4 || yLimit <= y1 + 2) return null;
+  // The copyright stamp sits at x<0.055 and question text begins near x=0.35.
+  // A drawing is the left-side shape between them.
+  const xSkip = Math.max(1, Math.floor(width * 0.055));
+  const xLimit = Math.max(xSkip + 2, Math.floor(width * 0.34));
+  // A diagonal only inks a few pixels in each column. A letter-height threshold
+  // drops those sides and the question text wins the span.
+  const minTall = Math.max(3, Math.round(height * 0.0018));
+  const dark = (x, y) => {
+    const i = (y * width + x) * 4;
+    return data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242;
+  };
+  const colInk = new Uint16Array(xLimit);
+  for (let y = y0; y < y1; y += 1) {
+    for (let x = xSkip; x < xLimit; x += 1) {
+      if (dark(x, y)) colInk[x] += 1;
+    }
+  }
+  const gapX = Math.max(2, Math.round(width * 0.08));
+  let bestL = -1;
+  let bestR = -1;
+  let runL = -1;
+  let runR = -1;
+  for (let x = xSkip; x <= xLimit; x += 1) {
+    if (x < xLimit && colInk[x] >= minTall) {
+      if (runL < 0) runL = x;
+      runR = x;
+    } else if (runL >= 0 && (x === xLimit || x > runR + gapX)) {
+      if (runR - runL > bestR - bestL) {
+        bestL = runL;
+        bestR = runR;
+      }
+      runL = -1;
+    }
+  }
+  if (bestL < 0 || bestL > width * 0.22 || bestR - bestL < width * 0.05) return null;
+  // A text line is only ~0.015 tall. A drawing fills a taller block of rows.
+  let inkRows = 0;
+  for (let y = y0; y < y1; y += 1) {
+    let n = 0;
+    for (let x = bestL; x <= bestR; x += 1) {
+      if (dark(x, y)) n += 1;
+      if (n >= 3) break;
+    }
+    if (n >= 3) inkRows += 1;
+  }
+  if (inkRows < height * 0.035) return null;
+  let minX = bestL;
+  let maxX = bestR;
+  const gapLimit = Math.max(2, Math.round(height * 0.016));
+  const grow = Math.max(2, Math.round(width * 0.04));
+  let last = y1 - 1;
+  let gap = 0;
+  let extra = false;
+  for (let y = y1; y <= yLimit; y += 1) {
+    let n = 0;
+    let rowL = maxX;
+    let rowR = minX;
+    const lookL = Math.max(xSkip, minX - grow);
+    const lookR = Math.min(xLimit - 1, maxX + grow);
+    for (let x = lookL; x <= lookR; x += 1) {
+      if (!dark(x, y)) continue;
+      n += 1;
+      if (x < rowL) rowL = x;
+      if (x > rowR) rowR = x;
+    }
+    let rule = 0;
+    const ruleLeft = Math.floor(width * 0.05);
+    const ruleRight = Math.floor(width * 0.92);
+    for (let x = ruleLeft; x < ruleRight; x += 1) {
+      if (dark(x, y)) rule += 1;
+    }
+    if (rule > (ruleRight - ruleLeft) * 0.55) n = 0;
+    // A row that is mostly the question sentence, with only a letter spilling
+    // into the drawing's columns, is not the drawing.
+    let right = 0;
+    const rightL = Math.floor(width * 0.5);
+    const rightR = Math.floor(width * 0.92);
+    for (let x = rightL; x < rightR; x += 1) {
+      if (dark(x, y)) right += 1;
+    }
+    if (right > 20 && n < Math.max(8, (lookR - lookL) * 0.15)) n = 0;
+    if (n >= 3) {
+      if (rowL < minX) minX = rowL;
+      if (rowR > maxX) maxX = rowR;
+      last = y;
+      gap = 0;
+      extra = true;
+    } else {
+      gap += 1;
+      if (gap > gapLimit) break;
+    }
+  }
+  if (!extra || last <= y1 + 1) return null;
+  const bottom = Math.min(limit, (last + 2) / height);
+  if (!(bottom > end + 0.004)) return null;
+  return bottom;
+}
+
+function slicePdf(item) {
+  return (item && item.slice && item.slice.source && item.slice.source.pdfId) || '';
+}
+
+function claimDrawingTails(measured) {
+  measured.forEach((item) => {
+    const slice = item && item.slice;
+    if (!slice || slice.kind !== 'row' || !slice.box || !item.bitmap) return;
+    const laterPart = measured.some((other) => (
+      other !== item
+      && other.slice
+      && other.slice.kind === 'row'
+      && other.slice.block === slice.block
+      && other.slice.page === slice.page
+      && slicePdf(other) === slicePdf(item)
+      && other.slice.box
+      && other.slice.box.y > slice.box.y + 0.008
+    ));
+    if (laterPart) return;
+    const end = slice.box.y + slice.box.h;
+    let limit = 0.945;
+    measured.forEach((other) => {
+      if (other === item || !other.slice || !other.slice.box) return;
+      if (other.slice.page !== slice.page || slicePdf(other) !== slicePdf(item)) return;
+      if (other.slice.kind !== 'row' && other.slice.kind !== 'stem') return;
+      const y = other.slice.box.y;
+      if (y < end - 0.008) return;
+      if (y < limit) limit = y;
+    });
+    const bottom = extendDrawingBox(item.bitmap, slice.box, limit);
+    if (!(bottom > end + 0.004)) return;
+    item.slice = { ...slice, box: placedBox(slice.box, slice.box.y, bottom - slice.box.y) };
+    syncSliceMetrics(item);
+  });
+}
+
 function sealOverlaps(measured) {
   for (let i = 0; i < measured.length; i += 1) {
     const earlier = measured[i];
@@ -2359,6 +2527,7 @@ function sealOverlaps(measured) {
       // Leave the later part alone when the trim would eat its own first line.
       if (newH < 0.016) continue;
       later.slice = { ...later.slice, box: placedBox(other, newY, newH) };
+      syncSliceMetrics(later);
     }
   }
 }
@@ -2432,6 +2601,7 @@ async function measureWorksheet(slices) {
       }
     }
   }
+  claimDrawingTails(measured);
   sealOverlaps(measured);
   return measured;
 }
@@ -2565,16 +2735,18 @@ function packWorksheet(measured, noteHeight) {
     };
     if (!last.items.length || !last.items.every(answerish)) break;
     const count = last.items.reduce((sum, item) => sum + answerCount(item), 0);
-    if (count !== 1) break;
     const prev = pages[pages.length - 2];
     const room = PAGE_H - heightOf(prev.items, prev.top);
     if (room < 36) break;
     let extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
     const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
     const need = leadGap + contentHeight(extra);
+    // One leftover answer may shrink to 0.45. A short answer key joins the
+    // previous page when it still fits at a readable size.
+    const minFactor = count === 1 ? 0.45 : 0.72;
     if (need > room) {
       const factor = room / need;
-      if (factor < 0.45) break;
+      if (factor < minFactor) break;
       extra = extra.map((item) => ({
         ...item,
         dh: Math.max(1, Math.round(item.dh * factor)),

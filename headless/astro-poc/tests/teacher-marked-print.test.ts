@@ -717,6 +717,25 @@ describe('teacher catalog picker', () => {
     assert.equal(natural.length, 1);
     const row = natural[0].items.find((item) => item.slice.kind === 'answer-row');
     assert.ok(row && row.cells && row.cells.length === 3);
+    // A short answer key joins the previous page when it still fits at a readable size.
+    const pulled = pack.packWorksheet([
+      { slice: { kind: 'row', gap: 4 }, dh: 1000 },
+      { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+    ], 0);
+    assert.equal(pulled.length, 1);
+    // A key that would have to shrink below 0.72 stays on its own page.
+    const leftBehind = pack.packWorksheet([
+      { slice: { kind: 'row', gap: 4 }, dh: 1100 },
+      { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+    ], 0);
+    assert.equal(leftBehind.length, 2);
     const moved = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4, block: 'other' }, dh: 1100 },
       { slice: { kind: 'row', gap: 4, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 160 },
@@ -978,6 +997,171 @@ describe('teacher catalog picker', () => {
     assert.ok(box.y <= byId['9ג'].row.y);
     const dalet = byId['9ד'].labelLine ? byId['9ד'].labelLine.y : byId['9ד'].row.y;
     assert.ok(end <= dalet + 0.004, `${end} includes ${dalet}`);
+  });
+
+  it('extends a crop through a drawing that starts inside it', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const api = new Function(`${preview.slice(preview.indexOf('function sliceInkRows'), preview.indexOf('async function measureWorksheet'))} return { extendDrawingBox, claimDrawingTails, sealOverlaps };`)() as {
+      extendDrawingBox: (bitmap: { width: number; height: number; getContext: () => { getImageData: () => { data: Uint8ClampedArray } } }, box: { x: number; y: number; w: number; h: number }, limitY: number) => number | null;
+      claimDrawingTails: (measured: { bitmap?: { width: number; height: number; getContext: () => { getImageData: () => { data: Uint8ClampedArray } } }; slice: { kind: string; block?: string; page: number; source: { pdfId: string }; box: { x: number; y: number; w: number; h: number } } }[]) => void;
+      sealOverlaps: (measured: { bitmap?: { width: number; height: number }; slice: { kind: string; page: number; source: { pdfId: string }; box: { y: number; h: number } } }[]) => void;
+    };
+    const width = 400;
+    const height = 900;
+    const data = new Uint8ClampedArray(width * height * 4);
+    data.fill(255);
+    const ink = (x0: number, x1: number, y0: number, y1: number) => {
+      for (let y = y0; y <= y1; y += 1) {
+        for (let x = x0; x <= x1; x += 1) {
+          const i = (y * width + x) * 4;
+          data[i] = data[i + 1] = data[i + 2] = 0;
+        }
+      }
+    };
+    // Rectangle on the left, continuing below the crop, with a short label under it.
+    ink(45, 110, 200, 202);
+    ink(45, 47, 200, 340);
+    ink(108, 110, 200, 340);
+    ink(45, 110, 338, 340);
+    ink(70, 84, 355, 368);
+    // The next question's sentence is on the right and must stay out of the crop.
+    ink(220, 360, 400, 414);
+    const bitmap = { width, height, getContext: () => ({ getImageData: () => ({ data }) }) };
+    const box = { x: 0, y: 0.2, w: 1, h: 0.12 };
+    const bottom = api.extendDrawingBox(bitmap, box, 0.7);
+    assert.ok(bottom != null && bottom > 368 / height && bottom < 390 / height, String(bottom));
+    assert.equal(api.extendDrawingBox(bitmap, box, 0.325), null);
+    const measured = [
+      { bitmap, slice: { kind: 'row', block: 'q7', page: 3, source: { pdfId: 'pythagoras' }, box: { ...box } } },
+      { bitmap, slice: { kind: 'stem', block: 'q8', page: 3, source: { pdfId: 'pythagoras' }, box: { x: 0, y: 0.1, w: 1, h: 0.5 } } },
+      { bitmap, slice: { kind: 'row', block: 'q8', page: 3, source: { pdfId: 'pythagoras' }, box: { x: 0, y: 0.62, w: 1, h: 0.08 } } },
+    ];
+    api.claimDrawingTails(measured);
+    api.sealOverlaps(measured);
+    const extended = measured[0].slice.box.y + measured[0].slice.box.h;
+    assert.ok(Math.abs(extended - (bottom as number)) < 0.001, String(extended));
+    assert.ok(Math.abs(measured[1].slice.box.y - extended) < 0.001, String(measured[1].slice.box.y));
+    assert.ok(measured[1].slice.box.h > 0.05, String(measured[1].slice.box.h));
+    const house = [
+      { bitmap, slice: { kind: 'row', block: 'q8', page: 3, source: { pdfId: 'house' }, box: { x: 0, y: 0.2, w: 1, h: 0.12 } } },
+      { bitmap, slice: { kind: 'row', block: 'q8', page: 3, source: { pdfId: 'house' }, box: { x: 0, y: 0.4, w: 1, h: 0.05 } } },
+    ];
+    api.claimDrawingTails(house);
+    assert.equal(house[0].slice.box.h, 0.12);
+  });
+
+  it('keeps every middle-school drawing inside the crop that owns it', (t) => {
+    const probe = spawnSync('python3', ['-c', 'import pymupdf, numpy'], { encoding: 'utf8' });
+    const pdfDir = '/tmp/sheets';
+    if (probe.status !== 0 || !existsSync(`${pdfDir}/cffd33bdee5e402bac3150c0e5ff7922.pdf`)) {
+      t.skip('worksheet pdfs or pymupdf are not available');
+      return;
+    }
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const extendDrawingBox = new Function(`${preview.slice(preview.indexOf('function sliceInkRows'), preview.indexOf('async function measureWorksheet'))} return extendDrawingBox;`)() as (
+      bitmap: { width: number; height: number; getContext: () => { getImageData: () => { data: Uint8ClampedArray } } },
+      box: { y: number; h: number },
+      limitY: number,
+    ) => number | null;
+    const script = fileURLToPath(new URL('../scripts/measure-label-gaps.py', import.meta.url));
+    const sheets = fileURLToPath(new URL('../public/teachers/sheets/', import.meta.url));
+    const scan = spawnSync('python3', ['-'], {
+      input: `
+import json, math, os
+from pathlib import Path
+import numpy as np, pymupdf, importlib.util
+spec = importlib.util.spec_from_file_location('gaps', ${JSON.stringify(script)})
+gaps = importlib.util.module_from_spec(spec); spec.loader.exec_module(gaps)
+sheets = Path(${JSON.stringify(sheets)})
+pdfs = Path(${JSON.stringify(pdfDir)})
+out = Path('/tmp/draw-crop-cases')
+out.mkdir(exist_ok=True)
+scale = 1100 / 595.276
+cases = []
+scanned = 0
+for path in sorted(sheets.glob('*.json')):
+    data = json.loads(path.read_text())
+    if (data.get('grade') or 0) < 7: continue
+    pdf = pdfs / f"{data.get('pdfId')}.pdf"
+    if not pdf.exists(): continue
+    scanned += 1
+    doc = pymupdf.open(pdf)
+    by_page = {}
+    for q in data.get('questions') or []:
+        by_page.setdefault(q.get('page'), []).append(q)
+    cache = {}
+    for page_no, qs in by_page.items():
+        if not isinstance(page_no, int) or page_no < 1 or page_no > doc.page_count: continue
+        groups = {}
+        for q in qs: groups.setdefault(q.get('q'), []).append(q)
+        page = doc[page_no - 1]
+        figures = gaps.page_figures(page)
+        for parts in groups.values():
+            parts.sort(key=lambda item: (item.get('row') or {}).get('y') or 0)
+            last = parts[-1]
+            row = last.get('row') or {}
+            if 'y' not in row or 'h' not in row: continue
+            end = row['y'] + row['h']
+            limit = 0.945
+            for other in qs:
+                if other is last: continue
+                for key in ('row', 'stem'):
+                    y = (other.get(key) or {}).get('y')
+                    if isinstance(y, (int, float)) and y >= end - 0.008 and y < limit: limit = y
+            owned = []
+            for fig in figures:
+                x0, y0, x1, y1 = fig
+                if x1 > 0.42 or (x1 - x0) < 0.06 or (y1 - y0) < 0.025: continue
+                if not (row['y'] - 0.004 <= y0 < end - 0.01): continue
+                owned.append(fig)
+            if not owned: continue
+            if page_no not in cache:
+                pix = page.get_pixmap(matrix=pymupdf.Matrix(scale, scale), alpha=False)
+                image = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
+                raw = out / f"{data['pdfId']}-{page_no}.raw"
+                rgba = np.empty((pix.height, pix.width, 4), dtype=np.uint8)
+                rgba[:, :, :3] = image[:, :, :3]
+                rgba[:, :, 3] = 255
+                rgba.tofile(raw)
+                cache[page_no] = (str(raw), pix.width, pix.height, image)
+            raw, width, height, image = cache[page_no]
+            for fig in owned:
+                x0 = max(0, math.floor(fig[0] * width)); x1 = min(width, math.ceil(fig[2] * width))
+                iy0 = max(0, math.floor(fig[1] * height)); iy1 = min(height - 1, math.ceil((fig[3] + 0.015) * height))
+                region = (image[iy0:iy1 + 1, x0:x1, :3] < 242).any(axis=2)
+                rows = np.flatnonzero(region.any(axis=1))
+                ink = ((iy0 + int(rows[-1]) + 1) / height) if rows.size else end
+                if ink <= end + 0.008 or ink >= limit - 0.004: continue
+                cases.append({'sheet': path.name[:8], 'id': last.get('id'), 'raw': raw, 'width': width, 'height': height, 'y': row['y'], 'h': row['h'], 'limit': limit, 'ink': ink, 'end': end})
+    doc.close()
+print(json.dumps({'scanned': scanned, 'cases': cases}))
+`,
+      encoding: 'utf8',
+      maxBuffer: 64 * 1024 * 1024,
+    });
+    assert.equal(scan.status, 0, scan.stderr);
+    const report = JSON.parse(scan.stdout) as { scanned: number; cases: { sheet: string; id: string; raw: string; width: number; height: number; y: number; h: number; limit: number; ink: number; end: number }[] };
+    assert.ok(report.scanned >= 200, String(report.scanned));
+    assert.ok(report.cases.length >= 10, String(report.cases.length));
+    const bitmaps = new Map<string, { width: number; height: number; getContext: () => { getImageData: () => { data: Uint8ClampedArray } } }>();
+    for (const item of report.cases) {
+      let bitmap = bitmaps.get(item.raw);
+      if (!bitmap) {
+        const raw = readFileSync(item.raw);
+        const data = new Uint8ClampedArray(raw.byteLength);
+        data.set(raw);
+        bitmap = { width: item.width, height: item.height, getContext: () => ({ getImageData: () => ({ data }) }) };
+        bitmaps.set(item.raw, bitmap);
+      }
+      const bottom = extendDrawingBox(bitmap, { y: item.y, h: item.h }, item.limit);
+      assert.ok(bottom != null && bottom + 1e-6 >= item.ink - 0.008 && bottom <= item.limit + 1e-6, `${item.sheet} ${item.id} ink ${item.ink} ext ${bottom} limit ${item.limit}`);
+    }
+    const rectangle = report.cases.find((item) => item.sheet === 'cffd33bd' && item.id === '7א');
+    assert.ok(rectangle, 'Pythagoras 7א');
+    const rectangleBitmap = bitmaps.get(rectangle.raw);
+    assert.ok(rectangleBitmap);
+    const rectangleBottom = extendDrawingBox(rectangleBitmap, { y: rectangle.y, h: rectangle.h }, rectangle.limit);
+    assert.ok(rectangleBottom != null && rectangleBottom > 0.22 && rectangleBottom < 0.27, String(rectangleBottom));
   });
 
   it('measures a committed label page without downloading a worksheet', (t) => {
