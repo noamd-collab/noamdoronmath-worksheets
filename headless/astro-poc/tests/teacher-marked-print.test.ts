@@ -433,6 +433,58 @@ describe('teacher catalog picker', () => {
     assert.ok(next.row.y < 0.27, JSON.stringify(next.row));
   });
 
+  it('prints a lone house part from the top of the whole drawing', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const files = [
+      '871fe90d52a04673a7d30fc039e4bf2e.json',
+      '4aba762b64b54af098827d1f386bcf68.json',
+      '9c95b48e57124721b4c2b56d79cf72ba.json',
+    ];
+    for (const file of files) {
+      const sheet = JSON.parse(readFileSync(new URL(`../public/teachers/sheets/${file}`, import.meta.url), 'utf8'));
+      const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; gap: number; box: { y: number; h: number; mask?: { x: number; y: number; h: number } } }[];
+      const byId = Object.fromEntries(sheet.questions.map((question: { id: string }) => [question.id, question]));
+      const rowsOf = (ids: string[]) => shortSlices(ids.map((id) => byId[id])).filter((slice) => slice.kind === 'row');
+      const figure = byId['8ד'].figure;
+      const storedMask = byId['8ד'].row.mask;
+      assert.ok(figure && figure.y0 < 0.09 && figure.y1 > 0.2, file);
+      for (const id of ['8ד', '8ג']) {
+        const rows = rowsOf([id]);
+        assert.equal(rows.length, 1, `${file} ${id}`);
+        const box = rows[0].box;
+        const end = box.y + box.h;
+        assert.ok(box.y <= figure.y0 + 0.004, `${file} ${id} top ${JSON.stringify(box)}`);
+        assert.ok(end >= figure.y1 - 0.01, `${file} ${id} end ${JSON.stringify(box)}`);
+        assert.ok(box.mask && Math.abs(box.mask.x - storedMask.x) < 0.001, `${file} ${id} mask ${JSON.stringify(box.mask)}`);
+        const maskBottom = box.y + (box.mask.y + box.mask.h) * box.h;
+        assert.ok(maskBottom >= end - 0.004, `${file} ${id} mask bottom ${maskBottom}`);
+      }
+      const all = rowsOf(['8א', '8ב', '8ג', '8ד']);
+      assert.equal(all.length, 4, file);
+      const ordered = all.slice().sort((a, b) => a.box.y - b.box.y);
+      for (let index = 1; index < ordered.length; index += 1) {
+        const previous = ordered[index - 1].box;
+        assert.ok(previous.y + previous.h <= ordered[index].box.y + 0.004, file);
+        assert.equal(ordered[index].gap, -2, file);
+      }
+      const roof = figure.y0 + 0.005;
+      assert.equal(all.filter((slice) => slice.box.y <= roof && slice.box.y + slice.box.h > roof).length, 1, file);
+    }
+  });
+
+  it('trims the next-line sliver when grade-9 9ג is printed alone', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const sheet = JSON.parse(readFileSync(new URL('../public/teachers/sheets/2056de6d71e14c98aa5efe856d2e1bcf.json', import.meta.url), 'utf8'));
+    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number } }[];
+    const byId = Object.fromEntries(sheet.questions.map((question: { id: string }) => [question.id, question]));
+    const rows = shortSlices([byId['9ג']]).filter((slice) => slice.kind === 'row' && slice.page === 4);
+    assert.equal(rows.length, 1);
+    const end = rows[0].box.y + rows[0].box.h;
+    assert.ok(end <= byId['9ד'].row.y - 0.0005, String(end));
+    assert.ok(end > byId['9ג'].row.y + 0.03, String(end));
+    assert.ok(rows[0].box.y <= byId['9ג'].row.y);
+  });
+
   it('measures a committed label page without downloading a worksheet', (t) => {
     const probe = spawnSync('python3', ['-c', 'import pymupdf, numpy'], { encoding: 'utf8' });
     if (probe.status !== 0) {

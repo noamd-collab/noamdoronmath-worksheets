@@ -609,25 +609,93 @@ function previousQuestionRow(slices, block, page) {
   return null;
 }
 
-/** A later part printed alone still includes a drawing shared with an earlier part. */
-function coverSharedFigure(question, box) {
+function questionRows(item) {
+  if (!item) return [];
+  return item.rows && item.rows.length ? item.rows : (item.row ? [item.row] : []);
+}
+
+function absoluteMask(box) {
+  if (!box || !box.mask || !(box.h > 0)) return null;
+  return {
+    x: box.mask.x,
+    w: box.mask.w,
+    y: box.y + box.mask.y * box.h,
+    y2: box.y + (box.mask.y + box.mask.h) * box.h,
+  };
+}
+
+function withSpan(box, y, end, masks) {
+  const height = Math.max(0.004, end - y);
+  const next = { ...box, y, h: height };
+  let best = null;
+  (masks || []).forEach((mask) => {
+    if (!mask) return;
+    const top = Math.max(mask.y, y);
+    const bot = Math.min(mask.y2, y + height);
+    const span = bot - top;
+    if (span < 0.003) return;
+    if (!best || span > best.span) best = { mask, top, bot, span };
+  });
+  if (!best) {
+    delete next.mask;
+    return next;
+  }
+  next.mask = {
+    x: best.mask.x,
+    w: best.mask.w,
+    y: (best.top - y) / height,
+    h: (best.bot - best.top) / height,
+  };
+  return next;
+}
+
+/**
+ * A part printed alone still includes the whole shared drawing: an earlier
+ * overlapping crop, or a figure whose top sits above this part (the house roof).
+ * A few thousandths past the next label is the next line, and is trimmed off.
+ */
+function coverSharedFigure(question, box, laterSelected) {
   const page = box.page || question.page;
+  const originalEnd = boxEnd(box);
   let top = box.y;
-  let end = boxEnd(box);
+  let end = originalEnd;
+  const masks = [];
+  const ownMask = absoluteMask(box);
+  if (ownMask) masks.push(ownMask);
   (SOURCE.questions || []).forEach((item) => {
     if (!item || item.q !== question.q || item.id === question.id) return;
-    const rows = item.rows && item.rows.length ? item.rows : (item.row ? [item.row] : []);
-    rows.forEach((other) => {
+    questionRows(item).forEach((other) => {
       if (!other || (other.page || item.page) !== page) return;
       const otherEnd = boxEnd(other);
       if (other.y < top - 0.003 && otherEnd > top + 0.003) {
         top = Math.min(top, other.y);
         end = Math.max(end, otherEnd);
       }
+      const mask = absoluteMask(other);
+      if (mask) masks.push(mask);
     });
+    const figure = item.figure;
+    if (!figure || item.page !== page) return;
+    const covers = figure.y1 > box.y + 0.003 && figure.y0 < originalEnd - 0.003;
+    if (!covers) return;
+    if (figure.y0 < top - 0.003) top = figure.y0;
+    if (!laterSelected && figure.y1 > end - 0.003 && item.row) end = Math.max(end, boxEnd(item.row));
   });
-  if (top === box.y && end === boxEnd(box)) return box;
-  return { ...box, page, y: top, h: Math.max(0.004, end - top) };
+  const ownFigure = question.figure;
+  if (ownFigure && question.page === page && ownFigure.y1 > box.y + 0.003 && ownFigure.y0 < originalEnd + 0.02) {
+    if (ownFigure.y0 < top - 0.003) top = ownFigure.y0;
+  }
+  if (end > originalEnd + 0.0005) {
+    let nextTop = null;
+    (SOURCE.questions || []).forEach((item) => {
+      if (!item || item.q !== question.q || item.id === question.id || !item.row) return;
+      if ((item.row.page || item.page) !== page) return;
+      if (item.row.y >= originalEnd - 0.004 && (nextTop == null || item.row.y < nextTop)) nextTop = item.row.y;
+    });
+    if (nextTop != null && end > nextTop - 0.001 && end - nextTop < 0.008) end = Math.min(end, nextTop - 0.0015);
+  }
+  if (Math.abs(top - box.y) < 0.0001 && Math.abs(end - originalEnd) < 0.0001) return box;
+  return withSpan({ ...box, page }, top, end, masks);
 }
 
 function shortSlices(chosen) {
@@ -647,8 +715,12 @@ function shortSlices(chosen) {
       const page = box.page || question.page;
       let next = { ...box, page };
       const prev = previousQuestionRow(slices, block, page);
+      const laterSelected = ordered.some((other) => (
+        other !== question && other.q === question.q && other.row
+        && (other.row.page || other.page) === page && other.row.y > box.y + 0.004
+      ));
       // The first selected part of this question can still own a shared drawing.
-      if (!prev) next = coverSharedFigure(question, next);
+      if (!prev) next = coverSharedFigure(question, next, laterSelected);
       if (prev && next.y < boxEnd(prev.box) - 0.003) {
         const prevEnd = boxEnd(prev.box);
         // Fully covered by the previous part: printing it again repeats its text.
@@ -659,7 +731,9 @@ function shortSlices(chosen) {
       }
       const last = slices[slices.length - 1];
       const dup = last && last.kind === 'row' && last.page === page && last.box.x === next.x && last.box.y === next.y && last.box.w === next.w && last.box.h === next.h;
-      if (!dup) slices.push({ page, box: next, gap: 4, block, kind: 'row' });
+      // Abutting rows overlap by 2px so the join is not a white seam.
+      const gap = prev && next.y <= boxEnd(prev.box) + 0.006 ? -2 : 4;
+      if (!dup) slices.push({ page, box: next, gap, block, kind: 'row' });
     });
   });
   slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16, block: 'footer', kind: 'footer' });
@@ -670,6 +744,12 @@ function contentHeight(items) {
   return items.reduce((sum, item, index) => sum + (index ? item.slice.gap : 0) + item.dh, 0);
 }
 
+function scaledGap(gap, factor) {
+  const next = Math.round(gap * factor);
+  // A negative gap is the 2px overlap that hides the seam; scaling must not turn it into a gap.
+  return gap < 0 ? Math.min(-1, next) : Math.max(1, next);
+}
+
 function shrinkTo(items, limit) {
   const height = contentHeight(items);
   if (height <= limit) return items;
@@ -677,7 +757,7 @@ function shrinkTo(items, limit) {
   const scaled = items.map((item) => ({
     ...item,
     dh: Math.max(1, Math.round(item.dh * factor)),
-    slice: { ...item.slice, gap: Math.max(1, Math.round(item.slice.gap * factor)) },
+    slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
   }));
   const extra = contentHeight(scaled) - limit;
   if (extra > 0) scaled[scaled.length - 1].dh = Math.max(1, scaled[scaled.length - 1].dh - extra);

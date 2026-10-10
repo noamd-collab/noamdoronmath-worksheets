@@ -295,6 +295,12 @@ export function sheetFromManifest(meta, manifest, gaps) {
       line: round(line),
       inkTop,
       ...(inkBottom != null ? { inkBottom } : {}),
+      ...(figures[id] ? { figure: {
+        x0: round(figures[id].x0),
+        y0: round(figures[id].y0),
+        x1: round(figures[id].x1),
+        y1: round(figures[id].y1),
+      } } : {}),
       labelLine: { page: labelLine.page, y: round(labelLine.y), h: round(labelLine.h) },
       row: rows[0],
       rows,
