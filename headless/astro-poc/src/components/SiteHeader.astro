@@ -70,7 +70,7 @@ const worksheetsBand: WorksheetsNavBand | null =
     document.addEventListener('click', (e) => {
       if (isOpen() && !(e.target as Element | null)?.closest?.('.exact-header')) setOpen(false);
     });
-    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+    window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => {
       if (e.matches && isOpen()) setOpen(false);
     });
   }
@@ -82,7 +82,7 @@ const worksheetsBand: WorksheetsNavBand | null =
     const toggle = root?.querySelector<HTMLButtonElement>('[data-tools-toggle]');
     if (!root || !toggle || toggle.dataset.toolsReady) return;
     toggle.dataset.toolsReady = '1';
-    const desktop = () => window.matchMedia('(min-width: 768px)').matches;
+    const desktop = () => window.matchMedia('(min-width: 900px)').matches;
     const visuallyOpen = () =>
       desktop() &&
       !root.hasAttribute('data-shut') &&

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
-import { labelAscent, labelLineBox, labelLineHeight, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
+import { cropEdgeInk, ensureWorksheetPdf, labelAscent, labelLineBox, labelLineHeight, measureExerciseGaps, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
 
 const source = JSON.parse(readFileSync(new URL('../../../demos/factoring-grade-9-a-source.json', import.meta.url), 'utf8'));
 const manifest = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/6a37fe7160324a17ad107b3dbe43c1db.json', import.meta.url), 'utf8'));
@@ -258,6 +258,8 @@ describe('teacher catalog picker', () => {
     assert.ok(partB.row.y < pinB.y, JSON.stringify({ row: partB.row, pin: pinB, line }));
     assert.ok(Math.abs(partB.row.y - lineB.y) < 0.002, JSON.stringify({ row: partB.row, line: lineB }));
     assert.ok(Math.abs((pinB.y - lineB.y) - labelAscent(line)) < 0.0001);
+    assert.ok(labelAscent(line) > 0.008);
+    assert.equal(partB.inkTop, null);
     assert.ok(partB.row.y + partB.row.h <= lineC.y + 0.002, JSON.stringify(partB.row));
     assert.equal(partB.rows.some((row: { page: number }) => row.page === 1), false);
     assert.ok(partB.row.y + partB.row.h <= partC.row.y + 0.002);
@@ -274,15 +276,26 @@ describe('teacher catalog picker', () => {
     assert.ok(oneB.row.y + oneB.row.h <= oneC.row.y + 0.002);
     assert.ok(built.headerCrop.h > 0.2 && built.headerCrop.h < 0.3);
     const served = JSON.parse(readFileSync(new URL('../public/teachers/sheets/22303ba02b3b46c3ae2529e347cbce2b.json', import.meta.url), 'utf8'));
-    assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '3ב').row, partB.row);
-    assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '3א').rows, partA.rows);
+    const gaps = Object.fromEntries(served.questions.map((question: { id: string; inkTop: number | null }) => [question.id, question.inkTop]));
+    const measured = sheetFromManifest({
+      grade: 7, topicId: 1, level: 'a', levelLabel: 'רמה א׳', pdfId: manifest.pdfHash, pdfUrl: 'https://example.invalid/a.pdf', title: 'מספרים מכוונים', topic: 'מספרים מכוונים',
+    }, manifest, gaps);
+    const measuredB = measured.questions.find((question: { id: string }) => question.id === '3ב');
+    const measuredA = measured.questions.find((question: { id: string }) => question.id === '3א');
+    assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '3ב').row, measuredB.row);
+    assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '3א').rows, measuredA.rows);
+    assert.ok(measuredB.inkTop < pinB.y - 0.0045, JSON.stringify(measuredB));
+    assert.ok(measuredB.inkTop > pinB.y - line * 0.65, JSON.stringify(measuredB));
+    assert.ok(measuredB.row.y + measuredB.row.h <= measured.questions.find((question: { id: string }) => question.id === '3ג').row.y + 0.0001);
   });
 
   it('stops a grade-8 last part before the next section header and images only scrambled manifest text', () => {
     const average = JSON.parse(readFileSync(new URL('../../../noam-ai/manifests/82a5285c2446440f8ab8ef4aad7b6cd3.json', import.meta.url), 'utf8'));
+    const servedAverage = JSON.parse(readFileSync(new URL('../public/teachers/sheets/82a5285c2446440f8ab8ef4aad7b6cd3.json', import.meta.url), 'utf8'));
+    const averageGaps = Object.fromEntries(servedAverage.questions.map((question: { id: string; inkTop: number | null }) => [question.id, question.inkTop]));
     const built = sheetFromManifest({
       grade: 8, topicId: 23, level: 'b', levelLabel: 'רמה ב׳', pdfId: average.pdfHash, pdfUrl: 'https://example.invalid/a.pdf', title: 'הממוצע', topic: 'הממוצע',
-    }, average);
+    }, average, averageGaps);
     const part = built.questions.find((question: { id: string }) => question.id === '4ד');
     const exercise = average.exercises.find((item: { q: number; part: string }) => item.q === 4 && item.part === 'ד');
     const cropBottom = exercise.crop.y + exercise.crop.h;
@@ -290,8 +303,7 @@ describe('teacher catalog picker', () => {
     assert.ok(part.row.y + part.row.h <= cropBottom - 0.05, JSON.stringify({ row: part.row, cropBottom }));
     assert.ok(part.row.y + part.row.h > exercise.pin.y + 0.02);
     assert.equal(part.scrambled, undefined);
-    const served = JSON.parse(readFileSync(new URL('../public/teachers/sheets/82a5285c2446440f8ab8ef4aad7b6cd3.json', import.meta.url), 'utf8'));
-    assert.deepEqual(served.questions.find((question: { id: string }) => question.id === '4ד').row, part.row);
+    assert.deepEqual(servedAverage.questions.find((question: { id: string }) => question.id === '4ד').row, part.row);
     const diagnosis = JSON.parse(readFileSync(new URL('../public/teachers/sheets/114ce88ff3514961b13a830c90608953.json', import.meta.url), 'utf8'));
     const fraction = diagnosis.questions.find((question: { id: string }) => question.id === '2א');
     assert.equal(fraction.scrambled, true);
@@ -337,8 +349,9 @@ describe('teacher catalog picker', () => {
     assert.equal(preview.includes('function readingOrder'), false);
     assert.equal(preview.includes('function paintExtract'), false);
     assert.equal(preview.includes('function hasHebrew'), false);
-    assert.match(html, /@media\(min-width:768px\)\{\s*\.topbar\{height:90px/);
-    assert.match(html, /@media\(min-width:768px\) and \(max-width:1279px\)/);
+    assert.match(html, /@media\(min-width:900px\)\{\s*\.topbar\{height:90px/);
+    assert.match(html, /@media\(min-width:900px\) and \(max-width:1279px\)/);
+    assert.match(html, /@media\(max-width:899\.98px\)/);
     assert.match(preview, /class="q-thumb"/);
     assert.match(preview, /paintSourceLine/);
     assert.match(preview, /IntersectionObserver/);
@@ -352,9 +365,33 @@ describe('teacher catalog picker', () => {
     const tight = thumbSlice({ row: { x: 0, y: 0.5, w: 1, h: 0.02 }, line: 0.025 }, { width: 1000, height: 1000 });
     assert.ok(0.5 - tight.srcY / 1000 < 0.002);
     const css = readFileSync(new URL('../src/styles/exact-site.css', import.meta.url), 'utf8');
-    assert.match(css, /@media \(min-width: 768px\) \{\s*\.exact-header \{height:90px/);
+    assert.match(css, /@media \(min-width: 900px\) \{\s*\.exact-header \{height:90px/);
     assert.match(css, /\.exact-header nav\[data-nav-panel\] \{flex-wrap:nowrap!important/);
-    assert.match(css, /@media \(min-width: 768px\) and \(max-width: 1279px\)/);
+    assert.match(css, /@media \(min-width: 900px\) and \(max-width: 1279px\)/);
+    assert.match(css, /@media \(max-width: 899\.98px\)/);
+  });
+
+  it('renders label crops from a white pixel row, with no clipped top and no next-label sliver', async () => {
+    const pdfId = '22303ba02b3b46c3ae2529e347cbce2b';
+    const sheetManifest = JSON.parse(readFileSync(new URL(`../../../noam-ai/manifests/${pdfId}.json`, import.meta.url), 'utf8'));
+    const served = JSON.parse(readFileSync(new URL(`../public/teachers/sheets/${pdfId}.json`, import.meta.url), 'utf8'));
+    const pdfPath = await ensureWorksheetPdf(pdfId);
+    const gaps = measureExerciseGaps(pdfPath, sheetManifest.exercises);
+    const ids = ['1ב', '3ב', '3ג'];
+    for (const id of ids) {
+      const question = served.questions.find((item: { id: string }) => item.id === id);
+      assert.equal(question.inkTop, gaps[id], id);
+      assert.equal(typeof question.inkTop, 'number', id);
+    }
+    const edges = cropEdgeInk(pdfPath, ids.map((id) => {
+      const question = served.questions.find((item: { id: string }) => item.id === id);
+      return { id, page: question.row.page, y: question.row.y, h: question.row.h };
+    }));
+    for (const edge of edges) {
+      assert.equal(edge.topDark, 0, JSON.stringify(edge));
+      assert.equal(edge.botDark, 0, JSON.stringify(edge));
+      assert.ok(edge.midDark > 20, JSON.stringify(edge));
+    }
   });
 
   it('leaves Noam AI exercise suggestions disabled', () => {

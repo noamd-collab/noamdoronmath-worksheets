@@ -5,7 +5,8 @@
  * Does not invent exercises. The grade-9 factoring level A file is copied
  * as-is so the pilot boxes stay the ones already checked.
  */
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -17,6 +18,8 @@ const richPath = join(repoRoot, 'demos/factoring-grade-9-a-source.json');
 const outDir = join(scriptDir, '../public/teachers');
 const sheetDir = join(outDir, 'sheets');
 const PDF_BASE = 'https://static.wixstatic.com/ugd/d8e7ad_';
+const measureScript = join(scriptDir, 'measure-label-gaps.py');
+const pdfCacheDir = '/tmp/pdfs/catalog';
 
 function round(value) {
   return Math.round(Number(value) * 10000) / 10000;
@@ -64,24 +67,33 @@ export function labelLineHeight(exercises) {
 }
 
 /**
- * How far above the pin the crop starts.
- * Half a line clears the label, but on a tall pitch that also catches the
- * previous part's dashed answer rule. Cap the ascent so that rule stays out.
+ * Fallback when the rendered page has no empty row above the label.
+ * Half a line keeps a table border that fills the search window, such as
+ * grade 8 17א. A measured white row is used instead whenever one exists,
+ * so a dashed answer rule above a real gap stays out of the crop.
  */
 export function labelAscent(lineHeight) {
   const line = lineHeight > 0 ? lineHeight : 0.026;
-  return Math.min(line / 2, 0.0042);
+  return line / 2;
 }
 
-/** Label line box. The pin is the anchor; the top sits just above the label ink. */
+/** Label line box for the fallback path. The pin is the anchor. */
 export function labelLineBox(pin, lineHeight) {
   const height = lineHeight > 0 ? lineHeight : 0.026;
   const y = Math.max(0, pin.y - labelAscent(height));
   return { page: pin.page, y, h: height };
 }
 
-function labelTop(pin, lineHeight) {
-  return labelLineBox(pin, lineHeight).y;
+function exerciseId(exercise) {
+  return String(exercise.q) + (exercise.part || '');
+}
+
+/** Measured white-row top when the build found one; otherwise half a line. */
+function labelTop(pin, lineHeight, measured) {
+  if (typeof measured === 'number' && Number.isFinite(measured) && measured >= 0 && measured < pin.y) {
+    return measured;
+  }
+  return Math.max(0, pin.y - labelAscent(lineHeight));
 }
 
 /** Manifest Hebrew is extractor order, not a readable string. Synthetic labels are not. */
@@ -115,25 +127,25 @@ function sectionHeaderEnd(exercise, cropBottom, top, line, nextPinY) {
 }
 
 /** One crop per chosen part: from the top of its label line to the top of the next label line. */
-export function partRows(exercises, index, lineHeight) {
+export function partRows(exercises, index, lineHeight, gaps) {
   const exercise = exercises[index];
   const pin = exercise.pin;
   const line = lineHeight || labelLineHeight(exercises);
-  const top = labelTop(pin, line);
+  const top = labelTop(pin, line, gaps && gaps[exerciseId(exercise)]);
   const slices = exercise.crops && exercise.crops.length ? exercise.crops : [exercise.crop];
   const here = slices.find((slice) => slice.page === pin.page) || exercise.crop || { x: 0, w: 1, y: pin.y, h: 0.04 };
   const nextPart = exercises.slice(index + 1).find((item) => (
     item.q === exercise.q && item.pin && item.pin.page === pin.page && item.pin.y > pin.y + 0.004
   ));
   if (nextPart) {
-    const end = labelTop(nextPart.pin, line);
+    const end = labelTop(nextPart.pin, line, gaps && gaps[exerciseId(nextPart)]);
     return [cropBox(pin.page, here.x, top, here.w, Math.max(line * 0.5, end - top))];
   }
   const nextOnPage = exercises.slice(index + 1).find((item) => (
     item.pin && item.pin.page === pin.page && item.pin.y > pin.y + 0.004
   ));
   let end = here.page === pin.page ? here.y + here.h : top + line;
-  if (nextOnPage) end = Math.min(end, labelTop(nextOnPage.pin, line));
+  if (nextOnPage) end = Math.min(end, labelTop(nextOnPage.pin, line, gaps && gaps[exerciseId(nextOnPage)]));
   const headerEnd = here.page === pin.page
     ? sectionHeaderEnd(exercise, here.y + here.h, top, line, nextOnPage ? nextOnPage.pin.y : null)
     : null;
@@ -145,7 +157,7 @@ export function partRows(exercises, index, lineHeight) {
     if (slice.page <= pin.page) continue;
     if (slice.page < next.pin.page) rows.push(cropBox(slice.page, slice.x, slice.y, slice.w, slice.h));
     else if (slice.page === next.pin.page) {
-      const clip = labelTop(next.pin, line);
+      const clip = labelTop(next.pin, line, gaps && gaps[exerciseId(next)]);
       if (clip > slice.y + line * 0.35) {
         rows.push(cropBox(slice.page, slice.x, slice.y, slice.w, Math.min(slice.h, clip - slice.y)));
       }
@@ -154,11 +166,11 @@ export function partRows(exercises, index, lineHeight) {
   return rows;
 }
 
-function stemBox(exercises, exercise, lineHeight) {
+function stemBox(exercises, exercise, lineHeight, gaps) {
   const first = exercises.find((item) => item.q === exercise.q);
   const crop = first && first.crop;
   if (!first || !crop || crop.page !== first.pin.page) return null;
-  const height = labelTop(first.pin, lineHeight) - crop.y;
+  const height = labelTop(first.pin, lineHeight, gaps && gaps[exerciseId(first)]) - crop.y;
   if (height < 0.008) return null;
   return { page: crop.page, x: round(crop.x || 0), y: round(crop.y), w: round(crop.w || 1), h: round(height) };
 }
@@ -167,7 +179,7 @@ export function pdfUrl(pdfId) {
   return PDF_BASE + pdfId + '.pdf';
 }
 
-export function sheetFromManifest(meta, manifest) {
+export function sheetFromManifest(meta, manifest, gaps) {
   const exercises = manifest.exercises || [];
   const first = exercises[0];
   const last = exercises[exercises.length - 1];
@@ -177,13 +189,23 @@ export function sheetFromManifest(meta, manifest) {
   const end = last ? last.crop.y + last.crop.h : 0.94;
   const footerY = end > 0.97 ? 0.985 : Math.max(end, 0.94);
   const line = labelLineHeight(exercises);
+  const tops = {};
+  if (gaps) {
+    for (const exercise of exercises) {
+      const key = exerciseId(exercise);
+      const raw = gaps[key];
+      const measured = typeof raw === 'number' && Number.isFinite(raw) ? round(raw) : null;
+      tops[key] = measured != null && measured >= 0 && measured < exercise.pin.y ? measured : null;
+    }
+  }
   const questions = exercises.map((exercise, index) => {
     const part = exercise.part || '';
     const id = String(exercise.q) + part;
     const label = part ? `שאלה ${exercise.q} סעיף ${part}` : `שאלה ${exercise.q}`;
-    const rows = partRows(exercises, index, line);
-    const stem = stemBox(exercises, exercise, line);
-    const labelLine = labelLineBox(exercise.pin, line);
+    const inkTop = gaps ? tops[id] : null;
+    const rows = partRows(exercises, index, line, gaps ? tops : undefined);
+    const stem = stemBox(exercises, exercise, line, gaps ? tops : undefined);
+    const labelLine = { page: exercise.pin.page, y: rows[0].y, h: line };
     const text = exercise.text || label;
     const scrambled = manifestScrambled(exercise.text);
     return {
@@ -196,6 +218,7 @@ export function sheetFromManifest(meta, manifest) {
       ...(scrambled ? { scrambled: true } : {}),
       box: markBox(exercise.pin),
       line: round(line),
+      inkTop,
       labelLine: { page: labelLine.page, y: round(labelLine.y), h: round(labelLine.h) },
       row: rows[0],
       rows,
@@ -267,7 +290,85 @@ export function catalogSheets(index) {
   return sheets;
 }
 
-function writeOutputs() {
+function cachedPdf(pdfId) {
+  const candidates = [
+    join(pdfCacheDir, `${pdfId}.pdf`),
+    join('/tmp/pdfs', `${pdfId}.pdf`),
+    join('/tmp/pdfs/g8', `${pdfId}.pdf`),
+  ];
+  for (const path of candidates) {
+    if (existsSync(path) && statSync(path).size > 1000) return path;
+  }
+  return null;
+}
+
+export async function ensureWorksheetPdf(pdfId) {
+  const cached = cachedPdf(pdfId);
+  if (cached) return cached;
+  mkdirSync(pdfCacheDir, { recursive: true });
+  const dest = join(pdfCacheDir, `${pdfId}.pdf`);
+  const response = await fetch(pdfUrl(pdfId));
+  if (!response.ok) throw new Error(`pdf ${pdfId} ${response.status}`);
+  writeFileSync(dest, Buffer.from(await response.arrayBuffer()));
+  return dest;
+}
+
+async function mapPool(items, limit, fn) {
+  const out = new Array(items.length);
+  let cursor = 0;
+  async function worker() {
+    while (cursor < items.length) {
+      const index = cursor;
+      cursor += 1;
+      out[index] = await fn(items[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, () => worker()));
+  return out;
+}
+
+function measureJobs(jobs) {
+  if (!jobs.length) return [];
+  const result = spawnSync('python3', [measureScript], {
+    input: JSON.stringify(jobs),
+    encoding: 'utf8',
+    maxBuffer: 64 * 1024 * 1024,
+  });
+  if (result.status !== 0) {
+    throw new Error(result.stderr || result.stdout || 'measure-label-gaps failed');
+  }
+  return JSON.parse(result.stdout);
+}
+
+/** White-row tops for one worksheet, keyed by question id. null means half-line fallback. */
+export function measureExerciseGaps(pdfPath, exercises) {
+  const line = labelLineHeight(exercises);
+  const pages = new Map();
+  for (const exercise of exercises) {
+    const page = exercise.pin.page;
+    if (!pages.has(page)) pages.set(page, []);
+    pages.get(page).push({ id: exerciseId(exercise), y: exercise.pin.y, line });
+  }
+  const [measured] = measureJobs([{
+    id: 'one',
+    pdf: pdfPath,
+    pages: [...pages.entries()].map(([page, pins]) => ({ page, pins })),
+  }]);
+  return measured.gaps;
+}
+
+/** Dark-pixel counts on the first and last row of a crop, at 300 dpi. */
+export function cropEdgeInk(pdfPath, crops) {
+  const result = spawnSync('python3', [measureScript], {
+    input: JSON.stringify({ cmd: 'edges', pdf: pdfPath, crops }),
+    encoding: 'utf8',
+    maxBuffer: 8 * 1024 * 1024,
+  });
+  if (result.status !== 0) throw new Error(result.stderr || result.stdout || 'crop edge check failed');
+  return JSON.parse(result.stdout);
+}
+
+async function writeOutputs() {
   const catalog = JSON.parse(readFileSync(catalogPath, 'utf8'));
   const rich = JSON.parse(readFileSync(richPath, 'utf8'));
   const index = buildTeacherCatalog(catalog);
@@ -276,6 +377,7 @@ function writeOutputs() {
   writeFileSync(join(outDir, 'teacher-catalog.json'), JSON.stringify(index));
   let exerciseSheets = 0;
   let questions = 0;
+  const pending = [];
   for (const sheet of catalogSheets(index)) {
     if (sheet.mode !== 'exercise') continue;
     exerciseSheets += 1;
@@ -284,16 +386,47 @@ function writeOutputs() {
       questions += rich.questions.length;
       continue;
     }
-    const manifest = JSON.parse(readFileSync(join(manifestDir, sheet.pdfId + '.json'), 'utf8'));
-    const source = sheetFromManifest(sheet, manifest);
-    questions += source.questions.length;
-    writeFileSync(join(sheetDir, sheet.pdfId + '.json'), JSON.stringify(source));
+    pending.push(sheet);
   }
-  return { sheets: catalogSheets(index).length, exerciseSheets, questions };
+  process.stderr.write(`downloading ${pending.length} worksheets\n`);
+  const paths = await mapPool(pending, 12, (sheet) => ensureWorksheetPdf(sheet.pdfId));
+  const jobs = pending.map((sheet, index) => {
+    const manifest = JSON.parse(readFileSync(join(manifestDir, sheet.pdfId + '.json'), 'utf8'));
+    const line = labelLineHeight(manifest.exercises || []);
+    const pages = new Map();
+    for (const exercise of manifest.exercises || []) {
+      const page = exercise.pin.page;
+      if (!pages.has(page)) pages.set(page, []);
+      pages.get(page).push({ id: exerciseId(exercise), y: exercise.pin.y, line });
+    }
+    return {
+      id: sheet.pdfId,
+      pdf: paths[index],
+      manifest,
+      sheet,
+      pages: [...pages.entries()].map(([page, pins]) => ({ page, pins })),
+    };
+  });
+  process.stderr.write(`measuring ${jobs.length} worksheets\n`);
+  const measured = measureJobs(jobs.map(({ id, pdf, pages }) => ({ id, pdf, pages })));
+  const byId = new Map(measured.map((item) => [item.id, item.gaps]));
+  let fallbacks = 0;
+  let measuredTops = 0;
+  for (const job of jobs) {
+    const gaps = byId.get(job.id) || {};
+    for (const value of Object.values(gaps)) {
+      if (typeof value === 'number') measuredTops += 1;
+      else fallbacks += 1;
+    }
+    const source = sheetFromManifest(job.sheet, job.manifest, gaps);
+    questions += source.questions.length;
+    writeFileSync(join(sheetDir, job.id + '.json'), JSON.stringify(source));
+  }
+  return { sheets: catalogSheets(index).length, exerciseSheets, questions, measuredTops, fallbacks };
 }
 
 const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
 if (isDirectRun) {
-  const stats = writeOutputs();
+  const stats = await writeOutputs();
   console.log(JSON.stringify(stats));
 }
