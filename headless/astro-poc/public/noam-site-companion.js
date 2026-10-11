@@ -212,7 +212,7 @@
     "html.noam-ai-engaged,html.noam-ai-engaged body,#noam-site-companion-panel{scroll-behavior:auto;transition:none;animation:none}",
     "}",
     "@media print{#noam-site-companion,#noam-site-companion-panel{display:none!important}html.noam-ai-engaged{display:block!important;height:auto!important;overflow:visible!important}html.noam-ai-engaged body{max-height:none!important;overflow:visible!important}}",
-    "#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + "!important}",
+    "#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}",
   ].join("");
   document.head.appendChild(style);
 
@@ -577,12 +577,13 @@
     paintChrome(true);
   });
   function botClientSrc() {
+    var versioned = "noam-bot-client.js?v=20260921-diagnostics1";
     var nodes = document.getElementsByTagName("script");
     for (var i = 0; i < nodes.length; i++) {
       var src = nodes[i].getAttribute("src") || "";
-      if (src.indexOf("noam-site-companion.js") !== -1) return src.replace("noam-site-companion.js", "noam-bot-client.js");
+      if (src.indexOf("noam-site-companion.js") !== -1) return src.replace("noam-site-companion.js", versioned);
     }
-    return "/noam-bot-client.js";
+    return "/" + versioned;
   }
 
   function ensureBotClient() {

@@ -250,7 +250,8 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('var SITE_FONT = "Heebo,\'Arial Hebrew\',Arial,sans-serif"'));
     assert.ok(client.includes('font-family:" + SITE_FONT + "'));
     assert.ok(client.includes('#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}"'));
-    assert.ok(client.includes('#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + "!important}"'));
+    assert.ok(client.includes('#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}"'));
+    assert.ok(client.includes('noam-bot-client.js?v=20260921-diagnostics1'));
     assert.ok(client.includes('setProperty("font-family", SITE_FONT, "important")'));
     assert.ok(client.includes('אחר'));
     assert.ok(client.includes('noam-teacher-option'));
@@ -308,6 +309,49 @@ describe('Noam AI bot guard', () => {
     pruneRateStore(stale, 2_000 + 60_000);
     assert.equal(stale.has('gone'), false);
     assert.equal(stale.has('kept'), true);
+  });
+
+  it('logs siteverify error-codes, score, hostname, and action without the secret or token', async () => {
+    const lines: string[] = [];
+    const original = console.warn;
+    console.warn = (...args: unknown[]) => {
+      lines.push(args.map((item) => String(item)).join(' '));
+    };
+    try {
+      const failed = await guardCompanionRequest(
+        {
+          origin: 'https://www.noamdoronmath.co.il',
+          clientIp: '203.0.113.40',
+          message: 'פירוק לגורמים',
+          botVerification: { provider: 'recaptcha-v3', token: 'do-not-log-token' },
+          now: 9_000,
+        },
+        {
+          store: new Map(),
+          secret: 'do-not-log-secret',
+          fetch: async () => ({
+            ok: true,
+            json: async () => ({
+              success: false,
+              score: 0.2,
+              action: 'noam_site_companion',
+              hostname: 'www.noamdoronmath.co.il',
+              'error-codes': ['invalid-input-response'],
+            }),
+          }),
+        }
+      );
+      assert.equal(failed.code, 'BOT_VERIFICATION_FAILED');
+    } finally {
+      console.warn = original;
+    }
+    const line = lines.find((item) => item.includes('NOAM_BOT_VERIFICATION_FAILED')) || '';
+    assert.match(line, /invalid-input-response/);
+    assert.match(line, /"score":0\.2/);
+    assert.match(line, /www\.noamdoronmath\.co\.il/);
+    assert.match(line, /noam_site_companion/);
+    assert.equal(line.includes('do-not-log-secret'), false);
+    assert.equal(line.includes('do-not-log-token'), false);
   });
 
   it('ships a paste-ready Wix folder with backend imports and the real catalog', () => {

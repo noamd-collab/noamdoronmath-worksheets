@@ -142,6 +142,21 @@ export function takeRateSlot(key, now, store, max) {
   return true;
 }
 
+function siteverifyLog(data) {
+  const body = data && typeof data === "object" ? data : {};
+  const rawCodes = body["error-codes"];
+  const errorCodes = Array.isArray(rawCodes)
+    ? rawCodes.filter((code) => typeof code === "string" && /^[A-Za-z0-9_-]{1,64}$/.test(code)).slice(0, 8)
+    : [];
+  const fields = {
+    errorCodes,
+    score: typeof body.score === "number" ? body.score : null,
+    hostname: typeof body.hostname === "string" ? body.hostname.slice(0, 200) : "",
+    action: typeof body.action === "string" ? body.action.slice(0, 80) : "",
+  };
+  console.warn("NOAM_BOT_VERIFICATION_FAILED", JSON.stringify(fields));
+}
+
 export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs }) {
   if (!secret || typeof token !== "string" || !token || token.length > 8192) return false;
   const body = new URLSearchParams({ secret: secret, response: token });
@@ -154,15 +169,31 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
     }, typeof timeoutMs === "number" ? timeoutMs : RECAPTCHA_TIMEOUT_MS);
   } catch (error) {
     if (isOutboundTimeout(error)) throw error;
+    siteverifyLog(null);
     return false;
   }
-  if (!response || !response.ok) return false;
-  const data = await response.json();
-  if (!data || data.success !== true) return false;
-  if (data.action !== (action || RECAPTCHA_ACTION)) return false;
-  if (typeof data.score !== "number" || data.score < RECAPTCHA_MIN_SCORE) return false;
-  if (!isAllowedRecaptchaHostname(data.hostname)) return false;
-  return true;
+  if (!response || !response.ok) {
+    siteverifyLog(null);
+    return false;
+  }
+  let data;
+  try {
+    data = await response.json();
+  } catch (error) {
+    siteverifyLog(null);
+    return false;
+  }
+  const expected = action || RECAPTCHA_ACTION;
+  const passed = !!(
+    data &&
+    data.success === true &&
+    data.action === expected &&
+    typeof data.score === "number" &&
+    data.score >= RECAPTCHA_MIN_SCORE &&
+    isAllowedRecaptchaHostname(data.hostname)
+  );
+  if (!passed) siteverifyLog(data);
+  return passed;
 }
 
 export async function guardCompanionRequest(input, deps) {
