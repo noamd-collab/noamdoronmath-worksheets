@@ -2068,14 +2068,21 @@ function answerBox(items, questionNumber, part) {
         // "· ד. כל" leaves כל to the left of the part letter. Cover the whole label line.
         // The sentence that continues under it stays, and the part name is redrawn.
         if (String(label.rest || '').trim() === 'כל') {
-          // The label baseline is not the bottom of the glyphs. The dots under
-          // «כל» sit about two points lower, in the gap above the next line.
+          // wrapped.top starts at the label baseline, so it is not the next line.
+          // The dots under «כל» sit about two points under that baseline, and the
+          // continuation's em top is a little lower still.
           const descent = Math.max(4, (label.h || 11) * 0.4);
-          const nextTop = wrapped.top || (label.y - (label.h || 11));
+          let continuationTop = label.y - (label.h || 11);
+          (items || []).forEach((glyph) => {
+            const gy = glyph.y || 0;
+            if (gy >= label.y - 4 || gy < label.y - 28) return;
+            const top = gy + Math.max(glyph.h || 0, 10);
+            if (top < label.y - 1 && top > continuationTop) continuationTop = top;
+          });
           slot = {
             left: 0,
             right: 0,
-            lineBottom: Math.max(label.y - descent, nextTop + 1.2),
+            lineBottom: Math.max(label.y - descent, continuationTop + 0.6),
             lineTop: label.y + Math.max(label.h || 0, 11) + 2,
           };
         }

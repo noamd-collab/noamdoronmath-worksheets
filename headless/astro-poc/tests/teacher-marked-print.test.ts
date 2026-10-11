@@ -626,6 +626,28 @@ describe('teacher catalog picker', () => {
       return sentenceY >= top && sentenceY <= bot;
     });
     assert.equal(sentenceMasked, false, 'the following answer line stays visible');
+    const realDots = answerSliceFor([{
+      page: 8,
+      width: 595.28,
+      height: 841.89,
+      items: [
+        { str: '19.', x: 522, y: 360, w: 16, h: 11, page: 8 },
+        { str: '324 + 6400 = 6724', x: 70.01, y: 345.9, w: 80.09, h: 10.5, page: 8 },
+        { str: '· ד. כל', x: 39.97, y: 345.9, w: 27.83, h: 10.5, page: 8 },
+        { str: 'צלע מוכפלת ב־', x: 458.77, y: 332.04, w: 63.56, h: 10.5, page: 8 },
+        { str: '20.', x: 522, y: 300, w: 16, h: 11, page: 8 },
+      ],
+    }], { q: 19, part: 'ד' });
+    const coversPdfY = (pdfY: number) => {
+      const yDown = (841.89 - pdfY) / 841.89;
+      return (realDots && realDots.box.masks || []).some((mask) => {
+        const top = realDots.box.y + mask.y * realDots.box.h;
+        const bot = top + mask.h * realDots.box.h;
+        return yDown >= top - 0.001 && yDown <= bot + 0.001;
+      });
+    };
+    assert.ok(coversPdfY(343.9), 'the lowest dot under כל is masked ' + JSON.stringify(realDots && realDots.box));
+    assert.equal(coversPdfY(342.54), false, 'the continuation em top stays visible');
     const headerApi = new Function(`${preview.slice(preview.indexOf('function trailingSheetHeader'), preview.indexOf('async function clipClosingLine'))} return { trailingSheetHeader, clipBoxAboveSheetHeader };`)() as {
       trailingSheetHeader: (text: string) => boolean;
       clipBoxAboveSheetHeader: (box: { y: number; h: number }, items: { str: string; y: number }[]) => { y: number; h: number };
