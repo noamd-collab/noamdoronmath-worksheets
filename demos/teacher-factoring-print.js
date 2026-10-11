@@ -1251,14 +1251,39 @@ function selectKey(key, on) {
   render();
 }
 
+const PDF_DOC_LIMIT = 4;
+
+function rememberPdfDoc(cache, id, doc, limit) {
+  const store = cache || pdfDocs;
+  const cap = limit > 0 ? limit : PDF_DOC_LIMIT;
+  if (store.has(id)) store.delete(id);
+  store.set(id, doc);
+  const dropped = [];
+  while (store.size > cap) {
+    const oldest = store.keys().next().value;
+    dropped.push(store.get(oldest));
+    store.delete(oldest);
+  }
+  dropped.forEach((old) => {
+    if (old && typeof old.destroy === 'function') {
+      try { old.destroy(); } catch (error) {}
+    }
+  });
+  return doc;
+}
+
 async function loadPdf(source) {
   const active = source || SOURCE;
   if (!active || !active.pdfUrl) throw new Error('PDF_LIB');
-  if (pdfDocs.has(active.pdfId)) return pdfDocs.get(active.pdfId);
+  if (pdfDocs.has(active.pdfId)) {
+    const cached = pdfDocs.get(active.pdfId);
+    rememberPdfDoc(pdfDocs, active.pdfId, cached, PDF_DOC_LIMIT);
+    return cached;
+  }
   if (!window.pdfjsLib || typeof window.pdfjsLib.getDocument !== 'function') throw new Error('PDF_LIB');
   window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
   const doc = await window.pdfjsLib.getDocument({ url: active.pdfUrl || SOURCE.pdfUrl, withCredentials: false, isEvalSupported: false }).promise;
-  pdfDocs.set(active.pdfId, doc);
+  rememberPdfDoc(pdfDocs, active.pdfId, doc, PDF_DOC_LIMIT);
   return doc;
 }
 
@@ -1828,7 +1853,7 @@ async function paintShort(root, slices) {
     items.forEach((item, itemIndex) => { height += (itemIndex ? item.slice.gap : 0) + item.dh; });
     const canvas = canvases[index];
     const sample = items.find((item) => item.bitmap && item.bitmap.width);
-    const scale = printCanvasScale(sample ? (sample.pageWidth || sample.bitmap.width) : 0);
+    const scale = printCanvasScale(sample ? (sample.originalPageWidth || sample.bitmap.width) : 0);
     canvas.width = Math.round(OUT_W * scale);
     canvas.height = Math.round(height * scale);
     const ctx = canvas.getContext('2d');
@@ -1896,7 +1921,8 @@ function answerBox(items, questionNumber, part) {
       // A rotated margin line is taller than the text and is not the next answer line.
       if ((item.h || 0) > line * 2.5) return;
       const token = String(item.str || '');
-      if (/[·•]\s*[אבגדהו]\./.test(token) || /^[אבגדהו]\.?$/.test(token.trim()) || /^\(\d{1,2}\)$/.test(token.trim()) || /^\d{1,2}\.$/.test(token.trim())) return;
+      // "ד. הוכחה" on the next line is the next part, not this answer's continuation.
+      if (/[·•]\s*[אבגדהו]\./.test(token) || /^[אבגדהו]\./.test(token.trim()) || /^[אבגדהו]\.?$/.test(token.trim()) || /^\(\d{1,2}\)$/.test(token.trim()) || /^\d{1,2}\.$/.test(token.trim())) return;
       taken.push(item);
       cursor = Math.min(cursor, item.y);
     });
@@ -1958,6 +1984,8 @@ function answerBox(items, questionNumber, part) {
         part: label.part,
         rest: label.rest,
         embedded: !!label.embedded,
+        markX: label.markX,
+        markW: label.markW,
       });
     });
   });
@@ -1975,13 +2003,40 @@ function answerBox(items, questionNumber, part) {
       const label = labels[index];
       const follower = labels[index + 1];
       const nextOnLine = follower && Math.abs(follower.y - label.y) <= 6 ? follower : null;
-      const after = (token) => token.x + Math.max(token.w || 0, 8) + 2;
-      if (label.embedded && !label.rest) right = label.x - 1;
-      else if (label.rest) right = label.x + Math.max(label.w || 0, 4) + 3;
+      const owned = label.markX != null;
+      const markLeft = owned ? label.markX : label.x;
+      // The answer sits to the left of its own "· ד." marker. The previous part's
+      // unit ("ס״מ", "אחוזים") sits to the right of that marker and is not this item.
+      if (owned && label.rest) right = markLeft + 2;
+      else if (owned) right = markLeft - 1;
+      else if (label.rest) right = label.x + Math.max(label.w || 0, 4) + 2;
       else right = label.x - 1;
-      left = nextOnLine ? after(nextOnLine) : 28;
-      if (label.rest) left = Math.min(left, label.x - 3);
-      top = label.y + Math.max(label.h || 0, 11) + 3;
+      if (nextOnLine && nextOnLine.markX != null) {
+        left = nextOnLine.markX + (nextOnLine.markW || 8) + 1.2;
+      } else if (nextOnLine) left = nextOnLine.x + Math.max(nextOnLine.w || 0, 8) + 2;
+      else if (owned && label.rest) left = label.x;
+      else left = 28;
+      if (owned && label.rest) {
+        const padded = label.x - 4;
+        if (padded < right - 6) left = Math.min(left, padded);
+        else left = Math.min(left, label.x);
+      }
+      if (left > right - 6 && label.rest) left = Math.min(left, owned ? label.x : right - 8);
+      top = label.y + Math.max(label.h || 0, 12) + 3;
+      const slotLeft0 = left;
+      const slotRight0 = right;
+      (items || []).forEach((glyph) => {
+        const gy = glyph.y || 0;
+        if (Math.abs(gy - label.y) > 5) return;
+        const gx = glyph.x || 0;
+        const gw = glyph.w || 0;
+        const overlap = Math.min(gx + gw, slotRight0) - Math.max(gx, slotLeft0);
+        if (overlap < 4) return;
+        top = Math.max(top, gy + Math.max(glyph.h || 0, 12) + 2);
+        // A digit the marker only grazes still belongs to this answer. The next part does not.
+        if (gx >= slotLeft0 - 6) left = Math.min(left, gx - 1);
+        if (gx + gw <= slotRight0 + 6) right = Math.max(right, gx + gw + 1);
+      });
       const nextInk = nextOnLine ? null : (follower ? aboveGlyphs(follower) : (next ? aboveGlyphs(next) : null));
       if (nextOnLine) bottom = label.y - 6;
       else if (nextInk != null) bottom = nextInk;
@@ -1990,7 +2045,9 @@ function answerBox(items, questionNumber, part) {
       if (bottom > label.y - 4) bottom = nextInk != null ? Math.max(label.y - 6, nextInk) : label.y - 6;
       const slotLeft = left;
       const slotRight = right;
-      const wrapped = wrappedAnswerLines(label, left, right, bottom, next);
+      // A neighbour on this line already bounds the slot. The line below a short
+      // middle answer belongs to the part that runs out to the margin.
+      const wrapped = nextOnLine ? null : wrappedAnswerLines(label, left, right, bottom, next);
       if (wrapped) {
         left = Math.min(left, wrapped.left);
         right = Math.max(right, wrapped.right);
@@ -2014,6 +2071,28 @@ function answerBox(items, questionNumber, part) {
             lineBottom: label.y - 1,
             lineTop: label.y + Math.max(label.h || 0, 11) + 2,
           };
+        }
+      } else {
+        // A one-word answer has no second line. Do not keep a blank band under it.
+        const inkBelow = (items || []).some((glyph) => {
+          const gy = glyph.y || 0;
+          if (gy >= label.y - 4 || gy <= bottom + 1) return false;
+          const gx = glyph.x || 0;
+          const gw = glyph.w || 0;
+          return gx + gw > left + 2 && gx < right - 2;
+        });
+        if (!inkBelow && bottom < label.y - 6) bottom = label.y - 6;
+        if (!nextOnLine && left <= 30) {
+          let inkLeft = right;
+          (items || []).forEach((glyph) => {
+            const gy = glyph.y || 0;
+            if (Math.abs(gy - label.y) > 5) return;
+            const gx = glyph.x || 0;
+            const gw = glyph.w || 0;
+            if (gx + gw < left + 4 || gx >= right - 1) return;
+            if (gx < inkLeft) inkLeft = gx;
+          });
+          if (inkLeft < right - 6) left = Math.max(0, inkLeft - 2);
         }
       }
     } else if (labels.length) {
@@ -2049,49 +2128,65 @@ function markerNumber(item, items) {
   return dotted ? Number(text) : null;
 }
 
+function measureAnswerUnits(text) {
+  let n = 0;
+  const value = String(text || '');
+  for (let i = 0; i < value.length; i += 1) {
+    const ch = value[i];
+    if (/[\u0590-\u05FF]/.test(ch)) n += 1;
+    else if (/[0-9A-Za-z]/.test(ch)) n += 0.56;
+    else n += 0.32;
+  }
+  return n;
+}
+
+function answerSliceBox(item, start, end) {
+  const text = String(item.str || '');
+  const width = item.w || 0;
+  const total = Math.max(measureAnswerUnits(text), 0.01);
+  const rtl = item.dir !== 'ltr' || /[\u0590-\u05FF]/.test(text);
+  const span = Math.max(measureAnswerUnits(text.slice(start, end)), 0.2);
+  if (!rtl || !(width > 0)) {
+    const from = measureAnswerUnits(text.slice(0, start));
+    return { x: (item.x || 0) + (from / total) * width, w: Math.max(4, (span / total) * width) };
+  }
+  const rightEdge = (item.x || 0) + width - (measureAnswerUnits(text.slice(0, start)) / total) * width;
+  const leftEdge = rightEdge - (span / total) * width;
+  return { x: leftEdge, w: Math.max(4, rightEdge - leftEdge) };
+}
+
 function answerLabels(item) {
   const text = String(item.str || '');
   const marks = [];
-  const re = /(?:^|[·•])\s*([אבגדהו])\./g;
+  // "· ד. הוכחה" and "· ג56" are both this part. A dot is not required when a digit follows.
+  const re = /(?:^|[·•])\s*([אבגדהו])(?:\.|(?=\d)|(?=\s*$))/g;
   let match;
   while ((match = re.exec(text))) {
     const embedded = match.index > 0 || text[match.index] === '·' || text[match.index] === '•';
     marks.push({ part: match[1], index: match.index, end: match.index + match[0].length, embedded });
   }
   if (!marks.length) return [];
-  const len = text.length || 1;
-  const width = item.w || 0;
-  const rtl = item.dir === 'rtl' || (item.dir !== 'ltr' && marks.length > 1);
-  // One mark owns the rest of its token, including an RTL span such as "· ד. כל".
-  // Splitting that token by string index puts כל outside the letter and leaves it on the page.
-  if (marks.length === 1) {
-    return [{
-      part: marks[0].part,
-      rest: text.slice(marks[0].end).trim(),
-      embedded: marks[0].embedded,
-      x: item.x,
+  return marks.map((mark, index) => {
+    const next = marks[index + 1];
+    const restEnd = next ? next.index : text.length;
+    const rest = text.slice(mark.end, restEnd).trim();
+    const markBox = answerSliceBox(item, mark.index, mark.end);
+    const foreign = text.slice(0, mark.index).replace(/[\s.·•]/g, '');
+    // A token that is only this part keeps its full width. A shared token keeps this part's words.
+    const sole = marks.length === 1 && !foreign;
+    const own = sole ? { x: item.x, w: Math.max(item.w || 0, 8) } : (rest ? answerSliceBox(item, mark.end, restEnd) : markBox);
+    return {
+      part: mark.part,
+      rest,
+      embedded: mark.embedded || marks.length > 1,
+      x: own.x,
       y: item.y,
-      w: item.w,
+      w: own.w,
       h: item.h,
       page: item.page,
-    }];
-  }
-  return marks.map((mark) => {
-    const span = Math.max(1, mark.end - mark.index);
-    let x = item.x;
-    let w = Math.max(item.w || 0, 8);
-    if (width > 0) {
-      if (rtl) {
-        const rightEdge = item.x + width - (mark.index / len) * width;
-        const leftEdge = item.x + width - (mark.end / len) * width;
-        x = leftEdge;
-        w = Math.max(4, rightEdge - leftEdge);
-      } else {
-        x = item.x + (mark.index / len) * width;
-        w = Math.max(4, (span / len) * width);
-      }
-    }
-    return { part: mark.part, rest: '', embedded: true, x, y: item.y, w, h: item.h, page: item.page };
+      markX: sole ? undefined : markBox.x,
+      markW: sole ? undefined : markBox.w,
+    };
   });
 }
 
@@ -2215,17 +2310,21 @@ function answerSliceFor(pages, question) {
   const part = question.part || '';
   for (let index = 0; index < pages.length; index += 1) {
     const sheet = pages[index];
-    const raw = answerBox(sheet.items, question.q, part);
+    const all = sheet.items || [];
+    const title = all.find((item) => String(item.str || '').includes('תשובות סופיות'));
+    // The question that introduces the key can share the page. Its number is not an answer.
+    const items = title ? all.filter((item) => (item.y || 0) <= title.y + 12) : all;
+    const raw = answerBox(items, question.q, part);
     if (!raw || raw.page !== sheet.page) continue;
     // A wrapped line runs under the other parts. Masks hide those parts; clipping would cut the line.
-    const box = raw.slot ? raw : clipForeignLabels(sheet.items, raw, part);
+    const box = raw.slot ? raw : clipForeignLabels(items, raw, part);
     const pad = 2;
     const gap = 1.2;
     let x0 = Math.max(0, box.x - pad);
     let y0 = Math.max(0, box.y - pad);
     let x1 = Math.min(sheet.width, box.x + box.w + pad);
     let y1 = Math.min(sheet.height, box.y + box.h + pad);
-    (sheet.items || []).forEach((item) => {
+    items.forEach((item) => {
       if (!partLabelToken(item.str)) return;
       const gx = item.x || 0;
       const gy = item.y || 0;
@@ -2597,18 +2696,18 @@ function trimPieceBox(slice, bitmap) {
   let y = box.y;
   let y2 = box.y + box.h;
   const source = slice.source;
-  const footer = source && source.footerCrop;
   const header = source && source.headerCrop;
   if (slice.kind !== 'answer') {
-    if (footer && Number(footer.page) === Number(slice.page) && footer.y < y2) y2 = footer.y;
+    // The source footer repeats on every page. footerCrop.page is only the page it was measured on.
+    const footerTop = sourceFooterTop(source, null);
+    if (y2 > footerTop && y < footerTop - 0.008) y2 = footerTop;
     // A part box that starts in the page-1 title block still holds the name line. Begin under it.
     if (header && Number(header.page) === Number(slice.page)) {
       const headerBottom = (header.y || 0) + (header.h || 0);
       if (y < 0.12 && y < headerBottom - 0.008 && y2 > headerBottom + 0.012) y = headerBottom;
     }
-    // Running header (בס״ד) and the source footer line, on every page.
+    // Running header (בס״ד) sits in the top margin on every page.
     if (y < 0.046 && y2 > y + 0.03) y = 0.046;
-    if (y2 > 0.945 && y < 0.92) y2 = 0.945;
   }
   if (y2 - y < 0.004) return slice;
   const clipped = y === box.y && Math.abs(y2 - (box.y + box.h)) < 0.0001 ? box : placedBox(box, y, y2 - y);
@@ -3654,6 +3753,25 @@ function maskMarginTicks(bitmap, box) {
 }
 
 /**
+ * The source sheet footer ("עמוד 1 מתוך 6", the copyright line under it) repeats
+ * on every page. footerCrop records that band on one page only. No clip may
+ * cross the top of the band, the same way none may cross headerBottom.
+ */
+function sourceFooterTop(source, items) {
+  let top = 1;
+  (items || []).forEach((item) => {
+    const y = item.y || 0;
+    if (y < 0.85) return;
+    const text = String(item.str || item.text || '');
+    if (/עמוד\s*\d|מתוך\s*\d|מתמטיקה\s*·\s*נועם|כל הזכויות שמורות/.test(text)) top = Math.min(top, y - 0.004);
+  });
+  const hinted = source && source.footerCrop && source.footerCrop.y;
+  if (typeof hinted === 'number' && hinted > 0.8) top = top < 1 ? Math.min(top, hinted) : hinted;
+  if (!(top < 1)) top = 0.945;
+  return top;
+}
+
+/**
  * A picked part is printed as separate pieces, stacked in source order:
  * the stem lines, each figure (its strokes plus the labels that sit on it),
  * and that part's own lines through its writing space. Nothing is painted
@@ -3672,6 +3790,7 @@ function layoutQuestionCrops(model) {
   }));
   const spanBot = Math.max.apply(null, parts.map((part) => part.row.y + part.row.h));
   const headerBottom = typeof model.headerBottom === 'number' ? model.headerBottom : 0;
+  const footerTop = typeof model.footerTop === 'number' ? model.footerTop : 1;
   const questionTop = typeof model.questionTop === 'number' ? model.questionTop : null;
   const questionBot = typeof model.questionBot === 'number' ? model.questionBot : null;
   const labelY = (part) => {
@@ -3805,12 +3924,34 @@ function layoutQuestionCrops(model) {
       if (y1 < headerBottom + 0.012) return;
       y0 = headerBottom;
     }
+    if (footerTop < 1 && y1 > footerTop) {
+      if (y0 >= footerTop - 0.006) return;
+      y1 = footerTop;
+    }
     if (y1 - y0 < 0.008) return;
     let x0 = Math.max(0, x);
     let width = w;
     if (segment !== 'figure' && x0 < 0.05) {
       width -= 0.05 - x0;
       x0 = 0.05;
+    }
+    // A part line must not reach back into the drawing and reprint its edge labels.
+    if (segment !== 'figure') {
+      let fence = 0;
+      figures.forEach((figure) => {
+        const overlap = Math.min(y1, figure.y1) - Math.max(y0, figure.y0);
+        if (overlap < 0.006) return;
+        if (figure.x1 < 0.52 && figure.x1 > fence) fence = figure.x1;
+      });
+      if (fence > x0 + 0.02) {
+        // A sentence that already starts in the text column stays. Only the drawing's edge labels are cut.
+        const limit = x0 >= 0.30 ? x0 : 0.32;
+        const cut = Math.min(fence + 0.012, limit);
+        if (cut > x0 + 0.02 && x0 + width - cut > 0.12) {
+          width -= cut - x0;
+          x0 = cut;
+        }
+      }
     }
     if (width < 0.012) return;
     const box = {
@@ -3830,6 +3971,7 @@ function layoutQuestionCrops(model) {
     const h = Math.max(item.h || 0.014, 0.01);
     if (furniture(item)) return;
     if (headerBottom && y < headerBottom - 0.006) return;
+    if (y >= footerTop - 0.002) return;
     if (y + h < stemTop - 0.006 || y >= ceiling) return;
     if (questionTop != null && y < questionTop - 0.01) return;
     const text = item.text != null ? item.text : item.str;
@@ -3914,7 +4056,15 @@ function layoutQuestionCrops(model) {
       pushBox(segment, x0 - 0.008, boxTop, Math.max(0.04, x1 - x0 + 0.016), boxH);
     });
   };
-  if (stemSpans.length) pushLines('stem', stemSpans, 0.008, firstLabel + 0.002);
+  if (stemSpans.length) {
+    const numberOnly = stemSpans.every((item) => questionNumberOf(item, items) != null);
+    const firstPart = ordered[0];
+    const firstPicked = firstPart && picked.some((part) => part.id === firstPart.id);
+    // Capping the number at the first part's line slices the glyph and leaves a stray mark.
+    // A later part printed alone still needs that number, at its full height.
+    if (numberOnly && !firstPicked) pushLines('stem', stemSpans, 0.008, null);
+    else if (!numberOnly) pushLines('stem', stemSpans, 0.008, firstLabel + 0.002);
+  }
   else if (Math.min(firstLabel, ceiling) - stemTop > 0.012 && Math.min(firstLabel, ceiling) - stemTop < 0.14) {
     pushBox('stem', 0.34, stemTop, 0.64, Math.min(firstLabel, ceiling) - stemTop);
   }
@@ -3928,7 +4078,9 @@ function layoutQuestionCrops(model) {
       if (overlap < 0.006) return;
       if (row.x + row.w < figure.x1 + 0.01) return;
       // Only a line that begins in the text column can cut the drawing. A scale or axis reaches further left.
-      if (row.x < 0.42 || row.x > figure.x1) return;
+      // "המקורי." starts at 0.414, so a sentence may cut a little left of the 0.42 column.
+      const sentence = /[א-ת]{4,}/.test(String(row.text || '')) && (row.w || 0) >= 0.2;
+      if (row.x < (sentence ? 0.40 : 0.42) || row.x > figure.x1) return;
       drawnRight = Math.min(drawnRight, row.x - 0.006);
     });
     const drawn = drawnRight > figure.x0 + 0.02 ? { ...figure, x1: drawnRight } : figure;
@@ -3962,7 +4114,7 @@ function layoutQuestionCrops(model) {
     const next = ordered.find((other) => labelY(other) > y0 + 0.008);
     let y1 = part.row.y + part.row.h;
     if (next && labelY(next) < y1) y1 = labelY(next);
-    y1 = Math.min(y1, ceiling);
+    y1 = Math.min(y1, ceiling, footerTop);
     if (y1 - y0 < 0.01) return;
     const spans = [];
     const takePart = (item) => {
@@ -3970,7 +4122,14 @@ function layoutQuestionCrops(model) {
       const h = Math.max(item.h || 0.012, 0.01);
       if (furniture(item)) return;
       if (headerBottom && y < headerBottom - 0.006) return;
+      if (y >= footerTop - 0.002) return;
       const text = item.text != null ? item.text : item.str;
+      const token = String(text || '').trim();
+      // 10, 6, 16 beside the L are the drawing's edge labels, not the part sentence.
+      if (/^[\d?]{1,3}$/.test(token) && (item.x || 0) < 0.48 && figures.some((figure) => {
+        const cy = y + h * 0.4;
+        return cy >= figure.y0 - 0.03 && cy <= figure.y1 + 0.03 && (item.x || 0) < figure.x1 + 0.16;
+      })) return;
       if (headerText(text) || otherNumber(item)) return;
       // A numerator sits just above the part letter. A whole line that ends above it is the previous part.
       const above = y < y0 - 0.008;
@@ -4085,7 +4244,9 @@ function rebuildQuestionGroup(group, texts) {
   if (questionMark) searchTop = Math.min(searchTop, questionMark.y - 0.008);
   const header = slice.source && slice.source.headerCrop;
   const headerBottom = header && Number(header.page) === Number(page) ? (header.y || 0) + (header.h || 0) : 0;
-  const figures = leftFigureBoxes(sample.bitmap, Math.max(0, searchTop - 0.008), figureScanBot)
+  const footerTop = sourceFooterTop(slice.source, pageItems);
+  if (searchBot > footerTop) searchBot = footerTop;
+  const figures = leftFigureBoxes(sample.bitmap, Math.max(0, searchTop - 0.008), Math.min(figureScanBot, footerTop))
     .filter((figure) => !figureIsSentence(figure, rows))
     .filter((figure) => {
       if (earlierEnd > 0.02 && figure.y1 <= earlierEnd + 0.008) return false;
@@ -4104,7 +4265,8 @@ function rebuildQuestionGroup(group, texts) {
       const clipY = !above && !beside && questionMark ? Math.max(figure.y0, questionMark.y - 0.002) : figure.y0;
       const original = figure.y1 - figure.y0;
       const tail = !above && !beside && questionMark && figure.y0 < questionMark.y - 0.02 && (y1 - clipY) < original * 0.45;
-      return tail ? null : { ...figure, y0: figure.y0, y1 };
+      const yCap = Math.min(y1, footerTop);
+      return tail || yCap - figure.y0 < 0.02 ? null : { ...figure, y0: figure.y0, y1: yCap };
     })
     .filter((figure) => figure && figure.y1 - figure.y0 >= 0.02);
   onPage.forEach((part) => {
@@ -4134,6 +4296,7 @@ function rebuildQuestionGroup(group, texts) {
     questionBot: questionCut,
     earlierEnd,
     headerBottom,
+    footerTop,
   });
   if (!boxes.length) return null;
   boxes.forEach((entry) => {
@@ -4389,7 +4552,68 @@ async function measureWorksheet(slices) {
   return polished;
 }
 
+function writingDashRows(data, width, height) {
+  const rows = [];
+  if (!data || !(width > 8) || !(height > 8)) return rows;
+  const dark = (x, y) => {
+    const i = (y * width + x) * 4;
+    return data[i] < 210 || data[i + 1] < 210 || data[i + 2] < 210;
+  };
+  const xL = Math.floor(width * 0.38);
+  const xR = Math.floor(width * 0.92);
+  const span = Math.max(1, xR - xL);
+  for (let y = 1; y < height - 1; y += 1) {
+    let n = 0;
+    let longest = 0;
+    let run = 0;
+    let gaps = 0;
+    let prev = false;
+    for (let x = xL; x < xR; x += 1) {
+      if (dark(x, y)) {
+        n += 1;
+        run += 1;
+        if (run > longest) longest = run;
+        prev = true;
+      } else if (prev) {
+        gaps += 1;
+        run = 0;
+        prev = false;
+      } else run = 0;
+    }
+    const frac = n / span;
+    if (frac < 0.45 || frac > 0.78 || longest >= width * 0.02 || gaps < 20) continue;
+    rows.push(y);
+  }
+  return rows;
+}
+
+function eraseWritingDashes(data, width, height, rows, srcY) {
+  if (!data || !rows || !rows.length) return;
+  const darkAt = (x, y) => {
+    if (y < 0 || y >= height || x < 0 || x >= width) return false;
+    const i = (y * width + x) * 4;
+    return data[i] < 210 || data[i + 1] < 210 || data[i + 2] < 210;
+  };
+  rows.forEach((absY) => {
+    const y = absY - srcY;
+    if (y < 0 || y >= height) return;
+    for (let x = 0; x < width; x += 1) {
+      if (!darkAt(x, y)) continue;
+      let support = 0;
+      for (let dy = 1; dy <= 6; dy += 1) {
+        if (darkAt(x, y - dy)) support += 1;
+        if (darkAt(x, y + dy)) support += 1;
+      }
+      // A digit or a triangle edge continues above and below. A writing dash does not.
+      if (support >= 4) continue;
+      const i = (y * width + x) * 4;
+      data[i] = data[i + 1] = data[i + 2] = 255;
+    }
+  });
+}
+
 function bakeMeasuredClips(measured) {
+  const dashCache = new Map();
   (measured || []).forEach((item) => {
     const bitmap = item && item.bitmap;
     const box = item && item.slice && item.slice.box;
@@ -4401,8 +4625,26 @@ function bakeMeasuredClips(measured) {
     const canvas = document.createElement('canvas');
     canvas.width = sw;
     canvas.height = sh;
-    canvas.getContext('2d').drawImage(bitmap, sx, sy, sw, sh, 0, 0, sw, sh);
-    item.pageWidth = bitmap.width;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, sw, sh);
+    if (bitmap.getContext) {
+      let dashes = dashCache.get(bitmap);
+      if (!dashes) {
+        try {
+          const page = bitmap.getContext('2d').getImageData(0, 0, bitmap.width, bitmap.height);
+          dashes = writingDashRows(page.data, bitmap.width, bitmap.height);
+        } catch (error) {
+          dashes = [];
+        }
+        dashCache.set(bitmap, dashes);
+      }
+      if (dashes.length) {
+        const image = ctx.getImageData(0, 0, sw, sh);
+        eraseWritingDashes(image.data, sw, sh, dashes, sy);
+        ctx.putImageData(image, 0, 0);
+      }
+    }
+    item.originalPageWidth = bitmap.width;
     item.bitmap = canvas;
     item.sw = sw;
     item.sh = sh;
@@ -4590,7 +4832,7 @@ function clearGreyRules(ctx, width, height) {
       const max = r > g ? (r > b ? r : b) : (g > b ? g : b);
       const min = r < g ? (r < b ? r : b) : (g < b ? g : b);
       const lum = (r + g + b) / 3;
-      if (max - min < 28 && lum >= 145 && lum <= 228) grey += 1;
+      if (max - min < 28 && lum >= 145 && lum <= 242) grey += 1;
       else if (lum < 90) dark += 1;
     }
     if (grey > width * 0.45 && dark < Math.max(3, width * 0.12)) rule[y] = 1;
@@ -4612,7 +4854,46 @@ function clearGreyRules(ctx, width, height) {
       const max = r > g ? (r > b ? r : b) : (g > b ? g : b);
       const min = r < g ? (r < b ? r : b) : (g < b ? g : b);
       const lum = (r + g + b) / 3;
-      if (max - min < 28 && lum >= 145 && lum <= 228) {
+      if (max - min < 28 && lum >= 145 && lum <= 242) {
+        data[i] = data[i + 1] = data[i + 2] = 255;
+        changed = true;
+      }
+    }
+  }
+  // A highlight box around one value is a short grey stroke, not a full-width rule.
+  const whiteAt = (x, y) => {
+    if (x < 0 || y < 0 || x >= width || y >= height) return true;
+    const i = (y * width + x) * 4;
+    return data[i] > 238 && data[i + 1] > 238 && data[i + 2] > 238;
+  };
+  const greyAt = (x, y) => {
+    const i = (y * width + x) * 4;
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const max = r > g ? (r > b ? r : b) : (g > b ? g : b);
+    const min = r < g ? (r < b ? r : b) : (g < b ? g : b);
+    const lum = (r + g + b) / 3;
+    return max - min < 28 && lum >= 145 && lum <= 242;
+  };
+  for (let y = 0; y < height; y += 1) {
+    let x = 0;
+    while (x < width) {
+      if (!greyAt(x, y)) {
+        x += 1;
+        continue;
+      }
+      const start = x;
+      while (x < width && greyAt(x, y)) x += 1;
+      if (x - start < 14) continue;
+      let open = 0;
+      for (let k = start; k < x; k += 2) {
+        if (whiteAt(k, y - 1) && whiteAt(k, y + 1)) open += 1;
+      }
+      const samples = Math.ceil((x - start) / 2);
+      if (samples && open / samples < 0.7) continue;
+      for (let k = start; k < x; k += 1) {
+        const i = (y * width + k) * 4;
         data[i] = data[i + 1] = data[i + 2] = 255;
         changed = true;
       }
@@ -4638,7 +4919,7 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
   const OUT_W = 1000;
   const PAGE_H = 1440;
   const sample = page.items.find((item) => item.bitmap && item.bitmap.width);
-  const scale = printCanvasScale(sample ? (sample.pageWidth || sample.bitmap.width) : 0);
+  const scale = printCanvasScale(sample ? (sample.originalPageWidth || sample.bitmap.width) : 0);
   canvas.width = Math.round(OUT_W * scale);
   canvas.height = Math.round(PAGE_H * scale);
   const ctx = canvas.getContext('2d');

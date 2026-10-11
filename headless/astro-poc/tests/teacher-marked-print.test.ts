@@ -738,6 +738,266 @@ describe('teacher catalog picker', () => {
     assert.equal(ruleData[(5 * ruleW + 8) * 4], 0);
     assert.equal(ruleData[(6 * ruleW + 8) * 4], 255);
     assert.equal(ruleData[(1 * ruleW + 8) * 4], 180);
+    for (let x = 8; x < 28; x += 1) {
+      const i = (8 * ruleW + x) * 4;
+      ruleData[i] = ruleData[i + 1] = ruleData[i + 2] = 230;
+    }
+    clearGreyRules({ getImageData: () => ({ data: ruleData }), putImageData: () => {} }, ruleW, ruleH);
+    assert.equal(ruleData[(8 * ruleW + 12) * 4], 255, 'a faint box edge around an answer value is cleared');
+    assert.equal(ruleData[(5 * ruleW + 8) * 4], 0, 'answer text stays');
+  });
+
+  it('clips each b82af2b review finding to its own ink', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const demo = readFileSync(new URL('../../../demos/teacher-factoring-print.js', import.meta.url), 'utf8');
+    assert.equal(preview, demo);
+    assert.equal(preview.includes('item.pageWidth'), false);
+    assert.match(preview, /originalPageWidth/);
+    const cacheApi = new Function(`${preview.slice(preview.indexOf('function rememberPdfDoc'), preview.indexOf('async function loadPdf'))} return { rememberPdfDoc };`)() as {
+      rememberPdfDoc: (cache: Map<string, { id: string; dead?: boolean; destroy?: () => void }>, id: string, doc: { id: string; dead?: boolean; destroy?: () => void }, limit: number) => unknown;
+    };
+    const cache = new Map<string, { id: string; dead?: boolean; destroy?: () => void }>();
+    const oldest = { id: '0', dead: false, destroy() { this.dead = true; } };
+    cacheApi.rememberPdfDoc(cache, '0', oldest, 4);
+    for (let n = 1; n < 5; n += 1) cacheApi.rememberPdfDoc(cache, String(n), { id: String(n), destroy() {} }, 4);
+    assert.equal(cache.size, 4);
+    assert.equal(cache.has('0'), false);
+    assert.equal(oldest.dead, true);
+    const trimApi = new Function(`${preview.slice(preview.indexOf('function sliceInkRows'), preview.indexOf('async function measureWorksheet'))} return { trimPieceBox, sourceFooterTop };`)() as {
+      sourceFooterTop: (source: { footerCrop?: { y: number } } | null, items: { str: string; y: number }[] | null) => number;
+      trimPieceBox: (slice: { kind: string; page: number; box: { x: number; y: number; w: number; h: number }; source?: { footerCrop?: { page: number; y: number } } }, bitmap: { width: number; height: number; getContext: () => { getImageData: () => { data: Uint8ClampedArray } } }) => { box: { y: number; h: number } };
+    };
+    const footerLine = trimApi.sourceFooterTop(null, [{ str: 'מתוך6ים ב׳ — מצולעים מורכבים', y: 0.9492 }, { str: 'מתמטיקה · נועם דורון', y: 0.959 }]);
+    assert.ok(footerLine < 0.949 && footerLine > 0.9, String(footerLine));
+    const hinted = trimApi.sourceFooterTop({ footerCrop: { y: 0.94 } }, [{ str: 'עמוד1', y: 0.9492 }]);
+    assert.ok(hinted <= 0.94, String(hinted));
+    const trimW = 20;
+    const trimH = 100;
+    const trimData = new Uint8ClampedArray(trimW * trimH * 4);
+    trimData.fill(255);
+    const footerBitmap = { width: trimW, height: trimH, getContext: () => ({ getImageData: () => ({ data: trimData }) }) };
+    const footerClip = trimApi.trimPieceBox({
+      kind: 'row',
+      page: 1,
+      box: { x: 0, y: 0.88, w: 1, h: 0.1 },
+      source: { footerCrop: { page: 5, y: 0.94 } },
+    }, footerBitmap);
+    assert.ok(footerClip.box.y + footerClip.box.h <= 0.94, String(footerClip.box.y + footerClip.box.h));
+    const layout = new Function(`${preview.slice(preview.indexOf('function leftFigureBoxes'), preview.indexOf('async function measureWorksheet'))} return layoutQuestionCrops;`)() as (model: object) => { box: { x?: number; y: number; w?: number; h: number; segment?: string } }[];
+    const footerBoxes = layout({
+      page: 1,
+      parts: [{ id: '3ד', part: 'ד', page: 1, row: { y: 0.9068, h: 0.0599, page: 1 }, labelLine: { y: 0.906, page: 1 } }],
+      picked: ['3ד'],
+      labels: [{ part: 'ד', y: 0.906 }],
+      figures: [],
+      rows: [{ y: 0.906, h: 0.014, x: 0.52, w: 0.36, text: 'ד. הוכיחו שכל חלוקה נותנת אותו שטח' }],
+      items: [
+        { str: 'ד.', x: 0.86, y: 0.906, w: 0.02, h: 0.014 },
+        { str: 'הוכיחו שכל חלוקה נותנת אותו שטח', x: 0.5, y: 0.906, w: 0.34, h: 0.014 },
+        { str: 'מתוך6ים ב׳ — מצולעים מורכבים', x: 0.38, y: 0.949, w: 0.22, h: 0.01 },
+        { str: 'מצוינות', x: 0.54, y: 0.963, w: 0.05, h: 0.01 },
+      ],
+      questionTop: 0.75,
+      questionBot: null,
+      earlierEnd: 0,
+      headerBottom: 0,
+      footerTop: 0.94,
+    });
+    assert.ok(footerBoxes.length > 0);
+    assert.ok(footerBoxes.every((entry) => entry.box.y + entry.box.h <= 0.941), JSON.stringify(footerBoxes.map((entry) => entry.box)));
+    const lShape = layout({
+      page: 1,
+      parts: [
+        { id: '1א', part: 'א', page: 1, row: { y: 0.37, h: 0.04, page: 1 }, labelLine: { y: 0.373, page: 1 } },
+        { id: '1ב', part: 'ב', page: 1, row: { y: 0.42, h: 0.04, page: 1 }, labelLine: { y: 0.424, page: 1 } },
+      ],
+      picked: ['1א', '1ב'],
+      labels: [{ part: 'א', y: 0.373 }, { part: 'ב', y: 0.424 }],
+      figures: [{ x0: 0.08, x1: 0.3, y0: 0.35, y1: 0.52 }],
+      rows: [
+        { y: 0.373, h: 0.014, x: 0.55, w: 0.32, text: 'א. חשבו את שטחו' },
+        { y: 0.424, h: 0.014, x: 0.5, w: 0.36, text: 'ב. מה שטח המלבן החוסם' },
+      ],
+      items: [
+        { str: '10', x: 0.206, y: 0.367, w: 0.015, h: 0.012 },
+        { str: '6', x: 0.36, y: 0.423, w: 0.01, h: 0.012 },
+        { str: '16', x: 0.262, y: 0.5, w: 0.015, h: 0.012 },
+        { str: 'א.', x: 0.857, y: 0.373, w: 0.02, h: 0.014 },
+        { str: 'חשבו את שטחו', x: 0.55, y: 0.373, w: 0.3, h: 0.014 },
+        { str: 'ב.', x: 0.86, y: 0.424, w: 0.016, h: 0.014 },
+        { str: 'מה שטח המלבן החוסם', x: 0.49, y: 0.424, w: 0.36, h: 0.014 },
+      ],
+      questionTop: 0.328,
+      questionBot: 0.55,
+      earlierEnd: 0,
+      headerBottom: 0,
+      footerTop: 0.94,
+    });
+    const lParts = lShape.filter((entry) => entry.box.segment !== 'figure');
+    assert.ok(lParts.length > 0, JSON.stringify(lShape));
+    assert.ok(lParts.every((entry) => (entry.box.x || 0) > 0.3), JSON.stringify(lParts));
+    const tail = layout({
+      page: 7,
+      parts: [{ id: '19ד', part: 'ד', page: 7, row: { y: 0.217, h: 0.04, page: 7 }, labelLine: { y: 0.218, page: 7 } }],
+      picked: ['19ד'],
+      labels: [{ part: 'ד', y: 0.218 }],
+      figures: [{ x0: 0.06, x1: 0.52, y0: 0.14, y1: 0.32 }],
+      rows: [{ y: 0.218, h: 0.014, x: 0.414, w: 0.44, text: 'הראו שההיקף המקורי.' }],
+      items: [
+        { str: 'ד.', x: 0.838, y: 0.218, w: 0.014, h: 0.014 },
+        { str: 'הראו שההיקף של הכפולה', x: 0.618, y: 0.218, w: 0.22, h: 0.014 },
+        { str: 'המקורי.', x: 0.414, y: 0.218, w: 0.12, h: 0.014 },
+      ],
+      questionTop: 0.049,
+      questionBot: 0.31,
+      earlierEnd: 0,
+      headerBottom: 0,
+      footerTop: 0.94,
+    });
+    const tailFigure = tail.find((entry) => entry.box.segment === 'figure');
+    const tailPart = tail.find((entry) => entry.box.segment === 'part');
+    const tailRight = (tailFigure.box.x || 0) + (tailFigure.box.w || 0);
+    assert.ok(tailFigure && tailRight < 0.43 && tailRight > 0.30, '19ד figure stops at the sentence ' + JSON.stringify(tailFigure));
+    assert.ok(tailPart && (tailPart.box.x || 0) <= 0.42 && (tailPart.box.x || 0) + (tailPart.box.w || 0) > 0.5, JSON.stringify(tailPart));
+    const later = layout({
+      page: 2,
+      parts: [
+        { id: '3א', part: 'א', page: 2, row: { y: 0.0495, h: 0.04, page: 2 }, labelLine: { y: 0.0495, page: 2 } },
+        { id: '3ב', part: 'ב', page: 2, row: { y: 0.102, h: 0.04, page: 2 }, labelLine: { y: 0.102, page: 2 } },
+      ],
+      picked: ['3ב'],
+      labels: [{ part: 'א', y: 0.0495 }, { part: 'ב', y: 0.102 }],
+      figures: [],
+      rows: [
+        { y: 0.0495, h: 0.013, x: 0.42, w: 0.45, text: '3. א. השלימו את השיעור' },
+        { y: 0.102, h: 0.013, x: 0.46, w: 0.4, text: 'ב. השלימו: המרחק' },
+      ],
+      items: [
+        { str: '3.', x: 0.919, y: 0.0495, w: 0.014, h: 0.013 },
+        { str: 'א.', x: 0.861, y: 0.0495, w: 0.016, h: 0.013 },
+        { str: 'השלימו את השיעור החסר', x: 0.42, y: 0.0495, w: 0.42, h: 0.013 },
+        { str: 'ב.', x: 0.862, y: 0.102, w: 0.014, h: 0.013 },
+        { str: 'השלימו: המרחק בין הנקודות', x: 0.46, y: 0.102, w: 0.38, h: 0.013 },
+      ],
+      questionTop: 0.043,
+      questionBot: 0.2,
+      earlierEnd: 0,
+      headerBottom: 0,
+      footerTop: 0.94,
+    });
+    const number = later.find((entry) => entry.box.segment === 'stem');
+    assert.ok(number && number.box.y <= 0.0495 && number.box.y + number.box.h >= 0.062, JSON.stringify(later));
+    assert.ok((number.box.w || 0) < 0.12, JSON.stringify(number));
+    assert.equal(later.some((entry) => entry.box.h < 0.012 && entry.box.y < 0.1), false, JSON.stringify(later));
+    const sliceApi = new Function(`${preview.slice(preview.indexOf('function answerBox'), preview.indexOf('async function answerSlices'))} return { answerSliceFor, answerBox };`)() as {
+      answerSliceFor: (pages: { page: number; width: number; height: number; items: { str: string; x: number; y: number; w: number; h: number; page: number; dir?: string }[] }[], question: { q: number; part: string }) => { box: { x: number; y: number; w: number; h: number } } | null;
+      answerBox: (items: { str: string; x: number; y: number; w: number; h: number; page: number; dir?: string }[], q: number, part: string) => { x: number; y: number; w: number; h: number } | null;
+    };
+    const width = 595.28;
+    const height = 841.89;
+    const q1 = ' .\u00a0אחוזים · ג56\u00a0ס״מ · ד. הוכחה';
+    const q7 = ' — \u00a0סמ״ר · ב. א׳ ו־ה׳156\u00a0סמ״ר · ג. מצולע ג׳ · ד. הוכחה';
+    const q8 = ' \u00a0סמ״ר ; מחוץ45\u00a0סמ״ר · ג. כ־27.3\u00a0אחוזים · ד. הוכחה';
+    const sheet = {
+      page: 6,
+      width,
+      height,
+      items: [
+        { str: '1.', x: 547, y: 720, w: 9, h: 12, page: 6 },
+        { str: q1, x: 259.1, y: 700, w: 126, h: 12, page: 6, dir: 'rtl' },
+        { str: '7.', x: 547, y: 560, w: 9, h: 12, page: 6 },
+        { str: q7, x: 100.8, y: 540, w: 218.8, h: 12, page: 6, dir: 'rtl' },
+        { str: '8.', x: 547, y: 500, w: 9, h: 12, page: 6 },
+        { str: q8, x: 223, y: 480, w: 216, h: 12, page: 6, dir: 'rtl' },
+        { str: '(1)', x: 548, y: 400, w: 16, h: 12, page: 6 },
+        { str: ' . · ב', x: 377.1, y: 380, w: 18.8, h: 12, page: 6, dir: 'rtl' },
+        { str: '13', x: 366.6, y: 380, w: 10.5, h: 12, page: 6 },
+        { str: 'ישר־זווית שהיתר בו הוא הקטע המחבר', x: 171, y: 360, w: 200, h: 12, page: 6, dir: 'rtl' },
+        { str: '(20)', x: 534, y: 220, w: 18, h: 12, page: 6 },
+        { str: '.ד', x: 509.4, y: 200, w: 7.4, h: 12, page: 6 },
+        { str: ' נימוק', x: 484.1, y: 200, w: 25.3, h: 12, page: 6, dir: 'rtl' },
+      ],
+    };
+    const coversPdf = (box: { x: number; y: number; w: number; h: number }, px: number, py: number) => {
+      const left = box.x * width;
+      const right = left + box.w * width;
+      const top = height - box.y * height;
+      const bottom = top - box.h * height;
+      return px >= left - 1 && px <= right + 1 && py >= bottom - 1 && py <= top + 1;
+    };
+    const dalet = sliceApi.answerSliceFor([sheet], { q: 1, part: 'ד' });
+    assert.ok(dalet, '1ד answer');
+    assert.equal(coversPdf(dalet.box, 270, 706), true, JSON.stringify(dalet.box));
+    assert.equal(coversPdf(dalet.box, 340, 706), false, '1ד does not take the previous ס״מ ' + JSON.stringify(dalet.box));
+    const seven = sliceApi.answerSliceFor([sheet], { q: 7, part: 'ד' });
+    assert.ok(seven, '7ד answer');
+    assert.equal(coversPdf(seven.box, 108, 546), true, '7ד keeps the start of הוכחה ' + JSON.stringify(seven.box));
+    assert.equal(coversPdf(seven.box, 250, 546), false, '7ד does not take the previous part ' + JSON.stringify(seven.box));
+    const eight = sliceApi.answerSliceFor([sheet], { q: 8, part: 'ד' });
+    assert.ok(eight, '8ד answer');
+    assert.equal(coversPdf(eight.box, 300, 486), false, '8ד does not take אחוזים from 8ג ' + JSON.stringify(eight.box));
+    const bet = sliceApi.answerBox([
+      { str: '(1)', x: 548, y: 400, w: 16, h: 12, page: 6 },
+      { str: ' . · ב', x: 377.1, y: 380, w: 18.8, h: 12, page: 6, dir: 'rtl' },
+      { str: '13', x: 366.6, y: 380, w: 10.5, h: 12, page: 6 },
+      { str: ' . · ג', x: 349.8, y: 380, w: 16.8, h: 12, page: 6, dir: 'rtl' },
+      { str: 'ישר־זווית שהיתר בו הוא הקטע המחבר', x: 171, y: 360, w: 352, h: 12, page: 6, dir: 'rtl' },
+      { str: '(2)', x: 548, y: 340, w: 16, h: 12, page: 6 },
+    ], 1, 'ב');
+    assert.ok(bet, '1ב answer');
+    assert.ok(bet.x <= 366.6 && bet.x + bet.w >= 377.1, '1ב keeps the whole 13 ' + JSON.stringify(bet));
+    assert.ok(bet.y <= 380 && bet.y + bet.h >= 392, '1ב keeps the full height of 13 ' + JSON.stringify(bet));
+    assert.ok(bet.y > 366, '1ב does not take the next line ' + JSON.stringify(bet));
+    const reason = sliceApi.answerBox(sheet.items, 20, 'ד');
+    assert.ok(reason, '20ד answer');
+    assert.ok(reason.x <= 484 && reason.x + reason.w >= 509, JSON.stringify(reason));
+    assert.ok(reason.h < 28, 'the source answer is the word נימוק ' + JSON.stringify(reason));
+    const mixed = sliceApi.answerSliceFor([
+      {
+        page: 7,
+        width,
+        height,
+        items: [
+          { str: '19.', x: 539, y: 789, w: 16, h: 11, page: 7 },
+          { str: 'ד.', x: 499, y: 648, w: 8, h: 11, page: 7 },
+          { str: '. מן ההיקף המקורי', x: 246, y: 648, w: 78, h: 11, page: 7 },
+          { str: 'תשובות סופיות', x: 489, y: 346, w: 58, h: 11, page: 7 },
+        ],
+      },
+      {
+        page: 8,
+        width,
+        height,
+        items: [
+          { str: '19.', x: 540, y: 344, w: 16, h: 11, page: 8 },
+          { str: '· ד. כל', x: 40, y: 344, w: 30, h: 11, page: 8 },
+          { str: 'צלע מוכפלת ב־k, ולכן גם סכומן — ההיקף — מוכפל ב־k', x: 290, y: 330, w: 232, h: 11, page: 8 },
+          { str: '20.', x: 540, y: 310, w: 16, h: 11, page: 8 },
+        ],
+      },
+    ], { q: 19, part: 'ד' });
+    assert.ok(mixed && mixed.box.x < 0.12 && mixed.box.x + mixed.box.w > 0.7, '19ד answer ignores the question above the key ' + JSON.stringify(mixed));
+    const dashApi = new Function(`${preview.slice(preview.indexOf('function writingDashRows'), preview.indexOf('function releasePageBitmaps'))} return { writingDashRows, eraseWritingDashes };`)() as {
+      writingDashRows: (data: Uint8ClampedArray, width: number, height: number) => number[];
+      eraseWritingDashes: (data: Uint8ClampedArray, width: number, height: number, rows: number[], srcY: number) => void;
+    };
+    const dw = 80;
+    const dh = 12;
+    const dashes = new Uint8ClampedArray(dw * dh * 4);
+    dashes.fill(255);
+    for (let x = 30; x < 74; x += 2) {
+      const i = (6 * dw + x) * 4;
+      dashes[i] = dashes[i + 1] = dashes[i + 2] = 0;
+    }
+    for (let y = 2; y < 10; y += 1) {
+      const i = (y * dw + 10) * 4;
+      dashes[i] = dashes[i + 1] = dashes[i + 2] = 0;
+    }
+    const foundRows = dashApi.writingDashRows(dashes, dw, dh);
+    assert.ok(foundRows.includes(6), String(foundRows));
+    dashApi.eraseWritingDashes(dashes, dw, dh, foundRows, 0);
+    assert.equal(dashes[(6 * dw + 33) * 4], 255, 'a writing dash across the figure is removed');
+    assert.equal(dashes[(6 * dw + 10) * 4], 0, 'a tall label stroke on that row stays');
   });
 
   it('keeps every picked part\'s ink and packs a lone answer', () => {
