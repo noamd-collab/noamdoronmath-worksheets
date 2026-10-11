@@ -38,7 +38,7 @@ export interface WorksheetsClientProps {
 }
 
 function levelClass(key: string): string {
-  if (key === 'c') return 'lvl lvl--c';
+  if (key === 'c' || key === 'c2') return 'lvl lvl--c';
   if (key === 'b') return 'lvl lvl--b';
   if (key === 'one') return 'lvl lvl--a lvl--one';
   return 'lvl lvl--a';

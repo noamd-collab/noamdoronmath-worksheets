@@ -26,11 +26,12 @@ const protectedFiles: Record<string, string> = {
   // Adapter, output, and integrations are unchanged. The other two Astro
   // configs (preview, open07-verify) are not in this fence.
   'astro.config.mjs': 'c63c0e1646e6198757b32ca085cda16091a3168adf0017ce9e3ce74b91b8f451',
-  // Approved G9 PDF v2 replacement (reviewed media ids) plus the G9-T15 kite subtitle.
-  // The previous pin was the pre-replacement snapshot.
-  'src/data/catalog.v1.json': 'd9ceacb5991348f398fd9612d6e9a8a550c9dc8e8dedda26b9ee8c3c3673152b',
+  // G9 PDF v2 plus G8 PDF v2 (two c2 levels).
+  'src/data/catalog.v1.json': '0838e8f41480c1c0607229103da6bd70f44d0975e4b920109f47884ba8efe9cd',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
-  'src/lib/worksheetLinks.ts': '1f9a5fdf234997fc8ba7593d1ef0066f082586816770eefc45da40035a825eaf',
+  // Viewer links forward the c2 sibling as pc2.
+  'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
+  // L14 diff-sq v6 film (letters only), kept from the baseline.
   'src/lib/conceptLoops.ts': '10601a87ba90387e8459658a9990e4f3a255a037a293e93fac1d8b6f97aa588c',
   'src/components/ConceptLoop.astro': '7a53ec85a1b9fb039cb6363e799b1e2d36f78d82f7d407738d18a3136c47b229',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
@@ -84,7 +85,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.equal(scripts.at(-1), companion[0], 'The companion script follows the adapter and does not replace it');
     const releasedScripts = scripts.slice(0, -2);
     assert.equal(releasedScripts.length, 14);
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'fd137a04d4e89748d6c95b67ca71ab3274408bd71865413940699e0392276c52');
+    // c2 (מצוינות 2) is a real viewer level, so the released level script changed.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '71c61d6861c76294e299ae7353f598be1a532ab193be4065cc914ae6a71bde92');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
