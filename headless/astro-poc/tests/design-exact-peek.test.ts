@@ -128,7 +128,7 @@ test('unknown target, off event and cleanup cancel only preview-owned work',()=>
 
 test('component reads current content without changing source data or importing math engines',()=>{
   const component=readFileSync(new URL('../src/components/LinkPeek.astro',import.meta.url),'utf8');
-  assert.match(component,/loadCatalog\(\)\.grades/);assert.match(component,/learningGaps\.h1, readingGraphs\.h1/);assert.match(component,/g\.topics\.length/);
+  assert.match(component,/loadCatalog\(\)\.grades/);assert.match(component,/learningGaps\.h1, readingGraphs\.h1/);assert.match(component,/countRenderedTopicCards\(g, 'reg'\)/);
   assert.doesNotMatch(component,/ConceptLoop|HeroLoop|conceptLoops|SEARCH_TERMS|localStorage|sessionStorage/);
   const controller=readFileSync(new URL('../src/lib/exactLinkPeek.ts',import.meta.url),'utf8');
   assert.doesNotMatch(controller,/fetch\(|localStorage|sessionStorage|preventDefault\(|\.href\s*=/);

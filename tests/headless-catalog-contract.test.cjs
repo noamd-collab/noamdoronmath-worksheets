@@ -51,7 +51,8 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
   assert.equal(s.uniquePdfIds, 956);
   assert.equal(s.childTopics, 3);
   assert.equal(s.withNoamTopicId, 148);
-  assert.equal(s.searchEntries, 116);
+  // G9-T15 gained a search entry (דלתון / kite). Previous pin was 116.
+  assert.equal(s.searchEntries, 117);
   assert.equal(s.iconKeys, 80);
 
   // Exact per-grade topic counts from DATA

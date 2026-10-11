@@ -31,7 +31,7 @@ describe('same-origin static manifests (HEADLESS-MIGRATION-13)', () => {
     for (const id of [
       '91def8012efb44c9bdd092522fa576d6', // G7-T08 a
       '2c47f33e99f44174a32f7f4cfb3b5e3e', // G8-T02 a
-      '8896327abb7a4d4fa8ed20aac2863dd2', // G9-T02 a
+      'ec49833022f345f88360f3f5d4a7ab92', // G9-T02 a (PDF v2)
     ]) {
       assert.ok(provenance.files[id], 'missing provenance entry ' + id);
       assert.equal(existsSync(join(pub, 'noam-ai', 'manifests', id + '.json')), true);
