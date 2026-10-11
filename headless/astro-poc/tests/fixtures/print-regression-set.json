@@ -103,6 +103,42 @@
       "level": "a",
       "selection": ["1א", "2", "3א", "4א", "5א", "6א"],
       "failedBefore": "Near-empty last answer page."
+    },
+    {
+      "id": "g7-t42-pagebreak",
+      "sheetId": "f60bd48e0b284c718193734d2a4b3e93",
+      "grade": "7",
+      "topic": "42",
+      "level": "c",
+      "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א"],
+      "failedBefore": "Answer key rows overlapped and ran into the footer."
+    },
+    {
+      "id": "g7-t15-answers",
+      "sheetId": "8b1c151fd0c945a08b8599785f3e63da",
+      "grade": "7",
+      "topic": "15",
+      "level": "c",
+      "selection": ["1א", "2א", "3א", "4א", "5א", "6א"],
+      "failedBefore": "Long answers overflowed past the right edge of the key."
+    },
+    {
+      "id": "g8-t3-pagebreak",
+      "sheetId": "60b3ca0f913844acb9c9fe1891122d54",
+      "grade": "8",
+      "topic": "3",
+      "level": "c",
+      "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "5א", "5ב", "5ג", "5ד", "6א", "6ב", "6ג", "6ד", "7א", "7ב"],
+      "failedBefore": "Answer key rows overlapped on the last page."
+    },
+    {
+      "id": "g9-t10-pagebreak",
+      "sheetId": "e1e687cf7eb844bf8ac3dff676207100",
+      "grade": "9",
+      "topic": "10",
+      "level": "b",
+      "selection": ["1א", "1ב", "2", "3א", "3ב", "3ג", "4", "5א", "5ב", "6"],
+      "failedBefore": "Answer key rows overlapped on the first page."
     }
   ]
 }
