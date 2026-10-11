@@ -8,7 +8,9 @@
   },
   "scripts": {
     "dev": "wix dev",
+    "prebuild": "tsx scripts/build-site-guide.ts",
     "build": "wix build",
+    "check:site-guide": "tsx scripts/build-site-guide.ts --check",
     "preview": "wix preview",
     "astro": "astro",
     "typecheck": "astro check",

@@ -4,6 +4,7 @@
  * The attached site-map markdown is not an input.
  *
  *   npx tsx scripts/build-site-guide.ts
+ *   npx tsx scripts/build-site-guide.ts --check
  */
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -109,11 +110,14 @@ function demoLine(page: { slug: string; grade: number; catalogCta?: { catalogTop
   }
 }
 
+function jsonFiles(dir: string): string[] {
+  return readdirSync(dir).filter((name) => name.endsWith('.json')).sort();
+}
+
 function loadManifests(): Map<string, { questionCount?: number; exerciseCount?: number; pageCount?: number }> {
   const dir = join(root, 'public/noam-ai/manifests');
   const map = new Map<string, { questionCount?: number; exerciseCount?: number; pageCount?: number }>();
-  for (const name of readdirSync(dir)) {
-    if (!name.endsWith('.json')) continue;
+  for (const name of jsonFiles(dir)) {
     const manifest = readJson(join(dir, name));
     const hash = String(manifest.pdfHash || name.replace(/\.json$/, '')).toLowerCase();
     map.set(hash, {
@@ -233,8 +237,7 @@ function main() {
   }
 
   const topicDir = join(root, 'src/data/topic-pages');
-  for (const name of readdirSync(topicDir)) {
-    if (!name.endsWith('.json')) continue;
+  for (const name of jsonFiles(topicDir)) {
     const page = readJson(join(topicDir, name));
     const grade = catalog.grades.find((item: { grade: number }) => item.grade === page.grade);
     const cta = page.catalogCta && page.catalogCta.label;
@@ -255,8 +258,7 @@ function main() {
 
   const categoryByPath = new Map<string, string[]>();
   const archiveDir = join(root, 'src/data/blog-archives');
-  for (const name of readdirSync(archiveDir)) {
-    if (!name.endsWith('.json')) continue;
+  for (const name of jsonFiles(archiveDir)) {
     const archive = readJson(join(archiveDir, name));
     if (archive.kind === 'category') {
       for (const card of archive.cards || []) {
@@ -295,8 +297,7 @@ function main() {
   }
 
   const blogDir = join(root, 'src/data/blog-posts');
-  for (const name of readdirSync(blogDir)) {
-    if (!name.endsWith('.json')) continue;
+  for (const name of jsonFiles(blogDir)) {
     const post = readJson(join(blogDir, name));
     const key = decodeURIComponent(post.path || '');
     const grade = gradeFromText(post.title + ' ' + post.h1) || (post.path && /grade-(\d)/.test(post.path) ? Number(post.path.match(/grade-(\d)/)[1]) : undefined);
@@ -315,8 +316,7 @@ function main() {
   }
 
   const pageDir = join(root, 'src/data/site-pages');
-  for (const name of readdirSync(pageDir)) {
-    if (!name.endsWith('.json')) continue;
+  for (const name of jsonFiles(pageDir)) {
     const page = readJson(join(pageDir, name));
     const how = Array.isArray(page.intro) ? page.intro.filter(Boolean).join(' ') : '';
     push(records, {
@@ -451,9 +451,19 @@ function main() {
     counts,
     records,
   };
+  const body = JSON.stringify(guide);
   const dest = join(root, 'src/data/site-guide.v1.json');
-  writeFileSync(dest, JSON.stringify(guide));
-  console.log(JSON.stringify({ counts, records: records.length, manifestMatches: manifestHits, bytes: Buffer.byteLength(JSON.stringify(guide)) }));
+  if (process.argv.includes('--check')) {
+    const current = readFileSync(dest, 'utf8');
+    if (current !== body) {
+      console.error('FAIL: src/data/site-guide.v1.json differs from a fresh build. Run: npx tsx scripts/build-site-guide.ts');
+      process.exit(1);
+    }
+    console.log('site-guide.v1.json matches a fresh build');
+    return;
+  }
+  writeFileSync(dest, body);
+  console.log(JSON.stringify({ counts, records: records.length, manifestMatches: manifestHits, bytes: Buffer.byteLength(body) }));
 }
 
 function learningParagraphs(html: string): string {
