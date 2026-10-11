@@ -1179,10 +1179,12 @@ describe('teacher catalog picker', () => {
       labels: { part: string; y: number }[];
       figures: { x0: number; x1: number; y0: number; y1: number }[];
       earlierEnd: number;
-    }) => { kind: string; box: { y: number; h: number; masks?: { x: number; y: number; h: number; w: number; role?: string }[] } }[];
-    const covers = (boxes: { box: { y: number; h: number; masks?: { x: number; y: number; h: number; w: number }[] } }[], y: number, rightText: boolean) => boxes.some((entry) => {
+    }) => { kind: string; box: { x?: number; y: number; w?: number; h: number; segment?: string; masks?: { x: number; y: number; h: number; w: number; role?: string }[] } }[];
+    const covers = (boxes: { box: { x?: number; y: number; w?: number; h: number; masks?: { x: number; y: number; h: number; w: number }[] } }[], y: number, rightText: boolean) => boxes.some((entry) => {
       const box = entry.box;
       if (y < box.y + 0.004 || y > box.y + box.h - 0.004) return false;
+      const right = (box.x || 0) + (box.w == null ? 1 : box.w);
+      if (rightText && right < 0.55) return false;
       if (!rightText) return true;
       return !(box.masks || []).some((mask) => {
         if (mask.x > 0.5 || mask.x + mask.w < 0.85) return false;
@@ -1226,7 +1228,9 @@ describe('teacher catalog picker', () => {
     });
     const foreign = similarity.find((entry) => entry.box.y < 0.5);
     assert.ok(foreign && foreign.box.h < 0.16 && foreign.box.y < 0.36 && foreign.box.y + foreign.box.h > 0.44, JSON.stringify(similarity));
-    assert.ok((foreign.box.masks || []).some((mask) => mask.role === 'swallowed' || (mask.x < 0.4 && mask.w > 0.5)));
+    assert.equal(foreign.box.segment, 'figure');
+    assert.equal((foreign.box.masks || []).length, 0);
+    assert.ok((foreign.box.x || 0) + (foreign.box.w || 1) < 0.55, JSON.stringify(foreign.box));
     assert.ok(!covers(similarity, 0.55, true), 'similarity drops question 3 text');
     assert.ok(covers(similarity, 0.86, true), 'similarity keeps question 4');
 
@@ -1252,7 +1256,7 @@ describe('teacher catalog picker', () => {
   it('covers a hidden line from both sides and keeps a 9. stem', () => {
     const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
     const api = new Function(`${preview.slice(preview.indexOf('function leftFigureBoxes'), preview.indexOf('async function measureWorksheet'))} return { layoutQuestionCrops, polishQuestionSlice, questionNumberOf, figureIsSentence };`)() as {
-      layoutQuestionCrops: (model: object) => { box: { y: number; h: number; masks?: { x: number; w: number; y: number; h: number; role?: string }[] } }[];
+      layoutQuestionCrops: (model: object) => { box: { x?: number; y: number; w?: number; h: number; segment?: string; masks?: { x: number; w: number; y: number; h: number; role?: string }[] } }[];
       polishQuestionSlice: (item: object, items: object[]) => { slice: { box: { y: number; h: number; masks?: { x: number; w: number; y: number; h: number; role?: string }[] } } };
       questionNumberOf: (item: { str: string; x?: number; y?: number }, items?: object[]) => number | null;
       figureIsSentence: (figure: object, rows: object[]) => boolean;
@@ -1285,18 +1289,42 @@ describe('teacher catalog picker', () => {
         { id: 'ב', part: 'ב', page: 1, stem: { y: 0.1, h: 0.04, page: 1 }, row: { y: 0.32, h: 0.06, page: 1 }, labelLine: { y: 0.32, page: 1 } },
       ],
     });
-    const covered = (x, y) => hidden.some((entry) => {
+    const holds = (x: number, y: number) => hidden.some((entry) => {
       const box = entry.box;
-      if (y < box.y || y > box.y + box.h) return false;
-      return (box.masks || []).some((mask) => y >= box.y + mask.y * box.h - 0.004 && y <= box.y + (mask.y + mask.h) * box.h + 0.004 && x >= mask.x - 0.02 && x <= mask.x + mask.w + 0.02);
+      const left = box.x || 0;
+      const right = left + (box.w == null ? 1 : box.w);
+      return y >= box.y - 0.002 && y <= box.y + box.h + 0.002 && x >= left - 0.01 && x <= right + 0.01;
     });
-    const inside = (y) => hidden.some((entry) => y > entry.box.y && y < entry.box.y + entry.box.h);
+    const inside = (y: number) => hidden.some((entry) => y > entry.box.y && y < entry.box.y + entry.box.h);
     assert.equal(inside(0.52), false, 'next question ' + JSON.stringify(hidden));
     assert.ok(inside(0.25), 'the drawing beside the hidden line stays');
-    assert.equal(covered(0.12, 0.218), false, 'a figure label stays ' + JSON.stringify(hidden));
-    assert.equal(covered(0.17, 0.218), false, 'a vertex letter stays');
-    assert.ok(covered(0.7, 0.218), 'right end of the hidden line');
-    assert.equal(covered(0.6, 0.118), false, 'stem stays visible');
+    assert.ok(holds(0.12, 0.218), 'a figure label stays ' + JSON.stringify(hidden));
+    assert.ok(holds(0.17, 0.218), 'a vertex letter stays');
+    assert.equal(holds(0.7, 0.218), false, 'the hidden line is not a piece ' + JSON.stringify(hidden));
+    const tail = api.layoutQuestionCrops({
+      page: 5,
+      earlierEnd: 0,
+      picked: ['12ב'],
+      labels: [{ part: 'א', y: 0.563 }, { part: 'ב', y: 0.613 }],
+      figures: [{ x0: 0.07, x1: 0.45, y0: 0.505, y1: 0.547 }],
+      questionTop: 0.12,
+      questionBot: 0.72,
+      rows: [
+        { y: 0.563, h: 0.014, x: 0.4, w: 0.45, text: 'סמנו במערכת הצירים את הנקודות.א' },
+        { y: 0.612, h: 0.014, x: 0.29, w: 0.55, text: 'באיזה יום.ב' },
+      ],
+      items: [
+        { str: '- ו5', x: 0.408, y: 0.563, w: 0.028, h: 0.014 },
+        { str: '4', x: 0.436, y: 0.563, w: 0.01, h: 0.014 },
+      ],
+      parts: [
+        { id: '12א', part: 'א', page: 5, stem: { y: 0.12, h: 0.4, page: 5 }, row: { y: 0.563, h: 0.05, page: 5 }, labelLine: { y: 0.563, page: 5 } },
+        { id: '12ב', part: 'ב', page: 5, stem: { y: 0.12, h: 0.4, page: 5 }, row: { y: 0.613, h: 0.05, page: 5 }, labelLine: { y: 0.613, page: 5 } },
+      ],
+    });
+    const tailFig = tail.find((entry) => entry.box.segment === 'figure');
+    assert.ok(tailFig && tailFig.box.y + tailFig.box.h < 0.57, 'a sentence tail is not part of the figure ' + JSON.stringify(tailFig && tailFig.box));
+    assert.ok(holds(0.6, 0.118), 'stem stays visible');
     const glued = api.layoutQuestionCrops({
       page: 2,
       earlierEnd: 0,
@@ -1372,6 +1400,128 @@ describe('teacher catalog picker', () => {
       { x0: 0.08, x1: 0.29, y0: 0.14, y1: 0.24 },
       [{ y: 0.17, h: 0.014, x: 0.37, w: 0.48 }, { y: 0.18, h: 0.012, x: 0.16, w: 0.02 }],
     ), false);
+  });
+
+  it('takes each crop from the card source PDF, not a page screenshot', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    assert.match(preview, /const PRINT_DPI = 300/);
+    assert.match(preview, /getDocument\(\{ url: active\.pdfUrl/);
+    assert.match(preview, /page\.render\(\{ canvasContext: canvas\.getContext\('2d'\), viewport \}\)/);
+    assert.equal(/html2canvas|drawWindow/.test(preview), false);
+    const bitmapFn = preview.slice(preview.indexOf('async function pageBitmap'), preview.indexOf('function boxEnd'));
+    assert.match(bitmapFn, /purpose === 'print'/);
+    assert.match(bitmapFn, /PRINT_DPI \/ 72/);
+    assert.match(preview, /pageBitmap\(slice\.page, slice\.source, 'print'\)/);
+    assert.match(preview, /clip: sourceClip\(/);
+    const sourceClip = new Function(`${preview.slice(preview.indexOf('function sourceClip'), preview.indexOf('function printCanvasScale'))} return sourceClip;`)() as (source: { pdfUrl?: string; pdfId?: string }, page: number, segment: string) => { pdfUrl: string; pdfId: string; page: number; segment: string };
+    const clip = sourceClip({ pdfUrl: 'https://static.wixstatic.com/ugd/d8e7ad_abc.pdf', pdfId: 'abc' }, 4, 'figure');
+    assert.equal(clip.pdfUrl, 'https://static.wixstatic.com/ugd/d8e7ad_abc.pdf');
+    assert.equal(clip.pdfId, 'abc');
+    assert.equal(clip.page, 4);
+    assert.equal(clip.segment, 'figure');
+    const layoutQuestionCrops = new Function(`${preview.slice(preview.indexOf('function leftFigureBoxes'), preview.indexOf('async function measureWorksheet'))} return layoutQuestionCrops;`)() as (model: object) => { box: { x?: number; y: number; w?: number; h: number; segment?: string } }[];
+    const boxes = layoutQuestionCrops({
+      page: 3,
+      earlierEnd: 0,
+      picked: ['8ג'],
+      labels: [{ part: 'א', y: 0.335 }, { part: 'ב', y: 0.384 }, { part: 'ג', y: 0.433 }, { part: 'ד', y: 0.481 }],
+      figures: [],
+      questionTop: 0.307,
+      questionBot: 0.533,
+      rows: [
+        { y: 0.313, h: 0.014, x: 0.57, w: 0.32, text: 'בטרפז ישר־זווית' },
+        { y: 0.384, h: 0.16, x: 0.026, w: 0.01, text: '© כל הזכויות שמורות לנועם דורון' },
+        { y: 0.384, h: 0.014, x: 0.665, w: 0.197, text: 'ב.מה אורך השוק האלכסונית?' },
+        { y: 0.433, h: 0.014, x: 0.742, w: 0.124, text: 'ג.מה היקף הטרפז?' },
+      ],
+      items: [
+        { str: '8.', x: 0.919, y: 0.313, w: 0.014, h: 0.013 },
+        { str: '© כל הזכויות שמורות לנועם דורון', x: 0.026, y: 0.384, w: 0.01, h: 0.16 },
+        { str: 'מה אורך השוק האלכסונית?', x: 0.665, y: 0.384, w: 0.197, h: 0.014 },
+        { str: 'ג.', x: 0.865, y: 0.433, w: 0.011, h: 0.013 },
+        { str: 'מה היקף הטרפז?', x: 0.742, y: 0.433, w: 0.124, h: 0.014 },
+      ],
+      parts: [
+        { id: '8א', part: 'א', page: 3, stem: { y: 0.306, h: 0.03, page: 3 }, row: { y: 0.336, h: 0.049, page: 3 }, labelLine: { y: 0.336, page: 3 } },
+        { id: '8ב', part: 'ב', page: 3, stem: { y: 0.306, h: 0.03, page: 3 }, row: { y: 0.385, h: 0.049, page: 3 }, labelLine: { y: 0.385, page: 3 } },
+        { id: '8ג', part: 'ג', page: 3, stem: { y: 0.306, h: 0.03, page: 3 }, row: { y: 0.434, h: 0.048, page: 3 }, labelLine: { y: 0.434, page: 3 } },
+        { id: '8ד', part: 'ד', page: 3, stem: { y: 0.306, h: 0.03, page: 3 }, row: { y: 0.482, h: 0.047, page: 3 }, labelLine: { y: 0.482, page: 3 } },
+      ],
+    });
+    const part = boxes.find((entry) => entry.box.segment === 'part');
+    assert.ok(part && part.box.y > 0.42, 'part crop stays on its own label ' + JSON.stringify(boxes));
+    const showsPrevious = boxes.some((entry) => {
+      const box = entry.box;
+      const left = box.x || 0;
+      const right = left + (box.w == null ? 1 : box.w);
+      return 0.39 > box.y && 0.39 < box.y + box.h && 0.7 >= left && 0.7 <= right;
+    });
+    assert.equal(showsPrevious, false, 'previous part stays out ' + JSON.stringify(boxes));
+  });
+
+  it('keeps a פרק זמן line and stops before the next section title', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const layoutQuestionCrops = new Function(`${preview.slice(preview.indexOf('function leftFigureBoxes'), preview.indexOf('async function measureWorksheet'))} return layoutQuestionCrops;`)() as (model: object) => { box: { x?: number; y: number; w?: number; h: number; segment?: string } }[];
+    const boxes = layoutQuestionCrops({
+      page: 2,
+      earlierEnd: 0,
+      picked: ['4א'],
+      labels: [{ part: 'א', y: 0.264 }],
+      figures: [],
+      questionTop: 0.21,
+      questionBot: null,
+      rows: [
+        { y: 0.238, h: 0.014, x: 0.33, w: 0.4, text: 'השינוי בכל פרק זמן הוא מספר שלם' },
+        { y: 0.264, h: 0.014, x: 0.14, w: 0.67, text: '.מצאו את כל האפשרויות.א' },
+        { y: 0.4, h: 0.016, x: 0.45, w: 0.4, text: 'פרק ב׳ · אלכסונים' },
+      ],
+      items: [
+        { str: '.א', x: 0.836, y: 0.264, w: 0.019, h: 0.014 },
+        { str: 'פרק ב׳ · אלכסונים', x: 0.5, y: 0.4, w: 0.35, h: 0.016 },
+      ],
+      parts: [
+        { id: '4א', part: 'א', page: 2, stem: { y: 0.208, h: 0.05, page: 2 }, row: { y: 0.264, h: 0.16, page: 2 }, labelLine: { y: 0.265, page: 2 } },
+      ],
+    });
+    const holds = (x: number, y: number) => boxes.some((entry) => {
+      const box = entry.box;
+      const left = box.x || 0;
+      const right = left + (box.w == null ? 1 : box.w);
+      return y >= box.y - 0.004 && y <= box.y + box.h + 0.004 && x >= left - 0.01 && x <= right + 0.01;
+    });
+    assert.ok(holds(0.84, 0.27), 'the part letter stays ' + JSON.stringify(boxes));
+    assert.equal(holds(0.6, 0.408), false, 'the next section title stays out ' + JSON.stringify(boxes));
+    const fraction = layoutQuestionCrops({
+      page: 1,
+      earlierEnd: 0,
+      picked: ['2א'],
+      labels: [{ part: 'א', y: 0.415 }],
+      figures: [],
+      questionTop: 0.364,
+      questionBot: 0.61,
+      rows: [
+        { y: 0.37, h: 0.014, x: 0.7, w: 0.16, text: '.פתרו' },
+        { y: 0.415, h: 0.014, x: 0.82, w: 0.05, text: 'א.= 3' },
+      ],
+      items: [
+        { str: 'x', x: 0.8, y: 0.398, w: 0.01, h: 0.014 },
+        { str: 'א.', x: 0.848, y: 0.415, w: 0.023, h: 0.014 },
+        { str: '= 3', x: 0.821, y: 0.415, w: 0.027, h: 0.014 },
+        { str: '4', x: 0.8, y: 0.423, w: 0.01, h: 0.014 },
+      ],
+      parts: [
+        { id: '2א', part: 'א', page: 1, stem: { y: 0.36, h: 0.04, page: 1 }, row: { y: 0.4, h: 0.16, page: 1 }, labelLine: { y: 0.401, page: 1 } },
+      ],
+    });
+    const inPart = (x: number, y: number) => fraction.some((entry) => {
+      const box = entry.box;
+      if (entry.box.segment !== 'part') return false;
+      const left = box.x || 0;
+      const right = left + (box.w == null ? 1 : box.w);
+      return y >= box.y - 0.004 && y <= box.y + box.h + 0.004 && x >= left - 0.01 && x <= right + 0.01;
+    });
+    assert.ok(inPart(0.805, 0.404), 'the numerator stays on the part line ' + JSON.stringify(fraction));
+    assert.equal(inPart(0.75, 0.376), false, 'the line above stays out');
   });
 
   it('keeps the stem, the drawing, and the whole answer when each part is picked alone', (t) => {
@@ -1679,7 +1829,7 @@ sys.stdout.write(json.dumps(out))
     const counts: Record<string, number> = {};
     const push = (kind: string, msg: string) => {
       counts[kind] = (counts[kind] || 0) + 1;
-      if (failures.filter((line) => line.startsWith(kind)).length < 8) failures.push(kind + ' ' + msg);
+      if (failures.filter((line) => line.startsWith(kind)).length < 12) failures.push(kind + ' ' + msg);
     };
     const focusIds: Record<string, string[]> = {
       e091562d859a4059abca94dfddc17bfa: ['14ב'],
@@ -1702,6 +1852,8 @@ sys.stdout.write(json.dumps(out))
       if (onlyPage && entry.page && entry.page !== onlyPage) return false;
       const box = entry.box;
       if (y < box.y + 0.004 || y > box.y + box.h - 0.004) return false;
+      const rightEdge = (box.x || 0) + (box.w == null ? 1 : box.w);
+      if (rightText && rightEdge < 0.55) return false;
       if (!rightText) return true;
       const masks = [];
       if (box.mask) masks.push(box.mask);
@@ -1772,11 +1924,19 @@ sys.stdout.write(json.dumps(out))
           const bitmap = ruleBitmap(pg, pageInfo.rules || []);
           const painted = onPage.map((crop) => {
             const figures = crop.figures || [];
+            if (crop.box && crop.box.segment) return { box: crop.box, masks: [] };
             const rules = (pageInfo.rules || []).length ? cropApi.maskWritingRules(bitmap, crop.box, [[crop.box.y, crop.box.y + crop.box.h]]) : [];
             const masks = cropApi.carveMasks((crop.box.masks || []).concat(rules), crop.box, figures);
             return { box: crop.box, masks };
           });
-          const visible = (x, y) => painted.some((crop) => y > crop.box.y + 0.002 && y < crop.box.y + crop.box.h - 0.002 && !pointMasked(crop.box, crop.masks, x, y));
+          const visible = (x, y) => painted.some((crop) => {
+            if (y <= crop.box.y + 0.002 || y >= crop.box.y + crop.box.h - 0.002) return false;
+            const left = crop.box.x || 0;
+            const right = left + (crop.box.w == null ? 1 : crop.box.w);
+            if (x < left - 0.006 || x > right + 0.006) return false;
+            return !pointMasked(crop.box, crop.masks, x, y);
+          });
+          const labelRows = cropApi.textRows((pageInfo.items || []).map(([str, x, y, w, h]) => ({ str, x, y, w, h })));
           included.forEach(({ shape }) => {
             onPage.forEach((crop) => {
               (crop.figures || []).forEach((figure) => {
@@ -1789,6 +1949,8 @@ sys.stdout.write(json.dumps(out))
                   if (/נועם|מתמטיקה|זכויות|עמוד/.test(text)) return;
                   const cx = item[1] + item[3] * 0.5;
                   const cy = item[2] + item[4] * 0.45;
+                  const onSentence = labelRows.some((row) => Math.abs(row.y - item[2]) <= 0.008 && (row.w || 0) > 0.18 && (row.x || 0) + (row.w || 0) > figure.x1 + 0.04);
+                  if (onSentence && cx > 0.34) return;
                   if (cx < figure.x0 - 0.02 || cx > figure.x1 + 0.02 || cy < figure.y0 - 0.016 || cy > figure.y1 + 0.016) return;
                   if (cy <= crop.box.y + 0.002 || cy >= crop.box.y + crop.box.h - 0.002) return;
                   if (!visible(cx, cy)) push('fig-text', `${file.slice(0, 8)} ${tag} "${text.slice(0, 16)}" y=${cy.toFixed(3)}`);
@@ -1845,13 +2007,27 @@ sys.stdout.write(json.dumps(out))
           const marks = cropApi.questionMarks(pageItems);
           pageFigures.set(page, figures);
           const onPage = siblings.filter((item) => item.row && pageOf(item.row, item) === page);
-          if (tagged || !onPage.length) {
+          onPage.forEach((part) => {
+            const fig = part.figure;
+            if (!fig || !(fig.x1 > fig.x0) || !(fig.y1 > fig.y0)) return;
+            const dup = figures.some((have) => {
+              const overlapX = Math.min(have.x1, fig.x1) - Math.max(have.x0, fig.x0);
+              const overlapY = Math.min(have.y1, fig.y1) - Math.max(have.y0, fig.y0);
+              return overlapX > 0.015 && overlapY > 0.015;
+            });
+            if (!dup) figures.push({ x0: fig.x0, x1: fig.x1, y0: fig.y0, y1: fig.y1 });
+          });
+          if (!onPage.length) {
             group.slices.forEach((slice) => crops.push(slice));
             return;
           }
           const picked = [];
           group.slices.forEach((slice) => {
             if (slice.kind === 'stem') return;
+            if (slice.partId) {
+              if (picked.indexOf(slice.partId) < 0) picked.push(slice.partId);
+              return;
+            }
             let best = null;
             onPage.forEach((part) => {
               const label = part.labelLine && pageOf(part.labelLine, part) === page ? part.labelLine.y : part.row.y;
@@ -1892,7 +2068,7 @@ sys.stdout.write(json.dumps(out))
             if (mark.y < after) return;
             if (!nextMark || mark.y < nextMark.y) nextMark = mark;
           });
-          const questionBot = nextMark ? nextMark.y - 0.004 : null;
+          const questionBot = nextMark ? nextMark.y - 0.004 : (nextStart > spanTop + 0.02 && nextStart < 0.98 ? nextStart - 0.008 : null);
           const relevant = figures.filter((figure) => {
             if (cropApi.figureIsSentence(figure, rows)) return false;
             const center = (figure.y0 + figure.y1) / 2;
@@ -1925,7 +2101,7 @@ sys.stdout.write(json.dumps(out))
             }, pageItems);
             return { ...slice, box: polished.slice.box, figures: slice.figures || relevant };
           };
-          if (!picked.length || (!swallowed && !uncovered && !(laterPick && questionMark && !numberIn))) {
+          if (!picked.length) {
             group.slices.forEach((slice) => crops.push(polishSlice(slice)));
             return;
           }
@@ -1940,13 +2116,14 @@ sys.stdout.write(json.dumps(out))
             items: pageItems,
             questionTop: questionMark ? questionMark.y - 0.006 : null,
             questionBot,
-            earlierEnd: swallowed ? earlierEnd : 0,
+            earlierEnd,
           });
           if (!boxes.length) group.slices.forEach((slice) => crops.push(polishSlice(slice)));
           else boxes.forEach((entry) => crops.push(polishSlice(entry)));
           if (swallowed) {
             const early = boxes.filter((entry) => entry.box.y + entry.box.h < earlierEnd - 0.008);
             early.forEach((entry) => {
+              if (entry.box.segment === 'figure' && (entry.box.x || 0) + (entry.box.w == null ? 1 : entry.box.w) < 0.55) return;
               const drawn = relevant.filter((figure) => figure.y1 > entry.box.y + 0.01 && figure.y0 < entry.box.y + entry.box.h - 0.01);
               const drawnH = drawn.reduce((max, figure) => Math.max(max, figure.y1 - figure.y0), 0);
               if (entry.box.h > drawnH + 0.05) push('gap', `${file.slice(0, 8)} ${question.id} h=${entry.box.h.toFixed(3)} drawn=${drawnH.toFixed(3)}`);
@@ -1968,7 +2145,7 @@ sys.stdout.write(json.dumps(out))
               items: pageItems,
               questionTop: questionMark ? questionMark.y - 0.006 : null,
               questionBot,
-              earlierEnd: swallowed ? earlierEnd : 0,
+              earlierEnd,
             });
             const multiCrops = (multiBoxes.length ? multiBoxes : group.slices).map((entry) => polishSlice(entry));
             guardFigures(multiCrops, question.id + '+');
@@ -2054,6 +2231,9 @@ sys.stdout.write(json.dumps(out))
             if (entry.page && entry.page !== page) return false;
             const box = entry.box;
             if (y < box.y + 0.002 || y > box.y + box.h - 0.002) return false;
+            const leftEdge = box.x || 0;
+            const rightEdge = leftEdge + (box.w == null ? 1 : box.w);
+            if (x < leftEdge - 0.012 || x > rightEdge + 0.012) return false;
             const masks = [];
             if (box.mask) masks.push(box.mask);
             (box.masks || []).forEach((mask) => masks.push(mask));
@@ -2099,6 +2279,63 @@ sys.stdout.write(json.dumps(out))
             if (leaked) push('leak', `${file.slice(0, 8)} ${question.id} shows "${text.slice(0, 28)}" y=${mid.toFixed(3)}`);
           });
         }
+        const spanInside = (box, item) => {
+          const left = box.x || 0;
+          const right = left + (box.w == null ? 1 : box.w);
+          return item.y >= box.y - 0.008 && item.y + (item.h || 0) <= box.y + box.h + 0.01
+            && item.x >= left - 0.01 && item.x + (item.w || 0) <= right + 0.012;
+        };
+        const pointIn = (x, y) => crops.some((crop) => {
+          if (crop.page && crop.page !== page) return false;
+          const box = crop.box;
+          const left = box.x || 0;
+          const right = left + (box.w == null ? 1 : box.w);
+          return y >= box.y - 0.004 && y <= box.y + box.h + 0.004 && x >= left - 0.01 && x <= right + 0.01;
+        });
+        crops.forEach((crop) => {
+          const figure = crop.box && crop.box.figure;
+          if (!figure || crop.box.segment !== 'figure' || (crop.page && crop.page !== page)) return;
+          figureItems.forEach((item) => {
+            const text = String(item.str || '').trim();
+            if (!text || text.length > 14 || (item.w || 0) > 0.12) return;
+            if (/נועם|מתמטיקה|זכויות|עמוד|פרק|בהצלחה/.test(text)) return;
+            const onSentence = figureRows.some((row) => Math.abs(row.y - item.y) <= 0.008 && (row.w || 0) > 0.18 && (row.x || 0) + (row.w || 0) > figure.x1 + 0.04);
+            if (onSentence) return;
+            const cx = item.x + (item.w || 0) * 0.5;
+            const cy = item.y + Math.max(item.h || 0.012, 0.008) * 0.45;
+            if (cx < figure.x0 - 0.022 || cx > figure.x1 + 0.022 || cy < figure.y0 - 0.022 || cy > figure.y1 + 0.022) return;
+            // The crop stops at the next question. A label of that question is not missing from this one.
+            if (cy > crop.box.y + crop.box.h + 0.004) return;
+            if (!spanInside(crop.box, item)) push('fig-span', `${file.slice(0, 8)} ${question.id} "${text.slice(0, 12)}" y=${cy.toFixed(3)}`);
+          });
+        });
+        if (question.part) {
+          figureItems.forEach((item) => {
+            if (Math.abs(item.y - realLabel) > 0.01) return;
+            const text = String(item.str || '').trim();
+            if (!text || (item.x || 0) < 0.32) return;
+            // A one-letter axis mark in the drawing column is a figure label, not the part sentence.
+            if (text.length <= 2 && (item.x || 0) + (item.w || 0) < 0.42 && !cropApi.rowPart(text)) return;
+            if (!crops.some((crop) => (!crop.page || crop.page === page) && spanInside(crop.box, item))) {
+              push('part-line', `${file.slice(0, 8)} ${question.id} "${text.slice(0, 18)}" x=${Number(item.x).toFixed(3)}`);
+            }
+          });
+        }
+        const pageMarks = cropApi.questionMarks(figureItems);
+        figureItems.forEach((item) => {
+          const text = String(item.str || '');
+          if (/(?:^|[\s·•])פרק\s*[אבגדהו]\s*[׳'״"]/.test(text)) {
+            const cx = item.x + (item.w || 0) * 0.5;
+            const cy = item.y + (item.h || 0.012) * 0.45;
+            if (pointIn(cx, cy)) push('header', `${file.slice(0, 8)} ${question.id} "${text.slice(0, 24)}"`);
+          }
+          const n = cropApi.questionNumberOf(item, figureItems);
+          if (n == null || n === question.q) return;
+          // (1) (2) (3) of a worked example sit left of the real question numbers.
+          const onMargin = pageMarks.some((mark) => mark.n === n && Math.abs(mark.y - item.y) < 0.01 && Math.abs(mark.x - (item.x || 0)) < 0.02);
+          if (!onMargin) return;
+          if (pointIn(item.x + (item.w || 0) * 0.5, item.y + (item.h || 0.012) * 0.45)) push('other-q', `${file.slice(0, 8)} ${question.id} shows ${n}`);
+        });
         if (watch) {
           watched.push({
             id: sheet.pdfId.slice(0, 8) + ' ' + question.id,
@@ -2176,6 +2413,10 @@ sys.stdout.write(json.dumps(out))
     assert.equal(counts['stem-text'] || 0, 0, ofKind('stem-text'));
     assert.equal(counts['fig-text'] || 0, 0, ofKind('fig-text'));
     assert.equal(counts['fig-ink'] || 0, 0, ofKind('fig-ink'));
+    assert.equal(counts['fig-span'] || 0, 0, ofKind('fig-span'));
+    assert.equal(counts['part-line'] || 0, 0, ofKind('part-line'));
+    assert.equal(counts.header || 0, 0, ofKind('header'));
+    assert.equal(counts['other-q'] || 0, 0, ofKind('other-q'));
     assert.ok(styles.paren > 500, 'question numbers (N) ' + JSON.stringify(styles));
     assert.ok(styles.dot > 100, 'question numbers N. ' + JSON.stringify(styles));
     assert.ok(parts > 20000, String(parts));
@@ -2184,17 +2425,17 @@ sys.stdout.write(json.dumps(out))
     assert.ok(withFigure > 5000, String(withFigure));
     const found = Object.fromEntries(watched.map((item) => [item.id, item.crops]));
     const rhombus = found['e091562d 14ב'];
-    assert.ok(rhombus && rhombus.some((crop) => crop.y < 0.15 && crop.y + crop.h > 0.2 && crop.h < 0.2 && crop.masks > 0), JSON.stringify(rhombus));
+    assert.ok(rhombus && rhombus.some((crop) => crop.y < 0.15 && crop.y + crop.h > 0.2 && crop.h < 0.2), JSON.stringify(rhombus));
     assert.ok(rhombus.some((crop) => crop.y > 0.26 && crop.y < 0.32 && crop.h > 0.04));
     const similarity = found['831390f8 4א'];
-    assert.ok(similarity && similarity.some((crop) => crop.y < 0.4 && crop.h < 0.16 && crop.y + crop.h > 0.43 && crop.masks > 0), JSON.stringify(similarity));
+    assert.ok(similarity && similarity.some((crop) => crop.y < 0.4 && crop.h < 0.16 && crop.y + crop.h > 0.43), JSON.stringify(similarity));
     assert.ok(similarity.some((crop) => crop.y > 0.75 && crop.y < 0.85));
     assert.equal(similarity.some((crop) => crop.y < 0.6 && crop.h > 0.25), false, JSON.stringify(similarity));
     const gimel = found['882bc55c 16ג'];
-    assert.ok(gimel && gimel.some((crop) => crop.y < 0.12 && crop.y + crop.h > 0.28 && crop.masks > 0), JSON.stringify(gimel));
+    assert.ok(gimel && gimel.some((crop) => crop.y < 0.2 && crop.y + crop.h > 0.26), JSON.stringify(gimel));
     assert.ok(gimel.some((crop) => crop.y > 0.4 && crop.y < 0.45));
     const dalet = found['b7a76fde 19ד'];
-    assert.ok(dalet && dalet.some((crop) => crop.y < 0.08 && crop.y + crop.h > 0.27 && crop.masks >= 1), JSON.stringify(dalet));
+    assert.ok(dalet && dalet.some((crop) => crop.y < 0.08 && crop.y + crop.h > 0.27), JSON.stringify(dalet));
     const daletSheet = scan.b7a76fde760d4c2e9252a933ed40a6c5;
     let daletBox: { h: number; w: number; slot?: { lineBottom: number } } | null = null;
     (daletSheet.answers || []).forEach((sheetPage) => {
@@ -2215,7 +2456,7 @@ sys.stdout.write(json.dumps(out))
     assert.ok(daletSlice && daletSlice.box.x >= 24 / (answerPages[0] ? answerPages[0].width : 595) - 0.002, JSON.stringify(daletSlice));
     assert.ok(daletSlice && daletSlice.box.x < 0.12 && daletSlice.box.x + daletSlice.box.w > 0.7, JSON.stringify(daletSlice));
     const areas = found['9c95b48e 9ד'];
-    assert.ok(areas && areas.some((crop) => crop.y < 0.2 && crop.y + crop.h > 0.205 && crop.masks > 0), JSON.stringify(areas));
+    assert.ok(areas && areas.some((crop) => crop.y < 0.2 && crop.y + crop.h > 0.205), JSON.stringify(areas));
     assert.ok(areas.some((crop) => crop.y > 0.3 && crop.y < 0.33));
     const expressions = found['adef6cf4 16ב'];
     assert.ok(expressions && expressions.every((crop) => crop.y + crop.h < 0.42), JSON.stringify(expressions));
