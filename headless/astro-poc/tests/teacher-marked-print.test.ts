@@ -1226,11 +1226,8 @@ describe('teacher catalog picker', () => {
         { id: '4א', part: 'א', page: 2, stem: { y: 0.3316, h: 0.4727, page: 2 }, row: { y: 0.8043, h: 0.12, page: 2 }, labelLine: { y: 0.8043, page: 2 } },
       ],
     });
-    const foreign = similarity.find((entry) => entry.box.y < 0.5);
-    assert.ok(foreign && foreign.box.h < 0.16 && foreign.box.y < 0.36 && foreign.box.y + foreign.box.h > 0.44, JSON.stringify(similarity));
-    assert.equal(foreign.box.segment, 'figure');
-    assert.equal((foreign.box.masks || []).length, 0);
-    assert.ok((foreign.box.x || 0) + (foreign.box.w || 1) < 0.55, JSON.stringify(foreign.box));
+    assert.equal(similarity.some((entry) => entry.box.y < 0.7), false, 'question 3 figure stays out ' + JSON.stringify(similarity));
+    assert.ok(similarity.some((entry) => entry.box.segment === 'figure' && entry.box.y > 0.75), JSON.stringify(similarity));
     assert.ok(!covers(similarity, 0.55, true), 'similarity drops question 3 text');
     assert.ok(covers(similarity, 0.86, true), 'similarity keeps question 4');
 
@@ -1350,9 +1347,10 @@ describe('teacher catalog picker', () => {
       if (y < box.y || y > box.y + box.h) return false;
       return (box.masks || []).some((mask) => y >= box.y + mask.y * box.h - 0.004 && y <= box.y + (mask.y + mask.h) * box.h + 0.004 && x >= mask.x - 0.02 && x <= mask.x + mask.w + 0.02);
     });
-    assert.ok(gluedHit(0.056), 'stem glued to the first letter ' + JSON.stringify(glued));
+    assert.equal(gluedHit(0.056), false, 'the first part is not reprinted ' + JSON.stringify(glued));
     assert.equal(gluedCovered(0.7, 0.056), false, 'stem words stay visible');
     assert.equal(gluedHit(0.105), false, 'the part between the stem and the pick stays out');
+    assert.ok(gluedHit(0.15), 'the picked part stays');
     const raised = api.layoutQuestionCrops({
       page: 8,
       earlierEnd: 0,
@@ -1672,6 +1670,44 @@ for path in sorted(sheets.glob('*.json')):
             # A full-width grey or black band is a section title, not part of the drawing.
             drawn = row_hit.copy()
             drawn[dilated] = False
+            # A writing line is short dashes. A graph axis is one long stroke.
+            band = dark[:, int(w * 0.40):int(w * 0.90)]
+            frac = band.mean(axis=1) if band.size else None
+            rule = np.zeros(h, dtype=bool)
+            if frac is not None:
+                dash_like = np.zeros(h, dtype=bool)
+                x0d, x1d = int(w * 0.40), int(w * 0.90)
+                candidates = np.flatnonzero((frac >= 0.45) & (frac <= 0.78))
+                for yy in candidates:
+                    row = dark[yy, x0d:x1d]
+                    longest = run = gaps = 0
+                    prev = False
+                    for value in row:
+                        if value:
+                            run += 1
+                            if run > longest:
+                                longest = run
+                            prev = True
+                        elif prev:
+                            gaps += 1
+                            run = 0
+                            prev = False
+                        else:
+                            run = 0
+                    if longest < w * 0.02 and gaps >= 20:
+                        dash_like[yy] = True
+                for yy in np.flatnonzero(dash_like):
+                    up = bool(dash_like[yy - 1]) if yy else False
+                    down = bool(dash_like[yy + 1]) if yy + 1 < h else False
+                    if up and down:
+                        continue
+                    above = yy - (2 if up else 1)
+                    below = yy + (2 if down else 1)
+                    if above >= 0 and dash_like[above]:
+                        continue
+                    if below < h and dash_like[below]:
+                        continue
+                    rule[yy] = True
             ys = np.flatnonzero(drawn)
             if ys.size:
                 splits = np.flatnonzero(np.diff(ys) > gap_lim)
@@ -1689,7 +1725,12 @@ for path in sorted(sheets.glob('*.json')):
                     gap_px = max(4, int(round(w * 0.016)))
                     limit = min(w - 2, int(w * 0.45))
                     link = 3
-                    seed = dark[low:high + 1, x1] & ~dilated[low:high + 1]
+                    while x1 > xs[0]:
+                        col = dark[low:high + 1, x1] & ~dilated[low:high + 1] & ~rule[low:high + 1]
+                        if col.any():
+                            break
+                        x1 -= 1
+                    seed = dark[low:high + 1, x1] & ~dilated[low:high + 1] & ~rule[low:high + 1]
                     miss = 0
                     for x in range(x1 + 1, limit + 1):
                         if not seed.any():
@@ -1697,7 +1738,7 @@ for path in sorted(sheets.glob('*.json')):
                         near = seed.copy()
                         near[link:] |= seed[:-link]
                         near[:-link] |= seed[link:]
-                        col = dark[low:high + 1, x] & ~dilated[low:high + 1]
+                        col = dark[low:high + 1, x] & ~dilated[low:high + 1] & ~rule[low:high + 1]
                         hit = col & near
                         if hit.any():
                             seed = hit
@@ -1837,13 +1878,18 @@ sys.stdout.write(json.dumps(out))
       '882bc55c1c8748e1bf7f416c6d2cbd19': ['16ג'],
       b7a76fde760d4c2e9252a933ed40a6c5: ['19ד'],
       '9c95b48e57124721b4c2b56d79cf72ba': ['9ד'],
+      '050b9cc226cd4326931adfb3c0775a05': ['1א'],
+      '871fe90d52a04673a7d30fc039e4bf2e': ['8ד'],
+      f4e2bea04e5a4e7382733a7be67c5e46: ['3ב'],
+      '4bd841f8e6594fc9bd30ac2ab3e138e2': ['11ב'],
+      fe59996ff67f4f56970e4dad5d87d4bc: ['20ד'],
       adef6cf437894f559832c4b28583a695: ['16ב'],
       '129976246ab548809e8decb9905dfd1a': ['15ב'],
       '5acb785125b341b4864f326b110e5c14': ['14ב'],
     };
     const styles = { paren: 0, dot: 0, bare: 0, star: 0 };
     const seenStyle = new Set<string>();
-    const watched: { id: string; crops: { y: number; h: number; masks: number }[] }[] = [];
+    const watched: { id: string; crops: { x: number; y: number; w: number; h: number; segment: string; masks: number }[] }[] = [];
     let parts = 0;
     let rebuilt = 0;
     let answers = 0;
@@ -1988,7 +2034,13 @@ sys.stdout.write(json.dumps(out))
         const watch = focusIds[sheet.pdfId] && focusIds[sheet.pdfId].indexOf(question.id) >= 0;
         const siblings = byQ.get(question.q) || [question];
         const tagged = siblings.some((item) => item.figure);
-        const slices = shortSlices([question]).filter((slice) => slice.kind === 'stem' || slice.kind === 'row');
+        const slices = shortSlices([question]).filter((slice) => {
+          if (slice.kind !== 'stem' && slice.kind !== 'row') return false;
+          const box = slice.box;
+          // The printer drops the running בס״ד row. It is not a piece of the question.
+          if (box && box.y < 0.05 && box.y + box.h < 0.075) return false;
+          return true;
+        });
         const groups = [];
         slices.forEach((slice) => {
           const last = groups[groups.length - 1];
@@ -2069,6 +2121,8 @@ sys.stdout.write(json.dumps(out))
             if (!nextMark || mark.y < nextMark.y) nextMark = mark;
           });
           const questionBot = nextMark ? nextMark.y - 0.004 : (nextStart > spanTop + 0.02 && nextStart < 0.98 ? nextStart - 0.008 : null);
+          const header = sheet.headerCrop;
+          const headerBottom = header && Number(header.page) === Number(page) ? (header.y || 0) + (header.h || 0) : 0;
           const relevant = figures.filter((figure) => {
             if (cropApi.figureIsSentence(figure, rows)) return false;
             const center = (figure.y0 + figure.y1) / 2;
@@ -2079,9 +2133,10 @@ sys.stdout.write(json.dumps(out))
             return swallowed && group.slices.some((slice) => slice.box.y < center && center < slice.box.y + slice.box.h);
           }).map((figure) => {
             const above = questionMark && figure.y1 < questionMark.y - 0.01;
-            const y1 = questionBot != null ? Math.min(figure.y1, questionBot) : figure.y1;
-            const clipY = !above && questionMark ? Math.max(figure.y0, questionMark.y - 0.002) : figure.y0;
-            const tail = !above && questionMark && figure.y0 < questionMark.y - 0.02 && (y1 - clipY) < (figure.y1 - figure.y0) * 0.45;
+            const beside = questionBot != null && figure.y0 < questionBot - 0.01 && figure.y1 > questionBot + 0.006;
+            const y1 = questionBot != null && !beside && !above ? Math.min(figure.y1, questionBot) : figure.y1;
+            const clipY = !above && !beside && questionMark ? Math.max(figure.y0, questionMark.y - 0.002) : figure.y0;
+            const tail = !above && !beside && questionMark && figure.y0 < questionMark.y - 0.02 && (y1 - clipY) < (figure.y1 - figure.y0) * 0.45;
             return tail ? null : { ...figure, y0: figure.y0, y1 };
           }).filter((figure) => figure && figure.y1 - figure.y0 >= 0.02);
           const own = relevant.filter((figure) => (figure.y0 + figure.y1) / 2 >= earlierEnd - 0.008);
@@ -2117,6 +2172,7 @@ sys.stdout.write(json.dumps(out))
             questionTop: questionMark ? questionMark.y - 0.006 : null,
             questionBot,
             earlierEnd,
+            headerBottom,
           });
           if (!boxes.length) group.slices.forEach((slice) => crops.push(polishSlice(slice)));
           else boxes.forEach((entry) => crops.push(polishSlice(entry)));
@@ -2146,6 +2202,7 @@ sys.stdout.write(json.dumps(out))
               questionTop: questionMark ? questionMark.y - 0.006 : null,
               questionBot,
               earlierEnd,
+              headerBottom,
             });
             const multiCrops = (multiBoxes.length ? multiBoxes : group.slices).map((entry) => polishSlice(entry));
             guardFigures(multiCrops, question.id + '+');
@@ -2190,8 +2247,20 @@ sys.stdout.write(json.dumps(out))
           }
         });
         const ownTop = Math.max(spanTop, earlierEnd > spanTop ? earlierEnd : spanTop);
+        const header = sheet.headerCrop;
+        const headerBottom = header && Number(header.page) === Number(page) ? (header.y || 0) + (header.h || 0) : 0;
+        const numberMarks = cropApi.questionMarks(figureItems);
+        let questionNumber = null;
+        numberMarks.forEach((mark) => {
+          if (mark.n !== question.q) return;
+          if (mark.y < spanTop - 0.3 || mark.y > spanBot + 0.05) return;
+          if (!questionNumber || mark.y < questionNumber.y) questionNumber = mark;
+        });
         figures.forEach((figure) => {
           if (cropApi.figureIsSentence(figure, figureRows)) return;
+          // A logo inside the title block, or a drawing that ends before this question's number, is not this question's figure.
+          if (headerBottom && figure.y1 < headerBottom + 0.008) return;
+          if (questionNumber && figure.y1 < questionNumber.y - 0.012) return;
           const center = (figure.y0 + figure.y1) / 2;
           if (center < ownTop - 0.008 || center > spanBot + 0.008) return;
           if (center > nextStart - 0.008) return;
@@ -2249,9 +2318,11 @@ sys.stdout.write(json.dumps(out))
             .filter((row) => cropApi.rowPart(row.text) && row.x + row.w > 0.8 && mine && row.y > mine.y + 0.012)
             .sort((a, b) => a.y - b.y)[0];
           const stemBot = partLine ? partLine.y : (partYs.length ? partYs[0] : (firstPart.labelLine ? firstPart.labelLine.y : firstPart.row.y));
+          // "3. א. …" is the first part, not a stem the later parts must reprint.
+          const firstOnNumber = mine && (textPage.labels || []).some((mark) => mark[0] === firstPart.part && Math.abs(mark[1] - mine.y) <= 0.012);
           const stemItems = pageItems.filter((item) => {
             const text = String(item.str || '').trim();
-            if (text.length < 3) return false;
+            if (text.length < 3 || firstOnNumber) return false;
             if (mine && Math.abs(item.y - mine.y) <= 0.012 && item.x < mine.x - 0.02) return true;
             if (mine && item.y > mine.y + 0.004 && item.y < stemBot - 0.004 && item.x > 0.35) return true;
             return false;
@@ -2314,6 +2385,9 @@ sys.stdout.write(json.dumps(out))
             if (Math.abs(item.y - realLabel) > 0.01) return;
             const text = String(item.str || '').trim();
             if (!text || (item.x || 0) < 0.32) return;
+            if (headerBottom && item.y < headerBottom - 0.004) return;
+            if (questionNumber && item.y < questionNumber.y - 0.008) return;
+            if (/נועם|מתמטיקה|רמת מצוינות|רמה\s*[אב]/.test(text)) return;
             // A one-letter axis mark in the drawing column is a figure label, not the part sentence.
             if (text.length <= 2 && (item.x || 0) + (item.w || 0) < 0.42 && !cropApi.rowPart(text)) return;
             if (!crops.some((crop) => (!crop.page || crop.page === page) && spanInside(crop.box, item))) {
@@ -2340,8 +2414,11 @@ sys.stdout.write(json.dumps(out))
           watched.push({
             id: sheet.pdfId.slice(0, 8) + ' ' + question.id,
             crops: crops.map((entry) => ({
+              x: Math.round((entry.box.x || 0) * 1000) / 1000,
               y: Math.round(entry.box.y * 1000) / 1000,
+              w: Math.round((entry.box.w == null ? 1 : entry.box.w) * 1000) / 1000,
               h: Math.round(entry.box.h * 1000) / 1000,
+              segment: entry.box.segment || '',
               masks: (entry.box.masks || []).length,
             })),
           });
@@ -2409,8 +2486,8 @@ sys.stdout.write(json.dumps(out))
     assert.equal(counts.answer || 0, 0, ofKind('answer'));
     assert.equal(counts.gap || 0, 0, ofKind('gap'));
     assert.equal(counts.foreign || 0, 0, ofKind('foreign'));
-    assert.equal(counts.leak || 0, 0, JSON.stringify(counts) + '\n' + ofKind('leak'));
-    assert.equal(counts['stem-text'] || 0, 0, ofKind('stem-text'));
+    assert.equal(counts.leak || 0, 0, JSON.stringify(counts) + '\n' + ofKind('leak') + '\n' + ofKind('stem-text') + '\n' + ofKind('part-line'));
+    assert.equal(counts['stem-text'] || 0, 0, ofKind('stem-text') + '\n' + ofKind('part-line'));
     assert.equal(counts['fig-text'] || 0, 0, ofKind('fig-text'));
     assert.equal(counts['fig-ink'] || 0, 0, ofKind('fig-ink'));
     assert.equal(counts['fig-span'] || 0, 0, ofKind('fig-span'));
@@ -2428,14 +2505,16 @@ sys.stdout.write(json.dumps(out))
     assert.ok(rhombus && rhombus.some((crop) => crop.y < 0.15 && crop.y + crop.h > 0.2 && crop.h < 0.2), JSON.stringify(rhombus));
     assert.ok(rhombus.some((crop) => crop.y > 0.26 && crop.y < 0.32 && crop.h > 0.04));
     const similarity = found['831390f8 4א'];
-    assert.ok(similarity && similarity.some((crop) => crop.y < 0.4 && crop.h < 0.16 && crop.y + crop.h > 0.43), JSON.stringify(similarity));
-    assert.ok(similarity.some((crop) => crop.y > 0.75 && crop.y < 0.85));
+    assert.ok(similarity && similarity.every((crop) => crop.y > 0.7), JSON.stringify(similarity));
+    assert.ok(similarity.some((crop) => crop.y < 0.86 && crop.y + crop.h > 0.88), JSON.stringify(similarity));
+    assert.ok(similarity.some((crop) => crop.y > 0.75 && crop.y < 0.86));
     assert.equal(similarity.some((crop) => crop.y < 0.6 && crop.h > 0.25), false, JSON.stringify(similarity));
     const gimel = found['882bc55c 16ג'];
     assert.ok(gimel && gimel.some((crop) => crop.y < 0.2 && crop.y + crop.h > 0.26), JSON.stringify(gimel));
     assert.ok(gimel.some((crop) => crop.y > 0.4 && crop.y < 0.45));
     const dalet = found['b7a76fde 19ד'];
     assert.ok(dalet && dalet.some((crop) => crop.y < 0.08 && crop.y + crop.h > 0.27), JSON.stringify(dalet));
+    assert.ok(dalet.every((crop) => crop.segment !== 'figure' || crop.x + crop.w < 0.36), JSON.stringify(dalet));
     const daletSheet = scan.b7a76fde760d4c2e9252a933ed40a6c5;
     let daletBox: { h: number; w: number; slot?: { lineBottom: number } } | null = null;
     (daletSheet.answers || []).forEach((sheetPage) => {
@@ -2456,8 +2535,22 @@ sys.stdout.write(json.dumps(out))
     assert.ok(daletSlice && daletSlice.box.x >= 24 / (answerPages[0] ? answerPages[0].width : 595) - 0.002, JSON.stringify(daletSlice));
     assert.ok(daletSlice && daletSlice.box.x < 0.12 && daletSlice.box.x + daletSlice.box.w > 0.7, JSON.stringify(daletSlice));
     const areas = found['9c95b48e 9ד'];
-    assert.ok(areas && areas.some((crop) => crop.y < 0.2 && crop.y + crop.h > 0.205), JSON.stringify(areas));
+    assert.ok(areas && areas.some((crop) => crop.y < 0.21 && crop.y + crop.h > 0.205), JSON.stringify(areas));
     assert.ok(areas.some((crop) => crop.y > 0.3 && crop.y < 0.33));
+    assert.equal(areas.some((crop) => crop.x < 0.28 && crop.y < 0.22 && crop.y + crop.h > 0.19), false, JSON.stringify(areas));
+    const pythagorasHeader = found['050b9cc2 1א'];
+    assert.ok(pythagorasHeader && pythagorasHeader.length && pythagorasHeader.every((crop) => crop.y >= 0.27), JSON.stringify(pythagorasHeader));
+    const house = found['871fe90d 8ד'];
+    assert.ok(house && house.some((crop) => crop.segment === 'figure' && crop.y + crop.h > 0.26), JSON.stringify(house));
+    const onlyBet = found['f4e2bea0 3ב'];
+    assert.ok(onlyBet && onlyBet.every((crop) => crop.y > 0.07 || crop.w < 0.12), JSON.stringify(onlyBet));
+    const prism = found['4bd841f8 11ב'];
+    assert.ok(prism && prism.some((crop) => crop.segment === 'stem' && crop.x < 0.12 && crop.x + crop.w > 0.5), JSON.stringify(prism));
+    const closing = found['fe59996f 20ד'];
+    // The stem sits mid-page on the previous page. The part is one line, and בהצלחה stays out.
+    assert.ok(closing && closing.every((crop) => crop.h < 0.2), JSON.stringify(closing));
+    assert.ok(closing.some((crop) => crop.segment === 'part' && crop.h < 0.08 && crop.y + crop.h < 0.14), JSON.stringify(closing));
+    assert.equal(closing.some((crop) => crop.y < 0.2 && crop.y + crop.h > 0.14), false, JSON.stringify(closing));
     const expressions = found['adef6cf4 16ב'];
     assert.ok(expressions && expressions.every((crop) => crop.y + crop.h < 0.42), JSON.stringify(expressions));
     const data = found['12997624 15ב'];
