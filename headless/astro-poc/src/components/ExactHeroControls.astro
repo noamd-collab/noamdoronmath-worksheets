@@ -85,6 +85,7 @@ const topics = {
 <script>
   import { bootAngleSumFilm, parkAngleSumFilm, resumeAngleSumFilm } from '../lib/angleSumFilm';
   import { initConceptLoops } from '../lib/conceptLoops';
+  import { HERO_PLAY_S, createHeroRotation, heroDwellMs } from '../lib/heroRotation';
 
   type LoopState = { playing: boolean; done: boolean; static: boolean };
   type Loop = HTMLElement & {
@@ -153,6 +154,7 @@ const topics = {
       const response = await fetch('/hero-loops/' + encodeURIComponent(variant), {
         credentials: 'same-origin',
         headers: { Accept: 'text/html' },
+        signal: AbortSignal.timeout(8_000),
       });
       if (!response.ok) throw new Error('hero loop');
       const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
@@ -241,13 +243,30 @@ const topics = {
     });
 
     let busy = false;
-    async function showVariant(variant: string, prior: Loop | null) {
+    // A stored k3-pause must not freeze the showcase. This is set only when
+    // the visitor pauses the card that is on screen right now.
+    let userHeldPause = false;
+    // Until an observer says otherwise, the hero is on screen. A silent
+    // IntersectionObserver must not stop the rotation.
+    let inView = true;
+
+    function startFilm(loop: Loop | null) {
+      if (!loop?.__loop || userHeldPause) return;
+      const state = loop.__loop.state();
+      if (!state || state.static || state.playing) return;
+      if (manuallyPaused(loop)) rememberPause(loop, false);
+      const toggle = loop.querySelector<HTMLButtonElement>('[data-el="toggle"]');
+      if (toggle) toggle.click();
+      else loop.__loop.play();
+    }
+
+    async function showVariant(variant: string, prior: Loop | null): Promise<boolean> {
       let next = mounted.get(variant);
       if (!next) {
         try {
           if (!originals.has(variant)) originals.set(variant, await fetchLoop(variant));
         } catch {
-          return;
+          return false;
         }
         next = originals.get(variant)!.cloneNode(true) as Loop;
         mounted.set(variant, next);
@@ -256,6 +275,7 @@ const topics = {
       // The engine has no destroy API. Reuse each initialized node at most
       // once per variant and keep inactive nodes connected, hidden and paused.
       // No fresh observer/RAF graph is abandoned on repeated shuffle clicks.
+      if (prior) rememberPause(prior, false);
       prior?.__loop?.pause();
       if (prior) {
         parkAngleSumFilm(prior);
@@ -265,12 +285,56 @@ const topics = {
       resumeAngleSumFilm(next);
       initConceptLoops();
       bootAngleSumFilm(next);
-      if (manuallyPaused(next) && next.__loop && !next.__loop.state().static) next.__loop.pause();
-      restoreManualPause(next);
+      // A pause key left from another page would show a frozen frame and,
+      // if the clock waited for the film to end, would never advance.
+      userHeldPause = false;
+      rememberPause(next, false);
+      startFilm(next);
       wasStatic.set(next, next.__loop?.state().static || false);
       try { sessionStorage.setItem('nd_hero_loop_last', variant); } catch { /* Optional. */ }
       describe();
       syncActiveCard();
+      return true;
+    }
+
+    const TICK_MS = 500;
+    const cycle = createHeroRotation(
+      {
+        inView: () => inView,
+        pageHidden: () => document.hidden,
+        busy: () => busy,
+        mount(variant, fail) {
+          if (busy) {
+            fail();
+            return;
+          }
+          const prior = activeLoop();
+          busy = true;
+          button.setAttribute('aria-busy', 'true');
+          void showVariant(variant, prior).then((ok) => {
+            if (!ok) fail();
+          }).finally(() => {
+            busy = false;
+            button.removeAttribute('aria-busy');
+          });
+        },
+      },
+      rotation.map((entry) => entry.variant),
+      activeLoop()?.dataset.loop || rotation[0]?.variant || 'triangle',
+      (variant) => heroDwellMs(HERO_PLAY_S[variant]),
+    );
+
+    function swapTo(variant: string) {
+      if (busy) return;
+      const prior = activeLoop();
+      busy = true;
+      button.setAttribute('aria-busy', 'true');
+      void showVariant(variant, prior).then((ok) => {
+        if (ok) cycle.jump(variant);
+      }).finally(() => {
+        busy = false;
+        button.removeAttribute('aria-busy');
+      });
     }
 
     button.addEventListener('click', () => {
@@ -281,11 +345,24 @@ const topics = {
         .filter((variant) => variant !== prior?.dataset.loop);
       const variant = candidates[Math.floor(Math.random() * candidates.length)];
       if (!variant) return;
-      busy = true;
-      button.setAttribute('aria-busy', 'true');
-      void showVariant(variant, prior).finally(() => {
-        busy = false;
-        button.removeAttribute('aria-busy');
+      swapTo(variant);
+    });
+
+    // The initial card's own adapter records the pause. This only remembers
+    // that the visitor paused the film now showing, so the clock can still move.
+    hero.addEventListener('click', (event) => {
+      // The pause-card restore and startFilm() click the toggle themselves.
+      // Only a real visitor click should hold this film until the next swap.
+      if (!event.isTrusted) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target?.closest('[data-pause-card], [data-el="toggle"]')) return;
+      queueMicrotask(() => {
+        const loop = activeLoop();
+        if (!loop?.__loop) return;
+        const state = loop.__loop.state();
+        if (!state || state.static) return;
+        userHeldPause = !state.playing;
+        rememberPause(loop, userHeldPause);
       });
     });
 
@@ -295,9 +372,27 @@ const topics = {
     preferenceObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', queueSync);
     window.addEventListener('nd:motion-off', queueSync);
-    // Match the original card's ARIA synchronization, with one active-card
-    // timer rather than adding a timer or observer for every shuffle.
-    window.setInterval(syncActiveCard, 500);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((records) => {
+        const last = records[records.length - 1];
+        if (last) inView = last.isIntersecting;
+      }, { threshold: 0 }).observe(hero);
+    }
+    // Hidden time does not count. When the tab is visible again the same
+    // interval keeps going; this kick covers a timer the browser suspended.
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) cycle.tick(TICK_MS);
+    });
+    // The pause-card script restores k3-pause on the next frame. Clear that
+    // stored pause afterwards so the first film actually plays.
+    requestAnimationFrame(() => requestAnimationFrame(() => startFilm(activeLoop())));
+    // One timer: card ARIA, a film that was paused by storage or by its own
+    // observer, and the rotation clock. The clock does not wait for the film to end.
+    window.setInterval(() => {
+      syncActiveCard();
+      if (!userHeldPause && inView && !document.hidden) startFilm(activeLoop());
+      cycle.tick(TICK_MS);
+    }, TICK_MS);
   }
 
   if (document.readyState === 'loading') {
