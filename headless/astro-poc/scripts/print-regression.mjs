@@ -9,9 +9,10 @@
  * The full print set waits until this regression is reported passed.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { crc32 } from 'node:zlib';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fixturePath = join(root, 'tests/fixtures/print-regression-set.json');
@@ -73,7 +74,12 @@ try {
       }
       const name = `${item.id}-page-${pageNo}.png`;
       const path = join(outDir, name);
-      writeFileSync(path, info.bytes);
+      // A comment keeps two cases that share a sheet from being dropped as one file.
+      writeFileSync(path, pngComment(info.bytes, item.id));
+      const written = statSync(path);
+      if (!written.isFile() || !(written.size > 0)) {
+        throw new Error(`${name} was not produced`);
+      }
       const entry = {
         file: name,
         path,
@@ -106,6 +112,20 @@ const manifest = {
 writeFileSync(join(outDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
 console.log('REGRESSION', outDir);
 console.log('DONE', pages.length);
+
+function pngComment(png, comment) {
+  const type = Buffer.from('tEXt');
+  const data = Buffer.concat([Buffer.from('Comment\0', 'latin1'), Buffer.from(String(comment), 'latin1')]);
+  const len = Buffer.alloc(4);
+  len.writeUInt32BE(data.length, 0);
+  const crc = Buffer.alloc(4);
+  crc.writeUInt32BE(crc32(Buffer.concat([type, data])) >>> 0, 0);
+  const chunk = Buffer.concat([len, type, data, crc]);
+  const marker = Buffer.from('IEND');
+  const iend = png.lastIndexOf(marker);
+  if (iend < 4) return png;
+  return Buffer.concat([png.subarray(0, iend - 4), chunk, png.subarray(iend - 4)]);
+}
 
 async function renderCase(item) {
   const selected = item.selection.map((id) => `ex:${item.sheetId}:${id}`);

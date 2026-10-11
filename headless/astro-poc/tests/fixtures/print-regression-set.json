@@ -57,6 +57,16 @@
       "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "4ד", "5א", "5ב", "5ג", "5ד", "6א", "6ב", "6ג", "6ד", "7א", "7ב", "7ג", "7ד", "8ד"],
       "pages": [3],
       "failedBefore": "Answer key wrap on straddle page 3: a unit or word landed on the next label."
+    },
+    {
+      "id": "clipped-descenders",
+      "sheetId": "871fe90d52a04673a7d30fc039e4bf2e",
+      "grade": "9",
+      "topic": "29",
+      "level": "c",
+      "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "4ד", "5א", "5ב", "5ג", "5ד", "6א", "6ב", "6ג", "6ד", "7א", "7ב", "7ג", "7ד", "8ד"],
+      "pages": [1, 2],
+      "failedBefore": "Hebrew descenders were clipped on text lines, including final letters ן ץ ך ף ק (straddle page 2 question 6ד and 6א, page 1 question 2)."
     }
   ]
 }

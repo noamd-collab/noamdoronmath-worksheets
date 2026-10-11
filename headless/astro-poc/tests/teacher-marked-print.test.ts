@@ -858,6 +858,7 @@ describe('teacher catalog picker', () => {
     const tailPart = tail.find((entry) => entry.box.segment === 'part');
     const tailRight = (tailFigure.box.x || 0) + (tailFigure.box.w || 0);
     assert.ok(tailFigure && tailRight < 0.43 && tailRight > 0.30, '19ד figure stops at the sentence ' + JSON.stringify(tailFigure));
+    assert.ok(tailRight <= 0.414, '19ד figure does not keep the י. of המקורי ' + tailRight);
     assert.ok(tailPart && (tailPart.box.x || 0) <= 0.42 && (tailPart.box.x || 0) + (tailPart.box.w || 0) > 0.5, JSON.stringify(tailPart));
     const later = layout({
       page: 2,
@@ -998,6 +999,72 @@ describe('teacher catalog picker', () => {
     dashApi.eraseWritingDashes(dashes, dw, dh, foundRows, 0);
     assert.equal(dashes[(6 * dw + 33) * 4], 255, 'a writing dash across the figure is removed');
     assert.equal(dashes[(6 * dw + 10) * 4], 0, 'a tall label stroke on that row stays');
+    // A writing rule under a sentence has long letter runs, so the strict column test misses it.
+    const wide = 200;
+    const tall = 24;
+    const ruled = new Uint8ClampedArray(wide * tall * 4);
+    ruled.fill(255);
+    const dot = (x: number, y: number) => {
+      const i = (y * wide + x) * 4;
+      ruled[i] = ruled[i + 1] = ruled[i + 2] = 170;
+    };
+    for (let x = 16; x < 70; x += 4) dot(x, 12);
+    for (let x = 80; x < 140; x += 1) dot(x, 12);
+    for (let x = 150; x < 190; x += 4) dot(x, 12);
+    for (let y = 4; y < 20; y += 1) dot(40, y);
+    const ruledRows = dashApi.writingDashRows(ruled, wide, tall);
+    assert.ok(ruledRows.includes(12), 'a faint writing rule under text is still a dash row ' + String(ruledRows));
+    dashApi.eraseWritingDashes(ruled, wide, tall, ruledRows, 0);
+    assert.equal(ruled[(12 * wide + 20) * 4], 255, 'the faint dash in the figure is removed');
+    assert.equal(ruled[(12 * wide + 40) * 4], 170, 'a stroke that continues above the rule stays');
+  });
+
+  it('pads each text line to the descender instead of the tight ink', () => {
+    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
+    const layoutQuestionCrops = new Function(`${preview.slice(preview.indexOf('function leftFigureBoxes'), preview.indexOf('async function measureWorksheet'))} return layoutQuestionCrops;`)() as (model: object) => { box: { x?: number; y: number; w?: number; h: number; segment?: string } }[];
+    const lines = [
+      { str: '.א', x: 0.85, y: 0.3668, w: 0.02, h: 0.0138 },
+      { str: 'מצולע ששטחו 300 בין', x: 0.4, y: 0.3668, w: 0.4, h: 0.0138 },
+      { str: 'הבסיס השני?', x: 0.7, y: 0.3867, w: 0.15, h: 0.0138 },
+      { str: '.ד', x: 0.85, y: 0.4787, w: 0.02, h: 0.0138 },
+      { str: 'הוכיחו שהחלק החסר בין המלבן', x: 0.35, y: 0.4787, w: 0.48, h: 0.0138 },
+    ];
+    const boxes = layoutQuestionCrops({
+      page: 2,
+      parts: [
+        { id: '6א', part: 'א', page: 2, stem: { y: 0.34, h: 0.02, page: 2 }, row: { y: 0.3705, h: 0.05, page: 2 }, labelLine: { y: 0.3705, page: 2 } },
+        { id: '6ב', part: 'ב', page: 2, row: { y: 0.4213, h: 0.03, page: 2 }, labelLine: { y: 0.4213, page: 2 } },
+        { id: '6ד', part: 'ד', page: 2, row: { y: 0.4828, h: 0.06, page: 2 }, labelLine: { y: 0.4828, page: 2 } },
+      ],
+      picked: ['6א', '6ב', '6ד'],
+      labels: [{ part: 'א', y: 0.3705 }, { part: 'ב', y: 0.4213 }, { part: 'ד', y: 0.4828 }],
+      figures: [{ x0: 0.08, x1: 0.34, y0: 0.36, y1: 0.52 }],
+      rows: [],
+      items: lines,
+      questionTop: 0.33,
+      questionBot: 0.55,
+      earlierEnd: 0,
+      headerBottom: 0,
+      footerTop: 0.94,
+    });
+    const parts = boxes.filter((entry) => entry.box.segment === 'part');
+    const coversLine = (line: { y: number; h: number }) => parts.filter((entry) => {
+      const top = entry.box.y;
+      const bot = top + entry.box.h;
+      return line.y >= top - 0.002 && line.y + line.h <= bot + 0.002;
+    });
+    lines.forEach((line) => {
+      const hits = coversLine(line);
+      const baseline = line.y + line.h;
+      assert.ok(hits.length === 1, 'one clip owns the line ' + JSON.stringify(line) + ' ' + JSON.stringify(hits));
+      const bot = hits[0].box.y + hits[0].box.h;
+      assert.ok(bot >= baseline + 0.004, 'descender padding below the baseline ' + bot + ' vs ' + baseline);
+    });
+    const first = coversLine(lines[1])[0];
+    const nextInk = lines[2].y + lines[2].h * 0.18;
+    assert.ok(first.box.y + first.box.h < nextInk, 'the first line stops before the next row ink ' + (first.box.y + first.box.h));
+    const dalet = coversLine(lines[4])[0];
+    assert.ok(dalet.box.y + dalet.box.h >= 0.4955, '6ד keeps the final letters ' + (dalet.box.y + dalet.box.h));
   });
 
   it('keeps every picked part\'s ink and packs a lone answer', () => {

@@ -2032,6 +2032,9 @@ function answerBox(items, questionNumber, part) {
         const gw = glyph.w || 0;
         const overlap = Math.min(gx + gw, slotRight0) - Math.max(gx, slotLeft0);
         if (overlap < 4) return;
+        // A "·" between answers is the next item's separator, not this answer.
+        const token = String(glyph.str || '').trim();
+        if (/^[·•.]+$/.test(token) || /^[·•]\s*[אבגדהו]\.?\s*$/.test(token)) return;
         top = Math.max(top, gy + Math.max(glyph.h || 0, 12) + 2);
         // A digit the marker only grazes still belongs to this answer. The next part does not.
         if (gx >= slotLeft0 - 6) left = Math.min(left, gx - 1);
@@ -3965,11 +3968,47 @@ function layoutQuestionCrops(model) {
     const kind = segment === 'stem' ? 'stem' : 'row';
     segments.push({ kind, page, box, figures });
   };
+  // A table row ends before the question column. It belongs to the drawing.
+  // A sentence that keeps going (19ד "המקורי.") is cut later, not here.
+  const tableBands = [];
+  figures.forEach((figure) => {
+    let edge = 0;
+    const ys = [];
+    rows.forEach((row) => {
+      if ((row.w || 0) < 0.18) return;
+      const overlap = Math.min(row.y + (row.h || 0.014), figure.y1) - Math.max(row.y, figure.y0);
+      if (overlap < 0.006) return;
+      if ((row.x || 0) + (row.w || 0) < figure.x1 + 0.01) return;
+      const sentence = /[א-ת]{4,}/.test(String(row.text || '')) && (row.w || 0) >= 0.2;
+      if (!sentence || (row.x || 0) + (row.w || 0) >= 0.72) return;
+      if (!ys.some((y) => Math.abs(y - row.y) <= 0.01)) ys.push(row.y);
+      edge = Math.max(edge, (row.x || 0) + (row.w || 0));
+      items.forEach((item) => {
+        if (Math.abs((item.y || 0) - row.y) > 0.01) return;
+        const right = (item.x || 0) + (item.w || 0);
+        if ((item.x || 0) >= 0.78 || right > 0.80) return;
+        if (right > edge) edge = right;
+      });
+    });
+    // One short line beside a drawing is still the question. A stack of them is a table.
+    if (ys.length >= 3 && edge > figure.x1) {
+      items.forEach((item) => {
+        const iy = item.y || 0;
+        if (iy < figure.y0 - 0.008 || iy > figure.y1 + 0.008) return;
+        const right = (item.x || 0) + (item.w || 0);
+        // Part letters sit at the right margin. Column headers stop before them.
+        if ((item.x || 0) >= 0.83 || right > 0.845) return;
+        if (right > edge) edge = right;
+      });
+      tableBands.push({ y0: figure.y0, y1: figure.y1, x1: Math.min(0.84, edge) });
+    }
+  });
   const stemSpans = [];
   const takeStem = (item) => {
     const y = item.y || 0;
     const h = Math.max(item.h || 0.014, 0.01);
     if (furniture(item)) return;
+    if (tableBands.some((band) => y >= band.y0 - 0.004 && y < band.y1 - 0.004 && (item.x || 0) < band.x1 - 0.004)) return;
     if (headerBottom && y < headerBottom - 0.006) return;
     if (y >= footerTop - 0.002) return;
     if (y + h < stemTop - 0.006 || y >= ceiling) return;
@@ -4012,47 +4051,80 @@ function layoutQuestionCrops(model) {
     spans.forEach((span) => {
       const y = span.y || 0;
       let line = null;
+      let best = 0.011;
       lines.forEach((one) => {
-        if (Math.abs(one.y - y) <= 0.01) line = one;
+        const dist = Math.abs(one.y - y);
+        if (dist <= 0.01 && dist < best) {
+          line = one;
+          best = dist;
+        }
       });
       if (!line) {
-        line = { y, spans: [] };
+        line = { y, em: 0.012, spans: [] };
         lines.push(line);
       }
       line.y = Math.min(line.y, y);
+      line.em = Math.max(line.em, span.h || 0.012, 0.012);
       line.spans.push(span);
     });
     lines.sort((a, b) => a.y - b.y);
+    for (let i = 1; i < lines.length;) {
+      if (lines[i].y - lines[i - 1].y <= 0.01) {
+        const prev = lines[i - 1];
+        prev.spans = prev.spans.concat(lines[i].spans);
+        prev.em = Math.max(prev.em, lines[i].em);
+        prev.y = Math.min(prev.y, lines[i].y);
+        lines.splice(i, 1);
+      } else i += 1;
+    }
     const bands = [];
     lines.forEach((line) => {
       const last = bands[bands.length - 1];
       const gap = last ? line.y - (last.bot) : 1;
       const crossesFigure = last && figures.some((figure) => figure.y0 < line.y - 0.004 && figure.y1 > last.y + 0.01 && figure.x1 > 0.08);
-      if (!last || gap > 0.04 || crossesFigure) bands.push({ y: line.y, bot: line.y, spans: line.spans.slice() });
+      if (!last || gap > 0.04 || crossesFigure) bands.push({ y: line.y, bot: line.y, em: line.em, spans: line.spans.slice() });
       else {
         last.spans = last.spans.concat(line.spans);
         last.bot = line.y;
+        last.em = Math.max(last.em, line.em);
       }
     });
     bands.forEach((band, index) => {
       let x0 = 1;
       let y0 = 1;
       let x1 = 0;
-      let y1 = 0;
+      let baseline = 0;
+      let em = band.em || 0.012;
       band.spans.forEach((span) => {
+        const spanEm = Math.max(span.h || 0.014, 0.012);
         x0 = Math.min(x0, span.x || 0);
         y0 = Math.min(y0, span.y || 0);
         x1 = Math.max(x1, (span.x || 0) + (span.w || 0));
-        y1 = Math.max(y1, (span.y || 0) + Math.max(span.h || 0.014, 0.012));
+        baseline = Math.max(baseline, (span.y || 0) + spanEm);
+        if (spanEm > em) em = spanEm;
       });
-      const extra = index === bands.length - 1 ? (padBelow || 0) : 0.006;
-      const boxTop = y0 - 0.003;
-      let boxH = y1 - y0 + extra;
-      // Writing room stops at the next part, even when a label's box hangs over that line.
-      if (typeof maxBottom === 'number') {
-        const cap = maxBottom - 0.003 - boxTop;
-        if (cap < boxH) boxH = Math.max(0.012, cap);
+      // PDF.js ends the box on the baseline. Finals (ן ץ ך ף ק), nikud and geresh sit below it.
+      // Pad to that line box. Stop before the next row's ink, never on this line's tight ink.
+      const descent = Math.max(0.008, em * 0.55);
+      let limit = baseline + descent;
+      const nextBand = bands[index + 1];
+      // Stop before the next row's ink. A close row wins over the descender pad.
+      let nextInk = null;
+      if (nextBand) nextInk = nextBand.y + Math.max(nextBand.em || 0.012, 0.012) * 0.2;
+      else if (typeof maxBottom === 'number') nextInk = maxBottom;
+      // A label beside this line shares its height. It must not erase the line.
+      const beside = nextBand && nextBand.y <= baseline - 0.004;
+      if (!beside && nextInk != null && nextInk - 0.002 < limit) limit = nextInk - 0.002;
+      if (index === bands.length - 1 && (padBelow || 0) > 0) {
+        let room = baseline + padBelow;
+        if (typeof maxBottom === 'number') room = Math.min(room, maxBottom - 0.004);
+        if (nextInk != null) room = Math.min(room, nextInk - 0.002);
+        if (room > limit) limit = room;
       }
+      // Ending above the em top would leave a sliced stub of the next part's line.
+      if (limit < y0 + Math.min(em, 0.012) * 0.72) return;
+      const boxTop = y0 - 0.003;
+      const boxH = limit - boxTop;
       pushBox(segment, x0 - 0.008, boxTop, Math.max(0.04, x1 - x0 + 0.016), boxH);
     });
   };
@@ -4072,6 +4144,8 @@ function layoutQuestionCrops(model) {
   figures.forEach((figure) => {
     // A long line that starts inside a blob and keeps going is the question, not the drawing.
     let drawnRight = figure.x1;
+    let contentRight = figure.x1;
+    let cutBySentence = false;
     rows.forEach((row) => {
       if ((row.w || 0) < 0.18) return;
       const overlap = Math.min(row.y + (row.h || 0.014), figure.y1) - Math.max(row.y, figure.y0);
@@ -4080,10 +4154,22 @@ function layoutQuestionCrops(model) {
       // Only a line that begins in the text column can cut the drawing. A scale or axis reaches further left.
       // "המקורי." starts at 0.414, so a sentence may cut a little left of the 0.42 column.
       const sentence = /[א-ת]{4,}/.test(String(row.text || '')) && (row.w || 0) >= 0.2;
+      // A table cell stops mid-page. Keep its rules and words in the drawing.
+      if (sentence && row.x + row.w < 0.72) {
+        let held = false;
+        tableBands.forEach((band) => {
+          if (row.y < band.y0 - 0.01 || row.y > band.y1 + 0.01) return;
+          held = true;
+          if (band.x1 > contentRight) contentRight = band.x1;
+        });
+        if (held) return;
+      }
       if (row.x < (sentence ? 0.40 : 0.42) || row.x > figure.x1) return;
       drawnRight = Math.min(drawnRight, row.x - 0.006);
+      cutBySentence = true;
     });
-    const drawn = drawnRight > figure.x0 + 0.02 ? { ...figure, x1: drawnRight } : figure;
+    const xLimit = cutBySentence ? drawnRight : Math.max(drawnRight, contentRight);
+    const drawn = xLimit > figure.x0 + 0.02 ? { ...figure, x1: xLimit } : figure;
     drawnFigures.push(drawn);
     let x0 = drawn.x0;
     let y0 = drawn.y0;
@@ -4097,10 +4183,25 @@ function layoutQuestionCrops(model) {
       y1 = Math.max(y1, (item.y || 0) + Math.max(item.h || 0.01, 0.008));
     });
     const left = x0 < 0.04 ? 0.04 : x0 - 0.008;
+    // A sentence cut must stay cut. Padding back across it reprints "י." from "המקורי.".
+    // A short number sitting on that cut (the 4 in a table) is still part of the drawing.
+    if (cutBySentence) {
+      x1 = Math.min(x1, drawn.x1);
+      items.forEach((item) => {
+        const text = String(item.str || item.text || '').trim();
+        if (!text || text.length > 3 || (item.w || 0) > 0.03 || /[א-ת]/.test(text)) return;
+        const ix = item.x || 0;
+        const right = ix + (item.w || 0);
+        const iy = item.y || 0;
+        if (iy < drawn.y0 - 0.012 || iy > drawn.y1 + 0.004) return;
+        if (ix > drawn.x1 + 0.02 || right < drawn.x1 - 0.01) return;
+        if (right > x1) x1 = right;
+      });
+    }
     // Ink sits 0.01 outside the stroke box. Once a label has already stretched the box, a full pad would swallow the next line.
     const padTop = y0 < drawn.y0 - 0.004 ? 0.004 : 0.014;
     const padBot = y1 > drawn.y1 + 0.004 ? 0.004 : 0.012;
-    const padRight = x1 > drawn.x1 + 0.004 ? 0.006 : 0.016;
+    const padRight = cutBySentence ? 0.002 : (x1 > drawn.x1 + 0.004 ? 0.006 : 0.016);
     const top = y0 - padTop;
     pushBox('figure', left, top, x1 - left + padRight, y1 + padBot - top, drawn);
   });
@@ -4135,6 +4236,8 @@ function layoutQuestionCrops(model) {
       const above = y < y0 - 0.008;
       if (y + h < y0 - 0.004 || y < y0 - 0.024) return;
       if (above && ((item.w || 0) > 0.08 || String(text || '').trim().length > 4)) return;
+      // The em box starts above the next part's label. The baseline is that next line.
+      if (y + h > y1 + 0.002) return;
       if (y >= y1 - 0.002 || y >= ceiling) return;
       if (onFigure(item)) return;
       const letter = rowPart(String(text || ''));
@@ -4555,13 +4658,20 @@ async function measureWorksheet(slices) {
 function writingDashRows(data, width, height) {
   const rows = [];
   if (!data || !(width > 8) || !(height > 8)) return rows;
-  const dark = (x, y) => {
+  const lumAt = (x, y) => {
     const i = (y * width + x) * 4;
-    return data[i] < 210 || data[i + 1] < 210 || data[i + 2] < 210;
+    return (data[i] + data[i + 1] + data[i + 2]) / 3;
   };
+  const dark = (x, y) => lumAt(x, y) < 210;
   const xL = Math.floor(width * 0.38);
   const xR = Math.floor(width * 0.92);
   const span = Math.max(1, xR - xL);
+  const seen = new Set();
+  const keep = (y) => {
+    if (seen.has(y)) return;
+    seen.add(y);
+    rows.push(y);
+  };
   for (let y = 1; y < height - 1; y += 1) {
     let n = 0;
     let longest = 0;
@@ -4582,7 +4692,57 @@ function writingDashRows(data, width, height) {
     }
     const frac = n / span;
     if (frac < 0.45 || frac > 0.78 || longest >= width * 0.02 || gaps < 20) continue;
-    rows.push(y);
+    keep(y);
+  }
+  // A writing rule under a line of text has long letter runs, so the test above misses it.
+  // Count only the short dashes, and only when they show on both sides of the page.
+  // A diagram dash that stays inside the figure (the divider through "12") does not.
+  const x0 = Math.floor(width * 0.06);
+  const x1 = Math.floor(width * 0.94);
+  const mid = Math.floor(width * 0.5);
+  const shortMax = Math.max(4, Math.round(width * 0.016));
+  const wide = Math.max(1, x1 - x0);
+  for (let y = 2; y < height - 2; y += 1) {
+    if (seen.has(y)) continue;
+    let left = 0;
+    let right = 0;
+    let gaps = 0;
+    let run = 0;
+    let runStart = 0;
+    let prev = false;
+    const close = (x) => {
+      if (!prev) return;
+      if (run > 0 && run <= shortMax) {
+        const mark = (at) => {
+          if (at < mid) left += 1;
+          else right += 1;
+        };
+        for (let at = runStart; at < x; at += 1) mark(at);
+        gaps += 1;
+      }
+      run = 0;
+      prev = false;
+    };
+    for (let x = x0; x < x1; x += 1) {
+      if (lumAt(x, y) < 232) {
+        if (!prev) runStart = x;
+        run += 1;
+        prev = true;
+      } else close(x);
+    }
+    close(x1);
+    if (left < 4 || right < 4 || gaps < 12) continue;
+    const frac = (left + right) / wide;
+    if (frac < 0.06 || frac > 0.62) continue;
+    const quiet = (dy) => {
+      const yy = y + dy;
+      if (yy < 0 || yy >= height) return true;
+      let n = 0;
+      for (let x = x0; x < x1; x += 3) if (lumAt(x, yy) < 232) n += 1;
+      return n / Math.ceil(wide / 3) < frac * 0.55;
+    };
+    if (!quiet(-3) || !quiet(3)) continue;
+    keep(y);
   }
   return rows;
 }
@@ -4598,7 +4758,8 @@ function eraseWritingDashes(data, width, height, rows, srcY) {
     const y = absY - srcY;
     if (y < 0 || y >= height) return;
     for (let x = 0; x < width; x += 1) {
-      if (!darkAt(x, y)) continue;
+      const lum = (data[(y * width + x) * 4] + data[(y * width + x) * 4 + 1] + data[(y * width + x) * 4 + 2]) / 3;
+      if (lum >= 236) continue;
       let support = 0;
       for (let dy = 1; dy <= 6; dy += 1) {
         if (darkAt(x, y - dy)) support += 1;

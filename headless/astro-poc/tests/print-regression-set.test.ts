@@ -12,6 +12,7 @@ const REQUIRED = [
   '19d',
   'pythagoras-part2',
   'answer-key-wrap',
+  'clipped-descenders',
 ];
 
 function caseById(id: string) {
@@ -25,6 +26,7 @@ describe('print regression set', () => {
     assert.match(fixture.purpose, /full print set/i);
     assert.match(script, /print-regression-set\.json/);
     assert.match(script, /\/regression/);
+    assert.match(script, /statSync/);
     assert.equal(script.includes('house-8d-page'), false);
     assert.equal(script.includes('areas-b-9d'), false);
     for (const item of fixture.cases) {
@@ -73,5 +75,10 @@ describe('print regression set', () => {
     assert.deepEqual(wrap.pages, [3]);
     assert.match(wrap.failedBefore, /wrap/i);
     assert.equal(wrap.sheetId, straddle.sheetId);
+    const descenders = caseById('clipped-descenders');
+    assert.match(descenders.failedBefore, /descender/i);
+    assert.deepEqual(descenders.pages, [1, 2]);
+    assert.equal(descenders.sheetId, straddle.sheetId);
+    assert.deepEqual(descenders.selection, straddle.selection);
   });
 });
