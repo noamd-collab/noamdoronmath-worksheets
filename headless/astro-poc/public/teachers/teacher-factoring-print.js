@@ -1419,6 +1419,127 @@ function withSpan(box, y, end, masks) {
 }
 
 /**
+ * Question sentences sit to the right of a figure. A tagged figure's right
+ * edge is the boundary; otherwise the text column starts just past the drawing.
+ */
+function textColumnX(question, page) {
+  let edge = 0.36;
+  (SOURCE.questions || []).forEach((item) => {
+    const figure = item && item.figure;
+    if (!figure || item.q !== question.q || item.page !== page) return;
+    if (figure.x1 > 0.25 && figure.x1 < 0.72) edge = Math.max(edge, figure.x1 + 0.008);
+  });
+  return edge;
+}
+
+function addRightMask(question, box, y0, y1, role) {
+  const height = box.h;
+  if (!(height > 0)) return box;
+  const top = Math.max(y0, box.y);
+  const bot = Math.min(y1, box.y + height);
+  if (bot - top < 0.01) return box;
+  const x = textColumnX(question, box.page || question.page);
+  const mask = {
+    x,
+    w: Math.max(0.05, 1 - x),
+    y: (top - box.y) / height,
+    h: (bot - top) / height,
+    role,
+  };
+  return { ...box, masks: (box.masks || []).concat([mask]) };
+}
+
+/**
+ * Lines of an earlier question that fall inside this crop are covered.
+ * A shared drawing on the left stays. This question's own rows stay.
+ */
+function maskForeignBands(question, box) {
+  const page = box.page || question.page;
+  const top = box.y;
+  const bot = top + box.h;
+  const own = questionRows(question)
+    .filter((row) => row && (row.page || question.page) === page)
+    .map((row) => [row.y, row.y + row.h]);
+  const spans = [];
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || !(item.q < question.q)) return;
+    const bands = [];
+    if (item.stem && item.stem.h > 0.008 && (item.stem.page || item.page) === page) {
+      bands.push([item.stem.y, item.stem.y + item.stem.h]);
+    }
+    questionRows(item).forEach((row) => {
+      if (row && (row.page || item.page) === page) bands.push([row.y, row.y + row.h]);
+    });
+    bands.forEach(([y0, y1]) => {
+      let pieces = [[Math.max(top, y0), Math.min(bot, y1)]];
+      own.forEach(([start, finish]) => {
+        pieces = pieces.reduce((list, piece) => {
+          const [low, high] = piece;
+          if (high - low < 0.008 || high <= start || low >= finish) {
+            if (high - low >= 0.008) list.push(piece);
+            return list;
+          }
+          if (low < start - 0.004) list.push([low, start]);
+          if (high > finish + 0.004) list.push([finish, high]);
+          return list;
+        }, []);
+      });
+      pieces.forEach((piece) => spans.push(piece));
+    });
+  });
+  spans.sort((a, b) => a[0] - b[0]);
+  const merged = [];
+  spans.forEach(([low, high]) => {
+    if (high - low < 0.008) return;
+    const last = merged[merged.length - 1];
+    if (last && low <= last[1] + 0.008) last[1] = Math.max(last[1], high);
+    else merged.push([low, high]);
+  });
+  let next = box;
+  merged.forEach(([low, high]) => {
+    next = addRightMask(question, next, low, high, 'swallowed');
+  });
+  return next;
+}
+
+/**
+ * An expanded shared figure may contain the other parts' lines. Those lines
+ * stay out of the crop; the drawing on the left stays.
+ */
+function maskSiblingLines(question, box) {
+  const page = box.page || question.page;
+  const top = box.y;
+  const bot = top + box.h;
+  const own = questionRows(question)
+    .filter((row) => row && (row.page || question.page) === page)
+    .map((row) => [row.y, row.y + row.h]);
+  let next = box;
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || item.q !== question.q || item.id === question.id) return;
+    questionRows(item).forEach((row) => {
+      if (!row || (row.page || item.page) !== page) return;
+      let pieces = [[Math.max(top, row.y), Math.min(bot, row.y + row.h)]];
+      own.forEach(([start, finish]) => {
+        pieces = pieces.reduce((list, piece) => {
+          const [low, high] = piece;
+          if (high - low < 0.01 || high <= start || low >= finish) {
+            if (high - low >= 0.01) list.push(piece);
+            return list;
+          }
+          if (low < start - 0.004) list.push([low, start]);
+          if (high > finish + 0.004) list.push([finish, high]);
+          return list;
+        }, []);
+      });
+      pieces.forEach(([low, high]) => {
+        if (high - low >= 0.01) next = addRightMask(question, next, low, high, 'sibling');
+      });
+    });
+  });
+  return next;
+}
+
+/**
  * A right-column mask is stored on the figure's right edge, which is the
  * wall stroke itself. Move it just past that stroke so the line stays.
  */
@@ -1544,7 +1665,10 @@ function shortSlices(chosen) {
       const stem = question.stem;
       const line = question.line > 0 ? question.line : 0.026;
       // A stem shorter than half a line is the clipped top of the first label, not the question text.
-      if (stem && stem.h >= line * 0.5) slices.push({ page: stem.page || question.page, box: stem, gap: 10, block, kind: 'stem' });
+      if (stem && stem.h >= line * 0.5) {
+        const stemBox = maskForeignBands(question, { ...stem, page: stem.page || question.page });
+        slices.push({ page: stemBox.page, box: stemBox, gap: 10, block, kind: 'stem' });
+      }
       lastQuestion = question.q;
     }
     const rows = question.rows && question.rows.length ? question.rows : [question.row];
@@ -1558,6 +1682,7 @@ function shortSlices(chosen) {
       ));
       // The first selected part of this question can still own a shared drawing.
       if (!prev) next = coverSharedFigure(question, next, laterSelected);
+      next = maskSiblingLines(question, maskForeignBands(question, next));
       if (prev && next.y < boxEnd(prev.box) - 0.003) {
         const prevEnd = boxEnd(prev.box);
         // Fully covered by the previous part: printing it again repeats its text.
@@ -1681,11 +1806,7 @@ async function paintShort(root, slices) {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
       ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
-      const mask = item.slice.box.mask;
-      if (mask) {
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(mask.x * OUT_W, y + mask.y * item.dh, mask.w * OUT_W, mask.h * item.dh);
-      }
+      fillSliceMasks(ctx, item.slice.box, y, item.dh, OUT_W);
       y += item.dh;
     });
   });
@@ -2190,15 +2311,30 @@ function sliceInkRows(bitmap, box) {
   return { bands, y0, height, x0, minX, maxX, width, rh };
 }
 
-function placedBox(box, y, h) {
-  const next = { ...box, y, h };
-  if (!box.mask || !(box.h > 0)) return next;
-  const absTop = box.y + box.mask.y * box.h;
-  const absBot = absTop + box.mask.h * box.h;
+function remapOneMask(box, mask, y, h) {
+  if (!mask || !(box.h > 0)) return null;
+  const absTop = box.y + mask.y * box.h;
+  const absBot = absTop + mask.h * box.h;
   const maskTop = Math.max(absTop, y);
   const maskBot = Math.min(absBot, y + h);
-  if (maskBot - maskTop < 0.0015) delete next.mask;
-  else next.mask = { x: box.mask.x, w: box.mask.w, y: (maskTop - y) / h, h: (maskBot - maskTop) / h };
+  if (maskBot - maskTop < 0.0015) return null;
+  const next = { x: mask.x, w: mask.w, y: (maskTop - y) / h, h: (maskBot - maskTop) / h };
+  if (mask.role) next.role = mask.role;
+  return next;
+}
+
+function placedBox(box, y, h) {
+  const next = { ...box, y, h };
+  if (box.mask) {
+    const mask = remapOneMask(box, box.mask, y, h);
+    if (mask) next.mask = mask;
+    else delete next.mask;
+  }
+  if (box.masks && box.masks.length) {
+    const masks = box.masks.map((mask) => remapOneMask(box, mask, y, h)).filter(Boolean);
+    if (masks.length) next.masks = masks;
+    else delete next.masks;
+  }
   return next;
 }
 
@@ -2346,6 +2482,20 @@ function syncSliceMetrics(item) {
   item.dh = Math.max(1, Math.round(1000 * item.sh / Math.max(1, item.sw)));
 }
 
+function fillSliceMasks(ctx, box, top, dh, width) {
+  if (!box) return;
+  const list = [];
+  if (box.mask) list.push(box.mask);
+  (box.masks || []).forEach((mask) => {
+    if (mask) list.push(mask);
+  });
+  if (!list.length) return;
+  ctx.fillStyle = '#fff';
+  list.forEach((mask) => {
+    ctx.fillRect(mask.x * width, top + mask.y * dh, mask.w * width, mask.h * dh);
+  });
+}
+
 /**
  * A drawing that starts inside a part can continue past the dashed writing
  * line: the rectangle's bottom edge and its label. Follow that ink, including
@@ -2472,6 +2622,34 @@ function slicePdf(item) {
   return (item && item.slice && item.slice.source && item.slice.source.pdfId) || '';
 }
 
+/**
+ * The next part or question on the source sheet, picked or not.
+ * The label line is the stop. A pin can sit inside the drawing, so the pin is not the stop.
+ */
+function sourceStopY(slice) {
+  const questions = (slice.source && slice.source.questions) || [];
+  const box = slice.box;
+  const end = box.y + box.h;
+  const page = slice.page;
+  let limit = 0.945;
+  const take = (y, itemPage) => {
+    if (typeof y !== 'number' || itemPage !== page) return;
+    if (y < end - 0.002) return;
+    if (y < limit) limit = y;
+  };
+  questions.forEach((item) => {
+    if (!item) return;
+    const line = item.labelLine;
+    if (line && typeof line.y === 'number') take(line.y, line.page || item.page);
+    else if (item.row) take(item.row.y, item.row.page || item.page);
+    (item.rows || []).forEach((row) => {
+      if (row) take(row.y, row.page || item.page);
+    });
+    if (item.stem) take(item.stem.y, item.stem.page || item.page);
+  });
+  return limit;
+}
+
 function claimDrawingTails(measured) {
   measured.forEach((item) => {
     const slice = item && item.slice;
@@ -2488,7 +2666,7 @@ function claimDrawingTails(measured) {
     ));
     if (laterPart) return;
     const end = slice.box.y + slice.box.h;
-    let limit = 0.945;
+    let limit = sourceStopY(slice);
     measured.forEach((other) => {
       if (other === item || !other.slice || !other.slice.box) return;
       if (other.slice.page !== slice.page || slicePdf(other) !== slicePdf(item)) return;
@@ -2500,6 +2678,76 @@ function claimDrawingTails(measured) {
     const bottom = extendDrawingBox(item.bitmap, slice.box, limit);
     if (!(bottom > end + 0.004)) return;
     item.slice = { ...slice, box: placedBox(slice.box, slice.box.y, bottom - slice.box.y) };
+    syncSliceMetrics(item);
+  });
+}
+
+function leftDrawingRun(bitmap, y0, y1) {
+  if (!bitmap || typeof bitmap.getContext !== 'function') return 0;
+  const width = bitmap.width;
+  const height = bitmap.height;
+  if (!(width > 8) || !(height > 8)) return 0;
+  let data;
+  try {
+    data = bitmap.getContext('2d').getImageData(0, 0, width, height).data;
+  } catch (error) {
+    return 0;
+  }
+  const top = Math.max(0, Math.floor(y0 * height));
+  const bot = Math.min(height - 1, Math.ceil(y1 * height));
+  const x0 = Math.max(1, Math.floor(width * 0.06));
+  const x1 = Math.max(x0 + 2, Math.floor(width * 0.34));
+  const wide = Math.max(4, Math.round(width * 0.05));
+  let run = 0;
+  let best = 0;
+  const dark = (x, y) => {
+    const i = (y * width + x) * 4;
+    return data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242;
+  };
+  for (let y = top; y <= bot; y += 1) {
+    let n = 0;
+    let left = x1;
+    let right = x0;
+    for (let x = x0; x < x1; x += 1) {
+      if (!dark(x, y)) continue;
+      n += 1;
+      if (x < left) left = x;
+      if (x > right) right = x;
+    }
+    if (n >= 2 && right - left >= wide) {
+      run += 1;
+      if (run > best) best = run;
+    } else {
+      run = 0;
+    }
+  }
+  return best / height;
+}
+
+/**
+ * A stem that swallowed the previous question keeps that band only when a
+ * drawing occupies the left side. Otherwise the band is the previous question's
+ * text and drops off the crop.
+ */
+function dropBlankForeign(measured) {
+  measured.forEach((item) => {
+    const slice = item && item.slice;
+    const box = slice && slice.box;
+    const bitmap = item && item.bitmap;
+    if (!box || !bitmap || !box.masks) return;
+    const swallowed = box.masks.filter((mask) => mask && mask.role === 'swallowed').sort((a, b) => a.y - b.y);
+    const prefix = swallowed[0];
+    if (!prefix || prefix.y > 0.04) return;
+    let cover = prefix.y + prefix.h;
+    swallowed.slice(1).forEach((mask) => {
+      if (mask.y <= cover + 0.02) cover = Math.max(cover, mask.y + mask.h);
+    });
+    const absTop = box.y + prefix.y * box.h;
+    const absBot = box.y + cover * box.h;
+    if (leftDrawingRun(bitmap, absTop, absBot) >= 0.022) return;
+    const newH = box.y + box.h - absBot;
+    if (newH < 0.012) return;
+    item.slice = { ...slice, box: placedBox(box, absBot, newH) };
     syncSliceMetrics(item);
   });
 }
@@ -2603,6 +2851,7 @@ async function measureWorksheet(slices) {
   }
   claimDrawingTails(measured);
   sealOverlaps(measured);
+  dropBlankForeign(measured);
   return measured;
 }
 
@@ -2741,9 +2990,9 @@ function packWorksheet(measured, noteHeight) {
     let extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
     const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
     const need = leadGap + contentHeight(extra);
-    // One leftover answer may shrink to 0.45. A short answer key joins the
-    // previous page when it still fits at a readable size.
-    const minFactor = count === 1 ? 0.45 : 0.72;
+    // An answer stays readable. Below 0.6 it keeps the next page.
+    // A longer key still joins only when it fits at 0.72.
+    const minFactor = count === 1 ? 0.6 : 0.72;
     if (need > room) {
       const factor = room / need;
       if (factor < minFactor) break;
@@ -2906,11 +3155,7 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
       ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
-      const mask = item.slice.box.mask;
-      if (mask) {
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(mask.x * OUT_W, y + mask.y * item.dh, mask.w * OUT_W, mask.h * item.dh);
-      }
+      fillSliceMasks(ctx, item.slice.box, y, item.dh, OUT_W);
     }
     y += item.dh;
   });

@@ -690,8 +690,14 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 400 },
     ], 0);
-    assert.equal(packed.length, 1);
-    assert.equal(packed[0].items.filter((item) => item.slice.kind === 'answer').length, 1);
+    // A lone answer that would shrink below 0.6 stays on the next page.
+    assert.equal(packed.length, 2);
+    const readable = pack.packWorksheet([
+      { slice: { kind: 'row', gap: 4 }, dh: 1100 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 280 },
+    ], 0);
+    assert.equal(readable.length, 1);
+    assert.equal(readable[0].items.filter((item) => item.slice.kind === 'answer').length, 1);
     const scale = new Function(`${preview.slice(preview.indexOf('function answerDisplayScale'), preview.indexOf('function answerCellSize'))} return answerDisplayScale;`)() as (naturalW: number, naturalH: number) => number;
     assert.equal(scale(180, 16), 1);
     assert.ok(scale(2000, 40) < 1, String(scale(2000, 40)));
@@ -862,11 +868,41 @@ describe('teacher catalog picker', () => {
     const body = preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'));
     const dir = new URL('../public/teachers/sheets/', import.meta.url);
     let parts = 0;
+    let pairs = 0;
+    const rightMasks = (box: { y: number; h: number; mask?: { x: number; y: number; w: number; h: number }; masks?: { x: number; y: number; w: number; h: number }[] }) => {
+      const list = [];
+      if (box.mask) list.push(box.mask);
+      (box.masks || []).forEach((mask) => list.push(mask));
+      return list.filter((mask) => mask.x <= 0.55 && mask.x + mask.w >= 0.85);
+    };
+    const masked = (box: { y: number; h: number; mask?: { x: number; y: number; w: number; h: number }; masks?: { x: number; y: number; w: number; h: number }[] }, y: number) => (
+      rightMasks(box).some((mask) => {
+        const top = box.y + mask.y * box.h;
+        const bot = top + mask.h * box.h;
+        return y >= top - 0.003 && y <= bot + 0.003;
+      })
+    );
     for (const file of readdirSync(dir).filter((name) => name.endsWith('.json'))) {
       const sheet = JSON.parse(readFileSync(new URL(file, dir), 'utf8'));
       if (!sheet || !(sheet.grade >= 7) || !Array.isArray(sheet.questions)) continue;
-      const shortSlices = new Function('SOURCE', `${body} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number } }[];
+      const shortSlices = new Function('SOURCE', `${body} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number; mask?: { x: number; y: number; w: number; h: number }; masks?: { x: number; y: number; w: number; h: number }[] } }[];
       const byId = Object.fromEntries(sheet.questions.map((question: { id: string }) => [question.id, question]));
+      const ids = sheet.questions.filter((question: { row?: unknown }) => question.row).map((question: { id: string }) => question.id);
+      const exposed = (crops: { page: number; box: { y: number; h: number; mask?: { x: number; y: number; w: number; h: number }; masks?: { x: number; y: number; w: number; h: number }[] } }[], page: number, y: number) => (
+        crops.some((slice) => slice.page === page && slice.box.y + 0.004 < y && y < slice.box.y + slice.box.h - 0.004 && !masked(slice.box, y))
+      );
+      const assertHidden = (picked: string[], label: string) => {
+        const crops = shortSlices(picked.map((id) => byId[id])).filter((slice) => slice.kind === 'row' || slice.kind === 'stem');
+        const pickedSet = new Set(picked);
+        for (const other of sheet.questions) {
+          if (!other.row || pickedSet.has(other.id)) continue;
+          const page = other.row.page || other.page;
+          const labelY = other.labelLine ? other.labelLine.y : other.row.y;
+          const mid = other.row.y + Math.min(other.row.h * 0.5, 0.02);
+          assert.ok(!exposed(crops, page, labelY), `${file} ${label} shows ${other.id} label`);
+          assert.ok(!exposed(crops, page, mid), `${file} ${label} shows ${other.id} line`);
+        }
+      };
       for (const question of sheet.questions) {
         if (!question.row) continue;
         parts += 1;
@@ -874,19 +910,15 @@ describe('teacher catalog picker', () => {
         const labelY = question.labelLine ? question.labelLine.y : question.row.y;
         const owns = rows.some((slice) => slice.page === (question.row.page || question.page) && slice.box.y <= labelY + 0.008 && slice.box.y + slice.box.h > labelY + 0.004);
         assert.ok(owns, `${file} ${question.id} misses its own label`);
-        for (const other of sheet.questions) {
-          if (other === question || other.q !== question.q || !other.row) continue;
-          const y = other.labelLine ? other.labelLine.y : other.row.y;
-          const page = other.row.page || other.page;
-          const inside = rows.some((slice) => slice.page === page && slice.box.y + 0.004 < y && y < slice.box.y + slice.box.h - 0.004);
-          if (!inside) continue;
-          const figure = sheet.questions.find((item: { q: number; figure?: { y0: number; y1: number } }) => item.q === question.q && item.figure);
-          const sharedFigure = Boolean(figure && figure.figure && y >= figure.figure.y0 - 0.004 && y <= figure.figure.y1 + 0.004);
-          assert.ok(sharedFigure, `${file} ${question.id} also prints ${other.id}`);
-        }
+        assertHidden([question.id], question.id);
+      }
+      for (let index = 0; index < ids.length - 2; index += 1) {
+        pairs += 1;
+        assertHidden([ids[index], ids[index + 2]], `${ids[index]}+${ids[index + 2]}`);
       }
     }
     assert.ok(parts > 20000, String(parts));
+    assert.ok(pairs > 20000, String(pairs));
   });
 
   it('prints one crop when consecutive parts share a drawing', () => {
@@ -1048,6 +1080,42 @@ describe('teacher catalog picker', () => {
     ];
     api.claimDrawingTails(house);
     assert.equal(house[0].slice.box.h, 0.12);
+    // The next part's sentence crosses into the drawing columns. It is not a full-width rule.
+    // It is not picked, and the extension still stops at that part's label on the source sheet.
+    ink(30, 180, 372, 390);
+    const stopped = [{
+      bitmap,
+      slice: {
+        kind: 'row',
+        block: 'q2',
+        page: 1,
+        source: {
+          pdfId: 'parallelogram',
+          questions: [
+            { q: 2, page: 1, row: { y: 0.2, h: 0.12 }, labelLine: { y: 0.2 } },
+            { q: 2, page: 1, id: '2ב', row: { y: 0.43, h: 0.04 }, labelLine: { y: 0.409 } },
+          ],
+        },
+        box: { x: 0, y: 0.2, w: 1, h: 0.12 },
+      },
+    }];
+    api.claimDrawingTails(stopped);
+    const stoppedEnd = stopped[0].slice.box.y + stopped[0].slice.box.h;
+    assert.ok(stoppedEnd <= 0.409, String(stoppedEnd));
+    assert.ok(stoppedEnd < 372 / height, String(stoppedEnd));
+    const open = [{
+      bitmap,
+      slice: {
+        kind: 'row',
+        block: 'q2',
+        page: 1,
+        source: { pdfId: 'parallelogram', questions: [] },
+        box: { x: 0, y: 0.2, w: 1, h: 0.12 },
+      },
+    }];
+    api.claimDrawingTails(open);
+    const openEnd = open[0].slice.box.y + open[0].slice.box.h;
+    assert.ok(openEnd > 372 / height, String(openEnd));
   });
 
   it('keeps every middle-school drawing inside the crop that owns it', (t) => {
