@@ -4649,6 +4649,7 @@ async function measureWorksheet(slices) {
           dh: cell.dh,
           imageW: cell.imageW,
           imageH: cell.imageH,
+          answerScale: cell.scale,
           labelW: cell.labelW,
           stack: cell.stack,
         });
@@ -5128,6 +5129,7 @@ function answerInkCanvas(bitmap, sx, sy, sw, sh, box) {
   cut.width = w;
   cut.height = h;
   const ctx = cut.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
   ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, w, h);
   clearGreyRules(ctx, w, h);
   if (box) fillSliceMasks(ctx, box, 0, h, w);
@@ -5187,10 +5189,20 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
     } else if (kind === 'answer' || kind === 'answer-row') {
       const cells = kind === 'answer-row' ? item.cells : [item];
       let right = OUT_W - 28;
-      // The crop is already at print resolution. Smoothing a one-pixel Hebrew
-      // cap onto a fractional destination turns it into a hollow gray bar.
-      const smoothing = ctx.imageSmoothingEnabled;
-      ctx.imageSmoothingEnabled = false;
+      // The crop is already at print resolution. Copy it onto whole device pixels.
+      // Smoothing a one-pixel Hebrew cap onto a fractional destination turns it
+      // into a hollow gray bar, and nearest-neighbor on that fraction drops it.
+      const paintAnswer = (ink, logicalX, logicalY, logicalW, logicalH, natural) => {
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.imageSmoothingEnabled = false;
+        const dx = Math.round(logicalX * scale);
+        const dy = Math.round(logicalY * scale);
+        // A natural-size answer is already one source pixel per device pixel.
+        if (natural) ctx.drawImage(ink, dx, dy);
+        else ctx.drawImage(ink, dx, dy, Math.max(1, Math.round(logicalW * scale)), Math.max(1, Math.round(logicalH * scale)));
+        ctx.restore();
+      };
       cells.forEach((cell) => {
         const labelW = cell.labelW || 0;
         const imageW = cell.imageW || Math.max(1, (cell.dw || 40) - labelW - 8);
@@ -5206,18 +5218,17 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
         if (cell.stack) {
           ctx.fillText(cell.slice.text, right, y + 14);
           const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
-          ctx.drawImage(ink, 0, 0, ink.width, ink.height, right - imageW, y + 18, imageW, imageH);
+          paintAnswer(ink, right - imageW, y + 18, imageW, imageH, cell.answerScale === 1);
         } else {
           const textY = y + Math.max(14, Math.round((item.dh + 10) / 2));
           ctx.fillText(cell.slice.text, right, textY);
           const imageX = right - labelW - 8 - imageW;
           const imageY = y + Math.max(0, Math.round((item.dh - imageH) / 2));
           const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
-          ctx.drawImage(ink, 0, 0, ink.width, ink.height, imageX, imageY, imageW, imageH);
+          paintAnswer(ink, imageX, imageY, imageW, imageH, cell.answerScale === 1);
         }
         right -= (cell.dw || imageW) + 14;
       });
-      ctx.imageSmoothingEnabled = smoothing;
     } else {
       const sx = item.baked ? 0 : item.slice.box.x * item.bitmap.width;
       const sy = item.baked ? 0 : item.slice.box.y * item.bitmap.height;
