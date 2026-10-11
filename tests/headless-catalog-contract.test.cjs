@@ -47,10 +47,10 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
   const s = result.stats;
   assert.equal(s.grades, 9);
   assert.equal(s.topics, 328);
-  assert.equal(s.levels, 956);
-  assert.equal(s.uniquePdfIds, 956);
+  assert.equal(s.levels, 958);
+  assert.equal(s.uniquePdfIds, 958);
   assert.equal(s.childTopics, 3);
-  assert.equal(s.withNoamTopicId, 148);
+  assert.equal(s.withNoamTopicId, 153);
   // G9-T15 gained a search entry (דלתון / kite). Previous pin was 116.
   assert.equal(s.searchEntries, 117);
   assert.equal(s.iconKeys, 80);
@@ -85,7 +85,7 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
   for (const gd of Object.values(raw.DATA)) {
     for (const row of Object.values(gd.links || {})) {
       if (row.one) rawPdfs.add(row.one);
-      for (const k of ['a', 'b', 'c']) if (row[k]) rawPdfs.add(row[k]);
+      for (const k of ['a', 'b', 'c', 'c2']) if (row[k]) rawPdfs.add(row[k]);
     }
   }
   const catPdfs = new Set();

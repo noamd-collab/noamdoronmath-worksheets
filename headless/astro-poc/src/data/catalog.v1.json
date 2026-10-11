@@ -26,6 +26,11 @@
         "key": "c",
         "label": "רמת מצוינות",
         "cssClass": "lvl--c"
+      },
+      {
+        "key": "c2",
+        "label": "מצוינות 2",
+        "cssClass": "lvl--c"
       }
     ],
     "defaults": {
@@ -8253,7 +8258,7 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "2c47f33e99f44174a32f7f4cfb3b5e3e",
+              "pdfId": "b62b8ffe166e46a5ba3f8bea511bafb8",
               "labelSource": "default"
             },
             {
@@ -8265,7 +8270,7 @@
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "73a7fa15988d48b88bf69926bc4351dc",
+              "pdfId": "11d77bb028ae4c749771adc999b062f4",
               "labelSource": "default"
             }
           ],
@@ -8275,9 +8280,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "2c47f33e99f44174a32f7f4cfb3b5e3e",
+              "pa": "b62b8ffe166e46a5ba3f8bea511bafb8",
               "pb": "86a563a229964377b0408693e1d4584a",
-              "pc": "73a7fa15988d48b88bf69926bc4351dc"
+              "pc": "11d77bb028ae4c749771adc999b062f4"
             }
           }
         },
@@ -8292,19 +8297,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "9488f7dcddd24a508514c95b3b6346a9",
+              "pdfId": "b3e8d707e51e45bc8946fccc8697b6c1",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "e35abc3cadf24904ba543a7322802d77",
+              "pdfId": "6bf3445843f34c7fb551220ec72e252e",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "60b3ca0f913844acb9c9fe1891122d54",
+              "pdfId": "a94ce449f10940e79b0de42a9b52e1d0",
               "labelSource": "default"
             }
           ],
@@ -8314,9 +8319,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "9488f7dcddd24a508514c95b3b6346a9",
-              "pb": "e35abc3cadf24904ba543a7322802d77",
-              "pc": "60b3ca0f913844acb9c9fe1891122d54"
+              "pa": "b3e8d707e51e45bc8946fccc8697b6c1",
+              "pb": "6bf3445843f34c7fb551220ec72e252e",
+              "pc": "a94ce449f10940e79b0de42a9b52e1d0"
             }
           }
         },
@@ -8331,19 +8336,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "de73a9e95e264a10816023e34a518b87",
+              "pdfId": "9776c3becf7c48c58607b117d45dbe96",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "a07273a6c2b545ecb70eff5693b139f6",
+              "pdfId": "078356ac9dc246d6ac1385eca7037d1c",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "a187b5f9358a4ac98a28cefc0cd0b455",
+              "pdfId": "61069e1403d740109b4438ed4d19b566",
               "labelSource": "default"
             }
           ],
@@ -8353,9 +8358,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "de73a9e95e264a10816023e34a518b87",
-              "pb": "a07273a6c2b545ecb70eff5693b139f6",
-              "pc": "a187b5f9358a4ac98a28cefc0cd0b455"
+              "pa": "9776c3becf7c48c58607b117d45dbe96",
+              "pb": "078356ac9dc246d6ac1385eca7037d1c",
+              "pc": "61069e1403d740109b4438ed4d19b566"
             }
           }
         },
@@ -8370,19 +8375,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "1eaf93b18083476f94ad7675aa5b793c",
+              "pdfId": "d822f910d34b4773b39c9c6b8aa1f6b3",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "f1a9b8f2f9594d2590f7fbb5a7a08422",
+              "pdfId": "9b655681242f439994ba548e2dbe4106",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "60e2b322ce874ac2ae7610899f8cd203",
+              "pdfId": "62ef925033ec4b3fa0f361ed601b3da7",
               "labelSource": "default"
             }
           ],
@@ -8392,9 +8397,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "1eaf93b18083476f94ad7675aa5b793c",
-              "pb": "f1a9b8f2f9594d2590f7fbb5a7a08422",
-              "pc": "60e2b322ce874ac2ae7610899f8cd203"
+              "pa": "d822f910d34b4773b39c9c6b8aa1f6b3",
+              "pb": "9b655681242f439994ba548e2dbe4106",
+              "pc": "62ef925033ec4b3fa0f361ed601b3da7"
             }
           }
         },
@@ -8409,19 +8414,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "53ce7c8ccf8a4b2baf20dd3077b959fc",
+              "pdfId": "c276156d21ab4682946847a38aa85683",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "4ddad47c159748229fa42e74daeac8d5",
+              "pdfId": "d0fc87c5732c42d397e839d84d3eaf04",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "af10b57372d94e27b5452235cf2a5a53",
+              "pdfId": "a7406d94628e41329355b49a83e1b7ca",
               "labelSource": "default"
             }
           ],
@@ -8431,9 +8436,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "53ce7c8ccf8a4b2baf20dd3077b959fc",
-              "pb": "4ddad47c159748229fa42e74daeac8d5",
-              "pc": "af10b57372d94e27b5452235cf2a5a53"
+              "pa": "c276156d21ab4682946847a38aa85683",
+              "pb": "d0fc87c5732c42d397e839d84d3eaf04",
+              "pc": "a7406d94628e41329355b49a83e1b7ca"
             }
           }
         },
@@ -8448,19 +8453,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "ba042049d4464a62829b67f55869caab",
+              "pdfId": "bebe6937b1e443858b053a7341f4b4cd",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "56c7ea92ce4546719d5ba8c655188415",
+              "pdfId": "1b2e902e5dc942689d4a6384137fb56d",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "89548da67a6c4bcc9b284fab93cba94c",
+              "pdfId": "4b3105d451464fef837a12877cdc94e4",
               "labelSource": "default"
             }
           ],
@@ -8470,9 +8475,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "ba042049d4464a62829b67f55869caab",
-              "pb": "56c7ea92ce4546719d5ba8c655188415",
-              "pc": "89548da67a6c4bcc9b284fab93cba94c"
+              "pa": "bebe6937b1e443858b053a7341f4b4cd",
+              "pb": "1b2e902e5dc942689d4a6384137fb56d",
+              "pc": "4b3105d451464fef837a12877cdc94e4"
             }
           }
         },
@@ -8487,19 +8492,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "02f2fbf8babb4d42a7ef1fc6c385bd61",
+              "pdfId": "80624f6d5e7b42e4bb8d9408e6136fcb",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "c77d200f197e4043a9e8124af27383db",
+              "pdfId": "f98e804af31044708ca2dc3f0d97f270",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "6f583e7972c542608b396094ac14c54a",
+              "pdfId": "60994088b46e43b78f3345fe5d3e5153",
               "labelSource": "default"
             }
           ],
@@ -8509,9 +8514,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "02f2fbf8babb4d42a7ef1fc6c385bd61",
-              "pb": "c77d200f197e4043a9e8124af27383db",
-              "pc": "6f583e7972c542608b396094ac14c54a"
+              "pa": "80624f6d5e7b42e4bb8d9408e6136fcb",
+              "pb": "f98e804af31044708ca2dc3f0d97f270",
+              "pc": "60994088b46e43b78f3345fe5d3e5153"
             }
           }
         },
@@ -8526,19 +8531,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "6ffd8b54e3d2443390371f557e8bfb03",
+              "pdfId": "5e5c345c418747bea1e83bbe770c9106",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "480bdf8fe18a4fa7b03b29da5901a9ff",
+              "pdfId": "8b2108fe4dd0452a9807759142938ecb",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "b21376514281439ab6bb70f7eafb525a",
+              "pdfId": "d3086bad05cc436d8e989cabc21b9772",
               "labelSource": "default"
             }
           ],
@@ -8548,9 +8553,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "6ffd8b54e3d2443390371f557e8bfb03",
-              "pb": "480bdf8fe18a4fa7b03b29da5901a9ff",
-              "pc": "b21376514281439ab6bb70f7eafb525a"
+              "pa": "5e5c345c418747bea1e83bbe770c9106",
+              "pb": "8b2108fe4dd0452a9807759142938ecb",
+              "pc": "d3086bad05cc436d8e989cabc21b9772"
             }
           }
         },
@@ -8565,19 +8570,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "bc509600c8f242b49d39a438b54abbc9",
+              "pdfId": "a150cbf555ca430885a78a78b458af12",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "f5e0edfba19344c890f203a33c6a0c27",
+              "pdfId": "dbbcb8d72c63490c8e8359e87619e51b",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "89fbc35e9f5c4e3480794c2589f2003b",
+              "pdfId": "1c5582794db84101bb4b55f691c58c09",
               "labelSource": "default"
             }
           ],
@@ -8587,9 +8592,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "bc509600c8f242b49d39a438b54abbc9",
-              "pb": "f5e0edfba19344c890f203a33c6a0c27",
-              "pc": "89fbc35e9f5c4e3480794c2589f2003b"
+              "pa": "a150cbf555ca430885a78a78b458af12",
+              "pb": "dbbcb8d72c63490c8e8359e87619e51b",
+              "pc": "1c5582794db84101bb4b55f691c58c09"
             }
           }
         },
@@ -8643,19 +8648,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "4316de8b7b304da38d3f47c67bcbb169",
+              "pdfId": "b7014bfe07dd44b194137be3d0d47d7c",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "103377f4e4934f7da2e43c0ac0a510f1",
+              "pdfId": "834a54a82a4f4eb9bdd2a70af59bb9b8",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "71318c32ce584a33a55085c031253ef5",
+              "pdfId": "34f232bed515456ebb7636d421cb10e5",
               "labelSource": "default"
             }
           ],
@@ -8665,9 +8670,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "4316de8b7b304da38d3f47c67bcbb169",
-              "pb": "103377f4e4934f7da2e43c0ac0a510f1",
-              "pc": "71318c32ce584a33a55085c031253ef5"
+              "pa": "b7014bfe07dd44b194137be3d0d47d7c",
+              "pb": "834a54a82a4f4eb9bdd2a70af59bb9b8",
+              "pc": "34f232bed515456ebb7636d421cb10e5"
             }
           }
         },
@@ -8682,19 +8687,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "32c9b1b5aea5413f864e8baaa0cf5ca2",
+              "pdfId": "7e40ceeefb054be0b0a06b9199cc4bb6",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "0001a2f4eb334aecaac682e62b50ce6a",
+              "pdfId": "93412e1b11c345469578d50d6615c564",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "0d55ce157c4a49dd8e0b63d70417aa52",
+              "pdfId": "8a0cd6b635724ec9a27d88e13c15aac0",
               "labelSource": "default"
             }
           ],
@@ -8704,9 +8709,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "32c9b1b5aea5413f864e8baaa0cf5ca2",
-              "pb": "0001a2f4eb334aecaac682e62b50ce6a",
-              "pc": "0d55ce157c4a49dd8e0b63d70417aa52"
+              "pa": "7e40ceeefb054be0b0a06b9199cc4bb6",
+              "pb": "93412e1b11c345469578d50d6615c564",
+              "pc": "8a0cd6b635724ec9a27d88e13c15aac0"
             }
           }
         },
@@ -8721,19 +8726,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "a349066a266843f48df9c578fdb29053",
+              "pdfId": "1b26a206ec0f49be85bcb55065aa8a26",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "d053182fce2645a692affb549ab255fb",
+              "pdfId": "289dcac119174a75816aea2a34817d7f",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "7113358defed49109c4f222d5644ee6a",
+              "pdfId": "6964bd9d1406484f9774fb6d01c2fafe",
               "labelSource": "default"
             }
           ],
@@ -8743,9 +8748,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "a349066a266843f48df9c578fdb29053",
-              "pb": "d053182fce2645a692affb549ab255fb",
-              "pc": "7113358defed49109c4f222d5644ee6a"
+              "pa": "1b26a206ec0f49be85bcb55065aa8a26",
+              "pb": "289dcac119174a75816aea2a34817d7f",
+              "pc": "6964bd9d1406484f9774fb6d01c2fafe"
             }
           }
         },
@@ -8760,19 +8765,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "2796cafaa2ae4895bef51c415e659b24",
+              "pdfId": "7ef8a3c07b79429fa98949a534cdb01f",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "2346e6cb402b45049467a83b6f492852",
+              "pdfId": "8bf66ca611f74e92867db68cb48ab206",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "ee6ed7b3cffb42f2b53bd3eb246396e7",
+              "pdfId": "17269fd166d6482da2d1f0a5bc3720a9",
               "labelSource": "default"
             }
           ],
@@ -8782,9 +8787,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "2796cafaa2ae4895bef51c415e659b24",
-              "pb": "2346e6cb402b45049467a83b6f492852",
-              "pc": "ee6ed7b3cffb42f2b53bd3eb246396e7"
+              "pa": "7ef8a3c07b79429fa98949a534cdb01f",
+              "pb": "8bf66ca611f74e92867db68cb48ab206",
+              "pc": "17269fd166d6482da2d1f0a5bc3720a9"
             }
           }
         },
@@ -8877,19 +8882,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "b5fa3c05c31c41e898a582781d820f83",
+              "pdfId": "ff8386883aa948e1a2ce371591248ee1",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "df302ac9438245c999579e924c53b894",
+              "pdfId": "cb7c93d69d644075953ed8a3b2b1b51b",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "88bee65cef714a71a678d5f677d29de4",
+              "pdfId": "f631693edb1643648591b614ab4103d0",
               "labelSource": "default"
             }
           ],
@@ -8899,9 +8904,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "b5fa3c05c31c41e898a582781d820f83",
-              "pb": "df302ac9438245c999579e924c53b894",
-              "pc": "88bee65cef714a71a678d5f677d29de4"
+              "pa": "ff8386883aa948e1a2ce371591248ee1",
+              "pb": "cb7c93d69d644075953ed8a3b2b1b51b",
+              "pc": "f631693edb1643648591b614ab4103d0"
             }
           }
         },
@@ -9072,19 +9077,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "91d3c7a866f04334b0bf4e219d55531b",
+              "pdfId": "6a94ad4691e8491bb0c311e681c2dd6f",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "82a5285c2446440f8ab8ef4aad7b6cd3",
+              "pdfId": "dbb5a614a814450abeaa2dcc1f3f50a0",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "5050767dca2d4e35bd953df51a32eb9c",
+              "pdfId": "edf0209a31494abab761594d9a3e80d0",
               "labelSource": "default"
             }
           ],
@@ -9094,9 +9099,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "91d3c7a866f04334b0bf4e219d55531b",
-              "pb": "82a5285c2446440f8ab8ef4aad7b6cd3",
-              "pc": "5050767dca2d4e35bd953df51a32eb9c"
+              "pa": "6a94ad4691e8491bb0c311e681c2dd6f",
+              "pb": "dbb5a614a814450abeaa2dcc1f3f50a0",
+              "pc": "edf0209a31494abab761594d9a3e80d0"
             }
           }
         },
@@ -9111,19 +9116,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "8de3a79f1de542918fcd20fb037f05eb",
+              "pdfId": "d4a0b5ac19d3448cb8a07f4c346dc670",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "5ccc39f3843149e68d3a5aae10a1a853",
+              "pdfId": "bfefa760993044df8508722cf248c662",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "7ea0b53881f44c21afaaf20c149605f5",
+              "pdfId": "d8b0f960953c4f949133e1308391240d",
               "labelSource": "default"
             }
           ],
@@ -9133,9 +9138,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "8de3a79f1de542918fcd20fb037f05eb",
-              "pb": "5ccc39f3843149e68d3a5aae10a1a853",
-              "pc": "7ea0b53881f44c21afaaf20c149605f5"
+              "pa": "d4a0b5ac19d3448cb8a07f4c346dc670",
+              "pb": "bfefa760993044df8508722cf248c662",
+              "pc": "d8b0f960953c4f949133e1308391240d"
             }
           }
         },
@@ -9289,19 +9294,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "36a4312b653a46fd84c3ca1b06d9fd9d",
+              "pdfId": "4426507db7244da896af971abf7b975b",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "825ce7b3e65445b08183b39a206c6df9",
+              "pdfId": "18dd79c7e8324bd599e2e7539e9c5baf",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "d2120e63d58d46098bbac02f0876d0c8",
+              "pdfId": "db92841f98b94328a68f9658575a8111",
               "labelSource": "default"
             }
           ],
@@ -9311,9 +9316,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "36a4312b653a46fd84c3ca1b06d9fd9d",
-              "pb": "825ce7b3e65445b08183b39a206c6df9",
-              "pc": "d2120e63d58d46098bbac02f0876d0c8"
+              "pa": "4426507db7244da896af971abf7b975b",
+              "pb": "18dd79c7e8324bd599e2e7539e9c5baf",
+              "pc": "db92841f98b94328a68f9658575a8111"
             }
           }
         },
@@ -9528,13 +9533,13 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "d7220ff03c1644c196dc820a0438b11f",
+              "pdfId": "c668529fe436409091a21be279e6a0f1",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "e2534608194f4b2da81513455d8e5276",
+              "pdfId": "fb812a27d04247c3856792131f4b377e",
               "labelSource": "default"
             },
             {
@@ -9550,8 +9555,8 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "d7220ff03c1644c196dc820a0438b11f",
-              "pb": "e2534608194f4b2da81513455d8e5276",
+              "pa": "c668529fe436409091a21be279e6a0f1",
+              "pb": "fb812a27d04247c3856792131f4b377e",
               "pc": "742b7aa6db284c24bd2d6a6ae55f653b"
             }
           }
@@ -9573,13 +9578,13 @@
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "a3c646c8ff704abb8d07d69d3a181d80",
+              "pdfId": "6feac61462624461b5e99426cf6a0205",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "d129ef514eb9441eb4f2f619dfa417ad",
+              "pdfId": "56b204637b654338ae94afefd3c4995d",
               "labelSource": "default"
             }
           ],
@@ -9590,8 +9595,8 @@
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
               "pa": "3a7a568d1f654271a0f77bece24536b4",
-              "pb": "a3c646c8ff704abb8d07d69d3a181d80",
-              "pc": "d129ef514eb9441eb4f2f619dfa417ad"
+              "pb": "6feac61462624461b5e99426cf6a0205",
+              "pc": "56b204637b654338ae94afefd3c4995d"
             }
           }
         },
@@ -9606,19 +9611,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "cae0734f982c4189b658e774a8fe5d31",
+              "pdfId": "8ed94113d9904ecc9ce85d122d666ef7",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "cc56262b89a643539facb8d395c8eac5",
+              "pdfId": "95c47d4d715f44e198503b41be556c76",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "39fe4a9e549b48b6b2519ec0367a526d",
+              "pdfId": "40910de472084b5d9cd5cd0459d3d52e",
               "labelSource": "default"
             }
           ],
@@ -9628,9 +9633,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "cae0734f982c4189b658e774a8fe5d31",
-              "pb": "cc56262b89a643539facb8d395c8eac5",
-              "pc": "39fe4a9e549b48b6b2519ec0367a526d"
+              "pa": "8ed94113d9904ecc9ce85d122d666ef7",
+              "pb": "95c47d4d715f44e198503b41be556c76",
+              "pc": "40910de472084b5d9cd5cd0459d3d52e"
             }
           }
         },
@@ -9684,13 +9689,13 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "968752bfd6074645b5a594c1f0b6ce08",
+              "pdfId": "5ae011f0761240d2a2cdaae6d6f1f438",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "f5fc815d55594464b6993c8711b4dba9",
+              "pdfId": "0a23d36c7a2c4636b11baabc92d0175f",
               "labelSource": "default"
             },
             {
@@ -9706,8 +9711,8 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "968752bfd6074645b5a594c1f0b6ce08",
-              "pb": "f5fc815d55594464b6993c8711b4dba9",
+              "pa": "5ae011f0761240d2a2cdaae6d6f1f438",
+              "pb": "0a23d36c7a2c4636b11baabc92d0175f",
               "pc": "237ec9ec2fca4598a9221c147c714baa"
             }
           }
@@ -9723,19 +9728,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "76be5b17412c473199ff77d617ebf751",
+              "pdfId": "68a1e0d1f1e34c8ba08c5c8c715fdada",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "923bc1787a37463e89a2de303fc0a998",
+              "pdfId": "71e0ba8f6b9f49259af51f4fb1dfc124",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "f2843487095d49b49e3ad58813c59ad0",
+              "pdfId": "c2d4a54ee9ed41c68138c2cd97597765",
               "labelSource": "default"
             }
           ],
@@ -9745,9 +9750,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "76be5b17412c473199ff77d617ebf751",
-              "pb": "923bc1787a37463e89a2de303fc0a998",
-              "pc": "f2843487095d49b49e3ad58813c59ad0"
+              "pa": "68a1e0d1f1e34c8ba08c5c8c715fdada",
+              "pb": "71e0ba8f6b9f49259af51f4fb1dfc124",
+              "pc": "c2d4a54ee9ed41c68138c2cd97597765"
             }
           }
         },
@@ -9762,19 +9767,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "51c4ed1e225c4325825970d9aca00a05",
+              "pdfId": "30beea0f36d44bb0a594ae1472897145",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "6007b826b92a4d97a56c4ab5f8df8318",
+              "pdfId": "57692d2151624ec2b0d4d3bda6eec94c",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "18ec1bc8c0374b8aa8c8f059a3da665b",
+              "pdfId": "0cba153ca83449b9a462ae7e5cdc034f",
               "labelSource": "default"
             }
           ],
@@ -9784,9 +9789,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "51c4ed1e225c4325825970d9aca00a05",
-              "pb": "6007b826b92a4d97a56c4ab5f8df8318",
-              "pc": "18ec1bc8c0374b8aa8c8f059a3da665b"
+              "pa": "30beea0f36d44bb0a594ae1472897145",
+              "pb": "57692d2151624ec2b0d4d3bda6eec94c",
+              "pc": "0cba153ca83449b9a462ae7e5cdc034f"
             }
           }
         },
@@ -9801,19 +9806,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "1e4a7ccf837b4e72adee0acdabe70acc",
+              "pdfId": "88b9a3ebe8fa48e6ae870f174aae42d7",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "a9bee41d5e3744dcb5b58d48d8247b97",
+              "pdfId": "bf7d44af457345c2928de03a988c1000",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "ab081025fd8e4bce8a92a135fb866d00",
+              "pdfId": "3a4ea563f1fc4ef7952fbf151edfc84e",
               "labelSource": "default"
             }
           ],
@@ -9823,9 +9828,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "1e4a7ccf837b4e72adee0acdabe70acc",
-              "pb": "a9bee41d5e3744dcb5b58d48d8247b97",
-              "pc": "ab081025fd8e4bce8a92a135fb866d00"
+              "pa": "88b9a3ebe8fa48e6ae870f174aae42d7",
+              "pb": "bf7d44af457345c2928de03a988c1000",
+              "pc": "3a4ea563f1fc4ef7952fbf151edfc84e"
             }
           }
         },
@@ -9840,19 +9845,25 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "831390f8e9504f2db0958e01d8d5fe71",
+              "pdfId": "6822d46bd0694cca95eb6dcc5511bee8",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "882bc55c1c8748e1bf7f416c6d2cbd19",
+              "pdfId": "497ac71f116242d8a5eb41251f4d0dc7",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "5427d9b77df24696b66bfc78fec8df61",
+              "pdfId": "cc80eda331654ceab3adb18c85a6cc09",
+              "labelSource": "default"
+            },
+            {
+              "key": "c2",
+              "label": "מצוינות 2",
+              "pdfId": "e4da722565a942e482c9e4dbf6ee41b5",
               "labelSource": "default"
             }
           ],
@@ -9862,9 +9873,10 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "831390f8e9504f2db0958e01d8d5fe71",
-              "pb": "882bc55c1c8748e1bf7f416c6d2cbd19",
-              "pc": "5427d9b77df24696b66bfc78fec8df61"
+              "pa": "6822d46bd0694cca95eb6dcc5511bee8",
+              "pb": "497ac71f116242d8a5eb41251f4d0dc7",
+              "pc": "cc80eda331654ceab3adb18c85a6cc09",
+              "pc2": "e4da722565a942e482c9e4dbf6ee41b5"
             }
           }
         },
@@ -9879,19 +9891,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "03bc260d7c71497cbeb614216a420504",
+              "pdfId": "c86b0890aa8946cab2216587c395c78a",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "1be8760e8bdc42b280ddf61a4253c967",
+              "pdfId": "8a6d1db653394034bf3cdf4be2a1c082",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "0d2c19b340234a8db8c0bc9d080b50d1",
+              "pdfId": "b17ef5ee8aa2493d93d8fa5a42751e9f",
               "labelSource": "default"
             }
           ],
@@ -9901,9 +9913,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "03bc260d7c71497cbeb614216a420504",
-              "pb": "1be8760e8bdc42b280ddf61a4253c967",
-              "pc": "0d2c19b340234a8db8c0bc9d080b50d1"
+              "pa": "c86b0890aa8946cab2216587c395c78a",
+              "pb": "8a6d1db653394034bf3cdf4be2a1c082",
+              "pc": "b17ef5ee8aa2493d93d8fa5a42751e9f"
             }
           }
         },
@@ -9918,19 +9930,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "09fa81169748476fbb517f0e9ed5b995",
+              "pdfId": "7eeffd8be9ac48eea9bfd1b29939f59f",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "a9455ac3a1734720b8a003924702bc94",
+              "pdfId": "1c13146361bd406f95fe457a80f09ba7",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "687e425a629d4aa09423081426518cf8",
+              "pdfId": "752a90d6091c421c816d2ab453dddacc",
               "labelSource": "default"
             }
           ],
@@ -9940,9 +9952,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "09fa81169748476fbb517f0e9ed5b995",
-              "pb": "a9455ac3a1734720b8a003924702bc94",
-              "pc": "687e425a629d4aa09423081426518cf8"
+              "pa": "7eeffd8be9ac48eea9bfd1b29939f59f",
+              "pb": "1c13146361bd406f95fe457a80f09ba7",
+              "pc": "752a90d6091c421c816d2ab453dddacc"
             }
           }
         },
@@ -9957,19 +9969,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "ffc05ae95ee94af2b09e47a211197c73",
+              "pdfId": "0f792dffdf544169ab715864d6f193b7",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "30ffcc8086724713b50ea7ca5e244d22",
+              "pdfId": "4c605911637848a89cb787336f6acfc4",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "23b536c1218744678c30db18bb6c115b",
+              "pdfId": "3d8a6bf5e5dd4609b02ec8374e3b0e8c",
               "labelSource": "default"
             }
           ],
@@ -9979,9 +9991,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "ffc05ae95ee94af2b09e47a211197c73",
-              "pb": "30ffcc8086724713b50ea7ca5e244d22",
-              "pc": "23b536c1218744678c30db18bb6c115b"
+              "pa": "0f792dffdf544169ab715864d6f193b7",
+              "pb": "4c605911637848a89cb787336f6acfc4",
+              "pc": "3d8a6bf5e5dd4609b02ec8374e3b0e8c"
             }
           }
         },
@@ -9996,19 +10008,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "8b899263461041b192021b30fdfb26fe",
+              "pdfId": "e557af6454de433e84533f1c82848310",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "9078d06d3dfb4a45a9f52cb1d2d41eb3",
+              "pdfId": "ed343c09746b4c369c46aca218056c93",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "dfb888deddfa46cd8f7b614b929752fa",
+              "pdfId": "3c7dc10a366f457d9d870afed2269b70",
               "labelSource": "default"
             }
           ],
@@ -10018,9 +10030,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "8b899263461041b192021b30fdfb26fe",
-              "pb": "9078d06d3dfb4a45a9f52cb1d2d41eb3",
-              "pc": "dfb888deddfa46cd8f7b614b929752fa"
+              "pa": "e557af6454de433e84533f1c82848310",
+              "pb": "ed343c09746b4c369c46aca218056c93",
+              "pc": "3c7dc10a366f457d9d870afed2269b70"
             }
           }
         },
@@ -10035,19 +10047,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "d359aa570dc34715b9d954990c118222",
+              "pdfId": "fae526069df44fbebce7905aacfca766",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "f9cbd69fe5244a218cd78555d690ad16",
+              "pdfId": "79288e54a9f84cfc833af14875104071",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "82b0f92f0e0b4521a4b24e05e05b5e68",
+              "pdfId": "62388ef754804868a1b693ff7640e491",
               "labelSource": "default"
             }
           ],
@@ -10057,9 +10069,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "d359aa570dc34715b9d954990c118222",
-              "pb": "f9cbd69fe5244a218cd78555d690ad16",
-              "pc": "82b0f92f0e0b4521a4b24e05e05b5e68"
+              "pa": "fae526069df44fbebce7905aacfca766",
+              "pb": "79288e54a9f84cfc833af14875104071",
+              "pc": "62388ef754804868a1b693ff7640e491"
             }
           }
         },
@@ -10074,19 +10086,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "c2ff9abab9cc4ce9bb939c3011a4c3ed",
+              "pdfId": "78348bd150124cee8030f2cad13932f1",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "357b9398b6c24ceda9e6435a5957abbe",
+              "pdfId": "51d6d712337c48a58c44a8f671e73b4f",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "36006c66008647979d1c919c35c92e82",
+              "pdfId": "4056d9678fa444819c2e79f606d1d791",
               "labelSource": "default"
             }
           ],
@@ -10096,9 +10108,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "c2ff9abab9cc4ce9bb939c3011a4c3ed",
-              "pb": "357b9398b6c24ceda9e6435a5957abbe",
-              "pc": "36006c66008647979d1c919c35c92e82"
+              "pa": "78348bd150124cee8030f2cad13932f1",
+              "pb": "51d6d712337c48a58c44a8f671e73b4f",
+              "pc": "4056d9678fa444819c2e79f606d1d791"
             }
           }
         },
@@ -10197,13 +10209,13 @@
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "a58da373a7e7423da4f6f52b34e5de60",
+              "pdfId": "472e1065cdf54da4addf306d6b3da25b",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "17350882e67843e988a512ecc5fc1aad",
+              "pdfId": "f8940a8a65484f3b86927c6680f19583",
               "labelSource": "default"
             }
           ],
@@ -10214,8 +10226,8 @@
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
               "pa": "0194c8508a9f45139d36a162d68683cc",
-              "pb": "a58da373a7e7423da4f6f52b34e5de60",
-              "pc": "17350882e67843e988a512ecc5fc1aad"
+              "pb": "472e1065cdf54da4addf306d6b3da25b",
+              "pc": "f8940a8a65484f3b86927c6680f19583"
             }
           }
         },
@@ -10230,19 +10242,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "3d2b6937dd0d41f5a29cf37975fc2145",
+              "pdfId": "c04089aba53e4f748d60f51019e4f246",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "40c4c02dadac47dd9f3eac3dfa716650",
+              "pdfId": "a020ec76275d469c9de8ff68fc68733c",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "b0f59b29ad6f43a581d0a2d416fc5e3d",
+              "pdfId": "37eb14b473bd4f2485cc16e2a24d73b6",
               "labelSource": "default"
             }
           ],
@@ -10252,9 +10264,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "3d2b6937dd0d41f5a29cf37975fc2145",
-              "pb": "40c4c02dadac47dd9f3eac3dfa716650",
-              "pc": "b0f59b29ad6f43a581d0a2d416fc5e3d"
+              "pa": "c04089aba53e4f748d60f51019e4f246",
+              "pb": "a020ec76275d469c9de8ff68fc68733c",
+              "pc": "37eb14b473bd4f2485cc16e2a24d73b6"
             }
           }
         },
@@ -10269,19 +10281,25 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "aa577c63e9864ff898a6dcbc6dbd2b1f",
+              "pdfId": "9e7431e80c144dfbbee55f510223f1e9",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "ee05c7d0b7fd4b928db13cc1c3d96a0c",
+              "pdfId": "1d6a35beba7c47068e1c540fb280275b",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "94b1dc9902014d0992cdfcf1449ce3af",
+              "pdfId": "3817771742d5438c85448a0cfe12b665",
+              "labelSource": "default"
+            },
+            {
+              "key": "c2",
+              "label": "מצוינות 2",
+              "pdfId": "0b79f523d8ea4598a85d5320d6acd823",
               "labelSource": "default"
             }
           ],
@@ -10291,9 +10309,10 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "aa577c63e9864ff898a6dcbc6dbd2b1f",
-              "pb": "ee05c7d0b7fd4b928db13cc1c3d96a0c",
-              "pc": "94b1dc9902014d0992cdfcf1449ce3af"
+              "pa": "9e7431e80c144dfbbee55f510223f1e9",
+              "pb": "1d6a35beba7c47068e1c540fb280275b",
+              "pc": "3817771742d5438c85448a0cfe12b665",
+              "pc2": "0b79f523d8ea4598a85d5320d6acd823"
             }
           }
         },
@@ -10308,19 +10327,19 @@
             {
               "key": "a",
               "label": "רמה א׳",
-              "pdfId": "db0ac55bcd744767b34578c1f77f9475",
+              "pdfId": "adc334b0365b4f37b0d9a5c72d260787",
               "labelSource": "default"
             },
             {
               "key": "b",
               "label": "רמה ב׳",
-              "pdfId": "bf4c61f3e6c649f6bb52014c3173e801",
+              "pdfId": "e3b0188e88004fb88e6f37c3f5b7634e",
               "labelSource": "default"
             },
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "f4c4d27439a44b5eb8f980b029992640",
+              "pdfId": "f7d64cc7e980419d9d3f9ae080827213",
               "labelSource": "default"
             }
           ],
@@ -10330,9 +10349,9 @@
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
             "siblingPdfQuery": {
-              "pa": "db0ac55bcd744767b34578c1f77f9475",
-              "pb": "bf4c61f3e6c649f6bb52014c3173e801",
-              "pc": "f4c4d27439a44b5eb8f980b029992640"
+              "pa": "adc334b0365b4f37b0d9a5c72d260787",
+              "pb": "e3b0188e88004fb88e6f37c3f5b7634e",
+              "pc": "f7d64cc7e980419d9d3f9ae080827213"
             }
           }
         },
@@ -10342,20 +10361,23 @@
           "description": "בעיות חשיבה, אסטרטגיות פתרון, ספירה חכמה ושאלות אתגר.",
           "group": "deep",
           "icon": "bulb",
+          "noamTopicId": "G8-T56",
           "levels": [
             {
-              "key": "one",
-              "label": "דף יחיד — כל הרמות",
-              "pdfId": "2d8795a2be0241038adc0b4aab74680d",
-              "labelSource": "default"
+              "key": "a",
+              "label": "העמקה",
+              "pdfId": "f6969d7f88ff42c6b51215dc6786587e",
+              "labelSource": "topic.aLabel"
             }
           ],
           "routing": {
             "resolvedNoamPrefix": "G8-T56",
-            "aiHintShown": false,
+            "aiHintShown": true,
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
-            "siblingPdfQuery": {}
+            "siblingPdfQuery": {
+              "pa": "f6969d7f88ff42c6b51215dc6786587e"
+            }
           }
         },
         {
@@ -10364,20 +10386,23 @@
           "description": "חקר תבניות מספריות וגאומטריות, ניסוח השערה, בדיקה והכללה מנומקת.",
           "group": "deep",
           "icon": "flask",
+          "noamTopicId": "G8-T57",
           "levels": [
             {
-              "key": "one",
-              "label": "דף יחיד — כל הרמות",
-              "pdfId": "48a794452e1846119fddd0e5d91da524",
-              "labelSource": "default"
+              "key": "a",
+              "label": "העמקה",
+              "pdfId": "8f47319e342c41219fe8dff54691b353",
+              "labelSource": "topic.aLabel"
             }
           ],
           "routing": {
             "resolvedNoamPrefix": "G8-T57",
-            "aiHintShown": false,
+            "aiHintShown": true,
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
-            "siblingPdfQuery": {}
+            "siblingPdfQuery": {
+              "pa": "8f47319e342c41219fe8dff54691b353"
+            }
           }
         },
         {
@@ -10386,20 +10411,23 @@
           "description": "חזרה רוחבית על כל פרקי השנה עם שאלות משולבות מכל התחומים.",
           "group": "synth",
           "icon": "book",
+          "noamTopicId": "G8-T58",
           "levels": [
             {
-              "key": "one",
-              "label": "דף יחיד — כל הרמות",
-              "pdfId": "11ca0a8bb1dd485d84bedd6de155e988",
-              "labelSource": "default"
+              "key": "a",
+              "label": "דף תלמיד",
+              "pdfId": "b90d358d66de47c396504c93f96ba00a",
+              "labelSource": "topic.aLabel"
             }
           ],
           "routing": {
             "resolvedNoamPrefix": "G8-T58",
-            "aiHintShown": false,
+            "aiHintShown": true,
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
-            "siblingPdfQuery": {}
+            "siblingPdfQuery": {
+              "pa": "b90d358d66de47c396504c93f96ba00a"
+            }
           }
         },
         {
@@ -10408,20 +10436,23 @@
           "description": "מבחן מסכם המשלב את נושאי השנה — אלגברה, פונקציות, נתונים וגאומטריה.",
           "group": "synth",
           "icon": "clipboard",
+          "noamTopicId": "G8-T59",
           "levels": [
             {
-              "key": "one",
-              "label": "דף יחיד — כל הרמות",
-              "pdfId": "db9c04190e124de1818dd41f9beb9258",
-              "labelSource": "default"
+              "key": "a",
+              "label": "דף תלמיד",
+              "pdfId": "c0e7043259714f3abd2e9a5cd62d6854",
+              "labelSource": "topic.aLabel"
             }
           ],
           "routing": {
             "resolvedNoamPrefix": "G8-T59",
-            "aiHintShown": false,
+            "aiHintShown": true,
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
-            "siblingPdfQuery": {}
+            "siblingPdfQuery": {
+              "pa": "c0e7043259714f3abd2e9a5cd62d6854"
+            }
           }
         },
         {
@@ -10430,20 +10461,23 @@
           "description": "מיפוי מסכם של הידע לקראת המעבר לכיתה ט׳.",
           "group": "support",
           "icon": "magnify",
+          "noamTopicId": "G8-T60",
           "levels": [
             {
-              "key": "one",
-              "label": "דף יחיד — כל הרמות",
-              "pdfId": "6a752ec33aec46bd8480aaf98af5a4bb",
-              "labelSource": "default"
+              "key": "a",
+              "label": "דף תלמיד",
+              "pdfId": "3921a74f2c054f90b565cb8645f64230",
+              "labelSource": "topic.aLabel"
             }
           ],
           "routing": {
             "resolvedNoamPrefix": "G8-T60",
-            "aiHintShown": false,
+            "aiHintShown": true,
             "usesViewer": true,
             "viewerPath": "worksheet-viewer-noam.html",
-            "siblingPdfQuery": {}
+            "siblingPdfQuery": {
+              "pa": "3921a74f2c054f90b565cb8645f64230"
+            }
           }
         },
         {

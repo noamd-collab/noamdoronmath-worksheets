@@ -199,28 +199,45 @@ describe('teacher catalog picker', () => {
   }
 
   it('reaches every catalog sheet for every grade in the picker', () => {
-    const replaced = new Map(
-      JSON.parse(readFileSync(new URL('./fixtures/g9-pdf-v2-replace.json', import.meta.url), 'utf8')).map(
-        (row: { old_media_id: string; new_media_id: string }) => [row.old_media_id, row.new_media_id]
-      )
-    );
     const fromCatalog = catalogSheets();
     const fromPicker = indexSheets();
-    assert.equal(fromPicker.length, fromCatalog.length);
-    for (let i = 0; i < fromCatalog.length; i++) {
-      const picker = fromPicker[i];
-      const live = fromCatalog[i];
-      assert.equal(picker.grade, live.grade);
-      assert.equal(picker.topicId, live.topicId);
-      assert.equal(picker.level, live.level);
-      if (picker.pdfId !== live.pdfId) {
-        assert.equal(
-          replaced.get(picker.pdfId),
-          live.pdfId,
-          `teacher sheet ${picker.pdfId} is not the reviewed old PDF for live ${live.pdfId}`
-        );
+    // Grade 8 and 9 teacher sheets stay on the pre-v2 PDFs until the rebuild after PR 95.
+    // Grade 8 also drops the two new c2 sheets. Topics 56–60 stay one-sheet.
+    const g8SingleLag: Record<number, string> = {
+      56: '2d8795a2be0241038adc0b4aab74680d',
+      57: '48a794452e1846119fddd0e5d91da524',
+      58: '11ca0a8bb1dd485d84bedd6de155e988',
+      59: 'db9c04190e124de1818dd41f9beb9258',
+      60: '6a752ec33aec46bd8480aaf98af5a4bb',
+    };
+    const oldByNew = (file: string) => new Map(
+      (JSON.parse(readFileSync(new URL(file, import.meta.url), 'utf8')) as Array<{
+        old_media_id: string | null;
+        new_media_id: string;
+      }>)
+        .filter((row) => row.old_media_id)
+        .map((row) => [row.new_media_id, row.old_media_id as string])
+    );
+    const g8OldByNew = oldByNew('./fixtures/g8-pdf-v2-replace.json');
+    const g9OldByNew = oldByNew('./fixtures/g9-pdf-v2-replace.json');
+    const expectedPicker = fromCatalog.flatMap((sheet) => {
+      if (sheet.grade === 8) {
+        if (sheet.level === 'c2') return [];
+        const lagged = g8SingleLag[sheet.topicId];
+        if (lagged && sheet.level === 'a') return [{ ...sheet, level: 'one', pdfId: lagged }];
+        const oldId = g8OldByNew.get(sheet.pdfId);
+        return [oldId ? { ...sheet, pdfId: oldId } : sheet];
       }
-    }
+      if (sheet.grade === 9) {
+        const oldId = g9OldByNew.get(sheet.pdfId);
+        return [oldId ? { ...sheet, pdfId: oldId } : sheet];
+      }
+      return [sheet];
+    });
+    assert.deepEqual(
+      fromPicker.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId]),
+      expectedPicker.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId])
+    );
     assert.deepEqual(index.grades.map((grade) => grade.grade), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
     for (const grade of [1, 2, 3, 4, 5, 6]) {
       assert.equal(index.grades.find((item) => item.grade === grade).band, 'elementary');
