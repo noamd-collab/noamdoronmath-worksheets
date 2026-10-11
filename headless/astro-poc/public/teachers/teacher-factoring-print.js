@@ -1768,6 +1768,10 @@ function scalePlaced(item, factor) {
     next.dw = Math.max(1, Math.round(item.dw * factor));
     next.dx = Math.round((item.dx || 0) * factor);
   }
+  if (item.imageW) next.imageW = Math.max(1, Math.round(item.imageW * factor));
+  if (item.imageH) next.imageH = Math.max(1, Math.round(item.imageH * factor));
+  if (item.labelW) next.labelW = Math.max(1, Math.round(item.labelW * factor));
+  if (item.cells) next.cells = item.cells.map((cell) => scalePlaced(cell, factor));
   return next;
 }
 
@@ -2082,7 +2086,7 @@ function answerBox(items, questionNumber, part) {
           slot = {
             left: 0,
             right: 0,
-            lineBottom: Math.max(label.y - descent, continuationTop + 0.6),
+            lineBottom: Math.max(label.y - descent, continuationTop + 1.2),
             lineTop: label.y + Math.max(label.h || 0, 11) + 2,
           };
         }
@@ -2119,12 +2123,12 @@ function answerBox(items, questionNumber, part) {
       if (!mentioned) return null;
     }
   }
-  // A "·" parked at the end of the answer is the next part's separator.
-  const peeled = peelEdgeMarks(items, left, right, bottom, top);
+  // A trailing ·, a leading ".", and a source prefix ("ד.", "א.") are not the answer.
+  const peeled = clipAnswerAffixes(items, left, right, bottom, top);
   left = peeled.left;
   right = peeled.right;
   if (slot && slot.right > slot.left + 6) {
-    const line = peelEdgeMarks(items, slot.left, slot.right, slot.lineBottom, slot.lineTop);
+    const line = clipAnswerAffixes(items, slot.left, slot.right, slot.lineBottom, slot.lineTop);
     slot.left = line.left;
     slot.right = line.right;
   }
@@ -2134,8 +2138,19 @@ function answerBox(items, questionNumber, part) {
   return box;
 }
 
-function peelEdgeMarks(items, left, right, bottom, top) {
-  const mark = (glyph) => /^[·•]+$/.test(String(glyph.str || '').replace(/\s/g, ''));
+function answerAffixText(text) {
+  const token = String(text || '').replace(/\s/g, '');
+  if (!token) return false;
+  // A trailing separator, a leading dot, or the source's own "ד." prefix.
+  if (/^[·•.]+$/.test(token)) return true;
+  if (/^[אבגדהו]\.?$/.test(token)) return true;
+  if (/^\.[אבגדהו]$/.test(token)) return true;
+  if (/^[·•][אבגדהו]\.?$/.test(token)) return true;
+  return false;
+}
+
+function clipAnswerAffixes(items, left, right, bottom, top) {
+  const mark = (glyph) => answerAffixText(glyph.str);
   const hits = (items || []).filter((glyph) => {
     if (!String(glyph.str || '').trim()) return false;
     const gy = glyph.y || 0;
@@ -2385,23 +2400,25 @@ function answerSliceFor(pages, question) {
     if (!raw || raw.page !== sheet.page) continue;
     // A wrapped line runs under the other parts. Masks hide those parts; clipping would cut the line.
     const box = raw.slot ? raw : clipForeignLabels(items, raw, part);
-    const pad = 2;
+    // Horizontal pad must stay smaller than a middot, or the trailing · comes back.
+    const padX = 0.8;
+    const padY = 0.5;
     const gap = 1.2;
-    let x0 = Math.max(0, box.x - pad);
-    let y0 = Math.max(0, box.y - pad);
-    let x1 = Math.min(sheet.width, box.x + box.w + pad);
-    let y1 = Math.min(sheet.height, box.y + box.h + pad);
+    let x0 = Math.max(0, box.x - padX);
+    let y0 = Math.max(0, box.y - padY);
+    let x1 = Math.min(sheet.width, box.x + box.w + padX);
+    let y1 = Math.min(sheet.height, box.y + box.h + padY);
     items.forEach((item) => {
-      if (!partLabelToken(item.str)) return;
+      if (!partLabelToken(item.str) && !answerAffixText(item.str)) return;
       const gx = item.x || 0;
       const gy = item.y || 0;
-      const gw = Math.max(item.w || 0, 6);
+      const gw = Math.max(item.w || 0, answerAffixText(item.str) ? 2 : 6);
       const gh = Math.max(item.h || 0, 8);
       const right = gx + gw;
       const top = gy + gh;
       const crossesY = top > y0 && gy < y1;
       const crossesX = right > x0 && gx < x1;
-      // The next part sits to the left in RTL. Do not pad across its label.
+      // The next part sits to the left in RTL. Do not pad across its label or a trailing ·.
       if (crossesY && right <= box.x + 0.8) x0 = Math.max(x0, Math.min(box.x, right + gap));
       if (crossesY && gx >= box.x + box.w - 0.8) x1 = Math.min(x1, Math.max(box.x + box.w, gx - gap));
       if (crossesX && gy >= box.y + box.h - 0.8) y1 = Math.min(y1, Math.max(box.y + box.h, gy - gap));
@@ -2757,6 +2774,20 @@ function answerEdgeSpan(bitmap, box, yTop, yBot) {
   return { minX, maxX };
 }
 
+function dropMaskedAnswerBand(piece) {
+  const box = piece && piece.box;
+  const masks = box && box.masks;
+  if (!box || !(box.h > 0) || !masks || !masks.length) return piece;
+  // The label line of a wrapped answer is masked out (the stranded כל). Keeping
+  // that blank band puts a gap between the printed label and the sentence.
+  const band = masks.find((mask) => mask && mask.y < 0.04 && mask.w > 0.85 && mask.h > 0.05 && mask.h < 0.75);
+  if (!band) return piece;
+  const cut = Math.min(0.8, band.y + band.h);
+  const h = box.h * (1 - cut);
+  if (h < 0.008) return piece;
+  return { ...piece, box: placedBox(box, box.y, h) };
+}
+
 function trimPieceBox(slice, bitmap) {
   const box = slice.box;
   if (!box || !bitmap) return slice;
@@ -2781,8 +2812,8 @@ function trimPieceBox(slice, bitmap) {
   const ink = sliceInkRows(bitmap, clipped);
   if (!ink || !ink.bands.length) return { ...slice, box: clipped };
   const pageH = ink.height;
-  const pad = Math.max(2, Math.round(pageH * 0.003));
-  if (slice.kind === 'answer') {
+    const pad = slice.kind === 'answer' ? 2 : Math.max(2, Math.round(pageH * 0.003));
+    if (slice.kind === 'answer') {
     const winTop = ink.y0;
     const winBot = Math.min(pageH, ink.y0 + (ink.rh || 0));
     const mid = (winTop + winBot) / 2;
@@ -2850,6 +2881,25 @@ function trimPieceBox(slice, bitmap) {
       else delete next.masks;
     }
     return { ...slice, box: next };
+  }
+  // A neighbour's cap or descender is a thin band parked on the edge of this crop,
+  // with white between it and this line. A real descender stays in the line's band.
+  if (clipped.h < 0.08 && clipped.segment !== 'figure' && ink.bands.length >= 2) {
+    const bands = ink.bands.slice();
+    const gapBetween = (above, below) => below.y - (above.y + above.h);
+    if (bands[0].h <= 4 && gapBetween(bands[0], bands[1]) >= 8) bands.shift();
+    if (bands.length >= 2) {
+      const tail = bands[bands.length - 1];
+      const prev = bands[bands.length - 2];
+      if (tail.h <= 4 && gapBetween(prev, tail) >= 8) bands.pop();
+    }
+    if (bands.length && bands.length < ink.bands.length) {
+      const top = Math.max(0, ink.y0 + bands[0].y - pad);
+      const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
+      if (bot - top > 8) {
+        return { ...slice, box: placedBox(clipped, top / pageH, (bot - top) / pageH) };
+      }
+    }
   }
   // Keep the original writing space. Cut only past one third of a page below the last ink.
   const last = ink.bands[ink.bands.length - 1];
@@ -3144,6 +3194,35 @@ function dropBlankForeign(measured) {
   });
 }
 
+function trimLineOverlaps(measured) {
+  for (let i = 0; i < measured.length; i += 1) {
+    const earlier = measured[i];
+    const box = earlier && earlier.slice && earlier.slice.box;
+    if (!box || (earlier.slice.kind !== 'row' && earlier.slice.kind !== 'stem')) continue;
+    // A tall box is a drawing. A short one is a text line whose bottom padding
+    // reprints as a ghost half-line in the next crop.
+    if (box.h > 0.06 || box.segment === 'figure') continue;
+    const earlierPdf = earlier.slice.source && earlier.slice.source.pdfId;
+    for (let j = i + 1; j < measured.length; j += 1) {
+      const later = measured[j];
+      const other = later.slice && later.slice.box;
+      if (!other || later.slice.page !== earlier.slice.page) continue;
+      if (later.slice.kind !== 'row' && later.slice.kind !== 'stem') continue;
+      const laterPdf = later.slice.source && later.slice.source.pdfId;
+      if (!earlierPdf || earlierPdf !== laterPdf) continue;
+      const overlapTop = Math.max(box.y, other.y);
+      const overlapBot = Math.min(box.y + box.h, other.y + other.h);
+      const overlap = overlapBot - overlapTop;
+      if (overlap < 0.0025 || overlap > 0.016) continue;
+      const newY = box.y + box.h;
+      const newH = other.y + other.h - newY;
+      if (newH < 0.012) continue;
+      later.slice = { ...later.slice, box: placedBox(other, newY, newH) };
+      syncSliceMetrics(later);
+    }
+  }
+}
+
 function sealOverlaps(measured) {
   for (let i = 0; i < measured.length; i += 1) {
     const earlier = measured[i];
@@ -3182,8 +3261,8 @@ function answerDisplayScale(naturalW, naturalH) {
 
 function answerCellSize(text, naturalW, naturalH) {
   const scale = answerDisplayScale(naturalW, naturalH);
-  const imageW = Math.max(1, Math.round(naturalW * scale));
-  const imageH = Math.max(1, Math.round(naturalH * scale));
+  let imageW = Math.max(1, Math.round(naturalW * scale));
+  let imageH = Math.max(1, Math.round(naturalH * scale));
   let labelW = Math.min(420, Math.ceil(String(text || '').length * 7.5));
   if (typeof document !== 'undefined') {
     try {
@@ -3194,15 +3273,18 @@ function answerCellSize(text, naturalW, naturalH) {
   }
   const maxW = 1000 - 56;
   const gap = 8;
-  let stack = false;
+  // The answer stays on the label's line. A long answer shrinks to the remaining
+  // width instead of dropping under the label with a blank band between them.
   let dw = labelW + gap + imageW;
-  let dh = Math.max(22, imageH + 2);
-  if (dw > maxW * 0.72) {
-    stack = true;
-    dw = Math.min(maxW, Math.max(labelW, imageW));
-    dh = 18 + imageH;
+  if (dw > maxW && imageW > 40) {
+    const room = Math.max(40, maxW - labelW - gap);
+    const factor = room / imageW;
+    imageW = Math.max(1, Math.round(imageW * factor));
+    imageH = Math.max(1, Math.round(imageH * factor));
+    dw = Math.min(maxW, labelW + gap + imageW);
   }
-  return { scale, imageW, imageH, labelW, dw, dh, stack };
+  const dh = Math.max(18, imageH);
+  return { scale, imageW, imageH, labelW, dw, dh, stack: false };
 }
 
 /**
@@ -4684,7 +4766,8 @@ async function measureWorksheet(slices) {
       measured.push({ slice, dh: 26 });
     } else if (slice.kind === 'answer' || slice.kind === 'row' || slice.kind === 'stem') {
       const bitmap = await pageBitmap(slice.page, slice.source, 'print');
-      const piece = trimPieceBox(await clipClosingLine(slice), bitmap);
+      const trimmed = trimPieceBox(await clipClosingLine(slice), bitmap);
+      const piece = slice.kind === 'answer' ? dropMaskedAnswerBand(trimmed) : trimmed;
       if (!piece.clip) piece.clip = sourceClip(piece.source || slice.source, piece.page, (piece.box && piece.box.segment) || piece.kind);
       const sw = piece.box.w * bitmap.width;
       const sh = piece.box.h * bitmap.height;
@@ -4727,6 +4810,7 @@ async function measureWorksheet(slices) {
     }
   }
   const polished = polishQuestionCrops(enrichQuestionCrops(measured, texts), texts);
+  trimLineOverlaps(polished);
   bakeMeasuredClips(polished);
   releasePageBitmaps();
   return polished;
@@ -4968,10 +5052,10 @@ function flowAnswers(items) {
       out.push(item);
       return;
     }
-    // Each answer keeps its own key line. Sharing a row put 1א beside 1ב
-    // and started 2א on the next line.
+    // Each answer keeps its own key line. A 3px gap on an ink-tight crop is
+    // about 56–60 device pixels at 300 DPI, so a short leftover fits the page above.
     out.push({
-      slice: { kind: 'answer-row', gap: item.slice.gap > 0 ? item.slice.gap : 8, block: 'answers' },
+      slice: { kind: 'answer-row', gap: 3, block: 'answers' },
       dh: item.dh,
       cells: [item],
     });
@@ -5066,6 +5150,34 @@ function packWorksheet(measured, noteHeight) {
     if (overflow > 0) extra[extra.length - 1].dh = Math.max(1, extra[extra.length - 1].dh - overflow);
     if (heightOf(prev.items.concat(extra), prev.top) > PAGE_H) break;
     prev.items = prev.items.concat(extra);
+    pages.pop();
+  }
+  // A last page that holds less than a quarter of a page goes back up.
+  // Scale the previous page with it, down to 0.75, instead of leaving a near-empty sheet.
+  while (pages.length > 1) {
+    const last = pages[pages.length - 1];
+    const prev = pages[pages.length - 2];
+    if (!last.items.length) {
+      pages.pop();
+      continue;
+    }
+    if (contentHeight(last.items) >= PAGE_H * 0.25) break;
+    const extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
+    const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
+    const room = PAGE_H - heightOf(prev.items, prev.top);
+    if (leadGap + contentHeight(extra) <= room + 0.5) {
+      prev.items = prev.items.concat(extra);
+      pages.pop();
+      continue;
+    }
+    const combined = prev.items.concat(extra);
+    const factor = PAGE_H / heightOf(combined, prev.top);
+    if (!(factor >= 0.75)) break;
+    const scaled = combined.map((item) => scalePlaced(item, factor));
+    const over = heightOf(scaled, prev.top) - PAGE_H;
+    if (over > 0) scaled[scaled.length - 1].dh = Math.max(1, scaled[scaled.length - 1].dh - over);
+    if (heightOf(scaled, prev.top) > PAGE_H + 0.5) break;
+    prev.items = scaled;
     pages.pop();
   }
   return pages;
@@ -5260,12 +5372,12 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
           const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
           paintAnswer(ink, right - imageW, y + 18, imageW, imageH, cell.answerScale === 1);
         } else {
-          const textY = y + Math.max(14, Math.round((item.dh + 10) / 2));
+          // The label shares the answer's first line. A tall answer wraps under that line.
+          const textY = y + Math.min(16, Math.max(14, imageH));
           ctx.fillText(cell.slice.text, right, textY);
           const imageX = right - labelW - 8 - imageW;
-          const imageY = y + Math.max(0, Math.round((item.dh - imageH) / 2));
           const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
-          paintAnswer(ink, imageX, imageY, imageW, imageH, cell.answerScale === 1);
+          paintAnswer(ink, imageX, y, imageW, imageH, cell.answerScale === 1);
         }
         right -= (cell.dw || imageW) + 14;
       });

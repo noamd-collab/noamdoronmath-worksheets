@@ -13,6 +13,10 @@ const REQUIRED = [
   'pythagoras-part2',
   'answer-key-wrap',
   'clipped-descenders',
+  'g8-t51-answers',
+  'g9-t45-pagebreak',
+  'g9-t43-pagebreak',
+  'g7-t28-answers',
 ];
 
 function caseById(id: string) {

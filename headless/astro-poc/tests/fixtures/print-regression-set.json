@@ -67,6 +67,42 @@
       "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "4ד", "5א", "5ב", "5ג", "5ד", "6א", "6ב", "6ג", "6ד", "7א", "7ב", "7ג", "7ד", "8ד"],
       "pages": [1, 2],
       "failedBefore": "Hebrew descenders and ascenders were clipped on text lines, including final letters ן ץ ך ף ק and the tops of 6ד (straddle page 2)."
+    },
+    {
+      "id": "g8-t51-answers",
+      "sheetId": "3c2c3c3769aa4587afc8c9d0a04f049f",
+      "grade": "8",
+      "topic": "51",
+      "level": "a",
+      "selection": ["1א", "2א", "3א", "4א", "5א", "6א"],
+      "failedBefore": "Guided-example box fragmented beside the tree, with orphan gray pieces and the top of (2) clipped."
+    },
+    {
+      "id": "g9-t45-pagebreak",
+      "sheetId": "7cf739195a244b8aad4a77a4a35230b8",
+      "grade": "9",
+      "topic": "45",
+      "level": "b",
+      "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "2ה"],
+      "failedBefore": "Ghost half-line under the stem, and a near-empty last page."
+    },
+    {
+      "id": "g9-t43-pagebreak",
+      "sheetId": "9764420460f84628acbffb2ea2ee53a5",
+      "grade": "9",
+      "topic": "43",
+      "level": "c",
+      "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "5א", "5ב", "5ג", "6א", "6ב", "6ג", "6ד", "7א", "7ב"],
+      "failedBefore": "Stray specks between lines across the later pages."
+    },
+    {
+      "id": "g7-t28-answers",
+      "sheetId": "42f063f1b6b44000bdfacb5d927a0524",
+      "grade": "7",
+      "topic": "28",
+      "level": "a",
+      "selection": ["1א", "2", "3א", "4א", "5א", "6א"],
+      "failedBefore": "Near-empty last answer page."
     }
   ]
 }

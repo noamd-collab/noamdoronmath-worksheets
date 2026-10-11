@@ -998,7 +998,7 @@ describe('teacher catalog picker', () => {
     assert.ok(bet.y > 366, '1ב does not take the next line ' + JSON.stringify(bet));
     const reason = sliceApi.answerBox(sheet.items, 20, 'ד');
     assert.ok(reason, '20ד answer');
-    assert.ok(reason.x <= 484 && reason.x + reason.w >= 509, JSON.stringify(reason));
+    assert.ok(reason.x <= 485 && reason.x + reason.w >= 500 && reason.x + reason.w < 510, JSON.stringify(reason));
     assert.ok(reason.h < 28, 'the source answer is the word נימוק ' + JSON.stringify(reason));
     const mixed = sliceApi.answerSliceFor([
       {
@@ -1309,14 +1309,15 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'answer', gap: 8 }, dh: 200, dw: 800 },
     ], 0);
     assert.equal(pulledAtSix.length, 1);
-    // A key that would have to shrink below 0.6 stays on its own page.
+    // A leftover under a quarter of a page is pulled back. A taller key that would
+    // shrink below 0.6 stays on its own page.
     const leftBehind = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 140, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 140, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 140, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 140, dw: 800 },
     ], 0);
     assert.equal(leftBehind.length, 2);
     const moved = pack.packWorksheet([
@@ -1324,11 +1325,21 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'row', gap: 4, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 160 },
       { slice: { kind: 'row', gap: -2, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 80 },
     ], 0);
-    assert.equal(moved.length, 2);
-    assert.equal(moved[0].items.length, 1);
-    assert.equal(moved[1].items.length, 2);
-    assert.equal(moved[1].items[0].slice.block, 'q6');
-    assert.equal(moved[1].items[1].slice.block, 'q6');
+    // 240px is under a quarter of a page, so it joins the page above. The two q6 pieces stay together.
+    assert.equal(moved.length, 1);
+    assert.equal(moved[0].items.length, 3);
+    assert.equal(moved[0].items[1].slice.block, 'q6');
+    assert.equal(moved[0].items[2].slice.block, 'q6');
+    const stays = pack.packWorksheet([
+      { slice: { kind: 'row', gap: 4, block: 'other' }, dh: 1100 },
+      { slice: { kind: 'row', gap: 4, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 400 },
+      { slice: { kind: 'row', gap: -2, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 200 },
+    ], 0);
+    assert.equal(stays.length, 2);
+    assert.equal(stays[0].items.length, 1);
+    assert.equal(stays[1].items.length, 2);
+    assert.equal(stays[1].items[0].slice.block, 'q6');
+    assert.equal(stays[1].items[1].slice.block, 'q6');
     const tall = pack.packWorksheet([
       { slice: { kind: 'stem', gap: 10, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 2000 },
       { slice: { kind: 'row', gap: 4, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 800 },
