@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "output": "short",
+  "purpose": "Fixed print cases that already failed. After every print fix, render this set first into /opt/cursor/artifacts/pr95-<sha>/regression/. Render the full print set only after this regression is reported passed.",
+  "cases": [
+    {
+      "id": "straddle-house-8d",
+      "sheetId": "871fe90d52a04673a7d30fc039e4bf2e",
+      "grade": "9",
+      "topic": "29",
+      "level": "c",
+      "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "4ד", "5א", "5ב", "5ג", "5ד", "6א", "6ב", "6ג", "6ד", "7א", "7ב", "7ג", "7ד", "8ד"],
+      "failedBefore": "Exercise and drawing split across pages, and the source footer leaked (מצולעים מורכבים עמוד 1/2 מתוך 6)."
+    },
+    {
+      "id": "only-3b",
+      "sheetId": "f4e2bea04e5a4e7382733a7be67c5e46",
+      "grade": "9",
+      "topic": "25",
+      "level": "b",
+      "selection": ["3ב"],
+      "failedBefore": "Missing Q3 stem and number when a later part is printed alone."
+    },
+    {
+      "id": "unpicked-part",
+      "sheetId": "f4e2bea04e5a4e7382733a7be67c5e46",
+      "grade": "9",
+      "topic": "25",
+      "level": "b",
+      "selection": ["3ב"],
+      "failedBefore": "3א must not print when only 3ב is selected."
+    },
+    {
+      "id": "19d",
+      "sheetId": "b7a76fde760d4c2e9252a933ed40a6c5",
+      "grade": "9",
+      "topic": "24",
+      "level": "c",
+      "selection": ["19ד"],
+      "failedBefore": "Neighbor fragments (המקורי.) and dashed lines across the triangle."
+    },
+    {
+      "id": "pythagoras-part2",
+      "sheetId": "050b9cc226cd4326931adfb3c0775a05",
+      "grade": "9",
+      "topic": "25",
+      "level": "c",
+      "selection": ["1א", "1ב", "2א"],
+      "failedBefore": "Source header leak, and dashed lines through the graph."
+    },
+    {
+      "id": "answer-key-wrap",
+      "sheetId": "871fe90d52a04673a7d30fc039e4bf2e",
+      "grade": "9",
+      "topic": "29",
+      "level": "c",
+      "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "4ד", "5א", "5ב", "5ג", "5ד", "6א", "6ב", "6ג", "6ד", "7א", "7ב", "7ג", "7ד", "8ד"],
+      "pages": [3],
+      "failedBefore": "Answer key wrap on straddle page 3: a unit or word landed on the next label."
+    }
+  ]
+}

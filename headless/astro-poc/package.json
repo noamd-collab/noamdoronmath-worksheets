@@ -15,6 +15,7 @@
     "test": "node scripts/run-tests.mjs",
     "test:unit": "node scripts/run-tests.mjs --unit",
     "catalog:measure": "node scripts/build-teacher-catalog.mjs",
+    "print:regression": "node scripts/print-regression.mjs",
     "test:live-ssr": "node scripts/run-tests.mjs --live-ssr",
     "refresh:catalog": "node scripts/refresh-catalog-snapshot.mjs refresh",
     "check:catalog": "node scripts/refresh-catalog-snapshot.mjs check",
