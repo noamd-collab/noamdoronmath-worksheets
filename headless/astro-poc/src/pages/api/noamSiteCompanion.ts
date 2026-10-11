@@ -7,6 +7,7 @@
 import type { APIRoute } from 'astro';
 import { NOAM_RECAPTCHA_SECRET_KEY, QWEN_API_KEY } from 'astro:env/server';
 import catalog from '../../data/catalog.v1.json';
+import guide from '../../data/site-guide.v1.json';
 import teacherIndex from '../../data/teacher-pick-index.json';
 import {
   NOAM_RECAPTCHA_SECRET_NAME,
@@ -40,6 +41,7 @@ async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
     origin: context.request.headers.get('origin') || '',
     clientIp: clientIpOf(context),
     catalog,
+    guide,
     teacherIndex,
     fetch: globalThis.fetch.bind(globalThis),
   });

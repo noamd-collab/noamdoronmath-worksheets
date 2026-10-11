@@ -4,7 +4,7 @@
  * qwen3.8-flash is called server-side. This module never reads a key from the browser.
  */
 import { fetchWithTimeout } from "./bot-guard.js";
-import { retrieveRecords } from "./retrieve.js";
+import { retrieveGuide, retrieveRecords } from "./retrieve.js";
 
 export const QWEN_CHAT_URL =
   "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions";
@@ -15,7 +15,7 @@ export const QWEN_TIMEOUT_MS = 12_000;
 export const FALLBACK_TEXT =
   "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
 export const MISSING_TEXT =
-  "לא מצאתי חומר תואם בקטלוג המאומת של האתר. לא המצאתי דף או שאלה.";
+  "לא מצאתי דף תואם. באיזו כיתה ובאיזה נושא לחפש?";
 export const RAMZI_TEXT =
   "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
 export const EXPORT_NOTE =
@@ -29,7 +29,8 @@ export const SYSTEM_PROMPT = [
   "אתה נועם AI, המלווה של האתר. אתה לא רמזי.",
   "רמזי נותן רמזים ושרטוט לשאלה בדף עבודה. אסור לך לתת רמז, פתרון, תשובה סופית או שרטוט.",
   "התפקיד שלך: להבין צורך, לבחור רק מתוך הרשומות שסופקו, להסביר איפה ללחוץ, ולכוון לדפים קיימים.",
-  "אסור להמציא דף, שאלה, מספר סעיף או כתובת. אם אין רשומה מתאימה, אמור שהנתון חסר.",
+  "כל רשומה מציינת מה יש בה, למי היא, ואיך משתמשים. הסבר רק מתוך השדות האלה.",
+  "אסור להמציא דף, שאלה, מספר סעיף, מספר שאלות, תשובה, משחק או כתובת. אם אין רשומה מתאימה, אמור שהנתון חסר.",
   "החזר JSON בלבד בלי טקסט מסביב:",
   '{"answer":"משפט קצר","details":"פירוט קצר","primaryRecordId":"id","chipRecordIds":["id"]}',
   "answer הוא משפט ניווט אחד. chipRecordIds מכיל לכל היותר שניים. בלי כתובות URL. אל תמציא סעיפים חיוניים.",
@@ -139,7 +140,7 @@ function exportNoteFor(input) {
 function linkOf(record) {
   return {
     recordId: record.id,
-    title: record.gradeLabel + " · " + record.title + " · " + record.levelLabel,
+    title: [record.gradeLabel, record.title, record.levelLabel].filter(Boolean).join(" · "),
     href: record.href,
     grade: record.grade,
     level: record.levelKey,
@@ -174,23 +175,22 @@ export function buildUserPrompt(input, records) {
   const page = safe.page || {};
   const teacherInput = { message: safe.message, teacher: safe.teacher, page: safe.page };
   const lines = records.map((record) => {
-    return (
-      record.id +
-      " | " +
-      record.gradeLabel +
-      " | " +
-      record.title +
-      " | " +
-      record.levelLabel +
-      " | " +
-      (record.description || "")
-    );
+    return [
+      record.id,
+      record.type || "worksheet",
+      record.gradeLabel || "",
+      record.title || "",
+      record.levelLabel || "",
+      clip(record.contains || record.description || "", 220),
+      clip(record.audience || "", 120),
+      clip(record.how || "", 220),
+    ].join(" | ");
   });
   return [
     "עמוד נוכחי: " + (page.kind || "other") + " " + (page.path || "") + " " + (page.title || ""),
     "בקשת המשתמש: " + String(safe.message || ""),
     "הקשר מורה: " + teacherQuery(teacherInput),
-    "רשומות מאומתות בלבד:",
+    "רשומות מאומתות. שדות: id | type | grade | title | level | contains | audience | how",
     lines.join("\n"),
   ].join("\n");
 }
@@ -214,7 +214,7 @@ function stripUnknownUrls(text, allowed) {
 function actionFrom(record) {
   return {
     id: record.id,
-    label: record.gradeLabel + " · " + record.title,
+    label: [record.gradeLabel, record.title].filter(Boolean).join(" · "),
     href: record.href,
   };
 }
@@ -283,7 +283,9 @@ export async function handleCompanionTurn(input, options) {
   }
   if (isRoleQuestion(message)) return roleAnswer(safe);
   const query = teacherQuery(safe) || (safe.page && safe.page.title) || "";
-  const records = retrieveRecords(settings.catalog, query, 6);
+  const records = settings.guide
+    ? retrieveGuide(settings.guide, query, 6)
+    : retrieveRecords(settings.catalog, query, 6);
   if (!records.length) {
     return emptyResult("catalog-gap", MISSING_TEXT, safe);
   }

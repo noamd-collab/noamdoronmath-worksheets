@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { companionPanelSize } from '../../../noam-ai/site-companion/panel-size.js';
-import { retrieveRecords } from '../../../noam-ai/site-companion/retrieve.js';
+import { retrieveGuide, retrieveRecords } from '../../../noam-ai/site-companion/retrieve.js';
 import {
   FALLBACK_TEXT,
   ROLE_TEXT,
@@ -30,6 +30,9 @@ import { runCompanionTurn } from '../../../noam-ai/site-companion/endpoint.js';
 
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
+);
+const guide = JSON.parse(
+  readFileSync(new URL('../src/data/site-guide.v1.json', import.meta.url), 'utf8')
 );
 
 describe('Noam AI panel size', () => {
@@ -75,6 +78,51 @@ describe('Noam AI catalog grounding', () => {
     assert.equal(result.source, 'catalog-gap');
     assert.equal(result.links.length, 0);
     assert.match(result.text, /לא מצאתי/);
+    assert.match(result.text, /באיזו כיתה/);
+  });
+});
+
+describe('Noam AI site manual', () => {
+  it('covers repo pages and keeps worksheet counts on the real PDF', () => {
+    assert.equal(guide.counts.worksheet, 956);
+    assert.equal(guide.counts.topic, 95);
+    assert.equal(guide.counts.hub, 9);
+    assert.equal(guide.counts.blog, 68);
+    assert.equal(guide.counts.game, 1);
+    assert.ok(guide.counts.page >= 10);
+    assert.equal(guide.manifestMatches, 449);
+    const sheet = guide.records.find((row) => row.id === 'g9-t2-a');
+    assert.ok(sheet);
+    assert.equal(sheet.levelLabel, 'רמה א׳');
+    assert.match(sheet.contains, /20 שאלות/);
+    assert.match(sheet.contains, /70 תרגילים/);
+    assert.match(sheet.href, /6a37fe7160324a17ad107b3dbe43c1db/);
+    assert.match(sheet.how, /הורדה \/ הדפסה/);
+    assert.equal(sheet.contains.includes('alg'), false);
+    const topic = guide.records.find((row) => row.href === '/factoring-grade-9');
+    assert.match(topic.contains, /בדקו את עצמכם/);
+    assert.match(topic.how, /רמה א׳ מתאימה לביסוס/);
+    assert.equal(topic.contains.includes('(x−3)(x+3)'), false);
+    const teachers = guide.records.find((row) => row.href === '/teachers');
+    assert.match(teachers.how, /כיתה, נושא ומטרת השיעור/);
+    assert.match(teachers.audience, /מרחב למורה/);
+    assert.ok(guide.records.some((row) => row.type === 'game' && row.href === '/games/kefel-mekutsar-2'));
+  });
+
+  it('retrieves a real factoring page and does not call the model when nothing matches', async () => {
+    const rows = retrieveGuide(guide, 'כיתה ט׳ פירוק לגורמים', 6);
+    assert.ok(rows.length > 0);
+    assert.ok(rows.every((row) => row.grade === 9));
+    assert.ok(rows.some((row) => row.href.includes('6a37fe7160324a17ad107b3dbe43c1db') || row.href === '/factoring-grade-9'));
+    let called = 0;
+    const result = await handleCompanionTurn(
+      { message: 'xxxxqqqq yyyywwww', page: { kind: 'home', path: '/', title: 'בית' } },
+      { guide, catalog, apiKey: 'test', fetch: async () => { called += 1; throw new Error('should not call'); } }
+    );
+    assert.equal(called, 0);
+    assert.equal(result.source, 'catalog-gap');
+    assert.equal(result.links.length, 0);
+    assert.match(result.text, /באיזו כיתה/);
   });
 });
 
@@ -265,6 +313,17 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('document.querySelector("dialog[open]")'));
     assert.equal(client.includes('input.focus();\n          engage("typing")'), false);
     assert.equal(client.includes('סימון וחיתוך של דף המקור עדיין לא ממומשים'), false);
+    assert.ok(client.includes('function thinkingLabel(seconds)'));
+    assert.ok(client.includes('return "חושב…";'));
+    assert.ok(client.includes('return "חושב… 1 שנייה";'));
+    assert.ok(client.includes('return "חושב… " + seconds + " שניות";'));
+    assert.ok(client.includes('aria-live="polite"'));
+    assert.ok(client.includes('#noam-site-companion-thinking .noam-think-dots i{animation:none;opacity:1}'));
+    assert.ok(client.includes('button.disabled = true'));
+    assert.ok(client.includes('clearInterval(thinkTimer)'));
+    assert.ok(client.includes('showThinking();'));
+    const thinkAt = client.indexOf('showThinking();');
+    assert.ok(solveAt > 0 && thinkAt > solveAt);
   });
 });
 

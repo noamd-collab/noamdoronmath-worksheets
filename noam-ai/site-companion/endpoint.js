@@ -195,6 +195,7 @@ export async function runCompanionTurn(payload, deps) {
   }
   const result = await handleCompanionTurn(payload, {
     catalog: settings.catalog,
+    guide: settings.guide,
     apiKey: settings.qwenKey,
     fetch: settings.fetch,
     timeoutMs: settings.qwenTimeoutMs,
