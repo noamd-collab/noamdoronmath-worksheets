@@ -647,7 +647,7 @@ insert into public.noam_learning_worksheets (worksheet_id) values
 ('g7-t48-a'),
 ('g7-t48-b'),
 ('g7-t48-c'),
-('g7-t16-one'),
+('g7-t16-a'),
 ('g7-t49-a'),
 ('g7-t49-b'),
 ('g7-t49-c'),

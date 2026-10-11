@@ -201,8 +201,9 @@ describe('teacher catalog picker', () => {
   it('reaches every catalog sheet for every grade in the picker', () => {
     const fromCatalog = catalogSheets();
     const fromPicker = indexSheets();
-    // Grade 8 and 9 teacher sheets stay on the pre-v2 PDFs until the rebuild after PR 95.
+    // Grades 7–9 teacher sheets stay on the pre-v2 PDFs until the rebuild after PR 95.
     // Grade 8 also drops the two new c2 sheets. Topics 56–60 stay one-sheet.
+    // G7-T16 stays the old single sheet.
     const g8SingleLag: Record<number, string> = {
       56: '2d8795a2be0241038adc0b4aab74680d',
       57: '48a794452e1846119fddd0e5d91da524',
@@ -218,9 +219,17 @@ describe('teacher catalog picker', () => {
         .filter((row) => row.old_media_id)
         .map((row) => [row.new_media_id, row.old_media_id as string])
     );
+    const g7OldByNew = oldByNew('./fixtures/g7-pdf-v2-replace.json');
     const g8OldByNew = oldByNew('./fixtures/g8-pdf-v2-replace.json');
     const g9OldByNew = oldByNew('./fixtures/g9-pdf-v2-replace.json');
     const expectedPicker = fromCatalog.flatMap((sheet) => {
+      if (sheet.grade === 7) {
+        if (sheet.pdfId === '2462413929e84600b5e47e24ca1340c1') {
+          return [{ ...sheet, level: 'one', pdfId: '7d8f7aa1d3c743f896c9ddddb943355e' }];
+        }
+        const oldId = g7OldByNew.get(sheet.pdfId);
+        return [oldId ? { ...sheet, pdfId: oldId } : sheet];
+      }
       if (sheet.grade === 8) {
         if (sheet.level === 'c2') return [];
         const lagged = g8SingleLag[sheet.topicId];

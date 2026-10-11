@@ -29,7 +29,7 @@ describe('same-origin static manifests (HEADLESS-MIGRATION-13)', () => {
     assert.ok(provenance.sourceOfTruth.path.includes('noam-ai/manifests'));
     // Representative ids from prior migration samples / catalog.
     for (const id of [
-      '91def8012efb44c9bdd092522fa576d6', // G7-T08 a
+      '12038ea80e88490eab29d10f1ae08804', // G7-T08 a (PDF v2)
       'b62b8ffe166e46a5ba3f8bea511bafb8', // G8-T02 a (PDF v2)
       'ec49833022f345f88360f3f5d4a7ab92', // G9-T02 a (PDF v2)
     ]) {
