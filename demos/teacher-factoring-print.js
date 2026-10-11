@@ -1968,6 +1968,16 @@ function answerBox(items, questionNumber, part) {
             lineTop: label.y + Math.max(label.h || 0, 11) + 2,
           };
         }
+        // "· ד. כל" leaves the word כל alone on the label line. The sentence continues below.
+        if (String(label.rest || '').trim() === 'כל') {
+          const edge = Math.min(slotLeft, label.x);
+          slot = {
+            left: edge,
+            right: edge,
+            lineBottom: label.y - 1,
+            lineTop: label.y + Math.max(label.h || 0, 11) + 2,
+          };
+        }
       }
     } else if (labels.length) {
       const mentioned = items.some((item) => (
@@ -3034,6 +3044,30 @@ function leftFigureBoxes(bitmap, y0, y1) {
       }
     });
     if (maxX <= minX) return;
+    // The left-column scan stops at 0.33. Follow the same stroke past that edge.
+    const gapPx = Math.max(4, Math.round(width * 0.016));
+    const limitX = Math.min(width - 2, Math.floor(width * 0.45));
+    const link = 3;
+    let seeds = [];
+    for (let y = low; y <= high; y += 1) {
+      if (barRow[y - top]) continue;
+      if (dark(maxX, y)) seeds.push(y);
+    }
+    let last = maxX;
+    let miss = 0;
+    for (let x = maxX + 1; x <= limitX && seeds.length; x += 1) {
+      const next = [];
+      for (let y = low; y <= high; y += 1) {
+        if (barRow[y - top] || !dark(x, y)) continue;
+        if (seeds.some((seed) => Math.abs(seed - y) <= link)) next.push(y);
+      }
+      if (next.length) {
+        seeds = next;
+        last = x;
+        miss = 0;
+      } else if (++miss > gapPx) break;
+    }
+    maxX = last;
     boxes.push({
       x0: minX / width,
       x1: (maxX + 1) / width,
@@ -3194,27 +3228,139 @@ function figureIsSentence(figure, rows) {
   return covered > height * 0.55;
 }
 
-function lineMasksFor(box, rows, hideSpans) {
+function expandedFigures(figures, pad) {
+  const gap = pad == null ? 0.02 : pad;
+  return (figures || []).filter((figure) => figure && figure.x1 > figure.x0 + 0.008 && figure.y1 > figure.y0 + 0.012).map((figure) => ({
+    x0: Math.max(0, figure.x0 - gap),
+    x1: Math.min(1, figure.x1 + gap),
+    y0: Math.max(0, figure.y0 - gap),
+    y1: Math.min(1, figure.y1 + gap),
+  }));
+}
+
+function figureLabel(item, figures) {
+  const text = String(item && item.str || '').trim();
+  if (!text || text.length > 14) return false;
+  const w = item.w || 0;
+  if (w > 0.1) return false;
+  const cx = (item.x || 0) + w * 0.5;
+  const cy = (item.y || 0) + Math.max(item.h || 0.012, 0.008) * 0.45;
+  return expandedFigures(figures).some((figure) => {
+    const gapX = cx < figure.x0 ? figure.x0 - cx : cx > figure.x1 ? cx - figure.x1 : 0;
+    const gapY = cy < figure.y0 ? figure.y0 - cy : cy > figure.y1 ? cy - figure.y1 : 0;
+    return gapX < 0.03 && gapY < 0.022;
+  });
+}
+
+/**
+ * A white band may cross a drawing. Keep the drawing: split the band into the
+ * pieces that sit above, below, and to either side of each figure.
+ * The previous question's house is not in this list, so its digit stays covered.
+ */
+function carveMasks(masks, box, figures) {
+  const regions = expandedFigures(figures, 0.034);
+  if (!box || !(box.h > 0) || !regions.length) return (masks || []).filter(Boolean);
+  const bw = box.w || 1;
+  const bx = box.x || 0;
+  let pieces = (masks || []).filter(Boolean);
+  regions.forEach((figure) => {
+    const next = [];
+    pieces.forEach((mask) => {
+      if (!mask) return;
+      const abs = {
+        x0: bx + mask.x * bw,
+        x1: bx + (mask.x + mask.w) * bw,
+        y0: box.y + mask.y * box.h,
+        y1: box.y + (mask.y + mask.h) * box.h,
+      };
+      const overlapX = Math.min(abs.x1, figure.x1) - Math.max(abs.x0, figure.x0);
+      const overlapY = Math.min(abs.y1, figure.y1) - Math.max(abs.y0, figure.y0);
+      if (overlapX < 0.004 || overlapY < 0.003) {
+        next.push(mask);
+        return;
+      }
+      const push = (x0, x1, y0, y1) => {
+        if (x1 - x0 < 0.008 || y1 - y0 < 0.003) return;
+        const rx = (x0 - bx) / bw;
+        const rw = (x1 - x0) / bw;
+        const ry = (y0 - box.y) / box.h;
+        const rh = (y1 - y0) / box.h;
+        if (rw < 0.004 || rh < 0.002) return;
+        next.push({
+          ...mask,
+          x: Math.max(0, rx),
+          w: Math.min(1 - Math.max(0, rx), rw),
+          y: Math.max(0, ry),
+          h: Math.min(1 - Math.max(0, ry), rh),
+        });
+      };
+      if (figure.y0 - abs.y0 > 0.003) push(abs.x0, abs.x1, abs.y0, Math.min(abs.y1, figure.y0));
+      if (abs.y1 - figure.y1 > 0.003) push(abs.x0, abs.x1, Math.max(abs.y0, figure.y1), abs.y1);
+      const midY0 = Math.max(abs.y0, figure.y0);
+      const midY1 = Math.min(abs.y1, figure.y1);
+      if (figure.x0 - abs.x0 > 0.008) push(abs.x0, Math.min(abs.x1, figure.x0), midY0, midY1);
+      if (abs.x1 - figure.x1 > 0.008) push(Math.max(abs.x0, figure.x1), abs.x1, midY0, midY1);
+    });
+    pieces = next;
+  });
+  return pieces;
+}
+
+function lineMasksFor(box, rows, hideSpans, figures, items) {
   const masks = [];
   if (!box || !(box.h > 0) || !rows || !hideSpans) return masks;
   const x0 = box.x || 0;
   const bw = box.w || 1;
-  rows.forEach((row) => {
-    const mid = row.y + row.h * 0.45;
-    if (mid < box.y + 0.002 || mid > box.y + box.h - 0.002) return;
-    if (!hideSpans.some(([low, high]) => mid >= low - 0.002 && mid < high + 0.002)) return;
-    const left = Math.max(x0, row.x - 0.008);
-    const right = Math.min(x0 + bw, row.x + row.w + 0.01);
-    if (right - left < 0.02) return;
-    const top = Math.max(box.y, row.y - 0.002);
-    const bot = Math.min(box.y + box.h, row.y + Math.max(row.h, 0.012) + 0.003);
-    if (bot - top < 0.006) return;
+  const regions = expandedFigures(figures);
+  const pushMask = (left, right, top, bot) => {
+    left = Math.max(x0, left);
+    right = Math.min(x0 + bw, right);
+    top = Math.max(box.y, top);
+    bot = Math.min(box.y + box.h, bot);
+    if (right - left < 0.012 || bot - top < 0.006) return;
     masks.push({
       x: (left - x0) / bw,
       w: (right - left) / bw,
       y: (top - box.y) / box.h,
       h: (bot - top) / box.h,
       role: 'line',
+    });
+  };
+  rows.forEach((row) => {
+    const mid = row.y + row.h * 0.45;
+    if (mid < box.y + 0.002 || mid > box.y + box.h - 0.002) return;
+    if (!hideSpans.some(([low, high]) => mid >= low - 0.002 && mid < high + 0.002)) return;
+    const top = row.y - 0.002;
+    const bot = row.y + Math.max(row.h, 0.012) + 0.003;
+    const hits = regions.some((figure) => {
+      const overlapY = Math.min(bot, figure.y1) - Math.max(top, figure.y0);
+      if (overlapY < 0.004) return false;
+      const overlapX = Math.min(row.x + row.w, figure.x1) - Math.max(row.x, figure.x0);
+      return overlapX > 0.004;
+    });
+    const onRow = (item) => {
+      const iy = item.y || 0;
+      const ih = Math.max(item.h || 0.012, 0.008);
+      if (iy > row.y + Math.max(row.h, 0.012) + 0.006) return false;
+      if (iy + ih < row.y - 0.006) return false;
+      const ix = item.x || 0;
+      const iw = Math.max(item.w || 0, 0.008);
+      return !(ix + iw < row.x - 0.012 || ix > row.x + row.w + 0.012);
+    };
+    const keepsLabel = items && items.some((item) => onRow(item) && figureLabel(item, figures));
+    if ((!hits && !keepsLabel) || !items || !items.length) {
+      pushMask(row.x - 0.008, row.x + row.w + 0.01, top, bot);
+      return;
+    }
+    items.forEach((item) => {
+      const text = String(item.str || '').trim();
+      if (!text) return;
+      if (!onRow(item)) return;
+      const ix = item.x || 0;
+      const iw = Math.max(item.w || 0, 0.008);
+      if (ix + iw < row.x - 0.012 || ix > row.x + row.w + 0.012) return;
+      if (figureLabel(item, figures)) return;
+      pushMask(ix - 0.004, ix + iw + 0.006, Math.min(top, (item.y || row.y) - 0.002), Math.max(bot, (item.y || row.y) + Math.max(item.h || row.h, 0.012) + 0.003));
     });
   });
   return masks;
@@ -3240,8 +3386,7 @@ function punchMasks(masks, box, y0, y1) {
 
 /**
  * Dashed writing lines are a few pixels tall and run across the text column.
- * Whitening that thin row removes a dash that crosses a drawing, and leaves
- * the drawing's own strokes, which are not a dash in the text column.
+ * The mask is the full width here; carveMasks then keeps the part that crosses a drawing.
  */
 function maskWritingRules(bitmap, box, spans) {
   if (!bitmap || !box || !(box.h > 0) || !spans || !spans.length || typeof bitmap.getContext !== 'function') return [];
@@ -3299,6 +3444,69 @@ function maskWritingRules(bitmap, box, spans) {
       } else flush(y);
     }
   });
+  return masks;
+}
+
+/**
+ * A writing bar sometimes leaves a short grey tick in the left margin.
+ * Whiten that tick. A stroke inside a figure is carved back out afterwards.
+ */
+function maskMarginTicks(bitmap, box) {
+  if (!bitmap || !box || !(box.h > 0) || typeof bitmap.getContext !== 'function') return [];
+  const width = bitmap.width;
+  const height = bitmap.height;
+  if (!(width > 8) || !(height > 8)) return [];
+  let data;
+  try {
+    data = bitmap.getContext('2d').getImageData(0, 0, width, height).data;
+  } catch (error) {
+    return [];
+  }
+  const yA = Math.max(0, Math.floor(box.y * height));
+  const yB = Math.min(height - 1, Math.ceil((box.y + box.h) * height));
+  const xL = Math.floor(width * 0.05);
+  const xR = Math.floor(width * 0.12);
+  if (xR - xL < 4) return [];
+  const grey = (x, y) => {
+    const i = (y * width + x) * 4;
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
+    const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
+    return mx < 230 && mx - mn < 24;
+  };
+  const masks = [];
+  let run = 0;
+  let runStart = yA;
+  const flush = (end) => {
+    if (run >= 1 && run <= 3) {
+      const absY = runStart / height;
+      const absH = Math.max(1, end - runStart) / height;
+      masks.push({
+        x: 0.04,
+        w: 0.09,
+        y: Math.max(0, (absY - box.y) / box.h),
+        h: Math.min(1, (absH + 0.001) / box.h),
+        role: 'margin',
+      });
+    }
+    run = 0;
+  };
+  for (let y = yA; y <= yB + 1; y += 1) {
+    let n = 0;
+    let samples = 0;
+    if (y <= yB) {
+      for (let x = xL; x < xR; x += 1) {
+        samples += 1;
+        if (grey(x, y)) n += 1;
+      }
+    }
+    if (y <= yB && samples && n / samples > 0.35) {
+      if (!run) runStart = y;
+      run += 1;
+    } else flush(y);
+  }
   return masks;
 }
 
@@ -3445,14 +3653,14 @@ function layoutQuestionCrops(model) {
       });
     }
     if (!coverAll && numberHere) {
-      const low = Math.max(y0, questionTop - 0.004);
       const high = Math.min(y1, earlierEnd);
-      if (high - low > 0.006) {
+      if (high - y0 > 0.006) {
+        // From the top of this band, so a previous house's legs cannot peek above the number.
         masks.push({
           x: 0,
           w: 0.38,
-          y: (low - y0) / height,
-          h: (high - low) / height,
+          y: 0,
+          h: Math.min(1, (high - y0) / height),
           role: 'prev-figure',
         });
       }
@@ -3462,9 +3670,10 @@ function layoutQuestionCrops(model) {
       const hide = hidden.slice();
       if (questionTop != null) hide.push([0, questionTop - 0.004]);
       if (questionBot != null) hide.push([questionBot, 1]);
-      lineMasksFor({ x: 0, y: y0, w: 1, h: height }, rows, hide).forEach((mask) => masks.push(mask));
+      lineMasksFor({ x: 0, y: y0, w: 1, h: height }, rows, hide, figures, model.items).forEach((mask) => masks.push(mask));
     }
-    boxes.push({ kind: 'row', page, box: { x: 0, y: y0, w: 1, h: height, masks } });
+    const box = { x: 0, y: y0, w: 1, h: height, masks: carveMasks(masks, { x: 0, y: y0, w: 1, h: height }, figures) };
+    boxes.push({ kind: 'row', page, box, figures });
   };
   foreign.forEach((figure) => {
     const y0 = Math.max(0, figure.y0 - 0.004);
@@ -3600,6 +3809,7 @@ function rebuildQuestionGroup(group, texts) {
     labels,
     figures,
     rows,
+    items: pageItems,
     questionTop: questionMark ? questionMark.y - 0.006 : null,
     questionBot: nextMark ? nextMark.y - 0.004 : null,
     earlierEnd: swallowed ? earlierEnd : 0,
@@ -3616,8 +3826,10 @@ function rebuildQuestionGroup(group, texts) {
   });
   boxes.forEach((entry) => {
     const rules = maskWritingRules(sample.bitmap, entry.box, hiddenSpans);
-    if (!rules.length) return;
-    entry.box = { ...entry.box, masks: (entry.box.masks || []).concat(rules) };
+    const ticks = maskMarginTicks(sample.bitmap, entry.box);
+    const masks = carveMasks((entry.box.masks || []).concat(rules, ticks), entry.box, figures);
+    entry.box = { ...entry.box, masks };
+    entry.figures = figures;
   });
   const lead = group[0].slice.gap;
   return boxes.map((entry, index) => {
@@ -3627,6 +3839,7 @@ function rebuildQuestionGroup(group, texts) {
       page: entry.page,
       gap: index ? 4 : lead,
       box: entry.box,
+      figures: entry.figures || figures,
     };
     const made = { slice: nextSlice, bitmap: sample.bitmap };
     syncSliceMetrics(made);
@@ -3690,13 +3903,13 @@ function polishQuestionSlice(item, items) {
       });
       // A drawing under the wording is taller than this. Only the grey stub above the first part goes.
       if (textBottom > nextBox.y + 0.008 && nextBox.y + nextBox.h - textBottom < 0.02) {
-        cutBox(Math.min(partRow.y - 0.003, textBottom + 0.006));
+        cutBox(Math.min(partRow.y - 0.003, textBottom + 0.004));
       }
     }
   }
   if (mine && mine.y > nextBox.y + 0.004 && mine.y < nextBox.y + nextBox.h - 0.004) {
     const lineTop = mine.y - 0.003;
-    const lineBot = mine.y + mine.h + 0.004;
+    const lineBot = mine.y + mine.h + 0.008;
     const covered = nextBox.masks.some((mask) => {
       if ((mask.role !== 'swallowed' && mask.role !== 'sibling') || mask.x > 0.5) return false;
       const top = nextBox.y + mask.y * nextBox.h;
@@ -3708,8 +3921,8 @@ function polishQuestionSlice(item, items) {
       nextBox.masks.push({
         x: 0,
         w: 0.38,
-        y: Math.max(0, (lineTop - nextBox.y) / nextBox.h),
-        h: Math.min(1, (lineBot - lineTop) / nextBox.h),
+        y: 0,
+        h: Math.min(1, (Math.min(nextBox.y + nextBox.h, lineBot) - nextBox.y) / nextBox.h),
         role: 'prev-figure',
       });
     }
@@ -3728,11 +3941,17 @@ function polishQuestionSlice(item, items) {
       hide.push([partRow.y - 0.003, Math.min(nextBox.y + nextBox.h, partRow.y + Math.max(partRow.h, 0.012) + 0.004)]);
     }
   }
-  textRows(items).length && lineMasksFor(nextBox, textRows(items), hide).forEach((mask) => nextBox.masks.push(mask));
-  const rules = maskWritingRules(item.bitmap, nextBox, hide);
-  if (rules.length) nextBox.masks = nextBox.masks.concat(rules);
+  const rows = textRows(items);
+  let figures = slice.figures || [];
+  if (!figures.length && item.bitmap) {
+    figures = leftFigureBoxes(item.bitmap, Math.max(0, nextBox.y - 0.012), Math.min(1, nextBox.y + nextBox.h + 0.012))
+      .filter((figure) => !figureIsSentence(figure, rows));
+  }
+  if (rows.length) lineMasksFor(nextBox, rows, hide, figures, items).forEach((mask) => nextBox.masks.push(mask));
+  const rules = maskWritingRules(item.bitmap, nextBox, hide).concat(maskMarginTicks(item.bitmap, nextBox));
+  nextBox.masks = carveMasks(nextBox.masks.concat(rules), nextBox, figures);
   if (!nextBox.masks.length) delete nextBox.masks;
-  return { ...item, slice: { ...slice, box: nextBox } };
+  return { ...item, slice: { ...slice, box: nextBox, figures } };
 }
 
 function polishQuestionCrops(measured, texts) {

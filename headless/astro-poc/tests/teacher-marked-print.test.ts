@@ -580,6 +580,16 @@ describe('teacher catalog picker', () => {
       return contY >= top && contY <= bot;
     });
     assert.equal(maskedCont, false);
+    const kolY = (842 - (360 + 6)) / 842;
+    const kolX = (40 + 20) / 595;
+    const kolMasked = (wrappedSlice.box.masks || []).some((mask) => {
+      const top = wrappedSlice.box.y + mask.y * wrappedSlice.box.h;
+      const bot = top + mask.h * wrappedSlice.box.h;
+      const left = wrappedSlice.box.x + mask.x * wrappedSlice.box.w;
+      const right = left + mask.w * wrappedSlice.box.w;
+      return kolY >= top - 0.002 && kolY <= bot + 0.002 && kolX >= left - 0.01 && kolX <= right + 0.01;
+    });
+    assert.ok(kolMasked, 'the stranded כל on the label line is covered ' + JSON.stringify(wrappedSlice.box));
     const trimApi = new Function(`${preview.slice(preview.indexOf('function sliceInkRows'), preview.indexOf('async function measureWorksheet'))} return { trimPieceBox };`)() as {
       trimPieceBox: (slice: { kind: string; page: number; box: { x: number; y: number; w: number; h: number }; source?: { footerCrop?: { page: number; y: number }; headerCrop?: { page: number; y: number; h: number } } }, bitmap: { width: number; height: number; getContext: (kind: string) => { getImageData: (x: number, y: number, w: number, h: number) => { data: Uint8ClampedArray } } }) => { box: { y: number; h: number } };
     };
@@ -1265,6 +1275,11 @@ describe('teacher catalog picker', () => {
         { y: 0.33, h: 0.016, x: 0.5, w: 0.32, text: 'הסעיף שלי.ב' },
         { y: 0.52, h: 0.016, x: 0.2, w: 0.6, text: 'השאלה הבאה לגמרי' },
       ],
+      items: [
+        { str: '40', x: 0.12, y: 0.21, w: 0.03, h: 0.014 },
+        { str: 'A', x: 0.16, y: 0.212, w: 0.02, h: 0.012 },
+        { str: 'שורה שנמשכת שמאלה', x: 0.4, y: 0.21, w: 0.42, h: 0.014 },
+      ],
       parts: [
         { id: 'א', part: 'א', page: 1, stem: { y: 0.1, h: 0.04, page: 1 }, row: { y: 0.2, h: 0.08, page: 1 }, labelLine: { y: 0.2, page: 1 } },
         { id: 'ב', part: 'ב', page: 1, stem: { y: 0.1, h: 0.04, page: 1 }, row: { y: 0.32, h: 0.06, page: 1 }, labelLine: { y: 0.32, page: 1 } },
@@ -1278,7 +1293,8 @@ describe('teacher catalog picker', () => {
     const inside = (y) => hidden.some((entry) => y > entry.box.y && y < entry.box.y + entry.box.h);
     assert.equal(inside(0.52), false, 'next question ' + JSON.stringify(hidden));
     assert.ok(inside(0.25), 'the drawing beside the hidden line stays');
-    assert.ok(covered(0.12, 0.218), 'left end of the hidden line ' + JSON.stringify(hidden));
+    assert.equal(covered(0.12, 0.218), false, 'a figure label stays ' + JSON.stringify(hidden));
+    assert.equal(covered(0.17, 0.218), false, 'a vertex letter stays');
     assert.ok(covered(0.7, 0.218), 'right end of the hidden line');
     assert.equal(covered(0.6, 0.118), false, 'stem stays visible');
     const glued = api.layoutQuestionCrops({
@@ -1368,9 +1384,11 @@ describe('teacher catalog picker', () => {
     const sheets = fileURLToPath(new URL('../public/teachers/sheets/', import.meta.url));
     const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
     const body = preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'));
-    const cropApi = new Function(`${preview.slice(preview.indexOf('function leftFigureBoxes'), preview.indexOf('async function measureWorksheet'))} return { layoutQuestionCrops, polishQuestionSlice, questionMarks, textRows, figureIsSentence, questionNumberOf, rowPart };`)() as {
-      layoutQuestionCrops: (model: { page: number; parts: { id: string; part: string; page: number; row: { y: number; h: number; page?: number }; stem?: { y: number; h: number; page?: number }; labelLine?: { y: number; page?: number } }[]; picked: string[]; labels: { part: string; y: number }[]; figures: { x0: number; x1: number; y0: number; y1: number }[]; earlierEnd: number; rows?: { y: number; h: number; x: number; w: number; text: string }[]; questionTop?: number | null; questionBot?: number | null }) => { kind?: string; page?: number; box: { y: number; h: number; masks?: { x: number; w: number; y: number; h: number; role?: string }[] } }[];
-      polishQuestionSlice: (item: { slice: { kind: string; block: string; page: number; box: { x?: number; y: number; w?: number; h: number; mask?: { x: number; w: number; y: number; h: number; role?: string }; masks?: { x: number; w: number; y: number; h: number; role?: string }[] } }; bitmap?: null }, items: { str: string; x: number; y: number; w: number; h: number }[]) => { slice: { box: { y: number; h: number; masks?: { x: number; w: number; y: number; h: number; role?: string }[] } } };
+    const cropApi = new Function(`${preview.slice(preview.indexOf('function leftFigureBoxes'), preview.indexOf('async function measureWorksheet'))} return { layoutQuestionCrops, polishQuestionSlice, questionMarks, textRows, figureIsSentence, questionNumberOf, rowPart, carveMasks, maskWritingRules };`)() as {
+      layoutQuestionCrops: (model: { page: number; parts: { id: string; part: string; page: number; row: { y: number; h: number; page?: number }; stem?: { y: number; h: number; page?: number }; labelLine?: { y: number; page?: number } }[]; picked: string[]; labels: { part: string; y: number }[]; figures: { x0: number; x1: number; y0: number; y1: number }[]; earlierEnd: number; rows?: { y: number; h: number; x: number; w: number; text: string }[]; items?: { str: string; x: number; y: number; w: number; h: number }[]; questionTop?: number | null; questionBot?: number | null }) => { kind?: string; page?: number; figures?: { x0: number; x1: number; y0: number; y1: number }[]; box: { y: number; h: number; masks?: { x: number; w: number; y: number; h: number; role?: string }[] } }[];
+      polishQuestionSlice: (item: { slice: { kind: string; block: string; page: number; figures?: { x0: number; x1: number; y0: number; y1: number }[]; box: { x?: number; y: number; w?: number; h: number; mask?: { x: number; w: number; y: number; h: number; role?: string }; masks?: { x: number; w: number; y: number; h: number; role?: string }[] } }; bitmap?: { width: number; height: number; getContext: () => { getImageData: () => { data: Uint8ClampedArray } } } | null }, items: { str: string; x: number; y: number; w: number; h: number }[]) => { slice: { box: { y: number; h: number; masks?: { x: number; w: number; y: number; h: number; role?: string }[] } } };
+      carveMasks: (masks: { x: number; w: number; y: number; h: number; role?: string }[], box: { x?: number; y: number; w?: number; h: number }, figures: { x0: number; x1: number; y0: number; y1: number }[]) => { x: number; w: number; y: number; h: number; role?: string }[];
+      maskWritingRules: (bitmap: { width: number; height: number; getContext: () => { getImageData: () => { data: Uint8ClampedArray } } } | null, box: { y: number; h: number }, spans: number[][]) => { x: number; w: number; y: number; h: number; role?: string }[];
       questionMarks: (items: { str: string; x: number; y: number; w: number; h: number }[]) => { n: number; y: number; h: number; x: number }[];
       textRows: (items: { str: string; x: number; y: number; w: number; h: number }[]) => { y: number; h: number; x: number; w: number; text: string }[];
       figureIsSentence: (figure: { x0: number; x1: number; y0: number; y1: number }, rows: { y: number; h: number; x: number; w: number }[]) => boolean;
@@ -1516,13 +1534,131 @@ for path in sorted(sheets.glob('*.json')):
                     xs = [x for x in tall if dark[low:high + 1, x].any()]
                     if not xs:
                         continue
+                    # The left-column scan stops at 0.33. Follow the same stroke past that edge.
+                    x1 = xs[-1]
+                    gap_px = max(4, int(round(w * 0.016)))
+                    limit = min(w - 2, int(w * 0.45))
+                    link = 3
+                    seed = dark[low:high + 1, x1] & ~dilated[low:high + 1]
+                    miss = 0
+                    for x in range(x1 + 1, limit + 1):
+                        if not seed.any():
+                            break
+                        near = seed.copy()
+                        near[link:] |= seed[:-link]
+                        near[:-link] |= seed[link:]
+                        col = dark[low:high + 1, x] & ~dilated[low:high + 1]
+                        hit = col & near
+                        if hit.any():
+                            seed = hit
+                            x1 = x
+                            miss = 0
+                        else:
+                            miss += 1
+                            if miss > gap_px:
+                                break
                     figures.append([
                         round(xs[0] / w, 4),
-                        round((xs[-1] + 1) / w, 4),
+                        round((x1 + 1) / w, 4),
                         round(low / h, 4),
                         round((high + 1) / h, 4),
                     ])
-        page_out[str(number)] = {'figures': figures, 'labels': labels, 'items': text_items}
+        shapes = []
+        inks = []
+        rule_ys = []
+        raw_rects = []
+        for drawing in page.get_drawings():
+            rect = drawing.get('rect')
+            if rect is None:
+                continue
+            fw = rect.width / width
+            fh = rect.height / height
+            if fw > 0.45 and fh < 0.12:
+                continue
+            if fw > 0.7 and fh < 0.08:
+                continue
+            if fw < 0.004 and fh < 0.004:
+                continue
+            raw_rects.append((rect.x0 / width, rect.y0 / height, rect.x1 / width, rect.y1 / height))
+            for item in drawing.get('items') or []:
+                kind = item[0]
+                if kind == 'l' and len(item) >= 3:
+                    p1, p2 = item[1], item[2]
+                    inks.append((((p1.x + p2.x) / 2) / width, ((p1.y + p2.y) / 2) / height))
+                elif kind == 'c' and len(item) >= 5:
+                    p0, p1, p2, p3 = item[1], item[2], item[3], item[4]
+                    t = 0.5
+                    u = 1 - t
+                    x = (u ** 3) * p0.x + 3 * (u ** 2) * t * p1.x + 3 * u * (t ** 2) * p2.x + (t ** 3) * p3.x
+                    y = (u ** 3) * p0.y + 3 * (u ** 2) * t * p1.y + 3 * u * (t ** 2) * p2.y + (t ** 3) * p3.y
+                    inks.append((x / width, y / height))
+                elif kind == 're' and len(item) >= 2:
+                    rr = item[1]
+                    inks.append((((rr.x0 + rr.x1) / 2) / width, ((rr.y0 + rr.y1) / 2) / height))
+        parent = list(range(len(raw_rects)))
+        def find(i):
+            while parent[i] != i:
+                parent[i] = parent[parent[i]]
+                i = parent[i]
+            return i
+        for i, a in enumerate(raw_rects):
+            for j in range(i):
+                b = raw_rects[j]
+                if a[2] + 0.015 < b[0] - 0.015 or b[2] + 0.015 < a[0] - 0.015:
+                    continue
+                if a[3] + 0.015 < b[1] - 0.015 or b[3] + 0.015 < a[1] - 0.015:
+                    continue
+                ra, rb = find(i), find(j)
+                if ra != rb:
+                    parent[rb] = ra
+        groups = {}
+        for i, rect in enumerate(raw_rects):
+            groups.setdefault(find(i), []).append(rect)
+        shape_bounds = []
+        for group in groups.values():
+            x0 = min(rect[0] for rect in group)
+            y0 = min(rect[1] for rect in group)
+            x1 = max(rect[2] for rect in group)
+            y1 = max(rect[3] for rect in group)
+            if x1 - x0 > 0.5 and y1 - y0 < 0.14:
+                continue
+            if x1 - x0 > 0.72:
+                continue
+            if y1 - y0 < 0.018 or x1 - x0 < 0.012:
+                continue
+            shape_bounds.append((x0, x1, y0, y1))
+        shape_bounds = shape_bounds[:24]
+        kept_inks = []
+        for x, y in inks:
+            hit = None
+            for index, (x0, x1, y0, y1) in enumerate(shape_bounds):
+                if x0 - 0.008 <= x <= x1 + 0.008 and y0 - 0.008 <= y <= y1 + 0.008:
+                    hit = index
+                    break
+            if hit is None:
+                continue
+            kept_inks.append((round(x, 4), round(y, 4), hit))
+        # A dashed writing line is a one-pixel run across the text column.
+        if number in pages_needed:
+            rule_view = dark[:, int(w * 0.42):int(w * 0.92)]
+            frac = rule_view.mean(axis=1) if rule_view.size else None
+            if frac is not None:
+                run = 0
+                for y, value in enumerate(list(frac) + [0]):
+                    if y < h and 0.1 < value < 0.78:
+                        run += 1
+                    else:
+                        if 1 <= run <= 3:
+                            rule_ys.append(round((y - run) / h, 4))
+                        run = 0
+        page_out[str(number)] = {
+            'figures': figures,
+            'labels': labels,
+            'items': text_items,
+            'shapes': [[round(x0, 4), round(x1, 4), round(y0, 4), round(y1, 4)] for x0, x1, y0, y1 in shape_bounds],
+            'inks': kept_inks[:80],
+            'rules': rule_ys[:40],
+        }
     doc.close()
     out[data['pdfId']] = {'file': path.name, 'pages': page_out, 'answers': answer_pages}
     used += 1
@@ -1537,7 +1673,7 @@ sys.stdout.write(json.dumps(out))
       maxBuffer: 80 * 1024 * 1024,
     });
     assert.equal(extracted.status, 0, extracted.stderr ? extracted.stderr.slice(-800) : '');
-    const scan = JSON.parse(extracted.stdout) as Record<string, { pages: Record<string, { figures: number[][]; labels: [string, number][]; items?: [string, number, number, number, number][] }>; answers: { page: number; w?: number; h?: number; items: [string, number, number, number, number][] }[] }>;
+    const scan = JSON.parse(extracted.stdout) as Record<string, { pages: Record<string, { figures: number[][]; labels: [string, number][]; items?: [string, number, number, number, number][]; shapes?: number[][]; inks?: number[][]; rules?: number[] }>; answers: { page: number; w?: number; h?: number; items: [string, number, number, number, number][] }[] }>;
     const dir = sheets.endsWith('/') ? sheets : sheets + '/';
     const failures: string[] = [];
     const counts: Record<string, number> = {};
@@ -1589,6 +1725,90 @@ sys.stdout.write(json.dumps(out))
         byQ.get(question.q).push(question);
       });
       const pageOf = (box, question) => (box && (box.page || question.page)) || question.page;
+      const ruleBitmaps = new Map();
+      const ruleBitmap = (pageNo, ruleYs) => {
+        const key = String(pageNo);
+        if (ruleBitmaps.has(key)) return ruleBitmaps.get(key);
+        const width = 160;
+        const height = 420;
+        const data = new Uint8ClampedArray(width * height * 4);
+        data.fill(255);
+        (ruleYs || []).forEach((y) => {
+          const py = Math.max(0, Math.min(height - 1, Math.round(Number(y) * height)));
+          for (let x = Math.floor(width * 0.42); x < Math.floor(width * 0.92); x += 1) {
+            const i = (py * width + x) * 4;
+            data[i] = data[i + 1] = data[i + 2] = 30;
+          }
+        });
+        const bitmap = { width, height, getContext: () => ({ getImageData: () => ({ data }) }) };
+        ruleBitmaps.set(key, bitmap);
+        return bitmap;
+      };
+      const pointMasked = (box, masks, x, y) => (masks || []).some((mask) => {
+        const top = box.y + mask.y * box.h;
+        const bot = top + mask.h * box.h;
+        if (y < top - 0.002 || y > bot + 0.002) return false;
+        return x >= mask.x - 0.003 && x <= mask.x + mask.w + 0.003;
+      });
+      const guardFigures = (cropList, tag) => {
+        const seen = new Set();
+        cropList.forEach((entry) => {
+          const pg = entry.page;
+          if (!pg || seen.has(pg)) return;
+          seen.add(pg);
+          const pageInfo = (info.pages || {})[String(pg)] || {};
+          const shapes = (pageInfo.shapes || []).map(([x0, x1, y0, y1]) => ({ x0, x1, y0, y1 }));
+          const onPage = cropList.filter((crop) => (crop.page || pg) === pg);
+          const included = shapes.map((shape, index) => ({ shape, index })).filter(({ shape }) => {
+            const inCrop = onPage.some((crop) => crop.box.y <= shape.y0 + 0.01 && crop.box.y + crop.box.h >= shape.y1 - 0.01);
+            if (!inCrop) return false;
+            return onPage.some((crop) => (crop.figures || []).some((figure) => {
+              const overlapX = Math.min(shape.x1, figure.x1) - Math.max(shape.x0, figure.x0);
+              const overlapY = Math.min(shape.y1, figure.y1) - Math.max(shape.y0, figure.y0);
+              return overlapX > 0.01 && overlapY > 0.012;
+            }));
+          });
+          if (!included.length) return;
+          const bitmap = ruleBitmap(pg, pageInfo.rules || []);
+          const painted = onPage.map((crop) => {
+            const figures = crop.figures || [];
+            const rules = (pageInfo.rules || []).length ? cropApi.maskWritingRules(bitmap, crop.box, [[crop.box.y, crop.box.y + crop.box.h]]) : [];
+            const masks = cropApi.carveMasks((crop.box.masks || []).concat(rules), crop.box, figures);
+            return { box: crop.box, masks };
+          });
+          const visible = (x, y) => painted.some((crop) => y > crop.box.y + 0.002 && y < crop.box.y + crop.box.h - 0.002 && !pointMasked(crop.box, crop.masks, x, y));
+          included.forEach(({ shape }) => {
+            onPage.forEach((crop) => {
+              (crop.figures || []).forEach((figure) => {
+                const overlapX = Math.min(shape.x1, figure.x1) - Math.max(shape.x0, figure.x0);
+                const overlapY = Math.min(shape.y1, figure.y1) - Math.max(shape.y0, figure.y0);
+                if (overlapX < 0.01 || overlapY < 0.012) return;
+                (pageInfo.items || []).forEach((item) => {
+                  const text = String(item[0] || '').trim();
+                  if (!text || text.length > 14 || item[3] > 0.1) return;
+                  if (/נועם|מתמטיקה|זכויות|עמוד/.test(text)) return;
+                  const cx = item[1] + item[3] * 0.5;
+                  const cy = item[2] + item[4] * 0.45;
+                  if (cx < figure.x0 - 0.02 || cx > figure.x1 + 0.02 || cy < figure.y0 - 0.016 || cy > figure.y1 + 0.016) return;
+                  if (cy <= crop.box.y + 0.002 || cy >= crop.box.y + crop.box.h - 0.002) return;
+                  if (!visible(cx, cy)) push('fig-text', `${file.slice(0, 8)} ${tag} "${text.slice(0, 16)}" y=${cy.toFixed(3)}`);
+                });
+              });
+            });
+          });
+          (pageInfo.inks || []).forEach((sample) => {
+            const shape = shapes[sample[2]];
+            if (!shape) return;
+            if (!included.some((one) => one.shape === shape)) return;
+            const x = sample[0];
+            const y = sample[1];
+            const inFigure = onPage.some((crop) => (crop.figures || []).some((figure) => x >= figure.x0 - 0.01 && x <= figure.x1 + 0.01 && y >= figure.y0 - 0.01 && y <= figure.y1 + 0.01));
+            if (!inFigure) return;
+            if (!onPage.some((crop) => y > crop.box.y + 0.002 && y < crop.box.y + crop.box.h - 0.002)) return;
+            if (!visible(x, y)) push('fig-ink', `${file.slice(0, 8)} ${tag} x=${x.toFixed(3)} y=${y.toFixed(3)}`);
+          });
+        });
+      };
       Object.values(info.pages || {}).forEach((pageInfo) => {
         (pageInfo.items || []).forEach((item) => {
           if (item[1] < 0.75) return;
@@ -1700,10 +1920,10 @@ sys.stdout.write(json.dumps(out))
           const polishSlice = (slice) => {
             if (!pageItems.length) return slice;
             const polished = cropApi.polishQuestionSlice({
-              slice: { kind: slice.kind || 'row', block: 'q' + question.q, page, box: slice.box },
+              slice: { kind: slice.kind || 'row', block: 'q' + question.q, page, box: slice.box, figures: slice.figures || relevant },
               bitmap: null,
             }, pageItems);
-            return { ...slice, box: polished.slice.box };
+            return { ...slice, box: polished.slice.box, figures: slice.figures || relevant };
           };
           if (!picked.length || (!swallowed && !uncovered && !(laterPick && questionMark && !numberIn))) {
             group.slices.forEach((slice) => crops.push(polishSlice(slice)));
@@ -1717,6 +1937,7 @@ sys.stdout.write(json.dumps(out))
             labels,
             figures: relevant,
             rows,
+            items: pageItems,
             questionTop: questionMark ? questionMark.y - 0.006 : null,
             questionBot,
             earlierEnd: swallowed ? earlierEnd : 0,
@@ -1735,7 +1956,25 @@ sys.stdout.write(json.dumps(out))
               if (covers(boxes, y, true)) push('foreign', `${file.slice(0, 8)} ${question.id} shows ${item.id}`);
             });
           }
+          if (question.id === siblings[0].id && onPage.length >= 3) {
+            const pair = [onPage[0].id, onPage[onPage.length - 1].id];
+            const multiBoxes = layoutQuestionCrops({
+              page,
+              parts: onPage,
+              picked: pair,
+              labels,
+              figures: relevant,
+              rows,
+              items: pageItems,
+              questionTop: questionMark ? questionMark.y - 0.006 : null,
+              questionBot,
+              earlierEnd: swallowed ? earlierEnd : 0,
+            });
+            const multiCrops = (multiBoxes.length ? multiBoxes : group.slices).map((entry) => polishSlice(entry));
+            guardFigures(multiCrops, question.id + '+');
+          }
         });
+        guardFigures(crops, question.id);
         const page = pageOf(question.row, question);
         const line = question.line > 0 ? question.line : 0.026;
         const stem = question.stem;
@@ -1854,7 +2093,10 @@ sys.stdout.write(json.dumps(out))
             if (mine && mid >= mine.y - 0.008 && mid < stemBot) return;
             if (mid >= ownTopY && mid < ownBotY) return;
             const left = item.x + Math.min(0.012, (item.w || 0.02) * 0.25);
-            if (shownAt(left, mid)) push('leak', `${file.slice(0, 8)} ${question.id} shows "${text.slice(0, 28)}" y=${mid.toFixed(3)}`);
+            const host = (pageFigures.get(page) || []).find((figure) => left >= figure.x0 - 0.028 && left <= figure.x1 + 0.028 && mid >= figure.y0 - 0.02 && mid <= figure.y1 + 0.02);
+            const past = host ? host.x1 + 0.04 : left;
+            const leaked = host ? item.x + (item.w || 0) > past + 0.008 && shownAt(past, mid) : shownAt(left, mid);
+            if (leaked) push('leak', `${file.slice(0, 8)} ${question.id} shows "${text.slice(0, 28)}" y=${mid.toFixed(3)}`);
           });
         }
         if (watch) {
@@ -1932,6 +2174,8 @@ sys.stdout.write(json.dumps(out))
     assert.equal(counts.foreign || 0, 0, ofKind('foreign'));
     assert.equal(counts.leak || 0, 0, JSON.stringify(counts) + '\n' + ofKind('leak'));
     assert.equal(counts['stem-text'] || 0, 0, ofKind('stem-text'));
+    assert.equal(counts['fig-text'] || 0, 0, ofKind('fig-text'));
+    assert.equal(counts['fig-ink'] || 0, 0, ofKind('fig-ink'));
     assert.ok(styles.paren > 500, 'question numbers (N) ' + JSON.stringify(styles));
     assert.ok(styles.dot > 100, 'question numbers N. ' + JSON.stringify(styles));
     assert.ok(parts > 20000, String(parts));
