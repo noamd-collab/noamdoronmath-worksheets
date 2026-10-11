@@ -6,9 +6,11 @@
   if (window.__noamSiteCompanion) return;
   window.__noamSiteCompanion = true;
 
-  var API_BASE = "https://amiramnoam.wixstudio.com/my-site-2/_functions";
+  var API_BASE = "/api";
   var API = API_BASE + "/noamSiteCompanion";
   var FALLBACK = "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
+  var TEACHER_QUIET = "נועם AI עוד לא פעיל. אפשר להמשיך לבחור ולהדפיס.";
+  var SITE_FONT = "Heebo,'Arial Hebrew',Arial,sans-serif";
   var EXPORT_NOTE = "במקרה פירוק לגורמים לכיתה ט׳ רמה א׳, אפשר לסמן את השאלות שנבחרו על דף המקור המלא, או להדפיס דף מצומצם שנחתך מאותו מקור עם ההוראה והנוסח המקוריים.";
   var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
   var SOLVE_REQUEST = /רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
@@ -135,18 +137,26 @@
     return pageKind() === "worksheet" && SOLVE_REQUEST.test(String(message || ""));
   }
 
+  function forceSiteFont(scope) {
+    if (!scope || !scope.style) return;
+    scope.style.setProperty("font-family", SITE_FONT, "important");
+    var nodes = scope.querySelectorAll("*");
+    for (var i = 0; i < nodes.length; i++) nodes[i].style.setProperty("font-family", SITE_FONT, "important");
+  }
+
   var style = document.createElement("style");
   style.textContent = [
-    "#noam-site-companion{position:fixed;z-index:9990;right:8px;bottom:8px;left:auto;font-family:Heebo,Arial,sans-serif;color:#22305a}",
+    "#noam-site-companion{position:fixed;z-index:9990;right:8px;bottom:8px;left:auto;font-family:" + SITE_FONT + ";color:#22305a}",
     "#noam-site-companion-launch{width:48px;height:48px;padding:4px;border:2px solid #22305a;border-radius:16px 6px 18px 7px;background:#2a7c7a;box-shadow:3px 3px 0 #e6a534;cursor:pointer}",
     "#noam-site-companion-launch img{width:32px;height:32px;display:block;border-radius:50%;background:#fff}",
     "#noam-site-companion-panel :focus-visible{outline:3px solid #1e605e;outline-offset:2px}",
-    "#noam-site-companion-panel{display:flex;flex-direction:column;gap:6px;box-sizing:border-box;overflow:auto;background:#fbfaf5;color:#22305a;border:2px solid #22305a;border-radius:16px 6px 18px 7px;box-shadow:3px 3px 0 #e6a534;padding:8px;font-size:16px;line-height:1.35;direction:rtl;text-align:right}",
+    "#noam-site-companion-panel{display:flex;flex-direction:column;gap:6px;box-sizing:border-box;overflow:auto;background:#fbfaf5;color:#22305a;border:2px solid #22305a;border-radius:16px 6px 18px 7px;box-shadow:3px 3px 0 #e6a534;padding:8px;font-size:16px;line-height:1.35;font-family:" + SITE_FONT + ";direction:rtl;text-align:right}",
     "#noam-site-companion-panel[hidden]{display:none!important}",
     "#noam-site-companion-panel header{display:flex;align-items:center;gap:6px;flex:none}",
     "#noam-site-companion-panel header img{width:24px;height:24px;flex:none;border-radius:50%;background:#fff}",
-    "#noam-site-companion-panel h2{margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 16px/1.3 Heebo,Arial,sans-serif}",
-    "#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input{font:700 16px/1.3 Heebo,Arial,sans-serif}",
+    "#noam-site-companion-panel h2{margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;font-size:16px;line-height:1.3;font-family:" + SITE_FONT + "}",
+    "#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input,#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}",
+    "#noam-site-companion-panel h2,#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input{font-weight:700;font-size:16px;line-height:1.3}",
     "#noam-site-companion-close,#noam-ai-expand,#noam-ai-collapse{box-sizing:border-box;min-width:44px;min-height:44px;height:44px;border:2px solid #22305a;border-radius:10px;background:#fff;color:#22305a;padding:4px 8px;cursor:pointer}",
     "#noam-site-companion-close{width:44px;padding:0;flex:none}",
     "#noam-site-companion-answer{margin:0;flex:none;font-size:16px;line-height:1.35;min-height:1.35em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}",
@@ -203,6 +213,7 @@
     "html.noam-ai-engaged,html.noam-ai-engaged body,#noam-site-companion-panel{scroll-behavior:auto;transition:none;animation:none}",
     "}",
     "@media print{#noam-site-companion,#noam-site-companion-panel{display:none!important}html.noam-ai-engaged{display:block!important;height:auto!important;overflow:visible!important}html.noam-ai-engaged body{max-height:none!important;overflow:visible!important}}",
+    "#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + "!important}",
   ].join("");
   document.head.appendChild(style);
 
@@ -235,6 +246,7 @@
     '<button type="submit" aria-label="שליחה">שליחה</button></form>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
+  forceSiteFont(root);
 
   var answerEl = document.getElementById("noam-site-companion-answer");
   var primaryEl = document.getElementById("noam-site-companion-primary");
@@ -276,14 +288,24 @@
     ];
   }
 
+  function sendChip(label) {
+    if (pageKind() === "teachers" && window.NoamTeacherChat && typeof window.NoamTeacherChat.turn === "function") {
+      window.NoamTeacherChat.turn(label);
+      return;
+    }
+  }
+
   function appendChip(item) {
     if (!item) return;
-    if (item.goal) {
+    if (item.goal || item.reply || (!item.href && item.label)) {
       var button = document.createElement("button");
       button.type = "button";
       button.textContent = item.label;
       button.addEventListener("click", function () {
-        document.dispatchEvent(new CustomEvent("noam-teacher-option", { detail: { goal: item.goal } }));
+        if (item.goal) {
+          document.dispatchEvent(new CustomEvent("noam-teacher-option", { detail: { goal: item.goal } }));
+        }
+        if (pageKind() === "teachers") sendChip(item.label);
       });
       chipsEl.appendChild(button);
       return;
@@ -295,10 +317,11 @@
     chipsEl.appendChild(link);
   }
 
-  function setChips(items) {
+  function setChips(items, extras) {
     chipsEl.textContent = "";
-    (items || []).slice(0, 2).forEach(appendChip);
-    if (pageKind() === "teachers") teacherGoalChips().forEach(appendChip);
+    (items || []).slice(0, 6).forEach(appendChip);
+    (extras || []).forEach(appendChip);
+    forceSiteFont(panel);
   }
 
   function showIdle() {
@@ -318,7 +341,7 @@
         primaryEl.href = links[0].href;
         primaryEl.textContent = links[0].label;
       }
-      setChips(links.slice(1, 3));
+      setChips(links.slice(1, 3), pageKind() === "teachers" ? teacherGoalChips() : []);
     }
     var details = "נועם AI מכוון לדפים קיימים. עזרה בפתרון שאלה נמצאת אצל רמזי.";
     if (pageKind() === "teachers") details += "\n" + EXPORT_NOTE;
@@ -343,8 +366,13 @@
       ramziEl.hidden = true;
     }
     setChips((result && result.chips) || []);
-    detailsEl.textContent = (result && result.details) || answerEl.textContent;
-    moreEl.hidden = !detailsEl.textContent;
+    var details = result && typeof result.details === "string" ? result.details : "";
+    if (answerEl.textContent && details.indexOf(answerEl.textContent) === 0) {
+      details = details.slice(answerEl.textContent.length).replace(/^\s+/, "");
+    }
+    if (details === answerEl.textContent) details = "";
+    detailsEl.textContent = details;
+    moreEl.hidden = !details;
     if (mode === "compact") fitCompact();
   }
 
@@ -597,10 +625,39 @@
     return botClientPromise;
   }
 
+  function showTurn(result) {
+    if (mode === "closed") setMode("compact");
+    engage("teacher");
+    showResult(result);
+    input.value = "";
+  }
+
+  function askTeachers(message) {
+    if (window.NoamTeacherChat && typeof window.NoamTeacherChat.turn === "function") {
+      window.NoamTeacherChat.turn(message);
+      return true;
+    }
+    return false;
+  }
+
+  document.addEventListener("noam-companion-ask", function (event) {
+    var message = event.detail && event.detail.message;
+    if (!message || pageKind() !== "teachers") return;
+    if (mode === "closed") setMode("compact");
+    engage("teacher");
+    askTeachers(message);
+  });
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     var message = input.value.trim();
     if (!message || streaming) return;
+    if (pageKind() === "teachers" && askTeachers(message)) {
+      input.value = "";
+      if (mode === "closed") setMode("compact");
+      engage("teacher");
+      return;
+    }
     if (isLocalSolve(message)) {
       showResult({ answer: RAMZI_TEXT, details: RAMZI_TEXT, primary: { action: "ramzi", label: "עזרה מרמזי" }, chips: [] });
       return;
@@ -618,8 +675,12 @@
       showResult(result);
     }).catch(function (error) {
       streaming = false;
-      var text = (error && error.message) || FALLBACK;
       var teacher = pageKind() === "teachers";
+      var reason = (error && (error.code || error.message)) || "UNKNOWN";
+      if (window.console && typeof window.console.warn === "function") {
+        window.console.warn("NOAM_PANEL_FAILED", String(reason).slice(0, 160));
+      }
+      var text = TEACHER_QUIET;
       showResult({
         answer: text,
         details: teacher ? text + "\n" + EXPORT_NOTE : text,
@@ -644,4 +705,5 @@
   showIdle();
   placeLauncher();
   window.requestAnimationFrame(placeLauncher);
+  window.NoamSiteCompanion = { show: showTurn };
 })();

@@ -7,6 +7,14 @@
 import { fetchWithTimeout } from "./bot-guard.js";
 import { QWEN_CHAT_URL, QWEN_MODEL, QWEN_TIMEOUT_MS } from "./companion.js";
 import { buildCatalogRecords } from "./retrieve.js";
+import {
+  clarifyTeacherQuestion,
+  describeSelection,
+  nextTeacherQuestion,
+  partLabelsInText,
+  readTeacherBrief,
+  selectByBrief,
+} from "../../headless/astro-poc/public/teachers/teacher-brief.js";
 
 export const CLASSIFIER_MAX_TOKENS = 300;
 export const MAX_PICKED_EXERCISES = 6;
@@ -23,8 +31,6 @@ export const CLASSIFIER_SYSTEM = [
   "exerciseLabels רק מספרים שהמורה כתב, בצורת 1א או 2ב.",
   "wantsSheet הוא true כשהמורה ביקש דף, נושא או רמה בלי סעיף מסוים.",
 ].join("\n");
-
-const LABEL_RE = /(\d{1,2})\s*([\u05D0-\u05EA])/g;
 
 function clip(value, max) {
   const text = String(value || "");
@@ -48,16 +54,20 @@ function messageOf(input) {
 }
 
 export function labelsInText(value) {
-  const found = [];
-  const seen = new Set();
-  const source = String(value || "");
-  for (const match of source.matchAll(LABEL_RE)) {
-    const label = match[1] + match[2];
-    if (seen.has(label)) continue;
-    seen.add(label);
-    found.push(label);
-  }
-  return found;
+  return partLabelsInText(value);
+}
+
+export function briefFromInput(input, classification) {
+  const teacher = teacherOf(input);
+  const classified = classification || {};
+  const said = readTeacherBrief([messageOf(input), teacher.note].join(" "));
+  const formLevel = levelOrEmpty(teacher.level) || levelOrEmpty(classified.level);
+  const levels = said.levels.length ? said.levels.slice() : (formLevel ? [formLevel] : []);
+  return readTeacherBrief([messageOf(input), teacher.note, teacher.gradeLabel].join(" "), {
+    grade: numberOrNull(teacher.grade) || numberOrNull(classified.grade),
+    topicId: /^\d{1,6}$/.test(teacher.topic) ? String(teacher.topic) : "",
+    levels: levels,
+  });
 }
 
 export function normalizeLabel(value) {
@@ -147,13 +157,15 @@ export function selectTeacherPicks(index, input, classification) {
   const grade = numberOrNull(teacher.grade) || numberOrNull(classified.grade);
   const topicId = /^\d{1,6}$/.test(teacher.topic) ? String(teacher.topic) : "";
   const level = levelOrEmpty(teacher.level) || levelOrEmpty(classified.level);
+  const saidLevels = readTeacherBrief(messageOf(input) + " " + teacher.note).levels;
+  const levelGate = saidLevels.length ? saidLevels : (level ? [level] : []);
   const queryTokens = tokens(
     [messageOf(input), teacher.topicLabel, teacher.note, teacher.gradeLabel, classified.topicQuery].join(" ")
   );
   let pool = rows.filter((sheet) => {
     if (grade && Number(sheet.grade) !== grade) return false;
     if (topicId && String(sheet.topicId) !== topicId) return false;
-    if (level && String(sheet.level) !== level) return false;
+    if (levelGate.length && levelGate.indexOf(String(sheet.level)) === -1) return false;
     return true;
   });
   if (!topicId) {
@@ -163,8 +175,25 @@ export function selectTeacherPicks(index, input, classification) {
       .sort((a, b) => b.score - a.score || a.sheet.grade - b.sheet.grade);
     pool = ranked.map((row) => row.sheet);
   }
+  const brief = briefFromInput(input, classified);
+  const asked = labelsInText(messageOf(input) + " " + teacher.note);
+  if (!asked.length && nextTeacherQuestion(brief)) {
+    return {
+      band: grade && grade <= 6 ? "elementary" : "middle",
+      exerciseIds: [],
+      sheetIds: [],
+      sheets: [],
+      ask: nextTeacherQuestion(brief),
+    };
+  }
   if (!pool.length) {
-    return { band: grade && grade <= 6 ? "elementary" : "middle", exerciseIds: [], sheetIds: [], sheets: [] };
+    return {
+      band: grade && grade <= 6 ? "elementary" : "middle",
+      exerciseIds: [],
+      sheetIds: [],
+      sheets: [],
+      ask: clarifyTeacherQuestion(rows, brief),
+    };
   }
   const band = pool[0].band === "elementary" || Number(pool[0].grade) <= 6 ? "elementary" : "middle";
   if (band === "elementary") {
@@ -176,8 +205,7 @@ export function selectTeacherPicks(index, input, classification) {
       sheets: chosenSheets,
     };
   }
-  const asked = labelsInText(messageOf(input) + " " + teacher.note);
-  if (asked.length) {
+  if (asked.length && !brief.minParts && !brief.minQuestions) {
     const exerciseIds = [];
     const used = new Set();
     for (const sheet of pool) {
@@ -195,15 +223,11 @@ export function selectTeacherPicks(index, input, classification) {
     );
     return { band, exerciseIds, sheetIds: [], sheets: pickedSheets };
   }
-  const sheet = pool[0];
-  const labels = (sheet.questions || []).slice(0, DEFAULT_MIDDLE_EXERCISES);
-  if (!labels.length) return { band, exerciseIds: [], sheetIds: [], sheets: [] };
-  return {
-    band,
-    exerciseIds: labels.map((label) => "ex:" + sheet.pdfId + ":" + label),
-    sheetIds: [],
-    sheets: [sheet],
-  };
+  const picked = selectByBrief(pool, brief);
+  if (!picked.exerciseIds.length) {
+    return { band, exerciseIds: [], sheetIds: [], sheets: [], ask: clarifyTeacherQuestion(rows, brief) };
+  }
+  return picked;
 }
 
 export function hrefForSheet(sheet, catalog) {
@@ -213,7 +237,11 @@ export function hrefForSheet(sheet, catalog) {
   return sheet.pdfUrl || "";
 }
 
-export function describePicks(pick) {
+export function describePicks(pick, brief) {
+  if (brief) {
+    const text = describeSelection(brief, pick);
+    if (text) return text;
+  }
   const sheets = pick.sheets || [];
   if (!sheets.length) return "";
   const place = sheets
