@@ -5,6 +5,7 @@ import { companionPanelSize } from '../../../noam-ai/site-companion/panel-size.j
 import { retrieveRecords } from '../../../noam-ai/site-companion/retrieve.js';
 import {
   FALLBACK_TEXT,
+  ROLE_TEXT,
   MAX_PAGE_PATH_CHARS,
   MAX_PAGE_TITLE_CHARS,
   MAX_TEACHER_NOTE_CHARS,
@@ -12,6 +13,7 @@ import {
   SOLVE_REQUEST_SOURCE,
   SYSTEM_PROMPT,
   handleCompanionTurn,
+  isRoleQuestion,
   isWorksheetSolveRequest,
   qwenRequestBody,
 } from '../../../noam-ai/site-companion/companion.js';
@@ -24,6 +26,7 @@ import {
   pruneRateStore,
 } from '../../../noam-ai/site-companion/bot-guard.js';
 import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
+import { runCompanionTurn } from '../../../noam-ai/site-companion/endpoint.js';
 
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
@@ -175,6 +178,32 @@ describe('Noam AI model role', () => {
     assert.equal(isWorksheetSolveRequest('worksheet', 'איך פותרים את שאלה 3?'), true);
   });
 
+  it('answers what Noam AI does without calling the model', async () => {
+    assert.equal(isRoleQuestion('במה אתה עוזר לי באתר?'), true);
+    assert.equal(isRoleQuestion('פירוק לגורמים לכיתה ט'), false);
+    let called = 0;
+    const result = await handleCompanionTurn(
+      { message: 'במה אתה עוזר לי באתר?', page: { kind: 'home', path: '/', title: 'בית' } },
+      { catalog, apiKey: 'server-side', fetch: async () => { called += 1; throw new Error('should not call'); } }
+    );
+    assert.equal(called, 0);
+    assert.equal(result.ok, true);
+    assert.equal(result.source, 'role');
+    assert.equal(result.answer, ROLE_TEXT);
+    assert.match(result.answer, /דפי עבודה/);
+    assert.match(result.answer, /תרגילים שכבר כתובים/);
+    assert.equal(result.links.length, 0);
+    assert.equal(result.chips.length, 0);
+    assert.equal(result.model, null);
+    const teacher = await runCompanionTurn(
+      { message: 'במה אתה עוזר לי באתר?', page: { kind: 'teachers', path: '/teachers', title: 'מורים' } },
+      { catalog, apiKey: 'server-side', fetch: async () => { called += 1; throw new Error('should not call'); } }
+    );
+    assert.equal(called, 0);
+    assert.equal(teacher.answer, ROLE_TEXT);
+    assert.equal(teacher.source, 'role');
+  });
+
   it('returns the safe fallback when the model call fails', async () => {
     const result = await handleCompanionTurn(
       { message: 'פירוק לגורמים', page: { kind: 'topic', path: '/factoring-grade-9', title: 'פירוק' } },
@@ -218,6 +247,12 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-xtight #noam-site-companion-form{padding-inline-end:0}'));
     assert.ok(client.includes('#noam-site-companion-panel.is-compact.is-tight.has-answer #noam-site-companion-form{padding-inline-end:0}'));
     assert.ok(client.includes('#noam-site-companion-answer{font-size:16px;-webkit-line-clamp:1;min-height:0;box-sizing:border-box;padding-inline-end:46px}'));
+    assert.ok(client.includes('var SITE_FONT = "Heebo,\'Arial Hebrew\',Arial,sans-serif"'));
+    assert.ok(client.includes('font-family:" + SITE_FONT + "'));
+    assert.ok(client.includes('#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}"'));
+    assert.ok(client.includes('#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}"'));
+    assert.ok(client.includes('noam-bot-client.js?v=20260921-diagnostics1'));
+    assert.ok(client.includes('setProperty("font-family", SITE_FONT, "important")'));
     assert.ok(client.includes('אחר'));
     assert.ok(client.includes('noam-teacher-option'));
     assert.ok(client.includes('document.querySelector("dialog[open]")'));
@@ -274,6 +309,49 @@ describe('Noam AI bot guard', () => {
     pruneRateStore(stale, 2_000 + 60_000);
     assert.equal(stale.has('gone'), false);
     assert.equal(stale.has('kept'), true);
+  });
+
+  it('logs siteverify error-codes, score, hostname, and action without the secret or token', async () => {
+    const lines: string[] = [];
+    const original = console.warn;
+    console.warn = (...args: unknown[]) => {
+      lines.push(args.map((item) => String(item)).join(' '));
+    };
+    try {
+      const failed = await guardCompanionRequest(
+        {
+          origin: 'https://www.noamdoronmath.co.il',
+          clientIp: '203.0.113.40',
+          message: 'פירוק לגורמים',
+          botVerification: { provider: 'recaptcha-v3', token: 'do-not-log-token' },
+          now: 9_000,
+        },
+        {
+          store: new Map(),
+          secret: 'do-not-log-secret',
+          fetch: async () => ({
+            ok: true,
+            json: async () => ({
+              success: false,
+              score: 0.2,
+              action: 'noam_site_companion',
+              hostname: 'www.noamdoronmath.co.il',
+              'error-codes': ['invalid-input-response'],
+            }),
+          }),
+        }
+      );
+      assert.equal(failed.code, 'BOT_VERIFICATION_FAILED');
+    } finally {
+      console.warn = original;
+    }
+    const line = lines.find((item) => item.includes('NOAM_BOT_VERIFICATION_FAILED')) || '';
+    assert.match(line, /invalid-input-response/);
+    assert.match(line, /"score":0\.2/);
+    assert.match(line, /www\.noamdoronmath\.co\.il/);
+    assert.match(line, /noam_site_companion/);
+    assert.equal(line.includes('do-not-log-secret'), false);
+    assert.equal(line.includes('do-not-log-token'), false);
   });
 
   it('ships a paste-ready Wix folder with backend imports and the real catalog', () => {
