@@ -11,8 +11,8 @@
     "catalogPath": "src/data/catalog.v1.json",
     "count": 451
   },
-  "generatedAt": "2026-10-11T18:52:53.470Z",
-  "aggregateSha256": "4a99372cb58932c10fcb89bc2f618f7b12eb7b6d2c73134d078b1cfff224e305",
+  "generatedAt": "2026-10-11T18:53:36.158Z",
+  "aggregateSha256": "3e701633bd463e6af407cc64a22a40342a34b3884152f8549eec6cbf17925c36",
   "files": {
     "013ccbb6896d486090482c2b548fef6c": {
       "source": "noam-ai/manifests/013ccbb6896d486090482c2b548fef6c.json",
@@ -336,8 +336,8 @@
     },
     "2462413929e84600b5e47e24ca1340c1": {
       "source": "noam-ai/manifests/2462413929e84600b5e47e24ca1340c1.json",
-      "sha256": "066149c92c69b8a0d1b393021e2493b45903f61f040f9f897a1d71a03f83214b",
-      "bytes": 59390
+      "sha256": "dabd31ed78dc800ad45dd67dba7692a4e0c0427077a715d7c0b08f44360936b4",
+      "bytes": 57941
     },
     "261cc61968014dc182ec02202d613ab9": {
       "source": "noam-ai/manifests/261cc61968014dc182ec02202d613ab9.json",
@@ -2273,8 +2273,8 @@
   "legacyIndex": {
     "path": "public/legacy-github/index.html",
     "source": "index.html",
-    "sha256": "6772efdf02d68813980f8b6170b0a15174bfc013d972b5716cdbc01d4e569469",
-    "bytes": 185543,
+    "sha256": "860183e755453f4a671150e5561af759bc986db13feafe6f5e95f9a432306d18",
+    "bytes": 185554,
     "note": "Sibling-level discovery fallback when pa/pb/pc are incomplete; not the Astro home route."
   }
 }

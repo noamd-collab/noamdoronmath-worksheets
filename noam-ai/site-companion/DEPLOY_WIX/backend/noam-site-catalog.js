@@ -8069,7 +8069,7 @@ export const catalog = {
         },
         {
           "id": 16,
-          "title": "משולש שווה־צלעות — העמקה ורשות (גיאומטריה)",
+          "title": "משולש שווה־צלעות — העמקה ורשות",
           "description": "תכונות וסימטריה, גובה ותיכון ושאלות אתגר ורשות.",
           "group": "m06",
           "icon": "star",
@@ -8077,9 +8077,9 @@ export const catalog = {
           "levels": [
             {
               "key": "a",
-              "label": "רמה א׳",
+              "label": "העמקה ורשות",
               "pdfId": "2462413929e84600b5e47e24ca1340c1",
-              "labelSource": "default"
+              "labelSource": "topic.aLabel"
             }
           ],
           "routing": {

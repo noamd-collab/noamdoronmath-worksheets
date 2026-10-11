@@ -34,8 +34,10 @@ describe('grade 7 PDF v2 replacements', () => {
     assert.ok(grade);
     const topic = grade.topics.find((entry) => entry.noamTopicId === 'G7-T16');
     assert.ok(topic);
+    assert.equal(topic.title, 'משולש שווה־צלעות — העמקה ורשות');
     assert.equal(topic.levels.length, 1);
     assert.equal(topic.levels[0].key, 'a');
+    assert.equal(topic.levels[0].label, 'העמקה ורשות');
     assert.equal(topic.levels[0].pdfId, '2462413929e84600b5e47e24ca1340c1');
     assert.equal(topic.routing.aiHintShown, true);
   });
