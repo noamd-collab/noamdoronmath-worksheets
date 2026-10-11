@@ -983,6 +983,17 @@ describe('teacher catalog picker', () => {
     ], 1, 'ב');
     assert.ok(bet, '1ב answer');
     assert.ok(bet.x <= 366.6 && bet.x + bet.w >= 377.1, '1ב keeps the whole 13 ' + JSON.stringify(bet));
+    const trailingDot = sliceApi.answerBox([
+      { str: '2.', x: 547.7, y: 539.7, w: 8, h: 11, page: 7 },
+      { str: 'א.', x: 513.7, y: 539.7, w: 10, h: 11, page: 7 },
+      { str: 'נכונה', x: 390, y: 539.7, w: 22, h: 11, page: 7 },
+      { str: '·', x: 384.7, y: 539.7, w: 3.2, h: 11, page: 7 },
+      { str: 'ב.', x: 374.2, y: 539.7, w: 8.5, h: 11, page: 7 },
+      { str: '3.', x: 547.7, y: 500, w: 8, h: 11, page: 7 },
+    ], 2, 'א');
+    assert.ok(trailingDot, '2א answer');
+    assert.ok(trailingDot.x > 387.9, 'the separator · after the answer stays outside the crop ' + JSON.stringify(trailingDot));
+    assert.ok(trailingDot.x <= 390 && trailingDot.x + trailingDot.w > 410, JSON.stringify(trailingDot));
     assert.ok(bet.y <= 380 && bet.y + bet.h >= 392, '1ב keeps the full height of 13 ' + JSON.stringify(bet));
     assert.ok(bet.y > 366, '1ב does not take the next line ' + JSON.stringify(bet));
     const reason = sliceApi.answerBox(sheet.items, 20, 'ד');
@@ -1262,25 +1273,26 @@ describe('teacher catalog picker', () => {
     assert.ok(scale(40, 12) <= 1.3);
     assert.ok(Math.abs(scale(40, 12) - 72 / 12) > 1);
     const flowed = pack.flowAnswers([
-      { slice: { kind: 'answer' }, dh: 28, dw: 220 },
-      { slice: { kind: 'answer' }, dh: 30, dw: 240 },
-      { slice: { kind: 'answer' }, dh: 26, dw: 200 },
-      { slice: { kind: 'answer' }, dh: 40, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 28, dw: 220 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 30, dw: 240 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 26, dw: 200 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 40, dw: 800 },
     ]);
-    assert.equal(flowed[0].slice.kind, 'answer-row');
-    assert.equal(flowed[0].cells && flowed[0].cells.length, 3);
-    assert.equal(flowed[0].dh, 30);
-    assert.equal(flowed[1].cells && flowed[1].cells.length, 1);
+    assert.equal(flowed.length, 4);
+    assert.ok(flowed.every((row) => row.slice.kind === 'answer-row' && row.cells && row.cells.length === 1));
+    assert.equal(flowed[0].dh, 28);
+    assert.equal(flowed[3].dh, 40);
     const natural = pack.packWorksheet([
-      { slice: { kind: 'row', gap: 4 }, dh: 1200 },
+      { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 8 }, dh: 34 },
-      { slice: { kind: 'answer', gap: 4 }, dh: 28, dw: 220 },
-      { slice: { kind: 'answer', gap: 4 }, dh: 30, dw: 240 },
-      { slice: { kind: 'answer', gap: 4 }, dh: 26, dw: 200 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 28, dw: 220 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 30, dw: 240 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 26, dw: 200 },
     ], 0);
     assert.equal(natural.length, 1);
-    const row = natural[0].items.find((item) => item.slice.kind === 'answer-row');
-    assert.ok(row && row.cells && row.cells.length === 3);
+    const rows = natural[0].items.filter((item) => item.slice.kind === 'answer-row');
+    assert.equal(rows.length, 3);
+    assert.ok(rows.every((row) => row.cells && row.cells.length === 1));
     // A short answer key joins the previous page when it still fits at a readable size.
     const pulled = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1000 },

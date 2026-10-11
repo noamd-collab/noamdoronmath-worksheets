@@ -2119,10 +2119,63 @@ function answerBox(items, questionNumber, part) {
       if (!mentioned) return null;
     }
   }
+  // A "·" parked at the end of the answer is the next part's separator.
+  const peeled = peelEdgeMarks(items, left, right, bottom, top);
+  left = peeled.left;
+  right = peeled.right;
+  if (slot && slot.right > slot.left + 6) {
+    const line = peelEdgeMarks(items, slot.left, slot.right, slot.lineBottom, slot.lineTop);
+    slot.left = line.left;
+    slot.right = line.right;
+  }
   if (top - bottom < 8 || right - left < 6) return null;
   const box = { page: marker.page, x: left, y: bottom, w: right - left, h: top - bottom };
   if (slot) box.slot = slot;
   return box;
+}
+
+function peelEdgeMarks(items, left, right, bottom, top) {
+  const mark = (glyph) => /^[·•]+$/.test(String(glyph.str || '').replace(/\s/g, ''));
+  const hits = (items || []).filter((glyph) => {
+    if (!String(glyph.str || '').trim()) return false;
+    const gy = glyph.y || 0;
+    const gh = Math.max(glyph.h || 0, 8);
+    const gx = glyph.x || 0;
+    const gw = Math.max(glyph.w || 0, 2);
+    if (gy + gh < bottom + 0.5 || gy > top - 0.5) return false;
+    if (gx + gw < left - 0.5 || gx > right + 0.5) return false;
+    return true;
+  });
+  let guard = 0;
+  while (guard < 8) {
+    guard += 1;
+    let leftGlyph = null;
+    let rightGlyph = null;
+    hits.forEach((glyph) => {
+      const gx = glyph.x || 0;
+      const gr = gx + Math.max(glyph.w || 0, 2);
+      if (gr <= left + 0.4 || gx >= right - 0.4) return;
+      if (!leftGlyph || gx < leftGlyph.x) leftGlyph = glyph;
+      if (!rightGlyph || gr > rightGlyph.x + Math.max(rightGlyph.w || 0, 2)) rightGlyph = glyph;
+    });
+    let moved = false;
+    if (leftGlyph && mark(leftGlyph)) {
+      const next = leftGlyph.x + Math.max(leftGlyph.w || 0, 2) + 0.6;
+      if (next < right - 6) {
+        left = next;
+        moved = true;
+      }
+    }
+    if (rightGlyph && rightGlyph !== leftGlyph && mark(rightGlyph)) {
+      const next = rightGlyph.x - 0.6;
+      if (next > left + 6) {
+        right = next;
+        moved = true;
+      }
+    }
+    if (!moved) break;
+  }
+  return { left, right };
 }
 
 function markerNumber(item, items) {
@@ -4909,33 +4962,20 @@ function measureNote(note) {
 }
 
 function flowAnswers(items) {
-  const maxW = 1000 - 56;
-  const gutter = 14;
   const out = [];
-  let index = 0;
-  while (index < items.length) {
-    const item = items[index];
+  items.forEach((item) => {
     if (!item.slice || item.slice.kind !== 'answer' || !(item.dw > 0)) {
       out.push(item);
-      index += 1;
-      continue;
+      return;
     }
-    const cells = [];
-    let used = 0;
-    while (index < items.length && items[index].slice && items[index].slice.kind === 'answer' && items[index].dw > 0) {
-      const next = items[index];
-      const add = (cells.length ? gutter : 0) + next.dw;
-      if (cells.length && used + add > maxW) break;
-      cells.push(next);
-      used += add;
-      index += 1;
-    }
+    // Each answer keeps its own key line. Sharing a row put 1א beside 1ב
+    // and started 2א on the next line.
     out.push({
-      slice: { kind: 'answer-row', gap: 4, block: 'answers' },
-      dh: Math.max.apply(null, cells.map((cell) => cell.dh)),
-      cells,
+      slice: { kind: 'answer-row', gap: item.slice.gap > 0 ? item.slice.gap : 8, block: 'answers' },
+      dh: item.dh,
+      cells: [item],
     });
-  }
+  });
   return out;
 }
 
