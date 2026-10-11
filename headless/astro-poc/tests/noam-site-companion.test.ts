@@ -55,12 +55,12 @@ describe('Noam AI catalog grounding', () => {
   it('returns real factoring worksheets and no Mishbetzet sheet', () => {
     const rows = retrieveRecords(catalog, 'כיתה ט׳ פירוק לגורמים', 6);
     assert.ok(rows.length > 0);
-    assert.ok(rows.some((row) => row.pdfId === '6a37fe7160324a17ad107b3dbe43c1db'));
+    assert.ok(rows.some((row) => row.pdfId === 'dd5036296f084fb7ad7fc6c1bbb25088'));
     const blob = JSON.stringify(rows);
     assert.equal(blob.includes('משבצת'), false);
     assert.equal(blob.includes('mishbetzet'), false);
     for (const row of rows) {
-      assert.match(row.href, /6a37fe7160324a17ad107b3dbe43c1db|worksheet-viewer-noam\.html|static\.wixstatic\.com/);
+      assert.match(row.href, /dd5036296f084fb7ad7fc6c1bbb25088|worksheet-viewer-noam\.html|static\.wixstatic\.com/);
     }
   });
 
@@ -292,7 +292,7 @@ describe('Noam AI bot guard', () => {
     assert.match(paste, /from 'backend\/noam-site-companion'/);
     assert.match(paste, /export function post_noamSiteCompanion/);
     assert.match(catalogJs, /export const catalog =/);
-    assert.match(catalogJs, /6a37fe7160324a17ad107b3dbe43c1db/);
+    assert.match(catalogJs, /dd5036296f084fb7ad7fc6c1bbb25088/);
     assert.equal(catalogJs.includes('export const catalog = []') || catalogJs.includes('export const catalog =[];'), false);
   });
 });

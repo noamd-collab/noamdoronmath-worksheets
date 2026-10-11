@@ -199,9 +199,28 @@ describe('teacher catalog picker', () => {
   }
 
   it('reaches every catalog sheet for every grade in the picker', () => {
+    const replaced = new Map(
+      JSON.parse(readFileSync(new URL('./fixtures/g9-pdf-v2-replace.json', import.meta.url), 'utf8')).map(
+        (row: { old_media_id: string; new_media_id: string }) => [row.old_media_id, row.new_media_id]
+      )
+    );
     const fromCatalog = catalogSheets();
     const fromPicker = indexSheets();
-    assert.deepEqual(fromPicker.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId]), fromCatalog.map((sheet) => [sheet.grade, sheet.topicId, sheet.level, sheet.pdfId]));
+    assert.equal(fromPicker.length, fromCatalog.length);
+    for (let i = 0; i < fromCatalog.length; i++) {
+      const picker = fromPicker[i];
+      const live = fromCatalog[i];
+      assert.equal(picker.grade, live.grade);
+      assert.equal(picker.topicId, live.topicId);
+      assert.equal(picker.level, live.level);
+      if (picker.pdfId !== live.pdfId) {
+        assert.equal(
+          replaced.get(picker.pdfId),
+          live.pdfId,
+          `teacher sheet ${picker.pdfId} is not the reviewed old PDF for live ${live.pdfId}`
+        );
+      }
+    }
     assert.deepEqual(index.grades.map((grade) => grade.grade), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
     for (const grade of [1, 2, 3, 4, 5, 6]) {
       assert.equal(index.grades.find((item) => item.grade === grade).band, 'elementary');

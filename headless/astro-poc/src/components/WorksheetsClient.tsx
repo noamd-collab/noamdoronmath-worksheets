@@ -14,6 +14,7 @@ import {
   buildTopicHaystack,
   topicMatchesQuery,
 } from '../lib/search';
+import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import {
   buildWorksheetsHref,
@@ -424,7 +425,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   const jumpGrades = otherFamily(grade);
   const jumpLabel = otherFamilyJumpLabel(grade);
   const searchFamilyLabel = familySearchLabel(grade);
-  const topLevelCount = gradeEntry.topics.filter((t) => t.parent === undefined).length;
+  const topLevelCount = countRenderedTopicCards(gradeEntry, track);
   const family = schoolFamilyOf(grade);
 
   return (
