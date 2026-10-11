@@ -142,23 +142,28 @@ export function takeRateSlot(key, now, store, max) {
   return true;
 }
 
-function siteverifyLog(data) {
+export function siteverifyFields(data) {
   const body = data && typeof data === "object" ? data : {};
   const rawCodes = body["error-codes"];
   const errorCodes = Array.isArray(rawCodes)
     ? rawCodes.filter((code) => typeof code === "string" && /^[A-Za-z0-9_-]{1,64}$/.test(code)).slice(0, 8)
     : [];
-  const fields = {
+  return {
     errorCodes,
     score: typeof body.score === "number" ? body.score : null,
     hostname: typeof body.hostname === "string" ? body.hostname.slice(0, 200) : "",
     action: typeof body.action === "string" ? body.action.slice(0, 80) : "",
   };
-  console.warn("NOAM_BOT_VERIFICATION_FAILED", JSON.stringify(fields));
+}
+
+function siteverifyLog(data) {
+  console.warn("NOAM_BOT_VERIFICATION_FAILED", JSON.stringify(siteverifyFields(data)));
 }
 
 export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs }) {
-  if (!secret || typeof token !== "string" || !token || token.length > 8192) return false;
+  if (!secret || typeof token !== "string" || !token || token.length > 8192) {
+    return { passed: false, siteverify: siteverifyFields(null) };
+  }
   const body = new URLSearchParams({ secret: secret, response: token });
   let response;
   try {
@@ -170,18 +175,18 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
   } catch (error) {
     if (isOutboundTimeout(error)) throw error;
     siteverifyLog(null);
-    return false;
+    return { passed: false, siteverify: siteverifyFields(null) };
   }
   if (!response || !response.ok) {
     siteverifyLog(null);
-    return false;
+    return { passed: false, siteverify: siteverifyFields(null) };
   }
   let data;
   try {
     data = await response.json();
   } catch (error) {
     siteverifyLog(null);
-    return false;
+    return { passed: false, siteverify: siteverifyFields(null) };
   }
   const expected = action || RECAPTCHA_ACTION;
   const passed = !!(
@@ -193,7 +198,7 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
     isAllowedRecaptchaHostname(data.hostname)
   );
   if (!passed) siteverifyLog(data);
-  return passed;
+  return { passed, siteverify: siteverifyFields(data) };
 }
 
 export async function guardCompanionRequest(input, deps) {
@@ -220,9 +225,9 @@ export async function guardCompanionRequest(input, deps) {
   if (typeof message !== "string" || !message.trim() || message.length > MAX_MESSAGE_CHARS) {
     return { ok: false, status: 400, code: "MESSAGE_LENGTH" };
   }
-  let passed = false;
+  let check = { passed: false, siteverify: siteverifyFields(null) };
   try {
-    passed = await verifyRecaptcha({
+    check = await verifyRecaptcha({
       token: token,
       secret: deps.secret,
       fetch: deps.fetch,
@@ -231,8 +236,15 @@ export async function guardCompanionRequest(input, deps) {
     });
   } catch (error) {
     if (isOutboundTimeout(error)) return { ok: false, status: 200, code: "UNAVAILABLE" };
-    return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
+    return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED", siteverify: siteverifyFields(null) };
   }
-  if (!passed) return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
+  if (!check || !check.passed) {
+    return {
+      ok: false,
+      status: 403,
+      code: "BOT_VERIFICATION_FAILED",
+      siteverify: (check && check.siteverify) || siteverifyFields(null),
+    };
+  }
   return { ok: true, status: 200 };
 }

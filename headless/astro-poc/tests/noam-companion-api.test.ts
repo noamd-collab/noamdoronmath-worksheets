@@ -12,7 +12,7 @@ import {
   secretsReady,
   visitorIpFrom,
 } from '../../../noam-ai/site-companion/endpoint.js';
-import { FALLBACK_TEXT, QWEN_MODEL, QWEN_TIMEOUT_MS } from '../../../noam-ai/site-companion/companion.js';
+import { FALLBACK_TEXT, QWEN_MODEL, QWEN_TIMEOUT_MS, ROLE_TEXT } from '../../../noam-ai/site-companion/companion.js';
 import { RECAPTCHA_TIMEOUT_MS } from '../../../noam-ai/site-companion/bot-guard.js';
 import { parseClassifier, selectTeacherPicks } from '../../../noam-ai/site-companion/teacher-pick.js';
 
@@ -142,7 +142,35 @@ describe('Noam AI headless endpoint', () => {
     });
     assert.equal(qwen, 0);
     assert.equal(result.status, 403);
-    assert.equal((result.body as { code: string }).code, 'BOT_VERIFICATION_FAILED');
+    const body = result.body as { code: string; siteverify: { errorCodes: string[]; score: number; hostname: string; action: string } };
+    assert.equal(body.code, 'BOT_VERIFICATION_FAILED');
+    assert.deepEqual(body.siteverify.errorCodes, []);
+    assert.equal(body.siteverify.score, 0.1);
+    assert.equal(body.siteverify.action, 'noam_site_companion');
+    assert.equal(JSON.stringify(body).includes(RECAPTCHA), false);
+    assert.equal(JSON.stringify(body).includes('unused-token'), false);
+  });
+
+  it('answers a greeting without reCAPTCHA or a model call', async () => {
+    let called = 0;
+    const result = await post({
+      fetch: async () => {
+        called += 1;
+        return { ok: true, json: async () => ({ success: false, 'error-codes': ['invalid-input-secret'] }) };
+      },
+      payload: {
+        message: 'הי במה אתה יכול לעזור לי?',
+        page: { kind: 'home', path: '/', title: 'בית' },
+        botVerification: { provider: 'recaptcha-v3', token: 'unused-token' },
+      },
+    });
+    assert.equal(called, 0);
+    assert.equal(result.status, 200);
+    const body = result.body as { ok: boolean; source: string; answer: string; model: string | null };
+    assert.equal(body.ok, true);
+    assert.equal(body.source, 'role');
+    assert.equal(body.answer, ROLE_TEXT);
+    assert.equal(body.model, null);
   });
 
   it('classifies with Qwen Flash and returns only an existing middle-school exercise', async () => {
@@ -345,7 +373,7 @@ describe('Noam AI headless endpoint', () => {
         store,
         fetch,
         payload: {
-          message: 'שלום',
+          message: 'פירוק לגורמים',
           page: { kind: 'home', path: '/', title: 'בית' },
           botVerification: { provider: 'recaptcha-v3', token: 'same-token' },
         },
@@ -357,7 +385,7 @@ describe('Noam AI headless endpoint', () => {
       store,
       fetch,
       payload: {
-        message: 'שלום',
+        message: 'פירוק לגורמים',
         page: { kind: 'home', path: '/', title: 'בית' },
         botVerification: { provider: 'recaptcha-v3', token: 'same-token' },
       },
@@ -368,7 +396,7 @@ describe('Noam AI headless endpoint', () => {
       store,
       fetch,
       payload: {
-        message: 'שלום',
+        message: 'פירוק לגורמים',
         page: { kind: 'home', path: '/', title: 'בית' },
         botVerification: { provider: 'recaptcha-v3', token: 'other-token' },
       },
@@ -382,7 +410,7 @@ describe('Noam AI headless endpoint', () => {
         fetch,
         noIpGlobalMax: 3,
         payload: {
-          message: 'שלום',
+          message: 'פירוק לגורמים',
           page: { kind: 'home', path: '/', title: 'בית' },
           botVerification: { provider: 'recaptcha-v3', token: 'global-' + i },
         },
@@ -395,7 +423,7 @@ describe('Noam AI headless endpoint', () => {
       fetch,
       noIpGlobalMax: 3,
       payload: {
-        message: 'שלום',
+        message: 'פירוק לגורמים',
         page: { kind: 'home', path: '/', title: 'בית' },
         botVerification: { provider: 'recaptcha-v3', token: 'global-next' },
       },

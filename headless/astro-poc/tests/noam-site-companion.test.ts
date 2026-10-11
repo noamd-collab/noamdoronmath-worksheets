@@ -180,6 +180,13 @@ describe('Noam AI model role', () => {
 
   it('answers what Noam AI does without calling the model', async () => {
     assert.equal(isRoleQuestion('במה אתה עוזר לי באתר?'), true);
+    assert.equal(isRoleQuestion('הי במה אתה יכול לעזור לי?'), true);
+    assert.equal(isRoleQuestion('שלום'), true);
+    assert.equal(isRoleQuestion('הי'), true);
+    assert.equal(isRoleQuestion('במה אתה יכול לעזור'), true);
+    assert.equal(isRoleQuestion('מה אתה עושה'), true);
+    assert.equal(isRoleQuestion('הי יש דף שברים לכיתה ג'), false);
+    assert.equal(isRoleQuestion('איך פותרים את שאלה 4?'), false);
     assert.equal(isRoleQuestion('פירוק לגורמים לכיתה ט'), false);
     let called = 0;
     const result = await handleCompanionTurn(
