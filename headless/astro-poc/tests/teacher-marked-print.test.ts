@@ -1259,8 +1259,8 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 400 },
     ], 0);
-    // A lone answer that would shrink below 0.6 stays on the next page.
-    assert.equal(packed.length, 2);
+    // 400px is under 40% of a page, and the combined page stays above 0.72, so it joins.
+    assert.equal(packed.length, 1);
     const readable = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 280 },
@@ -1309,8 +1309,8 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'answer', gap: 8 }, dh: 200, dw: 800 },
     ], 0);
     assert.equal(pulledAtSix.length, 1);
-    // A leftover under a quarter of a page is pulled back. A taller key that would
-    // shrink below 0.6 stays on its own page.
+    // A leftover under a quarter of a page is pulled back. An answer tail up to
+    // 40% joins too, as long as the combined page stays at 0.72. A taller key stays.
     const leftBehind = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
@@ -1340,6 +1340,12 @@ describe('teacher catalog picker', () => {
     assert.equal(stays[1].items.length, 2);
     assert.equal(stays[1].items[0].slice.block, 'q6');
     assert.equal(stays[1].items[1].slice.block, 'q6');
+    // Rounding many lines up used to leave the merged page 1px over and keep a short key behind.
+    const many = [];
+    for (let n = 0; n < 18; n += 1) many.push({ slice: { kind: 'row', gap: 4, block: 'q' + n }, dh: 62 });
+    for (let n = 0; n < 14; n += 1) many.push({ slice: { kind: 'answer', gap: 8 }, dh: 27, dw: 400 });
+    const joined = pack.packWorksheet(many, 0);
+    assert.equal(joined.length, 1);
     const tall = pack.packWorksheet([
       { slice: { kind: 'stem', gap: 10, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 2000 },
       { slice: { kind: 'row', gap: 4, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 800 },
