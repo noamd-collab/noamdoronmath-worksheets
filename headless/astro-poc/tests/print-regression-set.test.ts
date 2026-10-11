@@ -69,6 +69,7 @@ describe('print regression set', () => {
     assert.deepEqual(dalet.selection, ['19ד']);
     assert.match(dalet.failedBefore, /dashed/i);
     assert.match(dalet.failedBefore, /fragment/i);
+    assert.match(dalet.failedBefore, /dots/i);
     assert.deepEqual(part2.selection, ['1א', '1ב', '2א']);
     assert.match(part2.failedBefore, /header/i);
     assert.deepEqual(wrap.selection, straddle.selection);
@@ -77,6 +78,7 @@ describe('print regression set', () => {
     assert.equal(wrap.sheetId, straddle.sheetId);
     const descenders = caseById('clipped-descenders');
     assert.match(descenders.failedBefore, /descender/i);
+    assert.match(descenders.failedBefore, /ascender/i);
     assert.deepEqual(descenders.pages, [1, 2]);
     assert.equal(descenders.sheetId, straddle.sheetId);
     assert.deepEqual(descenders.selection, straddle.selection);

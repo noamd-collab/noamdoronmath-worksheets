@@ -612,6 +612,20 @@ describe('teacher catalog picker', () => {
       return rtlKolY >= top - 0.002 && rtlKolY <= bot + 0.002 && rtlKolX >= left - 0.01 && rtlKolX <= right + 0.01;
     });
     assert.ok(rtlMasked, 'pdf.js marks the כל token rtl, and that word is still covered ' + JSON.stringify(rtlKol && rtlKol.box));
+    const speckY = (841.89 - (343.6 - 2.2)) / 841.89;
+    const speckMasked = (rtlKol.box.masks || []).some((mask) => {
+      const top = rtlKol.box.y + mask.y * rtlKol.box.h;
+      const bot = top + mask.h * rtlKol.box.h;
+      return speckY >= top - 0.001 && speckY <= bot + 0.001;
+    });
+    assert.ok(speckMasked, 'dots under כל stay inside the label mask ' + JSON.stringify(rtlKol.box));
+    const sentenceY = (841.89 - (329.74 + 4)) / 841.89;
+    const sentenceMasked = (rtlKol.box.masks || []).some((mask) => {
+      const top = rtlKol.box.y + mask.y * rtlKol.box.h;
+      const bot = top + mask.h * rtlKol.box.h;
+      return sentenceY >= top && sentenceY <= bot;
+    });
+    assert.equal(sentenceMasked, false, 'the following answer line stays visible');
     const headerApi = new Function(`${preview.slice(preview.indexOf('function trailingSheetHeader'), preview.indexOf('async function clipClosingLine'))} return { trailingSheetHeader, clipBoxAboveSheetHeader };`)() as {
       trailingSheetHeader: (text: string) => boolean;
       clipBoxAboveSheetHeader: (box: { y: number; h: number }, items: { str: string; y: number }[]) => { y: number; h: number };
@@ -1017,9 +1031,51 @@ describe('teacher catalog picker', () => {
     dashApi.eraseWritingDashes(ruled, wide, tall, ruledRows, 0);
     assert.equal(ruled[(12 * wide + 20) * 4], 255, 'the faint dash in the figure is removed');
     assert.equal(ruled[(12 * wide + 40) * 4], 170, 'a stroke that continues above the rule stays');
+    const capsW = 200;
+    const capsH = 28;
+    const caps = new Uint8ClampedArray(capsW * capsH * 4);
+    caps.fill(255);
+    const mark = (x: number, y: number) => {
+      const i = (y * capsW + x) * 4;
+      caps[i] = caps[i + 1] = caps[i + 2] = 40;
+    };
+    for (let x = 16; x < capsW - 16; x += 8) mark(x, 4);
+    for (let y = 9; y < 20; y += 1) {
+      for (let x = 16; x < capsW - 16; x += 3) mark(x, y);
+    }
+    const capRows = dashApi.writingDashRows(caps, capsW, capsH);
+    assert.equal(capRows.includes(4), false, 'letter tops are not a writing dash ' + String(capRows));
+    // The dense short-run test matches Hebrew letter caps on the right half of the page.
+    const denseW = 400;
+    const denseH = 40;
+    const paintDense = (buf: Uint8ClampedArray, y: number, withBody: boolean) => {
+      const paint = (x: number, yy: number) => {
+        const i = (yy * denseW + x) * 4;
+        buf[i] = buf[i + 1] = buf[i + 2] = 30;
+      };
+      const xL = Math.floor(denseW * 0.38);
+      const xR = Math.floor(denseW * 0.92);
+      for (let x = xL; x < xR; x += 1) {
+        if (Math.floor((x - xL) / 5) % 2 === 0) paint(x, y);
+      }
+      if (!withBody) return;
+      for (let yy = y + 5; yy <= y + 14; yy += 1) {
+        for (let x = Math.floor(denseW * 0.06); x < Math.floor(denseW * 0.94); x += 3) paint(x, yy);
+      }
+    };
+    const denseCaps = new Uint8ClampedArray(denseW * denseH * 4);
+    denseCaps.fill(255);
+    paintDense(denseCaps, 8, true);
+    const denseCapRows = dashApi.writingDashRows(denseCaps, denseW, denseH);
+    assert.equal(denseCapRows.includes(8), false, 'dense letter tops are not a writing dash ' + String(denseCapRows));
+    const bareDash = new Uint8ClampedArray(denseW * denseH * 4);
+    bareDash.fill(255);
+    paintDense(bareDash, 8, false);
+    const bareRows = dashApi.writingDashRows(bareDash, denseW, denseH);
+    assert.ok(bareRows.includes(8), 'a dense writing dash with blank paper under it stays ' + String(bareRows));
   });
 
-  it('pads each text line to the descender instead of the tight ink', () => {
+  it('pads each text line to the full line box above and below', () => {
     const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
     const layoutQuestionCrops = new Function(`${preview.slice(preview.indexOf('function leftFigureBoxes'), preview.indexOf('async function measureWorksheet'))} return layoutQuestionCrops;`)() as (model: object) => { box: { x?: number; y: number; w?: number; h: number; segment?: string } }[];
     const lines = [
@@ -1058,7 +1114,9 @@ describe('teacher catalog picker', () => {
       const baseline = line.y + line.h;
       assert.ok(hits.length === 1, 'one clip owns the line ' + JSON.stringify(line) + ' ' + JSON.stringify(hits));
       const bot = hits[0].box.y + hits[0].box.h;
+      const top = hits[0].box.y;
       assert.ok(bot >= baseline + 0.004, 'descender padding below the baseline ' + bot + ' vs ' + baseline);
+      assert.ok(top <= line.y - 0.003, 'ascender padding above the line ' + top + ' vs ' + line.y);
     });
     const first = coversLine(lines[1])[0];
     const nextInk = lines[2].y + lines[2].h * 0.18;

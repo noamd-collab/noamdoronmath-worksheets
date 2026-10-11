@@ -2068,10 +2068,14 @@ function answerBox(items, questionNumber, part) {
         // "· ד. כל" leaves כל to the left of the part letter. Cover the whole label line.
         // The sentence that continues under it stays, and the part name is redrawn.
         if (String(label.rest || '').trim() === 'כל') {
+          // The label baseline is not the bottom of the glyphs. The dots under
+          // «כל» sit about two points lower, in the gap above the next line.
+          const descent = Math.max(4, (label.h || 11) * 0.4);
+          const nextTop = wrapped.top || (label.y - (label.h || 11));
           slot = {
             left: 0,
             right: 0,
-            lineBottom: label.y - 1,
+            lineBottom: Math.max(label.y - descent, nextTop + 1.2),
             lineTop: label.y + Math.max(label.h || 0, 11) + 2,
           };
         }
@@ -4103,18 +4107,30 @@ function layoutQuestionCrops(model) {
         baseline = Math.max(baseline, (span.y || 0) + spanEm);
         if (spanEm > em) em = spanEm;
       });
-      // PDF.js ends the box on the baseline. Finals (ן ץ ך ף ק), nikud and geresh sit below it.
-      // Pad to that line box. Stop before the next row's ink, never on this line's tight ink.
+      // PDF.js ends the box on the baseline. The line box continues above that top
+      // (ascenders, nikud, geresh) and below it (ן ץ ך ף ק). Never stop on the tight ink.
+      // A tall parenthesis must not set the pad: 0.006 is enough above the em top.
+      const ascent = Math.max(0.004, Math.min(0.006, em * 0.3));
       const descent = Math.max(0.008, em * 0.55);
       let limit = baseline + descent;
       const nextBand = bands[index + 1];
-      // Stop before the next row's ink. A close row wins over the descender pad.
       let nextInk = null;
-      if (nextBand) nextInk = nextBand.y + Math.max(nextBand.em || 0.012, 0.012) * 0.2;
-      else if (typeof maxBottom === 'number') nextInk = maxBottom;
+      if (nextBand) {
+        const nextEm = Math.max(nextBand.em || 0.012, 0.012);
+        nextInk = nextBand.y - Math.max(0.004, Math.min(0.006, nextEm * 0.3));
+      } else if (typeof maxBottom === 'number') nextInk = maxBottom;
       // A label beside this line shares its height. It must not erase the line.
       const beside = nextBand && nextBand.y <= baseline - 0.004;
       if (!beside && nextInk != null && nextInk - 0.002 < limit) limit = nextInk - 0.002;
+      // A close next line must not steal this line's descenders. The floor stops
+      // at that line, and at maxBottom, so a stem does not swallow the next part.
+      const descentFloor = baseline + Math.min(descent, 0.004);
+      if (limit < descentFloor) {
+        let floor = descentFloor;
+        if (nextBand) floor = Math.min(floor, nextBand.y - 0.002);
+        if (typeof maxBottom === 'number') floor = Math.min(floor, maxBottom - 0.004);
+        if (floor > limit) limit = floor;
+      }
       if (index === bands.length - 1 && (padBelow || 0) > 0) {
         let room = baseline + padBelow;
         if (typeof maxBottom === 'number') room = Math.min(room, maxBottom - 0.004);
@@ -4123,7 +4139,7 @@ function layoutQuestionCrops(model) {
       }
       // Ending above the em top would leave a sliced stub of the next part's line.
       if (limit < y0 + Math.min(em, 0.012) * 0.72) return;
-      const boxTop = y0 - 0.003;
+      const boxTop = y0 - ascent;
       const boxH = limit - boxTop;
       pushBox(segment, x0 - 0.008, boxTop, Math.max(0.04, x1 - x0 + 0.016), boxH);
     });
@@ -4663,6 +4679,24 @@ function writingDashRows(data, width, height) {
     return (data[i] + data[i + 1] + data[i + 2]) / 3;
   };
   const dark = (x, y) => lumAt(x, y) < 210;
+  // A letter cap is a short-run row with the letter body just under it.
+  // A writing dash has blank paper there. 0.13 is above a stray stroke and
+  // below the body of a Hebrew line.
+  const inkBelow = (y) => {
+    let body = 0;
+    const bx0 = Math.floor(width * 0.06);
+    const bx1 = Math.floor(width * 0.94);
+    const samples = Math.ceil(Math.max(1, bx1 - bx0) / 2);
+    for (let dy = 4; dy <= 14; dy += 1) {
+      const yy = y + dy;
+      if (yy < 0 || yy >= height) continue;
+      let n = 0;
+      for (let x = bx0; x < bx1; x += 2) if (lumAt(x, yy) < 232) n += 1;
+      const fracBelow = n / samples;
+      if (fracBelow > body) body = fracBelow;
+    }
+    return body;
+  };
   const xL = Math.floor(width * 0.38);
   const xR = Math.floor(width * 0.92);
   const span = Math.max(1, xR - xL);
@@ -4692,6 +4726,7 @@ function writingDashRows(data, width, height) {
     }
     const frac = n / span;
     if (frac < 0.45 || frac > 0.78 || longest >= width * 0.02 || gaps < 20) continue;
+    if (inkBelow(y) > 0.13) continue;
     keep(y);
   }
   // A writing rule under a line of text has long letter runs, so the test above misses it.
@@ -4742,6 +4777,8 @@ function writingDashRows(data, width, height) {
       return n / Math.ceil(wide / 3) < frac * 0.55;
     };
     if (!quiet(-3) || !quiet(3)) continue;
+    // The flat tops of a Hebrew line are short runs with white just above them.
+    if (inkBelow(y) > 0.13) continue;
     keep(y);
   }
   return rows;

@@ -37,7 +37,7 @@
       "topic": "24",
       "level": "c",
       "selection": ["19ד"],
-      "failedBefore": "Neighbor fragments (המקורי.) and dashed lines across the triangle."
+      "failedBefore": "Neighbor fragments (המקורי.), dashed lines across the triangle, and dots above the answer."
     },
     {
       "id": "pythagoras-part2",
@@ -66,7 +66,7 @@
       "level": "c",
       "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "4ד", "5א", "5ב", "5ג", "5ד", "6א", "6ב", "6ג", "6ד", "7א", "7ב", "7ג", "7ד", "8ד"],
       "pages": [1, 2],
-      "failedBefore": "Hebrew descenders were clipped on text lines, including final letters ן ץ ך ף ק (straddle page 2 question 6ד and 6א, page 1 question 2)."
+      "failedBefore": "Hebrew descenders and ascenders were clipped on text lines, including final letters ן ץ ך ף ק and the tops of 6ד (straddle page 2)."
     }
   ]
 }
