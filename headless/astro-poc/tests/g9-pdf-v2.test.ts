@@ -3,7 +3,7 @@
  * Duplicate grade-7 cards stay on their old ids (listed in the PR, not here).
  */
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -42,6 +42,22 @@ describe('grade 9 PDF v2 replacements', () => {
       rhombus.levels.find((level) => level.key === 'b')?.pdfId,
       'e091562d859a4059abca94dfddc17bfa'
     );
+  });
+
+  it('publishes a Noam AI manifest for every new media id', () => {
+    const provenance = JSON.parse(
+      readFileSync(join(root, 'public/noam-ai/sync-provenance.json'), 'utf8')
+    );
+    for (const row of pairs) {
+      const pub = join(root, 'public/noam-ai/manifests', row.new_media_id + '.json');
+      assert.equal(existsSync(pub), true, row.new_media_id);
+      const manifest = JSON.parse(readFileSync(pub, 'utf8'));
+      assert.equal(manifest.pdfHash, row.new_media_id);
+      assert.equal(manifest.schemaVersion, 2);
+      assert.ok(manifest.exercises.length > 0, row.package_id + ' ' + row.level);
+      assert.equal(manifest.reviewRequired, false);
+      assert.ok(provenance.files[row.new_media_id], 'provenance ' + row.new_media_id);
+    }
   });
 
   it('counts rendered cards, not hidden children or the other grade 9 track', () => {
