@@ -50,8 +50,8 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
   assert.equal(s.levels, 958);
   assert.equal(s.uniquePdfIds, 958);
   assert.equal(s.childTopics, 3);
-  assert.equal(s.withNoamTopicId, 153);
-  // G9-T15 gained a search entry (דלתון / kite). Previous pin was 116.
+  // G8 single sheets and G7-T16 gained Noam ids (148 → 154). G9-T15 gained a search entry.
+  assert.equal(s.withNoamTopicId, 154);
   assert.equal(s.searchEntries, 117);
   assert.equal(s.iconKeys, 80);
 
@@ -105,9 +105,9 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
   // Noam explicit x + fallback resolution sample
   const g7 = catalog.grades.find((g) => g.grade === 7);
   const t16 = g7.topics.find((t) => t.id === 16);
-  assert.equal(t16.noamTopicId, undefined);
+  assert.equal(t16.noamTopicId, 'G7-T16');
   assert.equal(t16.routing.resolvedNoamPrefix, 'G7-T16');
-  assert.equal(t16.routing.aiHintShown, false);
+  assert.equal(t16.routing.aiHintShown, true);
   assert.equal(t16.routing.usesViewer, true);
 
   const withX = g7.topics.find((t) => t.noamTopicId);

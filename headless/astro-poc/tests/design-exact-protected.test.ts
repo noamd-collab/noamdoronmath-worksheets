@@ -26,8 +26,8 @@ const protectedFiles: Record<string, string> = {
   // Adapter, output, and integrations are unchanged. The other two Astro
   // configs (preview, open07-verify) are not in this fence.
   'astro.config.mjs': 'c63c0e1646e6198757b32ca085cda16091a3168adf0017ce9e3ce74b91b8f451',
-  // G9 PDF v2 plus G8 PDF v2 (two c2 levels).
-  'src/data/catalog.v1.json': '0838e8f41480c1c0607229103da6bd70f44d0975e4b920109f47884ba8efe9cd',
+  // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
+  'src/data/catalog.v1.json': 'c97e40451e2344a017a22def51398ad466cbde4240642dce1c4a0061b40e3cc6',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
