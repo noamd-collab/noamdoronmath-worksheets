@@ -94,6 +94,16 @@ const topics = {
   type TopicMap = Record<string, [string, string]>;
   type RotationEntry = { variant: string; grade: string; label: string; href: string; panel: string };
 
+  let heroTicker = 0;
+  let startHeroClock = () => {};
+  let stopHeroListeners = () => {};
+
+  function stopHeroClock() {
+    if (!heroTicker) return;
+    window.clearInterval(heroTicker);
+    heroTicker = 0;
+  }
+
   function bootHeroControls() {
     const hero = document.querySelector<HTMLElement>('[data-hero-loop]');
     const current = hero?.querySelector<HTMLElement>('[data-hero-loop-current]');
@@ -313,7 +323,7 @@ const topics = {
           button.setAttribute('aria-busy', 'true');
           void showVariant(variant, prior).then((ok) => {
             if (!ok) fail();
-          }).finally(() => {
+          }).catch(() => fail()).finally(() => {
             busy = false;
             button.removeAttribute('aria-busy');
           });
@@ -370,29 +380,74 @@ const topics = {
     const queueSync = () => queueMicrotask(syncActiveCard);
     const preferenceObserver = new MutationObserver(queueSync);
     preferenceObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', queueSync);
     window.addEventListener('nd:motion-off', queueSync);
+    let viewObserver: IntersectionObserver | undefined;
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver((records) => {
+      viewObserver = new IntersectionObserver((records) => {
         const last = records[records.length - 1];
         if (last) inView = last.isIntersecting;
-      }, { threshold: 0 }).observe(hero);
+      }, { threshold: 0 });
+      viewObserver.observe(hero);
+    }
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // OS reduced motion and the site's motion class both keep the chip put.
+    // The shuffle button still changes the film.
+    function reducedMotion() {
+      return reduced.matches || document.documentElement.classList.contains('noam-a11y-motion');
+    }
+    function tickClock() {
+      syncActiveCard();
+      if (!userHeldPause && inView && !document.hidden) startFilm(activeLoop());
+      if (!reducedMotion()) cycle.tick(TICK_MS);
     }
     // Hidden time does not count. When the tab is visible again the same
     // interval keeps going; this kick covers a timer the browser suspended.
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) cycle.tick(TICK_MS);
-    });
+    const onVisible = () => {
+      if (!document.hidden && !reducedMotion()) cycle.tick(TICK_MS);
+    };
+    const onReduce = () => queueSync();
+    reduced.addEventListener('change', onReduce);
+    stopHeroListeners();
+    stopHeroListeners = () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('nd:motion-off', queueSync);
+      reduced.removeEventListener('change', onReduce);
+      preferenceObserver.disconnect();
+      viewObserver?.disconnect();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    // One handle. A second boot, a restored page, or a view transition
+    // must not stack another interval.
+    startHeroClock = () => {
+      if (heroTicker) return;
+      heroTicker = window.setInterval(tickClock, TICK_MS);
+    };
     // The pause-card script restores k3-pause on the next frame. Clear that
     // stored pause afterwards so the first film actually plays.
     requestAnimationFrame(() => requestAnimationFrame(() => startFilm(activeLoop())));
-    // One timer: card ARIA, a film that was paused by storage or by its own
-    // observer, and the rotation clock. The clock does not wait for the film to end.
-    window.setInterval(() => {
-      syncActiveCard();
-      if (!userHeldPause && inView && !document.hidden) startFilm(activeLoop());
-      cycle.tick(TICK_MS);
-    }, TICK_MS);
+    startHeroClock();
+  }
+
+  if (document.documentElement.dataset.heroClockBound !== '1') {
+    document.documentElement.dataset.heroClockBound = '1';
+    document.addEventListener('astro:before-swap', () => {
+      stopHeroClock();
+      stopHeroListeners();
+    });
+    document.addEventListener('astro:page-load', () => {
+      if (!document.querySelector('[data-hero-loop]')) {
+        stopHeroClock();
+        stopHeroListeners();
+        startHeroClock = () => {};
+        return;
+      }
+      bootHeroControls();
+    });
+    window.addEventListener('pagehide', () => stopHeroClock());
+    window.addEventListener('pageshow', () => {
+      if (!document.querySelector('[data-hero-loop]')) return;
+      startHeroClock();
+    });
   }
 
   if (document.readyState === 'loading') {

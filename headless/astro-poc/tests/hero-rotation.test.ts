@@ -232,7 +232,15 @@ describe('homepage hero clock', () => {
     assert.match(controls, /let inView = true/);
     assert.match(controls, /visibilitychange/);
     assert.match(controls, /threshold: 0/);
-    assert.match(controls, /cycle\.tick\(TICK_MS\)/);
+    assert.match(controls, /if \(!reducedMotion\(\)\) cycle\.tick\(TICK_MS\)/);
+    assert.match(controls, /prefers-reduced-motion: reduce/);
+    assert.match(controls, /noam-a11y-motion/);
+    assert.match(controls, /\.catch\(\(\) => fail\(\)\)/);
+    assert.match(controls, /if \(heroTicker\) return/);
+    assert.match(controls, /window\.clearInterval\(heroTicker\)/);
+    assert.match(controls, /astro:before-swap/);
+    assert.match(controls, /astro:page-load/);
+    assert.match(controls, /pagehide/);
     assert.equal((controls.match(/window\.setInterval\(/g) || []).length, 1);
     assert.doesNotMatch(controls, /gradeLoopDwellMs/);
     assert.doesNotMatch(controls, /manuallyPaused\([^)]*\)[\s\S]{0,80}cycle\.tick/);
