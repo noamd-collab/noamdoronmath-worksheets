@@ -40,6 +40,8 @@ export interface GradeLoopRotationHost {
 
 export interface GradeLoopRotationOptions {
   dwellMs?: number;
+  /** Per-variant dwell; defaults to dwellMs for every variant. */
+  dwellFor?: (variant: string) => number;
   random?: () => number;
 }
 
@@ -53,6 +55,21 @@ export const GRADE_LOOP_SLOWDOWN = 1.8;
  * 15 s with no hold phase (the approved v2 fallback).
  */
 export const GRADE_LOOP_FALLBACK_END_S = 10;
+/** Rest on the completed frame before the swap, for a film longer than the dwell. */
+export const GRADE_LOOP_LONG_REST_MS = 3_000;
+
+/**
+ * Dwell for one loop: the standard 15 s, or, for a long film (L14 diff-sq,
+ * 22 s engine lap) whose slowed completed frame lands after 15 s, long
+ * enough to reach that frame and rest on it before the swap.
+ */
+export function gradeLoopDwellMs(holdS: number | undefined, slowdown = GRADE_LOOP_SLOWDOWN): number {
+  if (typeof holdS !== 'number') return GRADE_LOOP_DWELL_MS;
+  const slowedMs = holdS * slowdown * 1000;
+  if (slowedMs < GRADE_LOOP_DWELL_MS) return GRADE_LOOP_DWELL_MS;
+  return Math.round(slowedMs) + GRADE_LOOP_LONG_REST_MS;
+}
+
 /** Same cap as the engine's own frame step, so a stalled frame never jumps. */
 const MAX_FRAME_MS = 50;
 
@@ -108,6 +125,7 @@ export function createGradeLoopRotation(
   options: GradeLoopRotationOptions = {}
 ) {
   const dwellMs = options.dwellMs ?? GRADE_LOOP_DWELL_MS;
+  const dwellOf = (variant: string) => options.dwellFor?.(variant) ?? dwellMs;
   const random = options.random ?? Math.random;
   const first = variants.includes(initial) ? initial : variants[0];
 
@@ -151,7 +169,7 @@ export function createGradeLoopRotation(
     // A held loop is paused on purpose; any other pause stops the clock.
     if (!held && !state.playing && !state.done) return false;
     elapsed += dtMs;
-    return elapsed >= dwellMs ? advance() : false;
+    return elapsed >= dwellOf(variant) ? advance() : false;
   }
 
   /** Freeze the current loop on its completed frame until the swap, once. */
@@ -168,6 +186,6 @@ export function createGradeLoopRotation(
     current: () => order[index],
     elapsed: () => elapsed,
     held: () => held,
-    progress: () => Math.min(1, elapsed / dwellMs),
+    progress: () => Math.min(1, elapsed / dwellOf(order[index])),
   };
 }

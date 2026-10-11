@@ -27,6 +27,7 @@ import {
   GRADE_LOOP_SLOWDOWN,
   createGradeLoopRotation,
   createGradeLoopSlowClock,
+  gradeLoopDwellMs,
   shuffleLoops,
   type GradeLoopRotationOptions,
   type GradeLoopState,
@@ -289,7 +290,11 @@ describe('grade loop pools (LOOPS_MAP_73_v2)', () => {
         continue;
       }
       assert.equal(GRADE_LOOP_HOLD_S[loop.variant], holds[loop.variant], `${loop.variant}: hold drifted from engine`);
-      assert.ok(holds[loop.variant]! * GRADE_LOOP_SLOWDOWN < GRADE_LOOP_DWELL_MS / 1000, `${loop.variant}: never holds`);
+      // A long film (only L14 diff-sq, 22 s lap) gets its own longer dwell.
+      const dwell = loop.variant === 'diff-sq' ? gradeLoopDwellMs(holds[loop.variant]) : GRADE_LOOP_DWELL_MS;
+      if (loop.variant === 'diff-sq') assert.ok(dwell > GRADE_LOOP_DWELL_MS, 'diff-sq: long dwell');
+      else assert.equal(gradeLoopDwellMs(holds[loop.variant]), GRADE_LOOP_DWELL_MS, `${loop.variant}: standard dwell`);
+      assert.ok(holds[loop.variant]! * GRADE_LOOP_SLOWDOWN < dwell / 1000, `${loop.variant}: never holds`);
     }
     for (const grade of GRADE_HUB_GRADES) {
       for (const entry of buildGradeLoopPool(grade)) {
@@ -514,6 +519,26 @@ describe('grade loop rotation policy', () => {
     };
     return { loops, env, mounts, calls, rotation, advance, done };
   }
+
+  it('a long film (diff-sq) gets its own longer dwell; every other loop keeps 15 s', () => {
+    const long = gradeLoopDwellMs(GRADE_LOOP_HOLD_S['diff-sq']);
+    assert.equal(long, 39_900);
+    const t = setup(['diff-sq', 'b', 'c'], {
+      dwellFor: (v) => (v === 'diff-sq' ? long : GRADE_LOOP_DWELL_MS),
+    });
+    try {
+      assert.equal(t.rotation.current(), 'diff-sq');
+      t.advance(GRADE_LOOP_DWELL_MS);
+      assert.equal(t.rotation.current(), 'diff-sq', 'does not swap at 15 s');
+      t.advance(Math.ceil(long / 500) * 500 - GRADE_LOOP_DWELL_MS);
+      assert.notEqual(t.rotation.current(), 'diff-sq');
+      const next = t.rotation.current();
+      t.advance(GRADE_LOOP_DWELL_MS);
+      assert.notEqual(t.rotation.current(), next, 'next loop swaps at 15 s');
+    } finally {
+      t.done();
+    }
+  });
 
   it('swaps every 15 s (calibration 8–45 s), without waiting for the 4-lap park', () => {
     assert.equal(GRADE_LOOP_DWELL_MS, 15_000);

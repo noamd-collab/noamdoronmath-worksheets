@@ -6,6 +6,8 @@
  * than silently regenerate it to make a design-only change pass.
  * conceptLoops.ts and ConceptLoop.astro moved when L01 angle-sum was removed
  * and replaced by the vertex-descent film. That was an explicit content change.
+ * They moved again when Noam approved Kimi's L14 diff-sq v6 film (letters only,
+ * x² − y² = (x − y)(x + y), 22 s lap): an explicit content change, not a regen.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -27,8 +29,8 @@ const protectedFiles: Record<string, string> = {
   'src/data/catalog.v1.json': '86748683d96c1364403c019832393c97b0e632de221bda3f7c16b80e2762b6fc',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   'src/lib/worksheetLinks.ts': '1f9a5fdf234997fc8ba7593d1ef0066f082586816770eefc45da40035a825eaf',
-  'src/lib/conceptLoops.ts': 'b78a1945395cd9239942952c806014f16138accf47a2768f5e8acf73e38e03a1',
-  'src/components/ConceptLoop.astro': '37c06f29131a44c5b3c670cd1ad28206d4f5e850ff39f5b3cd3ab63df59ca391',
+  'src/lib/conceptLoops.ts': '10601a87ba90387e8459658a9990e4f3a255a037a293e93fac1d8b6f97aa588c',
+  'src/components/ConceptLoop.astro': '7a53ec85a1b9fb039cb6363e799b1e2d36f78d82f7d407738d18a3136c47b229',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',

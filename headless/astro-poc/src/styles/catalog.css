@@ -3287,6 +3287,12 @@ html.noam-a11y-motion .hero-draw {
   stroke-width: 2;
 }
 .concept-loop .cl-big { font-size: 18px; font-weight: 800; }
+/* L14 diff-sq (Kimi v6) carries many small letter labels; on a phone the
+   560-wide viewBox shrinks to ~0.55, so give them a larger SVG size. */
+@media (max-width: 640px) {
+  .concept-loop[data-loop="diff-sq"] .cl-t { font-size: 21px; }
+  .concept-loop[data-loop="diff-sq"] .cl-big { font-size: 19px; }
+}
 
 /* accent fills/strokes */
 .concept-loop .cl-fill-a { fill: rgba(30, 136, 229, 0.16); }

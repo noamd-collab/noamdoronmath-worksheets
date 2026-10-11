@@ -23,7 +23,14 @@ export const FAMILY_CONCEPT_LOOP = {
   F38: 'pythagoras',
 } as const;
 
-export type ConceptLoopVariant = (typeof FAMILY_CONCEPT_LOOP)[keyof typeof FAMILY_CONCEPT_LOOP];
+/** One page whose own idea has its own ConceptLoop film (Kimi's L14 v6). */
+const SLUG_CONCEPT_OVERRIDE = {
+  'difference-of-squares-grade-9': 'diff-sq',
+} as const;
+
+export type ConceptLoopVariant =
+  | (typeof FAMILY_CONCEPT_LOOP)[keyof typeof FAMILY_CONCEPT_LOOP]
+  | (typeof SLUG_CONCEPT_OVERRIDE)[keyof typeof SLUG_CONCEPT_OVERRIDE];
 
 /** CSS/SVG loops. Transform and opacity only. */
 export const CSS_LOOP_VARIANTS = [
@@ -214,6 +221,9 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
   const film = FILM_LANDING_LOOPS[page.slug as FilmLandingSlug];
   if (film) return { kind: 'film', marker: film.marker, src: film.src };
+  // A slug-level concept film wins over a slug CSS loop and over its family.
+  const slugConcept = SLUG_CONCEPT_OVERRIDE[page.slug as keyof typeof SLUG_CONCEPT_OVERRIDE];
+  if (slugConcept) return { kind: 'concept', variant: slugConcept, marker: `concept-${slugConcept}` };
   const override = SLUG_CSS_OVERRIDE[page.slug];
   if (override) return { kind: 'css', variant: override, marker: override };
   const family = familyOf(page);

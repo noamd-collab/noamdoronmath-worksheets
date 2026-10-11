@@ -562,9 +562,9 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   },
   'diff-sq': {
     domain: 'אלגברה · הפרש ריבועים',
-    claim: 'הפרש ריבועים נפרש למלבן אחד',
-    mathLine: '5² − 3² = 25 − 9 = 16',
-    explain: 'מריבוע של 25 משבצות מוציאים ריבוע של 9. מה שנשאר נפרש למלבן אחד. השטח נשמר: 16.',
+    claim: 'הפרש ריבועים מתפרק למכפלה של סכום והפרש',
+    mathLine: 'x² − y² = (x − y) · (x + y)',
+    explain: 'מריבוע שהצלע שלו x מורידים ריבוע שהצלע שלו y. החלק שנשאר נחתך ומסודר מחדש למלבן אחד. אורכו הוא סכום הצלעות, ורוחבו הוא ההפרש ביניהן.',
   },
   parab: {
     domain: 'פונקציה ריבועית · הזזה אנכית',
@@ -643,7 +643,7 @@ export const GRADE_LOOP_HOLD_S: Record<string, number> = {
   'angle-kinds': 6.2,
   pythagoras: 7.6, 'mean-cols': 5.2, 'circ-unroll': 5.4, 'corr-angles': 5.6, exterior: 5.2, 'sas-snap': 5.2,
   'para-perp': 5.2, similar: 5.4, 'cyl-stack': 5.2, slope: 6.2,
-  'area-model': 7.5, 'quad-tree': 5.4, transform: 6.8, 'area-x4': 5.2, 'two-coins': 5.2, 'diff-sq': 5.4,
+  'area-model': 7.5, 'quad-tree': 5.4, transform: 6.8, 'area-x4': 5.2, 'two-coins': 5.2, 'diff-sq': 20.5,
   parab: 5.2, 'half-eq': 5.2,
 };
 

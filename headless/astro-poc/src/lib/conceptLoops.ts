@@ -1133,19 +1133,104 @@ function renderPct25(root: LoopRoot, t: number) {
 }
 const PCT25_HOLD = 5.6;
 
-/* ═══════════════ L14 — diff-sq: 25 − 9 unfolds to a rectangle of 16 (D = 10 s) ═══════════════ */
+/* ═══════════════ L14 — diff-sq: x² − y² = (x − y) · (x + y), letters only (D = 22 s) ═══════════════
+   Noam's script, v6 — same film, no numbers at all (this is FACTORIZATION):
+   1. an x×x square; trace left edge → x, bottom edge → x; x · x → x².
+      The bottom-edge x never moves again.
+   2. a dashed y×y square joins the corner; trace its top edge → y; y · y → y²
+   3. the difference: the y² square turns gray and almost transparent —
+      never gone; the inverted-Resh (L) traces itself; outer sides traced:
+      x below the blue strip, x − y and y on the right, x − y above the purple
+   4. cut, dashed target slot, slow lift + 90° rotation, dock
+   5. one rectangle: trace the purple half's bottom edge → y, then x + y below,
+      x − y on the right, x² − y² inside — and the formula lands and HOLDS. */
 
 function renderDiffSq(root: LoopRoot, t: number) {
-  const slide = ph(t, 1.6, 2.8) - ph(t, 8.2, 9.2);
-  const rect = q(root, 'rect16');
-  if (rect) rect.setAttribute('transform', `translate(${r2(-170 * (1 - slide))} 0)`);
-  op(rect, ph(t, 1.4, 1.9) * (1 - ph(t, 9.0, 9.6)));
-  op(q(root, 'lbl16'), ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6)));
+  const keep = 1 - ph(t, 21.2, 21.95); // scene outro — late and slow
+  const FX_OUT = 1 - ph(t, 21.0, 21.85); // formula outro
+  const FLY_OUT = 1 - ph(t, 13.8, 14.4); // L-stage labels out as the flight starts
+
+  // ——— scene 1: the x×x square — trace the edges, then x · x → x² ———
+  const bigIn = ph(t, 0.3, 1.1);
+  const bigOut = 1 - ph(t, 8.3, 9.1);
+  const bigSq = q(root, 'sq-big');
+  op(bigSq, bigIn * bigOut);
+  draw(bigSq, bigIn);
+  op(q(root, 'fill-big'), ph(t, 0.8, 1.2) * bigOut);
+  const eXl = q(root, 'eXl');
+  op(eXl, ph(t, 1.3, 1.4) * bigOut);
+  draw(eXl, ph(t, 1.3, 1.7));
+  op(q(root, 'lblXl'), ph(t, 1.7, 2.0) * bigOut);
+  const eXb = q(root, 'eXb');
+  op(eXb, ph(t, 1.9, 2.0) * keep);
+  draw(eXb, ph(t, 1.9, 2.3));
+  op(q(root, 'lblXb'), ph(t, 2.3, 2.6) * (1 - ph(t, 18.0, 18.3)));
+  op(q(root, 'mulX'), ph(t, 2.7, 3.0) * (1 - ph(t, 3.2, 3.5)));
+  op(q(root, 'powX'), ph(t, 3.5, 3.8) * bigOut);
+
+  // ——— scene 2: the dashed y×y joins — trace its top edge → y · y → y² ———
+  const sIn = ph(t, 4.7, 5.3);
+  const sOut = ph(t, 8.3, 9.3); // it does not fly away — it fades in place
+  op(q(root, 'g-small'), sIn * (1 - sOut));
+  const eYt = q(root, 'eYt');
+  op(eYt, ph(t, 5.4, 5.5) * (1 - sOut));
+  draw(eYt, ph(t, 5.4, 5.8));
+  op(q(root, 'lblYt'), ph(t, 5.8, 6.1) * (1 - sOut));
+  op(q(root, 'mulY'), ph(t, 6.2, 6.5) * (1 - ph(t, 6.8, 7.1)));
+  op(q(root, 'powY'), ph(t, 7.1, 7.4) * (1 - sOut));
+  // the gray ghost: almost transparent, but never gone
+  op(q(root, 'g-ghost'), 0.22 * ph(t, 8.5, 9.3) * keep);
+
+  // ——— scene 3: the inverted-Resh (L) traces itself; outer sides numbered ———
+  const lo = q(root, 'l-outline');
+  op(lo, ph(t, 9.1, 9.3) * (1 - ph(t, 13.6, 14.2)));
+  draw(lo, ph(t, 9.1, 9.9));
+  const lIn = ph(t, 9.4, 9.9);
+  const lOut = 1 - ph(t, 21.2, 21.95);
+  op(q(root, 'l-bot'), lIn * lOut);
+  op(q(root, 'l-top'), lIn * lOut);
+  op(q(root, 'lbl-bot'), ph(t, 9.9, 10.3) * (1 - ph(t, 16.0, 16.4)));
+  const eXYr = q(root, 'eXYr');
+  op(eXYr, ph(t, 10.4, 10.5) * FLY_OUT);
+  draw(eXYr, ph(t, 10.4, 10.8));
+  op(q(root, 'lblXYr'), ph(t, 10.8, 11.1) * FLY_OUT);
+  const eYr = q(root, 'eYr');
+  op(eYr, ph(t, 11.2, 11.3) * FLY_OUT);
+  draw(eYr, ph(t, 11.2, 11.6));
+  op(q(root, 'lblYr'), ph(t, 11.6, 11.9) * FLY_OUT);
+  const eXYt = q(root, 'eXYt');
+  op(eXYt, ph(t, 12.0, 12.1) * FLY_OUT);
+  draw(eXYt, ph(t, 12.0, 12.4));
+  op(q(root, 'lblXYt'), ph(t, 12.4, 12.7) * FLY_OUT);
+
+  // ——— scene 4: cut, dashed target slot, slow flight ———
+  op(q(root, 'cut'), ph(t, 12.6, 13.0) * (1 - ph(t, 13.8, 14.2)));
+  op(q(root, 'slot'), ph(t, 13.4, 13.8) * (1 - ph(t, 15.0, 15.4)));
+  const lift = ph(t, 13.8, 14.5);
+  const fly = ph(t, 14.5, 15.7);
+  const tx = lerp(lerp(0, 14, lift), 85, fly);
+  const ty = lerp(lerp(0, -34, lift), 85, fly);
+  const lt = q(root, 'l-top');
+  if (lt) lt.setAttribute('transform', `translate(${r2(tx)} ${r2(ty)}) rotate(${r2(90 * fly)} 280 106)`);
+
+  // ——— scene 5: one rectangle — x + y below, x − y on the right, x² − y² inside ———
+  const rm = q(root, 'rect-merge');
+  const rmIn = ph(t, 15.8, 16.5);
+  op(rm, rmIn * keep);
+  draw(rm, rmIn);
+  const eYh = q(root, 'eYh');
+  op(eYh, ph(t, 16.7, 16.8) * (1 - ph(t, 18.0, 18.3)));
+  draw(eYh, ph(t, 16.7, 17.1));
+  op(q(root, 'lblYh'), ph(t, 17.1, 17.4) * (1 - ph(t, 18.0, 18.3)));
+  op(q(root, 'dimDiff'), ph(t, 18.0, 18.4) * keep);
+  op(q(root, 'dimSum'), ph(t, 18.3, 18.7) * keep);
+  op(q(root, 'lblRes'), ph(t, 18.6, 19.0) * keep);
+
   const fxs = qa(root, '[data-fx]');
-  op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
-  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[0], ph(t, 18.9, 19.3) * FX_OUT);
+  op(fxs[1], ph(t, 19.3, 19.7) * FX_OUT);
 }
-const DIFF_SQ_HOLD = 5.4;
+const DIFF_SQ_HOLD = 20.5;
 
 /* ═══════════════ L15 — clock-3: hour on 3, minute on 12 (D = 10 s) ═══════════════ */
 
@@ -1957,7 +2042,7 @@ const SPECS = {
   'corr-angles': { duration: 10, hold: CORR_ANGLES_HOLD, render: renderCorrAngles },
   'mean-cols': { duration: 10, hold: MEAN_COLS_HOLD, render: renderMeanCols },
   'pct-25': { duration: 10, hold: PCT25_HOLD, render: renderPct25 },
-  'diff-sq': { duration: 10, hold: DIFF_SQ_HOLD, render: renderDiffSq },
+  'diff-sq': { duration: 22, hold: DIFF_SQ_HOLD, render: renderDiffSq },
   'clock-3': { duration: 10, hold: CLOCK3_HOLD, render: renderClock3 },
   'peri-rect': { duration: 10, hold: PERI_RECT_HOLD, render: renderPeriRect },
   'signed-jump': { duration: 10, hold: SIGNED_JUMP_HOLD, render: renderSignedJump },
