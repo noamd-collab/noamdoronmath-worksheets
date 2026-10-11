@@ -4687,8 +4687,8 @@ function writingDashRows(data, width, height) {
   };
   const dark = (x, y) => lumAt(x, y) < 210;
   // A letter cap is a short-run row with the letter body just under it.
-  // A writing dash has blank paper there. 0.13 is above a stray stroke and
-  // below the body of a Hebrew line.
+  // A writing dash has blank paper there. 0.10 sits above a real dash
+  // (about 0.04) and below an answer-key cap (about 0.12).
   const inkBelow = (y) => {
     let body = 0;
     const bx0 = Math.floor(width * 0.06);
@@ -4733,7 +4733,7 @@ function writingDashRows(data, width, height) {
     }
     const frac = n / span;
     if (frac < 0.45 || frac > 0.78 || longest >= width * 0.02 || gaps < 20) continue;
-    if (inkBelow(y) > 0.13) continue;
+    if (inkBelow(y) > 0.10) continue;
     keep(y);
   }
   // A writing rule under a line of text has long letter runs, so the test above misses it.
@@ -4785,7 +4785,7 @@ function writingDashRows(data, width, height) {
     };
     if (!quiet(-3) || !quiet(3)) continue;
     // The flat tops of a Hebrew line are short runs with white just above them.
-    if (inkBelow(y) > 0.13) continue;
+    if (inkBelow(y) > 0.10) continue;
     keep(y);
   }
   return rows;
@@ -4793,24 +4793,38 @@ function writingDashRows(data, width, height) {
 
 function eraseWritingDashes(data, width, height, rows, srcY) {
   if (!data || !rows || !rows.length) return;
-  const darkAt = (x, y) => {
-    if (y < 0 || y >= height || x < 0 || x >= width) return false;
+  const lumAt = (x, y) => {
+    if (y < 0 || y >= height || x < 0 || x >= width) return 255;
     const i = (y * width + x) * 4;
-    return data[i] < 210 || data[i + 1] < 210 || data[i + 2] < 210;
+    return (data[i] + data[i + 1] + data[i + 2]) / 3;
+  };
+  // A writing dash is a few gray pixels. A separate line a few pixels away does not
+  // save it. Keep real dark ink (a diagonal, a letter, a triangle edge) and a gray
+  // stroke that continues well above and below (an axis). Paint the rest pure white,
+  // including the near-white halo a lighter mask used to leave.
+  const keepStroke = (x, y) => {
+    const lum = lumAt(x, y);
+    if (lum < 100) return true;
+    if (lum >= 210) return false;
+    let above = 0;
+    for (let yy = y - 1; yy >= 0 && lumAt(x, yy) < 210; yy -= 1) {
+      above += 1;
+      if (above >= 4) break;
+    }
+    if (above < 4) return false;
+    let below = 0;
+    for (let yy = y + 1; yy < height && lumAt(x, yy) < 210; yy += 1) {
+      below += 1;
+      if (below >= 4) break;
+    }
+    return below >= 4;
   };
   rows.forEach((absY) => {
     const y = absY - srcY;
     if (y < 0 || y >= height) return;
     for (let x = 0; x < width; x += 1) {
-      const lum = (data[(y * width + x) * 4] + data[(y * width + x) * 4 + 1] + data[(y * width + x) * 4 + 2]) / 3;
-      if (lum >= 236) continue;
-      let support = 0;
-      for (let dy = 1; dy <= 6; dy += 1) {
-        if (darkAt(x, y - dy)) support += 1;
-        if (darkAt(x, y + dy)) support += 1;
-      }
-      // A digit or a triangle edge continues above and below. A writing dash does not.
-      if (support >= 4) continue;
+      if (lumAt(x, y) >= 253) continue;
+      if (keepStroke(x, y)) continue;
       const i = (y * width + x) * 4;
       data[i] = data[i + 1] = data[i + 2] = 255;
     }

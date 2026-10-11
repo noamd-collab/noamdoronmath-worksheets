@@ -1024,7 +1024,7 @@ describe('teacher catalog picker', () => {
     dashes.fill(255);
     for (let x = 30; x < 74; x += 2) {
       const i = (6 * dw + x) * 4;
-      dashes[i] = dashes[i + 1] = dashes[i + 2] = 0;
+      dashes[i] = dashes[i + 1] = dashes[i + 2] = 160;
     }
     for (let y = 2; y < 10; y += 1) {
       const i = (y * dw + 10) * 4;
@@ -1095,6 +1095,70 @@ describe('teacher catalog picker', () => {
     paintDense(bareDash, 8, false);
     const bareRows = dashApi.writingDashRows(bareDash, denseW, denseH);
     assert.ok(bareRows.includes(8), 'a dense writing dash with blank paper under it stays ' + String(bareRows));
+    // Answer-key caps sit just under the old 0.13 cutoff. A real dash is near 0.04.
+    const capBand = new Uint8ClampedArray(denseW * denseH * 4);
+    capBand.fill(255);
+    const bandX0 = Math.floor(denseW * 0.06);
+    const bandX1 = Math.floor(denseW * 0.94);
+    const paintBand = (buf: Uint8ClampedArray, y: number, bodyFrac: number) => {
+      for (let x = bandX0; x < bandX1; x += 1) {
+        if (Math.floor((x - bandX0) / 4) % 3 === 0) {
+          const i = (y * denseW + x) * 4;
+          buf[i] = buf[i + 1] = buf[i + 2] = 150;
+        }
+      }
+      const samples = Math.ceil((bandX1 - bandX0) / 2);
+      const want = Math.round(samples * bodyFrac);
+      let painted = 0;
+      for (let x = bandX0; x < bandX1 && painted < want; x += 2) {
+        const i = ((y + 8) * denseW + x) * 4;
+        buf[i] = buf[i + 1] = buf[i + 2] = 30;
+        painted += 1;
+      }
+    };
+    paintBand(capBand, 10, 0.125);
+    const capBandRows = dashApi.writingDashRows(capBand, denseW, denseH);
+    assert.equal(capBandRows.includes(10), false, 'an answer-key cap is not a writing dash ' + String(capBandRows));
+    const realDash = new Uint8ClampedArray(denseW * denseH * 4);
+    realDash.fill(255);
+    paintBand(realDash, 10, 0.04);
+    const realDashRows = dashApi.writingDashRows(realDash, denseW, denseH);
+    assert.ok(realDashRows.includes(10), 'a writing dash with a stray stroke under it stays ' + String(realDashRows));
+    // The y=3 dash sits on the graph: a 2px grid just above, the A–B line 6px below.
+    const figW = 400;
+    const figH = 40;
+    const fig = new Uint8ClampedArray(figW * figH * 4);
+    fig.fill(255);
+    const put = (x: number, y: number, shade: number) => {
+      const i = (y * figW + x) * 4;
+      fig[i] = fig[i + 1] = fig[i + 2] = shade;
+    };
+    const figL = Math.floor(figW * 0.38);
+    const figR = Math.floor(figW * 0.92);
+    for (let x = 40; x < 360; x += 1) {
+      put(x, 12, 196);
+      put(x, 13, 196);
+    }
+    for (let x = figL; x < figR; x += 1) {
+      if (Math.floor((x - figL) / 5) % 2 !== 0) continue;
+      put(x, 14, 201);
+      put(x, 15, 154);
+      put(x, 16, 193);
+    }
+    put(figL + 6, 15, 246);
+    for (let y = 2; y < 36; y += 1) put(200, y, 191);
+    for (let y = 21; y < 28; y += 1) put(230, y, 17);
+    put(240, 15, 17);
+    const figRows = dashApi.writingDashRows(fig, figW, figH);
+    assert.ok(figRows.includes(15), 'the gray writing dash is found ' + String(figRows));
+    assert.equal(figRows.includes(12), false, 'the graph grid is not a writing dash ' + String(figRows));
+    dashApi.eraseWritingDashes(fig, figW, figH, figRows, 0);
+    assert.equal(fig[(15 * figW + figL) * 4], 255, 'the dash fragment above the segment is removed');
+    assert.equal(fig[(15 * figW + figL + 6) * 4], 255, 'a near-white dash halo becomes pure white');
+    assert.equal(fig[(12 * figW + 80) * 4], 196, 'the graph grid above the dash stays');
+    assert.equal(fig[(15 * figW + 200) * 4], 191, 'a tall axis on the dash row stays');
+    assert.equal(fig[(24 * figW + 230) * 4], 17, 'the segment below the dash stays');
+    assert.equal(fig[(15 * figW + 240) * 4], 17, 'dark ink where the segment crosses the dash stays');
   });
 
   it('pads each text line to the full line box above and below', () => {
