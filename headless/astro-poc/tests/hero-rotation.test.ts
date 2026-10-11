@@ -215,7 +215,6 @@ describe('homepage hero clock', () => {
   });
 
   it('a shuffle jump starts that film’s dwell over, and a stored pause is not a clock input', () => {
-    const controls = read('src/components/ExactHeroControls.astro');
     const t = setup();
     t.advance(9_000);
     t.rotation.jump('diff-sq');
@@ -225,12 +224,29 @@ describe('homepage hero clock', () => {
     assert.equal(t.rotation.current(), 'diff-sq');
     t.advance(500);
     assert.equal(t.rotation.current(), 'transform');
+  });
 
+  it('a visible tab starts the current dwell over and does not add a tick', () => {
+    const t = setup();
+    t.advance(4_000);
+    assert.equal(t.rotation.elapsed(), 4_000);
+    t.rotation.reset();
+    assert.equal(t.rotation.current(), 'triangle');
+    assert.equal(t.rotation.elapsed(), 0);
+    t.advance(10_000 - 500);
+    assert.equal(t.rotation.current(), 'triangle');
+  });
+
+  it('the homepage clock resumes by resetting, and reduced motion does not press play', () => {
+    const controls = read('src/components/ExactHeroControls.astro');
     assert.match(controls, /createHeroRotation\(/);
     assert.match(controls, /heroDwellMs\(HERO_PLAY_S\[variant\]\)/);
     assert.match(controls, /pageHidden: \(\) => document\.hidden/);
     assert.match(controls, /let inView = true/);
     assert.match(controls, /visibilitychange/);
+    assert.match(controls, /if \(document\.hidden \|\| reducedMotion\(\)\) return;\s*cycle\.reset\(\)/);
+    assert.doesNotMatch(controls, /onVisible[\s\S]{0,160}cycle\.tick/);
+    assert.match(controls, /if \(!reducedMotion\(\) && !userHeldPause && inView && !document\.hidden\) startFilm/);
     assert.match(controls, /threshold: 0/);
     assert.match(controls, /if \(!reducedMotion\(\)\) cycle\.tick\(TICK_MS\)/);
     assert.match(controls, /prefers-reduced-motion: reduce/);
@@ -241,6 +257,8 @@ describe('homepage hero clock', () => {
     assert.match(controls, /astro:before-swap/);
     assert.match(controls, /astro:page-load/);
     assert.match(controls, /pagehide/);
+    assert.match(controls, /if \(event\.persisted\) return/);
+    assert.doesNotMatch(controls, /addEventListener\('pageshow'/);
     assert.equal((controls.match(/window\.setInterval\(/g) || []).length, 1);
     assert.doesNotMatch(controls, /gradeLoopDwellMs/);
     assert.doesNotMatch(controls, /manuallyPaused\([^)]*\)[\s\S]{0,80}cycle\.tick/);

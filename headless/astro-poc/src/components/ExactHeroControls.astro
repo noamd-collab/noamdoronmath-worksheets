@@ -299,7 +299,7 @@ const topics = {
       // if the clock waited for the film to end, would never advance.
       userHeldPause = false;
       rememberPause(next, false);
-      startFilm(next);
+      if (!reducedMotion()) startFilm(next);
       wasStatic.set(next, next.__loop?.state().static || false);
       try { sessionStorage.setItem('nd_hero_loop_last', variant); } catch { /* Optional. */ }
       describe();
@@ -397,13 +397,15 @@ const topics = {
     }
     function tickClock() {
       syncActiveCard();
-      if (!userHeldPause && inView && !document.hidden) startFilm(activeLoop());
+      // Reduced motion keeps the engine's own static frame. Do not press play.
+      if (!reducedMotion() && !userHeldPause && inView && !document.hidden) startFilm(activeLoop());
       if (!reducedMotion()) cycle.tick(TICK_MS);
     }
-    // Hidden time does not count. When the tab is visible again the same
-    // interval keeps going; this kick covers a timer the browser suspended.
+    // Hidden time does not count. Coming back starts this dwell over.
+    // The interval supplies the next tick, so this must not tick as well.
     const onVisible = () => {
-      if (!document.hidden && !reducedMotion()) cycle.tick(TICK_MS);
+      if (document.hidden || reducedMotion()) return;
+      cycle.reset();
     };
     const onReduce = () => queueSync();
     reduced.addEventListener('change', onReduce);
@@ -424,7 +426,9 @@ const topics = {
     };
     // The pause-card script restores k3-pause on the next frame. Clear that
     // stored pause afterwards so the first film actually plays.
-    requestAnimationFrame(() => requestAnimationFrame(() => startFilm(activeLoop())));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (!reducedMotion()) startFilm(activeLoop());
+    }));
     startHeroClock();
   }
 
@@ -443,10 +447,11 @@ const topics = {
       }
       bootHeroControls();
     });
-    window.addEventListener('pagehide', () => stopHeroClock());
-    window.addEventListener('pageshow', () => {
-      if (!document.querySelector('[data-hero-loop]')) return;
-      startHeroClock();
+    // A cached page freezes its own timer (persisted), so leave that handle.
+    // A real leave still drops it.
+    window.addEventListener('pagehide', (event) => {
+      if (event.persisted) return;
+      stopHeroClock();
     });
   }
 

@@ -159,9 +159,15 @@ export function createHeroRotation(
     elapsed = 0;
   }
 
+  /** The tab came back. Start this film's dwell over instead of adding a tick. */
+  function reset() {
+    elapsed = 0;
+  }
+
   return {
     tick,
     jump,
+    reset,
     current: () => list[index],
     elapsed: () => elapsed,
     dwell: () => dwellOf(list[index]),
