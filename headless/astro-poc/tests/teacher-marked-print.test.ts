@@ -590,6 +590,47 @@ describe('teacher catalog picker', () => {
       return kolY >= top - 0.002 && kolY <= bot + 0.002 && kolX >= left - 0.01 && kolX <= right + 0.01;
     });
     assert.ok(kolMasked, 'the stranded כל on the label line is covered ' + JSON.stringify(wrappedSlice.box));
+    const rtlKol = answerSliceFor([{
+      page: 8,
+      width: 595.28,
+      height: 841.89,
+      items: [
+        { str: '19.', x: 539.84, y: 343.6, w: 15.75, h: 10.5, page: 8 },
+        { str: '· ד. כל', x: 39.97, y: 343.6, w: 30.04, h: 10.5, dir: 'rtl', page: 8 },
+        { str: 'צלע מוכפלת ב־k, ולכן גם סכומן — ההיקף — מוכפל ב־k', x: 290.34, y: 329.74, w: 232, h: 10.5, page: 8 },
+        { str: '20.', x: 539.84, y: 309.93, w: 15.75, h: 10.5, page: 8 },
+      ],
+    }], { q: 19, part: 'ד' });
+    assert.ok(rtlKol && rtlKol.box.wrap, 'an RTL כל token still keeps the following line');
+    const rtlKolX = (39.97 + 8) / 595.28;
+    const rtlKolY = (841.89 - (343.6 + 6)) / 841.89;
+    const rtlMasked = (rtlKol.box.masks || []).some((mask) => {
+      const top = rtlKol.box.y + mask.y * rtlKol.box.h;
+      const bot = top + mask.h * rtlKol.box.h;
+      const left = rtlKol.box.x + mask.x * rtlKol.box.w;
+      const right = left + mask.w * rtlKol.box.w;
+      return rtlKolY >= top - 0.002 && rtlKolY <= bot + 0.002 && rtlKolX >= left - 0.01 && rtlKolX <= right + 0.01;
+    });
+    assert.ok(rtlMasked, 'pdf.js marks the כל token rtl, and that word is still covered ' + JSON.stringify(rtlKol && rtlKol.box));
+    const headerApi = new Function(`${preview.slice(preview.indexOf('function trailingSheetHeader'), preview.indexOf('async function clipClosingLine'))} return { trailingSheetHeader, clipBoxAboveSheetHeader };`)() as {
+      trailingSheetHeader: (text: string) => boolean;
+      clipBoxAboveSheetHeader: (box: { y: number; h: number }, items: { str: string; y: number }[]) => { y: number; h: number };
+    };
+    assert.equal(headerApi.trailingSheetHeader('חלק ב׳ — הקניה ותרגול שאלות 3-6'), true);
+    assert.equal(headerApi.trailingSheetHeader('בהצלחה!'), true);
+    assert.equal(headerApi.trailingSheetHeader('החלק שהוסר מן הפינה'), false);
+    assert.equal(headerApi.trailingSheetHeader('פיתגורס חלק 2 — שימושים'), false);
+    const aboveHeader = headerApi.clipBoxAboveSheetHeader(
+      { y: 0.684, h: 0.283 },
+      [
+        { str: 'מתי המרחק יוצא שלם? נסחו תנאי.', y: 0.692 },
+        { str: 'חלק', y: 0.753 },
+        { str: 'ב׳ — הקניה ותרגול שאלות 3-6', y: 0.753 },
+        { str: 'חוקרים את הגובה ליתר במשולש ישר־זווית.', y: 0.814 },
+      ],
+    );
+    assert.ok(aboveHeader.y === 0.684 && aboveHeader.h < 0.08 && aboveHeader.y + aboveHeader.h < 0.753, JSON.stringify(aboveHeader));
+    assert.equal(headerApi.clipBoxAboveSheetHeader({ y: 0.684, h: 0.04 }, [{ str: 'מתי המרחק יוצא שלם?', y: 0.692 }]).h, 0.04);
     const trimApi = new Function(`${preview.slice(preview.indexOf('function sliceInkRows'), preview.indexOf('async function measureWorksheet'))} return { trimPieceBox };`)() as {
       trimPieceBox: (slice: { kind: string; page: number; box: { x: number; y: number; w: number; h: number }; source?: { footerCrop?: { page: number; y: number }; headerCrop?: { page: number; y: number; h: number } } }, bitmap: { width: number; height: number; getContext: (kind: string) => { getImageData: (x: number, y: number, w: number, h: number) => { data: Uint8ClampedArray } } }) => { box: { y: number; h: number } };
     };

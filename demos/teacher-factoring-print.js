@@ -2005,12 +2005,12 @@ function answerBox(items, questionNumber, part) {
             lineTop: label.y + Math.max(label.h || 0, 11) + 2,
           };
         }
-        // "· ד. כל" leaves the word כל alone on the label line. The sentence continues below.
+        // "· ד. כל" leaves כל to the left of the part letter. Cover the whole label line.
+        // The sentence that continues under it stays, and the part name is redrawn.
         if (String(label.rest || '').trim() === 'כל') {
-          const edge = Math.min(slotLeft, label.x);
           slot = {
-            left: edge,
-            right: edge,
+            left: 0,
+            right: 0,
             lineBottom: label.y - 1,
             lineTop: label.y + Math.max(label.h || 0, 11) + 2,
           };
@@ -2062,7 +2062,9 @@ function answerLabels(item) {
   const len = text.length || 1;
   const width = item.w || 0;
   const rtl = item.dir === 'rtl' || (item.dir !== 'ltr' && marks.length > 1);
-  if (marks.length === 1 && item.dir !== 'rtl') {
+  // One mark owns the rest of its token, including an RTL span such as "· ד. כל".
+  // Splitting that token by string index puts כל outside the letter and leaves it on the page.
+  if (marks.length === 1) {
     return [{
       part: marks[0].part,
       rest: text.slice(marks[0].end).trim(),
@@ -2138,8 +2140,8 @@ function exerciseSlices(chosen) {
   const slices = [];
   try {
     groups.forEach((entry, index) => {
-      if (groups.length > 1 && entry.source && entry.source.levelLabel) {
-        slices.push({ kind: 'level', text: entry.source.levelLabel, gap: index ? 18 : 8, block: 'level-' + entry.source.pdfId, source: entry.source });
+      if (groups.length > 1 && entry.source && printedLevelLabel(entry.source)) {
+        slices.push({ kind: 'level', text: printedLevelLabel(entry.source), gap: index ? 18 : 8, block: 'level-' + entry.source.pdfId, source: entry.source });
       }
       SOURCE = entry.source;
       shortSlices(entry.questions).forEach((slice) => {
@@ -2290,7 +2292,8 @@ async function answerSlices(chosen) {
   for (let index = 0; index < ordered.length; index += 1) {
     const question = ordered[index];
     const source = question.source;
-    const label = (source && source.levelLabel ? source.levelLabel + ' · ' : '') + (question.label || ('שאלה ' + question.q));
+    const levelName = printedLevelLabel(source);
+    const label = (levelName ? levelName + ' · ' : '') + (question.label || ('שאלה ' + question.q));
     let pages = source ? cache.get(source.pdfId) : [];
     if (source && !cache.has(source.pdfId)) {
       pages = await answerPages(source);
@@ -2348,6 +2351,15 @@ async function paintGroupedShort(root, chosen) {
   root.replaceChildren(...holder.childNodes);
 }
 
+function printedLevelLabel(source) {
+  const level = source && source.level;
+  if (level === 'a') return 'רמה א׳';
+  if (level === 'b') return 'רמה ב׳';
+  if (level === 'c') return 'מצוינות';
+  const label = source && source.levelLabel ? String(source.levelLabel) : '';
+  return label.replace('רמת מצוינות', 'מצוינות');
+}
+
 function sheetTitle(chosen) {
   const topics = [];
   const levels = [];
@@ -2356,7 +2368,8 @@ function sheetTitle(chosen) {
     if (!source) return;
     const topic = source.topic || '';
     if (topic && topics.indexOf(topic) < 0) topics.push(topic);
-    if (source.levelLabel && levels.indexOf(source.levelLabel) < 0) levels.push(source.levelLabel);
+    const level = printedLevelLabel(source);
+    if (level && levels.indexOf(level) < 0) levels.push(level);
   });
   const topic = topics.join(' · ') || 'דף תרגול';
   if (levels.length === 1) return topic + ' · ' + levels[0];
@@ -2387,6 +2400,35 @@ async function pageTextItems(pageNumber, source) {
   return items;
 }
 
+function trailingSheetHeader(text) {
+  const value = String(text || '');
+  if (value.includes('בהצלחה')) return true;
+  // "חלק ב׳ — הקניה" is the next section. "החלק שהוסר" and "פיתגורס חלק 2" are not.
+  return /חלק\s*[אבגדהו]\s*[׳'״"]/.test(value) || /חלק\s*[אבגדהו]\s*[—–-]/.test(value);
+}
+
+function clipBoxAboveSheetHeader(box, items) {
+  if (!box) return box;
+  let cut = box.y + box.h;
+  const lines = [];
+  (items || []).forEach((item) => {
+    const y = item.y || 0;
+    if (y <= box.y + 0.008 || y >= box.y + box.h) return;
+    const text = String(item.str || '');
+    const line = lines.find((have) => Math.abs(have.y - y) <= 0.006);
+    if (line) {
+      line.text += ' ' + text;
+      line.y = Math.min(line.y, y);
+    } else lines.push({ y, text });
+  });
+  lines.forEach((line) => {
+    if (!trailingSheetHeader(line.text)) return;
+    cut = Math.min(cut, line.y - 0.004);
+  });
+  if (cut >= box.y + box.h - 0.0005) return box;
+  return { ...box, h: Math.max(0.004, cut - box.y) };
+}
+
 async function clipClosingLine(slice) {
   const box = slice.box;
   if (!box || slice.kind === 'answer') return slice;
@@ -2396,15 +2438,9 @@ async function clipClosingLine(slice) {
   } catch (error) {
     return slice;
   }
-  let cut = box.y + box.h;
-  items.forEach((item) => {
-    if (!item.str.includes('בהצלחה')) return;
-    if (item.y <= box.y + 0.008 || item.y >= box.y + box.h) return;
-    cut = Math.min(cut, item.y - 0.004);
-  });
-  if (cut >= box.y + box.h - 0.0005) return slice;
-  const h = Math.max(0.004, cut - box.y);
-  return { ...slice, box: { ...box, h } };
+  const next = clipBoxAboveSheetHeader(box, items);
+  if (next === box || (next.y === box.y && Math.abs(next.h - box.h) < 0.0005)) return slice;
+  return { ...slice, box: next };
 }
 
 function sliceInkRows(bitmap, box) {
@@ -3671,8 +3707,13 @@ function layoutQuestionCrops(model) {
   const qNum = qMatch ? Number(qMatch[1]) : null;
   const items = model.items || [];
   const rows = model.rows || [];
-  // A section title is "פרק ב׳". "פרק זמן" and "פרקו" are question wording.
-  const headerText = (text) => /(?:^|[\s·•])פרק\s*[אבגדהו]\s*[׳'״"]/.test(String(text || ''));
+  // A section title is "פרק ב׳" or "חלק ב׳". "פרק זמן", "פרקו", and "החלק שהוסר" are question wording.
+  const headerText = (text) => {
+    const value = String(text || '');
+    return /(?:^|[\s·•])פרק\s*[אבגדהו]\s*[׳'״"]/.test(value)
+      || /חלק\s*[אבגדהו]\s*[׳'״"]/.test(value)
+      || /חלק\s*[אבגדהו]\s*[—–-]/.test(value);
+  };
   let ceiling = questionBot == null ? 1 : questionBot;
   const noteHeader = (y, text) => {
     if (!headerText(text) || !(y > 0)) return;
@@ -4747,7 +4788,8 @@ function metaHTML(chosen, cfg) {
     if (!source) return;
     grades.add(source.gradeLabel || (gradeRecord(source.grade) || {}).label || '');
     topics.add(source.topic || source.title || '');
-    if (source.levelLabel) levels.add(source.levelLabel);
+    const level = printedLevelLabel(source);
+    if (level) levels.add(level);
   });
   const scenarioName = state.scenario === 'other' ? 'אחר' : cfg.label;
   return `<div class="plan-meta"><span>${escapeHTML([...grades].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...topics].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...levels].join(' · '))}</span><span>${escapeHTML(scenarioName)}</span></div>`;
