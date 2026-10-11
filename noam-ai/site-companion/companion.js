@@ -22,6 +22,8 @@ export const EXPORT_NOTE =
   "במקרה פירוק לגורמים לכיתה ט׳ רמה א׳, אפשר לסמן את השאלות שנבחרו על דף המקור המלא, או להדפיס דף מצומצם שנחתך מאותו מקור עם ההוראה והנוסח המקוריים.";
 export const QUESTION_GAP =
   "נועם AI לא בוחר סעיפים בעצמו ולא ממציא שאלות. הבחירה היא מתוך השאלות שכבר קיימות בדף.";
+export const ROLE_TEXT =
+  "נועם AI מוצא דפי עבודה ודפי נושא שכבר קיימים באתר, ונותן קישור אליהם. למורים הוא עוזר לבחור תרגילים שכבר כתובים בדפים.";
 
 export const SYSTEM_PROMPT = [
   "אתה נועם AI, המלווה של האתר. אתה לא רמזי.",
@@ -77,6 +79,29 @@ export function boundCompanionInput(input) {
 
 export function isWorksheetSolveRequest(pageKind, message) {
   return pageKind === "worksheet" && SOLVE_REQUEST.test(String(message || ""));
+}
+
+export function isRoleQuestion(message) {
+  const text = String(message || "")
+    .replace(/[?؟!.,]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!text || text.length > 80) return false;
+  if (SOLVE_REQUEST.test(text)) return false;
+  return (
+    text === "במה אתה עוזר לי באתר" ||
+    text === "במה אתה עוזר" ||
+    text === "במה את עוזרת לי באתר" ||
+    text === "מה אתה עושה" ||
+    text === "מה אתה עושה באתר" ||
+    text === "איך אתה עוזר" ||
+    text === "איך אתה עוזר לי באתר" ||
+    text === "מי אתה"
+  );
+}
+
+export function roleAnswer(input) {
+  return emptyResult("role", ROLE_TEXT, boundCompanionInput(input));
 }
 
 function teacherQuery(input) {
@@ -242,6 +267,7 @@ export async function handleCompanionTurn(input, options) {
   if (isWorksheetSolveRequest(pageKind, message)) {
     return emptyResult("ramzi-redirect", RAMZI_TEXT, safe);
   }
+  if (isRoleQuestion(message)) return roleAnswer(safe);
   const query = teacherQuery(safe) || (safe.page && safe.page.title) || "";
   const records = retrieveRecords(settings.catalog, query, 6);
   if (!records.length) {

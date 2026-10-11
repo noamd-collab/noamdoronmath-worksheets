@@ -11,7 +11,9 @@ import {
   QWEN_MODEL,
   RAMZI_TEXT,
   handleCompanionTurn,
+  isRoleQuestion,
   isWorksheetSolveRequest,
+  roleAnswer,
 } from "./companion.js";
 import {
   corsHeadersFor,
@@ -146,6 +148,9 @@ export async function runCompanionTurn(payload, deps) {
   const settings = deps || {};
   const page = payload && payload.page && typeof payload.page === "object" ? payload.page : {};
   const message = String((payload && payload.message) || "");
+  if (isRoleQuestion(message)) {
+    return withIds(Object.assign({ active: true }, roleAnswer(payload)), [], []);
+  }
   if (isWorksheetSolveRequest("worksheet", message)) {
     const text = page.kind === "worksheet" ? RAMZI_TEXT : "נועם AI לא פותר שאלה ולא ממציא תרגיל. הבחירה היא רק מתוך מה שכבר קיים באתר.";
     return withIds(
