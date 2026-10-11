@@ -5187,6 +5187,10 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
     } else if (kind === 'answer' || kind === 'answer-row') {
       const cells = kind === 'answer-row' ? item.cells : [item];
       let right = OUT_W - 28;
+      // The crop is already at print resolution. Smoothing a one-pixel Hebrew
+      // cap onto a fractional destination turns it into a hollow gray bar.
+      const smoothing = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
       cells.forEach((cell) => {
         const labelW = cell.labelW || 0;
         const imageW = cell.imageW || Math.max(1, (cell.dw || 40) - labelW - 8);
@@ -5213,6 +5217,7 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
         }
         right -= (cell.dw || imageW) + 14;
       });
+      ctx.imageSmoothingEnabled = smoothing;
     } else {
       const sx = item.baked ? 0 : item.slice.box.x * item.bitmap.width;
       const sy = item.baked ? 0 : item.slice.box.y * item.bitmap.height;

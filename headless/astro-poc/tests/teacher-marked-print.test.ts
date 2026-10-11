@@ -1159,6 +1159,7 @@ describe('teacher catalog picker', () => {
     assert.equal(fig[(15 * figW + 200) * 4], 191, 'a tall axis on the dash row stays');
     assert.equal(fig[(24 * figW + 230) * 4], 17, 'the segment below the dash stays');
     assert.equal(fig[(15 * figW + 240) * 4], 17, 'dark ink where the segment crosses the dash stays');
+    assert.match(preview, /ctx\.imageSmoothingEnabled = false/, 'answer crops are copied without smoothing so a one-pixel letter cap stays black');
   });
 
   it('pads each text line to the full line box above and below', () => {
