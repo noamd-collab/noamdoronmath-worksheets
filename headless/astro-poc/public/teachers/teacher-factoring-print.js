@@ -2429,6 +2429,7 @@ async function answerSlices(chosen) {
         gap: 8,
         block: 'answers',
         source,
+        questionId: question.id,
         clip: sourceClip(source, found.page, 'answer'),
       });
     }
@@ -5136,6 +5137,84 @@ function answerInkCanvas(bitmap, sx, sy, sw, sh, box) {
   return cut;
 }
 
+function printTraceReset() {
+  if (typeof window === 'undefined') return;
+  window.__printTrace = [];
+}
+
+function printTracePush(entry) {
+  if (typeof window === 'undefined') return;
+  const list = window.__printTrace || (window.__printTrace = []);
+  list.push(entry);
+}
+
+function printElementId(slice) {
+  if (!slice) return null;
+  const pdf = (slice.source && slice.source.pdfId) || (slice.clip && slice.clip.pdfId) || '';
+  const box = slice.box || {};
+  const srcPage = slice.page || 0;
+  const block = slice.block || '';
+  const seg = box.segment || slice.kind || '';
+  const source = {
+    page: srcPage,
+    x: Math.round((box.x || 0) * 1000) / 1000,
+    y: Math.round((box.y || 0) * 1000) / 1000,
+    w: Math.round((box.w || 0) * 1000) / 1000,
+    h: Math.round((box.h || 0) * 1000) / 1000,
+  };
+  if (slice.kind === 'answer') {
+    const who = slice.questionId || slice.partId || String(slice.text || '');
+    return { kind: 'answer', id: pdf + '|answer|' + who, source };
+  }
+  if (seg === 'figure') {
+    const yk = Math.round((box.y || 0) * 200);
+    const xk = Math.round((box.x || 0) * 200);
+    return { kind: 'figure', id: pdf + '|figure|' + block + '|' + srcPage + '|' + yk + '|' + xk, source };
+  }
+  if (slice.kind === 'stem' || seg === 'stem') {
+    return { kind: 'stem', id: pdf + '|stem|' + block + '|' + srcPage, source };
+  }
+  if (slice.kind === 'row') {
+    const who = slice.partId || (block + '@' + Math.round((box.y || 0) * 200));
+    return { kind: 'part', id: pdf + '|part|' + who + '|' + srcPage, source };
+  }
+  return null;
+}
+
+function printTraceElement(slice, pageIndex, dx, dy, dw, dh, sw, sh) {
+  const el = printElementId(slice);
+  if (!el || !(dw > 0) || !(dh > 0)) return;
+  const scale = Math.sqrt((dw / Math.max(1, sw)) * (dh / Math.max(1, sh)));
+  const x = Math.floor(dx);
+  const y = Math.floor(dy);
+  printTracePush({
+    kind: el.kind,
+    id: el.id,
+    page: pageIndex,
+    x,
+    y,
+    w: Math.max(1, Math.ceil(dx + dw) - x),
+    h: Math.max(1, Math.ceil(dy + dh) - y),
+    scale: Math.round(scale * 10000) / 10000,
+    source: el.source,
+  });
+}
+
+function printTraceChrome(pageIndex, x, y, w, h) {
+  if (!(w > 0) || !(h > 0)) return;
+  printTracePush({
+    kind: 'chrome',
+    id: '',
+    page: pageIndex,
+    x: Math.round(x),
+    y: Math.round(y),
+    w: Math.max(1, Math.round(w)),
+    h: Math.max(1, Math.round(h)),
+    scale: 1,
+    source: null,
+  });
+}
+
 function paintWorksheetPage(canvas, page, index, count, title, note) {
   const OUT_W = 1000;
   const PAGE_H = 1440;
@@ -5143,6 +5222,9 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
   const scale = printCanvasScale(sample ? (sample.originalPageWidth || sample.bitmap.width) : 0);
   canvas.width = Math.round(OUT_W * scale);
   canvas.height = Math.round(PAGE_H * scale);
+  printTraceChrome(index, 0, 0, canvas.width, Math.max(1, Math.round(page.top * scale)));
+  const footTop = Math.round((PAGE_H - 36) * scale);
+  printTraceChrome(index, 0, footTop, canvas.width, Math.max(1, canvas.height - footTop));
   const ctx = canvas.getContext('2d');
   ctx.setTransform(scale, 0, 0, scale, 0, 0);
   ctx.fillStyle = '#fff';
@@ -5175,12 +5257,14 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
     if (itemIndex) y += item.slice.gap;
     const kind = item.slice.kind;
     if (kind === 'level' || kind === 'answers-head') {
+      printTraceChrome(index, 0, y * scale, canvas.width, Math.max(1, item.dh * scale));
       ctx.fillStyle = '#1a2744';
       ctx.font = kind === 'answers-head' ? '700 24px Heebo, Arial, sans-serif' : '700 18px Heebo, Arial, sans-serif';
       ctx.textAlign = 'right';
       ctx.direction = 'rtl';
       ctx.fillText(item.slice.text, OUT_W - 28, y + (kind === 'answers-head' ? 26 : 24));
     } else if (kind === 'missing') {
+      printTraceChrome(index, 0, y * scale, canvas.width, Math.max(1, item.dh * scale));
       ctx.fillStyle = '#1a2744';
       ctx.font = '16px Heebo, Arial, sans-serif';
       ctx.textAlign = 'right';
@@ -5215,18 +5299,35 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
         const sy = cell.baked ? 0 : cell.slice.box.y * cell.bitmap.height;
         const sw = cell.baked ? cell.bitmap.width : cell.sw;
         const sh = cell.baked ? cell.bitmap.height : cell.sh;
+        const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
+        const natural = cell.answerScale === 1;
+        let imageX;
+        let imageY;
         if (cell.stack) {
           ctx.fillText(cell.slice.text, right, y + 14);
-          const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
-          paintAnswer(ink, right - imageW, y + 18, imageW, imageH, cell.answerScale === 1);
+          printTraceChrome(index, (right - labelW) * scale, y * scale, Math.max(1, labelW * scale), Math.max(1, 18 * scale));
+          imageX = right - imageW;
+          imageY = y + 18;
         } else {
           const textY = y + Math.max(14, Math.round((item.dh + 10) / 2));
           ctx.fillText(cell.slice.text, right, textY);
-          const imageX = right - labelW - 8 - imageW;
-          const imageY = y + Math.max(0, Math.round((item.dh - imageH) / 2));
-          const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
-          paintAnswer(ink, imageX, imageY, imageW, imageH, cell.answerScale === 1);
+          printTraceChrome(index, (right - labelW) * scale, y * scale, Math.max(1, labelW * scale), Math.max(1, item.dh * scale));
+          imageX = right - labelW - 8 - imageW;
+          imageY = y + Math.max(0, Math.round((item.dh - imageH) / 2));
         }
+        paintAnswer(ink, imageX, imageY, imageW, imageH, natural);
+        const drawW = natural ? ink.width : Math.max(1, Math.round(imageW * scale));
+        const drawH = natural ? ink.height : Math.max(1, Math.round(imageH * scale));
+        printTraceElement(
+          cell.slice,
+          index,
+          Math.round(imageX * scale),
+          Math.round(imageY * scale),
+          drawW,
+          drawH,
+          ink.width,
+          ink.height,
+        );
         right -= (cell.dw || imageW) + 14;
       });
     } else {
@@ -5237,6 +5338,7 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
       const destW = item.dw || OUT_W;
       const destX = item.dx || 0;
       ctx.drawImage(item.bitmap, sx, sy, sw, sh, destX, y, destW, item.dh);
+      printTraceElement(item.slice, index, destX * scale, y * scale, destW * scale, item.dh * scale, sw, sh);
       if (!item.slice.box.segment) fillSliceMasks(ctx, item.slice.box, y, item.dh, destW);
     }
     y += item.dh;
@@ -5271,6 +5373,7 @@ async function paintWorksheet(root, chosen, note) {
   root.dataset.missingAnswers = answers.missing.join(' | ');
   root.innerHTML = pages.map(() => '<figure class="crop-sheet"><canvas></canvas></figure>').join('');
   const canvases = root.querySelectorAll('canvas');
+  printTraceReset();
   pages.forEach((page, index) => paintWorksheetPage(canvases[index], page, index, pages.length, title, noteBox));
 }
 
