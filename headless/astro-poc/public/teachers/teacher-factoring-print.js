@@ -2174,16 +2174,19 @@ function answerBox(items, questionNumber, part) {
         const gx = glyph.x || 0;
         const gr = gx + Math.max(glyph.w || 0, 3);
         const gh = Math.max(glyph.h || 0, 10);
-        if (gy < bottom + 1 || gy > top - 1) return;
+        const gTop = gy + gh;
+        // A tall parenthesis hangs into this crop while its baseline sits on the next line.
+        if (gTop < bottom + 1 || gy > top - 1) return;
         if (Math.min(gr, right) - Math.max(gx, left) < 1) return;
-        const sameLine = Math.abs(gy - label.y) <= 8;
+        const sameLine = Math.abs(gy - label.y) <= 8 || Math.abs(gTop - label.y) <= 8;
         if (sameLine && (!slot || (gr > slot.left + 3 && gx < slot.right - 3))) return;
-        if (!sameLine && Math.abs(gy - label.y) > 18) return;
+        const gap = Math.min(Math.abs(gy - label.y), Math.abs(gTop - label.y));
+        if (!sameLine && gap > 22) return;
         covers.push({
           x0: Math.max(gx - 1, left),
           x1: Math.min(gr + 1, right),
           y0: Math.max(gy - 2, bottom),
-          y1: Math.min(gy + gh + 2, top),
+          y1: Math.min(gTop + 2, top),
         });
       });
     } else if (labels.length) {
@@ -3662,7 +3665,8 @@ function leftFigureBoxes(bitmap, y0, y1) {
     const b = data[i + 2];
     const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
     const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
-    return mx - mn < 28 && mx > 150 && mx < 235;
+    // 235–248 is the antialiased edge of a near-white writing box, not a stroke.
+    return mx - mn < 28 && mx > 150 && mx < 250;
   };
   const thinRule = new Uint8Array(height);
   const ruleL = Math.floor(width * 0.22);
@@ -3875,7 +3879,7 @@ function leftFigureBoxes(bitmap, y0, y1) {
       const b = data[i + 2];
       const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
       const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
-      return mx - mn < 28 && mx > 150 && mx < 235;
+      return mx - mn < 28 && mx > 150 && mx < 250;
     };
     const greyColumn = (x) => {
       let n = 0;
@@ -4085,6 +4089,43 @@ function leftFigureBoxes(bitmap, y0, y1) {
       const drawnH = maxY - minY;
       if (drawnH < spanNeed * 0.75) return;
       if (x1 - x0 < Math.max(16, Math.round(drawnH * 0.4))) return;
+      // A triangle inks every row. A guided-example box is a pale fill, and a
+      // sentence is separated text lines. Neither is the second drawing.
+      let paleN = 0;
+      let seen = 0;
+      const stepX = Math.max(1, Math.floor((x1 - x0) / 36));
+      const stepY = Math.max(1, Math.floor(drawnH / 36));
+      for (let y = minY; y <= maxY; y += stepY) {
+        for (let x = x0; x <= x1; x += stepX) {
+          seen += 1;
+          const i = (y * width + x) * 4;
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
+          const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
+          if (mx - mn < 22 && mx > 170 && mx < 252) paleN += 1;
+        }
+      }
+      if (seen && paleN / seen > 0.22) return;
+      let maxGap = 0;
+      let gap = 0;
+      let strokeRows = 0;
+      const rowCount = maxY - minY + 1;
+      for (let y = minY; y <= maxY; y += 1) {
+        let hit = false;
+        for (let x = x0; x <= x1; x += 2) {
+          if (strokeAt(x, y)) {
+            hit = true;
+            break;
+          }
+        }
+        if (hit) {
+          strokeRows += 1;
+          gap = 0;
+        } else if (++gap > maxGap) maxGap = gap;
+      }
+      if (maxGap > Math.max(14, Math.round(drawnH * 0.08)) && strokeRows < rowCount * 0.62) return;
       siblings.push({
         x0: x0 / width,
         x1: (x1 + 1) / width,
