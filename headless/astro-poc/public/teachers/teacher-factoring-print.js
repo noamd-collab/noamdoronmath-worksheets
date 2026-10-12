@@ -3396,24 +3396,61 @@ function leftFigureBoxes(bitmap, y0, y1) {
     const i = (y * width + x) * 4;
     return data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242;
   };
+  // A writing rule is one light-grey row with white above and below it.
+  // A text line plus that rule must not count as a tall drawing column.
+  const greyish = (x, y) => {
+    const i = (y * width + x) * 4;
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
+    const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
+    return mx - mn < 28 && mx > 150 && mx < 235;
+  };
+  const thinRule = new Uint8Array(height);
+  const ruleL = Math.floor(width * 0.22);
+  const ruleR = Math.floor(width * 0.92);
+  const ruleSpan = Math.max(1, Math.floor((ruleR - ruleL) / 2));
+  for (let y = 0; y < height; y += 1) {
+    let gray = 0;
+    let black = 0;
+    for (let x = ruleL; x < ruleR; x += 2) {
+      if (!dark(x, y)) continue;
+      if (greyish(x, y)) gray += 1;
+      else if (data[(y * width + x) * 4] < 120) black += 1;
+    }
+    if (gray < ruleSpan * 0.2 || black > gray * 0.25) continue;
+    const quiet = (yy) => {
+      if (yy < 0 || yy >= height) return true;
+      let n = 0;
+      for (let x = ruleL; x < ruleR; x += 4) {
+        if (dark(x, yy) && greyish(x, yy)) n += 1;
+      }
+      return n < ruleSpan * 0.08;
+    };
+    if (quiet(y - 2) && quiet(y + 2)) thinRule[y] = 1;
+  }
   const tall = [];
   for (let x = xStart; x < xStop; x += 1) {
-    let min = bot;
-    let max = top;
-    let n = 0;
+    // Distant specks (a writing rule under a letter) are not a drawing column.
+    // The stroke itself has to run.
+    let run = 0;
+    let best = 0;
     for (let y = top; y <= bot; y += 1) {
-      if (!dark(x, y)) continue;
-      n += 1;
-      if (y < min) min = y;
-      if (y > max) max = y;
+      if (!dark(x, y) || thinRule[y]) {
+        run = 0;
+        continue;
+      }
+      run += 1;
+      if (run > best) best = run;
     }
-    if (n >= 2 && max - min > tallMin) tall.push(x);
+    if (best > tallMin * 0.5) tall.push(x);
   }
   if (!tall.length) return [];
   const rowHit = new Uint8Array(bot - top + 1);
   tall.forEach((x) => {
     for (let y = top; y <= bot; y += 1) {
-      if (dark(x, y)) rowHit[y - top] = 1;
+      if (dark(x, y) && !thinRule[y]) rowHit[y - top] = 1;
     }
   });
   const clusters = [];
@@ -3574,7 +3611,7 @@ function leftFigureBoxes(bitmap, y0, y1) {
     const link = 3;
     let seeds = [];
     for (let y = low; y <= high; y += 1) {
-      if (barRow[y - top] || ruleAt(y)) continue;
+      if (barRow[y - top] || ruleAt(y) || thinRule[y]) continue;
       if (dark(maxX, y) && !(drawingLeft && greyColumn(maxX))) seeds.push(y);
     }
     let last = maxX;
@@ -3583,7 +3620,7 @@ function leftFigureBoxes(bitmap, y0, y1) {
       if (drawingLeft && greyColumn(x)) break;
       const next = [];
       for (let y = low; y <= high; y += 1) {
-        if (barRow[y - top] || ruleAt(y) || !dark(x, y)) continue;
+        if (barRow[y - top] || ruleAt(y) || thinRule[y] || !dark(x, y)) continue;
         if (drawingLeft && greyFill(x, y)) continue;
         if (seeds.some((seed) => Math.abs(seed - y) <= link)) next.push(y);
       }
