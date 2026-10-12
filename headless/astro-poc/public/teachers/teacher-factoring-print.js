@@ -2690,11 +2690,9 @@ function answerEdgeSpan(bitmap, box, yTop, yBot) {
     }
   }
   if (clusters.length < 2) return null;
-  const kept = clusters.filter((cluster) => {
-    const touches = cluster.x <= 1 || cluster.x + cluster.w >= rw - 1;
-    return !(touches && cluster.w <= 30);
-  });
-  const use = kept.length ? kept : clusters;
+  // Keep a trailing "·" or "X." that sits on the edge of the answer. Dropping
+  // that narrow cluster was cutting the mark off the crop.
+  const use = clusters;
   let minX = use[0].x;
   let maxX = use[0].x + use[0].w;
   use.forEach((cluster) => {
