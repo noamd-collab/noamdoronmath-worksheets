@@ -1965,6 +1965,7 @@ function answerBox(items, questionNumber, part) {
     return { left: nextLeft, right: nextRight, bottom: nextBottom, top: nextTop };
   }
 
+  let answerContinues = false;
   const markers = [];
   items.forEach((item) => {
     const n = markerNumber(item, items);
@@ -2075,6 +2076,7 @@ function answerBox(items, questionNumber, part) {
       // middle answer belongs to the part that runs out to the margin.
       const wrapped = nextOnLine ? null : wrappedAnswerLines(label, left, right, bottom, next);
       if (wrapped) {
+        answerContinues = true;
         left = Math.min(left, wrapped.left);
         right = Math.max(right, wrapped.right);
         bottom = Math.min(bottom, wrapped.bottom);
@@ -2212,6 +2214,7 @@ function answerBox(items, questionNumber, part) {
   const box = { page: marker.page, x: left, y: bottom, w: right - left, h: top - bottom };
   if (slot) box.slot = slot;
   if (covers.length) box.covers = covers;
+  if (answerContinues) box.continues = true;
   return box;
 }
 
@@ -2642,7 +2645,7 @@ function answerSliceFor(pages, question) {
         y: (sheet.height - y1) / sheet.height,
         w: (x1 - x0) / sheet.width,
         h: (y1 - y0) / sheet.height,
-        wrap: masks.length > 0,
+        wrap: Boolean(raw.continues),
         masks: masks.length ? masks : undefined,
       },
     };
