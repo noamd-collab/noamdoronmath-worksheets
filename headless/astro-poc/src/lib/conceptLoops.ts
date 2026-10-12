@@ -2200,6 +2200,12 @@ function motionOff(): boolean {
   return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off');
 }
 
+/** The kite card parks on its finished frame when the OS asks for less motion.
+ *  The flag is set outside this file so other loops keep playing. */
+function kiteOsReduce(variantName: string, root: LoopRoot): boolean {
+  return variantName === 'kite-construct' && root.hasAttribute('data-os-reduce');
+}
+
 function setupLoop(root: LoopRoot) {
   const variant = root.dataset.loop as keyof typeof SPECS;
   const spec = SPECS[variant];
@@ -2262,11 +2268,11 @@ function setupLoop(root: LoopRoot) {
     playing = false;
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
-    if (!isStatic) setToggle(done ? 'הפעלת ההדגמה מחדש' : 'הפעלת ההדגמה', true);
+    if (!isStatic) setToggle(done ? 'הפעלת ההדגמה מחדש' : 'המשך ההדגמה', true);
   }
 
   function applyMotionPrefs() {
-    if (motionOff()) {
+    if (motionOff() || kiteOsReduce(variant, root)) {
       // static completed frame, no motion at all
       isStatic = true;
       playing = false;
@@ -2285,7 +2291,7 @@ function setupLoop(root: LoopRoot) {
       drawFrame();
       if (toggle) toggle.style.display = '';
       if (inView) play();
-      else setToggle('הפעלת ההדגמה', true);
+      else setToggle('המשך ההדגמה', true);
     }
   }
 
@@ -2325,6 +2331,12 @@ function setupLoop(root: LoopRoot) {
     attributes: true,
     attributeFilter: ['class'],
   });
+  if (variant === 'kite-construct') {
+    new MutationObserver(applyMotionPrefs).observe(root, {
+      attributes: true,
+      attributeFilter: ['data-os-reduce'],
+    });
+  }
 
   applyMotionPrefs();
   if (!isStatic) setToggle('השהיית ההדגמה', false);

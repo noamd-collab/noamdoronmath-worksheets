@@ -2242,31 +2242,31 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'kite-construct' && (
         <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label={ariaLabels[variant]}>
-          <text class="cl-t cl-big" x="240" y="40" text-anchor="middle">סרגל ומחוגה בלבד: דלתון</text>
-          <line data-el="axis" x1="40" y1="165" x2="370" y2="165" stroke="var(--navy)" stroke-width="1.5" pathLength="1" style="opacity:0" />
-          <text data-el="axis-lbl" class="cl-t" x="360" y="182" text-anchor="end" style="opacity:0">ציר סימטריה</text>
-          <circle data-el="pA" cx="170" cy="165" r="4.5" fill="var(--navy)" style="opacity:0" />
-          <text data-el="lA" class="cl-t cl-num" x="170" y="190" text-anchor="middle" style="font-weight:800;opacity:0">A</text>
-          <circle data-el="pB" cx="240" cy="165" r="4.5" fill="var(--navy)" style="opacity:0" />
-          <text data-el="lB" class="cl-t cl-num" x="240" y="190" text-anchor="middle" style="font-weight:800;opacity:0">B</text>
-          <circle data-el="cA" cx="170" cy="165" r="60" fill="none" stroke="var(--teal)" stroke-width="2" pathLength="1" style="opacity:0" />
-          <circle data-el="cB" cx="240" cy="165" r="70" fill="none" stroke="var(--coral)" stroke-width="2" pathLength="1" style="opacity:0" />
-          <circle data-el="i1" cx="195.7" cy="110.8" r="4.5" fill="var(--yellow)" stroke="#fff" stroke-width="1.5" style="opacity:0" />
-          <text data-el="l1" class="cl-t cl-num" x="211" y="104" text-anchor="middle" style="font-weight:800;opacity:0">C</text>
-          <circle data-el="i2" cx="195.7" cy="219.2" r="4.5" fill="var(--yellow)" stroke="#fff" stroke-width="1.5" style="opacity:0" />
-          <text data-el="l2" class="cl-t cl-num" x="211" y="232" text-anchor="middle" style="font-weight:800;opacity:0">D</text>
-          <path data-el="kite" d="M170 165 L195.7 110.8 L240 165 L195.7 219.2 Z" fill="#7c3aed1f" stroke="var(--navy)" stroke-width="2" stroke-linejoin="round" style="opacity:0" />
-          <line data-el="sa1" x1="170" y1="165" x2="195.7" y2="110.8" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:0" />
-          <line data-el="sa2" x1="170" y1="165" x2="195.7" y2="219.2" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:0" />
-          <line data-el="sb1" x1="240" y1="165" x2="195.7" y2="110.8" stroke="var(--coral)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:0" />
-          <line data-el="sb2" x1="240" y1="165" x2="195.7" y2="219.2" stroke="var(--coral)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:0" />
-          <g data-el="ticksA" stroke="var(--teal-dark)" stroke-width="2.2" stroke-linecap="round" style="opacity:0">
+          <text class="cl-t cl-big cl-kite-title" x="240" y="40" text-anchor="middle">סרגל ומחוגה בלבד: דלתון</text>
+          <line data-el="axis" x1="40" y1="165" x2="370" y2="165" stroke="var(--navy)" stroke-width="1.5" pathLength="1" style="opacity:1" />
+          <text data-el="axis-lbl" class="cl-t" x="360" y="182" text-anchor="end" style="opacity:1">ציר סימטריה</text>
+          <circle data-el="pA" cx="170" cy="165" r="4.5" fill="var(--navy)" style="opacity:1" />
+          <text data-el="lA" class="cl-t cl-num" x="170" y="190" text-anchor="middle" style="font-weight:800;opacity:1">A</text>
+          <circle data-el="pB" cx="240" cy="165" r="4.5" fill="var(--navy)" style="opacity:1" />
+          <text data-el="lB" class="cl-t cl-num" x="240" y="190" text-anchor="middle" style="font-weight:800;opacity:1">B</text>
+          <circle data-el="cA" cx="170" cy="165" r="60" fill="none" stroke="var(--teal)" stroke-width="2" pathLength="1" style="opacity:0.12" />
+          <circle data-el="cB" cx="240" cy="165" r="110" fill="none" stroke="var(--coral)" stroke-width="2" pathLength="1" style="opacity:0.2" />
+          <circle data-el="i1" cx="144.3" cy="110.8" r="4.5" fill="var(--yellow)" stroke="#fff" stroke-width="1.5" style="opacity:1" />
+          <text data-el="l1" class="cl-t cl-num" x="159.3" y="104.8" text-anchor="middle" style="font-weight:800;opacity:1">C</text>
+          <circle data-el="i2" cx="144.3" cy="219.2" r="4.5" fill="var(--yellow)" stroke="#fff" stroke-width="1.5" style="opacity:1" />
+          <text data-el="l2" class="cl-t cl-num" x="159.3" y="231.2" text-anchor="middle" style="font-weight:800;opacity:1">D</text>
+          <path data-el="kite" d="M170 165 L144.3 110.8 L240 165 L144.3 219.2 Z" fill="#7c3aed1f" stroke="var(--navy)" stroke-width="2" stroke-linejoin="round" style="opacity:1" />
+          <line data-el="sa1" x1="170" y1="165" x2="144.3" y2="110.8" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:1" />
+          <line data-el="sa2" x1="170" y1="165" x2="144.3" y2="219.2" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:1" />
+          <line data-el="sb1" x1="240" y1="165" x2="144.3" y2="110.8" stroke="var(--coral)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:1" />
+          <line data-el="sb2" x1="240" y1="165" x2="144.3" y2="219.2" stroke="var(--coral)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:1" />
+          <g data-el="ticksA" stroke="var(--teal-dark)" stroke-width="2.2" stroke-linecap="round" style="opacity:0.6">
             <line x1="176.5" y1="134.9" x2="189.2" y2="140.9" />
             <line x1="177.9" y1="131.3" x2="190.9" y2="137.3" />
             <line x1="176.5" y1="189.1" x2="189.2" y2="195.1" />
             <line x1="177.9" y1="192.7" x2="190.9" y2="198.7" />
           </g>
-          <g data-el="ticksB" stroke="var(--coral-dark)" stroke-width="2.2" stroke-linecap="round" style="opacity:0">
+          <g data-el="ticksB" stroke="var(--coral-dark)" stroke-width="2.2" stroke-linecap="round" style="opacity:0.6">
             <line x1="212.5" y1="142.3" x2="223.3" y2="133.5" />
             <line x1="209.3" y1="138.4" x2="220.1" y2="129.6" />
             <line x1="215.7" y1="146.2" x2="226.5" y2="137.4" />
@@ -2274,21 +2274,21 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <line x1="209.3" y1="191.6" x2="220.1" y2="200.4" />
             <line x1="215.7" y1="183.8" x2="226.5" y2="192.6" />
           </g>
-          <path data-el="reflex" d="M158.9 141.5 A 26 26 0 1 1 158.9 188.5" fill="none" stroke="var(--coral-dark)" stroke-width="2.5" pathLength="1" style="opacity:0" />
+          <path data-el="reflex" d="M158.9 141.5 A 26 26 0 1 1 158.9 188.5" fill="none" stroke="var(--coral-dark)" stroke-width="2.5" pathLength="1" style="opacity:1" />
           <g data-el="chip-convex" style="opacity:0">
             <rect class="cl-chip" x="130" y="52" width="112" height="26" rx="9" />
             <text class="cl-t" x="186" y="70" text-anchor="middle" style="font-weight:800">דלתון קמור</text>
           </g>
-          <g data-el="chip-dart" style="opacity:0">
+          <g data-el="chip-dart" style="opacity:1">
             <rect x="120" y="52" width="132" height="26" rx="9" fill="#e5735c1f" stroke="var(--coral-dark)" stroke-width="1.5" />
             <text class="cl-t" x="186" y="70" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">דלתון קעור!</text>
           </g>
-          <g data-el="eq-lbl" style="opacity:0">
+          <g data-el="eq-lbl" style="opacity:1">
             <text class="cl-t cl-num" x="415" y="90" text-anchor="middle" style="font-weight:800">AC = AD</text>
             <text class="cl-t cl-num" x="415" y="114" text-anchor="middle" style="font-weight:800">BC = BD</text>
             <text class="cl-t" x="415" y="140" text-anchor="middle">שני זוגות שווים</text>
           </g>
-          <g data-el="refl-lbl" style="opacity:0">
+          <g data-el="refl-lbl" style="opacity:1">
             <rect x="16" y="210" width="92" height="26" rx="9" fill="#e5735c1f" stroke="var(--coral-dark)" stroke-width="1.5" />
             <text class="cl-t" x="62" y="228" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">זווית קעורה</text>
           </g>
@@ -2965,11 +2965,11 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'kite-construct' && (
         <>
           <p class="concept-loop__formula" dir="rtl">
-            <span data-fx="0">עיגול סביב <bdi class="cl-num">A</bdi> + עיגול סביב <bdi class="cl-num">B</bdi></span>
-            <span data-fx="1">= <bdi class="cl-num">4</bdi> קודקודי הדלתון</span>
-            <span data-el="check" class="cl-check" style="opacity:0" aria-hidden="true">✓</span>
+            <span data-fx="0" style="opacity:1">עיגול סביב <bdi class="cl-num">A</bdi> + עיגול סביב <bdi class="cl-num">B</bdi></span>
+            <span data-fx="1" style="opacity:1">= <bdi class="cl-num">4</bdi> קודקודי הדלתון</span>
+            <span data-el="check" class="cl-check" style="opacity:1" aria-hidden="true">✓</span>
           </p>
-          <p class="concept-loop__caption" data-el="caption">שני עיגולים — דלתון קמור, ובהגדלה: קעור</p>
+          <p class="concept-loop__caption" data-el="caption" style="opacity:1">שני עיגולים — דלתון קמור, ובהגדלה: קעור</p>
         </>
       )
     }
@@ -2980,6 +2980,26 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
   import { initConceptLoops } from '../lib/conceptLoops';
   initConceptLoops();
 </script>
+
+{
+  variant === 'kite-construct' && (
+    <script is:inline>
+      (function () {
+        var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+        function sync() {
+          document.querySelectorAll('[data-loop="kite-construct"]').forEach(function (el) {
+            if (mq.matches) el.setAttribute('data-os-reduce', '');
+            else el.removeAttribute('data-os-reduce');
+          });
+        }
+        if (typeof mq.addEventListener === 'function') mq.addEventListener('change', sync);
+        else mq.addListener(sync);
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync);
+        sync();
+      })();
+    </script>
+  )
+}
 
 <script>
   /**
@@ -3029,12 +3049,23 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       function state() {
         return hook.state();
       }
+      var kite = root.getAttribute('data-loop') === 'kite-construct';
       function sync() {
         var s = state();
         var paused = !s.playing && !s.static;
         card.classList.toggle('is-paused', paused);
         card.setAttribute('aria-pressed', paused ? 'true' : 'false');
-        card.setAttribute('aria-label', paused ? 'הפעלת הנפשה' : 'השהיית הנפשה');
+        var label = paused
+          ? kite
+            ? s.done
+              ? 'הפעלת ההדגמה מחדש'
+              : 'המשך ההדגמה'
+            : 'הפעלת הנפשה'
+          : kite
+            ? 'השהיית ההדגמה'
+            : 'השהיית הנפשה';
+        card.setAttribute('aria-label', label);
+        if (kite && toggleBtn) toggleBtn.setAttribute('aria-label', label);
         // static frame (reduced-motion): the control is inert
         card.setAttribute('aria-disabled', s.static ? 'true' : 'false');
         if (s.static) card.setAttribute('tabindex', '-1');
@@ -3055,6 +3086,9 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       card.addEventListener('click', function (e) {
         if (e.target && e.target.closest && e.target.closest('[data-el="toggle"]')) return; // the button handles itself
         toggle();
+      });
+      toggleBtn.addEventListener('click', function () {
+        sync();
       });
       card.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
@@ -3119,10 +3153,12 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
   /* the engine's old big round button → tiny corner bars/triangle */
   .concept-loop .concept-loop__card .concept-loop__toggle {
     inset-inline-start: auto;
-    inset-inline-end: 10px;
+    inset-inline-end: 8px;
     top: 8px;
-    width: 14px;
-    height: 14px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
     padding: 0;
     border: none;
     background: transparent;
@@ -3151,5 +3187,18 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
   }
   :global(html.noam-a11y-motion) .concept-loop__card {
     cursor: default;
+  }
+  /* The shared formula rule isolates every [data-fx] as LTR. These two
+     lines are Hebrew sentences, so they stay RTL and only A/B/4 are LTR. */
+  .concept-loop[data-loop='kite-construct'] .concept-loop__formula[dir='rtl'] [data-fx] {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+  /* The SVG title is 18 user units. On a phone the 480-wide viewBox
+     shrinks that to about 8px; 36 user units stays at least 12px tall. */
+  @media (max-width: 640px) {
+    .concept-loop[data-loop='kite-construct'] .cl-kite-title {
+      font-size: 36px;
+    }
   }
 </style>

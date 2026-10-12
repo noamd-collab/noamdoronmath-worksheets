@@ -10,6 +10,8 @@
  * x² − y² = (x − y)(x + y), 22 s lap): an explicit content change, not a regen.
  * They moved again for the grade-9 kite-construct film (loop #8 from
  * staging 654ab7c): an explicit content addition, not a regen.
+ * They moved again for the kite review fixes (RTL summary, final rest
+ * frame, 44px pause target): an explicit content fix, not a regen.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -35,8 +37,8 @@ const protectedFiles: Record<string, string> = {
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': '67294dc5725b7e16856370ddaa42e415765587faa6a4faddece53af9a2f81c66',
-  'src/components/ConceptLoop.astro': '104f46fc60c3c880967ce618417a415550e9712a5fa6f8aa9443612ccba4360b',
+  'src/lib/conceptLoops.ts': 'a5c17e59f84a753aba74ac258be28eec59aa8ace1a1bf270416b5f86ed999351',
+  'src/components/ConceptLoop.astro': '783a63e60659a71c177dcb18a5a3648c03ce0627da70b9da58169bc103b47d21',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',

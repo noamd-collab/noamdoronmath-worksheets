@@ -145,9 +145,10 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // and replaced by the vertex-descent film. Not a silent design regen.
   // Moved again for Noam's approved Kimi L14 diff-sq v6 film.
   // Moved again for the grade-9 kite-construct film (explicit content addition).
+  // Moved again for the kite review fixes (RTL summary, final rest frame, pause target).
   const expected = {
-    'src/components/ConceptLoop.astro': '104f46fc60c3c880967ce618417a415550e9712a5fa6f8aa9443612ccba4360b',
-    'src/lib/conceptLoops.ts': '67294dc5725b7e16856370ddaa42e415765587faa6a4faddece53af9a2f81c66',
+    'src/components/ConceptLoop.astro': '783a63e60659a71c177dcb18a5a3648c03ce0627da70b9da58169bc103b47d21',
+    'src/lib/conceptLoops.ts': 'a5c17e59f84a753aba74ac258be28eec59aa8ace1a1bf270416b5f86ed999351',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {
