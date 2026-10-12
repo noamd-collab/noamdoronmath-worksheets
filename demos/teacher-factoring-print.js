@@ -4891,19 +4891,22 @@ function layoutQuestionCrops(model) {
     let boxBot = Math.min(ceiling, footerTop, cap, bot + 0.008);
     if (boxBot - boxTop < 0.02) return;
     const inside = [];
+    const onInquiryLine = (box) => cluster.some((row) => {
+      const ry = row.y || 0;
+      const rh = Math.max(row.h || 0.014, 0.012);
+      const top = box.y || 0;
+      const bot = top + (box.h || 0);
+      return bot > ry - 0.004 && top < ry + rh + 0.004;
+    });
     for (let i = segments.length - 1; i >= 0; i -= 1) {
       const have = segments[i].box;
-      if (!have || have.segment === 'figure' || have.h > 0.05) continue;
+      if (!have || have.segment === 'figure') continue;
+      // The investigation paragraph is one band taller than a single line.
+      if (have.h > 0.05 && !(inquiry && onInquiryLine(have))) continue;
       if (have.y >= cap - 0.002) continue;
       if (inquiry) {
-        const midY = have.y + have.h * 0.5;
-        const onBody = cluster.some((row) => {
-          const ry = row.y || 0;
-          const rh = Math.max(row.h || 0.014, 0.012);
-          return midY >= ry - 0.004 && midY <= ry + rh + 0.004;
-        });
         // A tree label sits left of the box. A word of the investigation line does not.
-        if (!onBody && have.w < 0.1 && have.x + have.w < 0.3) continue;
+        if (!onInquiryLine(have) && have.w < 0.1 && have.x + have.w < 0.3) continue;
       } else if (have.x < 0.24) continue;
       const mid = have.y + have.h * 0.5;
       if (mid < boxTop - 0.004 || mid > boxBot + 0.004) continue;
@@ -4921,6 +4924,12 @@ function layoutQuestionCrops(model) {
       y0 = Math.min(y0, have.y);
       y1 = Math.max(y1, have.y + have.h);
     });
+    if (inquiry) {
+      cluster.forEach((row) => {
+        x0 = Math.min(x0, row.x || 0);
+        x1 = Math.max(x1, (row.x || 0) + (row.w || 0));
+      });
+    }
     // The box border sits just outside the text. The worked-example number of
     // this question is included whole; the next question's number is not.
     x0 = Math.max(inquiry ? 0.05 : 0.26, x0 - 0.016);
