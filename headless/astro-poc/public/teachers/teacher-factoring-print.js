@@ -3124,7 +3124,8 @@ function answerDisplayScale(naturalW, naturalH) {
   let scale = 1;
   if (naturalW > maxW) scale = maxW / naturalW;
   if (naturalH > maxW) scale = Math.min(scale, 1);
-  return Math.min(1.3, Math.max(0.05, scale));
+  // Source scale: the same size as the question body. Wider than the page still fits.
+  return Math.min(1, Math.max(0.05, scale));
 }
 
 function answerCellSize(text, naturalW, naturalH) {
@@ -3141,15 +3142,26 @@ function answerCellSize(text, naturalW, naturalH) {
   }
   const maxW = 1000 - 56;
   const gap = 8;
+  const baseline = 16;
+  let imageY = 0;
+  let labelBaseline = baseline;
+  if (imageH <= 36) {
+    // One line. Its bottom meets the label, including a crop a little taller than 15px.
+    const base = Math.max(baseline, imageH - 2);
+    imageY = Math.max(0, base + 2 - imageH);
+    labelBaseline = imageY + imageH - 2;
+  } else {
+    labelBaseline = Math.min(baseline, Math.max(12, Math.round(Math.min(imageH, 22) - 2)));
+  }
   let stack = false;
   let dw = labelW + gap + imageW;
-  let dh = Math.max(22, imageH + 2);
+  let dh = Math.max(18, labelBaseline + 4, imageY + imageH);
   if (dw > maxW * 0.72) {
     stack = true;
     dw = Math.min(maxW, Math.max(labelW, imageW));
-    dh = 18 + imageH;
+    dh = Math.max(dh, 18 + imageH);
   }
-  return { scale, imageW, imageH, labelW, dw, dh, stack };
+  return { scale, imageW, imageH, imageY, labelBaseline, labelW, dw, dh, stack };
 }
 
 /**
@@ -4649,6 +4661,8 @@ async function measureWorksheet(slices) {
           dh: cell.dh,
           imageW: cell.imageW,
           imageH: cell.imageH,
+          imageY: cell.imageY,
+          labelBaseline: cell.labelBaseline,
           answerScale: cell.scale,
           labelW: cell.labelW,
           stack: cell.stack,
@@ -5220,10 +5234,12 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
           const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
           paintAnswer(ink, right - imageW, y + 18, imageW, imageH, cell.answerScale === 1);
         } else {
-          const textY = y + Math.max(14, Math.round((item.dh + 10) / 2));
+          const textY = y + (cell.labelBaseline || Math.max(14, Math.round((item.dh + 10) / 2)));
           ctx.fillText(cell.slice.text, right, textY);
-          const imageX = right - labelW - 8 - imageW;
-          const imageY = y + Math.max(0, Math.round((item.dh - imageH) / 2));
+          const drawnLabel = Math.ceil(ctx.measureText(String(cell.slice.text || '')).width);
+          const labelSpan = Math.max(labelW, drawnLabel);
+          const imageX = right - labelSpan - 8 - imageW;
+          const imageY = y + (cell.imageY || 0);
           const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
           paintAnswer(ink, imageX, imageY, imageW, imageH, cell.answerScale === 1);
         }
