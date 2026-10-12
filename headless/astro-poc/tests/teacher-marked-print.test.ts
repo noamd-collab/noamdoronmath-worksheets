@@ -1259,7 +1259,7 @@ describe('teacher catalog picker', () => {
     const scale = new Function(`${preview.slice(preview.indexOf('function answerDisplayScale'), preview.indexOf('function answerCellSize'))} return answerDisplayScale;`)() as (naturalW: number, naturalH: number) => number;
     assert.equal(scale(180, 16), 1);
     assert.ok(scale(2000, 40) < 1, String(scale(2000, 40)));
-    assert.ok(scale(40, 12) <= 1.3);
+    assert.ok(scale(40, 12) <= 1);
     assert.ok(Math.abs(scale(40, 12) - 72 / 12) > 1);
     const flowed = pack.flowAnswers([
       { slice: { kind: 'answer' }, dh: 28, dw: 220 },
