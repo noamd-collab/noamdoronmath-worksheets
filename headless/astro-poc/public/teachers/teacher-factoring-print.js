@@ -2161,6 +2161,31 @@ function answerBox(items, questionNumber, part) {
           y1: Math.min(oy + Math.max(other.h || 0, 11) + 2, top),
         });
       });
+      // Parentheses of the next line, and "א." "ב." beside this part, stick out of
+      // the label's em box. Cover the glyph, not the answer in this part's slot.
+      const foreignMark = (text) => {
+        const token = String(text || '').replace(/\s/g, '');
+        if (!token || /[0-9a-z]/i.test(token)) return false;
+        return /^[()\[\]{}.·•]*[אבגדהו]?[()\[\]{}.·•]*$/.test(token);
+      };
+      (items || []).forEach((glyph) => {
+        if (!foreignMark(glyph.str)) return;
+        const gy = glyph.y || 0;
+        const gx = glyph.x || 0;
+        const gr = gx + Math.max(glyph.w || 0, 3);
+        const gh = Math.max(glyph.h || 0, 10);
+        if (gy < bottom + 1 || gy > top - 1) return;
+        if (Math.min(gr, right) - Math.max(gx, left) < 1) return;
+        const sameLine = Math.abs(gy - label.y) <= 8;
+        if (sameLine && (!slot || (gr > slot.left + 3 && gx < slot.right - 3))) return;
+        if (!sameLine && Math.abs(gy - label.y) > 18) return;
+        covers.push({
+          x0: Math.max(gx - 1, left),
+          x1: Math.min(gr + 1, right),
+          y0: Math.max(gy - 2, bottom),
+          y1: Math.min(gy + gh + 2, top),
+        });
+      });
     } else if (labels.length) {
       const mentioned = items.some((item) => (
         sameSheet(item)
@@ -3947,55 +3972,119 @@ function leftFigureBoxes(bitmap, y0, y1) {
   });
   // A second triangle sits in the same band, past the left figure, with a gap
   // too wide to follow one stroke across. DEF and PQR are that second figure.
+  // The apex is the only tall column. The base is a short stroke at the bottom,
+  // and it can sit below the left triangle, so follow that stroke out to both
+  // vertices instead of keeping the apex alone.
   const siblings = [];
+  const strokeYs = (x, y0, y1) => {
+    const ys = [];
+    for (let y = y0; y <= y1; y += 1) if (strokeAt(x, y)) ys.push(y);
+    return ys;
+  };
+  const gapCut = Math.max(10, Math.round(height * 0.016));
+  // Ink below the drawing is the next sentence. Keep the cluster that belongs
+  // to this band, including a base that hangs just under the left triangle.
+  const inBand = (ys, y0, y1) => {
+    const kept = [];
+    let start = 0;
+    for (let i = 1; i <= ys.length; i += 1) {
+      if (i < ys.length && ys[i] - ys[i - 1] <= gapCut) continue;
+      const a = ys[start];
+      const b = ys[i - 1];
+      if (b >= y0 && a <= y1) {
+        for (let k = start; k < i; k += 1) kept.push(ys[k]);
+      }
+      start = i;
+    }
+    return kept;
+  };
+  const touches = (prev, ys) => {
+    if (!prev.length || !ys.length) return false;
+    let i = 0;
+    for (let k = 0; k < ys.length; k += 1) {
+      const y = ys[k];
+      while (i < prev.length && prev[i] < y - 6) i += 1;
+      if (i < prev.length && prev[i] <= y + 6) return true;
+    }
+    return false;
+  };
   boxes.forEach((box) => {
-    const padY = Math.round(height * 0.02);
-    const low = Math.max(top, Math.floor(box.y0 * height) - padY);
-    const high = Math.min(bot, Math.ceil(box.y1 * height) + Math.round(height * 0.006));
-    const bandH = high - low;
-    if (bandH < tallMin) return;
-    const spanNeed = Math.max(12, bandH * 0.42);
+    const focus0 = Math.floor(box.y0 * height);
+    const focus1 = Math.ceil(box.y1 * height);
+    const focusH = focus1 - focus0;
+    if (focusH < tallMin) return;
+    const low = Math.max(top, focus0 - Math.round(height * 0.02));
+    const high = Math.min(bot, focus1 + Math.round(height * 0.05));
+    const bandTop = focus0 - Math.round(height * 0.012);
+    // The next part line sits just under the drawing. A longer tail reprints it.
+    const bandBot = focus1 + Math.round(height * 0.028);
+    const spanNeed = Math.max(12, Math.round(focusH * 0.5));
     const xFrom = Math.ceil(box.x1 * width) + Math.max(8, Math.round(width * 0.012));
-    const xTo = Math.min(width - 2, Math.floor(width * 0.78));
+    const xTo = Math.min(width - 2, Math.floor(width * 0.8));
     if (xTo <= xFrom + 8) return;
+    const column = (x) => inBand(strokeYs(x, low, high), bandTop, bandBot);
     const cols = [];
     for (let x = xFrom; x < xTo; x += 1) {
-      let n = 0;
-      let minY = high;
-      let maxY = low;
-      for (let y = low; y <= high; y += 1) {
-        if (!strokeAt(x, y)) continue;
-        n += 1;
-        if (y < minY) minY = y;
-        if (y > maxY) maxY = y;
-      }
-      if (n >= 2 && maxY - minY >= spanNeed) cols.push(x);
+      const ys = column(x);
+      if (ys.length >= 2 && ys[ys.length - 1] - ys[0] >= spanNeed) cols.push(x);
     }
-    if (cols.length < 4) return;
+    if (cols.length < 3) return;
     let start = cols[0];
-    let prev = cols[0];
+    let prevCol = cols[0];
     const groups = [];
-    const flush = () => groups.push([start, prev]);
+    const flush = () => groups.push([start, prevCol]);
     for (let i = 1; i < cols.length; i += 1) {
-      if (cols[i] - prev > Math.max(10, Math.round(width * 0.02))) {
+      if (cols[i] - prevCol > Math.max(10, Math.round(width * 0.02))) {
         flush();
         start = cols[i];
       }
-      prev = cols[i];
+      prevCol = cols[i];
     }
     flush();
-    groups.forEach(([x0, x1]) => {
-      if (x1 - x0 < 8) return;
+    groups.forEach(([gx0, gx1]) => {
+      let seedX = gx0;
+      let seedYs = null;
+      let seedSpan = 0;
+      for (let x = gx0; x <= gx1; x += 1) {
+        const ys = column(x);
+        if (ys.length < 2) continue;
+        const span = ys[ys.length - 1] - ys[0];
+        if (span > seedSpan) {
+          seedSpan = span;
+          seedYs = ys;
+          seedX = x;
+        }
+      }
+      if (!seedYs || seedSpan < spanNeed) return;
+      const walk = (dir) => {
+        let prevYs = seedYs;
+        let miss = 0;
+        let last = seedX;
+        const limit = dir > 0 ? xTo : xFrom;
+        for (let x = seedX + dir; dir > 0 ? x <= limit : x >= limit; x += dir) {
+          const ys = column(x);
+          if (touches(prevYs, ys)) {
+            prevYs = ys;
+            last = x;
+            miss = 0;
+          } else if (++miss > 6) break;
+        }
+        return last;
+      };
+      const x0 = Math.min(gx0, walk(-1));
+      const x1 = Math.max(gx1, walk(1));
+      if (x1 - x0 < 12) return;
       let minY = high;
       let maxY = low;
       for (let x = x0; x <= x1; x += 1) {
-        for (let y = low; y <= high; y += 1) {
-          if (!strokeAt(x, y)) continue;
-          if (y < minY) minY = y;
-          if (y > maxY) maxY = y;
-        }
+        const ys = column(x);
+        if (!ys.length) continue;
+        if (ys[0] < minY) minY = ys[0];
+        if (ys[ys.length - 1] > maxY) maxY = ys[ys.length - 1];
       }
-      if (maxY - minY < spanNeed * 0.85) return;
+      const drawnH = maxY - minY;
+      if (drawnH < spanNeed * 0.75) return;
+      if (x1 - x0 < Math.max(16, Math.round(drawnH * 0.4))) return;
       siblings.push({
         x0: x0 / width,
         x1: (x1 + 1) / width,
@@ -4054,9 +4143,20 @@ function clipEmptyFigureTail(bitmap, box) {
     if (dark > 1) darkCol[x] = 1;
     if (fill > Math.max(4, rh * 0.15)) fillCol[x] = 1;
   }
+  let firstDark = -1;
   let lastDark = -1;
-  for (let x = 0; x < rw; x += 1) if (darkCol[x]) lastDark = x;
+  let darkN = 0;
+  let fillN = 0;
+  for (let x = 0; x < rw; x += 1) {
+    if (darkCol[x]) {
+      darkN += 1;
+      if (firstDark < 0) firstDark = x;
+      lastDark = x;
+    } else if (fillCol[x]) fillN += 1;
+  }
   if (lastDark < 0) return null;
+  // The pale twin of a writing box is a wide fill with only a cut-off letter.
+  if (fillN > Math.max(36, Math.round(width * 0.04)) && darkN * 4 < fillN) return null;
   let tail = 0;
   for (let x = lastDark + 1; x < rw; x += 1) {
     if (fillCol[x] && !darkCol[x]) tail += 1;
