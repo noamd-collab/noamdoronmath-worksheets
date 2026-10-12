@@ -720,6 +720,9 @@ describe('teacher catalog picker', () => {
     const leakEnd = leaked.box.y + leaked.box.h;
     assert.ok(leakEnd < 0.2, 'a short parenthesis tail under the answer is dropped ' + String(leakEnd));
     assert.ok(leaked.box.y < 0.06, String(leaked.box.y));
+    const leakedWrap = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.3, wrap: true } }, leakBitmap);
+    const wrapEnd = leakedWrap.box.y + leakedWrap.box.h;
+    assert.ok(wrapEnd < 0.2, 'the parenthesis tail is dropped even when the answer wraps ' + String(wrapEnd));
     leakInk(4, 36, 110, 155);
     const keptLine = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.45 } }, leakBitmap);
     const keptEnd = keptLine.box.y + keptLine.box.h;

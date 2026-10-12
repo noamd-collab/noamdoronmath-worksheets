@@ -3115,8 +3115,9 @@ function trimPieceBox(slice, bitmap) {
       }
     }
     // The next line's parenthesis tips leak in as a short band under this answer.
-    // A real continuation is about as tall as this line, so it stays.
-    if (!clipped.wrap && bands.length >= 2) {
+    // A real continuation is about as tall as this line, so it stays. This is
+    // independent of wrap: a wrapped line is tall, and the tips are not.
+    if (bands.length >= 2) {
       let mainH = 0;
       bands.forEach((band) => {
         if (band.h > mainH) mainH = band.h;
