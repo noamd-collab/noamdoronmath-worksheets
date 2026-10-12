@@ -3114,6 +3114,21 @@ function trimPieceBox(slice, bitmap) {
         if (darkest > 90) bands.pop();
       }
     }
+    // The next line's parenthesis tips leak in as a short band under this answer.
+    // A real continuation is about as tall as this line, so it stays.
+    if (!clipped.wrap && bands.length >= 2) {
+      let mainH = 0;
+      bands.forEach((band) => {
+        if (band.h > mainH) mainH = band.h;
+      });
+      while (bands.length >= 2) {
+        const tail = bands[bands.length - 1];
+        const prev = bands[bands.length - 2];
+        const gap = tail.y - (prev.y + prev.h);
+        if (gap >= 8 && tail.h < mainH * 0.55 && tail.h < mainH) bands.pop();
+        else break;
+      }
+    }
     const top = Math.max(0, ink.y0 + bands[0].y - pad);
     const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
     const pageW = ink.width;

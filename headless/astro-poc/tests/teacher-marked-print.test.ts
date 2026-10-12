@@ -702,6 +702,28 @@ describe('teacher catalog picker', () => {
     const edgeEnd = edgeTrim.box.y + edgeTrim.box.h;
     assert.ok(edgeTrim.box.y < 0.03, String(edgeTrim.box.y));
     assert.ok(edgeEnd < 0.17, String(edgeEnd));
+    const leakData = new Uint8ClampedArray(trimW * trimH * 4);
+    leakData.fill(255);
+    const leakInk = (x0: number, x1: number, y0: number, y1: number) => {
+      for (let y = y0; y < y1; y += 1) {
+        for (let x = x0; x < x1; x += 1) {
+          const i = (y * trimW + x) * 4;
+          leakData[i] = leakData[i + 1] = leakData[i + 2] = 0;
+          leakData[i + 3] = 255;
+        }
+      }
+    };
+    leakInk(4, 36, 20, 70);
+    leakInk(8, 14, 82, 100);
+    const leakBitmap = { width: trimW, height: trimH, getContext: () => ({ getImageData: () => ({ data: leakData }) }) };
+    const leaked = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.3 } }, leakBitmap);
+    const leakEnd = leaked.box.y + leaked.box.h;
+    assert.ok(leakEnd < 0.2, 'a short parenthesis tail under the answer is dropped ' + String(leakEnd));
+    assert.ok(leaked.box.y < 0.06, String(leaked.box.y));
+    leakInk(4, 36, 110, 155);
+    const keptLine = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.45 } }, leakBitmap);
+    const keptEnd = keptLine.box.y + keptLine.box.h;
+    assert.ok(keptEnd > 0.38, 'a full second line of the answer stays ' + String(keptEnd));
     const headerTrim = trimApi.trimPieceBox({
       kind: 'row',
       page: 1,
