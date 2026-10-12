@@ -2715,7 +2715,9 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
 .exact-viewer .noam-row.assistant .noam-bubble{
   border:1px solid #d5dbe6;border-radius:16px;box-shadow:none;
   font:400 16px/1.55 Heebo,'Heebo Fallback',sans-serif;
+  white-space:pre-wrap;
 }
+.exact-viewer bdi[dir="ltr"]{unicode-bidi:isolate;direction:ltr}
 .exact-viewer .exact-hint-row{
   gap:8px;padding:8px 12px;border-top:1px solid #d5dbe6;background:#fff;
 }
@@ -8166,6 +8168,8 @@ function esc(s){
   var pinnedExerciseId='';
   var localChecks=[];
   var pendingCheckFocus=false;
+  var hintFloors=Object.create(null);
+  var awaitingFallback='';
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   var motionEventOff=false;
   function setAttr(el,name,value){if(el.getAttribute(name)!==String(value)){el.setAttribute(name,String(value));}}
@@ -8322,7 +8326,9 @@ function esc(s){
   function adaptComposer(){
     var compose=panelBody.querySelector('.noam-compose'),hint=document.getElementById('noamHint');
     if(!compose||!hint){return;}
-    var count=releasedHintCount(hint);
+    var released=releasedHintCount(hint);
+    var floor=hintFloors[currentExerciseId()]||0;
+    var count=released===null?(floor||null):Math.max(released,floor);
     if(!compose.classList.contains('exact-compose')){
       var shell=compose.querySelector('.noam-input-shell'),input=document.getElementById('noamQuestion');
       var send=document.getElementById('noamSend'),overview=document.getElementById('noamOverview');
@@ -8420,14 +8426,14 @@ function esc(s){
       return clone.textContent.replace(/\s+/g,' ').trim();
     }).filter(Boolean);
   }
-  function rowQualifies(row,previousKind,previousUserText){
+  function rowQualifies(row){
     if(!row||!row.classList.contains('assistant')){return false;}
-    if(row.querySelector('.noam-bubble.thinking,.noam-retry-action')){return false;}
+    if(row.querySelector('.noam-bubble.thinking')){return false;}
     var bubble=row.querySelector('.noam-bubble');
     var text=bubble?bubble.textContent:'';
     var guides=window.NoamDidacticGuides;
-    if(guides&&typeof guides.needsCheck==='function'){return guides.needsCheck(text,previousKind,previousUserText);}
-    return false;
+    if(guides&&typeof guides.needsCheck==='function'){return guides.needsCheck(text,'','');}
+    return !/חושב…|עדיין חושב/.test(String(text||''));
   }
   function makeCheckGroup(){
     var group=document.createElement('div');
@@ -8450,41 +8456,51 @@ function esc(s){
     return group;
   }
   function placeUnderstandingChecks(transcript){
+    var rows=Array.from(transcript.querySelectorAll('.noam-row.assistant'));
+    var lastYes=null;
+    var changed=false;
+    rows.forEach(function(row){
+      if(!rowQualifies(row)){return;}
+      var bubble=row.querySelector('.noam-bubble')||row;
+      if(!bubble.querySelector('.ramzi-check')){
+        bubble.appendChild(makeCheckGroup());
+        changed=true;
+      }
+      lastYes=bubble.querySelector('.ramzi-check-yes');
+    });
+    if(pendingCheckFocus&&lastYes){
+      pendingCheckFocus=false;
+      lastYes.focus({preventScroll:true});
+    }
+    return changed;
+  }
+  function softenAwaitingReply(transcript){
     var rows=Array.from(transcript.querySelectorAll('.noam-row'));
-    var last=null;
+    var guides=window.NoamDidacticGuides;
     rows.forEach(function(row,index){
       if(!row.classList.contains('assistant')){return;}
+      var retry=row.querySelector('.noam-retry-action');
+      if(!retry){return;}
       var prev=rows[index-1];
-      var kind='';
-      var userText='';
-      if(prev&&prev.classList.contains('user')){
-        var kindEl=prev.querySelector('.noam-kind');
-        kind=kindEl?kindEl.textContent.trim():'';
-        userText=prev.textContent||'';
-      }
-      if(rowQualifies(row,kind,userText)){last=row;}
+      var user=prev&&prev.classList.contains('user')?prev.textContent:'';
+      if(!/תסבירו מחדש|הצעד הבא|זווית אחרת/.test(user)){return;}
+      var bubble=row.querySelector('.noam-bubble');
+      var content=bubble&&bubble.querySelector('span:not(.noam-sr-only)');
+      var nextStep=/הצעד הבא/.test(user);
+      var fallback=awaitingFallback||(guides&&typeof guides.offlineUnderstanding==='function'
+        ?guides.offlineUnderstanding(nextStep?'understood':'not-understood')
+        :(nextStep
+          ?'אי אפשר להביא עכשיו את הצעד הבא. אפשר ללחוץ על «רמז», או לעבור לסעיף הבא.'
+          :'אי אפשר להביא עכשיו הסבר חדש. אפשר ללחוץ על «רמז», או לקרוא שוב את הצעד לאט.'));
+      if(content&&fallback&&content.textContent!==fallback){content.textContent=fallback;}
+      var title=bubble&&bubble.querySelector('.exact-error-title');
+      if(title){title.remove();}
+      var dismiss=row.querySelector('.exact-error-dismiss');
+      if(dismiss){dismiss.remove();}
+      retry.remove();
+      row.classList.remove('exact-error');
+      if(row.getAttribute('role')==='alert'){row.removeAttribute('role');}
     });
-    var removed=false;
-    transcript.querySelectorAll('.ramzi-check').forEach(function(group){
-      if(!last||!last.contains(group)){group.remove();removed=true;}
-    });
-    if(!last){return removed;}
-    var bubble=last.querySelector('.noam-bubble')||last;
-    if(bubble.querySelector('.ramzi-check')){
-      if(pendingCheckFocus){
-        pendingCheckFocus=false;
-        var keep=bubble.querySelector('.ramzi-check-yes');
-        if(keep){keep.focus({preventScroll:true});}
-      }
-      return removed;
-    }
-    bubble.appendChild(makeCheckGroup());
-    if(pendingCheckFocus){
-      pendingCheckFocus=false;
-      var yes=bubble.querySelector('.ramzi-check-yes');
-      if(yes){yes.focus({preventScroll:true});}
-    }
-    return true;
   }
   function replayLocalChecks(transcript){
     var id=currentExerciseId()||'current';
@@ -8516,21 +8532,36 @@ function esc(s){
     var guides=window.NoamDidacticGuides;
     var phrase=intent==='understood'?'הבנתי':'לא הבנתי';
     pendingCheckFocus=true;
-    if(guides&&id&&typeof guides.get==='function'&&guides.get(id)){
-      var input=document.getElementById('noamQuestion');
-      var send=document.getElementById('noamSend');
-      if(!input||!send||send.disabled){pendingCheckFocus=false;return;}
-      input.value=phrase;
+    var plan=guides&&typeof guides.planUnderstanding==='function'
+      ?guides.planUnderstanding(id,intent,{})
+      :(intent==='understood'
+        ?{action:'ai',prompt:'הבנתי. תנו רק את הצעד הבא, בלי לחזור על מה שכבר נאמר. סיימו בשאלה קצרה אחת.',fallback:'אי אפשר להביא עכשיו את הצעד הבא. אפשר ללחוץ על «רמז», או לעבור לסעיף הבא.'}
+        :{action:'ai',prompt:'לא הבנתי. תסבירו מחדש, יותר בפשטות ובצעדים קטנים, בלי לחזור על אותן מילים. סיימו בשאלה קצרה אחת.',fallback:'אי אפשר להביא עכשיו הסבר חדש. אפשר ללחוץ על «רמז», או לקרוא שוב את הצעד לאט.'});
+    var input=document.getElementById('noamQuestion');
+    var send=document.getElementById('noamSend');
+    var hint=document.getElementById('noamHint');
+    if(plan.action==='hint'&&hint&&!hint.disabled){
+      if(id){hintFloors[id]=Math.max(hintFloors[id]||0,plan.hintsOpened||0);}
+      if(guides&&typeof guides.noteCheck==='function'){guides.noteCheck(intent);}
+      hint.click();
+      return;
+    }
+    if(plan.action==='hint'){plan={action:'local',phrase:phrase};}
+    if(plan.action==='local'&&input&&send&&!send.disabled){
+      input.value=plan.phrase||phrase;
       input.dispatchEvent(new Event('input',{bubbles:true}));
       send.click();
       return;
     }
-    var transcript=document.getElementById('noamTranscript');
-    var texts=transcript?assistantBodies(transcript):[];
-    var pass=localChecks.filter(function(item){return item.id===(id||'current')&&item.user==='לא הבנתי';}).length;
-    var reply=guides&&typeof guides.fallbackUnderstanding==='function'
-      ?guides.fallbackUnderstanding(intent,texts,pass)
-      :(intent==='understood'?'יופי, שמח שזה ברור.':'זה בסדר גמור, בוא ננסה אחרת.');
+    if(plan.action==='ai'&&input&&send&&!send.disabled){
+      awaitingFallback=plan.fallback||'';
+      document.body.dataset.ramziAwait='1';
+      input.value=String(plan.prompt||phrase).slice(0,700);
+      input.dispatchEvent(new Event('input',{bubbles:true}));
+      send.click();
+      return;
+    }
+    var reply=plan.fallback||(guides&&typeof guides.offlineUnderstanding==='function'?guides.offlineUnderstanding(intent):'');
     localChecks.push({id:id||'current',user:phrase,assistant:reply});
     schedule();
   }
@@ -8582,9 +8613,11 @@ function esc(s){
         retry.after(dismiss);
       }
     });
+    softenAwaitingReply(transcript);
     replayLocalChecks(transcript);
     placeUnderstandingChecks(transcript);
     isolateMath(transcript);
+    isolateAngles(transcript);
     var empty=transcript.classList.contains('is-empty')&&!transcript.querySelector('.noam-bubble');
     var box=transcript.querySelector('.exact-empty');
     if(!empty){if(box){box.remove();}return;}
@@ -8646,6 +8679,37 @@ function esc(s){
       node.parentNode.replaceChild(frag,node);
     });
     root.dataset.mathIsolated='1';
+  }
+  function isolateAngles(root){
+    if(!root){return;}
+    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    var nodes=[];
+    while(walker.nextNode()){
+      var node=walker.currentNode;
+      var parent=node.parentElement;
+      if(!parent||!/∠/.test(node.nodeValue||'')){continue;}
+      if(parent.closest('button,a,svg,bdi,.noam-sr-only,.exact-hint-head,.exact-error-title,.ramzi-check')){continue;}
+      nodes.push(node);
+    }
+    var angleRe=/∠\s*[A-Za-z]{1,4}(?:\s*=\s*∠\s*[A-Za-z]{1,4})*/g;
+    nodes.forEach(function(node){
+      var value=node.nodeValue||'';
+      angleRe.lastIndex=0;
+      if(!angleRe.test(value)){return;}
+      angleRe.lastIndex=0;
+      var frag=document.createDocumentFragment();
+      var last=0,match;
+      while((match=angleRe.exec(value))){
+        if(match.index>last){frag.appendChild(document.createTextNode(value.slice(last,match.index)));}
+        var bdi=document.createElement('bdi');
+        bdi.dir='ltr';
+        bdi.textContent=match[0].replace(/\s+/g,'');
+        frag.appendChild(bdi);
+        last=match.index+match[0].length;
+      }
+      if(last<value.length){frag.appendChild(document.createTextNode(value.slice(last)));}
+      if(node.parentNode){node.parentNode.replaceChild(frag,node);}
+    });
   }
   function decoratePins(){
     document.querySelectorAll('.noam-exercise-pin').forEach(function(button){
@@ -9022,6 +9086,9 @@ function esc(s){
     if(event.target&&event.target.closest&&event.target.closest('#noamNewThread')){
       var resetId=currentExerciseId();
       localChecks=localChecks.filter(function(item){return item.id!==(resetId||'current');});
+      if(resetId){delete hintFloors[resetId];}
+      awaitingFallback='';
+      document.body.dataset.ramziAwait='';
       if(window.NoamDidacticGuides&&resetId&&typeof window.NoamDidacticGuides.resetUnderstanding==='function'){
         window.NoamDidacticGuides.resetUnderstanding(resetId);
       }

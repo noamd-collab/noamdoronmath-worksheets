@@ -272,20 +272,36 @@
     return verifiedVisual(guide,guide.defaultVisualKey);
   }
 
-  var UNDERSTOOD_LEAD="יופי, שמח שזה ברור.";
-  var NOT_UNDERSTOOD_LEAD="זה בסדר גמור, בוא ננסה אחרת.";
+  var UNDERSTOOD_LEAD="יופי, מעולה שזה ברור.";
+  var CLOSING_TEXT="יופי, מעולה שזה ברור.\nאפשר לעבור לסעיף הבא.";
+  var AI_SIMPLER="לא הבנתי. תסבירו מחדש, יותר בפשטות ובצעדים קטנים, בלי לחזור על אותן מילים. סיימו בשאלה קצרה אחת.";
+  var AI_NEXT="הבנתי. תנו רק את הצעד הבא, בלי לחזור על מה שכבר נאמר. סיימו בשאלה קצרה אחת.";
+  var AI_ANGLE="לא הבנתי את הצעד גם אחרי הפירוק. תנו זווית אחרת, בפשטות ובצעדים קטנים, בלי לחזור על אותו ניסוח. סיימו בשאלה קצרה.";
+  var AI_DOWN="אי אפשר להביא עכשיו הסבר חדש. אפשר ללחוץ על «רמז», או לקרוא שוב את הצעד לאט.";
+  var AI_DOWN_NEXT="אי אפשר להביא עכשיו את הצעד הבא. אפשר ללחוץ על «רמז», או לעבור לסעיף הבא.";
   var understandingState=Object.create(null);
+  var pendingNote="";
 
   function understandingFor(exerciseId){
     var id=String(exerciseId||"");
     if(!understandingState[id]){
-      understandingState[id]={cursor:-1,stepShown:false,goalShown:false};
+      understandingState[id]={cursor:-1,stepShown:false,factIndex:0,factsStarted:false};
     }
     return understandingState[id];
   }
 
+  function cloneState(state){
+    return {
+      cursor:state.cursor,
+      stepShown:state.stepShown,
+      factIndex:state.factIndex,
+      factsStarted:state.factsStarted
+    };
+  }
+
   function resetUnderstanding(exerciseId){
     delete understandingState[String(exerciseId||"")];
+    pendingNote="";
   }
 
   function hintKey(guide,index){
@@ -304,17 +320,6 @@
     };
   }
 
-  function fullStep(guide){
-    var lines=[];
-    if(guide.goal){lines.push("המטרה: "+guide.goal+".");}
-    (guide.canonicalFacts||[]).forEach(function(fact,index){
-      lines.push((index+1)+". "+fact);
-    });
-    if(guide.canonicalChain){lines.push("כל הצעד: "+guide.canonicalChain);}
-    if(guide.angleHelp){lines.push(guide.angleHelp);}
-    return lines.join("\n");
-  }
-
   function plainCheck(text){
     return String(text||"").replace(/\s+/g," ").trim().replace(/^[«"'“]+|[»"'”.!?؟]+$/g,"");
   }
@@ -326,8 +331,35 @@
     return "";
   }
 
-  function catchUp(exerciseId,guide,settings){
-    var state=understandingFor(exerciseId);
+  function shortenStep(part){
+    var text=String(part||"").replace(/\s+/g," ").trim();
+    text=text.replace(/,\s*(ולכן|לכן|ומכאן|מכאן)(?=\s|$)/g,".\n$1");
+    if(text.length>90&&text.indexOf("\n")===-1){
+      text=text.replace(/,\s+/g,",\n");
+    }
+    return text;
+  }
+
+  function substeps(guide){
+    var lines=[];
+    function pushPart(part){
+      String(part||"").split(/\s*;\s*/).forEach(function(piece){
+        var chunk=piece.trim();
+        if(!chunk){return;}
+        chunk.replace(/[^.!?؟]+[.!?؟]?/g,function(sentence){
+          var line=shortenStep(sentence);
+          if(line){lines.push(line);}
+          return sentence;
+        });
+      });
+    }
+    (guide.canonicalFacts||[]).forEach(pushPart);
+    if(guide.canonicalChain){pushPart(guide.canonicalChain);}
+    if(guide.angleHelp){pushPart(guide.angleHelp);}
+    return lines;
+  }
+
+  function catchUpState(state,guide,settings){
     var hints=guide.hints||[];
     var progress=Number(settings&&settings.progress);
     if(!isFinite(progress)||progress<0){progress=0;}
@@ -339,58 +371,85 @@
     return state;
   }
 
-  function replyToUnderstanding(guide,exerciseId,intent,settings){
-    var state=catchUp(exerciseId,guide,settings);
+  function catchUp(exerciseId,guide,settings){
+    return catchUpState(understandingFor(exerciseId),guide,settings);
+  }
+
+  function applyReply(state,guide,intent){
     var hints=guide.hints||[];
     if(intent==="understood"){
+      if(state.factsStarted||state.stepShown){
+        return checkReply(CLOSING_TEXT,"");
+      }
       var next=state.cursor+1;
       if(next>=0&&next<hints.length){
         state.cursor=next;
         return checkReply(UNDERSTOOD_LEAD+"\n"+hints[next],hintKey(guide,next));
       }
-      if(guide.nextStep&&!state.stepShown){
+      if(guide.nextStep){
         state.stepShown=true;
         return checkReply(UNDERSTOOD_LEAD+"\n"+guide.nextStep,"");
       }
-      if(guide.goal&&!state.goalShown){
-        state.goalShown=true;
-        return checkReply(UNDERSTOOD_LEAD+"\nאפשר לנסות עכשיו: "+guide.goal+".","");
-      }
-      return checkReply(UNDERSTOOD_LEAD+"\nאפשר לכתוב את הצעד כאן. אם משהו עדיין לא יושב, «לא הבנתי» נשאר כאן.","");
+      return checkReply(CLOSING_TEXT,"");
     }
     if(state.cursor<hints.length-1){
       state.cursor=Math.max(0,state.cursor+1);
-      return checkReply(NOT_UNDERSTOOD_LEAD+"\n"+hints[state.cursor],hintKey(guide,state.cursor));
+      return checkReply(hints[state.cursor],hintKey(guide,state.cursor));
     }
-    return checkReply(NOT_UNDERSTOOD_LEAD+"\n"+fullStep(guide),guide.defaultVisualKey||hintKey(guide,hints.length-1));
+    var steps=substeps(guide);
+    if(state.factIndex<steps.length){
+      state.factsStarted=true;
+      var line=steps[state.factIndex];
+      state.factIndex+=1;
+      return checkReply(line,guide.defaultVisualKey||hintKey(guide,hints.length-1));
+    }
+    return null;
   }
 
-  function needsCheck(text,previousKind,previousUserText){
-    var kind=String(previousKind||"").trim();
-    if(/^רמז\s+[123]$/.test(kind)){return true;}
-    var user=plainCheck(String(previousUserText||"").replace(/השאלה שלך:\s*/g,""));
-    if(user==="הבנתי"||user==="לא הבנתי"){return true;}
-    var value=String(text||"");
-    var understoodAt=value.indexOf(UNDERSTOOD_LEAD);
-    var retryAt=value.indexOf(NOT_UNDERSTOOD_LEAD);
-    if((understoodAt!==-1&&understoodAt<80)||(retryAt!==-1&&retryAt<80)){return true;}
-    if(/[?؟]/.test(value)&&!/לא הצלחתי לקבל תשובה/.test(value)){return true;}
-    return false;
+  function replyToUnderstanding(guide,exerciseId,intent,settings){
+    return applyReply(catchUp(exerciseId,guide,settings),guide,intent);
   }
 
-  function fallbackUnderstanding(intent,existingTexts,pass){
-    var texts=(existingTexts||[]).map(function(item){return String(item||"").trim();}).filter(Boolean);
-    var step=Number(pass)||0;
-    if(intent==="understood"){
-      return UNDERSTOOD_LEAD+"\n"+(texts.length?"נמשיך עם מה שכבר עלה:\n"+texts[texts.length-1]:"נמשיך לצעד הבא.");
+  function needsCheck(text){
+    var value=String(text||"").replace(/\s+/g," ").trim();
+    if(!value){return false;}
+    if(/חושב…|עדיין חושב/.test(value)){return false;}
+    return true;
+  }
+
+  function offlineUnderstanding(intent){
+    return intent==="understood"?AI_DOWN_NEXT:AI_DOWN;
+  }
+
+  function fallbackUnderstanding(intent){
+    return offlineUnderstanding(intent);
+  }
+
+  function noteCheck(intent){
+    pendingNote=intent==="understood"?"understood":"not-understood";
+  }
+
+  function planUnderstanding(exerciseId,intent,settings){
+    var guide=get(exerciseId);
+    if(!guide){
+      return intent==="understood"
+        ?{action:"ai",prompt:AI_NEXT,fallback:AI_DOWN_NEXT}
+        :{action:"ai",prompt:AI_SIMPLER,fallback:AI_DOWN};
     }
-    if(!texts.length){
-      return NOT_UNDERSTOOD_LEAD+"\nנפרק את הצעד לאט. ספרו מה כבר ברור, ונמשיך משם.";
+    var sim=catchUpState(cloneState(understandingFor(exerciseId)),guide,settings);
+    var hints=guide.hints||[];
+    if(!sim.factsStarted&&!sim.stepShown&&sim.cursor<hints.length-1){
+      return {action:"hint",hintsOpened:Math.min(3,sim.cursor+2),lead:intent==="understood"};
     }
-    if(step<=0){
-      return NOT_UNDERSTOOD_LEAD+"\n"+texts[texts.length-1].replace(/([.!?؟])\s+/g,"$1\n");
+    var reply=applyReply(sim,guide,intent);
+    if(!reply){
+      return {
+        action:"ai",
+        prompt:intent==="understood"?AI_NEXT:AI_ANGLE,
+        fallback:intent==="understood"?AI_DOWN_NEXT:AI_DOWN
+      };
     }
-    return NOT_UNDERSTOOD_LEAD+"\nכל הצעד, לאט:\n"+texts.join("\n");
+    return {action:"local",phrase:intent==="understood"?"הבנתי":"לא הבנתי",text:reply.text};
   }
 
   function respond(exerciseId,options){
@@ -405,8 +464,13 @@
     if(helpKind==="hint"){
       var hintIndex=Math.max(0,Math.min(2,Number(settings.hintIndex)||0));
       catchUp(exerciseId,guide,{helpKind:"hint",hintIndex:hintIndex,progress:hintIndex+1});
-      return {text:guide.hints[hintIndex],visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
+      var note=pendingNote;
+      pendingNote="";
+      var body=guide.hints[hintIndex];
+      if(note==="understood"){body=UNDERSTOOD_LEAD+"\n"+body;}
+      return {text:body,visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
     }
+    pendingNote="";
     if(asksToEnlarge(message)){
       return {text:"הנה השרטוט המלא כשהחלק הגאומטרי מוגדל והזוויות הדרושות מסומנות.",visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
     }
@@ -444,8 +508,11 @@
     resolveVisual:resolveVisual,
     needsCheck:needsCheck,
     resetUnderstanding:resetUnderstanding,
+    planUnderstanding:planUnderstanding,
+    noteCheck:noteCheck,
+    offlineUnderstanding:offlineUnderstanding,
     fallbackUnderstanding:fallbackUnderstanding,
     understoodLead:UNDERSTOOD_LEAD,
-    notUnderstoodLead:NOT_UNDERSTOOD_LEAD
+    closingText:CLOSING_TEXT
   };
 });
