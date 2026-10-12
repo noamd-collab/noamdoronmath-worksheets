@@ -1,0 +1,571 @@
+{
+ "package": "G9-KITE",
+ "level": "b",
+ "level_label": "רמה ב׳ — מודרכת",
+ "stage": "REVISED AFTER CONFIRM_b_round3.json R3-02 (q5 label only); official locked_check CHECKED under local alias G9-T99; NOT REVIEWED",
+ "source_mode": "original, from WRITER_VIEW_G9-KITE.json only; no source PDF read or claimed",
+ "questions": 20,
+ "items": 62,
+ "worked_examples": [
+  "q2",
+  "q4"
+ ],
+ "words_questions": [
+  9,
+  11,
+  13,
+  17
+ ],
+ "table_questions": [
+  1,
+  19
+ ],
+ "figure_questions": 14,
+ "pages": 15,
+ "per_question": [
+  {
+   "n": 1,
+   "items": [
+    "א",
+    "ב",
+    "ג",
+    "ד"
+   ],
+   "K": [
+    "K01",
+    "K02",
+    "K15",
+    "K16"
+   ],
+   "visual": "table"
+  },
+  {
+   "n": 2,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K02",
+    "K04",
+    "K05"
+   ],
+   "visual": "quad.kite+main-diagonal"
+  },
+  {
+   "n": 3,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K03",
+    "K04",
+    "K06",
+    "K07"
+   ],
+   "visual": "quad.kite+both-diagonals"
+  },
+  {
+   "n": 4,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K07",
+    "K10",
+    "K09"
+   ],
+   "visual": "quad.kite+secondary-diagonal"
+  },
+  {
+   "n": 5,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K07",
+    "K09",
+    "K15",
+    "K16"
+   ],
+   "visual": "quad.kite+both-diagonals"
+  },
+  {
+   "n": 6,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K11",
+    "K03",
+    "K12"
+   ],
+   "visual": "quad.kite-converse+perpendicular-bisector"
+  },
+  {
+   "n": 7,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K01",
+    "K02",
+    "K08"
+   ],
+   "visual": "quad.kite"
+  },
+  {
+   "n": 8,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K09",
+    "K06"
+   ],
+   "visual": "quad.kite+both-diagonals"
+  },
+  {
+   "n": 9,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K14",
+    "K13",
+    "K16",
+    "K07"
+   ],
+   "visual": "words: drawing from words, blank room"
+  },
+  {
+   "n": 10,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K13",
+    "K04",
+    "K03",
+    "K15"
+   ],
+   "visual": "quad.kite+point-on-main-diagonal"
+  },
+  {
+   "n": 11,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K12",
+    "K11",
+    "K14"
+   ],
+   "visual": "words: drawing from words, blank room"
+  },
+  {
+   "n": 12,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K16",
+    "K07",
+    "K09"
+   ],
+   "visual": "quad.rhombus-as-kite+diagonals"
+  },
+  {
+   "n": 13,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K14",
+    "K11",
+    "K10",
+    "K16"
+   ],
+   "visual": "words: drawing from words, blank room"
+  },
+  {
+   "n": 14,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K01",
+    "K10",
+    "K09",
+    "K18"
+   ],
+   "visual": "quad.kite"
+  },
+  {
+   "n": 15,
+   "items": [
+    "א",
+    "ב",
+    "ג",
+    "ד"
+   ],
+   "K": [
+    "K05",
+    "K08",
+    "K04"
+   ],
+   "visual": "quad.kite+main-diagonal"
+  },
+  {
+   "n": 16,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K12",
+    "K10",
+    "K09",
+    "K18"
+   ],
+   "visual": "compound.two-kites-same-sides"
+  },
+  {
+   "n": 17,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K14",
+    "K09",
+    "K18",
+    "K16"
+   ],
+   "visual": "words: drawing from words, blank room"
+  },
+  {
+   "n": 18,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K11",
+    "K06",
+    "K07"
+   ],
+   "visual": "compound.two-isosceles-triangles-common-base"
+  },
+  {
+   "n": 19,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K18",
+    "K08",
+    "K12"
+   ],
+   "visual": "table"
+  },
+  {
+   "n": 20,
+   "items": [
+    "א",
+    "ב",
+    "ג"
+   ],
+   "K": [
+    "K04",
+    "K06",
+    "K10",
+    "K09"
+   ],
+   "visual": "quad.kite+main-diagonal"
+  }
+ ],
+ "K_coverage_required_b": "K01-K16 + K18 (blueprint coverage.b)",
+ "K_coverage_index": {
+  "K01": [
+   1,
+   7,
+   14
+  ],
+  "K02": [
+   1,
+   2,
+   7
+  ],
+  "K03": [
+   3,
+   6,
+   10
+  ],
+  "K04": [
+   2,
+   3,
+   10,
+   15,
+   20
+  ],
+  "K05": [
+   2,
+   15
+  ],
+  "K06": [
+   3,
+   8,
+   18,
+   20
+  ],
+  "K07": [
+   3,
+   4,
+   5,
+   9,
+   12,
+   18
+  ],
+  "K08": [
+   7,
+   15,
+   19
+  ],
+  "K09": [
+   4,
+   5,
+   8,
+   12,
+   14,
+   16,
+   17,
+   20
+  ],
+  "K10": [
+   4,
+   13,
+   14,
+   16,
+   20
+  ],
+  "K11": [
+   6,
+   11,
+   13,
+   18
+  ],
+  "K12": [
+   6,
+   11,
+   16,
+   19
+  ],
+  "K13": [
+   9,
+   10
+  ],
+  "K14": [
+   9,
+   11,
+   13,
+   17
+  ],
+  "K15": [
+   1,
+   5,
+   10
+  ],
+  "K16": [
+   1,
+   5,
+   9,
+   12,
+   13,
+   17
+  ],
+  "K18": [
+   14,
+   16,
+   17,
+   19
+  ]
+ },
+ "dependent_items": {
+  "count": 33,
+  "of": 62,
+  "map": {
+   "b1ב": [
+    "א"
+   ],
+   "b1ד": [
+    "א"
+   ],
+   "b2ג": [
+    "ב"
+   ],
+   "b3ב": [
+    "א"
+   ],
+   "b3ג": [
+    "ב"
+   ],
+   "b4ב": [
+    "א"
+   ],
+   "b4ג": [
+    "ב"
+   ],
+   "b5ב": [
+    "א"
+   ],
+   "b5ג": [
+    "א"
+   ],
+   "b6ב": [
+    "א"
+   ],
+   "b7ב": [
+    "א"
+   ],
+   "b7ג": [
+    "א"
+   ],
+   "b8ב": [
+    "א"
+   ],
+   "b8ג": [
+    "ב"
+   ],
+   "b9ב": [
+    "א"
+   ],
+   "b9ג": [
+    "א"
+   ],
+   "b10ב": [
+    "א"
+   ],
+   "b10ג": [
+    "ב"
+   ],
+   "b12ב": [
+    "א"
+   ],
+   "b13ג": [
+    "ב"
+   ],
+   "b14ב": [
+    "א"
+   ],
+   "b15ב": [
+    "א"
+   ],
+   "b15ג": [
+    "ב"
+   ],
+   "b15ד": [
+    "ג"
+   ],
+   "b16ג": [
+    "א",
+    "ב"
+   ],
+   "b17ב": [
+    "א"
+   ],
+   "b17ג": [
+    "א",
+    "ב"
+   ],
+   "b18ב": [
+    "א"
+   ],
+   "b18ג": [
+    "ב"
+   ],
+   "b19ב": [
+    "א"
+   ],
+   "b19ג": [
+    "ב"
+   ],
+   "b20ב": [
+    "א"
+   ],
+   "b20ג": [
+    "ב"
+   ]
+  },
+  "non_adjacent": [
+   "b1ד on א",
+   "b5ג on א",
+   "b7ג on א",
+   "b9ג on א",
+   "b16ג on א+ב",
+   "b17ג on א+ב"
+  ]
+ },
+ "files": {
+  "pkg/level_b.py": "322cd6ca5c4cc75fb10b4bdb9e415edac12a74b9ef9dc639be2d15f52f0fc66c",
+  "pkg/out/deliver/b/sheet.pdf": "9657ae9c454eb673a350e79b0e1410717482254501c70d11f0fe81e07bd825d8"
+ },
+ "checks": {
+  "locked_check.py G9-KITE b (official; PACKAGE = local alias G9-T99 set by coordinator)": {
+   "result": "VERDICT: CHECKED -- GATES all pass; verify_export 0; selfcheck 0; didactic PASS 82 FAIL 0 REVIEW 0; check_pkg key re-computation 0 matched / 0 mismatch / 62 not mechanical (its fraction-only parser does not apply; exact review below)",
+   "evidence": "scratch/technical-20261011T151527/",
+   "deliver": "14 figures; constraints re-measured: 96; objects missing in SVG: 0; figures unrecorded: 0",
+   "g83_room": "q9 76.8 mm (now AC=9, BD=4 cm), q11 76.8 mm, q13 85.6 mm, q17 96.2 mm"
+  },
+  "G79": "NOT APPLICABLE / NOT RUN on the figkit route: build.py runs G79-spec only for wspec figures (wspec_build.spec_figs); all 14 figures are figkit.Figure, so no G79 line and no g79_b.json. check_pkg's 'G79: 14 engine figures' is a count, not a verdict. No G79 PASS is claimed; geometry is covered by deliver's constraint re-measurement, G72-struck PASS and review_keys model checks.",
+  "self_scan (scratch/b/self_scan.py)": "0 findings -- WITHIN LEVEL b ONLY: 20 distinct skeletons, each Pythagorean triple used once, K01-K16 + K18 covered",
+  "cross_scan (scratch/b/cross_scan.py, new)": "0 findings vs LIVE level_a.py and level_c.py at 15:15 (c frozen; a being revised, q7 changing on a's side), read with ast. INFO only: single common triangles in different kites and two common angle values (see FIXLOG). G9-T19 spot check of the round-3 numbers: none. kite-level-a not opened.",
+  "review_keys (scratch/b/review_keys.py)": "32 exact recomputations = stored; 101 model re-measurements ok",
+  "leak + text layer + islands (scratch/b/text_checks.py)": "0 findings over 184 strings, 482 islands, 15 pages (student + key)",
+  "visual": "q5 figure re-rendered after R3-02: label E outside, below the vertex; rest unchanged since round 3"
+ },
+ "review_response": "REVIEW_b.json: B-01 q4, B-02 q5, B-07 q8 changed (outside duplicates); B-09 q2, B-10 q10ג, B-11 q11, B-13 q9, B-16 q4 example, B-17 q9 key units, B-18 q5 key, B-19 q13/q17 rooms+sentence, B-20 q6/q20 marks, B-21 STATUS scope fixed. Kept per coordinator: q7, q12, q15, q16 design, q18 (the paired a/c questions change). q16 numbers changed anyway (level c q11ב prints the same 10/17/16 kite, area 168). q14 numbers changed (live level a q12 printed the same 25/40/48 kite). B-12 q19, B-14 q3/q6, B-15 kept and recorded. See FIXLOG_b.md.",
+ "honest_gaps": [
+  "PACKAGE G9-T99 is a local alias, not a site id; Noam must decide the real id before any upload (EYE_CHECK_b.md).",
+  "G79 not applicable on the figkit route; see checks.G79.",
+  "Level a is revised after this level (it reads the final level_b.py); cross_scan must be re-run then. q18 vs a q5 and q14 vs a q11 rely on level a moving.",
+  "New number sets (q5 4/14/20, q7 3x−2/x+10/52, q8 4/7/10, q9 9/4/2) were checked against live a, c and G9-T19, not against ~/worksheet-work/kite-level-a beyond the numbers reviewers named.",
+  "curriculum is set in level_b.py to track 'ט_רגילה'; content.py's CURRICULUM says 'ט' (setdefault only).",
+  "Q7 states the side expressions as a free-text given (statements_not_checked).",
+  "Within b, the Pythagoras chain recurs (q4, q14, q16, q20; q5 now without Pythagoras) -- B-15, recorded.",
+  "Construction items (q9, q11, q13, q17) are open: keys give an acceptance condition and a valid example.",
+  "No independent re-review yet."
+ ],
+ "round2_response": "CONFIRM_b.json: C-01 q7 new equation RS=3x−2, RU=x+10, perimeter 52 -> x=6, RS=RU=16, TS=TU=10 (ג: perimeter 60 leaves x=6, TS=14). C-02 q18 kept unchanged (coordinator: the proof is level b's, level a q5 changes). C-03/C-07 q9 AC=9, BD=4, AO=2 -> OC=7. C-04 q11ב back to AB=AD and AC⊥BD. C-05 q14 kept (level a moves q11). C-06 q8 AO=4, OC=7, BD=10 -> 20 + 35, AC=11, area 55 (reviewer's 4/9/10 rejected: its △CBD area 45 collided in noam-ai.json with q14's printed label 45, didactic D12 FAIL). C-08 q5 ET=4, TG=14, FH=20 -> EG=18, area 180.",
+ "round3_response": "CONFIRM_b_round3.json R3-02: q5 vertex label E moved outside the kite (prefer below the vertex); nothing else changed."
+}

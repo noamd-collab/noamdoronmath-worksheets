@@ -1,0 +1,75 @@
+{
+ "package": "G9-KITE",
+ "level": "b",
+ "round": 3,
+ "reviewer": "independent CONFIRM reviewer b (Claude), 2026-10-11",
+ "verdict": "FIX_NEEDED",
+ "verdict_note": "Level b needs no content change for the MAJOR finding. It sits in the pair b q7 / a q7, and the fix belongs to level a q7. Level a was revised at 15:09, after b's 15:00 build and scan, and it moved onto b's new q7 design. Once a q7 is changed, level b passes; it needs only the optional MINOR label fix R3-02.",
+ "counts": {"MAJOR": 1, "MINOR": 1},
+ "build_check": {
+  "sheet_sha256": "f4d098c1c4e95bca14656a846995babf0b4619244297654c44837be54957d04d = STATUS_b.json",
+  "level_b_sha256": "cdb596da77ddc63e98836bcd85a26e0d9e50b5452d34182451b92ab2b0fb331f = STATUS_b.json = deliver/b/source/level_b.py",
+  "latest_build": "Yes. level_b.py 15:00:31, built_at 15:00:34, sheet.pdf 15:00:35, and content.py and kit.py are unchanged. locked_check was not re-run. The official evidence (scratch/technical-20261011T150032) shows GATES all pass, verify_export 0, selfcheck 0, didactic PASS 82 FAIL 0 REVIEW 0.",
+  "frozen_inputs": "level_a.py df06c213… (15:09), level_c.py 8fb45b6c… (14:57)"
+ },
+ "blind_solutions": "review-scratch/confirm-b/r3/BLIND_SOLUTIONS_r3.md covers the changed questions q5, q7, q8, q9 and q11ב, solved from the student pages before the keys were opened. Pages 1–2, 6 and 8–12 are pixel-identical to round 2, so the round-2 blind solutions stand for them. Every key on p13–14 matches: q5 18 and 180; q7 x=6, 16, 10, 'no, x stays 6, TS becomes 14'; q8 20, 35, 55, 15; q9 OC=7, not a rhombus; q11ב the isosceles altitude is also the median, then the perpendicular bisector, CB=CD by SAS, so a kite.",
+ "findings": [
+  {
+   "id": "R3-01",
+   "question": "q7 (pair with level a q7)",
+   "page": [4, 5],
+   "severity": "MAJOR",
+   "what": "Level a q7 was revised after b and adopted b's new q7 design, so the pair has the same stem structure and the same item roles again. In both, the stem gives the two head-pair sides as expressions plus the perimeter. א asks for x and that side, and ב rebuilds the other pair's side from the perimeter. The wording is near-identical. Only ג differs: a has Tal's wrong-pair equation and b has Ron's uniqueness claim. No equation or number is shared any more; the duplication is the design itself.",
+   "evidence": "Frozen a q7: 'AB=2x+3 ו־AD=4x−13, והיקף הדלתון 84 ס״מ'; א 'מצאו את x ואת אורך הצלע AB' (x=8, 19); ב 'חשבו את אורך הצלע CB' (from 84, it is 23). b q7: 'RS=3x−2 ו־RU=x+10 … והיקף הדלתון 52 ס״מ'; א 'מצאו את x ואת אורך הצלע RS' (6, 16); ב 'חשבו את אורך הצלע TS' (from 52, it is 10).",
+   "fix": "Fix level a q7, not b. Level b's design came from CONFIRM_b round 2, and a then converged on it. Restore a's earlier structure, with the other pair given as an expression and the perimeter computed: 'AB=2x+3, AD=4x−13, CB=2x+5'. א: x=8, AB=19. ב: the perimeter is 2·19+2·21=80 ס״מ. ג: Tal sets AD=CB, so 4x−13=2x+5 gives x=9; then AB=21 and AD=23, which contradicts AB=AD. None of 2x+5, 21 or 80 appears in b. Re-run cross_scan afterwards.",
+   "noam_decision": false
+  },
+  {
+   "id": "R3-02",
+   "question": "q5 figure",
+   "page": 3,
+   "severity": "MINOR",
+   "what": "After the redraw to ET:TG=4:14, the label E sits inside the kite, above its vertex and between the segments ET and EH, close to T. The geometry is right: ET/EG measures 0.223 against 4/18, EG/FH 0.894 against 0.9, and the diagonals are perpendicular. But the label can be read as marking a point on TG, not the vertex.",
+   "evidence": "Zoom at 400 dpi: review-scratch/confirm-b/r3/q5_zoom.png.",
+   "fix": "Place the E label below the vertex, outside the kite: set prefer={'E': 'below'} in the q5 fig spec.",
+   "noam_decision": false
+  }
+ ],
+ "round2_resolution": [
+  {"id": "C-01", "status": "RESOLVED on b's side, then reopened as R3-01 by level a's later revision", "evidence": "b q7 is 3x−2=x+10, x=6, 16/10, perimeter 52, and Ron's claim. x+6, x=5 and 11 are gone. The figure measures RS:RU:TS:TU=243:245:152:152, against 16:16:10:10."},
+  {"id": "C-02", "status": "RESOLVED (level a moved)", "evidence": "Frozen a q5 is now: the theorem gives KM⊥LN through O, KO=21, MO=45, and Noa's 'difference' error (convexity). The two-perpendiculars-at-M collinearity proof survives only in b q18."},
+  {"id": "C-03", "status": "RESOLVED", "evidence": "b q9 is AC=9, BD=4, AO=2, OC=7. c q6 (10/3/8) is unchanged and no longer matches. kite-level-a q9 (10/8) does not match."},
+  {"id": "C-04", "status": "RESOLVED", "evidence": "b q11ב is 'AB=AD וגם AC⊥BD'. Frozen c q13ג is 'AB=AD ו־AC חוצה את BD'. These are different conditions with different key steps (altitude→median against median→altitude); this is INFO, not a copy. Key p14 is correct."},
+  {"id": "C-05", "status": "RESOLVED (level a moved)", "evidence": "a q11 is now 65/120/105 (25-60-65, 60-80-100). BD=72 and the 27-36-45 triangle are only in b q14."},
+  {"id": "C-06", "status": "RESOLVED", "evidence": "q8 is AO=4, OC=7, BD=10 → 20, 35, 55; ג 60/8 → 15. The 15·10/2=75 overlap with a q20 is gone. The base-BD route is the canonical K09 derivation: a q6 takes base AC, and c q8 takes the main diagonal. Accepted. The figure measures AO:OC=113:201 against 4:7, with the diagonals perpendicular."},
+  {"id": "C-07", "status": "RESOLVED", "evidence": "q9 needs about 90 by 40 mm in the 164 by 76.8 mm room."},
+  {"id": "C-08", "status": "RESOLVED", "evidence": "q5 is ET=4, TG=14, FH=20 → EG=18, area 180, and the student's value 8. c q11 (6+15=21) no longer matches."}
+ ],
+ "checks_on_changed_pages": {
+  "maths_units": "All keys are correct and carry units.",
+  "leaks": "None. The q7 stem gives the perimeter, and ב asks for TS, which is not printed. The q8 areas are not printed. q9 prints no OC.",
+  "figure_vs_text": "q5, q7 and q8 were measured and match within 1–2%. No marks were added. See R3-02 for the label position.",
+  "guided": "q5, q7, q8 and q9 now use light integer numbers. There are 2 worked examples (q2, q4).",
+  "text_layer": "review-scratch/confirm-b/r3/textlayer.txt: no digit-bracket-digit, no island starting with '=', no Hebrew parenthetical, no hyphen-minus in maths.",
+  "pages_layout": "15 pages. Pages 3, 4, 5, 7, 13 and 14 changed and were looked at; the rest are pixel-identical to round 2. No orphan page."
+ },
+ "duplication_all_20": {
+  "method": "ast dumps of the frozen level_a.py and level_c.py (review-scratch/confirm-b/r3/a_dump.txt, c_dump.txt), diffed against round 2. The text of kite-level-a, kite-smoke, G9-T15 a/b/c and G9-T19 a/b/c was read. review-scratch/confirm-b/r3/numscan_r3.py was run over all 20 b questions, and every hit was judged by eye.",
+  "result": "One open pair, b q7 / a q7 (R3-01). Every other b question is clear.",
+  "info_not_findings": [
+   "b q4 BD=48 also appears in a q12 and T19c q8, with different triangles and designs.",
+   "b q16's 21-28-35 triangle appears in a q5 with the legs swapped, and its 20-21-29 triangle in kite-level-a q7 and T19c q12 with the roles swapped.",
+   "b q20 uses 5-12-13, as do c q14 and c q20 (rectangle corners) and kite-level-a q8 (coordinates), each in a different design.",
+   "b q12 and a q14 share the K16 'rhombus as a kite in two ways' item א. a ב/ג now deduce angle bisection and then a right ∠KOL from 76°, while b deduces the bisection and perpendicularity by theorem and then the area. Accepted.",
+   "b q8 and c q8 both derive the area through two triangles and add an inverse item, but on different bases and with different numbers; this was accepted in round 2.",
+   "b q15's 110/55 is gone from c, whose q15 is now 124/62."
+  ]
+ },
+ "adjudications": {
+  "G79": "Not applicable on the figkit route, and not a pass. There are 14 figkit SVG figures, no 'wspec' in build.json and no engine maps. STATUS is honest.",
+  "didactic_REVIEW": "None: PASS 82, FAIL 0, REVIEW 0.",
+  "EYE_CHECK_package_id": "Noam's decision: the real site id instead of the local alias G9-T99.",
+  "STATUS_honesty": "The hashes, 15 pages, 62 items and the didactic and gate results all match. Its cross_scan of 0 findings was true against level a as it stood before a's 15:09 revision, which caused R3-01. STATUS already says the scan must be re-run after a's revision. Its kite-level-a gap is closed by this review: the new q5, q7, q8 and q9 numbers do not match kite-level-a.",
+  "noam_decisions": "Only the package id. R3-01 and R3-02 are fixes under the standing rules."
+ }
+}

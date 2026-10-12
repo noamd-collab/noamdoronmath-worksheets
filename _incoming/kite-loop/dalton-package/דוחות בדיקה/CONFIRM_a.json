@@ -1,0 +1,145 @@
+{
+  "package": "G9-KITE",
+  "level": "a",
+  "round": "CONFIRM (round 2), independent; did not write level a and did not do round 1",
+  "reviewer_scope": "edited nothing except CONFIRM_a.json and review-scratch/confirm-a/; no git; no rebuild",
+  "build_identity": {
+    "sheet_pdf_sha256": "a98b67172c7725f95ea8397eec4c2c70075f4a2ca8da63af73991f84f1a0910c (matches STATUS_a.pdf_sha256)",
+    "level_a_py_sha256": "ccafcfbbdb7e2e7b308ede92c15dd601cb59649e216db5e56035668df15f1509 (matches STATUS_a)",
+    "latest_build": "yes: level_a.py mtime 14:31:14, sheet.pdf/sheet.json/didactic.json 14:31:25, build.json 14:31:30; official evidence scratch/technical-20261011T143123 (GATES all pass, verify_export 0 errors / 117 constraints, selfcheck 0, didactic PASS 74 FAIL 0 REVIEW 5). No rerun needed.",
+    "compared_builds": "level b deliver/b/sheet.pdf 14:38:00 (after level_b.py 14:37:56), level c deliver/c/sheet.pdf 14:39:05 (after level_c.py 14:39:00): both are the live sources."
+  },
+  "process": {
+    "stage1_blind": "Key start found by page-text header test only (key = pages 12-14). Student pages 1-11 rendered at 2x (review-scratch/confirm-a/p01-p11.png), every question solved before opening the key or level_a.py: review-scratch/confirm-a/BLIND_SOLUTIONS.md. Changed questions (q5, q7, q9, q11, q12, q13, q14, q15, q16, q20) plus all others solved.",
+    "stage2_keys": "Key pages 12-14 read and compared item by item: all 59 keys agree with the blind solutions; units present (ס״מ, סמ״ר, מ׳, מ״ר, °); reasoning lines on every נמקו/הוכיחו/הסבירו/הראו item. q14ג key example (∠BAD=60°, ∠ABC=100° -> 60°/40°) checked: consistent.",
+    "stage3_print": "Text layer of all 14 pages (review-scratch/confirm-a/textlayer.txt): no digit-bracket-digit, 40 '(' = 40 ')' (question numbers only), no Hebrew parenthetical, 0 of 531 math islands start or end with '=', no ASCII hyphen-minus in math, U+2212 used. Grade label 'רמה א׳ · כיתה ט׳'. 14 pages; 'בהצלחה!' closes page 11. All changed figures measured on the renders: q5 35:56 and 53:56 ratios, LO/ON triple ticks equal; q7 11:14 with no ticks; q11 AC:BD = 0.583 = 42/72; q12 PO:PR and QO:PR = 7/39, 24/39; q13 ∠BAD measured 73.4° (74°); q15 ∠BAD 39.6°, ∠BCD 60.1°; q16 one arc on each of ∠SRT, ∠URT; q18 15:18:41 ratios; q20 AE:AC = 0.75, BD:AC = 0.5. No result marked before proof (q8 EF/EH, q16 TS/TU, q20 EB/ED unmarked).",
+    "stage4_duplication": "Text of current a, b, c, ~/worksheet-work/kite-level-a (deliver/a), G9-T15 a/b/c (tasks/18-worksheets/work/build/G9-T15) and G9-T19 a/b/c (work/batch-06/G9-T19) extracted to review-scratch/confirm-a/compare/. Every a-question compared by eye with every question of b and c, and by number-set scan and context grep against kite-level-a, T15 and T19. ~/worksheet-work/kite-smoke has only a one-item content.py (coordinate kite A(3,8) B(6,3) C(3,0) D(0,3), AC=8): nothing shared."
+  },
+  "verdict": "FIX_NEEDED",
+  "counts": {"MAJOR": 3, "MINOR": 7},
+  "findings": [
+    {
+      "id": "CA-01", "question": "7", "severity": "MAJOR",
+      "what": "A-R02 is not resolved. a q7 still retells b q7: same design (sides as expressions, find x, perimeter, a pupil's wrong alternative), and the new numbers land on b's solution: the same expression x+6 for the side equal to the first one, the same root x=5 and the same equal-pair length 11.",
+      "evidence": "a q7: AB=3x−4, AD=x+6, CB=2x+4 -> 3x−4=x+6, x=5, AB=AD=11, CB=14, P=50. b q7 (kept by coordinator): RS=2x+1, RU=x+6, TS=3x−2 -> 2x+1=x+6, x=5, RS=RU=11, TS=13, P=48. The round-1 replacement numbers caused it.",
+      "fix": "Change a q7's numbers and item roles, keep ג's wrong-pair idea. Stem: 'בדלתון ABCD קודקודי הראש הם A ו־C. AB = 3x − 8, AD = x + 10 (ס״מ), והיקף הדלתון 70 ס״מ.' א: 3x−8 = x+10, x = 9, AB = 19 ס״מ. ב: 'חשבו את אורך הצלע CB' -> CB = CD = (70 − 38)/2 = 16 ס״מ (rebuilds a missing side from the perimeter, K08, instead of b's perimeter from expressions). ג: 'טל השווה AD = CB...' -> x + 10 = 16, x = 6, then AB = 10, AD = 16, contradicting AB = AD. Redraw at AB:CB = 19:16. Avoid x = 5, x = 7 (kite-level-a q6) and side 11.",
+      "noam_decision": false
+    },
+    {
+      "id": "CA-02", "question": "15", "severity": "MAJOR",
+      "what": "New collision from the round-1 fix: a q15 now uses the angle set of level c q3 with the head angles swapped, the same misconception item ('BD bisects ∠ABC') and the same 60°/70° split at B.",
+      "evidence": "a q15: ∠BAD=40°, ∠ABC=∠ADC=130°, ∠BCD=60°; ∠ABD=70°, ∠DBC=60°; Yoav: BD bisects ∠ABC (65°). c q3 (live level_c.py, C-09): ∠BAD=4x−100, ∠BCD=x, ∠ABC=2x+50 -> 60°, 40°, 130°, 130°; ∠ABD=60°, ∠CBD=70°; ג: 'בדלתון כל אלכסון חוצה את הזוויות שבקצותיו, ולכן BD חוצה את ∠ABC' -> refute. Both cross-scans missed it because c's angles come from x and are not printed as stem numbers.",
+      "fix": "a q15: ∠BAD = 36°, ∠ABC = 132°. Then ∠ADC = 132°, ∠BCD = 360 − 36 − 264 = 60° (△BCD still equilateral, so ג is unchanged), ∠ABD = 72°, ∠DBC = 60°, and Yoav's wrong value is 66°. Redraw (AB ≈ 1.62·CB). The set 36/132/60/72 is in no other kite sheet checked. Alternatively the coordinator changes c q3.",
+      "noam_decision": false
+    },
+    {
+      "id": "CA-03", "question": "5", "severity": "MAJOR",
+      "what": "a q5 has the design of level b q18: two isosceles triangles on the common segment, the midpoint O of it, prove both medians are perpendicular to it, conclude the three points are collinear, then conclude about the diagonal. Round 1 changed only q5's numbers (A-R01), and the coordinator kept b q18.",
+      "evidence": "a q5: א 'הוכיחו כי KO⊥LN וגם MO⊥LN'; ב 'הסבירו מדוע הנקודות K, O, M נמצאות על ישר אחד, ומה נובע מכך על האלכסון KM'; ג KM = 66. b q18: א 'הוכיחו כי AM⊥BD'; ב 'הוכיחו כי CM⊥BD, והסיקו ש־A, M ו־C על ישר אחד'; ג 'מה מראה התוצאה על האלכסון AC'.",
+      "fix": "Keep the numbers 35/53/56. Change the roles. א: 'נמקו מדוע האלכסון KM מאונך ל־LN ועובר דרך O' (one line from the main-diagonal theorem proved in q3), then KO = 21. ב: 'חשבו את MO' -> 45. ג: 'נועה כתבה KM = 45 − 21 = 24 ס״מ. איזו הנחה על מיקום K ו־M ביחס ל־LN עומדת מאחורי החישוב שלה? מדוע בדלתון KM = KO + OM? חשבו את KM.' -> 66 ס״מ. This keeps K06, K07, K10 and removes the twin-median collinearity proof.",
+      "noam_decision": false
+    },
+    {
+      "id": "CA-04", "question": "11", "severity": "MINOR",
+      "what": "Number-set echo with level b q14 (created by b's round-2 change at 14:37, after a's revision): the same secondary diagonal 72 and the same half-kite triangle 27-36-45 in the same role (half secondary 36, head segment 27, side 45). The question designs differ (Dana's misconception vs a kite toy), so this is not a full copy.",
+      "evidence": "a q11: AB=39, BD=72, AC=42 -> BO=36, AO=15, OC=27, CB=45. b q14: sides 45 and 60, rod BD=72 -> BO=36, AO=27 (with AB=45), CO=48, AC=75.",
+      "fix": "Preferably b q14 changes (it moved last). Otherwise a q11: AB = 50, BD = 80, AC = 72 -> BO = 40, AO = 30, OC = 42, CB = 58. Dana's AO = 36 gives 1296 + 1600 = 2896, not 2500. ג perimeter 2·50 + 2·58 = 216 ס״מ. Redraw at AC:BD = 72:80. Re-scan before adopting: 30-40-50 sits in c q9 with its legs in swapped roles.",
+      "noam_decision": false
+    },
+    {
+      "id": "CA-05", "question": "20", "severity": "MINOR",
+      "what": "A-R06 is resolved against c q12, which now uses E and F on the secondary diagonal. a q20 still shares its א/ב role pair with level c q18: E on line AC, prove EB = ED, then show that the new quadrilateral with vertex E is a kite and name its heads/main diagonal. b q10א is a single shared item (E on AC, EB = ED). That is a K13 consequence and acceptable on its own.",
+      "evidence": "a q20 א 'הוכיחו כי EB = ED', ב 'הסבירו מדוע ABED הוא דלתון קמור, וקבעו מהו האלכסון הראשי שלו'. c q18 א 'הוכיחו ש־EB = ED, והסבירו מדוע EBCD דלתון. מהם קודקודי הראש שלו?'",
+      "fix": "Keep א and ג (ABED area 75, outside part 25). Replace ב, which is the 'new quadrilateral is a kite, name its main diagonal' role, with 'הסבירו מדוע AE⊥BD ומדוע O היא אמצע BD, ולכן שטח ABED שווה ל־AE·BD/2.' This leads into ג through ABED's perpendicular diagonals and does not repeat c q18's kite-identification item. Do not use a sum of △ABD and △EBD: AO is not given. K02 stays covered in q1, q2, q7, q13, q14.",
+      "noam_decision": false
+    },
+    {
+      "id": "CA-06", "question": "14", "severity": "MINOR",
+      "what": "New redundancy from the A-R07 fix: q14ג ('does the conclusion of ב, that each diagonal bisects the angles at its ends, hold in every kite?') tests exactly what the very next item, q15א, tests (the secondary diagonal does not bisect the side angles). It also repeats c q3ג, which refutes the claim 'בדלתון כל אלכסון חוצה את הזוויות שבקצותיו'.",
+      "evidence": "q14ג key: 'רק האלכסון הראשי חוצה את הזוויות שבקצותיו ... האלכסון המשני אינו חוצה את זוויות הצד'. q15א key: 'BD הוא האלכסון המשני ... אין משפט שהמשני חוצה את זוויות הצד'. c q3ג: same claim, refuted.",
+      "fix": "q14ג: 'נתון ∠LKN = 50°. היעזרו בסעיף ב וחשבו את ∠OKL ואת ∠OLK, והסיקו מהי ∠KOL.' -> 25°, ∠KLM = 130° so ∠OLK = 65°, ∠KOL = 90° (the diagonals are perpendicular, K06/K16). Avoid 110° (c q15 uses ∠LMN = 110° on KLMN). K15 stays in q15.",
+      "noam_decision": false
+    },
+    {
+      "id": "CA-07", "question": "9", "severity": "MINOR",
+      "what": "The new point P is not marked on AB. The figure prints only the label 'P', and the nearest mark on AB is the equal-length tick at AB's midpoint, about 3 mm to the right of the label. So the tick reads as the location of P, which would put P at the midpoint, AP = 2.5, not 2.",
+      "evidence": "review-scratch/confirm-a/z_q9.png. level_a.py fig q9: segments=['AC'], ticks=kite_ticks('ABCD'), no point marker for P (P9['P'] only names the point).",
+      "fix": "Draw P as a dot, or as a short cross-stroke that clearly differs from the tick, at 2/5 of AB, with the label directly above it. Alternatively move AB's single tick to segment PB's far half. Keep 'AP = 2' in the text only.",
+      "noam_decision": false
+    },
+    {
+      "id": "CA-08", "question": "6", "item": "ג", "severity": "MINOR",
+      "what": "q6ג is the flipped equation of kite-level-a q4ג. The same three numbers appear in the same area relation.",
+      "evidence": "a q6ג: AC = 18, BD = 10 -> area 90. kite-level-a q4ג: 'בדלתון אחר אורך האלכסון הראשי הוא 10 ושטחו 90' -> other diagonal 18.",
+      "fix": "a q6ג: AC = 17 ס״מ, BD = 8 ס״מ -> area 68 סמ״ר.",
+      "noam_decision": false
+    },
+    {
+      "id": "CA-09", "question": "18", "item": "א", "severity": "MINOR",
+      "what": "q18א repeats G9-T19 b q1א's first computation with the same givens in the same role: side 15 and diagonal 18 give half-diagonal 9 and the other half 12 (9-12-15). The shapes differ (kite vs rhombus) and so do the later items, so this is one item, not a design copy. With b q4 changed to 26/30/48 and c q12 to 65/89/78, the 9-12-15 triangle is otherwise only in c q17, as a paper triangle, which is a different object.",
+      "evidence": "a q18: AB = 15, BD = 18 -> BO = 9, AO = 12. T19 b q1: rhombus AB = 15, AC = 18 -> AO = 9, BO = 12.",
+      "fix": "Optional. a q18: AB = AD = 13 ס״מ, BD = 24 ס״מ, perimeter 100 ס״מ -> BO = 12, AO = 5, CB = 37, OC = 35. ג with perimeter 44 -> CB = 9 < BO = 12, still impossible. Do not combine this with the CA-04 alternative.",
+      "noam_decision": false
+    },
+    {
+      "id": "CA-10", "question": "-", "item": "STATUS_a cross_scan / honest_gaps", "severity": "MINOR",
+      "what": "STATUS_a's cross-scan is stale. It compared level a with b built at 13:57 and c built at 14:29, but b was revised at 14:37 and c at 14:39. Its 'remaining' list cites overlaps that no longer exist (a q18 ~ b q4 9-12-15, since b q4 is now 26/30/48; a q18 ~ c q12ג, since c q12 is now 65/89/78), and it misses CA-02 to CA-05. honest_gaps still says 'a q18 and level c q12ג share one kite'.",
+      "evidence": "STATUS_a.checks.cross_scan.scope 'built levels b (13:57) and c (14:29)'. pkg/out/deliver/b/sheet.pdf 14:38:00, pkg/out/deliver/c/sheet.pdf 14:39:05. FIXLOG_c cross-level round: c q12 moved to 65/89/78.",
+      "fix": "After the fixes, rerun scratch/a/cross_scan.py against the live b and c. Add an angle-set check that solves the expression angles (it would have caught CA-02) and an item-role comparison across levels (CA-01, CA-03). Then rewrite cross_scan.remaining and honest_gaps from the new result.",
+      "noam_decision": false
+    }
+  ],
+  "round1_resolution": [
+    {"id": "A-R01", "status": "number set resolved", "evidence": "a q5 is now 35/53/56 (21-28-35, 28-45-53); b q16 is now 29/35/42 and kite-level-a q1 is 10/17. The 21-28-35 triangle also sits in b q16, but with its legs in swapped roles, which counts as a single shared triangle and is acceptable. The design copy of b q18 is new finding CA-03."},
+    {"id": "A-R02", "status": "NOT resolved", "evidence": "see CA-01 (x=5, x+6, 11 still match b q7, and the design is the same)."},
+    {"id": "A-R03", "status": "resolved vs c q9", "evidence": "c q9 is now 34/50/56 and has no pupil-claim frame. a q11 is 39/72/42 and ג is a perimeter (168). The Pythagoras check in the key is right (1737 ≠ 1521). New echo with b q14: CA-04."},
+    {"id": "A-R04", "status": "resolved", "evidence": "a q13: ∠ABC=115°, ∠BAD=3x−10, ∠BCD=2x -> x=28, 74°/56°, then 37°/28°. This is not a shift of b q15's 3x+10/5x−50/x+20 or c q3's 4x−100/x/2x+50. The shared K05 algebra-angle genre is accepted, as the round-1 fix proposed it."},
+    {"id": "A-R05", "status": "resolved by level c", "evidence": "c q7 is now sides 5/6, BD 11 impossible, BD = 8. a q19 (3/4, right side angles) is unchanged. c q14 shares one item (BD from area/AC in a right-side-angle kite), but with 5-12-13 against 3-4-5 and a different sequence: acceptable."},
+    {"id": "A-R06", "status": "resolved vs c q12; residual pair with c q18", "evidence": "see CA-05."},
+    {"id": "A-R07", "status": "resolved vs b q12, but the fix created CA-06", "evidence": "q14ב/ג now differ from b q12ב/ג."},
+    {"id": "A-R08", "status": "resolved", "evidence": "b q10ג is now the head-angle error. a q9ג is the image Q of P, with AQ = 2 and CP = CQ. The new figure defect is CA-07."},
+    {"id": "A-R09", "status": "resolved vs kite-level-a q2, but the new numbers collide with c q3", "evidence": "see CA-02."},
+    {"id": "A-R10", "status": "resolved by level c", "evidence": "c q5 is now PQRS from a reflection, with a general iff theorem in ב. a q8/q17 keep EFGH/M. b q5 also uses EFGH (letters only, a different design): acceptable. a q8's 3-role converse sequence against b q6 is K11-dictated and drops a different condition: acceptable. a q17ב against b q11א (perpendicular-only counterexample) is K12-dictated with different numbers (2,5/3,6 against 1,3/2,4): acceptable."},
+    {"id": "A-R11", "status": "resolved", "evidence": "q16 figure has one arc on ∠SRT and one on ∠URT. verify_export measures 117 constraints, 5 of them equal_angle."},
+    {"id": "A-R12", "status": "resolved", "evidence": "14 pages; 'בהצלחה!' closes student page 11; key on pages 12-14."},
+    {"id": "A-R13", "status": "partly resolved", "evidence": "the scope is now recorded, but the cross-scan is stale: CA-10."},
+    {"id": "A-R14", "status": "resolved", "evidence": "q7 figure has no ticks; the q7 D4 REVIEW is gone (didactic REVIEW 5: q1, q2, q8, q12, q14)."}
+  ],
+  "checks_passed": {
+    "maths": "All 59 keys agree with the blind solutions. No unsolvable, ambiguous or missing-data item. Calculator-free (largest root √2025 = 45).",
+    "leaks": "No later item prints an earlier answer. q18ג's 44 is not an answer (CB = 41, OC = 40, AO = 12). q9ג's AQ = 2 follows from the given AP = 2 by reflection, which is the tested step. q7ג prints only Tal's equation, not x.",
+    "figure_vs_text": "All changed figures match the data within 1-2 % and 0.6°, apart from the CA-07 marker problem. No result is marked before it is proved.",
+    "print": "Grade label right. U+2212 used. No digit-bracket-digit, no Hebrew parenthetical, no island starting with '='. RTL order is right in the key fraction lines (q19ב 'BD = 24/5'). Page count and layout are fine: q11, q13 and q15 continue onto the next page item by item, with no orphaned stem.",
+    "status_numbers": "questions 20, items 59, pages 14, drawn 17, didactic REVIEW 5 and verify 117 all match the build. The only stale part of STATUS is the cross_scan block (CA-10)."
+  },
+  "adjudications": {
+    "didactic_D4_reviews": [
+      {"item": "q1", "decision": "acceptable", "reason": "The stem says the ticks are the only data; reading them is the K01 skill."},
+      {"item": "q2", "decision": "acceptable", "reason": "Same as q1: telling opposite pairs from adjacent pairs is the tested skill."},
+      {"item": "q8", "decision": "acceptable", "reason": "The text states EG⊥FH. The mark at M is the same fact; the checker wants the literal EM⊥FM."},
+      {"item": "q12", "decision": "acceptable", "reason": "The text states QO⊥PR with O on PR. The mark at O is the same fact."},
+      {"item": "q14", "decision": "acceptable", "reason": "The text says 'כל ארבע הצלעות שוות זו לזו'. Writing 'מעוין' would give away item א."},
+      {"item": "q7", "decision": "cleared", "reason": "The ticks were removed, so there is no REVIEW."}
+    ],
+    "G79": {
+      "decision": "honest NOT_APPLICABLE / NOT_RUN on the figkit route, not a pass",
+      "reason": "build.json checks have no g79_spec key and no wspec figures, because all 17 figures are figkit builder figures. STATUS_a records NOT_RUN and does not claim a PASS. The geometry is covered by G78 and verify_export (117 constraints re-measured, 0 errors) and by my measurements of the changed figures."
+    },
+    "eye_check_items": [
+      {"item": "1: G9-T99 build alias / site id", "noam_decision": true, "reason": "Choosing the site topic id is genuinely Noam's. The alias itself is not a defect, per the brief."},
+      {"item": "D4 REVIEWs", "noam_decision": false, "reason": "The standing rules decide them: acceptable with a written reason; REVIEW is not PASS."},
+      {"item": "CA-01..CA-10", "noam_decision": false, "reason": "All are decided by the standing originality and figure rules. Only which level changes in a cross-level pair (CA-02, CA-04) is the coordinator's call."}
+    ],
+    "not_flagged": [
+      "a q4 vs b q2: both are side-angle/split-angle chains with a 'second way' check, but they use different diagonals (BD vs AC), different targets and different angles: K04/K05 genre.",
+      "a q3 vs b q3 vs c q1ב: the canonical K03/K04 proof.",
+      "a q6א-ב vs b q8 vs c q8א: the area-formula derivation required by K09.",
+      "a q10 vs b q13: both use BD = 6 cm, but with different construction methods and different data; a single shared number.",
+      "a q11 vs kite-level-a q3 and b q5: the 'diagonals bisect each other' misconception is named by K15; numbers and later items differ.",
+      "a q12 vs c q8ג: both use the letters PQRS/O; c goes from area to PR, a from PR to area; different designs.",
+      "a q16 vs c q15: the SAS sufficient condition required by K12; the later items differ.",
+      "G9-T15: no shared design or number set. G9-T19: only CA-09.",
+      "PACKAGE = 'G9-T99' in content.py and footer numbering (out of scope per the brief)."
+    ]
+  }
+}

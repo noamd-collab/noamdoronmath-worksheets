@@ -1,0 +1,130 @@
+{
+  "package": "G9-KITE",
+  "local_label_not_website_id": true,
+  "title": "דלתון",
+  "grade": 9,
+  "levels": [
+    "a",
+    "b",
+    "c"
+  ],
+  "questions_each": 20,
+  "source_mode": "ORIGINAL_CURRICULUM_BASED_SUPPLEMENT; no original kite worksheet found, no false source-PDF coverage claim",
+  "reason": "User explicitly requested a kite package on2026-10-11; existingG9-T15 is parallels/isosceles introduction only",
+  "registry": {
+    "track": "ט_רגילה",
+    "topic": "kite",
+    "tools": [
+      "g9.kite.1",
+      "g9.kite.2",
+      "g9.kite.3"
+    ]
+  },
+  "scope_rules": [
+    "Define convex kites inclusively; state when excluding rhombus.",
+    "Use same unchanged skill7.0.1/engine6.18, native measurable geometry; all required gates and independent review.",
+    "Three differentiated levels,20questions each, varied shape not merely rotations.",
+    "Preserve truthful units and calculation/proof targets; blank space for student construction.",
+    "No substitution of numerical-only exercises for proof/identification roles.",
+    "Mix principle combinations and genuine dependent reasoning; record exact immediate/dependent item IDs without inflated metrics.",
+    "No source exemplar questions provided; write original tasks."
+  ],
+  "principles": [
+    {
+      "id": "K01",
+      "title": "הגדרה וזיהוי",
+      "requirement": "שני זוגות נפרדים של צלעות סמוכות שוות; הבחנה מצלעות נגדיות או זוג יחיד. קריאת נתונים מהשרטוט בלי להסיק לפי מראה."
+    },
+    {
+      "id": "K02",
+      "title": "זוגות קודקודים",
+      "requirement": "זיהוי קודקודי הראש וקודקודי הצד, האלכסון הראשי והמשני על פי זוגות הצלעות, גם באוריינטציות שונות."
+    },
+    {
+      "id": "K03",
+      "title": "חפיפה מן ההגדרה",
+      "requirement": "האלכסון הראשי מפרק לשני משולשים חופפים; מה נתון ומה הוכח, שימוש נכון במשפט חפיפה."
+    },
+    {
+      "id": "K04",
+      "title": "חציית זוויות הראש",
+      "requirement": "קישור בין האלכסון הראשי לחציית שתי זוויות הראש, חישובי זוויות ושרשור."
+    },
+    {
+      "id": "K05",
+      "title": "זוויות הצד",
+      "requirement": "הוכחת שוויון זוויות הצד; חישוב זוויות עם סכום זוויות במרובע והבחנה מהזוויות שאינן בהכרח שוות."
+    },
+    {
+      "id": "K06",
+      "title": "אלכסונים מאונכים",
+      "requirement": "הוכחה ושימוש במאונכות; קריאת סימון נתון לעומת מטרה להוכחה. אין לסמן תוצאה לפני הוכחתה."
+    },
+    {
+      "id": "K07",
+      "title": "חציית המשני",
+      "requirement": "האלכסון הראשי חוצה את המשני; המשני אינו חייב לחצות את הראשי. נימוק/דוגמה נגדית כנה."
+    },
+    {
+      "id": "K08",
+      "title": "היקף ושחזור",
+      "requirement": "חישוב היקף, שחזור צלע חסרה או ביטוי אלגברי מתוך אילוצים, בדיקת חיוביות והיתכנות."
+    },
+    {
+      "id": "K09",
+      "title": "שטח",
+      "requirement": "חישוב שטח בפירוק למשולשים או מכפלת אלכסונים חלקי שתיים, גזירת הנוסחה ושחזור נתון; יחידות אורך/שטח נכונות."
+    },
+    {
+      "id": "K10",
+      "title": "פיתגורס בדלתון",
+      "requirement": "הפקת משולשים ישרי זווית מתוך האלכסונים, חישובי צלע/אלכסון/היקף ושטח בשרשור, לא מניחים חצי אלכסון ראשי."
+    },
+    {
+      "id": "K11",
+      "title": "משפט הפוך",
+      "requirement": "נתון שאלכסון אחד הוא האנך האמצעי לאחר; הוכחת שני זוגות צלעות סמוכות שוות. להבחין בין מאונכות בלבד לחציה בלבד."
+    },
+    {
+      "id": "K12",
+      "title": "תנאים מספיקים",
+      "requirement": "הכרעה איזה מידע מספיק לזיהוי דלתון, ומה חסר; בניית/נימוק דוגמה נגדית כשאין די נתונים."
+    },
+    {
+      "id": "K13",
+      "title": "סימטריה",
+      "requirement": "הסבר ציר הסימטריה בהקשר אלכסון ראשי וקישור לתכונות; אין להניח סימטריה של אלכסון משני."
+    },
+    {
+      "id": "K14",
+      "title": "בניית שרטוט ממלל",
+      "requirement": "משימות אמיתיות ללא איור נתון עם מרחב ריק; סימון נתונים ומסקנות נפרד, קונסטרוקציה אפשרית ומנומקת."
+    },
+    {
+      "id": "K15",
+      "title": "תיקון טעות",
+      "requirement": "בחינת פתרון שגוי או טענה גורפת על חציית שני אלכסונים/כל זוויות שוות, תיקון ונימוק ללא חשיפת תשובה מוקדמת."
+    },
+    {
+      "id": "K16",
+      "title": "מקרה מיוחד",
+      "requirement": "מעוין כמקרה מיוחד תחת הגדרה כוללת המוצהרת בפתיחה; אם דורשים דלתון שאינו מעוין לומר זאת במפורש. מרובעים קמורים בלבד."
+    },
+    {
+      "id": "K17",
+      "title": "הכללה",
+      "requirement": "תנאים בהם תכונה נוספת הופכת דלתון למעוין, הוכחה/הפרכה במצוינות; בלי דמיון/טריגונומטריה שלא הוצהרו."
+    },
+    {
+      "id": "K18",
+      "title": "תכנון ושחזור",
+      "requirement": "השוואת אפשרויות/בחירה תחת אילוצי היקף או שטח, אפשרות/אי־אפשרות והצדקה; משימה רב־שלבית בעלת תלות משמעותית."
+    }
+  ],
+  "coverage": {
+    "a": "Core K01-K15 with accessible sequential arguments; K16 stated convention, brief recognition.",
+    "b": "Core K01-K16 with converse proofs, algebra, reconstruction and insufficient-data tasks; K18 feasible planning.",
+    "c": "K01-K18 integrated; nontrivial proof, counterexample, converse, generalization and planning. No unrelated advanced topics."
+  },
+  "reviewer": "B independently solves immutable student-only snapshots before any keys; root audits coverage against this approved curriculum blueprint; final all PDF/native actions independently reviewed."
+}

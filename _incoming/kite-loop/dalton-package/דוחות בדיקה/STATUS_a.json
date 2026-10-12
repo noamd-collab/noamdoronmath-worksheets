@@ -1,0 +1,258 @@
+{
+  "package": "G9-KITE",
+  "level": "a",
+  "label": "רמה א׳ · כיתה ט׳",
+  "stage": "REVISED_AFTER_CONFIRM_a_round3 (FIX_NEEDED, 2 MAJOR, 1 MINOR); OFFICIAL_LOCKED_CHECK_RUN; NOT_REVIEWED_AGAIN",
+  "source_mode": "original, from WRITER_VIEW_G9-KITE.json (approved blueprint); no source PDF was read or claimed",
+  "editable_source": "pkg/level_a.py",
+  "level_a_py_sha256": "1079f341239949885939a88cedd4a686e44b3ee74a88ef9e190caf45c7b9a287",
+  "pdf_sha256": "a990978d52ac58bc57687c727c754b7893172b2d80ed7163b3c5b8138534c5bd",
+  "package_id_in_build": "G9-T99, a local build alias set by the coordinator in content.py; not a site id (EYE_CHECK_a item 1)",
+  "questions": 20,
+  "items": 59,
+  "pages_student_plus_key": 14,
+  "figures": {
+    "drawn_questions": 17,
+    "distinct_svgs": 17,
+    "words_share": [
+      10,
+      17,
+      19
+    ],
+    "room_mm": 71.5,
+    "placements": "block+side"
+  },
+  "dependencies": {
+    "items_with_declared_dependency": 35,
+    "immediate_items": 8,
+    "note": "the author's own classification (kit 'on' / 'imm'), not an independent metric",
+    "immediate_ids": [
+      "a1א",
+      "a3ב",
+      "a4ב",
+      "a5ב",
+      "a6ג",
+      "a12ב",
+      "a13ב",
+      "a19א"
+    ]
+  },
+  "k_coverage_per_question": {
+    "1": [
+      "K01",
+      "K02"
+    ],
+    "2": [
+      "K01",
+      "K12",
+      "K02"
+    ],
+    "3": [
+      "K03",
+      "K05",
+      "K04"
+    ],
+    "4": [
+      "K05",
+      "K02"
+    ],
+    "5": [
+      "K06",
+      "K07",
+      "K10",
+      "K15"
+    ],
+    "6": [
+      "K06",
+      "K09"
+    ],
+    "7": [
+      "K08",
+      "K02",
+      "K15"
+    ],
+    "8": [
+      "K11",
+      "K03",
+      "K12"
+    ],
+    "9": [
+      "K13",
+      "K06",
+      "K05"
+    ],
+    "10": [
+      "K14",
+      "K01"
+    ],
+    "11": [
+      "K15",
+      "K07",
+      "K10",
+      "K08"
+    ],
+    "12": [
+      "K09",
+      "K10",
+      "K08",
+      "K07"
+    ],
+    "13": [
+      "K05",
+      "K04",
+      "K02"
+    ],
+    "14": [
+      "K16",
+      "K02",
+      "K04",
+      "K06"
+    ],
+    "15": [
+      "K15",
+      "K05",
+      "K04"
+    ],
+    "16": [
+      "K12",
+      "K03",
+      "K06"
+    ],
+    "17": [
+      "K12",
+      "K14",
+      "K07"
+    ],
+    "18": [
+      "K08",
+      "K10",
+      "K07"
+    ],
+    "19": [
+      "K14",
+      "K10",
+      "K09",
+      "K05"
+    ],
+    "20": [
+      "K07",
+      "K06",
+      "K09"
+    ]
+  },
+  "k_coverage_level": "K01-K16 all tested; K17, K18 not assigned to level a",
+  "checks": {
+    "official_locked_check": {
+      "command": "locked_check.py G9-KITE a",
+      "result": "GATES: all pass | verify 0 | selfcheck 0 | didactic PASS 74 FAIL 0 REVIEW 5 | VERDICT NOT CLEAN only because REVIEW != 0",
+      "evidence": "G9-KITE/scratch/technical-20261011T151620"
+    },
+    "G79": "NOT_APPLICABLE / NOT_RUN on the figkit builder route; not claimed as PASS. G78 PASS; verify_export re-measured 118 constraints, 0 errors.",
+    "didactic_reviews": [
+      {
+        "id": "q1",
+        "rule": "D4",
+        "explanation": "the ticks are the only data; reading them is the K01 skill (adjudicated acceptable)"
+      },
+      {
+        "id": "q2",
+        "rule": "D4",
+        "explanation": "same as q1 (adjudicated acceptable)"
+      },
+      {
+        "id": "q8",
+        "rule": "D4",
+        "explanation": "the text states EG⊥FH; the mark at M is the same fact (adjudicated acceptable)"
+      },
+      {
+        "id": "q12",
+        "rule": "D4",
+        "explanation": "the text states QO⊥PR; the mark at O is the same fact (adjudicated acceptable)"
+      },
+      {
+        "id": "q14",
+        "rule": "D4",
+        "explanation": "the text states the four equal sides in words (adjudicated acceptable)"
+      }
+    ],
+    "self_scan": {
+      "script": "scratch/a/self_scan.py",
+      "scope": "within level a",
+      "findings": 0
+    },
+    "cross_scan": {
+      "script": "scratch/a/cross_scan.py",
+      "scope": "level a against the LIVE built levels b (deliver/b 15:00:35, after level_b.py 15:00:31) and c (deliver/c 14:57:48, after level_c.py 14:57:43). Checks: E shared variable expressions; T exact right triangles read from figure coordinates (2+ sides printed) or, for figure-less questions, from printed numbers when the key uses Pythagoras; S the whole triangle set equal up to scale; N same stem numbers; A shared angle set (3+ values, one not 60/90) from key angle values and figure angle givens; R every same item-role pair listed",
+      "result": "against the frozen b (deliver 15:00:35) and c (deliver 14:57:48): E 0, S 0, N 0, A 0; the same 5 single shared triangles and 4 same-role pairs as listed. a q7 (solve-feasibility-decide) matches no b or c role sequence; b q7 is solve-calc-decide",
+      "remaining": [
+        {
+          "pair": "a q5 ~ b q16",
+          "what": "21-28-35 with the legs in swapped roles; accepted in CONFIRM_a (A-R01 resolution)"
+        },
+        {
+          "pair": "a q18 ~ c q7",
+          "what": "12-16-20 read from c q7's printed numbers (a construction question with no figure, sides 5/6); in a q18 it is △AOB of the kite. A different object, 3-4-5 family"
+        },
+        {
+          "pair": "a q19 ~ b q13, c q6, c q7",
+          "what": "3-4-5 in different roles; a q19 is kept by the coordinator's decision"
+        },
+        {
+          "pair": "R: a q5 ~ b q2, b q4 (calc-calc-calc by the coarse classifier)",
+          "what": "a q5 is theorem+Pythagoras, Pythagoras, then Noa's misconception about KO and OM; b q2 is an angle chain, b q4 a Pythagoras chain: different designs"
+        },
+        {
+          "pair": "R: a q8 ~ b q18 (prove-prove-explain)",
+          "what": "a q8 is the converse (perpendicular bisector → kite, then which proof step needs ⊥); b q18 is the twin-median collinearity proof. Different claims"
+        },
+        {
+          "pair": "R: a q16 ~ b q3 (prove-derive-prove)",
+          "what": "a q16 is the SAS sufficient condition (RS=RU and the bisected angle → kite → RT⊥SU); b q3 is the canonical property proof. K03/K12 dictated, different data"
+        }
+      ],
+      "not_covered": "~/worksheet-work/kite-level-a was not opened; only the numbers the reviewers named were avoided (13/20, 21/24, 252, 66, 9-12-15, 25/29, 40, 15/20/24)"
+    },
+    "review_keys": {
+      "script": "scratch/a/review_keys.py",
+      "matched": 35,
+      "findings": 0,
+      "note": "q7 now checks x=5, AB=9, CB=7, Noa's negative side and BD<AB+AD"
+    },
+    "leak_scan": {
+      "script": "scratch/a/leak_scan.py",
+      "pairs": 58,
+      "hits": 0
+    },
+    "text_layer": {
+      "script": "scratch/a/text_layer_check.py",
+      "pages": 14,
+      "islands": 559,
+      "findings": 0
+    },
+    "visual": "q7 page 4 and key pages 12-13 re-rendered and looked at; the other pages are unchanged since round 3; 14 pages, בהצלחה on page 11"
+  },
+  "honest_gaps": [
+    "Build alias G9-T99: Noam's decision before any upload (EYE_CHECK_a).",
+    "Five D4 REVIEW items remain by design (adjudicated acceptable twice); REVIEW is not PASS.",
+    "Several numbers are now large (q11: 65/100/120/105, perimeter 330; q18: 20/65/32, OC=63) because most small Pythagorean kites are taken by b, c, kite-level-a and G9-T19; all are calculator-free (largest square 10000).",
+    "content.py CURRICULUM track 'ט' is still not an official sequence; level_a.py sets its own curriculum (track ט_רגילה).",
+    "Not re-reviewed after this revision. Not REVIEWED, QUALIFIED or FINAL."
+  ],
+  "confirm_a_disposition": {
+    "CA-01 q7": "new equation and numbers: AB=2x+3, AD=4x−13, perimeter 84 → x=8, AB=19, CB=23 (side rebuilt from the perimeter); Tal equates AD and CB → x=9, AB=21, AD=23. No x+6/x+10, no x=5/6/7, no side 10/11/16",
+    "CA-02 q15": "∠BAD=36°, ∠ABC=132° → ∠ABD=72°, ∠DBC=60°, ∠BCD=60°, Yoav's wrong value 66°",
+    "CA-03 q5": "same 35/53/56 kite, new roles: א main-diagonal theorem gives KM⊥LN through O, KO=21; ב MO=45; ג Noa's difference MO−KO, the hidden same-side assumption, KM=KO+OM=66. The twin-median collinearity proof is gone",
+    "CA-04 q11": "AB=65, BD=120, AC=105 → BO=60, AO=25, OC=80, CB=100, perimeter 330; Dana's AO=52.5 gives 6356.25 ≠ 4225. Neither of the reviewer's alternatives was used (30-40-50 is in c q9); my intermediate 65/112/75 hit c q8's 33-56-65 and 61/120/91 was almost flat at A",
+    "CA-05 q20": "ב now: why AE⊥BD and O is the midpoint of BD, and express area ABED by AE and BD (no kite-identification item)",
+    "CA-06 q14": "ג now computes ∠OKL=38°, ∠OLK=52°, ∠KOL=90° from ∠LKN=76° (the reviewer's 50° shared {25,50,90} with c q18; 110° avoided)",
+    "CA-07 q9": "P drawn as a dot; AP changed to 1 cm so P sits far from the midpoint tick of AB (AQ=1)",
+    "CA-08 q6": "AC=17, BD=8, area 68",
+    "CA-09 q18": "AB=20, BD=32, perimeter 170 → AO=12, CB=65, OC=63; hypothetical perimeter 44 → CB=2 < BO=16. The reviewer's 13/24/100 hit c q20's 12-35-37; 17/30/84 was c q9's kite halved (found by the new scaled-set check)",
+    "CA-10": "cross_scan rerun against the live b and c, with an angle-set check (key angle values plus figure angle givens) and a list of every same-role pair"
+  },
+  "round1_disposition": "REVIEW_a round 1: A-R01..A-R14 handled (see FIXLOG_a); q19, q20 (except ב, changed in round 2), q8, q17 kept by the coordinator's decision",
+  "confirm_round3_disposition": {
+    "R3-01/R3-02 q7": "new design with a new data type and new roles: AB=x+4, AD=2x−1, CB=2x−3 with heads A and C. The roles are solve, feasibility, decide. א: x=5, AB=AD=9, CB=CD=7, all positive. ב: Noa's x−8 for CB gives −3, impossible, because x is fixed by AB=AD alone. ג: BD=20 is impossible by the triangle inequality in △ABD (BD<18). There is no perimeter and no pupil-alternative-perimeter item; b q7 runs solve-calc-decide with a given perimeter. No step is circular: x comes only from AB=AD, ב substitutes that x into Noa's expression, and ג uses only AB and AD. Not reused: 2x+5, perimeter 52, x=6, 2x+3, 4x−13.",
+    "R3-03 q11 key": "key א now: in △AOB, AO²=4225−3600=625, so AO=25 and not 52.5, so O is not the midpoint of AC (no decimal square)"
+  }
+}

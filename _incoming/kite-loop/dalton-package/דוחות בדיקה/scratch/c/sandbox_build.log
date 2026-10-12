@@ -1,0 +1,22 @@
+G76 c    objects 15/6 · busiest 3/4 · parts 1
+G77 c    questions 85% · sub-items 24% (17/72) · placements block+side
+G78 c    17 figure(s), 1 plane(s): numbers 8.0pt, letters 9.5pt
+G82 c    FIG_REF pass (20 questions)
+G83 c    FIG_DENSITY pass -- declared; words share [6, 7, 11] = 3 of 20 (target 2 +-1), figures on the other 17
+G83-room   c    PASS q6 75.1 mm; q7 75.1 mm; q11 75.1 mm
+built c    מצוינות        21 pages   figures 17/20 · distinct 17 · objects 17
+
+deliverable c/                           17 figures · 165 constraints re-measured · every printed number is data · 1 given(s) on an item that asks for a proof (question 13)
+
+
+G80-text   c    PASS    129 block(s) bound to sheet.json
+G81-angles c   PASS: no one-letter angle name (sheet.json, noam-ai.json, sheet.html)
+G42-render c.pdf                                      PASS    28473 chars swept
+G43-F2     c.pdf                                      PASS    no bare roots
+G67-leak   c.pdf                                      PASS    no markup leak
+G45/G46    c.pdf                                      PASS    body font + figures ok
+G70-font   c.pdf                                      PASS    body is David-Libre
+G72-struck c.pdf                                      PASS    8414 glyph(s) clear of every stroke
+G73-pages  c.pdf                                      PASS    21 page(s), footer agrees
+
+GATES: all pass

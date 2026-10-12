@@ -1,0 +1,58 @@
+{
+  "package": "G9-KITE",
+  "level": "c",
+  "round": "confirm round 3",
+  "reviewer": "independent confirm reviewer, level c (wrote no level; did round 2, not round 1)",
+  "date": "2026-10-11",
+  "files_reviewed": {
+    "pkg/level_c.py": "8fb45b6c283ccf8978349bded42917a4c2d959b601201f512fd0bcca1f786134",
+    "pkg/out/deliver/c/sheet.pdf": "ba3d08c7c01e8722e71419c6c44e11c9c958b261612bd4913131b6fb5a68a3cd",
+    "pkg/level_a.py (frozen)": "df06c213b24945e0b6572202433b418c38d415863f2cd796831fabe3b8f7cb86",
+    "pkg/level_b.py (frozen)": "cdb596da77ddc63e98836bcd85a26e0d9e50b5452d34182451b92ab2b0fb331f",
+    "build_freshness": "The sheet.pdf and level_c.py hashes equal STATUS_c.json. level_c.py mtime is 14:57:43 and the PDF was built at 14:57:48, so locked_check was not rerun. The a and b deliverables were built after their frozen sources (a 15:09:22 → 15:09:25, b 15:00:31 → 15:00:34), so their sheet.json files reflect the frozen files."
+  },
+  "method": "All 22 pages rendered at 2x (review-scratch/confirm-c/r3png). The changed questions (q9, q12 ד, q15, q20, and the q8 ד key) were solved blind from the student pages, see review-scratch/confirm-c/BLIND_SOLUTIONS_round3.md, then compared with key pages 19, 20 and 22. The text layer of all pages was scanned. The duplication scan (review-scratch/confirm-c/dupscan.py → dupscan_r3.out) was rerun over all 20 questions against frozen a and b, ~/worksheet-work/kite-level-a, kite-smoke, G9-T15 a/b/c and G9-T19 a/b/c, and every pair sharing 3 or more values or with similarity above 0.3 was read by eye.",
+  "round2_resolution": [
+    {"id": "CF-01", "status": "RESOLVED", "evidence": "p.9 q12 ד opens with 'בנתוני סעיף ג'. The key (p.20) cites 'בנתוני ג AO = 52 ו־OC = 80', so the rhombus case is excluded and 'no' is correct. My blind solution agrees."},
+    {"id": "CF-02", "status": "RESOLVED (on the b side)", "evidence": "Frozen b q9 is AC = 9, BD = 4, AO = 2, which no longer matches c q6 (KM = 10, KS = 3, KL = 5, LN = 8). The rescan has no c q6 vs b q9 row. c q6 vs b q13 has no 3-4-5 head triangle with secondary diagonal 6."},
+    {"id": "CF-03", "status": "RESOLVED (on the a side)", "evidence": "Frozen a q15 is ∠BAD = 36°, ∠ABC = 132°, so ∠ABD = 72° and ∠DBC = 60°. c q3 keeps 60/40/130 with the split 60/70. The angle sets differ; the shared 'BD bisects ∠ABC' misconception is now only principle-level overlap with different numbers, which is acceptable."},
+    {"id": "CF-04", "status": "RESOLVED", "evidence": "q20 uses a 24×40 rectangle: area 480, PB = 5 or 35, sides 13 and 37, perimeter 100. The key lists t by the even factor pairs of 144: 2·72, 4·36, 6·24, 8·18. The figure measures 24:40 with PB drawn ≈ 14. The overlap with kite-level-a q4 has dropped to {13, 18, 24}, which is incidental. The 12-35-37 triangle shared with T19 a q12 sits in a different role (a rhombus side check), so it is acceptable."},
+    {"id": "CF-05", "status": "RESOLVED", "evidence": "The key on p.19 for 8ד now gives WV = 40, VY = 60, XV = 26, VZ = 40 (as drawn). Then WY = 100 and XZ = 66, the area is 3300, no diagonal bisects the other, and by 5ב the quadrilateral is not a kite."},
+    {"id": "CF-06", "status": "RESOLVED", "evidence": "q15 uses ∠LMN = 124°, giving 98°, 62°, 70° and 28°. The key's checks hold (20+98+62 = 180; (180−124)/2 = 28). The figure was redrawn: ∠LMN measures ≈ 123.3°. The overlap with b q15 is gone."},
+    {"id": "CF-07", "status": "RESOLVED", "evidence": "q9 now has two items. א asks why BO = BD/2, solved with the SSS congruence and the isosceles bisector, then the equation, t = 16 and BD = 60. ב is the area, 1680. The opening 'O is not the midpoint' item is gone, so the item-role overlap with a q11 is gone; a q11 is now 65/120/105."},
+    {"id": "CF-08", "status": "PARTLY RESOLVED, see R3-01", "evidence": "cross_levels.py now uses values ≥ 3, but STATUS still records a run against the pre-freeze a and b hashes."}
+  ],
+  "findings": [
+    {
+      "id": "R3-01",
+      "level": "c",
+      "question": "-",
+      "item": "STATUS_c.json",
+      "page": "-",
+      "severity": "MINOR",
+      "what": "STATUS is stale against the frozen files. (1) checks.cross_levels says it ran against level_a.py ccafcfbb... and level_b.py 07fc6463..., and that the c q6/b q9 and c q3/a q15 collisions 'still show until a and b are edited'. Both siblings are now frozen at df06c213... and cdb596da..., and both collisions are gone. (2) honest_gaps still says '22 pages (72 items)' and 'check_pkg ... (72 not mechanical)', but the level now has 71 items, which the STATUS items field already records. (3) honest_gaps still lists the collisions as open.",
+      "evidence": "STATUS_c.json checks.scratch/c/cross_levels.py and honest_gaps; shasum of the frozen pkg/level_a.py and pkg/level_b.py; sheet.json item count 71.",
+      "fix": "Rerun scratch/c/cross_levels.py against the frozen a and b hashes. Record the result, which per this round's scan has no real collision left. Change both '72' to '71'. Drop the 'collisions stay until b and a make their changes' gap. No change to level_c.py or the sheet.",
+      "noam_decision": false
+    }
+  ],
+  "observations_not_findings": [
+    "q20 now runs over two pages: the stem, the figure and item א are on p.15, and items ב-ד are on p.16. Items ב-ד can be solved from the stem without the figure, so this is acceptable. Page 10 holds only q13, with half the page blank, because q14 is kept together with its figure on p.11. 22 pages in total, as recorded.",
+    "c q12 vs a q11 share AB = 65 and OC = 80 in different kites (a uses the triangles 25-60-65 and 60-80-100, c uses 39-52-65 and 39-80-89). This is incidental.",
+    "Other rescan pairs carry only common triangles (5-12-13, 9-12-15, 8-15-17, 3-4-5 multiples) in different roles, or the factor-list numbers in the q20 key (72, 36, 18). Neither counts as a copy under the standing rule."
+  ],
+  "checks_this_round": {
+    "maths": "All changed items agree with the blind solutions. Proofs are at grade level: SSS/SAS congruence, isosceles special lines, Pythagoras, and the factor-pair argument for integer squares in q20 ג.",
+    "leaks": "No later item text or given repeats an earlier answer. q12 ד prints only the reference to ג; q20 ב/ג/ד print no answers; q15 ב prints only the givens 40° and 124°.",
+    "text_layer": "22 pages: no digit-bracket-digit, no Hebrew parenthetical, no ASCII minus, no '=' island in the source. ★ marks on q14, q16, q20 (3 questions); 'כיתה ט׳' in the header.",
+    "figures": "q15 ∠LMN ≈ 123.3° (given 124°); q20 24:40 with PB drawn ≈ 14.3, not an answer; q9 and q12 unchanged and to scale. No mark on a to-prove relation.",
+    "units": "q9 cm and cm²; q20 cm, cm² and cm; q15 degrees."
+  },
+  "counts": {"MAJOR": 0, "MINOR": 1},
+  "verdict": "PASS",
+  "verdict_reason": "All round-2 findings are resolved and the fixes introduce no new mathematical, leak, figure, text-layer or layout defect. The duplication rescan of all 20 questions against the frozen a and b and the four outside corpora finds no copy. The single MINOR is STATUS bookkeeping.",
+  "adjudications": {
+    "G79": "Honest NOT_APPLICABLE, not a pass. build.py runs G79-spec only for spec-route figures (WB.spec_figs), and all 17 level-c figures are figkit builder figures. STATUS records this correctly.",
+    "EYE_CHECK": "Only item 1, the PACKAGE alias G9-T99, is Noam's decision: he chooses the site id before upload. Every other item is decided by the standing rules."
+  }
+}

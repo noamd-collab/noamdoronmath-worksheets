@@ -1,0 +1,38 @@
+{
+  "package": "G9-KITE",
+  "level": "a",
+  "round": "CONFIRM round 4 (narrow: q7 and the q11 key, plus a final duplication pass); levels b and c frozen",
+  "reviewer_scope": "edited nothing except CONFIRM_a_round4.json and review-scratch/confirm-a/r4/; no git; no rebuild",
+  "build_identity": {
+    "sheet_pdf_sha256": "a990978d52ac58bc57687c727c754b7893172b2d80ed7163b3c5b8138534c5bd (matches STATUS_a)",
+    "level_a_py_sha256": "1079f341239949885939a88cedd4a686e44b3ee74a88ef9e190caf45c7b9a287 (matches STATUS_a)",
+    "latest_build": "yes: level_a.py 15:16:20, sheet.pdf 15:16:22. Official evidence scratch/technical-20261011T151620: GATES all pass, verify_export 0 errors (118 constraints), selfcheck 0, didactic PASS 74 FAIL 0 REVIEW 5 (q1, q2, q8, q12, q14). No rerun needed.",
+    "frozen": "deliver/b 15:15:30: its text layer is identical to my round-3 extraction (only a figure label in b q5 moved). deliver/c has the same sha256 as in round 3 (ba3d08c7...)."
+  },
+  "blind": "Student pages 4, 6 and 7 rendered (review-scratch/confirm-a/r4/) and q7 and q11 solved before the key: r4/BLIND_SOLUTIONS_r4.md. Key pages 12-13 then compared: they agree.",
+  "q7_assessment": {
+    "stem": "Heads A and C; AB = x+4, AD = 2x−1, CB = 2x−3 (cm). Figure 9:7 measured 0.773 against 0.778, AD = AB, DC = CB, no ticks.",
+    "א": "AB = AD (stated heads, from the rule-box definition) -> x = 5. AB = AD = 9, CB = CD = 7, all positive. Correct.",
+    "ב_positivity": "Noa replaces CB = 2x−3 by x−8. x is fixed by AB = AD alone, which uses only the stated heads, so it is still x = 5 and CB = −3 < 0: no such kite. It rests on no unstated assumption, and the key says exactly this.",
+    "ג_feasibility": "BD = 20? In △ABD, BD < AB + AD = 18 by the triangle inequality, which is taught before grade 9 and is in scope. A grade-9 alternative also works: BO = 10 would exceed the hypotenuse CB = 7 of right △COB. The key uses △ABD (18). Correct and calculator-free.",
+    "leaks": "ב prints only Noa's expression. ג prints 20, which is not an earlier answer. No earlier answer is printed later."
+  },
+  "verdict": "PASS",
+  "counts": {"MAJOR": 0, "MINOR": 0},
+  "findings": [],
+  "round3_resolution": [
+    {"id": "R3-01", "status": "resolved", "evidence": "Frozen b q7: equal pair as expressions + given perimeter 52 -> א x=6, RS=16; ב TS rebuilt from the perimeter; ג Ron's 'perimeter 60'. a q7: three side expressions, no perimeter -> א x and all sides; ב positivity of an alternative expression; ג triangle-inequality bound on BD. Only א's 'equal pair gives x' is shared, which is the K08 core; ב and ג have different roles and no shared expressions or numbers (x=5 against x=6; 9/7 against 16/10). c q11 has four expressions, unknown heads, all possible x, then perimeter 54 -> AC and area, then the other x with BD=16, then sketches: a different sequence. Only ג's single 'is this diagonal length possible?' role echoes c q7א / c q11ג / b q14ג / b q19ב. That role is the K08 feasibility genre, here with its own data (9, 7, 20): acceptable, not a copy. No shared expressions (x+4, 2x−1, 2x−3, x−8) in b, c or kite-level-a."},
+    {"id": "R3-02", "status": "resolved", "evidence": "The pupil item is now Noa's expression x−8, which is well-posed because x comes from AB = AD only. The old circular 'Tal set AD = CB' item is gone."},
+    {"id": "R3-03", "status": "resolved", "evidence": "q11א key: 'ב־△AOB ישר הזווית AO² = 4225 − 3600 = 625, כלומר AO = 25 ולא 52.5, ולכן O אינה אמצע AC'. There is no decimal square. The stem is unchanged and my blind solution agrees (AO = 25, CB = 100, perimeter 330)."}
+  ],
+  "checks": {
+    "text_layer": "All 14 pages: no digit-bracket-digit, 40/40 brackets (question numbers only), no Hebrew parenthetical, no ASCII minus in math, 0 of 559 islands start or end with '='. Grade label 'רמה א׳ · כיתה ט׳'.",
+    "layout": "14 pages (student 1-11, key 12-14). q7 sits on page 4 with blank answer rooms; 'בהצלחה!' closes page 11.",
+    "final_duplication": "Only q7 and the q11 key changed in a since round 3. b's text is unchanged since round 3 and c is byte-identical, so the round-3 duplication pass over all 20 questions of a still holds. q7 was re-checked against b, c and kite-level-a above. Earlier adjudications stand (a q4~b q2 genre; a q3~b q3 canonical proof; a q8~b q6 K11; a q16~c q15 K12; a q17~b q11א K12; a q19 vs c q7/c q14 different triples; a q11 vs c q12 two coincident lengths, AB = 65 and OC = 80, through different triangles in a different design)."
+  },
+  "adjudications": {
+    "didactic_D4_reviews": "q1, q2, q8, q12, q14: acceptable (reasons in CONFIRM_a.json); REVIEW is not PASS.",
+    "G79": "honest NOT_APPLICABLE / NOT_RUN on the figkit route (no wspec figures, no g79_spec); not a pass. verify_export re-measured 118 constraints with 0 errors.",
+    "eye_check": "Only EYE_CHECK item 1, the site id for the G9-T99 build alias, is Noam's decision."
+  }
+}

@@ -1,0 +1,2128 @@
+{
+ "schema": "didactic/v1",
+ "package": "G9-T99",
+ "level": "c",
+ "items": {
+  "q1a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך קודקודי הראש",
+    "הערך קודקודי הצד",
+    "הערך האלכסון הראשי",
+    "הערך האלכסון המשני"
+   ],
+   "review_reasons": []
+  },
+  "q1b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "∠BAD = ∠BCD",
+    "הערך שגיאות"
+   ],
+   "review_reasons": []
+  },
+  "q1c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית BAD"
+   ],
+   "review_reasons": []
+  },
+  "q1d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "AM = MC",
+    "AC ⊥ BD",
+    "הערך האם M אמצע BD"
+   ],
+   "review_reasons": []
+  },
+  "q2a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "PL = PN"
+   ],
+   "review_reasons": []
+  },
+  "q2b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך השוואה"
+   ],
+   "review_reasons": []
+  },
+  "q2c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך תנאי",
+    "הערך KLMN"
+   ],
+   "review_reasons": []
+  },
+  "q3a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "∠ADC = ∠ABC",
+    "הערך x",
+    "גודל הזווית BAD",
+    "גודל הזווית BCD",
+    "גודל הזווית ABC"
+   ],
+   "review_reasons": []
+  },
+  "q3b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית ABD",
+    "גודל הזווית CBD"
+   ],
+   "review_reasons": []
+  },
+  "q3c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הכרעה"
+   ],
+   "review_reasons": []
+  },
+  "q3d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית BPC"
+   ],
+   "review_reasons": []
+  },
+  "q4a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך AC"
+   ],
+   "review_reasons": []
+  },
+  "q4b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח ABCD",
+    "היקף ABCD"
+   ],
+   "review_reasons": []
+  },
+  "q4c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך האם ABC ישרה",
+    "הערך שטח בדרך נוספת"
+   ],
+   "review_reasons": []
+  },
+  "q4d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך BH"
+   ],
+   "review_reasons": []
+  },
+  "q5a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "PQ = PS",
+    "RQ = RS",
+    "shape {\"points\": [\"P\", \"Q\", \"R\", \"S\"], \"value\": \"kite\"}",
+    "הערך קודקודי הראש"
+   ],
+   "review_reasons": []
+  },
+  "q5b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הכללה"
+   ],
+   "review_reasons": []
+  },
+  "q5c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך טענה"
+   ],
+   "review_reasons": []
+  },
+  "q6a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך LN",
+    "הערך הצדקת הבנייה"
+   ],
+   "review_reasons": []
+  },
+  "q6b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך ML",
+    "שטח KLMN",
+    "הערך האם KLM ישרה"
+   ],
+   "review_reasons": []
+  },
+  "q6c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך בנייה",
+    "polygon KLMN",
+    "segment KM",
+    "segment LN"
+   ],
+   "review_reasons": []
+  },
+  "q7a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך קיום"
+   ],
+   "review_reasons": []
+  },
+  "q7b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך תחום BD"
+   ],
+   "review_reasons": []
+  },
+  "q7c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך AC",
+    "הערך האם ABC ישרה"
+   ],
+   "review_reasons": []
+  },
+  "q7d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך בנייה",
+    "polygon ABCD",
+    "segment BD",
+    "segment AC"
+   ],
+   "review_reasons": []
+  },
+  "q8a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך נוסחת השטח"
+   ],
+   "review_reasons": []
+  },
+  "q8b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הכללה"
+   ],
+   "review_reasons": []
+  },
+  "q8c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך PR",
+    "היקף PQRS"
+   ],
+   "review_reasons": []
+  },
+  "q8d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך שטחים שווים",
+    "הערך דלתון"
+   ],
+   "review_reasons": []
+  },
+  "q9a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך t",
+    "אורך BD"
+   ],
+   "review_reasons": []
+  },
+  "q9b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח ABCD"
+   ],
+   "review_reasons": []
+  },
+  "q10a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "shape {\"points\": [\"A\", \"B\", \"C\", \"D\"], \"value\": \"rhombus\"}"
+   ],
+   "review_reasons": []
+  },
+  "q10b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "shape {\"points\": [\"A\", \"B\", \"C\", \"D\"], \"value\": \"rhombus\"}"
+   ],
+   "review_reasons": []
+  },
+  "q10c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הכרעה",
+    "הערך דוגמה נגדית"
+   ],
+   "review_reasons": []
+  },
+  "q11a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך x",
+    "הערך קודקודי ראש באפשרות שבה BC=AB",
+    "הערך קודקודי ראש באפשרות שבה BC=CD"
+   ],
+   "review_reasons": []
+  },
+  "q11b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך x",
+    "אורך AC",
+    "שטח ABCD"
+   ],
+   "review_reasons": []
+  },
+  "q11c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הכרעה"
+   ],
+   "review_reasons": []
+  },
+  "q11d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך סקיצות",
+    "polygon ABCD",
+    "segment AC",
+    "segment BD"
+   ],
+   "review_reasons": []
+  },
+  "q12a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "AE = AF",
+    "CE = CF",
+    "shape {\"points\": [\"A\", \"E\", \"C\", \"F\"], \"value\": \"kite\"}",
+    "הערך האלכסון הראשי"
+   ],
+   "review_reasons": []
+  },
+  "q12b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך יחס השטחים"
+   ],
+   "review_reasons": []
+  },
+  "q12c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח ABCD",
+    "אורך OE"
+   ],
+   "review_reasons": []
+  },
+  "q12d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הכרעה"
+   ],
+   "review_reasons": []
+  },
+  "q13a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "shape {\"points\": [\"A\", \"B\", \"C\", \"D\"], \"value\": \"kite\"}",
+    "הערך מספיק"
+   ],
+   "review_reasons": []
+  },
+  "q13b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "CB = CD",
+    "הערך מספיק"
+   ],
+   "review_reasons": []
+  },
+  "q13c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "CB = CD",
+    "הערך מספיק"
+   ],
+   "review_reasons": []
+  },
+  "q13d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך מספיק",
+    "הערך דוגמה נגדית"
+   ],
+   "review_reasons": []
+  },
+  "q14a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך נוסחת השטח"
+   ],
+   "review_reasons": []
+  },
+  "q14b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך תנאי השוויון"
+   ],
+   "review_reasons": []
+  },
+  "q14c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך BD"
+   ],
+   "review_reasons": []
+  },
+  "q14d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך שטח מרבי"
+   ],
+   "review_reasons": []
+  },
+  "q15a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "ML = MN",
+    "shape {\"points\": [\"K\", \"L\", \"M\", \"N\"], \"value\": \"kite\"}"
+   ],
+   "review_reasons": []
+  },
+  "q15b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית KLM",
+    "גודל הזווית KML"
+   ],
+   "review_reasons": []
+  },
+  "q15c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית KLN",
+    "גודל הזווית NLM"
+   ],
+   "review_reasons": []
+  },
+  "q16a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הוכחת הקשר"
+   ],
+   "review_reasons": []
+  },
+  "q16b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך מסקנה"
+   ],
+   "review_reasons": []
+  },
+  "q16c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך דוגמה לזווית ישרה בלבד",
+    "הערך דוגמה לאלכסונים שווים בלבד"
+   ],
+   "review_reasons": []
+  },
+  "q17a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "AE = AB",
+    "PE = PB",
+    "הערך קודקודי הראש"
+   ],
+   "review_reasons": []
+  },
+  "q17b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך AC",
+    "אורך EC"
+   ],
+   "review_reasons": []
+  },
+  "q17c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "∠AEP = 90°",
+    "אורך BP"
+   ],
+   "review_reasons": []
+  },
+  "q17d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח ABPE",
+    "הערך חלק משטח המשולש"
+   ],
+   "review_reasons": []
+  },
+  "q18a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "EB = ED",
+    "shape {\"points\": [\"E\", \"B\", \"C\", \"D\"], \"value\": \"kite\"}",
+    "הערך קודקודי הראש"
+   ],
+   "review_reasons": []
+  },
+  "q18b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית ABC",
+    "גודל הזווית EBC"
+   ],
+   "review_reasons": []
+  },
+  "q18c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "shape {\"points\": [\"E\", \"B\", \"C\", \"D\"], \"value\": \"rhombus\"}"
+   ],
+   "review_reasons": []
+  },
+  "q18d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הכרעה"
+   ],
+   "review_reasons": []
+  },
+  "q19a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך קודקודי הראש"
+   ],
+   "review_reasons": []
+  },
+  "q19b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שיעורי הנקודה M",
+    "point M"
+   ],
+   "review_reasons": []
+  },
+  "q19c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך שטח KLMN",
+    "הערך היקף KLMN"
+   ],
+   "review_reasons": []
+  },
+  "q20a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "AB = AD",
+    "CB = CD",
+    "הערך האלכסון הראשי"
+   ],
+   "review_reasons": []
+  },
+  "q20b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח ABCD"
+   ],
+   "review_reasons": []
+  },
+  "q20c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך PB"
+   ],
+   "review_reasons": []
+  },
+  "q20d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3",
+    "thm.kite_main_diagonal",
+    "frm.area_rhombus_diagonals",
+    "thm.congruence_sas",
+    "thm.congruence_sss",
+    "thm.congruence_asa",
+    "thm.congruent_parts",
+    "thm.isosceles_base_angles",
+    "thm.isosceles_special_lines",
+    "thm.triangle_angle_sum",
+    "thm.quad_angle_sum",
+    "thm.pythagoras",
+    "thm.pythagoras_converse",
+    "frm.area_triangle",
+    "frm.perimeter"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "היקף ABCD"
+   ],
+   "review_reasons": []
+  }
+ }
+}

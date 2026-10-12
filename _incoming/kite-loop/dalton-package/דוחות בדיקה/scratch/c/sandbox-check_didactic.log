@@ -1,0 +1,25 @@
+/Users/noamdoron/worksheet-work/hub-18/tasks/143-packages/work/kite-supplement/G9-KITE/scratch/c/sandbox/out/deliver/c: PASS 78  FAIL 5  REVIEW 9
+  FAIL items: q6a, q6b, q7c, q14b, q16a
+  REVIEW items: q2, q3, q4, q5, q8, q9b, q14, q14a, q15
+    REVIEW D8  q2       the text states ('equal_length', ('KL', 'KN')), which is in none of given / to_prove / to_construct
+    REVIEW D8  q2       the text states ('equal_length', ('LM', 'MN')), which is in none of given / to_prove / to_construct
+    REVIEW D8  q3       the text states ('equal_length', ('AB', 'AD')), which is in none of given / to_prove / to_construct
+    REVIEW D8  q3       the text states ('equal_length', ('BC', 'CD')), which is in none of given / to_prove / to_construct
+    REVIEW D4  q4       q4_head marks ('perpendicular', ('BH', 'CH')), covered only by the given BH ⊥ CH, which the text does not state
+    REVIEW D4  q5       q5_head marks ('perpendicular', ('ET', 'HT')), covered only by the given ET ⊥ HT, which the text does not state
+    FAIL   D12 q6a      noam-ai.json prints the find target's value at q6a.text ('תכננו את הבנייה: הסבירו מדוע מהנתונים נו') -- no stated given of the question carries it there
+    FAIL   D12 q6b      noam-ai.json prints the find target's value at q6b.text ('חשבו את $KL$, את $ML$ ואת שטח הדלתון. הו') -- no stated given of the question carries it there
+    FAIL   D12 q7c      noam-ai.json prints the find target's value at q7c.text ('תמר בחרה כעת שאורך האלכסון המשני יהיה $4') -- no stated given of the question carries it there
+    FAIL   D12 q7c      noam-ai.json prints the find target's value at q7c.text ('תמר בחרה כעת שאורך האלכסון המשני יהיה $4') -- no stated given of the question carries it there
+    REVIEW D4  q8       q8_head marks ('perpendicular', ('VW', 'VX')), covered only by the given VW ⊥ VX, which the text does not state
+    REVIEW D9  q9b      the text asks to construct and declares no to_construct
+    REVIEW D2  q14      q14_head draws the segment KM, which is no side and which the text never mentions (a helper line?)
+    REVIEW D8  q14      the text states ('equal_length', ('AB', 'AD')), which is in none of given / to_prove / to_construct
+    REVIEW D8  q14      the text states ('equal_length', ('BC', 'CD')), which is in none of given / to_prove / to_construct
+    REVIEW D8  q14      the text states ('equal_length', ('KL', 'KN')), which is in none of given / to_prove / to_construct
+    REVIEW D8  q14      the text states ('equal_length', ('LM', 'MN')), which is in none of given / to_prove / to_construct
+    REVIEW D12 q14a     the later item q14b prints the find target's value ('הוכיחו: בכל דלתון שצלעותיו $5$ מ׳ ו־$12$') -- it builds on this item's result; confirm it gives no answer away
+    FAIL   D12 q14b     noam-ai.json prints the find target's value at q14b.text ('הוכיחו: בכל דלתון שצלעותיו $5$ מ׳ ו־$12$') -- no stated given of the question carries it there
+    REVIEW D2  q15      q15_head draws the segment LX, which is no side and which the text never mentions (a helper line?)
+    REVIEW D2  q15      q15_head draws the segment NY, which is no side and which the text never mentions (a helper line?)
+    FAIL   D12 q16a     noam-ai.json prints the find target's value at q16a.text ('הוכיחו ש־$r^2=pq$.') -- no stated given of the question carries it there

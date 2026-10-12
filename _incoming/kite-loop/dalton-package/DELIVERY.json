@@ -1,0 +1,39 @@
+{
+  "package": "G9-KITE",
+  "local_label_not_website_id": true,
+  "build_alias_in_files": "G9-T99",
+  "topic": "דלתון",
+  "grade": 9,
+  "levels": {
+    "a": {
+      "pages_student": 11,
+      "pages_key": 3,
+      "verified_pdf_sha256": "a990978d52ac58bc57687c727c754b7893172b2d80ed7163b3c5b8138534c5bd",
+      "sheet_pdf_sha256": "a990978d52ac58bc57687c727c754b7893172b2d80ed7163b3c5b8138534c5bd",
+      "independent_report": "CONFIRM_a_round4.json",
+      "independent_report_sha256": "065de90d58b82d3470a342f19030d04fcbce3138b45d4d13599fe785e0e9b60d",
+      "דפי תלמיד_sha256": "6a4a923bdfe8af5831a668185f7be9d4b874c35469abc279cc0a979de0dcdbc8",
+      "מפתחות — פרטי_sha256": "cc97304117fef966c9feb5ff456dfe272e76e49770e17ed6e6a1a23345da9446"
+    },
+    "b": {
+      "pages_student": 12,
+      "pages_key": 3,
+      "verified_pdf_sha256": "9657ae9c454eb673a350e79b0e1410717482254501c70d11f0fe81e07bd825d8",
+      "sheet_pdf_sha256": "9657ae9c454eb673a350e79b0e1410717482254501c70d11f0fe81e07bd825d8",
+      "independent_report": "CONFIRM_b_round4.json",
+      "independent_report_sha256": "aa7f9dd6343c4094036643cc2f8e06fc06cf886b2e4dd8fb05adac947c079f20",
+      "דפי תלמיד_sha256": "1485b6c6f6160b1d0ad40ae6c3629e377e2d713ee1bf6ae8a8cb96c73bb6ac6e",
+      "מפתחות — פרטי_sha256": "a82bd53c421fc83779ff6e5b1f1e0973442786d3a19aaf492f0ef02f7ae1c7d8"
+    },
+    "c": {
+      "pages_student": 16,
+      "pages_key": 6,
+      "verified_pdf_sha256": "ba3d08c7c01e8722e71419c6c44e11c9c958b261612bd4913131b6fb5a68a3cd",
+      "sheet_pdf_sha256": "ba3d08c7c01e8722e71419c6c44e11c9c958b261612bd4913131b6fb5a68a3cd",
+      "independent_report": "CONFIRM_c_round3.json",
+      "independent_report_sha256": "fa4960262d0c911b08b8117f1bfcf28589543c0459740d15f86eff62b8edc008",
+      "דפי תלמיד_sha256": "f637991cbf6d9de95a2e5acffff281ffbd7ce4b41129dd280e030c331fad6113",
+      "מפתחות — פרטי_sha256": "949b26899e9d28efeba6b71d41c1f484e1c5b270ad12c06ba2ac5238479cd225"
+    }
+  }
+}

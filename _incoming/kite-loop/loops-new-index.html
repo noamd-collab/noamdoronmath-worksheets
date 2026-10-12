@@ -1,0 +1,1187 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>לולאות ConceptLoop חדשות (10) · נועם דורון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fbfaf5;--ink:#22305a;--navy:#22305a;--teal:#2a7c7a;--teal-dark:#1e605e;
+  --coral:#e5735c;--coral-dark:#a84434;--orange:#ea580c;--gold:#e6a534;--violet:#7c3aed;
+  --green:#2e9d57;--grid-soft:rgba(34,48,90,.065);--shadow-soft:4px 4px 0 rgba(34,48,90,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;padding:0;position:relative;font-family:Assistant,Heebo,Arial,sans-serif;font-size:16px;line-height:1.55;color:var(--ink);-webkit-font-smoothing:antialiased;background-color:var(--paper);background-image:linear-gradient(var(--grid-soft) 1px,transparent 1px),linear-gradient(90deg,var(--grid-soft) 1px,transparent 1px);background-size:32px 32px;background-attachment:fixed;min-height:100vh;overflow-x:clip}
+.site-head{max-width:1240px;margin:0 auto;padding:42px 20px 6px;text-align:center}
+.site-head h1{font-family:'Secular One',Assistant,Arial,sans-serif;font-size:2rem;margin:0 0 6px;color:var(--navy)}
+.site-head p{margin:0;color:var(--navy);opacity:.85}
+.head-note{max-width:1240px;margin:14px auto 0;padding:10px 16px;background:#fdf1d8;border:1.5px solid rgba(34,48,90,.12);border-radius:12px;font-weight:700;text-align:center}
+.loops-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:24px;max-width:1240px;margin:26px auto 0;padding:0 20px 70px}
+figure.old-loop{margin:0}
+.old-loop figcaption{margin-top:8px;text-align:center;font-weight:700;color:var(--navy)}
+.old-loop figcaption code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;background:#eef1f6;border:1px solid rgba(34,48,90,.12);border-radius:6px;padding:2px 8px;margin-inline-end:6px;color:#4a5478;direction:ltr;unicode-bidi:isolate}
+.concept-loop{position:relative;z-index:1;width:100%}
+.concept-loop__card{position:relative;background:#fff;border:1.5px solid rgba(26,43,74,.1);border-radius:16px;box-shadow:var(--shadow-soft);padding:14px 14px 8px}
+.concept-loop__svg{display:block;width:100%;height:auto}
+.concept-loop__toggle{position:absolute;top:10px;inset-inline-start:10px;z-index:2;width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid var(--navy);display:grid;place-items:center;cursor:pointer;padding:0;box-shadow:2px 2px 0 rgba(34,48,90,.08)}
+.concept-loop__toggle svg{width:12px;height:12px;fill:var(--navy)}
+.concept-loop__toggle .ic-play{display:none}
+.concept-loop__toggle.is-paused .ic-pause{display:none}
+.concept-loop__toggle.is-paused .ic-play{display:block}
+.concept-loop__toggle[aria-disabled="true"]{opacity:.35;cursor:default}
+.cl-steps{display:flex;align-items:center;gap:7px;justify-content:center;margin:8px 2px 0}
+.cl-steps__btn{width:27px;height:27px;border-radius:50%;border:1.5px solid var(--navy);background:#fff;cursor:pointer;font-size:16px;line-height:1;color:var(--navy);display:grid;place-items:center;padding:0}
+.cl-steps__btn:hover{background:#f3f4f6}
+.cl-steps__dot{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--navy);background:#fff;cursor:pointer;padding:0}
+.cl-steps__dot.on{background:var(--teal);border-color:var(--teal)}
+.concept-loop__formula{margin:10px 4px 0;min-height:1.5em;text-align:center;font-size:1.12rem;font-weight:700;color:var(--navy);direction:rtl}
+.concept-loop__formula [data-fx]{display:inline-block;margin:0 2px}
+.concept-loop__formula .check{color:var(--green)}
+.concept-loop__caption{margin:2px 4px 6px;min-height:1.4em;text-align:center;font-weight:700;color:var(--navy)}
+.concept-loop [data-fx]{opacity:0}
+.concept-loop .cl-line{stroke:var(--navy);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.concept-loop .cl-line-thin{stroke:var(--navy);stroke-width:1.5;fill:none}
+.concept-loop .cl-dash{stroke:var(--navy);stroke-width:1.5;stroke-dasharray:5 5;fill:none}
+.concept-loop .cl-dash-strong{stroke:var(--navy);stroke-width:2;stroke-dasharray:6 5;fill:none}
+.concept-loop [pathLength="1"]{stroke-dasharray:1}
+.concept-loop .cl-frame{fill:#f3f4f6;stroke:#d1d5db;stroke-width:1.5}
+.concept-loop .cl-rail{stroke:#9ca3af;stroke-width:1.5;stroke-dasharray:7 6;fill:none}
+.concept-loop .cl-big{font-size:20px;font-weight:800;fill:var(--navy)}
+.concept-loop .cl-fill-t{fill:#2a7c7a22}
+.concept-loop .cl-stroke-a{stroke:var(--teal);stroke-width:2.5;fill:none;stroke-linecap:round}
+.concept-loop .cl-stroke-b{stroke:var(--violet);stroke-width:2.5;fill:none;stroke-linecap:round}
+.concept-loop .cl-stroke-c{stroke:var(--orange);stroke-width:2.5;fill:none;stroke-linecap:round}
+.concept-loop .cl-t{font-family:Assistant,Arial,sans-serif;font-size:17px;font-weight:600;fill:var(--navy)}
+.concept-loop .cl-t-s{font-family:Assistant,Arial,sans-serif;font-size:15.5px;font-weight:600;fill:var(--navy)}
+.concept-loop .cl-num{direction:ltr;unicode-bidi:isolate}
+.concept-loop .cl-chip{fill:#fff;stroke:var(--navy);stroke-width:1.5}
+.concept-loop .cl-ltr{direction:ltr;unicode-bidi:isolate}
+.site-foot{max-width:1240px;margin:0 auto;padding:0 20px 46px;text-align:center;color:#5a6588;font-size:.9rem}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <h1>לולאות ConceptLoop חדשות</h1>
+  <p>10 סרטים חדשים לכיתות ז׳–ט׳ · אותו סגנון, אותם גוונים · מהדורה מתוקנת v3</p>
+</header>
+<div class="head-note">תצוגה מקדימה מקומית בלבד — לא מקושרת מהאתר החי. ממתין לאישור נועם.</div>
+
+<main class="loops-grid">
+
+<!-- 1 · roots -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="roots">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה: ריבוע אחד שצלעו גדלה 2, 3, 4 ו־5. בכל שלב נספרות המשבצות: 4, 9, 16, 25. אורך הצלע הוא השורש הריבועי של השטח. אם השטח 20, הצלע היא בין 4 ל־5, כי 16 קטן מ־20 קטן מ־25.">
+      <text class="cl-big" x="240" y="40" text-anchor="middle">מה אורך צלע הריבוע?</text>
+      <g data-el="cells"></g>
+      <rect data-el="b2" x="344" y="194" width="56" height="56" fill="none" class="cl-line" pathLength="1"/>
+      <rect data-el="b3" x="316" y="166" width="84" height="84" fill="none" class="cl-line" pathLength="1"/>
+      <rect data-el="b4" x="288" y="138" width="112" height="112" fill="none" class="cl-line" pathLength="1"/>
+      <rect data-el="b5" x="260" y="110" width="140" height="140" fill="none" class="cl-line" pathLength="1"/>
+      <text data-el="a2" class="cl-big cl-num" x="372" y="228" text-anchor="middle">4</text>
+      <text data-el="a3" class="cl-big cl-num" x="358" y="214" text-anchor="middle">9</text>
+      <text data-el="a4" class="cl-big cl-num" x="344" y="200" text-anchor="middle">16</text>
+      <text data-el="a5" class="cl-big cl-num" x="330" y="186" text-anchor="middle">25</text>
+      <g data-el="c2"><rect class="cl-chip" x="36" y="64" width="92" height="26" rx="9"/><text class="cl-t-s cl-num" x="82" y="82" text-anchor="middle" style="font-weight:800">√4 = 2</text></g>
+      <g data-el="c3"><rect class="cl-chip" x="140" y="64" width="92" height="26" rx="9"/><text class="cl-t-s cl-num" x="186" y="82" text-anchor="middle" style="font-weight:800">√9 = 3</text></g>
+      <g data-el="c4"><rect class="cl-chip" x="36" y="98" width="92" height="26" rx="9"/><text class="cl-t-s cl-num" x="82" y="116" text-anchor="middle" style="font-weight:800">√16 = 4</text></g>
+      <g data-el="c5"><rect class="cl-chip" x="140" y="98" width="92" height="26" rx="9"/><text class="cl-t-s cl-num" x="186" y="116" text-anchor="middle" style="font-weight:800">√25 = 5</text></g>
+      <line data-el="brk" x1="260" y1="250" x2="400" y2="250" stroke="var(--teal)" stroke-width="6" stroke-linecap="round" pathLength="1"/>
+      <g data-el="slabel"><rect class="cl-chip" x="288" y="262" width="84" height="26" rx="9"/><text class="cl-t-s" x="330" y="280" text-anchor="middle" style="font-weight:800">צלע = <tspan class="cl-num">5</tspan></text></g>
+      <g data-el="msg"><rect x="76" y="140" width="150" height="28" rx="10" fill="#2a7c7a1f" stroke="var(--teal)" stroke-width="1.5"/><text class="cl-t-s" x="151" y="159" text-anchor="middle" style="font-weight:800;fill:var(--teal-dark)">הצלע = השורש!</text></g>
+      <path data-el="arrow" d="M228 166 C 252 190, 260 220, 262 246" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" pathLength="1"/>
+      <path data-el="arrowhead" d="M262 246 l -8 -4 M262 246 l -8 4" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round"/>
+      <g data-el="rq"><rect class="cl-chip" x="66" y="140" width="172" height="28" rx="10"/><text class="cl-t-s" x="152" y="159" text-anchor="middle" style="font-weight:800">שטח 20 — בין אילו צלעות?</text></g>
+      <g data-el="ans"><rect x="86" y="178" width="132" height="26" rx="9" fill="#2e9d5722" stroke="var(--green)" stroke-width="1.5"/><text class="cl-t-s" x="152" y="196" text-anchor="middle" style="font-weight:800;fill:var(--green)">בין 4 ל־5</text></g>
+      <text data-el="why" class="cl-t-s cl-num" x="152" y="226" text-anchor="middle">16 &lt; 20 &lt; 25</text>
+      <rect data-el="pb4" x="288" y="138" width="112" height="112" fill="none" stroke="var(--gold)" stroke-width="3.5"/>
+      <rect data-el="pb5" x="260" y="110" width="140" height="140" fill="none" stroke="var(--gold)" stroke-width="3.5"/>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx class="cl-num">√4=2 · √9=3 · √16=4 · √25=5</span> <span data-fx>הצלע = השורש</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">השורש הריבועי של השטח = אורך צלע הריבוע</p>
+  </div>
+</div>
+<figcaption><code>roots</code>ז׳–ט׳ · שורש ריבועי = צלע הריבוע</figcaption>
+</figure>
+
+<!-- 2 · ineq-flip -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="ineq-flip">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה בשני חלקים. חלק ראשון: על ישר המספרים מסומנים 2 ו־6, ו־2 קטן מ־6. כופלים שניהם במינוס 1 — הנקודות מתהפכות במראה סביב 0 למינוס 2 ומינוס 6, והסדר מתהפך: מינוס 2 גדול ממינוס 6. חלק שני: פותרים מינוס 2x קטן מ־6. מחלקים את שני האגפים במינוס 2 — והסימן מתהפך לגדול מ. הפתרון: x גדול ממינוס 3. בדיקה: x שווה 0 מקיים 0 קטן מ־6.">
+      <text class="cl-big" x="240" y="40" text-anchor="middle">למה הסימן מתהפך?</text>
+      <g data-el="axis">
+        <line class="cl-line" x1="40" y1="200" x2="440" y2="200" pathLength="1"/>
+        <path class="cl-line" d="M440 200 l -9 -4 M440 200 l -9 4" pathLength="1"/>
+        <g class="cl-t-s cl-num" text-anchor="middle">
+          <text x="90" y="222">−6</text><text x="140" y="222">−4</text><text x="190" y="222">−2</text><text x="240" y="222">0</text><text x="290" y="222">2</text><text x="340" y="222">4</text><text x="390" y="222">6</text>
+        </g>
+        <g class="cl-line-thin">
+          <line x1="90" y1="195" x2="90" y2="205"/><line x1="140" y1="195" x2="140" y2="205"/><line x1="190" y1="195" x2="190" y2="205"/><line x1="240" y1="195" x2="240" y2="205"/><line x1="290" y1="195" x2="290" y2="205"/><line x1="340" y1="195" x2="340" y2="205"/><line x1="390" y1="195" x2="390" y2="205"/>
+        </g>
+      </g>
+      <g data-el="mg2"><circle cx="290" cy="200" r="5.5" fill="var(--teal)" stroke="#fff" stroke-width="1.5"/><text data-el="lb2" class="cl-t-s cl-num" x="290" y="176" text-anchor="middle" style="font-weight:800">2</text></g>
+      <g data-el="mg6"><circle cx="390" cy="200" r="5.5" fill="var(--orange)" stroke="#fff" stroke-width="1.5"/><text data-el="lb6" class="cl-t-s cl-num" x="390" y="176" text-anchor="middle" style="font-weight:800">6</text></g>
+      <g data-el="chipA"><rect x="300" y="128" width="80" height="26" rx="9" class="cl-chip"/><text class="cl-t-s cl-num" x="340" y="146" text-anchor="middle" style="font-weight:800">2 &lt; 6</text></g>
+      <g data-el="badge"><rect x="300" y="88" width="80" height="26" rx="9" fill="var(--gold)" opacity=".25"/><text class="cl-t-s cl-num" x="340" y="106" text-anchor="middle" style="font-weight:800">× (−1)</text><text class="cl-t-s" x="340" y="76" text-anchor="middle">כופלים את שניהם במינוס</text></g>
+      <g data-el="chipB"><rect x="100" y="128" width="98" height="26" rx="9" fill="#2e9d5722" stroke="var(--green)" stroke-width="1.5"/><text class="cl-t-s cl-num" x="149" y="146" text-anchor="middle" style="font-weight:800;fill:var(--green)">−2 &gt; −6</text></g>
+      <text data-el="exprL" class="cl-big cl-num" x="214" y="92" text-anchor="end" style="font-size:26px">−2x</text>
+      <text data-el="fracL" class="cl-big cl-num" x="214" y="92" text-anchor="end" style="font-size:21px">−2x : (−2)</text>
+      <text data-el="simpL" class="cl-big cl-num" x="214" y="92" text-anchor="end" style="font-size:26px">x</text>
+      <g data-el="flip" transform="translate(250 84)"><text class="cl-big cl-num" x="0" y="0" text-anchor="middle" style="font-size:26px;dominant-baseline:central">&lt;</text></g>
+      <text data-el="exprR" class="cl-big cl-num" x="286" y="92" text-anchor="start" style="font-size:26px">6</text>
+      <text data-el="fracR" class="cl-big cl-num" x="286" y="92" text-anchor="start" style="font-size:21px">6 : (−2)</text>
+      <text data-el="simpR" class="cl-big cl-num" x="286" y="92" text-anchor="start" style="font-size:26px">−3</text>
+      <g data-el="div-badge"><rect x="52" y="112" width="110" height="44" rx="9" fill="var(--gold)" opacity=".25"/><text class="cl-t-s" x="107" y="130" text-anchor="middle" style="font-weight:800">חלוקה ב־<tspan class="cl-num">(−2)</tspan></text><text class="cl-t-s" x="107" y="148" text-anchor="middle">בשני האגפים!</text></g>
+      <g data-el="res"><rect x="192" y="116" width="96" height="28" rx="10" fill="#2e9d5722" stroke="var(--green)" stroke-width="1.5"/><text class="cl-t-s cl-num" x="240" y="135" text-anchor="middle" style="font-weight:800;fill:var(--green);font-size:17px">x &gt; −3</text></g>
+      <g data-el="wrong">
+        <rect x="90" y="194" width="100" height="12" fill="var(--coral)" opacity=".3"/>
+        <path d="M90 200 l 10 -5 M90 200 l 10 5" stroke="var(--coral)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <text class="cl-t-s" x="140" y="184" text-anchor="middle" style="fill:var(--coral-dark)">שמאלה?</text>
+      </g>
+      <g data-el="right">
+        <rect x="169" y="194" width="261" height="12" fill="var(--teal)" opacity=".28"/>
+        <path d="M430 200 l -10 -5 M430 200 l -10 5" stroke="var(--teal)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <text class="cl-t-s" x="300" y="184" text-anchor="middle" style="fill:var(--teal-dark);font-weight:800">מימינה! ✓</text>
+      </g>
+      <circle data-el="dot" cx="165" cy="200" r="5.5" fill="#fff" stroke="var(--navy)" stroke-width="2.5"/>
+      <text data-el="dot-lbl" class="cl-t-s cl-num" x="165" y="244" text-anchor="middle" style="font-weight:800">−3</text>
+      <g data-el="chk"><rect class="cl-chip" x="300" y="240" width="150" height="26" rx="9"/><text class="cl-t-s" x="375" y="258" text-anchor="middle">בדיקה: <tspan class="cl-num" style="font-weight:800">x=0: 0 &lt; 6 ✓</tspan></text></g>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx class="cl-num">−2x &lt; 6</span> <span data-fx>חלוקה בשלילי הופכת את הסימן</span> <span data-fx class="cl-num" style="color:var(--green)">x &gt; −3</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">כפל ב־מינוס ממראה את ישר המספרים — והסדר מתהפך</p>
+  </div>
+</div>
+<figcaption><code>ineq-flip</code>ח׳ · אי־שוויונות — היפוך הסימן</figcaption>
+</figure>
+
+<!-- 3 · pow-pair -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="pow-pair">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה: הביטוי א בחזקת 2 שווה לא בחזקת 2 כפול ב בחזקת 2. מראים קודם חיזוי מספרי: 2 כפול 3 בחזקת 2 שווה 36. אחר כך פותחים לארבעה גורמים, מחליפים בחוק החילוף כך שכל גורם נפגש עם עצמו, ומקבלים א בחזקת 2 כפול ב בחזקת 2. מאמתים: 2 בחזקת 2 כפול 3 בחזקת 2 שווה 4 כפול 9 שווה 36.">
+      <text class="cl-big" x="240" y="40" text-anchor="middle">כמה שווה <tspan class="cl-num">(a · b)²</tspan>?</text>
+      <text data-el="open1" class="cl-big cl-num" x="240" y="86" text-anchor="middle" style="font-size:29px">(a · b)²</text>
+      <text data-el="open2" class="cl-big cl-num" x="220" y="86" text-anchor="middle" style="font-size:26px">(a · b) · (a · b)</text>
+      <g data-el="pred"><rect class="cl-chip" x="346" y="64" width="118" height="28" rx="10"/><text class="cl-t-s cl-num" x="405" y="83" text-anchor="middle" style="font-weight:800">(2 · 3)² = 36</text><text class="cl-t-s" x="405" y="56" text-anchor="middle">נסו לנחש:</text></g>
+      <g data-el="tiles">
+        <g data-el="tile1"><rect x="121" y="112" width="54" height="54" rx="12" fill="#1e88e561" stroke="var(--navy)" stroke-width="1.5"/><text class="cl-t cl-num" x="148" y="147" text-anchor="middle" style="font-size:25px;font-weight:800">a</text></g>
+        <g data-el="tile2"><rect x="189" y="112" width="54" height="54" rx="12" fill="#7c3aed52" stroke="var(--navy)" stroke-width="1.5"/><text class="cl-t cl-num" x="216" y="147" text-anchor="middle" style="font-size:25px;font-weight:800">b</text></g>
+        <g data-el="tile3"><rect x="257" y="112" width="54" height="54" rx="12" fill="#1e88e561" stroke="var(--navy)" stroke-width="1.5"/><text class="cl-t cl-num" x="284" y="147" text-anchor="middle" style="font-size:25px;font-weight:800">a</text></g>
+        <g data-el="tile4"><rect x="325" y="112" width="54" height="54" rx="12" fill="#7c3aed52" stroke="var(--navy)" stroke-width="1.5"/><text class="cl-t cl-num" x="352" y="147" text-anchor="middle" style="font-size:25px;font-weight:800">b</text></g>
+        <text data-el="d1" class="cl-t cl-num" x="182" y="146" text-anchor="middle" style="font-weight:800">·</text>
+        <text data-el="d2" class="cl-t cl-num" x="250" y="146" text-anchor="middle" style="font-weight:800">·</text>
+        <text data-el="d3" class="cl-t cl-num" x="318" y="146" text-anchor="middle" style="font-weight:800">·</text>
+      </g>
+      <text data-el="swap-lbl" class="cl-t-s" x="240" y="80" text-anchor="middle" style="fill:var(--gold);font-weight:800">חוק החילוף: כל אחד נפגש עם עצמו</text>
+      <path data-el="arc1" d="M216 104 C 232 82, 268 82, 284 104" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" pathLength="1"/>
+      <path data-el="arc2" d="M216 174 C 232 196, 268 196, 284 174" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" pathLength="1"/>
+      <text data-el="order-lbl" class="cl-t cl-num" x="240" y="206" text-anchor="middle" style="font-size:16px;font-weight:700;fill:var(--teal-dark)">a · b · a · b &nbsp;⟶&nbsp; a · a · b · b</text>
+      <g data-el="pairhl">
+        <rect x="114" y="104" width="136" height="70" rx="14" fill="#1e88e514" stroke="var(--teal)" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <rect x="250" y="104" width="136" height="70" rx="14" fill="#7c3aed12" stroke="var(--violet)" stroke-width="1.5" stroke-dasharray="6 5"/>
+      </g>
+      <g data-el="merged">
+        <g data-el="ma"><rect x="147" y="112" width="70" height="70" rx="14" fill="#1e88e561" stroke="var(--navy)" stroke-width="2"/><text class="cl-t cl-num" x="182" y="157" text-anchor="middle" style="font-size:28px;font-weight:800">a²</text></g>
+        <text data-el="mdot" class="cl-t cl-num" x="240" y="155" text-anchor="middle" style="font-weight:800">·</text>
+        <g data-el="mb"><rect x="283" y="112" width="70" height="70" rx="14" fill="#7c3aed52" stroke="var(--navy)" stroke-width="2"/><text class="cl-t cl-num" x="318" y="157" text-anchor="middle" style="font-size:28px;font-weight:800">b²</text></g>
+      </g>
+      <g data-el="proof">
+        <text class="cl-t cl-num" x="240" y="250" text-anchor="middle" style="font-weight:700;font-size:18px">2² · 3² = 4 · 9 = 36 ✓</text>
+        <text class="cl-t-s" x="240" y="274" text-anchor="middle">אותו מספר שניחשנו!</text>
+      </g>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx class="cl-num">(a·b)² = a·a·b·b</span> <span data-fx class="cl-num">= a² · b²</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">חילוף + אסוציאטיביות: כל גורם נפגש עם עצמו</p>
+  </div>
+</div>
+<figcaption><code>pow-pair</code>ז׳–ט׳ · חוק חזקות של כפול</figcaption>
+</figure>
+
+<!-- 4 · cone-slices -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="cone-slices">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה: חרוט נחתך שלושה חיתוכים. חיתוך אופקי נותן עיגול, חיתוך אלכסוני נותן אליפסה, וחיתוך אנכי דרך הקודקוד נותן משולש שבסיסו קוטר הבסיס. כל צורה מוצגת בתצוגה ישירה: העיגול מוצג מלמעלה כעיגול אמיתי.">
+      <text class="cl-big" x="240" y="40" text-anchor="middle">אילו צורות מסתתרות בחרוט?</text>
+      <g data-el="cone">
+        <path data-el="cone-fill" d="M150 70 L65 235 A 85 24 0 0 0 235 235 Z" fill="#ea580c14"/>
+        <line data-el="s1" class="cl-line" x1="150" y1="70" x2="65" y2="235" pathLength="1"/>
+        <line data-el="s2" class="cl-line" x1="150" y1="70" x2="235" y2="235" pathLength="1"/>
+        <path data-el="base-front" class="cl-line" d="M65 235 A 85 24 0 0 0 235 235" pathLength="1"/>
+        <path data-el="base-back" class="cl-dash" d="M65 235 A 85 24 0 0 1 235 235" pathLength="1"/>
+        <circle data-el="apex-dot" cx="150" cy="70" r="4" fill="var(--teal)" stroke="#fff" stroke-width="2"/>
+      </g>
+      <g data-el="plane1">
+        <line class="cl-dash-strong" x1="86" y1="190" x2="214" y2="190" pathLength="1"/>
+        <ellipse data-el="sec1" cx="150" cy="190" rx="62" ry="17" fill="#2a7c7a3d" stroke="var(--teal)" stroke-width="2.5"/>
+      </g>
+      <g data-el="plane2">
+        <line class="cl-dash-strong" x1="77.9" y1="210" x2="191.2" y2="150" pathLength="1"/>
+        <ellipse data-el="sec2" cx="134.6" cy="180" rx="64" ry="20" fill="#7c3aed2e" stroke="var(--violet)" stroke-width="2.5" transform="rotate(-27.9 134.6 180)"/>
+      </g>
+      <g data-el="plane3">
+        <line class="cl-dash-strong" x1="150" y1="235" x2="150" y2="70" pathLength="1"/>
+        <path data-el="sec3" d="M150 70 L65 235 L235 235 Z" fill="#e6a53440" stroke="var(--gold)" stroke-width="2.5"/>
+      </g>
+      <g data-el="fly1"><circle r="15" fill="#2a7c7a3d" stroke="var(--teal)" stroke-width="2.5"/></g>
+      <g data-el="fly2"><ellipse rx="40" ry="16" fill="#7c3aed2e" stroke="var(--violet)" stroke-width="2" transform="rotate(-27.9)"/></g>
+      <g data-el="fly3"><path d="M0 -22 L-30 16 L30 16 Z" fill="#e6a53440" stroke="var(--gold)" stroke-width="2"/></g>
+      <g data-el="shelf1"><rect class="cl-chip" x="330" y="72" width="96" height="26" rx="9"/><text class="cl-t-s" x="378" y="90" text-anchor="middle" style="font-weight:800">עיגול</text></g>
+      <g data-el="shelf2"><rect class="cl-chip" x="322" y="152" width="112" height="26" rx="9"/><text class="cl-t-s" x="378" y="170" text-anchor="middle" style="font-weight:800">אליפסה</text></g>
+      <g data-el="shelf3"><rect class="cl-chip" x="322" y="232" width="112" height="26" rx="9"/><text class="cl-t-s" x="378" y="250" text-anchor="middle" style="font-weight:800">משולש</text></g>
+      <text data-el="cut1" class="cl-t-s cl-ltr" x="44" y="180" text-anchor="start" style="fill:var(--teal-dark);font-weight:800">חיתוך אופקי</text>
+      <text data-el="cut2" class="cl-t-s cl-ltr" x="28" y="226" text-anchor="start" style="fill:var(--teal-dark);font-weight:800">חיתוך אלכסוני</text>
+      <text data-el="cut3" class="cl-t-s cl-ltr" x="168" y="62" text-anchor="start" style="fill:var(--teal-dark);font-weight:800">דרך הקודקוד</text>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx>עיגול</span> <span data-fx>· אליפסה</span> <span data-fx>· משולש</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">כל חיתוך חושף צורה אחרת — העיגול מוצג מלמעלה</p>
+  </div>
+</div>
+<figcaption><code>cone-slices</code>ז׳–ט׳ · חתכי חרוט</figcaption>
+</figure>
+
+<!-- 5 · sys-inter -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="sys-inter">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה: שתי משוואות בשני נעלמים. המשוואה y שווה x ועוד 1 היא הישר הטורקיז, והמשוואה y שווה 2x פחות 1 היא הישר הכתום. שני הישרים נפגשים בנקודה 2 פשוט 3, וזה הפתרון של המערכת. בדיקה בהצבה: 3 שווה 2 ועוד 1, וגם 3 שווה 2 כפול 2 פחות 1.">
+      <text class="cl-big" x="240" y="40" text-anchor="middle">איפה שני הישרים נפגשים?</text>
+      <g data-el="axes">
+        <line class="cl-line" x1="50" y1="240" x2="420" y2="240" pathLength="1"/>
+        <line class="cl-line" x1="90" y1="280" x2="90" y2="46" pathLength="1"/>
+        <path class="cl-line" d="M420 240 l -9 -4 M420 240 l -9 4 M90 46 l -4 9 M90 46 l 4 9" pathLength="1"/>
+        <g class="cl-t-s cl-num" text-anchor="middle">
+          <text x="122" y="260">1</text><text x="154" y="260">2</text><text x="186" y="260">3</text><text x="218" y="260">4</text><text x="250" y="260">5</text>
+        </g>
+        <g class="cl-t-s cl-num" text-anchor="end">
+          <text x="80" y="213">1</text><text x="80" y="181">2</text><text x="80" y="149">3</text>
+        </g>
+        <g class="cl-line-thin">
+          <line x1="282" y1="237" x2="282" y2="243"/><line x1="314" y1="237" x2="314" y2="243"/><line x1="346" y1="237" x2="346" y2="243"/><line x1="378" y1="237" x2="378" y2="243"/><line x1="410" y1="237" x2="410" y2="243"/>
+          <line x1="87" y1="208" x2="93" y2="208"/><line x1="87" y1="176" x2="93" y2="176"/><line x1="87" y1="144" x2="93" y2="144"/><line x1="87" y1="112" x2="93" y2="112"/><line x1="87" y1="80" x2="93" y2="80"/>
+        </g>
+        <text class="cl-t-s cl-num" x="428" y="262">x</text>
+        <text class="cl-t-s cl-num" x="90" y="36">y</text>
+      </g>
+      <g data-el="chip1"><rect x="104" y="58" width="96" height="26" rx="9" fill="#2a7c7a22" stroke="var(--teal)" stroke-width="1.5"/><text class="cl-t-s cl-num" x="152" y="76" text-anchor="middle" style="font-weight:800;fill:var(--teal-dark)">y = x + 1</text></g>
+      <g data-el="chip2"><rect x="210" y="58" width="106" height="26" rx="9" fill="#ea580c1f" stroke="var(--orange)" stroke-width="1.5"/><text class="cl-t-s cl-num" x="263" y="76" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">y = 2x − 1</text></g>
+      <g data-el="pts1" fill="var(--teal)" stroke="#fff" stroke-width="1.5">
+        <circle data-el="p11" cx="90" cy="208" r="4"/><circle data-el="p12" cx="122" cy="176" r="4"/><circle data-el="p13" cx="154" cy="144" r="4"/>
+      </g>
+      <g data-el="pts2" fill="var(--orange)" stroke="#fff" stroke-width="1.5">
+        <circle data-el="p21" cx="90" cy="272" r="4"/><circle data-el="p22" cx="122" cy="208" r="4"/><circle data-el="p23" cx="154" cy="144" r="4"/>
+      </g>
+      <line data-el="line1" x1="61.2" y1="236.8" x2="246.8" y2="51.2" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" pathLength="1"/>
+      <line data-el="line2" x1="83.6" y1="284.8" x2="198.8" y2="54.4" stroke="var(--orange)" stroke-width="2.5" stroke-linecap="round" pathLength="1"/>
+      <line data-el="gv" class="cl-dash" x1="154" y1="144" x2="154" y2="240" pathLength="1"/>
+      <line data-el="gh" class="cl-dash" x1="154" y1="144" x2="90" y2="144" pathLength="1"/>
+      <circle data-el="ring" cx="154" cy="144" r="8" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
+      <g data-el="star"><circle cx="154" cy="144" r="6" fill="var(--gold)" stroke="#fff" stroke-width="2"/></g>
+      <g data-el="sol"><rect class="cl-chip" x="196" y="120" width="76" height="28" rx="9"/><text class="cl-t-s cl-num" x="234" y="139" text-anchor="middle" style="font-weight:800;font-size:17px">(2 , 3)</text></g>
+      <g data-el="sub1"><rect class="cl-chip" x="316" y="120" width="128" height="26" rx="9"/><text class="cl-t-s cl-num" x="380" y="138" text-anchor="middle" style="font-weight:800;fill:var(--teal-dark)">3 = 2 + 1 ✓</text></g>
+      <g data-el="sub2"><rect class="cl-chip" x="316" y="152" width="128" height="26" rx="9"/><text class="cl-t-s cl-num" x="380" y="170" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">3 = 2·2 − 1 ✓</text></g>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx class="cl-num">y = x + 1</span> <span data-fx class="cl-num">y = 2x − 1</span> <span data-fx class="cl-num" style="color:var(--teal-dark)">(2, 3)</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">כל משוואה היא ישר — הפתרון הוא נקודת המפגש</p>
+  </div>
+</div>
+<figcaption><code>sys-inter</code>ט׳ · מערכות משוואות</figcaption>
+</figure>
+
+<!-- 6 · median-area -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="median-area">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה: משולש לא סימטרי A B C. תיכון אחד יוצא מהקודקוד B אל אמצע הצלע A C. התיכון מחלק את המשולש לשני משולשים בעלי שטח שווה, כי הבסיסים שווים והגובה מהקודקוד ב אל הישר א ג משותף לשניהם. שטח כל אחד הוא בסיס כפול גובה חלקי 2.">
+      <text class="cl-big" x="240" y="40" text-anchor="middle">מה עושה תיכון אחד?</text>
+      <path data-el="half1" d="M70 255 L190 55 L235 245 Z" fill="#2a7c7a26"/>
+      <path data-el="half2" d="M190 55 L400 235 L235 245 Z" fill="#ea580c26"/>
+      <path data-el="tri" class="cl-line" d="M70 255 L190 55 L400 235 Z" pathLength="1"/>
+      <g class="cl-t" text-anchor="middle">
+        <text data-el="vA" class="cl-num" x="56" y="266">A</text><text data-el="vB" class="cl-num" x="170" y="70" text-anchor="end">B</text><text data-el="vC" class="cl-num" x="414" y="244">C</text>
+      </g>
+      <circle data-el="mid" cx="235" cy="245" r="5" fill="var(--gold)" stroke="#fff" stroke-width="1.5"/>
+      <g data-el="ticks" stroke="var(--teal-dark)" stroke-width="2.5" stroke-linecap="round">
+        <line x1="148" y1="244" x2="148" y2="254"/><line x1="154" y1="243" x2="154" y2="253"/>
+        <line x1="313" y1="230" x2="313" y2="240"/><line x1="319" y1="229" x2="319" y2="239"/>
+      </g>
+      <line data-el="med" x1="190" y1="55" x2="235" y2="245" stroke="var(--teal)" stroke-width="3" stroke-linecap="round" pathLength="1"/>
+      <line data-el="ht" class="cl-dash" x1="190" y1="55" x2="201.6" y2="247" pathLength="1"/>
+      <rect data-el="ht-sq" x="194" y="236" width="9" height="9" fill="none" stroke="var(--navy)" stroke-width="1.5"/>
+      <g data-el="hlbl"><rect class="cl-chip" x="208" y="140" width="112" height="26" rx="9"/><text class="cl-t-s" x="264" y="158" text-anchor="middle" style="font-weight:800">אותו גובה ✓</text></g>
+            <g data-el="eq1"><rect class="cl-chip" x="100" y="196" width="106" height="26" rx="9"/><text class="cl-t-s" x="153" y="214" text-anchor="middle" style="font-weight:800;fill:var(--teal-dark)">שטח שווה ✓</text></g>
+      <g data-el="eq2"><rect class="cl-chip" x="258" y="196" width="106" height="26" rx="9"/><text class="cl-t-s" x="311" y="214" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">שטח שווה ✓</text></g>
+      <text data-el="base-lbl" class="cl-t-s" x="235" y="284" text-anchor="middle" style="font-weight:800">בסיסים שווים (אמצע!) · גובה משותף</text>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx>תיכון: מקודקוד ← אמצע הצלע שממול</span> <span data-fx>בסיסים שווים · גובה משותף</span> <span data-fx>שטח = (בסיס · גובה) : 2</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">תיכון אחד מחלק את המשולש לשני שטחים שווים</p>
+  </div>
+</div>
+<figcaption><code>median-area</code>ז׳–ט׳ · תיכון מחלק לשני שטחים שווים</figcaption>
+</figure>
+
+<!-- 7 · prism-layers -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="prism-layers">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה: מנסרה שבסיסה משולש ישר זווית שצלעותיו 4 ו־3, כלומר שטח הבסיס הוא 4 כפול 3 חלוקי 2, שווה 6. בונים את הנפח שכבה מעל שכבה: כל שכבה היא עוד עותק של הבסיס, 6 יחידות. הספירה המצטברת: 6, 12, 18, 24, 30. הנפח שווה שטח הבסיס כפול הגובה: 6 כפול 5 שווה 30.">
+      <text class="cl-big" x="240" y="40" text-anchor="middle">איך בונים נפח של מנסרה?</text>
+      <g data-el="layers"></g>
+      <g data-el="base-lbls">
+        <text class="cl-t-s cl-num" x="248" y="268" text-anchor="middle" style="font-weight:800">4</text>
+        <text class="cl-t-s" x="152" y="212" text-anchor="end">3</text>
+        <text class="cl-t-s" x="196" y="290" text-anchor="middle">שטח בסיס = <tspan class="cl-num" style="font-weight:800">(4 × 3) : 2 = 6</tspan></text>
+      </g>
+      <g data-el="hbrace">
+        <line x1="266" y1="250" x2="266" y2="165" stroke="var(--orange)" stroke-width="2.5" stroke-linecap="round" pathLength="1"/>
+        <line x1="260" y1="250" x2="272" y2="250" stroke="var(--orange)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="260" y1="165" x2="272" y2="165" stroke="var(--orange)" stroke-width="2.5" stroke-linecap="round"/>
+        <rect class="cl-chip" x="278" y="192" width="90" height="26" rx="9"/><text class="cl-t-s" x="323" y="210" text-anchor="middle" style="font-weight:800">גובה = <tspan class="cl-num">5</tspan></text>
+      </g>
+      <g data-el="count1"><rect class="cl-chip" x="330" y="62" width="128" height="26" rx="9"/><text data-el="cnt" class="cl-t-s" x="394" y="80" text-anchor="middle" style="font-weight:800">שכבה 1 מתוך 5</text></g>
+      <g data-el="count2"><rect x="322" y="96" width="136" height="26" rx="9" fill="#2a7c7a22" stroke="var(--teal)" stroke-width="1.5"/><text data-el="cnt2" class="cl-t-s" x="390" y="114" text-anchor="middle" style="font-weight:800;fill:var(--teal-dark)">סה״כ 6</text></g>
+      <g data-el="vol"><rect x="316" y="132" width="142" height="30" rx="10" fill="var(--gold)" opacity=".3"/><text class="cl-t cl-num" x="387" y="153" text-anchor="middle" style="font-weight:800;font-size:19px">V = 6 × 5 = 30</text></g>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx>נפח = שטח בסיס × גובה</span> <span data-fx class="cl-num">= 6 × 5 = 30</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">מנסרה = שכבות של הבסיס, אחת מעל השנייה</p>
+  </div>
+</div>
+<figcaption><code>prism-layers</code>ז׳–ט׳ · נפח מנסרה</figcaption>
+</figure>
+
+<!-- 8 · kite-construct -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="kite-construct">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה: בונים דלתון בסרגל ומחוגה. מציירים ציר ועליו שתי נקודות א וב. מסובבים מחוגה סביב A ואז סביב B — נקודות המפגש של שני העיגולים הן הקודקודים C ו־D. מתקבל דלתון עם שני זוגות צלעות שווות: AC שווה AD, ו־BC שווה BD. כשמגדילים את העיגול סביב B, הקודקודים עוברים לצד של A ונוצר דלתון קעור עם זווית קעורה.">
+      <text class="cl-big" x="240" y="40" text-anchor="middle">סרגל ומחוגה בלבד: דלתון</text>
+      <line data-el="axis" x1="40" y1="165" x2="370" y2="165" stroke="var(--navy)" stroke-width="1.5" stroke-dasharray="2 4" pathLength="1"/>
+      <text data-el="axis-lbl" class="cl-t-s" x="360" y="182" text-anchor="end">ציר סימטריה</text>
+      <circle data-el="pA" cx="170" cy="165" r="4.5" fill="var(--navy)"/><text data-el="lA" class="cl-t cl-num" x="170" y="190" text-anchor="middle" style="font-weight:800">A</text>
+      <circle data-el="pB" cx="240" cy="165" r="4.5" fill="var(--navy)"/><text data-el="lB" class="cl-t cl-num" x="240" y="190" text-anchor="middle" style="font-weight:800">B</text>
+      <circle data-el="cA" cx="170" cy="165" r="60" fill="none" stroke="var(--teal)" stroke-width="2" pathLength="1"/>
+      <circle data-el="cB" cx="240" cy="165" r="70" fill="none" stroke="var(--orange)" stroke-width="2" pathLength="1"/>
+      <circle data-el="i1" cx="195.7" cy="110.8" r="4.5" fill="var(--gold)" stroke="#fff" stroke-width="1.5"/><text data-el="l1" class="cl-t cl-num" x="211" y="104" text-anchor="middle" style="font-weight:800">C</text>
+      <circle data-el="i2" cx="195.7" cy="219.2" r="4.5" fill="var(--gold)" stroke="#fff" stroke-width="1.5"/><text data-el="l2" class="cl-t cl-num" x="211" y="232" text-anchor="middle" style="font-weight:800">D</text>
+      <path data-el="kite" d="M170 165 L195.7 110.8 L240 165 L195.7 219.2 Z" fill="#7c3aed1f" stroke="var(--navy)" stroke-width="2" stroke-linejoin="round"/>
+      <line data-el="sa1" x1="170" y1="165" x2="195.7" y2="110.8" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" pathLength="1"/>
+      <line data-el="sa2" x1="170" y1="165" x2="195.7" y2="219.2" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" pathLength="1"/>
+      <line data-el="sb1" x1="240" y1="165" x2="195.7" y2="110.8" stroke="var(--orange)" stroke-width="4" stroke-linecap="round" pathLength="1"/>
+      <line data-el="sb2" x1="240" y1="165" x2="195.7" y2="219.2" stroke="var(--orange)" stroke-width="4" stroke-linecap="round" pathLength="1"/>
+      <g data-el="ticksA" stroke="var(--teal-dark)" stroke-width="2.2" stroke-linecap="round">
+        <line x1="176.5" y1="134.9" x2="189.2" y2="140.9"/><line x1="177.9" y1="131.3" x2="190.9" y2="137.3"/>
+        <line x1="176.5" y1="189.1" x2="189.2" y2="195.1"/><line x1="177.9" y1="192.7" x2="190.9" y2="198.7"/>
+      </g>
+      <g data-el="ticksB" stroke="var(--coral-dark)" stroke-width="2.2" stroke-linecap="round">
+        <line x1="212.5" y1="142.3" x2="223.3" y2="133.5"/><line x1="209.3" y1="138.4" x2="220.1" y2="129.6"/><line x1="215.7" y1="146.2" x2="226.5" y2="137.4"/>
+        <line x1="212.5" y1="187.7" x2="223.3" y2="196.5"/><line x1="209.3" y1="191.6" x2="220.1" y2="200.4"/><line x1="215.7" y1="183.8" x2="226.5" y2="192.6"/>
+      </g>
+      <path data-el="reflex" d="M158.9 141.5 A 26 26 0 1 1 158.9 188.5" fill="none" stroke="var(--coral-dark)" stroke-width="2.5" pathLength="1"/>
+      <g data-el="chip-convex"><rect class="cl-chip" x="130" y="52" width="112" height="26" rx="9"/><text class="cl-t-s" x="186" y="70" text-anchor="middle" style="font-weight:800">דלתון קמור</text></g>
+      <g data-el="chip-dart"><rect x="120" y="52" width="132" height="26" rx="9" fill="#ea580c1f" stroke="var(--coral-dark)" stroke-width="1.5"/><text class="cl-t-s" x="186" y="70" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">דלתון קעור!</text></g>
+      <g data-el="eq-lbl">
+        <text class="cl-t-s cl-num" x="415" y="90" text-anchor="middle" style="font-weight:800">AC = AD</text>
+        <text class="cl-t-s cl-num" x="415" y="114" text-anchor="middle" style="font-weight:800">BC = BD</text>
+        <text class="cl-t-s" x="415" y="140" text-anchor="middle">שני זוגות שווים</text>
+      </g>
+      <g data-el="refl-lbl"><rect x="16" y="210" width="92" height="26" rx="9" fill="#ea580c1f" stroke="var(--coral-dark)" stroke-width="1.5"/><text class="cl-t-s" x="62" y="228" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">זווית קעורה</text></g>
+      <text data-el="grow-lbl" class="cl-t-s" x="240" y="256" text-anchor="middle" style="fill:var(--coral-dark);font-weight:800">מגדילים את העיגול סביב B…</text>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx>עיגול סביב A + עיגול סביב B</span> <span data-fx>= 4 קודקודי הדלתון</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">שני עיגולים — דלתון קמור, ובהגדלה: קעור</p>
+  </div>
+</div>
+<figcaption><code>kite-construct</code>ז׳–ט׳ · דלתון בסרגל ומחוגה</figcaption>
+</figure>
+
+<!-- 9 · sim-area -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="sim-area">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה: משולש ישר זווית שצלעותיו 3 ו־4, שטחו 6. מגדילים אותו פי 2: הצלעות הופכות ל־6 ו־8. המשולש הגדול מתחלק בדיוק לארבעה עותקים של המקורי, ולכן השטח גדל פי 4 והופך ל־24. יחס השטחים הוא ריבוע יחס הצלעות: 1 ל־4.">
+      <text class="cl-big" x="240" y="30" text-anchor="middle">מגדילים פי 2 — מה קורה לשטח?</text>
+      <g data-el="grid"></g>
+      <g data-el="bigwrap">
+        <path data-el="big" d="M120 240 L264 240 L120 48 Z" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linejoin="round"/>
+      </g>
+      <path data-el="small" d="M120 240 L192 240 L120 144 Z" fill="#2a7c7a33" stroke="var(--teal)" stroke-width="2.5" stroke-linejoin="round"/>
+      <path data-el="q1" d="M120 240 L192 240 L120 144 Z" fill="#2a7c7a4d"/>
+      <path data-el="q2" d="M192 240 L264 240 L192 144 Z" fill="#ea580c4d"/>
+      <path data-el="q4" d="M192 240 L192 144 L120 144 Z" fill="#e6a53459"/>
+      <path data-el="q3" d="M120 144 L192 144 L120 48 Z" fill="#7c3aed4d"/>
+      <g class="cl-t-s" text-anchor="middle" style="font-weight:800;fill:#fff">
+        <circle data-el="n1" cx="150" cy="212" r="10" fill="var(--teal)"/><text data-el="n1t" x="150" y="217">1</text>
+        <circle data-el="n2" cx="222" cy="212" r="10" fill="var(--orange)"/><text data-el="n2t" x="222" y="217">2</text>
+        <circle data-el="n3" cx="150" cy="112" r="10" fill="var(--violet)"/><text data-el="n3t" x="150" y="117">3</text>
+        <circle data-el="n4" cx="174" cy="180" r="10" fill="var(--gold)"/><text data-el="n4t" x="174" y="185">4</text>
+      </g>
+      <text data-el="b3" class="cl-t-s cl-num" x="156" y="260" text-anchor="middle">3</text>
+      <text data-el="h4" class="cl-t-s cl-num" x="110" y="196" text-anchor="end">4</text>
+      <text data-el="b6" class="cl-t-s cl-num" x="192" y="260" text-anchor="middle" style="font-weight:800;fill:var(--teal-dark)">6</text>
+      <text data-el="h8" class="cl-t-s cl-num" x="110" y="146" text-anchor="end" style="font-weight:800;fill:var(--teal-dark)">8</text>
+      <line data-el="lead6" x1="100" y1="232" x2="136" y2="214" class="cl-line-thin"/><g data-el="a6"><rect class="cl-chip" x="28" y="222" width="72" height="26" rx="9"/><text class="cl-t-s" x="64" y="240" text-anchor="middle" style="font-weight:800">שטח 6</text></g>
+      <line data-el="lead24" x1="302" y1="152" x2="228" y2="200" class="cl-line-thin"/><g data-el="a24"><rect x="300" y="136" width="80" height="26" rx="9" fill="#2a7c7a22" stroke="var(--teal)" stroke-width="1.5"/><text class="cl-t-s" x="340" y="154" text-anchor="middle" style="font-weight:800;fill:var(--teal-dark)">שטח 24</text></g>
+      <g data-el="k2"><rect x="316" y="58" width="64" height="30" rx="10" fill="var(--gold)" opacity=".35"/><text class="cl-t cl-num" x="348" y="80" text-anchor="middle" style="font-weight:800;font-size:20px">× 2</text></g>
+      <g data-el="four"><rect class="cl-chip" x="286" y="104" width="136" height="26" rx="9"/><text class="cl-t-s" x="354" y="122" text-anchor="middle" style="font-weight:800">4 עותקים של המקורי!</text></g>
+      <g data-el="ratio1"><rect class="cl-chip" x="292" y="172" width="150" height="26" rx="9"/><text class="cl-t-s" x="367" y="190" text-anchor="middle" style="font-weight:800">יחס צלעות = <tspan class="cl-num">1 : 2</tspan></text></g>
+      <g data-el="ratio2"><rect x="284" y="206" width="166" height="26" rx="9" fill="#2e9d5722" stroke="var(--green)" stroke-width="1.5"/><text class="cl-t-s" x="367" y="224" text-anchor="middle" style="font-weight:800;fill:var(--green)">יחס שטחים = <tspan class="cl-num">1 : 4 = 2²</tspan></text></g>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx>יחס שטחים</span> <span data-fx class="cl-num">= (יחס צלעות)²</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">דומים ביחס 1 : 2 — השטח גדל פי 4</p>
+  </div>
+</div>
+<figcaption><code>sim-area</code>ט׳ · דמיון ויחס שטחים</figcaption>
+</figure>
+
+<!-- 10 · chess-graph -->
+<figure class="old-loop">
+<div class="concept-loop" data-loop="chess-graph">
+  <div class="concept-loop__card">
+    <button class="concept-loop__toggle" type="button" aria-label="השהיית הנפשה">
+      <svg class="ic-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6L10.8 6z"/></svg>
+    </button>
+    <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label="הדגמה: מלכת שחמט נעה לאורך שורה 3 בלוח. היא עומדת במשבצת ג3, הולכת ארבע משבצות למשבצת ז3, עומדת, וחוזרת שלוש משבצות למשבצת ד3. המרחק שלה מנקודת ההתחלה נמדד במשבצות, והגרף לצד הלוח מצייר אותו לאורך הזמן: עולה כשהיא מתרחקת, ישר כשהיא עומדת, ויורד כשהיא חוזרת.">
+      <text class="cl-big" x="240" y="40" text-anchor="middle">מה הגרף מספר על המלכה?</text>
+      <g data-el="board"></g>
+      <g data-el="ruler" class="cl-t-s cl-num" text-anchor="middle" style="font-size:12px;font-weight:800;fill:var(--teal-dark)"></g>
+      <g data-el="queen"><circle r="10" fill="var(--gold)" stroke="#fff" stroke-width="2"/><text text-anchor="middle" y="4.5" style="font-size:13px;font-weight:800;fill:var(--navy)">♛</text></g>
+      <g data-el="sqchip"><rect x="-18" y="-36" width="36" height="20" rx="7" class="cl-chip"/><text data-el="sqtxt" class="cl-t-s cl-num" x="0" y="-21" text-anchor="middle" style="font-weight:800;font-size:12.5px">c3</text></g>
+      <g data-el="gax">
+        <line class="cl-line" x1="250" y1="240" x2="440" y2="240" pathLength="1"/>
+        <line class="cl-line" x1="250" y1="240" x2="250" y2="56" pathLength="1"/>
+        <path class="cl-line" d="M440 240 l -9 -4 M440 240 l -9 4 M250 56 l -4 9 M250 56 l 4 9" pathLength="1"/>
+        <g class="cl-t-s cl-num" text-anchor="middle" style="font-size:12.5px">
+          <text x="250" y="258">0</text><text x="280" y="258">1</text><text x="310" y="258">2</text><text x="340" y="258">3</text><text x="370" y="258">4</text><text x="400" y="258">5</text><text x="430" y="258">6</text>
+        </g>
+        <g class="cl-t-s cl-num" text-anchor="end" style="font-size:12.5px">
+          <text x="242" y="245">0</text><text x="242" y="205">1</text><text x="242" y="165">2</text><text x="242" y="125">3</text><text x="242" y="85">4</text>
+        </g>
+        <text class="cl-t-s" x="345" y="276" text-anchor="middle">זמן (דקות)</text>
+        <text class="cl-t-s" x="262" y="160" text-anchor="middle" transform="rotate(-90 262 160)">מרחק במשבצות</text>
+      </g>
+      <line data-el="cursor" x1="250" y1="60" x2="250" y2="240" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <path data-el="seg0" d="M250 240 L280 240" fill="none" stroke="#9ca3af" stroke-width="3.5" stroke-linecap="round" pathLength="1"/>
+      <path data-el="seg1" d="M280 240 L304 80" fill="none" stroke="var(--teal)" stroke-width="3.5" stroke-linecap="round" pathLength="1"/>
+      <path data-el="seg2" d="M304 80 L340 80" fill="none" stroke="#9ca3af" stroke-width="3.5" stroke-linecap="round" pathLength="1"/>
+      <path data-el="seg3" d="M340 80 L364 200" fill="none" stroke="var(--coral)" stroke-width="3.5" stroke-linecap="round" pathLength="1"/>
+      <path data-el="seg4" d="M364 200 L430 200" fill="none" stroke="#9ca3af" stroke-width="3.5" stroke-linecap="round" pathLength="1"/>
+      <circle data-el="tdot" cx="250" cy="240" r="5" fill="#fff" stroke="var(--navy)" stroke-width="2.5"/>
+      <g data-el="q-now"><rect x="300" y="46" width="146" height="26" rx="9" fill="#fdf1d8" stroke="var(--gold)" stroke-width="1.5"/><text data-el="q-txt" class="cl-t-s" x="373" y="64" text-anchor="middle" style="font-weight:800">עומדת — הגרף ישר</text></g>
+    </svg>
+    <p class="concept-loop__formula"><span data-fx>עולה = מתרחקת</span> <span data-fx>ישר = עומדת</span> <span data-fx>יורד = חוזרת</span> <span data-el="check" class="check">✓</span></p>
+    <p class="concept-loop__caption" data-el="caption">קוראים גרף: מה המלכה עשתה בכל דקה?</p>
+  </div>
+</div>
+<figcaption><code>chess-graph</code>ז׳ · קריאת גרפים — מרחק במשבצות</figcaption>
+</figure>
+
+</main>
+<footer class="site-foot">נבנה ב־ZCode · אוקטובר 2026 · הצגה לאישור נועם — לא לפרסום בלי אישור</footer>
+
+<script>
+(function(){
+"use strict";
+/* ===== helpers ===== */
+function bezier(x1,y1,x2,y2){
+  var i=3*x1,r=3*(x2-x1)-i,d=1-i-r,f=3*y1,u=3*(y2-y1)-f,l=1-f-u;
+  function bx(g){return ((d*g+r)*g+i)*g}
+  function sx(g){return ((l*g+u)*g+f)*g}
+  function dx(g){return (3*d*g+2*r)*g+i}
+  return function(g){
+    if(g<=0)return 0; if(g>=1)return 1;
+    var S=g;
+    for(var o=0;o<8;o++){var y=bx(S)-g;if(Math.abs(y)<1e-6)break;var D=dx(S);if(Math.abs(D)<1e-6)break;S=Math.min(1,Math.max(0,S-y/D));}
+    return sx(S);
+  };
+}
+var P=bezier(.16,1,.3,1);
+function s(n,a,b){return P(Math.min(1,Math.max(0,(n-a)/(b-a))))}
+function lerp(a,b,t){return a+(b-a)*t}
+function rnd(v){return Math.round(v*100)/100}
+var CUR=null;
+function E(name){return CUR?CUR.querySelector('[data-el="'+name+'"]'):null}
+function EA(sel){return CUR?Array.prototype.slice.call(CUR.querySelectorAll(sel)) : []}
+function c(el,o){if(el)el.style.opacity=String(rnd(Math.min(1,Math.max(0,o))))}
+function dr(el,p){if(el)el.style.strokeDashoffset=String(rnd(1-Math.min(1,Math.max(0,p))))}
+function tf(el,x,y,r){if(el)el.setAttribute("transform","translate("+rnd(x)+" "+rnd(y)+")"+(r?" rotate("+rnd(r)+")":""))}
+var RATE=0.62, HOLD_MS=1300;
+
+/* ===== builders ===== */
+function E_A0(svg,id){return svg.querySelector('[data-el="'+id+'"]')}
+function buildRoots(svg){
+  var g=E_A0(svg,"cells");if(!g)return;
+  for(var r=0;r<5;r++)for(var cc=0;cc<5;cc++){
+    var rc=document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rc.setAttribute("x",400-28*(cc+1));rc.setAttribute("y",250-28*(r+1));
+    rc.setAttribute("width",28);rc.setAttribute("height",28);
+    rc.setAttribute("fill","#1e88e518");
+    rc.setAttribute("data-el","cell");rc.setAttribute("data-r",String(r));rc.setAttribute("data-c",String(cc));
+    g.appendChild(rc);
+  }
+}
+function buildBoard(svg){
+  var g=E_A0(svg,"board");if(!g)return;
+  var ns="http://www.w3.org/2000/svg";
+  for(var r=0;r<8;r++)for(var f=0;f<8;f++){
+    var rc=document.createElementNS(ns,"rect");
+    rc.setAttribute("x",28+f*22);rc.setAttribute("y",64+r*22);
+    rc.setAttribute("width",22);rc.setAttribute("height",22);
+    rc.setAttribute("fill",(r+f)%2?"#cfd8e6":"#f7f8fb");
+    rc.setAttribute("stroke","rgba(34,48,90,.25)");rc.setAttribute("stroke-width","1");
+    g.appendChild(rc);
+  }
+  var files="abcdefgh";
+  for(var i=0;i<8;i++){
+    var t1=document.createElementNS(ns,"text");
+    t1.setAttribute("x",28+i*22+11);t1.setAttribute("y",254);t1.setAttribute("text-anchor","middle");
+    t1.setAttribute("class","cl-t-s cl-num");t1.style.fontSize="12px";t1.textContent=files[i];g.appendChild(t1);
+    var t2=document.createElementNS(ns,"text");
+    t2.setAttribute("x",16);t2.setAttribute("y",64+i*22+15);t2.setAttribute("text-anchor","middle");
+    t2.setAttribute("class","cl-t-s cl-num");t2.style.fontSize="12px";t2.textContent=String(8-i);g.appendChild(t2);
+  }
+  var ruler=E_A0(svg,"ruler");
+  if(ruler){
+    for(var k=1;k<=4;k++){
+      var t3=document.createElementNS(ns,"text");
+      t3.setAttribute("x",105+(k-1)*22);t3.setAttribute("y",208);t3.setAttribute("text-anchor","middle");
+      t3.setAttribute("data-el","rn"+k);t3.textContent=String(k);
+      ruler.appendChild(t3);
+    }
+  }
+}
+function buildGrid(svg){
+  var g=E_A0(svg,"grid");if(!g)return;
+  var ns="http://www.w3.org/2000/svg";
+  for(var x=72;x<=288;x+=24){
+    var l=document.createElementNS(ns,"line");
+    l.setAttribute("x1",x);l.setAttribute("y1",48);l.setAttribute("x2",x);l.setAttribute("y2",288);
+    l.setAttribute("stroke","rgba(34,48,90,.07)");g.appendChild(l);
+  }
+  for(var y=48;y<=288;y+=24){
+    var l2=document.createElementNS(ns,"line");
+    l2.setAttribute("x1",72);l2.setAttribute("y1",y);l2.setAttribute("x2",288);l2.setAttribute("y2",y);
+    l2.setAttribute("stroke","rgba(34,48,90,.07)");g.appendChild(l2);
+  }
+}
+function PZ(x,y,z){return [140+x*28+y*10, 250-y*16-z*17]}
+function buildLayers(svg){
+  var g=E_A0(svg,"layers");if(!g)return;
+  var fills=["#1e88e538","#7c3aed33","#ea580c30","#2a7c7a30","#e6a53438"];
+  var ns="http://www.w3.org/2000/svg";
+  function el(tag,attrs){
+    var e=document.createElementNS(ns,tag);
+    for(var a in attrs)e.setAttribute(a,attrs[a]);
+    e.setAttribute("data-el","lay");g.appendChild(e);return e;
+  }
+  var A0=PZ(0,0,0),B0=PZ(4,0,0),C0=PZ(0,3,0);
+  el("polygon",{points:[A0,B0,C0].map(function(p){return rnd(p[0])+","+rnd(p[1])}).join(" "),fill:"#f3f4f6",stroke:"#22305a","stroke-width":"2","stroke-linejoin":"round","data-k":"base"});
+  for(var k=1;k<=5;k++){
+    var A1=PZ(0,0,k),B1=PZ(4,0,k),C1=PZ(0,3,k);
+    el("polygon",{points:[A0,B0,B1,A1].map(function(p){return rnd(p[0])+","+rnd(p[1])}).join(" "),fill:fills[k-1],stroke:"#22305a","stroke-width":"1.5","stroke-linejoin":"round","data-k":String(k)});
+    el("polygon",{points:[A0,C0,C1,A1].map(function(p){return rnd(p[0])+","+rnd(p[1])}).join(" "),fill:fills[k-1],stroke:"#22305a","stroke-width":"1.5","stroke-linejoin":"round","data-k":String(k)});
+    el("polygon",{points:[A1,B1,C1].map(function(p){return rnd(p[0])+","+rnd(p[1])}).join(" "),fill:fills[k-1],stroke:"#22305a","stroke-width":"2","stroke-linejoin":"round","data-k":String(k)});
+  }
+}
+
+/* ===== loop definitions — beats: כל שלב נגזר ממקור אחד ===== */
+var DEFS={};
+
+/* 1 · roots — ריבוע אחד שצלעו גדלה */
+(function(){
+var BT=[
+  {id:"b2",label:"ריבוע 2×2",t0:0,t1:1.9},
+  {id:"b3",label:"ריבוע 3×3",t0:1.9,t1:3.7},
+  {id:"b4",label:"ריבוע 4×4",t0:3.7,t1:5.5},
+  {id:"b5",label:"ריבוע 5×5",t0:5.5,t1:7.3},
+  {id:"link",label:"הצלע = השורש",t0:7.3,t1:8.9},
+  {id:"q20",label:"שטח 20 — בין אילו צלעות?",t0:8.9,t1:11.1}
+];
+var K=[2,3,4,5];
+var ST=[BT[0].t0+.8,BT[1].t0+.8,BT[2].t0+.8,BT[3].t0+.8];
+DEFS["roots"]={beats:BT,init:buildRoots,fx:7.4,chk:10.5,cap:10.6,
+  render:function(n){
+    EA('[data-el="cell"]').forEach(function(rc){
+      var r=+rc.getAttribute("data-r"),cc=+rc.getAttribute("data-c");
+      var k=null;
+      for(var i=0;i<4;i++){if(r<K[i]&&cc<K[i]){k=i;break}}
+      if(k===null){c(rc,0);return}
+      var base=ST[k],idx=r*K[k]+cc;
+      c(rc,s(n,base+.06+idx*.018,base+.16+idx*.018));
+    });
+    for(var i=0;i<4;i++){
+      var b=E("b"+K[i]);c(b,s(n,ST[i]+.1,ST[i]+.45));dr(b,s(n,ST[i]+.15,ST[i]+.65));
+      var a=E("a"+K[i]);
+      var fadeNext=(i<3)?(1-s(n,ST[i+1],ST[i+1]+.3)):1;
+      var ap=s(n,ST[i]+.55,ST[i]+.85)*fadeNext;
+      c(a,ap);if(a)a.style.transform="scale("+rnd(.6+.4*ap)+")",a.style.transformOrigin=(400-14*K[i])+"px "+(250-14*K[i])+"px";
+      var ch=E("c"+K[i]);c(ch,s(n,ST[i]+.75,ST[i]+1.0));
+    }
+    var brk=E("brk");c(brk,s(n,7.6,7.9));dr(brk,s(n,7.65,8.3));
+    c(E("slabel"),s(n,8.0,8.3));
+    var msgP=s(n,8.0,8.4)*(1-s(n,9.3,9.7));
+    c(E("msg"),msgP);c(E("arrow"),msgP);dr(E("arrow"),s(n,8.1,8.6));
+    c(E("arrowhead"),s(n,8.5,8.7)*(1-s(n,9.3,9.7)));
+    c(E("rq"),s(n,9.1,9.5));
+    c(E("ans"),s(n,9.9,10.2));
+    c(E("why"),s(n,10.2,10.5));
+    var calm=s(n,10.2,10.5),blink=(Math.sin(n*6)*.5+.5)*.55+.35;
+    c(E("pb4"),s(n,9.4,9.8)*(blink*(1-calm)+.85*calm));
+    c(E("pb5"),s(n,9.5,9.9)*(blink*(1-calm)+.85*calm));
+  }};
+})();
+
+/* 2 · ineq-flip — מראה על ישר המספרים + פתרון מסודר */
+(function(){
+var BT=[
+  {id:"mark",label:"2 < 6 על הישר",t0:0,t1:2.1},
+  {id:"mul",label:"כופלים ב־(−1)",t0:2.1,t1:3.9},
+  {id:"flipped",label:"הסדר התהפך!",t0:3.9,t1:5.3},
+  {id:"eq",label:"המשוואה −2x < 6",t0:5.3,t1:6.6},
+  {id:"div",label:"חלוקה ב־(−2)",t0:6.6,t1:9.6},
+  {id:"res",label:"x > −3",t0:9.6,t1:11.5},
+  {id:"chk",label:"בדיקה: x = 0",t0:11.5,t1:13.7}
+];
+DEFS["ineq-flip"]={beats:BT,fx:11.6,chk:13.0,cap:13.2,
+  render:function(n){
+    var ax=E("axis");c(ax,s(n,.4,.9));dr(EA('[data-el="axis"] [pathLength]')[0],s(n,.45,1.0));
+    var mirOn=1-s(n,5.4,5.8);
+    var fly=s(n,2.8,3.6);
+    var g2=E("mg2"),g6=E("mg6"),lb2=E("lb2"),lb6=E("lb6");
+    if(g2){tf(g2,lerp(0,-100,fly),0);c(g2,s(n,1.0,1.4)*mirOn)}
+    if(g6){tf(g6,lerp(0,-300,fly),0);c(g6,s(n,1.0,1.4)*mirOn)}
+    if(lb2){var t2=fly>=1?"−2":"2";if(lb2.textContent!==t2)lb2.textContent=t2}
+    if(lb6){var t6=fly>=1?"−6":"6";if(lb6.textContent!==t6)lb6.textContent=t6}
+    c(E("chipA"),s(n,1.5,1.9)*mirOn);
+    c(E("badge"),s(n,2.2,2.6)*(1-s(n,4.4,4.8)));
+    c(E("chipB"),s(n,4.0,4.4)*mirOn);
+    c(E("exprL"),s(n,5.4,5.8)*(1-s(n,6.9,7.3)));
+    c(E("fracL"),s(n,6.9,7.3)*(1-s(n,8.8,9.2)));
+    c(E("simpL"),s(n,8.9,9.3));
+    c(E("exprR"),s(n,5.4,5.8)*(1-s(n,6.9,7.3)));
+    c(E("fracR"),s(n,6.9,7.3)*(1-s(n,8.8,9.2)));
+    c(E("simpR"),s(n,8.9,9.3));
+    var flip=E("flip");
+    if(flip){c(flip,s(n,5.4,5.8));flip.setAttribute("transform","translate(250 84) rotate("+rnd(180*s(n,7.5,8.3))+")")}
+    c(E("div-badge"),s(n,6.1,6.5)*(1-s(n,9.1,9.5)));
+    var res=E("res");var rp=s(n,9.7,10.1);c(res,rp);if(res){res.style.transform="scale("+rnd(.7+.3*rp)+")";res.style.transformOrigin="240px 130px"}
+    var dot=E("dot");c(dot,s(n,9.9,10.2));
+    c(E("dot-lbl"),s(n,10.2,10.5));
+    c(E("wrong"),s(n,10.5,10.9)*(1-s(n,11.0,11.4)));
+    c(E("right"),s(n,11.0,11.5));
+    c(E("chk"),s(n,11.7,12.1));
+  }};
+})();
+
+/* 3 · pow-pair — חיזוי, פירוק, חילוף, מיזוג, אימות */
+(function(){
+var BT=[
+  {id:"ask",label:"פותחים סוגריים",t0:0,t1:2.2},
+  {id:"four",label:"ארבעה גורמים",t0:2.2,t1:4.0},
+  {id:"swap",label:"חוק החילוף",t0:4.0,t1:6.4},
+  {id:"merge",label:"מיזוג: a² · b²",t0:6.4,t1:7.9},
+  {id:"verify",label:"אימות: 36",t0:7.9,t1:10.0}
+];
+DEFS["pow-pair"]={beats:BT,fx:8.0,chk:9.2,cap:9.4,
+  render:function(n){
+    c(E("open1"),s(n,.3,.7)*(1-s(n,1.2,1.6)));
+    c(E("open2"),s(n,1.5,1.9)*(1-s(n,2.3,2.7)));
+    c(E("pred"),s(n,3.4,3.8)*(1-s(n,4.1,4.4)));
+    var pop=[2.3,2.48,2.66,2.84];
+    var sw=s(n,4.3,5.5);
+    ["tile1","tile2","tile3","tile4"].forEach(function(id,i){
+      var tl=E(id);if(!tl)return;
+      var p=s(n,pop[i],pop[i]+.4);
+      c(tl,p*(1-s(n,6.6,7.1)));
+      var ox=0,oy=0;
+      if(i===1){ox=68*sw;oy=-44*Math.sin(Math.PI*sw)}
+      if(i===2){ox=-68*sw;oy=44*Math.sin(Math.PI*sw)}
+      tl.style.transform="translate("+rnd(ox)+"px,"+rnd(oy)+"px) scale("+rnd(.55+.45*p)+")";
+      tl.style.transformBox="fill-box";tl.style.transformOrigin="center";
+    });
+    ["d1","d2","d3"].forEach(function(id,i){c(E(id),s(n,pop[i]+.06,pop[i]+.3)*(1-s(n,6.6,7.0)))});
+    c(E("swap-lbl"),s(n,4.2,4.6)*(1-s(n,6.5,6.9)));
+    c(E("arc1"),s(n,4.3,4.6)*(1-s(n,6.5,6.9)));dr(E("arc1"),s(n,4.35,4.9));
+    c(E("arc2"),s(n,4.3,4.6)*(1-s(n,6.5,6.9)));dr(E("arc2"),s(n,4.35,4.9));
+    c(E("order-lbl"),s(n,5.6,6.0)*(1-s(n,6.6,7.0)));
+    c(E("pairhl"),s(n,6.5,6.9)*(1-s(n,7.4,7.8)));
+    var mg=s(n,6.9,7.5);
+    var ma=E("ma"),mb=E("mb"),mgd=E("merged");
+    c(mgd,mg);
+    if(ma){ma.style.transform="scale("+rnd(.5+.5*mg)+")";ma.style.transformOrigin="182px 147px"}
+    if(mb){mb.style.transform="scale("+rnd(.5+.5*mg)+")";mb.style.transformOrigin="318px 147px"}
+    c(E("mdot"),s(n,7.4,7.7));
+    c(E("proof"),s(n,8.1,8.6));
+  }};
+})();
+
+/* 4 · cone-slices */
+(function(){
+var BT=[
+  {id:"cone",label:"החרוט",t0:0,t1:1.9},
+  {id:"cut1",label:"חיתוך אופקי ← עיגול",t0:1.9,t1:4.1},
+  {id:"cut2",label:"חיתוך אלכסוני ← אליפסה",t0:4.1,t1:6.3},
+  {id:"cut3",label:"דרך הקודקוד ← משולש",t0:6.3,t1:8.5},
+  {id:"all",label:"שלושת החתכים",t0:8.5,t1:10.6}
+];
+DEFS["cone-slices"]={beats:BT,fx:8.7,chk:10.0,cap:10.2,
+  render:function(n){
+    c(E("cone-fill"),s(n,1.0,1.6));
+    [["s1",.35],["s2",.5],["base-front",.65],["base-back",.85]].forEach(function(it){
+      var el=E(it[0]);c(el,s(n,it[1],it[1]+.2));dr(el,s(n,it[1]+.05,it[1]+.6));
+    });
+    c(E("apex-dot"),s(n,1.0,1.3));
+    var acts=[
+      {sec:"sec1",fly:"fly1",shelf:"shelf1",cut:"cut1",x0:150,y0:190,ty:84,tx:292},
+      {sec:"sec2",fly:"fly2",shelf:"shelf2",cut:"cut2",x0:134.6,y0:180,ty:164,tx:286},
+      {sec:"sec3",fly:"fly3",shelf:"shelf3",cut:"cut3",x0:150,y0:180,ty:244,tx:286}
+    ];
+    acts.forEach(function(a,ai){
+      var t0=BT[ai+1].t0;
+      var cutFade = ai<2 ? (1-s(n,BT[ai+2].t0+.4,BT[ai+2].t0+.7)) : 1;
+      var loc=s(n,t0+.1,t0+.5)*cutFade;
+      c(E("plane"+(ai+1)),loc);
+      c(E(a.cut),s(n,t0+.15,t0+.45)*cutFade);
+      var fly=E(a.fly);
+      var fp=s(n,t0+1.1,t0+2.0);
+      if(fly){
+        var tx=lerp(a.x0,a.tx,fp),ty=lerp(a.y0,a.ty,fp),sc=lerp(1,.62,fp);
+        fly.setAttribute("transform","translate("+rnd(tx)+" "+rnd(ty)+") scale("+rnd(sc)+")");
+        c(fly,s(n,t0+1.05,t0+1.25));
+      }
+      c(E(a.shelf),s(n,t0+1.95,t0+2.15));
+    });
+  }};
+})();
+
+/* 5 · sys-inter */
+(function(){
+var BT=[
+  {id:"axes",label:"הצירים",t0:0,t1:1.5},
+  {id:"l1",label:"y = x + 1",t0:1.5,t1:3.5},
+  {id:"l2",label:"y = 2x − 1",t0:3.5,t1:5.7},
+  {id:"meet",label:"נקודת המפגש (2, 3)",t0:5.7,t1:7.6},
+  {id:"verify",label:"בדיקה בהצבה",t0:7.6,t1:9.8}
+];
+DEFS["sys-inter"]={beats:BT,fx:8.3,chk:9.3,cap:9.4,
+  render:function(n){
+    c(E("axes"),s(n,.3,.9));
+    EA('[data-el="axes"] [pathLength]').forEach(function(el,i){dr(el,s(n,.35+i*.08,1.1+i*.08))});
+    c(E("chip1"),s(n,1.6,2.0));
+    c(E("chip2"),s(n,3.6,4.0));
+    [["p11",2.0],["p12",2.2],["p13",2.4]].forEach(function(it){c(E(it[0]),s(n,it[1],it[1]+.25))});
+    [["p21",4.0],["p22",4.2],["p23",4.4]].forEach(function(it){c(E(it[0]),s(n,it[1],it[1]+.25))});
+    var l1=E("line1");c(l1,s(n,2.7,3.0));dr(l1,s(n,2.75,3.45));
+    var l2=E("line2");c(l2,s(n,4.7,5.0));dr(l2,s(n,4.75,5.45));
+    var pulse=s(n,6.4,6.8);
+    [["gv",5.8],["gh",6.0]].forEach(function(it){var el=E(it[0]);c(el,s(n,it[1],it[1]+.3));dr(el,s(n,it[1]+.05,it[1]+.7))});
+    c(E("star"),pulse);
+    var ring=E("ring"),rp=(n*1.1)%1;
+    if(ring){var pf=pulse*(1-s(n,7.2,7.5));c(ring,(1-rp)*pf);ring.setAttribute("r",pf>0?String(rnd(8+rp*14)):"8")}
+    var sol=E("sol");var sp2=s(n,6.9,7.3);c(sol,sp2);if(sol){sol.style.transform="scale("+rnd(.7+.3*sp2)+")";sol.style.transformOrigin="234px 134px"}
+    c(E("sub1"),s(n,7.7,8.0));
+    c(E("sub2"),s(n,7.9,8.2));
+  }};
+})();
+
+/* 6 · median-area */
+(function(){
+var BT=[
+  {id:"tri",label:"המשולש",t0:0,t1:1.9},
+  {id:"mid",label:"אמצע הצלע",t0:1.9,t1:3.0},
+  {id:"med",label:"התיכון מ־B",t0:3.0,t1:4.4},
+  {id:"halves",label:"שני חצאים שווים",t0:4.4,t1:6.4},
+  {id:"why",label:"למה שווה? גובה משותף",t0:6.4,t1:8.6}
+];
+DEFS["median-area"]={beats:BT,fx:8.7,chk:9.0,cap:9.2,
+  render:function(n){
+    var tr=E("tri");c(tr,s(n,.3,.7));dr(tr,s(n,.35,1.6));
+    ["vA","vB","vC"].forEach(function(id,i){c(E(id),s(n,.9+i*.15,1.1+i*.15))});
+    c(E("mid"),s(n,2.0,2.4));
+    c(E("ticks"),s(n,2.2,2.6));
+    var md=E("med");c(md,s(n,3.1,3.4));dr(md,s(n,3.15,4.1));
+    c(E("half1"),s(n,4.5,5.1));
+    c(E("half2"),s(n,4.6,5.2));
+    ["eq1","eq2"].forEach(function(id,i){
+      var el=E(id),p=s(n,5.3+i*.3,5.7+i*.3);
+      c(el,p);if(el){el.style.transform="scale("+rnd(.6+.4*p)+")";el.style.transformOrigin=(id==="eq1"?"153px 209px":"311px 209px")}
+    });
+    var ht=E("ht");c(ht,s(n,6.5,6.8));dr(ht,s(n,6.55,7.4));
+    c(E("ht-sq"),s(n,7.2,7.5));
+    c(E("hlbl"),s(n,7.5,7.9));
+    c(E("base-lbl"),s(n,7.9,8.3));
+  }};
+})();
+
+/* 7 · prism-layers */
+(function(){
+var BT=[
+  {id:"base",label:"הבסיס: שטח 6",t0:0,t1:1.8},
+  {id:"lay1",label:"שכבה 1",t0:1.8,t1:2.6},
+  {id:"lay2",label:"שכבה 2",t0:2.6,t1:3.4},
+  {id:"lay3",label:"שכבה 3",t0:3.4,t1:4.2},
+  {id:"lay4",label:"שכבה 4",t0:4.2,t1:5.0},
+  {id:"lay5",label:"שכבה 5",t0:5.0,t1:5.8},
+  {id:"vol",label:"הנפח: 6 × 5 = 30",t0:5.8,t1:8.6}
+];
+DEFS["prism-layers"]={beats:BT,init:buildLayers,fx:7.2,chk:8.0,cap:8.2,
+  render:function(n){
+    var stage=0;
+    for(var i=1;i<=5;i++){if(n>=BT[i].t0+.1)stage=i}
+    EA('[data-el="lay"]').forEach(function(el){
+      var k=el.getAttribute("data-k");
+      if(k==="base"){c(el,s(n,.7,1.1));return}
+      var kk=+k;
+      var p=s(n,BT[kk].t0+.1,BT[kk].t0+.55);
+      c(el,p);
+      el.style.transform="translateY("+rnd((1-p)*-8)+"px)";
+    });
+    c(E("base-lbls"),s(n,1.2,1.6));
+    var hb=E("hbrace");c(hb,s(n,5.9,6.2));dr(hb?hb.querySelector("line"):null,s(n,5.95,6.6));
+    var cnt=E("cnt");
+    if(cnt){var txt=n>=5.8?"הכול נבנה!":"שכבה "+Math.max(1,stage)+" מתוך 5";if(cnt.textContent!==txt)cnt.textContent=txt;c(cnt,s(n,1.4,1.8))}
+    var cums=[6,12,18,24,30];
+    var cnt2=E("cnt2");
+    if(cnt2){var t2="סה״כ "+(stage>0?cums[Math.min(stage,5)-1]:0);if(n>=5.8)t2="סה״כ 30";if(cnt2.textContent!==t2)cnt2.textContent=t2;c(cnt2,s(n,2.0,2.4))}
+    c(E("vol"),s(n,6.5,7.1));
+  }};
+})();
+
+/* 8 · kite-construct */
+(function(){
+var BT=[
+  {id:"axis",label:"ציר סימטריה",t0:0,t1:1.2},
+  {id:"points",label:"שתי נקודות: A ו־B",t0:1.2,t1:2.2},
+  {id:"circA",label:"עיגול סביב A",t0:2.2,t1:3.6},
+  {id:"circB",label:"עיגול סביב B",t0:3.6,t1:5.0},
+  {id:"convex",label:"דלתון קמור",t0:5.0,t1:7.4},
+  {id:"grow",label:"מגדילים את העיגול סביב B",t0:7.4,t1:9.2},
+  {id:"dart",label:"דלתון קעור!",t0:9.2,t1:10.8},
+  {id:"summary",label:"שני זוגות צלעות שוות",t0:10.8,t1:13.0}
+];
+var X0=195.7,X1=144.3,Y1=110.8,Y2=219.2;
+DEFS["kite-construct"]={beats:BT,fx:11.4,chk:12.4,cap:12.6,
+  render:function(n){
+    var ax=E("axis");c(ax,s(n,.3,.8));dr(ax,s(n,.35,1.0));
+    c(E("axis-lbl"),s(n,11.2,11.6));
+    c(E("pA"),s(n,1.3,1.6));c(E("lA"),s(n,1.4,1.7));
+    c(E("pB"),s(n,1.6,1.9));c(E("lB"),s(n,1.7,2.0));
+    var cA=E("cA");c(cA,s(n,2.3,2.7)*lerp(1,.12,s(n,7.5,8.0)));dr(cA,s(n,2.35,3.5));
+    var cB=E("cB"),rBr=lerp(70,110,s(n,7.6,8.4));
+    if(cB){cB.setAttribute("r",String(rnd(rBr)));c(cB,s(n,3.7,4.1)*lerp(1,.2,s(n,8.6,9.1)));dr(cB,s(n,3.75,4.9));}
+    var dart=s(n,8.4,9.0);
+    var ix=lerp(X0,X1,dart),iy1=lerp(Y1,Y1,dart),iy2=lerp(Y2,Y2,dart);
+    [["i1",iy1,"l1",Y1-6],["i2",iy2,"l2",Y2+12]].forEach(function(it){
+      var el=E(it[0]);if(el){el.setAttribute("cy",String(rnd(it[1])));el.setAttribute("cx",String(rnd(ix)))}
+      c(el,s(n,5.1,5.5));
+      var lb=E(it[2]);if(lb){lb.setAttribute("x",String(rnd(ix+15)));lb.setAttribute("y",String(rnd(it[3])))}
+      c(lb,s(n,5.4,5.8));
+    });
+    var kite=E("kite");
+    if(kite)kite.setAttribute("d","M170 165 L"+rnd(ix)+" "+rnd(iy1)+" L240 165 L"+rnd(ix)+" "+rnd(iy2)+" Z");
+    c(kite,s(n,5.6,6.1));
+    var segs=[["sa1",170,165,ix,iy1],["sa2",170,165,ix,iy2],["sb1",240,165,ix,iy1],["sb2",240,165,ix,iy2]];
+    segs.forEach(function(sg,i){
+      var el=E(sg[0]);if(!el)return;
+      el.setAttribute("x2",String(rnd(sg[3])));el.setAttribute("y2",String(rnd(sg[4])));
+      c(el,s(n,6.2+i*.15,6.55+i*.15));dr(el,s(n,6.25+i*.15,6.9+i*.15));
+    });
+    var rf=E("reflex");c(rf,s(n,9.3,9.6));dr(rf,s(n,9.35,10.05));
+    c(E("ticksA"),s(n,6.9,7.3)*lerp(1,0,dart*.4));
+    c(E("ticksB"),s(n,6.9,7.3)*lerp(1,0,dart*.4));
+    c(E("chip-convex"),s(n,6.6,7.0)*(1-s(n,7.5,7.9)));
+    c(E("chip-dart"),s(n,9.5,9.9));
+    c(E("eq-lbl"),s(n,10.9,11.3));
+    c(E("refl-lbl"),s(n,9.6,10.0));
+    c(E("grow-lbl"),s(n,7.5,7.9)*(1-s(n,8.8,9.2)));
+  }};
+})();
+
+/* 9 · sim-area */
+(function(){
+var BT=[
+  {id:"small",label:"משולש 3×4 — שטח 6",t0:0,t1:2.0},
+  {id:"grow",label:"מגדילים פי 2",t0:2.0,t1:5.2},
+  {id:"four",label:"4 עותקים של המקורי",t0:5.2,t1:7.0},
+  {id:"ratio",label:"יחס שטחים = (יחס צלעות)²",t0:7.0,t1:9.4}
+];
+DEFS["sim-area"]={beats:BT,init:buildGrid,fx:8.2,chk:8.8,cap:9.0,
+  render:function(n){
+    c(E("grid"),s(n,.2,.8));
+    var sm=E("small");
+    var kp=s(n,2.6,5.0);
+    c(sm,s(n,.5,.9)*(1-.8*kp));
+    var bw=E("bigwrap"),k=lerp(.5,1,kp);
+    if(bw)bw.setAttribute("transform","translate(120 240) scale("+rnd(k)+") translate(-120 -240)");
+    c(E("big"),s(n,2.5,3.0));
+    c(E("b3"),s(n,1.2,1.6)*(1-s(n,4.2,4.6)));
+    c(E("h4"),s(n,1.35,1.75)*(1-s(n,4.2,4.6)));
+    c(E("b6"),s(n,4.5,4.9));
+    c(E("h8"),s(n,4.6,5.0));
+    c(E("a6"),s(n,1.6,2.0)*(1-s(n,4.3,4.7)));
+    c(E("lead6"),s(n,1.7,2.0)*(1-s(n,4.3,4.7)));
+    c(E("k2"),s(n,2.1,2.5));
+    ["q1","q2","q3","q4"].forEach(function(id,i){c(E(id),s(n,5.3+i*.22,5.6+i*.22))});
+    ["n1","n1t","n2","n2t","n3","n3t","n4","n4t"].forEach(function(id){c(E(id),s(n,6.0,6.4))});
+    c(E("four"),s(n,6.4,6.8));
+    c(E("a24"),s(n,6.6,7.0));
+    c(E("lead24"),s(n,6.6,7.0));
+    c(E("ratio1"),s(n,7.1,7.5));
+    c(E("ratio2"),s(n,7.7,8.1));
+  }};
+})();
+
+/* 10 · chess-graph */
+(function(){
+var BT=[
+  {id:"start",label:"עמדת פתיחה: c3",t0:0,t1:1.0},
+  {id:"go",label:"יוצאת ל־g3 — הגרף עולה",t0:1.0,t1:1.85},
+  {id:"stay1",label:"עומדת ב־g3 — הגרף ישר",t0:1.85,t1:3.05},
+  {id:"back",label:"חוזרת ל־d3 — הגרף יורד",t0:3.05,t1:3.95},
+  {id:"read",label:"קריאת הגרף",t0:3.95,t1:7.8}
+];
+DEFS["chess-graph"]={beats:BT,init:buildBoard,fx:6.2,chk:7.0,cap:7.2,
+  render:function(n,B){
+    c(E("board"),s(n,.2,.6));
+    c(E("gax"),s(n,.3,.6));
+    EA('[data-el="gax"] [pathLength]').forEach(function(el,i){dr(el,s(n,.35+i*.05,.8+i*.05))});
+    /* מלכה: תנועה רק בתוך beats */
+    var qx=83,d=0;
+    if(n<1.05){qx=83;d=0}
+    else if(n<1.85){var p=s(n,1.1,1.75);qx=lerp(83,171,p);d=4*p}
+    else if(n<3.05){qx=171;d=4}
+    else if(n<3.95){var p2=s(n,3.15,3.85);qx=lerp(171,105,p2);d=lerp(4,1,p2)}
+    else{qx=105;d=1}
+    var qn=E("queen");
+    if(qn){qn.setAttribute("transform","translate("+rnd(qx)+" 185)");c(qn,s(n,.4,.7))}
+    var sq=E("sqchip"),stx=E("sqtxt");
+    if(sq){sq.setAttribute("transform","translate("+rnd(qx)+" 185)");c(sq,s(n,.6,.9))}
+    if(stx){var nm=n<1.75?"c3":(n<3.85?"g3":"d3");if(stx.textContent!==nm)stx.textContent=nm}
+    /* סמן הזמן בגרף: מקדם מצטבר, קפוא בין beats */
+    var mc=0;
+    if(n<1.0)mc=s(n,.4,.9);
+    else if(n<1.85)mc=1+s(n,1.1,1.75)*.8;
+    else if(n<3.05)mc=1.8+s(n,1.95,2.95)*1.2;
+    else if(n<3.95)mc=3+s(n,3.15,3.85)*.8;
+    else mc=3.8+s(n,4.05,6.0)*2.2;
+    mc=Math.min(mc,6);
+    function X(m){return 250+m*30}
+    function Y(v){return 240-v*40}
+    var v=mc<=1?0:mc<=1.8?4*(mc-1)/.8:mc<=3?4:mc<=3.8?4-3*(mc-3)/.8:1;
+    var segWins=[[0,1],[1,1.8],[1.8,3],[3,3.8],[3.8,6]];
+    segWins.forEach(function(w,i){
+      var el=E("seg"+i);if(!el)return;
+      var p=mc<=w[0]?0:mc>=w[1]?1:(mc-w[0])/(w[1]-w[0]);
+      c(el,s(n,.4,.8));dr(el,p);
+    });
+    var cur=E("cursor");
+    if(cur){cur.setAttribute("x1",String(rnd(X(mc))));cur.setAttribute("x2",String(rnd(X(mc))));c(cur,s(n,.4,.8))}
+    var td=E("tdot");
+    if(td){td.setAttribute("cx",String(rnd(X(mc))));td.setAttribute("cy",String(rnd(Y(v))));c(td,s(n,.4,.8))}
+    for(var k=1;k<=4;k++){c(E("rn"+k),s(n,4.3+k*.2,4.5+k*.2))}
+    var qt=E("q-txt");
+    if(qt){
+      var lbl="עמדת פתיחה — c3";
+      if(n>=1.1&&n<1.85)lbl="מתרחקת — הגרף עולה";
+      else if(n>=1.85&&n<3.05)lbl="עומדת — הגרף ישר";
+      else if(n>=3.15&&n<3.95)lbl="חוזרת — הגרף יורד";
+      else if(n>=3.95)lbl="ב־d3 — קוראים את הסיפור";
+      if(qt.textContent!==lbl)qt.textContent=lbl;
+    }
+    c(E("q-now"),s(n,.5,.8));
+  }};
+})();
+
+/* ===== engine ===== */
+var REDUCED=false;
+try{REDUCED=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+var loops=[];
+document.querySelectorAll("[data-loop]").forEach(function(box){
+  var name=box.getAttribute("data-loop"),def=DEFS[name];
+  if(!def){(window.__errs=window.__errs||[]).push("no def: "+name);return}
+  var svg=box.querySelector("svg.concept-loop__svg");
+  if(def.init){try{def.init(svg)}catch(err){(window.__errs=window.__errs||[]).push("init "+name+": "+err.message)}}
+  var btn=box.querySelector(".concept-loop__toggle");
+  var stepsArr=def.beats.map(function(b){return [b.t1+.05,b.label]});
+  var fxCount=box.querySelectorAll(".concept-loop__formula [data-fx]").length;
+  var fxStart0=def.fx!=null?def.fx:12;
+  var fxEnd0=fxStart0+Math.max(0,fxCount-1)*.34+.34;
+  var contentEnd0=Math.max(def.chk!=null?def.chk+.4:0,def.cap!=null?def.cap+.4:0,fxEnd0);
+  def.outStart=contentEnd0+2.3;
+  def.effD=def.outStart+.9;
+  var rec={box:box,svg:svg,def:def,btn:btn,paused:false,hidden:false,staticMode:REDUCED,n:0,last:performance.now(),holdUntil:0,fxs:Array.prototype.slice.call(box.querySelectorAll(".concept-loop__formula [data-fx]")),dots:[]};
+  function renderRec(){
+    CUR=rec.box;
+    var n=rec.n;
+    var outStart=def.outStart;
+    var out=1-s(n,outStart,outStart+.7);
+    var B={};
+    def.beats.forEach(function(b){B[b.id]=Math.min(1,Math.max(0,(n-b.t0)/(b.t1-b.t0)))});
+    try{def.render(n,B)}catch(err){(window.__errs=window.__errs||[]).push(name+": "+err.message)}
+    if(svg)svg.style.opacity=String(rnd(out));
+    rec.fxs.forEach(function(el,i){
+      var p=s(n,fxStart0+i*.34,fxStart0+.34+i*.34)*out;
+      el.style.opacity=String(rnd(p));
+      el.style.transform="translateY("+rnd((1-p)*5)+"px)";
+    });
+    var chk=box.querySelector('[data-el="check"]');
+    if(chk){var cp=s(n,def.chk,def.chk+.4)*out;chk.style.opacity=String(rnd(cp));chk.style.transform="translateY("+rnd((1-cp)*5)+"px)"}
+    var cap=box.querySelector('[data-el="caption"]');
+    if(cap)cap.style.opacity=String(rnd(s(n,def.cap,def.cap+.4)*out));
+    CUR=null;
+  }
+  rec.renderRec=renderRec;
+  /* stepper UI */
+  var stepsRow=document.createElement("div");
+  stepsRow.className="cl-steps";
+  function mkBtn(sym,label,dir){
+    var b=document.createElement("button");
+    b.type="button";b.className="cl-steps__btn";b.textContent=sym;b.setAttribute("aria-label",label);
+    b.addEventListener("click",function(){seek(dir)});
+    return b;
+  }
+  function seek(dir){
+    var ts=stepsArr.map(function(st){return st[0]});
+    var target=rec.n,i;
+    if(dir>0){for(i=0;i<ts.length;i++){if(ts[i]>rec.n+.01){target=ts[i];break}}}
+    else{for(i=ts.length-1;i>=0;i--){if(ts[i]<rec.n-.01){target=ts[i];break}}}
+    rec.n=target;
+    rec.paused=true;
+    if(rec.btn){rec.btn.classList.add("is-paused");rec.btn.setAttribute("aria-label","הפעלת הנפשה")}
+    rec.last=performance.now();
+    renderRec();syncDots();
+  }
+  function syncDots(){
+    var ts=stepsArr.map(function(st){return st[0]});
+    var cur=0;
+    for(var i2=0;i2<ts.length;i2++){if(rec.n>=ts[i2]-.01)cur=i2}
+    rec.dots.forEach(function(d,i3){d.classList.toggle("on",i3===cur)});
+  }
+  var prev=mkBtn("›","שלב קודם",-1);
+  var next=mkBtn("‹","שלב הבא",1);
+  stepsRow.appendChild(prev);
+  stepsArr.forEach(function(st){
+    var d=document.createElement("button");
+    d.type="button";d.className="cl-steps__dot";d.title=st[1];d.setAttribute("aria-label","שלב: "+st[1]);
+    d.addEventListener("click",function(){
+      rec.n=st[0];
+      rec.paused=true;
+      if(rec.btn){rec.btn.classList.add("is-paused");rec.btn.setAttribute("aria-label","הפעלת הנפשה")}
+      rec.last=performance.now();
+      renderRec();syncDots();
+    });
+    stepsRow.appendChild(d);rec.dots.push(d);
+  });
+  stepsRow.appendChild(next);
+  var formula=box.querySelector(".concept-loop__formula");
+  formula.parentNode.insertBefore(stepsRow,formula);
+  rec.syncDots=syncDots;
+  if(btn)btn.addEventListener("click",function(){
+    if(rec.staticMode)return;
+    rec.paused=!rec.paused;
+    btn.classList.toggle("is-paused",rec.paused);
+    btn.setAttribute("aria-label",rec.paused?"הפעלת הנפשה":"השהיית הנפשה");
+    if(!rec.paused){rec.last=performance.now()}
+  });
+  if("IntersectionObserver" in window){
+    new IntersectionObserver(function(en){rec.hidden=!en[0].isIntersecting},{threshold:.15}).observe(box);
+  }
+  if(rec.staticMode){
+    rec.n=stepsArr[stepsArr.length-1][0]+.6;
+    renderRec();syncDots();
+    if(btn){btn.setAttribute("aria-disabled","true");btn.setAttribute("tabindex","-1")}
+  }
+  loops.push(rec);
+});
+window.__clSeek=function(name,nn){
+  var rec=loops.filter(function(L){return L.box.getAttribute("data-loop")===name})[0];
+  if(!rec)return null;
+  rec.n=nn;rec.holdUntil=0;rec.paused=false;rec.last=performance.now();
+  rec.renderRec();rec.syncDots();
+  return true;
+};
+window.__clInfo=function(name){
+  var rec=loops.filter(function(L){return L.box.getAttribute("data-loop")===name})[0];
+  if(!rec)return null;
+  var steps=rec.def.beats.map(function(b){return [b.t1+.05,b.label]});
+  return {steps:steps,effD:rec.def.effD,outStart:rec.def.outStart,fx:rec.def.fx,chk:rec.def.chk,cap:rec.def.cap};
+};
+function tick(now){
+  for(var i=0;i<loops.length;i++){
+    var L=loops[i];
+    var dt=Math.min((now-L.last)/1000,.1);
+    L.last=now;
+    if(L.paused||L.hidden||L.staticMode)continue;
+    if(now<L.holdUntil)continue;
+    var target=L.n+dt*RATE,D=L.def.effD;
+    var sts=L.def.beats.map(function(b){return b.t1+.05});
+    for(var j=0;j<sts.length;j++){
+      if(L.n<sts[j]-1e-6&&target>=sts[j]){target=sts[j];L.holdUntil=now+HOLD_MS;break}
+    }
+    L.n=target%D;
+    L.renderRec();L.syncDots();
+  }
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+/* תמיכת צילום אוטומטי: ?seek=NAME:N&scroll=Y — קופץ למצב ועוצר */
+try{
+  var qs=new URLSearchParams(location.search);
+  if(qs.get("seek")){
+    var parts=qs.get("seek").split(":");
+    var sName=parts[0], sN=parseFloat(parts[1]);
+    window.addEventListener("load",function(){
+      window.__clSeek(sName,sN);
+      var rec=loops.filter(function(L){return L.box.getAttribute("data-loop")===sName})[0];
+      if(rec){rec.paused=true;if(rec.btn){rec.btn.classList.add("is-paused");rec.btn.setAttribute("aria-label","הפעלת הנפשה")}}
+      var sc=parseFloat(qs.get("scroll")||"0");
+      if(sc)window.scrollTo(0,sc);
+    });
+  }
+}catch(e){}
+})();
+
+</script>
+</body>
+</html>

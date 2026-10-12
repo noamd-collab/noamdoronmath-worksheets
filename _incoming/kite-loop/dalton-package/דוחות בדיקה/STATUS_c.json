@@ -1,0 +1,404 @@
+{
+  "package": "G9-KITE",
+  "level": "c",
+  "level_name": "מצוינות",
+  "writer": "Claude (level c writer)",
+  "date": "2026-10-11",
+  "source_mode": "original, from WRITER_VIEW_G9-KITE.json (approved curriculum blueprint); no source PDF read or claimed",
+  "stage": "CONFIRM_ROUND_2_FIXES_APPLIED_TECHNICALLY_CHECKED_NOT_RE_REVIEWED",
+  "questions": 20,
+  "items": 71,
+  "stars": [
+    14,
+    16,
+    20
+  ],
+  "pages": 22,
+  "words_share": [
+    6,
+    7,
+    11
+  ],
+  "figures": 17,
+  "figure_families": 14,
+  "coordinate_planes": 1,
+  "k_coverage_all_K01_K18": true,
+  "per_question": [
+    {
+      "n": 1,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K01",
+        "K02",
+        "K04",
+        "K05",
+        "K07",
+        "K15"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 2,
+      "items": [
+        "א",
+        "ב",
+        "ג"
+      ],
+      "star": false,
+      "principles": [
+        "K03",
+        "K06",
+        "K13",
+        "K16",
+        "K17"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 3,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K04",
+        "K05",
+        "K06",
+        "K08",
+        "K15"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 4,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K05",
+        "K08",
+        "K09",
+        "K10"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 5,
+      "items": [
+        "א",
+        "ב",
+        "ג"
+      ],
+      "star": false,
+      "principles": [
+        "K02",
+        "K06",
+        "K11",
+        "K12",
+        "K13",
+        "K17"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 6,
+      "items": [
+        "א",
+        "ב",
+        "ג"
+      ],
+      "star": false,
+      "principles": [
+        "K09",
+        "K10",
+        "K11",
+        "K14"
+      ],
+      "figure": "none: drawing from words"
+    },
+    {
+      "n": 7,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K05",
+        "K10",
+        "K12",
+        "K14",
+        "K18"
+      ],
+      "figure": "none: drawing from words"
+    },
+    {
+      "n": 8,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K07",
+        "K09",
+        "K10",
+        "K12",
+        "K17"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 9,
+      "items": [
+        "א",
+        "ב"
+      ],
+      "star": false,
+      "principles": [
+        "K07",
+        "K08",
+        "K09",
+        "K10"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 10,
+      "items": [
+        "א",
+        "ב",
+        "ג"
+      ],
+      "star": false,
+      "principles": [
+        "K01",
+        "K05",
+        "K12",
+        "K16",
+        "K17"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 11,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K02",
+        "K08",
+        "K12",
+        "K18"
+      ],
+      "figure": "none: drawing from words"
+    },
+    {
+      "n": 12,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K01",
+        "K09",
+        "K12",
+        "K13"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 13,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K03",
+        "K06",
+        "K11",
+        "K12"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 14,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": true,
+      "principles": [
+        "K05",
+        "K09",
+        "K10",
+        "K17",
+        "K18"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 15,
+      "items": [
+        "א",
+        "ב",
+        "ג"
+      ],
+      "star": false,
+      "principles": [
+        "K03",
+        "K04",
+        "K05",
+        "K11"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 16,
+      "items": [
+        "א",
+        "ב",
+        "ג"
+      ],
+      "star": true,
+      "principles": [
+        "K08",
+        "K10",
+        "K16",
+        "K17"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 17,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K09",
+        "K10",
+        "K11",
+        "K13"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 18,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": false,
+      "principles": [
+        "K01",
+        "K02",
+        "K04",
+        "K05",
+        "K13",
+        "K16"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 19,
+      "items": [
+        "א",
+        "ב",
+        "ג"
+      ],
+      "star": false,
+      "principles": [
+        "K02",
+        "K09",
+        "K10",
+        "K11",
+        "K18"
+      ],
+      "figure": "native figkit"
+    },
+    {
+      "n": 20,
+      "items": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ],
+      "star": true,
+      "principles": [
+        "K09",
+        "K10",
+        "K11",
+        "K18"
+      ],
+      "figure": "native figkit"
+    }
+  ],
+  "checks": {
+    "locked_check.py G9-KITE c": "GATES all pass; verify_export 0; selfcheck_noam_package 0; check_didactic PASS 91 FAIL 0 REVIEW 0; VERDICT CHECKED (run scratch/technical-20261011T145743)",
+    "G83": "words share 3 of 20 (target 2 +-1); room 75.1 mm under q6, q7, q11",
+    "G76": "objects 14/6, busiest 3/4",
+    "scratch/c/self_scan.py": "0 problems (skeleton, number sets, repeated equations, K index)",
+    "scratch/c/review_keys.py": "44 numeric targets recomputed exactly, 0 mismatches",
+    "scratch/c/leak_textlayer.py": "0 after round-1 fixes. The first version subtracted item-level givens and therefore MISSED the q8 ד leak (WY = 69 = answer of q8 ג); the scan now compares every later item text AND item given with every earlier answer, and it flags the old build (verified). Text layer: no digit-bracket-digit, no island starting with =, no unit=number, no raw root glyph",
+    "scratch/c/lint_src.py": "0: no Hebrew parenthetical, no digit-led island before a period, no one-letter angle",
+    "visual": "pages 7, 9, 12, 15 (q8 ד, q9, q12, q15, q19-q20) re-rendered and looked at",
+    "G79": "NOT_RUN, not applicable on the figkit route: all 17 figures are native figkit builder figures, no wspec spec figures; geometry checked instead by the builder re-measure and by eye",
+    "scratch/c/cross_levels.py": "Final run against the frozen level_a.py sha256 df06c213b24945e0b6572202433b418c38d415863f2cd796831fabe3b8f7cb86 and level_b.py sha256 322cd6ca5c4cc75fb10b4bdb9e415edac12a74b9ef9dc639be2d15f52f0fc66c. Compares every value >= 3 and flags pairs sharing 3+ values, plus exact right triangles. The round-2 collisions c q6/b q9 and c q3/a q15 are gone (b moved q9, a moved q15). No real collision is left. The 17 flagged pairs are small-number or role-free overlaps, checked by reading: c q6 3/5/10 and c q7 5/6/8/11 against algebra, table and angle questions; c q11 vs a q18 9/10/16; c q14 vs a q15 12/36/60, where a q15 is angles 36/132 and c q14 is a perimeter 36 and an area bound 60. Shared single right triangles in different roles: 5-12-13, 9-12-15, 12-16-20, 12-35-37."
+  },
+  "hashes": {
+    "pkg/level_c.py": "8fb45b6c283ccf8978349bded42917a4c2d959b601201f512fd0bcca1f786134",
+    "out/deliver/c/sheet.pdf": "ba3d08c7c01e8722e71419c6c44e11c9c958b261612bd4913131b6fb5a68a3cd",
+    "out/deliver/c/sheet.json": "2cef49bb85b7c6d51a4f4ee8003526cb686168a89352a9a6711e9cc7ba5e27ff",
+    "out/deliver/c/noam-ai.json": "3fa3a81904ad0e2f2ef8a89be73c6f585ada1980d2ce70be3a080fbcd1fb1a0c"
+  },
+  "honest_gaps": [
+    "PACKAGE is the local build alias G9-T99 set by the coordinator in content.py; not a site id; needs Noam before any upload.",
+    "Level sets curriculum track ט_רגילה itself; content.py default says track ט, which matches no curriculum sequence.",
+    "check_pkg key re-computation is not mechanical for this level (71 not mechanical); exact recomputation is in scratch/c/review_keys.py only for numeric targets; proofs, counterexamples and decisions were checked by reading, not by a machine.",
+    "No independent review yet; nothing here is REVIEWED, QUALIFIED or FINAL.",
+    "Figure shape variety judged by eye and fam tags; G76 does not prove neighbour difference.",
+    "Collision check after round 1 was done by reading pkg/level_a.py and pkg/level_b.py (read-only) for the new numbers and designs; ~/worksheet-work/kite-level-a was not opened, so new designs were checked against it only through the reviewer's list.",
+    "Key radicals are vector paths: a text-layer check cannot prove that no operand is dropped inside a root on key pages (C-15, engine).",
+    "22 pages (71 items).",
+    "Shared single right triangles kept on purpose: 5-12-13 (q14 sides, q20 corner triangle), 12-35-37 (q20; also in G9-T19 a q12), 9-12-15 (q17 fold triangle)."
+  ],
+  "review_round_1": "REVIEW_c.json FIX_NEEDED (10 MAJOR, 6 MINOR): C-01..C-14 and C-16 fixed in level_c.py; C-13 no change required; C-15 is engine behaviour (radicals drawn as vector paths, absent from the PDF text layer), reported, nothing to change in the level",
+  "confirm_round_2": "CONFIRM_c.json FIX_NEEDED (4 MAJOR, 4 MINOR). Fixed in level_c.py: CF-01 (q12 ד tied to the data of ג), CF-04 (q20 rectangle 24x40), CF-05 (q8 ד key counterexample), CF-06 (q15 head angle 124), CF-07 (q9 opens with the equation item), CF-08 (this file). Coordinator decisions: CF-02 c q6 vs b q9 -> level b changes q9, c keeps q6; CF-03 c q3 vs a q15 -> level a changes q15, c keeps q3.",
+  "confirm_round_3": "Passed, with one MINOR (R3-01): this file was stale. Fixed here only; level_c.py and the sheet are unchanged."
+}

@@ -1,0 +1,34 @@
+{
+ "package": "G9-KITE",
+ "level": "b",
+ "round": 4,
+ "reviewer": "independent CONFIRM reviewer b (Claude), 2026-10-11",
+ "verdict": "PASS",
+ "counts": {"MAJOR": 0, "MINOR": 0},
+ "build_check": {
+  "sheet_sha256": "9657ae9c454eb673a350e79b0e1410717482254501c70d11f0fe81e07bd825d8 = STATUS_b.json",
+  "level_b_sha256": "322cd6ca5c4cc75fb10b4bdb9e415edac12a74b9ef9dc639be2d15f52f0fc66c = STATUS_b.json = deliver/b/source/level_b.py",
+  "latest_build": "Yes: level_b.py 15:15:27 and sheet.pdf 15:15:30. locked_check was not re-run.",
+  "frozen_inputs": "level_a.py 1079f341… (15:16) and level_c.py 8fb45b6c… (14:57, unchanged since round 3)"
+ },
+ "R3-02_q5_label": {
+  "status": "RESOLVED",
+  "evidence": "Zoom at 400 dpi in review-scratch/confirm-b/r4/q5_zoom.png: E is now below its vertex, outside the kite, and clear of T and the diagonals. The geometry is unchanged.",
+  "nothing_else_changed": "I compared every page pixel by pixel with round 3. Pages 1–2 and 4–15 are identical. On page 3, only rows 1332–1535 at 144 dpi differ: the E label moved, and q5 item א with its answer line moved down about 24 px, about 4 mm, because the figure box is taller. No text or numbers changed. The ast dump of level_b.py is identical to round 3, so only the figure spec changed. The page still ends with room to spare, and page 4 is unchanged."
+ },
+ "R3-01_q7_pair": {
+  "status": "RESOLVED",
+  "evidence": "Frozen a q7 now has the head pair AB=x+4, AD=2x−1 and CB=2x−3, with no perimeter. Its items are: x and all the sides (x=5, 9 and 7); can BD be 20? (no, by the triangle inequality, BD<18); and Noa's expression CB=x−8, which would give a negative side. b q7 gives RS=3x−2, RU=x+10 and the perimeter 52. Its items are: x and RS (6, 16); TS from the perimeter (10); and Ron's claim that x changes with the perimeter (no). The stem structure is different, as are the roles of ב and ג, and no equation or number is shared."
+ },
+ "duplication_all_20": {
+  "method": "ast dumps of the frozen level_a.py, level_b.py and level_c.py (review-scratch/confirm-b/r4/*_dump.txt), diffed against round 3, and r4/numscan_r4.py re-run over all 20 b questions. The outside sheets (kite-level-a, kite-smoke, G9-T15, G9-T19) are unchanged and were cleared in round 3.",
+  "result": "No collision. The only new scan hits come from the new a q7 and share loose numbers in different roles: b q4 [5,9,18], b q5 [18,20] and b q8 [7,8,20]. The old b q19 ~ a q7 [13,19] hit is gone. Level c is unchanged.",
+  "info_not_findings": [
+   "a q7ב (can BD be 20 when AB=AD=9?) uses the triangle-inequality bound on the secondary diagonal, as do b q19ב/ג and c q7. It is a single item inside a different question design. B-12 already accepted this role being shared with c q7."
+  ]
+ },
+ "adjudications": {
+  "G79": "Not applicable on the figkit route, and not a pass; unchanged.",
+  "noam_decisions": "Only the real package id instead of the local alias G9-T99."
+ }
+}

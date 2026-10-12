@@ -1,0 +1,274 @@
+{
+ "package": "G9-KITE",
+ "level": "b",
+ "reviewer": "independent reviewer b (Claude), 2026-10-11",
+ "verdict": "FIX_NEEDED",
+ "summary": "Maths, keys, figures and print are clean. The level fails on duplication: 8 MAJOR findings where b repeats level a, level c, kite-level-a or the delivered G9-T19 in numbers, equations or designs (q4, q5, q7, q8, q12, q15, q16, q18). There are also 13 MINOR findings.",
+ "counts": {
+  "MAJOR": 8,
+  "MINOR": 13
+ },
+ "findings": [
+  {
+   "id": "B-01",
+   "level": "b",
+   "question": "q4",
+   "page": 3,
+   "severity": "MAJOR",
+   "what": "Same kite number set in the same role as level c q4 and kite-level-a q3: sides 15 and 20, secondary diagonal 24, parts 9 and 16, main diagonal 25, area 300.",
+   "evidence": "b q4: AB=AD=15, CB=CD=20, BD=24 -> BO=12, AO=9, CO=16, area 300. c q4 (level_c.py): AB=15, CB=20, BD=24, compute AC and area. ~/worksheet-work/kite-level-a q3: AO=9, BO=12, CO=16 -> AB=15, area 300.",
+   "fix": "Keep the design and the worked example; change the data to AB=AD=20 ס״מ, CB=CD=34 ס״מ, BD=32 ס״מ. Keys: BO=16; AO²=20·20−16·16=144, AO=12; CO²=34·34−16·16=900, CO=30; AC=42; area 42·32/2=672 סמ״ר. This set appears in no other level or kite sheet.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-02",
+   "level": "b",
+   "question": "q5",
+   "page": 4,
+   "severity": "MAJOR",
+   "what": "Same kite as level a q12 and kite-level-a q7: sides 25 and 29, secondary 40, parts 15 and 21, main diagonal 36. The error-correction role is also level a q11 and level c q9 (\"the diagonals bisect each other\"). K15 asks for that misconception, so the role can stay, but the numbers cannot.",
+   "evidence": "b q5: EF=EH=25, GF=GH=29, FH=40 -> ET=15, GT=21, EG=36. a q12: PQ=25, QO=20, PO=15, OR=21, RQ=29, PR=36. kite-level-a q7: AB=AD=25, CB=CD=29, BD=40, heights 15 and 21, AC=36.",
+   "fix": "Change the data to EF=EH=26 ס״מ, GF=GH=30 ס״מ, FH=48 ס״מ. Keys: FT=24; ET²=26·26−24·24=100, ET=10; GT²=30·30−24·24=324, GT=18; EG=28 ס״מ, and the student's wrong value is 2·10=20. ג is unchanged: a rhombus.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-03",
+   "level": "b",
+   "question": "q16",
+   "page": [
+    10,
+    11
+   ],
+   "severity": "MAJOR",
+   "what": "Copied numbers and a copied design. The numbers 10/17 with diagonal 16 (parts 6 and 15, main diagonal 21) are level a q5 (KLMN, KL=KN=10, ML=MN=17, LN=16, KM=21), and kite-level-a q1 has 10/17. The design (two kites from the same side lengths, one with a right angle at a side vertex and one with a given secondary diagonal: compare the areas) is level c q14 item א.",
+   "evidence": "b q16: AB=AD=KL=KN=10, CB=CD=ML=MN=17, BD=16 -> AC=21, area 168; KLMN with ∠KLM=90° -> 170. c q14: sides 5 and 12; ABCD with ∠ABC=90°, KLMN with LN=8; compute both areas and compare.",
+   "fix": "Change the numbers and the second shape. Rods of 29 and 35 ס״מ. Kite ABCD: AB=AD=29, CB=CD=35, BD=42 -> BO=21, AO=20, CO=28, AC=48, area 48·42/2=1008 סמ״ר. Second shape: the same four rods form a rectangle PQRS with PQ=RS=29 and QR=SP=35, area 1015 סמ״ר. ג: 'האם המלבן PQRS הוא דלתון? האם אורכי הצלעות לבדם קובעים את השטח?' Expected answer: no, the equal sides are opposite (K01); no, 1008 ≠ 1015.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-04",
+   "level": "b",
+   "question": "q7",
+   "page": 5,
+   "severity": "MAJOR",
+   "what": "Same equation in the same design as level a q7: the head-vertex sides 2x+1 = x+k, then find x, then the perimeter, then a critique item.",
+   "evidence": "b q7: RS=2x+1, RU=x+6 -> x=5; perimeter 48; Dana's claim. a q7: AB=2x+1, AD=x+5 -> x=4; perimeter 42; Tal's wrong equation 2x+1=3x.",
+   "fix": "Stem: 'בדלתון RSTU נתון RS=RU ו־TS=TU. נתון RS=3x−4 ו־RU=x+6, והיקף הדלתון 50 ס״מ.' א: x=5, so RS=RU=11. ב: 'מצאו את TS': 2·11+2·TS=50, so TS=TU=14 ס״מ. ג: 'האם אפשר, עם אותם ביטויים ל־RS ול־RU, לקבל דלתון שהיקפו 20 ס״מ? נמקו.' Expected answer: no; x=5 is forced, RS+RU=22>20, so TS would be −1. This keeps K08 (reconstruction plus feasibility) without the level-a equation.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-05",
+   "level": "b",
+   "question": "q15",
+   "page": 10,
+   "severity": "MAJOR",
+   "what": "Same shifted equation in the same design as level a q13: ∠ABC=3x+10 and ∠ADC=5x−k (the side angles), then x, then ∠BCD, then ∠ACB.",
+   "evidence": "b q15: ∠ABC=3x+10, ∠ADC=5x−50, ∠BAD=x+20; items x/∠ABC, ∠BCD, ∠ACB. a q13: ∠ABC=3x+10, ∠ADC=5x−30; items x, ∠BCD, ∠BAC/∠ACB.",
+   "fix": "Put the algebra on the head angle that AC bisects (K04) instead. ∠BAC=3x−15, ∠DAC=x+15, ∠BCD=3x+3. א: which two are equal, and why (AC bisects the head angle ∠BAD). ב: x=15, ∠BAD=60°. ג: ∠ABC=(360−60−48)/2=126° (side angles equal, K05). ד: ∠ACB=24°; check △ABC: 30+126+24=180. The figure is redrawn with head angles 60° and 48°.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-06",
+   "level": "b",
+   "question": "q12",
+   "page": 8,
+   "severity": "MAJOR",
+   "what": "Retold design of level a q14: a rhombus seen as a kite in two ways, then the kite theorem applied in each way to show that the diagonals bisect each other and are perpendicular. Items א and ב have the same roles in the same order.",
+   "evidence": "b q12 א 'המעוין הוא גם דלתון, בשתי דרכים...', ב 'הסיקו מן המשפט על האלכסון הראשי: איזה אלכסון חוצה את האחר'. a q14 א 'בשתי דרכים: K ו־M, L ו־N', ב 'השתמשו בתכונת האלכסון הראשי... בכל אחת משתי הדרכים... O אמצע של כל אחד מהאלכסונים'.",
+   "fix": "Keep א and ג and replace ב with angles. 'נתון ∠QPS=70°. בדרך שבה Q ו־S קודקודי הראש, הסבירו מדוע ∠QRS=70°, וחשבו את ∠PQR ואת ∠PQS.' Keys: in that way P and R are the side vertices, so ∠QRS=∠QPS=70°; in the first way (P and R are the heads) the side angles are equal, ∠PQR=∠PSR, so ∠PQR=(360−140)/2=110°; QS bisects the head angle, so ∠PQS=55°. The figure already fits: PR=10, QS=7 gives ∠QPS=69.98°.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-07",
+   "level": "b",
+   "question": "q8",
+   "page": [
+    5,
+    6
+   ],
+   "severity": "MAJOR",
+   "what": "Retold design, with a near-verbatim sentence, from the delivered G9-T19 (rhombus) package: through each vertex a parallel to the diagonal that does not pass through it, the bounding rectangle EFGH, area as half of it, AC=14, and an inverse item (area plus one diagonal gives the other).",
+   "evidence": "b q8: 'דרך כל קודקוד של הדלתון ABCD הועבר ישר המקביל לאלכסון שאינו עובר בקודקוד זה. הישרים יוצרים את המלבן EFGH', AC=14. G9-T19 b q12: 'דרך כל קודקוד העבירו מקביל לאלכסון שאינו עובר בו; הישרים ייצרו מלבן חוסם'. G9-T19 a q11: rectangle EFGH, AC=14 ס״מ. G9-T19 b q15: the rectangle's area and AC give BD.",
+   "fix": "Drop the rectangle (the figure keeps kite_pts(4,10,5): AO=4, OC=10, BD=10) and use a guided derivation through the secondary diagonal. Stem: 'בדלתון ABCD האלכסונים נפגשים ב־O. נתון AO=4 ס״מ, OC=10 ס״מ ו־BD=10 ס״מ.' א: areas of △ABD and △CBD with base BD and heights AO and CO: 20 and 50 סמ״ר. ב: 'הראו ששטח הדלתון שווה ל־AC·BD/2', since BD·AO/2+BD·CO/2=BD·AC/2=70. ג: 'לדלתון אחר שטח 60 סמ״ר ואלכסון אחד 8 ס״מ' gives 15 ס״מ. This route uses neither the bounding rectangle of T19 nor level a q6's base AC with heights BO and DO.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-08",
+   "level": "b",
+   "question": "q18",
+   "page": 12,
+   "severity": "MAJOR",
+   "what": "Retold design of level a q5 items א and ב: two isosceles triangles on the common base, the midpoint M, prove AM⊥BD and CM⊥BD, then A, M, C are collinear because there is only one perpendicular at M, then the conclusion about the main diagonal. b q3 already proves the same theorem by congruence.",
+   "evidence": "b q18 א 'הוכיחו כי AM⊥BD', ב 'הוכיחו כי CM⊥BD, והסיקו ש־A, M ו־C על ישר אחד', ג 'מה מראה התוצאה על האלכסון AC'. a q5 א 'הוכיחו כי KO⊥LN וגם MO⊥LN', ב 'הסבירו מדוע K, O, M על ישר אחד, ומה נובע מכך על האלכסון KM'.",
+   "fix": "Replace it with a new K03/K04/K06 proof. 'בדלתון ABCD (AB=AD, CB=CD) הנקודה P על AB והנקודה Q על AD, כך ש־AP=AQ.' א: prove △APC≅△AQC (SAS, with AC bisecting ∠BAD). ב: conclude CP=CQ and explain why APCQ is a kite. ג: prove PQ⊥AC, since in the isosceles △APQ the bisector of the head angle is the altitude, and conclude PQ∥BD. This configuration is not in level a, level c, T15 or T19.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-09",
+   "level": "b",
+   "question": "q2",
+   "page": 2,
+   "severity": "MINOR",
+   "what": "Overlaps level a q4: the same ∠BAD=70°, the same first item (a side angle from the angle sum), and a 'compute it a second way' item ג.",
+   "evidence": "b q2: ∠BAD=70°, ∠BCD=130°. a q4: ∠BAD=70°, ∠BCD=50°; ג in two ways.",
+   "fix": "Change the data to ∠BAD=84° and ∠BCD=116°. Keys: ∠ABC=(360−84−116)/2=80°; ∠BAC=42° and ∠ACD=58°; ∠ADC=180−42−58=80°. The worked example (80°, 40° gives 120°) stays.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-10",
+   "level": "b",
+   "question": "q10",
+   "page": 7,
+   "severity": "MINOR",
+   "what": "Item א repeats level a q20 א (E on the main diagonal, prove EB=ED), and item ג repeats level a q9 ג (BD is not a symmetry axis, refuted with the side lengths).",
+   "evidence": "b q10 ג key: 'אילו BD היה ציר... AB=CB. אבל AB קצר מ־CB'. a q9 ג key: 'שיקוף בישר BD... היה מתקיים CB=AB, אבל CB=8 ו־AB=5'.",
+   "fix": "Replace ג with: 'תלמיד טוען: AC ציר סימטריה, ולכן גם ∠BAD=∠BCD. מצאו את הטעות.' Expected answer: the reflection fixes A and C and swaps B and D, so it gives ∠ABC=∠ADC and not the head angles; here AB≠CB, so the head angles differ.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-11",
+   "level": "b",
+   "question": "q11",
+   "page": [
+    7,
+    8
+   ],
+   "severity": "MINOR",
+   "what": "Item ב, 'AB=AD and AC⊥BD: is it a kite?', is the same condition as level c q13 ג, inside the same 'does this information suffice' format. The key's counterexample for א (parts 2 and 5 on AC) repeats level a q17 (EM=2, MG=5).",
+   "evidence": "b q11 key א: 'שחלקיהם 2 ו־5 על AC, ו־1 ו־4 על BD'. a q17: EM=2, MG=5, FM=3, MH=6. c q13 ג: 'AB=AD ו־AC⊥BD'.",
+   "fix": "Change the key example to parts 1 and 3 on AC and 2 and 4 on BD (sides √5, √13, 5, √17). For ב, use 'נתון CB=CD ו־O אמצע BD' (prove AB=AD by SAS, then kite), which is not c q13 ג.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-12",
+   "level": "b",
+   "question": "q19",
+   "page": 12,
+   "severity": "MINOR",
+   "what": "Same role as level c q7: given the kite's sides, which secondary-diagonal lengths are possible (the bound is twice the shorter side).",
+   "evidence": "c q7 א/ב: sides 3 and 4, secondary diagonal 7 is impossible, find every possible length. b q19 ב/ג: sides 10 and 13, proposals 12/20/24, the largest whole length 19.",
+   "fix": "Acceptable, because b adds the perimeter reconstruction and a table of proposals. Optionally change ג to: 'האם ייתכן אלכסון משני באורך 19 ס״מ כאשר האלכסון הראשי שלם?' Or keep it and record the overlap.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-13",
+   "level": "b",
+   "question": "q9",
+   "page": 6,
+   "severity": "MINOR",
+   "what": "Close to level c q6: a kite built from its two diagonal lengths and the position of their intersection point, then 'is it a rhombus?'. The secondary diagonal is 6 in both.",
+   "evidence": "b q9: AC=9, BD=6, AO=3. c q6: KM=7, LN=6, KS=4.",
+   "fix": "Acceptable, because the construction from the diagonals is the natural K14 task. Change the numbers so the sheets do not share BD=6: AC=10, BD=8, AO=3, so OC=7 and it is not a rhombus.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-14",
+   "level": "b",
+   "question": "q6, q3",
+   "page": [
+    2,
+    4
+   ],
+   "severity": "MINOR",
+   "what": "Two canonical proofs follow level a's sequence. q6 is the converse (perpendicular bisector gives a kite) with the steps of level a q8: one pair by SAS, the other pair and the kite, then a weakened hypothesis in ג (a drops perpendicularity, b drops bisection). q3 has level a q3's first two items: SSS, then the head angles bisected.",
+   "evidence": "a q8 א/ב/ג vs b q6 א/ב/ג. a q3 א/ב vs b q3 א/ב.",
+   "fix": "The forced steps of a theorem proof are acceptable. For q6 ג, use a numeric counterexample that level a lacks: 'נתון AC⊥BD, AO=4, BO=3 ו־OD=5. חשבו את AB ואת AD. האם AB=AD?' (5 and √41).",
+   "noam_decision": false
+  },
+  {
+   "id": "B-15",
+   "level": "b",
+   "question": "level",
+   "page": null,
+   "severity": "MINOR",
+   "what": "Within level b, five questions repeat the chain 'half the secondary diagonal, two Pythagoras steps, the main diagonal, the area' (q4, q5, q14, q16, q20). This is heavy for 20 questions even on a guided level.",
+   "evidence": "q4 א–ג, q5 א–ב, q14 א–ב, q16 א, q20 ב–ג.",
+   "fix": "B-03 already replaces q16's second part with a rectangle. Beyond that, no change is required; just record it. If more variety is wanted, make q20 ג an inverse item: 'נתון שטח 85 סמ״ר; חשבו את CB'.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-16",
+   "level": "b",
+   "question": "q4 worked example",
+   "page": 3,
+   "severity": "MINOR",
+   "what": "The worked example jumps from 9 to 3 without the square/root step, so a student may copy '9' as the length.",
+   "evidence": "'לפי פיתגורס 5·5−4·4=9, ולכן הקטע שבין קודקוד הראש למפגש האלכסונים הוא 3 ס״מ.'",
+   "fix": "Write: 'לפי פיתגורס ריבוע הקטע הוא 5·5−4·4=9, ולכן הקטע שבין קודקוד הראש למפגש האלכסונים הוא 3 ס״מ, כי 3·3=9.'",
+   "noam_decision": false
+  },
+  {
+   "id": "B-17",
+   "level": "b",
+   "question": "q9 א key",
+   "page": 14,
+   "severity": "MINOR",
+   "what": "The key line omits units.",
+   "evidence": "'מסמנים AC באורך 9 ו־O במרחק 3 מ־A'",
+   "fix": "'מסמנים AC באורך 9 ס״מ ו־O במרחק 3 ס״מ מ־A'.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-18",
+   "level": "b",
+   "question": "q5 ב key",
+   "page": 14,
+   "severity": "MINOR",
+   "what": "The key's 'רק האלכסון הראשי חוצה את המשני' is false for a rhombus under the inclusive definition; here it holds only because EF≠GF.",
+   "evidence": "q5 ב key, page 14.",
+   "fix": "'הדלתון אינו מעוין, כי EF≠GF, ולכן רק האלכסון הראשי חוצה את המשני; T אינה אמצע EG.'",
+   "noam_decision": false
+  },
+  {
+   "id": "B-19",
+   "level": "b",
+   "question": "q17 ג, q13 ג",
+   "page": [
+    9,
+    11
+   ],
+   "severity": "MINOR",
+   "what": "The construction rooms are 76.8 mm by 164 mm. q17 ג asks for two true-size kites with diagonals 8 and 6 ס״מ (16 cm side by side, leaving about 4 mm), and q13 ג asks for two kites. It fits only if the student plans it exactly.",
+   "evidence": "build.json g83_room: q13c 76.8 mm, q17c 76.8 mm. Measured width between the margins is about 164 mm.",
+   "fix": "Add a sentence to both items: 'אפשר לבנות את שני הדלתונים על אותו אלכסון משני.' Or raise the q17 room to at least 130 mm.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-20",
+   "level": "b",
+   "question": "q6, q20 figures",
+   "page": [
+    4,
+    13
+   ],
+   "severity": "MINOR",
+   "what": "A given right angle has no mark in the figure: AC⊥BD in q6, ∠BAD=90° in q20. The data is in the text, so nothing contradicts, but K06 asks students to read given marks against goals to prove.",
+   "evidence": "FIXLOG: the q6 mark was removed after a deliver N1 complaint, although perp(AC,BD) is a stated given. q20 never had one.",
+   "fix": "Optional: declare the right angle as a given at the point, as q16 does ('perpendicular at O' or at A), and draw the mark.",
+   "noam_decision": false
+  },
+  {
+   "id": "B-21",
+   "level": "b",
+   "question": "honesty: self_scan scope",
+   "page": null,
+   "severity": "MINOR",
+   "what": "STATUS reports 'self_scan 0 findings; 20 distinct skeletons'. That is true, but the scan covered level b only. FIXLOG says the other levels and the earlier kite sheets were not opened, so the scan could not see the duplicates in B-01 to B-08. The claim is not false, just limited in scope.",
+   "evidence": "STATUS_b.json checks.self_scan; FIXLOG_b.md first paragraph.",
+   "fix": "Add to STATUS: 'self_scan is within-level only; cross-level and cross-package duplication is checked by the independent review (REVIEW_b.json)'.",
+   "noam_decision": false
+  }
+ ],
+ "adjudications": {
+  "didactic_REVIEW": "Level b has no didactic REVIEW items. check_didactic on out/deliver/b gives PASS 83, FAIL 0, REVIEW 0 (scratch/technical-20261011T135726/b-check_didactic.log; didactic.json has no REVIEW or FAIL). Level a's six D4 items are not in this reviewer's scope.",
+  "G79": "Honest NOT_RUN / not applicable, and not a pass. build.py runs G79-spec only when wspec_build.spec_figs(L) is non-empty, i.e. for wspec engine figures. verify_export's check_g79 (B2) requires a G79 verdict only for figures declared under build.json 'wspec' or shipped as engine maps. Level b's build.json has no 'wspec' key, and its 14 figures are figkit SVGs. references/v7-production-he.md requires the applicable gates and a recorded status (PASS/REVIEW/UNSUPPORTED/NOT_RUN), which STATUS does. The figure geometry was checked by deliver (111 constraints re-measured, 0 objects missing). This reviewer also measured all 14 figures on the 2x renders: lengths and angles match the labels within about 1–2% (e.g. q2 ∠BAD 70.0°, ∠BCD 130.2°; q15 99.6°/49.8°/100.6°/109.9°; q4 parts 9:12:16 exact), and no figure marks a result before it is proven.",
+  "EYE_CHECK_1_package_id": "Really Noam's decision. The site id for the kite topic does not exist, HANDOFF forbids inventing one, and the brief says G9-T99 is a local alias and not a defect. No fix is needed before review; a rebuild is needed after Noam chooses the id.",
+  "EYE_CHECK_2_G79": "Not Noam's decision. It is informational, and the standing rule (record the route and the status, and never claim a pass) is already met. No action.",
+  "STATUS_EYE_FIXLOG_match": "Matches. The sha256 of level_b.py (6fc28e9d…) and of sheet.pdf and out/b.pdf (583477fb…) equal STATUS. The 63 items, 2 worked examples (q2, q4), 4 words questions with 76.8 mm rooms, 14 figures and didactic PASS 83 match the built files. The only scope caveat is B-21.",
+  "originality_sources_checked": "level_a.py and level_c.py of G9-KITE; ~/worksheet-work/kite-level-a (sheet.pdf, 12 q); ~/worksheet-work/kite-smoke (1 q: AC from coordinates, no overlap); G9-T15 final a/b/c sheets (parallel lines and isosceles triangles: no kite content, no overlap); G9-T19 (rhombus) batch-06 delivered a/b/c sheets (overlap: B-07).",
+  "coverage": "Every K-id the blueprint assigns to b (K01–K16 and K18) is tested, and the proof and identification roles are real proofs or definitions (q1, q3, q6, q10, q11ב, q13א, q18). The level is guided: 2 worked examples, integer answers, calculator-free. It has 20 questions and stays in grade-9 regular-track scope (congruence, the angle sum, Pythagoras, area by the diagonals, linear equations). Every quadrilateral is convex; no non-convex shape appears. The inclusive definition is stated in the rule box, and 'not a rhombus' is explicit where needed (q17ג; q5ג and q9ג ask for it).",
+  "maths": "All 63 keys match the blind solutions (review-scratch/b/BLIND_SOLUTIONS.md). No wrong key, no unsolvable or ambiguous item, no item that leaks an earlier answer, and no figure that contradicts its text.",
+  "printing": "Grade label 'כיתה ט׳', U+2212 minus throughout (6 occurrences, no hyphen-minus). The math islands are complete and the RTL order is correct; spot-checked by zoom on the q2 and q4 examples and on key pages 14–15. The level strings contain no Hebrew parenthetical. The text layer of the student and key pages has no digit-bracket-digit and no island that starts with '='. The construction rooms are blank, with no grid. The footer reads 'מתוך 16' on the student pages, which the coordinator renumbers by rule, so it is not listed."
+ },
+ "note_for_coordinator": "Levels a and b were written in parallel from the same blueprint, so the overlaps are systemic. Each fix above changes level b only and was checked against level a, level c, kite-level-a, T15 and T19. If the coordinator prefers that level a yields on some pair, the finding still stands, on the other level. None of this is Noam's decision."
+}

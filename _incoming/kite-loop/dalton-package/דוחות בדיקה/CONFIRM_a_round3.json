@@ -1,0 +1,68 @@
+{
+  "package": "G9-KITE",
+  "level": "a",
+  "round": "CONFIRM round 3 (independent; after the writer's response to CONFIRM_a.json; levels b and c frozen)",
+  "reviewer_scope": "edited nothing except CONFIRM_a_round3.json and review-scratch/confirm-a/r3/; no git; no rebuild",
+  "build_identity": {
+    "sheet_pdf_sha256": "3f1fc9ce3b164a3307d7bba30ecc73315754350fa4177ad400bf6dd047e27e66 (matches STATUS_a.pdf_sha256)",
+    "level_a_py_sha256": "df06c213b24945e0b6572202433b418c38d415863f2cd796831fabe3b8f7cb86 (matches STATUS_a)",
+    "latest_build": "yes: level_a.py 15:09:22, sheet.pdf 15:09:25. Official evidence scratch/technical-20261011T150922: GATES all pass, verify_export 0 errors (118 constraints), selfcheck 0, didactic PASS 74 FAIL 0 REVIEW 5 (q1, q2, q8, q12, q14). No rerun needed.",
+    "frozen_comparands": "level_b.py 15:00:31 -> deliver/b 15:00:35 (sha f4d098c1...); level_c.py 14:57:43 -> deliver/c 14:57:48 (sha ba3d08c7...). Both were re-extracted and diffed against my round-2 extraction. b changed q5, q7, q8, q9, q11ב; c changed q9, q10 order, q15 (∠LMN=124°), q20 (QR=40)."
+  },
+  "process": {
+    "blind": "All 14 pages re-rendered (review-scratch/confirm-a/r3/p01-p14.png). Changed questions q5, q6, q7, q9, q11, q14, q15, q18, q20 solved from student pages 3-11 before reading the key: review-scratch/confirm-a/r3/BLIND_SOLUTIONS_r3.md. Then key pages 12-14 compared.",
+    "keys": "q5, q6, q9, q11, q14, q15, q18, q20: all keys equal the blind solutions; units and reasoning lines present. q7 א/ב equal the blind solution (x=8, AB=19, CB=23); q7ג: see R3-02.",
+    "print": "Text layer (r3/textlayer.txt): no digit-bracket-digit, 40/40 brackets (question numbers only), no Hebrew parenthetical, no ASCII minus in math, 0 of 558 islands start or end with '='. Grade label 'רמה א׳ · כיתה ט׳'. 14 pages; 'בהצלחה!' closes page 11.",
+    "figures": "q7 AB:CB 0.82 (19/23 = 0.826), AD = AB, CD = CB, no ticks. q9 P is a dot at AP/AB = 0.20, clearly apart from the midpoint tick (r3/z_q9.png). q11 AC:BD 0.877 (0.875). q14 ∠LKN measured 75.8°. q15 ∠BAD 35.9°, ∠BCD 59.7°. q18 AB:BD 0.63 (0.625), CB:BD 2.03 (2.03). q20 unchanged. No result is marked before it is proved.",
+    "duplication": "All 20 questions of a compared by eye with the frozen b and c student text (r3/compare/kite_b.txt, kite_c.txt), and by number/context grep against ~/worksheet-work/kite-level-a, G9-T15 a/b/c and G9-T19 a/b/c. kite-smoke has a single coordinate item (A(3,8) B(6,3) C(3,0) D(0,3)) and shares nothing."
+  },
+  "verdict": "FIX_NEEDED",
+  "counts": {"MAJOR": 2, "MINOR": 1},
+  "findings": [
+    {
+      "id": "R3-01", "question": "7", "severity": "MAJOR",
+      "what": "New design collision: level b rewrote its q7 in the same round, and a q7 and b q7 now have the same design. Both give the equal pair as two expressions, give the perimeter, and ask (א) x and the side, (ב) the other side rebuilt from the perimeter, (ג) a pupil's alternative. The numbers differ; the item roles are the same. STATUS_a's cross-scan R pass did not list this pair.",
+      "evidence": "a q7: AB=2x+3, AD=4x−13, perimeter 84 -> א x=8, AB=19; ב CB=(84−38)/2=23; ג Tal. Frozen b q7: RS=3x−2, RU=x+10, perimeter 52 -> א x=6, RS=16; ב TS=(52−32)/2=10; ג Ron's 'perimeter 60'.",
+      "fix": "a q7, one rewrite that also clears R3-02. Drop the perimeter and give the second pair as an expression again; b no longer uses that design. Stem: 'בדלתון ABCD קודקודי הראש הם A ו־C. אורכי הצלעות בס״מ: AB = 2x + 3, AD = 4x − 13, CB = 3x − 1.' א: 2x + 3 = 4x − 13, x = 8, AB = 19 ס״מ (unchanged). ב: 'חשבו את היקף הדלתון' -> CB = CD = 23, P = 2·19 + 2·23 = 84 ס״מ. ג keep the wrong-pair text: Tal sets AD = CB, 4x − 13 = 3x − 1, x = 12, then AB = 27 and AD = 35, contradicting AB = AD. The figure (19:23) stays. Checked: no other kite sheet has 2x+3 / 4x−13 / 3x−1, x=8 or x=12. c q11 (four expressions, all possible x) and kite-level-a q6 (x from the perimeter) have different roles.",
+      "noam_decision": false
+    },
+    {
+      "id": "R3-02", "question": "7", "item": "ג", "severity": "MAJOR",
+      "what": "q7ג is ill-posed. 'טל פתר אחרת: הוא השווה את AD ל־CB' no longer says what CB is: CB is not an expression any more, only the ב result. The key uses CB = 23, but 23 was obtained from x = 8, that is from AB = AD, which is what Tal did not use, so the scenario is circular. The only x-form that does not use AB = AD is CB = (84 − AB − AD)/2 = 47 − 3x. That gives 4x − 13 = 47 − 3x, x = 60/7, and AB = 141/7, AD = 149/7, not the key's x = 9, 21/23. The item's own 'check what his solution gives at A' therefore has two readings.",
+      "evidence": "Key q7ג: 'מ־4x − 13 = 23 טל מקבל x = 9, ואז AB = 21 ו־AD = 23'. Stem ג prints no equation.",
+      "fix": "Cleared by the R3-01 rewrite (CB = 3x − 1 gives Tal a definite equation). If the coordinator keeps the perimeter design instead, then ג must print Tal's equation without an earlier answer, for example: 'טל הניח שכל ארבע הצלעות שוות וכתב 4x − 13 = 84/4. מה הניח טל, ומדוע זה אינו נובע מהנתונים? מה נותן הפתרון שלו לשתי הצלעות שנפגשות בקודקוד A?' -> x = 8.5, AB = 20, AD = 21, a contradiction (the kite need not be a rhombus). This alone leaves R3-01 open.",
+      "noam_decision": false
+    },
+    {
+      "id": "R3-03", "question": "11", "item": "א key", "severity": "MINOR",
+      "what": "The new q11 numbers make Dana's AO = AC/2 = 52.5, and the key checks it by squaring a decimal: 52.5² = 2756.25, sum 6356.25. That is heavy for a calculator-free level-a key. The item does not force it, but the key models it.",
+      "evidence": "Key page 13, q11א: 'AO = 52.5 ... AB² = 2756.25 + 3600 = 6356.25, ולא 4225'.",
+      "fix": "Key q11א: 'ב־△AOB ישר הזווית AO² = 4225 − 3600 = 625, כלומר AO = 25 ולא 52.5, ולכן O אינה אמצע AC.' No decimal square is needed. The stem and numbers stay.",
+      "noam_decision": false
+    }
+  ],
+  "confirm_a_resolution": [
+    {"id": "CA-01", "status": "NOT resolved", "evidence": "the old b q7 match (x+6, x=5, 11) is gone, but a q7 now has the design of the rewritten frozen b q7 (R3-01), and ג became ill-posed (R3-02)."},
+    {"id": "CA-02", "status": "resolved", "evidence": "q15 is now 36°/132°/132°/60°, with ∠ABD = 72°, ∠DBC = 60° and Yoav's 66°. No such angle set in c q3 (60/40/130), c q15 (40/124), c q1, c q18, b q2, b q15, kite-level-a q2 (80/60/110), T15 or T19."},
+    {"id": "CA-03", "status": "resolved", "evidence": "q5 now runs: theorem plus KO, then MO, then Noa's same-side error with KM = KO + OM = 66. The twin-median collinearity proof (b q18) is gone. The א/ב Pythagoras chain is the accepted K10 genre (b q4, kite-level-a q5 use the same genre with other data)."},
+    {"id": "CA-04", "status": "resolved", "evidence": "q11 is now 65/120/105, giving BO = 60, AO = 25, OC = 80, CB = 100 and perimeter 330 (triangles 25-60-65 and 60-80-100). BD = 72 and 27-36-45 are gone. Note: c q12 also prints AB = 65 and has OC = 80 at the same vertices, but through different triangles (39-52-65, 39-80-89) and a different design (inner kite, area ratio). Two coincident lengths, not a number set in the same design: not flagged."},
+    {"id": "CA-05", "status": "resolved", "evidence": "q20ב is now 'AE⊥BD, O midpoint of BD, area ABED in terms of AE and BD'. The kite-identification item that matched c q18 is gone."},
+    {"id": "CA-06", "status": "resolved", "evidence": "q14ג: ∠LKN = 76°, giving 38°, 52°, 90°. It no longer repeats q15א or c q3ג. The 76°/38°/52° values in G9-T15 b/c belong to isosceles/parallel items, a different object and design."},
+    {"id": "CA-07", "status": "resolved", "evidence": "P is a dot at AP = 1 (1/5 of AB), clearly apart from the midpoint tick. The key gives AQ = 1."},
+    {"id": "CA-08", "status": "resolved", "evidence": "q6ג: 17·8/2 = 68. kite-level-a's {10, 18, 90} is gone. b q20 has AC = 17 with BD = 10 (area 85) and T19 b has a perimeter of 68 (rhombus): single numbers in other roles."},
+    {"id": "CA-09", "status": "resolved", "evidence": "q18: 20/32/170, giving BO = 16, AO = 12, CB = 65, OC = 63; Gil's 44 gives CB = 2 < 16. 12-16-20 is in kite-level-a q3 and c q7 with other roles; 16-63-65 is in no other sheet."},
+    {"id": "CA-10", "status": "resolved, with one gap", "evidence": "STATUS_a's cross-scan now runs against the live b (15:00:35) and c (14:57:48) builds and adds an angle-set check. Its role pass (R) missed the a q7 ~ b q7 pair (R3-01), so R3-01 should be added to its 'remaining' list after the fix."}
+  ],
+  "checks_passed": {
+    "maths": "All changed keys are correct, apart from R3-02's ill-posed premise.",
+    "leaks": "No later item prints an earlier answer. q5ג describes Noa's method without numbers. q14ג's 76° is a new given. q18ג's 44 is not an answer (12, 65, 63). q9ג's AQ = 1 follows from the given AP = 1 by reflection, which is the tested step.",
+    "units": "ס״מ, סמ״ר and ° are present in every changed key.",
+    "layout": "14 pages. Rooms for q10, q17 and q19 unchanged and blank, with no grid. q20 fits on page 11 with 'בהצלחה!'.",
+    "duplication_other_questions": "q1-q4, q6, q8-q10, q12, q13, q16, q17, q19 re-checked against the frozen b and c. b's changes (q5 ET=4/TG=14, q8 AO=4/OC=7, q9 AC=9/BD=4/AO=2, q11ב AB=AD with AC⊥BD) and c's changes (q9 without the claim frame, q15 124°, q20 QR=40) create no new overlap with level a. The earlier adjudications stand: a q4~b q2 genre, a q3~b q3 canonical proof, a q8~b q6 K11, a q16~c q15 K12, a q17~b q11א K12, a q19 vs c q7/c q14 different triples and roles."
+  },
+  "adjudications": {
+    "didactic_D4_reviews": "q1, q2, q8, q12, q14: acceptable (unchanged reasons from CONFIRM_a.json); REVIEW is not PASS.",
+    "G79": "honest NOT_APPLICABLE / NOT_RUN on the figkit route (no wspec figures, no g79_spec in build.json); not a pass. Geometry: verify_export 118 constraints re-measured, 0 errors.",
+    "eye_check": "Only item 1, the site id for the G9-T99 alias, is Noam's. R3-01 to R3-03 are decided by the standing rules."
+  }
+}

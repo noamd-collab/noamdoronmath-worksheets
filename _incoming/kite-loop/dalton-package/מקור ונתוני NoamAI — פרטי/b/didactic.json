@@ -1,0 +1,962 @@
+{
+ "schema": "didactic/v1",
+ "package": "G9-T99",
+ "level": "b",
+ "items": {
+  "q1a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הדלתונים"
+   ],
+   "review_reasons": []
+  },
+  "q1b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך קודקודי הראש והאלכסון הראשי"
+   ],
+   "review_reasons": []
+  },
+  "q1c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך אבחון הטעות"
+   ],
+   "review_reasons": []
+  },
+  "q1d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך שני האלכסונים הראשיים"
+   ],
+   "review_reasons": []
+  },
+  "q2a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית ABC"
+   ],
+   "review_reasons": []
+  },
+  "q2b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית BAC",
+    "גודל הזווית ACD"
+   ],
+   "review_reasons": []
+  },
+  "q2c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית ADC"
+   ],
+   "review_reasons": []
+  },
+  "q3a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך חפיפה"
+   ],
+   "review_reasons": []
+  },
+  "q3b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "∠LKM = ∠NKM",
+    "∠LMK = ∠NMK"
+   ],
+   "review_reasons": []
+  },
+  "q3c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "KM ⊥ LN",
+    "LP = PN"
+   ],
+   "review_reasons": []
+  },
+  "q4a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך BO",
+    "segment AC",
+    "point O"
+   ],
+   "review_reasons": []
+  },
+  "q4b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך AO",
+    "אורך CO"
+   ],
+   "review_reasons": []
+  },
+  "q4c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח ABCD"
+   ],
+   "review_reasons": []
+  },
+  "q5a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הטעות"
+   ],
+   "review_reasons": []
+  },
+  "q5b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך EG",
+    "שטח EFGH"
+   ],
+   "review_reasons": []
+  },
+  "q5c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך מקרה מיוחד"
+   ],
+   "review_reasons": []
+  },
+  "q6a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "AB = AD"
+   ],
+   "review_reasons": []
+  },
+  "q6b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "CB = CD",
+    "shape {\"points\": [\"A\", \"B\", \"C\", \"D\"], \"value\": \"kite\"}"
+   ],
+   "review_reasons": []
+  },
+  "q6c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך ניצבות בלבד"
+   ],
+   "review_reasons": []
+  },
+  "q7a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך x",
+    "אורך RS"
+   ],
+   "review_reasons": []
+  },
+  "q7b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך TS"
+   ],
+   "review_reasons": []
+  },
+  "q7c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הכרעה"
+   ],
+   "review_reasons": []
+  },
+  "q8a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח △ABD",
+    "שטח △CBD"
+   ],
+   "review_reasons": []
+  },
+  "q8b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח ABCD"
+   ],
+   "review_reasons": []
+  },
+  "q8c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך האלכסון האחר"
+   ],
+   "review_reasons": []
+  },
+  "q9a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך סדר בנייה"
+   ],
+   "review_reasons": []
+  },
+  "q9b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך ציר סימטריה"
+   ],
+   "review_reasons": []
+  },
+  "q9c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך מעוין?",
+    "polygon ABCD",
+    "segment AC",
+    "segment BD"
+   ],
+   "review_reasons": []
+  },
+  "q10a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "EB = ED"
+   ],
+   "review_reasons": []
+  },
+  "q10b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך ציר סימטריה"
+   ],
+   "review_reasons": []
+  },
+  "q10c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הטעות"
+   ],
+   "review_reasons": []
+  },
+  "q11a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך ניצבות בלבד"
+   ],
+   "review_reasons": []
+  },
+  "q11b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך שוקיים וניצבות"
+   ],
+   "review_reasons": []
+  },
+  "q11c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך חצייה בלבד",
+    "polygon ABCD",
+    "segment AC",
+    "segment BD"
+   ],
+   "review_reasons": []
+  },
+  "q12a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך קודקודי ראש"
+   ],
+   "review_reasons": []
+  },
+  "q12b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך חצייה הדדית"
+   ],
+   "review_reasons": []
+  },
+  "q12c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח PQRS"
+   ],
+   "review_reasons": []
+  },
+  "q13a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך דלתון"
+   ],
+   "review_reasons": []
+  },
+  "q13b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך AB"
+   ],
+   "review_reasons": []
+  },
+  "q13c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך בחירת C למעוין",
+    "polygon ABCD"
+   ],
+   "review_reasons": []
+  },
+  "q14a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך AC"
+   ],
+   "review_reasons": []
+  },
+  "q14b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח ABCD"
+   ],
+   "review_reasons": []
+  },
+  "q14c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך היתכנות"
+   ],
+   "review_reasons": []
+  },
+  "q15a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הזוויות השוות"
+   ],
+   "review_reasons": []
+  },
+  "q15b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך x",
+    "גודל הזווית ABC"
+   ],
+   "review_reasons": []
+  },
+  "q15c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית BCD"
+   ],
+   "review_reasons": []
+  },
+  "q15d": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "גודל הזווית ACB"
+   ],
+   "review_reasons": []
+  },
+  "q16a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח ABCD"
+   ],
+   "review_reasons": []
+  },
+  "q16b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "שטח KLMN"
+   ],
+   "review_reasons": []
+  },
+  "q16c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך קביעת השטח"
+   ],
+   "review_reasons": []
+  },
+  "q17a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך האלכסון הראשי"
+   ],
+   "review_reasons": []
+  },
+  "q17b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך קטעי המעוין"
+   ],
+   "review_reasons": []
+  },
+  "q17c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך בנייה",
+    "polygon ABCD",
+    "segment AC",
+    "segment BD"
+   ],
+   "review_reasons": []
+  },
+  "q18a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "AM ⊥ BD"
+   ],
+   "review_reasons": []
+  },
+  "q18b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "CM ⊥ BD",
+    "collinear(AMC)"
+   ],
+   "review_reasons": []
+  },
+  "q18c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך מסקנה"
+   ],
+   "review_reasons": []
+  },
+  "q19a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הצלעות"
+   ],
+   "review_reasons": []
+  },
+  "q19b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך הצעות אפשריות"
+   ],
+   "review_reasons": []
+  },
+  "q19c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך האורך הגדול ביותר"
+   ],
+   "review_reasons": []
+  },
+  "q20a": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "הערך סוג המשולש",
+    "segment BD",
+    "point O"
+   ],
+   "review_reasons": []
+  },
+  "q20b": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך AO"
+   ],
+   "review_reasons": []
+  },
+  "q20c": {
+   "hint_type": "guiding_question",
+   "exposure": 0,
+   "requires_human_review": false,
+   "allowed_tools": [
+    "g9.kite.1",
+    "g9.kite.2",
+    "g9.kite.3"
+   ],
+   "aux_allowed": false,
+   "forbidden_to_show": [
+    "אורך AC",
+    "שטח ABCD"
+   ],
+   "review_reasons": []
+  }
+ }
+}
