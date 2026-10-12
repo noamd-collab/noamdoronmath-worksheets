@@ -481,7 +481,11 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         </p>
       ) : (
         top && (
-          <p class="concept-loop__top" dir={top.ltr ? 'ltr' : undefined}>
+          <p
+            class="concept-loop__top"
+            dir={top.ltr ? 'ltr' : undefined}
+            data-el={variant === 'kite-construct' ? 'kite-top' : undefined}
+          >
             {top.text}
           </p>
         )

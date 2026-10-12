@@ -2134,6 +2134,8 @@ function renderKiteShow(root: LoopRoot, t: number) {
   if (area) area.style.display = showArea ? '' : 'none';
   if (build) build.style.display = showArea ? 'none' : '';
   if (cap) cap.style.display = showArea ? 'none' : '';
+  const title = q(root, 'kite-top');
+  if (title) title.textContent = showArea ? 'למה מחלקים ב־2?' : 'איך בונים דלתון?';
   if (showArea) renderKiteArea(root, Math.min(t, KITE_AREA_END));
   else renderKite(root, t - KITE_AREA_END);
 }

@@ -148,9 +148,10 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again for the kite review fixes (RTL summary, final rest frame, pause target).
   // Moved again so kite ticks follow each side and the pause button waits for JS.
   // Moved again so the kite card plays the area film, then the construction.
+  // Moved again so the card title follows whichever film is playing.
   const expected = {
-    'src/components/ConceptLoop.astro': 'd003269f0f18f65d1969280f05c0263cbbc9b4f18dcf13c82b18ba21849a5f37',
-    'src/lib/conceptLoops.ts': 'f18342e814dacaf4fdf5e38a7405e8588200e63e7bf65df6657a1023630d6f18',
+    'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
+    'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {
