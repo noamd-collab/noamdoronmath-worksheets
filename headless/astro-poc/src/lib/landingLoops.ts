@@ -26,6 +26,7 @@ export const FAMILY_CONCEPT_LOOP = {
 /** One page whose own idea has its own ConceptLoop film (Kimi's L14 v6). */
 const SLUG_CONCEPT_OVERRIDE = {
   'difference-of-squares-grade-9': 'diff-sq',
+  'kite-grade-9': 'kite-construct',
 } as const;
 
 export type ConceptLoopVariant =

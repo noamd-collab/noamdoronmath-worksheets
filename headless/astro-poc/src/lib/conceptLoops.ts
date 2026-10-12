@@ -15,6 +15,8 @@
  *     prefers-reduced-motion does not park the loop.
  */
 
+import { renderKiteArea } from './kiteAreaFilm';
+
 type LoopRoot = HTMLElement & { __loop?: LoopDebug };
 
 interface LoopDebug {
@@ -2010,6 +2012,169 @@ function renderTwoDiag(root: LoopRoot, t: number) {
 }
 const TWO_DIAG_HOLD = 5.2;
 
+/* ═══════════════ kite-construct — area film, then ruler-and-compass ═══════════════
+   First: «שטח דלתון — מהדלתון למלבן» (84 s). Then loop #8 from
+   staging/packages-120-oct12 @ 654ab7c: two circles meet in a convex kite,
+   and growing the second circle makes a concave kite. The construction
+   fades back to rest so the seam returns to the area film. After 4 laps
+   the engine parks on the completed concave frame. Reduced motion and
+   no JS rest on the area film's final frame (t = 84), not that hold. */
+
+const KITE_X0 = 195.7;
+const KITE_X1 = 144.3;
+const KITE_Y1 = 110.8;
+const KITE_Y2 = 219.2;
+
+function renderKite(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 14.6, 15.6);
+  const dart = ph(t, 8.4, 9.0) * fade;
+  const ix = lerp(KITE_X0, KITE_X1, dart);
+  const iy1 = KITE_Y1;
+  const iy2 = KITE_Y2;
+
+  const axis = q(root, 'axis');
+  op(axis, ph(t, 0.3, 0.8) * fade);
+  draw(axis, ph(t, 0.35, 1.0) * fade);
+  op(q(root, 'axis-lbl'), ph(t, 11.2, 11.6) * fade);
+
+  op(q(root, 'pA'), ph(t, 1.3, 1.6) * fade);
+  op(q(root, 'lA'), ph(t, 1.4, 1.7) * fade);
+  op(q(root, 'pB'), ph(t, 1.6, 1.9) * fade);
+  op(q(root, 'lB'), ph(t, 1.7, 2.0) * fade);
+
+  const cA = q(root, 'cA');
+  op(cA, ph(t, 2.3, 2.7) * lerp(1, 0.12, ph(t, 7.5, 8.0)) * fade);
+  draw(cA, ph(t, 2.35, 3.5) * fade);
+
+  const cB = q(root, 'cB');
+  if (cB) cB.setAttribute('r', String(r2(lerp(70, 110, ph(t, 7.6, 8.4) * fade))));
+  op(cB, ph(t, 3.7, 4.1) * lerp(1, 0.2, ph(t, 8.6, 9.1)) * fade);
+  draw(cB, ph(t, 3.75, 4.9) * fade);
+
+  const dots: Array<[string, number, string, number]> = [
+    ['i1', iy1, 'l1', KITE_Y1 - 6],
+    ['i2', iy2, 'l2', KITE_Y2 + 12],
+  ];
+  for (const [dot, y, label, ly] of dots) {
+    const el = q(root, dot);
+    if (el) {
+      el.setAttribute('cx', String(r2(ix)));
+      el.setAttribute('cy', String(r2(y)));
+    }
+    op(el, ph(t, 5.1, 5.5) * fade);
+    const lb = q(root, label);
+    if (lb) {
+      lb.setAttribute('x', String(r2(ix + 15)));
+      lb.setAttribute('y', String(r2(ly)));
+    }
+    op(lb, ph(t, 5.4, 5.8) * fade);
+  }
+
+  const kite = q(root, 'kite');
+  if (kite) {
+    kite.setAttribute(
+      'd',
+      `M170 165 L${r2(ix)} ${r2(iy1)} L240 165 L${r2(ix)} ${r2(iy2)} Z`,
+    );
+  }
+  op(kite, ph(t, 5.6, 6.1) * fade);
+
+  const segs: Array<[string, number, number]> = [
+    ['sa1', ix, iy1],
+    ['sa2', ix, iy2],
+    ['sb1', ix, iy1],
+    ['sb2', ix, iy2],
+  ];
+  segs.forEach(([name, x2, y2], i) => {
+    const el = q(root, name);
+    if (el) {
+      el.setAttribute('x2', String(r2(x2)));
+      el.setAttribute('y2', String(r2(y2)));
+    }
+    op(el, ph(t, 6.2 + i * 0.15, 6.55 + i * 0.15) * fade);
+    draw(el, ph(t, 6.25 + i * 0.15, 6.9 + i * 0.15) * fade);
+  });
+
+  // Congruence ticks ride the midpoint of each side, perpendicular to it,
+  // including while C and D slide into the concave kite.
+  placeKiteTicks(q(root, 'tick-ac'), 170, 165, ix, iy1, 2);
+  placeKiteTicks(q(root, 'tick-ad'), 170, 165, ix, iy2, 2);
+  placeKiteTicks(q(root, 'tick-bc'), 240, 165, ix, iy1, 3);
+  placeKiteTicks(q(root, 'tick-bd'), 240, 165, ix, iy2, 3);
+
+  const reflex = q(root, 'reflex');
+  op(reflex, ph(t, 9.3, 9.6) * fade);
+  draw(reflex, ph(t, 9.35, 10.05) * fade);
+
+  const tickFade = lerp(1, 0, dart * 0.4);
+  op(q(root, 'ticksA'), ph(t, 6.9, 7.3) * tickFade * fade);
+  op(q(root, 'ticksB'), ph(t, 6.9, 7.3) * tickFade * fade);
+  op(q(root, 'chip-convex'), ph(t, 6.6, 7.0) * (1 - ph(t, 7.5, 7.9)) * fade);
+  op(q(root, 'chip-dart'), ph(t, 9.5, 9.9) * fade);
+  op(q(root, 'eq-lbl'), ph(t, 10.9, 11.3) * fade);
+  op(q(root, 'refl-lbl'), ph(t, 9.6, 10.0) * fade);
+  op(q(root, 'grow-lbl'), ph(t, 7.5, 7.9) * (1 - ph(t, 8.8, 9.2)) * fade);
+
+  const fxs = qa(root, '[data-fx]');
+  const fxFade = 1 - ph(t, 14.6, 15.6);
+  op(fxs[0], ph(t, 11.4, 11.8) * fxFade);
+  op(fxs[1], ph(t, 11.7, 12.1) * fxFade);
+  op(q(root, 'check'), ph(t, 12.4, 12.8) * fxFade);
+  op(q(root, 'caption'), ph(t, 12.6, 13.0) * fxFade);
+}
+const KITE_HOLD = 13.6;
+const KITE_AREA_END = 84;
+const KITE_BUILD = 16;
+
+function renderKiteShow(root: LoopRoot, t: number) {
+  const area = q(root, 'kite-area');
+  const build = q(root, 'kite-build');
+  const cap = q(root, 'kite-caption');
+  const showArea = t <= KITE_AREA_END;
+  if (area) area.style.display = showArea ? '' : 'none';
+  if (build) build.style.display = showArea ? 'none' : '';
+  if (cap) cap.style.display = showArea ? 'none' : '';
+  const title = q(root, 'kite-top');
+  if (title) title.textContent = showArea ? 'למה מחלקים ב־2?' : 'איך בונים דלתון?';
+  if (showArea) renderKiteArea(root, Math.min(t, KITE_AREA_END));
+  else renderKite(root, t - KITE_AREA_END);
+}
+
+/** Double or triple ticks centered on a segment, perpendicular to it. */
+function placeKiteTicks(
+  group: El | null,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  count: 2 | 3,
+) {
+  if (!group) return;
+  const lines = group.querySelectorAll('line');
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len;
+  const uy = dy / len;
+  const px = -uy;
+  const py = ux;
+  const half = 7;
+  const gap = count === 2 ? 4 : 5;
+  const offsets = count === 2 ? [-gap / 2, gap / 2] : [-gap, 0, gap];
+  const mx = (x1 + x2) / 2;
+  const my = (y1 + y2) / 2;
+  offsets.forEach((off, i) => {
+    const line = lines[i];
+    if (!line) return;
+    const cx = mx + ux * off;
+    const cy = my + uy * off;
+    line.setAttribute('x1', String(r2(cx - px * half)));
+    line.setAttribute('y1', String(r2(cy - py * half)));
+    line.setAttribute('x2', String(r2(cx + px * half)));
+    line.setAttribute('y2', String(r2(cy + py * half)));
+  });
+}
+
 /* ═══════════════ engine ═══════════════ */
 
 const SPECS = {
@@ -2085,6 +2250,11 @@ const SPECS = {
   'mark-250': { duration: 10, hold: MARK250_HOLD, render: renderMark250 },
   'quad-gate': { duration: 10, hold: QUAD_GATE_HOLD, render: renderQuadGate },
   'two-diag': { duration: 10, hold: TWO_DIAG_HOLD, render: renderTwoDiag },
+  'kite-construct': {
+    duration: KITE_AREA_END + KITE_BUILD,
+    hold: KITE_AREA_END + KITE_HOLD,
+    render: renderKiteShow,
+  },
 } as const;
 
 const MAX_LAPS = 4;
@@ -2094,6 +2264,12 @@ function motionOff(): boolean {
   // Only an explicit menu choice parks the film. OS reduced motion used to
   // take this same path and left every grade demo on the final frame.
   return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off');
+}
+
+/** The kite card parks on its finished frame when the OS asks for less motion.
+ *  The flag is set outside this file so other loops keep playing. */
+function kiteOsReduce(variantName: string, root: LoopRoot): boolean {
+  return variantName === 'kite-construct' && root.hasAttribute('data-os-reduce');
 }
 
 function setupLoop(root: LoopRoot) {
@@ -2120,6 +2296,7 @@ function setupLoop(root: LoopRoot) {
   function setToggle(label: string, showPlay: boolean) {
     if (!toggle) return;
     toggle.setAttribute('aria-label', label);
+    toggle.setAttribute('aria-pressed', showPlay ? 'true' : 'false');
     if (icPlay) icPlay.style.display = showPlay ? '' : 'none';
     if (icPause) icPause.style.display = showPlay ? 'none' : '';
   }
@@ -2158,17 +2335,18 @@ function setupLoop(root: LoopRoot) {
     playing = false;
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
-    if (!isStatic) setToggle(done ? 'הפעלת ההדגמה מחדש' : 'הפעלת ההדגמה', true);
+    if (!isStatic) setToggle(done ? 'הפעלת ההדגמה מחדש' : 'המשך ההדגמה', true);
   }
 
   function applyMotionPrefs() {
-    if (motionOff()) {
+    if (motionOff() || kiteOsReduce(variant, root)) {
       // static completed frame, no motion at all
       isStatic = true;
       playing = false;
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
-      t = spec.hold;
+      // The kite rests on the area film's last frame. Other loops keep their hold.
+      t = variant === 'kite-construct' ? KITE_AREA_END : spec.hold;
       drawFrame();
       if (toggle) toggle.style.display = 'none';
     } else if (isStatic) {
@@ -2181,7 +2359,7 @@ function setupLoop(root: LoopRoot) {
       drawFrame();
       if (toggle) toggle.style.display = '';
       if (inView) play();
-      else setToggle('הפעלת ההדגמה', true);
+      else setToggle('המשך ההדגמה', true);
     }
   }
 
@@ -2221,9 +2399,19 @@ function setupLoop(root: LoopRoot) {
     attributes: true,
     attributeFilter: ['class'],
   });
+  if (variant === 'kite-construct') {
+    new MutationObserver(applyMotionPrefs).observe(root, {
+      attributes: true,
+      attributeFilter: ['data-os-reduce'],
+    });
+  }
 
   applyMotionPrefs();
-  if (!isStatic) setToggle('השהיית ההדגמה', false);
+  if (!isStatic) {
+    // The button is hidden in the markup so it stays gone when JS never runs.
+    if (toggle) toggle.style.display = '';
+    setToggle('השהיית ההדגמה', false);
+  }
 
   // deterministic hook for automated checks / report screenshots
   root.__loop = {

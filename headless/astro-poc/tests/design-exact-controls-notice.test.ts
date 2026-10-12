@@ -144,9 +144,14 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Hashes moved off live-base 8a098020 because L01 angle-sum was deleted
   // and replaced by the vertex-descent film. Not a silent design regen.
   // Moved again for Noam's approved Kimi L14 diff-sq v6 film.
+  // Moved again for the grade-9 kite-construct film (explicit content addition).
+  // Moved again for the kite review fixes (RTL summary, final rest frame, pause target).
+  // Moved again so kite ticks follow each side and the pause button waits for JS.
+  // Moved again so the kite card plays the area film, then the construction.
+  // Moved again so the card title follows whichever film is playing.
   const expected = {
-    'src/components/ConceptLoop.astro': '7a53ec85a1b9fb039cb6363e799b1e2d36f78d82f7d407738d18a3136c47b229',
-    'src/lib/conceptLoops.ts': '10601a87ba90387e8459658a9990e4f3a255a037a293e93fac1d8b6f97aa588c',
+    'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
+    'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {

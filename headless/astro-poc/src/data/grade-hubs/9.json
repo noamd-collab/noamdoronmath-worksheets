@@ -127,6 +127,11 @@
           "productionHref": "https://www.noamdoronmath.co.il/trapezoid-grade-9"
         },
         {
+          "path": "/kite-grade-9",
+          "label": "דלתון",
+          "productionHref": "https://www.noamdoronmath.co.il/kite-grade-9"
+        },
+        {
           "path": "/similar-triangles-grade-9",
           "label": "דמיון משולשים",
           "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-9"
@@ -339,6 +344,11 @@
       "path": "/trapezoid-grade-9",
       "label": "טרפז",
       "productionHref": "https://www.noamdoronmath.co.il/trapezoid-grade-9"
+    },
+    {
+      "path": "/kite-grade-9",
+      "label": "דלתון",
+      "productionHref": "https://www.noamdoronmath.co.il/kite-grade-9"
     },
     {
       "path": "/similar-triangles-grade-9",
