@@ -2158,10 +2158,11 @@ function answerKeptSpan(text) {
   let start = 0;
   let end = raw.length;
   // A glued "ד. הוכחה", ". נימוק" or "נכונה ·" still carries the source mark.
+  // A cut that lands inside the next part also leaves "· ד" on the end.
   const lead = /^(?:[\s]*[·•.]+[\s]*|[אבגדהו]\.\s*)/;
-  const trail = /\s*[·•]+\s*$/;
+  const trail = /(?:\s*[·•]+\s*[אבגדהו]\.?\s*|\s*[·•]+\s*)$/;
   let guard = 0;
-  while (guard < 4 && start < end) {
+  while (guard < 6 && start < end) {
     guard += 1;
     const cur = raw.slice(start, end);
     const head = cur.match(lead);
@@ -2177,6 +2178,36 @@ function answerKeptSpan(text) {
     break;
   }
   if (start === 0 && end === raw.length) return null;
+  return { start, end };
+}
+
+function glyphOverlapSpan(glyph, left, right) {
+  const text = String(glyph.str || '');
+  const width = glyph.w || 0;
+  const gx = glyph.x || 0;
+  if (!(width > 0) || !text) return null;
+  const overlapL = Math.max(left, gx);
+  const overlapR = Math.min(right, gx + width);
+  if (overlapR - overlapL < 0.4) return null;
+  const total = Math.max(measureAnswerUnits(text), 0.01);
+  const rtl = glyph.dir !== 'ltr' || /[\u0590-\u05FF]/.test(text);
+  const fromLeft = (overlapL - gx) / width;
+  const fromRight = (gx + width - overlapR) / width;
+  const u0 = (rtl ? fromRight : fromLeft) * total;
+  const u1 = total - (rtl ? fromLeft : fromRight) * total;
+  let start = text.length;
+  let end = 0;
+  let seen = false;
+  for (let i = 0; i < text.length; i += 1) {
+    const acc = measureAnswerUnits(text.slice(0, i));
+    const next = measureAnswerUnits(text.slice(0, i + 1));
+    if (next > u0 + 0.04 && acc < u1 - 0.04) {
+      if (!seen) start = i;
+      seen = true;
+      end = i + 1;
+    }
+  }
+  if (!seen || end <= start) return null;
   return { start, end };
 }
 
@@ -2221,15 +2252,22 @@ function clipAnswerAffixes(items, left, right, bottom, top) {
     }
     if (!moved) break;
   }
-  // The mark can share a glyph with the answer ("ד. הוכחה", ". נימוק ·").
+  // The mark shares the run with the answer ("ד. הוכחה", ". נימוק ·", "נכונה ·").
+  // Peel it from the slice this box actually shows, including when the box is
+  // padded a couple of points past the run or cuts through the next part label.
   hits.forEach((glyph) => {
-    const span = answerKeptSpan(glyph.str);
+    // Look a few points past the edge so a dot sitting on the boundary is peeled too.
+    const visible = glyphOverlapSpan(glyph, left - 3, right + 3);
+    if (!visible) return;
+    const shown = String(glyph.str || '').slice(visible.start, visible.end);
+    const span = answerKeptSpan(shown);
     if (!span || span.end <= span.start) return;
-    const kept = answerSliceBox(glyph, span.start, span.end);
+    const kept = answerSliceBox(glyph, visible.start + span.start, visible.start + span.end);
     const gx = glyph.x || 0;
     const gr = gx + Math.max(glyph.w || 0, 2);
-    if (gx <= left + 1.5 && kept.x > left + 0.4) left = Math.min(kept.x, right - 6);
-    if (gr >= right - 1.5 && kept.x + kept.w < right - 0.4) right = Math.max(kept.x + kept.w, left + 6);
+    const slack = 4;
+    if (gr >= right - slack && kept.x + kept.w < right - 0.3) right = Math.max(kept.x + kept.w, left + 6);
+    if (gx <= left + slack && kept.x > left + 0.3) left = Math.min(kept.x, right - 6);
   });
   return { left, right };
 }
@@ -2258,6 +2296,7 @@ function measureAnswerUnits(text) {
     const ch = value[i];
     if (/[\u0590-\u05FF]/.test(ch)) n += 1;
     else if (/[0-9A-Za-z]/.test(ch)) n += 0.56;
+    else if (/[·•.]/.test(ch)) n += 0.62;
     else n += 0.32;
   }
   return n;
@@ -2442,7 +2481,7 @@ function answerSliceFor(pages, question) {
     // A wrapped line runs under the other parts. Masks hide those parts; clipping would cut the line.
     const box = raw.slot ? raw : clipForeignLabels(items, raw, part);
     // Horizontal pad must stay smaller than a middot, or the trailing · comes back.
-    const padX = 0.8;
+    const padX = 0.35;
     const padY = 0.5;
     const gap = 1.2;
     let x0 = Math.max(0, box.x - padX);
