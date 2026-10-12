@@ -3354,9 +3354,11 @@ function answerCellSize(text, naturalW, naturalH) {
   const baseline = 16;
   let imageY = 0;
   let labelBaseline = baseline;
-  if (wraps === 1 && imageH <= labelLine + 6) {
-    // A short crop was top-aligned, so its glyphs sat above the label.
-    imageY = Math.max(0, baseline + 2 - imageH);
+  if (wraps === 1 && imageH <= 36) {
+    // One line of answer. Its bottom meets the label, including a crop that is
+    // a little taller than the 15px label.
+    const base = Math.max(baseline, imageH - 2);
+    imageY = Math.max(0, base + 2 - imageH);
     labelBaseline = imageY + imageH - 2;
   } else if (wraps > 1) {
     labelBaseline = Math.max(12, Math.min(baseline, fullH - 2));
@@ -3518,6 +3520,54 @@ function leftFigureBoxes(bitmap, y0, y1) {
       maxX -= 1;
     }
     if (maxX <= minX) return;
+    // A writing box is a tall mid-grey fill. The left-column scan runs into it
+    // and would carry the drawing across the sentence beside the figure.
+    const greyFill = (x, y) => {
+      const i = (y * width + x) * 4;
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
+      const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
+      return mx - mn < 28 && mx > 150 && mx < 235;
+    };
+    const greyColumn = (x) => {
+      let n = 0;
+      let black = 0;
+      for (let y = low; y <= high; y += 1) {
+        if (barRow[y - top] || ruleAt(y) || !dark(x, y)) continue;
+        if (greyFill(x, y)) n += 1;
+        else black += 1;
+      }
+      return n >= 8 && black * 3 < n;
+    };
+    let edge = maxX;
+    let greyRun = 0;
+    while (edge > minX && greyColumn(edge)) {
+      edge -= 1;
+      greyRun += 1;
+    }
+    // Peel the writing box off only when a real stroke remains to its left.
+    // A grey band with no drawing stays as it was.
+    let drawingLeft = false;
+    if (greyRun > Math.max(6, Math.round(width * 0.015))) {
+      for (let x = minX; x <= edge; x += 1) {
+        let stroke = 0;
+        for (let y = low; y <= high; y += 1) {
+          if (barRow[y - top] || ruleAt(y) || !dark(x, y) || greyFill(x, y)) continue;
+          stroke += 1;
+          if (stroke >= 4) break;
+        }
+        if (stroke >= 4) {
+          drawingLeft = true;
+          break;
+        }
+      }
+    }
+    if (drawingLeft) {
+      const retreat = Math.max(2, Math.round(width * 0.018));
+      maxX = Math.max(minX, edge - retreat);
+    }
     // The left-column scan stops at 0.33. Follow the same stroke past that edge.
     const gapPx = Math.max(4, Math.round(width * 0.016));
     const limitX = Math.min(width - 2, Math.floor(width * 0.45));
@@ -3525,14 +3575,16 @@ function leftFigureBoxes(bitmap, y0, y1) {
     let seeds = [];
     for (let y = low; y <= high; y += 1) {
       if (barRow[y - top] || ruleAt(y)) continue;
-      if (dark(maxX, y)) seeds.push(y);
+      if (dark(maxX, y) && !(drawingLeft && greyColumn(maxX))) seeds.push(y);
     }
     let last = maxX;
     let miss = 0;
     for (let x = maxX + 1; x <= limitX && seeds.length; x += 1) {
+      if (drawingLeft && greyColumn(x)) break;
       const next = [];
       for (let y = low; y <= high; y += 1) {
         if (barRow[y - top] || ruleAt(y) || !dark(x, y)) continue;
+        if (drawingLeft && greyFill(x, y)) continue;
         if (seeds.some((seed) => Math.abs(seed - y) <= link)) next.push(y);
       }
       if (next.length) {
@@ -5575,7 +5627,10 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
           const imageY = cell.imageY || 0;
           const textY = y + (cell.labelBaseline || Math.min(16, Math.max(14, imageH)));
           ctx.fillText(cell.slice.text, right, textY);
-          const imageX = right - labelW - 8 - imageW;
+          // A scaled row shrinks labelW but the type stays 15px. Use the ink width.
+          const drawnLabel = Math.ceil(ctx.measureText(String(cell.slice.text || '')).width);
+          const labelSpan = Math.max(labelW, drawnLabel);
+          const imageX = right - labelSpan - 8 - imageW;
           const ink = answerInkCanvas(cell.bitmap, sx, sy, sw, sh, cell.slice.box);
           const room = Math.max(1, (item.dh || imageH) - imageY);
           let drawW = imageW;
