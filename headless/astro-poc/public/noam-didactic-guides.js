@@ -273,12 +273,15 @@
   }
 
   var UNDERSTOOD_LEAD="יופי, מעולה שזה ברור.";
+  var NOT_UNDERSTOOD_LEAD="זה בסדר גמור, בואו ננסה אחרת.";
   var CLOSING_TEXT="יופי, מעולה שזה ברור.\nאפשר לעבור לסעיף הבא.";
   var AI_SIMPLER="לא הבנתי. תסבירו מחדש, יותר בפשטות ובצעדים קטנים, בלי לחזור על אותן מילים. סיימו בשאלה קצרה אחת.";
   var AI_NEXT="הבנתי. תנו רק את הצעד הבא, בלי לחזור על מה שכבר נאמר. סיימו בשאלה קצרה אחת.";
   var AI_ANGLE="לא הבנתי את הצעד גם אחרי הפירוק. תנו זווית אחרת, בפשטות ובצעדים קטנים, בלי לחזור על אותו ניסוח. סיימו בשאלה קצרה.";
   var AI_DOWN="אי אפשר להביא עכשיו הסבר חדש. אפשר ללחוץ על «רמז», או לקרוא שוב את הצעד לאט.";
   var AI_DOWN_NEXT="אי אפשר להביא עכשיו את הצעד הבא. אפשר ללחוץ על «רמז», או לעבור לסעיף הבא.";
+  var AI_DOWN_DONE="אי אפשר להביא עכשיו הסבר חדש. אפשר לקרוא שוב את הצעד לאט.";
+  var AI_DOWN_NEXT_DONE="אי אפשר להביא עכשיו את הצעד הבא. אפשר לעבור לסעיף הבא.";
   var understandingState=Object.create(null);
   var pendingNote="";
 
@@ -375,6 +378,19 @@
     return catchUpState(understandingFor(exerciseId),guide,settings);
   }
 
+  function retryText(body){
+    var text=String(body||"").trim();
+    if(!text){return NOT_UNDERSTOOD_LEAD;}
+    if(text.indexOf(NOT_UNDERSTOOD_LEAD)===0){return text;}
+    return NOT_UNDERSTOOD_LEAD+"\n"+text;
+  }
+
+  function hintsDone(settings){
+    if(settings&&settings.hintsDone){return true;}
+    var progress=Number(settings&&settings.progress);
+    return isFinite(progress)&&progress>=3;
+  }
+
   function applyReply(state,guide,intent){
     var hints=guide.hints||[];
     if(intent==="understood"){
@@ -394,14 +410,14 @@
     }
     if(state.cursor<hints.length-1){
       state.cursor=Math.max(0,state.cursor+1);
-      return checkReply(hints[state.cursor],hintKey(guide,state.cursor));
+      return checkReply(retryText(hints[state.cursor]),hintKey(guide,state.cursor));
     }
     var steps=substeps(guide);
     if(state.factIndex<steps.length){
       state.factsStarted=true;
       var line=steps[state.factIndex];
       state.factIndex+=1;
-      return checkReply(line,guide.defaultVisualKey||hintKey(guide,hints.length-1));
+      return checkReply(retryText(line),guide.defaultVisualKey||hintKey(guide,hints.length-1));
     }
     return null;
   }
@@ -414,15 +430,19 @@
     var value=String(text||"").replace(/\s+/g," ").trim();
     if(!value){return false;}
     if(/חושב…|עדיין חושב/.test(value)){return false;}
+    if(value.indexOf(UNDERSTOOD_LEAD)!==-1&&value.indexOf("אפשר לעבור לסעיף הבא")!==-1){return false;}
     return true;
   }
 
-  function offlineUnderstanding(intent){
-    return intent==="understood"?AI_DOWN_NEXT:AI_DOWN;
+  function offlineUnderstanding(intent,settings){
+    var done=hintsDone(settings);
+    if(intent==="understood"){return done?AI_DOWN_NEXT_DONE:AI_DOWN_NEXT;}
+    return retryText(done?AI_DOWN_DONE:AI_DOWN);
   }
 
-  function fallbackUnderstanding(intent){
-    return offlineUnderstanding(intent);
+  function fallbackUnderstanding(intent,settings){
+    var opts=settings&&typeof settings==="object"&&!Array.isArray(settings)?settings:null;
+    return offlineUnderstanding(intent,opts);
   }
 
   function noteCheck(intent){
@@ -430,26 +450,28 @@
   }
 
   function planUnderstanding(exerciseId,intent,settings){
+    var display=intent==="understood"?"הבנתי":"לא הבנתי";
     var guide=get(exerciseId);
     if(!guide){
       return intent==="understood"
-        ?{action:"ai",prompt:AI_NEXT,fallback:AI_DOWN_NEXT}
-        :{action:"ai",prompt:AI_SIMPLER,fallback:AI_DOWN};
+        ?{action:"ai",prompt:AI_NEXT,display:display,fallback:offlineUnderstanding(intent,settings)}
+        :{action:"ai",prompt:AI_SIMPLER,display:display,fallback:offlineUnderstanding(intent,settings)};
     }
     var sim=catchUpState(cloneState(understandingFor(exerciseId)),guide,settings);
     var hints=guide.hints||[];
     if(!sim.factsStarted&&!sim.stepShown&&sim.cursor<hints.length-1){
-      return {action:"hint",hintsOpened:Math.min(3,sim.cursor+2),lead:intent==="understood"};
+      return {action:"hint",hintsOpened:Math.min(3,sim.cursor+2),lead:intent==="understood",display:display};
     }
     var reply=applyReply(sim,guide,intent);
     if(!reply){
       return {
         action:"ai",
         prompt:intent==="understood"?AI_NEXT:AI_ANGLE,
-        fallback:intent==="understood"?AI_DOWN_NEXT:AI_DOWN
+        display:display,
+        fallback:offlineUnderstanding(intent,settings)
       };
     }
-    return {action:"local",phrase:intent==="understood"?"הבנתי":"לא הבנתי",text:reply.text};
+    return {action:"local",phrase:display,display:display,text:reply.text};
   }
 
   function respond(exerciseId,options){
@@ -468,6 +490,7 @@
       pendingNote="";
       var body=guide.hints[hintIndex];
       if(note==="understood"){body=UNDERSTOOD_LEAD+"\n"+body;}
+      if(note==="not-understood"){body=retryText(body);}
       return {text:body,visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
     }
     pendingNote="";
@@ -513,6 +536,7 @@
     offlineUnderstanding:offlineUnderstanding,
     fallbackUnderstanding:fallbackUnderstanding,
     understoodLead:UNDERSTOOD_LEAD,
+    notUnderstoodLead:NOT_UNDERSTOOD_LEAD,
     closingText:CLOSING_TEXT
   };
 });

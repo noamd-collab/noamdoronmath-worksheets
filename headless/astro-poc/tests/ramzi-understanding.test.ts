@@ -26,7 +26,7 @@ function hint(index: number) {
 }
 
 describe('Ramzi understanding checks', () => {
-  it('opens the next hint after לא הבנתי without repeating the kind lead', () => {
+  it('opens the next hint after לא הבנתי with one short neutral lead', () => {
     reset();
     const first = hint(0);
     assert.match(first.text, /∠EBD/);
@@ -34,6 +34,7 @@ describe('Ramzi understanding checks', () => {
 
     const plan = guides.planUnderstanding(proof, 'not-understood', {});
     assert.equal(plan.action, 'hint');
+    assert.equal(plan.display, 'לא הבנתי');
     assert.equal(plan.hintsOpened, 2);
     assert.equal(guides.planUnderstanding(proof, 'not-understood', {}).hintsOpened, 2);
 
@@ -43,8 +44,10 @@ describe('Ramzi understanding checks', () => {
       hintIndex: 0,
       progress: 1,
     });
+    assert.match(softer.text, /^זה בסדר גמור, בואו ננסה אחרת\.\n/);
+    assert.equal(softer.text.split(guides.notUnderstoodLead).length - 1, 1);
     assert.match(softer.text, /∠EBD = ∠DBC/);
-    assert.doesNotMatch(softer.text, /זה בסדר גמור|שמח|יופי, מעולה/);
+    assert.doesNotMatch(softer.text, /שמח|בוא ננסה/);
     assert.equal(softer.focusKey, 'q4a-bisector');
   });
 
@@ -58,9 +61,10 @@ describe('Ramzi understanding checks', () => {
       progress: 3,
     });
     assert.ok(latest);
+    assert.match(latest.text, /^זה בסדר גמור, בואו ננסה אחרת\.\n/);
     assert.match(latest.text, /E נמצאת על AB/);
     assert.match(latest.text, /\n/);
-    assert.doesNotMatch(latest.text, /DE ∥ BC|כל הצעד|זה בסדר גמור/);
+    assert.doesNotMatch(latest.text, /DE ∥ BC|כל הצעד/);
     seen.add(latest.text);
     while (latest) {
       const next = guides.respond(proof, {
@@ -73,16 +77,19 @@ describe('Ramzi understanding checks', () => {
         break;
       }
       assert.equal(seen.has(next.text), false);
-      assert.ok(next.text.length < 220);
+      assert.ok(next.text.length < 280);
       seen.add(next.text);
       latest = next;
     }
     assert.ok(seen.size >= 4);
-    const again = guides.planUnderstanding(proof, 'not-understood', { progress: 3 });
+    const again = guides.planUnderstanding(proof, 'not-understood', { progress: 3, hintsDone: true });
     assert.equal(again.action, 'ai');
+    assert.equal(again.display, 'לא הבנתי');
     assert.match(again.prompt, /זווית אחרת/);
-    assert.match(again.fallback, /רמז/);
-    assert.doesNotMatch(again.fallback, /זה בסדר גמור/);
+    assert.equal(again.prompt.includes('תסבירו מחדש'), false);
+    assert.match(again.fallback, /בואו ננסה אחרת/);
+    assert.match(again.fallback, /לקרוא שוב/);
+    assert.doesNotMatch(again.fallback, /רמז|הצעד הבא/);
     assert.equal(guides.respond(proof, { helpKind: 'free_question', studentMessage: 'לא הבנתי', progress: 3 }), null);
   });
 
@@ -133,43 +140,73 @@ describe('Ramzi understanding checks', () => {
   it('asks for a new explanation when there is no guide, and never stitches old replies', () => {
     const missed = guides.planUnderstanding(plain, 'not-understood', {});
     assert.equal(missed.action, 'ai');
-    assert.match(missed.prompt, /לא הבנתי/);
+    assert.equal(missed.display, 'לא הבנתי');
+    assert.match(missed.prompt, /תסבירו מחדש/);
     assert.match(missed.prompt, /פשטות|צעדים קטנים/);
     assert.match(missed.prompt, /שאלה קצרה/);
+    assert.doesNotMatch(missed.display, /תסבירו/);
+    assert.match(missed.fallback, /^זה בסדר גמור, בואו ננסה אחרת/);
     assert.match(missed.fallback, /רמז/);
-    assert.doesNotMatch(missed.fallback, /קודם מסמנים|זה בסדר גמור/);
+    assert.doesNotMatch(missed.fallback, /קודם מסמנים|הצעד הבא/);
     const got = guides.planUnderstanding(plain, 'understood', {});
     assert.equal(got.action, 'ai');
-    assert.match(got.prompt, /הצעד הבא/);
-    assert.doesNotMatch(got.prompt, /שמח/);
+    assert.equal(got.display, 'הבנתי');
+    assert.match(got.prompt, /תנו רק את הצעד הבא/);
+    assert.match(got.fallback, /הצעד הבא/);
+    assert.doesNotMatch(got.fallback, /שמח|בואו ננסה|הסבר חדש/);
     const offline = guides.offlineUnderstanding('not-understood');
+    const understoodDown = guides.offlineUnderstanding('understood');
     assert.match(offline, /רמז/);
+    assert.doesNotMatch(offline, /הצעד הבא/);
+    assert.match(understoodDown, /הצעד הבא/);
+    assert.doesNotMatch(understoodDown, /הסבר חדש|בואו ננסה/);
+    const noHint = guides.offlineUnderstanding('not-understood', { hintsDone: true });
+    const noHintYes = guides.offlineUnderstanding('understood', { hintsDone: true });
+    assert.doesNotMatch(noHint, /רמז/);
+    assert.match(noHint, /לקרוא שוב/);
+    assert.doesNotMatch(noHintYes, /רמז/);
+    assert.match(noHintYes, /סעיף הבא/);
     assert.equal(
       guides.fallbackUnderstanding('not-understood', ['קודם מסמנים את הזווית. אחר כך משווים.'], 1),
       offline,
     );
     assert.equal(guides.needsCheck('הסבר בלי שאלה.', '', 'השאלה שלך: הסבר כללי'), true);
     assert.equal(guides.needsCheck('רמזי חושב…', '', ''), false);
+    assert.equal(guides.needsCheck(guides.closingText, '', ''), false);
     assert.equal(guides.needsCheck('מה אפשר לומר על המשולש?', '', ''), true);
   });
 
-  it('renders a check under every reply, keeps the hint counter, and isolates angle signs', () => {
+  it('shows the short phrase, one button group, and rtl math runs', () => {
     const adapter = viewer.match(/<script id="exact-viewer-adapter">([\s\S]*?)<\/script>/)?.[1] || '';
     const style = viewer.match(/<style id="exact-viewer-presentation">([\s\S]*?)<\/style>/)?.[1] || '';
     assert.match(adapter, /planUnderstanding/);
     assert.match(adapter, /noteCheck/);
+    assert.match(adapter, /veiledHints/);
+    assert.match(adapter, /inferCheckIntent/);
+    assert.match(adapter, /תסבירו מחדש/);
+    assert.match(adapter, /content\.textContent='לא הבנתי'/);
+    assert.match(adapter, /input\.value=''/);
     assert.match(adapter, /hintFloors/);
     assert.match(adapter, /Math\.max\(released,floor\)/);
+    assert.match(adapter, /hintsDone:opened>=3/);
     assert.match(adapter, /createElement\('bdi'\)/);
     assert.match(adapter, /bdi\.dir='ltr'/);
-    assert.match(adapter, /noam-row\.assistant/);
-    assert.doesNotMatch(adapter, /ramzi-check'\)\.forEach/);
-    assert.doesNotMatch(adapter, /שמח|זה בסדר גמור|בוא ננסה/);
+    assert.match(adapter, /p\.dir='rtl'/);
+    assert.match(adapter, /ramzi-line/);
+    assert.match(adapter, /querySelectorAll\('\.ramzi-check'\)\.forEach/);
+    assert.match(adapter, /!rowQualifies\(last\)/);
+    assert.match(adapter, /ramziSoftened/);
+    assert.match(adapter, /removeChild\(node\)/);
+    assert.match(adapter, /noam-retry-action/);
+    assert.match(adapter, /isClosing/);
+    assert.doesNotMatch(adapter, /שמח|בוא ננסה/);
+    assert.match(adapter, /זה בסדר גמור, בואו ננסה אחרת/);
     assert.match(style, /\.exact-viewer \.ramzi-check button\{[\s\S]*min-height:44px/);
     assert.match(style, /font-family:Heebo,'Heebo Fallback',sans-serif/);
     assert.match(style, /\.exact-viewer \.ramzi-check\{[\s\S]*direction:rtl/);
     assert.match(style, /outline:3px solid #22305a/);
     assert.match(style, /bdi\[dir="ltr"\]\{unicode-bidi:isolate;direction:ltr\}/);
+    assert.match(style, /\.exact-viewer \.ramzi-line\{margin:0;direction:rtl\}/);
     assert.match(style, /white-space:pre-wrap/);
     assert.doesNotMatch(adapter, /ramzi-check-no[\s\S]{0,80}disabled\s*=/);
   });
