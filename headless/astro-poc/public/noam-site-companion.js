@@ -208,8 +208,16 @@
     "@media (min-width:768px){",
     "html.noam-ai-engaged #noam-accessibility{left:8px!important;right:auto!important}",
     "}",
+    "@keyframes noam-think-dot{0%,80%,100%{opacity:.25}40%{opacity:1}}",
+    "#noam-site-companion-panel.is-thinking #noam-site-companion-answer{display:block;-webkit-line-clamp:unset;overflow:visible}",
+    "#noam-site-companion-thinking{display:inline-flex;align-items:center;gap:6px}",
+    "#noam-site-companion-thinking .noam-think-dots{display:inline-flex;gap:3px}",
+    "#noam-site-companion-thinking .noam-think-dots i{width:6px;height:6px;border-radius:50%;background:currentColor;animation:noam-think-dot 1.2s infinite}",
+    "#noam-site-companion-thinking .noam-think-dots i:nth-child(2){animation-delay:.2s}",
+    "#noam-site-companion-thinking .noam-think-dots i:nth-child(3){animation-delay:.4s}",
     "@media (prefers-reduced-motion:reduce){",
     "html.noam-ai-engaged,html.noam-ai-engaged body,#noam-site-companion-panel{scroll-behavior:auto;transition:none;animation:none}",
+    "#noam-site-companion-thinking .noam-think-dots i{animation:none;opacity:1}",
     "}",
     "@media print{#noam-site-companion,#noam-site-companion-panel{display:none!important}html.noam-ai-engaged{display:block!important;height:auto!important;overflow:visible!important}html.noam-ai-engaged body{max-height:none!important;overflow:visible!important}}",
     "#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}",
@@ -338,7 +346,44 @@
     moreEl.hidden = false;
   }
 
+  var thinkTimer = null;
+
+  function thinkingLabel(seconds) {
+    if (!seconds) return "חושב…";
+    if (seconds === 1) return "חושב… 1 שנייה";
+    return "חושב… " + seconds + " שניות";
+  }
+
+  function sendButton() {
+    return form.querySelector("button");
+  }
+
+  function stopThinking() {
+    if (thinkTimer) clearInterval(thinkTimer);
+    thinkTimer = null;
+    panel.classList.remove("is-thinking");
+    var button = sendButton();
+    if (button) button.disabled = false;
+  }
+
+  function showThinking() {
+    stopThinking();
+    var started = Date.now();
+    hasAnswer = true;
+    panel.classList.add("is-thinking");
+    answerEl.innerHTML = '<span id="noam-site-companion-thinking"><span class="noam-think-text">חושב…</span><span class="noam-think-dots" aria-hidden="true"><i></i><i></i><i></i></span></span>';
+    var button = sendButton();
+    if (button) button.disabled = true;
+    thinkTimer = setInterval(function () {
+      var seconds = Math.floor((Date.now() - started) / 1000);
+      var text = answerEl.querySelector(".noam-think-text");
+      if (text) text.textContent = thinkingLabel(seconds);
+    }, 250);
+    if (mode === "compact") fitCompact();
+  }
+
   function showResult(result) {
+    stopThinking();
     hasAnswer = true;
     answerEl.textContent = (result && (result.answer || result.text)) || FALLBACK;
     var primary = result && result.primary;
@@ -411,7 +456,7 @@
       else visibleChips += 1;
     }
     if (visibleChips === 0 || (!wide && !teacher)) drop(chipsEl);
-    if (tight && !hasAnswer) drop(answerEl);
+    if (tight && !hasAnswer && !panel.classList.contains("is-thinking")) drop(answerEl);
     var order = teacher
       ? [primaryEl, ramziEl, moreEl, answerEl]
       : tight && hasAnswer
@@ -468,7 +513,10 @@
     expandEl.hidden = false;
     collapseEl.hidden = true;
     var sendBtn = form.querySelector("button");
-    if (sendBtn) sendBtn.textContent = panel.classList.contains("is-tight") ? "שלח" : "שליחה";
+    if (sendBtn) {
+      sendBtn.textContent = panel.classList.contains("is-tight") ? "שלח" : "שליחה";
+      sendBtn.disabled = streaming;
+    }
     expandEl.setAttribute("aria-expanded", "false");
     fitCompact();
   }
@@ -482,7 +530,10 @@
     panel.classList.remove("is-xtight");
     clearCompactDrops();
     var sendBtn = form.querySelector("button");
-    if (sendBtn) sendBtn.textContent = "שליחה";
+    if (sendBtn) {
+      sendBtn.textContent = "שליחה";
+      sendBtn.disabled = streaming;
+    }
     document.documentElement.classList.add("noam-ai-engaged");
     expandEl.hidden = true;
     collapseEl.hidden = false;
@@ -619,7 +670,7 @@
       return;
     }
     streaming = true;
-    answerEl.textContent = "בודק בקטלוג המאומת…";
+    showThinking();
     ensureBotClient().then(function (client) {
       return client.postJson(API, {
         message: message.slice(0, 700),

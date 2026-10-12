@@ -195,6 +195,7 @@ export async function runCompanionTurn(payload, deps) {
   }
   const result = await handleCompanionTurn(payload, {
     catalog: settings.catalog,
+    guide: settings.guide,
     apiKey: settings.qwenKey,
     fetch: settings.fetch,
     timeoutMs: settings.qwenTimeoutMs,
@@ -311,6 +312,14 @@ export async function handleNoamSiteCompanion(request, deps) {
       payload = {};
     }
   }
+  const originAllowed = isAllowedOrigin(origin) || isHeadlessPreviewOrigin(origin);
+  if (!originAllowed) {
+    return { status: 403, headers: { Vary: "Origin" }, body: "" };
+  }
+  // A greeting has no model call and no cost. Answer it before the guard.
+  if (isRoleQuestion(payload.message)) {
+    return jsonResponse(200, await runCompanionTurn(payload, settings), origin);
+  }
   const guard = await guardCompanionRequest(
     {
       origin,
@@ -348,6 +357,9 @@ export async function handleNoamSiteCompanion(request, deps) {
       [],
       []
     );
+    if (guard.code === "BOT_VERIFICATION_FAILED" && guard.siteverify) {
+      fail.siteverify = guard.siteverify;
+    }
     const cors = corsHeadersFor(origin);
     if (!cors) return { status: 403, headers: { Vary: "Origin" }, body: "" };
     return { status: guard.status, headers: cors, body: fail };

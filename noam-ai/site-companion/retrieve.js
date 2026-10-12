@@ -5,7 +5,7 @@
 
 const PDF_CDN = "https://static.wixstatic.com/ugd/d8e7ad_";
 
-function worksheetHref(catalog, grade, topic, level) {
+export function worksheetHref(catalog, grade, topic, level) {
   const pdfDirect = PDF_CDN + level.pdfId + ".pdf";
   const viewerEnabled = !!(catalog.config && catalog.config.viewer && catalog.config.viewer.enabled);
   const middle = ((catalog.config && catalog.config.middleGrades) || []).map(Number);
@@ -89,5 +89,53 @@ export function retrieveRecords(catalog, query, limit) {
     })
     .filter((row) => row.score > 0)
     .sort((a, b) => b.score - a.score || a.record.grade - b.record.grade || a.record.topicId - b.record.topicId);
+  return ranked.slice(0, cap).map((row) => row.record);
+}
+
+const GRADE_MARK = { א: 1, ב: 2, ג: 3, ד: 4, ה: 5, ו: 6, ז: 7, ח: 8, ט: 9 };
+const TYPE_RANK = { topic: 5, worksheet: 4, hub: 3, game: 3, catalog: 3, loop: 3, page: 2, blog: 1 };
+
+export function gradeMentioned(query) {
+  const match = String(query || "").match(/כיתה\s*([1-9אבגדהוזחט])/);
+  if (!match) return null;
+  const mark = match[1];
+  if (/[1-9]/.test(mark)) return Number(mark);
+  return GRADE_MARK[mark] || null;
+}
+
+function guideSearchText(record) {
+  return [record.gradeLabel, record.title, record.levelLabel, record.topic, record.contains, record.audience, record.how, record.terms]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+export function retrieveGuide(guide, query, limit) {
+  const records = (guide && guide.records) || [];
+  const wanted = tokens(query);
+  const cap = Math.max(1, Math.min(8, Number(limit) || 6));
+  const namedGrade = gradeMentioned(query);
+  if (!wanted.length && namedGrade == null) return records.slice(0, cap);
+  const ranked = records
+    .map((record) => {
+      if (namedGrade != null && record.grade != null && Number(record.grade) !== namedGrade) {
+        return { record, score: 0 };
+      }
+      const haystack = guideSearchText(record);
+      let score = namedGrade != null && Number(record.grade) === namedGrade ? 6 : 0;
+      for (const token of wanted) {
+        if (haystack.includes(token)) score += token.length > 3 ? 3 : 1;
+        if (String(record.title || "").toLowerCase().includes(token)) score += 4;
+      }
+      return { record, score };
+    })
+    .filter((row) => row.score > 0)
+    .sort((a, b) => {
+      return (
+        b.score - a.score ||
+        (TYPE_RANK[b.record.type] || 0) - (TYPE_RANK[a.record.type] || 0) ||
+        (a.record.grade || 0) - (b.record.grade || 0)
+      );
+    });
   return ranked.slice(0, cap).map((row) => row.record);
 }

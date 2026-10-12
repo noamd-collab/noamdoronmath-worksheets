@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
+import { fileURLToPath } from 'node:url';
 import { companionPanelSize } from '../../../noam-ai/site-companion/panel-size.js';
-import { retrieveRecords } from '../../../noam-ai/site-companion/retrieve.js';
+import { retrieveGuide, retrieveRecords } from '../../../noam-ai/site-companion/retrieve.js';
 import {
   FALLBACK_TEXT,
   ROLE_TEXT,
@@ -30,6 +32,9 @@ import { runCompanionTurn } from '../../../noam-ai/site-companion/endpoint.js';
 
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
+);
+const guide = JSON.parse(
+  readFileSync(new URL('../src/data/site-guide.v1.json', import.meta.url), 'utf8')
 );
 
 describe('Noam AI panel size', () => {
@@ -75,6 +80,102 @@ describe('Noam AI catalog grounding', () => {
     assert.equal(result.source, 'catalog-gap');
     assert.equal(result.links.length, 0);
     assert.match(result.text, /לא מצאתי/);
+    assert.match(result.text, /באיזו כיתה/);
+  });
+});
+
+function catalogPdfIds(source) {
+  const ids = [];
+  for (const grade of source.grades || []) {
+    for (const topic of grade.topics || []) {
+      for (const level of topic.levels || []) {
+        const pdfId = String(level.pdfId || '').toLowerCase();
+        if (/^[0-9a-f]{32}$/.test(pdfId)) ids.push(pdfId);
+      }
+    }
+  }
+  return ids;
+}
+
+function factoringLevelA() {
+  const grade = catalog.grades.find((item) => item.grade === 9);
+  const topic = grade.topics.find((item) => item.id === 2 && item.title === 'פירוק לגורמים');
+  return topic.levels.find((level) => level.key === 'a');
+}
+
+describe('Noam AI site manual', () => {
+  it('covers repo pages and keeps worksheet ids on the catalog', () => {
+    const catalogIds = catalogPdfIds(catalog).sort();
+    const guideIds = guide.records
+      .filter((row) => row.type === 'worksheet')
+      .map((row) => String(row.pdfId).toLowerCase())
+      .sort();
+    assert.deepEqual(guideIds, catalogIds);
+    assert.equal(guide.counts.worksheet, catalogIds.length);
+    for (const id of [
+      'dd5036296f084fb7ad7fc6c1bbb25088',
+      '073d5168d4b448dea8e2e69eda37dc48',
+      'b62b8ffe166e46a5ba3f8bea511bafb8',
+    ]) {
+      assert.ok(guideIds.includes(id), id);
+    }
+    assert.equal(guideIds.includes('6a37fe7160324a17ad107b3dbe43c1db'), false);
+    assert.equal(guide.counts.topic, 95);
+    assert.equal(guide.counts.hub, 9);
+    assert.equal(guide.counts.blog, 68);
+    assert.equal(guide.counts.game, 1);
+    assert.ok(guide.counts.page >= 10);
+    assert.equal(typeof guide.manifestMatches, 'number');
+    const level = factoringLevelA();
+    const sheet = guide.records.find((row) => row.id === 'g9-t2-a');
+    assert.ok(sheet);
+    assert.equal(sheet.pdfId, level.pdfId);
+    assert.equal(sheet.levelLabel, 'רמה א׳');
+    assert.match(sheet.href, new RegExp(level.pdfId));
+    assert.match(sheet.how, /הורדה \/ הדפסה/);
+    assert.equal(sheet.contains.includes('alg'), false);
+    const manifestUrl = new URL('../public/noam-ai/manifests/' + level.pdfId + '.json', import.meta.url);
+    assert.equal(existsSync(manifestUrl), true);
+    const manifest = JSON.parse(readFileSync(manifestUrl, 'utf8'));
+    assert.equal(String(manifest.pdfHash).toLowerCase(), String(level.pdfId).toLowerCase());
+    assert.match(sheet.contains, new RegExp(manifest.questionCount + ' שאלות'));
+    assert.match(sheet.contains, new RegExp(manifest.exerciseCount + ' תרגילים'));
+    assert.match(sheet.contains, new RegExp(manifest.pageCount + ' עמודים'));
+    const topic = guide.records.find((row) => row.href === '/factoring-grade-9');
+    assert.match(topic.contains, /בדקו את עצמכם/);
+    assert.match(topic.how, /רמה א׳ מתאימה לביסוס/);
+    assert.equal(topic.contains.includes('(x−3)(x+3)'), false);
+    const teachers = guide.records.find((row) => row.href === '/teachers');
+    assert.match(teachers.how, /כיתה, נושא ומטרת השיעור/);
+    assert.match(teachers.audience, /מרחב למורה/);
+    assert.ok(guide.records.some((row) => row.type === 'game' && row.href === '/games/kefel-mekutsar-2'));
+  });
+
+  it('fails when the committed guide differs from a fresh build', () => {
+    const root = fileURLToPath(new URL('..', import.meta.url));
+    const result = spawnSync('npx', ['tsx', 'scripts/build-site-guide.ts', '--check'], {
+      cwd: root,
+      encoding: 'utf8',
+      timeout: 120000,
+    });
+    assert.equal(result.status, 0, (result.stderr || '') + (result.stdout || ''));
+  });
+
+  it('retrieves a real factoring page and does not call the model when nothing matches', async () => {
+    const pdfId = factoringLevelA().pdfId;
+    const rows = retrieveGuide(guide, 'כיתה ט׳ פירוק לגורמים', 6);
+    assert.ok(rows.length > 0);
+    assert.ok(rows.every((row) => row.grade === 9));
+    assert.ok(rows.some((row) => row.href.includes(pdfId) || row.href === '/factoring-grade-9'));
+    let called = 0;
+    const result = await handleCompanionTurn(
+      { message: 'xxxxqqqq yyyywwww', page: { kind: 'home', path: '/', title: 'בית' } },
+      { guide, catalog, apiKey: 'test', fetch: async () => { called += 1; throw new Error('should not call'); } }
+    );
+    assert.equal(called, 0);
+    assert.equal(result.source, 'catalog-gap');
+    assert.equal(result.links.length, 0);
+    assert.match(result.text, /באיזו כיתה/);
   });
 });
 
@@ -180,6 +281,13 @@ describe('Noam AI model role', () => {
 
   it('answers what Noam AI does without calling the model', async () => {
     assert.equal(isRoleQuestion('במה אתה עוזר לי באתר?'), true);
+    assert.equal(isRoleQuestion('הי במה אתה יכול לעזור לי?'), true);
+    assert.equal(isRoleQuestion('שלום'), true);
+    assert.equal(isRoleQuestion('הי'), true);
+    assert.equal(isRoleQuestion('במה אתה יכול לעזור'), true);
+    assert.equal(isRoleQuestion('מה אתה עושה'), true);
+    assert.equal(isRoleQuestion('הי יש דף שברים לכיתה ג'), false);
+    assert.equal(isRoleQuestion('איך פותרים את שאלה 4?'), false);
     assert.equal(isRoleQuestion('פירוק לגורמים לכיתה ט'), false);
     let called = 0;
     const result = await handleCompanionTurn(
@@ -258,6 +366,17 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('document.querySelector("dialog[open]")'));
     assert.equal(client.includes('input.focus();\n          engage("typing")'), false);
     assert.equal(client.includes('סימון וחיתוך של דף המקור עדיין לא ממומשים'), false);
+    assert.ok(client.includes('function thinkingLabel(seconds)'));
+    assert.ok(client.includes('return "חושב…";'));
+    assert.ok(client.includes('return "חושב… 1 שנייה";'));
+    assert.ok(client.includes('return "חושב… " + seconds + " שניות";'));
+    assert.ok(client.includes('aria-live="polite"'));
+    assert.ok(client.includes('#noam-site-companion-thinking .noam-think-dots i{animation:none;opacity:1}'));
+    assert.ok(client.includes('button.disabled = true'));
+    assert.ok(client.includes('clearInterval(thinkTimer)'));
+    assert.ok(client.includes('showThinking();'));
+    const thinkAt = client.indexOf('showThinking();');
+    assert.ok(solveAt > 0 && thinkAt > solveAt);
   });
 });
 
