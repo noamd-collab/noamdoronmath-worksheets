@@ -3038,6 +3038,52 @@ function dropMaskedAnswerBand(piece) {
   return { ...piece, box: placedBox(box, box.y + box.h * cut, h) };
 }
 
+function bitmapWithAnswerMasks(bitmap, box) {
+  const masks = [];
+  if (box && box.mask) masks.push(box.mask);
+  (box && box.masks || []).forEach((mask) => {
+    if (mask) masks.push(mask);
+  });
+  if (!masks.length || !bitmap || typeof bitmap.getContext !== 'function') return bitmap;
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const rects = masks.map((mask) => ({
+    x0: Math.max(0, Math.floor((box.x + mask.x * box.w) * width)),
+    x1: Math.min(width, Math.ceil((box.x + (mask.x + mask.w) * box.w) * width)),
+    y0: Math.max(0, Math.floor((box.y + mask.y * box.h) * height)),
+    y1: Math.min(height, Math.ceil((box.y + (mask.y + mask.h) * box.h) * height)),
+  })).filter((rect) => rect.x1 > rect.x0 && rect.y1 > rect.y0);
+  if (!rects.length) return bitmap;
+  const ctx = bitmap.getContext('2d');
+  return {
+    width,
+    height,
+    getContext: () => ({
+      getImageData: (x, y, w, h) => {
+        const image = ctx.getImageData(x, y, w, h);
+        const data = image.data;
+        rects.forEach((rect) => {
+          const left = Math.max(x, rect.x0);
+          const right = Math.min(x + w, rect.x1);
+          const top = Math.max(y, rect.y0);
+          const bot = Math.min(y + h, rect.y1);
+          if (right <= left || bot <= top) return;
+          for (let row = top; row < bot; row += 1) {
+            const start = ((row - y) * w + (left - x)) * 4;
+            const end = start + (right - left) * 4;
+            for (let i = start; i < end; i += 4) {
+              data[i] = 255;
+              data[i + 1] = 255;
+              data[i + 2] = 255;
+            }
+          }
+        });
+        return image;
+      },
+    }),
+  };
+}
+
 function trimPieceBox(slice, bitmap) {
   const box = slice.box;
   if (!box || !bitmap) return slice;
@@ -3059,8 +3105,13 @@ function trimPieceBox(slice, bitmap) {
   }
   if (y2 - y < 0.004) return slice;
   const clipped = y === box.y && Math.abs(y2 - (box.y + box.h)) < 0.0001 ? box : placedBox(box, y, y2 - y);
-  const ink = sliceInkRows(bitmap, clipped);
+  let ink = sliceInkRows(bitmap, clipped);
   if (!ink || !ink.bands.length) return { ...slice, box: clipped };
+  const answerView = slice.kind === 'answer' ? bitmapWithAnswerMasks(bitmap, clipped) : bitmap;
+  if (answerView !== bitmap) {
+    const masked = sliceInkRows(answerView, clipped);
+    if (masked && masked.bands.length) ink = masked;
+  }
   const pageH = ink.height;
     const pad = slice.kind === 'answer' ? 2 : Math.max(2, Math.round(pageH * 0.003));
     if (slice.kind === 'answer') {
@@ -3114,20 +3165,28 @@ function trimPieceBox(slice, bitmap) {
         if (darkest > 90) bands.pop();
       }
     }
-    // The next line's parenthesis tips leak in as a short band under this answer.
-    // A real continuation is about as tall as this line, so it stays. This is
-    // independent of wrap: a wrapped line is tall, and the tips are not.
+    // Parenthesis tips from the next line are a narrow band beside this answer.
+    // A real line is about as wide as this one, so a short wide band stays.
     if (bands.length >= 2) {
-      let mainH = 0;
+      let main = bands[0];
       bands.forEach((band) => {
-        if (band.h > mainH) mainH = band.h;
+        if (band.h > main.h) main = band;
       });
-      while (bands.length >= 2) {
-        const tail = bands[bands.length - 1];
-        const prev = bands[bands.length - 2];
-        const gap = tail.y - (prev.y + prev.h);
-        if (gap >= 8 && tail.h < mainH * 0.55 && tail.h < mainH) bands.pop();
-        else break;
+      const mainW = main.maxX != null && main.minX != null ? main.maxX - main.minX : 0;
+      const fringe = (band) => {
+        if (band === main || !(band.h < main.h * 0.55)) return false;
+        if (!(mainW > 8) || band.minX == null) return true;
+        return band.maxX - band.minX < mainW * 0.45;
+      };
+      for (let index = bands.length - 1; index >= 0; index -= 1) {
+        const band = bands[index];
+        if (!fringe(band)) continue;
+        const prev = bands[index - 1];
+        const next = bands[index + 1];
+        const gapPrev = prev ? band.y - (prev.y + prev.h) : 99;
+        const gapNext = next ? next.y - (band.y + band.h) : 99;
+        if ((prev === main && gapPrev < 8) || (next === main && gapNext < 8)) continue;
+        bands.splice(index, 1);
       }
     }
     const top = Math.max(0, ink.y0 + bands[0].y - pad);
@@ -3140,7 +3199,7 @@ function trimPieceBox(slice, bitmap) {
       if (band.minX < inkMin) inkMin = band.minX;
       if (band.maxX > inkMax) inkMax = band.maxX;
     });
-    const edge = answerEdgeSpan(bitmap, clipped, top, bot);
+    const edge = answerEdgeSpan(answerView, clipped, top, bot);
     if (edge) {
       inkMin = edge.minX;
       inkMax = edge.maxX;
@@ -3152,7 +3211,7 @@ function trimPieceBox(slice, bitmap) {
     let left = Math.max(boundLeft, ink.x0 + inkMin - hPad);
     let right = Math.min(boundRight, ink.x0 + inkMax + 1 + hPad);
     // The glyph box can slice a letter. Finish that cluster. Do not drop an edge token.
-    const snapped = snapAnswerClusters(bitmap, clipped, top, bot);
+    const snapped = snapAnswerClusters(answerView, clipped, top, bot);
     if (snapped) {
       left = Math.max(0, snapped.minX - hPad);
       right = Math.min(pageW, snapped.maxX + 1 + hPad);
