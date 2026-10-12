@@ -2153,6 +2153,13 @@ function answerBox(items, questionNumber, part) {
             y1: Math.min(gy + Math.max(glyph.h || 0, 10) + 1.5, top),
           });
         });
+        // A leftover "א." or "ב. (" is the other line's edge, not this answer.
+        covers.push({
+          x0: left,
+          x1: right,
+          y0: Math.max(oy - 3, bottom),
+          y1: Math.min(oy + Math.max(other.h || 0, 11) + 2, top),
+        });
       });
     } else if (labels.length) {
       const mentioned = items.some((item) => (
@@ -2290,26 +2297,38 @@ function clipAnswerAffixes(items, left, right, bottom, top) {
     }
     if (!moved) break;
   }
-  // Shrink the window to the glyphs it actually holds. Never cut inside a glyph:
-  // "ד. הוכחה" and "א. יתר" keep their full PDF boxes. A proportional slice of
-  // the run cuts the next letter. The bitmap snap drops only the separator cluster.
+  // A shared Hebrew run stays on the slot the caller measured ("ד. הוכחה" does not
+  // take the previous part). A math glyph is kept whole: cutting "b = 5 , a = x"
+  // or "0.6" is how the edge tokens disappeared.
   let keepL = null;
   let keepR = null;
+  let mathL = null;
+  let mathR = null;
   hits.forEach((glyph) => {
     const text = String(glyph.str || '');
     if (!text.trim() || answerAffixText(text)) return;
     const gx = glyph.x || 0;
     const gr = gx + Math.max(glyph.w || 0, 2);
-    if (gr <= left + 0.4 || gx >= right - 0.4) return;
-    const kL = Math.max(gx, left);
-    const kR = Math.min(gr, right);
-    if (kR - kL < 0.4) return;
-    if (keepL == null || kL < keepL) keepL = kL;
-    if (keepR == null || kR > keepR) keepR = kR;
+    const overlap = Math.min(gr, right) - Math.max(gx, left);
+    if (overlap < 0.4) return;
+    if (/[אבגדהו]/.test(text)) {
+      const kL = Math.max(gx, left);
+      const kR = Math.min(gr, right);
+      if (kR - kL < 0.4) return;
+      if (keepL == null || kL < keepL) keepL = kL;
+      if (keepR == null || kR > keepR) keepR = kR;
+      return;
+    }
+    if (mathL == null || gx < mathL) mathL = gx;
+    if (mathR == null || gr > mathR) mathR = gr;
   });
   if (keepL != null && keepR > keepL + 6) {
     left = Math.max(left, keepL);
     right = Math.min(right, keepR);
+  }
+  if (mathL != null && mathR > mathL + 1) {
+    left = Math.min(left, mathL);
+    right = Math.max(right, mathR);
   }
   return { left, right };
 }
@@ -2895,26 +2914,12 @@ function answerEdgeSpan(bitmap, box, yTop, yBot) {
       }
     }
   }
-  if (clusters.length < 2) return null;
-  // A letter sits 4–7px from the next letter at 300 DPI. "ד." and "·" sit across
-  // a real space, about 18px. Dropping every short edge cluster cuts ה off הוכחה.
-  const space = 8;
-  const kept = clusters.filter((cluster, index) => {
-    const touchesLeft = cluster.x <= 1;
-    const touchesRight = cluster.x + cluster.w >= rw - 1;
-    if (!touchesLeft && !touchesRight) return true;
-    if (cluster.w > 30) return true;
-    const neighbor = touchesLeft ? clusters[index + 1] : clusters[index - 1];
-    if (!neighbor) return true;
-    const gap = touchesLeft
-      ? neighbor.x - (cluster.x + cluster.w)
-      : cluster.x - (neighbor.x + neighbor.w);
-    return gap < space;
-  });
-  const use = kept.length ? kept : clusters;
-  let minX = use[0].x;
-  let maxX = use[0].x + use[0].w;
-  use.forEach((cluster) => {
+  if (!clusters.length) return null;
+  // Keep every cluster in the crop. "x", "25", "=", and a closing bracket are
+  // narrow and a real space away from the next token. Dropping them deletes the answer.
+  let minX = clusters[0].x;
+  let maxX = clusters[0].x + clusters[0].w;
+  clusters.forEach((cluster) => {
     if (cluster.x < minX) minX = cluster.x;
     if (cluster.x + cluster.w > maxX) maxX = cluster.x + cluster.w;
   });
@@ -2922,8 +2927,8 @@ function answerEdgeSpan(bitmap, box, yTop, yBot) {
 }
 
 /**
- * Finish a letter the crop cut through, then drop only a separator cluster.
- * "ד." and "·" sit a space away from the word. A letter of "הוכחה" does not.
+ * Finish a letter the crop cut through. Do not drop an edge cluster:
+ * "x = 9", "25", and "0.6" are the answer, and a separator is only a glyph.
  */
 function snapAnswerClusters(bitmap, box, yTop, yBot) {
   if (!bitmap || !box || typeof bitmap.getContext !== 'function') return null;
@@ -2978,21 +2983,10 @@ function snapAnswerClusters(bitmap, box, yTop, yBot) {
   });
   if (!owned.length) return null;
   owned.sort((a, b) => a.x - b.x);
-  let minX = owned[0].x;
-  let maxX = owned[owned.length - 1].x + owned[owned.length - 1].w;
-  // A separator is the narrow cluster at the outer edge, across a real space.
-  // Letter spacing inside הוכחה is 4–7px at 300 DPI; "ד." is about 18px away.
-  // width*0.014 is ~35px, wider than ה, so the gap — not the width alone — decides.
-  const sep = Math.max(18, Math.round(width * 0.014));
-  const space = Math.max(8, Math.round(width * 0.0032));
-  if (owned.length >= 2) {
-    const first = owned[0];
-    const second = owned[1];
-    if (first.w <= sep && second.x - (first.x + first.w) >= space) minX = second.x;
-    const last = owned[owned.length - 1];
-    const prev = owned[owned.length - 2];
-    if (last.w <= sep && last.x - (prev.x + prev.w) >= space) maxX = prev.x + prev.w;
-  }
+  // The whole overlapping cluster, including the part that sticks out of the window.
+  // Never move the edge inward: that is what turned "x = 9" into "=".
+  const minX = owned[0].x;
+  const maxX = owned[owned.length - 1].x + owned[owned.length - 1].w;
   if (maxX - minX < 4) return null;
   return { minX, maxX };
 }
@@ -3070,6 +3064,25 @@ function trimPieceBox(slice, bitmap) {
       }
       if (darkest > 90) bands.shift();
     }
+    if (bands.length >= 2) {
+      const tail = bands[bands.length - 1];
+      const prev = bands[bands.length - 2];
+      if (tail.h <= 6 && tail.y - (prev.y + prev.h) >= 8) {
+        let darkest = 0;
+        try {
+          const image = bitmap.getContext('2d').getImageData(ink.x0, ink.y0 + tail.y, Math.max(1, ink.width - ink.x0), tail.h);
+          const pixels = image.data;
+          darkest = 255;
+          for (let i = 0; i < pixels.length; i += 4) {
+            if (pixels[i] < darkest) darkest = pixels[i];
+            if (darkest < 80) break;
+          }
+        } catch (error) {
+          darkest = 0;
+        }
+        if (darkest > 90) bands.pop();
+      }
+    }
     const top = Math.max(0, ink.y0 + bands[0].y - pad);
     const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
     const pageW = ink.width;
@@ -3091,7 +3104,7 @@ function trimPieceBox(slice, bitmap) {
     const boundRight = Math.min(pageW, Math.ceil((clipped.x + clipped.w) * pageW));
     let left = Math.max(boundLeft, ink.x0 + inkMin - hPad);
     let right = Math.min(boundRight, ink.x0 + inkMax + 1 + hPad);
-    // The glyph box can slice a letter. Finish that cluster, and drop only "·" / "." / "ד.".
+    // The glyph box can slice a letter. Finish that cluster. Do not drop an edge token.
     const snapped = snapAnswerClusters(bitmap, clipped, top, bot);
     if (snapped) {
       left = Math.max(0, snapped.minX - hPad);
@@ -3932,7 +3945,126 @@ function leftFigureBoxes(bitmap, y0, y1) {
       }
     }
   });
+  // A second triangle sits in the same band, past the left figure, with a gap
+  // too wide to follow one stroke across. DEF and PQR are that second figure.
+  const siblings = [];
+  boxes.forEach((box) => {
+    const padY = Math.round(height * 0.02);
+    const low = Math.max(top, Math.floor(box.y0 * height) - padY);
+    const high = Math.min(bot, Math.ceil(box.y1 * height) + Math.round(height * 0.006));
+    const bandH = high - low;
+    if (bandH < tallMin) return;
+    const spanNeed = Math.max(12, bandH * 0.42);
+    const xFrom = Math.ceil(box.x1 * width) + Math.max(8, Math.round(width * 0.012));
+    const xTo = Math.min(width - 2, Math.floor(width * 0.78));
+    if (xTo <= xFrom + 8) return;
+    const cols = [];
+    for (let x = xFrom; x < xTo; x += 1) {
+      let n = 0;
+      let minY = high;
+      let maxY = low;
+      for (let y = low; y <= high; y += 1) {
+        if (!strokeAt(x, y)) continue;
+        n += 1;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+      if (n >= 2 && maxY - minY >= spanNeed) cols.push(x);
+    }
+    if (cols.length < 4) return;
+    let start = cols[0];
+    let prev = cols[0];
+    const groups = [];
+    const flush = () => groups.push([start, prev]);
+    for (let i = 1; i < cols.length; i += 1) {
+      if (cols[i] - prev > Math.max(10, Math.round(width * 0.02))) {
+        flush();
+        start = cols[i];
+      }
+      prev = cols[i];
+    }
+    flush();
+    groups.forEach(([x0, x1]) => {
+      if (x1 - x0 < 8) return;
+      let minY = high;
+      let maxY = low;
+      for (let x = x0; x <= x1; x += 1) {
+        for (let y = low; y <= high; y += 1) {
+          if (!strokeAt(x, y)) continue;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+        }
+      }
+      if (maxY - minY < spanNeed * 0.85) return;
+      siblings.push({
+        x0: x0 / width,
+        x1: (x1 + 1) / width,
+        y0: minY / height,
+        y1: (maxY + 1) / height,
+      });
+    });
+  });
+  siblings.forEach((box) => {
+    const overlap = boxes.some((have) => {
+      const overlapX = Math.min(have.x1, box.x1) - Math.max(have.x0, box.x0);
+      const overlapY = Math.min(have.y1, box.y1) - Math.max(have.y0, box.y0);
+      return overlapX > 0.015 && overlapY > 0.015;
+    });
+    if (!overlap) boxes.push(box);
+  });
   return boxes;
+}
+
+/**
+ * A flat grey or near-white fill beside a drawing is an empty writing box.
+ * It is not part of the figure. A box with no dark stroke is only that fill.
+ */
+function clipEmptyFigureTail(bitmap, box) {
+  if (!bitmap || !box || box.segment !== 'figure' || typeof bitmap.getContext !== 'function') return box;
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const x0 = Math.max(0, Math.floor((box.x || 0) * width));
+  const x1 = Math.min(width, Math.ceil(((box.x || 0) + (box.w || 0)) * width));
+  const y0 = Math.max(0, Math.floor((box.y || 0) * height));
+  const y1 = Math.min(height, Math.ceil(((box.y || 0) + (box.h || 0)) * height));
+  if (x1 - x0 < 8 || y1 - y0 < 8) return box;
+  let data;
+  try {
+    data = bitmap.getContext('2d').getImageData(x0, y0, x1 - x0, y1 - y0).data;
+  } catch (error) {
+    return box;
+  }
+  const rw = x1 - x0;
+  const rh = y1 - y0;
+  const darkCol = new Uint8Array(rw);
+  const fillCol = new Uint8Array(rw);
+  for (let x = 0; x < rw; x += 1) {
+    let dark = 0;
+    let fill = 0;
+    for (let y = 0; y < rh; y += 2) {
+      const i = (y * rw + x) * 4;
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const mx = r > g ? (r > b ? r : b) : (g > b ? g : b);
+      const mn = r < g ? (r < b ? r : b) : (g < b ? g : b);
+      if (mx < 80) dark += 1;
+      else if (mx - mn < 18 && mx > 140 && mx < 252) fill += 1;
+    }
+    if (dark > 1) darkCol[x] = 1;
+    if (fill > Math.max(4, rh * 0.15)) fillCol[x] = 1;
+  }
+  let lastDark = -1;
+  for (let x = 0; x < rw; x += 1) if (darkCol[x]) lastDark = x;
+  if (lastDark < 0) return null;
+  let tail = 0;
+  for (let x = lastDark + 1; x < rw; x += 1) {
+    if (fillCol[x] && !darkCol[x]) tail += 1;
+  }
+  if (tail < Math.max(12, Math.round(width * 0.02))) return box;
+  const right = x0 + lastDark + 2;
+  if (right - x0 < 8) return box;
+  return { ...box, w: (right / width) - box.x };
 }
 
 function partMarks(items) {
@@ -4891,33 +5023,33 @@ function layoutQuestionCrops(model) {
     let boxBot = Math.min(ceiling, footerTop, cap, bot + 0.008);
     if (boxBot - boxTop < 0.02) return;
     const inside = [];
-    const onInquiryLine = (box) => cluster.some((row) => {
-      const ry = row.y || 0;
-      const rh = Math.max(row.h || 0.014, 0.012);
-      const top = box.y || 0;
-      const bot = top + (box.h || 0);
-      return bot > ry - 0.004 && top < ry + rh + 0.004;
-    });
     for (let i = segments.length - 1; i >= 0; i -= 1) {
       const have = segments[i].box;
       if (!have || have.segment === 'figure') continue;
-      // The investigation paragraph is one band taller than a single line.
-      if (have.h > 0.05 && !(inquiry && onInquiryLine(have))) continue;
-      if (have.y >= cap - 0.002) continue;
       if (inquiry) {
-        // A tree label sits left of the box. A word of the investigation line does not.
-        if (!onInquiryLine(have) && have.w < 0.1 && have.x + have.w < 0.3) continue;
-      } else if (have.x < 0.24) continue;
+        // The title bar and the paragraph under it are one figure. A segment that
+        // continues into the next part stays, so "רשמו" is not swallowed.
+        const overlap = Math.min((have.y || 0) + (have.h || 0), boxBot) - Math.max(have.y || 0, boxTop);
+        if (overlap < 0.006) continue;
+        if ((have.y || 0) + (have.h || 0) > cap + 0.006) continue;
+        inside.push(have);
+        segments.splice(i, 1);
+        continue;
+      }
+      // The investigation paragraph is one band taller than a single line.
+      if (have.h > 0.05) continue;
+      if (have.y >= cap - 0.002) continue;
+      if (have.x < 0.24) continue;
       const mid = have.y + have.h * 0.5;
       if (mid < boxTop - 0.004 || mid > boxBot + 0.004) continue;
       inside.push(have);
       segments.splice(i, 1);
     }
-    if (!inside.length) return;
-    let x0 = inside[0].x;
-    let x1 = inside[0].x + inside[0].w;
-    let y0 = inside[0].y;
-    let y1 = inside[0].y + inside[0].h;
+    if (!inside.length && !inquiry) return;
+    let x0 = inside.length ? inside[0].x : 0.06;
+    let x1 = inside.length ? inside[0].x + inside[0].w : 0.92;
+    let y0 = inside.length ? inside[0].y : boxTop;
+    let y1 = inside.length ? inside[0].y + inside[0].h : boxBot;
     inside.forEach((have) => {
       x0 = Math.min(x0, have.x);
       x1 = Math.max(x1, have.x + have.w);
@@ -4925,8 +5057,12 @@ function layoutQuestionCrops(model) {
       y1 = Math.max(y1, have.y + have.h);
     });
     if (inquiry) {
+      // The grey bar is wider than the word חקירה. The paragraph is the rest of the box.
+      x0 = 0.06;
+      x1 = Math.max(x1, 0.9);
+      y0 = Math.min(y0, boxTop);
+      y1 = Math.max(y1, boxBot);
       cluster.forEach((row) => {
-        x0 = Math.min(x0, row.x || 0);
         x1 = Math.max(x1, (row.x || 0) + (row.w || 0));
       });
     }
@@ -5094,6 +5230,13 @@ function rebuildQuestionGroup(group, texts) {
     headerBottom,
     footerTop,
   });
+  for (let i = boxes.length - 1; i >= 0; i -= 1) {
+    const entry = boxes[i];
+    if (!entry.box || entry.box.segment !== 'figure') continue;
+    const clipped = clipEmptyFigureTail(sample.bitmap, entry.box);
+    if (!clipped) boxes.splice(i, 1);
+    else entry.box = clipped;
+  }
   if (!boxes.length) return null;
   boxes.forEach((entry) => {
     entry.figures = figures;
@@ -5314,7 +5457,7 @@ async function measureWorksheet(slices) {
         let labelBaseline = cell.labelBaseline || 16;
         let imageY = cell.imageY || 0;
         let rowH = cell.dh;
-        if ((cell.wraps || 1) === 1 && cell.imageH > 28) {
+        if ((cell.wraps || 1) === 1 && cell.imageH > 10) {
           const glyph = answerGlyphBaseline(bitmap, piece.box, cell.imageH);
           if (glyph) {
             labelBaseline = glyph;

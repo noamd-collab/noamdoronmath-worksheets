@@ -166,6 +166,33 @@
       "level": "c",
       "selection": ["1א", "2א", "3א", "4א", "5א", "6א"],
       "failedBefore": "A figure in the answer key lost the top of its drawing."
+    },
+    {
+      "id": "g7-t20-pagebreak",
+      "sheetId": "59408ea089bd442a829c4bb989e86927",
+      "grade": "7",
+      "topic": "20",
+      "level": "c",
+      "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "4ד", "5א", "5ב", "5ג", "5ד", "6א", "6ב", "6ג", "6ד"],
+      "failedBefore": "Answer-key rows lost edge tokens, and a near-empty page broke the key."
+    },
+    {
+      "id": "g8-t15-pagebreak",
+      "sheetId": "ee6ed7b3cffb42f2b53bd3eb246396e7",
+      "grade": "8",
+      "topic": "15",
+      "level": "c",
+      "selection": ["1א", "1ב", "1ג", "1ד", "2א", "2ב", "2ג", "2ד", "3א", "3ב", "3ג", "3ד", "4א", "4ב", "4ג", "4ד", "5א", "5ב", "5ג", "5ד", "6א", "6ב", "6ג", "6ד"],
+      "failedBefore": "Answer-key rows lost edge tokens, and a near-empty page broke the key."
+    },
+    {
+      "id": "g9-t38-pagebreak",
+      "sheetId": "eaacaafa395d4576864bc1c8adf44e85",
+      "grade": "9",
+      "topic": "38",
+      "level": "b",
+      "selection": ["1א", "1ב", "2א", "2ב", "2ג", "3א", "3ב", "3ג", "4א", "4ב", "5א", "5ב", "6א", "7א", "8א", "8ב", "8ג", "9א", "9ב"],
+      "failedBefore": "Answer-key rows lost edge tokens, and a near-empty page broke the key."
     }
   ]
 }

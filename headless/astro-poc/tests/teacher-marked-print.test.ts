@@ -724,7 +724,8 @@ describe('teacher catalog picker', () => {
     edgeInk(14, 36, 30, 46);
     const edgeBitmap = { width: trimW, height: trimH, getContext: () => ({ getImageData: () => ({ data: edgeData }) }) };
     const noLetter = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.2 } }, edgeBitmap);
-    assert.ok(noLetter.box.x > 0.1, String(noLetter.box.x));
+    assert.ok(noLetter.box.x < 0.05, 'the edge token stays in the answer ' + String(noLetter.box.x));
+    assert.ok(noLetter.box.x + noLetter.box.w > 0.85, 'the rest of the answer stays ' + String(noLetter.box.w));
     const sheet = preview.slice(preview.indexOf('async function paintAllShort'), preview.indexOf('function markedHTML'));
     assert.equal(sheet.includes('headerCrop'), false);
     assert.match(sheet, /paintWorksheet/);
