@@ -2417,6 +2417,25 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 .exact-viewer .exact-hint-head{
   background:#e6a534;color:#22305a;font:800 13px Heebo,'Heebo Fallback',sans-serif;padding:6px 12px;
 }
+.exact-viewer .noam-row.assistant:has(.ramzi-check){
+  flex-direction:column;align-items:flex-end;
+}
+.exact-viewer .ramzi-check{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;max-width:100%;
+  direction:rtl;font-family:Heebo,'Heebo Fallback',sans-serif;
+}
+.exact-viewer .ramzi-check button{
+  flex:1 1 8.5rem;min-width:44px;min-height:44px;padding:8px 14px;
+  border:2px solid #22305a;border-radius:12px;cursor:pointer;
+  font-family:Heebo,'Heebo Fallback',sans-serif;font-weight:800;font-size:15px;line-height:1.2;
+  color:#22305a;background:#fff;
+}
+.exact-viewer .ramzi-check-yes{background:#e6a534}
+.exact-viewer .ramzi-check-no{background:#eaf4f3}
+.exact-viewer .ramzi-check button:focus-visible{
+  outline:3px solid #22305a;outline-offset:2px;
+}
+.exact-viewer .noam-row.exact-hint .ramzi-check{padding:0 10px 10px}
 .exact-viewer .noam-row.exact-overview .noam-bubble{
   background:#eaf4f3;border-color:#22305a;
 }
@@ -8144,6 +8163,9 @@ function esc(s){
   var choices=document.createElement('div');choices.className='exact-question-strip';choices.hidden=true;
   panel.querySelector('.panel-head').after(choices);
 
+  var pinnedExerciseId='';
+  var localChecks=[];
+  var pendingCheckFocus=false;
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   var motionEventOff=false;
   function setAttr(el,name,value){if(el.getAttribute(name)!==String(value)){el.setAttribute(name,String(value));}}
@@ -8375,6 +8397,143 @@ function esc(s){
     if(hint){return 'hint';}
     return 'idle';
   }
+  function currentExerciseId(){
+    var picked=panelBody.querySelector('.noam-picked-label');
+    var selection=picked&&picked.textContent.match(/^שאלה\s+(\S+)(?:\s+·\s+סעיף\s+(.+))?$/);
+    if(selection){
+      var q=selection[1],part=selection[2]||'',found='';
+      actualChoices.forEach(function(choice){
+        if(choice.q===q&&(choice.part||'')===part){found=choice.id;}
+      });
+      if(found){return found;}
+    }
+    if(pinnedExerciseId){return pinnedExerciseId;}
+    var active=document.querySelector('.noam-exercise-pin.is-active');
+    return active&&active.dataset.exerciseId||'';
+  }
+  function assistantBodies(transcript){
+    return Array.from(transcript.querySelectorAll('.noam-row.assistant')).map(function(row){
+      var bubble=row.querySelector('.noam-bubble');
+      if(!bubble||bubble.classList.contains('thinking')||row.querySelector('.noam-retry-action')){return '';}
+      var clone=bubble.cloneNode(true);
+      clone.querySelectorAll('.ramzi-check,.noam-sr-only,.exact-hint-head,.exact-error-title,ramzi-avatar,button').forEach(function(node){node.remove();});
+      return clone.textContent.replace(/\s+/g,' ').trim();
+    }).filter(Boolean);
+  }
+  function rowQualifies(row,previousKind,previousUserText){
+    if(!row||!row.classList.contains('assistant')){return false;}
+    if(row.querySelector('.noam-bubble.thinking,.noam-retry-action')){return false;}
+    var bubble=row.querySelector('.noam-bubble');
+    var text=bubble?bubble.textContent:'';
+    var guides=window.NoamDidacticGuides;
+    if(guides&&typeof guides.needsCheck==='function'){return guides.needsCheck(text,previousKind,previousUserText);}
+    return false;
+  }
+  function makeCheckGroup(){
+    var group=document.createElement('div');
+    group.className='ramzi-check';
+    group.dir='rtl';
+    group.setAttribute('role','group');
+    group.setAttribute('aria-label','אחרי ההסבר של רמזי');
+    function button(kind,className,label){
+      var el=document.createElement('button');
+      el.type='button';
+      el.className='ramzi-check-btn '+className;
+      el.dataset.ramziCheck=kind;
+      el.textContent=label;
+      return el;
+    }
+    group.append(
+      button('understood','ramzi-check-yes','הבנתי'),
+      button('not-understood','ramzi-check-no','לא הבנתי')
+    );
+    return group;
+  }
+  function placeUnderstandingChecks(transcript){
+    var rows=Array.from(transcript.querySelectorAll('.noam-row'));
+    var last=null;
+    rows.forEach(function(row,index){
+      if(!row.classList.contains('assistant')){return;}
+      var prev=rows[index-1];
+      var kind='';
+      var userText='';
+      if(prev&&prev.classList.contains('user')){
+        var kindEl=prev.querySelector('.noam-kind');
+        kind=kindEl?kindEl.textContent.trim():'';
+        userText=prev.textContent||'';
+      }
+      if(rowQualifies(row,kind,userText)){last=row;}
+    });
+    var removed=false;
+    transcript.querySelectorAll('.ramzi-check').forEach(function(group){
+      if(!last||!last.contains(group)){group.remove();removed=true;}
+    });
+    if(!last){return removed;}
+    var bubble=last.querySelector('.noam-bubble')||last;
+    if(bubble.querySelector('.ramzi-check')){
+      if(pendingCheckFocus){
+        pendingCheckFocus=false;
+        var keep=bubble.querySelector('.ramzi-check-yes');
+        if(keep){keep.focus({preventScroll:true});}
+      }
+      return removed;
+    }
+    bubble.appendChild(makeCheckGroup());
+    if(pendingCheckFocus){
+      pendingCheckFocus=false;
+      var yes=bubble.querySelector('.ramzi-check-yes');
+      if(yes){yes.focus({preventScroll:true});}
+    }
+    return true;
+  }
+  function replayLocalChecks(transcript){
+    var id=currentExerciseId()||'current';
+    localChecks.forEach(function(item){
+      if(item.id!==id){return;}
+      if(transcript.textContent.indexOf(item.assistant)!==-1){return;}
+      function row(role,text){
+        var line=document.createElement('div');
+        line.className='noam-row '+role;
+        line.dataset.ramziLocal='1';
+        var bubble=document.createElement('div');
+        bubble.className='noam-bubble';
+        var speaker=document.createElement('span');
+        speaker.className='noam-sr-only';
+        speaker.textContent=role==='user'?'השאלה שלך: ':'נועם AI: ';
+        var content=document.createElement('span');
+        content.textContent=text;
+        bubble.append(speaker,content);
+        line.appendChild(bubble);
+        return line;
+      }
+      transcript.append(row('user',item.user),row('assistant',item.assistant));
+      transcript.classList.remove('is-empty');
+    });
+  }
+  function submitUnderstanding(intent){
+    if(panelBody.querySelector('.noam-bubble.thinking')){return;}
+    var id=currentExerciseId();
+    var guides=window.NoamDidacticGuides;
+    var phrase=intent==='understood'?'הבנתי':'לא הבנתי';
+    pendingCheckFocus=true;
+    if(guides&&id&&typeof guides.get==='function'&&guides.get(id)){
+      var input=document.getElementById('noamQuestion');
+      var send=document.getElementById('noamSend');
+      if(!input||!send||send.disabled){pendingCheckFocus=false;return;}
+      input.value=phrase;
+      input.dispatchEvent(new Event('input',{bubbles:true}));
+      send.click();
+      return;
+    }
+    var transcript=document.getElementById('noamTranscript');
+    var texts=transcript?assistantBodies(transcript):[];
+    var pass=localChecks.filter(function(item){return item.id===(id||'current')&&item.user==='לא הבנתי';}).length;
+    var reply=guides&&typeof guides.fallbackUnderstanding==='function'
+      ?guides.fallbackUnderstanding(intent,texts,pass)
+      :(intent==='understood'?'יופי, שמח שזה ברור.':'זה בסדר גמור, בוא ננסה אחרת.');
+    localChecks.push({id:id||'current',user:phrase,assistant:reply});
+    schedule();
+  }
   function decorateConversation(){
     var transcript=document.getElementById('noamTranscript');
     if(!transcript){return;}
@@ -8423,6 +8582,8 @@ function esc(s){
         retry.after(dismiss);
       }
     });
+    replayLocalChecks(transcript);
+    placeUnderstandingChecks(transcript);
     isolateMath(transcript);
     var empty=transcript.classList.contains('is-empty')&&!transcript.querySelector('.noam-bubble');
     var box=transcript.querySelector('.exact-empty');
@@ -8852,8 +9013,22 @@ function esc(s){
     focusQuestionBand(el);
   },true);
   panelBody.addEventListener('click',function(event){
+    var check=event.target&&event.target.closest&&event.target.closest('[data-ramzi-check]');
+    if(check&&panelBody.contains(check)){
+      event.preventDefault();
+      submitUnderstanding(check.getAttribute('data-ramzi-check')==='understood'?'understood':'not-understood');
+      return;
+    }
+    if(event.target&&event.target.closest&&event.target.closest('#noamNewThread')){
+      var resetId=currentExerciseId();
+      localChecks=localChecks.filter(function(item){return item.id!==(resetId||'current');});
+      if(window.NoamDidacticGuides&&resetId&&typeof window.NoamDidacticGuides.resetUnderstanding==='function'){
+        window.NoamDidacticGuides.resetUnderstanding(resetId);
+      }
+    }
     var choice=event.target&&event.target.closest&&event.target.closest('[data-exercise-id]');
     if(!choice){return;}
+    pinnedExerciseId=choice.getAttribute('data-exercise-id')||pinnedExerciseId;
     var id=choice.getAttribute('data-exercise-id');
     if(!id){return;}
     var pins=document.querySelectorAll('.noam-exercise-pin');
