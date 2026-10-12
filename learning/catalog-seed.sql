@@ -860,6 +860,9 @@ insert into public.noam_learning_worksheets (worksheet_id) values
 ('g9-t6-a'),
 ('g9-t6-b'),
 ('g9-t6-c'),
+('g9-t46-a'),
+('g9-t46-b'),
+('g9-t46-c'),
 ('g9-t7-a'),
 ('g9-t7-b'),
 ('g9-t7-c'),
@@ -884,6 +887,9 @@ insert into public.noam_learning_worksheets (worksheet_id) values
 ('g9-t14-a'),
 ('g9-t14-b'),
 ('g9-t14-c'),
+('g9-t39-a'),
+('g9-t39-b'),
+('g9-t39-c'),
 ('g9-t15-a'),
 ('g9-t15-b'),
 ('g9-t15-c'),
@@ -953,8 +959,5 @@ insert into public.noam_learning_worksheets (worksheet_id) values
 ('g9-t37-c'),
 ('g9-t38-a'),
 ('g9-t38-b'),
-('g9-t38-c'),
-('g9-t39-a'),
-('g9-t39-b'),
-('g9-t39-c')
+('g9-t38-c')
 on conflict do nothing;

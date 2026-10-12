@@ -20,7 +20,7 @@ describe('grade 7 PDF v2 replacements', () => {
   const text = readFileSync(join(root, 'src/data/catalog.v1.json'), 'utf8');
 
   it('puts every reviewed new media id in the catalog and drops replaced ids', () => {
-    assert.equal(pairs.length, 115);
+    assert.equal(pairs.length, 127);
     for (const row of pairs) {
       assert.ok(text.includes(row.new_media_id), `${row.package_id} ${row.level} missing ${row.new_media_id}`);
       if (row.old_media_id) {

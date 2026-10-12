@@ -20,7 +20,7 @@ describe('grade 9 PDF v2 replacements', () => {
   const text = readFileSync(join(root, 'src/data/catalog.v1.json'), 'utf8');
 
   it('puts every reviewed new media id in the catalog and drops the old id', () => {
-    assert.equal(pairs.length, 53);
+    assert.equal(pairs.length, 56);
     for (const row of pairs) {
       assert.ok(text.includes(row.new_media_id), `${row.package_id} ${row.level} missing ${row.new_media_id}`);
       assert.equal(text.includes(row.old_media_id), false, `${row.package_id} ${row.level} still has ${row.old_media_id}`);
@@ -63,7 +63,7 @@ describe('grade 9 PDF v2 replacements', () => {
   it('counts rendered cards, not hidden children or the other grade 9 track', () => {
     const grade9 = catalog.grades.find((entry) => entry.grade === 9);
     assert.ok(grade9);
-    assert.equal(countRenderedTopicCards(grade9, 'reg'), 37);
+    assert.equal(countRenderedTopicCards(grade9, 'reg'), 38);
     assert.equal(countRenderedTopicCards(grade9, 'red'), 4);
     for (const grade of catalog.grades) {
       if (grade.grade === 9) continue;

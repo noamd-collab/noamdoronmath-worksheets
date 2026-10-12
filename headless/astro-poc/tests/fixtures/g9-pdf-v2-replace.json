@@ -316,5 +316,23 @@
     "level": "c",
     "old_media_id": "d7b408af0724473295b9dab6bd09251b",
     "new_media_id": "4f3683439d0d460a9b7e29ac97fa3793"
+  },
+  {
+    "package_id": "G9-T39",
+    "level": "a",
+    "old_media_id": "d19ab294164347eb9f34c8b635f3461d",
+    "new_media_id": "177f4a3afb2f42bfae772c13af5f0cd4"
+  },
+  {
+    "package_id": "G9-T39",
+    "level": "b",
+    "old_media_id": "62b362d015014ac0818926703824514f",
+    "new_media_id": "776a0416d36d4dd5b8b3ca7d22aae53a"
+  },
+  {
+    "package_id": "G9-T39",
+    "level": "c",
+    "old_media_id": "19f3facb7b7643e5a18d2054cf953800",
+    "new_media_id": "0eebcb9f2a8c4cb1afa7aa7054d130f3"
   }
 ]
