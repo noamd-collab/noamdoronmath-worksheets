@@ -1248,8 +1248,8 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 400 },
     ], 0);
-    // 400px is under 40% of a page, and the combined page stays above 0.72, so it joins.
-    assert.equal(packed.length, 1);
+    // A lone answer that would shrink below 0.6 stays on the next page.
+    assert.equal(packed.length, 2);
     const readable = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 280 },
@@ -1297,7 +1297,7 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'answer', gap: 8 }, dh: 200, dw: 800 },
     ], 0);
     assert.equal(pulledAtSix.length, 1);
-    // An answer tail under 40% of a page joins when the combined page stays at 0.72.
+    // A key that would have to shrink below 0.6 stays on its own page.
     const leftBehind = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
@@ -1306,15 +1306,17 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
       { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
     ], 0);
-    assert.equal(leftBehind.length, 1);
+    assert.equal(leftBehind.length, 2);
     const moved = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4, block: 'other' }, dh: 1100 },
       { slice: { kind: 'row', gap: 4, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 160 },
       { slice: { kind: 'row', gap: -2, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 80 },
     ], 0);
-    assert.equal(moved.length, 1);
-    const blocks = moved[0].items.map((item) => item.slice.block);
-    assert.deepEqual(blocks, ['other', 'q6', 'q6']);
+    assert.equal(moved.length, 2);
+    assert.equal(moved[0].items.length, 1);
+    assert.equal(moved[1].items.length, 2);
+    assert.equal(moved[1].items[0].slice.block, 'q6');
+    assert.equal(moved[1].items[1].slice.block, 'q6');
     const tall = pack.packWorksheet([
       { slice: { kind: 'stem', gap: 10, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 2000 },
       { slice: { kind: 'row', gap: 4, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 800 },

@@ -4947,23 +4947,6 @@ function packWorksheet(measured, noteHeight) {
   const CONT_TOP = 48;
   const heading = (item) => item && (item.slice.kind === 'stem' || item.slice.kind === 'level' || item.slice.kind === 'answers-head');
   const heightOf = (items, top) => top + FOOT + contentHeight(items);
-  // Rounding the scaled pieces up can leave the page a few pixels tall.
-  // Take one pixel from each line that can spare it, instead of clipping the last line to nothing.
-  const settle = (items, top) => {
-    let guard = 0;
-    while (heightOf(items, top) > PAGE_H + 0.5 && guard < 40) {
-      guard += 1;
-      let shaved = false;
-      for (let index = items.length - 1; index >= 0; index -= 1) {
-        if (items[index].dh > 8) {
-          items[index].dh -= 1;
-          shaved = true;
-        }
-      }
-      if (!shaved) break;
-    }
-    return heightOf(items, top) <= PAGE_H + 0.5;
-  };
   const pieceKey = (item) => {
     const slice = item && item.slice;
     if (!slice || (slice.kind !== 'stem' && slice.kind !== 'row') || !slice.block) return '';
@@ -5043,37 +5026,6 @@ function packWorksheet(measured, noteHeight) {
     if (overflow > 0) extra[extra.length - 1].dh = Math.max(1, extra[extra.length - 1].dh - overflow);
     if (heightOf(prev.items.concat(extra), prev.top) > PAGE_H) break;
     prev.items = prev.items.concat(extra);
-    pages.pop();
-  }
-  // A short last page goes back onto the previous one, scaled down to 0.72.
-  // A question leftover uses a quarter of a page. An answer-key tail is still
-  // mostly empty at 40%, which is where the one-line key pages were landing.
-  while (pages.length > 1) {
-    const last = pages[pages.length - 1];
-    const prev = pages[pages.length - 2];
-    if (!last.items.length) {
-      pages.pop();
-      continue;
-    }
-    const answerTail = last.items.every((item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head' || item.slice.kind === 'answer-row'));
-    const cap = answerTail ? PAGE_H * 0.4 : PAGE_H * 0.25;
-    if (contentHeight(last.items) >= cap) break;
-    const extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
-    const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
-    const room = PAGE_H - heightOf(prev.items, prev.top);
-    if (leadGap + contentHeight(extra) <= room + 0.5) {
-      prev.items = prev.items.concat(extra);
-      pages.pop();
-      continue;
-    }
-    const combined = prev.items.concat(extra);
-    const factor = PAGE_H / heightOf(combined, prev.top);
-    // 0.72 is the readable floor already used for a short key. 0.75 left two
-    // answer tails (0.746 and 0.748) on a page of their own.
-    if (!(factor >= 0.72)) break;
-    const scaled = combined.map((item) => scalePlaced(item, factor));
-    if (!settle(scaled, prev.top)) break;
-    prev.items = scaled;
     pages.pop();
   }
   return pages;
