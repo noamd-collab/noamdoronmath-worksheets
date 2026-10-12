@@ -2436,6 +2436,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
   outline:3px solid #22305a;outline-offset:2px;
 }
 .exact-viewer .noam-row.exact-hint .ramzi-check{padding:0 10px 10px}
+.exact-viewer .noam-row.exact-error .ramzi-check{margin-top:4px}
 .exact-viewer .noam-row.exact-overview .noam-bubble{
   background:#eaf4f3;border-color:#22305a;
 }
@@ -8443,18 +8444,12 @@ function esc(s){
     var bubble=row&&row.querySelector('.noam-bubble');
     return bubble?bubble.textContent||'':'';
   }
-  function isClosing(text){
-    return /יופי, מעולה שזה ברור/.test(text)&&/אפשר לעבור לסעיף הבא/.test(text);
-  }
   function rowQualifies(row){
     if(!row||!row.classList.contains('assistant')){return false;}
-    if(row.querySelector('.noam-bubble.thinking,.noam-retry-action,.exact-error-title')){return false;}
-    if(row.classList.contains('exact-error')){return false;}
+    if(row.querySelector('.noam-bubble.thinking')){return false;}
     var text=rowText(row);
     if(/חושב…|עדיין חושב/.test(text)){return false;}
-    if(isClosing(text)){return false;}
-    var guides=window.NoamDidacticGuides;
-    if(guides&&typeof guides.needsCheck==='function'){return guides.needsCheck(text,'','');}
+    if(!String(text||'').replace(/\s+/g,' ').trim()){return false;}
     return true;
   }
   function makeCheckGroup(){
@@ -8514,8 +8509,16 @@ function esc(s){
       if(!intent){return;}
       var bubble=row.querySelector('.noam-bubble');
       var content=bubble&&bubble.querySelector('span:not(.noam-sr-only)');
+      var repeat=0;
+      rows.forEach(function(item,at){
+        if(at>=index){return;}
+        var said=userContent(item);
+        var raw=said?said.textContent||'':'';
+        if(raw.trim()==='לא הבנתי'||/תסבירו מחדש|זווית אחרת/.test(raw)){repeat+=1;}
+      });
+      if(repeat<1){repeat=1;}
       var fallback=guides&&typeof guides.offlineUnderstanding==='function'
-        ?guides.offlineUnderstanding(intent,{hintsDone:done,progress:done?3:0})
+        ?guides.offlineUnderstanding(intent,{hintsDone:done,progress:done?3:0,repeat:repeat})
         :(intent==='understood'
           ?(done?'אי אפשר להביא עכשיו את הצעד הבא. אפשר לעבור לסעיף הבא.':'אי אפשר להביא עכשיו את הצעד הבא. אפשר ללחוץ על «רמז», או לעבור לסעיף הבא.')
           :(done?'זה בסדר גמור, בואו ננסה אחרת.\nאי אפשר להביא עכשיו הסבר חדש. אפשר לקרוא שוב את הצעד לאט.':'זה בסדר גמור, בואו ננסה אחרת.\nאי אפשר להביא עכשיו הסבר חדש. אפשר ללחוץ על «רמז», או לקרוא שוב את הצעד לאט.'));
@@ -8559,8 +8562,15 @@ function esc(s){
   }
   function prefixRetryLead(transcript){
     var guides=window.NoamDidacticGuides;
-    var lead=guides&&guides.notUnderstoodLead?guides.notUnderstoodLead:'זה בסדר גמור, בואו ננסה אחרת.';
+    var leads=guides&&guides.notUnderstoodLeads&&guides.notUnderstoodLeads.length?guides.notUnderstoodLeads:['זה בסדר גמור, בואו ננסה אחרת.'];
     var rows=Array.from(transcript.querySelectorAll('.noam-row'));
+    function startsWithLead(text){
+      var trimmed=String(text||'').trim();
+      for(var i=0;i<leads.length;i++){
+        if(trimmed.indexOf(leads[i])===0){return true;}
+      }
+      return false;
+    }
     rows.forEach(function(row,index){
       if(!row.classList.contains('assistant')){return;}
       if(row.querySelector('.noam-bubble.thinking,.noam-retry-action')){return;}
@@ -8570,7 +8580,14 @@ function esc(s){
       var content=row.querySelector('.noam-bubble span:not(.noam-sr-only)');
       if(!content){return;}
       var current=content.textContent||'';
-      if(current.trim().indexOf(lead)===0){return;}
+      if(startsWithLead(current)){return;}
+      var repeat=0;
+      rows.forEach(function(item,at){
+        if(at>=index){return;}
+        var earlier=userContent(item);
+        if(earlier&&earlier.textContent.trim()==='לא הבנתי'){repeat+=1;}
+      });
+      var lead=guides&&typeof guides.openingFor==='function'?guides.openingFor(repeat):leads[0];
       if(content.querySelector('.ramzi-line')){
         var line=document.createElement('p');
         line.className='ramzi-line';

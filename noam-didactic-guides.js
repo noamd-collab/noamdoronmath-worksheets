@@ -274,6 +274,11 @@
 
   var UNDERSTOOD_LEAD="יופי, מעולה שזה ברור.";
   var NOT_UNDERSTOOD_LEAD="זה בסדר גמור, בואו ננסה אחרת.";
+  var NOT_UNDERSTOOD_LATER=[
+    "אין בעיה, בואו נסתכל על זה אחרת.",
+    "בסדר, ננסה לנסח את זה אחרת.",
+    "זה מובן, בואו נפרק את הצעד."
+  ];
   var CLOSING_TEXT="יופי, מעולה שזה ברור.\nאפשר לעבור לסעיף הבא.";
   var AI_SIMPLER="לא הבנתי. תסבירו מחדש, יותר בפשטות ובצעדים קטנים, בלי לחזור על אותן מילים. סיימו בשאלה קצרה אחת.";
   var AI_NEXT="הבנתי. תנו רק את הצעד הבא, בלי לחזור על מה שכבר נאמר. סיימו בשאלה קצרה אחת.";
@@ -288,7 +293,7 @@
   function understandingFor(exerciseId){
     var id=String(exerciseId||"");
     if(!understandingState[id]){
-      understandingState[id]={cursor:-1,stepShown:false,factIndex:0,factsStarted:false};
+      understandingState[id]={cursor:-1,stepShown:false,factIndex:0,factsStarted:false,closed:false,lastStep:"",notUnderstoodCount:0};
     }
     return understandingState[id];
   }
@@ -298,7 +303,10 @@
       cursor:state.cursor,
       stepShown:state.stepShown,
       factIndex:state.factIndex,
-      factsStarted:state.factsStarted
+      factsStarted:state.factsStarted,
+      closed:!!state.closed,
+      lastStep:state.lastStep||"",
+      notUnderstoodCount:state.notUnderstoodCount||0
     };
   }
 
@@ -378,11 +386,34 @@
     return catchUpState(understandingFor(exerciseId),guide,settings);
   }
 
-  function retryText(body){
+  function openingFor(repeat){
+    var n=Math.max(1,Number(repeat)||1);
+    if(n<=3){return NOT_UNDERSTOOD_LEAD;}
+    return NOT_UNDERSTOOD_LATER[(n-4)%NOT_UNDERSTOOD_LATER.length];
+  }
+
+  function rememberStep(state,body){
+    var text=String(body||"").replace(/\s+/g," ").trim();
+    if(state&&text){state.lastStep=text;}
+  }
+
+  function retryText(body,state){
     var text=String(body||"").trim();
-    if(!text){return NOT_UNDERSTOOD_LEAD;}
-    if(text.indexOf(NOT_UNDERSTOOD_LEAD)===0){return text;}
-    return NOT_UNDERSTOOD_LEAD+"\n"+text;
+    var n=state?((state.notUnderstoodCount||0)+1):1;
+    if(state){state.notUnderstoodCount=n;}
+    var lead=openingFor(n);
+    if(!text){return lead;}
+    if(text.indexOf(lead)===0||text.indexOf(NOT_UNDERSTOOD_LEAD)===0){return text;}
+    for(var i=0;i<NOT_UNDERSTOOD_LATER.length;i++){
+      if(text.indexOf(NOT_UNDERSTOOD_LATER[i])===0){return text;}
+    }
+    return lead+"\n"+text;
+  }
+
+  function anglePrompt(lastStep){
+    var step=String(lastStep||"").replace(/\s+/g," ").trim().slice(0,280);
+    if(!step){return AI_ANGLE;}
+    return "לא הבנתי. תסבירו מחדש את הצעד האחרון מזווית אחרת, בפשטות ובצעדים קטנים, בלי לחזור על אותו ניסוח. הצעד האחרון: "+step+". סיימו בשאלה קצרה.";
   }
 
   function hintsDone(settings){
@@ -394,30 +425,37 @@
   function applyReply(state,guide,intent){
     var hints=guide.hints||[];
     if(intent==="understood"){
-      if(state.factsStarted||state.stepShown){
+      if(state.closed||state.factsStarted||state.stepShown){
+        state.closed=true;
         return checkReply(CLOSING_TEXT,"");
       }
       var next=state.cursor+1;
       if(next>=0&&next<hints.length){
         state.cursor=next;
+        rememberStep(state,hints[next]);
         return checkReply(UNDERSTOOD_LEAD+"\n"+hints[next],hintKey(guide,next));
       }
       if(guide.nextStep){
         state.stepShown=true;
+        rememberStep(state,guide.nextStep);
         return checkReply(UNDERSTOOD_LEAD+"\n"+guide.nextStep,"");
       }
+      state.closed=true;
       return checkReply(CLOSING_TEXT,"");
     }
+    if(state.closed){return null;}
     if(state.cursor<hints.length-1){
       state.cursor=Math.max(0,state.cursor+1);
-      return checkReply(retryText(hints[state.cursor]),hintKey(guide,state.cursor));
+      rememberStep(state,hints[state.cursor]);
+      return checkReply(retryText(hints[state.cursor],state),hintKey(guide,state.cursor));
     }
     var steps=substeps(guide);
     if(state.factIndex<steps.length){
       state.factsStarted=true;
       var line=steps[state.factIndex];
       state.factIndex+=1;
-      return checkReply(retryText(line),guide.defaultVisualKey||hintKey(guide,hints.length-1));
+      rememberStep(state,line);
+      return checkReply(retryText(line,state),guide.defaultVisualKey||hintKey(guide,hints.length-1));
     }
     return null;
   }
@@ -430,14 +468,15 @@
     var value=String(text||"").replace(/\s+/g," ").trim();
     if(!value){return false;}
     if(/חושב…|עדיין חושב/.test(value)){return false;}
-    if(value.indexOf(UNDERSTOOD_LEAD)!==-1&&value.indexOf("אפשר לעבור לסעיף הבא")!==-1){return false;}
     return true;
   }
 
   function offlineUnderstanding(intent,settings){
     var done=hintsDone(settings);
     if(intent==="understood"){return done?AI_DOWN_NEXT_DONE:AI_DOWN_NEXT;}
-    return retryText(done?AI_DOWN_DONE:AI_DOWN);
+    var repeat=Number(settings&&settings.repeat);
+    if(!isFinite(repeat)||repeat<1){repeat=1;}
+    return openingFor(repeat)+"\n"+(done?AI_DOWN_DONE:AI_DOWN);
   }
 
   function fallbackUnderstanding(intent,settings){
@@ -459,14 +498,14 @@
     }
     var sim=catchUpState(cloneState(understandingFor(exerciseId)),guide,settings);
     var hints=guide.hints||[];
-    if(!sim.factsStarted&&!sim.stepShown&&sim.cursor<hints.length-1){
+    if(!sim.closed&&!sim.factsStarted&&!sim.stepShown&&sim.cursor<hints.length-1){
       return {action:"hint",hintsOpened:Math.min(3,sim.cursor+2),lead:intent==="understood",display:display};
     }
     var reply=applyReply(sim,guide,intent);
     if(!reply){
       return {
         action:"ai",
-        prompt:intent==="understood"?AI_NEXT:AI_ANGLE,
+        prompt:intent==="understood"?AI_NEXT:(sim.closed?anglePrompt(sim.lastStep):AI_ANGLE),
         display:display,
         fallback:offlineUnderstanding(intent,settings)
       };
@@ -489,8 +528,9 @@
       var note=pendingNote;
       pendingNote="";
       var body=guide.hints[hintIndex];
+      rememberStep(understandingFor(exerciseId),body);
       if(note==="understood"){body=UNDERSTOOD_LEAD+"\n"+body;}
-      if(note==="not-understood"){body=retryText(body);}
+      if(note==="not-understood"){body=retryText(body,understandingFor(exerciseId));}
       return {text:body,visual:"focus",focusKey:visual&&visual.key||"",source:"didactic-guide"};
     }
     pendingNote="";
@@ -537,6 +577,8 @@
     fallbackUnderstanding:fallbackUnderstanding,
     understoodLead:UNDERSTOOD_LEAD,
     notUnderstoodLead:NOT_UNDERSTOOD_LEAD,
+    notUnderstoodLeads:[NOT_UNDERSTOOD_LEAD].concat(NOT_UNDERSTOOD_LATER),
+    openingFor:openingFor,
     closingText:CLOSING_TEXT
   };
 });

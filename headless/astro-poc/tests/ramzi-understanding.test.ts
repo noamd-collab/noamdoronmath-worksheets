@@ -91,6 +91,23 @@ describe('Ramzi understanding checks', () => {
     assert.match(again.fallback, /לקרוא שוב/);
     assert.doesNotMatch(again.fallback, /רמז|הצעד הבא/);
     assert.equal(guides.respond(proof, { helpKind: 'free_question', studentMessage: 'לא הבנתי', progress: 3 }), null);
+    const openings: string[] = [];
+    guides.resetUnderstanding(proof);
+    for (let index = 0; index < 3; index += 1) hint(index);
+    for (let index = 0; index < 4; index += 1) {
+      const varied = guides.respond(proof, {
+        helpKind: 'free_question',
+        studentMessage: 'לא הבנתי',
+        progress: 3,
+      });
+      assert.ok(varied);
+      openings.push(varied.text.split('\n')[0]);
+    }
+    assert.equal(openings[0], guides.notUnderstoodLead);
+    assert.equal(openings[2], guides.notUnderstoodLead);
+    assert.notEqual(openings[3], guides.notUnderstoodLead);
+    assert.equal(guides.notUnderstoodLeads.includes(openings[3]), true);
+    assert.doesNotMatch(openings[3], /שמח|בוא ננסה/);
   });
 
   it('uses a neutral lead for הבנתי, and closes after the explanation instead of nextStep', () => {
@@ -119,6 +136,17 @@ describe('Ramzi understanding checks', () => {
     assert.equal(closing.text, guides.closingText);
     assert.match(closing.text, /אפשר לעבור לסעיף הבא/);
     assert.doesNotMatch(closing.text, /נכון שצריך|שמח/);
+    const again = guides.planUnderstanding(proof, 'not-understood', { progress: 3, hintsDone: true });
+    assert.equal(again.action, 'ai');
+    assert.equal(again.display, 'לא הבנתי');
+    assert.match(again.prompt, /הצעד האחרון/);
+    assert.match(again.prompt, /זווית אחרת/);
+    assert.match(again.prompt, /E נמצאת על AB|הקרן BE/);
+    assert.equal(again.prompt.includes('תסבירו מחדש את הצעד האחרון'), true);
+    const stay = guides.planUnderstanding(proof, 'understood', { progress: 3, hintsDone: true });
+    assert.equal(stay.action, 'local');
+    assert.match(stay.text, /אפשר לעבור לסעיף הבא/);
+    assert.equal(guides.needsCheck(guides.closingText, '', ''), true);
   });
 
   it('does not steal a longer question that merely contains the words', () => {
@@ -170,9 +198,12 @@ describe('Ramzi understanding checks', () => {
       guides.fallbackUnderstanding('not-understood', ['קודם מסמנים את הזווית. אחר כך משווים.'], 1),
       offline,
     );
+    const fourth = guides.offlineUnderstanding('not-understood', { hintsDone: true, repeat: 4 });
+    assert.match(fourth, /^אין בעיה, בואו נסתכל על זה אחרת/);
+    assert.doesNotMatch(fourth, /רמז|שמח|בוא ננסה/);
     assert.equal(guides.needsCheck('הסבר בלי שאלה.', '', 'השאלה שלך: הסבר כללי'), true);
     assert.equal(guides.needsCheck('רמזי חושב…', '', ''), false);
-    assert.equal(guides.needsCheck(guides.closingText, '', ''), false);
+    assert.equal(guides.needsCheck(guides.closingText, '', ''), true);
     assert.equal(guides.needsCheck('מה אפשר לומר על המשולש?', '', ''), true);
   });
 
@@ -198,7 +229,10 @@ describe('Ramzi understanding checks', () => {
     assert.match(adapter, /ramziSoftened/);
     assert.match(adapter, /removeChild\(node\)/);
     assert.match(adapter, /noam-retry-action/);
-    assert.match(adapter, /isClosing/);
+    assert.match(adapter, /openingFor/);
+    assert.match(adapter, /noam-bubble\.thinking/);
+    assert.doesNotMatch(adapter, /isClosing\(text\)/);
+    assert.doesNotMatch(adapter, /exact-error'\)\{return false\}/);
     assert.doesNotMatch(adapter, /שמח|בוא ננסה/);
     assert.match(adapter, /זה בסדר גמור, בואו ננסה אחרת/);
     assert.match(style, /\.exact-viewer \.ramzi-check button\{[\s\S]*min-height:44px/);
