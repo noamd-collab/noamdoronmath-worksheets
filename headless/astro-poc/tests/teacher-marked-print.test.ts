@@ -2995,9 +2995,16 @@ sys.stdout.write(json.dumps(out))
                 .filter((item) => item.y < labelY - 8 && (item.x || 0) > 360 && markerToken(String(item.str || '').trim()))
                 .sort((a, b) => b.y - a.y)[0];
               const floor = Math.max(nextMark ? nextMark.y + (nextMark.h || 10) + 2 : labelY - 16, labelY - 16);
+              const otherPartLine = (y: number) => pageItems.some((other) => {
+                if (Math.abs((other.y || 0) - y) > 4) return false;
+                const token = String(other.str || '').trim();
+                return /^[אבגדהו]\.?$/.test(token) || /^\.[אבגדהו]$/.test(token) || /^[אבגדהו]\./.test(token) || /[·•]\s*[אבגדהו]\./.test(token);
+              });
               const more = pageItems.filter((item) => {
                 if ((item.h || 0) > 28) return false;
                 if (item.y > labelY - 8 || item.y < floor) return false;
+                // The next part's line is that part's answer, not this one wrapped.
+                if (otherPartLine(item.y || 0)) return false;
                 const token = String(item.str || '').trim();
                 if (!token || token.length < 3) return false;
                 if (/נועם|מתמטיקה|בס״ד|בס\"ד|זכויות|עמוד|תשובות/.test(token)) return false;

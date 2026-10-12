@@ -1924,13 +1924,27 @@ function answerBox(items, questionNumber, part) {
     if (!following.length) return null;
     const taken = [];
     let cursor = label.y;
+    let stopped = false;
+    const partLine = (y) => (items || []).some((other) => {
+      if (Math.abs((other.y || 0) - y) > 4) return false;
+      const token = String(other.str || '').trim();
+      // The next part's label ends this answer. Its sentence is not a continuation.
+      return /^[אבגדהו]\.?$/.test(token)
+        || /^\.[אבגדהו]$/.test(token)
+        || /^[אבגדהו]\./.test(token)
+        || /[·•]\s*[אבגדהו]\./.test(token)
+        || /^\(\d{1,2}\)$/.test(token)
+        || /^\d{1,2}\.$/.test(token);
+    });
     following.forEach((item) => {
+      if (stopped) return;
       if (item.y < cursor - line * 1.6) return;
       // A rotated margin line is taller than the text and is not the next answer line.
       if ((item.h || 0) > line * 2.5) return;
-      const token = String(item.str || '');
-      // "ד. הוכחה" on the next line is the next part, not this answer's continuation.
-      if (/[·•]\s*[אבגדהו]\./.test(token) || /^[אבגדהו]\./.test(token.trim()) || /^[אבגדהו]\.?$/.test(token.trim()) || /^\(\d{1,2}\)$/.test(token.trim()) || /^\d{1,2}\.$/.test(token.trim())) return;
+      if (partLine(item.y || 0)) {
+        stopped = true;
+        return;
+      }
       taken.push(item);
       cursor = Math.min(cursor, item.y);
     });
@@ -2005,6 +2019,7 @@ function answerBox(items, questionNumber, part) {
   let top = marker.y + Math.max(marker.h || 0, 12) + 4;
   let bottom = next ? aboveGlyphs(next) : marker.y - 28;
   let slot = null;
+  const covers = [];
   if (part) {
     const index = labels.findIndex((item) => item.part === part);
     if (index >= 0) {
@@ -2117,6 +2132,28 @@ function answerBox(items, questionNumber, part) {
           if (inkLeft < right - 6) left = Math.max(0, inkLeft - 2);
         }
       }
+      // A tall parenthesis reaches the previous part's line. Keep the parenthesis,
+      // and cover the other part's words so this crop does not reprint them.
+      labels.forEach((other) => {
+        if (!other || other === label) return;
+        if (Math.abs((other.y || 0) - label.y) <= 6) return;
+        const oy = other.y || 0;
+        if (oy < bottom + 2 || oy > top - 2) return;
+        (items || []).forEach((glyph) => {
+          const gy = glyph.y || 0;
+          if (Math.abs(gy - oy) > 5) return;
+          if (Math.abs(gy - label.y) <= 8) return;
+          const gx = glyph.x || 0;
+          const gr = gx + Math.max(glyph.w || 0, 4);
+          if (Math.min(gr, right) - Math.max(gx, left) < 2) return;
+          covers.push({
+            x0: Math.max(gx - 0.8, left),
+            x1: Math.min(gr + 0.8, right),
+            y0: Math.max(gy - 1, bottom),
+            y1: Math.min(gy + Math.max(glyph.h || 0, 10) + 1.5, top),
+          });
+        });
+      });
     } else if (labels.length) {
       const mentioned = items.some((item) => (
         sameSheet(item)
@@ -2139,6 +2176,7 @@ function answerBox(items, questionNumber, part) {
   if (top - bottom < 8 || right - left < 6) return null;
   const box = { page: marker.page, x: left, y: bottom, w: right - left, h: top - bottom };
   if (slot) box.slot = slot;
+  if (covers.length) box.covers = covers;
   return box;
 }
 
@@ -2252,23 +2290,27 @@ function clipAnswerAffixes(items, left, right, bottom, top) {
     }
     if (!moved) break;
   }
-  // The mark shares the run with the answer ("ד. הוכחה", ". נימוק ·", "נכונה ·").
-  // Peel it from the slice this box actually shows, including when the box is
-  // padded a couple of points past the run or cuts through the next part label.
+  // Shrink the window to the glyphs it actually holds. Never cut inside a glyph:
+  // "ד. הוכחה" and "א. יתר" keep their full PDF boxes. A proportional slice of
+  // the run cuts the next letter. The bitmap snap drops only the separator cluster.
+  let keepL = null;
+  let keepR = null;
   hits.forEach((glyph) => {
-    // Look a few points past the edge so a dot sitting on the boundary is peeled too.
-    const visible = glyphOverlapSpan(glyph, left - 3, right + 3);
-    if (!visible) return;
-    const shown = String(glyph.str || '').slice(visible.start, visible.end);
-    const span = answerKeptSpan(shown);
-    if (!span || span.end <= span.start) return;
-    const kept = answerSliceBox(glyph, visible.start + span.start, visible.start + span.end);
+    const text = String(glyph.str || '');
+    if (!text.trim() || answerAffixText(text)) return;
     const gx = glyph.x || 0;
     const gr = gx + Math.max(glyph.w || 0, 2);
-    const slack = 4;
-    if (gr >= right - slack && kept.x + kept.w < right - 0.3) right = Math.max(kept.x + kept.w, left + 6);
-    if (gx <= left + slack && kept.x > left + 0.3) left = Math.min(kept.x, right - 6);
+    if (gr <= left + 0.4 || gx >= right - 0.4) return;
+    const kL = Math.max(gx, left);
+    const kR = Math.min(gr, right);
+    if (kR - kL < 0.4) return;
+    if (keepL == null || kL < keepL) keepL = kL;
+    if (keepR == null || kR > keepR) keepR = kR;
   });
+  if (keepL != null && keepR > keepL + 6) {
+    left = Math.max(left, keepL);
+    right = Math.min(right, keepR);
+  }
   return { left, right };
 }
 
@@ -2532,6 +2574,20 @@ function answerSliceFor(pages, question) {
       if (x1 > slot.right + 4) cover(slot.right, x1);
       if (slot.left > x0 + 4) cover(x0, slot.left);
     }
+    (raw.covers || []).forEach((band) => {
+      const leftEdge = Math.max(band.x0, x0);
+      const rightEdge = Math.min(band.x1, x1);
+      const low = Math.max(band.y0, y0);
+      const high = Math.min(band.y1, y1);
+      if (rightEdge - leftEdge < 1.5 || high - low < 1.5) return;
+      masks.push({
+        x: (leftEdge - x0) / (x1 - x0),
+        y: (y1 - high) / (y1 - y0),
+        w: (rightEdge - leftEdge) / (x1 - x0),
+        h: (high - low) / (y1 - y0),
+        role: 'answer-foreign',
+      });
+    });
     return {
       page: sheet.page,
       box: {
@@ -2854,6 +2910,79 @@ function answerEdgeSpan(bitmap, box, yTop, yBot) {
   return { minX, maxX };
 }
 
+/**
+ * Finish a letter the crop cut through, then drop only a separator cluster.
+ * "ד." and "·" sit a space away from the word. A letter of "הוכחה" does not.
+ */
+function snapAnswerClusters(bitmap, box, yTop, yBot) {
+  if (!bitmap || !box || typeof bitmap.getContext !== 'function') return null;
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const y0 = Math.max(0, yTop);
+  const y1 = Math.min(height, yBot);
+  if (y1 - y0 < 2) return null;
+  const boxL = Math.floor(box.x * width);
+  const boxR = Math.ceil((box.x + box.w) * width);
+  const pad = Math.max(8, Math.round(width * 0.025));
+  const x0 = Math.max(0, boxL - pad);
+  const x1 = Math.min(width, boxR + pad);
+  if (x1 - x0 < 4) return null;
+  let image;
+  try {
+    image = bitmap.getContext('2d').getImageData(x0, y0, x1 - x0, y1 - y0);
+  } catch (error) {
+    return null;
+  }
+  const data = image.data;
+  const rw = x1 - x0;
+  const rh = y1 - y0;
+  if (!data || data.length < rw * rh * 4) return null;
+  const cols = new Uint16Array(rw);
+  for (let y = 0; y < rh; y += 1) {
+    for (let x = 0; x < rw; x += 1) {
+      const i = (y * rw + x) * 4;
+      if (data[i] < 242 || data[i + 1] < 242 || data[i + 2] < 242) cols[x] += 1;
+    }
+  }
+  const clusters = [];
+  let start = -1;
+  let blank = 0;
+  const gap = 5;
+  for (let x = 0; x <= rw; x += 1) {
+    if (x < rw && cols[x]) {
+      if (start < 0) start = x;
+      blank = 0;
+    } else if (start >= 0) {
+      blank += 1;
+      if (x === rw || blank >= gap) {
+        clusters.push({ x: x0 + start, w: x - blank - start });
+        start = -1;
+        blank = 0;
+      }
+    }
+  }
+  const owned = clusters.filter((cluster) => {
+    const right = cluster.x + cluster.w;
+    return right > boxL + 1 && cluster.x < boxR - 1;
+  });
+  if (!owned.length) return null;
+  owned.sort((a, b) => a.x - b.x);
+  let minX = owned[0].x;
+  let maxX = owned[owned.length - 1].x + owned[owned.length - 1].w;
+  // A separator is the narrow cluster at the outer edge, across a real space.
+  const sep = Math.max(18, Math.round(width * 0.014));
+  if (owned.length >= 2) {
+    const first = owned[0];
+    const second = owned[1];
+    if (first.w <= sep && second.x - (first.x + first.w) >= gap) minX = second.x;
+    const last = owned[owned.length - 1];
+    const prev = owned[owned.length - 2];
+    if (last.w <= sep && last.x - (prev.x + prev.w) >= gap) maxX = prev.x + prev.w;
+  }
+  if (maxX - minX < 4) return null;
+  return { minX, maxX };
+}
+
 function dropMaskedAnswerBand(piece) {
   const box = piece && piece.box;
   const masks = box && box.masks;
@@ -2910,6 +3039,23 @@ function trimPieceBox(slice, bitmap) {
       return true;
     });
     const bands = inner.length ? inner : ink.bands;
+    // A faint row left above the sentence (the dots under כל) is not this answer.
+    // A black stroke in that band is a real line and stays.
+    if (bands.length >= 2 && bands[0].h <= 6 && bands[1].y - (bands[0].y + bands[0].h) >= 8) {
+      let darkest = 0;
+      try {
+        const image = bitmap.getContext('2d').getImageData(ink.x0, ink.y0 + bands[0].y, Math.max(1, ink.width - ink.x0), bands[0].h);
+        const pixels = image.data;
+        darkest = 255;
+        for (let i = 0; i < pixels.length; i += 4) {
+          if (pixels[i] < darkest) darkest = pixels[i];
+          if (darkest < 80) break;
+        }
+      } catch (error) {
+        darkest = 0;
+      }
+      if (darkest > 90) bands.shift();
+    }
     const top = Math.max(0, ink.y0 + bands[0].y - pad);
     const bot = Math.min(pageH, ink.y0 + bands[bands.length - 1].y + bands[bands.length - 1].h + pad);
     const pageW = ink.width;
@@ -2929,8 +3075,14 @@ function trimPieceBox(slice, bitmap) {
     const hPad = 1;
     const boundLeft = Math.max(0, Math.floor(clipped.x * pageW));
     const boundRight = Math.min(pageW, Math.ceil((clipped.x + clipped.w) * pageW));
-    const left = Math.max(boundLeft, ink.x0 + inkMin - hPad);
-    const right = Math.min(boundRight, ink.x0 + inkMax + 1 + hPad);
+    let left = Math.max(boundLeft, ink.x0 + inkMin - hPad);
+    let right = Math.min(boundRight, ink.x0 + inkMax + 1 + hPad);
+    // The glyph box can slice a letter. Finish that cluster, and drop only "·" / "." / "ד.".
+    const snapped = snapAnswerClusters(bitmap, clipped, top, bot);
+    if (snapped) {
+      left = Math.max(0, snapped.minX - hPad);
+      right = Math.min(pageW, snapped.maxX + 1 + hPad);
+    }
     const next = placedBox(clipped, top / pageH, Math.max(0.004, (bot - top) / pageH));
     if (right - left > 4) {
       const kept = [];
@@ -3334,6 +3486,20 @@ function sealOverlaps(measured) {
   }
 }
 
+function answerGlyphBaseline(bitmap, box, imageH) {
+  const ink = sliceInkRows(bitmap, box);
+  if (!ink || !ink.bands.length || !(ink.rh > 0) || !(imageH > 0)) return null;
+  let band = ink.bands[0];
+  if (band.h <= 6 && ink.bands[1]) band = ink.bands[1];
+  if (band.h < 4) return null;
+  // The crop runs through the descenders. The label shares the glyph baseline.
+  const descent = Math.max(2, Math.min(5, Math.round(band.h * 0.16)));
+  const px = band.y + band.h - descent;
+  const frac = px / ink.rh;
+  if (!(frac > 0.05) || frac > 0.98) return null;
+  return Math.max(12, Math.min(imageH - 2, Math.round(imageH * frac)));
+}
+
 function answerDisplayScale(naturalW, naturalH) {
   const maxW = 1000 - 56;
   let scale = 1;
@@ -3469,27 +3635,29 @@ function leftFigureBoxes(bitmap, y0, y1) {
     };
     if (quiet(y - 2) && quiet(y + 2)) thinRule[y] = 1;
   }
+  // A roof, a triangle side, or a tree branch inks one or two pixels in a column,
+  // with white between the apex and the base. The span of those stroke pixels is
+  // the drawing. A grey writing rule and a one-pixel dash do not count, so they
+  // cannot join a letter to the figure.
+  const strokeAt = (x, y) => dark(x, y) && !thinRule[y] && !greyish(x, y);
   const tall = [];
   for (let x = xStart; x < xStop; x += 1) {
-    // Distant specks (a writing rule under a letter) are not a drawing column.
-    // The stroke itself has to run.
-    let run = 0;
-    let best = 0;
+    let n = 0;
+    let minY = bot;
+    let maxY = top;
     for (let y = top; y <= bot; y += 1) {
-      if (!dark(x, y) || thinRule[y]) {
-        run = 0;
-        continue;
-      }
-      run += 1;
-      if (run > best) best = run;
+      if (!strokeAt(x, y)) continue;
+      n += 1;
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
     }
-    if (best > tallMin * 0.5) tall.push(x);
+    if (n >= 2 && maxY - minY > tallMin) tall.push(x);
   }
   if (!tall.length) return [];
   const rowHit = new Uint8Array(bot - top + 1);
   tall.forEach((x) => {
     for (let y = top; y <= bot; y += 1) {
-      if (dark(x, y) && !thinRule[y]) rowHit[y - top] = 1;
+      if (strokeAt(x, y)) rowHit[y - top] = 1;
     }
   });
   const clusters = [];
@@ -3505,6 +3673,56 @@ function leftFigureBoxes(bitmap, y0, y1) {
       clusters.push([start, prev]);
       start = -1;
     }
+  }
+  // An apex that never formed a tall column still belongs to the drawing when
+  // stroke ink continues inside the figure's x range.
+  const rowStroke = (y, minX, maxX) => {
+    if (y < top || y > bot || thinRule[y]) return false;
+    const step = Math.max(1, Math.floor((maxX - minX) / 40) || 1);
+    for (let x = minX; x <= maxX; x += step) {
+      if (strokeAt(x, y)) return true;
+    }
+    return false;
+  };
+  for (let i = 0; i < clusters.length; i += 1) {
+    let low = clusters[i][0];
+    let high = clusters[i][1];
+    let minX = xStop;
+    let maxX = xStart;
+    tall.forEach((x) => {
+      for (let y = low; y <= high; y += 1) {
+        if (!strokeAt(x, y)) continue;
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        break;
+      }
+    });
+    if (maxX <= minX) continue;
+    let gap = 0;
+    for (let y = low - 1; y >= top; y -= 1) {
+      if (rowStroke(y, minX, maxX)) {
+        low = y;
+        gap = 0;
+      } else if (++gap > gapLim) break;
+    }
+    gap = 0;
+    for (let y = high + 1; y <= bot; y += 1) {
+      if (rowStroke(y, minX, maxX)) {
+        high = y;
+        gap = 0;
+      } else if (++gap > gapLim) break;
+    }
+    for (let y = low; y <= high; y += 1) {
+      if (rowStroke(y, minX, maxX)) rowHit[y - top] = 1;
+    }
+    clusters[i] = [low, high];
+  }
+  clusters.sort((a, b) => a[0] - b[0]);
+  for (let i = 1; i < clusters.length;) {
+    if (clusters[i][0] <= clusters[i - 1][1] + gapLim) {
+      clusters[i - 1][1] = Math.max(clusters[i - 1][1], clusters[i][1]);
+      clusters.splice(i, 1);
+    } else i += 1;
   }
   const boxes = [];
   const barPad = Math.max(2, Math.round(height * 0.005));
@@ -4623,10 +4841,13 @@ function layoutQuestionCrops(model) {
     }
     pushLines('part', spans, 0.028, Math.min(y1, ceiling));
   });
-  // A guided-example box ("דוגמה מודרכת") is one rectangle. Pieces of its border
-  // and its lines become one figure. The tree to its left stays its own figure.
+  // A guided box ("דוגמה מודרכת" or "חקירה מודרכת") is one rectangle. Pieces of
+  // its border and its lines become one figure. The tree to its left stays its own figure.
   rows.forEach((title) => {
-    if (!/דוגמה\s*מודרכת/.test(String(title.text || ''))) return;
+    const titleText = String(title.text || '');
+    const example = /דוגמה\s*מודרכת/.test(titleText);
+    const inquiry = /חקירה\s*מודרכת/.test(titleText);
+    if (!example && !inquiry) return;
     const yTitle = title.y || 0;
     if (yTitle < stemTop - 0.02 || yTitle >= ceiling - 0.01) return;
     // Stop at the next part letter so the example does not swallow "חשבו את" of another part.
@@ -4638,8 +4859,11 @@ function layoutQuestionCrops(model) {
     const cluster = [];
     rows.forEach((row) => {
       const y = row.y || 0;
-      if (y < yTitle - 0.004 || y > yTitle + 0.05 || y >= cap) return;
-      if ((row.x || 0) < 0.28) return;
+      if (y < yTitle - 0.004 || y >= cap) return;
+      if (example && (y > yTitle + 0.05 || (row.x || 0) < 0.28)) return;
+      // The investigation body is a long line that starts left of the title.
+      // A short token further left is a drawing label, not the box.
+      if (inquiry && (row.w || 0) < 0.12 && (row.x || 0) < 0.3) return;
       cluster.push(row);
     });
     if (!cluster.length) return;
@@ -4656,7 +4880,10 @@ function layoutQuestionCrops(model) {
     for (let i = segments.length - 1; i >= 0; i -= 1) {
       const have = segments[i].box;
       if (!have || have.segment === 'figure' || have.h > 0.05) continue;
-      if (have.x < 0.24 || have.y >= cap - 0.002) continue;
+      if (have.y >= cap - 0.002) continue;
+      if (inquiry) {
+        if (have.w < 0.1 && have.x + have.w < 0.3) continue;
+      } else if (have.x < 0.24) continue;
       const mid = have.y + have.h * 0.5;
       if (mid < boxTop - 0.004 || mid > boxBot + 0.004) continue;
       inside.push(have);
@@ -4675,7 +4902,7 @@ function layoutQuestionCrops(model) {
     });
     // The box border sits just outside the text. The worked-example number of
     // this question is included whole; the next question's number is not.
-    x0 = Math.max(0.26, x0 - 0.016);
+    x0 = Math.max(inquiry ? 0.05 : 0.26, x0 - 0.016);
     x1 = Math.min(0.98, x1 + 0.01);
     y0 = Math.max(headerBottom || 0, Math.min(y0, boxTop));
     y1 = Math.min(cap, ceiling, footerTop, Math.max(y1, boxBot));
@@ -5054,17 +5281,28 @@ async function measureWorksheet(slices) {
         const naturalW = Math.max(1, OUT_W * piece.box.w);
         const naturalH = Math.max(1, naturalW * sh / Math.max(1, sw));
         const cell = answerCellSize(piece.text, naturalW, naturalH);
+        let labelBaseline = cell.labelBaseline || 16;
+        let imageY = cell.imageY || 0;
+        let rowH = cell.dh;
+        if ((cell.wraps || 1) === 1 && cell.imageH > 28) {
+          const glyph = answerGlyphBaseline(bitmap, piece.box, cell.imageH);
+          if (glyph) {
+            labelBaseline = glyph;
+            imageY = 0;
+            rowH = Math.max(rowH, labelBaseline + 4, imageY + cell.imageH);
+          }
+        }
         measured.push({
           slice: piece,
           bitmap,
           sw,
           sh,
           dw: cell.dw,
-          dh: cell.dh,
+          dh: rowH,
           imageW: cell.imageW,
           imageH: cell.imageH,
-          imageY: cell.imageY || 0,
-          labelBaseline: cell.labelBaseline || 16,
+          imageY,
+          labelBaseline,
           wraps: cell.wraps || 1,
           wrapLead: cell.wrapLead || 0,
           answerNaturalW: cell.answerNaturalW || cell.imageW,

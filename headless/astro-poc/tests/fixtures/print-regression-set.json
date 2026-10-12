@@ -139,6 +139,33 @@
       "level": "b",
       "selection": ["1א", "1ב", "2", "3א", "3ב", "3ג", "4", "5א", "5ב", "6"],
       "failedBefore": "Answer key rows overlapped on the first page."
+    },
+    {
+      "id": "g8-t44-single",
+      "sheetId": "0d2c19b340234a8db8c0bc9d080b50d1",
+      "grade": "8",
+      "topic": "44",
+      "level": "c",
+      "selection": ["1א"],
+      "failedBefore": "The drawing beside the stem was cropped through its top."
+    },
+    {
+      "id": "g9-t7-answers",
+      "sheetId": "f068defc5cfc4d399f757acd636dde49",
+      "grade": "9",
+      "topic": "7",
+      "level": "c",
+      "selection": ["1א", "2א", "3א", "4א", "5א", "6א"],
+      "failedBefore": "A figure in the answer key lost the top of its drawing."
+    },
+    {
+      "id": "g8-t36-answers",
+      "sheetId": "742b7aa6db284c24bd2d6a6ae55f653b",
+      "grade": "8",
+      "topic": "36",
+      "level": "c",
+      "selection": ["1א", "2א", "3א", "4א", "5א", "6א"],
+      "failedBefore": "A figure in the answer key lost the top of its drawing."
     }
   ]
 }
