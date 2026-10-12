@@ -1,6 +1,6 @@
 {
   "files": 450,
-  "failedBoxes": 1525,
+  "failedBoxes": 1524,
   "issues": [
     "0001a2f4 p1 stroke unowned 326.4,312.2 6.7x5.8",
     "0001a2f4 p2 stroke unowned 449.7,191.7 6.7x5.8",
@@ -148,7 +148,6 @@
     "25ecf3b7 p2 stroke unowned 469.9,161.2 1.6x1.6",
     "2671eb03 p1 stroke unowned 42.5,163.0 510.2x94.6",
     "2671eb03 p4 answer 5א contains ב",
-    "2671eb03 p4 answer 8א contains ב",
     "27698585 p2 stroke unowned 437.2,131.6 1.6x1.6",
     "27698585 p5 stroke unowned 378.9,117.4 1.6x1.6",
     "2796cafa p1 stroke unowned 441.0,327.1 6.7x5.8",

@@ -1794,6 +1794,7 @@ function scalePlaced(item, factor) {
   if (item.wrapLead) next.wrapLead = Math.max(0, Math.round(item.wrapLead * factor));
   if (item.answerNaturalW) next.answerNaturalW = Math.max(1, Math.round(item.answerNaturalW * factor));
   if (item.labelW) next.labelW = Math.max(1, Math.round(item.labelW * factor));
+  if (item.pageScale || factor !== 1) next.pageScale = (item.pageScale || 1) * factor;
   if (item.cells) next.cells = item.cells.map((cell) => scalePlaced(cell, factor));
   return next;
 }
@@ -2709,6 +2710,15 @@ function answerSliceFor(pages, question) {
   return null;
 }
 
+function answerRowGap(prev) {
+  if (!prev) return 10;
+  // The heading must clear the first answer. A two-line answer needs air above the next label.
+  if (prev.kind === 'answers-head') return 26;
+  const height = prev.box && prev.box.h;
+  if (height > 0.022) return 16;
+  return 10;
+}
+
 async function answerSlices(chosen) {
   const ordered = worksheetOrder(chosen);
   const slices = [{ kind: 'answers-head', text: 'תשובות', gap: 20, block: 'answers' }];
@@ -2737,7 +2747,7 @@ async function answerSlices(chosen) {
           text: label + ' סעיף ' + hit.part,
           page: hit.page,
           box: hit.box,
-          gap: slices[slices.length - 1] && slices[slices.length - 1].kind === 'answers-head' ? 18 : 8,
+          gap: answerRowGap(slices[slices.length - 1]),
           block: 'answers',
           source,
           clip: sourceClip(source, hit.page, 'answer'),
@@ -2759,7 +2769,7 @@ async function answerSlices(chosen) {
         text: label,
         page: found.page,
         box: found.box,
-        gap: slices[slices.length - 1] && slices[slices.length - 1].kind === 'answers-head' ? 18 : 8,
+        gap: answerRowGap(slices[slices.length - 1]),
         block: 'answers',
         source,
         clip: sourceClip(source, found.page, 'answer'),
@@ -6178,9 +6188,17 @@ function packWorksheet(measured, noteHeight) {
     }
     if (!page.length && top > CONT_TOP && !fits(page, chunk, top) && fits(page, chunk, CONT_TOP)) top = CONT_TOP;
     if (!fits(page, chunk, top)) {
-      const lead = page.length && chunk.length ? (chunk[0].slice.gap || 0) : 0;
-      const room = PAGE_H - top - FOOT - contentHeight(page) - lead;
-      chunk = scalePiece(chunk, Math.max(1, room));
+      const answerChunk = chunk.length && chunk.every((item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'answer-row' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head'));
+      if (answerChunk) {
+        // An answer stays at the question's scale. Squeezing it makes the glyphs smaller than the label.
+        if (page.length) pages.push({ top, items: page });
+        page = [];
+        top = CONT_TOP;
+      } else {
+        const lead = page.length && chunk.length ? (chunk[0].slice.gap || 0) : 0;
+        const room = PAGE_H - top - FOOT - contentHeight(page) - lead;
+        chunk = scalePiece(chunk, Math.max(1, room));
+      }
     }
     page = page.concat(chunk);
   });
@@ -6204,16 +6222,11 @@ function packWorksheet(measured, noteHeight) {
     let extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
     const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
     const need = leadGap + contentHeight(extra);
-    // An answer stays readable. Below 0.6 it keeps the next page.
-    const minFactor = 0.6;
     if (need > room) {
       const factor = room / need;
-      if (factor < minFactor) break;
-      extra = extra.map((item) => ({
-        ...item,
-        dh: Math.max(1, Math.round(item.dh * factor)),
-        slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
-      }));
+      // Locked answers keep the source scale. A tighter squeeze starts a new page.
+      if (factor < 0.92) break;
+      extra = extra.map((item) => scalePlaced(item, factor));
     }
     const overflow = heightOf(prev.items.concat(extra), prev.top) - PAGE_H;
     if (overflow > 0) extra[extra.length - 1].dh = Math.max(1, extra[extra.length - 1].dh - overflow);
@@ -6246,7 +6259,9 @@ function packWorksheet(measured, noteHeight) {
     const factor = PAGE_H / heightOf(combined, prev.top);
     // 0.72 is the readable floor already used for a short key. 0.75 left two
     // answer tails (0.746 and 0.748) on a page of their own.
-    if (!(factor >= 0.72)) break;
+    // Answers stay at the same scale as the question body. 0.92 still closes a short tail.
+    const answerTailPage = combined.some((item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'answer-row'));
+    if (!(factor >= (answerTailPage ? 0.92 : 0.72))) break;
     const scaled = combined.map((item) => scalePlaced(item, factor));
     if (!settle(scaled, prev.top)) break;
     prev.items = scaled;
@@ -6455,7 +6470,9 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
         const imageW = cell.imageW || Math.max(1, (cell.dw || 40) - labelW - 8);
         const imageH = cell.imageH || Math.max(1, cell.dh - (cell.stack ? 18 : 2));
         ctx.fillStyle = '#1a2744';
-        ctx.font = '15px Heebo, Arial, sans-serif';
+        // The label shrinks with the row, so a squeezed page does not leave 15px type next to smaller glyphs.
+        const labelPx = Math.max(11, Math.round(15 * (cell.pageScale || 1)));
+        ctx.font = labelPx + 'px Heebo, Arial, sans-serif';
         ctx.textAlign = 'right';
         ctx.direction = 'rtl';
         const sx = cell.baked ? 0 : cell.slice.box.x * cell.bitmap.width;

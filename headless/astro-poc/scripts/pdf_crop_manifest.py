@@ -147,10 +147,24 @@ def _norm(x0, y0, x1, y1, width, height, pad=0.7):
     }
 
 
-def _objects_in(chars, drawings, x0, x1, y0, y1):
+def _glued_to_label(ch, label):
+    """The prefix's own period or middot. It is not part of the answer."""
+    if not label or ch['c'] not in '.·•':
+        return False
+    if abs(ch['y0'] - label['y0']) > 4.5:
+        return False
+    # RTL puts the mark just to the left of א. A stray mark on the right is the same prefix.
+    if -2 <= label['x0'] - ch['x1'] <= 7:
+        return True
+    return -2 <= ch['x0'] - label['x1'] <= 4
+
+
+def _objects_in(chars, drawings, x0, x1, y0, y1, label=None):
     taken_c = []
     for ch in chars:
         if ch.get('label') or ch['c'] in '·•':
+            continue
+        if _glued_to_label(ch, label):
             continue
         if ch['c'] == '.' and (ch['x1'] - ch['x0']) < 4:
             # A sentence period stays. A separator dot hugging the next prefix does not.
@@ -228,19 +242,42 @@ def answer_boxes(page):
                 # part's line stays below next_row_y, so it is not in this slot.
                 band_top = label['y0'] - 8
                 band_bot = next_row_y - 1.2
-                taken_c, taken_d = _objects_in(chars, drawings, left, right, band_top, band_bot)
+                taken_c, taken_d = _objects_in(chars, drawings, left, right, band_top, band_bot, label)
                 if not taken_c and not taken_d:
                     continue
                 use = [ch for ch in taken_c if ch['y0'] < next_row_y - 1.5]
                 if nxt:
                     # Do not keep a continuation that runs into the next part's column.
                     use = [ch for ch in use if (ch['x0'] + ch['x1']) / 2 > left]
-                box = _union(use, [d for d in taken_d if d['rect'].y0 < next_row_y - 1])
+                # The next row's ink is a hard bottom. A parenthesis is taller than
+                # the label, so its center — not its top — decides which row owns it.
+                foreign_top = None
+                for ch in chars:
+                    cy = (ch['y0'] + ch['y1']) / 2
+                    if cy < next_row_y - 1:
+                        continue
+                    cx = (ch['x0'] + ch['x1']) / 2
+                    if cx < left or cx > right:
+                        continue
+                    if foreign_top is None or ch['y0'] < foreign_top:
+                        foreign_top = ch['y0']
+                drawings_here = [d for d in taken_d if d['rect'].y0 < next_row_y - 1]
+                if foreign_top is not None:
+                    cut = foreign_top - 0.5
+                    use = [ch for ch in use if ch['y0'] < cut]
+                    drawings_here = [d for d in drawings_here if d['rect'].y0 < cut]
+                box = _union(use, drawings_here)
                 if not box:
                     continue
-                norm = _norm(*box, width, height, pad=0.9)
+                if foreign_top is not None:
+                    box = (box[0], box[1], box[2], min(box[3], foreign_top - 0.5))
+                norm = _norm(*box, width, height, pad=0.6)
                 if not norm:
                     continue
+                if foreign_top is not None:
+                    limit = (foreign_top - 0.4) / height
+                    if norm['y'] + norm['h'] > limit:
+                        norm['h'] = round(max(0.0, limit - norm['y']), 5)
                 # The slot edges are a hard stop. Padding must not cross the next prefix.
                 norm_left = left / width
                 norm_right = right / width
@@ -487,53 +524,94 @@ def _absorb_leftovers(figures, strokes, width, height):
 
 
 def _callouts(page, chars, markers, y_stop):
+    """A guided box is one rectangle: its title line, the paragraph inside
+    the gray fill, and the lines under it down to the next part prefix."""
     width, height = page.rect.width, page.rect.height
     bands = _question_bands(markers, height, y_stop)
-    out = []
+    bars = []
     for drawing in page.get_drawings():
         rect = drawing['rect']
-        if not _is_bar(drawing, width):
+        if rect.y0 < 74 or rect.y0 >= y_stop or rect.height < 16 or rect.height > 110:
             continue
-        if rect.y0 < 74 or rect.y0 >= y_stop or rect.height < 16 or rect.height > 56:
+        # Wider than a short rule, and not only a hairline.
+        if rect.width < width * 0.45:
             continue
-        # A guided box is narrower than a writing row. 0.50 still skips a short rule.
-        if rect.width < width * 0.50:
+        if any(abs(rect.y0 - have.y0) < 1.5 and abs(rect.x0 - have.x0) < 2 and abs(rect.height - have.height) < 1.5 for have in bars):
+            continue
+        bars.append(rect)
+    bars.sort(key=lambda rect: (rect.y0, -rect.width))
+    out = []
+    used = set()
+    for index, rect in enumerate(bars):
+        if index in used:
             continue
         inside = [
             ch for ch in chars
             if rect.x0 - 2 <= (ch['x0'] + ch['x1']) / 2 <= rect.x1 + 2
             and rect.y0 - 1 <= ch['y0'] <= rect.y1 + 1
         ]
-        if any(ch.get('label') for ch in inside):
+        if any(ch.get('label') for ch in inside) or not inside:
             continue
-        title = ''.join(ch['c'] for ch in sorted(inside, key=lambda ch: -ch['x0']))
-        if not title or len(title) > 28:
+        # The title is the first line in the fill. A writing row's first line is a sentence.
+        top_y = min(ch['y0'] for ch in inside)
+        title_chars = [ch for ch in inside if ch['y0'] < top_y + 7]
+        title = ''.join(ch['c'] for ch in sorted(title_chars, key=lambda ch: -ch['x0']))
+        if not title or len(title) > 24:
             continue
-        # The question number sits inside the bar, a few points below its top.
         q = _band_for((rect.y0 + rect.y1) / 2, bands)
         if q is None:
             continue
-        band = next((band for band in bands if band[0] == q and band[1] - 8 <= rect.y0 < band[2]), None)
+        band = next((item for item in bands if item[0] == q and item[1] - 8 <= rect.y0 < item[2]), None)
         if not band:
             continue
-        # Body text under the bar, until the next part prefix or the next bar.
-        labels = [ch for ch in chars if ch.get('label') and ch['y0'] > rect.y1 and ch['y0'] < band[2] and ch['x0'] > width * 0.7]
-        stop = min(labels, key=lambda ch: ch['y0'])['y0'] - 1.5 if labels else band[2]
-        body = [
+        labels = [
             ch for ch in chars
-            if rect.y1 - 1 < ch['y0'] < stop and not ch.get('label') and ch['c'] not in '·•'
+            if ch.get('label') and top_y + 8 < ch['y0'] < band[2] and ch['x0'] > width * 0.7
         ]
+        stop = min(labels, key=lambda ch: ch['y0'])['y0'] - 1.5 if labels else min(band[2], rect.y0 + 170)
+        stop = min(stop, rect.y0 + 170)
+        x_span_l, x_span_r = rect.x0, rect.x1
+        candidates = [
+            ch for ch in chars
+            if top_y + 7 < ch['y0'] < stop
+            and not ch.get('label')
+            and ch['c'] not in '·•'
+            and x_span_l - 8 <= (ch['x0'] + ch['x1']) / 2 <= x_span_r + 8
+        ]
+        candidates.sort(key=lambda ch: (ch['y0'], -ch['x0']))
+        body = []
+        last_bottom = top_y + 7
+        for ch in candidates:
+            # A blank band means the paragraph ended. Later text is the next exercise.
+            if body and ch['y0'] - last_bottom > 20:
+                break
+            body.append(ch)
+            if ch['y1'] > last_bottom:
+                last_bottom = ch['y1']
         if len(body) < 8:
             continue
-        x0 = min([rect.x0] + [ch['x0'] for ch in body])
-        y0 = min([rect.y0] + [ch['y0'] for ch in inside + body])
-        x1 = max([rect.x1] + [ch['x1'] for ch in body])
-        y1 = max([rect.y1] + [ch['y1'] for ch in body])
-        norm = _norm(x0, y0, x1, y1, width, height, pad=1.0)
-        if norm:
-            if any(abs(norm['x'] - have['x']) < 0.002 and abs(norm['y'] - have['y']) < 0.002 and have['q'] == q for have in out):
+        body_bottom = max(ch['y1'] for ch in body)
+        extra = [rect]
+        for other_index, other in enumerate(bars):
+            if other_index == index or other_index in used:
                 continue
-            out.append({'q': q, **norm})
+            if other.y0 < rect.y1 - 2 or other.y1 > body_bottom + 8:
+                continue
+            if other.x1 < rect.x0 + 30 or other.x0 > rect.x1 - 30:
+                continue
+            extra.append(other)
+            used.add(other_index)
+        owned = title_chars + body
+        x0 = min([item.x0 for item in extra] + [ch['x0'] for ch in owned])
+        y0 = min([item.y0 for item in extra] + [ch['y0'] for ch in owned])
+        x1 = max([item.x1 for item in extra] + [ch['x1'] for ch in owned])
+        y1 = max([item.y1 for item in extra] + [ch['y1'] for ch in owned])
+        norm = _norm(x0, y0, x1, y1, width, height, pad=1.0)
+        if not norm:
+            continue
+        if any(abs(norm['x'] - have['x']) < 0.002 and abs(norm['y'] - have['y']) < 0.002 and have['q'] == q for have in out):
+            continue
+        out.append({'q': q, **norm})
     return out
 
 
