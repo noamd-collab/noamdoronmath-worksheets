@@ -146,8 +146,6 @@ async function renderCase(item) {
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (error) => errors.push(String(error)));
-  const cdp = await context.newCDPSession(page);
-  await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
   console.log('OPEN', item.id, 'n', item.selection.length);
   await page.goto(`${base}/teachers/#summary`, { waitUntil: 'domcontentloaded', timeout: 60000 });
   await page.waitForFunction((want) => {

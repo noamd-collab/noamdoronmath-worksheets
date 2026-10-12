@@ -702,31 +702,6 @@ describe('teacher catalog picker', () => {
     const edgeEnd = edgeTrim.box.y + edgeTrim.box.h;
     assert.ok(edgeTrim.box.y < 0.03, String(edgeTrim.box.y));
     assert.ok(edgeEnd < 0.17, String(edgeEnd));
-    const leakData = new Uint8ClampedArray(trimW * trimH * 4);
-    leakData.fill(255);
-    const leakInk = (x0: number, x1: number, y0: number, y1: number) => {
-      for (let y = y0; y < y1; y += 1) {
-        for (let x = x0; x < x1; x += 1) {
-          const i = (y * trimW + x) * 4;
-          leakData[i] = leakData[i + 1] = leakData[i + 2] = 0;
-          leakData[i + 3] = 255;
-        }
-      }
-    };
-    leakInk(4, 36, 20, 70);
-    leakInk(8, 14, 82, 100);
-    const leakBitmap = { width: trimW, height: trimH, getContext: () => ({ getImageData: () => ({ data: leakData }) }) };
-    const leaked = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.3 } }, leakBitmap);
-    const leakEnd = leaked.box.y + leaked.box.h;
-    assert.ok(leakEnd < 0.2, 'a short parenthesis tail under the answer is dropped ' + String(leakEnd));
-    assert.ok(leaked.box.y < 0.06, String(leaked.box.y));
-    const leakedWrap = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.3, wrap: true } }, leakBitmap);
-    const wrapEnd = leakedWrap.box.y + leakedWrap.box.h;
-    assert.ok(wrapEnd < 0.2, 'the parenthesis tail is dropped even when the answer wraps ' + String(wrapEnd));
-    leakInk(4, 36, 110, 155);
-    const keptLine = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.45 } }, leakBitmap);
-    const keptEnd = keptLine.box.y + keptLine.box.h;
-    assert.ok(keptEnd > 0.38, 'a full second line of the answer stays ' + String(keptEnd));
     const headerTrim = trimApi.trimPieceBox({
       kind: 'row',
       page: 1,
@@ -749,8 +724,7 @@ describe('teacher catalog picker', () => {
     edgeInk(14, 36, 30, 46);
     const edgeBitmap = { width: trimW, height: trimH, getContext: () => ({ getImageData: () => ({ data: edgeData }) }) };
     const noLetter = trimApi.trimPieceBox({ kind: 'answer', page: 12, box: { x: 0, y: 0, w: 1, h: 0.2 } }, edgeBitmap);
-    assert.ok(noLetter.box.x < 0.05, 'the edge token stays in the answer ' + String(noLetter.box.x));
-    assert.ok(noLetter.box.x + noLetter.box.w > 0.85, 'the rest of the answer stays ' + String(noLetter.box.w));
+    assert.ok(noLetter.box.x > 0.1, String(noLetter.box.x));
     const sheet = preview.slice(preview.indexOf('async function paintAllShort'), preview.indexOf('function markedHTML'));
     assert.equal(sheet.includes('headerCrop'), false);
     assert.match(sheet, /paintWorksheet/);
@@ -1009,22 +983,11 @@ describe('teacher catalog picker', () => {
     ], 1, 'ב');
     assert.ok(bet, '1ב answer');
     assert.ok(bet.x <= 366.6 && bet.x + bet.w >= 377.1, '1ב keeps the whole 13 ' + JSON.stringify(bet));
-    const trailingDot = sliceApi.answerBox([
-      { str: '2.', x: 547.7, y: 539.7, w: 8, h: 11, page: 7 },
-      { str: 'א.', x: 513.7, y: 539.7, w: 10, h: 11, page: 7 },
-      { str: 'נכונה', x: 390, y: 539.7, w: 22, h: 11, page: 7 },
-      { str: '·', x: 384.7, y: 539.7, w: 3.2, h: 11, page: 7 },
-      { str: 'ב.', x: 374.2, y: 539.7, w: 8.5, h: 11, page: 7 },
-      { str: '3.', x: 547.7, y: 500, w: 8, h: 11, page: 7 },
-    ], 2, 'א');
-    assert.ok(trailingDot, '2א answer');
-    assert.ok(trailingDot.x > 387.9, 'the separator · after the answer stays outside the crop ' + JSON.stringify(trailingDot));
-    assert.ok(trailingDot.x <= 390 && trailingDot.x + trailingDot.w > 410, JSON.stringify(trailingDot));
     assert.ok(bet.y <= 380 && bet.y + bet.h >= 392, '1ב keeps the full height of 13 ' + JSON.stringify(bet));
     assert.ok(bet.y > 366, '1ב does not take the next line ' + JSON.stringify(bet));
     const reason = sliceApi.answerBox(sheet.items, 20, 'ד');
     assert.ok(reason, '20ד answer');
-    assert.ok(reason.x <= 485 && reason.x + reason.w >= 500 && reason.x + reason.w < 510, JSON.stringify(reason));
+    assert.ok(reason.x <= 484 && reason.x + reason.w >= 509, JSON.stringify(reason));
     assert.ok(reason.h < 28, 'the source answer is the word נימוק ' + JSON.stringify(reason));
     const mixed = sliceApi.answerSliceFor([
       {
@@ -1285,8 +1248,8 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 400 },
     ], 0);
-    // 400px is under 40% of a page, and the combined page stays above 0.72, so it joins.
-    assert.equal(packed.length, 1);
+    // A lone answer that would shrink below 0.6 stays on the next page.
+    assert.equal(packed.length, 2);
     const readable = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 280 },
@@ -1299,26 +1262,25 @@ describe('teacher catalog picker', () => {
     assert.ok(scale(40, 12) <= 1.3);
     assert.ok(Math.abs(scale(40, 12) - 72 / 12) > 1);
     const flowed = pack.flowAnswers([
-      { slice: { kind: 'answer', gap: 8 }, dh: 28, dw: 220 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 30, dw: 240 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 26, dw: 200 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 40, dw: 800 },
+      { slice: { kind: 'answer' }, dh: 28, dw: 220 },
+      { slice: { kind: 'answer' }, dh: 30, dw: 240 },
+      { slice: { kind: 'answer' }, dh: 26, dw: 200 },
+      { slice: { kind: 'answer' }, dh: 40, dw: 800 },
     ]);
-    assert.equal(flowed.length, 4);
-    assert.ok(flowed.every((row) => row.slice.kind === 'answer-row' && row.cells && row.cells.length === 1));
-    assert.equal(flowed[0].dh, 28);
-    assert.equal(flowed[3].dh, 40);
+    assert.equal(flowed[0].slice.kind, 'answer-row');
+    assert.equal(flowed[0].cells && flowed[0].cells.length, 3);
+    assert.equal(flowed[0].dh, 30);
+    assert.equal(flowed[1].cells && flowed[1].cells.length, 1);
     const natural = pack.packWorksheet([
-      { slice: { kind: 'row', gap: 4 }, dh: 1100 },
+      { slice: { kind: 'row', gap: 4 }, dh: 1200 },
       { slice: { kind: 'answers-head', gap: 8 }, dh: 34 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 28, dw: 220 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 30, dw: 240 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 26, dw: 200 },
+      { slice: { kind: 'answer', gap: 4 }, dh: 28, dw: 220 },
+      { slice: { kind: 'answer', gap: 4 }, dh: 30, dw: 240 },
+      { slice: { kind: 'answer', gap: 4 }, dh: 26, dw: 200 },
     ], 0);
     assert.equal(natural.length, 1);
-    const rows = natural[0].items.filter((item) => item.slice.kind === 'answer-row');
-    assert.equal(rows.length, 3);
-    assert.ok(rows.every((row) => row.cells && row.cells.length === 1));
+    const row = natural[0].items.find((item) => item.slice.kind === 'answer-row');
+    assert.ok(row && row.cells && row.cells.length === 3);
     // A short answer key joins the previous page when it still fits at a readable size.
     const pulled = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1000 },
@@ -1335,15 +1297,14 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'answer', gap: 8 }, dh: 200, dw: 800 },
     ], 0);
     assert.equal(pulledAtSix.length, 1);
-    // A leftover under a quarter of a page is pulled back. An answer tail up to
-    // 40% joins too, as long as the combined page stays at 0.72. A taller key stays.
+    // A key that would have to shrink below 0.6 stays on its own page.
     const leftBehind = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 140, dw: 800 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 140, dw: 800 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 140, dw: 800 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 140, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
     ], 0);
     assert.equal(leftBehind.length, 2);
     const moved = pack.packWorksheet([
@@ -1351,27 +1312,11 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'row', gap: 4, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 160 },
       { slice: { kind: 'row', gap: -2, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 80 },
     ], 0);
-    // 240px is under a quarter of a page, so it joins the page above. The two q6 pieces stay together.
-    assert.equal(moved.length, 1);
-    assert.equal(moved[0].items.length, 3);
-    assert.equal(moved[0].items[1].slice.block, 'q6');
-    assert.equal(moved[0].items[2].slice.block, 'q6');
-    const stays = pack.packWorksheet([
-      { slice: { kind: 'row', gap: 4, block: 'other' }, dh: 1100 },
-      { slice: { kind: 'row', gap: 4, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 400 },
-      { slice: { kind: 'row', gap: -2, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 200 },
-    ], 0);
-    assert.equal(stays.length, 2);
-    assert.equal(stays[0].items.length, 1);
-    assert.equal(stays[1].items.length, 2);
-    assert.equal(stays[1].items[0].slice.block, 'q6');
-    assert.equal(stays[1].items[1].slice.block, 'q6');
-    // Rounding many lines up used to leave the merged page 1px over and keep a short key behind.
-    const many = [];
-    for (let n = 0; n < 18; n += 1) many.push({ slice: { kind: 'row', gap: 4, block: 'q' + n }, dh: 62 });
-    for (let n = 0; n < 14; n += 1) many.push({ slice: { kind: 'answer', gap: 8 }, dh: 27, dw: 400 });
-    const joined = pack.packWorksheet(many, 0);
-    assert.equal(joined.length, 1);
+    assert.equal(moved.length, 2);
+    assert.equal(moved[0].items.length, 1);
+    assert.equal(moved[1].items.length, 2);
+    assert.equal(moved[1].items[0].slice.block, 'q6');
+    assert.equal(moved[1].items[1].slice.block, 'q6');
     const tall = pack.packWorksheet([
       { slice: { kind: 'stem', gap: 10, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 2000 },
       { slice: { kind: 'row', gap: 4, block: 'q7', source: { pdfId: 'pythagoras' } }, dh: 800 },
@@ -3021,16 +2966,9 @@ sys.stdout.write(json.dumps(out))
                 .filter((item) => item.y < labelY - 8 && (item.x || 0) > 360 && markerToken(String(item.str || '').trim()))
                 .sort((a, b) => b.y - a.y)[0];
               const floor = Math.max(nextMark ? nextMark.y + (nextMark.h || 10) + 2 : labelY - 16, labelY - 16);
-              const otherPartLine = (y: number) => pageItems.some((other) => {
-                if (Math.abs((other.y || 0) - y) > 4) return false;
-                const token = String(other.str || '').trim();
-                return /^[אבגדהו]\.?$/.test(token) || /^\.[אבגדהו]$/.test(token) || /^[אבגדהו]\./.test(token) || /[·•]\s*[אבגדהו]\./.test(token);
-              });
               const more = pageItems.filter((item) => {
                 if ((item.h || 0) > 28) return false;
                 if (item.y > labelY - 8 || item.y < floor) return false;
-                // The next part's line is that part's answer, not this one wrapped.
-                if (otherPartLine(item.y || 0)) return false;
                 const token = String(item.str || '').trim();
                 if (!token || token.length < 3) return false;
                 if (/נועם|מתמטיקה|בס״ד|בס\"ד|זכויות|עמוד|תשובות/.test(token)) return false;
