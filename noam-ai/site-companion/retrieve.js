@@ -66,21 +66,29 @@ export function buildCatalogRecords(catalog) {
   return records;
 }
 
-function tokens(value) {
+export function searchTokens(value) {
   return String(value || "")
     .toLowerCase()
     .split(/[^\p{L}\p{N}]+/u)
     .filter((part) => part.length >= 2);
 }
 
-export function retrieveRecords(catalog, query, limit) {
+function tokens(value) {
+  return searchTokens(value);
+}
+
+export function retrieveRecords(catalog, query, limit, page) {
   const records = buildCatalogRecords(catalog);
   const wanted = tokens(query);
   const cap = Math.max(1, Math.min(8, Number(limit) || 6));
-  if (!wanted.length) return records.slice(0, cap);
+  const namedGrade = focusGrade(query, page);
+  if (!wanted.length && namedGrade == null) return records.slice(0, cap);
   const ranked = records
     .map((record) => {
-      let score = 0;
+      if (namedGrade != null && record.grade != null && Number(record.grade) !== namedGrade) {
+        return { record, score: 0 };
+      }
+      let score = namedGrade != null && Number(record.grade) === namedGrade ? 6 : 0;
       for (const token of wanted) {
         if (record.searchText.includes(token)) score += token.length > 3 ? 3 : 1;
         if (record.title.toLowerCase().includes(token)) score += 4;
@@ -103,6 +111,23 @@ export function gradeMentioned(query) {
   return GRADE_MARK[mark] || null;
 }
 
+/** Grade of the open page, from /kite-grade-9, ?grade=9, or the page title. */
+export function pageGrade(page) {
+  const path = String((page && page.path) || "");
+  const fromSlug = path.match(/grade-(\d+)/);
+  if (fromSlug) return Number(fromSlug[1]);
+  const fromQuery = path.match(/[?&]grade=(\d+)/);
+  if (fromQuery) return Number(fromQuery[1]);
+  return gradeMentioned(String((page && page.title) || ""));
+}
+
+/** A grade the user named wins. Otherwise stay on the open page. */
+export function focusGrade(query, page) {
+  const named = gradeMentioned(query);
+  if (named != null) return named;
+  return pageGrade(page);
+}
+
 function guideSearchText(record) {
   return [record.gradeLabel, record.title, record.levelLabel, record.topic, record.contains, record.audience, record.how, record.terms]
     .filter(Boolean)
@@ -110,11 +135,11 @@ function guideSearchText(record) {
     .toLowerCase();
 }
 
-export function retrieveGuide(guide, query, limit) {
+export function retrieveGuide(guide, query, limit, page) {
   const records = (guide && guide.records) || [];
   const wanted = tokens(query);
   const cap = Math.max(1, Math.min(8, Number(limit) || 6));
-  const namedGrade = gradeMentioned(query);
+  const namedGrade = focusGrade(query, page);
   if (!wanted.length && namedGrade == null) return records.slice(0, cap);
   const ranked = records
     .map((record) => {

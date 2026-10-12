@@ -5,6 +5,7 @@
  */
 import { fetchWithTimeout } from "./bot-guard.js";
 import { retrieveGuide, retrieveRecords } from "./retrieve.js";
+import { dedupeActions, suggestTopicGroup } from "./topic-order.js";
 
 export const QWEN_CHAT_URL =
   "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions";
@@ -225,13 +226,17 @@ export function groundModelPayload(parsed, records, input) {
   const legacy = Array.isArray(parsed.optionRecordIds) ? parsed.optionRecordIds.map(String) : [];
   const primaryRecord = byId.get(String(parsed.primaryRecordId || legacy[0] || ""));
   const chipSource = Array.isArray(parsed.chipRecordIds) ? parsed.chipRecordIds : legacy.slice(1);
-  const chips = [];
+  const rawChips = [];
   for (const id of chipSource) {
     const record = byId.get(String(id));
-    if (!record || chips.length >= 2) continue;
+    if (!record) continue;
     if (primaryRecord && record.id === primaryRecord.id) continue;
-    chips.push(actionFrom(record));
+    rawChips.push(actionFrom(record));
   }
+  const primaryAction = primaryRecord ? actionFrom(primaryRecord) : null;
+  const uniqueChips = dedupeActions(rawChips)
+    .filter((chip) => !primaryAction || (chip.href !== primaryAction.href && chip.label !== primaryAction.label))
+    .slice(0, 2);
   const teacher = input && input.page && input.page.kind === "teachers";
   const answer = stripUnknownUrls(parsed.answer || parsed.text, allowed).trim() || "אלה הדפים שנמצאו בקטלוג. לחצו על הקישור.";
   const detailBody = stripUnknownUrls(parsed.details || "", allowed).trim();
@@ -239,7 +244,7 @@ export function groundModelPayload(parsed, records, input) {
   const primary = primaryRecord ? actionFrom(primaryRecord) : null;
   const links = [];
   if (primary) links.push(linkOf(primaryRecord));
-  for (const chip of chips) {
+  for (const chip of uniqueChips) {
     const record = byId.get(chip.id);
     if (record) links.push(linkOf(record));
   }
@@ -251,8 +256,8 @@ export function groundModelPayload(parsed, records, input) {
     text: answer,
     details,
     primary,
-    chips,
-    options: chips,
+    chips: uniqueChips,
+    options: uniqueChips,
     links,
     essential: [],
     essentialNote: teacher ? QUESTION_GAP : "",
@@ -282,10 +287,12 @@ export async function handleCompanionTurn(input, options) {
     return emptyResult("ramzi-redirect", RAMZI_TEXT, safe);
   }
   if (isRoleQuestion(message)) return roleAnswer(safe);
+  const suggested = suggestTopicGroup(safe, settings.catalog, settings.guide);
+  if (suggested) return suggested;
   const query = teacherQuery(safe) || (safe.page && safe.page.title) || "";
   const records = settings.guide
-    ? retrieveGuide(settings.guide, query, 6)
-    : retrieveRecords(settings.catalog, query, 6);
+    ? retrieveGuide(settings.guide, query, 6, safe.page)
+    : retrieveRecords(settings.catalog, query, 6, safe.page);
   if (!records.length) {
     return emptyResult("catalog-gap", MISSING_TEXT, safe);
   }
