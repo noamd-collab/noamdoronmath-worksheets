@@ -1,5 +1,6 @@
 ---
 import StackedFraction from './StackedFraction.astro';
+import KiteAreaFilm from './KiteAreaFilm.astro';
 /**
  * KIMI-LOOPS-K3 — Brilliant-style self-playing math film loops.
  *
@@ -184,7 +185,7 @@ const ariaLabels: Record<string, string> = {
   'quad-gate': 'הדגמה: צורה עם 4 צלעות נכנסת לסל המרובעים, ומשולש נשאר בחוץ.',
   'two-diag': 'הדגמה: במרובע נמתחים שני אלכסונים, אחד ואחר כך השני.',
   'kite-construct':
-    'הדגמה: בונים דלתון בסרגל ומחוגה. מציירים ציר ועליו שתי נקודות A ו־B. מסובבים מחוגה סביב A ואז סביב B — נקודות המפגש של שני העיגולים הן הקודקודים C ו־D. מתקבל דלתון עם שני זוגות צלעות שוות: AC שווה AD, ו־BC שווה BD. כשמגדילים את העיגול סביב B, הקודקודים עוברים לצד של A ונוצר דלתון קעור עם זווית קעורה.',
+    'הדגמה: קודם שטח הדלתון. משכפלים את ארבעת המשולשים ומסובבים כל עותק ב־180° סביב אמצע צלע הדלתון, עד שנוצר מלבן שגובהו AC ורוחבו BD. שטח המלבן הוא AC כפול BD, והוא כפול משטח הדלתון, ולכן S = (AC × BD) / 2. אחר כך בונים דלתון בסרגל ומחוגה: ציר, נקודות A ו־B, שני עיגולים, קודקודים C ו־D, דלתון קמור ואחר כך קעור.',
 };
 
 /* fixed top-strip problem text per variant (families layout);
@@ -256,7 +257,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'mark-250': { text: '200 < ? < 300', ltr: true },
   'quad-gate': { text: 'איזו צורה נכנסת?' },
   'two-diag': { text: 'כמה אלכסונים?' },
-  'kite-construct': { text: 'איך בונים דלתון?' },
+  'kite-construct': { text: 'למה מחלקים ב־2?' },
 };
 const top = topTexts[variant];
 
@@ -2243,7 +2244,16 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
     {
       variant === 'kite-construct' && (
-        <svg class="concept-loop__svg" viewBox="0 0 480 300" role="img" aria-label={ariaLabels[variant]}>
+        <>
+          <KiteAreaFilm />
+          <svg
+            class="concept-loop__svg"
+            data-el="kite-build"
+            viewBox="0 0 480 300"
+            role="img"
+            aria-label={ariaLabels[variant]}
+            style="display:none"
+          >
           <text class="cl-t cl-big cl-kite-title" x="240" y="40" text-anchor="middle">סרגל ומחוגה בלבד: דלתון</text>
           <line data-el="axis" x1="40" y1="165" x2="370" y2="165" stroke="var(--navy)" stroke-width="1.5" pathLength="1" style="opacity:1" />
           <text data-el="axis-lbl" class="cl-t" x="360" y="182" text-anchor="end" style="opacity:1">ציר סימטריה</text>
@@ -2303,7 +2313,8 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
             <text class="cl-t" x="62" y="228" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">זווית קעורה</text>
           </g>
           <text data-el="grow-lbl" class="cl-t" x="240" y="256" text-anchor="middle" style="fill:var(--coral-dark);font-weight:800;opacity:0">מגדילים את העיגול סביב B…</text>
-        </svg>
+          </svg>
+        </>
       )
     }
 
@@ -2973,14 +2984,14 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
     {
       variant === 'kite-construct' && (
-        <>
+        <div data-el="kite-caption" style="display:none">
           <p class="concept-loop__formula" dir="rtl">
             <span data-fx="0" style="opacity:1">עיגול סביב <bdi class="cl-num">A</bdi> + עיגול סביב <bdi class="cl-num">B</bdi></span>
             <span data-fx="1" style="opacity:1">= <bdi class="cl-num">4</bdi> קודקודי הדלתון</span>
             <span data-el="check" class="cl-check" style="opacity:1" aria-hidden="true">✓</span>
           </p>
           <p class="concept-loop__caption" data-el="caption" style="opacity:1">שני עיגולים — דלתון קמור, ובהגדלה: קעור</p>
-        </>
+        </div>
       )
     }
   </div>

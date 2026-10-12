@@ -99,7 +99,7 @@ function demoLine(page: { slug: string; grade: number; catalogCta?: { catalogTop
     if (loop.kind === 'css') return 'הדגמה: ' + cssLoopIdea(loop.variant);
     if (loop.kind === 'concept') {
       if (loop.variant === 'kite-construct') {
-        return 'הדגמה: דלתון בסרגל ומחוגה — קמור, ובהגדלה קעור';
+        return 'הדגמה: שטח דלתון — מהדלתון למלבן, ואחר כך בנייה בסרגל ומחוגה';
       }
       const copy = gradeLoopCopy(loop.variant);
       return 'הדגמה: ' + [copy.domain, copy.claim].filter(Boolean).join(' · ');

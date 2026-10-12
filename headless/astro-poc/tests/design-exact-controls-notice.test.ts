@@ -147,9 +147,10 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again for the grade-9 kite-construct film (explicit content addition).
   // Moved again for the kite review fixes (RTL summary, final rest frame, pause target).
   // Moved again so kite ticks follow each side and the pause button waits for JS.
+  // Moved again so the kite card plays the area film, then the construction.
   const expected = {
-    'src/components/ConceptLoop.astro': 'ce9a4b25edfb6a7d04573ea3865603003182f63170261fcc00b52b17a34bd4ac',
-    'src/lib/conceptLoops.ts': 'dda7e314cc4891007911700261764e20e5957328d02fd72ce0573c429a315f57',
+    'src/components/ConceptLoop.astro': 'd003269f0f18f65d1969280f05c0263cbbc9b4f18dcf13c82b18ba21849a5f37',
+    'src/lib/conceptLoops.ts': 'f18342e814dacaf4fdf5e38a7405e8588200e63e7bf65df6657a1023630d6f18',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {

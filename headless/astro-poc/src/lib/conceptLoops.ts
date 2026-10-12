@@ -15,6 +15,8 @@
  *     prefers-reduced-motion does not park the loop.
  */
 
+import { renderKiteArea } from './kiteAreaFilm';
+
 type LoopRoot = HTMLElement & { __loop?: LoopDebug };
 
 interface LoopDebug {
@@ -2010,11 +2012,13 @@ function renderTwoDiag(root: LoopRoot, t: number) {
 }
 const TWO_DIAG_HOLD = 5.2;
 
-/* ═══════════════ kite-construct — ruler-and-compass kite (content ≈ 13 s, lap 16 s) ═══════════════
-   Port of loop #8 from staging/packages-120-oct12 @ 654ab7c.
-   Two circles meet in a convex kite; growing the second circle makes a concave kite.
-   The lap fades back to rest so the seam matches t = 0. The engine parks on the
-   completed concave frame (hold), before that fade. */
+/* ═══════════════ kite-construct — area film, then ruler-and-compass ═══════════════
+   First: «שטח דלתון — מהדלתון למלבן» (84 s). Then loop #8 from
+   staging/packages-120-oct12 @ 654ab7c: two circles meet in a convex kite,
+   and growing the second circle makes a concave kite. The construction
+   fades back to rest so the seam returns to the area film. After 4 laps
+   the engine parks on the completed concave frame. Reduced motion and
+   no JS rest on the area film's final frame (t = 84), not that hold. */
 
 const KITE_X0 = 195.7;
 const KITE_X1 = 144.3;
@@ -2119,6 +2123,20 @@ function renderKite(root: LoopRoot, t: number) {
   op(q(root, 'caption'), ph(t, 12.6, 13.0) * fxFade);
 }
 const KITE_HOLD = 13.6;
+const KITE_AREA_END = 84;
+const KITE_BUILD = 16;
+
+function renderKiteShow(root: LoopRoot, t: number) {
+  const area = q(root, 'kite-area');
+  const build = q(root, 'kite-build');
+  const cap = q(root, 'kite-caption');
+  const showArea = t <= KITE_AREA_END;
+  if (area) area.style.display = showArea ? '' : 'none';
+  if (build) build.style.display = showArea ? 'none' : '';
+  if (cap) cap.style.display = showArea ? 'none' : '';
+  if (showArea) renderKiteArea(root, Math.min(t, KITE_AREA_END));
+  else renderKite(root, t - KITE_AREA_END);
+}
 
 /** Double or triple ticks centered on a segment, perpendicular to it. */
 function placeKiteTicks(
@@ -2230,7 +2248,11 @@ const SPECS = {
   'mark-250': { duration: 10, hold: MARK250_HOLD, render: renderMark250 },
   'quad-gate': { duration: 10, hold: QUAD_GATE_HOLD, render: renderQuadGate },
   'two-diag': { duration: 10, hold: TWO_DIAG_HOLD, render: renderTwoDiag },
-  'kite-construct': { duration: 16, hold: KITE_HOLD, render: renderKite },
+  'kite-construct': {
+    duration: KITE_AREA_END + KITE_BUILD,
+    hold: KITE_AREA_END + KITE_HOLD,
+    render: renderKiteShow,
+  },
 } as const;
 
 const MAX_LAPS = 4;
@@ -2321,7 +2343,8 @@ function setupLoop(root: LoopRoot) {
       playing = false;
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
-      t = spec.hold;
+      // The kite rests on the area film's last frame. Other loops keep their hold.
+      t = variant === 'kite-construct' ? KITE_AREA_END : spec.hold;
       drawFrame();
       if (toggle) toggle.style.display = 'none';
     } else if (isStatic) {
