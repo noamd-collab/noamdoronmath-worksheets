@@ -311,6 +311,7 @@ export const catalog = {
       "20": "מקביליות צלעות נגדיות אלכסונים",
       "22": "מעוינים אלכסונים מאונכים",
       "23": "ריבועים מעוין מלבן מקביליות אלכסונים",
+      "39": "טרפז בסיסים שוקיים שווה שוקיים ישר זווית שטח היקף",
       "44": "דו איבר דו־איבר דו-איבר ריבוע דו איבר ריבוע סכום ריבוע הפרש נוסחאות כפל מקוצר נוסחות פתיחת סוגריים פישוט ביטויים",
       "45": "הפרש ריבועים נוסחאות כפל מקוצר נוסחות מכפלת סכום והפרש פירוק לגורמים ריבועים אלגברה"
     }
@@ -11392,6 +11393,45 @@ export const catalog = {
           }
         },
         {
+          "id": 39,
+          "title": "הטרפז",
+          "description": "זיהוי טרפז, בסיסים ושוקיים, זוויות ליד שוק, טרפז שווה־שוקיים וישר־זווית, שטח, היקף והוכחות.",
+          "group": "geo",
+          "icon": "star",
+          "noamTopicId": "G9-T39",
+          "levels": [
+            {
+              "key": "a",
+              "label": "רמה א׳",
+              "pdfId": "d19ab294164347eb9f34c8b635f3461d",
+              "labelSource": "default"
+            },
+            {
+              "key": "b",
+              "label": "רמה ב׳",
+              "pdfId": "62b362d015014ac0818926703824514f",
+              "labelSource": "default"
+            },
+            {
+              "key": "c",
+              "label": "רמת מצוינות",
+              "pdfId": "19f3facb7b7643e5a18d2054cf953800",
+              "labelSource": "default"
+            }
+          ],
+          "routing": {
+            "resolvedNoamPrefix": "G9-T39",
+            "aiHintShown": true,
+            "usesViewer": true,
+            "viewerPath": "worksheet-viewer-noam.html",
+            "siblingPdfQuery": {
+              "pa": "d19ab294164347eb9f34c8b635f3461d",
+              "pb": "62b362d015014ac0818926703824514f",
+              "pc": "19f3facb7b7643e5a18d2054cf953800"
+            }
+          }
+        },
+        {
           "id": 15,
           "title": "גיאומטריה אנליטית",
           "description": "נקודות ושיקופים במערכת הצירים, מרחק ואמצע קטע, שיפוע ומשוואת ישר, שטחים וזיהוי מרובעים.",
@@ -12307,45 +12347,6 @@ export const catalog = {
               "pa": "dd8a073962444df9b1c136462c7ba851",
               "pb": "eaacaafa395d4576864bc1c8adf44e85",
               "pc": "6744a532c10a4bdeb4ce43e00848a2a3"
-            }
-          }
-        },
-        {
-          "id": 39,
-          "title": "הטרפז",
-          "description": "דף עבודה בשלוש רמות — לפי פריסת ההוראה תשפ״ז.",
-          "group": "spiral",
-          "icon": "star",
-          "noamTopicId": "G9-T39",
-          "levels": [
-            {
-              "key": "a",
-              "label": "רמה א׳",
-              "pdfId": "d19ab294164347eb9f34c8b635f3461d",
-              "labelSource": "default"
-            },
-            {
-              "key": "b",
-              "label": "רמה ב׳",
-              "pdfId": "62b362d015014ac0818926703824514f",
-              "labelSource": "default"
-            },
-            {
-              "key": "c",
-              "label": "רמת מצוינות",
-              "pdfId": "19f3facb7b7643e5a18d2054cf953800",
-              "labelSource": "default"
-            }
-          ],
-          "routing": {
-            "resolvedNoamPrefix": "G9-T39",
-            "aiHintShown": true,
-            "usesViewer": true,
-            "viewerPath": "worksheet-viewer-noam.html",
-            "siblingPdfQuery": {
-              "pa": "d19ab294164347eb9f34c8b635f3461d",
-              "pb": "62b362d015014ac0818926703824514f",
-              "pc": "19f3facb7b7643e5a18d2054cf953800"
             }
           }
         }

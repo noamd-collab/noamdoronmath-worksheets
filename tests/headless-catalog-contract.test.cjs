@@ -51,8 +51,9 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
   assert.equal(s.uniquePdfIds, 958);
   assert.equal(s.childTopics, 3);
   // G8 single sheets and G7-T16 gained Noam ids (148 → 154). G9-T15 gained a search entry.
+  // G9-T39 (הטרפז) gained a search entry when it moved into the geometry group (117 → 118).
   assert.equal(s.withNoamTopicId, 154);
-  assert.equal(s.searchEntries, 117);
+  assert.equal(s.searchEntries, 118);
   assert.equal(s.iconKeys, 80);
 
   // Exact per-grade topic counts from DATA
