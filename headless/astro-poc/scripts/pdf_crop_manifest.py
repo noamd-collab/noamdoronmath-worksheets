@@ -103,9 +103,13 @@ def _markers(spans, width):
         match = QNUM.match(token)
         if not match:
             continue
-        if span['x0'] < width * 0.80:
-            continue
         if len(token) > 6:
+            continue
+        # A bare "17" in the answer key sits left of the real "(3)". Only a
+        # parenthesized or dotted number, or a bare number in the far margin,
+        # starts a question.
+        parenthesized = token.startswith('(') or token.endswith('.')
+        if span['x0'] < width * (0.86 if parenthesized else 0.91):
             continue
         found.append({
             'q': int(match.group(1)),
@@ -354,7 +358,7 @@ def figure_boxes(page, y_stop):
                 continue
             cx = (ch['x0'] + ch['x1']) / 2
             cy = (ch['y0'] + ch['y1']) / 2
-            if cx < x0 - 14 or cx > x1 + 14 or cy < y0 - 14 or cy > y1 + 14:
+            if cx < x0 - 22 or cx > x1 + 22 or cy < y0 - 22 or cy > y1 + 22:
                 continue
             # A word of the question is not a vertex label.
             if any(other['c'] in HEBREW and abs(other['y0'] - ch['y0']) < 2 and 0 < abs(other['x0'] - ch['x1']) < 2 for other in chars):
@@ -371,12 +375,22 @@ def figure_boxes(page, y_stop):
             continue
         figures.append({'q': q, **norm, '_paths': group, '_rect': (x0, y0, x1, y1)})
     figures = _merge_figures(figures, width, height)
+    _absorb_leftovers(figures, strokes, width, height)
     callouts = _callouts(page, chars, markers, y_stop)
     return figures, callouts
 
 
+def _gap(a, b):
+    ax0, ay0, ax1, ay1 = a
+    bx0, by0, bx1, by1 = b
+    dx = 0 if ax0 <= bx1 and bx0 <= ax1 else min(abs(ax0 - bx1), abs(bx0 - ax1))
+    dy = 0 if ay0 <= by1 and by0 <= ay1 else min(abs(ay0 - by1), abs(by0 - ay1))
+    return max(dx, dy)
+
+
 def _merge_figures(figures, width, height):
-    """Two clusters of one question that overlap are one drawing."""
+    """Overlapping clusters of one question are one drawing. A tick or axis
+    stub that nearly touches a larger drawing of the same question joins it."""
     pending = figures[:]
     merged = []
     while pending:
@@ -402,7 +416,74 @@ def _merge_figures(figures, width, height):
         cur.update(norm)
         cur['_rect'] = (ax0, ay0, ax1, ay1)
         merged.append(cur)
+    # A tick-marked stub or an axis sliver sits a few points off its drawing.
+    changed = True
+    while changed:
+        changed = False
+        merged.sort(key=lambda fig: (fig['_rect'][2] - fig['_rect'][0]) * (fig['_rect'][3] - fig['_rect'][1]), reverse=True)
+        i = len(merged) - 1
+        while i > 0:
+            small = merged[i]
+            sx0, sy0, sx1, sy1 = small['_rect']
+            sw, sh = sx1 - sx0, sy1 - sy0
+            area = sw * sh
+            if sw > 28 and sh > 28:
+                i -= 1
+                continue
+            host = None
+            host_gap = 16
+            for other in merged[:i]:
+                if other['q'] != small['q']:
+                    continue
+                gap = _gap(small['_rect'], other['_rect'])
+                ow = other['_rect'][2] - other['_rect'][0]
+                oh = other['_rect'][3] - other['_rect'][1]
+                if gap < host_gap and ow * oh > area * 1.8:
+                    host = other
+                    host_gap = gap
+            if host is None:
+                i -= 1
+                continue
+            hx0, hy0, hx1, hy1 = host['_rect']
+            host['_rect'] = (min(hx0, sx0), min(hy0, sy0), max(hx1, sx1), max(hy1, sy1))
+            host['_paths'] = host['_paths'] + small['_paths']
+            norm = _norm(*host['_rect'], width, height, pad=1.2)
+            if norm:
+                host.update(norm)
+            merged.pop(i)
+            changed = True
+            i -= 1
     return merged
+
+
+def _absorb_leftovers(figures, strokes, width, height):
+    """A tick or a zero-height axis sits just outside the cluster that owns it."""
+    for drawing in strokes:
+        rect = drawing['rect']
+        if any(_center_inside(rect, fig, width, height, slop=1.5) for fig in figures):
+            continue
+        if rect.width > 48 and rect.height > 48:
+            continue
+        cx = (rect.x0 + rect.x1) / 2
+        cy = (rect.y0 + rect.y1) / 2
+        host = None
+        host_dist = 20
+        for fig in figures:
+            x0, y0, x1, y1 = fig['_rect']
+            dx = 0 if x0 <= cx <= x1 else min(abs(cx - x0), abs(cx - x1))
+            dy = 0 if y0 <= cy <= y1 else min(abs(cy - y0), abs(cy - y1))
+            dist = max(dx, dy)
+            if dist < host_dist:
+                host = fig
+                host_dist = dist
+        if host is None:
+            continue
+        x0, y0, x1, y1 = host['_rect']
+        host['_rect'] = (min(x0, rect.x0), min(y0, rect.y0), max(x1, rect.x1), max(y1, rect.y1))
+        host['_paths'].append(drawing)
+        norm = _norm(*host['_rect'], width, height, pad=1.2)
+        if norm:
+            host.update(norm)
 
 
 def _callouts(page, chars, markers, y_stop):
@@ -415,7 +496,8 @@ def _callouts(page, chars, markers, y_stop):
             continue
         if rect.y0 < 74 or rect.y0 >= y_stop or rect.height < 16 or rect.height > 56:
             continue
-        if rect.width < width * 0.62:
+        # A guided box is narrower than a writing row. 0.50 still skips a short rule.
+        if rect.width < width * 0.50:
             continue
         inside = [
             ch for ch in chars

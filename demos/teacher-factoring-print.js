@@ -2737,7 +2737,7 @@ async function answerSlices(chosen) {
           text: label + ' סעיף ' + hit.part,
           page: hit.page,
           box: hit.box,
-          gap: 8,
+          gap: slices[slices.length - 1] && slices[slices.length - 1].kind === 'answers-head' ? 18 : 8,
           block: 'answers',
           source,
           clip: sourceClip(source, hit.page, 'answer'),
@@ -2759,7 +2759,7 @@ async function answerSlices(chosen) {
         text: label,
         page: found.page,
         box: found.box,
-        gap: 8,
+        gap: slices[slices.length - 1] && slices[slices.length - 1].kind === 'answers-head' ? 18 : 8,
         block: 'answers',
         source,
         clip: sourceClip(source, found.page, 'answer'),
@@ -4879,7 +4879,10 @@ function layoutQuestionCrops(model) {
   rows.forEach((row) => noteHeader(row.y, row.text));
   items.forEach((item) => noteHeader(item.y, item.str));
   const keepFigure = (figure) => {
-    if (!figure || figure.y1 - figure.y0 < 0.018 || figure.x1 - figure.x0 < 0.02) return false;
+    if (!figure) return false;
+    const minH = figure.whole ? 0.01 : 0.018;
+    const minW = figure.whole ? 0.012 : 0.02;
+    if (figure.y1 - figure.y0 < minH || figure.x1 - figure.x0 < minW) return false;
     if (headerBottom && figure.y1 < headerBottom + 0.008) return false;
     // A drawing that ends in the previous question is that question's, not a shared figure.
     if (earlierEnd > 0.02 && figure.y1 <= earlierEnd + 0.008) return false;
@@ -4941,9 +4944,11 @@ function layoutQuestionCrops(model) {
     let y1 = y0 + h;
     // The next question's number can sit beside a drawing. Clip the text, not the ink.
     const beside = segment === 'figure' && y0 < ceiling - 0.008 && y1 > ceiling + 0.006;
-    if (!beside) y1 = Math.min(ceiling, y1);
+    // A manifest drawing is already one object. Clipping it to the next question
+    // number opens the shape and leaves the cut piece as a floating stub.
+    if (!beside && !(figure && figure.whole)) y1 = Math.min(ceiling, y1);
     // Running בס״ד sits in the top margin. A tall crop must not start inside it.
-    if (y0 < 0.046 && y1 > 0.08) y0 = 0.046;
+    if (!(figure && figure.whole) && y0 < 0.046 && y1 > 0.08) y0 = 0.046;
     if (headerBottom && y0 < headerBottom) {
       // Padding above a drawing must not pull in the title bar under the header.
       if (y1 < headerBottom + 0.012) return;
@@ -5177,6 +5182,11 @@ function layoutQuestionCrops(model) {
   }
   const drawnFigures = [];
   figures.forEach((figure) => {
+    if (figure.whole) {
+      drawnFigures.push(figure);
+      pushBox('figure', Math.max(0, figure.x0 - 0.004), Math.max(0, figure.y0 - 0.006), figure.x1 - figure.x0 + 0.008, figure.y1 - figure.y0 + 0.012, figure);
+      return;
+    }
     // A long line that starts inside a blob and keeps going is the question, not the drawing.
     let drawnRight = figure.x1;
     let contentRight = figure.x1;
@@ -6026,7 +6036,7 @@ function bakeMeasuredClips(measured) {
     canvas.height = sh;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, sw, sh);
-    if (bitmap.getContext) {
+    if (bitmap.getContext && !box.locked && !box.whole) {
       let dashes = dashCache.get(bitmap);
       if (!dashes) {
         try {
@@ -6336,6 +6346,27 @@ function clearGreyRules(ctx, width, height) {
   if (changed) ctx.putImageData(image, 0, 0);
 }
 
+function coverWholeFigures(ctx, item, destX, destY, destW, destH) {
+  const box = item && item.slice && item.slice.box;
+  const figures = item && item.slice && item.slice.figures;
+  if (!box || box.segment === 'figure' || !figures || !figures.length || !(box.w > 0) || !(box.h > 0)) return;
+  ctx.fillStyle = '#fff';
+  figures.forEach((figure) => {
+    if (!figure || !figure.whole) return;
+    const x0 = Math.max(box.x, figure.x0);
+    const y0 = Math.max(box.y, figure.y0);
+    const x1 = Math.min(box.x + box.w, figure.x1);
+    const y1 = Math.min(box.y + box.h, figure.y1);
+    if (x1 - x0 < 0.004 || y1 - y0 < 0.004) return;
+    ctx.fillRect(
+      destX + ((x0 - box.x) / box.w) * destW,
+      destY + ((y0 - box.y) / box.h) * destH,
+      ((x1 - x0) / box.w) * destW,
+      ((y1 - y0) / box.h) * destH,
+    );
+  });
+}
+
 function answerInkCanvas(bitmap, sx, sy, sw, sh, box) {
   const w = Math.max(1, Math.ceil(sw));
   const h = Math.max(1, Math.ceil(sh));
@@ -6345,7 +6376,9 @@ function answerInkCanvas(bitmap, sx, sy, sw, sh, box) {
   const ctx = cut.getContext('2d');
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, w, h);
-  clearGreyRules(ctx, w, h);
+  // A locked answer is the glyph box, including a filled angle mark. Grey-rule
+  // removal paints that mark white because its edge is lighter than the letters.
+  if (!(box && box.locked)) clearGreyRules(ctx, w, h);
   if (box) fillSliceMasks(ctx, box, 0, h, w);
   return cut;
 }
@@ -6500,6 +6533,9 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
       const destX = item.dx || 0;
       ctx.drawImage(item.bitmap, sx, sy, sw, sh, destX, y, destW, item.dh);
       if (!item.slice.box.segment) fillSliceMasks(ctx, item.slice.box, y, item.dh, destW);
+      // A text line that crosses a manifest drawing reprints a strip of it,
+      // shifted away from the drawing. Cover that overlap; the drawing is its own crop.
+      coverWholeFigures(ctx, item, destX, y, destW, item.dh);
     }
     y += item.dh;
   });
