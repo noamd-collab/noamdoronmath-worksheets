@@ -199,11 +199,13 @@
     "html.noam-ai-engaged #noam-site-companion-panel{direction:rtl;grid-column:1;grid-row:1;position:relative;right:auto;bottom:auto;width:auto;height:auto;max-height:100dvh;border-radius:0;box-shadow:none}",
     "html.noam-ai-engaged #noam-site-companion-details{flex:1;min-height:0}",
     "@media (max-width:767px){",
-    "html.noam-ai-engaged{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 40dvh}",
+    "html.noam-ai-engaged{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(168px,42dvh)}",
     "html.noam-ai-engaged body{grid-column:1;grid-row:1}",
-    "html.noam-ai-engaged #noam-site-companion-panel{grid-column:1;grid-row:2;height:40dvh;max-height:40dvh;width:100%}",
-    "html.noam-ai-engaged #noam-accessibility{bottom:calc(40dvh + 8px)!important}",
-    "html.noam-ai-engaged .fab{inset-block-end:calc(40dvh + 8px)!important}",
+    "html.noam-ai-engaged #noam-site-companion-panel{grid-column:1;grid-row:2;position:relative;height:auto;max-height:42dvh;width:100%;border-start-start-radius:18px;border-start-end-radius:18px;border-end-start-radius:0;border-end-end-radius:0;box-shadow:0 -3px 0 #e6a534;z-index:9991}",
+    "html.noam-ai-engaged #noam-site-companion-close{width:auto;min-width:72px;padding:4px 10px}",
+    "html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:8px!important;left:auto!important;right:auto!important;inset-inline-end:8px!important;z-index:10001!important}",
+    "html.noam-ai-engaged #noam-site-companion-form{padding-inline-end:56px}",
+    "html.noam-ai-engaged .fab{inset-block-end:calc(42dvh + 8px)!important}",
     "}",
     "@media (min-width:768px){",
     "html.noam-ai-engaged #noam-accessibility{left:8px!important;right:auto!important}",
@@ -316,7 +318,23 @@
 
   function setChips(items) {
     chipsEl.textContent = "";
-    (items || []).slice(0, 2).forEach(appendChip);
+    var seen = {};
+    var primaryHref = !primaryEl.hidden ? primaryEl.getAttribute("href") || "" : "";
+    var added = 0;
+    var list = items || [];
+    for (var i = 0; i < list.length && added < 8; i++) {
+      var item = list[i];
+      if (!item) continue;
+      var href = item.href || "";
+      var label = item.label || "";
+      if (href && primaryHref && href === primaryHref) continue;
+      if (href && seen["href:" + href]) continue;
+      if (label && seen["label:" + label]) continue;
+      if (href) seen["href:" + href] = true;
+      if (label) seen["label:" + label] = true;
+      appendChip(item);
+      added += 1;
+    }
     if (pageKind() === "teachers") teacherGoalChips().forEach(appendChip);
     forceSiteFont(panel);
   }
@@ -512,6 +530,7 @@
     panel.dataset.maxArea = String(Math.floor(size.maxArea));
     expandEl.hidden = false;
     collapseEl.hidden = true;
+    closer.textContent = "×";
     var sendBtn = form.querySelector("button");
     if (sendBtn) {
       sendBtn.textContent = panel.classList.contains("is-tight") ? "שלח" : "שליחה";
@@ -519,6 +538,25 @@
     }
     expandEl.setAttribute("aria-expanded", "false");
     fitCompact();
+  }
+
+  function revealLessonCard() {
+    if (window.innerWidth >= 768) return;
+    var card = document.querySelector(".exact-topic-demo, .concept-loop__card, .ka-film");
+    if (!card) return;
+    var sheet = Math.round(window.innerHeight * 0.42);
+    var room = window.innerHeight - sheet - 8;
+    var rect = card.getBoundingClientRect();
+    var delta = 0;
+    if (rect.height >= room - 8) delta = rect.top - 8;
+    else if (rect.bottom > room) delta = rect.bottom - room + 8;
+    else if (rect.top < 0) delta = rect.top - 8;
+    if (Math.abs(delta) < 2) return;
+    var before = document.body.scrollTop;
+    document.body.scrollTop = before + delta;
+    if (document.body.scrollTop === before && document.scrollingElement && document.scrollingElement !== document.body) {
+      document.scrollingElement.scrollTop += delta;
+    }
   }
 
   function layoutEngaged(force) {
@@ -535,8 +573,10 @@
       sendBtn.disabled = streaming;
     }
     document.documentElement.classList.add("noam-ai-engaged");
+    closer.textContent = window.innerWidth < 768 ? "סגירה" : "×";
     expandEl.hidden = true;
     collapseEl.hidden = false;
+    window.requestAnimationFrame(revealLessonCard);
     expandEl.setAttribute("aria-expanded", "true");
     panel.dataset.mode = "engaged";
   }
@@ -665,6 +705,8 @@
     event.preventDefault();
     var message = input.value.trim();
     if (!message || streaming) return;
+    input.value = "";
+    input.focus();
     if (isLocalSolve(message)) {
       showResult({ answer: RAMZI_TEXT, details: RAMZI_TEXT, primary: { action: "ramzi", label: "עזרה מרמזי" }, chips: [] });
       return;

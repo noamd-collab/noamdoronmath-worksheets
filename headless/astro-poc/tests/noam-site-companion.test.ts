@@ -14,6 +14,7 @@ import {
   QWEN_MODEL,
   SOLVE_REQUEST_SOURCE,
   SYSTEM_PROMPT,
+  groundModelPayload,
   handleCompanionTurn,
   isRoleQuestion,
   isWorksheetSolveRequest,
@@ -29,6 +30,7 @@ import {
 } from '../../../noam-ai/site-companion/bot-guard.js';
 import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
 import { runCompanionTurn } from '../../../noam-ai/site-companion/endpoint.js';
+import { didacticSequence } from '../../../noam-ai/site-companion/topic-order.js';
 
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
@@ -255,8 +257,10 @@ describe('Noam AI model role', () => {
     assert.equal(result.source, 'model');
     assert.equal(result.model, 'qwen3.8-flash');
     assert.equal(result.primary.href, allowed.href);
-    assert.equal(result.chips.length, 2);
-    assert.equal(result.links.length, 3);
+    assert.equal(result.chips.length, 1);
+    assert.equal(result.chips[0].id, records[3].id);
+    assert.equal(result.chips.some((chip) => chip.label === result.primary.label), false);
+    assert.equal(result.links.length, 2);
     assert.equal(result.essential.length, 0);
     assert.match(result.essentialNote, /לא ממציא שאלות/);
     assert.match(result.details, /לסמן את השאלות שנבחרו/);
@@ -380,6 +384,122 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('showThinking();'));
     const thinkAt = client.indexOf('showThinking();');
     assert.ok(solveAt > 0 && thinkAt > solveAt);
+  });
+
+  it('clears the composer after send and keeps the phone sheet off the lesson card', () => {
+    const client = readFileSync(new URL('../public/noam-site-companion.js', import.meta.url), 'utf8');
+    const submitAt = client.indexOf('form.addEventListener("submit"');
+    const submit = client.slice(submitAt);
+    const clearAt = submit.indexOf('input.value = ""');
+    const focusAt = submit.indexOf('input.focus()');
+    const solveAt = submit.indexOf('isLocalSolve(message)');
+    const postAt = submit.indexOf('client.postJson(API');
+    assert.ok(clearAt > 0 && focusAt > clearAt);
+    assert.ok(clearAt < solveAt && focusAt < postAt);
+    assert.equal(client.includes('bottom:calc(40dvh + 8px)'), false);
+    assert.ok(client.includes('closer.textContent = window.innerWidth < 768 ? "סגירה" : "×"'));
+    assert.ok(client.includes('revealLessonCard'));
+    assert.ok(client.includes('.exact-topic-demo, .concept-loop__card, .ka-film'));
+    assert.ok(client.includes('html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:8px!important'));
+    assert.ok(client.includes('seen["label:" + label]'));
+    const a11y = readFileSync(new URL('../public/noam-accessibility.js', import.meta.url), 'utf8');
+    assert.match(a11y, /\.exact-topic-demo,\.concept-loop__card,\.ka-film/);
+    assert.match(a11y, /function parkOffLessonCard/);
+  });
+});
+
+describe('Noam AI page context and topic order', () => {
+  function parentTopics(gradeNumber: number, groupKey: string) {
+    const grade = catalog.grades.find((item) => item.grade === gradeNumber);
+    return (grade?.topics || [])
+      .filter((topic) => topic.group === groupKey && topic.parent == null)
+      .map((topic) => topic.title);
+  }
+
+  it('reads each grade topic order from the catalog, with kite before the trapezoid', () => {
+    const sequence = didacticSequence(catalog);
+    for (const gradeNumber of [8, 9]) {
+      const grade = catalog.grades.find((item) => item.grade === gradeNumber);
+      for (const group of grade?.groups || []) {
+        const fromCatalog = parentTopics(gradeNumber, group.key);
+        const fromOrder = sequence
+          .filter((row) => row.grade === gradeNumber && row.groupKey === group.key)
+          .map((row) => row.title);
+        assert.deepEqual(fromOrder, fromCatalog);
+      }
+    }
+    const geo = parentTopics(9, 'geo');
+    const kite = geo.indexOf('דלתון');
+    const square = geo.indexOf('הריבוע');
+    const trapezoid = geo.indexOf('הטרפז');
+    assert.ok(kite >= 0 && kite < geo.indexOf('המקבילית'));
+    assert.ok(square >= 0 && trapezoid > square);
+    const kitePage = guide.records.find((row) => row.id === 'topic-kite-grade-9');
+    assert.equal(kitePage && kitePage.href, '/kite-grade-9');
+    assert.equal(kitePage && kitePage.grade, 9);
+    assert.equal(kitePage && kitePage.topic, 'דלתון');
+  });
+
+  it('offers grade 9 quadrilaterals in site order, once each, from the kite page', async () => {
+    let called = 0;
+    const result = await handleCompanionTurn(
+      {
+        message: 'יש מרובעים?',
+        page: { kind: 'topic', path: '/kite-grade-9', title: 'דלתון לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון' },
+      },
+      { catalog, guide, apiKey: 'server-side', fetch: async () => { called += 1; throw new Error('should not call'); } }
+    );
+    assert.equal(called, 0);
+    assert.equal(result.source, 'topic-order');
+    assert.match(result.answer, /כיתה ט׳/);
+    assert.equal(result.answer.includes('כיתה ג'), false);
+    assert.equal(/[A-Za-z]/.test(result.answer), false);
+    assert.ok(result.answer.indexOf('דלתון') < result.answer.indexOf('המקבילית'));
+    assert.ok(result.answer.indexOf('הריבוע') < result.answer.indexOf('הטרפז'));
+    assert.match(result.answer, /הנושא הבא הוא המקבילית/);
+    assert.match(result.answer, /הנושא הקודם הוא משולש שווה שוקיים/);
+    const titles = result.chips.map((chip) => chip.label);
+    assert.deepEqual(titles, [
+      'כיתה ט׳ · דלתון',
+      'כיתה ט׳ · המקבילית',
+      'כיתה ט׳ · המלבן',
+      'כיתה ט׳ · המעוין',
+      'כיתה ט׳ · הריבוע',
+      'כיתה ט׳ · הטרפז',
+    ]);
+    assert.equal(new Set(titles).size, titles.length);
+    assert.equal(result.chips.find((chip) => chip.label.endsWith('דלתון'))?.href, '/kite-grade-9');
+    const quadrilaterals = parentTopics(9, 'geo').filter((title) => !title.includes('משולש'));
+    assert.deepEqual(result.chips.map((chip) => chip.label.split(' · ')[1]), quadrilaterals);
+  });
+
+  it('names the next catalog topic after the open page', async () => {
+    const result = await handleCompanionTurn(
+      { message: 'מה הנושא הבא?', page: { kind: 'topic', path: '/kite-grade-9', title: 'דלתון לכיתה ט׳' } },
+      { catalog, guide, apiKey: 'server-side', fetch: async () => { throw new Error('should not call'); } }
+    );
+    assert.equal(result.source, 'topic-order');
+    assert.match(result.answer, /המקבילית/);
+    assert.equal(result.chips[0].href, '/parallelogram-grade-9');
+    assert.equal(result.chips.length, 1);
+  });
+
+  it('does not repeat a suggestion button for two levels of the same sheet', async () => {
+    const records = retrieveRecords(catalog, 'כיתה ג׳ מרובעים לפי תכונות', 4);
+    const same = records.filter((row) => row.title === 'מרובעים לפי תכונות');
+    assert.ok(same.length >= 2);
+    const result = groundModelPayload(
+      {
+        answer: 'דפי המרובעים בכיתה ג׳',
+        primaryRecordId: same[0].id,
+        chipRecordIds: same.slice(1).map((row) => row.id),
+      },
+      records,
+      { page: { kind: 'topic', path: '/kite-grade-9', title: 'דלתון' } }
+    );
+    const labels = [result.primary.label, ...result.chips.map((chip) => chip.label)];
+    assert.equal(new Set(labels).size, labels.length);
+    assert.equal(result.chips.some((chip) => chip.label === result.primary.label), false);
   });
 });
 
