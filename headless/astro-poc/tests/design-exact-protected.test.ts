@@ -8,6 +8,8 @@
  * and replaced by the vertex-descent film. That was an explicit content change.
  * They moved again when Noam approved Kimi's L14 diff-sq v6 film (letters only,
  * x² − y² = (x − y)(x + y), 22 s lap): an explicit content change, not a regen.
+ * They moved again for the grade-9 kite-construct film (loop #8 from
+ * staging 654ab7c): an explicit content addition, not a regen.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -32,9 +34,9 @@ const protectedFiles: Record<string, string> = {
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
-  // L14 diff-sq v6 film (letters only), kept from the baseline.
-  'src/lib/conceptLoops.ts': '10601a87ba90387e8459658a9990e4f3a255a037a293e93fac1d8b6f97aa588c',
-  'src/components/ConceptLoop.astro': '7a53ec85a1b9fb039cb6363e799b1e2d36f78d82f7d407738d18a3136c47b229',
+  // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
+  'src/lib/conceptLoops.ts': '67294dc5725b7e16856370ddaa42e415765587faa6a4faddece53af9a2f81c66',
+  'src/components/ConceptLoop.astro': '104f46fc60c3c880967ce618417a415550e9712a5fa6f8aa9443612ccba4360b',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',

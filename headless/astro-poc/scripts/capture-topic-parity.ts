@@ -107,6 +107,7 @@ const M22_SLUGS = [
   'coordinate-plane-applications-grade-9',
   'rhombus-grade-9',
   'trapezoid-grade-9',
+  'kite-grade-9',
   'similar-triangles-grade-9',
   'triangle-30-60-90-grade-9',
 ];

@@ -108,6 +108,14 @@ describe('landing loop coverage', () => {
     assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
   });
 
+  it('kite-grade-9 plays the kite-construct film', () => {
+    assert.deepEqual(topicLandingLoop(loadTopicPage('kite-grade-9')), {
+      kind: 'concept',
+      variant: 'kite-construct',
+      marker: 'concept-kite-construct',
+    });
+  });
+
   it('difference-of-squares-grade-9 gets its own L14 diff-sq film; other F21 pages keep area-model', () => {
     assert.deepEqual(topicLandingLoop(loadTopicPage('difference-of-squares-grade-9')), {
       kind: 'concept',

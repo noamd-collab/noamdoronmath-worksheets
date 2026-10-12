@@ -363,7 +363,13 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         data-topic-id={topic.id}
       >
         <div className="exact-card-heading">
-          <h3>{topic.title}</h3>
+          <h3>
+            {topic.noamTopicId === 'G9-T46' ? (
+              <a href="/kite-grade-9">{topic.title}</a>
+            ) : (
+              topic.title
+            )}
+          </h3>
           {topicCode ? <span className="exact-topic-code" style={{ background: badgeColor }}>{topicCode}</span> : null}
         </div>
         {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}

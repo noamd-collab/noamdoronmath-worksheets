@@ -2010,6 +2010,109 @@ function renderTwoDiag(root: LoopRoot, t: number) {
 }
 const TWO_DIAG_HOLD = 5.2;
 
+/* ═══════════════ kite-construct — ruler-and-compass kite (content ≈ 13 s, lap 16 s) ═══════════════
+   Port of loop #8 from staging/packages-120-oct12 @ 654ab7c.
+   Two circles meet in a convex kite; growing the second circle makes a concave kite.
+   The lap fades back to rest so the seam matches t = 0. The engine parks on the
+   completed concave frame (hold), before that fade. */
+
+const KITE_X0 = 195.7;
+const KITE_X1 = 144.3;
+const KITE_Y1 = 110.8;
+const KITE_Y2 = 219.2;
+
+function renderKite(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 14.6, 15.6);
+  const dart = ph(t, 8.4, 9.0) * fade;
+  const ix = lerp(KITE_X0, KITE_X1, dart);
+  const iy1 = KITE_Y1;
+  const iy2 = KITE_Y2;
+
+  const axis = q(root, 'axis');
+  op(axis, ph(t, 0.3, 0.8) * fade);
+  draw(axis, ph(t, 0.35, 1.0) * fade);
+  op(q(root, 'axis-lbl'), ph(t, 11.2, 11.6) * fade);
+
+  op(q(root, 'pA'), ph(t, 1.3, 1.6) * fade);
+  op(q(root, 'lA'), ph(t, 1.4, 1.7) * fade);
+  op(q(root, 'pB'), ph(t, 1.6, 1.9) * fade);
+  op(q(root, 'lB'), ph(t, 1.7, 2.0) * fade);
+
+  const cA = q(root, 'cA');
+  op(cA, ph(t, 2.3, 2.7) * lerp(1, 0.12, ph(t, 7.5, 8.0)) * fade);
+  draw(cA, ph(t, 2.35, 3.5) * fade);
+
+  const cB = q(root, 'cB');
+  if (cB) cB.setAttribute('r', String(r2(lerp(70, 110, ph(t, 7.6, 8.4) * fade))));
+  op(cB, ph(t, 3.7, 4.1) * lerp(1, 0.2, ph(t, 8.6, 9.1)) * fade);
+  draw(cB, ph(t, 3.75, 4.9) * fade);
+
+  const dots: Array<[string, number, string, number]> = [
+    ['i1', iy1, 'l1', KITE_Y1 - 6],
+    ['i2', iy2, 'l2', KITE_Y2 + 12],
+  ];
+  for (const [dot, y, label, ly] of dots) {
+    const el = q(root, dot);
+    if (el) {
+      el.setAttribute('cx', String(r2(ix)));
+      el.setAttribute('cy', String(r2(y)));
+    }
+    op(el, ph(t, 5.1, 5.5) * fade);
+    const lb = q(root, label);
+    if (lb) {
+      lb.setAttribute('x', String(r2(ix + 15)));
+      lb.setAttribute('y', String(r2(ly)));
+    }
+    op(lb, ph(t, 5.4, 5.8) * fade);
+  }
+
+  const kite = q(root, 'kite');
+  if (kite) {
+    kite.setAttribute(
+      'd',
+      `M170 165 L${r2(ix)} ${r2(iy1)} L240 165 L${r2(ix)} ${r2(iy2)} Z`,
+    );
+  }
+  op(kite, ph(t, 5.6, 6.1) * fade);
+
+  const segs: Array<[string, number, number]> = [
+    ['sa1', ix, iy1],
+    ['sa2', ix, iy2],
+    ['sb1', ix, iy1],
+    ['sb2', ix, iy2],
+  ];
+  segs.forEach(([name, x2, y2], i) => {
+    const el = q(root, name);
+    if (el) {
+      el.setAttribute('x2', String(r2(x2)));
+      el.setAttribute('y2', String(r2(y2)));
+    }
+    op(el, ph(t, 6.2 + i * 0.15, 6.55 + i * 0.15) * fade);
+    draw(el, ph(t, 6.25 + i * 0.15, 6.9 + i * 0.15) * fade);
+  });
+
+  const reflex = q(root, 'reflex');
+  op(reflex, ph(t, 9.3, 9.6) * fade);
+  draw(reflex, ph(t, 9.35, 10.05) * fade);
+
+  const tickFade = lerp(1, 0, dart * 0.4);
+  op(q(root, 'ticksA'), ph(t, 6.9, 7.3) * tickFade * fade);
+  op(q(root, 'ticksB'), ph(t, 6.9, 7.3) * tickFade * fade);
+  op(q(root, 'chip-convex'), ph(t, 6.6, 7.0) * (1 - ph(t, 7.5, 7.9)) * fade);
+  op(q(root, 'chip-dart'), ph(t, 9.5, 9.9) * fade);
+  op(q(root, 'eq-lbl'), ph(t, 10.9, 11.3) * fade);
+  op(q(root, 'refl-lbl'), ph(t, 9.6, 10.0) * fade);
+  op(q(root, 'grow-lbl'), ph(t, 7.5, 7.9) * (1 - ph(t, 8.8, 9.2)) * fade);
+
+  const fxs = qa(root, '[data-fx]');
+  const fxFade = 1 - ph(t, 14.6, 15.6);
+  op(fxs[0], ph(t, 11.4, 11.8) * fxFade);
+  op(fxs[1], ph(t, 11.7, 12.1) * fxFade);
+  op(q(root, 'check'), ph(t, 12.4, 12.8) * fxFade);
+  op(q(root, 'caption'), ph(t, 12.6, 13.0) * fxFade);
+}
+const KITE_HOLD = 13.6;
+
 /* ═══════════════ engine ═══════════════ */
 
 const SPECS = {
@@ -2085,6 +2188,7 @@ const SPECS = {
   'mark-250': { duration: 10, hold: MARK250_HOLD, render: renderMark250 },
   'quad-gate': { duration: 10, hold: QUAD_GATE_HOLD, render: renderQuadGate },
   'two-diag': { duration: 10, hold: TWO_DIAG_HOLD, render: renderTwoDiag },
+  'kite-construct': { duration: 16, hold: KITE_HOLD, render: renderKite },
 } as const;
 
 const MAX_LAPS = 4;
