@@ -2896,9 +2896,20 @@ function answerEdgeSpan(bitmap, box, yTop, yBot) {
     }
   }
   if (clusters.length < 2) return null;
-  const kept = clusters.filter((cluster) => {
-    const touches = cluster.x <= 1 || cluster.x + cluster.w >= rw - 1;
-    return !(touches && cluster.w <= 30);
+  // A letter sits 4–7px from the next letter at 300 DPI. "ד." and "·" sit across
+  // a real space, about 18px. Dropping every short edge cluster cuts ה off הוכחה.
+  const space = 8;
+  const kept = clusters.filter((cluster, index) => {
+    const touchesLeft = cluster.x <= 1;
+    const touchesRight = cluster.x + cluster.w >= rw - 1;
+    if (!touchesLeft && !touchesRight) return true;
+    if (cluster.w > 30) return true;
+    const neighbor = touchesLeft ? clusters[index + 1] : clusters[index - 1];
+    if (!neighbor) return true;
+    const gap = touchesLeft
+      ? neighbor.x - (cluster.x + cluster.w)
+      : cluster.x - (neighbor.x + neighbor.w);
+    return gap < space;
   });
   const use = kept.length ? kept : clusters;
   let minX = use[0].x;
@@ -2970,14 +2981,17 @@ function snapAnswerClusters(bitmap, box, yTop, yBot) {
   let minX = owned[0].x;
   let maxX = owned[owned.length - 1].x + owned[owned.length - 1].w;
   // A separator is the narrow cluster at the outer edge, across a real space.
+  // Letter spacing inside הוכחה is 4–7px at 300 DPI; "ד." is about 18px away.
+  // width*0.014 is ~35px, wider than ה, so the gap — not the width alone — decides.
   const sep = Math.max(18, Math.round(width * 0.014));
+  const space = Math.max(8, Math.round(width * 0.0032));
   if (owned.length >= 2) {
     const first = owned[0];
     const second = owned[1];
-    if (first.w <= sep && second.x - (first.x + first.w) >= gap) minX = second.x;
+    if (first.w <= sep && second.x - (first.x + first.w) >= space) minX = second.x;
     const last = owned[owned.length - 1];
     const prev = owned[owned.length - 2];
-    if (last.w <= sep && last.x - (prev.x + prev.w) >= gap) maxX = prev.x + prev.w;
+    if (last.w <= sep && last.x - (prev.x + prev.w) >= space) maxX = prev.x + prev.w;
   }
   if (maxX - minX < 4) return null;
   return { minX, maxX };
@@ -4882,7 +4896,14 @@ function layoutQuestionCrops(model) {
       if (!have || have.segment === 'figure' || have.h > 0.05) continue;
       if (have.y >= cap - 0.002) continue;
       if (inquiry) {
-        if (have.w < 0.1 && have.x + have.w < 0.3) continue;
+        const midY = have.y + have.h * 0.5;
+        const onBody = cluster.some((row) => {
+          const ry = row.y || 0;
+          const rh = Math.max(row.h || 0.014, 0.012);
+          return midY >= ry - 0.004 && midY <= ry + rh + 0.004;
+        });
+        // A tree label sits left of the box. A word of the investigation line does not.
+        if (!onBody && have.w < 0.1 && have.x + have.w < 0.3) continue;
       } else if (have.x < 0.24) continue;
       const mid = have.y + have.h * 0.5;
       if (mid < boxTop - 0.004 || mid > boxBot + 0.004) continue;
