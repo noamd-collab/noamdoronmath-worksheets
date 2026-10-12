@@ -146,9 +146,10 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again for Noam's approved Kimi L14 diff-sq v6 film.
   // Moved again for the grade-9 kite-construct film (explicit content addition).
   // Moved again for the kite review fixes (RTL summary, final rest frame, pause target).
+  // Moved again so kite ticks follow each side and the pause button waits for JS.
   const expected = {
-    'src/components/ConceptLoop.astro': '783a63e60659a71c177dcb18a5a3648c03ce0627da70b9da58169bc103b47d21',
-    'src/lib/conceptLoops.ts': 'a5c17e59f84a753aba74ac258be28eec59aa8ace1a1bf270416b5f86ed999351',
+    'src/components/ConceptLoop.astro': 'ce9a4b25edfb6a7d04573ea3865603003182f63170261fcc00b52b17a34bd4ac',
+    'src/lib/conceptLoops.ts': 'dda7e314cc4891007911700261764e20e5957328d02fd72ce0573c429a315f57',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {

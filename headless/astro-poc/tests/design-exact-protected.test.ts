@@ -12,6 +12,8 @@
  * staging 654ab7c): an explicit content addition, not a regen.
  * They moved again for the kite review fixes (RTL summary, final rest
  * frame, 44px pause target): an explicit content fix, not a regen.
+ * They moved again so the kite ticks follow each side, and the pause
+ * button stays hidden until JS runs.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -37,8 +39,8 @@ const protectedFiles: Record<string, string> = {
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': 'a5c17e59f84a753aba74ac258be28eec59aa8ace1a1bf270416b5f86ed999351',
-  'src/components/ConceptLoop.astro': '783a63e60659a71c177dcb18a5a3648c03ce0627da70b9da58169bc103b47d21',
+  'src/lib/conceptLoops.ts': 'dda7e314cc4891007911700261764e20e5957328d02fd72ce0573c429a315f57',
+  'src/components/ConceptLoop.astro': 'ce9a4b25edfb6a7d04573ea3865603003182f63170261fcc00b52b17a34bd4ac',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',
