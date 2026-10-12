@@ -88,6 +88,25 @@ const sheets = new Map();
 const library = new Map();
 const pdfDocs = new Map();
 const pageBitmaps = new Map();
+const cropManifests = new Map();
+
+async function loadCropManifest(pdfId) {
+  if (!pdfId) return null;
+  if (cropManifests.has(pdfId)) return cropManifests.get(pdfId);
+  try {
+    const response = await fetch(new URL('./crop-manifest/' + pdfId + '.json', import.meta.url));
+    if (!response.ok) {
+      cropManifests.set(pdfId, null);
+      return null;
+    }
+    const data = await response.json();
+    cropManifests.set(pdfId, data);
+    return data;
+  } catch (error) {
+    cropManifests.set(pdfId, null);
+    return null;
+  }
+}
 let state = {
   scenario: 'first',
   style: 'scaffold',
@@ -2560,7 +2579,44 @@ function clipForeignLabels(items, box, part) {
   return { ...box, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
 }
 
+function manifestAnswerList(pages, question) {
+  const found = [];
+  (pages || []).forEach((sheet) => {
+    const manifest = sheet && sheet.manifest;
+    const entry = manifest && manifest.pages && manifest.pages[String(sheet.page)];
+    (entry && entry.answers || []).forEach((box) => {
+      if (Number(box.q) !== Number(question.q) || !box.part) return;
+      found.push({
+        page: sheet.page,
+        part: box.part,
+        box: { x: box.x, y: box.y, w: box.w, h: box.h, locked: true },
+      });
+    });
+  });
+  return found;
+}
+
+function manifestAnswer(pages, question) {
+  const part = question.part || '';
+  if (!part) return null;
+  for (let index = 0; index < pages.length; index += 1) {
+    const sheet = pages[index];
+    const manifest = sheet && sheet.manifest;
+    const entry = manifest && manifest.pages && manifest.pages[String(sheet.page)];
+    if (!entry || !entry.answers) continue;
+    const hit = entry.answers.find((box) => Number(box.q) === Number(question.q) && box.part === part);
+    if (!hit) continue;
+    return {
+      page: sheet.page,
+      box: { x: hit.x, y: hit.y, w: hit.w, h: hit.h, locked: true },
+    };
+  }
+  return null;
+}
+
 function answerSliceFor(pages, question) {
+  const fromManifest = manifestAnswer(pages, question);
+  if (fromManifest) return fromManifest;
   const part = question.part || '';
   for (let index = 0; index < pages.length; index += 1) {
     const sheet = pages[index];
@@ -2666,7 +2722,28 @@ async function answerSlices(chosen) {
     let pages = source ? cache.get(source.pdfId) : [];
     if (source && !cache.has(source.pdfId)) {
       pages = await answerPages(source);
+      const manifest = await loadCropManifest(source.pdfId);
+      (pages || []).forEach((sheet) => {
+        sheet.manifest = manifest;
+      });
       cache.set(source.pdfId, pages);
+    }
+    // A question with no part letter still has א ב ג ד on the key. Each one is its own row.
+    const listed = !question.part && pages && pages.length ? manifestAnswerList(pages, question) : [];
+    if (listed.length > 1) {
+      listed.forEach((hit) => {
+        slices.push({
+          kind: 'answer',
+          text: label + ' סעיף ' + hit.part,
+          page: hit.page,
+          box: hit.box,
+          gap: 8,
+          block: 'answers',
+          source,
+          clip: sourceClip(source, hit.page, 'answer'),
+        });
+      });
+      continue;
     }
     const found = pages && pages.length ? answerSliceFor(pages, question) : null;
     if (!found) {
@@ -3087,6 +3164,8 @@ function bitmapWithAnswerMasks(bitmap, box) {
 function trimPieceBox(slice, bitmap) {
   const box = slice.box;
   if (!box || !bitmap) return slice;
+  // A manifest box is already the part's own glyphs and drawings.
+  if (box.locked || box.whole) return slice;
   let y = box.y;
   let y2 = box.y + box.h;
   const source = slice.source;
@@ -3569,7 +3648,7 @@ function trimLineOverlaps(measured) {
     if (!box || (earlier.slice.kind !== 'row' && earlier.slice.kind !== 'stem')) continue;
     // A tall box is a drawing. A short one is a text line whose bottom padding
     // reprints as a ghost half-line in the next crop.
-    if (box.h > 0.06 || box.segment === 'figure') continue;
+    if (box.h > 0.06 || box.segment === 'figure' || box.whole || box.locked) continue;
     const earlierPdf = earlier.slice.source && earlier.slice.source.pdfId;
     for (let j = i + 1; j < measured.length; j += 1) {
       const later = measured[j];
@@ -3641,7 +3720,7 @@ function answerDisplayScale(naturalW, naturalH) {
   return Math.min(1.3, Math.max(0.05, scale));
 }
 
-function answerCellSize(text, naturalW, naturalH) {
+function answerCellSize(text, naturalW, naturalH, sourceScale) {
   const display = answerDisplayScale(naturalW, naturalH);
   let fullW = Math.max(1, Math.round(naturalW * display));
   let fullH = Math.max(1, Math.round(naturalH * display));
@@ -3664,8 +3743,11 @@ function answerCellSize(text, naturalW, naturalH) {
   let answerNaturalW = fullW;
   // A one-line answer that is wider than the column wraps, still at a readable size.
   // A fraction or a proof is already several lines, so it scales as one piece.
-  if (fullW > colW + 1) {
-    const oneLine = fullH <= 28;
+  if (sourceScale && fullH > 36) {
+    // A multi-line answer stays at the page scale. Shrinking it makes the
+    // degree mark smaller than the words beside it.
+  } else if (fullW > colW + 1) {
+    const oneLine = sourceScale || fullH <= 28;
     if (oneLine) {
       let strips = Math.ceil(fullW / colW);
       if (strips > 4) {
@@ -4905,6 +4987,7 @@ function layoutQuestionCrops(model) {
       segment,
     };
     if (figure) box.figure = figure;
+    if (figure && figure.whole) box.whole = true;
     const kind = segment === 'stem' ? 'stem' : 'row';
     segments.push({ kind, page, box, figures });
   };
@@ -5306,7 +5389,14 @@ function layoutQuestionCrops(model) {
   return segments;
 }
 
-function rebuildQuestionGroup(group, texts) {
+function manifestPage(manifests, source, page) {
+  if (!manifests || !source || !source.pdfId) return null;
+  const manifest = manifests.get(source.pdfId);
+  if (!manifest || !manifest.pages) return null;
+  return manifest.pages[String(page)] || null;
+}
+
+function rebuildQuestionGroup(group, texts, manifests) {
   const sample = group[0];
   const slice = sample && sample.slice;
   if (!slice || !slice.source || !sample.bitmap) return null;
@@ -5397,7 +5487,17 @@ function rebuildQuestionGroup(group, texts) {
   const headerBottom = header && Number(header.page) === Number(page) ? (header.y || 0) + (header.h || 0) : 0;
   const footerTop = sourceFooterTop(slice.source, pageItems);
   if (searchBot > footerTop) searchBot = footerTop;
-  const figures = leftFigureBoxes(sample.bitmap, Math.max(0, searchTop - 0.008), Math.min(figureScanBot, footerTop))
+  const manifestEntry = manifestPage(manifests, slice.source, page);
+  const manifestFigures = manifestEntry
+    ? (manifestEntry.figures || []).concat(manifestEntry.callouts || []).filter((figure) => Number(figure.q) === q).map((figure) => ({
+      x0: figure.x,
+      x1: figure.x + figure.w,
+      y0: figure.y,
+      y1: figure.y + figure.h,
+      whole: true,
+    }))
+    : null;
+  const figures = manifestFigures || leftFigureBoxes(sample.bitmap, Math.max(0, searchTop - 0.008), Math.min(figureScanBot, footerTop))
     .filter((figure) => !figureIsSentence(figure, rows))
     .filter((figure) => {
       if (earlierEnd > 0.02 && figure.y1 <= earlierEnd + 0.008) return false;
@@ -5451,7 +5551,7 @@ function rebuildQuestionGroup(group, texts) {
   });
   for (let i = boxes.length - 1; i >= 0; i -= 1) {
     const entry = boxes[i];
-    if (!entry.box || entry.box.segment !== 'figure') continue;
+    if (!entry.box || entry.box.segment !== 'figure' || entry.box.whole) continue;
     const clipped = clipEmptyFigureTail(sample.bitmap, entry.box);
     if (!clipped) boxes.splice(i, 1);
     else entry.box = clipped;
@@ -5597,7 +5697,7 @@ function polishQuestionCrops(measured, texts) {
   });
 }
 
-function enrichQuestionCrops(measured, texts) {
+function enrichQuestionCrops(measured, texts, manifests) {
   const out = [];
   let index = 0;
   while (index < measured.length) {
@@ -5619,7 +5719,7 @@ function enrichQuestionCrops(measured, texts) {
       end += 1;
     }
     const group = measured.slice(index, end);
-    const replaced = rebuildQuestionGroup(group, texts);
+    const replaced = rebuildQuestionGroup(group, texts, manifests);
     if (replaced) replaced.forEach((made) => out.push(made));
     else group.forEach((made) => out.push(made));
     index = end;
@@ -5658,7 +5758,7 @@ async function measureWorksheet(slices) {
   for (let index = 0; index < slices.length; index += 1) {
     const slice = slices[index];
     if (slice.kind === 'level' || slice.kind === 'answers-head') {
-      measured.push({ slice, dh: 34 });
+      measured.push({ slice, dh: slice.kind === 'answers-head' ? 46 : 34 });
     } else if (slice.kind === 'missing') {
       measured.push({ slice, dh: 26 });
     } else if (slice.kind === 'answer' || slice.kind === 'row' || slice.kind === 'stem') {
@@ -5672,7 +5772,7 @@ async function measureWorksheet(slices) {
       if (piece.kind === 'answer') {
         const naturalW = Math.max(1, OUT_W * piece.box.w);
         const naturalH = Math.max(1, naturalW * sh / Math.max(1, sw));
-        const cell = answerCellSize(piece.text, naturalW, naturalH);
+        const cell = answerCellSize(piece.text, naturalW, naturalH, piece.box && piece.box.locked);
         let labelBaseline = cell.labelBaseline || 16;
         let imageY = cell.imageY || 0;
         let rowH = cell.dh;
@@ -5722,13 +5822,19 @@ async function measureWorksheet(slices) {
       texts.set(key, []);
     }
   }
-  const polished = polishQuestionCrops(enrichQuestionCrops(measured, texts), texts);
+  const manifests = new Map();
+  for (let index = 0; index < measured.length; index += 1) {
+    const source = measured[index] && measured[index].slice && measured[index].slice.source;
+    if (!source || !source.pdfId || manifests.has(source.pdfId)) continue;
+    manifests.set(source.pdfId, await loadCropManifest(source.pdfId));
+  }
+  const polished = polishQuestionCrops(enrichQuestionCrops(measured, texts, manifests), texts);
   trimLineOverlaps(polished);
   polished.forEach((item) => {
     if (!item || !item.bitmap || !item.slice || !item.slice.box) return;
     const box = item.slice.box;
     if (item.slice.kind !== 'row' && item.slice.kind !== 'stem') return;
-    if (box.segment === 'figure' || box.h >= 0.12) return;
+    if (box.segment === 'figure' || box.whole || box.locked || box.h >= 0.12) return;
     const ink = sliceInkRows(item.bitmap, box);
     if (!ink || ink.bands.length < 2) return;
     const bands = ink.bands.slice();

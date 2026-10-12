@@ -193,6 +193,33 @@
       "level": "b",
       "selection": ["1א", "1ב", "2א", "2ב", "2ג", "3א", "3ב", "3ג", "4א", "4ב", "5א", "5ב", "6א", "7א", "8א", "8ב", "8ג", "9א", "9ב"],
       "failedBefore": "Answer-key rows lost edge tokens, and a near-empty page broke the key."
+    },
+    {
+      "id": "g9-t22-pagebreak",
+      "sheetId": "3ac93dc4b8814eaa8d120e2f3802f27b",
+      "grade": "9",
+      "topic": "22",
+      "level": "one",
+      "selection": ["1א", "1ב", "1ג", "1ד", "1ה", "2א", "2ב"],
+      "failedBefore": "Ghost half-lines under the answers, 2א empty, and 2ב split across lines."
+    },
+    {
+      "id": "g7-t43-answers",
+      "sheetId": "250e2c98cba14765b4c575b17e62f874",
+      "grade": "7",
+      "topic": "43",
+      "level": "a",
+      "selection": ["1א", "2", "3א", "4א", "5א", "6א"],
+      "failedBefore": "Question 2's answers were one cut row, and graph B lost its y-axis."
+    },
+    {
+      "id": "g8-t47-answers",
+      "sheetId": "dfb888deddfa46cd8f7b614b929752fa",
+      "grade": "8",
+      "topic": "47",
+      "level": "c",
+      "selection": ["1א", "2א", "3א", "4א", "5א", "6א"],
+      "failedBefore": "The Q1 graph was split, with orphan axis slivers and a detached second line."
     }
   ]
 }
