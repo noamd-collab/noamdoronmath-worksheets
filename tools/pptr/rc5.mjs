@@ -1,0 +1,12 @@
+import puppeteer from 'puppeteer-core';
+const U='https://sgkbqz-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/kite-grade-9';const O=(process.env.OUT_DIR||'./out/');const S=ms=>new Promise(r=>setTimeout(r,ms));
+const b=await puppeteer.launch({executablePath:'/usr/bin/google-chrome',headless:'new',args:['--no-sandbox']});const res={};
+const desk={width:1366,height:900},ph={width:390,height:844,deviceScaleFactor:2,isMobile:true,hasTouch:true};
+const get=pg=>pg.evaluate(()=>{const r=document.querySelector('[data-loop="kite-construct"]');const t=r.querySelector('[data-el="kite-top"]');const k=r.getBoundingClientRect(),a=t.getBoundingClientRect();return {t:r.__loop?.state().t,title:t.textContent,fits:a.left>=k.left&&a.right<=k.right,lines:Math.round(a.height),docW:document.documentElement.scrollWidth}});
+for(const[n,vp]of[['desk',desk],['phone',ph]]){const pg=await b.newPage();await pg.setViewport(vp);await pg.goto(U,{waitUntil:'networkidle0',timeout:90000});const c=await pg.$('[data-loop="kite-construct"]');await c.scrollIntoView();await S(500);res[n]=[];
+ for(const t of [10,83.9,84.1,97.6,99.9]){await pg.evaluate(t=>{const r=document.querySelector('[data-loop="kite-construct"]');r.__loop.pause();r.__loop.seek(t)},t);await S(250);res[n].push(await get(pg));await c.screenshot({path:`${O}${n}-${t}.png`})}
+ await pg.evaluate(()=>{const r=document.querySelector('[data-loop="kite-construct"]');r.__loop.seek(83);r.__loop.play()});await S(2500);res[n].push(['live',await get(pg)]);
+ await pg.evaluate(()=>{const r=document.querySelector('[data-loop="kite-construct"]');r.__loop.seek(99.6);r.__loop.play()});await S(1500);res[n].push(['wrap',await get(pg)]);await pg.close()}
+for(const[n,vp,o]of[['phone-rm',ph,1],['phone-nojs',ph,0]]){const pg=await b.newPage();await pg.setViewport(vp);if(o)await pg.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);else await pg.setJavaScriptEnabled(false);await pg.goto(U,{waitUntil:'networkidle0'});const c=await pg.$('[data-loop="kite-construct"]');await c.scrollIntoView();await S(800);await c.screenshot({path:O+n+'.png'});res[n]=await pg.evaluate(()=>document.querySelector('[data-el="kite-top"]').textContent);await pg.close()}
+for(const p of['rhombus-grade-9','trapezoid-grade-9','grade-9']){const pg=await b.newPage();const r=await pg.goto(U.replace('kite-grade-9',p),{waitUntil:'networkidle0',timeout:90000});res[p]=r.status();await pg.close()}
+console.log(JSON.stringify(res));await b.close();
