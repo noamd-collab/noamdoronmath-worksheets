@@ -75,6 +75,13 @@ export function resolveDeterministicTurn(payload, deps) {
   if (continuesIntake(message, payload && payload.intake)) {
     return advanceExerciseIntake(message, payload && payload.intake, settings.teacherIndex, page);
   }
+  if (/מה זה|איך(?![\u0590-\u05FF])|למה(?![\u0590-\u05FF])/.test(message) && /30\s*[-–—]\s*60\s*[-–—]\s*90/.test(message)) {
+    return guideResult(
+      "משולש ישר זווית 30-60-90 הוא נושא בכיתה ט׳. הדף באתר מסביר את המשולש, ואפשר לפתוח ממנו את התרגול שכבר קיים.",
+      { id: "triangle-30-60-90-grade-9", label: "משולש 30-60-90", href: "/triangle-30-60-90-grade-9" },
+      []
+    );
+  }
   if (VAGUE.test(message.trim())) {
     return guideResult(VAGUE_TEXT, null, [
       sendOption("דפי עבודה"),

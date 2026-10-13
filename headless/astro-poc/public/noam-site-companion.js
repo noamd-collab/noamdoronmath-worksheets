@@ -666,10 +666,20 @@
     for (var i = 0; i < cards.length; i++) {
       var rect = cards[i].getBoundingClientRect();
       if (rect.width < 1 || rect.height < 1 || rect.bottom <= headerBottom || rect.top >= window.innerHeight) continue;
-      var overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
-      if (overlap < 24) continue;
-      var startsAbove = rect.top < mine.top;
-      var justInside = rect.top < mine.top + 40 && overlap > rect.height * 0.5;
+      var thumb = cards[i].querySelector(".q-thumb");
+      var thumbBox = thumb ? thumb.getBoundingClientRect() : null;
+      var top = rect.top;
+      var bottom = rect.bottom;
+      if (thumbBox && thumbBox.height > 1) {
+        top = Math.min(top, thumbBox.top);
+        bottom = Math.max(bottom, thumbBox.bottom);
+      }
+      var height = bottom - top;
+      var overlap = Math.min(bottom, mine.bottom) - Math.max(top, mine.top);
+      if (overlap < 8) continue;
+      var startsAbove = top < mine.top;
+      var justInside = top < mine.top + 40 && overlap > height * 0.5;
+      rect = { top: top, bottom: bottom, left: rect.left, right: rect.right, width: rect.width, height: height };
       if (!startsAbove && !justInside) continue;
       if (!hit || overlap > hitOverlap) {
         hit = cards[i];
@@ -686,6 +696,14 @@
     paintChrome(true);
   }
 
+  function cardExtent(node) {
+    var thumb = node.querySelector(".q-thumb");
+    var thumbBox = thumb ? thumb.getBoundingClientRect() : null;
+    if (thumbBox && thumbBox.height > 1) return { top: thumbBox.top, bottom: thumbBox.bottom, height: thumbBox.height };
+    var rect = node.getBoundingClientRect();
+    return { top: rect.top, bottom: rect.bottom, height: rect.height };
+  }
+
   function clearPhoneCards() {
     if (clearingPhone || placingWizard || mode !== "compact" || window.innerWidth >= 768 || Date.now() < phoneQuietUntil) return;
     var mine = panel.getBoundingClientRect();
@@ -698,7 +716,7 @@
     clearingPhone = true;
     try {
       for (var pass = 0; pass < 2 && card; pass++) {
-        var rect = card.getBoundingClientRect();
+        var rect = cardExtent(card);
         var need = Math.round(rect.bottom - mine.top + 8);
         var first = document.querySelector("#questions input:checked");
         var firstCard = first ? first.closest(".q-card") : null;
@@ -710,22 +728,22 @@
         var scrollBy = Math.min(need, room, maxScroll);
         if (scrollBy > 1) scroller.scrollTop += scrollBy;
         mine = panel.getBoundingClientRect();
-        rect = card.getBoundingClientRect();
+        rect = cardExtent(card);
         var overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
-        if (overlap < 24) {
+        if (overlap < 8) {
           card = phoneCardNode(mine, headerBottom);
           continue;
         }
         var top = Math.round(rect.bottom + 8);
         var bottomOffset = parseFloat(panel.style.bottom) || 8;
         var height = Math.round(window.innerHeight - bottomOffset - top);
-        if (height >= 72 && height < mine.height) {
+        if (height >= 56 && height < mine.height) {
           panel.style.height = height + "px";
           panel.dataset.height = String(height);
           mine = panel.getBoundingClientRect();
-          rect = card.getBoundingClientRect();
+          rect = cardExtent(card);
           overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
-          if (overlap < 24) {
+          if (overlap < 8) {
             card = phoneCardNode(mine, headerBottom);
             continue;
           }
@@ -962,13 +980,25 @@
     if (mode === "compact") placeOffWizard();
     if (mode === "compact") clearPhoneCards();
   }, true);
+  if (window.ResizeObserver) {
+    var questionList = document.getElementById("questions");
+    if (questionList) {
+      var questionObserver = new ResizeObserver(function () {
+        if (mode === "compact") clearPhoneCards();
+      });
+      questionObserver.observe(questionList);
+    }
+  }
   document.addEventListener("click", function (event) {
     if (mode !== "compact" || pageKind() !== "teachers") return;
     if (panel.contains(event.target)) return;
     placeOffWizard();
     clearPhoneCards();
   }, true);
-  window.setInterval(function () { paintChrome(false); }, 1000);
+  window.setInterval(function () {
+    paintChrome(false);
+    if (mode === "compact" && window.innerWidth < 768) clearPhoneCards();
+  }, 1000);
   showIdle();
   try {
     var savedRaw = sessionStorage.getItem(THREAD_KEY);

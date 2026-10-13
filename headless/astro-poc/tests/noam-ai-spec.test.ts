@@ -398,6 +398,22 @@ describe('Noam AI production spec', () => {
     assert.match(turn.answer, /30-60-90/);
   });
 
+  it('answers a student question instead of opening the lesson builder', () => {
+    const page = { kind: 'topic', path: '/grade-9', title: 'כיתה ט׳' };
+    const triangle = resolveDeterministicTurn(
+      { message: 'מה זה משולש 30-60-90?', page },
+      { catalog, guide, teacherIndex }
+    );
+    assert.equal(triangle && triangle.source === 'exercise-intake', false);
+    assert.equal(String(triangle && triangle.answer).includes('כמה סעיפים'), false);
+    assert.equal(triangle && triangle.primary && triangle.primary.href, '/triangle-30-60-90-grade-9');
+    const exam = resolveDeterministicTurn(
+      { message: 'יש לי מבחן בעוד 30 דקות, איך מתכוננים?', page },
+      { catalog, guide, teacherIndex }
+    );
+    assert.equal(exam, null);
+  });
+
   it('enables the recaptcha bypass only on the request host, with a constant-time compare', () => {
     const guardSrc = readFileSync(new URL('../../../noam-ai/site-companion/bot-guard.js', import.meta.url), 'utf8');
     const previewHost = 'jrxwre-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com';
@@ -474,7 +490,11 @@ describe('Noam AI production spec', () => {
     assert.match(rateStore, /NoamAiRateLimit/);
     assert.match(rateStore, /items\.get/);
     assert.match(rateStore, /items\.save/);
+    assert.match(rateStore, /consistentRead:\s*true/);
+    assert.match(rateStore, /ANYONE/);
     assert.equal(rateStore.includes('.find('), false);
+    assert.ok(client.includes('ResizeObserver'));
+    assert.ok(client.includes('function cardExtent('));
   });
 
   it('shares the rate limit across instances', async () => {
@@ -633,5 +653,58 @@ describe('Noam AI production spec', () => {
     }
     const blocked = await handleNoamSiteCompanion({ method: 'POST' }, deps);
     assert.equal(blocked.status, 429);
+    assert.equal((blocked.body as { backend?: string }).backend, undefined);
+    assert.equal((blocked.body as { wixError?: string }).wixError, undefined);
+  });
+
+  it('reports the rate backend and the Wix error on a preview probe only', async () => {
+    const previewHost = 'jrxwre-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com';
+    const deps = {
+      origin: 'https://' + previewHost,
+      requestHost: previewHost,
+      clientIp: '203.0.113.92',
+      qwenKey: 'qwen-test-key-xyz',
+      recaptchaSecret: 'recaptcha-test-secret-xyz',
+      catalog,
+      guide,
+      teacherIndex,
+      store: new Map(),
+      now: 14_000,
+      rateBackend: {
+        async take() {
+          throw new Error('WDE0027: permission denied');
+        },
+      },
+      fetch: async () => {
+        throw new Error('model');
+      },
+      payload: { rateProbe: true, message: 'בדיקת קצב', page: { path: '/', title: 'בית' } },
+    };
+    const preview = await handleNoamSiteCompanion({ method: 'POST' }, deps);
+    assert.equal(preview.status, 200);
+    assert.equal((preview.body as { backend?: string }).backend, 'memory');
+    assert.match(String((preview.body as { wixError?: string }).wixError), /permission denied/);
+    const production = await handleNoamSiteCompanion(
+      { method: 'POST' },
+      {
+        ...deps,
+        origin: 'https://www.noamdoronmath.co.il',
+        requestHost: 'www.noamdoronmath.co.il',
+        clientIp: '203.0.113.93',
+        store: new Map(),
+      }
+    );
+    assert.equal(production.status, 200);
+    assert.equal((production.body as { code?: string }).code, 'RATE_OK');
+    assert.equal((production.body as { backend?: string }).backend, undefined);
+    assert.equal((production.body as { wixError?: string }).wixError, undefined);
+    for (let i = 0; i < 11; i += 1) {
+      const again = await handleNoamSiteCompanion({ method: 'POST' }, deps);
+      assert.equal(again.status, 200, 'preview ' + i);
+    }
+    const blocked = await handleNoamSiteCompanion({ method: 'POST' }, deps);
+    assert.equal(blocked.status, 429);
+    assert.equal((blocked.body as { backend?: string }).backend, 'memory');
+    assert.match(String((blocked.body as { wixError?: string }).wixError), /permission denied/);
   });
 });

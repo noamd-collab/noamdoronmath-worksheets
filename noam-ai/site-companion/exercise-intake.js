@@ -67,6 +67,16 @@ function clipState(prior) {
 }
 
 const TRIANGLE_TRIPLE = /30\s*[-–—]\s*60\s*[-–—]\s*90/;
+const STUDENT_QUESTION = /מה זה|איך(?![\u0590-\u05FF])|למה(?![\u0590-\u05FF])/;
+const LESSON_CUE = /שיעור|להרכיב|דף עבודה לכיתה|\blesson\b/i;
+
+function isStudentQuestion(text) {
+  return STUDENT_QUESTION.test(String(text || ""));
+}
+
+function hasLessonCue(text) {
+  return LESSON_CUE.test(String(text || ""));
+}
 
 function withoutTriangle(text) {
   return String(text || "").replace(new RegExp(TRIANGLE_TRIPLE.source, "g"), " ");
@@ -80,11 +90,13 @@ export function isExercisePickRequest(message, intake) {
   const state = clipState(intake);
   if (state.active) return true;
   const text = String(message || "");
+  // "מה זה" / "איך" / "למה" are student questions, not a request to build a lesson.
+  if (isStudentQuestion(text)) return false;
   if (PICK_INTENT.test(text)) return true;
-  // A lesson length, or an explicit 30-60-90 triangle, starts the builder
-  // even when it is the first sentence.
+  // שיעור / להרכיב / דף עבודה לכיתה / lesson starts the builder.
+  // A bare 30-60-90 request still does, so the topic is found on the first sentence.
+  if (hasLessonCue(text)) return true;
   if (mentionsTriangleTriple(text)) return true;
-  if (minutesFrom(text) != null && /שיעור|lesson|דקות|minutes?/i.test(text)) return true;
   return false;
 }
 

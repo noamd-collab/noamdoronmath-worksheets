@@ -309,9 +309,7 @@ function denied(guard, origin) {
   if (guard.code === "BOT_VERIFICATION_FAILED" && guard.siteverify) {
     fail.siteverify = guard.siteverify;
   }
-  const cors = corsHeadersFor(origin);
-  if (!cors) return { status: 403, headers: { Vary: "Origin" }, body: "" };
-  return { status: guard.status, headers: cors, body: fail };
+  return { status: guard.status || 403, headers: responseHeaders(origin), body: fail };
 }
 
 function readJson(payload) {
@@ -361,9 +359,21 @@ export async function handleNoamSiteCompanion(request, deps) {
     },
     { store, noIpGlobalMax: settings.noIpGlobalMax, rateBackend: settings.rateBackend }
   );
-  if (!limited.ok) return denied(limited, origin);
+  if (!limited.ok) {
+    const fail = denied(limited, origin);
+    if (payload.rateProbe === true && isHeadlessPreviewHost(requestHost) && fail.body && typeof fail.body === "object") {
+      fail.body.backend = limited.backend || "memory";
+      if (limited.wixError) fail.body.wixError = String(limited.wixError).slice(0, 300);
+    }
+    return fail;
+  }
   if (payload.rateProbe === true) {
-    return jsonResponse(200, { ok: true, active: true, probe: true, code: "RATE_OK" }, origin);
+    const probe = { ok: true, active: true, probe: true, code: "RATE_OK" };
+    if (isHeadlessPreviewHost(requestHost)) {
+      probe.backend = limited.backend || "memory";
+      if (limited.wixError) probe.wixError = String(limited.wixError).slice(0, 300);
+    }
+    return jsonResponse(200, probe, origin);
   }
   // Guide, topic order, and lesson picking do not call the model.
   // Answer them before reCAPTCHA so a failed check does not block a real visitor.

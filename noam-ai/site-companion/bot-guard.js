@@ -290,10 +290,22 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
   return { passed, siteverify: siteverifyFields(data) };
 }
 
-/** One 12/min slot. Callers that already took a slot pass skipRateLimit. */
+function rateErrorText(error) {
+  const message = String(error && error.message ? error.message : error || "");
+  return message.replace(/\s+/g, " ").trim().slice(0, 300);
+}
+
+/** One 12/min slot. A boolean result is the shared counter. An object may name the backend. */
 async function takeOnBackend(backend, key, now, max) {
-  const allowed = await backend.take(key, now, max, RATE_LIMIT_WINDOW_MS);
-  return allowed === true;
+  const result = await backend.take(key, now, max, RATE_LIMIT_WINDOW_MS);
+  if (result && typeof result === "object") {
+    return {
+      allowed: result.ok === true,
+      backend: result.backend || "wix",
+      error: result.error ? rateErrorText(result.error) : "",
+    };
+  }
+  return { allowed: result === true, backend: "wix", error: "" };
 }
 
 export async function takeCompanionRate(input, deps) {
@@ -303,18 +315,23 @@ export async function takeCompanionRate(input, deps) {
   const now = input && typeof input.now === "number" ? input.now : Date.now();
   const globalMax = deps && typeof deps.noIpGlobalMax === "number" ? deps.noIpGlobalMax : RATE_LIMIT_NO_IP_GLOBAL_MAX;
   const backend = deps && deps.rateBackend;
+  let wixError = "";
   if (backend && typeof backend.take === "function") {
     try {
-      if (identity.mode === "ip") {
-        if (!(await takeOnBackend(backend, identity.key, now, RATE_LIMIT_MAX))) {
-          return { ok: false, status: 429, code: "RATE_LIMIT" };
-        }
-      } else if (!(await takeOnBackend(backend, identity.key, now, RATE_LIMIT_MAX)) || !(await takeOnBackend(backend, NO_IP_GLOBAL_KEY, now, globalMax))) {
-        return { ok: false, status: 429, code: "RATE_LIMIT" };
+      const first = await takeOnBackend(backend, identity.key, now, RATE_LIMIT_MAX);
+      if (!first.allowed) {
+        return { ok: false, status: 429, code: "RATE_LIMIT", backend: first.backend, wixError: first.error };
       }
-      return { ok: true, status: 200 };
+      if (identity.mode !== "ip") {
+        const global = await takeOnBackend(backend, NO_IP_GLOBAL_KEY, now, globalMax);
+        if (!global.allowed) {
+          return { ok: false, status: 429, code: "RATE_LIMIT", backend: global.backend, wixError: global.error };
+        }
+      }
+      return { ok: true, status: 200, backend: first.backend, wixError: first.error };
     } catch (error) {
-      console.warn("NOAM_RATE_STORE_UNAVAILABLE");
+      wixError = rateErrorText(error);
+      console.warn("NOAM_RATE_STORE_UNAVAILABLE " + wixError);
     }
   }
   const store = deps && deps.store;
@@ -322,11 +339,11 @@ export async function takeCompanionRate(input, deps) {
     return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
   }
   if (identity.mode === "ip") {
-    if (!takeRateSlot(identity.key, now, store)) return { ok: false, status: 429, code: "RATE_LIMIT" };
+    if (!takeRateSlot(identity.key, now, store)) return { ok: false, status: 429, code: "RATE_LIMIT", backend: "memory", wixError };
   } else if (!takeRateSlot(identity.key, now, store) || !takeRateSlot(NO_IP_GLOBAL_KEY, now, store, globalMax)) {
-    return { ok: false, status: 429, code: "RATE_LIMIT" };
+    return { ok: false, status: 429, code: "RATE_LIMIT", backend: "memory", wixError };
   }
-  return { ok: true, status: 200 };
+  return { ok: true, status: 200, backend: "memory", wixError };
 }
 
 export async function guardCompanionRequest(input, deps) {
