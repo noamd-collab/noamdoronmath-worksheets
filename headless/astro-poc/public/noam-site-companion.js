@@ -343,14 +343,14 @@
     chipsEl.appendChild(link);
   }
 
-  function setChips(items) {
+  function setChips(items, options) {
     chipsEl.textContent = "";
     var seen = {};
     var primaryHref = !primaryEl.hidden ? primaryEl.getAttribute("href") || "" : "";
     var added = 0;
     var primaryLabel = !primaryEl.hidden ? primaryEl.textContent || "" : "";
     var list = (items || []).slice();
-    if (pageKind() === "teachers") list = list.concat(teacherGoalChips());
+    if (pageKind() === "teachers" && !(options && options.plain)) list = list.concat(teacherGoalChips());
     for (var i = 0; i < list.length && added < 12; i++) {
       var item = list[i];
       if (!item) continue;
@@ -429,9 +429,17 @@
     if (mode === "compact") fitCompact();
   }
 
-  function saveThread(open) {
+  function saveThread(open, chipsCleared) {
     try {
-      sessionStorage.setItem(THREAD_KEY, JSON.stringify({ html: logEl.innerHTML, answer: answerEl.textContent || "", intake: intakeState, open: !!open }));
+      var prior = null;
+      try { prior = JSON.parse(sessionStorage.getItem(THREAD_KEY) || "null"); } catch (error) {}
+      sessionStorage.setItem(THREAD_KEY, JSON.stringify({
+        html: logEl.innerHTML,
+        answer: answerEl.textContent || "",
+        intake: intakeState,
+        open: !!open,
+        chipsCleared: !!(chipsCleared || (prior && prior.chipsCleared)),
+      }));
     } catch (error) {}
   }
 
@@ -453,14 +461,15 @@
       primaryEl.hidden = true;
       ramziEl.hidden = true;
     }
-    setChips((result && result.chips) || []);
+    var wizard = result && result.wizard;
+    var handed = !!(wizard && wizard.href && wizard.exerciseIds && wizard.exerciseIds.length);
+    setChips(handed ? [] : ((result && result.chips) || []), handed ? { plain: true } : null);
     detailsEl.textContent = (result && result.details) || answerEl.textContent;
     moreEl.hidden = !detailsEl.textContent;
-    saveThread(false);
+    saveThread(false, handed);
     if (mode === "compact") fitCompact();
-    var wizard = result && result.wizard;
-    if (wizard && wizard.href && wizard.exerciseIds && wizard.exerciseIds.length) {
-      saveThread(true);
+    if (handed) {
+      saveThread(true, true);
       var here = (location.pathname || "").replace(/\/$/, "") || "/";
       if (here === "/teachers") {
         history.replaceState(null, "", wizard.href);
@@ -474,6 +483,8 @@
   function clearInline() {
     panel.style.position = "";
     panel.style.right = "";
+    panel.style.left = "";
+    panel.style.top = "";
     panel.style.bottom = "";
     panel.style.width = "";
     panel.style.height = "";
@@ -588,13 +599,63 @@
     fitCompact();
   }
 
+  function wizardBoxes() {
+    var nodes = document.querySelectorAll(".scenario-list, #teacher-note, #other-field, #questions .q-card, .setup-fields, .level-field");
+    var boxes = [];
+    for (var i = 0; i < nodes.length; i++) {
+      var rect = nodes[i].getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < window.innerHeight) boxes.push(rect);
+    }
+    return boxes;
+  }
+
+  function hitsWizard(boxes) {
+    var mine = panel.getBoundingClientRect();
+    for (var i = 0; i < boxes.length; i++) {
+      if (rectsOverlap(mine, boxes[i])) return true;
+    }
+    return false;
+  }
+
+  function applyPanelCorner(corner) {
+    panel.style.right = corner.right;
+    panel.style.left = corner.left;
+    panel.style.top = corner.top;
+    panel.style.bottom = corner.bottom;
+  }
+
+  var placingWizard = false;
+
   function placeOffWizard() {
-    if (pageKind() !== "teachers" || window.innerWidth < 768) return;
-    var step = document.querySelector(".scenario-list");
-    if (!step) return;
-    if (!rectsOverlap(panel.getBoundingClientRect(), step.getBoundingClientRect())) return;
-    panel.style.right = "auto";
-    panel.style.left = "8px";
+    if (placingWizard || mode !== "compact" || pageKind() !== "teachers" || window.innerWidth < 768) return;
+    var boxes = wizardBoxes();
+    if (!boxes.length) return;
+    placingWizard = true;
+    var bottom = panel.style.bottom && panel.style.bottom !== "auto" ? panel.style.bottom : "8px";
+    var corners = [
+      { right: "8px", left: "auto", top: "auto", bottom: bottom },
+      { right: "auto", left: "8px", top: "auto", bottom: bottom },
+      { right: "8px", left: "auto", top: "8px", bottom: "auto" },
+      { right: "auto", left: "8px", top: "8px", bottom: "auto" },
+    ];
+    var placed = false;
+    try {
+      for (var i = 0; i < corners.length; i++) {
+        applyPanelCorner(corners[i]);
+        if (!hitsWizard(boxes)) {
+          placed = true;
+          break;
+        }
+      }
+      if (!placed) {
+        saveThread(true, false);
+        mode = "closed";
+        panel.dataset.mode = "closed";
+        paintChrome(true);
+      }
+    } finally {
+      placingWizard = false;
+    }
   }
 
   function revealLessonCard() {
@@ -819,6 +880,11 @@
   window.addEventListener("scroll", function () {
     if (mode === "compact") placeOffWizard();
   }, true);
+  document.addEventListener("click", function (event) {
+    if (mode !== "compact" || pageKind() !== "teachers") return;
+    if (panel.contains(event.target)) return;
+    placeOffWizard();
+  }, true);
   window.setInterval(function () { paintChrome(false); }, 1000);
   showIdle();
   try {
@@ -831,6 +897,7 @@
         answerEl.textContent = savedThread.answer;
       }
       intakeState = savedThread && savedThread.intake ? savedThread.intake : null;
+      if (savedThread && savedThread.chipsCleared) setChips([], { plain: true });
       if (savedThread && savedThread.open) openCompact();
     }
   } catch (error) {}

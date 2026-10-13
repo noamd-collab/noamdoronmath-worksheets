@@ -17,8 +17,11 @@ import {
 } from '../../../../../noam-ai/site-companion/endpoint.js';
 import { recaptchaBypassFromEnv } from '../../../../../noam-ai/site-companion/bot-guard.js';
 import { secretFromEnv } from '../../lib/noamSecrets';
+import { createWixRateBackend } from '../../lib/noamRateStore';
 
 export const prerender = false;
+
+const sharedRate = createWixRateBackend();
 
 function keys() {
   return {
@@ -56,6 +59,7 @@ async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
     teacherIndex,
     fetch: globalThis.fetch.bind(globalThis),
     recaptchaBypass: recaptchaBypassFromEnv(process.env, requestHost),
+    rateBackend: sharedRate,
   });
   return send(result);
 }

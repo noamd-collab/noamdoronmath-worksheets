@@ -353,13 +353,13 @@ export async function handleNoamSiteCompanion(request, deps) {
   const requestHost = requestHostFrom(request, settings);
   const store = settings.store || defaultStore;
   // Fixed answers skip reCAPTCHA. They still take the same 12/min slot.
-  const limited = takeCompanionRate(
+  const limited = await takeCompanionRate(
     {
       clientIp: settings.clientIp,
       botVerification: payload.botVerification,
       now: settings.now,
     },
-    { store, noIpGlobalMax: settings.noIpGlobalMax }
+    { store, noIpGlobalMax: settings.noIpGlobalMax, rateBackend: settings.rateBackend }
   );
   if (!limited.ok) return denied(limited, origin);
   // Guide, topic order, and lesson picking do not call the model.

@@ -146,10 +146,38 @@ function topicsFor(index, grade) {
   return topics;
 }
 
+function gradeLabelFor(index, grade) {
+  const sheet = (index || []).find((item) => Number(item.grade) === Number(grade));
+  return sheet ? (sheet.gradeLabel || "כיתה " + sheet.grade) : "";
+}
+
+function gradeHasExercises(index, grade) {
+  return (index || []).some((sheet) => {
+    return Number(sheet.grade) === Number(grade) && (sheet.questions || []).length > 0;
+  });
+}
+
+function topicHasExercises(index, grade, topicId, level) {
+  return (index || []).some((sheet) => {
+    if (Number(sheet.grade) !== Number(grade)) return false;
+    if (String(sheet.topicId) !== String(topicId)) return false;
+    if (level && String(sheet.level) !== String(level)) return false;
+    return (sheet.questions || []).length > 0;
+  });
+}
+
+function topicsWithExercises(index, grade, level) {
+  return topicsFor(index, grade).filter((topic) => topicHasExercises(index, grade, topic.topicId, level));
+}
+
+function worksheetChip(grade) {
+  return { label: "דפי עבודה", href: grade ? "/worksheets?grade=" + grade : "/worksheets" };
+}
+
 function matchTopics(index, grade, query) {
   const wanted = fold(query);
   if (wanted.length < 2) return [];
-  const pool = topicsFor(index, grade);
+  const pool = topicsFor(index, grade).filter((topic) => topicHasExercises(index, grade, topic.topicId, ""));
   const exact = pool.filter((topic) => fold(topic.topic) === wanted);
   if (exact.length) return exact;
   // "30" must not match "30-60-90". Digits are a count or a lesson length.
@@ -340,6 +368,10 @@ export function advanceExerciseIntake(message, prior, index, page) {
   state.levelRejected = false;
   state.topicMatches = [];
   absorb(state, message, index);
+  if (state.grade && !gradeHasExercises(index, state.grade)) {
+    state.emptyGrade = state.grade;
+    state.grade = null;
+  }
   if (state.levelRejected) {
     const repeated = state.gapKey === "level";
     const answer = repeated
@@ -357,28 +389,37 @@ export function advanceExerciseIntake(message, prior, index, page) {
     return ask(state, "minutes", "כמה דקות אורך השיעור?", [30, 45, 60].map((minutes) => option(minutes + " דקות", String(minutes))));
   }
   if (!state.grade) {
-    const grades = gradeRows(index);
-    const preferred = pageGrade(page);
+    const grades = gradeRows(index).filter((sheet) => gradeHasExercises(index, sheet.grade));
+    const preferred = state.emptyGrade || pageGrade(page);
     const home = grades.find((sheet) => Number(sheet.grade) === Number(preferred));
     const ordered = home ? [home].concat(grades.filter((sheet) => sheet !== home)) : grades;
+    const chips = ordered.map((sheet) => option(sheet.gradeLabel || "כיתה " + sheet.grade));
+    if (preferred && !home) {
+      const label = gradeLabelFor(index, preferred) || "כיתה " + preferred;
+      const repeated = state.gapKey === "no-exercises";
+      const answer = repeated
+        ? "ב" + label + " אין סעיפים קיימים. בחרו כיתה מהכפתורים, או פתחו את דפי העבודה."
+        : "ב" + label + " אין סעיפים קיימים לבחירה. בחרו כיתה שיש בה סעיפים, או פתחו את דפי העבודה.";
+      chips.push(worksheetChip(preferred));
+      return ask(state, "grade", answer, chips, "no-exercises");
+    }
     const homeLabel = home ? (home.gradeLabel || "כיתה " + home.grade) : "";
     const answer = homeLabel
       ? "לאיזו כיתה השיעור? ברירת המחדל היא " + homeLabel + "."
       : "לאיזו כיתה השיעור?";
-    return ask(
-      state,
-      "grade",
-      answer,
-      ordered.map((sheet) => option(sheet.gradeLabel || "כיתה " + sheet.grade))
-    );
+    return ask(state, "grade", answer, chips);
   }
   if (!state.topicId) {
-    const matches = state.topicMatches && state.topicMatches.length ? state.topicMatches : [];
+    const available = topicsWithExercises(index, state.grade, state.level);
+    const searched = state.topicMatches && state.topicMatches.length ? state.topicMatches : [];
+    const matches = searched.length ? searched : available;
     const repeated = state.gapKey === "topic";
     const answer = matches.length
       ? repeated
         ? "יש כמה דפים עם השם הזה. בחרו את הנושא המדויק מהכפתורים."
-        : "איזה מהנושאים האלה מתאים לשיעור?"
+        : searched.length
+          ? "איזה מהנושאים האלה מתאים לשיעור?"
+          : "איזה נושא לשיעור? בחרו נושא שיש בו סעיפים."
       : repeated
         ? "כתבו את שם הנושא כפי שהוא מופיע בדפי הכיתה, למשל דלתון."
         : "איזה נושא לשיעור? אפשר לכתוב שם, למשל דלתון או פירוק לגורמים.";
@@ -388,13 +429,25 @@ export function advanceExerciseIntake(message, prior, index, page) {
   state.gradeLabel = gradeLabel || "";
   const questions = questionsFor(index, state);
   if (!questions.length) {
+    const otherLevels = LEVELS.filter((level) => {
+      return level.key !== state.level && topicHasExercises(index, state.grade, state.topicId, level.key);
+    });
+    if (otherLevels.length) {
+      const repeated = state.gapKey === "none";
+      const answer = repeated
+        ? "ברמה הזו אין סעיפים. בחרו רמה אחרת מהכפתורים."
+        : "בנושא הזה אין סעיפים ב" + levelLabel(state.level) + ". בחרו רמה שיש בה סעיפים.";
+      return ask(state, "level", answer, otherLevels.map((level) => option(level.label)), "none");
+    }
     const repeated = state.gapKey === "none";
     const answer = repeated
-      ? "עדיין אין סעיף קיים בשילוב הזה. בחרו רמה א׳, רמה ב׳ או מצוינות, או כתבו נושא אחר."
-      : "בכיתה הזו אין סעיפים קיימים בנושא וברמה שביקשת. איזה נושא אחר, או איזו רמה?";
+      ? "עדיין אין סעיפים בנושא הזה. בחרו נושא אחר, או פתחו את דפי העבודה."
+      : "בנושא הזה אין סעיפים קיימים. בחרו נושא שיש בו סעיפים, או פתחו את דפי העבודה.";
     state.topicId = "";
     state.topicLabel = "";
-    return ask(state, "topicId", answer, levelOptions(), "none");
+    const chips = topicChoices(topicsWithExercises(index, state.grade, state.level)).slice(0, 7);
+    chips.push(worksheetChip(state.grade));
+    return ask(state, "topicId", answer, chips, "none");
   }
   if (questions.length < state.count) {
     const repeated = state.gapKey === "short";

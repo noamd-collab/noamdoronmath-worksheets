@@ -4,6 +4,7 @@ import { describe, it } from 'node:test';
 import { handleCompanionTurn } from '../../../noam-ai/site-companion/companion.js';
 import {
   acceptDevBypass,
+  memoryRateBackend,
   recaptchaBypassFromEnv,
 } from '../../../noam-ai/site-companion/bot-guard.js';
 import { handleNoamSiteCompanion } from '../../../noam-ai/site-companion/endpoint.js';
@@ -297,18 +298,19 @@ describe('Noam AI production spec', () => {
     assert.equal(turn.intake.topicId, '');
     assert.equal(turn.wizard, null);
     assert.equal(String(turn.answer).includes('30-60-90'), false);
-    assert.match(turn.answer, /לאיזו כיתה/);
-    assert.match(turn.answer, /ברירת המחדל היא כיתה ג׳/);
-    const grade3 = teacherIndex.find((row: { grade: number; gradeLabel: string }) => row.grade === 3);
-    assert.equal(labelsOf(turn)[0], grade3.gradeLabel);
-    turn = resolveDeterministicTurn(
-      { message: grade3.gradeLabel, page, intake: turn.intake },
+    assert.match(turn.answer, /אין סעיפים קיימים/);
+    const labels = labelsOf(turn);
+    assert.equal(labels.includes('כיתה ג׳'), false);
+    assert.equal(labels.includes('כיתה ט׳'), true);
+    assert.ok((turn.chips || []).some((chip: { href?: string }) => chip.href && chip.href.startsWith('/worksheets?grade=3')));
+    const again = resolveDeterministicTurn(
+      { message: 'כיתה ג׳', page, intake: turn.intake },
       { teacherIndex }
     );
-    assert.equal(turn.intake.grade, 3);
-    assert.equal(turn.intake.topicId, '');
-    assert.match(turn.answer, /נושא/);
-    assert.equal(String(turn.answer).includes('30-60-90'), false);
+    assert.equal(again.intake.grade, null);
+    assert.equal(again.intake.waiting, 'grade');
+    assert.match(again.answer, /אין סעיפים/);
+    assert.equal(labelsOf(again).includes('כיתה ג׳'), false);
   });
 
   it('parses typed chip labels the same way as taps', () => {
@@ -382,13 +384,101 @@ describe('Noam AI production spec', () => {
     assert.equal(client.includes('return "https://www.noamdoronmath.co.il" + path'), false);
     assert.match(client, /function siteHref\(path\) \{\s*return path;\s*\}/);
     assert.ok(client.includes('function placeOffWizard()'));
-    assert.ok(client.includes('document.querySelector(".scenario-list")'));
+    assert.ok(client.includes('#teacher-note'));
+    assert.ok(client.includes('#questions .q-card'));
     assert.ok(client.includes('if (mode === "compact") placeOffWizard();'));
+    assert.ok(client.includes('chipsCleared'));
+    assert.ok(client.includes('plain: true'));
+    const teachersHtml = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    assert.match(teachersHtml, /scroll-margin-top:120px/);
     assert.equal(client.includes('#noam-site-companion-panel.is-compact #noam-site-companion-log{display:none!important}'), false);
     assert.ok(client.includes('#noam-site-companion-panel.is-compact #noam-site-companion-log{display:flex'));
     assert.match(teacherPage, /#questions input:checked/);
     assert.match(teacherPage, /scrollIntoView/);
-    const teachersHtml = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.match(teachersHtml, /html\.noam-companion-open \.toast,html\.noam-ai-engaged \.toast\{bottom:auto;top:16px\}/);
+    assert.match(route, /createWixRateBackend/);
+    assert.match(readFileSync(new URL('../src/lib/noamRateStore.ts', import.meta.url), 'utf8'), /NoamAiRateLimit/);
+  });
+
+  it('shares the rate limit across instances', async () => {
+    const rateBackend = memoryRateBackend();
+    const deps = {
+      origin: 'https://www.noamdoronmath.co.il',
+      clientIp: '203.0.113.77',
+      qwenKey: 'qwen-test-key-xyz',
+      recaptchaSecret: 'recaptcha-test-secret-xyz',
+      catalog,
+      guide,
+      teacherIndex,
+      now: 11_000,
+      rateBackend,
+      fetch: async () => {
+        throw new Error('model');
+      },
+      payload: {
+        message: 'מה יש בעמוד המורים?',
+        page: { kind: 'home', path: '/', title: 'בית' },
+      },
+    };
+    for (let i = 0; i < 12; i += 1) {
+      const result = await handleNoamSiteCompanion({ method: 'POST' }, { ...deps, store: new Map() });
+      assert.equal(result.status, 200, 'shared ' + i);
+    }
+    const blocked = await handleNoamSiteCompanion({ method: 'POST' }, { ...deps, store: new Map() });
+    assert.equal(blocked.status, 429);
+  });
+
+  it('does not loop elementary topics that have no exercises', () => {
+    const tiny = [
+      {
+        pdfId: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        grade: 3,
+        gradeLabel: 'כיתה ג׳',
+        topicId: '4',
+        topic: 'שברים',
+        level: 'a',
+        questions: [],
+      },
+      {
+        pdfId: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+        grade: 9,
+        gradeLabel: 'כיתה ט׳',
+        topicId: '2',
+        topic: 'פירוק לגורמים',
+        level: 'a',
+        questions: [],
+      },
+      {
+        pdfId: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+        grade: 9,
+        gradeLabel: 'כיתה ט׳',
+        topicId: '2',
+        topic: 'פירוק לגורמים',
+        level: 'b',
+        questions: ['1א', '1ב'],
+      },
+    ];
+    const page = { path: '/grade-3', title: 'כיתה ג׳' };
+    let turn = advanceExerciseIntake('תבחר 2 תרגילים רמה א׳ לשיעור של 30 דקות', null, tiny, page);
+    assert.match(turn.answer, /אין סעיפים קיימים/);
+    assert.equal(labelsOf(turn).includes('כיתה ג׳'), false);
+    turn = advanceExerciseIntake('כיתה ט׳', turn.intake, tiny, page);
+    assert.equal(turn.intake.grade, 9);
+    assert.equal(turn.intake.waiting, 'topicId');
+    turn = advanceExerciseIntake('שברים', turn.intake, tiny, page);
+    assert.equal(turn.intake.topicId, '');
+    assert.equal(turn.intake.waiting, 'topicId');
+    assert.equal(labelsOf(turn).includes('רמה א׳') && labelsOf(turn).length === 3, false);
+    turn = advanceExerciseIntake('פירוק לגורמים', turn.intake, tiny, page);
+    assert.equal(turn.intake.waiting, 'level');
+    assert.deepEqual(labelsOf(turn), ['רמה ב׳']);
+    turn = advanceExerciseIntake('רמה א׳', turn.intake, tiny, page);
+    assert.equal(turn.intake.waiting, 'level');
+    assert.equal(turn.exerciseIds.length, 0);
+    turn = advanceExerciseIntake('רמה ב׳', turn.intake, tiny, page);
+    assert.deepEqual(turn.exerciseIds, [
+      'ex:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1א',
+      'ex:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1ב',
+    ]);
   });
 });

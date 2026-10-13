@@ -208,6 +208,29 @@ export function takeRateSlot(key, now, store, max) {
   return true;
 }
 
+/**
+ * One bucket map shared by every caller that receives this object.
+ * A module-level Map is not shared across Wix instances.
+ */
+export function memoryRateBackend(buckets) {
+  const store = buckets || new Map();
+  return {
+    async take(key, now, max, windowMs) {
+      const when = typeof now === "number" ? now : Date.now();
+      const limit = typeof max === "number" ? max : RATE_LIMIT_MAX;
+      const span = typeof windowMs === "number" ? windowMs : RATE_LIMIT_WINDOW_MS;
+      const fresh = (store.get(key) || []).filter((stamp) => when - stamp < span);
+      if (fresh.length >= limit) {
+        store.set(key, fresh);
+        return false;
+      }
+      fresh.push(when);
+      store.set(key, fresh);
+      return true;
+    },
+  };
+}
+
 export function siteverifyFields(data) {
   const body = data && typeof data === "object" ? data : {};
   const rawCodes = body["error-codes"];
@@ -268,16 +291,37 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
 }
 
 /** One 12/min slot. Callers that already took a slot pass skipRateLimit. */
-export function takeCompanionRate(input, deps) {
-  const store = deps && deps.store;
-  if (!store || typeof store.get !== "function") {
-    return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
-  }
+async function takeOnBackend(backend, key, now, max) {
+  const allowed = await backend.take(key, now, max, RATE_LIMIT_WINDOW_MS);
+  return allowed === true;
+}
+
+export async function takeCompanionRate(input, deps) {
   const verification = (input && input.botVerification) || {};
   const token = typeof verification.token === "string" ? verification.token : "";
   const identity = rateIdentity(input && input.clientIp, token);
   const now = input && typeof input.now === "number" ? input.now : Date.now();
   const globalMax = deps && typeof deps.noIpGlobalMax === "number" ? deps.noIpGlobalMax : RATE_LIMIT_NO_IP_GLOBAL_MAX;
+  const backend = deps && deps.rateBackend;
+  if (backend && typeof backend.take === "function") {
+    try {
+      if (identity.mode === "ip") {
+        if (!(await takeOnBackend(backend, identity.key, now, RATE_LIMIT_MAX))) {
+          return { ok: false, status: 429, code: "RATE_LIMIT" };
+        }
+      } else if (!(await takeOnBackend(backend, identity.key, now, RATE_LIMIT_MAX)) || !(await takeOnBackend(backend, NO_IP_GLOBAL_KEY, now, globalMax))) {
+        return { ok: false, status: 429, code: "RATE_LIMIT" };
+      }
+      return { ok: true, status: 200 };
+    } catch (error) {
+      console.warn("NOAM_RATE_STORE_UNAVAILABLE");
+      return { ok: false, status: 503, code: "RATE_STORE" };
+    }
+  }
+  const store = deps && deps.store;
+  if (!store || typeof store.get !== "function") {
+    return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
+  }
   if (identity.mode === "ip") {
     if (!takeRateSlot(identity.key, now, store)) return { ok: false, status: 429, code: "RATE_LIMIT" };
   } else if (!takeRateSlot(identity.key, now, store) || !takeRateSlot(NO_IP_GLOBAL_KEY, now, store, globalMax)) {
@@ -295,7 +339,7 @@ export async function guardCompanionRequest(input, deps) {
   const verification = input.botVerification || {};
   const token = verification.provider === "recaptcha-v3" ? verification.token : "";
   if (!deps || deps.skipRateLimit !== true) {
-    const limited = takeCompanionRate(input, deps);
+    const limited = await takeCompanionRate(input, deps);
     if (!limited.ok) return limited;
   }
   const message = input.message;
