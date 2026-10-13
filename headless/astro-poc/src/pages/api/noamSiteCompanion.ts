@@ -15,9 +15,13 @@ import {
   handleNoamSiteCompanion,
   visitorIpFrom,
 } from '../../../../../noam-ai/site-companion/endpoint.js';
+import { recaptchaBypassFromEnv } from '../../../../../noam-ai/site-companion/bot-guard.js';
 import { secretFromEnv } from '../../lib/noamSecrets';
+import { createWixRateBackend } from '../../lib/noamRateStore';
 
 export const prerender = false;
+
+const sharedRate = createWixRateBackend();
 
 function keys() {
   return {
@@ -35,15 +39,27 @@ function send(result: { status: number; headers: Record<string, string>; body: u
   return new Response(body, { status: result.status, headers: result.headers });
 }
 
+function requestHostOf(request: Request): string {
+  try {
+    return new URL(request.url).hostname;
+  } catch {
+    return '';
+  }
+}
+
 async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
+  const requestHost = requestHostOf(context.request);
   const result = await handleNoamSiteCompanion(context.request, {
     ...keys(),
     origin: context.request.headers.get('origin') || '',
+    requestHost,
     clientIp: clientIpOf(context),
     catalog,
     guide,
     teacherIndex,
     fetch: globalThis.fetch.bind(globalThis),
+    recaptchaBypass: recaptchaBypassFromEnv(process.env, requestHost),
+    rateBackend: sharedRate,
   });
   return send(result);
 }

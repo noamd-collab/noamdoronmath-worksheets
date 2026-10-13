@@ -77,8 +77,7 @@
   }
 
   function siteHref(path) {
-    if (location.port === "4337" || /(^|\.)noamdoronmath\.co\.il$/.test(location.hostname)) return path;
-    return "https://www.noamdoronmath.co.il" + path;
+    return path;
   }
 
   function pathOf(href) {
@@ -203,7 +202,7 @@
     "html.noam-ai-engaged body{grid-column:1;grid-row:1}",
     "html.noam-ai-engaged #noam-site-companion-panel{grid-column:1;grid-row:2;position:relative;height:auto;max-height:42dvh;width:100%;border-start-start-radius:18px;border-start-end-radius:18px;border-end-start-radius:0;border-end-end-radius:0;box-shadow:0 -3px 0 #e6a534;z-index:9991}",
     "html.noam-ai-engaged #noam-site-companion-close{width:auto;min-width:72px;padding:4px 10px}",
-    "html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:8px!important;left:auto!important;right:auto!important;inset-inline-end:8px!important;z-index:10001!important}",
+    "html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:calc(42dvh + 8px)!important;left:auto!important;right:auto!important;inset-inline-end:8px!important;z-index:10001!important}",
     "html.noam-ai-engaged #noam-site-companion-form{padding-inline-end:56px}",
     "html.noam-ai-engaged .fab{inset-block-end:calc(42dvh + 8px)!important}",
     "}",
@@ -222,6 +221,15 @@
     "#noam-site-companion-thinking .noam-think-dots i{animation:none;opacity:1}",
     "}",
     "@media print{#noam-site-companion,#noam-site-companion-panel{display:none!important}html.noam-ai-engaged{display:block!important;height:auto!important;overflow:visible!important}html.noam-ai-engaged body{max-height:none!important;overflow:visible!important}}",
+    "#noam-site-companion-log{display:none;margin:0}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-log{display:flex;flex-direction:column;gap:2px;flex:1;min-height:0;overflow:auto;order:1}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-log:empty{display:none!important}",
+    "html.noam-ai-engaged #noam-site-companion-log{display:flex;flex-direction:column;gap:4px;flex:1;min-height:0;overflow:auto}",
+    "#noam-site-companion-log p{margin:0}",
+    "#noam-site-companion-log .noam-log-user{align-self:flex-start;font-weight:700;background:#fff6e4;border-radius:10px;padding:2px 8px}",
+    "#noam-site-companion-log .noam-log-bot{align-self:stretch;font-weight:500}",
+    "#noam-site-companion-recaptcha{margin:0;font-size:16px;font-weight:500;line-height:1.3}",
+    "html.noam-companion-open .grecaptcha-badge{visibility:hidden!important}",
     "#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}",
   ].join("");
   document.head.appendChild(style);
@@ -244,6 +252,7 @@
     '<button type="button" id="noam-ai-expand" aria-expanded="false" aria-label="הרחבה">הרחבה</button>' +
     '<button type="button" id="noam-ai-collapse" hidden>צמצום</button>' +
     '<button type="button" id="noam-site-companion-close" aria-label="סגירת נועם AI">×</button></header>' +
+    '<div id="noam-site-companion-log" role="log"></div>' +
     '<p id="noam-site-companion-answer" aria-live="polite"></p>' +
     '<a id="noam-site-companion-primary" hidden></a>' +
     '<button type="button" id="noam-site-companion-ramzi" hidden>עזרה מרמזי</button>' +
@@ -252,12 +261,17 @@
     '<p id="noam-site-companion-details" hidden tabindex="0"></p>' +
     '<form id="noam-site-companion-form"><label for="noam-site-companion-input" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">מה אתם מחפשים?</label>' +
     '<input id="noam-site-companion-input" type="text" maxlength="700" autocomplete="off" aria-label="מה אתם מחפשים?">' +
-    '<button type="submit" aria-label="שליחה">שליחה</button></form>';
+    '<button type="submit" aria-label="שליחה">שליחה</button></form>' +
+    '<p id="noam-site-companion-recaptcha">מוגן באמצעות reCAPTCHA. התג לא מכסה את השיחה.</p>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
   forceSiteFont(root);
 
   var answerEl = document.getElementById("noam-site-companion-answer");
+  var logEl = document.getElementById("noam-site-companion-log");
+  var recaptchaEl = document.getElementById("noam-site-companion-recaptcha");
+  var intakeState = null;
+  var THREAD_KEY = "noam-ai-one-window";
   var primaryEl = document.getElementById("noam-site-companion-primary");
   var ramziEl = document.getElementById("noam-site-companion-ramzi");
   var chipsEl = document.getElementById("noam-site-companion-chips");
@@ -299,6 +313,19 @@
 
   function appendChip(item) {
     if (!item) return;
+    if (item.send) {
+      var choice = document.createElement("button");
+      choice.type = "button";
+      choice.textContent = item.label;
+      choice.addEventListener("click", function () {
+        if (streaming) return;
+        input.value = item.send;
+        if (typeof form.requestSubmit === "function") form.requestSubmit();
+        else form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      });
+      chipsEl.appendChild(choice);
+      return;
+    }
     if (item.goal) {
       var button = document.createElement("button");
       button.type = "button";
@@ -316,18 +343,21 @@
     chipsEl.appendChild(link);
   }
 
-  function setChips(items) {
+  function setChips(items, options) {
     chipsEl.textContent = "";
     var seen = {};
     var primaryHref = !primaryEl.hidden ? primaryEl.getAttribute("href") || "" : "";
     var added = 0;
-    var list = items || [];
-    for (var i = 0; i < list.length && added < 8; i++) {
+    var primaryLabel = !primaryEl.hidden ? primaryEl.textContent || "" : "";
+    var list = (items || []).slice();
+    if (pageKind() === "teachers" && !(options && options.plain)) list = list.concat(teacherGoalChips());
+    for (var i = 0; i < list.length && added < 12; i++) {
       var item = list[i];
       if (!item) continue;
       var href = item.href || "";
       var label = item.label || "";
       if (href && primaryHref && href === primaryHref) continue;
+      if (label && primaryLabel && label === primaryLabel) continue;
       if (href && seen["href:" + href]) continue;
       if (label && seen["label:" + label]) continue;
       if (href) seen["href:" + href] = true;
@@ -335,7 +365,6 @@
       appendChip(item);
       added += 1;
     }
-    if (pageKind() === "teachers") teacherGoalChips().forEach(appendChip);
     forceSiteFont(panel);
   }
 
@@ -394,15 +423,30 @@
     if (button) button.disabled = true;
     thinkTimer = setInterval(function () {
       var seconds = Math.floor((Date.now() - started) / 1000);
-      var text = answerEl.querySelector(".noam-think-text");
-      if (text) text.textContent = thinkingLabel(seconds);
+      var nodes = panel.querySelectorAll(".noam-think-text");
+      for (var i = 0; i < nodes.length; i++) nodes[i].textContent = thinkingLabel(seconds);
     }, 250);
     if (mode === "compact") fitCompact();
+  }
+
+  function saveThread(open, chipsCleared) {
+    try {
+      var prior = null;
+      try { prior = JSON.parse(sessionStorage.getItem(THREAD_KEY) || "null"); } catch (error) {}
+      sessionStorage.setItem(THREAD_KEY, JSON.stringify({
+        html: logEl.innerHTML,
+        answer: answerEl.textContent || "",
+        intake: intakeState,
+        open: !!open,
+        chipsCleared: !!(chipsCleared || (prior && prior.chipsCleared)),
+      }));
+    } catch (error) {}
   }
 
   function showResult(result) {
     stopThinking();
     hasAnswer = true;
+    intakeState = result && result.intake ? result.intake : null;
     answerEl.textContent = (result && (result.answer || result.text)) || FALLBACK;
     var primary = result && result.primary;
     if (primary && primary.action === "ramzi") {
@@ -417,15 +461,30 @@
       primaryEl.hidden = true;
       ramziEl.hidden = true;
     }
-    setChips((result && result.chips) || []);
+    var wizard = result && result.wizard;
+    var handed = !!(wizard && wizard.href && wizard.exerciseIds && wizard.exerciseIds.length);
+    setChips(handed ? [] : ((result && result.chips) || []), handed ? { plain: true } : null);
     detailsEl.textContent = (result && result.details) || answerEl.textContent;
     moreEl.hidden = !detailsEl.textContent;
+    saveThread(false, handed);
     if (mode === "compact") fitCompact();
+    if (handed) {
+      saveThread(true, true);
+      var here = (location.pathname || "").replace(/\/$/, "") || "/";
+      if (here === "/teachers") {
+        history.replaceState(null, "", wizard.href);
+        document.dispatchEvent(new CustomEvent("noam-teacher-prefill", { detail: wizard }));
+      } else {
+        location.assign(wizard.href);
+      }
+    }
   }
 
   function clearInline() {
     panel.style.position = "";
     panel.style.right = "";
+    panel.style.left = "";
+    panel.style.top = "";
     panel.style.bottom = "";
     panel.style.width = "";
     panel.style.height = "";
@@ -456,6 +515,8 @@
     undrop(primaryEl);
     undrop(ramziEl);
     undrop(answerEl);
+    undrop(recaptchaEl);
+    undrop(logEl);
     var links = chipsEl.querySelectorAll("a, button");
     for (var i = 0; i < links.length; i++) undrop(links[i]);
   }
@@ -475,11 +536,8 @@
     }
     if (visibleChips === 0 || (!wide && !teacher)) drop(chipsEl);
     if (tight && !hasAnswer && !panel.classList.contains("is-thinking")) drop(answerEl);
-    var order = teacher
-      ? [primaryEl, ramziEl, moreEl, answerEl]
-      : tight && hasAnswer
-        ? [primaryEl, ramziEl, moreEl, chipsEl]
-        : [moreEl, chipsEl, primaryEl, ramziEl];
+    var order = [recaptchaEl, chipsEl, moreEl, primaryEl, ramziEl, logEl];
+    if (!hasAnswer && !panel.classList.contains("is-thinking")) order.push(answerEl);
     for (var n = 0; n < order.length; n++) {
       if (panel.scrollHeight <= panel.clientHeight + 1) return;
       drop(order[n]);
@@ -490,19 +548,69 @@
     return a.width > 0 && b.width > 0 && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
   }
 
+  function applyLauncher(pos) {
+    root.style.right = pos.right;
+    root.style.left = pos.left;
+    root.style.top = pos.top;
+    root.style.bottom = pos.bottom;
+  }
+
+  function launcherHits(selector) {
+    var mine = launch.getBoundingClientRect();
+    if (mine.width < 1 || mine.height < 1) return false;
+    var nodes = document.querySelectorAll(selector);
+    for (var i = 0; i < nodes.length; i++) {
+      var rect = nodes[i].getBoundingClientRect();
+      if (rect.width > 1 && rect.height > 1 && rectsOverlap(mine, rect)) return true;
+    }
+    return false;
+  }
+
+  function launcherHitsCards() {
+    return launcherHits("#questions .q-card");
+  }
+
+  function launcherHitsChrome() {
+    return launcherHits(".topbar .brand, .topbar .nav-toggle, .topbar .learn-btn, #noam-accessibility");
+  }
+
+  function parkLauncherOffCards() {
+    var header = document.querySelector(".topbar");
+    var headerBottom = header ? Math.round(header.getBoundingClientRect().bottom) : 0;
+    var under = Math.max(8, headerBottom + 8) + "px";
+    var spots = [
+      { right: "auto", left: "8px", top: "auto", bottom: "8px" },
+      { right: "auto", left: "8px", top: "8px", bottom: "auto" },
+      { right: "8px", left: "auto", top: "8px", bottom: "auto" },
+      { right: "auto", left: "8px", top: under, bottom: "auto" },
+      { right: "8px", left: "auto", top: under, bottom: "auto" },
+    ];
+    for (var i = 0; i < spots.length; i++) {
+      applyLauncher(spots[i]);
+      if (!launcherHitsCards() && !launcherHitsChrome()) return;
+    }
+    for (var y = window.innerHeight - 56; y >= 8; y -= 24) {
+      applyLauncher({ right: "auto", left: "8px", top: y + "px", bottom: "auto" });
+      if (!launcherHitsCards() && !launcherHitsChrome()) return;
+    }
+    applyLauncher({ right: "auto", left: "8px", top: "8px", bottom: "auto" });
+  }
+
   function placeLauncher() {
-    root.style.right = "8px";
-    root.style.left = "auto";
-    root.style.bottom = "8px";
+    applyLauncher({ right: "8px", left: "auto", top: "auto", bottom: "8px" });
     var a11y = document.getElementById("noam-accessibility");
-    if (!a11y) return;
-    var box = a11y.getBoundingClientRect();
-    var mine = root.getBoundingClientRect();
-    if (!rectsOverlap(mine, box)) return;
-    root.style.bottom = Math.round(window.innerHeight - box.top + 8) + "px";
-    mine = root.getBoundingClientRect();
-    if (!rectsOverlap(mine, box)) return;
-    root.style.right = Math.round(window.innerWidth - box.left + 8) + "px";
+    if (a11y) {
+      var box = a11y.getBoundingClientRect();
+      var mine = root.getBoundingClientRect();
+      if (rectsOverlap(mine, box)) {
+        root.style.bottom = Math.round(window.innerHeight - box.top + 8) + "px";
+        mine = root.getBoundingClientRect();
+        if (rectsOverlap(mine, box)) root.style.right = Math.round(window.innerWidth - box.left + 8) + "px";
+      }
+    }
+    if (window.innerWidth >= 768 || pageKind() !== "teachers") return;
+    if (!launcherHitsCards()) return;
+    parkLauncherOffCards();
   }
 
   function layoutCompact(force) {
@@ -538,6 +646,165 @@
     }
     expandEl.setAttribute("aria-expanded", "false");
     fitCompact();
+    placeOffWizard();
+    clearPhoneCards();
+  }
+
+  function wizardBoxes() {
+    var nodes = document.querySelectorAll(".setup .segmented, .setup .scenario, .setup input, .setup select, .setup textarea, .setup button, .setup a, .results .q-card, .results button, .results input, .results a, #teacher-note");
+    var boxes = [];
+    for (var i = 0; i < nodes.length; i++) {
+      var rect = nodes[i].getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < window.innerHeight) boxes.push(rect);
+    }
+    return boxes;
+  }
+
+  function hitsWizard(boxes) {
+    var mine = panel.getBoundingClientRect();
+    for (var i = 0; i < boxes.length; i++) {
+      if (rectsOverlap(mine, boxes[i])) return true;
+    }
+    return false;
+  }
+
+  function applyPanelCorner(corner) {
+    panel.style.right = corner.right;
+    panel.style.left = corner.left;
+    panel.style.top = corner.top;
+    panel.style.bottom = corner.bottom;
+  }
+
+  var placingWizard = false;
+  var clearingPhone = false;
+  var phoneQuietUntil = 0;
+
+  function placeOffWizard() {
+    if (placingWizard || mode !== "compact" || pageKind() !== "teachers" || window.innerWidth < 768) return;
+    var boxes = wizardBoxes();
+    if (!boxes.length) return;
+    placingWizard = true;
+    var bottom = panel.style.bottom && panel.style.bottom !== "auto" ? panel.style.bottom : "8px";
+    var corners = [
+      { right: "8px", left: "auto", top: "auto", bottom: bottom },
+      { right: "auto", left: "8px", top: "auto", bottom: bottom },
+    ];
+    var placed = false;
+    try {
+      for (var i = 0; i < corners.length; i++) {
+        applyPanelCorner(corners[i]);
+        if (!hitsWizard(boxes)) {
+          placed = true;
+          break;
+        }
+      }
+      if (!placed) {
+        saveThread(true, false);
+        mode = "closed";
+        panel.dataset.mode = "closed";
+        paintChrome(true);
+      }
+    } finally {
+      placingWizard = false;
+    }
+  }
+
+  function phoneCardNode(mine, headerBottom) {
+    var cards = document.querySelectorAll("#questions .q-card");
+    var hit = null;
+    var hitOverlap = 0;
+    for (var i = 0; i < cards.length; i++) {
+      var rect = cards[i].getBoundingClientRect();
+      if (rect.width < 1 || rect.height < 1 || rect.bottom <= headerBottom || rect.top >= window.innerHeight) continue;
+      var thumb = cards[i].querySelector(".q-thumb");
+      var thumbBox = thumb ? thumb.getBoundingClientRect() : null;
+      var top = rect.top;
+      var bottom = rect.bottom;
+      if (thumbBox && thumbBox.height > 1) {
+        top = Math.min(top, thumbBox.top);
+        bottom = Math.max(bottom, thumbBox.bottom);
+      }
+      var height = bottom - top;
+      var overlap = Math.min(bottom, mine.bottom) - Math.max(top, mine.top);
+      if (overlap < 8) continue;
+      var startsAbove = top < mine.top;
+      var justInside = top < mine.top + 40 && overlap > height * 0.5;
+      rect = { top: top, bottom: bottom, left: rect.left, right: rect.right, width: rect.width, height: height };
+      if (!startsAbove && !justInside) continue;
+      if (!hit || overlap > hitOverlap) {
+        hit = cards[i];
+        hitOverlap = overlap;
+      }
+    }
+    return hit;
+  }
+
+  function collapseToIcon() {
+    saveThread(true, false);
+    mode = "closed";
+    panel.dataset.mode = "closed";
+    paintChrome(true);
+  }
+
+  function cardExtent(node) {
+    var thumb = node.querySelector(".q-thumb");
+    var thumbBox = thumb ? thumb.getBoundingClientRect() : null;
+    if (thumbBox && thumbBox.height > 1) return { top: thumbBox.top, bottom: thumbBox.bottom, height: thumbBox.height };
+    var rect = node.getBoundingClientRect();
+    return { top: rect.top, bottom: rect.bottom, height: rect.height };
+  }
+
+  function clearPhoneCards() {
+    if (clearingPhone || placingWizard || mode !== "compact" || window.innerWidth >= 768 || Date.now() < phoneQuietUntil) return;
+    var mine = panel.getBoundingClientRect();
+    if (mine.width < 1) return;
+    var header = document.querySelector(".topbar");
+    var headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+    var card = phoneCardNode(mine, headerBottom);
+    if (!card) return;
+    phoneQuietUntil = Date.now() + 180;
+    clearingPhone = true;
+    try {
+      for (var pass = 0; pass < 2 && card; pass++) {
+        var rect = cardExtent(card);
+        var need = Math.round(rect.bottom - mine.top + 8);
+        var first = document.querySelector("#questions input:checked");
+        var firstCard = first ? first.closest(".q-card") : null;
+        var title = firstCard ? firstCard.querySelector(".q-title") : null;
+        var anchorTop = title ? title.getBoundingClientRect().top : (firstCard ? firstCard.getBoundingClientRect().top : headerBottom + need);
+        var scroller = document.scrollingElement || document.documentElement;
+        var room = Math.max(0, Math.floor(anchorTop - headerBottom));
+        var maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop);
+        var scrollBy = Math.min(need, room, maxScroll);
+        if (scrollBy > 1) scroller.scrollTop += scrollBy;
+        mine = panel.getBoundingClientRect();
+        rect = cardExtent(card);
+        var overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
+        if (overlap < 8) {
+          card = phoneCardNode(mine, headerBottom);
+          continue;
+        }
+        var top = Math.round(rect.bottom + 8);
+        var bottomOffset = parseFloat(panel.style.bottom) || 8;
+        var height = Math.round(window.innerHeight - bottomOffset - top);
+        if (height >= 56 && height < mine.height) {
+          panel.style.height = height + "px";
+          panel.dataset.height = String(height);
+          mine = panel.getBoundingClientRect();
+          rect = cardExtent(card);
+          overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
+          if (overlap < 8) {
+            card = phoneCardNode(mine, headerBottom);
+            continue;
+          }
+        }
+        if (pass > 0) return;
+        collapseToIcon();
+        return;
+      }
+    } finally {
+      clearingPhone = false;
+    }
   }
 
   function revealLessonCard() {
@@ -573,6 +840,7 @@
       sendBtn.disabled = streaming;
     }
     document.documentElement.classList.add("noam-ai-engaged");
+    panel.dataset.sheet = window.innerWidth < 768 ? "bottom" : "rail";
     closer.textContent = window.innerWidth < 768 ? "סגירה" : "×";
     expandEl.hidden = true;
     collapseEl.hidden = false;
@@ -588,6 +856,7 @@
     panel.hidden = covered || mode === "closed";
     launch.hidden = mode !== "closed" || covered;
     launch.setAttribute("aria-expanded", mode === "closed" ? "false" : "true");
+    document.documentElement.classList.toggle("noam-companion-open", !covered && mode !== "closed");
     document.documentElement.dataset.noamAiMode = covered ? "suspended" : mode;
     if (covered) {
       document.documentElement.classList.remove("noam-ai-engaged");
@@ -707,6 +976,16 @@
     if (!message || streaming) return;
     input.value = "";
     input.focus();
+    if (hasAnswer && answerEl.textContent && answerEl.textContent.indexOf("חושב") !== 0) {
+      var prior = document.createElement("p");
+      prior.className = "noam-log-bot";
+      prior.textContent = answerEl.textContent;
+      logEl.appendChild(prior);
+    }
+    var mine = document.createElement("p");
+    mine.className = "noam-log-user";
+    mine.textContent = message;
+    logEl.appendChild(mine);
     if (isLocalSolve(message)) {
       showResult({ answer: RAMZI_TEXT, details: RAMZI_TEXT, primary: { action: "ramzi", label: "עזרה מרמזי" }, chips: [] });
       return;
@@ -718,6 +997,7 @@
         message: message.slice(0, 700),
         page: { kind: pageKind(), path: location.pathname + location.search, title: document.title },
         teacher: teacherContext(),
+        intake: intakeState,
       });
     }).then(function (result) {
       streaming = false;
@@ -746,8 +1026,47 @@
     if (mode === "compact") layoutCompact(false);
     if (mode === "closed") placeLauncher();
   });
-  window.setInterval(function () { paintChrome(false); }, 1000);
+  window.addEventListener("scroll", function () {
+    if (mode === "compact") placeOffWizard();
+    if (mode === "compact") clearPhoneCards();
+    if (mode === "closed") placeLauncher();
+  }, true);
+  if (window.ResizeObserver) {
+    var questionList = document.getElementById("questions");
+    if (questionList) {
+      var questionObserver = new ResizeObserver(function () {
+        if (mode === "compact") clearPhoneCards();
+        if (mode === "closed") placeLauncher();
+      });
+      questionObserver.observe(questionList);
+    }
+  }
+  document.addEventListener("click", function (event) {
+    if (mode !== "compact" || pageKind() !== "teachers") return;
+    if (panel.contains(event.target)) return;
+    placeOffWizard();
+    clearPhoneCards();
+  }, true);
+  window.setInterval(function () {
+    paintChrome(false);
+    if (mode === "closed") placeLauncher();
+    if (mode === "compact" && window.innerWidth < 768) clearPhoneCards();
+  }, 1000);
   showIdle();
+  try {
+    var savedRaw = sessionStorage.getItem(THREAD_KEY);
+    if (savedRaw) {
+      var savedThread = JSON.parse(savedRaw);
+      if (savedThread && savedThread.html) logEl.innerHTML = savedThread.html;
+      if (savedThread && savedThread.answer) {
+        hasAnswer = true;
+        answerEl.textContent = savedThread.answer;
+      }
+      intakeState = savedThread && savedThread.intake ? savedThread.intake : null;
+      if (savedThread && savedThread.chipsCleared) setChips([], { plain: true });
+      if (savedThread && savedThread.open) openCompact();
+    }
+  } catch (error) {}
   placeLauncher();
   window.requestAnimationFrame(placeLauncher);
 })();
