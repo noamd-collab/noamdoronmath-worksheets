@@ -9,6 +9,7 @@ import {
 } from '../../../noam-ai/site-companion/bot-guard.js';
 import { handleNoamSiteCompanion } from '../../../noam-ai/site-companion/endpoint.js';
 import { advanceExerciseIntake } from '../../../noam-ai/site-companion/exercise-intake.js';
+import { countRateBackend, rateBucketId } from '../../../noam-ai/site-companion/rate-bucket.js';
 import { TEACHERS_TEXT, resolveDeterministicTurn } from '../../../noam-ai/site-companion/guide-flow.js';
 import { wizardPrefillFromSearch } from '../public/teachers/wizard-prefill.js';
 
@@ -384,6 +385,7 @@ describe('Noam AI production spec', () => {
     assert.equal(client.includes('return "https://www.noamdoronmath.co.il" + path'), false);
     assert.match(client, /function siteHref\(path\) \{\s*return path;\s*\}/);
     assert.ok(client.includes('function placeOffWizard()'));
+    assert.ok(client.includes('.setup .segmented'));
     assert.ok(client.includes('#teacher-note'));
     assert.ok(client.includes('#questions .q-card'));
     assert.ok(client.includes('if (mode === "compact") placeOffWizard();'));
@@ -391,13 +393,18 @@ describe('Noam AI production spec', () => {
     assert.ok(client.includes('plain: true'));
     const teachersHtml = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.match(teachersHtml, /scroll-margin-top:120px/);
+    assert.match(teachersHtml, /scroll-margin-bottom:200px/);
     assert.equal(client.includes('#noam-site-companion-panel.is-compact #noam-site-companion-log{display:none!important}'), false);
     assert.ok(client.includes('#noam-site-companion-panel.is-compact #noam-site-companion-log{display:flex'));
     assert.match(teacherPage, /#questions input:checked/);
     assert.match(teacherPage, /scrollIntoView/);
     assert.match(teachersHtml, /html\.noam-companion-open \.toast,html\.noam-ai-engaged \.toast\{bottom:auto;top:16px\}/);
     assert.match(route, /createWixRateBackend/);
-    assert.match(readFileSync(new URL('../src/lib/noamRateStore.ts', import.meta.url), 'utf8'), /NoamAiRateLimit/);
+    const rateStore = readFileSync(new URL('../src/lib/noamRateStore.ts', import.meta.url), 'utf8');
+    assert.match(rateStore, /NoamAiRateLimit/);
+    assert.match(rateStore, /items\.get/);
+    assert.match(rateStore, /items\.save/);
+    assert.equal(rateStore.includes('.find('), false);
   });
 
   it('shares the rate limit across instances', async () => {
@@ -480,5 +487,81 @@ describe('Noam AI production spec', () => {
       'ex:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1א',
       'ex:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:1ב',
     ]);
+  });
+
+  it('keeps the builder when a topic is typed on a grade with no exercises', () => {
+    const page = { kind: 'topic', path: '/grade-3', title: 'כיתה ג׳' };
+    let turn = resolveDeterministicTurn({ message: 'להרכיב שיעור', page }, { teacherIndex });
+    turn = resolveDeterministicTurn({ message: '4', page, intake: turn.intake }, { teacherIndex });
+    turn = resolveDeterministicTurn({ message: 'רמה א׳', page, intake: turn.intake }, { teacherIndex });
+    turn = resolveDeterministicTurn({ message: '30 דקות', page, intake: turn.intake }, { teacherIndex });
+    assert.equal(turn.intake.waiting, 'grade');
+    turn = resolveDeterministicTurn({ message: 'ערך מקום', page, intake: turn.intake }, { teacherIndex });
+    assert.equal(turn.intake.active, true);
+    assert.equal(turn.intake.waiting, 'grade');
+    assert.match(turn.answer, /ערך מקום/);
+    assert.match(turn.answer, /אין סעיפים/);
+    assert.equal(turn.source, 'exercise-intake');
+  });
+
+  it('blocks on a shared count and does not write the blocked request', async () => {
+    const rateBackend = countRateBackend();
+    const id = rateBucketId('ip:203.0.113.90');
+    assert.equal(id.includes('203.0.113.90'), false);
+    const deps = {
+      origin: 'https://www.noamdoronmath.co.il',
+      clientIp: '203.0.113.90',
+      qwenKey: 'qwen-test-key-xyz',
+      recaptchaSecret: 'recaptcha-test-secret-xyz',
+      catalog,
+      guide,
+      teacherIndex,
+      now: 12_000,
+      rateBackend,
+      fetch: async () => {
+        throw new Error('model');
+      },
+      payload: { rateProbe: true, message: 'בדיקת קצב', page: { path: '/', title: 'בית' } },
+    };
+    for (let i = 0; i < 12; i += 1) {
+      const result = await handleNoamSiteCompanion({ method: 'POST' }, { ...deps, store: new Map() });
+      assert.equal(result.status, 200, 'probe ' + i);
+      assert.equal((result.body as { code?: string }).code, 'RATE_OK');
+    }
+    assert.equal(rateBackend.writes, 12);
+    const blocked = await handleNoamSiteCompanion({ method: 'POST' }, { ...deps, store: new Map() });
+    assert.equal(blocked.status, 429);
+    assert.equal((blocked.body as { code?: string }).code, 'RATE_LIMIT');
+    assert.equal(rateBackend.writes, 12);
+  });
+
+  it('falls back to the in-memory limit when the shared store throws', async () => {
+    const store = new Map();
+    const deps = {
+      origin: 'https://www.noamdoronmath.co.il',
+      clientIp: '203.0.113.91',
+      qwenKey: 'qwen-test-key-xyz',
+      recaptchaSecret: 'recaptcha-test-secret-xyz',
+      catalog,
+      guide,
+      teacherIndex,
+      store,
+      now: 13_000,
+      rateBackend: {
+        async take() {
+          throw new Error('wix data down');
+        },
+      },
+      fetch: async () => {
+        throw new Error('model');
+      },
+      payload: { rateProbe: true, message: 'בדיקת קצב', page: { path: '/', title: 'בית' } },
+    };
+    for (let i = 0; i < 12; i += 1) {
+      const result = await handleNoamSiteCompanion({ method: 'POST' }, deps);
+      assert.equal(result.status, 200, 'fallback ' + i);
+    }
+    const blocked = await handleNoamSiteCompanion({ method: 'POST' }, deps);
+    assert.equal(blocked.status, 429);
   });
 });

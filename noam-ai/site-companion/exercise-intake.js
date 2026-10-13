@@ -174,6 +174,28 @@ function worksheetChip(grade) {
   return { label: "דפי עבודה", href: grade ? "/worksheets?grade=" + grade : "/worksheets" };
 }
 
+function exercisableTopicHits(index, query) {
+  const wanted = fold(query);
+  if (wanted.length < 2 || /^\d+$/.test(wanted)) return [];
+  const exact = [];
+  const loose = [];
+  const seen = new Set();
+  for (const sheet of index || []) {
+    if (!(sheet.questions || []).length) continue;
+    const name = fold(sheet.topic);
+    const id = String(sheet.grade) + ":" + String(sheet.topicId);
+    if (seen.has(id)) continue;
+    if (name === wanted) {
+      seen.add(id);
+      exact.push(sheet);
+    } else if (name.includes(wanted)) {
+      seen.add(id);
+      loose.push(sheet);
+    }
+  }
+  return exact.length ? exact : loose;
+}
+
 function matchTopics(index, grade, query) {
   const wanted = fold(query);
   if (wanted.length < 2) return [];
@@ -203,9 +225,8 @@ function fillsWaiting(message, state) {
 
 export function continuesIntake(message, intake) {
   const state = clipState(intake);
-  if (!state.active) return isExercisePickRequest(message, null);
-  if (PICK_INTENT.test(String(message || ""))) return true;
-  return fillsWaiting(message, state);
+  if (state.active) return true;
+  return isExercisePickRequest(message, null);
 }
 
 function option(label, send) {
@@ -389,11 +410,32 @@ export function advanceExerciseIntake(message, prior, index, page) {
     return ask(state, "minutes", "כמה דקות אורך השיעור?", [30, 45, 60].map((minutes) => option(minutes + " דקות", String(minutes))));
   }
   if (!state.grade) {
+    const named = state.waiting === "grade" ? exercisableTopicHits(index, message) : [];
+    if (named.length === 1) {
+      state.grade = Number(named[0].grade);
+      state.topicId = String(named[0].topicId);
+      state.topicLabel = named[0].topic;
+    }
+  }
+  if (!state.grade) {
     const grades = gradeRows(index).filter((sheet) => gradeHasExercises(index, sheet.grade));
+    const namedGrades = state.waiting === "grade" ? exercisableTopicHits(index, message) : [];
     const preferred = state.emptyGrade || pageGrade(page);
     const home = grades.find((sheet) => Number(sheet.grade) === Number(preferred));
-    const ordered = home ? [home].concat(grades.filter((sheet) => sheet !== home)) : grades;
+    const offered = namedGrades.length
+      ? grades.filter((sheet) => namedGrades.some((hit) => Number(hit.grade) === Number(sheet.grade)))
+      : grades;
+    const ordered = home && offered.some((sheet) => sheet === home)
+      ? [home].concat(offered.filter((sheet) => sheet !== home))
+      : offered;
     const chips = ordered.map((sheet) => option(sheet.gradeLabel || "כיתה " + sheet.grade));
+    const typedTopic = state.waiting === "grade" && fold(message).length >= 2 && !gradeFrom(message) && !bareGrade(message);
+    if (typedTopic && !namedGrades.length) {
+      const topicName = fold(message).slice(0, 40);
+      const answer = "בנושא " + topicName + " אין סעיפים קיימים לבחירה. בחרו כיתה שיש בה סעיפים, או פתחו את דפי העבודה.";
+      chips.push(worksheetChip(preferred || pageGrade(page)));
+      return ask(state, "grade", answer, chips, "no-exercises");
+    }
     if (preferred && !home) {
       const label = gradeLabelFor(index, preferred) || "כיתה " + preferred;
       const repeated = state.gapKey === "no-exercises";

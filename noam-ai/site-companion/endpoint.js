@@ -362,6 +362,9 @@ export async function handleNoamSiteCompanion(request, deps) {
     { store, noIpGlobalMax: settings.noIpGlobalMax, rateBackend: settings.rateBackend }
   );
   if (!limited.ok) return denied(limited, origin);
+  if (payload.rateProbe === true) {
+    return jsonResponse(200, { ok: true, active: true, probe: true, code: "RATE_OK" }, origin);
+  }
   // Guide, topic order, and lesson picking do not call the model.
   // Answer them before reCAPTCHA so a failed check does not block a real visitor.
   const guided = resolveDeterministicTurn(payload, settings);

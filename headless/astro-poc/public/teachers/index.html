@@ -176,6 +176,10 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
   display:flex;align-items:flex-start;gap:10px;min-height:0;padding:14px;
   border:2px solid var(--ink);border-radius:var(--r-card);background:#fff;cursor:pointer;
   scroll-margin-top:120px;
+  scroll-margin-bottom:200px;
+}
+@media(max-width:767px){
+  html.noam-companion-open #questions{padding-bottom:200px}
 }
 .q-card:hover{background:var(--mint)}
 .q-card:has(input:checked){background:var(--warm)}

@@ -315,7 +315,6 @@ export async function takeCompanionRate(input, deps) {
       return { ok: true, status: 200 };
     } catch (error) {
       console.warn("NOAM_RATE_STORE_UNAVAILABLE");
-      return { ok: false, status: 503, code: "RATE_STORE" };
     }
   }
   const store = deps && deps.store;

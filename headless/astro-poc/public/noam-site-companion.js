@@ -595,12 +595,13 @@
       sendBtn.disabled = streaming;
     }
     expandEl.setAttribute("aria-expanded", "false");
-    placeOffWizard();
     fitCompact();
+    placeOffWizard();
+    clearPhoneCards();
   }
 
   function wizardBoxes() {
-    var nodes = document.querySelectorAll(".scenario-list, #teacher-note, #other-field, #questions .q-card, .setup-fields, .level-field");
+    var nodes = document.querySelectorAll(".setup .segmented, .setup .scenario, .setup input, .setup select, .setup textarea, .setup button, .setup a, .results .q-card, .results button, .results input, .results a, #teacher-note");
     var boxes = [];
     for (var i = 0; i < nodes.length; i++) {
       var rect = nodes[i].getBoundingClientRect();
@@ -625,6 +626,8 @@
   }
 
   var placingWizard = false;
+  var clearingPhone = false;
+  var phoneQuietUntil = 0;
 
   function placeOffWizard() {
     if (placingWizard || mode !== "compact" || pageKind() !== "teachers" || window.innerWidth < 768) return;
@@ -635,8 +638,6 @@
     var corners = [
       { right: "8px", left: "auto", top: "auto", bottom: bottom },
       { right: "auto", left: "8px", top: "auto", bottom: bottom },
-      { right: "8px", left: "auto", top: "8px", bottom: "auto" },
-      { right: "auto", left: "8px", top: "8px", bottom: "auto" },
     ];
     var placed = false;
     try {
@@ -655,6 +656,86 @@
       }
     } finally {
       placingWizard = false;
+    }
+  }
+
+  function phoneCardNode(mine, headerBottom) {
+    var cards = document.querySelectorAll("#questions .q-card");
+    var hit = null;
+    var hitOverlap = 0;
+    for (var i = 0; i < cards.length; i++) {
+      var rect = cards[i].getBoundingClientRect();
+      if (rect.width < 1 || rect.height < 1 || rect.bottom <= headerBottom || rect.top >= window.innerHeight) continue;
+      var overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
+      if (overlap < 24) continue;
+      var startsAbove = rect.top < mine.top;
+      var justInside = rect.top < mine.top + 40 && overlap > rect.height * 0.5;
+      if (!startsAbove && !justInside) continue;
+      if (!hit || overlap > hitOverlap) {
+        hit = cards[i];
+        hitOverlap = overlap;
+      }
+    }
+    return hit;
+  }
+
+  function collapseToIcon() {
+    saveThread(true, false);
+    mode = "closed";
+    panel.dataset.mode = "closed";
+    paintChrome(true);
+  }
+
+  function clearPhoneCards() {
+    if (clearingPhone || placingWizard || mode !== "compact" || window.innerWidth >= 768 || Date.now() < phoneQuietUntil) return;
+    var mine = panel.getBoundingClientRect();
+    if (mine.width < 1) return;
+    var header = document.querySelector(".topbar");
+    var headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+    var card = phoneCardNode(mine, headerBottom);
+    if (!card) return;
+    phoneQuietUntil = Date.now() + 180;
+    clearingPhone = true;
+    try {
+      for (var pass = 0; pass < 2 && card; pass++) {
+        var rect = card.getBoundingClientRect();
+        var need = Math.round(rect.bottom - mine.top + 8);
+        var first = document.querySelector("#questions input:checked");
+        var firstCard = first ? first.closest(".q-card") : null;
+        var title = firstCard ? firstCard.querySelector(".q-title") : null;
+        var anchorTop = title ? title.getBoundingClientRect().top : (firstCard ? firstCard.getBoundingClientRect().top : headerBottom + need);
+        var scroller = document.scrollingElement || document.documentElement;
+        var room = Math.max(0, Math.floor(anchorTop - headerBottom));
+        var maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop);
+        var scrollBy = Math.min(need, room, maxScroll);
+        if (scrollBy > 1) scroller.scrollTop += scrollBy;
+        mine = panel.getBoundingClientRect();
+        rect = card.getBoundingClientRect();
+        var overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
+        if (overlap < 24) {
+          card = phoneCardNode(mine, headerBottom);
+          continue;
+        }
+        var top = Math.round(rect.bottom + 8);
+        var bottomOffset = parseFloat(panel.style.bottom) || 8;
+        var height = Math.round(window.innerHeight - bottomOffset - top);
+        if (height >= 72 && height < mine.height) {
+          panel.style.height = height + "px";
+          panel.dataset.height = String(height);
+          mine = panel.getBoundingClientRect();
+          rect = card.getBoundingClientRect();
+          overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
+          if (overlap < 24) {
+            card = phoneCardNode(mine, headerBottom);
+            continue;
+          }
+        }
+        if (pass > 0) return;
+        collapseToIcon();
+        return;
+      }
+    } finally {
+      clearingPhone = false;
     }
   }
 
@@ -879,11 +960,13 @@
   });
   window.addEventListener("scroll", function () {
     if (mode === "compact") placeOffWizard();
+    if (mode === "compact") clearPhoneCards();
   }, true);
   document.addEventListener("click", function (event) {
     if (mode !== "compact" || pageKind() !== "teachers") return;
     if (panel.contains(event.target)) return;
     placeOffWizard();
+    clearPhoneCards();
   }, true);
   window.setInterval(function () { paintChrome(false); }, 1000);
   showIdle();
