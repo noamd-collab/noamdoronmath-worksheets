@@ -66,3 +66,44 @@ npm run preview   # http://127.0.0.1:4321/worksheets?grade=7
 2. Account/plan, domain, auth/SEO handled by Wix Astro integration after link.
 3. Local Node adapter ≠ Wix hosting adapter; expect config changes on link.
 4. Keep running `npm run refresh:catalog` when the authoritative catalog changes before linking/building elsewhere.
+
+## Pull request checks
+
+Workflow: [`.github/workflows/astro-poc-pr.yml`](../../.github/workflows/astro-poc-pr.yml). It runs on every pull request into `main`.
+
+Blocking checks (these must pass):
+
+| Check | What it does |
+|---|---|
+| `astro-poc-build` | `npm ci`, then a local Astro build |
+| `astro-poc-test` | `npm test` when `package.json` has a test script. Live HTML fetches skip when `CI=true` |
+| `astro-poc-internal-links` | crawls the built site and fails on broken internal links |
+
+The build command is `bash .github/scripts/build-servable.sh`: the site-guide prebuild, then `astro build --config astro.config.preview.mjs` (Node adapter, same pages). `npm run build` is `wix build`, which stops without `WIX_CLIENT_ID` and the Wix server secrets from `wix env pull`, and its output is a Wix/Cloudflare bundle rather than a server this workflow can crawl. The workflow does not run `wix env pull`, `wix preview`, or `wix release`, and it never deploys to Wix.
+
+Advisory checks do not block merge (`continue-on-error`). Each posts one pull request comment and updates that same comment on later pushes. Secrets are not allowed in job-level `if:`, so each advisory job maps its secret to a job env flag and gates every step on it: when the secret is missing, including on fork pull requests, the job reports success without running anything.
+
+| Check | Secret | What it does |
+|---|---|---|
+| `astro-poc-deepseek-review` | `DEEPSEEK_API_KEY` | sends the pull request diff to `https://api.deepseek.com` |
+| `astro-poc-qwen-visual-review` | `QWEN_API_KEY` | screenshots changed pages (fallback: `/`, `/grade-9`, `/worksheets?grade=9`) at 390px and 1280px, sends them to DashScope, uploads `qwen-visual-screenshots` |
+
+Qwen findings must be verified by a human. The comment says so.
+
+### Add the two secrets
+
+Repository **Settings → Secrets and variables → Actions → New repository secret**:
+
+- `DEEPSEEK_API_KEY` — DeepSeek API key (OpenAI-compatible, `https://api.deepseek.com`)
+- `QWEN_API_KEY` — DashScope / Model Studio key for the OpenAI-compatible endpoint
+
+Do not commit the keys. The workflow does not print them. The link check and the visual review each build the site again in the job that serves it. Optional repository variable `QWEN_BASE_URL` (Actions → Variables) overrides the DashScope host when the key is not for Beijing (`dashscope.aliyuncs.com`), Singapore (`dashscope-intl.aliyuncs.com`), or US (`dashscope-us.aliyuncs.com`). The job tries those three hosts itself.
+
+### Require the blocking checks
+
+**Settings → Rules → Rulesets** (or **Branches → Branch protection**) for `main`:
+
+- Require status checks to pass before merging
+- Add only: `astro-poc-build`, `astro-poc-test`, `astro-poc-internal-links`
+
+Do not require `astro-poc-deepseek-review` or `astro-poc-qwen-visual-review`. They are advisory, and on a fork they are skipped because the secrets are not available.

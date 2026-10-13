@@ -10,8 +10,11 @@ import {
   ARCHIVE_PATHS,
 } from '../scripts/lib/blog-archive-ssr.mjs';
 import { listBlogArchives } from '../src/lib/blogArchives';
+import { skipLiveHtmlInCi } from './skip-live-html.ts';
 
-describe('M26 live SSR archive card index', () => {
+describe('M26 live SSR archive card index', {
+  skip: skipLiveHtmlInCi('fetches live HTML from www.noamdoronmath.co.il/blog.'),
+}, () => {
   it('parseSsrCards returns 20 post cards from live /blog HTML', async () => {
     const res = await fetch('https://www.noamdoronmath.co.il/blog', {
       headers: { 'user-agent': 'Mozilla/5.0 (compatible; m26-unit)', accept: 'text/html' },
