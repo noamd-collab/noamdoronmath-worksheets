@@ -344,3 +344,12 @@ html.noam-a11y-motion .exact-catalog .card { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .exact-catalog .card { transition: none; }
 }
+
+@media (max-width: 600px) {
+  .exact-catalog .exact-catalog-fish {
+    position: static;
+    width: 80px;
+    margin-right: auto;
+    margin-bottom: 8px;
+  }
+}
