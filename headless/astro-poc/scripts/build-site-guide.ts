@@ -175,7 +175,7 @@ function main() {
     textOf(teachersHtml, /class="intro-note">([\s\S]*?)<\/p>/),
     textOf(teachersHtml, /class="scenario-title">([^<]+)</) + ' — ' + textOf(teachersHtml, /class="scenario-desc">([^<]+)</),
     mustInclude(teachersHtml, 'הדף המלא, עם סימון'),
-    mustInclude(teachersHtml, 'דף מצומצם מהמקור'),
+    mustInclude(teachersHtml, 'דף עבודה אחד מהמקור'),
   ].join(' ');
   const records: GuideRecord[] = [];
   let manifestHits = 0;
