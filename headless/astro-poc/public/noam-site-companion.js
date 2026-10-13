@@ -222,6 +222,12 @@
     "#noam-site-companion-thinking .noam-think-dots i{animation:none;opacity:1}",
     "}",
     "@media print{#noam-site-companion,#noam-site-companion-panel{display:none!important}html.noam-ai-engaged{display:block!important;height:auto!important;overflow:visible!important}html.noam-ai-engaged body{max-height:none!important;overflow:visible!important}}",
+    "#noam-site-companion-log{display:none;margin:0}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-log{display:none!important}",
+    "html.noam-ai-engaged #noam-site-companion-log{display:flex;flex-direction:column;gap:4px;flex:1;min-height:0;overflow:auto}",
+    "#noam-site-companion-log p{margin:0}",
+    "#noam-site-companion-recaptcha{margin:0;font-size:16px;font-weight:500;line-height:1.3}",
+    "html.noam-companion-open .grecaptcha-badge{visibility:hidden!important}",
     "#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}",
   ].join("");
   document.head.appendChild(style);
@@ -244,6 +250,7 @@
     '<button type="button" id="noam-ai-expand" aria-expanded="false" aria-label="הרחבה">הרחבה</button>' +
     '<button type="button" id="noam-ai-collapse" hidden>צמצום</button>' +
     '<button type="button" id="noam-site-companion-close" aria-label="סגירת נועם AI">×</button></header>' +
+    '<div id="noam-site-companion-log" role="log"></div>' +
     '<p id="noam-site-companion-answer" aria-live="polite"></p>' +
     '<a id="noam-site-companion-primary" hidden></a>' +
     '<button type="button" id="noam-site-companion-ramzi" hidden>עזרה מרמזי</button>' +
@@ -252,12 +259,16 @@
     '<p id="noam-site-companion-details" hidden tabindex="0"></p>' +
     '<form id="noam-site-companion-form"><label for="noam-site-companion-input" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">מה אתם מחפשים?</label>' +
     '<input id="noam-site-companion-input" type="text" maxlength="700" autocomplete="off" aria-label="מה אתם מחפשים?">' +
-    '<button type="submit" aria-label="שליחה">שליחה</button></form>';
+    '<button type="submit" aria-label="שליחה">שליחה</button></form>' +
+    '<p id="noam-site-companion-recaptcha">מוגן באמצעות reCAPTCHA. התג לא מכסה את השיחה.</p>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
   forceSiteFont(root);
 
   var answerEl = document.getElementById("noam-site-companion-answer");
+  var logEl = document.getElementById("noam-site-companion-log");
+  var intakeState = null;
+  var THREAD_KEY = "noam-ai-one-window";
   var primaryEl = document.getElementById("noam-site-companion-primary");
   var ramziEl = document.getElementById("noam-site-companion-ramzi");
   var chipsEl = document.getElementById("noam-site-companion-chips");
@@ -299,6 +310,19 @@
 
   function appendChip(item) {
     if (!item) return;
+    if (item.send) {
+      var choice = document.createElement("button");
+      choice.type = "button";
+      choice.textContent = item.label;
+      choice.addEventListener("click", function () {
+        if (streaming) return;
+        input.value = item.send;
+        if (typeof form.requestSubmit === "function") form.requestSubmit();
+        else form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      });
+      chipsEl.appendChild(choice);
+      return;
+    }
     if (item.goal) {
       var button = document.createElement("button");
       button.type = "button";
@@ -321,13 +345,16 @@
     var seen = {};
     var primaryHref = !primaryEl.hidden ? primaryEl.getAttribute("href") || "" : "";
     var added = 0;
-    var list = items || [];
-    for (var i = 0; i < list.length && added < 8; i++) {
+    var primaryLabel = !primaryEl.hidden ? primaryEl.textContent || "" : "";
+    var list = (items || []).slice();
+    if (pageKind() === "teachers") list = list.concat(teacherGoalChips());
+    for (var i = 0; i < list.length && added < 12; i++) {
       var item = list[i];
       if (!item) continue;
       var href = item.href || "";
       var label = item.label || "";
       if (href && primaryHref && href === primaryHref) continue;
+      if (label && primaryLabel && label === primaryLabel) continue;
       if (href && seen["href:" + href]) continue;
       if (label && seen["label:" + label]) continue;
       if (href) seen["href:" + href] = true;
@@ -335,7 +362,6 @@
       appendChip(item);
       added += 1;
     }
-    if (pageKind() === "teachers") teacherGoalChips().forEach(appendChip);
     forceSiteFont(panel);
   }
 
@@ -394,15 +420,22 @@
     if (button) button.disabled = true;
     thinkTimer = setInterval(function () {
       var seconds = Math.floor((Date.now() - started) / 1000);
-      var text = answerEl.querySelector(".noam-think-text");
-      if (text) text.textContent = thinkingLabel(seconds);
+      var nodes = panel.querySelectorAll(".noam-think-text");
+      for (var i = 0; i < nodes.length; i++) nodes[i].textContent = thinkingLabel(seconds);
     }, 250);
     if (mode === "compact") fitCompact();
+  }
+
+  function saveThread(open) {
+    try {
+      sessionStorage.setItem(THREAD_KEY, JSON.stringify({ html: logEl.innerHTML, answer: answerEl.textContent || "", intake: intakeState, open: !!open }));
+    } catch (error) {}
   }
 
   function showResult(result) {
     stopThinking();
     hasAnswer = true;
+    intakeState = result && result.intake ? result.intake : null;
     answerEl.textContent = (result && (result.answer || result.text)) || FALLBACK;
     var primary = result && result.primary;
     if (primary && primary.action === "ramzi") {
@@ -420,7 +453,19 @@
     setChips((result && result.chips) || []);
     detailsEl.textContent = (result && result.details) || answerEl.textContent;
     moreEl.hidden = !detailsEl.textContent;
+    saveThread(false);
     if (mode === "compact") fitCompact();
+    var wizard = result && result.wizard;
+    if (wizard && wizard.href && wizard.exerciseIds && wizard.exerciseIds.length) {
+      saveThread(true);
+      var here = (location.pathname || "").replace(/\/$/, "") || "/";
+      if (here === "/teachers") {
+        history.replaceState(null, "", wizard.href);
+        document.dispatchEvent(new CustomEvent("noam-teacher-prefill", { detail: wizard }));
+      } else {
+        location.assign(wizard.href);
+      }
+    }
   }
 
   function clearInline() {
@@ -573,6 +618,7 @@
       sendBtn.disabled = streaming;
     }
     document.documentElement.classList.add("noam-ai-engaged");
+    panel.dataset.sheet = window.innerWidth < 768 ? "bottom" : "rail";
     closer.textContent = window.innerWidth < 768 ? "סגירה" : "×";
     expandEl.hidden = true;
     collapseEl.hidden = false;
@@ -588,6 +634,7 @@
     panel.hidden = covered || mode === "closed";
     launch.hidden = mode !== "closed" || covered;
     launch.setAttribute("aria-expanded", mode === "closed" ? "false" : "true");
+    document.documentElement.classList.toggle("noam-companion-open", !covered && mode !== "closed");
     document.documentElement.dataset.noamAiMode = covered ? "suspended" : mode;
     if (covered) {
       document.documentElement.classList.remove("noam-ai-engaged");
@@ -707,6 +754,14 @@
     if (!message || streaming) return;
     input.value = "";
     input.focus();
+    if (hasAnswer && answerEl.textContent && answerEl.textContent.indexOf("חושב") !== 0) {
+      var prior = document.createElement("p");
+      prior.textContent = answerEl.textContent;
+      logEl.appendChild(prior);
+    }
+    var mine = document.createElement("p");
+    mine.textContent = message;
+    logEl.appendChild(mine);
     if (isLocalSolve(message)) {
       showResult({ answer: RAMZI_TEXT, details: RAMZI_TEXT, primary: { action: "ramzi", label: "עזרה מרמזי" }, chips: [] });
       return;
@@ -718,6 +773,7 @@
         message: message.slice(0, 700),
         page: { kind: pageKind(), path: location.pathname + location.search, title: document.title },
         teacher: teacherContext(),
+        intake: intakeState,
       });
     }).then(function (result) {
       streaming = false;
@@ -748,6 +804,19 @@
   });
   window.setInterval(function () { paintChrome(false); }, 1000);
   showIdle();
+  try {
+    var savedRaw = sessionStorage.getItem(THREAD_KEY);
+    if (savedRaw) {
+      var savedThread = JSON.parse(savedRaw);
+      if (savedThread && savedThread.html) logEl.innerHTML = savedThread.html;
+      if (savedThread && savedThread.answer) {
+        hasAnswer = true;
+        answerEl.textContent = savedThread.answer;
+      }
+      intakeState = savedThread && savedThread.intake ? savedThread.intake : null;
+      if (savedThread && savedThread.open) openCompact();
+    }
+  } catch (error) {}
   placeLauncher();
   window.requestAnimationFrame(placeLauncher);
 })();

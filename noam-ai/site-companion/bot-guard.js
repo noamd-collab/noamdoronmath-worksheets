@@ -98,6 +98,43 @@ export function isAllowedRecaptchaHostname(hostname) {
   return isProductionRecaptchaHost(hostname) || isHeadlessPreviewHost(hostname);
 }
 
+export function isProductionSiteOrigin(origin) {
+  if (typeof origin !== "string" || !origin) return false;
+  try {
+    const url = new URL(origin);
+    return url.hostname === "www.noamdoronmath.co.il" || url.hostname === "noamdoronmath.co.il";
+  } catch (error) {
+    return false;
+  }
+}
+
+/**
+ * Dev/test bypass. Off unless the process is not production, the flag is
+ * exactly "1", the token is at least 24 characters, and the origin is not
+ * the live site. The browser never receives this token.
+ */
+export function recaptchaBypassFromEnv(env, origin) {
+  const source = env || {};
+  const nodeEnv = String(source.NODE_ENV || "");
+  const blocked = { enabled: false, token: "", nodeEnv };
+  if (nodeEnv === "production") return blocked;
+  if (String(source.NOAM_RECAPTCHA_BYPASS || "") !== "1") return blocked;
+  const token = String(source.NOAM_RECAPTCHA_BYPASS_TOKEN || "");
+  if (token.length < 24) return blocked;
+  if (isProductionSiteOrigin(origin)) return blocked;
+  return { enabled: true, token, nodeEnv };
+}
+
+export function acceptDevBypass(verification, bypass, origin) {
+  if (!bypass || bypass.enabled !== true) return false;
+  if (bypass.nodeEnv === "production") return false;
+  if (isProductionSiteOrigin(origin)) return false;
+  const expected = typeof bypass.token === "string" ? bypass.token : "";
+  if (expected.length < 24) return false;
+  const provided = verification && verification.provider === "dev-bypass" ? verification.token : "";
+  return typeof provided === "string" && provided.length >= 24 && provided === expected;
+}
+
 /**
  * Rate-limit identity.
  * A real visitor IP (one address, no spaces or commas) is its own 12/min key.
@@ -224,6 +261,9 @@ export async function guardCompanionRequest(input, deps) {
   const message = input.message;
   if (typeof message !== "string" || !message.trim() || message.length > MAX_MESSAGE_CHARS) {
     return { ok: false, status: 400, code: "MESSAGE_LENGTH" };
+  }
+  if (acceptDevBypass(verification, deps.recaptchaBypass, origin)) {
+    return { ok: true, status: 200, bypass: true };
   }
   let check = { passed: false, siteverify: siteverifyFields(null) };
   try {

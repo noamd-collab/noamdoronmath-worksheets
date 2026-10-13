@@ -15,6 +15,7 @@ import {
   handleNoamSiteCompanion,
   visitorIpFrom,
 } from '../../../../../noam-ai/site-companion/endpoint.js';
+import { recaptchaBypassFromEnv } from '../../../../../noam-ai/site-companion/bot-guard.js';
 import { secretFromEnv } from '../../lib/noamSecrets';
 
 export const prerender = false;
@@ -44,6 +45,7 @@ async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
     guide,
     teacherIndex,
     fetch: globalThis.fetch.bind(globalThis),
+    recaptchaBypass: recaptchaBypassFromEnv(process.env, context.request.headers.get('origin') || ''),
   });
   return send(result);
 }

@@ -11,10 +11,9 @@ import {
   QWEN_MODEL,
   RAMZI_TEXT,
   handleCompanionTurn,
-  isRoleQuestion,
   isWorksheetSolveRequest,
-  roleAnswer,
 } from "./companion.js";
+import { resolveDeterministicTurn } from "./guide-flow.js";
 import {
   corsHeadersFor,
   guardCompanionRequest,
@@ -146,11 +145,10 @@ function missingTeacher() {
 
 export async function runCompanionTurn(payload, deps) {
   const settings = deps || {};
+  const guided = resolveDeterministicTurn(payload, settings);
+  if (guided) return guided;
   const page = payload && payload.page && typeof payload.page === "object" ? payload.page : {};
   const message = String((payload && payload.message) || "");
-  if (isRoleQuestion(message)) {
-    return withIds(Object.assign({ active: true }, roleAnswer(payload)), [], []);
-  }
   if (isWorksheetSolveRequest("worksheet", message)) {
     const text = page.kind === "worksheet" ? RAMZI_TEXT : "נועם AI לא פותר שאלה ולא ממציא תרגיל. הבחירה היא רק מתוך מה שכבר קיים באתר.";
     return withIds(
@@ -316,10 +314,10 @@ export async function handleNoamSiteCompanion(request, deps) {
   if (!originAllowed) {
     return { status: 403, headers: { Vary: "Origin" }, body: "" };
   }
-  // A greeting has no model call and no cost. Answer it before the guard.
-  if (isRoleQuestion(payload.message)) {
-    return jsonResponse(200, await runCompanionTurn(payload, settings), origin);
-  }
+  // Guide, topic order, and lesson picking do not call the model.
+  // Answer them before reCAPTCHA so a failed check does not block a real visitor.
+  const guided = resolveDeterministicTurn(payload, settings);
+  if (guided) return jsonResponse(200, guided, origin);
   const guard = await guardCompanionRequest(
     {
       origin,
@@ -335,6 +333,7 @@ export async function handleNoamSiteCompanion(request, deps) {
       extraOrigins: isHeadlessPreviewOrigin(origin) ? [origin] : [],
       recaptchaTimeoutMs: settings.recaptchaTimeoutMs,
       noIpGlobalMax: settings.noIpGlobalMax,
+      recaptchaBypass: settings.recaptchaBypass,
     }
   );
   if (!guard.ok && guard.code === "UNAVAILABLE") {

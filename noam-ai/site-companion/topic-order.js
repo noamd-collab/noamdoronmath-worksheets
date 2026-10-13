@@ -6,7 +6,7 @@
  * Grade-hub quadrilateral links are aligned to this same catalog order
  * when the hub loads (gradeHubQuadrilaterals). Do not keep a second list.
  */
-import { focusGrade, pageGrade, searchTokens } from "./retrieve.js";
+import { focusGrade, gradeMentioned, pageGrade, searchTokens } from "./retrieve.js";
 
 const NEXT_QUESTION = /הנושא הבא|מה אחרי|מה הלאה/;
 const PREV_QUESTION = /הנושא הקודם|מה לפני/;
@@ -174,11 +174,35 @@ function navigationAnswer(current, previous, next) {
   return lines.join(" ");
 }
 
+const KITE_QUERY = /דלתון|עפיפון|\bkite\b/i;
+
+/**
+ * דלתון / עפיפון belongs to grade 9 quadrilaterals.
+ * A named כיתה ג׳ does not move it.
+ */
+export function anchoredTopic(input, catalog, guide) {
+  const message = String((input && input.message) || "");
+  if (!KITE_QUERY.test(message)) return null;
+  const sequence = didacticSequence(catalog);
+  const item = sequence.find((row) => Number(row.grade) === 9 && bareTitle(row.title) === bareTitle("דלתון"));
+  if (!item) return null;
+  const named = gradeMentioned(message);
+  const answer =
+    named != null && named !== 9
+      ? "דלתון הוא נושא במרובעים של כיתה ט׳. אין דף דלתון בכיתה אחרת."
+      : "דלתון הוא נושא במרובעים של כיתה ט׳, בתחילת סדר המרובעים.";
+  const chip = chipFor(guide, item);
+  const details = ["כיתה ט׳ · מרובעים", "הקישור פותח את דף הדלתון של כיתה ט׳.", "סדר המרובעים מתחיל בדלתון."].join("\n");
+  return resultFrom(answer, details, uniqueChips([chip]));
+}
+
 /**
  * Answer a "what exists in this group" or next/previous question from the
  * catalog order. Returns null when the message is not that kind of question.
  */
 export function suggestTopicGroup(input, catalog, guide) {
+  const anchored = anchoredTopic(input, catalog, guide);
+  if (anchored) return anchored;
   const sequence = didacticSequence(catalog);
   if (!sequence.length) return null;
   const page = (input && input.page) || {};
