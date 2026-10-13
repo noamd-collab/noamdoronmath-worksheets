@@ -8,6 +8,6 @@ Calculator copies stay in `fx-82ms/` and `scientific-calculator/`. The scripts b
 
 Copy `.env.example` to `tools/.env` (gitignored). Never commit keys. Previews: build with `.env.local` only.
 
-`RELEASE_BRANCH` defaults to `headless/astro-poc-baseline` for now. After the PR that switches `main` to this site merges, set `RELEASE_BRANCH` to `main`.
+`RELEASE_BRANCH` defaults to `main`.
 
 `rc4.mjs` reads the local animation from `LOCAL_HTML` (a `file://` URL). Screenshot paths use `OUT_DIR`. Historical Wix preview hosts in `pptr/` are public preview URLs, not secrets. No API tokens are hardcoded.
