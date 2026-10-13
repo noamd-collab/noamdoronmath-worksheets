@@ -76,7 +76,7 @@ Blocking checks (these must pass):
 | Check | What it does |
 |---|---|
 | `astro-poc-build` | `npm ci`, then a local Astro build |
-| `astro-poc-test` | `npm test` when `package.json` has a test script |
+| `astro-poc-test` | `npm test` when `package.json` has a test script. Live HTML fetches skip when `CI=true` |
 | `astro-poc-internal-links` | crawls the built site and fails on broken internal links |
 
 The build command is `bash .github/scripts/build-servable.sh`: the site-guide prebuild, then `astro build --config astro.config.preview.mjs` (Node adapter, same pages). `npm run build` is `wix build`, which stops without `WIX_CLIENT_ID` and the Wix server secrets from `wix env pull`, and its output is a Wix/Cloudflare bundle rather than a server this workflow can crawl. The workflow does not run `wix env pull`, `wix preview`, or `wix release`, and it never deploys to Wix.
