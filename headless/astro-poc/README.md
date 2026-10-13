@@ -69,7 +69,7 @@ npm run preview   # http://127.0.0.1:4321/worksheets?grade=7
 
 ## Pull request checks
 
-Workflow: [`.github/workflows/astro-poc-pr.yml`](../../.github/workflows/astro-poc-pr.yml). It runs on every pull request into `headless/astro-poc-baseline`.
+Workflow: [`.github/workflows/astro-poc-pr.yml`](../../.github/workflows/astro-poc-pr.yml). It runs on every pull request into `main`.
 
 Blocking checks (these must pass):
 
@@ -81,7 +81,7 @@ Blocking checks (these must pass):
 
 The build command is `bash .github/scripts/build-servable.sh`: the site-guide prebuild, then `astro build --config astro.config.preview.mjs` (Node adapter, same pages). `npm run build` is `wix build`, which stops without `WIX_CLIENT_ID` and the Wix server secrets from `wix env pull`, and its output is a Wix/Cloudflare bundle rather than a server this workflow can crawl. The workflow does not run `wix env pull`, `wix preview`, or `wix release`, and it never deploys to Wix.
 
-Advisory checks do not block merge (`continue-on-error`). Each posts one pull request comment and updates that same comment on later pushes. They are skipped when the secret is missing, including on fork pull requests.
+Advisory checks do not block merge (`continue-on-error`). Each posts one pull request comment and updates that same comment on later pushes. Secrets are not allowed in job-level `if:`, so each advisory job maps its secret to a job env flag and gates every step on it: when the secret is missing, including on fork pull requests, the job reports success without running anything.
 
 | Check | Secret | What it does |
 |---|---|---|
@@ -101,7 +101,7 @@ Do not commit the keys. The workflow does not print them. The link check and the
 
 ### Require the blocking checks
 
-**Settings → Rules → Rulesets** (or **Branches → Branch protection**) for `headless/astro-poc-baseline`:
+**Settings → Rules → Rulesets** (or **Branches → Branch protection**) for `main`:
 
 - Require status checks to pass before merging
 - Add only: `astro-poc-build`, `astro-poc-test`, `astro-poc-internal-links`

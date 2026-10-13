@@ -1,9 +1,11 @@
-# Pull requests into headless/astro-poc-baseline.
+# Pull requests into main.
 #
 # Blocking jobs: astro-poc-build, astro-poc-test, astro-poc-internal-links.
 # Advisory jobs: astro-poc-deepseek-review, astro-poc-qwen-visual-review.
-# Advisory jobs are skipped when their API secret is missing (including fork PRs)
-# and use continue-on-error so a model failure does not fail the workflow.
+# Secrets are not allowed in job-level `if:`, so each advisory job maps its API
+# secret to a job env flag (HAS_KEY) and gates every step on it; the jobs skip
+# cleanly when the secret is missing (including fork pull requests) and use
+# continue-on-error so a model failure does not fail the workflow.
 #
 # This workflow never deploys. Do not add `wix release`, `wix preview`, or `wix env pull`.
 
@@ -12,7 +14,7 @@ name: Astro POC PR
 on:
   pull_request:
     branches:
-      - headless/astro-poc-baseline
+      - main
 
 permissions:
   contents: read
@@ -133,19 +135,27 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     continue-on-error: true
-    if: ${{ secrets.DEEPSEEK_API_KEY != '' }}
+    env:
+      HAS_KEY: ${{ secrets.DEEPSEEK_API_KEY != '' }}
     permissions:
       contents: read
       pull-requests: write
     steps:
+      - name: Skip when DEEPSEEK_API_KEY is not set
+        if: env.HAS_KEY != 'true'
+        run: echo "DEEPSEEK_API_KEY is not set; skipping the advisory review."
+
       - uses: actions/checkout@v4
+        if: env.HAS_KEY == 'true'
         with:
           fetch-depth: 1
 
       - name: Fetch the base branch
+        if: env.HAS_KEY == 'true'
         run: git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
 
       - name: Post the DeepSeek review
+        if: env.HAS_KEY == 'true'
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
@@ -160,41 +170,55 @@ jobs:
     timeout-minutes: 30
     needs: build
     continue-on-error: true
-    if: ${{ secrets.QWEN_API_KEY != '' && needs.build.result == 'success' }}
+    if: needs.build.result == 'success'
+    env:
+      HAS_KEY: ${{ secrets.QWEN_API_KEY != '' }}
     permissions:
       contents: read
       pull-requests: write
       actions: write
     steps:
+      - name: Skip when QWEN_API_KEY is not set
+        if: env.HAS_KEY != 'true'
+        run: echo "QWEN_API_KEY is not set; skipping the advisory review."
+
       - uses: actions/checkout@v4
+        if: env.HAS_KEY == 'true'
         with:
           fetch-depth: 1
 
       - name: Fetch the base branch
+        if: env.HAS_KEY == 'true'
         run: git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
 
       - uses: actions/setup-node@v4
+        if: env.HAS_KEY == 'true'
         with:
           node-version: '22'
           cache: npm
           cache-dependency-path: headless/astro-poc/package-lock.json
 
       - name: Install dependencies
+        if: env.HAS_KEY == 'true'
         working-directory: headless/astro-poc
         run: npm ci
 
       - name: Build the Astro site
+        if: env.HAS_KEY == 'true'
         run: bash .github/scripts/build-servable.sh
 
       - name: Install Playwright Chromium
+        if: env.HAS_KEY == 'true'
         run: |
           npm install --prefix /tmp/pw --no-audit --no-fund playwright
           npx --prefix /tmp/pw playwright install --with-deps chromium
 
       - name: Serve the built site
+        if: env.HAS_KEY == 'true'
         run: bash .github/scripts/serve-built-site.sh
 
       - name: Screenshot pages and post the Qwen review
+        if: env.HAS_KEY == 'true'
         env:
           QWEN_API_KEY: ${{ secrets.QWEN_API_KEY }}
           QWEN_BASE_URL: ${{ vars.QWEN_BASE_URL }}
@@ -208,7 +232,7 @@ jobs:
         run: node .github/scripts/qwen-visual-review.mjs
 
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ always() && env.HAS_KEY == 'true' }}
         with:
           name: qwen-visual-screenshots
           path: /tmp/astro-poc-screenshots
