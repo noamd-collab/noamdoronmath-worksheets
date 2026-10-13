@@ -31,6 +31,8 @@ import {
 import { starterLinksFor } from '../../../noam-ai/site-companion/starters.js';
 import { runCompanionTurn } from '../../../noam-ai/site-companion/endpoint.js';
 import { didacticSequence } from '../../../noam-ai/site-companion/topic-order.js';
+import { loadGradeHub } from '../src/lib/gradeHubs.ts';
+import { bareTopicTitle, catalogQuadrilateralTitles } from '../src/lib/gradeHubQuadrilaterals.ts';
 
 const catalog = JSON.parse(
   readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')
@@ -471,6 +473,12 @@ describe('Noam AI page context and topic order', () => {
     assert.equal(result.chips.find((chip) => chip.label.endsWith('דלתון'))?.href, '/kite-grade-9');
     const quadrilaterals = parentTopics(9, 'geo').filter((title) => !title.includes('משולש'));
     assert.deepEqual(result.chips.map((chip) => chip.label.split(' · ')[1]), quadrilaterals);
+    assert.deepEqual(quadrilaterals, catalogQuadrilateralTitles(catalog, 9));
+    const section = loadGradeHub(9).topicSections.find((item) => item.heading === 'מרובעים ומשולשים');
+    const pageQuads = (section?.links || [])
+      .map((link) => link.label)
+      .filter((label) => quadrilaterals.some((title) => bareTopicTitle(title) === bareTopicTitle(label)));
+    assert.deepEqual(pageQuads.map(bareTopicTitle), quadrilaterals.map(bareTopicTitle));
   });
 
   it('names the next catalog topic after the open page', async () => {

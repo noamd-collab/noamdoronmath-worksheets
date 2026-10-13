@@ -3,7 +3,8 @@
  * Source of truth: catalog.grades[].groups, then each group's topics in the
  * catalog topics-array order (the worksheets topic list). Child sheets stay
  * inside their parent and are not separate steps.
- * Grade-hub SEO lists are not this order: newer pages are appended there.
+ * Grade-hub quadrilateral links are aligned to this same catalog order
+ * when the hub loads (gradeHubQuadrilaterals). Do not keep a second list.
  */
 import { focusGrade, pageGrade, searchTokens } from "./retrieve.js";
 
