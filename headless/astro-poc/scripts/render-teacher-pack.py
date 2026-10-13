@@ -5,12 +5,22 @@ stdin: JSON plan from tests/teacher-print-pack.test.ts
 stdout: JSON report (page fill is computed by the test; this reports pixels).
 """
 import json
+import os
 import sys
 from html import escape
 from pathlib import Path
 
 import numpy as np
 import pymupdf
+
+# MuPDF warnings use the C stdout fd. Keep JSON on the original stdout.
+sys.stdout.flush()
+_JSON_FD = os.dup(1)
+os.dup2(2, 1)
+
+
+def emit(obj):
+    os.write(_JSON_FD, json.dumps(obj).encode())
 
 FONT = '/usr/share/fonts/truetype/noto/NotoSerifHebrew-Regular.ttf'
 OUT_W = 1000
@@ -49,10 +59,13 @@ def text_lines(doc):
                 if not text:
                     continue
                 box = line['bbox']
+                width = page.rect.width or 1
                 lines.append({
                     'page': index + 1,
                     'y': box[1] / height,
                     'y2': box[3] / height,
+                    'x': box[0] / width,
+                    'x2': box[2] / width,
                     'text': text,
                 })
     return lines
@@ -71,7 +84,7 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
     draw_rtl(out, pymupdf.Rect(PDF_W - 150, 2, PDF_W - 16, 34), 'בס״ד', 18)
     chrome = 40
     if not answers and page_index == 0:
-        draw_rtl(out, pymupdf.Rect(28, 40, PDF_W - 16, 78), title, 20)
+        draw_rtl(out, pymupdf.Rect(PDF_W - 420, 40, PDF_W - 16, 78), title, 20)
         draw_rtl(out, pymupdf.Rect(PDF_W - 120, 82, PDF_W - 16, 114), 'שם:', 16)
         out.draw_line(pymupdf.Point(28, 108 * SY), pymupdf.Point(PDF_W - 90, 108 * SY), color=(0.13, 0.19, 0.35), width=1)
         chrome = 40 + 86
@@ -83,7 +96,7 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
         dh = item['dh']
         kind = item.get('kind')
         if kind == 'level':
-            draw_rtl(out, pymupdf.Rect(28, y * SY, PDF_W - 16, (y + dh) * SY), item.get('label') or '', 16)
+            draw_rtl(out, pymupdf.Rect(PDF_W - 220, y * SY, PDF_W - 16, (y + dh) * SY), item.get('label') or '', 16)
         else:
             doc = docs[item['pdfId']]
             src = doc[item['page'] - 1]
@@ -97,8 +110,8 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
             pix = src.get_pixmap(matrix=pymupdf.Matrix(2, 2), clip=clip, alpha=False)
             dest = pymupdf.Rect(0, y * SY, PDF_W, (y + dh) * SY)
             out.insert_image(dest, pixmap=pix)
-            mask = box.get('mask')
-            if mask:
+            masks = box.get('masks') or ([box['mask']] if box.get('mask') else [])
+            for mask in masks:
                 m = pymupdf.Rect(
                     mask['x'] * PDF_W,
                     (y + mask['y'] * dh) * SY,
@@ -126,6 +139,10 @@ def source_probes(docs, probes):
 
 def main():
     plan = json.load(sys.stdin)
+    if plan.get('cmd') == 'warn-probe':
+        os.write(1, b'MuPDF warning: probe\n')
+        emit({'ok': True})
+        return
     if plan.get('cmd') == 'lines':
         lines = {}
         size = None
@@ -133,7 +150,7 @@ def main():
             doc = pymupdf.open(path)
             lines[pdf_id] = text_lines(doc)
             size = [doc[0].rect.width, doc[0].rect.height]
-        json.dump({'lines': lines, 'pageSize': size}, sys.stdout)
+        emit({'lines': lines, 'pageSize': size})
         return
 
     docs = {pdf_id: pymupdf.open(path) for pdf_id, path in plan['pdfs'].items()}
@@ -190,12 +207,12 @@ def main():
                 'topDark': top_dark,
                 'bodyDark': body_dark,
             })
-    json.dump({
+    emit({
         'pdf': str(out_pdf),
         'pngs': pngs,
         'pages': page_reports,
         'sourceProbes': source_probes(docs, plan.get('sourceProbes') or []),
-    }, sys.stdout)
+    })
 
 
 if __name__ == '__main__':

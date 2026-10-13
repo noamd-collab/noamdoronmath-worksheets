@@ -618,59 +618,97 @@ function questionRows(item) {
 }
 
 function absoluteMask(box) {
-  if (!box || !box.mask || !(box.h > 0)) return null;
-  return {
-    x: box.mask.x,
-    w: box.mask.w,
-    y: box.y + box.mask.y * box.h,
-    y2: box.y + (box.mask.y + box.mask.h) * box.h,
-  };
+  const masks = absoluteMasks(box);
+  return masks.length ? masks[0] : null;
+}
+
+function absoluteMasks(box) {
+  if (!box || !(box.h > 0)) return [];
+  const list = box.masks && box.masks.length ? box.masks : (box.mask ? [box.mask] : []);
+  return list.map((mask) => ({
+    x: mask.x,
+    w: mask.w,
+    y: box.y + mask.y * box.h,
+    y2: box.y + (mask.y + mask.h) * box.h,
+  }));
+}
+
+function boxWithMasks(box, y, end, absoluteList) {
+  const height = Math.max(0.004, end - y);
+  const next = { ...box, y, h: height };
+  const rel = [];
+  (absoluteList || []).forEach((mask) => {
+    if (!mask || !(mask.w > 0)) return;
+    const top = Math.max(mask.y, y);
+    const bot = Math.min(mask.y2, y + height);
+    if (bot - top < 0.0015) return;
+    rel.push({
+      x: mask.x,
+      w: mask.w,
+      y: (top - y) / height,
+      h: (bot - top) / height,
+    });
+  });
+  delete next.mask;
+  delete next.masks;
+  if (!rel.length) return next;
+  rel.sort((a, b) => (b.y + b.h) - (a.y + a.h));
+  next.masks = rel;
+  next.mask = rel[0];
+  return next;
 }
 
 function withSpan(box, y, end, masks) {
-  const height = Math.max(0.004, end - y);
-  const next = { ...box, y, h: height };
-  let best = null;
-  (masks || []).forEach((mask) => {
-    if (!mask) return;
-    const top = Math.max(mask.y, y);
-    const bot = Math.min(mask.y2, y + height);
-    const span = bot - top;
-    if (span < 0.0015) return;
-    if (!best || span > best.span) best = { mask, top, bot, span };
+  return boxWithMasks(box, y, end, masks && masks.length ? masks : absoluteMasks(box));
+}
+
+function questionFigure(question) {
+  const page = question.page;
+  let fig = null;
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || item.q !== question.q || !item.figure) return;
+    if ((item.page || page) !== page) return;
+    const f = item.figure;
+    if (!fig) fig = { x0: f.x0, y0: f.y0, x1: f.x1, y1: f.y1 };
+    else {
+      fig.x0 = Math.min(fig.x0, f.x0);
+      fig.y0 = Math.min(fig.y0, f.y0);
+      fig.x1 = Math.max(fig.x1, f.x1);
+      fig.y1 = Math.max(fig.y1, f.y1);
+    }
   });
-  if (!best) {
-    delete next.mask;
-    return next;
-  }
-  next.mask = {
-    x: best.mask.x,
-    w: best.mask.w,
-    y: (best.top - y) / height,
-    h: (best.bot - best.top) / height,
-  };
-  return next;
+  return fig;
+}
+
+function rangesOverlap(a0, a1, b0, b1, pad) {
+  const gap = pad == null ? 0.004 : pad;
+  return a0 < b1 + gap && b0 < a1 + gap;
 }
 
 /**
  * A right-column mask is stored on the figure's right edge, which is the
  * wall stroke itself. Move it just past that stroke so the line stays.
  */
-function clearDrawingStroke(question, box) {
-  if (!box || !box.mask) return box;
-  const page = box.page || question.page;
-  const figures = [];
+function shiftMask(question, mask, page) {
+  if (!mask) return mask;
+  let next = mask;
   (SOURCE.questions || []).forEach((item) => {
-    if (item && item.q === question.q && item.figure && item.page === page) figures.push(item.figure);
-  });
-  let mask = box.mask;
-  figures.forEach((figure) => {
-    if (Math.abs(mask.x - figure.x1) < 0.01 && mask.w > 0.15) {
+    if (!item || item.q !== question.q || !item.figure || item.page !== page) return;
+    if (Math.abs(next.x - item.figure.x1) < 0.01 && next.w > 0.15) {
       const shift = 0.008;
-      mask = { ...mask, x: mask.x + shift, w: Math.max(0.05, mask.w - shift) };
+      next = { ...next, x: next.x + shift, w: Math.max(0.05, next.w - shift) };
     }
   });
-  return mask === box.mask ? box : { ...box, mask };
+  return next;
+}
+
+function clearDrawingStroke(question, box) {
+  if (!box) return box;
+  const list = box.masks && box.masks.length ? box.masks : (box.mask ? [box.mask] : []);
+  if (!list.length) return box;
+  const page = box.page || question.page;
+  const shifted = list.map((mask) => shiftMask(question, mask, page));
+  return { ...box, masks: shifted, mask: shifted[0] };
 }
 
 function partRank(part) {
@@ -679,22 +717,28 @@ function partRank(part) {
   return index < 0 ? 99 : index;
 }
 
+function bandsOutside(y, y2, cutY, cutY2) {
+  if (y2 <= cutY + 0.002 || y >= cutY2 - 0.002) return [[y, y2]];
+  const out = [];
+  if (y < cutY - 0.001) out.push([y, cutY]);
+  if (y2 > cutY2 + 0.001) out.push([cutY2, y2]);
+  return out;
+}
+
 /**
- * A part printed alone still includes the whole shared drawing: an earlier
- * overlapping crop of the adjacent part, or a figure whose top sits above this
- * part (the house roof). A tall earlier row that runs through later parts
- * (question 19's drawing measured onto 19א) is not pulled in, so an unpicked
- * part stays off the page. The crop starts on a white row, so a label beside
- * the roof is not cut in half.
+ * A part printed alone keeps the whole shared drawing (the house, the polygon
+ * beside question 19) and the question number. Unpicked parts of that question
+ * are covered on the text side of the drawing, so their words are not printed.
+ * A later selected part is left for its own row. The crop starts on a white row.
  */
-function coverSharedFigure(question, box, laterSelected) {
+function coverSharedFigure(question, box, laterSelected, selectedIds) {
   const page = box.page || question.page;
   const originalEnd = boxEnd(box);
   let top = box.y;
   let end = originalEnd;
   const masks = [];
-  const ownMask = absoluteMask(box);
-  if (ownMask) masks.push(ownMask);
+  const ownMasks = absoluteMasks(box);
+  ownMasks.forEach((mask) => masks.push(mask));
   (SOURCE.questions || []).forEach((item) => {
     if (!item || item.q !== question.q || item.id === question.id) return;
     questionRows(item).forEach((other) => {
@@ -707,8 +751,7 @@ function coverSharedFigure(question, box, laterSelected) {
         if (adjacent) top = Math.min(top, other.y);
         if (otherEnd > end) end = otherEnd;
       }
-      const mask = absoluteMask(other);
-      if (mask) masks.push(mask);
+      absoluteMasks(other).forEach((mask) => masks.push(mask));
     });
     const figure = item.figure;
     if (!figure || item.page !== page) return;
@@ -735,11 +778,19 @@ function coverSharedFigure(question, box, laterSelected) {
     });
     top = lineTop;
   }
+  const fig = questionFigure(question);
+  if (fig && !laterSelected) {
+    top = Math.min(top, fig.y0);
+    end = Math.max(end, fig.y1 + 0.002);
+    const stem = question.stem;
+    if (stem && rangesOverlap(stem.y, stem.y + stem.h, fig.y0, fig.y1)) top = Math.min(top, stem.y);
+  }
   if (end > originalEnd + 0.0005) {
     let nextTop = null;
     (SOURCE.questions || []).forEach((item) => {
       if (!item || item.q !== question.q || item.id === question.id || !item.row) return;
       if ((item.row.page || item.page) !== page) return;
+      if (selectedIds && selectedIds.has(item.id)) return;
       if (item.row.y >= originalEnd - 0.004 && (nextTop == null || item.row.y < nextTop)) nextTop = item.row.y;
     });
     // A small step past the next label is the rest of the drawing, plus that label's text.
@@ -747,8 +798,29 @@ function coverSharedFigure(question, box, laterSelected) {
       masks.push({ x: 0.45, w: 0.55, y: nextTop, y2: Math.max(end, nextTop + 0.004) });
     }
   }
-  if (Math.abs(top - box.y) < 0.0001 && Math.abs(end - originalEnd) < 0.0001 && masks.length === (ownMask ? 1 : 0)) return box;
-  return withSpan({ ...box, page }, top, end, masks);
+  if (fig && !laterSelected) {
+    const textX = fig.x1;
+    const textW = Math.max(0.05, 0.98 - textX);
+    const stemEnd = question.stem ? question.stem.y + question.stem.h : null;
+    const pickedY = question.row ? question.row.y : top;
+    const pickedY2 = question.row ? boxEnd(question.row) : end;
+    (SOURCE.questions || []).forEach((item) => {
+      if (!item || item.q !== question.q || item.id === question.id || !item.row) return;
+      if ((item.row.page || item.page) !== page) return;
+      if (selectedIds && selectedIds.has(item.id)) return;
+      let y = item.row.y;
+      const y2 = boxEnd(item.row);
+      if (stemEnd != null && y < stemEnd) y = stemEnd;
+      if (y2 - y < 0.008) return;
+      bandsOutside(y, y2, pickedY, pickedY2).forEach((band) => {
+        const lo = Math.max(band[0], top);
+        const hi = Math.min(band[1], end);
+        if (hi - lo >= 0.008) masks.push({ x: textX, w: textW, y: lo, y2: hi });
+      });
+    });
+  }
+  if (Math.abs(top - box.y) < 0.0001 && Math.abs(end - originalEnd) < 0.0001 && masks.length === ownMasks.length) return box;
+  return boxWithMasks({ ...box, page }, top, end, masks);
 }
 
 function shortSlices(chosen) {
@@ -757,11 +829,16 @@ function shortSlices(chosen) {
   ));
   const slices = [];
   let lastQuestion = null;
+  const selectedIds = new Set(ordered.map((item) => item.id));
   const GLYPH_PAD = 0.0035;
   ordered.forEach((question) => {
     const block = (question.source && question.source.pdfId ? question.source.pdfId + ':' : '') + 'q' + question.q;
     if (question.q !== lastQuestion) {
-      if (question.stem) slices.push({ page: question.stem.page || question.page, box: question.stem, gap: 10, block, kind: 'stem', pdfId: SOURCE && SOURCE.pdfId });
+      const fig = questionFigure(question);
+      const stem = question.stem;
+      const stemInFigure = stem && fig && rangesOverlap(stem.y, stem.y + stem.h, fig.y0, fig.y1);
+      // The number sits on the drawing: one crop keeps them together.
+      if (stem && !stemInFigure) slices.push({ page: stem.page || question.page, box: stem, gap: 10, block, kind: 'stem', pdfId: SOURCE && SOURCE.pdfId });
       lastQuestion = question.q;
     }
     const rows = question.rows && question.rows.length ? question.rows : [question.row];
@@ -775,7 +852,7 @@ function shortSlices(chosen) {
         && (other.row.page || other.page) === page && other.row.y > box.y + 0.004
       ));
       // The first selected part of this question can still own a shared drawing.
-      if (!prev) next = coverSharedFigure(question, next, laterSelected);
+      if (!prev) next = coverSharedFigure(question, next, laterSelected, selectedIds);
       const originalTop = box.y;
       // A measured row can start inside the letter tops (6ד). Lift a short row
       // onto the white gap above it. Rows already expanded to a drawing stay put.
@@ -783,7 +860,7 @@ function shortSlices(chosen) {
       if (clipsInk && !(next.y < originalTop - 0.001) && next.h < 0.08) {
         const lifted = Math.max(0, next.y - GLYPH_PAD);
         const end = boxEnd(next);
-        next = next.mask ? withSpan(next, lifted, end, [absoluteMask(next)]) : { ...next, y: lifted, h: end - lifted };
+        next = next.mask ? withSpan(next, lifted, end, absoluteMasks(next)) : { ...next, y: lifted, h: end - lifted };
       }
       if (prev && next.y < boxEnd(prev.box) - 0.008) {
         const prevEnd = boxEnd(prev.box);
@@ -800,7 +877,7 @@ function shortSlices(chosen) {
         const kept = FOOTER_LIMIT - next.y;
         if (kept < 0.004) return;
         const end = FOOTER_LIMIT;
-        next = next.mask ? withSpan(next, next.y, end, [absoluteMask(next)]) : { ...next, h: end - next.y };
+        next = next.mask ? withSpan(next, next.y, end, absoluteMasks(next)) : { ...next, h: end - next.y };
       }
       const last = slices[slices.length - 1];
       const dup = last && last.kind === 'row' && last.page === page && last.box.x === next.x && last.box.y === next.y && last.box.w === next.w && last.box.h === next.h;
@@ -886,6 +963,17 @@ function orderPrintQuestions(chosen) {
   });
 }
 
+function batchesOf(chosen) {
+  const batches = [];
+  orderPrintQuestions(chosen).forEach((question) => {
+    const source = question.source || {};
+    const last = batches[batches.length - 1];
+    if (last && last.sourceId === source.pdfId && last.q === question.q) last.questions.push(question);
+    else batches.push({ sourceId: source.pdfId, q: question.q, questions: [question] });
+  });
+  return batches;
+}
+
 function packShort(measured, options) {
   const reserveTitle = !(options && options.answers);
   const blocks = [];
@@ -915,6 +1003,44 @@ function packShort(measured, options) {
   return pages;
 }
 
+function textItemBox(item, width, height) {
+  const baseline = item.transform[5];
+  const fontSize = item.height || Math.abs(item.transform[3]) || 8;
+  // pdf.js font size sits above PyMuPDF's glyph top. 0.78 lines the two up.
+  const ascent = fontSize * 0.78;
+  const x = item.transform[4] / width;
+  const w = (item.width || 0) / width;
+  return {
+    x,
+    x2: x + w,
+    y: 1 - (baseline + ascent) / height,
+    y2: 1 - baseline / height,
+    text: item.str,
+  };
+}
+
+function isAnswerHeading(line) {
+  const text = String(line.text || '').replace(/\s/g, '');
+  return text.startsWith('תשובות') && text.length < 24;
+}
+
+function isAnswerNumber(line) {
+  const text = String(line.text || '').trim();
+  if (!/^\d{1,2}\.$/.test(text)) return false;
+  if (line.y > 0.9) return false;
+  if (line.x != null && line.x < 0.85) return false;
+  return true;
+}
+
+function answerHeadingBox(head) {
+  if (!head) return null;
+  const y = Math.max(0.04, (head.y || 0) - 0.006);
+  const y2 = Math.min(0.14, Math.max(y + 0.022, (head.y2 || y + 0.02) + 0.008));
+  const x = head.x != null ? Math.max(0.02, head.x - 0.02) : 0.62;
+  const x2 = head.x2 != null ? Math.min(0.98, head.x2 + 0.02) : 0.97;
+  return { x, y, w: Math.max(0.08, x2 - x), h: Math.max(0.018, y2 - y) };
+}
+
 function answerCropsFromLines(lines, wanted) {
   const want = new Set((wanted || []).map((n) => String(n)));
   const pages = new Map();
@@ -923,25 +1049,26 @@ function answerCropsFromLines(lines, wanted) {
     pages.get(line.page).push(line);
   });
   const crops = [];
+  const FOOTER = 0.93;
   pages.forEach((pageLines, page) => {
     // The answer page opens with the heading "תשובות סופיות". A question that
     // merely mentions התשובות is not that page.
-    const heading = pageLines.some((line) => {
-      const text = String(line.text).replace(/\s/g, '');
-      return text.startsWith('תשובות') && text.length < 24;
+    if (!pageLines.some(isAnswerHeading)) return;
+    const byNumber = new Map();
+    pageLines.forEach((line) => {
+      if (!isAnswerNumber(line)) return;
+      const n = String(line.text).trim().match(/^(\d{1,2})\.$/)[1];
+      const prev = byNumber.get(n);
+      if (!prev || (line.x || 0) > (prev.x || 0)) byNumber.set(n, { n, y: line.y, y2: line.y2, x: line.x || 0 });
     });
-    if (!heading) return;
-    const marks = pageLines.map((line) => {
-      const match = String(line.text).trim().match(/^(\d{1,2})\.?$/);
-      return match ? { n: match[1], y: line.y, y2: line.y2 } : null;
-    }).filter(Boolean).sort((a, b) => a.y - b.y);
+    const marks = [...byNumber.values()].sort((a, b) => a.y - b.y);
     marks.forEach((mark, index) => {
       if (!want.has(mark.n)) return;
       const next = marks[index + 1];
       const y = Math.max(0.04, mark.y - 0.004);
-      let y2 = next ? Math.min(next.y - 0.006, 0.94) : Math.min(mark.y2 + 0.02, 0.94);
-      if (y2 - y < 0.012) y2 = Math.min(0.94, y + 0.02);
-      crops.push({ page, q: Number(mark.n), box: { x: 0.03, y, w: 0.94, h: Math.max(0.012, y2 - y) } });
+      let y2 = next ? Math.min(next.y - 0.004, FOOTER) : FOOTER;
+      if (y2 - y < 0.012) y2 = Math.min(FOOTER, y + 0.02);
+      crops.push({ page, q: Number(mark.n), box: { x: 0.02, y, w: 0.96, h: Math.max(0.012, y2 - y) } });
     });
   });
   return crops;
@@ -1008,11 +1135,11 @@ function paintMeasuredPage(ctx, items, top) {
     const sx = item.slice.box.x * item.bitmap.width;
     const sy = item.slice.box.y * item.bitmap.height;
     ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, ctx.canvas.width, item.dh);
-    const mask = item.slice.box.mask;
-    if (mask) {
+    const masks = item.slice.box.masks && item.slice.box.masks.length ? item.slice.box.masks : (item.slice.box.mask ? [item.slice.box.mask] : []);
+    masks.forEach((mask) => {
       ctx.fillStyle = '#fff';
       ctx.fillRect(mask.x * ctx.canvas.width, y + mask.y * item.dh, mask.w * ctx.canvas.width, mask.h * item.dh);
-    }
+    });
     y += item.dh;
   });
 }
@@ -1072,13 +1199,14 @@ async function sheetTextLines(source) {
     const content = await page.getTextContent();
     content.items.forEach((item) => {
       if (!item.str || !String(item.str).trim()) return;
-      const baseline = item.transform[5];
-      const height = item.height || Math.abs(item.transform[3]) || 8;
+      const box = textItemBox(item, viewport.width, viewport.height);
       lines.push({
         page: pageNumber,
-        y: 1 - (baseline + height) / viewport.height,
-        y2: 1 - baseline / viewport.height,
-        text: item.str,
+        y: box.y,
+        y2: box.y2,
+        x: box.x,
+        x2: box.x2,
+        text: box.text,
       });
     });
   }
@@ -1105,8 +1233,17 @@ async function answerMeasured(groups) {
       slices.push({
         page: head.page,
         pdfId: group.source.pdfId,
-        box: { x: 0.18, y: Math.max(0.04, head.y - 0.008), w: 0.64, h: 0.028 },
+        box: { x: 0, y: 0, w: 1, h: 0.02 },
         gap: 8,
+        block: 'answers-head:' + group.source.pdfId,
+        kind: 'level',
+        label: levelPrintName(group.source.level, group.source.levelLabel),
+      });
+      slices.push({
+        page: head.page,
+        pdfId: group.source.pdfId,
+        box: answerHeadingBox(head),
+        gap: 6,
         block: 'answers-head:' + group.source.pdfId,
         kind: 'answer',
       });
@@ -1130,13 +1267,14 @@ async function paintAllShort(root, chosen) {
   const slices = [];
   const groups = [];
   let lastLevel = null;
-  ordered.forEach((question) => {
+  batchesOf(ordered).forEach((batch) => {
+    const question = batch.questions[0];
     SOURCE = question.source;
-    const part = shortSlices([question]);
+    const part = shortSlices(batch.questions);
     if (!part.length) return;
     const known = groups.find((group) => group.source.pdfId === question.source.pdfId);
-    if (known) known.questions.push(question);
-    else groups.push({ source: question.source, questions: [question] });
+    if (known) batch.questions.forEach((item) => known.questions.push(item));
+    else groups.push({ source: question.source, questions: batch.questions.slice() });
     if (question.source.level !== lastLevel) {
       slices.push({
         page: part[0].page,
@@ -1437,6 +1575,8 @@ function applyWizard() {
   $('wizard-back').hidden = WIZARD_ORDER.indexOf(step) <= 0;
   $('wizard-next').hidden = step === 'result';
   $('wizard-next').textContent = step === 'pick' ? 'אל הדף' : 'המשך';
+  const anchor = step === 'result' ? $('wizard-result') : $('wizard-bar');
+  if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
 }
 
 function copyCanvases(from, to) {
