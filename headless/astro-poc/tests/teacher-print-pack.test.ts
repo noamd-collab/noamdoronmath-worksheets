@@ -895,6 +895,20 @@ print(int(np.any(arr < 80, axis=2).sum()))
     assert.equal(first.length, 1);
     assert.equal(partPiece(first[0]).some((piece) => covers(piece, 0.75)), false, '1ב still in the crop');
     for (const gap of gapsOf(first[0])) assert.ok(gap > 0.008 && gap < 0.03, 'wide gap ' + gap);
+    const dotsOf = (lines) => lines.flatMap((line) => (line.chars || []).filter((glyph) => '·∙•'.includes(glyph.c)).map((glyph) => ({
+      ...glyph,
+      y: glyph.y == null ? line.y : glyph.y,
+    })));
+    const overlapsDot = (piece, dot) => (
+      dot.y >= piece.box.y && dot.y < piece.box.y + piece.box.h - 0.001
+      && dot.x < piece.box.x + piece.box.w && dot.x2 > piece.box.x
+    );
+    const rowDots = dotsOf(linesA).filter((dot) => overlapsDot({ box: first[0].box }, dot));
+    assert.ok(rowDots.some((dot) => dot.x < 0.5), 'question 1 has a separator before ד');
+    assert.equal(partPiece(first[0]).some((piece) => rowDots.some((dot) => overlapsDot(piece, dot))), false, 'separator beside a picked part');
+    const whole1 = api.answerCropsFromLines(linesA, [1]);
+    assert.equal(whole1[0].pieces, undefined, 'a whole question was split');
+    assert.ok(rowDots.every((dot) => dot.x >= whole1[0].box.x && dot.x2 <= whole1[0].box.x + whole1[0].box.w), 'a whole question dropped its separators');
     for (const level of ['b', 'c']) {
       const six = one(measured.lines[SHEET_IDS[level]], { q: 6, part: 'ד' });
       assert.ok(six.pieces.length >= 2, level);

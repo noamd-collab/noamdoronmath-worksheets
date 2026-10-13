@@ -1137,8 +1137,17 @@ function answerClusters(glyphs) {
 function answerPartBox(glyphs, left, right, y, y2) {
   const owned = glyphs.filter((glyph) => glyph.x2 > left + 0.001 && glyph.x < right - 0.001 && !'·∙•'.includes(glyph.c));
   if (!owned.length) return null;
-  const x = Math.min(...owned.map((glyph) => glyph.x)) - 0.0015;
-  const x2 = Math.min(right, Math.max(...owned.map((glyph) => glyph.x2)) + 0.002);
+  let x = Math.min(...owned.map((glyph) => glyph.x)) - 0.0015;
+  let x2 = Math.min(right, Math.max(...owned.map((glyph) => glyph.x2)) + 0.002);
+  // A separator sits in the gap beside a part. Pull the nearer edge off it so
+  // an individually cropped answer does not keep the dot.
+  const midBox = (x + x2) / 2;
+  glyphs.forEach((glyph) => {
+    if (!'·∙•'.includes(glyph.c) || glyph.x >= x2 || glyph.x2 <= x) return;
+    const mid = (glyph.x + glyph.x2) / 2;
+    if (mid >= midBox) x2 = Math.min(x2, glyph.x - 0.001);
+    else x = Math.max(x, glyph.x2 + 0.001);
+  });
   if (x2 - x < 0.008) return null;
   return { x: Math.max(0.02, x), y, w: x2 - Math.max(0.02, x), h: Math.max(0.012, y2 - y) };
 }
