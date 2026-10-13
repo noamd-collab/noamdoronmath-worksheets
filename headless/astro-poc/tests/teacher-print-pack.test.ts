@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
@@ -14,7 +16,7 @@ const SHEET_IDS = {
   c: '871fe90d52a04673a7d30fc039e4bf2e',
 };
 const PICK = ['1א', '2א', '2', '3ב', '4א', '5א', '6ד', '6', '7א', '8ד', '10א', '12א', '12', '15א', '19ד'];
-const ARTIFACTS = '/opt/cursor/artifacts/teacher-print';
+const ARTIFACTS = process.env.TEACHER_PRINT_ARTIFACTS || join(tmpdir(), 'teacher-print');
 
 function layoutApi(source) {
   const start = printer.indexOf('function boxEnd');
@@ -343,7 +345,7 @@ describe('teacher short worksheet pack', () => {
   });
 
   it('keeps the result preview full width and the phone choice above the intro', () => {
-    assert.match(pageHtml, /\.wizard-result\{grid-column:1 \/ -1/);
+    assert.match(pageHtml, /\.wizard-result\{grid-column:1 \/ -1;margin-top:16px;min-width:0;padding:22px 24px\}/);
     assert.match(pageHtml, /#wizard-preview\{max-width:820px;margin-inline:auto\}/);
     assert.match(pageHtml, /scroll-margin-top:96px/);
     assert.match(pageHtml, /@media\(min-width:900px\)\{\s*\.wizard-bar,\.wizard-result\{scroll-margin-top:110px\}/);
@@ -352,7 +354,12 @@ describe('teacher short worksheet pack', () => {
     assert.match(printer, /scrollIntoView\(\{ block: 'start'/);
   });
 
-  it('keeps MuPDF warnings off the JSON stdout', () => {
+  it('keeps MuPDF warnings off the JSON stdout', (t) => {
+    const probe = spawnSync('python3', ['-c', 'import pymupdf'], { encoding: 'utf8' });
+    if (probe.status !== 0) {
+      t.skip('pymupdf is not installed');
+      return;
+    }
     const script = fileURLToPath(new URL('../scripts/render-teacher-pack.py', import.meta.url));
     const result = spawnSync('python3', [script], {
       input: JSON.stringify({ cmd: 'warn-probe' }),
@@ -742,6 +749,186 @@ print(int(np.any(arr < 80, axis=2).sum()))
     }
     mkdirSync(ARTIFACTS, { recursive: true });
     const copied = spawnSync('bash', ['-c', `rm -rf ${ARTIFACTS}/regress && mkdir -p ${ARTIFACTS}/regress/multipart-15 ${ARTIFACTS}/regress/level-a-10 && cp -f ${scratch}/*.pdf ${scratch}/*.png ${ARTIFACTS}/regress/ && cp -f ${scratch}/multipart-15/* ${ARTIFACTS}/regress/multipart-15/ && cp -f ${scratch}/level-a-10/* ${ARTIFACTS}/regress/level-a-10/`], { encoding: 'utf8' });
+    assert.equal(copied.status, 0, copied.stderr);
+  });
+
+  it('hides an unpicked middle part and keeps only the picked answer labels', (t) => {
+    const probe = spawnSync('python3', ['-c', 'import pymupdf, numpy'], { encoding: 'utf8' });
+    if (probe.status !== 0) {
+      t.skip('pymupdf is not installed');
+      return;
+    }
+    const sheets = {
+      a: loadSheet(SHEET_IDS.a),
+      c: loadSheet(SHEET_IDS.c),
+    };
+    const holder = {};
+    const api = layoutApi(holder);
+    const masksAt = (box, y, x) => {
+      const list = box.masks && box.masks.length ? box.masks : (box.mask ? [box.mask] : []);
+      return list.some((mask) => {
+        const top = box.y + mask.y * box.h;
+        const bot = top + mask.h * box.h;
+        return y >= top - 0.003 && y <= bot + 0.003 && x >= mask.x - 0.01 && x <= mask.x + mask.w + 0.01;
+      });
+    };
+    const take = (level, ids) => {
+      const sheet = sheets[level];
+      Object.keys(holder).forEach((key) => delete holder[key]);
+      Object.assign(holder, sheet);
+      const byId = Object.fromEntries(sheet.questions.map((question) => [question.id, question]));
+      const chosen = ids.map((id) => ({ ...byId[id], source: sheet }));
+      const slices = api.batchesOf(chosen).flatMap((batch) => api.shortSlices(batch.questions));
+      return { byId, slices };
+    };
+    for (const level of ['a', 'c']) {
+      const picked = take(level, ['1א', '1ג', '1ד']);
+      const rows = picked.slices.filter((slice) => slice.kind === 'row' && slice.block === `${SHEET_IDS[level]}:q1`);
+      const box = rows[0].box;
+      const bet = picked.byId['1ב'].row;
+      assert.equal(picked.slices.filter((slice) => slice.kind === 'stem' && slice.block.endsWith(':q1')).length, 1, level);
+      assert.equal(masksAt(box, bet.y + 0.006, 0.8), true, level + ' showed 1ב');
+      assert.equal(masksAt(box, bet.y + 0.006, 0.25), false, level + ' covered the drawing');
+      assert.equal(masksAt(box, picked.byId['1א'].row.y + 0.02, 0.8), false, level + ' hid 1א');
+      assert.equal(masksAt(box, picked.byId['1ג'].row.y + 0.006, 0.8), false, level + ' hid 1ג');
+      assert.equal(masksAt(box, picked.byId['1ד'].row.y + 0.006, 0.8), false, level + ' hid 1ד');
+    }
+
+    const pdfs = {};
+    for (const id of Object.values(SHEET_IDS)) pdfs[id] = ensurePdf(id);
+    const measured = runPack({ cmd: 'lines', pdfs });
+    const covered = (box, pageX) => {
+      const u = (pageX - box.x) / box.w;
+      return (box.masks || []).some((mask) => u >= mask.x - 0.006 && u <= mask.x + mask.w + 0.006);
+    };
+    for (const level of ['a', 'c']) {
+      const lines = measured.lines[SHEET_IDS[level]];
+      const whole = api.answerCropsFromLines(lines, [3]);
+      assert.equal(whole[0].box.masks, undefined, level + ' whole answer');
+      const crops = api.answerCropsFromLines(lines, [
+        { q: 3, part: 'ב' },
+        { q: 8, part: 'ד' },
+        { q: 19, part: 'ד' },
+      ]);
+      assert.deepEqual(crops.map((crop) => crop.q), [3, 8, 19], level);
+      for (const crop of crops) {
+        assert.equal(covered(crop.box, 0.87), true, level + ' q' + crop.q + ' still shows א');
+        assert.equal(covered(crop.box, 0.92), false, level + ' q' + crop.q + ' hid the number');
+      }
+      const three = crops.find((crop) => crop.q === 3);
+      assert.equal(covered(three.box, 0.75), false, level + ' hid ב');
+      assert.equal(covered(three.box, 0.56), true, level + ' still shows ד');
+    }
+
+    const pageW = measured.pageSize[0];
+    const pageH = measured.pageSize[1];
+    const chosen = ['1א', '1ג', '1ד', '3ב', '8ד', '19ד'].map((id) => ({ ...sheets.a.questions.find((question) => question.id === id), source: sheets.a }));
+    Object.assign(holder, sheets.a);
+    const slices = [];
+    api.batchesOf(api.orderPrintQuestions(chosen)).forEach((batch) => {
+      slices.push(...api.shortSlices(batch.questions));
+    });
+    slices.unshift({
+      page: slices[0].page,
+      pdfId: SHEET_IDS.a,
+      box: { x: 0, y: 0, w: 1, h: 0.02 },
+      gap: 8,
+      block: slices[0].block,
+      kind: 'level',
+      label: 'רמה א׳',
+    });
+    const exerciseMeasured = slices.map((slice) => {
+      if (slice.kind === 'level') return { slice, dh: 36 };
+      const sw = Math.max(1, slice.box.w * pageW);
+      const sh = Math.max(1, slice.box.h * pageH);
+      return { slice, dh: Math.max(1, Math.round(1000 * sh / sw)) };
+    });
+    const answerSpecs = chosen.map((question) => ({ q: question.q, part: question.part || '' }));
+    const answerCrops = api.answerCropsFromLines(measured.lines[SHEET_IDS.a], answerSpecs);
+    const head = measured.lines[SHEET_IDS.a].find((line) => String(line.text).replace(/\s/g, '') === 'תשובותסופיות');
+    const answerSlices = [
+      {
+        page: head.page,
+        pdfId: SHEET_IDS.a,
+        box: { x: 0, y: 0, w: 1, h: 0.02 },
+        gap: 8,
+        kind: 'level',
+        label: 'רמה א׳',
+        block: 'answers-head',
+      },
+      {
+        page: head.page,
+        pdfId: SHEET_IDS.a,
+        box: api.answerHeadingBox(head),
+        gap: 6,
+        kind: 'answer',
+        block: 'answers-head',
+        probe: 'head',
+      },
+      ...answerCrops.map((crop) => ({
+        page: crop.page,
+        pdfId: SHEET_IDS.a,
+        box: crop.box,
+        gap: 6,
+        kind: 'answer',
+        block: 'answer-' + crop.q,
+        probe: 'ans-' + crop.q,
+      })),
+    ];
+    const tag = (items) => items.map((item) => ({
+      kind: item.slice.kind,
+      pdfId: item.slice.pdfId || SHEET_IDS.a,
+      page: item.slice.page,
+      box: item.slice.box,
+      gap: item.slice.gap,
+      dh: item.dh,
+      label: item.slice.label,
+      probe: item.slice.probe || (item.slice.kind === 'row' && item.slice.block.endsWith(':q1') ? 'q1' : undefined),
+    }));
+    const scratch = join(tmpdir(), 'teacher-print-parts');
+    mkdirSync(scratch, { recursive: true });
+    const rendered = runPack({
+      title: 'מצולעים',
+      pdfs,
+      exercisePages: api.packShort(exerciseMeasured).map(tag),
+      answerPages: api.packShort(answerSlices.map((slice) => ({
+        slice,
+        dh: slice.kind === 'level' ? 36 : Math.max(1, Math.round(1000 * (slice.box.h * pageH) / Math.max(1, slice.box.w * pageW))),
+      })), { answers: true }).map(tag),
+      outPdf: join(scratch, 'parts.pdf'),
+      outDir: scratch,
+    });
+    for (const page of rendered.pages) assert.ok(page.basadDark > 0);
+    const q1 = rendered.pages.flatMap((page) => page.cropDark || []).find((item) => item.id === 'q1');
+    const ans3 = rendered.pages.flatMap((page) => page.cropDark || []).find((item) => item.id === 'ans-3');
+    assert.ok(q1 && ans3);
+    const row = slices.find((slice) => slice.kind === 'row' && slice.block.endsWith(':q1'));
+    const bet = sheets.a.questions.find((question) => question.id === '1ב').row;
+    const gimel = sheets.a.questions.find((question) => question.id === '1ג').row;
+    const rel = (y) => (y - row.box.y) / row.box.h;
+    const region = (png, y0, y1, x0, x1) => {
+      const result = spawnSync('python3', ['-c', `
+import sys, pymupdf, numpy as np
+doc = pymupdf.open(sys.argv[1])
+page = doc[0]
+w, h = page.rect.width, page.rect.height
+clip = pymupdf.Rect(float(sys.argv[4]) * w, float(sys.argv[2]) * h, float(sys.argv[5]) * w, float(sys.argv[3]) * h)
+pix = page.get_pixmap(clip=clip, alpha=False)
+arr = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
+print(int(np.any(arr < 80, axis=2).sum()))
+`, png, String(y0), String(y1), String(x0), String(x1)], { encoding: 'utf8' });
+      assert.equal(result.status, 0, result.stderr || result.stdout);
+      return Number(result.stdout.trim());
+    };
+    const betRel = rel(bet.y + 0.006);
+    assert.ok(region(q1.png, betRel - 0.04, betRel + 0.06, 0.62, 0.95) < 12, '1ב text printed');
+    assert.ok(region(q1.png, betRel - 0.04, betRel + 0.06, 0.08, 0.36) > 15, 'drawing beside 1ב missing');
+    assert.ok(region(q1.png, rel(gimel.y + 0.008), rel(gimel.y + 0.02), 0.55, 0.95) > 15, '1ג text missing');
+    const ax = (pageX) => (pageX - 0.02) / 0.96;
+    assert.ok(region(ans3.png, 0.15, 0.85, ax(0.84), ax(0.89)) < 8, 'answer 3 still shows א');
+    assert.ok(region(ans3.png, 0.15, 0.85, ax(0.73), ax(0.78)) > 8, 'answer 3 hid ב');
+    mkdirSync(ARTIFACTS, { recursive: true });
+    const copied = spawnSync('bash', ['-c', `mkdir -p ${ARTIFACTS}/parts && cp -f ${scratch}/* ${ARTIFACTS}/parts/`], { encoding: 'utf8' });
     assert.equal(copied.status, 0, copied.stderr);
   });
 });

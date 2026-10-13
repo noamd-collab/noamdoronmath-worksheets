@@ -819,6 +819,19 @@ function coverSharedFigure(question, box, laterSelected, selectedIds) {
       });
     });
   }
+  // A tall earlier part can contain a later part that was not picked (1א holds 1ב).
+  // Cover that part wherever it sits, and leave the drawing on the left.
+  const textX = fig ? fig.x1 : 0.46;
+  const textW = Math.max(0.04, 0.98 - textX);
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || item.q !== question.q || item.id === question.id || !item.row) return;
+    if ((item.row.page || item.page) !== page) return;
+    if (selectedIds && selectedIds.has(item.id)) return;
+    const lo = Math.max(item.row.y, top);
+    const hi = Math.min(boxEnd(item.row), end);
+    if (hi - lo < 0.008) return;
+    masks.push({ x: textX, w: textW, y: lo, y2: hi });
+  });
   if (Math.abs(top - box.y) < 0.0001 && Math.abs(end - originalEnd) < 0.0001 && masks.length === ownMasks.length) return box;
   return boxWithMasks({ ...box, page }, top, end, masks);
 }
@@ -1041,8 +1054,78 @@ function answerHeadingBox(head) {
   return { x, y, w: Math.max(0.08, x2 - x), h: Math.max(0.018, y2 - y) };
 }
 
+function wantedAnswerSpecs(wanted) {
+  const byQ = new Map();
+  (wanted || []).forEach((item) => {
+    const spec = item && typeof item === 'object' ? { q: String(item.q), part: item.part || '' } : { q: String(item), part: '' };
+    if (!byQ.has(spec.q)) byQ.set(spec.q, new Set());
+    byQ.get(spec.q).add(spec.part);
+  });
+  return byQ;
+}
+
+function charWeight(ch) {
+  if (/[\u0590-\u05FF]/.test(ch)) return 1;
+  if (/[0-9]/.test(ch)) return 0.55;
+  if (ch === ' ' || ch === '\u00a0') return 0.33;
+  if ('·∙•.,'.includes(ch)) return 0.35;
+  if (ch === '״' || ch === '-') return 0.3;
+  return 0.6;
+}
+
+// An answer line is "א. … · ב. … · ג. …". The letter is a label when it starts
+// the line or follows a middot. Positions are estimated inside the span.
+function answerPartLabels(item) {
+  const text = String(item.text || '');
+  const chars = Array.from(text);
+  if (!chars.length || item.x == null) return [];
+  const x0 = item.x;
+  const x1 = item.x2 == null ? item.x : item.x2;
+  const rtl = /[\u0590-\u05FF]/.test(text);
+  const weights = chars.map(charWeight);
+  const sum = weights.reduce((total, weight) => total + weight, 0) || 1;
+  const width = Math.max(0, x1 - x0);
+  const found = [];
+  let used = 0;
+  const letters = 'אבגדהוזחטי';
+  for (let index = 0; index < chars.length; index += 1) {
+    const span = weights[index] / sum * width;
+    const ch = chars[index];
+    let prev = '';
+    for (let before = index - 1; before >= 0; before -= 1) {
+      if (chars[before].trim()) { prev = chars[before]; break; }
+    }
+    const label = letters.includes(ch) && (index === 0 || '·∙•'.includes(prev));
+    if (label) {
+      const xRight = rtl ? x1 - used : x0 + used + span;
+      found.push({ part: ch, xRight });
+    }
+    used += span;
+  }
+  return found;
+}
+
+function answerPartMasks(items, box, parts) {
+  if (!parts || parts.has('')) return [];
+  const labels = items.flatMap(answerPartLabels).sort((a, b) => b.xRight - a.xRight);
+  if (!labels.length || ![...parts].some((part) => labels.some((label) => label.part === part))) return [];
+  const leftEdge = Math.min(...items.map((item) => item.x).filter((x) => x != null && x < 0.9));
+  const masks = [];
+  labels.forEach((label, index) => {
+    if (parts.has(label.part)) return;
+    const next = labels[index + 1];
+    const pageRight = Math.min(0.98, label.xRight + 0.008);
+    const pageLeft = next ? next.xRight + 0.003 : Math.max(0.02, leftEdge - 0.008);
+    if (pageRight - pageLeft < 0.012) return;
+    const x = (pageLeft - box.x) / box.w;
+    const right = (pageRight - box.x) / box.w;
+    masks.push({ x: Math.max(0, x), y: 0, w: Math.min(1, right) - Math.max(0, x), h: 1 });
+  });
+  return masks.filter((mask) => mask.w > 0.01);
+}
+
 function answerCropsFromLines(lines, wanted) {
-  const want = new Set((wanted || []).map((n) => String(n)));
+  const want = wantedAnswerSpecs(wanted);
   const pages = new Map();
   (lines || []).forEach((line) => {
     if (!pages.has(line.page)) pages.set(line.page, []);
@@ -1068,7 +1151,14 @@ function answerCropsFromLines(lines, wanted) {
       const y = Math.max(0.04, mark.y - 0.004);
       let y2 = next ? Math.min(next.y - 0.004, FOOTER) : FOOTER;
       if (y2 - y < 0.012) y2 = Math.min(FOOTER, y + 0.02);
-      crops.push({ page, q: Number(mark.n), box: { x: 0.02, y, w: 0.96, h: Math.max(0.012, y2 - y) } });
+      const box = { x: 0.02, y, w: 0.96, h: Math.max(0.012, y2 - y) };
+      const body = pageLines.filter((line) => line.y >= y - 0.002 && line.y < y2 - 0.002 && !(line.x != null && line.x >= 0.85 && isAnswerNumber(line)));
+      const masks = answerPartMasks(body, box, want.get(mark.n));
+      if (masks.length) {
+        box.masks = masks;
+        box.mask = masks[0];
+      }
+      crops.push({ page, q: Number(mark.n), box });
     });
   });
   return crops;
@@ -1222,7 +1312,7 @@ async function answerMeasured(groups) {
     } catch (error) {
       continue;
     }
-    const wanted = [...new Set(group.questions.map((question) => question.q))];
+    const wanted = group.questions.map((question) => ({ q: question.q, part: question.part || '' }));
     const crops = answerCropsFromLines(lines, wanted);
     if (!crops.length) continue;
     const head = lines.find((line) => {
