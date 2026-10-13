@@ -51,23 +51,37 @@ def text_lines(doc):
     lines = []
     for index, page in enumerate(doc):
         height = page.rect.height or 1
-        for block in page.get_text('dict')['blocks']:
+        width = page.rect.width or 1
+        for block in page.get_text('rawdict')['blocks']:
             if block.get('type') != 0:
                 continue
-            for line in block['lines']:
-                text = ''.join(span['text'] for span in line['spans']).strip()
-                if not text:
-                    continue
-                box = line['bbox']
-                width = page.rect.width or 1
-                lines.append({
-                    'page': index + 1,
-                    'y': box[1] / height,
-                    'y2': box[3] / height,
-                    'x': box[0] / width,
-                    'x2': box[2] / width,
-                    'text': text,
-                })
+            for line in block.get('lines') or []:
+                for span in line.get('spans') or []:
+                    chars = []
+                    for glyph in span.get('chars') or []:
+                        token = glyph.get('c') or ''
+                        if token == '':
+                            continue
+                        x0, y0, x1, y1 = glyph['bbox']
+                        chars.append({
+                            'c': token,
+                            'x': round(x0 / width, 4),
+                            'x2': round(x1 / width, 4),
+                            'y': round(y0 / height, 4),
+                            'y2': round(y1 / height, 4),
+                        })
+                    text = ''.join(glyph['c'] for glyph in chars).strip()
+                    if not text or not chars:
+                        continue
+                    lines.append({
+                        'page': index + 1,
+                        'y': min(glyph['y'] for glyph in chars),
+                        'y2': max(glyph['y2'] for glyph in chars),
+                        'x': min(glyph['x'] for glyph in chars),
+                        'x2': max(glyph['x2'] for glyph in chars),
+                        'text': text,
+                        'chars': chars,
+                    })
     return lines
 
 
@@ -107,18 +121,42 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
                 (box['x'] + box['w']) * src.rect.width,
                 (box['y'] + box['h']) * src.rect.height,
             )
-            pix = src.get_pixmap(matrix=pymupdf.Matrix(2, 2), clip=clip, alpha=False)
-            dest = pymupdf.Rect(0, y * SY, PDF_W, (y + dh) * SY)
-            out.insert_image(dest, pixmap=pix)
-            masks = box.get('masks') or ([box['mask']] if box.get('mask') else [])
-            for mask in masks:
-                m = pymupdf.Rect(
-                    mask['x'] * PDF_W,
-                    (y + mask['y'] * dh) * SY,
-                    (mask['x'] + mask['w']) * PDF_W,
-                    (y + (mask['y'] + mask['h']) * dh) * SY,
-                )
-                out.draw_rect(m, color=(1, 1, 1), fill=(1, 1, 1))
+            pieces = item.get('pieces') or []
+            if pieces:
+                row_h = box.get('h') or 0.02
+                for piece in pieces:
+                    part = piece['box']
+                    part_clip = pymupdf.Rect(
+                        part['x'] * src.rect.width,
+                        part['y'] * src.rect.height,
+                        (part['x'] + part['w']) * src.rect.width,
+                        (part['y'] + part['h']) * src.rect.height,
+                    )
+                    if part_clip.width < 0.4 or part_clip.height < 0.4:
+                        continue
+                    part_pix = src.get_pixmap(matrix=pymupdf.Matrix(2, 2), clip=part_clip, alpha=False)
+                    part_dh = (part['h'] / row_h) * dh if row_h else dh
+                    dy = (piece.get('dy') or 0) * dh
+                    dest = pymupdf.Rect(
+                        piece['at'] * PDF_W,
+                        (y + dy) * SY,
+                        (piece['at'] + part['w']) * PDF_W,
+                        (y + dy + part_dh) * SY,
+                    )
+                    out.insert_image(dest, pixmap=part_pix)
+            else:
+                pix = src.get_pixmap(matrix=pymupdf.Matrix(2, 2), clip=clip, alpha=False)
+                dest = pymupdf.Rect(0, y * SY, PDF_W, (y + dh) * SY)
+                out.insert_image(dest, pixmap=pix)
+                masks = box.get('masks') or ([box['mask']] if box.get('mask') else [])
+                for mask in masks:
+                    m = pymupdf.Rect(
+                        mask['x'] * PDF_W,
+                        (y + mask['y'] * dh) * SY,
+                        (mask['x'] + mask['w']) * PDF_W,
+                        (y + (mask['y'] + mask['h']) * dh) * SY,
+                    )
+                    out.draw_rect(m, color=(1, 1, 1), fill=(1, 1, 1))
         if item.get('probe'):
             placed.append({'id': item['probe'], 'y': y, 'dh': dh, 'kind': kind})
         y += dh

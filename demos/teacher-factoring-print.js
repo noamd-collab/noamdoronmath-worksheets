@@ -1073,55 +1073,153 @@ function charWeight(ch) {
   return 0.6;
 }
 
-// An answer line is "א. … · ב. … · ג. …". The letter is a label when it starts
-// the line or follows a middot. Positions are estimated inside the span.
-function answerPartLabels(item) {
+const ANSWER_PARTS = 'אבגדהוזחטי';
+const ANSWER_GAP = 0.014;
+const ANSWER_RIGHT = 0.948;
+
+function answerGlyphs(item) {
+  if (item.chars && item.chars.length) {
+    return item.chars.map((glyph) => ({
+      c: glyph.c,
+      x: glyph.x,
+      x2: glyph.x2,
+      y: glyph.y == null ? item.y : glyph.y,
+      y2: glyph.y2 == null ? (item.y2 || item.y) : glyph.y2,
+      exact: true,
+    }));
+  }
   const text = String(item.text || '');
   const chars = Array.from(text);
   if (!chars.length || item.x == null) return [];
   const x0 = item.x;
   const x1 = item.x2 == null ? item.x : item.x2;
-  const rtl = /[\u0590-\u05FF]/.test(text);
   const weights = chars.map(charWeight);
   const sum = weights.reduce((total, weight) => total + weight, 0) || 1;
   const width = Math.max(0, x1 - x0);
-  const found = [];
+  const rtl = /[\u0590-\u05FF]/.test(text);
+  const y2 = item.y2 == null ? item.y + 0.012 : item.y2;
   let used = 0;
-  const letters = 'אבגדהוזחטי';
-  for (let index = 0; index < chars.length; index += 1) {
+  return chars.map((ch, index) => {
     const span = weights[index] / sum * width;
-    const ch = chars[index];
-    let prev = '';
-    for (let before = index - 1; before >= 0; before -= 1) {
-      if (chars[before].trim()) { prev = chars[before]; break; }
-    }
-    const label = letters.includes(ch) && (index === 0 || '·∙•'.includes(prev));
-    if (label) {
-      const xRight = rtl ? x1 - used : x0 + used + span;
-      found.push({ part: ch, xRight });
-    }
+    const left = rtl ? x1 - used - span : x0 + used;
     used += span;
-  }
-  return found;
+    return { c: ch, x: left, x2: left + span, y: item.y, y2, exact: false };
+  });
 }
 
-function answerPartMasks(items, box, parts) {
-  if (!parts || parts.has('')) return [];
-  const labels = items.flatMap(answerPartLabels).sort((a, b) => b.xRight - a.xRight);
-  if (!labels.length || ![...parts].some((part) => labels.some((label) => label.part === part))) return [];
-  const leftEdge = Math.min(...items.map((item) => item.x).filter((x) => x != null && x < 0.9));
-  const masks = [];
-  labels.forEach((label, index) => {
-    if (parts.has(label.part)) return;
-    const next = labels[index + 1];
-    const pageRight = Math.min(0.98, label.xRight + 0.008);
-    const pageLeft = next ? next.xRight + 0.003 : Math.max(0.02, leftEdge - 0.008);
-    if (pageRight - pageLeft < 0.012) return;
-    const x = (pageLeft - box.x) / box.w;
-    const right = (pageRight - box.x) / box.w;
-    masks.push({ x: Math.max(0, x), y: 0, w: Math.min(1, right) - Math.max(0, x), h: 1 });
+function answerLabels(glyphs) {
+  const ordered = glyphs.slice().sort((a, b) => b.x2 - a.x2 || b.x - a.x);
+  const found = [];
+  ordered.forEach((glyph, index) => {
+    if (!ANSWER_PARTS.includes(glyph.c)) return;
+    let dot = index + 1;
+    while (dot < ordered.length && !String(ordered[dot].c).trim()) dot += 1;
+    if (dot >= ordered.length || ordered[dot].c !== '.') return;
+    let prev = index - 1;
+    while (prev >= 0 && !String(ordered[prev].c).trim()) prev -= 1;
+    if (prev >= 0 && !'·∙•'.includes(ordered[prev].c)) return;
+    found.push({ part: glyph.c, x: glyph.x, x2: glyph.x2 });
   });
-  return masks.filter((mask) => mask.w > 0.01);
+  return found.sort((a, b) => b.x2 - a.x2);
+}
+
+function answerClusters(glyphs) {
+  const sorted = glyphs.slice().sort((a, b) => a.y - b.y || b.x2 - a.x2);
+  const clusters = [];
+  sorted.forEach((glyph) => {
+    const last = clusters[clusters.length - 1];
+    if (!last || glyph.y - last.y > 0.01) clusters.push({ y: glyph.y, glyphs: [glyph] });
+    else last.glyphs.push(glyph);
+  });
+  return clusters;
+}
+
+function answerPartBox(glyphs, left, right, y, y2) {
+  const owned = glyphs.filter((glyph) => glyph.x2 > left + 0.001 && glyph.x < right - 0.001 && !'·∙•'.includes(glyph.c));
+  if (!owned.length) return null;
+  const x = Math.min(...owned.map((glyph) => glyph.x)) - 0.0015;
+  const x2 = Math.min(right, Math.max(...owned.map((glyph) => glyph.x2)) + 0.002);
+  if (x2 - x < 0.008) return null;
+  return { x: Math.max(0.02, x), y, w: x2 - Math.max(0.02, x), h: Math.max(0.012, y2 - y) };
+}
+
+// Each picked part is its own crop, placed just to the left of the question
+// number. The full answer line is not masked.
+function answerPieces(pageLines, mark, nextY, parts) {
+  if (!parts || parts.has('')) return null;
+  const band = pageLines.filter((line) => (
+    line.y >= mark.y - 0.008
+    && line.y < nextY - 0.004
+    && !(line.x != null && line.x >= 0.85 && isAnswerNumber(line))
+  ));
+  const glyphs = band.flatMap(answerGlyphs).filter((glyph) => glyph.x < 0.90);
+  const clusters = answerClusters(glyphs);
+  if (!clusters.length) return null;
+  const exact = glyphs.some((glyph) => glyph.exact);
+  const pad = exact ? 0.003 : 0.008;
+  const owned = [];
+  let carry = null;
+  clusters.forEach((cluster) => {
+    const labels = answerLabels(cluster.glyphs);
+    if (!labels.length) {
+      if (!carry || !parts.has(carry.part)) return;
+      const y = Math.min(...cluster.glyphs.map((glyph) => glyph.y)) - 0.002;
+      const y2 = Math.max(...cluster.glyphs.map((glyph) => glyph.y2)) + 0.002;
+      const box = answerPartBox(cluster.glyphs, 0.02, 0.90, y, y2);
+      if (box) owned.push({ part: carry.part, box });
+      return;
+    }
+    labels.forEach((label, index) => {
+      const next = labels[index + 1];
+      const seps = cluster.glyphs.filter((glyph) => (
+        '·∙•'.includes(glyph.c) && glyph.x2 < label.x + 0.002 && (!next || glyph.x > next.x - 0.004)
+      ));
+      const sep = seps.sort((a, b) => b.x2 - a.x2)[0];
+      const left = sep ? sep.x2 + pad : (next ? next.x2 + pad + 0.006 : 0.02);
+      const y = Math.min(...cluster.glyphs.map((glyph) => glyph.y)) - 0.002;
+      const y2 = Math.max(...cluster.glyphs.map((glyph) => glyph.y2)) + 0.002;
+      if (parts.has(label.part)) {
+        const box = answerPartBox(cluster.glyphs, left, Math.min(0.90, label.x2 + 0.004), y, y2);
+        if (box) owned.push({ part: label.part, box });
+      }
+    });
+    carry = labels[labels.length - 1];
+  });
+  if (!owned.length) return null;
+  const rank = {};
+  Array.from(ANSWER_PARTS).forEach((letter, index) => { rank[letter] = index; });
+  owned.sort((a, b) => a.box.y - b.box.y || (rank[a.part] || 0) - (rank[b.part] || 0));
+  const lines = [];
+  owned.forEach((item) => {
+    const last = lines[lines.length - 1];
+    if (!last || item.box.y - last.y > 0.01) lines.push({ y: item.box.y, items: [item] });
+    else last.items.push(item);
+  });
+  const number = pageLines.find((line) => isAnswerNumber(line) && Math.abs(line.y - mark.y) < 0.008 && String(line.text).trim().startsWith(mark.n));
+  const pieces = [];
+  lines.forEach((line, lineIndex) => {
+    const y = Math.min(...line.items.map((item) => item.box.y));
+    const y2 = Math.max(...line.items.map((item) => item.box.y + item.box.h));
+    let cursor = ANSWER_RIGHT;
+    const place = (box) => {
+      const width = Math.min(box.w, Math.max(0.012, cursor - 0.02));
+      cursor -= width;
+      const at = Math.max(0.02, cursor);
+      cursor -= ANSWER_GAP;
+      pieces.push({ box: { ...box, y, w: width, h: Math.max(0.012, y2 - y) }, at });
+    };
+    if (lineIndex === 0 && number) {
+      const nx = Math.max(0.88, (number.x || mark.x) - 0.002);
+      const nx2 = Math.min(0.98, (number.x2 || nx + 0.02) + 0.003);
+      place({ x: nx, y, w: Math.max(0.012, nx2 - nx), h: y2 - y });
+    }
+    line.items.forEach((item) => place(item.box));
+  });
+  const rowY = Math.max(0.04, Math.min(...pieces.map((piece) => piece.box.y)));
+  const rowY2 = Math.max(...pieces.map((piece) => piece.box.y + piece.box.h));
+  const rowH = Math.max(0.014, rowY2 - rowY);
+  pieces.forEach((piece) => { piece.dy = (piece.box.y - rowY) / rowH; });
+  return { box: { x: 0, y: rowY, w: 1, h: rowH }, pieces };
 }
 
 function answerCropsFromLines(lines, wanted) {
@@ -1142,23 +1240,22 @@ function answerCropsFromLines(lines, wanted) {
       if (!isAnswerNumber(line)) return;
       const n = String(line.text).trim().match(/^(\d{1,2})\.$/)[1];
       const prev = byNumber.get(n);
-      if (!prev || (line.x || 0) > (prev.x || 0)) byNumber.set(n, { n, y: line.y, y2: line.y2, x: line.x || 0 });
+      if (!prev || (line.x || 0) > (prev.x || 0)) byNumber.set(n, { n, y: line.y, y2: line.y2, x: line.x || 0, x2: line.x2 || 0 });
     });
     const marks = [...byNumber.values()].sort((a, b) => a.y - b.y);
     marks.forEach((mark, index) => {
       if (!want.has(mark.n)) return;
       const next = marks[index + 1];
+      const nextY = next ? next.y : FOOTER;
+      const laid = answerPieces(pageLines, mark, nextY, want.get(mark.n));
+      if (laid) {
+        crops.push({ page, q: Number(mark.n), box: laid.box, pieces: laid.pieces });
+        return;
+      }
       const y = Math.max(0.04, mark.y - 0.004);
       let y2 = next ? Math.min(next.y - 0.004, FOOTER) : FOOTER;
       if (y2 - y < 0.012) y2 = Math.min(FOOTER, y + 0.02);
-      const box = { x: 0.02, y, w: 0.96, h: Math.max(0.012, y2 - y) };
-      const body = pageLines.filter((line) => line.y >= y - 0.002 && line.y < y2 - 0.002 && !(line.x != null && line.x >= 0.85 && isAnswerNumber(line)));
-      const masks = answerPartMasks(body, box, want.get(mark.n));
-      if (masks.length) {
-        box.masks = masks;
-        box.mask = masks[0];
-      }
-      crops.push({ page, q: Number(mark.n), box });
+      crops.push({ page, q: Number(mark.n), box: { x: 0.02, y, w: 0.96, h: Math.max(0.012, y2 - y) } });
     });
   });
   return crops;
@@ -1222,14 +1319,30 @@ function paintMeasuredPage(ctx, items, top) {
       y += item.dh;
       return;
     }
-    const sx = item.slice.box.x * item.bitmap.width;
-    const sy = item.slice.box.y * item.bitmap.height;
-    ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, ctx.canvas.width, item.dh);
-    const masks = item.slice.box.masks && item.slice.box.masks.length ? item.slice.box.masks : (item.slice.box.mask ? [item.slice.box.mask] : []);
-    masks.forEach((mask) => {
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(mask.x * ctx.canvas.width, y + mask.y * item.dh, mask.w * ctx.canvas.width, mask.h * item.dh);
-    });
+    const pieces = item.slice.pieces && item.slice.pieces.length ? item.slice.pieces : null;
+    if (pieces) {
+      const rowH = item.slice.box.h || 0.02;
+      pieces.forEach((piece) => {
+        const box = piece.box;
+        const sx = box.x * item.bitmap.width;
+        const sy = box.y * item.bitmap.height;
+        const sw = Math.max(1, box.w * item.bitmap.width);
+        const sh = Math.max(1, box.h * item.bitmap.height);
+        const dw = box.w * ctx.canvas.width;
+        const ph = (box.h / rowH) * item.dh;
+        const dy = (piece.dy || 0) * item.dh;
+        ctx.drawImage(item.bitmap, sx, sy, sw, sh, piece.at * ctx.canvas.width, y + dy, dw, ph);
+      });
+    } else {
+      const sx = item.slice.box.x * item.bitmap.width;
+      const sy = item.slice.box.y * item.bitmap.height;
+      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, ctx.canvas.width, item.dh);
+      const masks = item.slice.box.masks && item.slice.box.masks.length ? item.slice.box.masks : (item.slice.box.mask ? [item.slice.box.mask] : []);
+      masks.forEach((mask) => {
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(mask.x * ctx.canvas.width, y + mask.y * item.dh, mask.w * ctx.canvas.width, mask.h * item.dh);
+      });
+    }
     y += item.dh;
   });
 }
@@ -1343,6 +1456,7 @@ async function answerMeasured(groups) {
         page: crop.page,
         pdfId: group.source.pdfId,
         box: crop.box,
+        pieces: crop.pieces,
         gap: 6,
         block: 'answer:' + group.source.pdfId + ':' + crop.q,
         kind: 'answer',

@@ -223,8 +223,9 @@ describe('teacher short worksheet pack', () => {
 
     const answerSlices = [];
     for (const level of ['a', 'b', 'c']) {
-      const wanted = [...new Set(ordered.filter((question) => question.source.level === level).map((question) => question.q))];
-      const crops = api.answerCropsFromLines(measuredLines.lines[SHEET_IDS[level]], wanted);
+      const specs = ordered.filter((question) => question.source.level === level).map((question) => ({ q: question.q, part: question.part || '' }));
+      const wanted = [...new Set(specs.map((spec) => spec.q))];
+      const crops = api.answerCropsFromLines(measuredLines.lines[SHEET_IDS[level]], specs);
       const numbers = crops.map((crop) => crop.q);
       assert.ok(numbers.includes(19), level + ' ' + numbers.join(','));
       assert.equal(new Set(numbers).size, numbers.length, level + ' duplicate ' + numbers.join(','));
@@ -266,6 +267,7 @@ describe('teacher short worksheet pack', () => {
           page: crop.page,
           pdfId: SHEET_IDS[level],
           box: crop.box,
+          pieces: crop.pieces,
           gap: 6,
           block: 'answer:' + SHEET_IDS[level] + ':' + crop.q,
           kind: 'answer',
@@ -289,6 +291,7 @@ describe('teacher short worksheet pack', () => {
       gap: item.slice.gap,
       dh: item.dh,
       label: item.slice.label,
+      pieces: item.slice.pieces,
       probe: item.slice.block === `${cId}:q8` && item.slice.kind === 'row' ? '8d'
         : item.slice.block === `${cId}:q3` && item.slice.kind === 'stem' ? '3b-stem'
         : item.slice.block === `${cId}:q3` && item.slice.kind === 'row' ? '3b'
@@ -617,8 +620,9 @@ describe('teacher short worksheet pack', () => {
     ]);
     const answerSlices = [];
     for (const level of ['c', 'a', 'b']) {
-      const wanted = [...new Set(regress.ordered.filter((question) => question.source.level === level).map((question) => question.q))];
-      const crops = api.answerCropsFromLines(measuredLines.lines[SHEET_IDS[level]], wanted);
+      const specs = regress.ordered.filter((question) => question.source.level === level).map((question) => ({ q: question.q, part: question.part || '' }));
+      const wanted = [...new Set(specs.map((spec) => spec.q))];
+      const crops = api.answerCropsFromLines(measuredLines.lines[SHEET_IDS[level]], specs);
       assert.equal(crops.some((crop) => crop.q === 1), false, level + ' printed unpicked Q1');
       assert.equal(new Set(crops.map((crop) => crop.q)).size, crops.length, level);
       const head = measuredLines.lines[SHEET_IDS[level]].find((line) => String(line.text).replace(/\s/g, '') === 'תשובותסופיות');
@@ -646,6 +650,7 @@ describe('teacher short worksheet pack', () => {
           page: crop.page,
           pdfId: SHEET_IDS[level],
           box: crop.box,
+          pieces: crop.pieces,
           gap: 6,
           block: 'answer:' + SHEET_IDS[level] + ':' + crop.q,
           kind: 'answer',
@@ -661,6 +666,7 @@ describe('teacher short worksheet pack', () => {
       gap: item.slice.gap,
       dh: item.dh,
       label: item.slice.label,
+      pieces: item.slice.pieces,
       probe: item.slice.probe || (
         item.slice.kind === 'row' && item.slice.block.endsWith(':q8') ? 'row-8d-' + item.slice.pdfId.slice(0, 4)
           : item.slice.kind === 'row' && item.slice.block.endsWith(':q10') ? 'row-10a-' + item.slice.pdfId.slice(0, 4)
@@ -734,14 +740,49 @@ print(int(np.any(arr < 80, axis=2).sum()))
     assert.equal(fifteen.pages.flat().filter((item) => item.slice.kind === 'stem' && item.slice.block === `${SHEET_IDS.a}:q1`).length, 1);
     const levelATen = packChosen([{ level: 'a', ids: tenIds }]);
     assert.equal(levelATen.pages.flat().filter((item) => item.slice.kind === 'stem' && item.slice.block === `${SHEET_IDS.a}:q1`).length, 1);
-    for (const [name, packed] of [['multipart-15', fifteen], ['level-a-10', levelATen]]) {
+    const answerPack = (groups) => {
+      const slices = [];
+      for (const group of groups) {
+        const specs = group.ids.map((id) => {
+          const question = sheets[group.level].questions.find((item) => item.id === id);
+          return { q: question.q, part: question.part || '' };
+        });
+        const lines = measuredLines.lines[SHEET_IDS[group.level]];
+        const crops = api.answerCropsFromLines(lines, specs);
+        const head = lines.find((line) => String(line.text).replace(/\s/g, '') === 'תשובותסופיות');
+        slices.push({
+          page: head.page, pdfId: SHEET_IDS[group.level], box: { x: 0, y: 0, w: 1, h: 0.02 }, gap: 8, kind: 'level',
+          label: api.levelPrintName(group.level, sheets[group.level].levelLabel), block: 'answers-head:' + group.level,
+        });
+        slices.push({
+          page: head.page, pdfId: SHEET_IDS[group.level], box: api.answerHeadingBox(head), gap: 6, kind: 'answer',
+          block: 'answers-head:' + group.level,
+        });
+        crops.forEach((crop) => slices.push({
+          page: crop.page, pdfId: SHEET_IDS[group.level], box: crop.box, pieces: crop.pieces, gap: 6, kind: 'answer',
+          block: 'answer:' + group.level + ':' + crop.q, probe: 'ans-' + group.level + '-' + crop.q,
+        }));
+      }
+      return api.packShort(slices.map((slice) => ({
+        slice,
+        dh: slice.kind === 'level' ? 36 : Math.max(1, Math.round(1000 * (slice.box.h * pageH) / Math.max(1, slice.box.w * pageW))),
+      })), { answers: true });
+    };
+    for (const [name, packed, answers] of [
+      ['multipart-15', fifteen, answerPack([
+        { level: 'a', ids: mixedIds.a },
+        { level: 'b', ids: mixedIds.b },
+        { level: 'c', ids: mixedIds.c },
+      ])],
+      ['level-a-10', levelATen, []],
+    ]) {
       const dir = `${scratch}/${name}`;
       mkdirSync(dir, { recursive: true });
       const painted = runPack({
         title: 'מצולעים',
         pdfs,
         exercisePages: packed.pages.map(tag),
-        answerPages: [],
+        answerPages: answers.map(tag),
         outPdf: `${scratch}/${name}.pdf`,
         outDir: dir,
       });
@@ -797,27 +838,68 @@ print(int(np.any(arr < 80, axis=2).sum()))
     const pdfs = {};
     for (const id of Object.values(SHEET_IDS)) pdfs[id] = ensurePdf(id);
     const measured = runPack({ cmd: 'lines', pdfs });
-    const covered = (box, pageX) => {
-      const u = (pageX - box.x) / box.w;
-      return (box.masks || []).some((mask) => u >= mask.x - 0.006 && u <= mask.x + mask.w + 0.006);
+    const gapsOf = (crop) => {
+      const row = (crop.pieces || []).filter((piece) => (piece.dy || 0) < 0.15);
+      const ordered = row.slice().sort((a, b) => (b.at + b.box.w) - (a.at + a.box.w));
+      const gaps = [];
+      for (let index = 0; index < ordered.length - 1; index += 1) {
+        gaps.push(ordered[index].at - (ordered[index + 1].at + ordered[index + 1].box.w));
+      }
+      return gaps;
     };
-    for (const level of ['a', 'c']) {
+    const partPiece = (crop) => (crop.pieces || []).filter((piece) => piece.box.x < 0.88);
+    const covers = (piece, x) => x >= piece.box.x - 0.002 && x <= piece.box.x + piece.box.w + 0.002;
+    const one = (lines, spec) => api.answerCropsFromLines(lines, [spec])[0];
+    for (const level of ['a', 'b', 'c']) {
       const lines = measured.lines[SHEET_IDS[level]];
       const whole = api.answerCropsFromLines(lines, [3]);
-      assert.equal(whole[0].box.masks, undefined, level + ' whole answer');
-      const crops = api.answerCropsFromLines(lines, [
+      assert.equal(whole[0].pieces, undefined, level + ' whole answer was split');
+      assert.ok(whole[0].box.w > 0.9, level);
+      for (const spec of [
         { q: 3, part: 'ב' },
         { q: 8, part: 'ד' },
         { q: 19, part: 'ד' },
-      ]);
-      assert.deepEqual(crops.map((crop) => crop.q), [3, 8, 19], level);
-      for (const crop of crops) {
-        assert.equal(covered(crop.box, 0.87), true, level + ' q' + crop.q + ' still shows א');
-        assert.equal(covered(crop.box, 0.92), false, level + ' q' + crop.q + ' hid the number');
+      ]) {
+        const crop = one(lines, spec);
+        assert.ok(crop.pieces && crop.pieces.length >= 2, level + ' ' + spec.q + spec.part);
+        assert.equal(crop.box.masks, undefined);
+        for (const gap of gapsOf(crop)) assert.ok(gap > 0.008 && gap < 0.03, level + ' gap ' + gap);
+        assert.equal(partPiece(crop).some((piece) => covers(piece, 0.87)), false, level + ' q' + spec.q + ' kept א');
       }
-      const three = crops.find((crop) => crop.q === 3);
-      assert.equal(covered(three.box, 0.75), false, level + ' hid ב');
-      assert.equal(covered(three.box, 0.56), true, level + ' still shows ד');
+      for (const spec of [
+        { q: 1, part: 'א' },
+        { q: 3, part: 'א' },
+        { q: 15, part: 'א' },
+      ]) {
+        const crop = one(lines, spec);
+        const dots = lines.flatMap((line) => (line.chars || []).filter((glyph) => '·∙•'.includes(glyph.c)).map((glyph) => ({ ...glyph, y: glyph.y == null ? line.y : glyph.y })));
+        const hit = partPiece(crop).some((piece) => dots.some((dot) => (
+          dot.y >= piece.box.y && dot.y < piece.box.y + piece.box.h - 0.001
+          && dot.x >= piece.box.x - 0.001 && dot.x2 <= piece.box.x + piece.box.w + 0.001
+        )));
+        assert.equal(hit, false, level + ' ' + spec.q + spec.part + ' kept a separator');
+        const later = dots.filter((dot) => dot.x < 0.86);
+        if (spec.q === 15) {
+          assert.equal(partPiece(crop).some((piece) => covers(piece, 0.52)), false, level + ' 15א kept אחוזים');
+          assert.ok(later.length, level + ' 15 separators');
+        }
+        for (const gap of gapsOf(crop)) assert.ok(gap > 0.008 && gap < 0.03, level + ' gap ' + gap);
+      }
+    }
+    const linesA = measured.lines[SHEET_IDS.a];
+    const first = api.answerCropsFromLines(linesA, [
+      { q: 1, part: 'א' },
+      { q: 1, part: 'ג' },
+      { q: 1, part: 'ד' },
+    ]);
+    assert.equal(first.length, 1);
+    assert.equal(partPiece(first[0]).some((piece) => covers(piece, 0.75)), false, '1ב still in the crop');
+    for (const gap of gapsOf(first[0])) assert.ok(gap > 0.008 && gap < 0.03, 'wide gap ' + gap);
+    for (const level of ['b', 'c']) {
+      const six = one(measured.lines[SHEET_IDS[level]], { q: 6, part: 'ד' });
+      assert.ok(six.pieces.length >= 2, level);
+      assert.equal(partPiece(six).some((piece) => covers(piece, 0.87)), false, level + ' 6ד kept א');
+      for (const gap of gapsOf(six)) assert.ok(gap < 0.03, level + ' 6ד gap ' + gap);
     }
 
     const pageW = measured.pageSize[0];
@@ -843,7 +925,7 @@ print(int(np.any(arr < 80, axis=2).sum()))
       const sh = Math.max(1, slice.box.h * pageH);
       return { slice, dh: Math.max(1, Math.round(1000 * sh / sw)) };
     });
-    const answerSpecs = chosen.map((question) => ({ q: question.q, part: question.part || '' }));
+    const answerSpecs = chosen.map((question) => ({ q: question.q, part: question.part || '' })).concat([{ q: 15, part: 'א' }]);
     const answerCrops = api.answerCropsFromLines(measured.lines[SHEET_IDS.a], answerSpecs);
     const head = measured.lines[SHEET_IDS.a].find((line) => String(line.text).replace(/\s/g, '') === 'תשובותסופיות');
     const answerSlices = [
@@ -869,6 +951,7 @@ print(int(np.any(arr < 80, axis=2).sum()))
         page: crop.page,
         pdfId: SHEET_IDS.a,
         box: crop.box,
+        pieces: crop.pieces,
         gap: 6,
         kind: 'answer',
         block: 'answer-' + crop.q,
@@ -883,6 +966,7 @@ print(int(np.any(arr < 80, axis=2).sum()))
       gap: item.slice.gap,
       dh: item.dh,
       label: item.slice.label,
+      pieces: item.slice.pieces,
       probe: item.slice.probe || (item.slice.kind === 'row' && item.slice.block.endsWith(':q1') ? 'q1' : undefined),
     }));
     const scratch = join(tmpdir(), 'teacher-print-parts');
@@ -924,9 +1008,36 @@ print(int(np.any(arr < 80, axis=2).sum()))
     assert.ok(region(q1.png, betRel - 0.04, betRel + 0.06, 0.62, 0.95) < 12, '1ב text printed');
     assert.ok(region(q1.png, betRel - 0.04, betRel + 0.06, 0.08, 0.36) > 15, 'drawing beside 1ב missing');
     assert.ok(region(q1.png, rel(gimel.y + 0.008), rel(gimel.y + 0.02), 0.55, 0.95) > 15, '1ג text missing');
-    const ax = (pageX) => (pageX - 0.02) / 0.96;
-    assert.ok(region(ans3.png, 0.15, 0.85, ax(0.84), ax(0.89)) < 8, 'answer 3 still shows א');
-    assert.ok(region(ans3.png, 0.15, 0.85, ax(0.73), ax(0.78)) > 8, 'answer 3 hid ב');
+    const ink = (png) => {
+      const result = spawnSync('python3', ['-c', `
+import sys, pymupdf, numpy as np
+doc = pymupdf.open(sys.argv[1])
+page = doc[0]
+pix = page.get_pixmap(alpha=False)
+arr = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
+dark = np.any(arr < 80, axis=2)
+cols = dark.any(axis=0)
+idx = np.flatnonzero(cols)
+if idx.size == 0:
+    print('0 1 0 0')
+else:
+    span = (idx[-1] - idx[0] + 1) / cols.size
+    gaps = np.diff(idx)
+    max_gap = ((gaps.max() - 1) / cols.size) if gaps.size else 0
+    quiet = int(dark[:, :int(cols.size * 0.62)].sum())
+    print(f'{span:.4f} {max_gap:.4f} {int(dark.sum())} {quiet}')
+`, png], { encoding: 'utf8' });
+      assert.equal(result.status, 0, result.stderr || result.stdout);
+      const [span, maxGap, dark, quiet] = result.stdout.trim().split(/\s+/).map(Number);
+      return { span, maxGap, dark, quiet };
+    };
+    for (const id of ['ans-1', 'ans-3', 'ans-8', 'ans-15', 'ans-19']) {
+      const row = ink(rendered.pages.flatMap((page) => page.cropDark || []).find((item) => item.id === id).png);
+      assert.ok(row.dark > 20, id + ' empty');
+      assert.ok(row.maxGap < 0.04, id + ' wide gap ' + row.maxGap);
+      assert.ok(row.span < 0.55, id + ' still the full line ' + row.span);
+      if (id !== 'ans-1') assert.equal(row.quiet, 0, id + ' leftover ink ' + row.quiet);
+    }
     mkdirSync(ARTIFACTS, { recursive: true });
     const copied = spawnSync('bash', ['-c', `mkdir -p ${ARTIFACTS}/parts && cp -f ${scratch}/* ${ARTIFACTS}/parts/`], { encoding: 'utf8' });
     assert.equal(copied.status, 0, copied.stderr);
