@@ -328,6 +328,76 @@ describe('Noam AI production spec', () => {
     assert.equal(String(turn.answer).includes('30-60-90'), false);
   });
 
+  it('records a lesson length on the first sentence and asks only for the missing slots', () => {
+    const page = { kind: 'home', path: '/', title: 'בית' };
+    for (const message of ['A 30-minute lesson', 'שיעור של 30 דקות', 'a 30 minute lesson']) {
+      const turn = resolveDeterministicTurn({ message, page }, { catalog, guide, teacherIndex });
+      assert.equal(turn && turn.source, 'exercise-intake', message);
+      assert.equal(turn.intake.minutes, 30, message);
+      assert.equal(turn.intake.count, null, message);
+      assert.equal(turn.intake.level, null, message);
+      assert.equal(turn.intake.grade, null, message);
+      assert.equal(turn.intake.topicId, '', message);
+      assert.equal(turn.intake.waiting, 'count', message);
+      assert.equal(String(turn.answer).includes('30-60-90'), false, message);
+      assert.match(turn.answer, /כמה סעיפים/, message);
+      assert.equal(/כמה דקות/.test(turn.answer), false, message);
+    }
+    const page9 = { path: '/grade-9', title: 'כיתה ט׳' };
+    let turn = resolveDeterministicTurn({ message: 'שיעור של 30 דקות', page: page9 }, { teacherIndex });
+    turn = resolveDeterministicTurn({ message: '4', page: page9, intake: turn.intake }, { teacherIndex });
+    assert.equal(turn.intake.minutes, 30);
+    assert.equal(turn.intake.waiting, 'level');
+    turn = resolveDeterministicTurn({ message: 'רמה א׳', page: page9, intake: turn.intake }, { teacherIndex });
+    assert.equal(turn.intake.waiting, 'grade');
+    assert.equal(/כמה דקות/.test(turn.answer), false);
+    turn = resolveDeterministicTurn({ message: 'כיתה ט׳', page: page9, intake: turn.intake }, { teacherIndex });
+    assert.equal(turn.intake.grade, 9);
+    assert.equal(turn.intake.waiting, 'topicId');
+    assert.equal(turn.intake.topicId, '');
+    assert.equal(String(turn.answer).includes('30-60-90'), false);
+    turn = resolveDeterministicTurn({ message: 'דלתון', page: page9, intake: turn.intake }, { teacherIndex });
+    assert.equal(turn.intake, null);
+    assert.equal(turn.wizard.minutes, 30);
+    assert.equal(turn.wizard.topic === '37', false);
+    assert.match(turn.answer, /דלתון/);
+    assert.match(turn.answer, /30 דקות/);
+  });
+
+  it('finds the 30-60-90 triangle from the first sentence without treating it as 30 minutes', () => {
+    const page = { kind: 'home', path: '/', title: 'בית' };
+    for (const message of ['30-60-90 triangle', 'משולש 30-60-90', 'משולש 30–60–90']) {
+      const turn = resolveDeterministicTurn({ message, page }, { catalog, guide, teacherIndex });
+      assert.equal(turn && turn.source, 'exercise-intake', message);
+      assert.equal(turn.intake.grade, 9, message);
+      assert.equal(turn.intake.topicId, '37', message);
+      assert.match(turn.intake.topicLabel, /30-60-90/, message);
+      assert.equal(turn.intake.minutes, null, message);
+      assert.equal(turn.intake.count, null, message);
+      assert.equal(turn.intake.level, null, message);
+      assert.equal(turn.intake.waiting, 'count', message);
+      assert.match(turn.answer, /כמה סעיפים/, message);
+      assert.equal(/איזה נושא/.test(turn.answer), false, message);
+    }
+    let turn = resolveDeterministicTurn(
+      { message: 'A 30-minute lesson about a 30-60-90 triangle', page },
+      { teacherIndex }
+    );
+    assert.equal(turn.intake.minutes, 30);
+    assert.equal(turn.intake.grade, 9);
+    assert.equal(turn.intake.topicId, '37');
+    assert.equal(turn.intake.waiting, 'count');
+    turn = resolveDeterministicTurn({ message: '4', page, intake: turn.intake }, { teacherIndex });
+    assert.equal(turn.intake.waiting, 'level');
+    turn = resolveDeterministicTurn({ message: 'רמה א׳', page, intake: turn.intake }, { teacherIndex });
+    assert.equal(turn.wizard.minutes, 30);
+    assert.equal(turn.wizard.grade, '9');
+    assert.equal(turn.wizard.topic, '37');
+    assert.equal(turn.wizard.level, 'a');
+    assert.equal(turn.exerciseIds.length, 4);
+    assert.match(turn.answer, /30-60-90/);
+  });
+
   it('enables the recaptcha bypass only on the request host, with a constant-time compare', () => {
     const guardSrc = readFileSync(new URL('../../../noam-ai/site-companion/bot-guard.js', import.meta.url), 'utf8');
     const previewHost = 'jrxwre-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com';

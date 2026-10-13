@@ -66,10 +66,26 @@ function clipState(prior) {
   };
 }
 
+const TRIANGLE_TRIPLE = /30\s*[-–—]\s*60\s*[-–—]\s*90/;
+
+function withoutTriangle(text) {
+  return String(text || "").replace(new RegExp(TRIANGLE_TRIPLE.source, "g"), " ");
+}
+
+function mentionsTriangleTriple(text) {
+  return TRIANGLE_TRIPLE.test(String(text || ""));
+}
+
 export function isExercisePickRequest(message, intake) {
   const state = clipState(intake);
   if (state.active) return true;
-  return PICK_INTENT.test(String(message || ""));
+  const text = String(message || "");
+  if (PICK_INTENT.test(text)) return true;
+  // A lesson length, or an explicit 30-60-90 triangle, starts the builder
+  // even when it is the first sentence.
+  if (mentionsTriangleTriple(text)) return true;
+  if (minutesFrom(text) != null && /שיעור|lesson|דקות|minutes?/i.test(text)) return true;
+  return false;
 }
 
 function levelFrom(text) {
@@ -115,10 +131,16 @@ function countFrom(text) {
 }
 
 function minutesFrom(text) {
-  const source = String(text || "");
+  // The 30 in "30-60-90" is an angle, not a lesson length.
+  const source = withoutTriangle(text);
   const numbered = source.match(/(\d{1,3})\s*דקות/);
   if (numbered) {
     const minutes = Number(numbered[1]);
+    if (minutes >= 5 && minutes <= 180) return minutes;
+  }
+  const english = source.match(/(\d{1,3})\s*[-–—]?\s*minutes?\b/i);
+  if (english) {
+    const minutes = Number(english[1]);
     if (minutes >= 5 && minutes <= 180) return minutes;
   }
   const folded = fold(source);
@@ -126,6 +148,13 @@ function minutesFrom(text) {
   if (folded.includes("שעה וחצי")) return 90;
   if (folded.includes("שעה")) return 60;
   return null;
+}
+
+function stripLessonLength(text) {
+  return withoutTriangle(text)
+    .replace(/\d{1,3}\s*דקות/g, " ")
+    .replace(/\d{1,3}\s*[-–—]?\s*minutes?\b/gi, " ")
+    .replace(/חצי שעה|שעה וחצי/g, " ");
 }
 
 function topicsFor(index, grade) {
@@ -194,6 +223,20 @@ function exercisableTopicHits(index, query) {
     }
   }
   return exact.length ? exact : loose;
+}
+
+function triangleHits(index) {
+  const seen = new Set();
+  const hits = [];
+  for (const sheet of index || []) {
+    if (!(sheet.questions || []).length) continue;
+    if (!fold(sheet.topic).includes("30-60-90")) continue;
+    const id = String(sheet.grade) + ":" + String(sheet.topicId);
+    if (seen.has(id)) continue;
+    seen.add(id);
+    hits.push(sheet);
+  }
+  return hits;
 }
 
 function matchTopics(index, grade, query) {
@@ -297,10 +340,24 @@ function absorb(state, message, index) {
     const value = Number(text);
     if (value >= 5 && value <= 180) state.minutes = value;
   }
-  // Topic search runs only while the builder is waiting for a topic.
-  // A lesson length such as 30 must not select "30-60-90".
-  if (state.waiting === "topicId") {
-    const matches = matchTopics(index, state.grade, fold(text));
+  // An explicit 30-60-90 triangle selects that sheet, including on the
+  // first sentence. A lesson length is removed before any other topic search
+  // so "30 דקות" cannot select the triangle.
+  if (mentionsTriangleTriple(text)) {
+    const hits = triangleHits(index);
+    if (hits.length === 1) {
+      state.grade = Number(hits[0].grade);
+      state.topicId = String(hits[0].topicId);
+      state.topicLabel = String(hits[0].topic || "");
+    } else if (hits.length > 1) {
+      state.topicMatches = hits.map((sheet) => ({
+        grade: Number(sheet.grade),
+        topicId: String(sheet.topicId),
+        topic: String(sheet.topic || ""),
+      }));
+    }
+  } else if (state.waiting === "topicId") {
+    const matches = matchTopics(index, state.grade, fold(stripLessonLength(text)));
     if (matches.length === 1) {
       state.topicId = matches[0].topicId;
       state.topicLabel = matches[0].topic;
