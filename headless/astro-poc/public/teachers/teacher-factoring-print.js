@@ -87,6 +87,7 @@ let state = {
   grade: '9',
   topic: '2',
   level: 'all',
+  wizard: 'grade',
 };
 let history = [];
 let rendering = false;
@@ -308,6 +309,7 @@ function render() {
   if (prepareHint) prepareHint.textContent = elementary ? 'הדף המלא מהמקור, בלי סימון.' : 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
   if (!ok) {
     paintSourceLine();
+    applyWizard();
     return;
   }
   if (elementary) {
@@ -344,6 +346,7 @@ function render() {
   $('undo').disabled = history.length === 0;
   paintSourceLine();
   if (!elementary) paintThumbs();
+  applyWizard();
 }
 
 function paintSourceLine() {
@@ -366,9 +369,9 @@ function paintSourceLine() {
   line.hidden = false;
   const grade = gradeRecord(state.grade);
   const topic = currentTopic();
-  const levels = [...new Set(chosen.map((meta) => meta.levelLabel))].join(' · ');
+  const levels = [...new Set(chosen.map((meta) => levelPrintName(meta.level, meta.levelLabel)))].join(' · ');
   const title = `${topic ? topic.title : ''} · ${grade ? grade.label : ''} · ${levels}`;
-  const links = chosen.map((meta) => `<a href="${escapeHTML(meta.pdfUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(chosen.length > 1 ? meta.levelLabel : 'פתיחת דף המקור')} ↗</a>`).join('');
+  const links = chosen.map((meta) => `<a href="${escapeHTML(meta.pdfUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(chosen.length > 1 ? levelPrintName(meta.level, meta.levelLabel) : 'פתיחת דף המקור')} ↗</a>`).join('');
   line.innerHTML = `<span>${escapeHTML(title)}</span>${links}`;
 }
 
@@ -670,11 +673,19 @@ function clearDrawingStroke(question, box) {
   return mask === box.mask ? box : { ...box, mask };
 }
 
+function partRank(part) {
+  const order = 'אבגדהוזחטיכלמנסעפצקרשת';
+  const index = order.indexOf(part || '');
+  return index < 0 ? 99 : index;
+}
+
 /**
  * A part printed alone still includes the whole shared drawing: an earlier
- * overlapping crop, or a figure whose top sits above this part (the house roof).
- * The crop starts on a white row, so a label beside the roof is not cut in half.
- * A drawing that sticks a little past the next label stays, and that label is masked.
+ * overlapping crop of the adjacent part, or a figure whose top sits above this
+ * part (the house roof). A tall earlier row that runs through later parts
+ * (question 19's drawing measured onto 19א) is not pulled in, so an unpicked
+ * part stays off the page. The crop starts on a white row, so a label beside
+ * the roof is not cut in half.
  */
 function coverSharedFigure(question, box, laterSelected) {
   const page = box.page || question.page;
@@ -690,8 +701,11 @@ function coverSharedFigure(question, box, laterSelected) {
       if (!other || (other.page || item.page) !== page) return;
       const otherEnd = boxEnd(other);
       if (other.y < top - 0.003 && otherEnd > top + 0.003) {
-        top = Math.min(top, other.y);
-        end = Math.max(end, otherEnd);
+        const adjacent = Math.abs(partRank(item.part) - partRank(question.part)) === 1;
+        // Only an adjacent part may pull the crop up into its text. A drawing
+        // that continues to the bottom of a later part still extends the end.
+        if (adjacent) top = Math.min(top, other.y);
+        if (otherEnd > end) end = otherEnd;
       }
       const mask = absoluteMask(other);
       if (mask) masks.push(mask);
@@ -708,15 +722,19 @@ function coverSharedFigure(question, box, laterSelected) {
     if (ownFigure.y0 < top - 0.003) top = ownFigure.y0;
   }
   // figure.y0 can sit halfway through the first part's label. Start on that part's white row.
-  let lineTop = top;
-  (SOURCE.questions || []).forEach((item) => {
-    if (!item || item.q !== question.q) return;
-    questionRows(item).forEach((other) => {
-      if (!other || (other.page || item.page) !== page) return;
-      if (other.y < top - 0.0004 && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
+  // Only after the crop was already lifted. A tall earlier row (19א) must not
+  // swallow a later part that was never pulled upward.
+  if (top < box.y - 0.0004) {
+    let lineTop = top;
+    (SOURCE.questions || []).forEach((item) => {
+      if (!item || item.q !== question.q) return;
+      questionRows(item).forEach((other) => {
+        if (!other || (other.page || item.page) !== page) return;
+        if (other.y < top - 0.0004 && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
+      });
     });
-  });
-  top = lineTop;
+    top = lineTop;
+  }
   if (end > originalEnd + 0.0005) {
     let nextTop = null;
     (SOURCE.questions || []).forEach((item) => {
@@ -735,18 +753,20 @@ function coverSharedFigure(question, box, laterSelected) {
 
 function shortSlices(chosen) {
   const ordered = chosen.slice().sort((a, b) => (
-    a.page - b.page || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
+    a.page - b.page || (a.q - b.q) || partRank(a.part) - partRank(b.part) || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
   ));
-  const slices = [{ page: SOURCE.headerCrop.page, box: SOURCE.headerCrop, gap: 14, block: 'header', kind: 'header' }];
+  const slices = [];
   let lastQuestion = null;
+  const GLYPH_PAD = 0.0035;
   ordered.forEach((question) => {
-    const block = 'q' + question.q;
+    const block = (question.source && question.source.pdfId ? question.source.pdfId + ':' : '') + 'q' + question.q;
     if (question.q !== lastQuestion) {
-      if (question.stem) slices.push({ page: question.stem.page || question.page, box: question.stem, gap: 10, block, kind: 'stem' });
+      if (question.stem) slices.push({ page: question.stem.page || question.page, box: question.stem, gap: 10, block, kind: 'stem', pdfId: SOURCE && SOURCE.pdfId });
       lastQuestion = question.q;
     }
     const rows = question.rows && question.rows.length ? question.rows : [question.row];
     rows.forEach((box) => {
+      if (!box) return;
       const page = box.page || question.page;
       let next = { ...box, page };
       const prev = previousQuestionRow(slices, block, page);
@@ -756,7 +776,16 @@ function shortSlices(chosen) {
       ));
       // The first selected part of this question can still own a shared drawing.
       if (!prev) next = coverSharedFigure(question, next, laterSelected);
-      if (prev && next.y < boxEnd(prev.box) - 0.003) {
+      const originalTop = box.y;
+      // A measured row can start inside the letter tops (6ד). Lift a short row
+      // onto the white gap above it. Rows already expanded to a drawing stay put.
+      const clipsInk = question.inkTop != null && Math.abs(question.inkTop - originalTop) < 0.002;
+      if (clipsInk && !(next.y < originalTop - 0.001) && next.h < 0.08) {
+        const lifted = Math.max(0, next.y - GLYPH_PAD);
+        const end = boxEnd(next);
+        next = next.mask ? withSpan(next, lifted, end, [absoluteMask(next)]) : { ...next, y: lifted, h: end - lifted };
+      }
+      if (prev && next.y < boxEnd(prev.box) - 0.008) {
         const prevEnd = boxEnd(prev.box);
         // Fully covered by the previous part: printing it again repeats its text.
         if (boxEnd(next) <= prevEnd + 0.004) return;
@@ -764,14 +793,22 @@ function shortSlices(chosen) {
         if (height < 0.004) return;
         next = { ...next, y: prevEnd, h: height };
       }
+      // Running source footers (page number, site line) sit at about y 0.949.
+      // A last part measured to the page bottom must not take them with it.
+      const FOOTER_LIMIT = 0.94;
+      if (boxEnd(next) > FOOTER_LIMIT) {
+        const kept = FOOTER_LIMIT - next.y;
+        if (kept < 0.004) return;
+        const end = FOOTER_LIMIT;
+        next = next.mask ? withSpan(next, next.y, end, [absoluteMask(next)]) : { ...next, h: end - next.y };
+      }
       const last = slices[slices.length - 1];
       const dup = last && last.kind === 'row' && last.page === page && last.box.x === next.x && last.box.y === next.y && last.box.w === next.w && last.box.h === next.h;
       // Abutting rows overlap by 2px so the join is not a white seam.
       const gap = prev && next.y <= boxEnd(prev.box) + 0.006 ? -2 : 4;
-      if (!dup) slices.push({ page, box: clearDrawingStroke(question, next), gap, block, kind: 'row' });
+      if (!dup) slices.push({ page, box: clearDrawingStroke(question, next), gap, block, kind: 'row', pdfId: SOURCE && SOURCE.pdfId });
     });
   });
-  slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16, block: 'footer', kind: 'footer' });
   return slices;
 }
 
@@ -819,14 +856,43 @@ function splitQuestion(items, limit) {
   return chunks.map((chunk) => (contentHeight(chunk) > limit ? shrinkTo(chunk, limit) : chunk));
 }
 
-function packShort(measured) {
-  const PAGE_H = 1440;
-  if (contentHeight(measured) <= PAGE_H || PAGE_H / contentHeight(measured) >= 0.85) {
-    return [shrinkTo(measured, PAGE_H)];
-  }
+const SHEET_PAGE_H = 1440;
+const SHEET_BASAD_H = 40;
+const SHEET_TITLE_H = 86;
+
+function sheetContentLimit(pageIndex, reserveTitle) {
+  return SHEET_PAGE_H - SHEET_BASAD_H - (reserveTitle && pageIndex === 0 ? SHEET_TITLE_H : 0);
+}
+
+function levelPrintName(level, label) {
+  if (level === 'a') return 'רמה א׳';
+  if (level === 'b') return 'רמה ב׳';
+  if (level === 'c' || String(label || '').includes('מצוינות')) return 'מצוינות';
+  return label || '';
+}
+
+function orderPrintQuestions(chosen) {
+  return chosen.slice().sort((a, b) => {
+    const rank = { a: 0, b: 1, c: 2, one: 3 };
+    const sa = a.source || {};
+    const sb = b.source || {};
+    const lr = (rank[sa.level] ?? 9) - (rank[sb.level] ?? 9);
+    if (lr) return lr;
+    const qr = (Number(a.q) || 0) - (Number(b.q) || 0);
+    if (qr) return qr;
+    const pr = partRank(a.part) - partRank(b.part);
+    if (pr) return pr;
+    return String(a.id || '').localeCompare(String(b.id || ''), 'he');
+  });
+}
+
+function packShort(measured, options) {
+  const reserveTitle = !(options && options.answers);
   const blocks = [];
   measured.forEach((item) => {
-    if (item.slice.block === 'footer') return;
+    if (!item || !item.slice) return;
+    if (item.slice.kind === 'header' || item.slice.kind === 'footer') return;
+    if (item.slice.block === 'header' || item.slice.block === 'footer') return;
     const last = blocks[blocks.length - 1];
     if (last && last.id === item.slice.block) last.items.push(item);
     else blocks.push({ id: item.slice.block, items: [item] });
@@ -834,59 +900,155 @@ function packShort(measured) {
   const pages = [];
   let page = [];
   blocks.forEach((block) => {
-    const parts = contentHeight(block.items) > PAGE_H ? splitQuestion(block.items, PAGE_H) : [block.items];
-    parts.forEach((part) => {
-      if (page.length && contentHeight(page.concat(part)) > PAGE_H) {
-        pages.push(page);
-        page = [];
-      }
-      page = page.concat(part);
-    });
+    let items = block.items;
+    const limitHere = sheetContentLimit(pages.length, reserveTitle);
+    if (page.length && contentHeight(page.concat(items)) > limitHere) {
+      pages.push(page);
+      page = [];
+    }
+    const limit = sheetContentLimit(pages.length, reserveTitle);
+    if (contentHeight(items) > limit) items = shrinkTo(items, limit);
+    page = page.concat(items);
   });
   if (page.length) pages.push(page);
-  const footer = measured.filter((item) => item.slice.block === 'footer');
   if (!pages.length) pages.push([]);
-  pages[pages.length - 1] = shrinkTo(pages[pages.length - 1].concat(footer), PAGE_H);
   return pages;
 }
 
-async function paintShort(root, slices) {
+function answerCropsFromLines(lines, wanted) {
+  const want = new Set((wanted || []).map((n) => String(n)));
+  const pages = new Map();
+  (lines || []).forEach((line) => {
+    if (!pages.has(line.page)) pages.set(line.page, []);
+    pages.get(line.page).push(line);
+  });
+  const crops = [];
+  pages.forEach((pageLines, page) => {
+    // The answer page opens with the heading "תשובות סופיות". A question that
+    // merely mentions התשובות is not that page.
+    const heading = pageLines.some((line) => {
+      const text = String(line.text).replace(/\s/g, '');
+      return text.startsWith('תשובות') && text.length < 24;
+    });
+    if (!heading) return;
+    const marks = pageLines.map((line) => {
+      const match = String(line.text).trim().match(/^(\d{1,2})\.?$/);
+      return match ? { n: match[1], y: line.y, y2: line.y2 } : null;
+    }).filter(Boolean).sort((a, b) => a.y - b.y);
+    marks.forEach((mark, index) => {
+      if (!want.has(mark.n)) return;
+      const next = marks[index + 1];
+      const y = Math.max(0.04, mark.y - 0.004);
+      let y2 = next ? Math.min(next.y - 0.006, 0.94) : Math.min(mark.y2 + 0.02, 0.94);
+      if (y2 - y < 0.012) y2 = Math.min(0.94, y + 0.02);
+      crops.push({ page, q: Number(mark.n), box: { x: 0.03, y, w: 0.94, h: Math.max(0.012, y2 - y) } });
+    });
+  });
+  return crops;
+}
+
+function worksheetTitle(chosen) {
+  const topics = [];
+  chosen.forEach((question) => {
+    const topic = question.source && (question.source.topic || question.source.title);
+    if (topic && !topics.includes(topic)) topics.push(topic);
+  });
+  return topics[0] || (SOURCE && SOURCE.topic) || 'דף תרגול';
+}
+
+async function measureSlices(slices) {
   const OUT_W = 1000;
   const measured = [];
   for (const slice of slices) {
-    const bitmap = await pageBitmap(slice.page);
-    const sw = slice.box.w * bitmap.width;
-    const sh = slice.box.h * bitmap.height;
+    if (slice.kind === 'level') {
+      measured.push({ slice, bitmap: null, sw: OUT_W, sh: 36, dh: 36 });
+      continue;
+    }
+    const bitmap = await pageBitmap(slice.page, sheets.get(slice.pdfId) || SOURCE);
+    const sw = Math.max(1, slice.box.w * bitmap.width);
+    const sh = Math.max(1, slice.box.h * bitmap.height);
     measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(OUT_W * sh / sw)) });
   }
-  const packs = packShort(measured);
+  return measured;
+}
+
+function paintPageChrome(ctx, width, pageIndex, pageCount, title) {
+  ctx.fillStyle = '#22305a';
+  ctx.font = '22px Heebo, Arial, sans-serif';
+  ctx.direction = 'rtl';
+  ctx.textAlign = 'right';
+  ctx.fillText('בס״ד', width - 28, 28);
+  if (pageIndex !== 0) return SHEET_BASAD_H;
+  ctx.font = '28px Heebo, Arial, sans-serif';
+  ctx.fillText(title, width - 28, 68);
+  ctx.font = '20px Heebo, Arial, sans-serif';
+  ctx.fillText('שם:', width - 28, 108);
+  ctx.strokeStyle = '#22305a';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(28, 112);
+  ctx.lineTo(width - 90, 112);
+  ctx.stroke();
+  return SHEET_BASAD_H + SHEET_TITLE_H;
+}
+
+function paintMeasuredPage(ctx, items, top) {
+  let y = top;
+  items.forEach((item, itemIndex) => {
+    if (itemIndex) y += item.slice.gap;
+    if (item.slice.kind === 'level') {
+      ctx.fillStyle = '#22305a';
+      ctx.font = '22px Heebo, Arial, sans-serif';
+      ctx.direction = 'rtl';
+      ctx.textAlign = 'right';
+      ctx.fillText(item.slice.label || '', ctx.canvas.width - 28, y + 26);
+      y += item.dh;
+      return;
+    }
+    const sx = item.slice.box.x * item.bitmap.width;
+    const sy = item.slice.box.y * item.bitmap.height;
+    ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, ctx.canvas.width, item.dh);
+    const mask = item.slice.box.mask;
+    if (mask) {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(mask.x * ctx.canvas.width, y + mask.y * item.dh, mask.w * ctx.canvas.width, mask.h * item.dh);
+    }
+    y += item.dh;
+  });
+}
+
+async function paintPacked(root, exerciseMeasured, answerMeasured, title) {
+  const OUT_W = 1000;
+  const exercisePages = packShort(exerciseMeasured);
+  const answerPages = answerMeasured.length ? packShort(answerMeasured, { answers: true }) : [];
+  const packs = exercisePages.concat(answerPages);
+  const answerStart = exercisePages.length;
   root.innerHTML = packs.map((_, index) => (
-    `<figure class="crop-sheet"><canvas></canvas><figcaption>דף מצומצם ${index + 1} מתוך ${packs.length} · ${escapeHTML(SOURCE.title)}</figcaption></figure>`
+    `<figure class="crop-sheet" data-sheet-page="${index + 1}" data-answers="${index >= answerStart ? '1' : '0'}"><canvas></canvas><figcaption>${index >= answerStart ? 'תשובות' : 'דף תרגול'} ${index + 1} מתוך ${packs.length}</figcaption></figure>`
   )).join('');
   const canvases = root.querySelectorAll('canvas');
+  if (document.fonts && document.fonts.load) {
+    try { await document.fonts.load('28px Heebo'); } catch (error) {}
+  }
   packs.forEach((items, index) => {
-    let height = 0;
-    items.forEach((item, itemIndex) => { height += (itemIndex ? item.slice.gap : 0) + item.dh; });
+    const answers = index >= answerStart;
+    const chrome = answers ? SHEET_BASAD_H : (index === 0 ? SHEET_BASAD_H + SHEET_TITLE_H : SHEET_BASAD_H);
+    let body = 0;
+    items.forEach((item, itemIndex) => { body += (itemIndex ? item.slice.gap : 0) + item.dh; });
     const canvas = canvases[index];
     canvas.width = OUT_W;
-    canvas.height = height;
+    canvas.height = Math.max(chrome + body, 1);
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, OUT_W, height);
-    let y = 0;
-    items.forEach((item, itemIndex) => {
-      if (itemIndex) y += item.slice.gap;
-      const sx = item.slice.box.x * item.bitmap.width;
-      const sy = item.slice.box.y * item.bitmap.height;
-      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
-      const mask = item.slice.box.mask;
-      if (mask) {
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(mask.x * OUT_W, y + mask.y * item.dh, mask.w * OUT_W, mask.h * item.dh);
-      }
-      y += item.dh;
-    });
+    ctx.fillRect(0, 0, OUT_W, canvas.height);
+    const usedChrome = paintPageChrome(ctx, OUT_W, answers ? 1 : index, packs.length, answers ? 'תשובות' : title);
+    paintMeasuredPage(ctx, items, usedChrome);
   });
+}
+
+async function paintShort(root, slices) {
+  const measured = await measureSlices(slices);
+  await paintPacked(root, measured, [], worksheetTitle([]));
 }
 
 function groupsOf(chosen) {
@@ -901,15 +1063,100 @@ function groupsOf(chosen) {
   return groups;
 }
 
-async function paintAllShort(root, chosen) {
-  const holder = document.createElement('div');
-  for (const group of groupsOf(chosen)) {
-    SOURCE = group.source;
-    const part = document.createElement('div');
-    await paintShort(part, shortSlices(group.questions));
-    while (part.firstChild) holder.appendChild(part.firstChild);
+async function sheetTextLines(source) {
+  const pdf = await loadPdf(source);
+  const lines = [];
+  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+    const page = await pdf.getPage(pageNumber);
+    const viewport = page.getViewport({ scale: 1 });
+    const content = await page.getTextContent();
+    content.items.forEach((item) => {
+      if (!item.str || !String(item.str).trim()) return;
+      const baseline = item.transform[5];
+      const height = item.height || Math.abs(item.transform[3]) || 8;
+      lines.push({
+        page: pageNumber,
+        y: 1 - (baseline + height) / viewport.height,
+        y2: 1 - baseline / viewport.height,
+        text: item.str,
+      });
+    });
   }
-  root.replaceChildren(...holder.childNodes);
+  return lines;
+}
+
+async function answerMeasured(groups) {
+  const slices = [];
+  for (const group of groups) {
+    let lines = [];
+    try {
+      lines = await sheetTextLines(group.source);
+    } catch (error) {
+      continue;
+    }
+    const wanted = [...new Set(group.questions.map((question) => question.q))];
+    const crops = answerCropsFromLines(lines, wanted);
+    if (!crops.length) continue;
+    const head = lines.find((line) => {
+      const text = String(line.text).replace(/\s/g, '');
+      return text.startsWith('תשובות') && text.length < 24;
+    });
+    if (head) {
+      slices.push({
+        page: head.page,
+        pdfId: group.source.pdfId,
+        box: { x: 0.18, y: Math.max(0.04, head.y - 0.008), w: 0.64, h: 0.028 },
+        gap: 8,
+        block: 'answers-head:' + group.source.pdfId,
+        kind: 'answer',
+      });
+    }
+    crops.forEach((crop) => {
+      slices.push({
+        page: crop.page,
+        pdfId: group.source.pdfId,
+        box: crop.box,
+        gap: 6,
+        block: 'answer:' + group.source.pdfId + ':' + crop.q,
+        kind: 'answer',
+      });
+    });
+  }
+  return measureSlices(slices);
+}
+
+async function paintAllShort(root, chosen) {
+  const ordered = orderPrintQuestions(chosen.filter((question) => question && question.source));
+  const slices = [];
+  const groups = [];
+  let lastLevel = null;
+  ordered.forEach((question) => {
+    SOURCE = question.source;
+    const part = shortSlices([question]);
+    if (!part.length) return;
+    const known = groups.find((group) => group.source.pdfId === question.source.pdfId);
+    if (known) known.questions.push(question);
+    else groups.push({ source: question.source, questions: [question] });
+    if (question.source.level !== lastLevel) {
+      slices.push({
+        page: part[0].page,
+        pdfId: question.source.pdfId,
+        box: { x: 0, y: 0, w: 1, h: 0.02 },
+        gap: 8,
+        block: part[0].block,
+        kind: 'level',
+        label: levelPrintName(question.source.level, question.source.levelLabel),
+      });
+      lastLevel = question.source.level;
+    }
+    part.forEach((slice) => {
+      slice.pdfId = slice.pdfId || question.source.pdfId;
+      slices.push(slice);
+    });
+  });
+  const exerciseMeasured = await measureSlices(slices);
+  const answers = await answerMeasured(groups);
+  await paintPacked(root, exerciseMeasured, answers, worksheetTitle(ordered));
 }
 
 function markedHTML(chosen) {
@@ -933,7 +1180,8 @@ function metaHTML(chosen, cfg) {
     if (!source) return;
     grades.add(source.gradeLabel || (gradeRecord(source.grade) || {}).label || '');
     topics.add(source.topic || source.title || '');
-    if (source.levelLabel) levels.add(source.levelLabel);
+    const levelName = levelPrintName(source.level, source.levelLabel);
+    if (levelName) levels.add(levelName);
   });
   const scenarioName = state.scenario === 'other' ? 'אחר' : cfg.label;
   return `<div class="plan-meta"><span>${escapeHTML([...grades].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...topics].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...levels].join(' · '))}</span><span>${escapeHTML(scenarioName)}</span></div>`;
@@ -1164,6 +1412,66 @@ async function loadCurrentTopic() {
   }
 }
 
+const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
+
+function applyWizard() {
+  if (!$('wizard-bar')) return;
+  const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'grade';
+  state.wizard = step;
+  document.body.dataset.wizard = step;
+  document.querySelectorAll('[data-wiz]').forEach((el) => {
+    el.classList.toggle('wiz-off', el.dataset.wiz !== step);
+  });
+  const setup = $('setup-panel');
+  if (setup) setup.classList.toggle('wiz-off', step === 'pick' || step === 'result');
+  const labels = {
+    grade: 'כיתה',
+    topic: 'נושא',
+    level: 'רמה',
+    scenario: 'מה קורה בשיעור?',
+    style: 'איך ניגשים לתרגול?',
+    pick: 'בחירת סעיפים',
+    result: 'הדף להדפסה',
+  };
+  $('wizard-label').textContent = labels[step];
+  $('wizard-back').hidden = WIZARD_ORDER.indexOf(step) <= 0;
+  $('wizard-next').hidden = step === 'result';
+  $('wizard-next').textContent = step === 'pick' ? 'אל הדף' : 'המשך';
+}
+
+function copyCanvases(from, to) {
+  to.replaceChildren();
+  from.querySelectorAll('canvas').forEach((canvas) => {
+    const figure = document.createElement('figure');
+    figure.className = 'crop-sheet';
+    const copy = document.createElement('canvas');
+    copy.width = canvas.width;
+    copy.height = canvas.height;
+    copy.getContext('2d').drawImage(canvas, 0, 0);
+    figure.appendChild(copy);
+    to.appendChild(figure);
+  });
+}
+
+async function showWizardResult() {
+  const preview = $('wizard-preview');
+  if (!preview) return;
+  if (!state.selected.length) {
+    announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
+    state.wizard = 'pick';
+    applyWizard();
+    return;
+  }
+  preview.textContent = 'מכינים את הדף…';
+  printMode = band() === 'elementary' ? 'marked' : 'short';
+  try {
+    await updatePrint();
+    copyCanvases($('print-area'), preview);
+  } catch (error) {
+    preview.textContent = 'דף המקור לא נטען, ולכן אין הדפסה.';
+  }
+}
+
 function bind() {
   $('questions').addEventListener('change', (event) => {
     const box = event.target;
@@ -1239,6 +1547,21 @@ function bind() {
   $('teacher-note').addEventListener('input', () => clearPreparedPrint());
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
+  if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
+    applyWizard();
+    if (state.wizard === 'result') await showWizardResult();
+  });
+  if ($('wizard-back')) $('wizard-back').addEventListener('click', () => {
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    state.wizard = WIZARD_ORDER[Math.max(0, index - 1)];
+    applyWizard();
+  });
+  if ($('wizard-print')) $('wizard-print').addEventListener('click', async () => {
+    try { await updatePrint(); } catch (error) { announce('דף המקור לא נטען.'); return; }
+    window.print();
+  });
   $('print-dialog').addEventListener('close', () => {
     const opener = printOpener;
     if (!opener) return;
