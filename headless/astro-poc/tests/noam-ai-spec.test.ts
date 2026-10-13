@@ -56,11 +56,16 @@ describe('Noam AI production spec', () => {
   });
 
   it('asks count, level, lesson length, grade, and topic, then picks that many existing questions', () => {
-    const turn = advanceExerciseIntake(
+    const asked = advanceExerciseIntake(
       'תבחר 2 תרגילים בדלתון לכיתה ט׳ רמה א׳ לשיעור של 30 דקות',
       null,
-      teacherIndex
+      teacherIndex,
+      { path: '/grade-3', title: 'כיתה ג׳' }
     );
+    assert.equal(asked.exerciseIds.length, 0);
+    assert.equal(asked.intake.topicId, '');
+    assert.match(asked.answer, /נושא/);
+    const turn = advanceExerciseIntake('דלתון', asked.intake, teacherIndex, { path: '/grade-3' });
     assert.equal(turn.source, 'exercise-intake');
     assert.equal(turn.exerciseIds.length, 2);
     assert.equal(turn.wizard && turn.wizard.count, 2);
@@ -106,7 +111,9 @@ describe('Noam AI production spec', () => {
       levelLabel: 'רמה א׳',
       questions: ['1א'],
     }];
-    const first = advanceExerciseIntake('תבחר 4 תרגילים בדלתון לכיתה ט׳ רמה א׳ לשיעור של 30 דקות', null, tiny);
+    const asked = advanceExerciseIntake('תבחר 4 תרגילים בדלתון לכיתה ט׳ רמה א׳ לשיעור של 30 דקות', null, tiny);
+    assert.match(asked.answer, /נושא/);
+    const first = advanceExerciseIntake('דלתון', asked.intake, tiny);
     assert.equal(first.exerciseIds.length, 0);
     assert.equal(first.answer.includes('לא מצאתי'), false);
     assert.match(first.answer, /1/);
@@ -207,7 +214,9 @@ describe('Noam AI production spec', () => {
     assert.equal(client.includes('dev-bypass'), false);
     assert.ok(client.includes('html.noam-companion-open .grecaptcha-badge{visibility:hidden!important}'));
     assert.ok(client.includes('מוגן באמצעות reCAPTCHA'));
-    assert.match(route, /recaptchaBypassFromEnv\(process\.env/);
+    assert.match(route, /recaptchaBypassFromEnv\(process\.env, requestHost\)/);
+    assert.match(route, /new URL\(request\.url\)\.hostname/);
+    assert.equal(/recaptchaBypassFromEnv\(process\.env,\s*context\.request\.headers/.test(route), false);
 
     const enabled = recaptchaBypassFromEnv({
       NODE_ENV: 'test',
@@ -217,7 +226,7 @@ describe('Noam AI production spec', () => {
     assert.equal(enabled.enabled, true);
     let sawVerify = false;
     const answered = await handleNoamSiteCompanion(
-      { method: 'POST' },
+      { method: 'POST', url: PREVIEW + '/api/noamSiteCompanion' },
       {
         origin: PREVIEW,
         clientIp: '203.0.113.61',
@@ -262,5 +271,124 @@ describe('Noam AI production spec', () => {
     const body = answered.body as { exerciseIds: string[]; answer: string };
     assert.deepEqual(body.exerciseIds, ['ex:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:1א']);
     assert.equal(body.answer.includes('1א'), true);
+  });
+
+  it('does not treat a lesson length as topic 30-60-90, and asks grade then topic', () => {
+    const page = { kind: 'topic', path: '/grade-3', title: 'כיתה ג׳' };
+    assert.ok(teacherIndex.some((row: { topic: string }) => String(row.topic).includes('30-60-90')));
+    let turn = resolveDeterministicTurn(
+      { message: 'להרכיב שיעור', page },
+      { teacherIndex }
+    );
+    turn = resolveDeterministicTurn(
+      { message: '4', page, intake: turn.intake },
+      { teacherIndex }
+    );
+    turn = resolveDeterministicTurn(
+      { message: 'רמה א׳', page, intake: turn.intake },
+      { teacherIndex }
+    );
+    turn = resolveDeterministicTurn(
+      { message: '30 דקות', page, intake: turn.intake },
+      { teacherIndex }
+    );
+    assert.equal(turn.intake.minutes, 30);
+    assert.equal(turn.intake.grade, null);
+    assert.equal(turn.intake.topicId, '');
+    assert.equal(turn.wizard, null);
+    assert.equal(String(turn.answer).includes('30-60-90'), false);
+    assert.match(turn.answer, /לאיזו כיתה/);
+    assert.match(turn.answer, /ברירת המחדל היא כיתה ג׳/);
+    const grade3 = teacherIndex.find((row: { grade: number; gradeLabel: string }) => row.grade === 3);
+    assert.equal(labelsOf(turn)[0], grade3.gradeLabel);
+    turn = resolveDeterministicTurn(
+      { message: grade3.gradeLabel, page, intake: turn.intake },
+      { teacherIndex }
+    );
+    assert.equal(turn.intake.grade, 3);
+    assert.equal(turn.intake.topicId, '');
+    assert.match(turn.answer, /נושא/);
+    assert.equal(String(turn.answer).includes('30-60-90'), false);
+  });
+
+  it('parses typed chip labels the same way as taps', () => {
+    const page = { path: '/grade-9', title: 'כיתה ט׳' };
+    let turn = advanceExerciseIntake('להרכיב שיעור', null, teacherIndex, page);
+    turn = advanceExerciseIntake('4 סעיפים', turn.intake, teacherIndex, page);
+    assert.equal(turn.intake.count, 4);
+    assert.match(turn.answer, /איזו רמה/);
+    turn = advanceExerciseIntake('6 סעיפים', { ...turn.intake, waiting: 'count', count: null }, teacherIndex, page);
+    assert.equal(turn.intake.count, 6);
+    turn = advanceExerciseIntake('30 דקות', { ...turn.intake, waiting: 'minutes', minutes: null, level: 'a' }, teacherIndex, page);
+    assert.equal(turn.intake.minutes, 30);
+    assert.equal(turn.intake.topicId, '');
+    assert.equal(String(turn.answer).includes('30-60-90'), false);
+  });
+
+  it('enables the recaptcha bypass only on the request host, with a constant-time compare', () => {
+    const guardSrc = readFileSync(new URL('../../../noam-ai/site-companion/bot-guard.js', import.meta.url), 'utf8');
+    const previewHost = 'jrxwre-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com';
+    const env = {
+      NOAM_RECAPTCHA_BYPASS: '1',
+      NOAM_RECAPTCHA_BYPASS_TOKEN: TOKEN,
+    };
+    assert.equal(recaptchaBypassFromEnv(env, previewHost).enabled, true);
+    assert.equal(recaptchaBypassFromEnv(env, 'www.noamdoronmath.co.il').enabled, false);
+    assert.equal(recaptchaBypassFromEnv(env, 'noamdoronmath.co.il').enabled, false);
+    assert.equal(recaptchaBypassFromEnv(env, 'https://www.noamdoronmath.co.il').enabled, false);
+    assert.equal(recaptchaBypassFromEnv({ ...env, NODE_ENV: 'production' }, previewHost).enabled, false);
+    const enabled = recaptchaBypassFromEnv(env, previewHost);
+    const wrong = TOKEN.slice(0, -1) + (TOKEN.endsWith('n') ? 'm' : 'n');
+    assert.equal(wrong.length, TOKEN.length);
+    assert.equal(acceptDevBypass({ provider: 'dev-bypass', token: TOKEN }, enabled, previewHost), true);
+    assert.equal(acceptDevBypass({ provider: 'dev-bypass', token: wrong }, enabled, previewHost), false);
+    assert.equal(acceptDevBypass({ provider: 'dev-bypass', token: TOKEN }, enabled, 'www.noamdoronmath.co.il'), false);
+    assert.equal(acceptDevBypass({ provider: 'dev-bypass', token: TOKEN }, enabled, 'https://evil.example'), false);
+    assert.match(guardSrc, /timingSafeEqual/);
+    assert.equal(guardSrc.includes('provided === expected'), false);
+  });
+
+  it('rate limits a fixed guide answer', async () => {
+    const store = new Map();
+    const deps = {
+      origin: 'https://www.noamdoronmath.co.il',
+      clientIp: '203.0.113.70',
+      qwenKey: 'qwen-test-key-xyz',
+      recaptchaSecret: 'recaptcha-test-secret-xyz',
+      catalog,
+      guide,
+      teacherIndex,
+      store,
+      now: 9_000,
+      fetch: async () => {
+        throw new Error('model');
+      },
+      payload: {
+        message: 'מה יש בעמוד המורים?',
+        page: { kind: 'home', path: '/', title: 'בית' },
+      },
+    };
+    for (let i = 0; i < 12; i += 1) {
+      const result = await handleNoamSiteCompanion({ method: 'POST' }, deps);
+      assert.equal(result.status, 200, 'guide ' + i);
+    }
+    const blocked = await handleNoamSiteCompanion({ method: 'POST' }, deps);
+    assert.equal(blocked.status, 429);
+  });
+
+  it('keeps the compact chat readable and off the teachers wizard', () => {
+    assert.ok(client.includes('noam-log-user'));
+    assert.ok(client.includes('noam-log-bot'));
+    assert.equal(client.includes('return "https://www.noamdoronmath.co.il" + path'), false);
+    assert.match(client, /function siteHref\(path\) \{\s*return path;\s*\}/);
+    assert.ok(client.includes('function placeOffWizard()'));
+    assert.ok(client.includes('document.querySelector(".scenario-list")'));
+    assert.ok(client.includes('if (mode === "compact") placeOffWizard();'));
+    assert.equal(client.includes('#noam-site-companion-panel.is-compact #noam-site-companion-log{display:none!important}'), false);
+    assert.ok(client.includes('#noam-site-companion-panel.is-compact #noam-site-companion-log{display:flex'));
+    assert.match(teacherPage, /#questions input:checked/);
+    assert.match(teacherPage, /scrollIntoView/);
+    const teachersHtml = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
+    assert.match(teachersHtml, /html\.noam-companion-open \.toast,html\.noam-ai-engaged \.toast\{bottom:auto;top:16px\}/);
   });
 });

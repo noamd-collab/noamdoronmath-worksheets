@@ -77,8 +77,7 @@
   }
 
   function siteHref(path) {
-    if (location.port === "4337" || /(^|\.)noamdoronmath\.co\.il$/.test(location.hostname)) return path;
-    return "https://www.noamdoronmath.co.il" + path;
+    return path;
   }
 
   function pathOf(href) {
@@ -203,7 +202,7 @@
     "html.noam-ai-engaged body{grid-column:1;grid-row:1}",
     "html.noam-ai-engaged #noam-site-companion-panel{grid-column:1;grid-row:2;position:relative;height:auto;max-height:42dvh;width:100%;border-start-start-radius:18px;border-start-end-radius:18px;border-end-start-radius:0;border-end-end-radius:0;box-shadow:0 -3px 0 #e6a534;z-index:9991}",
     "html.noam-ai-engaged #noam-site-companion-close{width:auto;min-width:72px;padding:4px 10px}",
-    "html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:8px!important;left:auto!important;right:auto!important;inset-inline-end:8px!important;z-index:10001!important}",
+    "html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:calc(42dvh + 8px)!important;left:auto!important;right:auto!important;inset-inline-end:8px!important;z-index:10001!important}",
     "html.noam-ai-engaged #noam-site-companion-form{padding-inline-end:56px}",
     "html.noam-ai-engaged .fab{inset-block-end:calc(42dvh + 8px)!important}",
     "}",
@@ -223,9 +222,12 @@
     "}",
     "@media print{#noam-site-companion,#noam-site-companion-panel{display:none!important}html.noam-ai-engaged{display:block!important;height:auto!important;overflow:visible!important}html.noam-ai-engaged body{max-height:none!important;overflow:visible!important}}",
     "#noam-site-companion-log{display:none;margin:0}",
-    "#noam-site-companion-panel.is-compact #noam-site-companion-log{display:none!important}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-log{display:flex;flex-direction:column;gap:2px;flex:1;min-height:0;overflow:auto;order:1}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-log:empty{display:none!important}",
     "html.noam-ai-engaged #noam-site-companion-log{display:flex;flex-direction:column;gap:4px;flex:1;min-height:0;overflow:auto}",
     "#noam-site-companion-log p{margin:0}",
+    "#noam-site-companion-log .noam-log-user{align-self:flex-start;font-weight:700;background:#fff6e4;border-radius:10px;padding:2px 8px}",
+    "#noam-site-companion-log .noam-log-bot{align-self:stretch;font-weight:500}",
     "#noam-site-companion-recaptcha{margin:0;font-size:16px;font-weight:500;line-height:1.3}",
     "html.noam-companion-open .grecaptcha-badge{visibility:hidden!important}",
     "#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}",
@@ -267,6 +269,7 @@
 
   var answerEl = document.getElementById("noam-site-companion-answer");
   var logEl = document.getElementById("noam-site-companion-log");
+  var recaptchaEl = document.getElementById("noam-site-companion-recaptcha");
   var intakeState = null;
   var THREAD_KEY = "noam-ai-one-window";
   var primaryEl = document.getElementById("noam-site-companion-primary");
@@ -501,6 +504,8 @@
     undrop(primaryEl);
     undrop(ramziEl);
     undrop(answerEl);
+    undrop(recaptchaEl);
+    undrop(logEl);
     var links = chipsEl.querySelectorAll("a, button");
     for (var i = 0; i < links.length; i++) undrop(links[i]);
   }
@@ -520,11 +525,8 @@
     }
     if (visibleChips === 0 || (!wide && !teacher)) drop(chipsEl);
     if (tight && !hasAnswer && !panel.classList.contains("is-thinking")) drop(answerEl);
-    var order = teacher
-      ? [primaryEl, ramziEl, moreEl, answerEl]
-      : tight && hasAnswer
-        ? [primaryEl, ramziEl, moreEl, chipsEl]
-        : [moreEl, chipsEl, primaryEl, ramziEl];
+    var order = [recaptchaEl, chipsEl, moreEl, primaryEl, ramziEl, logEl];
+    if (!hasAnswer && !panel.classList.contains("is-thinking")) order.push(answerEl);
     for (var n = 0; n < order.length; n++) {
       if (panel.scrollHeight <= panel.clientHeight + 1) return;
       drop(order[n]);
@@ -582,7 +584,17 @@
       sendBtn.disabled = streaming;
     }
     expandEl.setAttribute("aria-expanded", "false");
+    placeOffWizard();
     fitCompact();
+  }
+
+  function placeOffWizard() {
+    if (pageKind() !== "teachers" || window.innerWidth < 768) return;
+    var step = document.querySelector(".scenario-list");
+    if (!step) return;
+    if (!rectsOverlap(panel.getBoundingClientRect(), step.getBoundingClientRect())) return;
+    panel.style.right = "auto";
+    panel.style.left = "8px";
   }
 
   function revealLessonCard() {
@@ -756,10 +768,12 @@
     input.focus();
     if (hasAnswer && answerEl.textContent && answerEl.textContent.indexOf("חושב") !== 0) {
       var prior = document.createElement("p");
+      prior.className = "noam-log-bot";
       prior.textContent = answerEl.textContent;
       logEl.appendChild(prior);
     }
     var mine = document.createElement("p");
+    mine.className = "noam-log-user";
     mine.textContent = message;
     logEl.appendChild(mine);
     if (isLocalSolve(message)) {
@@ -802,6 +816,9 @@
     if (mode === "compact") layoutCompact(false);
     if (mode === "closed") placeLauncher();
   });
+  window.addEventListener("scroll", function () {
+    if (mode === "compact") placeOffWizard();
+  }, true);
   window.setInterval(function () { paintChrome(false); }, 1000);
   showIdle();
   try {

@@ -4,6 +4,7 @@
  * exactly that many questions that already exist on a worksheet.
  * Levels are רמה א׳, רמה ב׳, and מצוינות. There is no רמה ג׳.
  */
+import { pageGrade } from "./retrieve.js";
 import { dedupeActions } from "./topic-order.js";
 
 export const LEVELS = [
@@ -98,15 +99,16 @@ function bareGrade(text) {
 }
 
 function countFrom(text) {
-  const numbered = String(text || "").match(/(\d{1,2})\s*(?:תרגיל|שאלה|סעיף|פריט)/);
+  const numbered = String(text || "").match(/(\d{1,2})\s*(?:תרגילים|שאלות|סעיפים|פריטים|תרגיל|שאלה|סעיף|פריט)/);
   if (numbered) {
     const count = Number(numbered[1]);
     if (count >= 1 && count <= 30) return count;
   }
   const folded = fold(text);
+  const tails = ["תרגילים", "תרגיל", "שאלות", "שאלה", "סעיפים", "סעיף", "פריטים", "פריט"];
   for (const word of Object.keys(COUNT_WORD)) {
-    if (folded.includes(word + " תרגיל") || folded.includes(word + " שאלה") || folded.includes(word + " סעיף") || folded.includes(word + " פריט")) {
-      return COUNT_WORD[word];
+    for (const tail of tails) {
+      if (folded.includes(word + " " + tail)) return COUNT_WORD[word];
     }
   }
   return null;
@@ -150,24 +152,13 @@ function matchTopics(index, grade, query) {
   const pool = topicsFor(index, grade);
   const exact = pool.filter((topic) => fold(topic.topic) === wanted);
   if (exact.length) return exact;
+  // "30" must not match "30-60-90". Digits are a count or a lesson length.
+  if (/^\d+$/.test(wanted)) return [];
   return pool.filter((topic) => {
     const name = fold(topic.topic);
+    if (name.length < 2) return false;
     return name.includes(wanted) || wanted.includes(name);
   });
-}
-
-function residue(text) {
-  return fold(text)
-    .replace(/רמה\s*[אב]/g, " ")
-    .replace(/מצוינות/g, " ")
-    .replace(/\d{1,3}\s*דקות/g, " ")
-    .replace(/חצי שעה|שעה וחצי|שעה/g, " ")
-    .replace(/כיתה\s*[1-9אבגדהוזחט]/g, " ")
-    .replace(/\d{1,2}\s*(?:תרגילים|תרגיל|שאלות|שאלה|סעיפים|סעיף|פריטים|פריט)/g, " ")
-    .replace(/אחד|אחת|שניים|שתיים|שלוש|שלושה|ארבע|ארבעה|חמש|חמישה|שש|שישה|שבע|שבעה|שמונה|תשע|עשרה|עשר/g, " ")
-    .replace(/להרכיב שיעור|הרכיב שיעור|תבחר|בחרו לי|לבחור|תכין לי שיעור|תכין שיעור|שיעור של|שיעור/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
 }
 
 function fillsWaiting(message, state) {
@@ -257,14 +248,16 @@ function absorb(state, message, index) {
     const value = Number(text);
     if (value >= 5 && value <= 180) state.minutes = value;
   }
-  const topicQuery = state.waiting === "topicId" ? fold(text) : residue(text);
-  const matches = matchTopics(index, state.grade, topicQuery);
-  if (matches.length === 1) {
-    state.topicId = matches[0].topicId;
-    state.topicLabel = matches[0].topic;
-    if (!state.grade) state.grade = matches[0].grade;
-  } else if (matches.length > 1 && state.grade) {
-    state.topicMatches = matches;
+  // Topic search runs only while the builder is waiting for a topic.
+  // A lesson length such as 30 must not select "30-60-90".
+  if (state.waiting === "topicId") {
+    const matches = matchTopics(index, state.grade, fold(text));
+    if (matches.length === 1) {
+      state.topicId = matches[0].topicId;
+      state.topicLabel = matches[0].topic;
+    } else if (matches.length > 1) {
+      state.topicMatches = matches;
+    }
   }
 }
 
@@ -329,7 +322,19 @@ function pickedAnswer(state, exerciseIds) {
   );
 }
 
-export function advanceExerciseIntake(message, prior, index) {
+function gradeRows(index) {
+  const grades = [];
+  const seen = new Set();
+  for (const sheet of index || []) {
+    if (seen.has(sheet.grade)) continue;
+    seen.add(sheet.grade);
+    grades.push(sheet);
+  }
+  grades.sort((a, b) => Number(a.grade) - Number(b.grade));
+  return grades;
+}
+
+export function advanceExerciseIntake(message, prior, index, page) {
   const state = clipState(prior);
   state.active = true;
   state.levelRejected = false;
@@ -352,19 +357,19 @@ export function advanceExerciseIntake(message, prior, index) {
     return ask(state, "minutes", "כמה דקות אורך השיעור?", [30, 45, 60].map((minutes) => option(minutes + " דקות", String(minutes))));
   }
   if (!state.grade) {
-    const grades = [];
-    const seen = new Set();
-    for (const sheet of index || []) {
-      if (seen.has(sheet.grade)) continue;
-      seen.add(sheet.grade);
-      grades.push(sheet);
-    }
-    grades.sort((a, b) => Number(a.grade) - Number(b.grade));
+    const grades = gradeRows(index);
+    const preferred = pageGrade(page);
+    const home = grades.find((sheet) => Number(sheet.grade) === Number(preferred));
+    const ordered = home ? [home].concat(grades.filter((sheet) => sheet !== home)) : grades;
+    const homeLabel = home ? (home.gradeLabel || "כיתה " + home.grade) : "";
+    const answer = homeLabel
+      ? "לאיזו כיתה השיעור? ברירת המחדל היא " + homeLabel + "."
+      : "לאיזו כיתה השיעור?";
     return ask(
       state,
       "grade",
-      "לאיזו כיתה השיעור?",
-      grades.map((sheet) => option(sheet.gradeLabel || "כיתה " + sheet.grade))
+      answer,
+      ordered.map((sheet) => option(sheet.gradeLabel || "כיתה " + sheet.grade))
     );
   }
   if (!state.topicId) {

@@ -1282,8 +1282,11 @@ function applyWizardPrefill(prefill) {
     if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
     render();
     announce('הבחירה מנועם AI נטענה לאשף.');
-    const selection = $('selection');
-    if (selection) selection.focus();
+    const picked = document.querySelector('#questions input:checked');
+    const card = picked && picked.closest('.q-card');
+    if (card && typeof card.scrollIntoView === 'function') {
+      card.scrollIntoView({ block: 'start', inline: 'nearest' });
+    }
   });
 }
 

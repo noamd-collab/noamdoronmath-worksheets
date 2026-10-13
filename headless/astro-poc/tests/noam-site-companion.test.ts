@@ -402,7 +402,7 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('closer.textContent = window.innerWidth < 768 ? "סגירה" : "×"'));
     assert.ok(client.includes('revealLessonCard'));
     assert.ok(client.includes('.exact-topic-demo, .concept-loop__card, .ka-film'));
-    assert.ok(client.includes('html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:8px!important'));
+    assert.ok(client.includes('html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:calc(42dvh + 8px)!important'));
     assert.ok(client.includes('seen["label:" + label]'));
     const a11y = readFileSync(new URL('../public/noam-accessibility.js', import.meta.url), 'utf8');
     assert.match(a11y, /\.exact-topic-demo,\.concept-loop__card,\.ka-film/);

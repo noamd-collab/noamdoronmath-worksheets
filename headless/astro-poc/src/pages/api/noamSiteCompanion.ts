@@ -36,16 +36,26 @@ function send(result: { status: number; headers: Record<string, string>; body: u
   return new Response(body, { status: result.status, headers: result.headers });
 }
 
+function requestHostOf(request: Request): string {
+  try {
+    return new URL(request.url).hostname;
+  } catch {
+    return '';
+  }
+}
+
 async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
+  const requestHost = requestHostOf(context.request);
   const result = await handleNoamSiteCompanion(context.request, {
     ...keys(),
     origin: context.request.headers.get('origin') || '',
+    requestHost,
     clientIp: clientIpOf(context),
     catalog,
     guide,
     teacherIndex,
     fetch: globalThis.fetch.bind(globalThis),
-    recaptchaBypass: recaptchaBypassFromEnv(process.env, context.request.headers.get('origin') || ''),
+    recaptchaBypass: recaptchaBypassFromEnv(process.env, requestHost),
   });
   return send(result);
 }

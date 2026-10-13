@@ -6,6 +6,7 @@
  * SITE_ORIGINS and RECAPTCHA_SECRET_NAME must match the private
  * noamDiagramPlan / noamBotConfig backend. See docs/noam-ai-golive-checklist.md.
  */
+import { createHash, timingSafeEqual } from "node:crypto";
 export const SITE_ORIGINS = [
   "https://www.noamdoronmath.co.il",
   "https://noamdoronmath.co.il",
@@ -108,12 +109,33 @@ export function isProductionSiteOrigin(origin) {
   }
 }
 
+/** Hostname only. A full URL is accepted so callers can pass request.url. */
+export function requestHostName(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (!raw) return "";
+  if (raw.includes("://")) {
+    try {
+      return new URL(raw).hostname;
+    } catch (error) {
+      return "";
+    }
+  }
+  return raw.split("/")[0].split(":")[0];
+}
+
+function bypassHostAllowed(requestHost) {
+  const host = requestHostName(requestHost);
+  return isHeadlessPreviewHost(host) && !isProductionRecaptchaHost(host);
+}
+
 /**
- * Dev/test bypass. Off unless the process is not production, the flag is
- * exactly "1", the token is at least 24 characters, and the origin is not
- * the live site. The browser never receives this token.
+ * Dev/test bypass. The browser never receives this token.
+ * On only when the flag is exactly "1", the token is at least 24 characters,
+ * NODE_ENV is not production, and the request's own host is a preview host.
+ * The client Origin header is not a host. Production hosts stay off even
+ * when NODE_ENV is unset.
  */
-export function recaptchaBypassFromEnv(env, origin) {
+export function recaptchaBypassFromEnv(env, requestHost) {
   const source = env || {};
   const nodeEnv = String(source.NODE_ENV || "");
   const blocked = { enabled: false, token: "", nodeEnv };
@@ -121,18 +143,25 @@ export function recaptchaBypassFromEnv(env, origin) {
   if (String(source.NOAM_RECAPTCHA_BYPASS || "") !== "1") return blocked;
   const token = String(source.NOAM_RECAPTCHA_BYPASS_TOKEN || "");
   if (token.length < 24) return blocked;
-  if (isProductionSiteOrigin(origin)) return blocked;
+  if (!bypassHostAllowed(requestHost)) return blocked;
   return { enabled: true, token, nodeEnv };
 }
 
-export function acceptDevBypass(verification, bypass, origin) {
+function sameSecret(provided, expected) {
+  const left = createHash("sha256").update(String(provided), "utf8").digest();
+  const right = createHash("sha256").update(String(expected), "utf8").digest();
+  return timingSafeEqual(left, right);
+}
+
+export function acceptDevBypass(verification, bypass, requestHost) {
   if (!bypass || bypass.enabled !== true) return false;
   if (bypass.nodeEnv === "production") return false;
-  if (isProductionSiteOrigin(origin)) return false;
+  if (!bypassHostAllowed(requestHost)) return false;
   const expected = typeof bypass.token === "string" ? bypass.token : "";
   if (expected.length < 24) return false;
   const provided = verification && verification.provider === "dev-bypass" ? verification.token : "";
-  return typeof provided === "string" && provided.length >= 24 && provided === expected;
+  if (typeof provided !== "string" || provided.length < 24) return false;
+  return sameSecret(provided, expected);
 }
 
 /**
@@ -238,31 +267,42 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
   return { passed, siteverify: siteverifyFields(data) };
 }
 
-export async function guardCompanionRequest(input, deps) {
-  const origin = input && input.origin ? String(input.origin) : "";
-  const extra = deps && Array.isArray(deps.extraOrigins) ? deps.extraOrigins : [];
-  if (!isAllowedOrigin(origin) && extra.indexOf(origin) === -1) {
-    return { ok: false, status: 403, code: "ORIGIN_NOT_ALLOWED" };
-  }
+/** One 12/min slot. Callers that already took a slot pass skipRateLimit. */
+export function takeCompanionRate(input, deps) {
   const store = deps && deps.store;
   if (!store || typeof store.get !== "function") {
     return { ok: false, status: 403, code: "BOT_VERIFICATION_FAILED" };
   }
-  const verification = input.botVerification || {};
-  const token = verification.provider === "recaptcha-v3" ? verification.token : "";
-  const identity = rateIdentity(input.clientIp, token);
-  const now = typeof input.now === "number" ? input.now : Date.now();
+  const verification = (input && input.botVerification) || {};
+  const token = typeof verification.token === "string" ? verification.token : "";
+  const identity = rateIdentity(input && input.clientIp, token);
+  const now = input && typeof input.now === "number" ? input.now : Date.now();
   const globalMax = deps && typeof deps.noIpGlobalMax === "number" ? deps.noIpGlobalMax : RATE_LIMIT_NO_IP_GLOBAL_MAX;
   if (identity.mode === "ip") {
     if (!takeRateSlot(identity.key, now, store)) return { ok: false, status: 429, code: "RATE_LIMIT" };
   } else if (!takeRateSlot(identity.key, now, store) || !takeRateSlot(NO_IP_GLOBAL_KEY, now, store, globalMax)) {
     return { ok: false, status: 429, code: "RATE_LIMIT" };
   }
+  return { ok: true, status: 200 };
+}
+
+export async function guardCompanionRequest(input, deps) {
+  const origin = input && input.origin ? String(input.origin) : "";
+  const extra = deps && Array.isArray(deps.extraOrigins) ? deps.extraOrigins : [];
+  if (!isAllowedOrigin(origin) && extra.indexOf(origin) === -1) {
+    return { ok: false, status: 403, code: "ORIGIN_NOT_ALLOWED" };
+  }
+  const verification = input.botVerification || {};
+  const token = verification.provider === "recaptcha-v3" ? verification.token : "";
+  if (!deps || deps.skipRateLimit !== true) {
+    const limited = takeCompanionRate(input, deps);
+    if (!limited.ok) return limited;
+  }
   const message = input.message;
   if (typeof message !== "string" || !message.trim() || message.length > MAX_MESSAGE_CHARS) {
     return { ok: false, status: 400, code: "MESSAGE_LENGTH" };
   }
-  if (acceptDevBypass(verification, deps.recaptchaBypass, origin)) {
+  if (acceptDevBypass(verification, deps.recaptchaBypass, input.requestHost)) {
     return { ok: true, status: 200, bypass: true };
   }
   let check = { passed: false, siteverify: siteverifyFields(null) };

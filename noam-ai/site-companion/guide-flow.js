@@ -73,7 +73,7 @@ export function resolveDeterministicTurn(payload, deps) {
     };
   }
   if (continuesIntake(message, payload && payload.intake)) {
-    return advanceExerciseIntake(message, payload && payload.intake, settings.teacherIndex);
+    return advanceExerciseIntake(message, payload && payload.intake, settings.teacherIndex, page);
   }
   if (VAGUE.test(message.trim())) {
     return guideResult(VAGUE_TEXT, null, [

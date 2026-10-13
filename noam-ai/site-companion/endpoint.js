@@ -20,6 +20,7 @@ import {
   isAllowedOrigin,
   isHeadlessPreviewHost,
   isOutboundTimeout,
+  takeCompanionRate,
 } from "./bot-guard.js";
 import {
   classifyTeacherRequest,
@@ -278,6 +279,41 @@ function jsonResponse(status, body, origin) {
   return { status, headers: responseHeaders(origin), body };
 }
 
+function requestHostFrom(request, settings) {
+  if (settings && settings.requestHost) return String(settings.requestHost).trim();
+  const raw = request && typeof request.url === "string" ? request.url : "";
+  try {
+    return new URL(raw).hostname;
+  } catch (error) {
+    return "";
+  }
+}
+
+function denied(guard, origin) {
+  const fail = withIds(
+    {
+      ok: false,
+      active: true,
+      code: guard.code,
+      source: "fallback",
+      error: FALLBACK_TEXT,
+      text: FALLBACK_TEXT,
+      answer: FALLBACK_TEXT,
+      options: [],
+      links: [],
+      essential: [],
+    },
+    [],
+    []
+  );
+  if (guard.code === "BOT_VERIFICATION_FAILED" && guard.siteverify) {
+    fail.siteverify = guard.siteverify;
+  }
+  const cors = corsHeadersFor(origin);
+  if (!cors) return { status: 403, headers: { Vary: "Origin" }, body: "" };
+  return { status: guard.status, headers: cors, body: fail };
+}
+
 function readJson(payload) {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) return {};
   return payload;
@@ -314,6 +350,18 @@ export async function handleNoamSiteCompanion(request, deps) {
   if (!originAllowed) {
     return { status: 403, headers: { Vary: "Origin" }, body: "" };
   }
+  const requestHost = requestHostFrom(request, settings);
+  const store = settings.store || defaultStore;
+  // Fixed answers skip reCAPTCHA. They still take the same 12/min slot.
+  const limited = takeCompanionRate(
+    {
+      clientIp: settings.clientIp,
+      botVerification: payload.botVerification,
+      now: settings.now,
+    },
+    { store, noIpGlobalMax: settings.noIpGlobalMax }
+  );
+  if (!limited.ok) return denied(limited, origin);
   // Guide, topic order, and lesson picking do not call the model.
   // Answer them before reCAPTCHA so a failed check does not block a real visitor.
   const guided = resolveDeterministicTurn(payload, settings);
@@ -321,13 +369,15 @@ export async function handleNoamSiteCompanion(request, deps) {
   const guard = await guardCompanionRequest(
     {
       origin,
+      requestHost,
       clientIp: settings.clientIp,
       message: payload.message,
       botVerification: payload.botVerification,
       now: settings.now,
     },
     {
-      store: settings.store || defaultStore,
+      store,
+      skipRateLimit: true,
       secret: settings.recaptchaSecret,
       fetch: settings.fetch,
       extraOrigins: isHeadlessPreviewOrigin(origin) ? [origin] : [],
@@ -339,30 +389,7 @@ export async function handleNoamSiteCompanion(request, deps) {
   if (!guard.ok && guard.code === "UNAVAILABLE") {
     return jsonResponse(200, unavailableBody(), origin);
   }
-  if (!guard.ok) {
-    const fail = withIds(
-      {
-        ok: false,
-        active: true,
-        code: guard.code,
-        source: "fallback",
-        error: FALLBACK_TEXT,
-        text: FALLBACK_TEXT,
-        answer: FALLBACK_TEXT,
-        options: [],
-        links: [],
-        essential: [],
-      },
-      [],
-      []
-    );
-    if (guard.code === "BOT_VERIFICATION_FAILED" && guard.siteverify) {
-      fail.siteverify = guard.siteverify;
-    }
-    const cors = corsHeadersFor(origin);
-    if (!cors) return { status: 403, headers: { Vary: "Origin" }, body: "" };
-    return { status: guard.status, headers: cors, body: fail };
-  }
+  if (!guard.ok) return denied(guard, origin);
   try {
     const result = await runCompanionTurn(payload, settings);
     return jsonResponse(200, result, origin);
