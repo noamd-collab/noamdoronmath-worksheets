@@ -1,0 +1,226 @@
+{
+  "slug": "multiplying-signed-numbers-grade-7",
+  "path": "/multiplying-signed-numbers-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/multiplying-signed-numbers-grade-7",
+  "fetchedAt": "2026-09-23T16:20:21.340Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "כפל מספרים מכוונים לכיתה ז׳ | דפי עבודה חינם",
+  "description": "דפי עבודה בכפל מספרים מכוונים לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מפעילים את חוקי הסימנים בכפל, מחשבים מכפלה של כמה גורמים ומפשטים ביטויים עם מספרים שליליים.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "כפל מספרים מכוונים לכיתה ז׳",
+  "intro": "מפעילים את חוקי הסימנים בכפל, מחשבים מכפלה של כמה גורמים ומפשטים ביטויים עם מספרים שליליים. מתאים לכיתה ז׳ אחרי חיבור וחיסור של מספרים מכוונים. שלוש רמות תרגול, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מכפלה של שני מספרים בעלי אותו סימן היא חיובית, ומכפלה של מספרים בעלי סימנים שונים היא שלילית. במכפלה של כמה גורמים סופרים את הגורמים השליליים: מספר זוגי שלהם נותן תוצאה חיובית. דוגמה: (−2)·(−3)·(−1) = −6.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא להחיל על כפל את כלל החיבור ולחשוב ש־(−4)·(−5) שלילי. שני גורמים שליליים נותנים מכפלה חיובית: 20.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "חשבו: (−5)·4·(−2).",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: 40, כי יש שני גורמים שליליים והמכפלה חיובית.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לפני: חיבור וחיסור מספרים מכוונים",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בהמשך הפרק: חילוק מספרים מכוונים",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "קישורים קשורים",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא כפל מספרים מכוונים לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא כפל מספרים מכוונים לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/signed-numbers-grade-7",
+      "label": "מספרים מכוונים",
+      "productionHref": "https://www.noamdoronmath.co.il/signed-numbers-grade-7"
+    },
+    {
+      "path": "/powers-grade-7",
+      "label": "חזקות",
+      "productionHref": "https://www.noamdoronmath.co.il/powers-grade-7"
+    },
+    {
+      "path": "/algebraic-expressions-grade-7",
+      "label": "ביטויים אלגבריים",
+      "productionHref": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=7&topic=3",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=3",
+    "catalogTopicId": 3,
+    "catalogTopicTitle": "כפל מספרים מכוונים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=7&topic=3",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=3",
+      "catalogTopicId": 3,
+      "catalogTopicTitle": "כפל מספרים מכוונים"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/multiplying-signed-numbers-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/multiplying-signed-numbers-grade-7",
+        "name": "כפל מספרים מכוונים לכיתה ז׳ | דפי עבודה חינם",
+        "description": "דפי עבודה בכפל מספרים מכוונים לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מפעילים את חוקי הסימנים בכפל, מחשבים מכפלה של כמה גורמים ומפשטים ביטויים עם מספרים שליליים.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/multiplying-signed-numbers-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/multiplying-signed-numbers-grade-7#learning-resource",
+        "name": "כפל מספרים מכוונים לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/multiplying-signed-numbers-grade-7",
+        "description": "דפי עבודה בכפל מספרים מכוונים לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מפעילים את חוקי הסימנים בכפל, מחשבים מכפלה של כמה גורמים ומפשטים ביטויים עם מספרים שליליים.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/multiplying-signed-numbers-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא כפל מספרים מכוונים לכיתה ז׳ מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

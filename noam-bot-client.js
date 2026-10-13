@@ -13,7 +13,8 @@
   var ACTIONS = {
     noamImageAnalyze: "noam_image_analyze",
     noamImageSolve: "noam_image_solve",
-    noamDiagramPlan: "noam_diagram_plan"
+    noamDiagramPlan: "noam_diagram_plan",
+    noamSiteCompanion: "noam_site_companion"
   };
 
   function makeError(message, code, status) {

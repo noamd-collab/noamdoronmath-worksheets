@@ -1,0 +1,102 @@
+---
+/**
+ * HomeMarginArt — hand-drawn math line-art doodles in the page's side
+ * gutters (only ≥1200px, where the 1100px shell leaves real margins).
+ * Static, light, pointer-events none. No-overlap by construction: the
+ * gutters are outside the content column at every width where visible.
+ * Hidden below 1200px instead of crowding content.
+ */
+---
+
+<div class="margin-art" aria-hidden="true">
+  {/* סרגל (שמאל, אזור כיתות) */}
+  <svg class="ma ma--l1" viewBox="0 0 90 90" focusable="false">
+    <g transform="rotate(-12 45 45)" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6">
+      <rect x="18" y="22" width="54" height="16" rx="3" />
+      <line x1="26" y1="22" x2="26" y2="30" />
+      <line x1="34" y1="22" x2="34" y2="27" />
+      <line x1="42" y1="22" x2="42" y2="30" />
+      <line x1="50" y1="22" x2="50" y2="27" />
+      <line x1="58" y1="22" x2="58" y2="30" />
+    </g>
+  </svg>
+  {/* מחוגה (ימין) */}
+  <svg class="ma ma--r1" viewBox="0 0 90 90" focusable="false">
+    <g stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6">
+      <path d="M45 18 L28 70" />
+      <path d="M45 18 L62 70" />
+      <path d="M35 58 Q 45 64 55 58" />
+      <circle cx="45" cy="18" r="4" />
+    </g>
+  </svg>
+  {/* גרף עם קו ישר (שמאל) */}
+  <svg class="ma ma--l2" viewBox="0 0 90 90" focusable="false">
+    <g stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6">
+      <line x1="20" y1="72" x2="76" y2="72" />
+      <line x1="20" y1="72" x2="20" y2="16" />
+      <line x1="20" y1="62" x2="68" y2="30" stroke="var(--cobalt)" />
+      <circle cx="44" cy="46" r="3" fill="var(--cobalt)" stroke="none" />
+    </g>
+  </svg>
+  {/* פאי שברים (ימין) */}
+  <svg class="ma ma--r2" viewBox="0 0 90 90" focusable="false">
+    <g stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6">
+      <circle cx="45" cy="45" r="26" />
+      <path d="M45 45 L45 19 A26 26 0 0 1 71 45 Z" fill="var(--tint)" stroke="var(--cobalt)" />
+      <line x1="45" y1="19" x2="45" y2="71" />
+      <line x1="19" y1="45" x2="71" y2="45" />
+    </g>
+  </svg>
+  {/* עיפרון (שמאל) */}
+  <svg class="ma ma--l3" viewBox="0 0 90 90" focusable="false">
+    <g transform="rotate(20 45 45)" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6">
+      <path d="M28 60 L56 32 L64 40 L36 68 L26 70 Z" />
+      <path d="M56 32 L60 28 L68 36 L64 40" />
+      <path d="M28 60 L26 70 L36 68" fill="var(--tint)" />
+    </g>
+  </svg>
+  {/* משולש + זווית (ימין) */}
+  <svg class="ma ma--r3" viewBox="0 0 90 90" focusable="false">
+    <g stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6">
+      <path d="M22 66 L68 66 L52 24 Z" />
+      <path d="M22 56 L32 56 L32 66" stroke="var(--cobalt)" />
+    </g>
+  </svg>
+  {/* קו מספרים (שמאל, למטה) */}
+  <svg class="ma ma--l4" viewBox="0 0 90 90" focusable="false">
+    <g stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6">
+      <line x1="14" y1="48" x2="76" y2="48" />
+      <line x1="14" y1="43" x2="14" y2="53" />
+      <line x1="45" y1="43" x2="45" y2="53" />
+      <line x1="76" y1="43" x2="76" y2="53" />
+      <circle cx="58" cy="48" r="4" fill="var(--red)" stroke="none" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .margin-art {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ma {
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    display: none;
+  }
+  @media (min-width: 1200px) {
+    .ma { display: block; }
+    .ma--l1 { left: calc((100% - 1100px) / 2 - 128px); top: 24%; }
+    .ma--r1 { right: calc((100% - 1100px) / 2 - 128px); top: 20%; }
+    .ma--l2 { left: calc((100% - 1100px) / 2 - 136px); top: 44%; }
+    .ma--r2 { right: calc((100% - 1100px) / 2 - 130px); top: 47%; }
+    .ma--l3 { left: calc((100% - 1100px) / 2 - 126px); top: 66%; }
+    .ma--r3 { right: calc((100% - 1100px) / 2 - 134px); top: 68%; }
+    .ma--l4 { left: calc((100% - 1100px) / 2 - 132px); top: 86%; }
+  }
+</style>

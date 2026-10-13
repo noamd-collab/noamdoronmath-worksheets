@@ -1,0 +1,13 @@
+---
+/**
+ * Blog head tags that neither BaseLayout nor Wix's main-page injection provide
+ * (see src/lib/blogSeo.ts). Rendered by the blog pages into BaseLayout's
+ * `seo-tags` head slot; until that slot exists (Kimi's BaseLayout change), Astro
+ * drops this fragment and the page is unchanged.
+ */
+import { buildBlogSeoComplement, type BlogSeoInput } from '../lib/blogSeo';
+
+type Props = BlogSeoInput;
+const tags = buildBlogSeoComplement(Astro.props);
+---
+{tags.map((t) => (t.property ? <meta property={t.property} content={t.content} /> : <meta name={t.name} content={t.content} />))}

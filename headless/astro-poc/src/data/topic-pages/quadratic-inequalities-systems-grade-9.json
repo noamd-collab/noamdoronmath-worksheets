@@ -1,0 +1,216 @@
+{
+  "slug": "quadratic-inequalities-systems-grade-9",
+  "path": "/quadratic-inequalities-systems-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9",
+  "fetchedAt": "2026-09-23T16:21:35.853Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ | נועם דורון",
+  "description": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳: הסבר ותרגול בשלוש רמות. פתחו דפי עבודה בחינם וללא הרשמה, היעזרו ברמזים של נועם AI ותרגלו בקצב שלכם.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳",
+  "intro": "מתרגלים אי־שוויונות ריבועיים ומערכות משוואות ברמות א׳, ב׳ ומצוינות. דפי העבודה בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "אי־שוויון ריבועי — דוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פותרים x²−9>0. מפרקים: (x−3)(x+3)>0. המכפלה חיובית כאשר שני הגורמים בעלי אותו סימן. לכן הפתרון הוא: x קטן ממינוס 3, או x גדול מ־3. הקצוות אינם נכללים כי האי־שוויון חזק.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "טעויות נפוצות: מציאת נקודות האפס אינה מספיקה באי־שוויון ריבועי: צריך לבדוק באילו תחומים הביטוי חיובי או שלילי.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "מערכת משוואות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "לדוגמה y=x² וגם y=x+2. משווים: x²=x+2, ולכן (x−2)(x+1)=0. הפתרונות הם (2,4) ו־(−1,1); כל זוג מקיים את שתי המשוואות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו x²≤16.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה: −4≤x≤4, כולל הקצוות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ מתאימים לכיתה ט׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/factoring-grade-9",
+      "label": "פירוק לגורמים",
+      "productionHref": "https://www.noamdoronmath.co.il/factoring-grade-9"
+    },
+    {
+      "path": "/quadratic-equations-grade-9",
+      "label": "משוואות ריבועיות",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
+    },
+    {
+      "path": "/quadratic-function-grade-9",
+      "label": "הפונקציה הריבועית",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-function-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=9&topic=8",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=8",
+    "catalogTopicId": 8,
+    "catalogTopicTitle": "אי־שוויונות ריבועיים ומערכות משוואות"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=8",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=8",
+      "catalogTopicId": 8,
+      "catalogTopicTitle": "אי־שוויונות ריבועיים ומערכות משוואות"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9",
+        "name": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ | נועם דורון",
+        "description": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳: הסבר ותרגול בשלוש רמות. פתחו דפי עבודה בחינם וללא הרשמה, היעזרו ברמזים של נועם AI ותרגלו בקצב שלכם.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#learning-resource",
+        "name": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9",
+        "description": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳: הסבר ותרגול בשלוש רמות. פתחו דפי עבודה בחינם וללא הרשמה, היעזרו ברמזים של נועם AI ותרגלו בקצב שלכם.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ מתאימים לכיתה ט׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

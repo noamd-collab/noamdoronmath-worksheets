@@ -1,0 +1,160 @@
+{
+  "slug": "triangular-prism-volume-grade-9",
+  "source": "production",
+  "url": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-9",
+  "capturedAt": "2026-09-23T17:29:34.642Z",
+  "httpStatus": 200,
+  "title": "נפח מנסרה משולשת לכיתה ט׳ – דפי עבודה | נועם דורון",
+  "description": "דפי עבודה על נפח מנסרה משולשת לכיתה ט׳: זיהוי בסיס וגובה, חישוב שטח הבסיס ונפח המנסרה בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+  "h1": "מנסרה משולשת חלק 1 — מבנה ונפח לכיתה ט׳",
+  "intro": "מזהים את בסיסי המנסרה ואת גובהה ומחשבים נפח מנסרה משולשת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "updatedLine": null,
+  "authorLine": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "paragraphs": [
+        "נפח מנסרה הוא שטח הבסיס כפול גובה המנסרה. אם בסיס משולש בעל צלע 6 ס״מ וגובה אליה 4 ס״מ, שטחו 12 סמ״ר. בגובה מנסרה 10 ס״מ הנפח 120 סמ״ק."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "paragraphs": [
+        "גובה המשולש בבסיס וגובה המנסרה הם שני נתונים שונים. יש להשתמש בכל אחד בשלב המתאים."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "שטח בסיס מנסרה הוא 15 סמ״ר וגובהה 8 ס״מ. מה נפחה? תשובה: 120 סמ״ק.",
+        "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+        "שטחים ב׳ חלק 2 — מצולעים מורכבים — לכיתה ט׳"
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מזהים את בסיסי המנסרה ואת גובהה ומחשבים נפח מנסרה משולשת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=30",
+      "catalogTopicId": 30
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "נפח מנסרה הוא שטח הבסיס כפול גובה המנסרה. אם בסיס משולש בעל צלע 6 ס״מ וגובה אליה 4 ס״מ, שטחו 12 סמ״ר. בגובה מנסרה 10 ס״מ הנפח 120 סמ״ק.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "גובה המשולש בבסיס וגובה המנסרה הם שני נתונים שונים. יש להשתמש בכל אחד בשלב המתאים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "שטח בסיס מנסרה הוא 15 סמ״ר וגובהה 8 ס״מ. מה נפחה? תשובה: 120 סמ״ק.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שטחים ב׳ חלק 2 — מצולעים מורכבים — לכיתה ט׳",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לכל דפי כיתה ט׳",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא נפח מנסרה משולשת לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/similar-triangles-grade-9",
+      "label": "דמיון משולשים"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-9",
+      "label": "משפט פיתגורס"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/rectangle-grade-9",
+      "label": "מלבן"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=30",
+    "label": "פתיחת דפי העבודה ובחירת רמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=30",
+      "label": "פתיחת דפי העבודה ובחירת רמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא נפח מנסרה משולשת לכיתה ט׳ מתאימים לכיתה ט׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}

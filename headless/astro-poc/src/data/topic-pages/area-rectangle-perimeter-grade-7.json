@@ -1,0 +1,270 @@
+{
+  "slug": "area-rectangle-perimeter-grade-7",
+  "path": "/area-rectangle-perimeter-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7",
+  "fetchedAt": "2026-09-23T17:27:52.160Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳ | דפי עבודה חינם",
+  "description": "שטח מלבן וריבוע, צלע חסרה והיקף צורות מורכבות באלגברה לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳",
+  "intro": "מחשבים שטח מלבן וריבוע, מוצאים צלע חסרה ומבטאים היקף של צורות מורכבות. תרגול ברמות שונות — בחינם.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שטח מלבן = אורך×רוחב. שטח ריבוע = צלע². היקף הוא סכום כל הצלעות; בצורות מורכבות מפרקים לצורות מוכרות או מסמנים צלעות חסרות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מלבן 5×8: שטח 40. ריבוע צלע 6: שטח 36. היקף מלבן 5×8: 26.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה: לערבב בין שטח להיקף, לכלול בהיקף צלעות פנימיות שאינן חלק מגבול הצורה, או לשכוח צלע חיצונית.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מלבן ששטחו 24 ואורכו 8. מה רוחבו?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: 3.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מחשבים שטח מלבן וריבוע, מוצאים צלע חסרה ומבטאים היקף של צורות מורכבות. תרגול ברמות שונות — בחינם.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "היקף צורות מורכבות — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=44",
+      "catalogTopicId": 44
+    },
+    {
+      "type": "cta",
+      "label": "שטח מלבן וריבוע — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=18",
+      "catalogTopicId": 18
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "שטח מלבן = אורך×רוחב. שטח ריבוע = צלע². היקף הוא סכום כל הצלעות; בצורות מורכבות מפרקים לצורות מוכרות או מסמנים צלעות חסרות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מלבן 5×8: שטח 40. ריבוע צלע 6: שטח 36. היקף מלבן 5×8: 26.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה: לערבב בין שטח להיקף, לכלול בהיקף צלעות פנימיות שאינן חלק מגבול הצורה, או לשכוח צלע חיצונית.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מלבן ששטחו 24 ואורכו 8. מה רוחבו?",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא שטח מלבן וריבוע והיקף צורות לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא שטח מלבן וריבוע והיקף צורות לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/angles-introduction-measurement-grade-7",
+      "label": "זוויות",
+      "productionHref": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7"
+    },
+    {
+      "path": "/triangle-area-grade-7",
+      "label": "שטח משולש",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-area-grade-7"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-7",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "היקף צורות מורכבות — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=44",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=44",
+    "catalogTopicId": 44,
+    "catalogTopicTitle": "חישובי היקף — צורות מורכבות ואלגברה"
+  },
+  "catalogCtas": [
+    {
+      "label": "היקף צורות מורכבות — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=44",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=44",
+      "catalogTopicId": 44,
+      "catalogTopicTitle": "חישובי היקף — צורות מורכבות ואלגברה"
+    },
+    {
+      "label": "שטח מלבן וריבוע — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=18",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=18",
+      "catalogTopicId": 18,
+      "catalogTopicTitle": "שטח מלבן וריבוע — העמקה"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7",
+        "name": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳ | דפי עבודה חינם",
+        "description": "שטח מלבן וריבוע, צלע חסרה והיקף צורות מורכבות באלגברה לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#learning-resource",
+        "name": "שטח מלבן וריבוע והיקף צורות לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7",
+        "description": "שטח מלבן וריבוע, צלע חסרה והיקף צורות מורכבות באלגברה לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא שטח מלבן וריבוע והיקף צורות לכיתה ז׳ מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

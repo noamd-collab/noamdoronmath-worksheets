@@ -1,0 +1,206 @@
+{
+  "slug": "square-roots-grade-9",
+  "path": "/square-roots-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/square-roots-grade-9",
+  "fetchedAt": "2026-09-23T16:21:44.850Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "שורשים לכיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+  "description": "שורשים לכיתה ט׳: תרגול שורש ריבועי ופישוט ביטויים עם שורשים. דפי עבודה חינמיים ברמה א׳, רמה ב׳ ומצוינות, ללא הרשמה, עם דוגמאות ורמזים של נועם AI.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שורשים לכיתה ט׳",
+  "intro": "בדף זה לומדים לזהות שורש ריבועי, לפשט ביטויים ולבדוק מתי לשורש יש ערך ממשי. דפי העבודה מחולקים לשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "שורש ריבועי",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "לדוגמה: √49=7 כי 7²=49",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "פישוט",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "לדוגמה: √(36x²)=6x כאשר x≥0",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שאלה: חשבו: √81תשובה: התוצאה היא 9",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לכל דפי העבודה של כיתה ט׳",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא שורשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא שורשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/similar-triangles-grade-9",
+      "label": "דמיון משולשים",
+      "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-9"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-9",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-9"
+    },
+    {
+      "path": "/rectangle-grade-9",
+      "label": "מלבן",
+      "productionHref": "https://www.noamdoronmath.co.il/rectangle-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=9&topic=17",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=17",
+    "catalogTopicId": 17,
+    "catalogTopicTitle": "שורשים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=17",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=17",
+      "catalogTopicId": 17,
+      "catalogTopicTitle": "שורשים"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/square-roots-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/square-roots-grade-9",
+        "name": "שורשים לכיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+        "description": "שורשים לכיתה ט׳: תרגול שורש ריבועי ופישוט ביטויים עם שורשים. דפי עבודה חינמיים ברמה א׳, רמה ב׳ ומצוינות, ללא הרשמה, עם דוגמאות ורמזים של נועם AI.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/square-roots-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/square-roots-grade-9#learning-resource",
+        "name": "שורשים לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/square-roots-grade-9",
+        "description": "שורשים לכיתה ט׳: תרגול שורש ריבועי ופישוט ביטויים עם שורשים. דפי עבודה חינמיים ברמה א׳, רמה ב׳ ומצוינות, ללא הרשמה, עם דוגמאות ורמזים של נועם AI.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/square-roots-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא שורשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

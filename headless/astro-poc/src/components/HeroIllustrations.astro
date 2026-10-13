@@ -1,0 +1,18 @@
+---
+/**
+ * Legacy DOODLES-44 notebook strip — retired by final marginalia spec (Noam 00:47).
+ * SiteDoodles edge gutters + HomeSectionDoodle own the look. Component kept so
+ * the homepage import stays stable; renders nothing visible.
+ */
+---
+<div class="notebook-art" aria-hidden="true" data-notebook-art-retired hidden></div>
+
+<style>
+  .notebook-art {
+    display: none !important;
+  }
+  /* Undo any prior padding-top push from the old mobile strip */
+  :global(.home-hero__copy) {
+    padding-top: 0;
+  }
+</style>

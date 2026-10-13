@@ -1,0 +1,452 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/exact-topic.css';
+import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
+import ConceptLoop from './ConceptLoop.astro';
+import LandingLoop from './LandingLoop.astro';
+import DistancePointsLoop from './DistancePointsLoop.astro';
+import TriangleAngleSumLoop from './TriangleAngleSumLoop.astro';
+import ParallelCointeriorLoop from './ParallelCointeriorLoop.astro';
+import { loadCatalog } from '../lib/catalog/loadCatalog';
+import { buildWorksheetHref } from '../lib/worksheetLinks';
+import { topicLandingLoop } from '../lib/landingLoops';
+import {
+  loadTopicPage,
+  synthesizeBodyFlow,
+  type TopicBodyFlowItem,
+  type TopicPageFaqGroup,
+} from '../lib/topicPages';
+import { localizeSiteHref } from '../lib/sitePages';
+import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
+import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+const page = loadTopicPage(slug);
+const contentImages = (page.images || []).filter((i) => i.role === 'content-candidate');
+const about = page.author.links.find((l) => l.href.includes('aboutus'));
+const authorParts = about && page.author.text.includes(about.label)
+  ? page.author.text.split(about.label)
+  : null;
+
+const beforeUpdateCount =
+  page.updatedLinePlacement === 'after-first-faq-group' ? 1 : 0;
+const faqBeforeUpdate = page.faqGroups.slice(0, beforeUpdateCount);
+const faqAfterUpdate = page.faqGroups.slice(beforeUpdateCount);
+const bodyFlow: TopicBodyFlowItem[] = synthesizeBodyFlow(page);
+
+const LRI = '\u2066';
+const PDI = '\u2069';
+const NOWRAP_MATH = new Set(['S = (d1 · d2) : 2', '(6 · 8) : 2 = 24', '(10 · 6) : 2 = 30']);
+
+/** Keep a whole formula on one line. The isolate stays inside the span. */
+function textParts(text: string): { text: string; nowrap: boolean }[] {
+  const parts: { text: string; nowrap: boolean }[] = [];
+  const re = new RegExp(`${LRI}([^${PDI}]*)${PDI}`, 'g');
+  let last = 0;
+  for (const match of text.matchAll(re)) {
+    const index = match.index ?? 0;
+    if (index > last) parts.push({ text: text.slice(last, index), nowrap: false });
+    parts.push({ text: match[0], nowrap: NOWRAP_MATH.has(match[1] ?? '') });
+    last = index + match[0].length;
+  }
+  if (last < text.length || parts.length === 0) parts.push({ text: text.slice(last), nowrap: false });
+  return parts;
+}
+
+/** Group flow so H2 sections nest following paragraphs/lists; CTAs stay ordered siblings. */
+type BodyUnit =
+  | { kind: 'intro'; text: string }
+  | { kind: 'cta'; item: Extract<TopicBodyFlowItem, { type: 'cta' }> }
+  | {
+      kind: 'section';
+      heading: string;
+      blocks: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }>[];
+    }
+  | { kind: 'orphan'; item: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }> };
+
+function groupBodyFlow(flow: TopicBodyFlowItem[]): BodyUnit[] {
+  const units: BodyUnit[] = [];
+  let current: {
+    heading: string;
+    blocks: Extract<TopicBodyFlowItem, { type: 'paragraph' | 'list' }>[];
+  } | null = null;
+  const flush = () => {
+    if (current) {
+      units.push({ kind: 'section', heading: current.heading, blocks: current.blocks });
+      current = null;
+    }
+  };
+  for (const b of flow) {
+    if (b.type === 'paragraph' && b.role === 'intro') {
+      flush();
+      units.push({ kind: 'intro', text: b.text });
+      continue;
+    }
+    if (b.type === 'cta') {
+      flush();
+      units.push({ kind: 'cta', item: b });
+      continue;
+    }
+    if (b.type === 'heading') {
+      flush();
+      current = { heading: b.text, blocks: [] };
+      continue;
+    }
+    if (b.type === 'paragraph' || b.type === 'list') {
+      if (current) current.blocks.push(b);
+      else units.push({ kind: 'orphan', item: b });
+    }
+  }
+  flush();
+  return units;
+}
+
+const bodyUnits = groupBodyFlow(bodyFlow);
+const gradeCrumbLabel = isGradeHubGrade(page.grade)
+  ? `כיתה ${gradeHubLabel(page.grade)}`
+  : `כיתה ${page.grade}`;
+
+/* FAMILIES-B1: a family ConceptLoop (F01–F06, F21, F26, F38) stays in the
+   card beside the intro. Other families get a CSS LandingLoop. F07–F14 film
+   variants stay off topic pages (KIMI-ANIM-6). triangle-area-grade-7 keeps
+   its explorer and also gets a CSS loop — the explorer glides once.
+   analytic-geometry-grade-9 mounts DistancePointsLoop in this same slot.
+   triangle-quadrilateral-angle-sum-grade-7 mounts the provided HTML film
+   (its own controls and angle readouts stay inside the iframe).
+   parallel-lines-angles-grade-8 mounts the co-interior angles film. */
+const landingLoop = topicLandingLoop(page);
+const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
+const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
+const filmLoop = landingLoop.kind === 'film';
+const bareFilm =
+  filmLoop &&
+  (landingLoop.marker === 'triangle-angle-sum-vertex-descent' ||
+    landingLoop.marker === 'parallel-cointerior-angles');
+const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css' || filmLoop;
+const bodyStart = bodyUnits.findIndex((unit) => unit.kind !== 'intro' && unit.kind !== 'cta');
+const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
+const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
+const flowUnits = hasDemo ? bodyUnits.slice(heroEnd) : bodyUnits;
+const catalog = loadCatalog();
+const topicId = page.catalogCta?.catalogTopicId ?? null;
+const catalogTopic = catalog.grades.find((entry) => entry.grade === page.grade)
+  ?.topics.find((topic) => topic.id === topicId);
+const topicLevels = catalogTopic?.levels.map((level) => ({
+  key: level.key,
+  label: level.label,
+  href: buildWorksheetHref({
+    catalog,
+    grade: page.grade,
+    topic: catalogTopic,
+    levelKey: level.key,
+    backPath: resolveSiteHrefString(page.catalogCta.href),
+  }),
+})) || [];
+
+function faqHeadingId(groupIndex: number) {
+  return groupIndex === 0 ? 'topic-faq-heading' : `topic-faq-heading-${groupIndex}`;
+}
+---
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  ogImage={page.ogImage || undefined}
+  activeNav="worksheets"
+  skipHref="#topic-page-main"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(page.jsonLd)} />
+
+  <main
+    class="topic-page exact-topic"
+    data-grade={String(page.grade)}
+    id="topic-page-main"
+    data-topic-slug={page.slug}
+  >
+    <nav class="topic-page__crumbs" aria-label="מיקום">
+      <a href="/">בית</a>
+      <span aria-hidden="true">/</span>
+      <a href={page.gradeHubHref}>{gradeCrumbLabel}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{page.h1}</span>
+    </nav>
+    <div data-doodle="pencil" class="exact-topic-pencil">
+      <button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט">
+        <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" width="400" height="400" decoding="async" />
+      </button>
+    </div>
+
+    {
+      (page.preH1Ctas || []).map((cta) => (
+        <p class="topic-page__cta-row topic-page__cta-row--pre-h1" data-flow="cta" data-pre-h1-cta data-catalog-ctas>
+          <a
+            class="cta cta--mid topic-page__cta"
+            href={resolveSiteHrefString(cta.href)}
+            data-catalog-topic={
+              cta.catalogTopicId != null ? String(cta.catalogTopicId) : undefined
+            }
+          >
+            {cta.label}
+          </a>
+        </p>
+      ))
+    }
+
+    <header class="topic-page__header">
+      <h1>{page.h1}</h1>
+    </header>
+
+    <div data-body-flow>
+      {hasDemo && (
+        <div class="exact-topic-hero">
+          <div
+            class:list={['exact-topic-demo', bareFilm && 'exact-topic-demo--bare']}
+            data-landing-loop={loopVariant ? landingLoop.marker : undefined}
+            style={`background:${bareFilm ? '#fbfaf5' : page.grade >= 7 ? '#e3f1ec' : '#f8ebe0'}`}
+          >
+            {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
+            {loopVariant && <ConceptLoop variant={loopVariant} />}
+            {cssVariant && <LandingLoop variant={cssVariant} />}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'distance-between-points' && (
+              <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'triangle-angle-sum-vertex-descent' && (
+              <TriangleAngleSumLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'parallel-cointerior-angles' && (
+              <ParallelCointeriorLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
+          </div>
+          <div class="exact-topic-copy">
+            {heroUnits.map((unit) => {
+              if (unit.kind === 'intro') return (
+                <p class="topic-page__intro" data-flow="paragraph" data-role="intro">{unit.text}</p>
+              );
+              if (unit.kind === 'cta') return (
+                <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
+                  <a
+                    class="cta cta--mid topic-page__cta"
+                    href={resolveSiteHrefString(unit.item.href)}
+                    data-catalog-topic={unit.item.catalogTopicId != null ? String(unit.item.catalogTopicId) : undefined}
+                  >{unit.item.label}</a>
+                </p>
+              );
+              return null;
+            })}
+            {topicLevels.length > 0 && (
+              <div class="exact-topic-levels">
+                {topicLevels.map((level) => (
+                  <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href} target="_blank" rel="noopener noreferrer">{level.label}</a>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      <div class="topic-page__body">
+      {
+        flowUnits.map((unit) => {
+          if (unit.kind === 'intro') {
+            return (
+              <p class="topic-page__intro" data-flow="paragraph" data-role="intro">
+                {textParts(unit.text).map((part) =>
+                  part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                )}
+              </p>
+            );
+          }
+          if (unit.kind === 'cta') {
+            const block = unit.item;
+            return (
+              <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
+                <a
+                  class="cta cta--mid topic-page__cta"
+                  href={resolveSiteHrefString(block.href)}
+                  data-catalog-topic={
+                    block.catalogTopicId != null ? String(block.catalogTopicId) : undefined
+                  }
+                >
+                  {block.label}
+                </a>
+              </p>
+            );
+          }
+          if (unit.kind === 'section') {
+            return (
+              <section class="topic-page__section" data-flow="heading">
+                <h2>{unit.heading}</h2>
+                {unit.blocks.map((block) => {
+                  if (block.type === 'paragraph') {
+                    const cls =
+                      block.role === 'self-check' ? 'topic-page__self-check' : undefined;
+                    return (
+                      <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
+                        {textParts(block.text).map((part) =>
+                          part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                        )}
+                      </p>
+                    );
+                  }
+                  if (block.type === 'list') {
+                    return block.ordered ? (
+                      <ol data-flow="list">
+                        {block.items.map((item) => (
+                          <li set:text={item} />
+                        ))}
+                      </ol>
+                    ) : (
+                      <ul data-flow="list">
+                        {block.items.map((item) => (
+                          <li set:text={item} />
+                        ))}
+                      </ul>
+                    );
+                  }
+                  return null;
+                })}
+              </section>
+            );
+          }
+          if (unit.kind === 'orphan') {
+            const block = unit.item;
+            if (block.type === 'paragraph') {
+              const cls = block.role === 'self-check' ? 'topic-page__self-check' : undefined;
+              return (
+                <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
+                  {textParts(block.text).map((part) =>
+                    part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                  )}
+                </p>
+              );
+            }
+            if (block.type === 'list') {
+              return block.ordered ? (
+                <ol data-flow="list">
+                  {block.items.map((item) => (
+                    <li set:text={item} />
+                  ))}
+                </ol>
+              ) : (
+                <ul data-flow="list">
+                  {block.items.map((item) => (
+                    <li set:text={item} />
+                  ))}
+                </ul>
+              );
+            }
+          }
+          return null;
+        })
+      }
+      </div>
+    </div>
+
+    {
+      contentImages.length > 0 && (
+        <figure class="topic-page__figure">
+          {contentImages.map((img) => (
+            <img src={img.src} alt={img.alt || page.h1} loading="lazy" />
+          ))}
+        </figure>
+      )
+    }
+
+    {
+      faqBeforeUpdate.map((group: TopicPageFaqGroup, gi: number) => (
+        <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
+          <h2 id={faqHeadingId(gi)}>{group.heading}</h2>
+          <div class="topic-page__faq-list">
+            {group.items.map((item) => (
+              <div class="topic-page__faq-item" data-faq-item>
+                <h3>{item.question}</h3>
+                <p>{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    {
+      page.updatedLine && (
+        <p class="topic-page__updated" data-updated-line>
+          {page.updatedLine}
+        </p>
+      )
+    }
+
+    <p class="topic-page__author">
+      {
+        authorParts && about ? (
+          <>
+            {authorParts[0]}
+            <a href={localizeSiteHref(about.href)} rel="noopener noreferrer">
+              {about.label}
+            </a>
+            {authorParts.slice(1).join(about.label)}
+          </>
+        ) : (
+          <>
+            {page.author.text}
+            {about && (
+              <>
+                {' '}
+                <a href={localizeSiteHref(about.href)} rel="noopener noreferrer">
+                  ({about.label})
+                </a>
+              </>
+            )}
+          </>
+        )
+      }
+    </p>
+
+    {
+      page.relatedTopics.length > 0 && (
+        <nav class="topic-page__related" aria-label="נושאים קשורים">
+          <h2 class="topic-page__related-title">נושאים קשורים</h2>
+          <ul>
+            {page.relatedTopics.map((rel) => (
+              <li>
+                <a
+                  href={resolveSiteHrefString(rel.productionHref || rel.path)}
+                  rel="noopener noreferrer"
+                  data-topic-path={rel.path}
+                >
+                  {rel.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    {
+      faqAfterUpdate.map((group: TopicPageFaqGroup, oi: number) => {
+        const gi = beforeUpdateCount + oi;
+        return (
+          <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
+            <h2 id={faqHeadingId(gi)}>{group.heading}</h2>
+            <div class="topic-page__faq-list">
+              {group.items.map((item) => (
+                <div class="topic-page__faq-item" data-faq-item>
+                  <h3>{item.question}</h3>
+                  <p>{item.answer}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })
+    }
+
+    <p class="topic-page__terms">
+      <a href={localizeSiteHref(page.terms.href)} rel="noopener noreferrer">
+        {page.terms.label}
+      </a>
+    </p>
+  </main>
+</BaseLayout>

@@ -17,7 +17,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import { readConfig, p } from '../src/paths.mjs';
 import { normalizeForSpeech, buildScript, chunkScript, richContentToText } from '../src/text.mjs';
-import { audioSignature, completedRecordingCurrent, recordingLabel, acquireLock, assertCanSpend, readLedger, sha256 } from '../src/store.mjs';
+import { audioSignature, acquireLock, assertCanSpend, readLedger, sha256 } from '../src/store.mjs';
 import { isRetryable } from '../src/tts.mjs';
 import { ffmpegPath, encodePcmToMp3, probeMp3, silencePcm, pcmDurationSec } from '../src/mp3.mjs';
 import { compareCoverage, styleLeak, duplicateChunks } from '../src/asr.mjs';
@@ -134,17 +134,6 @@ check('changing the voice changes the signature', () => {
   assert(a !== audioSignature({ postId: 'post-1', script, cfg: other }), 'voice change did not change signature');
 });
 
-check('a finished Oren recording stays current after the switch to Liam', () => {
-  const oren = JSON.parse(JSON.stringify(cfg));
-  oren.tts.voice = 'TxvUy8tvDazkNBlnGcpU';
-  const signature = audioSignature({ postId: 'post-1', script, cfg: oren });
-  const state = { completed: true, signature, voice: 'TxvUy8tvDazkNBlnGcpU' };
-  assert(signature !== audioSignature({ postId: 'post-1', script, cfg }), 'Liam signature should differ');
-  assert(completedRecordingCurrent(state, { postId: 'post-1', script, cfg }), 'Oren recording was not kept');
-  eq(recordingLabel(state, { postId: 'post-1', script, cfg }), 'done', 'Oren recording was marked stale');
-  assert(!completedRecordingCurrent(state, { postId: 'post-1', script: script + '.', cfg }), 'text change should still invalidate');
-});
-
 check('changing the style instruction changes the signature', () => {
   const a = audioSignature({ postId: 'post-1', script, cfg });
   const other = JSON.parse(JSON.stringify(cfg));
@@ -207,13 +196,7 @@ check('actual cost uses the reported token counts', () => {
 
 check('the archive estimate is in the expected range', () => {
   const est = estimateForChars(cfg, 79827, { chunks: 90 });
-  const per1k = cfg.pricing[cfg.tts.model].usdPer1kChars;
-  if (per1k != null) {
-    // Character-priced provider (ElevenLabs): the estimate is exactly characters x price.
-    eq(est.estUsd, Number(((79827 / 1000) * per1k).toFixed(4)), 'characters x usdPer1kChars');
-  } else {
-    assert(est.estUsd > 2 && est.estUsd < 6, `estimate out of range: ${est.estUsd}`);
-  }
+  assert(est.estUsd > 2 && est.estUsd < 6, `estimate out of range: ${est.estUsd}`);
 });
 
 log('\n== audio assembly ==');

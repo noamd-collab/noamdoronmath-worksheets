@@ -1,0 +1,211 @@
+{
+  "slug": "linear-function-grade-9",
+  "path": "/linear-function-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/linear-function-grade-9",
+  "fetchedAt": "2026-09-23T15:56:10.454Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "פונקציה קווית לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "פונקציה קווית לכיתה ט׳: שיפוע, חיתוך עם הצירים וקריאת גרפים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "פונקציה קווית לכיתה ט׳",
+  "intro": "לומדים לקשר בין נוסחה, טבלה וגרף, לחשב שיפוע ולזהות חיתוך עם הצירים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בפונקציה y=mx+n, המספר m הוא השיפוע. המספר n הוא שיעור ה־y של נקודת החיתוך עם ציר y; נקודת החיתוך היא (0,n).",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: בפונקציה y=3x−2, השיפוע הוא 3 ונקודת החיתוך עם ציר y היא (0,−2).",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שיפוע אינו נקודת חיתוך. כשמחשבים שיפוע משתי נקודות שומרים על אותו סדר חיסור במונה ובמכנה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בפונקציה y=−2x+7, מהו y כאשר x=3?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: 1, כי y=−2×3+7=1.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 16.9.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא פונקציה קווית לכיתה ט׳ מתאימים לכיתה ט׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא פונקציה קווית לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/quadratic-function-grade-9",
+      "label": "הפונקציה הריבועית",
+      "productionHref": "https://www.noamdoronmath.co.il/quadratic-function-grade-9"
+    },
+    {
+      "path": "/analytic-geometry-grade-9",
+      "label": "גאומטריה אנליטית",
+      "productionHref": "https://www.noamdoronmath.co.il/analytic-geometry-grade-9"
+    },
+    {
+      "path": "/statistics-grade-9",
+      "label": "סטטיסטיקה",
+      "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=9&topic=34",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=34",
+    "catalogTopicId": 34,
+    "catalogTopicTitle": "פונקציה קווית"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=34",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=34",
+      "catalogTopicId": 34,
+      "catalogTopicTitle": "פונקציה קווית"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/linear-function-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/linear-function-grade-9",
+        "name": "פונקציה קווית לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "פונקציה קווית לכיתה ט׳: שיפוע, חיתוך עם הצירים וקריאת גרפים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/linear-function-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/linear-function-grade-9#learning-resource",
+        "name": "פונקציה קווית לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/linear-function-grade-9",
+        "description": "פונקציה קווית לכיתה ט׳: שיפוע, חיתוך עם הצירים וקריאת גרפים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/linear-function-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא פונקציה קווית לכיתה ט׳ מתאימים לכיתה ט׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

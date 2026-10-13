@@ -1,0 +1,155 @@
+{
+  "slug": "exponent-rules-grade-9",
+  "source": "preview",
+  "url": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/exponent-rules-grade-9",
+  "capturedAt": "2026-09-23T17:41:19.144Z",
+  "httpStatus": 200,
+  "title": "חוקי חזקות כיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+  "description": "חוקי חזקות לכיתה ט׳: תרגול כפל וחילוק חזקות וחזקה של חזקה. דפי עבודה בשלוש רמות, בחינם וללא הרשמה, עם הסברים, דוגמאות ורמזים של נועם AI.",
+  "h1": "חוקי חזקות לכיתה ט׳",
+  "intro": "בדף זה מתרגלים פישוט ביטויים בעזרת חוקי חזקות, בשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "updatedLine": null,
+  "authorLine": "נכתב ונערך על ידי נועם דורון , מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "כפל וחילוק חזקות",
+      "paragraphs": [
+        "כשמכפילים חזקות עם אותו בסיס מחברים את המעריכים, וכשמחלקים חזקות עם אותו בסיס מחסרים את המעריכים"
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "חזקה של חזקה",
+      "paragraphs": [
+        "בביטוי (x³)² כופלים את המעריכים ומקבלים x⁶"
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "פשטו: (a²)⁴",
+        "תשובה: a⁸",
+        "לחצו כאן לכל דפי העבודה של כיתה ט׳"
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "בדף זה מתרגלים פישוט ביטויים בעזרת חוקי חזקות, בשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=16",
+      "catalogTopicId": 16
+    },
+    {
+      "type": "heading",
+      "text": "כפל וחילוק חזקות"
+    },
+    {
+      "type": "paragraph",
+      "text": "כשמכפילים חזקות עם אותו בסיס מחברים את המעריכים, וכשמחלקים חזקות עם אותו בסיס מחסרים את המעריכים",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "חזקה של חזקה"
+    },
+    {
+      "type": "paragraph",
+      "text": "בביטוי (x³)² כופלים את המעריכים ומקבלים x⁶",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פשטו: (a²)⁴",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "תשובה: a⁸",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לחצו כאן לכל דפי העבודה של כיתה ט׳",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא חוקי חזקות כיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/factoring-grade-9",
+      "label": "פירוק לגורמים"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9",
+      "label": "משוואות ריבועיות"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/quadratic-function-grade-9",
+      "label": "הפונקציה הריבועית"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=9&topic=16",
+    "label": "פתיחת דפי העבודה ובחירת רמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=9&topic=16",
+      "label": "פתיחת דפי העבודה ובחירת רמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא חוקי חזקות כיתה ט׳ מתאימים לכיתה ט׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+---
+/**
+ * Round-3 self-drawing line art — the POC equivalent of the live site's
+ * SMIL vector-art strokes, on grade-hub / topic / math-tools pages
+ * (the page types where the live site actually has SMIL).
+ * Decorative only; drawing is pure CSS (catalog.css .hero-draw) with
+ * prefers-reduced-motion + noam-a11y-motion kill switches, plus a
+ * hover re-draw triggered from the BaseLayout motion script.
+ */
+export interface Props {
+  variant?: 'hub' | 'topic' | 'tools';
+}
+const { variant = 'hub' } = Astro.props;
+---
+
+<div class="line-art-box" data-line-draw aria-hidden="true">
+  {
+    variant === 'hub' && (
+      <svg class="line-art" viewBox="0 0 800 84" aria-hidden="true" focusable="false">
+        <path
+          class="hero-draw hero-draw--squiggle"
+          pathLength="1"
+          d="M24 58 C 90 20, 150 22, 205 52 S 320 84, 385 48"
+        ></path>
+        <circle class="hero-draw hero-draw--loop" pathLength="1" cx="720" cy="42" r="26"></circle>
+      </svg>
+    )
+  }
+  {
+    variant === 'topic' && (
+      <svg class="line-art" viewBox="0 0 800 84" aria-hidden="true" focusable="false">
+        <path
+          class="hero-draw hero-draw--loop"
+          pathLength="1"
+          d="M640 20 C 700 8, 760 18, 770 44 C 780 70, 720 82, 690 62 C 665 46, 690 24, 720 30"
+        ></path>
+        <path class="hero-draw hero-draw--triangle" pathLength="1" d="M40 62 l 70 0"></path>
+      </svg>
+    )
+  }
+  {
+    variant === 'tools' && (
+      <svg class="line-art" viewBox="0 0 800 84" aria-hidden="true" focusable="false">
+        <rect class="hero-draw hero-draw--loop" pathLength="1" x="648" y="14" width="58" height="56" rx="8"></rect>
+        <path
+          class="hero-draw hero-draw--squiggle"
+          pathLength="1"
+          d="M30 56 l 40 -28 l 40 28 l 40 -28 l 40 28 l 40 -28"
+        ></path>
+      </svg>
+    )
+  }
+</div>

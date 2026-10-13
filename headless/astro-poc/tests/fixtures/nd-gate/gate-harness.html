@@ -1,0 +1,228 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>gate fixture</title>
+<style>#ndGateOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  background: rgba(29, 28, 25, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: ndGateFade 0.35s ease;
+}
+@keyframes ndGateFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ndGatePop {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.nd-gate-box {
+  direction: rtl;
+  text-align: right;
+  background: #ffffff;
+  color: #1d1c19;
+  width: min(560px, 94vw);
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 14px;
+  padding: clamp(24px, 4vw, 40px);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+  border-top: 6px solid #e5ff82;
+  font-family: 'Heebo', 'Assistant', Arial, sans-serif;
+  animation: ndGatePop 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.nd-gate-box h2 {
+  font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: #1d1c19;
+}
+.nd-gate-box h2::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 4px;
+  background: #e5ff82;
+  border-radius: 2px;
+  margin-top: 10px;
+}
+.nd-gate-box p {
+  font-size: clamp(0.95rem, 2.4vw, 1.05rem);
+  line-height: 1.75;
+  color: #3a3936;
+  margin: 14px 0;
+}
+.nd-gate-box a {
+  color: #1a5c5d;
+  font-weight: 700;
+  text-decoration: underline;
+}
+.nd-gate-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f6f7ef;
+  border: 1.5px solid #e3e6cf;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 20px 0 6px;
+  cursor: pointer;
+  font-size: clamp(0.92rem, 2.4vw, 1rem);
+  line-height: 1.6;
+  font-weight: 600;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+.nd-gate-check:hover {
+  border-color: #c9d984;
+}
+.nd-gate-check input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  margin-top: 2px;
+  border-radius: 7px;
+  border: 2px solid #9aa38a;
+  background: #fff;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: all 0.15s;
+}
+.nd-gate-check input:checked {
+  background: #1a5c5d;
+  border-color: #1a5c5d;
+}
+.nd-gate-check input:checked::before {
+  content: '✔';
+  color: #e5ff82;
+  font-size: 16px;
+  font-weight: 900;
+}
+.nd-gate-check input:focus-visible {
+  outline: 3px solid #e5ff82;
+  outline-offset: 2px;
+}
+.nd-gate-btn {
+  width: 100%;
+  margin-top: 14px;
+  padding: 15px 20px;
+  font-size: clamp(1.05rem, 2.8vw, 1.2rem);
+  font-weight: 800;
+  font-family: inherit;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #e5ff82;
+  color: #1d1c19;
+  transition: all 0.2s;
+}
+.nd-gate-btn:hover:not(:disabled) {
+  background: #d4f25e;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(160, 200, 40, 0.35);
+}
+.nd-gate-btn:disabled {
+  background: #e8e8e4;
+  color: #a3a39d;
+  cursor: not-allowed;
+}
+.nd-gate-foot {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #9a9a94;
+}</style>
+</head><body><main>fixture</main><script>/**
+ * Production site-entry gate (ndGate) — copy and behavior from live
+ * www.noamdoronmath.co.il custom embed. Privacy href localized to the
+ * combined accessibility+privacy page (live /privacy 301s there).
+ * No invented legal text.
+ */
+(function () {
+  var STORAGE_KEY = 'nd_gate_accepted_v1';
+  var TERMS_URL = '/terms';
+  var PRIVACY_URL = '/accessibilityadaptation#privacy-policy';
+
+  try {
+    if (localStorage.getItem(STORAGE_KEY)) return;
+  } catch (e) {}
+
+  function build() {
+    var overlay = document.createElement('div');
+    overlay.id = 'ndGateOverlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'ndGateTitle');
+    overlay.setAttribute('data-site-gate', '1');
+    overlay.dir = 'rtl';
+
+    overlay.innerHTML =
+      '<div class="nd-gate-box">' +
+      '<h2 id="ndGateTitle">הבהרה</h2>' +
+      '<p>האתר נמצא כעת בשלבי הקמה ופיתוח, וכל השירותים והתכנים המוצגים בו ניתנים <b>ללא תשלום</b>. אין לראות באמור באתר משום התחייבות סופית מצד בעלי האתר, וייתכנו שינויים בתכנים בהמשך.</p>' +
+      '<p>אנו מכבדים את פרטיותכם — למידע נוסף ניתן לעיין ב<a href="' +
+      PRIVACY_URL +
+      '" target="_blank" rel="noopener">מדיניות הפרטיות</a> ובהצהרת הנגישות של האתר. לשאלות ובירורים ניתן ליצור קשר ישירות.</p>' +
+      '<label class="nd-gate-check" for="ndGateCheck">' +
+      '<input type="checkbox" id="ndGateCheck">' +
+      '<span>קראתי והבנתי את ההבהרה ואת <a href="' +
+      TERMS_URL +
+      '" target="_blank" rel="noopener">תנאי השימוש</a> של האתר, ואני מסכים/ה להם.</span>' +
+      '</label>' +
+      '<button class="nd-gate-btn" id="ndGateBtn" disabled>אישור וכניסה לאתר</button>' +
+      '<div class="nd-gate-foot">האישור נשמר בדפדפן זה בלבד ויוצג פעם אחת.</div>' +
+      '</div>';
+
+    document.body.appendChild(overlay);
+    document.documentElement.style.overflow = 'hidden';
+
+    var check = overlay.querySelector('#ndGateCheck');
+    var btn = overlay.querySelector('#ndGateBtn');
+    setTimeout(function () {
+      check.focus();
+    }, 350);
+
+    check.addEventListener('change', function () {
+      btn.disabled = !check.checked;
+    });
+    btn.addEventListener('click', function () {
+      try {
+        localStorage.setItem(STORAGE_KEY, new Date().toISOString());
+      } catch (e) {}
+      overlay.style.opacity = '0';
+      overlay.style.transition = 'opacity .3s';
+      document.documentElement.style.overflow = '';
+      setTimeout(function () {
+        overlay.remove();
+      }, 300);
+    });
+
+    overlay.addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.getElementById('ndGateOverlay')) e.preventDefault();
+    });
+  }
+
+  if (document.body) build();
+  else document.addEventListener('DOMContentLoaded', build);
+})();
+</script></body></html>

@@ -1,0 +1,141 @@
+---
+import '../styles/fonts.css';
+import '../styles/catalog.css';
+import '../styles/design-v2.css';
+import '../styles/exact-site.css';
+import '../styles/exact-reference-hover.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteDevelopmentNotice from '../components/SiteDevelopmentNotice.astro';
+import ExactMotion from '../components/ExactMotion.astro';
+import LinkPeek from '../components/LinkPeek.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { loadHomePage } from '../lib/homePage';
+import { resolveActiveNav, type ActiveNavKey } from '../lib/activeNav';
+import {
+  DEFAULT_SITE_DESCRIPTION,
+  DEFAULT_SITE_TITLE,
+  canonicalUrl,
+  isPreviewHost,
+  robotsContent,
+} from '../lib/siteSeo';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  /** Optional override; default is pathname-derived (M37). */
+  activeNav?: ActiveNavKey | null;
+  compactBrand?: boolean;
+  skipHref?: string;
+}
+const {
+  title = DEFAULT_SITE_TITLE,
+  description = DEFAULT_SITE_DESCRIPTION,
+  ogImage,
+  activeNav,
+  compactBrand = false,
+  skipHref = '#topic-list',
+} = Astro.props;
+
+const { footer } = loadHomePage();
+const resolvedNav: ActiveNavKey | null =
+  activeNav !== undefined ? activeNav : resolveActiveNav(Astro.url.pathname);
+const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
+const robots = robotsContent(Astro.url.hostname);
+const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
+const showPreviewNote = isPreviewHost(Astro.url.hostname);
+---
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#fbfaf5" />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="he_IL" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {/* Wix injects parallel [wix-seo-tag] title/canonical/og:title (often
+        "… | Noam Math Astro POC"). Keep our Hebrew tags; drop the duplicates. */}
+    <script is:inline>
+      (function () {
+        function stripWixSeoDupes() {
+          var nodes = document.querySelectorAll('[wix-seo-tag="true"]');
+          for (var i = 0; i < nodes.length; i++) {
+            var el = nodes[i];
+            var tag = el.tagName.toLowerCase();
+            if (tag === 'title') {
+              el.parentNode && el.parentNode.removeChild(el);
+              continue;
+            }
+            if (tag === 'link' && String(el.getAttribute('rel') || '').toLowerCase() === 'canonical') {
+              el.parentNode && el.parentNode.removeChild(el);
+              continue;
+            }
+            if (
+              tag === 'meta' &&
+              String(el.getAttribute('property') || '').toLowerCase() === 'og:title'
+            ) {
+              el.parentNode && el.parentNode.removeChild(el);
+            }
+          }
+        }
+        stripWixSeoDupes();
+        if (typeof MutationObserver === 'function') {
+          new MutationObserver(stripWixSeoDupes).observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+          });
+        }
+      })();
+    </script>
+    {/* Wix-documented slot for item-page SEO (<SEO.Tags slot="seo-tags">).
+        Blog item pages fill this; main pages use props above as the single
+        title/meta source (no "Astro POC" / "Home | …" duplicates). */}
+    <slot name="seo-tags" />
+    <link
+      rel="preload"
+      href="/fonts/secular-one-400-hebrew.c1e45f5b.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/heebo-hebrew.f1f7cfae.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    {/* Hide absolute doodles until client layout pick — no CLS */}
+    <script is:inline>
+      document.documentElement.classList.add('doodles-pending');
+    </script>
+  </head>
+  <body class="exact-site">
+    <div class="exact-frame">
+    <a class="skip-link" href={skipHref}>דילוג לתוכן</a>
+    <SiteHeader active={resolvedNav} compactBrand={useCompactBrand} />
+    <SiteDevelopmentNotice />
+    <slot />
+    <SiteFooter footer={footer} showPreviewNote={showPreviewNote} />
+    {/* POC motion system (branch poc-animations-fix): scroll reveal +
+        hover re-draw; honors prefers-reduced-motion, the accessibility
+        menu's noam-a11y-motion class, and fine-pointer devices. */}
+    <ExactMotion />
+    <LinkPeek />
+    <!-- The development notice is non-blocking; legal links remain in the footer. -->
+    <script src="/noam-accessibility.js" defer></script>
+    <script src="/noam-site-companion.js" defer></script>
+    </div>
+  </body>
+</html>

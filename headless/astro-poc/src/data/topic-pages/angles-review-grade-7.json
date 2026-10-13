@@ -1,0 +1,266 @@
+{
+  "slug": "angles-review-grade-7",
+  "path": "/angles-review-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/angles-review-grade-7",
+  "fetchedAt": "2026-09-23T17:03:08.810Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "זוויות לכיתה ז׳ — דף חזרה מסכם | נועם דורון",
+  "description": "דף חזרה בזוויות לכיתה ז׳: סימון ומדידה, חוצה זווית, זוויות צמודות וקודקודיות וסכום זוויות. דפי עבודה בשלוש רמות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "זוויות לכיתה ז׳ — דף חזרה מסכם",
+  "intro": "מסכמים את נושאי הזוויות: סימון ומדידה, חוצה זווית, זוויות צמודות וקודקודיות וסכום זוויות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "זוויות קודקודיות שוות, וזוויות צמודות משלימות יחד ל־180°. אם זווית אחת היא 68°, הזווית הקודקודית לה היא 68° וכל זווית צמודה לה היא 112°.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "זוויות צמודות אינן תמיד שוות; הסכום שלהן 180° רק כאשר השוקיים שאינן משותפות יוצרות קו ישר. בודקים את השרטוט ואת הסימונים לפני חישוב.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שתי זוויות צמודות על ישר. אחת מהן 127°. מה מידת השנייה? תשובה: 53°, כי סכום הזוויות על קו ישר הוא 180°.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "זוויות צמודות וקודקודיות",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מסכמים את נושאי הזוויות: סימון ומדידה, חוצה זווית, זוויות צמודות וקודקודיות וסכום זוויות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "לפתיחת דפי העבודה בשלוש רמות",
+      "href": "/worksheets?grade=7&topic=13",
+      "catalogTopicId": 13
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "זוויות קודקודיות שוות, וזוויות צמודות משלימות יחד ל־180°. אם זווית אחת היא 68°, הזווית הקודקודית לה היא 68° וכל זווית צמודה לה היא 112°.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "זוויות צמודות אינן תמיד שוות; הסכום שלהן 180° רק כאשר השוקיים שאינן משותפות יוצרות קו ישר. בודקים את השרטוט ואת הסימונים לפני חישוב.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "שתי זוויות צמודות על ישר. אחת מהן 127°. מה מידת השנייה? תשובה: 53°, כי סכום הזוויות על קו ישר הוא 180°.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "זוויות צמודות וקודקודיות",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לכל דפי כיתה ז׳",
+      "role": "body"
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא זוויות לכיתה ז׳ — דף חזרה מסכם מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא זוויות לכיתה ז׳ — דף חזרה מסכם מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/angles-introduction-measurement-grade-7",
+      "label": "זוויות",
+      "productionHref": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7"
+    },
+    {
+      "path": "/triangle-area-grade-7",
+      "label": "שטח משולש",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-area-grade-7"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-7",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "לפתיחת דפי העבודה בשלוש רמות",
+    "href": "/worksheets?grade=7&topic=13",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=13",
+    "catalogTopicId": 13,
+    "catalogTopicTitle": "זוויות — דף חזרה מסכם"
+  },
+  "catalogCtas": [
+    {
+      "label": "לפתיחת דפי העבודה בשלוש רמות",
+      "href": "/worksheets?grade=7&topic=13",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=13",
+      "catalogTopicId": 13,
+      "catalogTopicTitle": "זוויות — דף חזרה מסכם"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/angles-review-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/angles-review-grade-7",
+        "name": "זוויות לכיתה ז׳ — דף חזרה מסכם | נועם דורון",
+        "description": "דף חזרה בזוויות לכיתה ז׳: סימון ומדידה, חוצה זווית, זוויות צמודות וקודקודיות וסכום זוויות. דפי עבודה בשלוש רמות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/angles-review-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/angles-review-grade-7#learning-resource",
+        "name": "זוויות לכיתה ז׳ — דף חזרה מסכם",
+        "url": "https://www.noamdoronmath.co.il/angles-review-grade-7",
+        "description": "דף חזרה בזוויות לכיתה ז׳: סימון ומדידה, חוצה זווית, זוויות צמודות וקודקודיות וסכום זוויות. דפי עבודה בשלוש רמות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/angles-review-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא זוויות לכיתה ז׳ — דף חזרה מסכם מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

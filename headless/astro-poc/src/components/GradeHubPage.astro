@@ -1,0 +1,269 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GradeLoopPlayer from './GradeLoopPlayer.astro';
+import '../styles/exact-grade.css';
+import { buildGradeLoopPool } from '../lib/gradeLoopPools';
+import { loadCatalog } from '../lib/catalog/loadCatalog';
+import {
+  loadGradeHub,
+  siblingGradeHubLinks,
+  type GradeHubGrade,
+} from '../lib/gradeHubs';
+import { localizeSiteHref } from '../lib/sitePages';
+import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+
+interface Props {
+  grade: GradeHubGrade;
+}
+const { grade } = Astro.props;
+const hub = loadGradeHub(grade);
+const siblings = siblingGradeHubLinks(grade);
+/* The reference has one nine-grade strip. Keep every existing destination. */
+const otherFamilySiblings = siblingGradeHubLinks(grade <= 6 ? 7 : 1);
+const gradeTabs = [...siblings, ...otherFamilySiblings].sort((a, b) => a.grade - b.grade);
+const gradeLabel = gradeTabs.find((tab) => tab.grade === grade)?.label;
+const introIsCta = !!(hub.catalogCta && hub.catalogCta.label === hub.intro);
+const hasFaq = hub.faq.length > 0 && !!hub.faqHeading;
+const hasTopics = hub.topicSections.some((s) => s.links.length > 0);
+const grade1Catalog =
+  grade === 1 ? loadCatalog().grades.find((entry) => entry.grade === 1) : undefined;
+const grade1Groups = (grade1Catalog?.groups ?? [])
+  .map((group) => ({
+    key: group.key,
+    label: group.label,
+    topics: (grade1Catalog?.topics ?? []).filter(
+      (topic) => topic.group === group.key && topic.parent === undefined
+    ),
+  }))
+  .filter((group) => group.topics.length > 0);
+const faqJsonLd = hasFaq
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: hub.faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    }
+  : null;
+/* K3 + FAMILIES-B1: retain the verified one-loop-per-grade mapping and runtime.
+   Only its presentation moves into the full-width grade-player shell.
+   א׳=F03 tenframes, ב׳=F01 sticks, ג׳=F06 bars, ד׳=F02 numberline,
+   ה׳=F04 balance, ו׳=F05 pattern; ז׳–ט׳ keep the K3 loops. */
+const loopVariant =
+  grade === 7
+    ? 'triangle'
+    : grade === 8
+      ? 'pythagoras'
+      : grade === 9
+        ? 'area-model'
+        : grade === 1
+          ? 'tenframes'
+          : grade === 2
+            ? 'sticks'
+            : grade === 3
+              ? 'bars'
+              : grade === 4
+                ? 'numberline'
+                : grade === 5
+                  ? 'balance'
+                  : grade === 6
+                    ? 'pattern'
+                    : null;
+const gradePool = buildGradeLoopPool(grade);
+---
+<BaseLayout
+  title={hub.title}
+  description={hub.description}
+  activeNav="worksheets"
+  skipHref="#grade-hub-main"
+>
+  {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
+  <main class="grade-hub wrap exact-grade" data-grade={String(grade)} id="grade-hub-main">
+    <nav class="grade-hub__siblings" aria-label="כיתות">
+      {
+        gradeTabs.map((s) => (
+          <a
+            class:list={['grade-tab', s.grade === grade && 'is-current']}
+            href={s.href}
+            aria-current={s.grade === grade ? 'page' : undefined}
+            data-peek={`g:${s.grade}`}
+          >
+            כיתה {s.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <header class="grade-hub__header">
+      <div class="grade-hub__header-main">
+        <h1>{hub.h1}</h1>
+        {hub.lead && <p class="grade-hub__lead">{hub.lead}</p>}
+        {
+          hub.lead && hub.catalogCta && (
+            <p class="grade-hub__cta-wrap">
+              <a class="grade-hub__cta" href={hub.catalogCta.href} data-peek="ws">
+                {hub.catalogCta.label}
+              </a>
+            </p>
+          )
+        }
+        {
+          !hub.lead && !introIsCta && <p class="grade-hub__intro">{hub.intro}</p>
+        }
+        {
+          !hub.lead && hub.catalogCta && (
+            <p class="grade-hub__cta-wrap">
+              <a class="grade-hub__cta" href={hub.catalogCta.href} data-peek="ws">
+                {hub.catalogCta.label}
+              </a>
+            </p>
+          )
+        }
+        <div class="exact-grade__walker" data-doodle="walker" dir="ltr">
+          <div>
+            <button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט">
+              <img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {
+      loopVariant && (
+        <section class="exact-grade__players" aria-labelledby="grade-demos-heading">
+          <h2 id="grade-demos-heading">המחשות לכיתה {gradeLabel}</h2>
+          <div class="exact-grade__player-wrap">
+            <div class="exact-grade__pencil" data-doodle="pencil">
+              <button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט">
+                <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" width="400" height="400" loading="lazy" decoding="async" />
+              </button>
+            </div>
+            {/* The protected runtime supplies the real question, diagram and result.
+                Do not invent a playlist from the grade-four design sample. */}
+            <article class="exact-grade__player" data-landing-loop={`grade-${grade}`} role="region" aria-roledescription="נגן המחשות" aria-label={`המחשה לכיתה ${gradeLabel}`}>
+              <GradeLoopPlayer grade={grade} pool={gradePool} defaultVariant={loopVariant} />
+            </article>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      grade1Groups.length > 0 && (
+        <section class="grade-hub__topics" aria-label="קבוצות נושאים">
+          <h2 class="grade-hub__section-title">נושאים במאגר</h2>
+          {grade1Groups.map((group) => (
+            <div class="grade-hub__section">
+              <h3 class="grade-hub__section-title">
+                <a href={`/worksheets?grade=1&group=${group.key}`}>{group.label}</a>
+              </h3>
+              <ul class="grade-hub__topic-list">
+                {group.topics.map((topic) => (
+                  <li>
+                    <a href={`/worksheets?grade=1&group=${group.key}&topic=${topic.id}`}>
+                      {topic.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      hasTopics && (
+        <section class="grade-hub__topics" aria-label="נושאים">
+          {hub.topicSections.map((section) => (
+            <div class="grade-hub__section">
+              {section.heading && <h2 class="grade-hub__section-title">{section.heading}</h2>}
+              <ul class="grade-hub__topic-list">
+                {section.links.map((link) => (
+                  <li>
+                    <a
+                      href={resolveSiteHrefString(link.productionHref || link.path)}
+                      rel="noopener noreferrer"
+                      data-topic-path={link.path}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      hub.lead && !introIsCta && (
+        <details class="grade-hub__intro-fold">
+          <summary>ההסבר המלא</summary>
+          <p class="grade-hub__intro">{hub.intro}</p>
+        </details>
+      )
+    }
+
+    {
+      hasFaq && (
+        <section class="grade-hub__faq" aria-labelledby="grade-hub-faq-heading">
+          <h2 id="grade-hub-faq-heading">{hub.faqHeading}</h2>
+          <div class="grade-hub__faq-list">
+            {hub.faq.map((item) => (
+              <details class="grade-hub__faq-item">
+                <summary>{item.question}</summary>
+                <p>{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      hub.whatsapp && (
+        <aside class="grade-hub__whatsapp" aria-label={hub.whatsapp.heading}>
+          <div>
+            <h2 class="grade-hub__section-title">{hub.whatsapp.heading}</h2>
+            <p>{hub.whatsapp.body}</p>
+          </div>
+          <a href={hub.whatsapp.href} rel="noopener noreferrer" data-peek="whatsapp">
+            {hub.whatsapp.ctaLabel}
+          </a>
+        </aside>
+      )
+    }
+
+    {
+      hub.footerLinks && hub.footerLinks.length > 0 && (
+        <nav class="grade-hub__footer-links" aria-label="קישורים נוספים">
+          <ul>
+            {hub.footerLinks.map((link) => (
+              <li>
+                <a href={localizeSiteHref(link.href)} rel="noopener noreferrer">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    {
+      hub.contactLine && <p class="grade-hub__contact">{hub.contactLine}</p>
+    }
+
+    <p class="grade-hub__terms">
+      <a href={localizeSiteHref(hub.terms.href)} rel="noopener noreferrer">{hub.terms.label}</a>
+    </p>
+  </main>
+</BaseLayout>

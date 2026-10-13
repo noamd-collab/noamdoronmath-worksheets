@@ -1,0 +1,264 @@
+{
+  "path": "/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9E%D7%95%D7%A8%D7%99%D7%9D-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A7%D7%A6%D7%A8%D7%99%D7%9D-%D7%94%D7%9B%D7%A0%D7%94-%D7%9C%D7%A9%D7%99%D7%A2%D7%95%D7%A8",
+  "pathSlug": "%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9E%D7%95%D7%A8%D7%99%D7%9D-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A7%D7%A6%D7%A8%D7%99%D7%9D-%D7%94%D7%9B%D7%A0%D7%94-%D7%9C%D7%A9%D7%99%D7%A2%D7%95%D7%A8",
+  "decodedSlug": "דפי-עבודה-למורים-במתמטיקה-שמקצרים-הכנה-לשיעור",
+  "fileSlug": "worksheets-for-teachers",
+  "title": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור",
+  "description": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור: חימום, תרגול בקבוצות, שיעורי בית ומבדקים לפי כיתה ונושא, בחינם וללא הרשמה, מוכן להדפסה.",
+  "ogTitle": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור",
+  "ogDescription": "בונים שיעור מתוך הדפים שכבר קיימים: מגדירים מטרה, בוחרים שאלות ורמות, ומסיימים בבדיקה קצרה. קישורי תרגול ישירים וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp",
+  "h1": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור",
+  "author": "נועם דורון מתמטיקה",
+  "datePublished": "2026-09-02T08:49:10.000Z",
+  "dateModified": "2026-09-12T14:20:51.882Z",
+  "dateDisplay": "2 בספט׳",
+  "readingTime": "זמן קריאה 2 דקות",
+  "authorAvatar": {
+    "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+    "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+  },
+  "coverImage": "https://static.wixstatic.com/media/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp",
+  "blocks": [
+    {
+      "type": "p",
+      "text": "הכנת שיעור אינה מחייבת לבנות דף חדש בכל פעם. במאגר נועם דורון מתמטיקה אפשר לבחור כיתה, נושא ורמה ולפתוח את הקובץ הקיים בחינם וללא הרשמה. כדי שהדף ישרת את השיעור, מתחילים במטרה אחת שאפשר לראות בתשובות התלמידים."
+    },
+    {
+      "type": "h2",
+      "text": "דוגמה לשיעור: חיבור וחיסור מספרים מכוונים"
+    },
+    {
+      "type": "p",
+      "text": "המטרה: התלמיד יסביר חיסור של מספר שלילי באמצעות המספר הנגדי. פותחים בדוגמה: מינוס שלוש פחות מינוס חמש הם מינוס שלוש ועוד חמש, כלומר 2. מבקשים להסביר גם בתנועה על ציר המספרים."
+    },
+    {
+      "type": "p",
+      "text": "דפי חיבור וחיסור מספרים מכוונים לכיתה ז׳",
+      "segments": [
+        {
+          "type": "a",
+          "text": "דפי חיבור וחיסור מספרים מכוונים לכיתה ז׳",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=2"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "בוחרים מראש כמה שאלות לפתיחה משותפת וכמה לעבודה עצמאית. בקבוצה הזקוקה לתמיכה משתמשים בציר ובמספרים קטנים. לקבוצה שמסבירה היטב מציעים שאלה שמצריכה נימוק או זיהוי טעות. אין צורך שכל הכיתה תפתור את כל השאלות, ואות הרמה אינה תווית קבועה לתלמיד."
+    },
+    {
+      "type": "h2",
+      "text": "מבנה מעשי למפגש"
+    },
+    {
+      "type": "p",
+      "text": "פותחים בשאלת אבחון קצרה, מציגים דוגמה אחת, נותנים זמן לתרגול עצמאי ואז משווים שתי דרכי פתרון. בסיום נותנים שאלת יציאה. לדוגמה: מינוס שבע פחות מינוס שתיים. התשובה היא מינוס חמש. תלמיד שכתב תוצאה חיובית מתבקש להסביר את המעבר לחיבור הנגדי."
+    },
+    {
+      "type": "h2",
+      "text": "עוד נקודות כניסה מוכנות"
+    },
+    {
+      "type": "p",
+      "text": "כיתה ד׳ — שבר, ייצוגים ושמות שקולים",
+      "segments": [
+        {
+          "type": "a",
+          "text": "כיתה ד׳ — שבר, ייצוגים ושמות שקולים",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=11"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "כיתה ו׳ — נפח תיבה ומבנים",
+      "segments": [
+        {
+          "type": "a",
+          "text": "כיתה ו׳ — נפח תיבה ומבנים",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=14"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "כיתה ח׳ — פונקציה קווית",
+      "segments": [
+        {
+          "type": "a",
+          "text": "כיתה ח׳ — פונקציה קווית",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=29"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "כיתה ט׳ — חוק הפילוג המורחב",
+      "segments": [
+        {
+          "type": "a",
+          "text": "כיתה ט׳ — חוק הפילוג המורחב",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=1"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "text": "מה בודקים לפני חלוקה לתלמידים"
+    },
+    {
+      "type": "p",
+      "text": "פותחים את הרמה המתאימה ובודקים שההוראות והמושגים תואמים למה שנלמד. בשאלות גאומטריה בודקים גם את המידות והיחידות. אם מדפיסים, מביטים בתצוגה המקדימה ובוחרים את העמודים הנדרשים. אם משתפים קישור, שולחים את הקישור לנושא המדויק כדי שהתלמיד לא יצטרך לחפש מחדש במאגר."
+    },
+    {
+      "type": "h2",
+      "text": "משוב שימושי אחרי השיעור"
+    },
+    {
+      "type": "p",
+      "text": "רשמו לעצמכם באיזו שאלה הופיעה טעות משותפת, ומה היה מקור הקושי. בשיעור הבא התחילו בשאלה דומה עם מספרים אחרים. אין צורך להעביר לאתר שמות תלמידים או צילום של רשימת ציונים כדי להשתמש בדפים."
+    },
+    {
+      "type": "p",
+      "text": "בחירת כיתה ומאגר דפי העבודה",
+      "segments": [
+        {
+          "type": "a",
+          "text": "בחירת כיתה ומאגר דפי העבודה",
+          "href": "https://www.noamdoronmath.co.il/"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+      "segments": [
+        {
+          "type": "a",
+          "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+          "href": "https://www.noamdoronmath.co.il/aboutus"
+        }
+      ]
+    }
+  ],
+  "related": [],
+  "categories": [
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+    },
+    {
+      "text": "חטיבת הביניים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math"
+    },
+    {
+      "text": "מורים והורים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents"
+    },
+    {
+      "text": "מורים והורים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents"
+    }
+  ],
+  "whatsapp": {
+    "heading": "נפגשים גם בוואטסאפ",
+    "body": "הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.",
+    "ctaLabel": "להצטרפות לקבוצת הוואטסאפ ↗",
+    "ctaHref": "https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t",
+    "note": "ההצטרפות לבחירתכם. כל דפי העבודה פתוחים גם בלי להצטרף."
+  },
+  "recentPosts": {
+    "heading": "פוסטים אחרונים",
+    "viewAllLabel": "הצג הכול",
+    "viewAllHref": "https://www.noamdoronmath.co.il/blog",
+    "items": [
+      {
+        "title": "בעיות מילוליות במתמטיקה פותרים שלב אחר שלב",
+        "href": "https://www.noamdoronmath.co.il/post/בעיות-מילוליות-במתמטיקה-פותרים-שלב-אחר-שלב",
+        "imageAlt": "בעיות מילוליות במתמטיקה פותרים שלב אחר שלב"
+      },
+      {
+        "title": "תרגול חשיבה מתמטית לילדים שבונה ביטחון",
+        "href": "https://www.noamdoronmath.co.il/post/תרגול-חשיבה-מתמטית-לילדים-שבונה-ביטחון",
+        "imageAlt": "תרגול חשיבה מתמטית לילדים שבונה ביטחון"
+      },
+      {
+        "title": "דפי עבודה לשיעורי בית במתמטיקה שמקדמים ביטחון",
+        "href": "https://www.noamdoronmath.co.il/post/דפי-עבודה-לשיעורי-בית-במתמטיקה-שמקדמים-ביטחון",
+        "imageAlt": "דפי עבודה לשיעורי בית במתמטיקה שמקדמים ביטחון"
+      }
+    ]
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "author": {
+        "@type": "Person",
+        "name": "נועם דורון מתמטיקה"
+      },
+      "dateModified": "2026-09-12T14:20:51.882Z",
+      "datePublished": "2026-09-02T08:49:10.000Z",
+      "headline": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור",
+      "mainEntityOfPage": {
+        "@id": "https://www.noamdoronmath.co.il/post/דפי-עבודה-למורים-במתמטיקה-שמקצרים-הכנה-לשיעור",
+        "@type": "itemPage",
+        "url": "https://www.noamdoronmath.co.il/post/דפי-עבודה-למורים-במתמטיקה-שמקצרים-הכנה-לשיעור"
+      },
+      "description": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור: חימום, תרגול בקבוצות, שיעורי בית ומבדקים לפי כיתה ונושא, בחינם וללא הרשמה, מוכן להדפסה.",
+      "url": "https://www.noamdoronmath.co.il/post/דפי-עבודה-למורים-במתמטיקה-שמקצרים-הכנה-לשיעור",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://static.wixstatic.com/media/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_b7a4487c2f944fd7800af17cc777b910~mv2.webp",
+        "width": "1536",
+        "height": "1024"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+        "url": "https://www.noamdoronmath.co.il"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "דפי עבודה למורים במתמטיקה שמקצרים הכנה לשיעור",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "text": "כדי שהדף ישרת את השיעור, מתחילים במטרה אחת שאפשר לראות בתשובות התלמידים."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "בוחרים מראש כמה שאלות לפתיחה משותפת וכמה לעבודה עצמאית."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "פותחים בשאלת אבחון קצרה, מציגים דוגמה אחת, נותנים זמן לתרגול עצמאי ואז משווים שתי דרכי פתרון."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "פותחים את הרמה המתאימה ובודקים שההוראות והמושגים תואמים למה שנלמד."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "רשמו לעצמכם באיזו שאלה הופיעה טעות משותפת, ומה היה מקור הקושי."
+        }
+      ]
+    }
+  ],
+  "featureKey": "alt+author+captions+date+h2+images+lists+many-links+medium-body+schema",
+  "clusterSize": 6,
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/post/%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94-%D7%9C%D7%9E%D7%95%D7%A8%D7%99%D7%9D-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A7%D7%A6%D7%A8%D7%99%D7%9D-%D7%94%D7%9B%D7%A0%D7%94-%D7%9C%D7%A9%D7%99%D7%A2%D7%95%D7%A8",
+    "capturedAt": "2026-09-23T21:36:33.516Z",
+    "bodyChars": 1671
+  },
+  "postCategory": {
+    "text": "מורים והורים",
+    "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents"
+  },
+  "batch": "m27",
+  "categoryHint": "teachers-and-parents"
+}
