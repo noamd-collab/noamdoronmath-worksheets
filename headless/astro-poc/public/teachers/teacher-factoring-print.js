@@ -792,7 +792,8 @@ function clampBand(layout, page, band) {
   const margin = layout.margins && layout.margins[String(page)];
   if (margin) {
     top = Math.max(top, margin[0]);
-    end = Math.min(end, margin[1]);
+    // The footer's separator rule sits just above its text.
+    end = Math.min(end, margin[1] < 0.99 ? margin[1] - 0.012 : margin[1]);
   }
   const header = layout.headerEnd;
   if (header && header.page === page && top < header.y) {
@@ -1191,7 +1192,7 @@ function liftOverFaint(bitmap, x0, x1, y) {
   const from = Math.max(0, Math.floor(x0 * bitmap.width));
   const to = Math.min(bitmap.width, Math.ceil(x1 * bitmap.width));
   let row = Math.round(y * bitmap.height);
-  const stop = Math.max(0, row - Math.round(0.004 * bitmap.height));
+  const stop = Math.max(0, row - Math.round(0.007 * bitmap.height));
   let top = row;
   for (row -= 1; row >= stop; row -= 1) {
     let darkest = 255;

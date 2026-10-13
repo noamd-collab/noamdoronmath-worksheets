@@ -124,7 +124,7 @@ describe('continuous teacher worksheet: exercise blocks', () => {
     const margin = layout.margins[String(row.page)];
     assert.ok(margin && margin[1] < 0.97);
     const pieces = questionPieces(source, layout, 7, new Set(['7ד']));
-    for (const piece of pieces) assert.ok(piece.y1 <= margin[1] + 0.0005, `${piece.y0}-${piece.y1}`);
+    for (const piece of pieces) assert.ok(piece.y1 <= margin[1] - 0.01, `${piece.y0}-${piece.y1}`);
   });
 
   it('prints each part of a shared drawing once, in source order, without overlapping pieces', () => {
