@@ -1,0 +1,149 @@
+{
+  "slug": "square-roots-grade-9",
+  "source": "preview",
+  "url": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/square-roots-grade-9",
+  "capturedAt": "2026-09-23T17:43:33.093Z",
+  "httpStatus": 200,
+  "title": "שורשים לכיתה ט׳ | נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+  "description": "שורשים לכיתה ט׳: תרגול שורש ריבועי ופישוט ביטויים עם שורשים. דפי עבודה חינמיים ברמה א׳, רמה ב׳ ומצוינות, ללא הרשמה, עם דוגמאות ורמזים של נועם AI.",
+  "h1": "שורשים לכיתה ט׳",
+  "intro": "בדף זה לומדים לזהות שורש ריבועי, לפשט ביטויים ולבדוק מתי לשורש יש ערך ממשי. דפי העבודה מחולקים לשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "updatedLine": null,
+  "authorLine": "נכתב ונערך על ידי נועם דורון , מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "שורש ריבועי",
+      "paragraphs": [
+        "לדוגמה: √49=7 כי 7²=49"
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "פישוט",
+      "paragraphs": [
+        "לדוגמה: √(36x²)=6x כאשר x≥0"
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "שאלה: חשבו: √81תשובה: התוצאה היא 9",
+        "לכל דפי העבודה של כיתה ט׳"
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "בדף זה לומדים לזהות שורש ריבועי, לפשט ביטויים ולבדוק מתי לשורש יש ערך ממשי. דפי העבודה מחולקים לשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=17",
+      "catalogTopicId": 17
+    },
+    {
+      "type": "heading",
+      "text": "שורש ריבועי"
+    },
+    {
+      "type": "paragraph",
+      "text": "לדוגמה: √49=7 כי 7²=49",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "פישוט"
+    },
+    {
+      "type": "paragraph",
+      "text": "לדוגמה: √(36x²)=6x כאשר x≥0",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "שאלה: חשבו: √81תשובה: התוצאה היא 9",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לכל דפי העבודה של כיתה ט׳",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא שורשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/similar-triangles-grade-9",
+      "label": "דמיון משולשים"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-9",
+      "label": "משפט פיתגורס"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/rectangle-grade-9",
+      "label": "מלבן"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=9&topic=17",
+    "label": "פתיחת דפי העבודה ובחירת רמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=9&topic=17",
+      "label": "פתיחת דפי העבודה ובחירת רמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא שורשים לכיתה ט׳ מתאימים לכיתה ט׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}

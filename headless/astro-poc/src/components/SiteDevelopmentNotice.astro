@@ -1,0 +1,19 @@
+<aside class="exact-development-notice" aria-label="הודעת פיתוח" data-development-notice>
+  <p><strong>האתר נמצא כרגע בתהליכי פיתוח</strong> — ייתכנו שיבושים זמניים בפעילות הגלישה והקישורים.</p>
+  <button type="button" aria-label="סגירת הודעת הפיתוח">הבנתי</button>
+</aside>
+<style>
+  /* Non-blocking adaptation requested by Noam. Colors/type come from the
+     reference notice; the compact placement is documented for approval. */
+  .exact-development-notice{display:flex;align-items:center;justify-content:center;gap:12px;padding:4px 20px;border-bottom:2px solid #22305a;background:#fdf1d8;color:#22305a;font-family:'Heebo',sans-serif;font-size:14px;line-height:1.6;}
+  .exact-development-notice p{margin:0;}
+  .exact-development-notice strong{font-weight:800;}
+  .exact-development-notice button{flex:none;min-width:44px;min-height:44px;border:0;background:transparent;color:#22305a;font:inherit;font-weight:800;cursor:pointer;text-decoration:underline;}
+</style>
+<script>
+  // Dismiss only the informational UI: no terms acceptance, learning state,
+  // consent flag, or existing storage value is written by this component.
+  document.querySelectorAll('[data-development-notice]').forEach((notice) => {
+    notice.querySelector('button')?.addEventListener('click', () => notice.remove());
+  });
+</script>

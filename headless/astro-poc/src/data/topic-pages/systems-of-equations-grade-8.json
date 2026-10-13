@@ -1,0 +1,211 @@
+{
+  "slug": "systems-of-equations-grade-8",
+  "path": "/systems-of-equations-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8",
+  "fetchedAt": "2026-09-23T15:55:36.356Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "מערכות משוואות לכיתה ח׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "מערכות משוואות לכיתה ח׳: פתרון בשיטת ההצבה ובשיטת החיבור, ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מערכות משוואות לכיתה ח׳",
+  "intro": "לומדים לפתור שתי משוואות בשני נעלמים, בעזרת הצבה, חיבור וחיסור משוואות או גרף. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרון המערכת הוא זוג מספרים שמקיים את שתי המשוואות. בגרף הוא נקודת החיתוך של הישרים; אפשר למצוא אותו גם בהצבה או בחיבור וחיסור משוואות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: x+y=7, x−y=1, ולכן x=4 ו־y=3.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "זוג הפתרונות חייב לקיים את שתי המשוואות, לא רק אחת מהן.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו: x+y=10, x−y=2.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: x=6, y=4.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/linear-equations-grade-8",
+      "label": "משוואות ליניאריות",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-equations-grade-8"
+    },
+    {
+      "path": "/linear-function-grade-8",
+      "label": "פונקציה קווית",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-function-grade-8"
+    },
+    {
+      "path": "/inequalities-grade-8",
+      "label": "אי־שוויונות",
+      "productionHref": "https://www.noamdoronmath.co.il/inequalities-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=47",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=47",
+    "catalogTopicId": 47,
+    "catalogTopicTitle": "מערכות — חיתוך גרפי"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=47",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=47",
+      "catalogTopicId": 47,
+      "catalogTopicTitle": "מערכות — חיתוך גרפי"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8",
+        "name": "מערכות משוואות לכיתה ח׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "מערכות משוואות לכיתה ח׳: פתרון בשיטת ההצבה ובשיטת החיבור, ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#learning-resource",
+        "name": "מערכות משוואות לכיתה ח׳",
+        "url": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8",
+        "description": "מערכות משוואות לכיתה ח׳: פתרון בשיטת ההצבה ובשיטת החיבור, ובדיקת הפתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/systems-of-equations-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מערכות משוואות לכיתה ח׳ מתאימים לכיתה ח׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

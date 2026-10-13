@@ -1,0 +1,86 @@
+---
+/**
+ * One reusable loop for landing pages that do not already mount ConceptLoop.
+ * The card size comes from aspect-ratio, so the slot does not shift.
+ * Reduced motion, html.nd-motion-off, and html.noam-a11y-motion hold a
+ * finished frame. A tiny observer pauses the loop while it is off-screen.
+ */
+import LoopFormula from './LoopFormula.astro';
+import LoopSketch from './LoopSketch.astro';
+import {
+  CSS_LOOP_IDEAS,
+  FORMULA_LOOP_VARIANTS,
+  type CssLoopVariant,
+} from '../lib/landingLoops';
+
+interface Props {
+  variant: CssLoopVariant;
+}
+const { variant } = Astro.props;
+const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
+---
+
+<div
+  class:list={['ll', `ll--${variant}`]}
+  dir="ltr"
+  data-landing-loop={variant}
+  data-css-loop
+  data-loop-idea={CSS_LOOP_IDEAS[variant]}
+  aria-hidden="true"
+>
+  {formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}
+</div>
+
+<script>
+  const root = document.documentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stopped =
+    reduce ||
+    root.classList.contains('nd-motion-off') ||
+    root.classList.contains('noam-a11y-motion');
+  if (!stopped && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        entry.target.classList.toggle('ll--off', !entry.isIntersecting);
+      }
+    }, { rootMargin: '64px' });
+    document.querySelectorAll('.ll').forEach((node) => io.observe(node));
+  }
+</script>
+
+<style>
+  .ll {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+    aspect-ratio: 480 / 280;
+    position: relative;
+    container-type: inline-size;
+    contain: layout;
+    pointer-events: none;
+    direction: ltr;
+    background: #fff;
+    border: 2.5px solid #22305a;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+  .ll :global(.ll-math) {
+    unicode-bidi: isolate;
+    direction: ltr;
+    white-space: nowrap;
+  }
+  .ll--off,
+  .ll--off :global(*) { animation-play-state: paused !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ll,
+    .ll :global(*) { animation: none !important; }
+  }
+  :global(html.nd-motion-off) .ll,
+  :global(html.nd-motion-off) .ll :global(*),
+  :global(html.noam-a11y-motion) .ll,
+  :global(html.noam-a11y-motion) .ll :global(*) {
+    animation: none !important;
+  }
+</style>

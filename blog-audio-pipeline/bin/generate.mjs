@@ -23,7 +23,7 @@ import { buildScript, chunkScript } from '../src/text.mjs';
 import { speakChunk, isRetryable } from '../src/tts.mjs';
 import { encodePcmToMp3, probeMp3, silencePcm, pcmDurationSec, requireFfmpeg } from '../src/mp3.mjs';
 import {
-  audioSignature, completedRecordingCurrent, readState, writeState, readChunk, writeChunk, clearWork,
+  audioSignature, readState, writeState, readChunk, writeChunk, clearWork,
   acquireLock, addSpend, readLedger, assertCanSpend, sha256,
 } from '../src/store.mjs';
 import { actualCostUsd, estimateForChars, fmtUsd, fmtDuration } from '../src/cost.mjs';
@@ -32,7 +32,6 @@ import { parseArgs, log, fail } from '../src/cli.mjs';
 const args = parseArgs();
 const cfg = readConfig();
 if (args.model) cfg.tts.model = String(args.model);
-const eleven = cfg.tts.provider === 'elevenlabs';
 const source = args.source || 'sitemap';
 const dev = !!args.dev;
 const dryRun = !!args['dry-run'];
@@ -66,7 +65,7 @@ if (args['retry-failed']) {
 }
 if (args.limit) posts = posts.slice(0, Number(args.limit));
 
-log(`\nprovider ${cfg.tts.provider || 'gemini-api'}  model ${cfg.tts.model}  voice ${cfg.tts.voice}  source ${source}  storage ${storageBackend(cfg)}  posts ${posts.length}${dryRun ? '  [DRY RUN]' : ''}`);
+log(`\nmodel ${cfg.tts.model}  voice ${cfg.tts.voice}  source ${source}  storage ${storageBackend(cfg)}  posts ${posts.length}${dryRun ? '  [DRY RUN]' : ''}`);
 log(`ledger so far: ${fmtUsd(readLedger().spentUsd)} of ${fmtUsd(cfg.limits.spendLimitUsd)} limit\n`);
 
 const results = { done: [], skipped: [], failed: [] };
@@ -80,10 +79,9 @@ for (const stub of posts) {
   const est = estimateForChars(cfg, script.length, { chunks: chunks.length });
 
   const prior = readState(postId);
-  if (prior && completedRecordingCurrent(prior, { postId, script, cfg }) && !args.force) {
-    const voiceKept = prior.voice && prior.voice !== cfg.tts.voice;
-    log(`= skip  ${full.title}  (already rendered${voiceKept ? '; configured voice changed, recording kept' : ''}, signature ${(prior.signature || signature).slice(0, 12)})`);
-    results.skipped.push({ postId, slug: full.slug, reason: voiceKept ? 'completed voice kept' : 'signature unchanged' });
+  if (prior && prior.completed && prior.signature === signature && !args.force) {
+    log(`= skip  ${full.title}  (already rendered, signature ${signature.slice(0, 12)})`);
+    results.skipped.push({ postId, slug: full.slug, reason: 'signature unchanged' });
     continue;
   }
 
@@ -106,7 +104,6 @@ for (const stub of posts) {
     title: full.title,
     url: full.url,
     signature,
-    provider: cfg.tts.provider || 'gemini-api',
     model: cfg.tts.model,
     voice: cfg.tts.voice,
     language: cfg.tts.language ?? null,
@@ -149,8 +146,6 @@ for (const stub of posts) {
           try {
             const res = await speakChunk({
               text,
-              provider: cfg.tts.provider,
-              elevenlabs: cfg.tts.elevenlabs,
               model: cfg.tts.model,
               voice: cfg.tts.voice,
               language: cfg.tts.language,
@@ -176,13 +171,12 @@ for (const stub of posts) {
             addSpend({ model: cfg.tts.model, ...res.usage, usd, retry: attempt > 1 });
             state.usage.inputTextTokens += res.usage.inputTextTokens;
             state.usage.outputAudioTokens += res.usage.outputAudioTokens;
-            state.usage.characters = (state.usage.characters || 0) + (res.usage.characters || 0);
             state.usage.usd = Number((state.usage.usd + usd).toFixed(6));
             if (attempt > 1) state.usage.retries += attempt - 1;
 
             pcm = res.pcm;
             writeChunk(signature, i, text, pcm);
-            log(`         [${i + 1}/${chunks.length}] ${fmtDuration(secs)}  ${eleven ? `${res.usage.characters} credits` : `${res.usage.outputAudioTokens} audio tokens`}  ${fmtUsd(usd)}${attempt > 1 ? `  (attempt ${attempt})` : ''}`);
+            log(`         [${i + 1}/${chunks.length}] ${fmtDuration(secs)}  ${res.usage.outputAudioTokens} audio tokens  ${fmtUsd(usd)}${attempt > 1 ? `  (attempt ${attempt})` : ''}`);
             lastErr = null;
             break;
           } catch (e) {

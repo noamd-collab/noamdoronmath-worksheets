@@ -1,0 +1,121 @@
+---
+import type { HomePageContent } from '../lib/homePage';
+
+interface Props {
+  footer: HomePageContent['footer'];
+  /** Preview hosts only — never claim “preview only” on the live domain. */
+  showPreviewNote?: boolean;
+}
+const { footer, showPreviewNote = false } = Astro.props;
+
+/**
+ * Brand social URLs — verified only (do not invent):
+ * - Instagram: git 2156c6d (Noam); HTTP 200 → login redirect for /noamdoronmath/
+ * - Facebook: git 2156c6d (Noam); HTTP 200 → profile "נועם דורון מתמטיקה" id 61593749281930
+ * - WhatsApp: home-page.json + live CTA / grade hubs / blog; HTTP 200
+ * Missing (not in repo, not in live/.co.il footer/header): TikTok.
+ * YouTube in high-school-math.json is עובד לב ארי (third-party) — not brand; omitted.
+ */
+const socialLinks = [
+  {
+    href: 'https://www.instagram.com/noamdoronmath/',
+    label: 'אינסטגרם של נועם דורון מתמטיקה',
+    network: 'instagram' as const,
+  },
+  {
+    href: 'https://www.facebook.com/profile.php?id=61593749281930',
+    label: 'פייסבוק של נועם דורון מתמטיקה',
+    network: 'facebook' as const,
+  },
+  {
+    href: 'https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t',
+    label: 'הצטרפות לקבוצת הוואטסאפ של נועם דורון מתמטיקה',
+    network: 'whatsapp' as const,
+  },
+];
+---
+<footer class="exact-footer" data-home-footer style="background:#22305a;color:#e8ebf3;margin-top:24px;position:relative;">
+ <div style="max-width:1200px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;">
+  <div>
+   <strong style="font-family:'Secular One',sans-serif;font-weight:400;font-size:22px;color:#fff;">{footer.brandName}</strong>
+   <p style="margin:10px 0 0;line-height:1.6;font-size:15px;color:#c3c9dc;">{footer.brandBlurb}</p>
+  </div>
+  <div>
+   <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">{footer.contactHeading}</h3>
+   <p style="margin:0 0 6px;font-size:15px;color:#c3c9dc;">{footer.contactBody}</p>
+   <a href={'mailto:'+footer.email} style="color:#f2c46b;font-size:15px;">{footer.email}</a>
+   {/* Keep verified real social destinations. Supplied YouTube/LinkedIn are placeholders, not new URLs. */}
+      <ul style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;list-style:none;padding:0;" aria-label="רשתות חברתיות">
+        {
+          socialLinks.map((item) => (
+            <li>
+              <a
+                class="exact-social" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1.5px solid rgba(255,255,255,.3);color:#fff;" href={item.href}
+                target="_blank"
+                rel="noopener"
+                aria-label={item.label}
+                data-footer-social={item.network}
+                data-peek={item.network}
+              >
+                {item.network === 'instagram' && (
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                    <rect
+                      x="4"
+                      y="4"
+                      width="16"
+                      height="16"
+                      rx="4"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    ></rect>
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    ></circle>
+                    <circle cx="17" cy="7" r="1" fill="currentColor"></circle>
+                  </svg>
+                )}
+                {item.network === 'facebook' && (
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                    <path
+                      fill="currentColor"
+                      d="M14.2 20v-6.2h2.1l.3-2.4h-2.4V9.9c0-.7.2-1.2 1.2-1.2h1.3V6.6c-.2 0-1-.1-1.9-.1-1.9 0-3.2 1.2-3.2 3.3v1.6H9.4v2.4h2.2V20h2.6Z"
+                    ></path>
+                  </svg>
+                )}
+                {item.network === 'whatsapp' && (
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                    <path
+                      fill="currentColor"
+                      d="M12 3.1A8.4 8.4 0 0 0 4.7 15.4L3.5 20.3l5-1.3A8.4 8.4 0 1 0 12 3.1Zm0 1.7a6.7 6.7 0 0 1 5.7 10.1 6.7 6.7 0 0 1-9.4 2l-.4-.2-2.6.7.7-2.5-.2-.4A6.7 6.7 0 0 1 12 4.8Zm3.7 9.6c-.2.5-1 .9-1.4 1-.4.1-.8.2-2.6-.5-2.2-.9-3.6-3.1-3.7-3.3-.1-.2-.9-1.2-.9-2.2s.6-1.6.8-1.8c.2-.2.4-.3.6-.3h.4c.1 0 .3 0 .4.3.2.4.6 1.4.6 1.5.1.1.1.3 0 .4l-.3.5c-.1.1-.2.3-.1.5.1.2.5.8 1.1 1.3.8.7 1.4.9 1.6 1 .2.1.3.1.5-.1l.6-.7c.1-.2.3-.2.5-.1.2.1 1.3.6 1.5.7.2.1.4.2.4.3 0 .1 0 .6-.2 1.1Z"
+                    ></path>
+                  </svg>
+                )}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+  </div>
+  <nav aria-label={footer.quickNavHeading}>
+   <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">{footer.quickNavHeading}</h3>
+   <div style="display:flex;flex-direction:column;gap:6px;font-size:15px;">
+    {footer.quickNav.map(item=>(<a href={item.href} style="color:#c3c9dc;">{item.label}</a>))}
+   </div>
+  </nav>
+  <nav aria-label="מידע נוסף">
+   <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">מידע נוסף</h3>
+   <div style="display:flex;flex-direction:column;gap:6px;font-size:15px;">
+    {footer.legal.map(item=>item.href?(<a href={item.href} style="color:#c3c9dc;">{item.label}</a>):(<span>{item.label}</span>))}
+   </div>
+  </nav>
+ </div>
+ <div style="max-width:1200px;margin:0 auto;padding:18px 24px 28px;border-top:1px solid rgba(255,255,255,.15);font-size:13px;color:#a9b0c8;">{footer.copyright}
+  {showPreviewNote && footer.previewNote && <p class="home-foot">{footer.previewNote}</p>}
+ </div>
+</footer>

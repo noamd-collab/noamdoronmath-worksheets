@@ -1,0 +1,215 @@
+{
+  "path": "/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A9%D7%91%D7%A8%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%93-%D7%A9%D7%9E%D7%97%D7%96%D7%A7-%D7%94%D7%91%D7%A0%D7%94-%D7%95%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+  "pathSlug": "%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A9%D7%91%D7%A8%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%93-%D7%A9%D7%9E%D7%97%D7%96%D7%A7-%D7%94%D7%91%D7%A0%D7%94-%D7%95%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+  "decodedSlug": "תרגול-שברים-לכיתה-ד-שמחזק-הבנה-וביטחון",
+  "fileSlug": "fractions-practice-grade-4",
+  "title": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+  "description": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון: ציורים, ישר מספרים, השוואה וצמצום והרחבה. דפי עבודה בחינם ללא הרשמה לתרגול נעים ומדורג בבית.",
+  "ogTitle": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+  "ogDescription": "שברים לכיתה ד׳ דרך שלם, חלקים שווים וישר המספרים. דוגמאות, בדיקה עצמית ושלושה נושאי תרגול קיימים בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp",
+  "h1": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+  "author": "נועם דורון מתמטיקה",
+  "datePublished": "2026-09-06T08:28:02.000Z",
+  "dateModified": "2026-09-12T14:18:02.820Z",
+  "dateDisplay": "6 בספט׳",
+  "readingTime": "זמן קריאה 2 דקות",
+  "authorAvatar": {
+    "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+    "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+  },
+  "coverImage": "https://static.wixstatic.com/media/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp",
+  "blocks": [
+    {
+      "type": "p",
+      "text": "כדי להבין שבר מתחילים בשתי שאלות: מהו השלם, ולכמה חלקים שווים חילקנו אותו? המכנה מתאר את מספר החלקים השווים בשלם, והמונה את מספר החלקים שנבחרו. התרגול כאן מבוסס על דפי העבודה הקיימים לכיתה ד׳, ללא הרשמה."
+    },
+    {
+      "type": "h2",
+      "text": "דוגמה: אותו חלק בשמות שונים"
+    },
+    {
+      "type": "p",
+      "text": "צובעים חצי ממלבן. אם מחלקים את אותו המלבן לארבעה חלקים שווים, החלק הצבוע הוא שני רבעים. אם מחלקים לשמונה חלקים שווים, הוא ארבע שמיניות. השם השתנה, אבל השטח הצבוע נשאר זהה: חצי, שני רבעים וארבע שמיניות הם שברים שקולים."
+    },
+    {
+      "type": "h2",
+      "text": "איך משווים שברים"
+    },
+    {
+      "type": "p",
+      "text": "כאשר המונה זהה, צריך לחשוב על גודל החלק: רבע גדול משמינית כי חלוקה של אותו שלם לארבעה נותנת חלקים גדולים יותר מחלוקה לשמונה. כאשר המכנה זהה, משווים את מספר החלקים שנלקחו: שלוש שמיניות גדולות משתי שמיניות. תמיד משתמשים באותו שלם לצורך ההשוואה."
+    },
+    {
+      "type": "p",
+      "text": "מתחילים בציור ובשם השבר — ייצוגים ושמות שקולים",
+      "segments": [
+        {
+          "type": "a",
+          "text": "מתחילים בציור ובשם השבר — ייצוגים ושמות שקולים",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=11"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "ממקמים ומשווים — שברים על ישר המספרים",
+      "segments": [
+        {
+          "type": "a",
+          "text": "ממקמים ומשווים — שברים על ישר המספרים",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=12"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "משלבים ציור, השוואה וישר — שברים שקולים",
+      "segments": [
+        {
+          "type": "a",
+          "text": "משלבים ציור, השוואה וישר — שברים שקולים",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=13"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "text": "מפגש תרגול קצר בבית"
+    },
+    {
+      "type": "p",
+      "text": "בחרו מהדף כמה שאלות שמייצגות את הקושי. תחילה בקשו מהילד להסביר מהו השלם ומה אומר המכנה. אחר כך פותרים עצמאית ובודקים יחד. אם הציור לא מתאים לשבר, חוזרים לחלוקה לחלקים שווים. אם הציור נכון והסימון שגוי, מתרגלים קריאה וכתיבה של השבר. עוברים לרמה אחרת לפי השאלות עצמן והבנת הילד, ולא לפי מספר הדפים שסיים."
+    },
+    {
+      "type": "h2",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "p",
+      "text": "חלקים שאינם שווים אינם יחידות שבר שוות. אין להשוות רק לפי גודל המכנה, ואין להשוות חצי מעוגה קטנה לרבע מעוגה גדולה בלי לדעת את גודל העוגות. על ישר המספרים סופרים את המרווחים השווים בין 0 ל־1, ולא את מספר הסימונים."
+    },
+    {
+      "type": "h2",
+      "text": "בדיקה עצמית"
+    },
+    {
+      "type": "p",
+      "text": "שלם חולק לשמונה חלקים שווים ונצבעו ארבעה. איזה חלק מהשלם נצבע? תשובה: ארבע שמיניות, שהן חצי. אם נצבעו שני חלקים בלבד, נצבעו שתי שמיניות, שהן רבע. אפשר לוודא בעזרת ציור של מלבן אחד."
+    },
+    {
+      "type": "p",
+      "text": "לכל דפי העבודה לכיתה ד׳",
+      "segments": [
+        {
+          "type": "a",
+          "text": "לכל דפי העבודה לכיתה ד׳",
+          "href": "https://www.noamdoronmath.co.il/grade-4"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+      "segments": [
+        {
+          "type": "a",
+          "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+          "href": "https://www.noamdoronmath.co.il/aboutus"
+        }
+      ]
+    }
+  ],
+  "related": [],
+  "categories": [
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+    },
+    {
+      "text": "חטיבת הביניים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math"
+    },
+    {
+      "text": "מורים והורים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents"
+    },
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+    }
+  ],
+  "whatsapp": {
+    "heading": "נפגשים גם בוואטסאפ",
+    "body": "הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.",
+    "ctaLabel": "להצטרפות לקבוצת הוואטסאפ ↗",
+    "ctaHref": "https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t",
+    "note": "ההצטרפות לבחירתכם. כל דפי העבודה פתוחים גם בלי להצטרף."
+  },
+  "recentPosts": {
+    "heading": "פוסטים אחרונים",
+    "viewAllLabel": "הצג הכול",
+    "viewAllHref": "https://www.noamdoronmath.co.il/blog",
+    "items": [
+      {
+        "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
+        "href": "https://www.noamdoronmath.co.il/post/איך-לתרגל-גאומטריה-לכיתה-ו-ולהצליח-במבחנים",
+        "imageAlt": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים"
+      },
+      {
+        "title": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה",
+        "href": "https://www.noamdoronmath.co.il/post/תרגילי-אתגר-במתמטיקה-לכיתה-ד-שמקדמים-חשיבה",
+        "imageAlt": "תרגילי אתגר במתמטיקה לכיתה ד׳ שמקדמים חשיבה"
+      },
+      {
+        "title": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים",
+        "href": "https://www.noamdoronmath.co.il/post/הכנה-למבחן-במתמטיקה-לכיתה-ה-ב-7-ימים",
+        "imageAlt": "הכנה למבחן במתמטיקה לכיתה ה׳ ב-7 ימים"
+      }
+    ]
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "author": {
+        "@type": "Person",
+        "name": "נועם דורון מתמטיקה"
+      },
+      "dateModified": "2026-09-12T14:18:02.820Z",
+      "datePublished": "2026-09-06T08:28:02.000Z",
+      "headline": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון",
+      "mainEntityOfPage": {
+        "@id": "https://www.noamdoronmath.co.il/post/תרגול-שברים-לכיתה-ד-שמחזק-הבנה-וביטחון",
+        "@type": "itemPage",
+        "url": "https://www.noamdoronmath.co.il/post/תרגול-שברים-לכיתה-ד-שמחזק-הבנה-וביטחון"
+      },
+      "description": "תרגול שברים לכיתה ד׳ שמחזק הבנה וביטחון: ציורים, ישר מספרים, השוואה וצמצום והרחבה. דפי עבודה בחינם ללא הרשמה לתרגול נעים ומדורג בבית.",
+      "url": "https://www.noamdoronmath.co.il/post/תרגול-שברים-לכיתה-ד-שמחזק-הבנה-וביטחון",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://static.wixstatic.com/media/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_c11e98a0e7ff40fbab37fa63d0ea8282~mv2.webp",
+        "width": "1536",
+        "height": "1024"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+        "url": "https://www.noamdoronmath.co.il"
+      }
+    }
+  ],
+  "featureKey": "alt+author+captions+date+h2+images+lists+many-links+medium-body+schema",
+  "clusterSize": 6,
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/post/%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A9%D7%91%D7%A8%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%93-%D7%A9%D7%9E%D7%97%D7%96%D7%A7-%D7%94%D7%91%D7%A0%D7%94-%D7%95%D7%91%D7%99%D7%98%D7%97%D7%95%D7%9F",
+    "capturedAt": "2026-09-23T21:36:15.876Z",
+    "bodyChars": 1645
+  },
+  "postCategory": {
+    "text": "יסודי",
+    "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+  },
+  "batch": "m27",
+  "categoryHint": "elementary-math"
+}

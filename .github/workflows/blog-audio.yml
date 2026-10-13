@@ -4,9 +4,7 @@ name: blog-audio
 # Runs in GitHub's cloud, so it does not depend on any particular machine being on.
 #
 # Required repository secrets:
-#   ELEVENLABS_API_KEY         the ElevenLabs key; it produces the narration audio
-#   GEMINI_API_KEY             optional now: only the transcription check
-#                              (bin/verify-audio.mjs, run by hand) uses it
+#   GEMINI_API_KEY             the Google AI Studio key (Gemini API, not Vertex)
 #   NOAM_AUDIO_WORKER_TOKEN    same value as the Wix site secret of that name
 
 on:
@@ -62,7 +60,6 @@ jobs:
       - name: Confirm access before spending anything
         working-directory: blog-audio-pipeline
         env:
-          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NOAM_AUDIO_WORKER_TOKEN: ${{ secrets.NOAM_AUDIO_WORKER_TOKEN }}
         run: node bin/verify-access.mjs
@@ -75,7 +72,6 @@ jobs:
       - name: Render whatever the site has queued
         working-directory: blog-audio-pipeline
         env:
-          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NOAM_AUDIO_WORKER_TOKEN: ${{ secrets.NOAM_AUDIO_WORKER_TOKEN }}
           BLOG_AUDIO_REPO_DIR: ${{ github.workspace }}
@@ -85,7 +81,6 @@ jobs:
         if: always()
         working-directory: blog-audio-pipeline
         env:
-          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NOAM_AUDIO_WORKER_TOKEN: ${{ secrets.NOAM_AUDIO_WORKER_TOKEN }}
         run: node bin/status.mjs

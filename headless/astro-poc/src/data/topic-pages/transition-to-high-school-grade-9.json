@@ -1,0 +1,270 @@
+{
+  "slug": "transition-to-high-school-grade-9",
+  "path": "/transition-to-high-school-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9",
+  "fetchedAt": "2026-09-23T17:29:11.030Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "מעבר לחטיבה העליונה לכיתה ט׳ | דפי חזרה במתמטיקה – נועם דורון",
+  "description": "מעבר לחטיבה העליונה: דפי חזרה במתמטיקה לכיתה ט׳ לקראת התיכון — אלגברה, פונקציות וגאומטריה. שלוש רמות תרגול, א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לחיזוק הביטחון במעבר.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מעבר לחטיבה העליונה",
+  "intro": "מתרגלים ומרעננים אלגברה, פונקציות וגאומטריה לקראת המעבר לתיכון, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "חזרה חכמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פותרים, בודקים ומנמקים — לא רק זוכרים נוסחה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "דוגמה באלגברה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשווא x²−5x+6=0 מפרקים ל־(x−2)(x−3)=0 ולכן x=2 או x=3.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדיקת פתרון",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מציבים כל פתרון במשוואה המקורית ובודקים שהוא מתאים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "אילו מספרים פותרים את x²−9=0? תשובה: 3 ו־−3.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לכל דפי העבודה של כיתה ט׳",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מתרגלים ומרעננים אלגברה, פונקציות וגאומטריה לקראת המעבר לתיכון, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=20",
+      "catalogTopicId": 20
+    },
+    {
+      "type": "heading",
+      "text": "חזרה חכמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "פותרים, בודקים ומנמקים — לא רק זוכרים נוסחה.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "דוגמה באלגברה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במשווא x²−5x+6=0 מפרקים ל־(x−2)(x−3)=0 ולכן x=2 או x=3.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדיקת פתרון"
+    },
+    {
+      "type": "paragraph",
+      "text": "מציבים כל פתרון במשוואה המקורית ובודקים שהוא מתאים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "אילו מספרים פותרים את x²−9=0? תשובה: 3 ו־−3.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לכל דפי העבודה של כיתה ט׳",
+      "role": "body"
+    }
+  ],
+  "updatedLine": null,
+  "updatedLinePlacement": "absent",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מעבר לחטיבה העליונה לכיתה ט׳ מתאימים לכיתה ט׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מעבר לחטיבה העליונה לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-9",
+      "label": "כל דפי כיתה ט׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-9"
+    },
+    {
+      "path": "/factoring-grade-9",
+      "label": "אלגברה",
+      "productionHref": "https://www.noamdoronmath.co.il/factoring-grade-9"
+    },
+    {
+      "path": "/similar-triangles-grade-9",
+      "label": "גאומטריה",
+      "productionHref": "https://www.noamdoronmath.co.il/similar-triangles-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=9&topic=20",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=20",
+    "catalogTopicId": 20,
+    "catalogTopicTitle": "מעבר לחטיבה העליונה"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=20",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=20",
+      "catalogTopicId": 20,
+      "catalogTopicTitle": "מעבר לחטיבה העליונה"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9",
+        "name": "מעבר לחטיבה העליונה לכיתה ט׳ | דפי חזרה במתמטיקה – נועם דורון",
+        "description": "מעבר לחטיבה העליונה: דפי חזרה במתמטיקה לכיתה ט׳ לקראת התיכון — אלגברה, פונקציות וגאומטריה. שלוש רמות תרגול, א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לחיזוק הביטחון במעבר.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9#learning-resource",
+        "name": "מעבר לחטיבה העליונה לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9",
+        "description": "מעבר לחטיבה העליונה: דפי חזרה במתמטיקה לכיתה ט׳ לקראת התיכון — אלגברה, פונקציות וגאומטריה. שלוש רמות תרגול, א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לחיזוק הביטחון במעבר.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מעבר לחטיבה העליונה לכיתה ט׳ מתאימים לכיתה ט׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

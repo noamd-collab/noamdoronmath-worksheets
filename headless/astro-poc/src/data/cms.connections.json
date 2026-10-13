@@ -1,0 +1,10 @@
+{
+  "updatedAt": null,
+  "catalog": {
+    "kind": "catalog",
+    "mode": "snapshot",
+    "collectionId": null,
+    "contractVersion": 1,
+    "note": "Catalog served from src/data/catalog.v1.json snapshot. Live Wix CMS not connected — no collectionId configured. Do not invent collection names; set collectionId only after creating the collection on Headless site df6b8141-…"
+  }
+}

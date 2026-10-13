@@ -1,0 +1,333 @@
+{
+  "grade": 7,
+  "path": "/grade-7",
+  "sourceUrl": "https://www.noamdoronmath.co.il/grade-7",
+  "fetchedAt": "2026-09-23T14:40:00Z",
+  "title": "דפי עבודה במתמטיקה לכיתה ז׳ להדפסה בחינם | נועם דורון",
+  "description": "דפי עבודה במתמטיקה לכיתה ז׳: מספרים מכוונים, חזקות, משוואות, גיאומטריה וסטטיסטיקה — להורדה ולהדפסה בחינם, עם נועם AI שמסביר כל תרגיל צעד אחר צעד.",
+  "h1": "דפי עבודה במתמטיקה לכיתה ז׳ — בחינם",
+  "lead": "משוואות, מספרים מכוונים, חזקות, גיאומטריה וסטטיסטיקה — דפי עבודה בחינם וללא הרשמה.",
+  "intro": "בעמוד זה תמצאו דפי עבודה במתמטיקה לכיתה ז׳, המסודרים לפי נושאי הלימוד המרכזיים ובהתאם לתוכנית הלימודים. אפשר לתרגל משוואות, ביטויים אלגבריים, מספרים מכוונים, חזקות, שורשים, זוויות, משולשים, שטחים ומערכת צירים. בכל נושא ניתן לבחור דף ורמת קושי, לפתור באופן עצמאי ולהיעזר בהסברים ובנועם AI לקבלת רמזים ומשוב. הדפים זמינים בחינם, ללא הרשמה, ומתאימים לתרגול בכיתה, לשיעורי בית, לחזרה לקראת מבחן או ללמידה בקצב אישי. מומלץ להתחיל מהנושא הנלמד, לבחור רמה מתאימה, לפתור בצורה מסודרת ולבדוק את התשובות לפני שעוברים לדף הבא.",
+  "topicSections": [
+    {
+      "heading": "הסברים קצרים לפי נושא",
+      "links": [
+        {
+          "path": "/equations-basics-grade-7",
+          "label": "משוואות בסיס",
+          "productionHref": "https://www.noamdoronmath.co.il/equations-basics-grade-7"
+        },
+        {
+          "path": "/pythagorean-theorem-grade-7",
+          "label": "משפט פיתגורס",
+          "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7"
+        },
+        {
+          "path": "/combining-like-terms-grade-7",
+          "label": "כינוס איברים וחוק הפילוג",
+          "productionHref": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7"
+        },
+        {
+          "path": "/algebraic-expressions-grade-7",
+          "label": "ביטויים אלגבריים, הצבה וגורם משותף",
+          "productionHref": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7"
+        },
+        {
+          "path": "/signed-numbers-grade-7",
+          "label": "חיבור וחיסור מספרים מכוונים",
+          "productionHref": "https://www.noamdoronmath.co.il/signed-numbers-grade-7"
+        },
+        {
+          "path": "/multiplying-signed-numbers-grade-7",
+          "label": "כפל מספרים מכוונים",
+          "productionHref": "https://www.noamdoronmath.co.il/multiplying-signed-numbers-grade-7"
+        },
+        {
+          "path": "/dividing-signed-numbers-grade-7",
+          "label": "חילוק מספרים מכוונים",
+          "productionHref": "https://www.noamdoronmath.co.il/dividing-signed-numbers-grade-7"
+        },
+        {
+          "path": "/order-of-operations-signed-numbers-grade-7",
+          "label": "סדר פעולות במספרים מכוונים",
+          "productionHref": "https://www.noamdoronmath.co.il/order-of-operations-signed-numbers-grade-7"
+        },
+        {
+          "path": "/number-line-absolute-value-grade-7",
+          "label": "ישר המספרים וערך מוחלט",
+          "productionHref": "https://www.noamdoronmath.co.il/number-line-absolute-value-grade-7"
+        },
+        {
+          "path": "/square-root-grade-7",
+          "label": "שורש ריבועי",
+          "productionHref": "https://www.noamdoronmath.co.il/square-root-grade-7"
+        },
+        {
+          "path": "/powers-grade-7",
+          "label": "חזקות לכיתה ז׳",
+          "productionHref": "https://www.noamdoronmath.co.il/powers-grade-7"
+        },
+        {
+          "path": "/angles-introduction-measurement-grade-7",
+          "label": "זוויות — היכרות ומדידה",
+          "productionHref": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7"
+        },
+        {
+          "path": "/adjacent-vertical-angles-grade-7",
+          "label": "זוויות צמודות וקודקודיות",
+          "productionHref": "https://www.noamdoronmath.co.il/adjacent-vertical-angles-grade-7"
+        },
+        {
+          "path": "/angles-review-grade-7",
+          "label": "זוויות — דף חזרה",
+          "productionHref": "https://www.noamdoronmath.co.il/angles-review-grade-7"
+        },
+        {
+          "path": "/triangle-quadrilateral-angle-sum-grade-7",
+          "label": "סכום זוויות במשולש ובמרובע",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-quadrilateral-angle-sum-grade-7"
+        },
+        {
+          "path": "/triangle-area-grade-7",
+          "label": "שטח משולש",
+          "productionHref": "https://www.noamdoronmath.co.il/triangle-area-grade-7"
+        },
+        {
+          "path": "/special-triangles-grade-7-new",
+          "label": "משולשים מיוחדים",
+          "productionHref": "https://www.noamdoronmath.co.il/special-triangles-grade-7-new"
+        },
+        {
+          "path": "/coordinate-plane-quadrants-grade-7",
+          "label": "ארבעת הרביעים",
+          "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-quadrants-grade-7"
+        },
+        {
+          "path": "/coordinate-plane-four-quadrants-grade-7",
+          "label": "מערכת צירים — ארבעת הרביעים",
+          "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7"
+        },
+        {
+          "path": "/coordinate-plane-scale-grade-7",
+          "label": "מערכת צירים וקנה מידה",
+          "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-scale-grade-7"
+        },
+        {
+          "path": "/coordinate-plane-applications-grade-7",
+          "label": "מרחקים, היקף ושטח במערכת צירים",
+          "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7"
+        },
+        {
+          "path": "/equations-advanced-grade-7",
+          "label": "משוואות מתקדמות",
+          "productionHref": "https://www.noamdoronmath.co.il/equations-advanced-grade-7"
+        },
+        {
+          "path": "/equations-both-sides-word-problems-grade-7",
+          "label": "משוואות בשני אגפים",
+          "productionHref": "https://www.noamdoronmath.co.il/equations-both-sides-word-problems-grade-7"
+        },
+        {
+          "path": "/pythagoras-applications-grade-7",
+          "label": "יישומים במשפט פיתגורס",
+          "productionHref": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7"
+        },
+        {
+          "path": "/area-rectangle-perimeter-grade-7",
+          "label": "שטח והיקף מלבן",
+          "productionHref": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7"
+        },
+        {
+          "path": "/area-parallelogram-trapezoid-composite-grade-7",
+          "label": "שטח מקבילית, טרפז ומצולעים מורכבים",
+          "productionHref": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7"
+        },
+        {
+          "path": "/solids-box-cube-prism-grade-7",
+          "label": "תיבה, קובייה ומנסרה",
+          "productionHref": "https://www.noamdoronmath.co.il/solids-box-cube-prism-grade-7"
+        },
+        {
+          "path": "/patterns-and-graphs-grade-7",
+          "label": "דפוסים וגרפים",
+          "productionHref": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7"
+        }
+      ]
+    }
+  ],
+  "topicLinks": [
+    {
+      "path": "/equations-basics-grade-7",
+      "label": "משוואות בסיס",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-basics-grade-7"
+    },
+    {
+      "path": "/pythagorean-theorem-grade-7",
+      "label": "משפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7"
+    },
+    {
+      "path": "/combining-like-terms-grade-7",
+      "label": "כינוס איברים וחוק הפילוג",
+      "productionHref": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7"
+    },
+    {
+      "path": "/algebraic-expressions-grade-7",
+      "label": "ביטויים אלגבריים, הצבה וגורם משותף",
+      "productionHref": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7"
+    },
+    {
+      "path": "/signed-numbers-grade-7",
+      "label": "חיבור וחיסור מספרים מכוונים",
+      "productionHref": "https://www.noamdoronmath.co.il/signed-numbers-grade-7"
+    },
+    {
+      "path": "/multiplying-signed-numbers-grade-7",
+      "label": "כפל מספרים מכוונים",
+      "productionHref": "https://www.noamdoronmath.co.il/multiplying-signed-numbers-grade-7"
+    },
+    {
+      "path": "/dividing-signed-numbers-grade-7",
+      "label": "חילוק מספרים מכוונים",
+      "productionHref": "https://www.noamdoronmath.co.il/dividing-signed-numbers-grade-7"
+    },
+    {
+      "path": "/order-of-operations-signed-numbers-grade-7",
+      "label": "סדר פעולות במספרים מכוונים",
+      "productionHref": "https://www.noamdoronmath.co.il/order-of-operations-signed-numbers-grade-7"
+    },
+    {
+      "path": "/number-line-absolute-value-grade-7",
+      "label": "ישר המספרים וערך מוחלט",
+      "productionHref": "https://www.noamdoronmath.co.il/number-line-absolute-value-grade-7"
+    },
+    {
+      "path": "/square-root-grade-7",
+      "label": "שורש ריבועי",
+      "productionHref": "https://www.noamdoronmath.co.il/square-root-grade-7"
+    },
+    {
+      "path": "/powers-grade-7",
+      "label": "חזקות לכיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/powers-grade-7"
+    },
+    {
+      "path": "/angles-introduction-measurement-grade-7",
+      "label": "זוויות — היכרות ומדידה",
+      "productionHref": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7"
+    },
+    {
+      "path": "/adjacent-vertical-angles-grade-7",
+      "label": "זוויות צמודות וקודקודיות",
+      "productionHref": "https://www.noamdoronmath.co.il/adjacent-vertical-angles-grade-7"
+    },
+    {
+      "path": "/angles-review-grade-7",
+      "label": "זוויות — דף חזרה",
+      "productionHref": "https://www.noamdoronmath.co.il/angles-review-grade-7"
+    },
+    {
+      "path": "/triangle-quadrilateral-angle-sum-grade-7",
+      "label": "סכום זוויות במשולש ובמרובע",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-quadrilateral-angle-sum-grade-7"
+    },
+    {
+      "path": "/triangle-area-grade-7",
+      "label": "שטח משולש",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-area-grade-7"
+    },
+    {
+      "path": "/special-triangles-grade-7-new",
+      "label": "משולשים מיוחדים",
+      "productionHref": "https://www.noamdoronmath.co.il/special-triangles-grade-7-new"
+    },
+    {
+      "path": "/coordinate-plane-quadrants-grade-7",
+      "label": "ארבעת הרביעים",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-quadrants-grade-7"
+    },
+    {
+      "path": "/coordinate-plane-four-quadrants-grade-7",
+      "label": "מערכת צירים — ארבעת הרביעים",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-four-quadrants-grade-7"
+    },
+    {
+      "path": "/coordinate-plane-scale-grade-7",
+      "label": "מערכת צירים וקנה מידה",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-scale-grade-7"
+    },
+    {
+      "path": "/coordinate-plane-applications-grade-7",
+      "label": "מרחקים, היקף ושטח במערכת צירים",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-7"
+    },
+    {
+      "path": "/equations-advanced-grade-7",
+      "label": "משוואות מתקדמות",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-advanced-grade-7"
+    },
+    {
+      "path": "/equations-both-sides-word-problems-grade-7",
+      "label": "משוואות בשני אגפים",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-both-sides-word-problems-grade-7"
+    },
+    {
+      "path": "/pythagoras-applications-grade-7",
+      "label": "יישומים במשפט פיתגורס",
+      "productionHref": "https://www.noamdoronmath.co.il/pythagoras-applications-grade-7"
+    },
+    {
+      "path": "/area-rectangle-perimeter-grade-7",
+      "label": "שטח והיקף מלבן",
+      "productionHref": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7"
+    },
+    {
+      "path": "/area-parallelogram-trapezoid-composite-grade-7",
+      "label": "שטח מקבילית, טרפז ומצולעים מורכבים",
+      "productionHref": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7"
+    },
+    {
+      "path": "/solids-box-cube-prism-grade-7",
+      "label": "תיבה, קובייה ומנסרה",
+      "productionHref": "https://www.noamdoronmath.co.il/solids-box-cube-prism-grade-7"
+    },
+    {
+      "path": "/patterns-and-graphs-grade-7",
+      "label": "דפוסים וגרפים",
+      "productionHref": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "דפי עבודה",
+    "href": "/worksheets?grade=7",
+    "source": "site-header-label",
+    "note": "Production /grade-7 has no github worksheets CTA; catalog entry uses existing SiteHeader label."
+  },
+  "faqHeading": "שאלות נפוצות על דפי עבודה במתמטיקה לכיתה ז׳",
+  "faq": [
+    {
+      "question": "האם דפי העבודה מותאמים לתוכנית הלימודים של משרד החינוך?",
+      "answer": "כן, כל דפי העבודה באתר נכתבו בהתאמה מלאה לתוכנית הלימודים המעודכנת של משרד החינוך לכיתה ז׳."
+    },
+    {
+      "question": "האם השימוש בדפי העבודה כרוך בתשלום?",
+      "answer": "לא, כל דפי העבודה באתר ניתנים להורדה ולשימוש בחינם לגמרי עבור מורים, תלמידים והורים."
+    },
+    {
+      "question": "האם ניתן לקבל פתרונות מלאים לדפי העבודה?",
+      "answer": "בחלק גדול מדפי העבודה מופיעות תשובות סופיות. אנו עומלים על הוספת פתרונות מלאים לכלל התכנים."
+    },
+    {
+      "question": "כיצד כדאי להשתמש בדפי העבודה ללמידה בבית?",
+      "answer": "מומלץ לעבור על ההסברים הקצרים בראש כל נושא, לפתור את התרגילים בצורה מסודרת ולבדוק את התשובות."
+    },
+    {
+      "question": "אילו נושאים מכוסים בדפי העבודה לכיתה ז׳?",
+      "answer": "הדפים מכסים נושאים כגון משוואות, מספרים מכוונים, אלגברה בסיסית, חזקות וגיאומטריה (זוויות ושטחים)."
+    }
+  ],
+  "terms": {
+    "label": "תקנון שימוש בדפי עבודה חינמיים",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  }
+}

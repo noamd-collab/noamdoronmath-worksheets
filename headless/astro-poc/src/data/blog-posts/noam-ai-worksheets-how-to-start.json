@@ -1,0 +1,242 @@
+{
+  "path": "/post/%D7%91%D7%A7%D7%A8%D7%95%D7%91-%D7%A1%D7%95%D7%9B%D7%9F-%D7%91%D7%99%D7%A0%D7%94-%D7%9E%D7%9C%D7%90%D7%9B%D7%95%D7%AA%D7%99%D7%AA-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94",
+  "pathSlug": "%D7%91%D7%A7%D7%A8%D7%95%D7%91-%D7%A1%D7%95%D7%9B%D7%9F-%D7%91%D7%99%D7%A0%D7%94-%D7%9E%D7%9C%D7%90%D7%9B%D7%95%D7%AA%D7%99%D7%AA-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94",
+  "decodedSlug": "בקרוב-סוכן-בינה-מלאכותית-לתרגול-דפי-עבודה",
+  "fileSlug": "noam-ai-worksheets-how-to-start",
+  "title": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים",
+  "description": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים? פותחים דף עבודה, שואלים שאלה ומקבלים הסבר סבלני שלב אחר שלב. בחינם, ללא הרשמה, עם דוגמאות.",
+  "ogTitle": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים",
+  "ogDescription": "נועם AI זמין במציג דפי העבודה של חטיבת הביניים. כך פותחים דף, מבקשים רמז וחוזרים לתרגול עצמאי — בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_560fea189b6648b492e264b5191c05db~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_560fea189b6648b492e264b5191c05db~mv2.webp",
+  "h1": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים",
+  "author": "נועם דורון מתמטיקה",
+  "datePublished": "2026-08-25T00:09:47.000Z",
+  "dateModified": "2026-09-12T14:24:47.035Z",
+  "dateDisplay": "25 באוג׳",
+  "readingTime": "זמן קריאה 1 דקות",
+  "authorAvatar": {
+    "src": "https://lh3.googleusercontent.com/a/ACg8ocLcKKWJH1Tr8kRDComRJ0lj8ghJ6y82fikcMTCaO9htIE-bG0gl%3Ds96-c",
+    "alt": "תמונת הסופר/ת: נועם דורון מתמטיקה"
+  },
+  "coverImage": "https://static.wixstatic.com/media/d8e7ad_560fea189b6648b492e264b5191c05db~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_560fea189b6648b492e264b5191c05db~mv2.webp",
+  "blocks": [
+    {
+      "type": "p",
+      "text": "עדכון 8.9.2026: נועם AI כבר זמין במציג דפי העבודה של כיתות ז׳–ט׳. הפוסט פורסם במקור כהודעת ״בקרוב״; כעת אפשר לפתוח דף מהמאגר ולהשתמש בעזרה בתוך המציג. דפי העבודה נשארים חינמיים וללא הרשמה."
+    },
+    {
+      "type": "h2",
+      "text": "פותחים דף ומתחילים מתרגיל"
+    },
+    {
+      "type": "p",
+      "text": "בוחרים נושא ורמה במאגר. בדפי חטיבת הביניים נפתח מציג עם דף העבודה, זום וכלי PDF. מתחילים בניסיון עצמאי. אם נתקעים, משתמשים בכפתור נועם AI או בכפתור העזרה שליד תרגיל, כאשר הוא מופיע."
+    },
+    {
+      "type": "p",
+      "text": "דוגמה לכיתה ז׳ — חיבור וחיסור מספרים מכוונים",
+      "segments": [
+        {
+          "type": "a",
+          "text": "דוגמה לכיתה ז׳ — חיבור וחיסור מספרים מכוונים",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=2"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "דוגמה לכיתה ח׳ — פונקציה קווית",
+      "segments": [
+        {
+          "type": "a",
+          "text": "דוגמה לכיתה ח׳ — פונקציה קווית",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=29"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "דוגמה לכיתה ט׳ — חוק הפילוג המורחב",
+      "segments": [
+        {
+          "type": "a",
+          "text": "דוגמה לכיתה ט׳ — חוק הפילוג המורחב",
+          "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=1"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "text": "איזו בקשה עוזרת ללמוד"
+    },
+    {
+      "type": "p",
+      "text": "אפשר לבקש ״תן לי רמז ראשון״, ״הסבר למה מחליפים חיסור בחיבור המספר הנגדי״, או ״עזור לי לבדוק את השלב שכתבתי״. לאחר הרמז חוזרים לדף ומנסים להתקדם לבד. עדיף שאלה ממוקדת על בקשה לפתור את כל המארז בבת אחת."
+    },
+    {
+      "type": "h2",
+      "text": "דוגמה לשימוש ברמז"
+    },
+    {
+      "type": "p",
+      "text": "בתרגיל מינוס שלוש פחות מינוס חמש, הרמז יכול להיות: מהו המספר הנגדי של מינוס חמש? לאחר שמזהים אותו כ־5, כותבים מינוס שלוש ועוד חמש ומקבלים 2. כעת פותרים תרגיל דומה בלי עזרה כדי לבדוק שהרעיון הובן."
+    },
+    {
+      "type": "h2",
+      "text": "בודקים את ההסבר"
+    },
+    {
+      "type": "p",
+      "text": "עזרה מבוססת AI עשויה לטעות. בודקים חישוב באמצעות הצבה, ציר מספרים או דרך נוספת, בהתאם לתרגיל. אם העזרה לא מתאימה לסעיף, מציינים את הסעיף המדויק. אין צורך למסור פרטים אישיים כדי לשאול שאלה על החומר."
+    },
+    {
+      "type": "h2",
+      "text": "מה זמין כרגע"
+    },
+    {
+      "type": "p",
+      "text": "העזרה המתוארת כאן מיועדת לדפי חטיבת הביניים במציג. דפי היסודי זמינים לפתיחה ולהדפסה, אך אין בפוסט הזה הבטחה שעזרת AI זמינה בהם. אם העזרה אינה נטענת, אפשר להמשיך להשתמש בדף ובאפשרות פתיחת PDF."
+    },
+    {
+      "type": "p",
+      "text": "לכל דפי העבודה — בחירת כיתה",
+      "segments": [
+        {
+          "type": "a",
+          "text": "לכל דפי העבודה — בחירת כיתה",
+          "href": "https://www.noamdoronmath.co.il/"
+        }
+      ]
+    },
+    {
+      "type": "p",
+      "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+      "segments": [
+        {
+          "type": "a",
+          "text": "נועם דורון מתמטיקה · עודכן 8.9.2026 · אודות",
+          "href": "https://www.noamdoronmath.co.il/aboutus"
+        }
+      ]
+    }
+  ],
+  "related": [],
+  "categories": [
+    {
+      "text": "יסודי",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/elementary-math"
+    },
+    {
+      "text": "חטיבת הביניים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math"
+    },
+    {
+      "text": "מורים והורים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/teachers-and-parents"
+    },
+    {
+      "text": "חטיבת הביניים",
+      "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math"
+    }
+  ],
+  "whatsapp": {
+    "heading": "נפגשים גם בוואטסאפ",
+    "body": "הצטרפו לקבוצת הוואטסאפ של נועם דורון מתמטיקה, והישארו בקשר גם בין דפי העבודה.",
+    "ctaLabel": "להצטרפות לקבוצת הוואטסאפ ↗",
+    "ctaHref": "https://chat.whatsapp.com/DOepmlK5bKxCBbbGMusLdF?mode=gi_t",
+    "note": "ההצטרפות לבחירתכם. כל דפי העבודה פתוחים גם בלי להצטרף."
+  },
+  "postCategory": {
+    "text": "חטיבת הביניים",
+    "href": "https://www.noamdoronmath.co.il/blog/categories/middle-school-math"
+  },
+  "recentPosts": {
+    "heading": "פוסטים אחרונים",
+    "viewAllLabel": "הצג הכול",
+    "viewAllHref": "https://www.noamdoronmath.co.il/blog",
+    "items": [
+      {
+        "title": "הצבה בביטויים אלגבריים לכיתה ז׳ — דפי עבודה",
+        "href": "https://www.noamdoronmath.co.il/post/substitution-in-algebraic-expressions-grade-7",
+        "description": "דפי עבודה בהצבה בביטויים אלגבריים לכיתה ז׳: הצבת ערכים חיוביים ושליליים, חישוב ערך הביטוי והשוואה בין ביטויים. תרגול בשלוש רמות, בחינם וללא הרשמה."
+      },
+      {
+        "title": "שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים לכיתה ז׳ — דפי עבודה",
+        "href": "https://www.noamdoronmath.co.il/post/common-factor-and-minus-parentheses-grade-7",
+        "description": "דפי עבודה בגורם משותף ובמינוס לפני סוגריים לכיתה ז׳: הוצאת גורם, פתיחת סוגריים ופישוט ביטויים. שלוש רמות, חינם וללא הרשמה."
+      },
+      {
+        "title": "מפשטים ואז פותרים לכיתה ז׳ — דפי עבודה",
+        "href": "https://www.noamdoronmath.co.il/post/simplify-then-solve-equations-grade-7",
+        "description": "דפי עבודה בפישוט ובפתרון משוואות לכיתה ז׳: כינוס איברים דומים בכל אגף ומעבר מסודר לפתרון. שלוש רמות, חינם וללא הרשמה."
+      }
+    ]
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "author": {
+        "@type": "Person",
+        "name": "נועם דורון מתמטיקה"
+      },
+      "dateModified": "2026-09-12T14:24:47.035Z",
+      "datePublished": "2026-08-25T00:09:47.000Z",
+      "headline": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים",
+      "mainEntityOfPage": {
+        "@id": "https://www.noamdoronmath.co.il/post/בקרוב-סוכן-בינה-מלאכותית-לתרגול-דפי-עבודה",
+        "@type": "itemPage",
+        "url": "https://www.noamdoronmath.co.il/post/בקרוב-סוכן-בינה-מלאכותית-לתרגול-דפי-עבודה"
+      },
+      "description": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים? פותחים דף עבודה, שואלים שאלה ומקבלים הסבר סבלני שלב אחר שלב. בחינם, ללא הרשמה, עם דוגמאות.",
+      "url": "https://www.noamdoronmath.co.il/post/בקרוב-סוכן-בינה-מלאכותית-לתרגול-דפי-עבודה",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://static.wixstatic.com/media/d8e7ad_560fea189b6648b492e264b5191c05db~mv2.webp/v1/fill/w_1000,h_667,al_c,q_85,usm_0.66_1.00_0.01/d8e7ad_560fea189b6648b492e264b5191c05db~mv2.webp",
+        "width": "1536",
+        "height": "1024"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "נועם דורון - מתמטיקה דפי מתמטיקה בחינם",
+        "url": "https://www.noamdoronmath.co.il"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "נועם AI בדפי העבודה לכיתות ז׳–ט׳: איך מתחילים",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "פותחים דף ומתחילים מתרגיל",
+          "text": "בוחרים נושא ורמה במאגר. בדפי חטיבת הביניים נפתח מציג עם דף העבודה, זום וכלי PDF. מתחילים בניסיון עצמאי. אם נתקעים, משתמשים בכפתור נועם AI או בכפתור העזרה שליד תרגיל, כאשר הוא מופיע."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "איזו בקשה עוזרת ללמוד",
+          "text": "אפשר לבקש ״תן לי רמז ראשון״, ״הסבר למה מחליפים חיסור בחיבור המספר הנגדי״, או ״עזור לי לבדוק את השלב שכתבתי״. לאחר הרמז חוזרים לדף ומנסים להתקדם לבד. עדיף שאלה ממוקדת על בקשה לפתור את כל המארז בבת אחת."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "דוגמה לשימוש ברמז",
+          "text": "בתרגיל מינוס שלוש פחות מינוס חמש, הרמז יכול להיות: מהו המספר הנגדי של מינוס חמש? לאחר שמזהים אותו כ־5, כותבים מינוס שלוש ועוד חמש ומקבלים 2. כעת פותרים תרגיל דומה בלי עזרה כדי לבדוק שהרעיון הובן."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "בודקים את ההסבר",
+          "text": "עזרה מבוססת AI עשויה לטעות. בודקים חישוב באמצעות הצבה, ציר מספרים או דרך נוספת, בהתאם לתרגיל. אם העזרה לא מתאימה לסעיף, מציינים את הסעיף המדויק. אין צורך למסור פרטים אישיים כדי לשאול שאלה על החומר."
+        }
+      ]
+    }
+  ],
+  "featureKey": "alt+author+captions+date+h2+images+lists+many-links+medium-body+schema",
+  "clusterSize": 2,
+  "categoryHint": "general",
+  "batch": "m28",
+  "source": {
+    "liveUrl": "https://www.noamdoronmath.co.il/post/%D7%91%D7%A7%D7%A8%D7%95%D7%91-%D7%A1%D7%95%D7%9B%D7%9F-%D7%91%D7%99%D7%A0%D7%94-%D7%9E%D7%9C%D7%90%D7%9B%D7%95%D7%AA%D7%99%D7%AA-%D7%9C%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%93%D7%A4%D7%99-%D7%A2%D7%91%D7%95%D7%93%D7%94",
+    "capturedAt": "2026-09-23T22:00:12.370Z",
+    "bodyChars": 1435
+  }
+}

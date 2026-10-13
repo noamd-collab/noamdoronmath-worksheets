@@ -1,0 +1,227 @@
+{
+  "slug": "equations-basics-grade-7",
+  "path": "/equations-basics-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/equations-basics-grade-7",
+  "fetchedAt": "2026-09-23T15:34:38.906Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳ | דפי עבודה חינם",
+  "description": "לומדים מהו פתרון של משוואה ופותרים משוואות חד־שלביות ודו־שלביות לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳",
+  "intro": "מבינים מהו פתרון של משוואה, פותרים משוואות חד־שלביות ודו־שלביות בעזרת פעולות שוות בשני האגפים, ובודקים את הפתרון בהצבה. דפי התרגול זמינים בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרון של משוואה הוא מספר שכאשר מציבים אותו במקום הנעלם מתקבל שוויון נכון. במשוואה חד־שלבית מבצעים פעולה אחת בשני האגפים. במשוואה דו־שלבית מבצעים שתי פעולות בסדר הפוך לסדר הפעולות, עד שהנעלם נשאר לבדו.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "חד־שלבית: x+7=12 → x=5. דו־שלבית: 2x+3=11 → 2x=8 → x=4.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לבצע פעולה באגף אחד בלבד, לשנות סימן בלי לבצע פעולה מתאימה, או לדלג על בדיקת ההצבה. מבצעים כל פעולה בשני האגפים ובסוף מציבים את הפתרון במשוואה המקורית.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו: 3x−5=10.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: x=5.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳ מתאימים לכיתה ז׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/signed-numbers-grade-7",
+      "label": "מספרים מכוונים",
+      "productionHref": "https://www.noamdoronmath.co.il/signed-numbers-grade-7"
+    },
+    {
+      "path": "/powers-grade-7",
+      "label": "חזקות",
+      "productionHref": "https://www.noamdoronmath.co.il/powers-grade-7"
+    },
+    {
+      "path": "/algebraic-expressions-grade-7",
+      "label": "ביטויים אלגבריים",
+      "productionHref": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "הצבה בביטויים אלגבריים — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=23",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=23",
+    "catalogTopicId": 23,
+    "catalogTopicTitle": "הצבה בביטויים אלגבריים"
+  },
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/equations-basics-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/equations-basics-grade-7",
+        "name": "מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳ | דפי עבודה חינם",
+        "description": "לומדים מהו פתרון של משוואה ופותרים משוואות חד־שלביות ודו־שלביות לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/equations-basics-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/equations-basics-grade-7#learning-resource",
+        "name": "מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/equations-basics-grade-7",
+        "description": "לומדים מהו פתרון של משוואה ופותרים משוואות חד־שלביות ודו־שלביות לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/equations-basics-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מהו פתרון ומשוואות חד־ ודו־שלביות לכיתה ז׳ מתאימים לכיתה ז׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": [],
+  "catalogCtas": [
+    {
+      "label": "הצבה בביטויים אלגבריים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=23",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=23",
+      "catalogTopicId": 23,
+      "catalogTopicTitle": "הצבה בביטויים אלגבריים"
+    },
+    {
+      "label": "משוואות חד־שלביות — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=34",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=34",
+      "catalogTopicId": 34,
+      "catalogTopicTitle": "משוואות חד־שלביות"
+    },
+    {
+      "label": "מהו פתרון של משוואה — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=32",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=32",
+      "catalogTopicId": 32,
+      "catalogTopicTitle": "מהו פתרון של משוואה"
+    }
+  ]
+}

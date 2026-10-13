@@ -1,0 +1,149 @@
+{
+  "slug": "cone-grade-8",
+  "source": "preview",
+  "url": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/cone-grade-8",
+  "capturedAt": "2026-09-23T17:40:25.202Z",
+  "httpStatus": 200,
+  "title": "נפח חרוט לכיתה ח׳ | דפי עבודה חינם",
+  "description": "דפי עבודה חינמיים בנפח חרוט לכיתה ח׳, בשלוש רמות: א׳, ב׳ ומצוינות. תרגלו את נוסחת שליש שטח הבסיס כפול הגובה, פתרו תרגילים וקבלו רמז מנועם AI ללא הרשמה היום.",
+  "h1": "חרוט לכיתה ח׳",
+  "intro": "מזהים בסיס וגובה בחרוט ומתרגלים חישובי נפח לפי הנתונים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "updatedLine": null,
+  "authorLine": "נכתב ונערך על ידי נועם דורון , מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "paragraphs": [
+        "נפח חרוט הוא שליש משטח הבסיס כפול הגובה. חרוט שרדיוס בסיסו 3 ס״מ וגובהו 4 ס״מ הוא בעל נפח 12π סמ״ק."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "paragraphs": [
+        "אין להציב את אורך הקו המשופע במקום הגובה. הגובה ניצב למישור הבסיס."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "מה היחס בין נפח חרוט לנפח גליל בעלי אותו בסיס ואותו גובה?תשובה: 1:3. נפח החרוט הוא שליש מנפח הגליל.בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+        "לכל דפי כיתה ח׳"
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מזהים בסיס וגובה בחרוט ומתרגלים חישובי נפח לפי הנתונים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=15",
+      "catalogTopicId": 15
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "נפח חרוט הוא שליש משטח הבסיס כפול הגובה. חרוט שרדיוס בסיסו 3 ס״מ וגובהו 4 ס״מ הוא בעל נפח 12π סמ״ק.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "אין להציב את אורך הקו המשופע במקום הגובה. הגובה ניצב למישור הבסיס.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מה היחס בין נפח חרוט לנפח גליל בעלי אותו בסיס ואותו גובה?תשובה: 1:3. נפח החרוט הוא שליש מנפח הגליל.בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לכל דפי כיתה ח׳",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא נפח חרוט לכיתה ח׳ מתאימים לכיתה ח׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/triangle-congruence-grade-8",
+      "label": "חפיפת משולשים"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/similar-triangles-grade-8",
+      "label": "דמיון משולשים"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-8",
+      "label": "משפט פיתגורס"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=8&topic=15",
+    "label": "פתיחת דפי העבודה ובחירת רמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=8&topic=15",
+      "label": "פתיחת דפי העבודה ובחירת רמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא נפח חרוט לכיתה ח׳ מתאימים לכיתה ח׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}

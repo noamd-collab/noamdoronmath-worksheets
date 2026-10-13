@@ -1,0 +1,461 @@
+---
+import { HERO_ROTATION } from '../lib/heroRotation';
+
+// Short presentation labels follow the existing loop QA inventory. Topic links
+// name existing pages for the mathematical idea; other variants intentionally
+// open the catalog, without inventing a grade placement or pedagogical copy.
+const topics = {
+  triangle: ['שטח משולש', '/triangle-area-grade-7'],
+  pythagoras: ['משפט פיתגורס', '/pythagorean-theorem-grade-8'],
+  'area-model': ['כפל ביטויים ופתיחת סוגריים', '/distributive-law-grade-9'],
+  sticks: ['עשרות ויחידות', '/worksheets?grade=2'],
+  numberline: ['ישר המספרים · עיגול', '/worksheets?grade=4'],
+  tenframes: ['מסגרת עשר', '/worksheets?grade=1'],
+  balance: ['משוואות ומאזניים', '/worksheets?grade=5'],
+  pattern: ['חוקיות', '/worksheets?grade=6'],
+  bars: ['בעיות מילוליות · מודל פסים', '/worksheets?grade=3'],
+  ruler: ['מדידה ויחידות', '/worksheets'],
+  array: ['כפל במערך', '/worksheets'],
+  polygon: ['צורות ומצולעים', '/worksheets'],
+  data: ['הצגת נתונים', '/worksheets'],
+  baseten: ['חיבור רב־ספרתי', '/worksheets'],
+  cookies: ['חילוק עם שארית', '/worksheets'],
+  fraction: ['שבר כחלק משלם', '/worksheets'],
+  transform: ['שיקוף, סיבוב והזזה', '/worksheets'],
+  'angle-sum': ['סכום זוויות במשולש', '/triangle-quadrilateral-angle-sum-grade-7'],
+  'para-rect': ['שטח מקבילית', '/area-parallelogram-trapezoid-composite-grade-7'],
+  'angle-kinds': ['סוגי זוויות', '/angles-introduction-measurement-grade-7'],
+  'frac-product': ['כפל שברים', '/worksheets'],
+  slope: ['שיפוע', '/linear-function-grade-8'],
+  'add-within': ['חיבור בתחום העשר', '/worksheets'],
+  similar: ['דמיון משולשים', '/similar-triangles-grade-8'],
+  'order-ops': ['סדר פעולות חשבון', '/worksheets'],
+  'sup-angles': ['זוויות צמודות', '/adjacent-vertical-angles-grade-7'],
+  'share-12': ['חילוק לקבוצות שוות', '/worksheets'],
+  'corr-angles': ['זוויות בין מקבילים', '/parallel-lines-angles-grade-8'],
+  'mean-cols': ['ממוצע', '/statistics-grade-8'],
+  'pct-25': ['אחוזים', '/percentage-problems-grade-8'],
+  'diff-sq': ['הפרש ריבועים', '/difference-of-squares-grade-9'],
+  'clock-3': ['קריאת שעון · שעה שלמה', '/worksheets'],
+  'peri-rect': ['היקף מלבן', '/area-rectangle-perimeter-grade-7'],
+  'signed-jump': ['חיבור מספרים מכוונים', '/signed-numbers-grade-7'],
+  'prime-rect': ['מספרים ראשוניים', '/worksheets'],
+  'sas-snap': ['חפיפה · צלע־זווית־צלע', '/congruence-theorems-grade-8'],
+  'obtuse-ht': ['גובה מחוץ למשולש', '/triangle-area-grade-7'],
+  'box-vol': ['נפח תיבה', '/solids-box-cube-prism-grade-7'],
+  'trap-area': ['שטח טרפז', '/area-parallelogram-trapezoid-composite-grade-7'],
+  'odd-pair': ['מספרים זוגיים ואי־זוגיים', '/worksheets'],
+  'birds-sub': ['חיסור בתחום העשר', '/worksheets'],
+  'circ-unroll': ['היקף מעגל', '/circle-area-circumference-grade-8'],
+  'rect-count': ['שטח והיקף מלבן', '/area-rectangle-perimeter-grade-7'],
+  'l-split': ['שטח צורה מורכבת', '/area-parallelogram-trapezoid-composite-grade-7'],
+  'quad-tree': ['משפחת המרובעים', '/worksheets'],
+  'tri-sort': ['מיון משולשים', '/worksheets'],
+  parab: ['קודקוד הפרבולה', '/quadratic-function-grade-9'],
+  'ratio-beads': ['יחס', '/worksheets'],
+  neighbors: ['מספרים שכנים', '/worksheets'],
+  'signed-ops': ['סדר פעולות במספרים מכוונים', '/order-of-operations-signed-numbers-grade-7'],
+  'clock-span': ['חישוב משך זמן', '/worksheets'],
+  exterior: ['זווית חיצונית למשולש', '/exterior-angle-triangle-grade-8'],
+  'para-perp': ['מקבילים ומאונכים', '/worksheets'],
+  'quarter-12': ['חלק מכמות', '/worksheets'],
+  'two-coins': ['הסתברות · שני מטבעות', '/probability-grade-9'],
+  'map-scale': ['קנה מידה', '/worksheets'],
+  'unit-frac': ['השוואת שברי יחידה', '/worksheets'],
+  'coord-walk': ['נקודה במערכת הצירים', '/coordinate-plane-quadrants-grade-7'],
+  'coins-12': ['מטבעות וסכומים', '/worksheets'],
+  'cyl-stack': ['נפח גליל', '/cylinder-volume-grade-8'],
+  'tenth-cell': ['עשיריות ומאיות', '/worksheets'],
+  'equiv-half': ['שברים שווים על הישר', '/worksheets'],
+  'half-eq': ['משולש 30°–60°–90°', '/triangle-30-60-90-grade-9'],
+  'sq-stretch': ['ריבוע ומלבן', '/worksheets'],
+  'area-x4': ['הגדלה ושטח', '/worksheets'],
+  'cube-8': ['חזקה שלישית', '/powers-grade-7'],
+  'place-123': ['מאות, עשרות ויחידות', '/worksheets'],
+  'jumps-4': ['כפל כקפיצות שוות', '/worksheets'],
+  'apples-5': ['חילופיות בחיבור', '/worksheets'],
+  'topic-card': ['השלמת סדרה', '/worksheets'],
+  'mark-250': ['מספרים על הישר', '/worksheets'],
+  'quad-gate': ['זיהוי מרובעים', '/worksheets'],
+  'two-diag': ['אלכסונים במרובע', '/worksheets'],
+};
+---
+<script type="application/json" data-exact-hero-topics set:html={JSON.stringify(topics)} />
+<script type="application/json" data-hero-rotation set:html={JSON.stringify(HERO_ROTATION)} />
+<script>
+  import { bootAngleSumFilm, parkAngleSumFilm, resumeAngleSumFilm } from '../lib/angleSumFilm';
+  import { initConceptLoops } from '../lib/conceptLoops';
+  import { HERO_PLAY_S, createHeroRotation, heroDwellMs } from '../lib/heroRotation';
+
+  type LoopState = { playing: boolean; done: boolean; static: boolean };
+  type Loop = HTMLElement & {
+    __loop?: { pause(): void; play(): void; state(): LoopState };
+  };
+  type TopicMap = Record<string, [string, string]>;
+  type RotationEntry = { variant: string; grade: string; label: string; href: string; panel: string };
+
+  let heroTicker = 0;
+  let startHeroClock = () => {};
+  let stopHeroListeners = () => {};
+
+  function stopHeroClock() {
+    if (!heroTicker) return;
+    window.clearInterval(heroTicker);
+    heroTicker = 0;
+  }
+
+  function bootHeroControls() {
+    const hero = document.querySelector<HTMLElement>('[data-hero-loop]');
+    const current = hero?.querySelector<HTMLElement>('[data-hero-loop-current]');
+    const button = document.querySelector<HTMLButtonElement>('[data-exact-shuffle]');
+    const label = document.querySelector<HTMLElement>('[data-exact-hero-label]');
+    const link = document.querySelector<HTMLAnchorElement>('[data-exact-hero-topic]');
+    if (!hero || !current || !button || hero.dataset.exactControls === 'ready') return;
+    hero.dataset.exactControls = 'ready';
+
+    let topics: TopicMap = {};
+    try {
+      topics = JSON.parse(document.querySelector('[data-exact-hero-topics]')?.textContent || '{}');
+    } catch { /* Unknown metadata keeps the short generic label and catalog link. */ }
+    let rotation: RotationEntry[] = [];
+    try {
+      rotation = JSON.parse(document.querySelector('[data-hero-rotation]')?.textContent || '[]');
+    } catch { /* An empty rotation leaves the server-rendered triangle in place. */ }
+
+    const originals = new Map<string, HTMLElement>();
+    const mounted = new Map<string, Loop>();
+    const adapted = new WeakSet<Loop>();
+    const wasStatic = new WeakMap<Loop, boolean>();
+    const cache = document.createElement('div');
+    cache.hidden = true;
+    cache.style.display = 'none';
+    cache.setAttribute('aria-hidden', 'true');
+    cache.dataset.exactHeroCache = '';
+    hero.append(cache);
+
+    hero.querySelectorAll<HTMLTemplateElement>('template[data-hero-loop-variant]').forEach((template) => {
+      const variant = template.dataset.heroLoopVariant;
+      const source = template.content.querySelector<HTMLElement>('[data-loop]');
+      if (variant && source) originals.set(variant, source);
+    });
+    const defaultTemplate = document.querySelector<HTMLTemplateElement>('template[data-exact-hero-default]');
+    const defaultSource = defaultTemplate?.content.querySelector<HTMLElement>('[data-loop]');
+    if (defaultSource) originals.set('triangle', defaultSource);
+
+    const initial = current.querySelector<Loop>('[data-loop]');
+    if (initial?.dataset.loop) {
+      mounted.set(initial.dataset.loop, initial);
+      if (!originals.has(initial.dataset.loop)) originals.set(initial.dataset.loop, initial.cloneNode(true) as HTMLElement);
+    }
+
+    const activeLoop = () => current.querySelector<Loop>('[data-loop]');
+    const pauseKey = (loop: Loop) => `k3-pause:${loop.dataset.loop || ''}`;
+    const manuallyPaused = (loop: Loop) => {
+      try { return sessionStorage.getItem(pauseKey(loop)) === '1'; } catch { return false; }
+    };
+    function rememberPause(loop: Loop, paused: boolean) {
+      try {
+        if (paused) sessionStorage.setItem(pauseKey(loop), '1');
+        else sessionStorage.removeItem(pauseKey(loop));
+      } catch { /* Session storage is optional, as in the existing pause card. */ }
+    }
+
+    async function fetchLoop(variant: string): Promise<HTMLElement> {
+      const response = await fetch('/hero-loops/' + encodeURIComponent(variant), {
+        credentials: 'same-origin',
+        headers: { Accept: 'text/html' },
+        signal: AbortSignal.timeout(8_000),
+      });
+      if (!response.ok) throw new Error('hero loop');
+      const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+      doc.querySelectorAll('style').forEach((style) => {
+        const text = style.textContent || '';
+        if (!text) return;
+        const already = [...document.querySelectorAll('style')].some((existing) => existing.textContent === text);
+        if (!already) document.head.append(document.importNode(style, true));
+      });
+      const node = doc.querySelector<HTMLElement>('[data-loop]');
+      if (!node || node.dataset.loop !== variant) throw new Error('hero loop');
+      return document.importNode(node, true) as HTMLElement;
+    }
+
+    function describe() {
+      const loop = activeLoop();
+      if (!loop) return;
+      const info = topics[loop.dataset.loop || ''];
+      const spin = rotation.find((entry) => entry.variant === (loop.dataset.loop || ''));
+      const href = spin?.href || info?.[1] || '/worksheets';
+      const isCatalog = href === '/worksheets' || href.startsWith('/worksheets?');
+      if (label) label.textContent = spin ? `כיתה ${spin.grade} · ${spin.label}` : (info?.[0] || 'הדגמה מתמטית');
+      if (link) {
+        link.href = href;
+        link.textContent = isCatalog ? 'למאגר התרגול ←' : 'לדף הנושא ←';
+        link.dataset.peek = isCatalog ? 'ws' : 'topic';
+      }
+      const panel = document.querySelector<HTMLElement>('[data-exact-hero-panel]');
+      if (panel && spin?.panel) panel.style.background = spin.panel;
+    }
+
+    // Use the unchanged engine's toggle, not a second animation clock. This
+    // restores its internal userPaused flag before an in-view callback.
+    function restoreManualPause(loop: Loop) {
+      const state = loop.__loop?.state();
+      const toggle = loop.querySelector<HTMLButtonElement>('[data-el="toggle"]');
+      if (!state || state.static || !toggle || !manuallyPaused(loop)) return;
+      if (!state.playing) toggle.click();
+      toggle.click();
+    }
+
+    function syncActiveCard() {
+      const loop = activeLoop();
+      if (!loop || !adapted.has(loop)) return; // Initial card keeps its original adapter.
+      const card = loop.querySelector<HTMLElement>('[data-pause-card]');
+      const state = loop.__loop?.state();
+      if (!card || !state) return;
+      const motionResumed = wasStatic.get(loop) && !state.static;
+      wasStatic.set(loop, state.static);
+      if (motionResumed) restoreManualPause(loop);
+      const paused = !loop.__loop?.state().playing && !state.static;
+      card.classList.toggle('is-paused', paused);
+      card.setAttribute('aria-pressed', String(paused));
+      card.setAttribute('aria-label', paused ? 'הפעלת הנפשה' : 'השהיית הנפשה');
+      card.setAttribute('aria-disabled', String(state.static));
+      card.tabIndex = state.static ? -1 : 0;
+    }
+
+    function activateCard(loop: Loop) {
+      const state = loop.__loop?.state();
+      if (!state || state.static) return;
+      loop.querySelector<HTMLButtonElement>('[data-el="toggle"]')?.click();
+      rememberPause(loop, !loop.__loop?.state().playing);
+      syncActiveCard();
+    }
+
+    // A single delegated adapter handles only later template mounts. The
+    // initial ConceptLoop already owns its click, keyboard and session logic.
+    current.addEventListener('click', (event) => {
+      const loop = activeLoop();
+      const target = event.target instanceof Element ? event.target : null;
+      if (!loop || !adapted.has(loop) || !target?.closest('[data-pause-card]')) return;
+      if (target.closest('[data-el="toggle"]')) {
+        rememberPause(loop, !loop.__loop?.state().playing);
+        syncActiveCard();
+      } else activateCard(loop);
+    });
+    current.addEventListener('keydown', (event) => {
+      const loop = activeLoop();
+      const target = event.target instanceof Element ? event.target : null;
+      if (!loop || !adapted.has(loop) || !target?.closest('[data-pause-card]')) return;
+      if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+        event.preventDefault();
+        activateCard(loop);
+      }
+    });
+
+    let busy = false;
+    // A stored k3-pause must not freeze the showcase. This is set only when
+    // the visitor pauses the card that is on screen right now.
+    let userHeldPause = false;
+    // Until an observer says otherwise, the hero is on screen. A silent
+    // IntersectionObserver must not stop the rotation.
+    let inView = true;
+
+    function startFilm(loop: Loop | null) {
+      if (!loop?.__loop || userHeldPause) return;
+      const state = loop.__loop.state();
+      if (!state || state.static || state.playing) return;
+      if (manuallyPaused(loop)) rememberPause(loop, false);
+      const toggle = loop.querySelector<HTMLButtonElement>('[data-el="toggle"]');
+      if (toggle) toggle.click();
+      else loop.__loop.play();
+    }
+
+    async function showVariant(variant: string, prior: Loop | null): Promise<boolean> {
+      let next = mounted.get(variant);
+      if (!next) {
+        try {
+          if (!originals.has(variant)) originals.set(variant, await fetchLoop(variant));
+        } catch {
+          return false;
+        }
+        next = originals.get(variant)!.cloneNode(true) as Loop;
+        mounted.set(variant, next);
+        adapted.add(next);
+      }
+      // The engine has no destroy API. Reuse each initialized node at most
+      // once per variant and keep inactive nodes connected, hidden and paused.
+      // No fresh observer/RAF graph is abandoned on repeated shuffle clicks.
+      if (prior) rememberPause(prior, false);
+      prior?.__loop?.pause();
+      if (prior) {
+        parkAngleSumFilm(prior);
+        cache.append(prior);
+      }
+      current.append(next);
+      resumeAngleSumFilm(next);
+      initConceptLoops();
+      bootAngleSumFilm(next);
+      // A pause key left from another page would show a frozen frame and,
+      // if the clock waited for the film to end, would never advance.
+      userHeldPause = false;
+      rememberPause(next, false);
+      if (!reducedMotion()) startFilm(next);
+      wasStatic.set(next, next.__loop?.state().static || false);
+      try { sessionStorage.setItem('nd_hero_loop_last', variant); } catch { /* Optional. */ }
+      describe();
+      syncActiveCard();
+      return true;
+    }
+
+    const TICK_MS = 500;
+    const cycle = createHeroRotation(
+      {
+        inView: () => inView,
+        pageHidden: () => document.hidden,
+        busy: () => busy,
+        mount(variant, fail) {
+          if (busy) {
+            fail();
+            return;
+          }
+          const prior = activeLoop();
+          busy = true;
+          button.setAttribute('aria-busy', 'true');
+          void showVariant(variant, prior).then((ok) => {
+            if (!ok) fail();
+          }).catch(() => fail()).finally(() => {
+            busy = false;
+            button.removeAttribute('aria-busy');
+          });
+        },
+      },
+      rotation.map((entry) => entry.variant),
+      activeLoop()?.dataset.loop || rotation[0]?.variant || 'triangle',
+      (variant) => heroDwellMs(HERO_PLAY_S[variant]),
+    );
+
+    function swapTo(variant: string) {
+      if (busy) return;
+      const prior = activeLoop();
+      busy = true;
+      button.setAttribute('aria-busy', 'true');
+      void showVariant(variant, prior).then((ok) => {
+        if (ok) cycle.jump(variant);
+      }).finally(() => {
+        busy = false;
+        button.removeAttribute('aria-busy');
+      });
+    }
+
+    button.addEventListener('click', () => {
+      if (busy) return;
+      const prior = activeLoop();
+      const candidates = rotation
+        .map((entry) => entry.variant)
+        .filter((variant) => variant !== prior?.dataset.loop);
+      const variant = candidates[Math.floor(Math.random() * candidates.length)];
+      if (!variant) return;
+      swapTo(variant);
+    });
+
+    // The initial card's own adapter records the pause. This only remembers
+    // that the visitor paused the film now showing, so the clock can still move.
+    hero.addEventListener('click', (event) => {
+      // The pause-card restore and startFilm() click the toggle themselves.
+      // Only a real visitor click should hold this film until the next swap.
+      if (!event.isTrusted) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target?.closest('[data-pause-card], [data-el="toggle"]')) return;
+      queueMicrotask(() => {
+        const loop = activeLoop();
+        if (!loop?.__loop) return;
+        const state = loop.__loop.state();
+        if (!state || state.static) return;
+        userHeldPause = !state.playing;
+        rememberPause(loop, userHeldPause);
+      });
+    });
+
+    describe();
+    const queueSync = () => queueMicrotask(syncActiveCard);
+    const preferenceObserver = new MutationObserver(queueSync);
+    preferenceObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    window.addEventListener('nd:motion-off', queueSync);
+    let viewObserver: IntersectionObserver | undefined;
+    if ('IntersectionObserver' in window) {
+      viewObserver = new IntersectionObserver((records) => {
+        const last = records[records.length - 1];
+        if (last) inView = last.isIntersecting;
+      }, { threshold: 0 });
+      viewObserver.observe(hero);
+    }
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // OS reduced motion and the site's motion class both keep the chip put.
+    // The shuffle button still changes the film.
+    function reducedMotion() {
+      return reduced.matches || document.documentElement.classList.contains('noam-a11y-motion');
+    }
+    function tickClock() {
+      syncActiveCard();
+      // Reduced motion keeps the engine's own static frame. Do not press play.
+      if (!reducedMotion() && !userHeldPause && inView && !document.hidden) startFilm(activeLoop());
+      if (!reducedMotion()) cycle.tick(TICK_MS);
+    }
+    // Hidden time does not count. Coming back starts this dwell over.
+    // The interval supplies the next tick, so this must not tick as well.
+    const onVisible = () => {
+      if (document.hidden || reducedMotion()) return;
+      cycle.reset();
+    };
+    const onReduce = () => queueSync();
+    reduced.addEventListener('change', onReduce);
+    stopHeroListeners();
+    stopHeroListeners = () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('nd:motion-off', queueSync);
+      reduced.removeEventListener('change', onReduce);
+      preferenceObserver.disconnect();
+      viewObserver?.disconnect();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    // One handle. A second boot, a restored page, or a view transition
+    // must not stack another interval.
+    startHeroClock = () => {
+      if (heroTicker) return;
+      heroTicker = window.setInterval(tickClock, TICK_MS);
+    };
+    // The pause-card script restores k3-pause on the next frame. Clear that
+    // stored pause afterwards so the first film actually plays.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (!reducedMotion()) startFilm(activeLoop());
+    }));
+    startHeroClock();
+  }
+
+  if (document.documentElement.dataset.heroClockBound !== '1') {
+    document.documentElement.dataset.heroClockBound = '1';
+    document.addEventListener('astro:before-swap', () => {
+      stopHeroClock();
+      stopHeroListeners();
+    });
+    document.addEventListener('astro:page-load', () => {
+      if (!document.querySelector('[data-hero-loop]')) {
+        stopHeroClock();
+        stopHeroListeners();
+        startHeroClock = () => {};
+        return;
+      }
+      bootHeroControls();
+    });
+    // A cached page freezes its own timer (persisted), so leave that handle.
+    // A real leave still drops it.
+    window.addEventListener('pagehide', (event) => {
+      if (event.persisted) return;
+      stopHeroClock();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootHeroControls, { once: true });
+  } else bootHeroControls();
+</script>

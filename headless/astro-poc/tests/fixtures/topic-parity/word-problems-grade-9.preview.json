@@ -1,0 +1,165 @@
+{
+  "slug": "word-problems-grade-9",
+  "source": "preview",
+  "url": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/word-problems-grade-9",
+  "capturedAt": "2026-09-23T17:44:27.257Z",
+  "httpStatus": 200,
+  "title": "בעיות מילוליות לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "בעיות מילוליות לכיתה ט׳: תרגום נתונים למשוואה, בחירת נעלם, פתרון ובדיקת התאמה לסיפור. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית.",
+  "h1": "בעיות מילוליות לכיתה ט׳",
+  "intro": "מתרגלים מעבר מטקסט מילולי למודל מתמטי, פותרים משוואות ומאמתים תוצאות. החומר נגיש בחינם ברמות קושי שונות: בסיסית, מתקדמת ומצוינות. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "updatedLine": null,
+  "authorLine": "נכתב ונערך על ידי נועם דורון , מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "בוחרים נעלם ויחידות",
+      "paragraphs": [
+        "מגדירים את מה שמחפשים ומציינו יחידות."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "דוגמה",
+      "paragraphs": [
+        "למלבן צלעות x ו־x+3 והיקפו 26; המשוואה 2x+2(x+3)=26 ולכן x=5."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדיקת התאמה",
+      "paragraphs": [
+        "מציבים את הפתרון חזרה בסיפור ובודקים שהוא הגיוני."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "מספר ועוד מחציתו שווים 18. מהו המספר? תשובה: 12.",
+        "לכל דפי העבודה של כיתה ט׳"
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מתרגלים מעבר מטקסט מילולי למודל מתמטי, פותרים משוואות ומאמתים תוצאות. החומר נגיש בחינם ברמות קושי שונות: בסיסית, מתקדמת ומצוינות. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=9&topic=18",
+      "catalogTopicId": 18
+    },
+    {
+      "type": "heading",
+      "text": "בוחרים נעלם ויחידות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מגדירים את מה שמחפשים ומציינו יחידות.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "דוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "למלבן צלעות x ו־x+3 והיקפו 26; המשוואה 2x+2(x+3)=26 ולכן x=5.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדיקת התאמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "מציבים את הפתרון חזרה בסיפור ובודקים שהוא הגיוני.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מספר ועוד מחציתו שווים 18. מהו המספר? תשובה: 12.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לכל דפי העבודה של כיתה ט׳",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא בעיות מילוליות לכיתה ט׳ מתאימים לכיתה ט׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/factoring-grade-9",
+      "label": "פירוק לגורמים"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9",
+      "label": "משוואות ריבועיות"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/quadratic-function-grade-9",
+      "label": "הפונקציה הריבועית"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=9&topic=18",
+    "label": "פתיחת דפי העבודה ובחירת רמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://ocmsuc-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com/worksheets?grade=9&topic=18",
+      "label": "פתיחת דפי העבודה ובחירת רמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא בעיות מילוליות לכיתה ט׳ מתאימים לכיתה ט׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}

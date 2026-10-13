@@ -1,0 +1,206 @@
+{
+  "slug": "coordinate-plane-grade-8",
+  "path": "/coordinate-plane-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8",
+  "fetchedAt": "2026-09-23T16:21:07.610Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "מערכת צירים לכיתה ח׳ | דפי עבודה במתמטיקה בחינם – נועם דורון",
+  "description": "מערכת צירים לכיתה ח׳: קריאת וסימון נקודות, שיעורי x ו־y וחקירת צורות על רשת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מערכת צירים לכיתה ח׳",
+  "intro": "לומדים לקרוא ולסמן נקודות במערכת צירים, לזהות את שיעורי ה־x וה־y ולחקור צורות על גבי רשת. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "נקודה במערכת צירים נכתבת כך: (x,y). קוראים תחילה את שיעור ה־x על הציר האופקי, ואז את שיעור ה־y על הציר האנכי.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: לנקודה (3,−2) יש שיעור x שווה 3 ושיעור y שווה −2. מסמנים 3 יחידות ימינה ו־2 יחידות למטה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "חשוב לא להחליף בין סדר השיעורים: (3,−2) שונה מן (−2,3). נקודה על ציר x היא בעלת שיעור y=0, ונקודה על ציר y היא בעלת שיעור x=0.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מהם שיעורי הנקודה שנמצאת 4 יחידות שמאלה מן הראשית ו־1 יחידה למעלה?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "תשובה: (−4,1).",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 13.9.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מערכת צירים לכיתה ח׳ מתאימים לכיתה ח׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מערכת צירים לכיתה ח׳ מתאימים לכיתה ח׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/linear-function-grade-8",
+      "label": "פונקציה קווית",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-function-grade-8"
+    },
+    {
+      "path": "/statistics-grade-8",
+      "label": "סטטיסטיקה",
+      "productionHref": "https://www.noamdoronmath.co.il/statistics-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=8&topic=55",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=55",
+    "catalogTopicId": 55,
+    "catalogTopicTitle": "סינתזה גאומטרית"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=8&topic=55",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=55",
+      "catalogTopicId": 55,
+      "catalogTopicTitle": "סינתזה גאומטרית"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8",
+        "name": "מערכת צירים לכיתה ח׳ | דפי עבודה במתמטיקה בחינם – נועם דורון",
+        "description": "מערכת צירים לכיתה ח׳: קריאת וסימון נקודות, שיעורי x ו־y וחקירת צורות על רשת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8#learning-resource",
+        "name": "מערכת צירים לכיתה ח׳",
+        "url": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8",
+        "description": "מערכת צירים לכיתה ח׳: קריאת וסימון נקודות, שיעורי x ו־y וחקירת צורות על רשת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מערכת צירים לכיתה ח׳ מתאימים לכיתה ח׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

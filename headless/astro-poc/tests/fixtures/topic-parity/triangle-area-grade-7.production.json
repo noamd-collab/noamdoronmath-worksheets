@@ -1,0 +1,155 @@
+{
+  "slug": "triangle-area-grade-7",
+  "source": "production",
+  "url": "https://www.noamdoronmath.co.il/triangle-area-grade-7",
+  "capturedAt": "2026-09-23T15:55:29.657Z",
+  "title": "מפשטים ואז פותרים לכיתה ז – שטח משולש | נועם דורון",
+  "description": "מפשטים ואז פותרים לכיתה ז עם הסבר ברור על שטח משולש ודפי עבודה חינמיים להדפסה. היכנסו והתחילו לתרגל עכשיו.",
+  "h1": "שטח משולש לכיתה ז׳",
+  "intro": "לומדים לחשב שטח משולש לפי בסיס וגובה, ולזהות את הגובה המאונך גם בשרטוטים שונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "authorLine": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "paragraphs": [
+        "שטח משולש מחושב לפי בסיס × גובה ÷ 2. הגובה חייב להיות מאונך לבסיס, ולעיתים הוא נמצא מחוץ למשולש.",
+        "צלע אלכסונית אינה בהכרח גובה; קודם מזהים את הקטע המאונך לבסיס שנבחר."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "paragraphs": [
+        "דוגמה: בסיס 12 ס״מ וגובה 5 ס״מ: השטח 12×5÷2=30 סמ״ר."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "בסיס 9 ס״מ, גובה 6 ס״מ. מהו שטח המשולש?",
+        "תשובה: 27 סמ״ר, כי 9×6÷2=27."
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "לומדים לחשב שטח משולש לפי בסיס וגובה, ולזהות את הגובה המאונך גם בשרטוטים שונים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=19",
+      "catalogTopicId": 19
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "שטח משולש מחושב לפי בסיס × גובה ÷ 2. הגובה חייב להיות מאונך לבסיס, ולעיתים הוא נמצא מחוץ למשולש.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "צלע אלכסונית אינה בהכרח גובה; קודם מזהים את הקטע המאונך לבסיס שנבחר.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: בסיס 12 ס״מ וגובה 5 ס״מ: השטח 12×5÷2=30 סמ״ר.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בסיס 9 ס״מ, גובה 6 ס״מ. מהו שטח המשולש?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "תשובה: 27 סמ״ר, כי 9×6÷2=27.",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא שטח משולש לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/angles-introduction-measurement-grade-7",
+      "label": "זוויות"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7",
+      "label": "משפט פיתגורס"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7",
+      "label": "שטחים"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=19",
+    "label": "פתיחת דפי העבודה ובחירת רמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=19",
+      "label": "פתיחת דפי העבודה ובחירת רמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא שטח משולש לכיתה ז׳ מתאימים לכיתה ז׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  },
+  "httpStatus": 200
+}

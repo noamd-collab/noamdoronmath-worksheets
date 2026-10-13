@@ -10,7 +10,7 @@ for(const name of ['DATA','NOAM_PREFIX_FALLBACK']){
 const items=[];
 for(const [g,data] of Object.entries(ctx.DATA))for(const t of data.topics){
  const row=data.links[t.id]||{};
- for(const l of ['a','b','c','one'])if(row[l])items.push({id:`g${g}-t${t.id}-${l}`,g:Number(g),t:t.id,parent:t.parent||t.id,title:t.t,l,label:l==='one'?(row.oneLabel||'כל הרמות'):(t[l+'Label']||({a:'רמה א׳',b:'רמה ב׳',c:'מצוינות'})[l]),pdf:row[l],x:t.x||(ctx.NOAM_PREFIX_FALLBACK[g]||{})[t.id]||''});
+ for(const l of ['a','b','c','c2','one'])if(row[l])items.push({id:`g${g}-t${t.id}-${l}`,g:Number(g),t:t.id,parent:t.parent||t.id,title:t.t,l,label:l==='one'?(row.oneLabel||'כל הרמות'):(t[l+'Label']||({a:'רמה א׳',b:'רמה ב׳',c:'מצוינות',c2:'מצוינות 2'})[l]),pdf:row[l],x:t.x||(ctx.NOAM_PREFIX_FALLBACK[g]||{})[t.id]||''});
 }
 if(new Set(items.map(x=>x.id)).size!==items.length)throw Error('Duplicate learning IDs');
 fs.writeFileSync(path.join(root,'noam-learning-catalog.js'),'/* Generated from index.html; do not edit by hand. */\nwindow.NOAM_LEARNING_CATALOG='+JSON.stringify(items)+';\n');

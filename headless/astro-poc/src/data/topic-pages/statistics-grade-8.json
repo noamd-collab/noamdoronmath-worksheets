@@ -1,0 +1,201 @@
+{
+  "slug": "statistics-grade-8",
+  "path": "/statistics-grade-8",
+  "grade": 8,
+  "sourceUrl": "https://www.noamdoronmath.co.il/statistics-grade-8",
+  "fetchedAt": "2026-09-23T15:57:33.917Z",
+  "verifiedVia": "production-headless-chrome-parity-snapshot",
+  "title": "סטטיסטיקה לכיתה ח׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "סטטיסטיקה לכיתה ח׳: ממוצע, חציון, שכיח, טבלאות וגרפים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "סטטיסטיקה לכיתה ח׳",
+  "intro": "לומדים לארגן נתונים, לחשב ממוצע וחציון ולפרש טווח וייצוגים גרפיים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "ממוצע מתקבל מחלוקת סכום הנתונים במספרם. למציאת חציון מסדרים את הנתונים: כשמספרם אי־זוגי, החציון הוא הערך האמצעי; כשמספרם זוגי, החציון הוא ממוצע שני הערכים האמצעיים. טווח הוא ההפרש בין הערך הגדול לקטן.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: בנתונים 4, 6, 7, 7, 11 הממוצע הוא 7, החציון הוא 7 והטווח הוא 7.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "ערך חריג עשוי להשפיע מאוד על הממוצע, ולכן בודקים גם חציון וטווח.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "חשבו ממוצע של 2, 4, 4, 8.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "תשובה: 4.5.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 16.9.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא סטטיסטיקה לכיתה ח׳ מתאימים לכיתה ח׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא סטטיסטיקה לכיתה ח׳ מתאימים לכיתה ח׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/coordinate-plane-grade-8",
+      "label": "מערכת צירים",
+      "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-grade-8"
+    },
+    {
+      "path": "/linear-function-grade-8",
+      "label": "פונקציה קווית",
+      "productionHref": "https://www.noamdoronmath.co.il/linear-function-grade-8"
+    }
+  ],
+  "catalogCta": {
+    "label": "בחירת דף ורמה",
+    "href": "/worksheets?grade=8&topic=16",
+    "source": "production-github-cta",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=16",
+    "catalogTopicId": 16,
+    "catalogTopicTitle": "ארגון נתונים"
+  },
+  "catalogCtas": [
+    {
+      "label": "בחירת דף ורמה",
+      "href": "/worksheets?grade=8&topic=16",
+      "source": "production-github-cta",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=16",
+      "catalogTopicId": 16,
+      "catalogTopicTitle": "ארגון נתונים"
+    }
+  ],
+  "gradeHubHref": "/grade-8",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/statistics-grade-8#webpage",
+        "url": "https://www.noamdoronmath.co.il/statistics-grade-8",
+        "name": "סטטיסטיקה לכיתה ח׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "סטטיסטיקה לכיתה ח׳: ממוצע, חציון, שכיח, טבלאות וגרפים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/statistics-grade-8#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/statistics-grade-8#learning-resource",
+        "name": "סטטיסטיקה לכיתה ח׳",
+        "url": "https://www.noamdoronmath.co.il/statistics-grade-8",
+        "description": "סטטיסטיקה לכיתה ח׳: ממוצע, חציון, שכיח, טבלאות וגרפים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+        "educationalLevel": "כיתה ח׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/statistics-grade-8#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא סטטיסטיקה לכיתה ח׳ מתאימים לכיתה ח׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

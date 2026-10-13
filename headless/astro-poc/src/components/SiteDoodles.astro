@@ -1,0 +1,159 @@
+---
+/**
+ * Full-page edge-margin doodles (home + every BaseLayout page).
+ * Document-absolute L/R columns, φ vertical spacing, 15–30% bleed
+ * (parent clips — no horizontal scroll). Animated bob+wobble.
+ * Mobile: thin 24/39px edges, half tucked, sparse ≤2–3/viewport.
+ */
+import { selectDenseMargins } from '../lib/doodles/selectDenseMargins';
+import type { DoodleMotif } from '../lib/doodles/selectSiteDoodles';
+import manifest from '../data/doodles.manifest.json';
+
+const pathname = Astro.url.pathname;
+const motifs = (manifest.motifs || []) as DoodleMotif[];
+const placements =
+  motifs.length === 0 ? [] : selectDenseMargins(pathname, motifs);
+---
+
+{
+  placements.length > 0 && (
+    <div
+      class="site-doodles"
+      aria-hidden="true"
+      data-site-doodles
+      data-site-doodles-edges
+      data-path={pathname}
+    >
+      {placements.map((p) => (
+        <img
+          class:list={[
+            'site-doodle',
+            'site-doodle--float',
+            p.side === 'start' ? 'site-doodle--start' : 'site-doodle--end',
+            p.mobileVisible ? 'site-doodle--mobile' : 'site-doodle--desktop-only',
+          ]}
+          src={p.src}
+          alt=""
+          width={p.sizePx}
+          height={p.sizePx}
+          decoding="async"
+          loading="lazy"
+          data-doodle-id={p.id}
+          data-doodle-side={p.side}
+          data-mobile-visible={p.mobileVisible ? '1' : '0'}
+          style={[
+            `inset-block-start:${p.topPct}%`,
+            `--d-size:${p.sizePx}px`,
+            `--m-size:${p.mobileSizePx}px`,
+            `--doodle-bleed:${p.bleed}`,
+            `--doodle-rotate:${p.rotate}deg`,
+            `--doodle-op:${p.opacity}`,
+            `--doodle-delay:${p.delay}s`,
+            `--doodle-dur:${p.duration}s`,
+            `--doodle-bob:${p.bobPx}px`,
+            `--doodle-wobble:${p.wobbleDeg}deg`,
+          ].join(';')}
+        />
+      ))}
+    </div>
+  )
+}
+
+<style>
+  /*
+   * Document-absolute edge layer — scrolls with the page so density thins
+   * per viewport. Clips bleed; z-index 0 behind content (z-index ≥1).
+   */
+  .site-doodles {
+    position: absolute;
+    inset-block-start: 0;
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    width: 100%;
+    min-height: 100%;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    overflow: hidden; /* clip the bleed — no H-scroll */
+  }
+
+  .site-doodle {
+    position: absolute;
+    display: block;
+    width: var(--d-size, 45px);
+    max-width: min(120px, 11vw);
+    height: auto;
+    opacity: var(--doodle-op, 0.75);
+    transform: translateY(-50%) rotate(var(--doodle-rotate, 0deg));
+    transform-origin: center center;
+    /* Center on block % so φ bands sit correctly */
+    margin: 0;
+  }
+
+  /* Bleed 15–30% of doodle width past the logical edge */
+  .site-doodle--start {
+    inset-inline-start: calc(var(--d-size, 45px) * var(--doodle-bleed, 0.2) * -1);
+    inset-inline-end: auto;
+  }
+  .site-doodle--end {
+    inset-inline-end: calc(var(--d-size, 45px) * var(--doodle-bleed, 0.2) * -1);
+    inset-inline-start: auto;
+  }
+
+  .site-doodle--float {
+    animation: site-doodle-bob-wobble var(--doodle-dur, 6.5s) ease-in-out infinite;
+    animation-delay: var(--doodle-delay, 0s);
+    will-change: transform;
+  }
+
+  @keyframes site-doodle-bob-wobble {
+    0%,
+    100% {
+      transform: translateY(-50%) translateY(0)
+        rotate(calc(var(--doodle-rotate, 0deg) - var(--doodle-wobble, 4deg)));
+    }
+    50% {
+      transform: translateY(-50%) translateY(calc(-1 * var(--doodle-bob, 6px)))
+        rotate(calc(var(--doodle-rotate, 0deg) + var(--doodle-wobble, 4deg)));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-doodle--float {
+      animation: none;
+    }
+  }
+  :global(html.noam-a11y-motion) .site-doodle--float,
+  :global(html.nd-motion-off) .site-doodle--float {
+    animation: none !important;
+  }
+
+  /*
+   * Mobile: thin side edges, 24/39px, ~half tucked off-screen.
+   * Only sparse mobileVisible set renders — max ~2–3 per viewport.
+   */
+  @media (max-width: 767px) {
+    .site-doodle--desktop-only {
+      display: none !important;
+    }
+    .site-doodle--mobile {
+      width: var(--m-size, 24px) !important;
+      max-width: 32px !important;
+      opacity: calc(var(--doodle-op, 0.7) * 0.9);
+    }
+    /* Tuck ~65% off-edge so motifs never kiss hero title/lede at 390 */
+    .site-doodle--mobile.site-doodle--start {
+      inset-inline-start: calc(var(--m-size, 24px) * -0.65);
+    }
+    .site-doodle--mobile.site-doodle--end {
+      inset-inline-end: calc(var(--m-size, 24px) * -0.65);
+    }
+  }
+
+  @media print {
+    .site-doodles {
+      display: none !important;
+    }
+  }
+</style>

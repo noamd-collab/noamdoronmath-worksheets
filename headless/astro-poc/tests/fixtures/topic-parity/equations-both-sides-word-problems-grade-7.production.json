@@ -1,0 +1,170 @@
+{
+  "slug": "equations-both-sides-word-problems-grade-7",
+  "source": "production",
+  "url": "https://www.noamdoronmath.co.il/equations-both-sides-word-problems-grade-7",
+  "capturedAt": "2026-09-23T17:03:36.643Z",
+  "httpStatus": 200,
+  "title": "נעלם בשני האגפים, ייצוגים ושאלות מילוליות לכיתה ז׳ | דפי עבודה חינם",
+  "description": "נעלם בשני האגפים, שלושה ייצוגים לפתרון ושאלות מילוליות עם משוואות לכיתה ז׳. דפי עבודה חינם — נועם דורון.",
+  "h1": "נעלם בשני האגפים, ייצוגים ושאלות מילוליות לכיתה ז׳",
+  "intro": "מעבירים איברים בין אגפים בעזרת פעולות שוות, פותרים בעזרת מודל, טבלה או אלגברה, ובונים משוואה מתוך סיפור. תרגול ברמות שונות — בחינם וללא הרשמה.",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+  "authorLine": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+  "authorAboutHref": "https://www.noamdoronmath.co.il/aboutus",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "paragraphs": [
+        "כשהנעלם מופיע בשני האגפים, מבצעים פעולות שוות כדי לרכז אותו באגף אחד. אפשר לייצג את המשוואה במודל או בטבלה לפני המעבר לאלגברה. בשאלה מילולית בוחרים נעלם, כותבים משוואה, פותרים ובודקים את סבירות התשובה.",
+        "2x+3=x+9 → x=6. בשאלה מילולית: «מספר ועוד 5 שווה 17» → x+5=17 → x=12."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "paragraphs": [
+        "טעות נפוצה: להעביר איבר בלי להבין שהפעולה נעשית בשני האגפים, או לבנות משוואה שאינה מתאימה לסיפור."
+      ],
+      "listItems": []
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "paragraphs": [
+        "פתרו: 5x−2=3x+6.",
+        "תשובה: x=4."
+      ],
+      "listItems": []
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מעבירים איברים בין אגפים בעזרת פעולות שוות, פותרים בעזרת מודל, טבלה או אלגברה, ובונים משוואה מתוך סיפור. תרגול ברמות שונות — בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "שאלות מילוליות עם משוואות — בחירת דף ורמה",
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=41",
+      "catalogTopicId": 41
+    },
+    {
+      "type": "cta",
+      "label": "שלושה ייצוגים לפתרון משוואה — בחירת דף ורמה",
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=40",
+      "catalogTopicId": 40
+    },
+    {
+      "type": "cta",
+      "label": "נעלם בשני האגפים — בחירת דף ורמה",
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=39",
+      "catalogTopicId": 39
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "כשהנעלם מופיע בשני האגפים, מבצעים פעולות שוות כדי לרכז אותו באגף אחד. אפשר לייצג את המשוואה במודל או בטבלה לפני המעבר לאלגברה. בשאלה מילולית בוחרים נעלם, כותבים משוואה, פותרים ובודקים את סבירות התשובה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "2x+3=x+9 → x=6. בשאלה מילולית: «מספר ועוד 5 שווה 17» → x+5=17 → x=12.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה: להעביר איבר בלי להבין שהפעולה נעשית בשני האגפים, או לבנות משוואה שאינה מתאימה לסיפור.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו: 5x−2=3x+6.",
+      "role": "body"
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא נעלם בשני האגפים, ייצוגים ושאלות מילוליות לכיתה ז׳ מתאימים לכיתה ז׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "relatedLinks": [
+    {
+      "href": "https://www.noamdoronmath.co.il/signed-numbers-grade-7",
+      "label": "מספרים מכוונים"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/powers-grade-7",
+      "label": "חזקות"
+    },
+    {
+      "href": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7",
+      "label": "ביטויים אלגבריים"
+    }
+  ],
+  "catalogCta": {
+    "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=41",
+    "label": "שאלות מילוליות עם משוואות — בחירת דף ורמה"
+  },
+  "catalogCtas": [
+    {
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=41",
+      "label": "שאלות מילוליות עם משוואות — בחירת דף ורמה"
+    },
+    {
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=40",
+      "label": "שלושה ייצוגים לפתרון משוואה — בחירת דף ורמה"
+    },
+    {
+      "href": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=39",
+      "label": "נעלם בשני האגפים — בחירת דף ורמה"
+    }
+  ],
+  "images": [],
+  "jsonLd": {
+    "types": [
+      "WebPage",
+      "LearningResource",
+      "Person",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "question": "האם דפי העבודה בנושא נעלם בשני האגפים, ייצוגים ושאלות מילוליות לכיתה ז׳ מתאימים לכיתה ז׳?",
+        "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+      },
+      {
+        "question": "איך בוחרים רמת תרגול?",
+        "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+      },
+      {
+        "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+        "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+      }
+    ]
+  }
+}
