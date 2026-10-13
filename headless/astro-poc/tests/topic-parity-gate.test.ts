@@ -409,7 +409,7 @@ describe('M30 closes remaining topic-SEO gaps', () => {
   it('M23/M30 unmigrated empty; four pages + equations redirect registered', () => {
     assert.deepEqual([...TOPIC_PAGE_M23_UNMIGRATED], []);
     assert.deepEqual([...TOPIC_PAGE_M30_UNMIGRATED], []);
-    assert.equal(TOPIC_PAGE_M23_SLUGS.length, 23);
+    assert.equal(TOPIC_PAGE_M23_SLUGS.length, 22);
     assert.equal(TOPIC_PAGE_M30_SLUGS.length, 4);
     for (const slug of TOPIC_PAGE_M30_SLUGS) {
       assert.ok((TOPIC_PAGE_SLUGS as readonly string[]).includes(slug));
