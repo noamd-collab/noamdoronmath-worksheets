@@ -548,19 +548,69 @@
     return a.width > 0 && b.width > 0 && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
   }
 
+  function applyLauncher(pos) {
+    root.style.right = pos.right;
+    root.style.left = pos.left;
+    root.style.top = pos.top;
+    root.style.bottom = pos.bottom;
+  }
+
+  function launcherHits(selector) {
+    var mine = launch.getBoundingClientRect();
+    if (mine.width < 1 || mine.height < 1) return false;
+    var nodes = document.querySelectorAll(selector);
+    for (var i = 0; i < nodes.length; i++) {
+      var rect = nodes[i].getBoundingClientRect();
+      if (rect.width > 1 && rect.height > 1 && rectsOverlap(mine, rect)) return true;
+    }
+    return false;
+  }
+
+  function launcherHitsCards() {
+    return launcherHits("#questions .q-card");
+  }
+
+  function launcherHitsChrome() {
+    return launcherHits(".topbar .brand, .topbar .nav-toggle, .topbar .learn-btn, #noam-accessibility");
+  }
+
+  function parkLauncherOffCards() {
+    var header = document.querySelector(".topbar");
+    var headerBottom = header ? Math.round(header.getBoundingClientRect().bottom) : 0;
+    var under = Math.max(8, headerBottom + 8) + "px";
+    var spots = [
+      { right: "auto", left: "8px", top: "auto", bottom: "8px" },
+      { right: "auto", left: "8px", top: "8px", bottom: "auto" },
+      { right: "8px", left: "auto", top: "8px", bottom: "auto" },
+      { right: "auto", left: "8px", top: under, bottom: "auto" },
+      { right: "8px", left: "auto", top: under, bottom: "auto" },
+    ];
+    for (var i = 0; i < spots.length; i++) {
+      applyLauncher(spots[i]);
+      if (!launcherHitsCards() && !launcherHitsChrome()) return;
+    }
+    for (var y = window.innerHeight - 56; y >= 8; y -= 24) {
+      applyLauncher({ right: "auto", left: "8px", top: y + "px", bottom: "auto" });
+      if (!launcherHitsCards() && !launcherHitsChrome()) return;
+    }
+    applyLauncher({ right: "auto", left: "8px", top: "8px", bottom: "auto" });
+  }
+
   function placeLauncher() {
-    root.style.right = "8px";
-    root.style.left = "auto";
-    root.style.bottom = "8px";
+    applyLauncher({ right: "8px", left: "auto", top: "auto", bottom: "8px" });
     var a11y = document.getElementById("noam-accessibility");
-    if (!a11y) return;
-    var box = a11y.getBoundingClientRect();
-    var mine = root.getBoundingClientRect();
-    if (!rectsOverlap(mine, box)) return;
-    root.style.bottom = Math.round(window.innerHeight - box.top + 8) + "px";
-    mine = root.getBoundingClientRect();
-    if (!rectsOverlap(mine, box)) return;
-    root.style.right = Math.round(window.innerWidth - box.left + 8) + "px";
+    if (a11y) {
+      var box = a11y.getBoundingClientRect();
+      var mine = root.getBoundingClientRect();
+      if (rectsOverlap(mine, box)) {
+        root.style.bottom = Math.round(window.innerHeight - box.top + 8) + "px";
+        mine = root.getBoundingClientRect();
+        if (rectsOverlap(mine, box)) root.style.right = Math.round(window.innerWidth - box.left + 8) + "px";
+      }
+    }
+    if (window.innerWidth >= 768 || pageKind() !== "teachers") return;
+    if (!launcherHitsCards()) return;
+    parkLauncherOffCards();
   }
 
   function layoutCompact(force) {
@@ -979,12 +1029,14 @@
   window.addEventListener("scroll", function () {
     if (mode === "compact") placeOffWizard();
     if (mode === "compact") clearPhoneCards();
+    if (mode === "closed") placeLauncher();
   }, true);
   if (window.ResizeObserver) {
     var questionList = document.getElementById("questions");
     if (questionList) {
       var questionObserver = new ResizeObserver(function () {
         if (mode === "compact") clearPhoneCards();
+        if (mode === "closed") placeLauncher();
       });
       questionObserver.observe(questionList);
     }
@@ -997,6 +1049,7 @@
   }, true);
   window.setInterval(function () {
     paintChrome(false);
+    if (mode === "closed") placeLauncher();
     if (mode === "compact" && window.innerWidth < 768) clearPhoneCards();
   }, 1000);
   showIdle();

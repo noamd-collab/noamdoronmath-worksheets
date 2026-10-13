@@ -491,10 +491,20 @@ describe('Noam AI production spec', () => {
     assert.match(rateStore, /items\.get/);
     assert.match(rateStore, /items\.save/);
     assert.match(rateStore, /consistentRead:\s*true/);
-    assert.match(rateStore, /ANYONE/);
+    assert.match(rateStore, /insert: 'ADMIN'/);
+    assert.match(rateStore, /update: 'ADMIN'/);
+    assert.match(rateStore, /read: 'ADMIN'/);
+    assert.match(rateStore, /remove: 'ADMIN'/);
+    assert.match(rateStore, /auth\.elevate\(items\.get\)/);
+    assert.match(rateStore, /auth\.elevate\(items\.save\)/);
+    assert.equal(rateStore.includes('ANYONE'), false);
+    assert.equal(rateStore.includes('patchDataCollection'), false);
+    assert.equal(rateStore.includes('callEither'), false);
     assert.equal(rateStore.includes('.find('), false);
     assert.ok(client.includes('ResizeObserver'));
     assert.ok(client.includes('function cardExtent('));
+    assert.ok(client.includes('function launcherHitsCards()'));
+    assert.ok(client.includes('function parkLauncherOffCards()'));
   });
 
   it('shares the rate limit across instances', async () => {
