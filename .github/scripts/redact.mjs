@@ -1,6 +1,6 @@
 /** Strip credential-shaped text before it is logged or sent to a model. */
 
-const SECRET_ENV = ['DEEPSEEK_API_KEY', 'QWEN_API_KEY', 'GITHUB_TOKEN', 'WIX_CLIENT_ID'];
+const SECRET_ENV = ['CHINESE_MODELS_API_KEY', 'GITHUB_TOKEN', 'WIX_CLIENT_ID'];
 
 export function redactSecrets(text) {
   let out = String(text ?? '');

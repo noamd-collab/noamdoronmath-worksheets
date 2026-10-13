@@ -1,9 +1,9 @@
 /**
  * Advisory Qwen visual review.
  * Serves nothing itself: the workflow serves the built site first.
- * Skips when QWEN_API_KEY is missing. Never prints the key.
+ * Skips when CHINESE_MODELS_API_KEY is missing. Never prints the key.
  *
- *   QWEN_API_KEY=... BASE_URL=http://127.0.0.1:4321 BASE_SHA=... \
+ *   CHINESE_MODELS_API_KEY=... BASE_URL=http://127.0.0.1:4321 BASE_SHA=... \
  *     node .github/scripts/qwen-visual-review.mjs
  */
 import { execFileSync } from 'node:child_process';
@@ -14,25 +14,15 @@ import { pagesTouchedByDiff } from './pr-pages.mjs';
 import { redactSecrets } from './redact.mjs';
 
 const MARKER = '<!-- astro-poc-qwen-visual-review -->';
-const MODELS = ['qwen3.8-max', 'qwen3-vl-plus', 'qwen-vl-max', 'qwen2.5-vl-72b-instruct'];
+const ENDPOINT = 'https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions';
+const MODELS = ['qwen3.8-max'];
 const VIEWPORTS = [
   { name: 'phone', width: 390, height: 844 },
   { name: 'desktop', width: 1280, height: 800 },
 ];
 
 function completionUrls() {
-  const urls = [];
-  const custom = process.env.QWEN_BASE_URL?.trim();
-  if (custom) {
-    const base = custom.replace(/\/$/, '');
-    urls.push(base.endsWith('/chat/completions') ? base : `${base}/chat/completions`);
-  }
-  urls.push(
-    'https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions',
-    'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
-    'https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions',
-  );
-  return [...new Set(urls)];
+  return [ENDPOINT];
 }
 
 function changedFiles() {
@@ -152,7 +142,7 @@ async function callModel(endpoint, model, images, extraFields) {
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.QWEN_API_KEY}`,
+      Authorization: `Bearer ${process.env.CHINESE_MODELS_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -257,8 +247,8 @@ function commentBody({ selection, shots, review }) {
 }
 
 export async function runQwenReview({ postComment = true } = {}) {
-  if (!process.env.QWEN_API_KEY && !process.argv.includes('--screenshots-only')) {
-    console.log('QWEN_API_KEY is not set. Skipping Qwen visual review.');
+  if (!process.env.CHINESE_MODELS_API_KEY && !process.argv.includes('--screenshots-only')) {
+    console.log('CHINESE_MODELS_API_KEY is not set. Skipping Qwen visual review.');
     return { skipped: true };
   }
   const baseUrl = process.env.BASE_URL || 'http://127.0.0.1:4321';
@@ -272,8 +262,8 @@ export async function runQwenReview({ postComment = true } = {}) {
     console.log(`wrote ${shots.length} screenshots to ${outDir}`);
     return { skipped: false, screenshots: shots.length };
   }
-  if (!process.env.QWEN_API_KEY) {
-    console.log('QWEN_API_KEY is not set. Screenshots were saved. Skipping the model call.');
+  if (!process.env.CHINESE_MODELS_API_KEY) {
+    console.log('CHINESE_MODELS_API_KEY is not set. Screenshots were saved. Skipping the model call.');
     return { skipped: true, screenshots: shots.length };
   }
   const batches = [];

@@ -1,8 +1,8 @@
 /**
  * Advisory DeepSeek review of the pull request diff.
- * Skips when DEEPSEEK_API_KEY is missing. Never prints the key.
+ * Skips when CHINESE_MODELS_API_KEY is missing. Never prints the key.
  *
- *   BASE_SHA=... GITHUB_TOKEN=... PR_NUMBER=... DEEPSEEK_API_KEY=... \
+ *   BASE_SHA=... GITHUB_TOKEN=... PR_NUMBER=... CHINESE_MODELS_API_KEY=... \
  *     node .github/scripts/deepseek-review.mjs
  */
 import { execFileSync } from 'node:child_process';
@@ -10,8 +10,8 @@ import { upsertPullRequestComment } from './pr-comment.mjs';
 import { redactSecrets } from './redact.mjs';
 
 const MARKER = '<!-- astro-poc-deepseek-review -->';
-const ENDPOINT = 'https://api.deepseek.com/chat/completions';
-const MODELS = ['deepseek-flash', 'deepseek-chat'];
+const ENDPOINT = 'https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions';
+const MODELS = ['deepseek-v4-pro'];
 const DIFF_LIMIT = 100_000;
 
 const SYSTEM = `You review a pull request diff for an Astro 5 site in headless/astro-poc.
@@ -39,7 +39,7 @@ async function review(model, diff) {
   const response = await fetch(ENDPOINT, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+      Authorization: `Bearer ${process.env.CHINESE_MODELS_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -77,8 +77,8 @@ export async function runDeepSeekReview({ postComment = true, diffText, dryRun =
     const original = diffText ?? pullRequestDiff();
     return { dryRun: true, characters: original.length, truncated: original.length > DIFF_LIMIT };
   }
-  if (!process.env.DEEPSEEK_API_KEY) {
-    console.log('DEEPSEEK_API_KEY is not set. Skipping DeepSeek review.');
+  if (!process.env.CHINESE_MODELS_API_KEY) {
+    console.log('CHINESE_MODELS_API_KEY is not set. Skipping DeepSeek review.');
     return { skipped: true };
   }
   const original = diffText ?? pullRequestDiff();
