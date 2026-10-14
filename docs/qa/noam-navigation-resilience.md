@@ -4,7 +4,7 @@ The production browser reproduced a dead end for “איפה יש דפי עבו�
 
 The companion now searches a generated public index in the browser before requesting AI. It resolves sections and topic matches, asks for a grade for ambiguous matches, carries that topic into a grade-only follow-up, and retains catalog-based next/previous/group navigation. All links come from the site guide. Teacher building and exercise-help requests retain their existing paths; a failed service request offers real navigation links. No server security or credentials changed.
 
-Preview: https://xpqvc1-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com
+Preview: https://s6syoj-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com
 
 Validation:
 - 32 focused tests passed (navigation plus existing site companion).
