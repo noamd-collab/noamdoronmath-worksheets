@@ -744,7 +744,7 @@
     };
     loadNavigation().then(function (loaded) {
       var result = loaded[0].navigateSite(payload, loaded[1], previousNavigationMessage);
-      if (result) previousNavigationMessage = /^(?:כיתה|grade)\s*[1-9אבגדהוזחט][׳']?$/.test(message) ? previousNavigationMessage : message;
+      if (result) previousNavigationMessage = result.needsGrade ? message : "";
       return result;
     }).catch(function () { return null; }).then(function (localResult) {
       if (localResult) return localResult;

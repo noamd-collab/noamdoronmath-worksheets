@@ -64,3 +64,13 @@ test('next-topic and quadrilateral navigation retain catalog order without AI', 
   assert.equal(group.chips[0].href, '/kite-grade-9');
   assert.ok(group.chips.every((r: any) => r.label.includes('ט׳')));
 });
+
+test('natural Hebrew topic names match titles with a definite article', () => {
+  for (const q of ['מלבן לכיתה ט', 'תעביר אותי למקבילית לכיתה ט']) {
+    const r = ask(q);
+    assert.equal(r.source, 'site-navigation');
+    assert.ok(r.primary.href.includes(q.includes('מלבן') ? 'rectangle' : 'parallelogram'));
+  }
+  assert.equal(ask('שברים').needsGrade, true);
+  assert.equal(ask('דלתון לכיתה ט').needsGrade, false);
+});

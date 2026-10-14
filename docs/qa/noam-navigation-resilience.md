@@ -7,7 +7,7 @@ The companion now searches a generated public index in the browser before reques
 Preview: https://xpqvc1-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com
 
 Validation:
-- 31 focused tests passed (navigation plus existing site companion).
+- 32 focused tests passed (navigation plus existing site companion).
 - Fresh public index and JS bundle match build output (`check:site-guide`).
 - Wix build succeeded using `.env.local` only; no production release.
 - Real browser at 390×844 and 1280×800: kite request displays matching links; following the primary link opens `/kite-grade-9`; next topic from kite is `/parallelogram-grade-9`; blog navigation resolves `/blog`.

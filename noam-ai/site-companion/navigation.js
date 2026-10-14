@@ -2,7 +2,7 @@
 import { isRoleQuestion } from './companion.js';
 import { suggestTopicGroup } from './topic-order.js';
 const MARKS = 'אבגדהוזחט';
-const STOP = new Set('אני אנחנו רוצה רוצים צריך צריכה צריכים אפשר בבקשה איפה היכן יש את לי על של עם לכיתה כיתה בכיתה כיתות דף דפי עבודה תרגול תרגילים ללמוד למצוא מחפש מחפשת תמצא תראה תן קח אותי באתר נושא בנושא בנושא יש לכם האם איך מגיעים להגיע עבור'.split(' '));
+const STOP = new Set('אני אנחנו רוצה רוצים צריך צריכה צריכים אפשר בבקשה איפה היכן יש את לי על של עם לכיתה כיתה בכיתה כיתות דף דפי עבודה תרגול תרגילים ללמוד למצוא מחפש מחפשת תמצא תראה תן קח תעביר פתח תפתח לנו אותי באתר נושא בנושא בנושא יש לכם האם איך מגיעים להגיע עבור'.split(' '));
 const ROUTES = [
   [/בלוג|פוסטים|מאמרים/, '/blog'],
   [/מחשבון|כלים למתמטיקה/, '/math-tools'],
@@ -70,7 +70,8 @@ export function navigateSite(input, guide, previousMessage = '') {
     .map(r => {
       const title = words([r.title, r.topic].filter(Boolean).join(' '));
       const terms = words(r.terms);
-      const hit = (w, list) => list.some(t => t === w || (w.length > 3 && /^[בלמהו]/.test(w) && w.slice(1) === t));
+      const bare = (w) => w.length > 3 ? w.replace(/^ה/, '') : w;
+      const hit = (w, list) => list.some(t => bare(t) === bare(w) || (w.length > 3 && /^[בלמהו]/.test(w) && bare(w.slice(1)) === bare(t)));
       const hits = useful.filter(w => hit(w, title));
       const extras = useful.filter(w => hit(w, terms));
       return {r, score:hits.length * 10 + extras.length * 2 + (r.type === 'topic' ? 3 : 0), hits:hits.length + extras.length};
@@ -89,5 +90,5 @@ export function navigateSite(input, guide, previousMessage = '') {
     topics.add(key); rows.push(r);
   }
   const answer = !grade && grades.size > 1 ? 'באיזו כיתה? מצאתי דפים בנושא בכמה כיתות — בחרו קישור או כתבו את הכיתה.' : 'מצאתי דפים מתאימים באתר. בחרו קישור לפתיחה.';
-  return result(answer, rows);
+  return {...result(answer, rows), needsGrade: !grade && grades.size > 1};
 }
