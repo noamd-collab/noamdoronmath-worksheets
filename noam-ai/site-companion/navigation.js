@@ -46,8 +46,13 @@ export function navigateSite(input, guide, previousMessage = '') {
   if (page.kind === 'teachers' || /רמז|תפתור|לפתור|מה התשובה|איך פותרים|\bsolve\b|\bhint\b/i.test(text)) return null;
   if (isRoleQuestion(raw)) return navigationHelp(guide);
   if (/^(?:הי|היי|שלום|מה אתה עושה|מי אתה|במה אתה יכול לעזור(?: לי)?|מה יש באתר|עזרה|אני רוצה ללמוד)$/.test(text)) return navigationHelp(guide);
-  const ordered = suggestTopicGroup(input, guide.catalog, guide);
-  if (ordered) return ordered;
+  const exact = records.filter(r => r.type === 'topic' && normal(r.title) === text);
+  if (exact.length) return {...result('מצאתי את דף הנושא. בחרו קישור לפתיחה.', exact), needsGrade: false};
+  // Group expansion must not steal a specific subject (e.g. linear functions).
+  if (/הנושא הבא|הנושא הקודם|מה אחרי|מה לפני|מה הלאה|מרובעים/.test(text)) {
+    const ordered = suggestTopicGroup(input, guide.catalog, guide);
+    if (ordered) return ordered;
+  }
   const explicitGrade = gradeOf(raw);
   let query = text;
   if (explicitGrade && /^(?:[בל]?כיתה|grade)\s*[1-9אבגדהוזחט]$/.test(text) && previousMessage) query = normal(previousMessage) + ' ' + text;

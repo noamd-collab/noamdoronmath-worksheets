@@ -4,10 +4,10 @@ The production browser reproduced a dead end for “איפה יש דפי עבו�
 
 The companion now searches a generated public index in the browser before requesting AI. It resolves sections and topic matches, asks for a grade for ambiguous matches, carries that topic into a grade-only follow-up, and retains catalog-based next/previous/group navigation. All links come from the site guide. Teacher building and exercise-help requests retain their existing paths; a failed service request offers real navigation links. No server security or credentials changed.
 
-Preview: https://s6syoj-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com
+Preview: https://ysynnb-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com
 
 Validation:
-- 32 focused tests passed (navigation plus existing site companion).
+- 34 focused tests passed (navigation plus existing site companion).
 - Fresh public index and JS bundle match build output (`check:site-guide`).
 - Wix build succeeded using `.env.local` only; no production release.
 - Real browser at 390×844 and 1280×800: kite request displays matching links; following the primary link opens `/kite-grade-9`; next topic from kite is `/parallelogram-grade-9`; blog navigation resolves `/blog`.
@@ -15,3 +15,5 @@ Validation:
 - DeepSeek and Qwen reviews are requested through the repository's existing PR workflow. Their actual outcomes must be checked before release; successful skip jobs are not review approval.
 
 This is based on current `main`. PR #117 remains a separate, open change for the lesson-builder flow and persistent rate limit. This patch does not merge or replace it.
+
+Additional regression: all 96 topic titles resolve to their own actual page. Specific topics take precedence over broad group expansion. A SHA-256-derived version covers both generated code and data, and a test checks the client URLs against that version.

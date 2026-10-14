@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
@@ -73,4 +74,19 @@ test('natural Hebrew topic names match titles with a definite article', () => {
   }
   assert.equal(ask('שברים').needsGrade, true);
   assert.equal(ask('דלתון לכיתה ט').needsGrade, false);
+});
+
+test('all 96 published topic titles find their own page, never an unrelated group', () => {
+  const topics = guide.records.filter((r: any) => r.type === 'topic');
+  assert.equal(topics.length, 96);
+  for (const topic of topics) assert.ok(hrefs(ask(topic.title)).includes(topic.href), topic.title);
+});
+
+test('navigation cache version tracks both the generated index and code', () => {
+  const body = readFileSync(new URL('../public/noam-navigation-guide.json', import.meta.url), 'utf8');
+  const code = readFileSync(new URL('../public/noam-navigation.js', import.meta.url), 'utf8');
+  const version = createHash('sha256').update(body).update(code).digest('hex').slice(0,16);
+  const client = readFileSync(new URL('../public/noam-site-companion.js', import.meta.url), 'utf8');
+  assert.ok(client.includes('noam-navigation.js?v=' + version));
+  assert.ok(client.includes('noam-navigation-guide.json?v=' + version));
 });
