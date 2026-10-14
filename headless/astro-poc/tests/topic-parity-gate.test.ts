@@ -24,6 +24,7 @@ import {
   TOPIC_PAGE_M30_SLUGS,
   TOPIC_PAGE_M30_REDIRECTS,
   TOPIC_PAGE_M30_UNMIGRATED,
+  TOPIC_PAGE_AUTHORED_SLUGS,
   TOPIC_PAGE_SLUGS,
   loadTopicPage,
 } from '../src/lib/topicPages.ts';
@@ -39,6 +40,14 @@ import { contentToParitySnapshot } from '../src/lib/parity/contentToParitySnapsh
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fixtureDir = join(root, 'tests', 'fixtures', 'topic-parity');
+
+/**
+ * Authored slugs (elementary grades) have no production source page, so no
+ * production fixture exists for them. They skip SOURCE→content fixture diffs
+ * but stay inside every fixture-free check (schema visibility, structure).
+ */
+const AUTHORED = new Set<string>(TOPIC_PAGE_AUTHORED_SLUGS);
+const MIGRATED_SLUGS = TOPIC_PAGE_SLUGS.filter((s) => !AUTHORED.has(s));
 
 function loadProductionFixture(slug: string): TopicParitySnapshot {
   const path = join(fixtureDir, `${slug}.production.json`);
@@ -81,18 +90,18 @@ function hasParagraphSelfCheck(source: TopicParitySnapshot | { sections: { parag
 
 describe('topic SOURCE→content parity gate (M19/M20)', () => {
   it('has production fixtures for every migrated topic slug', () => {
-    for (const slug of TOPIC_PAGE_SLUGS) {
+    for (const slug of MIGRATED_SLUGS) {
       assert.ok(
         existsSync(join(fixtureDir, `${slug}.production.json`)),
         `missing fixture for ${slug}`
       );
     }
     const files = readdirSync(fixtureDir).filter((f) => f.endsWith('.production.json'));
-    assert.ok(files.length >= TOPIC_PAGE_SLUGS.length);
+    assert.ok(files.length >= MIGRATED_SLUGS.length);
   });
 
   it('migrated content matches production fixtures (SEO, intro, sections, FAQ, CTAs, JSON-LD)', () => {
-    for (const slug of TOPIC_PAGE_SLUGS) {
+    for (const slug of MIGRATED_SLUGS) {
       const source = loadProductionFixture(slug);
       const page = loadTopicPage(slug);
       const preview = contentToParitySnapshot(page, 'preview');
@@ -243,7 +252,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   });
 
   it('same-origin worksheet CTAs use production github topic ids (all CTAs, DOM order)', () => {
-    for (const slug of TOPIC_PAGE_SLUGS) {
+    for (const slug of MIGRATED_SLUGS) {
       const source = loadProductionFixture(slug);
       const page = loadTopicPage(slug);
       const srcCtas =
@@ -263,7 +272,7 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
   });
 
   it('FAQ parity is semantic Q&A (not markup-dependent on summary/details)', () => {
-    for (const slug of TOPIC_PAGE_SLUGS) {
+    for (const slug of MIGRATED_SLUGS) {
       const source = loadProductionFixture(slug);
       const page = loadTopicPage(slug);
       const srcFaq = source.faqGroups.flatMap((g) => g.items);
@@ -281,6 +290,25 @@ describe('topic SOURCE→content parity gate (M19/M20)', () => {
       const tpl = readFileSync(join(root, 'src', 'components', 'TopicPage.astro'), 'utf8');
       assert.ok(tpl.includes('data-faq-item'));
       assert.ok(tpl.includes('<h3>{item.question}</h3>') || tpl.includes('<h3>'));
+    }
+  });
+
+  it('authored elementary pages carry no production fixture but stay structurally valid', () => {
+    assert.ok(AUTHORED.size >= 1, 'expected at least one authored slug');
+    for (const slug of TOPIC_PAGE_AUTHORED_SLUGS) {
+      assert.ok(
+        !existsSync(join(fixtureDir, `${slug}.production.json`)),
+        `${slug}: authored page must not masquerade as a production capture`
+      );
+      const page = loadTopicPage(slug);
+      assert.ok(String(page.verifiedVia).startsWith('authored'), `${slug}: verifiedVia`);
+      assert.ok(page.grade >= 1 && page.grade <= 6, `${slug}: authored pages are elementary`);
+      assert.ok(page.intro.length >= 40 && page.intro !== page.h1, `${slug}: intro`);
+      assert.ok(page.faqGroups.length >= 1, `${slug}: faqGroups`);
+      assert.ok(page.catalogCtas.length >= 1, `${slug}: catalogCtas`);
+      assert.equal(page.catalogCtas[0].href, `/worksheets?grade=${page.grade}&topic=${page.catalogCtas[0].catalogTopicId}`, `${slug}: CTA href`);
+      const snapshot = contentToParitySnapshot(page, 'preview');
+      assertJsonLdFaqVisible(snapshot, slug);
     }
   });
 });
