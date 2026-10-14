@@ -279,6 +279,28 @@ async function buildBoard(el: HTMLElement, readout: HTMLElement): Promise<{ rese
   return { reset };
 }
 
+type KiteIxHook = {
+  points: { A: IxPoint; B: IxPoint; C: IxPoint; D: IxPoint };
+  screenOf: (p: IxPoint) => [number, number];
+};
+
+/** One-shot attention cue: pulse + nudge on B, gone on first touch or end. */
+function showCueOnce(boardEl: HTMLElement, cueEl: HTMLElement | null): void {
+  if (!cueEl) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const hook = (boardEl as HTMLElement & { __kiteIx?: KiteIxHook }).__kiteIx;
+  if (!hook) return;
+  const [bx, by] = hook.screenOf(hook.points.B);
+  cueEl.style.transform = `translate(${boardEl.offsetLeft + bx}px, ${boardEl.offsetTop + by}px)`;
+  cueEl.hidden = false;
+  const stop = () => {
+    cueEl.hidden = true;
+  };
+  boardEl.addEventListener('pointerdown', stop, { once: true });
+  cueEl.querySelector('.kite-ix__cue-finger')?.addEventListener('animationend', stop, { once: true });
+  setTimeout(stop, 3200);
+}
+
 function ready(fn: () => void): void {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn, { once: true });
   else fn();
@@ -298,10 +320,12 @@ export function initKiteInteractive(): void {
         const readout = ix.querySelector<HTMLElement>('[data-ix-readout]');
         const replayBtn = ix.querySelector<HTMLButtonElement>('[data-ix-replay]');
         const resetBtn = ix.querySelector<HTMLButtonElement>('[data-ix-reset]');
+        const cueEl = ix.querySelector<HTMLElement>('[data-ix-cue]');
         if (!demo || !loopRoot || !boardEl || !readout || !replayBtn || !resetBtn) return;
 
         let board: { reset: () => void } | null = null;
         let open = false;
+        let cueDone = false;
 
         const hook = (): LoopHook | null => loopRoot.__loop ?? null;
         const isStatic = (): boolean => hook()?.state().static ?? false;
@@ -314,6 +338,11 @@ export function initKiteInteractive(): void {
           requestAnimationFrame(() => ix.classList.add('is-on'));
           if (!board) {
             board = await buildBoard(boardEl, readout);
+          }
+          if (!cueDone) {
+            cueDone = true;
+            // No cue when the engine is static (OS reduce or the site motion menu).
+            if (!isStatic()) showCueOnce(boardEl, cueEl);
           }
           if (isStatic() && replayBtn) replayBtn.textContent = 'חזרה להדגמה';
         }
