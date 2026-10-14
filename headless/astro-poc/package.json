@@ -52,6 +52,7 @@
     "@wix/astro-pages": "^2.0.4",
     "@wix/astro-wix-hosting-adapter": "^2.0.0",
     "@wix/cli": "^1.1.92",
+    "esbuild": "0.27.7",
     "puppeteer-core": "^25.13.0",
     "tsx": "^4.23.15"
   },
