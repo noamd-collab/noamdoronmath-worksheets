@@ -26,11 +26,21 @@
     גררו את הקודקודים וגלו: האלכסונים נשארים מאונכים, והשטח תמיד מכפלת האלכסונים חלקי 2.
   </p>
   <div
-    class="kite-ix__board"
-    data-ix-board
-    role="img"
-    aria-label="דלתון אינטראקטיבי: גוררים את הקודקודים A, B ו־C, והאלכסונים והשטח מתעדכנים"
-  ></div>
+    class="kite-ix__stage"
+    data-ix-stage
+  >
+    <div
+      class="kite-ix__board"
+      data-ix-board
+      role="img"
+      aria-label="דלתון אינטראקטיבי: גוררים את הקודקודים A, B ו־C, והאלכסונים והשטח מתעדכנים"
+    ></div>
+    <span class="kite-ix__badge" data-ix-badge>נסו בעצמכם!</span>
+    <span class="kite-ix__cue" data-ix-cue hidden aria-hidden="true">
+      <span class="kite-ix__cue-ring"></span>
+      <span class="kite-ix__cue-finger"></span>
+    </span>
+  </div>
   <p class="kite-ix__readout" dir="rtl" aria-live="polite" data-ix-readout></p>
   <div class="kite-ix__actions">
     <button type="button" class="kite-ix__replay" data-ix-replay>הפעלת ההדגמה מחדש</button>
@@ -70,6 +80,100 @@
     background: #fbfaf5;
     touch-action: none;
     overflow: hidden;
+  }
+  .kite-ix__stage {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 260px;
+    display: flex;
+  }
+  .kite-ix__badge {
+    position: absolute;
+    top: 10px;
+    inset-inline-start: 10px;
+    z-index: 4;
+    padding: 7px 14px;
+    background: #e6a534;
+    color: #22305a;
+    border: 2px solid #22305a;
+    border-radius: 999px;
+    box-shadow: 2px 2px 0 #22305a;
+    font: 800 15px/1.2 Heebo, 'Heebo Fallback', sans-serif;
+    pointer-events: none;
+  }
+  .kite-ix__cue[hidden] {
+    display: none;
+  }
+  .kite-ix__cue {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .kite-ix__cue-ring {
+    position: absolute;
+    left: -15px;
+    top: -15px;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #e6a534;
+    border-radius: 50%;
+    opacity: 0;
+    animation: kite-ix-pulse 2.6s ease-out 1;
+  }
+  .kite-ix__cue-finger {
+    position: absolute;
+    left: 16px;
+    top: -7px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #22305a;
+    box-shadow: 0 1px 5px rgba(34, 48, 90, 0.45);
+    opacity: 0;
+    animation: kite-ix-nudge 2.6s ease-in-out 1;
+  }
+  @keyframes kite-ix-pulse {
+    0% {
+      transform: scale(0.55);
+      opacity: 0;
+    }
+    18% {
+      opacity: 1;
+    }
+    55% {
+      transform: scale(1.6);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+  @keyframes kite-ix-nudge {
+    0% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    40% {
+      transform: translate(-30px, 0);
+    }
+    72% {
+      transform: translate(-30px, 0);
+    }
+    100% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kite-ix__cue {
+      display: none;
+    }
   }
   .kite-ix__board :global(.JXGtext) {
     font-family: Heebo, 'Heebo Fallback', sans-serif;

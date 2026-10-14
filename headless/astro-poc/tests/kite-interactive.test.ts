@@ -91,4 +91,25 @@ describe('kite interactive handoff (JSXGraph pilot)', () => {
     assert.match(ix, /A\.moveTo\(\[0, clamp/);
     assert.match(ix, /C\.moveTo\(\[0, clamp/);
   });
+
+  it('shows a נסו בעצמכם badge and a one-shot attention cue that dies on first touch', () => {
+    const cmp = read('src/components/KiteInteractive.astro');
+    const ix = read('src/lib/kiteInteractive.ts');
+    // badge near the figure, never blocking drags
+    assert.match(cmp, /נסו בעצמכם!/);
+    assert.match(cmp, /data-ix-badge/);
+    assert.match(cmp, /\.kite-ix__badge\s*\{[^}]*pointer-events:\s*none/s);
+    // cue: pulse ring + nudging finger, plays exactly once for 2-3s
+    assert.match(cmp, /data-ix-cue/);
+    assert.match(cmp, /kite-ix-pulse 2\.6s ease-out 1/);
+    assert.match(cmp, /kite-ix-nudge 2\.6s ease-in-out 1/);
+    // stops on the first pointer contact; reduced motion hides it entirely
+    assert.match(ix, /addEventListener\('pointerdown', stop, \{ once: true \}\)/);
+    assert.match(ix, /cueDone/);
+    assert.match(ix, /prefers-reduced-motion:\s*reduce/);
+    assert.match(ix, /!isStatic\(\)\) showCueOnce/);
+    assert.match(cmp, /@media \(prefers-reduced-motion:\s*reduce\)\s*\{\s*\.kite-ix__cue\s*\{\s*display:\s*none/);
+    // hidden cue must not defeat the hidden attribute
+    assert.match(cmp, /\.kite-ix__cue\[hidden\]\s*\{\s*display:\s*none/);
+  });
 });
