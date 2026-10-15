@@ -132,6 +132,20 @@ import evenOddSequencesBGrade2 from '../data/topic-pages/even-odd-sequences-b-gr
 import wordProblemsMoneySimpleGrade2 from '../data/topic-pages/word-problems-money-simple-grade-2.json';
 import reflectionSymmetryGrade2 from '../data/topic-pages/reflection-symmetry-grade-2.json';
 import numbersOperationsReviewGrade2 from '../data/topic-pages/numbers-operations-review-grade-2.json';
+import placeValueGrade3 from '../data/topic-pages/place-value-grade-3.json';
+import neighborsNumberlineGrade3 from '../data/topic-pages/neighbors-numberline-grade-3.json';
+import sequencesFindMistakeGrade3 from '../data/topic-pages/sequences-find-mistake-grade-3.json';
+import thousandsGrade3 from '../data/topic-pages/thousands-grade-3.json';
+import estimationCloseNumbersGrade3 from '../data/topic-pages/estimation-close-numbers-grade-3.json';
+import wordProblemsGrade3 from '../data/topic-pages/word-problems-grade-3.json';
+import anglesTypesGrade3 from '../data/topic-pages/angles-types-grade-3.json';
+import linesAnglesShapesGrade3 from '../data/topic-pages/lines-angles-shapes-grade-3.json';
+import perimeterPolygonsGrade3 from '../data/topic-pages/perimeter-polygons-grade-3.json';
+import classifyTrianglesGrade3 from '../data/topic-pages/classify-triangles-grade-3.json';
+import quadrilateralsPropertiesGrade3 from '../data/topic-pages/quadrilaterals-properties-grade-3.json';
+import readBarDiagramGrade3 from '../data/topic-pages/read-bar-diagram-grade-3.json';
+import collectingDataGrade3 from '../data/topic-pages/collecting-data-grade-3.json';
+import moneyGrade3 from '../data/topic-pages/money-grade-3.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -315,6 +329,24 @@ export const TOPIC_PAGE_G1_SLUGS = [
 ] as const;
 
 /** Grade 2, catalog order. Only topics with an animation mapping ship. */
+/** Grade 3, catalog order. Only topics with an animation mapping ship. */
+export const TOPIC_PAGE_G3_SLUGS = [
+  'place-value-grade-3',
+  'neighbors-numberline-grade-3',
+  'sequences-find-mistake-grade-3',
+  'thousands-grade-3',
+  'estimation-close-numbers-grade-3',
+  'word-problems-grade-3',
+  'angles-types-grade-3',
+  'lines-angles-shapes-grade-3',
+  'perimeter-polygons-grade-3',
+  'classify-triangles-grade-3',
+  'quadrilaterals-properties-grade-3',
+  'read-bar-diagram-grade-3',
+  'collecting-data-grade-3',
+  'money-grade-3',
+] as const;
+
 export const TOPIC_PAGE_G2_SLUGS = [
   'number-bonds-10-20-grade-2',
   'tens-and-ones-grade-2',
@@ -336,6 +368,7 @@ export const TOPIC_PAGE_G2_SLUGS = [
 export const TOPIC_PAGE_AUTHORED_SLUGS = [
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
+  ...TOPIC_PAGE_G3_SLUGS,
 ] as const;
 
 export const TOPIC_PAGE_SLUGS = [
@@ -349,6 +382,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_KITE_SLUGS,
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
+  ...TOPIC_PAGE_G3_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -595,6 +629,21 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'word-problems-money-simple-grade-2': wordProblemsMoneySimpleGrade2 as TopicPageContent,
   'reflection-symmetry-grade-2': reflectionSymmetryGrade2 as TopicPageContent,
   'numbers-operations-review-grade-2': numbersOperationsReviewGrade2 as TopicPageContent,
+  // G3 (catalog order)
+  'place-value-grade-3': placeValueGrade3 as TopicPageContent,
+  'neighbors-numberline-grade-3': neighborsNumberlineGrade3 as TopicPageContent,
+  'sequences-find-mistake-grade-3': sequencesFindMistakeGrade3 as TopicPageContent,
+  'thousands-grade-3': thousandsGrade3 as TopicPageContent,
+  'estimation-close-numbers-grade-3': estimationCloseNumbersGrade3 as TopicPageContent,
+  'word-problems-grade-3': wordProblemsGrade3 as TopicPageContent,
+  'angles-types-grade-3': anglesTypesGrade3 as TopicPageContent,
+  'lines-angles-shapes-grade-3': linesAnglesShapesGrade3 as TopicPageContent,
+  'perimeter-polygons-grade-3': perimeterPolygonsGrade3 as TopicPageContent,
+  'classify-triangles-grade-3': classifyTrianglesGrade3 as TopicPageContent,
+  'quadrilaterals-properties-grade-3': quadrilateralsPropertiesGrade3 as TopicPageContent,
+  'read-bar-diagram-grade-3': readBarDiagramGrade3 as TopicPageContent,
+  'collecting-data-grade-3': collectingDataGrade3 as TopicPageContent,
+  'money-grade-3': moneyGrade3 as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
