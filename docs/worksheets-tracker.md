@@ -231,7 +231,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ז׳ | שטחים ב׳ חלק 1 — מקבילית וטרפז (G7-T45) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
 | כיתה ז׳ | שטחים ב׳ חלק 2 — מצולעים מורכבים (G7-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
 | כיתה ז׳ | מנסרה משולשת חלק 1 — מבנה ונפח (G7-T47) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ז׳ | מנסרה משולשת חלק 2 — שטח פנים (G7-T48) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ז׳ | מנסרה משולשת חלק 2 — שטח פנים (G7-T48) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | mapping PASS (#139 draft; DeepSeek/Qwen UI/Wix preview pending) | no | #139 |
 | כיתה ז׳ | חזרה שנתית (G7-T49) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ז׳ | משימת הערכה 1 (G7-T50) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ח׳ | אבחון קדם־ידע (G8-T01) | דף יחיד — כל הרמות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |

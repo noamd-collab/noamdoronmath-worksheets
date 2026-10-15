@@ -1,0 +1,160 @@
+{
+  "limitations": [
+    {
+      "level": "a",
+      "figure": "q1_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "svg_sha256": "3a46a2ee3e2cc5d20356b9dcd064b4a94d6ef144461e20fee92909fae2b9cfb4",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+    },
+    {
+      "level": "a",
+      "figure": "q17_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "svg_sha256": "551882042d0793fea8f7c2da9982034e4e47309fd913c6f376ca6752083b6ceb",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+    },
+    {
+      "level": "b",
+      "figure": "q5_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "svg_sha256": "57686e2c3eb9439bb3931c5b326cfd8a47cb21894766b324cdf7ce265dfb7344",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+    },
+    {
+      "level": "b",
+      "figure": "q15_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "svg_sha256": "c23ba24012afdbc5fa012828e8ae44becdae10c63c85b7bdce3c87bea5420e5b",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+    },
+    {
+      "level": "c",
+      "figure": "q1_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "svg_sha256": "0b821ab5342c11266745dbda6b121a8a263c06b045574937ddd782451f215e16",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+    },
+    {
+      "level": "c",
+      "figure": "q12_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "svg_sha256": "ce301687526910c267e262408a84bfba10b7ea740989a287109fb160a249f7db",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+    }
+  ]
+}

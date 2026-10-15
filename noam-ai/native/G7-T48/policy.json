@@ -1,0 +1,61 @@
+{
+  "schema": "noam-conservative-consumer/1",
+  "package": "G7-T48",
+  "native_engine_modified": false,
+  "support": "partial; selected relation overlays unsupported",
+  "stock_highlight_sha256": "461f5b9b79002a73157f230eb80a65b7bf0533c63b5c35b6a3cd13d7a238b951",
+  "levels": {
+    "a": {
+      "noam_ai_sha256": "7d87315aeda4c5b4ef401f87a853936bd22de915fe58a6938b7213d716de9448",
+      "blocked": [
+        {
+          "figure": "q1_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+        },
+        {
+          "figure": "q17_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+        }
+      ]
+    },
+    "b": {
+      "noam_ai_sha256": "99dd52a5f7c03c3dc344975f5478ace85ad9ec3d403c5ce15c05bf8b41f58e89",
+      "blocked": [
+        {
+          "figure": "q5_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+        },
+        {
+          "figure": "q15_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+        }
+      ]
+    },
+    "c": {
+      "noam_ai_sha256": "12fe541c6ad69e955d029b2ae7a78b52b583a44b7a4eb20aca8a8f0457042463",
+      "blocked": [
+        {
+          "figure": "q1_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+        },
+        {
+          "figure": "q12_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Only CH receives visible highlighting; BH is not highlighted, so the offered perpendicular relation is incomplete."
+        }
+      ]
+    }
+  },
+  "additional_limitations_sha256": "07a12d70de78b0d5789af79c9129a6b2305f4c4f3d60a67abd176ad9f062b093"
+}

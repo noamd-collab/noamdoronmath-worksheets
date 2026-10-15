@@ -1,0 +1,68 @@
+{
+  "package": "G7-T48",
+  "reviewScope": "Exact crop/pin mapping and static public assets only; no worksheet mathematics re-solve, no runtime consumer wiring, no merge or release approval",
+  "questions": 60,
+  "parts": 245,
+  "crossPageQuestions": 22,
+  "nativeSvgFigures": 36,
+  "mapping": "PASS",
+  "method": [
+    "every manifest item id matched against the approved public noam-ai.json per level",
+    "all 22 cross-page crop bands inspected as rendered images, plus a figure and table sample",
+    "geometric sweep over all 60 bands: own question marker inside, no neighbouring question or foreign part label inside, drawing ink unclipped, every pin on its own part label"
+  ],
+  "policy": "Partial support retained; 6 missing-BH-arm relation blocks unchanged",
+  "levels": [
+    {
+      "level": "a",
+      "mediaId": "1a77a39260504461a59a8623f08e98c2",
+      "studentPdfSha256": "711da842c661a48202310d38f6ef5dcbf112e9ce8b59ba743b5deca03d2ece92",
+      "pageCount": 16,
+      "questionCount": 20,
+      "exerciseCount": 80,
+      "manifestBeforeSha256": "0df05895f55e72fcc7a3fd557ea02253067718db1ec06601981df08ed0619e96",
+      "manifestAfterSha256": "0484025422eef6272c4eb89f972398e959d1596e4c31aefaa1bb9303aa672fbe",
+      "changedFields": [
+        "reviewRequired",
+        "reviewNote"
+      ],
+      "cropPinNativeDataUnchanged": true
+    },
+    {
+      "level": "b",
+      "mediaId": "5610935afd5c46a6afe3db53d470ae27",
+      "studentPdfSha256": "0a0c043bc0b4dd5a2618a203f547195f9ea1aee3e11692c1e5a31c6614cd9fe6",
+      "pageCount": 16,
+      "questionCount": 20,
+      "exerciseCount": 82,
+      "manifestBeforeSha256": "1c717e03053e75d2651eaf21c5482d7a2f3dbde96834722a655e6a7877bbf9fb",
+      "manifestAfterSha256": "84bf5a176841809fa73996ed49f0e0ca4ca612db9a03f5c5a88397f0bf9b9fe0",
+      "changedFields": [
+        "reviewRequired",
+        "reviewNote"
+      ],
+      "cropPinNativeDataUnchanged": true
+    },
+    {
+      "level": "c",
+      "mediaId": "9aa1f9bf967e483686c9e2258bd93fbe",
+      "studentPdfSha256": "4f33babe659d8fd705bbcc61cda40943a8e8305b6d4fad3736b33ccd0ad20e2a",
+      "pageCount": 17,
+      "questionCount": 20,
+      "exerciseCount": 83,
+      "manifestBeforeSha256": "a6c1b3521ff2de0381db040bf1fdb31fffb6e0b9025d3873801a3e58158527b9",
+      "manifestAfterSha256": "c6f509668acfd0b46bd52daf91ad4c08aac3545d2282375bb23a7aefaee3cb39",
+      "changedFields": [
+        "reviewRequired",
+        "reviewNote"
+      ],
+      "cropPinNativeDataUnchanged": true
+    }
+  ],
+  "pending": [
+    "DeepSeek code review",
+    "Qwen phone and desktop UI review",
+    "Wix preview",
+    "Noam merge/release approval"
+  ]
+}
