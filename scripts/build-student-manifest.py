@@ -113,6 +113,10 @@ def build(pdf_path, media_id, grade, topic_id, prefix, topic, level, native_path
         ys = [p.y for p in points]
         return pymupdf.Rect(min(xs), min(ys), max(xs), max(ys))
 
+    INK_TOL = 2.0  # pt; stroke miters and node dots can start a hair past the
+    # stroke that connects them, so connected ink is closed over with a small
+    # tolerance instead of a strict 1pt overlap.
+
     def ink_rects(page):
         out = []
         H = page.rect.height
@@ -129,8 +133,18 @@ def build(pdf_path, media_id, grade, topic_id, prefix, topic, level, native_path
                     r = item[1].rect
                 else:
                     continue
-                if r.is_empty or r.height > 0.5 * H:
+                # A stroke has area even when its centreline bbox is empty.
+                # Allow one quarter point for raster edge antialiasing as well.
+                # Do not infer header/footer ownership from fixed page y values.
+                # Retain the pre-existing large-group/frame exclusion in this narrow fix.
+                if r.height > 0.5 * H:
                     continue
+                stroked = "s" in d.get("type", "") and (d.get("stroke_opacity", 1) or 0) > 0
+                filled = "f" in d.get("type", "") and (d.get("fill_opacity", 1) or 0) > 0
+                if not stroked and (not filled or r.width <= 0 or r.height <= 0):
+                    continue
+                pad = max(0.25, (d.get("width") or 0) / 2 if stroked else 0)
+                r = pymupdf.Rect(r.x0 - pad, r.y0 - pad, r.x1 + pad, r.y1 + pad)
                 out.append(r)
         return out
 
@@ -148,11 +162,19 @@ def build(pdf_path, media_id, grade, topic_id, prefix, topic, level, native_path
         y1 = max(s["y1"] for s in ys)
         # Vector ink (figures, answer rules) has no text span; a band that ends
         # at the last text baseline clips figure bottoms and writing lines that
-        # belong to the question. Extend the band over any ink intersecting it.
-        for r in ink_rects(page):
-            if r.y1 > y0 + 1 and r.y0 < y1 - 1:
-                y0 = min(y0, r.y0)
-                y1 = max(y1, r.y1)
+        # belong to the question. Extend the band over the connected ink
+        # closure: ink touching the band within INK_TOL joins it, repeatedly,
+        # so the result does not depend on PDF draw order.
+        ink = ink_rects(page)
+        changed = True
+        while changed:
+            changed = False
+            for r in ink:
+                if r.y1 >= y0 - INK_TOL and r.y0 <= y1 + INK_TOL:
+                    ny0, ny1 = min(y0, r.y0), max(y1, r.y1)
+                    if ny0 != y0 or ny1 != y1:
+                        y0, y1 = ny0, ny1
+                        changed = True
         return y0, y1
 
     def qstart(q):

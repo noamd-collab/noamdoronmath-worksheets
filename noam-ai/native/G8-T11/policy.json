@@ -6,15 +6,15 @@
   "stock_highlight_sha256": "461f5b9b79002a73157f230eb80a65b7bf0533c63b5c35b6a3cd13d7a238b951",
   "levels": {
     "a": {
-      "noam_ai_sha256": "a91970211d791153dd6d2bc25ad51865d14ef3de0fb93ea24f0505f9bfe0ba8f",
+      "noam_ai_sha256": "54a3bbba70012883f591d21f372597e1c67ca5b19ed354fec6932ea9a1a5b8f1",
       "blocked": []
     },
     "b": {
-      "noam_ai_sha256": "8c535d131ca494e4fc3640c4faac4fed3989aba82ee246ced76be3791705142c",
+      "noam_ai_sha256": "99a99feeab1cab30b4de3f7147a68e62ac1d32a63a1970005206f888f989671e",
       "blocked": []
     },
     "c": {
-      "noam_ai_sha256": "078fa19f2766530ac3df1e3e369be9d1e4d0a25b4478f66d8a3222ca9b7f234e",
+      "noam_ai_sha256": "03ea06fd144d35890e6c905f8556f0d124e4f85e8907e62a42eaa838cc357376",
       "blocked": []
     }
   }
