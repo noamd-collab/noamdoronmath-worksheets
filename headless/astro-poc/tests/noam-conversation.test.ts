@@ -68,3 +68,17 @@ test('latest grade wins while all topic pages remain available',()=>{
  assert.ok(generic.some(r=>r.id==='catalog-9'));
  assert.equal(generic.some(r=>r.type==='worksheet'),false);
 });
+
+
+test('provider prose and example JSON cannot replace the final grounded answer', async()=>{
+ const result=await handleCompanionTurn({message:'דף פירוק לגורמים לכיתה ט',page},{guide,apiKey:'test',fetch:async(_url,init)=>{
+   const body=JSON.parse(init.body);assert.deepEqual(body.response_format,{type:'json_object'});
+   return {ok:true,json:async()=>({choices:[{message:{content:'Example: {"answer":"placeholder","primaryRecordId":"id"}\nFinal:\n'+JSON.stringify({answer:'הנה דף העבודה',primaryRecordId:'g9-t2-a',chipRecordIds:[]})}}]})};
+ }});
+ assert.equal(result.source,'model');assert.equal(result.primary.id,'g9-t2-a');assert.equal(result.answer,'הנה דף העבודה');
+});
+
+test('an invented primary target fails closed instead of claiming an unusable button', async()=>{
+ const result=await handleCompanionTurn({message:'דפים לכיתה ט',page},{guide,apiKey:'test',fetch:async()=>({ok:true,json:async()=>({choices:[{message:{content:JSON.stringify({answer:'מצאתי דף',primaryRecordId:'invented'})}}]})})});
+ assert.equal(result.source,'fallback');assert.equal(result.primary,null);
+});

@@ -203,13 +203,18 @@ export function buildUserPrompt(input, records) {
 }
 
 function parseModelJson(content) {
-  const raw = String(content || "").trim();
-  const start = raw.indexOf("{");
-  const end = raw.lastIndexOf("}");
-  if (start < 0 || end <= start) throw new Error("MODEL_JSON");
-  const parsed = JSON.parse(raw.slice(start, end + 1));
-  if (!parsed || typeof parsed !== "object") throw new Error("MODEL_JSON");
-  return parsed;
+  const raw = String(content || "").trim().replace(/```\s*$/, "").trim();
+  if (!raw.endsWith("}")) throw new Error("MODEL_JSON");
+  // Some compatible providers prepend prose containing an example JSON object.
+  // Parse only a complete final object; never expose that prose to the visitor.
+  for (let start = raw.lastIndexOf("{"); start >= 0; start = raw.lastIndexOf("{", start - 1)) {
+    try {
+      const parsed = JSON.parse(raw.slice(start));
+      if (parsed && typeof parsed === "object" && typeof (parsed.answer || parsed.text) === "string") return parsed;
+    } catch (_) {}
+    if (start === 0) break;
+  }
+  throw new Error("MODEL_JSON");
 }
 
 function stripUnknownUrls(text, allowed) {
@@ -276,6 +281,7 @@ export function qwenRequestBody(input, records) {
     model: QWEN_MODEL,
     stream: false,
     enable_thinking: false,
+    response_format: { type: "json_object" },
     max_tokens: MAX_OUTPUT_TOKENS,
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
