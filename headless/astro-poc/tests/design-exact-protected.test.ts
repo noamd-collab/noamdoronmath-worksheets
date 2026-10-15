@@ -17,6 +17,8 @@
  * They moved again so the kite card plays the area film first
  * («שטח דלתון — מהדלתון למלבן»), then the ruler-and-compass film.
  * They moved again so the card title follows the film that is playing.
+ * They moved again so para-rect marks base b and height h on the shape
+ * (explicit label fix, same 10s lap).
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -42,8 +44,8 @@ const protectedFiles: Record<string, string> = {
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
-  'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
+  'src/lib/conceptLoops.ts': 'f8a9bd34671e9231ba3a178c75bf49b134619b0453d1d71165f6cc6022f29530',
+  'src/components/ConceptLoop.astro': 'aa73048b174d6d5cf1565b767b47749b044ee9370edd2b809b315fb6442fb566',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // 47afe919: intentional text-only school notation on the readout

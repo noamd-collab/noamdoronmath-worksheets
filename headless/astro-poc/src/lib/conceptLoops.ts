@@ -886,15 +886,47 @@ function renderTransform(root: LoopRoot, t: number) {
 }
 const TRANS_HOLD = 6.8;
 
-/* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════ */
+/* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════
+   Base b stays on the bottom edge. Height is the perpendicular between the
+   two bases: a dashed altitude with a right-angle mark while the shape is a
+   parallelogram, then an outside bracket once that altitude would lie on the
+   rectangle's left side. Lap length and hold are unchanged. */
 
 function renderParaRect(root: LoopRoot, t: number) {
   const flat = ph(t, 1.3, 2.7) - ph(t, 8.1, 9.3);
   const s = 72 * (1 - flat);
+  const hx = 160 + s;
   const shape = q(root, 'shape');
-  if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(160 + s)},128`);
-  op(q(root, 'height'), 1);
-  op(q(root, 'lbl-h'), ph(t, 0.6, 1.0));
+  if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(hx)},128`);
+
+  const height = q(root, 'height');
+  if (height) {
+    height.setAttribute('x1', String(r2(hx)));
+    height.setAttribute('x2', String(r2(hx)));
+    height.setAttribute('y1', '128');
+    height.setAttribute('y2', '240');
+  }
+  const sq = q(root, 'h-sq');
+  if (sq) sq.setAttribute('d', `M${r2(hx)} 226 L${r2(hx + 14)} 226 L${r2(hx + 14)} 240`);
+  const brk = q(root, 'h-brk');
+  if (brk) brk.setAttribute('d', `M${r2(hx)} 128 L142 128 L142 240 L160 240`);
+
+  // 0 while the altitude is clearly inside the parallelogram, 1 on the rectangle.
+  const edge = Math.min(1, Math.max(0, (28 - s) / 28));
+  op(height, 1 - edge);
+  op(sq, 1);
+  op(brk, edge);
+
+  const labels = ph(t, 0.6, 1.0);
+  const lh = q(root, 'lbl-h');
+  if (lh) {
+    lh.setAttribute('x', String(r2(lerp(hx + 16, 124, edge))));
+    lh.setAttribute('y', '190');
+    lh.setAttribute('text-anchor', 'middle');
+  }
+  op(lh, labels);
+  op(q(root, 'b-brk'), labels);
+  op(q(root, 'lbl-b'), labels);
   op(q(root, 'lbl-same'), ph(t, 2.8, 3.3) * (1 - ph(t, 8.0, 8.6)));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
