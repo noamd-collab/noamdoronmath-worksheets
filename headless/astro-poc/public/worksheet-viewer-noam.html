@@ -4346,6 +4346,7 @@ function renderPdfPage(
         pageElement._renderTask =
           renderTask;
 
+        noamReadPrintedPinPage(pageNumber,page);
         return renderTask.promise;
       }
     )
@@ -5250,13 +5251,78 @@ function loadStaticManifest(){
     });
 }
 
+/* Resolve pins from printed PDF markers, never from a line-count estimate.
+   Only a complete, ordered marker match within a column may replace a map. */
+var noamPrintedPinPages = Object.create(null);
+function noamResolvePrintedPins(exercises, items, viewport, pageNumber){
+  var width=viewport.width, height=viewport.height;
+  var rows=exercises.filter(function(e){return Number((e.pin||{}).page)===pageNumber;});
+  var columns=[];
+  rows.forEach(function(e){
+    var x=Number(e.pin.x), kind=e.part ? "part" : "question";
+    if (!isFinite(x)){return;}
+    var col=columns.find(function(c){return c.kind===kind && Math.abs(c.x-x)<.12;});
+    if (!col){col={x:x,kind:kind,rows:[]};columns.push(col);}
+    col.rows.push(e);
+  });
+  var markers=[];
+  (items||[]).forEach(function(item){
+    var text=String(item.str||"").replace(/[\u200e\u200f]/g,"").trim();
+    var part=text.match(/^(?:([א-ת])[.)]|[.(]([א-ת]))$/);
+    var question=text.match(/^(?:\((\d{1,3})\)|(\d{1,3})[.)])$/);
+    if (!part && !question){return;}
+    var t=item.transform;
+    if (!t || !viewport.convertToViewportPoint){return;}
+    var p=viewport.convertToViewportPoint(t[4],t[5]);
+    var h=Number(item.height)||Math.hypot(t[2],t[3]);
+    markers.push({kind:part?"part":"question",label:part?(part[1]||part[2]):String(Number(question[1]||question[2])),
+      x:p[0]/width,y:(p[1]-h*.4)/height});
+  });
+  var result=Object.create(null);
+  columns.forEach(function(col){
+    var printed=markers.filter(function(m){
+      if (m.kind!==col.kind || Math.abs(m.x-col.x)>=.12){return false;}
+      return !columns.some(function(other){return other!==col && other.kind===col.kind && Math.abs(m.x-other.x)<Math.abs(m.x-col.x);});
+    }).sort(function(a,b){return a.y-b.y || b.x-a.x;});
+    var expected=col.rows.slice().sort(function(a,b){return a.pin.y-b.pin.y;});
+    if (printed.length!==expected.length || !printed.length){return;}
+    if (!expected.every(function(e,i){return String(col.kind==="part"?e.part:e.q)===printed[i].label;})){return;}
+    expected.forEach(function(e,i){
+      var m=printed[i];
+      if (m.y>0 && m.y<1){result[e.id]={page:pageNumber,x:m.x,y:m.y};}
+    });
+  });
+  return result;
+}
+function noamReadPrintedPinPage(pageNumber,page){
+  if (noamPrintedPinPages[pageNumber]){return;}
+  var entry={pending:true};
+  noamPrintedPinPages[pageNumber]=entry;
+  page.getTextContent().then(function(content){
+    entry.items=content.items||[];
+    entry.viewport=page.getViewport({scale:1});
+    entry.pending=false;
+    if (manifestReady){renderManifestPins();}
+  }).catch(function(){entry.pending=false;});
+}
+function noamPrintedPin(exercise){
+  var fallback=exercise.pin||{};
+  var entry=noamPrintedPinPages[Number(fallback.page)];
+  if (!entry || !entry.items || !manifestReady){return fallback;}
+  if (entry.manifest!==manifest){
+    entry.anchors=noamResolvePrintedPins(manifest.exercises,entry.items,entry.viewport,Number(fallback.page));
+    entry.manifest=manifest;
+  }
+  return entry.anchors[exercise.id]||fallback;
+}
+
 var noamNarrowPinsMedia = mobileLayout;
 
 function buildManifestPinGroups(exercises, groupByQuestion){
   var groups = [];
   var byQuestion = Object.create(null);
   exercises.forEach(function(exercise){
-    var pageNumber = Number((exercise.pin || {}).page || 0);
+    var pageNumber = Number((noamPrintedPin(exercise)).page || 0);
     var questionKey = pageNumber + ":" + String(exercise.q);
     var group = groupByQuestion && byQuestion[questionKey];
     if (!group){
@@ -5273,7 +5339,7 @@ function clusterManifestPinGroups(groups, pageHeight){
   var height = Math.max(1, Number(pageHeight) || 1);
   var edge = Math.min(22, height / 2);
   var positioned = groups.map(function(group){
-    var pin = group.exercises[0].pin || {};
+    var pin = noamPrintedPin(group.exercises[0]);
     var anchor = Math.max(.02, Math.min(.98, Number(pin.y) || .2)) * height;
     return {
       questionKey:group.questionKey,
@@ -5355,7 +5421,7 @@ function renderManifestPins(){
   if (narrow){
     var groupsByPage = Object.create(null);
     groups.forEach(function(group){
-      var number = Number((group.exercises[0].pin || {}).page || 0);
+      var number = Number((noamPrintedPin(group.exercises[0])).page || 0);
       if (!groupsByPage[number]){ groupsByPage[number] = []; }
       groupsByPage[number].push(group);
     });
@@ -5376,7 +5442,7 @@ function renderManifestPins(){
   if (!narrow){
     groups.forEach(function(group){
       var exercise = group.exercises[0];
-      var pin = exercise.pin || {};
+      var pin = noamPrintedPin(exercise);
       var pageNumber = Number(pin.page || 0);
       var pageElement = pdfPages.querySelector('.pdf-page[data-page="' + pageNumber + '"]');
       if (!pageElement || pageElement.clientWidth <= 0){ return; }
@@ -5387,7 +5453,7 @@ function renderManifestPins(){
       var pinY = Math.max(.02,Math.min(.98,Number(pin.y)||.2));
       var hasCloseRightNeighbor = groups.some(function(other){
         if (other === group){ return false; }
-        var otherPin = other.exercises[0].pin || {};
+        var otherPin = noamPrintedPin(other.exercises[0]);
         if (Number(otherPin.page || 0) !== pageNumber){ return false; }
         var otherY = Math.max(.02,Math.min(.98,Number(otherPin.y)||.2));
         if (Math.abs(otherY - pinY) * pageElement.clientHeight > 18){ return false; }
@@ -5402,7 +5468,7 @@ function renderManifestPins(){
   }
   groups.forEach(function(group){
     var exercise = group.exercises[0];
-    var pin = exercise.pin || {};
+    var pin = noamPrintedPin(exercise);
     var pageNumber = Number(pin.page || 0);
     var pageElement = pdfPages.querySelector('.pdf-page[data-page="' + pageNumber + '"]');
     if (!pageElement){ return; }

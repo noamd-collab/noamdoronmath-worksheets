@@ -8,7 +8,7 @@ const vm = require("node:vm");
 
 const viewer = fs.readFileSync(path.join(__dirname, "../worksheet-viewer-noam.html"), "utf8");
 const mediaSource = viewer.match(/var mobileLayout = [^;]+;/)[0];
-const source = viewer.slice(viewer.indexOf("var noamNarrowPinsMedia ="), viewer.indexOf("\nif (window.MutationObserver)"));
+const source = viewer.slice(viewer.indexOf("var noamPrintedPinPages ="), viewer.indexOf("\nif (window.MutationObserver)"));
 
 function button() {
   const item = { className: "", dataset: {}, style: {}, attributes: {}, listeners: {} };
@@ -17,6 +17,8 @@ function button() {
     remove: (...names) => { item.className = item.className.split(/\s+/).filter(value => !names.includes(value)).join(" "); },
     contains: name => item.className.split(/\s+/).includes(name)
   };
+  item.children = [];
+  item.appendChild = child => { item.children.push(child); };
   item.setAttribute = (name, value) => { item.attributes[name] = value; };
   item.getAttribute = name => item.attributes[name];
   item.addEventListener = (name, callback) => { item.listeners[name] = callback; };
@@ -53,7 +55,7 @@ function fixture(exercises, narrow = true, pageHeight = 500, legacyMedia = false
       return media;
     } },
     document: { createElement: tag => {
-      assert.equal(tag, "button");
+      assert.ok(["button", "img"].includes(tag));
       const item = button();
       item.focus = () => { ctx.document.activeElement = item; };
       return item;

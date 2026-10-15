@@ -99,8 +99,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.equal(scripts.at(-1), companion[0], 'The companion script follows the adapter and does not replace it');
     const releasedScripts = scripts.slice(0, -2);
     assert.equal(releasedScripts.length, 14);
-    // c2 (מצוינות 2) is a real viewer level, so the released level script changed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '71c61d6861c76294e299ae7353f598be1a532ab193be4065cc914ae6a71bde92');
+    // PR124 intentionally updates the shared viewer to anchor Ramzi to printed
+    // question markers. Dedicated printed-pin fixtures cover that behavior.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'f269eb36ba4616a1f15e95eab56e8c1522e2e257e0c97109714223cdf9b8b053');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
