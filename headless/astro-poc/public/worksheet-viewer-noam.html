@@ -8839,6 +8839,10 @@ function esc(s){
     box.append(makeAvatar(48,'idle'),title,note);
     transcript.appendChild(box);
   }
+  function hasPendingMath(text){
+    // Leave complete TeX runs intact until the asynchronously loaded renderer consumes them.
+    return /\\[([]|\$/.test(text||'');
+  }
   function isolateMath(root){
     if(!root||root.dataset.mathIsolated==='1'){return;}
     var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
@@ -8846,7 +8850,7 @@ function esc(s){
     while(walker.nextNode()){
       var node=walker.currentNode;
       var parent=node.parentElement;
-      if(!parent||!/[0-9]/.test(node.nodeValue||'')){continue;}
+      if(!parent||!/[0-9]/.test(node.nodeValue||'')||hasPendingMath(node.nodeValue)){continue;}
       if(parent.closest('button,a,svg,.katex,math,.noam-sr-only,.exact-hint-head,.exact-error-title,.exact-frac')){continue;}
       nodes.push(node);
     }
@@ -8893,6 +8897,7 @@ function esc(s){
       if(!content){return;}
       content.dir='rtl';
       content.style.display='block';
+      if(hasPendingMath(content.textContent)){return;}
       splitReadingLines(content);
       wrapReadingRuns(content);
     });
@@ -8931,7 +8936,7 @@ function esc(s){
       var parent=node.parentElement;
       if(!parent){continue;}
       if(parent.closest('button,a,svg,bdi,.katex,math,.noam-sr-only,.exact-hint-head,.exact-error-title,.ramzi-check,.exact-frac')){continue;}
-      if(!/[A-Za-z∠∥=]/.test(node.nodeValue||'')){continue;}
+      if(!/[A-Za-z∠∥=]/.test(node.nodeValue||'')||hasPendingMath(node.nodeValue)){continue;}
       nodes.push(node);
     }
     var runRe=/(?:[A-Za-z]+|∠\s*[A-Za-z]{1,4}|[0-9]+(?:\.[0-9]+)?|∥|[=°+\-−×÷<>≤≥])(?:\s*(?:[A-Za-z]+|∠\s*[A-Za-z]{1,4}|[0-9]+(?:\.[0-9]+)?|∥|[=°+\-−×÷<>≤≥]))*/g;
