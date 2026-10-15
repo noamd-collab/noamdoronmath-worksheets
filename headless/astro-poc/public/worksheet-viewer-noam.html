@@ -1906,7 +1906,7 @@ textarea:focus{
   .pdf-surface.has-pdf-tools .pdf-status,.pdf-surface.has-pdf-tools .pdf-fallback-message{inset-inline-start:0}
   .pdf-scroll{padding:6px 6px 76px;scrollbar-gutter:auto;-webkit-overflow-scrolling:touch;overflow-anchor:none}
   .pdf-pages{gap:10px}
-  .pdf-page{width:calc(100vw - 128px);min-height:0;margin-right:104px;overflow:visible}
+  .pdf-page{width:calc(100vw - 78px);min-height:0;margin-right:54px;overflow:visible}
   .pdf-page .noam-question-pin{width:44px;height:44px;font-size:20px;box-shadow:0 1px 4px #14213d30}
   .pdf-tools{grid-area:2/1;position:static;display:grid;grid-template-columns:44px minmax(0,1fr) 48px 44px;gap:4px;padding:5px 8px;margin:0;width:100%;max-height:none;border:0;border-top:1px solid #b7bec9;border-radius:0;box-shadow:none;direction:ltr}
   .pdf-tools.hidden{display:none}
@@ -2003,6 +2003,20 @@ textarea:focus{
   .panel-badge{display:none}
 }
 
+
+#pdfReading,.pdf-phone-hint{display:none}
+@media(max-width:900px){
+  body.noam-pdf-tools-open{--noam-tools-height:80px}
+  .pdf-surface.has-pdf-tools{grid-template-rows:auto minmax(0,1fr)}
+  .pdf-surface.has-pdf-tools .pdf-scroll,.pdf-surface.has-pdf-tools .pdf-native{grid-area:2/1}
+  .pdf-surface.has-pdf-tools .pdf-tools{grid-area:1/1}
+  .pdf-tools{grid-template-columns:44px 44px 44px minmax(70px,1fr) minmax(60px,1fr);gap:4px;padding:4px 6px}
+  .pdf-tools #pdfZoomSlider{display:none}
+  .pdf-tools #pdfFit{grid-column:4;grid-row:1}
+  .pdf-tools #pdfReading{display:flex;grid-column:5;grid-row:1}
+  .pdf-tools .pdf-phone-hint{display:block;grid-column:1/-1;direction:rtl;text-align:center;font:12px/20px Heebo,sans-serif;color:#22305a}
+  .pdf-scroll{padding-bottom:20px}
+}
 </style>
 <link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -2932,6 +2946,10 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
   .exact-viewer .exact-mobile-tabs{grid-column:1/-1;grid-row:4}
   .exact-viewer .stage{grid-column:1/-1;grid-row:5;min-height:0;overflow:hidden}
 }
+@media(max-width:900px){
+  .exact-viewer .pdf-page .noam-exercise-pin,
+  .exact-viewer .pdf-page .noam-report-pin{width:44px;height:44px;min-width:44px;min-height:44px}
+}
 </style>
 
 <header class="exact-viewer-header">
@@ -3041,7 +3059,9 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
         <input class="pdf-zoom-slider" id="pdfZoomSlider" type="range" min="70" max="170" step="1" value="70" aria-label="גודל תצוגת הדף באחוזים" aria-valuetext="70%">
         <output class="pdf-zoom-value" id="pdfZoomValue" for="pdfZoomSlider">70%</output>
         <button class="pdf-tool" id="pdfZoomIn" type="button" aria-label="הגדלת הדף באחוז אחד">+</button>
-        <button class="pdf-tool" id="pdfFit" type="button">התאם לרוחב</button>
+        <button class="pdf-tool" id="pdfFit" type="button">כל הדף</button>
+        <button class="pdf-tool" id="pdfReading" type="button">קריאה</button>
+        <span class="pdf-phone-hint">החליקו לצדדים לקריאה · לחצו על שאלה לרמז</span>
         <button class="pdf-tool primary" id="pdfNativeMode" type="button">תצוגת PDF מלאה</button>
       </div>
 
@@ -3936,7 +3956,7 @@ var pdfResizeObserver =
   null;
 
 var pdfZoom =
-  .7;
+  mobileLayout.matches ? 1 : .7;
 
 var pdfRenderVersion =
   0;
@@ -4469,12 +4489,12 @@ function observePdfPages(){
 }
 
 function getPdfPageWidth(){
-  // Match live GitHub viewer: on phones, 70% zoom is the width that fits
-  // beside the fixed button gutter. Scale only the PDF from there.
-  if (mobileLayout.matches){
-    return Math.max(120,pdfScroll.clientWidth - 116) * pdfZoom / .7;
-  }
+  // A phone starts at a readable paper size; fit is an explicit overview.
+  if (mobileLayout.matches){return 600 * pdfZoom;}
   return Math.max(120,pdfScroll.clientWidth - 78) * pdfZoom;
+}
+function getPdfFitZoom(){
+  return mobileLayout.matches ? Math.max(.25, Math.floor((pdfScroll.clientWidth - 66) / 6) / 100) : 1;
 }
 
 // Keep the same point on the current page when rotation or zoom changes page sizes.
@@ -4558,7 +4578,7 @@ function resetPdfRendering(){
 
 function setPdfZoom(value, deferRender){
   if (!Number.isFinite(value)){ return; }
-  var percent = Math.max(70, Math.min(170, Math.round(value * 100)));
+  var percent = Math.max(mobileLayout.matches ? 25 : 70, Math.min(170, Math.round(value * 100)));
   var nextZoom = percent / 100;
   var changed = nextZoom !== pdfZoom;
   pdfZoom = nextZoom;
@@ -4624,7 +4644,7 @@ function initPdfExperience(){
 
   setNativePdfMode(pdfNativeActive);
 
-  showPdfTools(!mobileLayout.matches);
+  showPdfTools(true);
 
   /* Noam overlays require the page canvas on every viewport. */
 
@@ -4767,7 +4787,7 @@ document
     function(){
       setPdfZoom(
         pdfZoom -
-        .01
+        (mobileLayout.matches ? .1 : .01)
       );
     }
   );
@@ -4781,10 +4801,21 @@ document
     function(){
       setPdfZoom(
         pdfZoom +
-        .01
+        (mobileLayout.matches ? .1 : .01)
       );
     }
   );
+
+document.getElementById("pdfReading").addEventListener("click", function(){setPdfZoom(1);});
+function syncPdfPhoneTools(){
+  pdfZoomSlider.min = mobileLayout.matches ? "25" : "70";
+  document.getElementById("pdfZoomOut").setAttribute("aria-label", mobileLayout.matches ? "הקטנת הדף" : "הקטנת הדף באחוז אחד");
+  document.getElementById("pdfZoomIn").setAttribute("aria-label", mobileLayout.matches ? "הגדלת הדף" : "הגדלת הדף באחוז אחד");
+  setPdfZoom(pdfZoom);
+}
+syncPdfPhoneTools();
+if (mobileLayout.addEventListener){mobileLayout.addEventListener("change",syncPdfPhoneTools);}
+else if (mobileLayout.addListener){mobileLayout.addListener(syncPdfPhoneTools);}
 
 pdfZoomSlider.addEventListener("input", function(){
   setPdfZoom(Number(pdfZoomSlider.value) / 100, true);
@@ -4800,7 +4831,7 @@ document
   .addEventListener(
     "click",
     function(){
-      setPdfZoom(1);
+      setPdfZoom(getPdfFitZoom());
     }
   );
 
@@ -4867,7 +4898,7 @@ function ensureNoamMathRenderer(){
 }
 
 /* This script is below the viewer DOM. No font or AI library needs to finish first. */
-showPdfTools(!mobileLayout.matches);
+showPdfTools(true);
 setNativePdfMode(false);
 loadNoamAsset("script",PDFJS_BASE+"build/pdf.min.js")
   .then(initPdfExperience)
@@ -5181,7 +5212,7 @@ feedbackDialog.addEventListener("click", function(event){
 function openNoamPanel(){
   var wasClosed=panel.classList.contains("hidden");
   if (wasClosed){panelReturnFocus=document.activeElement;}
-  if (wasClosed){setPdfZoom(.85);}
+  if (wasClosed && !mobileLayout.matches){setPdfZoom(.85);}
   panel.classList.remove("hidden");
   fab.classList.add("hidden");
   fab.setAttribute("aria-expanded","true");
@@ -5194,7 +5225,7 @@ function closeNoamPanel(){
   if (typeof hideNoamGlossaryPopover==="function"){hideNoamGlossaryPopover();}
   if (panel.contains(document.activeElement)){document.activeElement.blur();}
   panel.classList.add("hidden");
-  if (wasOpen){setPdfZoom(.7);}
+  if (wasOpen && !mobileLayout.matches){setPdfZoom(.7);}
   fab.classList.toggle("hidden",!manifestReady);
   fab.setAttribute("aria-expanded","false");
   syncMobilePanel();
@@ -5345,13 +5376,13 @@ function clusterManifestPinGroups(groups, pageHeight){
       questionKey:group.questionKey,
       questionKeys:[group.questionKey],
       exercises:group.exercises.slice(),
-      top:Math.max(edge, Math.min(height - edge, anchor))
+      top:Math.max(edge, Math.min(height - edge - 48, anchor))
     };
   }).sort(function(a,b){ return a.top - b.top; });
   var clusters = [];
   positioned.forEach(function(group){
     var previous = clusters[clusters.length - 1];
-    if (previous && group.top - previous.top < 48){
+    if (previous && group.top - previous.top < 100){
       previous.exercises = previous.exercises.concat(group.exercises);
       previous.questionKeys = previous.questionKeys.concat(group.questionKeys);
     }else{
@@ -5527,9 +5558,9 @@ function renderManifestPins(){
     ramziMark.draggable = false;
     report.appendChild(ramziMark);
     report.style.left = narrow
-      ? "calc(100% + 76px)"
+      ? "calc(100% + 26px)"
       : "calc(" + pinLeft + (group.reportBefore ? " - 40px)" : " + 40px)");
-    report.style.top = button.style.top;
+    report.style.top = narrow ? (group.top + 48) + "px" : button.style.top;
     report.dataset.exerciseId = exercise.id;
     report.dataset.exerciseIds = button.dataset.exerciseIds;
     report.dataset.label = "יש הערה על השאלה?";
@@ -5549,7 +5580,7 @@ function renderManifestPins(){
 }
 
 function refreshNoamMobileLayout(){
-  showPdfTools(!mobileLayout.matches);
+  showPdfTools(true);
   pdfLastWidth = Math.round(pdfScroll.clientWidth);
   resetPdfRendering();
   renderManifestPins();
@@ -9094,7 +9125,11 @@ function esc(s){
               }
               event.preventDefault();
               event.stopPropagation();
-              var target=hit._exactPin;
+              // Lazy rendering can replace pins before the 80ms decorator runs.
+              // Resolve the current question by ID at click time.
+              var target=Array.from(page.querySelectorAll('.noam-exercise-pin')).find(function(pin){
+                return (pin.dataset.exerciseIds||pin.dataset.exerciseId||'').split(' ').indexOf(hit.dataset.exerciseId)!==-1;
+              });
               setAiMode(true);
               if(target&&target.isConnected){target.click();}
             });
@@ -9188,7 +9223,8 @@ function esc(s){
         last=top;
         if(pin.style.top!==top+'px'){pin.style.top=top+'px';}
         var report=reportPin(page,pin);
-        if(report&&report.style.top!==pin.style.top){report.style.top=pin.style.top;}
+        var reportTop=pin.classList.contains('noam-question-pin')?(top+48)+'px':pin.style.top;
+        if(report&&report.style.top!==reportTop){report.style.top=reportTop;}
       });
       snapPinColumns(page,pins);
     });

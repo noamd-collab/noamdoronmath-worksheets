@@ -84,8 +84,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     const viewer = read('public/worksheet-viewer-noam.html');
     const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'Viewer must retain its head');
-    // Google Fonts link removed; Heebo woff2 is preloaded from /fonts.
-    assert.equal(sha256(head), '8c842de3e2b55e15a454fd1fabbc31794baeffaaf8b939d3a1bccd7cc586b462');
+    // Phone reading intentionally changes the inline CSS in this head.
+    // Metadata, fonts, canonical and robots are unchanged.
+    assert.equal(sha256(head), '6aa632f8c5727a7dcbce3357966a5e04fa47250e5e7c53122fd08cf6176a78e9');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
@@ -99,9 +100,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.equal(scripts.at(-1), companion[0], 'The companion script follows the adapter and does not replace it');
     const releasedScripts = scripts.slice(0, -2);
     assert.equal(releasedScripts.length, 14);
+    // Phone reading deliberately adds readable zoom, fit controls and a single
+    // touch-target rail; mobile layout/panel/pin tests cover these changes.
     // PR124 intentionally updates the shared viewer to anchor Ramzi to printed
     // question markers. Dedicated printed-pin fixtures cover that behavior.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'f269eb36ba4616a1f15e95eab56e8c1522e2e257e0c97109714223cdf9b8b053');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e80fe08884059830c858c96f6560b1dfa58013f092e5a1d4d76dc1f93a06627a');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

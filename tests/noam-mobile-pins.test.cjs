@@ -197,7 +197,7 @@ test("a one-pixel crossing from 901 to 900 redraws the PDF and keeps every part 
   f.resize(900);
   assert.equal(f.ctx.pdfResetCount, 1, "mode change must bypass the ordinary <3px resize tolerance");
   assert.equal(f.ctx.pdfLastWidth, 900);
-  assert.equal(f.ctx.toolsVisible, false, "phone tools start closed");
+  assert.equal(f.ctx.toolsVisible, true, "phone zoom stays directly reachable");
   assert.ok(f.pins().every(pin => pin.classList.contains("noam-question-pin")));
   assert.deepEqual(f.pins().flatMap(pin => pin.dataset.exerciseIds.split(" ")).sort(), parts.map(part => part.id).sort());
   assert.equal(f.ctx.selectedPin.dataset.exerciseIds, "q1a q1b");
@@ -212,7 +212,7 @@ test("landscape phone widths retain grouped targets and legacy media listeners s
   f.ctx.renderManifestPins();
   f.resize(844);
   assert.equal(f.ctx.pdfResetCount, 1);
-  assert.equal(f.ctx.toolsVisible, false);
+  assert.equal(f.ctx.toolsVisible, true);
   assert.ok(f.pins().every(pin => pin.classList.contains("noam-question-pin")));
   assert.deepEqual(f.pins().flatMap(pin => pin.dataset.exerciseIds.split(" ")).sort(), parts.map(part => part.id).sort());
 });
@@ -269,8 +269,8 @@ test("small rendered pages, including a real 14-question page, keep every target
         const centers = page.children.filter(pin => pin.classList.contains("noam-exercise-pin"))
           .map(pin => parseFloat(pin.style.top)).sort((a, b) => a - b);
         centers.forEach((center, index) => {
-          assert.ok(center >= 22 && center <= height - 22, "44px target remains within the page height");
-          if (index) assert.ok(center - centers[index - 1] >= 48 - 1e-8, "neighboring touch targets have at least4px space");
+          assert.ok(center >= 22 && center <= height - 70, "44px target remains within the page height");
+          if (index) assert.ok(center - centers[index - 1] >= 100 - 1e-8, "neighboring touch targets have at least4px space");
         });
       }
     }
@@ -282,12 +282,12 @@ test("rendering at a new zoom height rebuilds clusters without stale pins or los
   const f = fixture(exercises, true, 500);
   f.ctx.selectedExercise = exercises[1];
   f.ctx.renderManifestPins();
-  assert.equal(f.pins().length, 2);
+  assert.equal(f.pins().length, 1);
   f.pages.get(1).clientHeight = 280;
   f.ctx.renderManifestPins();
   assert.equal(f.pins().length, 1);
   assert.equal(f.ctx.selectedPin.dataset.exerciseIds, "q1a q2");
-  f.pages.get(1).clientHeight = 800;
+  f.pages.get(1).clientHeight = 1200;
   f.ctx.renderManifestPins();
   assert.equal(f.pins().length, 2);
   assert.equal(f.ctx.selectedPin.dataset.exerciseId, "q2");
@@ -307,8 +307,8 @@ test("every installed worksheet keeps all questions reachable with separated pho
         const centers = page.children.filter(pin => pin.classList.contains("noam-exercise-pin"))
           .map(pin => parseFloat(pin.style.top)).sort((a, b) => a - b);
         centers.forEach((center, index) => {
-          assert.ok(center >= 22 && center <= height - 22, file + ": target within page");
-          if (index) assert.ok(center - centers[index - 1] >= 48 - 1e-8, file + ": targets separated");
+          assert.ok(center >= 22 && center <= height - 70, file + ": target within page");
+          if (index) assert.ok(center - centers[index - 1] >= 100 - 1e-8, file + ": targets separated");
         });
       }
     }
@@ -360,16 +360,15 @@ test("desktop pairs retain a gap and stay inside the reserved gutter at narrow a
   }
 });
 
-test("mobile pairs fit the reserved gutter with a ten-pixel gap at every document zoom", () => {
+test("phone controls share one narrow rail without covering print or each other", () => {
   const f = fixture(parts);
   f.ctx.renderManifestPins();
-  const mobileGutter = Number(viewer.match(/\.pdf-page\{width:calc\(100vw - \d+px\);min-height:0;margin-right:(\d+)px/)[1]);
-  for (const width of [120, 185, 264, 316, 528, 792]) {
-    const ai = cssPixels(f.pins()[0].style.left, width);
-    const report = cssPixels(f.reports()[0].style.left, width);
-    assert.ok(ai - 22 >= width, "AI never covers printed content");
-    assert.equal(report - 18 - (ai + 22), 10);
-    assert.ok(report + 18 <= width + mobileGutter, "report fits even at 100% and higher zoom");
+  for (const width of [120,185,264,316,600,1020]) {
+    const ai=cssPixels(f.pins()[0].style.left,width);
+    const report=cssPixels(f.reports()[0].style.left,width);
+    assert.equal(ai,report);
+    assert.ok(ai-22>=width && ai+22<=width+54);
+    assert.equal(parseFloat(f.reports()[0].style.top)-parseFloat(f.pins()[0].style.top),48);
   }
 });
 
