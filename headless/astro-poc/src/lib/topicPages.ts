@@ -166,6 +166,17 @@ import quadrilateralsPropertiesGrade3 from '../data/topic-pages/quadrilaterals-p
 import readBarDiagramGrade3 from '../data/topic-pages/read-bar-diagram-grade-3.json';
 import collectingDataGrade3 from '../data/topic-pages/collecting-data-grade-3.json';
 import moneyGrade3 from '../data/topic-pages/money-grade-3.json';
+import columnAdditionCarryingGrade3 from '../data/topic-pages/column-addition-carrying-grade-3.json';
+import columnSubtractionBorrowingGrade3 from '../data/topic-pages/column-subtraction-borrowing-grade-3.json';
+import multiplicationFactsArraysGrade3 from '../data/topic-pages/multiplication-facts-arrays-grade-3.json';
+import divisionInverseMultiplicationGrade3 from '../data/topic-pages/division-inverse-multiplication-grade-3.json';
+import unitFractionsPartOfWholeGrade3 from '../data/topic-pages/unit-fractions-part-of-whole-grade-3.json';
+import polygonsSidesVerticesGrade3 from '../data/topic-pages/polygons-sides-vertices-grade-3.json';
+import shapesOnGridGrade3 from '../data/topic-pages/shapes-on-grid-grade-3.json';
+import timeWeightMeasuresGrade3 from '../data/topic-pages/time-weight-measures-grade-3.json';
+import divisionCheckMultiplicationGrade3 from '../data/topic-pages/division-check-multiplication-grade-3.json';
+import measuringLengthCmMGrade3 from '../data/topic-pages/measuring-length-cm-m-grade-3.json';
+import buildDecomposeShapesGrade3 from '../data/topic-pages/build-decompose-shapes-grade-3.json';
 import numbersToMillionGrade4 from '../data/topic-pages/numbers-to-million-grade-4.json';
 import orderRoundingMillionGrade4 from '../data/topic-pages/order-rounding-million-grade-4.json';
 import orderOfOperationsGrade4 from '../data/topic-pages/order-of-operations-grade-4.json';
@@ -471,13 +482,24 @@ export const TOPIC_PAGE_G3_SLUGS = [
   'sequences-find-mistake-grade-3',
   'thousands-grade-3',
   'estimation-close-numbers-grade-3',
+  'column-addition-carrying-grade-3',
+  'column-subtraction-borrowing-grade-3',
+  'multiplication-facts-arrays-grade-3',
+  'division-inverse-multiplication-grade-3',
+  'unit-fractions-part-of-whole-grade-3',
   'word-problems-grade-3',
   'angles-types-grade-3',
   'lines-angles-shapes-grade-3',
+  'polygons-sides-vertices-grade-3',
   'perimeter-polygons-grade-3',
   'classify-triangles-grade-3',
   'quadrilaterals-properties-grade-3',
+  'shapes-on-grid-grade-3',
+  'time-weight-measures-grade-3',
   'read-bar-diagram-grade-3',
+  'division-check-multiplication-grade-3',
+  'measuring-length-cm-m-grade-3',
+  'build-decompose-shapes-grade-3',
   'collecting-data-grade-3',
   'money-grade-3',
 ] as const;
@@ -820,6 +842,17 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'read-bar-diagram-grade-3': readBarDiagramGrade3 as TopicPageContent,
   'collecting-data-grade-3': collectingDataGrade3 as TopicPageContent,
   'money-grade-3': moneyGrade3 as TopicPageContent,
+  'column-addition-carrying-grade-3': columnAdditionCarryingGrade3 as TopicPageContent,
+  'column-subtraction-borrowing-grade-3': columnSubtractionBorrowingGrade3 as TopicPageContent,
+  'multiplication-facts-arrays-grade-3': multiplicationFactsArraysGrade3 as TopicPageContent,
+  'division-inverse-multiplication-grade-3': divisionInverseMultiplicationGrade3 as TopicPageContent,
+  'unit-fractions-part-of-whole-grade-3': unitFractionsPartOfWholeGrade3 as TopicPageContent,
+  'polygons-sides-vertices-grade-3': polygonsSidesVerticesGrade3 as TopicPageContent,
+  'shapes-on-grid-grade-3': shapesOnGridGrade3 as TopicPageContent,
+  'time-weight-measures-grade-3': timeWeightMeasuresGrade3 as TopicPageContent,
+  'division-check-multiplication-grade-3': divisionCheckMultiplicationGrade3 as TopicPageContent,
+  'measuring-length-cm-m-grade-3': measuringLengthCmMGrade3 as TopicPageContent,
+  'build-decompose-shapes-grade-3': buildDecomposeShapesGrade3 as TopicPageContent,
   // G4 (catalog order)
   'numbers-to-million-grade-4': numbersToMillionGrade4 as TopicPageContent,
   'order-rounding-million-grade-4': orderRoundingMillionGrade4 as TopicPageContent,

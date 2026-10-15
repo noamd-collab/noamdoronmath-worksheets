@@ -14,14 +14,14 @@
 |---|---|---|---|
 | 1 (א׳) | 23 | 23 | 0 |
 | 2 (ב׳) | 29 | 29 | 0 |
-| 3 (ג׳) | 25 | 14 | 0 |
+| 3 (ג׳) | 25 | 25 | 0 |
 | 4 (ד׳) | 30 | 17 | 0 |
 | 5 (ה׳) | 35 | 18 | 0 |
 | 6 (ו׳) | 27 | 14 | 0 |
 | 7 (ז׳) | 50 | 39 | 0 |
 | 8 (ח׳) | 65 | 26 | 0 |
 | 9 (ט׳) | 45 | 41 | 0 |
-| **סה״כ** | **329** | **221** | **0** |
+| **סה״כ** | **329** | **232** | **0** |
 
 ## כיתה א׳ (grade 1)
 
@@ -94,24 +94,24 @@
 | 3 | סדרות ואיתור טעות | 3 | /sequences-find-mistake-grade-3 | exists |
 | 3 | אל הרבבה | 4 | /thousands-grade-3 | exists |
 | 3 | אומדן באמצעות מספרים קרובים | 5 | /estimation-close-numbers-grade-3 | exists |
-| 3 | חיבור בטור עם המרה | 6 | — | exists |
-| 3 | חיסור בטור עם פריטה | 7 | — | exists |
+| 3 | חיבור בטור עם המרה | 6 | /column-addition-carrying-grade-3 | exists |
+| 3 | חיסור בטור עם פריטה | 7 | /column-subtraction-borrowing-grade-3 | exists |
 | 3 | בעיות מילוליות | 8 | /word-problems-grade-3 | exists |
-| 3 | כפל עובדות ומבנים | 9 | — | exists |
-| 3 | חילוק והקשר ההפוך לכפל | 10 | — | exists |
-| 3 | שברי יחידה וחלק משלם | 11 | — | exists |
+| 3 | כפל עובדות ומבנים | 9 | /multiplication-facts-arrays-grade-3 | exists |
+| 3 | חילוק והקשר ההפוך לכפל | 10 | /division-inverse-multiplication-grade-3 | exists |
+| 3 | שברי יחידה וחלק משלם | 11 | /unit-fractions-part-of-whole-grade-3 | exists |
 | 3 | זווית וסוגי זוויות | 12 | /angles-types-grade-3 | exists |
 | 3 | קווים וזוויות בצורות מוכרות | 13 | /lines-angles-shapes-grade-3 | exists |
-| 3 | מצולעים צלעות וקודקודים | 14 | — | exists |
+| 3 | מצולעים צלעות וקודקודים | 14 | /polygons-sides-vertices-grade-3 | exists |
 | 3 | היקף מצולעים | 15 | /perimeter-polygons-grade-3 | exists |
 | 3 | מיון משולשים | 16 | /classify-triangles-grade-3 | exists |
 | 3 | מרובעים לפי תכונות | 17 | /quadrilaterals-properties-grade-3 | exists |
-| 3 | צורות על רשת בנייה ופירוק | 18 | — | exists |
-| 3 | מדידות זמן ומשקל | 19 | — | exists |
+| 3 | צורות על רשת בנייה ופירוק | 18 | /shapes-on-grid-grade-3 | exists |
+| 3 | מדידות זמן ומשקל | 19 | /time-weight-measures-grade-3 | exists |
 | 3 | קוראים דיאגרמה | 20 | /read-bar-diagram-grade-3 | exists |
-| 3 | חילוק ובדיקה בכפל | 21 | — | exists |
-| 3 | מדידות אורך סמ ומטר | 22 | — | exists |
-| 3 | בונים ומפרקים צורות | 23 | — | exists |
+| 3 | חילוק ובדיקה בכפל | 21 | /division-check-multiplication-grade-3 | exists |
+| 3 | מדידות אורך סמ ומטר | 22 | /measuring-length-cm-m-grade-3 | exists |
+| 3 | בונים ומפרקים צורות | 23 | /build-decompose-shapes-grade-3 | exists |
 | 3 | אוספים נתונים | 24 | /collecting-data-grade-3 | exists |
 | 3 | כסף | 25 | /money-grade-3 | exists |
 
