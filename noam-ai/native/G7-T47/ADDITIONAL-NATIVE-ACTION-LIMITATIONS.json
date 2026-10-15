@@ -1,0 +1,276 @@
+{
+  "package": "G7-T47",
+  "reviewer": "repair_range",
+  "limitations": [
+    {
+      "level": "a",
+      "figure": "q3_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "55eb2284042e585ba20cd0a6f2c3347c1d437dd85a26a79e3417884a0ce5e3fc",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    },
+    {
+      "level": "a",
+      "figure": "q6_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "9f14feea7a905b2746b7fa25edc0c4a3724972a5d1774be86a18917e2068da54",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    },
+    {
+      "level": "a",
+      "figure": "q13_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "ca916988a39feeb18637bd7f1958323fe50cbba6277498ead467218c9dfcf4f8",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    },
+    {
+      "level": "a",
+      "figure": "q20_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "65869d9ca553c2c86c57fbfa1837144c12c7bad50c2992145962aeb065ad2929",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    },
+    {
+      "level": "b",
+      "figure": "q2_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "68f3b42d4096db668056703b52eec0bd87bdb792e3c1d7b5fdb777dcf5cf6cb5",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    },
+    {
+      "level": "b",
+      "figure": "q6_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "6ee6407f23a2be0998ddfb68ab06e7958a8166d7460d31391309d6e39a079274",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    },
+    {
+      "level": "b",
+      "figure": "q14_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "0329fc740dd1bc515e94f8dd7bdf1b611fb24a2d8e4064a00dabec8a7c0e8b8c",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    },
+    {
+      "level": "c",
+      "figure": "q1_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "3244ab7b5243ca100b1bad7876530580abd85fcb438969b5348bdfffc4258af7",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    },
+    {
+      "level": "c",
+      "figure": "q11_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "cecd8247238e38a279d5f41d303db2de670474752f7dab62e9e3c2d8364e867f",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    },
+    {
+      "level": "c",
+      "figure": "q17_head",
+      "relation": "r-perpendicular-B-C-H",
+      "type": "perpendicular",
+      "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay.",
+      "svg_sha256": "4ef8600644036e854dbafb77728d6d09ef0c0f4f02666b807102709216a54525",
+      "native_parts": [
+        [
+          "pt-B",
+          null
+        ],
+        [
+          "pt-C",
+          null
+        ],
+        [
+          "pt-H",
+          null
+        ],
+        [
+          "seg-CH",
+          null
+        ]
+      ],
+      "missing_segment": "BH"
+    }
+  ]
+}

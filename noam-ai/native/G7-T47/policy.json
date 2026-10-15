@@ -1,0 +1,85 @@
+{
+  "schema": "noam-conservative-consumer/1",
+  "package": "G7-T47",
+  "native_engine_modified": false,
+  "support": "partial; selected relation overlays unsupported",
+  "stock_highlight_sha256": "461f5b9b79002a73157f230eb80a65b7bf0533c63b5c35b6a3cd13d7a238b951",
+  "levels": {
+    "a": {
+      "noam_ai_sha256": "fbd79ba1c3db63b58a047bc3813d17a8e9b3140bdd9012929695800cac1a4a27",
+      "blocked": [
+        {
+          "figure": "q3_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        },
+        {
+          "figure": "q6_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        },
+        {
+          "figure": "q13_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        },
+        {
+          "figure": "q20_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        }
+      ]
+    },
+    "b": {
+      "noam_ai_sha256": "59f4ca397b7275f9c10fc37463691fe422c4b378f401dc9499ce01c8daea4db8",
+      "blocked": [
+        {
+          "figure": "q2_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        },
+        {
+          "figure": "q6_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        },
+        {
+          "figure": "q14_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        }
+      ]
+    },
+    "c": {
+      "noam_ai_sha256": "297953d9b7fc510b99711176af60242d5168e1eff70ccbf03d89944e06cdd106",
+      "blocked": [
+        {
+          "figure": "q1_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        },
+        {
+          "figure": "q11_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        },
+        {
+          "figure": "q17_head",
+          "relation": "r-perpendicular-B-C-H",
+          "type": "perpendicular",
+          "reason": "Actual native overlay highlights CH and the endpoints but omits the required BH arm. Explain this relation verbally; do not show the incomplete overlay."
+        }
+      ]
+    }
+  },
+  "additional_limitations_sha256": "2fdbcacdabd98535c2d0d784285d1bd7a73a579be1c5e2a9c07934b4693b2b88"
+}
