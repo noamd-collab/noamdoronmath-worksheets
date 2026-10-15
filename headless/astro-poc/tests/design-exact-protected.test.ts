@@ -37,7 +37,10 @@ const protectedFiles: Record<string, string> = {
   'astro.config.mjs': 'c63c0e1646e6198757b32ca085cda16091a3168adf0017ce9e3ce74b91b8f451',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
-  'src/data/catalog.v1.json': '2efb9b0b42b8ba4c0f605f8835a7a24412b8103d4cfbb6c53a04657b67059959',
+  // G8-T49 integration: grade-8 topic 11 (פיתגורס) now points at the approved
+  // 18/18/20-page student PDFs 54957bc52e6f43c7b54f954f591d488c,
+  // 61ea19bb43374124afd484642058d5c9, and bf7299b4a76b4b7986732cd0fa2d4cc0.
+  'src/data/catalog.v1.json': '9ccee33f3f30e6be8fa1ca164eb8eb446eb49ead6eda87c1726e802fcb31e4a3',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
