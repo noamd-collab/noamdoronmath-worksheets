@@ -57,6 +57,9 @@ def build(pdf_path, media_id, grade, topic_id, prefix, topic, level, native_path
           native_level=None):
     doc = pymupdf.open(pdf_path)
     page_count = len(doc)
+    # This package has explicitly identified section-heading bands and
+    # fraction-opened questions. Keep the accepted generic boundaries elsewhere.
+    use_g8_t26_boundaries = prefix == "G8-T26"
     level_code = {"a": "A", "b": "B", "c": "E", "c2": "E2", "one": "B"}[level]
 
     questions = []  # {q, page, top, bottom, parts:[{letter,page,x,y,y1}]}
@@ -121,6 +124,12 @@ def build(pdf_path, media_id, grade, topic_id, prefix, topic, level, native_path
         ys = [p.y for p in points]
         return pymupdf.Rect(min(xs), min(ys), max(xs), max(ys))
 
+    INK_TOL = 2.0  # pt; stroke miters and node dots can start a hair past the
+    # stroke that connects them, so connected ink is closed over with a small
+    # tolerance instead of a strict 1pt overlap.
+    CLEARANCE = 1.5  # pt; a boundary is placed this far into the empty gap in
+    # front of the ink it must not cut, capped at half the gap.
+
     def ink_rects(page):
         out = []
         H = page.rect.height
@@ -137,10 +146,42 @@ def build(pdf_path, media_id, grade, topic_id, prefix, topic, level, native_path
                     r = item[1].rect
                 else:
                     continue
-                if r.is_empty or r.height > 0.5 * H:
+                # A stroke has area even when its centreline bbox is empty.
+                # Allow one quarter point for raster edge antialiasing as well.
+                # Do not infer header/footer ownership from fixed page y values.
+                # Retain the pre-existing large-group/frame exclusion in this narrow fix.
+                if r.height > 0.5 * H:
                     continue
+                stroked = "s" in d.get("type", "") and (d.get("stroke_opacity", 1) or 0) > 0
+                filled = "f" in d.get("type", "") and (d.get("fill_opacity", 1) or 0) > 0
+                if not stroked and (not filled or r.width <= 0 or r.height <= 0):
+                    continue
+                pad = max(0.25, (d.get("width") or 0) / 2 if stroked else 0)
+                r = pymupdf.Rect(r.x0 - pad, r.y0 - pad, r.x1 + pad, r.y1 + pad)
                 out.append(r)
         return out
+
+    def text_rects(page):
+        return [pymupdf.Rect(s["x0"], s["y0"], s["x1"], s["y1"]) for s in spans(page)]
+
+    def marks(page):
+        """Every painted mark on the page: glyph boxes and vector ink."""
+        return text_rects(page) + ink_rects(page)
+
+    def zone_bands(page):
+        """Section/zone bands and running chrome: boxes spanning the full width.
+
+        A question's own boxes are inset to the body column, while a zone band
+        and the running header are drawn across the whole text width, so the
+        span itself separates sheet chrome from question content without
+        reading any text or assuming fixed page positions.
+        """
+        W = page.rect.width
+        return [r for r in ink_rects(page)
+                if r.x0 <= 0.08 * W and r.x1 >= 0.92 * W and r.height <= 40]
+
+    def inside_any(r, boxes):
+        return any(b.y0 - 0.5 <= r.y0 and r.y1 <= b.y1 + 0.5 for b in boxes)
 
     def content_band(pno):
         page = doc[pno]
@@ -156,21 +197,72 @@ def build(pdf_path, media_id, grade, topic_id, prefix, topic, level, native_path
         y1 = max(s["y1"] for s in ys)
         # Vector ink (figures, answer rules) has no text span; a band that ends
         # at the last text baseline clips figure bottoms and writing lines that
-        # belong to the question. Extend the band over any ink intersecting it.
-        for r in ink_rects(page):
-            if r.y1 > y0 + 1 and r.y0 < y1 - 1:
-                y0 = min(y0, r.y0)
-                y1 = max(y1, r.y1)
+        # belong to the question. Extend the band over the connected ink
+        # closure: ink touching the band within INK_TOL joins it, repeatedly,
+        # so the result does not depend on PDF draw order.
+        ink = ink_rects(page)
+        changed = True
+        while changed:
+            changed = False
+            for r in ink:
+                if r.y1 >= y0 - INK_TOL and r.y0 <= y1 + INK_TOL:
+                    ny0, ny1 = min(y0, r.y0), max(y1, r.y1)
+                    if ny0 != y0 or ny1 != y1:
+                        y0, y1 = ny0, ny1
+                        changed = True
         return y0, y1
 
     def qstart(q):
+        page = doc[q["page"] - 1]
+        y0 = q["top"]
         # A givens/example box can start a few points above the "(N)" marker;
         # include such ink so the crop does not clip its edge.
-        y0 = q["top"]
-        for r in ink_rects(doc[q["page"] - 1]):
+        for r in ink_rects(page):
             if r.y0 < y0 <= r.y1 and y0 - r.y0 <= 10:
                 y0 = r.y0
+        if not use_g8_t26_boundaries:
+            return y0
+        # The marker shares its line with the question's opening text, and a
+        # display fraction's numerator rises above the marker box. Starting at
+        # the marker top would leave that numerator in the previous question
+        # and cut it off this one, so the start covers every mark that overlaps
+        # the marker's own line.
+        page_marks = marks(page)
+        line = [r for r in page_marks if r.y1 > q["top"] and r.y0 < q["bottom"]]
+        if line:
+            y0 = min(y0, min(r.y0 for r in line))
+        # Then keep clearance inside the empty gap in front of that ink, so a
+        # rasterised edge pixel cannot fall on the far side of the boundary.
+        above = [r.y1 for r in page_marks if r.y1 <= y0 + 0.01]
+        gap = y0 - max(above) if above else None
+        y0 -= CLEARANCE if gap is None else max(0.0, min(CLEARANCE, gap / 2))
         return y0
+
+    def own_ink_bottom(q, page, y0, y1):
+        """Bottom of this question's own marks inside [y0, y1] on one page."""
+        bands = zone_bands(page)
+        own = [r.y1 for r in marks(page)
+               if r.y0 >= y0 - 0.01 and r.y1 <= y1 + 0.01 and not inside_any(r, bands)]
+        return max(own) if own else None
+
+    def trim_to_following_zone(q, page, y0, y1):
+        """Stop before a later zone's header band that follows this question.
+
+        The sheet prints a section band for the questions that come after it;
+        when such a band sits inside the question's own band, the crop would
+        show a heading that belongs to later questions.
+        """
+        last = own_ink_bottom(q, page, y0, y1)
+        if last is None:
+            return y1
+        for band in sorted(zone_bands(page), key=lambda r: r.y0):
+            if band.y0 <= last:
+                continue
+            if band.y0 >= y1:
+                continue
+            gap = band.y0 - last
+            return band.y0 - max(0.0, min(CLEARANCE, gap / 2))
+        return y1
 
     def band_crops(qi):
         q = questions[qi]
@@ -187,6 +279,12 @@ def build(pdf_path, media_id, grade, topic_id, prefix, topic, level, native_path
                 y1 = qstart(nxt)
             else:
                 y1 = bottom
+            if use_g8_t26_boundaries:
+                y1 = trim_to_following_zone(q, page, y0, y1)
+                # Only the known package opts in to classifying these bands
+                # as section chrome; generic boxed continuations remain content.
+                if pno != start_page and own_ink_bottom(q, page, y0, y1) is None:
+                    continue
             y0n = max(0.0, min(1.0, y0 / H))
             y1n = max(0.0, min(1.0, y1 / H))
             if y1n - y0n < 0.01:
