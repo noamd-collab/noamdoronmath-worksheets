@@ -118,6 +118,20 @@ import composeDecomposeGrade1 from '../data/topic-pages/compose-decompose-grade-
 import dataGrade1 from '../data/topic-pages/data-grade-1.json';
 import wordProblemsSimpleGrade1 from '../data/topic-pages/word-problems-simple-grade-1.json';
 import shapesComposeDecomposeGrade1 from '../data/topic-pages/shapes-compose-decompose-grade-1.json';
+import numberBonds1020Grade2 from '../data/topic-pages/number-bonds-10-20-grade-2.json';
+import tensAndOnesGrade2 from '../data/topic-pages/tens-and-ones-grade-2.json';
+import orderCompareNumberlineGrade2 from '../data/topic-pages/order-compare-numberline-grade-2.json';
+import equalityMissingNumberGrade2 from '../data/topic-pages/equality-missing-number-grade-2.json';
+import wordProblemsMoneyGrade2 from '../data/topic-pages/word-problems-money-grade-2.json';
+import tablesBarChartsGrade2 from '../data/topic-pages/tables-bar-charts-grade-2.json';
+import hundredsTensOnesGrade2 from '../data/topic-pages/hundreds-tens-ones-grade-2.json';
+import compareNumbersTo1000Grade2 from '../data/topic-pages/compare-numbers-to-1000-grade-2.json';
+import numbersTo1000Grade2 from '../data/topic-pages/numbers-to-1000-grade-2.json';
+import evenOddSequencesAGrade2 from '../data/topic-pages/even-odd-sequences-a-grade-2.json';
+import evenOddSequencesBGrade2 from '../data/topic-pages/even-odd-sequences-b-grade-2.json';
+import wordProblemsMoneySimpleGrade2 from '../data/topic-pages/word-problems-money-simple-grade-2.json';
+import reflectionSymmetryGrade2 from '../data/topic-pages/reflection-symmetry-grade-2.json';
+import numbersOperationsReviewGrade2 from '../data/topic-pages/numbers-operations-review-grade-2.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -300,8 +314,29 @@ export const TOPIC_PAGE_G1_SLUGS = [
   'shapes-compose-decompose-grade-1',
 ] as const;
 
+/** Grade 2, catalog order. Only topics with an animation mapping ship. */
+export const TOPIC_PAGE_G2_SLUGS = [
+  'number-bonds-10-20-grade-2',
+  'tens-and-ones-grade-2',
+  'order-compare-numberline-grade-2',
+  'equality-missing-number-grade-2',
+  'word-problems-money-grade-2',
+  'tables-bar-charts-grade-2',
+  'hundreds-tens-ones-grade-2',
+  'compare-numbers-to-1000-grade-2',
+  'numbers-to-1000-grade-2',
+  'even-odd-sequences-a-grade-2',
+  'even-odd-sequences-b-grade-2',
+  'word-problems-money-simple-grade-2',
+  'reflection-symmetry-grade-2',
+  'numbers-operations-review-grade-2',
+] as const;
+
 /** Slugs with no production source; the parity fixture gate must skip them. */
-export const TOPIC_PAGE_AUTHORED_SLUGS = [...TOPIC_PAGE_G1_SLUGS] as const;
+export const TOPIC_PAGE_AUTHORED_SLUGS = [
+  ...TOPIC_PAGE_G1_SLUGS,
+  ...TOPIC_PAGE_G2_SLUGS,
+] as const;
 
 export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_PILOT_SLUGS,
@@ -313,6 +348,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_M30_SLUGS,
   ...TOPIC_PAGE_KITE_SLUGS,
   ...TOPIC_PAGE_G1_SLUGS,
+  ...TOPIC_PAGE_G2_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -544,6 +580,21 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'data-grade-1': dataGrade1 as TopicPageContent,
   'word-problems-simple-grade-1': wordProblemsSimpleGrade1 as TopicPageContent,
   'shapes-compose-decompose-grade-1': shapesComposeDecomposeGrade1 as TopicPageContent,
+  // G2 (catalog order)
+  'number-bonds-10-20-grade-2': numberBonds1020Grade2 as TopicPageContent,
+  'tens-and-ones-grade-2': tensAndOnesGrade2 as TopicPageContent,
+  'order-compare-numberline-grade-2': orderCompareNumberlineGrade2 as TopicPageContent,
+  'equality-missing-number-grade-2': equalityMissingNumberGrade2 as TopicPageContent,
+  'word-problems-money-grade-2': wordProblemsMoneyGrade2 as TopicPageContent,
+  'tables-bar-charts-grade-2': tablesBarChartsGrade2 as TopicPageContent,
+  'hundreds-tens-ones-grade-2': hundredsTensOnesGrade2 as TopicPageContent,
+  'compare-numbers-to-1000-grade-2': compareNumbersTo1000Grade2 as TopicPageContent,
+  'numbers-to-1000-grade-2': numbersTo1000Grade2 as TopicPageContent,
+  'even-odd-sequences-a-grade-2': evenOddSequencesAGrade2 as TopicPageContent,
+  'even-odd-sequences-b-grade-2': evenOddSequencesBGrade2 as TopicPageContent,
+  'word-problems-money-simple-grade-2': wordProblemsMoneySimpleGrade2 as TopicPageContent,
+  'reflection-symmetry-grade-2': reflectionSymmetryGrade2 as TopicPageContent,
+  'numbers-operations-review-grade-2': numbersOperationsReviewGrade2 as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
