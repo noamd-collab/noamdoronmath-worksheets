@@ -1,0 +1,21 @@
+{
+  "schema": "noam-conservative-consumer/1",
+  "package": "G7-T28",
+  "native_engine_modified": false,
+  "support": "show-only; no highlight or auxiliary actions offered",
+  "stock_highlight_sha256": "461f5b9b79002a73157f230eb80a65b7bf0533c63b5c35b6a3cd13d7a238b951",
+  "levels": {
+    "a": {
+      "noam_ai_sha256": "1e36312e9e976be0626fe883c2372f97b976cb0eecee86bf6f3020d6beae0e25",
+      "blocked": []
+    },
+    "b": {
+      "noam_ai_sha256": "857fa30a62dee00b43be43b478b58a39b03c272fff338b25fa511b0a922cc7ef",
+      "blocked": []
+    },
+    "c": {
+      "noam_ai_sha256": "85c159da4c2fa10dbfc6573d6ea7bf83415da16ca8702e0e6729e447c1f61013",
+      "blocked": []
+    }
+  }
+}
