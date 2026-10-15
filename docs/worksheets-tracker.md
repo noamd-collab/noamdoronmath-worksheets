@@ -337,7 +337,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ט׳ | משולש ישר זווית 30-60-90 (G9-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | יחסי צלעות וזוויות (G9-T38) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | הטרפז (G9-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ט׳ | דמיון משולשים — משפט ז.ז וחישובים (G9-T40) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ט׳ | דמיון משולשים — משפט ז.ז וחישובים (G9-T40) | רמה א׳, רמה ב׳, רמת מצוינות | Kimi | PASS static mapping/native/student crops/teacher context (#160 draft; reviewRequired pending root signoff; external reviews pending) | no | #160 |
 | כיתה ט׳ | פירוק לגורמים 1 — הוצאת גורם משותף (G9-T41, parent 2) | גורם משותף · רמה א׳ | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | פירוק לגורמים 2 — נוסחאות הכפל המקוצר וטרינום (G9-T42, parent 2) | כפל מקוצר וטרינום · רמה א׳ | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | פירוק לגורמים 3 — פירוק מלא, משוואות ושברים אלגבריים (G9-T43, parent 2) | פירוק מלא ומשוואות · רמת מצוינות | unknown | unknown | unknown | unknown |
