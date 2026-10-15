@@ -244,7 +244,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | שינוי באחוזים (G8-T22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | שינויים עוקבים (G8-T23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | שורש ריבועי (G8-T48) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | פיתגורס (G8-T49) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ח׳ | פיתגורס (G8-T49) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | PASS static mapping/native/teacher context (draft; external reviews pending) | no | draft |
 | כיתה ח׳ | פיתגורס מורכב (G8-T50) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | גליל — שטח פנים (G8-T52) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | גליל — נפח (G8-T53) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
