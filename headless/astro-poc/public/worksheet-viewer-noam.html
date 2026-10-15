@@ -8693,7 +8693,8 @@ function esc(s){
         content.insertBefore(line,content.firstChild);
         return;
       }
-      content.textContent=lead+'\n'+current.trim();
+      // Keep KaTeX's HTML/MathML nodes: textContent includes hidden TeX and duplicates numbers.
+      content.insertBefore(document.createTextNode(lead+'\n'),content.firstChild);
     });
   }
   function replayLocalChecks(transcript){
@@ -8846,7 +8847,7 @@ function esc(s){
       var node=walker.currentNode;
       var parent=node.parentElement;
       if(!parent||!/[0-9]/.test(node.nodeValue||'')){continue;}
-      if(parent.closest('button,a,svg,.noam-sr-only,.exact-hint-head,.exact-error-title,.exact-frac')){continue;}
+      if(parent.closest('button,a,svg,.katex,math,.noam-sr-only,.exact-hint-head,.exact-error-title,.exact-frac')){continue;}
       nodes.push(node);
     }
     var mathRe=/([0-9]+\/[0-9]+|(?:[0-9]+(?:\.[0-9]+)?)(?:\s*[+\-−×÷=<>≤≥()]+\s*(?:[0-9]+(?:\.[0-9]+)?))+)/g;
@@ -8929,7 +8930,7 @@ function esc(s){
       var node=walker.currentNode;
       var parent=node.parentElement;
       if(!parent){continue;}
-      if(parent.closest('button,a,svg,bdi,.noam-sr-only,.exact-hint-head,.exact-error-title,.ramzi-check,.exact-frac')){continue;}
+      if(parent.closest('button,a,svg,bdi,.katex,math,.noam-sr-only,.exact-hint-head,.exact-error-title,.ramzi-check,.exact-frac')){continue;}
       if(!/[A-Za-z∠∥=]/.test(node.nodeValue||'')){continue;}
       nodes.push(node);
     }
