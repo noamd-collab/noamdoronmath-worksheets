@@ -49,6 +49,11 @@ export const FAMILY_CONCEPT_LOOP = {
 const SLUG_CONCEPT_OVERRIDE = {
   'difference-of-squares-grade-9': 'diff-sq',
   'kite-grade-9': 'kite-construct',
+  // Clock topics sit in the F07 measurement family but have their own films.
+  'reading-clock-grade-1': 'clock-3',
+  'clock-duration-grade-2': 'clock-span',
+  'time-weight-measures-grade-3': 'clock-span',
+  'time-and-weight-grade-4': 'clock-span',
 } as const;
 
 export type ConceptLoopVariant =
