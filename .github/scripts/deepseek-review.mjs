@@ -8,6 +8,7 @@
 import { execFileSync } from 'node:child_process';
 import { upsertPullRequestComment } from './pr-comment.mjs';
 import { redactSecrets } from './redact.mjs';
+import { GENERATED_GUIDE_PATH, prepareGeneratedJsonReview } from './generated-json-review.mjs';
 
 const MARKER = '<!-- astro-poc-deepseek-review -->';
 const ENDPOINT = 'https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions';
@@ -33,6 +34,15 @@ function pullRequestDiff() {
     encoding: 'utf8',
     maxBuffer: 64 * 1024 * 1024,
   });
+}
+
+function reviewInput(original, suppliedDiff) {
+  const header = `diff --git a/${GENERATED_GUIDE_PATH} b/${GENERATED_GUIDE_PATH}\n`;
+  if (suppliedDiff !== undefined || !original.includes(header)) return { text: original, normalized: false, changes: [] };
+  const options = { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 };
+  const before = execFileSync('git', ['show', `${process.env.BASE_SHA}:${GENERATED_GUIDE_PATH}`], options);
+  const after = execFileSync('git', ['show', `HEAD:${GENERATED_GUIDE_PATH}`], options);
+  return prepareGeneratedJsonReview(original, before, after);
 }
 
 async function review(model, diff) {
@@ -75,17 +85,19 @@ function modelRejected(error) {
 export async function runDeepSeekReview({ postComment = true, diffText, dryRun = false } = {}) {
   if (dryRun) {
     const original = diffText ?? pullRequestDiff();
-    return { dryRun: true, characters: original.length, truncated: original.length > DIFF_LIMIT };
+    const prepared = reviewInput(original, diffText);
+    return { dryRun: true, characters: original.length, reviewedCharacters: prepared.text.length, generatedJsonSemanticChanges: prepared.changes.length, truncated: prepared.text.length > DIFF_LIMIT };
   }
   if (!process.env.CHINESE_MODELS_API_KEY) {
     console.log('CHINESE_MODELS_API_KEY is not set. Skipping DeepSeek review.');
     return { skipped: true };
   }
   const original = diffText ?? pullRequestDiff();
-  const truncated = original.length > DIFF_LIMIT;
+  const prepared = reviewInput(original, diffText);
+  const truncated = prepared.text.length > DIFF_LIMIT;
   const diff = truncated
-    ? `${original.slice(0, DIFF_LIMIT)}\n\n[diff truncated from ${original.length} characters]\n`
-    : original;
+    ? `${prepared.text.slice(0, DIFF_LIMIT)}\n\n[review input truncated from ${prepared.text.length} characters]\n`
+    : prepared.text;
   let findings = '';
   let modelUsed = '';
   let failure = '';
@@ -108,7 +120,9 @@ export async function runDeepSeekReview({ postComment = true, diffText, dryRun =
     'This comment does not block the pull request. Blockers are the model’s judgment, not a required check.',
     '',
     `- Model: \`${modelUsed || 'unavailable'}\``,
-    `- Diff characters: ${original.length}${truncated ? ' (truncated before sending)' : ''}`,
+    `- Original diff characters: ${original.length}`,
+    `- Reviewed input characters: ${prepared.text.length}${truncated ? ' (truncated before sending)' : ''}`,
+    ...(prepared.normalized ? [`- Generated JSON: complete semantic delta for \`${GENERATED_GUIDE_PATH}\` (${prepared.changes.length} changed paths; before/after SHA-256 included). All other code diff sections retained verbatim.`] : []),
     '',
     findings || `The review did not complete.\n\n${failure || 'Unknown error.'}`,
     '',

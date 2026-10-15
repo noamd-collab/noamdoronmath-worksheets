@@ -29,6 +29,84 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const sha256 = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
 const read = (file: string) => readFileSync(join(root, file), 'utf8');
 
+const GENERIC_VIEWER_METADATA = {
+  title: '',
+  description: 'דף עבודה במתמטיקה באתר נועם דורון. בחרו דף עבודה מתאים מתוך קטלוג דפי העבודה.',
+  verified: false,
+};
+const AUTHORIZED_GENERIC_TITLE = '<title>דף עבודה במתמטיקה | נועם דורון</title>';
+const RELEASED_GENERIC_TITLE = '<title>דף עבודה · מתמטיקה · נועם דורון</title>';
+const AUTHORIZED_METADATA_LINES = [
+  '<meta name="description" data-viewer-description content="דף עבודה במתמטיקה באתר נועם דורון. בחרו דף עבודה מתאים מתוך קטלוג דפי העבודה.">',
+  '<meta name="viewer-resource-title" content="">',
+  '<meta name="viewer-resource-verified" content="false">',
+  `<script id="viewer-resource-metadata" type="application/json">${JSON.stringify(GENERIC_VIEWER_METADATA)}</script>`,
+  '',
+].join('\n');
+const TRUSTED_TITLE_GUARD = [
+  'var trustedViewerMetadata =',
+  '  document',
+  '  .getElementById(',
+  '    "viewer-resource-metadata"',
+  '  );',
+  'var trustedDocumentTitle = "";',
+  'try{',
+  '  var parsedViewerMetadata =',
+  '    trustedViewerMetadata',
+  '      ? JSON.parse(',
+  '          trustedViewerMetadata',
+  '          .textContent ||',
+  '          "{}"',
+  '        )',
+  '      : null;',
+  '  if (',
+  '    parsedViewerMetadata &&',
+  '    parsedViewerMetadata.verified === true &&',
+  '    typeof parsedViewerMetadata.title === "string" &&',
+  '    parsedViewerMetadata.title === document.title',
+  '  ){',
+  '    trustedDocumentTitle =',
+  '      parsedViewerMetadata.title;',
+  '  }',
+  '}catch(e){}',
+  '',
+].join('\n');
+const AUTHORIZED_TITLE_EXPRESSION = [
+  'document.title =',
+  '  trustedDocumentTitle ||',
+  '  "דף עבודה במתמטיקה | נועם דורון";',
+].join('\n');
+const RELEASED_TITLE_EXPRESSION = [
+  'document.title =',
+  '  ttl +',
+  '  " · מתמטיקה · נועם דורון";',
+].join('\n');
+
+function replaceExactlyOnce(value: string, search: string, replacement: string, label: string): string {
+  assert.equal(value.split(search).length - 1, 1, `${label} must occur exactly once`);
+  return value.replace(search, replacement);
+}
+
+function normalizeViewerHeadForAuthorizedMetadata(head: string): string {
+  return replaceExactlyOnce(
+    replaceExactlyOnce(head, AUTHORIZED_GENERIC_TITLE, RELEASED_GENERIC_TITLE, 'authorized generic title'),
+    AUTHORIZED_METADATA_LINES,
+    '',
+    'four authorized generic metadata lines'
+  );
+}
+
+function normalizeReleasedViewerScriptsForAuthorizedMetadata(releasedScripts: string[]): string[] {
+  const guardedScripts = releasedScripts.filter((script) => script.includes('var trustedViewerMetadata ='));
+  const titleScripts = releasedScripts.filter((script) => script.includes(AUTHORIZED_TITLE_EXPRESSION));
+  assert.equal(guardedScripts.length, 1, 'Only the authorized trusted-title guard may be new');
+  assert.equal(titleScripts.length, 1, 'Only the authorized document.title expression may change');
+  assert.equal(guardedScripts[0], titleScripts[0], 'The guard and title replacement belong to the same released script');
+  const restored = replaceExactlyOnce(guardedScripts[0], TRUSTED_TITLE_GUARD, '', 'authorized trusted-title guard');
+  const restoredTitle = replaceExactlyOnce(restored, AUTHORIZED_TITLE_EXPRESSION, RELEASED_TITLE_EXPRESSION, 'authorized document.title expression');
+  return releasedScripts.map((script) => script === guardedScripts[0] ? restoredTitle : script);
+}
+
 const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
   // added so the headless Noam AI route can read Wix Secrets Manager.
@@ -80,31 +158,40 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.equal(sha256(head), '6426393d0bb12eba064470d7016f44154fd0d02ff5f2164a4a071069c32fa798');
   });
 
-  it('preserves viewer head and every existing script, including AI answers and storage', () => {
+  it('preserves viewer head and every existing script, allowing only the reviewed metadata bootstrap', () => {
     const viewer = read('public/worksheet-viewer-noam.html');
     const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'Viewer must retain its head');
-    // Phone reading intentionally changes the inline CSS in this head.
-    // Metadata, fonts, canonical and robots are unchanged.
-    assert.equal(sha256(head), '6aa632f8c5727a7dcbce3357966a5e04fa47250e5e7c53122fd08cf6176a78e9');
+    // Preserve the released head fingerprint, normalizing only the new generic
+    // title plus exactly four approved metadata lines. This is not a hash regen.
+    assert.equal(sha256(normalizeViewerHeadForAuthorizedMetadata(head)), '6aa632f8c5727a7dcbce3357966a5e04fa47250e5e7c53122fd08cf6176a78e9');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
-    const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
-    const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
+    const bootstrap = scripts.filter((script) => /^<script id="viewer-resource-metadata" type="application\/json">[\s\S]*<\/script>$/.test(script));
+    assert.equal(bootstrap.length, 1, 'The one added metadata bootstrap must be non-executable application/json');
+    const bootstrapJson = bootstrap[0].match(/^<script id="viewer-resource-metadata" type="application\/json">([\s\S]*)<\/script>$/)?.[1];
+    assert.equal(bootstrapJson, JSON.stringify(GENERIC_VIEWER_METADATA), 'Bootstrap payload must be the exact generic metadata fields');
+    assert.deepEqual(JSON.parse(bootstrapJson), GENERIC_VIEWER_METADATA);
+    const executableScripts = scripts.filter((script) => script !== bootstrap[0]);
+    const adapters = executableScripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
+    const companion = executableScripts.filter((script) => /noam-site-companion\.js/.test(script));
     // One presentation adapter follows the released blocks. ramzi-avatar.js
     // is a released script. The site companion is one extra external script
     // after that adapter, so the released blocks stay byte-identical.
-    assert.equal(scripts.length, 16);
+    assert.equal(scripts.length, 17, 'Only the non-executable metadata bootstrap is added');
+    assert.equal(executableScripts.length, 16);
     assert.equal(adapters.length, 1, 'Only one explicitly marked presentation adapter is permitted');
     assert.equal(companion.length, 1, 'The site companion is the one added launcher script');
-    assert.equal(scripts.at(-2), adapters[0], 'The adapter must follow, not replace/interleave, the released scripts');
-    assert.equal(scripts.at(-1), companion[0], 'The companion script follows the adapter and does not replace it');
-    const releasedScripts = scripts.slice(0, -2);
+    assert.equal(executableScripts.at(-2), adapters[0], 'The adapter must follow, not replace/interleave, the released scripts');
+    assert.equal(executableScripts.at(-1), companion[0], 'The companion script follows the adapter and does not replace it');
+    const releasedScripts = executableScripts.slice(0, -2);
     assert.equal(releasedScripts.length, 14);
     // Phone reading deliberately adds readable zoom, fit controls and a single
     // touch-target rail; mobile layout/panel/pin tests cover these changes.
     // PR124 intentionally updates the shared viewer to anchor Ramzi to printed
     // question markers. Dedicated printed-pin fixtures cover that behavior.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e80fe08884059830c858c96f6560b1dfa58013f092e5a1d4d76dc1f93a06627a');
+    // Restore only this PR's trusted title guard and original title expression
+    // before checking the existing released-script fingerprint.
+    assert.equal(sha256(JSON.stringify(normalizeReleasedViewerScriptsForAuthorizedMetadata(releasedScripts))), 'e80fe08884059830c858c96f6560b1dfa58013f092e5a1d4d76dc1f93a06627a');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

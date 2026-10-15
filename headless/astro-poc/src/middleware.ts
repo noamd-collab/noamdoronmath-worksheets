@@ -15,6 +15,8 @@ import { defineMiddleware } from 'astro:middleware';
 import { redirectTargetForSiteUgdPath } from './lib/wixMedia';
 import { resolveRedirect } from './lib/redirects';
 import { PUBLIC_HTML_SHELLS } from './lib/publicHtmlShells';
+import { loadCatalog } from './lib/catalog/loadCatalog';
+import { renderViewerHtmlSafely } from './lib/viewerMetadata';
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const path = context.url.pathname;
@@ -29,7 +31,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
   const shell = context.url.search ? PUBLIC_HTML_SHELLS[path] : undefined;
   if (shell) {
-    return new Response(shell, {
+    const body = path === '/worksheet-viewer-noam.html'
+      ? renderViewerHtmlSafely(shell, context.url.searchParams, loadCatalog)
+      : shell;
+    return new Response(body, {
       status: 200,
       headers: {
         'Content-Type': 'text/html; charset=utf-8',

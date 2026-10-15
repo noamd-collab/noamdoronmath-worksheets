@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { pagesTouchedByDiff, routeFromPageFile } from './pr-pages.mjs';
+import { PAGE_PREFIX, VIEWER_PAGE_BANK, pagesTouchedByDiff, routeFromPageFile } from './pr-pages.mjs';
 
 describe('routeFromPageFile', () => {
   it('maps page files to routes', () => {
@@ -11,14 +11,33 @@ describe('routeFromPageFile', () => {
     assert.equal(routeFromPageFile('headless/astro-poc/src/pages/post/[...slug].astro'), null);
     assert.equal(routeFromPageFile('headless/astro-poc/src/pages/api/contact-form.ts'), null);
     assert.equal(routeFromPageFile('headless/astro-poc/src/components/GradeHubPage.astro'), null);
+    assert.equal(routeFromPageFile('headless/astro-poc/src/pages/sitemap-index.xml.ts'), null);
+    assert.equal(routeFromPageFile('headless/astro-poc/src/pages/llms.txt.ts'), null);
+    assert.equal(routeFromPageFile('headless/astro-poc/src/pages/data.json.ts'), null);
   });
 });
 
 describe('pagesTouchedByDiff', () => {
+  it('uses the explicit six-page viewer bank for viewer metadata surfaces', () => {
+    const expected = ['/', '/grade-5', '/factoring-grade-9', '/worksheets?grade=9', '/blog', '/worksheet-viewer-noam.html'];
+    assert.deepEqual(VIEWER_PAGE_BANK, expected);
+
+    for (const file of [
+      'headless/astro-poc/public/worksheet-viewer-noam.html',
+      'worksheet-viewer-noam.html',
+      `${PAGE_PREFIX.replace('src/pages/', 'src/lib/')}viewerMetadata.ts`,
+    ]) {
+      const result = pagesTouchedByDiff([file]);
+      assert.equal(result.fallback, false, file);
+      assert.deepEqual(result.pages, expected, file);
+      assert.deepEqual(result.omitted, [], file);
+    }
+  });
+
   it('uses the fallback set when the diff does not name a page', () => {
     const result = pagesTouchedByDiff(['headless/astro-poc/src/styles/exact-site.css']);
     assert.equal(result.fallback, true);
-    assert.deepEqual(result.pages, ['/', '/grade-9', '/worksheets?grade=9']);
+    assert.deepEqual(result.pages, ['/', '/grade-5', '/grade-9', '/factoring-grade-9', '/worksheets?grade=9', '/blog']);
   });
 
   it('keeps changed pages and caps the screenshot list', () => {

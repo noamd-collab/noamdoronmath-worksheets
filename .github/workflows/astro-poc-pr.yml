@@ -76,6 +76,9 @@ jobs:
         working-directory: headless/astro-poc
         run: npm ci
 
+      - name: Test viewer review helpers (no model requests)
+        run: node --test .github/scripts/generated-json-review.test.mjs .github/scripts/preview-query-server.test.mjs .github/scripts/qwen-visual-review.test.mjs
+
       - name: Install Chrome for the gate fixture
         run: |
           if [ ! -x /usr/bin/google-chrome ] && [ ! -x /usr/bin/google-chrome-stable ]; then

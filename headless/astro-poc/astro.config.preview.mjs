@@ -12,7 +12,10 @@ import node from '@astrojs/node';
 export default defineConfig({
   integrations: [react()],
   output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  // The preview server routes query-bearing public HTML through compiled Astro
+  // before static assets, matching the existing Wix document fallback contract.
+  // This is a verification harness, not a Wix-hosting or production change.
+  adapter: node({ mode: 'middleware' }),
   server: { host: '127.0.0.1', port: 4337 },
   image: { domains: ['static.wixstatic.com'] },
 

@@ -1,7 +1,9 @@
 /** Map a pull-request diff to Astro routes worth screenshotting. */
 
 export const PAGE_PREFIX = 'headless/astro-poc/src/pages/';
-export const FALLBACK_PAGES = ['/', '/grade-9', '/worksheets?grade=9'];
+export const FALLBACK_PAGES = ['/', '/grade-5', '/grade-9', '/factoring-grade-9', '/worksheets?grade=9', '/blog'];
+// Viewer metadata changes need the normal learner journey plus a real viewer.
+export const VIEWER_PAGE_BANK = ['/', '/grade-5', '/factoring-grade-9', '/worksheets?grade=9', '/blog', '/worksheet-viewer-noam.html'];
 export const MAX_SCREENSHOT_PAGES = 6;
 
 const PAGE_FILE = /\.(astro|ts|tsx|js|mjs)$/;
@@ -16,6 +18,8 @@ export function routeFromPageFile(file) {
   if (!PAGE_FILE.test(rel)) return null;
 
   let route = rel.replace(PAGE_FILE, '');
+  // Feed contents are tested as data, not mistaken for real learner screenshots.
+  if (/\.(xml|txt|json)$/.test(route)) return null;
   if (route.endsWith('/index')) route = route.slice(0, -'/index'.length);
   else if (route === 'index') route = '';
   if (route === 'worksheets') return '/worksheets?grade=9';
@@ -27,6 +31,13 @@ export function routeFromPageFile(file) {
  * single route, so those diffs use the fallback set.
  */
 export function pagesTouchedByDiff(files) {
+  if (files.some((file) => /worksheet-viewer-noam\.html$|\/viewerMetadata\.ts$/.test(file))) {
+    return {
+      pages: [...VIEWER_PAGE_BANK],
+      fallback: false,
+      omitted: [],
+    };
+  }
   const seen = new Set();
   const routes = [];
   for (const file of files) {
