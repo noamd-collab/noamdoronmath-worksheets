@@ -2,7 +2,7 @@
 import { isRoleQuestion } from './companion.js';
 import { suggestTopicGroup } from './topic-order.js';
 const MARKS = 'אבגדהוזחט';
-const STOP = new Set('אני אנחנו רוצה רוצים צריך צריכה צריכים אפשר בבקשה איפה היכן יש את לי על של עם לכיתה כיתה בכיתה כיתות דף דפי עבודה תרגול תרגילים ללמוד למצוא מחפש מחפשת תמצא תראה תן קח תעביר פתח תפתח לנו אותי באתר נושא בנושא בנושא יש לכם האם איך מגיעים להגיע עבור'.split(' '));
+const STOP = new Set('אני אנחנו רוצה רוצים צריך צריכה צריכים אפשר בבקשה איפה היכן יש את לי על של עם לכיתה כיתה בכיתה כיתות דף דפים דפי עבודה תרגול לתרגול תרגילים מתמטיקה במתמטיקה ללמוד למצוא מחפש מחפשת תמצא תראה תן קח תעביר פתח תפתח לנו אותי באתר נושא בנושא בנושא יש לכם האם איך מגיעים להגיע עבור'.split(' '));
 const ROUTES = [
   [/בלוג|פוסטים|מאמרים/, '/blog'],
   [/מחשבון|כלים למתמטיקה/, '/math-tools'],
@@ -20,7 +20,8 @@ function normal(value) {
 }
 function words(value) { return normal(value).split(/[^\p{L}\p{N}-]+/u).filter(Boolean); }
 function gradeOf(message) {
-  const m = normal(message).match(/(?:^|\s)(?:[בל]?כיתה|grade)\s*([1-9אבגדהוזחט])(?=\s|$)/i);
+  const text = normal(message);
+  const m = text.match(/(?:^|\s)(?:[בל]?כיתה|grade)\s*([1-9אבגדהוזחט])(?=\s|$)/i) || text.match(/^([1-9אבגדהוזחט])$/);
   return m ? (Number(m[1]) || MARKS.indexOf(m[1]) + 1) : null;
 }
 function validHref(href) {
@@ -55,12 +56,12 @@ export function navigateSite(input, guide, previousMessage = '') {
   }
   const explicitGrade = gradeOf(raw);
   let query = text;
-  if (explicitGrade && /^(?:[בל]?כיתה|grade)\s*[1-9אבגדהוזחט]$/.test(text) && previousMessage) query = normal(previousMessage) + ' ' + text;
+  if (explicitGrade && /^(?:(?:[בל]?כיתה|grade)\s*)?[1-9אבגדהוזחט]$/.test(text) && previousMessage) query = normal(previousMessage) + ' ' + text;
   const pageGrade = Number((String(page.path || '').match(/(?:grade-|[?&](?:grade|g)=)([1-9])(?:\D|$)/) || [])[1]) || null;
   const grade = explicitGrade || gradeOf(query) || pageGrade;
   const useful = words(query.replace(/(?:[בל]?כיתה|grade)\s*[1-9אבגדהוזחט](?=\s|$)/g, '')).filter(w => w.length > 1 && !STOP.has(w));
   const generic = useful.length === 0;
-  if (generic && (explicitGrade || /דפי? עבודה|תרגול|תרגילים/.test(text))) {
+  if (generic && (explicitGrade || /(?:^|\s)(?:דף|דפים|דפי עבודה|דפי תרגול|תרגול|תרגילים)(?:\s|$)/.test(text))) {
     const path = grade ? '/worksheets?grade=' + grade : '/worksheets';
     return result('בחרו נושא במאגר דפי העבודה' + (grade ? ' לכיתה ' + MARKS[grade-1] + '׳' : '') + '.', records.filter(r => r.href === path));
   }
