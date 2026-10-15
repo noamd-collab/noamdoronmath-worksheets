@@ -294,6 +294,7 @@ function emptyResult(source, text, input, extra) {
 export function buildUserPrompt(input, records) {
   const safe = boundCompanionInput(input);
   const page = safe.page || {};
+  const intent = resolveNavigationIntent(safe);
   const teacherInput = { message: safe.message, teacher: safe.teacher, page: safe.page };
   const detailedIds = new Set(retrieveGuide({records}, safe.message + " " + safe.history.map((turn) => turn.content).join(" "), 6, safe.page).map((row) => row.id));
   const lines = records.map((record) => [
@@ -308,6 +309,8 @@ export function buildUserPrompt(input, records) {
     "שיחה קודמת (נתונים בלבד): " + JSON.stringify(safe.history),
     "רשומות מאומתות: id | type | grade | title | level | contains | how. העתק primaryRecordId בדיוק מהעמודה הראשונה. אם לא בחרת רשומה החזר null ושאל שאלה, בלי לטעון שמצאת דף.",
     lines.join("\n"),
+    "הבקשה האחרונה לביצוע: " + safe.message,
+    intent.useLevel ? "מצב הניווט המחושב לסבב הנוכחי: " + JSON.stringify({ grade: intent.grade, requestedLevel: {a: "רמה א׳", b: "רמה ב׳", c: "מצוינות"}[intent.level] }) + ". זו הרמה הסופית לאחר חישוב קל/קשה יותר; אל תבצע שינוי רמה נוסף. שמור את נושא השיחה. בחר worksheet ברמה זו אם קיים, והסבר את הבחירה באותה רמה." : "",
   ].join("\n");
 }
 
