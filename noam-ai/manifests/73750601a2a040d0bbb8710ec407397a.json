@@ -13,9 +13,9 @@
  "questionCount": 20,
  "exerciseCount": 79,
  "parserConfidence": 0.99,
- "reviewRequired": true,
- "mappingValidation": "native item labels and question IDs checked",
- "reviewNote": "Cross-page pin/crop visual review required before approval; parser success alone is not visual confirmation",
+ "reviewRequired": false,
+ "mappingValidation": "Independent source-bound student crop, pin, native figure and teacher-context review passed.",
+ "reviewNote": "All 60 question unions, 238 item pins and teacher selections, and 44 native SVGs independently visually reviewed. Existing mathematical/source approvals and native capability limits retained; separate external model, responsive UI and preview gates remain pending.",
  "issues": [],
  "sourceSha256": "83cc63a442ee2dcbcaed950ef72473060bf0d1cf2077c96e967d44a56b4ad009",
  "questions": [
