@@ -1,0 +1,70 @@
+{
+  "schema": "crop-curation/1",
+  "package": "G9-T17",
+  "note": "The last question of a section is followed by the next section's boxed header on the same page. The generic band ended at the page content bottom and swallowed that foreign header. These trims end each affected page slice exactly at the named header box's top edge; a slice that becomes empty is dropped. Bound to the exact student PDFs (sourceSha256) and manifests (mediaId).",
+  "levels": {
+    "a": {
+      "mediaId": "975c532d265d4b90b536bbb247817f38",
+      "sourceSha256": "c33450ece0fb4562998eadb5200a0d923510ef78e77fe8250aecb7d5116a0eb2"
+    },
+    "b": {
+      "mediaId": "b38c199bb4bf4c828a23c4c3f25ac3da",
+      "sourceSha256": "c3af8e51572474639141c99affc4f173f32b1a0f7f46fb5b3623ab848d90bb15"
+    },
+    "c": {
+      "mediaId": "11c7f97008dc4d8c95c46dfc04f47eeb",
+      "sourceSha256": "5422705880099d510ecba50c4fc1dae93f21fc6f55416a9f01bee4a85e97f3e8"
+    }
+  },
+  "trims": [
+    {
+      "level": "a",
+      "question": 6,
+      "page": 4,
+      "foreignHeader": "חלק ב׳ – גבהים, נקודות וחוצי זוויות (7–12)",
+      "trimBottomY": 0.633843,
+      "expectedOldBottom": 0.68043
+    },
+    {
+      "level": "a",
+      "question": 12,
+      "page": 8,
+      "foreignHeader": "חלק ג׳ – הוכחות, ביטויים ומנגנונים (13–18)",
+      "trimBottomY": 0.292874,
+      "expectedOldBottom": 0.339458
+    },
+    {
+      "level": "b",
+      "question": 6,
+      "page": 5,
+      "foreignHeader": "חלק ב׳ – ביטויים, זיהוי ומנגנונים (7–11)",
+      "trimBottomY": 0.493674,
+      "expectedOldBottom": 0.540255
+    },
+    {
+      "level": "b",
+      "question": 11,
+      "page": 9,
+      "foreignHeader": "חלק ג׳ – חישובים בשרשרת ושרטוט ממילים (12–16)",
+      "trimBottomY": 0.053869,
+      "expectedOldBottom": 0.10045,
+      "note": "page 9 holds only the foreign header above question 12; the slice becomes empty and is dropped"
+    },
+    {
+      "level": "c",
+      "question": 7,
+      "page": 5,
+      "foreignHeader": "חלק ב׳ – מרכז, מקרים ונקודות סימטריות (8–14)",
+      "trimBottomY": 0.470147,
+      "expectedOldBottom": 0.516717
+    },
+    {
+      "level": "c",
+      "question": 14,
+      "page": 10,
+      "foreignHeader": "חלק ג׳ – הכללות, שטחים ומרובעים פנימיים (15–20)",
+      "trimBottomY": 0.523016,
+      "expectedOldBottom": 0.569595
+    }
+  ]
+}
