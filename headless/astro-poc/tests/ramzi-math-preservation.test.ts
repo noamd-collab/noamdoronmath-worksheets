@@ -9,7 +9,7 @@ const viewer = readFileSync(new URL('../public/worksheet-viewer-noam.html', impo
 function source(name: string, next: string) {
   return viewer.slice(viewer.indexOf(`  function ${name}(`), viewer.indexOf(`  function ${next}(`));
 }
-const functions = [source('userContent', 'veilStudentPrompts'), source('prefixRetryLead', 'replayLocalChecks'), source('isolateMath', 'shapeReading'), source('shapeReading', 'decoratePins')].join('\n');
+const functions = [source('userContent', 'veilStudentPrompts'), source('prefixRetryLead', 'replayLocalChecks'), source('hasPendingMath', 'shapeReading'), source('shapeReading', 'decoratePins')].join('\n');
 const lead = 'זה בסדר גמור, בואו ננסה אחרת.';
 // KaTeX stores three representations. Only katex-html is visually displayed.
 function math(tex: string, visible: string) {
@@ -58,4 +58,21 @@ test('an already shaped reply keeps its math while adding one opening', () => {
   assert.equal(view.reply.querySelector('.katex') === formula, true);
   assert.equal(formula.outerHTML, before);
   assert.equal(view.reply.querySelectorAll('.ramzi-line').length, 2);
+});
+
+
+test('cold load keeps raw TeX contiguous until KaTeX becomes available', () => {
+  for (const body of [String.raw`כמה זה \(12 \cdot 3\)?`, String.raw`חשבו $12 + 3 = 15$.`, String.raw`חשבו \[\frac{12}{3}\].`]) {
+    const view = setup(body);
+    view.decorate(); view.decorate();
+    assert.equal(view.reply.textContent, lead + '\n' + body);
+    assert.equal(view.reply.querySelectorAll('bdi,.exact-frac').length, 0);
+    assert.ok(Array.from(view.reply.childNodes).some(node => node.nodeType === 3 && node.textContent === body));
+    // Simulate the later renderer replacing its complete input with math markup.
+    view.reply.innerHTML = lead + '\n' + math('12 \\cdot 3', '12⋅3');
+    const before = view.reply.querySelector('.katex')!.outerHTML;
+    view.decorate();
+    assert.equal(view.reply.querySelector('.katex')!.outerHTML, before);
+    assert.equal(view.reply.querySelectorAll('.ramzi-line').length, 2);
+  }
 });
