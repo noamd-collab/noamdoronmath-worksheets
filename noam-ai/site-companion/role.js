@@ -35,4 +35,3 @@ export function isRoleQuestion(message) {
   if (SOLVE_REQUEST.test(text)) return false;
   return ROLE_PHRASES.indexOf(text) !== -1;
 }
-

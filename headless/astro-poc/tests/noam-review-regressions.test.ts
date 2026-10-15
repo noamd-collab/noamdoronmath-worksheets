@@ -14,7 +14,7 @@ const fail={guide,apiKey:'synthetic',log:()=>{},fetch:async()=>({ok:false,status
 const level=(link:any)=>new URL(link.href,'https://example.com').searchParams.get('lv');
 
 test('Noam level order: default A, harder excellence, easier B; history keeps subject and grade',async()=>{
- for(const [start,follow,expected] of [[first,'קשה יותר','c'],[first,'משהו קל יותר','b'],[first+' ברמה ב׳','עכשיו רמה א׳','a'],['grade 9, factoring, level B','something harder','a'],[first+' מצוינות','קל יותר','a']] as const){
+ for(const [start,follow,expected] of [[first,'קשה יותר','c'],[first,'משהו קל יותר','b'],[first+' ברמה ב׳','עכשיו רמה א׳','a'],['grade 9, factoring, level B','something harder','a'],[first+' מצוינות','קל יותר','a'],[first+' ברמה ב׳','קל יותר','b'],[first+' מצוינות','קשה יותר','c']] as const){
   const history=[{role:'user',content:start},{role:'assistant',content:'כיתה ג רמה ב בנושא אחר'}];
   for(const input of [{message:start,page},{message:follow,history,page}]){
    const server=await handleCompanionTurn(input,fail), local=navigateSite(input,guide);
