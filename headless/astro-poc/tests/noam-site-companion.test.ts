@@ -402,7 +402,7 @@ describe('Noam AI model role', () => {
     assert.match(result.primary.href, /lv=b/);
   });
 
-  it('ignores an unknown base URL and does not log the rejected value', async () => {
+  it('rejects an unknown base URL without a request or logging the rejected value', async () => {
     const logs = [];
     const leaked = 'sk-rejected-value-should-not-appear';
     let seen = '';
@@ -426,7 +426,7 @@ describe('Noam AI model role', () => {
         },
       }
     );
-    assert.equal(seen, 'https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions');
+    assert.equal(seen, '');
     assert.equal(logs.some((entry) => entry.code === 'QWEN_CONFIG_REJECTED'), true);
     assert.equal(JSON.stringify(logs).includes(leaked), false);
     assert.equal(JSON.stringify(logs).includes('evil.example'), false);

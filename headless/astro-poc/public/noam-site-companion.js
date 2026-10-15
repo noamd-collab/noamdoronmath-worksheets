@@ -41,8 +41,8 @@
         timer = setTimeout(function () { controller.abort(); reject(new Error("NAVIGATION_TIMEOUT")); }, 5000);
       });
       navigationPromise = Promise.race([timeout, Promise.all([
-        import("/noam-navigation.js?v=c4d63b4c904e38e5"),
-        fetch("/noam-navigation-guide.json?v=c4d63b4c904e38e5", {signal: controller.signal}).then(function (response) {
+        import("/noam-navigation.js?v=26208676af40f950"),
+        fetch("/noam-navigation-guide.json?v=26208676af40f950", {signal: controller.signal}).then(function (response) {
           if (!response.ok) throw new Error("NAVIGATION_UNAVAILABLE");
           return response.json();
         }),
@@ -809,8 +809,9 @@
       if (typeof code === "string" && /^[A-Z0-9_]{1,40}$/.test(code)) {
         panel.setAttribute("data-response-error", code);
       }
+      if (result && result.source === "fallback" && result.primary && result.active !== false) return result;
       if (!result || result.ok === false || result.active === false) return navigationFallback(payload);
-      panel.removeAttribute("data-response-error");
+      if (!code) panel.removeAttribute("data-response-error");
       return result;
     }).catch(function (error) {
       var code = String(error && error.code || "CONNECTION_FAILED");

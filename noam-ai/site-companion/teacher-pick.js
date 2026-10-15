@@ -5,6 +5,7 @@
  * Elementary returns the matching sheet, topic, and level — not single items.
  */
 import { QWEN_MODEL, callQwen } from "./companion.js";
+import { resolveNavigationIntent } from "./intent.js";
 import { buildCatalogRecords } from "./retrieve.js";
 
 export const CLASSIFIER_MAX_TOKENS = 300;
@@ -143,11 +144,12 @@ export function selectTeacherPicks(index, input, classification) {
   const rows = Array.isArray(index) ? index : [];
   const teacher = teacherOf(input);
   const classified = classification || {};
-  const grade = numberOrNull(teacher.grade) || numberOrNull(classified.grade);
+  const local = resolveNavigationIntent(input);
+  const grade = numberOrNull(teacher.grade) || numberOrNull(classified.grade) || local.grade;
   const topicId = /^\d{1,6}$/.test(teacher.topic) ? String(teacher.topic) : "";
-  const level = levelOrEmpty(teacher.level) || levelOrEmpty(classified.level);
+  const level = levelOrEmpty(teacher.level) || levelOrEmpty(classified.level) || local.level;
   const queryTokens = tokens(
-    [messageOf(input), teacher.topicLabel, teacher.note, teacher.gradeLabel, classified.topicQuery].join(" ")
+    [messageOf(input), teacher.topicLabel, teacher.note, teacher.gradeLabel, classified.topicQuery, local.subject].join(" ")
   );
   let pool = rows.filter((sheet) => {
     if (grade && Number(sheet.grade) !== grade) return false;

@@ -9,6 +9,7 @@ import {
   MISSING_TEXT,
   QUESTION_GAP,
   QWEN_MODEL,
+  resolveQwenTarget,
   RAMZI_TEXT,
   handleCompanionTurn,
   isRoleQuestion,
@@ -176,6 +177,7 @@ export async function runCompanionTurn(payload, deps) {
   }
   if (page.kind === "teachers") {
     let classification = null;
+    let classificationFailure = "MODEL_RESPONSE_FAILED";
     try {
       classification = await classifyTeacherRequest(payload, {
         apiKey: settings.qwenKey,
@@ -188,13 +190,21 @@ export async function runCompanionTurn(payload, deps) {
     } catch (error) {
       if (isOutboundTimeout(error)) throw error;
       classification = null;
+      classificationFailure = ["MODEL_AUTH_FAILED", "MODEL_HTTP", "QWEN_CONFIG_REJECTED"].includes(error.code) ? error.code : "MODEL_RESPONSE_FAILED";
     }
     const pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
-    if (!pick.sheets.length) return missingTeacher();
+    if (!pick.sheets.length) {
+      const missing = missingTeacher();
+      return classification ? missing : Object.assign(missing, { source: "fallback", model: null, code: classificationFailure });
+    }
     const body = teacherAnswer(pick, settings.catalog);
+    if (classification) body.model = resolveQwenTarget({model: settings.qwenModel, baseUrl: settings.qwenBaseUrl}).model;
     if (!classification) {
       body.model = null;
-      body.source = "catalog";
+      body.source = "fallback";
+      body.code = classificationFailure;
+      body.answer = "החיבור למודל לא הצליח. הנה בחירה בסיסית מהמאגר: " + body.answer;
+      body.text = body.answer;
     }
     return body;
   }

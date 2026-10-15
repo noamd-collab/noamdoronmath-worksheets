@@ -127,7 +127,9 @@ test('a requested level B sheet is not replaced by level A', () => {
 });
 
 test('sheet wording preserves a requested topic and grade-only follow-ups', () => {
-  assert.equal(ask('אני מחפש דפים על דלתון לכיתה ט׳').primary.href, '/kite-grade-9');
+  const kite = ask('אני מחפש דפים על דלתון לכיתה ט׳');
+  assert.match(kite.primary.href, /lv=a/);
+  assert.ok(hrefs(kite).includes('/kite-grade-9'));
   assert.equal(ask('אני מחפש דפים על שברים').needsGrade, true);
   const r = ask('ה׳', undefined, 'אני מחפש דפים על שברים');
   assert.ok(r.links.length);
