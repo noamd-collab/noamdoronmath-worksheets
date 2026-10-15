@@ -30,6 +30,8 @@ import {
 } from "./teacher-pick.js";
 
 export const QWEN_SECRET_NAME = "QWEN_API_KEY";
+export const QWEN_BASE_URL_NAME = "QWEN_BASE_URL";
+export const QWEN_MODEL_NAME = "QWEN_MODEL";
 export const NOAM_RECAPTCHA_SECRET_NAME = "NOAM_RECAPTCHA_SECRET_KEY";
 /** Public site key already served by the live bot config. Not a secret. */
 export const PUBLIC_RECAPTCHA_SITE_KEY = "6LdPhawtAAAAAIqCGLcShp8J1XO16Z9lVGTYuwgq";
@@ -177,8 +179,11 @@ export async function runCompanionTurn(payload, deps) {
     try {
       classification = await classifyTeacherRequest(payload, {
         apiKey: settings.qwenKey,
+        baseUrl: settings.qwenBaseUrl,
+        model: settings.qwenModel,
         fetch: settings.fetch,
         timeoutMs: settings.qwenTimeoutMs,
+        log: settings.log,
       });
     } catch (error) {
       if (isOutboundTimeout(error)) throw error;
@@ -197,8 +202,11 @@ export async function runCompanionTurn(payload, deps) {
     catalog: settings.catalog,
     guide: settings.guide,
     apiKey: settings.qwenKey,
+    baseUrl: settings.qwenBaseUrl,
+    model: settings.qwenModel,
     fetch: settings.fetch,
     timeoutMs: settings.qwenTimeoutMs,
+    log: settings.log,
   });
   return withIds(Object.assign({ active: true }, result), [], []);
 }

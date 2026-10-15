@@ -96,7 +96,7 @@ Qwen findings must be verified by a human. The comment says so.
 
 Repository **Settings → Secrets and variables → Actions → New repository secret**:
 
-- `CHINESE_MODELS_API_KEY` — QwenCloud Token Plan gateway key, used by both advisory jobs
+- `CHINESE_MODELS_API_KEY` — QwenCloud Token Plan gateway key, used by both advisory jobs. This is not the live site key. The site reads `QWEN_API_KEY` (a Model Studio pay-as-you-go key) plus optional `QWEN_BASE_URL` and `QWEN_MODEL`. See `docs/NOAM-AI-SECRETS-HE.md`. A green review job does not prove the live assistant reached a model.
 
 Do not commit the key. The workflow does not print it. The link check and the visual review each build the site again in the job that serves it.
 

@@ -1,5 +1,5 @@
 /** Navigation over public, build-verified site records. No model or credentials. */
-import { isRoleQuestion } from './companion.js';
+import { isRoleQuestion, levelKeyFromRecord, requestedLevelKey } from './companion.js';
 import { suggestTopicGroup } from './topic-order.js';
 const MARKS = 'אבגדהוזחט';
 const STOP = new Set('אני אנחנו רוצה רוצים צריך צריכה צריכים אפשר בבקשה איפה היכן יש את לי על של עם לכיתה כיתה בכיתה כיתות דף דפים דפי עבודה תרגול לתרגול תרגילים מתמטיקה במתמטיקה ללמוד למצוא מחפש מחפשת תמצא תראה תן קח תעביר פתח תפתח לנו אותי באתר נושא בנושא בנושא יש לכם האם איך מגיעים להגיע עבור'.split(' '));
@@ -88,13 +88,31 @@ export function navigateSite(input, guide, previousMessage = '') {
   const best = matches[0];
   const top = matches.filter(x => x.score >= best.score - 3).map(x => x.r);
   const grades = new Set(top.map(r => r.grade).filter(Boolean));
+  const level = requestedLevelKey(raw);
+  const pool = level ? rowsForRequestedLevel(top, level) : top;
   const rows = [];
-  const topics = new Set();
-  for (const r of top) {
-    const key = r.grade + ':' + (r.topic || r.title);
-    if (topics.has(key)) continue;
-    topics.add(key); rows.push(r);
+  const seen = new Set();
+  for (const r of pool) {
+    const key = r.type === 'worksheet'
+      ? r.grade + ':' + r.title + ':' + (level || levelKeyFromRecord(r) || 'sheet')
+      : r.grade + ':' + (r.topic || r.title);
+    if (seen.has(key)) continue;
+    seen.add(key); rows.push(r);
   }
-  const answer = !grade && grades.size > 1 ? 'באיזו כיתה? מצאתי דפים בנושא בכמה כיתות — בחרו קישור או כתבו את הכיתה.' : 'מצאתי דפים מתאימים באתר. בחרו קישור לפתיחה.';
-  return {...result(answer, rows), needsGrade: !grade && grades.size > 1};
+  const levelSheet = level && rows.some(r => r.type === 'worksheet' && levelKeyFromRecord(r) === level);
+  const ambiguous = !grade && grades.size > 1;
+  const answer = ambiguous
+    ? 'באיזו כיתה? מצאתי דפים בנושא בכמה כיתות — בחרו קישור או כתבו את הכיתה.'
+    : (level
+      ? (levelSheet
+        ? 'מצאתי את דף הנושא ואת הרמה שביקשתם. בחרו קישור לפתיחה.'
+        : 'מצאתי את דף הנושא. אין דף ברמה שביקשתם.')
+      : 'מצאתי דפים מתאימים באתר. בחרו קישור לפתיחה.');
+  return {...result(answer, rows), needsGrade: ambiguous};
+}
+
+function rowsForRequestedLevel(top, level) {
+  const sheets = top.filter(r => r.type === 'worksheet' && levelKeyFromRecord(r) === level);
+  const topics = top.filter(r => r.type === 'topic');
+  return sheets.length ? sheets.concat(topics) : topics;
 }

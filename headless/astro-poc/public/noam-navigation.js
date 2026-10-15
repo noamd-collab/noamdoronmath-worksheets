@@ -289,6 +289,28 @@ function isRoleQuestion(message) {
   if (SOLVE_REQUEST.test(text)) return false;
   return ROLE_PHRASES.indexOf(text) !== -1;
 }
+function foldLevel(value) {
+  return String(value || "").replace(/[\u0591-\u05C7]/g, "").replace(/[׳״"']/g, "").replace(/\s+/g, " ").trim();
+}
+function requestedLevelKey(message) {
+  const text = foldLevel(message).toLowerCase();
+  if (/מצוינות/.test(text)) return "c";
+  if (/רמה\s*ב(?![א-ת])|\blevel\s*b\b/.test(text)) return "b";
+  if (/רמה\s*א(?![א-ת])|\blevel\s*a\b/.test(text)) return "a";
+  return "";
+}
+function levelKeyFromRecord(record) {
+  const label = foldLevel(record && record.levelLabel);
+  if (label.includes("\u05DE\u05E6\u05D5\u05D9\u05E0\u05D5\u05EA")) return "c";
+  if (label === "\u05E8\u05DE\u05D4 \u05D0") return "a";
+  if (label === "\u05E8\u05DE\u05D4 \u05D1") return "b";
+  const key = String(record && record.levelKey || "").toLowerCase();
+  if (key === "a" || key === "b" || key === "c") return key;
+  if (key === "one") return "b";
+  const href = String(record && record.href || "");
+  const fromHref = href.match(/[?&]lv=(a|b|c)(?:&|$)/);
+  return fromHref ? fromHref[1] : "";
+}
 
 // ../../noam-ai/site-companion/navigation.js
 var MARKS = "\u05D0\u05D1\u05D2\u05D3\u05D4\u05D5\u05D6\u05D7\u05D8";
@@ -377,16 +399,25 @@ function navigateSite(input, guide, previousMessage = "") {
   const best = matches[0];
   const top = matches.filter((x) => x.score >= best.score - 3).map((x) => x.r);
   const grades = new Set(top.map((r) => r.grade).filter(Boolean));
+  const level = requestedLevelKey(raw);
+  const pool = level ? rowsForRequestedLevel(top, level) : top;
   const rows = [];
-  const topics = /* @__PURE__ */ new Set();
-  for (const r of top) {
-    const key = r.grade + ":" + (r.topic || r.title);
-    if (topics.has(key)) continue;
-    topics.add(key);
+  const seen = /* @__PURE__ */ new Set();
+  for (const r of pool) {
+    const key = r.type === "worksheet" ? r.grade + ":" + r.title + ":" + (level || levelKeyFromRecord(r) || "sheet") : r.grade + ":" + (r.topic || r.title);
+    if (seen.has(key)) continue;
+    seen.add(key);
     rows.push(r);
   }
-  const answer = !grade && grades.size > 1 ? "\u05D1\u05D0\u05D9\u05D6\u05D5 \u05DB\u05D9\u05EA\u05D4? \u05DE\u05E6\u05D0\u05EA\u05D9 \u05D3\u05E4\u05D9\u05DD \u05D1\u05E0\u05D5\u05E9\u05D0 \u05D1\u05DB\u05DE\u05D4 \u05DB\u05D9\u05EA\u05D5\u05EA \u2014 \u05D1\u05D7\u05E8\u05D5 \u05E7\u05D9\u05E9\u05D5\u05E8 \u05D0\u05D5 \u05DB\u05EA\u05D1\u05D5 \u05D0\u05EA \u05D4\u05DB\u05D9\u05EA\u05D4." : "\u05DE\u05E6\u05D0\u05EA\u05D9 \u05D3\u05E4\u05D9\u05DD \u05DE\u05EA\u05D0\u05D9\u05DE\u05D9\u05DD \u05D1\u05D0\u05EA\u05E8. \u05D1\u05D7\u05E8\u05D5 \u05E7\u05D9\u05E9\u05D5\u05E8 \u05DC\u05E4\u05EA\u05D9\u05D7\u05D4.";
-  return { ...result(answer, rows), needsGrade: !grade && grades.size > 1 };
+  const levelSheet = level && rows.some((r) => r.type === "worksheet" && levelKeyFromRecord(r) === level);
+  const ambiguous = !grade && grades.size > 1;
+  const answer = ambiguous ? "\u05D1\u05D0\u05D9\u05D6\u05D5 \u05DB\u05D9\u05EA\u05D4? \u05DE\u05E6\u05D0\u05EA\u05D9 \u05D3\u05E4\u05D9\u05DD \u05D1\u05E0\u05D5\u05E9\u05D0 \u05D1\u05DB\u05DE\u05D4 \u05DB\u05D9\u05EA\u05D5\u05EA \u2014 \u05D1\u05D7\u05E8\u05D5 \u05E7\u05D9\u05E9\u05D5\u05E8 \u05D0\u05D5 \u05DB\u05EA\u05D1\u05D5 \u05D0\u05EA \u05D4\u05DB\u05D9\u05EA\u05D4." : level ? levelSheet ? "\u05DE\u05E6\u05D0\u05EA\u05D9 \u05D0\u05EA \u05D3\u05E3 \u05D4\u05E0\u05D5\u05E9\u05D0 \u05D5\u05D0\u05EA \u05D4\u05E8\u05DE\u05D4 \u05E9\u05D1\u05D9\u05E7\u05E9\u05EA\u05DD. \u05D1\u05D7\u05E8\u05D5 \u05E7\u05D9\u05E9\u05D5\u05E8 \u05DC\u05E4\u05EA\u05D9\u05D7\u05D4." : "\u05DE\u05E6\u05D0\u05EA\u05D9 \u05D0\u05EA \u05D3\u05E3 \u05D4\u05E0\u05D5\u05E9\u05D0. \u05D0\u05D9\u05DF \u05D3\u05E3 \u05D1\u05E8\u05DE\u05D4 \u05E9\u05D1\u05D9\u05E7\u05E9\u05EA\u05DD." : "\u05DE\u05E6\u05D0\u05EA\u05D9 \u05D3\u05E4\u05D9\u05DD \u05DE\u05EA\u05D0\u05D9\u05DE\u05D9\u05DD \u05D1\u05D0\u05EA\u05E8. \u05D1\u05D7\u05E8\u05D5 \u05E7\u05D9\u05E9\u05D5\u05E8 \u05DC\u05E4\u05EA\u05D9\u05D7\u05D4.";
+  return { ...result(answer, rows), needsGrade: ambiguous };
+}
+function rowsForRequestedLevel(top, level) {
+  const sheets = top.filter((r) => r.type === "worksheet" && levelKeyFromRecord(r) === level);
+  const topics = top.filter((r) => r.type === "topic");
+  return sheets.length ? sheets.concat(topics) : topics;
 }
 export {
   navigateSite,
