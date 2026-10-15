@@ -305,7 +305,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ט׳ | משולש שווה שוקיים (G9-T15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | הפונקציה הריבועית (G9-T06) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | משוואות ריבועיות ונוסחת השורשים (G9-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | המקבילית (G9-T17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ט׳ | המקבילית (G9-T17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | pending (#144 draft; reviewRequired=true until independent mapping review) | no | #144 |
 | כיתה ט׳ | אי־שוויונות ריבועיים ומערכות משוואות (G9-T07) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | סטטיסטיקה (G9-T10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | הסתברות (G9-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
