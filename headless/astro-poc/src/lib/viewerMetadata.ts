@@ -167,3 +167,18 @@ export function renderViewerHtmlWithMetadata(html: string, metadata: ViewerMetad
     'viewer-resource-metadata'
   );
 }
+
+/** Auxiliary SEO must not make the original PDF viewer unavailable. */
+export function renderViewerHtmlSafely(
+  html: string,
+  params: SearchParams,
+  getCatalog: () => CatalogV1,
+): string {
+  try {
+    return renderViewerHtmlWithMetadata(html, resolveViewerMetadata(getCatalog(), params));
+  } catch {
+    // Never log the exception, request, catalog contents, or any credentials.
+    console.warn('Viewer metadata unavailable; serving the original bundled HTML shell.');
+    return html;
+  }
+}

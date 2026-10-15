@@ -15,6 +15,7 @@ describe('middleware static HTML query serve', () => {
     assert.match(mw, /PUBLIC_HTML_SHELLS/);
     assert.match(mw, /new Response\(body/);
     assert.match(mw, /context\.url\.search/);
+    assert.match(mw, /renderViewerHtmlSafely\(shell, context\.url\.searchParams, loadCatalog\)/);
     assert.match(shells, /worksheet-viewer-noam\.html\?raw/);
     assert.match(shells, /learning\.html\?raw/);
   });

@@ -6,6 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import {
   GENERIC_VIEWER_METADATA,
   renderViewerHtmlWithMetadata,
+  renderViewerHtmlSafely,
   resolveViewerMetadata,
   type ViewerMetadata,
 } from '../src/lib/viewerMetadata';
@@ -120,5 +121,33 @@ describe('viewer metadata', () => {
     const printEnd = publicViewer.indexOf('</style>', printStart) + '</style>'.length;
     assert.equal(hash(bodyMarkup), 'dcd74c341c28cf834d8865870c098d6a85eccd6e4279b3d6fc374a94123cf424');
     assert.equal(hash(publicViewer.slice(printStart, printEnd)), '548e2303508a758017ad93a3cc8834088e70ff90b61070840df6f9d0fada4c0f');
+  });
+});
+
+describe('viewer auxiliary metadata availability', () => {
+  const params = new URLSearchParams({ g: fixture.grade, topic: fixture.topic, pdf: fixture.pdf, lv: fixture.level });
+
+  it('keeps the normal catalog-derived result unchanged', () => {
+    assert.equal(renderViewerHtmlSafely(publicViewer, params, () => catalog), renderViewerHtmlWithMetadata(publicViewer, resolveViewerMetadata(catalog, params)));
+  });
+
+  it('returns the original shell on catalog errors without logging exception details', () => {
+    const originalWarn = console.warn;
+    const warnings: unknown[][] = [];
+    console.warn = (...args: unknown[]) => { warnings.push(args); };
+    try {
+      assert.equal(renderViewerHtmlSafely(publicViewer, params, () => { throw new Error('do-not-log-this-detail'); }), publicViewer);
+      assert.equal(renderViewerHtmlSafely(publicViewer, params, () => ({} as typeof catalog)), publicViewer);
+      assert.deepEqual(warnings, Array.from({ length: 2 }, () => ['Viewer metadata unavailable; serving the original bundled HTML shell.']));
+    } finally { console.warn = originalWarn; }
+  });
+
+  it('degrades to the untouched shell for marker drift while the strict renderer still fails', () => {
+    const changed = publicViewer.replace('data-viewer-description', 'data-future-description');
+    assert.throws(() => renderViewerHtmlWithMetadata(changed, resolveViewerMetadata(catalog, params)), /marker/);
+    const originalWarn = console.warn;
+    console.warn = () => {};
+    try { assert.equal(renderViewerHtmlSafely(changed, params, () => catalog), changed); }
+    finally { console.warn = originalWarn; }
   });
 });
