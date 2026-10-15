@@ -194,6 +194,19 @@ import anglesLinesPlaneGrade4 from '../data/topic-pages/angles-lines-plane-grade
 import trianglesClassifyBuildGrade4 from '../data/topic-pages/triangles-classify-build-grade-4.json';
 import quadrilateralsClassifyGrade4 from '../data/topic-pages/quadrilaterals-classify-grade-4.json';
 import grade4Summary from '../data/topic-pages/grade-4-summary.json';
+import columnAdditionGrade4 from '../data/topic-pages/column-addition-grade-4.json';
+import multiDigitSubtractionGrade4 from '../data/topic-pages/multi-digit-subtraction-grade-4.json';
+import estimationMoneyProblemsGrade4 from '../data/topic-pages/estimation-money-problems-grade-4.json';
+import operationLawsTensGrade4 from '../data/topic-pages/operation-laws-tens-grade-4.json';
+import longDivisionRemainderGrade4 from '../data/topic-pages/long-division-remainder-grade-4.json';
+import fractionNamesEquivalentGrade4 from '../data/topic-pages/fraction-names-equivalent-grade-4.json';
+import fractionsNumberlineCompareGrade4 from '../data/topic-pages/fractions-numberline-compare-grade-4.json';
+import equivalentFractionsGrade4 from '../data/topic-pages/equivalent-fractions-grade-4.json';
+import divisibilityFactorsGrade4 from '../data/topic-pages/divisibility-factors-grade-4.json';
+import primeCompositeGrade4 from '../data/topic-pages/prime-composite-grade-4.json';
+import polygonsDiagonalsGrade4 from '../data/topic-pages/polygons-diagonals-grade-4.json';
+import lengthUnitsConversionGrade4 from '../data/topic-pages/length-units-conversion-grade-4.json';
+import timeAndWeightGrade4 from '../data/topic-pages/time-and-weight-grade-4.json';
 import bigNumbersRoundingGrade5 from '../data/topic-pages/big-numbers-rounding-grade-5.json';
 import multiplicationMultiDigitGrade5 from '../data/topic-pages/multiplication-multi-digit-grade-5.json';
 import orderOfOperationsGrade5 from '../data/topic-pages/order-of-operations-grade-5.json';
@@ -459,15 +472,28 @@ export const TOPIC_PAGE_G5_SLUGS = [
 export const TOPIC_PAGE_G4_SLUGS = [
   'numbers-to-million-grade-4',
   'order-rounding-million-grade-4',
+  'column-addition-grade-4',
+  'multi-digit-subtraction-grade-4',
+  'estimation-money-problems-grade-4',
+  'operation-laws-tens-grade-4',
   'order-of-operations-grade-4',
   'distributive-area-model-grade-4',
   'multiplication-multi-digit-grade-4',
+  'long-division-remainder-grade-4',
+  'fraction-names-equivalent-grade-4',
+  'fractions-numberline-compare-grade-4',
+  'equivalent-fractions-grade-4',
+  'divisibility-factors-grade-4',
+  'prime-composite-grade-4',
   'parallel-perpendicular-shapes-grade-4',
+  'polygons-diagonals-grade-4',
   'rectangles-squares-grade-4',
   'angle-types-grade-4',
   'classify-triangles-grade-4',
+  'length-units-conversion-grade-4',
   'area-perimeter-rectangle-grade-4',
   'area-perimeter-composite-grade-4',
+  'time-and-weight-grade-4',
   'diagrams-conclusions-grade-4',
   'symmetry-reflection-rotation-grade-4',
   'angles-lines-plane-grade-4',
@@ -871,6 +897,19 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'triangles-classify-build-grade-4': trianglesClassifyBuildGrade4 as TopicPageContent,
   'quadrilaterals-classify-grade-4': quadrilateralsClassifyGrade4 as TopicPageContent,
   'grade-4-summary': grade4Summary as TopicPageContent,
+  'column-addition-grade-4': columnAdditionGrade4 as TopicPageContent,
+  'multi-digit-subtraction-grade-4': multiDigitSubtractionGrade4 as TopicPageContent,
+  'estimation-money-problems-grade-4': estimationMoneyProblemsGrade4 as TopicPageContent,
+  'operation-laws-tens-grade-4': operationLawsTensGrade4 as TopicPageContent,
+  'long-division-remainder-grade-4': longDivisionRemainderGrade4 as TopicPageContent,
+  'fraction-names-equivalent-grade-4': fractionNamesEquivalentGrade4 as TopicPageContent,
+  'fractions-numberline-compare-grade-4': fractionsNumberlineCompareGrade4 as TopicPageContent,
+  'equivalent-fractions-grade-4': equivalentFractionsGrade4 as TopicPageContent,
+  'divisibility-factors-grade-4': divisibilityFactorsGrade4 as TopicPageContent,
+  'prime-composite-grade-4': primeCompositeGrade4 as TopicPageContent,
+  'polygons-diagonals-grade-4': polygonsDiagonalsGrade4 as TopicPageContent,
+  'length-units-conversion-grade-4': lengthUnitsConversionGrade4 as TopicPageContent,
+  'time-and-weight-grade-4': timeAndWeightGrade4 as TopicPageContent,
   // G5 (catalog order)
   'big-numbers-rounding-grade-5': bigNumbersRoundingGrade5 as TopicPageContent,
   'multiplication-multi-digit-grade-5': multiplicationMultiDigitGrade5 as TopicPageContent,

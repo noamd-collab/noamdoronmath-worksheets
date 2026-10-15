@@ -15,13 +15,13 @@
 | 1 (א׳) | 23 | 23 | 0 |
 | 2 (ב׳) | 29 | 29 | 0 |
 | 3 (ג׳) | 25 | 25 | 0 |
-| 4 (ד׳) | 30 | 17 | 0 |
+| 4 (ד׳) | 30 | 30 | 0 |
 | 5 (ה׳) | 35 | 18 | 0 |
 | 6 (ו׳) | 27 | 14 | 0 |
 | 7 (ז׳) | 50 | 39 | 0 |
 | 8 (ח׳) | 65 | 26 | 0 |
 | 9 (ט׳) | 45 | 41 | 0 |
-| **סה״כ** | **329** | **232** | **0** |
+| **סה״כ** | **329** | **245** | **0** |
 
 ## כיתה א׳ (grade 1)
 
@@ -121,28 +121,28 @@
 |---|---|---|---|---|
 | 4 | מספרים עד מיליון קריאה ופירוק | 1 | /numbers-to-million-grade-4 | exists |
 | 4 | סדר שכנים ועיגול בתחום המיליון | 2 | /order-rounding-million-grade-4 | exists |
-| 4 | חיבור רב ספרתי בטור | 3 | — | exists |
-| 4 | חיסור רב ספרתי בטור | 4 | — | exists |
-| 4 | אומדן ובעיות חיבור וחיסור כולל כסף | 5 | — | exists |
-| 4 | חוקי פעולות וכפל בעשרות שלמות | 6 | — | exists |
+| 4 | חיבור רב ספרתי בטור | 3 | /column-addition-grade-4 | exists |
+| 4 | חיסור רב ספרתי בטור | 4 | /multi-digit-subtraction-grade-4 | exists |
+| 4 | אומדן ובעיות חיבור וחיסור כולל כסף | 5 | /estimation-money-problems-grade-4 | exists |
+| 4 | חוקי פעולות וכפל בעשרות שלמות | 6 | /operation-laws-tens-grade-4 | exists |
 | 4 | סדר פעולות חשבון | 7 | /order-of-operations-grade-4 | exists |
 | 4 | חוק הפילוג ומכפלות חלקיות | 8 | /distributive-area-model-grade-4 | exists |
 | 4 | כפל רב ספרתי | 9 | /multiplication-multi-digit-grade-4 | exists |
-| 4 | חילוק ארוך ושארית | 10 | — | exists |
-| 4 | שבר ייצוגים ושמות שקולים | 11 | — | exists |
-| 4 | שברים על ישר והשוואה | 12 | — | exists |
-| 4 | שברים שקולים ייצוגים השוואה וישר מספרים | 13 | — | exists |
-| 4 | התחלקות וגורמים | 14 | — | exists |
-| 4 | מספרים ראשוניים ופריקים | 15 | — | exists |
+| 4 | חילוק ארוך ושארית | 10 | /long-division-remainder-grade-4 | exists |
+| 4 | שבר ייצוגים ושמות שקולים | 11 | /fraction-names-equivalent-grade-4 | exists |
+| 4 | שברים על ישר והשוואה | 12 | /fractions-numberline-compare-grade-4 | exists |
+| 4 | שברים שקולים ייצוגים השוואה וישר מספרים | 13 | /equivalent-fractions-grade-4 | exists |
+| 4 | התחלקות וגורמים | 14 | /divisibility-factors-grade-4 | exists |
+| 4 | מספרים ראשוניים ופריקים | 15 | /prime-composite-grade-4 | exists |
 | 4 | מקבילים ומאונכים בצורות | 16 | /parallel-perpendicular-shapes-grade-4 | exists |
-| 4 | מצולעים ואלכסונים | 17 | — | exists |
+| 4 | מצולעים ואלכסונים | 17 | /polygons-diagonals-grade-4 | exists |
 | 4 | מלבנים ריבועים ויחסי הכלה | 18 | /rectangles-squares-grade-4 | exists |
 | 4 | סוגי זוויות | 19 | /angle-types-grade-4 | exists |
 | 4 | מיון משולשים | 20 | /classify-triangles-grade-4 | exists |
-| 4 | יחידות אורך והמרות | 21 | — | exists |
+| 4 | יחידות אורך והמרות | 21 | /length-units-conversion-grade-4 | exists |
 | 4 | שטח והיקף של מלבן וריבוע | 22 | /area-perimeter-rectangle-grade-4 | exists |
 | 4 | שטח והיקף של צורות מורכבות | 23 | /area-perimeter-composite-grade-4 | exists |
-| 4 | זמן ומשקל המרות ויישום | 24 | — | exists |
+| 4 | זמן ומשקל המרות ויישום | 24 | /time-and-weight-grade-4 | exists |
 | 4 | דיאגרמות ומסקנות | 25 | /diagrams-conclusions-grade-4 | exists |
 | 4 | סימטריה שיקופית וסיבובית | 26 | /symmetry-reflection-rotation-grade-4 | exists |
 | 4 | זוויות וקווים במישור | 27 | /angles-lines-plane-grade-4 | exists |
