@@ -34,7 +34,10 @@ const protectedFiles: Record<string, string> = {
   // added so the headless Noam AI route can read Wix Secrets Manager.
   // Adapter, output, and integrations are unchanged. The other two Astro
   // configs (preview, open07-verify) are not in this fence.
-  'astro.config.mjs': 'c63c0e1646e6198757b32ca085cda16091a3168adf0017ce9e3ce74b91b8f451',
+  // SEO-01 requested by Noam explicitly proposes the public build marker for
+  // Wix main-page ownership. This one fingerprint is reviewed in that PR;
+  // adapter, integrations, secret schema and all unrelated fences stay intact.
+  'astro.config.mjs': 'b8fce59d14c3b0164cdd80327ec9e9fc7faeb5ebd6abcba7f243ed4386085cb7',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   'src/data/catalog.v1.json': '2efb9b0b42b8ba4c0f605f8835a7a24412b8103d4cfbb6c53a04657b67059959',
@@ -73,11 +76,18 @@ describe('exact-design protected live-baseline boundaries', () => {
     });
   }
 
-  it('preserves the shared head exactly, including SEO, canonical, fonts and robots', () => {
+  it('preserves the reviewed SEO-01 shared head, ownership fallback, fonts and robots', () => {
     const head = read('src/layouts/BaseLayout.astro').match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'BaseLayout must retain its head');
-    // Self-hosted Heebo + Secular One preloads replace the Google Fonts stylesheet.
-    assert.equal(sha256(head), '6426393d0bb12eba064470d7016f44154fd0d02ff5f2164a4a071069c32fa798');
+    // Noam's requested SEO ownership repair intentionally changes this head;
+    // never regenerate unrelated fences to hide a presentation regression.
+    assert.equal(sha256(head), 'eccd02801c6cc0d632b5ce51d45aa8679577b8360041636c7a4593694fa113e6');
+    assert.match(head, /renderLayoutSeo &&/);
+    assert.match(head, /secular-one-400-hebrew\.c1e45f5b\.woff2/);
+    assert.match(head, /heebo-hebrew\.f1f7cfae\.woff2/);
+    assert.match(head, /meta name="robots" content=\{robots\}/);
+    assert.match(head, /slot name="seo-tags"/);
+    assert.doesNotMatch(head, /stripWixSeoDupes|MutationObserver/);
   });
 
   it('preserves viewer head and every existing script, including AI answers and storage', () => {
