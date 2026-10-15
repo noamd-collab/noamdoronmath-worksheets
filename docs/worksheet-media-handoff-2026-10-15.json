@@ -2,14 +2,14 @@
   "date": "2026-10-15",
   "metaSiteId": "36dd9544-acf9-4e85-a01a-798f3c1efbb9",
   "status": "UPLOADED_AND_REMOTE_SHA256_VERIFIED",
-  "packageCount": 9,
-  "studentPdfCount": 25,
+  "packageCount": 10,
+  "studentPdfCount": 28,
   "deliveredCount": 143,
   "draftOnly": true,
   "merge": false,
   "wixRelease": false,
   "siteCatalogChanged": false,
-  "scope": "Approved student PDFs only. Private keys, full PDFs, source PDFs and sheet.json excluded. G8-T26 is single-level a only. G9-T32 excluded pending identity correction/rebuild.",
+  "scope": "Approved student PDFs only. G8-T26 single levela. G9-T40 repair now independentlyconfirmed. Actual G9-T32 folder13coverage remains open andexcluded.",
   "authentication": "Existing authorized Wix connector; Cursor Forms-only key unchanged; no API key or signed upload URL in this record.",
   "rows": [
     {
@@ -309,6 +309,42 @@
       "bytes": 97519,
       "wixMediaId": "d8e7ad_c76551a59c73455399aaa5dc548d6eff.pdf",
       "fileUrl": "https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_c76551a59c73455399aaa5dc548d6eff.pdf",
+      "operationStatus": "READY",
+      "remoteByteVerified": true
+    },
+    {
+      "package": "G9-T40",
+      "level": "a",
+      "siteLevel": "r1",
+      "studentPages": 14,
+      "studentSha256": "c3584168ad1bb1e10537cbf48b8a2a709ef636af1c01939f1645351f912843d7",
+      "bytes": 137600,
+      "wixMediaId": "d8e7ad_cc003cda40a246d0a894daa0af43234e.pdf",
+      "fileUrl": "https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_cc003cda40a246d0a894daa0af43234e.pdf",
+      "operationStatus": "READY",
+      "remoteByteVerified": true
+    },
+    {
+      "package": "G9-T40",
+      "level": "b",
+      "siteLevel": "r2",
+      "studentPages": 12,
+      "studentSha256": "3040b3331ca836fd77bfae52359fe44c3b8bf6d6679a340af7acf1b05623309a",
+      "bytes": 126716,
+      "wixMediaId": "d8e7ad_dc2e7ba9ac2b4e03adb3476b1e8735e0.pdf",
+      "fileUrl": "https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_dc2e7ba9ac2b4e03adb3476b1e8735e0.pdf",
+      "operationStatus": "READY",
+      "remoteByteVerified": true
+    },
+    {
+      "package": "G9-T40",
+      "level": "c",
+      "siteLevel": "r3",
+      "studentPages": 15,
+      "studentSha256": "a0f6b5b9e666f4d36be6c19c914c50e117a5a95b516b8be06f4d5ba19a124ff6",
+      "bytes": 147241,
+      "wixMediaId": "d8e7ad_0cd86701d15e4516b2b0116552132ca0.pdf",
+      "fileUrl": "https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_0cd86701d15e4516b2b0116552132ca0.pdf",
       "operationStatus": "READY",
       "remoteByteVerified": true
     }
