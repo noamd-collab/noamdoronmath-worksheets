@@ -267,7 +267,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | משוואת ישר (G8-T18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
 | כיתה ח׳ | ישרים מקבילים לצירים (G8-T19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
 | כיתה ח׳ | תנועה (G8-T10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | אבחון אמצע שנה (G8-T26) | דף יחיד — כל הרמות | unknown | pending (#142 draft; reviewRequired=true until independent mapping review) | no | #142 |
+| כיתה ח׳ | אבחון אמצע שנה (G8-T26) | דף יחיד — כל הרמות | unknown | PASS static mapping/native/teacher context (#142 draft; external reviews pending) | no | #142 |
 | כיתה ח׳ | גישור ותיקון פערים (G8-T27) | דף יחיד — כל הרמות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
 | כיתה ח׳ | חפיפת משולשים (G8-T38) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#99); b yes (#99); c unknown | unknown | #99 (a,b) |
 | כיתה ח׳ | משפטי חפיפה (G8-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#99); c yes (#99) | unknown | #99 (b,c) |

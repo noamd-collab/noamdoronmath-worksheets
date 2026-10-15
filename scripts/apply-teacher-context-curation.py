@@ -14,7 +14,23 @@ item's ink.
 import argparse
 import copy
 import json
+import math
 from pathlib import Path
+
+
+def validate_rectangle(rect, page_count, label):
+    if not isinstance(rect, dict) or set(rect) != {'page', 'x', 'y', 'w', 'h'}:
+        raise ValueError(f'Unsupported {label} fields')
+    if any(isinstance(rect[k], bool) or not isinstance(rect[k], (int, float))
+           or not math.isfinite(rect[k]) for k in ('page', 'x', 'y', 'w', 'h')):
+        raise ValueError(f'Non-finite or non-numeric {label} rectangle')
+    if rect['page'] != int(rect['page']):
+        raise ValueError(f'Invalid {label} page')
+    if not (1 <= rect['page'] <= page_count and
+            0 <= rect['x'] < 1 and 0 <= rect['y'] < 1 and
+            0 < rect['w'] <= 1 - rect['x'] + 1e-6 and
+            0 < rect['h'] <= 1 - rect['y'] + 1e-6):
+        raise ValueError(f'{label.capitalize()} outside student PDF')
 
 
 def apply(record, manifest_dir, sheet_dir, check=False):
@@ -40,7 +56,10 @@ def apply(record, manifest_dir, sheet_dir, check=False):
         if len(items) != level['exerciseCount'] or source.get('pdfId') != media:
             raise ValueError('Teacher item binding changed')
         by_id = {str(q['id']): q for q in items}
-        native_ids = {str(q['q']) + str(q.get('part') or '') for q in manifest['exercises']}
+        manifest_ids = [str(q['q']) + str(q.get('part') or '') for q in manifest['exercises']]
+        native_ids = set(manifest_ids)
+        if len(native_ids) != len(manifest_ids):
+            raise ValueError('Duplicate manifest exercise ID')
         if len(by_id) != len(items) or set(by_id) != native_ids:
             raise ValueError('Teacher/manifest item mismatch')
         seen = set()
@@ -50,13 +69,7 @@ def apply(record, manifest_dir, sheet_dir, check=False):
             if ident in seen or ident not in by_id:
                 raise ValueError('Duplicate or unknown context target')
             seen.add(ident)
-            if set(stem) != {'page', 'x', 'y', 'w', 'h'}:
-                raise ValueError('Unsupported context fields')
-            if not (1 <= stem['page'] <= manifest['pageCount'] and
-                    0 <= stem['x'] < 1 and 0 <= stem['y'] < 1 and
-                    0 < stem['w'] <= 1 - stem['x'] + 1e-6 and
-                    0 < stem['h'] <= 1 - stem['y'] + 1e-6):
-                raise ValueError('Context outside student PDF')
+            validate_rectangle(stem, manifest['pageCount'], 'context')
             by_id[ident]['stem'] = stem
         rows = level.get('rows', [])
         if rows and schema == 'teacher-reviewed-context-curation/1':
@@ -73,14 +86,17 @@ def apply(record, manifest_dir, sheet_dir, check=False):
             if ident in seen_rows or ident not in by_id:
                 raise ValueError('Duplicate or unknown row target')
             seen_rows.add(ident)
-            if set(row) != {'page', 'x', 'y', 'w', 'h'}:
-                raise ValueError('Unsupported row fields')
+            validate_rectangle(row, manifest['pageCount'], 'row')
             record_item = by_id[ident]
             pin = next(e['pin'] for e in manifest['exercises']
                        if str(e['q']) + str(e.get('part') or '') == ident)
-            if row['page'] != pin['page'] or not (row['y'] <= pin['y'] <= row['y'] + row['h']):
+            if row['page'] != pin['page'] or not (
+                    row['x'] <= pin['x'] <= row['x'] + row['w'] and
+                    row['y'] <= pin['y'] <= row['y'] + row['h']):
                 raise ValueError('Reviewed row must contain its own pin')
             inside = any(crop['page'] == row['page'] and
+                         crop['x'] - 1e-6 <= row['x'] and
+                         row['x'] + row['w'] <= crop['x'] + crop['w'] + 1e-6 and
                          crop['y'] - 1e-6 <= row['y'] and
                          row['y'] + row['h'] <= crop['y'] + crop['h'] + 1e-6
                          for crop in crops[ident])

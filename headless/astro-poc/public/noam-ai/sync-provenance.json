@@ -11,8 +11,8 @@
     "catalogPath": "src/data/catalog.v1.json",
     "count": 454
   },
-  "generatedAt": "2026-10-15T17:21:51.795Z",
-  "aggregateSha256": "98cf7c85baea4b761cdffa60fb776926c1f4e609c6a8d59c8428fb68b96aaa41",
+  "generatedAt": "2026-10-15T17:23:17.058Z",
+  "aggregateSha256": "e9ba76812aebf4fcf674e7444d793a592585bc42bbda3f2e872e4c7532e041e5",
   "files": {
     "013ccbb6896d486090482c2b548fef6c": {
       "source": "noam-ai/manifests/013ccbb6896d486090482c2b548fef6c.json",
@@ -1761,8 +1761,8 @@
     },
     "c76551a59c73455399aaa5dc548d6eff": {
       "source": "noam-ai/manifests/c76551a59c73455399aaa5dc548d6eff.json",
-      "sha256": "6b5f34467c3fed6f82cef5948f5072c53d44a0c48b53709215fbe02a5a23b72d",
-      "bytes": 46710
+      "sha256": "4431f53013f1a1bb51bca63c430c90d20052b6f7d8c467edb0609d5906b7b455",
+      "bytes": 52684
     },
     "c7d24257f4aa488d95fcf4dcbac900bb": {
       "source": "noam-ai/manifests/c7d24257f4aa488d95fcf4dcbac900bb.json",
