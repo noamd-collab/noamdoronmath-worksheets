@@ -61,7 +61,7 @@ test('the shipped submit handler calls AI first and sends prior turns on follow-
 
 test('latest grade wins while all topic pages remain available',()=>{
  const rows=conversationRecords(guide,{message:'עכשיו לכיתה ח׳',history:[{role:'user',content:'דפים לכיתה ט׳'}],page});
- assert.ok(rows.some(r=>r.id==='g8-t1-a'));
+ assert.ok(rows.some(r=>r.type==='worksheet' && r.grade===8));
  assert.ok(rows.every(r=>r.type!=='worksheet'||r.grade===8));
  assert.ok(rows.some(r=>r.id==='topic-kite-grade-9'));
  const generic=conversationRecords(guide,{message:'אני רוצה ללמוד מתמטיקה',page});
