@@ -13,9 +13,9 @@
  "questionCount": 20,
  "exerciseCount": 80,
  "parserConfidence": 0.99,
- "reviewRequired": true,
+ "reviewRequired": false,
  "mappingValidation": "native item labels and question IDs checked",
- "reviewNote": "Cross-page pin/crop visual review required before approval; parser success alone is not visual confirmation",
+ "reviewNote": "Independent visual review 2026-10-15 passed for this exact mapping: all 60 question crops, 240 part pins and 11 figure crops across the three levels were rendered from the approved student PDFs and viewed with zero clipping, pin or continuation defects; native public bytes and teacher sheets verified. Evidence report SHA256 28df50b233f0845700e36048090a853bdc2515ee1b8fe453e36f442b5bc10f85",
  "issues": [],
  "sourceSha256": "0dd68690e3fe700b90d45e164f7f9dc3ac16e55567bc9bcc53a0a066909a43c9",
  "questions": [
