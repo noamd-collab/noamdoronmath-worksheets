@@ -124,7 +124,7 @@ describe('Noam AI site manual', () => {
       assert.ok(guideIds.includes(id), id);
     }
     assert.equal(guideIds.includes('6a37fe7160324a17ad107b3dbe43c1db'), false);
-    assert.equal(guide.counts.topic, 252);
+    assert.equal(guide.counts.topic, 265);
     const counting = guide.records.find((row) => row.id === 'topic-counting-grade-1');
     assert.equal(counting && counting.href, '/counting-grade-1');
     assert.equal(counting && counting.topic, 'מונים בלי לפספס');

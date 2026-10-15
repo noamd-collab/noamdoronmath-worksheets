@@ -256,6 +256,19 @@ import collectRepresentDataGrade6 from '../data/topic-pages/collect-represent-da
 import compareGroupsConclusionsGrade6 from '../data/topic-pages/compare-groups-conclusions-grade-6.json';
 import scalingDimensionsGrade6 from '../data/topic-pages/scaling-dimensions-grade-6.json';
 import patternsMultistepGrade6 from '../data/topic-pages/patterns-multistep-grade-6.json';
+import fractionTimesWholeGrade6 from '../data/topic-pages/fraction-times-whole-grade-6.json';
+import fractionPartQuantityAreaGrade6 from '../data/topic-pages/fraction-part-quantity-area-grade-6.json';
+import fractionTimesFractionGrade6 from '../data/topic-pages/fraction-times-fraction-grade-6.json';
+import multiplyMixedNumbersGrade6 from '../data/topic-pages/multiply-mixed-numbers-grade-6.json';
+import fractionMultiplicationApplyGrade6 from '../data/topic-pages/fraction-multiplication-apply-grade-6.json';
+import fractionDivisionMeaningGrade6 from '../data/topic-pages/fraction-division-meaning-grade-6.json';
+import fractionDivisionAlgorithmGrade6 from '../data/topic-pages/fraction-division-algorithm-grade-6.json';
+import fractionOperationsChooseGrade6 from '../data/topic-pages/fraction-operations-choose-grade-6.json';
+import multiplyDecimalsGrade6 from '../data/topic-pages/multiply-decimals-grade-6.json';
+import divideDecimalsGrade6 from '../data/topic-pages/divide-decimals-grade-6.json';
+import capacityMlLM3Grade6 from '../data/topic-pages/capacity-ml-l-m3-grade-6.json';
+import ratioGrade6 from '../data/topic-pages/ratio-grade-6.json';
+import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -449,15 +462,28 @@ export const TOPIC_PAGE_G1_SLUGS = [
 /** Grade 5, catalog order. Only topics with an animation mapping ship. */
 /** Grade 6, catalog order. Only topics with an animation mapping ship. */
 export const TOPIC_PAGE_G6_SLUGS = [
+  'fraction-times-whole-grade-6',
+  'fraction-part-quantity-area-grade-6',
+  'fraction-times-fraction-grade-6',
+  'multiply-mixed-numbers-grade-6',
+  'fraction-multiplication-apply-grade-6',
+  'fraction-division-meaning-grade-6',
+  'fraction-division-algorithm-grade-6',
+  'fraction-operations-choose-grade-6',
+  'multiply-decimals-grade-6',
+  'divide-decimals-grade-6',
   'solids-explore-grade-6',
   'boxes-nets-grade-6',
   'box-surface-area-grade-6',
   'box-volume-grade-6',
+  'capacity-ml-l-m3-grade-6',
   'quadrilaterals-review-grade-6',
   'measurement-geometry-synthesis-grade-6',
   'fraction-decimal-percent-grade-6',
   'percent-of-quantity-grade-6',
   'find-the-whole-grade-6',
+  'ratio-grade-6',
+  'scale-maps-grade-6',
   'numbers-operations-review-grade-6',
   'collect-represent-data-grade-6',
   'compare-groups-conclusions-grade-6',
@@ -995,6 +1021,19 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'compare-groups-conclusions-grade-6': compareGroupsConclusionsGrade6 as TopicPageContent,
   'scaling-dimensions-grade-6': scalingDimensionsGrade6 as TopicPageContent,
   'patterns-multistep-grade-6': patternsMultistepGrade6 as TopicPageContent,
+  'fraction-times-whole-grade-6': fractionTimesWholeGrade6 as TopicPageContent,
+  'fraction-part-quantity-area-grade-6': fractionPartQuantityAreaGrade6 as TopicPageContent,
+  'fraction-times-fraction-grade-6': fractionTimesFractionGrade6 as TopicPageContent,
+  'multiply-mixed-numbers-grade-6': multiplyMixedNumbersGrade6 as TopicPageContent,
+  'fraction-multiplication-apply-grade-6': fractionMultiplicationApplyGrade6 as TopicPageContent,
+  'fraction-division-meaning-grade-6': fractionDivisionMeaningGrade6 as TopicPageContent,
+  'fraction-division-algorithm-grade-6': fractionDivisionAlgorithmGrade6 as TopicPageContent,
+  'fraction-operations-choose-grade-6': fractionOperationsChooseGrade6 as TopicPageContent,
+  'multiply-decimals-grade-6': multiplyDecimalsGrade6 as TopicPageContent,
+  'divide-decimals-grade-6': divideDecimalsGrade6 as TopicPageContent,
+  'capacity-ml-l-m3-grade-6': capacityMlLM3Grade6 as TopicPageContent,
+  'ratio-grade-6': ratioGrade6 as TopicPageContent,
+  'scale-maps-grade-6': scaleMapsGrade6 as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
