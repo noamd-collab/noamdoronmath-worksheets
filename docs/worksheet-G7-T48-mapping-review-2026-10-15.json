@@ -9,7 +9,8 @@
   "method": [
     "every manifest item id matched against the approved public noam-ai.json per level",
     "all 22 cross-page crop bands inspected as rendered images, plus a figure and table sample",
-    "geometric sweep over all 60 bands: own question marker inside, no neighbouring question or foreign part label inside, drawing ink unclipped, every pin on its own part label"
+    "geometric sweep over all 60 bands: own question marker inside, no neighbouring question or foreign part label inside, drawing ink unclipped, every pin on its own part label",
+    "independent reviewer actually inspected every one of the 60 complete question crop unions, all 245 own part pins, all 22 cross-page questions and all 36 native SVG diagnostic renders; exact bound inputs and approved static exports verified"
   ],
   "policy": "Partial support retained; 6 missing-BH-arm relation blocks unchanged",
   "levels": [
@@ -64,5 +65,40 @@
     "Qwen phone and desktop UI review",
     "Wix preview",
     "Noam merge/release approval"
-  ]
+  ],
+  "independentReview": {
+    "status": "PASS_MAPPING_STATIC_NATIVE_ONLY",
+    "reviewer": "Codex independent reviewer",
+    "reviewedHead": "42dd5263ac8989551e8532c8f157a18c33cefa54",
+    "reviewedAtUTC": "2026-10-15T14:03:59.978349+00:00",
+    "privateReportSha256": "ec4e1dbd9396deceecf80b3ff69663f1c144bf50cddfefad7b33937102555a6a",
+    "boundInputFileCount": 99,
+    "allBoundInputsUnchangedAtFinish": true,
+    "questionCropsActuallyViewed": 60,
+    "partPinsActuallyViewed": 245,
+    "crossPageQuestionsActuallyViewed": 22,
+    "nativeSVGRendersActuallyViewed": 36,
+    "openMappingDefects": 0,
+    "approvedPublicNativeBytesPreserved": true,
+    "safeTeacherItemsByLevel": {
+      "a": 80,
+      "b": 82,
+      "c": 83
+    },
+    "missingBHArmBlocksPreserved": 6,
+    "scope": "Exercise/part crop and pin mapping plus preservation of approved static native exports. No new mathematical-content approval, runtime wiring, external UI review or release approval.",
+    "adjudication": "C question 5 glyph bounding-box overlap was investigated at 8x; actual printed ink is wholly inside the crop, with zero black pixels removed. No crop change required.",
+    "diagnosticRenderLimitation": "PyMuPDF SVG diagnostic rasterization displays dashed strokes as solid; all 11 original stroke-dasharray attributes are retained byte-exact. Live overlay/consumer behavior is outside this review."
+  },
+  "rootChecks": {
+    "affectedGuardTests": {
+      "pass": 34,
+      "fail": 0
+    },
+    "deterministicManifestReplays": {
+      "G7-T48": 3,
+      "G7-T47": 3,
+      "payloadExactExcludingReviewMetadata": true
+    }
+  }
 }
