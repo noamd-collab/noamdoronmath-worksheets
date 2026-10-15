@@ -225,6 +225,23 @@ import missingNumberFractionsGrade5 from '../data/topic-pages/missing-number-fra
 import meanDataInquiryGrade5 from '../data/topic-pages/mean-data-inquiry-grade-5.json';
 import frequencyChanceGrade5 from '../data/topic-pages/frequency-chance-grade-5.json';
 import transformationsGrade5 from '../data/topic-pages/transformations-grade-5.json';
+import numberSenseTensHundredsGrade5 from '../data/topic-pages/number-sense-tens-hundreds-grade-5.json';
+import longDivisionGrade5 from '../data/topic-pages/long-division-grade-5.json';
+import primeFactorsGrade5 from '../data/topic-pages/prime-factors-grade-5.json';
+import fractionMeaningGrade5 from '../data/topic-pages/fraction-meaning-grade-5.json';
+import fractionsNumberlineCompareGrade5 from '../data/topic-pages/fractions-numberline-compare-grade-5.json';
+import expandReduceFractionsGrade5 from '../data/topic-pages/expand-reduce-fractions-grade-5.json';
+import commonDenominatorGrade5 from '../data/topic-pages/common-denominator-grade-5.json';
+import addSubtractFractionsGrade5 from '../data/topic-pages/add-subtract-fractions-grade-5.json';
+import fractionOfQuantityGrade5 from '../data/topic-pages/fraction-of-quantity-grade-5.json';
+import fractionsMixedNumbersGrade5 from '../data/topic-pages/fractions-mixed-numbers-grade-5.json';
+import addSubtractMixedNumbersGrade5 from '../data/topic-pages/add-subtract-mixed-numbers-grade-5.json';
+import completingFractionsGrade5 from '../data/topic-pages/completing-fractions-grade-5.json';
+import buildClassifyShapesGrade5 from '../data/topic-pages/build-classify-shapes-grade-5.json';
+import unitConversionWeightGrade5 from '../data/topic-pages/unit-conversion-weight-grade-5.json';
+import decimalPlaceValueGrade5 from '../data/topic-pages/decimal-place-value-grade-5.json';
+import compareFractionsDecimalsGrade5 from '../data/topic-pages/compare-fractions-decimals-grade-5.json';
+import addSubtractDecimalsGrade5 from '../data/topic-pages/add-subtract-decimals-grade-5.json';
 import solidsExploreGrade6 from '../data/topic-pages/solids-explore-grade-6.json';
 import boxesNetsGrade6 from '../data/topic-pages/boxes-nets-grade-6.json';
 import boxSurfaceAreaGrade6 from '../data/topic-pages/box-surface-area-grade-6.json';
@@ -450,12 +467,26 @@ export const TOPIC_PAGE_G6_SLUGS = [
 
 export const TOPIC_PAGE_G5_SLUGS = [
   'big-numbers-rounding-grade-5',
+  'number-sense-tens-hundreds-grade-5',
   'multiplication-multi-digit-grade-5',
+  'long-division-grade-5',
+  'prime-factors-grade-5',
   'order-of-operations-grade-5',
+  'fraction-meaning-grade-5',
+  'fractions-numberline-compare-grade-5',
+  'expand-reduce-fractions-grade-5',
+  'common-denominator-grade-5',
+  'add-subtract-fractions-grade-5',
+  'fraction-of-quantity-grade-5',
+  'fractions-mixed-numbers-grade-5',
+  'add-subtract-mixed-numbers-grade-5',
+  'completing-fractions-grade-5',
   'read-tables-grade-5',
   'read-graphs-grade-5',
   'quadrilateral-family-grade-5',
   'quadrilateral-diagonals-grade-5',
+  'build-classify-shapes-grade-5',
+  'unit-conversion-weight-grade-5',
   'perimeter-parallel-perpendicular-grade-5',
   'triangle-height-acute-right-grade-5',
   'triangle-height-obtuse-parallelogram-grade-5',
@@ -463,6 +494,9 @@ export const TOPIC_PAGE_G5_SLUGS = [
   'composite-area-grade-5',
   'parallelogram-area-grade-5',
   'triangle-area-grade-5',
+  'decimal-place-value-grade-5',
+  'compare-fractions-decimals-grade-5',
+  'add-subtract-decimals-grade-5',
   'missing-number-fractions-grade-5',
   'mean-data-inquiry-grade-5',
   'frequency-chance-grade-5',
@@ -929,6 +963,23 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'mean-data-inquiry-grade-5': meanDataInquiryGrade5 as TopicPageContent,
   'frequency-chance-grade-5': frequencyChanceGrade5 as TopicPageContent,
   'transformations-grade-5': transformationsGrade5 as TopicPageContent,
+  'number-sense-tens-hundreds-grade-5': numberSenseTensHundredsGrade5 as TopicPageContent,
+  'long-division-grade-5': longDivisionGrade5 as TopicPageContent,
+  'prime-factors-grade-5': primeFactorsGrade5 as TopicPageContent,
+  'fraction-meaning-grade-5': fractionMeaningGrade5 as TopicPageContent,
+  'fractions-numberline-compare-grade-5': fractionsNumberlineCompareGrade5 as TopicPageContent,
+  'expand-reduce-fractions-grade-5': expandReduceFractionsGrade5 as TopicPageContent,
+  'common-denominator-grade-5': commonDenominatorGrade5 as TopicPageContent,
+  'add-subtract-fractions-grade-5': addSubtractFractionsGrade5 as TopicPageContent,
+  'fraction-of-quantity-grade-5': fractionOfQuantityGrade5 as TopicPageContent,
+  'fractions-mixed-numbers-grade-5': fractionsMixedNumbersGrade5 as TopicPageContent,
+  'add-subtract-mixed-numbers-grade-5': addSubtractMixedNumbersGrade5 as TopicPageContent,
+  'completing-fractions-grade-5': completingFractionsGrade5 as TopicPageContent,
+  'build-classify-shapes-grade-5': buildClassifyShapesGrade5 as TopicPageContent,
+  'unit-conversion-weight-grade-5': unitConversionWeightGrade5 as TopicPageContent,
+  'decimal-place-value-grade-5': decimalPlaceValueGrade5 as TopicPageContent,
+  'compare-fractions-decimals-grade-5': compareFractionsDecimalsGrade5 as TopicPageContent,
+  'add-subtract-decimals-grade-5': addSubtractDecimalsGrade5 as TopicPageContent,
   // G6 (catalog order)
   'solids-explore-grade-6': solidsExploreGrade6 as TopicPageContent,
   'boxes-nets-grade-6': boxesNetsGrade6 as TopicPageContent,
