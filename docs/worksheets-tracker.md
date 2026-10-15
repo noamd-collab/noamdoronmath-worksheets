@@ -211,7 +211,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ז׳ | שכיחות (G7-T25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
 | כיתה ז׳ | שכיחות יחסית חלק 1 — היכרות (G7-T26) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
 | כיתה ז׳ | שכיחות יחסית חלק 2 — ניסויים ויציבות (G7-T27) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ז׳ | הסתברות — היכרות (G7-T28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | pending (#137 draft; reviewRequired=true until Qwen visual review) | no | #137 |
+| כיתה ז׳ | הסתברות — היכרות (G7-T28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | mapping yes (#137 independent crop/pin review; DeepSeek/Qwen advisory pending) | no | #137 |
 | כיתה ז׳ | שוויון ביטויים חלק 1 — כינוס ופילוג (G7-T29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
 | כיתה ז׳ | שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים (G7-T30) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#100); c yes (#100) | unknown | #100 (b,c) |
 | כיתה ז׳ | נקודות על גרף ברביע הראשון (G7-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
