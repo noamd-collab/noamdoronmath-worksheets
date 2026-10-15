@@ -298,7 +298,7 @@ test("all six reported grade9 topics expose every level and preserve the exact s
   const f = fixture(); f.ctx.goToGrade(9);
   const expected = [
     [9, "G9-T10", ["f155a1aadd5a40fc9057f969f4f20c7f", "186267fbfc41491da1c1f36c879efda4", "5fa68df9fabd4fbeaf7f6113a5ba92c1"]],
-    [40, "G9-T40", ["cbc951ad64d347099b1eaf5b10b34e7f", "5b1d05c4655144eba82e34199475706c", "a260c5eec7a84cf5929f89921d10dec8"]],
+    [40, "G9-T40", ["cc003cda40a246d0a894daa0af43234e", "dc2e7ba9ac2b4e03adb3476b1e8735e0", "0cd86701d15e4516b2b0116552132ca0"]],
     [12, "G9-T12", ["f262d5fe385546a19a74dae866684939", "b7f8e2436c6e4e6bb53da597275c91bc", "4a03a896942440629450275ed5645d92"]],
     [15, "G9-T08", ["0e3eb157e6c44414bf54a7ec65b4b03d", "261cc61968014dc182ec02202d613ab9", "808f0933d2884c579ac3c4426f44661f"]],
     [4, "G9-T15", ["c1f3b2b325b24edaaf4a10aaa77f8538", "d5c02a99a8e14c2299ffd641a4a3c3d4", "b134261d88c24d9ba32ff73a6ab5fbfd"]],
