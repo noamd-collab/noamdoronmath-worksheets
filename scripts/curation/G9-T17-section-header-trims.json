@@ -1,0 +1,127 @@
+{
+  "schema": "crop-curation/1",
+  "package": "G9-T17",
+  "note": "Seven independently reviewed adjustments: six foreign section-header exclusions with a 0.25pt antialias margin (B11 foreign-only page removed), and A7 tiny side-label restoration. Every change is bound to the exact source PDF hash, media ID, question and exercise ID list. The generic builder is unchanged.",
+  "levels": {
+    "a": {
+      "mediaId": "975c532d265d4b90b536bbb247817f38",
+      "sourceSha256": "c33450ece0fb4562998eadb5200a0d923510ef78e77fe8250aecb7d5116a0eb2"
+    },
+    "b": {
+      "mediaId": "b38c199bb4bf4c828a23c4c3f25ac3da",
+      "sourceSha256": "c3af8e51572474639141c99affc4f173f32b1a0f7f46fb5b3623ab848d90bb15"
+    },
+    "c": {
+      "mediaId": "11c7f97008dc4d8c95c46dfc04f47eeb",
+      "sourceSha256": "5422705880099d510ecba50c4fc1dae93f21fc6f55416a9f01bee4a85e97f3e8"
+    }
+  },
+  "trims": [
+    {
+      "level": "a",
+      "question": 6,
+      "page": 4,
+      "foreignHeader": "חלק ב׳ – גבהים, נקודות וחוצי זוויות (7–12)",
+      "trimBottomY": 0.633554,
+      "expectedOldBottom": 0.68043,
+      "exerciseIds": [
+        "G9-T17-A-Q06א",
+        "G9-T17-A-Q06ב",
+        "G9-T17-A-Q06ג"
+      ],
+      "operation": "resize",
+      "marginPtBeforeForeignHeader": 0.25
+    },
+    {
+      "level": "a",
+      "question": 12,
+      "page": 8,
+      "foreignHeader": "חלק ג׳ – הוכחות, ביטויים ומנגנונים (13–18)",
+      "trimBottomY": 0.292583,
+      "expectedOldBottom": 0.339458,
+      "exerciseIds": [
+        "G9-T17-A-Q12א",
+        "G9-T17-A-Q12ב",
+        "G9-T17-A-Q12ג"
+      ],
+      "operation": "resize",
+      "marginPtBeforeForeignHeader": 0.25
+    },
+    {
+      "level": "b",
+      "question": 6,
+      "page": 5,
+      "foreignHeader": "חלק ב׳ – ביטויים, זיהוי ומנגנונים (7–11)",
+      "trimBottomY": 0.49338,
+      "expectedOldBottom": 0.540255,
+      "exerciseIds": [
+        "G9-T17-B-Q06א",
+        "G9-T17-B-Q06ב",
+        "G9-T17-B-Q06ג"
+      ],
+      "operation": "resize",
+      "marginPtBeforeForeignHeader": 0.25
+    },
+    {
+      "level": "b",
+      "question": 11,
+      "page": 9,
+      "foreignHeader": "חלק ג׳ – חישובים בשרשרת ושרטוט ממילים (12–16)",
+      "expectedOldBottom": 0.10045,
+      "note": "page 9 holds only the foreign header above question 12; the slice becomes empty and is dropped",
+      "exerciseIds": [
+        "G9-T17-B-Q11א",
+        "G9-T17-B-Q11ב",
+        "G9-T17-B-Q11ג",
+        "G9-T17-B-Q11ד"
+      ],
+      "operation": "drop",
+      "marginPtBeforeForeignHeader": 0.25
+    },
+    {
+      "level": "c",
+      "question": 7,
+      "page": 5,
+      "foreignHeader": "חלק ב׳ – מרכז, מקרים ונקודות סימטריות (8–14)",
+      "trimBottomY": 0.469841,
+      "expectedOldBottom": 0.516717,
+      "exerciseIds": [
+        "G9-T17-E-Q07א",
+        "G9-T17-E-Q07ב",
+        "G9-T17-E-Q07ג"
+      ],
+      "operation": "resize",
+      "marginPtBeforeForeignHeader": 0.25
+    },
+    {
+      "level": "c",
+      "question": 14,
+      "page": 10,
+      "foreignHeader": "חלק ג׳ – הכללות, שטחים ומרובעים פנימיים (15–20)",
+      "trimBottomY": 0.522719,
+      "expectedOldBottom": 0.569595,
+      "exerciseIds": [
+        "G9-T17-E-Q14א",
+        "G9-T17-E-Q14ב",
+        "G9-T17-E-Q14ג"
+      ],
+      "operation": "resize",
+      "marginPtBeforeForeignHeader": 0.25
+    },
+    {
+      "level": "a",
+      "question": 7,
+      "page": 4,
+      "reason": "Restore lower numeric side label 11, whose source text bbox ends at 745.736pt; reviewed bottom is at least746.5pt.",
+      "exerciseIds": [
+        "G9-T17-A-Q07א",
+        "G9-T17-A-Q07ב",
+        "G9-T17-A-Q07ג",
+        "G9-T17-A-Q07ד"
+      ],
+      "expectedOldBottom": 0.874106,
+      "operation": "resize",
+      "trimBottomY": 0.886696
+    }
+  ]
+}
