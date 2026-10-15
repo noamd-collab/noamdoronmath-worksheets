@@ -70,7 +70,7 @@ jobs:
           cache-dependency-path: headless/astro-poc/package-lock.json
 
       - name: Test the pull-request scripts
-        run: node --test .github/scripts/check-internal-links.test.mjs .github/scripts/pr-pages.test.mjs
+        run: node --test .github/scripts/check-internal-links.test.mjs .github/scripts/pr-pages.test.mjs .github/scripts/qwen-homepage-extra-shots.test.mjs
 
       - name: Install dependencies
         working-directory: headless/astro-poc

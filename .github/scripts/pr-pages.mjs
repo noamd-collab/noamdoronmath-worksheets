@@ -16,6 +16,8 @@ export function routeFromPageFile(file) {
   if (!PAGE_FILE.test(rel)) return null;
 
   let route = rel.replace(PAGE_FILE, '');
+  // Feed contents are tested as data, not mistaken for real learner screenshots.
+  if (/\.(xml|txt|json)$/.test(route)) return null;
   if (route.endsWith('/index')) route = route.slice(0, -'/index'.length);
   else if (route === 'index') route = '';
   if (route === 'worksheets') return '/worksheets?grade=9';

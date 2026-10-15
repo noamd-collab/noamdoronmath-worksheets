@@ -11,6 +11,9 @@ describe('routeFromPageFile', () => {
     assert.equal(routeFromPageFile('headless/astro-poc/src/pages/post/[...slug].astro'), null);
     assert.equal(routeFromPageFile('headless/astro-poc/src/pages/api/contact-form.ts'), null);
     assert.equal(routeFromPageFile('headless/astro-poc/src/components/GradeHubPage.astro'), null);
+    assert.equal(routeFromPageFile('headless/astro-poc/src/pages/sitemap-index.xml.ts'), null);
+    assert.equal(routeFromPageFile('headless/astro-poc/src/pages/llms.txt.ts'), null);
+    assert.equal(routeFromPageFile('headless/astro-poc/src/pages/data.json.ts'), null);
   });
 });
 
