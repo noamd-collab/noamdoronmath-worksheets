@@ -14,6 +14,12 @@ export default defineConfig({
   output: 'server',
   adapter: wixHosting(),
 
+  // Not a credential or dashboard toggle. Node previews omit this build marker
+  // and retain their own metadata because they do not run Wix's hosted injection.
+  vite: {
+    define: { 'import.meta.env.PUBLIC_WIX_MANAGED_MAIN_PAGE_SEO': JSON.stringify('true') },
+  },
+
   server: {
     host: '127.0.0.1',
     port: 4321,
