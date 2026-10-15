@@ -252,7 +252,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | ארגון נתונים (G8-T28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
 | כיתה ח׳ | עמודות ופיקטוגרמות (G8-T29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ח׳ | דיאגרמת עוגה (G8-T30) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | מושג הפונקציה (G8-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ח׳ | מושג הפונקציה (G8-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | PASS static mapping/native/teacher context (#140 draft; external reviews pending) | no | #140 |
 | כיתה ח׳ | סימון פונקציה (G8-T16) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
 | כיתה ח׳ | מעבר בין ייצוגים (G8-T12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
 | כיתה ח׳ | טווח הנתונים (G8-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
