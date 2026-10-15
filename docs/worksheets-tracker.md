@@ -284,7 +284,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | מערכות — פתרון אלגברי (G8-T07) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | מערכות — מידול (G8-T08) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | הסתברות — מרחב תוצאות (G8-T36) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | הסתברות — ניסוי והוגנות (G8-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ח׳ | הסתברות — ניסוי והוגנות (G8-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | PASS static mapping/native/teacher context (#143 draft; external reviews pending) | no | #143 |
 | כיתה ח׳ | אי־שוויון (G8-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#99); c yes (#99) | unknown | #99 (b,c) |
 | כיתה ח׳ | אי־שוויון גרפי (G8-T05) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | פיתגורס במרחב (G8-T51) | רמה א׳, רמה ב׳, רמת מצוינות, מצוינות 2 | unknown | yes (#99) | unknown | #99 |

@@ -1,0 +1,21 @@
+{
+  "schema": "noam-conservative-consumer/1",
+  "package": "G8-T37",
+  "native_engine_modified": false,
+  "support": "show-only; no highlight or auxiliary actions offered",
+  "stock_highlight_sha256": "461f5b9b79002a73157f230eb80a65b7bf0533c63b5c35b6a3cd13d7a238b951",
+  "levels": {
+    "a": {
+      "noam_ai_sha256": "26287bdc38536ee01beda2e3e2ddeaf5e6a767de08001709ace711000fef50fc",
+      "blocked": []
+    },
+    "b": {
+      "noam_ai_sha256": "9840ce4df1c720f752b5175befabdbdac5bb65826324b048ce4c62c84b944ff4",
+      "blocked": []
+    },
+    "c": {
+      "noam_ai_sha256": "203c34dd7f6d14f9cb72ebeda7e4223e99cfa1fcf3a29967d957857a20ca6239",
+      "blocked": []
+    }
+  }
+}
