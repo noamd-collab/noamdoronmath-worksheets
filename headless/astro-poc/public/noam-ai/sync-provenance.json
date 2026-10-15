@@ -11,8 +11,8 @@
     "catalogPath": "src/data/catalog.v1.json",
     "count": 454
   },
-  "generatedAt": "2026-10-12T13:58:07.551Z",
-  "aggregateSha256": "df6595a70273eb1c186f8cc33d73dd28fb78fd2b7265ba3aebbbe7b43f89eed2",
+  "generatedAt": "2026-10-15T18:30:54.818Z",
+  "aggregateSha256": "566036b8f73e075b50f92ca304ae608af1af7e6b19da4fb58be5dee6e4382242",
   "files": {
     "013ccbb6896d486090482c2b548fef6c": {
       "source": "noam-ai/manifests/013ccbb6896d486090482c2b548fef6c.json",
@@ -158,6 +158,11 @@
       "source": "noam-ai/manifests/129d683d836f4b9b860c8221f1c69587.json",
       "sha256": "b6d684021f810ae0dd9ca953784f740df1018036a1642063082000e31d1d5ba9",
       "bytes": 15923
+    },
+    "1484d3da89c246e0bf6f7c6ccf7fd6f5": {
+      "source": "noam-ai/manifests/1484d3da89c246e0bf6f7c6ccf7fd6f5.json",
+      "sha256": "c4e8aa69f69e942e164c6b9b8bac64ef35537b2eaff596a2b1e052b1a048d82d",
+      "bytes": 111039
     },
     "14cd0252316f484ca852ff37f8a77f15": {
       "source": "noam-ai/manifests/14cd0252316f484ca852ff37f8a77f15.json",
@@ -714,11 +719,6 @@
       "sha256": "15790296a8b6dbffc365cb4bc2293cfed149856d601f0afb2a56c054379d01c5",
       "bytes": 38980
     },
-    "52d5c542bc224c15a3ebd2a156748883": {
-      "source": "noam-ai/manifests/52d5c542bc224c15a3ebd2a156748883.json",
-      "sha256": "cafa7f9e07a75d93e09ebf836619c4f57bb0a4047f76aa484647977bf3270515",
-      "bytes": 86381
-    },
     "540bb5be65c54871be6ed071aba55d21": {
       "source": "noam-ai/manifests/540bb5be65c54871be6ed071aba55d21.json",
       "sha256": "6e376d40fa76dcda35e875282fa4e56c3288843d83791c2400e7a7fd6681d3af",
@@ -953,6 +953,11 @@
       "source": "noam-ai/manifests/6bf3445843f34c7fb551220ec72e252e.json",
       "sha256": "497542edf96910338f0717e6c59d624f7c7e0d20120b0b1a4f515d2c1941d5b2",
       "bytes": 52579
+    },
+    "6bfa684eb9b644f684bea0cde1c5c9a1": {
+      "source": "noam-ai/manifests/6bfa684eb9b644f684bea0cde1c5c9a1.json",
+      "sha256": "3ff216f0b0e72a641b2d3501946789298c923a0fac65a0b53679e5e263ccdbdf",
+      "bytes": 110005
     },
     "6cf3395e60694823b72b8512fdb36850": {
       "source": "noam-ai/manifests/6cf3395e60694823b72b8512fdb36850.json",
@@ -1388,6 +1393,11 @@
       "source": "noam-ai/manifests/9e7431e80c144dfbbee55f510223f1e9.json",
       "sha256": "1068b825bfdbd38892936e1abf31be4a83f187c82fdcb07ca0ac3d34cebfffee",
       "bytes": 66105
+    },
+    "9e98f366feb74e129b7c9d1f1d33285d": {
+      "source": "noam-ai/manifests/9e98f366feb74e129b7c9d1f1d33285d.json",
+      "sha256": "1f53e3c15d7c4211aa0869a1b5859b35907144fe356a29ed9b518f96cf3aa84d",
+      "bytes": 114290
     },
     "9f80522b4a47401db268237f24eb5d3f": {
       "source": "noam-ai/manifests/9f80522b4a47401db268237f24eb5d3f.json",
@@ -1899,11 +1909,6 @@
       "sha256": "b1d7c2e2c6212a122ef2abce5b44ae0383a02861c529278c101c839c1929e3b2",
       "bytes": 68175
     },
-    "d84668df3c894999b50350634abfab0f": {
-      "source": "noam-ai/manifests/d84668df3c894999b50350634abfab0f.json",
-      "sha256": "8cfeb19d08e2e8703cd0ba52b1145e2d2aafdae9392396f179417ee664ed2a77",
-      "bytes": 88339
-    },
     "d8b0f960953c4f949133e1308391240d": {
       "source": "noam-ai/manifests/d8b0f960953c4f949133e1308391240d.json",
       "sha256": "605441a0f031fe3e51865d893f43ad50b4374ba110605377a64667b0324b2c43",
@@ -2214,11 +2219,6 @@
       "sha256": "e03a5844ebd3f01959b1c7d57765fdc565ad30604e2fb70dda39faa7b66ffb90",
       "bytes": 16607
     },
-    "f97c62649ba442b788d9e4b6783f4be4": {
-      "source": "noam-ai/manifests/f97c62649ba442b788d9e4b6783f4be4.json",
-      "sha256": "572c88776b94cb0ddc7cb9873777d49e4c6bfe55daaafb58fab43328d097ac8e",
-      "bytes": 84628
-    },
     "f98e804af31044708ca2dc3f0d97f270": {
       "source": "noam-ai/manifests/f98e804af31044708ca2dc3f0d97f270.json",
       "sha256": "2bdb24d10e14806b76183de4ad8cd30552517f9e2080536be126877639668c9d",
@@ -2288,7 +2288,7 @@
   "legacyIndex": {
     "path": "public/legacy-github/index.html",
     "source": "index.html",
-    "sha256": "bae2fedecd6959897db87aa3763063dfcb1ccb4717699922f18a253917ee5fd5",
+    "sha256": "4086d8d27ae164e9d3a9966fd350d3deee6f60a0e5ea80e9e99f72081df846ec",
     "bytes": 186241,
     "note": "Sibling-level discovery fallback when pa/pb/pc are incomplete; not the Astro home route."
   }

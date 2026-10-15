@@ -1,0 +1,115 @@
+{
+  "schema": "student-reviewed-crop-curation/1",
+  "package": "G9-T32",
+  "grade": 9,
+  "topicId": 19,
+  "reason": "Restore elevated fraction numerator glyphs at four question starts; retain every crop bottom and all own-part pins.",
+  "levels": [
+    {
+      "level": "a",
+      "mediaId": "1484d3da89c246e0bf6f7c6ccf7fd6f5",
+      "studentSha256": "28aeb27e0d69b3797a1ec21847f880e6c5540b08b1e07e30d86c37be7e569094",
+      "operations": [
+        {
+          "q": 22,
+          "itemIds": [
+            "G9-T32-A-Q22א",
+            "G9-T32-A-Q22ב",
+            "G9-T32-A-Q22ג",
+            "G9-T32-A-Q22ד"
+          ],
+          "before": {
+            "page": 18,
+            "x": 0,
+            "y": 0.058141,
+            "w": 1,
+            "h": 0.531777
+          },
+          "after": {
+            "page": 18,
+            "x": 0,
+            "y": 0.052857,
+            "w": 1,
+            "h": 0.537061
+          }
+        }
+      ]
+    },
+    {
+      "level": "c",
+      "mediaId": "9e98f366feb74e129b7c9d1f1d33285d",
+      "studentSha256": "bef13f6b2568a36d380c027781f6f9a1162223ea613dc3fb02568b413f861641",
+      "operations": [
+        {
+          "q": 7,
+          "itemIds": [
+            "G9-T32-E-Q07א",
+            "G9-T32-E-Q07ב",
+            "G9-T32-E-Q07ג",
+            "G9-T32-E-Q07ד"
+          ],
+          "before": {
+            "page": 7,
+            "x": 0,
+            "y": 0.058141,
+            "w": 1,
+            "h": 0.554513
+          },
+          "after": {
+            "page": 7,
+            "x": 0,
+            "y": 0.052857,
+            "w": 1,
+            "h": 0.559797
+          }
+        },
+        {
+          "q": 8,
+          "itemIds": [
+            "G9-T32-E-Q08א",
+            "G9-T32-E-Q08ב",
+            "G9-T32-E-Q08ג",
+            "G9-T32-E-Q08ד"
+          ],
+          "before": {
+            "page": 8,
+            "x": 0,
+            "y": 0.058141,
+            "w": 1,
+            "h": 0.484759
+          },
+          "after": {
+            "page": 8,
+            "x": 0,
+            "y": 0.052857,
+            "w": 1,
+            "h": 0.490043
+          }
+        },
+        {
+          "q": 25,
+          "itemIds": [
+            "G9-T32-E-Q25א",
+            "G9-T32-E-Q25ב",
+            "G9-T32-E-Q25ג",
+            "G9-T32-E-Q25ד"
+          ],
+          "before": {
+            "page": 25,
+            "x": 0,
+            "y": 0.058141,
+            "w": 1,
+            "h": 0.60932
+          },
+          "after": {
+            "page": 25,
+            "x": 0,
+            "y": 0.052857,
+            "w": 1,
+            "h": 0.614604
+          }
+        }
+      ]
+    }
+  ]
+}
