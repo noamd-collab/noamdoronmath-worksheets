@@ -250,7 +250,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | גליל — נפח (G8-T53) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | חרוט (G8-T54) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | ארגון נתונים (G8-T28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | עמודות ופיקטוגרמות (G8-T29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ח׳ | עמודות ופיקטוגרמות (G8-T29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | pending (#146 draft; reviewRequired=true until independent mapping review) | no | #146 |
 | כיתה ח׳ | דיאגרמת עוגה (G8-T30) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | מושג הפונקציה (G8-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ח׳ | סימון פונקציה (G8-T16) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
