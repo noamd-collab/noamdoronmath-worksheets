@@ -14,6 +14,30 @@
   var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
   var SOLVE_REQUEST = /רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
   var botClientPromise = null;
+  var navigationPromise = null;
+  var previousNavigationMessage = "";
+  function loadNavigation() {
+    if (!navigationPromise) {
+      var controller = new AbortController();
+      var timer;
+      var timeout = new Promise(function (_, reject) {
+        timer = setTimeout(function () { controller.abort(); reject(new Error("NAVIGATION_TIMEOUT")); }, 5000);
+      });
+      navigationPromise = Promise.race([timeout, Promise.all([
+        import("/noam-navigation.js?v=d8e958a88873d5be"),
+        fetch("/noam-navigation-guide.json?v=d8e958a88873d5be", {signal: controller.signal}).then(function (response) {
+          if (!response.ok) throw new Error("NAVIGATION_UNAVAILABLE");
+          return response.json();
+        }),
+      ])]).then(function (loaded) { clearTimeout(timer); return loaded; }).catch(function (error) { clearTimeout(timer); navigationPromise = null; throw error; });
+    }
+    return navigationPromise;
+  }
+  function navigationFallback() {
+    return loadNavigation().then(function (loaded) { return loaded[0].navigationHelp(loaded[1], true); }).catch(function () {
+      return { answer: "אפשר להמשיך דרך מאגר דפי העבודה. בחרו כיתה ונושא במאגר.", primary: {label: "דפי עבודה", href: "/worksheets"}, chips: [{label: "בלוג", href: "/blog"}, {label: "למורים", href: "/teachers"}] };
+    });
+  }
   var script = document.currentScript;
   var avatarSrc = (script && script.getAttribute("data-avatar")) || "/design-exact/assets/avatar/ramzi-A-idle.svg";
   var mode = "closed";
@@ -419,7 +443,7 @@
     }
     setChips((result && result.chips) || []);
     detailsEl.textContent = (result && result.details) || answerEl.textContent;
-    moreEl.hidden = !detailsEl.textContent;
+    moreEl.hidden = !detailsEl.textContent || detailsEl.textContent === answerEl.textContent;
     if (mode === "compact") fitCompact();
   }
 
@@ -713,25 +737,26 @@
     }
     streaming = true;
     showThinking();
-    ensureBotClient().then(function (client) {
-      return client.postJson(API, {
-        message: message.slice(0, 700),
-        page: { kind: pageKind(), path: location.pathname + location.search, title: document.title },
-        teacher: teacherContext(),
-      });
+    var payload = {
+      message: message.slice(0, 700),
+      page: { kind: pageKind(), path: location.pathname + location.search, title: document.title },
+      teacher: teacherContext(),
+    };
+    loadNavigation().then(function (loaded) {
+      var result = loaded[0].navigateSite(payload, loaded[1], previousNavigationMessage);
+      if (result) previousNavigationMessage = result.needsGrade ? message : "";
+      return result;
+    }).catch(function () { return null; }).then(function (localResult) {
+      if (localResult) return localResult;
+      return ensureBotClient().then(function (client) { return client.postJson(API, payload); });
+    }).then(function (result) {
+      if (!result || result.ok === false || result.active === false) return navigationFallback();
+      return result;
+    }).catch(function () {
+      return navigationFallback();
     }).then(function (result) {
       streaming = false;
       showResult(result);
-    }).catch(function (error) {
-      streaming = false;
-      var text = (error && error.message) || FALLBACK;
-      var teacher = pageKind() === "teachers";
-      showResult({
-        answer: text,
-        details: teacher ? text + "\n" + EXPORT_NOTE : text,
-        primary: teacher ? { href: siteHref("/factoring-grade-9"), label: "פירוק לגורמים ט׳" } : null,
-        chips: teacher ? [{ label: "דפי עבודה", href: siteHref("/worksheets?grade=9&topic=2") }] : [],
-      });
     });
   });
   document.addEventListener("keydown", function (event) {
