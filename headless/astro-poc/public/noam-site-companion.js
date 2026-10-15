@@ -450,6 +450,11 @@
     var started = Date.now();
     hasAnswer = true;
     panel.classList.add("is-thinking");
+    primaryEl.hidden = true;
+    ramziEl.hidden = true;
+    moreEl.hidden = true;
+    detailsEl.hidden = true;
+    setChips([]);
     answerEl.innerHTML = '<span id="noam-site-companion-thinking"><span class="noam-think-text">חושב…</span><span class="noam-think-dots" aria-hidden="true"><i></i><i></i><i></i></span></span>';
     var button = sendButton();
     if (button) button.disabled = true;
@@ -744,7 +749,7 @@
     botClientPromise = new Promise(function (resolve, reject) {
       function finish(ok) {
         if (ok && window.NoamBotClient && typeof window.NoamBotClient.create === "function") {
-          resolve(window.NoamBotClient.create({ api: API_BASE, enabled: true, modelTimeoutMs: 20000 }));
+          resolve(window.NoamBotClient.create({ api: API_BASE, enabled: true, modelTimeoutMs: 30000 }));
           return;
         }
         reject(new Error(FALLBACK));

@@ -4,14 +4,14 @@
  * qwen3.8-flash is called server-side. This module never reads a key from the browser.
  */
 import { fetchWithTimeout } from "./bot-guard.js";
-import { retrieveGuide, retrieveRecords } from "./retrieve.js";
+import { gradeMentioned, retrieveGuide, retrieveRecords } from "./retrieve.js";
 import { dedupeActions, suggestTopicGroup } from "./topic-order.js";
 
 export const QWEN_CHAT_URL =
   "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions";
 export const QWEN_MODEL = "qwen3.8-flash";
 export const MAX_OUTPUT_TOKENS = 800;
-export const QWEN_TIMEOUT_MS = 12_000;
+export const QWEN_TIMEOUT_MS = 18_000;
 
 export const FALLBACK_TEXT =
   "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
@@ -232,7 +232,7 @@ function stripUnknownUrls(text, allowed) {
 function actionFrom(record) {
   return {
     id: record.id,
-    label: [record.gradeLabel, record.title, record.levelLabel].filter(Boolean).join(" · "),
+    label: [String(record.title || "").includes(record.gradeLabel) ? "" : record.gradeLabel, record.title, record.levelLabel].filter(Boolean).join(" · "),
     href: record.href,
   };
 }
@@ -295,6 +295,21 @@ export function qwenRequestBody(input, records) {
   };
 }
 
+// Keep every topic/section available for semantic discovery and grade changes.
+// Detailed worksheet levels are needed only once a grade is known; otherwise
+// the model can offer a topic/catalog page or ask one clarifying question.
+export function conversationRecords(guide, input) {
+  const safe = boundCompanionInput(input);
+  const contexts = [safe.message, ...safe.history.slice().reverse().map((turn) => turn.content)];
+  let grade = null;
+  for (const text of contexts) {
+    grade = gradeMentioned(text);
+    if (grade != null) break;
+  }
+  if (grade == null) grade = Number((safe.page.path.match(/(?:grade-|[?&](?:grade|g)=)([1-9])(?:\D|$)/) || [])[1]) || null;
+  return ((guide && guide.records) || []).filter((row) => row.type !== "worksheet" || Number(row.grade) === grade);
+}
+
 export async function handleCompanionTurn(input, options) {
   const settings = options || {};
   const safe = boundCompanionInput(input);
@@ -308,7 +323,7 @@ export async function handleCompanionTurn(input, options) {
   if (suggested) return suggested;
   const query = teacherQuery(safe) || (safe.page && safe.page.title) || "";
   const records = settings.guide
-    ? (Array.isArray(settings.guide.records) ? settings.guide.records : [])
+    ? conversationRecords(settings.guide, safe)
     : retrieveRecords(settings.catalog, query, 6, safe.page);
   if (!records.length) {
     return emptyResult("catalog-gap", MISSING_TEXT, safe);

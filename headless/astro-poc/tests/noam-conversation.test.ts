@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {readFileSync} from 'node:fs';
-import {boundCompanionInput, handleCompanionTurn, qwenRequestBody, isWorksheetSolveRequest} from '../../../noam-ai/site-companion/companion.js';
+import {conversationRecords, boundCompanionInput, handleCompanionTurn, qwenRequestBody, isWorksheetSolveRequest} from '../../../noam-ai/site-companion/companion.js';
 const guide=JSON.parse(readFileSync(new URL('../src/data/site-guide.v1.json',import.meta.url),'utf8'));
 const page={kind:'home',path:'/',title:'נועם דורון'};
 
@@ -56,4 +56,15 @@ test('the shipped submit handler calls AI first and sends prior turns on follow-
   assert.equal(sent.length,2);assert.equal(sent[0].history.length,0);
   assert.equal(sent[1].history.length,2);assert.equal(sent[1].history[0].content,'אני מחפש דפים לכיתה ט׳');
   assert.equal(displayed[1].source,'model');assert.equal(input.value,'');
+});
+
+
+test('latest grade wins while all topic pages remain available',()=>{
+ const rows=conversationRecords(guide,{message:'עכשיו לכיתה ח׳',history:[{role:'user',content:'דפים לכיתה ט׳'}],page});
+ assert.ok(rows.some(r=>r.id==='g8-t1-a'));
+ assert.ok(rows.every(r=>r.type!=='worksheet'||r.grade===8));
+ assert.ok(rows.some(r=>r.id==='topic-kite-grade-9'));
+ const generic=conversationRecords(guide,{message:'אני רוצה ללמוד מתמטיקה',page});
+ assert.ok(generic.some(r=>r.id==='catalog-9'));
+ assert.equal(generic.some(r=>r.type==='worksheet'),false);
 });
