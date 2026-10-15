@@ -9,7 +9,7 @@ import { isRoleQuestion, SOLVE_REQUEST_SOURCE } from "./role.js";
 export { isRoleQuestion, SOLVE_REQUEST_SOURCE } from "./role.js";
 const SOLVE_REQUEST = new RegExp(SOLVE_REQUEST_SOURCE, "i");
 import { navigateSite } from "./navigation.js";
-import { resolveNavigationIntent } from "./intent.js";
+import { resolveNavigationIntent, levelKeyFromRecord } from "./intent.js";
 export { requestedLevelKey, levelKeyFromRecord } from "./intent.js";
 import { dedupeActions, suggestTopicGroup } from "./topic-order.js";
 
@@ -433,6 +433,8 @@ export function groundModelPayload(parsed, records, input, modelName) {
 }
 
 export function qwenRequestBody(input, records, modelName) {
+  const intent = resolveNavigationIntent(input);
+  const levelInstruction = intent.useLevel ? "\nהרמה המחושבת לבקשה הנוכחית היא " + ({a: "רמה א׳", b: "רמה ב׳", c: "מצוינות"}[intent.level]) + ". בחר דף עבודה ברמה זו בלבד. קל יותר וקשה יותר מזיזים צעד אחד בסולם, לא שניים. הכלל הזה גובר על תיאורי קושי ישנים ברשומות." : "";
   return {
     model: modelName || QWEN_MODEL,
     stream: false,
@@ -440,7 +442,7 @@ export function qwenRequestBody(input, records, modelName) {
     response_format: { type: "json_object" },
     max_tokens: MAX_OUTPUT_TOKENS,
     messages: [
-      { role: "system", content: SYSTEM_PROMPT },
+      { role: "system", content: SYSTEM_PROMPT + levelInstruction },
       { role: "user", content: buildUserPrompt(input, records) },
     ],
   };
@@ -458,7 +460,8 @@ export function conversationRecords(guide, input) {
     if (grade != null) break;
   }
   if (grade == null) grade = Number((safe.page.path.match(/(?:grade-|[?&](?:grade|g)=)([1-9])(?:\D|$)/) || [])[1]) || null;
-  return ((guide && guide.records) || []).filter((row) => row.type !== "worksheet" || Number(row.grade) === grade);
+  const intent = resolveNavigationIntent(safe);
+  return ((guide && guide.records) || []).filter((row) => row.type !== "worksheet" || (Number(row.grade) === grade && (!intent.useLevel || levelKeyFromRecord(row) === intent.level)));
 }
 
 export async function handleCompanionTurn(input, options) {

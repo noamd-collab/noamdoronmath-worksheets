@@ -197,7 +197,7 @@ describe('Noam AI model role', () => {
     assert.equal(body.model, QWEN_MODEL);
     assert.equal(body.enable_thinking, false);
     assert.equal(body.stream, false);
-    assert.equal(body.messages[0].content, SYSTEM_PROMPT);
+    assert.ok(body.messages[0].content.startsWith(SYSTEM_PROMPT));
     assert.match(SYSTEM_PROMPT, /אתה לא רמזי/);
     assert.match(SYSTEM_PROMPT, /אסור לך לתת רמז/);
     const huge = 'א'.repeat(5000);

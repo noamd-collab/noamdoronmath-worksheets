@@ -3,7 +3,7 @@ import {readFileSync} from 'node:fs';
 import {test} from 'node:test';
 import {runInNewContext} from 'node:vm';
 import {parseHTML} from 'linkedom';
-import {handleCompanionTurn, callQwen, resolveQwenTarget, qwenChatUrlFrom} from '../../../noam-ai/site-companion/companion.js';
+import {handleCompanionTurn, callQwen, resolveQwenTarget, qwenChatUrlFrom, conversationRecords, qwenRequestBody} from '../../../noam-ai/site-companion/companion.js';
 import {navigateSite, navigationHelp} from '../../../noam-ai/site-companion/navigation.js';
 import {runCompanionTurn} from '../../../noam-ai/site-companion/endpoint.js';
 const read=(name:string)=>JSON.parse(readFileSync(new URL('../src/data/'+name,import.meta.url),'utf8'));
@@ -74,3 +74,12 @@ test('shipped submit flow preserves relative level intent after the real client 
  assert.equal(panel.getAttribute('data-answer-kind'),'fallback');
  assert.equal(panel.getAttribute('data-response-error'),'MODEL_AUTH_FAILED');
 });
+
+ test('model candidates and prompt enforce one difficulty step without losing topic discovery',()=>{
+ const input={message:'קל יותר',history:[{role:'user',content:first},{role:'user',content:'קשה יותר'}],page};
+ const rows=conversationRecords(guide,input);
+ assert.ok(rows.some((r:any)=>r.id==='g9-t2-a'));
+ assert.ok(rows.every((r:any)=>r.type!=='worksheet'||level(r)==='a'));
+ assert.ok(rows.some((r:any)=>r.type==='topic'));
+ assert.match(qwenRequestBody(input,rows).messages[0].content,/הרמה המחושבת לבקשה הנוכחית היא רמה א׳/);
+ });
