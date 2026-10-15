@@ -13,9 +13,9 @@
  "questionCount": 20,
  "exerciseCount": 80,
  "parserConfidence": 0.99,
- "reviewRequired": true,
+ "reviewRequired": false,
  "mappingValidation": "native item labels and question IDs checked",
- "reviewNote": "Cross-page pin/crop visual review required before approval; parser success alone is not visual confirmation",
+ "reviewNote": "Independent mapping/static-asset review 2026-10-15 passed: all60 question crops,240 part pins,26 cross-page questions and50 native SVGs viewed; zero crop, pin, figure-ink or neighbor-contamination defects. Partial-support policy blocks retained. Evidence report SHA256 bb3f93dc4d700c67afcbb80e90b5f3b7119336484c79606eaf5c00544d468f4f. Separate DeepSeek/Qwen UI/Wix preview and release approval remain pending.",
  "issues": [],
  "sourceSha256": "9b7a4842a2a0e486faea9a9382ed14695e5fe056bf804140f919e2b3deb53f19",
  "questions": [

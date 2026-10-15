@@ -1,0 +1,52 @@
+{
+  "package": "G7-T47",
+  "reviewScope": "Exact crop/pin mapping and static public assets only; no existing worksheet mathematics re-solve, runtime consumer, merge or release approval",
+  "independentEvidenceSha256": "bb3f93dc4d700c67afcbb80e90b5f3b7119336484c79606eaf5c00544d468f4f",
+  "questions": 60,
+  "parts": 240,
+  "crossPageQuestions": 26,
+  "nativeSvgFigures": 50,
+  "mapping": "PASS",
+  "policy": "Partial support retained;10 missing-BH-arm relation blocks unchanged",
+  "levels": [
+    {
+      "level": "a",
+      "mediaId": "8964a6f6949347ebb31486f0f9095d6b",
+      "manifestBeforeSha256": "228bd5bbce926499b9a7542b3754407ef75166b6112b78e225434ff022cff2f1",
+      "manifestAfterSha256": "b7a2362a6347faba8c6b86e6211ff7ca7eff07f9a757eafc404668e5509ff625",
+      "changedFields": [
+        "reviewRequired",
+        "reviewNote"
+      ],
+      "cropPinNativeDataUnchanged": true
+    },
+    {
+      "level": "b",
+      "mediaId": "e26cceb713814ad2a0534c0b3f288e50",
+      "manifestBeforeSha256": "8d1fbf28e9d70f7a527090cf1d7fb5730ac7a6719fbbcfce86e3acd7885fe856",
+      "manifestAfterSha256": "b4b59b99a403afba26eb80aa2de7f4277c4df83063616e8fe3c6fc8b49b1fbcb",
+      "changedFields": [
+        "reviewRequired",
+        "reviewNote"
+      ],
+      "cropPinNativeDataUnchanged": true
+    },
+    {
+      "level": "c",
+      "mediaId": "ad202916bec84364928f8b0f49a40c46",
+      "manifestBeforeSha256": "11c248dcc2e4c9d398b24dfa80094078220c8c7e0dcb0fe710dfba09e0e6e671",
+      "manifestAfterSha256": "923a785733a70d3762112bd75f2bf583630598acb535f8b0ac71c5cce7538371",
+      "changedFields": [
+        "reviewRequired",
+        "reviewNote"
+      ],
+      "cropPinNativeDataUnchanged": true
+    }
+  ],
+  "pending": [
+    "DeepSeek code review",
+    "Qwen phone and desktop UI review",
+    "Wix preview",
+    "Noam merge/release approval"
+  ]
+}
