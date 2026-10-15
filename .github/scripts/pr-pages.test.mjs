@@ -11,6 +11,9 @@ describe('routeFromPageFile', () => {
     assert.equal(routeFromPageFile('headless/astro-poc/src/pages/post/[...slug].astro'), null);
     assert.equal(routeFromPageFile('headless/astro-poc/src/pages/api/contact-form.ts'), null);
     assert.equal(routeFromPageFile('headless/astro-poc/src/components/GradeHubPage.astro'), null);
+    assert.equal(routeFromPageFile('headless/astro-poc/src/pages/sitemap-index.xml.ts'), null);
+    assert.equal(routeFromPageFile('headless/astro-poc/src/pages/llms.txt.ts'), null);
+    assert.equal(routeFromPageFile('headless/astro-poc/src/pages/data.json.ts'), null);
   });
 });
 
@@ -18,7 +21,7 @@ describe('pagesTouchedByDiff', () => {
   it('uses the fallback set when the diff does not name a page', () => {
     const result = pagesTouchedByDiff(['headless/astro-poc/src/styles/exact-site.css']);
     assert.equal(result.fallback, true);
-    assert.deepEqual(result.pages, ['/', '/grade-9', '/worksheets?grade=9']);
+    assert.deepEqual(result.pages, ['/', '/grade-5', '/grade-9', '/factoring-grade-9', '/worksheets?grade=9', '/blog']);
   });
 
   it('keeps changed pages and caps the screenshot list', () => {
