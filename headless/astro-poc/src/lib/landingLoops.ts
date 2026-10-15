@@ -10,7 +10,16 @@
 import topicFamilies from '../data/topicFamilies.json';
 import type { TopicPageContent } from './topicPages';
 
-/** Same mount list TopicPage used before this change (F01–F06, F21, F26, F38). */
+/**
+ * Family → ConceptLoop film. F01–F06, F21, F26, F38 were the original mounts.
+ * Per Noam's decision (2026-10-15): the existing F07–F13 films play on topic
+ * pages too (ending that part of the KIMI-ANIM-6 exclusion), and the later
+ * families reuse the closest existing film. F10/F14 keep their CSS loops.
+ * F11 subtraction topics use the new baseten-sub CSS loop via
+ * SLUG_CSS_OVERRIDE (only genuinely new loop: two-digit subtraction with
+ * borrowing). F24/F30 have no exact film yet — unit-frac and frac-product are
+ * the closest fits and are flagged in the PR for review.
+ */
 export const FAMILY_CONCEPT_LOOP = {
   F01: 'sticks',
   F02: 'numberline',
@@ -18,8 +27,21 @@ export const FAMILY_CONCEPT_LOOP = {
   F04: 'balance',
   F05: 'pattern',
   F06: 'bars',
+  F07: 'ruler',
+  F08: 'array',
+  F09: 'polygon',
+  F11: 'baseten',
+  F12: 'cookies',
+  F13: 'fraction',
   F21: 'area-model',
+  F22: 'equiv-half',
+  F23: 'prime-rect',
+  F24: 'unit-frac',
+  F25: 'frac-product',
   F26: 'triangle',
+  F27: 'tenth-cell',
+  F30: 'frac-product',
+  F33: 'ratio-beads',
   F38: 'pythagoras',
 } as const;
 
@@ -90,6 +112,7 @@ export const CSS_LOOP_VARIANTS = [
   'similar-area',
   'similar-aa',
   'tools',
+  'baseten-sub',
 ] as const;
 
 export type CssLoopVariant = (typeof CSS_LOOP_VARIANTS)[number];
@@ -160,6 +183,11 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'similar-triangles-area-ratio-grade-8': 'similar-area',
   'triangle-similarity-aa-grade-9': 'similar-aa',
   'triangle-similarity-proof-grade-8': 'similar-aa',
+  // Two-digit subtraction (incl. borrowing) — the one genuinely new loop.
+  'subtraction-two-digit-no-borrow-grade-2': 'baseten-sub',
+  'subtraction-two-digit-borrowing-grade-2': 'baseten-sub',
+  'column-subtraction-borrowing-grade-3': 'baseten-sub',
+  'multi-digit-subtraction-grade-4': 'baseten-sub',
 };
 
 export const GRADE_CONCEPT_LOOP = {
@@ -350,6 +378,7 @@ export const CSS_LOOP_IDEAS = {
   'similar-area': 'כשהצלעות גדלות פי 2, השטח גדל פי 4',
   'similar-aa': 'שתי זוויות שוות מספיקות כדי לקבוע דמיון',
   tools: 'המחשבון פותח קודם סוגריים: 2 × (3 + 1) הופך ל־2 × 4 = 8',
+  'baseten-sub': 'כשאין מספיק יחידות, מוט העשרת מתפרק לעשר יחידות: 52 − 27 = 25',
 } as const satisfies Record<CssLoopVariant, string>;
 
 export const FORMULA_LOOP_VARIANTS = [
