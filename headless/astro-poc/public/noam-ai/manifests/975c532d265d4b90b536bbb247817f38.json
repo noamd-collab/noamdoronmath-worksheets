@@ -13,9 +13,9 @@
  "questionCount": 18,
  "exerciseCount": 59,
  "parserConfidence": 0.99,
- "reviewRequired": true,
- "mappingValidation": "native item labels and question IDs checked",
- "reviewNote": "Cross-page pin/crop visual review required before approval; parser success alone is not visual confirmation",
+ "reviewRequired": false,
+ "mappingValidation": "Independent source-bound visual review passed: student question unions, item pins, native figures and teacher selection contexts.",
+ "reviewNote": "54 question unions, 180 item pins, 50 native figures and all 180 teacher selections independently reviewed. Seven crop corrections and reviewed teacher contexts replayed against the approved source hashes. External model, responsive UI and preview gates remain separate.",
  "issues": [],
  "sourceSha256": "c33450ece0fb4562998eadb5200a0d923510ef78e77fe8250aecb7d5116a0eb2",
  "questions": [
@@ -698,7 +698,7 @@
     "x": 0,
     "y": 0.058141,
     "w": 1,
-    "h": 0.575702
+    "h": 0.575413
    },
    "crops": [
     {
@@ -706,7 +706,7 @@
      "x": 0,
      "y": 0.058141,
      "w": 1,
-     "h": 0.575702
+     "h": 0.575413
     }
    ],
    "context": "",
@@ -729,7 +729,7 @@
     "x": 0,
     "y": 0.058141,
     "w": 1,
-    "h": 0.575702
+    "h": 0.575413
    },
    "crops": [
     {
@@ -737,7 +737,7 @@
      "x": 0,
      "y": 0.058141,
      "w": 1,
-     "h": 0.575702
+     "h": 0.575413
     }
    ],
    "context": "",
@@ -760,7 +760,7 @@
     "x": 0,
     "y": 0.058141,
     "w": 1,
-    "h": 0.575702
+    "h": 0.575413
    },
    "crops": [
     {
@@ -768,7 +768,7 @@
      "x": 0,
      "y": 0.058141,
      "w": 1,
-     "h": 0.575702
+     "h": 0.575413
     }
    ],
    "context": "",
@@ -791,7 +791,7 @@
     "x": 0,
     "y": 0.68043,
     "w": 1,
-    "h": 0.193676
+    "h": 0.206266
    },
    "crops": [
     {
@@ -799,7 +799,7 @@
      "x": 0,
      "y": 0.68043,
      "w": 1,
-     "h": 0.193676
+     "h": 0.206266
     },
     {
      "page": 5,
@@ -837,7 +837,7 @@
      "x": 0,
      "y": 0.68043,
      "w": 1,
-     "h": 0.193676
+     "h": 0.206266
     },
     {
      "page": 5,
@@ -875,7 +875,7 @@
      "x": 0,
      "y": 0.68043,
      "w": 1,
-     "h": 0.193676
+     "h": 0.206266
     },
     {
      "page": 5,
@@ -913,7 +913,7 @@
      "x": 0,
      "y": 0.68043,
      "w": 1,
-     "h": 0.193676
+     "h": 0.206266
     },
     {
      "page": 5,
@@ -1392,7 +1392,7 @@
      "x": 0,
      "y": 0.053575,
      "w": 1,
-     "h": 0.239299
+     "h": 0.239008
     }
    ],
    "context": "",
@@ -1415,7 +1415,7 @@
     "x": 0,
     "y": 0.053575,
     "w": 1,
-    "h": 0.239299
+    "h": 0.239008
    },
    "crops": [
     {
@@ -1430,7 +1430,7 @@
      "x": 0,
      "y": 0.053575,
      "w": 1,
-     "h": 0.239299
+     "h": 0.239008
     }
    ],
    "context": "",
@@ -1453,7 +1453,7 @@
     "x": 0,
     "y": 0.053575,
     "w": 1,
-    "h": 0.239299
+    "h": 0.239008
    },
    "crops": [
     {
@@ -1468,7 +1468,7 @@
      "x": 0,
      "y": 0.053575,
      "w": 1,
-     "h": 0.239299
+     "h": 0.239008
     }
    ],
    "context": "",

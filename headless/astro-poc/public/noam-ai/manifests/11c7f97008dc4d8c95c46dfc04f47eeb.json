@@ -13,9 +13,9 @@
  "questionCount": 20,
  "exerciseCount": 67,
  "parserConfidence": 0.99,
- "reviewRequired": true,
- "mappingValidation": "native item labels and question IDs checked",
- "reviewNote": "Cross-page pin/crop visual review required before approval; parser success alone is not visual confirmation",
+ "reviewRequired": false,
+ "mappingValidation": "Independent source-bound visual review passed: student question unions, item pins, native figures and teacher selection contexts.",
+ "reviewNote": "54 question unions, 180 item pins, 50 native figures and all 180 teacher selections independently reviewed. Seven crop corrections and reviewed teacher contexts replayed against the approved source hashes. External model, responsive UI and preview gates remain separate.",
  "issues": [],
  "sourceSha256": "5422705880099d510ecba50c4fc1dae93f21fc6f55416a9f01bee4a85e97f3e8",
  "questions": [
@@ -891,7 +891,7 @@
     "x": 0,
     "y": 0.058141,
     "w": 1,
-    "h": 0.412006
+    "h": 0.4117
    },
    "crops": [
     {
@@ -899,7 +899,7 @@
      "x": 0,
      "y": 0.058141,
      "w": 1,
-     "h": 0.412006
+     "h": 0.4117
     }
    ],
    "context": "",
@@ -922,7 +922,7 @@
     "x": 0,
     "y": 0.058141,
     "w": 1,
-    "h": 0.412006
+    "h": 0.4117
    },
    "crops": [
     {
@@ -930,7 +930,7 @@
      "x": 0,
      "y": 0.058141,
      "w": 1,
-     "h": 0.412006
+     "h": 0.4117
     }
    ],
    "context": "",
@@ -953,7 +953,7 @@
     "x": 0,
     "y": 0.058141,
     "w": 1,
-    "h": 0.412006
+    "h": 0.4117
    },
    "crops": [
     {
@@ -961,7 +961,7 @@
      "x": 0,
      "y": 0.058141,
      "w": 1,
-     "h": 0.412006
+     "h": 0.4117
     }
    ],
    "context": "",
@@ -1715,7 +1715,7 @@
     "x": 0,
     "y": 0.058141,
     "w": 1,
-    "h": 0.464875
+    "h": 0.464578
    },
    "crops": [
     {
@@ -1723,7 +1723,7 @@
      "x": 0,
      "y": 0.058141,
      "w": 1,
-     "h": 0.464875
+     "h": 0.464578
     }
    ],
    "context": "",
@@ -1746,7 +1746,7 @@
     "x": 0,
     "y": 0.058141,
     "w": 1,
-    "h": 0.464875
+    "h": 0.464578
    },
    "crops": [
     {
@@ -1754,7 +1754,7 @@
      "x": 0,
      "y": 0.058141,
      "w": 1,
-     "h": 0.464875
+     "h": 0.464578
     }
    ],
    "context": "",
@@ -1777,7 +1777,7 @@
     "x": 0,
     "y": 0.058141,
     "w": 1,
-    "h": 0.464875
+    "h": 0.464578
    },
    "crops": [
     {
@@ -1785,7 +1785,7 @@
      "x": 0,
      "y": 0.058141,
      "w": 1,
-     "h": 0.464875
+     "h": 0.464578
     }
    ],
    "context": "",

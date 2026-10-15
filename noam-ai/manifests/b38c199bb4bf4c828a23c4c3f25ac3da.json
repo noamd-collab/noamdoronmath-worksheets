@@ -13,9 +13,9 @@
  "questionCount": 16,
  "exerciseCount": 54,
  "parserConfidence": 0.99,
- "reviewRequired": true,
- "mappingValidation": "native item labels and question IDs checked",
- "reviewNote": "Cross-page pin/crop visual review required before approval; parser success alone is not visual confirmation",
+ "reviewRequired": false,
+ "mappingValidation": "Independent source-bound visual review passed: student question unions, item pins, native figures and teacher selection contexts.",
+ "reviewNote": "54 question unions, 180 item pins, 50 native figures and all 180 teacher selections independently reviewed. Seven crop corrections and reviewed teacher contexts replayed against the approved source hashes. External model, responsive UI and preview gates remain separate.",
  "issues": [],
  "sourceSha256": "c3af8e51572474639141c99affc4f173f32b1a0f7f46fb5b3623ab848d90bb15",
  "questions": [
@@ -740,7 +740,7 @@
     "x": 0,
     "y": 0.133616,
     "w": 1,
-    "h": 0.360058
+    "h": 0.359764
    },
    "crops": [
     {
@@ -748,7 +748,7 @@
      "x": 0,
      "y": 0.133616,
      "w": 1,
-     "h": 0.360058
+     "h": 0.359764
     }
    ],
    "context": "",
@@ -771,7 +771,7 @@
     "x": 0,
     "y": 0.133616,
     "w": 1,
-    "h": 0.360058
+    "h": 0.359764
    },
    "crops": [
     {
@@ -779,7 +779,7 @@
      "x": 0,
      "y": 0.133616,
      "w": 1,
-     "h": 0.360058
+     "h": 0.359764
     }
    ],
    "context": "",
@@ -802,7 +802,7 @@
     "x": 0,
     "y": 0.133616,
     "w": 1,
-    "h": 0.360058
+    "h": 0.359764
    },
    "crops": [
     {
@@ -810,7 +810,7 @@
      "x": 0,
      "y": 0.133616,
      "w": 1,
-     "h": 0.360058
+     "h": 0.359764
     }
    ],
    "context": "",
