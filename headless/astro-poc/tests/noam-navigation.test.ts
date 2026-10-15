@@ -90,3 +90,35 @@ test('navigation cache version tracks both the generated index and code', () => 
   assert.ok(client.includes('noam-navigation.js?v=' + version));
   assert.ok(client.includes('noam-navigation-guide.json?v=' + version));
 });
+
+// Reported live failure: "אני מחפש דפים לכיתה ט׳...".
+test('plain Hebrew requests for sheets open the grade catalog', () => {
+  for (const q of [
+    'אני מחפש דפים לכיתה ט׳...',
+    'אני מחפשת דפים לכיתה ט',
+    'אפשר דף לכיתה ט?',
+    'יש לכם דפים במתמטיקה לכיתה ט׳?',
+    'אני רוצה דפים לתרגול בכיתה ט',
+    'דפי תרגול לכיתה ט',
+  ]) {
+    const r = ask(q);
+    assert.equal(r.source, 'site-navigation', q);
+    assert.equal(r.primary.href, '/worksheets?grade=9', q);
+    assert.doesNotMatch(r.answer, /לא מצאתי/, q);
+  }
+  assert.equal(ask('יש לכם דפים?').primary.href, '/worksheets');
+  assert.equal(ask('דף').primary.href, '/worksheets');
+  assert.equal(ask('ט׳').primary.href, '/worksheets?grade=9');
+});
+test('sheet wording preserves a requested topic and grade-only follow-ups', () => {
+  assert.equal(ask('אני מחפש דפים על דלתון לכיתה ט׳').primary.href, '/kite-grade-9');
+  assert.equal(ask('אני מחפש דפים על שברים').needsGrade, true);
+  const r = ask('ה׳', undefined, 'אני מחפש דפים על שברים');
+  assert.ok(r.links.length);
+  for (const link of r.links) {
+    const row = guide.records.find((x: any) => x.id === link.id);
+    assert.equal(row.grade, 5);
+    assert.match(row.title + ' ' + row.topic, /שבר/);
+  }
+  assert.equal(ask('דפים על טופולוגיה לכיתה ט').source, 'navigation-clarify');
+});

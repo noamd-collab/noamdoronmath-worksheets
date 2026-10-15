@@ -285,7 +285,7 @@ function isRoleQuestion(message) {
 
 // ../../noam-ai/site-companion/navigation.js
 var MARKS = "\u05D0\u05D1\u05D2\u05D3\u05D4\u05D5\u05D6\u05D7\u05D8";
-var STOP = new Set("\u05D0\u05E0\u05D9 \u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05D5\u05E6\u05D4 \u05E8\u05D5\u05E6\u05D9\u05DD \u05E6\u05E8\u05D9\u05DA \u05E6\u05E8\u05D9\u05DB\u05D4 \u05E6\u05E8\u05D9\u05DB\u05D9\u05DD \u05D0\u05E4\u05E9\u05E8 \u05D1\u05D1\u05E7\u05E9\u05D4 \u05D0\u05D9\u05E4\u05D4 \u05D4\u05D9\u05DB\u05DF \u05D9\u05E9 \u05D0\u05EA \u05DC\u05D9 \u05E2\u05DC \u05E9\u05DC \u05E2\u05DD \u05DC\u05DB\u05D9\u05EA\u05D4 \u05DB\u05D9\u05EA\u05D4 \u05D1\u05DB\u05D9\u05EA\u05D4 \u05DB\u05D9\u05EA\u05D5\u05EA \u05D3\u05E3 \u05D3\u05E4\u05D9 \u05E2\u05D1\u05D5\u05D3\u05D4 \u05EA\u05E8\u05D2\u05D5\u05DC \u05EA\u05E8\u05D2\u05D9\u05DC\u05D9\u05DD \u05DC\u05DC\u05DE\u05D5\u05D3 \u05DC\u05DE\u05E6\u05D5\u05D0 \u05DE\u05D7\u05E4\u05E9 \u05DE\u05D7\u05E4\u05E9\u05EA \u05EA\u05DE\u05E6\u05D0 \u05EA\u05E8\u05D0\u05D4 \u05EA\u05DF \u05E7\u05D7 \u05EA\u05E2\u05D1\u05D9\u05E8 \u05E4\u05EA\u05D7 \u05EA\u05E4\u05EA\u05D7 \u05DC\u05E0\u05D5 \u05D0\u05D5\u05EA\u05D9 \u05D1\u05D0\u05EA\u05E8 \u05E0\u05D5\u05E9\u05D0 \u05D1\u05E0\u05D5\u05E9\u05D0 \u05D1\u05E0\u05D5\u05E9\u05D0 \u05D9\u05E9 \u05DC\u05DB\u05DD \u05D4\u05D0\u05DD \u05D0\u05D9\u05DA \u05DE\u05D2\u05D9\u05E2\u05D9\u05DD \u05DC\u05D4\u05D2\u05D9\u05E2 \u05E2\u05D1\u05D5\u05E8".split(" "));
+var STOP = new Set("\u05D0\u05E0\u05D9 \u05D0\u05E0\u05D7\u05E0\u05D5 \u05E8\u05D5\u05E6\u05D4 \u05E8\u05D5\u05E6\u05D9\u05DD \u05E6\u05E8\u05D9\u05DA \u05E6\u05E8\u05D9\u05DB\u05D4 \u05E6\u05E8\u05D9\u05DB\u05D9\u05DD \u05D0\u05E4\u05E9\u05E8 \u05D1\u05D1\u05E7\u05E9\u05D4 \u05D0\u05D9\u05E4\u05D4 \u05D4\u05D9\u05DB\u05DF \u05D9\u05E9 \u05D0\u05EA \u05DC\u05D9 \u05E2\u05DC \u05E9\u05DC \u05E2\u05DD \u05DC\u05DB\u05D9\u05EA\u05D4 \u05DB\u05D9\u05EA\u05D4 \u05D1\u05DB\u05D9\u05EA\u05D4 \u05DB\u05D9\u05EA\u05D5\u05EA \u05D3\u05E3 \u05D3\u05E4\u05D9\u05DD \u05D3\u05E4\u05D9 \u05E2\u05D1\u05D5\u05D3\u05D4 \u05EA\u05E8\u05D2\u05D5\u05DC \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC \u05EA\u05E8\u05D2\u05D9\u05DC\u05D9\u05DD \u05DE\u05EA\u05DE\u05D8\u05D9\u05E7\u05D4 \u05D1\u05DE\u05EA\u05DE\u05D8\u05D9\u05E7\u05D4 \u05DC\u05DC\u05DE\u05D5\u05D3 \u05DC\u05DE\u05E6\u05D5\u05D0 \u05DE\u05D7\u05E4\u05E9 \u05DE\u05D7\u05E4\u05E9\u05EA \u05EA\u05DE\u05E6\u05D0 \u05EA\u05E8\u05D0\u05D4 \u05EA\u05DF \u05E7\u05D7 \u05EA\u05E2\u05D1\u05D9\u05E8 \u05E4\u05EA\u05D7 \u05EA\u05E4\u05EA\u05D7 \u05DC\u05E0\u05D5 \u05D0\u05D5\u05EA\u05D9 \u05D1\u05D0\u05EA\u05E8 \u05E0\u05D5\u05E9\u05D0 \u05D1\u05E0\u05D5\u05E9\u05D0 \u05D1\u05E0\u05D5\u05E9\u05D0 \u05D9\u05E9 \u05DC\u05DB\u05DD \u05D4\u05D0\u05DD \u05D0\u05D9\u05DA \u05DE\u05D2\u05D9\u05E2\u05D9\u05DD \u05DC\u05D4\u05D2\u05D9\u05E2 \u05E2\u05D1\u05D5\u05E8".split(" "));
 var ROUTES = [
   [/בלוג|פוסטים|מאמרים/, "/blog"],
   [/מחשבון|כלים למתמטיקה/, "/math-tools"],
@@ -305,7 +305,8 @@ function words(value) {
   return normal(value).split(/[^\p{L}\p{N}-]+/u).filter(Boolean);
 }
 function gradeOf(message) {
-  const m = normal(message).match(/(?:^|\s)(?:[בל]?כיתה|grade)\s*([1-9אבגדהוזחט])(?=\s|$)/i);
+  const text = normal(message);
+  const m = text.match(/(?:^|\s)(?:[בל]?כיתה|grade)\s*([1-9אבגדהוזחט])(?=\s|$)/i) || text.match(/^([1-9אבגדהוזחט])$/);
   return m ? Number(m[1]) || MARKS.indexOf(m[1]) + 1 : null;
 }
 function validHref(href) {
@@ -339,12 +340,12 @@ function navigateSite(input, guide, previousMessage = "") {
   }
   const explicitGrade = gradeOf(raw);
   let query = text;
-  if (explicitGrade && /^(?:[בל]?כיתה|grade)\s*[1-9אבגדהוזחט]$/.test(text) && previousMessage) query = normal(previousMessage) + " " + text;
+  if (explicitGrade && /^(?:(?:[בל]?כיתה|grade)\s*)?[1-9אבגדהוזחט]$/.test(text) && previousMessage) query = normal(previousMessage) + " " + text;
   const pageGrade2 = Number((String(page.path || "").match(/(?:grade-|[?&](?:grade|g)=)([1-9])(?:\D|$)/) || [])[1]) || null;
   const grade = explicitGrade || gradeOf(query) || pageGrade2;
   const useful = words(query.replace(/(?:[בל]?כיתה|grade)\s*[1-9אבגדהוזחט](?=\s|$)/g, "")).filter((w) => w.length > 1 && !STOP.has(w));
   const generic = useful.length === 0;
-  if (generic && (explicitGrade || /דפי? עבודה|תרגול|תרגילים/.test(text))) {
+  if (generic && (explicitGrade || /(?:^|\s)(?:דף|דפים|דפי עבודה|דפי תרגול|תרגול|תרגילים)(?:\s|$)/.test(text))) {
     const path = grade ? "/worksheets?grade=" + grade : "/worksheets";
     return result("\u05D1\u05D7\u05E8\u05D5 \u05E0\u05D5\u05E9\u05D0 \u05D1\u05DE\u05D0\u05D2\u05E8 \u05D3\u05E4\u05D9 \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4" + (grade ? " \u05DC\u05DB\u05D9\u05EA\u05D4 " + MARKS[grade - 1] + "\u05F3" : "") + ".", records.filter((r) => r.href === path));
   }
