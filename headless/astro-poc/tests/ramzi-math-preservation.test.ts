@@ -28,7 +28,9 @@ test('לא הבנתי preserves math nodes and hidden TeX through repeated decor
   const before = Array.from(view.reply.querySelectorAll('.katex'));
   const markup = before.map(node => node.outerHTML);
   for (let i = 0; i < 3; i++) view.decorate();
-  assert.deepEqual(Array.from(view.reply.querySelectorAll('.katex')), before);
+  const after = Array.from(view.reply.querySelectorAll('.katex'));
+  assert.equal(after.length, before.length);
+  after.forEach((node, i) => assert.equal(node === before[i], true));
   assert.deepEqual(before.map(node => node.outerHTML), markup);
   assert.equal(view.reply.querySelectorAll('.ramzi-line').length, 4);
   assert.equal(view.reply.textContent.split(lead).length - 1, 1);
@@ -53,7 +55,7 @@ test('an already shaped reply keeps its math while adding one opening', () => {
   const formula = view.reply.querySelector('.katex')!;
   const before = formula.outerHTML;
   view.decorate(); view.decorate();
-  assert.equal(view.reply.querySelector('.katex'), formula);
+  assert.equal(view.reply.querySelector('.katex') === formula, true);
   assert.equal(formula.outerHTML, before);
   assert.equal(view.reply.querySelectorAll('.ramzi-line').length, 2);
 });
