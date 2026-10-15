@@ -181,6 +181,20 @@ import missingNumberFractionsGrade5 from '../data/topic-pages/missing-number-fra
 import meanDataInquiryGrade5 from '../data/topic-pages/mean-data-inquiry-grade-5.json';
 import frequencyChanceGrade5 from '../data/topic-pages/frequency-chance-grade-5.json';
 import transformationsGrade5 from '../data/topic-pages/transformations-grade-5.json';
+import solidsExploreGrade6 from '../data/topic-pages/solids-explore-grade-6.json';
+import boxesNetsGrade6 from '../data/topic-pages/boxes-nets-grade-6.json';
+import boxSurfaceAreaGrade6 from '../data/topic-pages/box-surface-area-grade-6.json';
+import boxVolumeGrade6 from '../data/topic-pages/box-volume-grade-6.json';
+import quadrilateralsReviewGrade6 from '../data/topic-pages/quadrilaterals-review-grade-6.json';
+import measurementGeometrySynthesisGrade6 from '../data/topic-pages/measurement-geometry-synthesis-grade-6.json';
+import fractionDecimalPercentGrade6 from '../data/topic-pages/fraction-decimal-percent-grade-6.json';
+import percentOfQuantityGrade6 from '../data/topic-pages/percent-of-quantity-grade-6.json';
+import findTheWholeGrade6 from '../data/topic-pages/find-the-whole-grade-6.json';
+import numbersOperationsReviewGrade6 from '../data/topic-pages/numbers-operations-review-grade-6.json';
+import collectRepresentDataGrade6 from '../data/topic-pages/collect-represent-data-grade-6.json';
+import compareGroupsConclusionsGrade6 from '../data/topic-pages/compare-groups-conclusions-grade-6.json';
+import scalingDimensionsGrade6 from '../data/topic-pages/scaling-dimensions-grade-6.json';
+import patternsMultistepGrade6 from '../data/topic-pages/patterns-multistep-grade-6.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -367,6 +381,24 @@ export const TOPIC_PAGE_G1_SLUGS = [
 /** Grade 3, catalog order. Only topics with an animation mapping ship. */
 /** Grade 4, catalog order. Only topics with an animation mapping ship. */
 /** Grade 5, catalog order. Only topics with an animation mapping ship. */
+/** Grade 6, catalog order. Only topics with an animation mapping ship. */
+export const TOPIC_PAGE_G6_SLUGS = [
+  'solids-explore-grade-6',
+  'boxes-nets-grade-6',
+  'box-surface-area-grade-6',
+  'box-volume-grade-6',
+  'quadrilaterals-review-grade-6',
+  'measurement-geometry-synthesis-grade-6',
+  'fraction-decimal-percent-grade-6',
+  'percent-of-quantity-grade-6',
+  'find-the-whole-grade-6',
+  'numbers-operations-review-grade-6',
+  'collect-represent-data-grade-6',
+  'compare-groups-conclusions-grade-6',
+  'scaling-dimensions-grade-6',
+  'patterns-multistep-grade-6',
+] as const;
+
 export const TOPIC_PAGE_G5_SLUGS = [
   'big-numbers-rounding-grade-5',
   'multiplication-multi-digit-grade-5',
@@ -449,6 +481,7 @@ export const TOPIC_PAGE_AUTHORED_SLUGS = [
   ...TOPIC_PAGE_G3_SLUGS,
   ...TOPIC_PAGE_G4_SLUGS,
   ...TOPIC_PAGE_G5_SLUGS,
+  ...TOPIC_PAGE_G6_SLUGS,
 ] as const;
 
 export const TOPIC_PAGE_SLUGS = [
@@ -465,6 +498,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_G3_SLUGS,
   ...TOPIC_PAGE_G4_SLUGS,
   ...TOPIC_PAGE_G5_SLUGS,
+  ...TOPIC_PAGE_G6_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -763,6 +797,21 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'mean-data-inquiry-grade-5': meanDataInquiryGrade5 as TopicPageContent,
   'frequency-chance-grade-5': frequencyChanceGrade5 as TopicPageContent,
   'transformations-grade-5': transformationsGrade5 as TopicPageContent,
+  // G6 (catalog order)
+  'solids-explore-grade-6': solidsExploreGrade6 as TopicPageContent,
+  'boxes-nets-grade-6': boxesNetsGrade6 as TopicPageContent,
+  'box-surface-area-grade-6': boxSurfaceAreaGrade6 as TopicPageContent,
+  'box-volume-grade-6': boxVolumeGrade6 as TopicPageContent,
+  'quadrilaterals-review-grade-6': quadrilateralsReviewGrade6 as TopicPageContent,
+  'measurement-geometry-synthesis-grade-6': measurementGeometrySynthesisGrade6 as TopicPageContent,
+  'fraction-decimal-percent-grade-6': fractionDecimalPercentGrade6 as TopicPageContent,
+  'percent-of-quantity-grade-6': percentOfQuantityGrade6 as TopicPageContent,
+  'find-the-whole-grade-6': findTheWholeGrade6 as TopicPageContent,
+  'numbers-operations-review-grade-6': numbersOperationsReviewGrade6 as TopicPageContent,
+  'collect-represent-data-grade-6': collectRepresentDataGrade6 as TopicPageContent,
+  'compare-groups-conclusions-grade-6': compareGroupsConclusionsGrade6 as TopicPageContent,
+  'scaling-dimensions-grade-6': scalingDimensionsGrade6 as TopicPageContent,
+  'patterns-multistep-grade-6': patternsMultistepGrade6 as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {

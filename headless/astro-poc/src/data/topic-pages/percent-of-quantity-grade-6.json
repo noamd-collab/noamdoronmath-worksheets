@@ -1,0 +1,265 @@
+{
+  "slug": "percent-of-quantity-grade-6",
+  "path": "/percent-of-quantity-grade-6",
+  "grade": 6,
+  "sourceUrl": "https://www.noamdoronmath.co.il/percent-of-quantity-grade-6",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g6-t19-grounded-pdf",
+  "title": "אחוז כחלק מכמות לכיתה ו׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "אחוז כחלק מכמות לכיתה ו׳: מציאת האחוז מתוך הכמות — כמו 45% מתוך 200, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "אחוז כחלק מכמות לכיתה ו׳",
+  "intro": "מוצאים אחוז מתוך כמות: כמה זה 45% מתוך 200? דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "אחוז הוא חלק מתוך 100. כדי למצוא אחוז מכמות כופלים את השבר בכמות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: 45% מתוך 200 זה 45/100 × 200 = 90.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "אפשר גם דרך 1%: מוצאים כמה זה 1% ואז כופלים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לכפול את האחוז עצמו בכמות בלי לחלק ב־100. 45% פירושם 45 מתוך 100.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: כמה זה 20% מתוך 150?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 30, כי 20/100 × 150 = 30.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מוצאים אחוז מתוך כמות: כמה זה 45% מתוך 200? דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=6&topic=19",
+      "catalogTopicId": 19
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "אחוז הוא חלק מתוך 100. כדי למצוא אחוז מכמות כופלים את השבר בכמות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: 45% מתוך 200 זה 45/100 × 200 = 90.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "אפשר גם דרך 1%: מוצאים כמה זה 1% ואז כופלים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לכפול את האחוז עצמו בכמות בלי לחלק ב־100. 45% פירושם 45 מתוך 100.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: כמה זה 20% מתוך 150?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 30, כי 20/100 × 150 = 30.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא אחוז כחלק מכמות מתאימים לכיתה ו׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ו׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא אחוז כחלק מכמות מתאימים לכיתה ו׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ו׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-6",
+      "label": "כל דפי כיתה ו׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-6"
+    },
+    {
+      "path": "/grade-7",
+      "label": "דפי עבודה לכיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=6&topic=19",
+    "source": "catalog-g6-t19",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=19",
+    "catalogTopicId": 19,
+    "catalogTopicTitle": "אחוז כחלק מכמות"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=6&topic=19",
+      "source": "catalog-g6-t19",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=19",
+      "catalogTopicId": 19,
+      "catalogTopicTitle": "אחוז כחלק מכמות"
+    }
+  ],
+  "gradeHubHref": "/grade-6",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/percent-of-quantity-grade-6#webpage",
+        "url": "https://www.noamdoronmath.co.il/percent-of-quantity-grade-6",
+        "name": "אחוז כחלק מכמות לכיתה ו׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "אחוז כחלק מכמות לכיתה ו׳: מציאת האחוז מתוך הכמות — כמו 45% מתוך 200, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/percent-of-quantity-grade-6#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/percent-of-quantity-grade-6#learning-resource",
+        "name": "אחוז כחלק מכמות לכיתה ו׳",
+        "url": "https://www.noamdoronmath.co.il/percent-of-quantity-grade-6",
+        "description": "אחוז כחלק מכמות לכיתה ו׳: מציאת האחוז מתוך הכמות — כמו 45% מתוך 200, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ו׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/percent-of-quantity-grade-6#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא אחוז כחלק מכמות מתאימים לכיתה ו׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ו׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
