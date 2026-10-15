@@ -306,7 +306,7 @@ describe('Noam AI headless endpoint', () => {
 
   it('returns the calm unavailable text when reCAPTCHA or Qwen times out', async () => {
     assert.equal(RECAPTCHA_TIMEOUT_MS, 5_000);
-    assert.equal(QWEN_TIMEOUT_MS, 12_000);
+    assert.equal(QWEN_TIMEOUT_MS, 18_000);
     const hang = (_url: string, init?: { signal?: AbortSignal }) => new Promise(() => {
       // Stays pending. The timeout aborts the signal and wins the race.
       void init;
