@@ -12,7 +12,7 @@
 
 | כיתה | נושאים | דפים נבנו | אנימציה חסרה |
 |---|---|---|---|
-| 1 (א׳) | 23 | 18 | 0 |
+| 1 (א׳) | 23 | 23 | 0 |
 | 2 (ב׳) | 29 | 14 | 0 |
 | 3 (ג׳) | 25 | 14 | 0 |
 | 4 (ד׳) | 30 | 17 | 0 |
@@ -21,7 +21,7 @@
 | 7 (ז׳) | 50 | 39 | 0 |
 | 8 (ח׳) | 65 | 26 | 0 |
 | 9 (ט׳) | 45 | 41 | 0 |
-| **סה״כ** | **329** | **201** | **0** |
+| **סה״כ** | **329** | **206** | **0** |
 
 ## כיתה א׳ (grade 1)
 
@@ -41,12 +41,12 @@
 | 1 | חוקרים את לוח המאה | 12 | /hundred-chart-grade-1 | exists |
 | 1 | שרשראות ופירמידות מספרים | 13 | /number-chains-pyramids-grade-1 | exists |
 | 1 | בעיות מילוליות בציור ובמספר | 14 | /word-problems-picture-grade-1 | exists |
-| 1 | מודדים ומשווים אורך | 15 | — | exists |
-| 1 | קבוצות שוות וחיבור חוזר | 16 | — | exists |
-| 1 | מצולעים | 17 | — | exists |
-| 1 | ריבוע ומלבן | 18 | — | exists |
+| 1 | מודדים ומשווים אורך | 15 | /measure-compare-length-grade-1 | exists |
+| 1 | קבוצות שוות וחיבור חוזר | 16 | /equal-groups-repeated-addition-grade-1 | exists |
+| 1 | מצולעים | 17 | /polygons-grade-1 | exists |
+| 1 | ריבוע ומלבן | 18 | /square-rectangle-grade-1 | exists |
 | 1 | מרכיבים ומפרקים | 19 | /compose-decompose-grade-1 | exists |
-| 1 | שעה שלמה | 20 | — | exists |
+| 1 | שעה שלמה | 20 | /reading-clock-grade-1 | exists |
 | 1 | נתונים | 21 | /data-grade-1 | exists |
 | 1 | בעיות מילוליות פשוטות | 22 | /word-problems-simple-grade-1 | exists |
 | 1 | הרכבה ופירוק | 23 | /shapes-compose-decompose-grade-1 | exists |

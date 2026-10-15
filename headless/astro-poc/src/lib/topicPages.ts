@@ -118,6 +118,11 @@ import composeDecomposeGrade1 from '../data/topic-pages/compose-decompose-grade-
 import dataGrade1 from '../data/topic-pages/data-grade-1.json';
 import wordProblemsSimpleGrade1 from '../data/topic-pages/word-problems-simple-grade-1.json';
 import shapesComposeDecomposeGrade1 from '../data/topic-pages/shapes-compose-decompose-grade-1.json';
+import measureCompareLengthGrade1 from '../data/topic-pages/measure-compare-length-grade-1.json';
+import equalGroupsRepeatedAdditionGrade1 from '../data/topic-pages/equal-groups-repeated-addition-grade-1.json';
+import polygonsGrade1 from '../data/topic-pages/polygons-grade-1.json';
+import squareRectangleGrade1 from '../data/topic-pages/square-rectangle-grade-1.json';
+import readingClockGrade1 from '../data/topic-pages/reading-clock-grade-1.json';
 import numberBonds1020Grade2 from '../data/topic-pages/number-bonds-10-20-grade-2.json';
 import tensAndOnesGrade2 from '../data/topic-pages/tens-and-ones-grade-2.json';
 import orderCompareNumberlineGrade2 from '../data/topic-pages/order-compare-numberline-grade-2.json';
@@ -371,7 +376,12 @@ export const TOPIC_PAGE_G1_SLUGS = [
   'hundred-chart-grade-1',
   'number-chains-pyramids-grade-1',
   'word-problems-picture-grade-1',
+  'measure-compare-length-grade-1',
+  'equal-groups-repeated-addition-grade-1',
+  'polygons-grade-1',
+  'square-rectangle-grade-1',
   'compose-decompose-grade-1',
+  'reading-clock-grade-1',
   'data-grade-1',
   'word-problems-simple-grade-1',
   'shapes-compose-decompose-grade-1',
@@ -730,6 +740,11 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'data-grade-1': dataGrade1 as TopicPageContent,
   'word-problems-simple-grade-1': wordProblemsSimpleGrade1 as TopicPageContent,
   'shapes-compose-decompose-grade-1': shapesComposeDecomposeGrade1 as TopicPageContent,
+  'measure-compare-length-grade-1': measureCompareLengthGrade1 as TopicPageContent,
+  'equal-groups-repeated-addition-grade-1': equalGroupsRepeatedAdditionGrade1 as TopicPageContent,
+  'polygons-grade-1': polygonsGrade1 as TopicPageContent,
+  'square-rectangle-grade-1': squareRectangleGrade1 as TopicPageContent,
+  'reading-clock-grade-1': readingClockGrade1 as TopicPageContent,
   // G2 (catalog order)
   'number-bonds-10-20-grade-2': numberBonds1020Grade2 as TopicPageContent,
   'tens-and-ones-grade-2': tensAndOnesGrade2 as TopicPageContent,
