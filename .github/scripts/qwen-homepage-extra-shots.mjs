@@ -73,6 +73,12 @@ export async function captureHomepageGameShots({ baseUrl, outDir }) {
           return image.complete && image.naturalWidth > 0
             && rect.top < window.innerHeight && rect.bottom > 0;
         }, undefined, { timeout: 15000 });
+        // complete/naturalWidth alone can precede paint with decoding="async".
+        await page.locator('a[data-home-game-promo] img').evaluate(async (image) => {
+          await image.decode();
+          await document.fonts.ready;
+          await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        });
         await page.screenshot({ path: file, fullPage: false, type: 'png' });
         shots.push({
           file,
