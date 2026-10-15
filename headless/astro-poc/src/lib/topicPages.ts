@@ -137,6 +137,21 @@ import evenOddSequencesBGrade2 from '../data/topic-pages/even-odd-sequences-b-gr
 import wordProblemsMoneySimpleGrade2 from '../data/topic-pages/word-problems-money-simple-grade-2.json';
 import reflectionSymmetryGrade2 from '../data/topic-pages/reflection-symmetry-grade-2.json';
 import numbersOperationsReviewGrade2 from '../data/topic-pages/numbers-operations-review-grade-2.json';
+import addingTensDecomposeGrade2 from '../data/topic-pages/adding-tens-decompose-grade-2.json';
+import additionTwoDigitNoCarryGrade2 from '../data/topic-pages/addition-two-digit-no-carry-grade-2.json';
+import additionTwoDigitCarryingGrade2 from '../data/topic-pages/addition-two-digit-carrying-grade-2.json';
+import subtractionTwoDigitNoBorrowGrade2 from '../data/topic-pages/subtraction-two-digit-no-borrow-grade-2.json';
+import subtractionTwoDigitBorrowingGrade2 from '../data/topic-pages/subtraction-two-digit-borrowing-grade-2.json';
+import calculationStrategiesGrade2 from '../data/topic-pages/calculation-strategies-grade-2.json';
+import multiplicationEqualGroupsGrade2 from '../data/topic-pages/multiplication-equal-groups-grade-2.json';
+import divisionMeasurementGrade2 from '../data/topic-pages/division-measurement-grade-2.json';
+import divisionEqualSharesGrade2 from '../data/topic-pages/division-equal-shares-grade-2.json';
+import multiplicationDivisionFamilyGrade2 from '../data/topic-pages/multiplication-division-family-grade-2.json';
+import timesEqualGroupsGrade2 from '../data/topic-pages/times-equal-groups-grade-2.json';
+import measuringLengthGrade2 from '../data/topic-pages/measuring-length-grade-2.json';
+import clockDurationGrade2 from '../data/topic-pages/clock-duration-grade-2.json';
+import halfAndQuarterGrade2 from '../data/topic-pages/half-and-quarter-grade-2.json';
+import shapesVsSolidsGrade2 from '../data/topic-pages/shapes-vs-solids-grade-2.json';
 import placeValueGrade3 from '../data/topic-pages/place-value-grade-3.json';
 import neighborsNumberlineGrade3 from '../data/topic-pages/neighbors-numberline-grade-3.json';
 import sequencesFindMistakeGrade3 from '../data/topic-pages/sequences-find-mistake-grade-3.json';
@@ -471,15 +486,30 @@ export const TOPIC_PAGE_G2_SLUGS = [
   'number-bonds-10-20-grade-2',
   'tens-and-ones-grade-2',
   'order-compare-numberline-grade-2',
+  'adding-tens-decompose-grade-2',
+  'addition-two-digit-no-carry-grade-2',
+  'addition-two-digit-carrying-grade-2',
+  'subtraction-two-digit-no-borrow-grade-2',
+  'subtraction-two-digit-borrowing-grade-2',
+  'calculation-strategies-grade-2',
   'equality-missing-number-grade-2',
   'word-problems-money-grade-2',
   'tables-bar-charts-grade-2',
   'hundreds-tens-ones-grade-2',
   'compare-numbers-to-1000-grade-2',
   'numbers-to-1000-grade-2',
+  'multiplication-equal-groups-grade-2',
+  'division-measurement-grade-2',
+  'division-equal-shares-grade-2',
+  'multiplication-division-family-grade-2',
+  'times-equal-groups-grade-2',
   'even-odd-sequences-a-grade-2',
   'even-odd-sequences-b-grade-2',
   'word-problems-money-simple-grade-2',
+  'measuring-length-grade-2',
+  'clock-duration-grade-2',
+  'half-and-quarter-grade-2',
+  'shapes-vs-solids-grade-2',
   'reflection-symmetry-grade-2',
   'numbers-operations-review-grade-2',
 ] as const;
@@ -760,6 +790,21 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'word-problems-money-simple-grade-2': wordProblemsMoneySimpleGrade2 as TopicPageContent,
   'reflection-symmetry-grade-2': reflectionSymmetryGrade2 as TopicPageContent,
   'numbers-operations-review-grade-2': numbersOperationsReviewGrade2 as TopicPageContent,
+  'adding-tens-decompose-grade-2': addingTensDecomposeGrade2 as TopicPageContent,
+  'addition-two-digit-no-carry-grade-2': additionTwoDigitNoCarryGrade2 as TopicPageContent,
+  'addition-two-digit-carrying-grade-2': additionTwoDigitCarryingGrade2 as TopicPageContent,
+  'subtraction-two-digit-no-borrow-grade-2': subtractionTwoDigitNoBorrowGrade2 as TopicPageContent,
+  'subtraction-two-digit-borrowing-grade-2': subtractionTwoDigitBorrowingGrade2 as TopicPageContent,
+  'calculation-strategies-grade-2': calculationStrategiesGrade2 as TopicPageContent,
+  'multiplication-equal-groups-grade-2': multiplicationEqualGroupsGrade2 as TopicPageContent,
+  'division-measurement-grade-2': divisionMeasurementGrade2 as TopicPageContent,
+  'division-equal-shares-grade-2': divisionEqualSharesGrade2 as TopicPageContent,
+  'multiplication-division-family-grade-2': multiplicationDivisionFamilyGrade2 as TopicPageContent,
+  'times-equal-groups-grade-2': timesEqualGroupsGrade2 as TopicPageContent,
+  'measuring-length-grade-2': measuringLengthGrade2 as TopicPageContent,
+  'clock-duration-grade-2': clockDurationGrade2 as TopicPageContent,
+  'half-and-quarter-grade-2': halfAndQuarterGrade2 as TopicPageContent,
+  'shapes-vs-solids-grade-2': shapesVsSolidsGrade2 as TopicPageContent,
   // G3 (catalog order)
   'place-value-grade-3': placeValueGrade3 as TopicPageContent,
   'neighbors-numberline-grade-3': neighborsNumberlineGrade3 as TopicPageContent,

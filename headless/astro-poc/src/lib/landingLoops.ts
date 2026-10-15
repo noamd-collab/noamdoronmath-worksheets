@@ -54,6 +54,8 @@ const SLUG_CONCEPT_OVERRIDE = {
   'clock-duration-grade-2': 'clock-span',
   'time-weight-measures-grade-3': 'clock-span',
   'time-and-weight-grade-4': 'clock-span',
+  // Equal-shares film for the multiplication/division family topic (no remainder story).
+  'multiplication-division-family-grade-2': 'share-12',
 } as const;
 
 export type ConceptLoopVariant =
