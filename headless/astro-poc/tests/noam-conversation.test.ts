@@ -12,7 +12,7 @@ test('grade request and semantic follow-up reach the model with the verified dir
     calls++;
     const body=JSON.parse(init.body);
     assert.match(body.messages[1].content,/לפרק ביטוי למכפלות/);
-    assert.match(body.messages[1].content,/g9-t2-a=רמה א׳/);
+    assert.match(body.messages[1].content,/g9-t2-a \| worksheet \| כיתה ט׳ \| פירוק לגורמים \| רמה א׳/);
     assert.match(body.messages[1].content,/catalog-9/);
     return {ok:true,json:async()=>({choices:[{message:{content:JSON.stringify({answer:'הנה פירוק לגורמים ברמה א׳',primaryRecordId:'g9-t2-a',chipRecordIds:['invented']})}}]})};
   }});

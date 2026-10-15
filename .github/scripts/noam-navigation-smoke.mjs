@@ -15,7 +15,15 @@ for(const [message,expected] of [
   ['משהו קל יותר','g9-t2-a'],
 ]){
   const start=Date.now();
-  const result=await handleCompanionTurn({message,history,page:{kind:'home',path:'/',title:'נועם דורון'}},{guide,catalog,apiKey:process.env.CHINESE_MODELS_API_KEY,fetch});
+  const result=await handleCompanionTurn({message,history,page:{kind:'home',path:'/',title:'נועם דורון'}},{guide,catalog,apiKey:process.env.CHINESE_MODELS_API_KEY,fetch:async (...args)=>{
+    const response=await fetch(...args);
+    if(response.ok){
+      const data=await response.clone().json();
+      // Synthetic test output only; helps distinguish latency from invalid record ids.
+      console.log(JSON.stringify({providerReply:data.choices?.[0]?.message?.content}));
+    }
+    return response;
+  }});
   console.log(JSON.stringify({message,source:result.source,answer:result.answer,primary:result.primary,elapsedMs:Date.now()-start}));
   assert.equal(result.source,'model');
   assert.equal(result.primary?.id,expected);

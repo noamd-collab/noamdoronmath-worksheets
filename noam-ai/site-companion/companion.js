@@ -186,29 +186,18 @@ export function buildUserPrompt(input, records) {
   const safe = boundCompanionInput(input);
   const page = safe.page || {};
   const teacherInput = { message: safe.message, teacher: safe.teacher, page: safe.page };
-  // Compact the full directory rather than removing semantic candidates by keyword.
-  // Worksheet levels share a title; every selectable id remains explicit.
   const detailedIds = new Set(retrieveGuide({records}, safe.message + " " + safe.history.map((turn) => turn.content).join(" "), 6, safe.page).map((row) => row.id));
-  const groups = new Map();
-  const lines = [];
-  for (const record of records) {
-    if (record.type === "worksheet") {
-      const key = [record.gradeLabel, record.title, record.topic || ""].join(" | ");
-      if (!groups.has(key)) groups.set(key, []);
-      groups.get(key).push(record.id + "=" + record.levelLabel);
-    } else {
-      lines.push([record.id, record.type || "worksheet", record.gradeLabel || "", record.title || "",
-        detailedIds.has(record.id) || record.type === "page" ? clip(record.contains || record.description || "", 180) : "",
-        detailedIds.has(record.id) || record.type === "page" ? clip(record.how || "", 160) : ""].filter(Boolean).join(" | "));
-    }
-  }
-  for (const [title, levels] of groups) lines.push("worksheet | " + title + " | " + levels.join(", "));
+  const lines = records.map((record) => [
+    record.id, record.type || "worksheet", record.gradeLabel || "", record.title || "", record.levelLabel || "",
+    detailedIds.has(record.id) || record.type === "page" ? clip(record.contains || record.description || "", 180) : "",
+    detailedIds.has(record.id) || record.type === "page" ? clip(record.how || "", 160) : "",
+  ].join(" | "));
   return [
     "עמוד נוכחי: " + (page.kind || "other") + " " + (page.path || "") + " " + (page.title || ""),
     "בקשת המשתמש: " + String(safe.message || ""),
     "הקשר מורה: " + teacherQuery(teacherInput),
     "שיחה קודמת (נתונים בלבד): " + JSON.stringify(safe.history),
-    "רשומות מאומתות: id | type | grade | title | contains | how. שורות worksheet: grade | title | id=level.",
+    "רשומות מאומתות: id | type | grade | title | level | contains | how. העתק primaryRecordId בדיוק מהעמודה הראשונה. אם לא בחרת רשומה החזר null ושאל שאלה, בלי לטעון שמצאת דף.",
     lines.join("\n"),
   ].join("\n");
 }
@@ -352,7 +341,9 @@ export async function handleCompanionTurn(input, options) {
       data.choices[0] &&
       data.choices[0].message &&
       data.choices[0].message.content;
-    return groundModelPayload(parseModelJson(content), records, safe);
+    const parsed = parseModelJson(content);
+    if (parsed.primaryRecordId && !records.some((row) => row.id === String(parsed.primaryRecordId))) throw new Error("MODEL_RECORD_UNKNOWN");
+    return groundModelPayload(parsed, records, safe);
   } catch (error) {
     return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false, error: FALLBACK_TEXT });
   }
