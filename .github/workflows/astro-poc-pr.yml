@@ -157,6 +157,13 @@ jobs:
         if: env.HAS_KEY == 'true'
         run: git fetch --no-tags --depth=1 origin "$BASE_REF"
 
+      - name: Check Noam navigation against the real model when changed
+        if: env.HAS_KEY == 'true'
+        timeout-minutes: 3
+        env:
+          CHINESE_MODELS_API_KEY: ${{ secrets.CHINESE_MODELS_API_KEY }}
+        run: node .github/scripts/noam-navigation-smoke.mjs
+
       - name: Post the DeepSeek review
         if: env.HAS_KEY == 'true'
         env:
