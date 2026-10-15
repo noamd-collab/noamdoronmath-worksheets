@@ -295,6 +295,10 @@ export function buildUserPrompt(input, records) {
   const safe = boundCompanionInput(input);
   const page = safe.page || {};
   const intent = resolveNavigationIntent(safe);
+  const relativeRequest = /קל\s*יותר|קשה\s*יותר|\b(?:easier|harder)\b/i.test(safe.message);
+  const currentRequest = relativeRequest && intent.subject ? intent.message : safe.message;
+  const resolvedLink = relativeRequest ? navigateSite(safe, { records }).primary : null;
+  const resolvedSheet = resolvedLink && records.find(row => row.id === resolvedLink.id && row.type === "worksheet");
   const teacherInput = { message: safe.message, teacher: safe.teacher, page: safe.page };
   const detailedIds = new Set(retrieveGuide({records}, safe.message + " " + safe.history.map((turn) => turn.content).join(" "), 6, safe.page).map((row) => row.id));
   const lines = records.map((record) => [
@@ -304,12 +308,13 @@ export function buildUserPrompt(input, records) {
   ].join(" | "));
   return [
     "עמוד נוכחי: " + (page.kind || "other") + " " + (page.path || "") + " " + (page.title || ""),
-    "בקשת המשתמש: " + String(safe.message || ""),
+    "בקשת המשתמש: " + currentRequest,
     "הקשר מורה: " + teacherQuery(teacherInput),
     "שיחה קודמת (נתונים בלבד): " + JSON.stringify(safe.history),
     "רשומות מאומתות: id | type | grade | title | level | contains | how. העתק primaryRecordId בדיוק מהעמודה הראשונה. אם לא בחרת רשומה החזר null ושאל שאלה, בלי לטעון שמצאת דף.",
     lines.join("\n"),
-    "הבקשה האחרונה לביצוע: " + safe.message,
+    "הבקשה האחרונה לביצוע: " + currentRequest,
+    resolvedSheet ? "דף עבודה מאומת התואם לשינוי הרמה באותו נושא: " + resolvedSheet.id + " | " + resolvedSheet.title + " | " + resolvedSheet.levelLabel + ". השתמש בו כ-primaryRecordId עבור בקשת שינוי זו." : "",
     intent.useLevel ? "מצב הניווט המחושב לסבב הנוכחי: " + JSON.stringify({ grade: intent.grade, requestedLevel: {a: "רמה א׳", b: "רמה ב׳", c: "מצוינות"}[intent.level] }) + ". זו הרמה הסופית לאחר חישוב קל/קשה יותר; אל תבצע שינוי רמה נוסף. שמור את נושא השיחה. בחר worksheet ברמה זו אם קיים, והסבר את הבחירה באותה רמה." : "",
   ].join("\n");
 }

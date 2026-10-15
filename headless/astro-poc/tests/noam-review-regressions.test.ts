@@ -82,4 +82,6 @@ test('shipped submit flow preserves relative level intent after the real client 
  assert.ok(rows.every((r:any)=>r.type!=='worksheet'||level(r)==='a'));
  assert.ok(rows.some((r:any)=>r.type==='topic'));
  assert.match(qwenRequestBody(input,rows).messages[0].content,/הרמה המחושבת לבקשה הנוכחית היא רמה א׳/);
+ assert.match(qwenRequestBody(input,rows).messages[1].content,/הבקשה האחרונה לביצוע: פירוק לגורמים כיתה 9 רמה א/);
+ assert.match(qwenRequestBody(input,rows).messages[1].content,/דף עבודה מאומת התואם לשינוי הרמה באותו נושא: g9-t2-a/);
  });
