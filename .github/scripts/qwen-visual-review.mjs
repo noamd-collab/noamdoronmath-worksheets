@@ -65,16 +65,30 @@ async function loadPlaywright() {
   return api;
 }
 
+export function viewerVisualFixture() {
+  const catalog = JSON.parse(readFileSync('headless/astro-poc/src/data/catalog.v1.json', 'utf8'));
+  const grade = catalog.grades.find((item) => item.grade === 9);
+  const topic = grade?.topics.find((item) => item.routing.usesViewer && item.levels.some((level) => level.key === 'a'));
+  const level = topic?.levels.find((item) => item.key === 'a');
+  if (!grade || !topic || !level) throw new Error('No verified catalog viewer resource for visual review.');
+  const params = new URLSearchParams({ g: String(grade.grade), topic: String(topic.id), pdf: level.pdfId, lv: level.key, t: topic.title });
+  for (const [key, value] of Object.entries(topic.routing.siblingPdfQuery || {})) params.set(key, String(value));
+  return { route: `/worksheet-viewer-noam.html?${params}`, title: `${topic.title} — ${grade.label} — ${level.label} | נועם דורון` };
+}
+
 export async function captureScreenshots({ baseUrl, pages, outDir }) {
   const { chromium } = await loadPlaywright();
   mkdirSync(outDir, { recursive: true });
   const browser = await chromium.launch({
     headless: true,
+    ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}),
     args: ['--no-sandbox', '--disable-dev-shm-usage'],
   });
   const shots = [];
   try {
-    for (const pageUrl of pages) {
+    for (const selectedPage of pages) {
+      const viewer = selectedPage.startsWith('/worksheet-viewer-noam.html') ? viewerVisualFixture() : null;
+      const pageUrl = viewer ? viewer.route : selectedPage;
       for (const viewport of VIEWPORTS) {
         const context = await browser.newContext({
           viewport: { width: viewport.width, height: viewport.height },
@@ -83,15 +97,34 @@ export async function captureScreenshots({ baseUrl, pages, outDir }) {
         });
         const page = await context.newPage();
         const target = new URL(pageUrl, baseUrl).href;
-        const file = join(outDir, `${slug(pageUrl)}-${viewport.name}.png`);
+        const stem = `${slug(viewer ? selectedPage : pageUrl)}-${viewport.name}`;
+        const file = join(outDir, `${stem}.png`);
         let status = 0;
         let error = '';
         try {
           const response = await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 45000 });
           status = response?.status() ?? 0;
+          if (status !== 200) throw new Error(`Selected learner page returned HTTP ${status}, not real 200 content.`);
+          let metadata;
+          if (viewer) {
+            const raw = await response.text();
+            const initialTitle = await page.evaluate((html) => new DOMParser().parseFromString(html, 'text/html').querySelector('title')?.textContent, raw);
+            if (initialTitle !== viewer.title) throw new Error('Viewer initial HTML did not contain the catalog-resolved title.');
+            await page.waitForSelector('.pdf-page.is-ready canvas', { timeout: 45000 });
+            const renderedTitle = await page.title();
+            if (renderedTitle !== viewer.title) throw new Error('Viewer client changed the verified document title.');
+            metadata = { initialTitle, renderedTitle, content: 'PDF canvas rendered' };
+          }
           await page.waitForTimeout(750);
           await page.screenshot({ path: file, fullPage: false, type: 'png' });
-          shots.push({ file, pageUrl, viewport: viewport.name, width: viewport.width, status });
+          shots.push({ file, pageUrl, viewport: viewport.name, width: viewport.width, status, ...(metadata ? { metadata } : {}) });
+          if (viewer) {
+            await page.emulateMedia({ media: 'print' });
+            await page.waitForTimeout(750);
+            const printFile = join(outDir, `${stem}-print.png`);
+            await page.screenshot({ path: printFile, fullPage: false, type: 'png' });
+            shots.push({ file: printFile, pageUrl, viewport: `${viewport.name}-print`, width: viewport.width, status, metadata, media: 'print' });
+          }
         } catch (err) {
           error = err instanceof Error ? err.message : 'screenshot failed';
           shots.push({ file, pageUrl, viewport: viewport.name, width: viewport.width, status, error });

@@ -4,7 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 
-<title>דף עבודה · מתמטיקה · נועם דורון</title>
+<title>דף עבודה במתמטיקה | נועם דורון</title>
+<meta name="description" data-viewer-description content="דף עבודה במתמטיקה באתר נועם דורון. בחרו דף עבודה מתאים מתוך קטלוג דפי העבודה.">
+<meta name="viewer-resource-title" content="">
+<meta name="viewer-resource-verified" content="false">
+<script id="viewer-resource-metadata" type="application/json">{"title":"","description":"דף עבודה במתמטיקה באתר נועם דורון. בחרו דף עבודה מתאים מתוך קטלוג דפי העבודה.","verified":false}</script>
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://www.noamdoronmath.co.il" crossorigin>
@@ -3414,6 +3418,31 @@ var ttl =
     "דף עבודה"
   ).trim();
 
+var trustedViewerMetadata =
+  document
+  .getElementById(
+    "viewer-resource-metadata"
+  );
+var trustedDocumentTitle = "";
+try{
+  var parsedViewerMetadata =
+    trustedViewerMetadata
+      ? JSON.parse(
+          trustedViewerMetadata
+          .textContent ||
+          "{}"
+        )
+      : null;
+  if (
+    parsedViewerMetadata &&
+    parsedViewerMetadata.verified === true &&
+    typeof parsedViewerMetadata.title === "string" &&
+    parsedViewerMetadata.title === document.title
+  ){
+    trustedDocumentTitle =
+      parsedViewerMetadata.title;
+  }
+}catch(e){}
 var okPdf =
   /^[0-9a-f]{32}$/
   .test(pdf);
@@ -3481,8 +3510,8 @@ document.body
   );
 
 document.title =
-  ttl +
-  " · מתמטיקה · נועם דורון";
+  trustedDocumentTitle ||
+  "דף עבודה במתמטיקה | נועם דורון";
 
 document
   .getElementById("title")

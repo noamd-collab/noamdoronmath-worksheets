@@ -9,7 +9,7 @@ if [[ ! -f ./dist/server/entry.mjs ]]; then
   echo "Missing dist/server/entry.mjs. Build the site before serving it."
   exit 1
 fi
-node ./dist/server/entry.mjs > /tmp/astro-server.log 2>&1 &
+node ../../.github/scripts/preview-query-server.mjs > /tmp/astro-server.log 2>&1 &
 echo $! > /tmp/astro-server.pid
 for _ in $(seq 1 60); do
   code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "http://${HOST}:${PORT}/" || true)"
