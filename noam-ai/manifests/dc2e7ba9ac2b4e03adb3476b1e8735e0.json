@@ -13,9 +13,9 @@
   "questionCount": 15,
   "exerciseCount": 58,
   "parserConfidence": 0.99,
-  "reviewRequired": true,
-  "mappingValidation": "native item labels and question IDs checked",
-  "reviewNote": "Cross-page pin/crop visual review required before approval; parser success alone is not visual confirmation",
+  "reviewRequired": false,
+  "mappingValidation": "independent visual crop/pin review and source-bound item/figure matching passed",
+  "reviewNote": "Independent visual question-crop/pin review passed for the approved student PDFs. All 183 teacher selections independently reviewed; four wrapped-line repairs rechecked. Native schema, source-table and live-preview limitations remain documented.",
   "issues": [],
   "sourceSha256": "3040b3331ca836fd77bfae52359fe44c3b8bf6d6679a340af7acf1b05623309a",
   "questions": [
