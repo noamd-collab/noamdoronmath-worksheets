@@ -41,8 +41,8 @@
         timer = setTimeout(function () { controller.abort(); reject(new Error("NAVIGATION_TIMEOUT")); }, 5000);
       });
       navigationPromise = Promise.race([timeout, Promise.all([
-        import("/noam-navigation.js?v=e3579d03f48c4937"),
-        fetch("/noam-navigation-guide.json?v=e3579d03f48c4937", {signal: controller.signal}).then(function (response) {
+        import("/noam-navigation.js?v=26208676af40f950"),
+        fetch("/noam-navigation-guide.json?v=26208676af40f950", {signal: controller.signal}).then(function (response) {
           if (!response.ok) throw new Error("NAVIGATION_UNAVAILABLE");
           return response.json();
         }),
@@ -466,10 +466,23 @@
     if (mode === "compact") fitCompact();
   }
 
+  function answerKind(result) {
+    var source = String(result && result.source || "");
+    if (source === "model" || source === "classifier") return "model";
+    if (source === "fallback" || source === "local-fallback") return "fallback";
+    return "hardcoded";
+  }
+
+  function markAnswer(result) {
+    var source = (result && result.source) || "local";
+    panel.setAttribute("data-response-source", source);
+    panel.setAttribute("data-answer-kind", answerKind(result));
+  }
+
   function showResult(result) {
     stopThinking();
     hasAnswer = true;
-    panel.setAttribute("data-response-source", (result && result.source) || "local");
+    markAnswer(result);
     answerEl.textContent = (result && (result.answer || result.text)) || FALLBACK;
     var primary = result && result.primary;
     if (primary && primary.action === "ramzi") {
@@ -792,7 +805,13 @@
     };
     panel.removeAttribute("data-response-error");
     ensureBotClient().then(function (client) { return client.postJson(API, payload); }).then(function (result) {
+      var code = result && result.code;
+      if (typeof code === "string" && /^[A-Z0-9_]{1,40}$/.test(code)) {
+        panel.setAttribute("data-response-error", code);
+      }
+      if (result && result.source === "fallback" && result.primary && result.active !== false) return result;
       if (!result || result.ok === false || result.active === false) return navigationFallback(payload);
+      if (!code) panel.removeAttribute("data-response-error");
       return result;
     }).catch(function (error) {
       var code = String(error && error.code || "CONNECTION_FAILED");

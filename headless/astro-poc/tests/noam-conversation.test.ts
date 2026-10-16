@@ -12,13 +12,13 @@ test('grade request and semantic follow-up reach the model with the verified dir
     calls++;
     const body=JSON.parse(init.body);
     assert.match(body.messages[1].content,/לפרק ביטוי למכפלות/);
-    assert.match(body.messages[1].content,/g9-t2-a \| worksheet \| כיתה ט׳ \| פירוק לגורמים \| רמה א׳/);
+    assert.match(body.messages[1].content,/g9-t2-b \| worksheet \| כיתה ט׳ \| פירוק לגורמים \| רמה ב׳/);
     assert.match(body.messages[1].content,/catalog-9/);
-    return {ok:true,json:async()=>({choices:[{message:{content:JSON.stringify({answer:'הנה פירוק לגורמים ברמה א׳',primaryRecordId:'g9-t2-a',chipRecordIds:['invented']})}}]})};
+    return {ok:true,json:async()=>({choices:[{message:{content:JSON.stringify({answer:'הנה פירוק לגורמים ברמה ב׳',primaryRecordId:'g9-t2-b',chipRecordIds:['invented']})}}]})};
   }});
   assert.equal(calls,1);assert.equal(result.source,'model');
-  assert.match(result.primary.href,/g=9/);assert.match(result.primary.href,/lv=a/);
-  assert.match(result.primary.label,/רמה א׳/);assert.equal(result.chips.length,0);
+  assert.match(result.primary.href,/g=9/);assert.match(result.primary.href,/lv=b/);
+  assert.match(result.primary.label,/רמה ב׳/);assert.equal(result.chips.length,0);
 });
 
 test('history cannot inject system roles or grow the prompt without bounds',()=>{

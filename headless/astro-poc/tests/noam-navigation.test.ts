@@ -110,8 +110,26 @@ test('plain Hebrew requests for sheets open the grade catalog', () => {
   assert.equal(ask('דף').primary.href, '/worksheets');
   assert.equal(ask('ט׳').primary.href, '/worksheets?grade=9');
 });
+test('a requested level B sheet is not replaced by level A', () => {
+  const r = ask('אני מחפש דפים לכיתה ט׳ על פירוק לגורמים, רמה ב׳');
+  assert.equal(r.source, 'site-navigation');
+  assert.match(r.primary.label, /רמה ב׳/);
+  assert.match(r.primary.href, /lv=b/);
+  assert.doesNotMatch(r.primary.href, /lv=a/);
+  assert.equal(r.primary.href.includes('5cb3894def5f410193accc77e67b6a89'), true);
+  const hrefs = [r.primary, ...r.chips].filter(Boolean).map((link) => link.href);
+  assert.ok(hrefs.includes('/factoring-grade-9'));
+  assert.equal(hrefs.some((href) => href.includes('lv=a')), false);
+  assert.doesNotMatch(r.answer, /רמה א/);
+  const english = ask('אני מחפש דפים לכיתה ט על פירוק לגורמים level B');
+  assert.match(english.primary.href, /lv=b/);
+  assert.equal([english.primary, ...english.chips].some((link) => link.href.includes('lv=a')), false);
+});
+
 test('sheet wording preserves a requested topic and grade-only follow-ups', () => {
-  assert.equal(ask('אני מחפש דפים על דלתון לכיתה ט׳').primary.href, '/kite-grade-9');
+  const kite = ask('אני מחפש דפים על דלתון לכיתה ט׳');
+  assert.match(kite.primary.href, /lv=a/);
+  assert.ok(hrefs(kite).includes('/kite-grade-9'));
   assert.equal(ask('אני מחפש דפים על שברים').needsGrade, true);
   const r = ask('ה׳', undefined, 'אני מחפש דפים על שברים');
   assert.ok(r.links.length);

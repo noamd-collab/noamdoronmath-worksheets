@@ -1,5 +1,6 @@
 /** Navigation over public, build-verified site records. No model or credentials. */
-import { isRoleQuestion } from './companion.js';
+import { isRoleQuestion } from './role.js';
+import { levelKeyFromRecord, requestedLevelKey, resolveNavigationIntent } from './intent.js';
 import { suggestTopicGroup } from './topic-order.js';
 const MARKS = 'אבגדהוזחט';
 const STOP = new Set('אני אנחנו רוצה רוצים צריך צריכה צריכים אפשר בבקשה איפה היכן יש את לי על של עם לכיתה כיתה בכיתה כיתות דף דפים דפי עבודה תרגול לתרגול תרגילים מתמטיקה במתמטיקה ללמוד למצוא מחפש מחפשת תמצא תראה תן קח תעביר פתח תפתח לנו אותי באתר נושא בנושא בנושא יש לכם האם איך מגיעים להגיע עבור'.split(' '));
@@ -40,17 +41,18 @@ export function navigationHelp(guide, offline = false) {
 }
 export function navigateSite(input, guide, previousMessage = '') {
   const records = (guide && guide.records || []).filter(r => validHref(r.href));
-  const raw = String(input.message || '').slice(0, 700);
+  const original = String(input.message || '').slice(0, 700);
+  const raw = isRoleQuestion(original) ? original : resolveNavigationIntent(input, previousMessage).message;
   const text = normal(raw);
   const page = input.page || {};
   // Teacher selections and exercise help keep their existing guarded flows.
   if (page.kind === 'teachers' || /רמז|תפתור|לפתור|מה התשובה|איך פותרים|\bsolve\b|\bhint\b/i.test(text)) return null;
   if (isRoleQuestion(raw)) return navigationHelp(guide);
   if (/^(?:הי|היי|שלום|מה אתה עושה|מי אתה|במה אתה יכול לעזור(?: לי)?|מה יש באתר|עזרה|אני רוצה ללמוד)$/.test(text)) return navigationHelp(guide);
-  const exact = records.filter(r => r.type === 'topic' && normal(r.title) === text);
+  const exact = records.filter(r => r.type === 'topic' && normal(r.title) === normal(original));
   if (exact.length) return {...result('מצאתי את דף הנושא. בחרו קישור לפתיחה.', exact), needsGrade: false};
   // Group expansion must not steal a specific subject (e.g. linear functions).
-  if (/הנושא הבא|הנושא הקודם|מה אחרי|מה לפני|מה הלאה|מרובעים/.test(text)) {
+  if (/הנושא הבא|הנושא הקודם|מה אחרי|מה לפני|מה הלאה|מרובעים/.test(normal(original))) {
     const ordered = suggestTopicGroup(input, guide.catalog, guide);
     if (ordered) return ordered;
   }
@@ -59,7 +61,7 @@ export function navigateSite(input, guide, previousMessage = '') {
   if (explicitGrade && /^(?:(?:[בל]?כיתה|grade)\s*)?[1-9אבגדהוזחט]$/.test(text) && previousMessage) query = normal(previousMessage) + ' ' + text;
   const pageGrade = Number((String(page.path || '').match(/(?:grade-|[?&](?:grade|g)=)([1-9])(?:\D|$)/) || [])[1]) || null;
   const grade = explicitGrade || gradeOf(query) || pageGrade;
-  const useful = words(query.replace(/(?:[בל]?כיתה|grade)\s*[1-9אבגדהוזחט](?=\s|$)/g, '')).filter(w => w.length > 1 && !STOP.has(w));
+  const useful = words(query.replace(/(?:[בל]?כיתה|grade)\s*[1-9אבגדהוזחט](?=\s|$)/g, '').replace(/רמה\s*[אב](?![א-ת])|מצוינות/g, '')).filter(w => w.length > 1 && !STOP.has(w));
   const generic = useful.length === 0;
   if (generic && (explicitGrade || /(?:^|\s)(?:דף|דפים|דפי עבודה|דפי תרגול|תרגול|תרגילים)(?:\s|$)/.test(text))) {
     const path = grade ? '/worksheets?grade=' + grade : '/worksheets';
@@ -67,7 +69,7 @@ export function navigateSite(input, guide, previousMessage = '') {
   }
   // Direct sections are matched only from the visitor's current request.
   for (const [pattern, path] of ROUTES) {
-    if (!pattern.test(text)) continue;
+    if (!pattern.test(normal(original))) continue;
     const row = records.find(r => r.href === path || r.id === path);
     if (row) return result('כאן אפשר לפתוח את ' + row.title + '.', [row]);
   }
@@ -88,13 +90,32 @@ export function navigateSite(input, guide, previousMessage = '') {
   const best = matches[0];
   const top = matches.filter(x => x.score >= best.score - 3).map(x => x.r);
   const grades = new Set(top.map(r => r.grade).filter(Boolean));
+  const level = requestedLevelKey(raw);
+  const pool = level ? rowsForRequestedLevel(top, level) : top;
   const rows = [];
-  const topics = new Set();
-  for (const r of top) {
-    const key = r.grade + ':' + (r.topic || r.title);
-    if (topics.has(key)) continue;
-    topics.add(key); rows.push(r);
+  const seen = new Set();
+  for (const r of pool) {
+    const key = r.type === 'worksheet'
+      ? r.grade + ':' + r.title + ':' + (level || levelKeyFromRecord(r) || 'sheet')
+      : r.grade + ':' + (r.topic || r.title);
+    if (seen.has(key)) continue;
+    seen.add(key); rows.push(r);
   }
-  const answer = !grade && grades.size > 1 ? 'באיזו כיתה? מצאתי דפים בנושא בכמה כיתות — בחרו קישור או כתבו את הכיתה.' : 'מצאתי דפים מתאימים באתר. בחרו קישור לפתיחה.';
-  return {...result(answer, rows), needsGrade: !grade && grades.size > 1};
+  const levelSheet = level && rows.some(r => r.type === 'worksheet' && levelKeyFromRecord(r) === level);
+  const ambiguous = !grade && grades.size > 1;
+  const answer = ambiguous
+    ? 'באיזו כיתה? מצאתי דפים בנושא בכמה כיתות — בחרו קישור או כתבו את הכיתה.'
+    : (level
+      ? (levelSheet
+        ? 'מצאתי את דף הנושא ואת הרמה שביקשתם. בחרו קישור לפתיחה.'
+        : 'מצאתי את דף הנושא. אין דף ברמה שביקשתם.')
+      : 'מצאתי דפים מתאימים באתר. בחרו קישור לפתיחה.');
+  return {...result(answer, rows), needsGrade: ambiguous};
+}
+
+function rowsForRequestedLevel(top, level) {
+  const firstPerGrade = rows => rows.filter((r, index) => rows.findIndex(other => other.grade === r.grade) === index);
+  const sheets = firstPerGrade(top.filter(r => r.type === 'worksheet' && levelKeyFromRecord(r) === level));
+  const topics = firstPerGrade(top.filter(r => r.type === 'topic'));
+  return sheets.length ? sheets.concat(topics) : topics;
 }

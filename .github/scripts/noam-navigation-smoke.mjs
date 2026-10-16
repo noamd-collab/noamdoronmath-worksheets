@@ -11,8 +11,10 @@ const catalog=JSON.parse(readFileSync('headless/astro-poc/src/data/catalog.v1.js
 const history=[];
 for(const [message,expected] of [
   ['אני מחפש דפים לכיתה ט׳','catalog-9'],
-  ['אני צריך לתרגל פירוק לגורמים ברמה ב׳','g9-t2-b'],
+  ['אני צריך לתרגל פירוק לגורמים','g9-t2-a'],
+  ['משהו קשה יותר','g9-t2-c'],
   ['משהו קל יותר','g9-t2-a'],
+  ['משהו קל יותר','g9-t2-b'],
 ]){
   const start=Date.now();
   const result=await handleCompanionTurn({message,history,page:{kind:'home',path:'/',title:'נועם דורון'}},{guide,catalog,apiKey:process.env.CHINESE_MODELS_API_KEY,fetch:async (...args)=>{
