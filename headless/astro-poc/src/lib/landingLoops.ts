@@ -58,6 +58,21 @@ const SLUG_CONCEPT_OVERRIDE = {
   'multiplication-division-family-grade-2': 'share-12',
   // Map-scale film for the scale topic (the family default is ratio-beads).
   'scale-maps-grade-6': 'map-scale',
+  // Family defaults below were the wrong lesson (bridging past 10,
+  // four-quadrant coords, rectangle area, negatives, algebra, fraction
+  // multiplication). Each slug reuses an existing film.
+  // counting-grade-1 stays on sticks: no pinned film counts and marks objects,
+  // and the concept-loop engine is hash-pinned so a new film cannot be added.
+  'addition-to-10-grade-1': 'add-within',
+  'numbers-operations-review-grade-2': 'place-123',
+  'perimeter-polygons-grade-3': 'peri-rect',
+  'order-of-operations-grade-4': 'order-ops',
+  'grade-4-summary': 'baseten',
+  'distributive-area-model-grade-4': 'l-split',
+  'multiplication-multi-digit-grade-4': 'array',
+  'fraction-division-meaning-grade-6': 'share-12',
+  'measurement-geometry-synthesis-grade-6': 'rect-count',
+  'percent-of-quantity-grade-6': 'pct-25',
 } as const;
 
 export type ConceptLoopVariant =
@@ -197,6 +212,8 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'subtraction-two-digit-borrowing-grade-2': 'baseten-sub',
   'column-subtraction-borrowing-grade-3': 'baseten-sub',
   'multi-digit-subtraction-grade-4': 'baseten-sub',
+  // Parallelogram area: S = b × h. The family film is triangle area (a·h):2.
+  'parallelogram-area-grade-5': 'area-para',
 };
 
 export const GRADE_CONCEPT_LOOP = {
@@ -451,9 +468,24 @@ function captionSpanEnd(text: string, start: number): number {
       j += 1;
       continue;
     }
-    if (captionIsGlue(text[j]!) || text[j] === ':') {
+    if (text[j] === ':') {
+      if (j + 1 < text.length && captionIsMathAt(text, j + 1)) {
+        j += 1;
+        continue;
+      }
+      break;
+    }
+    if (captionIsGlue(text[j]!)) {
       let k = j;
-      while (k < text.length && (captionIsGlue(text[k]!) || text[k] === ':')) k += 1;
+      while (k < text.length && captionIsGlue(text[k]!)) k += 1;
+      if (k < text.length && text[k] === ':') {
+        let m = k + 1;
+        while (m < text.length && captionIsGlue(text[m]!)) m += 1;
+        if (m < text.length && captionIsMathAt(text, m)) {
+          j = m;
+          continue;
+        }
+      }
       if (k < text.length && captionIsMathAt(text, k)) {
         j = k;
         continue;

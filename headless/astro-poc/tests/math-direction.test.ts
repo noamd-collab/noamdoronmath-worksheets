@@ -7,7 +7,7 @@ import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { isolateBlogPostDisplay, isolateMathRuns } from '../src/lib/mathDirection.ts';
 import { listServedBlogPosts } from '../src/lib/blogPosts.ts';
-import { synthesizeBodyFlow, loadTopicPage } from '../src/lib/topicPages.ts';
+import { synthesizeBodyFlow, loadTopicPage, TOPIC_PAGE_SLUGS } from '../src/lib/topicPages.ts';
 import { contentToParitySnapshot } from '../src/lib/parity/contentToParitySnapshot.ts';
 import { cleanText, diffTopicParity, type TopicParitySnapshot } from '../src/lib/parity/topicParity.ts';
 
@@ -48,6 +48,28 @@ describe('isolateMathRuns', () => {
     assert.equal(isolateMathRuns('|−7| = 7'), `${LRI}|−7| = 7${PDI}`);
   });
 
+  it('keeps a Hebrew label colon and em dashes outside the LTR isolate', () => {
+    assert.equal(isolateMathRuns('דוגמה: 2 + 5 = 7'), `דוגמה: ${LRI}2 + 5 = 7${PDI}`);
+    assert.equal(
+      isolateMathRuns('קודם: (10 + 5) × 3 = 45'),
+      `קודם: ${LRI}(10 + 5) × 3 = 45${PDI}`,
+    );
+    assert.equal(isolateMathRuns('הגובה: S = b × h'), `הגובה: ${LRI}S = b × h${PDI}`);
+    assert.equal(
+      isolateMathRuns('לשלם: 1 : 1/4 = 4'),
+      `לשלם: ${LRI}1 : 1/4 = 4${PDI}`,
+    );
+    assert.equal(
+      isolateMathRuns('התשובה היא 1,512: 56 × 7 = 392 ו־56 × 20 = 1,120'),
+      `התשובה היא ${LRI}1,512${PDI}: ${LRI}56 × 7 = 392${PDI} ו־${LRI}56 × 20 = 1,120${PDI}`,
+    );
+    const listed = 'מסמנים — 1, 2, 3, 4, 5, 6, 7 — והמספר';
+    assert.equal(
+      isolateMathRuns(listed),
+      `מסמנים — ${LRI}1, 2, 3, 4, 5, 6, 7${PDI} — והמספר`,
+    );
+  });
+
   it('is idempotent and leaves Hebrew prose unchanged', () => {
     const hebrew = 'דפי העבודה פתוחים בחינם וללא הרשמה.';
     assert.equal(isolateMathRuns(hebrew), hebrew);
@@ -57,6 +79,23 @@ describe('isolateMathRuns', () => {
 });
 
 describe('topic pages apply math isolates without rewriting JSON', () => {
+  it('no topic page opens an isolate with a label colon or an em dash', () => {
+    const bad: string[] = [];
+    for (const slug of TOPIC_PAGE_SLUGS) {
+      const page = loadTopicPage(slug);
+      const texts = [
+        page.h1,
+        ...page.sections.flatMap((section) => section.blocks.map((block) => block.text ?? '')),
+        ...page.faq.map((item) => `${item.question} ${item.answer}`),
+      ];
+      for (const text of texts) {
+        const out = isolateMathRuns(text);
+        if (/\u2066[:—]/.test(out)) bad.push(`${slug}: ${text}`);
+      }
+    }
+    assert.deepEqual(bad, []);
+  });
+
   it('signed-numbers body flow isolates the mirrored examples', () => {
     const raw = readFileSync('src/data/topic-pages/signed-numbers-grade-7.json', 'utf8');
     assert.equal(raw.includes(LRI), false);
