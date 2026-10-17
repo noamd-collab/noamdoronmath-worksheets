@@ -1,0 +1,265 @@
+{
+  "slug": "tens-and-ones-grade-2",
+  "path": "/tens-and-ones-grade-2",
+  "grade": 2,
+  "sourceUrl": "https://www.noamdoronmath.co.il/tens-and-ones-grade-2",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g2-t2-grounded-pdf",
+  "title": "עשרות ויחידות בתחום 100 לכיתה ב׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "עשרות ויחידות בתחום 100 לכיתה ב׳: בניית מספרים דו־ספרתיים מעשרות ויחידות, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "עשרות ויחידות בתחום 100 לכיתה ב׳",
+  "intro": "בונים מספרים עד 100 מעשרות ויחידות, וכותבים אותם נכון. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כל מספר דו־ספרתי בנוי מעשרות ומיחידות. במספר 63 יש 6 עשרות ו־3 יחידות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בונים את המספר לפי ההוראה: 3 עשרות ו־2 יחידות זה 32.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "כדאי להתחיל מהעשרות: 3 עשרות זה 30, ועוד 2 יחידות זה 32.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא להחליף בין עשרות ליחידות: 4 עשרות ו־7 יחידות זה 47, לא 74.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: כתבו את המספר שיש בו 5 עשרות ו־9 יחידות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 59 — 5 עשרות זה 50, ועוד 9 יחידות.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "בונים מספרים עד 100 מעשרות ויחידות, וכותבים אותם נכון. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=2&topic=2",
+      "catalogTopicId": 2
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "כל מספר דו־ספרתי בנוי מעשרות ומיחידות. במספר 63 יש 6 עשרות ו־3 יחידות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בונים את המספר לפי ההוראה: 3 עשרות ו־2 יחידות זה 32.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "כדאי להתחיל מהעשרות: 3 עשרות זה 30, ועוד 2 יחידות זה 32.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא להחליף בין עשרות ליחידות: 4 עשרות ו־7 יחידות זה 47, לא 74.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: כתבו את המספר שיש בו 5 עשרות ו־9 יחידות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 59 — 5 עשרות זה 50, ועוד 9 יחידות.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא עשרות ויחידות בתחום 100 מתאימים לכיתה ב׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ב׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא עשרות ויחידות בתחום 100 מתאימים לכיתה ב׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ב׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-2",
+      "label": "כל דפי כיתה ב׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-2"
+    },
+    {
+      "path": "/grade-3",
+      "label": "דפי עבודה לכיתה ג׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-3"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=2&topic=2",
+    "source": "catalog-g2-t2",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=2&topic=2",
+    "catalogTopicId": 2,
+    "catalogTopicTitle": "עשרות ויחידות בתחום 100"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=2&topic=2",
+      "source": "catalog-g2-t2",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=2&topic=2",
+      "catalogTopicId": 2,
+      "catalogTopicTitle": "עשרות ויחידות בתחום 100"
+    }
+  ],
+  "gradeHubHref": "/grade-2",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/tens-and-ones-grade-2#webpage",
+        "url": "https://www.noamdoronmath.co.il/tens-and-ones-grade-2",
+        "name": "עשרות ויחידות בתחום 100 לכיתה ב׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "עשרות ויחידות בתחום 100 לכיתה ב׳: בניית מספרים דו־ספרתיים מעשרות ויחידות, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/tens-and-ones-grade-2#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/tens-and-ones-grade-2#learning-resource",
+        "name": "עשרות ויחידות בתחום 100 לכיתה ב׳",
+        "url": "https://www.noamdoronmath.co.il/tens-and-ones-grade-2",
+        "description": "עשרות ויחידות בתחום 100 לכיתה ב׳: בניית מספרים דו־ספרתיים מעשרות ויחידות, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ב׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/tens-and-ones-grade-2#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא עשרות ויחידות בתחום 100 מתאימים לכיתה ב׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ב׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

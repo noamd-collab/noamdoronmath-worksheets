@@ -21,6 +21,7 @@ import {
   TOPIC_PAGE_M30_UNMIGRATED,
   TOPIC_PAGE_KITE_SLUGS,
   TOPIC_PAGE_G1_SLUGS,
+  TOPIC_PAGE_G2_SLUGS,
   TOPIC_PAGE_PILOT_SLUGS,
   TOPIC_PAGE_SLUGS,
   extractJsonLdFaq,
@@ -74,7 +75,8 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
         TOPIC_PAGE_M23_SLUGS.length +
         TOPIC_PAGE_M30_SLUGS.length +
         TOPIC_PAGE_KITE_SLUGS.length +
-        TOPIC_PAGE_G1_SLUGS.length
+        TOPIC_PAGE_G1_SLUGS.length +
+        TOPIC_PAGE_G2_SLUGS.length
     );
     assert.equal(TOPIC_PAGE_M20_SLUGS.length, 11);
     assert.equal(TOPIC_PAGE_M21_SLUGS.length, 24);
