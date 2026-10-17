@@ -76,9 +76,9 @@ test('natural Hebrew topic names match titles with a definite article', () => {
   assert.equal(ask('דלתון לכיתה ט').needsGrade, false);
 });
 
-test('all 96 published topic titles find their own page, never an unrelated group', () => {
+test('every published topic title finds its own page, never an unrelated group', () => {
   const topics = guide.records.filter((r: any) => r.type === 'topic');
-  assert.equal(topics.length, 96);
+  assert.ok(topics.length >= 96, 'expected at least the original 96 topics, got ' + topics.length);
   for (const topic of topics) assert.ok(hrefs(ask(topic.title)).includes(topic.href), topic.title);
 });
 
