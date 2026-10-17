@@ -85,7 +85,8 @@
         animation:none!important; animation-play-state:paused!important; transition:none!important;
       }
       @media print { #noam-accessibility { display:none!important; } }
-      /* Reserve the corner. The window stays the scroller. */
+      /* Reserve the corner on pages that still scroll the window.
+         exact-site phones zero this padding and scroll .exact-frame. */
       @media (max-width: 800px) {
         html.noam-a11y-pad body {
           padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
@@ -238,6 +239,12 @@
     function settleLauncher() {
       if (!astroShell || !host.isConnected || dialog.open) return;
       var metrics = launcherMetrics();
+      /* Phone: stay in the bottom dock, opposite the chat launcher.
+         Climbing the screen parks the button on the headline or בס״ד. */
+      if (docked()) {
+        applyHostBox('left', metrics.edge, 8, metrics.size);
+        return;
+      }
       var rects = obstacleRects();
       var maxBottom = Math.max(8, Math.round(window.innerHeight * 0.75));
       var bottoms = [8, 0];
