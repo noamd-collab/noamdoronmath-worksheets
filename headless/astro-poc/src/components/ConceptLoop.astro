@@ -1200,9 +1200,15 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'para-rect' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <polygon class="cl-line cl-fill-a" data-el="shape" points="160,240 400,240 472,128 232,128" />
-          <line class="cl-dash" data-el="height" x1="160" y1="240" x2="160" y2="128" />
-          <text class="cl-t cl-num" data-el="lbl-h" x="128" y="190" style="opacity:0">h</text>
-          <text class="cl-t" data-el="lbl-same" x="280" y="196" text-anchor="middle" style="opacity:0">אותו שטח</text>
+          {/* altitude drops from the top-left corner onto the base; the engine hides it when it would sit on the rectangle edge */}
+          <line class="cl-dash" data-el="height" x1="232" y1="128" x2="232" y2="240" />
+          <path class="cl-line" data-el="h-sq" d="M232 226 L246 226 L246 240" />
+          {/* outside height bracket, used once the shape is a rectangle */}
+          <path class="cl-arc" data-el="h-brk" d="M232 128 L142 128 L142 240 L160 240" style="opacity:0" />
+          <text class="cl-t cl-num" data-el="lbl-h" x="248" y="190" text-anchor="middle" direction="ltr" unicode-bidi="isolate" style="opacity:0">h</text>
+          <path class="cl-arc" data-el="b-brk" d="M160 250 L160 262 L400 262 L400 250" style="opacity:0" />
+          <text class="cl-t cl-num" data-el="lbl-b" x="280" y="280" text-anchor="middle" direction="ltr" unicode-bidi="isolate" style="opacity:0">b</text>
+          <text class="cl-t" data-el="lbl-same" x="280" y="196" text-anchor="middle" direction="rtl" unicode-bidi="isolate" style="opacity:0">אותו שטח</text>
         </svg>
       )
     }
