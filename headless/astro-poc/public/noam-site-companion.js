@@ -574,6 +574,9 @@
     root.style.right = "8px";
     root.style.left = "auto";
     root.style.bottom = "8px";
+    /* Phone dock keeps this launcher on the bottom-right. Do not stack it
+       over the accessibility button or the first screen of text. */
+    if (window.matchMedia("(max-width: 800px)").matches) return;
     var a11y = document.getElementById("noam-accessibility");
     if (!a11y) return;
     var box = a11y.getBoundingClientRect();
