@@ -59,7 +59,11 @@ function renderedLinks(markup) {
 }
 
 test("approved middle-school level mappings cannot silently disappear or change PDF", () => {
-  assert.deepEqual(approved.expectedLinkCounts, { 7: 148, 8: 177, 9: 127 });
+  // Grade 9 is 124, not 127: Noam's authorized removal of topic 21 "משולשים מיוחדים"
+  // (3 levels) in 66f916b "Remove special triangles from grade 9" (origin/main) updated the
+  // approved fixture (127 -> 124) and noam-linked-manifests (452 -> 449) but not
+  // this literal.
+  assert.deepEqual(approved.expectedLinkCounts, { 7: 148, 8: 177, 9: 124 });
   for (const [grade, topics] of Object.entries(approved.grades)) {
     const count = topics.reduce((total, topic) => total + Object.keys(topic.links).length, 0);
     assert.equal(count, approved.expectedLinkCounts[grade], `Incomplete approved grade ${grade} fixture`);
