@@ -11,7 +11,9 @@ import { TOPIC_PAGE_M30_REDIRECTS } from '../src/lib/topicPages';
 import { resolveSiteHref } from '../src/lib/resolveSiteHref';
 
 const pageExists = (p: string) =>
-  p === '/' || existsSync(new URL(`../src/pages${p}.astro`, import.meta.url));
+  p === '/' ||
+  (p.endsWith('.html') && existsSync(new URL(`../public${p}`, import.meta.url))) ||
+  existsSync(new URL(`../src/pages${p}.astro`, import.meta.url));
 
 describe('OPEN-15 redirects', () => {
   it('maps the representative legacy paths to their decided targets', () => {
@@ -34,6 +36,10 @@ describe('OPEN-15 redirects', () => {
       ['/equations-grade-7', '/equations-basics-grade-7'],
       ['/equations-both-sides-word-problems-grade-7-1', '/equations-both-sides-word-problems-grade-7'],
       ['/inequalities-grade-8-1', '/inequalities-grade-8'],
+      ['/about', '/aboutus'],
+      ['/contact', '/aboutus'],
+      ['/learning', '/learning.html'],
+      ['/worksheet-viewer', '/worksheet-viewer-noam.html'],
     ];
     for (const [from, to] of cases) assert.equal(resolveRedirect(from), to, from);
   });
