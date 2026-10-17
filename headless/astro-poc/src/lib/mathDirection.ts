@@ -21,10 +21,15 @@ function isCore(ch: string): boolean {
   return '−+×÷=≠<>≤≥±√∞%*'.includes(ch);
 }
 
-/** Symbols that may sit inside a math run (parentheses, degree, dashes, …). */
+/**
+ * Symbols that may sit inside a math run (parentheses, degree, …).
+ * Colon, en dash, and em dash are punctuation. A colon joins a run only as
+ * division (`12 : 4`, `(180−40):2`). An en dash joins only as a range (`3–7`).
+ * A label colon (`דוגמה: 2 + 5`) and an em dash stay outside the isolate.
+ */
 function isMathSymbol(ch: string): boolean {
   if (isCore(ch)) return true;
-  return '()[]{}|∥⊥∠^/~·∙′″⁄–—:+'.includes(ch) || ch === '-';
+  return '()[]{}|∥⊥∠^/~·∙′″⁄+'.includes(ch) || ch === '-';
 }
 
 function isGlue(ch: string): boolean {
@@ -85,10 +90,30 @@ function mathSpanEnd(text: string, start: number): number {
       j += 1;
       continue;
     }
+    if (text[j] === ':') {
+      // Tight division, e.g. (180−40):2. A space after the colon is a label.
+      if (j + 1 < text.length && isMathAt(text, j + 1)) {
+        j += 1;
+        continue;
+      }
+      break;
+    }
+    if (text[j] === '\u2013' && j + 1 < text.length && isMathAt(text, j + 1)) {
+      j += 1;
+      continue;
+    }
     if (isGlue(text[j]!)) {
       let k = j;
       while (k < text.length && isGlue(text[k]!)) k += 1;
-      if (k < text.length && isMathAt(text, k)) {
+      if (k < text.length && text[k] === ':') {
+        let m = k + 1;
+        while (m < text.length && isGlue(text[m]!)) m += 1;
+        if (m < text.length && isMathAt(text, m)) {
+          j = m;
+          continue;
+        }
+      }
+      if (k < text.length && (isMathAt(text, k) || text[k] === '\u2013')) {
         j = k;
         continue;
       }

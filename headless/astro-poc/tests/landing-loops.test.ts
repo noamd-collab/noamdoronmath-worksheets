@@ -108,6 +108,27 @@ describe('landing loop coverage', () => {
     assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
   });
 
+  it('reviewed elementary pages play an on-topic existing film', () => {
+    const expect: Record<string, { kind: 'concept' | 'css'; variant: string }> = {
+      'addition-to-10-grade-1': { kind: 'concept', variant: 'add-within' },
+      'numbers-operations-review-grade-2': { kind: 'concept', variant: 'place-123' },
+      'perimeter-polygons-grade-3': { kind: 'concept', variant: 'peri-rect' },
+      'order-of-operations-grade-4': { kind: 'concept', variant: 'order-ops' },
+      'grade-4-summary': { kind: 'concept', variant: 'baseten' },
+      'distributive-area-model-grade-4': { kind: 'concept', variant: 'l-split' },
+      'multiplication-multi-digit-grade-4': { kind: 'concept', variant: 'array' },
+      'parallelogram-area-grade-5': { kind: 'css', variant: 'area-para' },
+      'fraction-division-meaning-grade-6': { kind: 'concept', variant: 'share-12' },
+      'measurement-geometry-synthesis-grade-6': { kind: 'concept', variant: 'rect-count' },
+      'percent-of-quantity-grade-6': { kind: 'concept', variant: 'pct-25' },
+    };
+    for (const [slug, wanted] of Object.entries(expect)) {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      assert.equal(loop.kind, wanted.kind, slug);
+      assert.equal(loop.kind === 'film' ? '' : loop.variant, wanted.variant, slug);
+    }
+  });
+
   it('kite-grade-9 plays the kite-construct film', () => {
     assert.deepEqual(topicLandingLoop(loadTopicPage('kite-grade-9')), {
       kind: 'concept',
@@ -228,7 +249,7 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 123);
+    assert.equal(cssPages, 118);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);
