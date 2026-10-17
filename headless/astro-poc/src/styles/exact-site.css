@@ -6,14 +6,15 @@ body.exact-site {
 }
 /* Phone dock: the scrollport stops above the two launchers, which sit on
    opposite bottom corners. 128px stays after the footer so the last line
-   can scroll clear of that edge. */
+   can scroll clear of that edge. The lock applies only when .exact-frame
+   is the scroller; a page without that frame keeps normal document scroll. */
 @media (max-width: 800px) {
-  html:not(.noam-ai-engaged) {
+  html:not(.noam-ai-engaged):has(body.exact-site > .exact-frame) {
     height: 100dvh;
     overflow: hidden;
   }
-  html:not(.noam-ai-engaged) body.exact-site,
-  html.noam-a11y-pad:not(.noam-ai-engaged) body.exact-site {
+  html:not(.noam-ai-engaged):has(body.exact-site > .exact-frame) body.exact-site,
+  html.noam-a11y-pad:not(.noam-ai-engaged):has(body.exact-site > .exact-frame) body.exact-site {
     height: 100dvh;
     overflow: hidden;
     padding-bottom: 0;
