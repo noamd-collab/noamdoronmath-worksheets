@@ -1,2 +1,3 @@
 # local tool secrets (copy from tools/.env.example)
+.env.local
 tools/.env
