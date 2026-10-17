@@ -31,10 +31,11 @@ const PROD = 'https://www.noamdoronmath.co.il';
 /** Canonical related targets from the live GEO block, keyed by grade then family. */
 const LINKS: Record<number, Record<TopicFamily, readonly (readonly [string, string])[]>> = {
   1: {
-    // Elementary topics have no production sibling pages; hubs only.
-    algebra: [],
-    geometry: [],
-    graphs: [],
+    // Elementary topics have no production sibling pages; every family falls
+    // back to the two real hubs (own grade first, then the next grade).
+    algebra: [['/grade-2', 'דפי עבודה לכיתה ב׳']],
+    geometry: [['/grade-2', 'דפי עבודה לכיתה ב׳']],
+    graphs: [['/grade-2', 'דפי עבודה לכיתה ב׳']],
     default: [
       ['/grade-1', 'כל דפי כיתה א׳'],
       ['/grade-2', 'דפי עבודה לכיתה ב׳'],

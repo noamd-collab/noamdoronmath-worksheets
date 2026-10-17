@@ -101,6 +101,23 @@ import triangleSimilarityAaGrade9 from '../data/topic-pages/triangle-similarity-
 import triangularPrismSurfaceAreaGrade9 from '../data/topic-pages/triangular-prism-surface-area-grade-9.json';
 import triangularPrismVolumeGrade9 from '../data/topic-pages/triangular-prism-volume-grade-9.json';
 import countingGrade1 from '../data/topic-pages/counting-grade-1.json';
+import numbersTo100Grade1 from '../data/topic-pages/numbers-to-100-grade-1.json';
+import numberNeighborsGrade1 from '../data/topic-pages/number-neighbors-grade-1.json';
+import composeDecompose10Grade1 from '../data/topic-pages/compose-decompose-10-grade-1.json';
+import additionTo10Grade1 from '../data/topic-pages/addition-to-10-grade-1.json';
+import subtractionTo10Grade1 from '../data/topic-pages/subtraction-to-10-grade-1.json';
+import making20Via10Grade1 from '../data/topic-pages/making-20-via-10-grade-1.json';
+import additionTo20Grade1 from '../data/topic-pages/addition-to-20-grade-1.json';
+import subtractionTo20Grade1 from '../data/topic-pages/subtraction-to-20-grade-1.json';
+import equalityMissingNumberGrade1 from '../data/topic-pages/equality-missing-number-grade-1.json';
+import patternsSequencesGrade1 from '../data/topic-pages/patterns-sequences-grade-1.json';
+import hundredChartGrade1 from '../data/topic-pages/hundred-chart-grade-1.json';
+import numberChainsPyramidsGrade1 from '../data/topic-pages/number-chains-pyramids-grade-1.json';
+import wordProblemsPictureGrade1 from '../data/topic-pages/word-problems-picture-grade-1.json';
+import composeDecomposeGrade1 from '../data/topic-pages/compose-decompose-grade-1.json';
+import dataGrade1 from '../data/topic-pages/data-grade-1.json';
+import wordProblemsSimpleGrade1 from '../data/topic-pages/word-problems-simple-grade-1.json';
+import shapesComposeDecomposeGrade1 from '../data/topic-pages/shapes-compose-decompose-grade-1.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -255,11 +272,33 @@ export const TOPIC_PAGE_M30_UNMIGRATED = [] as const;
 export const TOPIC_PAGE_KITE_SLUGS = ['kite-grade-9'] as const;
 
 /**
- * Elementary topic pages (grades 1–6). Authored from catalog data — production
- * has no per-topic pages for these grades, so the parity gate skips them.
- * Order follows the catalog topic order (the site's existing order).
+ * Elementary topic pages (grades 1–6). Authored from catalog data + the real
+ * level-a PDF skill lists — production has no per-topic pages for these
+ * grades, so the parity gate skips them. Order follows the catalog order.
+ * Excluded until an animation family exists for them (docs/missing-animations.md):
+ * t15 מודדים ומשווים אורך, t16 קבוצות שוות וחיבור חוזר, t17 מצולעים,
+ * t18 ריבוע ומלבן, t20 שעה שלמה.
  */
-export const TOPIC_PAGE_G1_SLUGS = ['counting-grade-1'] as const;
+export const TOPIC_PAGE_G1_SLUGS = [
+  'counting-grade-1',
+  'numbers-to-100-grade-1',
+  'number-neighbors-grade-1',
+  'compose-decompose-10-grade-1',
+  'addition-to-10-grade-1',
+  'subtraction-to-10-grade-1',
+  'making-20-via-10-grade-1',
+  'addition-to-20-grade-1',
+  'subtraction-to-20-grade-1',
+  'equality-missing-number-grade-1',
+  'patterns-sequences-grade-1',
+  'hundred-chart-grade-1',
+  'number-chains-pyramids-grade-1',
+  'word-problems-picture-grade-1',
+  'compose-decompose-grade-1',
+  'data-grade-1',
+  'word-problems-simple-grade-1',
+  'shapes-compose-decompose-grade-1',
+] as const;
 
 /** Slugs with no production source; the parity fixture gate must skip them. */
 export const TOPIC_PAGE_AUTHORED_SLUGS = [...TOPIC_PAGE_G1_SLUGS] as const;
@@ -486,8 +525,25 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'special-triangles-grade-7-new': specialTrianglesGrade7New as TopicPageContent,
   'patterns-and-graphs-grade-7': patternsAndGraphsGrade7 as TopicPageContent,
   'kite-grade-9': kiteGrade9 as TopicPageContent,
-  // Elementary authored pages (G1 pilot)
+  // Elementary authored pages (G1, catalog order)
   'counting-grade-1': countingGrade1 as TopicPageContent,
+  'numbers-to-100-grade-1': numbersTo100Grade1 as TopicPageContent,
+  'number-neighbors-grade-1': numberNeighborsGrade1 as TopicPageContent,
+  'compose-decompose-10-grade-1': composeDecompose10Grade1 as TopicPageContent,
+  'addition-to-10-grade-1': additionTo10Grade1 as TopicPageContent,
+  'subtraction-to-10-grade-1': subtractionTo10Grade1 as TopicPageContent,
+  'making-20-via-10-grade-1': making20Via10Grade1 as TopicPageContent,
+  'addition-to-20-grade-1': additionTo20Grade1 as TopicPageContent,
+  'subtraction-to-20-grade-1': subtractionTo20Grade1 as TopicPageContent,
+  'equality-missing-number-grade-1': equalityMissingNumberGrade1 as TopicPageContent,
+  'patterns-sequences-grade-1': patternsSequencesGrade1 as TopicPageContent,
+  'hundred-chart-grade-1': hundredChartGrade1 as TopicPageContent,
+  'number-chains-pyramids-grade-1': numberChainsPyramidsGrade1 as TopicPageContent,
+  'word-problems-picture-grade-1': wordProblemsPictureGrade1 as TopicPageContent,
+  'compose-decompose-grade-1': composeDecomposeGrade1 as TopicPageContent,
+  'data-grade-1': dataGrade1 as TopicPageContent,
+  'word-problems-simple-grade-1': wordProblemsSimpleGrade1 as TopicPageContent,
+  'shapes-compose-decompose-grade-1': shapesComposeDecomposeGrade1 as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
