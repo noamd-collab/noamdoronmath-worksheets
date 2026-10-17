@@ -1,0 +1,265 @@
+{
+  "slug": "square-rectangle-grade-1",
+  "path": "/square-rectangle-grade-1",
+  "grade": 1,
+  "sourceUrl": "https://www.noamdoronmath.co.il/square-rectangle-grade-1",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g1-t18-grounded-pdf",
+  "title": "ריבוע ומלבן לכיתה א׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "ריבוע ומלבן לכיתה א׳: תכונות ולא מראה: שתי בדיקות לסיווג, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "ריבוע ומלבן לכיתה א׳",
+  "intro": "מזהים ריבוע ומלבן לפי התכונות שלהם, לא לפי המראה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בריבוע כל ארבע הצלעות שוות ובכל הפינות זוויות ישרות. במלבן הצלעות הנגדיות שוות והזוויות ישרות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בודקים שתי בדיקות: האם הצלעות שוות? והאם הפינות ישרות?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: דף הוא מלבן, וריבוע הוא מלבן מיוחד שכל צלעותיו שוות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא להחליט לפי המראה בלבד. גם ריבוע מסובב (שיה) הוא ריבוע — התכונות לא משתנות בסיבוב.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: לצורה יש 4 צלעות שוות ו־4 זוויות ישרות. מהי?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "ריבוע.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מזהים ריבוע ומלבן לפי התכונות שלהם, לא לפי המראה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=1&topic=18",
+      "catalogTopicId": 18
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "בריבוע כל ארבע הצלעות שוות ובכל הפינות זוויות ישרות. במלבן הצלעות הנגדיות שוות והזוויות ישרות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בודקים שתי בדיקות: האם הצלעות שוות? והאם הפינות ישרות?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: דף הוא מלבן, וריבוע הוא מלבן מיוחד שכל צלעותיו שוות.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא להחליט לפי המראה בלבד. גם ריבוע מסובב (שיה) הוא ריבוע — התכונות לא משתנות בסיבוב.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: לצורה יש 4 צלעות שוות ו־4 זוויות ישרות. מהי?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "ריבוע.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא ריבוע ומלבן מתאימים לכיתה א׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא ריבוע ומלבן מתאימים לכיתה א׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-1",
+      "label": "כל דפי כיתה א׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-1"
+    },
+    {
+      "path": "/grade-2",
+      "label": "דפי עבודה לכיתה ב׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-2"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=1&topic=18",
+    "source": "catalog-g1-t18",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=1&topic=18",
+    "catalogTopicId": 18,
+    "catalogTopicTitle": "ריבוע ומלבן"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=1&topic=18",
+      "source": "catalog-g1-t18",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=1&topic=18",
+      "catalogTopicId": 18,
+      "catalogTopicTitle": "ריבוע ומלבן"
+    }
+  ],
+  "gradeHubHref": "/grade-1",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/square-rectangle-grade-1#webpage",
+        "url": "https://www.noamdoronmath.co.il/square-rectangle-grade-1",
+        "name": "ריבוע ומלבן לכיתה א׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "ריבוע ומלבן לכיתה א׳: תכונות ולא מראה: שתי בדיקות לסיווג, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/square-rectangle-grade-1#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/square-rectangle-grade-1#learning-resource",
+        "name": "ריבוע ומלבן לכיתה א׳",
+        "url": "https://www.noamdoronmath.co.il/square-rectangle-grade-1",
+        "description": "ריבוע ומלבן לכיתה א׳: תכונות ולא מראה: שתי בדיקות לסיווג, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה א׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/square-rectangle-grade-1#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא ריבוע ומלבן מתאימים לכיתה א׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
