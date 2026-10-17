@@ -119,4 +119,12 @@ describe('OPEN-07 blog audio', () => {
     assert.notEqual(expected, livePlayer);
     assert.equal(copy, expected);
   });
+
+  it('player API fallback points at the classic site — /_functions 404s on the Headless domain', () => {
+    for (const file of ['../../../blog-audio-pipeline/site/noam-audio-player.js', '../public/blog-audio/noam-audio-player.js']) {
+      const src = readFileSync(new URL(file, import.meta.url), 'utf8');
+      assert.match(src, /var API = 'https:\/\/amiramnoam\.wixsite\.com\/my-site\/_functions\/blogAudioInfo';/);
+      assert.doesNotMatch(src, /var API = '[^']*noamdoronmath\.co\.il/, 'the Headless domain has no Velo /_functions');
+    }
+  });
 });
