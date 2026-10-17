@@ -125,7 +125,10 @@ describe('Noam AI site manual', () => {
       assert.ok(guideIds.includes(id), id);
     }
     assert.equal(guideIds.includes('6a37fe7160324a17ad107b3dbe43c1db'), false);
-    assert.equal(guide.counts.topic, 96);
+    assert.equal(guide.counts.topic, 97);
+    const counting = guide.records.find((row) => row.id === 'topic-counting-grade-1');
+    assert.equal(counting && counting.href, '/counting-grade-1');
+    assert.equal(counting && counting.topic, 'מונים בלי לפספס');
     const kite = guide.records.find((row) => row.id === 'topic-kite-grade-9');
     assert.equal(kite && kite.href, '/kite-grade-9');
     assert.equal(kite && kite.topic, 'דלתון');

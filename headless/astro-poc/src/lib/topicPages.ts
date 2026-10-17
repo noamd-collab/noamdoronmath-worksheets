@@ -100,6 +100,7 @@ import triangleSidesAnglesGrade9 from '../data/topic-pages/triangle-sides-angles
 import triangleSimilarityAaGrade9 from '../data/topic-pages/triangle-similarity-aa-grade-9.json';
 import triangularPrismSurfaceAreaGrade9 from '../data/topic-pages/triangular-prism-surface-area-grade-9.json';
 import triangularPrismVolumeGrade9 from '../data/topic-pages/triangular-prism-volume-grade-9.json';
+import countingGrade1 from '../data/topic-pages/counting-grade-1.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -253,6 +254,16 @@ export const TOPIC_PAGE_M30_UNMIGRATED = [] as const;
 /** Grade-9 kite (G9-T46). Not a production capture; authored with the kite loop. */
 export const TOPIC_PAGE_KITE_SLUGS = ['kite-grade-9'] as const;
 
+/**
+ * Elementary topic pages (grades 1–6). Authored from catalog data — production
+ * has no per-topic pages for these grades, so the parity gate skips them.
+ * Order follows the catalog topic order (the site's existing order).
+ */
+export const TOPIC_PAGE_G1_SLUGS = ['counting-grade-1'] as const;
+
+/** Slugs with no production source; the parity fixture gate must skip them. */
+export const TOPIC_PAGE_AUTHORED_SLUGS = [...TOPIC_PAGE_G1_SLUGS] as const;
+
 export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_PILOT_SLUGS,
   ...TOPIC_PAGE_M19_SLUGS,
@@ -262,6 +273,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_M23_SLUGS,
   ...TOPIC_PAGE_M30_SLUGS,
   ...TOPIC_PAGE_KITE_SLUGS,
+  ...TOPIC_PAGE_G1_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -474,6 +486,8 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'special-triangles-grade-7-new': specialTrianglesGrade7New as TopicPageContent,
   'patterns-and-graphs-grade-7': patternsAndGraphsGrade7 as TopicPageContent,
   'kite-grade-9': kiteGrade9 as TopicPageContent,
+  // Elementary authored pages (G1 pilot)
+  'counting-grade-1': countingGrade1 as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
