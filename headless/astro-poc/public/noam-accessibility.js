@@ -88,8 +88,8 @@
       /* Reserve the corner. The window stays the scroller. */
       @media (max-width: 800px) {
         html.noam-a11y-pad body {
-          padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
-          scroll-padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+          padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
+          scroll-padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
         }
       }
       @media (min-width: 801px) {
