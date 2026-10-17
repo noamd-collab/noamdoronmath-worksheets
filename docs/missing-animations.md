@@ -16,12 +16,12 @@
 | 2 (ב׳) | 29 | 29 | 0 |
 | 3 (ג׳) | 25 | 25 | 0 |
 | 4 (ד׳) | 30 | 30 | 0 |
-| 5 (ה׳) | 35 | 18 | 0 |
-| 6 (ו׳) | 27 | 14 | 0 |
+| 5 (ה׳) | 35 | 35 | 0 |
+| 6 (ו׳) | 27 | 27 | 0 |
 | 7 (ז׳) | 50 | 39 | 0 |
 | 8 (ח׳) | 65 | 26 | 0 |
 | 9 (ט׳) | 45 | 41 | 0 |
-| **סה״כ** | **329** | **245** | **0** |
+| **סה״כ** | **329** | **275** | **0** |
 
 ## כיתה א׳ (grade 1)
 
@@ -154,36 +154,36 @@
 
 | כיתה | נושא | מזהה נושא | דף נושא | אנימציה |
 |---|---|---|---|---|
-| 5 | תובנה מספרית כפל וחילוק בעשרות ומאות | 1 | — | exists |
+| 5 | תובנה מספרית כפל וחילוק בעשרות ומאות | 1 | /number-sense-tens-hundreds-grade-5 | exists |
 | 5 | מספרים גדולים ערך מקום עיגול ואומדן | 2 | /big-numbers-rounding-grade-5 | exists |
 | 5 | כפל רב ספרתי ובדיקת סבירות | 3 | /multiplication-multi-digit-grade-5 | exists |
-| 5 | חילוק מאונך ושארית | 4 | — | exists |
-| 5 | גורמים ראשוניים ופריקים | 5 | — | exists |
+| 5 | חילוק מאונך ושארית | 4 | /long-division-grade-5 | exists |
+| 5 | גורמים ראשוניים ופריקים | 5 | /prime-factors-grade-5 | exists |
 | 5 | סדר פעולות תכנון ולא רק ביצוע | 6 | /order-of-operations-grade-5 | exists |
-| 5 | חזרה על משמעות השבר וייצוגיו | 7 | — | exists |
-| 5 | שברים על ישר והשוואה | 8 | — | exists |
-| 5 | הרחבה וצמצום שברים שקולים | 9 | — | exists |
-| 5 | מכנה משותף בחירה יעילה | 10 | — | exists |
-| 5 | חיבור וחיסור שברים במכנים שונים | 11 | — | exists |
-| 5 | חלק מכמות | 12 | — | exists |
-| 5 | שברים גדולים מ 1 ומספרים מעורבים | 13 | — | exists |
-| 5 | חיבור וחיסור מספרים מעורבים | 14 | — | exists |
-| 5 | השלמת שברים ופעולות הפוכות | 15 | — | exists |
+| 5 | חזרה על משמעות השבר וייצוגיו | 7 | /fraction-meaning-grade-5 | exists |
+| 5 | שברים על ישר והשוואה | 8 | /fractions-numberline-compare-grade-5 | exists |
+| 5 | הרחבה וצמצום שברים שקולים | 9 | /expand-reduce-fractions-grade-5 | exists |
+| 5 | מכנה משותף בחירה יעילה | 10 | /common-denominator-grade-5 | exists |
+| 5 | חיבור וחיסור שברים במכנים שונים | 11 | /add-subtract-fractions-grade-5 | exists |
+| 5 | חלק מכמות | 12 | /fraction-of-quantity-grade-5 | exists |
+| 5 | שברים גדולים מ 1 ומספרים מעורבים | 13 | /fractions-mixed-numbers-grade-5 | exists |
+| 5 | חיבור וחיסור מספרים מעורבים | 14 | /add-subtract-mixed-numbers-grade-5 | exists |
+| 5 | השלמת שברים ופעולות הפוכות | 15 | /completing-fractions-grade-5 | exists |
 | 5 | קריאת טבלאות וחישוב נתונים | 16 | /read-tables-grade-5 | exists |
 | 5 | קריאת גרפים והשוואת נתונים | 17 | /read-graphs-grade-5 | exists |
 | 5 | משפחת המרובעים ויחסי הכלה | 18 | /quadrilateral-family-grade-5 | exists |
 | 5 | תכונות ואלכסונים במרובעים | 19 | /quadrilateral-diagonals-grade-5 | exists |
-| 5 | בניית צורות ומיון לפי תכונות | 20 | — | exists |
-| 5 | המרות יחידות ומדידת משקל | 21 | — | exists |
+| 5 | בניית צורות ומיון לפי תכונות | 20 | /build-classify-shapes-grade-5 | exists |
+| 5 | המרות יחידות ומדידת משקל | 21 | /unit-conversion-weight-grade-5 | exists |
 | 5 | היקף יחידות וקווים מקבילים מאונכים | 22 | /perimeter-parallel-perpendicular-grade-5 | exists |
 | 5 | גובה במשולש חד זווית וישר זווית | 23 | /triangle-height-acute-right-grade-5 | exists |
 | 5 | גובה במשולש קהה ובמקבילית | 24 | /triangle-height-obtuse-parallelogram-grade-5 | exists |
 | 5 | שטח והיקף של מלבנים וריבועים | 25 | /area-perimeter-rectangles-grade-5 | exists |
 | 5 | שטח צורה מורכבת פירוק והרכבה | 26 | /composite-area-grade-5 | exists |
 | 5 | שטח מקבילית והקשר למלבן | 27 | /parallelogram-area-grade-5 | exists |
-| 5 | מספרים עשרוניים ערך מקום וייצוגים | 28 | — | exists |
-| 5 | משווים שברים ומספרים עשרוניים | 29 | — | exists |
-| 5 | חיבור וחיסור מספרים עשרוניים ואומדן | 30 | — | exists |
+| 5 | מספרים עשרוניים ערך מקום וייצוגים | 28 | /decimal-place-value-grade-5 | exists |
+| 5 | משווים שברים ומספרים עשרוניים | 29 | /compare-fractions-decimals-grade-5 | exists |
+| 5 | חיבור וחיסור מספרים עשרוניים ואומדן | 30 | /add-subtract-decimals-grade-5 | exists |
 | 5 | שטח משולש בסיס וגובה | 31 | /triangle-area-grade-5 | exists |
 | 5 | נעלמים ומשוואות בשברים | 32 | /missing-number-fractions-grade-5 | exists |
 | 5 | ממוצע וחקר נתונים | 33 | /mean-data-inquiry-grade-5 | exists |
@@ -194,28 +194,28 @@
 
 | כיתה | נושא | מזהה נושא | דף נושא | אנימציה |
 |---|---|---|---|---|
-| 6 | כפל שבר במספר שלם | 1 | — | exists |
-| 6 | כפל כחלק מכמות ושטח | 2 | — | exists |
-| 6 | כפל שבר בשבר | 3 | — | exists |
-| 6 | כפל מספרים מעורבים | 4 | — | exists |
-| 6 | כפל שברים יישום ובקרה | 5 | — | exists |
-| 6 | משמעות חילוק שברים | 6 | — | exists |
-| 6 | אלגוריתם חילוק שברים והופכי | 7 | — | exists |
-| 6 | כפל וחילוק שברים בחירת פעולה | 8 | — | exists |
-| 6 | כפל מספרים עשרוניים | 9 | — | exists |
-| 6 | חילוק מספרים עשרוניים | 10 | — | exists |
+| 6 | כפל שבר במספר שלם | 1 | /fraction-times-whole-grade-6 | exists |
+| 6 | כפל כחלק מכמות ושטח | 2 | /fraction-part-quantity-area-grade-6 | exists |
+| 6 | כפל שבר בשבר | 3 | /fraction-times-fraction-grade-6 | exists |
+| 6 | כפל מספרים מעורבים | 4 | /multiply-mixed-numbers-grade-6 | exists |
+| 6 | כפל שברים יישום ובקרה | 5 | /fraction-multiplication-apply-grade-6 | exists |
+| 6 | משמעות חילוק שברים | 6 | /fraction-division-meaning-grade-6 | exists |
+| 6 | אלגוריתם חילוק שברים והופכי | 7 | /fraction-division-algorithm-grade-6 | exists |
+| 6 | כפל וחילוק שברים בחירת פעולה | 8 | /fraction-operations-choose-grade-6 | exists |
+| 6 | כפל מספרים עשרוניים | 9 | /multiply-decimals-grade-6 | exists |
+| 6 | חילוק מספרים עשרוניים | 10 | /divide-decimals-grade-6 | exists |
 | 6 | חקר גופים ותכונותיהם | 11 | /solids-explore-grade-6 | exists |
 | 6 | תיבות ופריסות מעבר בין דו ממד לתלת ממד | 12 | /boxes-nets-grade-6 | exists |
 | 6 | שטח פנים של תיבה | 13 | /box-surface-area-grade-6 | exists |
 | 6 | נפח תיבה ומבנים | 14 | /box-volume-grade-6 | exists |
-| 6 | קיבול סמק ליטר ומק | 15 | — | exists |
+| 6 | קיבול סמק ליטר ומק | 15 | /capacity-ml-l-m3-grade-6 | exists |
 | 6 | מרובעים ויחסי הכלה חזרה מנומקת | 16 | /quadrilaterals-review-grade-6 | exists |
 | 6 | דף סינתזה מדידות גאומטריה ופתרון רב שלבי | 17 | /measurement-geometry-synthesis-grade-6 | exists |
 | 6 | שבר עשרוני ואחוז שלושה ייצוגים לאותו מספר | 18 | /fraction-decimal-percent-grade-6 | exists |
 | 6 | אחוז כחלק מכמות | 19 | /percent-of-quantity-grade-6 | exists |
 | 6 | מציאת השלם ויישומי אחוזים | 20 | /find-the-whole-grade-6 | exists |
-| 6 | יחס משמעות ייצוג ויחסים שקולים | 21 | — | exists |
-| 6 | קנה מידה במפות ובשרטוטים | 22 | — | exists |
+| 6 | יחס משמעות ייצוג ויחסים שקולים | 21 | /ratio-grade-6 | exists |
+| 6 | קנה מידה במפות ובשרטוטים | 22 | /scale-maps-grade-6 | exists |
 | 6 | מספרים ופעולות סדר אומדן ובדיקת סבירות | 23 | /numbers-operations-review-grade-6 | exists |
 | 6 | אוספים ומייצגים נתונים | 24 | /collect-represent-data-grade-6 | exists |
 | 6 | משווים קבוצות ומנסחים מסקנות זהירות | 25 | /compare-groups-conclusions-grade-6 | exists |
