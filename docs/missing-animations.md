@@ -13,7 +13,7 @@
 | כיתה | נושאים | דפים נבנו | אנימציה חסרה |
 |---|---|---|---|
 | 1 (א׳) | 23 | 23 | 0 |
-| 2 (ב׳) | 29 | 14 | 0 |
+| 2 (ב׳) | 29 | 29 | 0 |
 | 3 (ג׳) | 25 | 14 | 0 |
 | 4 (ד׳) | 30 | 17 | 0 |
 | 5 (ה׳) | 35 | 18 | 0 |
@@ -21,7 +21,7 @@
 | 7 (ז׳) | 50 | 39 | 0 |
 | 8 (ח׳) | 65 | 26 | 0 |
 | 9 (ט׳) | 45 | 41 | 0 |
-| **סה״כ** | **329** | **206** | **0** |
+| **סה״כ** | **329** | **221** | **0** |
 
 ## כיתה א׳ (grade 1)
 
@@ -58,30 +58,30 @@
 | 2 | חוזרים להרכבות 10 ו 20 | 1 | /number-bonds-10-20-grade-2 | exists |
 | 2 | עשרות ויחידות בתחום 100 | 2 | /tens-and-ones-grade-2 | exists |
 | 2 | סדר השוואה וישר מספרים | 3 | /order-compare-numberline-grade-2 | exists |
-| 2 | מוסיפים עשרות ומפרקים מספרים | 4 | — | exists |
-| 2 | חיבור דו ספרתי ללא המרה | 5 | — | exists |
-| 2 | חיבור דו ספרתי עם המרה | 6 | — | exists |
-| 2 | חיסור דו ספרתי ללא פריטה | 7 | — | exists |
-| 2 | חיסור דו ספרתי עם פריטה | 8 | — | exists |
-| 2 | אסטרטגיות חישוב אומדן ופיצוי | 9 | — | exists |
+| 2 | מוסיפים עשרות ומפרקים מספרים | 4 | /adding-tens-decompose-grade-2 | exists |
+| 2 | חיבור דו ספרתי ללא המרה | 5 | /addition-two-digit-no-carry-grade-2 | exists |
+| 2 | חיבור דו ספרתי עם המרה | 6 | /addition-two-digit-carrying-grade-2 | exists |
+| 2 | חיסור דו ספרתי ללא פריטה | 7 | /subtraction-two-digit-no-borrow-grade-2 | exists |
+| 2 | חיסור דו ספרתי עם פריטה | 8 | /subtraction-two-digit-borrowing-grade-2 | exists |
+| 2 | אסטרטגיות חישוב אומדן ופיצוי | 9 | /calculation-strategies-grade-2 | exists |
 | 2 | שוויון ומספר חסר | 10 | /equality-missing-number-grade-2 | exists |
 | 2 | בעיות מילוליות וכסף | 11 | /word-problems-money-grade-2 | exists |
 | 2 | קוראים טבלה ודיאגרמת עמודות | 12 | /tables-bar-charts-grade-2 | exists |
 | 2 | מאות עשרות ויחידות | 13 | /hundreds-tens-ones-grade-2 | exists |
 | 2 | ממיינים ומשווים מספרים עד 1000 | 14 | /compare-numbers-to-1000-grade-2 | exists |
 | 2 | מספרים עד 1000 | 15 | /numbers-to-1000-grade-2 | exists |
-| 2 | כפל קבוצות שוות ומערכים | 16 | — | exists |
-| 2 | חילוק להכלה | 17 | — | exists |
-| 2 | חילוק לחלקים שווים | 18 | — | exists |
-| 2 | משפחת כפל וחילוק | 19 | — | exists |
-| 2 | פי בקבוצות שוות | 20 | — | exists |
+| 2 | כפל קבוצות שוות ומערכים | 16 | /multiplication-equal-groups-grade-2 | exists |
+| 2 | חילוק להכלה | 17 | /division-measurement-grade-2 | exists |
+| 2 | חילוק לחלקים שווים | 18 | /division-equal-shares-grade-2 | exists |
+| 2 | משפחת כפל וחילוק | 19 | /multiplication-division-family-grade-2 | exists |
+| 2 | פי בקבוצות שוות | 20 | /times-equal-groups-grade-2 | exists |
 | 2 | זוגי אי זוגי וסדרות א | 21 | /even-odd-sequences-a-grade-2 | exists |
 | 2 | זוגי אי זוגי וסדרות ב | 22 | /even-odd-sequences-b-grade-2 | exists |
-| 2 | מדידת אורך | 23 | — | exists |
+| 2 | מדידת אורך | 23 | /measuring-length-grade-2 | exists |
 | 2 | בעיות מילוליות וכסף פשוט | 24 | /word-problems-money-simple-grade-2 | exists |
-| 2 | שעון ומשך זמן | 25 | — | exists |
-| 2 | חצי ורבע | 26 | — | exists |
-| 2 | צורות וגופים לא אותו דבר | 28 | — | exists |
+| 2 | שעון ומשך זמן | 25 | /clock-duration-grade-2 | exists |
+| 2 | חצי ורבע | 26 | /half-and-quarter-grade-2 | exists |
+| 2 | צורות וגופים לא אותו דבר | 28 | /shapes-vs-solids-grade-2 | exists |
 | 2 | סימטרייה שיקופית אינטואיטיבית | 29 | /reflection-symmetry-grade-2 | exists |
 | 2 | סיכום מספרים פעולות וייצוגים | 30 | /numbers-operations-review-grade-2 | exists |
 

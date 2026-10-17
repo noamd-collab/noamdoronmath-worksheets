@@ -1,0 +1,265 @@
+{
+  "slug": "subtraction-two-digit-borrowing-grade-2",
+  "path": "/subtraction-two-digit-borrowing-grade-2",
+  "grade": 2,
+  "sourceUrl": "https://www.noamdoronmath.co.il/subtraction-two-digit-borrowing-grade-2",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g2-t8-grounded-pdf",
+  "title": "חיסור דו־ספרתי עם פריטה לכיתה ב׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "חיסור דו־ספרתי עם פריטה לכיתה ב׳: חיסור עם פריטה: מוט עשרת מתפרק לעשר יחידות, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "חיסור דו־ספרתי עם פריטה לכיתה ב׳",
+  "intro": "מחסרים מספרים דו־ספרתיים עם פריטה: כשאין מספיק יחידות, מפרקים עשרת. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כשאין מספיק יחידות למחסור, מוט אחד של עשרת מתפרק לעשר יחידות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: 52 − 27 = 25 — מתוך 52 מפרקים עשרת, ואז מחסרים 7 יחידות ו־2 עשרות.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בודקים בחיבור: 25 + 27 = 52.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לחסר את הקטן מהגדול בכל עמודה בלי פריטה. ב־52 − 27 אי אפשר 2 פחות 7 בלי לפרק עשרת.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: כמה זה 43 − 16?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 27: מפרקים עשרת מ־43, מחסרים 6 יחידות ועשרת אחת.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מחסרים מספרים דו־ספרתיים עם פריטה: כשאין מספיק יחידות, מפרקים עשרת. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=2&topic=8",
+      "catalogTopicId": 8
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "כשאין מספיק יחידות למחסור, מוט אחד של עשרת מתפרק לעשר יחידות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: 52 − 27 = 25 — מתוך 52 מפרקים עשרת, ואז מחסרים 7 יחידות ו־2 עשרות.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בודקים בחיבור: 25 + 27 = 52.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לחסר את הקטן מהגדול בכל עמודה בלי פריטה. ב־52 − 27 אי אפשר 2 פחות 7 בלי לפרק עשרת.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: כמה זה 43 − 16?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 27: מפרקים עשרת מ־43, מחסרים 6 יחידות ועשרת אחת.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא חיסור דו־ספרתי עם פריטה מתאימים לכיתה ב׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ב׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא חיסור דו־ספרתי עם פריטה מתאימים לכיתה ב׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ב׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-2",
+      "label": "כל דפי כיתה ב׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-2"
+    },
+    {
+      "path": "/grade-3",
+      "label": "דפי עבודה לכיתה ג׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-3"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=2&topic=8",
+    "source": "catalog-g2-t8",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=2&topic=8",
+    "catalogTopicId": 8,
+    "catalogTopicTitle": "חיסור דו־ספרתי עם פריטה"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=2&topic=8",
+      "source": "catalog-g2-t8",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=2&topic=8",
+      "catalogTopicId": 8,
+      "catalogTopicTitle": "חיסור דו־ספרתי עם פריטה"
+    }
+  ],
+  "gradeHubHref": "/grade-2",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/subtraction-two-digit-borrowing-grade-2#webpage",
+        "url": "https://www.noamdoronmath.co.il/subtraction-two-digit-borrowing-grade-2",
+        "name": "חיסור דו־ספרתי עם פריטה לכיתה ב׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "חיסור דו־ספרתי עם פריטה לכיתה ב׳: חיסור עם פריטה: מוט עשרת מתפרק לעשר יחידות, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/subtraction-two-digit-borrowing-grade-2#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/subtraction-two-digit-borrowing-grade-2#learning-resource",
+        "name": "חיסור דו־ספרתי עם פריטה לכיתה ב׳",
+        "url": "https://www.noamdoronmath.co.il/subtraction-two-digit-borrowing-grade-2",
+        "description": "חיסור דו־ספרתי עם פריטה לכיתה ב׳: חיסור עם פריטה: מוט עשרת מתפרק לעשר יחידות, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ב׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/subtraction-two-digit-borrowing-grade-2#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא חיסור דו־ספרתי עם פריטה מתאימים לכיתה ב׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ב׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
