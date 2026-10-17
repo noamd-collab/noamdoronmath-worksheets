@@ -50,6 +50,15 @@ const LINKS: Record<number, Record<TopicFamily, readonly (readonly [string, stri
       ['/grade-3', 'דפי עבודה לכיתה ג׳'],
     ],
   },
+  6: {
+    algebra: [['/grade-7', 'דפי עבודה לכיתה ז׳']],
+    geometry: [['/grade-7', 'דפי עבודה לכיתה ז׳']],
+    graphs: [['/grade-7', 'דפי עבודה לכיתה ז׳']],
+    default: [
+      ['/grade-6', 'כל דפי כיתה ו׳'],
+      ['/grade-7', 'דפי עבודה לכיתה ז׳'],
+    ],
+  },
   5: {
     algebra: [['/grade-6', 'דפי עבודה לכיתה ו׳']],
     geometry: [['/grade-6', 'דפי עבודה לכיתה ו׳']],
