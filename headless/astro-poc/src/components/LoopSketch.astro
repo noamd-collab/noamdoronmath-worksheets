@@ -584,7 +584,37 @@ const quadSigns = [
         <text class="sk-math sk-in sk-d2" x="220" y="50" font-size="28">∼</text>
       </>
     )}
+
+    {variant === 'baseten-sub' && (
+      <>
+        <text class="sk-math" x="30" y="66" font-size="30">52 − 27</text>
+        <text class="sk-math sk-result" x="30" y="122" font-size="30">= 25</text>
+        {Array.from({ length: 2 }, (_, i) => (
+          <rect class="sk-col" x={264 + i * 28} y="36" width="20" height="100" rx="5"></rect>
+        ))}
+        <g class="sk-rod-break">
+          <rect class="sk-col" x="320" y="36" width="20" height="100" rx="5"></rect>
+        </g>
+        <g class="sk-take">
+          <rect class="sk-col" x="348" y="36" width="20" height="100" rx="5"></rect>
+          <rect class="sk-col" x="376" y="36" width="20" height="100" rx="5"></rect>
+          <rect class="sk-gift" x="408" y="116" width="20" height="20" rx="4"></rect>
+          <rect class="sk-gift" x="438" y="116" width="20" height="20" rx="4"></rect>
+        </g>
+        <g class="sk-borrow-stay">
+          {Array.from({ length: 5 }, (_, i) => (
+            <rect class="sk-gift" x={264 + i * 30} y="156" width="20" height="20" rx="4"></rect>
+          ))}
+        </g>
+        <g class="sk-borrow-take">
+          {Array.from({ length: 5 }, (_, i) => (
+            <rect class="sk-gift" x={264 + i * 30} y="186" width="20" height="20" rx="4"></rect>
+          ))}
+        </g>
+      </>
+    )}
   </svg>
+
   {variant === 'circle' && <p class="sk-eq sk-eq--circle" dir="ltr">S = πr<sup>2</sup></p>}
   {variant === 'round-solid' && <p class="sk-eq sk-eq--cyl" dir="ltr">V = πr<sup>2</sup>h</p>}
   {variant === 'percent' && (
@@ -737,6 +767,36 @@ const quadSigns = [
   .sk .sk-d1 { animation-delay: 0.45s; }
   .sk .sk-d2 { animation-delay: 0.9s; }
   .sk .sk-bar { transform-box: fill-box; transform-origin: center bottom; animation: sk-grow 7s ease-in-out infinite; }
+
+  /* baseten-sub: 52 − 27 = 25 with borrowing. Static frame (reduced motion):
+     the setup plus the answer; transient borrowed/removed pieces stay dim. */
+  .sk .sk-rod-break { animation: sk-rod-break 7s ease-in-out infinite; }
+  .sk .sk-borrow-stay { animation: sk-borrow-stay 7s ease-in-out infinite; }
+  .sk .sk-borrow-take { animation: sk-borrow-take 7s ease-in-out infinite; opacity: 0.12; }
+  .sk .sk-take { animation: sk-take 7s ease-in-out infinite; opacity: 0.12; }
+  .sk .sk-result { animation: sk-result 7s ease-in-out infinite; }
+
+  @keyframes sk-rod-break {
+    0%, 22% { opacity: 1; }
+    34%, 100% { opacity: 0.12; }
+  }
+  @keyframes sk-borrow-stay {
+    0%, 22% { opacity: 0; }
+    34%, 100% { opacity: 1; }
+  }
+  @keyframes sk-borrow-take {
+    0%, 22% { opacity: 0; }
+    34%, 52% { opacity: 1; }
+    68%, 100% { opacity: 0.12; }
+  }
+  @keyframes sk-take {
+    0%, 52% { opacity: 1; }
+    68%, 100% { opacity: 0.12; }
+  }
+  @keyframes sk-result {
+    0%, 55% { opacity: 0; }
+    70%, 100% { opacity: 1; }
+  }
 
   @keyframes sk-hop {
     0%, 18% { transform: translateX(0); }
