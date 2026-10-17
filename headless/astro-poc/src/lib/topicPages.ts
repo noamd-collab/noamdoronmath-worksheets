@@ -163,6 +163,24 @@ import anglesLinesPlaneGrade4 from '../data/topic-pages/angles-lines-plane-grade
 import trianglesClassifyBuildGrade4 from '../data/topic-pages/triangles-classify-build-grade-4.json';
 import quadrilateralsClassifyGrade4 from '../data/topic-pages/quadrilaterals-classify-grade-4.json';
 import grade4Summary from '../data/topic-pages/grade-4-summary.json';
+import bigNumbersRoundingGrade5 from '../data/topic-pages/big-numbers-rounding-grade-5.json';
+import multiplicationMultiDigitGrade5 from '../data/topic-pages/multiplication-multi-digit-grade-5.json';
+import orderOfOperationsGrade5 from '../data/topic-pages/order-of-operations-grade-5.json';
+import readTablesGrade5 from '../data/topic-pages/read-tables-grade-5.json';
+import readGraphsGrade5 from '../data/topic-pages/read-graphs-grade-5.json';
+import quadrilateralFamilyGrade5 from '../data/topic-pages/quadrilateral-family-grade-5.json';
+import quadrilateralDiagonalsGrade5 from '../data/topic-pages/quadrilateral-diagonals-grade-5.json';
+import perimeterParallelPerpendicularGrade5 from '../data/topic-pages/perimeter-parallel-perpendicular-grade-5.json';
+import triangleHeightAcuteRightGrade5 from '../data/topic-pages/triangle-height-acute-right-grade-5.json';
+import triangleHeightObtuseParallelogramGrade5 from '../data/topic-pages/triangle-height-obtuse-parallelogram-grade-5.json';
+import areaPerimeterRectanglesGrade5 from '../data/topic-pages/area-perimeter-rectangles-grade-5.json';
+import compositeAreaGrade5 from '../data/topic-pages/composite-area-grade-5.json';
+import parallelogramAreaGrade5 from '../data/topic-pages/parallelogram-area-grade-5.json';
+import triangleAreaGrade5 from '../data/topic-pages/triangle-area-grade-5.json';
+import missingNumberFractionsGrade5 from '../data/topic-pages/missing-number-fractions-grade-5.json';
+import meanDataInquiryGrade5 from '../data/topic-pages/mean-data-inquiry-grade-5.json';
+import frequencyChanceGrade5 from '../data/topic-pages/frequency-chance-grade-5.json';
+import transformationsGrade5 from '../data/topic-pages/transformations-grade-5.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -348,6 +366,28 @@ export const TOPIC_PAGE_G1_SLUGS = [
 /** Grade 2, catalog order. Only topics with an animation mapping ship. */
 /** Grade 3, catalog order. Only topics with an animation mapping ship. */
 /** Grade 4, catalog order. Only topics with an animation mapping ship. */
+/** Grade 5, catalog order. Only topics with an animation mapping ship. */
+export const TOPIC_PAGE_G5_SLUGS = [
+  'big-numbers-rounding-grade-5',
+  'multiplication-multi-digit-grade-5',
+  'order-of-operations-grade-5',
+  'read-tables-grade-5',
+  'read-graphs-grade-5',
+  'quadrilateral-family-grade-5',
+  'quadrilateral-diagonals-grade-5',
+  'perimeter-parallel-perpendicular-grade-5',
+  'triangle-height-acute-right-grade-5',
+  'triangle-height-obtuse-parallelogram-grade-5',
+  'area-perimeter-rectangles-grade-5',
+  'composite-area-grade-5',
+  'parallelogram-area-grade-5',
+  'triangle-area-grade-5',
+  'missing-number-fractions-grade-5',
+  'mean-data-inquiry-grade-5',
+  'frequency-chance-grade-5',
+  'transformations-grade-5',
+] as const;
+
 export const TOPIC_PAGE_G4_SLUGS = [
   'numbers-to-million-grade-4',
   'order-rounding-million-grade-4',
@@ -408,6 +448,7 @@ export const TOPIC_PAGE_AUTHORED_SLUGS = [
   ...TOPIC_PAGE_G2_SLUGS,
   ...TOPIC_PAGE_G3_SLUGS,
   ...TOPIC_PAGE_G4_SLUGS,
+  ...TOPIC_PAGE_G5_SLUGS,
 ] as const;
 
 export const TOPIC_PAGE_SLUGS = [
@@ -423,6 +464,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_G2_SLUGS,
   ...TOPIC_PAGE_G3_SLUGS,
   ...TOPIC_PAGE_G4_SLUGS,
+  ...TOPIC_PAGE_G5_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -702,6 +744,25 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'triangles-classify-build-grade-4': trianglesClassifyBuildGrade4 as TopicPageContent,
   'quadrilaterals-classify-grade-4': quadrilateralsClassifyGrade4 as TopicPageContent,
   'grade-4-summary': grade4Summary as TopicPageContent,
+  // G5 (catalog order)
+  'big-numbers-rounding-grade-5': bigNumbersRoundingGrade5 as TopicPageContent,
+  'multiplication-multi-digit-grade-5': multiplicationMultiDigitGrade5 as TopicPageContent,
+  'order-of-operations-grade-5': orderOfOperationsGrade5 as TopicPageContent,
+  'read-tables-grade-5': readTablesGrade5 as TopicPageContent,
+  'read-graphs-grade-5': readGraphsGrade5 as TopicPageContent,
+  'quadrilateral-family-grade-5': quadrilateralFamilyGrade5 as TopicPageContent,
+  'quadrilateral-diagonals-grade-5': quadrilateralDiagonalsGrade5 as TopicPageContent,
+  'perimeter-parallel-perpendicular-grade-5': perimeterParallelPerpendicularGrade5 as TopicPageContent,
+  'triangle-height-acute-right-grade-5': triangleHeightAcuteRightGrade5 as TopicPageContent,
+  'triangle-height-obtuse-parallelogram-grade-5': triangleHeightObtuseParallelogramGrade5 as TopicPageContent,
+  'area-perimeter-rectangles-grade-5': areaPerimeterRectanglesGrade5 as TopicPageContent,
+  'composite-area-grade-5': compositeAreaGrade5 as TopicPageContent,
+  'parallelogram-area-grade-5': parallelogramAreaGrade5 as TopicPageContent,
+  'triangle-area-grade-5': triangleAreaGrade5 as TopicPageContent,
+  'missing-number-fractions-grade-5': missingNumberFractionsGrade5 as TopicPageContent,
+  'mean-data-inquiry-grade-5': meanDataInquiryGrade5 as TopicPageContent,
+  'frequency-chance-grade-5': frequencyChanceGrade5 as TopicPageContent,
+  'transformations-grade-5': transformationsGrade5 as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
