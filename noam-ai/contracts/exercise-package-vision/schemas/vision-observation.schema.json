@@ -1,0 +1,344 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://noamdoronmath.local/noam-ai/contracts/exercise-package-vision/schemas/vision-observation.schema.json",
+  "title": "VisionObservation (draft, layered)",
+  "description": "Independent Vision/OCR observation of a worksheet crop. Three layers must stay separate. Vision never invents vertex labels: if no glyph is visible, vertex_labels.visible_labels is empty (and that can be a high-confidence true negative). Structural geometry uses anonymous node ids only. Draft freeze — not wired to live prompts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "exerciseId",
+    "layers",
+    "confidence"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "exerciseId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^G[7-9]-T\\d{2}-[ABE]-Q\\d{1,3}[א-ת]?$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pdfId": { "type": "string", "maxLength": 64 },
+        "page": { "type": "integer", "minimum": 1 },
+        "crop_note": { "type": "string", "maxLength": 200 }
+      }
+    },
+    "confidence": {
+      "$ref": "#/$defs/confidence"
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text_numeric",
+        "vertex_labels",
+        "structural"
+      ],
+      "properties": {
+        "text_numeric": {
+          "$ref": "#/$defs/textNumericLayer"
+        },
+        "vertex_labels": {
+          "$ref": "#/$defs/vertexLabelsLayer"
+        },
+        "structural": {
+          "$ref": "#/$defs/structuralLayer"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "anonNodeId": {
+      "type": "string",
+      "pattern": "^n[0-9]{1,3}$"
+    },
+    "anonSegmentId": {
+      "type": "string",
+      "pattern": "^s[0-9]{1,3}$"
+    },
+    "textNumericLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "layer", "numbers", "confidence"],
+      "properties": {
+        "version": { "type": "integer", "const": 1 },
+        "layer": { "type": "string", "const": "text_numeric" },
+        "transcription": { "type": "string", "maxLength": 12000 },
+        "numbers": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "confidence"],
+            "properties": {
+              "value": { "type": "number" },
+              "unit": { "type": ["string", "null"], "maxLength": 24 },
+              "role_hint": {
+                "type": ["string", "null"],
+                "enum": ["length", "angle_deg", "area", "other", null]
+              },
+              "bbox": { "type": ["array", "null"] },
+              "confidence": { "$ref": "#/$defs/confidence" }
+            }
+          }
+        },
+        "hebrew_phrases": {
+          "type": "array",
+          "maxItems": 64,
+          "items": { "type": "string", "maxLength": 200 }
+        },
+        "confidence": { "$ref": "#/$defs/confidence" }
+      }
+    },
+    "vertexLabelsLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "layer", "visible_labels", "confidence"],
+      "properties": {
+        "version": { "type": "integer", "const": 1 },
+        "layer": { "type": "string", "const": "vertex_labels" },
+        "visible_labels": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["glyph", "confidence"],
+            "properties": {
+              "glyph": {
+                "type": "string",
+                "pattern": "^[A-Z]$",
+                "description": "Only a glyph actually visible in the image. Never a package semantic name copied in."
+              },
+              "near": {
+                "type": "string",
+                "enum": ["vertex", "intersection", "unknown"]
+              },
+              "bbox": { "type": ["array", "null"] },
+              "confidence": { "$ref": "#/$defs/confidence" }
+            }
+          }
+        },
+        "emptiness_is_confident": {
+          "type": "boolean",
+          "description": "When visible_labels is empty: true means Vision is confident no glyph labels are present (valid for unlabeled figures)."
+        },
+        "confidence": { "$ref": "#/$defs/confidence" }
+      }
+    },
+    "structuralLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "layer", "nodes", "segments", "confidence"],
+      "properties": {
+        "version": { "type": "integer", "const": 1 },
+        "layer": { "type": "string", "const": "structural" },
+        "nodes": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind"],
+            "properties": {
+              "id": { "$ref": "#/$defs/anonNodeId" },
+              "kind": {
+                "type": "string",
+                "enum": ["vertex", "foot", "intersection", "other"]
+              }
+            }
+          }
+        },
+        "segments": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "ends", "style"],
+            "properties": {
+              "id": { "$ref": "#/$defs/anonSegmentId" },
+              "ends": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": { "$ref": "#/$defs/anonNodeId" },
+                "uniqueItems": true
+              },
+              "style": {
+                "type": "string",
+                "enum": ["solid", "dashed"]
+              },
+              "role_hint": {
+                "type": ["string", "null"],
+                "enum": ["side", "base", "altitude", "diagonal", "extension", "other", null]
+              }
+            }
+          }
+        },
+        "intersections": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["node", "of"],
+            "properties": {
+              "node": { "$ref": "#/$defs/anonNodeId" },
+              "of": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 4,
+                "items": { "$ref": "#/$defs/anonSegmentId" },
+                "uniqueItems": true
+              }
+            }
+          },
+          "default": []
+        },
+        "right_angle_marks": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["vertex", "rays"],
+            "properties": {
+              "vertex": { "$ref": "#/$defs/anonNodeId" },
+              "rays": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": { "$ref": "#/$defs/anonNodeId" },
+                "uniqueItems": true
+              }
+            }
+          },
+          "default": []
+        },
+        "equal_side_marks": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["segments", "tick_count"],
+            "properties": {
+              "segments": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 8,
+                "items": { "$ref": "#/$defs/anonSegmentId" },
+                "uniqueItems": true
+              },
+              "tick_count": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3
+              }
+            }
+          },
+          "default": []
+        },
+        "parallel_marks": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["segments", "arrow_count"],
+            "properties": {
+              "segments": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 8,
+                "items": { "$ref": "#/$defs/anonSegmentId" },
+                "uniqueItems": true
+              },
+              "arrow_count": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3
+              }
+            }
+          },
+          "default": []
+        },
+        "collinear_orders": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 16,
+            "items": { "$ref": "#/$defs/anonNodeId" },
+            "uniqueItems": true
+          },
+          "default": []
+        },
+        "shape_hints": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "nodes"],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "triangle",
+                  "isosceles_triangle",
+                  "right_triangle",
+                  "rectangle",
+                  "parallelogram",
+                  "rhombus",
+                  "trapezoid",
+                  "polygon"
+                ]
+              },
+              "nodes": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 8,
+                "items": { "$ref": "#/$defs/anonNodeId" },
+                "uniqueItems": true
+              }
+            }
+          },
+          "default": []
+        },
+        "numeric_attachments": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["number", "attaches_to"],
+            "properties": {
+              "number": { "type": "number" },
+              "attaches_to": { "$ref": "#/$defs/anonSegmentId" },
+              "confidence": { "$ref": "#/$defs/confidence" }
+            }
+          },
+          "default": []
+        },
+        "confidence": { "$ref": "#/$defs/confidence" }
+      }
+    }
+  }
+}
