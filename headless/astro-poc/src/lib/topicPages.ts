@@ -146,6 +146,23 @@ import quadrilateralsPropertiesGrade3 from '../data/topic-pages/quadrilaterals-p
 import readBarDiagramGrade3 from '../data/topic-pages/read-bar-diagram-grade-3.json';
 import collectingDataGrade3 from '../data/topic-pages/collecting-data-grade-3.json';
 import moneyGrade3 from '../data/topic-pages/money-grade-3.json';
+import numbersToMillionGrade4 from '../data/topic-pages/numbers-to-million-grade-4.json';
+import orderRoundingMillionGrade4 from '../data/topic-pages/order-rounding-million-grade-4.json';
+import orderOfOperationsGrade4 from '../data/topic-pages/order-of-operations-grade-4.json';
+import distributiveAreaModelGrade4 from '../data/topic-pages/distributive-area-model-grade-4.json';
+import multiplicationMultiDigitGrade4 from '../data/topic-pages/multiplication-multi-digit-grade-4.json';
+import parallelPerpendicularShapesGrade4 from '../data/topic-pages/parallel-perpendicular-shapes-grade-4.json';
+import rectanglesSquaresGrade4 from '../data/topic-pages/rectangles-squares-grade-4.json';
+import angleTypesGrade4 from '../data/topic-pages/angle-types-grade-4.json';
+import classifyTrianglesGrade4 from '../data/topic-pages/classify-triangles-grade-4.json';
+import areaPerimeterRectangleGrade4 from '../data/topic-pages/area-perimeter-rectangle-grade-4.json';
+import areaPerimeterCompositeGrade4 from '../data/topic-pages/area-perimeter-composite-grade-4.json';
+import diagramsConclusionsGrade4 from '../data/topic-pages/diagrams-conclusions-grade-4.json';
+import symmetryReflectionRotationGrade4 from '../data/topic-pages/symmetry-reflection-rotation-grade-4.json';
+import anglesLinesPlaneGrade4 from '../data/topic-pages/angles-lines-plane-grade-4.json';
+import trianglesClassifyBuildGrade4 from '../data/topic-pages/triangles-classify-build-grade-4.json';
+import quadrilateralsClassifyGrade4 from '../data/topic-pages/quadrilaterals-classify-grade-4.json';
+import grade4Summary from '../data/topic-pages/grade-4-summary.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -330,6 +347,27 @@ export const TOPIC_PAGE_G1_SLUGS = [
 
 /** Grade 2, catalog order. Only topics with an animation mapping ship. */
 /** Grade 3, catalog order. Only topics with an animation mapping ship. */
+/** Grade 4, catalog order. Only topics with an animation mapping ship. */
+export const TOPIC_PAGE_G4_SLUGS = [
+  'numbers-to-million-grade-4',
+  'order-rounding-million-grade-4',
+  'order-of-operations-grade-4',
+  'distributive-area-model-grade-4',
+  'multiplication-multi-digit-grade-4',
+  'parallel-perpendicular-shapes-grade-4',
+  'rectangles-squares-grade-4',
+  'angle-types-grade-4',
+  'classify-triangles-grade-4',
+  'area-perimeter-rectangle-grade-4',
+  'area-perimeter-composite-grade-4',
+  'diagrams-conclusions-grade-4',
+  'symmetry-reflection-rotation-grade-4',
+  'angles-lines-plane-grade-4',
+  'triangles-classify-build-grade-4',
+  'quadrilaterals-classify-grade-4',
+  'grade-4-summary',
+] as const;
+
 export const TOPIC_PAGE_G3_SLUGS = [
   'place-value-grade-3',
   'neighbors-numberline-grade-3',
@@ -369,6 +407,7 @@ export const TOPIC_PAGE_AUTHORED_SLUGS = [
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
   ...TOPIC_PAGE_G3_SLUGS,
+  ...TOPIC_PAGE_G4_SLUGS,
 ] as const;
 
 export const TOPIC_PAGE_SLUGS = [
@@ -383,6 +422,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_G1_SLUGS,
   ...TOPIC_PAGE_G2_SLUGS,
   ...TOPIC_PAGE_G3_SLUGS,
+  ...TOPIC_PAGE_G4_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -644,6 +684,24 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'read-bar-diagram-grade-3': readBarDiagramGrade3 as TopicPageContent,
   'collecting-data-grade-3': collectingDataGrade3 as TopicPageContent,
   'money-grade-3': moneyGrade3 as TopicPageContent,
+  // G4 (catalog order)
+  'numbers-to-million-grade-4': numbersToMillionGrade4 as TopicPageContent,
+  'order-rounding-million-grade-4': orderRoundingMillionGrade4 as TopicPageContent,
+  'order-of-operations-grade-4': orderOfOperationsGrade4 as TopicPageContent,
+  'distributive-area-model-grade-4': distributiveAreaModelGrade4 as TopicPageContent,
+  'multiplication-multi-digit-grade-4': multiplicationMultiDigitGrade4 as TopicPageContent,
+  'parallel-perpendicular-shapes-grade-4': parallelPerpendicularShapesGrade4 as TopicPageContent,
+  'rectangles-squares-grade-4': rectanglesSquaresGrade4 as TopicPageContent,
+  'angle-types-grade-4': angleTypesGrade4 as TopicPageContent,
+  'classify-triangles-grade-4': classifyTrianglesGrade4 as TopicPageContent,
+  'area-perimeter-rectangle-grade-4': areaPerimeterRectangleGrade4 as TopicPageContent,
+  'area-perimeter-composite-grade-4': areaPerimeterCompositeGrade4 as TopicPageContent,
+  'diagrams-conclusions-grade-4': diagramsConclusionsGrade4 as TopicPageContent,
+  'symmetry-reflection-rotation-grade-4': symmetryReflectionRotationGrade4 as TopicPageContent,
+  'angles-lines-plane-grade-4': anglesLinesPlaneGrade4 as TopicPageContent,
+  'triangles-classify-build-grade-4': trianglesClassifyBuildGrade4 as TopicPageContent,
+  'quadrilaterals-classify-grade-4': quadrilateralsClassifyGrade4 as TopicPageContent,
+  'grade-4-summary': grade4Summary as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
