@@ -108,6 +108,33 @@ describe('landing loop coverage', () => {
     assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
   });
 
+  it('reviewed elementary pages play a film of their own lesson', () => {
+    const expected: Record<string, string> = {
+      'counting-grade-1': 'css:count-mark',
+      'addition-to-10-grade-1': 'concept:add-within',
+      'numbers-operations-review-grade-2': 'concept:array',
+      'perimeter-polygons-grade-3': 'concept:peri-rect',
+      'order-of-operations-grade-4': 'concept:order-ops',
+      'distributive-area-model-grade-4': 'css:distrib-area',
+      'multiplication-multi-digit-grade-4': 'css:col-mul',
+      'grade-4-summary': 'concept:baseten',
+      'parallelogram-area-grade-5': 'css:area-para',
+      'fraction-division-meaning-grade-6': 'css:frac-div',
+      'measurement-geometry-synthesis-grade-6': 'concept:rect-count',
+    };
+    for (const [slug, want] of Object.entries(expected)) {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      assert.equal(`${loop.kind}:${loop.kind === 'film' ? loop.marker : loop.variant}`, want, slug);
+    }
+    for (const slug of Object.keys(expected)) {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      const variant = loop.kind === 'film' ? loop.marker : loop.variant;
+      for (const wrong of ['coords', 'area-model', 'frac-product', 'order', 'tenframes', 'sticks', 'triangle', 'area']) {
+        assert.notEqual(variant, wrong, slug);
+      }
+    }
+  });
+
   it('kite-grade-9 plays the kite-construct film', () => {
     assert.deepEqual(topicLandingLoop(loadTopicPage('kite-grade-9')), {
       kind: 'concept',
@@ -116,7 +143,7 @@ describe('landing loop coverage', () => {
     });
   });
 
-  it('difference-of-squares-grade-9 gets its own L14 diff-sq film; other F21 pages keep area-model', () => {
+  it('difference-of-squares-grade-9 gets its own L14 diff-sq film; no other page plays it', () => {
     assert.deepEqual(topicLandingLoop(loadTopicPage('difference-of-squares-grade-9')), {
       kind: 'concept',
       variant: 'diff-sq',
@@ -245,6 +272,18 @@ describe('landing loop coverage', () => {
     assert.equal(shown.includes('∙'), false);
     assert.equal(shown.includes('⋅'), false);
     assert.equal(/\d\/\d/.test(shown), false);
+  });
+
+  it('new review loops show the same numbers as their captions', () => {
+    const sketch = read('src/components/LoopSketch.astro');
+    assert.match(CSS_LOOP_IDEAS['col-mul'], /175 × 5 = 875/);
+    for (const step of ['5 × 5 = 25', '7 × 5 + 2 = 37', '1 × 5 + 3 = 8']) assert.ok(sketch.includes(step), step);
+    assert.match(CSS_LOOP_IDEAS['distrib-area'], /150 \+ 90 = 240/);
+    assert.ok(sketch.includes('15 × 16 = 150 + 90 = 240'));
+    assert.match(CSS_LOOP_IDEAS['frac-div'], /8 רבעים/);
+    assert.match(sketch, /2 : <span class="ll-frac"><span class="ll-frac__n">1<\/span><span class="ll-frac__d">4<\/span><\/span>/);
+    assert.match(CSS_LOOP_IDEAS['count-mark'], /האחרון, 7,/);
+    assert.match(sketch, /length: 7 \}, \(_, i\) => \(\{\s*n: i \+ 1,\s*x: 408 - i \* 56/);
   });
 
   it('isolates every math fragment inside a Hebrew loop caption', () => {

@@ -58,6 +58,15 @@ const SLUG_CONCEPT_OVERRIDE = {
   'multiplication-division-family-grade-2': 'share-12',
   // Map-scale film for the scale topic (the family default is ratio-beads).
   'scale-maps-grade-6': 'map-scale',
+  // Reviewed pages whose family film taught another lesson (7 + 5 past ten,
+  // four-quadrant points, grid area, negatives). Each reuses the existing
+  // film that shows the page's own example.
+  'addition-to-10-grade-1': 'add-within',
+  'numbers-operations-review-grade-2': 'array',
+  'perimeter-polygons-grade-3': 'peri-rect',
+  'order-of-operations-grade-4': 'order-ops',
+  'grade-4-summary': 'baseten',
+  'measurement-geometry-synthesis-grade-6': 'rect-count',
 } as const;
 
 export type ConceptLoopVariant =
@@ -122,6 +131,10 @@ export const CSS_LOOP_VARIANTS = [
   'similar-aa',
   'tools',
   'baseten-sub',
+  'count-mark',
+  'col-mul',
+  'distrib-area',
+  'frac-div',
 ] as const;
 
 export type CssLoopVariant = (typeof CSS_LOOP_VARIANTS)[number];
@@ -197,6 +210,14 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'subtraction-two-digit-borrowing-grade-2': 'baseten-sub',
   'column-subtraction-borrowing-grade-3': 'baseten-sub',
   'multi-digit-subtraction-grade-4': 'baseten-sub',
+  // Reviewed pages with no existing film for their idea. The concept-loop
+  // engine is hash-pinned, so these are new CSS loops.
+  'counting-grade-1': 'count-mark',
+  'distributive-area-model-grade-4': 'distrib-area',
+  'multiplication-multi-digit-grade-4': 'col-mul',
+  'fraction-division-meaning-grade-6': 'frac-div',
+  // S = b × h with the perpendicular height. The family film is triangle area.
+  'parallelogram-area-grade-5': 'area-para',
 };
 
 export const GRADE_CONCEPT_LOOP = {
@@ -388,6 +409,10 @@ export const CSS_LOOP_IDEAS = {
   'similar-aa': 'שתי זוויות שוות מספיקות כדי לקבוע דמיון',
   tools: 'המחשבון פותח קודם סוגריים: 2 × (3 + 1) הופך ל־2 × 4 = 8',
   'baseten-sub': 'כשאין מספיק יחידות, מוט העשרת מתפרק לעשר יחידות: 52 − 27 = 25',
+  'count-mark': 'סופרים כל בלון פעם אחת ומסמנים אותו. המספר האחרון, 7, הוא מספר הבלונים',
+  'col-mul': 'כופלים מימין לשמאל, וההמרה עוברת לעמודה הבאה: 175 × 5 = 875',
+  'distrib-area': 'מפרקים את 16 ל־10 ועוד 6 ומחברים את שני השטחים: 150 + 90 = 240',
+  'frac-div': 'בכל שלם יש 4 רבעים, ולכן בשני שלמים יש 8 רבעים',
 } as const satisfies Record<CssLoopVariant, string>;
 
 export const FORMULA_LOOP_VARIANTS = [
