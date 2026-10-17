@@ -87,6 +87,7 @@ let state = {
   grade: '9',
   topic: '2',
   level: 'all',
+  wizard: 'grade',
 };
 let history = [];
 let rendering = false;
@@ -308,6 +309,7 @@ function render() {
   if (prepareHint) prepareHint.textContent = elementary ? 'הדף המלא מהמקור, בלי סימון.' : 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
   if (!ok) {
     paintSourceLine();
+    applyWizard();
     return;
   }
   if (elementary) {
@@ -344,6 +346,7 @@ function render() {
   $('undo').disabled = history.length === 0;
   paintSourceLine();
   if (!elementary) paintThumbs();
+  applyWizard();
 }
 
 function paintSourceLine() {
@@ -366,9 +369,9 @@ function paintSourceLine() {
   line.hidden = false;
   const grade = gradeRecord(state.grade);
   const topic = currentTopic();
-  const levels = [...new Set(chosen.map((meta) => meta.levelLabel))].join(' · ');
+  const levels = [...new Set(chosen.map((meta) => levelPrintName(meta.level, meta.levelLabel)))].join(' · ');
   const title = `${topic ? topic.title : ''} · ${grade ? grade.label : ''} · ${levels}`;
-  const links = chosen.map((meta) => `<a href="${escapeHTML(meta.pdfUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(chosen.length > 1 ? meta.levelLabel : 'פתיחת דף המקור')} ↗</a>`).join('');
+  const links = chosen.map((meta) => `<a href="${escapeHTML(meta.pdfUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(chosen.length > 1 ? levelPrintName(meta.level, meta.levelLabel) : 'פתיחת דף המקור')} ↗</a>`).join('');
   line.innerHTML = `<span>${escapeHTML(title)}</span>${links}`;
 }
 
@@ -615,86 +618,140 @@ function questionRows(item) {
 }
 
 function absoluteMask(box) {
-  if (!box || !box.mask || !(box.h > 0)) return null;
-  return {
-    x: box.mask.x,
-    w: box.mask.w,
-    y: box.y + box.mask.y * box.h,
-    y2: box.y + (box.mask.y + box.mask.h) * box.h,
-  };
+  const masks = absoluteMasks(box);
+  return masks.length ? masks[0] : null;
+}
+
+function absoluteMasks(box) {
+  if (!box || !(box.h > 0)) return [];
+  const list = box.masks && box.masks.length ? box.masks : (box.mask ? [box.mask] : []);
+  return list.map((mask) => ({
+    x: mask.x,
+    w: mask.w,
+    y: box.y + mask.y * box.h,
+    y2: box.y + (mask.y + mask.h) * box.h,
+  }));
+}
+
+function boxWithMasks(box, y, end, absoluteList) {
+  const height = Math.max(0.004, end - y);
+  const next = { ...box, y, h: height };
+  const rel = [];
+  (absoluteList || []).forEach((mask) => {
+    if (!mask || !(mask.w > 0)) return;
+    const top = Math.max(mask.y, y);
+    const bot = Math.min(mask.y2, y + height);
+    if (bot - top < 0.0015) return;
+    rel.push({
+      x: mask.x,
+      w: mask.w,
+      y: (top - y) / height,
+      h: (bot - top) / height,
+    });
+  });
+  delete next.mask;
+  delete next.masks;
+  if (!rel.length) return next;
+  rel.sort((a, b) => (b.y + b.h) - (a.y + a.h));
+  next.masks = rel;
+  next.mask = rel[0];
+  return next;
 }
 
 function withSpan(box, y, end, masks) {
-  const height = Math.max(0.004, end - y);
-  const next = { ...box, y, h: height };
-  let best = null;
-  (masks || []).forEach((mask) => {
-    if (!mask) return;
-    const top = Math.max(mask.y, y);
-    const bot = Math.min(mask.y2, y + height);
-    const span = bot - top;
-    if (span < 0.0015) return;
-    if (!best || span > best.span) best = { mask, top, bot, span };
+  return boxWithMasks(box, y, end, masks && masks.length ? masks : absoluteMasks(box));
+}
+
+function questionFigure(question) {
+  const page = question.page;
+  let fig = null;
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || item.q !== question.q || !item.figure) return;
+    if ((item.page || page) !== page) return;
+    const f = item.figure;
+    if (!fig) fig = { x0: f.x0, y0: f.y0, x1: f.x1, y1: f.y1 };
+    else {
+      fig.x0 = Math.min(fig.x0, f.x0);
+      fig.y0 = Math.min(fig.y0, f.y0);
+      fig.x1 = Math.max(fig.x1, f.x1);
+      fig.y1 = Math.max(fig.y1, f.y1);
+    }
   });
-  if (!best) {
-    delete next.mask;
-    return next;
-  }
-  next.mask = {
-    x: best.mask.x,
-    w: best.mask.w,
-    y: (best.top - y) / height,
-    h: (best.bot - best.top) / height,
-  };
-  return next;
+  return fig;
+}
+
+function rangesOverlap(a0, a1, b0, b1, pad) {
+  const gap = pad == null ? 0.004 : pad;
+  return a0 < b1 + gap && b0 < a1 + gap;
 }
 
 /**
  * A right-column mask is stored on the figure's right edge, which is the
  * wall stroke itself. Move it just past that stroke so the line stays.
  */
-function clearDrawingStroke(question, box) {
-  if (!box || !box.mask) return box;
-  const page = box.page || question.page;
-  const figures = [];
+function shiftMask(question, mask, page) {
+  if (!mask) return mask;
+  let next = mask;
   (SOURCE.questions || []).forEach((item) => {
-    if (item && item.q === question.q && item.figure && item.page === page) figures.push(item.figure);
-  });
-  let mask = box.mask;
-  figures.forEach((figure) => {
-    if (Math.abs(mask.x - figure.x1) < 0.01 && mask.w > 0.15) {
+    if (!item || item.q !== question.q || !item.figure || item.page !== page) return;
+    if (Math.abs(next.x - item.figure.x1) < 0.01 && next.w > 0.15) {
       const shift = 0.008;
-      mask = { ...mask, x: mask.x + shift, w: Math.max(0.05, mask.w - shift) };
+      next = { ...next, x: next.x + shift, w: Math.max(0.05, next.w - shift) };
     }
   });
-  return mask === box.mask ? box : { ...box, mask };
+  return next;
+}
+
+function clearDrawingStroke(question, box) {
+  if (!box) return box;
+  const list = box.masks && box.masks.length ? box.masks : (box.mask ? [box.mask] : []);
+  if (!list.length) return box;
+  const page = box.page || question.page;
+  const shifted = list.map((mask) => shiftMask(question, mask, page));
+  return { ...box, masks: shifted, mask: shifted[0] };
+}
+
+function partRank(part) {
+  const order = 'אבגדהוזחטיכלמנסעפצקרשת';
+  const index = order.indexOf(part || '');
+  return index < 0 ? 99 : index;
+}
+
+function bandsOutside(y, y2, cutY, cutY2) {
+  if (y2 <= cutY + 0.002 || y >= cutY2 - 0.002) return [[y, y2]];
+  const out = [];
+  if (y < cutY - 0.001) out.push([y, cutY]);
+  if (y2 > cutY2 + 0.001) out.push([cutY2, y2]);
+  return out;
 }
 
 /**
- * A part printed alone still includes the whole shared drawing: an earlier
- * overlapping crop, or a figure whose top sits above this part (the house roof).
- * The crop starts on a white row, so a label beside the roof is not cut in half.
- * A drawing that sticks a little past the next label stays, and that label is masked.
+ * A part printed alone keeps the whole shared drawing (the house, the polygon
+ * beside question 19) and the question number. Unpicked parts of that question
+ * are covered on the text side of the drawing, so their words are not printed.
+ * A later selected part is left for its own row. The crop starts on a white row.
  */
-function coverSharedFigure(question, box, laterSelected) {
+function coverSharedFigure(question, box, laterSelected, selectedIds) {
   const page = box.page || question.page;
   const originalEnd = boxEnd(box);
   let top = box.y;
   let end = originalEnd;
   const masks = [];
-  const ownMask = absoluteMask(box);
-  if (ownMask) masks.push(ownMask);
+  const ownMasks = absoluteMasks(box);
+  ownMasks.forEach((mask) => masks.push(mask));
   (SOURCE.questions || []).forEach((item) => {
     if (!item || item.q !== question.q || item.id === question.id) return;
     questionRows(item).forEach((other) => {
       if (!other || (other.page || item.page) !== page) return;
       const otherEnd = boxEnd(other);
       if (other.y < top - 0.003 && otherEnd > top + 0.003) {
-        top = Math.min(top, other.y);
-        end = Math.max(end, otherEnd);
+        const adjacent = Math.abs(partRank(item.part) - partRank(question.part)) === 1;
+        // Only an adjacent part may pull the crop up into its text. A drawing
+        // that continues to the bottom of a later part still extends the end.
+        if (adjacent) top = Math.min(top, other.y);
+        if (otherEnd > end) end = otherEnd;
       }
-      const mask = absoluteMask(other);
-      if (mask) masks.push(mask);
+      absoluteMasks(other).forEach((mask) => masks.push(mask));
     });
     const figure = item.figure;
     if (!figure || item.page !== page) return;
@@ -708,20 +765,32 @@ function coverSharedFigure(question, box, laterSelected) {
     if (ownFigure.y0 < top - 0.003) top = ownFigure.y0;
   }
   // figure.y0 can sit halfway through the first part's label. Start on that part's white row.
-  let lineTop = top;
-  (SOURCE.questions || []).forEach((item) => {
-    if (!item || item.q !== question.q) return;
-    questionRows(item).forEach((other) => {
-      if (!other || (other.page || item.page) !== page) return;
-      if (other.y < top - 0.0004 && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
+  // Only after the crop was already lifted. A tall earlier row (19א) must not
+  // swallow a later part that was never pulled upward.
+  if (top < box.y - 0.0004) {
+    let lineTop = top;
+    (SOURCE.questions || []).forEach((item) => {
+      if (!item || item.q !== question.q) return;
+      questionRows(item).forEach((other) => {
+        if (!other || (other.page || item.page) !== page) return;
+        if (other.y < top - 0.0004 && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
+      });
     });
-  });
-  top = lineTop;
+    top = lineTop;
+  }
+  const fig = questionFigure(question);
+  if (fig && !laterSelected) {
+    top = Math.min(top, fig.y0);
+    end = Math.max(end, fig.y1 + 0.002);
+    const stem = question.stem;
+    if (stem && rangesOverlap(stem.y, stem.y + stem.h, fig.y0, fig.y1)) top = Math.min(top, stem.y);
+  }
   if (end > originalEnd + 0.0005) {
     let nextTop = null;
     (SOURCE.questions || []).forEach((item) => {
       if (!item || item.q !== question.q || item.id === question.id || !item.row) return;
       if ((item.row.page || item.page) !== page) return;
+      if (selectedIds && selectedIds.has(item.id)) return;
       if (item.row.y >= originalEnd - 0.004 && (nextTop == null || item.row.y < nextTop)) nextTop = item.row.y;
     });
     // A small step past the next label is the rest of the drawing, plus that label's text.
@@ -729,24 +798,65 @@ function coverSharedFigure(question, box, laterSelected) {
       masks.push({ x: 0.45, w: 0.55, y: nextTop, y2: Math.max(end, nextTop + 0.004) });
     }
   }
-  if (Math.abs(top - box.y) < 0.0001 && Math.abs(end - originalEnd) < 0.0001 && masks.length === (ownMask ? 1 : 0)) return box;
-  return withSpan({ ...box, page }, top, end, masks);
+  if (fig && !laterSelected) {
+    const textX = fig.x1;
+    const textW = Math.max(0.05, 0.98 - textX);
+    const stemEnd = question.stem ? question.stem.y + question.stem.h : null;
+    const pickedY = question.row ? question.row.y : top;
+    const pickedY2 = question.row ? boxEnd(question.row) : end;
+    (SOURCE.questions || []).forEach((item) => {
+      if (!item || item.q !== question.q || item.id === question.id || !item.row) return;
+      if ((item.row.page || item.page) !== page) return;
+      if (selectedIds && selectedIds.has(item.id)) return;
+      let y = item.row.y;
+      const y2 = boxEnd(item.row);
+      if (stemEnd != null && y < stemEnd) y = stemEnd;
+      if (y2 - y < 0.008) return;
+      bandsOutside(y, y2, pickedY, pickedY2).forEach((band) => {
+        const lo = Math.max(band[0], top);
+        const hi = Math.min(band[1], end);
+        if (hi - lo >= 0.008) masks.push({ x: textX, w: textW, y: lo, y2: hi });
+      });
+    });
+  }
+  // A tall earlier part can contain a later part that was not picked (1א holds 1ב).
+  // Cover that part wherever it sits, and leave the drawing on the left.
+  const textX = fig ? fig.x1 : 0.46;
+  const textW = Math.max(0.04, 0.98 - textX);
+  (SOURCE.questions || []).forEach((item) => {
+    if (!item || item.q !== question.q || item.id === question.id || !item.row) return;
+    if ((item.row.page || item.page) !== page) return;
+    if (selectedIds && selectedIds.has(item.id)) return;
+    const lo = Math.max(item.row.y, top);
+    const hi = Math.min(boxEnd(item.row), end);
+    if (hi - lo < 0.008) return;
+    masks.push({ x: textX, w: textW, y: lo, y2: hi });
+  });
+  if (Math.abs(top - box.y) < 0.0001 && Math.abs(end - originalEnd) < 0.0001 && masks.length === ownMasks.length) return box;
+  return boxWithMasks({ ...box, page }, top, end, masks);
 }
 
 function shortSlices(chosen) {
   const ordered = chosen.slice().sort((a, b) => (
-    a.page - b.page || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
+    a.page - b.page || (a.q - b.q) || partRank(a.part) - partRank(b.part) || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
   ));
-  const slices = [{ page: SOURCE.headerCrop.page, box: SOURCE.headerCrop, gap: 14, block: 'header', kind: 'header' }];
+  const slices = [];
   let lastQuestion = null;
+  const selectedIds = new Set(ordered.map((item) => item.id));
+  const GLYPH_PAD = 0.0035;
   ordered.forEach((question) => {
-    const block = 'q' + question.q;
+    const block = (question.source && question.source.pdfId ? question.source.pdfId + ':' : '') + 'q' + question.q;
     if (question.q !== lastQuestion) {
-      if (question.stem) slices.push({ page: question.stem.page || question.page, box: question.stem, gap: 10, block, kind: 'stem' });
+      const fig = questionFigure(question);
+      const stem = question.stem;
+      const stemInFigure = stem && fig && rangesOverlap(stem.y, stem.y + stem.h, fig.y0, fig.y1);
+      // The number sits on the drawing: one crop keeps them together.
+      if (stem && !stemInFigure) slices.push({ page: stem.page || question.page, box: stem, gap: 10, block, kind: 'stem', pdfId: SOURCE && SOURCE.pdfId });
       lastQuestion = question.q;
     }
     const rows = question.rows && question.rows.length ? question.rows : [question.row];
     rows.forEach((box) => {
+      if (!box) return;
       const page = box.page || question.page;
       let next = { ...box, page };
       const prev = previousQuestionRow(slices, block, page);
@@ -755,8 +865,17 @@ function shortSlices(chosen) {
         && (other.row.page || other.page) === page && other.row.y > box.y + 0.004
       ));
       // The first selected part of this question can still own a shared drawing.
-      if (!prev) next = coverSharedFigure(question, next, laterSelected);
-      if (prev && next.y < boxEnd(prev.box) - 0.003) {
+      if (!prev) next = coverSharedFigure(question, next, laterSelected, selectedIds);
+      const originalTop = box.y;
+      // A measured row can start inside the letter tops (6ד). Lift a short row
+      // onto the white gap above it. Rows already expanded to a drawing stay put.
+      const clipsInk = question.inkTop != null && Math.abs(question.inkTop - originalTop) < 0.002;
+      if (clipsInk && !(next.y < originalTop - 0.001) && next.h < 0.08) {
+        const lifted = Math.max(0, next.y - GLYPH_PAD);
+        const end = boxEnd(next);
+        next = next.mask ? withSpan(next, lifted, end, absoluteMasks(next)) : { ...next, y: lifted, h: end - lifted };
+      }
+      if (prev && next.y < boxEnd(prev.box) - 0.008) {
         const prevEnd = boxEnd(prev.box);
         // Fully covered by the previous part: printing it again repeats its text.
         if (boxEnd(next) <= prevEnd + 0.004) return;
@@ -764,14 +883,22 @@ function shortSlices(chosen) {
         if (height < 0.004) return;
         next = { ...next, y: prevEnd, h: height };
       }
+      // Running source footers (page number, site line) sit at about y 0.949.
+      // A last part measured to the page bottom must not take them with it.
+      const FOOTER_LIMIT = 0.94;
+      if (boxEnd(next) > FOOTER_LIMIT) {
+        const kept = FOOTER_LIMIT - next.y;
+        if (kept < 0.004) return;
+        const end = FOOTER_LIMIT;
+        next = next.mask ? withSpan(next, next.y, end, absoluteMasks(next)) : { ...next, h: end - next.y };
+      }
       const last = slices[slices.length - 1];
       const dup = last && last.kind === 'row' && last.page === page && last.box.x === next.x && last.box.y === next.y && last.box.w === next.w && last.box.h === next.h;
       // Abutting rows overlap by 2px so the join is not a white seam.
       const gap = prev && next.y <= boxEnd(prev.box) + 0.006 ? -2 : 4;
-      if (!dup) slices.push({ page, box: clearDrawingStroke(question, next), gap, block, kind: 'row' });
+      if (!dup) slices.push({ page, box: clearDrawingStroke(question, next), gap, block, kind: 'row', pdfId: SOURCE && SOURCE.pdfId });
     });
   });
-  slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16, block: 'footer', kind: 'footer' });
   return slices;
 }
 
@@ -819,14 +946,54 @@ function splitQuestion(items, limit) {
   return chunks.map((chunk) => (contentHeight(chunk) > limit ? shrinkTo(chunk, limit) : chunk));
 }
 
-function packShort(measured) {
-  const PAGE_H = 1440;
-  if (contentHeight(measured) <= PAGE_H || PAGE_H / contentHeight(measured) >= 0.85) {
-    return [shrinkTo(measured, PAGE_H)];
-  }
+const SHEET_PAGE_H = 1440;
+const SHEET_BASAD_H = 40;
+const SHEET_TITLE_H = 86;
+
+function sheetContentLimit(pageIndex, reserveTitle) {
+  return SHEET_PAGE_H - SHEET_BASAD_H - (reserveTitle && pageIndex === 0 ? SHEET_TITLE_H : 0);
+}
+
+function levelPrintName(level, label) {
+  if (level === 'a') return 'רמה א׳';
+  if (level === 'b') return 'רמה ב׳';
+  if (level === 'c' || String(label || '').includes('מצוינות')) return 'מצוינות';
+  return label || '';
+}
+
+function orderPrintQuestions(chosen) {
+  return chosen.slice().sort((a, b) => {
+    const rank = { a: 0, b: 1, c: 2, one: 3 };
+    const sa = a.source || {};
+    const sb = b.source || {};
+    const lr = (rank[sa.level] ?? 9) - (rank[sb.level] ?? 9);
+    if (lr) return lr;
+    const qr = (Number(a.q) || 0) - (Number(b.q) || 0);
+    if (qr) return qr;
+    const pr = partRank(a.part) - partRank(b.part);
+    if (pr) return pr;
+    return String(a.id || '').localeCompare(String(b.id || ''), 'he');
+  });
+}
+
+function batchesOf(chosen) {
+  const batches = [];
+  orderPrintQuestions(chosen).forEach((question) => {
+    const source = question.source || {};
+    const last = batches[batches.length - 1];
+    if (last && last.sourceId === source.pdfId && last.q === question.q) last.questions.push(question);
+    else batches.push({ sourceId: source.pdfId, q: question.q, questions: [question] });
+  });
+  return batches;
+}
+
+function packShort(measured, options) {
+  const reserveTitle = !(options && options.answers);
   const blocks = [];
   measured.forEach((item) => {
-    if (item.slice.block === 'footer') return;
+    if (!item || !item.slice) return;
+    if (item.slice.kind === 'header' || item.slice.kind === 'footer') return;
+    if (item.slice.block === 'header' || item.slice.block === 'footer') return;
     const last = blocks[blocks.length - 1];
     if (last && last.id === item.slice.block) last.items.push(item);
     else blocks.push({ id: item.slice.block, items: [item] });
@@ -834,59 +1001,393 @@ function packShort(measured) {
   const pages = [];
   let page = [];
   blocks.forEach((block) => {
-    const parts = contentHeight(block.items) > PAGE_H ? splitQuestion(block.items, PAGE_H) : [block.items];
-    parts.forEach((part) => {
-      if (page.length && contentHeight(page.concat(part)) > PAGE_H) {
-        pages.push(page);
-        page = [];
-      }
-      page = page.concat(part);
-    });
+    let items = block.items;
+    const limitHere = sheetContentLimit(pages.length, reserveTitle);
+    if (page.length && contentHeight(page.concat(items)) > limitHere) {
+      pages.push(page);
+      page = [];
+    }
+    const limit = sheetContentLimit(pages.length, reserveTitle);
+    if (contentHeight(items) > limit) items = shrinkTo(items, limit);
+    page = page.concat(items);
   });
   if (page.length) pages.push(page);
-  const footer = measured.filter((item) => item.slice.block === 'footer');
   if (!pages.length) pages.push([]);
-  pages[pages.length - 1] = shrinkTo(pages[pages.length - 1].concat(footer), PAGE_H);
   return pages;
 }
 
-async function paintShort(root, slices) {
+function textItemBox(item, width, height) {
+  const baseline = item.transform[5];
+  const fontSize = item.height || Math.abs(item.transform[3]) || 8;
+  // pdf.js font size sits above PyMuPDF's glyph top. 0.78 lines the two up.
+  const ascent = fontSize * 0.78;
+  const x = item.transform[4] / width;
+  const w = (item.width || 0) / width;
+  return {
+    x,
+    x2: x + w,
+    y: 1 - (baseline + ascent) / height,
+    y2: 1 - baseline / height,
+    text: item.str,
+  };
+}
+
+function isAnswerHeading(line) {
+  const text = String(line.text || '').replace(/\s/g, '');
+  return text.startsWith('תשובות') && text.length < 24;
+}
+
+function isAnswerNumber(line) {
+  const text = String(line.text || '').trim();
+  if (!/^\d{1,2}\.$/.test(text)) return false;
+  if (line.y > 0.9) return false;
+  if (line.x != null && line.x < 0.85) return false;
+  return true;
+}
+
+function answerHeadingBox(head) {
+  if (!head) return null;
+  const y = Math.max(0.04, (head.y || 0) - 0.006);
+  const y2 = Math.min(0.14, Math.max(y + 0.022, (head.y2 || y + 0.02) + 0.008));
+  const x = head.x != null ? Math.max(0.02, head.x - 0.02) : 0.62;
+  const x2 = head.x2 != null ? Math.min(0.98, head.x2 + 0.02) : 0.97;
+  return { x, y, w: Math.max(0.08, x2 - x), h: Math.max(0.018, y2 - y) };
+}
+
+function wantedAnswerSpecs(wanted) {
+  const byQ = new Map();
+  (wanted || []).forEach((item) => {
+    const spec = item && typeof item === 'object' ? { q: String(item.q), part: item.part || '' } : { q: String(item), part: '' };
+    if (!byQ.has(spec.q)) byQ.set(spec.q, new Set());
+    byQ.get(spec.q).add(spec.part);
+  });
+  return byQ;
+}
+
+function charWeight(ch) {
+  if (/[\u0590-\u05FF]/.test(ch)) return 1;
+  if (/[0-9]/.test(ch)) return 0.55;
+  if (ch === ' ' || ch === '\u00a0') return 0.33;
+  if ('·∙•.,'.includes(ch)) return 0.35;
+  if (ch === '״' || ch === '-') return 0.3;
+  return 0.6;
+}
+
+const ANSWER_PARTS = 'אבגדהוזחטי';
+const ANSWER_GAP = 0.014;
+const ANSWER_RIGHT = 0.948;
+
+function answerGlyphs(item) {
+  if (item.chars && item.chars.length) {
+    return item.chars.map((glyph) => ({
+      c: glyph.c,
+      x: glyph.x,
+      x2: glyph.x2,
+      y: glyph.y == null ? item.y : glyph.y,
+      y2: glyph.y2 == null ? (item.y2 || item.y) : glyph.y2,
+      exact: true,
+    }));
+  }
+  const text = String(item.text || '');
+  const chars = Array.from(text);
+  if (!chars.length || item.x == null) return [];
+  const x0 = item.x;
+  const x1 = item.x2 == null ? item.x : item.x2;
+  const weights = chars.map(charWeight);
+  const sum = weights.reduce((total, weight) => total + weight, 0) || 1;
+  const width = Math.max(0, x1 - x0);
+  const rtl = /[\u0590-\u05FF]/.test(text);
+  const y2 = item.y2 == null ? item.y + 0.012 : item.y2;
+  let used = 0;
+  return chars.map((ch, index) => {
+    const span = weights[index] / sum * width;
+    const left = rtl ? x1 - used - span : x0 + used;
+    used += span;
+    return { c: ch, x: left, x2: left + span, y: item.y, y2, exact: false };
+  });
+}
+
+function answerLabels(glyphs) {
+  const ordered = glyphs.slice().sort((a, b) => b.x2 - a.x2 || b.x - a.x);
+  const found = [];
+  ordered.forEach((glyph, index) => {
+    if (!ANSWER_PARTS.includes(glyph.c)) return;
+    let dot = index + 1;
+    while (dot < ordered.length && !String(ordered[dot].c).trim()) dot += 1;
+    if (dot >= ordered.length || ordered[dot].c !== '.') return;
+    let prev = index - 1;
+    while (prev >= 0 && !String(ordered[prev].c).trim()) prev -= 1;
+    if (prev >= 0 && !'·∙•'.includes(ordered[prev].c)) return;
+    found.push({ part: glyph.c, x: glyph.x, x2: glyph.x2 });
+  });
+  return found.sort((a, b) => b.x2 - a.x2);
+}
+
+function answerClusters(glyphs) {
+  const sorted = glyphs.slice().sort((a, b) => a.y - b.y || b.x2 - a.x2);
+  const clusters = [];
+  sorted.forEach((glyph) => {
+    const last = clusters[clusters.length - 1];
+    if (!last || glyph.y - last.y > 0.01) clusters.push({ y: glyph.y, glyphs: [glyph] });
+    else last.glyphs.push(glyph);
+  });
+  return clusters;
+}
+
+function answerPartBox(glyphs, left, right, y, y2) {
+  const owned = glyphs.filter((glyph) => glyph.x2 > left + 0.001 && glyph.x < right - 0.001 && !'·∙•'.includes(glyph.c));
+  if (!owned.length) return null;
+  let x = Math.min(...owned.map((glyph) => glyph.x)) - 0.0015;
+  let x2 = Math.min(right, Math.max(...owned.map((glyph) => glyph.x2)) + 0.002);
+  // A separator sits in the gap beside a part. Pull the nearer edge off it so
+  // an individually cropped answer does not keep the dot.
+  const midBox = (x + x2) / 2;
+  glyphs.forEach((glyph) => {
+    if (!'·∙•'.includes(glyph.c) || glyph.x >= x2 || glyph.x2 <= x) return;
+    const mid = (glyph.x + glyph.x2) / 2;
+    if (mid >= midBox) x2 = Math.min(x2, glyph.x - 0.001);
+    else x = Math.max(x, glyph.x2 + 0.001);
+  });
+  if (x2 - x < 0.008) return null;
+  return { x: Math.max(0.02, x), y, w: x2 - Math.max(0.02, x), h: Math.max(0.012, y2 - y) };
+}
+
+// Each picked part is its own crop, placed just to the left of the question
+// number. The full answer line is not masked.
+function answerPieces(pageLines, mark, nextY, parts) {
+  if (!parts || parts.has('')) return null;
+  const band = pageLines.filter((line) => (
+    line.y >= mark.y - 0.008
+    && line.y < nextY - 0.004
+    && !(line.x != null && line.x >= 0.85 && isAnswerNumber(line))
+  ));
+  const glyphs = band.flatMap(answerGlyphs).filter((glyph) => glyph.x < 0.90);
+  const clusters = answerClusters(glyphs);
+  if (!clusters.length) return null;
+  const exact = glyphs.some((glyph) => glyph.exact);
+  const pad = exact ? 0.003 : 0.008;
+  const owned = [];
+  let carry = null;
+  clusters.forEach((cluster) => {
+    const labels = answerLabels(cluster.glyphs);
+    if (!labels.length) {
+      if (!carry || !parts.has(carry.part)) return;
+      const y = Math.min(...cluster.glyphs.map((glyph) => glyph.y)) - 0.002;
+      const y2 = Math.max(...cluster.glyphs.map((glyph) => glyph.y2)) + 0.002;
+      const box = answerPartBox(cluster.glyphs, 0.02, 0.90, y, y2);
+      if (box) owned.push({ part: carry.part, box });
+      return;
+    }
+    labels.forEach((label, index) => {
+      const next = labels[index + 1];
+      const seps = cluster.glyphs.filter((glyph) => (
+        '·∙•'.includes(glyph.c) && glyph.x2 < label.x + 0.002 && (!next || glyph.x > next.x - 0.004)
+      ));
+      const sep = seps.sort((a, b) => b.x2 - a.x2)[0];
+      const left = sep ? sep.x2 + pad : (next ? next.x2 + pad + 0.006 : 0.02);
+      const y = Math.min(...cluster.glyphs.map((glyph) => glyph.y)) - 0.002;
+      const y2 = Math.max(...cluster.glyphs.map((glyph) => glyph.y2)) + 0.002;
+      if (parts.has(label.part)) {
+        const box = answerPartBox(cluster.glyphs, left, Math.min(0.90, label.x2 + 0.004), y, y2);
+        if (box) owned.push({ part: label.part, box });
+      }
+    });
+    carry = labels[labels.length - 1];
+  });
+  if (!owned.length) return null;
+  const rank = {};
+  Array.from(ANSWER_PARTS).forEach((letter, index) => { rank[letter] = index; });
+  owned.sort((a, b) => a.box.y - b.box.y || (rank[a.part] || 0) - (rank[b.part] || 0));
+  const lines = [];
+  owned.forEach((item) => {
+    const last = lines[lines.length - 1];
+    if (!last || item.box.y - last.y > 0.01) lines.push({ y: item.box.y, items: [item] });
+    else last.items.push(item);
+  });
+  const number = pageLines.find((line) => isAnswerNumber(line) && Math.abs(line.y - mark.y) < 0.008 && String(line.text).trim().startsWith(mark.n));
+  const pieces = [];
+  lines.forEach((line, lineIndex) => {
+    const y = Math.min(...line.items.map((item) => item.box.y));
+    const y2 = Math.max(...line.items.map((item) => item.box.y + item.box.h));
+    let cursor = ANSWER_RIGHT;
+    const place = (box) => {
+      const width = Math.min(box.w, Math.max(0.012, cursor - 0.02));
+      cursor -= width;
+      const at = Math.max(0.02, cursor);
+      cursor -= ANSWER_GAP;
+      pieces.push({ box: { ...box, y, w: width, h: Math.max(0.012, y2 - y) }, at });
+    };
+    if (lineIndex === 0 && number) {
+      const nx = Math.max(0.88, (number.x || mark.x) - 0.002);
+      const nx2 = Math.min(0.98, (number.x2 || nx + 0.02) + 0.003);
+      place({ x: nx, y, w: Math.max(0.012, nx2 - nx), h: y2 - y });
+    }
+    line.items.forEach((item) => place(item.box));
+  });
+  const rowY = Math.max(0.04, Math.min(...pieces.map((piece) => piece.box.y)));
+  const rowY2 = Math.max(...pieces.map((piece) => piece.box.y + piece.box.h));
+  const rowH = Math.max(0.014, rowY2 - rowY);
+  pieces.forEach((piece) => { piece.dy = (piece.box.y - rowY) / rowH; });
+  return { box: { x: 0, y: rowY, w: 1, h: rowH }, pieces };
+}
+
+function answerCropsFromLines(lines, wanted) {
+  const want = wantedAnswerSpecs(wanted);
+  const pages = new Map();
+  (lines || []).forEach((line) => {
+    if (!pages.has(line.page)) pages.set(line.page, []);
+    pages.get(line.page).push(line);
+  });
+  const crops = [];
+  const FOOTER = 0.93;
+  pages.forEach((pageLines, page) => {
+    // The answer page opens with the heading "תשובות סופיות". A question that
+    // merely mentions התשובות is not that page.
+    if (!pageLines.some(isAnswerHeading)) return;
+    const byNumber = new Map();
+    pageLines.forEach((line) => {
+      if (!isAnswerNumber(line)) return;
+      const n = String(line.text).trim().match(/^(\d{1,2})\.$/)[1];
+      const prev = byNumber.get(n);
+      if (!prev || (line.x || 0) > (prev.x || 0)) byNumber.set(n, { n, y: line.y, y2: line.y2, x: line.x || 0, x2: line.x2 || 0 });
+    });
+    const marks = [...byNumber.values()].sort((a, b) => a.y - b.y);
+    marks.forEach((mark, index) => {
+      if (!want.has(mark.n)) return;
+      const next = marks[index + 1];
+      const nextY = next ? next.y : FOOTER;
+      const laid = answerPieces(pageLines, mark, nextY, want.get(mark.n));
+      if (laid) {
+        crops.push({ page, q: Number(mark.n), box: laid.box, pieces: laid.pieces });
+        return;
+      }
+      const y = Math.max(0.04, mark.y - 0.004);
+      let y2 = next ? Math.min(next.y - 0.004, FOOTER) : FOOTER;
+      if (y2 - y < 0.012) y2 = Math.min(FOOTER, y + 0.02);
+      crops.push({ page, q: Number(mark.n), box: { x: 0.02, y, w: 0.96, h: Math.max(0.012, y2 - y) } });
+    });
+  });
+  return crops;
+}
+
+function worksheetTitle(chosen) {
+  const topics = [];
+  chosen.forEach((question) => {
+    const topic = question.source && (question.source.topic || question.source.title);
+    if (topic && !topics.includes(topic)) topics.push(topic);
+  });
+  return topics[0] || (SOURCE && SOURCE.topic) || 'דף תרגול';
+}
+
+async function measureSlices(slices) {
   const OUT_W = 1000;
   const measured = [];
   for (const slice of slices) {
-    const bitmap = await pageBitmap(slice.page);
-    const sw = slice.box.w * bitmap.width;
-    const sh = slice.box.h * bitmap.height;
+    if (slice.kind === 'level') {
+      measured.push({ slice, bitmap: null, sw: OUT_W, sh: 36, dh: 36 });
+      continue;
+    }
+    const bitmap = await pageBitmap(slice.page, sheets.get(slice.pdfId) || SOURCE);
+    const sw = Math.max(1, slice.box.w * bitmap.width);
+    const sh = Math.max(1, slice.box.h * bitmap.height);
     measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(OUT_W * sh / sw)) });
   }
-  const packs = packShort(measured);
-  root.innerHTML = packs.map((_, index) => (
-    `<figure class="crop-sheet"><canvas></canvas><figcaption>דף מצומצם ${index + 1} מתוך ${packs.length} · ${escapeHTML(SOURCE.title)}</figcaption></figure>`
-  )).join('');
-  const canvases = root.querySelectorAll('canvas');
-  packs.forEach((items, index) => {
-    let height = 0;
-    items.forEach((item, itemIndex) => { height += (itemIndex ? item.slice.gap : 0) + item.dh; });
-    const canvas = canvases[index];
-    canvas.width = OUT_W;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, OUT_W, height);
-    let y = 0;
-    items.forEach((item, itemIndex) => {
-      if (itemIndex) y += item.slice.gap;
+  return measured;
+}
+
+function paintPageChrome(ctx, width, pageIndex, pageCount, title) {
+  ctx.fillStyle = '#22305a';
+  ctx.font = '22px Heebo, Arial, sans-serif';
+  ctx.direction = 'rtl';
+  ctx.textAlign = 'right';
+  ctx.fillText('בס״ד', width - 28, 28);
+  if (pageIndex !== 0) return SHEET_BASAD_H;
+  ctx.font = '28px Heebo, Arial, sans-serif';
+  ctx.fillText(title, width - 28, 68);
+  ctx.font = '20px Heebo, Arial, sans-serif';
+  ctx.fillText('שם:', width - 28, 108);
+  ctx.strokeStyle = '#22305a';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(28, 112);
+  ctx.lineTo(width - 90, 112);
+  ctx.stroke();
+  return SHEET_BASAD_H + SHEET_TITLE_H;
+}
+
+function paintMeasuredPage(ctx, items, top) {
+  let y = top;
+  items.forEach((item, itemIndex) => {
+    if (itemIndex) y += item.slice.gap;
+    if (item.slice.kind === 'level') {
+      ctx.fillStyle = '#22305a';
+      ctx.font = '22px Heebo, Arial, sans-serif';
+      ctx.direction = 'rtl';
+      ctx.textAlign = 'right';
+      ctx.fillText(item.slice.label || '', ctx.canvas.width - 28, y + 26);
+      y += item.dh;
+      return;
+    }
+    const pieces = item.slice.pieces && item.slice.pieces.length ? item.slice.pieces : null;
+    if (pieces) {
+      const rowH = item.slice.box.h || 0.02;
+      pieces.forEach((piece) => {
+        const box = piece.box;
+        const sx = box.x * item.bitmap.width;
+        const sy = box.y * item.bitmap.height;
+        const sw = Math.max(1, box.w * item.bitmap.width);
+        const sh = Math.max(1, box.h * item.bitmap.height);
+        const dw = box.w * ctx.canvas.width;
+        const ph = (box.h / rowH) * item.dh;
+        const dy = (piece.dy || 0) * item.dh;
+        ctx.drawImage(item.bitmap, sx, sy, sw, sh, piece.at * ctx.canvas.width, y + dy, dw, ph);
+      });
+    } else {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
-      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
-      const mask = item.slice.box.mask;
-      if (mask) {
+      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, ctx.canvas.width, item.dh);
+      const masks = item.slice.box.masks && item.slice.box.masks.length ? item.slice.box.masks : (item.slice.box.mask ? [item.slice.box.mask] : []);
+      masks.forEach((mask) => {
         ctx.fillStyle = '#fff';
-        ctx.fillRect(mask.x * OUT_W, y + mask.y * item.dh, mask.w * OUT_W, mask.h * item.dh);
-      }
-      y += item.dh;
-    });
+        ctx.fillRect(mask.x * ctx.canvas.width, y + mask.y * item.dh, mask.w * ctx.canvas.width, mask.h * item.dh);
+      });
+    }
+    y += item.dh;
   });
+}
+
+async function paintPacked(root, exerciseMeasured, answerMeasured, title) {
+  const OUT_W = 1000;
+  const exercisePages = packShort(exerciseMeasured);
+  const answerPages = answerMeasured.length ? packShort(answerMeasured, { answers: true }) : [];
+  const packs = exercisePages.concat(answerPages);
+  const answerStart = exercisePages.length;
+  root.innerHTML = packs.map((_, index) => (
+    `<figure class="crop-sheet" data-sheet-page="${index + 1}" data-answers="${index >= answerStart ? '1' : '0'}"><canvas></canvas><figcaption>${index >= answerStart ? 'תשובות' : 'דף תרגול'} ${index + 1} מתוך ${packs.length}</figcaption></figure>`
+  )).join('');
+  const canvases = root.querySelectorAll('canvas');
+  if (document.fonts && document.fonts.load) {
+    try { await document.fonts.load('28px Heebo'); } catch (error) {}
+  }
+  packs.forEach((items, index) => {
+    const answers = index >= answerStart;
+    const chrome = answers ? SHEET_BASAD_H : (index === 0 ? SHEET_BASAD_H + SHEET_TITLE_H : SHEET_BASAD_H);
+    let body = 0;
+    items.forEach((item, itemIndex) => { body += (itemIndex ? item.slice.gap : 0) + item.dh; });
+    const canvas = canvases[index];
+    canvas.width = OUT_W;
+    canvas.height = Math.max(chrome + body, 1);
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, OUT_W, canvas.height);
+    const usedChrome = paintPageChrome(ctx, OUT_W, answers ? 1 : index, packs.length, answers ? 'תשובות' : title);
+    paintMeasuredPage(ctx, items, usedChrome);
+  });
+}
+
+async function paintShort(root, slices) {
+  const measured = await measureSlices(slices);
+  await paintPacked(root, measured, [], worksheetTitle([]));
 }
 
 function groupsOf(chosen) {
@@ -901,15 +1402,112 @@ function groupsOf(chosen) {
   return groups;
 }
 
-async function paintAllShort(root, chosen) {
-  const holder = document.createElement('div');
-  for (const group of groupsOf(chosen)) {
-    SOURCE = group.source;
-    const part = document.createElement('div');
-    await paintShort(part, shortSlices(group.questions));
-    while (part.firstChild) holder.appendChild(part.firstChild);
+async function sheetTextLines(source) {
+  const pdf = await loadPdf(source);
+  const lines = [];
+  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+    const page = await pdf.getPage(pageNumber);
+    const viewport = page.getViewport({ scale: 1 });
+    const content = await page.getTextContent();
+    content.items.forEach((item) => {
+      if (!item.str || !String(item.str).trim()) return;
+      const box = textItemBox(item, viewport.width, viewport.height);
+      lines.push({
+        page: pageNumber,
+        y: box.y,
+        y2: box.y2,
+        x: box.x,
+        x2: box.x2,
+        text: box.text,
+      });
+    });
   }
-  root.replaceChildren(...holder.childNodes);
+  return lines;
+}
+
+async function answerMeasured(groups) {
+  const slices = [];
+  for (const group of groups) {
+    let lines = [];
+    try {
+      lines = await sheetTextLines(group.source);
+    } catch (error) {
+      continue;
+    }
+    const wanted = group.questions.map((question) => ({ q: question.q, part: question.part || '' }));
+    const crops = answerCropsFromLines(lines, wanted);
+    if (!crops.length) continue;
+    const head = lines.find((line) => {
+      const text = String(line.text).replace(/\s/g, '');
+      return text.startsWith('תשובות') && text.length < 24;
+    });
+    if (head) {
+      slices.push({
+        page: head.page,
+        pdfId: group.source.pdfId,
+        box: { x: 0, y: 0, w: 1, h: 0.02 },
+        gap: 8,
+        block: 'answers-head:' + group.source.pdfId,
+        kind: 'level',
+        label: levelPrintName(group.source.level, group.source.levelLabel),
+      });
+      slices.push({
+        page: head.page,
+        pdfId: group.source.pdfId,
+        box: answerHeadingBox(head),
+        gap: 6,
+        block: 'answers-head:' + group.source.pdfId,
+        kind: 'answer',
+      });
+    }
+    crops.forEach((crop) => {
+      slices.push({
+        page: crop.page,
+        pdfId: group.source.pdfId,
+        box: crop.box,
+        pieces: crop.pieces,
+        gap: 6,
+        block: 'answer:' + group.source.pdfId + ':' + crop.q,
+        kind: 'answer',
+      });
+    });
+  }
+  return measureSlices(slices);
+}
+
+async function paintAllShort(root, chosen) {
+  const ordered = orderPrintQuestions(chosen.filter((question) => question && question.source));
+  const slices = [];
+  const groups = [];
+  let lastLevel = null;
+  batchesOf(ordered).forEach((batch) => {
+    const question = batch.questions[0];
+    SOURCE = question.source;
+    const part = shortSlices(batch.questions);
+    if (!part.length) return;
+    const known = groups.find((group) => group.source.pdfId === question.source.pdfId);
+    if (known) batch.questions.forEach((item) => known.questions.push(item));
+    else groups.push({ source: question.source, questions: batch.questions.slice() });
+    if (question.source.level !== lastLevel) {
+      slices.push({
+        page: part[0].page,
+        pdfId: question.source.pdfId,
+        box: { x: 0, y: 0, w: 1, h: 0.02 },
+        gap: 8,
+        block: part[0].block,
+        kind: 'level',
+        label: levelPrintName(question.source.level, question.source.levelLabel),
+      });
+      lastLevel = question.source.level;
+    }
+    part.forEach((slice) => {
+      slice.pdfId = slice.pdfId || question.source.pdfId;
+      slices.push(slice);
+    });
+  });
+  const exerciseMeasured = await measureSlices(slices);
+  const answers = await answerMeasured(groups);
+  await paintPacked(root, exerciseMeasured, answers, worksheetTitle(ordered));
 }
 
 function markedHTML(chosen) {
@@ -933,7 +1531,8 @@ function metaHTML(chosen, cfg) {
     if (!source) return;
     grades.add(source.gradeLabel || (gradeRecord(source.grade) || {}).label || '');
     topics.add(source.topic || source.title || '');
-    if (source.levelLabel) levels.add(source.levelLabel);
+    const levelName = levelPrintName(source.level, source.levelLabel);
+    if (levelName) levels.add(levelName);
   });
   const scenarioName = state.scenario === 'other' ? 'אחר' : cfg.label;
   return `<div class="plan-meta"><span>${escapeHTML([...grades].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...topics].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...levels].join(' · '))}</span><span>${escapeHTML(scenarioName)}</span></div>`;
@@ -1164,6 +1763,68 @@ async function loadCurrentTopic() {
   }
 }
 
+const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
+
+function applyWizard() {
+  if (!$('wizard-bar')) return;
+  const step = WIZARD_ORDER.includes(state.wizard) ? state.wizard : 'grade';
+  state.wizard = step;
+  document.body.dataset.wizard = step;
+  document.querySelectorAll('[data-wiz]').forEach((el) => {
+    el.classList.toggle('wiz-off', el.dataset.wiz !== step);
+  });
+  const setup = $('setup-panel');
+  if (setup) setup.classList.toggle('wiz-off', step === 'pick' || step === 'result');
+  const labels = {
+    grade: 'כיתה',
+    topic: 'נושא',
+    level: 'רמה',
+    scenario: 'מה קורה בשיעור?',
+    style: 'איך ניגשים לתרגול?',
+    pick: 'בחירת סעיפים',
+    result: 'הדף להדפסה',
+  };
+  $('wizard-label').textContent = labels[step];
+  $('wizard-back').hidden = WIZARD_ORDER.indexOf(step) <= 0;
+  $('wizard-next').hidden = step === 'result';
+  $('wizard-next').textContent = step === 'pick' ? 'אל הדף' : 'המשך';
+  const anchor = step === 'result' ? $('wizard-result') : $('wizard-bar');
+  if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
+}
+
+function copyCanvases(from, to) {
+  to.replaceChildren();
+  from.querySelectorAll('canvas').forEach((canvas) => {
+    const figure = document.createElement('figure');
+    figure.className = 'crop-sheet';
+    const copy = document.createElement('canvas');
+    copy.width = canvas.width;
+    copy.height = canvas.height;
+    copy.getContext('2d').drawImage(canvas, 0, 0);
+    figure.appendChild(copy);
+    to.appendChild(figure);
+  });
+}
+
+async function showWizardResult() {
+  const preview = $('wizard-preview');
+  if (!preview) return;
+  if (!state.selected.length) {
+    announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
+    state.wizard = 'pick';
+    applyWizard();
+    return;
+  }
+  preview.textContent = 'מכינים את הדף…';
+  printMode = band() === 'elementary' ? 'marked' : 'short';
+  try {
+    await updatePrint();
+    copyCanvases($('print-area'), preview);
+  } catch (error) {
+    preview.textContent = 'דף המקור לא נטען, ולכן אין הדפסה.';
+  }
+}
+
 function bind() {
   $('questions').addEventListener('change', (event) => {
     const box = event.target;
@@ -1239,6 +1900,21 @@ function bind() {
   $('teacher-note').addEventListener('input', () => clearPreparedPrint());
   $('prepare').addEventListener('click', () => prepare('marked'));
   $('prepare-short').addEventListener('click', () => prepare('short'));
+  if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
+    applyWizard();
+    if (state.wizard === 'result') await showWizardResult();
+  });
+  if ($('wizard-back')) $('wizard-back').addEventListener('click', () => {
+    const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
+    state.wizard = WIZARD_ORDER[Math.max(0, index - 1)];
+    applyWizard();
+  });
+  if ($('wizard-print')) $('wizard-print').addEventListener('click', async () => {
+    try { await updatePrint(); } catch (error) { announce('דף המקור לא נטען.'); return; }
+    window.print();
+  });
   $('print-dialog').addEventListener('close', () => {
     const opener = printOpener;
     if (!opener) return;
