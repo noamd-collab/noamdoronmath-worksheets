@@ -52,8 +52,8 @@ describe('grade 9 factoring marked source', () => {
     assert.match(printer, /clearPreparedPrint/);
     assert.match(page, /print-unprepared/);
     assert.match(page, /כדי להדפיס, פותחים קודם את תצוגת ההדפסה/);
-    assert.match(page, /הצגת הדף המצומצם/);
-    assert.match(printer, /crop-sheet/);
+    assert.match(page, /הצגת דף העבודה/);
+    assert.match(printer, /flow-page/);
     assert.match(printer, /drawImage/);
     assert.equal(page.includes('עדיין לא ממומש'), false);
     for (const question of source.questions) {
@@ -67,7 +67,7 @@ describe('grade 9 factoring marked source', () => {
     assert.ok(source.headerCrop.mask && source.headerCrop.mask.h > 0);
     assert.ok(source.footerCrop.mask && source.footerCrop.mask.w > 0);
     assert.match(printer, /printOpener/);
-    assert.match(printer, /packShort/);
+    assert.match(printer, /function paginate/);
     assert.match(page, /rel="icon"/);
     assert.match(readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8'), /rel="icon"/);
   });
@@ -151,7 +151,9 @@ describe('grade 9 factoring marked source', () => {
   it('includes the teacher note in print and keeps the short sheet on one A4', () => {
     assert.match(printer, /function attachTeacherNote/);
     assert.match(printer, /class="teacher-print-note" dir="rtl"/);
-    assert.equal(printer.split('attachTeacherNote(printArea, note)').length - 1, 2);
+    // Marked pages attach the note; the continuous worksheet flows it as its last block.
+    assert.equal(printer.split('attachTeacherNote(printArea, note)').length - 1, 1);
+    assert.match(printer, /kind: 'note'/);
     assert.match(page, /\.print-area \.teacher-print-note\{[^}]*direction:rtl[^}]*break-inside:avoid;page-break-inside:avoid/);
     assert.match(page, /ההערה מודפסת על הדף/);
     assert.match(printer, /fonts\.load\('11px Heebo'\)/);
@@ -369,29 +371,24 @@ describe('teacher catalog picker', () => {
 
   it('prints only the checked part crops and drops hidden selections', () => {
     const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)({
-      headerCrop: { page: 1, x: 0, y: 0, w: 1, h: 0.2 },
-      footerCrop: { page: 2, x: 0, y: 0.96, w: 1, h: 0.03 },
-      questions: [],
-    });
-    const chosen = [
-      { id: '3ב', q: 3, page: 2, row: { page: 2, x: 0, y: 0.0662, w: 1, h: 0.0648 }, rows: [{ page: 2, x: 0, y: 0.0662, w: 1, h: 0.0648 }] },
-    ];
-    const slices = shortSlices(chosen).filter((slice: { kind: string }) => slice.kind === 'row');
-    assert.deepEqual(slices.map((slice: { page: number }) => slice.page), [2]);
-    assert.equal(slices[0].box.y, 0.0662);
-    const keepVisible = new Function(`${preview.slice(preview.indexOf('function keepVisible'), preview.indexOf('function currentExercises'))} return keepVisible;`)() as (selected: string[], visible: string[]) => string[];
+    // Part geometry of the continuous worksheet is covered in teacher-flow-print.test.ts.
+    assert.match(preview, /function questionPieces/);
+    const keepVisible = new Function(`${preview.slice(preview.indexOf('function keepVisible'), preview.indexOf('function topicKeys'))} return keepVisible;`)() as (selected: string[], visible: string[], scope?: string[]) => string[];
+    // Hidden picks of this topic drop; exercises picked in another topic stay for the one worksheet.
     assert.deepEqual(keepVisible(['ex:a:1ב', 'ex:b:3ב', 'sheet:c'], ['ex:b:3ב']), ['ex:b:3ב']);
+    assert.deepEqual(keepVisible(['ex:a:1ב', 'ex:b:3ב', 'ex:b:4א'], ['ex:b:3ב'], ['b']), ['ex:a:1ב', 'ex:b:3ב']);
     const topicHandler = preview.slice(preview.indexOf("$('topic').addEventListener"), preview.indexOf("$('filter-all')"));
-    assert.match(topicHandler, /state\.selected = \[\]/);
+    assert.match(topicHandler, /state\.selected = carried/);
     assert.match(topicHandler, /applyScenario/);
+    assert.match(preview, /function carriedPicks\(previousBand\)/);
+    assert.match(preview, /if \(previousBand !== band\(\)\) return \[\]/);
     const levelHandler = preview.slice(preview.indexOf("document.querySelectorAll('[name=level]')"), preview.indexOf("$('grade').addEventListener"));
-    assert.match(levelHandler, /keepVisible\(state\.selected, visibleSelectionKeys\(\)\)/);
+    assert.match(levelHandler, /keepVisible\(state\.selected, visibleSelectionKeys\(\), topicKeys\(\)\)/);
     const resolve = preview.slice(preview.indexOf('async function resolveChosen'), preview.indexOf('async function updatePrint'));
-    assert.match(resolve, /if \(!allow\.has\(key\)\) continue/);
+    assert.match(resolve, /if \(!allow\.has\(key\) && !\(key\.startsWith\('ex:'\) && library\.has\(key\)\)\) continue/);
     assert.match(preview, /box: null/);
-    assert.match(preview, /mode === 'short' && band\(\) === 'elementary'/);
-    assert.match(preview, /question\.rows && question\.rows\.length \? question\.rows : \[question\.row\]/);
+    assert.match(preview, /mode === 'flow' && band\(\) === 'elementary'/);
+    assert.match(preview, /question\.rows && question\.rows\.length \? question\.rows : \(question\.row \? \[question\.row\] : \[\]\)/);
     const html = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
     assert.match(html, /\.skip\{display:none!important\}/);
     assert.match(html, /\.q-thumb\{[^}]*max-height:120px/);
@@ -428,43 +425,6 @@ describe('teacher catalog picker', () => {
     assert.match(html, /@media\(min-width:900px\) and \(max-width:1023\.98px\)\{[\s\S]*?font-size:12px/);
   });
 
-  it('prints one crop when consecutive parts share a drawing', () => {
-    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-    const sheet = JSON.parse(readFileSync(new URL('../public/teachers/sheets/0d548ce76eb74a1ab10385cdaf1f77ca.json', import.meta.url), 'utf8'));
-    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number } }[];
-    const byId = Object.fromEntries(sheet.questions.map((question: { id: string; row: { y: number; h: number } }) => [question.id, question]));
-    const rowsOf = (ids: string[]) => shortSlices(ids.map((id) => byId[id])).filter((slice) => slice.kind === 'row' && slice.page === 4);
-    const covered = (rows: { box: { y: number; h: number } }[], y: number) => rows.filter((slice) => slice.box.y <= y && slice.box.y + slice.box.h > y).length;
-    const disjoint = (rows: { box: { y: number; h: number } }[]) => {
-      const ordered = rows.slice().sort((a, b) => a.box.y - b.box.y);
-      for (let index = 1; index < ordered.length; index += 1) {
-        const previous = ordered[index - 1].box;
-        assert.ok(previous.y + previous.h <= ordered[index].box.y + 0.004, JSON.stringify(ordered.map((slice) => slice.box)));
-      }
-    };
-    const aleph = byId['9א'];
-    const bet = byId['9ב'];
-    const gimel = byId['9ג'];
-    const pair = rowsOf(['9א', '9ב']);
-    disjoint(pair);
-    assert.equal(covered(pair, aleph.row.y + 0.01), 1);
-    assert.equal(covered(pair, bet.row.y + 0.01), 1);
-    assert.equal(pair.length, 1);
-    const triple = rowsOf(['9א', '9ב', '9ג']);
-    disjoint(triple);
-    assert.equal(covered(triple, bet.row.y + 0.01), 1);
-    assert.equal(covered(triple, gimel.row.y + gimel.row.h * 0.5), 1);
-    assert.ok(triple.some((slice) => slice.box.y + slice.box.h >= gimel.row.y + gimel.row.h - 0.004));
-    const onlyBet = rowsOf(['9ב']);
-    assert.equal(onlyBet.length, 1);
-    assert.ok(onlyBet[0].box.y <= aleph.row.y + 0.002, JSON.stringify(onlyBet[0].box));
-    assert.ok(onlyBet[0].box.y + onlyBet[0].box.h >= aleph.row.y + aleph.row.h - 0.004, JSON.stringify(onlyBet[0].box));
-    const onlyAleph = rowsOf(['9א']);
-    assert.equal(onlyAleph.length, 1);
-    assert.ok(Math.abs(onlyAleph[0].box.y - aleph.row.y) < 0.0001);
-    assert.ok(Math.abs(onlyAleph[0].box.h - aleph.row.h) < 0.0001);
-  });
-
   it('assigns the grade-9 house drawing to question 8', () => {
     const sheet = JSON.parse(readFileSync(new URL('../public/teachers/sheets/871fe90d52a04673a7d30fc039e4bf2e.json', import.meta.url), 'utf8'));
     const last = sheet.questions.find((question: { id: string }) => question.id === '8ד');
@@ -476,66 +436,6 @@ describe('teacher catalog picker', () => {
     assert.ok(next.stem && next.stem.mask && next.stem.mask.x === 0 && next.stem.mask.w > 0.3 && next.stem.mask.w < 0.55);
     assert.ok(next.row.mask && next.row.mask.x === 0 && next.row.mask.h < 0.5 && next.row.mask.w < 0.55);
     assert.ok(next.row.y < 0.27, JSON.stringify(next.row));
-  });
-
-  it('prints a lone house part from the top of the whole drawing', () => {
-    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-    const files = [
-      '871fe90d52a04673a7d30fc039e4bf2e.json',
-      '4aba762b64b54af098827d1f386bcf68.json',
-      '9c95b48e57124721b4c2b56d79cf72ba.json',
-    ];
-    for (const file of files) {
-      const sheet = JSON.parse(readFileSync(new URL(`../public/teachers/sheets/${file}`, import.meta.url), 'utf8'));
-      const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; gap: number; box: { y: number; h: number; mask?: { x: number; y: number; h: number } } }[];
-      const byId = Object.fromEntries(sheet.questions.map((question: { id: string }) => [question.id, question]));
-      const rowsOf = (ids: string[]) => shortSlices(ids.map((id) => byId[id])).filter((slice) => slice.kind === 'row');
-      const figure = byId['8ד'].figure;
-      const storedMask = byId['8ד'].row.mask;
-      assert.ok(figure && figure.y0 < 0.09 && figure.y1 > 0.2, file);
-      for (const id of ['8ד', '8ג']) {
-        const rows = rowsOf([id]);
-        assert.equal(rows.length, 1, `${file} ${id}`);
-        const box = rows[0].box;
-        const end = box.y + box.h;
-        assert.ok(box.y <= figure.y0 + 0.004, `${file} ${id} top ${JSON.stringify(box)}`);
-        assert.ok(end >= figure.y1 - 0.01, `${file} ${id} end ${JSON.stringify(box)}`);
-        assert.ok(box.y <= byId['8א'].row.y + 0.0001, `${file} ${id} half line ${JSON.stringify(box)}`);
-        assert.ok(box.mask && box.mask.x >= storedMask.x + 0.004 && box.mask.x <= storedMask.x + 0.012, `${file} ${id} mask ${JSON.stringify(box.mask)}`);
-        const maskBottom = box.y + (box.mask.y + box.mask.h) * box.h;
-        assert.ok(maskBottom >= end - 0.004, `${file} ${id} mask bottom ${maskBottom}`);
-      }
-      const all = rowsOf(['8א', '8ב', '8ג', '8ד']);
-      assert.equal(all.length, 4, file);
-      const ordered = all.slice().sort((a, b) => a.box.y - b.box.y);
-      for (let index = 1; index < ordered.length; index += 1) {
-        const previous = ordered[index - 1].box;
-        assert.ok(previous.y + previous.h <= ordered[index].box.y + 0.004, file);
-        assert.equal(ordered[index].gap, -2, file);
-      }
-      const roof = figure.y0 + 0.005;
-      assert.equal(all.filter((slice) => slice.box.y <= roof && slice.box.y + slice.box.h > roof).length, 1, file);
-    }
-  });
-
-  it('keeps the grade-9 9ג sketch and hides the next line when printed alone', () => {
-    const preview = readFileSync(new URL('../public/teachers/teacher-factoring-print.js', import.meta.url), 'utf8');
-    const sheet = JSON.parse(readFileSync(new URL('../public/teachers/sheets/2056de6d71e14c98aa5efe856d2e1bcf.json', import.meta.url), 'utf8'));
-    const shortSlices = new Function('SOURCE', `${preview.slice(preview.indexOf('function boxEnd'), preview.indexOf('function contentHeight'))} return shortSlices;`)(sheet) as (chosen: { id: string }[]) => { kind: string; page: number; box: { y: number; h: number; mask?: { x: number; y: number; h: number } } }[];
-    const byId = Object.fromEntries(sheet.questions.map((question: { id: string }) => [question.id, question]));
-    const rows = shortSlices([byId['9ג']]).filter((slice) => slice.kind === 'row' && slice.page === 4);
-    assert.equal(rows.length, 1);
-    const box = rows[0].box;
-    const end = box.y + box.h;
-    // The rectangle sketch continues just past 9ד's label row. Keep it, and cover 9ד's text.
-    assert.ok(end >= 0.3114, String(end));
-    assert.ok(end > byId['9ג'].row.y + 0.03, String(end));
-    assert.ok(box.y <= byId['9ג'].row.y);
-    assert.ok(box.mask && box.mask.x >= 0.4 && box.mask.x < 0.6, JSON.stringify(box.mask));
-    const maskTop = box.y + box.mask.y * box.h;
-    const maskBottom = maskTop + box.mask.h * box.h;
-    assert.ok(maskTop <= byId['9ד'].row.y + 0.001, String(maskTop));
-    assert.ok(maskBottom >= end - 0.002, String(maskBottom));
   });
 
   it('measures a committed label page without downloading a worksheet', (t) => {

@@ -366,6 +366,11 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .print-unprepared{margin:0;font:16px/1.4 Heebo,Arial,sans-serif}
 .source-sheet figcaption,.crop-sheet figcaption{direction:rtl;font-size:13px;margin-top:6px;color:#3d4870}
 .crop-sheet{margin:0 0 18px}
+.flow-preview{display:grid;gap:16px;justify-items:center}
+.flow-page{box-sizing:border-box;width:100%;max-width:620px;aspect-ratio:194/281;padding:2.6% 3.6%;background:#fff;border:1px solid #d9deea;box-shadow:0 2px 10px rgba(34,48,90,.08);display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.flow-basad{align-self:stretch;direction:rtl;text-align:right;font:600 12px/1 Heebo,Arial,sans-serif;color:#22305a;margin:0 0 6px}
+.flow-canvas{width:92.8%}
+.flow-canvas canvas{display:block;width:100%;height:auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .crop-sheet canvas{display:block;width:100%;height:auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 @media print{
   .skip{display:none!important}
@@ -391,6 +396,13 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
   .print-area .source-mark{background:transparent;outline:none;border:2px solid #c47d00;border-radius:0;mix-blend-mode:normal}
   .print-area .print-unprepared{display:block!important;margin:0;font-size:16px}
   .print-area figcaption{width:180mm;margin:2mm 0 0;font-size:10px;line-height:1.3}
+  .print-area .flow-page{box-sizing:border-box;width:194mm;max-width:none;height:281mm;max-height:281mm;aspect-ratio:auto;margin:0;padding:0;border:0;box-shadow:none;overflow:hidden;display:flex;flex-direction:column;align-items:center;break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always}
+  .print-area .flow-page:last-child{break-after:auto;page-break-after:auto}
+  .print-area .flow-basad{display:block;box-sizing:border-box;width:180mm;align-self:center;height:5mm;margin:0 0 2mm;font:600 11px/5mm Heebo,Arial,sans-serif}
+  .print-area .source-sheet .flow-basad{flex:0 0 auto}
+  .print-area .flow-canvas{width:180mm;flex:0 0 auto}
+  .print-area .flow-canvas canvas{width:180mm;height:auto;max-height:270mm}
+  .print-area .flow-page .teacher-print-note{flex:0 0 auto}
 }
 
 </style>
@@ -420,7 +432,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 </div>
 </header>
 <main class="wrap">
-<div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן בוחרים דפים וסעיפים שכבר באתר, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">יסודי: בחירה לפי דף, נושא ורמה. חטיבת ביניים: בחירת סעיפים מתוך הדפים.<br>ההדפסה מסמנת על דף המקור המלא, או חותכת דף מצומצם מאותו מקור. הצעות נועם AI כבויות.</p></div>
+<div class="intro"><div><p class="eyebrow">מתכננים את התרגול</p><h1>בוחרים מה לתרגל.</h1><p class="subtitle">כיתה, נושא ומטרת השיעור. מכאן בוחרים דפים וסעיפים שכבר באתר, ומדפיסים את דף המקור עם סימון.</p><p class="head-meta"><span>מהדפים הקיימים, לשיעור שלכם</span><span class="demo-tag">כיתות א׳–ט׳</span><span class="brand-kicker">מתמטיקה • מרחב למורה</span></p></div><p class="intro-note">יסודי: בחירה לפי דף, נושא ורמה. חטיבת ביניים: בחירת סעיפים מתוך הדפים.<br>ההדפסה חותכת דף עבודה אחד ברצף מאותם דפים, עם דף תשובות בסוף, או מסמנת על דף המקור המלא. הצעות נועם AI כבויות.</p></div>
 <div class="workspace">
 <aside class="panel setup" aria-label="הגדרות השיעור">
 <h2 class="step-title"><span class="step-num">1</span> מתחילים מהכיתה</h2>
@@ -445,13 +457,13 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <div class="source-line"><span>פירוק לגורמים · כיתה ט׳ · רמה א׳</span><a href="https://static.wixstatic.com/ugd/d8e7ad_6a37fe7160324a17ad107b3dbe43c1db.pdf" target="_blank" rel="noopener noreferrer">פתיחת דף המקור ↗</a></div>
 <div id="available-content"><p class="logic-note"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span id="rationale">תחילה גורם מספרי, אחר כך סימנים וגורם משתנה. אין צורך להתחיל מכל הדף.</span></p>
 <div class="other-note-banner" id="other-banner" hidden><strong>בחירה ידנית עם הערת מורה</strong><p>הרצף האחרון נשאר כפי שהוא. אפשר לבחור שאלות ולצרף את ההערה לתוכנית.</p></div>
-<div class="toolbar"><h3>הפניות לשאלות <span class="toolbar-meta" id="available-count"></span></h3><button class="text-btn" id="undo" disabled><svg aria-hidden="true"><use href="#i-undo"/></svg>ביטול שינוי</button></div>
+<div class="toolbar"><h3>הפניות לשאלות <span class="toolbar-meta" id="available-count"></span></h3><button class="text-btn" id="undo" disabled><svg aria-hidden="true"><use href="#i-undo"/></svg>ביטול שינוי</button><button class="text-btn" id="clear-selection" type="button" disabled>ניקוי הבחירה</button></div>
 <div class="list-header"><span>הסימון ניתן לשינוי</span><div class="filter" aria-label="סינון תצוגת השאלות"><button type="button" id="filter-all" aria-pressed="true">כל ההצעות</button><button type="button" id="filter-selected" aria-pressed="false">רק הבחירה שלי</button></div></div>
 <div class="question-list" id="questions"></div><button class="text-btn show-more" id="show-more">הצגת שאלות נוספות <span class="count-dot" id="more-count"></span></button>
 <div class="suggestion" id="suggestion"><svg aria-hidden="true"><use href="#i-bulb"/></svg><div class="suggestion-copy"><strong>נשאר מקום לעוד צעד?</strong><p id="suggestion-text">אפשר להוסיף סעיף עם שלושה איברים.</p></div><button type="button" id="add-suggestion">הוספה לבחירה</button></div>
 <details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">חיוני = בסיס לרצף המוצע; נוסף = חיזוק לבחירתכם; העמקה = אתגר אפשרי. אלו תיוגים פדגוגיים של ההדגמה, לא תיוגי המחבר.</p><p style="margin-top:8px">ההפניות מתארות בקצרה שאלות קיימות. בעבודה עם המקור יש לשמור על הוראות משותפות, סעיפים תלויים, נוסח ותרשימים.</p></div></details>
-<details class="details"><summary>ומה לגבי הדפסת דף התלמיד?</summary><div class="details-body"><p>שתי דרכי הדפסה, שתיהן מתוך דף המקור:</p><div class="future-modes"><div class="future-mode"><b>הדף המלא, עם סימון</b><span>השאלות שנבחרו מסומנות על גבי דף המקור.</span><br><span class="future-label">המקרה הזה</span></div><div class="future-mode"><b>דף מצומצם מהמקור</b><span>רק הבחירה שלכם, חתוכה מהמקור עם ההוראה, הנוסח והתרשים.</span><br><span class="future-label">המקרה הזה</span></div></div><p>הדף המצומצם אינו ניסוח חדש. כל קטע הוא חיתוך של דף המקור.</p></div></details>
-<div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המצומצם</button></div><p class="prepare-hint" id="prepare-hint">דף מלא עם סימון, או דף מצומצם שנחתך מהמקור</p></div>
+<details class="details"><summary>ומה לגבי הדפסת דף התלמיד?</summary><div class="details-body"><p>שתי דרכי הדפסה, שתיהן מתוך דף המקור:</p><div class="future-modes"><div class="future-mode"><b>הדף המלא, עם סימון</b><span>השאלות שנבחרו מסומנות על גבי דף המקור.</span><br><span class="future-label">המקרה הזה</span></div><div class="future-mode"><b>דף עבודה אחד מהמקור</b><span>רק הבחירה שלכם, ברצף על פני העמודים, חתוכה מהמקור עם ההוראה, הנוסח והתרשים. דף התשובות בסוף.</span><br><span class="future-label">המקרה הזה</span></div></div><p>דף העבודה אינו ניסוח חדש. כל קטע הוא חיתוך של דף המקור, ותרגיל עם השרטוט שלו לא נחצה בין עמודים.</p></div></details>
+<div class="prepare-bar"><div class="selection-total" aria-live="polite" aria-atomic="true"><strong id="selection-count">0 נבחרו</strong><span id="selection-composition"></span></div><button type="button" class="primary" id="prepare"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת הדף המסומן</button><button type="button" class="text-btn" id="prepare-short"><svg aria-hidden="true"><use href="#i-print"/></svg>הצגת דף העבודה</button></div><p class="prepare-hint" id="prepare-hint">דף עבודה אחד ברצף, חתוך מהמקור, עם דף תשובות בסוף. אפשר לבחור סעיפים מכמה נושאים וכיתות.</p></div>
 <div id="unavailable" class="empty" hidden><h3>אין דפים להצגה בכיתה הזו</h3><p style="margin-top:8px">אפשר לחזור לפירוק לגורמים לכיתה ט׳.</p><button type="button" class="text-btn" id="return-demo">חזרה לפירוק לגורמים</button></div>
 </section></div>
 <footer class="foot"><div class="foot-grid"><div><strong class="foot-brand">נועם דורון - מתמטיקה</strong><p>דפי עבודה במתמטיקה להורדה בחינם לכיתות א׳–ט׳. תשתית למידה איכותית לכל תלמיד.</p></div><div><h3>צור קשר</h3><p>מורים והורים, נשמח לעזור בכל שאלה.</p><a class="foot-mail" href="mailto:noamd@noamdoronmath.co.il">noamd@noamdoronmath.co.il</a></div><nav aria-label="ניווט מהיר"><h3>ניווט מהיר</h3><a href="https://www.noamdoronmath.co.il/">בית</a><a href="https://www.noamdoronmath.co.il/worksheets">דפי עבודה</a><a href="https://www.noamdoronmath.co.il/aboutus">אודותינו</a><a href="https://www.noamdoronmath.co.il/blog">בלוג</a></nav></div><div class="foot-bottom"><span>רק דפים וסעיפים שכבר בקטלוג. הצעות נועם AI כבויות. ההערה נשארת בעמוד ונכנסת להדפסה.</span><span class="footer-source">מקור: דפי העבודה של האתר · כיתות א׳–ט׳</span><span>© 2026 נועם דורון מתמטיקה. כל הזכויות שמורות.</span></div></footer>

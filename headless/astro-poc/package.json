@@ -17,6 +17,7 @@
     "test": "node scripts/run-tests.mjs",
     "test:unit": "node scripts/run-tests.mjs --unit",
     "catalog:measure": "node scripts/build-teacher-catalog.mjs",
+    "catalog:print-layout": "python3 scripts/measure-print-layout.py --pdfs \"${TEACHER_PDF_CACHE:-$TMPDIR/noam-teacher-pdfs}\"",
     "test:live-ssr": "node scripts/run-tests.mjs --live-ssr",
     "refresh:catalog": "node scripts/refresh-catalog-snapshot.mjs refresh",
     "check:catalog": "node scripts/refresh-catalog-snapshot.mjs check",

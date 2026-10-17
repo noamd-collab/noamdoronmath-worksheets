@@ -148,9 +148,22 @@ function visibleSelectionKeys() {
   return currentExercises().map((question) => exKey(question.source.pdfId, question.id));
 }
 
-function keepVisible(selected, visible) {
+/** Drops hidden picks of this topic. Exercises picked in other topics stay. */
+function keepVisible(selected, visible, scope) {
   const allow = new Set(visible);
-  return selected.filter((key) => allow.has(key));
+  const here = scope ? new Set(scope) : null;
+  return selected.filter((key) => allow.has(key) || (here && key.startsWith('ex:') && !here.has(key.split(':')[1])));
+}
+
+function topicKeys() {
+  const topic = currentTopic();
+  return topic ? topic.sheets.map((sheet) => sheet.pdfId) : [];
+}
+
+/** Exercises picked so far, kept when the teacher moves to another topic or grade of the same band. */
+function carriedPicks(previousBand) {
+  if (previousBand !== band()) return [];
+  return state.selected.filter((key) => key.startsWith('ex:') && library.has(key));
 }
 
 function currentExercises() {
@@ -262,7 +275,10 @@ function thumbAria(question) {
 
 function exerciseCard(question) {
   const key = exKey(question.source.pdfId, question.id);
-  const level = question.source.levelLabel ? `<span class="q-page" style="display:block">${escapeHTML(question.source.levelLabel)} · עמוד ${question.page}</span>` : `<span class="q-page" style="display:block">עמוד ${question.page} בדף המקור</span>`;
+  const elsewhere = !topicKeys().includes(question.source.pdfId)
+    ? [question.source.gradeLabel, question.source.topic].filter(Boolean).join(' · ') + ' · '
+    : '';
+  const level = question.source.levelLabel ? `<span class="q-page" style="display:block">${escapeHTML(elsewhere + question.source.levelLabel)} · עמוד ${question.page}</span>` : `<span class="q-page" style="display:block">${escapeHTML(elsewhere)}עמוד ${question.page} בדף המקור</span>`;
   const badge = pilotOn() ? `<span class="badge ${tier(question)}">${TIERS[tier(question)]}</span>` : '';
   const body = needsThumb(question)
     ? `<canvas class="q-thumb" data-thumb="${escapeHTML(key)}" aria-label="${escapeHTML(thumbAria(question))}"></canvas>`
@@ -302,10 +318,15 @@ function render() {
       ? `${gradeRecord(state.grade).label} · ${topic.title}. בוחרים דף לפי רמה.`
       : `${gradeRecord(state.grade).label} · ${topic.title}. ${currentExercises().length} סעיפים בדפי הנושא.`;
   }
+  // Middle school: the continuous worksheet is the main print; the marked source page is the second choice.
   const shortBtn = $('prepare-short');
-  if (shortBtn) shortBtn.hidden = elementary;
+  if (shortBtn) {
+    shortBtn.hidden = elementary;
+    shortBtn.className = elementary ? 'text-btn' : 'primary';
+    $('prepare').className = elementary ? 'primary' : 'text-btn';
+  }
   const prepareHint = $('prepare-hint');
-  if (prepareHint) prepareHint.textContent = elementary ? 'הדף המלא מהמקור, בלי סימון.' : 'דף מלא עם סימון, או דף מצומצם שנחתך מהמקור';
+  if (prepareHint) prepareHint.textContent = elementary ? 'הדף המלא מהמקור, בלי סימון.' : 'דף עבודה אחד ברצף, חתוך מהמקור, עם דף תשובות בסוף. אפשר לבחור סעיפים מכמה נושאים וכיתות.';
   if (!ok) {
     paintSourceLine();
     return;
@@ -342,6 +363,7 @@ function render() {
   const pdfs = new Set(state.selected.map((key) => key.split(':')[1]).filter(Boolean));
   $('selection-composition').textContent = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
   $('undo').disabled = history.length === 0;
+  $('clear-selection').disabled = state.selected.length === 0;
   paintSourceLine();
   if (!elementary) paintThumbs();
 }
@@ -576,6 +598,21 @@ async function paintSheets(root, bake) {
     canvas.height = Math.floor(viewport.height);
     await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
     if (bake) bakeMarks(canvas, stage);
+    const figure = stage.closest('.source-sheet');
+    if (figure && !figure.querySelector('.flow-basad') && !(await hasBasad(page))) {
+      figure.insertAdjacentHTML('afterbegin', '<div class="flow-basad" dir="rtl">בס״ד</div>');
+    }
+  }
+}
+
+/** True when the top of a source page already prints בס״ד. */
+async function hasBasad(page) {
+  try {
+    const text = await page.getTextContent();
+    const height = page.getViewport({ scale: 1 }).height;
+    return text.items.some((item) => /בס["״”]?ד|ד["״”]?סב/.test(item.str || '') && item.transform && item.transform[5] > height * 0.9);
+  } catch (error) {
+    return false;
   }
 }
 
@@ -595,298 +632,687 @@ async function pageBitmap(pageNumber, source) {
   return canvas;
 }
 
-function boxEnd(box) {
-  return box.y + box.h;
+/* ------------------------------------------------------------------
+   One continuous worksheet.
+   Every picked exercise is cut from its original PDF page and laid on
+   A4 pages one after another, across sheets and grades. An exercise is
+   one block: its stem, its question number, its picked parts and its
+   drawing. A block is never split across pages; it moves whole to the
+   next page. The answer key follows on its own pages, cut from each
+   sheet's "תשובות סופיות" section, with the same flow rules.
+   Boxes beyond sheets/*.json (title, drawings, writing rules, question
+   numbers, answer lines) come from print-layout/<pdfId>.json, measured
+   on the source PDFs by scripts/measure-print-layout.py.
+   ------------------------------------------------------------------ */
+const FLOW = {
+  OUT_W: 1000, // canvas px across the 180mm print column
+  X0: 0.05, // source window: right of the margin copyright line
+  X1: 0.96, // and wide enough for the question number column
+  PAGE_H: 1500, // canvas px under the בס״ד line on one A4 page (270mm)
+  GAP: 24, // between blocks
+  PIECE_GAP: 6, // between pieces of one block
+  PULL_BELOW: 0.65, // pull a later exercise up only while the page stays this empty
+  LOOKAHEAD: 3, // how far ahead an exercise may come from
+  MIN_FIGURE_H: 0.03, // smaller boxes are inline marks, not drawings
+};
+const PX_PER_MM = FLOW.OUT_W / 180;
+const layouts = new Map();
+
+function rowsOf(question) {
+  const rows = question.rows && question.rows.length ? question.rows : (question.row ? [question.row] : []);
+  return rows.map((row) => ({ ...row, page: row.page || question.page }));
 }
 
-function previousQuestionRow(slices, block, page) {
-  for (let index = slices.length - 1; index >= 0; index -= 1) {
-    const slice = slices[index];
-    if (slice.kind !== 'row') continue;
-    if (slice.block === block && slice.page === page) return slice;
-    return null;
+function rowOn(question, page) {
+  return rowsOf(question).find((row) => row.page === page) || null;
+}
+
+function partsOf(source, q) {
+  return source.questions.filter((item) => item.q === q);
+}
+
+function stemOf(parts) {
+  const owner = parts.find((item) => item.stem);
+  return owner ? { ...owner.stem, page: owner.stem.page || owner.page } : null;
+}
+
+/** Where question q starts on a page: its stem, or its first labelled part. */
+function questionTop(source, q, page) {
+  const parts = partsOf(source, q);
+  let top = null;
+  const stem = stemOf(parts);
+  if (stem && stem.page === page) top = stem.y;
+  parts.forEach((item) => {
+    const row = rowOn(item, page);
+    if (row && item.page === page) top = top == null ? row.y : Math.min(top, row.y);
+  });
+  return top;
+}
+
+function nextQuestionTop(source, q, page) {
+  let next = null;
+  const seen = new Set();
+  source.questions.forEach((item) => {
+    if (item.q === q || seen.has(item.q)) return;
+    seen.add(item.q);
+    if (source.questions.indexOf(item) < source.questions.findIndex((other) => other.q === q)) return;
+    const top = questionTop(source, item.q, page);
+    if (top != null && (next == null || top < next)) next = top;
+  });
+  return next;
+}
+
+/**
+ * Each part's own lines on a page: from its label line to the next part's
+ * label line, or to the next question. A first part without a stem keeps the
+ * question text above its label as a stem of its own.
+ */
+function partRanges(source, q, page) {
+  const parts = partsOf(source, q);
+  const nextTop = nextQuestionTop(source, q, page);
+  const stem = stemOf(parts);
+  const ranges = new Map();
+  let ownStem = null;
+  const labelled = parts.filter((item) => item.page === page && rowOn(item, page));
+  parts.forEach((item, index) => {
+    const row = rowOn(item, page);
+    if (!row) return;
+    const line = item.line > 0 ? item.line : 0.024;
+    let top = row.y;
+    let end;
+    if (item.page === page) {
+      if (index === 0 && !(stem && stem.page === page) && item.box) {
+        const labelTop = item.box.y + item.box.h / 2 - line * 0.6;
+        if (labelTop > row.y + line * 0.5) {
+          ownStem = [row.y, labelTop];
+          top = labelTop;
+        }
+      }
+      const later = labelled.filter((other) => parts.indexOf(other) > index && rowOn(other, page).y > row.y + 0.004);
+      end = later.length ? rowOn(later[0], page).y : row.y + row.h;
+      if (!later.length && nextTop != null && nextTop > top + line * 0.5) end = Math.min(end, nextTop);
+    } else {
+      end = row.y + row.h;
+      if (nextTop != null && nextTop > top + 0.01) end = Math.min(end, nextTop);
+    }
+    ranges.set(item.id, [top, Math.max(end, top + 0.004)]);
+  });
+  return { ranges, ownStem };
+}
+
+function questionSpan(source, q, page) {
+  const top = questionTop(source, q, page);
+  let end = null;
+  partsOf(source, q).forEach((item) => {
+    const row = rowOn(item, page);
+    if (row) end = end == null ? row.y + row.h : Math.max(end, row.y + row.h);
+  });
+  const next = nextQuestionTop(source, q, page);
+  if (end != null && next != null && next > (top == null ? 0 : top)) end = Math.min(end, next);
+  if (top == null && end == null) return null;
+  return [top == null ? 0 : top, end == null ? top : end];
+}
+
+/** Drawings on a page with the question that owns each one (most vertical overlap). */
+function pageFigures(source, layout, page) {
+  const list = (layout.figures || [])
+    .filter((figure) => figure.page === page && figure.y1 - figure.y0 >= FLOW.MIN_FIGURE_H)
+    .map((figure) => ({ ...figure }));
+  source.questions.forEach((item) => {
+    if (item.figure && item.page === page) list.push({ page, ...item.figure, q: item.q });
+  });
+  const spans = new Map();
+  source.questions.forEach((item) => {
+    if (!spans.has(item.q)) spans.set(item.q, questionSpan(source, item.q, page));
+  });
+  list.forEach((figure) => {
+    if (figure.q != null) return;
+    let best = null;
+    spans.forEach((span, q) => {
+      if (!span) return;
+      const overlap = Math.min(span[1], figure.y1) - Math.max(span[0], figure.y0);
+      if (overlap > 0 && (!best || overlap > best.overlap)) best = { q, overlap };
+    });
+    figure.q = best ? best.q : null;
+  });
+  return list;
+}
+
+function overlaps(a0, a1, b0, b1) {
+  return Math.min(a1, b1) - Math.max(a0, b0) > 0.0005;
+}
+
+/**
+ * Keeps a band inside the page's running header and footer, below the sheet
+ * header on page 1, and off a section bar
+ * ("חלק ב׳ – …"): a bar low in the band ends it, a bar high in the band starts it.
+ */
+function clampBand(layout, page, band) {
+  let [top, end] = band;
+  const margin = layout.margins && layout.margins[String(page)];
+  if (margin) {
+    top = Math.max(top, margin[0]);
+    // The footer's separator rule sits just above its text.
+    end = Math.min(end, margin[1] < 0.99 ? margin[1] - 0.012 : margin[1]);
   }
-  return null;
+  const header = layout.headerEnd;
+  if (header && header.page === page && top < header.y) {
+    if (end <= header.y + 0.004) return null;
+    top = header.y;
+  }
+  (layout.sections || []).forEach((bar) => {
+    if (bar.page !== page || !overlaps(top, end, bar.y0, bar.y1)) return;
+    if (bar.y0 > top + 0.01) end = Math.min(end, bar.y0);
+    else top = Math.max(top, bar.y1);
+  });
+  return end - top > 0.003 ? [top, end] : null;
 }
 
-function questionRows(item) {
-  if (!item) return [];
-  return item.rows && item.rows.length ? item.rows : (item.row ? [item.row] : []);
+/** Visible x ranges inside the window → white masks over everything else. */
+function maskOutside(visible, y0, y1) {
+  const spans = visible
+    .map(([x0, x1]) => [Math.max(FLOW.X0, x0), Math.min(FLOW.X1, x1)])
+    .filter(([x0, x1]) => x1 > x0)
+    .sort((a, b) => a[0] - b[0]);
+  const masks = [];
+  let cursor = FLOW.X0;
+  spans.forEach(([x0, x1]) => {
+    if (x0 > cursor) masks.push({ x0: cursor, y0, x1: x0, y1 });
+    cursor = Math.max(cursor, x1);
+  });
+  if (cursor < FLOW.X1) masks.push({ x0: cursor, y0, x1: FLOW.X1, y1 });
+  return masks;
 }
 
 function absoluteMask(box) {
   if (!box || !box.mask || !(box.h > 0)) return null;
   return {
-    x: box.mask.x,
-    w: box.mask.w,
-    y: box.y + box.mask.y * box.h,
-    y2: box.y + (box.mask.y + box.mask.h) * box.h,
+    x0: box.x + box.mask.x * box.w,
+    x1: box.x + (box.mask.x + box.mask.w) * box.w,
+    y0: box.y + box.mask.y * box.h,
+    y1: box.y + (box.mask.y + box.mask.h) * box.h,
   };
 }
 
-function withSpan(box, y, end, masks) {
-  const height = Math.max(0.004, end - y);
-  const next = { ...box, y, h: height };
-  let best = null;
-  (masks || []).forEach((mask) => {
-    if (!mask) return;
-    const top = Math.max(mask.y, y);
-    const bot = Math.min(mask.y2, y + height);
-    const span = bot - top;
-    if (span < 0.0015) return;
-    if (!best || span > best.span) best = { mask, top, bot, span };
-  });
-  if (!best) {
-    delete next.mask;
-    return next;
-  }
-  next.mask = {
-    x: best.mask.x,
-    w: best.mask.w,
-    y: (best.top - y) / height,
-    h: (best.bot - best.top) / height,
-  };
-  return next;
-}
-
 /**
- * A right-column mask is stored on the figure's right edge, which is the
- * wall stroke itself. Move it just past that stroke so the line stays.
+ * Pieces of one exercise on its source pages. Kept full width: the stem and
+ * the picked parts. Kept beside them: the question number, and the whole
+ * drawing the question owns. Everything else inside a kept band (unpicked
+ * parts, the next question's text beside a tall drawing) is masked white,
+ * and writing rules under hidden text are lifted out of the drawing column.
  */
-function clearDrawingStroke(question, box) {
-  if (!box || !box.mask) return box;
-  const page = box.page || question.page;
-  const figures = [];
-  (SOURCE.questions || []).forEach((item) => {
-    if (item && item.q === question.q && item.figure && item.page === page) figures.push(item.figure);
+function questionPieces(source, layout, q, picked) {
+  const parts = partsOf(source, q);
+  const stem = stemOf(parts);
+  const pages = new Set();
+  parts.forEach((item) => {
+    if (picked.has(item.id)) rowsOf(item).forEach((row) => pages.add(row.page));
   });
-  let mask = box.mask;
-  figures.forEach((figure) => {
-    if (Math.abs(mask.x - figure.x1) < 0.01 && mask.w > 0.15) {
-      const shift = 0.008;
-      mask = { ...mask, x: mask.x + shift, w: Math.max(0.05, mask.w - shift) };
+  if (stem) pages.add(stem.page);
+  const pieces = [];
+  [...pages].sort((a, b) => a - b).forEach((page) => {
+    const { ranges, ownStem } = partRanges(source, q, page);
+    const full = [];
+    if (stem && stem.page === page) full.push([stem.y, stem.y + stem.h]);
+    let pickedHere = false;
+    parts.forEach((item) => {
+      if (!picked.has(item.id) || !ranges.has(item.id)) return;
+      full.push(ranges.get(item.id));
+      pickedHere = true;
+    });
+    if (!pickedHere && !(stem && stem.page === page && page === Math.min(...pages))) return;
+    if (ownStem && pickedHere) full.push(ownStem);
+    const bands = full.map((band) => clampBand(layout, page, band)).filter(Boolean);
+    full.length = 0;
+    full.push(...bands);
+    if (!full.length) return;
+    const marker = layout.markers && layout.markers[String(q)];
+    const markerBand = marker && marker.page === page
+      && !full.some(([y0, y1]) => (marker.y0 + marker.y1) / 2 > y0 && (marker.y0 + marker.y1) / 2 < y1)
+      ? [marker.y0, marker.y1] : null;
+    const figures = pageFigures(source, layout, page);
+    const owned = figures.filter((figure) => figure.q === q);
+    const touching = owned.filter((figure) => full.some(([y0, y1]) => overlaps(y0, y1, figure.y0, figure.y1)));
+    const drawings = touching.length ? touching : owned;
+    const bounds = new Set();
+    full.forEach(([y0, y1]) => { bounds.add(y0); bounds.add(y1); });
+    if (markerBand) { bounds.add(markerBand[0]); bounds.add(markerBand[1]); }
+    drawings.forEach((figure) => { bounds.add(figure.y0); bounds.add(figure.y1); });
+    const ys = [...bounds].map((y) => Math.max(0, Math.min(1, y))).sort((a, b) => a - b);
+    const segments = [];
+    for (let index = 0; index + 1 < ys.length; index += 1) {
+      const y0 = ys[index];
+      const y1 = ys[index + 1];
+      if (y1 - y0 < 0.0002) continue;
+      const mid = (y0 + y1) / 2;
+      const isFull = full.some(([a, b]) => mid > a && mid < b);
+      const inMarker = markerBand && mid > markerBand[0] && mid < markerBand[1];
+      const figs = drawings.filter((figure) => mid > figure.y0 && mid < figure.y1);
+      if (!isFull && !inMarker && !figs.length) continue;
+      const visible = figs.map((figure) => [figure.x0, figure.x1]);
+      if (inMarker) visible.push([marker.x0, FLOW.X1]);
+      segments.push({ y0, y1, masks: isFull ? [] : maskOutside(visible, y0, y1), hidden: !isFull, full: isFull });
     }
-  });
-  return mask === box.mask ? box : { ...box, mask };
-}
-
-/**
- * A part printed alone still includes the whole shared drawing: an earlier
- * overlapping crop, or a figure whose top sits above this part (the house roof).
- * The crop starts on a white row, so a label beside the roof is not cut in half.
- * A drawing that sticks a little past the next label stays, and that label is masked.
- */
-function coverSharedFigure(question, box, laterSelected) {
-  const page = box.page || question.page;
-  const originalEnd = boxEnd(box);
-  let top = box.y;
-  let end = originalEnd;
-  const masks = [];
-  const ownMask = absoluteMask(box);
-  if (ownMask) masks.push(ownMask);
-  (SOURCE.questions || []).forEach((item) => {
-    if (!item || item.q !== question.q || item.id === question.id) return;
-    questionRows(item).forEach((other) => {
-      if (!other || (other.page || item.page) !== page) return;
-      const otherEnd = boxEnd(other);
-      if (other.y < top - 0.003 && otherEnd > top + 0.003) {
-        top = Math.min(top, other.y);
-        end = Math.max(end, otherEnd);
+    // Where hidden text meets kept text, the mask edge moves to the nearest white row.
+    segments.forEach((segment, index) => {
+      if (segment.full) return;
+      const before = segments[index - 1];
+      const after = segments[index + 1];
+      const snapTop = before && before.full && segment.y0 - before.y1 < 0.002;
+      const snapBottom = after && after.full && after.y0 - segment.y1 < 0.002;
+      segment.masks.forEach((mask) => {
+        if (snapTop) mask.snapTop = true;
+        if (snapBottom) mask.snapBottom = true;
+      });
+    });
+    // Contiguous segments make one piece.
+    const groups = [];
+    segments.forEach((segment) => {
+      const last = groups[groups.length - 1];
+      if (last && segment.y0 - last.y1 < 0.002) {
+        last.y1 = segment.y1;
+        last.masks.push(...segment.masks);
+        if (segment.hidden) last.hidden.push([segment.y0, segment.y1]);
+      } else {
+        groups.push({ page, y0: segment.y0, y1: segment.y1, masks: segment.masks.slice(), hidden: segment.hidden ? [[segment.y0, segment.y1]] : [] });
       }
-      const mask = absoluteMask(other);
-      if (mask) masks.push(mask);
     });
-    const figure = item.figure;
-    if (!figure || item.page !== page) return;
-    const covers = figure.y1 > box.y + 0.003 && figure.y0 < originalEnd - 0.003;
-    if (!covers) return;
-    if (figure.y0 < top - 0.003) top = figure.y0;
-    if (!laterSelected && figure.y1 > end - 0.003 && item.row) end = Math.max(end, boxEnd(item.row));
-  });
-  const ownFigure = question.figure;
-  if (ownFigure && question.page === page && ownFigure.y1 > box.y + 0.003 && ownFigure.y0 < originalEnd + 0.02) {
-    if (ownFigure.y0 < top - 0.003) top = ownFigure.y0;
-  }
-  // figure.y0 can sit halfway through the first part's label. Start on that part's white row.
-  let lineTop = top;
-  (SOURCE.questions || []).forEach((item) => {
-    if (!item || item.q !== question.q) return;
-    questionRows(item).forEach((other) => {
-      if (!other || (other.page || item.page) !== page) return;
-      if (other.y < top - 0.0004 && boxEnd(other) > top + 0.001) lineTop = Math.min(lineTop, other.y);
+    const ownMasks = [];
+    if (stem && stem.page === page) ownMasks.push(absoluteMask(stem));
+    parts.forEach((item) => {
+      if (!picked.has(item.id)) return;
+      const row = rowOn(item, page);
+      if (row) ownMasks.push(absoluteMask(row));
     });
-  });
-  top = lineTop;
-  if (end > originalEnd + 0.0005) {
-    let nextTop = null;
-    (SOURCE.questions || []).forEach((item) => {
-      if (!item || item.q !== question.q || item.id === question.id || !item.row) return;
-      if ((item.row.page || item.page) !== page) return;
-      if (item.row.y >= originalEnd - 0.004 && (nextTop == null || item.row.y < nextTop)) nextTop = item.row.y;
-    });
-    // A small step past the next label is the rest of the drawing, plus that label's text.
-    if (nextTop != null && end > nextTop - 0.001 && end - nextTop < 0.008) {
-      masks.push({ x: 0.45, w: 0.55, y: nextTop, y2: Math.max(end, nextTop + 0.004) });
-    }
-  }
-  if (Math.abs(top - box.y) < 0.0001 && Math.abs(end - originalEnd) < 0.0001 && masks.length === (ownMask ? 1 : 0)) return box;
-  return withSpan({ ...box, page }, top, end, masks);
-}
-
-function shortSlices(chosen) {
-  const ordered = chosen.slice().sort((a, b) => (
-    a.page - b.page || SOURCE.questions.indexOf(a) - SOURCE.questions.indexOf(b)
-  ));
-  const slices = [{ page: SOURCE.headerCrop.page, box: SOURCE.headerCrop, gap: 14, block: 'header', kind: 'header' }];
-  let lastQuestion = null;
-  ordered.forEach((question) => {
-    const block = 'q' + question.q;
-    if (question.q !== lastQuestion) {
-      if (question.stem) slices.push({ page: question.stem.page || question.page, box: question.stem, gap: 10, block, kind: 'stem' });
-      lastQuestion = question.q;
-    }
-    const rows = question.rows && question.rows.length ? question.rows : [question.row];
-    rows.forEach((box) => {
-      const page = box.page || question.page;
-      let next = { ...box, page };
-      const prev = previousQuestionRow(slices, block, page);
-      const laterSelected = ordered.some((other) => (
-        other !== question && other.q === question.q && other.row
-        && (other.row.page || other.page) === page && other.row.y > box.y + 0.004
-      ));
-      // The first selected part of this question can still own a shared drawing.
-      if (!prev) next = coverSharedFigure(question, next, laterSelected);
-      if (prev && next.y < boxEnd(prev.box) - 0.003) {
-        const prevEnd = boxEnd(prev.box);
-        // Fully covered by the previous part: printing it again repeats its text.
-        if (boxEnd(next) <= prevEnd + 0.004) return;
-        const height = boxEnd(next) - prevEnd;
-        if (height < 0.004) return;
-        next = { ...next, y: prevEnd, h: height };
-      }
-      const last = slices[slices.length - 1];
-      const dup = last && last.kind === 'row' && last.page === page && last.box.x === next.x && last.box.y === next.y && last.box.w === next.w && last.box.h === next.h;
-      // Abutting rows overlap by 2px so the join is not a white seam.
-      const gap = prev && next.y <= boxEnd(prev.box) + 0.006 ? -2 : 4;
-      if (!dup) slices.push({ page, box: clearDrawingStroke(question, next), gap, block, kind: 'row' });
+    const foreign = figures.filter((figure) => figure.q !== q && figure.q != null);
+    groups.forEach((piece) => {
+      ownMasks.filter(Boolean).forEach((mask) => {
+        if (overlaps(piece.y0, piece.y1, mask.y0, mask.y1)) piece.masks.push({ ...mask, y0: Math.max(mask.y0, piece.y0), y1: Math.min(mask.y1, piece.y1) });
+      });
+      foreign.forEach((figure) => {
+        if (overlaps(piece.y0, piece.y1, figure.y0, figure.y1)) {
+          piece.masks.push({ x0: figure.x0, x1: figure.x1, y0: Math.max(figure.y0, piece.y0), y1: Math.min(figure.y1, piece.y1) });
+        }
+      });
+      piece.erase = (layout.rules || [])
+        .filter((rule) => rule.page === page && piece.hidden.some(([a, b]) => rule.y > a && rule.y < b))
+        .map((rule) => ({ x0: rule.x0, x1: rule.x1, y: rule.y }));
+      piece.source = source;
+      pieces.push(piece);
     });
   });
-  slices.push({ page: SOURCE.footerCrop.page, box: SOURCE.footerCrop, gap: 16, block: 'footer', kind: 'footer' });
-  return slices;
+  return pieces;
 }
 
-function contentHeight(items) {
-  return items.reduce((sum, item, index) => sum + (index ? item.slice.gap : 0) + item.dh, 0);
-}
-
-function scaledGap(gap, factor) {
-  const next = Math.round(gap * factor);
-  // A negative gap is the 2px overlap that hides the seam; scaling must not turn it into a gap.
-  return gap < 0 ? Math.min(-1, next) : Math.max(1, next);
-}
-
-function shrinkTo(items, limit) {
-  const height = contentHeight(items);
-  if (height <= limit) return items;
-  const factor = limit / height;
-  const scaled = items.map((item) => ({
-    ...item,
-    dh: Math.max(1, Math.round(item.dh * factor)),
-    slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
-  }));
-  const extra = contentHeight(scaled) - limit;
-  if (extra > 0) scaled[scaled.length - 1].dh = Math.max(1, scaled[scaled.length - 1].dh - extra);
-  return scaled;
-}
-
-function splitQuestion(items, limit) {
-  const stem = items.filter((item) => item.slice.kind === 'stem');
-  const rows = items.filter((item) => item.slice.kind === 'row');
-  if (rows.length < 2) return [shrinkTo(items, limit)];
-  const chunks = [];
-  let current = [];
-  rows.forEach((row) => {
-    const trial = stem.concat(current, [row]);
-    if (current.length >= 2 && contentHeight(trial) > limit) {
-      chunks.push(stem.concat(current));
-      current = [row];
+/** Answer lines of one question, with unpicked parts and their separators masked. */
+function answerPieces(source, layout, q, picked) {
+  const answers = layout.answers;
+  const record = answers && answers.questions && answers.questions[String(q)];
+  if (!record || !record.lines || !record.lines.length) return null;
+  const letters = partsOf(source, q).map((item) => item.part).filter(Boolean);
+  const chosen = new Set(partsOf(source, q).filter((item) => picked.has(item.id)).map((item) => item.part));
+  const split = record.parts && letters.length && !letters.every((letter) => chosen.has(letter));
+  const onLine = (box, line) => box.page === line.page && Math.abs(box.y - line.y) < 0.002;
+  // On a split line only the number, the picked parts and the "·" between two picked parts stay.
+  const lineMasks = record.lines.map((line, index) => {
+    if (!split) return [];
+    const keep = [];
+    if (index === 0 && record.num) keep.push([record.num.x0, FLOW.X1]);
+    Object.entries(record.parts).forEach(([letter, boxes]) => {
+      if (!chosen.has(letter)) return;
+      boxes.forEach((box) => { if (onLine(box, line)) keep.push([box.x, box.x + box.w]); });
+    });
+    Object.entries(record.seps || {}).forEach(([letter, box]) => {
+      const previous = letters[letters.indexOf(letter) - 1];
+      if (chosen.has(letter) && previous && chosen.has(previous) && onLine(box, line)) keep.push([box.x, box.x + box.w]);
+    });
+    return maskOutside(keep, line.y, line.y + line.h);
+  });
+  const visible = record.lines.map((line, index) => {
+    if (!split || index === 0) return true;
+    return Object.entries(record.parts).some(([letter, boxes]) => chosen.has(letter) && boxes.some((box) => onLine(box, line)));
+  });
+  const pieces = [];
+  record.lines.forEach((line, index) => {
+    if (!visible[index]) return;
+    const last = pieces[pieces.length - 1];
+    if (last && last.page === line.page && last.lastIndex === index - 1) {
+      last.y1 = line.y + line.h;
+      last.lastIndex = index;
+      last.masks.push(...lineMasks[index]);
     } else {
-      current.push(row);
+      pieces.push({ page: line.page, y0: line.y, y1: line.y + line.h, lastIndex: index, masks: lineMasks[index].slice(), erase: [], source });
     }
   });
-  if (current.length === 1 && chunks.length) chunks[chunks.length - 1].push(current[0]);
-  else if (current.length) chunks.push(stem.concat(current));
-  return chunks.map((chunk) => (contentHeight(chunk) > limit ? shrinkTo(chunk, limit) : chunk));
+  return pieces;
 }
 
-function packShort(measured) {
-  const PAGE_H = 1440;
-  if (contentHeight(measured) <= PAGE_H || PAGE_H / contentHeight(measured) >= 0.85) {
-    return [shrinkTo(measured, PAGE_H)];
+function boxPiece(source, box) {
+  if (!box) return null;
+  return { page: box.page || 1, y0: box.y, y1: box.y + box.h, x0: box.x, x1: box.x + box.w, masks: [], erase: [], source };
+}
+
+async function measurePieces(pieces) {
+  let height = 0;
+  for (const piece of pieces) {
+    piece.bitmap = await pageBitmap(piece.page, piece.source);
+    const width = (FLOW.X1 - FLOW.X0) * piece.bitmap.width;
+    piece.dh = Math.max(1, Math.round((piece.y1 - piece.y0) * piece.bitmap.height * FLOW.OUT_W / width));
   }
-  const blocks = [];
-  measured.forEach((item) => {
-    if (item.slice.block === 'footer') return;
-    const last = blocks[blocks.length - 1];
-    if (last && last.id === item.slice.block) last.items.push(item);
-    else blocks.push({ id: item.slice.block, items: [item] });
+  pieces.forEach((piece, index) => { height += (index ? FLOW.PIECE_GAP : 0) + piece.dh; });
+  return height;
+}
+
+async function loadLayout(pdfId) {
+  if (layouts.has(pdfId)) return layouts.get(pdfId);
+  let layout = { title: null, markers: {}, figures: [], rules: [], answers: null };
+  try {
+    const response = await fetch(new URL('./print-layout/' + pdfId + '.json', import.meta.url));
+    if (response.ok) layout = { ...layout, ...(await response.json()) };
+  } catch (error) {}
+  layouts.set(pdfId, layout);
+  return layout;
+}
+
+function sortedGroups(chosen) {
+  const groups = [];
+  chosen.forEach((question) => {
+    const source = question.source;
+    if (!source) return;
+    let group = groups.find((item) => item.source.pdfId === source.pdfId);
+    if (!group) {
+      group = { source, questions: [] };
+      groups.push(group);
+    }
+    if (!group.questions.includes(question)) group.questions.push(question);
   });
-  const pages = [];
-  let page = [];
-  blocks.forEach((block) => {
-    const parts = contentHeight(block.items) > PAGE_H ? splitQuestion(block.items, PAGE_H) : [block.items];
-    parts.forEach((part) => {
-      if (page.length && contentHeight(page.concat(part)) > PAGE_H) {
-        pages.push(page);
-        page = [];
+  groups.forEach((group) => {
+    group.questions.sort((a, b) => group.source.questions.indexOf(a) - group.source.questions.indexOf(b));
+  });
+  return groups;
+}
+
+/** Blocks for both parts of the worksheet, in print order. */
+async function flowBlocks(chosen) {
+  const groups = sortedGroups(chosen);
+  const questions = [];
+  const answers = [];
+  const missing = [];
+  let head = null;
+  for (const group of groups) {
+    const source = group.source;
+    const layout = await loadLayout(source.pdfId);
+    const picked = new Set(group.questions.map((question) => question.id));
+    const numbers = [...new Set(group.questions.map((question) => question.q))];
+    const title = boxPiece(source, layout.title);
+    if (title) questions.push({ kind: 'title', group: source.pdfId, pieces: [title], keepWithNext: true, key: source.pdfId + ':title' });
+    numbers.forEach((q) => {
+      const pieces = questionPieces(source, layout, q, picked);
+      if (pieces.length) {
+        questions.push({ kind: 'question', group: source.pdfId, q, pieces, key: source.pdfId + ':' + q, label: (source.levelLabel || '') + ' ' + q });
       }
-      page = page.concat(part);
     });
+    const keyPieces = numbers.map((q) => ({ q, pieces: answerPieces(source, layout, q, picked) }));
+    keyPieces.filter((item) => !item.pieces).forEach((item) => missing.push(source.pdfId + ':' + item.q));
+    const found = keyPieces.filter((item) => item.pieces && item.pieces.length);
+    if (!found.length) continue;
+    if (!head && layout.answers && layout.answers.head) {
+      head = { kind: 'answers-head', group: 'answers', pieces: [boxPiece(source, layout.answers.head)], keepWithNext: true, key: 'answers:head' };
+    }
+    if (groups.length > 1 && title) {
+      answers.push({ kind: 'title', group: source.pdfId, pieces: [boxPiece(source, layout.title)], keepWithNext: true, key: source.pdfId + ':answers-title' });
+    }
+    found.forEach((item) => answers.push({ kind: 'answer', group: source.pdfId, q: item.q, pieces: item.pieces, key: source.pdfId + ':answer:' + item.q }));
+  }
+  if (head && answers.length) answers.unshift(head);
+  for (const block of questions.concat(answers)) block.height = await measurePieces(block.pieces);
+  return { questions, answers, missing };
+}
+
+/**
+ * Fill pages in order. A block that does not fit moves whole to the next
+ * page. While the page would stay below PULL_BELOW, a smaller exercise
+ * from the next few blocks of the same sheet may come up into the gap.
+ * Titles stay with the block after them. A block taller than a page gets
+ * the page to itself, scaled to fit.
+ */
+function paginate(blocks) {
+  const pages = [];
+  const queue = blocks.slice();
+  // A block taller than a page is scaled once, leaving room for a title glued to it.
+  queue.forEach((block, index) => {
+    const before = queue[index - 1];
+    const room = FLOW.PAGE_H - (before && before.keepWithNext ? before.height + FLOW.GAP : 0);
+    if (block.height > room && block.kind !== 'note') {
+      block.scale = room / block.height;
+      block.height = room;
+    }
   });
-  if (page.length) pages.push(page);
-  const footer = measured.filter((item) => item.slice.block === 'footer');
-  if (!pages.length) pages.push([]);
-  pages[pages.length - 1] = shrinkTo(pages[pages.length - 1].concat(footer), PAGE_H);
+  let page = { items: [], used: 0 };
+  const need = (block) => (page.items.length ? FLOW.GAP : 0) + block.height;
+  const nextAfter = (index) => queue[index + 1];
+  const fits = (index) => {
+    const block = queue[index];
+    let total = need(block);
+    if (block.keepWithNext && nextAfter(index)) total += FLOW.GAP + Math.min(nextAfter(index).height, FLOW.PAGE_H);
+    return page.used + total <= FLOW.PAGE_H;
+  };
+  const place = (index) => {
+    const [block] = queue.splice(index, 1);
+    const y = page.items.length ? page.used + FLOW.GAP : 0;
+    page.items.push({ block, y });
+    page.used = y + block.height;
+  };
+  const close = (final) => {
+    // A title never ends a page: it moves on with the block it belongs to.
+    while (!final && page.items.length > 1 && page.items[page.items.length - 1].block.keepWithNext) {
+      queue.unshift(page.items.pop().block);
+      const last = page.items[page.items.length - 1];
+      page.used = last.y + last.block.height;
+    }
+    if (page.items.length) pages.push(page);
+    page = { items: [], used: 0 };
+  };
+  while (queue.length) {
+    const block = queue[0];
+    if (fits(0)) {
+      place(0);
+      continue;
+    }
+    if (!page.items.length) {
+      place(0);
+      continue;
+    }
+    if (page.used / FLOW.PAGE_H < FLOW.PULL_BELOW && block.kind !== 'title' && block.kind !== 'answers-head') {
+      let pulled = false;
+      for (let index = 1; index <= FLOW.LOOKAHEAD && index < queue.length; index += 1) {
+        const later = queue[index];
+        if (later.kind === 'title' || later.kind === 'answers-head' || later.group !== block.group) break;
+        if (later.height < block.height && fits(index)) {
+          later.pulled = true;
+          place(index);
+          pulled = true;
+          break;
+        }
+      }
+      if (pulled) continue;
+    }
+    close();
+  }
+  close(true);
   return pages;
 }
 
-async function paintShort(root, slices) {
-  const OUT_W = 1000;
-  const measured = [];
-  for (const slice of slices) {
-    const bitmap = await pageBitmap(slice.page);
-    const sw = slice.box.w * bitmap.width;
-    const sh = slice.box.h * bitmap.height;
-    measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(OUT_W * sh / sw)) });
+/**
+ * Lifts a writing rule out of a drawing column: inside the rule's strip, a
+ * column is cleared only when the pixels just above and below the strip are
+ * white, so a drawing stroke that crosses the rule stays whole.
+ */
+function eraseRule(ctx, x, y, w, h) {
+  const left = Math.max(0, Math.floor(x));
+  const top = Math.max(1, Math.floor(y));
+  const width = Math.min(ctx.canvas.width - left, Math.ceil(w));
+  const height = Math.min(ctx.canvas.height - top - 1, Math.ceil(h));
+  if (width <= 0 || height <= 0) return;
+  const image = ctx.getImageData(left, top - 1, width, height + 2);
+  const data = image.data;
+  const lum = (index) => 0.299 * data[index] + 0.587 * data[index + 1] + 0.114 * data[index + 2];
+  const crossed = (col) => {
+    for (let near = Math.max(0, col - 2); near <= Math.min(width - 1, col + 2); near += 1) {
+      if (lum(near * 4) < 200 || lum(((height + 1) * width + near) * 4) < 200) return true;
+    }
+    return false;
+  };
+  for (let col = 0; col < width; col += 1) {
+    // Beside a crossing stroke only the light rule grey goes; the dark stroke stays.
+    const near = crossed(col);
+    for (let row = 1; row <= height; row += 1) {
+      const index = (row * width + col) * 4;
+      if (near && lum(index) < 135) continue;
+      data[index] = 255;
+      data[index + 1] = 255;
+      data[index + 2] = 255;
+    }
   }
-  const packs = packShort(measured);
-  root.innerHTML = packs.map((_, index) => (
-    `<figure class="crop-sheet"><canvas></canvas><figcaption>דף מצומצם ${index + 1} מתוך ${packs.length} · ${escapeHTML(SOURCE.title)}</figcaption></figure>`
-  )).join('');
-  const canvases = root.querySelectorAll('canvas');
-  packs.forEach((items, index) => {
-    let height = 0;
-    items.forEach((item, itemIndex) => { height += (itemIndex ? item.slice.gap : 0) + item.dh; });
-    const canvas = canvases[index];
-    canvas.width = OUT_W;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
+  ctx.putImageData(image, left, top - 1);
+}
+
+const bitmapPixels = new WeakMap();
+
+function pixelsOf(bitmap) {
+  if (!bitmapPixels.has(bitmap)) {
+    bitmapPixels.set(bitmap, bitmap.getContext('2d').getImageData(0, 0, bitmap.width, bitmap.height));
+  }
+  return bitmapPixels.get(bitmap);
+}
+
+/** Moves a mask top up over faint glyph tops of hidden text, stopping at the first dark row. */
+function liftOverFaint(bitmap, x0, x1, y) {
+  const image = pixelsOf(bitmap);
+  const from = Math.max(0, Math.floor(x0 * bitmap.width));
+  const to = Math.min(bitmap.width, Math.ceil(x1 * bitmap.width));
+  let row = Math.round(y * bitmap.height);
+  const stop = Math.max(0, row - Math.round(0.007 * bitmap.height));
+  let top = row;
+  for (row -= 1; row >= stop; row -= 1) {
+    let darkest = 255;
+    for (let c = from; c < to; c += 1) {
+      const index = (row * bitmap.width + c) * 4;
+      darkest = Math.min(darkest, image.data[index], image.data[index + 1], image.data[index + 2]);
+    }
+    if (darkest < 200) break;
+    if (darkest < 250) top = row;
+  }
+  return top / bitmap.height;
+}
+
+/** Nearest source row (either direction, within limit) with no ink between x0 and x1. */
+function nearestWhiteRow(bitmap, x0, x1, y, limit) {
+  const image = pixelsOf(bitmap);
+  const from = Math.max(0, Math.floor(x0 * bitmap.width));
+  const to = Math.min(bitmap.width, Math.ceil(x1 * bitmap.width));
+  const row = Math.round(y * bitmap.height);
+  const reach = Math.round(limit * bitmap.height);
+  const white = (r) => {
+    if (r < 0 || r >= bitmap.height) return false;
+    for (let c = from; c < to; c += 1) {
+      const index = (r * bitmap.width + c) * 4;
+      if (image.data[index] < 245 || image.data[index + 1] < 245 || image.data[index + 2] < 245) return false;
+    }
+    return true;
+  };
+  for (let step = 0; step <= reach; step += 1) {
+    if (white(row - step)) return (row - step) / bitmap.height;
+    if (white(row + step)) return (row + step) / bitmap.height;
+  }
+  return null;
+}
+
+function drawBlock(ctx, block, top) {
+  const scale = block.scale || 1;
+  const width = FLOW.OUT_W * scale;
+  const left = (FLOW.OUT_W - width) / 2;
+  let y = top;
+  block.pieces.forEach((piece, index) => {
+    if (index) y += FLOW.PIECE_GAP * scale;
+    const bitmap = piece.bitmap;
+    const dh = piece.dh * scale;
+    const span = FLOW.X1 - FLOW.X0;
+    const px = (x) => left + (x - FLOW.X0) / span * width;
+    const py = (yy) => y + (yy - piece.y0) / (piece.y1 - piece.y0) * dh;
+    const x0 = piece.x0 == null ? FLOW.X0 : Math.max(FLOW.X0, piece.x0);
+    const x1 = piece.x1 == null ? FLOW.X1 : Math.min(FLOW.X1, piece.x1);
+    ctx.drawImage(
+      bitmap,
+      x0 * bitmap.width, piece.y0 * bitmap.height, (x1 - x0) * bitmap.width, (piece.y1 - piece.y0) * bitmap.height,
+      px(x0), y, px(x1) - px(x0), dh,
+    );
     ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, OUT_W, height);
-    let y = 0;
-    items.forEach((item, itemIndex) => {
-      if (itemIndex) y += item.slice.gap;
-      const sx = item.slice.box.x * item.bitmap.width;
-      const sy = item.slice.box.y * item.bitmap.height;
-      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
-      const mask = item.slice.box.mask;
-      if (mask) {
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(mask.x * OUT_W, y + mask.y * item.dh, mask.w * OUT_W, mask.h * item.dh);
-      }
-      y += item.dh;
+    piece.masks.forEach((mask) => {
+      const mx0 = Math.max(x0, mask.x0);
+      const mx1 = Math.min(x1, mask.x1);
+      if (mx1 <= mx0) return;
+      let my0 = mask.y0;
+      let my1 = mask.y1;
+      if (mask.snapTop) my0 = liftOverFaint(bitmap, mx0, mx1, nearestWhiteRow(bitmap, mx0, mx1, my0, 0.008) ?? my0);
+      if (mask.snapBottom) my1 = nearestWhiteRow(bitmap, mx0, mx1, my1, 0.008) ?? my1;
+      my0 = Math.max(piece.y0, my0);
+      my1 = Math.min(piece.y1, my1);
+      if (my1 <= my0) return;
+      ctx.fillRect(px(mx0), py(my0), px(mx1) - px(mx0), py(my1) - py(my0));
     });
+    (piece.erase || []).forEach((rule) => {
+      const half = Math.max(2, dh / (piece.y1 - piece.y0) * 0.0014);
+      eraseRule(ctx, px(Math.max(x0, rule.x0)), py(rule.y) - half, px(Math.min(x1, rule.x1)) - px(Math.max(x0, rule.x0)), half * 2);
+    });
+    y += dh;
   });
+}
+
+function pageCanvas(page) {
+  const canvas = document.createElement('canvas');
+  canvas.width = FLOW.OUT_W;
+  const drawn = page.items.filter((item) => item.block.kind !== 'note');
+  canvas.height = Math.max(1, Math.ceil(Math.max(0, ...drawn.map((item) => item.y + item.block.height))));
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  page.items.forEach((item) => {
+    if (item.block.kind === 'note') return;
+    drawBlock(ctx, item.block, item.y);
+  });
+  return canvas;
+}
+
+function flowPageHTML(page, part, index, total) {
+  const note = page.items.find((item) => item.block.kind === 'note');
+  const fill = Math.min(1, page.used / FLOW.PAGE_H);
+  return `<section class="flow-page" data-part="${part}" data-fill="${fill.toFixed(3)}" aria-label="עמוד ${index + 1} מתוך ${total}"><div class="flow-basad" dir="rtl">בס״ד</div><div class="flow-canvas"></div>${note ? teacherNoteHTML(note.block.text) : ''}</section>`;
+}
+
+async function renderFlow(root, chosen, note) {
+  const { questions, answers, missing } = await flowBlocks(chosen);
+  if (note) {
+    const height = (await noteBandMm(note)) * PX_PER_MM;
+    questions.push({ kind: 'note', group: 'note', pieces: [], height, text: note, key: 'note' });
+  }
+  const parts = [
+    { name: 'questions', pages: paginate(questions) },
+    { name: 'answers', pages: answers.length ? paginate(answers) : [] },
+  ];
+  const all = parts.flatMap((part) => part.pages.map((page) => ({ part: part.name, page })));
+  root.innerHTML = all.map((item, index) => flowPageHTML(item.page, item.part, index, all.length)).join('');
+  const slots = root.querySelectorAll('.flow-canvas');
+  all.forEach((item, index) => slots[index].appendChild(pageCanvas(item.page)));
+  return {
+    pages: all.map((item, index) => ({
+      page: index + 1,
+      part: item.part,
+      fill: Number((item.page.used / FLOW.PAGE_H).toFixed(3)),
+      blocks: item.page.items.map((entry) => entry.block.key + (entry.block.pulled ? ' (pulled up)' : '') + (entry.block.scale ? ' (scaled)' : '')),
+    })),
+    missingAnswers: missing,
+  };
 }
 
 function groupsOf(chosen) {
@@ -899,17 +1325,6 @@ function groupsOf(chosen) {
     else groups.push({ source, questions: [question] });
   });
   return groups;
-}
-
-async function paintAllShort(root, chosen) {
-  const holder = document.createElement('div');
-  for (const group of groupsOf(chosen)) {
-    SOURCE = group.source;
-    const part = document.createElement('div');
-    await paintShort(part, shortSlices(group.questions));
-    while (part.firstChild) holder.appendChild(part.firstChild);
-  }
-  root.replaceChildren(...holder.childNodes);
 }
 
 function markedHTML(chosen) {
@@ -939,14 +1354,30 @@ function metaHTML(chosen, cfg) {
   return `<div class="plan-meta"><span>${escapeHTML([...grades].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...topics].filter(Boolean).join(' · '))}</span><span>${escapeHTML([...levels].join(' · '))}</span><span>${escapeHTML(scenarioName)}</span></div>`;
 }
 
-async function updateShortPrint(plan, printArea, chosen, note, cfg) {
-  const head = `<p class="plan-notice">דף מצומצם. כל קטע נחתך מדף המקור, עם ההוראה, הנוסח והתרשים המקוריים.</p>${metaHTML(chosen, cfg)}`;
-  const foot = `<p class="print-source">מקור: ${escapeHTML(chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index).join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>${note ? `<div class="plan-notes"><strong>הערת המורה</strong><br>${escapeHTML(note)}</div>` : ''}`;
-  plan.innerHTML = head + '<div class="crop-preview"></div>' + foot;
+function copyPages(from, to) {
+  to.innerHTML = from.innerHTML;
+  const sources = from.querySelectorAll('.flow-canvas canvas');
+  to.querySelectorAll('.flow-canvas').forEach((slot, index) => {
+    slot.innerHTML = '';
+    const source = sources[index];
+    if (!source) return;
+    const copy = document.createElement('canvas');
+    copy.width = source.width;
+    copy.height = source.height;
+    copy.getContext('2d').drawImage(source, 0, 0);
+    slot.appendChild(copy);
+  });
+}
+
+async function updateFlowPrint(plan, printArea, chosen, note, cfg) {
+  const head = `<p class="plan-notice">דף עבודה אחד: כל הסעיפים שנבחרו ברצף, כל אחד חתוך מדף המקור עם ההוראה והשרטוט שלו. התשובות הסופיות בסוף.</p>${metaHTML(chosen, cfg)}`;
+  const sources = chosen.map((question) => question.source && question.source.title).filter((title, index, all) => title && all.indexOf(title) === index);
+  const foot = `<p class="print-source">מקור: ${escapeHTML(sources.join(' · '))}</p><p class="plan-notes">${escapeHTML(STYLES[state.style].plan)}</p>`;
   printArea.innerHTML = '';
-  await paintAllShort(plan.querySelector('.crop-preview'), chosen);
-  await paintAllShort(printArea, chosen);
-  await attachTeacherNote(printArea, note);
+  const stats = await renderFlow(printArea, chosen, note);
+  plan.innerHTML = head + '<div class="flow-preview"></div>' + foot;
+  copyPages(printArea, plan.querySelector('.flow-preview'));
+  window.__teacherPrintStats = stats;
 }
 
 function elementarySource(meta, pageCount) {
@@ -990,7 +1421,8 @@ async function resolveChosen() {
   const chosen = [];
   const allow = new Set(visibleSelectionKeys());
   for (const key of state.selected) {
-    if (!allow.has(key)) continue;
+    // Exercises stay picked across topics and grades; whole sheets follow the visible topic.
+    if (!allow.has(key) && !(key.startsWith('ex:') && library.has(key))) continue;
     if (key.startsWith('sheet:')) {
       const source = await materializeElementary(key.slice(6));
       if (source) source.questions.forEach((question) => chosen.push(question));
@@ -1018,8 +1450,8 @@ async function updatePrint() {
   }
   const note = $('teacher-note').value.trim();
   const cfg = SCENARIOS[state.scenario] || SCENARIOS.first;
-  if (printMode === 'short') {
-    await updateShortPrint(plan, printArea, chosen, note, cfg);
+  if (printMode === 'flow') {
+    await updateFlowPrint(plan, printArea, chosen, note, cfg);
     return;
   }
   const head = `<p class="plan-notice">דף המקור המלא. מה שנבחר מסומן על העמוד.</p>${metaHTML(chosen, cfg)}`;
@@ -1035,7 +1467,7 @@ async function updatePrint() {
 
 async function prepare(mode) {
   if (rendering) return;
-  if (mode === 'short' && band() === 'elementary') return;
+  if (mode === 'flow' && band() === 'elementary') return;
   if (!state.selected.length) {
     announce(band() === 'elementary' ? 'עדיין לא נבחר דף.' : 'עדיין לא נבחרו שאלות.');
     return;
@@ -1046,19 +1478,19 @@ async function prepare(mode) {
   if ($('prepare-short')) $('prepare-short').disabled = true;
   try {
     await updatePrint();
-    const ready = mode === 'short'
-      ? $('dialog-plan').querySelector('.crop-sheet canvas')
+    const ready = mode === 'flow'
+      ? $('dialog-plan').querySelector('.flow-page canvas')
       : $('dialog-plan').querySelector('.source-stage canvas');
     if (!ready) {
-      announce(mode === 'short' ? 'לא נוצר דף מצומצם. לא הוצגה רשימת קישורים במקום.' : 'לא נוצר סימון. לא הוצגה רשימת קישורים במקום.');
+      announce(mode === 'flow' ? 'לא נוצר דף עבודה. לא הוצגה רשימת קישורים במקום.' : 'לא נוצר סימון. לא הוצגה רשימת קישורים במקום.');
       return;
     }
-    $('print-title').textContent = mode === 'short' ? 'דף מצומצם מהמקור' : 'דף המקור עם סימון';
-    $('print-lead').textContent = mode === 'short'
-      ? 'קטעים שנחתכו מדף המקור, עם ההוראה והנוסח המקוריים.'
+    $('print-title').textContent = mode === 'flow' ? 'דף עבודה אחד מהמקור' : 'דף המקור עם סימון';
+    $('print-lead').textContent = mode === 'flow'
+      ? 'הסעיפים שנבחרו ברצף, כל אחד חתוך מדף המקור עם השרטוט שלו. דף התשובות בסוף.'
       : 'העמוד המלא, ומה שנבחר מסומן עליו.';
-    $('print').lastChild.textContent = mode === 'short' ? 'הדפסת הדף המצומצם' : 'הדפסת הדף המסומן';
-    printOpener = mode === 'short' ? $('prepare-short') : $('prepare');
+    $('print').lastChild.textContent = mode === 'flow' ? 'הדפסת דף העבודה' : 'הדפסת הדף המסומן';
+    printOpener = mode === 'flow' ? $('prepare-short') : $('prepare');
     $('print-dialog').showModal();
   } catch (error) {
     $('dialog-plan').innerHTML = '<p>דף המקור לא נטען, ולכן אין הדפסה. לא הוצג דף חלופי.</p>';
@@ -1182,7 +1614,7 @@ function bind() {
     if (!el.checked) return;
     state.level = el.value;
     state.expanded = false;
-    const next = keepVisible(state.selected, visibleSelectionKeys());
+    const next = keepVisible(state.selected, visibleSelectionKeys(), topicKeys());
     if (next.join('\n') !== selectionKey()) {
       snapshot();
       state.selected = next;
@@ -1191,26 +1623,44 @@ function bind() {
     render();
   }));
   $('grade').addEventListener('change', async () => {
+    const previousBand = band();
     state.grade = $('grade').value;
     state.level = 'all';
     state.expanded = false;
-    state.selected = [];
+    const carried = carriedPicks(previousBand);
+    state.selected = carried;
     state.topic = '';
-    history = [];
-    clearPreparedPrint();
+    if (!carried.length) history = [];
     fillTopics();
     await loadCurrentTopic();
-    applyScenario(state.scenario === 'other' ? 'first' : state.scenario);
+    if (carried.length) {
+      render();
+      announce('הבחירה נשמרה. אפשר להוסיף סעיפים מהכיתה הזו.');
+    } else {
+      clearPreparedPrint();
+      applyScenario(state.scenario === 'other' ? 'first' : state.scenario);
+    }
   });
   $('topic').addEventListener('change', async () => {
     state.topic = $('topic').value;
     state.expanded = false;
-    state.selected = [];
-    history = [];
-    clearPreparedPrint();
+    const carried = carriedPicks(band());
+    state.selected = carried;
+    if (!carried.length) history = [];
     await loadCurrentTopic();
-    if (state.scenario === 'other') render();
-    else applyScenario(state.scenario, { quiet: true });
+    if (carried.length || state.scenario === 'other') render();
+    else {
+      clearPreparedPrint();
+      applyScenario(state.scenario, { quiet: true });
+    }
+  });
+  $('clear-selection').addEventListener('click', () => {
+    if (!state.selected.length) return;
+    snapshot();
+    state.selected = [];
+    clearPreparedPrint();
+    render();
+    announce('הבחירה נוקתה.');
   });
   $('filter-all').addEventListener('click', () => { state.filter = 'all'; $('filter-all').setAttribute('aria-pressed', 'true'); $('filter-selected').setAttribute('aria-pressed', 'false'); render(); });
   $('filter-selected').addEventListener('click', () => { state.filter = 'selected'; $('filter-selected').setAttribute('aria-pressed', 'true'); $('filter-all').setAttribute('aria-pressed', 'false'); render(); });
@@ -1238,7 +1688,7 @@ function bind() {
   });
   $('teacher-note').addEventListener('input', () => clearPreparedPrint());
   $('prepare').addEventListener('click', () => prepare('marked'));
-  $('prepare-short').addEventListener('click', () => prepare('short'));
+  $('prepare-short').addEventListener('click', () => prepare('flow'));
   $('print-dialog').addEventListener('close', () => {
     const opener = printOpener;
     if (!opener) return;
