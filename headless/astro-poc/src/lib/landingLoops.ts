@@ -56,6 +56,8 @@ const SLUG_CONCEPT_OVERRIDE = {
   'time-and-weight-grade-4': 'clock-span',
   // Equal-shares film for the multiplication/division family topic (no remainder story).
   'multiplication-division-family-grade-2': 'share-12',
+  // Map-scale film for the scale topic (the family default is ratio-beads).
+  'scale-maps-grade-6': 'map-scale',
 } as const;
 
 export type ConceptLoopVariant =
