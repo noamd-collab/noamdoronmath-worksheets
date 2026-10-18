@@ -32,7 +32,7 @@ const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
   data-css-loop
   data-loop-idea={CSS_LOOP_IDEAS[variant]}
 >
-  {<button class="ll-pause" type="button" aria-label="השהיית ההמחשה" aria-pressed="false">השהיה</button>}
+  {<button class="ll-pause" type="button" disabled aria-label="השהיית ההמחשה" aria-pressed="false">השהיה</button>}
   <div class="ll-content" aria-hidden={lesson || similarity ? undefined : "true"}>{variant === 'similar' || variant === 'similar-area' || variant === 'similar-aa' ? <SimilarityLoop variant={variant}/> : isLessonLoop(variant) ? <LessonLoop variant={variant} /> : formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}</div>
 </div>
 
@@ -44,6 +44,7 @@ const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
       button.setAttribute('aria-label', paused ? 'המשך ההמחשה' : 'השהיית ההמחשה');
       button.textContent = paused ? 'המשך' : 'השהיה';
     });
+    button.disabled = false;
   });
   const root = document.documentElement;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

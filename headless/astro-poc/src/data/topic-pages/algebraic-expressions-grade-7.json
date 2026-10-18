@@ -126,7 +126,7 @@
     }
   ],
   "catalogCta": {
-    "label": "גורם משותף ומינוס לפני וגריים — בחירת דף ורמה",
+    "label": "גורם משותף ומינוס לפני סוגריים — בחירת דף ורמה",
     "href": "/worksheets?grade=7&topic=30",
     "source": "production-github-cta",
     "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=30",
@@ -135,7 +135,7 @@
   },
   "catalogCtas": [
     {
-      "label": "גורם משותף ומינוס לפני וגריים — בחירת דף ורמה",
+      "label": "גורם משותף ומינוס לפני סוגריים — בחירת דף ורמה",
       "href": "/worksheets?grade=7&topic=30",
       "source": "production-github-cta",
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=30",
@@ -143,7 +143,7 @@
       "catalogTopicTitle": "שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים"
     },
     {
-      "label": "הצבה בביטויים אגבריים — בחירת דף ורמה",
+      "label": "הצבה בביטויים אלגבריים — בחירת דף ורמה",
       "href": "/worksheets?grade=7&topic=23",
       "source": "production-github-cta",
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=23",

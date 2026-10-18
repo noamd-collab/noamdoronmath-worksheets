@@ -1,10 +1,12 @@
 # PR #169 — review follow-up and replacement similarity animation
 
-Wix preview: https://sjfme8-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com
+Wix preview: https://edjsek-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com
 
 ## Similarity replacement requested by Noam
 
 `SimilarityLoop.astro` replaces the previous `similar`, `similar-area` and `similar-aa` sketches wherever those variants are selected. The common diagram uses true 3–4–5 and 6–8–10 triangles at one scale, labelled corresponding vertices and sides. The basic version enlarges an outlined copy onto the larger triangle. Area mode partitions the large triangle into four congruent copies. AA mode teaches two equal-angle pairs without assuming side lengths. All explanations remain readable throughout the animation; ratios use horizontal fraction bars. Pause and reduced-motion modes retain the mathematical information.
+
+Item-by-item Hebrew response, including all additional notes: [Gemini response](pr169-gemini-response-he.md).
 
 ## Antigravity findings addressed
 
@@ -18,7 +20,7 @@ Wix preview: https://sjfme8-noam-math-astro-poc-amiramnoam-130a.wix-site-host.co
 | Reflection marker stayed behind | The reflected marker moves with the folding half. |
 | Motion and mobile defects | Pause controls cover CSS loops; ConceptLoop now observes OS reduced-motion preference changes; decorative pencil is hidden on narrow screens. |
 
-The corner widgets are existing fixed controls. A viewport-edge intersection is not proof that the animation is internally clipped. No general repositioning of those controls is included, and this report does not certify every scroll position or every device.
+The five mobile routes named in finding 5c were rechecked at 360×800 and 390×800, at three scroll positions each. All 30 observations found both launchers and zero intersections with the visible, clipped card area. The scroll frame ends at y=720, above the controls at y=743.5/748. Full card bounding boxes extending beyond the scrollport do not describe visible overlap. See the linked response and committed measurements; this is not certification of every device.
 
 ## Validation and limits
 
@@ -27,6 +29,6 @@ The corner widgets are existing fixed controls. A viewport-edge intersection is 
 - Tests measure the actual similarity SVG paths: all three corresponding-side ratios are 2; area ratio is 4; the four drawn tiles have the small triangle's area and fill the large triangle.
 - Wix build and preview succeeded using ignored `.env.local` only.
 - Brave checks cover representative repaired lessons at phone widths and the similarity drawing on desktop. Pause freezes the moving copy; reduced motion leaves the diagram and explanation visible. No Safari or physical-device claim.
-- After integrating main (four dedicated topic films and teacher-print fixes), 81 focused integration checks also passed. New GitHub build/test/link checks and DeepSeek/Qwen reviews must be assessed at the new commit. Earlier reviews of `419c2e37` are not evidence for this revision. Previous DeepSeek attempts timed out.
+- After integrating main (four dedicated topic films and teacher-print fixes), 81 focused integration checks also passed. GitHub run 39144335520 completed all five jobs at `9837d41e`. DeepSeek completed only a truncated diff review: its missing-import blocker is contradicted by tracked files and passing builds. Qwen completed the selected phone/desktop views; its clipping claims were independently checked against scroll boundaries. Neither is a whole-site certification. Subsequent small follow-up changes require their own checks; see the itemized response.
 
 No merge or production release is part of this update. The external review requirement remains in force; a green workflow wrapper alone is not a completed review.
