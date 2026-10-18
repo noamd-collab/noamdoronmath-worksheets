@@ -18,8 +18,8 @@ describe('percent explorer', () => {
 
   it('only the percent page mounts it, and it opens on the page example', () => {
     const topic = readFileSync('src/components/TopicPage.astro', 'utf8');
-    assert.match(topic, /const percentExplorer = slug === 'percent-of-quantity-grade-6';/);
-    assert.match(topic, /\{percentExplorer && <PercentExplorer \/>\}/);
+    assert.match(topic, /'percent-of-quantity-grade-6': 'percent',/);
+    assert.match(topic, /\{explorer === 'percent' && <PercentExplorer \/>\}/);
     const comp = readFileSync('src/components/PercentExplorer.astro', 'utf8');
     assert.match(comp, /const START_Q = 200;/);
     assert.match(comp, /const START_P = 45;/);
