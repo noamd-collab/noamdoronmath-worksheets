@@ -5,7 +5,10 @@
  * scope. URLs, paths, imports, comments, non-string code, CSS lengths,
  * unit rates, and/or pairs, dates, breadcrumbs, step labels, and spaced
  * game scores (N / 100) are not fractions. String literals in scripts,
- * topicFilms, conceptLoops.ts, and public JavaScript are scanned.
+ * topicFilms, conceptLoops.ts, loopHelpers.ts, landingLoops.ts,
+ * kiteAreaFilm.ts, public-lesson/lesson.html, and public JavaScript are
+ * scanned. A fraction built in code (`n + "/" + d`, `${n}/${d}`) is scanned
+ * too, unless the line is a path, url, or file join.
  *
  *   node .github/scripts/check-slash-fractions.mjs
  *
@@ -27,8 +30,7 @@ const UNIT_LEFT = new Set(['km', 'm', 'cm', 'mm', 'kg', 'g', 'mg', 's', 'h', 'mi
 const UNIT_RIGHT = new Set(['h', 'hr', 's', 'sec', 'min', 'm', 'cm', 'km', 'l', 'ml', 's²', 'm²', 'm³', 'cm²', 'cm³']);
 const WORD_PAIRS = new Set(['and/or', 'w/o', 'n/a', 'yes/no', 'on/off']);
 const DATE_WORD = /תאריך|ביום|עודכן|בחודש|לוח/;
-const MATH_WORD = /שבר|תשובה|חשבו|דוגמה|כפול|חלקי|שווה|מכנה|מונה/;
-const MATH_OP = /[=+−×·÷:<>≤≥]/;
+const NON_TEXT_SIDE = /\b(?:path|url|href|src|slug|file|dir|base|origin|import|join|pathname)\b/i;
 
 const SKIP_DIR = new Set(['node_modules', 'dist', 'sheets', '.git']);
 const SCAN_EXT = new Set(['.astro', '.ts', '.tsx', '.js', '.mjs', '.html', '.json']);
@@ -44,6 +46,10 @@ const ROOTS = [
   'headless/astro-poc/src/layouts',
   'headless/astro-poc/src/lib/topicFilms',
   'headless/astro-poc/src/lib/conceptLoops.ts',
+  'headless/astro-poc/src/lib/loopHelpers.ts',
+  'headless/astro-poc/src/lib/landingLoops.ts',
+  'headless/astro-poc/src/lib/kiteAreaFilm.ts',
+  'headless/astro-poc/src/public-lesson/lesson.html',
   'headless/astro-poc/public',
 ];
 
@@ -202,10 +208,13 @@ function inUrlOrPath(text, start, end) {
   return false;
 }
 
+/** A colon is a clock only when a digit sits on both sides, as in 12:30. */
+function colonIsClock(text, index) {
+  return text[index] === ':' && isDigit(text[index - 1]) && isDigit(text[index + 1]);
+}
+
 function looksLikeTime(text, hit) {
-  const before = text[hit.start - 1];
-  const after = text[hit.end];
-  return before === ':' || after === ':';
+  return colonIsClock(text, hit.start - 1) || colonIsClock(text, hit.end);
 }
 
 /** A spaced "N / 100" is a game score, not a quotient. `p/100` stays a fraction. */
@@ -236,27 +245,33 @@ function isUnitOrWordPair(num, den) {
   return false;
 }
 
+function inDayMonth(dayText, monthText) {
+  if (!/^\d{1,2}$/.test(dayText) || !/^\d{1,2}$/.test(monthText)) return false;
+  const day = Number(dayText);
+  const month = Number(monthText);
+  return day >= 1 && day <= 31 && month >= 1 && month <= 12;
+}
+
+/**
+ * A date has three parts (18/10/2026, 2026/10/18) or an explicit date word
+ * (עודכן ב־18/10). A bare pair such as 18/12 or 18/10 is a fraction.
+ */
 function isDate(text, hit) {
   const num = hit.num;
   const den = hit.den;
-  if (!/^\d{1,2}$/.test(num)) return false;
+  if (!/^\d{1,4}$/.test(num) || !/^\d{1,4}$/.test(den)) return false;
   const after = text.slice(hit.end);
-  if (/^\d{1,2}$/.test(den) && /^\/(?:\d{2}|\d{4})\b/.test(after)) return true;
-  if (/^(?:19|20)\d{2}$/.test(den) && /^\d{1,2}$/.test(num) && Number(num) >= 1 && Number(num) <= 31) return true;
-  const window = text.slice(Math.max(0, hit.start - 30), Math.min(text.length, hit.end + 8));
-  if (DATE_WORD.test(window) && /^\d{1,2}$/.test(den)) {
-    const month = Number(den);
-    const day = Number(num);
-    if (day >= 1 && day <= 31 && month >= 1 && month <= 12) return true;
+  const before = text.slice(0, hit.start);
+  if (inDayMonth(num, den) && /^\/(?:\d{4}|\d{2})\b/.test(after)) return true;
+  if (/^(?:19|20)\d{2}$/.test(num) && /^\d{1,2}$/.test(den) && /^\/\d{1,2}\b/.test(after) && Number(den) >= 1 && Number(den) <= 12) {
+    return true;
   }
-  if (!/^\d{1,2}$/.test(den)) return false;
-  const day = Number(num);
-  const month = Number(den);
-  if (day < 13 || day > 31 || month < 1 || month > 12) return false;
-  const around = text.slice(Math.max(0, hit.start - 2), hit.start) + text.slice(hit.end, hit.end + 2);
-  if (MATH_OP.test(around)) return false;
-  if (MATH_WORD.test(window)) return false;
-  return true;
+  if (/^\d{1,2}$/.test(num) && /^(?:\d{2}|\d{4})$/.test(den) && /\d{1,2}\/$/.test(before) && Number(num) >= 1 && Number(num) <= 12) {
+    return true;
+  }
+  if (inDayMonth(num, den) && /(?:19|20)\d{2}\/$/.test(before)) return true;
+  const window = text.slice(Math.max(0, hit.start - 30), Math.min(text.length, hit.end + 8));
+  return DATE_WORD.test(window) && inDayMonth(num, den);
 }
 
 /**
@@ -798,12 +813,48 @@ function pushHits(findings, rel, snippets, lineNo, piece, sourceLine = '') {
   }
 }
 
+function sideIsNonText(side) {
+  return NON_TEXT_SIDE.test(side);
+}
+
+/**
+ * A quotient assembled in code, where the slash never sits inside one literal:
+ * `n + "/" + d` or `${n}/${d}`. Path and url joins stay quiet.
+ * @returns {Array<{line:number,text:string}>}
+ */
+export function findBuiltSlashFractions(source) {
+  const hits = [];
+  const masked = source.replace(/\/\*[\s\S]*?\*\//g, (block) => block.replace(/[^\n]/g, ' '));
+  masked.split('\n').forEach((raw, idx) => {
+    const line = stripLineComment(raw);
+    if (!line.includes('/')) return;
+    if (sideIsNonText(line)) return;
+    const concat = /([A-Za-z_$][\w$]*)\s*\+\s*(['"])\/\2\s*\+\s*([A-Za-z_$][\w$]*)/g;
+    for (const match of line.matchAll(concat)) {
+      if (sideIsNonText(match[1]) || sideIsNonText(match[3])) continue;
+      hits.push({ line: idx + 1, text: `${match[1]} + "/" + ${match[3]}` });
+    }
+    const templ = /\$\{([^{}]{1,80})\}\s*\/\s*\$\{([^{}]{1,80})\}/g;
+    for (const match of line.matchAll(templ)) {
+      const left = match[1].trim();
+      const right = match[2].trim();
+      if (sideIsNonText(left) || sideIsNonText(right)) continue;
+      if (left.includes('/') || right.includes('/')) continue;
+      hits.push({ line: idx + 1, text: `\${${left}}/\${${right}}` });
+    }
+  });
+  return hits;
+}
+
 function scanCodeStrings(rel, source, baseLine, snippets, findings) {
   const lines = source.split('\n');
   for (const piece of extractStrings(source)) {
     const head = lines[piece.line - 1] || '';
     if (/^\s*import\b/.test(head)) continue;
     pushHits(findings, rel, snippets, baseLine + piece.line - 1, piece.text, head);
+  }
+  for (const hit of findBuiltSlashFractions(source)) {
+    findings.push({ file: rel, line: baseLine + hit.line - 1, text: hit.text });
   }
 }
 

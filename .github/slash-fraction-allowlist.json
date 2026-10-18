@@ -11,7 +11,7 @@
     },
     {
       "id": "comments-code-style",
-      "reason": "Comments, non-string code, and <style>. String literals inside <script>, topicFilms, conceptLoops.ts, and public JavaScript are scanned. A slash in real code, including Math.floor(m / 5) inside an Astro expression, is not a fraction. CSS lengths (8px / 8px), font shorthand (16px/1.5), and aspect-ratio (4 / 3) are not fractions."
+      "reason": "Comments, non-string code, and <style>. String literals inside <script>, topicFilms, conceptLoops.ts, loopHelpers.ts, landingLoops.ts, kiteAreaFilm.ts, public-lesson/lesson.html, and public JavaScript are scanned. A quotient built at runtime (n + \"/\" + d, ${n}/${d}) is a fraction when it is visible text. The same shape in a path, url, href, src, slug, or file join is not. A slash in real code, including Math.floor(m / 5) inside an Astro expression, is not a fraction. CSS lengths (8px / 8px), font shorthand (16px/1.5), and aspect-ratio (4 / 3) are not fractions."
     },
     {
       "id": "units",
@@ -23,11 +23,11 @@
     },
     {
       "id": "dates",
-      "reason": "Calendar dates: a year (18/10/2026, including the leftover 10/2026), a date word (עודכן, תאריך, ביום), or a day 13–31 with month 1–12 and no math operator (18/10). 1/2 stays a fraction. A 19xx or 20xx denominator with a 1–31 numerator is a year, not a quotient."
+      "reason": "Calendar dates only when the shape is clear: three parts (18/10/2026 or 2026/10/18), or a two-part pair next to a date word (עודכן, תאריך, ביום, בחודש, לוח), such as עודכן ב־18/10. A bare pair is a fraction, including 18/10, 18/12, 13/12, 20/10, and 31/12. A bare 10/2026 is a fraction too; 10/2026 is a date only as the second slash of 18/10/2026."
     },
     {
       "id": "times",
-      "reason": "Clock and duration text such as 0:00 / 0:19. The colon glues the slash to a timestamp."
+      "reason": "Clock and duration text such as 0:00 / 0:19 and 12:30 / 13:00. A colon counts as a clock only when a digit sits on both sides (12:30). A fraction followed by a colon, such as 18/12: or ל-3/4:, stays a fraction."
     },
     {
       "id": "colon-ratios",
@@ -47,7 +47,7 @@
     },
     {
       "id": "game-scores",
-      "reason": "A spaced game score N / 100, such as 7 / 100, is a score out of 100. A tight fraction stays a fraction, including p/100 and 8/100."
+      "reason": "A spaced game score N / 100, such as 7 / 100, is a score out of 100. A tight fraction stays a fraction, including p/100 and 8/100. The public lesson shows a live score out of 300 with the same spaced slash; that one line is a snippet because the total is 300, not 100."
     }
   ],
   "snippets": [
@@ -55,6 +55,11 @@
       "file": "headless/astro-poc/src/data/topic-pages/algebraic-expressions-grade-7.json",
       "match": "יחידות/סימנים",
       "reason": "Hebrew pair 'units/signs'. Not a quotient. The grammar already ignores Hebrew words; this entry records the review."
+    },
+    {
+      "file": "headless/astro-poc/src/public-lesson/lesson.html",
+      "match": "0   / 300",
+      "reason": "Live score out of 300. The numerator sits in #scoreBig and the slash is a score separator, the same role as N / 100. Not a quotient."
     }
   ]
 }

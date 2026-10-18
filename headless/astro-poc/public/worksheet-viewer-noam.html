@@ -2475,6 +2475,7 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 .exact-viewer .exact-frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin-inline:0.15em}
 .exact-viewer .exact-frac-bar{display:block;width:100%;height:2px;background:#22305a;margin:1px 0}
 .exact-viewer .exact-frac-row{display:inline-flex;align-items:center;direction:ltr;unicode-bidi:isolate;vertical-align:middle;gap:0.12em}
+.exact-viewer .exact-eq{display:inline;direction:ltr;unicode-bidi:isolate}
 .exact-viewer .noam-math-key .exact-frac{margin-inline:0;font-size:12px;line-height:1.05}
 .exact-viewer .noam-glossary-popover .exact-frac,.exact-viewer .noam-glossary-detail .exact-frac{font-size:0.92em;line-height:1.05}
 .exact-viewer .noam-attach-item{
@@ -5777,8 +5778,28 @@ function noamFractionSpeech(text){
     return (sign?"מינוס ":"")+n+" חלקי "+d;
   });
 }
+function equationNeedsLtr(run){
+  if(run.indexOf("⟨")<0){return false;}
+  var marks=run.match(/⟨/g);
+  if(marks&&marks.length>=2){return true;}
+  return /[=+−\-×·÷:<>≤≥^]/.test(run.replace(/⟨[^⟩]*⟩/g,""));
+}
+function wrapEquations(text){
+  var token="⟨[^⟩]*⟩|[0-9A-Za-zπ√⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿⁱ₀₁₂₃₄₅₆₇₈₉()[\\]{}.,−+×·÷=<>≤≥:^…%½¼¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞±\\-]+";
+  var re=new RegExp("(?:"+token+")(?:\\s*(?:"+token+"))+","g");
+  return text.replace(re,function(run,offset){
+    var body=run;
+    var lead="";
+    if(/^[-−]/.test(body)&&offset>0&&/[\u0590-\u05FF]/.test(text.charAt(offset-1))){
+      lead=body.charAt(0);
+      body=body.slice(1);
+    }
+    if(!equationNeedsLtr(body)){return run;}
+    return lead+'<span class="exact-eq" dir="ltr">'+body+"</span>";
+  });
+}
 function noamFractionHtml(text){
-  var safe=esc(String(text||""));
+  var safe=wrapEquations(esc(String(text||"")));
   return safe.replace(/([−-])?⟨([^⟩¦]+)¦([^⟩]+)⟩/g,function(all,sign,n,d,offset,whole){
     var prefix=sign==="-"&&offset>0&&/[\u0590-\u05FF]/.test(whole.charAt(offset-1));
     var label=(sign&&!prefix?"מינוס ":"")+n+" חלקי "+d;

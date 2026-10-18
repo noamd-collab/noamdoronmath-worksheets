@@ -120,7 +120,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // PR124 intentionally updates the shared viewer to anchor Ramzi to printed
     // question markers. Dedicated printed-pin fixtures cover that behavior.
     // Glossary text and the fraction key use a horizontal bar (Noam, 18.10.2026).
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '5a9b4d95267242e91e174f0a433c480d428235a95f7d4408f89d392cdcd94b2a');
+    // A letter equation such as a/b = c/d is wrapped in dir=ltr so RTL does not mirror it.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'fae5eb5a6a8d205f1ae3f6ee4b184ed08dde4fbfe77f498698c05ad269958c77');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

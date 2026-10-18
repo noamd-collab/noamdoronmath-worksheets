@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { describe, it } from 'node:test';
 import {
   checkTree,
+  findBuiltSlashFractions,
   findSlashFractions,
   filesToScan,
   replaceSlashFractions,
@@ -26,8 +27,10 @@ describe('findSlashFractions', () => {
       'and/or w/o n/a',
       'עודכן ב־18/10/2026',
       'עודכן ב־18/10',
-      '18/10',
+      '18/10/2026',
+      '2026/10/18',
       '0:00 / 0:19',
+      '12:30 / 13:00',
       'https://example.com/a/b',
       'src/pages/index.astro',
     ];
@@ -41,6 +44,12 @@ describe('findSlashFractions', () => {
     assert.equal(findSlashFractions('11/12')[0].text, '11/12');
     assert.equal(findSlashFractions('15/4 = 3.75')[0].text, '15/4');
     assert.equal(findSlashFractions('התשובה היא 15/4')[0].text, '15/4');
+    for (const sample of ['18/10', '18/12', '13/12', '20/10', '31/12', '10/2026']) {
+      assert.equal(findSlashFractions(sample)[0].text, sample, sample);
+    }
+    assert.equal(findSlashFractions('⟨7¦4⟩ מול 18/12: מי גדול?')[0].text, '18/12');
+    assert.equal(findSlashFractions('בין ⟨1¦2⟩ ל-3/4: ⟨5¦8⟩')[0].text, '3/4');
+    assert.equal(findSlashFractions('ל-3/4:')[0].text, '3/4');
   });
 
   it('splits a product on × and keeps a middle-dot numerator', () => {
@@ -161,6 +170,10 @@ describe('review gaps', () => {
   it('scans conceptLoops.ts and public JavaScript', () => {
     const files = filesToScan();
     assert.equal(files.some((file) => file.endsWith('/src/lib/conceptLoops.ts')), true);
+    assert.equal(files.some((file) => file.endsWith('/src/lib/loopHelpers.ts')), true);
+    assert.equal(files.some((file) => file.endsWith('/src/lib/landingLoops.ts')), true);
+    assert.equal(files.some((file) => file.endsWith('/src/lib/kiteAreaFilm.ts')), true);
+    assert.equal(files.some((file) => file.endsWith('/src/public-lesson/lesson.html')), true);
     assert.equal(files.some((file) => file === 'headless/astro-poc/public/noam-glossary.js'), true);
     const root = mkdtempSync(join(tmpdir(), 'slash-gap-'));
     const rel = 'headless/astro-poc/public/gap.js';
@@ -176,10 +189,31 @@ describe('review gaps', () => {
       rmSync(root, { recursive: true, force: true });
     }
   });
+
+  it('flags a fraction built at runtime and keeps a path join', () => {
+    const source = [
+      'const label = n + "/" + d;',
+      'const shown = `${n}/${d}`;',
+      'const file = dir + "/" + name;',
+      'const url = `${base}/${slug}`;',
+      'const joined = `${PROD}/${slug}`;',
+      '',
+    ].join('\n');
+    assert.deepEqual(
+      findBuiltSlashFractions(source).map((hit) => `${hit.line}: ${hit.text}`),
+      ['1: n + "/" + d', '2: ${n}/${d}'],
+    );
+    const hits = scanSource('headless/astro-poc/src/lib/topicFilms/gap.ts', source, []);
+    assert.deepEqual(
+      hits.map((hit) => `${hit.line}: ${hit.text}`),
+      ['1: n + "/" + d', '2: ${n}/${d}'],
+    );
+  });
 });
 
 describe('repository', () => {
   it('has no slash fractions in visible site text', () => {
+    // Bare pairs such as 18/12 and a colon after a fraction (ל-3/4:) are hits.
     const hits = checkTree();
     assert.deepEqual(
       hits.map((hit) => `${hit.file}:${hit.line}: ${hit.text}`),
