@@ -16,11 +16,13 @@ const hidden = JSON.parse(read('src/data/hidden-practice.v1.json')) as {
   sheets: Array<{ pdfId: string; x: string; grade: number; level: string; title: string; questions: number }>;
 };
 const slug = hidden.page.split('/').pop() as string;
-const pageFile = `src/pages/practice-private/${slug}.astro`;
+const pageFile = 'src/pages/practice-private/[slug].astro';
 
 describe('hidden practice page', () => {
-  it('lives in a sub-folder, so the page sitemap glob (src/pages/*.astro) never lists it', () => {
+  it('is a dynamic [slug] route in a sub-folder, so neither the repo glob nor the Wix pages-sitemap lists it', () => {
     assert.ok(existsSync(join(root, pageFile)));
+    assert.equal(read(pageFile).includes('Astro.url.pathname'), true);
+    assert.equal(read(pageFile).includes(slug), false, 'the slug lives only in hidden-practice.v1.json');
     assert.ok(read('src/pages/sitemap-pages.xml.ts').includes("import.meta.glob('./*.astro')"));
     assert.equal(readdirSync(join(root, 'src/pages')).some((f) => f.includes(slug)), false);
   });
