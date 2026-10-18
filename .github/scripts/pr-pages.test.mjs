@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { pagesTouchedByDiff, routeFromPageFile } from './pr-pages.mjs';
+import { ELEMENTARY_GRADE_HUB_PAGES, pagesTouchedByDiff, routeFromPageFile } from './pr-pages.mjs';
 
 describe('routeFromPageFile', () => {
   it('maps page files to routes', () => {
@@ -22,6 +22,16 @@ describe('pagesTouchedByDiff', () => {
     const result = pagesTouchedByDiff(['headless/astro-poc/src/styles/exact-site.css']);
     assert.equal(result.fallback, true);
     assert.deepEqual(result.pages, ['/', '/grade-5', '/grade-9', '/factoring-grade-9', '/worksheets?grade=9', '/blog']);
+  });
+
+  it('screenshots every elementary grade hub when the hub nav changes', () => {
+    const result = pagesTouchedByDiff([
+      'headless/astro-poc/src/components/GradeHubPage.astro',
+      'headless/astro-poc/src/pages/index.astro',
+    ]);
+    assert.equal(result.fallback, false);
+    assert.deepEqual(result.pages, ELEMENTARY_GRADE_HUB_PAGES);
+    assert.deepEqual(result.omitted, []);
   });
 
   it('keeps changed pages and caps the screenshot list', () => {
