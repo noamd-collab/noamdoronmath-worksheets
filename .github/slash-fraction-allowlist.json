@@ -1,0 +1,56 @@
+{
+  "description": "ASCII '/' that stays because it is not a fraction or a division sign. Rules are enforced in .github/scripts/check-slash-fractions.mjs. Snippets are an explicit backstop for a match the grammar would otherwise report.",
+  "rules": [
+    {
+      "id": "blogs",
+      "reason": "Blog posts and blog pages are excluded (Noam, 18.10.2026)."
+    },
+    {
+      "id": "urls-paths-imports",
+      "reason": "URLs, site paths, href/src values, and import paths."
+    },
+    {
+      "id": "comments-code-style",
+      "reason": "Comments, non-string code, <script>, <style>, and style attributes (including border-radius and aspect-ratio)."
+    },
+    {
+      "id": "units",
+      "reason": "Unit rates such as km/h, m/s, and m/s²."
+    },
+    {
+      "id": "and-or",
+      "reason": "Word pairs such as and/or, w/o, n/a, and Hebrew pairs the grammar does not treat as quotients (יחידות/סימנים)."
+    },
+    {
+      "id": "dates",
+      "reason": "Calendar dates: a year (18/10/2026, including the leftover 10/2026), a date word (עודכן, תאריך, ביום), or a day 13–31 with month 1–12 and no math operator (18/10). 1/2 stays a fraction. A 19xx or 20xx denominator with a 1–31 numerator is a year, not a quotient."
+    },
+    {
+      "id": "times",
+      "reason": "Clock and duration text such as 0:00 / 0:19. The colon glues the slash to a timestamp."
+    },
+    {
+      "id": "colon-ratios",
+      "reason": "Ratios and division already written with a colon are left as they are."
+    },
+    {
+      "id": "step-kickers",
+      "reason": "Kite-area film step labels (01 / מתחילים מדלתון) are a number plus a Hebrew title, not a quotient."
+    },
+    {
+      "id": "removed-orphan",
+      "reason": "math-tools.json removedOrphans text 3/4 is an editing leftover that is not rendered."
+    },
+    {
+      "id": "crumbs",
+      "reason": "Breadcrumb separators are a lone '/' between links, not a numerator over a denominator."
+    }
+  ],
+  "snippets": [
+    {
+      "file": "headless/astro-poc/src/data/topic-pages/algebraic-expressions-grade-7.json",
+      "match": "יחידות/סימנים",
+      "reason": "Hebrew pair 'units/signs'. Not a quotient. The grammar already ignores Hebrew words; this entry records the review."
+    }
+  ]
+}

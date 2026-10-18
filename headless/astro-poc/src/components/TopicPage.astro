@@ -19,6 +19,7 @@ import {
 import { localizeSiteHref } from '../lib/sitePages';
 import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import TopicText from './TopicText.astro';
 
 interface Props {
   slug: string;
@@ -36,43 +37,6 @@ const beforeUpdateCount =
 const faqBeforeUpdate = page.faqGroups.slice(0, beforeUpdateCount);
 const faqAfterUpdate = page.faqGroups.slice(beforeUpdateCount);
 const bodyFlow: TopicBodyFlowItem[] = synthesizeBodyFlow(page);
-
-const LRI = '\u2066';
-const PDI = '\u2069';
-const NOWRAP_MATH = new Set(['S = (d1 · d2) : 2', '(6 · 8) : 2 = 24', '(10 · 6) : 2 = 30']);
-/** A formula this short fits on one 390px line, so it never breaks. */
-const NOWRAP_MAX = 28;
-
-/** Keep a whole formula on one line. The isolate stays inside the span. */
-function textParts(text: string): { text: string; nowrap: boolean }[] {
-  const parts: { text: string; nowrap: boolean }[] = [];
-  const re = new RegExp(`${LRI}([^${PDI}]*)${PDI}`, 'g');
-  let last = 0;
-  for (const match of text.matchAll(re)) {
-    const index = match.index ?? 0;
-    if (index > last) parts.push({ text: text.slice(last, index), nowrap: false });
-    parts.push(...mathParts(match[1] ?? ''));
-    last = index + match[0].length;
-  }
-  if (last < text.length || parts.length === 0) parts.push({ text: text.slice(last), nowrap: false });
-  return parts;
-}
-
-/** A long chain may break only after "=". LRI opens the first step and PDI closes the last. */
-function mathParts(math: string): { text: string; nowrap: boolean }[] {
-  if (NOWRAP_MATH.has(math) || math.length <= NOWRAP_MAX) {
-    return [{ text: `${LRI}${math}${PDI}`, nowrap: true }];
-  }
-  const steps = math.split(/(?<==) /);
-  const parts: { text: string; nowrap: boolean }[] = [];
-  steps.forEach((step, i) => {
-    if (i > 0) parts.push({ text: ' ', nowrap: false });
-    const open = i === 0 ? LRI : '';
-    const close = i === steps.length - 1 ? PDI : '';
-    parts.push({ text: `${open}${step}${close}`, nowrap: step.length <= NOWRAP_MAX });
-  });
-  return parts;
-}
 
 /** Group flow so H2 sections nest following paragraphs/lists; CTAs stay ordered siblings. */
 type BodyUnit =
@@ -213,7 +177,7 @@ function faqHeadingId(groupIndex: number) {
     }
 
     <header class="topic-page__header">
-      <h1>{page.h1}</h1>
+      <h1><TopicText text={page.h1} /></h1>
     </header>
 
     <div data-body-flow>
@@ -240,7 +204,7 @@ function faqHeadingId(groupIndex: number) {
           <div class="exact-topic-copy">
             {heroUnits.map((unit) => {
               if (unit.kind === 'intro') return (
-                <p class="topic-page__intro" data-flow="paragraph" data-role="intro">{unit.text}</p>
+                <p class="topic-page__intro" data-flow="paragraph" data-role="intro"><TopicText text={unit.text} /></p>
               );
               if (unit.kind === 'cta') return (
                 <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
@@ -269,9 +233,7 @@ function faqHeadingId(groupIndex: number) {
           if (unit.kind === 'intro') {
             return (
               <p class="topic-page__intro" data-flow="paragraph" data-role="intro">
-                {textParts(unit.text).map((part) =>
-                  part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
-                )}
+                <TopicText text={unit.text} />
               </p>
             );
           }
@@ -294,16 +256,14 @@ function faqHeadingId(groupIndex: number) {
           if (unit.kind === 'section') {
             return (
               <section class="topic-page__section" data-flow="heading">
-                <h2>{unit.heading}</h2>
+                <h2><TopicText text={unit.heading} /></h2>
                 {unit.blocks.map((block) => {
                   if (block.type === 'paragraph') {
                     const cls =
                       block.role === 'self-check' ? 'topic-page__self-check' : undefined;
                     return (
                       <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
-                        {textParts(block.text).map((part) =>
-                          part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
-                        )}
+                        <TopicText text={block.text} />
                       </p>
                     );
                   }
@@ -311,13 +271,13 @@ function faqHeadingId(groupIndex: number) {
                     return block.ordered ? (
                       <ol data-flow="list">
                         {block.items.map((item) => (
-                          <li set:text={item} />
+                          <li><TopicText text={item} /></li>
                         ))}
                       </ol>
                     ) : (
                       <ul data-flow="list">
                         {block.items.map((item) => (
-                          <li set:text={item} />
+                          <li><TopicText text={item} /></li>
                         ))}
                       </ul>
                     );
@@ -333,9 +293,7 @@ function faqHeadingId(groupIndex: number) {
               const cls = block.role === 'self-check' ? 'topic-page__self-check' : undefined;
               return (
                 <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
-                  {textParts(block.text).map((part) =>
-                    part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
-                  )}
+                  <TopicText text={block.text} />
                 </p>
               );
             }
@@ -343,13 +301,13 @@ function faqHeadingId(groupIndex: number) {
               return block.ordered ? (
                 <ol data-flow="list">
                   {block.items.map((item) => (
-                    <li set:text={item} />
+                    <li><TopicText text={item} /></li>
                   ))}
                 </ol>
               ) : (
                 <ul data-flow="list">
                   {block.items.map((item) => (
-                    <li set:text={item} />
+                    <li><TopicText text={item} /></li>
                   ))}
                 </ul>
               );
@@ -374,12 +332,12 @@ function faqHeadingId(groupIndex: number) {
     {
       faqBeforeUpdate.map((group: TopicPageFaqGroup, gi: number) => (
         <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
-          <h2 id={faqHeadingId(gi)}>{group.heading}</h2>
+          <h2 id={faqHeadingId(gi)}><TopicText text={group.heading} /></h2>
           <div class="topic-page__faq-list">
             {group.items.map((item) => (
               <div class="topic-page__faq-item" data-faq-item>
-                <h3>{item.question}</h3>
-                <p>{item.answer}</p>
+                <h3><TopicText text={item.question} /></h3>
+                <p><TopicText text={item.answer} /></p>
               </div>
             ))}
           </div>
@@ -433,7 +391,7 @@ function faqHeadingId(groupIndex: number) {
                   rel="noopener noreferrer"
                   data-topic-path={rel.path}
                 >
-                  {rel.label}
+                  <TopicText text={rel.label} />
                 </a>
               </li>
             ))}
@@ -447,12 +405,12 @@ function faqHeadingId(groupIndex: number) {
         const gi = beforeUpdateCount + oi;
         return (
           <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
-            <h2 id={faqHeadingId(gi)}>{group.heading}</h2>
+            <h2 id={faqHeadingId(gi)}><TopicText text={group.heading} /></h2>
             <div class="topic-page__faq-list">
               {group.items.map((item) => (
                 <div class="topic-page__faq-item" data-faq-item>
-                  <h3>{item.question}</h3>
-                  <p>{item.answer}</p>
+                  <h3><TopicText text={item.question} /></h3>
+                  <p><TopicText text={item.answer} /></p>
                 </div>
               ))}
             </div>

@@ -1,0 +1,31 @@
+---
+import StackedFraction from './StackedFraction.astro';
+import { splitFractionMarkers } from '../lib/topicMathText';
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+const parts = splitFractionMarkers(text || '');
+
+function spoken(sign: string, n: string, d: string): string {
+  const minus = sign === '−' || sign === '-' ? 'מינוס ' : '';
+  return `${minus}${n} חלקי ${d}`;
+}
+---
+
+{
+  parts.map((part) =>
+    part.kind === 'text' ? (
+      part.text
+    ) : part.sign ? (
+      <span class="topic-frac-row" dir="ltr" role="img" aria-label={spoken(part.sign, part.n, part.d)}>
+        <span aria-hidden="true">{part.sign}</span>
+        <StackedFraction n={part.n} d={part.d} labelled={false} />
+      </span>
+    ) : (
+      <StackedFraction n={part.n} d={part.d} />
+    ),
+  )
+}

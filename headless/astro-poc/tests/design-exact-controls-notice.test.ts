@@ -152,8 +152,10 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again so para-rect marks base b and height h on the shape.
   // Moved again for the 2026-10-18 topic films. Helpers moved to loopHelpers.ts
   // and stay pinned. Explicit content, not a silent regen.
+  // ConceptLoop.astro moved again: kite-construct aria says חלקי, not a slash
+  // (Noam, 18.10.2026). conceptLoops.ts and loopHelpers.ts are unchanged.
   const expected = {
-    'src/components/ConceptLoop.astro': '76b8b0e26f9211cde8e7e4323608fd48cd02bee62a14f99b205923aa420d70b3',
+    'src/components/ConceptLoop.astro': '894808ad94ae42828f33ff395b0e6d64c038d9d1f2d2f141ac7ccacf72183d34',
     'src/lib/conceptLoops.ts': '8470ac2d099ba475f3edadc583f6522ffa4df17f66c76afa278406f5b0bc3e75',
     'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
   };

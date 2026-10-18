@@ -66,6 +66,8 @@ describe('isolateMathRuns', () => {
     assert.equal(isolateMathRuns('כמה זה 2 : 1/4?'), `כמה זה ${LRI}2 : 1/4${PDI}?`);
     assert.equal(isolateMathRuns('לשלם: 1 : 1/4 = 4, כי'), `לשלם: ${LRI}1 : 1/4 = 4${PDI}, כי`);
     assert.equal(isolateMathRuns('ביחס x : x√3 : 2x.'), `ביחס ${LRI}x : x√3 : 2x${PDI}.`);
+    assert.equal(isolateMathRuns('כמה זה ⟨1¦4⟩?'), `כמה זה ${LRI}⟨1¦4⟩${PDI}?`);
+    assert.equal(isolateMathRuns('השבר −⟨3¦4⟩ שווה'), `השבר ${LRI}−⟨3¦4⟩${PDI} שווה`);
   });
 
   it('is idempotent and leaves Hebrew prose unchanged', () => {

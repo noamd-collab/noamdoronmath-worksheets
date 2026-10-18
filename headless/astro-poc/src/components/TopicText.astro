@@ -1,0 +1,27 @@
+---
+/**
+ * Topic-page copy: math isolates stay on one line, and ⟨n¦d⟩ renders
+ * as a horizontal fraction bar.
+ */
+import FractionRun from './FractionRun.astro';
+import { layoutMathRuns } from '../lib/topicMathText';
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+const parts = layoutMathRuns(text || '');
+---
+
+{
+  parts.map((part) =>
+    part.nowrap ? (
+      <span class="topic-math-nowrap">
+        <FractionRun text={part.text} />
+      </span>
+    ) : (
+      <FractionRun text={part.text} />
+    ),
+  )
+}

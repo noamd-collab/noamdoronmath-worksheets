@@ -29,7 +29,7 @@ function isCore(ch: string): boolean {
  */
 function isMathSymbol(ch: string): boolean {
   if (isCore(ch)) return true;
-  return '()[]{}|∥⊥∠^/~·∙′″⁄–+'.includes(ch) || ch === '-';
+  return '()[]{}|∥⊥∠^/~·∙′″⁄–+⟨⟩¦'.includes(ch) || ch === '-';
 }
 
 function isGlue(ch: string): boolean {

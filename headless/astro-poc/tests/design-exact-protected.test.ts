@@ -23,6 +23,8 @@
  * fraction-division meaning, grade-4 summary, measurement L-area).
  * Explicit content. Easing helpers moved to loopHelpers.ts so those films
  * can import them; that file is pinned here too. Not a silent regen.
+ * ConceptLoop.astro moved again so the kite-construct aria names the
+ * division with חלקי instead of an ASCII slash (Noam, 18.10.2026).
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -52,7 +54,7 @@ const protectedFiles: Record<string, string> = {
   // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
   'src/lib/conceptLoops.ts': '8470ac2d099ba475f3edadc583f6522ffa4df17f66c76afa278406f5b0bc3e75',
   'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
-  'src/components/ConceptLoop.astro': '76b8b0e26f9211cde8e7e4323608fd48cd02bee62a14f99b205923aa420d70b3',
+  'src/components/ConceptLoop.astro': '894808ad94ae42828f33ff395b0e6d64c038d9d1f2d2f141ac7ccacf72183d34',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // 47afe919: intentional text-only school notation on the readout
