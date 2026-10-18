@@ -116,7 +116,7 @@
     "source": "production-github-cta",
     "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=55",
     "catalogTopicId": 55,
-    "catalogTopicTitle": "סינתזה גאומטרית"
+    "catalogTopicTitle": "שילוב גאומטרי"
   },
   "catalogCtas": [
     {
@@ -125,7 +125,7 @@
       "source": "production-github-cta",
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=8&topic=55",
       "catalogTopicId": 55,
-      "catalogTopicTitle": "סינתזה גאומטרית"
+      "catalogTopicTitle": "שילוב גאומטרי"
     }
   ],
   "gradeHubHref": "/grade-8",

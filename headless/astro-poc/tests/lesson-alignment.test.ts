@@ -119,3 +119,10 @@ it('routes the reviewed topics to the actual concept being taught',()=>{
     assert.ok(loop.kind!=='film' && loop.variant===variant,slug);
   }
 });
+
+ it('renders current-main fraction markers and legacy algebra together without losing surrounding prose', () => {
+  assert.deepEqual(lessonMathParts('כי ⟨45¦100⟩ × 200 = 90; (x²−4)/(x−2)'), [
+    'כי ', {numerator:'45',denominator:'100'}, ' × 200 = 90; ', {numerator:'x²−4',denominator:'x−2'}
+  ]);
+  assert.match(spokenLessonMath('⟨3¦4⟩'), /המונה 3, המכנה 4/);
+ });

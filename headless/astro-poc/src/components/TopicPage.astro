@@ -3,6 +3,8 @@ import TopicText from './TopicText.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
+import PercentExplorer from './PercentExplorer.astro';
+import AreaExplorer from './AreaExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
 import LandingLoop from './LandingLoop.astro';
 import DistancePointsLoop from './DistancePointsLoop.astro';
@@ -98,10 +100,18 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
    analytic-geometry-grade-9 mounts DistancePointsLoop in this same slot.
    triangle-quadrilateral-angle-sum-grade-7 mounts the provided HTML film
    (its own controls and angle readouts stay inside the iframe).
-   parallel-lines-angles-grade-8 mounts the co-interior angles film. */
+   parallel-lines-angles-grade-8 mounts the co-interior angles film.
+   Pages in TOPIC_EXPLORER mount a hands-on explorer in place of their
+   loop: the percent 100-square, and the fraction / decimal area models. */
+const TOPIC_EXPLORER: Record<string, 'percent' | 'fraction' | 'decimal'> = {
+  'percent-of-quantity-grade-6': 'percent',
+  'fraction-times-fraction-grade-6': 'fraction',
+  'multiply-decimals-grade-6': 'decimal',
+};
+const explorer = TOPIC_EXPLORER[slug];
 const landingLoop = topicLandingLoop(page);
-const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
-const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
+const loopVariant = landingLoop.kind === 'concept' && !explorer ? landingLoop.variant : undefined;
+const cssVariant = landingLoop.kind === 'css' && !explorer ? landingLoop.variant : undefined;
 const filmLoop = landingLoop.kind === 'film';
 const bareFilm =
   filmLoop &&
@@ -190,6 +200,8 @@ function faqHeadingId(groupIndex: number) {
           >
             {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
             {loopVariant && <ConceptLoop variant={loopVariant} />}
+            {explorer === 'percent' && <PercentExplorer />}
+            {(explorer === 'fraction' || explorer === 'decimal') && <AreaExplorer kind={explorer} />}
             {cssVariant && <LandingLoop variant={cssVariant} />}
             {landingLoop.kind === 'film' && landingLoop.marker === 'distance-between-points' && (
               <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />

@@ -1,3 +1,4 @@
+import { visibleMathLength } from './topicFractionMarkers';
 const LRI = '\u2066';
 const PDI = '\u2069';
 const NOWRAP_MATH = new Set(['S = (d1 · d2) : 2', '(6 · 8) : 2 = 24', '(10 · 6) : 2 = 30']);
@@ -21,7 +22,7 @@ export function textParts(text: string): { text: string; nowrap: boolean }[] {
 
 /** A long chain may break only after "=". LRI opens the first step and PDI closes the last. */
 function mathParts(math: string): { text: string; nowrap: boolean }[] {
-  if (NOWRAP_MATH.has(math) || math.length <= NOWRAP_MAX) {
+  if (NOWRAP_MATH.has(math) || visibleMathLength(math) <= NOWRAP_MAX) {
     return [{ text: `${LRI}${math}${PDI}`, nowrap: true }];
   }
   const steps = math.split(/(?<==) /);
@@ -30,7 +31,7 @@ function mathParts(math: string): { text: string; nowrap: boolean }[] {
     if (i > 0) parts.push({ text: ' ', nowrap: false });
     const open = i === 0 ? LRI : '';
     const close = i === steps.length - 1 ? PDI : '';
-    parts.push({ text: `${open}${step}${close}`, nowrap: step.length <= NOWRAP_MAX });
+    parts.push({ text: `${open}${step}${close}`, nowrap: visibleMathLength(step) <= NOWRAP_MAX });
   });
   return parts;
 }
