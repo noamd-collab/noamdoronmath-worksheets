@@ -62,6 +62,11 @@ export function pagesTouchedByDiff(files) {
   if (normalized.some((file) => GRADE_HUB_NAV_FILES.includes(file))) {
     return { pages: [...ELEMENTARY_GRADE_HUB_PAGES], fallback: false, omitted: [] };
   }
+  if (normalized.includes('headless/astro-poc/src/components/SimilarityLoop.astro')) {
+    return { pages: ['/similar-triangles-grade-8', '/similar-triangles-grade-9',
+      '/triangle-similarity-aa-grade-9', '/triangle-similarity-proof-grade-8',
+      '/similar-triangles-area-ratio-grade-8', '/scaling-dimensions-grade-6'], fallback: false, omitted: [] };
+  }
   const seen = new Set();
   const routes = [];
   for (const file of files) {
