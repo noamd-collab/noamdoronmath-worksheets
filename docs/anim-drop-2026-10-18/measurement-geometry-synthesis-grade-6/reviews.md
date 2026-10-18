@@ -543,3 +543,159 @@ FAIL
 
 # Lead note (final) — measurement-geometry-synthesis-grade-6
 Final film = round r9. Qwen visual r9: PASS. DeepSeek r9: FAIL, repeating a text-anchor/overlap claim for "6 ס״מ" and "3 ס״מ" that is contradicted by the rendered 390px frame (frames/r9/390-t12.png: labels clear of shape and dimension lines) and that contradicts DeepSeek's own r6 advice on the same anchors. Round budget exhausted; DeepSeek FAIL is therefore recorded as disputed, NOT as pass.
+
+# Qwen visual review — u1 (qwen3.7-plus)
+
+Automated measurements:
+```
+1280px: svg scale 0.85, seamIdentical=false, jsErrors=0, smallestSvgTextPx=25.4, clipped=[], textBelow12.5px=[]
+390px: svg scale 0.46, seamIdentical=false, jsErrors=0, smallestSvgTextPx=13.7, clipped=[], textBelow12.5px=[]
+```
+
+## Verdict
+FAIL
+
+## Blockers
+1.  **390-t3_5.png**: The result chip for Step 1 displays "48 סמ״ר" (the final answer) instead of the required "60 סמ״ר" (the area of the full rectangle); fix the state logic so Chip 1 shows '60' during the first sweep and only changes to '48' in Step 3.
+2.  **390-t1_5.png, 1280-t0_4.png**: The start frame is missing the dimension labels (10, 6, 4, 3) and the dashed completion rectangle required by the brief ("Draw the L shape... with dimension labels"); ensure `render(0)` includes the static geometry and labels identical to the hold state (minus the blue fill).
+3.  **390-t13.png, 1280-t13.png**: The final hold frame is missing the dimension labels and the dashed outline of the missing corner; fix the fade-out logic so that labels and the dashed box remain visible (opacity 1) at `t=duration` while only the formula/chips fade or stay as specified.
+
+## Notes
+-   **Math/Logic**: The unit square grid (60 cells total, 12 orange, 48 blue) is implemented correctly and matches the visual requirements perfectly in frames where the state is correct (e.g., 390-t5_5, 390-t8_5).
+-   **Legibility**: Text size is sufficient on mobile (smallest ~13.7px), and contrast is good.
+-   **RTL/LTR**: Equations (`10 × 6 = 60`) render correctly Left-to-Right within the Hebrew interface.
+-   **Seam**: The automated check flags `seamIdentical=false`, which is consistent with the visual evidence that the start frame (Frame 1/10) lacks elements present in the end frame (Frame 9/12).
+
+# Qwen visual review — u2 (qwen3.7-plus)
+
+Automated measurements:
+```
+1280px: svg scale 0.85, seamIdentical=false, jsErrors=0, smallestSvgTextPx=25.4, clipped=[], textBelow12.5px=[]
+390px: svg scale 0.46, seamIdentical=false, jsErrors=0, smallestSvgTextPx=13.7, clipped=[], textBelow12.5px=[]
+```
+
+## Verdict
+FAIL
+
+## Blockers
+1.  **Frame `390-t3_5.png` (Step 1 Result):** The result chip for Step 1 displays "48 סמ״ר" (the final answer) instead of the required intermediate value "60 סמ״ר". This breaks the pedagogical flow where Step 1 must establish the area of the full rectangle ($10 \times 6 = 60$) before subtraction occurs.
+    *   **Fix:** Update the logic for Step 1's result chip to display "60 סמ״ר" (counting up from 0 to 60) while the grid sweeps in.
+
+2.  **Frame `390-t13.png` (Hold/End State):** The final hold frame is missing the complete formula row (`10 × 6 = 60...`, `4 × 3 = 12...`, `60 − 12 = 48...`) and the checkmark (✓) chunk, which are explicitly required to remain visible at the end.
+    *   **Fix:** Ensure the formula container and checkmark element do not fade out or disappear during the final hold phase; they should remain fully opaque alongside the green result chip.
+
+3.  **Frame `390-t1_5.png` (Start/Loop Seam):** The start frame shows dimension labels ("10 ס״מ", etc.) and the dashed outline, whereas the brief requires the loop seam ($t=0$ and $t=duration$) to be identical and minimal (L outline only), with dimensions fading in later.
+    *   **Fix:** Set the opacity of dimension labels and the dashed completion rectangle to 0 at $t=0$ and ensure they fade in only after the animation begins, matching the clean state of the final fade-out.
+
+## Notes
+*   **Unit Squares & Grid:** The implementation of the 60 unit squares (390-t5_5.png) and the specific highlighting of the 12 orange corner cells (390-t6_5.png) is mathematically exact and visually clear.
+*   **Step 3 Logic:** The transition to blue cells and the green "48 סמ״ר" chip in the final frames (390-t12_5.png, 1280-t13.png) correctly follows the subtraction logic ($60 - 12 = 48$).
+*   **Legibility:** Text sizes and contrast are sufficient on both mobile (390px) and desktop (1280px) viewports; Hebrew text direction is correct.
+
+# Qwen visual review — u3 (qwen3.7-plus)
+
+Automated measurements:
+```
+1280px: svg scale 0.85, seamIdentical=true, jsErrors=0, smallestSvgTextPx=25.4, clipped=[], textBelow12.5px=[]
+390px: svg scale 0.46, seamIdentical=true, jsErrors=0, smallestSvgTextPx=13.7, clipped=[], textBelow12.5px=[]
+```
+
+## Verdict
+FAIL
+
+## Blockers
+1.  **Frame `390-t3_5.png`**: The result chip for Step 1 displays "51 סמ״ר" instead of the correct count (should be counting up to 60 or showing the final 60); this is a math/logic error in the animation timing or calculation.
+2.  **Frames `390-t8_5.png`, `390-t10_5.png`, `1280-t8_5.png`**: The unit squares in the top-right corner (the cut-out area) are filled with orange but lack the internal grid lines visible in the rest of the shape; the brief requires grid lines to be visible everywhere ("grid of 1 cm × 1 cm cells... over the full 10×6 rectangle").
+3.  **Frame `390-t3_5.png`**: The dimension labels (10, 6, 4, 3) are missing during the grid sweep; the brief implies dimensions should be present to define the shape being counted, and they disappear prematurely or haven't appeared yet while the counting starts.
+
+## Notes
+-   **Seam & Loop**: The start frame (`1280-t0_4.png`) and end frames (`390-t13.png`, `1280-t13.png`) appear identical (clean L-shape outline, no text), satisfying the loop requirement.
+-   **Legibility**: Text size on mobile (390px) is good; the smallest text is well above the 13px threshold.
+-   **RTL/LTR**: Hebrew text is correctly oriented, and math equations follow the correct Left-to-Right order (e.g., `10 × 6 = 60`).
+-   **Final State**: The final hold frame correctly shows the blue L-shape with grid, green result chip "48 סמ״ר", and the checkmark.
+
+# DeepSeek code review — u3 (deepseek-v4-pro)
+
+## Verdict
+**FAIL**
+
+## Blockers
+1. **Cells abruptly disappear at t=14.5 instead of fading out progressively with the master fade (hard cutoff)**  
+   The contract requires a clean loop seam with everything fading out near the end (last ~1–1.5 s). The current code uses a condition `if (t > cellStart && t < 14.5)` and sets `op(cell, 0)` otherwise, which makes the 60 unit squares vanish instantly at 14.5 s while other elements fade smoothly. This causes a noticeable jump and breaks the smooth fade-out.  
+   **Fix:** In the `cells.forEach` callback, remove the hard cutoff and use the master fade multiplier consistently. For example:  
+   ```js
+   const localP = ph(t, cellStart, cellStart + 0.25);
+   op(cell, localP * fade);
+   const isVisible = localP > 0; // or t > cellStart
+   // (no else with op(cell,0); no t<14.5 check)
+   ```  
+   Then the fill-colouring logic inside `if (isVisible)` will still work, and the cells will fade together with the rest of the scene.
+
+## Notes
+- The initial fill for unit squares is set to `"rgba(255,255,255,0.1)"` while the spec expects the cells to appear as an outlined grid with no solid fill (stroke-only). This faint white fill is unnecessary and could reduce clarity, especially on a white card. Consider removing that default colour and letting the cells have `fill="none"` during Step 1 (simply don’t set the fill attribute when no tint is intended).
+- Verify that the minus sign in the formula `60 − 12 = 48` is the required Unicode minus (U+2212) and not an ASCII hyphen. The snippet looks correct, but double-check the actual character in the file.
+- The corner cells are highlighted orange with no fade-in (they appear abruptly). The brief allows a more staggered appearance; adding a small fade-in (e.g., `fill = \`rgba(234,88,12,${0.35 * ph(t, hStart, hStart+0.15)}\``) would make the animation smoother and align better with the “pop” feel of the other elements, but it’s not a strict requirement.
+- All other elements (dimension labels, step badges, result chips, formula chunks) fade out correctly with `fade`, and the loop seam at t=0 and t=16 will be identical once the cell opacity is fixed.
+
+# Qwen visual review — u4 (qwen3.7-plus)
+
+Automated measurements:
+```
+1280px: svg scale 0.85, seamIdentical=true, jsErrors=0, smallestSvgTextPx=25.4, clipped=[], textBelow12.5px=[]
+390px: svg scale 0.46, seamIdentical=true, jsErrors=0, smallestSvgTextPx=13.7, clipped=[], textBelow12.5px=[]
+```
+
+## Verdict
+FAIL
+
+## Blockers
+1.  **Frame `390-t3_5.png`**: The Step 1 result chip displays "51 סמ״ר" instead of the correct "60 סמ״ר" (or an intermediate count like 50/52); this is a math/counting error in the animation logic.
+    *   **Fix**: Debug the Step 1 sweep counter to ensure it maps strictly to the number of visible cells (0 to 60) and lands exactly on 60.
+2.  **Frames `390-t8_5.png`, `390-t10_5.png`, `1280-t8_5.png`**: The formula chunk for Step 2 (`4 × 3 = 12 סמר`) is missing from the screen while the orange highlight is active; the brief requires the formula chunks to appear in order.
+    *   **Fix**: Adjust the timeline so the second formula line fades in simultaneously with or immediately after the Step 2 badge/chip appears.
+
+## Notes
+*   **Legibility**: Text is clear and large enough on both viewports (smallest effective size ~13.7px on phone).
+*   **RTL/LTR**: Hebrew text reads correctly right-to-left, and math equations read correctly left-to-right.
+*   **Visuals**: The unit squares (grid) are implemented correctly, the colors (orange for cut, blue for final) match the brief, and the loop seam (start/end state) appears identical and clean.
+*   **Math**: Aside from the transient counting glitch in blocker #1, the final geometry (48 blue squares) and equations are correct.
+
+# DeepSeek code review — u4 (deepseek-v4-pro)
+
+## Verdict
+FAIL
+
+## Blockers
+
+1. **Chip counting logic does not follow the mandatory exact math rule and the teacher's explicit formula.**  
+   The code uses `Math.floor(...) + 1`, which produces counts that start at 1 and overshoot by one for most of the animation. The addendum requires `count = Math.round(60 × progress)` and `count = Math.round(12 × progress)` for chips 1 and 2 respectively (progress = (t‑stepStart)/sweepDuration, clamped).  
+   *Location in render:*  
+   ```js
+   count1 = Math.min(60, Math.max(0, Math.floor(p * 60) + 1));
+   ```
+   and the same pattern for `count2`.  
+   **Fix:** Replace with `Math.round(… * N)` (e.g. `Math.min(60, Math.round(60 * p1))`, `Math.min(12, Math.round(12 * p2))`) and ensure `0` before the sweep starts.
+
+2. **Hebrew units in the HTML formula chunks will render incorrectly on the RTL page.**  
+   The formula chunks contain `סמ״ר` inside a `dir="ltr"` paragraph without any RTL isolation. The letters will be displayed in wrong order (e.g. `רמ״ס` instead of `סמ״ר`). SVG text handles this via `cl-rtl`; the HTML formula needs explicit direction isolation.  
+   *Location:*  
+   ```html
+   <span data-fx="0" style="display:block">10 × 6 = 60 סמ״ר</span>
+   ```  
+   **Fix:** Wrap the Hebrew unit in a `<span dir="rtl">סמ״ר</span>` for each chunk (or use `cl-rtl` class on the unit span).  
+   Example:  
+   `<span data-fx="2" style="display:block">60 − 12 = 48 <span dir="rtl">סמ״ר</span></span>`.
+
+## Notes
+
+- **Formula chunk display style** – Using `display:block` forces each equation onto its own line, while the spec describes inline‑block LTR isolates that wrap within the row. This may be acceptable but is a stylistic deviation; consider using `display:inline-block` instead.  
+- **Cell numbering at t=0** – The chip1/chip2 text content becomes `"0 סמ״ר"` when hidden, which matches the loop seam (`render(0)` and `render(duration)`). This is correct.  
+- **Green‑only for final result** – Chip3’s green is set via `style.fill` (inline), which beats the CSS trap, and the `✓` chunk uses the `cl-check` class. That’s correct.  
+- **Text sizes and margins** – All SVG texts meet the ≥30 px (digits 30 px, Hebrew 32 px) rule; margins are adequate.  
+- **Collision‑free** – At the hold frame (t=13.0) only six text elements are visible, and none overlap.  
+- All other requirements (pure function, no external assets, `data‑el` existence, loop seam) are satisfied.
+
+# Lead note (unit-squares pass, 2026-10-18) — measurement-geometry-synthesis-grade-6
+Request (Noam): add 1 cm unit squares (60 cells over the 10×6 rectangle counting up; 12 orange corner cells; 48 blue cells in the final L). All fix + visual-review calls used qwen3.7-plus (daytime rule), via the QwenCloud Token Plan; no DeepSeek-driven fixes. Previous film kept as film.r9.js. Rounds: u1 (first pass, seam false) → u2 (seam false, hold frame incomplete) → u3 (seam true, hold complete) → u4 (one extra minimal patch beyond the 3-round cap, only to remove a measured hard cutoff: the grid popped off at t=14.5; now fades with the master fade 14.5→16).
+Measured on final film.js (u4): 60 cells in the DOM; t=3.9 chip1 '60', 60 visible; t=6.6 12 orange cells, chip2 '12'; t=13 (hold) 48 blue cells, 0 orange, chip3 '48 סמ״ר' green (only green element + ✓); seam: render(0) DOM == render(16) DOM (seamIdentical=true at 390 and 1280, 0 JS errors, min SVG text 13.7px at 390, no clipping).
+Qwen u4 verdict: FAIL, 2 blockers, both REJECTED by lead: (1) "chip shows 51 at t=3.5" — it is a mid-count frame and the count equals the number of cells started (50 fully visible + 1 fading in); (2) "formula 2 missing at t=8.5/10.5" — frames 390-t8_5 and 390-t10_5 do show both '10 × 6 = 60' and '4 × 3 = 12' (chunk 2 appears at t=6.8). DeepSeek u4 (deepseek-v4-pro, record only): FAIL, 2 blockers, DISPUTED: (1) asks for Math.round(60·p) while the lead's final spec deliberately counts cells by index (count always equals cells shown); (2) HTML-unit bidi note — the same formula markup/unit rendering is used by r9 and the other approved films and renders 'סמ״ר' correctly in the frames. Round budget exhausted: both FAILs recorded as disputed, NOT as pass. Earlier DeepSeek note on u3 (hard cutoff of cells at 14.5) was valid and fixed in u4.
