@@ -5259,7 +5259,9 @@ function showNoamGlossaryPopover(trigger,entry,keyboardOpen){
   trigger.setAttribute("aria-expanded","true");
   document.getElementById("noamGlossaryPopoverKind").textContent=entry.kind||"מושג";
   document.getElementById("noamGlossaryPopoverTitle").textContent=entry.term;
-  document.getElementById("noamGlossaryPopoverText").textContent=entry.short;
+  var popoverText=document.getElementById("noamGlossaryPopoverText");
+  popoverText.textContent=entry.short;
+  renderNoamFractionMarkers(popoverText);
   var more=document.getElementById("noamGlossaryMore");
   more.onclick=function(){hideNoamGlossaryPopover();renderNoamGlossaryDetail(entry.id);};
   popover.hidden=false;
@@ -5272,6 +5274,53 @@ function noamStripMarkdownEmphasis(text){
   return String(text||"")
     .replace(/\*\*([^*]+)\*\*/g,"$1")
     .replace(/(^|[\s(„"'])\*([^*\n]+)\*(?=[\s).,;:!?״"']|$)/g,"$1$2");
+}
+
+function makeNoamFraction(numerator,denominator){
+  var fraction=document.createElement("span");
+  fraction.className="exact-frac";
+  fraction.dir="ltr";
+  fraction.style.unicodeBidi="isolate";
+  fraction.style.whiteSpace="nowrap";
+  fraction.setAttribute("role","img");
+  fraction.setAttribute("aria-label",numerator+" חלקי "+denominator);
+  var top=document.createElement("span");
+  top.setAttribute("aria-hidden","true");
+  top.textContent=numerator;
+  var bar=document.createElement("span");
+  bar.className="exact-frac-bar";
+  bar.setAttribute("aria-hidden","true");
+  var bottom=document.createElement("span");
+  bottom.setAttribute("aria-hidden","true");
+  bottom.textContent=denominator;
+  fraction.append(top,bar,bottom);
+  return fraction;
+}
+
+function renderNoamFractionMarkers(root){
+  if (!root){return;}
+  var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+  var nodes=[];
+  while(walker.nextNode()){
+    var node=walker.currentNode;
+    var parent=node.parentElement;
+    if (!parent||node.nodeValue.indexOf("⟨")<0||parent.closest("script,style,svg,textarea,.exact-frac,.katex")){continue;}
+    nodes.push(node);
+  }
+  nodes.forEach(function(node){
+    var marker=/⟨([^⟩¦]+)¦([^⟩]+)⟩/g;
+    var text=node.nodeValue;
+    var last=0,match;
+    var fragment=document.createDocumentFragment();
+    while((match=marker.exec(text))){
+      if (match.index>last){fragment.appendChild(document.createTextNode(text.slice(last,match.index)));}
+      fragment.appendChild(makeNoamFraction(match[1],match[2]));
+      last=match.index+match[0].length;
+    }
+    if (!last){return;}
+    if (last<text.length){fragment.appendChild(document.createTextNode(text.slice(last)));}
+    node.parentNode.replaceChild(fragment,node);
+  });
 }
 
 function makeNoamGlossaryTerm(match){
@@ -5345,6 +5394,7 @@ function renderNoamGlossaryDetail(entryId){
       '<p class="noam-glossary-prerequisite">'+esc(entry.prerequisite)+'</p>'+
       '<button type="button" class="noam-action primary noam-glossary-question" id="noamGlossaryQuestion">רוצה להבין יותר? '+esc(entry.question)+'</button>'+
     '</article>';
+  renderNoamFractionMarkers(panelBody);
   document.getElementById("noamGlossaryChatTab").addEventListener("click",function(){activeGlossaryEntryId=null;renderNoamChat();});
   document.getElementById("noamGlossaryQuestion").addEventListener("click",function(){
     noamDrafts[selectedExercise.id]=entry.question;
@@ -5418,7 +5468,7 @@ function renderNoamChat(){
           '<button type="button" class="noam-math-key" data-math="cube" dir="ltr" title="העלאה בחזקה שלישית" aria-label="העלאה בחזקה שלישית">x³</button>' +
           '<button type="button" class="noam-math-key" data-math="power" dir="ltr" title="חזקה לבחירתכם" aria-label="חזקה לבחירתכם">xⁿ</button>' +
           '<button type="button" class="noam-math-key" data-math="root" dir="ltr" title="שורש ריבועי" aria-label="שורש ריבועי">√</button>' +
-          '<button type="button" class="noam-math-key" data-math="fraction" dir="ltr" title="שבר" aria-label="שבר">a/b</button>' +
+          '<button type="button" class="noam-math-key" data-math="fraction" dir="ltr" title="שבר" aria-label="שבר">⟨a¦b⟩</button>' +
           '<button type="button" class="noam-math-key" data-math="multiply" dir="ltr" title="כפל" aria-label="כפל">×</button>' +
           '<button type="button" class="noam-math-key" data-math="divide" dir="ltr" title="חילוק" aria-label="חילוק">÷</button>' +
           '<button type="button" class="noam-math-key" data-math="parentheses" dir="ltr" title="סוגריים" aria-label="סוגריים">( )</button>' +
@@ -5540,6 +5590,7 @@ function renderNoamChat(){
 
   setNoamBusy(busy);
   document.getElementById("noamDraw").disabled=busy||drawingPending;
+  renderNoamFractionMarkers(panelBody);
   renderPanelMath(panelBody);
   panelBody.querySelectorAll(".noam-row.assistant .noam-bubble,#noamPickedText").forEach(enhanceNoamGlossary);
   if (showQuestionPreview){renderExercisePreview(selectedExercise,0);}
@@ -8034,13 +8085,7 @@ function esc(s){
         span.style.whiteSpace='nowrap';
         var frac=/^([0-9]+)\/([0-9]+)$/.exec(match[1]);
         if(frac){
-          span.className='exact-frac';
-          span.appendChild(document.createTextNode(frac[1]));
-          var bar=document.createElement('span');
-          bar.className='exact-frac-bar';
-          bar.setAttribute('aria-hidden','true');
-          span.appendChild(bar);
-          span.appendChild(document.createTextNode(frac[2]));
+          span=makeNoamFraction(frac[1],frac[2]);
         }else{
           span.textContent=match[1].replace(/-/g,'−');
         }
