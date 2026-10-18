@@ -31,6 +31,7 @@ const UNIT_RIGHT = new Set(['h', 'hr', 's', 'sec', 'min', 'm', 'cm', 'km', 'l', 
 const WORD_PAIRS = new Set(['and/or', 'w/o', 'n/a', 'yes/no', 'on/off']);
 const DATE_WORD = /תאריך|ביום|עודכן|בחודש|לוח/;
 const NON_TEXT_SIDE = /\b(?:path|url|href|src|slug|file|dir|base|origin|import|join|pathname)\b/i;
+const PATH_JOIN_NAME = /^(?:folder|name|prefix|id|lang|page)$/i;
 
 const SKIP_DIR = new Set(['node_modules', 'dist', 'sheets', '.git']);
 const SCAN_EXT = new Set(['.astro', '.ts', '.tsx', '.js', '.mjs', '.html', '.json']);
@@ -817,6 +818,12 @@ function sideIsNonText(side) {
   return NON_TEXT_SIDE.test(side);
 }
 
+function bothSidesArePathJoin(left, right) {
+  const l = left.trim();
+  const r = right.trim();
+  return /^[A-Za-z_$][\w$]*$/.test(l) && /^[A-Za-z_$][\w$]*$/.test(r) && PATH_JOIN_NAME.test(l) && PATH_JOIN_NAME.test(r);
+}
+
 /**
  * A quotient assembled in code, where the slash never sits inside one literal:
  * `n + "/" + d` or `${n}/${d}`. Path and url joins stay quiet.
@@ -829,16 +836,19 @@ export function findBuiltSlashFractions(source) {
     const line = stripLineComment(raw);
     if (!line.includes('/')) return;
     if (sideIsNonText(line)) return;
-    const concat = /([A-Za-z_$][\w$]*)\s*\+\s*(['"])\/\2\s*\+\s*([A-Za-z_$][\w$]*)/g;
+    const builtSide = String.raw`(?:String\s*\(\s*[A-Za-z_$][\w$]*\s*\)|[A-Za-z_$][\w$]*)`;
+    const concat = new RegExp(`(${builtSide})\\s*\\+\\s*(['"])\\/\\2\\s*\\+\\s*(${builtSide})`, 'g');
     for (const match of line.matchAll(concat)) {
-      if (sideIsNonText(match[1]) || sideIsNonText(match[3])) continue;
-      hits.push({ line: idx + 1, text: `${match[1]} + "/" + ${match[3]}` });
+      const left = match[1].replace(/\s+/g, '');
+      const right = match[3].replace(/\s+/g, '');
+      if (sideIsNonText(left) || sideIsNonText(right)) continue;
+      hits.push({ line: idx + 1, text: `${left} + "/" + ${right}` });
     }
     const templ = /\$\{([^{}]{1,80})\}\s*\/\s*\$\{([^{}]{1,80})\}/g;
     for (const match of line.matchAll(templ)) {
       const left = match[1].trim();
       const right = match[2].trim();
-      if (sideIsNonText(left) || sideIsNonText(right)) continue;
+      if (sideIsNonText(left) || sideIsNonText(right) || bothSidesArePathJoin(left, right)) continue;
       if (left.includes('/') || right.includes('/')) continue;
       hits.push({ line: idx + 1, text: `\${${left}}/\${${right}}` });
     }
@@ -992,6 +1002,22 @@ function regionHasJsx(chars, from, to) {
   return false;
 }
 
+/** `<p>{num}/{den}</p>` is a fraction drawn from two expressions. `{folder}/{name}` is a path. */
+function pushMarkupExprFractions(rel, body, bodyStartLine, findings) {
+  const re = /\{([A-Za-z_$][\w$]*)\}\s*\/\s*\{([A-Za-z_$][\w$]*)\}/g;
+  body.split('\n').forEach((raw, idx) => {
+    const line = stripLineComment(raw);
+    for (const match of line.matchAll(re)) {
+      if (bothSidesArePathJoin(match[1], match[2])) continue;
+      findings.push({
+        file: rel,
+        line: bodyStartLine + idx,
+        text: `{${match[1]}}/{${match[2]}}`,
+      });
+    }
+  });
+}
+
 export function scanSource(rel, source, snippets = []) {
   const findings = [];
   const push = (lineNo, piece, sourceLine = '') => pushHits(findings, rel, snippets, lineNo, piece, sourceLine);
@@ -1002,6 +1028,7 @@ export function scanSource(rel, source, snippets = []) {
     if (fm) scanCodeStrings(rel, fm[1], 2, snippets, findings);
     const body = fm ? source.slice(fm[0].length) : source;
     const bodyStartLine = fm ? fm[0].split('\n').length : 1;
+    pushMarkupExprFractions(rel, blankRegions(body), bodyStartLine, findings);
     const scriptRe = /<script\b[^>]*>([\s\S]*?)<\/script>/gi;
     for (const match of body.matchAll(scriptRe)) {
       const start = bodyStartLine + lineOfOffset(body, match.index || 0) - 1;

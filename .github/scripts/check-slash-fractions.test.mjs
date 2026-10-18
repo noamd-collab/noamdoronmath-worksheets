@@ -197,16 +197,26 @@ describe('review gaps', () => {
       'const file = dir + "/" + name;',
       'const url = `${base}/${slug}`;',
       'const joined = `${PROD}/${slug}`;',
+      'const built = String(a) + "/" + String(b);',
+      'const foldered = `${folder}/${name}`;',
+      'const prefixed = `${prefix}/${id}`;',
+      'const paged = `${lang}/${page}`;',
       '',
     ].join('\n');
     assert.deepEqual(
       findBuiltSlashFractions(source).map((hit) => `${hit.line}: ${hit.text}`),
-      ['1: n + "/" + d', '2: ${n}/${d}'],
+      ['1: n + "/" + d', '2: ${n}/${d}', '6: String(a) + "/" + String(b)'],
     );
     const hits = scanSource('headless/astro-poc/src/lib/topicFilms/gap.ts', source, []);
     assert.deepEqual(
       hits.map((hit) => `${hit.line}: ${hit.text}`),
-      ['1: n + "/" + d', '2: ${n}/${d}'],
+      ['1: n + "/" + d', '2: ${n}/${d}', '6: String(a) + "/" + String(b)'],
+    );
+    const astro = ['---', 'const hidden = (a+b)/2;', '---', '<p>{num}/{den}</p>', '<p>{folder}/{name}</p>', ''].join('\n');
+    const markupHits = scanSource('headless/astro-poc/src/pages/gap.astro', astro, []);
+    assert.deepEqual(
+      markupHits.map((hit) => `${hit.line}: ${hit.text}`),
+      ['4: {num}/{den}'],
     );
   });
 });

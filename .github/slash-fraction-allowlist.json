@@ -11,7 +11,7 @@
     },
     {
       "id": "comments-code-style",
-      "reason": "Comments, non-string code, and <style>. String literals inside <script>, topicFilms, conceptLoops.ts, loopHelpers.ts, landingLoops.ts, kiteAreaFilm.ts, public-lesson/lesson.html, and public JavaScript are scanned. A quotient built at runtime (n + \"/\" + d, ${n}/${d}) is a fraction when it is visible text. The same shape in a path, url, href, src, slug, or file join is not. A slash in real code, including Math.floor(m / 5) inside an Astro expression, is not a fraction. CSS lengths (8px / 8px), font shorthand (16px/1.5), and aspect-ratio (4 / 3) are not fractions."
+      "reason": "Comments, non-string code, and <style>. String literals inside <script>, topicFilms, conceptLoops.ts, loopHelpers.ts, landingLoops.ts, kiteAreaFilm.ts, public-lesson/lesson.html, and public JavaScript are scanned. A quotient built at runtime (n + \"/\" + d, String(a) + \"/\" + String(b), ${n}/${d}, or Astro {num}/{den}) is a fraction when it is visible text. The same shape in a path, url, href, src, slug, or file join is not, including ${folder}/${name}, ${prefix}/${id}, and ${lang}/${page}. A slash in real code, including Math.floor(m / 5) inside an Astro expression, is not a fraction. CSS lengths (8px / 8px), font shorthand (16px/1.5), and aspect-ratio (4 / 3) are not fractions."
     },
     {
       "id": "units",

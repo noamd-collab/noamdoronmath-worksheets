@@ -5778,24 +5778,49 @@ function noamFractionSpeech(text){
     return (sign?"מינוס ":"")+n+" חלקי "+d;
   });
 }
-function equationNeedsLtr(run){
-  if(run.indexOf("⟨")<0){return false;}
-  var marks=run.match(/⟨/g);
+function equationCoreQualifies(core){
+  if(core.indexOf("⟨")<0){return false;}
+  var marks=core.match(/⟨/g);
   if(marks&&marks.length>=2){return true;}
-  return /[=+−\-×·÷:<>≤≥^]/.test(run.replace(/⟨[^⟩]*⟩/g,""));
+  if(!marks||marks.length!==1||core.indexOf("=")<0){return false;}
+  return /[A-Za-zπ√⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿⁱ]/.test(core.replace(/⟨[^⟩]*⟩/g,""));
+}
+function trimEquationEdges(piece){
+  var lead="";
+  var core=piece;
+  var trail="";
+  var edge=/[()[\]{}=.,:;]/;
+  while(core.length&&(core.charAt(0)===" "||edge.test(core.charAt(0)))){
+    lead+=core.charAt(0);
+    core=core.slice(1);
+  }
+  while(core.length&&(core.charAt(core.length-1)===" "||edge.test(core.charAt(core.length-1)))){
+    trail=core.charAt(core.length-1)+trail;
+    core=core.slice(0,-1);
+  }
+  return {lead:lead,core:core,trail:trail};
 }
 function wrapEquations(text){
   var token="⟨[^⟩]*⟩|[0-9A-Za-zπ√⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿⁱ₀₁₂₃₄₅₆₇₈₉()[\\]{}.,−+×·÷=<>≤≥:^…%½¼¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞±\\-]+";
   var re=new RegExp("(?:"+token+")(?:\\s*(?:"+token+"))+","g");
-  return text.replace(re,function(run,offset){
-    var body=run;
-    var lead="";
-    if(/^[-−]/.test(body)&&offset>0&&/[\u0590-\u05FF]/.test(text.charAt(offset-1))){
-      lead=body.charAt(0);
-      body=body.slice(1);
+  var split=/(?<=\S)[:;,.](?=\s|$)/g;
+  return text.replace(re,function(run){
+    var bits=[];
+    var last=0;
+    var found;
+    split.lastIndex=0;
+    while((found=split.exec(run))){
+      bits.push(run.slice(last,found.index));
+      bits.push(found[0]);
+      last=found.index+found[0].length;
     }
-    if(!equationNeedsLtr(body)){return run;}
-    return lead+'<span class="exact-eq" dir="ltr">'+body+"</span>";
+    bits.push(run.slice(last));
+    return bits.map(function(bit){
+      if(/^[;:,.]$/.test(bit)){return bit;}
+      var trimmed=trimEquationEdges(bit);
+      if(!equationCoreQualifies(trimmed.core)){return bit;}
+      return trimmed.lead+'<span class="exact-eq" dir="ltr">'+trimmed.core+"</span>"+trimmed.trail;
+    }).join("");
   });
 }
 function noamFractionHtml(text){
