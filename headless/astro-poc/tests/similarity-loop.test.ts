@@ -14,8 +14,8 @@ it('draws every corresponding side at exactly twice its partner, and area four t
   const a=triangle('small-fill'),b=triangle('large-fill');
   for(let i=0;i<3;i++) close(b.sides[i]/a.sides[i],2);
   close(b.area/a.area,4);
-  a.sides.forEach((side,i)=>close(side/14,[5,7,6][i]));
-  b.sides.forEach((side,i)=>close(side/14,[10,14,12][i]));
+  a.sides.forEach((side,i)=>close(side/50,[1,2,1.8][i]));
+  b.sides.forEach((side,i)=>close(side/50,[2,4,3.6][i]));
   for(let i=1;i<3;i++) {
     const [x,y]=[a.points[i][0]-a.points[0][0],a.points[i][1]-a.points[0][1]];
     close(b.points[i][0]-b.points[0][0],-2*y);close(b.points[i][1]-b.points[0][1],2*x);
@@ -29,7 +29,7 @@ it('triangle area uses the same unit grid and one complete cell becomes four cel
   assert.ok(cells.every(c=>c[2]===w&&c[3]===h));
   assert.equal(new Set(cells.map(c=>c.slice(0,2).join(','))).size,4);
   assert.deepEqual([...new Set(cells.map(c=>c[0]))],[218,218+w]);
-  assert.deepEqual([...new Set(cells.map(c=>c[1]))],[119,119+h]);
+  assert.deepEqual([...new Set(cells.map(c=>c[1]))],[91,91+h]);
   assert.equal(cells.reduce((s,c)=>s+c[2]*c[3],0),4*w*h);
   assert.equal(w,14);assert.equal(h,14);
   assert.equal((component.match(/class="square-unit-pattern" width="14" height="14"/g)||[]).length,2);
@@ -71,8 +71,8 @@ it('corresponding heights, angle bisectors and medians obey their definitions an
 });
 it('perimeter traces match the triangles and perimeter doubles, not stays equal',()=>{
   const a=triangle('small-fill'),b=triangle('large-fill');
-  close(a.sides.reduce((s,x)=>s+x,0)/14,18);
-  close(b.sides.reduce((s,x)=>s+x,0)/14,36);
+  close(a.sides.reduce((s,x)=>s+x,0)/50,4.8);
+  close(b.sides.reduce((s,x)=>s+x,0)/50,9.6);
   const paths=[...component.matchAll(/class="perimeter" pathLength="1" d="([^"]+)"/g)].map(m=>m[1]);
   for(const [i,cls] of ['small-fill','large-fill'].entries())assert.equal(paths[i],component.match(new RegExp('<path d="([^"]+)" class="'+cls+'"'))?.[1]);
 });

@@ -3,46 +3,35 @@ import LessonMath from './LessonMath.astro';
 interface Props { variant: 'similar' | 'similar-area' | 'similar-aa' }
 const { variant } = Astro.props;
 const area = variant === 'similar-area';
-const initialPhase = area ? 3 : 0;
+const initialPhase = area ? 6 : 0;
 const gridId = `similarity-${crypto.randomUUID()}`;
 ---
 <section class="similarity-film" data-similarity={variant} data-phase={initialPhase} data-beat="0" dir="rtl" aria-label="משפטי דמיון: ז.ז, צ.ז.צ, צ.צ.צ ויחס שטחים">
   <svg viewBox="0 0 360 280" role="img" aria-label="משולשים במנחים שונים. ז.ז: שתי זוויות מתאימות שוות. צ.ז.צ: שתי צלעות ביחס שווה והזווית שביניהן שווה. צ.צ.צ: שלוש צלעות ביחס שווה. לאחר הוכחת הדמיון, ההיקפים והקטעים המתאימים גדלים פי 2, והשטחים פי 4.">
     <g class="triangles-scene">
-      <path d="M25 130 L63 71.212246 L123 130 Z" class="small-fill"/>
-      <path d="M190 35 L307.575508 111 L190 231 Z" class="large-fill"/>
+      <path d="M25 130 L47 85.100111 L125 130 Z" class="small-fill"/>
+      <path d="M190 35 L279.799777 79 L190 235 Z" class="large-fill"/>
 
-      <g transform="translate(25 130)" aria-hidden="true"><g class="growing-copy"><path d="M0 0 L38 -58.787754 L98 0 Z"/></g></g>
-      <g class="side-lengths"><text x="34" y="93">5</text><text x="256" y="60">10</text><text x="77" y="153">7</text><text x="170" y="137">14</text><text x="106" y="91">6</text><text x="272" y="186">12</text></g>
-      <g class="angle-pair angle-alpha"><path d="M33.142857 117.402624 A15 15 0 0 1 40 130 M206.796501 45.857143 A20 20 0 0 1 190 55"/><text x="49" y="121">α</text><text x="207" y="68">α</text></g>
-      <g class="angle-pair angle-beta"><path d="M74.428571 82.409914 A16 16 0 0 1 54.314286 84.649447 M292.178715 126.714286 A22 22 0 0 1 289.099356 99.057143"/><text x="66" y="101">β</text><text x="271" y="123">β</text></g>
-      <g class="vertices"><text x="17" y="152">A</text><text x="61" y="54">B</text><text x="138" y="137">C</text><text x="180" y="24">D</text><text x="326" y="112">E</text><text x="185" y="252">F</text></g>
+      <g transform="translate(25 130)" aria-hidden="true"><g class="growing-copy"><path d="M0 0 L22 -44.899889 L100 0 Z"/></g></g>
+      <g class="side-lengths"><g class="length-pair length-first"><text x="24" y="98">1</text><text x="242" y="43">2</text></g><g class="length-pair length-second"><text x="77" y="153">2</text><text x="170" y="137">4</text></g><g class="length-pair length-third"><text x="99" y="99">1.8</text><text x="258" y="170">3.6</text></g></g>
+      <g class="angle-pair angle-alpha"><path d="M31.6 116.530033 A15 15 0 0 1 40 130 M207.061958 43.36 A19 19 0 0 1 190 54"/><text x="48" y="119">α</text><text x="205" y="66">α</text></g>
+      <g class="angle-pair angle-beta"><path d="M58.266667 91.585651 A13 13 0 0 1 41.28 96.774082 M271.318687 93.733333 A17 17 0 0 1 264.533815 71.52"/><text x="53" y="109">β</text><text x="253" y="86">β</text></g>
+      <g class="vertices"><text x="17" y="152">A</text><text x="44" y="71">B</text><text x="138" y="137">C</text><text x="180" y="24">D</text><text x="296" y="81">E</text><text x="185" y="252">F</text></g>
       <g class="angle-equations"><text class="alpha-equation" x="95" y="274">α = α</text><text class="beta-equation" x="265" y="274">β = β</text></g>
+      <g class="triangle-edges" fill="none"><path class="given-edges" d="M47 85.100111 L25 130 L125 130 M279.799777 79 L190 35 L190 235"/><path class="remaining-edges" d="M47 85.100111 L125 130 M279.799777 79 L190 235"/></g>
       <g class="matching-sides" fill="none">
-        <path class="match-leg first-leg" d="M25 130 L63 71.212246 M190 35 L307.575508 111"/>
-        <path class="match-leg second-leg" d="M25 130 L123 130 M190 35 L190 231"/>
-        <path class="match-leg third-leg" d="M63 71.212246 L123 130 M307.575508 111 L190 231"/>
+        <path class="match-leg first-leg" d="M25 130 L47 85.100111 M190 35 L279.799777 79"/>
+        <path class="match-leg second-leg" d="M25 130 L125 130 M190 35 L190 235"/>
+        <path class="match-leg third-leg" d="M47 85.100111 L125 130 M279.799777 79 L190 235"/>
       </g>
       <g class="perimeters" fill="none">
-        <path class="perimeter" pathLength="1" d="M25 130 L63 71.212246 L123 130 Z"/>
-        <path class="perimeter" pathLength="1" d="M190 35 L307.575508 111 L190 231 Z"/>
-        <text x="76" y="204">P = 18</text><text x="260" y="233">P = 36</text>
+        <path class="perimeter" pathLength="1" d="M25 130 L47 85.100111 L125 130 Z"/>
+        <path class="perimeter" pathLength="1" d="M190 35 L279.799777 79 L190 235 Z"/>
+        <text x="76" y="204">P = 4.8</text><text x="260" y="233">P = 9.6</text>
       </g>
-      <g class="construction height-pair">
-        <path class="segment" d="M25 130 L73 81.010205 M190 35 L287.97959 131"/>
-        <path class="construction-mark" d="M68 76.111226 L63.101021 81.111226 L68.101021 86.010205 M297.777549 121 L287.777549 111.202041 L277.97959 121.202041"/>
-        <text x="95" y="274">h</text><text x="265" y="274">2h</text>
-      </g>
-      <g class="construction bisector-pair">
-        <path class="segment" d="M25 130 L88 95.707144 M190 35 L258.585713 161"/>
-        <path class="construction-mark" d="M32.057143 119.082274 A13 13 0 0 1 36.418031 123.784811 M39.931271 121.872445 A17 17 0 0 1 42 130 M205.956676 45.314286 A19 19 0 0 1 199.083737 51.687891 M200.996103 55.201132 A23 23 0 0 1 190 58"/>
-        <text x="95" y="274">b</text><text x="265" y="274">2b</text>
-      </g>
-      <g class="construction median-pair">
-        <path class="segment" d="M25 130 L93 100.606123 M190 35 L248.787754 171"/>
-        <path class="construction-mark" d="M80.799417 83.052042 L75.200583 88.766327 M110.799417 112.445919 L105.200583 118.160204 M283.895916 146.598834 L272.467345 135.401166 M225.108163 206.598834 L213.679591 195.401166"/><circle cx="93" cy="100.606123" r="3"/><circle cx="248.787754" cy="171" r="3"/>
-        <text x="95" y="274">m</text><text x="265" y="274">2m</text>
-      </g>
+      <g class="construction height-pair"><path class="segment" d="M25 130 L49.888889 86.76307 M190 35 L276.47386 84.777778"/><path class="construction-mark" d="M45.555556 84.268632 L43.061117 88.601965 L47.394451 91.096404 M281.462736 76.111111 L272.796069 71.122235 L267.807193 79.788901"/><text x="95" y="274">h</text><text x="265" y="274">2h</text></g>
+      <g class="construction bisector-pair"><path class="segment" d="M25 130 L73 100.066741 M190 35 L249.866518 131"/><path class="construction-mark" d="M30.72 118.326029 A13 13 0 0 1 36.030866 123.121047 M39.424978 121.004446 A17 17 0 0 1 42 130 M207.061958 43.36 A19 19 0 0 1 200.053855 51.122035 M202.170456 54.516147 A23 23 0 0 1 190 58"/><text x="95" y="274">b</text><text x="265" y="274">2b</text></g>
+      <g class="construction median-pair"><path class="segment" d="M25 130 L86 107.550056 M190 35 L234.899889 157"/><path class="construction-mark" d="M68.495551 92.858417 L64.504449 99.79175 M264.283166 121.991101 L250.4165 114.008899 M107.495551 115.308361 L103.504449 122.241695 M219.383278 199.991101 L205.516611 192.008899"/><circle cx="86" cy="107.550056" r="3"/><circle cx="234.899889" cy="157" r="3"/><text x="95" y="274">m</text><text x="265" y="274">2m</text></g>
     </g>
     <defs>
       <pattern id={`${gridId}-small`} class="square-unit-pattern" width="14" height="14" x="25" y="130" patternUnits="userSpaceOnUse"><path d="M14 0 H0 V14" class="grid-line"/></pattern>
@@ -50,41 +39,48 @@ const gridId = `similarity-${crypto.randomUUID()}`;
       <pattern id={`${gridId}-moving`} width="14" height="14" patternUnits="userSpaceOnUse"><path d="M14 0 H0 V14" class="grid-line"/></pattern>
     </defs>
     <g class="area-scene">
-      <path d="M25 130 L63 71.212246 L123 130 Z" class="area-small"/>
-      <path d="M25 130 L63 71.212246 L123 130 Z" class="triangle-unit-grid" fill={`url(#${gridId}-small)`}/>
-      <path d="M190 35 L307.575508 111 L190 231 Z" class="area-large"/>
+      <path d="M25 130 L47 85.100111 L125 130 Z" class="area-small"/>
+      <path d="M25 130 L47 85.100111 L125 130 Z" class="triangle-unit-grid" fill={`url(#${gridId}-small)`}/>
+      <path d="M190 35 L279.799777 79 L190 235 Z" class="area-large"/>
       <g class="unit-grid">
-        <path d="M190 35 L307.575508 111 L190 231 Z" class="triangle-unit-grid" fill={`url(#${gridId}-large)`}/>
-        <rect class="unit-cell" x="218" y="119" width="14" height="14"/>
-        <rect class="unit-cell" x="232" y="119" width="14" height="14"/>
-        <rect class="unit-cell" x="218" y="133" width="14" height="14"/>
-        <rect class="unit-cell" x="232" y="133" width="14" height="14"/>
+        <path d="M190 35 L279.799777 79 L190 235 Z" class="triangle-unit-grid" fill={`url(#${gridId}-large)`}/>
+        <rect class="unit-cell" x="218" y="91" width="14" height="14"/>
+        <rect class="unit-cell" x="232" y="91" width="14" height="14"/>
+        <rect class="unit-cell" x="218" y="105" width="14" height="14"/>
+        <rect class="unit-cell" x="232" y="105" width="14" height="14"/>
       </g>
-      <rect class="unit-original" x="67" y="102" width="14" height="14"/>
+      <rect class="unit-original" x="53" y="102" width="14" height="14"/>
       <g transform="translate(25 130)" aria-hidden="true"><g class="area-growing">
-        <path d="M0 0 L38 -58.787754 L98 0 Z" class="moving-triangle"/>
-        <path d="M0 0 L38 -58.787754 L98 0 Z" fill={`url(#${gridId}-moving)`}/>
-        <rect class="moving-unit" x="42" y="-28" width="14" height="14"/>
+        <path d="M0 0 L22 -44.899889 L100 0 Z" class="moving-triangle"/>
+        <path d="M0 0 L22 -44.899889 L100 0 Z" fill={`url(#${gridId}-moving)`}/>
+        <rect class="moving-unit" x="28" y="-28" width="14" height="14"/>
       </g></g>
       <text x="74" y="160">1 × 1</text>
       <text class="area-total" x="75" y="209">S</text><text class="area-total" x="265" y="258">4S</text>
     </g>
   </svg>
   <div class="scene-caption">
-    <p class="caption-0">שתי זוויות שוות · אותה צורה בכל מנח</p>
+    <p class="caption-0"><span class="aa-proof">שתי זוויות שוות · המשולשים דומים</span><span class="aa-result">הצלעות המתאימות · פי 2</span></p>
     <p class="caption-1"><span class="proof-label">שתי צלעות באותו יחס · הזווית שביניהן שווה</span><span class="result-label">גם ההיקף גדל פי 2</span></p>
-    <p class="caption-2"><span class="proof-label">שלוש צלעות · אותו יחס</span><span class="height-label">גבהים מתאימים · אותו יחס</span><span class="bisector-label">חוצי זוויות מתאימים · אותו יחס</span><span class="median-label">תיכונים מתאימים · אותו יחס</span></p>
-    <p class="caption-3">כל משבצת: 1×1 · פי 4 בשטח</p>
-    <div class="formula formula-0"><LessonMath value="△ABC ∼ △DEF"/></div>
-    <div class="formula formula-1"><span class="proof-label"><LessonMath value="10/5 = 14/7 = 2"/></span><span class="result-label"><LessonMath value="36/18 = 2"/></span></div>
-    <div class="formula formula-2"><span class="proof-label"><LessonMath value="10/5 = 14/7 = 12/6 = 2"/></span><span class="height-label"><LessonMath value="2h/h = 2"/></span><span class="bisector-label"><LessonMath value="2b/b = 2"/></span><span class="median-label"><LessonMath value="2m/m = 2"/></span></div>
-    <div class="formula formula-3"><LessonMath value="4S/S = 2² = 4"/></div>
+    <p class="caption-2">שלושת יחסי הצלעות שווים · המשולשים דומים</p>
+    <p class="caption-3">גבהים מתאימים · אותו יחס דמיון</p>
+    <p class="caption-4">חוצי זוויות מתאימים · אותו יחס דמיון</p>
+    <p class="caption-5">תיכונים מתאימים · אותו יחס דמיון</p>
+    <p class="caption-6">כל משבצת: 1×1 · פי 4 בשטח</p>
+    <div class="formula formula-0"><span class="aa-proof"><LessonMath value="△ABC ∼ △DEF"/></span><span class="aa-first"><LessonMath value="2/1 = 2"/></span><span class="aa-second"><LessonMath value="4/2 = 2"/></span></div>
+    <div class="formula formula-1"><span class="proof-label"><LessonMath value="2/1 = 4/2 = 2"/></span><span class="result-label"><LessonMath value="9.6/4.8 = 2"/></span></div>
+    <div class="formula formula-2"><span class="sss-first"><LessonMath value="2/1"/></span><span class="sss-second"><LessonMath value="= 4/2"/></span><span class="sss-third"><LessonMath value="= 3.6/1.8 = 2"/></span></div>
+    <div class="formula formula-3"><LessonMath value="2h/h = 2"/></div>
+    <div class="formula formula-4"><LessonMath value="2b/b = 2"/></div>
+    <div class="formula formula-5"><LessonMath value="2m/m = 2"/></div>
+    <div class="formula formula-6"><LessonMath value="4S/S = 2² = 4"/></div>
   </div>
-  <div class="construction-controls" role="group" aria-label="בחירת קטעים מתאימים במשולשים">
-    {['גובה','חוצה זווית','תיכון'].map((label,i)=><button type="button" data-construction={i+1} aria-pressed="false" disabled>{label}</button>)}
+  <div class="sas-controls" role="group" aria-label="צ.ז.צ והיקף">
+    <button type="button" data-sas-beat="0" aria-pressed="true" disabled>צ.ז.צ</button>
+    <button type="button" data-sas-beat="2" aria-pressed="false" disabled>היקף</button>
   </div>
   <div class="chapters" role="group" aria-label="בחירת קטע — 10 שניות לכל קטע">
-    {['ז.ז','צ.ז.צ','צ.צ.צ','שטח'].map((label,i)=><button type="button" data-chapter={i} aria-pressed={initialPhase===i?'true':'false'} disabled>{label}<span aria-hidden="true"></span></button>)}
+    {['ז.ז','צ.ז.צ','צ.צ.צ','גובה','חוצה זווית','תיכון','שטח'].map((label,i)=><button type="button" data-chapter={i} aria-pressed={initialPhase===i?'true':'false'} disabled>{label}<span aria-hidden="true"></span></button>)}
   </div>
 </section>
 <script>
@@ -98,11 +94,11 @@ const gridId = `similarity-${crypto.randomUUID()}`;
     let elapsed=0;
     let previous=0;
     const duration=10000;
-    const detailButtons=Array.from(film.querySelectorAll<HTMLButtonElement>('[data-construction]'));
+    const sasButtons=Array.from(film.querySelectorAll<HTMLButtonElement>('[data-sas-beat]'));
     const beat=()=> {
       const current=elapsed<3000?0:elapsed<5200?1:elapsed<7400?2:3;
       film.dataset.beat=String(current);
-      detailButtons.forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.construction)===current)));
+      sasButtons.forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.sasBeat)===(current<2?0:2))));
     };
     const select=(next:number)=>{
       phase=next;elapsed=0;film.dataset.phase=String(next);beat();
@@ -117,12 +113,8 @@ const gridId = `similarity-${crypto.randomUUID()}`;
       });
       button.disabled=false;
     });
-    detailButtons.forEach((button,i)=>{
-      button.addEventListener('click',()=>{
-        elapsed=[3000,5200,7400][i];beat();
-        film.toggleAttribute('data-inspect',shell?.classList.contains('ll--paused') ?? false);
-        film.style.setProperty('--progress',String(elapsed/duration));
-      });
+    sasButtons.forEach(button=>{
+      button.addEventListener('click',()=>{elapsed=Number(button.dataset.sasBeat)===2?5200:0;beat();film.style.setProperty('--progress',String(elapsed/duration));});
       button.disabled=false;
     });
     reduced.addEventListener('change',()=>{ elapsed=0; previous=0; });
@@ -132,11 +124,12 @@ const gridId = `similarity-${crypto.randomUUID()}`;
     const tick=(now:number)=>{
       if(!film.isConnected) return;
       const root=document.documentElement;
+      film.toggleAttribute('data-static',reduced.matches || ['nd-motion-off','noam-a11y-motion','noam-a11y-no-motion'].some(c=>root.classList.contains(c)));
       const stopped=reduced.matches || document.hidden || shell?.classList.contains('ll--paused') || shell?.classList.contains('ll--off') || ['nd-motion-off','noam-a11y-motion','noam-a11y-no-motion'].some(c=>root.classList.contains(c));
       if(!stopped && film.hasAttribute('data-inspect')) film.removeAttribute('data-inspect');
       if(!stopped && previous) {
         elapsed+=Math.min(now-previous,100);
-        if(elapsed>=duration) select((phase+1)%4);
+        if(elapsed>=duration) select((phase+1)%7);
         beat();
         film.style.setProperty('--progress',String(elapsed/duration));
       }
@@ -150,8 +143,11 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   svg{display:block;width:100%;height:auto;}
   svg path{stroke-linejoin:round;stroke-linecap:round;}
   svg text{font:700 19px Heebo,sans-serif;text-anchor:middle;direction:ltr;unicode-bidi:isolate;fill:#22305a;paint-order:stroke;stroke:white;stroke-width:3px;stroke-linejoin:round;}
-  .small-fill{fill:#dceee8;stroke:#22305a;stroke-width:2.5;}
-  .large-fill{fill:#fff3d6;stroke:#22305a;stroke-width:2.5;}
+  .small-fill{fill:#dceee8;stroke:none;}
+  .large-fill{fill:#fff3d6;stroke:none;}
+  .triangle-edges{stroke:#22305a;stroke-width:2.5;}
+  .remaining-edges{transition:opacity .5s;}
+  [data-phase="1"][data-beat="0"] .remaining-edges,[data-phase="1"][data-beat="1"] .remaining-edges{opacity:.08;}
   .growing-copy{transform-box:view-box;transform-origin:0 0;opacity:0;}
   .growing-copy path{fill:#65b4a63b;stroke:#14635b;stroke-width:2.5;}
   [data-phase='0'][data-ready] .growing-copy{animation:rotate-enlarge 10s ease-in-out both;}
@@ -161,9 +157,9 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   [data-phase='0'][data-ready] .angle-alpha,[data-phase='0'][data-ready] .alpha-equation{animation:alpha-focus 10s ease-in-out both;}
   [data-phase='0'][data-ready] .angle-beta,[data-phase='0'][data-ready] .beta-equation{animation:beta-focus 10s ease-in-out both;}
   .alpha-equation{fill:#14635b;}.beta-equation{fill:#a44716;}
-  .area-scene,.angle-equations,[data-phase='0'] .side-lengths{display:none;}
-  [data-phase='0'] .angle-equations,[data-phase='3'] .area-scene{display:inline;}
-  [data-phase='3'] .triangles-scene{display:none;}
+  .area-scene,.angle-equations{display:none;}
+  [data-phase='0'][data-beat='0'] .angle-equations,[data-phase='0'][data-beat='1'] .angle-equations,[data-phase='6'] .area-scene{display:inline;}
+  [data-phase='6'] .triangles-scene{display:none;}
   .area-small,.area-large{fill:#e7f3ed;stroke:#22305a;stroke-width:2;}
   .area-large{fill:#fff3d6;}
   .grid-line{fill:none;stroke:#608b83;stroke-width:1;}
@@ -172,28 +168,26 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   .unit-cell:nth-of-type(2){fill:#f7d489;}.unit-cell:nth-of-type(3){fill:#b9c9e9;}.unit-cell:nth-of-type(4){fill:#efb9a8;}
   .area-growing{transform-box:view-box;transform-origin:0 0;opacity:0;}
   .moving-triangle{fill:#dceee8;stroke:#14635b;stroke-width:2;}
-  [data-phase='3'][data-ready] .area-growing{animation:triangle-area-grow 10s ease-in-out both;}
-  [data-phase='3'][data-ready] .unit-grid{animation:reveal-grid 10s ease-in-out both;}
+  [data-phase='6'][data-ready] .area-growing{animation:triangle-area-grow 10s ease-in-out both;}
+  [data-phase='6'][data-ready] .unit-grid{animation:reveal-grid 10s ease-in-out both;}
   .area-total{font-size:24px;}
   .scene-caption{min-height:82px;display:grid;align-content:center;text-align:center;}
   .scene-caption p{font-size:15px;line-height:1.5;margin:0 0 8px;}
   .scene-caption>*{display:none;}
-  [data-phase='0'] .caption-0,[data-phase='1'] .caption-1,[data-phase='2'] .caption-2,[data-phase='3'] .caption-3,[data-phase='0'] .formula-0,[data-phase='1'] .formula-1,[data-phase='2'] .formula-2,[data-phase='3'] .formula-3{display:block;}
+  [data-phase='0'] .caption-0,[data-phase='0'] .formula-0,[data-phase='1'] .caption-1,[data-phase='1'] .formula-1,[data-phase='2'] .caption-2,[data-phase='2'] .formula-2,[data-phase='3'] .caption-3,[data-phase='3'] .formula-3,[data-phase='4'] .caption-4,[data-phase='4'] .formula-4,[data-phase='5'] .caption-5,[data-phase='5'] .formula-5,[data-phase='6'] .caption-6,[data-phase='6'] .formula-6{display:block;}
   .formula{font-size:21px;font-weight:750;direction:ltr;}
-  .construction-controls{display:none;gap:6px;margin:0 0 10px;}
-  .construction-controls button{flex:1;min-height:44px;background:white;border:1px solid #d5dce6;border-radius:8px;color:#22305a;font:600 13px Heebo,sans-serif;cursor:pointer;pointer-events:auto;}
-  .construction-controls button[aria-pressed='true']{background:#e7f3ed;border-color:#14635b;}
-  .construction-controls button:focus-visible{outline:3px solid #e6a534;outline-offset:2px;}
-  :global(.ll--paused) [data-phase='2'] .construction-controls{display:flex;}
-  @media(prefers-reduced-motion:reduce){[data-phase='2'] .construction-controls{display:flex;}}
-  :global(html.nd-motion-off) [data-phase='2'] .construction-controls,:global(html.noam-a11y-motion) [data-phase='2'] .construction-controls,:global(html.noam-a11y-no-motion) [data-phase='2'] .construction-controls{display:flex;}
-  .chapters{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;border-top:1px solid #e0e5e9;padding-top:12px;}
+  .sas-controls{display:none;gap:8px;margin-bottom:10px;}
+  .sas-controls button{flex:1;min-height:44px;border:1px solid #d5dce6;border-radius:9px;background:white;color:#22305a;font:600 14px Heebo,sans-serif;cursor:pointer;pointer-events:auto;}
+  .sas-controls button[aria-pressed='true']{background:#e7f3ed;border-color:#14635b;}
+  .sas-controls button:focus-visible{outline:3px solid #e6a534;outline-offset:2px;}
+  [data-static][data-phase='1'] .sas-controls,:global(.ll--paused) [data-phase='1'] .sas-controls{display:flex;}
+  .chapters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;border-top:1px solid #e0e5e9;padding-top:12px;}
   .chapters button{position:relative;overflow:hidden;min-height:44px;border:1px solid #d5dce6;border-radius:9px;background:white;color:#22305a;font:600 14px Heebo,sans-serif;cursor:pointer;pointer-events:auto;}
   .chapters button[aria-pressed='true']{background:#e7f3ed;border-color:#1e605e;}
   .chapters button:focus-visible{outline:3px solid #e6a534;outline-offset:2px;}
   .chapters span{position:absolute;bottom:0;right:0;height:3px;background:#1e605e;width:100%;transform:scaleX(0);transform-origin:right;}
   .chapters [aria-pressed='true'] span{transform:scaleX(var(--progress));}
-  @keyframes rotate-enlarge{0%,5%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}12%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}32%{transform:translate(0,0) rotate(90deg) scale(1);opacity:1;}70%,88%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:1;}100%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:0;}}
+  @keyframes rotate-enlarge{0%,5%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}12%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}22%{transform:translate(0,0) rotate(90deg) scale(1);opacity:1;}43%,47%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:1;}52%,100%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:0;}}
   @keyframes alpha-focus{0%,45%,100%{opacity:1;stroke-width:5;}55%,85%{opacity:.5;stroke-width:3;}}
   @keyframes beta-focus{0%,40%{opacity:.5;stroke-width:3;}50%,100%{opacity:1;stroke-width:5;}}
   @keyframes triangle-area-grow{0%,8%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}15%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}55%,65%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:1;}75%,100%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:0;}}
@@ -205,25 +199,44 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   [data-ready] .matching-sides .third-leg{animation-delay:1.4s;}
   @keyframes draw-side{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
   .second-leg{stroke:#a44716;}.third-leg{stroke:#5d54a4;}
-  [data-phase='1'] .matching-sides,[data-phase='2'][data-beat='0'] .matching-sides{display:inline;}
-  [data-phase='1'] .third-leg,[data-phase='1'] .angle-beta,[data-phase='2'] .angle-pair{display:none;}
+  [data-phase='1'] .matching-sides,[data-phase='2'] .matching-sides{display:inline;}
+  [data-phase='1'] .third-leg,[data-phase='1'] .angle-beta,[data-phase='2'] .angle-pair,[data-phase='3'] .angle-pair,[data-phase='4'] .angle-pair,[data-phase='5'] .angle-pair{display:none;}
   [data-phase='1'] .angle-alpha{stroke-width:5;}
-  [data-phase='1']:not([data-beat='0']) .matching-sides{display:none;}
-  [data-phase='1']:not([data-beat='0']) .perimeters{display:inline;}
+  [data-phase='1'][data-beat='0'] .length-third,[data-phase='1'][data-beat='1'] .length-third{display:none;}
+  [data-phase='1'][data-beat='2'] .matching-sides,[data-phase='1'][data-beat='3'] .matching-sides{display:none;}
+  [data-phase='1'][data-beat='2'] .perimeters,[data-phase='1'][data-beat='3'] .perimeters{display:inline;}
   .perimeter{stroke:#14635b;stroke-width:4;stroke-dasharray:1;}
-  [data-ready][data-phase='1'] .perimeter{animation:trace-perimeter 6.8s linear both;}
+  [data-ready][data-phase='1'] .perimeter{animation:trace-perimeter 4.8s linear both;}
   @keyframes trace-perimeter{0%{stroke-dashoffset:1;}60%,100%{stroke-dashoffset:0;}}
-  [data-phase='2']:not([data-beat='0']) .side-lengths{display:none;}
-  [data-phase='2'][data-beat='1'] .height-pair,[data-phase='2'][data-beat='2'] .bisector-pair,[data-phase='2'][data-beat='3'] .median-pair{display:inline;}
+  [data-phase='0'] .length-pair{display:none;}
+  [data-phase='0'][data-beat='2'] .length-first,[data-phase='0'][data-beat='3'] .length-second{display:inline;}
+  [data-phase='0'][data-beat='2'] .matching-sides,[data-phase='0'][data-beat='3'] .matching-sides{display:inline;}
+  [data-phase='0'] .match-leg{display:none;}
+  [data-phase='0'][data-beat='2'] .first-leg,[data-phase='0'][data-beat='3'] .second-leg{display:inline;animation-delay:0s;}
+  [data-phase='2'][data-beat='0'] .length-second,[data-phase='2'][data-beat='0'] .length-third,[data-phase='2'][data-beat='1'] .length-third,[data-phase='2'][data-beat='0'] .second-leg,[data-phase='2'][data-beat='0'] .third-leg,[data-phase='2'][data-beat='1'] .third-leg{display:none;}
+  [data-phase='2'] .match-leg{animation-delay:0s!important;}
+  [data-phase='2'][data-beat='3'][data-ready] .growing-copy{animation:proof-fit 2.6s ease-in-out both;}
+  @keyframes proof-fit{0%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}10%{opacity:.8;}85%,100%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:.65;}}
+  [data-phase='3'] .side-lengths,[data-phase='4'] .side-lengths,[data-phase='5'] .side-lengths{display:none;}
+  [data-phase='3'] .height-pair,[data-phase='4'] .bisector-pair,[data-phase='5'] .median-pair{display:inline;}
   .construction{color:#14635b;}.bisector-pair{color:#a44716;}.median-pair{color:#5d54a4;}
   .segment{fill:none;stroke:currentColor;stroke-width:3;stroke-dasharray:240;}
   [data-ready] .construction .segment{animation:draw-segment .8s ease-out both;}
   .construction-mark{fill:none;stroke:currentColor;stroke-width:1.6;}
   .construction circle{fill:currentColor;}.construction text{fill:currentColor;}
   @keyframes draw-segment{from{stroke-dashoffset:240;}to{stroke-dashoffset:0;}}
-  .result-label,.height-label,.bisector-label,.median-label{display:none;}
-  [data-phase='1']:not([data-beat='0']) .proof-label,[data-phase='2']:not([data-beat='0']) .proof-label{display:none;}
-  [data-phase='1']:not([data-beat='0']) .result-label,[data-phase='2'][data-beat='1'] .height-label,[data-phase='2'][data-beat='2'] .bisector-label,[data-phase='2'][data-beat='3'] .median-label{display:inline;}
+  .result-label,.aa-result,.aa-first,.aa-second{display:none;}
+  [data-phase='0'][data-beat='2'] .aa-proof,[data-phase='0'][data-beat='3'] .aa-proof{display:none;}
+  [data-phase='0'][data-beat='2'] .aa-result,[data-phase='0'][data-beat='3'] .aa-result,[data-phase='0'][data-beat='2'] .aa-first,[data-phase='0'][data-beat='3'] .aa-second{display:inline;}
+  [data-phase='1'][data-beat='2'] .proof-label,[data-phase='1'][data-beat='3'] .proof-label{display:none;}
+  [data-phase='1'][data-beat='2'] .result-label,[data-phase='1'][data-beat='3'] .result-label{display:inline;}
+  [data-phase='2'][data-beat='0'] .sss-second,[data-phase='2'][data-beat='0'] .sss-third,[data-phase='2'][data-beat='1'] .sss-third{visibility:hidden;}
+  .formula-2{display:none;direction:ltr;white-space:nowrap;font-size:19px;}
+  /* Static views retain the complete argument without running a clock. */
+  [data-static][data-phase='2'] .length-pair,[data-inspect][data-phase='2'] .length-pair,[data-static][data-phase='2'] .match-leg,[data-inspect][data-phase='2'] .match-leg{display:inline;}
+  [data-static][data-phase='2'] .sss-second,[data-static][data-phase='2'] .sss-third,[data-inspect][data-phase='2'] .sss-second,[data-inspect][data-phase='2'] .sss-third{visibility:visible;}
+  [data-static][data-phase='0'] .length-first,[data-static][data-phase='0'] .length-second,[data-inspect][data-phase='0'] .length-first,[data-inspect][data-phase='0'] .length-second{display:inline;}
+  [data-static] *{animation:none!important;}
   [data-inspect] *{animation:none!important;}
   [data-hidden] *{animation-play-state:paused!important;}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;}.growing-copy,.area-growing{display:none;}.unit-grid{opacity:1;}}
