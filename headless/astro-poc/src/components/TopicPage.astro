@@ -21,6 +21,8 @@ import {
 import { localizeSiteHref } from '../lib/sitePages';
 import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import TopicFractionRun from './TopicFractionRun.astro';
+import { visibleMathLength } from '../lib/topicFractionMarkers';
 
 interface Props {
   slug: string;
@@ -62,7 +64,7 @@ function textParts(text: string): { text: string; nowrap: boolean }[] {
 
 /** A long chain may break only after "=". LRI opens the first step and PDI closes the last. */
 function mathParts(math: string): { text: string; nowrap: boolean }[] {
-  if (NOWRAP_MATH.has(math) || math.length <= NOWRAP_MAX) {
+  if (NOWRAP_MATH.has(math) || visibleMathLength(math) <= NOWRAP_MAX) {
     return [{ text: `${LRI}${math}${PDI}`, nowrap: true }];
   }
   const steps = math.split(/(?<==) /);
@@ -71,7 +73,7 @@ function mathParts(math: string): { text: string; nowrap: boolean }[] {
     if (i > 0) parts.push({ text: ' ', nowrap: false });
     const open = i === 0 ? LRI : '';
     const close = i === steps.length - 1 ? PDI : '';
-    parts.push({ text: `${open}${step}${close}`, nowrap: step.length <= NOWRAP_MAX });
+    parts.push({ text: `${open}${step}${close}`, nowrap: visibleMathLength(step) <= NOWRAP_MAX });
   });
   return parts;
 }
@@ -282,7 +284,7 @@ function faqHeadingId(groupIndex: number) {
             return (
               <p class="topic-page__intro" data-flow="paragraph" data-role="intro">
                 {textParts(unit.text).map((part) =>
-                  part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                  part.nowrap ? <span class="topic-math-nowrap"><TopicFractionRun text={part.text} /></span> : <TopicFractionRun text={part.text} />,
                 )}
               </p>
             );
@@ -314,7 +316,7 @@ function faqHeadingId(groupIndex: number) {
                     return (
                       <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
                         {textParts(block.text).map((part) =>
-                          part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                          part.nowrap ? <span class="topic-math-nowrap"><TopicFractionRun text={part.text} /></span> : <TopicFractionRun text={part.text} />,
                         )}
                       </p>
                     );
@@ -346,7 +348,7 @@ function faqHeadingId(groupIndex: number) {
               return (
                 <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
                   {textParts(block.text).map((part) =>
-                    part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                    part.nowrap ? <span class="topic-math-nowrap"><TopicFractionRun text={part.text} /></span> : <TopicFractionRun text={part.text} />,
                   )}
                 </p>
               );
