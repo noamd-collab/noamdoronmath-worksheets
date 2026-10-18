@@ -5,12 +5,15 @@ const { value } = Astro.props;
 const parts = lessonMathParts(value);
 const hasFraction = parts.some(part => typeof part !== 'string');
 ---
-{hasFraction ? <math xmlns="http://www.w3.org/1998/Math/MathML" dir="ltr" displaystyle="true" aria-label={value}>
-  <mrow>{parts.map(part => typeof part === 'string'
-    ? <mtext>{part}</mtext>
-    : <mfrac><mtext>{part.numerator}</mtext><mtext>{part.denominator}</mtext></mfrac>)}</mrow>
-</math> : <bdi dir="ltr">{value}</bdi>}
+{hasFraction ? <span class="expression" role="math" dir="ltr" aria-label={value}>
+  <span aria-hidden="true">{parts.map(part => typeof part === 'string'
+    ? <span class="term">{part}</span>
+    : <span class="fraction"><span class="numerator">{part.numerator}</span><span class="denominator">{part.denominator}</span></span>)}</span>
+</span> : <bdi dir="ltr">{value}</bdi>}
 <style>
-  math { direction:ltr; unicode-bidi:isolate; vertical-align:middle; font-size:inherit; color:inherit; }
-  mtext { font-family:Heebo,sans-serif; font-weight:700; white-space:pre; }
+  .expression { direction:ltr; unicode-bidi:isolate; font-size:inherit; color:inherit; }
+  .term { white-space:pre; }
+  .fraction { display:inline-grid; grid-template-rows:auto auto; vertical-align:middle; text-align:center; margin:0 .12em; line-height:1.35; }
+  .numerator,.denominator { display:block; padding:.08em .2em; white-space:nowrap; }
+  .numerator { border-bottom:1.5px solid currentColor; }
 </style>
