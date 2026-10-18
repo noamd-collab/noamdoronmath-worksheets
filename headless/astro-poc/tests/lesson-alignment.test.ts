@@ -3,8 +3,27 @@ import { describe, it } from 'node:test';
 import { LESSON_LOOPS, LESSON_TOPIC_MAP, type Lesson } from '../src/lib/lessonLoops.ts';
 import { topicLandingLoop } from '../src/lib/landingLoops.ts';
 import { loadTopicPage, TOPIC_PAGE_SLUGS } from '../src/lib/topicPages.ts';
+import { lessonMathParts } from '../src/lib/lessonMath.ts';
 
 describe('lesson alignment regressions',()=>{
+  it('renders every authored fraction as a numerator and denominator, preserving its surrounding expression',()=>{
+    assert.deepEqual(lessonMathParts('(x² − 9)/(x − 3); x ≠ 3'),[
+      {numerator:'x² − 9',denominator:'x − 3'}, '; x ≠ 3',
+    ]);
+    assert.deepEqual(lessonMathParts('((x − 3)(x + 3))/(x − 3)'),[
+      {numerator:'(x − 3)(x + 3)',denominator:'x − 3'},
+    ]);
+    assert.deepEqual(lessonMathParts('1/2 + 1/3'),[
+      {numerator:'1',denominator:'2'}, ' + ', {numerator:'1',denominator:'3'},
+    ]);
+    for(const lesson of Object.values(LESSON_LOOPS) as Lesson[]){
+      for(const value of [...lesson.steps.map(s=>s.math),...(lesson.bars??[]).map(b=>b.label)]){
+        const parts=lessonMathParts(value);
+        assert.ok(parts.every(p=>typeof p==='string' ? !p.includes('/') : p.numerator && p.denominator),value);
+        if(!value.includes('/')) assert.equal(parts.join(''),value);
+      }
+    }
+  });
   it('does not substitute related but different mathematical operations',()=>{
     const expected = {
       'reflection-symmetry-grade-2':'reflect-fold',

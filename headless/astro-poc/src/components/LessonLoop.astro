@@ -1,5 +1,6 @@
 ---
 import { LESSON_LOOPS, type Lesson, type LessonLoopVariant } from '../lib/lessonLoops';
+import LessonMath from './LessonMath.astro';
 interface Props { variant: LessonLoopVariant }
 const { variant } = Astro.props;
 const lesson: Lesson = LESSON_LOOPS[variant];
@@ -29,7 +30,7 @@ const faces = [
     {[3,5,2].map((n,i)=><g><rect class={`filled bar bar-${i}`} x={120+i*100} y={195-n*32} width="52" height={n*32}/><text x={146+i*100} y="224">{['א','ב','ג'][i]}</text></g>)}
   </svg>}
   {lesson.picture === 'bars' && <div class="fraction-bars" dir="ltr">
-    {lesson.bars?.map((b,i)=><div class="fraction-row"><bdi>{b.label}</bdi><div class={`cells cells-${i}`} style={`--parts:${b.total}`}>
+    {lesson.bars?.map((b,i)=><div class="fraction-row"><span class="fraction-label"><LessonMath value={b.label}/></span><div class={`cells cells-${i}`} style={`--parts:${b.total}`}>
       {Array.from({length:b.total},(_,j)=><span class:list={['cell',j<b.filled && 'cell--filled']}></span>)}
     </div></div>)}
   </div>}
@@ -43,7 +44,7 @@ const faces = [
     <path d="M35 60 H50 V45 M140 45 V60 H155 M35 150 H50 V165 M140 165 V150 H155 M235 80 H250 V65 M420 65 V80 H435 M235 150 H250 V165 M420 165 V150 H435"/>
   </svg>}
   <ol class:list={['steps',lesson.picture === 'equation' || lesson.picture === 'place' ? 'steps--large':'']}>
-    {lesson.steps.map((s,i)=><li class={`step step-${i}`}><span class="step-number">{i+1}</span><div><p>{s.text}</p>{s.math && <p class="math" dir="ltr"><bdi dir="ltr">{s.math}</bdi></p>}</div></li>)}
+    {lesson.steps.map((s,i)=><li class={`step step-${i}`}><span class="step-number">{i+1}</span><div><p>{s.text}</p>{s.math && <p class="math" dir="ltr"><LessonMath value={s.math}/></p>}</div></li>)}
   </ol>
 </div>
 <style>
@@ -66,7 +67,7 @@ const faces = [
   .step-number {display:grid;place-items:center;border-radius:50%;background:#e3f1ec;min-width:28px;height:28px;font-weight:800;}
   .fraction-bars {display:grid;gap:12px;margin-bottom:20px;}
   .fraction-row {display:grid;grid-template-columns:95px 1fr;align-items:center;gap:8px;}
-  .fraction-row bdi {font-size:16px;font-weight:800;text-align:center;}
+  .fraction-label {font-size:16px;font-weight:800;text-align:center;}
   .cells {display:grid;grid-template-columns:repeat(var(--parts),1fr);height:32px;border:2px solid #22305a;}
   .cell {border-inline-end:1px solid #22305a;background:#fff;} .cell:last-child {border:0;} .cell--filled {background:#e6a534;}
   .mirror {transform-origin:240px 0;animation:fold 9s ease-in-out infinite;}
