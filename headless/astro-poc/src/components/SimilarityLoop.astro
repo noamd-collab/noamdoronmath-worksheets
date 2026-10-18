@@ -65,7 +65,7 @@ const gridId = `similarity-${crypto.randomUUID()}`;
     <p class="caption-5">תיכונים מתאימים · אותו יחס דמיון</p>
     <p class="caption-6">1×1 גדל ל־2×2 · ארבע יחידות שטח</p>
     <div class="formula formula-0"><span class="aa-proof"><LessonMath value="△ABC ∼ △DEF"/></span><span class="aa-first"><LessonMath value="2/1 = 2"/></span><span class="aa-second"><LessonMath value="4/2 = 2"/></span></div>
-    <div class="formula formula-1"><span class="proof-label"><LessonMath value="2/1 = 4/2 = 2"/></span><span class="result-label"><LessonMath value="9.6/4.8 = 2"/></span></div>
+    <div class="formula formula-1"><span class="proof-label"><span class="sas-first"><LessonMath value="2/1"/></span><span class="sas-second"><LessonMath value="= 4/2 = 2"/></span></span><span class="result-label"><LessonMath value="9.6/4.8 = 2"/></span></div>
     <div class="formula formula-2"><span class="sss-first"><LessonMath value="2/1"/></span><span class="sss-second"><LessonMath value="= 4/2"/></span><span class="sss-third"><LessonMath value="= 3.6/1.8 = 2"/></span></div>
     <div class="formula formula-3"><LessonMath value="2h/h = 2"/></div>
     <div class="formula formula-4"><LessonMath value="2b/b = 2"/></div>
@@ -150,6 +150,7 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   [data-phase='0'][data-ready] .growing-copy{animation:rotate-enlarge 10s ease-in-out both;}
   .angle-pair{fill:none;stroke-width:3;}
   .angle-pair text{font-size:16px;stroke-width:2px;fill:currentColor;}
+  [data-phase='0'] .angle-pair text{font-size:12px;stroke-width:1.5px;}
   .angle-alpha{color:#14635b;stroke:#14635b;}.angle-beta{color:#a44716;stroke:#a44716;}
   [data-phase='0'][data-ready] .angle-alpha,[data-phase='0'][data-ready] .alpha-equation{animation:alpha-focus 10s ease-in-out both;}
   [data-phase='0'][data-ready] .angle-beta,[data-phase='0'][data-ready] .beta-equation{animation:beta-focus 10s ease-in-out both;}
@@ -200,7 +201,14 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   .second-leg{stroke:#a44716;}.third-leg{stroke:#5d54a4;}
   [data-phase='1'] .matching-sides,[data-phase='2'] .matching-sides{display:inline;}
   [data-phase='1'] .third-leg,[data-phase='1'] .angle-beta,[data-phase='2'] .angle-pair,[data-phase='3'] .angle-pair,[data-phase='4'] .angle-pair,[data-phase='5'] .angle-pair{display:none;}
-  [data-phase='1'] .angle-alpha{stroke-width:5;}
+  [data-phase='1'] .angle-alpha{stroke-width:5;transition:opacity .4s;}
+  /* Introduce each given pair before bringing the included angle into focus. */
+  [data-phase='1'][data-beat='0'] .length-second,[data-phase='1'][data-beat='0'] .second-leg{display:none;}
+  [data-phase='1'][data-beat='0'] .sas-second{visibility:hidden;}
+  [data-phase='1'][data-beat='0'] .angle-alpha{opacity:.3;stroke-width:2;}
+  [data-phase='1'] .match-leg{animation-delay:0s!important;}
+  [data-phase='1'][data-beat='1'] .angle-alpha{animation:sas-angle-focus 2.2s ease-out both;}
+  @keyframes sas-angle-focus{0%,25%{opacity:.3;stroke-width:2;}55%,100%{opacity:1;stroke-width:5;}}
   [data-phase='1'][data-beat='0'] .length-third,[data-phase='1'][data-beat='1'] .length-third{display:none;}
   [data-phase='1'][data-beat='2'] .matching-sides,[data-phase='1'][data-beat='3'] .matching-sides{display:none;}
   [data-phase='1'][data-beat='2'] .perimeters,[data-phase='1'][data-beat='3'] .perimeters{display:inline;}
@@ -232,6 +240,9 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   [data-phase='2'][data-beat='0'] .sss-second,[data-phase='2'][data-beat='0'] .sss-third,[data-phase='2'][data-beat='1'] .sss-third{visibility:hidden;}
   .formula-2{display:none;direction:ltr;white-space:nowrap;font-size:19px;}
   /* Static views retain the complete argument without running a clock. */
+  [data-static][data-phase='1'] .length-second,[data-inspect][data-phase='1'] .length-second,[data-static][data-phase='1'] .second-leg,[data-inspect][data-phase='1'] .second-leg{display:inline;}
+  [data-static][data-phase='1'] .sas-second,[data-inspect][data-phase='1'] .sas-second{visibility:visible;}
+  [data-static][data-phase='1'] .angle-alpha,[data-inspect][data-phase='1'] .angle-alpha{opacity:1;stroke-width:5;}
   [data-static][data-phase='2'] .length-pair,[data-inspect][data-phase='2'] .length-pair,[data-static][data-phase='2'] .match-leg,[data-inspect][data-phase='2'] .match-leg{display:inline;}
   [data-static][data-phase='2'] .sss-second,[data-static][data-phase='2'] .sss-third,[data-inspect][data-phase='2'] .sss-second,[data-inspect][data-phase='2'] .sss-third{visibility:visible;}
   [data-static][data-phase='0'] .length-first,[data-static][data-phase='0'] .length-second,[data-inspect][data-phase='0'] .length-first,[data-inspect][data-phase='0'] .length-second{display:inline;}
