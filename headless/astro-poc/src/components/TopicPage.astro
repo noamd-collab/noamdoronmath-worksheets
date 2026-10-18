@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
+import PercentExplorer from './PercentExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
 import LandingLoop from './LandingLoop.astro';
 import DistancePointsLoop from './DistancePointsLoop.astro';
@@ -134,10 +135,13 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
    analytic-geometry-grade-9 mounts DistancePointsLoop in this same slot.
    triangle-quadrilateral-angle-sum-grade-7 mounts the provided HTML film
    (its own controls and angle readouts stay inside the iframe).
-   parallel-lines-angles-grade-8 mounts the co-interior angles film. */
+   parallel-lines-angles-grade-8 mounts the co-interior angles film.
+   percent-of-quantity-grade-6 mounts the 100-square explorer in place of
+   its CSS loop. */
 const landingLoop = topicLandingLoop(page);
 const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
-const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
+const percentExplorer = slug === 'percent-of-quantity-grade-6';
+const cssVariant = landingLoop.kind === 'css' && !percentExplorer ? landingLoop.variant : undefined;
 const filmLoop = landingLoop.kind === 'film';
 const bareFilm =
   filmLoop &&
@@ -226,6 +230,7 @@ function faqHeadingId(groupIndex: number) {
           >
             {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
             {loopVariant && <ConceptLoop variant={loopVariant} />}
+            {percentExplorer && <PercentExplorer />}
             {cssVariant && <LandingLoop variant={cssVariant} />}
             {landingLoop.kind === 'film' && landingLoop.marker === 'distance-between-points' && (
               <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />
