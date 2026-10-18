@@ -204,7 +204,7 @@ describe('landing loop coverage', () => {
     for (const note of ['257 × 3 = 771', '257 × 20 = 5,140', '≈ 250 × 20 = 5,000']) assert.ok(sketch.includes(note), note);
     assert.match(CSS_LOOP_IDEAS['long-mul'], /771 \+ 5,140 = 5,911/);
 
-    assert.ok(pageText('fraction-division-algorithm-grade-6').includes('1/2 : 1/4 = 1/2 × 4 = 2'));
+    assert.ok(pageText('fraction-division-algorithm-grade-6').includes('⟨1¦2⟩ : ⟨1¦4⟩ = ⟨1¦2⟩ × 4 = 2'));
     assert.match(
       formula,
       /<span class="ll-frac__n"><span class="ll-rc-up">4<\/span><\/span><span class="ll-frac__d"><span class="ll-rc-down">1<\/span><\/span>/,
