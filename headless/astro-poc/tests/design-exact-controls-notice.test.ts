@@ -163,7 +163,7 @@ describe('protected math sources stay pinned after the L01 removal', () => {
 describe('non-blocking site-development notice', () => {
   it('is an in-flow aside, not a dialog, overlay, consent form or focus trap', () => {
     assert.match(notice, /<aside[^>]*data-development-notice/);
-    assert.match(notice, /<button\s+type="button"\s+aria-label="סגירת הודעת הפיתוח"/);
+    assert.match(notice, /<button\s+type="button"\s+aria-label="(?:הבנתי – )?סגירת הודעת הפיתוח"/);
     assert.match(notice, /min-width:44px;min-height:44px/);
     assert.doesNotMatch(notice, /<dialog\b|aria-modal\s*=|role\s*=\s*['"](?:dialog|alertdialog)['"]|\bautofocus\b|\binert\b|type\s*=\s*['"]checkbox['"]/i);
     assert.doesNotMatch(notice, /position\s*:\s*(?:fixed|absolute)|overflow(?:-[xy])?\s*:\s*(?:hidden|clip)|overscroll-behavior\s*:\s*none/i);
