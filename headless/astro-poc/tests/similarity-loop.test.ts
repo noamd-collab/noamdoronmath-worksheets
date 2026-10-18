@@ -55,11 +55,12 @@ it('corresponding heights, angle bisectors and medians obey their definitions an
     const n=m.slice(1).map(Number);return {a:n.slice(0,2),p:n.slice(2,4),d:n.slice(4,6),q:n.slice(6,8)};
   };
   for(const name of ['height-pair','bisector-pair','median-pair']){
-    const {a,p,d,q}=endpoints(name);assert.deepEqual(a,A);assert.deepEqual(d,D);
+    const {a,p,d,q}=endpoints(name);assert.deepEqual(a,name==='height-pair'?C:A);assert.deepEqual(d,name==='height-pair'?triangle('large-fill').points[2]:D);
     close(q[0]-D[0],-2*(p[1]-A[1]));close(q[1]-D[1],2*(p[0]-A[0]));
-    // The foot lies on BC in every construction.
-    close((p[0]-B[0])*(C[1]-B[1]),(p[1]-B[1])*(C[0]-B[0]));
-    if(name==='height-pair')close((p[0]-A[0])*(C[0]-B[0])+(p[1]-A[1])*(C[1]-B[1]),0);
+    // Height is drawn from C onto AB so it is visually distinct from the outline.
+    const [baseStart,baseEnd]=name==='height-pair'?[A,B]:[B,C];
+    close((p[0]-baseStart[0])*(baseEnd[1]-baseStart[1]),(p[1]-baseStart[1])*(baseEnd[0]-baseStart[0]));
+    if(name==='height-pair')close((p[0]-C[0])*(B[0]-A[0])+(p[1]-C[1])*(B[1]-A[1]),0);
     if(name==='median-pair'){close(p[0],(B[0]+C[0])/2);close(p[1],(B[1]+C[1])/2);}
     if(name==='bisector-pair'){
       const len=(x:number[],y:number[])=>Math.hypot(x[0]-y[0],x[1]-y[1]);
