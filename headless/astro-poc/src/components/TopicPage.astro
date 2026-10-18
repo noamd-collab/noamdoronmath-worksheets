@@ -4,6 +4,7 @@ import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import PercentExplorer from './PercentExplorer.astro';
 import AreaExplorer from './AreaExplorer.astro';
+import DecimalExplorer from './DecimalExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
 import LandingLoop from './LandingLoop.astro';
 import DistancePointsLoop from './DistancePointsLoop.astro';
@@ -141,10 +142,14 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
    parallel-lines-angles-grade-8 mounts the co-interior angles film.
    Pages in TOPIC_EXPLORER mount a hands-on explorer in place of their
    loop: the percent 100-square, and the fraction / decimal area models. */
-const TOPIC_EXPLORER: Record<string, 'percent' | 'fraction' | 'decimal'> = {
+const TOPIC_EXPLORER: Record<string, 'percent' | 'fraction' | 'decimal' | 'divide' | 'place'> = {
   'percent-of-quantity-grade-6': 'percent',
   'fraction-times-fraction-grade-6': 'fraction',
+  'fraction-part-quantity-area-grade-6': 'fraction',
+  'fraction-multiplication-apply-grade-6': 'fraction',
   'multiply-decimals-grade-6': 'decimal',
+  'divide-decimals-grade-6': 'divide',
+  'decimal-place-value-grade-5': 'place',
 };
 const explorer = TOPIC_EXPLORER[slug];
 const landingLoop = topicLandingLoop(page);
@@ -239,7 +244,8 @@ function faqHeadingId(groupIndex: number) {
             {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
             {loopVariant && <ConceptLoop variant={loopVariant} />}
             {explorer === 'percent' && <PercentExplorer />}
-            {(explorer === 'fraction' || explorer === 'decimal') && <AreaExplorer kind={explorer} />}
+            {(explorer === 'fraction' || explorer === 'decimal') && <AreaExplorer kind={explorer} slug={slug} />}
+            {(explorer === 'divide' || explorer === 'place') && <DecimalExplorer kind={explorer} />}
             {cssVariant && <LandingLoop variant={cssVariant} />}
             {landingLoop.kind === 'film' && landingLoop.marker === 'distance-between-points' && (
               <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />

@@ -2,7 +2,9 @@
 /**
  * Area-model explorer for two grade-6 topic pages (engine: ../lib/areaExplorer.ts).
  *
- *   kind="fraction"  fraction-times-fraction-grade-6, opens on 2/3 × 3/4
+ *   kind="fraction"  fraction-times-fraction-grade-6, opens on 2/3 × 3/4;
+ *                    fraction-part-quantity-area-grade-6 on 1/2 × 1/3;
+ *                    fraction-multiplication-apply-grade-6 on 2/3 × 1/2
  *   kind="decimal"   multiply-decimals-grade-6, opens on 0.8 × 0.72
  *
  * Both draw a unit square: the first factor shades columns, the second
@@ -13,14 +15,21 @@ import { decimalProduct, dec, fractionProduct } from '../lib/areaExplorer';
 
 interface Props {
   kind: 'fraction' | 'decimal';
+  slug: string;
 }
-const { kind } = Astro.props;
+const { kind, slug } = Astro.props;
 
 const SIZE = 240;
 const PAD = 30;
 const TOP = PAD + SIZE;
 
-const F = { a: 2, b: 3, c: 3, d: 4 };
+/* each fraction page opens on its own example */
+const FRACTION_START: Record<string, { a: number; b: number; c: number; d: number }> = {
+  'fraction-part-quantity-area-grade-6': { a: 1, b: 2, c: 1, d: 3 },
+  'fraction-multiplication-apply-grade-6': { a: 2, b: 3, c: 1, d: 2 },
+};
+const F = FRACTION_START[slug] ?? { a: 2, b: 3, c: 3, d: 4 };
+const fSmaller = F.a < F.b && F.c < F.d;
 const fp = fractionProduct(F.a, F.b, F.c, F.d);
 
 const D = { x: 0.8, y: 0.72 };
@@ -101,6 +110,9 @@ const hLines = Array.from({ length: rows - 1 }, (_, i) => PAD + ((i + 1) * SIZE)
         </p>
         <p class="ae-hint">
           החפיפה היא <bdi data-el="cells">{`${fp.n} מתוך ${fp.m}`}</bdi> משבצות. מונה כפול מונה, מכנה כפול מכנה.
+        </p>
+        <p class="ae-hint" data-el="fsmaller" hidden={!fSmaller}>
+          חלק של חלק: התשובה קטנה משני השברים.
         </p>
         <p class="sr-only" aria-live="polite" data-el="live" />
       </div>

@@ -121,6 +121,8 @@ function setupFraction(root: HTMLElement) {
     const reduced = q(root, 'reduced');
     if (reduced) reduced.hidden = rn === n;
     setText(root, 'cells', `${n} מתוך ${m}`);
+    const smaller = q(root, 'fsmaller');
+    if (smaller) smaller.hidden = !(a < b && c < d);
     root.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((btn) => {
       const [k, dir] = btn.dataset.step!.split(':') as [Key, string];
       const next = v[k] + Number(dir);
