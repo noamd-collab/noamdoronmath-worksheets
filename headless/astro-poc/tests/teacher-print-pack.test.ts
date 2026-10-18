@@ -113,7 +113,8 @@ describe('teacher short worksheet pack', () => {
     const dhOf = (box) => {
       const sw = Math.max(1, box.w * pageW);
       const sh = Math.max(1, box.h * pageH);
-      return Math.max(1, Math.round(1000 * sh / sw));
+      const dw = box.w < 0.5 ? box.w * 1000 : 1000;
+      return Math.max(1, Math.round(dw * sh / sw));
     };
 
     const slices = [];
@@ -429,6 +430,20 @@ describe('teacher short worksheet pack', () => {
     assert.ok(ten.box.y < 0.33, String(ten.box.y));
     assert.ok(ten.box.y + ten.box.h > 0.55, 'long answer cut at ' + (ten.box.y + ten.box.h));
     assert.equal(crops.some((crop) => crop.q === 1), false);
+
+    const parenLines = [
+      { page: 4, y: 0.065, y2: 0.080, x: 0.794, x2: 0.912, text: 'תשובות סופיות' },
+      { page: 4, y: 0.128, y2: 0.138, x: 0.907, x2: 0.929, text: '(1)' },
+      { page: 4, y: 0.128, y2: 0.138, x: 0.865, x2: 0.881, text: 'א.' },
+      { page: 4, y: 0.128, y2: 0.138, x: 0.854, x2: 0.862, text: '6' },
+      { page: 4, y: 0.128, y2: 0.138, x: 0.822, x2: 0.835, text: 'ב.' },
+      { page: 4, y: 0.128, y2: 0.138, x: 0.810, x2: 0.818, text: '5' },
+      { page: 4, y: 0.152, y2: 0.162, x: 0.907, x2: 0.929, text: '(2)' },
+    ];
+    const parenCrops = api.answerCropsFromLines(parenLines, [{ q: 1, part: 'א' }]);
+    assert.equal(parenCrops.length, 1);
+    assert.equal(parenCrops[0].q, 1);
+    assert.equal(parenCrops[0].pieces.length, 2);
   });
 
   it('prints only the picked part, keeps 19 with its drawing, and groups parts of one question', (t) => {
@@ -606,11 +621,16 @@ describe('teacher short worksheet pack', () => {
         }
         slices.push(...part);
       }
-      const exerciseMeasured = slices.map((slice) => {
-        const sw = Math.max(1, slice.box.w * pageW);
-        const sh = Math.max(1, slice.box.h * pageH);
-        return { slice, dh: slice.kind === 'level' ? 36 : Math.max(1, Math.round(1000 * sh / sw)) };
-      });
+      const dhOf = (box) => {
+        const sw = Math.max(1, box.w * pageW);
+        const sh = Math.max(1, box.h * pageH);
+        const dw = box.w < 0.5 ? box.w * 1000 : 1000;
+        return Math.max(1, Math.round(dw * sh / sw));
+      };
+      const exerciseMeasured = slices.map((slice) => ({
+        slice,
+        dh: slice.kind === 'level' ? 36 : dhOf(slice.box),
+      }));
       return { ordered, pages: api.packShort(exerciseMeasured) };
     };
     const regress = packChosen([
@@ -678,9 +698,15 @@ describe('teacher short worksheet pack', () => {
     }));
     const scratch = '/tmp/teacher-print-regress';
     mkdirSync(scratch, { recursive: true });
+    const dhOfAns = (box) => {
+      const sw = Math.max(1, box.w * pageW);
+      const sh = Math.max(1, box.h * pageH);
+      const dw = box.w < 0.5 ? box.w * 1000 : 1000;
+      return Math.max(1, Math.round(dw * sh / sw));
+    };
     const answerMeasured = answerSlices.map((slice) => ({
       slice,
-      dh: slice.kind === 'level' ? 36 : Math.max(1, Math.round(1000 * (slice.box.h * pageH) / Math.max(1, slice.box.w * pageW))),
+      dh: slice.kind === 'level' ? 36 : dhOfAns(slice.box),
     }));
     const rendered = runPack({
       title: 'מצולעים',
@@ -765,7 +791,7 @@ print(int(np.any(arr < 80, axis=2).sum()))
       }
       return api.packShort(slices.map((slice) => ({
         slice,
-        dh: slice.kind === 'level' ? 36 : Math.max(1, Math.round(1000 * (slice.box.h * pageH) / Math.max(1, slice.box.w * pageW))),
+        dh: slice.kind === 'level' ? 36 : dhOfAns(slice.box),
       })), { answers: true });
     };
     for (const [name, packed, answers] of [
@@ -933,12 +959,16 @@ print(int(np.any(arr < 80, axis=2).sum()))
       kind: 'level',
       label: 'רמה א׳',
     });
-    const exerciseMeasured = slices.map((slice) => {
-      if (slice.kind === 'level') return { slice, dh: 36 };
-      const sw = Math.max(1, slice.box.w * pageW);
-      const sh = Math.max(1, slice.box.h * pageH);
-      return { slice, dh: Math.max(1, Math.round(1000 * sh / sw)) };
-    });
+    const dhOf = (box) => {
+      const sw = Math.max(1, box.w * pageW);
+      const sh = Math.max(1, box.h * pageH);
+      const dw = box.w < 0.5 ? box.w * 1000 : 1000;
+      return Math.max(1, Math.round(dw * sh / sw));
+    };
+    const exerciseMeasured = slices.map((slice) => ({
+      slice,
+      dh: slice.kind === 'level' ? 36 : dhOf(slice.box),
+    }));
     const answerSpecs = chosen.map((question) => ({ q: question.q, part: question.part || '' })).concat([{ q: 15, part: 'א' }]);
     const answerCrops = api.answerCropsFromLines(measured.lines[SHEET_IDS.a], answerSpecs);
     const head = measured.lines[SHEET_IDS.a].find((line) => String(line.text).replace(/\s/g, '') === 'תשובותסופיות');
@@ -991,7 +1021,7 @@ print(int(np.any(arr < 80, axis=2).sum()))
       exercisePages: api.packShort(exerciseMeasured).map(tag),
       answerPages: api.packShort(answerSlices.map((slice) => ({
         slice,
-        dh: slice.kind === 'level' ? 36 : Math.max(1, Math.round(1000 * (slice.box.h * pageH) / Math.max(1, slice.box.w * pageW))),
+        dh: slice.kind === 'level' ? 36 : dhOf(slice.box),
       })), { answers: true }).map(tag),
       outPdf: join(scratch, 'parts.pdf'),
       outDir: scratch,

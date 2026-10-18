@@ -12,6 +12,7 @@ import { join } from 'node:path';
 import { captureHomepageGameShots, shouldCaptureHomepageGameShots } from './qwen-homepage-extra-shots.mjs';
 import { captureGradeHubTopicShots, shouldCaptureGradeHubTopics } from './qwen-grade-hub-shots.mjs';
 import { captureParaRectFilmShots, shouldCaptureParaRectFilm } from './qwen-para-rect-shots.mjs';
+import { captureTeacherPrintShots, shouldCaptureTeacherPrintShots } from './qwen-teacher-shots.mjs';
 import { upsertPullRequestComment } from './pr-comment.mjs';
 import { pagesTouchedByDiff } from './pr-pages.mjs';
 import { redactSecrets } from './redact.mjs';
@@ -271,6 +272,10 @@ export async function runQwenReview({ postComment = true } = {}) {
   if (shouldCaptureGradeHubTopics(changedFiles())) {
     console.log('capturing elementary grade-hub topic sections at 390 and 1280');
     shots.push(...await captureGradeHubTopicShots({ baseUrl, outDir }));
+  }
+  if (shouldCaptureTeacherPrintShots(changedFiles())) {
+    console.log('capturing teacher printed worksheet pages at 390 and 1280');
+    shots.push(...await captureTeacherPrintShots({ baseUrl, outDir }));
   }
   writeFileSync(join(outDir, 'manifest.json'), JSON.stringify({ selection, shots }, null, 2));
   const images = imageContent(shots);

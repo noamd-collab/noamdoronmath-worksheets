@@ -1037,9 +1037,13 @@ function isAnswerHeading(line) {
   return text.startsWith('תשובות') && text.length < 24;
 }
 
+function answerNumberValue(line) {
+  const match = String(line.text || '').trim().match(/^(?:\((\d{1,2})\)|(\d{1,2})\.)$/);
+  return match ? (match[1] || match[2]) : null;
+}
+
 function isAnswerNumber(line) {
-  const text = String(line.text || '').trim();
-  if (!/^\d{1,2}\.$/.test(text)) return false;
+  if (!answerNumberValue(line)) return false;
   if (line.y > 0.9) return false;
   if (line.x != null && line.x < 0.85) return false;
   return true;
@@ -1109,6 +1113,7 @@ function answerGlyphs(item) {
 
 function answerLabels(glyphs) {
   const ordered = glyphs.slice().sort((a, b) => b.x2 - a.x2 || b.x - a.x);
+  const hasSeparators = ordered.some((glyph) => '·∙•'.includes(glyph.c));
   const found = [];
   ordered.forEach((glyph, index) => {
     if (!ANSWER_PARTS.includes(glyph.c)) return;
@@ -1117,7 +1122,11 @@ function answerLabels(glyphs) {
     if (dot >= ordered.length || ordered[dot].c !== '.') return;
     let prev = index - 1;
     while (prev >= 0 && !String(ordered[prev].c).trim()) prev -= 1;
-    if (prev >= 0 && !'·∙•'.includes(ordered[prev].c)) return;
+    if (hasSeparators) {
+      if (prev >= 0 && !'·∙•'.includes(ordered[prev].c)) return;
+    } else if (prev >= 0 && ordered[prev].x - glyph.x2 < 0.01) {
+      return;
+    }
     found.push({ part: glyph.c, x: glyph.x, x2: glyph.x2 });
   });
   return found.sort((a, b) => b.x2 - a.x2);
@@ -1204,7 +1213,7 @@ function answerPieces(pageLines, mark, nextY, parts) {
     if (!last || item.box.y - last.y > 0.01) lines.push({ y: item.box.y, items: [item] });
     else last.items.push(item);
   });
-  const number = pageLines.find((line) => isAnswerNumber(line) && Math.abs(line.y - mark.y) < 0.008 && String(line.text).trim().startsWith(mark.n));
+  const number = pageLines.find((line) => isAnswerNumber(line) && Math.abs(line.y - mark.y) < 0.008 && answerNumberValue(line) === mark.n);
   const pieces = [];
   lines.forEach((line, lineIndex) => {
     const y = Math.min(...line.items.map((item) => item.box.y));
@@ -1247,7 +1256,7 @@ function answerCropsFromLines(lines, wanted) {
     const byNumber = new Map();
     pageLines.forEach((line) => {
       if (!isAnswerNumber(line)) return;
-      const n = String(line.text).trim().match(/^(\d{1,2})\.$/)[1];
+      const n = answerNumberValue(line);
       const prev = byNumber.get(n);
       if (!prev || (line.x || 0) > (prev.x || 0)) byNumber.set(n, { n, y: line.y, y2: line.y2, x: line.x || 0, x2: line.x2 || 0 });
     });
@@ -1290,7 +1299,8 @@ async function measureSlices(slices) {
     const bitmap = await pageBitmap(slice.page, sheets.get(slice.pdfId) || SOURCE);
     const sw = Math.max(1, slice.box.w * bitmap.width);
     const sh = Math.max(1, slice.box.h * bitmap.height);
-    measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(OUT_W * sh / sw)) });
+    const dw = slice.box.w < 0.5 ? slice.box.w * OUT_W : OUT_W;
+    measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(dw * sh / sw)) });
   }
   return measured;
 }
@@ -1345,7 +1355,10 @@ function paintMeasuredPage(ctx, items, top) {
     } else {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
-      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, ctx.canvas.width, item.dh);
+      const narrow = item.slice.box.w < 0.5;
+      const dx = narrow ? item.slice.box.x * ctx.canvas.width : 0;
+      const dw = narrow ? item.slice.box.w * ctx.canvas.width : ctx.canvas.width;
+      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, dx, y, dw, item.dh);
       const masks = item.slice.box.masks && item.slice.box.masks.length ? item.slice.box.masks : (item.slice.box.mask ? [item.slice.box.mask] : []);
       masks.forEach((mask) => {
         ctx.fillStyle = '#fff';
@@ -1820,6 +1833,8 @@ async function showWizardResult() {
   try {
     await updatePrint();
     copyCanvases($('print-area'), preview);
+    const anchor = $('wizard-result');
+    if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ block: 'start', inline: 'nearest' });
   } catch (error) {
     preview.textContent = 'דף המקור לא נטען, ולכן אין הדפסה.';
   }

@@ -49,4 +49,17 @@ describe('pagesTouchedByDiff', () => {
     assert.equal(result.pages.length, 6);
     assert.deepEqual(result.omitted, ['/grade-5']);
   });
+
+  it('screenshots /teachers when teachers page or print-pack files change', () => {
+    const result = pagesTouchedByDiff([
+      'headless/astro-poc/public/teachers/index.html',
+      'headless/astro-poc/public/teachers/teacher-factoring-print.js',
+      'headless/astro-poc/public/teachers/packs/factoring-9/4aba762b64b54af098827d1f386bcf68.json',
+      'headless/astro-poc/scripts/render-teacher-pack.py',
+    ]);
+    assert.equal(result.fallback, false);
+    assert.deepEqual(result.pages, ['/teachers']);
+    assert.deepEqual(result.omitted, []);
+  });
 });
+

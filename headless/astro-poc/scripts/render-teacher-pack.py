@@ -87,7 +87,7 @@ def text_lines(doc):
 
 def draw_rtl(page, rect, text, size):
     css = "@font-face{font-family:Noto;src:url('%s');} *{font-family:Noto;margin:0;padding:0;}" % FONT
-    html = '<div dir="rtl" style="font-size:%dpx;line-height:1.2;color:#22305a;text-align:right;">%s</div>' % (
+    html = '<div style="font-size:%dpx;line-height:1.2;color:#22305a;text-align:right;">\u202b%s\u202c</div>' % (
         size, escape(text),
     )
     page.insert_htmlbox(rect, html, css=css)
@@ -95,12 +95,12 @@ def draw_rtl(page, rect, text, size):
 
 def paint_page(out, items, page_index, answers, title, docs, probes):
     out.draw_rect(out.rect, color=(1, 1, 1), fill=(1, 1, 1))
-    draw_rtl(out, pymupdf.Rect(PDF_W - 150, 2, PDF_W - 16, 34), 'בס״ד', 18)
+    draw_rtl(out, pymupdf.Rect(28 * SX, 4 * SY, PDF_W - 28 * SX, 38 * SY), 'בס״ד', 14)
     chrome = 40
     if not answers and page_index == 0:
-        draw_rtl(out, pymupdf.Rect(PDF_W - 420, 40, PDF_W - 16, 78), title, 20)
-        draw_rtl(out, pymupdf.Rect(PDF_W - 120, 82, PDF_W - 16, 114), 'שם:', 16)
-        out.draw_line(pymupdf.Point(28, 108 * SY), pymupdf.Point(PDF_W - 90, 108 * SY), color=(0.13, 0.19, 0.35), width=1)
+        draw_rtl(out, pymupdf.Rect(28 * SX, 42 * SY, PDF_W - 28 * SX, 82 * SY), title, 17)
+        draw_rtl(out, pymupdf.Rect(28 * SX, 84 * SY, PDF_W - 28 * SX, 118 * SY), 'שם:', 13)
+        out.draw_line(pymupdf.Point(28 * SX, 112 * SY), pymupdf.Point(PDF_W - 90 * SX, 112 * SY), color=(0.13, 0.19, 0.35), width=1)
         chrome = 40 + 86
     y = chrome
     placed = []
@@ -109,12 +109,13 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
             y += item.get('gap') or 0
         dh = item['dh']
         kind = item.get('kind')
+        box = item.get('box') or {}
+        narrow = kind != 'level' and not item.get('pieces') and (box.get('w') or 1) < 0.5
         if kind == 'level':
-            draw_rtl(out, pymupdf.Rect(PDF_W - 220, y * SY, PDF_W - 16, (y + dh) * SY), item.get('label') or '', 16)
+            draw_rtl(out, pymupdf.Rect(28 * SX, y * SY, PDF_W - 28 * SX, (y + dh) * SY), item.get('label') or '', 13)
         else:
             doc = docs[item['pdfId']]
             src = doc[item['page'] - 1]
-            box = item['box']
             clip = pymupdf.Rect(
                 box['x'] * src.rect.width,
                 box['y'] * src.rect.height,
@@ -146,7 +147,9 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
                     out.insert_image(dest, pixmap=part_pix)
             else:
                 pix = src.get_pixmap(matrix=pymupdf.Matrix(2, 2), clip=clip, alpha=False)
-                dest = pymupdf.Rect(0, y * SY, PDF_W, (y + dh) * SY)
+                dx0 = box['x'] * PDF_W if narrow else 0
+                dx1 = (box['x'] + box['w']) * PDF_W if narrow else PDF_W
+                dest = pymupdf.Rect(dx0, y * SY, dx1, (y + dh) * SY)
                 out.insert_image(dest, pixmap=pix)
                 masks = box.get('masks') or ([box['mask']] if box.get('mask') else [])
                 for mask in masks:
@@ -158,7 +161,14 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
                     )
                     out.draw_rect(m, color=(1, 1, 1), fill=(1, 1, 1))
         if item.get('probe'):
-            placed.append({'id': item['probe'], 'y': y, 'dh': dh, 'kind': kind})
+            placed.append({
+                'id': item['probe'],
+                'y': y,
+                'dh': dh,
+                'kind': kind,
+                'x0': box['x'] if narrow else 0.0,
+                'x1': (box['x'] + box['w']) if narrow else 1.0,
+            })
         y += dh
     probes.append(placed)
     return chrome, y
@@ -225,8 +235,10 @@ def main():
         for probe in page_reports[index]['probes']:
             y0 = probe['y'] / PAGE_H
             y1 = (probe['y'] + probe['dh']) / PAGE_H
-            clip = pymupdf.Rect(0, y0 * page.rect.height, page.rect.width, y1 * page.rect.height)
-            if clip.height < 1:
+            x0 = probe.get('x0', 0.0)
+            x1 = probe.get('x1', 1.0)
+            clip = pymupdf.Rect(x0 * page.rect.width, y0 * page.rect.height, x1 * page.rect.width, y1 * page.rect.height)
+            if clip.height < 1 or clip.width < 1:
                 continue
             crop = page.get_pixmap(matrix=pymupdf.Matrix(2, 2), clip=clip, alpha=False)
             dest = out_dir / ('crop-%s.png' % probe['id'])

@@ -286,6 +286,13 @@ body[data-wizard] .wiz-extra{display:none!important}
 .wizard-result{grid-column:1 / -1;margin-top:16px;min-width:0;padding:22px 24px}
 .wizard-result canvas{display:block;width:100%;height:auto;background:#fff}
 #wizard-preview{max-width:820px;margin-inline:auto}
+body[data-wizard] .wrap{display:flex;flex-direction:column}
+body[data-wizard] .wizard-bar{order:1}
+body[data-wizard] .workspace{order:2}
+body[data-wizard] .intro{order:3}
+body[data-wizard] .foot{order:4}
+body[data-wizard] .setup,body[data-wizard] .results{grid-column:1 / -1}
+body[data-wizard="result"] .wizard-result{scroll-margin-top:164px}
 @media(min-width:900px){
   .topbar{height:90px;box-sizing:border-box}
   .topline{flex-wrap:nowrap;gap:8px;height:100%;box-sizing:border-box;padding:0 12px}
@@ -342,6 +349,29 @@ body[data-wizard] .wiz-extra{display:none!important}
 }
 @media(min-width:900px){
   .wizard-bar,.wizard-result{scroll-margin-top:110px}
+  body[data-wizard="result"] .wizard-result{scroll-margin-top:190px}
+}
+@media(min-width:801px){
+  .wrap{width:min(var(--shell),calc(100% - 144px))}
+  .intro{padding-inline:max(72px,calc(50vw - 568px))}
+  .foot-grid,.foot-bottom{max-width:min(var(--shell),calc(100% - 96px))}
+}
+@media(max-width:800px){
+  html:not(.noam-ai-engaged),
+  html:not(.noam-ai-engaged) body,
+  html.noam-a11y-pad:not(.noam-ai-engaged) body{
+    height:100dvh;overflow:hidden;padding-bottom:0;scroll-padding-bottom:0;
+  }
+  html:not(.noam-ai-engaged) .app{
+    min-height:0;
+    height:calc(100dvh - 80px - env(safe-area-inset-bottom, 0px));
+    overflow-x:hidden;
+    overflow-y:auto;
+    scroll-padding-bottom:calc(128px + env(safe-area-inset-bottom, 0px));
+  }
+  html:not(.noam-ai-engaged) .foot{
+    margin-bottom:calc(128px + env(safe-area-inset-bottom, 0px));
+  }
 }
 @media(max-width:767.98px){
   .wrap{display:flex;flex-direction:column}
@@ -502,6 +532,7 @@ body[data-wizard] .wiz-extra{display:none!important}
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
 <script type="module" src="/teachers/teacher-factoring-print.js"></script>
 
+<script src="/noam-accessibility.js" defer></script>
 <script src="/noam-site-companion.js" defer data-avatar="/design-exact/assets/avatar/ramzi-A-idle.svg"></script>
 </body>
 </html>
