@@ -72,8 +72,8 @@ const faces = [
   .mirror {transform-origin:240px 0;animation:fold 9s ease-in-out infinite;}
   .bar {transform-box:fill-box;transform-origin:center bottom;animation:grow 9s ease-in-out infinite;}
   .bar-1 {animation-delay:.25s;} .bar-2 {animation-delay:.5s;}
-  .step,.pair {animation:highlight 9s ease-in-out infinite;}
-  .step-1,.pair-1 {animation-delay:3s;} .step-2,.pair-2 {animation-delay:6s;}
+  .step-number,.pair {animation:highlight 9s ease-in-out infinite;}
+  .step-1 .step-number,.pair-1 {animation-delay:3s;} .step-2 .step-number,.pair-2 {animation-delay:6s;}
   @keyframes highlight {0%,25% {opacity:1;} 35%,100% {opacity:.65;} }
   @keyframes fold {0%,12% {transform:scaleX(-1);opacity:.35;} 40%,85% {transform:scaleX(1);opacity:1;} 100% {transform:scaleX(-1);opacity:.35;} }
   @keyframes grow {0%,10% {transform:scaleY(0);} 35%,95% {transform:scaleY(1);} 100% {transform:scaleY(0);} }

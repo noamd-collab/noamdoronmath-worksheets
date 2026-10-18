@@ -187,4 +187,8 @@
 /* Give the lesson, rather than its decorative surround, the phone width. */
 @media (max-width: 640px) {
   .exact-topic .exact-topic-demo:not(.exact-topic-demo--bare) { padding: 18px 8px 12px; }
+  /* SVG coordinates scale down on phones. Enlarge only the spacious titles,
+     not tightly spaced measurements elsewhere in the shared illustrations. */
+  .exact-topic .concept-loop[data-loop="angle-kinds"] .cl-t,
+  .exact-topic .concept-loop[data-loop="tri-sort"] svg > .cl-t { font-size: 28px; }
 }
