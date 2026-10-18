@@ -117,6 +117,14 @@ const odd = POWERS_ROWS[2];
     </div>
   )}
 
+  {variant === 'frac-recip' && (
+    <div class="ll-stack">
+      <p class="ll-eq" dir="ltr"><span class="ll-frac"><span class="ll-frac__n">1</span><span class="ll-frac__d">2</span></span> : <span class="ll-frac"><span class="ll-frac__n">1</span><span class="ll-frac__d">4</span></span></p>
+      <p class="ll-eq ll-rc" dir="ltr">= <span class="ll-frac"><span class="ll-frac__n">1</span><span class="ll-frac__d">2</span></span> <span class="ll-rc-op"><span class="ll-rc-div">:</span><span class="ll-rc-mul">×</span></span> <span class="ll-frac ll-rc-flip"><span class="ll-frac__n"><span class="ll-rc-up">4</span></span><span class="ll-frac__d"><span class="ll-rc-down">1</span></span></span> <span class="ll-rc-ans">= 2</span></p>
+      <p class="ll-cap" dir="rtl" set:html={captionMathHtml(CSS_LOOP_IDEAS['frac-recip'])}></p>
+    </div>
+  )}
+
   {variant === 'tools' && (
     <div class="ll-screen">
       <p class="ll-eq ll-on-dark" dir="ltr">2 × <span class="ll-parens">(3 + 1)</span></p>
@@ -212,6 +220,64 @@ const odd = POWERS_ROWS[2];
   .ll-on-dark { color: #fbfaf5; }
   .ll-cap--light { color: #d7efe8; }
   .ll-screen .ll-parens { background: #3d4d78; }
+  .ll-frac {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1;
+    margin-inline: 0.12em;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  .ll-frac__n { border-bottom: 0.08em solid currentColor; padding: 0 0.14em 0.04em; }
+  .ll-frac__d { padding: 0.04em 0.14em 0; }
+
+  /* frac-recip. The rest style is the finished frame: × and the flipped
+     divisor. In the loop the copy starts as ":" over the same divisor, then
+     only the divisor flips: its 1 and 4 trade places across the bar. */
+  .ll-rc-op { display: inline-grid; }
+  .ll-rc-op > span { grid-area: 1 / 1; }
+  .ll-rc-div { opacity: 0; }
+  .ll-rc-flip { background: #fdf1d8; border-radius: 0.28em; }
+  .ll-rc-up, .ll-rc-down { display: inline-block; }
+  .ll-rc { animation: ll-rc-line 8s ease-in-out infinite; }
+  .ll-rc-div { animation: ll-rc-div 8s ease-in-out infinite; }
+  .ll-rc-mul { animation: ll-rc-mul 8s ease-in-out infinite; }
+  .ll-rc-up { animation: ll-rc-up 8s ease-in-out infinite; }
+  .ll-rc-down { animation: ll-rc-down 8s ease-in-out infinite; }
+  .ll-rc-ans { animation: ll-rc-ans 8s ease-in-out infinite; }
+
+  @keyframes ll-rc-line {
+    0%, 8% { opacity: 0; }
+    14%, 90% { opacity: 1; }
+    95%, 100% { opacity: 0; }
+  }
+  @keyframes ll-rc-div {
+    0%, 22% { opacity: 1; }
+    28%, 96% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes ll-rc-mul {
+    0%, 22% { opacity: 0; }
+    28%, 96% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes ll-rc-up {
+    0%, 28% { transform: translateY(1.16em); }
+    40%, 96% { transform: translateY(0); }
+    100% { transform: translateY(1.16em); }
+  }
+  @keyframes ll-rc-down {
+    0%, 28% { transform: translateY(-1.16em); }
+    40%, 96% { transform: translateY(0); }
+    100% { transform: translateY(-1.16em); }
+  }
+  @keyframes ll-rc-ans {
+    0%, 46% { opacity: 0; }
+    52%, 90% { opacity: 1; }
+    95%, 100% { opacity: 0; }
+  }
 
   .ll-row-0 { animation: ll-focus 12s ease-in-out infinite; }
   .ll-row-1 { animation: ll-focus 12s ease-in-out infinite; animation-delay: 4s; }

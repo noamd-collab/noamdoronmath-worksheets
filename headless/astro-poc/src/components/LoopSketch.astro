@@ -33,6 +33,34 @@ const quarters = Array.from({ length: 8 }, (_, i) => ({
   x: 120 + (i % 4) * 60,
   y: i < 4 ? 72 : 132,
 }));
+/* Ten frames fill left to right, top row first, like the tenframes film. */
+const frameCells = (x: number, y: number, cell: number) =>
+  Array.from({ length: 10 }, (_, i) => ({
+    i,
+    cx: x + cell / 2 + (i % 5) * cell,
+    cy: y + cell / 2 + Math.floor(i / 5) * cell,
+  }));
+const frameGrid = (x: number, y: number, cell: number) => [
+  ...[1, 2, 3, 4].map((c) => ({ x1: x + c * cell, y1: y, x2: x + c * cell, y2: y + 2 * cell })),
+  { x1: x, y1: y + cell, x2: x + 5 * cell, y2: y + cell },
+];
+/* sub-via-10: 15 is a full frame and 5 more. The 5 go first, then 2 of the ten. */
+const svFrames = [{ x: 72, y: 86 }, { x: 258, y: 86 }];
+const svTen = frameCells(72, 86, 30);
+const svFive = frameCells(258, 86, 30).slice(0, 5);
+/* split-ways: 6 split three ways, from small to big. */
+const splitRows = [1, 2, 3].map((k, r) => ({
+  k,
+  y: 62 + r * 62,
+  left: Array.from({ length: k }, (_, i) => 64 + i * 34),
+  right: Array.from({ length: 6 - k }, (_, i) => 64 + (k + i) * 34 + 24),
+}));
+/* bonds-10-20: 6 + 4 fills one frame; 13 + 7 fills the second frame of 20,
+   which sits under the first so both completed frames line up. */
+const bondFrames = [{ x: 164, y: 34 }, { x: 24, y: 122 }, { x: 164, y: 122 }];
+const bondSix = frameCells(164, 34, 26);
+const bondTen = frameCells(24, 122, 26);
+const bondThirteen = frameCells(164, 122, 26);
 ---
 
 <div class="sk">
@@ -724,6 +752,137 @@ const quarters = Array.from({ length: 8 }, (_, i) => ({
         ))}
       </>
     )}
+
+    {variant === 'sub-via-10' && (
+      <>
+        {svFrames.map((f) => (
+          <g>
+            <rect class="sk-ink" x={f.x} y={f.y} width="150" height="60" rx="3"></rect>
+            {frameGrid(f.x, f.y, 30).map((l) => (
+              <line class="sk-ink" style="stroke-width:2" x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}></line>
+            ))}
+          </g>
+        ))}
+        {svTen.slice(0, 8).map((c) => (
+          <circle class="sk-dot" cx={c.cx} cy={c.cy} r="11"></circle>
+        ))}
+        {svTen.slice(8).map((c) => (
+          <circle class="sk-dot sk-sv-take2" cx={c.cx} cy={c.cy} r="11"></circle>
+        ))}
+        {svFive.map((c) => (
+          <circle class="sk-gift sk-sv-take5" cx={c.cx} cy={c.cy} r="11"></circle>
+        ))}
+        <text class="sk-math sk-note sk-sv-step1" x="333" y="180" font-size="22" text-anchor="middle">{MINUS}5</text>
+        <text class="sk-math sk-note sk-sv-step2" x="192" y="180" font-size="22" text-anchor="middle">{MINUS}2</text>
+      </>
+    )}
+
+    {variant === 'split-ways' && (
+      <>
+        {splitRows.map((row) => (
+          <g class={`sk-sw-row sk-sw-row--${row.k}`}>
+            {row.left.map((x) => (
+              <circle class="sk-dot" cx={x} cy={row.y} r="13"></circle>
+            ))}
+            <g class={`sk-sw-move sk-sw-move--${row.k}`}>
+              <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+              {row.right.map((x) => (
+                <circle class="sk-gift" cx={x} cy={row.y} r="13"></circle>
+              ))}
+            </g>
+            <text class={`sk-math sk-sw-eq sk-sw-eq--${row.k}`} x="300" y={row.y + 9} font-size="26">6 = {row.k} + {6 - row.k}</text>
+          </g>
+        ))}
+      </>
+    )}
+
+    {variant === 'tri-square' && (
+      <>
+        <rect class="sk-ghost-box" x="170" y="40" width="140" height="140"></rect>
+        <g class="sk-ts-a">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <polygon class="sk-box" points="170,40 170,180 310,180"></polygon>
+        </g>
+        <g class="sk-ts-b">
+          <rect class="sk-stage" x="0" y="0" width="480" height="280"></rect>
+          <polygon class="sk-box sk-box--gold" points="170,40 310,40 310,180"></polygon>
+        </g>
+      </>
+    )}
+
+    {variant === 'bonds-10-20' && (
+      <>
+        <g class="sk-bd-row2">
+          {bondFrames.slice(1).map((f) => (
+            <g>
+              <rect class="sk-ink" x={f.x} y={f.y} width="130" height="52" rx="3"></rect>
+              {frameGrid(f.x, f.y, 26).map((l) => (
+                <line class="sk-ink" style="stroke-width:2" x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}></line>
+              ))}
+            </g>
+          ))}
+          {[...bondTen, ...bondThirteen.slice(0, 3)].map((c) => (
+            <circle class="sk-dot" cx={c.cx} cy={c.cy} r="9"></circle>
+          ))}
+        </g>
+        <rect class="sk-ink" x={bondFrames[0].x} y={bondFrames[0].y} width="130" height="52" rx="3"></rect>
+        {frameGrid(bondFrames[0].x, bondFrames[0].y, 26).map((l) => (
+          <line class="sk-ink" style="stroke-width:2" x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}></line>
+        ))}
+        {bondSix.slice(0, 6).map((c) => (
+          <circle class="sk-dot" cx={c.cx} cy={c.cy} r="9"></circle>
+        ))}
+        <g class="sk-bd-fill1">
+          {bondSix.slice(6).map((c) => (
+            <circle class="sk-gift" cx={c.cx} cy={c.cy} r="9"></circle>
+          ))}
+        </g>
+        <g class="sk-bd-fill2">
+          {bondThirteen.slice(3).map((c) => (
+            <circle class="sk-gift" cx={c.cx} cy={c.cy} r="9"></circle>
+          ))}
+        </g>
+        <text class="sk-math sk-bd-eq1" x="316" y="69" font-size="26">6 + 4 = 10</text>
+        <text class="sk-math sk-bd-eq2" x="316" y="157" font-size="26">13 + 7 = 20</text>
+      </>
+    )}
+
+    {variant === 'long-mul' && (
+      <>
+        <rect class="sk-track sk-lm-band" x="200" y="51" width="34" height="30" rx="8"></rect>
+        <text class="sk-math" x="149" y="40" font-size="28" text-anchor="middle">2</text>
+        <text class="sk-math" x="183" y="40" font-size="28" text-anchor="middle">5</text>
+        <text class="sk-math" x="217" y="40" font-size="28" text-anchor="middle">7</text>
+        <text class="sk-math" x="85" y="74" font-size="28" text-anchor="middle">×</text>
+        <text class="sk-math" x="183" y="74" font-size="28" text-anchor="middle">2</text>
+        <text class="sk-math" x="217" y="74" font-size="28" text-anchor="middle">3</text>
+        <line class="sk-ink" x1="71" y1="86" x2="237" y2="86"></line>
+        <g class="sk-lm-1">
+          <text class="sk-math" x="149" y="116" font-size="28" text-anchor="middle">7</text>
+          <text class="sk-math" x="183" y="116" font-size="28" text-anchor="middle">7</text>
+          <text class="sk-math" x="217" y="116" font-size="28" text-anchor="middle">1</text>
+          <text class="sk-math sk-note" x="263" y="111" font-size="18">257 × 3 = 771</text>
+        </g>
+        <g class="sk-lm-0">
+          <circle class="sk-coral" cx="217" cy="139" r="16"></circle>
+          <text class="sk-math" x="217" y="149" font-size="28" text-anchor="middle">0</text>
+        </g>
+        <g class="sk-lm-2">
+          <text class="sk-math" x="115" y="149" font-size="28" text-anchor="middle">5</text>
+          <text class="sk-math" x="149" y="149" font-size="28" text-anchor="middle">1</text>
+          <text class="sk-math" x="183" y="149" font-size="28" text-anchor="middle">4</text>
+          <text class="sk-math sk-note" x="263" y="144" font-size="18">257 × 20 = 5,140</text>
+        </g>
+        <g class="sk-lm-3">
+          <line class="sk-ink" x1="71" y1="161" x2="237" y2="161"></line>
+          <text class="sk-math" x="115" y="193" font-size="28" text-anchor="middle">5</text>
+          <text class="sk-math" x="149" y="193" font-size="28" text-anchor="middle">9</text>
+          <text class="sk-math" x="183" y="193" font-size="28" text-anchor="middle">1</text>
+          <text class="sk-math" x="217" y="193" font-size="28" text-anchor="middle">1</text>
+        </g>
+        <text class="sk-math sk-note sk-lm-est" x="263" y="188" font-size="18">≈ 250 × 20 = 5,000</text>
+      </>
+    )}
   </svg>
 
   {variant === 'circle' && <p class="sk-eq sk-eq--circle" dir="ltr">S = πr<sup>2</sup></p>}
@@ -739,6 +898,9 @@ const quarters = Array.from({ length: 8 }, (_, i) => ({
   )}
   {variant === 'frac-div' && (
     <p class="sk-eq sk-eq--fdiv" dir="ltr">2 : <span class="ll-frac"><span class="ll-frac__n">1</span><span class="ll-frac__d">4</span></span> = <span class="sk-fd-slot"><span class="sk-fd-q">?</span><span class="sk-fd-ans">8</span></span></p>
+  )}
+  {variant === 'sub-via-10' && (
+    <p class="sk-eq sk-eq--sv" dir="ltr">15 {MINUS} 7 <span class="sk-sv-step1">= 15 {MINUS} 5</span> <span class="sk-sv-step2">{MINUS} 2</span> <span class="sk-sv-step3">= 8</span></p>
   )}
   <p class="sk-cap" dir="rtl" set:html={captionMathHtml(idea)}></p>
 </div>
@@ -1032,6 +1194,178 @@ const quarters = Array.from({ length: 8 }, (_, i) => ({
     0%, 60% { opacity: 1; }
     66%, 92% { opacity: 0; }
     97%, 100% { opacity: 1; }
+  }
+
+  /* sub-via-10, split-ways, tri-square, bonds-10-20, long-mul. Same rule:
+     the rest style is the finished frame. Pieces that are taken away stay
+     dim in it, so reduced motion still shows what was removed. */
+  .sk-sv-take5, .sk-sv-take2 { opacity: 0.15; }
+  .sk-eq--sv { inset-inline: 0; top: 6%; text-align: center; font-size: 5.4cqi; }
+  .sk-sw-move, .sk-ts-a, .sk-ts-b { transform-box: fill-box; transform-origin: 0 0; }
+  .sk-lm-band { transform-box: fill-box; transform-origin: 0 0; opacity: 0; }
+
+  .sk .sk-sv-take5 { animation: sk-sv-take5 8s ease-in-out infinite; }
+  .sk .sk-sv-take2 { animation: sk-sv-take2 8s ease-in-out infinite; }
+  .sk .sk-sv-step1 { animation: sk-sv-step1 8s ease-in-out infinite; }
+  .sk .sk-sv-step2 { animation: sk-sv-step2 8s ease-in-out infinite; }
+  .sk .sk-sv-step3 { animation: sk-sv-step3 8s ease-in-out infinite; }
+  .sk .sk-sw-row--2 { animation: sk-sw-row2 8s ease-in-out infinite; }
+  .sk .sk-sw-row--3 { animation: sk-sw-row3 8s ease-in-out infinite; }
+  .sk .sk-sw-move--1 { animation: sk-sw-move1 8s ease-in-out infinite; }
+  .sk .sk-sw-move--2 { animation: sk-sw-move2 8s ease-in-out infinite; }
+  .sk .sk-sw-move--3 { animation: sk-sw-move3 8s ease-in-out infinite; }
+  .sk .sk-sw-eq--1 { animation: sk-sw-eq1 8s ease-in-out infinite; }
+  .sk .sk-sw-eq--2 { animation: sk-sw-eq2 8s ease-in-out infinite; }
+  .sk .sk-sw-eq--3 { animation: sk-sw-eq3 8s ease-in-out infinite; }
+  .sk .sk-ts-a { animation: sk-ts-a 8s ease-in-out infinite; }
+  .sk .sk-ts-b { animation: sk-ts-b 8s ease-in-out infinite; }
+  .sk .sk-bd-fill1 { animation: sk-bd-fill1 8s ease-in-out infinite; }
+  .sk .sk-bd-eq1 { animation: sk-bd-eq1 8s ease-in-out infinite; }
+  .sk .sk-bd-row2 { animation: sk-bd-row2 8s ease-in-out infinite; }
+  .sk .sk-bd-fill2 { animation: sk-bd-fill2 8s ease-in-out infinite; }
+  .sk .sk-bd-eq2 { animation: sk-bd-eq2 8s ease-in-out infinite; }
+  .sk .sk-lm-band { animation: sk-lm-band 8s ease-in-out infinite; }
+  .sk .sk-lm-1 { animation: sk-lm-1 8s ease-in-out infinite; }
+  .sk .sk-lm-0 { animation: sk-lm-0 8s ease-in-out infinite; }
+  .sk .sk-lm-2 { animation: sk-lm-2 8s ease-in-out infinite; }
+  .sk .sk-lm-3 { animation: sk-lm-3 8s ease-in-out infinite; }
+  .sk .sk-lm-est { animation: sk-lm-est 8s ease-in-out infinite; }
+
+  /* 15 − 7: the 5 leave first and a full ten is left, then 2 of the ten. */
+  @keyframes sk-sv-take5 {
+    0%, 14% { opacity: 1; }
+    22%, 92% { opacity: 0.15; }
+    98%, 100% { opacity: 1; }
+  }
+  @keyframes sk-sv-take2 {
+    0%, 40% { opacity: 1; }
+    48%, 92% { opacity: 0.15; }
+    98%, 100% { opacity: 1; }
+  }
+  @keyframes sk-sv-step1 {
+    0%, 14% { opacity: 0; }
+    22%, 92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes sk-sv-step2 {
+    0%, 40% { opacity: 0; }
+    48%, 92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes sk-sv-step3 {
+    0%, 62% { opacity: 0; }
+    70%, 92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  /* The loop opens on one whole row of 6. Each split slides the gold part
+     off and writes its sum; at the end the first row closes up again. */
+  @keyframes sk-sw-row2 {
+    0%, 29% { opacity: 0; }
+    35%, 90% { opacity: 1; }
+    95%, 100% { opacity: 0; }
+  }
+  @keyframes sk-sw-row3 {
+    0%, 55% { opacity: 0; }
+    61%, 90% { opacity: 1; }
+    95%, 100% { opacity: 0; }
+  }
+  @keyframes sk-sw-move1 {
+    0%, 11% { transform: translateX(-5%); }
+    19%, 90% { transform: translateX(0); }
+    98%, 100% { transform: translateX(-5%); }
+  }
+  @keyframes sk-sw-move2 {
+    0%, 37% { transform: translateX(-5%); }
+    45%, 97% { transform: translateX(0); }
+    100% { transform: translateX(-5%); }
+  }
+  @keyframes sk-sw-move3 {
+    0%, 63% { transform: translateX(-5%); }
+    71%, 97% { transform: translateX(0); }
+    100% { transform: translateX(-5%); }
+  }
+  @keyframes sk-sw-eq1 {
+    0%, 17% { opacity: 0; }
+    23%, 90% { opacity: 1; }
+    95%, 100% { opacity: 0; }
+  }
+  @keyframes sk-sw-eq2 {
+    0%, 43% { opacity: 0; }
+    49%, 100% { opacity: 1; }
+  }
+  @keyframes sk-sw-eq3 {
+    0%, 69% { opacity: 0; }
+    75%, 100% { opacity: 1; }
+  }
+  /* The two halves meet along the long side, hold as a square, then part. */
+  @keyframes sk-ts-a {
+    0%, 12% { transform: translate(-5%, 8.571%); }
+    32%, 68% { transform: translate(0, 0); }
+    88%, 100% { transform: translate(-5%, 8.571%); }
+  }
+  @keyframes sk-ts-b {
+    0%, 12% { transform: translate(5%, -8.571%); }
+    32%, 68% { transform: translate(0, 0); }
+    88%, 100% { transform: translate(5%, -8.571%); }
+  }
+  /* The empty cells fill: 4 complete the 6 to 10, then 7 complete the 13 to 20. */
+  @keyframes sk-bd-fill1 {
+    0%, 8% { opacity: 0; }
+    16%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+  @keyframes sk-bd-eq1 {
+    0%, 18% { opacity: 0; }
+    24%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+  @keyframes sk-bd-row2 {
+    0%, 32% { opacity: 0; }
+    38%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+  @keyframes sk-bd-fill2 {
+    0%, 44% { opacity: 0; }
+    52%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+  @keyframes sk-bd-eq2 {
+    0%, 56% { opacity: 0; }
+    62%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+  /* 257 × 23: the band marks the digit of 23 in use. Times 3, then times 20,
+     where the row starts with 0, then the sum and the estimate. */
+  @keyframes sk-lm-band {
+    0%, 6% { opacity: 0; transform: translateX(0); }
+    10%, 30% { opacity: 1; transform: translateX(0); }
+    34%, 54% { opacity: 1; transform: translateX(-100%); }
+    58%, 100% { opacity: 0; transform: translateX(-100%); }
+  }
+  @keyframes sk-lm-1 {
+    0%, 12% { opacity: 0; }
+    18%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+  @keyframes sk-lm-0 {
+    0%, 34% { opacity: 0; }
+    40%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+  @keyframes sk-lm-2 {
+    0%, 42% { opacity: 0; }
+    48%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+  @keyframes sk-lm-3 {
+    0%, 60% { opacity: 0; }
+    66%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
+  }
+  @keyframes sk-lm-est {
+    0%, 72% { opacity: 0; }
+    78%, 92% { opacity: 1; }
+    97%, 100% { opacity: 0; }
   }
 
   @keyframes sk-hop {
