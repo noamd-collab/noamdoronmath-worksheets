@@ -154,7 +154,8 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // and stay pinned. Explicit content, not a silent regen.
   const expected = {
     'src/components/ConceptLoop.astro': '76b8b0e26f9211cde8e7e4323608fd48cd02bee62a14f99b205923aa420d70b3',
-    'src/lib/conceptLoops.ts': '8470ac2d099ba475f3edadc583f6522ffa4df17f66c76afa278406f5b0bc3e75',
+    // PR169: preserve new topic films and honor OS reduced motion.
+    'src/lib/conceptLoops.ts': 'f644fd20a34335d565899aa5369773184bee34565135d55aa9ba4b4a7aa447a0',
     'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
   };
   for (const [file, digest] of Object.entries(expected)) {

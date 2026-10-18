@@ -51,7 +51,8 @@ const protectedFiles: Record<string, string> = {
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
   // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
-  'src/lib/conceptLoops.ts': '8470ac2d099ba475f3edadc583f6522ffa4df17f66c76afa278406f5b0bc3e75',
+  // PR169: preserve new topic films and honor OS reduced motion.
+    'src/lib/conceptLoops.ts': 'f644fd20a34335d565899aa5369773184bee34565135d55aa9ba4b4a7aa447a0',
   'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
   'src/components/ConceptLoop.astro': '76b8b0e26f9211cde8e7e4323608fd48cd02bee62a14f99b205923aa420d70b3',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine

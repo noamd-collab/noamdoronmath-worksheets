@@ -52,7 +52,11 @@ const MIGRATED_SLUGS = TOPIC_PAGE_SLUGS.filter((s) => !AUTHORED.has(s));
 function loadProductionFixture(slug: string): TopicParitySnapshot {
   const path = join(fixtureDir, `${slug}.production.json`);
   assert.ok(existsSync(path), `missing production fixture: ${path}`);
-  const data = JSON.parse(readFileSync(path, 'utf8')) as TopicParitySnapshot;
+  // Historical captures stay unchanged. Only these explicit, reviewed corrections
+  // replace the old level descriptions and corrupted algebra example.
+  const corrections = JSON.parse(readFileSync(join(root, 'tests/fixtures/pr169-content-corrections.json'), 'utf8'));
+  const data = JSON.parse(readFileSync(path, 'utf8'), (_key, value) =>
+    typeof value === 'string' ? (corrections[value] ?? value) : value) as TopicParitySnapshot;
   assert.equal(data.slug, slug);
   assert.equal(data.source, 'production');
   assert.ok(data.title && data.h1 && data.description);

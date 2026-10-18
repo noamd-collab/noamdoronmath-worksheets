@@ -1,3 +1,4 @@
+import { splitFractionMarkers } from './topicFractionMarkers';
 /** Small, balanced-operand parser for authored arithmetic, not HTML or LaTeX. */
 export type LessonMathPart = string | { numerator: string; denominator: string };
 const atom = /^[−-]?(?:\d+(?:\.\d+)?[a-zA-Z]*|[a-zA-Z]+)[²³]?$/;
@@ -24,7 +25,7 @@ function operand(source: string, at: number, direction: -1 | 1): [number, number
   return atom.test(source.slice(...range)) ? range : null;
 }
 const unwrap = (s: string) => s.startsWith('(') && s.endsWith(')') ? s.slice(1, -1) : s;
-export function lessonMathParts(expression: string): LessonMathPart[] {
+function slashMathParts(expression: string): LessonMathPart[] {
   const parts: LessonMathPart[] = [];
   let last = 0;
   for (let i = 0; i < expression.length; i++) {
@@ -43,4 +44,11 @@ export function lessonMathParts(expression: string): LessonMathPart[] {
 }
 export function spokenLessonMath(value: string): string {
   return lessonMathParts(value).map(p => typeof p === 'string' ? p : ` שבר: המונה ${p.numerator}, המכנה ${p.denominator}, סוף שבר `).join('');
+}
+
+/** Support existing explicit fraction markers alongside authored arithmetic. */
+export function lessonMathParts(expression: string): LessonMathPart[] {
+  return splitFractionMarkers(expression).flatMap<LessonMathPart>(part => part.kind === "frac"
+    ? [{ numerator: part.n, denominator: part.d }]
+    : slashMathParts(part.text));
 }

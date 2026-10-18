@@ -118,7 +118,9 @@ describe('topic pages apply math isolates without rewriting JSON', () => {
     const page = loadTopicPage('signed-numbers-grade-7');
     const preview = contentToParitySnapshot(page, 'preview');
     const source = JSON.parse(
-      readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8')
+      readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8'),
+      (_key, value) => typeof value === 'string'
+        ? (JSON.parse(readFileSync('tests/fixtures/pr169-content-corrections.json', 'utf8'))[value] ?? value) : value
     ) as TopicParitySnapshot;
     const diffs = diffTopicParity(source, preview).filter((d) => d.severity === 'error');
     assert.deepEqual(

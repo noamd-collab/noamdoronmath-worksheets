@@ -6,6 +6,8 @@
  * finished frame. A tiny observer pauses the loop while it is off-screen.
  */
 import SimilarityLoop from './SimilarityLoop.astro';
+import LessonLoop from './LessonLoop.astro';
+import { isLessonLoop } from '../lib/lessonLoops';
 import LoopFormula from './LoopFormula.astro';
 import LoopSketch from './LoopSketch.astro';
 import {
@@ -18,22 +20,20 @@ interface Props {
   variant: CssLoopVariant;
 }
 const { variant } = Astro.props;
+const lesson = isLessonLoop(variant);
 const similarity = variant === 'similar' || variant === 'similar-area' || variant === 'similar-aa';
 const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
 ---
 
 <div
-  class:list={['ll', `ll--${variant}`, similarity && 'll--similarity']}
+  class:list={['ll', `ll--${variant}`, (lesson || similarity) && 'll--lesson']}
   dir="ltr"
   data-landing-loop={variant}
   data-css-loop
   data-loop-idea={CSS_LOOP_IDEAS[variant]}
-  aria-hidden={similarity ? undefined : "true"}
 >
-  {similarity ? <>
-    <button class="ll-pause" type="button" disabled aria-label="השהיית ההמחשה" aria-pressed="false">השהיה</button>
-    <SimilarityLoop variant={variant as 'similar' | 'similar-area' | 'similar-aa'} />
-  </> : formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}
+  {<button class="ll-pause" type="button" disabled aria-label="השהיית ההמחשה" aria-pressed="false">השהיה</button>}
+  <div class="ll-content" aria-hidden={lesson || similarity ? undefined : "true"}>{variant === 'similar' || variant === 'similar-area' || variant === 'similar-aa' ? <SimilarityLoop variant={variant}/> : isLessonLoop(variant) ? <LessonLoop variant={variant} /> : formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}</div>
 </div>
 
 <script>
@@ -68,7 +68,7 @@ const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
     width: 100%;
     max-width: 520px;
     margin-inline: auto;
-    aspect-ratio: 480 / 280;
+
     position: relative;
     container-type: inline-size;
     contain: layout;
@@ -79,12 +79,14 @@ const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
     border-radius: 24px;
     overflow: hidden;
   }
-  .ll--similarity {aspect-ratio:auto;}
-  .ll-pause {display:block;margin:8px 8px 0 auto;min-height:44px;min-width:64px;border:1px solid #22305a;border-radius:10px;background:white;color:#22305a;font:700 14px Heebo,sans-serif;pointer-events:auto;cursor:pointer;}
+  .ll-content {position:relative;aspect-ratio:480 / 280;}
+  .ll--lesson .ll-content {aspect-ratio:auto;}
+  .ll-pause { display:block; margin:8px 8px 0 auto; min-height:44px; min-width:64px; border:1px solid #22305a; border-radius:10px; background:white; color:#22305a; font:700 14px Heebo,sans-serif; pointer-events:auto; cursor:pointer; }
   .ll-pause:focus-visible {outline:3px solid #e6a534;outline-offset:2px;}
   .ll--paused :global(*) {animation-play-state:paused!important;}
   @media(prefers-reduced-motion:reduce) {.ll-pause {display:none;}}
-  :global(html.nd-motion-off) .ll-pause,:global(html.noam-a11y-motion) .ll-pause {display:none;}
+  :global(html.nd-motion-off) .ll-pause, :global(html.noam-a11y-motion) .ll-pause {display:none;}
+
   .ll :global(.ll-math) {
     unicode-bidi: isolate;
     direction: ltr;
