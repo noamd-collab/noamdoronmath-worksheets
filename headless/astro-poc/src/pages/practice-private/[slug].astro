@@ -2,9 +2,11 @@
 /**
  * HIDDEN practice page (grade 7 angles) for a private study group.
  * Not a site page: no layout, no header or footer, noindex in the meta tag and in
- * the X-Robots-Tag header, no canonical, and absent from the page sitemap (that
- * glob is only src/pages/*.astro, so a sub-folder page is never listed). Nothing
- * links here; the only way in is this URL. The worksheets are original questions
+ * the X-Robots-Tag header, no canonical, and absent from the sitemaps: it is a
+ * dynamic [slug] route (like hero-loops/[variant]), so Wix's own pages-sitemap
+ * does not list it, and the repo page glob (src/pages/*.astro) never sees a
+ * sub-folder. Any other slug is a 404. Nothing links here; the only way in is
+ * this URL. The worksheets are original questions
  * (built with the hebrew-math-worksheet-v5 skill) opened in the standard viewer,
  * so the Ramzi buttons work on the production domain.
  */
@@ -12,6 +14,17 @@ import '../../styles/fonts.css';
 import hidden from '../../data/hidden-practice.v1.json';
 
 export const prerender = false;
+
+if (Astro.url.pathname.replace(/\/+$/, '') !== hidden.page) {
+  return new Response('Not Found', {
+    status: 404,
+    headers: {
+      'content-type': 'text/plain; charset=utf-8',
+      'x-robots-tag': 'noindex',
+      'cache-control': 'no-store',
+    },
+  });
+}
 
 Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet');
 Astro.response.headers.set('Cache-Control', 'private, no-store');
