@@ -46,7 +46,7 @@ it('doubling both dimensions creates four original square units',()=>{
   const [w,h]=original.slice(1).map(Number);
   assert.ok(cells.every(c=>c[2]===w&&c[3]===h));
   assert.equal(new Set(cells.map(c=>c.slice(0,2).join(','))).size,4);
-  assert.deepEqual([...new Set(cells.map(c=>c[0]))],[220,220+w]);
-  assert.deepEqual([...new Set(cells.map(c=>c[1]))],[24,24+h]);
+  assert.deepEqual([...new Set(cells.map(c=>c[0]))],[214,214+w]);
+  assert.deepEqual([...new Set(cells.map(c=>c[1]))],[76,76+h]);
   assert.equal(cells.reduce((s,c)=>s+c[2]*c[3],0),4*w*h);
 });

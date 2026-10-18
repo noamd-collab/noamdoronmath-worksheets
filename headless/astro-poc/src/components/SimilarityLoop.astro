@@ -4,108 +4,145 @@ interface Props { variant: 'similar' | 'similar-area' | 'similar-aa' }
 const { variant } = Astro.props;
 const area = variant === 'similar-area';
 const aa = variant === 'similar-aa';
-const steps = area ? [
-  {text:'כל צלע במשולש הגדול ארוכה פי שניים',math:'6/3 = 8/4 = 10/5 = 2'},
-  {text:'ארבעה משולשים קטנים מכסים את הגדול',math:'4 × 6 = 24'},
-  {text:'יחס השטחים הוא ריבוע יחס הדמיון',math:'24/6 = 2² = 4'},
-] : aa ? [
-  {text:'הסימון הירוק: שתי זוויות ישרות שוות',math:'∠A = ∠D = 90°'},
-  {text:'הקשת הכתומה: זוג נוסף של זוויות שוות',math:'∠B = ∠E'},
-  {text:'שני זוגות מספיקים — דמיון לפי ז.ז',math:'△ABC ∼ △DEF'},
-] : [
-  {text:'שני זוגות של זוויות שוות — דמיון לפי ז.ז',math:'∠A = ∠D; ∠B = ∠E'},
-  {text:'מתאימים צלעות לפי הקודקודים, גם כשהמשולש מסובב',math:'6/3 = 8/4 = 10/5 = 2'},
-  {text:'פי שניים באורך ובגובה — פי ארבעה בשטח',math:'24/6 = 2² = 4'},
-];
+const initialPhase = area ? 2 : aa ? 1 : 0;
 ---
-<section class:list={['similarity',area&&'similarity--area',aa&&'similarity--aa']} data-similarity={variant} dir="rtl" aria-label="דמיון משולשים: מנח שונה, שתי זוויות שוות וריבוע יחס הדמיון">
-  <h2>{area?'פי 2 בצלעות, פי 4 בשטח':aa?'משפט דמיון ז.ז':'מסובבים — ונשארים דומים'}</h2>
-  <p class="intro">המנח שונה. התאמת הזוויות והצלעות נשמרת.</p>
-  <svg class="triangles" viewBox="0 0 360 245" role="img" aria-label={aa?'משולשים ABC ו־DEF במנחים שונים. ריבועים ירוקים מסמנים זוויות ישרות A ו־D; קשתות כתומות מסמנות זוויות שוות B ו־E. לכן המשולשים דומים לפי זווית זווית.':area?'משולש ABC בעל צלעות 3, 4, 5 ושטח 6. משולש DEF מסובב ברבע סיבוב, צלעותיו 6, 8, 10 ושטחו 24. ארבעה עותקים חופפים של הקטן ממלאים את הגדול.':'משולש ABC בעל צלעות 3, 4, 5 מול משולש DEF בעל צלעות 6, 8, 10, מסובב ברבע סיבוב. כל צלע כפולה מהמתאימה לה. שני זוגות זוויות שוות מסומנים בירוק ובכתום.'}>
-    <path d="M35 125 L35 65 L115 125 Z" class="small-fill"/>
-    <path d="M195 45 L315 45 L195 205 Z" class="large-fill"/>
-    {area && <g class="area-tiles">
-      <path d="M195 45 H255 L195 125 Z" class="tile-one"/>
-      <path d="M255 45 H315 L255 125 Z" class="tile-two"/>
-      <path d="M195 125 H255 L195 205 Z" class="tile-three"/>
-      <path d="M255 45 V125 H195 Z" class="tile-four"/>
-    </g>}
-    {!aa && !area && <g transform="translate(35 125)" aria-hidden="true"><g class="growing-copy"><path d="M0 0 V-60 L80 0 Z"/></g></g>}
-    <g class="side side-one"><path d="M35 125 V65 M195 45 H315"/>{!aa&&<><text x="17" y="102">3</text><text x="253" y="29">6</text></>}</g>
-    <g class="side side-two"><path d="M35 125 H115 M195 45 V205"/>{!aa&&<><text x="78" y="151">4</text><text x="175" y="130">8</text></>}</g>
-    <g class="side side-three"><path d="M35 65 L115 125 M315 45 L195 205"/>{!aa&&<><text x="91" y="87">5</text><text x="278" y="139">10</text></>}</g>
-    <g class="angle-pair angle-right"><path d="M35 113 H47 V125 M195 59 H209 V45"/></g>
-    <g class="angle-pair angle-acute"><path d="M35 85 A20 20 0 0 0 51 77 M291 45 A24 24 0 0 0 300.6 64.2"/></g>
-    <g class="vertices"><text x="25" y="150">A</text><text x="30" y="49">B</text><text x="130" y="133">C</text><text x="180" y="32">D</text><text x="332" y="49">E</text><text x="190" y="230">F</text></g>
-  </svg>
-  <div class="angle-key" aria-label="שני זוגות הזוויות השוות">
-    <span class="right-key"><bdi>∠A = ∠D</bdi><small>סימון ריבוע · זוויות ישרות</small></span>
-    <span class="acute-key"><bdi>∠B = ∠E</bdi><small>סימון קשת · זוויות שוות</small></span>
-  </div>
-  <p class="theorem"><strong>ז.ז — זווית–זווית</strong><br/>שני זוגות של זוויות שוות מספיקים כדי להוכיח דמיון.</p>
-  <ol>{steps.map((step,i)=><li class={`explanation explanation-${i}`}><span class="number">{i+1}</span><div><p>{step.text}</p><p class="math"><LessonMath value={step.math}/></p></div></li>)}</ol>
-  <section class="area-demo" aria-label="מדוע יחס השטחים הוא ריבוע יחס הדמיון">
-    <h3>מה קורה ליחידת שטח?</h3>
-    <p>{aa?'דוגמה נפרדת: נבחר הגדלה פי 2. ז.ז לבדו אינו קובע את יחס הגדלים.':'בהגדלה פי 2, כל ריבוע יחידה גדל גם לרוחב וגם לגובה.'}</p>
-    <svg class="unit-squares" viewBox="0 0 360 125" role="img" aria-label="ריבוע שצלעו יחידה אחת גדל לריבוע שצלעו שתי יחידות. הריבוע המוגדל מכיל ארבע יחידות שטח מקוריות, מסודרות בשתי שורות ושתי עמודות.">
-      <rect class="unit-original" x="50" y="42" width="36" height="36"/>
+<section class="similarity-film" data-similarity={variant} data-phase={initialPhase} dir="rtl" aria-label="המחשת דמיון: סיבוב, זווית–זווית ויחס שטחים">
+  <svg viewBox="0 0 360 280" role="img" aria-label="משולשים דומים במנחים שונים; שני זוגות זוויות שוות. בהגדלה לדוגמה פי 2 בכל כיוון, ריבוע יחידה הופך לארבע יחידות שטח מקוריות.">
+    <g class="triangles-scene">
+      <path d="M35 125 L35 65 L115 125 Z" class="small-fill"/>
+      <path d="M195 45 L315 45 L195 205 Z" class="large-fill"/>
+      {area && <g class="area-tiles">
+        <path d="M195 45 H255 L195 125 Z" class="tile-one"/>
+        <path d="M255 45 H315 L255 125 Z" class="tile-two"/>
+        <path d="M195 125 H255 L195 205 Z" class="tile-three"/>
+        <path d="M255 45 V125 H195 Z" class="tile-four"/>
+      </g>}
+      <g transform="translate(35 125)" aria-hidden="true"><g class="growing-copy"><path d="M0 0 V-60 L80 0 Z"/></g></g>
+      {!aa && <g class="side-lengths"><text x="17" y="102">3</text><text x="253" y="29">6</text><text x="78" y="151">4</text><text x="175" y="130">8</text><text x="91" y="87">5</text><text x="278" y="139">10</text></g>}
+      <g class="angle-pair angle-right"><path d="M35 113 H47 V125 M195 59 H209 V45"/></g>
+      <g class="angle-pair angle-acute"><path d="M35 85 A20 20 0 0 0 51 77 M291 45 A24 24 0 0 0 300.6 64.2"/></g>
+      <g class="vertices"><text x="25" y="150">A</text><text x="30" y="49">B</text><text x="130" y="133">C</text><text x="180" y="32">D</text><text x="332" y="49">E</text><text x="190" y="230">F</text></g>
+      <g class="angle-equations"><text class="right-equation" x="95" y="265">∠A = ∠D</text><text class="acute-equation" x="265" y="265">∠B = ∠E</text></g>
+    </g>
+    <g class="area-scene">
+      <rect class="unit-original" x="42" y="105" width="48" height="48"/>
+      <rect class="unit-target" x="214" y="76" width="96" height="96"/>
       <g class="unit-grid">
-        <rect class="unit-cell" x="220" y="24" width="36" height="36"/>
-        <rect class="unit-cell" x="256" y="24" width="36" height="36"/>
-        <rect class="unit-cell" x="220" y="60" width="36" height="36"/>
-        <rect class="unit-cell" x="256" y="60" width="36" height="36"/>
+        <rect class="unit-cell" x="214" y="76" width="48" height="48"/>
+        <rect class="unit-cell" x="262" y="76" width="48" height="48"/>
+        <rect class="unit-cell" x="214" y="124" width="48" height="48"/>
+        <rect class="unit-cell" x="262" y="124" width="48" height="48"/>
+        <text x="238" y="108">1</text><text x="286" y="108">2</text><text x="238" y="156">3</text><text x="286" y="156">4</text>
       </g>
-      <g transform="translate(50 42)" aria-hidden="true"><rect class="unit-growing" width="36" height="36"/></g>
-      <path class="unit-arrow" d="M110 60 H186 M177 53 L186 60 L177 67"/>
-      <text x="148" y="42">×2</text>
-      <text x="68" y="102">1</text><text x="256" y="120">2</text><text x="310" y="66">2</text>
-    </svg>
-    <div class="unit-captions" dir="ltr"><span dir="rtl">יחידת שטח אחת</span><span dir="rtl">4 יחידות שטח מקוריות</span></div>
-    <p class="area-equation" dir="ltr">2 × 2 = 2² = 4</p>
-    <p class="area-rule">באופן כללי: יחס אורכים <bdi>k</bdi> ← יחס שטחים <bdi>k²</bdi>.</p>
-    {!aa && <p class="triangle-areas">במשולשים שמעל: שטח הקטן 6 יחידות ריבועיות, ושטח הגדול 24.</p>}
-  </section>
+      <g transform="translate(42 105)" aria-hidden="true"><rect class="unit-growing" width="48" height="48"/></g>
+      <path class="unit-arrow" d="M112 129 H184 M175 122 L184 129 L175 136"/>
+      <text x="148" y="113">×2</text>
+      <path class="measure" d="M214 65 V57 M214 61 H310 M310 57 V65 M319 76 H327 M323 76 V172 M319 172 H327"/>
+      <text x="66" y="179">1</text><text x="262" y="49">2</text><text x="342" y="133">2</text>
+      <text class="area-total" x="66" y="227">1</text><text class="area-total" x="262" y="227">2² = 4</text>
+    </g>
+  </svg>
+  <div class="scene-caption">
+    <p class="caption-0">אותה צורה, גם אחרי סיבוב והגדלה</p>
+    <p class="caption-1">שני זוגות זוויות שוות · דמיון ז.ז</p>
+    <p class="caption-2">{aa?'הגדלה לדוגמה: פי 2 באורך, פי 4 בשטח':'פי 2 בכל כיוון · פי 4 בשטח'}</p>
+    <div class="formula formula-0"><LessonMath value={aa?'△ABC ∼ △DEF':'6/3 = 8/4 = 10/5 = 2'}/></div>
+    <div class="formula formula-1"><LessonMath value="△ABC ∼ △DEF"/></div>
+    <div class="formula formula-2"><LessonMath value="2 × 2 = 2² = 4"/></div>
+  </div>
+  <div class="chapters" role="group" aria-label="בחירת שלב בהמחשה">
+    {['סיבוב','ז.ז','שטח'].map((label,i)=><button type="button" data-chapter={i} aria-pressed={initialPhase===i?'true':'false'} disabled>{label}<span aria-hidden="true"></span></button>)}
+  </div>
 </section>
+<script>
+  document.querySelectorAll<HTMLElement>('.similarity-film').forEach(film => {
+    if(film.dataset.ready) return;
+    film.dataset.ready='true';
+    const shell=film.closest('.ll');
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+    const buttons=Array.from(film.querySelectorAll<HTMLButtonElement>('[data-chapter]'));
+    let phase=Number(film.dataset.phase)||0;
+    let elapsed=0;
+    let previous=0;
+    const duration=8000;
+    const select=(next:number)=>{
+      phase=next;elapsed=0;film.dataset.phase=String(next);
+      buttons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===next)));
+      film.style.setProperty('--progress','0');
+    };
+    buttons.forEach((button,i)=>{
+      button.addEventListener('click',()=>{
+        if(i===phase) return;
+        select(i);
+        film.toggleAttribute('data-inspect',shell?.classList.contains('ll--paused') ?? false);
+      });
+      button.disabled=false;
+    });
+    reduced.addEventListener('change',()=>{ elapsed=0; previous=0; });
+    document.addEventListener('visibilitychange',()=>{ film.toggleAttribute('data-hidden',document.hidden); previous=0; });
+    // One clock advances chapters only while the shared pause control, viewport
+    // observer and accessibility preferences allow the CSS animation to run.
+    const tick=(now:number)=>{
+      if(!film.isConnected) return;
+      const root=document.documentElement;
+      const stopped=reduced.matches || document.hidden || shell?.classList.contains('ll--paused') || shell?.classList.contains('ll--off') || ['nd-motion-off','noam-a11y-motion','noam-a11y-no-motion'].some(c=>root.classList.contains(c));
+      if(!stopped && film.hasAttribute('data-inspect')) film.removeAttribute('data-inspect');
+      if(!stopped && previous) {
+        elapsed+=Math.min(now-previous,100);
+        if(elapsed>=duration) select((phase+1)%3);
+        film.style.setProperty('--progress',String(elapsed/duration));
+      }
+      previous=now;requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+</script>
 <style>
-  .similarity {padding:12px 12px 16px;color:#22305a;font-family:Heebo,sans-serif;}
-  h2 {font-size:clamp(19px,5cqi,26px);line-height:1.3;margin:0 0 6px;}
-  .intro {font-size:15px;line-height:1.6;margin:0;}
-  svg {display:block;width:100%;height:auto;overflow:visible;}
-  svg path {stroke-linejoin:round;stroke-linecap:round;}
-  .small-fill {fill:#e1f1eb;stroke:#22305a;stroke-width:2;}
-  .large-fill {fill:#fff4da;stroke:#22305a;stroke-width:2;}
-  svg text {font:700 20px Heebo,sans-serif;text-anchor:middle;direction:ltr;unicode-bidi:isolate;fill:#22305a;paint-order:stroke;stroke:white;stroke-width:4px;stroke-linejoin:round;}
-  .side path {fill:none;stroke-width:2.5;stroke:#22305a;}
-  .angle-pair {fill:none;stroke-width:4;animation:angle-focus 12s ease-in-out infinite;}
-  .angle-right{stroke:#14635b;} .angle-acute{stroke:#a44716;animation-delay:6s;}
-  .angle-key {display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;}
-  .angle-key>span {border-radius:10px;padding:8px 3px;border:2px solid currentColor;font-weight:800;font-size:17px;}
-  .right-key{color:#14635b;background:#e7f5ef;} .acute-key{color:#a44716;background:#fff1df;}
-  small{display:block;font-size:12px;font-weight:500;margin-top:3px;}
-  .theorem{margin:10px 0;padding:10px;border-right:4px solid #22305a;background:#f1f5f6;border-radius:8px;font-size:15px;line-height:1.6;}
-  .growing-copy {transform-box:view-box;transform-origin:0 0;animation:enlarge 18s ease-in-out infinite;opacity:0;}
-  .growing-copy path {fill:#e6a53433;stroke:#a55700;stroke-width:2;stroke-dasharray:4 3;}
-  .area-tiles path {stroke:#22305a;stroke-width:1.5;}
-  .tile-one{fill:#b7dfd2;} .tile-two{fill:#f7d489;} .tile-three{fill:#b9c9e9;} .tile-four{fill:#efb9a8;}
-  .area-tiles path {animation:tiles 18s ease-in-out infinite;}
-  .area-tiles .tile-two{animation-delay:4.5s;} .area-tiles .tile-three{animation-delay:9s;} .area-tiles .tile-four{animation-delay:13.5s;}
-  ol{padding:0;margin:12px 0;list-style:none;display:grid;gap:8px;}
-  li{display:flex;gap:8px;align-items:center;padding:10px 8px;border:1px solid #dce1e9;border-radius:12px;background:white;}
-  li>div{flex:1;min-width:0;} li p{margin:0;font-size:15px;line-height:1.6;}
-  .number{display:grid;place-items:center;min-width:26px;height:26px;border-radius:50%;background:#e3f1ec;font-weight:700;}
-  .math{text-align:center;direction:ltr;font-size:clamp(15px,4cqi,21px);font-weight:700;margin-top:5px;}
-  .area-demo{border:1px solid #b7d9cf;border-radius:12px;background:#f0f8f4;padding:12px 10px;}
-  h3{font-size:19px;margin:0 0 6px;} .area-demo p{font-size:14px;line-height:1.6;margin:4px 0;}
-  .unit-original,.unit-cell{fill:#b7dfd2;stroke:#22305a;stroke-width:1.5;}
+  .similarity-film{padding:8px 12px 14px;color:#22305a;font-family:Heebo,sans-serif;--progress:0;}
+  svg{display:block;width:100%;height:auto;}
+  svg path{stroke-linejoin:round;stroke-linecap:round;}
+  svg text{font:700 19px Heebo,sans-serif;text-anchor:middle;direction:ltr;unicode-bidi:isolate;fill:#22305a;paint-order:stroke;stroke:white;stroke-width:3px;stroke-linejoin:round;}
+  .small-fill{fill:#dceee8;stroke:#22305a;stroke-width:2.5;}
+  .large-fill{fill:#fff3d6;stroke:#22305a;stroke-width:2.5;}
+  .growing-copy{transform-box:view-box;transform-origin:0 0;opacity:0;}
+  .growing-copy path{fill:#65b4a63b;stroke:#14635b;stroke-width:2.5;}
+  [data-phase='0'][data-ready] .growing-copy{animation:rotate-enlarge 8s ease-in-out both;}
+  .angle-pair{fill:none;stroke-width:3;}
+  .angle-right{stroke:#14635b;}.angle-acute{stroke:#a44716;}
+  [data-phase='1'][data-ready] .angle-right,[data-phase='1'][data-ready] .right-equation{animation:right-focus 8s ease-in-out both;}
+  [data-phase='1'][data-ready] .angle-acute,[data-phase='1'][data-ready] .acute-equation{animation:acute-focus 8s ease-in-out both;}
+  .right-equation{fill:#14635b;}.acute-equation{fill:#a44716;}
+  .area-tiles path{stroke:#22305a;stroke-width:1;}
+  .tile-one{fill:#b7dfd2;}.tile-two{fill:#f7d489;}.tile-three{fill:#b9c9e9;}.tile-four{fill:#efb9a8;}
+  .area-scene,.angle-equations,[data-phase='1'] .side-lengths{display:none;}
+  [data-phase='1'] .angle-equations,[data-phase='2'] .area-scene{display:inline;}
+  [data-phase='2'] .triangles-scene{display:none;}
+  .unit-original,.unit-target,.unit-cell{fill:#b7dfd2;stroke:#22305a;stroke-width:1.5;}
+  .unit-target{fill:none;stroke:#9da9b9;stroke-dasharray:3 4;}
   .unit-cell:nth-child(2){fill:#f7d489;}.unit-cell:nth-child(3){fill:#b9c9e9;}.unit-cell:nth-child(4){fill:#efb9a8;}
-  .unit-growing{fill:#e6a53433;stroke:#a55700;stroke-width:2;stroke-dasharray:4 3;transform-box:view-box;transform-origin:0 0;animation:square-grow 12s ease-in-out infinite;opacity:0;}
-  .unit-arrow{fill:none;stroke:#22305a;stroke-width:2;}
-  .unit-captions{display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:13px;text-align:center;}
-  .area-demo .area-equation{font-size:23px;text-align:center;font-weight:800;margin:10px 0;}
-  .area-rule{font-weight:700;} .triangle-areas{border-top:1px solid #b7d9cf;padding-top:8px;}
-  @keyframes enlarge {0%,8%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;} 12%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;} 24%{transform:translate(0,0) rotate(90deg) scale(1);opacity:1;} 42%,50%{transform:translate(160px,-80px) rotate(90deg) scale(2);opacity:1;} 56%,100%{transform:translate(160px,-80px) rotate(90deg) scale(2);opacity:0;}}
-  @keyframes square-grow{0%,8%{transform:translate(0,0) scale(1);opacity:0;} 15%{transform:translate(0,0) scale(1);opacity:1;} 45%,65%{transform:translate(170px,-18px) scale(2);opacity:1;} 75%,100%{transform:translate(170px,-18px) scale(2);opacity:0;}}
-  @keyframes angle-focus {0%,40%,100%{stroke-width:4;} 50%,65%{stroke-width:7;}}
-  @keyframes tiles {0%,20%{opacity:1;} 30%,90%{opacity:.6;} 100%{opacity:1;}}
-  @media(prefers-reduced-motion:reduce){*{animation:none!important;}.growing-copy,.unit-growing{display:none;}}
+  .unit-growing{fill:#b7dfd2;stroke:#14635b;stroke-width:2;transform-box:view-box;transform-origin:0 0;opacity:0;}
+  [data-phase='2'][data-ready] .unit-growing{animation:square-grow 8s ease-in-out both;}
+  [data-phase='2'][data-ready] .unit-grid{animation:reveal-grid 8s ease-in-out both;}
+  .unit-arrow,.measure{fill:none;stroke:#22305a;stroke-width:1.5;}
+  .area-total{font-size:24px;}
+  .scene-caption{min-height:82px;display:grid;align-content:center;text-align:center;}
+  .scene-caption p{font-size:15px;line-height:1.5;margin:0 0 8px;}
+  .scene-caption>*{display:none;}
+  [data-phase='0'] .caption-0,[data-phase='1'] .caption-1,[data-phase='2'] .caption-2,[data-phase='0'] .formula-0,[data-phase='1'] .formula-1,[data-phase='2'] .formula-2{display:block;}
+  .formula{font-size:21px;font-weight:750;direction:ltr;}
+  .chapters{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;border-top:1px solid #e0e5e9;padding-top:12px;}
+  .chapters button{position:relative;overflow:hidden;min-height:44px;border:1px solid #d5dce6;border-radius:9px;background:white;color:#22305a;font:600 14px Heebo,sans-serif;cursor:pointer;pointer-events:auto;}
+  .chapters button[aria-pressed='true']{background:#e7f3ed;border-color:#1e605e;}
+  .chapters button:focus-visible{outline:3px solid #e6a534;outline-offset:2px;}
+  .chapters span{position:absolute;bottom:0;right:0;height:3px;background:#1e605e;width:100%;transform:scaleX(0);transform-origin:right;}
+  .chapters [aria-pressed='true'] span{transform:scaleX(var(--progress));}
+  @keyframes rotate-enlarge{0%,5%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}12%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}32%{transform:translate(0,0) rotate(90deg) scale(1);opacity:1;}70%,88%{transform:translate(160px,-80px) rotate(90deg) scale(2);opacity:1;}100%{transform:translate(160px,-80px) rotate(90deg) scale(2);opacity:0;}}
+  @keyframes right-focus{0%,45%,100%{opacity:1;stroke-width:5;}55%,85%{opacity:.5;stroke-width:3;}}
+  @keyframes acute-focus{0%,40%{opacity:.5;stroke-width:3;}50%,100%{opacity:1;stroke-width:5;}}
+  @keyframes square-grow{0%,8%{transform:translate(0,0) scale(1);opacity:0;}15%{transform:translate(0,0) scale(1);opacity:1;}55%,65%{transform:translate(172px,-29px) scale(2);opacity:1;}75%,100%{transform:translate(172px,-29px) scale(2);opacity:0;}}
+  @keyframes reveal-grid{0%,60%{opacity:0;}75%,100%{opacity:1;}}
+  [data-inspect] *{animation:none!important;}
+  [data-hidden] *{animation-play-state:paused!important;}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;}.growing-copy,.unit-growing{display:none;}.unit-grid{opacity:1;}}
+  :global(html.nd-motion-off) *, :global(html.noam-a11y-motion) *, :global(html.noam-a11y-no-motion) *{animation:none!important;}
 </style>
