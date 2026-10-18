@@ -8085,7 +8085,13 @@ function esc(s){
         span.style.whiteSpace='nowrap';
         var frac=/^([0-9]+)\/([0-9]+)$/.exec(match[1]);
         if(frac){
-          span=makeNoamFraction(frac[1],frac[2]);
+          span.className='exact-frac';
+          span.appendChild(document.createTextNode(frac[1]));
+          var bar=document.createElement('span');
+          bar.className='exact-frac-bar';
+          bar.setAttribute('aria-hidden','true');
+          span.appendChild(bar);
+          span.appendChild(document.createTextNode(frac[2]));
         }else{
           span.textContent=match[1].replace(/-/g,'−');
         }
