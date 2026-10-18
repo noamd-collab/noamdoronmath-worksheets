@@ -255,6 +255,8 @@ describe('Noam AI headless endpoint', () => {
     assert.equal(client.includes('my-site-2'), false);
     assert.match(bot, /NOT_ACTIVE/);
     assert.match(config, /QWEN_API_KEY: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
+    assert.match(config, /QWEN_BASE_URL: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
+    assert.match(config, /QWEN_MODEL: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
     assert.match(config, /NOAM_RECAPTCHA_SECRET_KEY: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
     assert.equal(QWEN_SECRET_NAME, 'QWEN_API_KEY');
     assert.equal(NOAM_RECAPTCHA_SECRET_NAME, 'NOAM_RECAPTCHA_SECRET_KEY');
@@ -306,7 +308,7 @@ describe('Noam AI headless endpoint', () => {
 
   it('returns the calm unavailable text when reCAPTCHA or Qwen times out', async () => {
     assert.equal(RECAPTCHA_TIMEOUT_MS, 5_000);
-    assert.equal(QWEN_TIMEOUT_MS, 12_000);
+    assert.equal(QWEN_TIMEOUT_MS, 18_000);
     const hang = (_url: string, init?: { signal?: AbortSignal }) => new Promise(() => {
       // Stays pending. The timeout aborts the signal and wins the race.
       void init;

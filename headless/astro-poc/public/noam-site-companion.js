@@ -14,6 +14,50 @@
   var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
   var SOLVE_REQUEST = /רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
   var botClientPromise = null;
+  var navigationPromise = null;
+  var RESOURCE_REQUEST = /דפים|דפי|דף עבודה|תרגול|מחפש|מחפשת|מאגר|worksheet|practice|find/i;
+  var historyKey = "noam-navigation-conversation-v1";
+  var conversation = [];
+  try {
+    var saved = JSON.parse(sessionStorage.getItem(historyKey) || "null");
+    if (saved && Date.now() - saved.at < 30 * 60 * 1000 && Array.isArray(saved.turns)) {
+      conversation = saved.turns.filter(function (turn) {
+        return turn && (turn.role === "user" || turn.role === "assistant") && typeof turn.content === "string";
+      }).slice(-8).map(function (turn) { return {role: turn.role, content: turn.content.slice(0, 700)}; });
+    }
+  } catch (_) {}
+  function remember(message, result) {
+    var labels = [result.primary].concat(result.chips || []).filter(Boolean).map(function (action) { return action.label; }).filter(Boolean);
+    conversation.push({role: "user", content: message.slice(0, 700)},
+      {role: "assistant", content: [result.answer || result.text || "", labels.join("; ")].join("\n").slice(0, 700)});
+    conversation = conversation.slice(-8);
+    try { sessionStorage.setItem(historyKey, JSON.stringify({at: Date.now(), turns: conversation})); } catch (_) {}
+  }
+  function loadNavigation() {
+    if (!navigationPromise) {
+      var controller = new AbortController();
+      var timer;
+      var timeout = new Promise(function (_, reject) {
+        timer = setTimeout(function () { controller.abort(); reject(new Error("NAVIGATION_TIMEOUT")); }, 5000);
+      });
+      navigationPromise = Promise.race([timeout, Promise.all([
+        import("/noam-navigation.js?v=2062a158d2d825aa"),
+        fetch("/noam-navigation-guide.json?v=2062a158d2d825aa", {signal: controller.signal}).then(function (response) {
+          if (!response.ok) throw new Error("NAVIGATION_UNAVAILABLE");
+          return response.json();
+        }),
+      ])]).then(function (loaded) { clearTimeout(timer); return loaded; }).catch(function (error) { clearTimeout(timer); navigationPromise = null; throw error; });
+    }
+    return navigationPromise;
+  }
+  function navigationFallback(payload) {
+    return loadNavigation().then(function (loaded) {
+      var result = loaded[0].navigateSite(payload, loaded[1], "") || loaded[0].navigationHelp(loaded[1], true);
+      return Object.assign({}, result, {source: "local-fallback", answer: "החיבור לנועם AI לא הצליח כרגע. הנה ניווט בסיסי: " + (result.answer || "בחרו דף מהרשימה.")});
+    }).catch(function () {
+      return {source: "local-fallback", answer: "החיבור לנועם AI לא הצליח כרגע. אפשר להמשיך דרך מאגר דפי העבודה.", primary: {label: "דפי עבודה", href: "/worksheets"}, chips: []};
+    });
+  }
   var script = document.currentScript;
   var avatarSrc = (script && script.getAttribute("data-avatar")) || "/design-exact/assets/avatar/ramzi-A-idle.svg";
   var mode = "closed";
@@ -133,7 +177,7 @@
   }
 
   function isLocalSolve(message) {
-    return pageKind() === "worksheet" && SOLVE_REQUEST.test(String(message || ""));
+    return pageKind() === "worksheet" && SOLVE_REQUEST.test(String(message || "")) && !RESOURCE_REQUEST.test(String(message || ""));
   }
 
   function forceSiteFont(scope) {
@@ -164,6 +208,9 @@
     "#noam-site-companion-chips{display:flex;flex-wrap:wrap;gap:6px}",
     "#noam-site-companion-chips a,#noam-site-companion-chips button{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;border:2px solid #22305a;border-radius:999px;background:#fff;color:#22305a;text-decoration:none;cursor:pointer}",
     "#noam-site-companion-details{margin:0;font-size:16px;font-weight:500;line-height:1.35;overflow:auto;white-space:pre-wrap}",
+    "#noam-site-companion-request{margin:4px 0;color:#4c5978;font-size:16px;overflow-wrap:anywhere;flex:none}",
+    "#noam-site-companion-reset{align-self:flex-start;border:0;background:transparent;color:#1d6362;text-decoration:underline;min-height:36px;cursor:pointer;flex:none}",
+    "#noam-site-companion-panel.is-compact #noam-site-companion-request,#noam-site-companion-panel.is-compact #noam-site-companion-reset{display:none}",
     "#noam-site-companion-form{display:flex;gap:6px;flex:none}",
     "#noam-site-companion-input{flex:1;min-width:0;height:44px;border:2px solid #22305a;border-radius:10px;padding:4px 8px;font-weight:500}",
     "#noam-site-companion-form button{min-height:44px;min-width:44px;border:2px solid #22305a;border-radius:10px;background:#22305a;color:#fff;padding:4px 8px;cursor:pointer;flex:none}",
@@ -244,6 +291,7 @@
     '<button type="button" id="noam-ai-expand" aria-expanded="false" aria-label="הרחבה">הרחבה</button>' +
     '<button type="button" id="noam-ai-collapse" hidden>צמצום</button>' +
     '<button type="button" id="noam-site-companion-close" aria-label="סגירת נועם AI">×</button></header>' +
+    '<p id="noam-site-companion-request" hidden></p>' +
     '<p id="noam-site-companion-answer" aria-live="polite"></p>' +
     '<a id="noam-site-companion-primary" hidden></a>' +
     '<button type="button" id="noam-site-companion-ramzi" hidden>עזרה מרמזי</button>' +
@@ -252,7 +300,8 @@
     '<p id="noam-site-companion-details" hidden tabindex="0"></p>' +
     '<form id="noam-site-companion-form"><label for="noam-site-companion-input" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">מה אתם מחפשים?</label>' +
     '<input id="noam-site-companion-input" type="text" maxlength="700" autocomplete="off" aria-label="מה אתם מחפשים?">' +
-    '<button type="submit" aria-label="שליחה">שליחה</button></form>';
+    '<button type="submit" aria-label="שליחה">שליחה</button></form>' +
+    '<button type="button" id="noam-site-companion-reset" hidden>שיחה חדשה</button>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
   forceSiteFont(root);
@@ -264,6 +313,18 @@
   var moreEl = document.getElementById("noam-site-companion-more");
   var detailsEl = document.getElementById("noam-site-companion-details");
   var form = document.getElementById("noam-site-companion-form");
+  var requestEl = document.getElementById("noam-site-companion-request");
+  var resetEl = document.getElementById("noam-site-companion-reset");
+  resetEl.hidden = !conversation.length;
+  resetEl.addEventListener("click", function () {
+    if (streaming) return;
+    conversation = [];
+    try { sessionStorage.removeItem(historyKey); } catch (_) {}
+    resetEl.hidden = true;
+    requestEl.hidden = true;
+    showIdle();
+    input.focus();
+  });
   var input = document.getElementById("noam-site-companion-input");
   var expandEl = document.getElementById("noam-ai-expand");
   var collapseEl = document.getElementById("noam-ai-collapse");
@@ -389,6 +450,11 @@
     var started = Date.now();
     hasAnswer = true;
     panel.classList.add("is-thinking");
+    primaryEl.hidden = true;
+    ramziEl.hidden = true;
+    moreEl.hidden = true;
+    detailsEl.hidden = true;
+    setChips([]);
     answerEl.innerHTML = '<span id="noam-site-companion-thinking"><span class="noam-think-text">חושב…</span><span class="noam-think-dots" aria-hidden="true"><i></i><i></i><i></i></span></span>';
     var button = sendButton();
     if (button) button.disabled = true;
@@ -400,9 +466,23 @@
     if (mode === "compact") fitCompact();
   }
 
+  function answerKind(result) {
+    var source = String(result && result.source || "");
+    if (source === "model" || source === "classifier") return "model";
+    if (source === "fallback" || source === "local-fallback") return "fallback";
+    return "hardcoded";
+  }
+
+  function markAnswer(result) {
+    var source = (result && result.source) || "local";
+    panel.setAttribute("data-response-source", source);
+    panel.setAttribute("data-answer-kind", answerKind(result));
+  }
+
   function showResult(result) {
     stopThinking();
     hasAnswer = true;
+    markAnswer(result);
     answerEl.textContent = (result && (result.answer || result.text)) || FALLBACK;
     var primary = result && result.primary;
     if (primary && primary.action === "ramzi") {
@@ -419,7 +499,7 @@
     }
     setChips((result && result.chips) || []);
     detailsEl.textContent = (result && result.details) || answerEl.textContent;
-    moreEl.hidden = !detailsEl.textContent;
+    moreEl.hidden = !detailsEl.textContent || detailsEl.textContent === answerEl.textContent;
     if (mode === "compact") fitCompact();
   }
 
@@ -494,6 +574,9 @@
     root.style.right = "8px";
     root.style.left = "auto";
     root.style.bottom = "8px";
+    /* Phone dock keeps this launcher on the bottom-right. Do not stack it
+       over the accessibility button or the first screen of text. */
+    if (window.matchMedia("(max-width: 800px)").matches) return;
     var a11y = document.getElementById("noam-accessibility");
     if (!a11y) return;
     var box = a11y.getBoundingClientRect();
@@ -682,7 +765,7 @@
     botClientPromise = new Promise(function (resolve, reject) {
       function finish(ok) {
         if (ok && window.NoamBotClient && typeof window.NoamBotClient.create === "function") {
-          resolve(window.NoamBotClient.create({ api: API_BASE, enabled: true, modelTimeoutMs: 20000 }));
+          resolve(window.NoamBotClient.create({ api: API_BASE, enabled: true, modelTimeoutMs: 30000 }));
           return;
         }
         reject(new Error(FALLBACK));
@@ -712,26 +795,36 @@
       return;
     }
     streaming = true;
+    requestEl.textContent = "אתם: " + message.slice(0, 700);
+    requestEl.hidden = false;
+    resetEl.hidden = false;
+    resetEl.disabled = true;
     showThinking();
-    ensureBotClient().then(function (client) {
-      return client.postJson(API, {
-        message: message.slice(0, 700),
-        page: { kind: pageKind(), path: location.pathname + location.search, title: document.title },
-        teacher: teacherContext(),
-      });
+    var payload = {
+      message: message.slice(0, 700),
+      page: { kind: pageKind(), path: location.pathname + location.search, title: document.title },
+      teacher: teacherContext(),
+      history: conversation.slice(-8),
+    };
+    panel.removeAttribute("data-response-error");
+    ensureBotClient().then(function (client) { return client.postJson(API, payload); }).then(function (result) {
+      var code = result && result.code;
+      if (typeof code === "string" && /^[A-Z0-9_]{1,40}$/.test(code)) {
+        panel.setAttribute("data-response-error", code);
+      }
+      if (result && result.source === "fallback" && result.primary && result.active !== false) return result;
+      if (!result || result.ok === false || result.active === false) return navigationFallback(payload);
+      if (!code) panel.removeAttribute("data-response-error");
+      return result;
+    }).catch(function (error) {
+      var code = String(error && error.code || "CONNECTION_FAILED");
+      panel.setAttribute("data-response-error", /^[A-Z0-9_]{1,80}$/.test(code) ? code : "CONNECTION_FAILED");
+      return navigationFallback(payload);
     }).then(function (result) {
       streaming = false;
+      resetEl.disabled = false;
+      remember(message, result);
       showResult(result);
-    }).catch(function (error) {
-      streaming = false;
-      var text = (error && error.message) || FALLBACK;
-      var teacher = pageKind() === "teachers";
-      showResult({
-        answer: text,
-        details: teacher ? text + "\n" + EXPORT_NOTE : text,
-        primary: teacher ? { href: siteHref("/factoring-grade-9"), label: "פירוק לגורמים ט׳" } : null,
-        chips: teacher ? [{ label: "דפי עבודה", href: siteHref("/worksheets?grade=9&topic=2") }] : [],
-      });
     });
   });
   document.addEventListener("keydown", function (event) {

@@ -6,6 +6,8 @@
  *   npx tsx scripts/build-site-guide.ts
  *   npx tsx scripts/build-site-guide.ts --check
  */
+import { createHash } from 'node:crypto';
+import { buildSync } from 'esbuild';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -456,9 +458,18 @@ function main() {
   };
   const body = JSON.stringify(guide);
   const dest = join(root, 'src/data/site-guide.v1.json');
+  // The browser needs only public navigation fields, never server configuration.
+  const navigationBody = JSON.stringify({ catalog: { grades: readJson(join(root, 'src/data/catalog.v1.json')).grades.map((g: any) => ({ grade: g.grade, label: g.label, groups: g.groups, topics: g.topics.map(({ id, parent, title, description, group }: any) => ({ id, parent, title, description, group })) })) }, records: records.map(({ id, type, title, href, grade, topic, levelLabel, terms }) => ({ id, type, title, href, grade, topic, levelLabel, terms })) });
+  const navigationDest = join(root, 'public/noam-navigation-guide.json');
+  const navigationScript = buildSync({entryPoints: [join(repo, 'noam-ai/site-companion/navigation.js')], bundle: true, format: 'esm', platform: 'browser', write: false}).outputFiles[0].text;
+  const scriptDest = join(root, 'public/noam-navigation.js');
+  const version = createHash('sha256').update(navigationBody).update(navigationScript).digest('hex').slice(0, 16);
+  const companionDest = join(root, 'public/noam-site-companion.js');
+  const companionCurrent = readFileSync(companionDest, 'utf8');
+  const companionBody = companionCurrent.replace(/(noam-navigation(?:-guide\.json|\.js)\?v=)[a-z0-9]+/g, (_match, prefix) => prefix + version);
   if (process.argv.includes('--check')) {
     const current = readFileSync(dest, 'utf8');
-    if (current !== body) {
+    if (current !== body || readFileSync(navigationDest, 'utf8') !== navigationBody || readFileSync(scriptDest, 'utf8') !== navigationScript || companionCurrent !== companionBody) {
       console.error('FAIL: src/data/site-guide.v1.json differs from a fresh build. Run: npx tsx scripts/build-site-guide.ts');
       process.exit(1);
     }
@@ -466,6 +477,9 @@ function main() {
     return;
   }
   writeFileSync(dest, body);
+  writeFileSync(navigationDest, navigationBody);
+  writeFileSync(scriptDest, navigationScript);
+  writeFileSync(companionDest, companionBody);
   console.log(JSON.stringify({ counts, records: records.length, manifestMatches: manifestHits, bytes: Buffer.byteLength(body) }));
 }
 

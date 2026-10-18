@@ -1,0 +1,265 @@
+{
+  "slug": "order-rounding-million-grade-4",
+  "path": "/order-rounding-million-grade-4",
+  "grade": 4,
+  "sourceUrl": "https://www.noamdoronmath.co.il/order-rounding-million-grade-4",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g4-t2-grounded-pdf",
+  "title": "סדר שכנים ועיגול בתחום המיליון לכיתה ד׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "סדר שכנים ועיגול בתחום המיליון לכיתה ד׳: סדר והשוואה, שכנים וקירוב לעיגול, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "סדר שכנים ועיגול בתחום המיליון לכיתה ד׳",
+  "intro": "מסדרים ומשווים מספרים גדולים, מוצאים שכנים ומעגלים לסדר הקרוב. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "משווים מספרים גדולים משמאל לימין: קודם מאות האלפים, ואז עשרות האלפים וכך הלאה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שכנים בקפיצות של 1,000: לפני 460,000 נמצא 459,000 ואחריו 461,000.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "לעגל לאלף הקרוב פירושו לבחור את הכפולה של 1,000 שהכי קרובה למספר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לעגל לפי הספרה הראשונה בלבד. בעיגול לאלפים מסתכלים על ספרת המאות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: עגלו את 460,500 לאלף הקרוב.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 461,000, כי ספרת המאות היא 5, ומ־5 ומעלה מעגלים למעלה.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מסדרים ומשווים מספרים גדולים, מוצאים שכנים ומעגלים לסדר הקרוב. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=4&topic=2",
+      "catalogTopicId": 2
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "משווים מספרים גדולים משמאל לימין: קודם מאות האלפים, ואז עשרות האלפים וכך הלאה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שכנים בקפיצות של 1,000: לפני 460,000 נמצא 459,000 ואחריו 461,000.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "לעגל לאלף הקרוב פירושו לבחור את הכפולה של 1,000 שהכי קרובה למספר.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לעגל לפי הספרה הראשונה בלבד. בעיגול לאלפים מסתכלים על ספרת המאות.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: עגלו את 460,500 לאלף הקרוב.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 461,000, כי ספרת המאות היא 5, ומ־5 ומעלה מעגלים למעלה.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא סדר שכנים ועיגול בתחום המיליון מתאימים לכיתה ד׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ד׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא סדר שכנים ועיגול בתחום המיליון מתאימים לכיתה ד׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ד׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-4",
+      "label": "כל דפי כיתה ד׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-4"
+    },
+    {
+      "path": "/grade-5",
+      "label": "דפי עבודה לכיתה ה׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-5"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=4&topic=2",
+    "source": "catalog-g4-t2",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=2",
+    "catalogTopicId": 2,
+    "catalogTopicTitle": "סדר שכנים ועיגול בתחום המיליון"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=4&topic=2",
+      "source": "catalog-g4-t2",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=2",
+      "catalogTopicId": 2,
+      "catalogTopicTitle": "סדר שכנים ועיגול בתחום המיליון"
+    }
+  ],
+  "gradeHubHref": "/grade-4",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/order-rounding-million-grade-4#webpage",
+        "url": "https://www.noamdoronmath.co.il/order-rounding-million-grade-4",
+        "name": "סדר שכנים ועיגול בתחום המיליון לכיתה ד׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "סדר שכנים ועיגול בתחום המיליון לכיתה ד׳: סדר והשוואה, שכנים וקירוב לעיגול, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/order-rounding-million-grade-4#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/order-rounding-million-grade-4#learning-resource",
+        "name": "סדר שכנים ועיגול בתחום המיליון לכיתה ד׳",
+        "url": "https://www.noamdoronmath.co.il/order-rounding-million-grade-4",
+        "description": "סדר שכנים ועיגול בתחום המיליון לכיתה ד׳: סדר והשוואה, שכנים וקירוב לעיגול, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ד׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/order-rounding-million-grade-4#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא סדר שכנים ועיגול בתחום המיליון מתאימים לכיתה ד׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ד׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

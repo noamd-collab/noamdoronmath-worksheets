@@ -1,0 +1,265 @@
+{
+  "slug": "measure-compare-length-grade-1",
+  "path": "/measure-compare-length-grade-1",
+  "grade": 1,
+  "sourceUrl": "https://www.noamdoronmath.co.il/measure-compare-length-grade-1",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g1-t15-grounded-pdf",
+  "title": "מודדים ומשווים אורך לכיתה א׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "מודדים ומשווים אורך לכיתה א׳: מדידה ביחידות משותפות, קו התחלה משותף והשוואה, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "מודדים ומשווים אורך לכיתה א׳",
+  "intro": "מודדים אורכים ומשווים אותם: קו התחלה משותף ויחידות זהות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כדי להשוות אורכים מניחים את שני החפצים מאותו קו התחלה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מודדים ביחידות זהות: כמה קליפים או קוביות נכנסים באורך של כל חפץ.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: אם העיפרון הוא 6 קליפים והסרגל הוא 8 קליפים, הסרגל ארוך יותר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא להתחיל מדידה מנקודות שונות. מצמידים את שני החפצים לאותו קו התחלה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: עיפרון א׳ הוא 5 קליפים ועיפרון ב׳ הוא 7 קליפים. איזה ארוך יותר?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "עיפרון ב׳ ארוך יותר, כי 7 גדול מ־5.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מודדים אורכים ומשווים אותם: קו התחלה משותף ויחידות זהות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=1&topic=15",
+      "catalogTopicId": 15
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "כדי להשוות אורכים מניחים את שני החפצים מאותו קו התחלה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מודדים ביחידות זהות: כמה קליפים או קוביות נכנסים באורך של כל חפץ.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: אם העיפרון הוא 6 קליפים והסרגל הוא 8 קליפים, הסרגל ארוך יותר.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא להתחיל מדידה מנקודות שונות. מצמידים את שני החפצים לאותו קו התחלה.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: עיפרון א׳ הוא 5 קליפים ועיפרון ב׳ הוא 7 קליפים. איזה ארוך יותר?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "עיפרון ב׳ ארוך יותר, כי 7 גדול מ־5.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מודדים ומשווים אורך מתאימים לכיתה א׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מודדים ומשווים אורך מתאימים לכיתה א׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-1",
+      "label": "כל דפי כיתה א׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-1"
+    },
+    {
+      "path": "/grade-2",
+      "label": "דפי עבודה לכיתה ב׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-2"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=1&topic=15",
+    "source": "catalog-g1-t15",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=1&topic=15",
+    "catalogTopicId": 15,
+    "catalogTopicTitle": "מודדים ומשווים אורך"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=1&topic=15",
+      "source": "catalog-g1-t15",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=1&topic=15",
+      "catalogTopicId": 15,
+      "catalogTopicTitle": "מודדים ומשווים אורך"
+    }
+  ],
+  "gradeHubHref": "/grade-1",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/measure-compare-length-grade-1#webpage",
+        "url": "https://www.noamdoronmath.co.il/measure-compare-length-grade-1",
+        "name": "מודדים ומשווים אורך לכיתה א׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "מודדים ומשווים אורך לכיתה א׳: מדידה ביחידות משותפות, קו התחלה משותף והשוואה, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/measure-compare-length-grade-1#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/measure-compare-length-grade-1#learning-resource",
+        "name": "מודדים ומשווים אורך לכיתה א׳",
+        "url": "https://www.noamdoronmath.co.il/measure-compare-length-grade-1",
+        "description": "מודדים ומשווים אורך לכיתה א׳: מדידה ביחידות משותפות, קו התחלה משותף והשוואה, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה א׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/measure-compare-length-grade-1#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מודדים ומשווים אורך מתאימים לכיתה א׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

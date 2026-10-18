@@ -1,0 +1,265 @@
+{
+  "slug": "triangle-height-obtuse-parallelogram-grade-5",
+  "path": "/triangle-height-obtuse-parallelogram-grade-5",
+  "grade": 5,
+  "sourceUrl": "https://www.noamdoronmath.co.il/triangle-height-obtuse-parallelogram-grade-5",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g5-t24-grounded-pdf",
+  "title": "גובה במשולש קהה ובמקבילית לכיתה ה׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "גובה במשולש קהה ובמקבילית לכיתה ה׳: גובה שיוצא מחוץ למשולש וגובה במקבילית, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "גובה במשולש קהה ובמקבילית לכיתה ה׳",
+  "intro": "מוצאים גובה גם במשולש קה־זווית (לפעמים מחוץ למשולש) ובמקבילית. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשולש קה־זווית הגובה לבסיס מסוים יכול לצאת מחוץ למשולש — ממשיכים את הבסיס בקו מקווקו.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "גם במקבילית הגובה הוא הקו המאונך בין שני הבסיסים המקבילים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: לשני בסיסים שונים במקבילית יש שני גבהים שונים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לחשוב שהגובה חייב להיות בתוך הצורה. במשולש קה־זווית הגובה יכול להיות בחוץ, על המשך הבסיס.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: אם הגובה יצא מחוץ למשולש — האם זה תקין?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "כן. במשולש קה־זווית הגובה לבסיס קצר יוצא מחוץ למשולש, על המשך הבסיס.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מוצאים גובה גם במשולש קה־זווית (לפעמים מחוץ למשולש) ובמקבילית. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=5&topic=24",
+      "catalogTopicId": 24
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במשולש קה־זווית הגובה לבסיס מסוים יכול לצאת מחוץ למשולש — ממשיכים את הבסיס בקו מקווקו.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "גם במקבילית הגובה הוא הקו המאונך בין שני הבסיסים המקבילים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: לשני בסיסים שונים במקבילית יש שני גבהים שונים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לחשוב שהגובה חייב להיות בתוך הצורה. במשולש קה־זווית הגובה יכול להיות בחוץ, על המשך הבסיס.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: אם הגובה יצא מחוץ למשולש — האם זה תקין?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "כן. במשולש קה־זווית הגובה לבסיס קצר יוצא מחוץ למשולש, על המשך הבסיס.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא גובה במשולש קהה ובמקבילית מתאימים לכיתה ה׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ה׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא גובה במשולש קהה ובמקבילית מתאימים לכיתה ה׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ה׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-5",
+      "label": "כל דפי כיתה ה׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-5"
+    },
+    {
+      "path": "/grade-6",
+      "label": "דפי עבודה לכיתה ו׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-6"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=5&topic=24",
+    "source": "catalog-g5-t24",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=5&topic=24",
+    "catalogTopicId": 24,
+    "catalogTopicTitle": "גובה במשולש קהה ובמקבילית"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=5&topic=24",
+      "source": "catalog-g5-t24",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=5&topic=24",
+      "catalogTopicId": 24,
+      "catalogTopicTitle": "גובה במשולש קהה ובמקבילית"
+    }
+  ],
+  "gradeHubHref": "/grade-5",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/triangle-height-obtuse-parallelogram-grade-5#webpage",
+        "url": "https://www.noamdoronmath.co.il/triangle-height-obtuse-parallelogram-grade-5",
+        "name": "גובה במשולש קהה ובמקבילית לכיתה ה׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "גובה במשולש קהה ובמקבילית לכיתה ה׳: גובה שיוצא מחוץ למשולש וגובה במקבילית, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/triangle-height-obtuse-parallelogram-grade-5#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/triangle-height-obtuse-parallelogram-grade-5#learning-resource",
+        "name": "גובה במשולש קהה ובמקבילית לכיתה ה׳",
+        "url": "https://www.noamdoronmath.co.il/triangle-height-obtuse-parallelogram-grade-5",
+        "description": "גובה במשולש קהה ובמקבילית לכיתה ה׳: גובה שיוצא מחוץ למשולש וגובה במקבילית, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ה׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/triangle-height-obtuse-parallelogram-grade-5#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא גובה במשולש קהה ובמקבילית מתאימים לכיתה ה׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ה׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

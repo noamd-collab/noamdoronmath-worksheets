@@ -1,0 +1,265 @@
+{
+  "slug": "multiply-mixed-numbers-grade-6",
+  "path": "/multiply-mixed-numbers-grade-6",
+  "grade": 6,
+  "sourceUrl": "https://www.noamdoronmath.co.il/multiply-mixed-numbers-grade-6",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g6-t4-grounded-pdf",
+  "title": "כפל מספרים מעורבים לכיתה ו׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "כפל מספרים מעורבים לכיתה ו׳: כפל מספרים מעורבים בפירוק לשברים, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "כפל מספרים מעורבים לכיתה ו׳",
+  "intro": "כופלים מספרים מעורבים בפירוק לשברים פשוטים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מספר מעורב מפורק לשבר גדול מ־1: 1 ו־1/2 = 3/2, ואז כופלים כרגיל.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: 1 ו־1/2 × 2/3 = 3/2 × 2/3 = 1.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "קוראים את הפירוק מהשרטוט וכותבים את התרגיל.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לכפול את השלם והשבר בנפרד בלי לאחד. מפרקים לשבר אחד קודם.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: חשבו 1 ו־1/2 × 2/3.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 1, כי 3/2 × 2/3 = 6/6 = 1.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "כופלים מספרים מעורבים בפירוק לשברים פשוטים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=6&topic=4",
+      "catalogTopicId": 4
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "מספר מעורב מפורק לשבר גדול מ־1: 1 ו־1/2 = 3/2, ואז כופלים כרגיל.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: 1 ו־1/2 × 2/3 = 3/2 × 2/3 = 1.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "קוראים את הפירוק מהשרטוט וכותבים את התרגיל.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לכפול את השלם והשבר בנפרד בלי לאחד. מפרקים לשבר אחד קודם.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: חשבו 1 ו־1/2 × 2/3.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 1, כי 3/2 × 2/3 = 6/6 = 1.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא כפל מספרים מעורבים מתאימים לכיתה ו׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ו׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא כפל מספרים מעורבים מתאימים לכיתה ו׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ו׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-6",
+      "label": "כל דפי כיתה ו׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-6"
+    },
+    {
+      "path": "/grade-7",
+      "label": "דפי עבודה לכיתה ז׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=6&topic=4",
+    "source": "catalog-g6-t4",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=4",
+    "catalogTopicId": 4,
+    "catalogTopicTitle": "כפל מספרים מעורבים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=6&topic=4",
+      "source": "catalog-g6-t4",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=6&topic=4",
+      "catalogTopicId": 4,
+      "catalogTopicTitle": "כפל מספרים מעורבים"
+    }
+  ],
+  "gradeHubHref": "/grade-6",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/multiply-mixed-numbers-grade-6#webpage",
+        "url": "https://www.noamdoronmath.co.il/multiply-mixed-numbers-grade-6",
+        "name": "כפל מספרים מעורבים לכיתה ו׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "כפל מספרים מעורבים לכיתה ו׳: כפל מספרים מעורבים בפירוק לשברים, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/multiply-mixed-numbers-grade-6#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/multiply-mixed-numbers-grade-6#learning-resource",
+        "name": "כפל מספרים מעורבים לכיתה ו׳",
+        "url": "https://www.noamdoronmath.co.il/multiply-mixed-numbers-grade-6",
+        "description": "כפל מספרים מעורבים לכיתה ו׳: כפל מספרים מעורבים בפירוק לשברים, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ו׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/multiply-mixed-numbers-grade-6#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא כפל מספרים מעורבים מתאימים לכיתה ו׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ו׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

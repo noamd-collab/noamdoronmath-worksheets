@@ -1907,7 +1907,7 @@ textarea:focus{
   .pdf-surface.has-pdf-tools .pdf-status,.pdf-surface.has-pdf-tools .pdf-fallback-message{inset-inline-start:0}
   .pdf-scroll{padding:6px 6px 76px;scrollbar-gutter:auto;-webkit-overflow-scrolling:touch;overflow-anchor:none}
   .pdf-pages{gap:10px}
-  .pdf-page{width:calc(100vw - 128px);min-height:0;margin-right:104px;overflow:visible}
+  .pdf-page{width:calc(100vw - 78px);min-height:0;margin-right:54px;overflow:visible}
   .pdf-page .noam-question-pin{width:44px;height:44px;font-size:20px;box-shadow:0 1px 4px #14213d30}
   .pdf-tools{grid-area:2/1;position:static;display:grid;grid-template-columns:44px minmax(0,1fr) 48px 44px;gap:4px;padding:5px 8px;margin:0;width:100%;max-height:none;border:0;border-top:1px solid #b7bec9;border-radius:0;box-shadow:none;direction:ltr}
   .pdf-tools.hidden{display:none}
@@ -2004,6 +2004,20 @@ textarea:focus{
   .panel-badge{display:none}
 }
 
+
+#pdfReading,.pdf-phone-hint{display:none}
+@media(max-width:900px){
+  body.noam-pdf-tools-open{--noam-tools-height:80px}
+  .pdf-surface.has-pdf-tools{grid-template-rows:auto minmax(0,1fr)}
+  .pdf-surface.has-pdf-tools .pdf-scroll,.pdf-surface.has-pdf-tools .pdf-native{grid-area:2/1}
+  .pdf-surface.has-pdf-tools .pdf-tools{grid-area:1/1}
+  .pdf-tools{grid-template-columns:44px 44px 44px minmax(70px,1fr) minmax(60px,1fr);gap:4px;padding:4px 6px}
+  .pdf-tools #pdfZoomSlider{display:none}
+  .pdf-tools #pdfFit{grid-column:4;grid-row:1}
+  .pdf-tools #pdfReading{display:flex;grid-column:5;grid-row:1}
+  .pdf-tools .pdf-phone-hint{display:block;grid-column:1/-1;direction:rtl;text-align:center;font:12px/20px Heebo,sans-serif;color:#22305a}
+  .pdf-scroll{padding-bottom:20px}
+}
 </style>
 <link rel="stylesheet" href="noam-learning.css?v=20260910-mobile-1">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -2441,6 +2455,10 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
   .exact-question-strip button:not(.exact-q-arrow){min-width:32px;height:32px;font-size:14px}
   .exact-q-arrow{width:28px;height:32px;min-width:28px}
 }
+@media(max-width:900px){
+  .exact-viewer .pdf-page .noam-exercise-pin,
+  .exact-viewer .pdf-page .noam-report-pin{width:44px;height:44px;min-width:44px;min-height:44px}
+}
 </style>
 
 <header class="exact-viewer-header">
@@ -2525,7 +2543,9 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
         <input class="pdf-zoom-slider" id="pdfZoomSlider" type="range" min="70" max="170" step="1" value="70" aria-label="גודל תצוגת הדף באחוזים" aria-valuetext="70%">
         <output class="pdf-zoom-value" id="pdfZoomValue" for="pdfZoomSlider">70%</output>
         <button class="pdf-tool" id="pdfZoomIn" type="button" aria-label="הגדלת הדף באחוז אחד">+</button>
-        <button class="pdf-tool" id="pdfFit" type="button">התאם לרוחב</button>
+        <button class="pdf-tool" id="pdfFit" type="button">כל הדף</button>
+        <button class="pdf-tool" id="pdfReading" type="button">קריאה</button>
+        <span class="pdf-phone-hint">החליקו לצדדים לקריאה · לחצו על שאלה לרמז</span>
         <button class="pdf-tool primary" id="pdfNativeMode" type="button">תצוגת PDF מלאה</button>
         <a
           class="pdf-tool-link"
@@ -3429,7 +3449,7 @@ var pdfResizeObserver =
   null;
 
 var pdfZoom =
-  .7;
+  mobileLayout.matches ? 1 : .7;
 
 var pdfRenderVersion =
   0;
@@ -3839,6 +3859,7 @@ function renderPdfPage(
         pageElement._renderTask =
           renderTask;
 
+        noamReadPrintedPinPage(pageNumber,page);
         return renderTask.promise;
       }
     )
@@ -3961,12 +3982,12 @@ function observePdfPages(){
 }
 
 function getPdfPageWidth(){
-  // Match live GitHub viewer: on phones, 70% zoom is the width that fits
-  // beside the fixed button gutter. Scale only the PDF from there.
-  if (mobileLayout.matches){
-    return Math.max(120,pdfScroll.clientWidth - 116) * pdfZoom / .7;
-  }
+  // A phone starts at a readable paper size; fit is an explicit overview.
+  if (mobileLayout.matches){return 600 * pdfZoom;}
   return Math.max(120,pdfScroll.clientWidth - 78) * pdfZoom;
+}
+function getPdfFitZoom(){
+  return mobileLayout.matches ? Math.max(.25, Math.floor((pdfScroll.clientWidth - 66) / 6) / 100) : 1;
 }
 
 // Keep the same point on the current page when rotation or zoom changes page sizes.
@@ -4050,7 +4071,7 @@ function resetPdfRendering(){
 
 function setPdfZoom(value, deferRender){
   if (!Number.isFinite(value)){ return; }
-  var percent = Math.max(70, Math.min(170, Math.round(value * 100)));
+  var percent = Math.max(mobileLayout.matches ? 25 : 70, Math.min(170, Math.round(value * 100)));
   var nextZoom = percent / 100;
   var changed = nextZoom !== pdfZoom;
   pdfZoom = nextZoom;
@@ -4116,7 +4137,7 @@ function initPdfExperience(){
 
   setNativePdfMode(pdfNativeActive);
 
-  showPdfTools(!mobileLayout.matches);
+  showPdfTools(true);
 
   /* Noam overlays require the page canvas on every viewport. */
 
@@ -4259,7 +4280,7 @@ document
     function(){
       setPdfZoom(
         pdfZoom -
-        .01
+        (mobileLayout.matches ? .1 : .01)
       );
     }
   );
@@ -4273,10 +4294,21 @@ document
     function(){
       setPdfZoom(
         pdfZoom +
-        .01
+        (mobileLayout.matches ? .1 : .01)
       );
     }
   );
+
+document.getElementById("pdfReading").addEventListener("click", function(){setPdfZoom(1);});
+function syncPdfPhoneTools(){
+  pdfZoomSlider.min = mobileLayout.matches ? "25" : "70";
+  document.getElementById("pdfZoomOut").setAttribute("aria-label", mobileLayout.matches ? "הקטנת הדף" : "הקטנת הדף באחוז אחד");
+  document.getElementById("pdfZoomIn").setAttribute("aria-label", mobileLayout.matches ? "הגדלת הדף" : "הגדלת הדף באחוז אחד");
+  setPdfZoom(pdfZoom);
+}
+syncPdfPhoneTools();
+if (mobileLayout.addEventListener){mobileLayout.addEventListener("change",syncPdfPhoneTools);}
+else if (mobileLayout.addListener){mobileLayout.addListener(syncPdfPhoneTools);}
 
 pdfZoomSlider.addEventListener("input", function(){
   setPdfZoom(Number(pdfZoomSlider.value) / 100, true);
@@ -4292,7 +4324,7 @@ document
   .addEventListener(
     "click",
     function(){
-      setPdfZoom(1);
+      setPdfZoom(getPdfFitZoom());
     }
   );
 
@@ -4359,7 +4391,7 @@ function ensureNoamMathRenderer(){
 }
 
 /* This script is below the viewer DOM. No font or AI library needs to finish first. */
-showPdfTools(!mobileLayout.matches);
+showPdfTools(true);
 setNativePdfMode(false);
 loadNoamAsset("script",PDFJS_BASE+"build/pdf.min.js")
   .then(initPdfExperience)
@@ -4663,7 +4695,7 @@ feedbackDialog.addEventListener("click", function(event){
 function openNoamPanel(){
   var wasClosed=panel.classList.contains("hidden");
   if (wasClosed){panelReturnFocus=document.activeElement;}
-  if (wasClosed){setPdfZoom(.85);}
+  if (wasClosed && !mobileLayout.matches){setPdfZoom(.85);}
   panel.classList.remove("hidden");
   fab.classList.add("hidden");
   fab.setAttribute("aria-expanded","true");
@@ -4676,7 +4708,7 @@ function closeNoamPanel(){
   if (typeof hideNoamGlossaryPopover==="function"){hideNoamGlossaryPopover();}
   if (panel.contains(document.activeElement)){document.activeElement.blur();}
   panel.classList.add("hidden");
-  if (wasOpen){setPdfZoom(.7);}
+  if (wasOpen && !mobileLayout.matches){setPdfZoom(.7);}
   fab.classList.toggle("hidden",!manifestReady);
   fab.setAttribute("aria-expanded","false");
   syncMobilePanel();
@@ -4733,13 +4765,78 @@ function loadStaticManifest(){
     });
 }
 
+/* Resolve pins from printed PDF markers, never from a line-count estimate.
+   Only a complete, ordered marker match within a column may replace a map. */
+var noamPrintedPinPages = Object.create(null);
+function noamResolvePrintedPins(exercises, items, viewport, pageNumber){
+  var width=viewport.width, height=viewport.height;
+  var rows=exercises.filter(function(e){return Number((e.pin||{}).page)===pageNumber;});
+  var columns=[];
+  rows.forEach(function(e){
+    var x=Number(e.pin.x), kind=e.part ? "part" : "question";
+    if (!isFinite(x)){return;}
+    var col=columns.find(function(c){return c.kind===kind && Math.abs(c.x-x)<.12;});
+    if (!col){col={x:x,kind:kind,rows:[]};columns.push(col);}
+    col.rows.push(e);
+  });
+  var markers=[];
+  (items||[]).forEach(function(item){
+    var text=String(item.str||"").replace(/[\u200e\u200f]/g,"").trim();
+    var part=text.match(/^(?:([א-ת])[.)]|[.(]([א-ת]))$/);
+    var question=text.match(/^(?:\((\d{1,3})\)|(\d{1,3})[.)])$/);
+    if (!part && !question){return;}
+    var t=item.transform;
+    if (!t || !viewport.convertToViewportPoint){return;}
+    var p=viewport.convertToViewportPoint(t[4],t[5]);
+    var h=Number(item.height)||Math.hypot(t[2],t[3]);
+    markers.push({kind:part?"part":"question",label:part?(part[1]||part[2]):String(Number(question[1]||question[2])),
+      x:p[0]/width,y:(p[1]-h*.4)/height});
+  });
+  var result=Object.create(null);
+  columns.forEach(function(col){
+    var printed=markers.filter(function(m){
+      if (m.kind!==col.kind || Math.abs(m.x-col.x)>=.12){return false;}
+      return !columns.some(function(other){return other!==col && other.kind===col.kind && Math.abs(m.x-other.x)<Math.abs(m.x-col.x);});
+    }).sort(function(a,b){return a.y-b.y || b.x-a.x;});
+    var expected=col.rows.slice().sort(function(a,b){return a.pin.y-b.pin.y;});
+    if (printed.length!==expected.length || !printed.length){return;}
+    if (!expected.every(function(e,i){return String(col.kind==="part"?e.part:e.q)===printed[i].label;})){return;}
+    expected.forEach(function(e,i){
+      var m=printed[i];
+      if (m.y>0 && m.y<1){result[e.id]={page:pageNumber,x:m.x,y:m.y};}
+    });
+  });
+  return result;
+}
+function noamReadPrintedPinPage(pageNumber,page){
+  if (noamPrintedPinPages[pageNumber]){return;}
+  var entry={pending:true};
+  noamPrintedPinPages[pageNumber]=entry;
+  page.getTextContent().then(function(content){
+    entry.items=content.items||[];
+    entry.viewport=page.getViewport({scale:1});
+    entry.pending=false;
+    if (manifestReady){renderManifestPins();}
+  }).catch(function(){entry.pending=false;});
+}
+function noamPrintedPin(exercise){
+  var fallback=exercise.pin||{};
+  var entry=noamPrintedPinPages[Number(fallback.page)];
+  if (!entry || !entry.items || !manifestReady){return fallback;}
+  if (entry.manifest!==manifest){
+    entry.anchors=noamResolvePrintedPins(manifest.exercises,entry.items,entry.viewport,Number(fallback.page));
+    entry.manifest=manifest;
+  }
+  return entry.anchors[exercise.id]||fallback;
+}
+
 var noamNarrowPinsMedia = mobileLayout;
 
 function buildManifestPinGroups(exercises, groupByQuestion){
   var groups = [];
   var byQuestion = Object.create(null);
   exercises.forEach(function(exercise){
-    var pageNumber = Number((exercise.pin || {}).page || 0);
+    var pageNumber = Number((noamPrintedPin(exercise)).page || 0);
     var questionKey = pageNumber + ":" + String(exercise.q);
     var group = groupByQuestion && byQuestion[questionKey];
     if (!group){
@@ -4756,19 +4853,19 @@ function clusterManifestPinGroups(groups, pageHeight){
   var height = Math.max(1, Number(pageHeight) || 1);
   var edge = Math.min(22, height / 2);
   var positioned = groups.map(function(group){
-    var pin = group.exercises[0].pin || {};
+    var pin = noamPrintedPin(group.exercises[0]);
     var anchor = Math.max(.02, Math.min(.98, Number(pin.y) || .2)) * height;
     return {
       questionKey:group.questionKey,
       questionKeys:[group.questionKey],
       exercises:group.exercises.slice(),
-      top:Math.max(edge, Math.min(height - edge, anchor))
+      top:Math.max(edge, Math.min(height - edge - 48, anchor))
     };
   }).sort(function(a,b){ return a.top - b.top; });
   var clusters = [];
   positioned.forEach(function(group){
     var previous = clusters[clusters.length - 1];
-    if (previous && group.top - previous.top < 48){
+    if (previous && group.top - previous.top < 100){
       previous.exercises = previous.exercises.concat(group.exercises);
       previous.questionKeys = previous.questionKeys.concat(group.questionKeys);
     }else{
@@ -4838,7 +4935,7 @@ function renderManifestPins(){
   if (narrow){
     var groupsByPage = Object.create(null);
     groups.forEach(function(group){
-      var number = Number((group.exercises[0].pin || {}).page || 0);
+      var number = Number((noamPrintedPin(group.exercises[0])).page || 0);
       if (!groupsByPage[number]){ groupsByPage[number] = []; }
       groupsByPage[number].push(group);
     });
@@ -4859,7 +4956,7 @@ function renderManifestPins(){
   if (!narrow){
     groups.forEach(function(group){
       var exercise = group.exercises[0];
-      var pin = exercise.pin || {};
+      var pin = noamPrintedPin(exercise);
       var pageNumber = Number(pin.page || 0);
       var pageElement = pdfPages.querySelector('.pdf-page[data-page="' + pageNumber + '"]');
       if (!pageElement || pageElement.clientWidth <= 0){ return; }
@@ -4870,7 +4967,7 @@ function renderManifestPins(){
       var pinY = Math.max(.02,Math.min(.98,Number(pin.y)||.2));
       var hasCloseRightNeighbor = groups.some(function(other){
         if (other === group){ return false; }
-        var otherPin = other.exercises[0].pin || {};
+        var otherPin = noamPrintedPin(other.exercises[0]);
         if (Number(otherPin.page || 0) !== pageNumber){ return false; }
         var otherY = Math.max(.02,Math.min(.98,Number(otherPin.y)||.2));
         if (Math.abs(otherY - pinY) * pageElement.clientHeight > 18){ return false; }
@@ -4885,7 +4982,7 @@ function renderManifestPins(){
   }
   groups.forEach(function(group){
     var exercise = group.exercises[0];
-    var pin = exercise.pin || {};
+    var pin = noamPrintedPin(exercise);
     var pageNumber = Number(pin.page || 0);
     var pageElement = pdfPages.querySelector('.pdf-page[data-page="' + pageNumber + '"]');
     if (!pageElement){ return; }
@@ -4944,9 +5041,9 @@ function renderManifestPins(){
     ramziMark.draggable = false;
     report.appendChild(ramziMark);
     report.style.left = narrow
-      ? "calc(100% + 76px)"
+      ? "calc(100% + 26px)"
       : "calc(" + pinLeft + (group.reportBefore ? " - 40px)" : " + 40px)");
-    report.style.top = button.style.top;
+    report.style.top = narrow ? (group.top + 48) + "px" : button.style.top;
     report.dataset.exerciseId = exercise.id;
     report.dataset.exerciseIds = button.dataset.exerciseIds;
     report.dataset.label = "יש הערה על השאלה?";
@@ -4966,7 +5063,7 @@ function renderManifestPins(){
 }
 
 function refreshNoamMobileLayout(){
-  showPdfTools(!mobileLayout.matches);
+  showPdfTools(true);
   pdfLastWidth = Math.round(pdfScroll.clientWidth);
   resetPdfRendering();
   renderManifestPins();
@@ -8031,7 +8128,8 @@ function esc(s){
         last=top;
         if(pin.style.top!==top+'px'){pin.style.top=top+'px';}
         var report=reportPin(page,pin);
-        if(report&&report.style.top!==pin.style.top){report.style.top=pin.style.top;}
+        var reportTop=pin.classList.contains('noam-question-pin')?(top+48)+'px':pin.style.top;
+        if(report&&report.style.top!==reportTop){report.style.top=reportTop;}
       });
       snapPinColumns(page,pins);
     });

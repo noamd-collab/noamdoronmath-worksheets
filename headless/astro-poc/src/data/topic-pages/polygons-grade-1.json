@@ -1,0 +1,265 @@
+{
+  "slug": "polygons-grade-1",
+  "path": "/polygons-grade-1",
+  "grade": 1,
+  "sourceUrl": "https://www.noamdoronmath.co.il/polygons-grade-1",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g1-t17-grounded-pdf",
+  "title": "מצולעים לכיתה א׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "מצולעים לכיתה א׳: צלעות וקודקודים, וספירה מסודרת בלי טעויות, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "מצולעים לכיתה א׳",
+  "intro": "מכירים מצולעים: סופרים צלעות וקודקודים בלי לפספס ובלי לספור פעמיים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מצולע הוא צורה סגורה עם צלעות ישרות. לכל מצולע יש אותו מספר של צלעות וקודקודים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "סופרים בסדר לאורך השפה ומסמנים מה שכבר נספר.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: למחומש יש 5 צלעות ו־5 קודקודים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לספור צלע פעמיים או לפספס אחת. מתחילים מנקודה מסומנת ומסמנים כל צלע.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: כמה צלעות יש למשושה?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 6 צלעות (ו־6 קודקודים).",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מכירים מצולעים: סופרים צלעות וקודקודים בלי לפספס ובלי לספור פעמיים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=1&topic=17",
+      "catalogTopicId": 17
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "מצולע הוא צורה סגורה עם צלעות ישרות. לכל מצולע יש אותו מספר של צלעות וקודקודים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "סופרים בסדר לאורך השפה ומסמנים מה שכבר נספר.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: למחומש יש 5 צלעות ו־5 קודקודים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לספור צלע פעמיים או לפספס אחת. מתחילים מנקודה מסומנת ומסמנים כל צלע.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: כמה צלעות יש למשושה?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 6 צלעות (ו־6 קודקודים).",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מצולעים מתאימים לכיתה א׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מצולעים מתאימים לכיתה א׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-1",
+      "label": "כל דפי כיתה א׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-1"
+    },
+    {
+      "path": "/grade-2",
+      "label": "דפי עבודה לכיתה ב׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-2"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=1&topic=17",
+    "source": "catalog-g1-t17",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=1&topic=17",
+    "catalogTopicId": 17,
+    "catalogTopicTitle": "מצולעים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=1&topic=17",
+      "source": "catalog-g1-t17",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=1&topic=17",
+      "catalogTopicId": 17,
+      "catalogTopicTitle": "מצולעים"
+    }
+  ],
+  "gradeHubHref": "/grade-1",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/polygons-grade-1#webpage",
+        "url": "https://www.noamdoronmath.co.il/polygons-grade-1",
+        "name": "מצולעים לכיתה א׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "מצולעים לכיתה א׳: צלעות וקודקודים, וספירה מסודרת בלי טעויות, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/polygons-grade-1#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/polygons-grade-1#learning-resource",
+        "name": "מצולעים לכיתה א׳",
+        "url": "https://www.noamdoronmath.co.il/polygons-grade-1",
+        "description": "מצולעים לכיתה א׳: צלעות וקודקודים, וספירה מסודרת בלי טעויות, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה א׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/polygons-grade-1#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מצולעים מתאימים לכיתה א׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

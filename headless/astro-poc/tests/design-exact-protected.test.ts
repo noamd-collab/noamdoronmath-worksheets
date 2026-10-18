@@ -17,6 +17,8 @@
  * They moved again so the kite card plays the area film first
  * («שטח דלתון — מהדלתון למלבן»), then the ruler-and-compass film.
  * They moved again so the card title follows the film that is playing.
+ * They moved again so para-rect marks base b and height h on the shape
+ * (explicit label fix, same 10s lap).
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -32,9 +34,10 @@ const read = (file: string) => readFileSync(join(root, file), 'utf8');
 const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
   // added so the headless Noam AI route can read Wix Secrets Manager.
-  // Adapter, output, and integrations are unchanged. The other two Astro
-  // configs (preview, open07-verify) are not in this fence.
-  'astro.config.mjs': 'c63c0e1646e6198757b32ca085cda16091a3168adf0017ce9e3ce74b91b8f451',
+  // QWEN_BASE_URL and QWEN_MODEL were added so a Model Studio key can point
+  // at its region and model without another code change. Adapter, output,
+  // and integrations are unchanged. The other Astro configs are not in this fence.
+  'astro.config.mjs': 'f940201eed3b4d37887c50dee706af4cbce38a701cc4c56606927c637f42beb7',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   'src/data/catalog.v1.json': '2efb9b0b42b8ba4c0f605f8835a7a24412b8103d4cfbb6c53a04657b67059959',
@@ -42,14 +45,18 @@ const protectedFiles: Record<string, string> = {
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
-  'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
+  'src/lib/conceptLoops.ts': 'f8a9bd34671e9231ba3a178c75bf49b134619b0453d1d71165f6cc6022f29530',
+  'src/components/ConceptLoop.astro': 'aa73048b174d6d5cf1565b767b47749b044ee9370edd2b809b315fb6442fb566',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
-  'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',
+  // 47afe919: intentional text-only school notation on the readout
+  // (':' for division, '×' for multiply). Not a fence regen.
+  'src/components/TriangleAreaExplorer.astro': 'b2760424b5735dcf4340e5fe95aa306d19e2dd7043e841c5d12092c0fa6a01b6',
   'src/lib/homePage.ts': '26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb',
   'src/data/home-page.json': 'af14191d863d623cfb95e65f28ca258663d4b8be01a1ef07d520c8b1e47ff73b',
-  'public/learning.html': 'ced06f94814182e633bc9b356a8262ecebd14513c5b74c7e2515e4e09ee62524',
+  // b7eab08d added the favicon links. 20d0ad0f added noam-site-companion.js.
+  // Both are intentional. The בס״ד headless block was not redesigned.
+  'public/learning.html': 'e0ba9a8743a1422e5d3bfeafdee4a4a01e1736422a4cb3777e962078f1c61ffb',
   'public/noam-learning-config.js': '90228359e65a99300b7d5017ddc58edce650b0b1a403a13b40c22608330f4ca7',
   // Lazy Supabase: guest learning no longer downloads the SDK. Google sign-in
   // and an existing session still load it, then recreate the engine.
@@ -80,8 +87,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     const viewer = read('public/worksheet-viewer-noam.html');
     const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
     assert.ok(head, 'Viewer must retain its head');
-    // Google Fonts link removed; Heebo woff2 is preloaded from /fonts.
-    assert.equal(sha256(head), '8c842de3e2b55e15a454fd1fabbc31794baeffaaf8b939d3a1bccd7cc586b462');
+    // Phone reading intentionally changes the inline CSS in this head.
+    // Metadata, fonts, canonical and robots are unchanged.
+    assert.equal(sha256(head), '6aa632f8c5727a7dcbce3357966a5e04fa47250e5e7c53122fd08cf6176a78e9');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
@@ -95,8 +103,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.equal(scripts.at(-1), companion[0], 'The companion script follows the adapter and does not replace it');
     const releasedScripts = scripts.slice(0, -2);
     assert.equal(releasedScripts.length, 14);
-    // c2 (מצוינות 2) is a real viewer level, so the released level script changed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '71c61d6861c76294e299ae7353f598be1a532ab193be4065cc914ae6a71bde92');
+    // Phone reading deliberately adds readable zoom, fit controls and a single
+    // touch-target rail; mobile layout/panel/pin tests cover these changes.
+    // PR124 intentionally updates the shared viewer to anchor Ramzi to printed
+    // question markers. Dedicated printed-pin fixtures cover that behavior.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e80fe08884059830c858c96f6560b1dfa58013f092e5a1d4d76dc1f93a06627a');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
