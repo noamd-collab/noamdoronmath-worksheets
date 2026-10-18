@@ -1,0 +1,378 @@
+---
+/**
+ * Area-model explorer for two grade-6 topic pages (engine: ../lib/areaExplorer.ts).
+ *
+ *   kind="fraction"  fraction-times-fraction-grade-6, opens on 2/3 × 3/4
+ *   kind="decimal"   multiply-decimals-grade-6, opens on 0.8 × 0.72
+ *
+ * Both draw a unit square: the first factor shades columns, the second
+ * shades rows, and the overlap is the product. The first frame is rendered
+ * here, so the card is complete before the script runs.
+ */
+import { decimalProduct, dec, fractionProduct } from '../lib/areaExplorer';
+
+interface Props {
+  kind: 'fraction' | 'decimal';
+}
+const { kind } = Astro.props;
+
+const SIZE = 240;
+const PAD = 30;
+const TOP = PAD + SIZE;
+
+const F = { a: 2, b: 3, c: 3, d: 4 };
+const fp = fractionProduct(F.a, F.b, F.c, F.d);
+
+const D = { x: 0.8, y: 0.72 };
+const dp = decimalProduct(D.x, D.y);
+const split = dp.yt > 0 && dp.yh > 0;
+
+const cols = kind === 'fraction' ? F.b : 10;
+const rows = kind === 'fraction' ? F.d : 10;
+const shapes =
+  kind === 'fraction'
+    ? [
+        { x: PAD, y: PAD, w: (F.a * SIZE) / F.b, h: SIZE, cls: 'ae-a' },
+        { x: PAD, y: TOP - (F.c * SIZE) / F.d, w: SIZE, h: (F.c * SIZE) / F.d, cls: 'ae-b' },
+        { x: PAD, y: TOP - (F.c * SIZE) / F.d, w: (F.a * SIZE) / F.b, h: (F.c * SIZE) / F.d, cls: 'ae-both' },
+      ]
+    : [
+        { x: PAD, y: PAD, w: D.x * SIZE, h: SIZE, cls: 'ae-a' },
+        { x: PAD, y: TOP - D.y * SIZE, w: SIZE, h: D.y * SIZE, cls: 'ae-b' },
+        { x: PAD, y: TOP - dp.yt * SIZE, w: D.x * SIZE, h: dp.yt * SIZE, cls: 'ae-both' },
+        { x: PAD, y: TOP - D.y * SIZE, w: D.x * SIZE, h: dp.yh * SIZE, cls: 'ae-both2' },
+      ];
+const vLines = Array.from({ length: cols - 1 }, (_, i) => PAD + ((i + 1) * SIZE) / cols);
+const hLines = Array.from({ length: rows - 1 }, (_, i) => PAD + ((i + 1) * SIZE) / rows);
+---
+
+{
+  kind === 'fraction' ? (
+    <div class="area-explorer" data-area-explorer="fraction" data-a={F.a} data-b={F.b} data-c={F.c} data-d={F.d}>
+      <div class="ae-card">
+        <p class="ae-ask">צובעים את שני השברים על אותה רשת. החפיפה היא התשובה.</p>
+        <div class="ae-controls" dir="ltr">
+          <span class="ae-frac ae-frac--a">
+            <span class="ae-step">
+              <button type="button" data-step="a:-1" aria-label="הקטנת המונה של השבר הראשון">−</button>
+              <b data-el="a">{F.a}</b>
+              <button type="button" data-step="a:1" aria-label="הגדלת המונה של השבר הראשון">+</button>
+            </span>
+            <span class="ae-bar" />
+            <span class="ae-step">
+              <button type="button" data-step="b:-1" aria-label="הקטנת המכנה של השבר הראשון">−</button>
+              <b data-el="b">{F.b}</b>
+              <button type="button" data-step="b:1" aria-label="הגדלת המכנה של השבר הראשון">+</button>
+            </span>
+          </span>
+          <span class="ae-op">×</span>
+          <span class="ae-frac ae-frac--b">
+            <span class="ae-step">
+              <button type="button" data-step="c:-1" aria-label="הקטנת המונה של השבר השני">−</button>
+              <b data-el="c">{F.c}</b>
+              <button type="button" data-step="c:1" aria-label="הגדלת המונה של השבר השני">+</button>
+            </span>
+            <span class="ae-bar" />
+            <span class="ae-step">
+              <button type="button" data-step="d:-1" aria-label="הקטנת המכנה של השבר השני">−</button>
+              <b data-el="d">{F.d}</b>
+              <button type="button" data-step="d:1" aria-label="הגדלת המכנה של השבר השני">+</button>
+            </span>
+          </span>
+        </div>
+        <svg class="ae-svg" viewBox="0 0 300 300" aria-hidden="true" focusable="false">
+          <g data-el="layer">
+            {shapes.map((s) => <rect x={s.x} y={s.y} width={s.w} height={s.h} class={s.cls} />)}
+            {vLines.map((x) => <line x1={x} y1={PAD} x2={x} y2={TOP} class="ae-grid" />)}
+            {hLines.map((y) => <line x1={PAD} y1={y} x2={PAD + SIZE} y2={y} class="ae-grid" />)}
+            <rect x={PAD} y={PAD} width={SIZE} height={SIZE} class="ae-frame" />
+          </g>
+        </svg>
+        <p class="ae-readout" dir="ltr">
+          <span class="ae-q"><span data-el="a">{F.a}</span><span data-el="b">{F.b}</span></span>
+          <span>×</span>
+          <span class="ae-q"><span data-el="c">{F.c}</span><span data-el="d">{F.d}</span></span>
+          <span>=</span>
+          <span class="ae-q"><span data-el="n">{fp.n}</span><span data-el="m">{fp.m}</span></span>
+          <span data-el="reduced" class="ae-reduced" hidden={fp.rn === fp.n}>
+            <span>=</span>
+            <span class="ae-q ae-ans"><span data-el="rn">{fp.rn}</span><span data-el="rm">{fp.rm}</span></span>
+          </span>
+        </p>
+        <p class="ae-hint">
+          החפיפה היא <bdi data-el="cells">{`${fp.n} מתוך ${fp.m}`}</bdi> משבצות. מונה כפול מונה, מכנה כפול מכנה.
+        </p>
+        <p class="sr-only" aria-live="polite" data-el="live" />
+      </div>
+    </div>
+  ) : (
+    <div class="area-explorer" data-area-explorer="decimal">
+      <div class="ae-card">
+        <p class="ae-ask">ריבוע שלם מחולק ל־100 משבצות. החפיפה היא המכפלה.</p>
+        <p class="ae-legend">מפרקים את הגובה לעשיריות (אדום) ומאיות (ורוד) וכופלים כל חלק.</p>
+        <svg class="ae-svg" viewBox="0 0 300 300" aria-hidden="true" focusable="false">
+          <g data-el="layer">
+            {shapes.map((s) => <rect x={s.x} y={s.y} width={s.w} height={s.h} class={s.cls} />)}
+            {vLines.map((x) => <line x1={x} y1={PAD} x2={x} y2={TOP} class="ae-grid" />)}
+            {hLines.map((y) => <line x1={PAD} y1={y} x2={PAD + SIZE} y2={y} class="ae-grid" />)}
+            <rect x={PAD} y={PAD} width={SIZE} height={SIZE} class="ae-frame" />
+          </g>
+        </svg>
+        <div class="ae-sliders">
+          <label class="ae-slider ae-slider--a">
+            <span>
+              רוחב: <bdi data-el="x">{dec(D.x, 1)}</bdi>
+            </span>
+            <input type="range" dir="ltr" data-el="rx" min="0.1" max="1" step="0.1" value={D.x} />
+          </label>
+          <label class="ae-slider ae-slider--b">
+            <span>
+              גובה: <bdi data-el="y">{dec(D.y, 2)}</bdi>
+            </span>
+            <input type="range" dir="ltr" data-el="ry" min="0.01" max="1" step="0.01" value={D.y} />
+          </label>
+        </div>
+        <div class="ae-readout ae-readout--lines" dir="ltr">
+          <div data-el="split" class="ae-split" hidden={!split}>
+            <p>
+              <span data-el="x">{dec(D.x, 1)}</span> × <span data-el="yt">{dec(dp.yt, 1)}</span> ={' '}
+              <span data-el="p1">{dec(dp.p1)}</span>
+            </p>
+            <p>
+              <span data-el="x">{dec(D.x, 1)}</span> × <span data-el="yh">{dec(dp.yh, 2)}</span> ={' '}
+              <span data-el="p2">{dec(dp.p2)}</span>
+            </p>
+            <p>
+              <span data-el="p1">{dec(dp.p1)}</span> + <span data-el="p2">{dec(dp.p2)}</span> ={' '}
+              <b class="ae-ans" data-el="ans">{dec(dp.ans, 4)}</b>
+            </p>
+          </div>
+          <p data-el="direct" hidden={split}>
+            <span data-el="x">{dec(D.x, 1)}</span> × <span data-el="y">{dec(D.y, 2)}</span> ={' '}
+            <b class="ae-ans" data-el="ans">{dec(dp.ans, 4)}</b>
+          </p>
+        </div>
+        <p class="ae-hint" data-el="smaller">
+          המכפלה קטנה משני המספרים: כפל בעשרוני קטן מ־1 מקטין.
+        </p>
+        <p class="sr-only" aria-live="polite" data-el="live" />
+      </div>
+    </div>
+  )
+}
+
+<script>
+  import { initAreaExplorers } from '../lib/areaExplorer';
+  initAreaExplorers();
+</script>
+
+<style>
+  .area-explorer {
+    margin: 6px 0 20px;
+  }
+  .ae-card {
+    background: #fff;
+    border: 1.5px solid rgba(26, 43, 74, 0.1);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    padding: 14px 16px 12px;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .ae-ask {
+    margin: 0;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--navy);
+    text-align: center;
+    text-wrap: balance;
+  }
+  .ae-svg {
+    display: block;
+    width: min(100%, 280px);
+    height: auto;
+  }
+  .ae-svg :global(.ae-a) {
+    fill: rgba(230, 165, 52, 0.45);
+  }
+  .ae-svg :global(.ae-b) {
+    fill: rgba(30, 96, 94, 0.28);
+  }
+  .ae-svg :global(.ae-both) {
+    fill: #e5735c;
+  }
+  .ae-svg :global(.ae-both2) {
+    fill: #f0a08f;
+  }
+  .ae-svg :global(.ae-grid) {
+    stroke: rgba(26, 43, 74, 0.35);
+    stroke-width: 1;
+  }
+  .ae-svg :global(.ae-frame) {
+    fill: none;
+    stroke: var(--navy);
+    stroke-width: 2.5;
+  }
+
+  /* fraction steppers */
+  .ae-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    direction: ltr;
+  }
+  .ae-frac {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .ae-frac--a b {
+    color: #b7791f;
+  }
+  .ae-frac--b b {
+    color: #1e605e;
+  }
+  .ae-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ae-step b {
+    min-width: 1.2em;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+  .ae-step button {
+    font: inherit;
+    font-weight: 800;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(26, 43, 74, 0.25);
+    background: #fff;
+    color: var(--navy);
+    cursor: pointer;
+    line-height: 1;
+  }
+  .ae-step button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+  .ae-step button:focus-visible,
+  .ae-slider input:focus-visible {
+    outline: 3px solid var(--cobalt);
+    outline-offset: 2px;
+  }
+  .ae-bar {
+    display: block;
+    width: 40px;
+    height: 2.5px;
+    background: var(--navy);
+    border-radius: 2px;
+  }
+  .ae-op {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--navy);
+  }
+
+  /* readouts */
+  .ae-readout {
+    margin: 0;
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .ae-readout--lines {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .ae-readout--lines p {
+    margin: 0;
+    white-space: nowrap;
+  }
+  .ae-split {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .ae-readout--lines [hidden] {
+    display: none;
+  }
+  .ae-reduced {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ae-reduced[hidden] {
+    display: none;
+  }
+  .ae-q {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.15;
+  }
+  .ae-q > span:first-child {
+    border-bottom: 2px solid currentColor;
+    padding: 0 3px;
+  }
+  .ae-ans {
+    color: #e5735c;
+  }
+  .ae-legend {
+    margin: 0;
+    text-align: center;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .ae-hint {
+    margin: 0;
+    text-align: center;
+    color: var(--muted);
+    font-weight: 600;
+    max-width: 34em;
+  }
+  .ae-hint[hidden] {
+    display: none;
+  }
+
+  /* decimal sliders */
+  .ae-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: min(100%, 300px);
+  }
+  .ae-slider {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .ae-slider input[type='range'] {
+    width: 100%;
+    height: 28px;
+    background: transparent;
+  }
+  .ae-slider--a input {
+    accent-color: #e6a534;
+  }
+  .ae-slider--b input {
+    accent-color: #1e605e;
+  }
+</style>
