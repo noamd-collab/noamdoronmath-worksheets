@@ -3,6 +3,35 @@
 export const PAGE_PREFIX = 'headless/astro-poc/src/pages/';
 export const FALLBACK_PAGES = ['/', '/grade-5', '/grade-9', '/factoring-grade-9', '/worksheets?grade=9', '/blog'];
 export const MAX_SCREENSHOT_PAGES = 6;
+export const GRADE_HUB_NAV_FILES = [
+  'headless/astro-poc/src/components/GradeHubPage.astro',
+  'headless/astro-poc/src/lib/elementaryTopicNav.ts',
+  'headless/astro-poc/src/styles/exact-grade.css',
+];
+export const ELEMENTARY_GRADE_HUB_PAGES = [
+  '/grade-1',
+  '/grade-2',
+  '/grade-3',
+  '/grade-4',
+  '/grade-5',
+  '/grade-6',
+];
+export const TEACHER_FILES = [
+  'headless/astro-poc/src/pages/teachers.ts',
+  'headless/astro-poc/public/teachers/index.html',
+  'headless/astro-poc/public/teachers/teacher-factoring-print.js',
+  'headless/astro-poc/public/teachers/teacher-marked-print.js',
+  'demos/teacher-factoring-print.js',
+  'demos/teacher-marked-print.js',
+  'headless/astro-poc/scripts/render-teacher-pack.py',
+  'headless/astro-poc/tests/teacher-print-pack.test.ts',
+  'headless/astro-poc/tests/teacher-marked-print.test.ts',
+];
+
+export function isTeacherFile(file) {
+  const norm = String(file).replaceAll('\\', '/');
+  return TEACHER_FILES.includes(norm) || norm.startsWith('headless/astro-poc/public/teachers/');
+}
 
 const PAGE_FILE = /\.(astro|ts|tsx|js|mjs)$/;
 
@@ -29,10 +58,14 @@ export function routeFromPageFile(file) {
  * single route, so those diffs use the fallback set.
  */
 export function pagesTouchedByDiff(files) {
+  const normalized = files.map((file) => String(file).replaceAll('\\', '/'));
+  if (normalized.some((file) => GRADE_HUB_NAV_FILES.includes(file))) {
+    return { pages: [...ELEMENTARY_GRADE_HUB_PAGES], fallback: false, omitted: [] };
+  }
   const seen = new Set();
   const routes = [];
   for (const file of files) {
-    const route = routeFromPageFile(file);
+    const route = isTeacherFile(file) ? '/teachers' : routeFromPageFile(file);
     if (!route || seen.has(route)) continue;
     seen.add(route);
     routes.push(route);
@@ -46,3 +79,4 @@ export function pagesTouchedByDiff(files) {
     omitted: routes.slice(MAX_SCREENSHOT_PAGES),
   };
 }
+

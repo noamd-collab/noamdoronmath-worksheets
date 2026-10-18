@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { pagesTouchedByDiff, routeFromPageFile } from './pr-pages.mjs';
+import { ELEMENTARY_GRADE_HUB_PAGES, pagesTouchedByDiff, routeFromPageFile } from './pr-pages.mjs';
 
 describe('routeFromPageFile', () => {
   it('maps page files to routes', () => {
@@ -24,6 +24,16 @@ describe('pagesTouchedByDiff', () => {
     assert.deepEqual(result.pages, ['/', '/grade-5', '/grade-9', '/factoring-grade-9', '/worksheets?grade=9', '/blog']);
   });
 
+  it('screenshots every elementary grade hub when the hub nav changes', () => {
+    const result = pagesTouchedByDiff([
+      'headless/astro-poc/src/components/GradeHubPage.astro',
+      'headless/astro-poc/src/pages/index.astro',
+    ]);
+    assert.equal(result.fallback, false);
+    assert.deepEqual(result.pages, ELEMENTARY_GRADE_HUB_PAGES);
+    assert.deepEqual(result.omitted, []);
+  });
+
   it('keeps changed pages and caps the screenshot list', () => {
     const files = [
       'headless/astro-poc/src/pages/grade-8.astro',
@@ -39,4 +49,17 @@ describe('pagesTouchedByDiff', () => {
     assert.equal(result.pages.length, 6);
     assert.deepEqual(result.omitted, ['/grade-5']);
   });
+
+  it('screenshots /teachers when teachers page or print-pack files change', () => {
+    const result = pagesTouchedByDiff([
+      'headless/astro-poc/public/teachers/index.html',
+      'headless/astro-poc/public/teachers/teacher-factoring-print.js',
+      'headless/astro-poc/public/teachers/packs/factoring-9/4aba762b64b54af098827d1f386bcf68.json',
+      'headless/astro-poc/scripts/render-teacher-pack.py',
+    ]);
+    assert.equal(result.fallback, false);
+    assert.deepEqual(result.pages, ['/teachers']);
+    assert.deepEqual(result.omitted, []);
+  });
 });
+

@@ -32,6 +32,7 @@ const NON_LANDING_PAGES = new Set([
   'worksheets.astro',
   'dev-loops.astro',
   'hero-loops/[variant].astro',
+  'practice-private/angles-7-f11b7303210e.astro',
   'blog/index.astro',
   'blog/categories/[slug].astro',
   'post/[...slug].astro',
@@ -115,12 +116,12 @@ describe('landing loop coverage', () => {
       'numbers-operations-review-grade-2': 'concept:array',
       'perimeter-polygons-grade-3': 'concept:peri-rect',
       'order-of-operations-grade-4': 'concept:order-ops',
-      'distributive-area-model-grade-4': 'css:distrib-area',
+      'distributive-area-model-grade-4': 'concept:distributive-area-model-grade-4',
       'multiplication-multi-digit-grade-4': 'css:col-mul',
-      'grade-4-summary': 'concept:baseten',
+      'grade-4-summary': 'concept:grade-4-summary',
       'parallelogram-area-grade-5': 'css:area-para',
-      'fraction-division-meaning-grade-6': 'css:frac-div',
-      'measurement-geometry-synthesis-grade-6': 'concept:rect-count',
+      'fraction-division-meaning-grade-6': 'concept:fraction-division-meaning-grade-6',
+      'measurement-geometry-synthesis-grade-6': 'concept:measurement-geometry-synthesis-grade-6',
     };
     for (const [slug, want] of Object.entries(expected)) {
       const loop = topicLandingLoop(loadTopicPage(slug));
@@ -333,7 +334,11 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 128);
+    // Two reviewed pages left the CSS loops for their own concept films
+    // (distributive-area-model-grade-4, fraction-division-meaning-grade-6).
+    // The follow-up pages add six CSS loops and move grade 5 order of
+    // operations to the order-ops film.
+    assert.equal(cssPages, 126);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);

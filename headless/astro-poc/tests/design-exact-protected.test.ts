@@ -17,6 +17,12 @@
  * They moved again so the kite card plays the area film first
  * («שטח דלתון — מהדלתון למלבן»), then the ruler-and-compass film.
  * They moved again so the card title follows the film that is playing.
+ * They moved again so para-rect marks base b and height h on the shape
+ * (explicit label fix, same 10s lap).
+ * They moved again for the 2026-10-18 topic films (distributive area,
+ * fraction-division meaning, grade-4 summary, measurement L-area).
+ * Explicit content. Easing helpers moved to loopHelpers.ts so those films
+ * can import them; that file is pinned here too. Not a silent regen.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -43,8 +49,10 @@ const protectedFiles: Record<string, string> = {
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
-  'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
+  // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
+  'src/lib/conceptLoops.ts': '8470ac2d099ba475f3edadc583f6522ffa4df17f66c76afa278406f5b0bc3e75',
+  'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
+  'src/components/ConceptLoop.astro': '76b8b0e26f9211cde8e7e4323608fd48cd02bee62a14f99b205923aa420d70b3',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // 47afe919: intentional text-only school notation on the readout

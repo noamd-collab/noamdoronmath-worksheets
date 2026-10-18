@@ -16,6 +16,13 @@
  */
 
 import { renderKiteArea } from './kiteAreaFilm';
+import { draw, lerp, move, op, ph, q, qa, r2, shift } from './loopHelpers';
+import { FILM as distribFilm } from './topicFilms/distributive-area-model-grade-4';
+import { FILM as fracDivFilm } from './topicFilms/fraction-division-meaning-grade-6';
+import { FILM as grade4SummaryFilm } from './topicFilms/grade-4-summary';
+import { FILM as measureFilm } from './topicFilms/measurement-geometry-synthesis-grade-6';
+
+export { EASE, lerp, ph } from './loopHelpers';
 
 type LoopRoot = HTMLElement & { __loop?: LoopDebug };
 
@@ -25,59 +32,6 @@ interface LoopDebug {
   play: () => void;
   state: () => { t: number; playing: boolean; laps: number; done: boolean; static: boolean };
 }
-
-/* ——— easing: exact cubic-bezier(.16,1,.3,1) via Newton–Raphson ——— */
-function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
-  const cx = 3 * x1;
-  const bx = 3 * (x2 - x1) - cx;
-  const ax = 1 - cx - bx;
-  const cy = 3 * y1;
-  const by = 3 * (y2 - y1) - cy;
-  const ay = 1 - cy - by;
-  const sx = (t: number) => ((ax * t + bx) * t + cx) * t;
-  const sy = (t: number) => ((ay * t + by) * t + cy) * t;
-  const sd = (t: number) => (3 * ax * t + 2 * bx) * t + cx;
-  return (x: number) => {
-    if (x <= 0) return 0;
-    if (x >= 1) return 1;
-    let t = x;
-    for (let i = 0; i < 8; i++) {
-      const err = sx(t) - x;
-      if (Math.abs(err) < 1e-6) break;
-      const d = sd(t);
-      if (Math.abs(d) < 1e-6) break;
-      t = Math.min(1, Math.max(0, t - err / d));
-    }
-    return sy(t);
-  };
-}
-const EASE = cubicBezier(0.16, 1, 0.3, 1);
-export { EASE };
-
-/** eased progress of t inside [a,b] */
-const ph = (t: number, a: number, b: number) => EASE(Math.min(1, Math.max(0, (t - a) / (b - a))));
-const lerp = (a: number, b: number, p: number) => a + (b - a) * p;
-export { ph, lerp };
-const r2 = (n: number) => Math.round(n * 100) / 100;
-
-type El = SVGElement | HTMLElement;
-const q = (root: LoopRoot, name: string) =>
-  root.querySelector(`[data-el="${name}"]`) as El;
-const qa = (root: LoopRoot, sel: string) =>
-  Array.from(root.querySelectorAll(sel)) as El[];
-
-const op = (el: El | null, v: number) => {
-  if (el) el.style.opacity = String(r2(Math.min(1, Math.max(0, v))));
-};
-const draw = (el: El | null, p: number) => {
-  if (el) el.style.strokeDashoffset = String(r2(1 - Math.min(1, Math.max(0, p))));
-};
-const move = (el: El | null, x: number, y: number, rot = 0) => {
-  if (el) el.setAttribute('transform', `translate(${r2(x)} ${r2(y)}) rotate(${r2(rot)})`);
-};
-const shift = (el: El | null, dx: number, dy: number) => {
-  if (el) el.setAttribute('transform', `translate(${r2(dx)} ${r2(dy)})`);
-};
 
 /* ═══════════════ variant A — triangle area (D = 10 s) ═══════════════
    corrected script (Noam, K3 fix): the 6×4 rectangle is 24, a diagonal
@@ -886,15 +840,47 @@ function renderTransform(root: LoopRoot, t: number) {
 }
 const TRANS_HOLD = 6.8;
 
-/* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════ */
+/* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════
+   Base b stays on the bottom edge. Height is the perpendicular between the
+   two bases: a dashed altitude with a right-angle mark while the shape is a
+   parallelogram, then an outside bracket once that altitude would lie on the
+   rectangle's left side. Lap length and hold are unchanged. */
 
 function renderParaRect(root: LoopRoot, t: number) {
   const flat = ph(t, 1.3, 2.7) - ph(t, 8.1, 9.3);
   const s = 72 * (1 - flat);
+  const hx = 160 + s;
   const shape = q(root, 'shape');
-  if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(160 + s)},128`);
-  op(q(root, 'height'), 1);
-  op(q(root, 'lbl-h'), ph(t, 0.6, 1.0));
+  if (shape) shape.setAttribute('points', `160,240 400,240 ${r2(400 + s)},128 ${r2(hx)},128`);
+
+  const height = q(root, 'height');
+  if (height) {
+    height.setAttribute('x1', String(r2(hx)));
+    height.setAttribute('x2', String(r2(hx)));
+    height.setAttribute('y1', '128');
+    height.setAttribute('y2', '240');
+  }
+  const sq = q(root, 'h-sq');
+  if (sq) sq.setAttribute('d', `M${r2(hx)} 226 L${r2(hx + 14)} 226 L${r2(hx + 14)} 240`);
+  const brk = q(root, 'h-brk');
+  if (brk) brk.setAttribute('d', `M${r2(hx)} 128 L142 128 L142 240 L160 240`);
+
+  // 0 while the altitude is clearly inside the parallelogram, 1 on the rectangle.
+  const edge = Math.min(1, Math.max(0, (28 - s) / 28));
+  op(height, 1 - edge);
+  op(sq, 1);
+  op(brk, edge);
+
+  const labels = ph(t, 0.6, 1.0);
+  const lh = q(root, 'lbl-h');
+  if (lh) {
+    lh.setAttribute('x', String(r2(lerp(hx + 16, 124, edge))));
+    lh.setAttribute('y', '190');
+    lh.setAttribute('text-anchor', 'middle');
+  }
+  op(lh, labels);
+  op(q(root, 'b-brk'), labels);
+  op(q(root, 'lbl-b'), labels);
   op(q(root, 'lbl-same'), ph(t, 2.8, 3.3) * (1 - ph(t, 8.0, 8.6)));
   const fxs = qa(root, '[data-fx]');
   op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
@@ -2255,7 +2241,41 @@ const SPECS = {
     hold: KITE_AREA_END + KITE_HOLD,
     render: renderKiteShow,
   },
+  // Topic films from anim-drop 2026-10-18. Duration and hold stay the film's.
+  'distributive-area-model-grade-4': {
+    duration: distribFilm.duration,
+    hold: distribFilm.hold,
+    render: renderDistribFilm,
+  },
+  'fraction-division-meaning-grade-6': {
+    duration: fracDivFilm.duration,
+    hold: fracDivFilm.hold,
+    render: renderFracDivFilm,
+  },
+  'grade-4-summary': {
+    duration: grade4SummaryFilm.duration,
+    hold: grade4SummaryFilm.hold,
+    render: renderGrade4SummaryFilm,
+  },
+  'measurement-geometry-synthesis-grade-6': {
+    duration: measureFilm.duration,
+    hold: measureFilm.hold,
+    render: renderMeasureFilm,
+  },
 } as const;
+
+function renderDistribFilm(root: LoopRoot, t: number) {
+  distribFilm.render(root, t);
+}
+function renderFracDivFilm(root: LoopRoot, t: number) {
+  fracDivFilm.render(root, t);
+}
+function renderGrade4SummaryFilm(root: LoopRoot, t: number) {
+  grade4SummaryFilm.render(root, t);
+}
+function renderMeasureFilm(root: LoopRoot, t: number) {
+  measureFilm.render(root, t);
+}
 
 const MAX_LAPS = 4;
 
