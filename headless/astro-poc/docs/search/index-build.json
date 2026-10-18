@@ -314,9 +314,9 @@
     },
     {
       "key": "page:/isosceles-triangle-properties-grade-8",
-      "title": "משולש שווה שוקיים לכיתה ח׳",
+      "title": "משולש שווה־שוקיים לכיתה ח׳",
       "linkedTopic": "topic:8:40",
-      "linkedTitle": "משולש שווה שוקיים",
+      "linkedTitle": "משולש שווה־שוקיים",
       "verified": true,
       "reason": "links to the topic, same grade, shared title word"
     },
@@ -364,7 +364,7 @@
       "key": "page:/binomial-square-grade-9",
       "title": "דו־איבר בריבוע לכיתה ט׳",
       "linkedTopic": "topic:9:44",
-      "linkedTitle": "דו איבר בריבוע",
+      "linkedTitle": "דו־איבר בריבוע",
       "verified": true,
       "reason": "links to the topic, same grade, shared title word"
     },
@@ -492,7 +492,7 @@
       "key": "page:/isosceles-triangle-grade-8",
       "title": "משולש שווה־שוקיים לכיתה ח׳",
       "linkedTopic": "topic:8:41",
-      "linkedTitle": "הוכחה — שווה שוקיים",
+      "linkedTitle": "הוכחה — שווה־שוקיים",
       "verified": true,
       "reason": "links to the topic, same grade, shared title word"
     },
@@ -612,7 +612,7 @@
       "key": "page:/triangle-30-60-90-grade-9",
       "title": "משולש ישר־זווית ⁦30–60–90⁩ לכיתה ט׳",
       "linkedTopic": "topic:9:37",
-      "linkedTitle": "משולש ישר זווית 30-60-90",
+      "linkedTitle": "משולש ישר־זווית 30–60–90",
       "verified": true,
       "reason": "links to the topic, same grade, shared title word"
     },
@@ -700,7 +700,7 @@
       "key": "page:/isosceles-triangle-grade-9",
       "title": "משולש שווה־שוקיים לכיתה ט׳",
       "linkedTopic": "topic:9:4",
-      "linkedTitle": "משולש שווה שוקיים",
+      "linkedTitle": "משולש שווה־שוקיים",
       "verified": true,
       "reason": "links to the topic, same grade, shared title word"
     },
@@ -900,7 +900,7 @@
       "key": "post:geometry-grade-6-exams",
       "title": "איך לתרגל גאומטריה לכיתה ו׳ ולהצליח במבחנים",
       "linkedTopic": "topic:6:12",
-      "linkedTitle": "תיבות ופריסות מעבר בין דו ממד לתלת ממד",
+      "linkedTitle": "תיבות ופריסות מעבר בין דו־ממד לתלת־ממד",
       "verified": false,
       "reason": "titles share no topic word"
     },

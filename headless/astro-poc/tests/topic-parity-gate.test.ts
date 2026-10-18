@@ -36,6 +36,7 @@ import {
   type TopicParitySnapshot,
 } from '../src/lib/parity/topicParity.ts';
 import { contentToParitySnapshot } from '../src/lib/parity/contentToParitySnapshot.ts';
+import { applyContentCorrections, topicPageCorrections } from '../src/lib/parity/contentCorrections.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fixtureDir = join(root, 'tests', 'fixtures', 'topic-parity');
@@ -43,7 +44,11 @@ const fixtureDir = join(root, 'tests', 'fixtures', 'topic-parity');
 function loadProductionFixture(slug: string): TopicParitySnapshot {
   const path = join(fixtureDir, `${slug}.production.json`);
   assert.ok(existsSync(path), `missing production fixture: ${path}`);
-  const data = JSON.parse(readFileSync(path, 'utf8')) as TopicParitySnapshot;
+  // Reviewed corrections (src/data/content-corrections.json) apply on top of the capture.
+  const data = applyContentCorrections(
+    JSON.parse(readFileSync(path, 'utf8')) as TopicParitySnapshot,
+    topicPageCorrections(slug)
+  );
   assert.equal(data.slug, slug);
   assert.equal(data.source, 'production');
   assert.ok(data.title && data.h1 && data.description);
