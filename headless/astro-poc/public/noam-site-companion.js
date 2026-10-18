@@ -41,8 +41,8 @@
         timer = setTimeout(function () { controller.abort(); reject(new Error("NAVIGATION_TIMEOUT")); }, 5000);
       });
       navigationPromise = Promise.race([timeout, Promise.all([
-        import("/noam-navigation.js?v=2062a158d2d825aa"),
-        fetch("/noam-navigation-guide.json?v=2062a158d2d825aa", {signal: controller.signal}).then(function (response) {
+        import("/noam-navigation.js?v=758e498be7a22201"),
+        fetch("/noam-navigation-guide.json?v=758e498be7a22201", {signal: controller.signal}).then(function (response) {
           if (!response.ok) throw new Error("NAVIGATION_UNAVAILABLE");
           return response.json();
         }),
