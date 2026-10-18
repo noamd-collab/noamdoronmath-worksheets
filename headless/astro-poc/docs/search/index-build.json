@@ -873,6 +873,14 @@
       "reason": "already attached to an earlier link"
     },
     {
+      "key": "page:/kite-grade-9",
+      "title": "דלתון לכיתה ט׳",
+      "linkedTopic": "topic:9:46",
+      "linkedTitle": "דלתון",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "post:annual-review-grade-7",
       "title": "חזרה שנתית לכיתה ז׳ | דפי עבודה חינם",
       "linkedTopic": "topic:7:49",

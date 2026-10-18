@@ -4,9 +4,11 @@ import { describe, it } from 'node:test';
 import {
   BLOG_POST_M25_PILOT_PATHS,
   BLOG_POST_SERVED_PATHS,
+  BLOG_POST_CLASSIC_GAP_PATHS,
   BLOG_M25_DEFERRED,
   LIVE_CHROME_BASELINE,
   listPilotBlogPosts,
+  listClassicGapBlogPosts,
   loadBlogPostByPath,
   isPilotBlogPath,
   isLocallyServedPath,
@@ -28,7 +30,39 @@ describe('M25 blog pilot', () => {
 
   it('defers 0 remaining posts after M29 (M30 closed topic gaps)', () => {
     assert.deepEqual([...BLOG_M25_DEFERRED], []);
-    assert.equal(BLOG_POST_SERVED_PATHS.length, 60);
+    assert.equal(BLOG_POST_SERVED_PATHS.length, 68);
+  });
+
+  it('serves the 8 classic-site posts missing from the headless domain', () => {
+    const slugs = [
+      'פתרון-מפשטים-לכיתה-ז',
+      'איך-משתמשים-בעוזר-מתמטי-חכם-בלי-לוותר-על-החשיבה',
+      'איך-מלמדים-חילוק-ארוך-לילדים-בלי-לנחש-בדרך',
+      'מהו-סדר-פעולות-ואיך-פותרים-תרגילים-בלי-להתבלבל',
+      'למידה-אדפטיבית-במתמטיקה-שמקדמת-כל-תלמיד',
+      'תוצאות-מתרגול-עקבי-במתמטיקה-שמרגישים-בכיתה',
+      'איך-מתרגלים-כפל-בעזרת-משחקים-בבית-ובכיתה',
+      'איך-מסבירים-היקף-ושטח-בלי-לבלבל-בין-השניים',
+    ];
+    assert.equal(BLOG_POST_CLASSIC_GAP_PATHS.length, 8);
+    assert.equal(listClassicGapBlogPosts().length, 8);
+    for (const slug of slugs) {
+      const post = loadBlogPostByPath(`/post/${encodeURIComponent(slug)}`);
+      assert.ok(post, slug);
+      assert.equal(post.decodedSlug, slug);
+      assert.equal(post.batch, 'classic-gap');
+      assert.equal(isPilotBlogPath(post.path), true);
+      assert.ok(post.blocks.length >= 3, slug);
+      assert.ok(/BlogPosting/.test(JSON.stringify(post.jsonLd)), slug);
+      assert.equal(post.source.liveUrl.includes('amiramnoam.wixsite.com/my-site/post/'), true);
+    }
+    const page = readFileSync('src/pages/post/[...slug].astro', 'utf8');
+    assert.match(page, /audioSlug=\{post\.decodedSlug\}/);
+    const tpl = readFileSync('src/components/BlogPostPage.astro', 'utf8');
+    assert.match(tpl, /BlogAudioBar/);
+    assert.match(tpl, /<BlogAudioBar slug=\{audioSlug\} \/>/);
+    const bar = readFileSync('src/components/BlogAudioBar.astro', 'utf8');
+    assert.match(bar, /<noam-audio-player/);
   });
 
   it('each pilot has title, description, h1, ordered body, author, schema', () => {
@@ -289,7 +323,7 @@ describe('M25 blog pilot', () => {
     assert.ok(tpl.includes('authorAvatar'));
   });
 
-  it('newest learning-gaps post resolves encoded and decoded and leads /blog', () => {
+  it('learning-gaps post resolves encoded and decoded and stays listed on /blog', () => {
     const slug = 'פערים-לימודיים-במתמטיקה-כך-סוגרים-אותם-נכון';
     const encoded = encodeURIComponent(slug);
     const variants = [`/post/${slug}`, `/post/${encoded}`, `/post/${encodeURI(slug)}`];
@@ -302,8 +336,12 @@ describe('M25 blog pilot', () => {
     }
     const archive = loadBlogArchiveByPath('/blog');
     assert.ok(archive);
-    assert.equal(archive.cards[0]?.title, 'פערים לימודיים במתמטיקה: כך סוגרים אותם נכון');
-    assert.ok(archive.cards[0]?.href.includes(encoded));
+    const card = archive.cards.find(
+      (c) => c.title === 'פערים לימודיים במתמטיקה: כך סוגרים אותם נכון'
+    );
+    assert.ok(card);
+    assert.ok(card.href.includes(encoded));
+    assert.equal(archive.cards[0]?.title, 'איך מסבירים היקף ושטח בלי לבלבל בין השניים');
   });
 
   it('manifest file documents classification + pilot (no bulk 63)', () => {

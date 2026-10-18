@@ -1,6 +1,6 @@
 (function(){
  'use strict';
- const storageKey='noam-fx82ms-settings-v1';let saved=null;try{saved=JSON.parse(localStorage.getItem(storageKey));}catch(_){}
+ const storageKey='noam-basic-calc-v1';let saved=null;try{saved=JSON.parse(localStorage.getItem(storageKey));}catch(_){}
  const calc=createMS82(createEngine(math),createAlgorithms(math),saved);
  const stage=document.querySelector('.ms-stage'),device=document.querySelector('.ms-device'),lcd=document.getElementById('ms-lcd'),readable=document.getElementById('ms-readable');
  function resize(){device.style.transform='scale('+stage.clientWidth/464+')';}

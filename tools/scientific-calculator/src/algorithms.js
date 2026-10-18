@@ -1,6 +1,5 @@
 /* Numerical scientific-calculator helpers. Approximations use IEEE-754 doubles.
- * Mode definitions: fx-991ES PLUS 2nd edition English manual, pp30–78.
- * This is an independent implementation, not Casio firmware emulation. */
+ * This is an independent implementation, not a firmware emulator. */
 function createAlgorithms(math) {
   'use strict';
   const finite = (x, name = 'ערך') => {

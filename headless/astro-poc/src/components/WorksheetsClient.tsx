@@ -13,6 +13,7 @@ import {
 import { GradeNav } from './GradeNav';
 import { catalogSearch, matchingTopicIds } from '../lib/siteSearch/catalogFilter';
 import { searchHref } from '../lib/siteSearch/url';
+import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
 import {
   buildWorksheetsHref,
@@ -38,7 +39,7 @@ export interface WorksheetsClientProps {
 }
 
 function levelClass(key: string): string {
-  if (key === 'c') return 'lvl lvl--c';
+  if (key === 'c' || key === 'c2') return 'lvl lvl--c';
   if (key === 'b') return 'lvl lvl--b';
   if (key === 'one') return 'lvl lvl--a lvl--one';
   return 'lvl lvl--a';
@@ -337,7 +338,13 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         data-topic-id={topic.id}
       >
         <div className="exact-card-heading">
-          <h3>{topic.title}</h3>
+          <h3>
+            {topic.noamTopicId === 'G9-T46' ? (
+              <a href="/kite-grade-9">{topic.title}</a>
+            ) : (
+              topic.title
+            )}
+          </h3>
           {topicCode ? <span className="exact-topic-code" style={{ background: badgeColor }}>{topicCode}</span> : null}
         </div>
         {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}
@@ -399,7 +406,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   const jumpGrades = otherFamily(grade);
   const jumpLabel = otherFamilyJumpLabel(grade);
   const searchFamilyLabel = familySearchLabel(grade);
-  const topLevelCount = gradeEntry.topics.filter((t) => t.parent === undefined).length;
+  const topLevelCount = countRenderedTopicCards(gradeEntry, track);
   const family = schoolFamilyOf(grade);
 
   return (
@@ -424,7 +431,9 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
 
       <header className="exact-catalog-heading">
         <div data-doodle="fish" className="exact-catalog-fish">
-          <img src="/design-exact/assets/doodles/geometry-fish.webp" alt="" />
+          <button type="button" className="exact-doodle-btn" aria-label="הנפשת השרבוט">
+            <img src="/design-exact/assets/doodles/geometry-fish.webp" alt="" />
+          </button>
         </div>
         <h1 data-pop="0">דפי עבודה ל{gradeLabel}</h1>
         <p data-pop="100">

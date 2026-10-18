@@ -1,8 +1,8 @@
 {
-  "name": "noam-fx82ms-calculator",
+  "name": "noam-basic-calculator",
   "private": true,
   "version": "1.0.0",
-  "description": "Independent fx-82MS 2nd edition practice calculator",
+  "description": "Independent two-line scientific practice calculator",
   "dependencies": {
     "mathjs": "15.2.0"
   },
@@ -11,6 +11,6 @@
   },
   "scripts": {
     "build": "node build.cjs ..",
-    "test": "node build.cjs . && node --test *.test.cjs"
+    "test": "node build.cjs . && node --test *.test.cjs ../../trademark-guard.test.cjs"
   }
 }

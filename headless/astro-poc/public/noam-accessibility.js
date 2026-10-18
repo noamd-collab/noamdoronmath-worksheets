@@ -15,8 +15,10 @@
   function init() {
     if (document.getElementById('noam-accessibility')) return;
     const defaults = { text: 100, contrast: false, links: false, motion: false };
-    const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let prefs = { ...defaults, stopAnim: reduceQuery.matches, stopAnimChosen: false };
+    // OS prefers-reduced-motion must not flip "עצירת אנימציות" on. Grade
+    // demos (and every other rAF loop) keep playing until the visitor
+    // presses that control. A saved choice still wins.
+    let prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
     try {
       const saved = JSON.parse(localStorage.getItem('noam-accessibility-v1') || '{}');
       prefs.text = [100,110,120,130,140,150].includes(saved.text) ? saved.text : 100;
@@ -201,6 +203,13 @@
         if (r.bottom <= 0 || r.top >= window.innerHeight || r.right <= 0 || r.left >= window.innerWidth) continue;
         rects.push(r);
       }
+      var cards = document.querySelectorAll('.exact-topic-demo,.concept-loop__card,.ka-film,.grade-loop');
+      for (var c = 0; c < cards.length; c++) {
+        var card = cards[c].getBoundingClientRect();
+        if (card.width < 2 || card.height < 2) continue;
+        if (card.bottom <= 0 || card.top >= window.innerHeight || card.right <= 0 || card.left >= window.innerWidth) continue;
+        rects.push(card);
+      }
       var fixedNodes = document.body.querySelectorAll('*');
       for (var j = 0; j < fixedNodes.length; j++) {
         var fixedEl = fixedNodes[j];
@@ -240,7 +249,30 @@
           if (!boxHits(host.getBoundingClientRect(), rects)) return;
         }
       }
+      if (parkOffLessonCard(metrics)) return;
       applyHostBox('left', metrics.edge, 8, metrics.size);
+    }
+    function parkOffLessonCard(metrics) {
+      var cardEl = document.querySelector('.exact-topic-demo,.concept-loop__card,.ka-film');
+      if (!cardEl) return false;
+      var card = cardEl.getBoundingClientRect();
+      if (card.width < 2 || card.height < 2) return false;
+      var rects = obstacleRects();
+      var topGap = Math.max(8, Math.round(window.innerHeight - metrics.size - 8));
+      var aboveCard = Math.round(window.innerHeight - card.top + 8);
+      var spots = [];
+      if (card.top > metrics.size + 16) {
+        spots.push(['left', aboveCard], ['right', aboveCard]);
+      }
+      spots.push(['left', topGap], ['right', topGap]);
+      for (var i = 0; i < spots.length; i++) {
+        applyHostBox(spots[i][0], metrics.edge, spots[i][1], metrics.size);
+        var box = host.getBoundingClientRect();
+        var onCard = box.left < card.right && box.right > card.left && box.top < card.bottom && box.bottom > card.top;
+        if (!onCard && !boxHits(box, rects)) return true;
+      }
+      applyHostBox('left', metrics.edge, topGap, metrics.size);
+      return true;
     }
     function placeDialogNearLauncher() {
       if (!astroShell) return;
@@ -347,13 +379,8 @@
       apply(true);
     });
     root.getElementById('reset').addEventListener('click', () => {
-      prefs = { ...defaults, stopAnim: reduceQuery.matches, stopAnimChosen: false };
+      prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
       apply(true);
-    });
-    reduceQuery.addEventListener('change', () => {
-      if (prefs.stopAnimChosen) return;
-      prefs.stopAnim = reduceQuery.matches;
-      apply(false);
     });
     let scheduled = false;
     new MutationObserver(() => {

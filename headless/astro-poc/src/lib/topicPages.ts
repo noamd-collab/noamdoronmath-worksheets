@@ -69,6 +69,7 @@ import analyticGeometryGrade9 from '../data/topic-pages/analytic-geometry-grade-
 import coordinatePlaneApplicationsGrade9 from '../data/topic-pages/coordinate-plane-applications-grade-9.json';
 import rhombusGrade9 from '../data/topic-pages/rhombus-grade-9.json';
 import trapezoidGrade9 from '../data/topic-pages/trapezoid-grade-9.json';
+import kiteGrade9 from '../data/topic-pages/kite-grade-9.json';
 import similarTrianglesGrade9 from '../data/topic-pages/similar-triangles-grade-9.json';
 import triangle306090Grade9 from '../data/topic-pages/triangle-30-60-90-grade-9.json';
 
@@ -249,6 +250,9 @@ export const TOPIC_PAGE_M30_REDIRECTS: ReadonlyArray<{ from: string; to: string 
 
 export const TOPIC_PAGE_M30_UNMIGRATED = [] as const;
 
+/** Grade-9 kite (G9-T46). Not a production capture; authored with the kite loop. */
+export const TOPIC_PAGE_KITE_SLUGS = ['kite-grade-9'] as const;
+
 export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_PILOT_SLUGS,
   ...TOPIC_PAGE_M19_SLUGS,
@@ -257,6 +261,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_M22_SLUGS,
   ...TOPIC_PAGE_M23_SLUGS,
   ...TOPIC_PAGE_M30_SLUGS,
+  ...TOPIC_PAGE_KITE_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -468,6 +473,7 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'triangle-similarity-aa-grade-9': triangleSimilarityAaGrade9 as TopicPageContent,
   'special-triangles-grade-7-new': specialTrianglesGrade7New as TopicPageContent,
   'patterns-and-graphs-grade-7': patternsAndGraphsGrade7 as TopicPageContent,
+  'kite-grade-9': kiteGrade9 as TopicPageContent,
 };
 
 function hasSelfCheckSection(sections: TopicPageSection[]): boolean {
