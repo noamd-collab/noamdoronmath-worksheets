@@ -28,11 +28,11 @@ it('triangle area uses the same unit grid and one complete cell becomes four cel
   const [w,h]=original.slice(1).map(Number);
   assert.ok(cells.every(c=>c[2]===w&&c[3]===h));
   assert.equal(new Set(cells.map(c=>c.slice(0,2).join(','))).size,4);
-  assert.deepEqual([...new Set(cells.map(c=>c[0]))],[218,218+w]);
-  assert.deepEqual([...new Set(cells.map(c=>c[1]))],[91,91+h]);
+  assert.deepEqual([...new Set(cells.map(c=>c[0]))],[190,190+w]);
+  assert.deepEqual([...new Set(cells.map(c=>c[1]))],[75,75+h]);
   assert.equal(cells.reduce((s,c)=>s+c[2]*c[3],0),4*w*h);
-  assert.equal(w,14);assert.equal(h,14);
-  assert.equal((component.match(/class="square-unit-pattern" width="14" height="14"/g)||[]).length,2);
+  assert.equal(w,28);assert.equal(h,28);
+  assert.equal((component.match(/class="square-unit-pattern" width="28" height="28"/g)||[]).length,2);
   for(const cls of ['small','large']){
     const gridPath=component.match(new RegExp('<path d="([^"<>]+)" class="area-'+cls+'"'))?.[1];
     assert.equal(gridPath,component.match(new RegExp('<path d="([^"<>]+)" class="'+cls+'-fill"'))?.[1]);
@@ -43,6 +43,16 @@ it('triangle area uses the same unit grid and one complete cell becomes four cel
     return cross.every(v=>v>=0)||cross.every(v=>v<=0);
   };
   for(const [x,y,cw,ch] of cells)for(const point of [[x,y],[x+cw,y],[x,y+ch],[x+cw,y+ch]])assert.ok(inside(point,triangle('large-fill').points));
+  const originalPosition=component.match(/<rect class="unit-original" x="(\d+)" y="(\d+)"/);assert.ok(originalPosition);
+  const [ox,oy]=originalPosition.slice(1).map(Number);
+  const [A]=triangle('small-fill').points,[D]=triangle('large-fill').points;
+  const mapped=[];
+  for(const point of [[ox,oy],[ox+w,oy],[ox,oy+h],[ox+w,oy+h]]){
+    assert.ok(inside(point,triangle('small-fill').points));
+    mapped.push([D[0]-2*(point[1]-A[1]),D[1]+2*(point[0]-A[0])]);
+  }
+  close(Math.min(...mapped.map(p=>p[0])),190);close(Math.max(...mapped.map(p=>p[0])),190+2*w);
+  close(Math.min(...mapped.map(p=>p[1])),75);close(Math.max(...mapped.map(p=>p[1])),75+2*h);
 
 });
 

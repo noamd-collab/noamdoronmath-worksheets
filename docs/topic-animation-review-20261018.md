@@ -47,3 +47,7 @@ The area chapter now fills the two oblique triangles with identical 1×1 square-
 ## Separate proof chapters follow-up
 
 24 focused geometry/controller/landing-loop checks pass for the latest change. These cover true side lengths and scale, clipped area-grid cells, perpendicular and angle-bisector/median feet, seven ten-second chapters, pause/reduced motion, and AA/SSS reveal timing. Current preview and external-review results are recorded in the PR description after verification. Prior-head review claims above remain historical.
+
+## Explicit 1×1 to 2×2 area demonstration
+
+The area grids now remain stationary and use the exact same 28-pixel unit size in both triangles throughout the sequence. Only one highlighted square grows and rotates: its 1×1 cell maps exactly to a 2×2 block in the large triangle; four original-size cells are revealed afterward. Visible 1×1 and 2×2 labels replace reliance on tiny grids. Geometry tests verify both containment of the original square and the exact transformed bounds of the four-cell target.

@@ -34,28 +34,25 @@ const gridId = `similarity-${crypto.randomUUID()}`;
       <g class="construction median-pair"><path class="segment" d="M25 130 L86 107.550056 M190 35 L234.899889 157"/><path class="construction-mark" d="M68.495551 92.858417 L64.504449 99.79175 M264.283166 121.991101 L250.4165 114.008899 M107.495551 115.308361 L103.504449 122.241695 M219.383278 199.991101 L205.516611 192.008899"/><circle cx="86" cy="107.550056" r="3"/><circle cx="234.899889" cy="157" r="3"/><text x="95" y="274">m</text><text x="265" y="274">2m</text></g>
     </g>
     <defs>
-      <pattern id={`${gridId}-small`} class="square-unit-pattern" width="14" height="14" x="25" y="130" patternUnits="userSpaceOnUse"><path d="M14 0 H0 V14" class="grid-line"/></pattern>
-      <pattern id={`${gridId}-large`} class="square-unit-pattern" width="14" height="14" x="190" y="35" patternUnits="userSpaceOnUse"><path d="M14 0 H0 V14" class="grid-line"/></pattern>
-      <pattern id={`${gridId}-moving`} width="14" height="14" patternUnits="userSpaceOnUse"><path d="M14 0 H0 V14" class="grid-line"/></pattern>
+      <pattern id={`${gridId}-small`} class="square-unit-pattern" width="28" height="28" x="17" y="130" patternUnits="userSpaceOnUse"><path d="M28 0 H0 V28" class="grid-line"/></pattern>
+      <pattern id={`${gridId}-large`} class="square-unit-pattern" width="28" height="28" x="190" y="75" patternUnits="userSpaceOnUse"><path d="M28 0 H0 V28" class="grid-line"/></pattern>
     </defs>
     <g class="area-scene">
       <path d="M25 130 L47 85.100111 L125 130 Z" class="area-small"/>
       <path d="M25 130 L47 85.100111 L125 130 Z" class="triangle-unit-grid" fill={`url(#${gridId}-small)`}/>
       <path d="M190 35 L279.799777 79 L190 235 Z" class="area-large"/>
+      <path d="M190 35 L279.799777 79 L190 235 Z" class="triangle-unit-grid" fill={`url(#${gridId}-large)`}/>
       <g class="unit-grid">
-        <path d="M190 35 L279.799777 79 L190 235 Z" class="triangle-unit-grid" fill={`url(#${gridId}-large)`}/>
-        <rect class="unit-cell" x="218" y="91" width="14" height="14"/>
-        <rect class="unit-cell" x="232" y="91" width="14" height="14"/>
-        <rect class="unit-cell" x="218" y="105" width="14" height="14"/>
-        <rect class="unit-cell" x="232" y="105" width="14" height="14"/>
+        <rect class="unit-cell" x="190" y="75" width="28" height="28"/>
+        <rect class="unit-cell" x="218" y="75" width="28" height="28"/>
+        <rect class="unit-cell" x="190" y="103" width="28" height="28"/>
+        <rect class="unit-cell" x="218" y="103" width="28" height="28"/>
       </g>
-      <rect class="unit-original" x="53" y="102" width="14" height="14"/>
+      <rect class="unit-original" x="45" y="102" width="28" height="28"/>
       <g transform="translate(25 130)" aria-hidden="true"><g class="area-growing">
-        <path d="M0 0 L22 -44.899889 L100 0 Z" class="moving-triangle"/>
-        <path d="M0 0 L22 -44.899889 L100 0 Z" fill={`url(#${gridId}-moving)`}/>
-        <rect class="moving-unit" x="28" y="-28" width="14" height="14"/>
+        <rect class="moving-unit" x="20" y="-28" width="28" height="28"/>
       </g></g>
-      <text x="74" y="160">1 × 1</text>
+      <text class="unit-size" x="70" y="160">1 × 1</text><text class="unit-size enlarged-size" x="281" y="150">2 × 2</text>
       <text class="area-total" x="75" y="209">S</text><text class="area-total" x="265" y="258">4S</text>
     </g>
   </svg>
@@ -66,7 +63,7 @@ const gridId = `similarity-${crypto.randomUUID()}`;
     <p class="caption-3">גבהים מתאימים · אותו יחס דמיון</p>
     <p class="caption-4">חוצי זוויות מתאימים · אותו יחס דמיון</p>
     <p class="caption-5">תיכונים מתאימים · אותו יחס דמיון</p>
-    <p class="caption-6">כל משבצת: 1×1 · פי 4 בשטח</p>
+    <p class="caption-6">1×1 גדל ל־2×2 · ארבע יחידות שטח</p>
     <div class="formula formula-0"><span class="aa-proof"><LessonMath value="△ABC ∼ △DEF"/></span><span class="aa-first"><LessonMath value="2/1 = 2"/></span><span class="aa-second"><LessonMath value="4/2 = 2"/></span></div>
     <div class="formula formula-1"><span class="proof-label"><LessonMath value="2/1 = 4/2 = 2"/></span><span class="result-label"><LessonMath value="9.6/4.8 = 2"/></span></div>
     <div class="formula formula-2"><span class="sss-first"><LessonMath value="2/1"/></span><span class="sss-second"><LessonMath value="= 4/2"/></span><span class="sss-third"><LessonMath value="= 3.6/1.8 = 2"/></span></div>
@@ -162,14 +159,16 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   [data-phase='6'] .triangles-scene{display:none;}
   .area-small,.area-large{fill:#e7f3ed;stroke:#22305a;stroke-width:2;}
   .area-large{fill:#fff3d6;}
-  .grid-line{fill:none;stroke:#608b83;stroke-width:1;}
+  .grid-line{fill:none;stroke:#608b83;stroke-width:1;opacity:.6;}
   .triangle-unit-grid{stroke:#22305a;stroke-width:2;}
   .unit-original,.unit-cell,.moving-unit{fill:#7bb9a8;stroke:#22305a;stroke-width:1;}
   .unit-cell:nth-of-type(2){fill:#f7d489;}.unit-cell:nth-of-type(3){fill:#b9c9e9;}.unit-cell:nth-of-type(4){fill:#efb9a8;}
   .area-growing{transform-box:view-box;transform-origin:0 0;opacity:0;}
-  .moving-triangle{fill:#dceee8;stroke:#14635b;stroke-width:2;}
-  [data-phase='6'][data-ready] .area-growing{animation:triangle-area-grow 10s ease-in-out both;}
+  .moving-unit{fill:#7bb9a8;stroke:#14635b;stroke-width:2;}.unit-original{stroke:#14635b;stroke-width:2;}.unit-size{font-size:22px;}
+  [data-phase='6'][data-ready] .area-growing{animation:unit-area-grow 10s ease-in-out both;}
   [data-phase='6'][data-ready] .unit-grid{animation:reveal-grid 10s ease-in-out both;}
+  [data-phase='6'][data-ready] .enlarged-size{animation:reveal-size 10s ease-in-out both;}
+  @keyframes reveal-size{0%,45%{opacity:0;}55%,100%{opacity:1;}}
   .area-total{font-size:24px;}
   .scene-caption{min-height:82px;display:grid;align-content:center;text-align:center;}
   .scene-caption p{font-size:15px;line-height:1.5;margin:0 0 8px;}
@@ -190,7 +189,7 @@ const gridId = `similarity-${crypto.randomUUID()}`;
   @keyframes rotate-enlarge{0%,5%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}12%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}22%{transform:translate(0,0) rotate(90deg) scale(1);opacity:1;}43%,47%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:1;}52%,100%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:0;}}
   @keyframes alpha-focus{0%,45%,100%{opacity:1;stroke-width:5;}55%,85%{opacity:.5;stroke-width:3;}}
   @keyframes beta-focus{0%,40%{opacity:.5;stroke-width:3;}50%,100%{opacity:1;stroke-width:5;}}
-  @keyframes triangle-area-grow{0%,8%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}15%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}55%,65%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:1;}75%,100%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:0;}}
+  @keyframes unit-area-grow{0%,8%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}15%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}55%,65%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:1;}75%,100%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:0;}}
   @keyframes reveal-grid{0%,60%{opacity:0;}75%,100%{opacity:1;}}
   .matching-sides,.perimeters,.construction{display:none;}
   .match-leg{stroke-width:4;stroke:#14635b;}
