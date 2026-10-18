@@ -32,6 +32,7 @@ const NON_LANDING_PAGES = new Set([
   'worksheets.astro',
   'dev-loops.astro',
   'hero-loops/[variant].astro',
+  'practice-private/angles-7-f11b7303210e.astro',
   'blog/index.astro',
   'blog/categories/[slug].astro',
   'post/[...slug].astro',
