@@ -399,7 +399,7 @@ describe('journey: blog → post → related topic → worksheet', () => {
         ]);
         assert.ok(cards.length >= 5, `${viewport}: blog cards ${cards.length}`);
         let opened = false;
-        for (const href of cards.slice(0, 6)) {
+        for (const href of cards) {
           await go(tab, '/blog');
           await clickVisible(tab, `main a[href="${href}"]`, `${viewport} blog → ${href}`);
           await assertHebrewRtl(tab, `${viewport} ${href}`);
@@ -416,7 +416,7 @@ describe('journey: blog → post → related topic → worksheet', () => {
           opened = true;
           break;
         }
-        assert.ok(opened, `${viewport}: none of the first blog posts links to a topic page`);
+        assert.ok(opened, `${viewport}: no blog post links to a topic page`);
       } finally {
         await tab.page.close();
       }
