@@ -103,6 +103,18 @@ function demoLine(page: { slug: string; grade: number; catalogCta?: { catalogTop
       if (loop.variant === 'kite-construct') {
         return 'הדגמה: שטח דלתון — מהדלתון למלבן, ואחר כך בנייה בסרגל ומחוגה';
       }
+      if (loop.variant === 'distributive-area-model-grade-4') {
+        return 'הדגמה: 12 × 4 מתפרק ל־10 × 4 ועוד 2 × 4, ואז 40 + 8 = 48';
+      }
+      if (loop.variant === 'fraction-division-meaning-grade-6') {
+        return 'הדגמה: כמה פעמים נכנס החלק — שלושה רבעים חלקי רבע שווה 3, ו־2 חלקי חצי שווה 4';
+      }
+      if (loop.variant === 'grade-4-summary') {
+        return 'הדגמה: 2,847 + 1,675 — אומדים 4,500 ומחברים לעמודות עד 4,522';
+      }
+      if (loop.variant === 'measurement-geometry-synthesis-grade-6') {
+        return 'הדגמה: שטח צורת L — מלבן 10 × 6 פחות פינה 4 × 3 שווה 48';
+      }
       const copy = gradeLoopCopy(loop.variant);
       return 'הדגמה: ' + [copy.domain, copy.claim].filter(Boolean).join(' · ');
     }
