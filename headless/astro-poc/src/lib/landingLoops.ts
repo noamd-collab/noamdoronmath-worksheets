@@ -69,6 +69,12 @@ const SLUG_CONCEPT_OVERRIDE = {
   'distributive-area-model-grade-4': 'distributive-area-model-grade-4',
   'fraction-division-meaning-grade-6': 'fraction-division-meaning-grade-6',
   'measurement-geometry-synthesis-grade-6': 'measurement-geometry-synthesis-grade-6',
+  // The same mismatch on pages outside that review: 7 + 5 past ten on pages
+  // within 10, and negatives in grade 5. making-20-via-10-grade-1 and
+  // addition-to-20-grade-1 teach bridging through ten, so they keep tenframes.
+  'compose-decompose-10-grade-1': 'add-within',
+  'subtraction-to-10-grade-1': 'birds-sub',
+  'order-of-operations-grade-5': 'order-ops',
 } as const;
 
 export type ConceptLoopVariant =
@@ -137,6 +143,12 @@ export const CSS_LOOP_VARIANTS = [
   'col-mul',
   'distrib-area',
   'frac-div',
+  'sub-via-10',
+  'split-ways',
+  'tri-square',
+  'bonds-10-20',
+  'long-mul',
+  'frac-recip',
 ] as const;
 
 export type CssLoopVariant = (typeof CSS_LOOP_VARIANTS)[number];
@@ -218,6 +230,14 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'multiplication-multi-digit-grade-4': 'col-mul',
   // S = b × h with the perpendicular height. The family film is triangle area.
   'parallelogram-area-grade-5': 'area-para',
+  // Pages outside that review whose family film taught another lesson, with
+  // no existing film for their own example.
+  'subtraction-to-20-grade-1': 'sub-via-10',
+  'compose-decompose-grade-1': 'split-ways',
+  'shapes-compose-decompose-grade-1': 'tri-square',
+  'number-bonds-10-20-grade-2': 'bonds-10-20',
+  'multiplication-multi-digit-grade-5': 'long-mul',
+  'fraction-division-algorithm-grade-6': 'frac-recip',
 };
 
 export const GRADE_CONCEPT_LOOP = {
@@ -413,6 +433,12 @@ export const CSS_LOOP_IDEAS = {
   'col-mul': 'כופלים מימין לשמאל, וההמרה עוברת לעמודה הבאה: 175 × 5 = 875',
   'distrib-area': 'מפרקים את 16 ל־10 ועוד 6 ומחברים את שני השטחים: 150 + 90 = 240',
   'frac-div': 'בכל שלם יש 4 רבעים, ולכן בשני שלמים יש 8 רבעים',
+  'sub-via-10': `ב־15 ${MINUS} 7 מחסרים קודם 5 כדי להגיע ל־10, ואז עוד 2. נשארים 8`,
+  'split-ways': 'מפרקים את 6 לפי הסדר מהקטן לגדול: 1 + 5, 2 + 4, 3 + 3, ולא מפספסים אף דרך',
+  'tri-square': 'שני משולשים זהים נצמדים בצלע הארוכה, בלי רווח ובלי חפיפה, ויוצרים ריבוע',
+  'bonds-10-20': '6 + 4 = 10 היא הרכבה של 10, ובאותו אופן 13 + 7 = 20 היא הרכבה של 20',
+  'long-mul': 'כופלים ב־3, ואז ב־20 בשורה שמתחילה ב־0, ומחברים: 771 + 5,140 = 5,911',
+  'frac-recip': 'בחילוק בשבר הופכים רק את המחלק, ואז כופלים',
 } as const satisfies Record<CssLoopVariant, string>;
 
 export const FORMULA_LOOP_VARIANTS = [
@@ -425,6 +451,7 @@ export const FORMULA_LOOP_VARIANTS = [
   'tools',
   'proof',
   'quad-factor',
+  'frac-recip',
 ] as const satisfies readonly CssLoopVariant[];
 
 /**

@@ -47,4 +47,27 @@ if (HERO_ROTATION[0]?.variant !== DEFAULT) throw new Error('Default hero loop mu
   .hero-loop .concept-loop__svg {
     aspect-ratio: 560 / 340;
   }
+  /* Reserve the tallest hero film before it is fetched. The angle-sum iframe
+     starts at 440px; keeping that viewport avoids its load-time fit shrinking
+     the card. No overflow clipping: every film and its controls stay readable. */
+  @media (max-width: 480px) {
+    .hero-loop {
+      height: 440px;
+    }
+
+    .hero-loop > [data-hero-loop-current] {
+      height: 100%;
+    }
+
+    .hero-loop :global(.angle-sum-loop--card .angle-sum-loop__frame) {
+      height: 440px !important;
+    }
+
+    /* Topic chips wrap differently at phone widths. Reserve the control row
+       too, so the panel does not jump when the shuffled topic label changes. */
+    :global(.exact-home [data-exact-hero-panel] > div:last-child) {
+      min-height: 104px;
+      align-content: flex-start;
+    }
+  }
 </style>
