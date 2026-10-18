@@ -22,11 +22,11 @@ The corner widgets are existing fixed controls. A viewport-edge intersection is 
 
 ## Validation and limits
 
-- Local suite: 563 passed, zero failed, two live-only tests skipped with `CI=true`. The Linux Chrome fixture was excluded locally because this Mac has no `/usr/bin/google-chrome`; GitHub must run it.
+- Local suite: 573 passed, zero failed, two live-only tests skipped with `CI=true`. The Linux Chrome fixture was excluded locally because this Mac has no `/usr/bin/google-chrome`; GitHub must run it.
 - Five PR route / visual-review selection tests passed. `git diff --check` passed.
 - Tests measure the actual similarity SVG paths: all three corresponding-side ratios are 2; area ratio is 4; the four drawn tiles have the small triangle's area and fill the large triangle.
 - Wix build and preview succeeded using ignored `.env.local` only.
 - Brave checks cover representative repaired lessons at phone widths and the similarity drawing on desktop. Pause freezes the moving copy; reduced motion leaves the diagram and explanation visible. No Safari or physical-device claim.
-- New GitHub build/test/link checks and DeepSeek/Qwen reviews must be assessed at the new commit. Earlier reviews of `419c2e37` are not evidence for this revision. Previous DeepSeek attempts timed out.
+- After integrating main (four dedicated topic films and teacher-print fixes), 81 focused integration checks also passed. New GitHub build/test/link checks and DeepSeek/Qwen reviews must be assessed at the new commit. Earlier reviews of `419c2e37` are not evidence for this revision. Previous DeepSeek attempts timed out.
 
 No merge or production release is part of this update. The external review requirement remains in force; a green workflow wrapper alone is not a completed review.

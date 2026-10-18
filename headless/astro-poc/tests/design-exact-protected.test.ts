@@ -19,6 +19,10 @@
  * They moved again so the card title follows the film that is playing.
  * They moved again so para-rect marks base b and height h on the shape
  * (explicit label fix, same 10s lap).
+ * They moved again for the 2026-10-18 topic films (distributive area,
+ * fraction-division meaning, grade-4 summary, measurement L-area).
+ * Explicit content. Easing helpers moved to loopHelpers.ts so those films
+ * can import them; that file is pinned here too. Not a silent regen.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -45,9 +49,11 @@ const protectedFiles: Record<string, string> = {
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  // PR169 review: honor OS reduced motion for every loop; drawings/timing unchanged.
-  'src/lib/conceptLoops.ts': 'c1ed05eb068b46f216ffd4de4bcab159e9cc620f30ff06a6e41bd3affdbd2552',
-  'src/components/ConceptLoop.astro': 'aa73048b174d6d5cf1565b767b47749b044ee9370edd2b809b315fb6442fb566',
+  // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
+  // PR169: preserve new topic films and honor OS reduced motion.
+    'src/lib/conceptLoops.ts': 'f644fd20a34335d565899aa5369773184bee34565135d55aa9ba4b4a7aa447a0',
+  'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
+  'src/components/ConceptLoop.astro': '76b8b0e26f9211cde8e7e4323608fd48cd02bee62a14f99b205923aa420d70b3',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // 47afe919: intentional text-only school notation on the readout

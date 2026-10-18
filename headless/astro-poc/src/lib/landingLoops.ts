@@ -106,11 +106,11 @@ const SLUG_CONCEPT_OVERRIDE = {
   'numbers-operations-review-grade-2': 'array',
   'perimeter-polygons-grade-3': 'peri-rect',
   'order-of-operations-grade-4': 'order-ops',
-  'grade-4-summary': 'baseten',
-  'measurement-geometry-synthesis-grade-6': 'rect-count',
-  // The same mismatch on pages outside that review: 7 + 5 past ten on pages
-  // within 10, and negatives in grade 5. making-20-via-10-grade-1 and
-  // addition-to-20-grade-1 teach bridging through ten, so they keep tenframes.
+  'grade-4-summary': 'grade-4-summary',
+  'distributive-area-model-grade-4': 'distributive-area-model-grade-4',
+  'fraction-division-meaning-grade-6': 'fraction-division-meaning-grade-6',
+  'measurement-geometry-synthesis-grade-6': 'measurement-geometry-synthesis-grade-6',
+  // Within-10 and grade-5 pages retain their lesson-specific corrections.
   'compose-decompose-10-grade-1': 'add-within',
   'subtraction-to-10-grade-1': 'birds-sub',
   'order-of-operations-grade-5': 'order-ops',
@@ -266,9 +266,7 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   // Reviewed pages with no existing film for their idea. The concept-loop
   // engine is hash-pinned, so these are new CSS loops.
   'counting-grade-1': 'count-mark',
-  'distributive-area-model-grade-4': 'distrib-area',
   'multiplication-multi-digit-grade-4': 'col-mul',
-  'fraction-division-meaning-grade-6': 'frac-div',
   // S = b × h with the perpendicular height. The family film is triangle area.
   'parallelogram-area-grade-5': 'area-para',
   // Pages outside that review whose family film taught another lesson, with

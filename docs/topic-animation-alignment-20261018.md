@@ -1,8 +1,8 @@
 # Topic-animation mapping audit — 2026-10-18
 
-265 topic mappings reviewed against the page lesson; 95 selections changed from the original baseline. The table records routing, not a claim that every frame of every film was visually reviewed. Existing films may illustrate one relevant example of a broader lesson. New lesson sequences keep all worked steps visible, support pause and reduced motion, and avoid unrelated family fallbacks.
+265 topic mappings reviewed against the page lesson; 99 selections changed from the original baseline. The table records routing, not a claim that every frame of every film was visually reviewed. Existing films may illustrate one relevant example of a broader lesson. New lesson sequences keep all worked steps visible, support pause and reduced motion, and avoid unrelated family fallbacks.
 
-Includes the nine routing fixes from PR #168. The three similarity variants are replaced with new proportional drawings, enlargement, area dissection and AA explanations. Topic FAQ level guidance and seven corrupted algebra paragraphs are corrected; worksheet links and PDFs are unchanged. See [review follow-up](topic-animation-review-20261018.md).
+Includes the nine routing fixes from PR #168 and four dedicated films merged in #170. The three similarity variants are replaced with new proportional drawings, enlargement, area dissection and AA explanations. Topic FAQ level guidance and seven corrupted algebra paragraphs are corrected; worksheet links and PDFs are unchanged. See [review follow-up](topic-animation-review-20261018.md).
 
 | Grade | Topic | Previous animation | Selected animation |
 |---|---|---|---|
@@ -90,13 +90,13 @@ Includes the nine routing fixes from PR #168. The three similarity variants are 
 | 4 | classify-triangles-grade-4 | triangles | concept-tri-sort |
 | 4 | column-addition-grade-4 | concept-baseten | concept-baseten |
 | 4 | diagrams-conclusions-grade-4 | stats | read-bars |
-| 4 | distributive-area-model-grade-4 | distrib-area | distrib-area |
+| 4 | distributive-area-model-grade-4 | distrib-area | concept-distributive-area-model-grade-4 |
 | 4 | divisibility-factors-grade-4 | concept-prime-rect | concept-prime-rect |
 | 4 | equivalent-fractions-grade-4 | concept-equiv-half | concept-equiv-half |
 | 4 | estimation-money-problems-grade-4 | concept-baseten | concept-baseten |
 | 4 | fraction-names-equivalent-grade-4 | concept-fraction | concept-fraction |
 | 4 | fractions-numberline-compare-grade-4 | concept-equiv-half | fraction-numberline |
-| 4 | grade-4-summary | concept-baseten | concept-baseten |
+| 4 | grade-4-summary | concept-baseten | concept-grade-4-summary |
 | 4 | length-units-conversion-grade-4 | concept-ruler | concept-ruler |
 | 4 | long-division-remainder-grade-4 | concept-cookies | divide-remainder |
 | 4 | multi-digit-subtraction-grade-4 | baseten-sub | baseten-sub |
@@ -158,13 +158,13 @@ Includes the nine routing fixes from PR #168. The three similarity variants are 
 | 6 | find-the-whole-grade-6 | percent | percent-whole |
 | 6 | fraction-decimal-percent-grade-6 | percent | percent |
 | 6 | fraction-division-algorithm-grade-6 | concept-frac-product | frac-recip |
-| 6 | fraction-division-meaning-grade-6 | frac-div | frac-div |
+| 6 | fraction-division-meaning-grade-6 | frac-div | concept-fraction-division-meaning-grade-6 |
 | 6 | fraction-multiplication-apply-grade-6 | concept-frac-product | concept-frac-product |
 | 6 | fraction-operations-choose-grade-6 | concept-frac-product | concept-frac-product |
 | 6 | fraction-part-quantity-area-grade-6 | concept-frac-product | concept-quarter-12 |
 | 6 | fraction-times-fraction-grade-6 | concept-frac-product | concept-frac-product |
 | 6 | fraction-times-whole-grade-6 | concept-frac-product | concept-quarter-12 |
-| 6 | measurement-geometry-synthesis-grade-6 | concept-rect-count | concept-rect-count |
+| 6 | measurement-geometry-synthesis-grade-6 | concept-rect-count | concept-measurement-geometry-synthesis-grade-6 |
 | 6 | multiply-decimals-grade-6 | concept-tenth-cell | decimal-multiply |
 | 6 | multiply-mixed-numbers-grade-6 | concept-frac-product | mixed-multiply |
 | 6 | numbers-operations-review-grade-6 | concept-numberline | concept-numberline |

@@ -16,6 +16,22 @@ export const ELEMENTARY_GRADE_HUB_PAGES = [
   '/grade-5',
   '/grade-6',
 ];
+export const TEACHER_FILES = [
+  'headless/astro-poc/src/pages/teachers.ts',
+  'headless/astro-poc/public/teachers/index.html',
+  'headless/astro-poc/public/teachers/teacher-factoring-print.js',
+  'headless/astro-poc/public/teachers/teacher-marked-print.js',
+  'demos/teacher-factoring-print.js',
+  'demos/teacher-marked-print.js',
+  'headless/astro-poc/scripts/render-teacher-pack.py',
+  'headless/astro-poc/tests/teacher-print-pack.test.ts',
+  'headless/astro-poc/tests/teacher-marked-print.test.ts',
+];
+
+export function isTeacherFile(file) {
+  const norm = String(file).replaceAll('\\', '/');
+  return TEACHER_FILES.includes(norm) || norm.startsWith('headless/astro-poc/public/teachers/');
+}
 
 export const TOPIC_ANIMATION_FILES = [
   'headless/astro-poc/src/lib/landingLoops.ts',
@@ -68,7 +84,7 @@ export function pagesTouchedByDiff(files) {
   const seen = new Set();
   const routes = [];
   for (const file of files) {
-    const route = routeFromPageFile(file);
+    const route = isTeacherFile(file) ? '/teachers' : routeFromPageFile(file);
     if (!route || seen.has(route)) continue;
     seen.add(route);
     routes.push(route);
@@ -82,3 +98,4 @@ export function pagesTouchedByDiff(files) {
     omitted: routes.slice(MAX_SCREENSHOT_PAGES),
   };
 }
+

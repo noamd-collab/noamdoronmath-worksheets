@@ -150,10 +150,13 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again so the kite card plays the area film, then the construction.
   // Moved again so the card title follows whichever film is playing.
   // Moved again so para-rect marks base b and height h on the shape.
+  // Moved again for the 2026-10-18 topic films. Helpers moved to loopHelpers.ts
+  // and stay pinned. Explicit content, not a silent regen.
   const expected = {
-    'src/components/ConceptLoop.astro': 'aa73048b174d6d5cf1565b767b47749b044ee9370edd2b809b315fb6442fb566',
-    // PR169 review: honor OS reduced motion for every loop; drawings/timing unchanged.
-  'src/lib/conceptLoops.ts': 'c1ed05eb068b46f216ffd4de4bcab159e9cc620f30ff06a6e41bd3affdbd2552',
+    'src/components/ConceptLoop.astro': '76b8b0e26f9211cde8e7e4323608fd48cd02bee62a14f99b205923aa420d70b3',
+    // PR169: preserve new topic films and honor OS reduced motion.
+    'src/lib/conceptLoops.ts': 'f644fd20a34335d565899aa5369773184bee34565135d55aa9ba4b4a7aa447a0',
+    'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {
