@@ -255,6 +255,8 @@ describe('Noam AI headless endpoint', () => {
     assert.equal(client.includes('my-site-2'), false);
     assert.match(bot, /NOT_ACTIVE/);
     assert.match(config, /QWEN_API_KEY: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
+    assert.match(config, /QWEN_BASE_URL: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
+    assert.match(config, /QWEN_MODEL: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
     assert.match(config, /NOAM_RECAPTCHA_SECRET_KEY: envField.string\(\{ context: 'server', access: 'secret', optional: true \}\)/);
     assert.equal(QWEN_SECRET_NAME, 'QWEN_API_KEY');
     assert.equal(NOAM_RECAPTCHA_SECRET_NAME, 'NOAM_RECAPTCHA_SECRET_KEY');

@@ -5,12 +5,14 @@
  * When either is missing the response is "not active" and Qwen is not called.
  */
 import type { APIRoute } from 'astro';
-import { NOAM_RECAPTCHA_SECRET_KEY, QWEN_API_KEY } from 'astro:env/server';
+import { NOAM_RECAPTCHA_SECRET_KEY, QWEN_API_KEY, QWEN_BASE_URL, QWEN_MODEL } from 'astro:env/server';
 import catalog from '../../data/catalog.v1.json';
 import guide from '../../data/site-guide.v1.json';
 import teacherIndex from '../../data/teacher-pick-index.json';
 import {
   NOAM_RECAPTCHA_SECRET_NAME,
+  QWEN_BASE_URL_NAME,
+  QWEN_MODEL_NAME,
   QWEN_SECRET_NAME,
   handleNoamSiteCompanion,
   visitorIpFrom,
@@ -22,6 +24,8 @@ export const prerender = false;
 function keys() {
   return {
     qwenKey: secretFromEnv(QWEN_SECRET_NAME, QWEN_API_KEY),
+    qwenBaseUrl: secretFromEnv(QWEN_BASE_URL_NAME, QWEN_BASE_URL),
+    qwenModel: secretFromEnv(QWEN_MODEL_NAME, QWEN_MODEL),
     recaptchaSecret: secretFromEnv(NOAM_RECAPTCHA_SECRET_NAME, NOAM_RECAPTCHA_SECRET_KEY),
   };
 }

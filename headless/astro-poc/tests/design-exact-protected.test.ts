@@ -34,9 +34,10 @@ const read = (file: string) => readFileSync(join(root, file), 'utf8');
 const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
   // added so the headless Noam AI route can read Wix Secrets Manager.
-  // Adapter, output, and integrations are unchanged. The other two Astro
-  // configs (preview, open07-verify) are not in this fence.
-  'astro.config.mjs': 'c63c0e1646e6198757b32ca085cda16091a3168adf0017ce9e3ce74b91b8f451',
+  // QWEN_BASE_URL and QWEN_MODEL were added so a Model Studio key can point
+  // at its region and model without another code change. Adapter, output,
+  // and integrations are unchanged. The other Astro configs are not in this fence.
+  'astro.config.mjs': 'f940201eed3b4d37887c50dee706af4cbce38a701cc4c56606927c637f42beb7',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   'src/data/catalog.v1.json': '2efb9b0b42b8ba4c0f605f8835a7a24412b8103d4cfbb6c53a04657b67059959',

@@ -1,0 +1,265 @@
+{
+  "slug": "numbers-to-million-grade-4",
+  "path": "/numbers-to-million-grade-4",
+  "grade": 4,
+  "sourceUrl": "https://www.noamdoronmath.co.il/numbers-to-million-grade-4",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g4-t1-grounded-pdf",
+  "title": "מספרים עד מיליון — קריאה ופירוק לכיתה ד׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "מספרים עד מיליון — קריאה ופירוק לכיתה ד׳: ערך מקום, הקסה וייצוגים של מספרים גדולים, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "מספרים עד מיליון — קריאה ופירוק לכיתה ד׳",
+  "intro": "קוראים ופורקים מספרים עד מיליון לפי ערך המקום. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טבלת ערך המקום מסדרת את הספרות: יחידות, עשרות, מאות, אלפים, עשרות אלפים ומאות אלפים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "פירוק מורכב כותב את המספר כסכום: 640,205 = 600,000 + 40,000 + 200 + 5.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: ב־304,508 הספרה 3 שווה 300,000.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לשכוח אפסים בפירוק. בודקים שסכום החלקים שווה בדיוק למספר המקורי.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: כתבו את הפירוק המורכב של 70,506.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 70,000 + 500 + 6.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "קוראים ופורקים מספרים עד מיליון לפי ערך המקום. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=4&topic=1",
+      "catalogTopicId": 1
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "טבלת ערך המקום מסדרת את הספרות: יחידות, עשרות, מאות, אלפים, עשרות אלפים ומאות אלפים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "פירוק מורכב כותב את המספר כסכום: 640,205 = 600,000 + 40,000 + 200 + 5.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: ב־304,508 הספרה 3 שווה 300,000.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לשכוח אפסים בפירוק. בודקים שסכום החלקים שווה בדיוק למספר המקורי.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: כתבו את הפירוק המורכב של 70,506.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 70,000 + 500 + 6.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מספרים עד מיליון — קריאה ופירוק מתאימים לכיתה ד׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ד׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מספרים עד מיליון — קריאה ופירוק מתאימים לכיתה ד׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ד׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-4",
+      "label": "כל דפי כיתה ד׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-4"
+    },
+    {
+      "path": "/grade-5",
+      "label": "דפי עבודה לכיתה ה׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-5"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=4&topic=1",
+    "source": "catalog-g4-t1",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=1",
+    "catalogTopicId": 1,
+    "catalogTopicTitle": "מספרים עד מיליון — קריאה ופירוק"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=4&topic=1",
+      "source": "catalog-g4-t1",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=1",
+      "catalogTopicId": 1,
+      "catalogTopicTitle": "מספרים עד מיליון — קריאה ופירוק"
+    }
+  ],
+  "gradeHubHref": "/grade-4",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/numbers-to-million-grade-4#webpage",
+        "url": "https://www.noamdoronmath.co.il/numbers-to-million-grade-4",
+        "name": "מספרים עד מיליון — קריאה ופירוק לכיתה ד׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "מספרים עד מיליון — קריאה ופירוק לכיתה ד׳: ערך מקום, הקסה וייצוגים של מספרים גדולים, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/numbers-to-million-grade-4#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/numbers-to-million-grade-4#learning-resource",
+        "name": "מספרים עד מיליון — קריאה ופירוק לכיתה ד׳",
+        "url": "https://www.noamdoronmath.co.il/numbers-to-million-grade-4",
+        "description": "מספרים עד מיליון — קריאה ופירוק לכיתה ד׳: ערך מקום, הקסה וייצוגים של מספרים גדולים, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ד׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/numbers-to-million-grade-4#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מספרים עד מיליון — קריאה ופירוק מתאימים לכיתה ד׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ד׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

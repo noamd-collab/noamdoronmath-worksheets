@@ -1,0 +1,265 @@
+{
+  "slug": "measuring-length-cm-m-grade-3",
+  "path": "/measuring-length-cm-m-grade-3",
+  "grade": 3,
+  "sourceUrl": "https://www.noamdoronmath.co.il/measuring-length-cm-m-grade-3",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g3-t22-grounded-pdf",
+  "title": "מדידות אורך — ס״מ ומטר לכיתה ג׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "מדידות אורך — ס״מ ומטר לכיתה ג׳: אורך משני הקצוות על הסרגל, סנטימטרים ומטרים, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "מדידות אורך — ס״מ ומטר לכיתה ג׳",
+  "intro": "מודדים אורך בסנטימטרים ובמטרים, וקוראים את הסרגל משני הקצוות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מודדים את האורך לפי שני הקצוות על הסרגל: מחסרים את הקריאה הראשונה מהשנייה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "במטר אחד יש 100 סנטימטרים: 1 מ׳ = 100 ס״מ.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דוגמה: חפץ מ־2 עד 7 בסרגל הוא באורך 5 ס״מ.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לקרוא רק את הקצה השני בלי להחשיב את הראשון. אם החפץ לא מתחיל ב־0, מחסרים את הקריאות.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: חפץ מ־3 עד 10 בסרגל. מה אורכו?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 7 ס״מ, כי 10 − 3 = 7.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מודדים אורך בסנטימטרים ובמטרים, וקוראים את הסרגל משני הקצוות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=3&topic=22",
+      "catalogTopicId": 22
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "מודדים את האורך לפי שני הקצוות על הסרגל: מחסרים את הקריאה הראשונה מהשנייה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "במטר אחד יש 100 סנטימטרים: 1 מ׳ = 100 ס״מ.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דוגמה: חפץ מ־2 עד 7 בסרגל הוא באורך 5 ס״מ.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לקרוא רק את הקצה השני בלי להחשיב את הראשון. אם החפץ לא מתחיל ב־0, מחסרים את הקריאות.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: חפץ מ־3 עד 10 בסרגל. מה אורכו?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 7 ס״מ, כי 10 − 3 = 7.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא מדידות אורך — ס״מ ומטר מתאימים לכיתה ג׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ג׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא מדידות אורך — ס״מ ומטר מתאימים לכיתה ג׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ג׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-3",
+      "label": "כל דפי כיתה ג׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-3"
+    },
+    {
+      "path": "/grade-4",
+      "label": "דפי עבודה לכיתה ד׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-4"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=3&topic=22",
+    "source": "catalog-g3-t22",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=3&topic=22",
+    "catalogTopicId": 22,
+    "catalogTopicTitle": "מדידות אורך — ס״מ ומטר"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=3&topic=22",
+      "source": "catalog-g3-t22",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=3&topic=22",
+      "catalogTopicId": 22,
+      "catalogTopicTitle": "מדידות אורך — ס״מ ומטר"
+    }
+  ],
+  "gradeHubHref": "/grade-3",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/measuring-length-cm-m-grade-3#webpage",
+        "url": "https://www.noamdoronmath.co.il/measuring-length-cm-m-grade-3",
+        "name": "מדידות אורך — ס״מ ומטר לכיתה ג׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "מדידות אורך — ס״מ ומטר לכיתה ג׳: אורך משני הקצוות על הסרגל, סנטימטרים ומטרים, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/measuring-length-cm-m-grade-3#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/measuring-length-cm-m-grade-3#learning-resource",
+        "name": "מדידות אורך — ס״מ ומטר לכיתה ג׳",
+        "url": "https://www.noamdoronmath.co.il/measuring-length-cm-m-grade-3",
+        "description": "מדידות אורך — ס״מ ומטר לכיתה ג׳: אורך משני הקצוות על הסרגל, סנטימטרים ומטרים, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה ג׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/measuring-length-cm-m-grade-3#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא מדידות אורך — ס״מ ומטר מתאימים לכיתה ג׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ג׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
