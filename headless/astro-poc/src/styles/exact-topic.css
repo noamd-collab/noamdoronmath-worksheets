@@ -183,3 +183,8 @@
 .exact-topic .topic-page__author,
 .exact-topic .topic-page__updated,
 .exact-topic .topic-page__terms { color: #5a6588; }
+
+/* Give the lesson, rather than its decorative surround, the phone width. */
+@media (max-width: 640px) {
+  .exact-topic .exact-topic-demo:not(.exact-topic-demo--bare) { padding: 18px 8px 12px; }
+}

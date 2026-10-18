@@ -7,6 +7,7 @@
  * triangle-area-grade-7 keeps its explorer; the explorer glides once, so it
  * still needs a real loop.
  */
+import { LESSON_LOOPS, LESSON_LOOP_VARIANTS, LESSON_TOPIC_MAP } from './lessonLoops';
 import topicFamilies from '../data/topicFamilies.json';
 import type { TopicPageContent } from './topicPages';
 
@@ -17,8 +18,8 @@ import type { TopicPageContent } from './topicPages';
  * families reuse the closest existing film. F10/F14 keep their CSS loops.
  * F11 subtraction topics use the new baseten-sub CSS loop via
  * SLUG_CSS_OVERRIDE (only genuinely new loop: two-digit subtraction with
- * borrowing). F24/F30 have no exact film yet — unit-frac and frac-product are
- * the closest fits and are flagged in the PR for review.
+ * borrowing). Lesson-specific overrides take precedence: family films are
+ * never a substitute for checking the learning objective of a page.
  */
 export const FAMILY_CONCEPT_LOOP = {
   F01: 'sticks',
@@ -47,6 +48,47 @@ export const FAMILY_CONCEPT_LOOP = {
 
 /** One page whose own idea has its own ConceptLoop film (Kimi's L14 v6). */
 const SLUG_CONCEPT_OVERRIDE = {
+  // Reviewed against the lesson, independently of the family fallback.
+  'build-decompose-shapes-grade-3': 'polygon',
+  'number-neighbors-grade-1': 'neighbors',
+  'hundreds-tens-ones-grade-2': 'place-123',
+  'numbers-to-1000-grade-2': 'place-123',
+  'place-value-grade-3': 'place-123',
+  'even-odd-sequences-a-grade-2': 'odd-pair',
+  'even-odd-sequences-b-grade-2': 'odd-pair',
+  'division-equal-shares-grade-2': 'share-12',
+  'division-measurement-grade-2': 'jumps-4',
+  'division-check-multiplication-grade-3': 'share-12',
+  'division-inverse-multiplication-grade-3': 'share-12',
+  'angles-types-grade-3': 'angle-kinds',
+  'angle-types-grade-4': 'angle-kinds',
+  'lines-angles-shapes-grade-3': 'angle-kinds',
+  'angles-lines-plane-grade-4': 'angle-kinds',
+  'classify-triangles-grade-3': 'tri-sort',
+  'classify-triangles-grade-4': 'tri-sort',
+  'triangles-classify-build-grade-4': 'tri-sort',
+  'parallel-perpendicular-shapes-grade-4': 'para-perp',
+  'perimeter-parallel-perpendicular-grade-5': 'para-perp',
+  'polygons-diagonals-grade-4': 'two-diag',
+  'quadrilateral-diagonals-grade-5': 'two-diag',
+  'triangle-height-obtuse-parallelogram-grade-5': 'obtuse-ht',
+  'symmetry-reflection-rotation-grade-4': 'transform',
+  'transformations-grade-5': 'transform',
+  'area-perimeter-rectangle-grade-4': 'rect-count',
+  'area-perimeter-rectangles-grade-5': 'rect-count',
+  'composite-area-grade-5': 'l-split',
+  'area-perimeter-composite-grade-4': 'l-split',
+  'quadrilaterals-classify-grade-4': 'quad-tree',
+  'quadrilateral-family-grade-5': 'quad-tree',
+  'quadrilaterals-review-grade-6': 'quad-tree',
+  'rectangles-squares-grade-4': 'quad-tree',
+  'fraction-times-whole-grade-6': 'quarter-12',
+  'fraction-part-quantity-area-grade-6': 'quarter-12',
+  'fraction-operations-choose-grade-6': 'frac-product',
+  'equations-basics-grade-7': 'balance',
+  'parallelogram-trapezoid-area-grade-9': 'trap-area',
+  'neighbors-numberline-grade-3': 'neighbors',
+  'money-grade-3': 'coins-12',
   'difference-of-squares-grade-9': 'diff-sq',
   'kite-grade-9': 'kite-construct',
   // Clock topics sit in the F07 measurement family but have their own films.
@@ -81,6 +123,7 @@ export type ConceptLoopVariant =
 
 /** CSS/SVG loops. Transform and opacity only. */
 export const CSS_LOOP_VARIANTS = [
+  ...LESSON_LOOP_VARIANTS,
   'powers',
   'exp-rules',
   'roots',
@@ -298,6 +341,8 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
 }
 
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
+  const lesson = LESSON_TOPIC_MAP[page.slug];
+  if (lesson) return { kind: 'css', variant: lesson, marker: lesson };
   const film = FILM_LANDING_LOOPS[page.slug as FilmLandingSlug];
   if (film) return { kind: 'film', marker: film.marker, src: film.src };
   // A slug-level concept film wins over a slug CSS loop and over its family.
@@ -373,6 +418,7 @@ export function powerMarkup(row: PowerRow): string {
  * and listed in the pull request.
  */
 export const CSS_LOOP_IDEAS = {
+  ...Object.fromEntries(Object.entries(LESSON_LOOPS).map(([id, lesson]) => [id, lesson.idea])) as { [K in keyof typeof LESSON_LOOPS]: string },
   powers: `סוגריים קובעים את הסימן: (${MINUS}3)² = 9, בלי סוגריים ${MINUS}3² = ${MINUS}9, וחזקה אי־זוגית (${MINUS}3)³ = ${MINUS}27`,
   'exp-rules': 'בכפל חזקות עם אותו בסיס מחברים מעריכים: 2³ × 2² = 2⁵',
   roots: 'השורש שואל איזה מספר בריבוע נותן את זה: 3² = 9 ולכן √9 = 3',

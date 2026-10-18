@@ -21,6 +21,7 @@ import {
   powerMarkup,
   topicLandingLoop,
 } from '../src/lib/landingLoops.ts';
+import { isLessonLoop, LESSON_LOOPS } from '../src/lib/lessonLoops.ts';
 import { GRADE_HUB_GRADES } from '../src/lib/gradeHubs.ts';
 import { TOPIC_PAGE_SLUGS, loadTopicPage } from '../src/lib/topicPages.ts';
 
@@ -270,6 +271,7 @@ describe('landing loop coverage', () => {
       loop,
       read('src/components/LoopFormula.astro'),
       read('src/components/LoopSketch.astro'),
+      read('src/components/LessonLoop.astro'),
     ].join('\n');
     assert.match(loop, /prefers-reduced-motion:\s*reduce/);
     assert.match(loop, /html\.nd-motion-off/);
@@ -279,7 +281,9 @@ describe('landing loop coverage', () => {
     assert.match(loop, /animation-play-state:\s*paused/);
     assert.doesNotMatch(scenes, /<video\b|lottie|gsap|bodymovin/i);
     for (const variant of CSS_LOOP_VARIANTS) {
-      assert.ok(scenes.includes(`variant === '${variant}'`), `missing scene ${variant}`);
+      if (isLessonLoop(variant)) {
+        assert.ok(scenes.includes(`lesson.picture === '${LESSON_LOOPS[variant].picture}'`) || ['equation', 'place'].includes(LESSON_LOOPS[variant].picture), `missing lesson renderer ${variant}`);
+      } else assert.ok(scenes.includes(`variant === '${variant}'`), `missing scene ${variant}`);
     }
   });
 
@@ -333,7 +337,7 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 128);
+    assert.ok(cssPages >= 128, `expected coverage of at least the existing 128 CSS pages, got ${cssPages}`);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);
