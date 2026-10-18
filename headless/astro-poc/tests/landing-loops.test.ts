@@ -417,7 +417,8 @@ describe('landing loop coverage', () => {
     assert.match(sketch, /d="M160 88 Q240 312 320 88"/);
     assert.match(sketch, /\(\{MINUS\}2, 4\)/);
     assert.match(sketch, /\(2, 4\)/);
-    assert.match(sketch, /class="sk-box" points="250,118 340,200 160,200"/);
+    // Similarity moved to its own measured, labeled demonstration (see similarity-loop.test.ts).
+    assert.match(read('src/components/SimilarityLoop.astro'), /class="small-fill"/);
     assert.match(sketch, /24%, 86% \{ transform: scale\(1\); \}/);
     assert.match(sketch, /V = S × ℓ/);
     assert.equal(sketch.includes('y="120" font-size="22">V = S'), false);

@@ -21,13 +21,16 @@ export const TOPIC_ANIMATION_FILES = [
   'headless/astro-poc/src/lib/landingLoops.ts',
   'headless/astro-poc/src/lib/lessonLoops.ts',
   'headless/astro-poc/src/components/LessonLoop.astro',
+  'headless/astro-poc/src/components/SimilarityLoop.astro',
+  'headless/astro-poc/src/components/TopicText.astro',
+  'headless/astro-poc/src/lib/lessonMath.ts',
   'headless/astro-poc/src/components/LandingLoop.astro',
   'headless/astro-poc/src/styles/exact-topic.css',
 ];
 export const TOPIC_ANIMATION_PAGES = [
-  '/reflection-symmetry-grade-2', '/box-surface-area-grade-6',
-  '/data-grade-1', '/add-subtract-fractions-grade-5',
-  '/algebraic-fractions-grade-9', '/hundred-chart-grade-1',
+  '/similar-triangles-grade-8', '/algebraic-fractions-grade-9',
+  '/fractions-numberline-compare-grade-4', '/read-tables-grade-5',
+  '/reflection-symmetry-grade-2', '/classify-triangles-grade-3',
 ];
 
 const PAGE_FILE = /\.(astro|ts|tsx|js|mjs)$/;

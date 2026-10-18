@@ -1,8 +1,8 @@
 # Topic-animation mapping audit — 2026-10-18
 
-265 topic mappings reviewed against the page lesson. The table records routing, not a claim that every frame of every film was visually reviewed. Existing films may illustrate one relevant example of a broader lesson. New lesson sequences keep all three worked steps visible, support pause and reduced motion, and avoid unrelated family fallbacks.
+265 topic mappings reviewed against the page lesson; 95 selections changed from the original baseline. The table records routing, not a claim that every frame of every film was visually reviewed. Existing films may illustrate one relevant example of a broader lesson. New lesson sequences keep all worked steps visible, support pause and reduced motion, and avoid unrelated family fallbacks.
 
-Includes the nine routing fixes from PR #168. No content JSON or worksheet links changed.
+Includes the nine routing fixes from PR #168. The three similarity variants are replaced with new proportional drawings, enlargement, area dissection and AA explanations. Topic FAQ level guidance and seven corrupted algebra paragraphs are corrected; worksheet links and PDFs are unchanged. See [review follow-up](topic-animation-review-20261018.md).
 
 | Grade | Topic | Previous animation | Selected animation |
 |---|---|---|---|
@@ -60,14 +60,14 @@ Includes the nine routing fixes from PR #168. No content JSON or worksheet links
 | 2 | word-problems-money-simple-grade-2 | concept-bars | concept-bars |
 | 3 | angles-types-grade-3 | angles | concept-angle-kinds |
 | 3 | build-decompose-shapes-grade-3 | concept-polygon | concept-polygon |
-| 3 | classify-triangles-grade-3 | triangles | concept-tri-sort |
+| 3 | classify-triangles-grade-3 | triangles | triangle-angles |
 | 3 | collecting-data-grade-3 | stats | read-bars |
 | 3 | column-addition-carrying-grade-3 | concept-baseten | concept-baseten |
 | 3 | column-subtraction-borrowing-grade-3 | baseten-sub | baseten-sub |
 | 3 | division-check-multiplication-grade-3 | concept-cookies | concept-share-12 |
 | 3 | division-inverse-multiplication-grade-3 | concept-cookies | concept-share-12 |
 | 3 | estimation-close-numbers-grade-3 | concept-numberline | concept-numberline |
-| 3 | lines-angles-shapes-grade-3 | angles | concept-angle-kinds |
+| 3 | lines-angles-shapes-grade-3 | angles | concept-para-perp |
 | 3 | measuring-length-cm-m-grade-3 | concept-ruler | concept-ruler |
 | 3 | money-grade-3 | concept-bars | concept-coins-12 |
 | 3 | multiplication-facts-arrays-grade-3 | concept-array | concept-array |
@@ -84,7 +84,7 @@ Includes the nine routing fixes from PR #168. No content JSON or worksheet links
 | 3 | unit-fractions-part-of-whole-grade-3 | concept-fraction | concept-fraction |
 | 3 | word-problems-grade-3 | concept-bars | concept-bars |
 | 4 | angle-types-grade-4 | angles | concept-angle-kinds |
-| 4 | angles-lines-plane-grade-4 | angles | concept-angle-kinds |
+| 4 | angles-lines-plane-grade-4 | angles | concept-para-perp |
 | 4 | area-perimeter-composite-grade-4 | area | concept-l-split |
 | 4 | area-perimeter-rectangle-grade-4 | area | concept-rect-count |
 | 4 | classify-triangles-grade-4 | triangles | concept-tri-sort |
@@ -95,7 +95,7 @@ Includes the nine routing fixes from PR #168. No content JSON or worksheet links
 | 4 | equivalent-fractions-grade-4 | concept-equiv-half | concept-equiv-half |
 | 4 | estimation-money-problems-grade-4 | concept-baseten | concept-baseten |
 | 4 | fraction-names-equivalent-grade-4 | concept-fraction | concept-fraction |
-| 4 | fractions-numberline-compare-grade-4 | concept-equiv-half | compare-fractions |
+| 4 | fractions-numberline-compare-grade-4 | concept-equiv-half | fraction-numberline |
 | 4 | grade-4-summary | concept-baseten | concept-baseten |
 | 4 | length-units-conversion-grade-4 | concept-ruler | concept-ruler |
 | 4 | long-division-remainder-grade-4 | concept-cookies | divide-remainder |
@@ -120,7 +120,7 @@ Includes the nine routing fixes from PR #168. No content JSON or worksheet links
 | 5 | big-numbers-rounding-grade-5 | concept-sticks | round-large |
 | 5 | build-classify-shapes-grade-5 | concept-polygon | concept-polygon |
 | 5 | common-denominator-grade-5 | concept-unit-frac | fraction-add |
-| 5 | compare-fractions-decimals-grade-5 | concept-equiv-half | compare-fractions |
+| 5 | compare-fractions-decimals-grade-5 | concept-equiv-half | fraction-decimal-compare |
 | 5 | completing-fractions-grade-5 | concept-unit-frac | fraction-complete |
 | 5 | composite-area-grade-5 | area | concept-l-split |
 | 5 | decimal-place-value-grade-5 | concept-tenth-cell | concept-tenth-cell |
@@ -128,7 +128,7 @@ Includes the nine routing fixes from PR #168. No content JSON or worksheet links
 | 5 | fraction-meaning-grade-5 | concept-fraction | concept-fraction |
 | 5 | fraction-of-quantity-grade-5 | concept-frac-product | fraction-count |
 | 5 | fractions-mixed-numbers-grade-5 | concept-unit-frac | mixed-number |
-| 5 | fractions-numberline-compare-grade-5 | concept-equiv-half | compare-fractions |
+| 5 | fractions-numberline-compare-grade-5 | concept-equiv-half | fraction-numberline |
 | 5 | frequency-chance-grade-5 | probability | probability |
 | 5 | long-division-grade-5 | concept-cookies | long-division |
 | 5 | mean-data-inquiry-grade-5 | stats | stats |
@@ -141,8 +141,8 @@ Includes the nine routing fixes from PR #168. No content JSON or worksheet links
 | 5 | prime-factors-grade-5 | concept-prime-rect | prime-factorization |
 | 5 | quadrilateral-diagonals-grade-5 | quads | concept-two-diag |
 | 5 | quadrilateral-family-grade-5 | quads | concept-quad-tree |
-| 5 | read-graphs-grade-5 | stats | read-bars |
-| 5 | read-tables-grade-5 | stats | read-bars |
+| 5 | read-graphs-grade-5 | stats | read-linegraph |
+| 5 | read-tables-grade-5 | stats | read-table |
 | 5 | transformations-grade-5 | transform | concept-transform |
 | 5 | triangle-area-grade-5 | concept-triangle | concept-triangle |
 | 5 | triangle-height-acute-right-grade-5 | concept-triangle | concept-triangle |
@@ -152,8 +152,8 @@ Includes the nine routing fixes from PR #168. No content JSON or worksheet links
 | 6 | box-volume-grade-6 | solids | solids |
 | 6 | boxes-nets-grade-6 | solids | box-net |
 | 6 | capacity-ml-l-m3-grade-6 | concept-ruler | capacity-units |
-| 6 | collect-represent-data-grade-6 | stats | read-bars |
-| 6 | compare-groups-conclusions-grade-6 | stats | read-bars |
+| 6 | collect-represent-data-grade-6 | stats | data-mean |
+| 6 | compare-groups-conclusions-grade-6 | stats | compare-groups |
 | 6 | divide-decimals-grade-6 | concept-tenth-cell | decimal-divide |
 | 6 | find-the-whole-grade-6 | percent | percent-whole |
 | 6 | fraction-decimal-percent-grade-6 | percent | percent |
@@ -245,7 +245,7 @@ Includes the nine routing fixes from PR #168. No content JSON or worksheet links
 | 9 | linear-function-grade-9 | linear | linear |
 | 9 | parallelogram-grade-9 | quads | quads |
 | 9 | parallelogram-trapezoid-area-grade-9 | concept-triangle | concept-trap-area |
-| 9 | precalculus-functions-graphs-grade-9 | parabola | parabola |
+| 9 | precalculus-functions-graphs-grade-9 | parabola | linear-table |
 | 9 | probability-grade-9 | probability | probability |
 | 9 | pythagoras-applications-grade-9 | concept-pythagoras | concept-pythagoras |
 | 9 | pythagoras-basics-grade-9 | concept-pythagoras | concept-pythagoras |

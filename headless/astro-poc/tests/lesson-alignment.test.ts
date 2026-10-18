@@ -2,8 +2,9 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { LESSON_LOOPS, LESSON_TOPIC_MAP, type Lesson } from '../src/lib/lessonLoops.ts';
 import { topicLandingLoop } from '../src/lib/landingLoops.ts';
-import { loadTopicPage, TOPIC_PAGE_SLUGS } from '../src/lib/topicPages.ts';
-import { lessonMathParts } from '../src/lib/lessonMath.ts';
+import { loadTopicPage, TOPIC_PAGE_SLUGS, synthesizeBodyFlow } from '../src/lib/topicPages.ts';
+import { textParts } from '../src/lib/topicText.ts';
+import { lessonMathParts, spokenLessonMath } from '../src/lib/lessonMath.ts';
 
 describe('lesson alignment regressions',()=>{
   it('renders every authored fraction as a numerator and denominator, preserving its surrounding expression',()=>{
@@ -72,4 +73,49 @@ describe('lesson alignment regressions',()=>{
     assert.match(l.steps[2].math,/x ≠ 3/);
     for(const x of [-2,0,2,4,7]) assert.equal((x*x-9)/(x-3),x+3);
   });
+});
+
+
+it('renders numeric, signed, algebraic and ratio fractions from every topic paragraph',()=>{
+  for(const slug of TOPIC_PAGE_SLUGS){
+    for(const b of synthesizeBodyFlow(loadTopicPage(slug))){
+      if(b.type!=='paragraph') continue;
+      for(const segment of textParts(b.text)){
+        const rendered = lessonMathParts(segment.text);
+        for(const part of rendered) if(typeof part==='string') {
+          assert.doesNotMatch(part,/[\dA-Za-z²)]\s*\/\s*[\dA-Za-z(−]/, `${slug}: ${part}`);
+        }
+      }
+    }
+  }
+  assert.deepEqual(lessonMathParts('(x²−4)/(x−2)'),[{numerator:'x²−4',denominator:'x−2'}]);
+  assert.deepEqual(lessonMathParts('AB/DE=2/3'),[{numerator:'AB',denominator:'DE'},'=',{numerator:'2',denominator:'3'}]);
+  assert.deepEqual(lessonMathParts('(−3)/(−4)'),[{numerator:'−3',denominator:'−4'}]);
+  assert.deepEqual(lessonMathParts('https://example.com/1/2'),['https://example.com/1/2']);
+  assert.match(spokenLessonMath('3/4'),/המונה 3, המכנה 4/);
+});
+it('describes A as regular, B as easier, excellence as harder in both visible and structured FAQ',()=>{
+  for(const slug of TOPIC_PAGE_SLUGS){
+    const p=loadTopicPage(slug);
+    const text=JSON.stringify([p.faq,p.faqGroups,p.jsonLd]);
+    assert.doesNotMatch(text,/רמה א׳ מתאימה לביסוס/);
+    for(const f of p.faq.filter(f=>f.question.includes('רמת תרגול'))){
+      assert.match(f.answer,/רמה א׳ היא רמת התרגול הרגילה/);
+      assert.match(f.answer,/רמה ב׳ קלה יותר/);
+    }
+  }
+});
+it('routes the reviewed topics to the actual concept being taught',()=>{
+  const expected={
+    'classify-triangles-grade-3':'triangle-angles','read-graphs-grade-5':'read-linegraph',
+    'read-tables-grade-5':'read-table','collect-represent-data-grade-6':'data-mean',
+    'compare-groups-conclusions-grade-6':'compare-groups','fractions-numberline-compare-grade-4':'fraction-numberline',
+    'fractions-numberline-compare-grade-5':'fraction-numberline','compare-fractions-decimals-grade-5':'fraction-decimal-compare',
+    'lines-angles-shapes-grade-3':'para-perp','angles-lines-plane-grade-4':'para-perp',
+    'precalculus-functions-graphs-grade-9':'linear-table',
+  };
+  for(const [slug,variant] of Object.entries(expected)){
+    const loop=topicLandingLoop(loadTopicPage(slug));
+    assert.ok(loop.kind!=='film' && loop.variant===variant,slug);
+  }
 });

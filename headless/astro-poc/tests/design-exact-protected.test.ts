@@ -45,7 +45,8 @@ const protectedFiles: Record<string, string> = {
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': 'f8a9bd34671e9231ba3a178c75bf49b134619b0453d1d71165f6cc6022f29530',
+  // PR169 review: honor OS reduced motion for every loop; drawings/timing unchanged.
+  'src/lib/conceptLoops.ts': 'c1ed05eb068b46f216ffd4de4bcab159e9cc620f30ff06a6e41bd3affdbd2552',
   'src/components/ConceptLoop.astro': 'aa73048b174d6d5cf1565b767b47749b044ee9370edd2b809b315fb6442fb566',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
