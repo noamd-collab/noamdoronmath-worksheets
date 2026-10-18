@@ -4,78 +4,81 @@ interface Props { variant: 'similar' | 'similar-area' | 'similar-aa' }
 const { variant } = Astro.props;
 const area = variant === 'similar-area';
 const initialPhase = area ? 3 : 0;
+const gridId = `similarity-${crypto.randomUUID()}`;
 ---
 <section class="similarity-film" data-similarity={variant} data-phase={initialPhase} data-beat="0" dir="rtl" aria-label="משפטי דמיון: ז.ז, צ.ז.צ, צ.צ.צ ויחס שטחים">
   <svg viewBox="0 0 360 280" role="img" aria-label="משולשים במנחים שונים. ז.ז: שתי זוויות מתאימות שוות. צ.ז.צ: שתי צלעות ביחס שווה והזווית שביניהן שווה. צ.צ.צ: שלוש צלעות ביחס שווה. לאחר הוכחת הדמיון, ההיקפים והקטעים המתאימים גדלים פי 2, והשטחים פי 4.">
     <g class="triangles-scene">
-      <path d="M35 125 L35 65 L115 125 Z" class="small-fill"/>
-      <path d="M195 45 L315 45 L195 205 Z" class="large-fill"/>
-      {area && <g class="area-tiles">
-        <path d="M195 45 H255 L195 125 Z" class="tile-one"/>
-        <path d="M255 45 H315 L255 125 Z" class="tile-two"/>
-        <path d="M195 125 H255 L195 205 Z" class="tile-three"/>
-        <path d="M255 45 V125 H195 Z" class="tile-four"/>
-      </g>}
-      <g transform="translate(35 125)" aria-hidden="true"><g class="growing-copy"><path d="M0 0 V-60 L80 0 Z"/></g></g>
-      <g class="side-lengths"><text x="17" y="102">3</text><text x="253" y="29">6</text><text x="78" y="151">4</text><text x="175" y="130">8</text><text x="91" y="87">5</text><text x="278" y="139">10</text></g>
-      <g class="angle-pair angle-right"><path d="M35 113 H47 V125 M195 59 H209 V45"/></g>
-      <g class="angle-pair angle-acute"><path d="M35 85 A20 20 0 0 0 51 77 M291 45 A24 24 0 0 0 300.6 64.2"/></g>
-      <g class="vertices"><text x="25" y="150">A</text><text x="30" y="49">B</text><text x="130" y="133">C</text><text x="180" y="32">D</text><text x="332" y="49">E</text><text x="190" y="230">F</text></g>
-      <g class="angle-equations"><text class="right-equation" x="95" y="265">∠A = ∠D</text><text class="acute-equation" x="265" y="265">∠B = ∠E</text></g>
+      <path d="M25 130 L63 71.212246 L123 130 Z" class="small-fill"/>
+      <path d="M190 35 L307.575508 111 L190 231 Z" class="large-fill"/>
+
+      <g transform="translate(25 130)" aria-hidden="true"><g class="growing-copy"><path d="M0 0 L38 -58.787754 L98 0 Z"/></g></g>
+      <g class="side-lengths"><text x="34" y="93">5</text><text x="256" y="60">10</text><text x="77" y="153">7</text><text x="170" y="137">14</text><text x="106" y="91">6</text><text x="272" y="186">12</text></g>
+      <g class="angle-pair angle-alpha"><path d="M33.142857 117.402624 A15 15 0 0 1 40 130 M206.796501 45.857143 A20 20 0 0 1 190 55"/><text x="49" y="121">α</text><text x="207" y="68">α</text></g>
+      <g class="angle-pair angle-beta"><path d="M74.428571 82.409914 A16 16 0 0 1 54.314286 84.649447 M292.178715 126.714286 A22 22 0 0 1 289.099356 99.057143"/><text x="66" y="101">β</text><text x="271" y="123">β</text></g>
+      <g class="vertices"><text x="17" y="152">A</text><text x="61" y="54">B</text><text x="138" y="137">C</text><text x="180" y="24">D</text><text x="326" y="112">E</text><text x="185" y="252">F</text></g>
+      <g class="angle-equations"><text class="alpha-equation" x="95" y="274">α = α</text><text class="beta-equation" x="265" y="274">β = β</text></g>
       <g class="matching-sides" fill="none">
-        <path class="match-leg first-leg" d="M35 125 L35 65 M195 45 L315 45"/>
-        <path class="match-leg second-leg" d="M35 125 L115 125 M195 45 L195 205"/>
-        <path class="match-leg third-leg" d="M35 65 L115 125 M315 45 L195 205"/>
+        <path class="match-leg first-leg" d="M25 130 L63 71.212246 M190 35 L307.575508 111"/>
+        <path class="match-leg second-leg" d="M25 130 L123 130 M190 35 L190 231"/>
+        <path class="match-leg third-leg" d="M63 71.212246 L123 130 M307.575508 111 L190 231"/>
       </g>
       <g class="perimeters" fill="none">
-        <path class="perimeter" pathLength="1" d="M35 125 L35 65 L115 125 Z"/>
-        <path class="perimeter" pathLength="1" d="M195 45 L315 45 L195 205 Z"/>
-        <text x="76" y="204">P = 12</text><text x="260" y="233">P = 24</text>
+        <path class="perimeter" pathLength="1" d="M25 130 L63 71.212246 L123 130 Z"/>
+        <path class="perimeter" pathLength="1" d="M190 35 L307.575508 111 L190 231 Z"/>
+        <text x="76" y="204">P = 18</text><text x="260" y="233">P = 36</text>
       </g>
       <g class="construction height-pair">
-        <path class="segment" d="M35 125 L63.8 86.6 M195 45 L271.8 102.6"/>
-        <path class="construction-mark" d="M57.4 81.8 L52.6 88.2 L59 93 M281.4 89.8 L268.6 80.2 L259 93"/>
-        <text x="95" y="265">h</text><text x="265" y="265">2h</text>
+        <path class="segment" d="M25 130 L73 81.010205 M190 35 L287.97959 131"/>
+        <path class="construction-mark" d="M68 76.111226 L63.101021 81.111226 L68.101021 86.010205 M297.777549 121 L287.777549 111.202041 L277.97959 121.202041"/>
+        <text x="95" y="274">h</text><text x="265" y="274">2h</text>
       </g>
       <g class="construction bisector-pair">
-        <path class="segment" d="M35 125 L69.285714 90.714286 M195 45 L263.571428 113.571428"/>
-        <path class="construction-mark" d="M35 107 A18 18 0 0 1 47.7279 112.2721 M50.5563 109.4437 A22 22 0 0 1 57 125 M219 45 A24 24 0 0 1 211.9706 61.9706 M214.799 64.799 A28 28 0 0 1 195 73"/>
-        <text x="95" y="265">b</text><text x="265" y="265">2b</text>
+        <path class="segment" d="M25 130 L88 95.707144 M190 35 L258.585713 161"/>
+        <path class="construction-mark" d="M32.057143 119.082274 A13 13 0 0 1 36.418031 123.784811 M39.931271 121.872445 A17 17 0 0 1 42 130 M205.956676 45.314286 A19 19 0 0 1 199.083737 51.687891 M200.996103 55.201132 A23 23 0 0 1 190 58"/>
+        <text x="95" y="274">b</text><text x="265" y="274">2b</text>
       </g>
       <g class="construction median-pair">
-        <path class="segment" d="M35 125 L75 95 M195 45 L255 125"/>
-        <path class="construction-mark" d="M52 84 L58 76 M92 114 L98 106 M277 79 L293 91 M217 159 L233 171"/>
-        <circle cx="75" cy="95" r="3"/><circle cx="255" cy="125" r="3"/>
-        <text x="95" y="265">m</text><text x="265" y="265">2m</text>
+        <path class="segment" d="M25 130 L93 100.606123 M190 35 L248.787754 171"/>
+        <path class="construction-mark" d="M80.799417 83.052042 L75.200583 88.766327 M110.799417 112.445919 L105.200583 118.160204 M283.895916 146.598834 L272.467345 135.401166 M225.108163 206.598834 L213.679591 195.401166"/><circle cx="93" cy="100.606123" r="3"/><circle cx="248.787754" cy="171" r="3"/>
+        <text x="95" y="274">m</text><text x="265" y="274">2m</text>
       </g>
     </g>
+    <defs>
+      <pattern id={`${gridId}-small`} class="square-unit-pattern" width="14" height="14" x="25" y="130" patternUnits="userSpaceOnUse"><path d="M14 0 H0 V14" class="grid-line"/></pattern>
+      <pattern id={`${gridId}-large`} class="square-unit-pattern" width="14" height="14" x="190" y="35" patternUnits="userSpaceOnUse"><path d="M14 0 H0 V14" class="grid-line"/></pattern>
+      <pattern id={`${gridId}-moving`} width="14" height="14" patternUnits="userSpaceOnUse"><path d="M14 0 H0 V14" class="grid-line"/></pattern>
+    </defs>
     <g class="area-scene">
-      <rect class="unit-original" x="42" y="105" width="48" height="48"/>
-      <rect class="unit-target" x="214" y="76" width="96" height="96"/>
+      <path d="M25 130 L63 71.212246 L123 130 Z" class="area-small"/>
+      <path d="M25 130 L63 71.212246 L123 130 Z" class="triangle-unit-grid" fill={`url(#${gridId}-small)`}/>
+      <path d="M190 35 L307.575508 111 L190 231 Z" class="area-large"/>
       <g class="unit-grid">
-        <rect class="unit-cell" x="214" y="76" width="48" height="48"/>
-        <rect class="unit-cell" x="262" y="76" width="48" height="48"/>
-        <rect class="unit-cell" x="214" y="124" width="48" height="48"/>
-        <rect class="unit-cell" x="262" y="124" width="48" height="48"/>
-        <text x="238" y="108">1</text><text x="286" y="108">2</text><text x="238" y="156">3</text><text x="286" y="156">4</text>
+        <path d="M190 35 L307.575508 111 L190 231 Z" class="triangle-unit-grid" fill={`url(#${gridId}-large)`}/>
+        <rect class="unit-cell" x="218" y="119" width="14" height="14"/>
+        <rect class="unit-cell" x="232" y="119" width="14" height="14"/>
+        <rect class="unit-cell" x="218" y="133" width="14" height="14"/>
+        <rect class="unit-cell" x="232" y="133" width="14" height="14"/>
       </g>
-      <g transform="translate(42 105)" aria-hidden="true"><rect class="unit-growing" width="48" height="48"/></g>
-      <path class="unit-arrow" d="M112 129 H184 M175 122 L184 129 L175 136"/>
-      <text x="148" y="113">×2</text>
-      <path class="measure" d="M214 65 V57 M214 61 H310 M310 57 V65 M319 76 H327 M323 76 V172 M319 172 H327"/>
-      <text x="66" y="179">1</text><text x="262" y="49">2</text><text x="342" y="133">2</text>
-      <text class="area-total" x="66" y="227">1</text><text class="area-total" x="262" y="227">2² = 4</text>
+      <rect class="unit-original" x="67" y="102" width="14" height="14"/>
+      <g transform="translate(25 130)" aria-hidden="true"><g class="area-growing">
+        <path d="M0 0 L38 -58.787754 L98 0 Z" class="moving-triangle"/>
+        <path d="M0 0 L38 -58.787754 L98 0 Z" fill={`url(#${gridId}-moving)`}/>
+        <rect class="moving-unit" x="42" y="-28" width="14" height="14"/>
+      </g></g>
+      <text x="74" y="160">1 × 1</text>
+      <text class="area-total" x="75" y="209">S</text><text class="area-total" x="265" y="258">4S</text>
     </g>
   </svg>
   <div class="scene-caption">
     <p class="caption-0">שתי זוויות שוות · אותה צורה בכל מנח</p>
     <p class="caption-1"><span class="proof-label">שתי צלעות באותו יחס · הזווית שביניהן שווה</span><span class="result-label">גם ההיקף גדל פי 2</span></p>
     <p class="caption-2"><span class="proof-label">שלוש צלעות · אותו יחס</span><span class="height-label">גבהים מתאימים · אותו יחס</span><span class="bisector-label">חוצי זוויות מתאימים · אותו יחס</span><span class="median-label">תיכונים מתאימים · אותו יחס</span></p>
-    <p class="caption-3">פי 2 בכל כיוון · פי 4 בשטח</p>
+    <p class="caption-3">כל משבצת: 1×1 · פי 4 בשטח</p>
     <div class="formula formula-0"><LessonMath value="△ABC ∼ △DEF"/></div>
-    <div class="formula formula-1"><span class="proof-label"><LessonMath value="6/3 = 8/4 = 2"/></span><span class="result-label"><LessonMath value="24/12 = 2"/></span></div>
-    <div class="formula formula-2"><span class="proof-label"><LessonMath value="6/3 = 8/4 = 10/5 = 2"/></span><span class="height-label"><LessonMath value="2h/h = 2"/></span><span class="bisector-label"><LessonMath value="2b/b = 2"/></span><span class="median-label"><LessonMath value="2m/m = 2"/></span></div>
-    <div class="formula formula-3"><LessonMath value="2 × 2 = 2² = 4"/></div>
+    <div class="formula formula-1"><span class="proof-label"><LessonMath value="10/5 = 14/7 = 2"/></span><span class="result-label"><LessonMath value="36/18 = 2"/></span></div>
+    <div class="formula formula-2"><span class="proof-label"><LessonMath value="10/5 = 14/7 = 12/6 = 2"/></span><span class="height-label"><LessonMath value="2h/h = 2"/></span><span class="bisector-label"><LessonMath value="2b/b = 2"/></span><span class="median-label"><LessonMath value="2m/m = 2"/></span></div>
+    <div class="formula formula-3"><LessonMath value="4S/S = 2² = 4"/></div>
   </div>
   <div class="construction-controls" role="group" aria-label="בחירת קטעים מתאימים במשולשים">
     {['גובה','חוצה זווית','תיכון'].map((label,i)=><button type="button" data-construction={i+1} aria-pressed="false" disabled>{label}</button>)}
@@ -153,22 +156,24 @@ const initialPhase = area ? 3 : 0;
   .growing-copy path{fill:#65b4a63b;stroke:#14635b;stroke-width:2.5;}
   [data-phase='0'][data-ready] .growing-copy{animation:rotate-enlarge 10s ease-in-out both;}
   .angle-pair{fill:none;stroke-width:3;}
-  .angle-right{stroke:#14635b;}.angle-acute{stroke:#a44716;}
-  [data-phase='0'][data-ready] .angle-right,[data-phase='0'][data-ready] .right-equation{animation:right-focus 10s ease-in-out both;}
-  [data-phase='0'][data-ready] .angle-acute,[data-phase='0'][data-ready] .acute-equation{animation:acute-focus 10s ease-in-out both;}
-  .right-equation{fill:#14635b;}.acute-equation{fill:#a44716;}
-  .area-tiles path{stroke:#22305a;stroke-width:1;}
-  .tile-one{fill:#b7dfd2;}.tile-two{fill:#f7d489;}.tile-three{fill:#b9c9e9;}.tile-four{fill:#efb9a8;}
+  .angle-pair text{font-size:16px;stroke-width:2px;fill:currentColor;}
+  .angle-alpha{color:#14635b;stroke:#14635b;}.angle-beta{color:#a44716;stroke:#a44716;}
+  [data-phase='0'][data-ready] .angle-alpha,[data-phase='0'][data-ready] .alpha-equation{animation:alpha-focus 10s ease-in-out both;}
+  [data-phase='0'][data-ready] .angle-beta,[data-phase='0'][data-ready] .beta-equation{animation:beta-focus 10s ease-in-out both;}
+  .alpha-equation{fill:#14635b;}.beta-equation{fill:#a44716;}
   .area-scene,.angle-equations,[data-phase='0'] .side-lengths{display:none;}
   [data-phase='0'] .angle-equations,[data-phase='3'] .area-scene{display:inline;}
   [data-phase='3'] .triangles-scene{display:none;}
-  .unit-original,.unit-target,.unit-cell{fill:#b7dfd2;stroke:#22305a;stroke-width:1.5;}
-  .unit-target{fill:none;stroke:#9da9b9;stroke-dasharray:3 4;}
-  .unit-cell:nth-child(2){fill:#f7d489;}.unit-cell:nth-child(3){fill:#b9c9e9;}.unit-cell:nth-child(4){fill:#efb9a8;}
-  .unit-growing{fill:#b7dfd2;stroke:#14635b;stroke-width:2;transform-box:view-box;transform-origin:0 0;opacity:0;}
-  [data-phase='3'][data-ready] .unit-growing{animation:square-grow 10s ease-in-out both;}
+  .area-small,.area-large{fill:#e7f3ed;stroke:#22305a;stroke-width:2;}
+  .area-large{fill:#fff3d6;}
+  .grid-line{fill:none;stroke:#608b83;stroke-width:1;}
+  .triangle-unit-grid{stroke:#22305a;stroke-width:2;}
+  .unit-original,.unit-cell,.moving-unit{fill:#7bb9a8;stroke:#22305a;stroke-width:1;}
+  .unit-cell:nth-of-type(2){fill:#f7d489;}.unit-cell:nth-of-type(3){fill:#b9c9e9;}.unit-cell:nth-of-type(4){fill:#efb9a8;}
+  .area-growing{transform-box:view-box;transform-origin:0 0;opacity:0;}
+  .moving-triangle{fill:#dceee8;stroke:#14635b;stroke-width:2;}
+  [data-phase='3'][data-ready] .area-growing{animation:triangle-area-grow 10s ease-in-out both;}
   [data-phase='3'][data-ready] .unit-grid{animation:reveal-grid 10s ease-in-out both;}
-  .unit-arrow,.measure{fill:none;stroke:#22305a;stroke-width:1.5;}
   .area-total{font-size:24px;}
   .scene-caption{min-height:82px;display:grid;align-content:center;text-align:center;}
   .scene-caption p{font-size:15px;line-height:1.5;margin:0 0 8px;}
@@ -188,10 +193,10 @@ const initialPhase = area ? 3 : 0;
   .chapters button:focus-visible{outline:3px solid #e6a534;outline-offset:2px;}
   .chapters span{position:absolute;bottom:0;right:0;height:3px;background:#1e605e;width:100%;transform:scaleX(0);transform-origin:right;}
   .chapters [aria-pressed='true'] span{transform:scaleX(var(--progress));}
-  @keyframes rotate-enlarge{0%,5%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}12%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}32%{transform:translate(0,0) rotate(90deg) scale(1);opacity:1;}70%,88%{transform:translate(160px,-80px) rotate(90deg) scale(2);opacity:1;}100%{transform:translate(160px,-80px) rotate(90deg) scale(2);opacity:0;}}
-  @keyframes right-focus{0%,45%,100%{opacity:1;stroke-width:5;}55%,85%{opacity:.5;stroke-width:3;}}
-  @keyframes acute-focus{0%,40%{opacity:.5;stroke-width:3;}50%,100%{opacity:1;stroke-width:5;}}
-  @keyframes square-grow{0%,8%{transform:translate(0,0) scale(1);opacity:0;}15%{transform:translate(0,0) scale(1);opacity:1;}55%,65%{transform:translate(172px,-29px) scale(2);opacity:1;}75%,100%{transform:translate(172px,-29px) scale(2);opacity:0;}}
+  @keyframes rotate-enlarge{0%,5%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}12%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}32%{transform:translate(0,0) rotate(90deg) scale(1);opacity:1;}70%,88%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:1;}100%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:0;}}
+  @keyframes alpha-focus{0%,45%,100%{opacity:1;stroke-width:5;}55%,85%{opacity:.5;stroke-width:3;}}
+  @keyframes beta-focus{0%,40%{opacity:.5;stroke-width:3;}50%,100%{opacity:1;stroke-width:5;}}
+  @keyframes triangle-area-grow{0%,8%{transform:translate(0,0) rotate(0deg) scale(1);opacity:0;}15%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}55%,65%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:1;}75%,100%{transform:translate(165px,-95px) rotate(90deg) scale(2);opacity:0;}}
   @keyframes reveal-grid{0%,60%{opacity:0;}75%,100%{opacity:1;}}
   .matching-sides,.perimeters,.construction{display:none;}
   .match-leg{stroke-width:4;stroke:#14635b;}
@@ -201,8 +206,8 @@ const initialPhase = area ? 3 : 0;
   @keyframes draw-side{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
   .second-leg{stroke:#a44716;}.third-leg{stroke:#5d54a4;}
   [data-phase='1'] .matching-sides,[data-phase='2'][data-beat='0'] .matching-sides{display:inline;}
-  [data-phase='1'] .third-leg,[data-phase='1'] .angle-acute,[data-phase='2'] .angle-pair{display:none;}
-  [data-phase='1'] .angle-right{stroke-width:5;}
+  [data-phase='1'] .third-leg,[data-phase='1'] .angle-beta,[data-phase='2'] .angle-pair{display:none;}
+  [data-phase='1'] .angle-alpha{stroke-width:5;}
   [data-phase='1']:not([data-beat='0']) .matching-sides{display:none;}
   [data-phase='1']:not([data-beat='0']) .perimeters{display:inline;}
   .perimeter{stroke:#14635b;stroke-width:4;stroke-dasharray:1;}
@@ -221,6 +226,6 @@ const initialPhase = area ? 3 : 0;
   [data-phase='1']:not([data-beat='0']) .result-label,[data-phase='2'][data-beat='1'] .height-label,[data-phase='2'][data-beat='2'] .bisector-label,[data-phase='2'][data-beat='3'] .median-label{display:inline;}
   [data-inspect] *{animation:none!important;}
   [data-hidden] *{animation-play-state:paused!important;}
-  @media(prefers-reduced-motion:reduce){*{animation:none!important;}.growing-copy,.unit-growing{display:none;}.unit-grid{opacity:1;}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;}.growing-copy,.area-growing{display:none;}.unit-grid{opacity:1;}}
   :global(html.nd-motion-off) *, :global(html.noam-a11y-motion) *, :global(html.noam-a11y-no-motion) *{animation:none!important;}
 </style>
