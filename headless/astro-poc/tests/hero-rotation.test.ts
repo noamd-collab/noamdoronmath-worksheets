@@ -3,7 +3,7 @@
  * Source and data checks only — the browser check is the preview.
  */
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -24,7 +24,7 @@ import {
   heroRotationVariant,
   type HeroRotationHost,
 } from '../src/lib/heroRotation.ts';
-import { loadTopicPage } from '../src/lib/topicPages.ts';
+import { TOPIC_PAGE_SLUGS, loadTopicPage } from '../src/lib/topicPages.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file: string) => readFileSync(join(root, file), 'utf8');
@@ -36,6 +36,24 @@ function heroPool(): string[] {
   assert.ok(block);
   assert.ok(extra);
   return [...`${block[1]}\n${extra[1]}`.matchAll(/'([a-z0-9-]+)'/g)].map((match) => match[1]);
+}
+
+/**
+ * Audit comment 6251087305 partitions topic pages into MATCH and the three
+ * lists in the fixture. The 174-row MATCH table is only in REPORT.md.
+ * 163 MATCH topic pages = every served topic slug outside those lists.
+ */
+function auditMatchSlugs(): Set<string> {
+  const audit = JSON.parse(read('tests/fixtures/audit-6251087305-non-match.json')) as {
+    wrong_topic: string[];
+    wrong_grade: string[];
+    generic_thin: string[];
+  };
+  const excluded = new Set([...audit.wrong_topic, ...audit.wrong_grade, ...audit.generic_thin]);
+  assert.equal(excluded.size, 102);
+  const match = new Set(TOPIC_PAGE_SLUGS.filter((slug) => !excluded.has(slug)));
+  assert.equal(match.size, 163);
+  return match;
 }
 
 function specsKeys(): Set<string> {
@@ -59,7 +77,7 @@ describe('home hero rotation', () => {
   });
 
   it('rotates existing loops across grades, each with a real topic page', () => {
-    assert.ok(HERO_ROTATION.length > 12, 'the pool is wider than the old fixed nine');
+    assert.equal(HERO_ROTATION.length, 57);
     assert.equal(new Set(HERO_ROTATION.map((entry) => entry.variant)).size, HERO_ROTATION.length);
     const grades = new Set(HERO_ROTATION.map((entry) => entry.gradeNum));
     for (const grade of [1, 2, 3, 4, 5, 6, 7, 8, 9]) assert.ok(grades.has(grade), `grade ${grade}`);
@@ -68,7 +86,21 @@ describe('home hero rotation', () => {
     assert.equal(hrefOf('fraction-division-meaning-grade-6'), '/fraction-division-meaning-grade-6');
     assert.equal(hrefOf('grade-4-summary'), '/grade-4-summary');
     assert.equal(hrefOf('measurement-geometry-synthesis-grade-6'), '/measurement-geometry-synthesis-grade-6');
-    assert.equal(hrefOf('kite-construct'), '/kite-grade-9');
+    // Re-add once PR 169 mounts the matching film. Audit comment 6251087305
+    // marks these pages WRONG-TOPIC, WRONG-GRADE, or GENERIC on main.
+    const heldForPr169: Array<[string, string]> = [
+      ['birds-sub', '/subtraction-to-10-grade-1'],
+      ['neighbors', '/number-neighbors-grade-1'],
+      ['place-123', '/hundreds-tens-ones-grade-2'],
+      ['odd-pair', '/even-odd-sequences-a-grade-2'],
+      ['coins-12', '/money-grade-3'],
+      ['two-diag', '/quadrilateral-diagonals-grade-5'],
+    ];
+    for (const [variant, href] of heldForPr169) {
+      assert.equal(hrefOf(variant), undefined, `${variant} stays out until PR 169`);
+      assert.equal(HERO_ROTATION.some((entry) => entry.href === href), false, href);
+    }
+    assert.equal(hrefOf('kite-construct'), undefined, '100 s kite film cannot play in full');
     const blocked: Array<[string, string]> = [
       ['tenframes', '/subtraction-to-10-grade-1'],
       ['area-model', '/algebraic-fractions-grade-9'],
@@ -94,7 +126,10 @@ describe('home hero rotation', () => {
       assert.equal(heroChip(entry), `כיתה ${entry.grade} · ${entry.label}`);
       assert.equal(entry.label.includes('/'), false, `${entry.variant}: a fraction in a chip uses a fraction bar, not a slash`);
       assert.match(entry.href, /^\/[a-z0-9-]+$/);
-      assert.equal(loadTopicPage(entry.href.slice(1)).slug, entry.href.slice(1));
+      const slug = entry.href.slice(1);
+      assert.equal(existsSync(join(root, 'src/pages', `${slug}.astro`)), true, `${slug} page`);
+      assert.equal(loadTopicPage(slug).slug, slug);
+      assert.equal(auditMatchSlugs().has(slug), true, `${slug} is not in the audit MATCH set`);
       assert.equal(heroRotationVariant(entry.variant), entry.variant);
     }
     assert.equal(heroRotationVariant('not-a-loop'), undefined);
@@ -131,18 +166,12 @@ describe('home hero rotation', () => {
       assert.ok(duration > 0, `${variant}: topic film duration`);
       return duration;
     };
-    const kiteS = () => {
-      const area = Number(engine.match(/const KITE_AREA_END = (\d+)/)?.[1]);
-      const build = Number(engine.match(/const KITE_BUILD = (\d+)/)?.[1]);
-      return area + build;
-    };
+    assert.equal(Object.keys(HERO_PLAY_S).length, HERO_ROTATION.length);
     for (const entry of HERO_ROTATION) {
       const playS = HERO_PLAY_S[entry.variant];
       assert.equal(typeof playS, 'number', `${entry.variant}: missing play length`);
       if (entry.variant === 'angle-sum') {
         assert.equal(playS, filmDuration);
-      } else if (entry.variant === 'kite-construct') {
-        assert.equal(playS, kiteS());
       } else if (entry.variant.includes('grade-')) {
         assert.equal(playS, topicFilmS(entry.variant), `${entry.variant}: play length drifted from the film`);
       } else {
@@ -150,16 +179,11 @@ describe('home hero rotation', () => {
         assert.ok(row, `${entry.variant}: duration missing from the engine`);
         assert.equal(playS, Number(row[1]), `${entry.variant}: play length drifted from the film`);
       }
-      const dwell = heroDwellMs(playS);
-      assert.ok(dwell >= HERO_DWELL_MIN_MS && dwell <= HERO_DWELL_CAP_MS);
       const raw = Math.round(playS * 1000);
-      if (raw >= HERO_DWELL_MIN_MS && raw <= HERO_DWELL_CAP_MS) {
-        assert.equal(dwell, raw, `${entry.variant}: one play inside 8–25 s is not shortened or stretched`);
-      } else {
-        assert.equal(dwell, raw > HERO_DWELL_CAP_MS ? HERO_DWELL_CAP_MS : HERO_DWELL_MIN_MS);
-      }
+      assert.ok(raw <= HERO_DWELL_CAP_MS, `${entry.variant}: ${playS}s is longer than the homepage cap`);
+      assert.ok(raw >= HERO_DWELL_MIN_MS, `${entry.variant}: ${playS}s is shorter than one readable play`);
+      assert.equal(heroDwellMs(playS), raw, `${entry.variant}: the homepage must play the film in full`);
     }
-    assert.equal(heroDwellMs(HERO_PLAY_S['kite-construct']), HERO_DWELL_CAP_MS);
     assert.equal(heroDwellMs(HERO_PLAY_S['diff-sq']), 22_000);
     assert.equal(heroDwellMs(5), HERO_DWELL_MIN_MS);
     assert.equal(heroDwellMs(40), HERO_DWELL_CAP_MS);
