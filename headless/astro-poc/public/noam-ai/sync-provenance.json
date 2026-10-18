@@ -7,12 +7,12 @@
     "note": "Canonical bytes live in the repo; GitHub Pages serves the same tree. PDFs stay on Wix Media."
   },
   "selection": {
-    "rule": "catalog.v1.json topics with routing.usesViewer (+ siblingPdfQuery)",
+    "rule": "catalog.v1.json topics with routing.usesViewer (+ siblingPdfQuery) + hidden-practice.v1.json sheets",
     "catalogPath": "src/data/catalog.v1.json",
-    "count": 454
+    "count": 456
   },
-  "generatedAt": "2026-10-12T13:58:07.551Z",
-  "aggregateSha256": "df6595a70273eb1c186f8cc33d73dd28fb78fd2b7265ba3aebbbe7b43f89eed2",
+  "generatedAt": "2026-10-18T19:21:57.555Z",
+  "aggregateSha256": "ded50d9b695b6f08cb37e66215a92dd9d44b8d1cfa25aa53397a58f9b489b7c2",
   "files": {
     "013ccbb6896d486090482c2b548fef6c": {
       "source": "noam-ai/manifests/013ccbb6896d486090482c2b548fef6c.json",
@@ -1109,6 +1109,11 @@
       "sha256": "a51f9476b47928f6d3681c8447ba2a1cf961f8a0552bfc56e7c37d7d45a58410",
       "bytes": 56542
     },
+    "7b44434fc6e34f169012b46fca46b28e": {
+      "source": "noam-ai/manifests/7b44434fc6e34f169012b46fca46b28e.json",
+      "sha256": "1cfd31abba4c771115409337ce6e75426c3bc515ea4abb27db5895b32b1714dd",
+      "bytes": 50516
+    },
     "7c31b866f23f4d6981ed30a636388c06": {
       "source": "noam-ai/manifests/7c31b866f23f4d6981ed30a636388c06.json",
       "sha256": "9ed6f702e44663098219074edcf8eb3e377ebf2c261cc7565609eb9f0d2a889f",
@@ -1653,6 +1658,11 @@
       "source": "noam-ai/manifests/be4ba56a773c4b4a90348ab2c234fefb.json",
       "sha256": "1c5f1d3d6e8fe37fea7be41a7ee595ca2a780002f91e1be3adb8dd95484f23d3",
       "bytes": 62498
+    },
+    "be4c76ca42ca4dde9dfe26592b353a9f": {
+      "source": "noam-ai/manifests/be4c76ca42ca4dde9dfe26592b353a9f.json",
+      "sha256": "f9eea14335053fb93482c9cff27ab004e0edf0010ad8e5a37353fb8a29d0834e",
+      "bytes": 32620
     },
     "bea3993e136246edaffb14a03e469c31": {
       "source": "noam-ai/manifests/bea3993e136246edaffb14a03e469c31.json",
