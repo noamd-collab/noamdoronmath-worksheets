@@ -239,6 +239,11 @@
   font: 700 19px/1.35 Heebo, 'Heebo Fallback', sans-serif;
   color: #22305a;
 }
+.exact-catalog .exact-card-heading h3 a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
 .exact-catalog .exact-topic-code {
   padding: 2px 8px;
   border-radius: 8px;
@@ -338,4 +343,13 @@ html.nd-motion-off .exact-catalog .card,
 html.noam-a11y-motion .exact-catalog .card { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .exact-catalog .card { transition: none; }
+}
+
+@media (max-width: 600px) {
+  .exact-catalog .exact-catalog-fish {
+    position: static;
+    width: 80px;
+    margin-right: auto;
+    margin-bottom: 8px;
+  }
 }

@@ -21,7 +21,7 @@ test("every linked middle-school PDF has a usable matching Noam AI manifest", ()
     for (const topic of data.topics) {
       const prefix = topic.x || (context.NOAM_PREFIX_FALLBACK[grade] || {})[topic.id];
       for (const [level, pdf] of Object.entries(data.links[topic.id])) {
-        if (!["a", "b", "c", "one"].includes(level)) continue;
+        if (!["a", "b", "c", "c2", "one"].includes(level)) continue;
         const label = `${grade}/${topic.id}/${level}`;
         const manifestPath = path.join(root, "noam-ai", "manifests", pdf + ".json");
         assert.ok(fs.existsSync(manifestPath), `Missing AI map for ${label}: ${pdf}`);
@@ -29,7 +29,7 @@ test("every linked middle-school PDF has a usable matching Noam AI manifest", ()
         assert.equal(manifest.pdfHash, pdf, label);
         assert.equal(manifest.grade, grade, label);
         assert.equal(manifest.prefix, prefix, label);
-        assert.equal(manifest.levelCode, level === "a" ? "A" : level === "c" ? "E" : "B", label);
+        assert.equal(manifest.levelCode, { a: "A", b: "B", c: "E", c2: "E2", one: "B" }[level], label);
         assert.ok(manifest.pageCount > 0, label);
         assert.ok(manifest.exercises.length > 0, `Empty AI map: ${label}`);
         assert.equal(new Set(manifest.exercises.map(e => e.id)).size, manifest.exercises.length, label);
@@ -47,5 +47,5 @@ test("every linked middle-school PDF has a usable matching Noam AI manifest", ()
       }
     }
   }
-  assert.equal(count, 449, "Middle-school coverage changed");
+  assert.equal(count, 454, "Middle-school coverage changed");
 });

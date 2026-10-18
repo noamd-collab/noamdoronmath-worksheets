@@ -3,9 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
+import LandingLoop from './LandingLoop.astro';
+import DistancePointsLoop from './DistancePointsLoop.astro';
+import TriangleAngleSumLoop from './TriangleAngleSumLoop.astro';
+import ParallelCointeriorLoop from './ParallelCointeriorLoop.astro';
 import { loadCatalog } from '../lib/catalog/loadCatalog';
 import { buildWorksheetHref } from '../lib/worksheetLinks';
-import topicFamilies from '../data/topicFamilies.json';
+import { topicLandingLoop } from '../lib/landingLoops';
 import {
   loadTopicPage,
   synthesizeBodyFlow,
@@ -32,6 +36,25 @@ const beforeUpdateCount =
 const faqBeforeUpdate = page.faqGroups.slice(0, beforeUpdateCount);
 const faqAfterUpdate = page.faqGroups.slice(beforeUpdateCount);
 const bodyFlow: TopicBodyFlowItem[] = synthesizeBodyFlow(page);
+
+const LRI = '\u2066';
+const PDI = '\u2069';
+const NOWRAP_MATH = new Set(['S = (d1 · d2) : 2', '(6 · 8) : 2 = 24', '(10 · 6) : 2 = 30']);
+
+/** Keep a whole formula on one line. The isolate stays inside the span. */
+function textParts(text: string): { text: string; nowrap: boolean }[] {
+  const parts: { text: string; nowrap: boolean }[] = [];
+  const re = new RegExp(`${LRI}([^${PDI}]*)${PDI}`, 'g');
+  let last = 0;
+  for (const match of text.matchAll(re)) {
+    const index = match.index ?? 0;
+    if (index > last) parts.push({ text: text.slice(last, index), nowrap: false });
+    parts.push({ text: match[0], nowrap: NOWRAP_MATH.has(match[1] ?? '') });
+    last = index + match[0].length;
+  }
+  if (last < text.length || parts.length === 0) parts.push({ text: text.slice(last), nowrap: false });
+  return parts;
+}
 
 /** Group flow so H2 sections nest following paragraphs/lists; CTAs stay ordered siblings. */
 type BodyUnit =
@@ -86,42 +109,29 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
   ? `כיתה ${gradeHubLabel(page.grade)}`
   : `כיתה ${page.grade}`;
 
-/* FAMILIES-B1: every topic page in a family that has a loop shows it in a
-   card beside the intro text. Family comes from topicFamilies.json via the
-   page's own catalog topic id (g{grade}-t{id}). triangle-area-grade-7 keeps
-   its hands-on explorer instead. */
-/* F07–F14 loop variants exist in ConceptLoop/conceptLoops and /dev-loops (QA),
-   but are NOT mounted on topic pages — they replaced the quiet doodle/LineArt
-   intro look with thin film cards (KIMI-ANIM-6 regression). Keep F01–F06 +
-   F21/F26/F38 only, matching pre-#13 TopicPage wiring. */
-const FAMILY_LOOP = {
-  F01: 'sticks',
-  F02: 'numberline',
-  F03: 'tenframes',
-  F04: 'balance',
-  F05: 'pattern',
-  F06: 'bars',
-  F21: 'area-model',
-  F26: 'triangle',
-  F38: 'pythagoras',
-} as const;
-const topicId = page.catalogCta?.catalogTopicId ?? null;
-const family =
-  topicId != null
-    ? (topicFamilies as Record<string, string>)[`g${page.grade}-t${topicId}`]
-    : undefined;
-const loopVariant =
-  slug !== 'triangle-area-grade-7' && family
-    ? FAMILY_LOOP[family as keyof typeof FAMILY_LOOP]
-    : undefined;
-// Keep the existing instructional engine. Only its placement and surrounding
-// presentation change to the supplied topic screen; no demo data is imported.
-const hasDemo = !!loopVariant || slug === 'triangle-area-grade-7';
+/* FAMILIES-B1: a family ConceptLoop (F01–F06, F21, F26, F38) stays in the
+   card beside the intro. Other families get a CSS LandingLoop. F07–F14 film
+   variants stay off topic pages (KIMI-ANIM-6). triangle-area-grade-7 keeps
+   its explorer and also gets a CSS loop — the explorer glides once.
+   analytic-geometry-grade-9 mounts DistancePointsLoop in this same slot.
+   triangle-quadrilateral-angle-sum-grade-7 mounts the provided HTML film
+   (its own controls and angle readouts stay inside the iframe).
+   parallel-lines-angles-grade-8 mounts the co-interior angles film. */
+const landingLoop = topicLandingLoop(page);
+const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
+const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
+const filmLoop = landingLoop.kind === 'film';
+const bareFilm =
+  filmLoop &&
+  (landingLoop.marker === 'triangle-angle-sum-vertex-descent' ||
+    landingLoop.marker === 'parallel-cointerior-angles');
+const hasDemo = landingLoop.kind === 'concept' || landingLoop.kind === 'css' || filmLoop;
 const bodyStart = bodyUnits.findIndex((unit) => unit.kind !== 'intro' && unit.kind !== 'cta');
 const heroEnd = bodyStart === -1 ? bodyUnits.length : bodyStart;
 const heroUnits = hasDemo ? bodyUnits.slice(0, heroEnd) : [];
 const flowUnits = hasDemo ? bodyUnits.slice(heroEnd) : bodyUnits;
 const catalog = loadCatalog();
+const topicId = page.catalogCta?.catalogTopicId ?? null;
 const catalogTopic = catalog.grades.find((entry) => entry.grade === page.grade)
   ?.topics.find((topic) => topic.id === topicId);
 const topicLevels = catalogTopic?.levels.map((level) => ({
@@ -163,7 +173,9 @@ function faqHeadingId(groupIndex: number) {
       <span aria-current="page">{page.h1}</span>
     </nav>
     <div data-doodle="pencil" class="exact-topic-pencil">
-      <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" width="400" height="400" decoding="async" />
+      <button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט">
+        <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" width="400" height="400" decoding="async" />
+      </button>
     </div>
 
     {
@@ -189,9 +201,23 @@ function faqHeadingId(groupIndex: number) {
     <div data-body-flow>
       {hasDemo && (
         <div class="exact-topic-hero">
-          <div class="exact-topic-demo" style={`background:${page.grade >= 7 ? '#e3f1ec' : '#f8ebe0'}`}>
+          <div
+            class:list={['exact-topic-demo', bareFilm && 'exact-topic-demo--bare']}
+            data-landing-loop={loopVariant ? landingLoop.marker : undefined}
+            style={`background:${bareFilm ? '#fbfaf5' : page.grade >= 7 ? '#e3f1ec' : '#f8ebe0'}`}
+          >
             {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
             {loopVariant && <ConceptLoop variant={loopVariant} />}
+            {cssVariant && <LandingLoop variant={cssVariant} />}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'distance-between-points' && (
+              <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'triangle-angle-sum-vertex-descent' && (
+              <TriangleAngleSumLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
+            {landingLoop.kind === 'film' && landingLoop.marker === 'parallel-cointerior-angles' && (
+              <ParallelCointeriorLoop src={landingLoop.src} marker={landingLoop.marker} />
+            )}
           </div>
           <div class="exact-topic-copy">
             {heroUnits.map((unit) => {
@@ -225,7 +251,9 @@ function faqHeadingId(groupIndex: number) {
           if (unit.kind === 'intro') {
             return (
               <p class="topic-page__intro" data-flow="paragraph" data-role="intro">
-                {unit.text}
+                {textParts(unit.text).map((part) =>
+                  part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                )}
               </p>
             );
           }
@@ -255,7 +283,9 @@ function faqHeadingId(groupIndex: number) {
                       block.role === 'self-check' ? 'topic-page__self-check' : undefined;
                     return (
                       <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
-                        {block.text}
+                        {textParts(block.text).map((part) =>
+                          part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                        )}
                       </p>
                     );
                   }
@@ -285,7 +315,9 @@ function faqHeadingId(groupIndex: number) {
               const cls = block.role === 'self-check' ? 'topic-page__self-check' : undefined;
               return (
                 <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
-                  {block.text}
+                  {textParts(block.text).map((part) =>
+                    part.nowrap ? <span class="topic-math-nowrap">{part.text}</span> : part.text,
+                  )}
                 </p>
               );
             }

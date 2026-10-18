@@ -22,7 +22,7 @@ const ALGEBRA_PRIORITY =
 
 const GRAPHS = /coordinate|graph|function|statistic|probability|precalculus/;
 const GEOMETRY =
-  /triangle|angle|pythag|rectangle|square|rhombus|trapezoid|parallelogram|polygon|circle|cylinder|cone|prism|congru|similar|geometric|area|volume/;
+  /triangle|angle|pythag|rectangle|square|rhombus|trapezoid|kite|parallelogram|polygon|circle|cylinder|cone|prism|congru|similar|geometric|area|volume/;
 const ALGEBRA =
   /equation|algebra|factor|power|exponent|root|signed|inequal|binomial|distributive|word-problem|percentage/;
 

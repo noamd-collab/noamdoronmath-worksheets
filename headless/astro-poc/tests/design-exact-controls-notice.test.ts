@@ -123,7 +123,7 @@ describe('exact hero presentation adapter inventory', () => {
     assert.match(wrapper, /cache\.hidden = true/);
     assert.match(wrapper, /cache\.style\.display = 'none'/);
     assert.match(wrapper, /hero\.append\(cache\)/);
-    assert.match(wrapper, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) cache\.append\(prior\);\s*current\.append\(next\)/);
+    assert.match(wrapper, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) \{\s*parkAngleSumFilm\(prior\);\s*cache\.append\(prior\);\s*\}\s*current\.append\(next\);\s*resumeAngleSumFilm\(next\)/);
     assert.doesNotMatch(wrapper, /current\.replaceChildren|prior\??\.remove\(/);
     assert.equal((wrapper.match(/window\.setInterval\(/g) || []).length, 1, 'One shared ARIA timer, not one per shuffle');
   });
@@ -140,14 +140,18 @@ describe('exact hero presentation adapter inventory', () => {
   });
 });
 
-describe('protected math sources remain byte-identical to verified live 8a098020', () => {
-  // Read independently with git show from live-base commit
-  // 8a098020ca33f374224338b8ac3fd08faa8ad5f1, not regenerated from this candidate.
+describe('protected math sources stay pinned after the L01 removal', () => {
+  // Hashes moved off live-base 8a098020 because L01 angle-sum was deleted
+  // and replaced by the vertex-descent film. Not a silent design regen.
+  // Moved again for Noam's approved Kimi L14 diff-sq v6 film.
+  // Moved again for the grade-9 kite-construct film (explicit content addition).
+  // Moved again for the kite review fixes (RTL summary, final rest frame, pause target).
+  // Moved again so kite ticks follow each side and the pause button waits for JS.
+  // Moved again so the kite card plays the area film, then the construction.
+  // Moved again so the card title follows whichever film is playing.
   const expected = {
-    // HeroLoop.astro is the homepage shell. It may stop inlining every loop.
-    // The diagram engine stays byte-identical.
-    'src/components/ConceptLoop.astro': '12c0ec36ecf290acec5f3a20c5fd74532de522c0d9edd6711322d209851218f6',
-    'src/lib/conceptLoops.ts': 'b9e5a864e93b08e70fa7257dcf9d7fedae7dcb4cd5798996b7325d98575be53d',
+    'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
+    'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {
@@ -159,7 +163,7 @@ describe('protected math sources remain byte-identical to verified live 8a098020
 describe('non-blocking site-development notice', () => {
   it('is an in-flow aside, not a dialog, overlay, consent form or focus trap', () => {
     assert.match(notice, /<aside[^>]*data-development-notice/);
-    assert.match(notice, /<button\s+type="button"\s+aria-label="סגירת הודעת הפיתוח"/);
+    assert.match(notice, /<button\s+type="button"\s+aria-label="(?:הבנתי – )?סגירת הודעת הפיתוח"/);
     assert.match(notice, /min-width:44px;min-height:44px/);
     assert.doesNotMatch(notice, /<dialog\b|aria-modal\s*=|role\s*=\s*['"](?:dialog|alertdialog)['"]|\bautofocus\b|\binert\b|type\s*=\s*['"]checkbox['"]/i);
     assert.doesNotMatch(notice, /position\s*:\s*(?:fixed|absolute)|overflow(?:-[xy])?\s*:\s*(?:hidden|clip)|overscroll-behavior\s*:\s*none/i);

@@ -68,4 +68,4 @@ test('error does not overwrite Ans, AC recovers',()=>{const c=run(fresh(),'7 equ
 test('input rejects invalid syntax and remains correctable',()=>{const c=run(fresh(),'1 mul mul 2 equals');assert.equal(c.state.error.code,'Syntax ERROR');run(c,'left del equals');close(c,2);});
 test('memory serialization is model specific and validates finite values',()=>{const c=run(fresh(),'3 shift rcl negative');const saved=c.save();const d=createMS82(createEngine(math),createAlgorithms(math),saved);run(d,'rcl negative');close(d,3);});
 
-test('contrast is option 2 after MODE four times, matching 2nd edition',()=>{const c=run(fresh(),'mode mode mode mode');assert.equal(c.display().expression,'Disp◀CONT▶');run(c,'2 right right');assert.equal(c.state.settings.contrast,8);run(c,'left ac');assert.equal(c.state.settings.contrast,7);assert.equal(c.state.menu,null);});
+test('contrast is option 2 after MODE four times',()=>{const c=run(fresh(),'mode mode mode mode');assert.equal(c.display().expression,'Disp◀CONT▶');run(c,'2 right right');assert.equal(c.state.settings.contrast,8);run(c,'left ac');assert.equal(c.state.settings.contrast,7);assert.equal(c.state.menu,null);});

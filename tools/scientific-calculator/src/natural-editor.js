@@ -1,4 +1,4 @@
-/* Structural, bounded Natural Display editor. Parentheses in the serialized
+/* Structural, bounded math display editor. Parentheses in the serialized
  * arithmetic are never reused as presentation or cursor locations.
  */
 (function(global){

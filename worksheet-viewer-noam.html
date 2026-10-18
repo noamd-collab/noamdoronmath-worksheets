@@ -2659,7 +2659,8 @@ var BOT_CLIENT_LOAD_TIMEOUT_MS = 8000;
 var LEVEL = {
   a:"A",
   b:"B",
-  c:"E"
+  c:"E",
+  c2:"E2"
 };
 
 var MIN_WAIT = 1250;
@@ -2695,7 +2696,8 @@ var FEEDBACK_FORM_CONTEXT_FIELD = "entry.147537363";
 var LEVEL_NAME = {
   a:"רמה א׳",
   b:"רמה ב׳",
-  c:"רמת מצוינות"
+  c:"רמת מצוינות",
+  c2:"מצוינות 2"
 };
 
 /* R504-DEV-MIN-20260901-01: LOCAL-OVERRIDE DEVELOPMENT COPY, NOT FOR GITHUB.
@@ -3007,7 +3009,7 @@ var levelPdfMap = {
   c:""
 };
 
-["a", "b", "c"]
+["a", "b", "c", "c2"]
   .forEach(
     function(key){
 
@@ -3056,7 +3058,7 @@ function buildLevelHref(
       nextPdf
     );
 
-  ["a", "b", "c"]
+  ["a", "b", "c", "c2"]
     .forEach(
       function(key){
 
@@ -3090,7 +3092,7 @@ function renderLevelSwitch(
   }
 
   var html =
-    ["a", "b", "c"]
+    ["a", "b", "c", "c2"]
     .map(
       function(key){
 
@@ -3248,7 +3250,7 @@ function parseIndexLevelPdfs(
     c:""
   };
 
-  ["a", "b", "c"]
+  ["a", "b", "c", "c2"]
     .forEach(
       function(key){
 
@@ -3324,7 +3326,7 @@ function discoverSiblingLevels(){
         );
 
       if (discovered){
-        ["a", "b", "c"]
+        ["a", "b", "c", "c2"]
           .forEach(
             function(key){
 
@@ -8117,5 +8119,6 @@ function esc(s){
 
 })();
 </script>
+<script src="noam-site-companion.js" defer></script>
 </body>
 </html>

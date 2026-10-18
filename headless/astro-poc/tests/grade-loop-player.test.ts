@@ -27,6 +27,7 @@ import {
   GRADE_LOOP_SLOWDOWN,
   createGradeLoopRotation,
   createGradeLoopSlowClock,
+  gradeLoopDwellMs,
   shuffleLoops,
   type GradeLoopRotationOptions,
   type GradeLoopState,
@@ -46,7 +47,11 @@ function engineHolds(): Record<string, number> {
   );
   return Object.fromEntries(
     [...source.matchAll(/^\s+'?([a-z0-9-]+)'?:\s*\{ duration: [\d.]+, hold: ([A-Z0-9_]+), render/gm)].map(
-      (m) => [m[1], consts.get(m[2])]
+      (m) => {
+        const hold = consts.get(m[2]);
+        assert.ok(hold !== undefined, `${m[1]}: hold constant ${m[2]} is not defined`);
+        return [m[1], hold];
+      }
     )
   );
 }
@@ -93,7 +98,7 @@ function loopsMap(file: string): Map<string, Record<string, string>> {
   }));
 }
 
-const numbers = (text: string) => text.match(/\d+/g) ?? [];
+const numbers = (text: string): string[] => text.match(/\d+/g) ?? [];
 
 function specsKeys(): Set<string> {
   const source = read('src/lib/conceptLoops.ts');
@@ -126,7 +131,11 @@ describe('grade loop pools (LOOPS_MAP_73_v2)', () => {
       assert.equal(pool[0].variant, GRADE_LOOP_DEFAULTS[grade]);
       assert.equal(new Set(pool.map((entry) => entry.variant)).size, pool.length);
       for (const entry of pool) {
-        assert.ok(specs.has(entry.variant), `${entry.variant}: unknown to the engine`);
+        if (entry.variant === 'angle-sum') {
+          assert.equal(specs.has(entry.variant), false, 'angle-sum is the vertex-descent film, not an engine drawing');
+        } else {
+          assert.ok(specs.has(entry.variant), `${entry.variant}: unknown to the engine`);
+        }
         assert.ok(entry.label.trim().length > 0 && entry.label.length <= 32);
       }
     });
@@ -278,11 +287,24 @@ describe('grade loop pools (LOOPS_MAP_73_v2)', () => {
     const holds = engineHolds();
     assert.equal(Object.keys(GRADE_LOOP_HOLD_S).length, gradeLoopMap().length);
     for (const loop of gradeLoopMap()) {
+      if (loop.variant === 'angle-sum') {
+        assert.equal(holds[loop.variant], undefined, 'the film is not an engine spec');
+        assert.equal(GRADE_LOOP_HOLD_S[loop.variant], 6.2);
+        assert.ok(6.2 * GRADE_LOOP_SLOWDOWN < GRADE_LOOP_DWELL_MS / 1000, 'angle-sum: never holds');
+        continue;
+      }
       assert.equal(GRADE_LOOP_HOLD_S[loop.variant], holds[loop.variant], `${loop.variant}: hold drifted from engine`);
-      assert.ok(holds[loop.variant]! * GRADE_LOOP_SLOWDOWN < GRADE_LOOP_DWELL_MS / 1000, `${loop.variant}: never holds`);
+      // A long film (only L14 diff-sq, 22 s lap) gets its own longer dwell.
+      const dwell = loop.variant === 'diff-sq' ? gradeLoopDwellMs(holds[loop.variant]) : GRADE_LOOP_DWELL_MS;
+      if (loop.variant === 'diff-sq') assert.ok(dwell > GRADE_LOOP_DWELL_MS, 'diff-sq: long dwell');
+      else assert.equal(gradeLoopDwellMs(holds[loop.variant]), GRADE_LOOP_DWELL_MS, `${loop.variant}: standard dwell`);
+      assert.ok(holds[loop.variant]! * GRADE_LOOP_SLOWDOWN < dwell / 1000, `${loop.variant}: never holds`);
     }
     for (const grade of GRADE_HUB_GRADES) {
-      for (const entry of buildGradeLoopPool(grade)) assert.equal(entry.hold, holds[entry.variant]);
+      for (const entry of buildGradeLoopPool(grade)) {
+        if (entry.variant === 'angle-sum') assert.equal(entry.hold, 6.2);
+        else assert.equal(entry.hold, holds[entry.variant]);
+      }
     }
   });
 
@@ -298,7 +320,8 @@ describe('grade loop pools (LOOPS_MAP_73_v2)', () => {
 describe('GradeLoopPlayer render contract', () => {
   it('renders the default loop live and one template per other pool variant', () => {
     assert.match(player, /<div data-grade-loop-current>\s*<ConceptLoop variant=\{defaultVariant as Variant\} \/>\s*<\/div>/);
-    assert.match(player, /others\.map\(\(entry\) => \(\s*<template data-grade-loop-variant=\{entry\.variant\}>\s*<ConceptLoop variant=\{entry\.variant as Variant\} \/>\s*<\/template>/);
+    assert.match(player, /others\.map\(\(entry\) => \(\s*<template data-grade-loop-variant=\{entry\.variant\}>\s*\{entry\.variant === 'angle-sum' \? \(\s*<TriangleAngleSumLoop[\s\S]*?src="\/loops\/triangle-angle-sum-vertex-descent\.html"[\s\S]*?marker="triangle-angle-sum-vertex-descent"[\s\S]*?variant="angle-sum"[\s\S]*?card\s*\/>\s*\) : \(\s*<ConceptLoop variant=\{entry\.variant as Variant\} \/>\s*\)\}\s*<\/template>/);
+    assert.doesNotMatch(player, /reel\.mp4/);
     assert.match(player, /const others = pool\.filter\(\(entry\) => entry\.variant !== defaultVariant\)/);
     for (const grade of GRADE_HUB_GRADES) {
       const pool = buildGradeLoopPool(grade);
@@ -378,23 +401,28 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(gradeCss.split('@media')[0], /\.concept-loop__svg \{\s*grid-column: 2;\s*grid-row: 1 \/ 4;/);
   });
 
-  it('reduced motion hides ▶ (engine toggle and pause button) in player CSS only; next stays', () => {
+  it('OS reduced motion does not hide ▶; only an explicit a11y class does', () => {
     const css = player.split('<style>')[1];
-    assert.match(
-      css,
-      /@media \(prefers-reduced-motion: reduce\) \{[\s\S]*?\.grade-loop :global\(\[data-el='toggle'\]\),\s*\.grade-loop__pause \{\s*display: none !important;\s*\}\s*\}/
-    );
+    const media = css.match(/@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n  \}/);
+    assert.ok(media, 'reduced-motion block');
+    assert.match(media[1], /\.grade-loop__progress-fill \{\s*transition: none;/);
+    assert.doesNotMatch(media[1], /display:\s*none/, 'OS reduced motion must not hide the demo controls');
     for (const motionOff of ['nd-motion-off', 'noam-a11y-motion']) {
       assert.match(css, new RegExp(`:global\\(html\\.${motionOff}\\) \\.grade-loop :global\\(\\[data-el='toggle'\\]\\)`));
       assert.match(css, new RegExp(`:global\\(html\\.${motionOff}\\) \\.grade-loop__pause`));
     }
-    // Hidden only under motion-off: every toggle-hiding selector is inside the media query or behind an html class.
     const hides = [...css.matchAll(/^\s*(.*):global\(\[data-el='toggle'\]\)/gm)].map((m) => m[1]);
-    assert.equal(hides.length, 3);
+    assert.equal(hides.length, 2);
     assert.equal(hides.filter((prefix) => /html\.(nd-motion-off|noam-a11y-motion)/.test(prefix)).length, 2);
     assert.doesNotMatch(css, /grade-loop__next(?!\[hidden\])[^{]*\{[^}]*display: none/, 'ללולאה הבאה stays visible');
-    assert.match(player, /"▶ פעם אחת" is deferred until the engine supports it/);
+    assert.match(player, /"▶ פעם אחת" stays deferred/);
     assert.doesNotMatch(css.split('@media')[0], /\.grade-loop__pause \{[^}]*display: none/);
+    const engine = read('src/lib/conceptLoops.ts');
+    assert.doesNotMatch(engine, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+    assert.match(engine, /classList\.contains\('nd-motion-off'\)/);
+    const a11y = read('public/noam-accessibility.js');
+    assert.doesNotMatch(a11y, /stopAnim:\s*reduceQuery\.matches/);
+    assert.match(a11y, /stopAnim:\s*false/);
   });
 
   it('hold phase freezes on the engine completed frame via __loop.seek + pause', () => {
@@ -410,9 +438,11 @@ describe('GradeLoopPlayer render contract', () => {
     assert.doesNotMatch(read('src/lib/conceptLoops.ts'), /slowdown|GRADE_LOOP|speed/i, 'engine untouched');
     const script = player.split('<script>')[1];
     assert.match(script, /const slow = createGradeLoopSlowClock\(\{/);
-    assert.match(script, /state\.playing && !state\.static && !rotation\.held\(\) && !manuallyPaused\(loop\)/);
+    assert.match(script, /state\.playing && !state\.static && !resting && !rotation\.held\(\) && !manuallyPaused\(loop\)/);
     assert.match(script, /seek: \(t\) => activeLoop\(\)\?\.__loop\?\.seek\(t\)/);
-    assert.match(script, /ended: \(\) => rotation\.hold\(\)/);
+    assert.match(script, /ended: \(\) => restThenReplay\(\)/);
+    assert.match(script, /REPLAY_PAUSE_MS = 1600/);
+    assert.match(script, /function ensurePlaying\(\)/);
     assert.match(script, /entries\.get\(variant\)\?\.hold \?\? GRADE_LOOP_FALLBACK_END_S/);
     assert.match(script, /slow\.reset\(endOf\(variant\)\);\s*wasStatic\.set/, 'each mount restarts the slow clock');
     // Reduced motion: no frame loop and no seek.
@@ -432,9 +462,9 @@ describe('GradeLoopPlayer render contract', () => {
   });
 
   it('swaps like ExactHeroControls: cached nodes, one init per variant, one timer', () => {
-    assert.match(player, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) cache\.append\(prior\);\s*current\.append\(next\)/);
+    assert.match(player, /prior\?\.__loop\?\.pause\(\);\s*if \(prior\) \{\s*parkAngleSumFilm\(prior\);\s*cache\.append\(prior\);\s*\}\s*current\.append\(next\);\s*resumeAngleSumFilm\(next\)/);
     assert.match(player, /if \(firstVisit\) initConceptLoops\(\)/);
-    assert.equal((player.match(/initConceptLoops\(\)/g) || []).length, 1);
+    assert.equal((player.match(/initConceptLoops\(\)/g) || []).length, 2);
     assert.match(player, /cache\.hidden = true/);
     assert.doesNotMatch(player, /replaceChildren|prior\??\.remove\(/);
     assert.equal((player.match(/window\.setInterval\(/g) || []).length, 1);
@@ -442,6 +472,11 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(player, /!adapted\.has\(loop\)/);
     assert.match(player, /event\.key === 'Enter' \|\| event\.key === ' ' \|\| event\.key === 'Spacebar'/);
     assert.match(player, /new IntersectionObserver\(/);
+    assert.match(player, /let inView = true/);
+    assert.match(player, /rootMargin: '0px 0px 100% 0px'/);
+    assert.match(player, /threshold: 0/);
+    assert.match(player, /initConceptLoops\(\);\s*ensurePlaying\(\);\s*runSlowClock\(\)/);
+    assert.match(player, /setTimeout\(start, 120\)/);
   });
 });
 
@@ -488,6 +523,26 @@ describe('grade loop rotation policy', () => {
     };
     return { loops, env, mounts, calls, rotation, advance, done };
   }
+
+  it('a long film (diff-sq) gets its own longer dwell; every other loop keeps 15 s', () => {
+    const long = gradeLoopDwellMs(GRADE_LOOP_HOLD_S['diff-sq']);
+    assert.equal(long, 39_900);
+    const t = setup(['diff-sq', 'b', 'c'], {
+      dwellFor: (v) => (v === 'diff-sq' ? long : GRADE_LOOP_DWELL_MS),
+    });
+    try {
+      assert.equal(t.rotation.current(), 'diff-sq');
+      t.advance(GRADE_LOOP_DWELL_MS);
+      assert.equal(t.rotation.current(), 'diff-sq', 'does not swap at 15 s');
+      t.advance(Math.ceil(long / 500) * 500 - GRADE_LOOP_DWELL_MS);
+      assert.notEqual(t.rotation.current(), 'diff-sq');
+      const next = t.rotation.current();
+      t.advance(GRADE_LOOP_DWELL_MS);
+      assert.notEqual(t.rotation.current(), next, 'next loop swaps at 15 s');
+    } finally {
+      t.done();
+    }
+  });
 
   it('swaps every 15 s (calibration 8–45 s), without waiting for the 4-lap park', () => {
     assert.equal(GRADE_LOOP_DWELL_MS, 15_000);

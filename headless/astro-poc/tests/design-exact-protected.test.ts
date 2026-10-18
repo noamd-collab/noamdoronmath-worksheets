@@ -4,6 +4,19 @@
  * explicitly out-of-scope behavior/content while permitting presentation edits.
  * A future intentional content/engine migration must review this fence rather
  * than silently regenerate it to make a design-only change pass.
+ * conceptLoops.ts and ConceptLoop.astro moved when L01 angle-sum was removed
+ * and replaced by the vertex-descent film. That was an explicit content change.
+ * They moved again when Noam approved Kimi's L14 diff-sq v6 film (letters only,
+ * x² − y² = (x − y)(x + y), 22 s lap): an explicit content change, not a regen.
+ * They moved again for the grade-9 kite-construct film (loop #8 from
+ * staging 654ab7c): an explicit content addition, not a regen.
+ * They moved again for the kite review fixes (RTL summary, final rest
+ * frame, 44px pause target): an explicit content fix, not a regen.
+ * They moved again so the kite ticks follow each side, and the pause
+ * button stays hidden until JS runs.
+ * They moved again so the kite card plays the area film first
+ * («שטח דלתון — מהדלתון למלבן»), then the ruler-and-compass film.
+ * They moved again so the card title follows the film that is playing.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -17,13 +30,20 @@ const sha256 = (value: string | Buffer) => createHash('sha256').update(value).di
 const read = (file: string) => readFileSync(join(root, file), 'utf8');
 
 const protectedFiles: Record<string, string> = {
-  'astro.config.mjs': 'f85dead2ee638d8010de960290886eb4801b2ea9d86388fee11ceaea00e937a3',
-  // Regenerated from index.html after 24 topic-title spelling fixes (ס״מ, סמ״ק, מ״ק, maqaf, geresh).
-  'src/data/catalog.v1.json': '3a4f0d943333a90ca7c0ccdc1b94c01414c16eaa333936a6481d2b5d2d0439a7',
+  // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
+  // added so the headless Noam AI route can read Wix Secrets Manager.
+  // Adapter, output, and integrations are unchanged. The other two Astro
+  // configs (preview, open07-verify) are not in this fence.
+  'astro.config.mjs': 'c63c0e1646e6198757b32ca085cda16091a3168adf0017ce9e3ce74b91b8f451',
+  // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
+  // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
+  'src/data/catalog.v1.json': '4c5ccc34149a798f47c4f261744f132b36d7ff083dc4d0052c81a53219639fb6',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
-  'src/lib/worksheetLinks.ts': '1f9a5fdf234997fc8ba7593d1ef0066f082586816770eefc45da40035a825eaf',
-  'src/lib/conceptLoops.ts': 'b9e5a864e93b08e70fa7257dcf9d7fedae7dcb4cd5798996b7325d98575be53d',
-  'src/components/ConceptLoop.astro': '12c0ec36ecf290acec5f3a20c5fd74532de522c0d9edd6711322d209851218f6',
+  // Viewer links forward the c2 sibling as pc2.
+  'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
+  // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
+  'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
+  'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   'src/components/TriangleAreaExplorer.astro': '9f68cbd1c15d95be86bdccd58ef6bed0c51d967a7f00731744a34d03524068f9',
@@ -64,15 +84,19 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.equal(sha256(head), '8c842de3e2b55e15a454fd1fabbc31794baeffaaf8b939d3a1bccd7cc586b462');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
+    const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
     // One presentation adapter follows the released blocks. ramzi-avatar.js
-    // is a released script (15 total). The only perf edit inside those blocks
-    // is the noam-learning-boot.js cache-bust query.
-    assert.equal(scripts.length, 15);
+    // is a released script. The site companion is one extra external script
+    // after that adapter, so the released blocks stay byte-identical.
+    assert.equal(scripts.length, 16);
     assert.equal(adapters.length, 1, 'Only one explicitly marked presentation adapter is permitted');
-    assert.equal(scripts.at(-1), adapters[0], 'The adapter must follow, not replace/interleave, the released scripts');
-    const releasedScripts = scripts.slice(0, -1);
+    assert.equal(companion.length, 1, 'The site companion is the one added launcher script');
+    assert.equal(scripts.at(-2), adapters[0], 'The adapter must follow, not replace/interleave, the released scripts');
+    assert.equal(scripts.at(-1), companion[0], 'The companion script follows the adapter and does not replace it');
+    const releasedScripts = scripts.slice(0, -2);
     assert.equal(releasedScripts.length, 14);
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'fd137a04d4e89748d6c95b67ca71ab3274408bd71865413940699e0392276c52');
+    // c2 (מצוינות 2) is a real viewer level, so the released level script changed.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '71c61d6861c76294e299ae7353f598be1a532ab193be4065cc914ae6a71bde92');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

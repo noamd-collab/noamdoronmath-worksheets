@@ -102,6 +102,11 @@
       "heading": "מרובעים ומשולשים",
       "links": [
         {
+          "path": "/kite-grade-9",
+          "label": "דלתון",
+          "productionHref": "https://www.noamdoronmath.co.il/kite-grade-9"
+        },
+        {
           "path": "/parallelogram-grade-9",
           "label": "מקבילית",
           "productionHref": "https://www.noamdoronmath.co.il/parallelogram-grade-9"
@@ -314,6 +319,11 @@
       "path": "/coordinate-plane-applications-grade-9",
       "label": "מערכת הצירים — יישום והעמקה",
       "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-9"
+    },
+    {
+      "path": "/kite-grade-9",
+      "label": "דלתון",
+      "productionHref": "https://www.noamdoronmath.co.il/kite-grade-9"
     },
     {
       "path": "/parallelogram-grade-9",
