@@ -113,7 +113,7 @@ function demoLine(page: { slug: string; grade: number; catalogCta?: { catalogTop
         return 'הדגמה: 2,847 + 1,675 — אומדים 4,500 ומחברים לעמודות עד 4,522';
       }
       if (loop.variant === 'measurement-geometry-synthesis-grade-6') {
-        return 'הדגמה: שטח צורת L — מלבן 10 × 6 פחות פינה 4 × 3 שווה 48';
+        return 'הדגמה: שטח צורת L — 60 ריבועי 1 ס״מ פחות פינה של 12 שווה 48';
       }
       const copy = gradeLoopCopy(loop.variant);
       return 'הדגמה: ' + [copy.domain, copy.claim].filter(Boolean).join(' · ');
