@@ -10,6 +10,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { captureHomepageGameShots, shouldCaptureHomepageGameShots } from './qwen-homepage-extra-shots.mjs';
+import { captureParaRectFilmShots, shouldCaptureParaRectFilm } from './qwen-para-rect-shots.mjs';
 import { upsertPullRequestComment } from './pr-comment.mjs';
 import { pagesTouchedByDiff } from './pr-pages.mjs';
 import { redactSecrets } from './redact.mjs';
@@ -261,6 +262,10 @@ export async function runQwenReview({ postComment = true } = {}) {
   if (shouldCaptureHomepageGameShots(changedFiles())) {
     console.log('capturing scrolled below-fold GamePromoCard evidence');
     shots.push(...await captureHomepageGameShots({ baseUrl, outDir }));
+  }
+  if (shouldCaptureParaRectFilm(changedFiles())) {
+    console.log('capturing homepage para-rect rectangle and parallelogram frames');
+    shots.push(...await captureParaRectFilmShots({ baseUrl, outDir }));
   }
   writeFileSync(join(outDir, 'manifest.json'), JSON.stringify({ selection, shots }, null, 2));
   const images = imageContent(shots);
