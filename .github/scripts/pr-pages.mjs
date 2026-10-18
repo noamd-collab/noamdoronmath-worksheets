@@ -17,6 +17,19 @@ export const ELEMENTARY_GRADE_HUB_PAGES = [
   '/grade-6',
 ];
 
+export const TOPIC_ANIMATION_FILES = [
+  'headless/astro-poc/src/lib/landingLoops.ts',
+  'headless/astro-poc/src/lib/lessonLoops.ts',
+  'headless/astro-poc/src/components/LessonLoop.astro',
+  'headless/astro-poc/src/components/LandingLoop.astro',
+  'headless/astro-poc/src/styles/exact-topic.css',
+];
+export const TOPIC_ANIMATION_PAGES = [
+  '/reflection-symmetry-grade-2', '/box-surface-area-grade-6',
+  '/data-grade-1', '/add-subtract-fractions-grade-5',
+  '/algebraic-fractions-grade-9', '/hundred-chart-grade-1',
+];
+
 const PAGE_FILE = /\.(astro|ts|tsx|js|mjs)$/;
 
 export function routeFromPageFile(file) {
@@ -43,6 +56,9 @@ export function routeFromPageFile(file) {
  */
 export function pagesTouchedByDiff(files) {
   const normalized = files.map((file) => String(file).replaceAll('\\', '/'));
+  if (normalized.some((file) => TOPIC_ANIMATION_FILES.includes(file))) {
+    return { pages: [...TOPIC_ANIMATION_PAGES], fallback: false, omitted: [] };
+  }
   if (normalized.some((file) => GRADE_HUB_NAV_FILES.includes(file))) {
     return { pages: [...ELEMENTARY_GRADE_HUB_PAGES], fallback: false, omitted: [] };
   }
