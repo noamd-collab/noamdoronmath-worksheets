@@ -50,3 +50,30 @@ it('doubling both dimensions creates four original square units',()=>{
   assert.deepEqual([...new Set(cells.map(c=>c[1]))],[76,76+h]);
   assert.equal(cells.reduce((s,c)=>s+c[2]*c[3],0),4*w*h);
 });
+
+// Verify the actual drawn endpoints rather than merely asserting named classes.
+it('corresponding heights, angle bisectors and medians obey their definitions and scale by two',()=>{
+  const A=[35,125],B=[35,65],C=[115,125],D=[195,45];
+  const endpoints=(cls:string)=>{
+    const group=component.split('class="construction '+cls+'"')[1];assert.ok(group);
+    const m=group.match(/class="segment" d="M([\d.]+) ([\d.]+) L([\d.]+) ([\d.]+) M([\d.]+) ([\d.]+) L([\d.]+) ([\d.]+)"/);assert.ok(m);
+    const n=m.slice(1).map(Number);return {a:n.slice(0,2),p:n.slice(2,4),d:n.slice(4,6),q:n.slice(6,8)};
+  };
+  const close=(a:number,b:number)=>assert.ok(Math.abs(a-b)<1e-4,`${a} != ${b}`);
+  for(const name of ['height-pair','bisector-pair','median-pair']){
+    const {a,p,d,q}=endpoints(name);assert.deepEqual(a,A);assert.deepEqual(d,D);
+    close(q[0]-D[0],-2*(p[1]-A[1]));close(q[1]-D[1],2*(p[0]-A[0]));
+    // The foot lies on BC in every construction.
+    close((p[0]-B[0])*(C[1]-B[1]),(p[1]-B[1])*(C[0]-B[0]));
+    if(name==='height-pair')close((p[0]-A[0])*(C[0]-B[0])+(p[1]-A[1])*(C[1]-B[1]),0);
+    if(name==='median-pair'){close(p[0],(B[0]+C[0])/2);close(p[1],(B[1]+C[1])/2);}
+    if(name==='bisector-pair')close(p[0]-A[0],A[1]-p[1]); // 45° between the perpendicular legs.
+  }
+});
+it('perimeter traces match the triangles and perimeter doubles, not stays equal',()=>{
+  const a=triangle('small-fill'),b=triangle('large-fill');
+  assert.equal(a.sides.reduce((s,x)=>s+x,0)/20,12);
+  assert.equal(b.sides.reduce((s,x)=>s+x,0)/20,24);
+  const paths=[...component.matchAll(/class="perimeter" pathLength="1" d="([^"]+)"/g)].map(m=>m[1]);
+  assert.deepEqual(paths,['M35 125 L35 65 L115 125 Z','M195 45 L315 45 L195 205 Z']);
+});

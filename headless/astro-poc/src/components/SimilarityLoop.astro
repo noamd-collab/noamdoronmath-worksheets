@@ -3,11 +3,10 @@ import LessonMath from './LessonMath.astro';
 interface Props { variant: 'similar' | 'similar-area' | 'similar-aa' }
 const { variant } = Astro.props;
 const area = variant === 'similar-area';
-const aa = variant === 'similar-aa';
-const initialPhase = area ? 2 : aa ? 1 : 0;
+const initialPhase = area ? 3 : 0;
 ---
-<section class="similarity-film" data-similarity={variant} data-phase={initialPhase} dir="rtl" aria-label="המחשת דמיון: סיבוב, זווית–זווית ויחס שטחים">
-  <svg viewBox="0 0 360 280" role="img" aria-label="משולשים דומים במנחים שונים; שני זוגות זוויות שוות. בהגדלה לדוגמה פי 2 בכל כיוון, ריבוע יחידה הופך לארבע יחידות שטח מקוריות.">
+<section class="similarity-film" data-similarity={variant} data-phase={initialPhase} data-beat="0" dir="rtl" aria-label="משפטי דמיון: ז.ז, צ.ז.צ, צ.צ.צ ויחס שטחים">
+  <svg viewBox="0 0 360 280" role="img" aria-label="משולשים במנחים שונים. ז.ז: שתי זוויות מתאימות שוות. צ.ז.צ: שתי צלעות ביחס שווה והזווית שביניהן שווה. צ.צ.צ: שלוש צלעות ביחס שווה. לאחר הוכחת הדמיון, ההיקפים והקטעים המתאימים גדלים פי 2, והשטחים פי 4.">
     <g class="triangles-scene">
       <path d="M35 125 L35 65 L115 125 Z" class="small-fill"/>
       <path d="M195 45 L315 45 L195 205 Z" class="large-fill"/>
@@ -18,11 +17,37 @@ const initialPhase = area ? 2 : aa ? 1 : 0;
         <path d="M255 45 V125 H195 Z" class="tile-four"/>
       </g>}
       <g transform="translate(35 125)" aria-hidden="true"><g class="growing-copy"><path d="M0 0 V-60 L80 0 Z"/></g></g>
-      {!aa && <g class="side-lengths"><text x="17" y="102">3</text><text x="253" y="29">6</text><text x="78" y="151">4</text><text x="175" y="130">8</text><text x="91" y="87">5</text><text x="278" y="139">10</text></g>}
+      <g class="side-lengths"><text x="17" y="102">3</text><text x="253" y="29">6</text><text x="78" y="151">4</text><text x="175" y="130">8</text><text x="91" y="87">5</text><text x="278" y="139">10</text></g>
       <g class="angle-pair angle-right"><path d="M35 113 H47 V125 M195 59 H209 V45"/></g>
       <g class="angle-pair angle-acute"><path d="M35 85 A20 20 0 0 0 51 77 M291 45 A24 24 0 0 0 300.6 64.2"/></g>
       <g class="vertices"><text x="25" y="150">A</text><text x="30" y="49">B</text><text x="130" y="133">C</text><text x="180" y="32">D</text><text x="332" y="49">E</text><text x="190" y="230">F</text></g>
       <g class="angle-equations"><text class="right-equation" x="95" y="265">∠A = ∠D</text><text class="acute-equation" x="265" y="265">∠B = ∠E</text></g>
+      <g class="matching-sides" fill="none">
+        <path class="match-leg first-leg" d="M35 125 L35 65 M195 45 L315 45"/>
+        <path class="match-leg second-leg" d="M35 125 L115 125 M195 45 L195 205"/>
+        <path class="match-leg third-leg" d="M35 65 L115 125 M315 45 L195 205"/>
+      </g>
+      <g class="perimeters" fill="none">
+        <path class="perimeter" pathLength="1" d="M35 125 L35 65 L115 125 Z"/>
+        <path class="perimeter" pathLength="1" d="M195 45 L315 45 L195 205 Z"/>
+        <text x="76" y="204">P = 12</text><text x="260" y="233">P = 24</text>
+      </g>
+      <g class="construction height-pair">
+        <path class="segment" d="M35 125 L63.8 86.6 M195 45 L271.8 102.6"/>
+        <path class="construction-mark" d="M57.4 81.8 L52.6 88.2 L59 93 M281.4 89.8 L268.6 80.2 L259 93"/>
+        <text x="95" y="265">h</text><text x="265" y="265">2h</text>
+      </g>
+      <g class="construction bisector-pair">
+        <path class="segment" d="M35 125 L69.285714 90.714286 M195 45 L263.571428 113.571428"/>
+        <path class="construction-mark" d="M35 107 A18 18 0 0 1 47.7279 112.2721 M50.5563 109.4437 A22 22 0 0 1 57 125 M219 45 A24 24 0 0 1 211.9706 61.9706 M214.799 64.799 A28 28 0 0 1 195 73"/>
+        <text x="95" y="265">b</text><text x="265" y="265">2b</text>
+      </g>
+      <g class="construction median-pair">
+        <path class="segment" d="M35 125 L75 95 M195 45 L255 125"/>
+        <path class="construction-mark" d="M52 84 L58 76 M92 114 L98 106 M277 79 L293 91 M217 159 L233 171"/>
+        <circle cx="75" cy="95" r="3"/><circle cx="255" cy="125" r="3"/>
+        <text x="95" y="265">m</text><text x="265" y="265">2m</text>
+      </g>
     </g>
     <g class="area-scene">
       <rect class="unit-original" x="42" y="105" width="48" height="48"/>
@@ -43,15 +68,20 @@ const initialPhase = area ? 2 : aa ? 1 : 0;
     </g>
   </svg>
   <div class="scene-caption">
-    <p class="caption-0">אותה צורה, גם אחרי סיבוב והגדלה</p>
-    <p class="caption-1">שני זוגות זוויות שוות · דמיון ז.ז</p>
-    <p class="caption-2">{aa?'הגדלה לדוגמה: פי 2 באורך, פי 4 בשטח':'פי 2 בכל כיוון · פי 4 בשטח'}</p>
-    <div class="formula formula-0"><LessonMath value={aa?'△ABC ∼ △DEF':'6/3 = 8/4 = 10/5 = 2'}/></div>
-    <div class="formula formula-1"><LessonMath value="△ABC ∼ △DEF"/></div>
-    <div class="formula formula-2"><LessonMath value="2 × 2 = 2² = 4"/></div>
+    <p class="caption-0">שתי זוויות שוות · אותה צורה בכל מנח</p>
+    <p class="caption-1"><span class="proof-label">שתי צלעות באותו יחס · הזווית שביניהן שווה</span><span class="result-label">גם ההיקף גדל פי 2</span></p>
+    <p class="caption-2"><span class="proof-label">שלוש צלעות · אותו יחס</span><span class="height-label">גבהים מתאימים · אותו יחס</span><span class="bisector-label">חוצי זוויות מתאימים · אותו יחס</span><span class="median-label">תיכונים מתאימים · אותו יחס</span></p>
+    <p class="caption-3">פי 2 בכל כיוון · פי 4 בשטח</p>
+    <div class="formula formula-0"><LessonMath value="△ABC ∼ △DEF"/></div>
+    <div class="formula formula-1"><span class="proof-label"><LessonMath value="6/3 = 8/4 = 2"/></span><span class="result-label"><LessonMath value="24/12 = 2"/></span></div>
+    <div class="formula formula-2"><span class="proof-label"><LessonMath value="6/3 = 8/4 = 10/5 = 2"/></span><span class="height-label"><LessonMath value="2h/h = 2"/></span><span class="bisector-label"><LessonMath value="2b/b = 2"/></span><span class="median-label"><LessonMath value="2m/m = 2"/></span></div>
+    <div class="formula formula-3"><LessonMath value="2 × 2 = 2² = 4"/></div>
   </div>
-  <div class="chapters" role="group" aria-label="בחירת שלב בהמחשה">
-    {['סיבוב','ז.ז','שטח'].map((label,i)=><button type="button" data-chapter={i} aria-pressed={initialPhase===i?'true':'false'} disabled>{label}<span aria-hidden="true"></span></button>)}
+  <div class="construction-controls" role="group" aria-label="בחירת קטעים מתאימים במשולשים">
+    {['גובה','חוצה זווית','תיכון'].map((label,i)=><button type="button" data-construction={i+1} aria-pressed="false" disabled>{label}</button>)}
+  </div>
+  <div class="chapters" role="group" aria-label="בחירת קטע — 10 שניות לכל קטע">
+    {['ז.ז','צ.ז.צ','צ.צ.צ','שטח'].map((label,i)=><button type="button" data-chapter={i} aria-pressed={initialPhase===i?'true':'false'} disabled>{label}<span aria-hidden="true"></span></button>)}
   </div>
 </section>
 <script>
@@ -64,9 +94,15 @@ const initialPhase = area ? 2 : aa ? 1 : 0;
     let phase=Number(film.dataset.phase)||0;
     let elapsed=0;
     let previous=0;
-    const duration=8000;
+    const duration=10000;
+    const detailButtons=Array.from(film.querySelectorAll<HTMLButtonElement>('[data-construction]'));
+    const beat=()=> {
+      const current=elapsed<3000?0:elapsed<5200?1:elapsed<7400?2:3;
+      film.dataset.beat=String(current);
+      detailButtons.forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.construction)===current)));
+    };
     const select=(next:number)=>{
-      phase=next;elapsed=0;film.dataset.phase=String(next);
+      phase=next;elapsed=0;film.dataset.phase=String(next);beat();
       buttons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===next)));
       film.style.setProperty('--progress','0');
     };
@@ -75,6 +111,14 @@ const initialPhase = area ? 2 : aa ? 1 : 0;
         if(i===phase) return;
         select(i);
         film.toggleAttribute('data-inspect',shell?.classList.contains('ll--paused') ?? false);
+      });
+      button.disabled=false;
+    });
+    detailButtons.forEach((button,i)=>{
+      button.addEventListener('click',()=>{
+        elapsed=[3000,5200,7400][i];beat();
+        film.toggleAttribute('data-inspect',shell?.classList.contains('ll--paused') ?? false);
+        film.style.setProperty('--progress',String(elapsed/duration));
       });
       button.disabled=false;
     });
@@ -89,7 +133,8 @@ const initialPhase = area ? 2 : aa ? 1 : 0;
       if(!stopped && film.hasAttribute('data-inspect')) film.removeAttribute('data-inspect');
       if(!stopped && previous) {
         elapsed+=Math.min(now-previous,100);
-        if(elapsed>=duration) select((phase+1)%3);
+        if(elapsed>=duration) select((phase+1)%4);
+        beat();
         film.style.setProperty('--progress',String(elapsed/duration));
       }
       previous=now;requestAnimationFrame(tick);
@@ -106,31 +151,38 @@ const initialPhase = area ? 2 : aa ? 1 : 0;
   .large-fill{fill:#fff3d6;stroke:#22305a;stroke-width:2.5;}
   .growing-copy{transform-box:view-box;transform-origin:0 0;opacity:0;}
   .growing-copy path{fill:#65b4a63b;stroke:#14635b;stroke-width:2.5;}
-  [data-phase='0'][data-ready] .growing-copy{animation:rotate-enlarge 8s ease-in-out both;}
+  [data-phase='0'][data-ready] .growing-copy{animation:rotate-enlarge 10s ease-in-out both;}
   .angle-pair{fill:none;stroke-width:3;}
   .angle-right{stroke:#14635b;}.angle-acute{stroke:#a44716;}
-  [data-phase='1'][data-ready] .angle-right,[data-phase='1'][data-ready] .right-equation{animation:right-focus 8s ease-in-out both;}
-  [data-phase='1'][data-ready] .angle-acute,[data-phase='1'][data-ready] .acute-equation{animation:acute-focus 8s ease-in-out both;}
+  [data-phase='0'][data-ready] .angle-right,[data-phase='0'][data-ready] .right-equation{animation:right-focus 10s ease-in-out both;}
+  [data-phase='0'][data-ready] .angle-acute,[data-phase='0'][data-ready] .acute-equation{animation:acute-focus 10s ease-in-out both;}
   .right-equation{fill:#14635b;}.acute-equation{fill:#a44716;}
   .area-tiles path{stroke:#22305a;stroke-width:1;}
   .tile-one{fill:#b7dfd2;}.tile-two{fill:#f7d489;}.tile-three{fill:#b9c9e9;}.tile-four{fill:#efb9a8;}
-  .area-scene,.angle-equations,[data-phase='1'] .side-lengths{display:none;}
-  [data-phase='1'] .angle-equations,[data-phase='2'] .area-scene{display:inline;}
-  [data-phase='2'] .triangles-scene{display:none;}
+  .area-scene,.angle-equations,[data-phase='0'] .side-lengths{display:none;}
+  [data-phase='0'] .angle-equations,[data-phase='3'] .area-scene{display:inline;}
+  [data-phase='3'] .triangles-scene{display:none;}
   .unit-original,.unit-target,.unit-cell{fill:#b7dfd2;stroke:#22305a;stroke-width:1.5;}
   .unit-target{fill:none;stroke:#9da9b9;stroke-dasharray:3 4;}
   .unit-cell:nth-child(2){fill:#f7d489;}.unit-cell:nth-child(3){fill:#b9c9e9;}.unit-cell:nth-child(4){fill:#efb9a8;}
   .unit-growing{fill:#b7dfd2;stroke:#14635b;stroke-width:2;transform-box:view-box;transform-origin:0 0;opacity:0;}
-  [data-phase='2'][data-ready] .unit-growing{animation:square-grow 8s ease-in-out both;}
-  [data-phase='2'][data-ready] .unit-grid{animation:reveal-grid 8s ease-in-out both;}
+  [data-phase='3'][data-ready] .unit-growing{animation:square-grow 10s ease-in-out both;}
+  [data-phase='3'][data-ready] .unit-grid{animation:reveal-grid 10s ease-in-out both;}
   .unit-arrow,.measure{fill:none;stroke:#22305a;stroke-width:1.5;}
   .area-total{font-size:24px;}
   .scene-caption{min-height:82px;display:grid;align-content:center;text-align:center;}
   .scene-caption p{font-size:15px;line-height:1.5;margin:0 0 8px;}
   .scene-caption>*{display:none;}
-  [data-phase='0'] .caption-0,[data-phase='1'] .caption-1,[data-phase='2'] .caption-2,[data-phase='0'] .formula-0,[data-phase='1'] .formula-1,[data-phase='2'] .formula-2{display:block;}
+  [data-phase='0'] .caption-0,[data-phase='1'] .caption-1,[data-phase='2'] .caption-2,[data-phase='3'] .caption-3,[data-phase='0'] .formula-0,[data-phase='1'] .formula-1,[data-phase='2'] .formula-2,[data-phase='3'] .formula-3{display:block;}
   .formula{font-size:21px;font-weight:750;direction:ltr;}
-  .chapters{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;border-top:1px solid #e0e5e9;padding-top:12px;}
+  .construction-controls{display:none;gap:6px;margin:0 0 10px;}
+  .construction-controls button{flex:1;min-height:44px;background:white;border:1px solid #d5dce6;border-radius:8px;color:#22305a;font:600 13px Heebo,sans-serif;cursor:pointer;pointer-events:auto;}
+  .construction-controls button[aria-pressed='true']{background:#e7f3ed;border-color:#14635b;}
+  .construction-controls button:focus-visible{outline:3px solid #e6a534;outline-offset:2px;}
+  :global(.ll--paused) [data-phase='2'] .construction-controls{display:flex;}
+  @media(prefers-reduced-motion:reduce){[data-phase='2'] .construction-controls{display:flex;}}
+  :global(html.nd-motion-off) [data-phase='2'] .construction-controls,:global(html.noam-a11y-motion) [data-phase='2'] .construction-controls,:global(html.noam-a11y-no-motion) [data-phase='2'] .construction-controls{display:flex;}
+  .chapters{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;border-top:1px solid #e0e5e9;padding-top:12px;}
   .chapters button{position:relative;overflow:hidden;min-height:44px;border:1px solid #d5dce6;border-radius:9px;background:white;color:#22305a;font:600 14px Heebo,sans-serif;cursor:pointer;pointer-events:auto;}
   .chapters button[aria-pressed='true']{background:#e7f3ed;border-color:#1e605e;}
   .chapters button:focus-visible{outline:3px solid #e6a534;outline-offset:2px;}
@@ -141,6 +193,32 @@ const initialPhase = area ? 2 : aa ? 1 : 0;
   @keyframes acute-focus{0%,40%{opacity:.5;stroke-width:3;}50%,100%{opacity:1;stroke-width:5;}}
   @keyframes square-grow{0%,8%{transform:translate(0,0) scale(1);opacity:0;}15%{transform:translate(0,0) scale(1);opacity:1;}55%,65%{transform:translate(172px,-29px) scale(2);opacity:1;}75%,100%{transform:translate(172px,-29px) scale(2);opacity:0;}}
   @keyframes reveal-grid{0%,60%{opacity:0;}75%,100%{opacity:1;}}
+  .matching-sides,.perimeters,.construction{display:none;}
+  .match-leg{stroke-width:4;stroke:#14635b;}
+  [data-ready] .matching-sides .match-leg{stroke-dasharray:300;animation:draw-side .7s ease-out both;}
+  [data-ready] .matching-sides .second-leg{animation-delay:.7s;}
+  [data-ready] .matching-sides .third-leg{animation-delay:1.4s;}
+  @keyframes draw-side{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
+  .second-leg{stroke:#a44716;}.third-leg{stroke:#5d54a4;}
+  [data-phase='1'] .matching-sides,[data-phase='2'][data-beat='0'] .matching-sides{display:inline;}
+  [data-phase='1'] .third-leg,[data-phase='1'] .angle-acute,[data-phase='2'] .angle-pair{display:none;}
+  [data-phase='1'] .angle-right{stroke-width:5;}
+  [data-phase='1']:not([data-beat='0']) .matching-sides{display:none;}
+  [data-phase='1']:not([data-beat='0']) .perimeters{display:inline;}
+  .perimeter{stroke:#14635b;stroke-width:4;stroke-dasharray:1;}
+  [data-ready][data-phase='1'] .perimeter{animation:trace-perimeter 6.8s linear both;}
+  @keyframes trace-perimeter{0%{stroke-dashoffset:1;}60%,100%{stroke-dashoffset:0;}}
+  [data-phase='2']:not([data-beat='0']) .side-lengths{display:none;}
+  [data-phase='2'][data-beat='1'] .height-pair,[data-phase='2'][data-beat='2'] .bisector-pair,[data-phase='2'][data-beat='3'] .median-pair{display:inline;}
+  .construction{color:#14635b;}.bisector-pair{color:#a44716;}.median-pair{color:#5d54a4;}
+  .segment{fill:none;stroke:currentColor;stroke-width:3;stroke-dasharray:240;}
+  [data-ready] .construction .segment{animation:draw-segment .8s ease-out both;}
+  .construction-mark{fill:none;stroke:currentColor;stroke-width:1.6;}
+  .construction circle{fill:currentColor;}.construction text{fill:currentColor;}
+  @keyframes draw-segment{from{stroke-dashoffset:240;}to{stroke-dashoffset:0;}}
+  .result-label,.height-label,.bisector-label,.median-label{display:none;}
+  [data-phase='1']:not([data-beat='0']) .proof-label,[data-phase='2']:not([data-beat='0']) .proof-label{display:none;}
+  [data-phase='1']:not([data-beat='0']) .result-label,[data-phase='2'][data-beat='1'] .height-label,[data-phase='2'][data-beat='2'] .bisector-label,[data-phase='2'][data-beat='3'] .median-label{display:inline;}
   [data-inspect] *{animation:none!important;}
   [data-hidden] *{animation-play-state:paused!important;}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;}.growing-copy,.unit-growing{display:none;}.unit-grid{opacity:1;}}
