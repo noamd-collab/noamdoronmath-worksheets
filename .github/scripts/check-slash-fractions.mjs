@@ -2,8 +2,10 @@
  * Fail when visible site text writes a fraction or division with '/'.
  *
  * Noam, 18.10.2026: every fraction uses a horizontal bar. Blogs are out of
- * scope. URLs, paths, imports, comments, code, unit rates, and/or pairs,
- * and dates are not fractions.
+ * scope. URLs, paths, imports, comments, non-string code, CSS lengths,
+ * unit rates, and/or pairs, dates, breadcrumbs, step labels, and spaced
+ * game scores (N / 100) are not fractions. String literals in scripts,
+ * topicFilms, conceptLoops.ts, and public JavaScript are scanned.
  *
  *   node .github/scripts/check-slash-fractions.mjs
  *
@@ -20,7 +22,7 @@ const OPEN = '⟨';
 const BAR = '¦';
 const CLOSE = '⟩';
 
-const SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹₀₁₂₃₄₅₆₇₈₉';
+const SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿⁱ₀₁₂₃₄₅₆₇₈₉';
 const UNIT_LEFT = new Set(['km', 'm', 'cm', 'mm', 'kg', 'g', 'mg', 's', 'h', 'min', 'sec', 'l', 'ml', 'bit', 'kb', 'mb', 'gb', 'n', 'w', 'rev']);
 const UNIT_RIGHT = new Set(['h', 'hr', 's', 'sec', 'min', 'm', 'cm', 'km', 'l', 'ml', 's²', 'm²', 'm³', 'cm²', 'cm³']);
 const WORD_PAIRS = new Set(['and/or', 'w/o', 'n/a', 'yes/no', 'on/off']);
@@ -41,6 +43,7 @@ const ROOTS = [
   'headless/astro-poc/src/components',
   'headless/astro-poc/src/layouts',
   'headless/astro-poc/src/lib/topicFilms',
+  'headless/astro-poc/src/lib/conceptLoops.ts',
   'headless/astro-poc/public',
 ];
 
@@ -61,8 +64,16 @@ function isProseIdent(token) {
   return Boolean(words && words.length);
 }
 
+const GREEK = 'αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
+
 function isLetter(ch) {
   return /[A-Za-z]/.test(ch || '');
+}
+function isGreek(ch) {
+  return GREEK.includes(ch || '');
+}
+function isIdentChar(ch) {
+  return isDigit(ch) || isLetter(ch) || isGreek(ch) || isSup(ch);
 }
 function isDigit(ch) {
   return ch >= '0' && ch <= '9';
@@ -73,41 +84,37 @@ function isSup(ch) {
 
 function readAtomBackward(text, end) {
   let j = end - 1;
-  if (j < 0) return null;
-  const ch = text[j];
-  if (isDigit(ch)) {
-    while (j >= 0 && isDigit(text[j])) j -= 1;
-    return { start: j + 1, text: text.slice(j + 1, end) };
-  }
-  if (isLetter(ch) || isSup(ch)) {
-    while (j >= 0 && (isLetter(text[j]) || isDigit(text[j]) || isSup(text[j]))) j -= 1;
-    if (!isLetter(text[j + 1])) return null;
-    return { start: j + 1, text: text.slice(j + 1, end) };
-  }
-  return null;
+  if (j < 0 || !isIdentChar(text[j])) return null;
+  while (j >= 0 && isIdentChar(text[j])) j -= 1;
+  const token = text.slice(j + 1, end);
+  if (![...token].some((ch) => isDigit(ch) || isLetter(ch) || isGreek(ch))) return null;
+  return { start: j + 1, text: token };
 }
 
 function readAtomForward(text, start) {
-  if (start >= text.length) return null;
-  const ch = text[start];
-  if (isDigit(ch)) {
-    let j = start + 1;
-    while (j < text.length && isDigit(text[j])) j += 1;
-    return { end: j, text: text.slice(start, j) };
-  }
-  if (isLetter(ch)) {
-    let j = start + 1;
-    while (j < text.length && (isLetter(text[j]) || isDigit(text[j]) || isSup(text[j]))) j += 1;
-    return { end: j, text: text.slice(start, j) };
-  }
-  return null;
+  if (start >= text.length || !isIdentChar(text[start])) return null;
+  let j = start + 1;
+  while (j < text.length && isIdentChar(text[j])) j += 1;
+  const token = text.slice(start, j);
+  if (![...token].some((ch) => isDigit(ch) || isLetter(ch) || isGreek(ch))) return null;
+  return { end: j, text: token };
+}
+
+function groupPair(ch) {
+  if (ch === ')') return '(';
+  if (ch === ']') return '[';
+  if (ch === '(') return ')';
+  if (ch === '[') return ']';
+  return '';
 }
 
 function readGroupBackward(text, closeIdx) {
+  const open = groupPair(text[closeIdx]);
+  if (open !== '(' && open !== '[') return null;
   let depth = 0;
   for (let i = closeIdx; i >= 0; i -= 1) {
-    if (text[i] === ')') depth += 1;
-    else if (text[i] === '(') {
+    if (text[i] === text[closeIdx]) depth += 1;
+    else if (text[i] === open) {
       depth -= 1;
       if (depth === 0) {
         const inner = text.slice(i + 1, closeIdx);
@@ -120,10 +127,12 @@ function readGroupBackward(text, closeIdx) {
 }
 
 function readGroupForward(text, openIdx) {
+  const close = groupPair(text[openIdx]);
+  if (close !== ')' && close !== ']') return null;
   let depth = 0;
   for (let j = openIdx; j < text.length; j += 1) {
-    if (text[j] === '(') depth += 1;
-    else if (text[j] === ')') {
+    if (text[j] === text[openIdx]) depth += 1;
+    else if (text[j] === close) {
       depth -= 1;
       if (depth === 0) {
         const inner = text.slice(openIdx + 1, j);
@@ -140,7 +149,7 @@ function readNumerator(text, slash) {
   let i = slash - 1;
   while (i >= 0 && text[i] === ' ') i -= 1;
   if (i < 0) return null;
-  if (text[i] === ')') {
+  if (text[i] === ')' || text[i] === ']') {
     const group = readGroupBackward(text, i);
     if (!group) return null;
     return { start: group.start, token: group.text, bareNumber: false };
@@ -170,7 +179,7 @@ function readDenominator(text, slash) {
   let i = slash + 1;
   while (i < text.length && text[i] === ' ') i += 1;
   if (i >= text.length) return null;
-  if (text[i] === '(') {
+  if (text[i] === '(' || text[i] === '[') {
     const group = readGroupForward(text, i);
     if (!group) return null;
     return { end: group.end, token: group.text };
@@ -197,6 +206,27 @@ function looksLikeTime(text, hit) {
   const before = text[hit.start - 1];
   const after = text[hit.end];
   return before === ':' || after === ':';
+}
+
+/** A spaced "N / 100" is a game score, not a quotient. `p/100` stays a fraction. */
+function isGameScore(hit) {
+  return /^\d+\s+\/\s+100$/.test(hit.text);
+}
+
+function isCssLength(token) {
+  return /^\d+(?:\.\d+)?(?:px|em|rem|vh|vw|dvh|dvw|ch|ex|%)$/i.test(token);
+}
+
+/** `8px / 8px` is a border-radius slash. `13px/1.5` is a font shorthand. */
+function isCssFraction(text, hit) {
+  if (isCssLength(hit.num) && isCssLength(hit.den)) return true;
+  if (!isCssLength(hit.num) || !/^\d+(?:\.\d+)?$/.test(hit.den)) return false;
+  const around = text.slice(Math.max(0, hit.start - 24), hit.start);
+  return /font(?:-size)?\s*:\s*[^\n]*$/i.test(around) || /line-height\s*:\s*$/i.test(around);
+}
+
+function isAspectRatio(line, hit) {
+  return Boolean(line) && /aspect-?ratio/i.test(line) && /^\d+$/.test(hit.num) && /^\d+$/.test(hit.den);
 }
 
 function isUnitOrWordPair(num, den) {
@@ -245,7 +275,8 @@ export function findSlashFractions(text) {
     let num = left.token;
     if (left.bareNumber && start > 0 && (text[start - 1] === '−' || text[start - 1] === '-')) {
       const prev = start === 1 ? '' : text[start - 2];
-      if (!/[A-Za-z0-9)]/.test(prev)) {
+      const prefixHyphen = text[start - 1] === '-' && /[\u0590-\u05FF]/.test(prev);
+      if (!prefixHyphen && !/[A-Za-z0-9)]/.test(prev)) {
         sign = text[start - 1];
         start -= 1;
       }
@@ -264,7 +295,9 @@ export function findSlashFractions(text) {
     }
     if (
       looksLikeTime(text, hit) ||
+      isGameScore(hit) ||
       isUnitOrWordPair(hit.num, hit.den) ||
+      isCssFraction(text, hit) ||
       isDate(text, hit) ||
       isProseIdent(hit.num) ||
       isProseIdent(hit.den)
@@ -316,6 +349,385 @@ function blankRegions(src) {
     .replace(/\s(?:href|src|srcset|poster|data-src)\s*=\s*'[^']*'/gi, (m) => ' '.repeat(m.length));
 }
 
+const BEFORE_EXPR = new Set([
+  'case', 'default', 'do', 'else', 'return', 'throw', 'new', 'in', 'instanceof',
+  'typeof', 'void', 'delete', 'extends', 'await', 'yield', 'of',
+]);
+const FN_STATEMENT_PREV = new Set(['eof', 'semi', 'else', 'do', 'try', 'finally', 'export', 'block-end', '{']);
+
+/**
+ * String and template literals. Regex literals are skipped so a quote inside
+ * `/["']/ ` does not look like the start of a string. `${...}` is scanned as
+ * code; its source is blanked in the template text.
+ */
+export function extractStrings(source) {
+  const pieces = [];
+  scanCode(source, 0, source.length, 1, pieces, false);
+  return pieces;
+}
+
+function scanCode(source, start, end, startLine, pieces, stopAtBrace) {
+  let i = start;
+  let line = startLine;
+  let exprAllowed = true;
+  let prevKind = 'eof';
+  let newlineSince = true;
+  /** @type {Array<'block'|'expr'|'fn-body'|{type:'fn',kind:'fn-expr'|'fn-stmt',params:number,paramsClosed:boolean,body:boolean}>} */
+  const stack = [];
+
+  const topFn = () => {
+    const top = stack[stack.length - 1];
+    return top && typeof top === 'object' && top.type === 'fn' && !top.body ? top : null;
+  };
+
+  while (i < end) {
+    const ch = source[i];
+    if (ch === '\n') {
+      line += 1;
+      newlineSince = true;
+      i += 1;
+      continue;
+    }
+    if (ch === ' ' || ch === '\t' || ch === '\r' || ch === '\f') {
+      i += 1;
+      continue;
+    }
+    if (ch === '/' && source[i + 1] === '/') {
+      while (i < end && source[i] !== '\n') i += 1;
+      continue;
+    }
+    if (ch === '/' && source[i + 1] === '*') {
+      i += 2;
+      while (i < end && !(source[i] === '*' && source[i + 1] === '/')) {
+        if (source[i] === '\n') {
+          line += 1;
+          newlineSince = true;
+        }
+        i += 1;
+      }
+      i = Math.min(end, i + 2);
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      const read = readQuoted(source, i, end, line);
+      pieces.push({ line, text: read.text, start: read.start, end: read.end });
+      i = read.i;
+      line = read.line;
+      exprAllowed = false;
+      prevKind = 'value';
+      newlineSince = false;
+      continue;
+    }
+    if (ch === '`') {
+      const read = readTemplate(source, i, end, line, pieces);
+      i = read.i;
+      line = read.line;
+      exprAllowed = false;
+      prevKind = 'value';
+      newlineSince = false;
+      continue;
+    }
+    if (ch === '/') {
+      if (exprAllowed) {
+        const next = skipRegexp(source, i, end);
+        if (next != null) {
+          i = next;
+          exprAllowed = false;
+          prevKind = 'value';
+          newlineSince = false;
+          continue;
+        }
+      }
+      i += 1;
+      if (source[i] === '=') i += 1;
+      exprAllowed = true;
+      prevKind = 'op';
+      newlineSince = false;
+      continue;
+    }
+    if (ch >= '0' && ch <= '9') {
+      i += 1;
+      while (i < end && /[0-9A-Za-z_.]/.test(source[i])) i += 1;
+      exprAllowed = false;
+      prevKind = 'value';
+      newlineSince = false;
+      continue;
+    }
+    if (isIdentStart(ch)) {
+      const wordStart = i;
+      i += 1;
+      while (i < end && isIdentPart(source[i])) i += 1;
+      const word = source.slice(wordStart, i);
+      if (word === 'function' || (word === 'async' && keywordAhead(source, i, end, 'function'))) {
+        if (word === 'async') {
+          while (i < end && (source[i] === ' ' || source[i] === '\t')) i += 1;
+          i += 'function'.length;
+        }
+        const kind = FN_STATEMENT_PREV.has(prevKind) || (prevKind === 'return' && newlineSince) ? 'fn-stmt' : 'fn-expr';
+        stack.push({ type: 'fn', kind, params: 0, paramsClosed: false, body: false });
+        exprAllowed = false;
+        prevKind = 'function';
+        newlineSince = false;
+        continue;
+      }
+      if (word === 'export') {
+        exprAllowed = true;
+        prevKind = 'export';
+        newlineSince = false;
+        continue;
+      }
+      if (BEFORE_EXPR.has(word)) {
+        exprAllowed = true;
+        prevKind = word === 'return' || word === 'else' || word === 'do' || word === 'throw' || word === 'yield' ? word : 'op';
+      } else {
+        exprAllowed = false;
+        prevKind = word === 'const' || word === 'let' || word === 'var' ? word : 'ident';
+      }
+      newlineSince = false;
+      continue;
+    }
+    if (ch === '{') {
+      const fn = topFn();
+      if (fn && fn.paramsClosed) {
+        fn.body = true;
+        stack.push('fn-body');
+      } else if (isBlockBrace(prevKind, exprAllowed, newlineSince, stack)) {
+        stack.push('block');
+      } else {
+        stack.push('expr');
+      }
+      exprAllowed = true;
+      prevKind = '{';
+      newlineSince = false;
+      i += 1;
+      continue;
+    }
+    if (ch === '}') {
+      if (stack.length === 0 && stopAtBrace) return { i: i + 1, line };
+      const frame = stack.pop();
+      if (frame === 'fn-body') {
+        const fn = stack.pop();
+        exprAllowed = !fn || fn.kind === 'fn-stmt';
+        prevKind = exprAllowed ? 'block-end' : 'expr-end';
+      } else if (frame === 'block') {
+        exprAllowed = true;
+        prevKind = 'block-end';
+      } else {
+        exprAllowed = false;
+        prevKind = 'expr-end';
+      }
+      newlineSince = false;
+      i += 1;
+      continue;
+    }
+    if (ch === '(') {
+      const fn = topFn();
+      if (fn && !fn.body) fn.params += 1;
+      exprAllowed = true;
+      prevKind = '(';
+      newlineSince = false;
+      i += 1;
+      continue;
+    }
+    if (ch === ')') {
+      const fn = topFn();
+      if (fn && !fn.body && fn.params > 0) {
+        fn.params -= 1;
+        if (fn.params === 0) fn.paramsClosed = true;
+      }
+      exprAllowed = false;
+      prevKind = ')';
+      newlineSince = false;
+      i += 1;
+      continue;
+    }
+    if (ch === '.' && source[i + 1] === '.' && source[i + 2] === '.') {
+      i += 3;
+      exprAllowed = true;
+      prevKind = 'op';
+      newlineSince = false;
+      continue;
+    }
+    if (ch === '=' && source[i + 1] === '>') {
+      i += 2;
+      exprAllowed = true;
+      prevKind = '=>';
+      newlineSince = false;
+      continue;
+    }
+    if (ch === '+' && source[i + 1] === '+' || ch === '-' && source[i + 1] === '-') {
+      i += 2;
+      newlineSince = false;
+      continue;
+    }
+    if (ch === '?' && source[i + 1] === '.') {
+      i += 2;
+      exprAllowed = false;
+      prevKind = '.';
+      newlineSince = false;
+      continue;
+    }
+    if (ch === '?' && source[i + 1] === '?') {
+      i += 2;
+      exprAllowed = true;
+      prevKind = 'op';
+      newlineSince = false;
+      continue;
+    }
+    if (ch === ']') {
+      exprAllowed = false;
+      prevKind = 'value';
+      newlineSince = false;
+      i += 1;
+      continue;
+    }
+    if ('=+-*%&|^!~,:;?<>['.includes(ch)) {
+      if ((ch === '=' || ch === '!' || ch === '<' || ch === '>') && source[i + 1] === '=') {
+        i += source[i + 2] === '=' ? 3 : 2;
+      } else if ((ch === '&' || ch === '|') && source[i + 1] === ch) {
+        i += 2;
+      } else if (ch === '*' && source[i + 1] === '*') {
+        i += 2;
+      } else if ('+-*%&|^'.includes(ch) && source[i + 1] === '=') {
+        i += 2;
+      } else {
+        i += 1;
+      }
+      exprAllowed = true;
+      prevKind = ch === ';' ? 'semi' : 'op';
+      newlineSince = false;
+      continue;
+    }
+    if (ch === '.') {
+      exprAllowed = false;
+      prevKind = '.';
+      newlineSince = false;
+      i += 1;
+      continue;
+    }
+    i += 1;
+  }
+  return { i, line };
+}
+
+function isBlockBrace(prevKind, exprAllowed, newlineSince, stack) {
+  if (prevKind === '=>' || prevKind === 'else' || prevKind === 'do' || prevKind === 'try' || prevKind === 'finally' || prevKind === 'semi' || prevKind === 'eof' || prevKind === ')' || prevKind === 'block-end') {
+    return true;
+  }
+  if (prevKind === '{') {
+    const top = stack[stack.length - 1];
+    return top === 'block' || top === 'fn-body';
+  }
+  if (prevKind === 'return' || prevKind === 'yield' || prevKind === 'throw') return newlineSince;
+  if (prevKind === 'var' || prevKind === 'let' || prevKind === 'const') return false;
+  return !exprAllowed;
+}
+
+function isIdentStart(ch) {
+  return /[A-Za-z_$]/.test(ch || '') || (ch && ch.codePointAt(0) > 127 && /[\p{L}]/u.test(ch));
+}
+function isIdentPart(ch) {
+  return /[A-Za-z0-9_$]/.test(ch || '') || (ch && ch.codePointAt(0) > 127 && /[\p{L}\p{N}]/u.test(ch));
+}
+
+function keywordAhead(source, i, end, word) {
+  while (i < end && (source[i] === ' ' || source[i] === '\t' || source[i] === '\n' || source[i] === '\r')) i += 1;
+  return source.slice(i, i + word.length) === word && !isIdentPart(source[i + word.length] || '');
+}
+
+function readQuoted(source, i, end, line) {
+  const quote = source[i];
+  const start = i + 1;
+  i += 1;
+  let text = '';
+  while (i < end) {
+    if (source[i] === '\n') line += 1;
+    if (source[i] === '\\') {
+      text += source[i + 1] === '\n' ? '\n' : source[i + 1] || '';
+      if (source[i + 1] === '\n') line += 1;
+      i += 2;
+      continue;
+    }
+    if (source[i] === quote) {
+      i += 1;
+      break;
+    }
+    text += source[i];
+    i += 1;
+  }
+  return { i, line, text, start, end: i - 1 };
+}
+
+function readTemplate(source, i, end, line, pieces) {
+  const startLine = line;
+  i += 1;
+  let text = '';
+  while (i < end) {
+    if (source[i] === '\\') {
+      text += source[i + 1] === '\n' ? '\n' : source[i + 1] || '';
+      if (source[i + 1] === '\n') line += 1;
+      i += 2;
+      continue;
+    }
+    if (source[i] === '`') {
+      i += 1;
+      break;
+    }
+    if (source[i] === '$' && source[i + 1] === '{') {
+      const from = i;
+      const nested = scanCode(source, i + 2, end, line, pieces, true);
+      text += source.slice(from, nested.i).replace(/[^\n]/g, ' ');
+      i = nested.i;
+      line = nested.line;
+      continue;
+    }
+    if (source[i] === '\n') line += 1;
+    text += source[i];
+    i += 1;
+  }
+  pieces.push({ line: startLine, text });
+  return { i, line };
+}
+
+/** End index of a regex literal starting at `i`, or null when it does not close. */
+function skipRegexp(source, i, end) {
+  let j = i + 1;
+  let inClass = false;
+  while (j < end) {
+    const c = source[j];
+    if (c === '\n') return null;
+    if (c === '\\') {
+      j += 2;
+      continue;
+    }
+    if (inClass) {
+      if (c === ']') inClass = false;
+      j += 1;
+      continue;
+    }
+    if (c === '[') {
+      inClass = true;
+      j += 1;
+      continue;
+    }
+    if (c === '/') {
+      j += 1;
+      while (j < end && /[a-z]/i.test(source[j])) j += 1;
+      return j;
+    }
+    j += 1;
+  }
+  return null;
+}
+
+function lineOfOffset(text, offset) {
+  let line = 1;
+  for (let i = 0; i < offset && i < text.length; i += 1) {
+    if (text[i] === '\n') line += 1;
+  }
+  return line;
+}
+
 function stripLineComment(line) {
   let quote = '';
   for (let i = 0; i < line.length; i += 1) {
@@ -361,11 +773,9 @@ function quotedPieces(line) {
   return pieces;
 }
 
-function textNodes(line) {
-  const pieces = [];
-  const re = />([^<]*)</g;
-  for (const match of line.matchAll(re)) pieces.push(match[1]);
-  return pieces;
+/** Text that is not inside a tag, including a line that is only text. */
+function visibleLine(line) {
+  return line.replace(/<[^>]*>/g, ' ');
 }
 
 function skipQuotedPath(piece) {
@@ -377,33 +787,180 @@ function skipQuotedPath(piece) {
 /**
  * @returns {Array<{file:string,line:number,text:string}>}
  */
+function pushHits(findings, rel, snippets, lineNo, piece, sourceLine = '') {
+  if (!piece || !piece.includes('/')) return;
+  if (skipQuotedPath(piece)) return;
+  for (const hit of findSlashFractions(piece)) {
+    if (allowed(rel, hit, snippets)) continue;
+    const lineOff = lineOfOffset(piece, hit.start) - 1;
+    if (lineOff === 0 && isAspectRatio(sourceLine, hit)) continue;
+    findings.push({ file: rel, line: lineNo + lineOff, text: hit.text });
+  }
+}
+
+function scanCodeStrings(rel, source, baseLine, snippets, findings) {
+  const lines = source.split('\n');
+  for (const piece of extractStrings(source)) {
+    const head = lines[piece.line - 1] || '';
+    if (/^\s*import\b/.test(head)) continue;
+    pushHits(findings, rel, snippets, baseLine + piece.line - 1, piece.text, head);
+  }
+}
+
+/**
+ * Astro and HTML `{...}` expressions are code. Blank the ones that are not
+ * JSX, and keep scanning the strings inside them. JSX children stay visible.
+ */
+function blankMarkupExpressions(rel, source, baseLine, snippets, findings) {
+  const chars = [...source];
+  function walk(from, to) {
+    let i = from;
+    while (i < to) {
+      if (chars[i] !== '{') {
+        i += 1;
+        continue;
+      }
+      const end = matchBrace(chars, i, to);
+      if (end < 0) {
+        i += 1;
+        continue;
+      }
+      if (!regionHasJsx(chars, i + 1, end)) {
+        const code = chars.slice(i + 1, end).join('');
+        const line = baseLine + lineOfOffset(source, i) - 1;
+        scanCodeStrings(rel, code, line, snippets, findings);
+        for (let k = i + 1; k < end; k += 1) {
+          if (chars[k] !== '\n') chars[k] = ' ';
+        }
+      } else {
+        walk(i + 1, end);
+      }
+      i = end + 1;
+    }
+  }
+  walk(0, chars.length);
+  return chars.join('');
+}
+
+function matchBrace(chars, open, limit) {
+  let depth = 0;
+  let i = open;
+  /** @type {number[]} */
+  const templateResume = [];
+  let inTemplate = false;
+  while (i < limit) {
+    const ch = chars[i];
+    if (!inTemplate && ch === '/' && chars[i + 1] === '/') {
+      while (i < limit && chars[i] !== '\n') i += 1;
+      continue;
+    }
+    if (!inTemplate && ch === '/' && chars[i + 1] === '*') {
+      i += 2;
+      while (i < limit && !(chars[i] === '*' && chars[i + 1] === '/')) i += 1;
+      i = Math.min(limit, i + 2);
+      continue;
+    }
+    if (!inTemplate && (ch === '"' || ch === "'")) {
+      const quote = ch;
+      i += 1;
+      while (i < limit) {
+        if (chars[i] === '\\') {
+          i += 2;
+          continue;
+        }
+        if (chars[i] === quote) {
+          i += 1;
+          break;
+        }
+        i += 1;
+      }
+      continue;
+    }
+    if (!inTemplate && ch === '`') {
+      inTemplate = true;
+      i += 1;
+      continue;
+    }
+    if (inTemplate) {
+      if (ch === '\\') {
+        i += 2;
+        continue;
+      }
+      if (ch === '`') {
+        inTemplate = false;
+        i += 1;
+        continue;
+      }
+      if (ch === '$' && chars[i + 1] === '{') {
+        i += 2;
+        depth += 1;
+        templateResume.push(depth - 1);
+        inTemplate = false;
+        continue;
+      }
+      i += 1;
+      continue;
+    }
+    if (ch === '{') depth += 1;
+    else if (ch === '}') {
+      depth -= 1;
+      if (templateResume.length && depth === templateResume[templateResume.length - 1]) {
+        templateResume.pop();
+        inTemplate = true;
+      }
+      if (depth === 0) return i;
+    }
+    i += 1;
+  }
+  return -1;
+}
+
+function regionHasJsx(chars, from, to) {
+  let i = from;
+  while (i < to) {
+    const ch = chars[i];
+    if (ch === '"' || ch === "'" || ch === '`') {
+      const quote = ch;
+      i += 1;
+      while (i < to) {
+        if (chars[i] === '\\') {
+          i += 2;
+          continue;
+        }
+        if (chars[i] === quote) {
+          i += 1;
+          break;
+        }
+        i += 1;
+      }
+      continue;
+    }
+    if (ch === '<' && /[A-Za-z/!]/.test(chars[i + 1] || '')) return true;
+    i += 1;
+  }
+  return false;
+}
+
 export function scanSource(rel, source, snippets = []) {
   const findings = [];
-  const push = (lineNo, piece) => {
-    if (!piece || !piece.includes('/')) return;
-    if (skipQuotedPath(piece)) return;
-    for (const hit of findSlashFractions(piece)) {
-      if (allowed(rel, hit, snippets)) continue;
-      findings.push({ file: rel, line: lineNo, text: hit.text });
-    }
-  };
+  const push = (lineNo, piece, sourceLine = '') => pushHits(findings, rel, snippets, lineNo, piece, sourceLine);
 
   const markup = rel.endsWith('.astro') || rel.endsWith('.html');
   if (markup) {
     const fm = rel.endsWith('.astro') ? source.match(/^---\n([\s\S]*?)\n---/) : null;
-    if (fm) {
-      fm[1].split('\n').forEach((raw, idx) => {
-        const line = stripLineComment(raw);
-        if (/^\s*(?:import|export)\b/.test(line)) return;
-        for (const piece of quotedPieces(line)) push(idx + 2, piece);
-      });
-    }
-    const body = blankRegions(fm ? source.slice(fm[0].length) : source);
+    if (fm) scanCodeStrings(rel, fm[1], 2, snippets, findings);
+    const body = fm ? source.slice(fm[0].length) : source;
     const bodyStartLine = fm ? fm[0].split('\n').length : 1;
-    body.split('\n').forEach((raw, idx) => {
+    const scriptRe = /<script\b[^>]*>([\s\S]*?)<\/script>/gi;
+    for (const match of body.matchAll(scriptRe)) {
+      const start = bodyStartLine + lineOfOffset(body, match.index || 0) - 1;
+      scanCodeStrings(rel, match[1], start, snippets, findings);
+    }
+    const masked = blankMarkupExpressions(rel, blankRegions(body), bodyStartLine, snippets, findings);
+    masked.split('\n').forEach((raw, idx) => {
       const lineNo = bodyStartLine + idx;
       const line = stripLineComment(raw);
-      for (const piece of textNodes(line)) push(lineNo, piece);
+      push(lineNo, visibleLine(line), line);
       const attrs = line.matchAll(/\s(?:aria-label|alt|title)\s*=\s*"([^"]*)"/gi);
       for (const match of attrs) push(lineNo, match[1]);
       const attrsSingle = line.matchAll(/\s(?:aria-label|alt|title)\s*=\s*'([^']*)'/gi);
@@ -438,16 +995,16 @@ export function scanSource(rel, source, snippets = []) {
     return findings;
   }
 
+  const code = rel.endsWith('.ts') || rel.endsWith('.tsx') || rel.endsWith('.js') || rel.endsWith('.mjs');
+  if (code) {
+    scanCodeStrings(rel, source, 1, snippets, findings);
+    return findings;
+  }
   const masked = blankRegions(source);
-  const lines = masked.split('\n');
-  const codeOnly = rel.endsWith('.ts') || rel.endsWith('.tsx') || rel.endsWith('.js') || rel.endsWith('.mjs');
-  lines.forEach((raw, idx) => {
+  masked.split('\n').forEach((raw, idx) => {
     const line = stripLineComment(raw);
-    if (/^\s*(?:import|export)\b/.test(line)) return;
-    for (const piece of quotedPieces(line)) push(idx + 1, piece);
-    if (!codeOnly) {
-      for (const piece of textNodes(line)) push(idx + 1, piece);
-    }
+    if (/^\s*import\b/.test(line)) return;
+    push(idx + 1, visibleLine(line));
   });
   return findings;
 }
@@ -469,11 +1026,16 @@ function walk(dir, out, root) {
       walk(abs, out, root);
       continue;
     }
-    if (rel.includes('/public/') && !rel.endsWith('.html')) continue;
+    if (rel.includes('/public/') && !rel.endsWith('.html') && !rel.endsWith('.js')) continue;
     const dot = name.lastIndexOf('.');
     const ext = dot >= 0 ? name.slice(dot) : '';
     if (!SCAN_EXT.has(ext)) continue;
-    if ((ext === '.ts' || ext === '.tsx' || ext === '.js' || ext === '.mjs') && !rel.includes('/src/lib/topicFilms/')) continue;
+    const code = ext === '.ts' || ext === '.tsx' || ext === '.js' || ext === '.mjs';
+    const codeAllowed =
+      rel.includes('/src/lib/topicFilms/') ||
+      rel.endsWith('/src/lib/conceptLoops.ts') ||
+      rel.includes('/public/');
+    if (code && !codeAllowed) continue;
     out.push(rel);
   }
 }

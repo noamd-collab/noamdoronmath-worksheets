@@ -94,6 +94,90 @@ describe('scanSource', () => {
   });
 });
 
+describe('review gaps', () => {
+  it('flags algebraic quotients and keeps the documented non-fractions', () => {
+    for (const sample of ['2x/3', 'π/2', '2a/3b', '(a+b)/2', 'p/100', '8/100']) {
+      assert.equal(findSlashFractions(sample)[0].text, sample, sample);
+    }
+    const quiet = [
+      'בית / כיתה',
+      '01 / מתחילים',
+      'יחידות/סימנים',
+      '7 / 100',
+      '90 km/h',
+      '12 m/s',
+      'and/or',
+      'עודכן ב־18/10/2026',
+      'https://example.com/a/b',
+      'src/pages/index.astro',
+      'border-radius:8px / 8px',
+      'font:16px/1.5 Heebo',
+    ];
+    for (const sample of quiet) {
+      assert.deepEqual(findSlashFractions(sample), [], sample);
+    }
+    assert.equal(replaceSlashFractions('ב-3/4 המכנה'), 'ב-⟨3¦4⟩ המכנה');
+  });
+
+  it('flags template text, a string after a tag, and an export string', () => {
+    const astro = [
+      '<p>',
+      '3/4',
+      '</p>',
+      '</span> (a+b)/2',
+      '<p>{Math.floor(m / 5)}</p>',
+      '{cond && (<em>2x/3</em>)}',
+      '<script>',
+      'const code = (a+b)/2;',
+      'const shown = "π/2";',
+      'const re = /"/g;',
+      'const after = "2a/3b";',
+      '</script>',
+      '',
+    ].join('\n');
+    const hits = scanSource('headless/astro-poc/src/pages/gap.astro', astro, []);
+    assert.deepEqual(
+      hits.map((hit) => `${hit.line}: ${hit.text}`).sort(),
+      ['11: 2a/3b', '2: 3/4', '4: (a+b)/2', '6: 2x/3', '9: π/2'],
+    );
+  });
+
+  it('flags svg text inside a topicFilms string and an exported string', () => {
+    const source = [
+      'export const svg = `<svg><text>3/4</text></svg>`;',
+      'export const X = "1/2";',
+      'const hidden = (a+b)/2;',
+      'import film from "./grades/a/b";',
+      'stage.style.aspectRatio = "4 / 3";',
+      '',
+    ].join('\n');
+    const hits = scanSource('headless/astro-poc/src/lib/topicFilms/gap.ts', source, []);
+    assert.deepEqual(
+      hits.map((hit) => `${hit.line}: ${hit.text}`),
+      ['1: 3/4', '2: 1/2'],
+    );
+  });
+
+  it('scans conceptLoops.ts and public JavaScript', () => {
+    const files = filesToScan();
+    assert.equal(files.some((file) => file.endsWith('/src/lib/conceptLoops.ts')), true);
+    assert.equal(files.some((file) => file === 'headless/astro-poc/public/noam-glossary.js'), true);
+    const root = mkdtempSync(join(tmpdir(), 'slash-gap-'));
+    const rel = 'headless/astro-poc/public/gap.js';
+    mkdirSync(join(root, 'headless/astro-poc/public'), { recursive: true });
+    writeFileSync(join(root, rel), 'export const label = "3/4";\nconst code = (a+b)/2;\n');
+    try {
+      const hits = checkTree(root, []);
+      assert.deepEqual(
+        hits.filter((hit) => hit.file === rel).map((hit) => `${hit.line}: ${hit.text}`),
+        ['1: 3/4'],
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});
+
 describe('repository', () => {
   it('has no slash fractions in visible site text', () => {
     const hits = checkTree();

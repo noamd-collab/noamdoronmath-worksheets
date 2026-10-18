@@ -25,6 +25,10 @@
  * can import them; that file is pinned here too. Not a silent regen.
  * ConceptLoop.astro moved again so the kite-construct aria names the
  * division with חלקי instead of an ASCII slash (Noam, 18.10.2026).
+ * The viewer released scripts moved again so the glossary and the
+ * fraction key draw a horizontal bar instead of an ASCII slash
+ * (Noam, 18.10.2026). Glossary files are not in this fence. Not a
+ * silent regen.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -115,7 +119,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // touch-target rail; mobile layout/panel/pin tests cover these changes.
     // PR124 intentionally updates the shared viewer to anchor Ramzi to printed
     // question markers. Dedicated printed-pin fixtures cover that behavior.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e80fe08884059830c858c96f6560b1dfa58013f092e5a1d4d76dc1f93a06627a');
+    // Glossary text and the fraction key use a horizontal bar (Noam, 18.10.2026).
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '5a9b4d95267242e91e174f0a433c480d428235a95f7d4408f89d392cdcd94b2a');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

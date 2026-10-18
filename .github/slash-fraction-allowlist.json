@@ -11,7 +11,7 @@
     },
     {
       "id": "comments-code-style",
-      "reason": "Comments, non-string code, <script>, <style>, and style attributes (including border-radius and aspect-ratio)."
+      "reason": "Comments, non-string code, and <style>. String literals inside <script>, topicFilms, conceptLoops.ts, and public JavaScript are scanned. A slash in real code, including Math.floor(m / 5) inside an Astro expression, is not a fraction. CSS lengths (8px / 8px), font shorthand (16px/1.5), and aspect-ratio (4 / 3) are not fractions."
     },
     {
       "id": "units",
@@ -19,7 +19,7 @@
     },
     {
       "id": "and-or",
-      "reason": "Word pairs such as and/or, w/o, n/a, and Hebrew pairs the grammar does not treat as quotients (יחידות/סימנים)."
+      "reason": "Word pairs such as and/or, w/o, and n/a. Hebrew pairs such as יחידות/סימנים are not quotients: the grammar does not treat Hebrew words as a numerator or a denominator. The snippet below records the review of algebraic-expressions-grade-7.json."
     },
     {
       "id": "dates",
@@ -35,7 +35,7 @@
     },
     {
       "id": "step-kickers",
-      "reason": "Kite-area film step labels (01 / מתחילים מדלתון) are a number plus a Hebrew title, not a quotient."
+      "reason": "Step labels such as 01 / מתחילים are a number plus a Hebrew title, not a quotient. The kite-area film uses this form (01 / מתחילים מדלתון)."
     },
     {
       "id": "removed-orphan",
@@ -43,7 +43,11 @@
     },
     {
       "id": "crumbs",
-      "reason": "Breadcrumb separators are a lone '/' between links, not a numerator over a denominator."
+      "reason": "Breadcrumb separators such as בית / כיתה are a lone '/' between Hebrew words, not a numerator over a denominator."
+    },
+    {
+      "id": "game-scores",
+      "reason": "A spaced game score N / 100, such as 7 / 100, is a score out of 100. A tight fraction stays a fraction, including p/100 and 8/100."
     }
   ],
   "snippets": [
