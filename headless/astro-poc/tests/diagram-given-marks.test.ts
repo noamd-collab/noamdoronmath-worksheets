@@ -182,3 +182,13 @@ describe('viewer reads source givens from the approved package data', () => {
     assert.deepEqual(JSON.parse(JSON.stringify(await run('/noam-ai/native/../x/a/figures/q1_head.svg', 'q1'))), []);
   });
 });
+
+describe('evidence source spoofing', () => {
+  it('rejects a hint-only equality labelled source "question" (grounded against the question text only)', () => {
+    const p = clone(fixture.plan);
+    p.equalGroups = [{ segments: [['P', 'S'], ['R', 'S']], count: 1, color: 'teal' }];
+    p.evidence = [{ mark: 'equalGroups.0', source: 'question', quote: 'PS=RS' }];
+    const r = Plan.inspect(p, { ...fixture.context, hintText: fixture.context.hintText + ' PS=RS.' });
+    assert.equal(r.reason, 'unproven_evidence');
+  });
+});
