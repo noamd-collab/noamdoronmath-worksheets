@@ -8864,7 +8864,9 @@ function esc(s){
     transcript.querySelectorAll('.noam-row.assistant').forEach(function(row){
       if(!row.querySelector('.noam-retry-action')){return;}
       row.querySelectorAll('.exact-hint-head').forEach(function(head){head.remove();});
-      row.classList.remove('exact-hint','exact-overview','exact-success');
+      ['exact-hint','exact-overview','exact-success'].forEach(function(name){
+        if(row.classList.contains(name)){row.classList.remove(name);}
+      });
     });
   }
   function userContent(row){
@@ -8967,6 +8969,7 @@ function esc(s){
       // No answer exists to explain. Keep both understanding controls, but lead
       // to the real recovery action without another paid request or fake reply.
       pendingCheckFocus=false;
+      if(last.classList.contains('is-dismissed')){last.classList.remove('is-dismissed');}
       retry.focus();
       return;
     }
@@ -9037,8 +9040,10 @@ function esc(s){
         var bubble=next.querySelector('.noam-bubble');
         if(bubble){bubble.prepend(head);}
       }
-      if(label==='הסבר כללי'&&!next.classList.contains('exact-overview')){next.classList.add('exact-overview');}
-      if(next.dataset.ramziConfirmed==='1'&&!next.classList.contains('exact-success')){next.classList.add('exact-success');}
+      if(!next.querySelector('.noam-retry-action')){
+        if(label==='הסבר כללי'&&!next.classList.contains('exact-overview')){next.classList.add('exact-overview');}
+        if(next.dataset.ramziConfirmed==='1'&&!next.classList.contains('exact-success')){next.classList.add('exact-success');}
+      }
     });
     transcript.querySelectorAll('.noam-row.assistant').forEach(function(row){
       var retry=row.querySelector('.noam-retry-action');

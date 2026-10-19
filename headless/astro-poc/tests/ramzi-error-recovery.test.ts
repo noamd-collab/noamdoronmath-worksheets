@@ -37,6 +37,11 @@ test('security failure stays an error with its retry action through repeated dec
   assert.equal(document.querySelectorAll('.ramzi-check button').length, 2);
   assert.equal(document.querySelectorAll('.noam-row').length, 2);
   assert.equal(focusCount, 6);
+  const row = document.querySelector('.noam-row.assistant')!;
+  row.classList.add('is-dismissed');
+  api.submitUnderstanding('not-understood');
+  assert.equal(row.classList.contains('is-dismissed'), false, 'retry must be visible before focusing it');
+  assert.equal(focusCount, 7);
 });
 
 test('a successful geometry hint exposes drawing without special user wording; failure and existing drawings do not', () => {
@@ -55,4 +60,25 @@ test('a successful geometry hint exposes drawing without special user wording; f
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, { ...answer, answerError: true }), false);
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, thread, { ...answer, visual: { type: 'ai-diagram' } }), false);
   assert.equal(api.noamCanOfferDrawing({ id: 'kite' }, { messages: [{ ...user, kind: '', text: 'שלום' }, answer] }, answer), false);
+});
+
+test('decorating stable hint and overview failures does not retrigger the class MutationObserver', async () => {
+  for (const kind of ['רמז 1', 'הסבר כללי']) {
+    const { document, window } = parseHTML(`<html><body><div id="panel"><div id="noamTranscript">
+      <div class="noam-row user"><div class="noam-bubble"><span class="noam-kind">${kind}</span></div></div>
+      <div class="noam-row assistant" data-ramzi-confirmed="1"><div class="noam-bubble"><span>בדיקת האבטחה נכשלה</span><button class="noam-retry-action">נסו שוב</button></div></div>
+    </div></div></body></html>`);
+    const api = runInNewContext(functions + '\n({decorateConversation})', {
+      document, window: {}, panelBody: document.querySelector('#panel'), pendingCheckFocus: false,
+      schedule() {}, veilStudentPrompts() {}, replayLocalChecks() {}, prefixRetryLead() {}, isolateMath() {}, shapeReading() {},
+    });
+    api.decorateConversation();
+    const mutations: any[] = [];
+    const observer = new window.MutationObserver(records => mutations.push(...records));
+    observer.observe(document.querySelector('#panel')!, { attributes: true, subtree: true, attributeFilter: ['class'], childList: true });
+    api.decorateConversation(); api.decorateConversation();
+    await new Promise(resolve => setImmediate(resolve));
+    mutations.push(...observer.takeRecords()); observer.disconnect();
+    assert.equal(mutations.length, 0, kind + ': stable decoration must not schedule another sync');
+  }
 });
