@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 247 117" width="247" height="117">
+<g data-layer="lines">
+<line id="e0001" data-seg="DE" x1="26" y1="90.62" x2="92.38" y2="90.62" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="DF" x1="26" y1="90.62" x2="67.89" y2="52.91" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="EF" x1="92.38" y1="90.62" x2="67.89" y2="52.91" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="GH" x1="154.62" y1="90.62" x2="221" y2="90.62" stroke="#000000" stroke-width="1.5"/>
+<line id="e0005" data-seg="GK" x1="154.62" y1="90.62" x2="196.34" y2="26.38" stroke="#000000" stroke-width="1"/>
+<line id="e0006" data-seg="HK" x1="221" y1="90.62" x2="196.34" y2="26.38" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0007" data-mark="arc DEF" d="M 82.49 90.62 L 82.51 89.96 L 82.57 89.31 L 82.68 88.66 L 82.83 88.03 L 83.03 87.4 L 83.26 86.79 L 83.53 86.19 L 83.85 85.61 L 84.2 85.06 L 84.58 84.53 L 85.01 84.03 L 85.46 83.55 L 85.94 83.11 L 86.45 82.7 L 86.99 82.32" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0008" data-mark="arc2 EDF" d="M 35 90.62 L 34.98 90.02 L 34.92 89.42 L 34.82 88.83 L 34.68 88.25 L 34.51 87.68 L 34.29 87.12 L 34.04 86.57 L 33.75 86.05 L 33.43 85.54 L 33.08 85.06 L 32.69 84.6" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0009" data-mark="arc2 EDF" d="M 38 90.62 L 37.97 89.82 L 37.89 89.03 L 37.76 88.24 L 37.58 87.46 L 37.34 86.7 L 37.05 85.95 L 36.72 85.22 L 36.34 84.52 L 35.91 83.85 L 35.43 83.2 L 34.92 82.59" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0010" data-mark="arc3 GHK" d="M 206.4 90.62 L 206.43 89.64 L 206.53 88.67 L 206.69 87.71 L 206.92 86.76 L 207.21 85.83 L 207.56 84.91 L 207.97 84.03 L 208.44 83.17 L 208.96 82.35 L 209.54 81.56 L 210.18 80.82 L 210.86 80.12 L 211.58 79.46 L 212.35 78.86 L 213.15 78.3 L 213.99 77.81 L 214.87 77.37 L 215.77 76.99" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0011" data-mark="arc3 GHK" d="M 203.4 90.62 L 203.44 89.44 L 203.55 88.27 L 203.75 87.11 L 204.02 85.97 L 204.37 84.84 L 204.8 83.74 L 205.29 82.67 L 205.86 81.64 L 206.49 80.65 L 207.19 79.7 L 207.95 78.8 L 208.77 77.96 L 209.65 77.17 L 210.57 76.44 L 211.54 75.77 L 212.56 75.17 L 213.61 74.64 L 214.69 74.19" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0012" data-mark="arc3 GHK" d="M 200.4 90.62 L 200.44 89.24 L 200.58 87.87 L 200.81 86.51 L 201.13 85.17 L 201.54 83.86 L 202.03 82.57 L 202.61 81.32 L 203.28 80.11 L 204.02 78.95 L 204.84 77.84 L 205.73 76.79 L 206.69 75.8 L 207.71 74.88 L 208.79 74.02 L 209.93 73.24 L 211.12 72.54 L 212.35 71.92 L 213.62 71.38" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0013" data-mark="arc HGK" d="M 168.31 90.62 L 168.28 89.71 L 168.19 88.81 L 168.04 87.91 L 167.83 87.03 L 167.57 86.16 L 167.24 85.31 L 166.86 84.49 L 166.43 83.69 L 165.95 82.92 L 165.41 82.19 L 164.83 81.49 L 164.2 80.84 L 163.53 80.22 L 162.82 79.66 L 162.08 79.14" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0014" data-pt="D" cx="26" cy="90.62" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0015" data-pt="E" cx="92.38" cy="90.62" r="2" fill="#000000" stroke="none"/>
+<circle id="e0016" data-pt="F" cx="67.89" cy="52.91" r="2" fill="#000000" stroke="none"/>
+<circle id="e0017" data-pt="G" cx="154.62" cy="90.62" r="2" fill="#000000" stroke="none"/>
+<circle id="e0018" data-pt="H" cx="221" cy="90.62" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0019" data-pt="K" cx="196.34" cy="26.38" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0020" data-for="ang DEF" x="71.19" y="84.95" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">57°</text>
+<text id="e0021" data-for="ang EDF" x="49.62" y="85.29" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">42°</text>
+<text id="e0022" data-for="ang GHK" x="193.28" y="75.3" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">69°</text>
+<text id="e0023" data-for="ang HGK" x="180.08" y="85.4" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">57°</text>
+<text id="e0024" data-for="D" x="16.45" y="98.72" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">D</text>
+<text id="e0025" data-for="E" x="101.18" y="99.83" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">E</text>
+<text id="e0026" data-for="F" x="69.12" y="48.03" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">F</text>
+<text id="e0027" data-for="G" x="145.28" y="100.12" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">G</text>
+<text id="e0028" data-for="H" x="229.79" y="101.1" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">H</text>
+<text id="e0029" data-for="K" x="197.32" y="21.48" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">K</text>
+</g>
+</svg>

@@ -1,0 +1,6545 @@
+{
+ "schema_version": "noam-ai/v1",
+ "package": "G8-T10",
+ "level": "b",
+ "curriculum": {
+  "grade": "8",
+  "track": "ח",
+  "topic": "slope_linear",
+  "unit": "קצב שינוי, שיפוע, ייצוג אלגברי של פונקציה ליניארית",
+  "allowed_tools": [
+   {
+    "id": "g7.coordinate_system.1",
+    "name": "מערכת צירים והרחבתה"
+   },
+   {
+    "id": "g7.directed_numbers.1",
+    "name": "הכרה"
+   },
+   {
+    "id": "g7.directed_numbers.2",
+    "name": "חיבור"
+   },
+   {
+    "id": "g7.directed_numbers.3",
+    "name": "חיסור"
+   },
+   {
+    "id": "g7.directed_numbers.4",
+    "name": "כפל וחילוק"
+   },
+   {
+    "id": "g7.angles.1",
+    "name": "סימון"
+   },
+   {
+    "id": "g7.angles.2",
+    "name": "מדידה"
+   },
+   {
+    "id": "g7.angles.3",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "g7.angles.4",
+    "name": "סכום והפרש"
+   },
+   {
+    "id": "g7.angles.5",
+    "name": "צמודות וקודקודיות"
+   },
+   {
+    "id": "g7.angles.6",
+    "name": "זוויות במשולש ובמרובע"
+   },
+   {
+    "id": "g7.transformations.1",
+    "name": "צורות חופפות במישור וטרנספורמציות"
+   },
+   {
+    "id": "g7.powers_roots.1",
+    "name": "חזקות עם מעריך טבעי ושורש ריבועי חיובי"
+   },
+   {
+    "id": "g7.areas.1",
+    "name": "שטחים א׳"
+   },
+   {
+    "id": "g7.areas.2",
+    "name": "ב׳"
+   },
+   {
+    "id": "g7.areas.3",
+    "name": "חישוב היקפים"
+   },
+   {
+    "id": "g7.algebraic_expressions.1",
+    "name": "משתנים וביטויים אלגבריים"
+   },
+   {
+    "id": "g7.algebraic_expressions.2",
+    "name": "זהות"
+   },
+   {
+    "id": "g7.algebraic_expressions.3",
+    "name": "כינוס איברים דומים"
+   },
+   {
+    "id": "g7.algebraic_expressions.4",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "g7.solids.1",
+    "name": "גופים במרחב: קובייה"
+   },
+   {
+    "id": "g7.solids.2",
+    "name": "תיבה"
+   },
+   {
+    "id": "g7.solids.3",
+    "name": "מנסרה משולשת"
+   },
+   {
+    "id": "g7.data_frequency.1",
+    "name": "איסוף"
+   },
+   {
+    "id": "g7.data_frequency.2",
+    "name": "ייצוג וקריאת מידע"
+   },
+   {
+    "id": "g7.data_frequency.3",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g7.data_frequency.4",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g7.data_frequency.5",
+    "name": "הסתברות בהקשר של שכיחות יחסית"
+   },
+   {
+    "id": "g7.pythagoras.1",
+    "name": "משפט פיתגורס ושימושיו"
+   },
+   {
+    "id": "g7.equations.1",
+    "name": "משוואות ממעלה ראשונה ופתרונן"
+   },
+   {
+    "id": "g7.word_problems.1",
+    "name": "שאלות בהקשרים בעזרת משוואה ממעלה ראשונה"
+   },
+   {
+    "id": "g7.points_on_graph.1",
+    "name": "נקודות על גרף ברביע I"
+   },
+   {
+    "id": "g8.ratio_scale.1",
+    "name": "יחס"
+   },
+   {
+    "id": "g8.ratio_scale.2",
+    "name": "פרופורציה וקנה מידה"
+   },
+   {
+    "id": "g8.pythagoras.1",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "g8.percentages.1",
+    "name": "אחוזים"
+   },
+   {
+    "id": "g8.cylinder_cone.1",
+    "name": "גליל"
+   },
+   {
+    "id": "g8.cylinder_cone.2",
+    "name": "חרוט"
+   },
+   {
+    "id": "g8.data_center.1",
+    "name": "איסוף מידע"
+   },
+   {
+    "id": "g8.data_center.2",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g8.data_center.3",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g8.data_center.4",
+    "name": "טווח ומדדי מרכז"
+   },
+   {
+    "id": "g8.data_center.5",
+    "name": "שני מקורות מידע"
+   },
+   {
+    "id": "g8.transformations.1",
+    "name": "טרנספורמציות וצורות חופפות"
+   },
+   {
+    "id": "g8.functions_intro.1",
+    "name": "מבוא לפונקציות"
+   },
+   {
+    "id": "g8.functions_intro.2",
+    "name": "ייצוגים"
+   },
+   {
+    "id": "g8.functions_intro.3",
+    "name": "עלייה וירידה"
+   },
+   {
+    "id": "g8.functions_intro.4",
+    "name": "גרפים לינאריים"
+   },
+   {
+    "id": "g8.slope_linear.1",
+    "name": "קצב שינוי"
+   },
+   {
+    "id": "g8.slope_linear.2",
+    "name": "שיפוע"
+   },
+   {
+    "id": "g8.slope_linear.3",
+    "name": "ייצוג אלגברי של פונקציה ליניארית"
+   },
+   {
+    "id": "thm.adjacent_angles",
+    "name": "זוויות צמודות (סכומן 180°)"
+   },
+   {
+    "id": "thm.vertical_angles",
+    "name": "זוויות קודקודיות שוות"
+   },
+   {
+    "id": "thm.angle_bisector",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "thm.alternate_angles",
+    "name": "זוויות מתחלפות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.corresponding_angles",
+    "name": "זוויות מתאימות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.triangle_angle_sum",
+    "name": "סכום הזוויות במשולש 180°"
+   },
+   {
+    "id": "thm.quad_angle_sum",
+    "name": "סכום הזוויות במרובע 360°"
+   },
+   {
+    "id": "frm.area_rectangle",
+    "name": "שטח מלבן = אורך × רוחב"
+   },
+   {
+    "id": "frm.area_triangle",
+    "name": "שטח משולש = צלע × גובה : 2"
+   },
+   {
+    "id": "frm.area_parallelogram",
+    "name": "שטח מקבילית = צלע × גובה"
+   },
+   {
+    "id": "frm.area_trapezoid",
+    "name": "שטח טרפז = (סכום בסיסים) × גובה : 2"
+   },
+   {
+    "id": "frm.perimeter",
+    "name": "היקף מצולע"
+   },
+   {
+    "id": "frm.box_volume",
+    "name": "נפח תיבה"
+   },
+   {
+    "id": "frm.box_surface",
+    "name": "שטח פנים של תיבה"
+   },
+   {
+    "id": "thm.pythagoras",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "thm.pythagoras_converse",
+    "name": "המשפט ההפוך למשפט פיתגורס"
+   },
+   {
+    "id": "mth.distributive",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "mth.first_degree_eq",
+    "name": "פתרון משוואה ממעלה ראשונה"
+   }
+  ],
+  "not_yet_allowed": [
+   {
+    "id": "g8.word_problems_eq.1",
+    "name": "שאלות מילוליות בעזרת משוואות"
+   },
+   {
+    "id": "g8.congruence.1",
+    "name": "חפיפת משולשים"
+   },
+   {
+    "id": "g8.inter_extrapolation.1",
+    "name": "אינטרפולציה"
+   },
+   {
+    "id": "g8.inter_extrapolation.2",
+    "name": "אקסטרפולציה"
+   },
+   {
+    "id": "g8.triangle_parts.1",
+    "name": "צלעות במשולש"
+   },
+   {
+    "id": "g8.triangle_parts.2",
+    "name": "תיכון"
+   },
+   {
+    "id": "g8.triangle_parts.3",
+    "name": "זווית חיצונית"
+   },
+   {
+    "id": "g8.triangle_parts.4",
+    "name": "שווה שוקיים"
+   },
+   {
+    "id": "g8.triangle_parts.5",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g8.systems_basic.1",
+    "name": "מערכות משוואות (רמה בסיסית)"
+   },
+   {
+    "id": "g8.similarity.1",
+    "name": "דמיון משולשים"
+   },
+   {
+    "id": "g8.probability.1",
+    "name": "הסתברות א"
+   },
+   {
+    "id": "g8.probability.2",
+    "name": "הסתברות ב"
+   },
+   {
+    "id": "g8.pythagoras_3d.1",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "g8.inequalities.1",
+    "name": "אי-שוויונות"
+   },
+   {
+    "id": "g9.alg_technique.1",
+    "name": "חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.2",
+    "name": "פישוט ביטויים בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.3",
+    "name": "פתרון משוואות בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.4",
+    "name": "שאלות השוואת שטחים בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9.alg_technique.5",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.6",
+    "name": "פירוק לגורמים: הוצאת גורם משותף"
+   },
+   {
+    "id": "g9.alg_technique.7",
+    "name": "פירוק תלת-איבר ריבועי (מקדם 1)"
+   },
+   {
+    "id": "g9.alg_technique.8",
+    "name": "פירוק בעזרת נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.9",
+    "name": "פתרון משוואות ריבועיות בסיסיות באמצעות פירוק לגורמים"
+   },
+   {
+    "id": "g9.alg_technique.10",
+    "name": "צמצום שברים אלגבריים"
+   },
+   {
+    "id": "g9.alg_technique.11",
+    "name": "כפל וחילוק שברים אלגבריים"
+   },
+   {
+    "id": "g9.kite.1",
+    "name": "הכרת הדלתון"
+   },
+   {
+    "id": "g9.kite.2",
+    "name": "זוויות בדלתון"
+   },
+   {
+    "id": "g9.kite.3",
+    "name": "האלכסון הראשי בדלתון"
+   },
+   {
+    "id": "g9.isosceles_converse.1",
+    "name": "משפטים הפוכים להוכחה כי משולש הוא שווה שוקיים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.1",
+    "name": "היכרות עם הגרף והביטוי האלגברי"
+   },
+   {
+    "id": "g9.quad_func_and_eq.2",
+    "name": "תכונות הפונקציה הריבועית (התייחסות איכותנית): קיצון, עלייה וירידה, חיתוך עם הצירים, חיוביות ושליליות"
+   },
+   {
+    "id": "g9.quad_func_and_eq.3",
+    "name": "הזזה אנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.4",
+    "name": "הזזה אופקית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.5",
+    "name": "שילוב הזזה אופקית ואנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.6",
+    "name": "הצגת פונקציה ריבועית כמכפלה"
+   },
+   {
+    "id": "g9.quad_func_and_eq.7",
+    "name": "הצגה סטנדרטית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.8",
+    "name": "פתרון משוואות ריבועיות בעזרת נוסחת השורשים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.9",
+    "name": "סרטוט גרף על סמך ייצוג סטנדרטי"
+   },
+   {
+    "id": "g9.side_angle_relations.1",
+    "name": "מול הצלע הגדולה ממוקמת הזווית הגדולה"
+   },
+   {
+    "id": "g9.side_angle_relations.2",
+    "name": "מול הזווית הגדולה ממוקמת הצלע הגדולה"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.1",
+    "name": "הניצב מול זווית 30° שווה למחצית היתר"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.2",
+    "name": "משפט הפוך: ניצב השווה למחצית היתר ⇒ הזווית שמולו 30°"
+   },
+   {
+    "id": "g9.parallels_trapezoid.1",
+    "name": "תכונות של הקבלה או אי-הקבלה"
+   },
+   {
+    "id": "g9.parallels_trapezoid.2",
+    "name": "משפט הפוך לישרים מקבילים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.3",
+    "name": "הכרת הטרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.4",
+    "name": "טרפז שווה שוקיים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.5",
+    "name": "הוכחה שמרובע הוא טרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.6",
+    "name": "שטח והיקף טרפז"
+   },
+   {
+    "id": "g9.quad_eq_applications.1",
+    "name": "כולל שימוש בטכניקה אלגברית"
+   },
+   {
+    "id": "g9.quad_inequalities.1",
+    "name": "פתרון אי-שוויון ריבועי בהקשר של פונקציה ריבועית"
+   },
+   {
+    "id": "g9.parallelogram.1",
+    "name": "הגדרת מקבילית"
+   },
+   {
+    "id": "g9.parallelogram.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9.parallelogram.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.rational_equations.1",
+    "name": "פתרון משוואות עם פירוק לגורמים במכנה"
+   },
+   {
+    "id": "g9.rational_equations.2",
+    "name": "תחום הצבה"
+   },
+   {
+    "id": "g9.rational_equations.3",
+    "name": "משוואות שבהן אחד הפתרונות אינו קביל"
+   },
+   {
+    "id": "g9.rectangle.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rectangle.2",
+    "name": "תכונות צלעות, זוויות, אלכסונים"
+   },
+   {
+    "id": "g9.rectangle.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.probability.1",
+    "name": "מהי הסתברות, מושגים בסיסיים (כולל השלמה של ח׳)"
+   },
+   {
+    "id": "g9.probability.2",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9.probability.3",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9.probability.4",
+    "name": "מאורעות דו-שלביים"
+   },
+   {
+    "id": "g9.probability.5",
+    "name": "ייצוגים שונים: טבלה, דיאגרמת עץ, מודל השטח"
+   },
+   {
+    "id": "g9.integrative_literacy.1",
+    "name": "שילוב אלגברה וגיאומטריה בהקשר מהעולם האמיתי"
+   },
+   {
+    "id": "g9.system_degree_2.1",
+    "name": "משמעות אלגברית ומשמעות גרפית של פתרון מערכת משוואות"
+   },
+   {
+    "id": "g9.function_properties.1",
+    "name": "תכונות של גרף: חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה"
+   },
+   {
+    "id": "g9.function_properties.2",
+    "name": "הקשר בין משוואות לגרף של פונקציה"
+   },
+   {
+    "id": "g9.function_properties.3",
+    "name": "הזזה אנכית, הזזה אופקית"
+   },
+   {
+    "id": "g9.function_properties.4",
+    "name": "שיקוף ביחס לציר ה-x"
+   },
+   {
+    "id": "g9.rhombus.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rhombus.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.rhombus.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.square.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.square.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.square.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.right_triangle_median.1",
+    "name": "התיכון ליתר"
+   },
+   {
+    "id": "g9.right_triangle_median.2",
+    "name": "תרגול המשפט בשילוב מרובעים"
+   },
+   {
+    "id": "g9.powers.1",
+    "name": "חוקי חזקות מעריך טבעי או אפס"
+   },
+   {
+    "id": "g9.powers.2",
+    "name": "חוקי שורש ריבועי"
+   },
+   {
+    "id": "g9.word_problems.1",
+    "name": "שאלות מילוליות הנדסיות וכלליות (לרבות משוואה ריבועית או מערכת משוואות)"
+   },
+   {
+    "id": "g9.word_problems.2",
+    "name": "שאלות תנועה"
+   },
+   {
+    "id": "g9.word_problems.3",
+    "name": "שילוב אחוזים"
+   },
+   {
+    "id": "g9.word_problems.4",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9.similarity.1",
+    "name": "יחסי שטחים במשולשים דומים"
+   },
+   {
+    "id": "g9m.graph_reading.1",
+    "name": "תופעות המיוצגות באמצעות גרף במערכת צירים"
+   },
+   {
+    "id": "g9m.graph_reading.2",
+    "name": "קריאת מידע מהגרף ומענה על שאלות"
+   },
+   {
+    "id": "g9m.computational_triangle.1",
+    "name": "סכום זוויות במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.2",
+    "name": "שטח והיקף משולש"
+   },
+   {
+    "id": "g9m.computational_triangle.3",
+    "name": "קטעים מיוחדים במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.4",
+    "name": "שילוב עם מערכת צירים"
+   },
+   {
+    "id": "g9m.linear_function.1",
+    "name": "משמעות השיפוע כקצב שינוי, בשילוב אוריינות"
+   },
+   {
+    "id": "g9m.linear_function.2",
+    "name": "ייצוג אלגברי וגרפי והתאמה ביניהם"
+   },
+   {
+    "id": "g9m.linear_function.3",
+    "name": "נקודה על ישר ומשמעותה"
+   },
+   {
+    "id": "g9m.linear_function.4",
+    "name": "חיתוך עם הצירים"
+   },
+   {
+    "id": "g9m.linear_function.5",
+    "name": "ישרים מקבילים"
+   },
+   {
+    "id": "g9m.linear_function.6",
+    "name": "שטחים והיקפים במערכת צירים"
+   },
+   {
+    "id": "g9m.alg_technique_basic.1",
+    "name": "חוק הפילוג וחוק הפילוג המורחב"
+   },
+   {
+    "id": "g9m.alg_technique_basic.2",
+    "name": "פתרון משוואות פשוטות בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9m.pythagoras.1",
+    "name": "חישובי צלעות במשולשים"
+   },
+   {
+    "id": "g9m.pythagoras.2",
+    "name": "חישובי צלעות בצורות מורכבות"
+   },
+   {
+    "id": "g9m.pythagoras.3",
+    "name": "חישובי היקפים ושטחים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.1",
+    "name": "קווים מיוחדים במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.2",
+    "name": "זוויות במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.4",
+    "name": "תכונות הדלתון"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.5",
+    "name": "חישובי שטחים והיקפים"
+   },
+   {
+    "id": "g9m.statistics.1",
+    "name": "איסוף וארגון נתונים בטבלה, ברשימה ובדיאגרמות"
+   },
+   {
+    "id": "g9m.statistics.2",
+    "name": "שכיחות ושכיחות יחסית"
+   },
+   {
+    "id": "g9m.statistics.3",
+    "name": "טווח נתונים"
+   },
+   {
+    "id": "g9m.statistics.4",
+    "name": "ממוצע, שכיח וחציון"
+   },
+   {
+    "id": "g9m.percentages.1",
+    "name": "החלק היחסי משלם"
+   },
+   {
+    "id": "g9m.percentages.2",
+    "name": "הגדלה והקטנה"
+   },
+   {
+    "id": "g9m.percentages.3",
+    "name": "שאלות מילוליות פשוטות ואורייניות"
+   },
+   {
+    "id": "g9m.similarity.1",
+    "name": "המושג דומים"
+   },
+   {
+    "id": "g9m.similarity.2",
+    "name": "הגדלה או הקטנה של צורות"
+   },
+   {
+    "id": "g9m.similarity.3",
+    "name": "צלעות פרופורציונליות"
+   },
+   {
+    "id": "g9m.similarity.4",
+    "name": "משפט ז.ז"
+   },
+   {
+    "id": "g9m.similarity.5",
+    "name": "חישובי צלעות וזוויות במשולשים דומים"
+   },
+   {
+    "id": "g9m.similarity.6",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9m.equations.1",
+    "name": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.1",
+    "name": "חזרה על ישרים מקבילים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.2",
+    "name": "הגדרת המקבילית"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.3",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.4",
+    "name": "זיהוי מקבילית"
+   },
+   {
+    "id": "g9m.probability.1",
+    "name": "מהי הסתברות"
+   },
+   {
+    "id": "g9m.probability.2",
+    "name": "מושגים בסיסיים"
+   },
+   {
+    "id": "g9m.probability.3",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9m.probability.4",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9m.quad_partial.1",
+    "name": "הצבת ערכי x בביטוי של פונקציה ריבועית וחישוב ערך ה-y"
+   },
+   {
+    "id": "g9m.quad_partial.2",
+    "name": "מפונקציה ריבועית לפתרון משוואה ריבועית"
+   },
+   {
+    "id": "g9m.quad_partial.3",
+    "name": "פתרון משוואות ריבועיות ע״י נוסחת השורשים"
+   },
+   {
+    "id": "g9m.rectangle.1",
+    "name": "הגדרה של מלבן"
+   },
+   {
+    "id": "g9m.rectangle.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems.1",
+    "name": "שאלות מילוליות ושאלות אוריינות בנושאים שונים, כולל שימוש במשוואה ריבועית"
+   },
+   {
+    "id": "g9m.rhombus.1",
+    "name": "הגדרה של מעוין"
+   },
+   {
+    "id": "g9m.rhombus.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.square.1",
+    "name": "הגדרה של ריבוע"
+   },
+   {
+    "id": "g9m.square.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems_integrative.1",
+    "name": "שאלות מילוליות ואוריינות בנושאים שונים"
+   },
+   {
+    "id": "g9m.trapezoid.1",
+    "name": "הגדרה של טרפז"
+   },
+   {
+    "id": "g9m.trapezoid.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.areas_and_perimeters.1",
+    "name": "שאלות אוריינות אינטגרטיביות כולל מעגל — היקף ושטח"
+   },
+   {
+    "id": "thm.co_interior_angles",
+    "name": "זוויות חד-צדדיות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.pythagoras_3d",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "thm.congruence_sas",
+    "name": "משפט חפיפה צ.ז.צ"
+   },
+   {
+    "id": "thm.congruence_asa",
+    "name": "משפט חפיפה ז.צ.ז"
+   },
+   {
+    "id": "thm.congruence_sss",
+    "name": "משפט חפיפה צ.צ.צ"
+   },
+   {
+    "id": "thm.congruence_ssa",
+    "name": "משפט חפיפה צ.צ.ז"
+   },
+   {
+    "id": "thm.congruent_parts",
+    "name": "במשולשים חופפים צלעות וזוויות מתאימות שוות"
+   },
+   {
+    "id": "thm.exterior_angle",
+    "name": "זווית חיצונית למשולש"
+   },
+   {
+    "id": "thm.isosceles_base_angles",
+    "name": "במשולש שווה שוקיים זוויות הבסיס שוות"
+   },
+   {
+    "id": "thm.isosceles_special_lines",
+    "name": "במשולש שווה שוקיים חוצה זווית הראש, התיכון והגובה לבסיס מתלכדים"
+   },
+   {
+    "id": "thm.isosceles_converse",
+    "name": "משפטים הפוכים: הוכחה שמשולש שווה שוקיים"
+   },
+   {
+    "id": "thm.triangle_inequality",
+    "name": "אי-שוויון המשולש"
+   },
+   {
+    "id": "thm.side_angle_order",
+    "name": "מול הצלע הגדולה הזווית הגדולה (וההפך)"
+   },
+   {
+    "id": "thm.similarity_aa",
+    "name": "משפט דמיון ז.ז"
+   },
+   {
+    "id": "thm.similarity_sas",
+    "name": "משפט דמיון צ.ז.צ"
+   },
+   {
+    "id": "thm.similarity_sss",
+    "name": "משפט דמיון צ.צ.צ"
+   },
+   {
+    "id": "thm.similar_area_ratio",
+    "name": "יחס השטחים הוא ריבוע יחס הדמיון"
+   },
+   {
+    "id": "thm.kite_main_diagonal",
+    "name": "בדלתון האלכסון הראשי חוצה את המשני, מאונך לו וחוצה את זוויות הראש"
+   },
+   {
+    "id": "thm.30_60_90",
+    "name": "במשולש ישר זווית הניצב מול 30° שווה למחצית היתר"
+   },
+   {
+    "id": "thm.parallel_converse",
+    "name": "משפטים הפוכים לישרים מקבילים"
+   },
+   {
+    "id": "thm.isosceles_trapezoid",
+    "name": "טרפז שווה שוקיים: זוויות בסיס ואלכסונים"
+   },
+   {
+    "id": "thm.parallelogram_props",
+    "name": "במקבילית צלעות נגדיות שוות, זוויות נגדיות שוות, האלכסונים חוצים זה את זה"
+   },
+   {
+    "id": "thm.parallelogram_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מקבילית"
+   },
+   {
+    "id": "thm.rectangle_props",
+    "name": "במלבן כל הזוויות ישרות והאלכסונים שווים"
+   },
+   {
+    "id": "thm.rectangle_converse",
+    "name": "משפטים הפוכים: מקבילית עם זווית ישרה או עם אלכסונים שווים היא מלבן"
+   },
+   {
+    "id": "thm.rhombus_props",
+    "name": "במעוין כל הצלעות שוות, האלכסונים מאונכים וחוצי זוויות"
+   },
+   {
+    "id": "thm.rhombus_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מעוין"
+   },
+   {
+    "id": "thm.square_props",
+    "name": "ריבוע: מלבן שהוא גם מעוין"
+   },
+   {
+    "id": "thm.right_triangle_median",
+    "name": "התיכון ליתר שווה למחצית היתר"
+   },
+   {
+    "id": "frm.area_rhombus_diagonals",
+    "name": "שטח מעוין / דלתון = מכפלת האלכסונים : 2"
+   },
+   {
+    "id": "thm.midsegment",
+    "name": "קטע אמצעים במשולש ובטרפז"
+   },
+   {
+    "id": "frm.short_multiplication",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "mth.factoring",
+    "name": "פירוק לגורמים"
+   },
+   {
+    "id": "frm.quadratic_formula",
+    "name": "נוסחת השורשים"
+   }
+  ]
+ },
+ "questions": [
+  {
+   "id": "q1",
+   "label": 1,
+   "text": "כל שורה בטבלה מתארת תנועה במהירות קבועה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "כל שורה בטבלה מתארת תנועה במהירות קבועה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "מסע",
+     "דרך בק״מ",
+     "מהירות בקמ״ש",
+     "זמן בשעות"
+    ],
+    "rows": [
+     [
+      "א׳",
+      "___",
+      "$7$",
+      "$3$"
+     ],
+     [
+      "ב׳",
+      "$36$",
+      "$9$",
+      "___"
+     ],
+     [
+      "ג׳",
+      "$20$",
+      "___",
+      "$2.5$"
+     ]
+    ]
+   },
+   "example": {
+    "title": "דוגמה מודרכת",
+    "lines": [
+     "אם גוף נע $5$ קמ״ש במשך שעתיים, הדרך היא $5\\cdot2=10$ ק״מ. לחישוב זמן מחלקים דרך במהירות."
+    ]
+   },
+   "items": [
+    {
+     "id": "q1a",
+     "label": "א",
+     "text": "השלימו את הדרך בשורה הראשונה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את הדרך בשורה הראשונה.",
+       "text": "הערך השלימו את הדרך בשורה הראשונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1b",
+     "label": "ב",
+     "text": "השלימו את הזמן בשורה השנייה ואת המהירות בשלישית.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את הזמן בשורה השנייה ואת המהירות בשלישית.",
+       "text": "הערך השלימו את הזמן בשורה השנייה ואת המהירות בשלישית."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1c",
+     "label": "ג",
+     "text": "באיזו שורה הזמן גדול ביותר?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "באיזו שורה הזמן גדול ביותר?",
+       "text": "הערך באיזו שורה הזמן גדול ביותר?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1d",
+     "label": "ד",
+     "text": "בדקו את השורה השלישית באמצעות כפל, והסבירו מה פירוש יחידת המהירות. כתבו גם את שלוש הנוסחאות הכלליות לחישוב דרך, מהירות וזמן, ופרשו את היחידות בכל אחת.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בדקו את השורה השלישית באמצעות כפל, והסבירו מה פירוש יחידת המהירות. כתבו גם את שלוש הנוסחאות הכלליות לחישוב דרך, מהירות וזמן, ופרשו את היחידות בכל אחת.",
+       "text": "הערך בדקו את השורה השלישית באמצעות כפל, והסבירו מה פירוש יחידת המהירות. כתבו גם את שלוש הנוסחאות הכלליות לחישוב דרך, מהירות וזמן, ופרשו את היחידות בכל אחת."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "label": 2,
+   "text": "שני מטיילים יוצאים בו־זמנית משני קצות דרך שאורכה $70$ ק״מ, לפי החצים. מהירות $A$ היא $6$ קמ״ש ומהירות $B$ היא $8$ קמ״ש.",
+   "figure_id": "q2_head",
+   "given": [
+    {
+     "text": "שני מטיילים יוצאים בו־זמנית משני קצות דרך שאורכה $70$ ק״מ, לפי החצים. מהירות $A$ היא $6$ קמ״ש ומהירות $B$ היא $8$ קמ״ש."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q2a",
+     "label": "א",
+     "text": "האם המרחק ביניהם גדל או קטן? מה קצב השינוי?",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם המרחק ביניהם גדל או קטן? מה קצב השינוי?",
+       "text": "הערך האם המרחק ביניהם גדל או קטן? מה קצב השינוי?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2b",
+     "label": "ב",
+     "text": "חשבו את הזמן עד המפגש.",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את הזמן עד המפגש.",
+       "text": "הערך חשבו את הזמן עד המפגש."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2c",
+     "label": "ג",
+     "text": "מה הדרך שעובר כל מטייל עד המפגש?",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה הדרך שעובר כל מטייל עד המפגש?",
+       "text": "הערך מה הדרך שעובר כל מטייל עד המפגש?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2d",
+     "label": "ד",
+     "text": "איזו בדיקה מתאימה כאן: סכום הדרכים או הפרשן? בצעו אותה. הסבירו גם מדוע משכי תנועתם עד המפגש שווים.",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "איזו בדיקה מתאימה כאן: סכום הדרכים או הפרשן? בצעו אותה. הסבירו גם מדוע משכי תנועתם עד המפגש שווים.",
+       "text": "הערך איזו בדיקה מתאימה כאן: סכום הדרכים או הפרשן? בצעו אותה. הסבירו גם מדוע משכי תנועתם עד המפגש שווים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q3",
+   "label": 3,
+   "text": "ביומן נסיעה מופיעים שעת התחלה $08:40$, שעת סיום $10:10$ ודרך $27$ ק״מ. הנסיעה רציפה ובמהירות קבועה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "ביומן נסיעה מופיעים שעת התחלה $08:40$, שעת סיום $10:10$ ודרך $27$ ק״מ. הנסיעה רציפה ובמהירות קבועה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "רישום",
+     "ערך"
+    ],
+    "rows": [
+     [
+      "יציאה",
+      "$08:40$"
+     ],
+     [
+      "הגעה",
+      "$10:10$"
+     ],
+     [
+      "דרך",
+      "$27$ ק״מ"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q3a",
+     "label": "א",
+     "text": "מה משך הנסיעה בדקות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה משך הנסיעה בדקות?",
+       "text": "הערך מה משך הנסיעה בדקות?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3b",
+     "label": "ב",
+     "text": "המירו את המשך לשעות ומצאו את המהירות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המירו את המשך לשעות ומצאו את המהירות.",
+       "text": "הערך המירו את המשך לשעות ומצאו את המהירות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3c",
+     "label": "ג",
+     "text": "כמה ק״מ עבר הרכב עד $09:10$?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "שעת הבדיקה הנתונה היא 09:10."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כמה ק״מ עבר הרכב עד $09:10$?",
+       "text": "הערך כמה ק״מ עבר הרכב עד $09:10$?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3d",
+     "label": "ד",
+     "text": "רשמו משפט המסביר מדוע $10.10−8.40$ אינו חישוב תקין של משך בשעות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "רשמו משפט המסביר מדוע $10.10−8.40$ אינו חישוב תקין של משך בשעות.",
+       "text": "הערך רשמו משפט המסביר מדוע $10.10−8.40$ אינו חישוב תקין של משך בשעות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q4",
+   "label": 4,
+   "text": "$B$ נמצא $12$ ק״מ לפני $A$. שניהם נעים ימינה: $A$ במהירות $8$ קמ״ש ו־$B$ במהירות $4$ קמ״ש. החצים מציינים כיוון.",
+   "figure_id": "q4_head",
+   "given": [
+    {
+     "text": "$B$ נמצא $12$ ק״מ לפני $A$. שניהם נעים ימינה: $A$ במהירות $8$ קמ״ש ו־$B$ במהירות $4$ קמ״ש. החצים מציינים כיוון."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q4a",
+     "label": "א",
+     "text": "כמה מן הפער נסגר בכל שעה?",
+     "figure_id": "q4_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כמה מן הפער נסגר בכל שעה?",
+       "text": "הערך כמה מן הפער נסגר בכל שעה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4b",
+     "label": "ב",
+     "text": "מצאו את זמן ההשגה.",
+     "figure_id": "q4_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו את זמן ההשגה.",
+       "text": "הערך מצאו את זמן ההשגה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4c",
+     "label": "ג",
+     "text": "תלמיד השתמש בסכום המהירויות. חשבו את הזמן שהיה מקבל והסבירו את טעותו.",
+     "figure_id": "q4_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תלמיד השתמש בסכום המהירויות. חשבו את הזמן שהיה מקבל והסבירו את טעותו.",
+       "text": "הערך תלמיד השתמש בסכום המהירויות. חשבו את הזמן שהיה מקבל והסבירו את טעותו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4d",
+     "label": "ד",
+     "text": "בדקו את ההשגה באמצעות דרכי הגופים.",
+     "figure_id": "q4_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בדקו את ההשגה באמצעות דרכי הגופים.",
+       "text": "הערך בדקו את ההשגה באמצעות דרכי הגופים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q5",
+   "label": 5,
+   "text": "שני רוכבים נעו זה לקראת זה מתחנות שונות במשך שעתיים וחצי עד שנפגשו. מהירויותיהם $10$ ו־$14$ קמ״ש. צריך להשלים תעודת מרחק בין התחנות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "שני רוכבים נעו זה לקראת זה מתחנות שונות במשך שעתיים וחצי עד שנפגשו. מהירויותיהם $10$ ו־$14$ קמ״ש. צריך להשלים תעודת מרחק בין התחנות."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "רוכב",
+     "מהירות בקמ״ש",
+     "זמן בשעות",
+     "דרך בק״מ"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "$10$",
+      "$2.5$",
+      "___"
+     ],
+     [
+      "שני",
+      "$14$",
+      "$2.5$",
+      "___"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q5a",
+     "label": "א",
+     "text": "השלימו בטבלה את דרך הרוכב הראשון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו בטבלה את דרך הרוכב הראשון.",
+       "text": "הערך השלימו בטבלה את דרך הרוכב הראשון."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5b",
+     "label": "ב",
+     "text": "השלימו את דרך הרוכב השני.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את דרך הרוכב השני.",
+       "text": "הערך השלימו את דרך הרוכב השני."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5c",
+     "label": "ג",
+     "text": "מה המרחק בין התחנות? הסבירו מדוע.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה המרחק בין התחנות? הסבירו מדוע.",
+       "text": "הערך מה המרחק בין התחנות? הסבירו מדוע."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5d",
+     "label": "ד",
+     "text": "אמתו את התעודה בחלוקת המרחק בקצב ההתקרבות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אמתו את התעודה בחלוקת המרחק בקצב ההתקרבות.",
+       "text": "הערך אמתו את התעודה בחלוקת המרחק בקצב ההתקרבות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q6",
+   "label": 6,
+   "text": "שני הולכים נעים ימינה במהירות $6$ קמ״ש כל אחד. $B$ נמצא בתחילה $4$ ק״מ לפני $A$.",
+   "figure_id": "q6_head",
+   "given": [
+    {
+     "text": "שני הולכים נעים ימינה במהירות $6$ קמ״ש כל אחד. $B$ נמצא בתחילה $4$ ק״מ לפני $A$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q6a",
+     "label": "א",
+     "text": "מה יהיה הפער לאחר שעה?",
+     "figure_id": "q6_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה יהיה הפער לאחר שעה?",
+       "text": "הערך מה יהיה הפער לאחר שעה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6b",
+     "label": "ב",
+     "text": "האם $A$ ישיג את $B$ אם המצב לא ישתנה?",
+     "figure_id": "q6_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם $A$ ישיג את $B$ אם המצב לא ישתנה?",
+       "text": "הערך האם $A$ ישיג את $B$ אם המצב לא ישתנה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6c",
+     "label": "ג",
+     "text": "כעת רק $A$ מגביר מהירות ל־$10$ קמ״ש. כמה זמן יעבור עד השגה?",
+     "figure_id": "q6_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כעת רק $A$ מגביר מהירות ל־$10$ קמ״ש. כמה זמן יעבור עד השגה?",
+       "text": "הערך כעת רק $A$ מגביר מהירות ל־$10$ קמ״ש. כמה זמן יעבור עד השגה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6d",
+     "label": "ד",
+     "text": "מה יקרה לפער אם $A$ יאט במקום להגביר מהירות?",
+     "figure_id": "q6_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה יקרה לפער אם $A$ יאט במקום להגביר מהירות?",
+       "text": "הערך מה יקרה לפער אם $A$ יאט במקום להגביר מהירות?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q7",
+   "label": 7,
+   "text": "תוכנית מסע מורכבת משני חלקים. בחלק הראשון עוברים $10$ ק״מ במהירות $5$ קמ״ש, ובשני $18$ ק״מ במהירות $9$ קמ״ש.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "תוכנית מסע מורכבת משני חלקים. בחלק הראשון עוברים $10$ ק״מ במהירות $5$ קמ״ש, ובשני $18$ ק״מ במהירות $9$ קמ״ש."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "חלק",
+     "דרך בק״מ",
+     "מהירות בקמ״ש",
+     "זמן בשעות"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "$10$",
+      "$5$",
+      "___"
+     ],
+     [
+      "שני",
+      "$18$",
+      "$9$",
+      "___"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q7a",
+     "label": "א",
+     "text": "מצאו את זמני החלקים והשלימו את הטבלה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו את זמני החלקים והשלימו את הטבלה.",
+       "text": "הערך מצאו את זמני החלקים והשלימו את הטבלה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7b",
+     "label": "ב",
+     "text": "חשבו דרך כוללת וזמן כולל.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו דרך כוללת וזמן כולל.",
+       "text": "הערך חשבו דרך כוללת וזמן כולל."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7c",
+     "label": "ג",
+     "text": "חשבו את המהירות הממוצעת.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את המהירות הממוצעת.",
+       "text": "הערך חשבו את המהירות הממוצעת."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7d",
+     "label": "ד",
+     "text": "השוו לממוצע החשבוני של שתי המהירויות והסבירו את השוויון כאן.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השוו לממוצע החשבוני של שתי המהירויות והסבירו את השוויון כאן.",
+       "text": "הערך השוו לממוצע החשבוני של שתי המהירויות והסבירו את השוויון כאן."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q8",
+   "label": 8,
+   "text": "המרחק בין שתי תחנות הוא $38$ ק״מ. $A$ יוצא בראשונה ב־$09:00$ במהירות $6$ קמ״ש. $B$ יוצא מהשנייה לעברו בשעה $10:00$, במהירות $10$ קמ״ש.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "המרחק בין שתי תחנות הוא $38$ ק״מ. $A$ יוצא בראשונה ב־$09:00$ במהירות $6$ קמ״ש. $B$ יוצא מהשנייה לעברו בשעה $10:00$, במהירות $10$ קמ״ש."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q8a",
+     "label": "א",
+     "text": "ציירו חצי כיוון, סמנו תחנות, ורשמו מתחת לכל גוף את זמן יציאתו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ציירו חצי כיוון, סמנו תחנות, ורשמו מתחת לכל גוף את זמן יציאתו.",
+       "text": "הערך ציירו חצי כיוון, סמנו תחנות, ורשמו מתחת לכל גוף את זמן יציאתו."
+      }
+     ],
+     "to_construct": [
+      {
+       "text": "שרטוט התחנות והגופים A ו־B עם חצי כיוון"
+      }
+     ],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8b",
+     "label": "ב",
+     "text": "כמה עבר $A$ לפני יציאת $B$, וכמה מרחק נותר ביניהם?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כמה עבר $A$ לפני יציאת $B$, וכמה מרחק נותר ביניהם?",
+       "text": "הערך כמה עבר $A$ לפני יציאת $B$, וכמה מרחק נותר ביניהם?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8c",
+     "label": "ג",
+     "text": "חשבו כמה זמן נוסע כל גוף עד המפגש ואת שעת המפגש.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו כמה זמן נוסע כל גוף עד המפגש ואת שעת המפגש.",
+       "text": "הערך חשבו כמה זמן נוסע כל גוף עד המפגש ואת שעת המפגש."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8d",
+     "label": "ד",
+     "text": "בדקו באמצעות סכום הדרכים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בדקו באמצעות סכום הדרכים.",
+       "text": "הערך בדקו באמצעות סכום הדרכים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q9",
+   "label": 9,
+   "text": "מסע מתואר בטבלה. בדוח נכתב: הממוצעת היא ממוצע שתי המהירויות. בדקו את הדוח.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מסע מתואר בטבלה. בדוח נכתב: הממוצעת היא ממוצע שתי המהירויות. בדקו את הדוח."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "חלק",
+     "דרך בק״מ",
+     "מהירות בקמ״ש"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "$24$",
+      "$8$"
+     ],
+     [
+      "שני",
+      "$12$",
+      "$6$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q9a",
+     "label": "א",
+     "text": "מצאו את משך כל חלק.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו את משך כל חלק.",
+       "text": "הערך מצאו את משך כל חלק."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9b",
+     "label": "ב",
+     "text": "חשבו את הממוצעת הנכונה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את הממוצעת הנכונה.",
+       "text": "הערך חשבו את הממוצעת הנכונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9c",
+     "label": "ג",
+     "text": "חשבו את תוצאת הדוח ואת ההפרש מן הממוצעת הנכונה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את תוצאת הדוח ואת ההפרש מן הממוצעת הנכונה.",
+       "text": "הערך חשבו את תוצאת הדוח ואת ההפרש מן הממוצעת הנכונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9d",
+     "label": "ד",
+     "text": "הסבירו מדוע כאן הממוצעת דווקא גדולה מן הממוצע החשבוני.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסבירו מדוע כאן הממוצעת דווקא גדולה מן הממוצע החשבוני.",
+       "text": "הערך הסבירו מדוע כאן הממוצעת דווקא גדולה מן הממוצע החשבוני."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q10",
+   "label": 10,
+   "text": "אדם הלך $11.5$ ק״מ במשך שעתיים ו־$30$ דקות. תלמיד חילק את הדרך ב־$2.3$ שעות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "אדם הלך $11.5$ ק״מ במשך שעתיים ו־$30$ דקות. תלמיד חילק את הדרך ב־$2.3$ שעות."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "רישום זמן",
+     "ערך בשעות"
+    ],
+    "rows": [
+     [
+      "הנתון המקורי",
+      "___"
+     ],
+     [
+      "תא החישוב השגוי",
+      "$2.3$"
+     ]
+    ]
+   },
+   "example": {
+    "title": "דוגמה מודרכת",
+    "lines": [
+     "חצי שעה היא $\\f{30}{60}=0.5$ שעות. החלק העשרוני אינו רישום של מספר הדקות."
+    ]
+   },
+   "items": [
+    {
+     "id": "q10a",
+     "label": "א",
+     "text": "המירו את משך ההליכה לשעות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המירו את משך ההליכה לשעות.",
+       "text": "הערך המירו את משך ההליכה לשעות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10b",
+     "label": "ב",
+     "text": "חשבו את התוצאה השגויה ואת התוצאה הנכונה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את התוצאה השגויה ואת התוצאה הנכונה.",
+       "text": "הערך חשבו את התוצאה השגויה ואת התוצאה הנכונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10c",
+     "label": "ג",
+     "text": "בכמה קמ״ש הוגדלה המהירות בדוח השגוי?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בכמה קמ״ש הוגדלה המהירות בדוח השגוי?",
+       "text": "הערך בכמה קמ״ש הוגדלה המהירות בדוח השגוי?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10d",
+     "label": "ד",
+     "text": "בדקו את המהירות הנכונה באמצעות כפל בזמן הנכון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בדקו את המהירות הנכונה באמצעות כפל בזמן הנכון.",
+       "text": "הערך בדקו את המהירות הנכונה באמצעות כפל בזמן הנכון."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q11",
+   "label": 11,
+   "text": "לפי החצים שני גופים מתרחקים זה מזה. הפער ההתחלתי $8$ ק״מ; המהירויות הן $3$ ו־$5$ קמ״ש.",
+   "figure_id": "q11_head",
+   "given": [
+    {
+     "text": "לפי החצים שני גופים מתרחקים זה מזה. הפער ההתחלתי $8$ ק״מ; המהירויות הן $3$ ו־$5$ קמ״ש."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q11a",
+     "label": "א",
+     "text": "מה קצב הגדילה של הפער?",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה קצב הגדילה של הפער?",
+       "text": "הערך מה קצב הגדילה של הפער?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11b",
+     "label": "ב",
+     "text": "מה יהיה הפער לאחר שעתיים?",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה יהיה הפער לאחר שעתיים?",
+       "text": "הערך מה יהיה הפער לאחר שעתיים?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11c",
+     "label": "ג",
+     "text": "כעבור כמה זמן יהיה הפער $48$ ק״מ?",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כעבור כמה זמן יהיה הפער $48$ ק״מ?",
+       "text": "הערך כעבור כמה זמן יהיה הפער $48$ ק״מ?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11d",
+     "label": "ד",
+     "text": "האם נכון להשוות את דרכי הגופים זו לזו כדי למצוא את הזמן בסעיף הקודם? נמקו.",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם נכון להשוות את דרכי הגופים זו לזו כדי למצוא את הזמן בסעיף הקודם? נמקו.",
+       "text": "הערך האם נכון להשוות את דרכי הגופים זו לזו כדי למצוא את הזמן בסעיף הקודם? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q12",
+   "label": 12,
+   "text": "מסע בן שלושה חלקים מתואר בטבלה. אין עצירות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מסע בן שלושה חלקים מתואר בטבלה. אין עצירות."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "חלק",
+     "דרך בק״מ",
+     "מהירות בקמ״ש"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "$16$",
+      "$8$"
+     ],
+     [
+      "שני",
+      "$21$",
+      "$7$"
+     ],
+     [
+      "שלישי",
+      "$12$",
+      "$6$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q12a",
+     "label": "א",
+     "text": "חשבו את זמן כל חלק.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את זמן כל חלק.",
+       "text": "הערך חשבו את זמן כל חלק."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12b",
+     "label": "ב",
+     "text": "חשבו סך דרך וסך זמן.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו סך דרך וסך זמן.",
+       "text": "הערך חשבו סך דרך וסך זמן."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12c",
+     "label": "ג",
+     "text": "מצאו את הממוצעת והשוו לממוצע החשבוני של המהירויות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו את הממוצעת והשוו לממוצע החשבוני של המהירויות.",
+       "text": "הערך מצאו את הממוצעת והשוו לממוצע החשבוני של המהירויות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12d",
+     "label": "ד",
+     "text": "האם זמנים לא שווים תמיד מונעים שוויון בין שני הממוצעים? השתמשו במסע הזה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם זמנים לא שווים תמיד מונעים שוויון בין שני הממוצעים? השתמשו במסע הזה.",
+       "text": "הערך האם זמנים לא שווים תמיד מונעים שוויון בין שני הממוצעים? השתמשו במסע הזה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q13",
+   "label": 13,
+   "text": "שני נוסעים צריכים לעבור אותה דרך באורך $36$ ק״מ. הראשון יוצא ב־$08:00$ במהירות $12$ קמ״ש, והשני ב־$07:00$ במהירות $9$ קמ״ש.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "שני נוסעים צריכים לעבור אותה דרך באורך $36$ ק״מ. הראשון יוצא ב־$08:00$ במהירות $12$ קמ״ש, והשני ב־$07:00$ במהירות $9$ קמ״ש."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "נוסע",
+     "יציאה",
+     "הגעה"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "$08:00$",
+      "___"
+     ],
+     [
+      "שני",
+      "$07:00$",
+      "___"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q13a",
+     "label": "א",
+     "text": "חשבו את משך הנסיעה של כל נוסע.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את משך הנסיעה של כל נוסע.",
+       "text": "הערך חשבו את משך הנסיעה של כל נוסע."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13b",
+     "label": "ב",
+     "text": "השלימו את שעות ההגעה בטבלה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את שעות ההגעה בטבלה.",
+       "text": "הערך השלימו את שעות ההגעה בטבלה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13c",
+     "label": "ג",
+     "text": "מי נסע זמן רב יותר, ובכמה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מי נסע זמן רב יותר, ובכמה?",
+       "text": "הערך מי נסע זמן רב יותר, ובכמה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13d",
+     "label": "ד",
+     "text": "הסבירו מדוע הגעה באותה שעה אינה מוכיחה מהירויות שוות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסבירו מדוע הגעה באותה שעה אינה מוכיחה מהירויות שוות.",
+       "text": "הערך הסבירו מדוע הגעה באותה שעה אינה מוכיחה מהירויות שוות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q14",
+   "label": 14,
+   "text": "רוכב $A$ יוצא בשעה $08:00$ במהירות $12$ קמ״ש. רוכב $B$ יוצא מאותה תחנה אחריו באותו כיוון במהירות $16$ קמ״ש. תעודת מסלול דורשת שהם ייפגשו במרחק $48$ ק״מ מן התחנה. המערכת מציעה ל־$B$ יציאה בשעה $08:30$ או בשעה $09:00$. החצים סכמתיים ומציגים את הכיוון ואת סדר הרוכבים בעת יציאת הרוכב המאוחר.",
+   "figure_id": "q14_head",
+   "given": [
+    {
+     "text": "רוכב $A$ יוצא בשעה $08:00$ במהירות $12$ קמ״ש. רוכב $B$ יוצא מאותה תחנה אחריו באותו כיוון במהירות $16$ קמ״ש. תעודת מסלול דורשת שהם ייפגשו במרחק $48$ ק״מ מן התחנה. המערכת מציעה ל־$B$ יציאה בשעה $08:30$ או בשעה $09:00$. החצים סכמתיים ומציגים את הכיוון ואת סדר הרוכבים בעת יציאת הרוכב המאוחר."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q14a",
+     "label": "א",
+     "text": "חשבו כמה זמן צריך כל רוכב כדי להגיע למקום שבתעודה, וקבעו באיזו שעה יגיע לשם $A$.",
+     "figure_id": "q14_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו כמה זמן צריך כל רוכב כדי להגיע למקום שבתעודה, וקבעו באיזו שעה יגיע לשם $A$.",
+       "text": "הערך חשבו כמה זמן צריך כל רוכב כדי להגיע למקום שבתעודה, וקבעו באיזו שעה יגיע לשם $A$."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14b",
+     "label": "ב",
+     "text": "בחרו את שעת יציאת $B$ שמאפשרת מפגש במקום הנדרש. בדקו מדוע ההצעה האחרת אינה מתאימה.",
+     "figure_id": "q14_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בחרו את שעת יציאת $B$ שמאפשרת מפגש במקום הנדרש. בדקו מדוע ההצעה האחרת אינה מתאימה.",
+       "text": "הערך בחרו את שעת יציאת $B$ שמאפשרת מפגש במקום הנדרש. בדקו מדוע ההצעה האחרת אינה מתאימה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14c",
+     "label": "ג",
+     "text": "חשבו את יתרון $A$ בעת יציאת $B$ בתוכנית שבחרתם, ואת קצב צמצום הפער.",
+     "figure_id": "q14_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את יתרון $A$ בעת יציאת $B$ בתוכנית שבחרתם, ואת קצב צמצום הפער.",
+       "text": "הערך חשבו את יתרון $A$ בעת יציאת $B$ בתוכנית שבחרתם, ואת קצב צמצום הפער."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14d",
+     "label": "ד",
+     "text": "אמתו את זמן ההשגה בעזרת הפער, רשמו את שעת השעון, ובדקו ששתי הדרכים עד ההשגה שוות.",
+     "figure_id": "q14_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אמתו את זמן ההשגה בעזרת הפער, רשמו את שעת השעון, ובדקו ששתי הדרכים עד ההשגה שוות.",
+       "text": "הערך אמתו את זמן ההשגה בעזרת הפער, רשמו את שעת השעון, ובדקו ששתי הדרכים עד ההשגה שוות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q15",
+   "label": 15,
+   "text": "על דף ריק ציירו שלושה מצבי תנועה של שני גופים: התקרבות, התרחקות והשגה אפשרית. בחרו בעצמכם מהירויות חיוביות שונות ומרחק התחלתי מתאים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "על דף ריק ציירו שלושה מצבי תנועה של שני גופים: התקרבות, התרחקות והשגה אפשרית. בחרו בעצמכם מהירויות חיוביות שונות ומרחק התחלתי מתאים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q15a",
+     "label": "א",
+     "text": "ציירו את שלושת המצבים עם חצי כיוון, שמות ומהירויות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ציירו את שלושת המצבים עם חצי כיוון, שמות ומהירויות.",
+       "text": "הערך ציירו את שלושת המצבים עם חצי כיוון, שמות ומהירויות."
+      }
+     ],
+     "to_construct": [
+      {
+       "text": "שלושה תרשימי כיוון תנועה עם גופים ומהירויות"
+      }
+     ],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15b",
+     "label": "ב",
+     "text": "לכל מצב ציינו אם הפער גדל או קטן ומהו קצב השינוי שבחרתם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "לכל מצב ציינו אם הפער גדל או קטן ומהו קצב השינוי שבחרתם.",
+       "text": "הערך לכל מצב ציינו אם הפער גדל או קטן ומהו קצב השינוי שבחרתם."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15c",
+     "label": "ג",
+     "text": "בחרו את מצב ההתקרבות וחשבו זמן מפגש מתאים לנתונים שלכם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בחרו את מצב ההתקרבות וחשבו זמן מפגש מתאים לנתונים שלכם.",
+       "text": "הערך בחרו את מצב ההתקרבות וחשבו זמן מפגש מתאים לנתונים שלכם."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15d",
+     "label": "ד",
+     "text": "כיצד תשנו רק מהירות אחת במצב ההשגה כך שלא תהיה השגה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כיצד תשנו רק מהירות אחת במצב ההשגה כך שלא תהיה השגה?",
+       "text": "הערך כיצד תשנו רק מהירות אחת במצב ההשגה כך שלא תהיה השגה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q16",
+   "label": 16,
+   "text": "הפרדה התחלתית בין שני גופים היא $21$ ק״מ. בתוכנית א׳ הם נעים זה לקראת זה במהירויות $6$ ו־$9$ קמ״ש. בתוכנית ב׳ הם נעים ימינה, והמהיר נמצא מאחור.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הפרדה התחלתית בין שני גופים היא $21$ ק״מ. בתוכנית א׳ הם נעים זה לקראת זה במהירויות $6$ ו־$9$ קמ״ש. בתוכנית ב׳ הם נעים ימינה, והמהיר נמצא מאחור."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "תוכנית",
+     "כיוונים",
+     "קצב צמצום"
+    ],
+    "rows": [
+     [
+      "א׳",
+      "זה לקראת זה",
+      "___"
+     ],
+     [
+      "ב׳",
+      "אותו כיוון, מהיר מאחור",
+      "___"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q16a",
+     "label": "א",
+     "text": "כתבו לכל תוכנית את קצב צמצום הפער.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו לכל תוכנית את קצב צמצום הפער.",
+       "text": "הערך כתבו לכל תוכנית את קצב צמצום הפער."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16b",
+     "label": "ב",
+     "text": "חשבו את הזמן עד מפגש או השגה בכל תוכנית.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את הזמן עד מפגש או השגה בכל תוכנית.",
+       "text": "הערך חשבו את הזמן עד מפגש או השגה בכל תוכנית."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16c",
+     "label": "ג",
+     "text": "המירו את משך תוכנית א׳ לשעות ודקות. השוו במפורש את שני משכי המפגש, והסבירו מדוע ההשגה אורכת יותר.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המירו את משך תוכנית א׳ לשעות ודקות. השוו במפורש את שני משכי המפגש, והסבירו מדוע ההשגה אורכת יותר.",
+       "text": "הערך המירו את משך תוכנית א׳ לשעות ודקות. השוו במפורש את שני משכי המפגש, והסבירו מדוע ההשגה אורכת יותר."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16d",
+     "label": "ד",
+     "text": "מדוע אין להשתמש באותה פעולת חשבון בשתי התוכניות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מדוע אין להשתמש באותה פעולת חשבון בשתי התוכניות?",
+       "text": "הערך מדוע אין להשתמש באותה פעולת חשבון בשתי התוכניות?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q17",
+   "label": 17,
+   "text": "הליכה במהירות קבועה מתועדת כך: $3150$ מטר במשך $45$ דקות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הליכה במהירות קבועה מתועדת כך: $3150$ מטר במשך $45$ דקות."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "גודל",
+     "יחידה מקורית",
+     "יחידה לחישוב"
+    ],
+    "rows": [
+     [
+      "דרך",
+      "$3150$ מטר",
+      "___ ק״מ"
+     ],
+     [
+      "זמן",
+      "$45$ דקות",
+      "___ שעות"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q17a",
+     "label": "א",
+     "text": "המירו את הדרך לק״מ ואת הזמן לשעות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המירו את הדרך לק״מ ואת הזמן לשעות.",
+       "text": "הערך המירו את הדרך לק״מ ואת הזמן לשעות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17b",
+     "label": "ב",
+     "text": "מצאו מהירות בקמ״ש.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו מהירות בקמ״ש.",
+       "text": "הערך מצאו מהירות בקמ״ש."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17c",
+     "label": "ג",
+     "text": "כמה ק״מ יעבור ההולך בשעתיים באותה מהירות? המירו גם את התוצאה למטרים וציינו כמה מטרים בכל ק״מ.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כמה ק״מ יעבור ההולך בשעתיים באותה מהירות? המירו גם את התוצאה למטרים וציינו כמה מטרים בכל ק״מ.",
+       "text": "הערך כמה ק״מ יעבור ההולך בשעתיים באותה מהירות? המירו גם את התוצאה למטרים וציינו כמה מטרים בכל ק״מ."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17d",
+     "label": "ד",
+     "text": "כמה דקות יידרשו כדי לעבור $2.1$ ק״מ? הסבירו מדוע צריך לאחד יחידות לפני הצבה בנוסחת הדרך.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כמה דקות יידרשו כדי לעבור $2.1$ ק״מ? הסבירו מדוע צריך לאחד יחידות לפני הצבה בנוסחת הדרך.",
+       "text": "הערך כמה דקות יידרשו כדי לעבור $2.1$ ק״מ? הסבירו מדוע צריך לאחד יחידות לפני הצבה בנוסחת הדרך."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q18",
+   "label": 18,
+   "text": "מסלול הלוך וחזור כולל $45$ ק״מ בכל כיוון. מהירות ההלוך נקבעה ל־$9$ קמ״ש. חוזה מגביל את המסע כולו ל־$8$ שעות ללא עצירות. ניתן לבחור לחזור במהירות $12$, $15$ או $18$ קמ״ש, והמערכת צריכה לבחור את המהירות הקטנה ביותר שעומדת בחוזה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מסלול הלוך וחזור כולל $45$ ק״מ בכל כיוון. מהירות ההלוך נקבעה ל־$9$ קמ״ש. חוזה מגביל את המסע כולו ל־$8$ שעות ללא עצירות. ניתן לבחור לחזור במהירות $12$, $15$ או $18$ קמ״ש, והמערכת צריכה לבחור את המהירות הקטנה ביותר שעומדת בחוזה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "מהירות חזרה בקמ״ש",
+     "משך חזרה",
+     "עומדת בחוזה?"
+    ],
+    "rows": [
+     [
+      "$12$",
+      "___",
+      "___"
+     ],
+     [
+      "$15$",
+      "___",
+      "___"
+     ],
+     [
+      "$18$",
+      "___",
+      "___"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q18a",
+     "label": "א",
+     "text": "חשבו את זמן ההלוך ואת הזמן שנותר לחזרה. שחזרו את המהירות המזערית הדרושה ובחרו מן הרשימה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את זמן ההלוך ואת הזמן שנותר לחזרה. שחזרו את המהירות המזערית הדרושה ובחרו מן הרשימה.",
+       "text": "הערך חשבו את זמן ההלוך ואת הזמן שנותר לחזרה. שחזרו את המהירות המזערית הדרושה ובחרו מן הרשימה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18b",
+     "label": "ב",
+     "text": "השלימו את הטבלה לכל ההצעות. הסבירו מדוע ההצעה האטית מן הבחירה שלכם נדחית, וחשבו גם את הממוצעת בתוכנית שנבחרה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את הטבלה לכל ההצעות. הסבירו מדוע ההצעה האטית מן הבחירה שלכם נדחית, וחשבו גם את הממוצעת בתוכנית שנבחרה.",
+       "text": "הערך השלימו את הטבלה לכל ההצעות. הסבירו מדוע ההצעה האטית מן הבחירה שלכם נדחית, וחשבו גם את הממוצעת בתוכנית שנבחרה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18c",
+     "label": "ג",
+     "text": "חשבו את הממוצע החשבוני של מהירויות התוכנית שנבחרה ואת הפרשו מן הממוצעת האמיתית.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את הממוצע החשבוני של מהירויות התוכנית שנבחרה ואת הפרשו מן הממוצעת האמיתית.",
+       "text": "הערך חשבו את הממוצע החשבוני של מהירויות התוכנית שנבחרה ואת הפרשו מן הממוצעת האמיתית."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18d",
+     "label": "ד",
+     "text": "הסבירו מדוע הדרך האטית משפיעה כאן יותר, אף ששני מרחקי המסלול שווים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסבירו מדוע הדרך האטית משפיעה כאן יותר, אף ששני מרחקי המסלול שווים.",
+       "text": "הערך הסבירו מדוע הדרך האטית משפיעה כאן יותר, אף ששני מרחקי המסלול שווים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q19",
+   "label": 19,
+   "text": "הגוף $A$ נע ימינה במהירות $15$ קמ״ש ומתחיל $14$ ק״מ מאחורי $B$, שנע ימינה במהירות $8$ קמ״ש. רוצים השגה בתוך שעתיים לכל היותר.",
+   "figure_id": "q19_head",
+   "given": [
+    {
+     "text": "הגוף $A$ נע ימינה במהירות $15$ קמ״ש ומתחיל $14$ ק״מ מאחורי $B$, שנע ימינה במהירות $8$ קמ״ש. רוצים השגה בתוך שעתיים לכל היותר."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q19a",
+     "label": "א",
+     "text": "חשבו את קצב צמצום הפער.",
+     "figure_id": "q19_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את קצב צמצום הפער.",
+       "text": "הערך חשבו את קצב צמצום הפער."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19b",
+     "label": "ב",
+     "text": "האם הדרישה מתקיימת? חשבו.",
+     "figure_id": "q19_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם הדרישה מתקיימת? חשבו.",
+       "text": "הערך האם הדרישה מתקיימת? חשבו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19c",
+     "label": "ג",
+     "text": "במסע אחר הפער ההתחלתי הוא $21$ ק״מ, ושאר הנתונים נשמרים. האם הדרישה מתקיימת?",
+     "figure_id": "q19_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "במסע אחר הפער ההתחלתי הוא $21$ ק״מ, ושאר הנתונים נשמרים. האם הדרישה מתקיימת?",
+       "text": "הערך במסע אחר הפער ההתחלתי הוא $21$ ק״מ, ושאר הנתונים נשמרים. האם הדרישה מתקיימת?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19d",
+     "label": "ד",
+     "text": "מה הפער הגדול ביותר המאפשר עמידה בדרישה באותן מהירויות?",
+     "figure_id": "q19_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה הפער הגדול ביותר המאפשר עמידה בדרישה באותן מהירויות?",
+       "text": "הערך מה הפער הגדול ביותר המאפשר עמידה בדרישה באותן מהירויות?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q20",
+   "label": 20,
+   "text": "בחרו בעצמכם שתי מהירויות חיוביות שונות למטיילים שיוצאים בו־זמנית משני קצות דרך ונפגשים אחרי שעתיים. תכננו את אורך הדרך בהתאם.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בחרו בעצמכם שתי מהירויות חיוביות שונות למטיילים שיוצאים בו־זמנית משני קצות דרך ונפגשים אחרי שעתיים. תכננו את אורך הדרך בהתאם."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q20a",
+     "label": "א",
+     "text": "כתבו את המהירויות שבחרתם וציירו חצי כיוון מתאימים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו את המהירויות שבחרתם וציירו חצי כיוון מתאימים.",
+       "text": "הערך כתבו את המהירויות שבחרתם וציירו חצי כיוון מתאימים."
+      }
+     ],
+     "to_construct": [
+      {
+       "text": "שרטוט שני מטיילים וחצי כיוון לפי בחירה"
+      }
+     ],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20b",
+     "label": "ב",
+     "text": "מצאו את הדרך של כל מטייל עד המפגש.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו את הדרך של כל מטייל עד המפגש.",
+       "text": "הערך מצאו את הדרך של כל מטייל עד המפגש."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20c",
+     "label": "ג",
+     "text": "מה אורך הדרך שעליכם לקבוע?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה אורך הדרך שעליכם לקבוע?",
+       "text": "הערך מה אורך הדרך שעליכם לקבוע?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20d",
+     "label": "ד",
+     "text": "בדקו שאורך הדרך והמהירויות נותנים את משך המפגש הנדרש.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בדקו שאורך הדרך והמהירויות נותנים את משך המפגש הנדרש.",
+       "text": "הערך בדקו שאורך הדרך והמהירויות נותנים את משך המפגש הנדרש."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20e",
+     "label": "ה",
+     "text": "אם אותם מטיילים יוצאים מאותה נקודה באותו כיוון, האם הם נשארים יחד אחרי היציאה? נמקו. אם אותם גופים יוצאים מאותה נקודה דווקא לכיוונים מנוגדים, מהו קצב התרחקותם? חשבו לפי בחירתכם ונמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אם אותם מטיילים יוצאים מאותה נקודה באותו כיוון, האם הם נשארים יחד אחרי היציאה? נמקו. אם אותם גופים יוצאים מאותה נקודה דווקא לכיוונים מנוגדים, מהו קצב התרחקותם? חשבו לפי בחירתכם ונמקו.",
+       "text": "הערך אם אותם מטיילים יוצאים מאותה נקודה באותו כיוון, האם הם נשארים יחד אחרי היציאה? נמקו. אם אותם גופים יוצאים מאותה נקודה דווקא לכיוונים מנוגדים, מהו קצב התרחקותם? חשבו לפי בחירתכם ונמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  }
+ ],
+ "figures": [
+  {
+   "id": "q2_head",
+   "svg": "figures/q2_head.svg",
+   "question": "q2",
+   "view": {
+    "width_px": 431.3,
+    "height_px": 81.2,
+    "unit_px": 1.0,
+    "viewbox": [
+     431.3,
+     81.2
+    ]
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-A",
+      "kind": "point",
+      "role": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ]
+     },
+     {
+      "svg_id": "pt-B",
+      "kind": "point",
+      "role": "point",
+      "name": "B",
+      "xy": [
+       400.0,
+       35.0
+      ],
+      "svg_xy": [
+       415.67,
+       66.73
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-1c1e4c",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        400.0,
+        35.0
+       ],
+       [
+        376.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        415.67,
+        66.73
+       ],
+       [
+        391.67,
+        66.73
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-a54078",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        18.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        33.67,
+        31.73
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-A",
+      "kind": "label",
+      "role": "vertex",
+      "name": "A",
+      "text": "A",
+      "for": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "ink_box": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ]
+     },
+     {
+      "svg_id": "lbl-B",
+      "kind": "label",
+      "role": "vertex",
+      "name": "B",
+      "text": "B",
+      "for": "B",
+      "xy": [
+       400.0,
+       25.146667
+      ],
+      "svg_xy": [
+       415.67,
+       56.88
+      ],
+      "ink_box": [
+       412.0,
+       47.0,
+       419.35,
+       59.92
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q2_head",
+    "kind": "plane_geometry",
+    "visual_support": "full",
+    "question": "q2",
+    "svg": "figures/q2_head.svg",
+    "view": {
+     "viewbox": [
+      431.3,
+      81.2
+     ]
+    },
+    "objects": [
+     {
+      "id": "pt-A",
+      "svg_id": "pt-A",
+      "type": "point",
+      "part": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-B",
+      "svg_id": "pt-B",
+      "type": "point",
+      "part": "point",
+      "name": "B",
+      "xy": [
+       400.0,
+       35.0
+      ],
+      "svg_xy": [
+       415.67,
+       66.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-1c1e4c",
+      "svg_id": "seg-1c1e4c",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        400.0,
+        35.0
+       ],
+       [
+        376.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        415.67,
+        66.73
+       ],
+       [
+        391.67,
+        66.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-a54078",
+      "svg_id": "seg-a54078",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        18.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        33.67,
+        31.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-A",
+      "svg_id": "lbl-A",
+      "type": "label",
+      "part": "vertex",
+      "name": "A",
+      "text": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "bbox": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ],
+      "for": "A",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-B",
+      "svg_id": "lbl-B",
+      "type": "label",
+      "part": "vertex",
+      "name": "B",
+      "text": "B",
+      "xy": [
+       400.0,
+       25.146667
+      ],
+      "svg_xy": [
+       415.67,
+       56.88
+      ],
+      "bbox": [
+       412.0,
+       47.0,
+       419.35,
+       59.92
+      ],
+      "for": "B",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-70A6B8",
+      "type": "statement",
+      "role": "given",
+      "text": "שני מטיילים יוצאים בו־זמנית משני קצות דרך שאורכה $70$ ק״מ, לפי החצים. מהירות $A$ היא $6$ קמ״ש ומהירות $B$ היא $8$ קמ״ש.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q2a",
+      "quantity": "value",
+      "what": "האם המרחק ביניהם גדל או קטן? מה קצב השינוי?",
+      "text": "הערך האם המרחק ביניהם גדל או קטן? מה קצב השינוי?",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q2b",
+      "quantity": "value",
+      "what": "חשבו את הזמן עד המפגש.",
+      "text": "הערך חשבו את הזמן עד המפגש.",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q2c",
+      "quantity": "value",
+      "what": "מה הדרך שעובר כל מטייל עד המפגש?",
+      "text": "הערך מה הדרך שעובר כל מטייל עד המפגש?",
+      "objects": []
+     },
+     {
+      "id": "r-find-4",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q2d",
+      "quantity": "value",
+      "what": "איזו בדיקה מתאימה כאן: סכום הדרכים או הפרשן? בצעו אותה. הסבירו גם מדוע משכי תנועתם עד המפגש שווים.",
+      "text": "הערך איזו בדיקה מתאימה כאן: סכום הדרכים או הפרשן? בצעו אותה. הסבירו גם מדוע משכי תנועתם עד המפגש שווים.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q2_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q4_head",
+   "svg": "figures/q4_head.svg",
+   "question": "q4",
+   "view": {
+    "width_px": 124.7,
+    "height_px": 81.2,
+    "unit_px": 1.0,
+    "viewbox": [
+     124.7,
+     81.2
+    ]
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-A",
+      "kind": "point",
+      "role": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ]
+     },
+     {
+      "svg_id": "pt-B",
+      "kind": "point",
+      "role": "point",
+      "name": "B",
+      "xy": [
+       85.0,
+       35.0
+      ],
+      "svg_xy": [
+       100.67,
+       66.73
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-a35d2a",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        85.0,
+        35.0
+       ],
+       [
+        97.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        100.67,
+        66.73
+       ],
+       [
+        112.67,
+        66.73
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-f61c83",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        24.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        39.67,
+        31.73
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-A",
+      "kind": "label",
+      "role": "vertex",
+      "name": "A",
+      "text": "A",
+      "for": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "ink_box": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ]
+     },
+     {
+      "svg_id": "lbl-B",
+      "kind": "label",
+      "role": "vertex",
+      "name": "B",
+      "text": "B",
+      "for": "B",
+      "xy": [
+       85.0,
+       25.146667
+      ],
+      "svg_xy": [
+       100.67,
+       56.88
+      ],
+      "ink_box": [
+       97.0,
+       47.0,
+       104.35,
+       59.92
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q4_head",
+    "kind": "plane_geometry",
+    "visual_support": "full",
+    "question": "q4",
+    "svg": "figures/q4_head.svg",
+    "view": {
+     "viewbox": [
+      124.7,
+      81.2
+     ]
+    },
+    "objects": [
+     {
+      "id": "pt-A",
+      "svg_id": "pt-A",
+      "type": "point",
+      "part": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-B",
+      "svg_id": "pt-B",
+      "type": "point",
+      "part": "point",
+      "name": "B",
+      "xy": [
+       85.0,
+       35.0
+      ],
+      "svg_xy": [
+       100.67,
+       66.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-a35d2a",
+      "svg_id": "seg-a35d2a",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        85.0,
+        35.0
+       ],
+       [
+        97.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        100.67,
+        66.73
+       ],
+       [
+        112.67,
+        66.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-f61c83",
+      "svg_id": "seg-f61c83",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        24.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        39.67,
+        31.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-A",
+      "svg_id": "lbl-A",
+      "type": "label",
+      "part": "vertex",
+      "name": "A",
+      "text": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "bbox": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ],
+      "for": "A",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-B",
+      "svg_id": "lbl-B",
+      "type": "label",
+      "part": "vertex",
+      "name": "B",
+      "text": "B",
+      "xy": [
+       85.0,
+       25.146667
+      ],
+      "svg_xy": [
+       100.67,
+       56.88
+      ],
+      "bbox": [
+       97.0,
+       47.0,
+       104.35,
+       59.92
+      ],
+      "for": "B",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-B12AA8B4",
+      "type": "statement",
+      "role": "given",
+      "text": "$B$ נמצא $12$ ק״מ לפני $A$. שניהם נעים ימינה: $A$ במהירות $8$ קמ״ש ו־$B$ במהירות $4$ קמ״ש. החצים מציינים כיוון.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q4a",
+      "quantity": "value",
+      "what": "כמה מן הפער נסגר בכל שעה?",
+      "text": "הערך כמה מן הפער נסגר בכל שעה?",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q4b",
+      "quantity": "value",
+      "what": "מצאו את זמן ההשגה.",
+      "text": "הערך מצאו את זמן ההשגה.",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q4c",
+      "quantity": "value",
+      "what": "תלמיד השתמש בסכום המהירויות. חשבו את הזמן שהיה מקבל והסבירו את טעותו.",
+      "text": "הערך תלמיד השתמש בסכום המהירויות. חשבו את הזמן שהיה מקבל והסבירו את טעותו.",
+      "objects": []
+     },
+     {
+      "id": "r-find-4",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q4d",
+      "quantity": "value",
+      "what": "בדקו את ההשגה באמצעות דרכי הגופים.",
+      "text": "הערך בדקו את ההשגה באמצעות דרכי הגופים.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q4_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q6_head",
+   "svg": "figures/q6_head.svg",
+   "question": "q6",
+   "view": {
+    "width_px": 115.7,
+    "height_px": 81.2,
+    "unit_px": 1.0,
+    "viewbox": [
+     115.7,
+     81.2
+    ]
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-A",
+      "kind": "point",
+      "role": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ]
+     },
+     {
+      "svg_id": "pt-B",
+      "kind": "point",
+      "role": "point",
+      "name": "B",
+      "xy": [
+       70.0,
+       35.0
+      ],
+      "svg_xy": [
+       85.67,
+       66.73
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-a54078",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        18.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        33.67,
+        31.73
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-b23338",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        70.0,
+        35.0
+       ],
+       [
+        88.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        85.67,
+        66.73
+       ],
+       [
+        103.67,
+        66.73
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-A",
+      "kind": "label",
+      "role": "vertex",
+      "name": "A",
+      "text": "A",
+      "for": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "ink_box": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ]
+     },
+     {
+      "svg_id": "lbl-B",
+      "kind": "label",
+      "role": "vertex",
+      "name": "B",
+      "text": "B",
+      "for": "B",
+      "xy": [
+       70.0,
+       25.146667
+      ],
+      "svg_xy": [
+       85.67,
+       56.88
+      ],
+      "ink_box": [
+       82.0,
+       47.0,
+       89.35,
+       59.92
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q6_head",
+    "kind": "plane_geometry",
+    "visual_support": "full",
+    "question": "q6",
+    "svg": "figures/q6_head.svg",
+    "view": {
+     "viewbox": [
+      115.7,
+      81.2
+     ]
+    },
+    "objects": [
+     {
+      "id": "pt-A",
+      "svg_id": "pt-A",
+      "type": "point",
+      "part": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-B",
+      "svg_id": "pt-B",
+      "type": "point",
+      "part": "point",
+      "name": "B",
+      "xy": [
+       70.0,
+       35.0
+      ],
+      "svg_xy": [
+       85.67,
+       66.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-a54078",
+      "svg_id": "seg-a54078",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        18.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        33.67,
+        31.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-b23338",
+      "svg_id": "seg-b23338",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        70.0,
+        35.0
+       ],
+       [
+        88.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        85.67,
+        66.73
+       ],
+       [
+        103.67,
+        66.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-A",
+      "svg_id": "lbl-A",
+      "type": "label",
+      "part": "vertex",
+      "name": "A",
+      "text": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "bbox": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ],
+      "for": "A",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-B",
+      "svg_id": "lbl-B",
+      "type": "label",
+      "part": "vertex",
+      "name": "B",
+      "text": "B",
+      "xy": [
+       70.0,
+       25.146667
+      ],
+      "svg_xy": [
+       85.67,
+       56.88
+      ],
+      "bbox": [
+       82.0,
+       47.0,
+       89.35,
+       59.92
+      ],
+      "for": "B",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-6B4A",
+      "type": "statement",
+      "role": "given",
+      "text": "שני הולכים נעים ימינה במהירות $6$ קמ״ש כל אחד. $B$ נמצא בתחילה $4$ ק״מ לפני $A$.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q6a",
+      "quantity": "value",
+      "what": "מה יהיה הפער לאחר שעה?",
+      "text": "הערך מה יהיה הפער לאחר שעה?",
+      "objects": []
+     },
+     {
+      "id": "r-find-AB",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q6b",
+      "quantity": "value",
+      "what": "האם $A$ ישיג את $B$ אם המצב לא ישתנה?",
+      "text": "הערך האם $A$ ישיג את $B$ אם המצב לא ישתנה?",
+      "objects": []
+     },
+     {
+      "id": "r-find-A10",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q6c",
+      "quantity": "value",
+      "what": "כעת רק $A$ מגביר מהירות ל־$10$ קמ״ש. כמה זמן יעבור עד השגה?",
+      "text": "הערך כעת רק $A$ מגביר מהירות ל־$10$ קמ״ש. כמה זמן יעבור עד השגה?",
+      "objects": []
+     },
+     {
+      "id": "r-find-A",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q6d",
+      "quantity": "value",
+      "what": "מה יקרה לפער אם $A$ יאט במקום להגביר מהירות?",
+      "text": "הערך מה יקרה לפער אם $A$ יאט במקום להגביר מהירות?",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q6_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q11_head",
+   "svg": "figures/q11_head.svg",
+   "question": "q11",
+   "view": {
+    "width_px": 158.0,
+    "height_px": 81.2,
+    "unit_px": 1.0,
+    "viewbox": [
+     158.0,
+     81.2
+    ]
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-A",
+      "kind": "point",
+      "role": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       21.0,
+       31.73
+      ]
+     },
+     {
+      "svg_id": "pt-B",
+      "kind": "point",
+      "role": "point",
+      "name": "B",
+      "xy": [
+       110.0,
+       35.0
+      ],
+      "svg_xy": [
+       131.0,
+       66.73
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-62bf95",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        110.0,
+        35.0
+       ],
+       [
+        125.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        131.0,
+        66.73
+       ],
+       [
+        146.0,
+        66.73
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-f67b0f",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        -9.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        21.0,
+        31.73
+       ],
+       [
+        12.0,
+        31.73
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-A",
+      "kind": "label",
+      "role": "vertex",
+      "name": "A",
+      "text": "A",
+      "for": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       21.0,
+       21.88
+      ],
+      "ink_box": [
+       17.33,
+       12.0,
+       24.67,
+       24.92
+      ]
+     },
+     {
+      "svg_id": "lbl-B",
+      "kind": "label",
+      "role": "vertex",
+      "name": "B",
+      "text": "B",
+      "for": "B",
+      "xy": [
+       110.0,
+       25.146667
+      ],
+      "svg_xy": [
+       131.0,
+       56.88
+      ],
+      "ink_box": [
+       127.33,
+       47.0,
+       134.67,
+       59.92
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q11_head",
+    "kind": "plane_geometry",
+    "visual_support": "full",
+    "question": "q11",
+    "svg": "figures/q11_head.svg",
+    "view": {
+     "viewbox": [
+      158.0,
+      81.2
+     ]
+    },
+    "objects": [
+     {
+      "id": "pt-A",
+      "svg_id": "pt-A",
+      "type": "point",
+      "part": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       21.0,
+       31.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-B",
+      "svg_id": "pt-B",
+      "type": "point",
+      "part": "point",
+      "name": "B",
+      "xy": [
+       110.0,
+       35.0
+      ],
+      "svg_xy": [
+       131.0,
+       66.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-62bf95",
+      "svg_id": "seg-62bf95",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        110.0,
+        35.0
+       ],
+       [
+        125.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        131.0,
+        66.73
+       ],
+       [
+        146.0,
+        66.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-f67b0f",
+      "svg_id": "seg-f67b0f",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        -9.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        21.0,
+        31.73
+       ],
+       [
+        12.0,
+        31.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-A",
+      "svg_id": "lbl-A",
+      "type": "label",
+      "part": "vertex",
+      "name": "A",
+      "text": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       21.0,
+       21.88
+      ],
+      "bbox": [
+       17.33,
+       12.0,
+       24.67,
+       24.92
+      ],
+      "for": "A",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-B",
+      "svg_id": "lbl-B",
+      "type": "label",
+      "part": "vertex",
+      "name": "B",
+      "text": "B",
+      "xy": [
+       110.0,
+       25.146667
+      ],
+      "svg_xy": [
+       131.0,
+       56.88
+      ],
+      "bbox": [
+       127.33,
+       47.0,
+       134.67,
+       59.92
+      ],
+      "for": "B",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-835",
+      "type": "statement",
+      "role": "given",
+      "text": "לפי החצים שני גופים מתרחקים זה מזה. הפער ההתחלתי $8$ ק״מ; המהירויות הן $3$ ו־$5$ קמ״ש.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q11a",
+      "quantity": "value",
+      "what": "מה קצב הגדילה של הפער?",
+      "text": "הערך מה קצב הגדילה של הפער?",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q11b",
+      "quantity": "value",
+      "what": "מה יהיה הפער לאחר שעתיים?",
+      "text": "הערך מה יהיה הפער לאחר שעתיים?",
+      "objects": []
+     },
+     {
+      "id": "r-find-48",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q11c",
+      "quantity": "value",
+      "what": "כעבור כמה זמן יהיה הפער $48$ ק״מ?",
+      "text": "הערך כעבור כמה זמן יהיה הפער $48$ ק״מ?",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q11d",
+      "quantity": "value",
+      "what": "האם נכון להשוות את דרכי הגופים זו לזו כדי למצוא את הזמן בסעיף הקודם? נמקו.",
+      "text": "הערך האם נכון להשוות את דרכי הגופים זו לזו כדי למצוא את הזמן בסעיף הקודם? נמקו.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q11_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q14_head",
+   "svg": "figures/q14_head.svg",
+   "question": "q14",
+   "view": {
+    "width_px": 168.7,
+    "height_px": 81.2,
+    "unit_px": 1.0,
+    "viewbox": [
+     168.7,
+     81.2
+    ]
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-A",
+      "kind": "point",
+      "role": "point",
+      "name": "A",
+      "xy": [
+       105.0,
+       35.0
+      ],
+      "svg_xy": [
+       120.67,
+       66.73
+      ]
+     },
+     {
+      "svg_id": "pt-B",
+      "kind": "point",
+      "role": "point",
+      "name": "B",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-5ed12b",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        48.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        63.67,
+        31.73
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-d7cd0f",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        105.0,
+        35.0
+       ],
+       [
+        141.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        120.67,
+        66.73
+       ],
+       [
+        156.67,
+        66.73
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-A",
+      "kind": "label",
+      "role": "vertex",
+      "name": "A",
+      "text": "A",
+      "for": "A",
+      "xy": [
+       105.0,
+       25.146667
+      ],
+      "svg_xy": [
+       120.67,
+       56.88
+      ],
+      "ink_box": [
+       117.0,
+       47.0,
+       124.35,
+       59.92
+      ]
+     },
+     {
+      "svg_id": "lbl-B",
+      "kind": "label",
+      "role": "vertex",
+      "name": "B",
+      "text": "B",
+      "for": "B",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "ink_box": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q14_head",
+    "kind": "plane_geometry",
+    "visual_support": "full",
+    "question": "q14",
+    "svg": "figures/q14_head.svg",
+    "view": {
+     "viewbox": [
+      168.7,
+      81.2
+     ]
+    },
+    "objects": [
+     {
+      "id": "pt-A",
+      "svg_id": "pt-A",
+      "type": "point",
+      "part": "point",
+      "name": "A",
+      "xy": [
+       105.0,
+       35.0
+      ],
+      "svg_xy": [
+       120.67,
+       66.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-B",
+      "svg_id": "pt-B",
+      "type": "point",
+      "part": "point",
+      "name": "B",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-5ed12b",
+      "svg_id": "seg-5ed12b",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        48.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        63.67,
+        31.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-d7cd0f",
+      "svg_id": "seg-d7cd0f",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        105.0,
+        35.0
+       ],
+       [
+        141.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        120.67,
+        66.73
+       ],
+       [
+        156.67,
+        66.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-A",
+      "svg_id": "lbl-A",
+      "type": "label",
+      "part": "vertex",
+      "name": "A",
+      "text": "A",
+      "xy": [
+       105.0,
+       25.146667
+      ],
+      "svg_xy": [
+       120.67,
+       56.88
+      ],
+      "bbox": [
+       117.0,
+       47.0,
+       124.35,
+       59.92
+      ],
+      "for": "A",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-B",
+      "svg_id": "lbl-B",
+      "type": "label",
+      "part": "vertex",
+      "name": "B",
+      "text": "B",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "bbox": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ],
+      "for": "B",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-A080012B1648",
+      "type": "statement",
+      "role": "given",
+      "text": "רוכב $A$ יוצא בשעה $08:00$ במהירות $12$ קמ״ש. רוכב $B$ יוצא מאותה תחנה אחריו באותו כיוון במהירות $16$ קמ״ש. תעודת מסלול דורשת שהם ייפגשו במרחק $48$ ק״מ מן התחנה. המערכת מציעה ל־$B$ יציאה בשעה $08:30$ או בשעה $09:00$. החצים סכמתיים ומציגים את הכיוון ואת סדר הרוכבים בעת יציאת הרוכב המאוחר.",
+      "objects": []
+     },
+     {
+      "id": "r-find-A",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q14a",
+      "quantity": "value",
+      "what": "חשבו כמה זמן צריך כל רוכב כדי להגיע למקום שבתעודה, וקבעו באיזו שעה יגיע לשם $A$.",
+      "text": "הערך חשבו כמה זמן צריך כל רוכב כדי להגיע למקום שבתעודה, וקבעו באיזו שעה יגיע לשם $A$.",
+      "objects": []
+     },
+     {
+      "id": "r-find-B",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q14b",
+      "quantity": "value",
+      "what": "בחרו את שעת יציאת $B$ שמאפשרת מפגש במקום הנדרש. בדקו מדוע ההצעה האחרת אינה מתאימה.",
+      "text": "הערך בחרו את שעת יציאת $B$ שמאפשרת מפגש במקום הנדרש. בדקו מדוע ההצעה האחרת אינה מתאימה.",
+      "objects": []
+     },
+     {
+      "id": "r-find-AB",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q14c",
+      "quantity": "value",
+      "what": "חשבו את יתרון $A$ בעת יציאת $B$ בתוכנית שבחרתם, ואת קצב צמצום הפער.",
+      "text": "הערך חשבו את יתרון $A$ בעת יציאת $B$ בתוכנית שבחרתם, ואת קצב צמצום הפער.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q14d",
+      "quantity": "value",
+      "what": "אמתו את זמן ההשגה בעזרת הפער, רשמו את שעת השעון, ובדקו ששתי הדרכים עד ההשגה שוות.",
+      "text": "הערך אמתו את זמן ההשגה בעזרת הפער, רשמו את שעת השעון, ובדקו ששתי הדרכים עד ההשגה שוות.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q14_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q19_head",
+   "svg": "figures/q19_head.svg",
+   "question": "q19",
+   "view": {
+    "width_px": 171.7,
+    "height_px": 81.2,
+    "unit_px": 1.0,
+    "viewbox": [
+     171.7,
+     81.2
+    ]
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-A",
+      "kind": "point",
+      "role": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ]
+     },
+     {
+      "svg_id": "pt-B",
+      "kind": "point",
+      "role": "point",
+      "name": "B",
+      "xy": [
+       120.0,
+       35.0
+      ],
+      "svg_xy": [
+       135.67,
+       66.73
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-54b64b",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        120.0,
+        35.0
+       ],
+       [
+        144.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        135.67,
+        66.73
+       ],
+       [
+        159.67,
+        66.73
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-ed1b70",
+      "kind": "segment",
+      "role": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        45.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        60.67,
+        31.73
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-A",
+      "kind": "label",
+      "role": "vertex",
+      "name": "A",
+      "text": "A",
+      "for": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "ink_box": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ]
+     },
+     {
+      "svg_id": "lbl-B",
+      "kind": "label",
+      "role": "vertex",
+      "name": "B",
+      "text": "B",
+      "for": "B",
+      "xy": [
+       120.0,
+       25.146667
+      ],
+      "svg_xy": [
+       135.67,
+       56.88
+      ],
+      "ink_box": [
+       132.0,
+       47.0,
+       139.35,
+       59.92
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q19_head",
+    "kind": "plane_geometry",
+    "visual_support": "full",
+    "question": "q19",
+    "svg": "figures/q19_head.svg",
+    "view": {
+     "viewbox": [
+      171.7,
+      81.2
+     ]
+    },
+    "objects": [
+     {
+      "id": "pt-A",
+      "svg_id": "pt-A",
+      "type": "point",
+      "part": "point",
+      "name": "A",
+      "xy": [
+       0.0,
+       0.0
+      ],
+      "svg_xy": [
+       15.67,
+       31.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-B",
+      "svg_id": "pt-B",
+      "type": "point",
+      "part": "point",
+      "name": "B",
+      "xy": [
+       120.0,
+       35.0
+      ],
+      "svg_xy": [
+       135.67,
+       66.73
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-54b64b",
+      "svg_id": "seg-54b64b",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        120.0,
+        35.0
+       ],
+       [
+        144.0,
+        35.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        135.67,
+        66.73
+       ],
+       [
+        159.67,
+        66.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-ed1b70",
+      "svg_id": "seg-ed1b70",
+      "type": "segment",
+      "part": "data",
+      "xy": [
+       [
+        0.0,
+        0.0
+       ],
+       [
+        45.0,
+        0.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        15.67,
+        31.73
+       ],
+       [
+        60.67,
+        31.73
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-A",
+      "svg_id": "lbl-A",
+      "type": "label",
+      "part": "vertex",
+      "name": "A",
+      "text": "A",
+      "xy": [
+       0.0,
+       -9.853333
+      ],
+      "svg_xy": [
+       15.67,
+       21.88
+      ],
+      "bbox": [
+       12.0,
+       12.0,
+       19.35,
+       24.92
+      ],
+      "for": "A",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-B",
+      "svg_id": "lbl-B",
+      "type": "label",
+      "part": "vertex",
+      "name": "B",
+      "text": "B",
+      "xy": [
+       120.0,
+       25.146667
+      ],
+      "svg_xy": [
+       135.67,
+       56.88
+      ],
+      "bbox": [
+       132.0,
+       47.0,
+       139.35,
+       59.92
+      ],
+      "for": "B",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-A1514B8",
+      "type": "statement",
+      "role": "given",
+      "text": "הגוף $A$ נע ימינה במהירות $15$ קמ״ש ומתחיל $14$ ק״מ מאחורי $B$, שנע ימינה במהירות $8$ קמ״ש. רוצים השגה בתוך שעתיים לכל היותר.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q19a",
+      "quantity": "value",
+      "what": "חשבו את קצב צמצום הפער.",
+      "text": "הערך חשבו את קצב צמצום הפער.",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q19b",
+      "quantity": "value",
+      "what": "האם הדרישה מתקיימת? חשבו.",
+      "text": "הערך האם הדרישה מתקיימת? חשבו.",
+      "objects": []
+     },
+     {
+      "id": "r-find-21",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q19c",
+      "quantity": "value",
+      "what": "במסע אחר הפער ההתחלתי הוא $21$ ק״מ, ושאר הנתונים נשמרים. האם הדרישה מתקיימת?",
+      "text": "הערך במסע אחר הפער ההתחלתי הוא $21$ ק״מ, ושאר הנתונים נשמרים. האם הדרישה מתקיימת?",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q19d",
+      "quantity": "value",
+      "what": "מה הפער הגדול ביותר המאפשר עמידה בדרישה באותן מהירויות?",
+      "text": "הערך מה הפער הגדול ביותר המאפשר עמידה בדרישה באותן מהירויות?",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q19_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  }
+ ],
+ "visuals": [
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q1_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q1",
+   "objects": [
+    {
+     "id": "q1_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "מסע",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "דרך בק״מ",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "מהירות בקמ״ש",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "זמן בשעות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "א׳",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$7$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "$3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "ב׳",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$36$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$9$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r3c4",
+     "type": "cell",
+     "row": 3,
+     "col": 4,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "ג׳",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$20$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r4c3",
+     "type": "cell",
+     "row": 4,
+     "col": 3,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r4c4",
+     "type": "cell",
+     "row": 4,
+     "col": 4,
+     "value": "$2.5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q1_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q3_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q3",
+   "objects": [
+    {
+     "id": "q3_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "רישום",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "ערך",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "יציאה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$08:40$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "הגעה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$10:10$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "דרך",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$27$ ק״מ",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q3_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q5_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q5",
+   "objects": [
+    {
+     "id": "q5_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "רוכב",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "מהירות בקמ״ש",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "זמן בשעות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "דרך בק״מ",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "ראשון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$10$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$2.5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "שני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$14$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$2.5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r3c4",
+     "type": "cell",
+     "row": 3,
+     "col": 4,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q5_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q7_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q7",
+   "objects": [
+    {
+     "id": "q7_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "חלק",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "דרך בק״מ",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "מהירות בקמ״ש",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "זמן בשעות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "ראשון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$10$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "שני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$18$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$9$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r3c4",
+     "type": "cell",
+     "row": 3,
+     "col": 4,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q7_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q9_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q9",
+   "objects": [
+    {
+     "id": "q9_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "חלק",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "דרך בק״מ",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "מהירות בקמ״ש",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "ראשון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$24$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$8$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "שני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$12$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$6$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q9_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q10_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q10",
+   "objects": [
+    {
+     "id": "q10_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "רישום זמן",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "ערך בשעות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "הנתון המקורי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "תא החישוב השגוי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$2.3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q10_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q12_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q12",
+   "objects": [
+    {
+     "id": "q12_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "חלק",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "דרך בק״מ",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "מהירות בקמ״ש",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "ראשון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$16$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$8$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "שני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$21$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$7$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "שלישי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$12$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r4c3",
+     "type": "cell",
+     "row": 4,
+     "col": 3,
+     "value": "$6$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q12_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q13_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q13",
+   "objects": [
+    {
+     "id": "q13_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "נוסע",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "יציאה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "הגעה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "ראשון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$08:00$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "שני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$07:00$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q13_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q16_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q16",
+   "objects": [
+    {
+     "id": "q16_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "תוכנית",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "כיוונים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "קצב צמצום",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "א׳",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "זה לקראת זה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "ב׳",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "אותו כיוון, מהיר מאחור",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q16_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q17_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q17",
+   "objects": [
+    {
+     "id": "q17_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "גודל",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "יחידה מקורית",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "יחידה לחישוב",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "דרך",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$3150$ מטר",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "___ ק״מ",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "זמן",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$45$ דקות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "___ שעות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q17_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q18_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q18",
+   "objects": [
+    {
+     "id": "q18_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "מהירות חזרה בקמ״ש",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "משך חזרה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "עומדת בחוזה?",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$12$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$15$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$18$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r4c3",
+     "type": "cell",
+     "row": 4,
+     "col": 3,
+     "value": "___",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q18_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  }
+ ]
+}

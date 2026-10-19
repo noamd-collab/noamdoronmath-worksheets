@@ -40,6 +40,13 @@ test('native figure consumer uses approved local SVG and rejects external or tra
   assert.equal(render('https://evil.test/a.svg'),null);
   assert.equal(render('/noam-ai/native/G8-T49/a/../../a.svg'),null);
   assert.equal(render('/noam-ai/native/G8-T49/a/a.svg?x=1'),null);
+  for (const pkg of ['G7-ASSESS1','G8-ASSESS1','G8-CIRCLE','G8-INTERP','G8-TWOSRC','G9-3060','G9-KITE','G9-SIDEANG','G9-TRAP']) {
+    const url='/noam-ai/native/'+pkg+'/b/figures/q1_head.svg';
+    assert.equal(render(url).querySelector('img').getAttribute('src'),url);
+  }
+  for (const path of ['G7-CIRCLE/a/figures/q1.svg','G8-ASSESS2/a/figures/q1.svg','G9-KITE/../a.svg','G9-TRAP/a/%2e%2e/x.svg','G9-SIDEANG/a/x.svg#fragment']) {
+    assert.equal(render('/noam-ai/native/'+path),null);
+  }
   const fig=render('/noam-ai/native/G8-T49/a/figures/q8.svg');
   assert.equal(fig.querySelector('img').getAttribute('src'),'/noam-ai/native/G8-T49/a/figures/q8.svg');
   assert.match(fig.textContent,/השרטוט המקורי/);

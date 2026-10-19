@@ -5032,7 +5032,7 @@ try {
     document.getElementById("backBtn").after(topicBack);
   }
   // An exact same-origin unlisted return never falls back into the public catalog.
-  if (["/worksheet-pilot/approved-three-20261019", "/worksheet-pilot/next-ten-20261019", "/worksheet-pilot/second-ten-20261019", "/worksheet-pilot/third-ten-20261019", "/worksheet-pilot/fourth-ten-20261019"].indexOf(returnPath) !== -1 && navigationParams.get("pilot") === "1") {
+  if (["/worksheet-pilot/approved-three-20261019", "/worksheet-pilot/next-ten-20261019", "/worksheet-pilot/second-ten-20261019", "/worksheet-pilot/third-ten-20261019", "/worksheet-pilot/fourth-ten-20261019", "/worksheet-pilot/remaining-101-20261019"].indexOf(returnPath) !== -1 && navigationParams.get("pilot") === "1") {
     document.getElementById("backBtn").href=returnPath;
     document.getElementById("backBtn").textContent="חזרה לבחירת דף";
   }
@@ -6978,7 +6978,7 @@ function cacheExercisePreview(exerciseId,dataUrl){
 function noamNativeFigure(exercise){
   // URLs come only from the current published manifest, never from AI replies.
   var url=String(exercise&&exercise.nativeFigureUrl||"");
-  if (!/^\/noam-ai\/native\/G[789]-T[0-9]+\/[abc]\/[a-zA-Z0-9_./-]+\.svg$/.test(url)||url.includes("..")){return null;}
+  if (!/^\/noam-ai\/native\/(?:G[789]-T[0-9]+|G7-ASSESS1|G8-(?:ASSESS1|CIRCLE|INTERP|TWOSRC)|G9-(?:3060|KITE|SIDEANG|TRAP))\/[abc]\/[a-zA-Z0-9_./-]+\.svg$/.test(url)||url.includes("..")){return null;}
   var figure=document.createElement("figure");
   figure.className="noam-native-figure";
   figure.style.margin="12px 0";

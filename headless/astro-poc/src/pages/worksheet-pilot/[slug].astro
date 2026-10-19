@@ -6,10 +6,11 @@ import nextBatch from '../../data/worksheet-next-ten.v1.json';
 import secondBatch from '../../data/worksheet-second-ten.v1.json';
 import thirdBatch from '../../data/worksheet-third-ten.v1.json';
 import fourthBatch from '../../data/worksheet-fourth-ten.v1.json';
+import remainingBatch from '../../data/worksheet-remaining-101.v1.json';
 
 export const prerender = false;
 
-const hidden = [firstBatch, nextBatch, secondBatch, thirdBatch, fourthBatch].find(batch => batch.page === Astro.url.pathname.replace(/\/+$/, ''));
+const hidden = [firstBatch, nextBatch, secondBatch, thirdBatch, fourthBatch, remainingBatch].find(batch => batch.page === Astro.url.pathname.replace(/\/+$/, ''));
 if (!hidden) {
   return new Response('Not Found', {
     status: 404,
@@ -26,6 +27,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
 Astro.response.headers.set('Referrer-Policy', 'no-referrer');
 
 const here = hidden.page;
+const gradeNames: Record<number, string> = { 7: 'ז׳', 8: 'ח׳', 9: 'ט׳' };
 const levelNames: Record<string, string> = { a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות', one: 'דף יחיד' };
 const sheets = hidden.sheets.map((s) => {
   const p = new URLSearchParams({
@@ -64,7 +66,7 @@ const sheets = hidden.sheets.map((s) => {
       <ul class="cards">
         {sheets.map((s) => (
           <li class="card">
-            <h2>{s.title} · כיתה {s.grade === 8 ? "ח׳" : "ט׳"}</h2>
+            <h2>{s.title} · כיתה {gradeNames[s.grade]}</h2>
             <p>{s.questions} שאלות · {s.package === 'G8-T26' ? 'דף אבחון' : levelNames[s.level]}</p>
             <a class="go" href={s.href} rel="nofollow noopener">פתיחת הדף עם רמזי</a>
           </li>

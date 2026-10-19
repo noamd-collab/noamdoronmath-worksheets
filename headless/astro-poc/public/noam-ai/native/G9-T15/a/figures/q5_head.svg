@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 215" width="190" height="215">
+<g data-layer="lines">
+<line id="e0001" data-seg="KP" x1="95" y1="26.22" x2="26" y2="188.78" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="KR" x1="95" y1="26.22" x2="164" y2="188.78" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="LM" x1="50.48" y1="131.1" x2="139.52" y2="131.1" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="PR" x1="26" y1="188.78" x2="164" y2="188.78" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<polyline id="e0005" data-mark="par LM" points="90.67,133.6 95,131.1 90.67,128.6" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline id="e0006" data-mark="par PR" points="90.67,191.28 95,188.78 90.67,186.28" fill="none" stroke="#000000" stroke-width="1"/>
+<line id="e0007" data-mark="tick KL" x1="76.42" y1="80.22" x2="69.06" y2="77.1" stroke="#000000" stroke-width="1"/>
+<line id="e0008" data-mark="tick KM" x1="120.94" y1="77.1" x2="113.58" y2="80.22" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0009" data-pt="K" cx="95" cy="26.22" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0010" data-pt="L" cx="50.48" cy="131.1" r="2" fill="#000000" stroke="none"/>
+<circle id="e0011" data-pt="M" cx="139.52" cy="131.1" r="2" fill="#000000" stroke="none"/>
+<circle id="e0012" data-pt="P" cx="26" cy="188.78" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="R" cx="164" cy="188.78" r="0.75" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0014" data-for="K" x="95" y="21.72" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">K</text>
+<text id="e0015" data-for="L" x="41.47" y="131.71" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">L</text>
+<text id="e0016" data-for="M" x="149.98" y="131.09" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">M</text>
+<text id="e0017" data-for="P" x="17.56" y="198.8" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">P</text>
+<text id="e0018" data-for="R" x="172.74" y="199" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">R</text>
+</g>
+</svg>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 176" width="300" height="176">
+<g data-layer="lines">
+<line id="e0001" data-line="EG" x1="33.9" y1="26.34" x2="288" y2="26.34" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-line="FH" x1="33.9" y1="149.66" x2="288" y2="149.66" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-line="RT" x1="12" y1="73.96" x2="132.5" y2="73.96" stroke="#000000" stroke-width="1.5"/>
+<line id="e0004" data-seg="ET" x1="47.9" y1="26.34" x2="118.5" y2="73.96" stroke="#000000" stroke-width="1"/>
+<line id="e0005" data-seg="FT" x1="47.9" y1="149.66" x2="118.5" y2="73.96" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="marks">
+<path id="e0006" data-mark="arc GET" d="M 59.43 26.34 L 59.41 27.1 L 59.33 27.86 L 59.21 28.61 L 59.03 29.35 L 58.81 30.07 L 58.54 30.78 L 58.22 31.48 L 57.86 32.14 L 57.46 32.79" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0007" data-mark="arc2 HFT" d="M 63.9 149.66 L 63.86 148.57 L 63.75 147.48 L 63.56 146.4 L 63.31 145.34 L 62.97 144.3 L 62.57 143.28 L 62.1 142.29 L 61.57 141.34 L 60.97 140.43 L 60.31 139.56 L 59.59 138.73 L 58.81 137.96" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0008" data-mark="arc2 HFT" d="M 66.9 149.66 L 66.86 148.36 L 66.72 147.07 L 66.5 145.79 L 66.19 144.53 L 65.8 143.29 L 65.32 142.08 L 64.77 140.91 L 64.13 139.78 L 63.42 138.69 L 62.63 137.66 L 61.78 136.68 L 60.86 135.77" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0009" data-pt="E" cx="47.9" cy="26.34" r="2" fill="#000000" stroke="none"/>
+<circle id="e0010" data-pt="F" cx="47.9" cy="149.66" r="2" fill="#000000" stroke="none"/>
+<circle id="e0011" data-pt="G" cx="274" cy="26.34" r="2" fill="#000000" stroke="none"/>
+<circle id="e0012" data-pt="H" cx="274" cy="149.66" r="2" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="R" cx="26" cy="73.96" r="2" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="T" cx="118.5" cy="73.96" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0015" data-for="ang GET" x="77.71" y="37.66" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">34°</text>
+<text id="e0016" data-for="ang HFT" x="77.52" y="140.52" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">47°</text>
+<text id="e0017" data-for="E" x="47.9" y="21.84" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">E</text>
+<text id="e0018" data-for="F" x="47.9" y="164.53" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">F</text>
+<text id="e0019" data-for="G" x="274" y="21.84" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">G</text>
+<text id="e0020" data-for="H" x="274" y="164.53" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">H</text>
+<text id="e0021" data-for="R" x="26" y="69.46" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">R</text>
+<text id="e0022" data-for="T" x="121.39" y="68.96" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">T</text>
+</g>
+</svg>

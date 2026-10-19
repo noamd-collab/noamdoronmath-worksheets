@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 270 137" width="270" height="137">
+<g data-layer="lines">
+<line id="e0001" data-seg="AB" x1="47.1" y1="26.19" x2="26" y2="110.81" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="AC" x1="47.1" y1="26.19" x2="68.19" y2="110.81" stroke="#000000" stroke-width="1"/>
+<line id="e0003" data-seg="BC" x1="26" y1="110.81" x2="68.19" y2="110.81" stroke="#000000" stroke-width="1.5"/>
+<line id="e0004" data-seg="DE" x1="127.97" y1="68.18" x2="103.35" y2="110.81" stroke="#000000" stroke-width="1"/>
+<line id="e0005" data-seg="DF" x1="127.97" y1="68.18" x2="152.58" y2="110.81" stroke="#000000" stroke-width="1"/>
+<line id="e0006" data-seg="EF" x1="103.35" y1="110.81" x2="152.58" y2="110.81" stroke="#000000" stroke-width="1.5"/>
+<line id="e0007" data-seg="GH" x1="212.35" y1="96.72" x2="180.71" y2="110.81" stroke="#000000" stroke-width="1"/>
+<line id="e0008" data-seg="GK" x1="212.35" y1="96.72" x2="244" y2="110.81" stroke="#000000" stroke-width="1.5"/>
+<line id="e0009" data-seg="HK" x1="180.71" y1="110.81" x2="244" y2="110.81" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0010" data-mark="arc ABC" d="M 28.25 101.8 L 28.87 101.98 L 29.48 102.2 L 30.07 102.47 L 30.64 102.77 L 31.19 103.12 L 31.71 103.5 L 32.21 103.91 L 32.68 104.36 L 33.11 104.84 L 33.51 105.35 L 33.87 105.89 L 34.2 106.45 L 34.48 107.03 L 34.72 107.64 L 34.92 108.25 L 35.08 108.88 L 35.19 109.52 L 35.26 110.16 L 35.28 110.81" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0011" data-mark="arc2 DEF" d="M 107.85 103.02 L 108.38 103.35 L 108.89 103.72 L 109.37 104.12 L 109.82 104.56 L 110.24 105.03 L 110.63 105.52 L 110.98 106.04 L 111.3 106.59 L 111.57 107.15 L 111.81 107.73 L 112 108.33 L 112.15 108.94 L 112.26 109.56 L 112.33 110.18 L 112.35 110.81" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0012" data-mark="arc2 DEF" d="M 109.35 100.42 L 110.06 100.86 L 110.74 101.35 L 111.38 101.89 L 111.98 102.47 L 112.54 103.1 L 113.06 103.76 L 113.53 104.45 L 113.95 105.18 L 114.31 105.93 L 114.63 106.71 L 114.89 107.5 L 115.09 108.32 L 115.23 109.14 L 115.32 109.97 L 115.35 110.81" fill="none" stroke="#000000" stroke-width="1"/>
+<line id="e0013" data-mark="tick AB" x1="40.43" y1="69.47" x2="32.67" y2="67.53" stroke="#000000" stroke-width="1"/>
+<line id="e0014" data-mark="tick AC" x1="61.53" y1="67.53" x2="53.76" y2="69.47" stroke="#000000" stroke-width="1"/>
+<line id="e0015" data-mark="tick2 DE" x1="119.87" y1="90.2" x2="112.95" y2="86.2" stroke="#000000" stroke-width="1"/>
+<line id="e0016" data-mark="tick2 DE" x1="118.37" y1="92.79" x2="111.45" y2="88.79" stroke="#000000" stroke-width="1"/>
+<line id="e0017" data-mark="tick2 DF" x1="142.99" y1="86.2" x2="136.06" y2="90.2" stroke="#000000" stroke-width="1"/>
+<line id="e0018" data-mark="tick2 DF" x1="144.49" y1="88.79" x2="137.56" y2="92.79" stroke="#000000" stroke-width="1"/>
+<line id="e0019" data-mark="tick3 GH" x1="200.9" y1="106.2" x2="197.64" y2="98.89" stroke="#000000" stroke-width="1"/>
+<line id="e0020" data-mark="tick3 GH" x1="198.16" y1="107.42" x2="194.9" y2="100.11" stroke="#000000" stroke-width="1"/>
+<line id="e0021" data-mark="tick3 GH" x1="195.42" y1="108.64" x2="192.16" y2="101.33" stroke="#000000" stroke-width="1"/>
+<line id="e0022" data-mark="tick3 GK" x1="227.06" y1="98.89" x2="223.81" y2="106.2" stroke="#000000" stroke-width="1"/>
+<line id="e0023" data-mark="tick3 GK" x1="229.8" y1="100.11" x2="226.55" y2="107.42" stroke="#000000" stroke-width="1"/>
+<line id="e0024" data-mark="tick3 GK" x1="232.54" y1="101.33" x2="229.29" y2="108.64" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0025" data-pt="A" cx="47.1" cy="26.19" r="2" fill="#000000" stroke="none"/>
+<circle id="e0026" data-pt="B" cx="26" cy="110.81" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0027" data-pt="C" cx="68.19" cy="110.81" r="2" fill="#000000" stroke="none"/>
+<circle id="e0028" data-pt="D" cx="127.97" cy="68.18" r="2" fill="#000000" stroke="none"/>
+<circle id="e0029" data-pt="E" cx="103.35" cy="110.81" r="2" fill="#000000" stroke="none"/>
+<circle id="e0030" data-pt="F" cx="152.58" cy="110.81" r="2" fill="#000000" stroke="none"/>
+<circle id="e0031" data-pt="G" cx="212.35" cy="96.72" r="2" fill="#000000" stroke="none"/>
+<circle id="e0032" data-pt="H" cx="180.71" cy="110.81" r="2" fill="#000000" stroke="none"/>
+<circle id="e0033" data-pt="K" cx="244" cy="110.81" r="0.75" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0034" data-for="ang ABC" x="43.45" y="100.91" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">76°</text>
+<text id="e0035" data-for="ang DEF" x="125.16" y="101.95" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">60°</text>
+<text id="e0036" data-for="A" x="47.1" y="21.69" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0037" data-for="B" x="17.9" y="121.57" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0038" data-for="C" x="76.37" y="121.63" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">C</text>
+<text id="e0039" data-for="D" x="127.97" y="63.68" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">D</text>
+<text id="e0040" data-for="E" x="94.63" y="120.28" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">E</text>
+<text id="e0041" data-for="F" x="161.25" y="120.25" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">F</text>
+<text id="e0042" data-for="G" x="212.35" y="92.22" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">G</text>
+<text id="e0043" data-for="H" x="171.56" y="114.77" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">H</text>
+<text id="e0044" data-for="K" x="253.67" y="117.3" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">K</text>
+</g>
+</svg>
