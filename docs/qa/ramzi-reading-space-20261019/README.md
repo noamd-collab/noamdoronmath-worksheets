@@ -16,3 +16,11 @@ Screenshots replay the **actual already-rendered live G9-T40 answer DOM**, with 
 Behavior tests cover deferred reveal, long-answer start, no repeated scroll hijack, typing, source preview, diagram ownership, tall layout, and stale transcript cancellation. Existing understanding and protected-boundary tests also pass (31 total).
 
 Qwen visual review is recorded separately. Deployment and exact PR review receipts belong in the PR.
+
+## Review and preview completion
+
+The initial short-phone PNG was accidentally captured after a browser reload cleared emulation. Independent review caught this. It was replaced with the verified **390x600** PNG, and Qwen re-reviewed that exact replacement in `qwen-short-phone-review.md` (no blockers). Qwen mis-transcribes some button labels in its prose; the actual screenshot/DOM labels are unchanged. The earlier Qwen report applies to desktop and tall phone only.
+
+`composer-focus.png` shows the desktop body scrolled to the input. Filling the field focuses `noamQuestion`, fully visible at y553.7–605.7 within panel y126–678. Shift+Tab reaches `noamMathToggle`; body scroll remains 134.5px.
+
+The exact source built successfully (96.82s, 1,866 static assets). Wix preview opened the actual G9-T40 PDF and question 1א. The new compact class activates on the actual 552px panel. Writing, opening/closing the math keyboard, and expanding the original question work. Expanded question keeps its dedicated preview and hides the transcript; no tutor request was sent. Preview URL is in the PR handoff, not evidence for production deployment.
