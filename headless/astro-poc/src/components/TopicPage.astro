@@ -1,5 +1,4 @@
 ---
-import TopicText from './TopicText.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
@@ -22,6 +21,7 @@ import {
 import { localizeSiteHref } from '../lib/sitePages';
 import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
+import TopicText from './TopicText.astro';
 
 interface Props {
   slug: string;
@@ -187,7 +187,7 @@ function faqHeadingId(groupIndex: number) {
     }
 
     <header class="topic-page__header">
-      <h1>{page.h1}</h1>
+      <h1><TopicText value={page.h1}/></h1>
     </header>
 
     <div data-body-flow>
@@ -268,7 +268,7 @@ function faqHeadingId(groupIndex: number) {
           if (unit.kind === 'section') {
             return (
               <section class="topic-page__section" data-flow="heading">
-                <h2>{unit.heading}</h2>
+                <h2><TopicText value={unit.heading}/></h2>
                 {unit.blocks.map((block) => {
                   if (block.type === 'paragraph') {
                     const cls =
@@ -344,11 +344,11 @@ function faqHeadingId(groupIndex: number) {
     {
       faqBeforeUpdate.map((group: TopicPageFaqGroup, gi: number) => (
         <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
-          <h2 id={faqHeadingId(gi)}>{group.heading}</h2>
+          <h2 id={faqHeadingId(gi)}><TopicText value={group.heading}/></h2>
           <div class="topic-page__faq-list">
             {group.items.map((item) => (
               <div class="topic-page__faq-item" data-faq-item>
-                <h3>{item.question}</h3>
+                <h3><TopicText value={item.question}/></h3>
                 <p><TopicText value={item.answer}/></p>
               </div>
             ))}
@@ -403,7 +403,7 @@ function faqHeadingId(groupIndex: number) {
                   rel="noopener noreferrer"
                   data-topic-path={rel.path}
                 >
-                  {rel.label}
+                  <TopicText value={rel.label}/>
                 </a>
               </li>
             ))}
@@ -417,11 +417,11 @@ function faqHeadingId(groupIndex: number) {
         const gi = beforeUpdateCount + oi;
         return (
           <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
-            <h2 id={faqHeadingId(gi)}>{group.heading}</h2>
+            <h2 id={faqHeadingId(gi)}><TopicText value={group.heading}/></h2>
             <div class="topic-page__faq-list">
               {group.items.map((item) => (
                 <div class="topic-page__faq-item" data-faq-item>
-                  <h3>{item.question}</h3>
+                  <h3><TopicText value={item.question}/></h3>
                   <p><TopicText value={item.answer}/></p>
                 </div>
               ))}

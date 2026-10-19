@@ -35,7 +35,8 @@ describe('area explorer', () => {
     assert.match(comp, /const F = \{ a: 2, b: 3, c: 3, d: 4 \};/);
     assert.match(comp, /const D = \{ x: 0\.8, y: 0\.72 \};/);
     const frac = readFileSync('src/data/topic-pages/fraction-times-fraction-grade-6.json', 'utf8');
-    assert.ok(frac.includes('2/3 × 3/4 = 6/12 = 1/2'));
+    // Fractions are stored as bar markers, never as a slash (PR 172).
+    assert.ok(frac.includes('⟨2¦3⟩ × ⟨3¦4⟩ = ⟨6¦12⟩ = ⟨1¦2⟩'));
     const decimals = readFileSync('src/data/topic-pages/multiply-decimals-grade-6.json', 'utf8');
     assert.ok(decimals.includes('0.8 × 0.72'));
   });

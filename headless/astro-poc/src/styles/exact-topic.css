@@ -22,6 +22,14 @@
 }
 .exact-topic .topic-page__crumbs a { color: #1e605e; }
 .exact-topic .topic-math-nowrap { white-space: nowrap; }
+.exact-topic .topic-frac-row {
+  display: inline-flex;
+  align-items: center;
+  direction: ltr;
+  unicode-bidi: isolate;
+  vertical-align: middle;
+  gap: 0.12em;
+}
 .exact-topic .topic-page__crumbs [aria-current='page'] {
   /* The source wraps this segment; the former shared skin truncated it. */
   max-width: none;

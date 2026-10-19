@@ -2474,6 +2474,10 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 .exact-viewer .noam-bubble.thinking{display:flex;align-items:center;gap:8px}
 .exact-viewer .exact-frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin-inline:0.15em}
 .exact-viewer .exact-frac-bar{display:block;width:100%;height:2px;background:#22305a;margin:1px 0}
+.exact-viewer .exact-frac-row{display:inline-flex;align-items:center;direction:ltr;unicode-bidi:isolate;vertical-align:middle;gap:0.12em}
+.exact-viewer .exact-eq{display:inline;direction:ltr;unicode-bidi:isolate}
+.exact-viewer .noam-math-key .exact-frac{margin-inline:0;font-size:12px;line-height:1.05}
+.exact-viewer .noam-glossary-popover .exact-frac,.exact-viewer .noam-glossary-detail .exact-frac{font-size:0.92em;line-height:1.05}
 .exact-viewer .noam-attach-item{
   border:2px solid #22305a;border-radius:12px 5px 13px 6px;box-shadow:4px 4px 0 rgba(34,48,90,.12);
 }
@@ -3145,8 +3149,8 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
 <script src="noam-diagram-plan.js?v=20260921-constructions1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
-<script src="noam-glossary-curriculum.js?v=20260927-concepts2"></script>
-<script src="noam-glossary.js?v=20260927-concepts2"></script>
+<script src="noam-glossary-curriculum.js?v=20261018-fracbar"></script>
+<script src="noam-glossary.js?v=20261018-fracbar"></script>
 <script>
 (function(){
 
@@ -5767,6 +5771,68 @@ function scheduleNoamGlossaryClose(){
   },180);
 }
 
+function noamFractionSpeech(text){
+  return String(text||"").replace(/([−-])?⟨([^⟩¦]+)¦([^⟩]+)⟩/g,function(all,sign,n,d,offset,whole){
+    var prefix=sign==="-"&&offset>0&&/[\u0590-\u05FF]/.test(whole.charAt(offset-1));
+    if(prefix){return "-"+n+" חלקי "+d;}
+    return (sign?"מינוס ":"")+n+" חלקי "+d;
+  });
+}
+function equationCoreQualifies(core){
+  if(core.indexOf("⟨")<0){return false;}
+  var marks=core.match(/⟨/g);
+  if(marks&&marks.length>=2){return true;}
+  if(!marks||marks.length!==1||core.indexOf("=")<0){return false;}
+  return /[A-Za-zπ√⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿⁱ]/.test(core.replace(/⟨[^⟩]*⟩/g,""));
+}
+function trimEquationEdges(piece){
+  var lead="";
+  var core=piece;
+  var trail="";
+  var edge=/[()[\]{}=.,:;]/;
+  while(core.length&&(core.charAt(0)===" "||edge.test(core.charAt(0)))){
+    lead+=core.charAt(0);
+    core=core.slice(1);
+  }
+  while(core.length&&(core.charAt(core.length-1)===" "||edge.test(core.charAt(core.length-1)))){
+    trail=core.charAt(core.length-1)+trail;
+    core=core.slice(0,-1);
+  }
+  return {lead:lead,core:core,trail:trail};
+}
+function wrapEquations(text){
+  var token="⟨[^⟩]*⟩|[0-9A-Za-zπ√⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿⁱ₀₁₂₃₄₅₆₇₈₉()[\\]{}.,−+×·÷=<>≤≥:^…%½¼¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞±\\-]+";
+  var re=new RegExp("(?:"+token+")(?:\\s*(?:"+token+"))+","g");
+  var split=/(?<=\S)[:;,.](?=\s|$)/g;
+  return text.replace(re,function(run){
+    var bits=[];
+    var last=0;
+    var found;
+    split.lastIndex=0;
+    while((found=split.exec(run))){
+      bits.push(run.slice(last,found.index));
+      bits.push(found[0]);
+      last=found.index+found[0].length;
+    }
+    bits.push(run.slice(last));
+    return bits.map(function(bit){
+      if(/^[;:,.]$/.test(bit)){return bit;}
+      var trimmed=trimEquationEdges(bit);
+      if(!equationCoreQualifies(trimmed.core)){return bit;}
+      return trimmed.lead+'<span class="exact-eq" dir="ltr">'+trimmed.core+"</span>"+trimmed.trail;
+    }).join("");
+  });
+}
+function noamFractionHtml(text){
+  var safe=wrapEquations(esc(String(text||"")));
+  return safe.replace(/([−-])?⟨([^⟩¦]+)¦([^⟩]+)⟩/g,function(all,sign,n,d,offset,whole){
+    var prefix=sign==="-"&&offset>0&&/[\u0590-\u05FF]/.test(whole.charAt(offset-1));
+    var label=(sign&&!prefix?"מינוס ":"")+n+" חלקי "+d;
+    var frac='<span class="exact-frac" role="img" aria-label="'+escAttr(label)+'"><span aria-hidden="true">'+n+'</span><span class="exact-frac-bar" aria-hidden="true"></span><span aria-hidden="true">'+d+'</span></span>';
+    if(!sign||prefix){return (prefix?"-":"")+frac;}
+    return '<span class="exact-frac-row" dir="ltr"><span aria-hidden="true">'+(sign==="-"?"−":sign)+'</span>'+frac+'</span>';
+  });
+}
 function showNoamGlossaryPopover(trigger,entry,keyboardOpen){
   if (!trigger||!entry){return;}
   var popover=ensureNoamGlossaryPopover();
@@ -5776,7 +5842,7 @@ function showNoamGlossaryPopover(trigger,entry,keyboardOpen){
   trigger.setAttribute("aria-expanded","true");
   document.getElementById("noamGlossaryPopoverKind").textContent=entry.kind||"מושג";
   document.getElementById("noamGlossaryPopoverTitle").textContent=entry.term;
-  document.getElementById("noamGlossaryPopoverText").textContent=entry.short;
+  document.getElementById("noamGlossaryPopoverText").innerHTML=noamFractionHtml(entry.short);
   var more=document.getElementById("noamGlossaryMore");
   more.onclick=function(){hideNoamGlossaryPopover();renderNoamGlossaryDetail(entry.id);};
   popover.hidden=false;
@@ -5799,7 +5865,7 @@ function makeNoamGlossaryTerm(match){
   button.dataset.glossaryId=match.id;
   button.setAttribute("aria-expanded","false");
   button.setAttribute("aria-controls","noamGlossaryPopover");
-  button.setAttribute("aria-label",match.text+" — "+match.entry.short+" לחצו להסבר מלא");
+  button.setAttribute("aria-label",match.text+" — "+noamFractionSpeech(match.entry.short)+" לחצו להסבר מלא");
   button.addEventListener("pointerenter",function(){showNoamGlossaryPopover(button,match.entry,false);});
   button.addEventListener("pointerleave",scheduleNoamGlossaryClose);
   button.addEventListener("focus",function(){showNoamGlossaryPopover(button,match.entry,false);});
@@ -5856,15 +5922,15 @@ function renderNoamGlossaryDetail(entryId){
     '<article class="noam-glossary-detail" aria-labelledby="noamGlossaryTitle">'+
       '<p class="noam-glossary-detail-kind">'+esc(entry.kind||"מושג")+'</p>'+
       '<h2 id="noamGlossaryTitle">'+esc(entry.term)+'</h2>'+
-      '<p>'+esc(entry.detail)+'</p>'+
-      '<p class="noam-glossary-example"><b>דוגמה: </b>'+esc(entry.example)+'</p>'+
+      '<p>'+noamFractionHtml(entry.detail)+'</p>'+
+      '<p class="noam-glossary-example"><b>דוגמה: </b>'+noamFractionHtml(entry.example)+'</p>'+
       '<h3>מה כדאי לדעת קודם?</h3>'+
-      '<p class="noam-glossary-prerequisite">'+esc(entry.prerequisite)+'</p>'+
-      '<button type="button" class="noam-action primary noam-glossary-question" id="noamGlossaryQuestion">רוצה להבין יותר? '+esc(entry.question)+'</button>'+
+      '<p class="noam-glossary-prerequisite">'+noamFractionHtml(entry.prerequisite)+'</p>'+
+      '<button type="button" class="noam-action primary noam-glossary-question" id="noamGlossaryQuestion">רוצה להבין יותר? '+noamFractionHtml(entry.question)+'</button>'+
     '</article>';
   document.getElementById("noamGlossaryChatTab").addEventListener("click",function(){activeGlossaryEntryId=null;renderNoamChat();});
   document.getElementById("noamGlossaryQuestion").addEventListener("click",function(){
-    noamDrafts[selectedExercise.id]=entry.question;
+    noamDrafts[selectedExercise.id]=noamFractionSpeech(entry.question);
     activeGlossaryEntryId=null;
     renderNoamChat();
     var input=document.getElementById("noamQuestion");
@@ -5935,7 +6001,7 @@ function renderNoamChat(){
           '<button type="button" class="noam-math-key" data-math="cube" dir="ltr" title="העלאה בחזקה שלישית" aria-label="העלאה בחזקה שלישית">x³</button>' +
           '<button type="button" class="noam-math-key" data-math="power" dir="ltr" title="חזקה לבחירתכם" aria-label="חזקה לבחירתכם">xⁿ</button>' +
           '<button type="button" class="noam-math-key" data-math="root" dir="ltr" title="שורש ריבועי" aria-label="שורש ריבועי">√</button>' +
-          '<button type="button" class="noam-math-key" data-math="fraction" dir="ltr" title="שבר" aria-label="שבר">a/b</button>' +
+          '<button type="button" class="noam-math-key" data-math="fraction" dir="ltr" title="שבר" aria-label="שבר"><span class="exact-frac" aria-hidden="true"><span>a</span><span class="exact-frac-bar"></span><span>b</span></span></button>' +
           '<button type="button" class="noam-math-key" data-math="multiply" dir="ltr" title="כפל" aria-label="כפל">×</button>' +
           '<button type="button" class="noam-math-key" data-math="divide" dir="ltr" title="חילוק" aria-label="חילוק">÷</button>' +
           '<button type="button" class="noam-math-key" data-math="parentheses" dir="ltr" title="סוגריים" aria-label="סוגריים">( )</button>' +

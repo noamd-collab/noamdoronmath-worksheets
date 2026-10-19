@@ -8,4 +8,4 @@ const { value } = Astro.props;
 {textParts(value).map(part => part.nowrap
   ? <span class="topic-math-nowrap"><LessonMath value={part.text}/></span>
   : lessonMathParts(part.text).map(piece => typeof piece === 'string' ? piece
-    : <LessonMath value={`(${piece.numerator})/(${piece.denominator})`}/>))}
+    : <LessonMath value={`⟨${piece.numerator}¦${piece.denominator}⟩`}/>))}
