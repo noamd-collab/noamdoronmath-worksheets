@@ -2799,7 +2799,9 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
   background:transparent;border:0;box-shadow:none;
 }
 .exact-viewer .pdf-page .noam-exercise-pin .exact-ramzi-pin{
-  width:26px;height:26px;filter:none;
+  width:26px;height:26px;filter:none;display:grid;place-items:center;
+  border:1px solid #aab6c5;border-radius:50%;background:#fbfaf5;
+  color:#1e605e;font:700 18px/1 Heebo,Arial,sans-serif;
 }
 .exact-viewer .pdf-page .noam-exercise-pin.is-active{
   background:transparent;box-shadow:none;
@@ -8872,7 +8874,7 @@ function esc(s){
     var transcript=document.getElementById('noamTranscript');
     if(!transcript){return;}
     transcript.querySelectorAll('.noam-bubble.thinking').forEach(function(bubble){
-      if(!bubble.querySelector('ramzi-avatar')){bubble.prepend(makeAvatar(32,'thinking'));}
+      /* The header avatar alone carries the thinking state. */
       var content=bubble.querySelector('span:not(.noam-sr-only):not(.noam-thinking-dots)');
       if(content&&content.textContent==='נועם AI חושב…'){content.textContent='רמזי חושב…';}
     });
@@ -8937,7 +8939,7 @@ function esc(s){
     var note=document.createElement('p');
     note.className='exact-empty-note';
     note.textContent='אפשר להתחיל ברמז, או לכתוב מה ניסיתם.';
-    box.append(makeAvatar(48,'idle'),title,note);
+    box.append(title,note);
     transcript.appendChild(box);
   }
   function hasPendingMath(text){
@@ -9070,14 +9072,12 @@ function esc(s){
         button.dataset.exactQuiet='1';
         button.textContent='';
       }
-      /* רמזי is the hint affordance: the robot sits on the exercise pin. */
+      /* A quiet help mark opens Ramzi; his avatar belongs only in the panel header. */
       if(!button.querySelector('.exact-ramzi-pin')){
-        var mark=document.createElement('img');
+        var mark=document.createElement('span');
         mark.className='exact-ramzi-pin';
-        mark.src='design-exact/assets/avatar/ramzi-A-idle.svg';
-        mark.alt='';
+        mark.textContent='?';
         mark.setAttribute('aria-hidden','true');
-        mark.draggable=false;
         button.appendChild(mark);
       }
     });
@@ -9419,7 +9419,7 @@ function esc(s){
   });
   if(reduced.addEventListener){reduced.addEventListener('change',schedule);}else{reduced.addListener(schedule);}
   Array.from(document.querySelectorAll('img.exact-ramzi-avatar')).forEach(function(img){mountAvatar(img,44);});
-  var fabImg=fab.querySelector('img');if(fabImg){mountAvatar(fabImg,36);}
+  var fabImg=fab.querySelector('img');if(fabImg){fabImg.remove();}
   /* Released scripts keep selectManifestExercise and the report dialog inside
      their own function. A list choice passes no pin, so mark the matching pin
      after that click. A re-render or a closed dialog focuses the hidden pin;

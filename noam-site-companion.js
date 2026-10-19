@@ -219,6 +219,7 @@
   if (pageKind() === "worksheet") {
     launch.title = "נועם AI — ניווט באתר";
     launch.setAttribute("aria-label", launch.title);
+    launch.textContent = "ניווט";
   }
 
   var panel = document.createElement("section");
@@ -242,6 +243,7 @@
     '<button type="submit" aria-label="שליחה">שליחה</button></form>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
+  if (pageKind() === "worksheet") panel.querySelector("header img").remove();
 
   var answerEl = document.getElementById("noam-site-companion-answer");
   var primaryEl = document.getElementById("noam-site-companion-primary");
