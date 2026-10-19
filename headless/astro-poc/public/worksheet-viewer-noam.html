@@ -2744,6 +2744,16 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
 .exact-viewer .panel-body.is-chat>.noam-transcript{
   flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto;padding:8px 0;
 }
+/* A short panel has one reading scrollport. Fixed composer rows must not
+   squeeze the hint and its understanding controls into a tiny inner window. */
+.exact-viewer .panel.is-reading-compact .panel-body.is-chat:not(.is-previewing){
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;
+}
+.exact-viewer .panel.is-reading-compact .panel-body.is-chat:not(.is-previewing)>.noam-transcript{
+  flex:none;min-height:0;max-height:none;overflow:visible;
+}
+.exact-viewer .panel.is-reading-compact .noam-transcript>.noam-row{flex-shrink:0}
+.exact-viewer .panel.is-reading-compact .noam-compose.exact-compose{margin-top:0}
 .exact-viewer .exact-empty{
   min-height:0;justify-content:flex-start;align-items:flex-start;text-align:start;
   gap:8px;padding:8px 4px 12px;
@@ -9417,6 +9427,27 @@ function esc(s){
     });
   }
 
+  var lastReadingTranscript=null;
+  function revealCompactReply(){
+    var transcript=document.getElementById('noamTranscript');
+    if(!transcript||transcript===lastReadingTranscript){return;}
+    lastReadingTranscript=transcript;
+    requestAnimationFrame(function(){
+      if(!transcript.isConnected||!panel.classList.contains('is-reading-compact')||
+          panelBody.classList.contains('is-previewing')||document.activeElement.id==='noamQuestion'){return;}
+      var replies=transcript.querySelectorAll('.noam-row.assistant');
+      var reply=replies[replies.length-1];
+      // Diagram completion has its own reveal/expansion behavior.
+      if(!reply||reply.querySelector('.noam-geometry')){return;}
+      var area=panelBody.getBoundingClientRect(),box=reply.getBoundingClientRect();
+      if(box.height>panelBody.clientHeight||box.top<area.top){
+        panelBody.scrollTop+=box.top-area.top-8;
+      }else if(box.bottom>area.bottom){
+        panelBody.scrollTop+=box.bottom-area.bottom+8;
+      }
+    });
+  }
+
   function sync(){
     scheduled=false;
     narrow=window.innerWidth<1000||window.innerHeight<640;
@@ -9442,7 +9473,10 @@ function esc(s){
       if(narrow&&previousOpen&&(document.activeElement===body||panel.contains(document.activeElement))){pageTab.focus({preventScroll:true});}
     }
     previousOpen=open;
+    // Use the panel's available height, not the full desktop window height.
+    panel.classList.toggle('is-reading-compact',open&&panelIn.clientHeight<720);
     adaptQuestionChoices();adaptComposer();decorateConversation();decoratePins();ensureReportControl();
+    revealCompactReply();
     updateQuestionScroller();
     var preview=document.getElementById('noamPickedPreview');
     if(preview){
