@@ -44,3 +44,14 @@ test('native figure consumer uses approved local SVG and rejects external or tra
   assert.equal(fig.querySelector('img').getAttribute('src'),'/noam-ai/native/G8-T49/a/figures/q8.svg');
   assert.match(fig.textContent,/השרטוט המקורי/);
 });
+
+test('single diagnostic enables AI without discovering or displaying sibling levels', () => {
+  const source=read('public/worksheet-viewer-noam.html');
+  const config=source.slice(source.indexOf('var LEVEL ='),source.indexOf('var MIN_WAIT'));
+  const discover=source.slice(source.indexOf('function discoverSiblingLevels(){'),source.indexOf('renderLevelSwitch(true);'));
+  let rendered=0;
+  const ctx=vm.createContext({lv:'one',renderLevelSwitch:()=>{rendered++;}});
+  vm.runInContext(config+discover+';discoverSiblingLevels();',ctx);
+  assert.equal(ctx.LEVEL.one,'B');
+  assert.equal(rendered,1); // Would throw on unbound fetch/okX if public lookup runs.
+});

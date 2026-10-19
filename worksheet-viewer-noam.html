@@ -2680,7 +2680,8 @@ var LEVEL = {
   a:"A",
   b:"B",
   c:"E",
-  c2:"E2"
+  c2:"E2",
+  one:"B" // Existing solver protocol for a single diagnostic; not a displayed level.
 };
 
 var MIN_WAIT = 1250;
@@ -2717,7 +2718,8 @@ var LEVEL_NAME = {
   a:"רמה א׳",
   b:"רמה ב׳",
   c:"רמת מצוינות",
-  c2:"מצוינות 2"
+  c2:"מצוינות 2",
+  one:"דף אבחון"
 };
 
 /* R504-DEV-MIN-20260901-01: LOCAL-OVERRIDE DEVELOPMENT COPY, NOT FOR GITHUB.
@@ -3104,6 +3106,7 @@ function buildLevelHref(
 function renderLevelSwitch(
   loading
 ){
+  if (lv === "one") { levelSwitch.textContent="דף אבחון"; return; }
 
   if (!okLv){
     levelSwitch.style.display =
@@ -3295,6 +3298,7 @@ function parseIndexLevelPdfs(
 }
 
 function discoverSiblingLevels(){
+  if (lv === "one") { renderLevelSwitch(false); return; }
 
   if (
     !okX ||
