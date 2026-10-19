@@ -2720,7 +2720,7 @@ var LEVEL_NAME = {
   b:"רמה ב׳",
   c:"רמת מצוינות",
   c2:"מצוינות 2",
-  one:"דף אבחון"
+  one:"דף יחיד"
 };
 
 /* R504-DEV-MIN-20260901-01: LOCAL-OVERRIDE DEVELOPMENT COPY, NOT FOR GITHUB.
@@ -2891,6 +2891,8 @@ var x =
     q.get("x") ||
     ""
   ).trim();
+
+if (x === "G8-T26") LEVEL_NAME.one = "דף אבחון";
 
 var lv =
   (
@@ -3107,7 +3109,7 @@ function buildLevelHref(
 function renderLevelSwitch(
   loading
 ){
-  if (lv === "one") { levelSwitch.textContent="דף אבחון"; return; }
+  if (lv === "one") { levelSwitch.textContent=LEVEL_NAME.one; return; }
 
   if (!okLv){
     levelSwitch.style.display =
@@ -4488,7 +4490,7 @@ try {
     document.getElementById("backBtn").after(topicBack);
   }
   // An exact same-origin unlisted return never falls back into the public catalog.
-  if (returnPath === "/worksheet-pilot/approved-three-20261019" && navigationParams.get("pilot") === "1") {
+  if (["/worksheet-pilot/approved-three-20261019", "/worksheet-pilot/next-ten-20261019"].indexOf(returnPath) !== -1 && navigationParams.get("pilot") === "1") {
     document.getElementById("backBtn").href=returnPath;
     document.getElementById("backBtn").textContent="חזרה לבחירת דף";
   }
