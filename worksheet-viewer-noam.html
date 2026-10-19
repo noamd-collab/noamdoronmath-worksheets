@@ -2363,6 +2363,12 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 }
 .exact-viewer .panel-body.is-chat>.noam-compose{flex-shrink:0}
 .exact-viewer .panel-body:not(.is-previewing) .noam-picked-preview{display:none}
+/* Expanded question and its original SVG share one scrollable preview at every width. */
+.exact-viewer .panel-body.is-previewing{overflow:hidden}
+.exact-viewer .panel-body.is-previewing>:not(.noam-picked){display:none}
+.exact-viewer .panel-body.is-previewing>.noam-picked{flex:1 1 auto;min-height:0;max-height:none;overflow:auto}
+.exact-viewer .panel-body.is-previewing .noam-picked-preview:not([hidden]){max-height:none;overflow:visible;direction:rtl}
+.exact-viewer .panel-body.is-previewing .noam-picked-preview>img{max-height:none}
 .exact-viewer .panel-body.is-chat>.noam-transcript{
   flex:1 1 auto;
   min-height:120px;
