@@ -85,7 +85,7 @@ export function combine(v: Values, op: Op): Combined {
     pn: rn - whole * rm,
     pm: rm,
     belowZero,
-    smallerThanProduct: L < v.b * v.d,
+    smallerThanProduct: v.b !== v.d && L < v.b * v.d,
   };
 }
 
@@ -124,7 +124,9 @@ export function sayParts(n: number, L: number): string {
 export function sayMixed(whole: number, pn: number, pm: number): string {
   const wholes = whole === 0 ? '' : whole === 1 ? 'שלם אחד' : whole === 2 ? 'שני שלמים' : `${whole} שלמים`;
   if (pn === 0) return wholes || 'אפס';
-  return wholes ? `${wholes} ו${sayParts(pn, pm)}` : sayParts(pn, pm);
+  if (!wholes) return sayParts(pn, pm);
+  const parts = sayParts(pn, pm);
+  return `${wholes} ו${/^\d/.test(parts) ? '־' : ''}${parts}`; // ו־5 חלקים, never ו5
 }
 
 /** "נחלק לשישיות" / "נחלק ל־24 חלקים" — the re-division step, written on the drawing. */
@@ -402,7 +404,7 @@ function setup(root: HTMLElement) {
     setText(root, 'words', sentence(v, op, r));
     setText(root, 'smallest', smallestHint(v, r));
     const reduced = q(root, 'reduced');
-    if (reduced) reduced.hidden = r.rn === r.n || r.n === 0;
+    if (reduced) reduced.hidden = r.rn === r.n || r.n === 0 || r.rm === 1; // a whole is written once, not as 1 over 1
     const mixed = q(root, 'mixed');
     if (mixed) mixed.hidden = r.whole === 0 || r.pn === 0;
     const wholeOnly = q(root, 'whole-only');

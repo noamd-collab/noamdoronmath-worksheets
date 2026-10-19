@@ -4,7 +4,8 @@
  * reaches a reader or a screen reader.
  */
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync as readFs } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 import {
   BELOW_ZERO_TEXT,
@@ -21,6 +22,10 @@ import {
   splitLabel,
 } from '../src/lib/fractionAddSubExplorer.ts';
 import { scanSource } from '../../../.github/scripts/check-slash-fractions.mjs';
+
+// paths are relative to headless/astro-poc, wherever the test runner starts
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
+const readFileSync = (rel: string, enc: 'utf8') => readFs(ROOT + rel, enc);
 
 const half = { a: 1, b: 2, c: 1, d: 3 }; // 1/2 and 1/3
 
@@ -39,6 +44,10 @@ describe('fraction add / subtract explorer', () => {
     assert.deepEqual([m.n, m.rn, m.rm, m.whole, m.pn, m.pm], [5, 5, 4, 1, 1, 4]);
     assert.equal(sentence({ a: 3, b: 4, c: 1, d: 2 }, 'add', m), 'שלושה רבעים ועוד חצי שווה שלם אחד ורבע');
     assert.equal(sayMixed(2, 0, 1), 'שני שלמים');
+    assert.equal(sayMixed(1, 5, 12), 'שלם אחד ו־5 חלקים מתוך 12'); // a maqaf before a digit
+    const one = combine({ a: 1, b: 2, c: 1, d: 2 }, 'add');
+    assert.deepEqual([one.n, one.rn, one.rm, one.whole, one.pn], [2, 1, 1, 1, 0]);
+    assert.equal(one.smallerThanProduct, false, 'equal denominators: no "smallest common denominator" hint');
     // reduced: 1/6 + 1/3 = 3/6 = 1/2
     const s = combine({ a: 1, b: 6, c: 1, d: 3 }, 'add');
     assert.deepEqual([s.n, s.rn, s.rm], [3, 1, 2]);
@@ -117,6 +126,5 @@ describe('fraction add / subtract explorer', () => {
     const engine = readFileSync('src/lib/fractionAddSubExplorer.ts', 'utf8');
     assert.equal(scanSource('headless/astro-poc/src/components/FractionAddSubExplorer.astro', comp).length, 0);
     assert.equal(scanSource('headless/astro-poc/src/lib/fractionAddSubExplorer.ts', engine).length, 0);
-    assert.equal(scanSource('headless/astro-poc/tests/x.ts', readFileSync('src/lib/fractionAddSubExplorer.ts', 'utf8')).length, 0);
   });
 });

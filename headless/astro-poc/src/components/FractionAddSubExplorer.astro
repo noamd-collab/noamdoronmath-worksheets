@@ -103,7 +103,7 @@ const step = (k: 'a' | 'b' | 'c' | 'd', dir: 1 | -1) => !canStep(V, op, k, dir);
       <span class="fs-q fs-q--b"><span data-el="cn">{r.cn}</span><span data-el="L">{r.L}</span></span>
       <span>=</span>
       <span class="fs-q fs-ans"><span data-el="n">{r.n}</span><span data-el="L">{r.L}</span></span>
-      <span data-el="reduced" class="fs-more" hidden={r.rn === r.n || r.n === 0}>
+      <span data-el="reduced" class="fs-more" hidden={r.rn === r.n || r.n === 0 || r.rm === 1}>
         <span>=</span>
         <span class="fs-q fs-ans"><span data-el="rn">{r.rn}</span><span data-el="rm">{r.rm}</span></span>
       </span>
