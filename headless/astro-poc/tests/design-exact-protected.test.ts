@@ -105,7 +105,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Metadata, fonts, canonical and robots are unchanged.
     // 2026-10-19: Help marks replace repeated robots; expanded source previews scroll
     // so the original SVG disclosure is reachable on desktop as well as phone.
-    assert.equal(sha256(head), '6aa632f8c5727a7dcbce3357966a5e04fa47250e5e7c53122fd08cf6176a78e9');
+    assert.equal(sha256(head), '7dbac8dff3fb244004c0afef62b328a5120e1a23f63b8696760a9f81571e722e');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
@@ -130,9 +130,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // exact unlisted back link, and lv=one diagnostic support. The existing AI
     // solve/auth/rate-limit/storage code remains unchanged. Behavior and URL guards
     // are exercised by worksheet-pilot.test.ts; all other fence hashes stay fixed.
+    // 2026-10-19: A modal clone expands generated diagrams without changing models,
+    // source geometry, authentication or persistence; covered by diagram-expansion tests.
     // Next batches: single-sheet label and five exact return paths; G8-T26 stays diagnostic.
     // Auth, solve protocol and sibling isolation are unchanged and covered separately.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '373018ba2a0a9d4b99f9abdc3f73d0577427af8e2c019ff6d764a059ab179c0c');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '5721552ce3307736ba9b413f3d2f2c093dbf2baa6d13f13fbbf8c4d1a946d7b5');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
