@@ -1,11 +1,13 @@
 ---
 /** Direct-link-only approved worksheets. Publicly reachable, unlisted. */
 import '../../styles/fonts.css';
-import hidden from '../../data/worksheet-pilot.v1.json';
+import firstBatch from '../../data/worksheet-pilot.v1.json';
+import nextBatch from '../../data/worksheet-next-ten.v1.json';
 
 export const prerender = false;
 
-if (Astro.url.pathname.replace(/\/+$/, '') !== hidden.page) {
+const hidden = [firstBatch, nextBatch].find(batch => batch.page === Astro.url.pathname.replace(/\/+$/, ''));
+if (!hidden) {
   return new Response('Not Found', {
     status: 404,
     headers: {
@@ -21,7 +23,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
 Astro.response.headers.set('Referrer-Policy', 'no-referrer');
 
 const here = hidden.page;
-const levelNames: Record<string, string> = { a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות', one: 'דף אבחון' };
+const levelNames: Record<string, string> = { a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות', one: 'דף יחיד' };
 const sheets = hidden.sheets.map((s) => {
   const p = new URLSearchParams({
     g: String(s.grade),
@@ -60,7 +62,7 @@ const sheets = hidden.sheets.map((s) => {
         {sheets.map((s) => (
           <li class="card">
             <h2>{s.title} · כיתה {s.grade === 8 ? "ח׳" : "ט׳"}</h2>
-            <p>{s.questions} שאלות · {levelNames[s.level]}</p>
+            <p>{s.questions} שאלות · {s.package === 'G8-T26' ? 'דף אבחון' : levelNames[s.level]}</p>
             <a class="go" href={s.href} rel="nofollow noopener">פתיחת הדף עם רמזי</a>
           </li>
         ))}
