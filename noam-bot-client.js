@@ -143,9 +143,7 @@
               reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
             }
           }
-          // Google's supported host for networks where google.com is unreachable.
-          // Same v3 provider, site key, action and server verification.
-          script.src = "https://www.recaptcha.net/recaptcha/api.js?render=" + encodeURIComponent(siteKey);
+          script.src = "https://www.google.com/recaptcha/api.js?render=" + encodeURIComponent(siteKey);
           script.async = true;
           script.onload = function () { finish(true); };
           script.onerror = function () { finish(false); };
