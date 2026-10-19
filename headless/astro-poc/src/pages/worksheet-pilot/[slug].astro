@@ -1,0 +1,148 @@
+---
+/** Direct-link-only approved worksheets. Publicly reachable, unlisted. */
+import '../../styles/fonts.css';
+import hidden from '../../data/worksheet-pilot.v1.json';
+
+export const prerender = false;
+
+if (Astro.url.pathname.replace(/\/+$/, '') !== hidden.page) {
+  return new Response('Not Found', {
+    status: 404,
+    headers: {
+      'content-type': 'text/plain; charset=utf-8',
+      'x-robots-tag': 'noindex',
+      'cache-control': 'no-store',
+    },
+  });
+}
+
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet');
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+
+const here = hidden.page;
+const levelNames: Record<string, string> = { a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות', one: 'דף אבחון' };
+const sheets = hidden.sheets.map((s) => {
+  const p = new URLSearchParams({
+    g: String(s.grade),
+    x: s.x,
+    lv: s.level,
+    pdf: s.pdfId,
+    t: s.title,
+    back: here,
+    pilot: "1",
+  });
+  for (const sibling of hidden.sheets.filter(item => item.package === s.package)) {
+    if (['a', 'b', 'c'].includes(sibling.level)) p.set('p' + sibling.level, sibling.pdfId);
+  }
+  return { ...s, href: '/worksheet-viewer-noam.html?' + p.toString() };
+});
+---
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#fbfaf5" />
+    <title>דפי עבודה עם רמזי</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <main class="wrap" id="main">
+      <p class="eyebrow">בס״ד · נועם דורון מתמטיקה</p>
+      <h1>דפי עבודה עם רמזי</h1>
+      <p class="lead">
+        בחרו דף עבודה. ליד כל שאלה אפשר לפתוח את רמזי ולבקש רמז או הסבר.
+      </p>
+      <ul class="cards">
+        {sheets.map((s) => (
+          <li class="card">
+            <h2>{s.title} · כיתה {s.grade === 8 ? "ח׳" : "ט׳"}</h2>
+            <p>{s.questions} שאלות · {levelNames[s.level]}</p>
+            <a class="go" href={s.href} rel="nofollow noopener">פתיחת הדף עם רמזי</a>
+          </li>
+        ))}
+      </ul>
+      <p class="hint">מומלץ לעבוד על דף אחד בכל פעם, במחברת, ולפתוח את רמזי רק כשנתקעים.</p>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: light;
+  }
+  body {
+    margin: 0;
+    background: #fbfaf5;
+    color: #14213d;
+    font-family: 'Heebo', 'Heebo Fallback', system-ui, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 18px 48px;
+  }
+  .eyebrow {
+    margin: 0 0 6px;
+    font-size: 0.9rem;
+    color: #4a5568;
+  }
+  h1 {
+    margin: 0 0 10px;
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 900;
+  }
+  .lead {
+    margin: 0 0 22px;
+    font-size: 1.05rem;
+  }
+  .cards {
+    display: grid;
+    gap: 14px;
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+  }
+  .card {
+    padding: 16px 18px;
+    border: 2px solid #14213d;
+    border-radius: 14px;
+    background: #fff;
+  }
+  .card h2 {
+    margin: 0 0 4px;
+    font-size: 1.3rem;
+    font-weight: 900;
+  }
+  .card p {
+    margin: 0 0 12px;
+  }
+  .go {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: #0d47a1;
+    color: #fff;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .go:hover,
+  .go:focus-visible {
+    background: #1565c0;
+  }
+  .go:focus-visible {
+    outline: 3px solid #14213d;
+    outline-offset: 3px;
+  }
+  .hint {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #4a5568;
+  }
+</style>

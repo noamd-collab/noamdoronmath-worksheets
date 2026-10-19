@@ -3191,7 +3191,8 @@ var LEVEL = {
   a:"A",
   b:"B",
   c:"E",
-  c2:"E2"
+  c2:"E2",
+  one:"B" // Existing solver protocol for a single diagnostic; not a displayed level.
 };
 
 var MIN_WAIT = 1250;
@@ -3228,7 +3229,8 @@ var LEVEL_NAME = {
   a:"רמה א׳",
   b:"רמה ב׳",
   c:"רמת מצוינות",
-  c2:"מצוינות 2"
+  c2:"מצוינות 2",
+  one:"דף אבחון"
 };
 
 /* R504-DEV-MIN-20260901-01: LOCAL-OVERRIDE DEVELOPMENT COPY, NOT FOR GITHUB.
@@ -3615,6 +3617,7 @@ function buildLevelHref(
 function renderLevelSwitch(
   loading
 ){
+  if (lv === "one") { levelSwitch.textContent="דף אבחון"; return; }
 
   if (!okLv){
     levelSwitch.style.display =
@@ -3806,6 +3809,7 @@ function parseIndexLevelPdfs(
 }
 
 function discoverSiblingLevels(){
+  if (lv === "one") { renderLevelSwitch(false); return; }
 
   if (
     !okX ||
@@ -5002,6 +5006,11 @@ try {
       topicBack.href = worksheetsHrefFromReturn(null, g, topicId);
     }
     document.getElementById("backBtn").after(topicBack);
+  }
+  // An exact same-origin unlisted return never falls back into the public catalog.
+  if (returnPath === "/worksheet-pilot/approved-three-20261019" && navigationParams.get("pilot") === "1") {
+    document.getElementById("backBtn").href=returnPath;
+    document.getElementById("backBtn").textContent="חזרה לבחירת דף";
   }
 } catch (navigationError) { /* The default grade link remains available. */ }
 
@@ -6939,6 +6948,24 @@ function cacheExercisePreview(exerciseId,dataUrl){
   }
 }
 
+function noamNativeFigure(exercise){
+  // URLs come only from the current published manifest, never from AI replies.
+  var url=String(exercise&&exercise.nativeFigureUrl||"");
+  if (!/^\/noam-ai\/native\/G[789]-T[0-9]+\/[abc]\/[a-zA-Z0-9_./-]+\.svg$/.test(url)||url.includes("..")){return null;}
+  var figure=document.createElement("figure");
+  figure.className="noam-native-figure";
+  figure.style.margin="12px 0";
+  var image=document.createElement("img");
+  image.src=url;
+  image.alt="השרטוט המקורי של "+exerciseLabel(exercise);
+  image.style.cssText="display:block;max-width:100%;width:100%;max-height:340px;object-fit:contain;background:white";
+  var caption=document.createElement("figcaption");
+  caption.textContent="השרטוט המקורי של השאלה";
+  image.addEventListener("error",function(){figure.hidden=true;});
+  figure.appendChild(image);figure.appendChild(caption);
+  return figure;
+}
+
 function showExercisePreview(exercise,dataUrl){
   var preview=document.getElementById("noamPickedPreview");
   var fallback=document.getElementById("noamPickedText");
@@ -6951,6 +6978,14 @@ function showExercisePreview(exercise,dataUrl){
       : String(exercise.text||exercise.prompt||"")
   ).slice(0,500);
   preview.replaceChildren(image);
+  var nativeFigure=noamNativeFigure(exercise);
+  if (nativeFigure){
+    var details=document.createElement("details");
+    var summary=document.createElement("summary");
+    summary.textContent="הצגת השרטוט של השאלה";
+    summary.style.cssText="cursor:pointer;padding:12px 0;font-weight:700";
+    details.appendChild(summary);details.appendChild(nativeFigure);preview.appendChild(details);
+  }
   preview.hidden=false;
   fallback.hidden=true;
   panelBody.querySelectorAll('.noam-question-visual-image[data-exercise-id="'+exercise.id+'"]')
