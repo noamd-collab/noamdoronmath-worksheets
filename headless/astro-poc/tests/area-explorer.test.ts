@@ -35,8 +35,8 @@ describe('area explorer', () => {
     assert.match(comp, /const F = FRACTION_START\[slug\] \?\? \{ a: 2, b: 3, c: 3, d: 4 \};/);
     assert.match(comp, /'fraction-part-quantity-area-grade-6': \{ a: 1, b: 2, c: 1, d: 3 \}/);
     assert.match(comp, /'fraction-multiplication-apply-grade-6': \{ a: 2, b: 3, c: 1, d: 2 \}/);
-    assert.ok(readFileSync('src/data/topic-pages/fraction-part-quantity-area-grade-6.json', 'utf8').includes('1/2 × 1/3 = 1/6'));
-    assert.ok(readFileSync('src/data/topic-pages/fraction-multiplication-apply-grade-6.json', 'utf8').includes('2/3 × 1/2 = 1/3'));
+    assert.ok(readFileSync('src/data/topic-pages/fraction-part-quantity-area-grade-6.json', 'utf8').includes('⟨1¦2⟩ × ⟨1¦3⟩ = ⟨1¦6⟩'));
+    assert.ok(readFileSync('src/data/topic-pages/fraction-multiplication-apply-grade-6.json', 'utf8').includes('⟨2¦3⟩ × ⟨1¦2⟩ = ⟨1¦3⟩'));
     assert.deepEqual(fractionProduct(2, 3, 1, 2), { n: 2, m: 6, rn: 1, rm: 3 });
     assert.match(comp, /const D = \{ x: 0\.8, y: 0\.72 \};/);
     const frac = readFileSync('src/data/topic-pages/fraction-times-fraction-grade-6.json', 'utf8');
