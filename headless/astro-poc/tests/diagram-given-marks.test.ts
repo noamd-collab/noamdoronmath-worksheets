@@ -258,3 +258,46 @@ describe('source-constrained kite geometry (reported rectangle)', () => {
     }
   });
 });
+
+describe('restored drawings acquire source givens without another AI call', () => {
+  const html = readFileSync(join(root, 'public/worksheet-viewer-noam.html'), 'utf8');
+  const fn = html.slice(html.indexOf('function noamRenderAiDiagram(visual){'), html.indexOf('function noamDiagramError(error){'));
+  function restored() {
+    const exercise = { id: 'kite-q1b', nativeFigureUrl: '/noam-ai/native/G9-KITE/a/figures/q1_head.svg', identity: 'source-a' };
+    const p = clone(fixture.plan); p.equalGroups = []; p.evidence = [];
+    p.points = { P: [0, 0], Q: [0, 4], R: [3, 4], S: [3, 0] };
+    const visual = { exerciseId: exercise.id, sourceIdentity: 'source-a', plan: p, context: { ...fixture.context } as any };
+    let resolve: (v: any) => void = () => {}; let fetches = 0, renders = 0, saves = 0;
+    const pending = new Promise(r => { resolve = r; });
+    const sandbox: any = { manifest: { exercises: [exercise] }, selectedExercise: exercise, document: documentStub(),
+      NoamDiagramPlan: Plan, NoamGeometry: Geometry, noamDiagramSourceIdentity: (e: any) => e.identity,
+      noamSourceGivens: () => { fetches++; return pending; }, renderNoamChat: () => renders++, saveNoamState: () => saves++ };
+    sandbox.window = sandbox; vm.runInNewContext(fn, sandbox);
+    return { sandbox, visual, resolve, count: () => ({ fetches, renders, saves }) };
+  }
+  it('hides the legacy rectangle then repairs and renders it, fetching once', async () => {
+    const f = restored();
+    assert.equal(f.sandbox.noamRenderAiDiagram(f.visual), null);
+    assert.equal(f.sandbox.noamRenderAiDiagram(f.visual), null);
+    assert.equal(f.count().fetches, 1);
+    f.resolve(clone(fixture.sourceGivens)); await new Promise(r => setImmediate(r));
+    assert.equal(Plan.inspect(f.visual.plan, f.visual.context).ok, true);
+    assert.equal(tickMarks(f.sandbox.noamRenderAiDiagram(f.visual)), 6);
+    assert.deepEqual(f.count(), { fetches: 1, renders: 1, saves: 1 });
+  });
+  it('does not hydrate stale source identities or move the current section', async () => {
+    const f = restored(); f.sandbox.noamRenderAiDiagram(f.visual);
+    f.sandbox.manifest.exercises = [{ id: f.visual.exerciseId, identity: 'replacement-source' }];
+    f.resolve(clone(fixture.sourceGivens)); await new Promise(r => setImmediate(r));
+    assert.equal(f.visual.context.sourceGivens, undefined); assert.equal(f.count().saves, 0);
+    const g = restored(); g.sandbox.noamRenderAiDiagram(g.visual); g.sandbox.selectedExercise = { id: 'another-question' };
+    g.resolve(clone(fixture.sourceGivens)); await new Promise(r => setImmediate(r));
+    assert.equal(g.count().renders, 0); assert.equal(g.count().saves, 1);
+  });
+  it('retains rejection when an old drawing has unsupported metric data', async () => {
+    const f = restored(); f.visual.context.questionText += ' PQ=4.';
+    f.sandbox.noamRenderAiDiagram(f.visual); f.resolve(clone(fixture.sourceGivens)); await new Promise(r => setImmediate(r));
+    assert.equal(f.sandbox.noamRenderAiDiagram(f.visual), null);
+    assert.deepEqual(f.visual.plan.points.Q, [0, 4]);
+  });
+});
