@@ -729,6 +729,12 @@
     try{
       var initial=inspect(plan,context);
       if(initial.ok||initial.reason!=="source_coordinate_contradiction"){return null;}
+      // This layout repair is not a metric solver. The general inspector does
+      // not parse every prose length/ratio; leave such figures unsupported
+      // rather than silently changing an unlabelled numerical given.
+      var prose=sourceWithoutMachineMarkers(String(context.questionText||""))+" "+String(context.hintText||"");
+      prose=prose.replace(/שאלה\s+\d+(?=$|[^\d])/g,"");
+      if(/[0-9°∠]/.test(prose)||/(?:^|[^א-ת])(?:ה?אורך|אורכה|אורכו|אורכי|באורך|ה?היקף|ה?שטח|סנטימטר|ס״מ|ס"מ|ה?יחס|ביחס|ה?זווית|ה?זוויות)(?=$|[^א-ת])|\b(?:length|ratio|perimeter|area|degrees?|angles?)\b/i.test(prose)||/[A-Z]\s*[:÷\/×]/.test(prose)){return null;}
       var names=Object.keys(plan.points||{}),groups=context&&context.sourceGivens;
       if(names.length!==4||names.some(function(n){return !/^[A-Z]$/.test(n);})||!Array.isArray(groups)||groups.length!==2||!Array.isArray(plan.segments)||plan.segments.length!==4){return null;}
       var pairs=[],heads=[],sides=[];

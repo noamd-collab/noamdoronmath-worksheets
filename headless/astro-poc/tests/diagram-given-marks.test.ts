@@ -251,4 +251,10 @@ describe('source-constrained kite geometry (reported rectangle)', () => {
     p.equalGroups = [{ segments: [['P', 'S'], ['R', 'S']], count: 1, color: 'teal' }];
     assert.equal(Plan.repairSourceKiteCoordinates(p, c), null);
   });
+  it('declines metric data the general validator does not fully parse', () => {
+    for (const given of ['PQ=4.', 'PQ=4 ס״מ.', 'אורך PQ הוא ארבע.', 'היחס PQ:QR הוא שתיים לשלוש.', 'הזווית P חדה.']) {
+      const c = context(); c.questionText += ' ' + given;
+      assert.equal(Plan.repairSourceKiteCoordinates(rectangle(), c), null, given);
+    }
+  });
 });
