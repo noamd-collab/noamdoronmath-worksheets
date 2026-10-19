@@ -7699,7 +7699,19 @@ function noamDidacticResponse(exercise,helpKind,hintIndex,studentMessage,progres
   }
 }
 
-function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis){
+function noamSelectedPartDirective(exercise,analysis){
+  // A shared question crop can describe earlier parts as well. Carry the exact
+  // selected task in the solver message, not only beside the vision transcript.
+  // Unreliable OCR and PDF-rebuilt expressions keep their existing dedicated path.
+  if (!exercise||!exercise.part||!exercise.text||noamManifestOcrUnreliable(exercise)||
+      (analysis&&analysis.selected_part_expression)){return "";}
+  var task=String(exercise.text).trim();
+  if (task.length>180){task=task.slice(0,120)+" … "+task.slice(-55);}
+  return "המטרה כעת — "+noamExerciseSectionLabel(exercise)+": "+task+
+    " התמקד רק במטרה זו. יתר הסעיפים בתמונה הם הקשר; אל תחזור להוכחה שהסעיף מניח שכבר הושלמה.";
+}
+
+function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis,exercise){
   var budget=Math.max(0,SOLVER_MESSAGE_MAX-MATH_OUTPUT_INSTRUCTION.length);
   var current=String(studentMessage||"").trim();
   var recent=noamRecentThreadText(thread,220);
@@ -7729,8 +7741,11 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis){
   var currentBudget=Math.min(current.length,Math.max(90,Math.floor(budget*(verified ? .24 : .42))));
   var currentText=current.slice(0,currentBudget);
   var prefixBudget=Math.max(0,budget-label.length-currentText.length-2);
-  var prefix=guard.length<=prefixBudget?guard:
-    (guard.slice(0,Math.max(0,prefixBudget-145))+" … "+guard.slice(-140)).slice(0,prefixBudget);
+  var scope=noamSelectedPartDirective(exercise,analysis).slice(0,prefixBudget);
+  var guardBudget=Math.max(0,prefixBudget-scope.length-(scope?1:0));
+  var boundedGuard=guard.length<=guardBudget?guard:
+    (guard.slice(0,Math.max(0,guardBudget-145))+" … "+guard.slice(-140)).slice(0,guardBudget);
+  var prefix=scope+(scope&&boundedGuard?"\n":"")+boundedGuard;
   var contextRoom=Math.max(0,prefixBudget-prefix.length-(prefix?1:0));
   if (contextRoom>45&&(thread.history||[]).length){
     var context="הקשר קודם, שעשוי לכלול טעות: "+noamRecentThreadText(thread,contextRoom-34);
@@ -7749,7 +7764,7 @@ function noamResponseVisual(exercise,thread,studentMessage,answer,helpKind,hintI
 }
 
 function noamCanOfferDrawing(exercise,thread,message){
-  if (!exercise||!thread||!message||message.role!=="assistant"||!String(message.text||"").trim()){
+  if (!exercise||!thread||!message||message.answerError||message.role!=="assistant"||!String(message.text||"").trim()){
     return false;
   }
   if (message.visual&&message.visual.type==="geometry-guide"){
@@ -7767,10 +7782,11 @@ function noamCanOfferDrawing(exercise,thread,message){
   var studentAskedForVisual=!!(window.NoamLocalVisual.wantsVisualSupport&&
     window.NoamLocalVisual.wantsVisualSupport(options.studentMessage));
   var sourceOnlyFallback=!!(message.visual&&message.visual.type==="question-image");
-  // This is an escape hatch for visual edge cases, not a permanent control on
-  // every geometry answer. Offer it only after a visual request was missed or
-  // when the only visual available is the original worksheet crop.
-  if (!studentAskedForVisual&&!sourceOnlyFallback){return false;}
+  // A delivered geometry hint must offer a visual next step even when the
+  // student did not know to type a special drawing request. Generation remains
+  // an explicit click; existing rendered visuals and failed replies are excluded.
+  var geometryHint=options.helpKind==="hint";
+  if (!studentAskedForVisual&&!sourceOnlyFallback&&!geometryHint){return false;}
   var source=ttl+"\n"+localVisualExerciseSource(exercise)+"\n"+noamRecentThreadText(thread,700)+"\n"+message.text;
   return noamGeometryContext(source);
 }
@@ -8234,7 +8250,7 @@ function askNoam(helpKind,studentMessage){
   getExerciseAnalysis(exercise)
     .then(function(analysis){
       requestAnalysis=analysis;
-      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt,analysis);
+      var solverMessage=noamSolverMessage(studentMessage,thread,ttl,guidePrompt,analysis,exercise);
       requestPayload={
         exerciseId:exercise.id,
         grade:g,
@@ -8523,7 +8539,6 @@ function esc(s){
   var pendingCheckFocus=false;
   var hintFloors=Object.create(null);
   var veiledHints=Object.create(null);
-  var awaitingIntent='';
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   var motionEventOff=false;
   function setAttr(el,name,value){if(el.getAttribute(name)!==String(value)){el.setAttribute(name,String(value));}}
@@ -8843,43 +8858,13 @@ function esc(s){
     if(/תנו רק את הצעד הבא/.test(text)){return 'understood';}
     return '';
   }
-  function softenAwaitingReply(transcript){
-    var rows=Array.from(transcript.querySelectorAll('.noam-row'));
-    var guides=window.NoamDidacticGuides;
-    var done=openedHintCount()>=3;
-    rows.forEach(function(row,index){
-      if(!row.classList.contains('assistant')){return;}
-      if(row.dataset.ramziSoftened==='1'){return;}
-      var retry=row.querySelector('.noam-retry-action');
-      if(!retry){return;}
-      var prev=rows[index-1];
-      var user=prev&&prev.classList.contains('user')?prev.textContent:'';
-      var intent=inferCheckIntent(user)||awaitingIntent;
-      if(!intent){return;}
-      var bubble=row.querySelector('.noam-bubble');
-      var content=bubble&&bubble.querySelector('span:not(.noam-sr-only)');
-      var repeat=0;
-      rows.forEach(function(item,at){
-        if(at>=index){return;}
-        var said=userContent(item);
-        var raw=said?said.textContent||'':'';
-        if(raw.trim()==='לא הבנתי'||/תסבירו מחדש|זווית אחרת/.test(raw)){repeat+=1;}
-      });
-      if(repeat<1){repeat=1;}
-      var fallback=guides&&typeof guides.offlineUnderstanding==='function'
-        ?guides.offlineUnderstanding(intent,{hintsDone:done,progress:done?3:0,repeat:repeat})
-        :(intent==='understood'
-          ?(done?'אי אפשר להביא עכשיו את הצעד הבא. אפשר לעבור לסעיף הבא.':'אי אפשר להביא עכשיו את הצעד הבא. אפשר ללחוץ על «רמז», או לעבור לסעיף הבא.')
-          :(done?'זה בסדר גמור, בואו ננסה אחרת.\nאי אפשר להביא עכשיו הסבר חדש. אפשר לקרוא שוב את הצעד לאט.':'זה בסדר גמור, בואו ננסה אחרת.\nאי אפשר להביא עכשיו הסבר חדש. אפשר ללחוץ על «רמז», או לקרוא שוב את הצעד לאט.'));
-      if(content&&fallback&&content.textContent!==fallback){content.textContent=fallback;}
-      row.dataset.ramziSoftened='1';
-      var title=bubble&&bubble.querySelector('.exact-error-title');
-      if(title){title.remove();}
-      var dismiss=row.querySelector('.exact-error-dismiss');
-      if(dismiss){dismiss.remove();}
-      retry.remove();
-      row.classList.remove('exact-error');
-      if(row.getAttribute('role')==='alert'){row.removeAttribute('role');}
+  function preserveFailedReplies(transcript){
+    // A failed request is not a delivered hint or a simpler explanation. Keep
+    // the original reason and retry control even after הבנתי / לא הבנתי.
+    transcript.querySelectorAll('.noam-row.assistant').forEach(function(row){
+      if(!row.querySelector('.noam-retry-action')){return;}
+      row.querySelectorAll('.exact-hint-head').forEach(function(head){head.remove();});
+      row.classList.remove('exact-hint','exact-overview','exact-success');
     });
   }
   function userContent(row){
@@ -8975,6 +8960,16 @@ function esc(s){
   }
   function submitUnderstanding(intent){
     if(panelBody.querySelector('.noam-bubble.thinking')){return;}
+    var replies=panelBody.querySelectorAll('.noam-row.assistant');
+    var last=replies.length?replies[replies.length-1]:null;
+    var retry=last&&last.querySelector('.noam-retry-action');
+    if(retry){
+      // No answer exists to explain. Keep both understanding controls, but lead
+      // to the real recovery action without another paid request or fake reply.
+      pendingCheckFocus=false;
+      retry.focus();
+      return;
+    }
     var id=currentExerciseId();
     var guides=window.NoamDidacticGuides;
     var phrase=intent==='understood'?'הבנתי':'לא הבנתי';
@@ -9007,7 +9002,6 @@ function esc(s){
       return;
     }
     if(plan.action==='ai'&&input&&send&&!send.disabled){
-      awaitingIntent=intent;
       input.value=String(plan.prompt||phrase).slice(0,700);
       input.dispatchEvent(new Event('input',{bubbles:true}));
       send.click();
@@ -9067,7 +9061,7 @@ function esc(s){
         retry.after(dismiss);
       }
     });
-    softenAwaitingReply(transcript);
+    preserveFailedReplies(transcript);
     veilStudentPrompts(transcript);
     replayLocalChecks(transcript);
     prefixRetryLead(transcript);
@@ -9614,7 +9608,6 @@ function esc(s){
       var resetId=currentExerciseId();
       localChecks=localChecks.filter(function(item){return item.id!==(resetId||'current');});
       if(resetId){delete hintFloors[resetId];delete veiledHints[resetId];}
-      awaitingIntent='';
       if(window.NoamDidacticGuides&&resetId&&typeof window.NoamDidacticGuides.resetUnderstanding==='function'){
         window.NoamDidacticGuides.resetUnderstanding(resetId);
       }

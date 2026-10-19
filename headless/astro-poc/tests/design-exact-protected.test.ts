@@ -138,7 +138,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Remaining101: nine exact semantic native SVG namespaces and a sixth exact back path.
     // Combined with reviewed PR194 UI expansion; auth, geometry, and AI protocol unchanged.
     // PR197: reviewed clone-only zoom and original-figure expansion; no solve/auth/storage changes.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '6554b861e6c95a1e121bbaa2e08dff2ea733aa4220befe7787b9b365136737c9');
+    // Noam 2026-10-19: selected-part task priority and explicit drawing action after
+    // a successful geometry hint. Regression tests cover scope, errors and request races.
+    // Only this script fence changes; authentication and original worksheet bytes do not.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '6acd5ca20a64db318252bc37504b521a7f719a050de7cff965426e7282a4dedb');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
