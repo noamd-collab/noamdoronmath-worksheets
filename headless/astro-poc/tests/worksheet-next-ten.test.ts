@@ -55,7 +55,7 @@ test('single worksheets display a generic label while the diagnostic keeps its n
 });
 
 test('both viewers return only to exact authorized pilot paths with pilot=1', () => {
-  const allowed = ['/worksheet-pilot/approved-three-20261019', pilot.page, '/worksheet-pilot/second-ten-20261019', '/worksheet-pilot/third-ten-20261019', '/worksheet-pilot/fourth-ten-20261019'];
+  const allowed = ['/worksheet-pilot/approved-three-20261019', pilot.page, '/worksheet-pilot/second-ten-20261019', '/worksheet-pilot/third-ten-20261019', '/worksheet-pilot/fourth-ten-20261019', '/worksheet-pilot/remaining-101-20261019'];
   for (const path of ['public/worksheet-viewer-noam.html','../../worksheet-viewer-noam.html']) {
     const source = read(path);
     const navigation = source.slice(source.indexOf('/* BACK —'),source.indexOf('var panel ='));

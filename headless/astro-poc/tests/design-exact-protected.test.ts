@@ -134,7 +134,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // source geometry, authentication or persistence; covered by diagram-expansion tests.
     // Next batches: single-sheet label and five exact return paths; G8-T26 stays diagnostic.
     // Auth, solve protocol and sibling isolation are unchanged and covered separately.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '5721552ce3307736ba9b413f3d2f2c093dbf2baa6d13f13fbbf8c4d1a946d7b5');
+    // Remaining101: nine exact semantic native SVG namespaces and a sixth exact back path.
+    // Combined with reviewed PR194 UI expansion; auth, geometry, and AI protocol unchanged.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '12672585237ed93434e3ab7c553e31b30bad06e2eb5a7d7f802201b670046bf9');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

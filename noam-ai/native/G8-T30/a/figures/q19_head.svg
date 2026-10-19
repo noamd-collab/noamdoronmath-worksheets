@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 152" width="152" height="152">
+<g data-layer="wedges">
+<path id="e0001" d="M 76 76 L 76 4 A 72 72 0 0 1 138.35 40 A 72 72 0 0 1 138.35 112 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qs:a"/>
+<path id="e0002" d="M 76 76 L 138.35 112 A 72 72 0 0 1 51.37 143.66 A 72 72 0 0 1 5.09 63.5 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qs:b"/>
+<path id="e0003" d="M 76 76 L 5.09 63.5 A 72 72 0 0 1 76 4 Z" fill="#e3e3e3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qs:c"/>
+</g>
+<g data-layer="lines">
+<circle id="e0004" cx="76" cy="76" r="72" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qs"/>
+</g>
+<g data-layer="labels">
+<text id="e0005" x="113.41" y="52.27" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qs:a">האירק</text>
+<text id="e0006" x="113.41" y="65.3" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qs:a">120°</text>
+<text id="e0007" x="61.22" y="116.56" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qs:b">לוגרת</text>
+<text id="e0008" x="61.22" y="127.18" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qs:b">160°</text>
+<text id="e0009" x="48.23" y="47.21" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qs:c">הרזח</text>
+</g>
+</svg>
