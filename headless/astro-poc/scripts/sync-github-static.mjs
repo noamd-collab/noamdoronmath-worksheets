@@ -51,7 +51,9 @@ function collectHiddenPdfIds() {
   const p = join(pocRoot, 'src', 'data', 'hidden-practice.v1.json');
   if (!existsSync(p)) return [];
   const data = JSON.parse(readFileSync(p, 'utf8'));
-  return (data.sheets || []).map((s) => String(s.pdfId).toLowerCase());
+  const pilotPath = join(pocRoot, 'src', 'data', 'worksheet-pilot.v1.json');
+  const pilot = existsSync(pilotPath) ? JSON.parse(readFileSync(pilotPath, 'utf8')) : { sheets: [] };
+  return [...(data.sheets || []), ...(pilot.sheets || [])].map((s) => String(s.pdfId).toLowerCase());
 }
 
 function collectViewerPdfIds(catalog) {
