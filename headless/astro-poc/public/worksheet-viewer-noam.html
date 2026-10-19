@@ -8036,6 +8036,37 @@ function noamDiagramRefresh(exercise,thread,message,complete){
   }
 }
 
+/* Source given-data marks for the explicit drawing: equal-length givens of the
+   worksheet package (noam-ai.json beside the approved native figure) whose
+   segments carry the same tick count in that figure. Trusted static data only;
+   never model output. Any failure yields no marks and changes nothing else. */
+var noamSourceGivensCache={};
+function noamSourceGivens(exercise){
+  var url=String(exercise&&exercise.nativeFigureUrl||""),qid=String(exercise&&exercise.nativeQuestionId||"");
+  var match=url.match(/^(\/noam-ai\/native\/(?:G[789]-T[0-9]+|G7-ASSESS1|G8-(?:ASSESS1|CIRCLE|INTERP|TWOSRC)|G9-(?:3060|KITE|SIDEANG|TRAP))\/[abc]\/)figures\/[a-zA-Z0-9_-]+\.svg$/);
+  if(!match||!/^q[0-9]{1,2}$/.test(qid)){return Promise.resolve([]);}
+  var dataUrl=match[1]+"noam-ai.json";
+  if(!noamSourceGivensCache[dataUrl]){
+    noamSourceGivensCache[dataUrl]=fetch(dataUrl,{cache:"force-cache"}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
+  }
+  return noamSourceGivensCache[dataUrl].then(function(data){
+    try{
+      var question=(data&&Array.isArray(data.questions)?data.questions:[]).find(function(q){return q&&q.id===qid;});
+      if(!question){return [];}
+      var figures=Array.isArray(data.figures)?data.figures:[],figure=figures.find(function(f){return f&&f.id===question.figure_id;});
+      var marks=figure&&figure.objects&&Array.isArray(figure.objects.marks)?figure.objects.marks:[],ticks={};
+      marks.forEach(function(m){if(m&&m.kind==="ticks"&&typeof m.name==="string"&&/^[A-Z]{2}$/.test(m.name)&&[1,2,3].indexOf(m.n)>=0){ticks[m.name.split("").sort().join("")]=m.n;}});
+      return (Array.isArray(question.given)?question.given:[]).filter(function(g){return g&&g.type==="equal_length"&&Array.isArray(g.of)&&g.of.length>=2;}).map(function(g){
+        var segs=g.of.map(function(name){return typeof name==="string"&&/^[A-Z]{2}$/.test(name)?name.split(""):null;});
+        if(segs.some(function(x){return !x;})){return null;}
+        var counts=segs.map(function(x){return ticks[x.slice().sort().join("")];});
+        if(!counts[0]||counts.some(function(c){return c!==counts[0];})){return null;}
+        return {segments:segs,count:counts[0]};
+      }).filter(Boolean).slice(0,6);
+    }catch(_error){return [];}
+  });
+}
+
 function noamDiagramSourceInput(exercise){
   // Vision and planning belong to the same background job. This keeps both
   // model calls outside Wix's short request window and preserves one source.
@@ -8129,7 +8160,9 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
   if (!job){
     job=Promise.resolve().then(function(){
       if (!window.NoamDiagramPlan){throw new Error("diagram compiler unavailable");}
-      return noamDiagramSourceInput(exercise);
+      return Promise.all([noamDiagramSourceInput(exercise),noamSourceGivens(exercise)]).then(function(parts){
+        parts[0].sourceGivens=parts[1];return parts[0];
+      });
     }).then(function(source){
       var context={questionText:source.questionText,hintText:options.answer,studentMessage:options.studentMessage};
       return postJson(API+"/noamDiagramPlan",{
@@ -8145,7 +8178,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
       }).then(function(result){
         var validatedContext={questionText:typeof result.validationQuestionText==="string"?
           result.validationQuestionText.slice(0,18000):context.questionText,
-          hintText:context.hintText,studentMessage:context.studentMessage};
+          hintText:context.hintText,studentMessage:context.studentMessage,sourceGivens:source.sourceGivens};
         var checked=result&&result.ok&&window.NoamDiagramPlan.inspect(result.plan,validatedContext);
         if (!checked||!checked.ok){
           console.warn("NOAM_DIAGRAM_REJECTED",String(result&&result.validationReason||checked&&checked.reason||"unavailable").slice(0,80),JSON.stringify(result&&result.constraint||null));

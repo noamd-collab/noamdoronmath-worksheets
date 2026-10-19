@@ -530,6 +530,26 @@
         var length=distance(points[pairs[0][0]],points[pairs[0][1]]);if(pairs.some(function(p){return !sameLength(length,distance(points[p[0]],points[p[1]]));})||(groupLengths[item.count]!==undefined&&!sameLength(length,groupLengths[item.count]))){fail("coordinate_contradiction");}groupLengths[item.count]=length;
         return {segments:pairs,count:item.count,color:color(item.color)};
       });
+      // Source given-data marks (trusted worksheet package data, never model
+      // output) are preserved on every drawing, whether or not the model
+      // supplied them and independent of the current focus. A group is added
+      // only when all of its segments are drawn. The source tick count wins.
+      // Drawn coordinates must agree; equal lengths are never inferred from
+      // different tick counts, and nothing outside context.sourceGivens is added.
+      list(context.sourceGivens,6).forEach(function(item){
+        if(!object(item)||[1,2,3].indexOf(item.count)<0||!Array.isArray(item.segments)){return;}
+        var pairs=item.segments.slice(0,8).filter(function(p){return Array.isArray(p)&&p.length===2&&p.every(function(n){return typeof n==="string"&&Object.prototype.hasOwnProperty.call(points,n);})&&p[0]!==p[1];}).map(function(p){return p.slice();});
+        if(pairs.length<2||pairs.length!==item.segments.length||!pairs.every(isDrawn)){return;}
+        var keySet=pairs.map(pairKey).sort().join("|");
+        scene.equalGroups=scene.equalGroups.filter(function(group){return group.segments.map(pairKey).sort().join("|")!==keySet;});
+        scene.equalGroups.push({segments:pairs,count:item.count,color:"teal",given:true});
+      });
+      if(scene.equalGroups.length>6){fail("invalid_list");}
+      var givenLengths={};scene.equalGroups.forEach(function(group){
+        var length=distance(points[group.segments[0][0]],points[group.segments[0][1]]);
+        if(group.segments.some(function(p){return !sameLength(length,distance(points[p[0]],points[p[1]]));})||(givenLengths[group.count]!==undefined&&!sameLength(length,givenLengths[group.count]))){fail("source_coordinate_contradiction");}
+        givenLengths[group.count]=length;
+      });
       scene.rightAngles=list(plan.rightAngles,8).map(function(item,index){var a=angle(item);focused(item,true);proof("rightAngles."+index,function(quote){return perpendicularIn(quote,item);});if(Math.abs(a.cosine)>EPS){fail("coordinate_contradiction");}return item.slice();});
       scene.angles=list(plan.angles,8).map(function(item,index){
         keys(item,["from","vertex","to","label"]);var a=angle([item.from,item.vertex,item.to]),label=angleLabel(item.label);focused(a.ends,true);
@@ -553,7 +573,7 @@
         });
       }
       if(Object.keys(evidence).some(function(mark){return !usedEvidence[mark];})){fail("unused_evidence");}
-      if(!scene.highlights.length&&!scene.pointHighlights.length&&!scene.angles.length&&!scene.equalGroups.length&&!scene.rightAngles.length){fail("missing_focus");}
+      if(!scene.highlights.length&&!scene.pointHighlights.length&&!scene.angles.length&&!scene.equalGroups.some(function(group){return !group.given;})&&!scene.rightAngles.length){fail("missing_focus");}
       var xs=pointNames.map(function(n){return points[n][0];}),ys=pointNames.map(function(n){return points[n][1];});
       if(Math.max.apply(null,xs)-Math.min.apply(null,xs)<EPS||Math.max.apply(null,ys)-Math.min.apply(null,ys)<EPS){fail("flat_scene");}
       // A plain outline can contradict a given even without a false tick mark.

@@ -4,9 +4,21 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const require = createRequire(import.meta.url);
+import vm from 'node:vm';
+
 const root = join(import.meta.dirname, '..');
-const Plan = require(join(root, 'public/noam-diagram-plan.js'));
+// public/ sits under "type":"module", so these UMD browser files cannot be
+// require()d directly. Evaluate them as CommonJS in a sandbox instead.
+function loadUmd(file: string, deps: Record<string, unknown> = {}) {
+  const module = { exports: {} as any };
+  // Same realm as the test, so plain test objects keep Object.prototype.
+  const run = vm.compileFunction(readFileSync(join(root, 'public', file), 'utf8'), ['module', 'exports', 'require'], { filename: file });
+  run(module, module.exports, (name: string) => deps[name]);
+  return module.exports;
+}
+const Geometry = loadUmd('noam-geometry.js');
+const Plan = loadUmd('noam-diagram-plan.js', { './noam-geometry.js': Geometry });
+void createRequire;
 const fixture = JSON.parse(readFileSync(join(root, 'tests/fixtures/diagram-given-marks/g9-t46-a-q1b.json'), 'utf8'));
 const clone = <T>(v: T): T => JSON.parse(JSON.stringify(v));
 const ctx = (extra: Record<string, string> = {}) => ({ ...fixture.context, ...extra });
@@ -91,5 +103,82 @@ describe('marks that are not given in the data stay blocked', () => {
     const p = clone(fixture.plan); p.segments = [['P', 'Q'], ['Q', 'R'], ['R', 'S']];
     const r = Plan.inspect(p, ctx());
     assert.equal(r.ok, false); assert.equal(r.reason, 'undrawn_mark');
+  });
+});
+
+function documentStub() {
+  function create(name: string): any {
+    return { name, attributes: {} as Record<string, string>, children: [] as any[], className: '', textContent: '',
+      appendChild(node: any) { this.children.push(node); return node; },
+      setAttribute(key: string, value: string) { this.attributes[key] = String(value); if (key === 'class') this.className = String(value); } };
+  }
+  return { createElementNS: (_ns: string, name: string) => create(name), createElement: create, createTextNode: (t: string) => ({ name: '#text', textContent: t, children: [] }) };
+}
+const nodes = (n: any): any[] => (n ? [n].concat((n.children || []).flatMap(nodes)) : []);
+const tickMarks = (svg: any) => nodes(svg).filter((n) => (n.className || n.attributes?.class) === 'noam-geometry-equality-mark').length;
+
+describe('source given-data marks are guaranteed from the package, not the model', () => {
+  const withSource = () => ({ ...fixture.context, sourceGivens: fixture.sourceGivens });
+  it('the model omits equalGroups: the drawing still carries the source ticks (1+1+2+2 marks)', () => {
+    const p = clone(fixture.plan); p.equalGroups = []; p.evidence = [];
+    const r = Plan.inspect(p, withSource());
+    assert.equal(r.ok, true, r.reason);
+    assert.deepEqual(ticks(r.scene), [[1, ['PQ', 'PS']], [2, ['QR', 'RS']]]);
+    assert.deepEqual(r.scene.highlights.map((h: any) => h.from + h.to), ['PQ', 'QR']);
+    assert.equal(tickMarks(Plan.render(documentStub(), p, withSource())), 6);
+  });
+  it('without source givens the same plan renders no ticks (the old behaviour)', () => {
+    const p = clone(fixture.plan); p.equalGroups = []; p.evidence = [];
+    assert.equal(tickMarks(Plan.render(documentStub(), p, fixture.context)), 0);
+  });
+  it('the source tick count wins over a model count for the same pair', () => {
+    const p = clone(fixture.plan); p.equalGroups = [{ segments: [['Q', 'R'], ['R', 'S']], count: 3, color: 'teal' }];
+    p.evidence = [{ mark: 'equalGroups.0', source: 'question', quote: 'QR=RS' }];
+    const r = Plan.inspect(p, withSource());
+    assert.equal(r.ok, true, r.reason);
+    assert.deepEqual(ticks(r.scene).sort(), [[1, ['PQ', 'PS']], [2, ['QR', 'RS']]]);
+  });
+  it('source givens alone never count as the current focus', () => {
+    const p = clone(fixture.plan); p.highlights = []; p.equalGroups = []; p.evidence = [];
+    assert.equal(Plan.inspect(p, withSource()).reason, 'missing_focus');
+  });
+  it('a source given on an undrawn segment is skipped, not invented', () => {
+    const p = clone(fixture.plan); p.segments = [['P', 'Q'], ['Q', 'R'], ['R', 'S']]; p.equalGroups = []; p.evidence = [];
+    const r = Plan.inspect(p, withSource());
+    assert.equal(r.ok, true, r.reason);
+    assert.deepEqual(ticks(r.scene), [[2, ['QR', 'RS']]]);
+  });
+  it('drawn coordinates that contradict a source given are rejected', () => {
+    const p = clone(fixture.plan); p.points.S = [3, 3]; p.equalGroups = []; p.evidence = [];
+    assert.equal(Plan.inspect(p, withSource()).reason, 'source_coordinate_contradiction');
+  });
+  it('malformed source givens add nothing', () => {
+    const p = clone(fixture.plan); p.equalGroups = []; p.evidence = [];
+    const bad = [{ segments: [['P', 'Q'], ['P', 'X']], count: 1 }, { segments: [['P', 'Q']], count: 1 }, { segments: [['P', 'Q'], ['P', 'S']], count: 4 }];
+    const r = Plan.inspect(p, { ...fixture.context, sourceGivens: bad });
+    assert.equal(r.ok, true, r.reason); assert.deepEqual(r.scene.equalGroups, []);
+  });
+});
+
+describe('viewer reads source givens from the approved package data', () => {
+  const html = readFileSync(join(root, 'public/worksheet-viewer-noam.html'), 'utf8');
+  const fn = html.match(/var noamSourceGivensCache=\{\};\nfunction noamSourceGivens\(exercise\)\{[\s\S]*?\n\}\n/)?.[0];
+  function run(url: string, qid: string) {
+    assert.ok(fn, 'noamSourceGivens');
+    const sandbox: any = { fetch: async (u: string) => ({ ok: true, json: async () => JSON.parse(readFileSync(join(root, 'public', u), 'utf8')) }) };
+    vm.runInNewContext(fn + '\nresult=noamSourceGivens({nativeFigureUrl:' + JSON.stringify(url) + ',nativeQuestionId:' + JSON.stringify(qid) + '});', sandbox);
+    return sandbox.result;
+  }
+  it('G9-T46 A q1: PQ=PS one tick, RQ=RS two ticks', async () => {
+    assert.deepEqual(JSON.parse(JSON.stringify(await run('/noam-ai/native/G9-KITE/a/figures/q1_head.svg', 'q1'))),
+      [{ segments: [['P', 'Q'], ['P', 'S']], count: 1 }, { segments: [['R', 'Q'], ['R', 'S']], count: 2 }]);
+  });
+  it('G8-T39 A q1: AC=AD and BC=BD with their source tick counts', async () => {
+    const r = JSON.parse(JSON.stringify(await run('/noam-ai/native/G8-T39/a/figures/q1_head.svg', 'q1')));
+    assert.deepEqual(r.map((g: any) => g.segments.map((s: string[]) => s.join(''))), [['AC', 'AD'], ['BC', 'BD']]);
+    assert.ok(r.every((g: any) => [1, 2, 3].includes(g.count)));
+  });
+  it('an unapproved figure URL yields no marks', async () => {
+    assert.deepEqual(JSON.parse(JSON.stringify(await run('/noam-ai/native/../x/a/figures/q1_head.svg', 'q1'))), []);
   });
 });
