@@ -7991,6 +7991,24 @@ function noamRenderAiDiagram(visual){
   if (!visual||!window.NoamDiagramPlan||!window.NoamGeometry||!manifest){return null;}
   var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
   if (!exercise||visual.sourceIdentity!==noamDiagramSourceIdentity(exercise)){return null;}
+  // Old saved drawings predate package-given validation. Hydrate their static
+  // source data once, without regenerating a hint or calling the AI endpoint.
+  if(visual.context&&!Array.isArray(visual.context.sourceGivens)&&exercise.nativeFigureUrl){
+    if(!noamRenderAiDiagram.pending){noamRenderAiDiagram.pending=new WeakSet();}
+    if(!noamRenderAiDiagram.pending.has(visual)){
+      noamRenderAiDiagram.pending.add(visual);
+      noamSourceGivens(exercise).then(function(givens){
+        var currentExercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
+        if(!currentExercise||visual.sourceIdentity!==noamDiagramSourceIdentity(currentExercise)){return;}
+        visual.context=Object.assign({},visual.context,{sourceGivens:givens});
+        var repaired=window.NoamDiagramPlan.repairSourceKiteCoordinates(visual.plan,visual.context);
+        if(repaired){visual.plan=repaired;}
+        saveNoamState();
+        if(selectedExercise&&selectedExercise.id===exercise.id){renderNoamChat();}
+      }).catch(function(){/* Retain the explicit retry action, never a false drawing. */});
+    }
+    return null;
+  }
   try{
     var scene=window.NoamDiagramPlan.compile(visual.plan,visual.context);
     return scene?window.NoamGeometry.render(document,scene):null;
@@ -8180,6 +8198,10 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
           result.validationQuestionText.slice(0,18000):context.questionText,
           hintText:context.hintText,studentMessage:context.studentMessage,sourceGivens:source.sourceGivens};
         var checked=result&&result.ok&&window.NoamDiagramPlan.inspect(result.plan,validatedContext);
+        if(checked&&!checked.ok&&typeof window.NoamDiagramPlan.repairSourceKiteCoordinates==="function"){
+          var sourceRepair=window.NoamDiagramPlan.repairSourceKiteCoordinates(result.plan,validatedContext);
+          if(sourceRepair){result.plan=sourceRepair;checked=window.NoamDiagramPlan.inspect(result.plan,validatedContext);}
+        }
         if (!checked||!checked.ok){
           console.warn("NOAM_DIAGRAM_REJECTED",String(result&&result.validationReason||checked&&checked.reason||"unavailable").slice(0,80),JSON.stringify(result&&result.constraint||null));
           var error=new Error("diagram unsupported");error.code="DIAGRAM_UNSUPPORTED";

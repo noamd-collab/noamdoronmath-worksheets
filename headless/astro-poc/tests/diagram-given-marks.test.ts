@@ -192,3 +192,112 @@ describe('evidence source spoofing', () => {
     assert.equal(r.reason, 'unproven_evidence');
   });
 });
+
+describe('source-constrained kite geometry (reported rectangle)', () => {
+  const context = () => ({ ...fixture.context, sourceGivens: clone(fixture.sourceGivens) });
+  function rectangle() {
+    const p = clone(fixture.plan); p.equalGroups = []; p.evidence = [];
+    p.points = { P: [0, 0], Q: [0, 4], R: [3, 4], S: [3, 0] };
+    return p;
+  }
+  function verify(original: any, repaired: any, c: any) {
+    assert.ok(repaired);
+    assert.equal(Plan.inspect(repaired, c).ok, true);
+    assert.deepEqual({ ...repaired, points: original.points }, original, 'coordinates only');
+    const length = (a: string, b: string) => Math.hypot(repaired.points[a][0] - repaired.points[b][0], repaired.points[a][1] - repaired.points[b][1]);
+    assert.ok(Math.abs(length('P', 'Q') - length('P', 'S')) < 1e-10);
+    assert.ok(Math.abs(length('R', 'Q') - length('R', 'S')) < 1e-10);
+    assert.equal(tickMarks(Plan.render(documentStub(), repaired, c)), 6);
+    for (const [a, b, d] of [['P', 'Q', 'R'], ['Q', 'R', 'S'], ['R', 'S', 'P'], ['S', 'P', 'Q']]) {
+      const v = (n: string) => [repaired.points[n][0] - repaired.points[b][0], repaired.points[n][1] - repaired.points[b][1]];
+      assert.ok(Math.abs(v(a)[0] * v(d)[0] + v(a)[1] * v(d)[1]) > 1e-5, 'no accidental right angle');
+    }
+    assert.deepEqual(repaired.angles, []); assert.deepEqual(repaired.rightAngles, []);
+  }
+  it('repairs the reported tall rectangle without adding a proof or changing focus', () => {
+    const p = rectangle(), before = clone(p), c = context();
+    assert.equal(Plan.inspect(p, c).reason, 'source_coordinate_contradiction');
+    verify(p, Plan.repairSourceKiteCoordinates(p, c), c); assert.deepEqual(p, before);
+  });
+  it('repairs coordinates captured in the actual 19:03:16 UTC diagram job', () => {
+    const p = rectangle(); p.points = { Q: [0, 3], R: [4, 3], P: [-2, -1], S: [2, -1] };
+    verify(p, Plan.repairSourceKiteCoordinates(p, context()), context());
+  });
+  it('keeps already valid kites and a valid square unchanged (no inequality assumption)', () => {
+    assert.equal(Plan.repairSourceKiteCoordinates(clone(fixture.plan), context()), null);
+    const p = rectangle(); p.points.R = [4, 4]; p.points.S = [4, 0];
+    assert.equal(Plan.inspect(p, context()).ok, true);
+    assert.equal(Plan.repairSourceKiteCoordinates(p, context()), null);
+  });
+  it('does not repair from missing, malformed, opposite or incomplete source pairs', () => {
+    const p = rectangle();
+    for (const sourceGivens of [[], [fixture.sourceGivens[0]],
+      [{ segments: [['P', 'Q'], ['R', 'S']], count: 1 }, { segments: [['P', 'S'], ['Q', 'R']], count: 2 }],
+      [{ segments: [['P', 'Q'], ['P', 'X']], count: 1 }, fixture.sourceGivens[1]],
+      fixture.sourceGivens.map((g: any) => ({ ...g, count: 1 }))]) {
+      assert.equal(Plan.repairSourceKiteCoordinates(p, { ...context(), sourceGivens }), null);
+    }
+  });
+  it('does not invent missing edges or reshape a larger diagram', () => {
+    for (const alter of [(p: any) => p.segments.pop(), (p: any) => p.segments.push(['P', 'R']),
+      (p: any) => { p.points.X = [2, 2]; }, (p: any) => { p.points.S = [-3, 2]; }]) {
+      const p = rectangle(); alter(p); assert.equal(Plan.repairSourceKiteCoordinates(p, context()), null);
+    }
+  });
+  it('does not bypass conflicting explicit facts or forged proof evidence', () => {
+    const p = rectangle(), c = context();
+    assert.equal(Plan.repairSourceKiteCoordinates(p, { ...c, questionText: c.questionText + ' PQ∥RS.' }), null);
+    p.evidence = [{ mark: 'equalGroups.0', source: 'question', quote: 'PS=RS' }];
+    p.equalGroups = [{ segments: [['P', 'S'], ['R', 'S']], count: 1, color: 'teal' }];
+    assert.equal(Plan.repairSourceKiteCoordinates(p, c), null);
+  });
+  it('declines metric data the general validator does not fully parse', () => {
+    for (const given of ['PQ=4.', 'PQ=4 ס״מ.', 'אורך PQ הוא ארבע.', 'היחס PQ:QR הוא שתיים לשלוש.', 'הזווית P חדה.']) {
+      const c = context(); c.questionText += ' ' + given;
+      assert.equal(Plan.repairSourceKiteCoordinates(rectangle(), c), null, given);
+    }
+  });
+});
+
+describe('restored drawings acquire source givens without another AI call', () => {
+  const html = readFileSync(join(root, 'public/worksheet-viewer-noam.html'), 'utf8');
+  const fn = html.slice(html.indexOf('function noamRenderAiDiagram(visual){'), html.indexOf('function noamDiagramError(error){'));
+  function restored() {
+    const exercise = { id: 'kite-q1b', nativeFigureUrl: '/noam-ai/native/G9-KITE/a/figures/q1_head.svg', identity: 'source-a' };
+    const p = clone(fixture.plan); p.equalGroups = []; p.evidence = [];
+    p.points = { P: [0, 0], Q: [0, 4], R: [3, 4], S: [3, 0] };
+    const visual = { exerciseId: exercise.id, sourceIdentity: 'source-a', plan: p, context: { ...fixture.context } as any };
+    let resolve: (v: any) => void = () => {}; let fetches = 0, renders = 0, saves = 0;
+    const pending = new Promise(r => { resolve = r; });
+    const sandbox: any = { manifest: { exercises: [exercise] }, selectedExercise: exercise, document: documentStub(),
+      NoamDiagramPlan: Plan, NoamGeometry: Geometry, noamDiagramSourceIdentity: (e: any) => e.identity,
+      noamSourceGivens: () => { fetches++; return pending; }, renderNoamChat: () => renders++, saveNoamState: () => saves++ };
+    sandbox.window = sandbox; vm.runInNewContext(fn, sandbox);
+    return { sandbox, visual, resolve, count: () => ({ fetches, renders, saves }) };
+  }
+  it('hides the legacy rectangle then repairs and renders it, fetching once', async () => {
+    const f = restored();
+    assert.equal(f.sandbox.noamRenderAiDiagram(f.visual), null);
+    assert.equal(f.sandbox.noamRenderAiDiagram(f.visual), null);
+    assert.equal(f.count().fetches, 1);
+    f.resolve(clone(fixture.sourceGivens)); await new Promise(r => setImmediate(r));
+    assert.equal(Plan.inspect(f.visual.plan, f.visual.context).ok, true);
+    assert.equal(tickMarks(f.sandbox.noamRenderAiDiagram(f.visual)), 6);
+    assert.deepEqual(f.count(), { fetches: 1, renders: 1, saves: 1 });
+  });
+  it('does not hydrate stale source identities or move the current section', async () => {
+    const f = restored(); f.sandbox.noamRenderAiDiagram(f.visual);
+    f.sandbox.manifest.exercises = [{ id: f.visual.exerciseId, identity: 'replacement-source' }];
+    f.resolve(clone(fixture.sourceGivens)); await new Promise(r => setImmediate(r));
+    assert.equal(f.visual.context.sourceGivens, undefined); assert.equal(f.count().saves, 0);
+    const g = restored(); g.sandbox.noamRenderAiDiagram(g.visual); g.sandbox.selectedExercise = { id: 'another-question' };
+    g.resolve(clone(fixture.sourceGivens)); await new Promise(r => setImmediate(r));
+    assert.equal(g.count().renders, 0); assert.equal(g.count().saves, 1);
+  });
+  it('retains rejection when an old drawing has unsupported metric data', async () => {
+    const f = restored(); f.visual.context.questionText += ' PQ=4.';
+    f.sandbox.noamRenderAiDiagram(f.visual); f.resolve(clone(fixture.sourceGivens)); await new Promise(r => setImmediate(r));
+    assert.equal(f.sandbox.noamRenderAiDiagram(f.visual), null);
+    assert.deepEqual(f.visual.plan.points.Q, [0, 4]);
+  });
+});
