@@ -23,6 +23,12 @@
  * fraction-division meaning, grade-4 summary, measurement L-area).
  * Explicit content. Easing helpers moved to loopHelpers.ts so those films
  * can import them; that file is pinned here too. Not a silent regen.
+ * ConceptLoop.astro moved again so the kite-construct aria names the
+ * division with חלקי instead of an ASCII slash (Noam, 18.10.2026).
+ * The viewer released scripts moved again so the glossary and the
+ * fraction key draw a horizontal bar instead of an ASCII slash
+ * (Noam, 18.10.2026). Glossary files are not in this fence. Not a
+ * silent regen.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -51,9 +57,10 @@ const protectedFiles: Record<string, string> = {
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
   // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
-  'src/lib/conceptLoops.ts': '8470ac2d099ba475f3edadc583f6522ffa4df17f66c76afa278406f5b0bc3e75',
+  // PR169: preserve new topic films and honor OS reduced motion.
+    'src/lib/conceptLoops.ts': 'f644fd20a34335d565899aa5369773184bee34565135d55aa9ba4b4a7aa447a0',
   'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
-  'src/components/ConceptLoop.astro': '76b8b0e26f9211cde8e7e4323608fd48cd02bee62a14f99b205923aa420d70b3',
+  'src/components/ConceptLoop.astro': '894808ad94ae42828f33ff395b0e6d64c038d9d1f2d2f141ac7ccacf72183d34',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // 47afe919: intentional text-only school notation on the readout
@@ -114,7 +121,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // touch-target rail; mobile layout/panel/pin tests cover these changes.
     // PR124 intentionally updates the shared viewer to anchor Ramzi to printed
     // question markers. Dedicated printed-pin fixtures cover that behavior.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e80fe08884059830c858c96f6560b1dfa58013f092e5a1d4d76dc1f93a06627a');
+    // Glossary text and the fraction key use a horizontal bar (Noam, 18.10.2026).
+    // A pure equation such as a/b = c/d is wrapped in dir=ltr. A mixed Hebrew
+    // sentence is not, so 15 מתוך 20 = 3/4 keeps its reading order.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'aa46d7dcbee15e601dae07f90beecb9dfe98bddea4e96a613c0940ab0cd4ca13');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

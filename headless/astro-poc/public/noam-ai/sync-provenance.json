@@ -11,8 +11,8 @@
     "catalogPath": "src/data/catalog.v1.json",
     "count": 456
   },
-  "generatedAt": "2026-10-18T20:30:12.769Z",
-  "aggregateSha256": "28c751e660afdfccdd4ca4c00b2ebb5a4c88d3de02f6faae6641e38ca42f1458",
+  "generatedAt": "2026-10-19T00:57:50.369Z",
+  "aggregateSha256": "0e82783acc264660ec33208d44ea562caf3d458f41e193986488f1ef3b918f34",
   "files": {
     "013ccbb6896d486090482c2b548fef6c": {
       "source": "noam-ai/manifests/013ccbb6896d486090482c2b548fef6c.json",
@@ -1111,8 +1111,8 @@
     },
     "7b44434fc6e34f169012b46fca46b28e": {
       "source": "noam-ai/manifests/7b44434fc6e34f169012b46fca46b28e.json",
-      "sha256": "1cfd31abba4c771115409337ce6e75426c3bc515ea4abb27db5895b32b1714dd",
-      "bytes": 50516
+      "sha256": "5b41fd65574e17f69c67ef71120a77c0ccc38d8d0e75b778774299aac80e0d61",
+      "bytes": 73377
     },
     "7c31b866f23f4d6981ed30a636388c06": {
       "source": "noam-ai/manifests/7c31b866f23f4d6981ed30a636388c06.json",
@@ -1661,8 +1661,8 @@
     },
     "be4c76ca42ca4dde9dfe26592b353a9f": {
       "source": "noam-ai/manifests/be4c76ca42ca4dde9dfe26592b353a9f.json",
-      "sha256": "f9eea14335053fb93482c9cff27ab004e0edf0010ad8e5a37353fb8a29d0834e",
-      "bytes": 32620
+      "sha256": "1cf787e34ae6f255ba5a87832a25979b8851f9171bbecf4dfc14836d7d77d907",
+      "bytes": 47220
     },
     "bea3993e136246edaffb14a03e469c31": {
       "source": "noam-ai/manifests/bea3993e136246edaffb14a03e469c31.json",

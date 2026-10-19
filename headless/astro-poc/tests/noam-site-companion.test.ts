@@ -154,7 +154,7 @@ describe('Noam AI site manual', () => {
     assert.match(sheet.contains, new RegExp(manifest.pageCount + ' עמודים'));
     const topic = guide.records.find((row) => row.href === '/factoring-grade-9');
     assert.match(topic.contains, /בדקו את עצמכם/);
-    assert.match(topic.how, /רמה א׳ מתאימה לביסוס/);
+    assert.match(topic.how, /רמה א׳ היא רמת התרגול הרגילה וברירת המחדל/);
     assert.equal(topic.contains.includes('(x−3)(x+3)'), false);
     const teachers = guide.records.find((row) => row.href === '/teachers');
     assert.match(teachers.how, /כיתה, נושא ומטרת השיעור/);

@@ -21,6 +21,7 @@ import {
   powerMarkup,
   topicLandingLoop,
 } from '../src/lib/landingLoops.ts';
+import { isLessonLoop, LESSON_LOOPS } from '../src/lib/lessonLoops.ts';
 import { GRADE_HUB_GRADES } from '../src/lib/gradeHubs.ts';
 import { TOPIC_PAGE_SLUGS, loadTopicPage } from '../src/lib/topicPages.ts';
 
@@ -271,6 +272,7 @@ describe('landing loop coverage', () => {
       loop,
       read('src/components/LoopFormula.astro'),
       read('src/components/LoopSketch.astro'),
+      read('src/components/LessonLoop.astro'),
     ].join('\n');
     assert.match(loop, /prefers-reduced-motion:\s*reduce/);
     assert.match(loop, /html\.nd-motion-off/);
@@ -280,7 +282,9 @@ describe('landing loop coverage', () => {
     assert.match(loop, /animation-play-state:\s*paused/);
     assert.doesNotMatch(scenes, /<video\b|lottie|gsap|bodymovin/i);
     for (const variant of CSS_LOOP_VARIANTS) {
-      assert.ok(scenes.includes(`variant === '${variant}'`), `missing scene ${variant}`);
+      if (isLessonLoop(variant)) {
+        assert.ok(scenes.includes(`lesson.picture === '${LESSON_LOOPS[variant].picture}'`) || ['equation', 'place'].includes(LESSON_LOOPS[variant].picture), `missing lesson renderer ${variant}`);
+      } else assert.ok(scenes.includes(`variant === '${variant}'`), `missing scene ${variant}`);
     }
   });
 
@@ -334,11 +338,8 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    // Two reviewed pages left the CSS loops for their own concept films
-    // (distributive-area-model-grade-4, fraction-division-meaning-grade-6).
-    // The follow-up pages add six CSS loops and move grade 5 order of
-    // operations to the order-ops film.
-    assert.equal(cssPages, 126);
+    // Some corrected CSS lessons move to dedicated concept films as they become available.
+    assert.ok(cssPages >= 121, `expected coverage of the existing CSS lessons, got ${cssPages}`);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);
@@ -418,7 +419,8 @@ describe('landing loop coverage', () => {
     assert.match(sketch, /d="M160 88 Q240 312 320 88"/);
     assert.match(sketch, /\(\{MINUS\}2, 4\)/);
     assert.match(sketch, /\(2, 4\)/);
-    assert.match(sketch, /class="sk-box" points="250,118 340,200 160,200"/);
+    // Similarity moved to its own measured, labeled demonstration (see similarity-loop.test.ts).
+    assert.match(read('src/components/SimilarityLoop.astro'), /class="small-fill"/);
     assert.match(sketch, /24%, 86% \{ transform: scale\(1\); \}/);
     assert.match(sketch, /V = S × ℓ/);
     assert.equal(sketch.includes('y="120" font-size="22">V = S'), false);

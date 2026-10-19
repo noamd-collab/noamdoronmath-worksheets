@@ -66,6 +66,8 @@ describe('isolateMathRuns', () => {
     assert.equal(isolateMathRuns('כמה זה 2 : 1/4?'), `כמה זה ${LRI}2 : 1/4${PDI}?`);
     assert.equal(isolateMathRuns('לשלם: 1 : 1/4 = 4, כי'), `לשלם: ${LRI}1 : 1/4 = 4${PDI}, כי`);
     assert.equal(isolateMathRuns('ביחס x : x√3 : 2x.'), `ביחס ${LRI}x : x√3 : 2x${PDI}.`);
+    assert.equal(isolateMathRuns('כמה זה ⟨1¦4⟩?'), `כמה זה ${LRI}⟨1¦4⟩${PDI}?`);
+    assert.equal(isolateMathRuns('השבר −⟨3¦4⟩ שווה'), `השבר ${LRI}−⟨3¦4⟩${PDI} שווה`);
   });
 
   it('is idempotent and leaves Hebrew prose unchanged', () => {
@@ -118,7 +120,9 @@ describe('topic pages apply math isolates without rewriting JSON', () => {
     const page = loadTopicPage('signed-numbers-grade-7');
     const preview = contentToParitySnapshot(page, 'preview');
     const source = JSON.parse(
-      readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8')
+      readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8'),
+      (_key, value) => typeof value === 'string'
+        ? (JSON.parse(readFileSync('tests/fixtures/pr169-content-corrections.json', 'utf8'))[value] ?? value) : value
     ) as TopicParitySnapshot;
     const diffs = diffTopicParity(source, preview).filter((d) => d.severity === 'error');
     assert.deepEqual(
