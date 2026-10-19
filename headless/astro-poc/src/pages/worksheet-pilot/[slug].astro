@@ -32,6 +32,9 @@ const sheets = hidden.sheets.map((s) => {
     back: here,
     pilot: "1",
   });
+  for (const sibling of hidden.sheets.filter(item => item.package === s.package)) {
+    if (['a', 'b', 'c'].includes(sibling.level)) p.set('p' + sibling.level, sibling.pdfId);
+  }
   return { ...s, href: '/worksheet-viewer-noam.html?' + p.toString() };
 });
 ---
