@@ -3145,7 +3145,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 
         <img class="exact-ramzi-avatar" src="design-exact/assets/avatar/ramzi-A-idle.svg" alt="" width="44" height="44" decoding="async">
         <div class="exact-ramzi-title">
-          <div class="exact-ramzi-name"><b id="noamPanelTitle">רמזי</b><span class="panel-badge">נועם AI</span></div>
+          <div class="exact-ramzi-name"><b id="noamPanelTitle">רמזי</b><span class="panel-badge">AI</span></div>
           <span class="exact-ramzi-status">רמזים והסברים במתמטיקה</span>
         </div>
 
@@ -5234,7 +5234,7 @@ function aiFeedbackUrl(exercise){
   var url = new URL(FEEDBACK_FORM_URL);
   url.searchParams.set(
     FEEDBACK_FORM_CONTEXT_FIELD,
-    feedbackLocation(exercise) + " · משוב על תשובת נועם AI"
+    feedbackLocation(exercise) + " · משוב על תשובת רמזי"
   );
   return url.href;
 }
@@ -5686,7 +5686,7 @@ function renderExercisePicker(){
   panelBody.classList.remove("is-chat", "is-previewing");
   panelBack.hidden = true;
   if (!manifestReady){
-    panelBody.innerHTML = '<div class="note">נועם AI עדיין אינו זמין לדף הזה.</div>';
+    panelBody.innerHTML = '<div class="note">רמזי עדיין אינו זמין לדף הזה.</div>';
     return;
   }
 
@@ -5740,7 +5740,7 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   var content = document.createElement("span");
   var speaker = document.createElement("span");
   speaker.className = "noam-sr-only";
-  speaker.textContent = role === "user" ? "השאלה שלך: " : "נועם AI: ";
+  speaker.textContent = role === "user" ? "השאלה שלך: " : "רמזי: ";
   bubble.appendChild(speaker);
   content.textContent = role === "assistant" ? noamStripMarkdownEmphasis(text) : text;
   bubble.appendChild(content);
@@ -6084,10 +6084,10 @@ function renderNoamChat(){
         '<textarea id="noamQuestion" maxlength="700" placeholder="למשל: איך מתחילים?" aria-describedby="noamComposeHelp">'+esc(noamDrafts[selectedExercise.id]||"")+'</textarea>' +
       '</div>' +
       '<div class="noam-compose-help" id="noamComposeHelp"><span dir="ltr">Enter</span> לשליחה · <span dir="ltr">Shift+Enter</span> לשורה חדשה</div>' +
-      '<button type="button" class="noam-send" id="noamSend">שלח לנועם AI</button>' +
+      '<button type="button" class="noam-send" id="noamSend">שלח לרמזי</button>' +
     '</div>' +
     (hasAssistantAnswer
-      ? '<button type="button" class="noam-ai-feedback" id="noamAiFeedback">יש הערה על התשובה שקיבלתם מנועם AI? כתבו לנו</button>'
+      ? '<button type="button" class="noam-ai-feedback" id="noamAiFeedback">יש הערה על התשובה שקיבלתם מרמזי? כתבו לנו</button>'
       : '');
 
   var attachButton=document.getElementById("noamAttachButton");
@@ -6135,7 +6135,7 @@ function renderNoamChat(){
   if (busy){
     var thinkingText=pendingExerciseId===selectedExercise.id
       ? "רמזי חושב…"
-      : "נועם AI עדיין חושב על הסעיף הקודם…";
+      : "רמזי עדיין חושב על הסעיף הקודם…";
     var thinking=addTranscriptBubble(transcript,"assistant",thinkingText,"");
     var thinkingBubble=thinking.querySelector(".noam-bubble");
     thinkingBubble.classList.add("thinking");
@@ -6255,7 +6255,7 @@ function tryNoamLocalVisual(studentMessage){
   thread.messages=thread.messages.slice(-60);
   saveNoamState();
   renderNoamChat();
-  announceNoam(exerciseLabel(selectedExercise)+". נועם AI הציג שרטוט להמחשה.");
+  announceNoam(exerciseLabel(selectedExercise)+". רמזי הציג שרטוט להמחשה.");
   return true;
 }
 
@@ -8220,7 +8220,7 @@ function askNoam(helpKind,studentMessage){
   pendingExerciseId=exercise.id;
   saveNoamState();setNoamBusy(true);renderNoamChat();
   restoreNoamChatFocus(requestFocusId);
-  announceNoam("נועם AI מכין תשובה עבור " + exerciseLabel(exercise) + ".");
+  announceNoam("רמזי מכין תשובה עבור " + exerciseLabel(exercise) + ".");
 
   var attachments=(typeof currentAttachments==="function")?currentAttachments().slice():[];
   var guide=noamDidacticGuide(exercise.id);
@@ -8251,7 +8251,7 @@ function askNoam(helpKind,studentMessage){
     thread.messages=thread.messages.slice(-60);
     if (helpKind==="hint"){thread.hintIndex=Math.min(3,thread.hintIndex+1);}
     saveNoamState();setNoamBusy(false);renderNoamChat();
-    announceNoam(exerciseLabel(exercise) + ". נועם AI: " + guidedAnswer);
+    announceNoam(exerciseLabel(exercise) + ". רמזי: " + guidedAnswer);
     return;
   }
 
@@ -8279,7 +8279,7 @@ function askNoam(helpKind,studentMessage){
       return noamGuardSignedAddResult(result,requestPayload,requestAnalysis,studentMessage);
     })
     .then(function(result){
-      if (!result||!result.ok||!result.answer){ throw new Error((result&&result.error)||"נועם AI לא זמין כרגע."); }
+      if (!result||!result.ok||!result.answer){ throw new Error((result&&result.error)||"רמזי לא זמין כרגע."); }
       if (result&&result.answer){result.answer=noamClarifySignedAddLanguage(result.answer);}
       var elapsed=Date.now()-started;
       return new Promise(function(resolve){setTimeout(function(){resolve(result);},Math.max(0,MIN_WAIT-elapsed));});
@@ -8295,7 +8295,7 @@ function askNoam(helpKind,studentMessage){
       if (helpKind==="hint"){thread.hintIndex=Math.min(3,thread.hintIndex+1);}
       if (attachments.length&&typeof clearNoamAttachments==="function"){clearNoamAttachments(exercise.id);}
       saveNoamState();setNoamBusy(false);renderNoamChat();
-      announceNoam(exerciseLabel(exercise) + ". נועם AI: " + answer);
+      announceNoam(exerciseLabel(exercise) + ". רמזי: " + answer);
     })
     .catch(function(error){
       var errorMessage=String(error&&error.message||"לא הצלחנו לקבל תשובה כרגע.");
@@ -8362,7 +8362,7 @@ function ensureNoamBotClient(){
       }
       noamBotClient=null;
       if (script&&script.parentNode){script.parentNode.removeChild(script);}
-      var unavailable=new Error("לא הצלחנו לטעון את נועם AI. נסו שוב בעוד רגע.");
+      var unavailable=new Error("לא הצלחנו לטעון את רמזי. נסו שוב בעוד רגע.");
       unavailable.code="BOT_CLIENT_UNAVAILABLE";
       reject(unavailable);
     }
@@ -8957,7 +8957,7 @@ function esc(s){
         bubble.className='noam-bubble';
         var speaker=document.createElement('span');
         speaker.className='noam-sr-only';
-        speaker.textContent=role==='user'?'השאלה שלך: ':'נועם AI: ';
+        speaker.textContent=role==='user'?'השאלה שלך: ':'רמזי: ';
         var content=document.createElement('span');
         content.textContent=text;
         bubble.append(speaker,content);

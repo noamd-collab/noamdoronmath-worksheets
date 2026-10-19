@@ -142,7 +142,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // a successful geometry hint. Regression tests cover scope, errors and request races.
     // Only this script fence changes; authentication and original worksheet bytes do not.
     // Noam 2026-10-19: pin label wording only ('העזר ברמזי' / '· רמזי'); no logic change.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '644b349645dd267bba1f0d31eafd2585ad9679a08c35bc560e3644660f9f188a');
+    // Noam 2026-10-19 20:46: Ramzi panel wording ('נועם AI' → 'רמזי'); text only.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e1cb66590186c32e0c7bcdc80857654413ca1866e2155ace620efecf4d361ab2');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
