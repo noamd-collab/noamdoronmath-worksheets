@@ -8,7 +8,7 @@
  * The first frame is rendered here, so the card is complete before the
  * script runs.
  */
-import { LINE, at, decimalQuotient, divideHint, hundredths, jumpPath, placeValue, quotientText, tenths } from '../lib/decimalExplorer';
+import { LINE, at, decimalQuotient, divideHint, hundredths, jumpPath, placeValue, placeWholeText, quotientText, tenths } from '../lib/decimalExplorer';
 
 interface Props {
   kind: 'divide' | 'place';
@@ -81,7 +81,10 @@ const cells = Array.from({ length: 100 }, (_, i) => ({ row: Math.floor(i / 10), 
     <div class="dec-explorer" data-decimal-explorer="place">
       <div class="de-card">
         <p class="de-ask">
-          <bdi data-el="v">{hundredths(H)}</bdi> הם <bdi data-el="t">{pv.tenths}</bdi> עשיריות ו־<bdi data-el="u">{pv.hundredths}</bdi> מאיות
+          <span data-el="parts">
+            <bdi data-el="v">{hundredths(H)}</bdi> הם <bdi data-el="t">{pv.tenths}</bdi> עשיריות ו־<bdi data-el="u">{pv.hundredths}</bdi> מאיות
+          </span>
+          <span data-el="whole" hidden>{placeWholeText}</span>
         </p>
         <p class="de-legend">כל עמודה שלמה היא עשירית. כל משבצת בודדת היא מאית.</p>
         <div class="de-grid" data-el="grid" dir="ltr" aria-hidden="true">

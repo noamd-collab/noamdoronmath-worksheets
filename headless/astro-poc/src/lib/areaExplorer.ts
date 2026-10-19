@@ -4,6 +4,8 @@
  *   fraction-times-fraction-grade-6: a unit square split into b columns
  *   (a of them shaded) and d rows (c of them shaded). The overlap is
  *   a·c cells out of b·d, so a/b × c/d = ac/bd. Steppers change a, b, c, d.
+ *   A label on the overlap reads the product as "a/b of c/d" (a/b מ־c/d),
+ *   in the readout's order, with fraction bars.
  *
  *   multiply-decimals-grade-6: a unit square with a 10 × 10 grid. Width x
  *   (tenths) and height y (hundredths) give the overlap x·y, read as
@@ -26,6 +28,28 @@ export function fractionProduct(a: number, b: number, c: number, d: number) {
   const m = b * d;
   const g = gcd(n, m);
   return { n, m, rn: n / g, rm: m / g };
+}
+
+/**
+ * Where the "a/b מ־c/d" label sits: the overlap's centre, as a percent of
+ * the 300-unit viewBox, kept inside the square. small = the overlap is too
+ * tight for the bare label, so it gets a white pill over the overlap.
+ */
+export function overlapLabel(a: number, b: number, c: number, d: number) {
+  const w = (a * SIZE) / b;
+  const h = (c * SIZE) / d;
+  const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
+  const pct = (n: number) => Number(((n / (SIZE + 2 * PAD)) * 100).toFixed(2));
+  return {
+    x: pct(clamp(PAD + w / 2, PAD + 45, PAD + SIZE - 45)),
+    y: pct(clamp(PAD + SIZE - h / 2, PAD + 30, PAD + SIZE - 30)),
+    small: w < 90 || h < 52,
+  };
+}
+
+/** Spoken fraction for screen readers, never a slash: "2 חלקי 3". */
+export function sayFraction(n: number, m: number): string {
+  return `${n} חלקי ${m}`;
 }
 
 /** Round to k decimals and drop trailing zeros: 0.56, 0.016, 0.576. */
@@ -118,6 +142,13 @@ function setupFraction(root: HTMLElement) {
     setText(root, 'm', String(m));
     setText(root, 'rn', String(rn));
     setText(root, 'rm', String(rm));
+    const of = q(root, 'of');
+    if (of) {
+      const pos = overlapLabel(a, b, c, d);
+      of.style.left = `${pos.x}%`;
+      of.style.top = `${pos.y}%`;
+      of.classList.toggle('is-small', pos.small);
+    }
     const reduced = q(root, 'reduced');
     if (reduced) reduced.hidden = rn === n;
     setText(root, 'cells', `${n} מתוך ${m}`);
@@ -131,7 +162,11 @@ function setupFraction(root: HTMLElement) {
       const min = k === 'b' ? Math.max(lo, v.a) : k === 'd' ? Math.max(lo, v.c) : lo;
       btn.disabled = next < min || next > max;
     });
-    if (say) announce(root, `${a}/${b} כפול ${c}/${d} שווה ${n}/${m}${rn !== n ? `, כלומר ${rn}/${rm}` : ''}`);
+    if (say)
+      announce(
+        root,
+        `${sayFraction(a, b)} כפול ${sayFraction(c, d)}, כלומר ${sayFraction(a, b)} מתוך ${sayFraction(c, d)}, שווה ${sayFraction(n, m)}${rn !== n ? `, כלומר ${sayFraction(rn, rm)}` : ''}`,
+      );
   }
 
   root.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((btn) =>

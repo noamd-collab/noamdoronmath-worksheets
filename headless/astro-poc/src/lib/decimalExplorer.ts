@@ -41,6 +41,9 @@ export function placeValue(h: number) {
   return { tenths: Math.floor(h / 10), hundredths: h % 10 };
 }
 
+/** The sentence at 100 hundredths, instead of "1 הם 10 עשיריות ו־0 מאיות". */
+export const placeWholeText = '1 הוא 10 עשיריות, שהן 100 מאיות';
+
 /** Tenths count as a decimal string: 8 → "0.8", 10 → "1". */
 export function tenths(n: number): string {
   return String(n / 10);
@@ -146,8 +149,13 @@ function setupPlace(root: HTMLElement) {
     setText(root, 't', String(t));
     setText(root, 'u', String(u));
     setText(root, 'h', String(h));
-    range!.setAttribute('aria-valuetext', `${hundredths(h)}: ${t} עשיריות ו־${u} מאיות`);
-    if (say) announce(root, `${hundredths(h)} הם ${t} עשיריות ו־${u} מאיות`);
+    const whole = h === 100;
+    const parts = q(root, 'parts');
+    if (parts) parts.hidden = whole;
+    const wholeEl = q(root, 'whole');
+    if (wholeEl) wholeEl.hidden = !whole;
+    range!.setAttribute('aria-valuetext', whole ? placeWholeText : `${hundredths(h)}: ${t} עשיריות ו־${u} מאיות`);
+    if (say) announce(root, whole ? placeWholeText : `${hundredths(h)} הם ${t} עשיריות ו־${u} מאיות`);
   }
 
   range.addEventListener('input', () => draw(true));

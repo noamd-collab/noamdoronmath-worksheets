@@ -5,7 +5,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
-import { dec, decimalProduct, fractionProduct } from '../src/lib/areaExplorer.ts';
+import { dec, decimalProduct, fractionProduct, overlapLabel, sayFraction } from '../src/lib/areaExplorer.ts';
 
 describe('area explorer', () => {
   it('fraction × fraction: overlap cells and the reduced answer', () => {
@@ -44,5 +44,21 @@ describe('area explorer', () => {
     assert.ok(frac.includes('⟨2¦3⟩ × ⟨3¦4⟩ = ⟨6¦12⟩ = ⟨1¦2⟩'));
     const decimals = readFileSync('src/data/topic-pages/multiply-decimals-grade-6.json', 'utf8');
     assert.ok(decimals.includes('0.8 × 0.72'));
+  });
+
+  it('the overlap reads "a/b of c/d" in the readout order, with bars, and screen readers hear no slash', () => {
+    const comp = readFileSync('src/components/AreaExplorer.astro', 'utf8');
+    assert.match(
+      comp,
+      /<span class="ae-q"><span data-el="a">\{F\.a\}<\/span><span data-el="b">\{F\.b\}<\/span><\/span>\s*<span class="ae-of-word">מ־<\/span>\s*<span class="ae-q"><span data-el="c">\{F\.c\}<\/span><span data-el="d">\{F\.d\}<\/span><\/span>/,
+    );
+    // 1/2 × 1/3: the label sits on the bottom-left cell, centred on it
+    assert.deepEqual(overlapLabel(1, 2, 1, 3), { x: 30, y: 76.67, small: false });
+    assert.equal(overlapLabel(1, 6, 1, 6).small, true);
+    const tiny = overlapLabel(1, 6, 1, 6);
+    assert.ok(tiny.x >= 25 && tiny.y <= 80, 'tiny overlap label stays inside the square');
+    assert.equal(sayFraction(2, 3), '2 חלקי 3');
+    const engine = readFileSync('src/lib/areaExplorer.ts', 'utf8');
+    assert.doesNotMatch(engine, /\$\{[a-z]+\}\/\$\{[a-z]+\}/, 'no a/b template in spoken text');
   });
 });
