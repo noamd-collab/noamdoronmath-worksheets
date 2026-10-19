@@ -1,0 +1,189 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { mkdtemp, mkdir, readFile, writeFile, rm, copyFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { gzipSync } from 'node:zlib';
+import { createNativeSvgResponder } from '../src/lib/nativeSvgResponse';
+import { collectNativeSvg, generateNativeSvg, finalizeNativeSvg, filesBelow, matchesRoute, narrowNativeRoutes, baselineRoutesFromManifest, projectRoot, sha256 } from '../scripts/bundle-native-svg.mjs';
+
+const originalRoutes = { version: 1, include: ['/*'], exclude: ['/_astro/*', '/noam-ai/*', '/fonts/*', '/_wix/pages.json'] };
+
+test('all native SVG endpoint responses retain the exact tracked bytes and hash', async () => {
+  const generated = await generateNativeSvg();
+  const entries = await collectNativeSvg();
+  const { GET } = await import('../src/pages/noam-ai/native/[...asset]');
+  const descriptor = JSON.parse(await readFile(join(projectRoot, 'src/generated/native-svg-bundle.json'), 'utf8'));
+  const originalFetch = globalThis.fetch;
+  let fetches = 0;
+  globalThis.fetch = async (url, options) => {
+    fetches++;
+    assert.equal(String(url), `https://worksheet.test${descriptor.bundlePath}`);
+    assert.equal(options?.redirect, 'error');
+    assert.equal(options?.credentials, 'omit');
+    return new Response(await readFile(join(projectRoot, 'public', descriptor.bundlePath)));
+  };
+  try {
+  assert.equal(generated.count, Object.keys(entries).length);
+  for (const [asset, entry] of Object.entries(entries) as [string, { body: string; bytes: number; sha256: string }][]) {
+    const response = await GET({ params: { asset }, request: new Request('https://worksheet.test/noam-ai/native/' + asset) } as any);
+    assert.equal(response.status, 200, asset);
+    assert.equal(response.headers.get('Content-Type'), 'image/svg+xml; charset=utf-8');
+    assert.equal(response.headers.get('X-Content-Type-Options'), 'nosniff');
+    const bytes = Buffer.from(await response.arrayBuffer());
+    assert.equal(bytes.length, entry.bytes, asset);
+    assert.equal(sha256(bytes), entry.sha256, asset);
+    assert.deepEqual(bytes, await readFile(join(projectRoot, 'public/noam-ai/native', asset)), asset);
+  }
+  assert.equal(fetches, 1);
+  console.log(`Verified ${generated.count} endpoint bodies / ${generated.sourceBytes} exact source bytes / one same-origin static fetch`);
+  } finally { globalThis.fetch = originalFetch; }
+});
+
+test('unknown, traversal, encoded, and non-SVG keys return 404; UTF-8 BOM and CRLF survive', async () => {
+  const body = '\uFEFF<svg>עברית\r\n</svg>';
+  const asset = 'G9-T40/a/figures/a.svg';
+  const json = JSON.stringify({ [asset]: { body, bytes: Buffer.byteLength(body), sha256: sha256(body) } });
+  const publicBytes = Buffer.from(JSON.stringify({ gzipBase64: gzipSync(json).toString('base64') }));
+  const bundleSha256 = sha256(publicBytes);
+  const descriptor = { bundlePath: `/noam-ai/native-svg-bundle.${bundleSha256}.json`, bundleSha256, bundleBytes: publicBytes.length, sha256: sha256(json) };
+  const respond = createNativeSvgResponder(descriptor, async () => new Response(publicBytes));
+  assert.deepEqual(Buffer.from(await (await respond(asset, 'https://worksheet.test/')).arrayBuffer()), Buffer.from(body));
+  for (const invalid of [undefined, '', '__proto__', 'constructor', '../a.svg', '/G9-T40/a/figures/a.svg', 'G9-T40/a/../figures/a.svg', 'G9-T40/a/%2e%2e/a.svg', 'G9-T40/a/figures/missing.svg', 'G9-T40/a/noam-ai.json', 'G9-T40/a/figures/a.svg/', 'G9-T40/a/figures/a.svg?x=1', 'G9-T40/a/figures/a.svg%00', 'G9-T40\\a\\figures\\a.svg']) {
+    assert.equal((await respond(invalid, 'https://worksheet.test/')).status, 404, invalid);
+  }
+});
+
+test('adapter narrowing retains unrelated rules and keeps manifests/native JSON static', () => {
+  const result = narrowNativeRoutes(originalRoutes);
+  assert.deepEqual(result.include, originalRoutes.include);
+  assert.deepEqual(result.exclude.filter((rule: string) => !rule.startsWith('/noam-ai/')), originalRoutes.exclude.filter((rule) => !rule.startsWith('/noam-ai/')));
+  for (const path of ['/noam-ai/native/G9-T40/a/noam-ai.json', '/noam-ai/native/G7-ASSESS1/c/noam-ai.json', '/noam-ai/manifests/123.json', '/noam-ai/sync-provenance.json']) {
+    assert.ok(result.exclude.some((rule: string) => matchesRoute(rule, path)), path);
+  }
+  assert.ok(!result.exclude.some((rule: string) => matchesRoute(rule, '/noam-ai/native/G9-T40/a/figures/fig1.svg')));
+  assert.deepEqual(narrowNativeRoutes({ ...originalRoutes, exclude: ['/_astro/*', '/noam-ai/native/G9-T40/a/figures/fig1.svg', '/noam-ai/manifests/*', '/fonts/*', '/_wix/pages.json'] }), result);
+});
+
+async function fixture() {
+  const root = await mkdtemp(join(tmpdir(), 'native-svg-build-test-'));
+  const source = join(root, 'public/noam-ai/native/G9-T40/a/figures');
+  await mkdir(source, { recursive: true });
+  await writeFile(join(source, 'fig1.svg'), '<svg>\r\nשלום</svg>');
+  await generateNativeSvg(root);
+  await mkdir(join(root, 'dist/noam-ai/native/G9-T40/a/figures'), { recursive: true });
+  await copyFile(join(source, 'fig1.svg'), join(root, 'dist/noam-ai/native/G9-T40/a/figures/fig1.svg'));
+  await writeFile(join(root, 'dist/noam-ai/native/G9-T40/a/noam-ai.json'), '{"unchanged":true}');
+  await writeFile(join(root, 'dist/keep.txt'), 'keep exact bytes\r\n');
+  const endpoint = { routeData: { route: '/noam-ai/native/[...asset]', type: 'endpoint', prerender: false, segments: [[{ content: 'noam-ai', dynamic: false }], [{ content: 'native', dynamic: false }], [{ content: '...asset', dynamic: true, spread: true }]] } };
+  const manifest = { base: '/', routes: [endpoint] };
+  const baseline = await baselineRoutesFromManifest(manifest, root);
+  await writeFile(join(root, 'dist/_routes.json'), JSON.stringify(baseline));
+  await mkdir(join(root, 'dist/_worker.js'), { recursive: true });
+  await writeFile(join(root, 'dist/_worker.js/manifest_test.mjs'), `export const manifest = ${JSON.stringify(manifest)};`);
+  const bundle = JSON.parse(await readFile(join(root, 'src/generated/native-svg-bundle.json'), 'utf8'));
+  await copyFile(join(root, 'public', bundle.bundlePath), join(root, 'dist', bundle.bundlePath));
+  await writeFile(join(root, 'dist/_worker.js/native.mjs'), `export default ${JSON.stringify(bundle)};`);
+  return root;
+}
+
+test('postbuild removes only exact bundled copies, preserves every other byte, and stays below the static limit', async () => {
+  const root = await fixture();
+  try {
+    const before = new Map(await Promise.all((await filesBelow(join(root, 'dist'))).map(async (path: string) => [path, sha256(await readFile(join(root, 'dist', path)))])));
+    const result = await finalizeNativeSvg(root);
+    assert.equal(result.removedSvg, 1);
+    assert.ok(result.staticCount < 5000);
+    const after = await filesBelow(join(root, 'dist'));
+    assert.deepEqual(after, [...before.keys()].filter((path) => !path.endsWith('.svg')));
+    for (const path of after.filter((path: string) => path !== '_routes.json')) assert.equal(sha256(await readFile(join(root, 'dist', path))), before.get(path));
+    assert.equal(await readFile(join(root, 'public/noam-ai/native/G9-T40/a/figures/fig1.svg'), 'utf8'), '<svg>\r\nשלום</svg>');
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('stale source, altered built SVG, or stale worker fails before any pruning', async () => {
+  for (const mutation of ['source', 'built', 'worker']) {
+    const root = await fixture();
+    try {
+      const path = mutation === 'worker' ? 'dist/_worker.js/native.mjs' : `${mutation === 'source' ? 'public' : 'dist'}/noam-ai/native/G9-T40/a/figures/fig1.svg`;
+      await writeFile(join(root, path), 'changed');
+      const original = await readFile(join(root, 'dist/_routes.json'));
+      await assert.rejects(finalizeNativeSvg(root), /changed|absent/);
+      assert.ok((await filesBelow(join(root, 'dist'))).some((file: string) => file.endsWith('.svg')));
+      assert.deepEqual(await readFile(join(root, 'dist/_routes.json')), original);
+    } finally { await rm(root, { recursive: true, force: true }); }
+  }
+});
+
+test('installed adapter baseline avoids native SVG rule truncation without losing unrelated static routes', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'native-svg-route-limit-'));
+  try {
+    await mkdir(join(root, 'public/noam-ai/native/G9-T40/a/figures'), { recursive: true });
+    for (let i = 0; i < 120; i++) await writeFile(join(root, `public/noam-ai/native/G9-T40/a/figures/fig${i}.svg`), '<svg/>');
+    await mkdir(join(root, 'public/z-static'), { recursive: true });
+    await writeFile(join(root, 'public/z-static/keep.txt'), 'keep');
+    const manifest = { base: '/', routes: [{ routeData: { route: '/noam-ai/native/[...asset]', type: 'endpoint', prerender: false, segments: [[{ content: 'noam-ai', dynamic: false }], [{ content: 'native', dynamic: false }], [{ content: '...asset', dynamic: true, spread: true }]] } }] };
+    const baseline = await baselineRoutesFromManifest(manifest, root);
+    const routes = narrowNativeRoutes(baseline);
+    assert.ok(routes.exclude.some((rule: string) => matchesRoute(rule, '/z-static/keep.txt')));
+    assert.ok(routes.exclude.some((rule: string) => matchesRoute(rule, '/noam-ai/native/G9-T40/a/noam-ai.json')));
+    for (let i = 0; i < 120; i++) assert.ok(!routes.exclude.some((rule: string) => matchesRoute(rule, `/noam-ai/native/G9-T40/a/figures/fig${i}.svg`)));
+    assert.ok(routes.include.length + routes.exclude.length < 100);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('bundle load shares one promise, fails closed on HTTP/digest errors, and retries only on a later request', async () => {
+  const asset = 'G9-T40/a/figures/a.svg';
+  const body = '<svg/>';
+  const json = JSON.stringify({ [asset]: { body, sha256: sha256(body), bytes: Buffer.byteLength(body) } });
+  const bytes = Buffer.from(JSON.stringify({ gzipBase64: gzipSync(json).toString('base64') }));
+  const digest = sha256(bytes);
+  const descriptor = { bundlePath: `/noam-ai/native-svg-bundle.${digest}.json`, bundleSha256: digest, bundleBytes: bytes.length, sha256: sha256(json) };
+  let calls = 0;
+  const respond = createNativeSvgResponder(descriptor, async (url, options) => {
+    calls++;
+    assert.equal(String(url), `https://worksheet.test${descriptor.bundlePath}`);
+    assert.equal(options?.redirect, 'error');
+    await Promise.resolve();
+    return calls === 1 ? new Response(null, { status: 503 }) : new Response(bytes);
+  });
+  const first = await Promise.all([respond(asset, 'https://worksheet.test/path?evil=https://elsewhere.test'), respond(asset, 'https://worksheet.test/path')]);
+  assert.equal(calls, 1);
+  for (const response of first) {
+    assert.equal(response.status, 503);
+    assert.equal(response.headers.get('X-Noam-Native-Svg-Error'), 'bundle-unavailable');
+    assert.equal(await response.text(), '');
+  }
+  const retried = await Promise.all([respond(asset, 'https://worksheet.test/path'), respond(asset, 'https://worksheet.test/path')]);
+  assert.equal(calls, 2);
+  assert.ok(retried.every((response) => response.status === 200));
+  const tampered = Buffer.from(bytes); tampered[10] ^= 1;
+  for (const [data, expected] of [[tampered, descriptor], [bytes, { ...descriptor, sha256: '0'.repeat(64) }]] as const) {
+    const invalid = createNativeSvgResponder(expected, async () => new Response(data));
+    assert.equal((await invalid(asset, 'https://worksheet.test/path')).status, 503);
+  }
+  const redirected = createNativeSvgResponder(descriptor, async (_url, options) => {
+    assert.equal(options?.redirect, 'error'); throw new TypeError('redirect rejected');
+  });
+  assert.equal((await redirected(asset, 'https://worksheet.test/path')).status, 503);
+  assert.throws(() => createNativeSvgResponder({ ...descriptor, bundlePath: 'https://elsewhere.test/file.json' }), /Invalid/);
+  const routes = narrowNativeRoutes(originalRoutes, descriptor.bundlePath);
+  assert.ok(routes.exclude.includes(descriptor.bundlePath));
+  assert.ok(descriptor.bundlePath.length < 100);
+  assert.ok(!routes.exclude.some((rule: string) => matchesRoute(rule, '/noam-ai/native-svg-bundle.unlisted.json')));
+});
+
+test('generation replaces only obsolete generated bundles and leaves retained public data unchanged', async () => {
+  const root = await fixture();
+  try {
+    const original = JSON.parse(await readFile(join(root, 'src/generated/native-svg-bundle.json'), 'utf8'));
+    await writeFile(join(root, 'public/noam-ai/sync-provenance.json'), '{"keep":true}');
+    await writeFile(join(root, 'public/noam-ai/native/G9-T40/a/figures/fig1.svg'), '<svg>changed</svg>');
+    await generateNativeSvg(root);
+    const current = JSON.parse(await readFile(join(root, 'src/generated/native-svg-bundle.json'), 'utf8'));
+    assert.notEqual(current.bundlePath, original.bundlePath);
+    const bundles = (await filesBelow(join(root, 'public'))).filter((path: string) => path.includes('native-svg-bundle.'));
+    assert.deepEqual(bundles, [current.bundlePath.slice(1)]);
+    assert.equal(await readFile(join(root, 'public/noam-ai/sync-provenance.json'), 'utf8'), '{"keep":true}');
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

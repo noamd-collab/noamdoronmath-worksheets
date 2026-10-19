@@ -38,3 +38,7 @@ reports/
 # Claude Design handoff (spec only; do not import)
 design_handoff_noam_site/
 
+
+# Exact native SVG server bundle regenerated from tracked public assets
+/src/generated/native-svg-bundle.json
+/public/noam-ai/native-svg-bundle.*.json
