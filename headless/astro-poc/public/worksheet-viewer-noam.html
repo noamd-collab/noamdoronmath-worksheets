@@ -8180,6 +8180,10 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
           result.validationQuestionText.slice(0,18000):context.questionText,
           hintText:context.hintText,studentMessage:context.studentMessage,sourceGivens:source.sourceGivens};
         var checked=result&&result.ok&&window.NoamDiagramPlan.inspect(result.plan,validatedContext);
+        if(checked&&!checked.ok&&typeof window.NoamDiagramPlan.repairSourceKiteCoordinates==="function"){
+          var sourceRepair=window.NoamDiagramPlan.repairSourceKiteCoordinates(result.plan,validatedContext);
+          if(sourceRepair){result.plan=sourceRepair;checked=window.NoamDiagramPlan.inspect(result.plan,validatedContext);}
+        }
         if (!checked||!checked.ok){
           console.warn("NOAM_DIAGRAM_REJECTED",String(result&&result.validationReason||checked&&checked.reason||"unavailable").slice(0,80),JSON.stringify(result&&result.constraint||null));
           var error=new Error("diagram unsupported");error.code="DIAGRAM_UNSUPPORTED";

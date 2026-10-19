@@ -722,7 +722,46 @@
       return inspect(normalized,context).ok?normalized:null;
     }catch(_error){return null;}
   }
+  // Repair only a complete four-edge outline whose two adjacent-equality
+  // groups come from the approved package. No topology or teaching marks
+  // change. The full validator remains the acceptance authority.
+  function repairSourceKiteCoordinates(plan,context){
+    try{
+      var initial=inspect(plan,context);
+      if(initial.ok||initial.reason!=="source_coordinate_contradiction"){return null;}
+      var names=Object.keys(plan.points||{}),groups=context&&context.sourceGivens;
+      if(names.length!==4||names.some(function(n){return !/^[A-Z]$/.test(n);})||!Array.isArray(groups)||groups.length!==2||!Array.isArray(plan.segments)||plan.segments.length!==4){return null;}
+      var pairs=[],heads=[],sides=[];
+      groups.forEach(function(group){
+        if(!group||[1,2,3].indexOf(group.count)<0||!Array.isArray(group.segments)||group.segments.length!==2){throw new Error("ambiguous givens");}
+        var edges=group.segments;
+        if(edges.some(function(e){return !Array.isArray(e)||e.length!==2||e[0]===e[1]||e.some(function(n){return names.indexOf(n)<0;});})){throw new Error("invalid endpoints");}
+        var shared=edges[0].filter(function(n){return edges[1].indexOf(n)>=0;});
+        if(shared.length!==1){throw new Error("not adjacent");}
+        heads.push(shared[0]);sides.push(edges.map(function(e){return e.filter(function(n){return n!==shared[0];})[0];}).sort());
+        pairs=pairs.concat(edges.map(pairKey));
+      });
+      // Equal tick classes could assert all four sides equal: do not choose
+      // a general kite for that case. Different classes do NOT assert unequal
+      // lengths; this is one illustrative layout, without an inequality mark.
+      if(groups[0].count===groups[1].count||heads[0]===heads[1]||sides[0].join("")!==sides[1].join("")||new Set(pairs).size!==4||plan.segments.some(function(e){return pairs.indexOf(pairKey(e))<0;})||new Set(plan.segments.map(pairKey)).size!==4){return null;}
+      var a=plan.points[heads[0]],b=plan.points[heads[1]],u=[b[0]-a[0],b[1]-a[1]],length=Math.hypot(u[0],u[1]);
+      if(!Number.isFinite(length)||length<1e-6){return null;}
+      var first=plan.points[sides[0][0]],second=plan.points[sides[0][1]],cross1=u[0]*(first[1]-a[1])-u[1]*(first[0]-a[0]),cross2=u[0]*(second[1]-a[1])-u[1]*(second[0]-a[0]);
+      if(!Number.isFinite(cross1)||!Number.isFinite(cross2)||cross1*cross2>=0){return null;}
+      var projections=[first,second].map(function(p){return ((p[0]-a[0])*u[0]+(p[1]-a[1])*u[1])/(length*length);});
+      if(projections.some(function(t){return !Number.isFinite(t)||t<=0||t>=1;})){return null;}
+      // Keep the original head-to-head axis and each side of it. A general
+      // exemplar avoids accidentally suggesting a rectangle or a rhombus.
+      // No diagonal, angle, length value or vertex-role answer is rendered.
+      var center=[a[0]+.4*u[0],a[1]+.4*u[1]],offset=[-.35*u[1],.35*u[0]],sign=cross1>0?1:-1;
+      var repaired=JSON.parse(JSON.stringify(plan));
+      repaired.points[sides[0][0]]=[center[0]+sign*offset[0],center[1]+sign*offset[1]];
+      repaired.points[sides[0][1]]=[center[0]-sign*offset[0],center[1]-sign*offset[1]];
+      return inspect(repaired,context).ok?repaired:null;
+    }catch(_error){return null;}
+  }
   function compile(plan,context){return inspect(plan,context).scene;}
   function render(doc,plan,context){var scene=compile(plan,context);return scene&&geometry&&typeof geometry.render==="function"?geometry.render(doc,scene):null;}
-  return {requestedParallelConstruction:requestedParallelConstruction,inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,buildCollinearSegmentPlan:buildCollinearSegmentPlan,buildPerpendicularTrianglePlan:buildPerpendicularTrianglePlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,PROMPT_SCHEMA:PROMPT_SCHEMA};
+  return {requestedParallelConstruction:requestedParallelConstruction,inspect:inspect,compile:compile,render:render,validateFocus:validateFocus,repairVerticalAngleFocus:repairVerticalAngleFocus,buildVerticalAnglePlan:buildVerticalAnglePlan,buildCollinearSegmentPlan:buildCollinearSegmentPlan,buildPerpendicularTrianglePlan:buildPerpendicularTrianglePlan,sourceRayNames:sourceRayNames,normalizeRayPresentation:normalizeRayPresentation,normalizeParallelAngleFocus:normalizeParallelAngleFocus,repairSourceKiteCoordinates:repairSourceKiteCoordinates,PROMPT_SCHEMA:PROMPT_SCHEMA};
 });

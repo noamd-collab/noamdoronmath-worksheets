@@ -192,3 +192,63 @@ describe('evidence source spoofing', () => {
     assert.equal(r.reason, 'unproven_evidence');
   });
 });
+
+describe('source-constrained kite geometry (reported rectangle)', () => {
+  const context = () => ({ ...fixture.context, sourceGivens: clone(fixture.sourceGivens) });
+  function rectangle() {
+    const p = clone(fixture.plan); p.equalGroups = []; p.evidence = [];
+    p.points = { P: [0, 0], Q: [0, 4], R: [3, 4], S: [3, 0] };
+    return p;
+  }
+  function verify(original: any, repaired: any, c: any) {
+    assert.ok(repaired);
+    assert.equal(Plan.inspect(repaired, c).ok, true);
+    assert.deepEqual({ ...repaired, points: original.points }, original, 'coordinates only');
+    const length = (a: string, b: string) => Math.hypot(repaired.points[a][0] - repaired.points[b][0], repaired.points[a][1] - repaired.points[b][1]);
+    assert.ok(Math.abs(length('P', 'Q') - length('P', 'S')) < 1e-10);
+    assert.ok(Math.abs(length('R', 'Q') - length('R', 'S')) < 1e-10);
+    assert.equal(tickMarks(Plan.render(documentStub(), repaired, c)), 6);
+    for (const [a, b, d] of [['P', 'Q', 'R'], ['Q', 'R', 'S'], ['R', 'S', 'P'], ['S', 'P', 'Q']]) {
+      const v = (n: string) => [repaired.points[n][0] - repaired.points[b][0], repaired.points[n][1] - repaired.points[b][1]];
+      assert.ok(Math.abs(v(a)[0] * v(d)[0] + v(a)[1] * v(d)[1]) > 1e-5, 'no accidental right angle');
+    }
+    assert.deepEqual(repaired.angles, []); assert.deepEqual(repaired.rightAngles, []);
+  }
+  it('repairs the reported tall rectangle without adding a proof or changing focus', () => {
+    const p = rectangle(), before = clone(p), c = context();
+    assert.equal(Plan.inspect(p, c).reason, 'source_coordinate_contradiction');
+    verify(p, Plan.repairSourceKiteCoordinates(p, c), c); assert.deepEqual(p, before);
+  });
+  it('repairs coordinates captured in the actual 19:03:16 UTC diagram job', () => {
+    const p = rectangle(); p.points = { Q: [0, 3], R: [4, 3], P: [-2, -1], S: [2, -1] };
+    verify(p, Plan.repairSourceKiteCoordinates(p, context()), context());
+  });
+  it('keeps already valid kites and a valid square unchanged (no inequality assumption)', () => {
+    assert.equal(Plan.repairSourceKiteCoordinates(clone(fixture.plan), context()), null);
+    const p = rectangle(); p.points.R = [4, 4]; p.points.S = [4, 0];
+    assert.equal(Plan.inspect(p, context()).ok, true);
+    assert.equal(Plan.repairSourceKiteCoordinates(p, context()), null);
+  });
+  it('does not repair from missing, malformed, opposite or incomplete source pairs', () => {
+    const p = rectangle();
+    for (const sourceGivens of [[], [fixture.sourceGivens[0]],
+      [{ segments: [['P', 'Q'], ['R', 'S']], count: 1 }, { segments: [['P', 'S'], ['Q', 'R']], count: 2 }],
+      [{ segments: [['P', 'Q'], ['P', 'X']], count: 1 }, fixture.sourceGivens[1]],
+      fixture.sourceGivens.map((g: any) => ({ ...g, count: 1 }))]) {
+      assert.equal(Plan.repairSourceKiteCoordinates(p, { ...context(), sourceGivens }), null);
+    }
+  });
+  it('does not invent missing edges or reshape a larger diagram', () => {
+    for (const alter of [(p: any) => p.segments.pop(), (p: any) => p.segments.push(['P', 'R']),
+      (p: any) => { p.points.X = [2, 2]; }, (p: any) => { p.points.S = [-3, 2]; }]) {
+      const p = rectangle(); alter(p); assert.equal(Plan.repairSourceKiteCoordinates(p, context()), null);
+    }
+  });
+  it('does not bypass conflicting explicit facts or forged proof evidence', () => {
+    const p = rectangle(), c = context();
+    assert.equal(Plan.repairSourceKiteCoordinates(p, { ...c, questionText: c.questionText + ' PQ∥RS.' }), null);
+    p.evidence = [{ mark: 'equalGroups.0', source: 'question', quote: 'PS=RS' }];
+    p.equalGroups = [{ segments: [['P', 'S'], ['R', 'S']], count: 1, color: 'teal' }];
+    assert.equal(Plan.repairSourceKiteCoordinates(p, c), null);
+  });
+});

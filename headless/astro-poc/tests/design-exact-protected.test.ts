@@ -145,7 +145,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Noam 2026-10-19 20:46: Ramzi panel wording ('נועם AI' → 'רמזי'); text only.
     // Noam 2026-10-19 22:13: the explicit drawing keeps the source figure's given
     // equality ticks (package data, separate from focus). Solve/auth/storage unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e64a71ad0f44351bdd1d511324ec857c0139805df85abdcde401e1023172c040');
+    // Noam's reported rectangle: revalidate a source-given kite coordinate repair before display.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'c93e093975a746939acdf7295b2d04e9fba93f022cc9ae8aac787c6440180e8f');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
