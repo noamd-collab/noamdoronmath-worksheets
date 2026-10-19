@@ -5,7 +5,14 @@
   "headlessProjectSiteId": "df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46",
   "studioHtmlAppId": "0ca81118-7ca8-40a7-8f97-8d06d901a556",
   "wixSiteIdHeader": "36dd9544-acf9-4e85-a01a-798f3c1efbb9",
-  "siteIdNote": "36dd9544 is the production meta site and the media library. df6b8141 is the Headless project site, not the production library.",
+  "siteIdNote": "2026-10-19: live www.noamdoronmath.co.il getMetaSiteId() is df6b8141, same as the Headless wix.config.json siteId. 36dd9544 is the Studio meta site (contact form), not in the live homepage. 0ca81118 is the Studio HTML app id (media API 404). Forms-key generate-upload-url: df6b8141 and 36dd9544 return 403 PERMISSION_DENIED; 0ca81118 returns 404. usrfiles host does not prove ownership.",
+  "rerun2026-10-19": {
+    "uploaded": false,
+    "reason": "WIX_MEDIA_API_KEY is not in this agent. CLOUD_AGENT_ALL_SECRET_NAMES is only WIX_FORMS_API_KEY.",
+    "publish": false,
+    "wixRelease": false,
+    "merge": false
+  },
   "status": "already_on_media_library_remote_sha256_verified",
   "uploadedThisRun": false,
   "duplicateUploadSkipped": true,
@@ -387,5 +394,5 @@
       "studentPages": 14
     }
   ],
-  "kimiCode": "The 24 media IDs are ready for draft PRs."
+  "kimiCode": "2026-10-19 rerun did not upload. WIX_MEDIA_API_KEY is not injected in this agent. Do not open draft PRs from this rerun."
 }

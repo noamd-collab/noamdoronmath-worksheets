@@ -1,13 +1,20 @@
 # Wix media IDs — 2026-10-15
 
-24 student pages are already in the production media library and READY. This run re-downloaded every file and matched sha256. No second upload (that would duplicate the same bytes). No publish, no wix release, no merge. G8-T26 and G9-T32 were not touched.
+2026-10-19 rerun: no upload. `WIX_MEDIA_API_KEY` is still not injected. `CLOUD_AGENT_ALL_SECRET_NAMES` is only `WIX_FORMS_API_KEY`. No publish, no wix release, no merge. G8-T26 and G9-T32 were not touched.
 
-## Site ID
+## Site ID (checked 2026-10-19, before any upload)
 
-- Production media library (noamdoronmath.co.il): meta site `36dd9544-acf9-4e85-a01a-798f3c1efbb9`. The 24 files answer on `36dd9544-….usrfiles.com/ugd/d8e7ad_…`.
-- `df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46` is the Headless project site id (`headless/astro-poc/wix.config.json`), not the production media library.
-- `0ca81118-7ca8-40a7-8f97-8d06d901a556` is the Studio HTML app id. A media list call with it returned HTTP 404.
-- Wix REST `wix-site-id` for this library is the production meta site id.
+- Live `www.noamdoronmath.co.il` sets `getMetaSiteId()` to `df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46`. That same value is the Headless project `siteId` in `headless/astro-poc/wix.config.json`. On the live site, this is the meta site id.
+- `36dd9544-acf9-4e85-a01a-798f3c1efbb9` is the Studio meta site id (contact form). It is not in the live homepage HTML. The 15.10 table below was checked against that Studio host.
+- `0ca81118-7ca8-40a7-8f97-8d06d901a556` is the Studio HTML app id, not a meta site. Media API returns HTTP 404.
+- Forms-key probe of `POST /site-media/v1/files/generate-upload-url`: `df6b8141` and `36dd9544` both return 403 `PERMISSION_DENIED` (valid site context, no media permission). `0ca81118` returns 404.
+- `*.usrfiles.com` does not identify the owner: a zero UUID host still serves `d8e7ad_…`.
+
+The 15.10 rows below are the earlier remote sha256 check. This rerun did not upload them again.
+
+## 15.10 check
+
+24 student pages were already in the Studio media library and READY. That run re-downloaded every file and matched sha256. No second upload. No publish, no wix release, no merge.
 
 ## This run
 
@@ -40,4 +47,4 @@
 | G9-T17 | r2 | `d8e7ad_b38c199bb4bf4c828a23c4c3f25ac3da.pdf` | yes `c3af8e51572474639141c99affc4f173f32b1a0f7f46fb5b3623ab848d90bb15` | `d8e7ad_b38c199bb4bf4c828a23c4c3f25ac3da.pdf` | https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_b38c199bb4bf4c828a23c4c3f25ac3da.pdf |
 | G9-T17 | r3 | `d8e7ad_11c7f97008dc4d8c95c46dfc04f47eeb.pdf` | yes `5422705880099d510ecba50c4fc1dae93f21fc6f55416a9f01bee4a85e97f3e8` | `d8e7ad_11c7f97008dc4d8c95c46dfc04f47eeb.pdf` | https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_11c7f97008dc4d8c95c46dfc04f47eeb.pdf |
 
-Kimi Code: these 24 media IDs are ready for the draft PRs. Do not use G8-T26 or G9-T32 from the other handoff.
+Kimi Code: the 2026-10-19 rerun did not upload. `WIX_MEDIA_API_KEY` is not in this agent. Do not open draft PRs from this rerun. G8-T26 and G9-T32 stay untouched.
