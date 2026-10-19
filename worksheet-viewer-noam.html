@@ -1529,6 +1529,20 @@ textarea:focus{
   outline-offset:2px;
 }
 .noam-draw-action:disabled{cursor:wait;opacity:.65}
+/* Expand an existing diagram independently of the short chat scrollport. */
+.noam-diagram-expand{min-height:44px;font-size:15px}
+.noam-diagram-dialog{box-sizing:border-box;width:min(720px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - 24px);padding:0;border:2px solid var(--ink);border-radius:20px;background:#fff;color:var(--ink);direction:rtl;overflow:hidden}
+.noam-diagram-dialog[open]{display:flex;flex-direction:column}
+.noam-diagram-dialog::backdrop{background:rgba(15,25,45,.55)}
+.noam-diagram-dialog-header{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);flex:none}
+.noam-diagram-dialog-title{margin:0;font:800 20px/1.3 Assistant,sans-serif}
+.noam-diagram-dialog-header small{display:block;font:400 12px/1.2 Assistant,sans-serif}
+.noam-diagram-dialog-close{min-width:64px;min-height:44px;border:2px solid var(--ink);border-radius:12px;background:#fff;color:var(--ink);font:700 16px Assistant,sans-serif;cursor:pointer}
+.noam-diagram-dialog-close:focus-visible{outline:3px solid var(--accent-dark);outline-offset:3px}
+.noam-diagram-dialog-content{overflow:auto;overscroll-behavior:contain;min-height:0;padding:12px;scrollbar-gutter:stable}
+.noam-diagram-dialog-content .noam-geometry{margin:0;max-width:none}
+.noam-diagram-dialog .noam-diagram-dialog-content .noam-geometry-svg{display:block;width:100%;height:auto;min-height:240px;max-height:min(55dvh,480px)}
+
 .noam-draw-beta{
   display:inline-block;
   margin-inline-start:3px;
@@ -5187,7 +5201,10 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
     var visualElement=visual.type==="ai-diagram" ? noamRenderAiDiagram(visual) : visual.type==="geometry-guide"
       ? noamRenderGeometryGuide(visual)
       : window.NoamLocalVisual&&window.NoamLocalVisual.render(document,visual);
-    if (visualElement){bubble.appendChild(visualElement);}
+    if (visualElement){
+      if(visual.type==="ai-diagram"||visual.type==="geometry-guide"){noamAddDiagramExpansion(bubble,visualElement);}
+      bubble.appendChild(visualElement);
+    }
   }
   if (message&&thread&&noamCanOfferDrawing(selectedExercise,thread,message)){
     var drawButton=document.createElement("button");
@@ -7258,6 +7275,61 @@ function noamRenderGeometryGuide(visual){
   }catch(error){return null;}
 }
 
+function noamAddDiagramExpansion(container,figure){
+  var expand=document.createElement("button");
+  expand.type="button";
+  expand.className="noam-draw-action noam-diagram-expand";
+  expand.textContent="הגדלת השרטוט";
+  expand.setAttribute("aria-haspopup","dialog");
+  expand.addEventListener("click",function(){
+    var dialog=document.createElement("dialog");
+    dialog.className="noam-diagram-dialog";
+    dialog.setAttribute("aria-labelledby","noamDiagramDialogTitle");
+    var header=document.createElement("div");
+    header.className="noam-diagram-dialog-header";
+    var heading=document.createElement("div");
+    var blessing=document.createElement("small");
+    blessing.textContent="בס״ד";
+    var title=document.createElement("h2");
+    title.id="noamDiagramDialogTitle";
+    title.className="noam-diagram-dialog-title";
+    title.textContent="שרטוט להמחשה";
+    heading.appendChild(blessing);heading.appendChild(title);
+    var close=document.createElement("button");
+    close.type="button";
+    close.className="noam-diagram-dialog-close";
+    close.textContent="סגירה";
+    close.autofocus=true;
+    close.addEventListener("click",function(){dialog.close();});
+    header.appendChild(heading);header.appendChild(close);
+    var content=document.createElement("div");
+    content.className="noam-diagram-dialog-content";
+    content.tabIndex=0;
+    content.setAttribute("role","region");
+    content.setAttribute("aria-label","השרטוט והסבר הסימונים");
+    // Reuse the rendered result: no regeneration, model request or transcript mutation.
+    var copy=figure.cloneNode(true);
+    // Glossary buttons in the transcript have listeners; a cloned button does not.
+    copy.querySelectorAll(".noam-term").forEach(function(term){
+      term.replaceWith(document.createTextNode(term.textContent));
+    });
+    content.appendChild(copy);
+    dialog.appendChild(header);dialog.appendChild(content);
+    dialog.addEventListener("keydown",function(event){
+      if(event.key!=="Tab"){return;}
+      if(event.shiftKey&&document.activeElement===close){event.preventDefault();content.focus();}
+      else if(!event.shiftKey&&document.activeElement===content){event.preventDefault();close.focus();}
+    });
+    dialog.addEventListener("close",function(){
+      dialog.remove();
+      if(expand.isConnected){expand.focus({preventScroll:true});}
+    },{once:true});
+    document.body.appendChild(dialog);
+    dialog.showModal();
+  });
+  container.appendChild(expand);
+}
+
 function noamDiagramRuntime(){
   // Private runtime maps are not transcript state. A reload never leaves a
   // disabled "pending" button behind, and failures never enter the cache.
@@ -7323,10 +7395,10 @@ function noamDiagramRefresh(exercise,thread,message,complete){
       var figure=!message.diagramError&&row.querySelector&&row.querySelector(".noam-geometry");
       var target=figure||(message.diagramError&&row.querySelector&&row.querySelector(".noam-draw-action, .noam-draw-error"))||row;
       // A long answer can be taller than the scrollport. Reveal its drawing,
-      // not the whole answer; prefer the SVG if the complete figure cannot fit.
+      // not the whole answer; reveal expansion when the figure cannot fit.
       if (figure&&figure.getBoundingClientRect&&transcript.clientHeight>0&&
           figure.getBoundingClientRect().height>transcript.clientHeight){
-        target=figure.querySelector(".noam-geometry-svg")||figure;
+        target=row.querySelector(".noam-diagram-expand")||figure;
       }
       if (typeof target.scrollIntoView==="function"){
         target.scrollIntoView({block:figure?"center":"nearest",inline:"nearest",behavior:"instant"});
