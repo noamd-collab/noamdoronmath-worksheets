@@ -2281,9 +2281,8 @@ const MAX_LAPS = 4;
 
 function motionOff(): boolean {
   const html = document.documentElement;
-  // Only an explicit menu choice parks the film. OS reduced motion used to
-  // take this same path and left every grade demo on the final frame.
-  return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off');
+  return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off')
+    || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 /** The kite card parks on its finished frame when the OS asks for less motion.
@@ -2413,6 +2412,8 @@ function setupLoop(root: LoopRoot) {
       play();
     }
   });
+
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applyMotionPrefs);
 
   // react to the site's accessibility menu toggle (class on <html>)
   new MutationObserver(applyMotionPrefs).observe(document.documentElement, {

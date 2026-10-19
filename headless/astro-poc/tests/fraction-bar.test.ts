@@ -1,45 +1,36 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { cleanText } from '../src/lib/parity/topicParity.ts';
-import { layoutMathRuns, splitFractionMarkers } from '../src/lib/topicMathText.ts';
+import { splitFractionMarkers } from '../src/lib/topicFractionMarkers.ts';
+import { lessonMathParts } from '../src/lib/lessonMath.ts';
 
 const LRI = '\u2066';
 const PDI = '\u2069';
 
 describe('splitFractionMarkers', () => {
-  it('keeps a leading minus on the whole fraction, and parentheses on one side', () => {
+  it('splits a marker into text and a fraction; parentheses stay on one side', () => {
     const parts = splitFractionMarkers('השבר −⟨3¦4⟩ שווה ל־⟨(−3)¦4⟩ ול־⟨3¦(−4)⟩ וגם ⟨(−3)¦(−4)⟩.');
     const fracs = parts.filter((part) => part.kind === 'frac');
     assert.deepEqual(
-      fracs.map((part) => (part.kind === 'frac' ? [part.sign, part.n, part.d] : [])),
+      fracs.map((part) => (part.kind === 'frac' ? [part.n, part.d] : [])),
       [
-        ['−', '3', '4'],
-        ['', '(−3)', '4'],
-        ['', '3', '(−4)'],
-        ['', '(−3)', '(−4)'],
+        ['3', '4'],
+        ['(−3)', '4'],
+        ['3', '(−4)'],
+        ['(−3)', '(−4)'],
       ],
     );
-  });
-
-  it('does not peel a minus that is subtraction', () => {
-    const parts = splitFractionMarkers(`${LRI}x−⟨3¦4⟩${PDI}`);
-    const frac = parts.find((part) => part.kind === 'frac');
-    assert.ok(frac && frac.kind === 'frac');
-    assert.equal(frac.sign, '');
-    assert.equal(frac.n, '3');
+    assert.match(parts[0]?.kind === 'text' ? parts[0].text : '', /−$/, 'the leading minus stays as text before the bar');
   });
 
   it('leaves a product of two fractions as two bars', () => {
     const parts = splitFractionMarkers('⟨2¦3⟩ × ⟨1¦2⟩');
     assert.equal(parts.filter((part) => part.kind === 'frac').length, 2);
   });
-});
 
-describe('layoutMathRuns', () => {
-  it('keeps a short marked formula on one line', () => {
-    const parts = layoutMathRuns(`דוגמה: ${LRI}⟨2¦3⟩ + ⟨1¦3⟩ = 1${PDI}.`);
-    assert.equal(parts.filter((part) => part.nowrap).length, 1);
-    assert.match(parts.find((part) => part.nowrap)?.text || '', /⟨2¦3⟩/);
+  it('lesson math draws a marker as numerator over denominator, not a slash', () => {
+    const parts = lessonMathParts(`${LRI}⟨2¦3⟩ + ⟨1¦3⟩ = 1${PDI}`);
+    assert.equal(parts.filter((part) => typeof part !== 'string').length, 2);
   });
 });
 

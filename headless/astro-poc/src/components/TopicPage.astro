@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/exact-topic.css';
 import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
+import PercentExplorer from './PercentExplorer.astro';
+import AreaExplorer from './AreaExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
 import LandingLoop from './LandingLoop.astro';
 import DistancePointsLoop from './DistancePointsLoop.astro';
@@ -98,10 +100,18 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
    analytic-geometry-grade-9 mounts DistancePointsLoop in this same slot.
    triangle-quadrilateral-angle-sum-grade-7 mounts the provided HTML film
    (its own controls and angle readouts stay inside the iframe).
-   parallel-lines-angles-grade-8 mounts the co-interior angles film. */
+   parallel-lines-angles-grade-8 mounts the co-interior angles film.
+   Pages in TOPIC_EXPLORER mount a hands-on explorer in place of their
+   loop: the percent 100-square, and the fraction / decimal area models. */
+const TOPIC_EXPLORER: Record<string, 'percent' | 'fraction' | 'decimal'> = {
+  'percent-of-quantity-grade-6': 'percent',
+  'fraction-times-fraction-grade-6': 'fraction',
+  'multiply-decimals-grade-6': 'decimal',
+};
+const explorer = TOPIC_EXPLORER[slug];
 const landingLoop = topicLandingLoop(page);
-const loopVariant = landingLoop.kind === 'concept' ? landingLoop.variant : undefined;
-const cssVariant = landingLoop.kind === 'css' ? landingLoop.variant : undefined;
+const loopVariant = landingLoop.kind === 'concept' && !explorer ? landingLoop.variant : undefined;
+const cssVariant = landingLoop.kind === 'css' && !explorer ? landingLoop.variant : undefined;
 const filmLoop = landingLoop.kind === 'film';
 const bareFilm =
   filmLoop &&
@@ -177,7 +187,7 @@ function faqHeadingId(groupIndex: number) {
     }
 
     <header class="topic-page__header">
-      <h1><TopicText text={page.h1} /></h1>
+      <h1><TopicText value={page.h1}/></h1>
     </header>
 
     <div data-body-flow>
@@ -190,6 +200,8 @@ function faqHeadingId(groupIndex: number) {
           >
             {slug === 'triangle-area-grade-7' && <TriangleAreaExplorer />}
             {loopVariant && <ConceptLoop variant={loopVariant} />}
+            {explorer === 'percent' && <PercentExplorer />}
+            {(explorer === 'fraction' || explorer === 'decimal') && <AreaExplorer kind={explorer} />}
             {cssVariant && <LandingLoop variant={cssVariant} />}
             {landingLoop.kind === 'film' && landingLoop.marker === 'distance-between-points' && (
               <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />
@@ -204,7 +216,7 @@ function faqHeadingId(groupIndex: number) {
           <div class="exact-topic-copy">
             {heroUnits.map((unit) => {
               if (unit.kind === 'intro') return (
-                <p class="topic-page__intro" data-flow="paragraph" data-role="intro"><TopicText text={unit.text} /></p>
+                <p class="topic-page__intro" data-flow="paragraph" data-role="intro"><TopicText value={unit.text}/></p>
               );
               if (unit.kind === 'cta') return (
                 <p class="topic-page__cta-row" data-flow="cta" data-catalog-ctas>
@@ -233,7 +245,7 @@ function faqHeadingId(groupIndex: number) {
           if (unit.kind === 'intro') {
             return (
               <p class="topic-page__intro" data-flow="paragraph" data-role="intro">
-                <TopicText text={unit.text} />
+                <TopicText value={unit.text}/>
               </p>
             );
           }
@@ -256,14 +268,14 @@ function faqHeadingId(groupIndex: number) {
           if (unit.kind === 'section') {
             return (
               <section class="topic-page__section" data-flow="heading">
-                <h2><TopicText text={unit.heading} /></h2>
+                <h2><TopicText value={unit.heading}/></h2>
                 {unit.blocks.map((block) => {
                   if (block.type === 'paragraph') {
                     const cls =
                       block.role === 'self-check' ? 'topic-page__self-check' : undefined;
                     return (
                       <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
-                        <TopicText text={block.text} />
+                        <TopicText value={block.text}/>
                       </p>
                     );
                   }
@@ -271,13 +283,13 @@ function faqHeadingId(groupIndex: number) {
                     return block.ordered ? (
                       <ol data-flow="list">
                         {block.items.map((item) => (
-                          <li><TopicText text={item} /></li>
+                          <li><TopicText value={item}/></li>
                         ))}
                       </ol>
                     ) : (
                       <ul data-flow="list">
                         {block.items.map((item) => (
-                          <li><TopicText text={item} /></li>
+                          <li><TopicText value={item}/></li>
                         ))}
                       </ul>
                     );
@@ -293,7 +305,7 @@ function faqHeadingId(groupIndex: number) {
               const cls = block.role === 'self-check' ? 'topic-page__self-check' : undefined;
               return (
                 <p class={cls} data-flow="paragraph" data-role={block.role || 'body'}>
-                  <TopicText text={block.text} />
+                  <TopicText value={block.text}/>
                 </p>
               );
             }
@@ -301,13 +313,13 @@ function faqHeadingId(groupIndex: number) {
               return block.ordered ? (
                 <ol data-flow="list">
                   {block.items.map((item) => (
-                    <li><TopicText text={item} /></li>
+                    <li><TopicText value={item}/></li>
                   ))}
                 </ol>
               ) : (
                 <ul data-flow="list">
                   {block.items.map((item) => (
-                    <li><TopicText text={item} /></li>
+                    <li><TopicText value={item}/></li>
                   ))}
                 </ul>
               );
@@ -332,12 +344,12 @@ function faqHeadingId(groupIndex: number) {
     {
       faqBeforeUpdate.map((group: TopicPageFaqGroup, gi: number) => (
         <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
-          <h2 id={faqHeadingId(gi)}><TopicText text={group.heading} /></h2>
+          <h2 id={faqHeadingId(gi)}><TopicText value={group.heading}/></h2>
           <div class="topic-page__faq-list">
             {group.items.map((item) => (
               <div class="topic-page__faq-item" data-faq-item>
-                <h3><TopicText text={item.question} /></h3>
-                <p><TopicText text={item.answer} /></p>
+                <h3><TopicText value={item.question}/></h3>
+                <p><TopicText value={item.answer}/></p>
               </div>
             ))}
           </div>
@@ -391,7 +403,7 @@ function faqHeadingId(groupIndex: number) {
                   rel="noopener noreferrer"
                   data-topic-path={rel.path}
                 >
-                  <TopicText text={rel.label} />
+                  <TopicText value={rel.label}/>
                 </a>
               </li>
             ))}
@@ -405,12 +417,12 @@ function faqHeadingId(groupIndex: number) {
         const gi = beforeUpdateCount + oi;
         return (
           <section class="topic-page__faq" aria-labelledby={faqHeadingId(gi)} data-faq-group={String(gi)}>
-            <h2 id={faqHeadingId(gi)}><TopicText text={group.heading} /></h2>
+            <h2 id={faqHeadingId(gi)}><TopicText value={group.heading}/></h2>
             <div class="topic-page__faq-list">
               {group.items.map((item) => (
                 <div class="topic-page__faq-item" data-faq-item>
-                  <h3><TopicText text={item.question} /></h3>
-                  <p><TopicText text={item.answer} /></p>
+                  <h3><TopicText value={item.question}/></h3>
+                  <p><TopicText value={item.answer}/></p>
                 </div>
               ))}
             </div>
