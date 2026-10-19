@@ -143,7 +143,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Only this script fence changes; authentication and original worksheet bytes do not.
     // Noam 2026-10-19: pin label wording only ('העזר ברמזי' / '· רמזי'); no logic change.
     // Noam 2026-10-19 20:46: Ramzi panel wording ('נועם AI' → 'רמזי'); text only.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e1cb66590186c32e0c7bcdc80857654413ca1866e2155ace620efecf4d361ab2');
+    // Noam 2026-10-19 22:13: the explicit drawing keeps the source figure's given
+    // equality ticks (package data, separate from focus). Solve/auth/storage unchanged.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e64a71ad0f44351bdd1d511324ec857c0139805df85abdcde401e1023172c040');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
