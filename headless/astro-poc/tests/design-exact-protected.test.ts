@@ -105,7 +105,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Metadata, fonts, canonical and robots are unchanged.
     // 2026-10-19: Help marks replace repeated robots; expanded source previews scroll
     // so the original SVG disclosure is reachable on desktop as well as phone.
-    assert.equal(sha256(head), '7dbac8dff3fb244004c0afef62b328a5120e1a23f63b8696760a9f81571e722e');
+    // PR197: reviewed full-width phone diagrams, fullscreen modal and bounded zoom.
+    assert.equal(sha256(head), 'bd63c61ec71a4c34b4e1ae0485484a08af978ac5a0f2005db1af435242aa08f2');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
@@ -136,7 +137,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Auth, solve protocol and sibling isolation are unchanged and covered separately.
     // Remaining101: nine exact semantic native SVG namespaces and a sixth exact back path.
     // Combined with reviewed PR194 UI expansion; auth, geometry, and AI protocol unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '12672585237ed93434e3ab7c553e31b30bad06e2eb5a7d7f802201b670046bf9');
+    // PR197: reviewed clone-only zoom and original-figure expansion; no solve/auth/storage changes.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '6554b861e6c95a1e121bbaa2e08dff2ea733aa4220befe7787b9b365136737c9');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

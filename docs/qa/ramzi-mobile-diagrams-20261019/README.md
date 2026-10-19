@@ -8,7 +8,7 @@ Validation: 11 focused zoom lifecycle, clean entry, and reading-space tests pass
 
 Final Wix preview built and checked; its URL is shared through the designated preview handoff. The final follow-up removes an unnecessary touch-action declaration and retains the browser default gestures, with no visual difference. The initial CI failure was a clean-entry guard rejecting that declaration; it was removed without weakening the test. Final CI is tracked on PR #197.
 
-Local full-unit execution also encountered an unrelated protected-hash/environment gate fixture failure; do not call that local full run green. Focused checks are green and the final CI result remains authoritative for its environment.
+Local full-unit execution found the intentional viewer head/script changes against the protected baseline, plus an environment-dependent gate fixture failure. After independent diff review, only the two viewer hashes were updated for PR197; all other protected boundaries remain unchanged. The original clean-entry assertion remains intact. Full local run is not claimed green; focused/protected checks and final CI are reported separately.
 
 ## Additional live sample (not a release-wide certification)
 
