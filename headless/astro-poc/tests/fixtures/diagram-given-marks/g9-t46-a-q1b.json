@@ -1,0 +1,28 @@
+{
+  "note": "G9-T46 level A Q1b (Dalton PQRS). Repro from the 19.10.2026 logs: source ticks PQ=PS (one tick) and QR=RS (two ticks); the hint focuses on PQ and QR. Before: the plan with the source equalities was rejected as outside_current_focus, so only the tick-free plan rendered.",
+  "context": {
+    "questionText": "PQ=PS. QR=RS.",
+    "hintText": "התבוננו בצלעות PQ ו־QR.",
+    "studentMessage": ""
+  },
+  "plan": {
+    "version": 1,
+    "status": "ok",
+    "points": {"P": [0, 0], "Q": [-2, 3], "R": [0, 7], "S": [2, 3]},
+    "segments": [["P", "Q"], ["Q", "R"], ["R", "S"], ["S", "P"]],
+    "highlights": [
+      {"from": "P", "to": "Q", "color": "blue", "label": "PQ"},
+      {"from": "Q", "to": "R", "color": "orange", "label": "QR"}
+    ],
+    "angles": [],
+    "equalGroups": [
+      {"segments": [["P", "Q"], ["P", "S"]], "count": 1, "color": "teal"},
+      {"segments": [["Q", "R"], ["R", "S"]], "count": 2, "color": "teal"}
+    ],
+    "rightAngles": [],
+    "evidence": [
+      {"mark": "equalGroups.0", "source": "question", "quote": "PQ=PS"},
+      {"mark": "equalGroups.1", "source": "question", "quote": "QR=RS"}
+    ]
+  }
+}

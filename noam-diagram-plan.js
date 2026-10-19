@@ -519,7 +519,13 @@
       });
       var groupLengths={};scene.equalGroups=list(plan.equalGroups,6).map(function(item,index){
         keys(item,["segments","count","color"]);var pairs=list(item.segments,8).map(pair);if(pairs.length<2||[1,2,3].indexOf(item.count)<0||pairs.some(function(p,i){return pairs.slice(0,i).some(function(other){return pairKey(p)===pairKey(other);});})){fail("invalid_equality");}
-        pairs.forEach(function(p){focused(p,false);});
+        // Preserved given data is separate from focus: an equality proven by an
+        // affirmative quote from the question itself (a given of the source
+        // figure) keeps its ticks even when the current hint focuses on other
+        // segments. It must still be drawn, proven and coordinate-consistent.
+        // Hint-sourced or unproven equalities stay limited to the current focus.
+        var givenEvidence=evidence["equalGroups."+index],preservedGiven=!!givenEvidence&&givenEvidence.source==="question";
+        pairs.forEach(function(p){if(preservedGiven){if(!isDrawn(p)){fail("undrawn_mark");}}else{focused(p,false);}});
         proof("equalGroups."+index,function(quote){return pairs.slice(1).every(function(p){return equalityIn(quote,pairs[0],p);});});
         var length=distance(points[pairs[0][0]],points[pairs[0][1]]);if(pairs.some(function(p){return !sameLength(length,distance(points[p[0]],points[p[1]]));})||(groupLengths[item.count]!==undefined&&!sameLength(length,groupLengths[item.count]))){fail("coordinate_contradiction");}groupLengths[item.count]=length;
         return {segments:pairs,count:item.count,color:color(item.color)};
