@@ -130,9 +130,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // exact unlisted back link, and lv=one diagnostic support. The existing AI
     // solve/auth/rate-limit/storage code remains unchanged. Behavior and URL guards
     // are exercised by worksheet-pilot.test.ts; all other fence hashes stay fixed.
-    // Next batches: single-sheet label and four exact return paths; G8-T26 stays diagnostic.
+    // Next batches: single-sheet label and five exact return paths; G8-T26 stays diagnostic.
     // Auth, solve protocol and sibling isolation are unchanged and covered separately.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'abce995a346543b9fe182bf2013b20e6f378b38bfd6292d16a1c1b5f72100f2e');
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '373018ba2a0a9d4b99f9abdc3f73d0577427af8e2c019ff6d764a059ab179c0c');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
