@@ -140,6 +140,9 @@
     "#noam-site-companion{position:fixed;z-index:9990;right:8px;bottom:8px;left:auto;font-family:Heebo,Arial,sans-serif;color:#22305a}",
     "#noam-site-companion-launch{width:48px;height:48px;padding:4px;border:2px solid #22305a;border-radius:16px 6px 18px 7px;background:#2a7c7a;box-shadow:3px 3px 0 #e6a534;cursor:pointer}",
     "#noam-site-companion-launch img{width:32px;height:32px;display:block;border-radius:50%;background:#fff}",
+    // Keep the shared avatar, but make site navigation secondary on worksheets.
+    "body.exact-viewer #noam-site-companion-launch{box-sizing:border-box;width:44px;height:44px;min-width:44px;min-height:44px;padding:7px;border:1px solid #aab6c5;border-radius:12px;background:#fbfaf5;box-shadow:none}",
+    "body.exact-viewer #noam-site-companion-launch img{width:28px;height:28px}",
     "#noam-site-companion-panel :focus-visible{outline:3px solid #1e605e;outline-offset:2px}",
     "#noam-site-companion-panel{display:flex;flex-direction:column;gap:6px;box-sizing:border-box;overflow:auto;background:#fbfaf5;color:#22305a;border:2px solid #22305a;border-radius:16px 6px 18px 7px;box-shadow:3px 3px 0 #e6a534;padding:8px;font-size:16px;line-height:1.35;direction:rtl;text-align:right}",
     "#noam-site-companion-panel[hidden]{display:none!important}",
@@ -213,6 +216,10 @@
   document.body.appendChild(root);
   var launch = document.getElementById("noam-site-companion-launch");
   launch.querySelector("img").src = avatarSrc;
+  if (pageKind() === "worksheet") {
+    launch.title = "נועם AI — ניווט באתר";
+    launch.setAttribute("aria-label", launch.title);
+  }
 
   var panel = document.createElement("section");
   panel.id = "noam-site-companion-panel";
