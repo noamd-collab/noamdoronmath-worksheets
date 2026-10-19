@@ -2857,6 +2857,14 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
 .exact-viewer .pdf-page .noam-exercise-pin.is-active .exact-ramzi-pin{
   outline:2px solid #e6a534;outline-offset:2px;border-radius:8px;
 }
+/* Hover label sits in the right gutter, past the "!" report button, so it
+   never covers the printed question text (the text runs leftward from the
+   RTL part marker, and the pins sit to the right of that marker). */
+.exact-viewer .pdf-page .noam-exercise-pin::after{
+  inset-inline-start:auto;right:auto;left:calc(100% + 38px);
+  font-size:11.5px;line-height:1.35;
+}
+.exact-viewer.exact-narrow .pdf-page .noam-exercise-pin::after{display:none}
 .exact-viewer .pdf-page .noam-report-pin{
   width:28px;height:28px;min-width:28px;min-height:28px;
   border:1px solid #c5cad6;background:#f4f7f8;color:#5a6588;box-shadow:none;
@@ -5594,8 +5602,8 @@ function renderManifestPins(){
     button.dataset.questionKeys = (group.questionKeys || [group.questionKey]).join(" ");
     button.dataset.exerciseIds = group.exercises.map(function(item){ return item.id; }).join(" ");
     button.dataset.label = narrow && group.exercises.length > 1
-      ? manifestPinQuestionLabel(group.exercises) + " · בחירת שאלה וסעיף · נועם AI"
-      : exerciseLabel(exercise) + " · העזר בנועם AI";
+      ? manifestPinQuestionLabel(group.exercises) + " · בחירת שאלה וסעיף · רמזי"
+      : exerciseLabel(exercise) + " · העזר ברמזי";
     button.setAttribute("aria-label", button.dataset.label);
     var active = selectedExercise
       ? group.exercises.some(function(item){ return item.id === selectedExercise.id; })

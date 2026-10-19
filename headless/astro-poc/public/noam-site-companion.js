@@ -8,10 +8,10 @@
 
   var API_BASE = "/api";
   var API = API_BASE + "/noamSiteCompanion";
-  var FALLBACK = "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
+  var FALLBACK = "מנווט AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
   var SITE_FONT = "Heebo,'Arial Hebrew',Arial,sans-serif";
   var EXPORT_NOTE = "במקרה פירוק לגורמים לכיתה ט׳ רמה א׳, אפשר לסמן את השאלות שנבחרו על דף המקור המלא, או להדפיס דף מצומצם שנחתך מאותו מקור עם ההוראה והנוסח המקוריים.";
-  var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
+  var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». מנווט AI מכוון באתר ולא נותן רמז לפתרון.";
   var SOLVE_REQUEST = /רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
   var botClientPromise = null;
   var navigationPromise = null;
@@ -53,9 +53,9 @@
   function navigationFallback(payload) {
     return loadNavigation().then(function (loaded) {
       var result = loaded[0].navigateSite(payload, loaded[1], "") || loaded[0].navigationHelp(loaded[1], true);
-      return Object.assign({}, result, {source: "local-fallback", answer: "החיבור לנועם AI לא הצליח כרגע. הנה ניווט בסיסי: " + (result.answer || "בחרו דף מהרשימה.")});
+      return Object.assign({}, result, {source: "local-fallback", answer: "החיבור למנווט AI לא הצליח כרגע. הנה ניווט בסיסי: " + (result.answer || "בחרו דף מהרשימה.")});
     }).catch(function () {
-      return {source: "local-fallback", answer: "החיבור לנועם AI לא הצליח כרגע. אפשר להמשיך דרך מאגר דפי העבודה.", primary: {label: "דפי עבודה", href: "/worksheets"}, chips: []};
+      return {source: "local-fallback", answer: "החיבור למנווט AI לא הצליח כרגע. אפשר להמשיך דרך מאגר דפי העבודה.", primary: {label: "דפי עבודה", href: "/worksheets"}, chips: []};
     });
   }
   var script = document.currentScript;
@@ -279,12 +279,12 @@
   var root = document.createElement("div");
   root.id = "noam-site-companion";
   root.innerHTML =
-    '<button type="button" id="noam-site-companion-launch" aria-expanded="false" aria-controls="noam-site-companion-panel" aria-label="פתיחת נועם AI"><img alt="" width="32" height="32"></button>';
+    '<button type="button" id="noam-site-companion-launch" aria-expanded="false" aria-controls="noam-site-companion-panel" aria-label="פתיחת מנווט AI"><img alt="" width="32" height="32"></button>';
   document.body.appendChild(root);
   var launch = document.getElementById("noam-site-companion-launch");
   launch.querySelector("img").src = avatarSrc;
   if (pageKind() === "worksheet") {
-    launch.title = "נועם AI — ניווט באתר";
+    launch.title = "מנווט AI — ניווט באתר";
     launch.setAttribute("aria-label", launch.title);
     launch.textContent = "ניווט";
   }
@@ -295,10 +295,10 @@
   panel.setAttribute("role", "region");
   panel.setAttribute("aria-labelledby", "noam-site-companion-title");
   panel.innerHTML =
-    '<header><img alt="" width="24" height="24"><h2 id="noam-site-companion-title">נועם AI</h2>' +
+    '<header><img alt="" width="24" height="24"><h2 id="noam-site-companion-title">מנווט AI</h2>' +
     '<button type="button" id="noam-ai-expand" aria-expanded="false" aria-label="הרחבה">הרחבה</button>' +
     '<button type="button" id="noam-ai-collapse" hidden>צמצום</button>' +
-    '<button type="button" id="noam-site-companion-close" aria-label="סגירת נועם AI">×</button></header>' +
+    '<button type="button" id="noam-site-companion-close" aria-label="סגירת מנווט AI">×</button></header>' +
     '<p id="noam-site-companion-request" hidden></p>' +
     '<p id="noam-site-companion-answer" aria-live="polite"></p>' +
     '<a id="noam-site-companion-primary" hidden></a>' +
@@ -428,7 +428,7 @@
       }
       setChips(links.slice(1, 3));
     }
-    var details = "נועם AI מכוון לדפים קיימים. עזרה בפתרון שאלה נמצאת אצל רמזי.";
+    var details = "מנווט AI מכוון לדפים קיימים. עזרה בפתרון שאלה נמצאת אצל רמזי.";
     if (pageKind() === "teachers") details += "\n" + EXPORT_NOTE;
     detailsEl.textContent = details;
     moreEl.hidden = false;
