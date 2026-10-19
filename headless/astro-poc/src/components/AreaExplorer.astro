@@ -11,7 +11,7 @@
  * shades rows, and the overlap is the product. The first frame is rendered
  * here, so the card is complete before the script runs.
  */
-import { decimalProduct, dec, fractionProduct } from '../lib/areaExplorer';
+import { decimalProduct, dec, fractionProduct, overlapLabel } from '../lib/areaExplorer';
 
 interface Props {
   kind: 'fraction' | 'decimal';
@@ -31,6 +31,7 @@ const FRACTION_START: Record<string, { a: number; b: number; c: number; d: numbe
 const F = FRACTION_START[slug] ?? { a: 2, b: 3, c: 3, d: 4 };
 const fSmaller = F.a < F.b && F.c < F.d;
 const fp = fractionProduct(F.a, F.b, F.c, F.d);
+const fl = overlapLabel(F.a, F.b, F.c, F.d);
 
 const D = { x: 0.8, y: 0.72 };
 const dp = decimalProduct(D.x, D.y);
@@ -89,14 +90,28 @@ const hLines = Array.from({ length: rows - 1 }, (_, i) => PAD + ((i + 1) * SIZE)
             </span>
           </span>
         </div>
-        <svg class="ae-svg" viewBox="0 0 300 300" aria-hidden="true" focusable="false">
-          <g data-el="layer">
-            {shapes.map((s) => <rect x={s.x} y={s.y} width={s.w} height={s.h} class={s.cls} />)}
-            {vLines.map((x) => <line x1={x} y1={PAD} x2={x} y2={TOP} class="ae-grid" />)}
-            {hLines.map((y) => <line x1={PAD} y1={y} x2={PAD + SIZE} y2={y} class="ae-grid" />)}
-            <rect x={PAD} y={PAD} width={SIZE} height={SIZE} class="ae-frame" />
-          </g>
-        </svg>
+        <div class="ae-board">
+          <svg class="ae-svg" viewBox="0 0 300 300" aria-hidden="true" focusable="false">
+            <g data-el="layer">
+              {shapes.map((s) => <rect x={s.x} y={s.y} width={s.w} height={s.h} class={s.cls} />)}
+              {vLines.map((x) => <line x1={x} y1={PAD} x2={x} y2={TOP} class="ae-grid" />)}
+              {hLines.map((y) => <line x1={PAD} y1={y} x2={PAD + SIZE} y2={y} class="ae-grid" />)}
+              <rect x={PAD} y={PAD} width={SIZE} height={SIZE} class="ae-frame" />
+            </g>
+          </svg>
+          {/* the overlap read as "a/b of c/d", in the readout's order */}
+          <span
+            class:list={['ae-of', fl.small && 'is-small']}
+            data-el="of"
+            dir="rtl"
+            aria-hidden="true"
+            style={`left:${fl.x}%;top:${fl.y}%`}
+          >
+            <span class="ae-q"><span data-el="a">{F.a}</span><span data-el="b">{F.b}</span></span>
+            <span class="ae-of-word">מ־</span>
+            <span class="ae-q"><span data-el="c">{F.c}</span><span data-el="d">{F.d}</span></span>
+          </span>
+        </div>
         <p class="ae-readout" dir="ltr">
           <span class="ae-q"><span data-el="a">{F.a}</span><span data-el="b">{F.b}</span></span>
           <span>×</span>
@@ -206,6 +221,35 @@ const hLines = Array.from({ length: rows - 1 }, (_, i) => PAD + ((i + 1) * SIZE)
     display: block;
     width: min(100%, 280px);
     height: auto;
+  }
+  .ae-board {
+    position: relative;
+    width: min(100%, 280px);
+  }
+  .ae-board .ae-svg {
+    width: 100%;
+  }
+  .ae-of {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--navy);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .ae-of.is-small {
+    background: rgba(255, 255, 255, 0.94);
+    border: 2px solid #e5735c;
+    font-size: 0.9rem;
+  }
+  .ae-of-word {
+    font-size: 1.05em;
   }
   .ae-svg :global(.ae-a) {
     fill: rgba(230, 165, 52, 0.45);
