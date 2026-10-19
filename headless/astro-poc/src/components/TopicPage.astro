@@ -5,6 +5,7 @@ import TriangleAreaExplorer from './TriangleAreaExplorer.astro';
 import PercentExplorer from './PercentExplorer.astro';
 import AreaExplorer from './AreaExplorer.astro';
 import DecimalExplorer from './DecimalExplorer.astro';
+import FractionAddSubExplorer from './FractionAddSubExplorer.astro';
 import ConceptLoop from './ConceptLoop.astro';
 import LandingLoop from './LandingLoop.astro';
 import DistancePointsLoop from './DistancePointsLoop.astro';
@@ -103,8 +104,9 @@ const gradeCrumbLabel = isGradeHubGrade(page.grade)
    (its own controls and angle readouts stay inside the iframe).
    parallel-lines-angles-grade-8 mounts the co-interior angles film.
    Pages in TOPIC_EXPLORER mount a hands-on explorer in place of their
-   loop: the percent 100-square, and the fraction / decimal area models. */
-const TOPIC_EXPLORER: Record<string, 'percent' | 'fraction' | 'decimal' | 'divide' | 'place'> = {
+   loop: the percent 100-square, the fraction / decimal area models, and the
+   grade-5 fraction add / subtract strips. */
+const TOPIC_EXPLORER: Record<string, 'percent' | 'fraction' | 'decimal' | 'divide' | 'place' | 'fraction-add'> = {
   'percent-of-quantity-grade-6': 'percent',
   'fraction-times-fraction-grade-6': 'fraction',
   'fraction-part-quantity-area-grade-6': 'fraction',
@@ -112,6 +114,8 @@ const TOPIC_EXPLORER: Record<string, 'percent' | 'fraction' | 'decimal' | 'divid
   'multiply-decimals-grade-6': 'decimal',
   'divide-decimals-grade-6': 'divide',
   'decimal-place-value-grade-5': 'place',
+  'add-subtract-fractions-grade-5': 'fraction-add',
+  'common-denominator-grade-5': 'fraction-add',
 };
 const explorer = TOPIC_EXPLORER[slug];
 const landingLoop = topicLandingLoop(page);
@@ -208,6 +212,7 @@ function faqHeadingId(groupIndex: number) {
             {explorer === 'percent' && <PercentExplorer />}
             {(explorer === 'fraction' || explorer === 'decimal') && <AreaExplorer kind={explorer} slug={slug} />}
             {(explorer === 'divide' || explorer === 'place') && <DecimalExplorer kind={explorer} />}
+            {explorer === 'fraction-add' && <FractionAddSubExplorer slug={slug} />}
             {cssVariant && <LandingLoop variant={cssVariant} />}
             {landingLoop.kind === 'film' && landingLoop.marker === 'distance-between-points' && (
               <DistancePointsLoop src={landingLoop.src} marker={landingLoop.marker} />
