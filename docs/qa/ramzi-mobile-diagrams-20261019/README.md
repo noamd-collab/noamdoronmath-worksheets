@@ -6,7 +6,7 @@ Scope: Headless worksheet viewer only. Root static viewer, provider, authenticat
 
 Validation: 11 focused zoom lifecycle, clean entry, and reading-space tests pass; Wix production build passes (1,866 static assets). Browser checks used Brave phone emulation (390×844 and 390×600), not a physical device. Original figure opened in the actual Wix preview; 150% zoom measured 549px content in a 366px scroll viewport, reset and Close restored the same selected question and focus. Keyboard Shift+Tab from Close moved to the final focus stop. The generated SVG was reused in a clearly identified local presentation fixture; this is not a new model result. Qwen reviewed these phone/desktop captures with no blockers; DeepSeek PR review also found no blockers.
 
-Preview: https://dyzhdj-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com (the final follow-up removes an unnecessary touch-action declaration and retains the browser default gestures; no visual difference). The initial CI failure was a clean-entry guard rejecting that declaration; it was removed without weakening the test. Final CI is tracked on PR #197.
+Final Wix preview built and checked; its URL is shared through the designated preview handoff. The final follow-up removes an unnecessary touch-action declaration and retains the browser default gestures, with no visual difference. The initial CI failure was a clean-entry guard rejecting that declaration; it was removed without weakening the test. Final CI is tracked on PR #197.
 
 Local full-unit execution also encountered an unrelated protected-hash/environment gate fixture failure; do not call that local full run green. Focused checks are green and the final CI result remains authoritative for its environment.
 
