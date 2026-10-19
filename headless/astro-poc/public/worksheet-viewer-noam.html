@@ -5018,7 +5018,7 @@ try {
     document.getElementById("backBtn").after(topicBack);
   }
   // An exact same-origin unlisted return never falls back into the public catalog.
-  if (["/worksheet-pilot/approved-three-20261019", "/worksheet-pilot/next-ten-20261019"].indexOf(returnPath) !== -1 && navigationParams.get("pilot") === "1") {
+  if (["/worksheet-pilot/approved-three-20261019", "/worksheet-pilot/next-ten-20261019", "/worksheet-pilot/second-ten-20261019"].indexOf(returnPath) !== -1 && navigationParams.get("pilot") === "1") {
     document.getElementById("backBtn").href=returnPath;
     document.getElementById("backBtn").textContent="חזרה לבחירת דף";
   }

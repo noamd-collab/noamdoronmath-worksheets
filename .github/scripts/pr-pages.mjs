@@ -75,9 +75,10 @@ export function routeFromPageFile(file) {
  */
 export function pagesTouchedByDiff(files) {
   const normalized = files.map((file) => String(file).replaceAll('\\', '/'));
-  if (normalized.includes('headless/astro-poc/src/data/worksheet-next-ten.v1.json') ||
+  if (normalized.includes('headless/astro-poc/src/data/worksheet-second-ten.v1.json') ||
+      normalized.includes('headless/astro-poc/src/data/worksheet-next-ten.v1.json') ||
       normalized.includes('headless/astro-poc/src/pages/worksheet-pilot/[slug].astro')) {
-    return { pages: ['/worksheet-pilot/next-ten-20261019', '/worksheet-pilot/approved-three-20261019'], fallback: false, omitted: [] };
+    return { pages: ['/worksheet-pilot/second-ten-20261019', '/worksheet-pilot/next-ten-20261019', '/worksheet-pilot/approved-three-20261019'], fallback: false, omitted: [] };
   }
   if (normalized.some((file) => TOPIC_ANIMATION_FILES.includes(file))) {
     return { pages: [...TOPIC_ANIMATION_PAGES], fallback: false, omitted: [] };

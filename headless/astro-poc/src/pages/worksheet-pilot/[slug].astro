@@ -3,10 +3,11 @@
 import '../../styles/fonts.css';
 import firstBatch from '../../data/worksheet-pilot.v1.json';
 import nextBatch from '../../data/worksheet-next-ten.v1.json';
+import secondBatch from '../../data/worksheet-second-ten.v1.json';
 
 export const prerender = false;
 
-const hidden = [firstBatch, nextBatch].find(batch => batch.page === Astro.url.pathname.replace(/\/+$/, ''));
+const hidden = [firstBatch, nextBatch, secondBatch].find(batch => batch.page === Astro.url.pathname.replace(/\/+$/, ''));
 if (!hidden) {
   return new Response('Not Found', {
     status: 404,
