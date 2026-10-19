@@ -141,7 +141,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Noam 2026-10-19: selected-part task priority and explicit drawing action after
     // a successful geometry hint. Regression tests cover scope, errors and request races.
     // Only this script fence changes; authentication and original worksheet bytes do not.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '6acd5ca20a64db318252bc37504b521a7f719a050de7cff965426e7282a4dedb');
+    // Noam 2026-10-19: pin label wording only ('העזר ברמזי' / '· רמזי'); no logic change.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '644b349645dd267bba1f0d31eafd2585ad9679a08c35bc560e3644660f9f188a');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
