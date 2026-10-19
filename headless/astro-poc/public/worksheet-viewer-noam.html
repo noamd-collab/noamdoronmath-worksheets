@@ -1540,7 +1540,25 @@ textarea:focus{
 .noam-diagram-dialog-close:focus-visible{outline:3px solid var(--accent-dark);outline-offset:3px}
 .noam-diagram-dialog-content{overflow:auto;overscroll-behavior:contain;min-height:0;padding:12px;scrollbar-gutter:stable}
 .noam-diagram-dialog-content .noam-geometry{margin:0;max-width:none}
-.noam-diagram-dialog .noam-diagram-dialog-content .noam-geometry-svg{display:block;width:100%;height:auto;min-height:240px;max-height:min(55dvh,480px)}
+.noam-diagram-dialog .noam-diagram-dialog-content .noam-geometry-svg{display:block;width:100%;height:auto;min-height:0;max-height:none}
+.noam-diagram-zoom{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px;border-bottom:1px solid var(--line);flex:none}
+.noam-diagram-zoom button{min-width:44px;min-height:44px;padding:6px 12px;border:1px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink);font:700 16px Assistant,sans-serif}
+.noam-diagram-zoom button:focus-visible{outline:3px solid var(--accent-dark);outline-offset:2px}
+.noam-diagram-zoom button:disabled{opacity:.4}
+.noam-diagram-zoom output{min-width:48px;text-align:center;font:700 16px Assistant,sans-serif;direction:ltr}
+.noam-diagram-viewport{overflow:auto;max-width:100%;direction:ltr;overscroll-behavior:contain;touch-action:pan-x pan-y pinch-zoom}
+.noam-diagram-canvas{width:100%}
+.noam-diagram-pan-help{font:400 14px/1.5 Assistant,sans-serif;margin:8px;text-align:center}
+@media(max-width:600px){
+  .noam-diagram-dialog{width:100%;height:100dvh;max-height:100dvh;max-width:100%;margin:0;border:0;border-radius:0}
+  .noam-diagram-dialog-header{padding:calc(8px + env(safe-area-inset-top)) 12px 8px}
+  .noam-diagram-dialog-content{flex:1;padding:8px 4px calc(8px + env(safe-area-inset-bottom));scrollbar-gutter:auto}
+  .noam-diagram-dialog-content .noam-geometry{padding:8px;border:0}
+  .exact-viewer .noam-row.assistant:has(.noam-geometry) .noam-bubble{width:100%;max-width:100%;box-sizing:border-box;padding-inline:6px}
+  .exact-viewer .noam-bubble .noam-geometry{padding:6px;margin-inline:0}
+  .exact-viewer .noam-bubble .noam-geometry-svg{max-height:none}
+  .exact-viewer .noam-bubble .noam-diagram-expand{width:100%;margin-block:8px}
+}
 
 .noam-draw-beta{
   display:inline-block;
@@ -6990,12 +7008,13 @@ function noamNativeFigure(exercise){
   var url=String(exercise&&exercise.nativeFigureUrl||"");
   if (!/^\/noam-ai\/native\/(?:G[789]-T[0-9]+|G7-ASSESS1|G8-(?:ASSESS1|CIRCLE|INTERP|TWOSRC)|G9-(?:3060|KITE|SIDEANG|TRAP))\/[abc]\/[a-zA-Z0-9_./-]+\.svg$/.test(url)||url.includes("..")){return null;}
   var figure=document.createElement("figure");
-  figure.className="noam-native-figure";
+  figure.className="noam-native-figure noam-geometry";
   figure.style.margin="12px 0";
   var image=document.createElement("img");
   image.src=url;
   image.alt="השרטוט המקורי של "+exerciseLabel(exercise);
-  image.style.cssText="display:block;max-width:100%;width:100%;max-height:340px;object-fit:contain;background:white";
+  image.className="noam-geometry-svg";
+  image.style.cssText="display:block;max-width:100%;width:100%;height:auto;object-fit:contain;background:white";
   var caption=document.createElement("figcaption");
   caption.textContent="השרטוט המקורי של השאלה";
   image.addEventListener("error",function(){figure.hidden=true;});
@@ -7021,7 +7040,8 @@ function showExercisePreview(exercise,dataUrl){
     var summary=document.createElement("summary");
     summary.textContent="הצגת השרטוט של השאלה";
     summary.style.cssText="cursor:pointer;padding:12px 0;font-weight:700";
-    details.appendChild(summary);details.appendChild(nativeFigure);preview.appendChild(details);
+    details.appendChild(summary);details.appendChild(nativeFigure);
+    noamAddDiagramExpansion(details,nativeFigure);preview.appendChild(details);
   }
   preview.hidden=false;
   fallback.hidden=true;
@@ -7836,7 +7856,7 @@ function noamAddDiagramExpansion(container,figure){
     var title=document.createElement("h2");
     title.id="noamDiagramDialogTitle";
     title.className="noam-diagram-dialog-title";
-    title.textContent="שרטוט להמחשה";
+    title.textContent=figure.classList.contains("noam-native-figure")?"השרטוט של השאלה":"שרטוט להמחשה";
     heading.appendChild(blessing);heading.appendChild(title);
     var close=document.createElement("button");
     close.type="button";
@@ -7856,12 +7876,51 @@ function noamAddDiagramExpansion(container,figure){
     copy.querySelectorAll(".noam-term").forEach(function(term){
       term.replaceWith(document.createTextNode(term.textContent));
     });
+    var svg=copy.querySelector(".noam-geometry-svg");
+    var zoom=document.createElement("div");
+    zoom.className="noam-diagram-zoom";
+    zoom.setAttribute("role","group");
+    zoom.setAttribute("aria-label","גודל השרטוט");
+    var minus=document.createElement("button"),plus=document.createElement("button"),fit=document.createElement("button");
+    minus.type=plus.type=fit.type="button";
+    minus.textContent="−";minus.setAttribute("aria-label","הקטנת השרטוט");
+    plus.textContent="+";plus.setAttribute("aria-label","הגדלת השרטוט בזום");
+    fit.textContent="התאמה למסך";
+    var amount=document.createElement("output");
+    amount.setAttribute("aria-live","polite");
+    var scale=100,viewport,canvas;
+    if(svg){
+      viewport=document.createElement("div");viewport.className="noam-diagram-viewport";
+      viewport.tabIndex=0;viewport.setAttribute("role","region");
+      viewport.setAttribute("aria-label","שרטוט מוגדל — אפשר לגלול לצדדים");
+      canvas=document.createElement("div");canvas.className="noam-diagram-canvas";
+      svg.replaceWith(viewport);viewport.appendChild(canvas);canvas.appendChild(svg);
+    }
+    function setScale(value){
+      scale=Math.max(100,Math.min(250,value));
+      if(canvas){canvas.style.width=scale+"%";}
+      amount.textContent=scale+"%";minus.disabled=scale===100;plus.disabled=scale===250;
+      if(viewport&&scale===100){viewport.scrollLeft=0;}
+    }
+    minus.addEventListener("click",function(){setScale(scale-25);});
+    plus.addEventListener("click",function(){setScale(scale+25);});
+    fit.addEventListener("click",function(){setScale(100);});
+    zoom.appendChild(minus);zoom.appendChild(amount);zoom.appendChild(plus);zoom.appendChild(fit);
+    setScale(100);
     content.appendChild(copy);
-    dialog.appendChild(header);dialog.appendChild(content);
+    if(svg){
+      var help=document.createElement("p");
+      help.className="noam-diagram-pan-help";
+      help.textContent="בהגדלה אפשר לגלול לצדדים בתוך השרטוט.";
+      content.appendChild(help);
+    }
+    dialog.appendChild(header);if(svg){dialog.appendChild(zoom);}dialog.appendChild(content);
     dialog.addEventListener("keydown",function(event){
       if(event.key!=="Tab"){return;}
-      if(event.shiftKey&&document.activeElement===close){event.preventDefault();content.focus();}
-      else if(!event.shiftKey&&document.activeElement===content){event.preventDefault();close.focus();}
+      var stops=Array.from(dialog.querySelectorAll("button:not(:disabled),[tabindex='0']"));
+      var first=stops[0],last=stops[stops.length-1];
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
     });
     dialog.addEventListener("close",function(){
       dialog.remove();
