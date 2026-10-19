@@ -110,6 +110,25 @@ export async function baselineRoutesFromManifest(manifest, root) {
   } finally { await rm(temporary, { recursive: true, force: true }); }
 }
 
+// Astro App.match and the Cloudflare handler both consult manifest.assets
+// before matching an endpoint. Pruned SVG copies must leave this Set as well.
+// Replace only the serialized assets array; preserve all other manifest bytes.
+export function removeBundledSvgAssetRegistrations(source, svgPaths) {
+  const declarations = [...source.matchAll(/const manifest = deserializeManifest\((\{[^\n]+\})\);/g)];
+  if (declarations.length !== 1) throw new Error('Unsupported built Astro manifest serialization');
+  const serialized = JSON.parse(declarations[0][1]);
+  if (!Array.isArray(serialized.assets)) throw new Error('Built Astro manifest has no assets array');
+  const remove = new Set(svgPaths.map((path) => '/' + path));
+  if (remove.size !== svgPaths.length || [...remove].some((path) => !path.startsWith('/noam-ai/native/') || !path.endsWith('.svg'))) throw new Error('Invalid SVG asset registration removal set');
+  const removed = serialized.assets.filter((path) => remove.has(path));
+  if (removed.length !== remove.size || new Set(removed).size !== remove.size) throw new Error('Built Astro SVG asset registration inventory mismatch');
+  const assets = serialized.assets.filter((path) => !remove.has(path));
+  const oldToken = '"assets":' + JSON.stringify(serialized.assets);
+  const newToken = '"assets":' + JSON.stringify(assets);
+  if (source.split(oldToken).length !== 2) throw new Error('Ambiguous built Astro asset array');
+  return { source: source.replace(oldToken, newToken), assets, removed: removed.length };
+}
+
 export async function finalizeNativeSvg(root = projectRoot) {
   const dist = join(root, 'dist');
   const descriptor = JSON.parse(await readFile(join(root, 'src/generated/native-svg-bundle.json'), 'utf8'));
@@ -142,6 +161,14 @@ export async function finalizeNativeSvg(root = projectRoot) {
   if (!manifest.routes.some(({ routeData }) => routeData.route === '/noam-ai/native/[...asset]' && routeData.prerender === false)) {
     throw new Error('Native SVG server endpoint absent from built Astro manifest');
   }
+  const manifestPath = join(dist, manifestFiles[0]);
+  const registration = removeBundledSvgAssetRegistrations(await readFile(manifestPath, 'utf8'), svgPaths);
+  const remainingAssets = new Set(registration.assets);
+  const { App } = await import('astro/app');
+  const app = new App({ ...manifest, assets: remainingAssets });
+  for (const path of svgPaths) {
+    if (remainingAssets.has('/' + path) || app.match(new Request('https://native-svg-build.invalid/' + path))?.route !== '/noam-ai/native/[...asset]') throw new Error(`Pruned SVG still blocked before endpoint: ${path}`);
+  }
   const originalRoutes = JSON.parse(await readFile(join(dist, '_routes.json'), 'utf8'));
   const routes = narrowNativeRoutes(await baselineRoutesFromManifest(manifest, root), descriptor.bundlePath);
   // Preserve any adapter/custom rule outside our subtree. A future adapter or
@@ -163,10 +190,11 @@ export async function finalizeNativeSvg(root = projectRoot) {
   const staticCount = remaining.filter((path) => !path.startsWith('_worker.js/')).length;
   if (staticCount >= 5000) throw new Error(`Static deployment still has ${staticCount} files`);
   // All checks precede mutation. Only these verified SVG copies and _routes.json
-  // are touched; the tracked originals and all other deployment bytes stay put.
+  // plus the exact SVG manifest.assets entries are touched; originals stay put.
   for (const path of svgPaths) await unlink(join(dist, path));
+  await writeFile(manifestPath, registration.source);
   await writeFile(join(dist, '_routes.json'), JSON.stringify(routes, null, 2));
-  return { removedSvg: svgPaths.length, staticCount, sourceBytes: bundle.sourceBytes, bundleSha256: bundle.sha256 };
+  return { removedSvg: svgPaths.length, removedAssetRegistrations: registration.removed, staticCount, sourceBytes: bundle.sourceBytes, bundleSha256: bundle.sha256 };
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
 import { createNativeSvgResponder } from '../src/lib/nativeSvgResponse';
-import { collectNativeSvg, generateNativeSvg, finalizeNativeSvg, filesBelow, matchesRoute, narrowNativeRoutes, baselineRoutesFromManifest, projectRoot, sha256 } from '../scripts/bundle-native-svg.mjs';
+import { collectNativeSvg, generateNativeSvg, finalizeNativeSvg, filesBelow, matchesRoute, narrowNativeRoutes, baselineRoutesFromManifest, removeBundledSvgAssetRegistrations, projectRoot, sha256 } from '../scripts/bundle-native-svg.mjs';
 
 const originalRoutes = { version: 1, include: ['/*'], exclude: ['/_astro/*', '/noam-ai/*', '/fonts/*', '/_wix/pages.json'] };
 
@@ -76,11 +76,11 @@ async function fixture() {
   await writeFile(join(root, 'dist/noam-ai/native/G9-T40/a/noam-ai.json'), '{"unchanged":true}');
   await writeFile(join(root, 'dist/keep.txt'), 'keep exact bytes\r\n');
   const endpoint = { routeData: { route: '/noam-ai/native/[...asset]', type: 'endpoint', prerender: false, segments: [[{ content: 'noam-ai', dynamic: false }], [{ content: 'native', dynamic: false }], [{ content: '...asset', dynamic: true, spread: true }]] } };
-  const manifest = { base: '/', routes: [endpoint] };
+  const manifest = { base: '/', routes: [endpoint], assets: ['/noam-ai/native/G9-T40/a/figures/fig1.svg', '/noam-ai/native/G9-T40/a/noam-ai.json', '/keep.txt'], renderers: [], entryModules: {}, adapterName: 'test', hrefRoot: 'file:///tmp/native-svg-test/' };
   const baseline = await baselineRoutesFromManifest(manifest, root);
   await writeFile(join(root, 'dist/_routes.json'), JSON.stringify(baseline));
   await mkdir(join(root, 'dist/_worker.js'), { recursive: true });
-  await writeFile(join(root, 'dist/_worker.js/manifest_test.mjs'), `export const manifest = ${JSON.stringify(manifest)};`);
+  await writeFile(join(root, 'dist/_worker.js/manifest_test.mjs'), `function deserializeManifest(value) { value.assets = new Set(value.assets); value.routes[0].routeData.pattern = new RegExp('^/noam-ai/native/(.+)$'); return value; }\nconst manifest = deserializeManifest(${JSON.stringify(manifest)});\nexport { manifest };`);
   const bundle = JSON.parse(await readFile(join(root, 'src/generated/native-svg-bundle.json'), 'utf8'));
   await copyFile(join(root, 'public', bundle.bundlePath), join(root, 'dist', bundle.bundlePath));
   await writeFile(join(root, 'dist/_worker.js/native.mjs'), `export default ${JSON.stringify(bundle)};`);
@@ -96,7 +96,7 @@ test('postbuild removes only exact bundled copies, preserves every other byte, a
     assert.ok(result.staticCount < 5000);
     const after = await filesBelow(join(root, 'dist'));
     assert.deepEqual(after, [...before.keys()].filter((path) => !path.endsWith('.svg')));
-    for (const path of after.filter((path: string) => path !== '_routes.json')) assert.equal(sha256(await readFile(join(root, 'dist', path))), before.get(path));
+    for (const path of after.filter((path: string) => path !== '_routes.json' && path !== '_worker.js/manifest_test.mjs')) assert.equal(sha256(await readFile(join(root, 'dist', path))), before.get(path));
     assert.equal(await readFile(join(root, 'public/noam-ai/native/G9-T40/a/figures/fig1.svg'), 'utf8'), '<svg>\r\nשלום</svg>');
   } finally { await rm(root, { recursive: true, force: true }); }
 });
@@ -186,4 +186,26 @@ test('generation replaces only obsolete generated bundles and leaves retained pu
     assert.deepEqual(bundles, [current.bundlePath.slice(1)]);
     assert.equal(await readFile(join(root, 'public/noam-ai/sync-provenance.json'), 'utf8'), '{"keep":true}');
   } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('only bundled SVG registrations leave Astro assets, allowing the real App.match endpoint', async () => {
+  const { App } = await import('astro/app');
+  const path = '/noam-ai/native/G7-ASSESS1/a/figures/q14_head.svg';
+  const retained = ['/noam-ai/native/G7-ASSESS1/a/noam-ai.json', '/noam-ai/manifests/a.json', '/other.svg'];
+  const routeData = { route: '/noam-ai/native/[...asset]', type: 'endpoint', pattern: /^\/noam-ai\/native\/(.+)$/, prerender: false };
+  const manifest = { base: '/', routes: [{ routeData }], assets: new Set([path, ...retained]), renderers: [], entryModules: {}, adapterName: 'test', hrefRoot: 'file:///tmp/native-svg-test/' };
+  const request = new Request('https://worksheet.test' + path);
+  assert.equal(new App(manifest as any).match(request), undefined);
+  const serialized = { assets: [path, ...retained], unrelated: { keep: 'exact bytes' } };
+  const source = `const manifest = deserializeManifest(${JSON.stringify(serialized)});\nexport { manifest };\n`;
+  const patched = removeBundledSvgAssetRegistrations(source, [path.slice(1)]);
+  assert.equal(patched.removed, 1);
+  assert.deepEqual(patched.assets, retained);
+  assert.equal(patched.source, source.replace(JSON.stringify(serialized.assets), JSON.stringify(retained)));
+  const next = { ...manifest, assets: new Set(patched.assets) };
+  assert.equal(new App(next as any).match(request)?.route, routeData.route);
+  assert.equal(next.assets.has(path), false, 'Cloudflare early static-asset branch also bypassed');
+  for (const asset of retained) assert.equal(next.assets.has(asset), true);
+  assert.throws(() => removeBundledSvgAssetRegistrations(source, ['noam-ai/native/missing.svg']), /inventory mismatch/);
+  assert.throws(() => removeBundledSvgAssetRegistrations('unknown serialization', [path.slice(1)]), /Unsupported/);
 });
