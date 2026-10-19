@@ -2437,7 +2437,8 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
   content:"";position:absolute;inset:-4px;
 }
 .exact-viewer .pdf-page .noam-report-pin .exact-ramzi-pin{
-  width:100%;height:100%;display:block;object-fit:contain;pointer-events:none;
+  width:100%;height:100%;display:grid;place-items:center;pointer-events:none;
+  font:700 18px/1 Heebo,Arial,sans-serif;color:#1e605e;
   filter:drop-shadow(0 1px 1px rgba(34,48,90,.22));
 }
 .exact-viewer .pdf-page .noam-report-pin:hover,
@@ -5042,9 +5043,9 @@ function renderManifestPins(){
     report.type = "button";
     report.className = "noam-report-pin" + (group.reportBefore ? " noam-report-before" : "");
     report.textContent = "";
-    var ramziMark = document.createElement("img");
+    var ramziMark = document.createElement("span");
     ramziMark.className = "exact-ramzi-pin";
-    ramziMark.src = "design-exact/assets/avatar/ramzi-A-idle.svg";
+    ramziMark.textContent = "!";
     ramziMark.alt = "";
     ramziMark.setAttribute("aria-hidden", "true");
     ramziMark.draggable = false;
@@ -8026,7 +8027,7 @@ function esc(s){
     var transcript=document.getElementById('noamTranscript');
     if(!transcript){return;}
     transcript.querySelectorAll('.noam-bubble.thinking').forEach(function(bubble){
-      if(!bubble.querySelector('ramzi-avatar')){bubble.prepend(makeAvatar(32,'thinking'));}
+      /* The header avatar alone carries the thinking state. */
       var content=bubble.querySelector('span:not(.noam-sr-only):not(.noam-thinking-dots)');
       if(content&&content.textContent==='נועם AI חושב…'){content.textContent='רמזי חושב…';}
     });
@@ -8090,7 +8091,7 @@ function esc(s){
       var hint=document.getElementById('noamHint');
       if(hint&&!hint.disabled){hint.click();}
     });
-    box.append(makeAvatar(80,'idle'),title,button);
+    box.append(title,button);
     transcript.appendChild(box);
   }
   function isolateMath(root){
@@ -8298,7 +8299,7 @@ function esc(s){
   });
   if(reduced.addEventListener){reduced.addEventListener('change',schedule);}else{reduced.addListener(schedule);}
   Array.from(document.querySelectorAll('img.exact-ramzi-avatar')).forEach(function(img){mountAvatar(img,44);});
-  var fabImg=fab.querySelector('img');if(fabImg){mountAvatar(fabImg,36);}
+  var fabImg=fab.querySelector('img');if(fabImg){fabImg.remove();}
   sync();
 
 })();

@@ -103,6 +103,7 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.ok(head, 'Viewer must retain its head');
     // Phone reading intentionally changes the inline CSS in this head.
     // Metadata, fonts, canonical and robots are unchanged.
+    // 2026-10-19: Noam requested a help mark instead of repeated robot pins.
     assert.equal(sha256(head), '6aa632f8c5727a7dcbce3357966a5e04fa47250e5e7c53122fd08cf6176a78e9');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
