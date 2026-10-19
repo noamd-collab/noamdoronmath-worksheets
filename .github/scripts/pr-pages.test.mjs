@@ -64,10 +64,10 @@ describe('pagesTouchedByDiff', () => {
 });
 
 
-it('screenshots both concrete worksheet routes when their dynamic page or next batch changes', () => {
-  for (const file of ['headless/astro-poc/src/data/worksheet-third-ten.v1.json', 'headless/astro-poc/src/data/worksheet-second-ten.v1.json', 'headless/astro-poc/src/data/worksheet-next-ten.v1.json', 'headless/astro-poc/src/pages/worksheet-pilot/[slug].astro']) {
+it('screenshots all concrete worksheet routes when their dynamic page or next batch changes', () => {
+  for (const file of ['headless/astro-poc/src/data/worksheet-fourth-ten.v1.json', 'headless/astro-poc/src/data/worksheet-third-ten.v1.json', 'headless/astro-poc/src/data/worksheet-second-ten.v1.json', 'headless/astro-poc/src/data/worksheet-next-ten.v1.json', 'headless/astro-poc/src/pages/worksheet-pilot/[slug].astro']) {
     const result=pagesTouchedByDiff([file]);
     assert.equal(result.fallback,false);
-    assert.deepEqual(result.pages,['/worksheet-pilot/third-ten-20261019','/worksheet-pilot/second-ten-20261019','/worksheet-pilot/next-ten-20261019','/worksheet-pilot/approved-three-20261019']);
+    assert.deepEqual(result.pages,['/worksheet-pilot/fourth-ten-20261019','/worksheet-pilot/third-ten-20261019','/worksheet-pilot/second-ten-20261019','/worksheet-pilot/next-ten-20261019','/worksheet-pilot/approved-three-20261019']);
   }
 });
