@@ -1,0 +1,25 @@
+# Review source, configuration and tests before generated native/site data.
+# Git -O only orders the full diff: no changed path is excluded.
+.github/*
+*.mjs
+*.cjs
+*.js
+*.ts
+*.tsx
+*.jsx
+*.astro
+*.html
+*.css
+*.scss
+*.py
+*.sh
+*.sql
+package.json
+*/package.json
+package-lock.json
+*/package-lock.json
+*/tsconfig.json
+*.yml
+*.yaml
+*.toml
+*.md
