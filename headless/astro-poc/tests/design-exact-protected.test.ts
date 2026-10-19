@@ -124,7 +124,11 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Glossary text and the fraction key use a horizontal bar (Noam, 18.10.2026).
     // A pure equation such as a/b = c/d is wrapped in dir=ltr. A mixed Hebrew
     // sentence is not, so 15 מתוך 20 = 3/4 keeps its reading order.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'aa46d7dcbee15e601dae07f90beecb9dfe98bddea4e96a613c0940ab0cd4ca13');
+    // PR185, Noam-authorized worksheet integration: original native SVG disclosure,
+    // exact unlisted back link, and lv=one diagnostic support. The existing AI
+    // solve/auth/rate-limit/storage code remains unchanged. Behavior and URL guards
+    // are exercised by worksheet-pilot.test.ts; all other fence hashes stay fixed.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e65b8eb34ea069e382d0297e03385ef726a8d69e8075f7c01a06cc7b1c190534');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

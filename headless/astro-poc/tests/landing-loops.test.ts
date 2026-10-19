@@ -34,6 +34,7 @@ const NON_LANDING_PAGES = new Set([
   'dev-loops.astro',
   'hero-loops/[variant].astro',
   'practice-private/[slug].astro',
+  'worksheet-pilot/[slug].astro', // Unlisted document picker, not a topic/marketing landing.
   'blog/index.astro',
   'blog/categories/[slug].astro',
   'post/[...slug].astro',
