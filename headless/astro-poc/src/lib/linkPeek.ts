@@ -348,7 +348,7 @@ export function initLinkPeek(gradeCounts?: Record<string, number>): void {
       })
       .join('');
     const ai = data.ai
-      ? `<div class="nd-link-peek__ai"><span class="nd-link-peek__ai-ring" aria-hidden="true"></span><span class="nd-link-peek__ai-text">נועם AI זמין בכל דף</span></div>`
+      ? `<div class="nd-link-peek__ai"><span class="nd-link-peek__ai-ring" aria-hidden="true"></span><span class="nd-link-peek__ai-text">מנווט AI זמין בכל דף</span></div>`
       : '';
     el.innerHTML = `<div class="nd-link-peek__card"><div class="nd-link-peek__shadow" aria-hidden="true">${blocks}</div><p class="nd-link-peek__title">${data.title}</p><p class="nd-link-peek__tag">${data.tag}</p><p class="nd-link-peek__desc">${data.desc}</p>${ai}</div>`;
     el.hidden = false;

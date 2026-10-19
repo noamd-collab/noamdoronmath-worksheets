@@ -64,9 +64,9 @@ describe('clean worksheet before Noam AI', () => {
     vm.createContext(context);
     vm.runInContext(
       `${fn}\nresult = [\n` +
-        `questionHitName({dataset:{label:'שאלות 1, 2 · בחירת שאלה וסעיף · נועם AI'}}),\n` +
-        `questionHitName({dataset:{label:'שאלה 1 · סעיף א · העזר בנועם AI'}}),\n` +
-        `questionHitName({dataset:{label:'שאלה 3 · בחירת שאלה וסעיף · נועם AI'}})\n` +
+        `questionHitName({dataset:{label:'שאלות 1, 2 · בחירת שאלה וסעיף · רמזי'}}),\n` +
+        `questionHitName({dataset:{label:'שאלה 1 · סעיף א · העזר ברמזי'}}),\n` +
+        `questionHitName({dataset:{label:'שאלה 3 · בחירת שאלה וסעיף · רמזי'}})\n` +
         `];`,
       context
     );
