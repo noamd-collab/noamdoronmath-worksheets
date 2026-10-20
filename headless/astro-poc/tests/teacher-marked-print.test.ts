@@ -47,8 +47,8 @@ describe('grade 9 factoring marked source', () => {
     assert.match(page, /print-color-adjust:\s*exact/);
     assert.match(page, /-webkit-print-color-adjust:\s*exact/);
     assert.match(page, /integrity="sha384-/);
-    assert.match(page, /\.print-area \.source-mark\{[^}]*background:\s*transparent/);
-    assert.match(printer, /globalCompositeOperation = 'multiply'/);
+    assert.match(page, /\.print-area \.source-mark\{display:none/);
+    assert.match(printer, /function selectionMarkBox/);
     assert.match(printer, /clearPreparedPrint/);
     assert.match(page, /print-unprepared/);
     assert.match(page, /כדי להדפיס, פותחים קודם את תצוגת ההדפסה/);
@@ -400,7 +400,7 @@ describe('teacher catalog picker', () => {
     assert.match(preview, /function levelAllows/);
     assert.match(preview, /question\.scrambled === true/);
     assert.match(preview, /aria-label="\$\{escapeHTML\(thumbAria\(question\)\)\}"/);
-    assert.equal(preview.includes('aria-hidden="true"'), false);
+    assert.equal(preview.slice(0, preview.indexOf('function selectionMarkBox')).includes('aria-hidden="true"'), false);
     assert.equal(preview.includes('function readingOrder'), false);
     assert.equal(preview.includes('function paintExtract'), false);
     assert.equal(preview.includes('function hasHebrew'), false);

@@ -530,11 +530,31 @@ async function attachTeacherNote(root, note) {
   sheet.insertAdjacentHTML('beforeend', html);
 }
 
+function selectionMarkBox(question) {
+  const box = question.box;
+  if (!box || ![box.x, box.y, box.w, box.h].every(Number.isFinite)
+      || box.x < 0 || box.y < 0 || box.w <= 0 || box.h <= 0) return null;
+  // The old selection rectangle includes the start of the sentence. Put a
+  // small check beside its right edge, never over the original PDF text.
+  const x = box.x + box.w + 0.006;
+  const w = Math.min(0.014, 0.995 - x);
+  if (w < 0.006) return null;
+  const line = question.labelLine;
+  const lineCenter = line && line.page === question.page
+    && Number.isFinite(line.y) && Number.isFinite(line.h) && line.h > 0
+    ? line.y + line.h / 2 : NaN;
+  const center = lineCenter >= box.y && lineCenter <= box.y + box.h
+    ? lineCenter : box.y + box.h / 2;
+  const h = Math.min(0.01, box.h * 0.5);
+  return { x, y: Math.max(0, Math.min(1 - h, center - h / 2)), w, h };
+}
+
 function sheetHTML(pageNumber, questions) {
   const marked = questions.filter((question) => question.box);
   const marks = marked.map((question) => {
-    const box = question.box;
-    return `<span class="source-mark" data-question="${escapeHTML(question.id)}" style="left:${box.x * 100}%;top:${box.y * 100}%;width:${box.w * 100}%;height:${box.h * 100}%" title="${escapeHTML(question.label)}"></span>`;
+    const box = selectionMarkBox(question);
+    if (!box) return '';
+    return `<span class="source-mark" data-question="${escapeHTML(question.id)}" style="left:${box.x * 100}%;top:${box.y * 100}%;width:${box.w * 100}%;height:${box.h * 100}%" role="img" aria-label="${escapeHTML(question.label)} — נבחר" title="${escapeHTML(question.label)}"><svg viewBox="0 0 16 16" preserveAspectRatio="none" aria-hidden="true"><path d="M 2 8 L 6 12 L 14 3"/></svg></span>`;
   }).join('');
   const names = marked.map((question) => question.label).join(' · ');
   const caption = names
@@ -553,14 +573,15 @@ function bakeMarks(canvas, stage) {
     const w = (parseFloat(mark.style.width) / 100) * width;
     const h = (parseFloat(mark.style.height) / 100) * height;
     ctx.save();
-    ctx.globalCompositeOperation = 'multiply';
-    ctx.fillStyle = 'rgba(255,214,90,0.55)';
-    ctx.fillRect(x, y, w, h);
-    ctx.restore();
-    ctx.save();
-    ctx.strokeStyle = '#c47d00';
-    ctx.lineWidth = Math.max(2, width * 0.0025);
-    ctx.strokeRect(x, y, w, h);
+    ctx.strokeStyle = '#21645f';
+    ctx.lineWidth = Math.min(w, h) * 0.15;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x + w * 2 / 16, y + h * 8 / 16);
+    ctx.lineTo(x + w * 6 / 16, y + h * 12 / 16);
+    ctx.lineTo(x + w * 14 / 16, y + h * 3 / 16);
+    ctx.stroke();
     ctx.restore();
   });
 }
