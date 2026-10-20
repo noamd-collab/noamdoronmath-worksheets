@@ -3301,6 +3301,18 @@ html.noam-a11y-motion .hero-draw {
 .concept-loop .cl-fill-d { fill: #e5e7eb; }
 .concept-loop .cl-stroke-a { stroke: var(--cobalt); stroke-width: 2.5; }
 .concept-loop .cl-stroke-b { stroke: #7c3aed; stroke-width: 2.5; }
+/* SAS copy stays dashed even where .cl-line would otherwise draw a solid stroke. */
+.concept-loop .cl-sas-dash {
+  stroke-dasharray: 14 11;
+  stroke-width: 3.5;
+}
+.concept-loop[data-loop='sas-snap'] .cl-sas-cap {
+  font-size: 22px;
+  font-weight: 800;
+}
+@media (max-width: 640px) {
+  .concept-loop[data-loop='sas-snap'] .cl-sas-cap { font-size: 26px; }
+}
 
 .concept-loop .cl-t {
   font-family: 'Assistant', Arial, sans-serif;

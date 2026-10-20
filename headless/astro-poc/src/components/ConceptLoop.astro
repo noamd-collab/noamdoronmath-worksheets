@@ -162,7 +162,8 @@ const ariaLabels: Record<string, string> = {
   'peri-rect': 'הדגמה: הליכה על שפת המלבן סוכמת את ארבע הצלעות להיקף.',
   'signed-jump': 'הדגמה: על הישר, קפיצה של 5 מ־2− מגיעה אל 3.',
   'prime-rect': 'הדגמה: 6 נכנס למלבן של נקודות, ו־7 נשאר בלי מלבן.',
-  'sas-snap': 'הדגמה: שני משולשים עם אותם סימנים נצמדים ומתלכדים.',
+  'sas-snap':
+    'הדגמה: שני משולשים. קודם סימון אחד על צלע, אחר כך שני סימונים על הצלע השנייה, ואז קשת על הזווית שביניהן. משולש אחד מחליק והם נפגשים באמצע. שני המתארים נשארים גלויים, והמשולשים חופפים לפי צלע־זווית־צלע.',
   'obtuse-ht': 'הדגמה: הגובה למשולש קהה יורד מחוץ לצורה ופוגש את המשך הבסיס.',
   'box-vol': 'הדגמה: קוביות יחידה ממלאות תיבה, 3 כפול 2 כפול 2 שווה 12.',
   'trap-area': 'הדגמה: בטרפז, ממוצע שני הבסיסים כפול הגובה נותן את השטח.',
@@ -1518,18 +1519,32 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'sas-snap' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
-          <polygon class="cl-col" data-el="ghost" points="280,204 390,184 340,104" />
-          <polygon class="cl-line cl-stroke-a" points="90,220 200,200 150,120" />
-          <line class="cl-line" x1="132" y1="214" x2="140" y2="206" />
-          <line class="cl-line" x1="112" y1="182" x2="122" y2="176" />
-          <path class="cl-line cl-stroke-a" d="M112 214 A22 22 0 0 1 108 196" />
-          <g data-el="copy">
-            <polygon class="cl-line cl-stroke-b" points="90,220 200,200 150,120" fill="rgba(124,58,237,0.12)" />
-            <line class="cl-stroke-b" x1="132" y1="214" x2="140" y2="206" />
-            <line class="cl-stroke-b" x1="112" y1="182" x2="122" y2="176" />
-            <path class="cl-stroke-b" d="M112 214 A22 22 0 0 1 108 196" fill="none" />
+          <g data-el="orig" transform="translate(-136 0)">
+            <polygon class="cl-line cl-stroke-a cl-fill-a" data-el="triA" points="155,280 400,210 250,28" />
+            <g data-el="m1a" style="opacity:0">
+              <line class="cl-line cl-stroke-a" x1="275.03" y1="236.35" x2="279.97" y2="253.65" />
+            </g>
+            <g data-el="m2a" style="opacity:0">
+              <line class="cl-line cl-stroke-a" x1="193.02" y1="153.63" x2="209.86" y2="159.98" />
+              <line class="cl-line cl-stroke-a" x1="195.14" y1="148.02" x2="211.98" y2="154.37" />
+            </g>
+            <path class="cl-line cl-stroke-a" data-el="m3a" fill="none" style="opacity:0" d="M189.61 270.11 A36 36 0 0 0 167.7 246.31" />
           </g>
-          <text class="cl-t" data-el="same" x="280" y="270" text-anchor="middle" style="opacity:0">התלכדו, והסימנים זהים</text>
+          <g data-el="copy" transform="translate(136 0)">
+            <polygon class="cl-line cl-stroke-b cl-fill-b cl-sas-dash" data-el="triB" points="155,280 400,210 250,28" />
+            <g data-el="m1b" style="opacity:0">
+              <line class="cl-line cl-stroke-b" x1="275.03" y1="236.35" x2="279.97" y2="253.65" />
+            </g>
+            <g data-el="m2b" style="opacity:0">
+              <line class="cl-line cl-stroke-b" x1="193.02" y1="153.63" x2="209.86" y2="159.98" />
+              <line class="cl-line cl-stroke-b" x1="195.14" y1="148.02" x2="211.98" y2="154.37" />
+            </g>
+            <path class="cl-line cl-stroke-b" data-el="m3b" fill="none" style="opacity:0" d="M189.61 270.11 A36 36 0 0 0 167.7 246.31" />
+          </g>
+          <text class="cl-t cl-sas-cap" data-el="cap1" x="280" y="322" text-anchor="middle" direction="rtl" style="opacity:0">צלע ראשונה שווה</text>
+          <text class="cl-t cl-sas-cap" data-el="cap2" x="280" y="322" text-anchor="middle" direction="rtl" style="opacity:0">צלע שנייה שווה</text>
+          <text class="cl-t cl-sas-cap" data-el="cap3" x="280" y="322" text-anchor="middle" direction="rtl" style="opacity:0">הזווית הכלולה שווה</text>
+          <text class="cl-t cl-sas-cap" data-el="congruent" x="280" y="322" text-anchor="middle" direction="rtl" style="opacity:0">המשולשים חופפים</text>
         </svg>
       )
     }
