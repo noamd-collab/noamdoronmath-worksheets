@@ -28,6 +28,8 @@
  * conceptLoops.ts and ConceptLoop.astro moved again for the grade-8
  * sas-snap film (Noam, 20.10.2026): two visible triangles, pair-by-pair
  * marks, then they meet in the middle with both outlines still visible.
+ * Moved again the same day so the dashed triangle is sas-copy: the
+ * existing [data-el='copy'] { opacity: 0 } rule was hiding it.
  * Explicit content fix, not a silent regen.
  * The viewer released scripts moved again so the glossary and the
  * fraction key draw a horizontal bar instead of an ASCII slash
@@ -62,9 +64,9 @@ const protectedFiles: Record<string, string> = {
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
   // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
   // PR169: preserve new topic films and honor OS reduced motion.
-    'src/lib/conceptLoops.ts': '228ec063f528cb7df0bff5fdf795835d22fd3c9be6717e1e0af69649ddb780de',
+    'src/lib/conceptLoops.ts': '48eb182e5b4dafde1760c4bd4a252c96c5d2b58283cbba3912ccf01f39a85435',
   'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
-  'src/components/ConceptLoop.astro': '8a3436b8c071ca6a16df2dccfec3a1268f703dca1912143c066189e3446f6283',
+  'src/components/ConceptLoop.astro': '7d725f47d324b76dae27c27874116a93ed59ffb3523c26198140b19276293d7a',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // 47afe919: intentional text-only school notation on the readout

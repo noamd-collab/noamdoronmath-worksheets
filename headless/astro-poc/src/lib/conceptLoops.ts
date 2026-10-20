@@ -1348,6 +1348,8 @@ const PRIME_RECT_HOLD = 5.4;
    overlapped pose in the middle of the 560×340 card. Each copy starts 136px
    apart so both are fully on the card, then they slide together. The copy
    stays dashed so both outlines remain visible on top of each other.
+   The moving group is sas-copy, not copy: catalog.css hides every
+   [data-el='copy'] (the transform film) at opacity 0.
    Marks: one tick, then two ticks, then the included arc — each pair with
    its own caption. "המשולשים חופפים" starts only after the slide has
    finished, and the formula follows it. */
@@ -1426,7 +1428,9 @@ function renderSasSnap(root: LoopRoot, t: number) {
   const vis = t < 9.15 ? endFade : ph(t, 9.8, 10);
   const together = ph(t, 4.2, 4.9) * (1 - ph(t, 9.2, 9.75));
   shift(q(root, 'orig'), -SAS_APART * (1 - together), 0);
-  shift(q(root, 'copy'), SAS_APART * (1 - together), 0);
+  const sasCopy = q(root, 'sas-copy');
+  shift(sasCopy, SAS_APART * (1 - together), 0);
+  op(sasCopy, 1);
   op(q(root, 'triA'), vis);
   op(q(root, 'triB'), vis);
 
