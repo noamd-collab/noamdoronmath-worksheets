@@ -149,7 +149,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Noam 2026-10-20: unsupported diagram replies keep their error and may show the
     // approved source figure (עזר מהדף), highlighting only a side named in a standard hint.
     // Auth, solve protocol, storage and the other 13 released scripts are unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'f5433e295fd43ace840d9e444e2cb32ca671975e4eee596870e964956dc55e3f');
+    // 2026-10-20: acknowledge an actually loaded source aid without claiming a
+    // generated diagram succeeded; failure history, retry and auth remain unchanged.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'd6f07f27aef01d3abf5b32bb15a557e99360e74f39577d3af257832d59e50a62');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
