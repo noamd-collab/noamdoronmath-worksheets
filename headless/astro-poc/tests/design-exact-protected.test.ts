@@ -146,7 +146,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Noam 2026-10-19 22:13: the explicit drawing keeps the source figure's given
     // equality ticks (package data, separate from focus). Solve/auth/storage unchanged.
     // Noam's reported rectangle: revalidate a source-given kite coordinate repair before display.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '8e9e9cf26be84df58ad897f844e41f32b28dee117543fb84cfefc218c10e590c');
+    // Noam 2026-10-20: unsupported diagram replies keep their error and may show the
+    // approved source figure (עזר מהדף), highlighting only a side named in a standard hint.
+    // Auth, solve protocol, storage and the other 13 released scripts are unchanged.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'f5433e295fd43ace840d9e444e2cb32ca671975e4eee596870e964956dc55e3f');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

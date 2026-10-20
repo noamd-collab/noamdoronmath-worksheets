@@ -2380,7 +2380,7 @@ body.exact-viewer{
   border:0;background:#fff;
 }
 .exact-viewer.exact-narrow .panel-in{border:0;border-radius:0;box-shadow:none}
-.exact-viewer.exact-narrow .panel-head{gap:10px;padding:8px 12px;border-bottom:2px solid #22305a}
+.exact-viewer.exact-narrow .panel-head{gap:8px;padding:4px 10px;border-bottom:1px solid #d5dbe6}
 .exact-viewer.exact-narrow .panel-close{width:44px;height:44px;padding:0}
 .exact-viewer.exact-narrow .mobile-close-label{display:none}
 .exact-viewer.exact-narrow.exact-help-active>.bar{display:none}
@@ -2721,17 +2721,18 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
 }
 .exact-viewer .panel-in{border:0;border-radius:16px;box-shadow:none;background:#fff}
 .exact-viewer .panel-head{
-  gap:8px;padding:8px 12px;min-height:0;background:#f4f7f8;
+  gap:8px;padding:4px 10px;min-height:0;background:#f4f7f8;
   border-bottom:1px solid #d5dbe6;
 }
 .exact-viewer .panel-head b{
-  font:700 20px/1.3 Heebo,'Heebo Fallback',sans-serif;color:#22305a;
+  font:700 18px/1.25 Heebo,'Heebo Fallback',sans-serif;color:#22305a;
 }
 .exact-viewer .panel-badge{
   font:400 13px/1.3 Heebo,'Heebo Fallback',sans-serif;background:#fff;
   border:1px solid #d5dbe6;color:#22305a;padding:0 8px;
 }
-.exact-viewer .exact-ramzi-status{font:400 14px/1.4 Heebo,'Heebo Fallback',sans-serif;color:#22305a}
+.exact-viewer .exact-ramzi-status{font:400 12px/1.3 Heebo,'Heebo Fallback',sans-serif;color:#22305a}
+.exact-viewer .panel-head .exact-ramzi-avatar{width:32px;height:32px}
 .exact-viewer .panel-close{
   width:44px;height:44px;min-width:44px;border:1px solid #d5dbe6;border-radius:12px;
   background:#fff;color:#22305a;box-shadow:none;font-size:18px;
@@ -2751,9 +2752,9 @@ html.noam-a11y-motion .exact-viewer .noam-print-arrow-icon{animation:none}
 .exact-viewer .panel.is-short .panel-body,
 .exact-viewer .panel.is-short .panel-body.is-chat{overflow:hidden;min-height:0}
 .exact-viewer .noam-picked{
-  padding:8px 12px;background:#f4f7f8;border:1px solid #d5dbe6;border-radius:12px;box-shadow:none;
+  padding:4px 10px;background:#f4f7f8;border:1px solid #d5dbe6;border-radius:12px;box-shadow:none;
 }
-.exact-viewer .noam-picked-label{font:700 14px/1.4 Heebo,'Heebo Fallback',sans-serif;color:#22305a}
+.exact-viewer .noam-picked-label{font:700 13px/1.4 Heebo,'Heebo Fallback',sans-serif;color:#22305a}
 .exact-viewer .noam-picked-text{font:400 16px/1.5 Heebo,'Heebo Fallback',sans-serif;color:#22305a;max-height:none}
 .exact-viewer .noam-thread-tools{gap:4px}
 .exact-viewer .panel.is-short .noam-thread-tools{display:flex;min-height:0;margin:0}
@@ -5756,11 +5757,11 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
   // suppresses old saved replies that predate the diagram mechanism.
   if (visual&&visual.type==="question-image"){visual=null;}
   if (visual){
-    var visualElement=visual.type==="ai-diagram" ? noamRenderAiDiagram(visual) : visual.type==="geometry-guide"
+    var visualElement=visual.type==="native-source-focus" ? noamRenderNativeFocus(visual) : visual.type==="ai-diagram" ? noamRenderAiDiagram(visual) : visual.type==="geometry-guide"
       ? noamRenderGeometryGuide(visual)
       : window.NoamLocalVisual&&window.NoamLocalVisual.render(document,visual);
     if (visualElement){
-      if(visual.type==="ai-diagram"||visual.type==="geometry-guide"){noamAddDiagramExpansion(bubble,visualElement);}
+      if(visual.type==="native-source-focus"||visual.type==="ai-diagram"||visual.type==="geometry-guide"){noamAddDiagramExpansion(bubble,visualElement);}
       bubble.appendChild(visualElement);
     }
   }
@@ -5782,6 +5783,7 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
       drawError.setAttribute("role","status");
       drawError.textContent=message.diagramError;
       bubble.appendChild(drawError);
+      noamAppendSourceDiagramHelp(bubble,selectedExercise,message);
     }
   }
   row.appendChild(bubble);
@@ -7030,6 +7032,179 @@ function noamNativeFigure(exercise){
   return figure;
 }
 
+// Local illustration of objects explicitly named in an already delivered hint.
+// The public package supplies all coordinates; this never calls a protected AI
+// endpoint and never adds an equality, inferred correspondence or new segment.
+var noamNativeFocusPackages={};
+function noamNativeFocusUrl(exercise){
+  var url=String(exercise&&exercise.nativeFigureUrl||"");
+  var match=url.match(/^(\/noam-ai\/native\/(?:G[789]-T[0-9]+|G7-ASSESS1|G8-(?:ASSESS1|CIRCLE|INTERP|TWOSRC)|G9-(?:3060|KITE|SIDEANG|TRAP))\/[abc]\/)figures\/[a-zA-Z0-9_-]+\.svg$/);
+  return match?match[1]+'noam-ai.json':null;
+}
+function noamLoadNativeFocus(exercise){
+  var url=noamNativeFocusUrl(exercise);if(!url){return Promise.resolve(null);}
+  if(!noamNativeFocusPackages[url]){
+    var entry={data:null,promise:null};noamNativeFocusPackages[url]=entry;
+    entry.promise=fetch(url,{cache:'force-cache'}).then(function(r){return r.ok?r.json():null;})
+      .then(function(data){entry.data=data;return data;}).catch(function(){return null;});
+  }
+  return noamNativeFocusPackages[url].promise;
+}
+function noamNativeSegmentFocus(data,exercise,hint){
+  if(!noamNativeFocusUrl(exercise)||typeof hint!=='string'||hint.length>4000){return null;}
+  var q=(data&&Array.isArray(data.questions)?data.questions:[]).find(function(q){return q&&q.id===exercise.nativeQuestionId;});
+  var part=q&&Array.isArray(q.items)&&q.items.find(function(p){return p&&p.label===exercise.part;});
+  var f=part&&(Array.isArray(data.figures)?data.figures:[]).find(function(f){return f&&f.id===part.figure_id;});
+  if(!f||f.id!==q.figure_id||f.question!==q.id||f.svg!=='figures/'+exercise.nativeFigureUrl.split('/').pop()){return null;}
+  var w=f.view&&f.view.width_px,h=f.view&&f.view.height_px;
+  if(!Number.isFinite(w)||!Number.isFinite(h)||w<20||h<20||w>2000||h>2000){return null;}
+  var points=f.objects&&f.objects.points,segments=f.objects&&f.objects.segments;
+  if(!Array.isArray(points)||!Array.isArray(segments)){return null;}
+  var pointMap={};
+  function inBounds(xy){return Array.isArray(xy)&&xy.length===2&&xy.every(Number.isFinite)&&xy[0]>=0&&xy[0]<=w&&xy[1]>=0&&xy[1]<=h;}
+  for(var p of points){
+    if(!p||p.kind!=='point'||p.role!=='vertex'||!/^[A-Z]$/.test(p.name)||pointMap[p.name]||!inBounds(p.svg_xy)){return null;}
+    pointMap[p.name]=p.svg_xy;
+  }
+  var names=[],match,re=/(?:^|[^A-Za-z])([A-Z]{2})(?=$|[^A-Za-z])/g;
+  while((match=re.exec(hint))){var name=match[1].split('').sort().join('');if(names.indexOf(name)<0){names.push(name);}}
+  if(!names.length||names.length>6){return null;}
+  var lines=[];
+  for(var name of names){
+    var matches=segments.filter(function(s){return s&&s.kind==='segment'&&s.role==='edge'&&typeof s.name==='string'&&s.name.split('').sort().join('')===name;});
+    if(matches.length!==1||!pointMap[name[0]]||!pointMap[name[1]]||name[0]===name[1]){return null;}
+    var line=matches[0],xy=line.svg_xy;
+    if(!Array.isArray(xy)||xy.length!==2||!xy.every(inBounds)){return null;}
+    var a=pointMap[name[0]],b=pointMap[name[1]];
+    function near(x,y){return Math.abs(x[0]-y[0])<0.1&&Math.abs(x[1]-y[1])<0.1;}
+    if(!((near(xy[0],a)&&near(xy[1],b))||(near(xy[1],a)&&near(xy[0],b)))){return null;}
+    lines.push({name:name,xy:[a.slice(),b.slice()]});
+  }
+  return {width:w,height:h,lines:lines};
+}
+function noamNativeFocusIdentity(exercise){
+  return JSON.stringify([noamDiagramSourceIdentity(exercise),exercise.nativeFigureUrl,exercise.nativeQuestionId,exercise.part]);
+}
+function noamRenderNativeFocus(visual){
+  if(!manifest||!visual||visual.type!=='native-source-focus'){return null;}
+  var exercise=(manifest.exercises||[]).find(function(e){return e.id===visual.exerciseId;});
+  if(!exercise||visual.sourceIdentity!==noamNativeFocusIdentity(exercise)){return null;}
+  var url=noamNativeFocusUrl(exercise),entry=url&&noamNativeFocusPackages[url];
+  if(!entry){
+    noamLoadNativeFocus(exercise).then(function(data){if(data&&selectedExercise&&selectedExercise.id===exercise.id){renderNoamChat();}});
+    return null;
+  }
+  var focus=noamNativeSegmentFocus(entry.data,exercise,visual.hint);if(!focus){return null;}
+  var figure=noamNativeFigure(exercise);if(!figure){return null;}
+  var ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox','0 0 '+focus.width+' '+focus.height);svg.setAttribute('class','noam-geometry-svg');
+  svg.setAttribute('role','img');svg.setAttribute('aria-label','השרטוט המקורי עם הדגשת הקטעים שהוזכרו ברמז: '+focus.lines.map(function(l){return l.name;}).join(', '));
+  svg.style.cssText='display:block;width:100%;height:auto;background:white';
+  var image=document.createElementNS(ns,'image');image.setAttribute('href',exercise.nativeFigureUrl);
+  image.setAttribute('width',String(focus.width));image.setAttribute('height',String(focus.height));svg.appendChild(image);
+  image.addEventListener('error',function(){figure.hidden=true;});
+  focus.lines.forEach(function(l){
+    var line=document.createElementNS(ns,'line');line.setAttribute('x1',String(l.xy[0][0]));line.setAttribute('y1',String(l.xy[0][1]));
+    line.setAttribute('x2',String(l.xy[1][0]));line.setAttribute('y2',String(l.xy[1][1]));
+    line.setAttribute('stroke','#2677bb');line.setAttribute('stroke-width','3');line.setAttribute('stroke-opacity','0.65');svg.appendChild(line);
+  });
+  figure.querySelector('img').replaceWith(svg);
+  figure.querySelector('figcaption').textContent='עזר מהדף — הדגשה על השרטוט המקורי: '+focus.lines.map(function(l){return l.name;}).join(', ')+'. הצבע מסמן את הקטעים שהוזכרו ברמז, ולא שוויון ביניהם.';
+  return figure;
+}
+function noamPrepareNativeFocus(exercise,options){
+  // Only the standard hint-button request may inherit the delivered hint.
+  // A new free-form drawing request must keep its own scope and protected path.
+  if(!options||options.helpKind!=='hint'||!/^(?:אפשר\s+)?רמז(?:\s*[123])?\s*[?؟]?$/.test(String(options.studentMessage||'').trim())){return Promise.resolve(null);}
+  var hint=String(options&&options.answer||'').slice(0,4000);
+  if(/אנך|מקביל|חוצה|תיכון|גובה|האריכ|הארך|הארכ|הוסיפ|הוסף|בנו|בניית|בנייה/.test(hint+' '+String(options&&options.studentMessage||''))){return Promise.resolve(null);}
+  // Do not fetch the package for a reply with no explicitly named segment.
+  if(!/(?:^|[^A-Za-z])[A-Z]{2}(?=$|[^A-Za-z])/.test(hint)){return Promise.resolve(null);}
+  return noamLoadNativeFocus(exercise).then(function(data){
+    if(!noamNativeSegmentFocus(data,exercise,hint)){return null;}
+    var visual={type:'native-source-focus',exerciseId:exercise.id,sourceIdentity:noamNativeFocusIdentity(exercise),hint:hint};
+    return noamRenderNativeFocus(visual)?visual:null;
+  });
+}
+
+function noamSourceVertexAid(data,exercise){
+  // Read only the published question/figure mapping, never a model's coordinates.
+  var questions=data&&Array.isArray(data.questions)?data.questions:[];
+  var question=questions.find(function(q){return q&&q.id===exercise.nativeQuestionId;});
+  var part=question&&Array.isArray(question.items)&&question.items.find(function(p){return p&&p.label===exercise.part;});
+  if(!part||!/התאמ/.test(part.text||"")||!/חפיפה\s+שהוכח/.test(part.text||"")){return null;}
+  var figure=(Array.isArray(data.figures)?data.figures:[]).find(function(f){return f&&f.id===part.figure_id;});
+  if(!figure||figure.question!==question.id||figure.id!==question.figure_id||
+      figure.svg!=="figures/"+exercise.nativeFigureUrl.split('/').pop()){return null;}
+  var view=figure.view||{},width=view.width_px,height=view.height_px;
+  if(!Number.isFinite(width)||!Number.isFinite(height)||width<20||height<20||width>2000||height>2000){return null;}
+  var points=figure.objects&&figure.objects.points;
+  if(!Array.isArray(points)||points.length!==4){return null;}
+  var names=new Set(),positions=new Set();
+  for(var p of points){
+    var xy=p&&p.svg_xy;
+    if(!p||p.kind!=="point"||p.role!=="vertex"||!/^[A-Z]$/.test(p.name)||names.has(p.name)||
+        !Array.isArray(xy)||xy.length!==2||!xy.every(Number.isFinite)||
+        xy[0]<0||xy[0]>width||xy[1]<0||xy[1]>height||positions.has(xy.join(','))){return null;}
+    names.add(p.name);positions.add(xy.join(','));
+  }
+  return {width:width,height:height,points:points.map(function(p){return {name:p.name,xy:p.svg_xy.slice()};})};
+}
+
+function noamAppendSourceDiagramHelp(container,exercise,message){
+  var legacy="עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.";
+  if(!exercise||!message||message.answerError||message.role!=="assistant"||
+      !(message.diagramErrorCode==="DIAGRAM_UNSUPPORTED"||(!message.diagramErrorCode&&message.diagramError===legacy))){return;}
+  // Old unsupported conversations get an explicitly labelled source aid, not a
+  // fabricated AI success. The original answer/error and retry action remain.
+  var figure=noamNativeFigure(exercise);
+  if(!figure){return;}
+  figure.querySelector('figcaption').textContent="השרטוט המקורי — ללא הדגשה נוספת";
+  var sourceIdentity=noamDiagramSourceIdentity(exercise);
+  var sourceFigureUrl=exercise.nativeFigureUrl;
+  var details=document.createElement('details'),summary=document.createElement('summary');
+  summary.textContent="עזר מהדף: השרטוט המקורי";
+  summary.style.cssText="cursor:pointer;padding:12px 0;font-weight:700";
+  details.appendChild(summary);noamAddDiagramExpansion(details,figure);details.appendChild(figure);container.appendChild(details);
+  figure.querySelector('img').addEventListener('error',function(){details.remove();});
+  var match=String(exercise.nativeFigureUrl||"").match(/^(\/noam-ai\/native\/[A-Z0-9-]+\/[abc]\/)figures\/[a-zA-Z0-9_-]+\.svg$/);
+  if(!match){return;}
+  fetch(match[1]+'noam-ai.json',{cache:'force-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(data){
+      if(!details.isConnected||!selectedExercise||selectedExercise.id!==exercise.id||selectedExercise.nativeFigureUrl!==sourceFigureUrl||sourceIdentity!==noamDiagramSourceIdentity(selectedExercise)){return;}
+      var aid=noamSourceVertexAid(data,exercise);if(!aid){return;}
+      var button=document.createElement('button');button.type='button';button.className='noam-draw-action';
+      button.style.cssText='min-height:44px;padding:8px 12px;font:inherit';
+      button.textContent='איתור הקודקודים';button.setAttribute('aria-pressed','false');
+      var original=figure.querySelector('img'),caption=figure.querySelector('figcaption'),marked=null;
+      function toggleVertices(){
+        if(button.getAttribute('aria-pressed')==='true'){
+          marked.replaceWith(original);button.setAttribute('aria-pressed','false');
+          caption.textContent='השרטוט המקורי — ללא הדגשה נוספת';return;
+        }
+        var ns='http://www.w3.org/2000/svg';
+        marked=document.createElementNS(ns,'svg');marked.setAttribute('viewBox','0 0 '+aid.width+' '+aid.height);
+        marked.setAttribute('class','noam-geometry-svg');marked.setAttribute('role','img');
+        marked.setAttribute('aria-label','השרטוט המקורי עם סימון כל הקודקודים באותו צבע, ללא התאמה ביניהם');
+        marked.style.cssText='display:block;width:100%;height:auto;background:white';
+        var image=document.createElementNS(ns,'image');image.setAttribute('href',exercise.nativeFigureUrl);
+        image.addEventListener('error',function(){details.remove();});
+        image.setAttribute('width',String(aid.width));image.setAttribute('height',String(aid.height));marked.appendChild(image);
+        aid.points.forEach(function(p){
+          var ring=document.createElementNS(ns,'circle');ring.setAttribute('cx',String(p.xy[0]));ring.setAttribute('cy',String(p.xy[1]));
+          ring.setAttribute('r','5');ring.setAttribute('fill','none');ring.setAttribute('stroke','#2677bb');ring.setAttribute('stroke-width','1.8');marked.appendChild(ring);
+        });
+        original.replaceWith(marked);button.setAttribute('aria-pressed','true');
+        caption.textContent='עזר מהדף: כל הקודקודים מודגשים באותו צבע. היעזרו בסדר הקודקודים מהחפיפה שהוכחתם; הסימון אינו נותן את ההתאמה.';
+      }
+      button.addEventListener('click',toggleVertices);
+      details.insertBefore(button,figure);
+      // The verified aid is immediately useful, including on restored chats.
+      // Only the static package is loaded; no retry or model call is performed.
+      summary.textContent='עזר מהדף: איתור הקודקודים';
+      details.open=true;toggleVertices();
+  }).catch(function(){/* The plain approved source remains available. */});
+}
+
 function showExercisePreview(exercise,dataUrl){
   var preview=document.getElementById("noamPickedPreview");
   var fallback=document.getElementById("noamPickedText");
@@ -7775,6 +7950,7 @@ function noamCanOfferDrawing(exercise,thread,message){
   if (!exercise||!thread||!message||message.answerError||message.role!=="assistant"||!String(message.text||"").trim()){
     return false;
   }
+  if (message.visual&&message.visual.type==="native-source-focus"){return !noamRenderNativeFocus(message.visual);}
   if (message.visual&&message.visual.type==="geometry-guide"){
     return !noamRenderGeometryGuide(message.visual);
   }
@@ -8164,6 +8340,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
   // signals an explicit retry without changing the student's pedagogical input.
   var reviewRequested=!!message.diagramError;
   delete message.diagramError;
+  delete message.diagramErrorCode;
   var sourceIdentity=noamDiagramSourceIdentity(exercise);
   var key=JSON.stringify(["diagram-v1",sourceIdentity,options.answer,options.studentMessage]);
   var job=runtime.cache.has(key)?Promise.resolve(runtime.cache.get(key)):runtime.jobs.get(key);
@@ -8176,7 +8353,9 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
     if (saved){job=Promise.resolve(saved);}
   }
   if (!job){
-    job=Promise.resolve().then(function(){
+    job=(message.diagramTyped?Promise.resolve(null):noamPrepareNativeFocus(exercise,options)).then(function(nativeVisual){
+      if(nativeVisual){return nativeVisual;}
+      return Promise.resolve().then(function(){
       if (!window.NoamDiagramPlan){throw new Error("diagram compiler unavailable");}
       return Promise.all([noamDiagramSourceInput(exercise),noamSourceGivens(exercise)]).then(function(parts){
         parts[0].sourceGivens=parts[1];return parts[0];
@@ -8215,6 +8394,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
         return {type:"ai-diagram",exerciseId:exercise.id,sourceIdentity:sourceIdentity,cacheKey:key,
           plan:JSON.parse(JSON.stringify(result.plan)),context:validatedContext};
       });
+      });
     }).then(function(visual){
       runtime.cache.set(key,visual);
       while(runtime.cache.size>16){runtime.cache.delete(runtime.cache.keys().next().value);}
@@ -8236,6 +8416,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
     return visual;
   },function(error){
     message.diagramError=noamDiagramError(error);
+    message.diagramErrorCode=error&&error.code==="DIAGRAM_UNSUPPORTED"?"DIAGRAM_UNSUPPORTED":"DIAGRAM_UNAVAILABLE";
     if (message.diagramTyped){message.text="השרטוט עדיין לא מוכן.";}
     return null;
   }).then(function(visual){
@@ -9616,7 +9797,7 @@ function esc(s){
     text(status,mood==='thinking'?'רמזי חושב…':mood==='error'?'לא הצלחתי לקבל תשובה':mood==='hint'?'יש רמז חדש':mood==='success'?'התשובה נכונה':'רמזים והסברים במתמטיקה');
     document.querySelectorAll('.exact-ramzi-avatar ramzi-avatar, .panel-head ramzi-avatar').forEach(function(avatar){
       if(avatar.getAttribute('mood')!==mood){avatar.setAttribute('mood',mood);}
-      var headerSize=narrow?36:44;
+      var headerSize=32;
       if(avatar.closest('.panel-head')&&avatar.getAttribute('size')!==String(headerSize)){avatar.setAttribute('size',String(headerSize));}
     });
     if(mood!==previousMood||mode!==previousMotion){previousMood=mood;previousMotion=mode;}
