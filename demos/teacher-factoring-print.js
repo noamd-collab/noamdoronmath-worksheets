@@ -88,12 +88,15 @@ let state = {
   topic: '2',
   level: 'all',
   wizard: 'grade',
+  lastAiPickCount: 0,
 };
 let history = [];
 let rendering = false;
 let printMode = 'marked';
 let printOpener = null;
 let loadToken = 0;
+let aiPickPending = 0;
+let teacherBotClientPromise = null;
 
 function exKey(pdfId, id) {
   return 'ex:' + pdfId + ':' + id;
@@ -103,10 +106,174 @@ function sheetKey(pdfId) {
   return 'sheet:' + pdfId;
 }
 
+function ensureTeacherBotClient() {
+  if (teacherBotClientPromise) return teacherBotClientPromise;
+  teacherBotClientPromise = new Promise((resolve, reject) => {
+    function finish(ok) {
+      if (ok && window.NoamBotClient && typeof window.NoamBotClient.create === 'function') {
+        resolve(window.NoamBotClient.create({ api: '/api', enabled: true, modelTimeoutMs: 25000 }));
+        return;
+      }
+      reject(new Error('BOT_CLIENT_UNAVAILABLE'));
+    }
+    if (window.NoamBotClient) {
+      finish(true);
+      return;
+    }
+    const loader = document.createElement('script');
+    loader.src = '/noam-bot-client.js?v=20260921-diagnostics1';
+    loader.async = true;
+    loader.onload = () => finish(true);
+    loader.onerror = () => finish(false);
+    document.head.appendChild(loader);
+  }).catch((error) => {
+    teacherBotClientPromise = null;
+    throw error;
+  });
+  return teacherBotClientPromise;
+}
+
+function smartExercisePick(pool, count, scenario, style, seedKeys) {
+  if (!Array.isArray(pool) || !pool.length) return [];
+  const entries = pool.map((question, index) => ({
+    key: exKey(question.source.pdfId, question.id),
+    question,
+    index,
+  }));
+  const target = Math.min(Math.max(1, Number(count) || 15), entries.length);
+  const byKey = new Map(entries.map((entry) => [entry.key, entry]));
+  const chosen = [];
+  const used = new Set();
+  const addEntry = (entry) => {
+    if (!entry || used.has(entry.key) || chosen.length >= target) return;
+    used.add(entry.key);
+    chosen.push(entry);
+  };
+  (seedKeys || []).forEach((key) => addEntry(byKey.get(key)));
+  if (chosen.length < target) {
+    let ordered = entries.slice();
+    if (scenario === 'spiral') {
+      const step = Math.max(1, Math.floor(entries.length / 15));
+      ordered = [];
+      for (let offset = 0; offset < step; offset += 1) {
+        for (let i = offset; i < entries.length; i += step) ordered.push(entries[i]);
+      }
+    } else if (scenario === 'exam') {
+      const cut = Math.floor(entries.length * 0.25);
+      ordered = entries.slice(cut).concat(entries.slice(0, cut));
+    } else if (scenario === 'practice') {
+      const cut = Math.min(Math.floor(entries.length * 0.08), 4);
+      ordered = entries.slice(cut).concat(entries.slice(0, cut));
+    }
+    const remaining = ordered.filter((entry) => !used.has(entry.key));
+    const needed = target - chosen.length;
+    if (remaining.length <= needed) {
+      remaining.forEach(addEntry);
+    } else if (scenario === 'spiral' || scenario === 'other' || style === 'creative') {
+      for (let i = 0; i < needed; i += 1) {
+        const idx = Math.min(remaining.length - 1, Math.floor((i * remaining.length) / needed));
+        addEntry(remaining[idx]);
+      }
+      remaining.forEach(addEntry);
+    } else {
+      remaining.slice(0, needed).forEach(addEntry);
+    }
+  }
+  chosen.sort((a, b) => a.index - b.index);
+  return chosen.map((entry) => entry.key);
+}
+
+async function pickWithAi(rawCount) {
+  const count = Number(rawCount);
+  if (!Number.isInteger(count) || count <= 0 || band() === 'elementary' || aiPickPending) return [];
+  const pool = currentExercises();
+  if (!pool.length) return [];
+  const target = Math.min(count, pool.length);
+  aiPickPending = count;
+  paintAiPickButtons();
+  const status = $('ai-suggest-status');
+  if (status) status.textContent = `נועם AI בוחר ${target} סעיפים…`;
+  const gradeEl = $('grade');
+  const topicEl = $('topic');
+  const payload = {
+    message: `בחר ${count} עם AI`,
+    page: { kind: 'teachers', path: location.pathname + location.search, title: document.title },
+    teacher: {
+      grade: String(state.grade),
+      gradeLabel: gradeEl && gradeEl.selectedOptions[0] ? gradeEl.selectedOptions[0].textContent.trim() : '',
+      topic: String(state.topic),
+      topicLabel: topicEl && topicEl.selectedOptions[0] ? topicEl.selectedOptions[0].textContent.trim() : '',
+      level: String(state.level || 'all'),
+      goal: String(state.scenario),
+      goalLabel: (SCENARIOS[state.scenario] && SCENARIOS[state.scenario].label) || 'אחר',
+      style: String(state.style),
+      styleLabel: (STYLES[state.style] && STYLES[state.style].label) || '',
+      note: $('teacher-note') ? String($('teacher-note').value || '').trim().slice(0, 400) : '',
+      count,
+      candidates: pool.slice(0, 100).map((question) => ({
+        id: (question.source && question.source.level ? question.source.level + ':' : '') + question.id,
+        label: question.id,
+        text: String(question.text || '').slice(0, 80),
+      })),
+    },
+  };
+  let remoteIds = [];
+  let fromModel = false;
+  try {
+    const client = await ensureTeacherBotClient();
+    const result = await client.postJson('/api/noamSiteCompanion', payload);
+    if (result && Array.isArray(result.exerciseIds) && result.exerciseIds.length) {
+      const visible = new Set(visibleSelectionKeys());
+      remoteIds = result.exerciseIds.filter((key) => visible.has(key));
+      fromModel = result.source === 'classifier' && Boolean(result.model);
+    }
+  } catch (error) {
+    remoteIds = [];
+  } finally {
+    aiPickPending = 0;
+  }
+  const finalPicked = smartExercisePick(pool, target, state.scenario, state.style, remoteIds);
+  const before = selectionKey();
+  snapshot();
+  state.selected = finalPicked;
+  state.lastAiPickCount = count;
+  state.expanded = true;
+  if (selectionKey() !== before) clearPreparedPrint();
+  render();
+  const msg = fromModel
+    ? `נבחרו ${finalPicked.length} סעיפים עם AI.`
+    : `נבחרו ${finalPicked.length} סעיפים מתוך הדף.`;
+  if (status) status.textContent = msg;
+  announce(msg);
+  return finalPicked;
+}
+
+function paintAiPickButtons() {
+  const group = $('ai-pick-group');
+  if (!group) return;
+  const elementary = band() === 'elementary';
+  group.hidden = elementary;
+  const total = elementary ? 0 : currentExercises().length;
+  group.querySelectorAll('[data-ai-pick]').forEach((btn) => {
+    const count = Number(btn.dataset.aiPick);
+    const busy = aiPickPending === count;
+    const baseLabel = count === 15 ? 'בחר 15 עם AI' : `בחר ${count}`;
+    btn.textContent = busy ? `בוחר ${count}…` : baseLabel;
+    btn.disabled = elementary || total === 0 || aiPickPending > 0;
+    const active = !elementary && total > 0 && state.lastAiPickCount === count && state.selected.length === Math.min(count, total);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    if (busy) btn.setAttribute('aria-busy', 'true');
+    else btn.removeAttribute('aria-busy');
+  });
+}
+
 function installSuggest() {
   window.NoamTeacherSuggest = {
     enabled: false,
+    batchPick: true,
+    model: 'qwen3.8-flash',
     classifier: 'qwen-flash',
+    pickCount: pickWithAi,
     async classifyRequest() {
       return { enabled: false, intent: null };
     },
@@ -344,6 +511,7 @@ function render() {
   const pdfs = new Set(state.selected.map((key) => key.split(':')[1]).filter(Boolean));
   $('selection-composition').textContent = pdfs.size ? 'מתוך ' + pdfs.size + (pdfs.size === 1 ? ' דף מקור' : ' דפי מקור') : '';
   $('undo').disabled = history.length === 0;
+  paintAiPickButtons();
   paintSourceLine();
   if (!elementary) paintThumbs();
   applyWizard();
@@ -479,6 +647,7 @@ function selectKey(key, on) {
   if (!key) return;
   const before = selectionKey();
   snapshot();
+  state.lastAiPickCount = 0;
   if (on && !state.selected.includes(key)) state.selected.push(key);
   if (!on) state.selected = state.selected.filter((item) => item !== key);
   if (selectionKey() !== before) clearPreparedPrint();
@@ -1726,6 +1895,7 @@ function applyScenario(value, options) {
   const before = selectionKey();
   if (!quiet) snapshot();
   state.scenario = value;
+  state.lastAiPickCount = 0;
   state.expanded = false;
   state.filter = 'all';
   if (value !== 'other') {
@@ -1911,12 +2081,18 @@ function bind() {
   });
   $('filter-all').addEventListener('click', () => { state.filter = 'all'; $('filter-all').setAttribute('aria-pressed', 'true'); $('filter-selected').setAttribute('aria-pressed', 'false'); render(); });
   $('filter-selected').addEventListener('click', () => { state.filter = 'selected'; $('filter-selected').setAttribute('aria-pressed', 'true'); $('filter-all').setAttribute('aria-pressed', 'false'); render(); });
+  document.querySelectorAll('[data-ai-pick]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      pickWithAi(Number(btn.dataset.aiPick));
+    });
+  });
   $('show-more').addEventListener('click', () => { state.expanded = true; render(); });
   $('undo').addEventListener('click', () => {
     const previous = history.pop();
     if (!previous) return;
     const before = selectionKey();
     state.selected = previous;
+    state.lastAiPickCount = 0;
     if (selectionKey() !== before) clearPreparedPrint();
     render();
   });
