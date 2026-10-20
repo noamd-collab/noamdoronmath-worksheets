@@ -7166,7 +7166,20 @@ function noamAppendSourceDiagramHelp(container,exercise,message){
   summary.textContent="עזר מהדף: השרטוט המקורי";
   summary.style.cssText="cursor:pointer;padding:12px 0;font-weight:700";
   details.appendChild(summary);noamAddDiagramExpansion(details,figure);details.appendChild(figure);container.appendChild(details);
-  figure.querySelector('img').addEventListener('error',function(){details.remove();});
+  function sourceAidLoaded(){
+    if(!details.isConnected||!selectedExercise||selectedExercise.id!==exercise.id||selectedExercise.nativeFigureUrl!==sourceFigureUrl||
+        sourceIdentity!==noamDiagramSourceIdentity(selectedExercise)){return;}
+    var status=container.querySelector('.noam-draw-error'),retry=container.querySelector('.noam-draw-action');
+    if(status){status.textContent='לא נוצר שרטוט חדש. מוצג כאן עזר חזותי על השרטוט המקורי מהדף.';status.style.color='inherit';}
+    if(retry){setNoamDiagramButtonLabel(retry,'נסו ליצור המחשה נוספת',true);}
+  }
+  function sourceAidFailed(){
+    var status=container.querySelector('.noam-draw-error'),retry=container.querySelector('.noam-draw-action');
+    if(status){status.textContent=message.diagramError;status.style.color='';}
+    if(retry){setNoamDiagramButtonLabel(retry,'השרטוט לא הופיע — נסו שוב',true);}
+    details.remove();
+  }
+  figure.querySelector('img').addEventListener('error',sourceAidFailed);
   var match=String(exercise.nativeFigureUrl||"").match(/^(\/noam-ai\/native\/[A-Z0-9-]+\/[abc]\/)figures\/[a-zA-Z0-9_-]+\.svg$/);
   if(!match){return;}
   fetch(match[1]+'noam-ai.json',{cache:'force-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(data){
@@ -7187,7 +7200,10 @@ function noamAppendSourceDiagramHelp(container,exercise,message){
         marked.setAttribute('aria-label','השרטוט המקורי עם סימון כל הקודקודים באותו צבע, ללא התאמה ביניהם');
         marked.style.cssText='display:block;width:100%;height:auto;background:white';
         var image=document.createElementNS(ns,'image');image.setAttribute('href',exercise.nativeFigureUrl);
-        image.addEventListener('error',function(){details.remove();});
+        // Report the source aid only once the actual original SVG has loaded.
+        // The stored generation error and retry behavior remain intact.
+        image.addEventListener('load',sourceAidLoaded);
+        image.addEventListener('error',sourceAidFailed);
         image.setAttribute('width',String(aid.width));image.setAttribute('height',String(aid.height));marked.appendChild(image);
         aid.points.forEach(function(p){
           var ring=document.createElementNS(ns,'circle');ring.setAttribute('cx',String(p.xy[0]));ring.setAttribute('cy',String(p.xy[1]));

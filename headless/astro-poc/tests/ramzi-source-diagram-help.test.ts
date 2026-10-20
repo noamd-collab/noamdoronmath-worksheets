@@ -6,20 +6,22 @@ import { parseHTML } from 'linkedom';
 const source=readFileSync(new URL('../public/worksheet-viewer-noam.html',import.meta.url),'utf8');
 const helper='function noamNativeFigure'+source.split('function noamNativeFigure')[1].split('function showExercisePreview')[0];
 const zoom='function noamAddDiagramExpansion'+source.split('function noamAddDiagramExpansion')[1].split('function noamDiagramRuntime')[0];
+const label='function setNoamDiagramButtonLabel'+source.split('function setNoamDiagramButtonLabel')[1].split('function addTranscriptBubble')[0];
 const data=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T39/a/noam-ai.json',import.meta.url),'utf8'));
 const manifest=JSON.parse(readFileSync(new URL('../public/noam-ai/manifests/9448157f4ecb463489417696230f0e57.json',import.meta.url),'utf8'));
 const exercise=manifest.exercises.find((e:any)=>e.q===1&&e.part==='ג');
 const legacy='עדיין לא הצלחתי להכין המחשה מדויקת לשלב הזה. אפשר לכתוב אילו קטעים או זוויות להדגיש.';
 const message={role:'assistant',text:'האם שוויון הזוויות נובע מהצלעות השוות או מהצלע המשותפת?',diagramError:legacy};
 function fixture(payload:any=data, ex:any=exercise, msg:any=message){
- const {document,window}=parseHTML('<html><body><div id="bubble"></div></body></html>');
+ const {document,window}=parseHTML('<html><body><div id="bubble"><button class="noam-draw-action">השרטוט לא הופיע — נסו שוב</button><span class="noam-draw-error"></span></div></body></html>');
+ document.querySelector('.noam-draw-error')!.textContent=msg.diagramError||'';
  const create=document.createElement.bind(document);
  document.createElement=(name:string)=>{const el=create(name);if(name==='dialog'){el.showModal=()=>el.setAttribute('open','');el.close=()=>el.dispatchEvent(new window.Event('close'));}return el;};
  const calls:string[]=[];
  const context:any={document,window,exercise:ex,message:msg,selectedExercise:ex,exerciseLabel:()=> 'שאלה 1 · סעיף ג',
   noamDiagramSourceIdentity:(e:any)=>e.id+':'+(e.version||''),
   fetch:async(url:string)=>{calls.push(url);return{ok:true,json:async()=>payload};},container:document.getElementById('bubble')};
- runInNewContext(helper+'\n'+zoom+';noamAppendSourceDiagramHelp(container,exercise,message);',context);
+ runInNewContext(label+'\n'+helper+'\n'+zoom+';noamAppendSourceDiagramHelp(container,exercise,message);',context);
  return {document,window,context,calls,open:async()=>{const d=document.querySelector('details');if(d){d.open=true;d.dispatchEvent(new window.Event('toggle'));await new Promise(r=>setImmediate(r));}},aid:()=>runInNewContext('noamSourceVertexAid('+JSON.stringify(payload)+',exercise)',context)};
 }
 it('actual G8 saved unsupported reply offers separately labelled source and four unpaired vertices',async()=>{
@@ -81,4 +83,22 @@ it('unavailable or malformed package leaves only the explicitly labelled origina
 it('broken source image removes the aid and enlargement rather than presenting an empty success',()=>{
  const f=fixture();f.document.querySelector('figure img')!.dispatchEvent(new f.window.Event('error'));
  assert.equal(f.document.querySelector('details'),null);
+});
+it('status acknowledges the source aid only after image load, preserves failure and retry, and restores error if image fails',async()=>{
+ const original=JSON.stringify(message),f=fixture();await f.open();
+ const image=f.document.querySelector('figure svg image')!;
+ const status=f.document.querySelector('.noam-draw-error')!;
+ assert.equal(status.textContent,legacy,'a pending image is not successful visual delivery');
+ image.dispatchEvent(new f.window.Event('load'));
+ assert.match(status.textContent!,/לא נוצר שרטוט חדש.*השרטוט המקורי/);
+ assert.match(f.document.querySelector('.noam-draw-action')!.textContent!,/המחשה נוספת/);
+ assert.equal(JSON.stringify(message),original,'generation failure remains in history');
+ image.dispatchEvent(new f.window.Event('error'));
+ assert.equal(status.textContent,legacy);
+ assert.equal(f.document.querySelector('details'),null);
+});
+it('late image load cannot announce source aid in another selected section',async()=>{
+ const f=fixture();await f.open();f.context.selectedExercise={...exercise,id:'other'};
+ f.document.querySelector('figure svg image')!.dispatchEvent(new f.window.Event('load'));
+ assert.equal(f.document.querySelector('.noam-draw-error')!.textContent,legacy);
 });
