@@ -96,3 +96,37 @@ test('a comma or conjunction before a new relation starts a clause, not another 
   }
  }
 });
+
+test('existing altitude and median clauses remain independent of a preceding parallel list',()=>{
+ for(const kind of ['גובה','תיכון']){
+  for(const construction of [kind,'ה'+kind]){
+   for(const copula of ['', 'הוא ', 'הינו ']){
+    for(const destination of ['', ' לצלע AB']){
+     for(const separator of [', ', ' ו-', ', ו־']){
+      const clause='CD '+copula+construction+destination;
+      const plan={version:1,status:'ok',points:{A:[0,0],B:[4,0],C:[2,3],D:[2,0],P:[0,2],K:[4,2]},
+       segments:[['A','B'],['C','D'],['P','K']],highlights:[{from:'P',to:'K',color:'blue',label:''}],angles:[],equalGroups:[],rightAngles:[],evidence:[]};
+      const context={questionText:'הקטעים AB, CD, PK נתונים. D על הקטע AB. PK מקביל ל-AB'+separator+clause+'.',hintText:'התבוננו בקטע PK.',studentMessage:''};
+      assert.equal(Plan.inspect(plan,context).ok,true,'valid construction: '+separator+clause);
+      if(kind==='גובה'){plan.points.C=[3,3];}else{plan.points.D=[1,0];}
+      const invalid=Plan.inspect(plan,context);
+      assert.equal(invalid.reason,'source_coordinate_contradiction','construction constraints remain active: '+clause);
+      assert.ok(!(invalid.constraint.first?.join('')==='PK'&&invalid.constraint.second?.join('')==='CD'),'no invented PK∥CD');
+     }
+    }
+   }
+  }
+ }
+});
+
+test('copulas and the existing English altitude wording cannot be swallowed as list operands',()=>{
+ for(const separator of [', ', ' ו-', ', ו־']){
+  for(const clause of ['CD הוא גובה לצלע AB','CD הינו גובה לצלע AB','CD היא גובה לצלע AB','CD הינה גובה לצלע AB',
+   'CD is an altitude to AB','CD is a height onto AB','CD IS an altitude to AB','CD Is A Height onto AB']){
+   const plan={version:1,status:'ok',points:{A:[0,0],B:[4,0],C:[2,3],D:[2,0],P:[0,2],K:[4,2]},
+    segments:[['A','B'],['C','D'],['P','K']],highlights:[{from:'P',to:'K',color:'blue',label:''}],angles:[],equalGroups:[],rightAngles:[],evidence:[]};
+   const context={questionText:'הקטעים AB, CD, PK נתונים. D על הקטע AB. PK מקביל לצלעות AB'+separator+clause+'.',hintText:'התבוננו בקטע PK.',studentMessage:''};
+   assert.equal(Plan.inspect(plan,context).ok,true,separator+clause);
+  }
+ }
+});
