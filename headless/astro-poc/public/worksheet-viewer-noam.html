@@ -3213,7 +3213,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 <script src="noam-didactic-guides.js?v=20260927-hints1"></script>
 <script src="noam-geometry.js?v=20260921-aux1"></script>
 <script src="noam-geometry-guides.js?v=20260920-1"></script>
-<script src="noam-diagram-plan.js?v=20260921-constructions1"></script>
+<script src="noam-diagram-plan.js?v=20261021-plural-relations1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20261018-fracbar"></script>
 <script src="noam-glossary.js?v=20261018-fracbar"></script>
@@ -8436,7 +8436,7 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
   delete message.diagramError;
   delete message.diagramErrorCode;
   var sourceIdentity=noamDiagramSourceIdentity(exercise);
-  var key=JSON.stringify(["diagram-v1",sourceIdentity,options.answer,options.studentMessage]);
+  var key=JSON.stringify(["diagram-v2-plural-relations",sourceIdentity,options.answer,options.studentMessage]);
   var job=runtime.cache.has(key)?Promise.resolve(runtime.cache.get(key)):runtime.jobs.get(key);
   // Reuse a validated saved transcript result after reload, but only for an
   // identical worksheet version, question, student request, and current hint.

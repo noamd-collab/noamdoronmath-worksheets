@@ -160,7 +160,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // clear stale section announcements, and omit understanding buttons on errors.
     // Dedicated recovery/zoom tests cover these intentional behavior changes.
     // No auth protocol, original PDF/SVG, catalogue or storage format changed.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'c86a201de43dc90153373b892beca82e293a555655d687a3ea43d126e31e29d0');
+    // PR212 follow-up: version the plural-relation compiler and its saved plan cache.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e119721fb6e0659e4de77d42b862e16c7106193365cc483308302532465c2561');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {
