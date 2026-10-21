@@ -116,7 +116,7 @@
   "faqHeading": "שאלות נפוצות",
   "faq": [
     {
-      "question": "האם דפי העבודה בנושא דף סיכום אינטגרטיבי לכיתה ד׳ מתאימים לכיתה ד׳?",
+      "question": "האם דפי העבודה בנושא דף סיכום אינטגרטיבי מתאימים לכיתה ד׳?",
       "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ד׳ ומסודר לפי רמות קושי."
     },
     {
@@ -134,7 +134,7 @@
       "source": "authored",
       "items": [
         {
-          "question": "האם דפי העבודה בנושא דף סיכום אינטגרטיבי לכיתה ד׳ מתאימים לכיתה ד׳?",
+          "question": "האם דפי העבודה בנושא דף סיכום אינטגרטיבי מתאימים לכיתה ד׳?",
           "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ד׳ ומסודר לפי רמות קושי."
         },
         {
@@ -175,7 +175,7 @@
     "source": "catalog-g4-t31",
     "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=31",
     "catalogTopicId": 31,
-    "catalogTopicTitle": "דף סיכום אינטגרטיבי לכיתה ד׳"
+    "catalogTopicTitle": "דף סיכום אינטגרטיבי"
   },
   "catalogCtas": [
     {
@@ -184,7 +184,7 @@
       "source": "catalog-g4-t31",
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=4&topic=31",
       "catalogTopicId": 31,
-      "catalogTopicTitle": "דף סיכום אינטגרטיבי לכיתה ד׳"
+      "catalogTopicTitle": "דף סיכום אינטגרטיבי"
     }
   ],
   "gradeHubHref": "/grade-4",
@@ -231,7 +231,7 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "האם דפי העבודה בנושא דף סיכום אינטגרטיבי לכיתה ד׳ מתאימים לכיתה ד׳?",
+            "name": "האם דפי העבודה בנושא דף סיכום אינטגרטיבי מתאימים לכיתה ד׳?",
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ד׳ ומסודר לפי רמות קושי."
