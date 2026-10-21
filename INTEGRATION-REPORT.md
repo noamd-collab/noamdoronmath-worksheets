@@ -7,8 +7,9 @@ HEAD לפני תיקון M33/M25: `f10dd3e6b8bd54e1a6d86647c3d5ec74f0ac0ab2`
 קומיט התיקון (M33, מניפסט M25, והרצת הבדיקות): `0acbf139f33286544385b996b5d9c86dfe3cc8bc`  
 HEAD אחרי רישום ה-SHA: `c6f9168fbbf1feec633354aed418ee3328461677`  
 HEAD אחרי מדידת בס״ד: `7fe57a0c374389c7c0d321da46e42bc064df0aa5`  
-HEAD אחרי תיקון robots/sitemap, ועליו רץ האימות של 21.10.2026: `bfbdf7dec02bd3fe96b21ae35ebdcc18ca1cda9d`  
-HEAD אחרי רישום האימות הזה: בגוף PR #60.  
+HEAD אחרי תיקון robots/sitemap, ועליו רץ האימות הראשון של 21.10.2026: `bfbdf7dec02bd3fe96b21ae35ebdcc18ca1cda9d`  
+HEAD אחרי רישום האימות הראשון: `de8ab8936f2bc8b301b22575ee928f4ca86ae9d2`  
+עליו רצה בדיקה חוזרת ב-21.10.2026, בלי שינוי קוד: `test:unit` 451/0/1, `tsc` 0, build מקומי יציאה 0. ה-HEAD שאחרי רישום הבדיקה הזו מופיע בגוף PR #60.  
 לא מוזג. ענפי המקור לא שונו. אין release, DNS, או פריסה לייצור.
 
 הבסיס התקדם מאז שנפתחו שלבי ה-SEO: נכללים בו כבר מיזוג #41 (לופים) ומיזוג #50 (תוויות נגישות). הם לא חלק מ-15 ה-PR-ים, והם כבר ב-ancestry.
@@ -78,6 +79,7 @@ HEAD אחרי רישום האימות הזה: בגוף PR #60.
 | `npm run test:unit` לפני תיקון M33/M25 | 449 עברו, 2 נכשלו, 1 דולג. לא ירוק |
 | `npm run test:unit` אחרי התיקון | 452 בדיקות: 451 עברו, 0 נכשלו, 1 דולג |
 | אימות חוזר 21.10.2026 על `bfbdf7de` | `test:unit` 451/0/1, `tsc` 0, build מקומי יציאה 0 |
+| בדיקה חוזרת 21.10.2026 על `de8ab893` | `test:unit` 451/0/1, `tsc` 0, build מקומי יציאה 0. אין שינוי קוד |
 | `npm run typecheck:tests` | 0 |
 | `npx tsc -p tsconfig.json --noEmit` אחרי `astro check` | 0, גם אחרי התיקון |
 | `npm run typecheck` (`astro check`) עם `WIX_CLIENT_ID` מקומי בלבד | 7 שגיאות, כולן ב-`ConceptLoop.astro` המוגן. לא נגעתי בקובץ |
@@ -116,6 +118,15 @@ HEAD אחרי רישום האימות הזה: בגוף PR #60.
 - `npm run test:unit`: 452 בדיקות, 451 עברו, 0 נכשלו, 1 דולג. הדילוג הוא `grade-loop-player` כי `LOOPS_MAP_73_v2.csv` לא נמצא בקופה.
 - `npx tsc -p tsconfig.json --noEmit` אחרי `astro check`: יציאה 0.
 - `npx astro build --config astro.config.preview.mjs`: יציאה 0. השרת נבנה ב-3.60 שניות.
+
+### בדיקה חוזרת 21.10.2026 על `de8ab893`
+
+על `de8ab8936f2bc8b301b22575ee928f4ca86ae9d2`. אין שינוי קוד מעבר ל-M33, ל-M25, ולתיקון robots/sitemap שכבר היו בענף. M33 ו-M25 לא נמחקו ולא דולגו.
+
+- `npm run test:unit`: 452 בדיקות, 451 עברו, 0 נכשלו, 1 דולג. משך 4290ms. הדילוג הוא `grade-loop-player` כי `LOOPS_MAP_73_v2.csv` לא נמצא בקופה.
+- `npx tsc -p tsconfig.json --noEmit` אחרי `astro check`: יציאה 0.
+- `npx astro build --config astro.config.preview.mjs`: יציאה 0. השרת נבנה ב-4.27 שניות.
+- `astro check` עם `WIX_CLIENT_ID=local-typecheck` בלבד: 7 שגיאות, 0 אזהרות, 83 hints. כולן ב-`ConceptLoop.astro`, באותן שורות 2992, 2984, 2976, 2972, 2931, 2919. הקובץ לא נערך.
 
 ### כשלים שנשארו, לא הוסתרו
 
