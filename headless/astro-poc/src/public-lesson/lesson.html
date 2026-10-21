@@ -85,8 +85,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 .bar>i{display:block;height:100%;border-radius:8px;transform-origin:right center}
 .retry{align-self:flex-start;font-family:"Secular One",sans-serif;font-size:13.5px;padding:6px 16px;border-radius:50px;border:2px solid #1a8a80;background:#fff;color:#1a8a80;cursor:pointer}
 .formula{background:#fff;border:2.5px solid #1a8a80;border-radius:16px;padding:14px 20px;font-family:"Secular One",sans-serif;font-size:clamp(20px,5.4vw,26px);color:#17233f;box-shadow:0 8px 20px rgba(26,138,128,.12);text-align:center}
-/* Inline math stays one LTR run. A trailing ? lives inside the run so it
-   does not jump to the left of the opening parenthesis. */
+/* Inline math stays one isolated LTR run. A trailing ? stays outside the run
+   so it ends the Hebrew sentence instead of sitting between Hebrew and math. */
 .math{direction:ltr;unicode-bidi:isolate;white-space:nowrap}
 .math-line{display:block;width:100%;max-width:100%;min-width:0;align-self:stretch;direction:ltr;unicode-bidi:isolate;white-space:nowrap;text-align:center}
 #heroEq{font-family:"Secular One",sans-serif;font-size:22px;color:#c04a2d}
@@ -297,7 +297,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
     bd.className = 'math'; bd.dir = 'ltr'; bd.textContent = text;
     return bd;
   }
-  /* LRI/PDI runs become <bdi class="math">. A final ? stays inside that run. */
+  /* LRI/PDI runs become <bdi class="math">. Punctuation after a run stays RTL text. */
   function fillRich(el, text) {
     el.replaceChildren();
     const s = String(text || '');
@@ -308,10 +308,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       if (a > i) el.append(s.slice(i, a));
       const b = s.indexOf(PDI, a + 1);
       if (b < 0) { el.append(s.slice(a + 1)); break; }
-      let math = s.slice(a + 1, b), j = b + 1;
-      if (s[j] === '?') { math += '?'; j += 1; }
-      el.append(mathNode(math));
-      i = j;
+      el.append(mathNode(s.slice(a + 1, b)));
+      i = b + 1;
     }
   }
   function escHtml(s) { return s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
@@ -324,10 +322,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       if (a > i) html += escHtml(s.slice(i, a));
       const b = s.indexOf(PDI, a + 1);
       if (b < 0) { html += escHtml(s.slice(a + 1)); break; }
-      let math = s.slice(a + 1, b), j = b + 1;
-      if (s[j] === '?') { math += '?'; j += 1; }
-      html += '<bdi class="math" dir="ltr">' + escHtml(math) + '</bdi>';
-      i = j;
+      html += '<bdi class="math" dir="ltr">' + escHtml(s.slice(a + 1, b)) + '</bdi>';
+      i = b + 1;
     }
     return html;
   }
@@ -947,8 +943,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const title = $('title');
       title.textContent = '';
       title.append(document.createTextNode(S.tA || ''));
-      if (S.tM) title.append(mathNode(S.tM + (S.tB || '')));
-      else if (S.tB) title.append(document.createTextNode(S.tB));
+      if (S.tM) title.append(mathNode(S.tM));
+      if (S.tB) title.append(document.createTextNode(S.tB));
       fillRich($('sub'), S.sub || '');
       const ready = this.canNext();
       let cue = S.cue || '';
@@ -1025,7 +1021,10 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       if (tm && title.clientWidth > 8) {
         tm.style.fontSize = '';
         const max = parseFloat(getComputedStyle(title).fontSize);
-        if (tm.scrollWidth > title.clientWidth + 1) tm.style.fontSize = Math.max(12, max * title.clientWidth / tm.scrollWidth) + 'px';
+        let tail = 0;
+        if (tm.nextSibling) { const r = document.createRange(); r.selectNodeContents(tm.nextSibling); tail = r.getBoundingClientRect().width; }
+        const avail = title.clientWidth - tail;
+        if (tm.scrollWidth > avail + 1) tm.style.fontSize = Math.max(12, max * avail / tm.scrollWidth) + 'px';
       }
     },
     paintQuiz(S, st, done) {

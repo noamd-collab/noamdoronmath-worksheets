@@ -1,0 +1,99 @@
+---
+/**
+ * A short silent picture of co-interior angles.
+ * Not the grade-8 player. One link, no sentence, transform and opacity only.
+ */
+---
+
+<a
+  class="home-cointerior"
+  href="/parallel-lines-angles-grade-8"
+  data-home-cointerior
+  aria-label="ישרים מקבילים וזוויות חד-צדדיות"
+>
+  <svg viewBox="0 0 480 200" aria-hidden="true">
+    <line class="home-cointerior__line" x1="28" y1="58" x2="452" y2="58"></line>
+    <line class="home-cointerior__line" x1="28" y1="148" x2="452" y2="148"></line>
+    <line class="home-cointerior__cut" x1="156" y1="22" x2="324" y2="184"></line>
+    <polygon class="home-cointerior__wedge home-cointerior__wedge--a" points="191,58 148,58 220,86"></polygon>
+    <polygon class="home-cointerior__wedge home-cointerior__wedge--b" points="289,148 246,148 260,120"></polygon>
+  </svg>
+</a>
+
+<script>
+  const root = document.documentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stopped =
+    reduce ||
+    root.classList.contains('nd-motion-off') ||
+    root.classList.contains('noam-a11y-motion');
+  if (!stopped && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        entry.target.classList.toggle('home-cointerior--off', !entry.isIntersecting);
+      }
+    }, { rootMargin: '64px' });
+    document.querySelectorAll('.home-cointerior').forEach((node) => io.observe(node));
+  }
+</script>
+
+<style>
+  .home-cointerior {
+    display: block;
+    width: min(100%, 420px);
+    margin: 18px 0 0;
+    background: #fff;
+    border: 2px solid #22305a;
+    border-radius: 18px 6px 20px 8px / 8px 20px 6px 18px;
+    box-shadow: 4px 4px 0 #e6a534;
+    overflow: hidden;
+    text-decoration: none;
+  }
+  .home-cointerior svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #fbfaf5;
+  }
+  .home-cointerior__line,
+  .home-cointerior__cut {
+    fill: none;
+    stroke: #22305a;
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+  .home-cointerior__cut { stroke: #2a7c7a; }
+  .home-cointerior__wedge { stroke: none; }
+  .home-cointerior__wedge--a {
+    fill: #2a7c7a;
+    opacity: 1;
+    animation: home-cointerior-a 7s ease-in-out infinite;
+  }
+  .home-cointerior__wedge--b {
+    fill: #e6a534;
+    opacity: 1;
+    animation: home-cointerior-b 7s ease-in-out infinite;
+  }
+  .home-cointerior--off,
+  .home-cointerior--off * { animation-play-state: paused !important; }
+
+  @keyframes home-cointerior-a {
+    0%, 100% { opacity: 0.28; }
+    22%, 78% { opacity: 1; }
+  }
+  @keyframes home-cointerior-b {
+    0%, 14% { opacity: 0.22; }
+    36%, 100% { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-cointerior,
+    .home-cointerior * { animation: none !important; }
+  }
+  :global(html.nd-motion-off) .home-cointerior,
+  :global(html.nd-motion-off) .home-cointerior *,
+  :global(html.noam-a11y-motion) .home-cointerior,
+  :global(html.noam-a11y-motion) .home-cointerior * {
+    animation: none !important;
+  }
+</style>

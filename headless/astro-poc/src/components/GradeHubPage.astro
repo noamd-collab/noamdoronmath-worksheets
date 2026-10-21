@@ -3,12 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import GradeLoopPlayer from './GradeLoopPlayer.astro';
 import '../styles/exact-grade.css';
 import { buildGradeLoopPool } from '../lib/gradeLoopPools';
-import { loadCatalog } from '../lib/catalog/loadCatalog';
 import {
   loadGradeHub,
   siblingGradeHubLinks,
   type GradeHubGrade,
 } from '../lib/gradeHubs';
+import { elementaryTopicSections } from '../lib/elementaryTopicNav';
 import { localizeSiteHref } from '../lib/sitePages';
 import { resolveSiteHrefString } from '../lib/resolveSiteHref';
 
@@ -25,17 +25,7 @@ const gradeLabel = gradeTabs.find((tab) => tab.grade === grade)?.label;
 const introIsCta = !!(hub.catalogCta && hub.catalogCta.label === hub.intro);
 const hasFaq = hub.faq.length > 0 && !!hub.faqHeading;
 const hasTopics = hub.topicSections.some((s) => s.links.length > 0);
-const grade1Catalog =
-  grade === 1 ? loadCatalog().grades.find((entry) => entry.grade === 1) : undefined;
-const grade1Groups = (grade1Catalog?.groups ?? [])
-  .map((group) => ({
-    key: group.key,
-    label: group.label,
-    topics: (grade1Catalog?.topics ?? []).filter(
-      (topic) => topic.group === group.key && topic.parent === undefined
-    ),
-  }))
-  .filter((group) => group.topics.length > 0);
+const elementarySections = elementaryTopicSections(grade);
 const faqJsonLd = hasFaq
   ? {
       '@context': 'https://schema.org',
@@ -126,7 +116,9 @@ const gradePool = buildGradeLoopPool(grade);
         }
         <div class="exact-grade__walker" data-doodle="walker" dir="ltr">
           <div>
-            <img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" />
+            <button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט">
+              <img src="/design-exact/assets/doodles/notebook-doodles-v1.webp" alt="" width="600" height="400" loading="lazy" decoding="async" />
+            </button>
           </div>
         </div>
       </div>
@@ -138,7 +130,9 @@ const gradePool = buildGradeLoopPool(grade);
           <h2 id="grade-demos-heading">המחשות לכיתה {gradeLabel}</h2>
           <div class="exact-grade__player-wrap">
             <div class="exact-grade__pencil" data-doodle="pencil">
-              <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" width="400" height="400" loading="lazy" decoding="async" />
+              <button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט">
+                <img src="/design-exact/assets/doodles/orbit-pencil.webp" alt="" width="400" height="400" loading="lazy" decoding="async" />
+              </button>
             </div>
             {/* The protected runtime supplies the real question, diagram and result.
                 Do not invent a playlist from the grade-four design sample. */}
@@ -151,20 +145,15 @@ const gradePool = buildGradeLoopPool(grade);
     }
 
     {
-      grade1Groups.length > 0 && (
-        <section class="grade-hub__topics" aria-label="קבוצות נושאים">
-          <h2 class="grade-hub__section-title">נושאים במאגר</h2>
-          {grade1Groups.map((group) => (
+      elementarySections.length > 0 && (
+        <section class="grade-hub__topics" aria-label="נושאים" data-elementary-topics>
+          {elementarySections.map((section) => (
             <div class="grade-hub__section">
-              <h3 class="grade-hub__section-title">
-                <a href={`/worksheets?grade=1&group=${group.key}`}>{group.label}</a>
-              </h3>
+              <h2 class="grade-hub__section-title">{section.heading}</h2>
               <ul class="grade-hub__topic-list">
-                {group.topics.map((topic) => (
+                {section.links.map((link) => (
                   <li>
-                    <a href={`/worksheets?grade=1&group=${group.key}&topic=${topic.id}`}>
-                      {topic.title}
-                    </a>
+                    <a href={link.href}>{link.label}</a>
                   </li>
                 ))}
               </ul>

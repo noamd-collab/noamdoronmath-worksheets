@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 217" width="190" height="217">
+<g data-layer="lines">
+<line id="e0001" data-seg="PQ" x1="26" y1="190.9" x2="164" y2="190.9" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="PR" x1="26" y1="190.9" x2="61.03" y2="26.1" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="PS" x1="26" y1="190.9" x2="117.63" y2="116.69" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="QR" x1="164" y1="190.9" x2="61.03" y2="26.1" stroke="#000000" stroke-width="1.5"/>
+<line id="e0005" data-seg="ST" x1="117.63" y1="116.69" x2="41.77" y2="116.69" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="marks">
+<polyline id="e0006" data-mark="par PQ" points="90.67,193.4 95,190.9 90.67,188.4" fill="none" stroke="#000000" stroke-width="1"/>
+<polyline id="e0007" data-mark="par ST" points="75.37,119.19 79.7,116.69 75.37,114.19" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0008" data-mark="arc QPS" d="M 42 190.9 L 41.96 189.81 L 41.85 188.73 L 41.67 187.66 L 41.41 186.6 L 41.08 185.56 L 40.68 184.55 L 40.22 183.56 L 39.69 182.61 L 39.09 181.7 L 38.43 180.83" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0009" data-mark="arc RPS" d="M 30.37 170.36 L 31.75 170.7 L 33.11 171.14 L 34.44 171.67 L 35.73 172.29 L 36.97 172.99 L 38.16 173.78 L 39.3 174.65 L 40.37 175.59 L 41.38 176.6 L 42.32 177.68" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0010" data-pt="P" cx="26" cy="190.9" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0011" data-pt="Q" cx="164" cy="190.9" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0012" data-pt="R" cx="61.03" cy="26.1" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="S" cx="117.63" cy="116.69" r="2" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="T" cx="41.77" cy="116.69" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0015" data-for="P" x="18.04" y="201.78" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">P</text>
+<text id="e0016" data-for="Q" x="173.11" y="200.39" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">Q</text>
+<text id="e0017" data-for="R" x="59.36" y="21.08" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">R</text>
+<text id="e0018" data-for="S" x="126.17" y="115.79" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">S</text>
+<text id="e0019" data-for="T" x="32.77" y="119.21" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">T</text>
+</g>
+</svg>

@@ -7,16 +7,52 @@ import { ExactReferenceMotion } from '../src/lib/exactReferenceMotion.js';
 function withIsland(check: (fixture: any) => void) {
   const state = { ssr: true, ready: false, engine: false, animations: [] as any[] };
   const owner = { hasAttribute: (name: string) => name === 'data-exact-motion-ready' && state.ready };
-  const makeElement = () => {
+  const makeElement = (tag = 'div') => {
     const target = new EventTarget() as any;
+    target.tagName = tag.toUpperCase();
     target.dataset = {};
     target.style = {};
+    target.className = '';
     target.attributes = new Map();
+    target.children = [];
+    target.classList = {
+      add: (...names: string[]) => {
+        const cur = new Set(String(target.className || '').split(/\s+/).filter(Boolean));
+        names.forEach((name) => cur.add(name));
+        target.className = [...cur].join(' ');
+      },
+    };
     target.setAttribute = (name: string, value: string) => target.attributes.set(name, value);
+    target.getAttribute = (name: string) => target.attributes.has(name) ? target.attributes.get(name) : null;
+    target.removeAttribute = (name: string) => target.attributes.delete(name);
+    target.insertBefore = (node: any, ref: any) => {
+      node.parentNode = target;
+      const at = target.children.indexOf(ref);
+      if (at >= 0) target.children.splice(at, 0, node);
+      else target.children.push(node);
+      return node;
+    };
+    target.appendChild = (node: any) => {
+      if (node.parentNode?.children) {
+        const at = node.parentNode.children.indexOf(node);
+        if (at >= 0) node.parentNode.children.splice(at, 1);
+      }
+      node.parentNode = target;
+      target.children.push(node);
+      return node;
+    };
     target.closest = (selector: string) => {
       if (selector.includes('[data-loop]')) return state.engine ? {} : null;
       if (selector === 'astro-island[ssr]') return state.ssr ? owner : null;
       if (selector === '[data-exact-hydration]') return owner;
+      let node = target;
+      while (node) {
+        const hidden = node.attributes?.get?.('aria-hidden') === 'true';
+        if (selector === '[aria-hidden="true"]' && hidden) return node;
+        const interactive = selector === 'button' || selector === 'a,button' || selector === 'button,a';
+        if (interactive && (node.tagName === 'BUTTON' || node.tagName === 'A')) return node;
+        node = node.parentNode;
+      }
       return null;
     };
     target.getBoundingClientRect = () => ({ top: 0, bottom: 50 });
@@ -36,7 +72,8 @@ function withIsland(check: (fixture: any) => void) {
     };
     return target;
   };
-  const fish = makeElement(), img = makeElement();
+  const fish = makeElement(), img = makeElement('img'), holder = makeElement();
+  holder.appendChild(img);
   fish.dataset.doodle = 'fish';
   fish.querySelector = (selector: string) => selector === 'img' ? img : null;
   const root = {
@@ -46,6 +83,7 @@ function withIsland(check: (fixture: any) => void) {
   const globals = {
     document: {
       querySelector: (selector: string) => selector === '.exact-frame' ? root : null,
+      createElement: (tag: string) => makeElement(tag),
       documentElement: { dataset: {}, classList: { contains: () => false } },
       hidden: false,
     },
@@ -89,9 +127,14 @@ describe('exact decorative motion hydration boundary', () => {
     state.ready = true;
     motion.scan();
     assert.equal(state.animations.length, 1);
-    assert.equal(img.tabIndex, 0);
-    assert.equal(img.attributes.get('role'), 'button');
-    assert.equal(img.attributes.get('aria-label'), 'הנפשת השרבוט');
+    assert.equal(img.tabIndex, undefined);
+    assert.equal(img.attributes.get('role'), undefined);
+    assert.equal(img.attributes.get('aria-label'), undefined);
+    assert.equal(img.getAttribute('alt') ?? '', '');
+    const button = img.parentNode;
+    assert.equal(button.tagName, 'BUTTON');
+    assert.equal(button.getAttribute('type'), 'button');
+    assert.equal(button.getAttribute('aria-label'), 'הנפשת השרבוט');
     const listenerCount = motion.listeners.length;
     motion.scan();
     assert.equal(state.animations.length, 1);

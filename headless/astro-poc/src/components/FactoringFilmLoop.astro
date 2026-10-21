@@ -1,0 +1,107 @@
+---
+/**
+ * Grade 9 common-factor film.
+ * The 120s player, chapters, and 1.5× default stay in
+ * public/loops/common-factor-minus-parentheses-grade-9.html.
+ * This wrapper only frames that file.
+ */
+interface Props {
+  src: string;
+  marker: string;
+}
+const { src, marker } = Astro.props;
+const frameSrc = `${src}?embed=1`;
+---
+
+<div class="factoring-loop" data-factoring-loop data-landing-loop={marker}>
+  <iframe
+    class="factoring-loop__frame"
+    src={frameSrc}
+    title="גורם משותף ומינוס לפני סוגריים"
+    loading="eager"
+    scrolling="no"
+    data-factoring-frame
+  ></iframe>
+</div>
+
+<script>
+  function boot(root) {
+    const frame = root.querySelector('[data-factoring-frame]');
+    if (!frame) return;
+
+    function fit() {
+      let doc;
+      try { doc = frame.contentDocument; } catch { return; }
+      const main = doc?.querySelector('main');
+      if (!main) return;
+      const h = Math.ceil(main.getBoundingClientRect().height);
+      if (h > 200 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
+    }
+
+    function motionOff() {
+      const html = document.documentElement;
+      return html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion');
+    }
+
+    function holdStill() {
+      if (!motionOff()) return;
+      try {
+        const player = frame.contentWindow;
+        const s = player?.mathScene
+          ?? frame.contentDocument?.getElementById('film')?.contentWindow?.mathScene;
+        if (s?.isPlaying?.()) s.pause();
+      } catch { return; }
+    }
+
+    let watching = false;
+    function onReady() {
+      let doc;
+      try { doc = frame.contentDocument; } catch { return; }
+      if (!doc?.querySelector('main')) return;
+      fit();
+      holdStill();
+      if (watching || !('ResizeObserver' in window)) return;
+      watching = true;
+      const observer = new ResizeObserver(fit);
+      observer.observe(frame);
+      if (doc.body) observer.observe(doc.body);
+    }
+
+    frame.addEventListener('load', onReady);
+    onReady();
+
+    new MutationObserver(holdStill).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  }
+
+  document.querySelectorAll('[data-factoring-loop]').forEach(boot);
+</script>
+
+<style>
+  .factoring-loop {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    container-type: inline-size;
+    background: #fbfaf5;
+  }
+  .factoring-loop__frame {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border: 0;
+    background: #fbfaf5;
+    /* 16:9 stage, controls, and the readable caption bar. */
+    height: 520px;
+    height: calc((100cqi - 26px) * 9 / 16 + 196px);
+    min-height: 320px;
+    overflow: hidden;
+  }
+  @container (width > 780px) {
+    .factoring-loop__frame {
+      height: calc((100cqi - 26px) * 9 / 16 + 148px);
+    }
+  }
+</style>

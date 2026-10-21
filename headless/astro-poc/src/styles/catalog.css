@@ -3287,6 +3287,12 @@ html.noam-a11y-motion .hero-draw {
   stroke-width: 2;
 }
 .concept-loop .cl-big { font-size: 18px; font-weight: 800; }
+/* L14 diff-sq (Kimi v6) carries many small letter labels; on a phone the
+   560-wide viewBox shrinks to ~0.55, so give them a larger SVG size. */
+@media (max-width: 640px) {
+  .concept-loop[data-loop="diff-sq"] .cl-t { font-size: 21px; }
+  .concept-loop[data-loop="diff-sq"] .cl-big { font-size: 19px; }
+}
 
 /* accent fills/strokes */
 .concept-loop .cl-fill-a { fill: rgba(30, 136, 229, 0.16); }
@@ -3295,6 +3301,18 @@ html.noam-a11y-motion .hero-draw {
 .concept-loop .cl-fill-d { fill: #e5e7eb; }
 .concept-loop .cl-stroke-a { stroke: var(--cobalt); stroke-width: 2.5; }
 .concept-loop .cl-stroke-b { stroke: #7c3aed; stroke-width: 2.5; }
+/* SAS copy stays dashed even where .cl-line would otherwise draw a solid stroke. */
+.concept-loop .cl-sas-dash {
+  stroke-dasharray: 14 11;
+  stroke-width: 3.5;
+}
+.concept-loop[data-loop='sas-snap'] .cl-sas-cap {
+  font-size: 22px;
+  font-weight: 800;
+}
+@media (max-width: 640px) {
+  .concept-loop[data-loop='sas-snap'] .cl-sas-cap { font-size: 26px; }
+}
 
 .concept-loop .cl-t {
   font-family: 'Assistant', Arial, sans-serif;
@@ -3316,6 +3334,19 @@ html.noam-a11y-motion .hero-draw {
 .concept-loop .cl-num.cl-rtl {
   direction: rtl;
   unicode-bidi: isolate;
+}
+/* Slope card only: the added ticks and ordered pairs. The original step
+   labels stay on .cl-t. */
+.concept-loop[data-loop='slope'] .cl-slope-tick {
+  font-size: 16px;
+  font-weight: 700;
+}
+.concept-loop[data-loop='slope'] .cl-slope-pair {
+  font-size: 18px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 4px;
 }
 .concept-loop .cl-sfrac-bar {
   stroke: var(--navy);
@@ -3912,6 +3943,8 @@ body {
 .concept-loop [data-el='cut-v'], .concept-loop [data-el='cut-h'], .concept-loop [data-el='q-shade'], .concept-loop [data-el='q-lbl'],
 .concept-loop [data-el='bar-o'], .concept-loop [data-el='bar-shade'], .concept-loop [data-el='bar-d1'], .concept-loop [data-el='bar-d2'], .concept-loop [data-el='bar-d3'], .concept-loop [data-el='bar-lbl'],
 .concept-loop [data-el='nl'], .concept-loop [data-el='nl0'], .concept-loop [data-el='nl1'], .concept-loop [data-el='nl-pt'], .concept-loop [data-el='nl-lbl'],
+/* data-el="copy" is the transform film's moving piece and stays hidden until that film fades it in.
+   sas-snap uses data-el="sas-copy" so this rule does not blank its dashed triangle. */
 .concept-loop [data-el='axis'], .concept-loop [data-el='copy'], .concept-loop [data-el='copy-fill'],
 .concept-loop [data-el='pivot'], .concept-loop [data-el='vec'], .concept-loop [data-el='vec-head'] {
   opacity: 0;

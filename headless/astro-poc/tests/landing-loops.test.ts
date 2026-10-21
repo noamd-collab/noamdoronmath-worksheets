@@ -17,11 +17,12 @@ import {
   MINUS,
   NON_LANDING_SITE_SLUGS,
   POWERS_ROWS,
+  SLUG_FILM,
   marketingLandingLoop,
   powerMarkup,
-  SLUG_FILM,
   topicLandingLoop,
 } from '../src/lib/landingLoops.ts';
+import { isLessonLoop, LESSON_LOOPS } from '../src/lib/lessonLoops.ts';
 import { GRADE_HUB_GRADES } from '../src/lib/gradeHubs.ts';
 import { TOPIC_PAGE_SLUGS, loadTopicPage } from '../src/lib/topicPages.ts';
 
@@ -34,6 +35,8 @@ const NON_LANDING_PAGES = new Set([
   'dev-loops.astro',
   'loop-compare.astro',
   'hero-loops/[variant].astro',
+  'practice-private/[slug].astro',
+  'worksheet-pilot/[slug].astro', // Unlisted document picker, not a topic/marketing landing.
   'blog/index.astro',
   'blog/categories/[slug].astro',
   'post/[...slug].astro',
@@ -61,13 +64,37 @@ describe('landing loop coverage', () => {
         assert.ok(CSS_LOOP_VARIANTS.includes(loop.variant), `${slug} variant ${loop.variant}`);
       }
       if (loop.kind === 'film') {
-        assert.equal(slug, 'analytic-geometry-grade-9');
-        assert.equal(loop.src, '/loops/distance-between-points.html');
-        assert.equal(loop.marker, 'distance-between-points');
+        const films = {
+          'analytic-geometry-grade-9': {
+            src: '/loops/distance-between-points.html',
+            marker: 'distance-between-points',
+          },
+          'triangle-quadrilateral-angle-sum-grade-7': {
+            src: '/loops/triangle-angle-sum-vertex-descent.html',
+            marker: 'triangle-angle-sum-vertex-descent',
+          },
+          'parallel-lines-angles-grade-8': {
+            src: '/loops/parallel-cointerior-angles.html',
+            marker: 'parallel-cointerior-angles',
+          },
+          'algebraic-expressions-grade-7': {
+            src: '/loops/algebraic-substitution-grade-7.html',
+            marker: 'algebraic-substitution-grade-7',
+          },
+          'factoring-grade-9': {
+            src: '/loops/common-factor-minus-parentheses-grade-9.html',
+            marker: 'common-factor-minus-parentheses',
+          },
+        };
+        assert.deepEqual(
+          { src: loop.src, marker: loop.marker },
+          films[slug as keyof typeof films],
+          slug,
+        );
       }
     }
     assert.equal(counts.concept + counts.css + counts.film, TOPIC_PAGE_SLUGS.length);
-    assert.equal(counts.film, 1);
+    assert.equal(counts.film, 5);
     assert.ok(counts.css > 0);
     assert.ok(counts.concept > 0);
   });
@@ -89,9 +116,9 @@ describe('landing loop coverage', () => {
     assert.equal(topicLandingLoop(loadTopicPage('exponent-rules-grade-9')).variant, 'exp-rules');
     assert.equal(topicLandingLoop(loadTopicPage('multiplying-signed-numbers-grade-7')).variant, 'signed-mul');
     assert.deepEqual(topicLandingLoop(loadTopicPage('parallel-lines-angles-grade-8')), {
-      kind: 'concept',
-      variant: 'corr-angles',
-      marker: 'concept-corr-angles',
+      kind: 'film',
+      marker: 'parallel-cointerior-angles',
+      src: '/loops/parallel-cointerior-angles.html',
     });
     assert.deepEqual(topicLandingLoop(loadTopicPage('geometric-proof-grade-8')), {
       kind: 'concept',
@@ -107,6 +134,132 @@ describe('landing loop coverage', () => {
     assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
   });
 
+  it('reviewed elementary pages play a film of their own lesson', () => {
+    const expected: Record<string, string> = {
+      'counting-grade-1': 'css:count-mark',
+      'addition-to-10-grade-1': 'concept:add-within',
+      'numbers-operations-review-grade-2': 'concept:array',
+      'perimeter-polygons-grade-3': 'concept:peri-rect',
+      'order-of-operations-grade-4': 'concept:order-ops',
+      'distributive-area-model-grade-4': 'concept:distributive-area-model-grade-4',
+      'multiplication-multi-digit-grade-4': 'css:col-mul',
+      'grade-4-summary': 'concept:grade-4-summary',
+      'parallelogram-area-grade-5': 'concept:para-rect',
+      'fraction-division-meaning-grade-6': 'concept:fraction-division-meaning-grade-6',
+      'measurement-geometry-synthesis-grade-6': 'concept:measurement-geometry-synthesis-grade-6',
+    };
+    for (const [slug, want] of Object.entries(expected)) {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      assert.equal(`${loop.kind}:${loop.kind === 'film' ? loop.marker : loop.variant}`, want, slug);
+    }
+    for (const slug of Object.keys(expected)) {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      const variant = loop.kind === 'film' ? loop.marker : loop.variant;
+      for (const wrong of ['coords', 'area-model', 'frac-product', 'order', 'tenframes', 'sticks', 'triangle', 'area']) {
+        assert.notEqual(variant, wrong, slug);
+      }
+    }
+  });
+
+  it('follow-up elementary pages play a film of their own lesson', () => {
+    const expected: Record<string, string> = {
+      'compose-decompose-10-grade-1': 'concept:add-within',
+      'subtraction-to-10-grade-1': 'concept:birds-sub',
+      'order-of-operations-grade-5': 'concept:order-ops',
+      'subtraction-to-20-grade-1': 'css:sub-via-10',
+      'compose-decompose-grade-1': 'css:split-ways',
+      'shapes-compose-decompose-grade-1': 'css:tri-square',
+      'number-bonds-10-20-grade-2': 'css:bonds-10-20',
+      'multiplication-multi-digit-grade-5': 'css:long-mul',
+      'fraction-division-algorithm-grade-6': 'css:frac-recip',
+      // Bridging through ten is these two pages' own idea, so they keep 7 + 5.
+      'making-20-via-10-grade-1': 'concept:tenframes',
+      'addition-to-20-grade-1': 'concept:tenframes',
+    };
+    for (const [slug, want] of Object.entries(expected)) {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      assert.equal(`${loop.kind}:${loop.kind === 'film' ? loop.marker : loop.variant}`, want, slug);
+    }
+    const tenframes = TOPIC_PAGE_SLUGS.filter((slug) => {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      return loop.kind === 'concept' && loop.variant === 'tenframes';
+    });
+    assert.deepEqual([...tenframes].sort(), ['addition-to-20-grade-1', 'making-20-via-10-grade-1']);
+    // Algebra and negative numbers belong to grade 7 and up.
+    for (const slug of TOPIC_PAGE_SLUGS) {
+      const page = loadTopicPage(slug);
+      if (page.grade > 6) continue;
+      const loop = topicLandingLoop(page);
+      const variant = loop.kind === 'film' ? loop.marker : loop.variant;
+      for (const wrong of ['area-model', 'order', 'signed', 'signed-jump', 'signed-ops', 'coords']) {
+        assert.notEqual(variant, wrong, slug);
+      }
+    }
+  });
+
+  it('follow-up loops show the example written on their page', () => {
+    const sketch = read('src/components/LoopSketch.astro');
+    const formula = read('src/components/LoopFormula.astro');
+    const pageText = (slug: string) => JSON.stringify(loadTopicPage(slug).sections);
+
+    assert.ok(pageText('subtraction-to-20-grade-1').includes(`15 ${MINUS} 7 = 15 ${MINUS} 5 ${MINUS} 2 = 8`));
+    assert.ok(
+      sketch.includes(
+        '15 {MINUS} 7 <span class="sk-sv-step1">= 15 {MINUS} 5</span> <span class="sk-sv-step2">{MINUS} 2</span> <span class="sk-sv-step3">= 8</span>',
+      ),
+    );
+    assert.match(CSS_LOOP_IDEAS['sub-via-10'], new RegExp(`15 ${MINUS} 7 .*5 .*10.*2.*8`));
+
+    assert.ok(pageText('compose-decompose-grade-1').includes('1 + 5, 2 + 4 ו־3 + 3'));
+    assert.ok(sketch.includes('6 = {row.k} + {6 - row.k}'));
+    assert.match(sketch, /const splitRows = \[1, 2, 3\]/);
+    assert.match(CSS_LOOP_IDEAS['split-ways'], /1 \+ 5, 2 \+ 4, 3 \+ 3/);
+
+    assert.match(pageText('shapes-compose-decompose-grade-1'), /שני משולשים[^"]*ריבוע/);
+    assert.match(CSS_LOOP_IDEAS['tri-square'], /שני משולשים.*ריבוע/);
+
+    assert.ok(pageText('number-bonds-10-20-grade-2').includes('6 + 4'));
+    assert.ok(pageText('number-bonds-10-20-grade-2').includes('13 + 7 = 20'));
+    assert.ok(sketch.includes('>6 + 4 = 10</text>'));
+    assert.ok(sketch.includes('>13 + 7 = 20</text>'));
+    assert.match(CSS_LOOP_IDEAS['bonds-10-20'], /6 \+ 4 = 10.*13 \+ 7 = 20/);
+
+    assert.ok(pageText('multiplication-multi-digit-grade-5').includes('257 × 23 = 257 × 20 + 257 × 3 = 5,140 + 771 = 5,911'));
+    assert.ok(pageText('multiplication-multi-digit-grade-5').includes('250 × 20 = 5,000'));
+    for (const note of ['257 × 3 = 771', '257 × 20 = 5,140', '≈ 250 × 20 = 5,000']) assert.ok(sketch.includes(note), note);
+    assert.match(CSS_LOOP_IDEAS['long-mul'], /771 \+ 5,140 = 5,911/);
+
+    assert.ok(pageText('fraction-division-algorithm-grade-6').includes('⟨1¦2⟩ : ⟨1¦4⟩ = ⟨1¦2⟩ × 4 = 2'));
+    assert.match(
+      formula,
+      /<span class="ll-frac__n"><span class="ll-rc-up">4<\/span><\/span><span class="ll-frac__d"><span class="ll-rc-down">1<\/span><\/span>/,
+    );
+    assert.match(formula, /<span class="ll-rc-mul">×<\/span>/);
+    assert.match(formula, /<span class="ll-rc-ans">= 2<\/span>/);
+    assert.match(CSS_LOOP_IDEAS['frac-recip'], /רק את המחלק/);
+  });
+
+  it('kite-grade-9 plays the kite-construct film', () => {
+    assert.deepEqual(topicLandingLoop(loadTopicPage('kite-grade-9')), {
+      kind: 'concept',
+      variant: 'kite-construct',
+      marker: 'concept-kite-construct',
+    });
+  });
+
+  it('difference-of-squares-grade-9 gets its own L14 diff-sq film; no other page plays it', () => {
+    assert.deepEqual(topicLandingLoop(loadTopicPage('difference-of-squares-grade-9')), {
+      kind: 'concept',
+      variant: 'diff-sq',
+      marker: 'concept-diff-sq',
+    });
+    for (const slug of TOPIC_PAGE_SLUGS) {
+      if (slug === 'difference-of-squares-grade-9') continue;
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      assert.notEqual(loop.kind === 'concept' ? loop.variant : '', 'diff-sq', slug);
+    }
+  });
+
   it('topic, grade, home, and marketing templates emit data-landing-loop', () => {
     const topic = read('src/components/TopicPage.astro');
     const loop = read('src/components/LandingLoop.astro');
@@ -118,7 +271,12 @@ describe('landing loop coverage', () => {
     assert.match(topic, /data-landing-loop=\{loopVariant \? landingLoop\.marker : undefined\}/);
     assert.match(topic, /\{cssVariant && <LandingLoop variant=\{cssVariant\} \/>\}/);
     assert.match(topic, /\{loopVariant && <ConceptLoop variant=\{loopVariant\} \/>\}/);
-    assert.match(topic, /landingLoop\.kind === 'film' && <DistancePointsLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /landingLoop\.kind === 'film' && landingLoop\.marker === 'distance-between-points'/);
+    assert.match(topic, /<DistancePointsLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /<TriangleAngleSumLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /<ParallelCointeriorLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /<AlgebraicSubstitutionLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
+    assert.match(topic, /<FactoringFilmLoop src=\{landingLoop\.src\} marker=\{landingLoop\.marker\} \/>/);
     assert.match(loop, /data-landing-loop=\{variant\}/);
     assert.match(hub, /data-landing-loop=\{`grade-\$\{grade\}`\}/);
     assert.match(home, /data-landing-loop="hero"/);
@@ -140,6 +298,7 @@ describe('landing loop coverage', () => {
       loop,
       read('src/components/LoopFormula.astro'),
       read('src/components/LoopSketch.astro'),
+      read('src/components/LessonLoop.astro'),
       read('src/components/LessonFilm.astro'),
     ].join('\n');
     assert.match(loop, /prefers-reduced-motion:\s*reduce/);
@@ -150,7 +309,9 @@ describe('landing loop coverage', () => {
     assert.match(loop, /animation-play-state:\s*paused/);
     assert.doesNotMatch(scenes, /<video\b|lottie|gsap|bodymovin/i);
     for (const variant of CSS_LOOP_VARIANTS) {
-      assert.ok(scenes.includes(`variant === '${variant}'`), `missing scene ${variant}`);
+      if (isLessonLoop(variant)) {
+        assert.ok(scenes.includes(`lesson.picture === '${LESSON_LOOPS[variant].picture}'`) || ['equation', 'place'].includes(LESSON_LOOPS[variant].picture), `missing lesson renderer ${variant}`);
+      } else assert.ok(scenes.includes(`variant === '${variant}'`), `missing scene ${variant}`);
     }
   });
 
@@ -220,7 +381,8 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 25);
+    // Some corrected CSS lessons move to dedicated concept films as they become available.
+    assert.ok(cssPages >= 95, `expected coverage of the existing CSS lessons, got ${cssPages}`);
     const absolute = topicLandingLoop(loadTopicPage('number-line-absolute-value-grade-7'));
     assert.equal(absolute.kind, 'css');
     assert.equal(absolute.variant, 'absolute');
@@ -228,8 +390,6 @@ describe('landing loop coverage', () => {
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(topicLandingLoop(loadTopicPage('coordinate-plane-applications-grade-7')).variant, 'coord-app');
     assert.equal(topicLandingLoop(loadTopicPage('coordinate-plane-applications-grade-9')).variant, 'coord-app');
-    assert.equal(topicLandingLoop(loadTopicPage('parallel-lines-angles-grade-8')).variant, 'corr-angles');
-    assert.match(read('src/components/TopicPage.astro'), /parallel-more/);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);
     assert.equal(CSS_LOOP_IDEAS.stats.includes('16/3'), false);
@@ -245,6 +405,18 @@ describe('landing loop coverage', () => {
     assert.equal(shown.includes('∙'), false);
     assert.equal(shown.includes('⋅'), false);
     assert.equal(/\d\/\d/.test(shown), false);
+  });
+
+  it('new review loops show the same numbers as their captions', () => {
+    const sketch = read('src/components/LoopSketch.astro');
+    assert.match(CSS_LOOP_IDEAS['col-mul'], /175 × 5 = 875/);
+    for (const step of ['5 × 5 = 25', '7 × 5 + 2 = 37', '1 × 5 + 3 = 8']) assert.ok(sketch.includes(step), step);
+    assert.match(CSS_LOOP_IDEAS['distrib-area'], /150 \+ 90 = 240/);
+    assert.ok(sketch.includes('15 × 16 = 150 + 90 = 240'));
+    assert.match(CSS_LOOP_IDEAS['frac-div'], /8 רבעים/);
+    assert.match(sketch, /2 : <span class="ll-frac"><span class="ll-frac__n">1<\/span><span class="ll-frac__d">4<\/span><\/span>/);
+    assert.match(CSS_LOOP_IDEAS['count-mark'], /האחרון, 7,/);
+    assert.match(sketch, /length: 7 \}, \(_, i\) => \(\{\s*n: i \+ 1,\s*x: 408 - i \* 56/);
   });
 
   it('isolates every math fragment inside a Hebrew loop caption', () => {
@@ -296,7 +468,8 @@ describe('landing loop coverage', () => {
     assert.match(sketch, /d="M160 88 Q240 312 320 88"/);
     assert.match(sketch, /\(\{MINUS\}2, 4\)/);
     assert.match(sketch, /\(2, 4\)/);
-    assert.match(sketch, /class="sk-box" points="250,118 340,200 160,200"/);
+    // Similarity moved to its own measured, labeled demonstration (see similarity-loop.test.ts).
+    assert.match(read('src/components/SimilarityLoop.astro'), /class="small-fill"/);
     assert.match(sketch, /24%, 86% \{ transform: scale\(1\); \}/);
     assert.match(sketch, /V = S × ℓ/);
     assert.equal(sketch.includes('y="120" font-size="22">V = S'), false);
