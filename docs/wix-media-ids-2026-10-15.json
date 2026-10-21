@@ -13,6 +13,19 @@
     "wixRelease": false,
     "merge": false
   },
+  "rerun2026-10-21": {
+    "uploaded": false,
+    "reason": "WIX_MEDIA_API_KEY is not injected. CLOUD_AGENT_ALL_SECRET_NAMES and CLOUD_AGENT_INJECTED_SECRET_NAMES are only WIX_FORMS_API_KEY.",
+    "publish": false,
+    "wixRelease": false,
+    "merge": false,
+    "siteIds": {
+      "liveDomainMetaSiteId": "df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46",
+      "studioMetaSiteId": "36dd9544-acf9-4e85-a01a-798f3c1efbb9",
+      "studioHtmlAppId": "0ca81118-7ca8-40a7-8f97-8d06d901a556",
+      "note": "df6b8141 and 36dd9544 are both meta site IDs of two sites. The live domain reports df6b8141. 36dd9544 is the Studio meta site. 0ca81118 is the Studio HTML app id, not a meta site."
+    }
+  },
   "status": "already_on_media_library_remote_sha256_verified",
   "uploadedThisRun": false,
   "duplicateUploadSkipped": true,
@@ -28,7 +41,8 @@
     "injected": [
       "WIX_FORMS_API_KEY"
     ],
-    "wixMediaApiKeyPresent": false
+    "wixMediaApiKeyPresent": false,
+    "checkedAt": "2026-10-21T15:53:00Z"
   },
   "conversation": "Wix media student files",
   "agent": "Cursor",

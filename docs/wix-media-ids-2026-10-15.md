@@ -1,6 +1,19 @@
 # Wix media IDs — 2026-10-15
 
-2026-10-19 rerun: no upload. `WIX_MEDIA_API_KEY` is still not injected. `CLOUD_AGENT_ALL_SECRET_NAMES` is only `WIX_FORMS_API_KEY`. No publish, no wix release, no merge. G8-T26 and G9-T32 were not touched.
+2026-10-21 rerun: no upload. `WIX_MEDIA_API_KEY` is not in this agent. `CLOUD_AGENT_ALL_SECRET_NAMES` and `CLOUD_AGENT_INJECTED_SECRET_NAMES` are only `WIX_FORMS_API_KEY`. No publish, no wix release, no merge. G8-T26 and G9-T32 were not touched. Kimi Code: these IDs are not ready from this rerun.
+
+## Site IDs (checked 2026-10-21, before any upload call)
+
+Both `df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46` and `36dd9544-acf9-4e85-a01a-798f3c1efbb9` are meta site IDs. They are two Wix sites, not “site id vs meta site id”.
+
+- Live `www.noamdoronmath.co.il` sets `getMetaSiteId()` to `df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46`. That is the Headless project in `headless/astro-poc/wix.config.json`. The same page sets `getHtmlSiteId()` to the literal `dummy-site-id` and `isWixSite()` to false. This matches Noam’s memory for the live domain.
+- `36dd9544-acf9-4e85-a01a-798f3c1efbb9` is the classic Studio meta site (contact form, legal iframe, `d8e7ad` files). It is not in the live homepage HTML. The 15.10 file URLs below use this host.
+- `0ca81118-7ca8-40a7-8f97-8d06d901a556` is the Studio HTML app id, not a meta site. Media API returns HTTP 404 for it.
+- A known student PDF returns HTTP 200 from both `*.usrfiles.com` hosts, from `static.wixstatic.com`, and from `www.noamdoronmath.co.il/_files/ugd/…`. The host does not show which library owns the file.
+
+The Media Manager call was not made. The key has to be injected as `WIX_MEDIA_API_KEY`, scoped to the meta site that should receive the files.
+
+2026-10-19 rerun: no upload. `WIX_MEDIA_API_KEY` was not injected then either.
 
 ## Site ID (checked 2026-10-19, before any upload)
 
@@ -47,4 +60,4 @@ The 15.10 rows below are the earlier remote sha256 check. This rerun did not upl
 | G9-T17 | r2 | `d8e7ad_b38c199bb4bf4c828a23c4c3f25ac3da.pdf` | yes `c3af8e51572474639141c99affc4f173f32b1a0f7f46fb5b3623ab848d90bb15` | `d8e7ad_b38c199bb4bf4c828a23c4c3f25ac3da.pdf` | https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_b38c199bb4bf4c828a23c4c3f25ac3da.pdf |
 | G9-T17 | r3 | `d8e7ad_11c7f97008dc4d8c95c46dfc04f47eeb.pdf` | yes `5422705880099d510ecba50c4fc1dae93f21fc6f55416a9f01bee4a85e97f3e8` | `d8e7ad_11c7f97008dc4d8c95c46dfc04f47eeb.pdf` | https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_11c7f97008dc4d8c95c46dfc04f47eeb.pdf |
 
-Kimi Code: the 2026-10-19 rerun did not upload. `WIX_MEDIA_API_KEY` is not in this agent. Do not open draft PRs from this rerun. G8-T26 and G9-T32 stay untouched.
+Kimi Code: the 2026-10-21 rerun did not upload. `WIX_MEDIA_API_KEY` is not in this agent. Do not open draft PRs from this rerun. G8-T26 and G9-T32 stay untouched.
