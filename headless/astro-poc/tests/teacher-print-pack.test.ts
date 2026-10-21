@@ -756,6 +756,9 @@ describe('teacher short worksheet pack', () => {
       outDir: scratch,
     });
     for (const painted of rendered.pages) assert.ok(painted.basadDark > 0, JSON.stringify(painted));
+    assert.equal(rendered.pages.length, 3, 'regression trailing page');
+    assert.equal(rendered.pages.filter((page) => page.kind === 'exercise').length, 2);
+    assert.equal(rendered.pages.filter((page) => page.kind === 'answer').length, 1);
     const region = (png, y0, y1, x0, x1) => {
       const result = spawnSync('python3', ['-c', `
 import sys, pymupdf, numpy as np
@@ -852,6 +855,7 @@ print(int(np.any(arr < 80, axis=2).sum()))
         outDir: dir,
       });
       for (const page of painted.pages) assert.ok(page.basadDark > 0, name);
+      assert.equal(painted.pages.length, name === 'level-a-10' ? 2 : 3, name + ' trailing page');
     }
     mkdirSync(ARTIFACTS, { recursive: true });
     const copied = spawnSync('bash', ['-c', `rm -rf ${ARTIFACTS}/regress && mkdir -p ${ARTIFACTS}/regress/multipart-15 ${ARTIFACTS}/regress/level-a-10 && cp -f ${scratch}/*.pdf ${scratch}/*.png ${ARTIFACTS}/regress/ && cp -f ${scratch}/multipart-15/* ${ARTIFACTS}/regress/multipart-15/ && cp -f ${scratch}/level-a-10/* ${ARTIFACTS}/regress/level-a-10/`], { encoding: 'utf8' });
@@ -1066,6 +1070,8 @@ print(int(np.any(arr < 80, axis=2).sum()))
       outDir: scratch,
     });
     for (const page of rendered.pages) assert.ok(page.basadDark > 0);
+    assert.equal(rendered.pages.length, 2, 'parts trailing page');
+    assert.equal(rendered.pages.filter((page) => page.kind === 'answer').length, 1);
     const q1 = rendered.pages.flatMap((page) => page.cropDark || []).find((item) => item.id === 'q1');
     const ans3 = rendered.pages.flatMap((page) => page.cropDark || []).find((item) => item.id === 'ans-3');
     assert.ok(q1 && ans3);
