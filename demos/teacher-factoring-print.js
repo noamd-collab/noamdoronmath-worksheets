@@ -299,28 +299,43 @@ function shortSlices(chosen) {
   return slices;
 }
 
+const SHORT_PAGE_W = 1000;
+const SHORT_PAGE_H = 1440;
+
 function contentHeight(items) {
   return items.reduce((sum, item, index) => sum + (index ? item.slice.gap : 0) + item.dh, 0);
 }
 
-function shrinkTo(items, limit) {
-  const height = contentHeight(items);
-  if (height <= limit) return items;
-  const factor = limit / height;
-  const scaled = items.map((item) => ({
-    ...item,
-    dh: Math.max(1, Math.round(item.dh * factor)),
-    slice: { ...item.slice, gap: Math.max(1, Math.round(item.slice.gap * factor)) },
-  }));
-  const extra = contentHeight(scaled) - limit;
-  if (extra > 0) scaled[scaled.length - 1].dh = Math.max(1, scaled[scaled.length - 1].dh - extra);
-  return scaled;
+function placeShort(items, scale, outW) {
+  const drawW = Math.max(1, Math.round(outW * scale));
+  const x0 = Math.floor((outW - drawW) / 2);
+  let cursor = 0;
+  const rows = items.map((item, index) => {
+    if (index) cursor += item.slice.gap * scale;
+    const y = Math.round(cursor);
+    const dh = Math.max(1, Math.round(item.dh * scale));
+    cursor += item.dh * scale;
+    return { item, y, dh };
+  });
+  const height = rows.length ? rows[rows.length - 1].y + rows[rows.length - 1].dh : 0;
+  return { drawW, x0, rows, height, scale };
+}
+
+function layoutShort(items, limit, outW) {
+  const natural = contentHeight(items);
+  let scale = natural > limit ? limit / natural : 1;
+  let placed = placeShort(items, scale, outW);
+  for (let pass = 0; pass < 4 && placed.height > limit; pass += 1) {
+    scale *= limit / placed.height;
+    placed = placeShort(items, scale, outW);
+  }
+  return placed;
 }
 
 function splitQuestion(items, limit) {
   const stem = items.filter((item) => item.slice.kind === 'stem');
   const rows = items.filter((item) => item.slice.kind === 'row');
-  if (rows.length < 2) return [shrinkTo(items, limit)];
+  if (rows.length < 2) return [items];
   const chunks = [];
   let current = [];
   rows.forEach((row) => {
@@ -334,17 +349,19 @@ function splitQuestion(items, limit) {
   });
   if (current.length === 1 && chunks.length) chunks[chunks.length - 1].push(current[0]);
   else if (current.length) chunks.push(stem.concat(current));
-  return chunks.map((chunk) => (contentHeight(chunk) > limit ? shrinkTo(chunk, limit) : chunk));
+  return chunks;
 }
 
 function packShort(measured) {
-  const PAGE_H = 1440;
-  if (contentHeight(measured) <= PAGE_H || PAGE_H / contentHeight(measured) >= 0.85) {
-    return [shrinkTo(measured, PAGE_H)];
+  const footer = measured.filter((item) => item.slice.block === 'footer');
+  const body = measured.filter((item) => item.slice.block !== 'footer');
+  const withFooter = body.concat(footer);
+  if (!body.length) return [footer];
+  if (contentHeight(withFooter) <= SHORT_PAGE_H || SHORT_PAGE_H / contentHeight(withFooter) >= 0.85) {
+    return [withFooter];
   }
   const blocks = [];
-  measured.forEach((item) => {
-    if (item.slice.block === 'footer') return;
+  body.forEach((item) => {
     const last = blocks[blocks.length - 1];
     if (last && last.id === item.slice.block) last.items.push(item);
     else blocks.push({ id: item.slice.block, items: [item] });
@@ -352,9 +369,9 @@ function packShort(measured) {
   const pages = [];
   let page = [];
   blocks.forEach((block) => {
-    const parts = contentHeight(block.items) > PAGE_H ? splitQuestion(block.items, PAGE_H) : [block.items];
+    const parts = contentHeight(block.items) > SHORT_PAGE_H ? splitQuestion(block.items, SHORT_PAGE_H) : [block.items];
     parts.forEach((part) => {
-      if (page.length && contentHeight(page.concat(part)) > PAGE_H) {
+      if (page.length && contentHeight(page.concat(part)) > SHORT_PAGE_H) {
         pages.push(page);
         page = [];
       }
@@ -362,20 +379,18 @@ function packShort(measured) {
     });
   });
   if (page.length) pages.push(page);
-  const footer = measured.filter((item) => item.slice.block === 'footer');
   if (!pages.length) pages.push([]);
-  pages[pages.length - 1] = shrinkTo(pages[pages.length - 1].concat(footer), PAGE_H);
+  pages[pages.length - 1] = pages[pages.length - 1].concat(footer);
   return pages;
 }
 
 async function paintShort(root, slices) {
-  const OUT_W = 1000;
   const measured = [];
   for (const slice of slices) {
     const bitmap = await pageBitmap(slice.page);
     const sw = slice.box.w * bitmap.width;
     const sh = slice.box.h * bitmap.height;
-    measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(OUT_W * sh / sw)) });
+    measured.push({ slice, bitmap, sw, sh, dh: Math.max(1, Math.round(SHORT_PAGE_W * sh / sw)) });
   }
   const packs = packShort(measured);
   root.innerHTML = packs.map((_, index) => (
@@ -383,26 +398,23 @@ async function paintShort(root, slices) {
   )).join('');
   const canvases = root.querySelectorAll('canvas');
   packs.forEach((items, index) => {
-    let height = 0;
-    items.forEach((item, itemIndex) => { height += (itemIndex ? item.slice.gap : 0) + item.dh; });
+    const layout = layoutShort(items, SHORT_PAGE_H, SHORT_PAGE_W);
     const canvas = canvases[index];
-    canvas.width = OUT_W;
-    canvas.height = height;
+    canvas.width = SHORT_PAGE_W;
+    canvas.height = Math.max(1, layout.height);
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, OUT_W, height);
-    let y = 0;
-    items.forEach((item, itemIndex) => {
-      if (itemIndex) y += item.slice.gap;
+    ctx.fillRect(0, 0, SHORT_PAGE_W, layout.height);
+    layout.rows.forEach((row) => {
+      const item = row.item;
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
-      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, 0, y, OUT_W, item.dh);
+      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, layout.x0, row.y, layout.drawW, row.dh);
       const mask = item.slice.box.mask;
       if (mask) {
         ctx.fillStyle = '#fff';
-        ctx.fillRect(mask.x * OUT_W, y + mask.y * item.dh, mask.w * OUT_W, mask.h * item.dh);
+        ctx.fillRect(layout.x0 + mask.x * layout.drawW, row.y + mask.y * row.dh, mask.w * layout.drawW, mask.h * row.dh);
       }
-      y += item.dh;
     });
   });
 }

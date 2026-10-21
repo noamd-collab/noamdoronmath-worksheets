@@ -56,6 +56,7 @@ describe('grade 9 factoring marked source', () => {
     assert.ok(source.headerCrop.mask && source.headerCrop.mask.h > 0);
     assert.ok(source.footerCrop.mask && source.footerCrop.mask.w > 0);
     assert.match(printer, /printOpener/);
+    assert.match(printer, /layoutShort/);
     assert.match(printer, /packShort/);
     assert.match(page, /rel="icon"/);
     assert.match(readFileSync(new URL('../public/teachers-demo-preview/index.html', import.meta.url), 'utf8'), /rel="icon"/);
@@ -93,6 +94,61 @@ describe('grade 9 factoring marked source', () => {
     assert.equal(card4.includes('<bdi dir="ltr" class="math">?'), false);
     assert.equal(card4.includes('<bdi dir="ltr" class="math">,'), false);
     assert.equal(card4.includes('<bdi dir="ltr" class="math">.'), false);
+  });
+
+  it('scales a crowded short sheet on both axes and keeps a split question with its instruction', () => {
+    const api = new Function(
+      `${printer.slice(printer.indexOf('const SHORT_PAGE_W'), printer.indexOf('async function paintShort'))} return { contentHeight, packShort, layoutShort, SHORT_PAGE_H, SHORT_PAGE_W };`,
+    )() as {
+      contentHeight: (items: { dh: number; slice: { gap: number } }[]) => number;
+      packShort: (items: { dh: number; slice: { gap: number; block: string; kind: string } }[]) => { dh: number; slice: { gap: number; block: string; kind: string } }[][];
+      layoutShort: (items: { dh: number; slice: { gap: number } }[], limit: number, outW: number) => { drawW: number; height: number; rows: { dh: number; item: { dh: number } }[] };
+      SHORT_PAGE_H: number;
+      SHORT_PAGE_W: number;
+    };
+    const practice = [
+      { dh: 160, slice: { gap: 14, block: 'header', kind: 'header' } },
+      { dh: 263, slice: { gap: 10, block: 'q2', kind: 'stem' } },
+      { dh: 84, slice: { gap: 4, block: 'q2', kind: 'row' } },
+      { dh: 84, slice: { gap: 4, block: 'q2', kind: 'row' } },
+      { dh: 84, slice: { gap: 4, block: 'q2', kind: 'row' } },
+      { dh: 84, slice: { gap: 4, block: 'q2', kind: 'row' } },
+      { dh: 35, slice: { gap: 10, block: 'q4', kind: 'stem' } },
+      { dh: 91, slice: { gap: 4, block: 'q4', kind: 'row' } },
+      { dh: 91, slice: { gap: 4, block: 'q4', kind: 'row' } },
+      { dh: 95, slice: { gap: 10, block: 'q5', kind: 'stem' } },
+      { dh: 90, slice: { gap: 4, block: 'q5', kind: 'row' } },
+      { dh: 90, slice: { gap: 4, block: 'q5', kind: 'row' } },
+      { dh: 90, slice: { gap: 4, block: 'q5', kind: 'row' } },
+      { dh: 90, slice: { gap: 4, block: 'q5', kind: 'row' } },
+      { dh: 45, slice: { gap: 16, block: 'footer', kind: 'footer' } },
+    ];
+    assert.ok(api.contentHeight(practice) > api.SHORT_PAGE_H);
+    const onePage = api.packShort(practice);
+    assert.equal(onePage.length, 1);
+    assert.equal(onePage[0][onePage[0].length - 1].slice.kind, 'footer');
+    const fitted = api.layoutShort(onePage[0], api.SHORT_PAGE_H, api.SHORT_PAGE_W);
+    assert.ok(fitted.height <= api.SHORT_PAGE_H);
+    assert.ok(fitted.drawW < api.SHORT_PAGE_W);
+    const sample = fitted.rows[1];
+    assert.ok(Math.abs(sample.dh / sample.item.dh - fitted.drawW / api.SHORT_PAGE_W) < 0.03);
+
+    const rows = Array.from({ length: 20 }, () => ({ dh: 100, slice: { gap: 4, block: 'q5', kind: 'row' } }));
+    const crowded = [
+      { dh: 80, slice: { gap: 14, block: 'header', kind: 'header' } },
+      { dh: 90, slice: { gap: 10, block: 'q5', kind: 'stem' } },
+      ...rows,
+      { dh: 40, slice: { gap: 16, block: 'footer', kind: 'footer' } },
+    ];
+    const pages = api.packShort(crowded);
+    assert.ok(pages.length >= 2);
+    for (const page of pages) {
+      assert.equal(page.some((item) => item.slice.kind === 'stem'), true);
+      assert.equal(page.length === 1 && page[0].slice.kind === 'footer', false);
+    }
+    const last = pages[pages.length - 1];
+    assert.equal(last[last.length - 1].slice.kind, 'footer');
+    assert.equal(pages[0].some((item) => item.slice.kind === 'footer'), false);
   });
 
   it('keeps the original question instruction on the true/false and partial-factor cards', () => {
