@@ -27,6 +27,8 @@ interface Props {
   activeNav?: ActiveNavKey | null;
   compactBrand?: boolean;
   skipHref?: string;
+  /** When set, replaces the host-based robots policy (compare page is noindex). */
+  robots?: string;
 }
 const {
   title = DEFAULT_SITE_TITLE,
@@ -35,13 +37,14 @@ const {
   activeNav,
   compactBrand = false,
   skipHref = '#topic-list',
+  robots: robotsOverride,
 } = Astro.props;
 
 const { footer } = loadHomePage();
 const resolvedNav: ActiveNavKey | null =
   activeNav !== undefined ? activeNav : resolveActiveNav(Astro.url.pathname);
 const useCompactBrand = compactBrand || resolvedNav === 'worksheets';
-const robots = robotsContent(Astro.url.hostname);
+const robots = robotsOverride ?? robotsContent(Astro.url.hostname);
 const canonical = canonicalUrl(Astro.url.pathname, Astro.url.search);
 const showPreviewNote = isPreviewHost(Astro.url.hostname);
 ---

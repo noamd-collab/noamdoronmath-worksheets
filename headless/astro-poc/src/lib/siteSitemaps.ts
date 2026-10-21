@@ -14,7 +14,7 @@ import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 /**
  * Non-public / noise slugs — never appear in /sitemap-pages.xml.
  */
-const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops']);
+const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops', 'loop-compare']);
 
 function excludePath(path: string): boolean {
   if (path !== '/' && REDIRECT_RULES.some((r) => r.from === path)) return true;

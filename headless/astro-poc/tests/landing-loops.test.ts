@@ -17,6 +17,7 @@ import {
   MINUS,
   NON_LANDING_SITE_SLUGS,
   POWERS_ROWS,
+  SLUG_FILM,
   marketingLandingLoop,
   powerMarkup,
   topicLandingLoop,
@@ -32,6 +33,7 @@ const NON_LANDING_PAGES = new Set([
   '404.astro',
   'worksheets.astro',
   'dev-loops.astro',
+  'loop-compare.astro',
   'hero-loops/[variant].astro',
   'practice-private/[slug].astro',
   'worksheet-pilot/[slug].astro', // Unlisted document picker, not a topic/marketing landing.
@@ -105,7 +107,11 @@ describe('landing loop coverage', () => {
     });
     assert.equal(topicLandingLoop(loadTopicPage('pythagorean-theorem-grade-8')).kind, 'concept');
     assert.equal(topicLandingLoop(loadTopicPage('pythagorean-theorem-grade-8')).variant, 'pythagoras');
-    assert.equal(topicLandingLoop(loadTopicPage('triangle-area-grade-7')).variant, 'triangle-area');
+    assert.deepEqual(topicLandingLoop(loadTopicPage('triangle-area-grade-7')), {
+      kind: 'concept',
+      variant: 'triangle',
+      marker: 'concept-triangle',
+    });
     assert.equal(topicLandingLoop(loadTopicPage('square-root-grade-7')).variant, 'roots');
     assert.equal(topicLandingLoop(loadTopicPage('exponent-rules-grade-9')).variant, 'exp-rules');
     assert.equal(topicLandingLoop(loadTopicPage('multiplying-signed-numbers-grade-7')).variant, 'signed-mul');
@@ -114,7 +120,16 @@ describe('landing loop coverage', () => {
       marker: 'parallel-cointerior-angles',
       src: '/loops/parallel-cointerior-angles.html',
     });
-    assert.equal(topicLandingLoop(loadTopicPage('geometric-proof-grade-8')).variant, 'proof');
+    assert.deepEqual(topicLandingLoop(loadTopicPage('geometric-proof-grade-8')), {
+      kind: 'concept',
+      variant: 'sas-snap',
+      marker: 'concept-sas-snap',
+    });
+    assert.equal(topicLandingLoop(loadTopicPage('signed-numbers-grade-7')).variant, 'signed-jump');
+    assert.equal(topicLandingLoop(loadTopicPage('coordinate-plane-quadrants-grade-7')).variant, 'coord-walk');
+    assert.equal(topicLandingLoop(loadTopicPage('linear-function-grade-8')).variant, 'slope');
+    assert.equal(topicLandingLoop(loadTopicPage('percentage-problems-grade-8')).variant, 'pct-25');
+    assert.equal(topicLandingLoop(loadTopicPage('triangle-median-grade-8')).variant, 'median');
     assert.equal(topicLandingLoop(loadTopicPage('transition-to-high-school-grade-9')).variant, 'quad-factor');
     assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
   });
@@ -284,6 +299,7 @@ describe('landing loop coverage', () => {
       read('src/components/LoopFormula.astro'),
       read('src/components/LoopSketch.astro'),
       read('src/components/LessonLoop.astro'),
+      read('src/components/LessonFilm.astro'),
     ].join('\n');
     assert.match(loop, /prefers-reduced-motion:\s*reduce/);
     assert.match(loop, /html\.nd-motion-off/);
@@ -327,6 +343,22 @@ describe('landing loop coverage', () => {
     assert.match(formula, /unicode-bidi:\s*isolate/);
   });
 
+  it('mounts an existing ConceptLoop film and leaves the spec file alone', () => {
+    const concept = read('src/components/ConceptLoop.astro');
+    const films = new Set<string>();
+    for (const slug of Object.keys(SLUG_FILM)) {
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      assert.equal(loop.kind, 'concept', slug);
+      assert.equal(loop.variant, SLUG_FILM[slug], slug);
+      assert.equal(loop.marker, `concept-${SLUG_FILM[slug]}`, slug);
+      films.add(SLUG_FILM[slug]);
+    }
+    for (const film of films) {
+      assert.match(concept, new RegExp(`variant === '${film}'`), film);
+    }
+    assert.equal(read('src/lib/conceptLoops.ts').includes('function renderSignedJump'), true);
+  });
+
   it('every new loop states one Hebrew idea', () => {
     assert.deepEqual(Object.keys(CSS_LOOP_IDEAS).sort(), [...CSS_LOOP_VARIANTS].sort());
     const hebrew = /[\u0590-\u05FF]/;
@@ -350,8 +382,14 @@ describe('landing loop coverage', () => {
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
     // Some corrected CSS lessons move to dedicated concept films as they become available.
-    assert.ok(cssPages >= 120, `expected coverage of the existing CSS lessons, got ${cssPages}`);
+    assert.ok(cssPages >= 95, `expected coverage of the existing CSS lessons, got ${cssPages}`);
+    const absolute = topicLandingLoop(loadTopicPage('number-line-absolute-value-grade-7'));
+    assert.equal(absolute.kind, 'css');
+    assert.equal(absolute.variant, 'absolute');
+    assert.equal(SLUG_FILM['number-line-absolute-value-grade-7'], undefined);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
+    assert.equal(topicLandingLoop(loadTopicPage('coordinate-plane-applications-grade-7')).variant, 'coord-app');
+    assert.equal(topicLandingLoop(loadTopicPage('coordinate-plane-applications-grade-9')).variant, 'coord-app');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);
     assert.equal(CSS_LOOP_IDEAS.stats.includes('16/3'), false);
@@ -400,7 +438,7 @@ describe('landing loop coverage', () => {
     assert.match(captionMathHtml(CSS_LOOP_IDEAS.signed), /ב־<bdi dir="ltr" class="ll-math">−2<\/bdi>/);
     assert.match(
       captionMathHtml(CSS_LOOP_IDEAS['exp-rules']),
-      /: <bdi dir="ltr" class="ll-math">2³ × 2² = 2⁵<\/bdi>/,
+      /: <bdi dir="ltr" class="ll-math">2² × 2³ = 2⁵<\/bdi>/,
     );
     const quad = captionMathHtml(CSS_LOOP_IDEAS['quad-ineq']);
     assert.match(quad, /<bdi dir="ltr" class="ll-math">x² &gt; 9<\/bdi>/);

@@ -60,6 +60,11 @@
       "file": "headless/astro-poc/src/public-lesson/lesson.html",
       "match": "0   / 300",
       "reason": "Live score out of 300. The numerator sits in #scoreBig and the slash is a score separator, the same role as N / 100. Not a quotient."
+    },
+    {
+      "file": "headless/astro-poc/public/loops/common-factor-minus-parentheses-grade-9.html",
+      "match": "Oi0/XC4",
+      "reason": "Base64-encoded inner frame payload inside atob(...), not visible text or a quotient."
     }
   ]
 }
