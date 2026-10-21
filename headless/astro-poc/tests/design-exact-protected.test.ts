@@ -19,6 +19,16 @@
  * They moved again so the card title follows the film that is playing.
  * They moved again so para-rect marks base b and height h on the shape
  * (explicit label fix, same 10s lap).
+ * They moved again for the 2026-10-18 topic films (distributive area,
+ * fraction-division meaning, grade-4 summary, measurement L-area).
+ * Explicit content. Easing helpers moved to loopHelpers.ts so those films
+ * can import them; that file is pinned here too. Not a silent regen.
+ * ConceptLoop.astro moved again so the kite-construct aria names the
+ * division with חלקי instead of an ASCII slash (Noam, 18.10.2026).
+ * The viewer released scripts moved again so the glossary and the
+ * fraction key draw a horizontal bar instead of an ASCII slash
+ * (Noam, 18.10.2026). Glossary files are not in this fence. Not a
+ * silent regen.
  */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -40,13 +50,17 @@ const protectedFiles: Record<string, string> = {
   'astro.config.mjs': 'f940201eed3b4d37887c50dee706af4cbce38a701cc4c56606927c637f42beb7',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
-  'src/data/catalog.v1.json': '2efb9b0b42b8ba4c0f605f8835a7a24412b8103d4cfbb6c53a04657b67059959',
+  // 2026-10-18: Noam-approved text-only wording migration (סינתזה → סיכום/שילוב); IDs, URLs, levels, and PDF mappings remain unchanged.
+  'src/data/catalog.v1.json': 'de6c6af05b1eff2a205c87014fd7ac735b439c45c2bd456180fb64bb654ddda4',
   'src/lib/catalog/loadCatalog.ts': '1a5e54a4c19c016046202f3e0b9bb95203e58fe983dab5a27e6f261abfbc9d95',
   // Viewer links forward the c2 sibling as pc2.
   'src/lib/worksheetLinks.ts': '6bfa7fe86ff7d02a87c2f7533c6eabae1c34a372c2c68b2a92519e8c4790f531',
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
-  'src/lib/conceptLoops.ts': 'f8a9bd34671e9231ba3a178c75bf49b134619b0453d1d71165f6cc6022f29530',
-  'src/components/ConceptLoop.astro': 'aa73048b174d6d5cf1565b767b47749b044ee9370edd2b809b315fb6442fb566',
+  // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
+  // PR169: preserve new topic films and honor OS reduced motion.
+    'src/lib/conceptLoops.ts': 'f644fd20a34335d565899aa5369773184bee34565135d55aa9ba4b4a7aa447a0',
+  'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
+  'src/components/ConceptLoop.astro': '894808ad94ae42828f33ff395b0e6d64c038d9d1f2d2f141ac7ccacf72183d34',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // 47afe919: intentional text-only school notation on the readout
@@ -89,7 +103,13 @@ describe('exact-design protected live-baseline boundaries', () => {
     assert.ok(head, 'Viewer must retain its head');
     // Phone reading intentionally changes the inline CSS in this head.
     // Metadata, fonts, canonical and robots are unchanged.
-    assert.equal(sha256(head), '6aa632f8c5727a7dcbce3357966a5e04fa47250e5e7c53122fd08cf6176a78e9');
+    // 2026-10-19: Help marks replace repeated robots; expanded source previews scroll
+    // so the original SVG disclosure is reachable on desktop as well as phone.
+    // PR197: reviewed full-width phone diagrams, fullscreen modal and bounded zoom.
+    // PR212: Noam-approved height-aware diagram fit, vertical scroll chaining,
+    // and opt-in question zoom; manually checked at 390x844 and 1280x800.
+    // Only presentation CSS changed in this head; metadata/SEO/fonts stay fixed.
+    assert.equal(sha256(head), 'b589c3b750e23afaac27cac03180e19bc2502a8066ed101b7ff464466eaadcdf');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
@@ -107,7 +127,41 @@ describe('exact-design protected live-baseline boundaries', () => {
     // touch-target rail; mobile layout/panel/pin tests cover these changes.
     // PR124 intentionally updates the shared viewer to anchor Ramzi to printed
     // question markers. Dedicated printed-pin fixtures cover that behavior.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e80fe08884059830c858c96f6560b1dfa58013f092e5a1d4d76dc1f93a06627a');
+    // Glossary text and the fraction key use a horizontal bar (Noam, 18.10.2026).
+    // A pure equation such as a/b = c/d is wrapped in dir=ltr. A mixed Hebrew
+    // sentence is not, so 15 מתוך 20 = 3/4 keeps its reading order.
+    // PR185, Noam-authorized worksheet integration: original native SVG disclosure,
+    // exact unlisted back link, and lv=one diagnostic support. The existing AI
+    // solve/auth/rate-limit/storage code remains unchanged. Behavior and URL guards
+    // are exercised by worksheet-pilot.test.ts; all other fence hashes stay fixed.
+    // 2026-10-19: A modal clone expands generated diagrams without changing models,
+    // source geometry, authentication or persistence; covered by diagram-expansion tests.
+    // Next batches: single-sheet label and five exact return paths; G8-T26 stays diagnostic.
+    // Auth, solve protocol and sibling isolation are unchanged and covered separately.
+    // Remaining101: nine exact semantic native SVG namespaces and a sixth exact back path.
+    // Combined with reviewed PR194 UI expansion; auth, geometry, and AI protocol unchanged.
+    // PR197: reviewed clone-only zoom and original-figure expansion; no solve/auth/storage changes.
+    // Noam 2026-10-19: selected-part task priority and explicit drawing action after
+    // a successful geometry hint. Regression tests cover scope, errors and request races.
+    // Only this script fence changes; authentication and original worksheet bytes do not.
+    // Noam 2026-10-19: pin label wording only ('העזר ברמזי' / '· רמזי'); no logic change.
+    // Noam 2026-10-19 20:46: Ramzi panel wording ('נועם AI' → 'רמזי'); text only.
+    // Noam 2026-10-19 22:13: the explicit drawing keeps the source figure's given
+    // equality ticks (package data, separate from focus). Solve/auth/storage unchanged.
+    // Noam's reported rectangle: revalidate a source-given kite coordinate repair before display.
+    // Noam 2026-10-20: unsupported diagram replies keep their error and may show the
+    // approved source figure (עזר מהדף), highlighting only a side named in a standard hint.
+    // Auth, solve protocol, storage and the other 13 released scripts are unchanged.
+    // 2026-10-20: acknowledge an actually loaded source aid without claiming a
+    // generated diagram succeeded; failure history, retry and auth remain unchanged.
+    // 2026-10-21: exact subsection sources, original SVG coordinate units,
+    // native chart drawing actions and truthful visible source fallback.
+    // PR212: keep original question access after errors, fit cloned diagrams,
+    // clear stale section announcements, and omit understanding buttons on errors.
+    // Dedicated recovery/zoom tests cover these intentional behavior changes.
+    // No auth protocol, original PDF/SVG, catalogue or storage format changed.
+    // PR212 follow-up: version the plural-relation compiler and its saved plan cache.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e119721fb6e0659e4de77d42b862e16c7106193365cc483308302532465c2561');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

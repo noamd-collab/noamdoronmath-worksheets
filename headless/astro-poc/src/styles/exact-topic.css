@@ -22,6 +22,14 @@
 }
 .exact-topic .topic-page__crumbs a { color: #1e605e; }
 .exact-topic .topic-math-nowrap { white-space: nowrap; }
+.exact-topic .topic-frac-row {
+  display: inline-flex;
+  align-items: center;
+  direction: ltr;
+  unicode-bidi: isolate;
+  vertical-align: middle;
+  gap: 0.12em;
+}
 .exact-topic .topic-page__crumbs [aria-current='page'] {
   /* The source wraps this segment; the former shared skin truncated it. */
   max-width: none;
@@ -183,3 +191,13 @@
 .exact-topic .topic-page__author,
 .exact-topic .topic-page__updated,
 .exact-topic .topic-page__terms { color: #5a6588; }
+
+/* Give the lesson, rather than its decorative surround, the phone width. */
+@media (max-width: 640px) {
+  .exact-topic .exact-topic-pencil {display:none;}
+  .exact-topic .exact-topic-demo:not(.exact-topic-demo--bare) { padding: 18px 8px 12px; }
+  /* SVG coordinates scale down on phones. Enlarge only the spacious titles,
+     not tightly spaced measurements elsewhere in the shared illustrations. */
+  .exact-topic .concept-loop[data-loop="angle-kinds"] .cl-t,
+  .exact-topic .concept-loop[data-loop="tri-sort"] svg > .cl-t { font-size: 28px; }
+}

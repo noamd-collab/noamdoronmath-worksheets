@@ -33,6 +33,22 @@ export function isTeacherFile(file) {
   return TEACHER_FILES.includes(norm) || norm.startsWith('headless/astro-poc/public/teachers/');
 }
 
+export const TOPIC_ANIMATION_FILES = [
+  'headless/astro-poc/src/lib/landingLoops.ts',
+  'headless/astro-poc/src/lib/lessonLoops.ts',
+  'headless/astro-poc/src/components/LessonLoop.astro',
+  'headless/astro-poc/src/components/SimilarityLoop.astro',
+  'headless/astro-poc/src/components/TopicText.astro',
+  'headless/astro-poc/src/lib/lessonMath.ts',
+  'headless/astro-poc/src/components/LandingLoop.astro',
+  'headless/astro-poc/src/styles/exact-topic.css',
+];
+export const TOPIC_ANIMATION_PAGES = [
+  '/similar-triangles-grade-8', '/algebraic-fractions-grade-9',
+  '/fractions-numberline-compare-grade-4', '/read-tables-grade-5',
+  '/reflection-symmetry-grade-2', '/classify-triangles-grade-3',
+];
+
 const PAGE_FILE = /\.(astro|ts|tsx|js|mjs)$/;
 
 export function routeFromPageFile(file) {
@@ -59,8 +75,24 @@ export function routeFromPageFile(file) {
  */
 export function pagesTouchedByDiff(files) {
   const normalized = files.map((file) => String(file).replaceAll('\\', '/'));
+  if (normalized.includes('headless/astro-poc/src/data/worksheet-remaining-101.v1.json') ||
+      normalized.includes('headless/astro-poc/src/data/worksheet-fourth-ten.v1.json') ||
+      normalized.includes('headless/astro-poc/src/data/worksheet-third-ten.v1.json') ||
+      normalized.includes('headless/astro-poc/src/data/worksheet-second-ten.v1.json') ||
+      normalized.includes('headless/astro-poc/src/data/worksheet-next-ten.v1.json') ||
+      normalized.includes('headless/astro-poc/src/pages/worksheet-pilot/[slug].astro')) {
+    return { pages: ['/worksheet-pilot/remaining-101-20261019', '/worksheet-pilot/fourth-ten-20261019', '/worksheet-pilot/third-ten-20261019', '/worksheet-pilot/second-ten-20261019', '/worksheet-pilot/next-ten-20261019', '/worksheet-pilot/approved-three-20261019'], fallback: false, omitted: [] };
+  }
+  if (normalized.some((file) => TOPIC_ANIMATION_FILES.includes(file))) {
+    return { pages: [...TOPIC_ANIMATION_PAGES], fallback: false, omitted: [] };
+  }
   if (normalized.some((file) => GRADE_HUB_NAV_FILES.includes(file))) {
     return { pages: [...ELEMENTARY_GRADE_HUB_PAGES], fallback: false, omitted: [] };
+  }
+  if (normalized.includes('headless/astro-poc/src/components/SimilarityLoop.astro')) {
+    return { pages: ['/similar-triangles-grade-8', '/similar-triangles-grade-9',
+      '/triangle-similarity-aa-grade-9', '/triangle-similarity-proof-grade-8',
+      '/similar-triangles-area-ratio-grade-8', '/scaling-dimensions-grade-6'], fallback: false, omitted: [] };
   }
   const seen = new Set();
   const routes = [];

@@ -186,6 +186,7 @@ export async function runCompanionTurn(payload, deps) {
         fetch: settings.fetch,
         timeoutMs: settings.qwenTimeoutMs,
         log: settings.log,
+        teacherIndex: settings.teacherIndex,
       });
     } catch (error) {
       if (isOutboundTimeout(error)) throw error;

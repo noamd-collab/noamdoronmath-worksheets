@@ -8,10 +8,10 @@
 
   var API_BASE = "/api";
   var API = API_BASE + "/noamSiteCompanion";
-  var FALLBACK = "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
+  var FALLBACK = "מנווט AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
   var SITE_FONT = "Heebo,'Arial Hebrew',Arial,sans-serif";
   var EXPORT_NOTE = "במקרה פירוק לגורמים לכיתה ט׳ רמה א׳, אפשר לסמן את השאלות שנבחרו על דף המקור המלא, או להדפיס דף מצומצם שנחתך מאותו מקור עם ההוראה והנוסח המקוריים.";
-  var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
+  var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». מנווט AI מכוון באתר ולא נותן רמז לפתרון.";
   var SOLVE_REQUEST = /רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
   var botClientPromise = null;
   var navigationPromise = null;
@@ -41,8 +41,8 @@
         timer = setTimeout(function () { controller.abort(); reject(new Error("NAVIGATION_TIMEOUT")); }, 5000);
       });
       navigationPromise = Promise.race([timeout, Promise.all([
-        import("/noam-navigation.js?v=2062a158d2d825aa"),
-        fetch("/noam-navigation-guide.json?v=2062a158d2d825aa", {signal: controller.signal}).then(function (response) {
+        import("/noam-navigation.js?v=758e498be7a22201"),
+        fetch("/noam-navigation-guide.json?v=758e498be7a22201", {signal: controller.signal}).then(function (response) {
           if (!response.ok) throw new Error("NAVIGATION_UNAVAILABLE");
           return response.json();
         }),
@@ -53,9 +53,9 @@
   function navigationFallback(payload) {
     return loadNavigation().then(function (loaded) {
       var result = loaded[0].navigateSite(payload, loaded[1], "") || loaded[0].navigationHelp(loaded[1], true);
-      return Object.assign({}, result, {source: "local-fallback", answer: "החיבור לנועם AI לא הצליח כרגע. הנה ניווט בסיסי: " + (result.answer || "בחרו דף מהרשימה.")});
+      return Object.assign({}, result, {source: "local-fallback", answer: "החיבור למנווט AI לא הצליח כרגע. הנה ניווט בסיסי: " + (result.answer || "בחרו דף מהרשימה.")});
     }).catch(function () {
-      return {source: "local-fallback", answer: "החיבור לנועם AI לא הצליח כרגע. אפשר להמשיך דרך מאגר דפי העבודה.", primary: {label: "דפי עבודה", href: "/worksheets"}, chips: []};
+      return {source: "local-fallback", answer: "החיבור למנווט AI לא הצליח כרגע. אפשר להמשיך דרך מאגר דפי העבודה.", primary: {label: "דפי עבודה", href: "/worksheets"}, chips: []};
     });
   }
   var script = document.currentScript;
@@ -192,6 +192,9 @@
     "#noam-site-companion{position:fixed;z-index:9990;right:8px;bottom:8px;left:auto;font-family:" + SITE_FONT + ";color:#22305a}",
     "#noam-site-companion-launch{width:48px;height:48px;padding:4px;border:2px solid #22305a;border-radius:16px 6px 18px 7px;background:#2a7c7a;box-shadow:3px 3px 0 #e6a534;cursor:pointer}",
     "#noam-site-companion-launch img{width:32px;height:32px;display:block;border-radius:50%;background:#fff}",
+    // Keep the shared avatar, but make site navigation secondary on worksheets.
+    "body.exact-viewer #noam-site-companion-launch{box-sizing:border-box;width:44px;height:44px;min-width:44px;min-height:44px;padding:7px;border:1px solid #aab6c5;border-radius:12px;background:#fbfaf5;box-shadow:none}",
+    "body.exact-viewer #noam-site-companion-launch img{width:28px;height:28px}",
     "#noam-site-companion-panel :focus-visible{outline:3px solid #1e605e;outline-offset:2px}",
     "#noam-site-companion-panel{display:flex;flex-direction:column;gap:6px;box-sizing:border-box;overflow:auto;background:#fbfaf5;color:#22305a;border:2px solid #22305a;border-radius:16px 6px 18px 7px;box-shadow:3px 3px 0 #e6a534;padding:8px;font-size:16px;line-height:1.35;font-family:" + SITE_FONT + ";direction:rtl;text-align:right}",
     "#noam-site-companion-panel[hidden]{display:none!important}",
@@ -276,10 +279,15 @@
   var root = document.createElement("div");
   root.id = "noam-site-companion";
   root.innerHTML =
-    '<button type="button" id="noam-site-companion-launch" aria-expanded="false" aria-controls="noam-site-companion-panel" aria-label="פתיחת נועם AI"><img alt="" width="32" height="32"></button>';
+    '<button type="button" id="noam-site-companion-launch" aria-expanded="false" aria-controls="noam-site-companion-panel" aria-label="פתיחת מנווט AI"><img alt="" width="32" height="32"></button>';
   document.body.appendChild(root);
   var launch = document.getElementById("noam-site-companion-launch");
   launch.querySelector("img").src = avatarSrc;
+  if (pageKind() === "worksheet") {
+    launch.title = "מנווט AI — ניווט באתר";
+    launch.setAttribute("aria-label", launch.title);
+    launch.textContent = "ניווט";
+  }
 
   var panel = document.createElement("section");
   panel.id = "noam-site-companion-panel";
@@ -287,10 +295,10 @@
   panel.setAttribute("role", "region");
   panel.setAttribute("aria-labelledby", "noam-site-companion-title");
   panel.innerHTML =
-    '<header><img alt="" width="24" height="24"><h2 id="noam-site-companion-title">נועם AI</h2>' +
+    '<header><img alt="" width="24" height="24"><h2 id="noam-site-companion-title">מנווט AI</h2>' +
     '<button type="button" id="noam-ai-expand" aria-expanded="false" aria-label="הרחבה">הרחבה</button>' +
     '<button type="button" id="noam-ai-collapse" hidden>צמצום</button>' +
-    '<button type="button" id="noam-site-companion-close" aria-label="סגירת נועם AI">×</button></header>' +
+    '<button type="button" id="noam-site-companion-close" aria-label="סגירת מנווט AI">×</button></header>' +
     '<p id="noam-site-companion-request" hidden></p>' +
     '<p id="noam-site-companion-answer" aria-live="polite"></p>' +
     '<a id="noam-site-companion-primary" hidden></a>' +
@@ -304,6 +312,7 @@
     '<button type="button" id="noam-site-companion-reset" hidden>שיחה חדשה</button>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
+  if (pageKind() === "worksheet") panel.querySelector("header img").remove();
   forceSiteFont(root);
 
   var answerEl = document.getElementById("noam-site-companion-answer");
@@ -419,7 +428,7 @@
       }
       setChips(links.slice(1, 3));
     }
-    var details = "נועם AI מכוון לדפים קיימים. עזרה בפתרון שאלה נמצאת אצל רמזי.";
+    var details = "מנווט AI מכוון לדפים קיימים. עזרה בפתרון שאלה נמצאת אצל רמזי.";
     if (pageKind() === "teachers") details += "\n" + EXPORT_NOTE;
     detailsEl.textContent = details;
     moreEl.hidden = false;

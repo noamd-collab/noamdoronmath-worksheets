@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 151" width="180" height="151">
+<g data-layer="lines">
+<line id="e0001" data-seg="WX" x1="90" y1="124.78" x2="90" y2="26.22" stroke="#000000" stroke-width="1"/>
+<line id="e0002" data-seg="XY" x1="90" y1="26.22" x2="26" y2="124.78" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="XZ" x1="90" y1="26.22" x2="154" y2="124.78" stroke="#000000" stroke-width="1.5"/>
+<line id="e0004" data-seg="YZ" x1="26" y1="124.78" x2="154" y2="124.78" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0005" data-mark="arc2 XYZ" d="M 33.67 112.97 L 34.43 113.51 L 35.16 114.09 L 35.85 114.72 L 36.5 115.39 L 37.09 116.11 L 37.65 116.87 L 38.14 117.65 L 38.59 118.48 L 38.98 119.32 L 39.31 120.2 L 39.59 121.09 L 39.8 122 L 39.96 122.92 L 40.05 123.85 L 40.08 124.78" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0006" data-mark="arc2 XYZ" d="M 35.3 110.46 L 36.23 111.1 L 37.11 111.81 L 37.95 112.58 L 38.73 113.4 L 39.46 114.26 L 40.13 115.18 L 40.73 116.14 L 41.27 117.13 L 41.75 118.16 L 42.15 119.22 L 42.48 120.3 L 42.74 121.4 L 42.93 122.52 L 43.04 123.65 L 43.08 124.78" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0007" data-mark="arc WXY" d="M 90 42.22 L 88.98 42.19 L 87.96 42.09 L 86.95 41.93 L 85.95 41.7 L 84.97 41.41 L 84.01 41.06 L 83.07 40.64 L 82.16 40.17 L 81.29 39.64" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0008" data-mark="arc WXZ" d="M 90 47.22 L 91.34 47.18 L 92.68 47.05 L 94.01 46.83 L 95.32 46.54 L 96.6 46.15 L 97.87 45.69 L 99.1 45.15 L 100.29 44.53 L 101.44 43.83" fill="none" stroke="#000000" stroke-width="1"/>
+<line id="e0009" data-mark="tick XY" x1="61.35" y1="77.68" x2="54.65" y2="73.32" stroke="#000000" stroke-width="1"/>
+<line id="e0010" data-mark="tick XZ" x1="125.35" y1="73.32" x2="118.65" y2="77.68" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0011" data-pt="W" cx="90" cy="124.78" r="2" fill="#000000" stroke="none"/>
+<circle id="e0012" data-pt="X" cx="90" cy="26.22" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="Y" cx="26" cy="124.78" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="Z" cx="154" cy="124.78" r="0.75" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0015" data-for="ang XYZ" x="52.63" y="114.06" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">57°</text>
+<text id="e0016" data-for="W" x="90" y="139.65" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">W</text>
+<text id="e0017" data-for="X" x="90" y="21.72" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">X</text>
+<text id="e0018" data-for="Y" x="16.66" y="134.28" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">Y</text>
+<text id="e0019" data-for="Z" x="162.8" y="133.99" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">Z</text>
+</g>
+</svg>

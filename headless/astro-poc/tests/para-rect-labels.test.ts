@@ -30,6 +30,7 @@ function markup() {
 
 async function boot() {
   const { document, window } = parseHTML(`<!doctype html><html><body>${markup()}</body></html>`);
+  window.matchMedia = () => ({ matches: false, addEventListener() {} }) as any;
   Object.assign(globalThis, {
     document,
     window,

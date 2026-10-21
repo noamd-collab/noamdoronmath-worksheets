@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 156" width="220" height="156">
+<g data-layer="lines">
+<line id="e0001" data-seg="AB" x1="61.58" y1="26.34" x2="26" y2="129.66" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="AC" x1="61.58" y1="26.34" x2="142.31" y2="129.66" stroke="#000000" stroke-width="1"/>
+<line id="e0003" data-seg="BD" x1="26" y1="129.66" x2="97.24" y2="71.98" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="BE" x1="26" y1="129.66" x2="194" y2="129.66" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0005" data-mark="arc ABD" d="M 35.59 101.8 L 37.3 102.45 L 38.97 103.2 L 40.59 104.06 L 42.14 105.01 L 43.64 106.06 L 45.07 107.2 L 46.43 108.43 L 47.71 109.73 L 48.9 111.12" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0006" data-mark="arc2 ACE" d="M 135.31 120.7 L 135.93 120.25 L 136.58 119.84 L 137.26 119.47 L 137.96 119.15 L 138.68 118.88 L 139.42 118.66 L 140.17 118.49 L 140.93 118.37 L 141.7 118.3 L 142.47 118.29 L 143.23 118.33 L 144 118.41 L 144.76 118.55 L 145.5 118.75 L 146.23 118.99 L 146.95 119.28 L 147.64 119.61 L 148.31 120 L 148.95 120.42 L 149.55 120.89 L 150.13 121.4 L 150.67 121.95 L 151.17 122.54 L 151.64 123.15 L 152.05 123.8 L 152.43 124.47 L 152.76 125.17 L 153.04 125.88 L 153.27 126.62 L 153.45 127.37 L 153.58 128.12 L 153.66 128.89 L 153.68 129.66" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0007" data-mark="arc2 ACE" d="M 133.46 118.34 L 134.25 117.76 L 135.07 117.24 L 135.93 116.78 L 136.81 116.38 L 137.72 116.04 L 138.66 115.76 L 139.6 115.55 L 140.57 115.39 L 141.53 115.31 L 142.51 115.29 L 143.48 115.34 L 144.45 115.45 L 145.4 115.62 L 146.34 115.87 L 147.27 116.17 L 148.17 116.54 L 149.04 116.96 L 149.89 117.45 L 150.7 117.99 L 151.47 118.58 L 152.19 119.23 L 152.88 119.92 L 153.51 120.66 L 154.1 121.44 L 154.63 122.25 L 155.1 123.1 L 155.51 123.98 L 155.87 124.89 L 156.16 125.82 L 156.39 126.76 L 156.55 127.72 L 156.65 128.69 L 156.68 129.66" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0008" data-mark="arc3 CBD" d="M 42 129.66 L 41.96 128.57 L 41.85 127.49 L 41.67 126.42 L 41.41 125.36 L 41.08 124.32 L 40.68 123.31 L 40.22 122.32 L 39.69 121.37 L 39.09 120.46 L 38.44 119.59" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0009" data-mark="arc3 CBD" d="M 45 129.66 L 44.96 128.37 L 44.82 127.08 L 44.61 125.81 L 44.3 124.55 L 43.91 123.32 L 43.44 122.11 L 42.88 120.95 L 42.25 119.82 L 41.55 118.74 L 40.77 117.7" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0010" data-mark="arc3 CBD" d="M 48 129.66 L 47.95 128.16 L 47.8 126.67 L 47.54 125.2 L 47.19 123.74 L 46.74 122.32 L 46.19 120.92 L 45.55 119.57 L 44.82 118.26 L 44 117.01 L 43.1 115.82" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0011" data-pt="A" cx="61.58" cy="26.34" r="2" fill="#000000" stroke="none"/>
+<circle id="e0012" data-pt="B" cx="26" cy="129.66" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="C" cx="142.31" cy="129.66" r="2" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="D" cx="97.24" cy="71.98" r="2" fill="#000000" stroke="none"/>
+<circle id="e0015" data-pt="E" cx="194" cy="129.66" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0016" data-for="ang ABD" x="50.68" y="98.15" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">32°</text>
+<text id="e0017" data-for="ang ACE" x="153.86" y="109.72" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">128°</text>
+<text id="e0018" data-for="ang CBD" x="60.27" y="125.32" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">39°</text>
+<text id="e0019" data-for="A" x="59.99" y="21.28" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0020" data-for="B" x="17.68" y="140.03" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0021" data-for="C" x="142.31" y="144.53" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">C</text>
+<text id="e0022" data-for="D" x="105.69" y="69.81" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">D</text>
+<text id="e0023" data-for="E" x="202.36" y="134.09" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">E</text>
+</g>
+</svg>
