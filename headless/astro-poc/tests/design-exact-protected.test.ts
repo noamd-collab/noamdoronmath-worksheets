@@ -151,7 +151,9 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Auth, solve protocol, storage and the other 13 released scripts are unchanged.
     // 2026-10-20: acknowledge an actually loaded source aid without claiming a
     // generated diagram succeeded; failure history, retry and auth remain unchanged.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'd6f07f27aef01d3abf5b32bb15a557e99360e74f39577d3af257832d59e50a62');
+    // 2026-10-21: exact subsection sources, original SVG coordinate units,
+    // native chart drawing actions and truthful visible source fallback.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'ab6077323994a10a7579d09821a292ee0e0220962df018cecd29e42752247d4b');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

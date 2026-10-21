@@ -7050,20 +7050,34 @@ function noamLoadNativeFocus(exercise){
   }
   return noamNativeFocusPackages[url].promise;
 }
+function noamSourceCoordinateView(figure){
+  // Exported point coordinates use the original SVG viewBox, while width_px
+  // and height_px can be scaled display dimensions. Keep overlays in SVG units.
+  var box=figure&&figure.view&&figure.view.viewbox;
+  if(!Array.isArray(box)||box.length!==2||!box.every(Number.isFinite)||
+      box.some(function(n){return n<20||n>2000;})){return null;}
+  return {width:box[0],height:box[1]};
+}
 function noamNativeSegmentFocus(data,exercise,hint){
   if(!noamNativeFocusUrl(exercise)||typeof hint!=='string'||hint.length>4000){return null;}
   var q=(data&&Array.isArray(data.questions)?data.questions:[]).find(function(q){return q&&q.id===exercise.nativeQuestionId;});
   var part=q&&Array.isArray(q.items)&&q.items.find(function(p){return p&&p.label===exercise.part;});
   var f=part&&(Array.isArray(data.figures)?data.figures:[]).find(function(f){return f&&f.id===part.figure_id;});
-  if(!f||f.id!==q.figure_id||f.question!==q.id||f.svg!=='figures/'+exercise.nativeFigureUrl.split('/').pop()){return null;}
-  var w=f.view&&f.view.width_px,h=f.view&&f.view.height_px;
-  if(!Number.isFinite(w)||!Number.isFinite(h)||w<20||h<20||w>2000||h>2000){return null;}
+  // A subsection can have its own approved figure. Match that exact figure,
+  // not the question's default; the manifest, item and SVG must all agree.
+  if(!f||f.id!==exercise.nativeFigureId||f.question!==q.id||f.svg!=='figures/'+exercise.nativeFigureUrl.split('/').pop()){return null;}
+  var view=noamSourceCoordinateView(f);if(!view){return null;}
+  var w=view.width,h=view.height;
   var points=f.objects&&f.objects.points,segments=f.objects&&f.objects.segments;
   if(!Array.isArray(points)||!Array.isArray(segments)){return null;}
   var pointMap={};
   function inBounds(xy){return Array.isArray(xy)&&xy.length===2&&xy.every(Number.isFinite)&&xy[0]>=0&&xy[0]<=w&&xy[1]>=0&&xy[1]<=h;}
   for(var p of points){
-    if(!p||p.kind!=='point'||p.role!=='vertex'||!/^[A-Z]$/.test(p.name)||pointMap[p.name]||!inBounds(p.svg_xy)){return null;}
+    // Coordinate-plane exports call vertices "point". Unnamed markers and
+    // anchors are not segment endpoints; each named endpoint remains unique,
+    // in bounds and independently matched to the segment coordinates below.
+    if(!p||p.kind!=='point'||!/^[A-Z]$/.test(p.name)){continue;}
+    if(pointMap[p.name]||!inBounds(p.svg_xy)){return null;}
     pointMap[p.name]=p.svg_xy;
   }
   var names=[],match,re=/(?:^|[^A-Za-z])([A-Z]{2})(?=$|[^A-Za-z])/g;
@@ -7136,8 +7150,8 @@ function noamSourceVertexAid(data,exercise){
   var figure=(Array.isArray(data.figures)?data.figures:[]).find(function(f){return f&&f.id===part.figure_id;});
   if(!figure||figure.question!==question.id||figure.id!==question.figure_id||
       figure.svg!=="figures/"+exercise.nativeFigureUrl.split('/').pop()){return null;}
-  var view=figure.view||{},width=view.width_px,height=view.height_px;
-  if(!Number.isFinite(width)||!Number.isFinite(height)||width<20||height<20||width>2000||height>2000){return null;}
+  var view=noamSourceCoordinateView(figure);if(!view){return null;}
+  var width=view.width,height=view.height;
   var points=figure.objects&&figure.objects.points;
   if(!Array.isArray(points)||points.length!==4){return null;}
   var names=new Set(),positions=new Set();
@@ -7166,6 +7180,9 @@ function noamAppendSourceDiagramHelp(container,exercise,message){
   summary.textContent="עזר מהדף: השרטוט המקורי";
   summary.style.cssText="cursor:pointer;padding:12px 0;font-weight:700";
   details.appendChild(summary);noamAddDiagramExpansion(details,figure);details.appendChild(figure);container.appendChild(details);
+  // Charts, graphs and subsection-specific figures are useful even when no
+  // extra overlay can be validated. Show the exact source and label it honestly.
+  details.open=true;
   function sourceAidLoaded(){
     if(!details.isConnected||!selectedExercise||selectedExercise.id!==exercise.id||selectedExercise.nativeFigureUrl!==sourceFigureUrl||
         sourceIdentity!==noamDiagramSourceIdentity(selectedExercise)){return;}
@@ -7180,6 +7197,7 @@ function noamAppendSourceDiagramHelp(container,exercise,message){
     details.remove();
   }
   figure.querySelector('img').addEventListener('error',sourceAidFailed);
+  figure.querySelector('img').addEventListener('load',sourceAidLoaded);
   var match=String(exercise.nativeFigureUrl||"").match(/^(\/noam-ai\/native\/[A-Z0-9-]+\/[abc]\/)figures\/[a-zA-Z0-9_-]+\.svg$/);
   if(!match){return;}
   fetch(match[1]+'noam-ai.json',{cache:'force-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(data){
@@ -7988,7 +8006,9 @@ function noamCanOfferDrawing(exercise,thread,message){
   var geometryHint=options.helpKind==="hint";
   if (!studentAskedForVisual&&!sourceOnlyFallback&&!geometryHint){return false;}
   var source=ttl+"\n"+localVisualExerciseSource(exercise)+"\n"+noamRecentThreadText(thread,700)+"\n"+message.text;
-  return noamGeometryContext(source);
+  // An approved native chart/graph must not lose its drawing action just
+  // because its title lacks a geometry keyword.
+  return !!noamNativeFocusUrl(exercise)||noamGeometryContext(source);
 }
 
 function noamManualVisual(exercise,thread,message){
