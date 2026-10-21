@@ -83,7 +83,9 @@ const topics = {
 <script type="application/json" data-exact-hero-topics set:html={JSON.stringify(topics)} />
 <script type="application/json" data-hero-rotation set:html={JSON.stringify(HERO_ROTATION)} />
 <script>
+  import { bootAngleSumFilm, parkAngleSumFilm, resumeAngleSumFilm } from '../lib/angleSumFilm';
   import { initConceptLoops } from '../lib/conceptLoops';
+  import { HERO_PLAY_S, createHeroRotation, heroDwellMs } from '../lib/heroRotation';
 
   type LoopState = { playing: boolean; done: boolean; static: boolean };
   type Loop = HTMLElement & {
@@ -92,13 +94,26 @@ const topics = {
   type TopicMap = Record<string, [string, string]>;
   type RotationEntry = { variant: string; grade: string; label: string; href: string; panel: string };
 
+  let heroTicker = 0;
+  let startHeroClock = () => {};
+  let stopHeroListeners = () => {};
+
+  function stopHeroClock() {
+    if (!heroTicker) return;
+    window.clearInterval(heroTicker);
+    heroTicker = 0;
+  }
+
   function bootHeroControls() {
     const hero = document.querySelector<HTMLElement>('[data-hero-loop]');
-    const current = hero?.querySelector<HTMLElement>('[data-hero-loop-current]');
+    const currentHost = hero?.querySelector<HTMLElement>('[data-hero-loop-current]');
     const button = document.querySelector<HTMLButtonElement>('[data-exact-shuffle]');
     const label = document.querySelector<HTMLElement>('[data-exact-hero-label]');
     const link = document.querySelector<HTMLAnchorElement>('[data-exact-hero-topic]');
-    if (!hero || !current || !button || hero.dataset.exactControls === 'ready') return;
+    if (!hero || !currentHost || !button || hero.dataset.exactControls === 'ready') return;
+    // Typed as checked: the hoisted function declarations below do not inherit
+    // TypeScript's narrowing of the null check above.
+    const current: HTMLElement = currentHost;
     hero.dataset.exactControls = 'ready';
 
     let topics: TopicMap = {};
@@ -152,6 +167,7 @@ const topics = {
       const response = await fetch('/hero-loops/' + encodeURIComponent(variant), {
         credentials: 'same-origin',
         headers: { Accept: 'text/html' },
+        signal: AbortSignal.timeout(8_000),
       });
       if (!response.ok) throw new Error('hero loop');
       const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
@@ -240,13 +256,30 @@ const topics = {
     });
 
     let busy = false;
-    async function showVariant(variant: string, prior: Loop | null) {
+    // A stored k3-pause must not freeze the showcase. This is set only when
+    // the visitor pauses the card that is on screen right now.
+    let userHeldPause = false;
+    // Until an observer says otherwise, the hero is on screen. A silent
+    // IntersectionObserver must not stop the rotation.
+    let inView = true;
+
+    function startFilm(loop: Loop | null) {
+      if (!loop?.__loop || userHeldPause) return;
+      const state = loop.__loop.state();
+      if (!state || state.static || state.playing) return;
+      if (manuallyPaused(loop)) rememberPause(loop, false);
+      const toggle = loop.querySelector<HTMLButtonElement>('[data-el="toggle"]');
+      if (toggle) toggle.click();
+      else loop.__loop.play();
+    }
+
+    async function showVariant(variant: string, prior: Loop | null): Promise<boolean> {
       let next = mounted.get(variant);
       if (!next) {
         try {
           if (!originals.has(variant)) originals.set(variant, await fetchLoop(variant));
         } catch {
-          return;
+          return false;
         }
         next = originals.get(variant)!.cloneNode(true) as Loop;
         mounted.set(variant, next);
@@ -255,15 +288,66 @@ const topics = {
       // The engine has no destroy API. Reuse each initialized node at most
       // once per variant and keep inactive nodes connected, hidden and paused.
       // No fresh observer/RAF graph is abandoned on repeated shuffle clicks.
+      if (prior) rememberPause(prior, false);
       prior?.__loop?.pause();
-      if (prior) cache.append(prior);
+      if (prior) {
+        parkAngleSumFilm(prior);
+        cache.append(prior);
+      }
       current.append(next);
+      resumeAngleSumFilm(next);
       initConceptLoops();
-      restoreManualPause(next);
+      bootAngleSumFilm(next);
+      // A pause key left from another page would show a frozen frame and,
+      // if the clock waited for the film to end, would never advance.
+      userHeldPause = false;
+      rememberPause(next, false);
+      if (!reducedMotion()) startFilm(next);
       wasStatic.set(next, next.__loop?.state().static || false);
       try { sessionStorage.setItem('nd_hero_loop_last', variant); } catch { /* Optional. */ }
       describe();
       syncActiveCard();
+      return true;
+    }
+
+    const TICK_MS = 500;
+    const cycle = createHeroRotation(
+      {
+        inView: () => inView,
+        pageHidden: () => document.hidden,
+        busy: () => busy,
+        mount(variant, fail) {
+          if (busy) {
+            fail();
+            return;
+          }
+          const prior = activeLoop();
+          busy = true;
+          button.setAttribute('aria-busy', 'true');
+          void showVariant(variant, prior).then((ok) => {
+            if (!ok) fail();
+          }).catch(() => fail()).finally(() => {
+            busy = false;
+            button.removeAttribute('aria-busy');
+          });
+        },
+      },
+      rotation.map((entry) => entry.variant),
+      activeLoop()?.dataset.loop || rotation[0]?.variant || 'triangle',
+      (variant) => heroDwellMs(HERO_PLAY_S[variant]),
+    );
+
+    function swapTo(variant: string) {
+      if (busy) return;
+      const prior = activeLoop();
+      busy = true;
+      button.setAttribute('aria-busy', 'true');
+      void showVariant(variant, prior).then((ok) => {
+        if (ok) cycle.jump(variant);
+      }).finally(() => {
+        busy = false;
+        button.removeAttribute('aria-busy');
+      });
     }
 
     button.addEventListener('click', () => {
@@ -274,11 +358,24 @@ const topics = {
         .filter((variant) => variant !== prior?.dataset.loop);
       const variant = candidates[Math.floor(Math.random() * candidates.length)];
       if (!variant) return;
-      busy = true;
-      button.setAttribute('aria-busy', 'true');
-      void showVariant(variant, prior).finally(() => {
-        busy = false;
-        button.removeAttribute('aria-busy');
+      swapTo(variant);
+    });
+
+    // The initial card's own adapter records the pause. This only remembers
+    // that the visitor paused the film now showing, so the clock can still move.
+    hero.addEventListener('click', (event) => {
+      // The pause-card restore and startFilm() click the toggle themselves.
+      // Only a real visitor click should hold this film until the next swap.
+      if (!event.isTrusted) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target?.closest('[data-pause-card], [data-el="toggle"]')) return;
+      queueMicrotask(() => {
+        const loop = activeLoop();
+        if (!loop?.__loop) return;
+        const state = loop.__loop.state();
+        if (!state || state.static) return;
+        userHeldPause = !state.playing;
+        rememberPause(loop, userHeldPause);
       });
     });
 
@@ -286,11 +383,79 @@ const topics = {
     const queueSync = () => queueMicrotask(syncActiveCard);
     const preferenceObserver = new MutationObserver(queueSync);
     preferenceObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', queueSync);
     window.addEventListener('nd:motion-off', queueSync);
-    // Match the original card's ARIA synchronization, with one active-card
-    // timer rather than adding a timer or observer for every shuffle.
-    window.setInterval(syncActiveCard, 500);
+    let viewObserver: IntersectionObserver | undefined;
+    if ('IntersectionObserver' in window) {
+      viewObserver = new IntersectionObserver((records) => {
+        const last = records[records.length - 1];
+        if (last) inView = last.isIntersecting;
+      }, { threshold: 0 });
+      viewObserver.observe(hero);
+    }
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // OS reduced motion and the site's motion class both keep the chip put.
+    // The shuffle button still changes the film.
+    function reducedMotion() {
+      return reduced.matches || document.documentElement.classList.contains('noam-a11y-motion');
+    }
+    function tickClock() {
+      syncActiveCard();
+      // Reduced motion keeps the engine's own static frame. Do not press play.
+      if (!reducedMotion() && !userHeldPause && inView && !document.hidden) startFilm(activeLoop());
+      if (!reducedMotion()) cycle.tick(TICK_MS);
+    }
+    // Hidden time does not count. Coming back starts this dwell over.
+    // The interval supplies the next tick, so this must not tick as well.
+    const onVisible = () => {
+      if (document.hidden || reducedMotion()) return;
+      cycle.reset();
+    };
+    const onReduce = () => queueSync();
+    reduced.addEventListener('change', onReduce);
+    stopHeroListeners();
+    stopHeroListeners = () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('nd:motion-off', queueSync);
+      reduced.removeEventListener('change', onReduce);
+      preferenceObserver.disconnect();
+      viewObserver?.disconnect();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    // One handle. A second boot, a restored page, or a view transition
+    // must not stack another interval.
+    startHeroClock = () => {
+      if (heroTicker) return;
+      heroTicker = window.setInterval(tickClock, TICK_MS);
+    };
+    // The pause-card script restores k3-pause on the next frame. Clear that
+    // stored pause afterwards so the first film actually plays.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (!reducedMotion()) startFilm(activeLoop());
+    }));
+    startHeroClock();
+  }
+
+  if (document.documentElement.dataset.heroClockBound !== '1') {
+    document.documentElement.dataset.heroClockBound = '1';
+    document.addEventListener('astro:before-swap', () => {
+      stopHeroClock();
+      stopHeroListeners();
+    });
+    document.addEventListener('astro:page-load', () => {
+      if (!document.querySelector('[data-hero-loop]')) {
+        stopHeroClock();
+        stopHeroListeners();
+        startHeroClock = () => {};
+        return;
+      }
+      bootHeroControls();
+    });
+    // A cached page freezes its own timer (persisted), so leave that handle.
+    // A real leave still drops it.
+    window.addEventListener('pagehide', (event) => {
+      if (event.persisted) return;
+      stopHeroClock();
+    });
   }
 
   if (document.readyState === 'loading') {

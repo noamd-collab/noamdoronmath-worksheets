@@ -1,0 +1,30 @@
+{
+  "dryRun": true,
+  "sent": false,
+  "contractVerified": false,
+  "narrationText": "niqqud (default for dry run; not decided)",
+  "request": {
+    "method": "POST",
+    "url": "https://api.heygen.com/v3/video-agents",
+    "headers": {
+      "X-Api-Key": "<HEYGEN_API_KEY from environment, never stored>",
+      "content-type": "application/json"
+    },
+    "body": {
+      "mode": "generate",
+      "avatar_id": "MISSING: Noam's own avatar look ID",
+      "voice_id": "MISSING: Noam's own voice ID",
+      "orientation": "portrait",
+      "prompt": "Present this Hebrew narration word for word, exactly as written, with no rewording, additions or omissions. Do not add on-screen text that is not given.\n\nחֲזָקוֹת נראות פשוטות בשיעור הראשון. ואז מגיעה טעות נפוצה: לחשוב ששלוש בְּחֶזְקַת ארבע שווה לשלוש כפול ארבע.\nבביטוי שלוש בְּחֶזְקַת ארבע, המספר שלוש הוא הַבָּסִיס, והמספר ארבע הוא הַמַּעֲרִיךְ.\nחֶזְקָה היא קיצור לְכֶפֶל חוזר. הַמַּעֲרִיךְ אומר כמה פעמים הַבָּסִיס מופיע בַּכֶּפֶל: שלוש כפול שלוש כפול שלוש כפול שלוש, וזה שמונים ואחת.\nכלומר הַחֶזְקָה היא לא כֶּפֶל בין הַבָּסִיס לַמַּעֲרִיךְ. שלוש בְּחֶזְקַת ארבע לא שווה לשלוש כפול ארבע.\nעוד דוגמה: שתיים בְּחֶזְקַת חמש. כותבים את הַכֶּפֶל המלא: שתיים כפול שתיים כפול שתיים כפול שתיים כפול שתיים, וזה שלושים ושתיים.\nרק אחרי שהמשמעות ברורה, עוברים לחוקים שמקצרים את הדרך.\nבפוסט המלא תמצאו את חוקי הַחֲזָקוֹת, מינוס וסוגריים, וְשׁוֹרֶשׁ רִיבּוּעִי. הקישור בתיאור."
+    }
+  },
+  "blockers": [
+    "content not approved by Noam (status: awaiting-noam-review)",
+    "series is on hold until Noam approves a sample video; this video is not in pilot.videos",
+    "Noam's own avatar ID is missing or not confirmed as his (heygen.avatarId + avatarOwnerConfirmed)",
+    "Noam's own voice ID is missing or not confirmed as his (heygen.voiceId + voiceOwnerConfirmed)",
+    "heygen.narrationText not chosen (\"niqqud\" or \"unpointed\"); decide after a listening test",
+    "HeyGen quota/cost not checked (heygen.quotaChecked)",
+    "heygen.contract.json is not filled from official docs (verifiedFromDocs !== true)"
+  ]
+}

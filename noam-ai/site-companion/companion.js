@@ -3,29 +3,35 @@
  * Retrieval is limited to the verified catalog. The model may only rank and explain those records.
  * qwen3.8-flash is called server-side. This module never reads a key from the browser.
  */
-import { retrieveRecords } from "./retrieve.js";
+import { fetchWithTimeout } from "./bot-guard.js";
+import { retrieveGuide, retrieveRecords } from "./retrieve.js";
+import { dedupeActions, suggestTopicGroup } from "./topic-order.js";
 
 export const QWEN_CHAT_URL =
   "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1/chat/completions";
 export const QWEN_MODEL = "qwen3.8-flash";
 export const MAX_OUTPUT_TOKENS = 800;
+export const QWEN_TIMEOUT_MS = 12_000;
 
 export const FALLBACK_TEXT =
   "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
 export const MISSING_TEXT =
-  "לא מצאתי חומר תואם בקטלוג המאומת של האתר. לא המצאתי דף או שאלה.";
+  "לא מצאתי דף תואם. באיזו כיתה ובאיזה נושא לחפש?";
 export const RAMZI_TEXT =
   "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
 export const EXPORT_NOTE =
-  "סימון וחיתוך של דף המקור עדיין לא ממומשים. אין כאן ייצוא מזויף.";
+  "במקרה פירוק לגורמים לכיתה ט׳ רמה א׳, אפשר לסמן את השאלות שנבחרו על דף המקור המלא, או להדפיס דף מצומצם שנחתך מאותו מקור עם ההוראה והנוסח המקוריים.";
 export const QUESTION_GAP =
-  "אין בקטלוג המאומת פירוט של שאלות בתוך הדף, ולכן אי אפשר לסמן כאן אילו שאלות חיוניות. הקישור הוא לדף הקיים.";
+  "נועם AI לא בוחר סעיפים בעצמו ולא ממציא שאלות. הבחירה היא מתוך השאלות שכבר קיימות בדף.";
+export const ROLE_TEXT =
+  "נועם AI מוצא דפי עבודה ודפי נושא שכבר קיימים באתר, ונותן קישור אליהם. למורים הוא עוזר לבחור תרגילים שכבר כתובים בדפים.";
 
 export const SYSTEM_PROMPT = [
   "אתה נועם AI, המלווה של האתר. אתה לא רמזי.",
   "רמזי נותן רמזים ושרטוט לשאלה בדף עבודה. אסור לך לתת רמז, פתרון, תשובה סופית או שרטוט.",
   "התפקיד שלך: להבין צורך, לבחור רק מתוך הרשומות שסופקו, להסביר איפה ללחוץ, ולכוון לדפים קיימים.",
-  "אסור להמציא דף, שאלה, מספר סעיף או כתובת. אם אין רשומה מתאימה, אמור שהנתון חסר.",
+  "כל רשומה מציינת מה יש בה, למי היא, ואיך משתמשים. הסבר רק מתוך השדות האלה.",
+  "אסור להמציא דף, שאלה, מספר סעיף, מספר שאלות, תשובה, משחק או כתובת. אם אין רשומה מתאימה, אמור שהנתון חסר.",
   "החזר JSON בלבד בלי טקסט מסביב:",
   '{"answer":"משפט קצר","details":"פירוט קצר","primaryRecordId":"id","chipRecordIds":["id"]}',
   "answer הוא משפט ניווט אחד. chipRecordIds מכיל לכל היותר שניים. בלי כתובות URL. אל תמציא סעיפים חיוניים.",
@@ -77,6 +83,43 @@ export function isWorksheetSolveRequest(pageKind, message) {
   return pageKind === "worksheet" && SOLVE_REQUEST.test(String(message || ""));
 }
 
+const ROLE_GREETING = /^(?:היי|הי|שלום)\s+/;
+const ROLE_PHRASES = [
+  "במה אתה עוזר לי באתר",
+  "במה אתה עוזר",
+  "במה את עוזרת לי באתר",
+  "במה אתה יכול לעזור",
+  "במה אתה יכול לעזור לי",
+  "במה אתה יכול לעזור לי באתר",
+  "מה אתה עושה",
+  "מה אתה עושה באתר",
+  "איך אתה עוזר",
+  "איך אתה עוזר לי",
+  "איך אתה עוזר לי באתר",
+  "איך אתה יכול לעזור",
+  "איך אתה יכול לעזור לי",
+  "איך אתה יכול לעזור לי באתר",
+  "מי אתה",
+];
+
+export function isRoleQuestion(message) {
+  let text = String(message || "")
+    .replace(/[?؟!.,]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!text || text.length > 80) return false;
+  if (SOLVE_REQUEST.test(text)) return false;
+  if (text === "הי" || text === "היי" || text === "שלום") return true;
+  text = text.replace(ROLE_GREETING, "");
+  if (!text || text.length > 80) return false;
+  if (SOLVE_REQUEST.test(text)) return false;
+  return ROLE_PHRASES.indexOf(text) !== -1;
+}
+
+export function roleAnswer(input) {
+  return emptyResult("role", ROLE_TEXT, boundCompanionInput(input));
+}
+
 function teacherQuery(input) {
   const teacher = (input && input.teacher) || {};
   return [
@@ -98,7 +141,7 @@ function exportNoteFor(input) {
 function linkOf(record) {
   return {
     recordId: record.id,
-    title: record.gradeLabel + " · " + record.title + " · " + record.levelLabel,
+    title: [record.gradeLabel, record.title, record.levelLabel].filter(Boolean).join(" · "),
     href: record.href,
     grade: record.grade,
     level: record.levelKey,
@@ -133,23 +176,22 @@ export function buildUserPrompt(input, records) {
   const page = safe.page || {};
   const teacherInput = { message: safe.message, teacher: safe.teacher, page: safe.page };
   const lines = records.map((record) => {
-    return (
-      record.id +
-      " | " +
-      record.gradeLabel +
-      " | " +
-      record.title +
-      " | " +
-      record.levelLabel +
-      " | " +
-      (record.description || "")
-    );
+    return [
+      record.id,
+      record.type || "worksheet",
+      record.gradeLabel || "",
+      record.title || "",
+      record.levelLabel || "",
+      clip(record.contains || record.description || "", 220),
+      clip(record.audience || "", 120),
+      clip(record.how || "", 220),
+    ].join(" | ");
   });
   return [
     "עמוד נוכחי: " + (page.kind || "other") + " " + (page.path || "") + " " + (page.title || ""),
     "בקשת המשתמש: " + String(safe.message || ""),
     "הקשר מורה: " + teacherQuery(teacherInput),
-    "רשומות מאומתות בלבד:",
+    "רשומות מאומתות. שדות: id | type | grade | title | level | contains | audience | how",
     lines.join("\n"),
   ].join("\n");
 }
@@ -173,7 +215,7 @@ function stripUnknownUrls(text, allowed) {
 function actionFrom(record) {
   return {
     id: record.id,
-    label: record.gradeLabel + " · " + record.title,
+    label: [record.gradeLabel, record.title].filter(Boolean).join(" · "),
     href: record.href,
   };
 }
@@ -184,13 +226,17 @@ export function groundModelPayload(parsed, records, input) {
   const legacy = Array.isArray(parsed.optionRecordIds) ? parsed.optionRecordIds.map(String) : [];
   const primaryRecord = byId.get(String(parsed.primaryRecordId || legacy[0] || ""));
   const chipSource = Array.isArray(parsed.chipRecordIds) ? parsed.chipRecordIds : legacy.slice(1);
-  const chips = [];
+  const rawChips = [];
   for (const id of chipSource) {
     const record = byId.get(String(id));
-    if (!record || chips.length >= 2) continue;
+    if (!record) continue;
     if (primaryRecord && record.id === primaryRecord.id) continue;
-    chips.push(actionFrom(record));
+    rawChips.push(actionFrom(record));
   }
+  const primaryAction = primaryRecord ? actionFrom(primaryRecord) : null;
+  const uniqueChips = dedupeActions(rawChips)
+    .filter((chip) => !primaryAction || (chip.href !== primaryAction.href && chip.label !== primaryAction.label))
+    .slice(0, 2);
   const teacher = input && input.page && input.page.kind === "teachers";
   const answer = stripUnknownUrls(parsed.answer || parsed.text, allowed).trim() || "אלה הדפים שנמצאו בקטלוג. לחצו על הקישור.";
   const detailBody = stripUnknownUrls(parsed.details || "", allowed).trim();
@@ -198,7 +244,7 @@ export function groundModelPayload(parsed, records, input) {
   const primary = primaryRecord ? actionFrom(primaryRecord) : null;
   const links = [];
   if (primary) links.push(linkOf(primaryRecord));
-  for (const chip of chips) {
+  for (const chip of uniqueChips) {
     const record = byId.get(chip.id);
     if (record) links.push(linkOf(record));
   }
@@ -210,8 +256,8 @@ export function groundModelPayload(parsed, records, input) {
     text: answer,
     details,
     primary,
-    chips,
-    options: chips,
+    chips: uniqueChips,
+    options: uniqueChips,
     links,
     essential: [],
     essentialNote: teacher ? QUESTION_GAP : "",
@@ -240,27 +286,32 @@ export async function handleCompanionTurn(input, options) {
   if (isWorksheetSolveRequest(pageKind, message)) {
     return emptyResult("ramzi-redirect", RAMZI_TEXT, safe);
   }
+  if (isRoleQuestion(message)) return roleAnswer(safe);
+  const suggested = suggestTopicGroup(safe, settings.catalog, settings.guide);
+  if (suggested) return suggested;
   const query = teacherQuery(safe) || (safe.page && safe.page.title) || "";
-  const records = retrieveRecords(settings.catalog, query, 6);
+  const records = settings.guide
+    ? retrieveGuide(settings.guide, query, 6, safe.page)
+    : retrieveRecords(settings.catalog, query, 6, safe.page);
   if (!records.length) {
     return emptyResult("catalog-gap", MISSING_TEXT, safe);
   }
   if (!settings.apiKey) {
-    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false });
+    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false, error: FALLBACK_TEXT });
   }
   const fetcher = settings.fetch;
   if (typeof fetcher !== "function") {
-    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false });
+    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false, error: FALLBACK_TEXT });
   }
   try {
-    const response = await fetcher(QWEN_CHAT_URL, {
+    const response = await fetchWithTimeout(fetcher, QWEN_CHAT_URL, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + settings.apiKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(qwenRequestBody(safe, records)),
-    });
+    }, typeof settings.timeoutMs === "number" ? settings.timeoutMs : QWEN_TIMEOUT_MS);
     if (!response || !response.ok) throw new Error("QWEN_HTTP");
     const data = await response.json();
     const content =
@@ -271,6 +322,6 @@ export async function handleCompanionTurn(input, options) {
       data.choices[0].message.content;
     return groundModelPayload(parseModelJson(content), records, safe);
   } catch (error) {
-    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false });
+    return emptyResult("fallback", FALLBACK_TEXT, safe, { ok: false, error: FALLBACK_TEXT });
   }
 }

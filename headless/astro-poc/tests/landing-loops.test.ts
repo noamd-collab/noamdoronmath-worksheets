@@ -31,6 +31,7 @@ const NON_LANDING_PAGES = new Set([
   '404.astro',
   'worksheets.astro',
   'dev-loops.astro',
+  'search.astro',
   'hero-loops/[variant].astro',
   'blog/index.astro',
   'blog/categories/[slug].astro',
@@ -106,6 +107,27 @@ describe('landing loop coverage', () => {
     assert.equal(topicLandingLoop(loadTopicPage('geometric-proof-grade-8')).variant, 'proof');
     assert.equal(topicLandingLoop(loadTopicPage('transition-to-high-school-grade-9')).variant, 'quad-factor');
     assert.equal(marketingLandingLoop('high-school-math'), 'parabola');
+  });
+
+  it('kite-grade-9 plays the kite-construct film', () => {
+    assert.deepEqual(topicLandingLoop(loadTopicPage('kite-grade-9')), {
+      kind: 'concept',
+      variant: 'kite-construct',
+      marker: 'concept-kite-construct',
+    });
+  });
+
+  it('difference-of-squares-grade-9 gets its own L14 diff-sq film; other F21 pages keep area-model', () => {
+    assert.deepEqual(topicLandingLoop(loadTopicPage('difference-of-squares-grade-9')), {
+      kind: 'concept',
+      variant: 'diff-sq',
+      marker: 'concept-diff-sq',
+    });
+    for (const slug of TOPIC_PAGE_SLUGS) {
+      if (slug === 'difference-of-squares-grade-9') continue;
+      const loop = topicLandingLoop(loadTopicPage(slug));
+      assert.notEqual(loop.kind === 'concept' ? loop.variant : '', 'diff-sq', slug);
+    }
   });
 
   it('topic, grade, home, and marketing templates emit data-landing-loop', () => {

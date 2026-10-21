@@ -1,3 +1,4 @@
+import adaptiveLearningMath from '../data/blog-posts/adaptive-learning-math.json';
 import additionSubtractionGrade1 from '../data/blog-posts/addition-subtraction-grade-1.json';
 import aiTutorAgentFree from '../data/blog-posts/ai-tutor-agent-free.json';
 import annualReviewGrade7 from '../data/blog-posts/annual-review-grade-7.json';
@@ -7,6 +8,7 @@ import challengeExercisesGrade4 from '../data/blog-posts/challenge-exercises-gra
 import commonFactorAndMinusParenthesesGrade7 from '../data/blog-posts/common-factor-and-minus-parentheses-grade-7.json';
 import compositePolygonsAreaGrade7 from '../data/blog-posts/composite-polygons-area-grade-7.json';
 import congruentPolygonsTransformationsGrade7 from '../data/blog-posts/congruent-polygons-transformations-grade-7.json';
+import consistentMathPracticeResults from '../data/blog-posts/consistent-math-practice-results.json';
 import coordinateAxesPracticeGuide from '../data/blog-posts/coordinate-axes-practice-guide.json';
 import dataCollectionReadingGrade7 from '../data/blog-posts/data-collection-reading-grade-7.json';
 import decimalsPracticeGrade6 from '../data/blog-posts/decimals-practice-grade-6.json';
@@ -28,6 +30,7 @@ import homeworkWorksheets from '../data/blog-posts/homework-worksheets.json';
 import learningGapsMath from '../data/blog-posts/learning-gaps-math.json';
 import mathForKidsConfidencePractice from '../data/blog-posts/math-for-kids-confidence-practice.json';
 import mathThinkingPractice from '../data/blog-posts/math-thinking-practice.json';
+import multiplicationGamesPractice from '../data/blog-posts/multiplication-games-practice.json';
 import multiplicationTableWorksheets from '../data/blog-posts/multiplication-table-worksheets.json';
 import noamAiWorksheetsHowToStart from '../data/blog-posts/noam-ai-worksheets-how-to-start.json';
 import oneStepEquationsGrade7 from '../data/blog-posts/one-step-equations-grade-7.json';
@@ -35,6 +38,7 @@ import orderOfOperationsGuide from '../data/blog-posts/order-of-operations-guide
 import parallelogramTrapezoidAreaGrade7 from '../data/blog-posts/parallelogram-trapezoid-area-grade-7.json';
 import patternsGrade7 from '../data/blog-posts/patterns-grade-7.json';
 import percentagesExercisesGrade7 from '../data/blog-posts/percentages-exercises-grade-7.json';
+import perimeterAndAreaExplained from '../data/blog-posts/perimeter-and-area-explained.json';
 import perimeterComplexShapesAlgebraGrade7 from '../data/blog-posts/perimeter-complex-shapes-algebra-grade-7.json';
 import powersRootsMiddleGuide from '../data/blog-posts/powers-roots-middle-guide.json';
 import probabilityIntroductionGrade7 from '../data/blog-posts/probability-introduction-grade-7.json';
@@ -42,9 +46,12 @@ import readingGraphsForKids from '../data/blog-posts/reading-graphs-for-kids.jso
 import rectangleSquareAreaAdvancedGrade7 from '../data/blog-posts/rectangle-square-area-advanced-grade-7.json';
 import relativeFrequencyExperimentsGrade7 from '../data/blog-posts/relative-frequency-experiments-grade-7.json';
 import relativeFrequencyIntroductionGrade7 from '../data/blog-posts/relative-frequency-introduction-grade-7.json';
+import simplifyExpressionsGrade7 from '../data/blog-posts/simplify-expressions-grade-7.json';
 import simplifyThenSolveEquationsGrade7 from '../data/blog-posts/simplify-then-solve-equations-grade-7.json';
+import smartMathAssistantKeepThinking from '../data/blog-posts/smart-math-assistant-keep-thinking.json';
 import strugglingStudentsPractice from '../data/blog-posts/struggling-students-practice.json';
 import substitutionInAlgebraicExpressionsGrade7 from '../data/blog-posts/substitution-in-algebraic-expressions-grade-7.json';
+import teachLongDivisionWithoutGuessing from '../data/blog-posts/teach-long-division-without-guessing.json';
 import threeRepresentationsEquationSolutionGrade7 from '../data/blog-posts/three-representations-equation-solution-grade-7.json';
 import triangularPrismSurfaceAreaGrade7 from '../data/blog-posts/triangular-prism-surface-area-grade-7.json';
 import triangularPrismVolumeGrade7 from '../data/blog-posts/triangular-prism-volume-grade-7.json';
@@ -52,6 +59,7 @@ import twoStepEquationsGrade7 from '../data/blog-posts/two-step-equations-grade-
 import unknownOnBothSidesGrade7 from '../data/blog-posts/unknown-on-both-sides-grade-7.json';
 import variablesAndAlgebraicModelingGrade7 from '../data/blog-posts/variables-and-algebraic-modeling-grade-7.json';
 import whatIsAnEquationSolutionGrade7 from '../data/blog-posts/what-is-an-equation-solution-grade-7.json';
+import whatIsOrderOfOperations from '../data/blog-posts/what-is-order-of-operations.json';
 import whenLearnPercentagesGrade6 from '../data/blog-posts/when-learn-percentages-grade-6.json';
 import wordProblemsStepByStep from '../data/blog-posts/word-problems-step-by-step.json';
 import wordProblemsWithEquationsGrade7 from '../data/blog-posts/word-problems-with-equations-grade-7.json';
@@ -159,7 +167,7 @@ export function expectedChromeFlags(post: BlogPostContent) {
 }
 
 /**
- * Frozen live-visible chrome expectations for served blog posts (M25–M29 + OPEN-07-FIX; all 60).
+ * Frozen live-visible chrome expectations for served blog posts (M25–M29 + OPEN-07-FIX + classic gap; all 68).
  * Prevents a falsely green gate when fixture fields are dropped.
  */
 export const LIVE_CHROME_BASELINE: Record<
@@ -653,6 +661,70 @@ export const LIVE_CHROME_BASELINE: Record<
     postCategory: true,
     recentPosts: true,
   },
+  'adaptive-learning-math': {
+    readingTime: true,
+    authorEditor: false,
+    faq: false,
+    whatsapp: true,
+    postCategory: false,
+    recentPosts: true,
+  },
+  'consistent-math-practice-results': {
+    readingTime: true,
+    authorEditor: false,
+    faq: false,
+    whatsapp: true,
+    postCategory: false,
+    recentPosts: true,
+  },
+  'multiplication-games-practice': {
+    readingTime: true,
+    authorEditor: false,
+    faq: false,
+    whatsapp: true,
+    postCategory: false,
+    recentPosts: true,
+  },
+  'perimeter-and-area-explained': {
+    readingTime: true,
+    authorEditor: false,
+    faq: false,
+    whatsapp: true,
+    postCategory: false,
+    recentPosts: true,
+  },
+  'simplify-expressions-grade-7': {
+    readingTime: true,
+    authorEditor: false,
+    faq: false,
+    whatsapp: true,
+    postCategory: false,
+    recentPosts: true,
+  },
+  'smart-math-assistant-keep-thinking': {
+    readingTime: true,
+    authorEditor: false,
+    faq: false,
+    whatsapp: true,
+    postCategory: false,
+    recentPosts: true,
+  },
+  'teach-long-division-without-guessing': {
+    readingTime: true,
+    authorEditor: false,
+    faq: false,
+    whatsapp: true,
+    postCategory: false,
+    recentPosts: true,
+  },
+  'what-is-order-of-operations': {
+    readingTime: true,
+    authorEditor: false,
+    faq: false,
+    whatsapp: true,
+    postCategory: false,
+    recentPosts: true,
+  },
 };
 
 /** M25 pilot: one post per live feature cluster (8). */
@@ -735,13 +807,26 @@ export const BLOG_POST_OPEN07_PATHS = [
   '/post/%D7%A4%D7%A2%D7%A8%D7%99%D7%9D-%D7%9C%D7%99%D7%9E%D7%95%D7%93%D7%99%D7%99%D7%9D-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%9B%D7%9A-%D7%A1%D7%95%D7%92%D7%A8%D7%99%D7%9D-%D7%90%D7%95%D7%AA%D7%9D-%D7%A0%D7%9B%D7%95%D7%9F',
 ] as const;
 
-/** All locally served blog post paths (M25–M29 = 59, + OPEN-07-FIX = 60). */
+/** Classic Wix posts missing from the headless served set (8). Same extractor as OPEN-07. */
+export const BLOG_POST_CLASSIC_GAP_PATHS = [
+  '/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%A1%D7%91%D7%99%D7%A8%D7%99%D7%9D-%D7%94%D7%99%D7%A7%D7%A3-%D7%95%D7%A9%D7%98%D7%97-%D7%91%D7%9C%D7%99-%D7%9C%D7%91%D7%9C%D7%91%D7%9C-%D7%91%D7%99%D7%9F-%D7%94%D7%A9%D7%A0%D7%99%D7%99%D7%9D',
+  '/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%9C%D7%9E%D7%93%D7%99%D7%9D-%D7%97%D7%99%D7%9C%D7%95%D7%A7-%D7%90%D7%A8%D7%95%D7%9A-%D7%9C%D7%99%D7%9C%D7%93%D7%99%D7%9D-%D7%91%D7%9C%D7%99-%D7%9C%D7%A0%D7%97%D7%A9-%D7%91%D7%93%D7%A8%D7%9A',
+  '/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%A9%D7%AA%D7%9E%D7%A9%D7%99%D7%9D-%D7%91%D7%A2%D7%95%D7%96%D7%A8-%D7%9E%D7%AA%D7%9E%D7%98%D7%99-%D7%97%D7%9B%D7%9D-%D7%91%D7%9C%D7%99-%D7%9C%D7%95%D7%95%D7%AA%D7%A8-%D7%A2%D7%9C-%D7%94%D7%97%D7%A9%D7%99%D7%91%D7%94',
+  '/post/%D7%90%D7%99%D7%9A-%D7%9E%D7%AA%D7%A8%D7%92%D7%9C%D7%99%D7%9D-%D7%9B%D7%A4%D7%9C-%D7%91%D7%A2%D7%96%D7%A8%D7%AA-%D7%9E%D7%A9%D7%97%D7%A7%D7%99%D7%9D-%D7%91%D7%91%D7%99%D7%AA-%D7%95%D7%91%D7%9B%D7%99%D7%AA%D7%94',
+  '/post/%D7%9C%D7%9E%D7%99%D7%93%D7%94-%D7%90%D7%93%D7%A4%D7%98%D7%99%D7%91%D7%99%D7%AA-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A7%D7%93%D7%9E%D7%AA-%D7%9B%D7%9C-%D7%AA%D7%9C%D7%9E%D7%99%D7%93',
+  '/post/%D7%9E%D7%94%D7%95-%D7%A1%D7%93%D7%A8-%D7%A4%D7%A2%D7%95%D7%9C%D7%95%D7%AA-%D7%95%D7%90%D7%99%D7%9A-%D7%A4%D7%95%D7%AA%D7%A8%D7%99%D7%9D-%D7%AA%D7%A8%D7%92%D7%99%D7%9C%D7%99%D7%9D-%D7%91%D7%9C%D7%99-%D7%9C%D7%94%D7%AA%D7%91%D7%9C%D7%91%D7%9C',
+  '/post/%D7%A4%D7%AA%D7%A8%D7%95%D7%9F-%D7%9E%D7%A4%D7%A9%D7%98%D7%99%D7%9D-%D7%9C%D7%9B%D7%99%D7%AA%D7%94-%D7%96',
+  '/post/%D7%AA%D7%95%D7%A6%D7%90%D7%95%D7%AA-%D7%9E%D7%AA%D7%A8%D7%92%D7%95%D7%9C-%D7%A2%D7%A7%D7%91%D7%99-%D7%91%D7%9E%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94-%D7%A9%D7%9E%D7%A8%D7%92%D7%99%D7%A9%D7%99%D7%9D-%D7%91%D7%9B%D7%99%D7%AA%D7%94',
+] as const;
+
+/** All locally served blog post paths (M25–M29 = 59, + OPEN-07-FIX = 60, + classic gap = 68). */
 export const BLOG_POST_SERVED_PATHS = [
   ...BLOG_POST_M25_PILOT_PATHS,
   ...BLOG_POST_M27_PATHS,
   ...BLOG_POST_M28_PATHS,
   ...BLOG_POST_M29_PATHS,
   ...BLOG_POST_OPEN07_PATHS,
+  ...BLOG_POST_CLASSIC_GAP_PATHS,
 ] as const;
 
 /** Covered in M26 (blog archives). Kept for docs/history. */
@@ -749,7 +834,7 @@ export const BLOG_M25_DEFERRED = [] as const;
 
 /** Remaining after M29: 0 post bodies; 5 topic-SEO exclusions remain. */
 export const BLOG_M29_DEFERRED_POSTS_NOTE =
-  '0 remaining /post/* bodies; 60 posts + 4 archives are served locally. 5 topic exclusions remain.';
+  '0 remaining /post/* bodies; 68 posts + 4 archives are served locally. 5 topic exclusions remain.';
 
 /** @deprecated use BLOG_M29_DEFERRED_POSTS_NOTE */
 export const BLOG_M28_DEFERRED_POSTS_NOTE = BLOG_M29_DEFERRED_POSTS_NOTE;
@@ -759,6 +844,7 @@ export const BLOG_M27_DEFERRED_POSTS_NOTE = BLOG_M29_DEFERRED_POSTS_NOTE;
 export const BLOG_M26_DEFERRED_POSTS_NOTE = BLOG_M29_DEFERRED_POSTS_NOTE;
 
 const ALL_POSTS: BlogPostContent[] = [
+  adaptiveLearningMath,
   additionSubtractionGrade1,
   aiTutorAgentFree,
   annualReviewGrade7,
@@ -768,6 +854,7 @@ const ALL_POSTS: BlogPostContent[] = [
   commonFactorAndMinusParenthesesGrade7,
   compositePolygonsAreaGrade7,
   congruentPolygonsTransformationsGrade7,
+  consistentMathPracticeResults,
   coordinateAxesPracticeGuide,
   dataCollectionReadingGrade7,
   decimalsPracticeGrade6,
@@ -789,6 +876,7 @@ const ALL_POSTS: BlogPostContent[] = [
   learningGapsMath,
   mathForKidsConfidencePractice,
   mathThinkingPractice,
+  multiplicationGamesPractice,
   multiplicationTableWorksheets,
   noamAiWorksheetsHowToStart,
   oneStepEquationsGrade7,
@@ -796,6 +884,7 @@ const ALL_POSTS: BlogPostContent[] = [
   parallelogramTrapezoidAreaGrade7,
   patternsGrade7,
   percentagesExercisesGrade7,
+  perimeterAndAreaExplained,
   perimeterComplexShapesAlgebraGrade7,
   powersRootsMiddleGuide,
   probabilityIntroductionGrade7,
@@ -803,9 +892,12 @@ const ALL_POSTS: BlogPostContent[] = [
   rectangleSquareAreaAdvancedGrade7,
   relativeFrequencyExperimentsGrade7,
   relativeFrequencyIntroductionGrade7,
+  simplifyExpressionsGrade7,
   simplifyThenSolveEquationsGrade7,
+  smartMathAssistantKeepThinking,
   strugglingStudentsPractice,
   substitutionInAlgebraicExpressionsGrade7,
+  teachLongDivisionWithoutGuessing,
   threeRepresentationsEquationSolutionGrade7,
   triangularPrismSurfaceAreaGrade7,
   triangularPrismVolumeGrade7,
@@ -813,6 +905,7 @@ const ALL_POSTS: BlogPostContent[] = [
   unknownOnBothSidesGrade7,
   variablesAndAlgebraicModelingGrade7,
   whatIsAnEquationSolutionGrade7,
+  whatIsOrderOfOperations,
   whenLearnPercentagesGrade6,
   wordProblemsStepByStep,
   wordProblemsWithEquationsGrade7,
@@ -866,6 +959,15 @@ export function listOpen07BlogPosts(): BlogPostContent[] {
   });
 }
 
+export function listClassicGapBlogPosts(): BlogPostContent[] {
+  const byPath = new Map(ALL_POSTS.map((p) => [p.path, p]));
+  return BLOG_POST_CLASSIC_GAP_PATHS.map((path) => {
+    const p = byPath.get(path);
+    if (!p) throw new Error(`Missing classic-gap blog post fixture for ${path}`);
+    return p;
+  });
+}
+
 export function listServedBlogPosts(): BlogPostContent[] {
   return [
     ...listPilotBlogPosts(),
@@ -873,6 +975,7 @@ export function listServedBlogPosts(): BlogPostContent[] {
     ...listM28BlogPosts(),
     ...listM29BlogPosts(),
     ...listOpen07BlogPosts(),
+    ...listClassicGapBlogPosts(),
   ];
 }
 
@@ -901,7 +1004,7 @@ export function loadBlogPostByPath(pathname: string): BlogPostContent | null {
   return null;
 }
 
-/** True when this preview serves the blog post path (all M25–M29 posts). */
+/** True when this preview serves the blog post path (M25–M29, OPEN-07, classic gap). */
 export function isPilotBlogPath(pathname: string): boolean {
   const norm = normPath(pathname);
   return (BLOG_POST_SERVED_PATHS as readonly string[]).some((p) => pathsEqual(p, norm));

@@ -6,10 +6,11 @@
   if (window.__noamSiteCompanion) return;
   window.__noamSiteCompanion = true;
 
-  var API_BASE = "https://amiramnoam.wixstudio.com/my-site-2/_functions";
+  var API_BASE = "/api";
   var API = API_BASE + "/noamSiteCompanion";
   var FALLBACK = "נועם AI לא זמין כרגע. לא הצגתי הצעה מומצאת. נסו שוב בעוד רגע.";
-  var EXPORT_NOTE = "סימון וחיתוך של דף המקור עדיין לא ממומשים. אין כאן ייצוא מזויף.";
+  var SITE_FONT = "Heebo,'Arial Hebrew',Arial,sans-serif";
+  var EXPORT_NOTE = "במקרה פירוק לגורמים לכיתה ט׳ רמה א׳, אפשר לסמן את השאלות שנבחרו על דף המקור המלא, או להדפיס דף מצומצם שנחתך מאותו מקור עם ההוראה והנוסח המקוריים.";
   var RAMZI_TEXT = "עזרה בפתרון השאלה שייכת לרמזי, עוזר הלמידה בדף העבודה. לחצו על «עזרה מרמזי». נועם AI מכוון באתר ולא נותן רמז לפתרון.";
   var SOLVE_REQUEST = /רמז|לפתור|תפתור|מה התשובה|איך פותרים|הדרך לפתרון|\bhint\b|\bsolve\b|the answer/i;
   var botClientPromise = null;
@@ -135,25 +136,33 @@
     return pageKind() === "worksheet" && SOLVE_REQUEST.test(String(message || ""));
   }
 
+  function forceSiteFont(scope) {
+    if (!scope || !scope.style) return;
+    scope.style.setProperty("font-family", SITE_FONT, "important");
+    var nodes = scope.querySelectorAll("*");
+    for (var i = 0; i < nodes.length; i++) nodes[i].style.setProperty("font-family", SITE_FONT, "important");
+  }
+
   var style = document.createElement("style");
   style.textContent = [
-    "#noam-site-companion{position:fixed;z-index:9990;right:8px;bottom:8px;left:auto;font-family:Heebo,Arial,sans-serif;color:#22305a}",
+    "#noam-site-companion{position:fixed;z-index:9990;right:8px;bottom:8px;left:auto;font-family:" + SITE_FONT + ";color:#22305a}",
     "#noam-site-companion-launch{width:48px;height:48px;padding:4px;border:2px solid #22305a;border-radius:16px 6px 18px 7px;background:#2a7c7a;box-shadow:3px 3px 0 #e6a534;cursor:pointer}",
     "#noam-site-companion-launch img{width:32px;height:32px;display:block;border-radius:50%;background:#fff}",
     "#noam-site-companion-panel :focus-visible{outline:3px solid #1e605e;outline-offset:2px}",
-    "#noam-site-companion-panel{display:flex;flex-direction:column;gap:6px;box-sizing:border-box;overflow:auto;background:#fbfaf5;color:#22305a;border:2px solid #22305a;border-radius:16px 6px 18px 7px;box-shadow:3px 3px 0 #e6a534;padding:8px;font-size:16px;line-height:1.35;direction:rtl;text-align:right}",
+    "#noam-site-companion-panel{display:flex;flex-direction:column;gap:6px;box-sizing:border-box;overflow:auto;background:#fbfaf5;color:#22305a;border:2px solid #22305a;border-radius:16px 6px 18px 7px;box-shadow:3px 3px 0 #e6a534;padding:8px;font-size:16px;line-height:1.35;font-family:" + SITE_FONT + ";direction:rtl;text-align:right}",
     "#noam-site-companion-panel[hidden]{display:none!important}",
     "#noam-site-companion-panel header{display:flex;align-items:center;gap:6px;flex:none}",
     "#noam-site-companion-panel header img{width:24px;height:24px;flex:none;border-radius:50%;background:#fff}",
-    "#noam-site-companion-panel h2{margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 16px/1.3 Heebo,Arial,sans-serif}",
-    "#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input{font:700 16px/1.3 Heebo,Arial,sans-serif}",
+    "#noam-site-companion-panel h2{margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;font-size:16px;line-height:1.3;font-family:" + SITE_FONT + "}",
+    "#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input,#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}",
+    "#noam-site-companion-panel button,#noam-site-companion-panel a,#noam-site-companion-panel input{font-weight:700;font-size:16px;line-height:1.3}",
     "#noam-site-companion-close,#noam-ai-expand,#noam-ai-collapse{box-sizing:border-box;min-width:44px;min-height:44px;height:44px;border:2px solid #22305a;border-radius:10px;background:#fff;color:#22305a;padding:4px 8px;cursor:pointer}",
     "#noam-site-companion-close{width:44px;padding:0;flex:none}",
     "#noam-site-companion-answer{margin:0;flex:none;font-size:16px;line-height:1.35;min-height:1.35em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}",
     "#noam-site-companion-primary,#noam-site-companion-ramzi{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;border-radius:10px;background:#2a7c7a;color:#fff;text-decoration:none;border:2px solid #22305a;cursor:pointer}",
     "#noam-site-companion-primary[hidden],#noam-site-companion-ramzi[hidden],#noam-ai-expand[hidden],#noam-ai-collapse[hidden],#noam-site-companion-details[hidden],#noam-site-companion-more[hidden]{display:none!important}",
     "#noam-site-companion-chips{display:flex;flex-wrap:wrap;gap:6px}",
-    "#noam-site-companion-chips a{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;border:2px solid #22305a;border-radius:999px;background:#fff;color:#22305a;text-decoration:none}",
+    "#noam-site-companion-chips a,#noam-site-companion-chips button{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;border:2px solid #22305a;border-radius:999px;background:#fff;color:#22305a;text-decoration:none;cursor:pointer}",
     "#noam-site-companion-details{margin:0;font-size:16px;font-weight:500;line-height:1.35;overflow:auto;white-space:pre-wrap}",
     "#noam-site-companion-form{display:flex;gap:6px;flex:none}",
     "#noam-site-companion-input{flex:1;min-width:0;height:44px;border:2px solid #22305a;border-radius:10px;padding:4px 8px;font-weight:500}",
@@ -171,6 +180,7 @@
     "#noam-site-companion-panel.is-compact.is-tight header img,#noam-site-companion-panel.is-compact.is-tight #noam-ai-expand{display:none!important}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-close{position:absolute;inset-inline-end:0;top:0}",
     "#noam-site-companion-panel.is-compact.is-tight h2{font-size:16px;line-height:1.3}",
+    "#noam-site-companion-panel.is-compact.is-teacher #noam-site-companion-answer{-webkit-line-clamp:1}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-answer{font-size:16px;-webkit-line-clamp:1;min-height:0;box-sizing:border-box;padding-inline-end:46px}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-input,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form button,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-primary,#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-ramzi{font-size:16px}",
     "#noam-site-companion-panel.is-compact.is-tight #noam-site-companion-form{width:100%;gap:4px;box-sizing:border-box;padding-inline-end:46px}",
@@ -189,19 +199,30 @@
     "html.noam-ai-engaged #noam-site-companion-panel{direction:rtl;grid-column:1;grid-row:1;position:relative;right:auto;bottom:auto;width:auto;height:auto;max-height:100dvh;border-radius:0;box-shadow:none}",
     "html.noam-ai-engaged #noam-site-companion-details{flex:1;min-height:0}",
     "@media (max-width:767px){",
-    "html.noam-ai-engaged{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 40dvh}",
+    "html.noam-ai-engaged{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(168px,42dvh)}",
     "html.noam-ai-engaged body{grid-column:1;grid-row:1}",
-    "html.noam-ai-engaged #noam-site-companion-panel{grid-column:1;grid-row:2;height:40dvh;max-height:40dvh;width:100%}",
-    "html.noam-ai-engaged #noam-accessibility{bottom:calc(40dvh + 8px)!important}",
-    "html.noam-ai-engaged .fab{inset-block-end:calc(40dvh + 8px)!important}",
+    "html.noam-ai-engaged #noam-site-companion-panel{grid-column:1;grid-row:2;position:relative;height:auto;max-height:42dvh;width:100%;border-start-start-radius:18px;border-start-end-radius:18px;border-end-start-radius:0;border-end-end-radius:0;box-shadow:0 -3px 0 #e6a534;z-index:9991}",
+    "html.noam-ai-engaged #noam-site-companion-close{width:auto;min-width:72px;padding:4px 10px}",
+    "html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:8px!important;left:auto!important;right:auto!important;inset-inline-end:8px!important;z-index:10001!important}",
+    "html.noam-ai-engaged #noam-site-companion-form{padding-inline-end:56px}",
+    "html.noam-ai-engaged .fab{inset-block-end:calc(42dvh + 8px)!important}",
     "}",
     "@media (min-width:768px){",
     "html.noam-ai-engaged #noam-accessibility{left:8px!important;right:auto!important}",
     "}",
+    "@keyframes noam-think-dot{0%,80%,100%{opacity:.25}40%{opacity:1}}",
+    "#noam-site-companion-panel.is-thinking #noam-site-companion-answer{display:block;-webkit-line-clamp:unset;overflow:visible}",
+    "#noam-site-companion-thinking{display:inline-flex;align-items:center;gap:6px}",
+    "#noam-site-companion-thinking .noam-think-dots{display:inline-flex;gap:3px}",
+    "#noam-site-companion-thinking .noam-think-dots i{width:6px;height:6px;border-radius:50%;background:currentColor;animation:noam-think-dot 1.2s infinite}",
+    "#noam-site-companion-thinking .noam-think-dots i:nth-child(2){animation-delay:.2s}",
+    "#noam-site-companion-thinking .noam-think-dots i:nth-child(3){animation-delay:.4s}",
     "@media (prefers-reduced-motion:reduce){",
     "html.noam-ai-engaged,html.noam-ai-engaged body,#noam-site-companion-panel{scroll-behavior:auto;transition:none;animation:none}",
+    "#noam-site-companion-thinking .noam-think-dots i{animation:none;opacity:1}",
     "}",
     "@media print{#noam-site-companion,#noam-site-companion-panel{display:none!important}html.noam-ai-engaged{display:block!important;height:auto!important;overflow:visible!important}html.noam-ai-engaged body{max-height:none!important;overflow:visible!important}}",
+    "#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}",
   ].join("");
   document.head.appendChild(style);
 
@@ -234,6 +255,7 @@
     '<button type="submit" aria-label="שליחה">שליחה</button></form>';
   root.appendChild(panel);
   panel.querySelector("header img").src = avatarSrc;
+  forceSiteFont(root);
 
   var answerEl = document.getElementById("noam-site-companion-answer");
   var primaryEl = document.getElementById("noam-site-companion-primary");
@@ -267,21 +289,62 @@
     return extra;
   }
 
+  function teacherGoalChips() {
+    return [
+      { label: "מפגש ראשון", goal: "first" },
+      { label: "תרגול וביסוס", goal: "practice" },
+      { label: "אחר", goal: "other" },
+    ];
+  }
+
+  function appendChip(item) {
+    if (!item) return;
+    if (item.goal) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.textContent = item.label;
+      button.addEventListener("click", function () {
+        document.dispatchEvent(new CustomEvent("noam-teacher-option", { detail: { goal: item.goal } }));
+      });
+      chipsEl.appendChild(button);
+      return;
+    }
+    if (!item.href) return;
+    var link = document.createElement("a");
+    link.href = item.href;
+    link.textContent = item.label;
+    chipsEl.appendChild(link);
+  }
+
   function setChips(items) {
     chipsEl.textContent = "";
-    (items || []).slice(0, 2).forEach(function (item) {
-      if (!item || !item.href) return;
-      var link = document.createElement("a");
-      link.href = item.href;
-      link.textContent = item.label;
-      chipsEl.appendChild(link);
-    });
+    var seen = {};
+    var primaryHref = !primaryEl.hidden ? primaryEl.getAttribute("href") || "" : "";
+    var added = 0;
+    var list = items || [];
+    for (var i = 0; i < list.length && added < 8; i++) {
+      var item = list[i];
+      if (!item) continue;
+      var href = item.href || "";
+      var label = item.label || "";
+      if (href && primaryHref && href === primaryHref) continue;
+      if (href && seen["href:" + href]) continue;
+      if (label && seen["label:" + label]) continue;
+      if (href) seen["href:" + href] = true;
+      if (label) seen["label:" + label] = true;
+      appendChip(item);
+      added += 1;
+    }
+    if (pageKind() === "teachers") teacherGoalChips().forEach(appendChip);
+    forceSiteFont(panel);
   }
 
   function showIdle() {
     hasAnswer = false;
     var links = starterLinks();
-    answerEl.textContent = "מה לחפש באתר?";
+    answerEl.textContent = pageKind() === "teachers"
+      ? "אפשר להתחיל ממפגש ראשון בפירוק לגורמים לכיתה ט׳, לבחור שאלות קיימות, ולסמן אותן על דף המקור."
+      : "מה לחפש באתר?";
     if (pageKind() === "worksheet") {
       primaryEl.hidden = true;
       ramziEl.hidden = false;
@@ -301,7 +364,44 @@
     moreEl.hidden = false;
   }
 
+  var thinkTimer = null;
+
+  function thinkingLabel(seconds) {
+    if (!seconds) return "חושב…";
+    if (seconds === 1) return "חושב… 1 שנייה";
+    return "חושב… " + seconds + " שניות";
+  }
+
+  function sendButton() {
+    return form.querySelector("button");
+  }
+
+  function stopThinking() {
+    if (thinkTimer) clearInterval(thinkTimer);
+    thinkTimer = null;
+    panel.classList.remove("is-thinking");
+    var button = sendButton();
+    if (button) button.disabled = false;
+  }
+
+  function showThinking() {
+    stopThinking();
+    var started = Date.now();
+    hasAnswer = true;
+    panel.classList.add("is-thinking");
+    answerEl.innerHTML = '<span id="noam-site-companion-thinking"><span class="noam-think-text">חושב…</span><span class="noam-think-dots" aria-hidden="true"><i></i><i></i><i></i></span></span>';
+    var button = sendButton();
+    if (button) button.disabled = true;
+    thinkTimer = setInterval(function () {
+      var seconds = Math.floor((Date.now() - started) / 1000);
+      var text = answerEl.querySelector(".noam-think-text");
+      if (text) text.textContent = thinkingLabel(seconds);
+    }, 250);
+    if (mode === "compact") fitCompact();
+  }
+
   function showResult(result) {
+    stopThinking();
     hasAnswer = true;
     answerEl.textContent = (result && (result.answer || result.text)) || FALLBACK;
     var primary = result && result.primary;
@@ -356,7 +456,7 @@
     undrop(primaryEl);
     undrop(ramziEl);
     undrop(answerEl);
-    var links = chipsEl.querySelectorAll("a");
+    var links = chipsEl.querySelectorAll("a, button");
     for (var i = 0; i < links.length; i++) undrop(links[i]);
   }
 
@@ -365,17 +465,21 @@
     panel.classList.toggle("has-answer", hasAnswer);
     var tight = panel.classList.contains("is-tight");
     var wide = !tight && window.innerWidth >= 768;
-    var links = chipsEl.querySelectorAll("a");
+    var teacher = pageKind() === "teachers";
+    var links = chipsEl.querySelectorAll("a, button");
     var visibleChips = 0;
     for (var i = 0; i < links.length; i++) {
-      if (!wide || i > 0) drop(links[i]);
+      var keep = teacher ? i === links.length - 1 : wide && i === 0;
+      if (!keep) drop(links[i]);
       else visibleChips += 1;
     }
-    if (!wide || visibleChips === 0) drop(chipsEl);
-    if (tight && !hasAnswer) drop(answerEl);
-    var order = tight && hasAnswer
-      ? [primaryEl, ramziEl, moreEl, chipsEl]
-      : [moreEl, chipsEl, primaryEl, ramziEl];
+    if (visibleChips === 0 || (!wide && !teacher)) drop(chipsEl);
+    if (tight && !hasAnswer && !panel.classList.contains("is-thinking")) drop(answerEl);
+    var order = teacher
+      ? [primaryEl, ramziEl, moreEl, answerEl]
+      : tight && hasAnswer
+        ? [primaryEl, ramziEl, moreEl, chipsEl]
+        : [moreEl, chipsEl, primaryEl, ramziEl];
     for (var n = 0; n < order.length; n++) {
       if (panel.scrollHeight <= panel.clientHeight + 1) return;
       drop(order[n]);
@@ -406,6 +510,7 @@
     document.documentElement.classList.remove("noam-ai-engaged");
     mountPanel(root, force);
     panel.classList.add("is-compact");
+    panel.classList.toggle("is-teacher", pageKind() === "teachers");
     var size = panelSize(window.innerWidth, window.innerHeight);
     panel.classList.toggle("is-tight", size.height < 160);
     panel.classList.toggle("is-xtight", size.height < 110);
@@ -425,10 +530,33 @@
     panel.dataset.maxArea = String(Math.floor(size.maxArea));
     expandEl.hidden = false;
     collapseEl.hidden = true;
+    closer.textContent = "×";
     var sendBtn = form.querySelector("button");
-    if (sendBtn) sendBtn.textContent = panel.classList.contains("is-tight") ? "שלח" : "שליחה";
+    if (sendBtn) {
+      sendBtn.textContent = panel.classList.contains("is-tight") ? "שלח" : "שליחה";
+      sendBtn.disabled = streaming;
+    }
     expandEl.setAttribute("aria-expanded", "false");
     fitCompact();
+  }
+
+  function revealLessonCard() {
+    if (window.innerWidth >= 768) return;
+    var card = document.querySelector(".exact-topic-demo, .concept-loop__card, .ka-film");
+    if (!card) return;
+    var sheet = Math.round(window.innerHeight * 0.42);
+    var room = window.innerHeight - sheet - 8;
+    var rect = card.getBoundingClientRect();
+    var delta = 0;
+    if (rect.height >= room - 8) delta = rect.top - 8;
+    else if (rect.bottom > room) delta = rect.bottom - room + 8;
+    else if (rect.top < 0) delta = rect.top - 8;
+    if (Math.abs(delta) < 2) return;
+    var before = document.body.scrollTop;
+    document.body.scrollTop = before + delta;
+    if (document.body.scrollTop === before && document.scrollingElement && document.scrollingElement !== document.body) {
+      document.scrollingElement.scrollTop += delta;
+    }
   }
 
   function layoutEngaged(force) {
@@ -440,10 +568,15 @@
     panel.classList.remove("is-xtight");
     clearCompactDrops();
     var sendBtn = form.querySelector("button");
-    if (sendBtn) sendBtn.textContent = "שליחה";
+    if (sendBtn) {
+      sendBtn.textContent = "שליחה";
+      sendBtn.disabled = streaming;
+    }
     document.documentElement.classList.add("noam-ai-engaged");
+    closer.textContent = window.innerWidth < 768 ? "סגירה" : "×";
     expandEl.hidden = true;
     collapseEl.hidden = false;
+    window.requestAnimationFrame(revealLessonCard);
     expandEl.setAttribute("aria-expanded", "true");
     panel.dataset.mode = "engaged";
   }
@@ -535,12 +668,13 @@
     paintChrome(true);
   });
   function botClientSrc() {
+    var versioned = "noam-bot-client.js?v=20260921-diagnostics1";
     var nodes = document.getElementsByTagName("script");
     for (var i = 0; i < nodes.length; i++) {
       var src = nodes[i].getAttribute("src") || "";
-      if (src.indexOf("noam-site-companion.js") !== -1) return src.replace("noam-site-companion.js", "noam-bot-client.js");
+      if (src.indexOf("noam-site-companion.js") !== -1) return src.replace("noam-site-companion.js", versioned);
     }
-    return "/noam-bot-client.js";
+    return "/" + versioned;
   }
 
   function ensureBotClient() {
@@ -571,12 +705,14 @@
     event.preventDefault();
     var message = input.value.trim();
     if (!message || streaming) return;
+    input.value = "";
+    input.focus();
     if (isLocalSolve(message)) {
       showResult({ answer: RAMZI_TEXT, details: RAMZI_TEXT, primary: { action: "ramzi", label: "עזרה מרמזי" }, chips: [] });
       return;
     }
     streaming = true;
-    answerEl.textContent = "בודק בקטלוג המאומת…";
+    showThinking();
     ensureBotClient().then(function (client) {
       return client.postJson(API, {
         message: message.slice(0, 700),
@@ -589,11 +725,18 @@
     }).catch(function (error) {
       streaming = false;
       var text = (error && error.message) || FALLBACK;
-      showResult({ answer: text, details: text, primary: null, chips: [] });
+      var teacher = pageKind() === "teachers";
+      showResult({
+        answer: text,
+        details: teacher ? text + "\n" + EXPORT_NOTE : text,
+        primary: teacher ? { href: siteHref("/factoring-grade-9"), label: "פירוק לגורמים ט׳" } : null,
+        chips: teacher ? [{ label: "דפי עבודה", href: siteHref("/worksheets?grade=9&topic=2") }] : [],
+      });
     });
   });
   document.addEventListener("keydown", function (event) {
     if (event.key !== "Escape" || mode === "closed") return;
+    if (document.querySelector("dialog[open]")) return;
     event.preventDefault();
     if (mode === "engaged") compact();
     else setMode("closed");

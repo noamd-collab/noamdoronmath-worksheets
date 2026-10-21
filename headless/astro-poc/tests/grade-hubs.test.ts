@@ -15,6 +15,11 @@ import {
   siblingGradeHubLinks,
 } from '../src/lib/gradeHubs.ts';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog.ts';
+import {
+  bareTopicTitle,
+  catalogQuadrilateralTitles,
+  orderQuadrilateralLinks,
+} from '../src/lib/gradeHubQuadrilaterals.ts';
 import { buildWorksheetHref } from '../src/lib/worksheetLinks.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -125,5 +130,63 @@ describe('grade hub routes (HEADLESS-MIGRATION-16/17)', () => {
     assert.ok(pdfHref.endsWith('.pdf'));
     assert.ok(!pdfHref.includes('noamdoronmath.co.il/_files/'));
     assert.equal(loadGradeHub(1).catalogCta!.href, '/worksheets?grade=1');
+  });
+
+  it('grade 9 lists kite first among quadrilaterals, trapezoid right after the square', () => {
+    const catalog = loadCatalog();
+    const titles = catalogQuadrilateralTitles(catalog, 9);
+    assert.equal(bareTopicTitle(titles[0]), 'דלתון');
+    const square = titles.findIndex((title) => bareTopicTitle(title) === 'ריבוע');
+    assert.equal(bareTopicTitle(titles[square + 1]), 'טרפז');
+
+    const hub = loadGradeHub(9);
+    const section = hub.topicSections.find((item) => item.heading === 'מרובעים ומשולשים');
+    assert.ok(section);
+    const sectionQuads = section.links.filter((link) =>
+      titles.some((title) => bareTopicTitle(title) === bareTopicTitle(link.label))
+    );
+    assert.deepEqual(
+      sectionQuads.map((link) => bareTopicTitle(link.label)),
+      titles.map(bareTopicTitle)
+    );
+    const paths = section.links.map((link) => link.path);
+    const squareAt = paths.indexOf('/square-grade-9');
+    assert.equal(paths[0], '/kite-grade-9');
+    assert.equal(paths[squareAt + 1], '/trapezoid-grade-9');
+    assert.deepEqual(paths.slice(squareAt + 2), [
+      '/similar-triangles-grade-9',
+      '/triangle-similarity-aa-grade-9',
+      '/triangle-30-60-90-grade-9',
+      '/triangle-sides-angles-grade-9',
+      '/congruent-polygons-transformations-grade-9',
+      '/isosceles-triangle-grade-9',
+      '/triangle-calculations-grade-9',
+    ]);
+
+    const flatQuads = hub.topicLinks
+      .filter((link) => titles.some((title) => bareTopicTitle(title) === bareTopicTitle(link.label)))
+      .map((link) => link.path);
+    assert.deepEqual(
+      flatQuads,
+      sectionQuads.map((link) => link.path)
+    );
+
+    const stored = JSON.parse(readFileSync(join(root, 'src/data/grade-hubs/9.json'), 'utf8'));
+    const storedSection = stored.topicSections.find(
+      (item: { heading: string }) => item.heading === 'מרובעים ומשולשים'
+    );
+    assert.deepEqual(
+      storedSection.links.map((link: { path: string }) => link.path).slice(0, sectionQuads.length),
+      sectionQuads.map((link) => link.path)
+    );
+
+    const reversed = orderQuadrilateralLinks(
+      [...sectionQuads].reverse().concat([{ label: 'דמיון משולשים', path: '/similar-triangles-grade-9' }]),
+      titles
+    );
+    assert.deepEqual(
+      reversed.map((link) => link.label),
+      [...sectionQuads.map((link) => link.label), 'דמיון משולשים']
+    );
   });
 });

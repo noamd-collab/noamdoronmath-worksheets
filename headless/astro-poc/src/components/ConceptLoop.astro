@@ -1,5 +1,6 @@
 ---
 import StackedFraction from './StackedFraction.astro';
+import KiteAreaFilm from './KiteAreaFilm.astro';
 /**
  * KIMI-LOOPS-K3 — Brilliant-style self-playing math film loops.
  *
@@ -37,7 +38,6 @@ export interface Props {
     | 'cookies'
     | 'fraction'
     | 'transform'
-    | 'angle-sum'
     | 'para-rect'
     | 'angle-kinds'
     | 'frac-product'
@@ -92,7 +92,8 @@ export interface Props {
     | 'topic-card'
     | 'mark-250'
     | 'quad-gate'
-    | 'two-diag';
+    | 'two-diag'
+    | 'kite-construct';
 }
 const { variant } = Astro.props;
 
@@ -126,8 +127,6 @@ const ariaLabels: Record<string, string> = {
   fraction: 'הדגמה: עוגה נחתכת לארבעה חלקים שווים ואחד נצבע — אותו רבע מופיע גם על פס וגם על ישר.',
   transform:
     'הדגמה: משולש משתקף סביב ישר, מסתובב 90 מעלות סביב נקודה ומוזז — הצורה נשארת חופפת.',
-  'angle-sum':
-    'הדגמה: שלוש הזוויות של משולש נפרדות ונצמדות לקו ישר, והסכום 180 מעלות.',
   'para-rect': 'הדגמה: מקבילית נמתחת למלבן, הגובה נשאר, והשטח לא משתנה.',
   'angle-kinds':
     'הדגמה: זווית נפתחת, סימן הריבוע מופיע ב־90 מעלות, והפתיחה ממשיכה לזווית קהה.',
@@ -141,7 +140,8 @@ const ariaLabels: Record<string, string> = {
   'corr-angles': 'הדגמה: חותך עובר בין שני ישרים מקבילים, ושתי זוויות מתאימות שוות.',
   'mean-cols': 'הדגמה: העמודות 2, 4 ו־6 מתאזנות, וכל אחת נעצרת על הממוצע 4.',
   'pct-25': 'הדגמה: 25 משבצות מתוך 100 נצבעות, וזה 25 אחוז.',
-  'diff-sq': 'הדגמה: ההפרש בין שני ריבועים נפרש למלבן אחד, והשטח נשמר.',
+  'diff-sq':
+    'הדגמה: ריבוע שהצלע שלו x — השטח הוא x בריבוע. מסמנים בקו מקווקו ריבוע שהצלע שלו y ומורידים אותו. נשארת צורת ר׳ הפוכה; היא נחתכת, הרצועה מסתובבת ומשלימה מלבן של (x + y) על (x − y) — לכן x² − y² = (x − y) · (x + y).',
   'clock-3': 'הדגמה: השעון נעצר על השעה 3:00, שעה שלמה.',
   'peri-rect': 'הדגמה: הליכה על שפת המלבן סוכמת את ארבע הצלעות להיקף.',
   'signed-jump': 'הדגמה: על הישר, קפיצה של 5 מ־2− מגיעה אל 3.',
@@ -184,6 +184,8 @@ const ariaLabels: Record<string, string> = {
   'mark-250': 'הדגמה: 250 מסומן על הישר בין 200 ל־300.',
   'quad-gate': 'הדגמה: צורה עם 4 צלעות נכנסת לסל המרובעים, ומשולש נשאר בחוץ.',
   'two-diag': 'הדגמה: במרובע נמתחים שני אלכסונים, אחד ואחר כך השני.',
+  'kite-construct':
+    'הדגמה: קודם שטח הדלתון. משכפלים את ארבעת המשולשים ומסובבים כל עותק ב־180° סביב אמצע צלע הדלתון, עד שנוצר מלבן שגובהו AC ורוחבו BD. שטח המלבן הוא AC כפול BD, והוא כפול משטח הדלתון, ולכן S = (AC × BD) / 2. אחר כך בונים דלתון בסרגל ומחוגה: ציר, נקודות A ו־B, שני עיגולים, קודקודים C ו־D, דלתון קמור ואחר כך קעור.',
 };
 
 /* fixed top-strip problem text per variant (families layout);
@@ -200,7 +202,6 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   baseten: { text: '38 + 25 = ?', ltr: true },
   cookies: { text: 'כמה עוגיות בכל צלחת? ומה נשאר?' },
   fraction: { text: 'איזה חלק של העוגה צבוע?' },
-  'angle-sum': { text: 'מהו סכום הזוויות במשולש?' },
   'para-rect': { text: 'האם השטח משתנה?' },
   'angle-kinds': { text: 'איזו זווית זו?' },
   'frac-product': { text: 'חצי של שליש — כמה?' },
@@ -213,7 +214,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'corr-angles': { text: 'האם הזוויות שוות?' },
   'mean-cols': { text: 'מה הממוצע של 2, 4 ו־6?' },
   'pct-25': { text: 'כמה זה 25 מתוך 100?' },
-  'diff-sq': { text: '5² − 3² = ?', ltr: true },
+  'diff-sq': { text: 'x² − y² = ?', ltr: true },
   'clock-3': { text: 'איזו שעה שלמה?' },
   'peri-rect': { text: 'מה היקף המלבן?' },
   'signed-jump': { text: '−2 + 5 = ?', ltr: true },
@@ -256,6 +257,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'mark-250': { text: '200 < ? < 300', ltr: true },
   'quad-gate': { text: 'איזו צורה נכנסת?' },
   'two-diag': { text: 'כמה אלכסונים?' },
+  'kite-construct': { text: 'למה מחלקים ב־2?' },
 };
 const top = topTexts[variant];
 
@@ -454,7 +456,9 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       data-el="toggle"
       tabindex="-1"
       aria-hidden="true"
+      aria-pressed="false"
       aria-label="השהיית ההדגמה"
+      style="display:none"
     >
       <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
         <g data-el="ic-pause">
@@ -477,7 +481,11 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         </p>
       ) : (
         top && (
-          <p class="concept-loop__top" dir={top.ltr ? 'ltr' : undefined}>
+          <p
+            class="concept-loop__top"
+            dir={top.ltr ? 'ltr' : undefined}
+            data-el={variant === 'kite-construct' ? 'kite-top' : undefined}
+          >
             {top.text}
           </p>
         )
@@ -1189,24 +1197,6 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     }
 
     {
-      variant === 'angle-sum' && (
-        <svg class="concept-loop__svg" viewBox="0 0 560 360" role="img" aria-label={ariaLabels[variant]}>
-          <polygon class="cl-line" points="150,248 430,248 280,92" />
-          <g data-el="ang0" style="opacity:0">
-            <path class="cl-fill-a cl-stroke-a" d="M0 0 L26 0 A26 26 0 0 0 18 -18 Z" />
-          </g>
-          <g data-el="ang1" style="opacity:0">
-            <path class="cl-fill-b cl-stroke-b" d="M0 0 L-26 0 A26 26 0 0 1 -18 -18 Z" />
-          </g>
-          <g data-el="ang2" style="opacity:0">
-            <path class="cl-fill-c cl-line" d="M0 0 L16 16 A26 26 0 0 1 -16 16 Z" />
-          </g>
-          <line class="cl-line" data-el="straight" x1="130" y1="312" x2="400" y2="312" pathLength="1" style="opacity:0" />
-          <text class="cl-t cl-num cl-ok" data-el="lbl180" x="418" y="318" style="opacity:0">180°</text>
-        </svg>
-      )
-    }
-    {
       variant === 'para-rect' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <polygon class="cl-line cl-fill-a" data-el="shape" points="160,240 400,240 472,128 232,128" />
@@ -1388,14 +1378,53 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'diff-sq' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
-          <rect class="cl-fill-a cl-stroke-a" x="50" y="70" width="150" height="150" />
-          <rect class="cl-line" x="50" y="70" width="90" height="90" fill="#fff" />
-          <text class="cl-t cl-num" x="95" y="122" text-anchor="middle">9</text>
-          <text class="cl-t cl-num" x="150" y="200" text-anchor="middle">16</text>
-          <g data-el="rect16" style="opacity:0">
-            <rect class="cl-fill-c cl-line" x="250" y="150" width="220" height="55" />
-            <text class="cl-t cl-num" data-el="lbl16" x="360" y="184" text-anchor="middle" style="opacity:0">16</text>
+          {/* scene 1 — the x×x square: trace left edge → x, bottom edge → x;
+              x · x → x². The bottom-edge x never moves again */}
+          <rect data-el="fill-big" class="cl-fill-a" x="144" y="55" width="170" height="170" style="opacity:0" />
+          <rect data-el="sq-big" class="cl-line cl-stroke-a" x="144" y="55" width="170" height="170" pathLength="1" style="opacity:0" />
+          <line data-el="eXl" class="cl-line" x1="144" y1="225" x2="144" y2="55" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblXl" class="cl-t cl-num" x="132" y="146" text-anchor="end" style="opacity:0">x</text>
+          <line data-el="eXb" class="cl-line" x1="144" y1="225" x2="314" y2="225" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblXb" class="cl-t cl-num" x="229" y="250" text-anchor="middle" style="opacity:0">x</text>
+          <text data-el="mulX" class="cl-t cl-num cl-big" x="229" y="196" text-anchor="middle" style="opacity:0">x · x</text>
+          <text data-el="powX" class="cl-t cl-num cl-big" x="229" y="196" text-anchor="middle" style="opacity:0">x²</text>
+          {/* scene 2 — the dashed y×y square joins: trace its top edge → y; y · y → y² */}
+          <g data-el="g-small" style="opacity:0">
+            <rect class="cl-dash" x="144" y="55" width="102" height="102" fill="#fff" />
+            <text data-el="mulY" class="cl-t cl-num" x="195" y="111" text-anchor="middle" style="opacity:0">y · y</text>
+            <text data-el="powY" class="cl-t cl-num cl-big" x="195" y="111" text-anchor="middle" style="opacity:0">y²</text>
           </g>
+          <line data-el="eYt" class="cl-line" x1="144" y1="55" x2="246" y2="55" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblYt" class="cl-t cl-num" x="195" y="44" text-anchor="middle" style="opacity:0">y</text>
+          {/* scene 3 — subtraction: the y² square turns gray, almost transparent, never gone */}
+          <g data-el="g-ghost" stroke="#9ca3af" fill="none" style="opacity:0">
+            <rect x="144" y="55" width="102" height="102" stroke-width="1.5" stroke-dasharray="5 5" />
+          </g>
+          {/* the inverted-Resh (L) traces itself; outer sides traced + numbered */}
+          <path data-el="l-outline" class="cl-line cl-stroke-a" d="M246 157 L246 55 L314 55 L314 225 L144 225 L144 157 Z" pathLength="1" style="opacity:0" />
+          <g data-el="l-bot" style="opacity:0">
+            <rect class="cl-fill-a cl-stroke-a" x="144" y="157" width="170" height="68" />
+            <text data-el="lbl-bot" class="cl-t cl-num" x="229" y="197" text-anchor="middle" stroke="#fff" stroke-width="3" paint-order="stroke" style="opacity:0">x · (x − y)</text>
+          </g>
+          <g data-el="l-top" style="opacity:0">
+            <rect class="cl-fill-b cl-stroke-b" x="246" y="55" width="68" height="102" />
+          </g>
+          <line data-el="eXYr" class="cl-line" x1="314" y1="225" x2="314" y2="157" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblXYr" class="cl-t cl-num" x="328" y="196" style="opacity:0">x − y</text>
+          <line data-el="eYr" class="cl-line" x1="314" y1="157" x2="314" y2="55" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblYr" class="cl-t cl-num" x="328" y="111" style="opacity:0">y</text>
+          <line data-el="eXYt" class="cl-line" x1="246" y1="55" x2="314" y2="55" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblXYt" class="cl-t cl-num" x="280" y="44" text-anchor="middle" style="opacity:0">x − y</text>
+          {/* scene 4 — the cut, the dashed target slot, the slow rotation */}
+          <line data-el="cut" class="cl-dash" x1="246" y1="157" x2="314" y2="157" stroke="#ea580c" stroke-width="2.5" style="opacity:0" />
+          <rect data-el="slot" class="cl-dash" x="314" y="157" width="102" height="68" style="opacity:0" />
+          {/* scene 5 — one rectangle (x + y) × (x − y) = x² − y² */}
+          <rect data-el="rect-merge" class="cl-line cl-stroke-a" x="144" y="157" width="272" height="68" pathLength="1" style="opacity:0" />
+          <line data-el="eYh" class="cl-line" x1="314" y1="225" x2="416" y2="225" stroke-width="3" pathLength="1" style="opacity:0" />
+          <text data-el="lblYh" class="cl-t cl-num" x="365" y="250" text-anchor="middle" style="opacity:0">y</text>
+          <text data-el="dimSum" class="cl-t cl-num" x="280" y="250" text-anchor="middle" style="opacity:0">x + y</text>
+          <text data-el="dimDiff" class="cl-t cl-num" x="430" y="196" style="opacity:0">x − y</text>
+          <text data-el="lblRes" class="cl-t cl-num cl-big" x="280" y="200" text-anchor="middle" stroke="#fff" stroke-width="3" paint-order="stroke" style="opacity:0">x² − y²</text>
         </svg>
       )
     }
@@ -2217,6 +2246,81 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         </svg>
       )
     }
+    {
+      variant === 'kite-construct' && (
+        <>
+          <KiteAreaFilm />
+          <svg
+            class="concept-loop__svg"
+            data-el="kite-build"
+            viewBox="0 0 480 300"
+            role="img"
+            aria-label={ariaLabels[variant]}
+            style="display:none"
+          >
+          <text class="cl-t cl-big cl-kite-title" x="240" y="40" text-anchor="middle">סרגל ומחוגה בלבד: דלתון</text>
+          <line data-el="axis" x1="40" y1="165" x2="370" y2="165" stroke="var(--navy)" stroke-width="1.5" pathLength="1" style="opacity:1" />
+          <text data-el="axis-lbl" class="cl-t" x="360" y="182" text-anchor="end" style="opacity:1">ציר סימטריה</text>
+          <circle data-el="pA" cx="170" cy="165" r="4.5" fill="var(--navy)" style="opacity:1" />
+          <text data-el="lA" class="cl-t cl-num" x="170" y="190" text-anchor="middle" style="font-weight:800;opacity:1">A</text>
+          <circle data-el="pB" cx="240" cy="165" r="4.5" fill="var(--navy)" style="opacity:1" />
+          <text data-el="lB" class="cl-t cl-num" x="240" y="190" text-anchor="middle" style="font-weight:800;opacity:1">B</text>
+          <circle data-el="cA" cx="170" cy="165" r="60" fill="none" stroke="var(--teal)" stroke-width="2" pathLength="1" style="opacity:0.12" />
+          <circle data-el="cB" cx="240" cy="165" r="110" fill="none" stroke="var(--coral)" stroke-width="2" pathLength="1" style="opacity:0.2" />
+          <circle data-el="i1" cx="144.3" cy="110.8" r="4.5" fill="var(--yellow)" stroke="#fff" stroke-width="1.5" style="opacity:1" />
+          <text data-el="l1" class="cl-t cl-num" x="159.3" y="104.8" text-anchor="middle" style="font-weight:800;opacity:1">C</text>
+          <circle data-el="i2" cx="144.3" cy="219.2" r="4.5" fill="var(--yellow)" stroke="#fff" stroke-width="1.5" style="opacity:1" />
+          <text data-el="l2" class="cl-t cl-num" x="159.3" y="231.2" text-anchor="middle" style="font-weight:800;opacity:1">D</text>
+          <path data-el="kite" d="M170 165 L144.3 110.8 L240 165 L144.3 219.2 Z" fill="#7c3aed1f" stroke="var(--navy)" stroke-width="2" stroke-linejoin="round" style="opacity:1" />
+          <line data-el="sa1" x1="170" y1="165" x2="144.3" y2="110.8" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:1" />
+          <line data-el="sa2" x1="170" y1="165" x2="144.3" y2="219.2" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:1" />
+          <line data-el="sb1" x1="240" y1="165" x2="144.3" y2="110.8" stroke="var(--coral)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:1" />
+          <line data-el="sb2" x1="240" y1="165" x2="144.3" y2="219.2" stroke="var(--coral)" stroke-width="4" stroke-linecap="round" pathLength="1" style="opacity:1" />
+          <g data-el="ticksA" stroke="var(--teal-dark)" stroke-width="2.2" stroke-linecap="round" style="opacity:0.6">
+            <g data-el="tick-ac">
+              <line x1="151.68" y1="142.71" x2="164.33" y2="136.71" />
+              <line x1="149.97" y1="139.09" x2="162.62" y2="133.09" />
+            </g>
+            <g data-el="tick-ad">
+              <line x1="164.33" y1="193.29" x2="151.68" y2="187.29" />
+              <line x1="162.62" y1="196.91" x2="149.97" y2="190.91" />
+            </g>
+          </g>
+          <g data-el="ticksB" stroke="var(--coral-dark)" stroke-width="2.2" stroke-linecap="round" style="opacity:0.6">
+            <g data-el="tick-bc">
+              <line x1="193.05" y1="146.46" x2="199.95" y2="134.27" />
+              <line x1="188.7" y1="143.99" x2="195.6" y2="131.81" />
+              <line x1="184.35" y1="141.53" x2="191.25" y2="129.34" />
+            </g>
+            <g data-el="tick-bd">
+              <line x1="199.95" y1="195.73" x2="193.05" y2="183.54" />
+              <line x1="195.6" y1="198.19" x2="188.7" y2="186.01" />
+              <line x1="191.25" y1="200.66" x2="184.35" y2="188.47" />
+            </g>
+          </g>
+          <path data-el="reflex" d="M158.9 141.5 A 26 26 0 1 1 158.9 188.5" fill="none" stroke="var(--coral-dark)" stroke-width="2.5" pathLength="1" style="opacity:1" />
+          <g data-el="chip-convex" style="opacity:0">
+            <rect class="cl-chip" x="130" y="52" width="112" height="26" rx="9" />
+            <text class="cl-t" x="186" y="70" text-anchor="middle" style="font-weight:800">דלתון קמור</text>
+          </g>
+          <g data-el="chip-dart" style="opacity:1">
+            <rect x="120" y="52" width="132" height="26" rx="9" fill="#e5735c1f" stroke="var(--coral-dark)" stroke-width="1.5" />
+            <text class="cl-t" x="186" y="70" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">דלתון קעור!</text>
+          </g>
+          <g data-el="eq-lbl" style="opacity:1">
+            <text class="cl-t cl-num" x="415" y="90" text-anchor="middle" style="font-weight:800">AC = AD</text>
+            <text class="cl-t cl-num" x="415" y="114" text-anchor="middle" style="font-weight:800">BC = BD</text>
+            <text class="cl-t" x="415" y="140" text-anchor="middle">שני זוגות שווים</text>
+          </g>
+          <g data-el="refl-lbl" style="opacity:1">
+            <rect x="16" y="210" width="92" height="26" rx="9" fill="#e5735c1f" stroke="var(--coral-dark)" stroke-width="1.5" />
+            <text class="cl-t" x="62" y="228" text-anchor="middle" style="font-weight:800;fill:var(--coral-dark)">זווית קעורה</text>
+          </g>
+          <text data-el="grow-lbl" class="cl-t" x="240" y="256" text-anchor="middle" style="fill:var(--coral-dark);font-weight:800;opacity:0">מגדילים את העיגול סביב B…</text>
+          </svg>
+        </>
+      )
+    }
 
     {
       variant === 'triangle' && (
@@ -2443,14 +2547,6 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       )
     }
     {
-      variant === 'angle-sum' && (
-        <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">∠ + ∠ + ∠ = 180°</span>
-          <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
-        </p>
-      )
-    }
-    {
       variant === 'para-rect' && (
         <p class="concept-loop__formula">
           <span data-fx="0">הבסיס והגובה לא משתנים, ולכן השטח לא משתנה</span>
@@ -2549,7 +2645,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
     {
       variant === 'diff-sq' && (
         <p class="concept-loop__formula" dir="ltr">
-          <span data-fx="0">5² − 3² = 25 − 9 = 16</span>
+          <span data-fx="0">x² − y² = (x − y) · (x + y)</span>
           <span data-fx="1" class="cl-check" aria-hidden="true">✓</span>
         </p>
       )
@@ -2890,6 +2986,18 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         </p>
       )
     }
+    {
+      variant === 'kite-construct' && (
+        <div data-el="kite-caption" style="display:none">
+          <p class="concept-loop__formula" dir="rtl">
+            <span data-fx="0" style="opacity:1">עיגול סביב <bdi class="cl-num">A</bdi> + עיגול סביב <bdi class="cl-num">B</bdi></span>
+            <span data-fx="1" style="opacity:1">= <bdi class="cl-num">4</bdi> קודקודי הדלתון</span>
+            <span data-el="check" class="cl-check" style="opacity:1" aria-hidden="true">✓</span>
+          </p>
+          <p class="concept-loop__caption" data-el="caption" style="opacity:1">שני עיגולים — דלתון קמור, ובהגדלה: קעור</p>
+        </div>
+      )
+    }
   </div>
 </div>
 
@@ -2897,6 +3005,26 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
   import { initConceptLoops } from '../lib/conceptLoops';
   initConceptLoops();
 </script>
+
+{
+  variant === 'kite-construct' && (
+    <script is:inline>
+      (function () {
+        var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+        function sync() {
+          document.querySelectorAll('[data-loop="kite-construct"]').forEach(function (el) {
+            if (mq.matches) el.setAttribute('data-os-reduce', '');
+            else el.removeAttribute('data-os-reduce');
+          });
+        }
+        if (typeof mq.addEventListener === 'function') mq.addEventListener('change', sync);
+        else mq.addListener(sync);
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync);
+        sync();
+      })();
+    </script>
+  )
+}
 
 <script>
   /**
@@ -2946,12 +3074,24 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       function state() {
         return hook.state();
       }
+      var kite = root.getAttribute('data-loop') === 'kite-construct';
       function sync() {
         var s = state();
         var paused = !s.playing && !s.static;
         card.classList.toggle('is-paused', paused);
         card.setAttribute('aria-pressed', paused ? 'true' : 'false');
-        card.setAttribute('aria-label', paused ? 'הפעלת הנפשה' : 'השהיית הנפשה');
+        var label = paused
+          ? kite
+            ? s.done
+              ? 'הפעלת ההדגמה מחדש'
+              : 'המשך ההדגמה'
+            : 'הפעלת הנפשה'
+          : kite
+            ? 'השהיית ההדגמה'
+            : 'השהיית הנפשה';
+        card.setAttribute('aria-label', label);
+        toggleBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+        if (kite) toggleBtn.setAttribute('aria-label', label);
         // static frame (reduced-motion): the control is inert
         card.setAttribute('aria-disabled', s.static ? 'true' : 'false');
         if (s.static) card.setAttribute('tabindex', '-1');
@@ -2972,6 +3112,9 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       card.addEventListener('click', function (e) {
         if (e.target && e.target.closest && e.target.closest('[data-el="toggle"]')) return; // the button handles itself
         toggle();
+      });
+      toggleBtn.addEventListener('click', function () {
+        sync();
       });
       card.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
@@ -3036,10 +3179,12 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
   /* the engine's old big round button → tiny corner bars/triangle */
   .concept-loop .concept-loop__card .concept-loop__toggle {
     inset-inline-start: auto;
-    inset-inline-end: 10px;
+    inset-inline-end: 8px;
     top: 8px;
-    width: 14px;
-    height: 14px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
     padding: 0;
     border: none;
     background: transparent;
@@ -3068,5 +3213,18 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
   }
   :global(html.noam-a11y-motion) .concept-loop__card {
     cursor: default;
+  }
+  /* The shared formula rule isolates every [data-fx] as LTR. These two
+     lines are Hebrew sentences, so they stay RTL and only A/B/4 are LTR. */
+  .concept-loop[data-loop='kite-construct'] .concept-loop__formula[dir='rtl'] [data-fx] {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+  /* The SVG title is 18 user units. On a phone the 480-wide viewBox
+     shrinks that to about 8px; 36 user units stays at least 12px tall. */
+  @media (max-width: 640px) {
+    .concept-loop[data-loop='kite-construct'] .cl-kite-title {
+      font-size: 36px;
+    }
   }
 </style>

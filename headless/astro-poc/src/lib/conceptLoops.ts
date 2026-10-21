@@ -15,6 +15,8 @@
  *     prefers-reduced-motion does not park the loop.
  */
 
+import { renderKiteArea } from './kiteAreaFilm';
+
 type LoopRoot = HTMLElement & { __loop?: LoopDebug };
 
 interface LoopDebug {
@@ -884,38 +886,6 @@ function renderTransform(root: LoopRoot, t: number) {
 }
 const TRANS_HOLD = 6.8;
 
-/* ═══════════════ L01 — angle-sum: three wedges join a straight line (D = 10 s) ═══════════════ */
-
-function renderAngleSum(root: LoopRoot, t: number) {
-  const moveP = ph(t, 2.0, 3.5) - ph(t, 8.2, 9.4);
-  const homes = [
-    { x: 168, y: 236 },
-    { x: 392, y: 236 },
-    { x: 280, y: 118 },
-  ];
-  const targets = [
-    { x: 168, y: 300 },
-    { x: 248, y: 300 },
-    { x: 328, y: 300 },
-  ];
-  for (let i = 0; i < 3; i++) {
-    const g = q(root, `ang${i}`);
-    const x = lerp(homes[i].x, targets[i].x, moveP);
-    const y = lerp(homes[i].y, targets[i].y, moveP);
-    if (g) g.setAttribute('transform', `translate(${r2(x)} ${r2(y)})`);
-    op(g, ph(t, 0.7, 1.1) * (1 - ph(t, 9.4, 9.8)));
-  }
-  const line = q(root, 'straight');
-  op(line, ph(t, 3.2, 3.6) * (1 - ph(t, 8.4, 9.0)));
-  draw(line, ph(t, 3.3, 4.0));
-  op(q(root, 'lbl180'), ph(t, 4.0, 4.4) * (1 - ph(t, 8.2, 8.8)));
-  const fxs = qa(root, '[data-fx]');
-  const show = ph(t, 4.5, 4.9) * (1 - ph(t, 8.0, 8.6));
-  op(fxs[0], show);
-  op(fxs[1], ph(t, 4.9, 5.3) * (1 - ph(t, 8.0, 8.6)));
-}
-const ANGLE_SUM_HOLD = 6.2;
-
 /* ═══════════════ L02 — para-rect: parallelogram shears into a rectangle (D = 10 s) ═══════════════ */
 
 function renderParaRect(root: LoopRoot, t: number) {
@@ -1165,19 +1135,104 @@ function renderPct25(root: LoopRoot, t: number) {
 }
 const PCT25_HOLD = 5.6;
 
-/* ═══════════════ L14 — diff-sq: 25 − 9 unfolds to a rectangle of 16 (D = 10 s) ═══════════════ */
+/* ═══════════════ L14 — diff-sq: x² − y² = (x − y) · (x + y), letters only (D = 22 s) ═══════════════
+   Noam's script, v6 — same film, no numbers at all (this is FACTORIZATION):
+   1. an x×x square; trace left edge → x, bottom edge → x; x · x → x².
+      The bottom-edge x never moves again.
+   2. a dashed y×y square joins the corner; trace its top edge → y; y · y → y²
+   3. the difference: the y² square turns gray and almost transparent —
+      never gone; the inverted-Resh (L) traces itself; outer sides traced:
+      x below the blue strip, x − y and y on the right, x − y above the purple
+   4. cut, dashed target slot, slow lift + 90° rotation, dock
+   5. one rectangle: trace the purple half's bottom edge → y, then x + y below,
+      x − y on the right, x² − y² inside — and the formula lands and HOLDS. */
 
 function renderDiffSq(root: LoopRoot, t: number) {
-  const slide = ph(t, 1.6, 2.8) - ph(t, 8.2, 9.2);
-  const rect = q(root, 'rect16');
-  if (rect) rect.setAttribute('transform', `translate(${r2(-170 * (1 - slide))} 0)`);
-  op(rect, ph(t, 1.4, 1.9) * (1 - ph(t, 9.0, 9.6)));
-  op(q(root, 'lbl16'), ph(t, 2.9, 3.3) * (1 - ph(t, 8.0, 8.6)));
+  const keep = 1 - ph(t, 21.2, 21.95); // scene outro — late and slow
+  const FX_OUT = 1 - ph(t, 21.0, 21.85); // formula outro
+  const FLY_OUT = 1 - ph(t, 13.8, 14.4); // L-stage labels out as the flight starts
+
+  // ——— scene 1: the x×x square — trace the edges, then x · x → x² ———
+  const bigIn = ph(t, 0.3, 1.1);
+  const bigOut = 1 - ph(t, 8.3, 9.1);
+  const bigSq = q(root, 'sq-big');
+  op(bigSq, bigIn * bigOut);
+  draw(bigSq, bigIn);
+  op(q(root, 'fill-big'), ph(t, 0.8, 1.2) * bigOut);
+  const eXl = q(root, 'eXl');
+  op(eXl, ph(t, 1.3, 1.4) * bigOut);
+  draw(eXl, ph(t, 1.3, 1.7));
+  op(q(root, 'lblXl'), ph(t, 1.7, 2.0) * bigOut);
+  const eXb = q(root, 'eXb');
+  op(eXb, ph(t, 1.9, 2.0) * keep);
+  draw(eXb, ph(t, 1.9, 2.3));
+  op(q(root, 'lblXb'), ph(t, 2.3, 2.6) * (1 - ph(t, 18.0, 18.3)));
+  op(q(root, 'mulX'), ph(t, 2.7, 3.0) * (1 - ph(t, 3.2, 3.5)));
+  op(q(root, 'powX'), ph(t, 3.5, 3.8) * bigOut);
+
+  // ——— scene 2: the dashed y×y joins — trace its top edge → y · y → y² ———
+  const sIn = ph(t, 4.7, 5.3);
+  const sOut = ph(t, 8.3, 9.3); // it does not fly away — it fades in place
+  op(q(root, 'g-small'), sIn * (1 - sOut));
+  const eYt = q(root, 'eYt');
+  op(eYt, ph(t, 5.4, 5.5) * (1 - sOut));
+  draw(eYt, ph(t, 5.4, 5.8));
+  op(q(root, 'lblYt'), ph(t, 5.8, 6.1) * (1 - sOut));
+  op(q(root, 'mulY'), ph(t, 6.2, 6.5) * (1 - ph(t, 6.8, 7.1)));
+  op(q(root, 'powY'), ph(t, 7.1, 7.4) * (1 - sOut));
+  // the gray ghost: almost transparent, but never gone
+  op(q(root, 'g-ghost'), 0.22 * ph(t, 8.5, 9.3) * keep);
+
+  // ——— scene 3: the inverted-Resh (L) traces itself; outer sides numbered ———
+  const lo = q(root, 'l-outline');
+  op(lo, ph(t, 9.1, 9.3) * (1 - ph(t, 13.6, 14.2)));
+  draw(lo, ph(t, 9.1, 9.9));
+  const lIn = ph(t, 9.4, 9.9);
+  const lOut = 1 - ph(t, 21.2, 21.95);
+  op(q(root, 'l-bot'), lIn * lOut);
+  op(q(root, 'l-top'), lIn * lOut);
+  op(q(root, 'lbl-bot'), ph(t, 9.9, 10.3) * (1 - ph(t, 16.0, 16.4)));
+  const eXYr = q(root, 'eXYr');
+  op(eXYr, ph(t, 10.4, 10.5) * FLY_OUT);
+  draw(eXYr, ph(t, 10.4, 10.8));
+  op(q(root, 'lblXYr'), ph(t, 10.8, 11.1) * FLY_OUT);
+  const eYr = q(root, 'eYr');
+  op(eYr, ph(t, 11.2, 11.3) * FLY_OUT);
+  draw(eYr, ph(t, 11.2, 11.6));
+  op(q(root, 'lblYr'), ph(t, 11.6, 11.9) * FLY_OUT);
+  const eXYt = q(root, 'eXYt');
+  op(eXYt, ph(t, 12.0, 12.1) * FLY_OUT);
+  draw(eXYt, ph(t, 12.0, 12.4));
+  op(q(root, 'lblXYt'), ph(t, 12.4, 12.7) * FLY_OUT);
+
+  // ——— scene 4: cut, dashed target slot, slow flight ———
+  op(q(root, 'cut'), ph(t, 12.6, 13.0) * (1 - ph(t, 13.8, 14.2)));
+  op(q(root, 'slot'), ph(t, 13.4, 13.8) * (1 - ph(t, 15.0, 15.4)));
+  const lift = ph(t, 13.8, 14.5);
+  const fly = ph(t, 14.5, 15.7);
+  const tx = lerp(lerp(0, 14, lift), 85, fly);
+  const ty = lerp(lerp(0, -34, lift), 85, fly);
+  const lt = q(root, 'l-top');
+  if (lt) lt.setAttribute('transform', `translate(${r2(tx)} ${r2(ty)}) rotate(${r2(90 * fly)} 280 106)`);
+
+  // ——— scene 5: one rectangle — x + y below, x − y on the right, x² − y² inside ———
+  const rm = q(root, 'rect-merge');
+  const rmIn = ph(t, 15.8, 16.5);
+  op(rm, rmIn * keep);
+  draw(rm, rmIn);
+  const eYh = q(root, 'eYh');
+  op(eYh, ph(t, 16.7, 16.8) * (1 - ph(t, 18.0, 18.3)));
+  draw(eYh, ph(t, 16.7, 17.1));
+  op(q(root, 'lblYh'), ph(t, 17.1, 17.4) * (1 - ph(t, 18.0, 18.3)));
+  op(q(root, 'dimDiff'), ph(t, 18.0, 18.4) * keep);
+  op(q(root, 'dimSum'), ph(t, 18.3, 18.7) * keep);
+  op(q(root, 'lblRes'), ph(t, 18.6, 19.0) * keep);
+
   const fxs = qa(root, '[data-fx]');
-  op(fxs[0], ph(t, 3.3, 3.7) * (1 - ph(t, 8.0, 8.6)));
-  op(fxs[1], ph(t, 3.7, 4.1) * (1 - ph(t, 8.0, 8.6)));
+  op(fxs[0], ph(t, 18.9, 19.3) * FX_OUT);
+  op(fxs[1], ph(t, 19.3, 19.7) * FX_OUT);
 }
-const DIFF_SQ_HOLD = 5.4;
+const DIFF_SQ_HOLD = 20.5;
 
 /* ═══════════════ L15 — clock-3: hour on 3, minute on 12 (D = 10 s) ═══════════════ */
 
@@ -1957,6 +2012,169 @@ function renderTwoDiag(root: LoopRoot, t: number) {
 }
 const TWO_DIAG_HOLD = 5.2;
 
+/* ═══════════════ kite-construct — area film, then ruler-and-compass ═══════════════
+   First: «שטח דלתון — מהדלתון למלבן» (84 s). Then loop #8 from
+   staging/packages-120-oct12 @ 654ab7c: two circles meet in a convex kite,
+   and growing the second circle makes a concave kite. The construction
+   fades back to rest so the seam returns to the area film. After 4 laps
+   the engine parks on the completed concave frame. Reduced motion and
+   no JS rest on the area film's final frame (t = 84), not that hold. */
+
+const KITE_X0 = 195.7;
+const KITE_X1 = 144.3;
+const KITE_Y1 = 110.8;
+const KITE_Y2 = 219.2;
+
+function renderKite(root: LoopRoot, t: number) {
+  const fade = 1 - ph(t, 14.6, 15.6);
+  const dart = ph(t, 8.4, 9.0) * fade;
+  const ix = lerp(KITE_X0, KITE_X1, dart);
+  const iy1 = KITE_Y1;
+  const iy2 = KITE_Y2;
+
+  const axis = q(root, 'axis');
+  op(axis, ph(t, 0.3, 0.8) * fade);
+  draw(axis, ph(t, 0.35, 1.0) * fade);
+  op(q(root, 'axis-lbl'), ph(t, 11.2, 11.6) * fade);
+
+  op(q(root, 'pA'), ph(t, 1.3, 1.6) * fade);
+  op(q(root, 'lA'), ph(t, 1.4, 1.7) * fade);
+  op(q(root, 'pB'), ph(t, 1.6, 1.9) * fade);
+  op(q(root, 'lB'), ph(t, 1.7, 2.0) * fade);
+
+  const cA = q(root, 'cA');
+  op(cA, ph(t, 2.3, 2.7) * lerp(1, 0.12, ph(t, 7.5, 8.0)) * fade);
+  draw(cA, ph(t, 2.35, 3.5) * fade);
+
+  const cB = q(root, 'cB');
+  if (cB) cB.setAttribute('r', String(r2(lerp(70, 110, ph(t, 7.6, 8.4) * fade))));
+  op(cB, ph(t, 3.7, 4.1) * lerp(1, 0.2, ph(t, 8.6, 9.1)) * fade);
+  draw(cB, ph(t, 3.75, 4.9) * fade);
+
+  const dots: Array<[string, number, string, number]> = [
+    ['i1', iy1, 'l1', KITE_Y1 - 6],
+    ['i2', iy2, 'l2', KITE_Y2 + 12],
+  ];
+  for (const [dot, y, label, ly] of dots) {
+    const el = q(root, dot);
+    if (el) {
+      el.setAttribute('cx', String(r2(ix)));
+      el.setAttribute('cy', String(r2(y)));
+    }
+    op(el, ph(t, 5.1, 5.5) * fade);
+    const lb = q(root, label);
+    if (lb) {
+      lb.setAttribute('x', String(r2(ix + 15)));
+      lb.setAttribute('y', String(r2(ly)));
+    }
+    op(lb, ph(t, 5.4, 5.8) * fade);
+  }
+
+  const kite = q(root, 'kite');
+  if (kite) {
+    kite.setAttribute(
+      'd',
+      `M170 165 L${r2(ix)} ${r2(iy1)} L240 165 L${r2(ix)} ${r2(iy2)} Z`,
+    );
+  }
+  op(kite, ph(t, 5.6, 6.1) * fade);
+
+  const segs: Array<[string, number, number]> = [
+    ['sa1', ix, iy1],
+    ['sa2', ix, iy2],
+    ['sb1', ix, iy1],
+    ['sb2', ix, iy2],
+  ];
+  segs.forEach(([name, x2, y2], i) => {
+    const el = q(root, name);
+    if (el) {
+      el.setAttribute('x2', String(r2(x2)));
+      el.setAttribute('y2', String(r2(y2)));
+    }
+    op(el, ph(t, 6.2 + i * 0.15, 6.55 + i * 0.15) * fade);
+    draw(el, ph(t, 6.25 + i * 0.15, 6.9 + i * 0.15) * fade);
+  });
+
+  // Congruence ticks ride the midpoint of each side, perpendicular to it,
+  // including while C and D slide into the concave kite.
+  placeKiteTicks(q(root, 'tick-ac'), 170, 165, ix, iy1, 2);
+  placeKiteTicks(q(root, 'tick-ad'), 170, 165, ix, iy2, 2);
+  placeKiteTicks(q(root, 'tick-bc'), 240, 165, ix, iy1, 3);
+  placeKiteTicks(q(root, 'tick-bd'), 240, 165, ix, iy2, 3);
+
+  const reflex = q(root, 'reflex');
+  op(reflex, ph(t, 9.3, 9.6) * fade);
+  draw(reflex, ph(t, 9.35, 10.05) * fade);
+
+  const tickFade = lerp(1, 0, dart * 0.4);
+  op(q(root, 'ticksA'), ph(t, 6.9, 7.3) * tickFade * fade);
+  op(q(root, 'ticksB'), ph(t, 6.9, 7.3) * tickFade * fade);
+  op(q(root, 'chip-convex'), ph(t, 6.6, 7.0) * (1 - ph(t, 7.5, 7.9)) * fade);
+  op(q(root, 'chip-dart'), ph(t, 9.5, 9.9) * fade);
+  op(q(root, 'eq-lbl'), ph(t, 10.9, 11.3) * fade);
+  op(q(root, 'refl-lbl'), ph(t, 9.6, 10.0) * fade);
+  op(q(root, 'grow-lbl'), ph(t, 7.5, 7.9) * (1 - ph(t, 8.8, 9.2)) * fade);
+
+  const fxs = qa(root, '[data-fx]');
+  const fxFade = 1 - ph(t, 14.6, 15.6);
+  op(fxs[0], ph(t, 11.4, 11.8) * fxFade);
+  op(fxs[1], ph(t, 11.7, 12.1) * fxFade);
+  op(q(root, 'check'), ph(t, 12.4, 12.8) * fxFade);
+  op(q(root, 'caption'), ph(t, 12.6, 13.0) * fxFade);
+}
+const KITE_HOLD = 13.6;
+const KITE_AREA_END = 84;
+const KITE_BUILD = 16;
+
+function renderKiteShow(root: LoopRoot, t: number) {
+  const area = q(root, 'kite-area');
+  const build = q(root, 'kite-build');
+  const cap = q(root, 'kite-caption');
+  const showArea = t <= KITE_AREA_END;
+  if (area) area.style.display = showArea ? '' : 'none';
+  if (build) build.style.display = showArea ? 'none' : '';
+  if (cap) cap.style.display = showArea ? 'none' : '';
+  const title = q(root, 'kite-top');
+  if (title) title.textContent = showArea ? 'למה מחלקים ב־2?' : 'איך בונים דלתון?';
+  if (showArea) renderKiteArea(root, Math.min(t, KITE_AREA_END));
+  else renderKite(root, t - KITE_AREA_END);
+}
+
+/** Double or triple ticks centered on a segment, perpendicular to it. */
+function placeKiteTicks(
+  group: El | null,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  count: 2 | 3,
+) {
+  if (!group) return;
+  const lines = group.querySelectorAll('line');
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len;
+  const uy = dy / len;
+  const px = -uy;
+  const py = ux;
+  const half = 7;
+  const gap = count === 2 ? 4 : 5;
+  const offsets = count === 2 ? [-gap / 2, gap / 2] : [-gap, 0, gap];
+  const mx = (x1 + x2) / 2;
+  const my = (y1 + y2) / 2;
+  offsets.forEach((off, i) => {
+    const line = lines[i];
+    if (!line) return;
+    const cx = mx + ux * off;
+    const cy = my + uy * off;
+    line.setAttribute('x1', String(r2(cx - px * half)));
+    line.setAttribute('y1', String(r2(cy - py * half)));
+    line.setAttribute('x2', String(r2(cx + px * half)));
+    line.setAttribute('y2', String(r2(cy + py * half)));
+  });
+}
+
 /* ═══════════════ engine ═══════════════ */
 
 const SPECS = {
@@ -1977,7 +2195,6 @@ const SPECS = {
   cookies: { duration: 10, hold: CK_HOLD, render: renderCookies },
   fraction: { duration: 10, hold: FRAC_HOLD, render: renderFraction },
   transform: { duration: 11, hold: TRANS_HOLD, render: renderTransform },
-  'angle-sum': { duration: 10, hold: ANGLE_SUM_HOLD, render: renderAngleSum },
   'para-rect': { duration: 10, hold: PARA_RECT_HOLD, render: renderParaRect },
   'angle-kinds': { duration: 10, hold: ANGLE_KINDS_HOLD, render: renderAngleKinds },
   'frac-product': { duration: 10, hold: FRAC_PRODUCT_HOLD, render: renderFracProduct },
@@ -1990,7 +2207,7 @@ const SPECS = {
   'corr-angles': { duration: 10, hold: CORR_ANGLES_HOLD, render: renderCorrAngles },
   'mean-cols': { duration: 10, hold: MEAN_COLS_HOLD, render: renderMeanCols },
   'pct-25': { duration: 10, hold: PCT25_HOLD, render: renderPct25 },
-  'diff-sq': { duration: 10, hold: DIFF_SQ_HOLD, render: renderDiffSq },
+  'diff-sq': { duration: 22, hold: DIFF_SQ_HOLD, render: renderDiffSq },
   'clock-3': { duration: 10, hold: CLOCK3_HOLD, render: renderClock3 },
   'peri-rect': { duration: 10, hold: PERI_RECT_HOLD, render: renderPeriRect },
   'signed-jump': { duration: 10, hold: SIGNED_JUMP_HOLD, render: renderSignedJump },
@@ -2033,6 +2250,11 @@ const SPECS = {
   'mark-250': { duration: 10, hold: MARK250_HOLD, render: renderMark250 },
   'quad-gate': { duration: 10, hold: QUAD_GATE_HOLD, render: renderQuadGate },
   'two-diag': { duration: 10, hold: TWO_DIAG_HOLD, render: renderTwoDiag },
+  'kite-construct': {
+    duration: KITE_AREA_END + KITE_BUILD,
+    hold: KITE_AREA_END + KITE_HOLD,
+    render: renderKiteShow,
+  },
 } as const;
 
 const MAX_LAPS = 4;
@@ -2042,6 +2264,12 @@ function motionOff(): boolean {
   // Only an explicit menu choice parks the film. OS reduced motion used to
   // take this same path and left every grade demo on the final frame.
   return html.classList.contains('noam-a11y-motion') || html.classList.contains('nd-motion-off');
+}
+
+/** The kite card parks on its finished frame when the OS asks for less motion.
+ *  The flag is set outside this file so other loops keep playing. */
+function kiteOsReduce(variantName: string, root: LoopRoot): boolean {
+  return variantName === 'kite-construct' && root.hasAttribute('data-os-reduce');
 }
 
 function setupLoop(root: LoopRoot) {
@@ -2068,6 +2296,7 @@ function setupLoop(root: LoopRoot) {
   function setToggle(label: string, showPlay: boolean) {
     if (!toggle) return;
     toggle.setAttribute('aria-label', label);
+    toggle.setAttribute('aria-pressed', showPlay ? 'true' : 'false');
     if (icPlay) icPlay.style.display = showPlay ? '' : 'none';
     if (icPause) icPause.style.display = showPlay ? 'none' : '';
   }
@@ -2106,17 +2335,18 @@ function setupLoop(root: LoopRoot) {
     playing = false;
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
-    if (!isStatic) setToggle(done ? 'הפעלת ההדגמה מחדש' : 'הפעלת ההדגמה', true);
+    if (!isStatic) setToggle(done ? 'הפעלת ההדגמה מחדש' : 'המשך ההדגמה', true);
   }
 
   function applyMotionPrefs() {
-    if (motionOff()) {
+    if (motionOff() || kiteOsReduce(variant, root)) {
       // static completed frame, no motion at all
       isStatic = true;
       playing = false;
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
-      t = spec.hold;
+      // The kite rests on the area film's last frame. Other loops keep their hold.
+      t = variant === 'kite-construct' ? KITE_AREA_END : spec.hold;
       drawFrame();
       if (toggle) toggle.style.display = 'none';
     } else if (isStatic) {
@@ -2129,7 +2359,7 @@ function setupLoop(root: LoopRoot) {
       drawFrame();
       if (toggle) toggle.style.display = '';
       if (inView) play();
-      else setToggle('הפעלת ההדגמה', true);
+      else setToggle('המשך ההדגמה', true);
     }
   }
 
@@ -2169,9 +2399,19 @@ function setupLoop(root: LoopRoot) {
     attributes: true,
     attributeFilter: ['class'],
   });
+  if (variant === 'kite-construct') {
+    new MutationObserver(applyMotionPrefs).observe(root, {
+      attributes: true,
+      attributeFilter: ['data-os-reduce'],
+    });
+  }
 
   applyMotionPrefs();
-  if (!isStatic) setToggle('השהיית ההדגמה', false);
+  if (!isStatic) {
+    // The button is hidden in the markup so it stays gone when JS never runs.
+    if (toggle) toggle.style.display = '';
+    setToggle('השהיית ההדגמה', false);
+  }
 
   // deterministic hook for automated checks / report screenshots
   root.__loop = {
