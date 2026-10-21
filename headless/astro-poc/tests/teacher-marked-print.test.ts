@@ -593,4 +593,43 @@ describe('teacher catalog picker', () => {
     assert.match(page, /הצעות נועם AI כבויות/);
     assert.equal(printer.includes('worksheet-viewer-noam'), false);
   });
+
+  it('provides batch AI pick buttons (15, 30, 45) backed by qwen3.8-flash in the list header', () => {
+    const demoHtml = readFileSync(new URL('../../../demos/teacher-practice-picker-site-style.html', import.meta.url), 'utf8');
+    for (const html of [page, demoHtml]) {
+      assert.match(html, /id="ai-pick-15"[^>]*data-ai-pick="15"[^>]*>בחר 15 עם AI<\/button>/);
+      assert.match(html, /id="ai-pick-30"[^>]*data-ai-pick="30"[^>]*>בחר 30<\/button>/);
+      assert.match(html, /id="ai-pick-45"[^>]*data-ai-pick="45"[^>]*>בחר 45<\/button>/);
+    }
+    assert.match(printer, /model:\s*'qwen3\.8-flash'/);
+    const smartPick = new Function(
+      `${printer.slice(printer.indexOf('function exKey'), printer.indexOf('async function pickWithAi'))} return smartExercisePick;`
+    )() as (pool: { id: string; source: { pdfId: string } }[], count: number, scenario: string, style: string, seedKeys: string[]) => string[];
+    const pool = source.questions.map((question: { id: string }) => ({
+      ...question,
+      source: { pdfId: source.pdfId },
+    }));
+    assert.equal(pool.length, 70);
+    for (const count of [15, 30, 45]) {
+      const picked = smartPick(pool, count, 'first', 'scaffold', [`ex:${source.pdfId}:10א`, `ex:${source.pdfId}:15ב`]);
+      assert.equal(picked.length, count);
+      assert.equal(new Set(picked).size, count);
+      assert.ok(picked.includes(`ex:${source.pdfId}:10א`));
+      assert.ok(picked.includes(`ex:${source.pdfId}:15ב`));
+    }
+  });
+
+  it('never leaves 0 available exercises or 0 suggestions when filtering levels on single-level topics', () => {
+    const catalogData = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
+    const g8t1 = catalogData.grades.find((g: { grade: number }) => g.grade === 8).topics.find((t: { id: number }) => t.id === 1);
+    assert.deepEqual(g8t1.sheets.map((s: { level: string }) => s.level), ['one']);
+    const g9t43 = catalogData.grades.find((g: { grade: number }) => g.grade === 9).topics.find((t: { id: number }) => t.id === 43);
+    assert.deepEqual(g9t43.sheets.map((s: { level: string }) => s.level), ['c']);
+    assert.match(printer, /function syncLevels\(\)/);
+    assert.match(printer, /return matching\.length \? matching : topic\.sheets/);
+    assert.match(printer, /state\.level === 'all' \|\| state\.level === 'a'/);
+    const levelHandler = printer.slice(printer.indexOf("document.querySelectorAll('[name=level]')"), printer.indexOf("$('grade').addEventListener"));
+    assert.match(levelHandler, /if \(!next\.length && state\.scenario !== 'other'\)/);
+    assert.match(levelHandler, /exercisePreset\(state\.scenario\)/);
+  });
 });
