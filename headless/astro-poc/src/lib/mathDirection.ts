@@ -22,14 +22,14 @@ function isCore(ch: string): boolean {
 }
 
 /**
- * Symbols that may sit inside a math run (parentheses, degree, …).
- * Colon, en dash, and em dash are punctuation. A colon joins a run only as
- * division (`12 : 4`, `(180−40):2`). An en dash joins only as a range (`3–7`).
- * A label colon (`דוגמה: 2 + 5`) and an em dash stay outside the isolate.
+ * Symbols that may sit inside a math run (parentheses, en dash, …).
+ * The colon and the em dash are not here. A colon joins a run only as
+ * division (see mathSpanEnd). An em dash is Hebrew punctuation, so it stays
+ * outside the isolate with the label colon.
  */
 function isMathSymbol(ch: string): boolean {
   if (isCore(ch)) return true;
-  return '()[]{}|∥⊥∠^/~·∙′″⁄+'.includes(ch) || ch === '-';
+  return '()[]{}|∥⊥∠^/~·∙′″⁄–+⟨⟩¦'.includes(ch) || ch === '-';
 }
 
 function isGlue(ch: string): boolean {
@@ -82,7 +82,12 @@ export function isolateMathRuns(input: string): string {
   return out;
 }
 
-/** End index (exclusive) of the math span that starts at `start`. */
+/**
+ * End index (exclusive) of the math span that starts at `start`.
+ * A colon stays inside only as division: tight `(180−40):2` or spaced
+ * `84 : 6`. A colon glued to the run and followed by a space is a label
+ * (`1,512: 56 × 7`), so the run ends before it.
+ */
 function mathSpanEnd(text: string, start: number): number {
   let j = start;
   while (j < text.length) {
@@ -90,22 +95,14 @@ function mathSpanEnd(text: string, start: number): number {
       j += 1;
       continue;
     }
-    if (text[j] === ':') {
-      // Tight division, e.g. (180−40):2. A space after the colon is a label.
-      if (j + 1 < text.length && isMathAt(text, j + 1)) {
-        j += 1;
-        continue;
-      }
-      break;
-    }
-    if (text[j] === '\u2013' && j + 1 < text.length && isMathAt(text, j + 1)) {
+    if (text[j] === ':' && j > start && j + 1 < text.length && isMathAt(text, j + 1)) {
       j += 1;
       continue;
     }
     if (isGlue(text[j]!)) {
       let k = j;
       while (k < text.length && isGlue(text[k]!)) k += 1;
-      if (k < text.length && text[k] === ':') {
+      if (text[k] === ':') {
         let m = k + 1;
         while (m < text.length && isGlue(text[m]!)) m += 1;
         if (m < text.length && isMathAt(text, m)) {
@@ -113,7 +110,7 @@ function mathSpanEnd(text: string, start: number): number {
           continue;
         }
       }
-      if (k < text.length && (isMathAt(text, k) || text[k] === '\u2013')) {
+      if (k < text.length && isMathAt(text, k)) {
         j = k;
         continue;
       }

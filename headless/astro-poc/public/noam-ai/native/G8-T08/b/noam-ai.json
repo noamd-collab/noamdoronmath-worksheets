@@ -1,0 +1,4277 @@
+{
+ "schema_version": "noam-ai/v1",
+ "package": "G8-T08",
+ "level": "b",
+ "curriculum": {
+  "grade": "8",
+  "track": "ח",
+  "topic": "systems_basic",
+  "unit": "מערכות משוואות (רמה בסיסית)",
+  "allowed_tools": [
+   {
+    "id": "g7.coordinate_system.1",
+    "name": "מערכת צירים והרחבתה"
+   },
+   {
+    "id": "g7.directed_numbers.1",
+    "name": "הכרה"
+   },
+   {
+    "id": "g7.directed_numbers.2",
+    "name": "חיבור"
+   },
+   {
+    "id": "g7.directed_numbers.3",
+    "name": "חיסור"
+   },
+   {
+    "id": "g7.directed_numbers.4",
+    "name": "כפל וחילוק"
+   },
+   {
+    "id": "g7.angles.1",
+    "name": "סימון"
+   },
+   {
+    "id": "g7.angles.2",
+    "name": "מדידה"
+   },
+   {
+    "id": "g7.angles.3",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "g7.angles.4",
+    "name": "סכום והפרש"
+   },
+   {
+    "id": "g7.angles.5",
+    "name": "צמודות וקודקודיות"
+   },
+   {
+    "id": "g7.angles.6",
+    "name": "זוויות במשולש ובמרובע"
+   },
+   {
+    "id": "g7.transformations.1",
+    "name": "צורות חופפות במישור וטרנספורמציות"
+   },
+   {
+    "id": "g7.powers_roots.1",
+    "name": "חזקות עם מעריך טבעי ושורש ריבועי חיובי"
+   },
+   {
+    "id": "g7.areas.1",
+    "name": "שטחים א׳"
+   },
+   {
+    "id": "g7.areas.2",
+    "name": "ב׳"
+   },
+   {
+    "id": "g7.areas.3",
+    "name": "חישוב היקפים"
+   },
+   {
+    "id": "g7.algebraic_expressions.1",
+    "name": "משתנים וביטויים אלגבריים"
+   },
+   {
+    "id": "g7.algebraic_expressions.2",
+    "name": "זהות"
+   },
+   {
+    "id": "g7.algebraic_expressions.3",
+    "name": "כינוס איברים דומים"
+   },
+   {
+    "id": "g7.algebraic_expressions.4",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "g7.solids.1",
+    "name": "גופים במרחב: קובייה"
+   },
+   {
+    "id": "g7.solids.2",
+    "name": "תיבה"
+   },
+   {
+    "id": "g7.solids.3",
+    "name": "מנסרה משולשת"
+   },
+   {
+    "id": "g7.data_frequency.1",
+    "name": "איסוף"
+   },
+   {
+    "id": "g7.data_frequency.2",
+    "name": "ייצוג וקריאת מידע"
+   },
+   {
+    "id": "g7.data_frequency.3",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g7.data_frequency.4",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g7.data_frequency.5",
+    "name": "הסתברות בהקשר של שכיחות יחסית"
+   },
+   {
+    "id": "g7.pythagoras.1",
+    "name": "משפט פיתגורס ושימושיו"
+   },
+   {
+    "id": "g7.equations.1",
+    "name": "משוואות ממעלה ראשונה ופתרונן"
+   },
+   {
+    "id": "g7.word_problems.1",
+    "name": "שאלות בהקשרים בעזרת משוואה ממעלה ראשונה"
+   },
+   {
+    "id": "g7.points_on_graph.1",
+    "name": "נקודות על גרף ברביע I"
+   },
+   {
+    "id": "g8.ratio_scale.1",
+    "name": "יחס"
+   },
+   {
+    "id": "g8.ratio_scale.2",
+    "name": "פרופורציה וקנה מידה"
+   },
+   {
+    "id": "g8.pythagoras.1",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "g8.percentages.1",
+    "name": "אחוזים"
+   },
+   {
+    "id": "g8.cylinder_cone.1",
+    "name": "גליל"
+   },
+   {
+    "id": "g8.cylinder_cone.2",
+    "name": "חרוט"
+   },
+   {
+    "id": "g8.data_center.1",
+    "name": "איסוף מידע"
+   },
+   {
+    "id": "g8.data_center.2",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g8.data_center.3",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g8.data_center.4",
+    "name": "טווח ומדדי מרכז"
+   },
+   {
+    "id": "g8.data_center.5",
+    "name": "שני מקורות מידע"
+   },
+   {
+    "id": "g8.transformations.1",
+    "name": "טרנספורמציות וצורות חופפות"
+   },
+   {
+    "id": "g8.functions_intro.1",
+    "name": "מבוא לפונקציות"
+   },
+   {
+    "id": "g8.functions_intro.2",
+    "name": "ייצוגים"
+   },
+   {
+    "id": "g8.functions_intro.3",
+    "name": "עלייה וירידה"
+   },
+   {
+    "id": "g8.functions_intro.4",
+    "name": "גרפים לינאריים"
+   },
+   {
+    "id": "g8.slope_linear.1",
+    "name": "קצב שינוי"
+   },
+   {
+    "id": "g8.slope_linear.2",
+    "name": "שיפוע"
+   },
+   {
+    "id": "g8.slope_linear.3",
+    "name": "ייצוג אלגברי של פונקציה ליניארית"
+   },
+   {
+    "id": "g8.word_problems_eq.1",
+    "name": "שאלות מילוליות בעזרת משוואות"
+   },
+   {
+    "id": "g8.congruence.1",
+    "name": "חפיפת משולשים"
+   },
+   {
+    "id": "g8.inter_extrapolation.1",
+    "name": "אינטרפולציה"
+   },
+   {
+    "id": "g8.inter_extrapolation.2",
+    "name": "אקסטרפולציה"
+   },
+   {
+    "id": "g8.triangle_parts.1",
+    "name": "צלעות במשולש"
+   },
+   {
+    "id": "g8.triangle_parts.2",
+    "name": "תיכון"
+   },
+   {
+    "id": "g8.triangle_parts.3",
+    "name": "זווית חיצונית"
+   },
+   {
+    "id": "g8.triangle_parts.4",
+    "name": "שווה שוקיים"
+   },
+   {
+    "id": "g8.triangle_parts.5",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g8.systems_basic.1",
+    "name": "מערכות משוואות (רמה בסיסית)"
+   },
+   {
+    "id": "thm.adjacent_angles",
+    "name": "זוויות צמודות (סכומן 180°)"
+   },
+   {
+    "id": "thm.vertical_angles",
+    "name": "זוויות קודקודיות שוות"
+   },
+   {
+    "id": "thm.angle_bisector",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "thm.alternate_angles",
+    "name": "זוויות מתחלפות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.corresponding_angles",
+    "name": "זוויות מתאימות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.triangle_angle_sum",
+    "name": "סכום הזוויות במשולש 180°"
+   },
+   {
+    "id": "thm.quad_angle_sum",
+    "name": "סכום הזוויות במרובע 360°"
+   },
+   {
+    "id": "frm.area_rectangle",
+    "name": "שטח מלבן = אורך × רוחב"
+   },
+   {
+    "id": "frm.area_triangle",
+    "name": "שטח משולש = צלע × גובה : 2"
+   },
+   {
+    "id": "frm.area_parallelogram",
+    "name": "שטח מקבילית = צלע × גובה"
+   },
+   {
+    "id": "frm.area_trapezoid",
+    "name": "שטח טרפז = (סכום בסיסים) × גובה : 2"
+   },
+   {
+    "id": "frm.perimeter",
+    "name": "היקף מצולע"
+   },
+   {
+    "id": "frm.box_volume",
+    "name": "נפח תיבה"
+   },
+   {
+    "id": "frm.box_surface",
+    "name": "שטח פנים של תיבה"
+   },
+   {
+    "id": "thm.pythagoras",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "thm.pythagoras_converse",
+    "name": "המשפט ההפוך למשפט פיתגורס"
+   },
+   {
+    "id": "thm.congruence_sas",
+    "name": "משפט חפיפה צ.ז.צ"
+   },
+   {
+    "id": "thm.congruence_asa",
+    "name": "משפט חפיפה ז.צ.ז"
+   },
+   {
+    "id": "thm.congruence_sss",
+    "name": "משפט חפיפה צ.צ.צ"
+   },
+   {
+    "id": "thm.congruence_ssa",
+    "name": "משפט חפיפה צ.צ.ז"
+   },
+   {
+    "id": "thm.congruent_parts",
+    "name": "במשולשים חופפים צלעות וזוויות מתאימות שוות"
+   },
+   {
+    "id": "thm.exterior_angle",
+    "name": "זווית חיצונית למשולש"
+   },
+   {
+    "id": "thm.isosceles_base_angles",
+    "name": "במשולש שווה שוקיים זוויות הבסיס שוות"
+   },
+   {
+    "id": "thm.isosceles_special_lines",
+    "name": "במשולש שווה שוקיים חוצה זווית הראש, התיכון והגובה לבסיס מתלכדים"
+   },
+   {
+    "id": "thm.triangle_inequality",
+    "name": "אי-שוויון המשולש"
+   },
+   {
+    "id": "mth.distributive",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "mth.first_degree_eq",
+    "name": "פתרון משוואה ממעלה ראשונה"
+   }
+  ],
+  "not_yet_allowed": [
+   {
+    "id": "g8.similarity.1",
+    "name": "דמיון משולשים"
+   },
+   {
+    "id": "g8.probability.1",
+    "name": "הסתברות א"
+   },
+   {
+    "id": "g8.probability.2",
+    "name": "הסתברות ב"
+   },
+   {
+    "id": "g8.pythagoras_3d.1",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "g8.inequalities.1",
+    "name": "אי-שוויונות"
+   },
+   {
+    "id": "g9.alg_technique.1",
+    "name": "חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.2",
+    "name": "פישוט ביטויים בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.3",
+    "name": "פתרון משוואות בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.4",
+    "name": "שאלות השוואת שטחים בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9.alg_technique.5",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.6",
+    "name": "פירוק לגורמים: הוצאת גורם משותף"
+   },
+   {
+    "id": "g9.alg_technique.7",
+    "name": "פירוק תלת-איבר ריבועי (מקדם 1)"
+   },
+   {
+    "id": "g9.alg_technique.8",
+    "name": "פירוק בעזרת נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.9",
+    "name": "פתרון משוואות ריבועיות בסיסיות באמצעות פירוק לגורמים"
+   },
+   {
+    "id": "g9.alg_technique.10",
+    "name": "צמצום שברים אלגבריים"
+   },
+   {
+    "id": "g9.alg_technique.11",
+    "name": "כפל וחילוק שברים אלגבריים"
+   },
+   {
+    "id": "g9.kite.1",
+    "name": "הכרת הדלתון"
+   },
+   {
+    "id": "g9.kite.2",
+    "name": "זוויות בדלתון"
+   },
+   {
+    "id": "g9.kite.3",
+    "name": "האלכסון הראשי בדלתון"
+   },
+   {
+    "id": "g9.isosceles_converse.1",
+    "name": "משפטים הפוכים להוכחה כי משולש הוא שווה שוקיים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.1",
+    "name": "היכרות עם הגרף והביטוי האלגברי"
+   },
+   {
+    "id": "g9.quad_func_and_eq.2",
+    "name": "תכונות הפונקציה הריבועית (התייחסות איכותנית): קיצון, עלייה וירידה, חיתוך עם הצירים, חיוביות ושליליות"
+   },
+   {
+    "id": "g9.quad_func_and_eq.3",
+    "name": "הזזה אנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.4",
+    "name": "הזזה אופקית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.5",
+    "name": "שילוב הזזה אופקית ואנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.6",
+    "name": "הצגת פונקציה ריבועית כמכפלה"
+   },
+   {
+    "id": "g9.quad_func_and_eq.7",
+    "name": "הצגה סטנדרטית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.8",
+    "name": "פתרון משוואות ריבועיות בעזרת נוסחת השורשים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.9",
+    "name": "סרטוט גרף על סמך ייצוג סטנדרטי"
+   },
+   {
+    "id": "g9.side_angle_relations.1",
+    "name": "מול הצלע הגדולה ממוקמת הזווית הגדולה"
+   },
+   {
+    "id": "g9.side_angle_relations.2",
+    "name": "מול הזווית הגדולה ממוקמת הצלע הגדולה"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.1",
+    "name": "הניצב מול זווית 30° שווה למחצית היתר"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.2",
+    "name": "משפט הפוך: ניצב השווה למחצית היתר ⇒ הזווית שמולו 30°"
+   },
+   {
+    "id": "g9.parallels_trapezoid.1",
+    "name": "תכונות של הקבלה או אי-הקבלה"
+   },
+   {
+    "id": "g9.parallels_trapezoid.2",
+    "name": "משפט הפוך לישרים מקבילים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.3",
+    "name": "הכרת הטרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.4",
+    "name": "טרפז שווה שוקיים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.5",
+    "name": "הוכחה שמרובע הוא טרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.6",
+    "name": "שטח והיקף טרפז"
+   },
+   {
+    "id": "g9.quad_eq_applications.1",
+    "name": "כולל שימוש בטכניקה אלגברית"
+   },
+   {
+    "id": "g9.quad_inequalities.1",
+    "name": "פתרון אי-שוויון ריבועי בהקשר של פונקציה ריבועית"
+   },
+   {
+    "id": "g9.parallelogram.1",
+    "name": "הגדרת מקבילית"
+   },
+   {
+    "id": "g9.parallelogram.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9.parallelogram.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.rational_equations.1",
+    "name": "פתרון משוואות עם פירוק לגורמים במכנה"
+   },
+   {
+    "id": "g9.rational_equations.2",
+    "name": "תחום הצבה"
+   },
+   {
+    "id": "g9.rational_equations.3",
+    "name": "משוואות שבהן אחד הפתרונות אינו קביל"
+   },
+   {
+    "id": "g9.rectangle.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rectangle.2",
+    "name": "תכונות צלעות, זוויות, אלכסונים"
+   },
+   {
+    "id": "g9.rectangle.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.probability.1",
+    "name": "מהי הסתברות, מושגים בסיסיים (כולל השלמה של ח׳)"
+   },
+   {
+    "id": "g9.probability.2",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9.probability.3",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9.probability.4",
+    "name": "מאורעות דו-שלביים"
+   },
+   {
+    "id": "g9.probability.5",
+    "name": "ייצוגים שונים: טבלה, דיאגרמת עץ, מודל השטח"
+   },
+   {
+    "id": "g9.integrative_literacy.1",
+    "name": "שילוב אלגברה וגיאומטריה בהקשר מהעולם האמיתי"
+   },
+   {
+    "id": "g9.system_degree_2.1",
+    "name": "משמעות אלגברית ומשמעות גרפית של פתרון מערכת משוואות"
+   },
+   {
+    "id": "g9.function_properties.1",
+    "name": "תכונות של גרף: חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה"
+   },
+   {
+    "id": "g9.function_properties.2",
+    "name": "הקשר בין משוואות לגרף של פונקציה"
+   },
+   {
+    "id": "g9.function_properties.3",
+    "name": "הזזה אנכית, הזזה אופקית"
+   },
+   {
+    "id": "g9.function_properties.4",
+    "name": "שיקוף ביחס לציר ה-x"
+   },
+   {
+    "id": "g9.rhombus.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rhombus.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.rhombus.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.square.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.square.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.square.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.right_triangle_median.1",
+    "name": "התיכון ליתר"
+   },
+   {
+    "id": "g9.right_triangle_median.2",
+    "name": "תרגול המשפט בשילוב מרובעים"
+   },
+   {
+    "id": "g9.powers.1",
+    "name": "חוקי חזקות מעריך טבעי או אפס"
+   },
+   {
+    "id": "g9.powers.2",
+    "name": "חוקי שורש ריבועי"
+   },
+   {
+    "id": "g9.word_problems.1",
+    "name": "שאלות מילוליות הנדסיות וכלליות (לרבות משוואה ריבועית או מערכת משוואות)"
+   },
+   {
+    "id": "g9.word_problems.2",
+    "name": "שאלות תנועה"
+   },
+   {
+    "id": "g9.word_problems.3",
+    "name": "שילוב אחוזים"
+   },
+   {
+    "id": "g9.word_problems.4",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9.similarity.1",
+    "name": "יחסי שטחים במשולשים דומים"
+   },
+   {
+    "id": "g9m.graph_reading.1",
+    "name": "תופעות המיוצגות באמצעות גרף במערכת צירים"
+   },
+   {
+    "id": "g9m.graph_reading.2",
+    "name": "קריאת מידע מהגרף ומענה על שאלות"
+   },
+   {
+    "id": "g9m.computational_triangle.1",
+    "name": "סכום זוויות במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.2",
+    "name": "שטח והיקף משולש"
+   },
+   {
+    "id": "g9m.computational_triangle.3",
+    "name": "קטעים מיוחדים במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.4",
+    "name": "שילוב עם מערכת צירים"
+   },
+   {
+    "id": "g9m.linear_function.1",
+    "name": "משמעות השיפוע כקצב שינוי, בשילוב אוריינות"
+   },
+   {
+    "id": "g9m.linear_function.2",
+    "name": "ייצוג אלגברי וגרפי והתאמה ביניהם"
+   },
+   {
+    "id": "g9m.linear_function.3",
+    "name": "נקודה על ישר ומשמעותה"
+   },
+   {
+    "id": "g9m.linear_function.4",
+    "name": "חיתוך עם הצירים"
+   },
+   {
+    "id": "g9m.linear_function.5",
+    "name": "ישרים מקבילים"
+   },
+   {
+    "id": "g9m.linear_function.6",
+    "name": "שטחים והיקפים במערכת צירים"
+   },
+   {
+    "id": "g9m.alg_technique_basic.1",
+    "name": "חוק הפילוג וחוק הפילוג המורחב"
+   },
+   {
+    "id": "g9m.alg_technique_basic.2",
+    "name": "פתרון משוואות פשוטות בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9m.pythagoras.1",
+    "name": "חישובי צלעות במשולשים"
+   },
+   {
+    "id": "g9m.pythagoras.2",
+    "name": "חישובי צלעות בצורות מורכבות"
+   },
+   {
+    "id": "g9m.pythagoras.3",
+    "name": "חישובי היקפים ושטחים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.1",
+    "name": "קווים מיוחדים במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.2",
+    "name": "זוויות במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.4",
+    "name": "תכונות הדלתון"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.5",
+    "name": "חישובי שטחים והיקפים"
+   },
+   {
+    "id": "g9m.statistics.1",
+    "name": "איסוף וארגון נתונים בטבלה, ברשימה ובדיאגרמות"
+   },
+   {
+    "id": "g9m.statistics.2",
+    "name": "שכיחות ושכיחות יחסית"
+   },
+   {
+    "id": "g9m.statistics.3",
+    "name": "טווח נתונים"
+   },
+   {
+    "id": "g9m.statistics.4",
+    "name": "ממוצע, שכיח וחציון"
+   },
+   {
+    "id": "g9m.percentages.1",
+    "name": "החלק היחסי משלם"
+   },
+   {
+    "id": "g9m.percentages.2",
+    "name": "הגדלה והקטנה"
+   },
+   {
+    "id": "g9m.percentages.3",
+    "name": "שאלות מילוליות פשוטות ואורייניות"
+   },
+   {
+    "id": "g9m.similarity.1",
+    "name": "המושג דומים"
+   },
+   {
+    "id": "g9m.similarity.2",
+    "name": "הגדלה או הקטנה של צורות"
+   },
+   {
+    "id": "g9m.similarity.3",
+    "name": "צלעות פרופורציונליות"
+   },
+   {
+    "id": "g9m.similarity.4",
+    "name": "משפט ז.ז"
+   },
+   {
+    "id": "g9m.similarity.5",
+    "name": "חישובי צלעות וזוויות במשולשים דומים"
+   },
+   {
+    "id": "g9m.similarity.6",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9m.equations.1",
+    "name": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.1",
+    "name": "חזרה על ישרים מקבילים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.2",
+    "name": "הגדרת המקבילית"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.3",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.4",
+    "name": "זיהוי מקבילית"
+   },
+   {
+    "id": "g9m.probability.1",
+    "name": "מהי הסתברות"
+   },
+   {
+    "id": "g9m.probability.2",
+    "name": "מושגים בסיסיים"
+   },
+   {
+    "id": "g9m.probability.3",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9m.probability.4",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9m.quad_partial.1",
+    "name": "הצבת ערכי x בביטוי של פונקציה ריבועית וחישוב ערך ה-y"
+   },
+   {
+    "id": "g9m.quad_partial.2",
+    "name": "מפונקציה ריבועית לפתרון משוואה ריבועית"
+   },
+   {
+    "id": "g9m.quad_partial.3",
+    "name": "פתרון משוואות ריבועיות ע״י נוסחת השורשים"
+   },
+   {
+    "id": "g9m.rectangle.1",
+    "name": "הגדרה של מלבן"
+   },
+   {
+    "id": "g9m.rectangle.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems.1",
+    "name": "שאלות מילוליות ושאלות אוריינות בנושאים שונים, כולל שימוש במשוואה ריבועית"
+   },
+   {
+    "id": "g9m.rhombus.1",
+    "name": "הגדרה של מעוין"
+   },
+   {
+    "id": "g9m.rhombus.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.square.1",
+    "name": "הגדרה של ריבוע"
+   },
+   {
+    "id": "g9m.square.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems_integrative.1",
+    "name": "שאלות מילוליות ואוריינות בנושאים שונים"
+   },
+   {
+    "id": "g9m.trapezoid.1",
+    "name": "הגדרה של טרפז"
+   },
+   {
+    "id": "g9m.trapezoid.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.areas_and_perimeters.1",
+    "name": "שאלות אוריינות אינטגרטיביות כולל מעגל — היקף ושטח"
+   },
+   {
+    "id": "thm.co_interior_angles",
+    "name": "זוויות חד-צדדיות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.pythagoras_3d",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "thm.isosceles_converse",
+    "name": "משפטים הפוכים: הוכחה שמשולש שווה שוקיים"
+   },
+   {
+    "id": "thm.side_angle_order",
+    "name": "מול הצלע הגדולה הזווית הגדולה (וההפך)"
+   },
+   {
+    "id": "thm.similarity_aa",
+    "name": "משפט דמיון ז.ז"
+   },
+   {
+    "id": "thm.similarity_sas",
+    "name": "משפט דמיון צ.ז.צ"
+   },
+   {
+    "id": "thm.similarity_sss",
+    "name": "משפט דמיון צ.צ.צ"
+   },
+   {
+    "id": "thm.similar_area_ratio",
+    "name": "יחס השטחים הוא ריבוע יחס הדמיון"
+   },
+   {
+    "id": "thm.kite_main_diagonal",
+    "name": "בדלתון האלכסון הראשי חוצה את המשני, מאונך לו וחוצה את זוויות הראש"
+   },
+   {
+    "id": "thm.30_60_90",
+    "name": "במשולש ישר זווית הניצב מול 30° שווה למחצית היתר"
+   },
+   {
+    "id": "thm.parallel_converse",
+    "name": "משפטים הפוכים לישרים מקבילים"
+   },
+   {
+    "id": "thm.isosceles_trapezoid",
+    "name": "טרפז שווה שוקיים: זוויות בסיס ואלכסונים"
+   },
+   {
+    "id": "thm.parallelogram_props",
+    "name": "במקבילית צלעות נגדיות שוות, זוויות נגדיות שוות, האלכסונים חוצים זה את זה"
+   },
+   {
+    "id": "thm.parallelogram_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מקבילית"
+   },
+   {
+    "id": "thm.rectangle_props",
+    "name": "במלבן כל הזוויות ישרות והאלכסונים שווים"
+   },
+   {
+    "id": "thm.rectangle_converse",
+    "name": "משפטים הפוכים: מקבילית עם זווית ישרה או עם אלכסונים שווים היא מלבן"
+   },
+   {
+    "id": "thm.rhombus_props",
+    "name": "במעוין כל הצלעות שוות, האלכסונים מאונכים וחוצי זוויות"
+   },
+   {
+    "id": "thm.rhombus_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מעוין"
+   },
+   {
+    "id": "thm.square_props",
+    "name": "ריבוע: מלבן שהוא גם מעוין"
+   },
+   {
+    "id": "thm.right_triangle_median",
+    "name": "התיכון ליתר שווה למחצית היתר"
+   },
+   {
+    "id": "frm.area_rhombus_diagonals",
+    "name": "שטח מעוין / דלתון = מכפלת האלכסונים : 2"
+   },
+   {
+    "id": "thm.midsegment",
+    "name": "קטע אמצעים במשולש ובטרפז"
+   },
+   {
+    "id": "frm.short_multiplication",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "mth.factoring",
+    "name": "פירוק לגורמים"
+   },
+   {
+    "id": "frm.quadratic_formula",
+    "name": "נוסחת השורשים"
+   }
+  ]
+ },
+ "questions": [
+  {
+   "id": "q1",
+   "label": 1,
+   "text": "בספרייה של כיתה יש מדף עליון ומדף תחתון. נסמן $u$ = מספר הספרים במדף העליון ו־$d$ = מספר הספרים במדף התחתון. בכל אחד מסעיפים א–ד כתבו משוואה למשפט.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $56$, $3$, $28$, $14$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q1a",
+     "label": "א",
+     "text": "״בשני המדפים יחד $56$ ספרים.״",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשוואה",
+       "text": "הערך המשוואה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1b",
+     "label": "ב",
+     "text": "״במדף העליון יש פי $3$ ספרים מאשר במדף התחתון.״",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשוואה",
+       "text": "הערך המשוואה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1c",
+     "label": "ג",
+     "text": "״במדף העליון יש $28$ ספרים יותר מאשר במדף התחתון.״",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשוואה",
+       "text": "הערך המשוואה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1d",
+     "label": "ד",
+     "text": "״אם מעבירים $14$ ספרים מן המדף העליון אל המדף התחתון, יהיה בשני המדפים אותו מספר ספרים.״ כתבו משוואה, והראו שהיא אומרת אותו דבר כמו המשוואה של סעיף ג.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשוואה",
+       "text": "הערך המשוואה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1e",
+     "label": "ה",
+     "text": "מצאו כמה ספרים יש בכל מדף בעזרת המשפטים של סעיפים א ו־ב, ובדקו שגם המשפט של סעיף ג מתקיים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מספרי הספרים",
+       "text": "הערך מספרי הספרים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "label": 2,
+   "text": "בדוכן מיצים כוס מיץ תפוזים עולה $8$ שקלים וכוס לימונדה $6$ שקלים. בבוקר אחד נמכרו $30$ כוסות, והדוכן קיבל $214$ שקלים. נגה סימנה $x$ = מספר כוסות מיץ התפוזים ו־$y$ = מספר כוסות הלימונדה, ורשמה את הנתונים בטבלה — אבל טעתה במשבצת אחת.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $8$, $6$, $30$, $214$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "סוג",
+     "מספר כוסות",
+     "מחיר כוס (שקלים)",
+     "סך הכול (שקלים)"
+    ],
+    "rows": [
+     [
+      "מיץ תפוזים",
+      "$x$",
+      "$8$",
+      "$8x$"
+     ],
+     [
+      "לימונדה",
+      "$y$",
+      "$6$",
+      "$6 + y$"
+     ],
+     [
+      "יחד",
+      "$30$",
+      "",
+      "$214$"
+     ]
+    ]
+   },
+   "example": {
+    "title": "דוגמה פתורה: זר פרחים",
+    "lines": [
+     "ורד עולה $11$ שקלים וחמנייה $6$ שקלים. זר של $14$ פרחים עלה $104$ שקלים. כמה ורדים וכמה חמניות בזר?",
+     "1. אותיות: $r$ = מספר הוורדים, $h$ = מספר החמניות.",
+     "2. מספר הפרחים: $r + h = 14$.   המחיר: $11r + 6h = 104$.",
+     "3. מן המשוואה הראשונה $h = 14 − r$. מציבים: $11r + 6(14 − r) = 104$, $5r + 84 = 104$, $r = 4$, $h = 10$.",
+     "4. בדיקה בסיפור: $4 + 10 = 14$ פרחים, $44 + 60 = 104$ שקלים.",
+     "5. תשובה: בזר $4$ ורדים ו־$10$ חמניות."
+    ]
+   },
+   "items": [
+    {
+     "id": "q2a",
+     "label": "א",
+     "text": "מצאו את המשבצת השגויה בטבלה של נגה, ותקנו אותה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "התיקון",
+       "text": "הערך התיקון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2b",
+     "label": "ב",
+     "text": "דרך בלי אותיות: אילו כל $30$ הכוסות היו של מיץ תפוזים, כמה היה הדוכן מקבל, ובכמה זה יותר מ־$214$? כל כוס לימונדה במקום כוס מיץ תפוזים מורידה כמה שקלים? מכאן: כמה כוסות לימונדה נמכרו?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כוסות לימונדה",
+       "text": "הערך כוסות לימונדה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2c",
+     "label": "ג",
+     "text": "מן השורה ״יחד״ בטבלה המתוקנת כתבו שתי משוואות, ופתרו אותן כמו בדוגמה הפתורה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הפתרון",
+       "text": "הערך הפתרון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2d",
+     "label": "ד",
+     "text": "בדקו את התשובה בסיפור וכתבו משפט תשובה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "משפט התשובה",
+       "text": "הערך משפט התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q3",
+   "label": 3,
+   "text": "בחנות ממתקים מוכרים שקיות סוכריות קטנות ב־$12$ שקלים ושקיות גדולות ב־$18$ שקלים. ביום שישי נמכרו $24$ שקיות. תלמידים בחרו אותיות לגדלים שלא ידועים, וכתבו מה כל אות מסמנת:",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $12$, $18$, $24$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "הגדרה",
+     "מה כתב התלמיד"
+    ],
+    "rows": [
+     [
+      "$A$",
+      "$x$ = שקיות קטנות"
+     ],
+     [
+      "$B$",
+      "$x$ = מספר השקיות הקטנות שנמכרו ביום שישי"
+     ],
+     [
+      "$C$",
+      "$y$ = המחיר"
+     ],
+     [
+      "$D$",
+      "$y$ = מספר השקיות הגדולות שנמכרו ביום שישי"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q3a",
+     "label": "א",
+     "text": "אילו שתי הגדרות ברורות? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההגדרות",
+       "text": "הערך ההגדרות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3b",
+     "label": "ב",
+     "text": "תקנו את הגדרה $A$, כך שיהיה ברור מה $x$ סופר.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "התיקון",
+       "text": "הערך התיקון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3c",
+     "label": "ג",
+     "text": "מדוע הגדרה $C$ אינה מתאימה כאן, גם אם נוסיף לאיזה מחיר הכוונה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההסבר",
+       "text": "הערך ההסבר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3d",
+     "label": "ד",
+     "text": "בעזרת ההגדרות הברורות, כתבו משוואה למשפט ״ביום שישי נמכרו $24$ שקיות״.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשוואה",
+       "text": "הערך המשוואה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q4",
+   "label": 4,
+   "text": "בשתי קופות חיסכון יש יחד $260$ שקלים. בקופה של מאיה יש פי $3$ ממה שיש בקופה של יואב. אלון סימן $m$ = השקלים בקופה של מאיה ו־$y$ = השקלים בקופה של יואב, וכתב שתי משוואות: $m + y = 260$ ו־$y = 3m$. הוא פתר וקיבל $m = 65$ ו־$y = 195$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $260$, $3$, $65$, $195$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q4a",
+     "label": "א",
+     "text": "הציבו את התשובה של אלון בשתי המשוואות שלו. האם הן מתקיימות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההכרעה",
+       "text": "הערך ההכרעה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4b",
+     "label": "ב",
+     "text": "עכשיו בדקו מול הסיפור: למי יש יותר כסף לפי הסיפור, ולמי לפי התשובה של אלון?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההכרעה",
+       "text": "הערך ההכרעה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4c",
+     "label": "ג",
+     "text": "מה סעיפים א ו־ב מלמדים על בדיקה במשוואות בלבד?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההסבר",
+       "text": "הערך ההסבר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4d",
+     "label": "ד",
+     "text": "מצאו את הטעות של אלון, תקנו את המשוואה, ומצאו כמה כסף יש בכל קופה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שקלים",
+       "what": "התשובה",
+       "text": "הערך התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q5",
+   "label": 5,
+   "text": "$△ABC$ הוא משולש שווה שוקיים, $AB = AC$. גודלי הזוויות שלו, במעלות: $∠BAC = 2x$, $∠ABC = x + y$, $∠ACB = 3y + 10$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $10$, $30$, $60$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q5a",
+     "label": "א",
+     "text": "דני הציע $x = 30$ ו־$y = 10$. חשבו את שלוש הזוויות לפי ההצעה שלו. אילו תכונות של המשולש מתקיימות, ואילו לא?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הבדיקה",
+       "text": "הערך הבדיקה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5b",
+     "label": "ב",
+     "text": "כתבו שתי משוואות: אחת מן השוויון של זוויות הבסיס, ואחת מסכום הזוויות במשולש.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המערכת",
+       "text": "הערך המערכת"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5c",
+     "label": "ג",
+     "text": "מצאו את $x$ ואת $y$, ואת שלוש הזוויות של המשולש.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הזוויות",
+       "text": "הערך הזוויות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5d",
+     "label": "ד",
+     "text": "האם ייתכן שהמשולש הזה שווה צלעות, כלומר שכל זוויותיו בגודל $60°$? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההכרעה",
+       "text": "הערך ההכרעה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q6",
+   "label": 6,
+   "text": "סירת מנוע קטנה שטה בנהר. נסמן $v$ = המהירות שלה במים שקטים ו־$c$ = המהירות של הזרם, בקמ״ש. הסירה שטה $21$ ק״מ עם הזרם בשעה וחצי, וחזרה את אותם $21$ ק״מ נגד הזרם בשלוש שעות וחצי.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $21$, $28$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "example": {
+    "title": "דוגמה מודרכת: עם הזרם ונגד הזרם",
+    "lines": [
+     "סירה שטה במים שקטים במהירות $8$ קמ״ש. הזרם של הנהר הוא $3$ קמ״ש.",
+     "עם הזרם: $8 + 3 = 11$ קמ״ש, ובשעתיים וחצי הסירה עוברת $2.5 · 11 = 27.5$ ק״מ.",
+     "נגד הזרם: $8 − 3 = ___$ קמ״ש, ובשעתיים וחצי הסירה עוברת ____ ק״מ."
+    ]
+   },
+   "items": [
+    {
+     "id": "q6a",
+     "label": "א",
+     "text": "השלימו את המקומות הריקים בדוגמה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההשלמה",
+       "text": "הערך ההשלמה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6b",
+     "label": "ב",
+     "text": "כתבו שתי משוואות לסירת המנוע (דרך = מהירות × זמן).",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המערכת",
+       "text": "הערך המערכת"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6c",
+     "label": "ג",
+     "text": "מהי המהירות של הסירה במים שקטים, ומהי המהירות של הזרם?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "קמ״ש",
+       "what": "המהירויות",
+       "text": "הערך המהירויות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6d",
+     "label": "ד",
+     "text": "כמה זמן ייקח לסירה לשוט $28$ ק״מ עם הזרם?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שעות",
+       "what": "הזמן",
+       "text": "הערך הזמן"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q7",
+   "label": 7,
+   "text": "לקייטנה קנו $18$ משחקים: פריזבים ב־$24$ שקלים לפריזבי ועפיפונים ב־$42$ שקלים לעפיפון, ושילמו $558$ שקלים. שני תלמידים פתרו:",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $18$, $24$, $42$, $558$, $11$, $7$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "תלמיד",
+     "האותיות",
+     "המערכת",
+     "הפתרון"
+    ],
+    "rows": [
+     [
+      "שיר",
+      "$f$ = מספר הפריזבים, $k$ = מספר העפיפונים",
+      "$f + k = 18$ וגם $24f + 42k = 558$",
+      "$f = 11$, $k = 7$"
+     ],
+     [
+      "תום",
+      "$x$ = מספר העפיפונים, $y$ = מספר הפריזבים",
+      "$x + y = 18$ וגם $42x + 24y = 558$",
+      "$x = 7$, $y = 11$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q7a",
+     "label": "א",
+     "text": "שיר אומרת: ״יצא לי $11$ ו־$7$, ולתום $7$ ו־$11$ — אחד מאיתנו טעה.״ האם היא צודקת? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההכרעה",
+       "text": "הערך ההכרעה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7b",
+     "label": "ב",
+     "text": "בחרו אותיות אחרות משלכם, כתבו מה כל אחת מסמנת, וכתבו מערכת.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המערכת",
+       "text": "הערך המערכת"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7c",
+     "label": "ג",
+     "text": "יעל בחרה $x$ = מספר הפריזבים ו־$y$ = מספר העפיפונים, וכתבה $42x + 24y = 558$. מה הטעות שלה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "התיקון",
+       "text": "הערך התיקון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7d",
+     "label": "ד",
+     "text": "כתבו משפט תשובה שאינו תלוי באותיות שנבחרו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "משפט התשובה",
+       "text": "הערך משפט התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q8",
+   "label": 8,
+   "text": "בליגת כדורגל של בתי ספר כל ניצחון שווה אותו מספר נקודות, וכל תיקו שווה אותו מספר נקודות (על הפסד מקבלים $0$ נקודות). בטבלה שתי קבוצות. נסמן $w$ = מספר הנקודות על ניצחון ו־$t$ = מספר הנקודות על תיקו.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $0$, $6$, $3$, $21$, $4$, $8$, $20$, $2$, $10$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "קבוצה",
+     "ניצחונות",
+     "תיקו",
+     "נקודות"
+    ],
+    "rows": [
+     [
+      "הנשרים",
+      "$6$",
+      "$3$",
+      "$21$"
+     ],
+     [
+      "הדולפינים",
+      "$4$",
+      "$8$",
+      "$20$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q8a",
+     "label": "א",
+     "text": "בשאלה 2 (דוכן המיצים) המחירים היו נתונים, וכמות הכוסות לא הייתה ידועה. מה לא ידוע כאן, ומה נתון?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההסבר",
+       "text": "הערך ההסבר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8b",
+     "label": "ב",
+     "text": "כתבו משוואה לכל קבוצה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המערכת",
+       "text": "הערך המערכת"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8c",
+     "label": "ג",
+     "text": "חלקו כל משוואה במספר שמתאים לה (הראשונה ב־$3$, השנייה ב־$4$), ומצאו את שיטת הניקוד.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שיטת הניקוד",
+       "text": "הערך שיטת הניקוד"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8d",
+     "label": "ד",
+     "text": "לקבוצה שלישית $10$ ניצחונות ו־$3$ תוצאות תיקו. כמה נקודות יש לה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הנקודות",
+       "text": "הערך הנקודות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q9",
+   "label": 9,
+   "text": "דן קנה במזנון כריכים ב־$14$ שקלים לכריך ובקבוקי שתייה ב־$6$ שקלים לבקבוק, ושילם $74$ שקלים. בטבלה כל המספרים האפשריים של כריכים ($6$ כריכים כבר עולים יותר מ־$74$ שקלים).",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $14$, $6$, $74$, $0$, $1$, $2$, $3$, $4$, $5$, $10$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "מספר הכריכים",
+     "כסף שנשאר לשתייה (שקלים)",
+     "מספר הבקבוקים"
+    ],
+    "rows": [
+     [
+      "$0$",
+      "$74$",
+      ""
+     ],
+     [
+      "$1$",
+      "",
+      ""
+     ],
+     [
+      "$2$",
+      "",
+      ""
+     ],
+     [
+      "$3$",
+      "",
+      ""
+     ],
+     [
+      "$4$",
+      "",
+      ""
+     ],
+     [
+      "$5$",
+      "",
+      ""
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q9a",
+     "label": "א",
+     "text": "השלימו את הטבלה: כמה כסף נשאר לשתייה, וכמה בקבוקים זה (גם אם המספר אינו שלם).",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הטבלה",
+       "text": "הערך הטבלה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9b",
+     "label": "ב",
+     "text": "באילו שורות מספר הבקבוקים שלם? כתבו את כל הקניות האפשריות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הקניות",
+       "text": "הערך הקניות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9c",
+     "label": "ג",
+     "text": "מדוע המשפט ״שילמתי $74$ שקלים״ לבדו אינו מספיק כדי לדעת מה דן קנה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההסבר",
+       "text": "הערך ההסבר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9d",
+     "label": "ד",
+     "text": "דן נתן רמז: ״קניתי פחות מ־$10$ פריטים.״ מה הוא קנה? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הקנייה",
+       "text": "הערך הקנייה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q10",
+   "label": 10,
+   "text": "תמר קנתה למסיבה בלונים ב־$4$ שקלים לבלון ונרות ב־$7$ שקלים לנר. היא מספרת: ״קניתי $16$ פריטים ושילמתי $85$ שקלים.״",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $4$, $7$, $16$, $85$, $49$, $2$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q10a",
+     "label": "א",
+     "text": "כתבו מערכת, ומצאו כמה בלונים וכמה נרות קנתה תמר.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הקנייה",
+       "text": "הערך הקנייה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10b",
+     "label": "ב",
+     "text": "שלוש חברות של תמר זוכרות עוד פרט. שיר: ״על הנרות שילמת $49$ שקלים.״ ליאור: ״קנית יותר מפי $2$ בלונים מנרות.״ עדן: ״קנית יותר בלונים מנרות.״ מי מהן זוכרת נכון?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מי זוכרת נכון",
+       "text": "הערך מי זוכרת נכון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10c",
+     "label": "ג",
+     "text": "גם בלי המשפט ״שילמתי $85$ שקלים״ אפשר היה למצוא את התשובה — מן המשפט ״קניתי $16$ פריטים״ ומן מה ששיר זוכרת. הראו איך.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הקנייה",
+       "text": "הערך הקנייה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10d",
+     "label": "ד",
+     "text": "האם אפשר למצוא את התשובה מן המשפט ״קניתי $16$ פריטים״ ומן מה שעדן זוכרת בלבד? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההכרעה",
+       "text": "הערך ההכרעה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q11",
+   "label": 11,
+   "text": "שני מסלולים לטלפון: במסלול א׳ משלמים $20$ שקלים בחודש ועוד $0.5$ שקל לכל דקת שיחה. במסלול ב׳ משלמים $35$ שקלים בחודש ועוד $0.2$ שקל לכל דקה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $20$, $0.5$, $35$, $0.2$, $0$, $40$, $60$, $80$, $100$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "דקות בחודש",
+     "$0$",
+     "$20$",
+     "$40$",
+     "$60$",
+     "$80$"
+    ],
+    "rows": [
+     [
+      "מסלול א׳ (שקלים)",
+      "$20$",
+      "",
+      "",
+      "",
+      ""
+     ],
+     [
+      "מסלול ב׳ (שקלים)",
+      "$35$",
+      "",
+      "",
+      "",
+      ""
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q11a",
+     "label": "א",
+     "text": "השלימו את הטבלה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הטבלה",
+       "text": "הערך הטבלה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11b",
+     "label": "ב",
+     "text": "לפי הטבלה: בין אילו שני מספרים של דקות שני המסלולים עולים אותו מחיר? הסבירו איך ראיתם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "התחום",
+       "text": "הערך התחום"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11c",
+     "label": "ג",
+     "text": "נסמן $x$ = מספר הדקות ו־$y$ = המחיר בשקלים. כתבו משוואה לכל מסלול, ומצאו בדיוק באיזה מספר דקות המחירים שווים. מהו המחיר אז?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "נקודת השוויון",
+       "text": "הערך נקודת השוויון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11d",
+     "label": "ד",
+     "text": "אם מסמנים כל מסלול במערכת צירים, מתקבלים שני ישרים. מה מתארת נקודת החיתוך שלהם? ואיזה מסלול כדאי למי שמדבר $100$ דקות בחודש?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המסלול",
+       "text": "הערך המסלול"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q12",
+   "label": 12,
+   "text": "שכבה ח׳ יוצאת לשייט. יש סירות של $6$ מקומות וסירות של $8$ מקומות, וכל סירה יוצאת מלאה. בשכבה $118$ תלמידים, וכולם שטים. נסמן $s$ = מספר הסירות של $6$ מקומות ו־$e$ = מספר הסירות של $8$ מקומות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $6$, $8$, $118$, $17$, $21$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "example": {
+    "title": "דוגמה מודרכת: מתי פתרון של מערכת אינו תשובה?",
+    "lines": [
+     "בסיפור א׳ סופרים אנשים, ומן המערכת יצא $x = 4.5$. אין $4.5$ אנשים — לסיפור הזה אין פתרון.",
+     "בסיפור ב׳ מודדים מים בליטרים, ומן המערכת יצא $x = 4.5$. $4.5$ ליטר — אפשרי.",
+     "בסיפור שבו סופרים, הפתרון חייב להיות מספר ________ שאינו ________."
+    ]
+   },
+   "items": [
+    {
+     "id": "q12a",
+     "label": "א",
+     "text": "השלימו את המשפט האחרון בדוגמה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההשלמה",
+       "text": "הערך ההשלמה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12b",
+     "label": "ב",
+     "text": "הזמינו $17$ סירות. כתבו מערכת ומצאו כמה סירות מכל סוג הוזמנו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסירות",
+       "text": "הערך הסירות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12c",
+     "label": "ג",
+     "text": "המורה שאלה: ״ומה אם נזמין $21$ סירות?״ מצאו את $s$ ואת $e$ אילו הוזמנו $21$ סירות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הפתרון",
+       "text": "הערך הפתרון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12d",
+     "label": "ד",
+     "text": "האם התוצאה של סעיף ג היא פתרון של הסיפור? היעזרו בדוגמה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההכרעה",
+       "text": "הערך ההכרעה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q13",
+   "label": 13,
+   "text": "בחנות בדים מטר של בד כותנה עולה $30$ שקלים, ומטר של בד משי עולה $70$ שקלים. נעמה קנתה $5$ מטרים משני הסוגים יחד, ושילמה $210$ שקלים. נסמן $c$ = מספר המטרים של כותנה ו־$m$ = מספר המטרים של משי.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $30$, $70$, $5$, $210$, $12$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "סוג הבד",
+     "מטרים",
+     "מחיר למטר (שקלים)",
+     "סך הכול (שקלים)"
+    ],
+    "rows": [
+     [
+      "כותנה",
+      "$c$",
+      "$30$",
+      ""
+     ],
+     [
+      "משי",
+      "$m$",
+      "$70$",
+      ""
+     ],
+     [
+      "יחד",
+      "$5$",
+      "",
+      "$210$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q13a",
+     "label": "א",
+     "text": "עוד לפני חישוב: כמה היו עולים $5$ מטרים של כותנה בלבד? ושל משי בלבד? האם $210$ שקלים ביניהם?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שקלים",
+       "what": "הסכומים",
+       "text": "הערך הסכומים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13b",
+     "label": "ב",
+     "text": "השלימו את הטבלה וכתבו מערכת.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המערכת",
+       "text": "הערך המערכת"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13c",
+     "label": "ג",
+     "text": "כמה מטרים מכל בד קנתה נעמה? הראו גם שהמחיר יוצא $210$ שקלים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הפתרון",
+       "text": "הערך הפתרון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13d",
+     "label": "ד",
+     "text": "בשאלה 12 מספר סירות שלילי או לא שלם היה בלתי אפשרי. האם הכמות שקיבלתם למשי אפשרית? הסבירו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההכרעה",
+       "text": "הערך ההכרעה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q14",
+   "label": 14,
+   "text": "בחנות צעצועים פאזל עולה $35$ שקלים ומשחק קופסה $50$ שקלים. ליאת קנתה $8$ צעצועים ב־$325$ שקלים. השלבים של הפתרון שלה התערבבו:",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $35$, $50$, $8$, $325$, $5$, $3$, $400$, $45$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "שלב",
+     "מה כתוב"
+    ],
+    "rows": [
+     [
+      "$A$",
+      "$35p + 50(8 − p) = 325$"
+     ],
+     [
+      "$B$",
+      "תשובה: ליאת קנתה $5$ פאזלים ו־$3$ משחקי קופסה."
+     ],
+     [
+      "$C$",
+      "$p$ = מספר הפאזלים, $g$ = מספר משחקי הקופסה"
+     ],
+     [
+      "$D$",
+      "$p + g = 8$ וגם $35p + 50g = 325$"
+     ],
+     [
+      "$E$",
+      "$400 − 15p = 325$, ולכן $p = 5$ ו־$g = 3$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q14a",
+     "label": "א",
+     "text": "סדרו את השלבים בסדר הנכון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסדר",
+       "text": "הערך הסדר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14b",
+     "label": "ב",
+     "text": "שלב אחד חסר בין $E$ לבין $B$. מהו? כתבו אותו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלב החסר",
+       "text": "הערך השלב החסר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14c",
+     "label": "ג",
+     "text": "מה מייצג המספר $400$ בשלב $E$? ומה מייצג $15p$?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשמעות",
+       "text": "הערך המשמעות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14d",
+     "label": "ד",
+     "text": "אילו משחק קופסה היה עולה $45$ שקלים (וכל השאר כמו בסיפור), באילו שלבים היה צריך לשנות משהו? פתרו — מה מגלים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הגילוי",
+       "text": "הערך הגילוי"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q15",
+   "label": 15,
+   "text": "חזרו לקנייה של תמר משאלה 10: בלונים ב־$4$ שקלים, נרות ב־$7$ שקלים, $16$ פריטים. נניח שאיננו יודעים כמה היא שילמה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $10$, $4$, $7$, $16$, $76$, $81$, $3$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q15a",
+     "label": "א",
+     "text": "אילו תמר הייתה משלמת $76$ שקלים — כמה בלונים וכמה נרות הייתה קונה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הקנייה",
+       "text": "הערך הקנייה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15b",
+     "label": "ב",
+     "text": "אילו הייתה משלמת $81$ שקלים — מה הייתם מקבלים? האם זה אפשרי?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההכרעה",
+       "text": "הערך ההכרעה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15c",
+     "label": "ג",
+     "text": "מהו הסכום הקטן ביותר ומהו הסכום הגדול ביותר שתמר יכלה לשלם על $16$ פריטים? הסבירו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסכומים",
+       "text": "הערך הסכומים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15d",
+     "label": "ד",
+     "text": "הסבירו מדוע כל נר נוסף (במקום בלון) מוסיף לתשלום $3$ שקלים, ומה זה אומר על הסכומים שתמר יכלה לשלם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההסבר",
+       "text": "הערך ההסבר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q16",
+   "label": 16,
+   "text": "בחווה אורזים ביצים במגשים גדולים ובקרטונים קטנים, וכל מגש וכל קרטון מלאים. מנהל המשלוחים כתב שתי משוואות: $x + y = 6$ ו־$30x + 15y = 150$, כאשר $x$ = מספר המגשים ו־$y$ = מספר הקרטונים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $6$, $150$, $30$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q16a",
+     "label": "א",
+     "text": "מה מייצג המספר $6$?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשמעות",
+       "text": "הערך המשמעות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16b",
+     "label": "ב",
+     "text": "מה מייצג המספר $30$, ומה מייצג הביטוי $30x$?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשמעות",
+       "text": "הערך המשמעות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16c",
+     "label": "ג",
+     "text": "מה מייצג המספר $150$?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשמעות",
+       "text": "הערך המשמעות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16d",
+     "label": "ד",
+     "text": "מצאו כמה מגשים וכמה קרטונים יש במשלוח, והציבו בשתי המשוואות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הפתרון",
+       "text": "הערך הפתרון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16e",
+     "label": "ה",
+     "text": "כתבו במילים את הסיפור המלא שהמנהל תיאר.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסיפור",
+       "text": "הערך הסיפור"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q17",
+   "label": 17,
+   "text": "לאירוע הזמינו $25$ מגשי אוכל: מגשי סלטים ב־$60$ שקלים למגש, ומגשי כריכים ב־$85$ שקלים למגש. התשלום היה $1850$ שקלים. נסמן $x$ = מספר מגשי הסלטים ו־$y$ = מספר מגשי הכריכים. לפניכם ארבע מערכות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הנתונים: $25$, $60$, $85$, $1850$, $1$, $2$, $3$, $4$, $145$, $12$, $13$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "מערכת",
+     "שורה ראשונה",
+     "שורה שנייה"
+    ],
+    "rows": [
+     [
+      "$1$",
+      "$x + y = 25$",
+      "$60x + 85x = 1850$"
+     ],
+     [
+      "$2$",
+      "$x + y = 25$",
+      "$60x + 85y = 1850$"
+     ],
+     [
+      "$3$",
+      "$x + y = 25$",
+      "$85x + 60y = 1850$"
+     ],
+     [
+      "$4$",
+      "$60x + 85y = 1850$",
+      "$60 + 85 = 145$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q17a",
+     "label": "א",
+     "text": "איזו מערכת מתאימה לסיפור? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המערכת",
+       "text": "הערך המערכת"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17b",
+     "label": "ב",
+     "text": "מה הטעות במערכת 1, ומה הבעיה במערכת 4?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההסבר",
+       "text": "הערך ההסבר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17c",
+     "label": "ג",
+     "text": "מצאו כמה מגשים מכל סוג הוזמנו, וכתבו משפט תשובה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "התשובה",
+       "text": "הערך התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17d",
+     "label": "ד",
+     "text": "גלעד פתר וקיבל $x = 12$ ו־$y = 13$. בלי לבדוק את החישוב שלו — בדקו את התשובה שלו מול הסיפור.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הבדיקה",
+       "text": "הערך הבדיקה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  }
+ ],
+ "figures": [],
+ "visuals": [
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q2_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q2",
+   "objects": [
+    {
+     "id": "q2_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "סוג",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "מספר כוסות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "מחיר כוס (שקלים)",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "סך הכול (שקלים)",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "מיץ תפוזים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$x$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$8$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "$8x$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "לימונדה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$y$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$6$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r3c4",
+     "type": "cell",
+     "row": 3,
+     "col": 4,
+     "value": "$6 + y$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "יחד",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$30$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r4c3",
+     "type": "cell",
+     "row": 4,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r4c4",
+     "type": "cell",
+     "row": 4,
+     "col": 4,
+     "value": "$214$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q2_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q3_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q3",
+   "objects": [
+    {
+     "id": "q3_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "הגדרה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "מה כתב התלמיד",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$A$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$x$ = שקיות קטנות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$B$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$x$ = מספר השקיות הקטנות שנמכרו ביום שישי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$C$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$y$ = המחיר",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r5c1",
+     "type": "cell",
+     "row": 5,
+     "col": 1,
+     "value": "$D$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r5c2",
+     "type": "cell",
+     "row": 5,
+     "col": 2,
+     "value": "$y$ = מספר השקיות הגדולות שנמכרו ביום שישי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q3_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q7_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q7",
+   "objects": [
+    {
+     "id": "q7_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "תלמיד",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "האותיות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "המערכת",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "הפתרון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "שיר",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$f$ = מספר הפריזבים, $k$ = מספר העפיפונים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$f + k = 18$ וגם $24f + 42k = 558$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "$f = 11$, $k = 7$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "תום",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$x$ = מספר העפיפונים, $y$ = מספר הפריזבים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$x + y = 18$ וגם $42x + 24y = 558$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q7_table-r3c4",
+     "type": "cell",
+     "row": 3,
+     "col": 4,
+     "value": "$x = 7$, $y = 11$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q7_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q8_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q8",
+   "objects": [
+    {
+     "id": "q8_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "קבוצה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "ניצחונות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "תיקו",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "נקודות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "הנשרים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$6$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "$21$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "הדולפינים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$8$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r3c4",
+     "type": "cell",
+     "row": 3,
+     "col": 4,
+     "value": "$20$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q8_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q9_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q9",
+   "objects": [
+    {
+     "id": "q9_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "מספר הכריכים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "כסף שנשאר לשתייה (שקלים)",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "מספר הבקבוקים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$0$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$74$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$2$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r4c3",
+     "type": "cell",
+     "row": 4,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r5c1",
+     "type": "cell",
+     "row": 5,
+     "col": 1,
+     "value": "$3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r5c2",
+     "type": "cell",
+     "row": 5,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r5c3",
+     "type": "cell",
+     "row": 5,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r6c1",
+     "type": "cell",
+     "row": 6,
+     "col": 1,
+     "value": "$4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r6c2",
+     "type": "cell",
+     "row": 6,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r6c3",
+     "type": "cell",
+     "row": 6,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r7c1",
+     "type": "cell",
+     "row": 7,
+     "col": 1,
+     "value": "$5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r7c2",
+     "type": "cell",
+     "row": 7,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q9_table-r7c3",
+     "type": "cell",
+     "row": 7,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q9_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q11_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q11",
+   "objects": [
+    {
+     "id": "q11_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "דקות בחודש",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "$0$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "$20$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "$40$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r1c5",
+     "type": "cell",
+     "row": 1,
+     "col": 5,
+     "value": "$60$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r1c6",
+     "type": "cell",
+     "row": 1,
+     "col": 6,
+     "value": "$80$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "מסלול א׳ (שקלים)",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$20$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r2c5",
+     "type": "cell",
+     "row": 2,
+     "col": 5,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r2c6",
+     "type": "cell",
+     "row": 2,
+     "col": 6,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "מסלול ב׳ (שקלים)",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$35$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r3c4",
+     "type": "cell",
+     "row": 3,
+     "col": 4,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r3c5",
+     "type": "cell",
+     "row": 3,
+     "col": 5,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q11_table-r3c6",
+     "type": "cell",
+     "row": 3,
+     "col": 6,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q11_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q13_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q13",
+   "objects": [
+    {
+     "id": "q13_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "סוג הבד",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "מטרים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "מחיר למטר (שקלים)",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "סך הכול (שקלים)",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "כותנה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$c$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$30$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "משי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$m$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$70$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c4",
+     "type": "cell",
+     "row": 3,
+     "col": 4,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "יחד",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r4c3",
+     "type": "cell",
+     "row": 4,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r4c4",
+     "type": "cell",
+     "row": 4,
+     "col": 4,
+     "value": "$210$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q13_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q14_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q14",
+   "objects": [
+    {
+     "id": "q14_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "שלב",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "מה כתוב",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$A$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$35p + 50(8 − p) = 325$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$B$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "תשובה: ליאת קנתה $5$ פאזלים ו־$3$ משחקי קופסה.",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$C$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$p$ = מספר הפאזלים, $g$ = מספר משחקי הקופסה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r5c1",
+     "type": "cell",
+     "row": 5,
+     "col": 1,
+     "value": "$D$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r5c2",
+     "type": "cell",
+     "row": 5,
+     "col": 2,
+     "value": "$p + g = 8$ וגם $35p + 50g = 325$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r6c1",
+     "type": "cell",
+     "row": 6,
+     "col": 1,
+     "value": "$E$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r6c2",
+     "type": "cell",
+     "row": 6,
+     "col": 2,
+     "value": "$400 − 15p = 325$, ולכן $p = 5$ ו־$g = 3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q14_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q17_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q17",
+   "objects": [
+    {
+     "id": "q17_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "מערכת",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "שורה ראשונה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "שורה שנייה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$x + y = 25$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$60x + 85x = 1850$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$2$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$x + y = 25$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$60x + 85y = 1850$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$x + y = 25$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r4c3",
+     "type": "cell",
+     "row": 4,
+     "col": 3,
+     "value": "$85x + 60y = 1850$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r5c1",
+     "type": "cell",
+     "row": 5,
+     "col": 1,
+     "value": "$4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r5c2",
+     "type": "cell",
+     "row": 5,
+     "col": 2,
+     "value": "$60x + 85y = 1850$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r5c3",
+     "type": "cell",
+     "row": 5,
+     "col": 3,
+     "value": "$60 + 85 = 145$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q17_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 194" width="260" height="194">
+<g data-layer="lines">
+<line id="e0001" data-seg="AB" x1="65.92" y1="57.87" x2="26" y2="167.54" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="AC" x1="65.92" y1="57.87" x2="164.67" y2="167.54" stroke="#000000" stroke-width="1"/>
+<line id="e0003" data-seg="BC" x1="26" y1="167.54" x2="164.67" y2="167.54" stroke="#000000" stroke-width="1.5"/>
+<line id="e0004" data-seg="BP" x1="26" y1="167.54" x2="227.48" y2="26.46" stroke="#000000" stroke-width="1"/>
+<line id="e0005" data-seg="CE" x1="164.67" y1="167.54" x2="234" y2="167.54" stroke="#000000" stroke-width="1.5"/>
+<line id="e0006" data-seg="CP" x1="164.67" y1="167.54" x2="227.48" y2="26.46" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="marks">
+<path id="e0007" data-mark="arc ABP" d="M 31.47 152.51 L 32.48 152.91 L 33.46 153.38 L 34.4 153.92 L 35.3 154.52 L 36.17 155.18 L 36.98 155.9 L 37.74 156.67 L 38.45 157.49 L 39.11 158.36" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0008" data-mark="arc CBP" d="M 47 167.54 L 46.95 166.12 L 46.81 164.7 L 46.57 163.29 L 46.23 161.91 L 45.8 160.55 L 45.28 159.22 L 44.67 157.93 L 43.98 156.69 L 43.2 155.49" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0009" data-mark="arc2 ACP" d="M 154.46 156.21 L 155.25 155.54 L 156.09 154.93 L 156.96 154.38 L 157.87 153.89 L 158.81 153.46 L 159.78 153.09 L 160.77 152.8 L 161.77 152.56 L 162.8 152.4 L 163.82 152.31 L 164.86 152.29 L 165.89 152.34 L 166.92 152.45 L 167.93 152.64 L 168.93 152.9 L 169.92 153.22 L 170.87 153.61" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0010" data-mark="arc2 ACP" d="M 152.46 153.98 L 153.4 153.18 L 154.4 152.45 L 155.45 151.79 L 156.53 151.2 L 157.66 150.69 L 158.82 150.25 L 160 149.89 L 161.21 149.62 L 162.43 149.43 L 163.66 149.32 L 164.89 149.29 L 166.13 149.35 L 167.36 149.49 L 168.57 149.71 L 169.77 150.02 L 170.95 150.4 L 172.09 150.87" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0011" data-mark="arc2 ECP" d="M 187.92 167.54 L 187.87 165.97 L 187.71 164.4 L 187.44 162.85 L 187.07 161.31 L 186.6 159.81 L 186.03 158.34 L 185.36 156.92 L 184.59 155.54 L 183.73 154.22 L 182.79 152.96 L 181.76 151.77 L 180.65 150.65 L 179.47 149.61 L 178.22 148.64 L 176.91 147.77 L 175.54 146.99 L 174.13 146.3" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0012" data-mark="arc2 ECP" d="M 190.92 167.54 L 190.86 165.76 L 190.68 163.99 L 190.38 162.24 L 189.96 160.51 L 189.43 158.81 L 188.78 157.16 L 188.02 155.55 L 187.16 154 L 186.19 152.5 L 185.12 151.08 L 183.96 149.73 L 182.71 148.47 L 181.38 147.29 L 179.97 146.21 L 178.49 145.22 L 176.95 144.33 L 175.35 143.56" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0013" data-pt="A" cx="65.92" cy="57.87" r="2" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="B" cx="26" cy="167.54" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0015" data-pt="C" cx="164.67" cy="167.54" r="2" fill="#000000" stroke="none"/>
+<circle id="e0016" data-pt="E" cx="234" cy="167.54" r="2" fill="#000000" stroke="none"/>
+<circle id="e0017" data-pt="P" cx="227.48" cy="26.46" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0018" data-for="A" x="64.06" y="52.76" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0019" data-for="B" x="17.64" y="177.83" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0020" data-for="C" x="164.67" y="182.41" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">C</text>
+<text id="e0021" data-for="E" x="242.36" y="171.97" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">E</text>
+<text id="e0022" data-for="P" x="234.06" y="22.92" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">P</text>
+</g>
+</svg>

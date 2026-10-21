@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 111" width="190" height="111">
+<g data-layer="lines">
+<line id="e0001" data-seg="AB" x1="112.99" y1="26.16" x2="26" y2="84.84" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="AC" x1="112.99" y1="26.16" x2="164" y2="84.84" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="AD" x1="112.99" y1="26.16" x2="89.29" y2="84.84" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="BC" x1="26" y1="84.84" x2="164" y2="84.84" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0005" data-mark="arc ABC" d="M 37.54 77.05 L 38.03 77.83 L 38.47 78.64 L 38.85 79.47 L 39.17 80.33 L 39.44 81.21 L 39.65 82.1 L 39.8 83.01 L 39.89 83.92 L 39.92 84.84" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0006" data-mark="arc2 ACB" d="M 153.5 72.76 L 152.73 73.48 L 152.01 74.25 L 151.34 75.06 L 150.72 75.91 L 150.17 76.8 L 149.67 77.73 L 149.23 78.69 L 148.86 79.67 L 148.55 80.68 L 148.31 81.7 L 148.14 82.74 L 148.03 83.79 L 148 84.84" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0007" data-mark="arc2 ACB" d="M 151.53 70.5 L 150.62 71.35 L 149.76 72.26 L 148.97 73.22 L 148.23 74.24 L 147.57 75.3 L 146.98 76.4 L 146.46 77.53 L 146.02 78.7 L 145.65 79.9 L 145.37 81.11 L 145.16 82.35 L 145.04 83.59 L 145 84.84" fill="none" stroke="#000000" stroke-width="1"/>
+<line id="e0008" data-mark="tick AD" x1="104.85" y1="57" x2="97.43" y2="54" stroke="#000000" stroke-width="1"/>
+<line id="e0009" data-mark="tick BD" x1="57.65" y1="80.84" x2="57.65" y2="88.84" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0010" data-pt="A" cx="112.99" cy="26.16" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0011" data-pt="B" cx="26" cy="84.84" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0012" data-pt="C" cx="164" cy="84.84" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="D" cx="89.29" cy="84.84" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0014" data-for="ang ABC" x="55.84" y="79.45" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">34°</text>
+<text id="e0015" data-for="ang ACB" x="134.62" y="75.19" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">49°</text>
+<text id="e0016" data-for="A" x="114.23" y="21.18" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0017" data-for="B" x="16.92" y="92.05" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0018" data-for="C" x="173.07" y="93.41" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">C</text>
+<text id="e0019" data-for="D" x="89.29" y="98.21" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">D</text>
+</g>
+</svg>

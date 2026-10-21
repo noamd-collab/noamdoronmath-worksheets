@@ -149,9 +149,22 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // Moved again so kite ticks follow each side and the pause button waits for JS.
   // Moved again so the kite card plays the area film, then the construction.
   // Moved again so the card title follows whichever film is playing.
+  // Moved again so para-rect marks base b and height h on the shape.
+  // Moved again for the 2026-10-18 topic films. Helpers moved to loopHelpers.ts
+  // and stay pinned. Explicit content, not a silent regen.
+  // ConceptLoop.astro moved again: kite-construct aria says חלקי, not a slash
+  // (Noam, 18.10.2026). conceptLoops.ts and loopHelpers.ts are unchanged.
+  // Moved again for the grade-8 sas-snap film (Noam, 20.10.2026): both
+  // triangles stay visible, marks arrive in pairs, then they meet in
+  // the middle. Moved again the same day: the dashed group is sas-copy
+  // so [data-el='copy'] { opacity: 0 } no longer hides it.
+  // Moved again so the lap reset keeps both outlines on screen.
+  // Explicit content fix, not a silent regen.
   const expected = {
-    'src/components/ConceptLoop.astro': 'd0b71bb4153302694c5ba797bce046d7290999c9e923ab4663c60cb58cb54246',
-    'src/lib/conceptLoops.ts': 'e60dda4e84009904e23c44bbece637ee96ff17dfdb6a5525c8178d8eec2c54cd',
+    'src/components/ConceptLoop.astro': '7d725f47d324b76dae27c27874116a93ed59ffb3523c26198140b19276293d7a',
+    // PR169: preserve new topic films and honor OS reduced motion.
+    'src/lib/conceptLoops.ts': '16776933aea73936f536f13c018eb834969775fb06890b8057a7e79e6067347c',
+    'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
   };
   for (const [file, digest] of Object.entries(expected)) {
     it(file, () => {

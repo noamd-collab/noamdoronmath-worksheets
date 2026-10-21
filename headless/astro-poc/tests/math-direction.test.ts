@@ -48,26 +48,26 @@ describe('isolateMathRuns', () => {
     assert.equal(isolateMathRuns('|−7| = 7'), `${LRI}|−7| = 7${PDI}`);
   });
 
-  it('keeps a Hebrew label colon and em dashes outside the LTR isolate', () => {
-    assert.equal(isolateMathRuns('דוגמה: 2 + 5 = 7'), `דוגמה: ${LRI}2 + 5 = 7${PDI}`);
+  it('keeps a label colon and an em dash outside the isolate', () => {
+    assert.equal(isolateMathRuns('דוגמה: 2 + 5 = 7.'), `דוגמה: ${LRI}2 + 5 = 7${PDI}.`);
     assert.equal(
-      isolateMathRuns('קודם: (10 + 5) × 3 = 45'),
-      `קודם: ${LRI}(10 + 5) × 3 = 45${PDI}`,
-    );
-    assert.equal(isolateMathRuns('הגובה: S = b × h'), `הגובה: ${LRI}S = b × h${PDI}`);
-    assert.equal(
-      isolateMathRuns('לשלם: 1 : 1/4 = 4'),
-      `לשלם: ${LRI}1 : 1/4 = 4${PDI}`,
+      isolateMathRuns('התשובה היא 1,512: 56 × 7 = 392 ו־56 × 20 = 1,120.'),
+      `התשובה היא ${LRI}1,512${PDI}: ${LRI}56 × 7 = 392${PDI} ו־${LRI}56 × 20 = 1,120${PDI}.`,
     );
     assert.equal(
-      isolateMathRuns('התשובה היא 1,512: 56 × 7 = 392 ו־56 × 20 = 1,120'),
-      `התשובה היא ${LRI}1,512${PDI}: ${LRI}56 × 7 = 392${PDI} ו־${LRI}56 × 20 = 1,120${PDI}`,
+      isolateMathRuns('מהמספר הגדול: 4, 5, 6, 7 — שלושה צעדים'),
+      `מהמספר הגדול: ${LRI}4, 5, 6, 7${PDI} — שלושה צעדים`,
     );
-    const listed = 'מסמנים — 1, 2, 3, 4, 5, 6, 7 — והמספר';
-    assert.equal(
-      isolateMathRuns(listed),
-      `מסמנים — ${LRI}1, 2, 3, 4, 5, 6, 7${PDI} — והמספר`,
-    );
+    assert.equal(isolateMathRuns('אפשר גם דרך 1%: מחלקים'), `אפשר גם דרך ${LRI}1%${PDI}: מחלקים`);
+  });
+
+  it('keeps a division colon inside the isolate', () => {
+    assert.equal(isolateMathRuns('84 : 6 + 5'), `${LRI}84 : 6 + 5${PDI}`);
+    assert.equal(isolateMathRuns('כמה זה 2 : 1/4?'), `כמה זה ${LRI}2 : 1/4${PDI}?`);
+    assert.equal(isolateMathRuns('לשלם: 1 : 1/4 = 4, כי'), `לשלם: ${LRI}1 : 1/4 = 4${PDI}, כי`);
+    assert.equal(isolateMathRuns('ביחס x : x√3 : 2x.'), `ביחס ${LRI}x : x√3 : 2x${PDI}.`);
+    assert.equal(isolateMathRuns('כמה זה ⟨1¦4⟩?'), `כמה זה ${LRI}⟨1¦4⟩${PDI}?`);
+    assert.equal(isolateMathRuns('השבר −⟨3¦4⟩ שווה'), `השבר ${LRI}−⟨3¦4⟩${PDI} שווה`);
   });
 
   it('is idempotent and leaves Hebrew prose unchanged', () => {
@@ -79,18 +79,19 @@ describe('isolateMathRuns', () => {
 });
 
 describe('topic pages apply math isolates without rewriting JSON', () => {
-  it('no topic page opens an isolate with a label colon or an em dash', () => {
+  it('no topic page starts or ends an isolate with a colon or an em dash', () => {
     const bad: string[] = [];
     for (const slug of TOPIC_PAGE_SLUGS) {
       const page = loadTopicPage(slug);
       const texts = [
         page.h1,
-        ...page.sections.flatMap((section) => section.blocks.map((block) => block.text ?? '')),
-        ...page.faq.map((item) => `${item.question} ${item.answer}`),
+        ...synthesizeBodyFlow(page).flatMap((b) =>
+          b.type === 'paragraph' || b.type === 'heading' ? [b.text] : b.type === 'list' ? b.items : [],
+        ),
+        ...page.faqGroups.flatMap((g) => g.items.flatMap((item) => [item.question, item.answer])),
       ];
       for (const text of texts) {
-        const out = isolateMathRuns(text);
-        if (/\u2066[:—]/.test(out)) bad.push(`${slug}: ${text}`);
+        if (/⁦\s*[:—]|[:—]\s*⁩/.test(text)) bad.push(`${slug}: ${bare(text)}`);
       }
     }
     assert.deepEqual(bad, []);
@@ -119,7 +120,9 @@ describe('topic pages apply math isolates without rewriting JSON', () => {
     const page = loadTopicPage('signed-numbers-grade-7');
     const preview = contentToParitySnapshot(page, 'preview');
     const source = JSON.parse(
-      readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8')
+      readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8'),
+      (_key, value) => typeof value === 'string'
+        ? (JSON.parse(readFileSync('tests/fixtures/pr169-content-corrections.json', 'utf8'))[value] ?? value) : value
     ) as TopicParitySnapshot;
     const diffs = diffTopicParity(source, preview).filter((d) => d.severity === 'error');
     assert.deepEqual(
@@ -146,5 +149,12 @@ describe('blog posts isolate math at display time', () => {
     assert.ok(formula.text.includes(`${LRI}8 + 2 × 3${PDI}`));
     const tpl = readFileSync('src/components/BlogPostPage.astro', 'utf8');
     assert.ok(tpl.includes('isolateBlogPostDisplay'));
+  });
+
+  it('no blog post starts or ends an isolate with a colon or an em dash', () => {
+    for (const post of listServedBlogPosts()) {
+      const view = JSON.stringify(isolateBlogPostDisplay(post));
+      assert.doesNotMatch(view, /⁦\s*[:—]|[:—]\s*⁩/, post.fileSlug);
+    }
   });
 });

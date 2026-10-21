@@ -7,6 +7,7 @@
  * triangle-area-grade-7 keeps its explorer; the explorer glides once, so it
  * still needs a real loop.
  */
+import { LESSON_LOOPS, LESSON_LOOP_VARIANTS, LESSON_TOPIC_MAP } from './lessonLoops';
 import topicFamilies from '../data/topicFamilies.json';
 import type { TopicPageContent } from './topicPages';
 
@@ -17,8 +18,8 @@ import type { TopicPageContent } from './topicPages';
  * families reuse the closest existing film. F10/F14 keep their CSS loops.
  * F11 subtraction topics use the new baseten-sub CSS loop via
  * SLUG_CSS_OVERRIDE (only genuinely new loop: two-digit subtraction with
- * borrowing). F24/F30 have no exact film yet — unit-frac and frac-product are
- * the closest fits and are flagged in the PR for review.
+ * borrowing). Lesson-specific overrides take precedence: family films are
+ * never a substitute for checking the learning objective of a page.
  */
 export const FAMILY_CONCEPT_LOOP = {
   F01: 'sticks',
@@ -47,6 +48,48 @@ export const FAMILY_CONCEPT_LOOP = {
 
 /** One page whose own idea has its own ConceptLoop film (Kimi's L14 v6). */
 const SLUG_CONCEPT_OVERRIDE = {
+  // Reviewed against the lesson, independently of the family fallback.
+  'build-decompose-shapes-grade-3': 'polygon',
+  'number-neighbors-grade-1': 'neighbors',
+  'hundreds-tens-ones-grade-2': 'place-123',
+  'numbers-to-1000-grade-2': 'place-123',
+  'place-value-grade-3': 'place-123',
+  'even-odd-sequences-a-grade-2': 'odd-pair',
+  'even-odd-sequences-b-grade-2': 'odd-pair',
+  'division-equal-shares-grade-2': 'share-12',
+  'division-measurement-grade-2': 'jumps-4',
+  'division-check-multiplication-grade-3': 'share-12',
+  'division-inverse-multiplication-grade-3': 'share-12',
+  'angles-types-grade-3': 'angle-kinds',
+  'angle-types-grade-4': 'angle-kinds',
+  'lines-angles-shapes-grade-3': 'para-perp',
+  'angles-lines-plane-grade-4': 'para-perp',
+  'classify-triangles-grade-4': 'tri-sort',
+  'triangles-classify-build-grade-4': 'tri-sort',
+  'parallel-perpendicular-shapes-grade-4': 'para-perp',
+  'perimeter-parallel-perpendicular-grade-5': 'para-perp',
+  'polygons-diagonals-grade-4': 'two-diag',
+  'quadrilateral-diagonals-grade-5': 'two-diag',
+  'triangle-height-obtuse-parallelogram-grade-5': 'obtuse-ht',
+  'symmetry-reflection-rotation-grade-4': 'transform',
+  'transformations-grade-5': 'transform',
+  'area-perimeter-rectangle-grade-4': 'rect-count',
+  'area-perimeter-rectangles-grade-5': 'rect-count',
+  'composite-area-grade-5': 'l-split',
+  'area-perimeter-composite-grade-4': 'l-split',
+  'quadrilaterals-classify-grade-4': 'quad-tree',
+  'quadrilateral-family-grade-5': 'quad-tree',
+  'quadrilaterals-review-grade-6': 'quad-tree',
+  'rectangles-squares-grade-4': 'quad-tree',
+  'fraction-times-whole-grade-6': 'quarter-12',
+  'fraction-part-quantity-area-grade-6': 'quarter-12',
+  'fraction-operations-choose-grade-6': 'frac-product',
+  'equations-basics-grade-7': 'balance',
+  'parallelogram-trapezoid-area-grade-9': 'trap-area',
+  // Parallelogram area: shear parallelogram into rectangle (same base & height, same area).
+  'parallelogram-area-grade-5': 'para-rect',
+  'neighbors-numberline-grade-3': 'neighbors',
+  'money-grade-3': 'coins-12',
   'difference-of-squares-grade-9': 'diff-sq',
   'kite-grade-9': 'kite-construct',
   // Clock topics sit in the F07 measurement family but have their own films.
@@ -58,23 +101,21 @@ const SLUG_CONCEPT_OVERRIDE = {
   'multiplication-division-family-grade-2': 'share-12',
   // Map-scale film for the scale topic (the family default is ratio-beads).
   'scale-maps-grade-6': 'map-scale',
-  // Family defaults below were the wrong lesson (bridging past 10,
-  // four-quadrant coords, rectangle area, negatives, algebra, fraction
-  // multiplication). Each slug reuses an existing film.
-  // counting-grade-1 stays on sticks: no pinned film counts and marks objects,
-  // and the concept-loop engine is hash-pinned so a new film cannot be added.
+  // Reviewed pages whose family film taught another lesson (7 + 5 past ten,
+  // four-quadrant points, grid area, negatives). Each reuses the existing
+  // film that shows the page's own example.
   'addition-to-10-grade-1': 'add-within',
-  'numbers-operations-review-grade-2': 'place-123',
+  'numbers-operations-review-grade-2': 'array',
   'perimeter-polygons-grade-3': 'peri-rect',
   'order-of-operations-grade-4': 'order-ops',
-  'grade-4-summary': 'baseten',
-  'distributive-area-model-grade-4': 'l-split',
-  'multiplication-multi-digit-grade-4': 'array',
-  'fraction-division-meaning-grade-6': 'share-12',
-  'measurement-geometry-synthesis-grade-6': 'rect-count',
-  'percent-of-quantity-grade-6': 'pct-25',
-  // Parallelogram area: shear parallelogram into rectangle (same base & height, same area).
-  'parallelogram-area-grade-5': 'para-rect',
+  'grade-4-summary': 'grade-4-summary',
+  'distributive-area-model-grade-4': 'distributive-area-model-grade-4',
+  'fraction-division-meaning-grade-6': 'fraction-division-meaning-grade-6',
+  'measurement-geometry-synthesis-grade-6': 'measurement-geometry-synthesis-grade-6',
+  // Within-10 and grade-5 pages retain their lesson-specific corrections.
+  'compose-decompose-10-grade-1': 'add-within',
+  'subtraction-to-10-grade-1': 'birds-sub',
+  'order-of-operations-grade-5': 'order-ops',
 } as const;
 
 export type ConceptLoopVariant =
@@ -83,6 +124,7 @@ export type ConceptLoopVariant =
 
 /** CSS/SVG loops. Transform and opacity only. */
 export const CSS_LOOP_VARIANTS = [
+  ...LESSON_LOOP_VARIANTS,
   'powers',
   'exp-rules',
   'roots',
@@ -139,6 +181,16 @@ export const CSS_LOOP_VARIANTS = [
   'similar-aa',
   'tools',
   'baseten-sub',
+  'count-mark',
+  'col-mul',
+  'distrib-area',
+  'frac-div',
+  'sub-via-10',
+  'split-ways',
+  'tri-square',
+  'bonds-10-20',
+  'long-mul',
+  'frac-recip',
 ] as const;
 
 export type CssLoopVariant = (typeof CSS_LOOP_VARIANTS)[number];
@@ -210,10 +262,21 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'triangle-similarity-aa-grade-9': 'similar-aa',
   'triangle-similarity-proof-grade-8': 'similar-aa',
   // Two-digit subtraction (incl. borrowing) — the one genuinely new loop.
-  'subtraction-two-digit-no-borrow-grade-2': 'baseten-sub',
   'subtraction-two-digit-borrowing-grade-2': 'baseten-sub',
   'column-subtraction-borrowing-grade-3': 'baseten-sub',
   'multi-digit-subtraction-grade-4': 'baseten-sub',
+  // Reviewed pages with no existing film for their idea. The concept-loop
+  // engine is hash-pinned, so these are new CSS loops.
+  'counting-grade-1': 'count-mark',
+  'multiplication-multi-digit-grade-4': 'col-mul',
+  // Pages outside that review whose family film taught another lesson, with
+  // no existing film for their own example.
+  'subtraction-to-20-grade-1': 'sub-via-10',
+  'compose-decompose-grade-1': 'split-ways',
+  'shapes-compose-decompose-grade-1': 'tri-square',
+  'number-bonds-10-20-grade-2': 'bonds-10-20',
+  'multiplication-multi-digit-grade-5': 'long-mul',
+  'fraction-division-algorithm-grade-6': 'frac-recip',
 };
 
 export const GRADE_CONCEPT_LOOP = {
@@ -274,6 +337,8 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
 }
 
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
+  const lesson = LESSON_TOPIC_MAP[page.slug];
+  if (lesson) return { kind: 'css', variant: lesson, marker: lesson };
   const film = FILM_LANDING_LOOPS[page.slug as FilmLandingSlug];
   if (film) return { kind: 'film', marker: film.marker, src: film.src };
   // A slug-level concept film wins over a slug CSS loop and over its family.
@@ -349,6 +414,7 @@ export function powerMarkup(row: PowerRow): string {
  * and listed in the pull request.
  */
 export const CSS_LOOP_IDEAS = {
+  ...Object.fromEntries(Object.entries(LESSON_LOOPS).map(([id, lesson]) => [id, lesson.idea])) as { [K in keyof typeof LESSON_LOOPS]: string },
   powers: `סוגריים קובעים את הסימן: (${MINUS}3)² = 9, בלי סוגריים ${MINUS}3² = ${MINUS}9, וחזקה אי־זוגית (${MINUS}3)³ = ${MINUS}27`,
   'exp-rules': 'בכפל חזקות עם אותו בסיס מחברים מעריכים: 2³ × 2² = 2⁵',
   roots: 'השורש שואל איזה מספר בריבוע נותן את זה: 3² = 9 ולכן √9 = 3',
@@ -405,6 +471,16 @@ export const CSS_LOOP_IDEAS = {
   'similar-aa': 'שתי זוויות שוות מספיקות כדי לקבוע דמיון',
   tools: 'המחשבון פותח קודם סוגריים: 2 × (3 + 1) הופך ל־2 × 4 = 8',
   'baseten-sub': 'כשאין מספיק יחידות, מוט העשרת מתפרק לעשר יחידות: 52 − 27 = 25',
+  'count-mark': 'סופרים כל בלון פעם אחת ומסמנים אותו. המספר האחרון, 7, הוא מספר הבלונים',
+  'col-mul': 'כופלים מימין לשמאל, וההמרה עוברת לעמודה הבאה: 175 × 5 = 875',
+  'distrib-area': 'מפרקים את 16 ל־10 ועוד 6 ומחברים את שני השטחים: 150 + 90 = 240',
+  'frac-div': 'בכל שלם יש 4 רבעים, ולכן בשני שלמים יש 8 רבעים',
+  'sub-via-10': `ב־15 ${MINUS} 7 מחסרים קודם 5 כדי להגיע ל־10, ואז עוד 2. נשארים 8`,
+  'split-ways': 'מפרקים את 6 לפי הסדר מהקטן לגדול: 1 + 5, 2 + 4, 3 + 3, ולא מפספסים אף דרך',
+  'tri-square': 'שני משולשים זהים נצמדים בצלע הארוכה, בלי רווח ובלי חפיפה, ויוצרים ריבוע',
+  'bonds-10-20': '6 + 4 = 10 היא הרכבה של 10, ובאותו אופן 13 + 7 = 20 היא הרכבה של 20',
+  'long-mul': 'כופלים ב־3, ואז ב־20 בשורה שמתחילה ב־0, ומחברים: 771 + 5,140 = 5,911',
+  'frac-recip': 'בחילוק בשבר הופכים רק את המחלק, ואז כופלים',
 } as const satisfies Record<CssLoopVariant, string>;
 
 export const FORMULA_LOOP_VARIANTS = [
@@ -417,6 +493,7 @@ export const FORMULA_LOOP_VARIANTS = [
   'tools',
   'proof',
   'quad-factor',
+  'frac-recip',
 ] as const satisfies readonly CssLoopVariant[];
 
 /**
@@ -468,24 +545,9 @@ function captionSpanEnd(text: string, start: number): number {
       j += 1;
       continue;
     }
-    if (text[j] === ':') {
-      if (j + 1 < text.length && captionIsMathAt(text, j + 1)) {
-        j += 1;
-        continue;
-      }
-      break;
-    }
-    if (captionIsGlue(text[j]!)) {
+    if (captionIsGlue(text[j]!) || text[j] === ':') {
       let k = j;
-      while (k < text.length && captionIsGlue(text[k]!)) k += 1;
-      if (k < text.length && text[k] === ':') {
-        let m = k + 1;
-        while (m < text.length && captionIsGlue(text[m]!)) m += 1;
-        if (m < text.length && captionIsMathAt(text, m)) {
-          j = m;
-          continue;
-        }
-      }
+      while (k < text.length && (captionIsGlue(text[k]!) || text[k] === ':')) k += 1;
       if (k < text.length && captionIsMathAt(text, k)) {
         j = k;
         continue;

@@ -5,4 +5,5 @@ set -euo pipefail
 export ASTRO_TELEMETRY_DISABLED=1
 cd "$(dirname "$0")/../../headless/astro-poc"
 npx tsx scripts/build-site-guide.ts
+node scripts/bundle-native-svg.mjs generate
 npx astro build --config astro.config.preview.mjs
