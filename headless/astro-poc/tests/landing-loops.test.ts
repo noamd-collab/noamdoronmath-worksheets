@@ -117,7 +117,7 @@ describe('landing loop coverage', () => {
       'grade-4-summary': { kind: 'concept', variant: 'baseten' },
       'distributive-area-model-grade-4': { kind: 'concept', variant: 'l-split' },
       'multiplication-multi-digit-grade-4': { kind: 'concept', variant: 'array' },
-      'parallelogram-area-grade-5': { kind: 'css', variant: 'area-para' },
+      'parallelogram-area-grade-5': { kind: 'concept', variant: 'para-rect' },
       'fraction-division-meaning-grade-6': { kind: 'concept', variant: 'share-12' },
       'measurement-geometry-synthesis-grade-6': { kind: 'concept', variant: 'rect-count' },
       'percent-of-quantity-grade-6': { kind: 'concept', variant: 'pct-25' },
@@ -249,7 +249,7 @@ describe('landing loop coverage', () => {
       assert.ok(variant, slug);
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
-    assert.equal(cssPages, 118);
+    assert.equal(cssPages, 117);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);

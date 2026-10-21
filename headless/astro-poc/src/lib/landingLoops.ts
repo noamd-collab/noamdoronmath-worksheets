@@ -73,6 +73,8 @@ const SLUG_CONCEPT_OVERRIDE = {
   'fraction-division-meaning-grade-6': 'share-12',
   'measurement-geometry-synthesis-grade-6': 'rect-count',
   'percent-of-quantity-grade-6': 'pct-25',
+  // Parallelogram area: shear parallelogram into rectangle (same base & height, same area).
+  'parallelogram-area-grade-5': 'para-rect',
 } as const;
 
 export type ConceptLoopVariant =
@@ -212,8 +214,6 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'subtraction-two-digit-borrowing-grade-2': 'baseten-sub',
   'column-subtraction-borrowing-grade-3': 'baseten-sub',
   'multi-digit-subtraction-grade-4': 'baseten-sub',
-  // Parallelogram area: S = b × h. The family film is triangle area (a·h):2.
-  'parallelogram-area-grade-5': 'area-para',
 };
 
 export const GRADE_CONCEPT_LOOP = {
