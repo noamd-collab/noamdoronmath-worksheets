@@ -5029,6 +5029,33 @@ function packWorksheet(measured, noteHeight) {
     prev.items = prev.items.concat(extra);
     pages.pop();
   }
+  // A short last page (an answer tail under 40%, anything else under a quarter)
+  // joins the previous page at full size. Only the whitespace between pieces
+  // gives way, down to half and never under 4px; no crop is ever scaled, so
+  // every row keeps the height of what is drawn in it.
+  while (pages.length > 1) {
+    const last = pages[pages.length - 1];
+    const prev = pages[pages.length - 2];
+    if (!last.items.length) {
+      pages.pop();
+      continue;
+    }
+    const answerTail = last.items.every((item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head' || item.slice.kind === 'answer-row'));
+    const cap = answerTail ? PAGE_H * 0.4 : PAGE_H * 0.25;
+    if (contentHeight(last.items) >= cap) break;
+    const combined = prev.items.concat(last.items).map((item) => ({ ...item, slice: { ...item.slice } }));
+    let over = heightOf(combined, prev.top) - PAGE_H;
+    for (let index = combined.length - 1; index > 0 && over > 0; index -= 1) {
+      const gap = combined[index].slice.gap || 0;
+      if (gap <= 4) continue;
+      const take = Math.min(over, gap - Math.max(4, Math.ceil(gap / 2)));
+      combined[index].slice.gap = gap - take;
+      over -= take;
+    }
+    if (over > 0) break;
+    prev.items = combined;
+    pages.pop();
+  }
   return pages;
 }
 
