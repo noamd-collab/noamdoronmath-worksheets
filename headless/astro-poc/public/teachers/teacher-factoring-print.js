@@ -5006,7 +5006,9 @@ function packWorksheet(measured, noteHeight) {
   });
   if (page.length) pages.push({ top, items: page });
   if (!pages.length) pages.push({ top: FIRST_TOP, items: [] });
-  // A leftover page that holds one answer goes back onto the previous page.
+  // A leftover answer page goes back onto the previous page only when it fits
+  // unscaled: the key crop is drawn at its own size, so a shorter row would let
+  // the next row paint over it.
   while (pages.length > 1) {
     const last = pages[pages.length - 1];
     const answerish = (item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head' || item.slice.kind === 'answer-row');
@@ -5021,23 +5023,9 @@ function packWorksheet(measured, noteHeight) {
     const prev = pages[pages.length - 2];
     const room = PAGE_H - heightOf(prev.items, prev.top);
     if (room < 36) break;
-    let extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
+    const extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
     const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
-    const need = leadGap + contentHeight(extra);
-    // An answer stays readable. Below 0.6 it keeps the next page.
-    const minFactor = 0.6;
-    if (need > room) {
-      const factor = room / need;
-      if (factor < minFactor) break;
-      extra = extra.map((item) => ({
-        ...item,
-        dh: Math.max(1, Math.round(item.dh * factor)),
-        slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
-      }));
-    }
-    const overflow = heightOf(prev.items.concat(extra), prev.top) - PAGE_H;
-    if (overflow > 0) extra[extra.length - 1].dh = Math.max(1, extra[extra.length - 1].dh - overflow);
-    if (heightOf(prev.items.concat(extra), prev.top) > PAGE_H) break;
+    if (leadGap + contentHeight(extra) > room) break;
     prev.items = prev.items.concat(extra);
     pages.pop();
   }

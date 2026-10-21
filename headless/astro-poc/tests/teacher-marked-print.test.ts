@@ -1248,14 +1248,14 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 400 },
     ], 0);
-    // A lone answer that would shrink below 0.6 stays on the next page.
+    // An answer that does not fit at its own size stays on the next page.
     assert.equal(packed.length, 2);
     const readable = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answer', gap: 8 }, dh: 280 },
     ], 0);
-    assert.equal(readable.length, 1);
-    assert.equal(readable[0].items.filter((item) => item.slice.kind === 'answer').length, 1);
+    assert.equal(readable.length, 2);
+    assert.deepEqual(readable[1].items.map((item) => item.dh), [280]);
     const scale = new Function(`${preview.slice(preview.indexOf('function answerDisplayScale'), preview.indexOf('function answerCellSize'))} return answerDisplayScale;`)() as (naturalW: number, naturalH: number) => number;
     assert.equal(scale(180, 16), 1);
     assert.ok(scale(2000, 40) < 1, String(scale(2000, 40)));
@@ -1281,7 +1281,7 @@ describe('teacher catalog picker', () => {
     assert.equal(natural.length, 1);
     const row = natural[0].items.find((item) => item.slice.kind === 'answer-row');
     assert.ok(row && row.cells && row.cells.length === 3);
-    // A short answer key joins the previous page when it still fits at a readable size.
+    // An answer key is never shrunk to join the previous page.
     const pulled = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1000 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
@@ -1289,15 +1289,14 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
       { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
     ], 0);
-    assert.equal(pulled.length, 1);
-    // The heading fits, and the answer that is left needs about 0.67. The old 0.72 floor left it behind.
+    assert.equal(pulled.length, 2);
+    pulled.forEach((page) => page.items.filter((item) => item.slice.kind === 'answer').forEach((item) => assert.equal(item.dh, 80)));
     const pulledAtSix = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
       { slice: { kind: 'answer', gap: 8 }, dh: 200, dw: 800 },
     ], 0);
-    assert.equal(pulledAtSix.length, 1);
-    // A key that would have to shrink below 0.6 stays on its own page.
+    assert.equal(pulledAtSix.length, 2);
     const leftBehind = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
