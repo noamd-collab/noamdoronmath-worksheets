@@ -5006,10 +5006,32 @@ function packWorksheet(measured, noteHeight) {
   });
   if (page.length) pages.push({ top, items: page });
   if (!pages.length) pages.push({ top: FIRST_TOP, items: [] });
+  const answerish = (item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head' || item.slice.kind === 'answer-row');
+  // An answer row keeps its height: the key crop is drawn at its own size, so a
+  // shorter row would let the next row paint over the bottom of it. Only the
+  // question pieces shrink, and no row is shaved to make the page fit.
+  const keepsHeight = (item) => answerish(item) || (item.slice && item.slice.kind === 'level');
+  const fitKeepingAnswers = (items, limit, floor) => {
+    let fixed = 0;
+    let flexible = 0;
+    items.forEach((item, index) => {
+      const height = item.dh + (index ? item.slice.gap : 0);
+      if (keepsHeight(item)) fixed += height;
+      else flexible += height;
+    });
+    if (fixed + flexible <= limit) return items;
+    if (!(flexible > 0)) return null;
+    let factor = Math.min(1, (limit - fixed) / flexible);
+    for (let guard = 0; guard < 40 && factor >= floor; guard += 1) {
+      const placed = items.map((item) => (keepsHeight(item) ? item : scalePlaced(item, factor)));
+      if (contentHeight(placed) <= limit) return placed;
+      factor -= 0.002;
+    }
+    return null;
+  };
   // A leftover page that holds one answer goes back onto the previous page.
   while (pages.length > 1) {
     const last = pages[pages.length - 1];
-    const answerish = (item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head' || item.slice.kind === 'answer-row');
     const answerCount = (item) => {
       if (!item.slice) return 0;
       if (item.slice.kind === 'answer-row') return (item.cells || []).length;
@@ -5021,24 +5043,28 @@ function packWorksheet(measured, noteHeight) {
     const prev = pages[pages.length - 2];
     const room = PAGE_H - heightOf(prev.items, prev.top);
     if (room < 36) break;
-    let extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
+    const extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
     const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
-    const need = leadGap + contentHeight(extra);
-    // An answer stays readable. Below 0.6 it keeps the next page.
-    const minFactor = 0.6;
-    if (need > room) {
-      const factor = room / need;
-      if (factor < minFactor) break;
-      extra = extra.map((item) => ({
-        ...item,
-        dh: Math.max(1, Math.round(item.dh * factor)),
-        slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
-      }));
-    }
-    const overflow = heightOf(prev.items.concat(extra), prev.top) - PAGE_H;
-    if (overflow > 0) extra[extra.length - 1].dh = Math.max(1, extra[extra.length - 1].dh - overflow);
-    if (heightOf(prev.items.concat(extra), prev.top) > PAGE_H) break;
+    if (leadGap + contentHeight(extra) > room) break;
     prev.items = prev.items.concat(extra);
+    pages.pop();
+  }
+  // A short last page goes back onto the previous one when the question pieces
+  // still print at 0.72 or more. A question leftover uses a quarter of a page;
+  // an answer-key tail is still mostly empty at 40%.
+  while (pages.length > 1) {
+    const last = pages[pages.length - 1];
+    const prev = pages[pages.length - 2];
+    if (!last.items.length) {
+      pages.pop();
+      continue;
+    }
+    const cap = last.items.every(answerish) ? PAGE_H * 0.4 : PAGE_H * 0.25;
+    if (contentHeight(last.items) >= cap) break;
+    const extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
+    const placed = fitKeepingAnswers(prev.items.concat(extra), PAGE_H - prev.top - FOOT, 0.72);
+    if (!placed) break;
+    prev.items = placed;
     pages.pop();
   }
   return pages;
