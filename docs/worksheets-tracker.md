@@ -12,6 +12,8 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - #100 names three levels that failed review and were not changed: G7-T02 c, G7-T04 b, G7-T11 c. Other levels left off the replacement lists are `unknown`, not failed.
 - `noamd-collab/noam-agent-hub` was not readable (repository not found with this token). Nothing from that repo is in this table.
 - Topic titles match `catalog.v1.json` at `9eb9e25e`. Twenty-four titles changed spelling in `d3bb8361` (Hebrew hyphens and geresh). Review, author, live, and PR cells were not changed.
+- Unlisted pilot pages in this repo (direct-link only; these PRs say the catalog was not changed): #185 `worksheet-pilot.v1.json`, #189 `worksheet-next-ten.v1.json`, #190 `worksheet-second-ten.v1.json`, #192 `worksheet-third-ten.v1.json`, #193 `worksheet-fourth-ten.v1.json`, #195 `worksheet-remaining-101.v1.json`. When a row's `(G#-T#)` id is the sheet `x` in one of those files, that PR is listed as unlisted. Author was not in those files. Reviewed cells were not changed. Live stays `unknown` (production was not checked).
+- G8-T66 «שני מקורות מידע» is grade 8 in #195 (`x` G8-T66, keys a/b/c) and is not in `catalog.v1.json`, so it has its own row. Hebrew level names are not in that file; the row uses the catalog default for keys a/b/c (`רמה א׳`, `רמה ב׳`, `רמת מצוינות`), which #104 states for those keys.
 - Topics named in the staging stub as pending (G7-T28, G7-T47, G7-T48, G8-T11, G8-T26, G8-T29, G8-T37, G8-T49, G8-T35, G9-T17, G9-T32) are filled only from the catalog and the PRs above. The stub's author and pending status were not copied.
 
 | Grade | Topic | Levels | Author | Reviewed | Live | PR |
@@ -185,141 +187,142 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ו׳ | משווים קבוצות ומנסחים מסקנות זהירות (id 25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #88 |
 | כיתה ו׳ | שינוי ממדים מה קורה להיקף לשטח ולנפח (id 26) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | חוקיות ופתרון בעיות רב־שלביות (id 27) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ז׳ | מספרים מכוונים — ישר המספרים וערך מוחלט (G7-T01) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | חיבור וחיסור מספרים מכוונים (G7-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#100); b yes (#100); c failed review, not changed (#100) | unknown | #100 |
-| כיתה ז׳ | כפל מספרים מכוונים (G7-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | חילוק מספרים מכוונים (G7-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#100); b failed review, not changed (#100); c yes (#100) | unknown | #100 |
-| כיתה ז׳ | סדר פעולות החשבון במספרים מכוונים (G7-T05) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | חזקות עם מעריך טבעי (G7-T06) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | שורש ריבועי (G7-T07) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | מערכת צירים — היכרות וקנה מידה (G7-T08) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | הרחבת מערכת הצירים חלק 1 (G7-T09) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | הרחבת מערכת הצירים חלק 2 — יישום והעמקה (G7-T10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | זוויות חלק 1 — היכרות, סימון ומדידה (G7-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#100); b yes (#100); c failed review, not changed (#100) | unknown | #100 |
-| כיתה ז׳ | זוויות חלק 2 — יחסים ופעולות (G7-T12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | זוויות — דף חזרה מסכם (G7-T13) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | סכום הזוויות במשולש ובמרובע (G7-T14) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | משולשים מיוחדים (G7-T15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | משולש שווה־צלעות — העמקה ורשות (G7-T16) | העמקה ורשות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | מצולעים חופפים וטרנספורמציות (G7-T17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | שטח מלבן וריבוע — העמקה (G7-T18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | שטח משולש — העמקה (G7-T19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | תיבה וקובייה (G7-T20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | חוקיות (G7-T21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | משתנים וביטויים אלגבריים — שפה ומידול (G7-T22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | הצבה בביטויים אלגבריים (G7-T23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | איסוף וקריאת מידע (G7-T24) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ז׳ | שכיחות (G7-T25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ז׳ | שכיחות יחסית חלק 1 — היכרות (G7-T26) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ז׳ | שכיחות יחסית חלק 2 — ניסויים ויציבות (G7-T27) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ז׳ | הסתברות — היכרות (G7-T28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ז׳ | שוויון ביטויים חלק 1 — כינוס ופילוג (G7-T29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים (G7-T30) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#100); c yes (#100) | unknown | #100 (b,c) |
-| כיתה ז׳ | נקודות על גרף ברביע הראשון (G7-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | מהו פתרון של משוואה (G7-T32) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#100); b yes (#100); c unknown | unknown | #100 (a,b) |
-| כיתה ז׳ | משוואות ופתרונן חלק 1 — מבוא (G7-T33) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#100); c yes (#100) | unknown | #100 (b,c) |
-| כיתה ז׳ | משוואות חד־שלביות (G7-T34) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | משוואות דו־שלביות (G7-T35) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | מפשטים ואז פותרים (G7-T36) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | משוואות ופתרונן חלק 2 — סוגריים ושקילות (G7-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | סוגריים וחוק הפילוג (G7-T38) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | הנעלם בשני האגפים (G7-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | שלושה ייצוגים לפתרון משוואה (G7-T40) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | שאלות מילוליות באמצעות משוואות (G7-T41) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | פיתגורס חלק 1 — היכרות וחישוב (G7-T42) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | פיתגורס חלק 2 — שימושים (G7-T43) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | חישובי היקף — צורות מורכבות ואלגברה (G7-T44) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | שטחים ב׳ חלק 1 — מקבילית וטרפז (G7-T45) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | שטחים ב׳ חלק 2 — מצולעים מורכבים (G7-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
-| כיתה ז׳ | מנסרה משולשת חלק 1 — מבנה ונפח (G7-T47) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ז׳ | מנסרה משולשת חלק 2 — שטח פנים (G7-T48) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ז׳ | חזרה שנתית (G7-T49) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ז׳ | משימת הערכה 1 (G7-T50) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | אבחון קדם־ידע (G8-T01) | דף יחיד — כל הרמות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | משוואות ליניאריות (G8-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#99); b unknown; c yes (#99) | unknown | #99 (a,c) |
-| כיתה ח׳ | מכנים מספריים (G8-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | יחס ופרופורציה (G8-T24) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | קנה מידה (G8-T25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | אחוזים — ייצוגים (G8-T20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | בעיות אחוזים (G8-T21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | שינוי באחוזים (G8-T22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | שינויים עוקבים (G8-T23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | שורש ריבועי (G8-T48) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | פיתגורס (G8-T49) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | פיתגורס מורכב (G8-T50) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | גליל — שטח פנים (G8-T52) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | גליל — נפח (G8-T53) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | חרוט (G8-T54) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | ארגון נתונים (G8-T28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | עמודות ופיקטוגרמות (G8-T29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | דיאגרמת עוגה (G8-T30) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | מושג הפונקציה (G8-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | סימון פונקציה (G8-T16) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | מעבר בין ייצוגים (G8-T12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | טווח הנתונים (G8-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | הממוצע (G8-T32) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | החציון (G8-T33) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | בחירת מדד (G8-T34) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | אוריינות וביקורת ייצוג (G8-T35) | דף יחיד — כל הרמות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | קצב השתנות (G8-T13) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | שיפוע וישר y=mx (G8-T14) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | פונקציה קווית (G8-T15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | חיתוך צירים (G8-T17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | משוואת ישר (G8-T18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | ישרים מקבילים לצירים (G8-T19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | תנועה (G8-T10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | אבחון אמצע שנה (G8-T26) | דף יחיד — כל הרמות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | גישור ותיקון פערים (G8-T27) | דף יחיד — כל הרמות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | חפיפת משולשים (G8-T38) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#99); b yes (#99); c unknown | unknown | #99 (a,b) |
-| כיתה ח׳ | משפטי חפיפה (G8-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#99); c yes (#99) | unknown | #99 (b,c) |
-| כיתה ח׳ | הוכחה גאומטרית (G8-T40) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | זווית חיצונית (G8-T41) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#99); b yes (#99); c unknown | unknown | #99 (a,b) |
-| כיתה ח׳ | משולש שווה־שוקיים (G8-T42) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | הוכחה — שווה־שוקיים (G8-T43) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | התיכון במשולש (G8-T44) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | דמיון משולשים (G8-T45) | רמה א׳, רמה ב׳, רמת מצוינות, מצוינות 2 | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | הוכחת דמיון (G8-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | יחס שטחים (G8-T47) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | מילוליות — בחירת נעלמים (G8-T09) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | מערכות — חיתוך גרפי (G8-T06) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | מערכות — פתרון אלגברי (G8-T07) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | מערכות — מידול (G8-T08) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | הסתברות — מרחב תוצאות (G8-T36) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ח׳ | הסתברות — ניסוי והוגנות (G8-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | אי־שוויון (G8-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#99); c yes (#99) | unknown | #99 (b,c) |
-| כיתה ח׳ | אי־שוויון גרפי (G8-T05) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | פיתגורס במרחב (G8-T51) | רמה א׳, רמה ב׳, רמת מצוינות, מצוינות 2 | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | סינתזה גאומטרית (G8-T55) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | העמקה — בעיות לא שגרתיות (G8-T56) | העמקה | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | העמקה — חקר והכללה (G8-T57) | העמקה | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | חזרה מסכמת (G8-T58) | דף תלמיד | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | הערכה מסכמת (G8-T59) | דף תלמיד | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | אבחון סוף שנה (G8-T60) | דף תלמיד | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | אינטרפולציה ואקסטרפולציה (G8-T61) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | זוויות בין ישרים מקבילים (G8-T62) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | מעגל ועיגול — היקף ושטח (G8-T63) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ח׳ | משימת הערכה 1 (G8-T64) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ז׳ | מספרים מכוונים — ישר המספרים וערך מוחלט (G7-T01) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | חיבור וחיסור מספרים מכוונים (G7-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#100); b yes (#100); c failed review, not changed (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | כפל מספרים מכוונים (G7-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | חילוק מספרים מכוונים (G7-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#100); b failed review, not changed (#100); c yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | סדר פעולות החשבון במספרים מכוונים (G7-T05) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | חזקות עם מעריך טבעי (G7-T06) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | שורש ריבועי (G7-T07) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | מערכת צירים — היכרות וקנה מידה (G7-T08) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | הרחבת מערכת הצירים חלק 1 (G7-T09) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | הרחבת מערכת הצירים חלק 2 — יישום והעמקה (G7-T10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | זוויות חלק 1 — היכרות, סימון ומדידה (G7-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#100); b yes (#100); c failed review, not changed (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | זוויות חלק 2 — יחסים ופעולות (G7-T12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | זוויות — דף חזרה מסכם (G7-T13) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | סכום הזוויות במשולש ובמרובע (G7-T14) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | משולשים מיוחדים (G7-T15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | משולש שווה־צלעות — העמקה ורשות (G7-T16) | העמקה ורשות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | מצולעים חופפים וטרנספורמציות (G7-T17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | שטח מלבן וריבוע — העמקה (G7-T18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | שטח משולש — העמקה (G7-T19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | תיבה וקובייה (G7-T20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | חוקיות (G7-T21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | משתנים וביטויים אלגבריים — שפה ומידול (G7-T22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | הצבה בביטויים אלגבריים (G7-T23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | איסוף וקריאת מידע (G7-T24) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ז׳ | שכיחות (G7-T25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ז׳ | שכיחות יחסית חלק 1 — היכרות (G7-T26) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ז׳ | שכיחות יחסית חלק 2 — ניסויים ויציבות (G7-T27) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ז׳ | הסתברות — היכרות (G7-T28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ז׳ | שוויון ביטויים חלק 1 — כינוס ופילוג (G7-T29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | שוויון ביטויים חלק 2 — גורם משותף ומינוס לפני סוגריים (G7-T30) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#100); c yes (#100) | unknown | #100 (b,c); #195 (unlisted) |
+| כיתה ז׳ | נקודות על גרף ברביע הראשון (G7-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | מהו פתרון של משוואה (G7-T32) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#100); b yes (#100); c unknown | unknown | #100 (a,b); #195 (unlisted) |
+| כיתה ז׳ | משוואות ופתרונן חלק 1 — מבוא (G7-T33) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#100); c yes (#100) | unknown | #100 (b,c); #195 (unlisted) |
+| כיתה ז׳ | משוואות חד־שלביות (G7-T34) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | משוואות דו־שלביות (G7-T35) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | מפשטים ואז פותרים (G7-T36) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | משוואות ופתרונן חלק 2 — סוגריים ושקילות (G7-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | סוגריים וחוק הפילוג (G7-T38) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | הנעלם בשני האגפים (G7-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | שלושה ייצוגים לפתרון משוואה (G7-T40) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | שאלות מילוליות באמצעות משוואות (G7-T41) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | פיתגורס חלק 1 — היכרות וחישוב (G7-T42) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | פיתגורס חלק 2 — שימושים (G7-T43) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | חישובי היקף — צורות מורכבות ואלגברה (G7-T44) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | שטחים ב׳ חלק 1 — מקבילית וטרפז (G7-T45) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | שטחים ב׳ חלק 2 — מצולעים מורכבים (G7-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100; #195 (unlisted) |
+| כיתה ז׳ | מנסרה משולשת חלק 1 — מבנה ונפח (G7-T47) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ז׳ | מנסרה משולשת חלק 2 — שטח פנים (G7-T48) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ז׳ | חזרה שנתית (G7-T49) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ז׳ | משימת הערכה 1 (G7-T50) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ח׳ | אבחון קדם־ידע (G8-T01) | דף יחיד — כל הרמות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #193 (unlisted) |
+| כיתה ח׳ | משוואות ליניאריות (G8-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#99); b unknown; c yes (#99) | unknown | #99 (a,c); #195 (unlisted) |
+| כיתה ח׳ | מכנים מספריים (G8-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #189 (unlisted) |
+| כיתה ח׳ | יחס ופרופורציה (G8-T24) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #195 (unlisted) |
+| כיתה ח׳ | קנה מידה (G8-T25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #195 (unlisted) |
+| כיתה ח׳ | אחוזים — ייצוגים (G8-T20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #195 (unlisted) |
+| כיתה ח׳ | בעיות אחוזים (G8-T21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #195 (unlisted) |
+| כיתה ח׳ | שינוי באחוזים (G8-T22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #195 (unlisted) |
+| כיתה ח׳ | שינויים עוקבים (G8-T23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #189 (unlisted) |
+| כיתה ח׳ | שורש ריבועי (G8-T48) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | פיתגורס (G8-T49) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #185 (unlisted) |
+| כיתה ח׳ | פיתגורס מורכב (G8-T50) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | גליל — שטח פנים (G8-T52) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #192 (unlisted) |
+| כיתה ח׳ | גליל — נפח (G8-T53) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #192 (unlisted) |
+| כיתה ח׳ | חרוט (G8-T54) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #192 (unlisted) |
+| כיתה ח׳ | ארגון נתונים (G8-T28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | עמודות ופיקטוגרמות (G8-T29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ח׳ | דיאגרמת עוגה (G8-T30) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #195 (unlisted) |
+| כיתה ח׳ | מושג הפונקציה (G8-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ח׳ | סימון פונקציה (G8-T16) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | מעבר בין ייצוגים (G8-T12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | טווח הנתונים (G8-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | הממוצע (G8-T32) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #195 (unlisted) |
+| כיתה ח׳ | החציון (G8-T33) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #195 (unlisted) |
+| כיתה ח׳ | בחירת מדד (G8-T34) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | אוריינות וביקורת ייצוג (G8-T35) | דף יחיד — כל הרמות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #189 (unlisted) |
+| כיתה ח׳ | קצב השתנות (G8-T13) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | שיפוע וישר y=mx (G8-T14) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | פונקציה קווית (G8-T15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #195 (unlisted) |
+| כיתה ח׳ | חיתוך צירים (G8-T17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | משוואת ישר (G8-T18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | ישרים מקבילים לצירים (G8-T19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | תנועה (G8-T10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | אבחון אמצע שנה (G8-T26) | דף יחיד — כל הרמות | unknown | unknown | unknown | #185 (unlisted) |
+| כיתה ח׳ | גישור ותיקון פערים (G8-T27) | דף יחיד — כל הרמות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | חפיפת משולשים (G8-T38) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#99); b yes (#99); c unknown | unknown | #99 (a,b); #195 (unlisted) |
+| כיתה ח׳ | משפטי חפיפה (G8-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#99); c yes (#99) | unknown | #99 (b,c); #195 (unlisted) |
+| כיתה ח׳ | הוכחה גאומטרית (G8-T40) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | זווית חיצונית (G8-T41) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#99); b yes (#99); c unknown | unknown | #99 (a,b); #195 (unlisted) |
+| כיתה ח׳ | משולש שווה־שוקיים (G8-T42) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | הוכחה — שווה־שוקיים (G8-T43) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | התיכון במשולש (G8-T44) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | דמיון משולשים (G8-T45) | רמה א׳, רמה ב׳, רמת מצוינות, מצוינות 2 | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | הוכחת דמיון (G8-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | יחס שטחים (G8-T47) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | מילוליות — בחירת נעלמים (G8-T09) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #193 (unlisted) |
+| כיתה ח׳ | מערכות — חיתוך גרפי (G8-T06) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #189 (unlisted) |
+| כיתה ח׳ | מערכות — פתרון אלגברי (G8-T07) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #193 (unlisted) |
+| כיתה ח׳ | מערכות — מידול (G8-T08) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #190 (unlisted) |
+| כיתה ח׳ | הסתברות — מרחב תוצאות (G8-T36) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ח׳ | הסתברות — ניסוי והוגנות (G8-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ח׳ | אי־שוויון (G8-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#99); c yes (#99) | unknown | #99 (b,c); #195 (unlisted) |
+| כיתה ח׳ | אי־שוויון גרפי (G8-T05) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #189 (unlisted) |
+| כיתה ח׳ | פיתגורס במרחב (G8-T51) | רמה א׳, רמה ב׳, רמת מצוינות, מצוינות 2 | unknown | yes (#99) | unknown | #99; #192 (unlisted) |
+| כיתה ח׳ | סינתזה גאומטרית (G8-T55) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99; #192 (unlisted) |
+| כיתה ח׳ | העמקה — בעיות לא שגרתיות (G8-T56) | העמקה | unknown | yes (#99) | unknown | #99; #189 (unlisted) |
+| כיתה ח׳ | העמקה — חקר והכללה (G8-T57) | העמקה | unknown | yes (#99) | unknown | #99; #189 (unlisted) |
+| כיתה ח׳ | חזרה מסכמת (G8-T58) | דף תלמיד | unknown | yes (#99) | unknown | #99; #189 (unlisted) |
+| כיתה ח׳ | הערכה מסכמת (G8-T59) | דף תלמיד | unknown | yes (#99) | unknown | #99; #189 (unlisted) |
+| כיתה ח׳ | אבחון סוף שנה (G8-T60) | דף תלמיד | unknown | yes (#99) | unknown | #99; #189 (unlisted) |
+| כיתה ח׳ | אינטרפולציה ואקסטרפולציה (G8-T61) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ח׳ | זוויות בין ישרים מקבילים (G8-T62) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ח׳ | מעגל ועיגול — היקף ושטח (G8-T63) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ח׳ | משימת הערכה 1 (G8-T64) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
 | כיתה ח׳ | הוכחות בחפיפת משולשים (G8-T65) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | חוק הפילוג המורחב (G9-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | פירוק לגורמים (G9-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | צמצום שברים אלגבריים (G9-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | משולש שווה־שוקיים (G9-T15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | הפונקציה הריבועית (G9-T06) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | משוואות ריבועיות ונוסחת השורשים (G9-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | המקבילית (G9-T17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | אי־שוויונות ריבועיים ומערכות משוואות (G9-T07) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | סטטיסטיקה (G9-T10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | הסתברות (G9-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | המלבן (G9-T18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | קדם אנליזה — מפונקציות לגרפים ובחזרה (G9-T12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | המעוין (G9-T19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#98); b unknown; c yes (#98) | unknown | #98 (a,c) |
-| כיתה ט׳ | הריבוע (G9-T20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | גיאומטריה אנליטית (G9-T08) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | חוקי חזקות (G9-T01) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | שורשים (G9-T05) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | בעיות מילוליות (G9-T09) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | דמיון משולשים (G9-T32) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | מעבר לחטיבה העליונה (G9-T13) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
+| כיתה ח׳ | שני מקורות מידע (G8-T66) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ט׳ | חוק הפילוג המורחב (G9-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #192 (unlisted) |
+| כיתה ט׳ | פירוק לגורמים (G9-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #193 (unlisted) |
+| כיתה ט׳ | צמצום שברים אלגבריים (G9-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #195 (unlisted) |
+| כיתה ט׳ | משולש שווה־שוקיים (G9-T15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #195 (unlisted) |
+| כיתה ט׳ | הפונקציה הריבועית (G9-T06) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #195 (unlisted) |
+| כיתה ט׳ | משוואות ריבועיות ונוסחת השורשים (G9-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #195 (unlisted) |
+| כיתה ט׳ | המקבילית (G9-T17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ט׳ | אי־שוויונות ריבועיים ומערכות משוואות (G9-T07) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #192 (unlisted) |
+| כיתה ט׳ | סטטיסטיקה (G9-T10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #193 (unlisted) |
+| כיתה ט׳ | הסתברות (G9-T11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #193 (unlisted) |
+| כיתה ט׳ | המלבן (G9-T18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #193 (unlisted) |
+| כיתה ט׳ | קדם אנליזה — מפונקציות לגרפים ובחזרה (G9-T12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #193 (unlisted) |
+| כיתה ט׳ | המעוין (G9-T19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#98); b unknown; c yes (#98) | unknown | #98 (a,c); #195 (unlisted) |
+| כיתה ט׳ | הריבוע (G9-T20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #193 (unlisted) |
+| כיתה ט׳ | גיאומטריה אנליטית (G9-T08) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #192 (unlisted) |
+| כיתה ט׳ | חוקי חזקות (G9-T01) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #192 (unlisted) |
+| כיתה ט׳ | שורשים (G9-T05) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #192 (unlisted) |
+| כיתה ט׳ | בעיות מילוליות (G9-T09) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #195 (unlisted) |
+| כיתה ט׳ | דמיון משולשים (G9-T32) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #185 (unlisted) |
+| כיתה ט׳ | מעבר לחטיבה העליונה (G9-T13) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98; #193 (unlisted) |
 | כיתה ט׳ | משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳ (G9-T16) | דף יחיד — כל הרמות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | מצולעים חופפים וטרנספורמציות — לכיתה ט׳ (G9-T21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | פיתגורס חלק 1 — היכרות וחישוב — לכיתה ט׳ (G9-T22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -331,17 +334,17 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ט׳ | מנסרה משולשת חלק 1 — מבנה ונפח — לכיתה ט׳ (G9-T28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | מנסרה משולשת חלק 2 — שטח פנים — לכיתה ט׳ (G9-T29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | הרחבת מערכת הצירים חלק 2 — יישום והעמקה — לכיתה ט׳ (G9-T30) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | גיאומטריה חישובית — משולש (G9-T33) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | פונקציה קווית (G9-T34) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | משפט פיתגורס (G9-T35) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | קריאת גרפים (G9-T36) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | משולש ישר־זווית 30–60–90 (G9-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | יחסי צלעות וזוויות (G9-T38) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | הטרפז (G9-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
-| כיתה ט׳ | דמיון משולשים — משפט ז.ז וחישובים (G9-T40) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ט׳ | גיאומטריה חישובית — משולש (G9-T33) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ט׳ | פונקציה קווית (G9-T34) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ט׳ | משפט פיתגורס (G9-T35) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ט׳ | קריאת גרפים (G9-T36) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ט׳ | משולש ישר־זווית 30–60–90 (G9-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ט׳ | יחסי צלעות וזוויות (G9-T38) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
+| כיתה ט׳ | הטרפז (G9-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
+| כיתה ט׳ | דמיון משולשים — משפט ז.ז וחישובים (G9-T40) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #195 (unlisted) |
 | כיתה ט׳ | פירוק לגורמים 1 — הוצאת גורם משותף (G9-T41, parent 2) | גורם משותף · רמה א׳ | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | פירוק לגורמים 2 — נוסחאות הכפל המקוצר וטרינום (G9-T42, parent 2) | כפל מקוצר וטרינום · רמה א׳ | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | פירוק לגורמים 3 — פירוק מלא, משוואות ושברים אלגבריים (G9-T43, parent 2) | פירוק מלא ומשוואות · רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | דו־איבר בריבוע (G9-T44) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | הפרש ריבועים (G9-T45) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | דלתון (G9-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
+| כיתה ט׳ | דלתון (G9-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104; #195 (unlisted) |
