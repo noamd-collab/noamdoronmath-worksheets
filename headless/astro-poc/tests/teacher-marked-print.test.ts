@@ -1246,9 +1246,9 @@ describe('teacher catalog picker', () => {
     const pack = new Function(`${preview.slice(preview.indexOf('function contentHeight'), preview.indexOf('function scaledGap'))}${preview.slice(preview.indexOf('function scaledGap'), preview.indexOf('function shrinkTo'))}${preview.slice(preview.indexOf('function flowAnswers'), preview.indexOf('function paintWorksheetPage'))} return { packWorksheet, flowAnswers, answerDisplayScale: (typeof answerDisplayScale === 'function' ? answerDisplayScale : null) };`)() as { packWorksheet: (measured: { dh: number; dw?: number; slice: { kind: string; gap: number } }[], noteHeight: number) => { items: { slice: { kind: string }; cells?: unknown[]; dh: number }[] }[]; flowAnswers: (items: { dh: number; dw?: number; slice: { kind: string } }[]) => { slice: { kind: string }; cells?: { dw: number }[]; dh: number }[] };
     const packed = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 500 },
+      { slice: { kind: 'answer', gap: 8 }, dh: 400 },
     ], 0);
-    // The answer keeps its height, so the question would print below 0.72; it stays on the next page.
+    // A lone answer that would shrink below 0.6 stays on the next page.
     assert.equal(packed.length, 2);
     const readable = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
@@ -1281,7 +1281,7 @@ describe('teacher catalog picker', () => {
     assert.equal(natural.length, 1);
     const row = natural[0].items.find((item) => item.slice.kind === 'answer-row');
     assert.ok(row && row.cells && row.cells.length === 3);
-    // A short answer key joins the previous page; the question shrinks a little and the answers keep their height.
+    // A short answer key joins the previous page when it still fits at a readable size.
     const pulled = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1000 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
@@ -1290,21 +1290,17 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
     ], 0);
     assert.equal(pulled.length, 1);
-    assert.deepEqual(pulled[0].items.filter((item) => item.slice.kind !== 'row').map((item) => item.dh), [34, 80, 80, 80]);
-    assert.ok(pulled[0].items[0].dh < 1000 && pulled[0].items[0].dh >= 720, String(pulled[0].items[0].dh));
-    // The question prints at about 0.93 so the heading and the answer fit unscaled.
+    // The heading fits, and the answer that is left needs about 0.67. The old 0.72 floor left it behind.
     const pulledAtSix = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
       { slice: { kind: 'answer', gap: 8 }, dh: 200, dw: 800 },
     ], 0);
     assert.equal(pulledAtSix.length, 1);
-    // When the question would have to shrink below 0.72 the key stays on its own page.
+    // A key that would have to shrink below 0.6 stays on its own page.
     const leftBehind = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
-      { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
       { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
       { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
       { slice: { kind: 'answer', gap: 8 }, dh: 80, dw: 800 },
@@ -1313,7 +1309,7 @@ describe('teacher catalog picker', () => {
     assert.equal(leftBehind.length, 2);
     const moved = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4, block: 'other' }, dh: 1100 },
-      { slice: { kind: 'row', gap: 4, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 400 },
+      { slice: { kind: 'row', gap: 4, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 160 },
       { slice: { kind: 'row', gap: -2, block: 'q6', source: { pdfId: 'pythagoras' } }, dh: 80 },
     ], 0);
     assert.equal(moved.length, 2);
