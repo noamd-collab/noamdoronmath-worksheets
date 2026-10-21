@@ -323,7 +323,11 @@
   }
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function explicitRelationSymbols(sentence){
-    return String(sentence||"").replace(/⟂/g,"⊥").replace(
+    // A named segment followed by its own relation starts a new clause,
+    // even after a comma or ו-. It is not another operand of the earlier list.
+    var clauses=String(sentence||"").replace(/⟂/g,"⊥").replace(
+      /(?:,\s*(?:ו[־-]?\s*)?|\s+ו[־-]?\s*)(?=[A-Z]{2}(?![A-Za-z])\s*(?:(?:(?:הוא|הינו)\s+)?(?:מאונך|ניצב|מקביל)\s+ל|[=∥⊥]))/g,"; ");
+    return clauses.replace(
       /([A-Z]{2})\s+(?:(?:הוא|הינו)\s+)?(מאונך|ניצב|מקביל)\s+ל[־-]?\s*(?:(?:אלכסו(?:ן|נים)|ישר(?:ים)?|צלע(?:ות)?|קטע(?:ים)?)\s+)?([A-Z]{2}(?:\s*(?:,\s*(?:ו[־-]?\s*)?|ו[־-]?\s*)[A-Z]{2})*)(?![A-Z])/g,
       function(_all,first,relation,others){
         // An explicit list states the relation to every named segment. Keep

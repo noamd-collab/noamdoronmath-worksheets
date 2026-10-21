@@ -79,3 +79,20 @@ test('the captured live coordinates are rejected for PK parallelism, without cha
  assert.equal(JSON.stringify(plan),before);
  assert.match(Plan.PROMPT_SCHEMA,/PK∥AB and PK∥CD/,'the existing planner repair receives unambiguous list guidance');
 });
+
+test('a comma or conjunction before a new relation starts a clause, not another list operand',()=>{
+ for(const prefix of ['PK מקביל ל-AB','PK מקביל לצלעות AB']){
+  for(const suffix of [', CD מאונך ל-AB.',' ו-CD הוא מאונך ל-AB.',', ו־CD הינו ניצב ל־AB.',', CD⊥AB.',' ו-CD ⊥ AB.']){
+   const plan={version:1,status:'ok',points:{A:[0,0],B:[4,0],C:[5,0],D:[5,3],P:[0,2],K:[4,2]},
+    segments:[['A','B'],['C','D'],['P','K']],highlights:[{from:'P',to:'K',color:'blue',label:''}],angles:[],equalGroups:[],rightAngles:[],evidence:[]};
+   const context={questionText:'הקטעים AB, CD, PK נתונים. '+prefix+suffix,hintText:'התבוננו בקטע PK.',studentMessage:''};
+   assert.equal(Plan.inspect(plan,context).ok,true,'independent perpendicular clause: '+prefix+suffix);
+   plan.points.D=[8,0];
+   const invalid=Plan.inspect(plan,context);
+   assert.equal(invalid.reason,'source_coordinate_contradiction','the second clause must still be checked: '+prefix+suffix);
+   assert.deepEqual(invalid.constraint.first,['C','D']);
+   assert.equal(invalid.constraint.relation,'⊥');
+   assert.ok(!invalid.constraint.requiredRelations.includes('PK∥CD'),'do not invent a parallel relation');
+  }
+ }
+});
