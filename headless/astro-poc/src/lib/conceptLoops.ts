@@ -1352,7 +1352,9 @@ const PRIME_RECT_HOLD = 5.4;
    [data-el='copy'] (the transform film) at opacity 0.
    Marks: one tick, then two ticks, then the included arc — each pair with
    its own caption. "המשולשים חופפים" starts only after the slide has
-   finished, and the formula follows it. */
+   finished, and the formula follows it. The lap never blanks the card:
+   both outlines stay drawn, then slide apart again so the seam matches
+   the start. */
 
 const SAS_A = { x: 155, y: 280 };
 const SAS_B = { x: 400, y: 210 };
@@ -1424,15 +1426,17 @@ function placeSasArc(
 }
 
 function renderSasSnap(root: LoopRoot, t: number) {
-  const endFade = 1 - ph(t, 8.35, 9.1);
-  const vis = t < 9.15 ? endFade : ph(t, 9.8, 10);
-  const together = ph(t, 4.2, 4.9) * (1 - ph(t, 9.2, 9.75));
+  // Captions leave before the reset. The triangles stay opaque and slide
+  // back apart, so the homepage hero and the grade player never show an
+  // empty peach panel.
+  const endFade = 1 - ph(t, 8.2, 8.9);
+  const together = ph(t, 4.2, 4.9) * (1 - ph(t, 8.5, 9.4));
   shift(q(root, 'orig'), -SAS_APART * (1 - together), 0);
   const sasCopy = q(root, 'sas-copy');
   shift(sasCopy, SAS_APART * (1 - together), 0);
   op(sasCopy, 1);
-  op(q(root, 'triA'), vis);
-  op(q(root, 'triB'), vis);
+  op(q(root, 'triA'), 1);
+  op(q(root, 'triB'), 1);
 
   placeSasTicks(q(root, 'm1a'), SAS_A.x, SAS_A.y, SAS_B.x, SAS_B.y, 1);
   placeSasTicks(q(root, 'm1b'), SAS_A.x, SAS_A.y, SAS_B.x, SAS_B.y, 1);

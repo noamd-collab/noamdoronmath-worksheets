@@ -158,11 +158,12 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // triangles stay visible, marks arrive in pairs, then they meet in
   // the middle. Moved again the same day: the dashed group is sas-copy
   // so [data-el='copy'] { opacity: 0 } no longer hides it.
+  // Moved again so the lap reset keeps both outlines on screen.
   // Explicit content fix, not a silent regen.
   const expected = {
     'src/components/ConceptLoop.astro': '7d725f47d324b76dae27c27874116a93ed59ffb3523c26198140b19276293d7a',
     // PR169: preserve new topic films and honor OS reduced motion.
-    'src/lib/conceptLoops.ts': '48eb182e5b4dafde1760c4bd4a252c96c5d2b58283cbba3912ccf01f39a85435',
+    'src/lib/conceptLoops.ts': '16776933aea73936f536f13c018eb834969775fb06890b8057a7e79e6067347c',
     'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
   };
   for (const [file, digest] of Object.entries(expected)) {

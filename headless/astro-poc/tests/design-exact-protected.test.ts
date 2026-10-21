@@ -30,6 +30,8 @@
  * marks, then they meet in the middle with both outlines still visible.
  * Moved again the same day so the dashed triangle is sas-copy: the
  * existing [data-el='copy'] { opacity: 0 } rule was hiding it.
+ * Moved again so the lap reset keeps both outlines on screen and slides
+ * them apart, instead of fading the card empty (Noam, 21.10.2026).
  * Explicit content fix, not a silent regen.
  * The viewer released scripts moved again so the glossary and the
  * fraction key draw a horizontal bar instead of an ASCII slash
@@ -64,7 +66,7 @@ const protectedFiles: Record<string, string> = {
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
   // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
   // PR169: preserve new topic films and honor OS reduced motion.
-    'src/lib/conceptLoops.ts': '48eb182e5b4dafde1760c4bd4a252c96c5d2b58283cbba3912ccf01f39a85435',
+    'src/lib/conceptLoops.ts': '16776933aea73936f536f13c018eb834969775fb06890b8057a7e79e6067347c',
   'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
   'src/components/ConceptLoop.astro': '7d725f47d324b76dae27c27874116a93ed59ffb3523c26198140b19276293d7a',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine

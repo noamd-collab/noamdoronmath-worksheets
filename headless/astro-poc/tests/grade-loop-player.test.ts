@@ -487,6 +487,8 @@ describe('GradeLoopPlayer render contract', () => {
     const fn = engine.slice(engine.indexOf('function renderSasSnap'), engine.indexOf('const SAS_SNAP_HOLD'));
     assert.match(fn, /q\(root, 'sas-copy'\)/);
     assert.match(fn, /op\(sasCopy, 1\)/);
+    assert.match(fn, /op\(q\(root, 'triA'\), 1\)/);
+    assert.match(fn, /op\(q\(root, 'triB'\), 1\)/);
     assert.doesNotMatch(fn, /q\(root, 'copy'\)/);
   });
 });
