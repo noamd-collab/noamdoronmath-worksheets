@@ -1,6 +1,6 @@
 # Wix media IDs — 2026-10-15
 
-2026-10-21 19:23 IDT, after Noam’s 19:16 approval to finish: still no new upload. `WIX_MEDIA_API_KEY` is not injected. `CLOUD_AGENT_ALL_SECRET_NAMES` and `CLOUD_AGENT_INJECTED_SECRET_NAMES` are only `WIX_FORMS_API_KEY`. The 24 files already in the table were downloaded again. Each returned HTTP 200 and the sha256 matched the recorded hash. Hub issue 1 still returns 403 because commenting is disabled above 2500 comments. No publish, no wix release, no merge. G8-T26 and G9-T32 were not touched.
+2026-10-21 19:30 IDT: this upload task is already done elsewhere. Draft PR https://github.com/noamd-collab/noamdoronmath-worksheets/pull/127 records the same eight packages as uploaded and READY. `WIX_MEDIA_API_KEY` is still not injected here, so this branch did not upload again. The 24 URLs below were downloaded again at 19:30 IDT. Each returned HTTP 200 and the sha256 matched. Hub issue 1 still returns 403 above 2500 comments. No merge and no publish from this branch. G8-T26 and G9-T32 were not touched here.
 
 ## Site IDs (checked 2026-10-21, before any upload call)
 
