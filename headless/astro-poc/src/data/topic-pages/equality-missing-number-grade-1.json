@@ -1,0 +1,265 @@
+{
+  "slug": "equality-missing-number-grade-1",
+  "path": "/equality-missing-number-grade-1",
+  "grade": 1,
+  "sourceUrl": "https://www.noamdoronmath.co.il/equality-missing-number-grade-1",
+  "fetchedAt": "2026-10-15T00:00:00.000Z",
+  "verifiedVia": "authored-elementary-g1-t10-grounded-pdf",
+  "title": "שוויון נעלם והשוואת תרגילים לכיתה א׳ | דפי עבודה במתמטיקה – נועם דורון",
+  "description": "שוויון נעלם והשוואת תרגילים לכיתה א׳: סימן השוויון כמאזניים ומספר חסר בכל מקום, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+  "h1": "שוויון נעלם והשוואת תרגילים לכיתה א׳",
+  "intro": "מבינים את סימן השוויון כמו מאזניים ומוצאים מספר חסר בכל מקום בתרגיל. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "הסימן = אומר ששני הצדדים שווים, כמו מאזניים מאוזנים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בתרגיל עם נעלם מחפשים איזה מספר מאזן את שני הצדדים: 3 + ? = 7.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "הנעלם יכול להיות בכל מקום: ? + 2 = 6, 8 = 5 + ?, וגם 9 − ? = 4.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "טעות נפוצה היא לחשוב ש־= אומר ״והתשובה היא״. בתרגיל 5 = 2 + ? התשובה היא 3, כי 2 ועוד 3 שווה 5.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בדקו את עצמכם: מה מסתתר אחרי ה־? בתרגיל 4 + ? = 9?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 5, כי 4 ועוד 5 זה 9.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "מבינים את סימן השוויון כמו מאזניים ומוצאים מספר חסר בכל מקום בתרגיל. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=1&topic=10",
+      "catalogTopicId": 10
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "הסימן = אומר ששני הצדדים שווים, כמו מאזניים מאוזנים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בתרגיל עם נעלם מחפשים איזה מספר מאזן את שני הצדדים: 3 + ? = 7.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "הנעלם יכול להיות בכל מקום: ? + 2 = 6, 8 = 5 + ?, וגם 9 − ? = 4.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "טעות נפוצה היא לחשוב ש־= אומר ״והתשובה היא״. בתרגיל 5 = 2 + ? התשובה היא 3, כי 2 ועוד 3 שווה 5.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "בדקו את עצמכם: מה מסתתר אחרי ה־? בתרגיל 4 + ? = 9?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 5, כי 4 ועוד 5 זה 9.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 15.10.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "האם דפי העבודה בנושא שוויון נעלם והשוואת תרגילים מתאימים לכיתה א׳?",
+      "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+    },
+    {
+      "question": "איך בוחרים רמת תרגול?",
+      "answer": "רמה א׳ היא רמת התרגול הרגילה וברירת המחדל. רמה ב׳ קלה יותר ומתאימה לביסוס ולתרגול מודרך. מצוינות היא הרמה הקשה יותר, להעמקה ולאתגר."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "authored",
+      "items": [
+        {
+          "question": "האם דפי העבודה בנושא שוויון נעלם והשוואת תרגילים מתאימים לכיתה א׳?",
+          "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+        },
+        {
+          "question": "איך בוחרים רמת תרגול?",
+          "answer": "רמה א׳ היא רמת התרגול הרגילה וברירת המחדל. רמה ב׳ קלה יותר ומתאימה לביסוס ולתרגול מודרך. מצוינות היא הרמה הקשה יותר, להעמקה ולאתגר."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/grade-1",
+      "label": "כל דפי כיתה א׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-1"
+    },
+    {
+      "path": "/grade-2",
+      "label": "דפי עבודה לכיתה ב׳",
+      "productionHref": "https://www.noamdoronmath.co.il/grade-2"
+    }
+  ],
+  "catalogCta": {
+    "label": "פתיחת דפי העבודה ובחירת רמה",
+    "href": "/worksheets?grade=1&topic=10",
+    "source": "catalog-g1-t10",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=1&topic=10",
+    "catalogTopicId": 10,
+    "catalogTopicTitle": "שוויון נעלם והשוואת תרגילים"
+  },
+  "catalogCtas": [
+    {
+      "label": "פתיחת דפי העבודה ובחירת רמה",
+      "href": "/worksheets?grade=1&topic=10",
+      "source": "catalog-g1-t10",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=1&topic=10",
+      "catalogTopicId": 10,
+      "catalogTopicTitle": "שוויון נעלם והשוואת תרגילים"
+    }
+  ],
+  "gradeHubHref": "/grade-1",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/equality-missing-number-grade-1#webpage",
+        "url": "https://www.noamdoronmath.co.il/equality-missing-number-grade-1",
+        "name": "שוויון נעלם והשוואת תרגילים לכיתה א׳ | דפי עבודה במתמטיקה – נועם דורון",
+        "description": "שוויון נעלם והשוואת תרגילים לכיתה א׳: סימן השוויון כמאזניים ומספר חסר בכל מקום, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/equality-missing-number-grade-1#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/equality-missing-number-grade-1#learning-resource",
+        "name": "שוויון נעלם והשוואת תרגילים לכיתה א׳",
+        "url": "https://www.noamdoronmath.co.il/equality-missing-number-grade-1",
+        "description": "שוויון נעלם והשוואת תרגילים לכיתה א׳: סימן השוויון כמאזניים ומספר חסר בכל מקום, ודפי עבודה ברמות א׳, ב׳ ומצוינות. חינם וללא הרשמה.",
+        "educationalLevel": "כיתה א׳",
+        "learningResourceType": "דפי עבודה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/equality-missing-number-grade-1#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "האם דפי העבודה בנושא שוויון נעלם והשוואת תרגילים מתאימים לכיתה א׳?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה א׳ ומסודר לפי רמות קושי."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "איך בוחרים רמת תרגול?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "רמה א׳ היא רמת התרגול הרגילה וברירת המחדל. רמה ב׳ קלה יותר ומתאימה לביסוס ולתרגול מודרך. מצוינות היא הרמה הקשה יותר, להעמקה ולאתגר."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

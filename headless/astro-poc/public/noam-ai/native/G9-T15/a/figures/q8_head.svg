@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 107" width="240" height="107">
+<g data-layer="lines">
+<line id="e0001" data-seg="KL" x1="120" y1="26.36" x2="26" y2="80.64" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="KM" x1="120" y1="26.36" x2="214" y2="80.64" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="KN" x1="120" y1="26.36" x2="88.67" y2="80.64" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="LM" x1="26" y1="80.64" x2="214" y2="80.64" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<line id="e0005" data-mark="tick KL" x1="75" y1="56.96" x2="71" y2="50.04" stroke="#000000" stroke-width="1"/>
+<line id="e0006" data-mark="tick KM" x1="169" y1="50.04" x2="165" y2="56.96" stroke="#000000" stroke-width="1"/>
+<line id="e0007" data-mark="tick2 KN" x1="108.55" y1="54.2" x2="101.62" y2="50.2" stroke="#000000" stroke-width="1"/>
+<line id="e0008" data-mark="tick2 KN" x1="107.05" y1="56.8" x2="100.12" y2="52.8" stroke="#000000" stroke-width="1"/>
+<line id="e0009" data-mark="tick2 LN" x1="55.84" y1="76.64" x2="55.84" y2="84.64" stroke="#000000" stroke-width="1"/>
+<line id="e0010" data-mark="tick2 LN" x1="58.84" y1="76.64" x2="58.84" y2="84.64" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0011" data-pt="K" cx="120" cy="26.36" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0012" data-pt="L" cx="26" cy="80.64" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="M" cx="214" cy="80.64" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="N" cx="88.67" cy="80.64" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0015" data-for="K" x="120" y="21.86" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">K</text>
+<text id="e0016" data-for="L" x="16.94" y="87.5" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">L</text>
+<text id="e0017" data-for="M" x="224.66" y="87.93" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">M</text>
+<text id="e0018" data-for="N" x="88.67" y="94.01" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">N</text>
+</g>
+</svg>

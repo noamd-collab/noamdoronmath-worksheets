@@ -46,7 +46,7 @@ function archiveLastmod(path: string): string {
 }
 
 /**
- * 60 served posts plus the 4 archive routes.
+ * 68 served posts plus the 4 archive routes.
  * Post paths are decoded so Hebrew slugs match the live sitemap strings.
  */
 export function listBlogSitemapEntries(): BlogSitemapEntry[] {

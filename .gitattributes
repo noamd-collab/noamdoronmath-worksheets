@@ -1,0 +1,5 @@
+# Generated public index: review build-site-guide.ts and validate with check:site-guide.
+# Keep the full data in Git, but avoid flooding code-review diffs with one huge JSON line.
+headless/astro-poc/public/noam-navigation-guide.json -diff linguist-generated=true
+headless/astro-poc/public/noam-navigation.js linguist-generated=true
+headless/astro-poc/src/data/site-guide.v1.json -diff linguist-generated=true

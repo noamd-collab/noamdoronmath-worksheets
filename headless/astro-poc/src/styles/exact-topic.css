@@ -21,6 +21,15 @@
   color: #5a6588;
 }
 .exact-topic .topic-page__crumbs a { color: #1e605e; }
+.exact-topic .topic-math-nowrap { white-space: nowrap; }
+.exact-topic .topic-frac-row {
+  display: inline-flex;
+  align-items: center;
+  direction: ltr;
+  unicode-bidi: isolate;
+  vertical-align: middle;
+  gap: 0.12em;
+}
 .exact-topic .topic-page__crumbs [aria-current='page'] {
   /* The source wraps this segment; the former shared skin truncated it. */
   max-width: none;
@@ -182,3 +191,24 @@
 .exact-topic .topic-page__author,
 .exact-topic .topic-page__updated,
 .exact-topic .topic-page__terms { color: #5a6588; }
+
+/* order-ops: the two expressions are the film's content, but they rendered at
+   the 15px base size (.cl-t wins over .cl-big). That is about 8px on a 390px
+   phone, and the dashed boxes framed empty space. Draw them at the size the
+   boxes were laid out for, and move the first box onto 3 × 4. */
+.exact-topic .concept-loop[data-loop="order-ops"] .cl-big { font-size: 36px; font-weight: 700; }
+.exact-topic .concept-loop[data-loop="order-ops"] [data-el="box-mul"] {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: translateX(-10px) scaleX(0.87);
+}
+
+/* Give the lesson, rather than its decorative surround, the phone width. */
+@media (max-width: 640px) {
+  .exact-topic .exact-topic-pencil {display:none;}
+  .exact-topic .exact-topic-demo:not(.exact-topic-demo--bare) { padding: 18px 8px 12px; }
+  /* SVG coordinates scale down on phones. Enlarge only the spacious titles,
+     not tightly spaced measurements elsewhere in the shared illustrations. */
+  .exact-topic .concept-loop[data-loop="angle-kinds"] .cl-t,
+  .exact-topic .concept-loop[data-loop="tri-sort"] svg > .cl-t { font-size: 28px; }
+}

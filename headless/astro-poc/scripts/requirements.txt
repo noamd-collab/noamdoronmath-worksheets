@@ -1,0 +1,4 @@
+# Python packages for scripts/measure-label-gaps.py (npm run catalog:measure).
+# The unit suite does not install these. The fixture test skips when they are missing.
+pymupdf>=1.24
+numpy>=1.26

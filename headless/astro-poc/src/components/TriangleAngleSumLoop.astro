@@ -3,16 +3,32 @@
  * Grade 7 triangle angle-sum film.
  * The SVG, math, and controls stay in public/loops/triangle-angle-sum-vertex-descent.html.
  * This wrapper only frames that file so its readouts and play/pause/seek stay usable.
+ * `card` is the hero and grade-player frame: same film, tighter chrome, and it loops.
  */
 interface Props {
   src: string;
   marker: string;
+  /** Set on the hero and the grade player so shuffle can find `[data-loop]`. */
+  variant?: string;
+  card?: boolean;
 }
-const { src, marker } = Astro.props;
-const frameSrc = `${src}?embed=1`;
+const { src, marker, variant, card = false } = Astro.props;
+const frameSrc = card ? `${src}?embed=1&loop=1&card=1` : `${src}?embed=1`;
 ---
 
-<div class="angle-sum-loop" data-angle-sum-loop data-landing-loop={marker}>
+<div
+  class:list={['angle-sum-loop', card && 'angle-sum-loop--card']}
+  data-angle-sum-loop
+  data-landing-loop={marker}
+  data-loop={variant}
+>
+  {
+    card && (
+      <button type="button" class="angle-sum-loop__pause" data-pause-card aria-label="השהיית הנפשה">
+        השהיית הנפשה
+      </button>
+    )
+  }
   <iframe
     class="angle-sum-loop__frame"
     src={frameSrc}
@@ -23,68 +39,42 @@ const frameSrc = `${src}?embed=1`;
 </div>
 
 <script>
-  function boot(root) {
-    const frame = root.querySelector('[data-angle-sum-frame]');
-    if (!frame) return;
-
-    function fit() {
-      let doc;
-      try { doc = frame.contentDocument; } catch { return; }
-      const main = doc?.querySelector('main');
-      if (!main) return;
-      const h = Math.ceil(main.getBoundingClientRect().height);
-      if (h > 200 && Math.abs(frame.clientHeight - h) > 2) frame.style.height = `${h}px`;
-    }
-
-    function motionOff() {
-      const html = document.documentElement;
-      return html.classList.contains('nd-motion-off') || html.classList.contains('noam-a11y-motion');
-    }
-
-    function holdStill() {
-      if (!motionOff()) return;
-      let demo;
-      try { demo = frame.contentWindow?.triangleDemo; } catch { return; }
-      if (demo?.getState?.().playing) demo.pause();
-    }
-
-    let watching = false;
-    function onReady() {
-      let doc;
-      try { doc = frame.contentDocument; } catch { return; }
-      if (!doc?.querySelector('main')) return;
-      fit();
-      holdStill();
-      if (watching || !('ResizeObserver' in window)) return;
-      watching = true;
-      const observer = new ResizeObserver(fit);
-      observer.observe(frame);
-      if (doc.body) observer.observe(doc.body);
-    }
-
-    frame.addEventListener('load', onReady);
-    onReady();
-
-    new MutationObserver(holdStill).observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-  }
-
-  document.querySelectorAll('[data-angle-sum-loop]').forEach(boot);
+  import { watchAngleSumFilms } from '../lib/angleSumFilm';
+  watchAngleSumFilms();
 </script>
 
 <style>
   .angle-sum-loop {
+    position: relative;
     display: block;
     width: 100%;
+    max-width: 100%;
     background: #fbfaf5;
   }
   .angle-sum-loop__frame {
     display: block;
     width: 100%;
+    max-width: 100%;
     height: 600px;
     border: 0;
     background: #fbfaf5;
+  }
+  .angle-sum-loop--card {
+    background: transparent;
+  }
+  .angle-sum-loop--card .angle-sum-loop__frame {
+    height: 440px;
+    background: transparent;
+  }
+  .angle-sum-loop__pause {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 </style>

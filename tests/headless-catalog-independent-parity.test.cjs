@@ -149,7 +149,7 @@ test('independent: contract consumer href meaning matches production sheetHref f
       if (meaning.pa || meaning.pb || meaning.pc) withSiblings++;
       // siblings from production row a/b/c only
       const row = prod.DATA[m.grade].links[m.topicId];
-      for (const k of ['a', 'b', 'c']) {
+      for (const k of ['a', 'b', 'c', 'c2']) {
         const q = 'p' + k;
         assert.equal(meaning[q] || null, row[k] || null, q + ' sibling');
       }
@@ -201,7 +201,7 @@ test('independent: viewer-disabled override forces direct PDF for all contract c
       const row = disabled.DATA[gk].links[t.id] || {};
       const keys = Object.prototype.hasOwnProperty.call(row, 'one')
         ? ['one']
-        : ['a', 'b', 'c'].filter((k) => row[k] != null);
+        : ['a', 'b', 'c', 'c2'].filter((k) => row[k] != null);
       for (const key of keys) {
         const pdf = row[key];
         const prodHref = disabled.sheetHref(t, grade, key === 'one' ? 'b' : key, pdf, row);

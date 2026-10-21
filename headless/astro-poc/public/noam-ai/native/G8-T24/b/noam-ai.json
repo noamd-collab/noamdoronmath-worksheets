@@ -1,0 +1,3644 @@
+{
+ "schema_version": "noam-ai/v1",
+ "package": "G8-T24",
+ "level": "b",
+ "curriculum": {
+  "grade": "8",
+  "track": "ח",
+  "topic": "ratio_scale",
+  "unit": "יחס, פרופורציה וקנה מידה",
+  "allowed_tools": [
+   {
+    "id": "g7.coordinate_system.1",
+    "name": "מערכת צירים והרחבתה"
+   },
+   {
+    "id": "g7.directed_numbers.1",
+    "name": "הכרה"
+   },
+   {
+    "id": "g7.directed_numbers.2",
+    "name": "חיבור"
+   },
+   {
+    "id": "g7.directed_numbers.3",
+    "name": "חיסור"
+   },
+   {
+    "id": "g7.directed_numbers.4",
+    "name": "כפל וחילוק"
+   },
+   {
+    "id": "g7.angles.1",
+    "name": "סימון"
+   },
+   {
+    "id": "g7.angles.2",
+    "name": "מדידה"
+   },
+   {
+    "id": "g7.angles.3",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "g7.angles.4",
+    "name": "סכום והפרש"
+   },
+   {
+    "id": "g7.angles.5",
+    "name": "צמודות וקודקודיות"
+   },
+   {
+    "id": "g7.angles.6",
+    "name": "זוויות במשולש ובמרובע"
+   },
+   {
+    "id": "g7.transformations.1",
+    "name": "צורות חופפות במישור וטרנספורמציות"
+   },
+   {
+    "id": "g7.powers_roots.1",
+    "name": "חזקות עם מעריך טבעי ושורש ריבועי חיובי"
+   },
+   {
+    "id": "g7.areas.1",
+    "name": "שטחים א׳"
+   },
+   {
+    "id": "g7.areas.2",
+    "name": "ב׳"
+   },
+   {
+    "id": "g7.areas.3",
+    "name": "חישוב היקפים"
+   },
+   {
+    "id": "g7.algebraic_expressions.1",
+    "name": "משתנים וביטויים אלגבריים"
+   },
+   {
+    "id": "g7.algebraic_expressions.2",
+    "name": "זהות"
+   },
+   {
+    "id": "g7.algebraic_expressions.3",
+    "name": "כינוס איברים דומים"
+   },
+   {
+    "id": "g7.algebraic_expressions.4",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "g7.solids.1",
+    "name": "גופים במרחב: קובייה"
+   },
+   {
+    "id": "g7.solids.2",
+    "name": "תיבה"
+   },
+   {
+    "id": "g7.solids.3",
+    "name": "מנסרה משולשת"
+   },
+   {
+    "id": "g7.data_frequency.1",
+    "name": "איסוף"
+   },
+   {
+    "id": "g7.data_frequency.2",
+    "name": "ייצוג וקריאת מידע"
+   },
+   {
+    "id": "g7.data_frequency.3",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g7.data_frequency.4",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g7.data_frequency.5",
+    "name": "הסתברות בהקשר של שכיחות יחסית"
+   },
+   {
+    "id": "g7.pythagoras.1",
+    "name": "משפט פיתגורס ושימושיו"
+   },
+   {
+    "id": "g7.equations.1",
+    "name": "משוואות ממעלה ראשונה ופתרונן"
+   },
+   {
+    "id": "g7.word_problems.1",
+    "name": "שאלות בהקשרים בעזרת משוואה ממעלה ראשונה"
+   },
+   {
+    "id": "g7.points_on_graph.1",
+    "name": "נקודות על גרף ברביע I"
+   },
+   {
+    "id": "g8.ratio_scale.1",
+    "name": "יחס"
+   },
+   {
+    "id": "g8.ratio_scale.2",
+    "name": "פרופורציה וקנה מידה"
+   },
+   {
+    "id": "thm.adjacent_angles",
+    "name": "זוויות צמודות (סכומן 180°)"
+   },
+   {
+    "id": "thm.vertical_angles",
+    "name": "זוויות קודקודיות שוות"
+   },
+   {
+    "id": "thm.angle_bisector",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "thm.alternate_angles",
+    "name": "זוויות מתחלפות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.corresponding_angles",
+    "name": "זוויות מתאימות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.triangle_angle_sum",
+    "name": "סכום הזוויות במשולש 180°"
+   },
+   {
+    "id": "thm.quad_angle_sum",
+    "name": "סכום הזוויות במרובע 360°"
+   },
+   {
+    "id": "frm.area_rectangle",
+    "name": "שטח מלבן = אורך × רוחב"
+   },
+   {
+    "id": "frm.area_triangle",
+    "name": "שטח משולש = צלע × גובה : 2"
+   },
+   {
+    "id": "frm.area_parallelogram",
+    "name": "שטח מקבילית = צלע × גובה"
+   },
+   {
+    "id": "frm.area_trapezoid",
+    "name": "שטח טרפז = (סכום בסיסים) × גובה : 2"
+   },
+   {
+    "id": "frm.perimeter",
+    "name": "היקף מצולע"
+   },
+   {
+    "id": "frm.box_volume",
+    "name": "נפח תיבה"
+   },
+   {
+    "id": "frm.box_surface",
+    "name": "שטח פנים של תיבה"
+   },
+   {
+    "id": "thm.pythagoras",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "mth.distributive",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "mth.first_degree_eq",
+    "name": "פתרון משוואה ממעלה ראשונה"
+   }
+  ],
+  "not_yet_allowed": [
+   {
+    "id": "g8.pythagoras.1",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "g8.percentages.1",
+    "name": "אחוזים"
+   },
+   {
+    "id": "g8.cylinder_cone.1",
+    "name": "גליל"
+   },
+   {
+    "id": "g8.cylinder_cone.2",
+    "name": "חרוט"
+   },
+   {
+    "id": "g8.data_center.1",
+    "name": "איסוף מידע"
+   },
+   {
+    "id": "g8.data_center.2",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g8.data_center.3",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g8.data_center.4",
+    "name": "טווח ומדדי מרכז"
+   },
+   {
+    "id": "g8.data_center.5",
+    "name": "שני מקורות מידע"
+   },
+   {
+    "id": "g8.transformations.1",
+    "name": "טרנספורמציות וצורות חופפות"
+   },
+   {
+    "id": "g8.functions_intro.1",
+    "name": "מבוא לפונקציות"
+   },
+   {
+    "id": "g8.functions_intro.2",
+    "name": "ייצוגים"
+   },
+   {
+    "id": "g8.functions_intro.3",
+    "name": "עלייה וירידה"
+   },
+   {
+    "id": "g8.functions_intro.4",
+    "name": "גרפים לינאריים"
+   },
+   {
+    "id": "g8.slope_linear.1",
+    "name": "קצב שינוי"
+   },
+   {
+    "id": "g8.slope_linear.2",
+    "name": "שיפוע"
+   },
+   {
+    "id": "g8.slope_linear.3",
+    "name": "ייצוג אלגברי של פונקציה ליניארית"
+   },
+   {
+    "id": "g8.word_problems_eq.1",
+    "name": "שאלות מילוליות בעזרת משוואות"
+   },
+   {
+    "id": "g8.congruence.1",
+    "name": "חפיפת משולשים"
+   },
+   {
+    "id": "g8.inter_extrapolation.1",
+    "name": "אינטרפולציה"
+   },
+   {
+    "id": "g8.inter_extrapolation.2",
+    "name": "אקסטרפולציה"
+   },
+   {
+    "id": "g8.triangle_parts.1",
+    "name": "צלעות במשולש"
+   },
+   {
+    "id": "g8.triangle_parts.2",
+    "name": "תיכון"
+   },
+   {
+    "id": "g8.triangle_parts.3",
+    "name": "זווית חיצונית"
+   },
+   {
+    "id": "g8.triangle_parts.4",
+    "name": "שווה שוקיים"
+   },
+   {
+    "id": "g8.triangle_parts.5",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g8.systems_basic.1",
+    "name": "מערכות משוואות (רמה בסיסית)"
+   },
+   {
+    "id": "g8.similarity.1",
+    "name": "דמיון משולשים"
+   },
+   {
+    "id": "g8.probability.1",
+    "name": "הסתברות א"
+   },
+   {
+    "id": "g8.probability.2",
+    "name": "הסתברות ב"
+   },
+   {
+    "id": "g8.pythagoras_3d.1",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "g8.inequalities.1",
+    "name": "אי-שוויונות"
+   },
+   {
+    "id": "g9.alg_technique.1",
+    "name": "חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.2",
+    "name": "פישוט ביטויים בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.3",
+    "name": "פתרון משוואות בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.4",
+    "name": "שאלות השוואת שטחים בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9.alg_technique.5",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.6",
+    "name": "פירוק לגורמים: הוצאת גורם משותף"
+   },
+   {
+    "id": "g9.alg_technique.7",
+    "name": "פירוק תלת-איבר ריבועי (מקדם 1)"
+   },
+   {
+    "id": "g9.alg_technique.8",
+    "name": "פירוק בעזרת נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.9",
+    "name": "פתרון משוואות ריבועיות בסיסיות באמצעות פירוק לגורמים"
+   },
+   {
+    "id": "g9.alg_technique.10",
+    "name": "צמצום שברים אלגבריים"
+   },
+   {
+    "id": "g9.alg_technique.11",
+    "name": "כפל וחילוק שברים אלגבריים"
+   },
+   {
+    "id": "g9.kite.1",
+    "name": "הכרת הדלתון"
+   },
+   {
+    "id": "g9.kite.2",
+    "name": "זוויות בדלתון"
+   },
+   {
+    "id": "g9.kite.3",
+    "name": "האלכסון הראשי בדלתון"
+   },
+   {
+    "id": "g9.isosceles_converse.1",
+    "name": "משפטים הפוכים להוכחה כי משולש הוא שווה שוקיים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.1",
+    "name": "היכרות עם הגרף והביטוי האלגברי"
+   },
+   {
+    "id": "g9.quad_func_and_eq.2",
+    "name": "תכונות הפונקציה הריבועית (התייחסות איכותנית): קיצון, עלייה וירידה, חיתוך עם הצירים, חיוביות ושליליות"
+   },
+   {
+    "id": "g9.quad_func_and_eq.3",
+    "name": "הזזה אנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.4",
+    "name": "הזזה אופקית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.5",
+    "name": "שילוב הזזה אופקית ואנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.6",
+    "name": "הצגת פונקציה ריבועית כמכפלה"
+   },
+   {
+    "id": "g9.quad_func_and_eq.7",
+    "name": "הצגה סטנדרטית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.8",
+    "name": "פתרון משוואות ריבועיות בעזרת נוסחת השורשים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.9",
+    "name": "סרטוט גרף על סמך ייצוג סטנדרטי"
+   },
+   {
+    "id": "g9.side_angle_relations.1",
+    "name": "מול הצלע הגדולה ממוקמת הזווית הגדולה"
+   },
+   {
+    "id": "g9.side_angle_relations.2",
+    "name": "מול הזווית הגדולה ממוקמת הצלע הגדולה"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.1",
+    "name": "הניצב מול זווית 30° שווה למחצית היתר"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.2",
+    "name": "משפט הפוך: ניצב השווה למחצית היתר ⇒ הזווית שמולו 30°"
+   },
+   {
+    "id": "g9.parallels_trapezoid.1",
+    "name": "תכונות של הקבלה או אי-הקבלה"
+   },
+   {
+    "id": "g9.parallels_trapezoid.2",
+    "name": "משפט הפוך לישרים מקבילים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.3",
+    "name": "הכרת הטרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.4",
+    "name": "טרפז שווה שוקיים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.5",
+    "name": "הוכחה שמרובע הוא טרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.6",
+    "name": "שטח והיקף טרפז"
+   },
+   {
+    "id": "g9.quad_eq_applications.1",
+    "name": "כולל שימוש בטכניקה אלגברית"
+   },
+   {
+    "id": "g9.quad_inequalities.1",
+    "name": "פתרון אי-שוויון ריבועי בהקשר של פונקציה ריבועית"
+   },
+   {
+    "id": "g9.parallelogram.1",
+    "name": "הגדרת מקבילית"
+   },
+   {
+    "id": "g9.parallelogram.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9.parallelogram.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.rational_equations.1",
+    "name": "פתרון משוואות עם פירוק לגורמים במכנה"
+   },
+   {
+    "id": "g9.rational_equations.2",
+    "name": "תחום הצבה"
+   },
+   {
+    "id": "g9.rational_equations.3",
+    "name": "משוואות שבהן אחד הפתרונות אינו קביל"
+   },
+   {
+    "id": "g9.rectangle.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rectangle.2",
+    "name": "תכונות צלעות, זוויות, אלכסונים"
+   },
+   {
+    "id": "g9.rectangle.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.probability.1",
+    "name": "מהי הסתברות, מושגים בסיסיים (כולל השלמה של ח׳)"
+   },
+   {
+    "id": "g9.probability.2",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9.probability.3",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9.probability.4",
+    "name": "מאורעות דו-שלביים"
+   },
+   {
+    "id": "g9.probability.5",
+    "name": "ייצוגים שונים: טבלה, דיאגרמת עץ, מודל השטח"
+   },
+   {
+    "id": "g9.integrative_literacy.1",
+    "name": "שילוב אלגברה וגיאומטריה בהקשר מהעולם האמיתי"
+   },
+   {
+    "id": "g9.system_degree_2.1",
+    "name": "משמעות אלגברית ומשמעות גרפית של פתרון מערכת משוואות"
+   },
+   {
+    "id": "g9.function_properties.1",
+    "name": "תכונות של גרף: חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה"
+   },
+   {
+    "id": "g9.function_properties.2",
+    "name": "הקשר בין משוואות לגרף של פונקציה"
+   },
+   {
+    "id": "g9.function_properties.3",
+    "name": "הזזה אנכית, הזזה אופקית"
+   },
+   {
+    "id": "g9.function_properties.4",
+    "name": "שיקוף ביחס לציר ה-x"
+   },
+   {
+    "id": "g9.rhombus.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rhombus.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.rhombus.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.square.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.square.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.square.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.right_triangle_median.1",
+    "name": "התיכון ליתר"
+   },
+   {
+    "id": "g9.right_triangle_median.2",
+    "name": "תרגול המשפט בשילוב מרובעים"
+   },
+   {
+    "id": "g9.powers.1",
+    "name": "חוקי חזקות מעריך טבעי או אפס"
+   },
+   {
+    "id": "g9.powers.2",
+    "name": "חוקי שורש ריבועי"
+   },
+   {
+    "id": "g9.word_problems.1",
+    "name": "שאלות מילוליות הנדסיות וכלליות (לרבות משוואה ריבועית או מערכת משוואות)"
+   },
+   {
+    "id": "g9.word_problems.2",
+    "name": "שאלות תנועה"
+   },
+   {
+    "id": "g9.word_problems.3",
+    "name": "שילוב אחוזים"
+   },
+   {
+    "id": "g9.word_problems.4",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9.similarity.1",
+    "name": "יחסי שטחים במשולשים דומים"
+   },
+   {
+    "id": "g9m.graph_reading.1",
+    "name": "תופעות המיוצגות באמצעות גרף במערכת צירים"
+   },
+   {
+    "id": "g9m.graph_reading.2",
+    "name": "קריאת מידע מהגרף ומענה על שאלות"
+   },
+   {
+    "id": "g9m.computational_triangle.1",
+    "name": "סכום זוויות במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.2",
+    "name": "שטח והיקף משולש"
+   },
+   {
+    "id": "g9m.computational_triangle.3",
+    "name": "קטעים מיוחדים במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.4",
+    "name": "שילוב עם מערכת צירים"
+   },
+   {
+    "id": "g9m.linear_function.1",
+    "name": "משמעות השיפוע כקצב שינוי, בשילוב אוריינות"
+   },
+   {
+    "id": "g9m.linear_function.2",
+    "name": "ייצוג אלגברי וגרפי והתאמה ביניהם"
+   },
+   {
+    "id": "g9m.linear_function.3",
+    "name": "נקודה על ישר ומשמעותה"
+   },
+   {
+    "id": "g9m.linear_function.4",
+    "name": "חיתוך עם הצירים"
+   },
+   {
+    "id": "g9m.linear_function.5",
+    "name": "ישרים מקבילים"
+   },
+   {
+    "id": "g9m.linear_function.6",
+    "name": "שטחים והיקפים במערכת צירים"
+   },
+   {
+    "id": "g9m.alg_technique_basic.1",
+    "name": "חוק הפילוג וחוק הפילוג המורחב"
+   },
+   {
+    "id": "g9m.alg_technique_basic.2",
+    "name": "פתרון משוואות פשוטות בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9m.pythagoras.1",
+    "name": "חישובי צלעות במשולשים"
+   },
+   {
+    "id": "g9m.pythagoras.2",
+    "name": "חישובי צלעות בצורות מורכבות"
+   },
+   {
+    "id": "g9m.pythagoras.3",
+    "name": "חישובי היקפים ושטחים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.1",
+    "name": "קווים מיוחדים במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.2",
+    "name": "זוויות במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.4",
+    "name": "תכונות הדלתון"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.5",
+    "name": "חישובי שטחים והיקפים"
+   },
+   {
+    "id": "g9m.statistics.1",
+    "name": "איסוף וארגון נתונים בטבלה, ברשימה ובדיאגרמות"
+   },
+   {
+    "id": "g9m.statistics.2",
+    "name": "שכיחות ושכיחות יחסית"
+   },
+   {
+    "id": "g9m.statistics.3",
+    "name": "טווח נתונים"
+   },
+   {
+    "id": "g9m.statistics.4",
+    "name": "ממוצע, שכיח וחציון"
+   },
+   {
+    "id": "g9m.percentages.1",
+    "name": "החלק היחסי משלם"
+   },
+   {
+    "id": "g9m.percentages.2",
+    "name": "הגדלה והקטנה"
+   },
+   {
+    "id": "g9m.percentages.3",
+    "name": "שאלות מילוליות פשוטות ואורייניות"
+   },
+   {
+    "id": "g9m.similarity.1",
+    "name": "המושג דומים"
+   },
+   {
+    "id": "g9m.similarity.2",
+    "name": "הגדלה או הקטנה של צורות"
+   },
+   {
+    "id": "g9m.similarity.3",
+    "name": "צלעות פרופורציונליות"
+   },
+   {
+    "id": "g9m.similarity.4",
+    "name": "משפט ז.ז"
+   },
+   {
+    "id": "g9m.similarity.5",
+    "name": "חישובי צלעות וזוויות במשולשים דומים"
+   },
+   {
+    "id": "g9m.similarity.6",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9m.equations.1",
+    "name": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.1",
+    "name": "חזרה על ישרים מקבילים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.2",
+    "name": "הגדרת המקבילית"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.3",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.4",
+    "name": "זיהוי מקבילית"
+   },
+   {
+    "id": "g9m.probability.1",
+    "name": "מהי הסתברות"
+   },
+   {
+    "id": "g9m.probability.2",
+    "name": "מושגים בסיסיים"
+   },
+   {
+    "id": "g9m.probability.3",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9m.probability.4",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9m.quad_partial.1",
+    "name": "הצבת ערכי x בביטוי של פונקציה ריבועית וחישוב ערך ה-y"
+   },
+   {
+    "id": "g9m.quad_partial.2",
+    "name": "מפונקציה ריבועית לפתרון משוואה ריבועית"
+   },
+   {
+    "id": "g9m.quad_partial.3",
+    "name": "פתרון משוואות ריבועיות ע״י נוסחת השורשים"
+   },
+   {
+    "id": "g9m.rectangle.1",
+    "name": "הגדרה של מלבן"
+   },
+   {
+    "id": "g9m.rectangle.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems.1",
+    "name": "שאלות מילוליות ושאלות אוריינות בנושאים שונים, כולל שימוש במשוואה ריבועית"
+   },
+   {
+    "id": "g9m.rhombus.1",
+    "name": "הגדרה של מעוין"
+   },
+   {
+    "id": "g9m.rhombus.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.square.1",
+    "name": "הגדרה של ריבוע"
+   },
+   {
+    "id": "g9m.square.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems_integrative.1",
+    "name": "שאלות מילוליות ואוריינות בנושאים שונים"
+   },
+   {
+    "id": "g9m.trapezoid.1",
+    "name": "הגדרה של טרפז"
+   },
+   {
+    "id": "g9m.trapezoid.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.areas_and_perimeters.1",
+    "name": "שאלות אוריינות אינטגרטיביות כולל מעגל — היקף ושטח"
+   },
+   {
+    "id": "thm.co_interior_angles",
+    "name": "זוויות חד-צדדיות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.pythagoras_converse",
+    "name": "המשפט ההפוך למשפט פיתגורס"
+   },
+   {
+    "id": "thm.pythagoras_3d",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "thm.congruence_sas",
+    "name": "משפט חפיפה צ.ז.צ"
+   },
+   {
+    "id": "thm.congruence_asa",
+    "name": "משפט חפיפה ז.צ.ז"
+   },
+   {
+    "id": "thm.congruence_sss",
+    "name": "משפט חפיפה צ.צ.צ"
+   },
+   {
+    "id": "thm.congruence_ssa",
+    "name": "משפט חפיפה צ.צ.ז"
+   },
+   {
+    "id": "thm.congruent_parts",
+    "name": "במשולשים חופפים צלעות וזוויות מתאימות שוות"
+   },
+   {
+    "id": "thm.exterior_angle",
+    "name": "זווית חיצונית למשולש"
+   },
+   {
+    "id": "thm.isosceles_base_angles",
+    "name": "במשולש שווה שוקיים זוויות הבסיס שוות"
+   },
+   {
+    "id": "thm.isosceles_special_lines",
+    "name": "במשולש שווה שוקיים חוצה זווית הראש, התיכון והגובה לבסיס מתלכדים"
+   },
+   {
+    "id": "thm.isosceles_converse",
+    "name": "משפטים הפוכים: הוכחה שמשולש שווה שוקיים"
+   },
+   {
+    "id": "thm.triangle_inequality",
+    "name": "אי-שוויון המשולש"
+   },
+   {
+    "id": "thm.side_angle_order",
+    "name": "מול הצלע הגדולה הזווית הגדולה (וההפך)"
+   },
+   {
+    "id": "thm.similarity_aa",
+    "name": "משפט דמיון ז.ז"
+   },
+   {
+    "id": "thm.similarity_sas",
+    "name": "משפט דמיון צ.ז.צ"
+   },
+   {
+    "id": "thm.similarity_sss",
+    "name": "משפט דמיון צ.צ.צ"
+   },
+   {
+    "id": "thm.similar_area_ratio",
+    "name": "יחס השטחים הוא ריבוע יחס הדמיון"
+   },
+   {
+    "id": "thm.kite_main_diagonal",
+    "name": "בדלתון האלכסון הראשי חוצה את המשני, מאונך לו וחוצה את זוויות הראש"
+   },
+   {
+    "id": "thm.30_60_90",
+    "name": "במשולש ישר זווית הניצב מול 30° שווה למחצית היתר"
+   },
+   {
+    "id": "thm.parallel_converse",
+    "name": "משפטים הפוכים לישרים מקבילים"
+   },
+   {
+    "id": "thm.isosceles_trapezoid",
+    "name": "טרפז שווה שוקיים: זוויות בסיס ואלכסונים"
+   },
+   {
+    "id": "thm.parallelogram_props",
+    "name": "במקבילית צלעות נגדיות שוות, זוויות נגדיות שוות, האלכסונים חוצים זה את זה"
+   },
+   {
+    "id": "thm.parallelogram_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מקבילית"
+   },
+   {
+    "id": "thm.rectangle_props",
+    "name": "במלבן כל הזוויות ישרות והאלכסונים שווים"
+   },
+   {
+    "id": "thm.rectangle_converse",
+    "name": "משפטים הפוכים: מקבילית עם זווית ישרה או עם אלכסונים שווים היא מלבן"
+   },
+   {
+    "id": "thm.rhombus_props",
+    "name": "במעוין כל הצלעות שוות, האלכסונים מאונכים וחוצי זוויות"
+   },
+   {
+    "id": "thm.rhombus_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מעוין"
+   },
+   {
+    "id": "thm.square_props",
+    "name": "ריבוע: מלבן שהוא גם מעוין"
+   },
+   {
+    "id": "thm.right_triangle_median",
+    "name": "התיכון ליתר שווה למחצית היתר"
+   },
+   {
+    "id": "frm.area_rhombus_diagonals",
+    "name": "שטח מעוין / דלתון = מכפלת האלכסונים : 2"
+   },
+   {
+    "id": "thm.midsegment",
+    "name": "קטע אמצעים במשולש ובטרפז"
+   },
+   {
+    "id": "frm.short_multiplication",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "mth.factoring",
+    "name": "פירוק לגורמים"
+   },
+   {
+    "id": "frm.quadratic_formula",
+    "name": "נוסחת השורשים"
+   }
+  ]
+ },
+ "questions": [
+  {
+   "id": "q1",
+   "label": 1,
+   "text": "במחנה קיץ כל קבוצה כוללת מדריכים וחניכים ביחס שמוצג בטבלה. כל יחידה בטבלה מייצגת אותו מספר אנשים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מדריכים: 2 יחידות"
+    },
+    {
+     "text": "חניכים: 7 יחידות"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "קבוצה",
+     "מספר היחידות"
+    ],
+    "rows": [
+     [
+      "מדריכים",
+      "$2$"
+     ],
+     [
+      "חניכים",
+      "$7$"
+     ]
+    ]
+   },
+   "example": {
+    "title": "דוגמה מודרכת",
+    "lines": [
+     "בטבלה כזאת כל שורה היא קבוצה, ומספר היחידות שבה הוא אחד מרכיבי היחס. למשל בסלט: מלפפונים $3$ יחידות ועגבניות יחידה אחת.",
+     "כל הסלט הוא $3 + 1 = 4$ יחידות. היחס בין המלפפונים לעגבניות הוא $\\rat{3}{1}$: מול כל יחידה של עגבניות יש שלוש יחידות של מלפפונים."
+    ]
+   },
+   "items": [
+    {
+     "id": "q1a",
+     "label": "א",
+     "text": "מהו סך היחידות בקבוצה אחת?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "יחידות",
+       "what": "סך היחידות",
+       "text": "הערך סך היחידות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1b",
+     "label": "ב",
+     "text": "גל כתבה: ״היחס בין המדריכים לחניכים הוא $\\rat{7}{2}$״. מה שגוי בכתיבה שלה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הטעות",
+       "text": "הערך הטעות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1c",
+     "label": "ג",
+     "text": "כתבו את שני היחסים: מדריכים לחניכים, וחניכים למדריכים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שני היחסים",
+       "text": "הערך שני היחסים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "label": 2,
+   "text": "במשק חקלאי יש $12$ ברווזים, $8$ אווזים ו־$10$ תרנגולות. בכל סעיף מבקשים יחס בין שני גדלים מהמשק, ותשובה שאפשר לצמצם עוד נחשבת לא גמורה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "12 ברווזים"
+    },
+    {
+     "text": "8 אווזים"
+    },
+    {
+     "text": "10 תרנגולות"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q2a",
+     "label": "א",
+     "text": "יחס הברווזים לאווזים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2b",
+     "label": "ב",
+     "text": "יחס האווזים לברווזים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2c",
+     "label": "ג",
+     "text": "יחס האווזים לכלל העופות במשק.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2d",
+     "label": "ד",
+     "text": "יחס התרנגולות לשאר העופות במשק (ברווזים ואווזים יחד).",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q3",
+   "label": 3,
+   "text": "כתבו כל אחד מהיחסים בצורה הקצרה ביותר, כלומר כך שלשני הרכיבים לא יהיה עוד גורם משותף.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q3a",
+     "label": "א",
+     "text": "$\\rat{14}{21}$",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3b",
+     "label": "ב",
+     "text": "$\\rat{55}{35}$",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3c",
+     "label": "ג",
+     "text": "$\\rat{6}{\\rat{9}{15}}$",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3d",
+     "label": "ד",
+     "text": "$\\rat{32}{48}$",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3e",
+     "label": "ה",
+     "text": "אילו שני סעיפים נתנו, אחרי הצמצום, אותו יחס?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסעיפים",
+       "text": "הערך הסעיפים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q4",
+   "label": 4,
+   "text": "מצאו בכל סעיף את המספר שחסר, כך שהשוויון בין שני היחסים יתקיים.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q4a",
+     "label": "א",
+     "text": "$\\rat{3}{5} = 18:___$",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המספר החסר",
+       "text": "הערך המספר החסר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4b",
+     "label": "ב",
+     "text": "$\\rat{4}{7} = ___:35$",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המספר החסר",
+       "text": "הערך המספר החסר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4c",
+     "label": "ג",
+     "text": "$\\rat{24}{18} = 8:___$",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המספר החסר",
+       "text": "הערך המספר החסר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4d",
+     "label": "ד",
+     "text": "$\\rat{45}{27} = ___:24$",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המספר החסר",
+       "text": "הערך המספר החסר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q5",
+   "label": 5,
+   "text": "בדרך שהודגמה, חלקו $108$ ליטרים של צבע בין שני ציירים ביחס $\\rat{5}{7}$.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "example": {
+    "title": "דוגמה מודרכת",
+    "lines": [
+     "חלוקה של $56$ מטבעות בין שני חברים ביחס $\\rat{5}{3}$.",
+     "שלב ראשון: מצרפים את רכיבי היחס. $5 + 3 = 8$ חלקים שווים.",
+     "שלב שני: מחלקים את הכמות בסכום. $\\f{56}{8} = 7$ מטבעות בכל חלק.",
+     "שלב שלישי: מכפילים את החלק בכל רכיב. $5 · 7 = 35$ ו־$3 · 7 = 21$ מטבעות."
+    ]
+   },
+   "items": [
+    {
+     "id": "q5a",
+     "label": "א",
+     "text": "לכמה חלקים שווים מתחלקת הכמות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "חלקים",
+       "what": "מספר החלקים",
+       "text": "הערך מספר החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5b",
+     "label": "ב",
+     "text": "כמה ליטרים יש בחלק אחד?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ליטרים",
+       "what": "ערך חלק",
+       "text": "הערך ערך חלק"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5c",
+     "label": "ג",
+     "text": "כמה ליטרים מקבל כל צייר?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ליטרים",
+       "what": "החלקים",
+       "text": "הערך החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q6",
+   "label": 6,
+   "text": "חלקו כל אחת מהכמויות לשני חלקים, בהתאם ליחס שנכתב בצידה.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q6a",
+     "label": "א",
+     "text": "$77$ מטרים של חבל ביחס $\\rat{3}{4}$.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "מטרים",
+       "what": "שני החלקים",
+       "text": "הערך שני החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6b",
+     "label": "ב",
+     "text": "$72$ ליטרים של מיץ ביחס $\\rat{1}{3}$.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ליטרים",
+       "what": "שני החלקים",
+       "text": "הערך שני החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6c",
+     "label": "ג",
+     "text": "$90$ ק״ג של תפוחי אדמה ביחס $\\rat{7}{3}$.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ק״ג",
+       "what": "שני החלקים",
+       "text": "הערך שני החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6d",
+     "label": "ד",
+     "text": "$187$ כרטיסים ביחס $\\rat{5}{6}$.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "כרטיסים",
+       "what": "שני החלקים",
+       "text": "הערך שני החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q7",
+   "label": 7,
+   "text": "שלושה אחים חולקים $156$ שקלים ביחס $\\rat{5}{\\rat{4}{3}}$.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q7a",
+     "label": "א",
+     "text": "מהו סכום הרכיבים של היחס?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "יחידות",
+       "what": "סך היחידות",
+       "text": "הערך סך היחידות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7b",
+     "label": "ב",
+     "text": "כמה שקלים מקבל כל אח?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שקלים",
+       "what": "שלושת החלקים",
+       "text": "הערך שלושת החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7c",
+     "label": "ג",
+     "text": "איזה חלק מהסכום מקבל כל אח? כתבו כל חלק כשבר מצומצם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שלושת החלקים",
+       "text": "הערך שלושת החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q8",
+   "label": 8,
+   "text": "דשן במשקל $96$ ק״ג חולק בין שתי חלקות ביחס $\\rat{7}{5}$. לפי הרישום, החלקה הראשונה קיבלה $60$ ק״ג והשנייה $36$ ק״ג.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q8a",
+     "label": "א",
+     "text": "האם שני החלקים מצטרפים לכל כמות הדשן?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם מצטרפים",
+       "text": "הערך האם מצטרפים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8b",
+     "label": "ב",
+     "text": "צמצמו את היחס בין שני החלקים שנרשמו והשוו אותו ליחס שנקבע. האם הרישום תקין?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם תקין",
+       "text": "הערך האם תקין"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8c",
+     "label": "ג",
+     "text": "מהי החלוקה הנכונה של הדשן?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ק״ג",
+       "what": "החלוקה",
+       "text": "הערך החלוקה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q9",
+   "label": 9,
+   "text": "בחניון של בית ספר יחס מספר האופניים למספר הקורקינטים הוא $\\rat{3}{8}$. נשאלה השאלה: כמה קורקינטים יש על כל $21$ אופניים? תהילה ענתה: ״$56$ אופניים על כל $21$ קורקינטים״.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q9a",
+     "label": "א",
+     "text": "האם תשובתה של תהילה מתיישבת עם כך שבחניון יש יותר קורקינטים מאופניים? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם מתיישבת",
+       "text": "הערך האם מתיישבת"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9b",
+     "label": "ב",
+     "text": "מה הטעות בתשובה של תהילה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הטעות",
+       "text": "הערך הטעות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9c",
+     "label": "ג",
+     "text": "כתבו במשפט מלא את התשובה שהייתה צריכה להתקבל.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "התשובה הנכונה",
+       "text": "הערך התשובה הנכונה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9d",
+     "label": "ד",
+     "text": "כמה אופניים יש על כל $40$ קורקינטים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "אופניים",
+       "what": "מספר האופניים",
+       "text": "הערך מספר האופניים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q10",
+   "label": 10,
+   "text": "שתי חברות חולקות רווח של $98$ שקלים ביחס $\\rat{2}{5}$. דנית כתבה שהראשונה מקבלת $2$ שקלים והשנייה $5$ שקלים.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q10a",
+     "label": "א",
+     "text": "מה סכום שני החלקים שדנית כתבה? האם הוא שווה לרווח?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שקלים",
+       "what": "הסכום",
+       "text": "הערך הסכום"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10b",
+     "label": "ב",
+     "text": "מדוע אי אפשר לקחת את רכיבי היחס עצמם כסכומי כסף? הסבירו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הטעות",
+       "text": "הערך הטעות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10c",
+     "label": "ג",
+     "text": "חלקו את הרווח כראוי.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שקלים",
+       "what": "החלקים",
+       "text": "הערך החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q11",
+   "label": 11,
+   "text": "בחנות בדים $4$ מטרים של בד עולים $108$ שקלים. המחיר פרופורציוני לאורך הבד שנקנה.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "example": {
+    "title": "דוגמה מודרכת",
+    "lines": [
+     "קשר בין שני גדלים הוא פרופורציוני כשהיחס ביניהם אינו משתנה.",
+     "דוגמה: מכונה אורזת $126$ קופסאות ב־$9$ דקות. בדקה אחת היא אורזת $14$ קופסאות, ולכן ב־$15$ דקות היא תארוז $210$. שני היחסים $\\rat{9}{126}$ ו־$\\rat{15}{210}$ שווים (שניהם $\\rat{1}{14}$)."
+    ]
+   },
+   "items": [
+    {
+     "id": "q11a",
+     "label": "א",
+     "text": "חשבו את מחירו של מטר בד אחד.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שקלים",
+       "what": "מחיר מטר",
+       "text": "הערך מחיר מטר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11b",
+     "label": "ב",
+     "text": "אדם קנה $7$ מטרים. כמה שילם?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שקלים",
+       "what": "המחיר",
+       "text": "הערך המחיר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11c",
+     "label": "ג",
+     "text": "עם $351$ שקלים, כמה מטרים של בד אפשר לקנות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "מטרים",
+       "what": "מספר המטרים",
+       "text": "הערך מספר המטרים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11d",
+     "label": "ד",
+     "text": "בחנות אחרת $3$ מטרים מאותו בד עולים $78$ שקלים. האם היחס בין האורך למחיר בחנות הזאת שווה ליחס בחנות הראשונה? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם באותו יחס",
+       "text": "הערך האם באותו יחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q12",
+   "label": 12,
+   "text": "מדפסת מדפיסה $120$ עמודים ב־$8$ דקות, בקצב קבוע.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q12a",
+     "label": "א",
+     "text": "כמה עמודים היא מדפיסה בדקה אחת?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "עמודים",
+       "what": "עמודים לדקה",
+       "text": "הערך עמודים לדקה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12b",
+     "label": "ב",
+     "text": "כמה עמודים היא תדפיס ב־$20$ דקות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "עמודים",
+       "what": "מספר העמודים",
+       "text": "הערך מספר העמודים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12c",
+     "label": "ג",
+     "text": "כמה זמן ייקח לה להדפיס $1800$ עמודים? תנו את התשובה בשעות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שעות",
+       "what": "הזמן",
+       "text": "הערך הזמן"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12d",
+     "label": "ד",
+     "text": "כתבו את היחס בין מספר הדקות למספר העמודים, בצורה מצומצמת.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q13",
+   "label": 13,
+   "text": "במחסן מאחסנים בקבוקים בארגזים, ובכל ארגז אותו מספר בקבוקים. בטבלה נפלה טעות באחת השורות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בכל ארגז אותו מספר בקבוקים"
+    },
+    {
+     "text": "באחת השורות בטבלה נפלה טעות"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "מספר הארגזים",
+     "מספר הבקבוקים"
+    ],
+    "rows": [
+     [
+      "$3$",
+      "$24$"
+     ],
+     [
+      "$5$",
+      "$40$"
+     ],
+     [
+      "$7$",
+      "$56$"
+     ],
+     [
+      "$11$",
+      "$90$"
+     ],
+     [
+      "$12$",
+      "$96$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q13a",
+     "label": "א",
+     "text": "באיזו שורה בטבלה נפלה הטעות, ומהו המספר שצריך להופיע בה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השורה והמספר הנכון",
+       "text": "הערך השורה והמספר הנכון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13b",
+     "label": "ב",
+     "text": "כמה בקבוקים יש ב־$14$ ארגזים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "בקבוקים",
+       "what": "מספר הבקבוקים",
+       "text": "הערך מספר הבקבוקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13c",
+     "label": "ג",
+     "text": "כמה ארגזים דרושים כדי לאחסן $200$ בקבוקים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ארגזים",
+       "what": "מספר הארגזים",
+       "text": "הערך מספר הארגזים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q14",
+   "label": 14,
+   "text": "כתבו כל יחס אחרי המרה ליחידה אחת, בצורה מצומצמת.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q14a",
+     "label": "א",
+     "text": "אורך של $2.5$ מטרים לעומת אורך של $40$ סנטימטרים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14b",
+     "label": "ב",
+     "text": "רבע שעה לעומת $45$ שניות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14c",
+     "label": "ג",
+     "text": "דני אומר: ״אין צורך להמיר; ניקח את שני המספרים כמו שהם ונרשום ביניהם יחס״. הסבירו, בעזרת סעיף א׳, מדוע הוא טועה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "ההסבר",
+       "text": "הערך ההסבר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q15",
+   "label": 15,
+   "text": "הגרף מתאר את שטח הקיר שאפשר לצבוע לפי כמות הצבע. ציר $x$ הוא כמות הצבע בליטרים וציר $y$ הוא השטח במטרים רבועים. השטח פרופורציוני לכמות הצבע.",
+   "figure_id": "q15_head",
+   "given": [
+    {
+     "text": "הגרף מציג ארבע נקודות"
+    },
+    {
+     "text": "השטח פרופורציוני לכמות הצבע"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q15a",
+     "label": "א",
+     "text": "קראו מהגרף: כמה מטרים רבועים אפשר לצבוע ב־$4$ ליטרים?",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "מטרים רבועים",
+       "what": "השטח",
+       "text": "הערך השטח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15b",
+     "label": "ב",
+     "text": "כמה מטרים רבועים אפשר לצבוע בליטר אחד?",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "מטרים רבועים",
+       "what": "שטח לליטר",
+       "text": "הערך שטח לליטר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15c",
+     "label": "ג",
+     "text": "כמה ליטרים נדרשים לצביעת קיר ששטחו $144$ מטרים רבועים?",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ליטרים",
+       "what": "כמות הצבע",
+       "text": "הערך כמות הצבע"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15d",
+     "label": "ד",
+     "text": "כתבו את היחס בין כמות הצבע (בליטרים) לשטח (במטרים רבועים) בצורה מצומצמת.",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "היחס",
+       "text": "הערך היחס"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q16",
+   "label": 16,
+   "text": "בסלט פירות יחס מספר התפוזים למספר התפוחים הוא $\\rat{3}{2}$.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q16a",
+     "label": "א",
+     "text": "בסלט אחד יש $24$ תפוזים. כמה תפוחים יש בו?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "תפוחים",
+       "what": "מספר התפוחים",
+       "text": "הערך מספר התפוחים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16b",
+     "label": "ב",
+     "text": "בסלט אחר יש $22$ תפוחים. כמה תפוזים יש בו?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "תפוזים",
+       "what": "מספר התפוזים",
+       "text": "הערך מספר התפוזים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16c",
+     "label": "ג",
+     "text": "בסלט שהכין אורן יש $12$ תפוזים ו־$9$ תפוחים. האם הסלט שלו שומר על היחס? אם לא, מה צריך להוסיף או להוציא, בלי לשנות את מספר התפוזים, כדי שישמור, וכמה פירות יהיו אז בסלט בסך הכול?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה לתקן",
+       "text": "הערך מה לתקן"
+      },
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "פירות",
+       "what": "מספר הפירות אחרי התיקון",
+       "text": "הערך מספר הפירות אחרי התיקון"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q17",
+   "label": 17,
+   "text": "במעבדה מערבבים תמיסה ומים ביחס $\\rat{3}{5}$ (תמיסה:מים). נפח התערובת כולה הוא $64$ מיליליטרים.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q17a",
+     "label": "א",
+     "text": "לכמה חלקים שווים מחולקת התערובת?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "חלקים",
+       "what": "מספר החלקים",
+       "text": "הערך מספר החלקים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17b",
+     "label": "ב",
+     "text": "מה כמות המים בתערובת, במיליליטרים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "מיליליטרים",
+       "what": "כמות המים",
+       "text": "הערך כמות המים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17c",
+     "label": "ג",
+     "text": "מה כמות התמיסה בתערובת, במיליליטרים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "מיליליטרים",
+       "what": "כמות התמיסה",
+       "text": "הערך כמות התמיסה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q18",
+   "label": 18,
+   "text": "הוצאה משותפת של שני שכנים מתחלקת ביניהם לפי היחס $\\rat{5}{2}$; חלקו של האחד גדול משל השני ב־$42$ שקלים.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q18a",
+     "label": "א",
+     "text": "מהו ההפרש בין שני החלקים, ביחידות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "יחידות",
+       "what": "הפרש היחידות",
+       "text": "הערך הפרש היחידות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18b",
+     "label": "ב",
+     "text": "מהו ערכה של יחידה אחת, בשקלים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שקלים",
+       "what": "ערך יחידה",
+       "text": "הערך ערך יחידה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18c",
+     "label": "ג",
+     "text": "מהי ההוצאה כולה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "שקלים",
+       "what": "ההוצאה הכוללת",
+       "text": "הערך ההוצאה הכוללת"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q19",
+   "label": 19,
+   "text": "בספרייה יחס ספרי העיון לספרי הקריאה הוא $\\rat{3}{7}$, ובסך הכול $150$ ספרים.",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q19a",
+     "label": "א",
+     "text": "מהו סכום שני הרכיבים של היחס?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "יחידות",
+       "what": "סך היחידות",
+       "text": "הערך סך היחידות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19b",
+     "label": "ב",
+     "text": "כמה ספרי קריאה יש בספרייה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ספרים",
+       "what": "ספרי הקריאה",
+       "text": "הערך ספרי הקריאה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19c",
+     "label": "ג",
+     "text": "בכמה ספרי הקריאה עולים על ספרי העיון? פתרו בשתי דרכים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ספרים",
+       "what": "ההפרש",
+       "text": "הערך ההפרש"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q20",
+   "label": 20,
+   "text": "מדללים סירופ במים ביחס $\\rat{1}{5}$ (סירופ:מים).",
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q20a",
+     "label": "א",
+     "text": "סירופ בנפח $4$ ליטרים מדוללים בכמה ליטרים של מים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ליטרים",
+       "what": "כמות המים",
+       "text": "הערך כמות המים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20b",
+     "label": "ב",
+     "text": "מהו נפח המשקה שהתקבל?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ליטרים",
+       "what": "כמות המשקה",
+       "text": "הערך כמות המשקה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20c",
+     "label": "ג",
+     "text": "נועה טוענת: ״הסירופ הוא חמישית מהמשקה כולו״. האם היא צודקת? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם צודקת",
+       "text": "הערך האם צודקת"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20d",
+     "label": "ד",
+     "text": "כמה ליטרים סירופ יש ב־$60$ ליטרים משקה מוכן?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ליטרים",
+       "what": "כמות הסירופ",
+       "text": "הערך כמות הסירופ"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  }
+ ],
+ "figures": [
+  {
+   "id": "q15_head",
+   "svg": "figures/q15_head.svg",
+   "question": "q15",
+   "view": {
+    "width_px": 230.0,
+    "height_px": 224.7,
+    "unit_px": 1.628895,
+    "viewbox": [
+     141.2,
+     138.0
+    ]
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-1d5259",
+      "kind": "point",
+      "role": "point",
+      "svg_xy": [
+       83.19,
+       55.85
+      ]
+     },
+     {
+      "svg_id": "pt-34aeed",
+      "kind": "point",
+      "role": "point",
+      "svg_xy": [
+       51.19,
+       87.85
+      ]
+     },
+     {
+      "svg_id": "pt-551ced",
+      "kind": "point",
+      "role": "point",
+      "svg_xy": [
+       99.19,
+       39.85
+      ]
+     },
+     {
+      "svg_id": "pt-ee78b1",
+      "kind": "point",
+      "role": "point",
+      "svg_xy": [
+       35.19,
+       103.85
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-axis-x",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        10.39,
+        119.85
+       ],
+       [
+        123.99,
+        119.85
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-axis-y",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        19.19,
+        128.65
+       ],
+       [
+        19.19,
+        15.05
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-o0",
+      "kind": "label",
+      "role": "value",
+      "name": "o0",
+      "text": "0",
+      "for": "o0",
+      "svg_xy": [
+       14.46,
+       126.28
+      ],
+      "ink_box": [
+       12.55,
+       121.15,
+       16.36,
+       127.86
+      ]
+     },
+     {
+      "svg_id": "lbl-x",
+      "kind": "label",
+      "role": "value",
+      "name": "x",
+      "text": "x",
+      "for": "x",
+      "svg_xy": [
+       129.93,
+       123.15
+      ],
+      "ink_box": [
+       127.67,
+       117.06,
+       132.2,
+       125.02
+      ]
+     },
+     {
+      "svg_id": "lbl-x1",
+      "kind": "label",
+      "role": "value",
+      "name": "x1",
+      "text": "1",
+      "for": "x1",
+      "svg_xy": [
+       35.19,
+       127.38
+      ],
+      "ink_box": [
+       33.28,
+       122.25,
+       37.09,
+       128.95
+      ]
+     },
+     {
+      "svg_id": "lbl-x2",
+      "kind": "label",
+      "role": "value",
+      "name": "x2",
+      "text": "2",
+      "for": "x2",
+      "svg_xy": [
+       51.19,
+       127.38
+      ],
+      "ink_box": [
+       49.28,
+       122.25,
+       53.09,
+       128.95
+      ]
+     },
+     {
+      "svg_id": "lbl-x3",
+      "kind": "label",
+      "role": "value",
+      "name": "x3",
+      "text": "3",
+      "for": "x3",
+      "svg_xy": [
+       67.19,
+       127.38
+      ],
+      "ink_box": [
+       65.28,
+       122.25,
+       69.09,
+       128.95
+      ]
+     },
+     {
+      "svg_id": "lbl-x4",
+      "kind": "label",
+      "role": "value",
+      "name": "x4",
+      "text": "4",
+      "for": "x4",
+      "svg_xy": [
+       83.19,
+       127.38
+      ],
+      "ink_box": [
+       81.28,
+       122.25,
+       85.09,
+       128.95
+      ]
+     },
+     {
+      "svg_id": "lbl-x5",
+      "kind": "label",
+      "role": "value",
+      "name": "x5",
+      "text": "5",
+      "for": "x5",
+      "svg_xy": [
+       99.19,
+       127.38
+      ],
+      "ink_box": [
+       97.28,
+       122.25,
+       101.09,
+       128.95
+      ]
+     },
+     {
+      "svg_id": "lbl-x6",
+      "kind": "label",
+      "role": "value",
+      "name": "x6",
+      "text": "6",
+      "for": "x6",
+      "svg_xy": [
+       115.19,
+       127.38
+      ],
+      "ink_box": [
+       113.28,
+       122.25,
+       117.09,
+       128.95
+      ]
+     },
+     {
+      "svg_id": "lbl-y",
+      "kind": "label",
+      "role": "value",
+      "name": "y",
+      "text": "y",
+      "for": "y",
+      "svg_xy": [
+       13.06,
+       15.09
+      ],
+      "ink_box": [
+       10.79,
+       9.0,
+       15.32,
+       16.96
+      ]
+     },
+     {
+      "svg_id": "lbl-y16",
+      "kind": "label",
+      "role": "value",
+      "name": "y16",
+      "text": "16",
+      "for": "y16",
+      "svg_xy": [
+       12.81,
+       89.63
+      ],
+      "ink_box": [
+       9.0,
+       84.5,
+       16.62,
+       91.21
+      ]
+     },
+     {
+      "svg_id": "lbl-y24",
+      "kind": "label",
+      "role": "value",
+      "name": "y24",
+      "text": "24",
+      "for": "y24",
+      "svg_xy": [
+       12.81,
+       73.63
+      ],
+      "ink_box": [
+       9.0,
+       68.5,
+       16.62,
+       75.21
+      ]
+     },
+     {
+      "svg_id": "lbl-y32",
+      "kind": "label",
+      "role": "value",
+      "name": "y32",
+      "text": "32",
+      "for": "y32",
+      "svg_xy": [
+       12.81,
+       57.63
+      ],
+      "ink_box": [
+       9.0,
+       52.5,
+       16.62,
+       59.21
+      ]
+     },
+     {
+      "svg_id": "lbl-y40",
+      "kind": "label",
+      "role": "value",
+      "name": "y40",
+      "text": "40",
+      "for": "y40",
+      "svg_xy": [
+       12.81,
+       41.63
+      ],
+      "ink_box": [
+       9.0,
+       36.5,
+       16.62,
+       43.21
+      ]
+     },
+     {
+      "svg_id": "lbl-y48",
+      "kind": "label",
+      "role": "value",
+      "name": "y48",
+      "text": "48",
+      "for": "y48",
+      "svg_xy": [
+       12.81,
+       25.63
+      ],
+      "ink_box": [
+       9.0,
+       20.5,
+       16.62,
+       27.21
+      ]
+     },
+     {
+      "svg_id": "lbl-y8",
+      "kind": "label",
+      "role": "value",
+      "name": "y8",
+      "text": "8",
+      "for": "y8",
+      "svg_xy": [
+       14.46,
+       105.63
+      ],
+      "ink_box": [
+       12.55,
+       100.5,
+       16.36,
+       107.21
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q15_head",
+    "kind": "coordinate_plane",
+    "visual_support": "full",
+    "question": "q15",
+    "svg": "figures/q15_head.svg",
+    "view": {
+     "viewbox": [
+      141.2,
+      138.0
+     ]
+    },
+    "objects": [
+     {
+      "id": "seg-axis-x",
+      "svg_id": "seg-axis-x",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        10.39,
+        119.85
+       ],
+       [
+        123.99,
+        119.85
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-axis-y",
+      "svg_id": "seg-axis-y",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        19.19,
+        128.65
+       ],
+       [
+        19.19,
+        15.05
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-1d5259",
+      "svg_id": "pt-1d5259",
+      "type": "point",
+      "part": "point",
+      "svg_xy": [
+       83.19,
+       55.85
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-34aeed",
+      "svg_id": "pt-34aeed",
+      "type": "point",
+      "part": "point",
+      "svg_xy": [
+       51.19,
+       87.85
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-551ced",
+      "svg_id": "pt-551ced",
+      "type": "point",
+      "part": "point",
+      "svg_xy": [
+       99.19,
+       39.85
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-ee78b1",
+      "svg_id": "pt-ee78b1",
+      "type": "point",
+      "part": "point",
+      "svg_xy": [
+       35.19,
+       103.85
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-o0",
+      "svg_id": "lbl-o0",
+      "type": "label",
+      "part": "value",
+      "name": "o0",
+      "text": "0",
+      "svg_xy": [
+       14.46,
+       126.28
+      ],
+      "bbox": [
+       12.55,
+       121.15,
+       16.36,
+       127.86
+      ],
+      "for": "o0",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x",
+      "svg_id": "lbl-x",
+      "type": "label",
+      "part": "value",
+      "name": "x",
+      "text": "x",
+      "svg_xy": [
+       129.93,
+       123.15
+      ],
+      "bbox": [
+       127.67,
+       117.06,
+       132.2,
+       125.02
+      ],
+      "for": "x",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x1",
+      "svg_id": "lbl-x1",
+      "type": "label",
+      "part": "value",
+      "name": "x1",
+      "text": "1",
+      "svg_xy": [
+       35.19,
+       127.38
+      ],
+      "bbox": [
+       33.28,
+       122.25,
+       37.09,
+       128.95
+      ],
+      "for": "x1",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x2",
+      "svg_id": "lbl-x2",
+      "type": "label",
+      "part": "value",
+      "name": "x2",
+      "text": "2",
+      "svg_xy": [
+       51.19,
+       127.38
+      ],
+      "bbox": [
+       49.28,
+       122.25,
+       53.09,
+       128.95
+      ],
+      "for": "x2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x3",
+      "svg_id": "lbl-x3",
+      "type": "label",
+      "part": "value",
+      "name": "x3",
+      "text": "3",
+      "svg_xy": [
+       67.19,
+       127.38
+      ],
+      "bbox": [
+       65.28,
+       122.25,
+       69.09,
+       128.95
+      ],
+      "for": "x3",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x4",
+      "svg_id": "lbl-x4",
+      "type": "label",
+      "part": "value",
+      "name": "x4",
+      "text": "4",
+      "svg_xy": [
+       83.19,
+       127.38
+      ],
+      "bbox": [
+       81.28,
+       122.25,
+       85.09,
+       128.95
+      ],
+      "for": "x4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x5",
+      "svg_id": "lbl-x5",
+      "type": "label",
+      "part": "value",
+      "name": "x5",
+      "text": "5",
+      "svg_xy": [
+       99.19,
+       127.38
+      ],
+      "bbox": [
+       97.28,
+       122.25,
+       101.09,
+       128.95
+      ],
+      "for": "x5",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x6",
+      "svg_id": "lbl-x6",
+      "type": "label",
+      "part": "value",
+      "name": "x6",
+      "text": "6",
+      "svg_xy": [
+       115.19,
+       127.38
+      ],
+      "bbox": [
+       113.28,
+       122.25,
+       117.09,
+       128.95
+      ],
+      "for": "x6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y",
+      "svg_id": "lbl-y",
+      "type": "label",
+      "part": "value",
+      "name": "y",
+      "text": "y",
+      "svg_xy": [
+       13.06,
+       15.09
+      ],
+      "bbox": [
+       10.79,
+       9.0,
+       15.32,
+       16.96
+      ],
+      "for": "y",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y16",
+      "svg_id": "lbl-y16",
+      "type": "label",
+      "part": "value",
+      "name": "y16",
+      "text": "16",
+      "svg_xy": [
+       12.81,
+       89.63
+      ],
+      "bbox": [
+       9.0,
+       84.5,
+       16.62,
+       91.21
+      ],
+      "for": "y16",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y24",
+      "svg_id": "lbl-y24",
+      "type": "label",
+      "part": "value",
+      "name": "y24",
+      "text": "24",
+      "svg_xy": [
+       12.81,
+       73.63
+      ],
+      "bbox": [
+       9.0,
+       68.5,
+       16.62,
+       75.21
+      ],
+      "for": "y24",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y32",
+      "svg_id": "lbl-y32",
+      "type": "label",
+      "part": "value",
+      "name": "y32",
+      "text": "32",
+      "svg_xy": [
+       12.81,
+       57.63
+      ],
+      "bbox": [
+       9.0,
+       52.5,
+       16.62,
+       59.21
+      ],
+      "for": "y32",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y40",
+      "svg_id": "lbl-y40",
+      "type": "label",
+      "part": "value",
+      "name": "y40",
+      "text": "40",
+      "svg_xy": [
+       12.81,
+       41.63
+      ],
+      "bbox": [
+       9.0,
+       36.5,
+       16.62,
+       43.21
+      ],
+      "for": "y40",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y48",
+      "svg_id": "lbl-y48",
+      "type": "label",
+      "part": "value",
+      "name": "y48",
+      "text": "48",
+      "svg_xy": [
+       12.81,
+       25.63
+      ],
+      "bbox": [
+       9.0,
+       20.5,
+       16.62,
+       27.21
+      ],
+      "for": "y48",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y8",
+      "svg_id": "lbl-y8",
+      "type": "label",
+      "part": "value",
+      "name": "y8",
+      "text": "8",
+      "svg_xy": [
+       14.46,
+       105.63
+      ],
+      "bbox": [
+       12.55,
+       100.5,
+       16.36,
+       107.21
+      ],
+      "for": "y8",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "given",
+      "text": "הגרף מציג ארבע נקודות",
+      "objects": []
+     },
+     {
+      "id": "r-statement-2",
+      "type": "statement",
+      "role": "given",
+      "text": "השטח פרופורציוני לכמות הצבע",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q15a",
+      "unit": "מטרים רבועים",
+      "quantity": "value",
+      "what": "השטח",
+      "text": "הערך השטח",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q15b",
+      "unit": "מטרים רבועים",
+      "quantity": "value",
+      "what": "שטח לליטר",
+      "text": "הערך שטח לליטר",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q15c",
+      "unit": "ליטרים",
+      "quantity": "value",
+      "what": "כמות הצבע",
+      "text": "הערך כמות הצבע",
+      "objects": []
+     },
+     {
+      "id": "r-find-4",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q15d",
+      "quantity": "value",
+      "what": "היחס",
+      "text": "הערך היחס",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q15_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  }
+ ],
+ "visuals": [
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q1_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q1",
+   "objects": [
+    {
+     "id": "q1_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "קבוצה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "מספר היחידות",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "מדריכים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$2$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "חניכים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q1_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$7$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q1_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q13_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q13",
+   "objects": [
+    {
+     "id": "q13_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "מספר הארגזים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "מספר הבקבוקים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$24$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$40$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$7$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$56$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r5c1",
+     "type": "cell",
+     "row": 5,
+     "col": 1,
+     "value": "$11$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r5c2",
+     "type": "cell",
+     "row": 5,
+     "col": 2,
+     "value": "$90$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r6c1",
+     "type": "cell",
+     "row": 6,
+     "col": 1,
+     "value": "$12$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r6c2",
+     "type": "cell",
+     "row": 6,
+     "col": 2,
+     "value": "$96$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q13_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  }
+ ]
+}

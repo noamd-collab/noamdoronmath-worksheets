@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124.74 199.98" width="124.74" height="199.98" data-dialect="wspec-graph-svg/1">
+<g data-layer="grid">
+<line id="e0001" data-grid="x 0" x1="25" y1="44.14" x2="25" y2="170.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0002" data-grid="x 1" x1="39" y1="44.14" x2="39" y2="170.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0003" data-grid="x 2" x1="53" y1="44.14" x2="53" y2="170.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0004" data-grid="x 3" x1="67" y1="44.14" x2="67" y2="170.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0005" data-grid="x 4" x1="81" y1="44.14" x2="81" y2="170.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0006" data-grid="x 5" x1="95" y1="44.14" x2="95" y2="170.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0007" data-grid="y 0" x1="25" y1="170.14" x2="95" y2="170.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0008" data-grid="y 1" x1="25" y1="156.14" x2="95" y2="156.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0009" data-grid="y 2" x1="25" y1="142.14" x2="95" y2="142.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0010" data-grid="y 3" x1="25" y1="128.14" x2="95" y2="128.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0011" data-grid="y 4" x1="25" y1="114.14" x2="95" y2="114.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0012" data-grid="y 5" x1="25" y1="100.14" x2="95" y2="100.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0013" data-grid="y 6" x1="25" y1="86.14" x2="95" y2="86.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0014" data-grid="y 7" x1="25" y1="72.14" x2="95" y2="72.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0015" data-grid="y 8" x1="25" y1="58.14" x2="95" y2="58.14" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0016" data-grid="y 9" x1="25" y1="44.14" x2="95" y2="44.14" stroke="#c8c8c8" stroke-width="0.47"/>
+</g>
+<g data-layer="axes">
+<line id="e0017" data-axis="x" x1="16.6" y1="170.14" x2="103.41" y2="170.14" stroke="#000000" stroke-width="1.07"/>
+<polygon id="e0018" data-arrow="x" points="103.41,167.34 110.41,170.14 103.41,172.94" fill="#000000" stroke="none"/>
+<line id="e0019" data-axis="y" x1="25" y1="178.54" x2="25" y2="35.74" stroke="#000000" stroke-width="1.07"/>
+<polygon id="e0020" data-arrow="y" points="22.2,35.74 25,28.74 27.8,35.74" fill="#000000" stroke="none"/>
+<line id="e0021" data-tick="x 1" x1="39" y1="167.14" x2="39" y2="173.14" stroke="#000000" stroke-width="0.8"/>
+<line id="e0022" data-tick="x 2" x1="53" y1="167.14" x2="53" y2="173.14" stroke="#000000" stroke-width="0.8"/>
+<line id="e0023" data-tick="x 3" x1="67" y1="167.14" x2="67" y2="173.14" stroke="#000000" stroke-width="0.8"/>
+<line id="e0024" data-tick="x 4" x1="81" y1="167.14" x2="81" y2="173.14" stroke="#000000" stroke-width="0.8"/>
+<line id="e0025" data-tick="x 5" x1="95" y1="167.14" x2="95" y2="173.14" stroke="#000000" stroke-width="0.8"/>
+<line id="e0026" data-tick="y 2" x1="22" y1="142.14" x2="28" y2="142.14" stroke="#000000" stroke-width="0.8"/>
+<line id="e0027" data-tick="y 4" x1="22" y1="114.14" x2="28" y2="114.14" stroke="#000000" stroke-width="0.8"/>
+<line id="e0028" data-tick="y 6" x1="22" y1="86.14" x2="28" y2="86.14" stroke="#000000" stroke-width="0.8"/>
+<line id="e0029" data-tick="y 8" x1="22" y1="58.14" x2="28" y2="58.14" stroke="#000000" stroke-width="0.8"/>
+</g>
+<g data-layer="labels">
+<text id="e0030" data-axname="x" x="115.57" y="176.79" font-family="David Libre,serif" font-size="12.67" font-style="italic" text-anchor="middle" fill="#000000">x</text>
+<text id="e0031" data-axname="y" x="17.04" y="33.17" font-family="David Libre,serif" font-size="12.67" font-style="italic" text-anchor="middle" fill="#000000">y</text>
+<text id="e0032" data-num="origin" x="23.5" y="182.11" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">0</text>
+<text id="e0033" data-num="x 1" x="39" y="182.11" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">3</text>
+<text id="e0034" data-num="x 2" x="53" y="182.11" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">6</text>
+<text id="e0035" data-num="x 3" x="67" y="182.11" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">9</text>
+<text id="e0036" data-num="x 4" x="81" y="182.11" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">12</text>
+<text id="e0037" data-num="x 5" x="95" y="182.11" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">15</text>
+<text id="e0038" data-num="y 2" x="20.5" y="145.87" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">20</text>
+<text id="e0039" data-num="y 4" x="20.5" y="117.87" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">40</text>
+<text id="e0040" data-num="y 6" x="20.5" y="89.87" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">60</text>
+<text id="e0041" data-num="y 8" x="20.5" y="61.87" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">80</text>
+<text id="e0042" data-axtitle="x" x="87.6" y="193.98" font-family="David Libre,serif" font-size="12.67" text-anchor="middle" direction="ltr" unicode-bidi="bidi-override" fill="#000000">תועיסנ</text>
+<text id="e0043" data-axtitle="y" x="25" y="14.87" font-family="David Libre,serif" font-size="12.67" text-anchor="middle" direction="ltr" unicode-bidi="bidi-override" fill="#000000">םילקש</text>
+</g>
+</svg>

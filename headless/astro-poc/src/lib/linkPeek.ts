@@ -218,6 +218,28 @@ export const PK: Record<string, PeekEntry> = {
     ],
     ai: true,
   },
+  teachers: {
+    title: 'למורים',
+    tag: 'מרחב למורה',
+    desc: 'בחירת דפים וסעיפים שכבר בקטלוג, סימון על דף המקור, והערה להדפסה.',
+    blocks: [
+      [0, 0, 23, 1.2, 'h'],
+      [1, 2.1, 7.4, 9.6, 'c'],
+      [2.7, 3.1, 4, 4, 'o'],
+      [3.55, 4.55, 0.65, 0.65, 'n'],
+      [5.2, 4.55, 0.65, 0.65, 'n'],
+      [2.4, 7.5, 4.6, 3.4, 'b'],
+      [9.4, 2.1, 12.4, 9.6, 'c'],
+      [10.6, 3.1, 6.4, 1.1, 't'],
+      [10.6, 4.8, 9.6, 0.55, 'l'],
+      [10.6, 5.7, 8.2, 0.55, 'l'],
+      [10.6, 6.6, 9, 0.55, 'l'],
+      [10.6, 7.5, 7.4, 0.55, 'l'],
+      [10.6, 8.8, 2.4, 1.6, 'k'],
+      [13.4, 8.8, 3.4, 1.6, 'a'],
+      [17.2, 8.8, 3.2, 1.6, 'n'],
+    ],
+  },
   topic: {
     title: 'דף נושא',
     tag: 'הסבר + הדגמה',
@@ -326,7 +348,7 @@ export function initLinkPeek(gradeCounts?: Record<string, number>): void {
       })
       .join('');
     const ai = data.ai
-      ? `<div class="nd-link-peek__ai"><span class="nd-link-peek__ai-ring" aria-hidden="true"></span><span class="nd-link-peek__ai-text">נועם AI זמין בכל דף</span></div>`
+      ? `<div class="nd-link-peek__ai"><span class="nd-link-peek__ai-ring" aria-hidden="true"></span><span class="nd-link-peek__ai-text">מנווט AI זמין בכל דף</span></div>`
       : '';
     el.innerHTML = `<div class="nd-link-peek__card"><div class="nd-link-peek__shadow" aria-hidden="true">${blocks}</div><p class="nd-link-peek__title">${data.title}</p><p class="nd-link-peek__tag">${data.tag}</p><p class="nd-link-peek__desc">${data.desc}</p>${ai}</div>`;
     el.hidden = false;

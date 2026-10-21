@@ -423,7 +423,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
     domain: 'זוויות · סכום זוויות במשולש',
     claim: 'סכום הזוויות במשולש הוא 180°',
     mathLine: '∠ + ∠ + ∠ = 180°',
-    explain: 'שלוש הזוויות של המשולש נפרדות ממנו. הן נצמדות זו לזו על קו ישר. הסכום שלהן 180°.',
+    explain: 'הבסיס נשאר קבוע והקודקוד יורד. זווית הקודקוד גדלה, ושתי זוויות הבסיס קטנות. הסכום נשאר 180°.',
   },
   'map-scale': {
     domain: 'קנה מידה · מהמפה למציאות',
@@ -502,7 +502,7 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
     domain: 'חפיפת משולשים · צלע־זווית־צלע',
     claim: 'שתי צלעות והזווית שביניהן קובעות משולש',
     mathLine: 'צלע־זווית־צלע',
-    explain: 'בשני משולשים מסומנות אותן שתי צלעות ואותה זווית שביניהן. משולש אחד זז ונצמד לשני. הם מתלכדים, ולכן המשולשים חופפים.',
+    explain: 'בשני משולשים מסומנות אותן שתי צלעות ואותה זווית שביניהן. המשולשים נפגשים באמצע, ושני המתארים נשארים גלויים. לכן המשולשים חופפים.',
   },
   'para-perp': {
     domain: 'ישרים · מקבילים ומאונכים',
@@ -562,9 +562,9 @@ export const GRADE_LOOP_COPY: Record<string, GradeLoopCopy> = {
   },
   'diff-sq': {
     domain: 'אלגברה · הפרש ריבועים',
-    claim: 'הפרש ריבועים נפרש למלבן אחד',
-    mathLine: '5² − 3² = 25 − 9 = 16',
-    explain: 'מריבוע של 25 משבצות מוציאים ריבוע של 9. מה שנשאר נפרש למלבן אחד. השטח נשמר: 16.',
+    claim: 'הפרש ריבועים מתפרק למכפלה של סכום והפרש',
+    mathLine: 'x² − y² = (x − y) · (x + y)',
+    explain: 'מריבוע שהצלע שלו x מורידים ריבוע שהצלע שלו y. החלק שנשאר נחתך ומסודר מחדש למלבן אחד. אורכו הוא סכום הצלעות, ורוחבו הוא ההפרש ביניהן.',
   },
   parab: {
     domain: 'פונקציה ריבועית · הזזה אנכית',
@@ -641,9 +641,9 @@ export const GRADE_LOOP_HOLD_S: Record<string, number> = {
   'signed-jump': 5.2, 'coord-walk': 5.2, 'cube-8': 5.2, 'box-vol': 5.6, 'signed-ops': 5.2, 'angle-sum': 6.2,
   'map-scale': 5.2, 'sq-stretch': 5.0, 'rect-count': 5.8, 'l-split': 5.0, 'trap-area': 5.2, 'para-rect': 5.4,
   'angle-kinds': 6.2,
-  pythagoras: 7.6, 'mean-cols': 5.2, 'circ-unroll': 5.4, 'corr-angles': 5.6, exterior: 5.2, 'sas-snap': 5.2,
+  pythagoras: 7.6, 'mean-cols': 5.2, 'circ-unroll': 5.4, 'corr-angles': 5.6, exterior: 5.2, 'sas-snap': 6.7,
   'para-perp': 5.2, similar: 5.4, 'cyl-stack': 5.2, slope: 6.2,
-  'area-model': 7.5, 'quad-tree': 5.4, transform: 6.8, 'area-x4': 5.2, 'two-coins': 5.2, 'diff-sq': 5.4,
+  'area-model': 7.5, 'quad-tree': 5.4, transform: 6.8, 'area-x4': 5.2, 'two-coins': 5.2, 'diff-sq': 20.5,
   parab: 5.2, 'half-eq': 5.2,
 };
 

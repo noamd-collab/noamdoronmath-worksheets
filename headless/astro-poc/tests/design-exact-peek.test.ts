@@ -42,6 +42,12 @@ test('actual grade counts survive and unknown keys do not reuse a previous toolt
   assert.equal(resolveExactPeek('g:42',live),null);
   assert.equal(renderExactPeek('nonexistent',live),null);
   assert.equal(resolveExactPeek('google',live)!.title,'התחברות עם Google');
+  const teachers=renderExactPeek('teachers',live)!;
+  assert.match(teachers,/למורים/);
+  assert.match(teachers,/מרחב למורה/);
+  assert.equal(resolveExactPeek('teachers',live)!.blocks,EXACT_PEEK_BLOCKS.teachers);
+  assert.ok(EXACT_PEEK_BLOCKS.teachers.some((block)=>block[4]==='o'&&block[2]>=4));
+  assert.ok(EXACT_PEEK_BLOCKS.teachers.filter((block)=>block[4]==='l').length>=3);
 });
 
 test('calculator is the exact four decorative reference frames, never an input or solver', () => {
@@ -122,7 +128,7 @@ test('unknown target, off event and cleanup cancel only preview-owned work',()=>
 
 test('component reads current content without changing source data or importing math engines',()=>{
   const component=readFileSync(new URL('../src/components/LinkPeek.astro',import.meta.url),'utf8');
-  assert.match(component,/loadCatalog\(\)\.grades/);assert.match(component,/learningGaps\.h1, readingGraphs\.h1/);assert.match(component,/g\.topics\.length/);
+  assert.match(component,/loadCatalog\(\)\.grades/);assert.match(component,/learningGaps\.h1, readingGraphs\.h1/);assert.match(component,/countRenderedTopicCards\(g, 'reg'\)/);
   assert.doesNotMatch(component,/ConceptLoop|HeroLoop|conceptLoops|SEARCH_TERMS|localStorage|sessionStorage/);
   const controller=readFileSync(new URL('../src/lib/exactLinkPeek.ts',import.meta.url),'utf8');
   assert.doesNotMatch(controller,/fetch\(|localStorage|sessionStorage|preventDefault\(|\.href\s*=/);

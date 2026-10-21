@@ -29,6 +29,13 @@ export default defineConfig({
   env: {
     schema: {
       BLOG_AUDIO_FUNCTIONS_BASE: envField.string({ context: 'server', access: 'public', optional: true }),
+      // Optional so `wix preview` / `wix build` succeed before Noam adds them.
+      // Names must match Secrets Manager on Noam Math Astro POC.
+      QWEN_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // Optional. Empty keeps the Token Plan default. A Model Studio key needs the matching base URL and model.
+      QWEN_BASE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      QWEN_MODEL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      NOAM_RECAPTCHA_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });
