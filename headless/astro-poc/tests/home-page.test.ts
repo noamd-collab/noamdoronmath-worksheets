@@ -206,6 +206,20 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
     assert.match(html, /<nav id="primary-nav"[^>]*data-nav-panel/);
   });
 
+  it('triangle doodle uses school notation, not a slash fraction', () => {
+    const index = readFileSync(join(root, 'src', 'pages', 'index.astro'), 'utf8');
+    const caption = index.match(/<g data-play-s="1"[^>]*>[\s\S]*?<text\b([^>]*)>([^<]*)<\/text>/);
+    assert.ok(caption, 'triangle doodle caption is missing');
+    const attrs = caption[1];
+    const text = caption[2];
+    assert.equal(text, 'S = (a · h) : 2');
+    assert.match(attrs, /direction="ltr"/);
+    assert.match(attrs, /unicode-bidi="isolate"/);
+    assert.equal(index.includes('a·h/2'), false);
+    assert.equal(index.includes('a*h/2'), false);
+    assert.equal(index.includes('ah/2'), false);
+  });
+
   it('required href set is complete for gate scripts', () => {
     const hrefs = homePageRequiredHrefs(home);
     for (const g of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
