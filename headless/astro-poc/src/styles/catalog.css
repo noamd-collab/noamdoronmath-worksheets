@@ -3698,7 +3698,14 @@ html.noam-a11y-motion .tri-explorer .te-handle { transition: none; }
 /* numberline: the top question swaps per phase without layout shift */
 .concept-loop__top.cl-topswap { position: relative; }
 .cl-topsz { visibility: hidden; }
-.cl-tops { position: absolute; inset: 0; }
+.cl-tops { position: absolute; inset: 0; unicode-bidi: isolate; }
+.concept-loop .ll-math {
+  display: inline-block;
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+  margin-inline: 0.22em;
+}
 
 /* ——— plane flight layer: content always paints above it ——— */
 .home-hero__copy,

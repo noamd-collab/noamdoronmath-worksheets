@@ -143,7 +143,7 @@ const aria: Record<string, string> = {
       <>
         <p class="concept-loop__top cl-topswap">
           <span class="cl-topsz" aria-hidden="true">כמה משבצות יש בריבוע של 3 על 3?</span>
-          <span class="cl-tops" data-el="top0">כמה משבצות יש בריבוע של&nbsp;<bdi dir="ltr" class="ll-math">3</bdi>&nbsp;על&nbsp;<bdi dir="ltr" class="ll-math">3</bdi>?</span>
+          <span class="cl-tops" data-el="top0">כמה משבצות יש בריבוע של <bdi dir="ltr" class="ll-math">3</bdi> על <bdi dir="ltr" class="ll-math">3</bdi>?</span>
           <span class="cl-tops" data-el="top1" style="opacity:0">אז מהו <bdi dir="ltr" class="ll-math">√9</bdi>?</span>
         </p>
         <svg class="concept-loop__svg" viewBox="0 0 560 280" role="img" aria-label={aria.roots}>
@@ -163,8 +163,8 @@ const aria: Record<string, string> = {
             <text class="cl-t cl-num lf-big" x="144" y="232" text-anchor="middle">3</text>
           </g>
           <text class="cl-t cl-num lf-big" data-el="eq-sq" x="390" y="108" text-anchor="middle" style="opacity:0">3² = 9</text>
-          <path class="cl-stroke-a" data-el="rad-path" d="M250 176 L274 206 L304 148 L332 148" pathLength="1" fill="none" stroke-dashoffset="1" />
-          <text class="cl-t cl-num lf-big" data-el="rad" x="308" y="174" text-anchor="start" style="opacity:0">9</text>
+          <path class="cl-stroke-a" data-el="rad-path" d="M248 168 L270 202 L292 138 L316 138" pathLength="1" fill="none" stroke-dashoffset="1" />
+          <text class="cl-t cl-num lf-big" data-el="rad" x="296" y="174" text-anchor="start" style="opacity:0">9</text>
           <text class="cl-t cl-num lf-big cl-ok" data-el="eq-root" x="400" y="258" text-anchor="middle" style="opacity:0">√9 = 3</text>
         </svg>
       </>
@@ -316,7 +316,7 @@ const aria: Record<string, string> = {
           <text class="cl-t cl-num" x="228" y="70" text-anchor="end">4</text>
           <path data-el="ab" d="M142 174 H322" class="cl-stroke-a" pathLength="1" fill="none" stroke-dashoffset="1" style="opacity:0" />
           <path data-el="bc" d="M322 174 V66" class="cl-stroke-a" pathLength="1" fill="none" stroke-dashoffset="1" style="opacity:0" />
-          <path data-el="ca" d="M322 66 L142 174" class="cl-line" pathLength="1" stroke-dashoffset="1" style="opacity:0" />
+          <path data-el="ca" d="M322 66 L142 174" class="cl-line" pathLength="1" fill="none" stroke-dashoffset="1" style="opacity:0" />
           <path d="M310 174 H322 V162" fill="none" stroke="#22305a" stroke-width="2" />
           {[1, 2, 3, 4, 5].map((n) => (
             <text class="cl-t cl-num" data-el={`ab-${n}`} x={142 + (n - 0.5) * 36} y="158" text-anchor="middle" style="opacity:0">{n}</text>
@@ -324,13 +324,13 @@ const aria: Record<string, string> = {
           {[1, 2, 3].map((n) => (
             <text class="cl-t cl-num" data-el={`bc-${n}`} x="346" y={174 - (n - 0.5) * 36} text-anchor="start" dominant-baseline="central" style="opacity:0">{n}</text>
           ))}
-          <text class="cl-t cl-num lf-big cl-ok" data-el="lenAB" x="232" y="198" text-anchor="middle" style="opacity:0">5</text>
-          <text class="cl-t cl-num lf-big cl-ok" data-el="lenBC" x="404" y="120" text-anchor="middle" style="opacity:0">3</text>
+          <text class="cl-t cl-num lf-len cl-ok" data-el="lenAB" x="232" y="200" text-anchor="middle" style="opacity:0">5</text>
+          <text class="cl-t cl-num lf-len cl-ok" data-el="lenBC" x="358" y="120" text-anchor="middle" style="opacity:0">3</text>
           <circle data-el="ptA" cx="142" cy="174" r="6" class="cl-pt-a" style="opacity:0" />
           <circle data-el="ptB" cx="322" cy="174" r="6" class="cl-pt-b" style="opacity:0" />
           <circle data-el="ptC" cx="322" cy="66" r="6" class="cl-pt-a" style="opacity:0" />
           <text class="cl-t cl-num" data-el="lblA" x="128" y="160" text-anchor="end" style="opacity:0">A({MINUS}3, 1)</text>
-          <text class="cl-t cl-num" data-el="lblB" x="308" y="198" text-anchor="end" style="opacity:0">B(2, 1)</text>
+          <text class="cl-t cl-num" data-el="lblB" x="304" y="148" text-anchor="end" style="opacity:0">B(2, 1)</text>
           <text class="cl-t cl-num" data-el="lblC" x="336" y="54" text-anchor="start" style="opacity:0">C(2, 4)</text>
         </svg>
         <p class="lf-answer cl-ok" data-el="area" style="opacity:0">שטח <bdi dir="ltr" class="ll-math">5 × 3 : 2 = 7.5</bdi></p>
@@ -688,12 +688,18 @@ const aria: Record<string, string> = {
 </script>
 
 <style>
-  .cl-tops { display: block; text-align: center; line-height: 1.45; }
+  .cl-tops {
+    display: block;
+    text-align: center;
+    line-height: 1.45;
+    unicode-bidi: isolate;
+  }
   .ll-math {
     display: inline-block;
     direction: ltr;
     unicode-bidi: isolate;
     white-space: nowrap;
+    margin-inline: 0.22em;
   }
   .cl-t.cl-tc-a { fill: #2a7c7a; }
   .cl-t.cl-tc-b { fill: #7c3aed; }
@@ -717,6 +723,7 @@ const aria: Record<string, string> = {
     justify-content: center;
   }
   .lf-big { font-size: 28px; font-weight: 800; }
+  .lf-len { font-size: 20px; font-weight: 800; }
   .lf-mid { font-size: 20px; font-weight: 700; }
   .lf-cell { fill: #fff; stroke: #22305a; stroke-width: 2; }
   .lf-hop { stroke-width: 2.6; }

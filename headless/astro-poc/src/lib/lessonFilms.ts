@@ -33,6 +33,19 @@ const move = (el: Element | null, x: number, y: number) => {
 const text = (el: Element | null, value: string) => {
   if (el && el.textContent !== value) el.textContent = value;
 };
+const lin = (t: number, a: number, b: number) => {
+  if (!(b > a)) return t >= a ? 1 : 0;
+  return Math.min(1, Math.max(0, (t - a) / (b - a)));
+};
+
+/** Opacity plus visibility, so a hidden line cannot paint over the next one. */
+function setShown(el: Element | null, value: number) {
+  if (!el) return;
+  const v = value <= 0.004 ? 0 : value >= 0.996 ? 1 : Math.min(1, Math.max(0, value));
+  const node = el as HTMLElement;
+  node.style.opacity = String(r2(v));
+  node.style.visibility = v <= 0 ? 'hidden' : 'visible';
+}
 
 /** Minor arc centered on (cx, cy). Screen angles: 0 is +x, clockwise positive. */
 export function arcD(cx: number, cy: number, r: number, a0: number, a1: number): string {
@@ -79,19 +92,29 @@ function show(root: Root, name: string, t: number, a: number, b: number, c: numb
   op(q(root, name), ph(t, a, b) * (1 - ph(t, c, d)) * alive);
 }
 
-/** Question swaps: the old line is fully gone before the next line fades in. */
+/**
+ * One question at a time. The outgoing line reaches opacity 0 and
+ * visibility:hidden before the next line starts. The loop seam does the
+ * same: the last line is gone, then the first line fades back in.
+ */
 function captions(root: Root, t: number, names: string[], cuts: number[], seam: [number, number]) {
-  const fade = 0.22;
-  const mid = (seam[0] + seam[1]) / 2;
-  const seamOut = ph(t, seam[0], mid);
-  const seamIn = ph(t, mid, seam[1]);
-  names.forEach((name, i) => {
-    const inn = i === 0 ? 1 : ph(t, cuts[i - 1] + fade, cuts[i - 1] + fade * 2);
-    const out = i < cuts.length ? ph(t, cuts[i], cuts[i] + fade) : 0;
-    const shown = inn * (1 - out);
-    const value = i === 0 ? shown * (1 - seamOut) + seamIn : shown * (1 - seamOut);
-    op(q(root, name), value);
+  const fade = 0.2;
+  const gap = 0.14;
+  const values = names.map((_, i) => {
+    const in0 = i === 0 ? -10 : cuts[i - 1] + fade + gap;
+    const out0 = i < cuts.length ? cuts[i] : seam[0];
+    let v = 0;
+    if (t >= in0 && t < out0) v = i === 0 ? 1 : lin(t, in0, in0 + fade);
+    else if (t >= out0 && t < out0 + fade) v = 1 - lin(t, out0, out0 + fade);
+    if (i === 0 && t >= seam[0] + fade + gap) {
+      const back = seam[0] + fade + gap;
+      v = lin(t, back, back + fade);
+    }
+    return v;
   });
+  let winner = 0;
+  for (let i = 1; i < values.length; i++) if (values[i] > values[winner]) winner = i;
+  names.forEach((name, i) => setShown(q(root, name), i === winner && values[i] > 0 ? values[i] : 0));
 }
 
 function renderRoots(root: Root, t: number) {
@@ -102,7 +125,7 @@ function renderRoots(root: Root, t: number) {
   op(q(root, 'rad'), ph(t, 6.2, 6.6) * alive);
   draw(q(root, 'rad-path'), ph(t, 6.3, 7.3));
   op(q(root, 'eq-root'), ph(t, 7.5, 8.2) * alive);
-  captions(root, t, ['top0', 'top1'], [5.6], [11.6, 12.6]);
+  captions(root, t, ['top0', 'top1'], [5.6], [12.0, 12.7]);
 }
 
 function renderIneq(root: Root, t: number) {
@@ -123,39 +146,42 @@ function renderIneq(root: Root, t: number) {
 
 function renderExp(root: Root, t: number) {
   const alive = 1 - ph(t, 12.8, 13.6);
-  const start = [70, 150, 340, 420, 500];
-  const end = [100, 180, 260, 340, 420];
-  const y = 146;
-  const expand = ph(t, 1.5, 2.05);
-  const slide = ph(t, 2.9, 4.5);
-  const paren = expand * (1 - ph(t, 3.0, 3.55));
+  // 2² is the cobalt pair, 2³ is the purple triple. They start apart,
+  // then slide into one product 2 × 2 × 2 × 2 × 2.
+  const start = [108, 176, 360, 428, 496];
+  const end = [112, 184, 256, 328, 400];
+  const y = 148;
+  const expand = lin(t, 1.4, 2.6);
+  const slide = lin(t, 3.4, 5.0);
+  const paren = expand * (1 - lin(t, 3.4, 4.05));
   op(q(root, 'powL'), (1 - expand) * alive);
   op(q(root, 'powR'), (1 - expand) * alive);
   for (let i = 0; i < 5; i++) {
     op(q(root, `f${i}`), expand * alive);
     move(q(root, `f${i}`), lerp(start[i], end[i], slide), y);
-    op(q(root, `c${i}`), ph(t, 4.7 + i * 0.28, 4.95 + i * 0.28) * alive);
-    move(q(root, `c${i}`), end[i], 96);
+    op(q(root, `c${i}`), lin(t, 5.25 + i * 0.28, 5.5 + i * 0.28) * alive);
+    move(q(root, `c${i}`), end[i], 98);
   }
   for (let i = 0; i < 4; i++) {
     const x0 = lerp(start[i], end[i], slide);
     const x1 = lerp(start[i + 1], end[i + 1], slide);
     move(q(root, `m${i}`), (x0 + x1) / 2, y);
+    // The × between the two groups appears only as the groups meet.
     op(q(root, `m${i}`), expand * (i === 1 ? slide : 1) * alive);
   }
   const parens: Array<[string, number, number]> = [
-    ['pL0', start[0] - 38, end[0] - 38],
-    ['pL1', start[1] + 38, end[1] + 38],
-    ['pR0', start[2] - 38, end[2] - 38],
-    ['pR1', start[4] + 38, end[4] + 38],
+    ['pL0', start[0] - 34, end[0] - 34],
+    ['pL1', start[1] + 34, end[1] + 34],
+    ['pR0', start[2] - 34, end[2] - 34],
+    ['pR1', start[4] + 34, end[4] + 34],
   ];
   for (const [name, from, to] of parens) {
     move(q(root, name), lerp(from, to, slide), y);
     op(q(root, name), paren * alive);
   }
-  op(q(root, 'plus'), ph(t, 6.7, 7.2) * alive);
-  op(q(root, 'result'), ph(t, 8.0, 8.6) * alive);
-  captions(root, t, ['top0', 'top1', 'top2'], [2.5, 6.5], [12.8, 13.6]);
+  op(q(root, 'plus'), lin(t, 6.9, 7.3) * alive);
+  op(q(root, 'result'), lin(t, 8.15, 8.6) * alive);
+  captions(root, t, ['top0', 'top1', 'top2'], [3.15, 6.7], [12.8, 13.6]);
 }
 
 function renderPowers(root: Root, t: number) {
@@ -200,18 +226,24 @@ function renderCoord(root: Root, t: number) {
   op(q(root, 'lblB'), ph(t, 1.3, 1.7) * alive);
   op(q(root, 'ab'), ph(t, 1.8, 2.1) * alive);
   draw(q(root, 'ab'), ph(t, 1.9, 2.8));
-  for (let i = 1; i <= 5; i++) op(q(root, `ab-${i}`), ph(t, 2.2 + i * 0.28, 2.45 + i * 0.28) * alive);
+  for (let i = 1; i <= 5; i++) {
+    const count = ph(t, 2.2 + i * 0.28, 2.45 + i * 0.28);
+    op(q(root, `ab-${i}`), count * (1 - ph(t, 3.65, 4.05)) * alive);
+  }
   op(q(root, 'lenAB'), ph(t, 3.8, 4.3) * alive);
   op(q(root, 'ptC'), ph(t, 4.6, 5.0) * alive);
   op(q(root, 'lblC'), ph(t, 4.7, 5.1) * alive);
   op(q(root, 'bc'), ph(t, 5.2, 5.5) * alive);
   draw(q(root, 'bc'), ph(t, 5.3, 6.0));
-  for (let i = 1; i <= 3; i++) op(q(root, `bc-${i}`), ph(t, 5.5 + i * 0.28, 5.75 + i * 0.28) * alive);
+  for (let i = 1; i <= 3; i++) {
+    const count = ph(t, 5.5 + i * 0.28, 5.75 + i * 0.28);
+    op(q(root, `bc-${i}`), count * (1 - ph(t, 6.45, 6.85)) * alive);
+  }
   op(q(root, 'lenBC'), ph(t, 6.6, 7.1) * alive);
   op(q(root, 'ca'), ph(t, 7.2, 7.6) * alive);
   draw(q(root, 'ca'), ph(t, 7.3, 8.1));
   op(q(root, 'area'), ph(t, 8.4, 9.0) * alive);
-  captions(root, t, ['top0', 'top1', 'top2'], [1.6, 7.8], [13.4, 14.4]);
+  captions(root, t, ['top0', 'top1', 'top2'], [1.6, 7.8], [13.7, 14.55]);
 }
 
 function ride(hours: number) {
@@ -220,14 +252,24 @@ function ride(hours: number) {
   return { d: Math.max(0, 30 - 15 * (hours - 3)), v: '15' };
 }
 
+function trailPortion(hours: number) {
+  const climb = Math.hypot(148, 108);
+  const flat = 74;
+  const total = climb * 2 + flat;
+  let walked = 0;
+  if (hours <= 2) walked = (hours / 2) * climb;
+  else if (hours <= 3) walked = climb + (hours - 2) * flat;
+  else walked = climb + flat + ((hours - 3) / 2) * climb;
+  return Math.min(1, Math.max(0, walked / total));
+}
+
 function renderRead(root: Root, t: number) {
   const alive = 1 - ph(t, 12.6, 13.5);
-  const raw = Math.min(5, Math.max(0, lerp(0, 5, ph(t, 0.5, 10.5))));
+  const raw = Math.min(5, Math.max(0, ((Math.min(10.5, Math.max(0.5, t)) - 0.5) / 10) * 5));
   const hours = Math.round(raw * 10) / 10;
   const { d, v } = ride(hours);
-  const shown = Math.round(d * 10) / 10;
   const gx = 78 + hours * 74;
-  const gy = 268 - shown * 3.6;
+  const gy = 268 - d * 3.6;
   const rx = 64 + (d / 30) * 420;
   attr(q(root, 'rider'), 'cx', rx);
   attr(q(root, 'gdot'), 'cx', gx);
@@ -242,10 +284,10 @@ function renderRead(root: Root, t: number) {
   op(q(root, 'dashh'), ph(t, 0.8, 1.2) * alive);
   op(q(root, 'rider'), alive);
   op(q(root, 'gdot'), ph(t, 0.4, 0.8) * alive);
-  draw(q(root, 'trail'), ph(t, 0.5, 10.5));
+  draw(q(root, 'trail'), t < 0.5 ? 0 : trailPortion(hours));
   text(q(root, 'speed'), `${v} קמ״ש`);
   text(q(root, 'clock'), `${hours.toFixed(1)} שע׳`);
-  text(q(root, 'dist'), `${shown.toFixed(1)} ק״מ`);
+  text(q(root, 'dist'), `${d.toFixed(1)} ק״מ`);
   op(q(root, 'readout'), ph(t, 0.8, 1.2) * alive);
   op(q(root, 'sum'), ph(t, 10.6, 11.2) * alive);
 }
@@ -260,7 +302,7 @@ function renderSystems(root: Root, t: number) {
   op(q(root, 'pname'), ph(t, 3.6, 4.1) * alive);
   op(q(root, 'chk1'), ph(t, 4.8, 5.4) * alive);
   op(q(root, 'chk2'), ph(t, 6.0, 6.6) * alive);
-  captions(root, t, ['top0', 'top1'], [4.4], [12.4, 13.4]);
+  captions(root, t, ['top0', 'top1'], [4.4], [13.0, 13.75]);
 }
 
 function renderCone(root: Root, t: number) {
@@ -276,7 +318,7 @@ function renderCone(root: Root, t: number) {
   op(q(root, 'sector'), ph(t, 7.4, 8.0) * alive);
   draw(q(root, 'sector'), ph(t, 7.5, 8.8));
   op(q(root, 'net-lbl'), ph(t, 8.8, 9.3) * alive);
-  captions(root, t, ['top0', 'top1'], [5.8], [12.4, 13.4]);
+  captions(root, t, ['top0', 'top1'], [5.8], [13.0, 13.75]);
 }
 
 function renderCyl(root: Root, t: number) {
@@ -294,7 +336,7 @@ function renderCyl(root: Root, t: number) {
   op(q(root, 'c1'), alive);
   op(q(root, 'c2'), alive);
   op(q(root, 'formula'), ph(t, 7.8, 8.4) * alive);
-  captions(root, t, ['top0', 'top1'], [4.6], [12.4, 13.4]);
+  captions(root, t, ['top0', 'top1'], [4.6], [13.0, 13.75]);
 }
 
 function renderPrism(root: Root, t: number) {
@@ -310,7 +352,7 @@ function renderPrism(root: Root, t: number) {
   for (const [name, x, y] of faces) move(q(root, name), lerp(x, 0, p), lerp(y, 0, p));
   op(q(root, 'area'), ph(t, 4.2, 4.8) * alive);
   op(q(root, 'vol'), ph(t, 6.4, 7.1) * alive);
-  captions(root, t, ['top0', 'top1', 'top2'], [3.8, 6.0], [13.4, 14.4]);
+  captions(root, t, ['top0', 'top1', 'top2'], [3.8, 6.0], [13.7, 14.55]);
 }
 
 const XN = (n: number) => 270 + n * 30;
@@ -379,7 +421,7 @@ function renderQuad(root: Root, t: number) {
   op(q(root, 'roots'), ph(t, 3.6, 4.2) * alive);
   op(q(root, 'fact'), ph(t, 5.4, 6.1) * alive);
   op(q(root, 'solve'), ph(t, 7.2, 7.9) * alive);
-  captions(root, t, ['top0', 'top1'], [5.0], [13.4, 14.4]);
+  captions(root, t, ['top0', 'top1'], [5.0], [13.7, 14.55]);
 }
 
 function renderQuadIneq(root: Root, t: number) {
@@ -393,7 +435,7 @@ function renderQuadIneq(root: Root, t: number) {
   op(q(root, 'shadeR'), ph(t, 5.0, 5.6) * alive);
   op(q(root, 'mid'), ph(t, 5.8, 6.3) * alive);
   op(q(root, 'answer'), ph(t, 6.8, 7.5) * alive);
-  captions(root, t, ['top0', 'top1'], [4.2], [12.4, 13.4]);
+  captions(root, t, ['top0', 'top1'], [4.2], [13.0, 13.75]);
 }
 
 function renderRect(root: Root, t: number) {
@@ -406,21 +448,22 @@ function renderRect(root: Root, t: number) {
   op(q(root, 'd2'), ph(t, 4.6, 5.0) * alive);
   draw(q(root, 'd2'), ph(t, 4.7, 5.6));
   op(q(root, 'eq'), ph(t, 5.8, 6.4) * alive);
-  captions(root, t, ['top0', 'top1'], [3.3], [11.4, 12.4]);
+  captions(root, t, ['top0', 'top1'], [3.3], [12.05, 12.75]);
 }
 
 function renderTriangles(root: Root, t: number) {
-  const alive = 1 - ph(t, 12.4, 13.4);
-  const u = Math.min(1, Math.max(0, (t - 0.25) / 10.9));
-  const A = { x: 280, y: lerp(36, 221, u) };
+  const alive = 1 - ph(t, 13.05, 13.75);
+  // Apex descends toward the base across the loop, so γ opens to ~170°.
+  const u = Math.min(1, Math.max(0, (t - 0.35) / 8.85));
+  const A = { x: 280, y: lerp(34, 221, u) };
   const B = { x: 110, y: 236 };
   const C = { x: 450, y: 236 };
   const poly = q(root, 'tri');
   if (poly) poly.setAttribute('points', `${r2(A.x)},${r2(A.y)} ${B.x},${B.y} ${C.x},${C.y}`);
   const altitude = C.y - A.y;
-  putArc(q(root, 'arcA'), A.x, A.y, Math.max(12, Math.min(36, altitude * 0.42)), ray(A, B), ray(A, C));
-  putArc(q(root, 'arcB'), B.x, B.y, 36, ray(B, C), ray(B, A));
-  putArc(q(root, 'arcC'), C.x, C.y, 36, ray(C, A), ray(C, B));
+  putArc(q(root, 'arcA'), A.x, A.y, Math.min(34, Math.max(14, altitude * 0.45)), ray(A, B), ray(A, C));
+  putArc(q(root, 'arcB'), B.x, B.y, 40, ray(B, C), ray(B, A));
+  putArc(q(root, 'arcC'), C.x, C.y, 40, ray(C, A), ray(C, B));
   const gamma = Math.round(corner(A, B, C));
   const alpha = Math.round(corner(B, A, C));
   const beta = 180 - gamma - alpha;
@@ -428,9 +471,13 @@ function renderTriangles(root: Root, t: number) {
   text(q(root, 'degB'), `α ${alpha}°`);
   text(q(root, 'degC'), `β ${beta}°`);
   attr(q(root, 'degA'), 'x', A.x);
-  attr(q(root, 'degA'), 'y', Math.max(18, A.y - 16));
-  putLabel(q(root, 'degB'), B.x, B.y, 52, ray(B, C), ray(B, A));
-  putLabel(q(root, 'degC'), C.x, C.y, 52, ray(C, A), ray(C, B));
+  attr(q(root, 'degA'), 'y', altitude > 50 ? A.y + Math.min(40, altitude * 0.32) : A.y - 18);
+  putLabel(q(root, 'degB'), B.x, B.y, 56, ray(B, C), ray(B, A));
+  putLabel(q(root, 'degC'), C.x, C.y, 56, ray(C, A), ray(C, B));
+  for (const el of [q(root, 'degB'), q(root, 'degC')]) {
+    if (!el) continue;
+    if (Number(el.getAttribute('y')) > B.y - 10) attr(el, 'y', B.y + 22);
+  }
   text(q(root, 'sum'), `α ${alpha}° + β ${beta}° + γ ${gamma}° = 180°`);
   op(q(root, 'sum'), ph(t, 0.4, 0.8) * alive);
   op(q(root, 'tri'), alive);
@@ -478,7 +525,7 @@ function renderSide(root: Root, t: number) {
 const PARA = [
   { a: [190, 108, 30, 0, 45], b: [310, 228, 30, 0, 45], da: '45°', db: '45°', pair: '45° = 45°' },
   { a: [190, 108, 30, 0, 45], b: [310, 228, 30, 180, 225], da: '45°', db: '45°', pair: '45° = 45°' },
-  { a: [190, 108, 30, 180, 225], b: [310, 228, 30, 0, 45], da: '45°', db: '45°', pair: '45° = 45°' },
+  { a: [190, 108, 36, 180, 225], b: [310, 228, 36, 0, 45], da: '45°', db: '45°', pair: '45° = 45°' },
   { a: [190, 108, 28, 0, 45], b: [310, 228, 42, 225, 360], da: '45°', db: '135°', pair: '45° + 135° = 180°' },
   { a: [190, 108, 26, 0, 45], b: [190, 108, 42, 180, 225], da: '45°', db: '45°', pair: '45° = 45°' },
   { a: [190, 108, 26, 0, 45], b: [190, 108, 42, 45, 180], da: '45°', db: '135°', pair: '45° + 135° = 180°' },
@@ -498,9 +545,9 @@ function renderParallel(root: Root, t: number) {
   text(q(root, 'degB'), spec.db);
   putLabel(q(root, 'degA'), spec.a[0], spec.a[1], spec.a[2] + 18, rad(spec.a[3]), rad(spec.a[4]));
   putLabel(q(root, 'degB'), spec.b[0], spec.b[1], spec.b[2] + 18, rad(spec.b[3]), rad(spec.b[4]));
-  for (let i = 0; i < 6; i++) op(q(root, `cap${i}`), i === step ? alive : 0);
+  for (let i = 0; i < 6; i++) setShown(q(root, `cap${i}`), i === step ? alive : 0);
   text(q(root, 'sumline'), spec.pair);
-  op(q(root, 'sumline'), alive);
+  setShown(q(root, 'sumline'), alive);
 }
 
 const SPECS: Record<string, Spec> = {
@@ -522,7 +569,7 @@ const SPECS: Record<string, Spec> = {
   'quad-factor': { duration: 15, hold: 12.0, render: renderQuad },
   'quad-ineq': { duration: 14, hold: 11.0, render: renderQuadIneq },
   rect: { duration: 13, hold: 10.0, render: renderRect },
-  triangles: { duration: 14, hold: 11.4, render: renderTriangles },
+  triangles: { duration: 14, hold: 9.6, render: renderTriangles },
   'side-angle': { duration: 14, hold: 10.2, render: renderSide },
   'parallel-more': { duration: 18, hold: 15.2, render: renderParallel },
 };
