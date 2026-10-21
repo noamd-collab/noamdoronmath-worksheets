@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148 168.83" width="148" height="168.83">
-<g data-layer="marks">
-<circle id="e0001" cx="74" cy="74" r="70" fill="none" stroke="#000000" stroke-width="1.33" data-pie="bcirc" data-for="bcirc:qt_c"/>
-</g>
-<g data-layer="labels">
-<text id="e0002" x="74" y="161.4" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="bcap" data-for="bcirc:qt_c">תישילש הצובק</text>
-</g>
-</svg>

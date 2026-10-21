@@ -58,7 +58,6 @@ test("shrinking the page width keeps the reader halfway through page four", () =
   assert.equal(before.fraction, .5);
 
   f.scroll.clientWidth = 390;
-  f.ctx.pdfZoom = .7;
   f.ctx.resetPdfRendering();
 
   const after = f.ctx.capturePdfPosition();
@@ -99,23 +98,13 @@ test("fit width reserves both feedback and AI gutters before document scaling", 
     const containerInset = mobile ? 12 : 34;
     for (const width of [280, 320, 380, 664, 1024]) {
       f.scroll.clientWidth = width;
-      f.ctx.pdfZoom = f.ctx.getPdfFitZoom();
+      f.ctx.pdfZoom = 1;
       const fitted = f.ctx.getPdfPageWidth();
-      assert.ok(fitted + gutter + containerInset <= width, "fit and both controls stay inside the viewport");
-      const fitZoom = f.ctx.pdfZoom;
-      f.ctx.pdfZoom = fitZoom * 2;
+      assert.equal(fitted + gutter + containerInset, width, "100% document plus buttons fits scroll viewport");
+      f.ctx.pdfZoom = .7;
+      assert.ok(f.ctx.getPdfPageWidth() + gutter + containerInset <= width, "default zoom keeps both targets visible");
+      f.ctx.pdfZoom = 2;
       assert.equal(f.ctx.getPdfPageWidth(), fitted * 2, "document zoom does not scale button gutter");
     }
-  }
-});
-
-test("phone reading size stays legible independently of viewport width", () => {
-  const f = fixture();
-  for (const width of [320,375,390,430,844]) {
-    f.scroll.clientWidth = width;
-    f.ctx.pdfZoom = 1;
-    assert.equal(f.ctx.getPdfPageWidth(),600);
-    f.ctx.pdfZoom = f.ctx.getPdfFitZoom();
-    assert.ok(f.ctx.getPdfPageWidth()+66 <= width+.01);
   }
 });

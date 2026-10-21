@@ -5,31 +5,23 @@
  * When either is missing the response is "not active" and Qwen is not called.
  */
 import type { APIRoute } from 'astro';
-import { NOAM_RECAPTCHA_SECRET_KEY, QWEN_API_KEY, QWEN_BASE_URL, QWEN_MODEL } from 'astro:env/server';
+import { NOAM_RECAPTCHA_SECRET_KEY, QWEN_API_KEY } from 'astro:env/server';
 import catalog from '../../data/catalog.v1.json';
 import guide from '../../data/site-guide.v1.json';
 import teacherIndex from '../../data/teacher-pick-index.json';
 import {
   NOAM_RECAPTCHA_SECRET_NAME,
-  QWEN_BASE_URL_NAME,
-  QWEN_MODEL_NAME,
   QWEN_SECRET_NAME,
   handleNoamSiteCompanion,
   visitorIpFrom,
 } from '../../../../../noam-ai/site-companion/endpoint.js';
-import { publicRequestHost, recaptchaBypassFromEnv } from '../../../../../noam-ai/site-companion/bot-guard.js';
 import { secretFromEnv } from '../../lib/noamSecrets';
-import { createWixRateBackend } from '../../lib/noamRateStore';
 
 export const prerender = false;
-
-const sharedRate = createWixRateBackend();
 
 function keys() {
   return {
     qwenKey: secretFromEnv(QWEN_SECRET_NAME, QWEN_API_KEY),
-    qwenBaseUrl: secretFromEnv(QWEN_BASE_URL_NAME, QWEN_BASE_URL),
-    qwenModel: secretFromEnv(QWEN_MODEL_NAME, QWEN_MODEL),
     recaptchaSecret: secretFromEnv(NOAM_RECAPTCHA_SECRET_NAME, NOAM_RECAPTCHA_SECRET_KEY),
   };
 }
@@ -43,27 +35,15 @@ function send(result: { status: number; headers: Record<string, string>; body: u
   return new Response(body, { status: result.status, headers: result.headers });
 }
 
-function requestHostOf(request: Request): string {
-  return publicRequestHost(
-    request.url,
-    request.headers.get('x-forwarded-host') || '',
-    request.headers.get('host') || '',
-  );
-}
-
 async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {
-  const requestHost = requestHostOf(context.request);
   const result = await handleNoamSiteCompanion(context.request, {
     ...keys(),
     origin: context.request.headers.get('origin') || '',
-    requestHost,
     clientIp: clientIpOf(context),
     catalog,
     guide,
     teacherIndex,
     fetch: globalThis.fetch.bind(globalThis),
-    recaptchaBypass: recaptchaBypassFromEnv(process.env, requestHost),
-    rateBackend: sharedRate,
   });
   return send(result);
 }
