@@ -22,7 +22,7 @@ const ALGEBRA_PRIORITY =
 
 const GRAPHS = /coordinate|graph|function|statistic|probability|precalculus/;
 const GEOMETRY =
-  /triangle|angle|pythag|rectangle|square|rhombus|trapezoid|parallelogram|polygon|circle|cylinder|cone|prism|congru|similar|geometric|area|volume/;
+  /triangle|angle|pythag|rectangle|square|rhombus|trapezoid|kite|parallelogram|polygon|circle|cylinder|cone|prism|congru|similar|geometric|area|volume/;
 const ALGEBRA =
   /equation|algebra|factor|power|exponent|root|signed|inequal|binomial|distributive|word-problem|percentage/;
 
@@ -30,6 +30,62 @@ const PROD = 'https://www.noamdoronmath.co.il';
 
 /** Canonical related targets from the live GEO block, keyed by grade then family. */
 const LINKS: Record<number, Record<TopicFamily, readonly (readonly [string, string])[]>> = {
+  1: {
+    // Elementary topics have no production sibling pages; every family falls
+    // back to the two real hubs (own grade first, then the next grade).
+    algebra: [['/grade-2', 'דפי עבודה לכיתה ב׳']],
+    geometry: [['/grade-2', 'דפי עבודה לכיתה ב׳']],
+    graphs: [['/grade-2', 'דפי עבודה לכיתה ב׳']],
+    default: [
+      ['/grade-1', 'כל דפי כיתה א׳'],
+      ['/grade-2', 'דפי עבודה לכיתה ב׳'],
+    ],
+  },
+  2: {
+    algebra: [['/grade-3', 'דפי עבודה לכיתה ג׳']],
+    geometry: [['/grade-3', 'דפי עבודה לכיתה ג׳']],
+    graphs: [['/grade-3', 'דפי עבודה לכיתה ג׳']],
+    default: [
+      ['/grade-2', 'כל דפי כיתה ב׳'],
+      ['/grade-3', 'דפי עבודה לכיתה ג׳'],
+    ],
+  },
+  6: {
+    algebra: [['/grade-7', 'דפי עבודה לכיתה ז׳']],
+    geometry: [['/grade-7', 'דפי עבודה לכיתה ז׳']],
+    graphs: [['/grade-7', 'דפי עבודה לכיתה ז׳']],
+    default: [
+      ['/grade-6', 'כל דפי כיתה ו׳'],
+      ['/grade-7', 'דפי עבודה לכיתה ז׳'],
+    ],
+  },
+  5: {
+    algebra: [['/grade-6', 'דפי עבודה לכיתה ו׳']],
+    geometry: [['/grade-6', 'דפי עבודה לכיתה ו׳']],
+    graphs: [['/grade-6', 'דפי עבודה לכיתה ו׳']],
+    default: [
+      ['/grade-5', 'כל דפי כיתה ה׳'],
+      ['/grade-6', 'דפי עבודה לכיתה ו׳'],
+    ],
+  },
+  4: {
+    algebra: [['/grade-5', 'דפי עבודה לכיתה ה׳']],
+    geometry: [['/grade-5', 'דפי עבודה לכיתה ה׳']],
+    graphs: [['/grade-5', 'דפי עבודה לכיתה ה׳']],
+    default: [
+      ['/grade-4', 'כל דפי כיתה ד׳'],
+      ['/grade-5', 'דפי עבודה לכיתה ה׳'],
+    ],
+  },
+  3: {
+    algebra: [['/grade-4', 'דפי עבודה לכיתה ד׳']],
+    geometry: [['/grade-4', 'דפי עבודה לכיתה ד׳']],
+    graphs: [['/grade-4', 'דפי עבודה לכיתה ד׳']],
+    default: [
+      ['/grade-3', 'כל דפי כיתה ג׳'],
+      ['/grade-4', 'דפי עבודה לכיתה ד׳'],
+    ],
+  },
   7: {
     algebra: [
       ['/signed-numbers-grade-7', 'מספרים מכוונים'],

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 162" width="190" height="162">
+<g data-layer="lines">
+<line id="e0001" data-seg="AB" x1="55.12" y1="135.57" x2="164" y2="135.57" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="AD" x1="55.12" y1="135.57" x2="26" y2="45.95" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="BC" x1="164" y1="135.57" x2="126.42" y2="26.43" stroke="#000000" stroke-width="1.5"/>
+<line id="e0004" data-seg="BD" x1="164" y1="135.57" x2="26" y2="45.95" stroke="#000000" stroke-width="1"/>
+<line id="e0005" data-seg="CD" x1="126.42" y1="26.43" x2="26" y2="45.95" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0006" data-mark="arc ADB" d="M 30.94 61.17 L 31.97 60.8 L 32.96 60.36 L 33.93 59.85 L 34.85 59.28 L 35.74 58.64 L 36.58 57.95 L 37.37 57.2 L 38.11 56.4 L 38.79 55.56 L 39.42 54.66" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0007" data-mark="arc2 BAD" d="M 71.12 135.57 L 71.08 134.49 L 70.98 133.42 L 70.79 132.36 L 70.54 131.31 L 70.22 130.29 L 69.83 129.28 L 69.38 128.31 L 68.86 127.36 L 68.27 126.46 L 67.63 125.59 L 66.93 124.78 L 66.18 124.01 L 65.37 123.29 L 64.52 122.63 L 63.63 122.02 L 62.7 121.48 L 61.74 121 L 60.74 120.59 L 59.72 120.25 L 58.68 119.97 L 57.62 119.77 L 56.55 119.63 L 55.48 119.57 L 54.4 119.59 L 53.33 119.67 L 52.26 119.83 L 51.21 120.05 L 50.18 120.35" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0008" data-mark="arc2 BAD" d="M 74.12 135.57 L 74.08 134.29 L 73.95 133.02 L 73.73 131.76 L 73.44 130.52 L 73.05 129.29 L 72.59 128.1 L 72.05 126.94 L 71.43 125.82 L 70.74 124.75 L 69.97 123.72 L 69.14 122.75 L 68.25 121.84 L 67.3 120.98 L 66.29 120.2 L 65.23 119.48 L 64.12 118.84 L 62.98 118.27 L 61.8 117.78 L 60.58 117.37 L 59.35 117.05 L 58.09 116.8 L 56.82 116.65 L 55.55 116.57 L 54.27 116.59 L 52.99 116.69 L 51.73 116.88 L 50.48 117.15 L 49.25 117.5" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0009" data-mark="arc3 BCD" d="M 131.63 41.56 L 130.58 41.88 L 129.52 42.13 L 128.44 42.3 L 127.35 42.4 L 126.25 42.43 L 125.16 42.38 L 124.07 42.26 L 123 42.06 L 121.93 41.79 L 120.9 41.45 L 119.88 41.03 L 118.9 40.55 L 117.95 40 L 117.04 39.39 L 116.18 38.72 L 115.36 37.99 L 114.6 37.21 L 113.89 36.38 L 113.24 35.5 L 112.65 34.57 L 112.12 33.61 L 111.67 32.62 L 111.28 31.6 L 110.96 30.55 L 110.71 29.48" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0010" data-mark="arc3 BCD" d="M 132.61 44.39 L 131.36 44.78 L 130.1 45.07 L 128.81 45.28 L 127.52 45.4 L 126.22 45.43 L 124.92 45.37 L 123.63 45.22 L 122.35 44.99 L 121.09 44.67 L 119.86 44.26 L 118.66 43.77 L 117.49 43.2 L 116.36 42.55 L 115.28 41.82 L 114.26 41.03 L 113.29 40.16 L 112.38 39.23 L 111.54 38.24 L 110.77 37.2 L 110.07 36.1 L 109.44 34.96 L 108.9 33.78 L 108.44 32.57 L 108.06 31.32 L 107.77 30.06" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0011" data-mark="arc3 BCD" d="M 133.58 47.23 L 132.14 47.67 L 130.68 48.01 L 129.19 48.25 L 127.69 48.39 L 126.19 48.43 L 124.69 48.36 L 123.19 48.19 L 121.71 47.92 L 120.25 47.55 L 118.82 47.08 L 117.43 46.51 L 116.08 45.85 L 114.77 45.1 L 113.53 44.26 L 112.34 43.33 L 111.22 42.33 L 110.16 41.25 L 109.19 40.11 L 108.29 38.9 L 107.48 37.63 L 106.76 36.31 L 106.13 34.94 L 105.6 33.53 L 105.16 32.09 L 104.82 30.63" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0012" data-pt="A" cx="55.12" cy="135.57" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0013" data-pt="B" cx="164" cy="135.57" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0014" data-pt="C" cx="126.42" cy="26.43" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0015" data-pt="D" cx="26" cy="45.95" r="0.75" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0016" data-for="ang ADB" x="47.8" y="78.09" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">39°</text>
+<text id="e0017" data-for="ang BAD" x="74.25" y="112.97" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">108°</text>
+<text id="e0018" data-for="ang BCD" x="109.9" y="58.77" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">98°</text>
+<text id="e0019" data-for="A" x="48.79" y="148.72" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0020" data-for="B" x="172.32" y="145.94" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0021" data-for="C" x="131.59" y="21.91" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">C</text>
+<text id="e0022" data-for="D" x="16.89" y="45.02" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">D</text>
+</g>
+</svg>

@@ -15,8 +15,10 @@
   function init() {
     if (document.getElementById('noam-accessibility')) return;
     const defaults = { text: 100, contrast: false, links: false, motion: false };
-    const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let prefs = { ...defaults, stopAnim: reduceQuery.matches, stopAnimChosen: false };
+    // OS prefers-reduced-motion must not flip "עצירת אנימציות" on. Grade
+    // demos (and every other rAF loop) keep playing until the visitor
+    // presses that control. A saved choice still wins.
+    let prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
     try {
       const saved = JSON.parse(localStorage.getItem('noam-accessibility-v1') || '{}');
       prefs.text = [100,110,120,130,140,150].includes(saved.text) ? saved.text : 100;
@@ -83,11 +85,12 @@
         animation:none!important; animation-play-state:paused!important; transition:none!important;
       }
       @media print { #noam-accessibility { display:none!important; } }
-      /* Reserve the corner. The window stays the scroller. */
+      /* Reserve the corner on pages that still scroll the window.
+         exact-site phones zero this padding and scroll .exact-frame. */
       @media (max-width: 800px) {
         html.noam-a11y-pad body {
-          padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
-          scroll-padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+          padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
+          scroll-padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
         }
       }
       @media (min-width: 801px) {
@@ -147,6 +150,12 @@
         }
         #stop-anim { border-radius:18px 6px 20px 8px / 8px 20px 6px 18px; }
         #stop-anim[aria-pressed="true"] { background:#a84434; border-color:#22305a; color:#fff; }
+        /* Worksheet tools stay secondary to the question-level Ramzi controls. */
+        :host-context(body.exact-viewer) #launch {
+          width:44px; height:44px; padding:9px; border:1px solid #aab6c5;
+          border-radius:12px; background:#fbfaf5; color:#1e605e; box-shadow:none;
+        }
+        :host-context(body.exact-viewer) #launch svg { width:24px; height:24px; }
         dialog { direction:rtl; position:fixed; inset:auto 14px calc(140px + env(safe-area-inset-bottom)) auto; margin:0; width:min(330px,calc(100vw - 28px)); max-height:calc(100dvh - 165px); overflow:auto; background:#fbfaf5; color:#22305a; border:2px solid #22305a; border-radius:22px 8px 26px 10px / 10px 26px 8px 22px; padding:16px; box-shadow:6px 6px 0 #e6a534; font:16px/1.5 Heebo,Arial,sans-serif; }
         dialog::backdrop { background:rgba(34,48,90,0.35); }
         header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
@@ -201,6 +210,13 @@
         if (r.bottom <= 0 || r.top >= window.innerHeight || r.right <= 0 || r.left >= window.innerWidth) continue;
         rects.push(r);
       }
+      var cards = document.querySelectorAll('.exact-topic-demo,.concept-loop__card,.ka-film,.grade-loop');
+      for (var c = 0; c < cards.length; c++) {
+        var card = cards[c].getBoundingClientRect();
+        if (card.width < 2 || card.height < 2) continue;
+        if (card.bottom <= 0 || card.top >= window.innerHeight || card.right <= 0 || card.left >= window.innerWidth) continue;
+        rects.push(card);
+      }
       var fixedNodes = document.body.querySelectorAll('*');
       for (var j = 0; j < fixedNodes.length; j++) {
         var fixedEl = fixedNodes[j];
@@ -229,6 +245,12 @@
     function settleLauncher() {
       if (!astroShell || !host.isConnected || dialog.open) return;
       var metrics = launcherMetrics();
+      /* Phone: stay in the bottom dock, opposite the chat launcher.
+         Climbing the screen parks the button on the headline or בס״ד. */
+      if (docked()) {
+        applyHostBox('left', metrics.edge, 8, metrics.size);
+        return;
+      }
       var rects = obstacleRects();
       var maxBottom = Math.max(8, Math.round(window.innerHeight * 0.75));
       var bottoms = [8, 0];
@@ -240,7 +262,30 @@
           if (!boxHits(host.getBoundingClientRect(), rects)) return;
         }
       }
+      if (parkOffLessonCard(metrics)) return;
       applyHostBox('left', metrics.edge, 8, metrics.size);
+    }
+    function parkOffLessonCard(metrics) {
+      var cardEl = document.querySelector('.exact-topic-demo,.concept-loop__card,.ka-film');
+      if (!cardEl) return false;
+      var card = cardEl.getBoundingClientRect();
+      if (card.width < 2 || card.height < 2) return false;
+      var rects = obstacleRects();
+      var topGap = Math.max(8, Math.round(window.innerHeight - metrics.size - 8));
+      var aboveCard = Math.round(window.innerHeight - card.top + 8);
+      var spots = [];
+      if (card.top > metrics.size + 16) {
+        spots.push(['left', aboveCard], ['right', aboveCard]);
+      }
+      spots.push(['left', topGap], ['right', topGap]);
+      for (var i = 0; i < spots.length; i++) {
+        applyHostBox(spots[i][0], metrics.edge, spots[i][1], metrics.size);
+        var box = host.getBoundingClientRect();
+        var onCard = box.left < card.right && box.right > card.left && box.top < card.bottom && box.bottom > card.top;
+        if (!onCard && !boxHits(box, rects)) return true;
+      }
+      applyHostBox('left', metrics.edge, topGap, metrics.size);
+      return true;
     }
     function placeDialogNearLauncher() {
       if (!astroShell) return;
@@ -347,13 +392,8 @@
       apply(true);
     });
     root.getElementById('reset').addEventListener('click', () => {
-      prefs = { ...defaults, stopAnim: reduceQuery.matches, stopAnimChosen: false };
+      prefs = { ...defaults, stopAnim: false, stopAnimChosen: false };
       apply(true);
-    });
-    reduceQuery.addEventListener('change', () => {
-      if (prefs.stopAnimChosen) return;
-      prefs.stopAnim = reduceQuery.matches;
-      apply(false);
     });
     let scheduled = false;
     new MutationObserver(() => {

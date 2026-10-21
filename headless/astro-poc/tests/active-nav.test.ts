@@ -22,6 +22,7 @@ describe('M37 resolveActiveNav', () => {
   it('maps about / tools / highschool / learning', () => {
     assert.equal(resolveActiveNav('/aboutus'), 'about');
     assert.equal(resolveActiveNav('/math-tools'), 'tools');
+    assert.equal(resolveActiveNav('/games/kefel-mekutsar-2'), 'tools');
     assert.equal(resolveActiveNav('/high-school-math'), 'highschool');
     assert.equal(resolveActiveNav('/high-school-math-1'), 'highschool');
     assert.equal(resolveActiveNav('/learning.html'), 'learning');
@@ -78,6 +79,8 @@ describe('M37 resolveActiveNav', () => {
     assert.equal(resolveActiveNav('/accessibilityadaptation'), null);
     assert.equal(resolveActiveNav('/conditionforfreeworksheets'), null);
     assert.equal(resolveActiveNav('/worksheet-viewer-noam.html'), null);
+    assert.equal(resolveActiveNav('/teachers'), 'teachers');
+    assert.notEqual(resolveActiveNav('/teachers'), 'home');
   });
 
   it('SiteHeader sets aria-current=page only on the matching destination', async () => {
@@ -107,6 +110,7 @@ describe('M37 resolveActiveNav', () => {
     const destinations = {
       home: '/', about: '/aboutus', blog: '/blog',
       tools: '/math-tools', highschool: '/high-school-math', learning: '/learning.html',
+      teachers: '/teachers',
     };
     for (const [key, href] of Object.entries(destinations)) {
       for (const expr of currentExpr(href)) {

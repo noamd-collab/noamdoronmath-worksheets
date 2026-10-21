@@ -19,7 +19,8 @@ export type ActiveNavKey =
   | 'about'
   | 'blog'
   | 'tools'
-  | 'highschool';
+  | 'highschool'
+  | 'teachers';
 
 /** Which of the two worksheets nav items should be `aria-current`. */
 export type WorksheetsNavBand = SchoolLevelParam;
@@ -52,7 +53,7 @@ export function resolveActiveNav(pathname: string): ActiveNavKey | null {
 
   if (path === '/') return 'home';
   if (path === '/aboutus') return 'about';
-  if (path === '/math-tools') return 'tools';
+  if (path === '/math-tools' || path === '/games/kefel-mekutsar-2') return 'tools';
   if (path === '/high-school-math' || path === '/high-school-math-1') {
     return 'highschool';
   }
@@ -70,6 +71,7 @@ export function resolveActiveNav(pathname: string): ActiveNavKey | null {
   if (path === '/blog' || path.startsWith('/blog/') || path.startsWith('/post/')) {
     return 'blog';
   }
+  if (path === '/teachers') return 'teachers';
 
   // Legal / policy / other site pages — do not fake "home"
   return null;

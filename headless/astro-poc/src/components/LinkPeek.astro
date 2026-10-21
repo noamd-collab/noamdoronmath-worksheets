@@ -1,5 +1,6 @@
 ---
 import { loadCatalog } from '../lib/catalog/loadCatalog';
+import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
 import learningGaps from '../data/blog-posts/learning-gaps-math.json';
 import readingGraphs from '../data/blog-posts/reading-graphs-for-kids.json';
 // Reference preview layouts, populated from the unchanged real content sources.
@@ -9,7 +10,7 @@ const letters = ['', 'א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ז׳', 'ח
 const peekData = {
   topics: grades.flatMap(g => g.topics.slice(0, 2).map(t => ({ grade: letters[g.grade], title: t.title }))),
   posts: [learningGaps.h1, readingGraphs.h1],
-  gradeCounts: Object.fromEntries(grades.map(g => [g.grade, g.topics.length])),
+  gradeCounts: Object.fromEntries(grades.map(g => [g.grade, countRenderedTopicCards(g, 'reg')])),
 };
 ---
 <script is:inline type="application/json" data-exact-peek-data set:html={JSON.stringify(peekData).replace(/</g, '\\u003c')} />

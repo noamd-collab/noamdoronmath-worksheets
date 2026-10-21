@@ -1,0 +1,80 @@
+---
+/**
+ * Grade 7 triangle angle-sum film.
+ * The SVG, math, and controls stay in public/loops/triangle-angle-sum-vertex-descent.html.
+ * This wrapper only frames that file so its readouts and play/pause/seek stay usable.
+ * `card` is the hero and grade-player frame: same film, tighter chrome, and it loops.
+ */
+interface Props {
+  src: string;
+  marker: string;
+  /** Set on the hero and the grade player so shuffle can find `[data-loop]`. */
+  variant?: string;
+  card?: boolean;
+}
+const { src, marker, variant, card = false } = Astro.props;
+const frameSrc = card ? `${src}?embed=1&loop=1&card=1` : `${src}?embed=1`;
+---
+
+<div
+  class:list={['angle-sum-loop', card && 'angle-sum-loop--card']}
+  data-angle-sum-loop
+  data-landing-loop={marker}
+  data-loop={variant}
+>
+  {
+    card && (
+      <button type="button" class="angle-sum-loop__pause" data-pause-card aria-label="השהיית הנפשה">
+        השהיית הנפשה
+      </button>
+    )
+  }
+  <iframe
+    class="angle-sum-loop__frame"
+    src={frameSrc}
+    title="הקודקוד יורד והזוויות משתנות"
+    loading="eager"
+    data-angle-sum-frame
+  ></iframe>
+</div>
+
+<script>
+  import { watchAngleSumFilms } from '../lib/angleSumFilm';
+  watchAngleSumFilms();
+</script>
+
+<style>
+  .angle-sum-loop {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    background: #fbfaf5;
+  }
+  .angle-sum-loop__frame {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 600px;
+    border: 0;
+    background: #fbfaf5;
+  }
+  .angle-sum-loop--card {
+    background: transparent;
+  }
+  .angle-sum-loop--card .angle-sum-loop__frame {
+    height: 440px;
+    background: transparent;
+  }
+  .angle-sum-loop__pause {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

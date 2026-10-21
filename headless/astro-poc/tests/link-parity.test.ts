@@ -47,12 +47,19 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
   });
 
   it('viewer-routed one-level uses lv=b while catalog key stays one', () => {
-    const g = catalog.grades.find((x) => x.grade === 7)!;
-    const topic = g.topics.find(
-      (t) => t.routing.usesViewer && t.levels.length === 1 && t.levels[0].key === 'one'
-    )!;
+    // G7-T16 is level a after the grade-7 PDF v2 swap. Other grades still have one-level sheets.
+    const found = catalog.grades
+      .map((grade) => ({
+        grade: grade.grade,
+        topic: grade.topics.find(
+          (t) => t.routing.usesViewer && t.levels.length === 1 && t.levels[0].key === 'one'
+        ),
+      }))
+      .find((entry) => entry.topic);
+    assert.ok(found?.topic);
+    const topic = found.topic;
     assert.equal(topic.levels[0].key, 'one');
-    const href = buildWorksheetHref({ catalog, grade: 7, topic, levelKey: 'one' });
+    const href = buildWorksheetHref({ catalog, grade: found.grade, topic, levelKey: 'one' });
     const u = new URL(href, 'https://www.noamdoronmath.co.il');
     assert.equal(u.searchParams.get('lv'), 'b');
     assert.equal(u.searchParams.get('pdf'), topic.levels[0].pdfId);
@@ -60,7 +67,7 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
       u.searchParams.get('topic'),
       String(topic.parent !== undefined ? topic.parent : topic.id)
     );
-    assert.equal(u.searchParams.get('back'), '/worksheets?grade=7');
+    assert.equal(u.searchParams.get('back'), `/worksheets?grade=${found.grade}`);
   });
 
   it('direct PDF uses Wix Media pdfBase (elementary or non-viewer)', () => {

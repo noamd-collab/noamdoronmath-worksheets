@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
+import LandingLoop from './LandingLoop.astro';
+import { marketingLandingLoop } from '../lib/landingLoops';
 import { loadSitePage, localizeSiteHref, type SitePageBlock } from '../lib/sitePages';
 
 interface Props {
@@ -48,6 +50,7 @@ function renderUnits(blocks: SitePageBlock[], slug: string): RenderUnit[] {
 }
 
 const units = renderUnits(page.blocks, page.slug);
+const marketingLoop = marketingLandingLoop(page.slug);
 ---
 <BaseLayout title={page.title} description={page.description} skipHref="#site-page-main">
   <main id="site-page-main" class="wrap site-page" data-site-page={page.slug}>
@@ -60,6 +63,11 @@ const units = renderUnits(page.blocks, page.slug);
     <header class="banner site-page__header">
       <h1>{page.h1}</h1>
     </header>
+    {marketingLoop && (
+      <div class="site-page__loop">
+        <LandingLoop variant={marketingLoop} />
+      </div>
+    )}
     {slug === 'math-tools' && <LineArtDoodles variant="tools" />}
 
     <div class="site-page__body" data-site-body data-legal-body={page.slug === 'terms' ? '1' : undefined}>
@@ -280,3 +288,10 @@ const units = renderUnits(page.blocks, page.slug);
     </nav>
   </main>
 </BaseLayout>
+
+<style>
+  .site-page__loop {
+    max-width: 460px;
+    margin: 4px 0 28px;
+  }
+</style>

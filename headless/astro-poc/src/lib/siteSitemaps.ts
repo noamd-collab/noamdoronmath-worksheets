@@ -7,10 +7,13 @@
  */
 import redirectsMap from '../data/redirects.json';
 import { BLOG_SITEMAP_PATH } from './blogSitemap';
+import { PUBLIC_LESSON_PATH } from './publicLesson';
 import { REDIRECT_RULES } from './redirects';
 import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 
-/** Non-public / noise slugs — never appear in /sitemap-pages.xml. */
+/**
+ * Non-public / noise slugs — never appear in /sitemap-pages.xml.
+ */
 const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops']);
 
 function excludePath(path: string): boolean {
@@ -42,27 +45,33 @@ export function listMainPagePaths(pageModuleKeys: readonly string[]): string[] {
   if (!pageModuleKeys.length) {
     throw new Error('listMainPagePaths requires Vite glob module keys (no filesystem on Workers)');
   }
-  return pathsFromAstroModuleKeys(pageModuleKeys);
+  const paths = pathsFromAstroModuleKeys(pageModuleKeys);
+  // These public HTML endpoints sit outside the top-level .astro glob. Blog
+  // posts/archives stay in their existing dedicated child map, not this list.
+  for (const publicPath of [PUBLIC_LESSON_PATH, '/blog']) {
+    if (!excludePath(publicPath) && !paths.includes(publicPath)) paths.push(publicPath);
+  }
+  return paths.sort((a, b) => a.localeCompare(b));
 }
 
 export function renderPagesSitemapXml(pageModuleKeys: readonly string[]): string {
-  const today = new Date().toISOString().slice(0, 10);
+  // No trustworthy per-page revision dates are available here. Omitting
+  // lastmod is preferable to claiming every page changed on each request.
   const urls = listMainPagePaths(pageModuleKeys)
     .map(
       (path) =>
-        `  <url><loc>${SITE_CANONICAL_ORIGIN}${path === '/' ? '/' : path}</loc><lastmod>${today}</lastmod></url>`
+        `  <url><loc>${SITE_CANONICAL_ORIGIN}${path === '/' ? '/' : path}</loc></url>`
     )
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
 export function renderSitemapIndexXml(): string {
-  const today = new Date().toISOString().slice(0, 10);
   const children = ['/sitemap-pages.xml', BLOG_SITEMAP_PATH];
   const body = children
     .map(
       (p) =>
-        `  <sitemap><loc>${SITE_CANONICAL_ORIGIN}${p}</loc><lastmod>${today}</lastmod></sitemap>`
+        `  <sitemap><loc>${SITE_CANONICAL_ORIGIN}${p}</loc></sitemap>`
     )
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</sitemapindex>\n`;

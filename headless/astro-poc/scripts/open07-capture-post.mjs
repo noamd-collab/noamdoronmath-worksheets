@@ -5,12 +5,14 @@
  *   npm i --no-save puppeteer-core
  *   node scripts/open07-capture-post.mjs --path /post/<encoded-slug> --file-slug <ascii-name>
  *   CHROME_PATH=... overrides the browser binary.
+ *   BLOG_CAPTURE_ORIGIN=... overrides the site origin (default: production domain).
+ *   --batch <name> overrides the JSON batch tag (default: open07).
  */
 import puppeteer from 'puppeteer-core';
 import { writeFileSync, mkdirSync } from 'fs';
 import { BLOG_CHROME_EXTRACTOR } from './lib/blog-chrome-extractor.js';
 
-const PROD = 'https://www.noamdoronmath.co.il';
+const PROD = (process.env.BLOG_CAPTURE_ORIGIN || 'https://www.noamdoronmath.co.il').replace(/\/$/, '');
 const arg = (name) => {
   const i = process.argv.indexOf(name);
   return i > 0 ? process.argv[i + 1] : undefined;
@@ -342,7 +344,7 @@ for (const pick of picks) {
     featureKey: pick.featureKey,
     clusterSize: pick.clusterSize,
     categoryHint: pick.categoryHint,
-    batch: 'open07',
+    batch: arg('--batch') || 'open07',
     skippedEmbeds: skippedEmbeds.length
       ? skippedEmbeds.map((e) => ({ src: e.src, reason: e.skippedReason }))
       : undefined,

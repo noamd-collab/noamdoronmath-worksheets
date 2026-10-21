@@ -115,7 +115,7 @@ function walkExpectedFromProduction(prod) {
       const row = (gd.links && gd.links[t.id]) || {};
       const levelKeys = Object.prototype.hasOwnProperty.call(row, 'one')
         ? ['one']
-        : ['a', 'b', 'c'].filter((k) => row[k] != null);
+        : ['a', 'b', 'c', 'c2'].filter((k) => row[k] != null);
 
       const levels = [];
       for (const key of levelKeys) {
@@ -213,7 +213,7 @@ function contractHref(catalog, gradeNum, topic, level, options) {
   params.set('t', topic.title);
 
   const siblings = (topic.routing && topic.routing.siblingPdfQuery) || {};
-  for (const k of ['pa', 'pb', 'pc']) {
+  for (const k of ['pa', 'pb', 'pc', 'pc2']) {
     if (siblings[k]) params.set(k, siblings[k]);
   }
 
@@ -231,7 +231,7 @@ function hrefMeaning(href) {
   const path = href.slice(0, q);
   const params = new URLSearchParams(href.slice(q + 1));
   const obj = { kind: 'viewer', path };
-  for (const key of ['g', 'x', 'lv', 'pdf', 't', 'pa', 'pb', 'pc']) {
+  for (const key of ['g', 'x', 'lv', 'pdf', 't', 'pa', 'pb', 'pc', 'pc2']) {
     if (params.has(key)) obj[key] = params.get(key);
   }
   return obj;
