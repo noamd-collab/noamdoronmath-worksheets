@@ -1,6 +1,6 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');const math=require('mathjs');
-const {createEngine}=require('./core');const {createAlgorithms}=require('./algorithms');const {createMS82}=require('./ms82');
-const fresh=()=>createMS82(createEngine(math),createAlgorithms(math));
+const {createEngine}=require('./core');const {createAlgorithms}=require('./algorithms');const {createTwoLine}=require('./twoline');
+const fresh=()=>createTwoLine(createEngine(math),createAlgorithms(math));
 function run(c,seq){for(const word of seq.split(/\s+/)){if(/^\d+$/.test(word))for(const d of word)c.press(d);else c.press(word);}return c;}
 function close(c,v,tol=1e-9){assert.equal(c.state.error,null,JSON.stringify(c.state.error));assert.ok(Math.abs(c.state.result-v)<=tol*Math.max(1,Math.abs(v)),`${c.state.result} != ${v}`);}
 const cases=[
@@ -66,6 +66,6 @@ test('Clear memory does not reset settings; clear mode preserves memories',()=>{
 test('OFF and ON retain independent memories',()=>{const c=run(fresh(),'8 shift rcl negative shift ac 2');assert.equal(c.display().result,'');run(c,'on rcl negative');close(c,8);});
 test('error does not overwrite Ans, AC recovers',()=>{const c=run(fresh(),'7 equals 1 div 0 equals');assert.equal(c.state.error.code,'Math ERROR');assert.equal(c.state.memory.Ans,7);run(c,'ac ans equals');close(c,7);});
 test('input rejects invalid syntax and remains correctable',()=>{const c=run(fresh(),'1 mul mul 2 equals');assert.equal(c.state.error.code,'Syntax ERROR');run(c,'left del equals');close(c,2);});
-test('memory serialization is model specific and validates finite values',()=>{const c=run(fresh(),'3 shift rcl negative');const saved=c.save();const d=createMS82(createEngine(math),createAlgorithms(math),saved);run(d,'rcl negative');close(d,3);});
+test('memory serialization is model specific and validates finite values',()=>{const c=run(fresh(),'3 shift rcl negative');const saved=c.save();const d=createTwoLine(createEngine(math),createAlgorithms(math),saved);run(d,'rcl negative');close(d,3);});
 
 test('contrast is option 2 after MODE four times',()=>{const c=run(fresh(),'mode mode mode mode');assert.equal(c.display().expression,'Disp◀CONT▶');run(c,'2 right right');assert.equal(c.state.settings.contrast,8);run(c,'left ac');assert.equal(c.state.settings.contrast,7);assert.equal(c.state.menu,null);});

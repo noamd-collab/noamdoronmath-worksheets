@@ -1,11 +1,11 @@
 (function(){
  'use strict';
  const storageKey='noam-basic-calc-v1';let saved=null;try{saved=JSON.parse(localStorage.getItem(storageKey));}catch(_){}
- const calc=createMS82(createEngine(math),createAlgorithms(math),saved);
+ const calc=createTwoLine(createEngine(math),createAlgorithms(math),saved);
  const stage=document.querySelector('.ms-stage'),device=document.querySelector('.ms-device'),lcd=document.getElementById('ms-lcd'),readable=document.getElementById('ms-readable');
  function resize(){device.style.transform='scale('+stage.clientWidth/464+')';}
  if(typeof ResizeObserver==='function')new ResizeObserver(resize).observe(stage);window.addEventListener('resize',resize);resize();
- function render(){const d=calc.display();lcd.innerHTML=MS82Display.render(d,calc.state.settings.contrast,calc.state.on);lcd.dataset.expression=d.expression;lcd.dataset.result=d.result;readable.textContent=[d.expression,d.result].filter(Boolean).join(' = ');device.dataset.mode=calc.state.mode;
+ function render(){const d=calc.display();lcd.innerHTML=TwoLineDisplay.render(d,calc.state.settings.contrast,calc.state.on);lcd.dataset.expression=d.expression;lcd.dataset.result=d.result;readable.textContent=[d.expression,d.result].filter(Boolean).join(' = ');device.dataset.mode=calc.state.mode;
   for(const id of ['shift','alpha']){const b=device.querySelector(`[data-key="${id}"]`);b.classList.toggle('active',calc.state[id]);b.setAttribute('aria-pressed',String(calc.state[id]));}
   try{localStorage.setItem(storageKey,JSON.stringify(calc.save()));}catch(_){}
  }

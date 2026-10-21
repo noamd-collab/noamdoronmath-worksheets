@@ -2,7 +2,7 @@
 
 A second, independent calculator for the Noam Doron math-tools page. The selector in `../scientific-calculator/calculators.html` keeps the math-display calculator as its default. Each calculator lives in its own iframe; changing tabs retains the current expressions, results and memories without reloading either one.
 
-The public folder name is unchanged so existing links keep working. That folder name still contains a retired model token. It is called out in the cleanup report so it can be renamed later with a redirect.
+The public folder is `basic-calculator`. The previous public path stays as a redirect so older links still open this calculator.
 
 ## Scope
 

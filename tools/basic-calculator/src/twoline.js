@@ -1,7 +1,7 @@
 /* Independent two-line scientific practice model. No firmware or brand assets.
  * Input precedence follows ordinary scientific-calculator conventions.
  */
-function createMS82(engine, algorithms, saved) {
+function createTwoLine(engine, algorithms, saved) {
   'use strict';
   const defaults=()=>({angle:'deg',format:'norm',digits:10,mixed:true,decimal:'.',contrast:6});
   const vars=()=>Object.fromEntries('ABCDEFMXY'.split('').concat('Ans').map(x=>[x,0]));
@@ -245,4 +245,4 @@ function createMS82(engine, algorithms, saved) {
   }
   return {state:s,press,display,calculate,text,save:()=>({memory:s.memory,settings:s.settings})};
 }
-if(typeof module!=='undefined'&&module.exports)module.exports={createMS82};
+if(typeof module!=='undefined'&&module.exports)module.exports={createTwoLine};
