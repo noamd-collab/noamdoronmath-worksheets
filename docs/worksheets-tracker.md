@@ -1,6 +1,6 @@
 # Worksheet tracker
 
-One row per grade and topic in `headless/astro-poc/src/data/catalog.v1.json` on `main` (`a7ddd8cd`). That file is generated from `index.html`. Level names are the catalog labels.
+One row per grade and topic in `headless/astro-poc/src/data/catalog.v1.json` on `main` (`746df4e4`). That file is generated from `index.html`. The catalog and `index.html` bytes are unchanged since `a7ddd8cd`. Level names are the catalog labels.
 
 Columns: grade, topic, levels present, author, reviewed, live, PR.
 
@@ -11,7 +11,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - #88 replaced specific grade 3 and grade 6 media ids (round 6). That PR does not say those sheets were reviewed, so those levels stay `unknown` and the PR is listed on that level only.
 - #100 names three levels that failed review and were not changed: G7-T02 c, G7-T04 b, G7-T11 c. Other levels left off the replacement lists are `unknown`, not failed.
 - `noamd-collab/noam-agent-hub` was not readable (repository not found with this token). Nothing from that repo is in this table.
-- Topic titles match `index.html` / `catalog.v1.json` on `main` (`a7ddd8cd`). #216 had copied baseline spellings, including two labels #175 had already renamed (`שילוב גאומטרי`, `דף סיכום מדידות`). Review, author, live, and PR cells were not changed.
+- Topic titles match `index.html` / `catalog.v1.json` on `main` (`746df4e4`; same bytes as `a7ddd8cd`). #216 had copied baseline spellings, including two labels #175 had already renamed (`שילוב גאומטרי`, `דף סיכום מדידות`). `סמ` and `סמק` are the catalog spelling. Review, author, live, and PR cells were not changed.
 - Topics named in the staging stub as pending (G7-T28, G7-T47, G7-T48, G8-T11, G8-T26, G8-T29, G8-T37, G8-T49, G8-T35, G9-T17, G9-T32) are filled only from the catalog and the PRs above. The stub's author and pending status were not copied.
 
 | Grade | Topic | Levels | Author | Reviewed | Live | PR |
