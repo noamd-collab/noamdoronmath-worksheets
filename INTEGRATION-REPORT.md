@@ -22,14 +22,14 @@ HEAD אחרי רישום האימות הראשון: `de8ab8936f2bc8b301b22575ee9
 - `6d8306e9` על הבסיס הוא הערת ניסיון מקומי של PR #61 מעל PR #60. הניסיון לא נדחף, ו־PR #60 לא נכנס לבסיס.
 - ה־PR נשאר `dirty` כי הבסיס התקדם. הבסיס לא מוזג לתוך הענף, וה־PR לא מוזג.
 
-בדיקה נוספת על `8531af5b9bd86f723a5f8673ffbe076345f60c1b` (21.10.2026, 16:36 UTC), בלי שינוי קוד:
+בדיקה נוספת על `20c059155db8dd31430f1a33075487bf320b2b56` (21.10.2026, 18:51 UTC), בלי שינוי קוד:
 
 - `robots.txt.ts` ו־`sitemap.xml.ts` חסרים גם בבסיס וגם ב־`main`.
 - `sitemap-index.xml.ts` זהה לבסיס. `siteSeo.ts`, `astro.config.mjs` ו־`SiteHeader.astro` שונים.
 - ב־`main` יש `llms.txt.ts` אחר (`ee6dbf16`), לא הקובץ של הענף (`26e3592b`). אין שם `seo-proposals.json`, `structuredData.ts`, `robots.txt.ts`, `data-basad` ב־`SiteHeader.astro`, או `robots: false`.
-- `npm run test:unit`: 452 בדיקות, 451 עברו, 0 נכשלו, 1 דולג, 4218ms. יציאה 0.
-- `npx tsc -p tsconfig.json --noEmit`: פלט ריק, יציאה 0.
-- `npx astro build --config astro.config.preview.mjs`: `Server built in 3.51s`, אחר כך `Complete!`, יציאה 0.
+- `npm run test:unit`: 452 בדיקות, 451 עברו, 0 נכשלו, 1 דולג, 4290ms. יציאה 0.
+- `npx tsc -p tsconfig.json --noEmit` ו־`npm run typecheck:tests`: פלט ריק, יציאה 0.
+- `npx astro build --config astro.config.preview.mjs`: `Server built in 3.60s`, אחר כך `Complete!`, יציאה 0.
 
 ה־HEAD שאחרי רישום הבדיקה הזו מופיע בגוף PR #60.
 
