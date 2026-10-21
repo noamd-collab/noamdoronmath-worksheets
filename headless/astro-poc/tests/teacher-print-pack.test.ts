@@ -22,7 +22,7 @@ function layoutApi(source) {
   const start = printer.indexOf('function boxEnd');
   const end = printer.indexOf('async function measureSlices');
   return new Function('SOURCE', `${printer.slice(start, end)}
-    return { shortSlices, packShort, orderPrintQuestions, batchesOf, levelPrintName, answerCropsFromLines, answerHeadingBox, textItemBox, contentHeight, sheetContentLimit, worksheetTitle, SHEET_PAGE_H, SHEET_BASAD_H, SHEET_TITLE_H };
+    return { shortSlices, packShort, orderPrintQuestions, batchesOf, levelPrintName, answerCropsFromLines, answerHeadingBox, textItemBox, contentHeight, fittedScale, fittedHeight, sheetContentLimit, worksheetTitle, SHEET_PAGE_H, SHEET_BASAD_H, SHEET_TITLE_H };
   `)(source);
 }
 
@@ -55,6 +55,45 @@ function runPack(plan) {
 describe('teacher short worksheet pack', () => {
   it('keeps the public printer identical to the demo copy', () => {
     assert.equal(printer, demo);
+  });
+
+  it('scales a crowded short sheet on both axes and keeps the question together', () => {
+    const api = layoutApi({});
+    const room = api.sheetContentLimit(0, true);
+    const crowded = [
+      { dh: 700, slice: { gap: 10, block: 'q5', kind: 'stem' } },
+      { dh: 400, slice: { gap: 4, block: 'q5', kind: 'row' } },
+      { dh: 400, slice: { gap: 4, block: 'q5', kind: 'row' } },
+    ];
+    assert.ok(api.contentHeight(crowded) > room);
+    const pages = api.packShort(crowded);
+    assert.equal(pages.length, 1);
+    assert.equal(pages[0].some((item) => item.slice.kind === 'stem'), true);
+    const scale = api.fittedScale(pages[0], room);
+    assert.ok(scale < 1);
+    assert.ok(api.fittedHeight(pages[0], scale) <= room);
+    const drawW = Math.round(1000 * scale);
+    const sample = pages[0][0];
+    const dh = Math.max(1, Math.round(sample.dh * scale));
+    assert.ok(Math.abs(dh / sample.dh - drawW / 1000) < 0.03);
+
+    const slight = [
+      { dh: room - 20, slice: { gap: 8, block: 'q1', kind: 'row' } },
+      { dh: 80, slice: { gap: 8, block: 'q2', kind: 'stem' } },
+    ];
+    assert.ok(api.contentHeight(slight) > room);
+    assert.ok(room / api.contentHeight(slight) >= 0.85);
+    assert.equal(api.packShort(slight).length, 1);
+
+    const heavy = [
+      { dh: 900, slice: { gap: 8, block: 'q1', kind: 'row' } },
+      { dh: 200, slice: { gap: 10, block: 'q2', kind: 'stem' } },
+      { dh: 900, slice: { gap: 4, block: 'q2', kind: 'row' } },
+    ];
+    const split = api.packShort(heavy);
+    assert.ok(split.length >= 2);
+    assert.equal(split[1].some((item) => item.slice.kind === 'stem'), true);
+    assert.equal(split[1].some((item) => item.slice.kind === 'footer'), false);
   });
 
   it('shows one wizard choice at a time, with back, and the sheet at the end', () => {
