@@ -72,8 +72,11 @@ describe('M24 site / policy pages', () => {
     assert.ok(gate.includes('/accessibilityadaptation#privacy-policy'));
     assert.ok(gate.includes('/terms'));
     assert.ok(!gate.includes("PRIVACY_URL = '/privacy'"));
+    // The exact-design port (0027b8c, PR #31) replaced the blocking gate in the layout
+    // with SiteDevelopmentNotice; design-exact-controls-notice.test.ts asserts the same.
     const layout = readFileSync('src/layouts/BaseLayout.astro', 'utf8');
-    assert.ok(layout.includes('nd-site-gate.js'));
+    assert.ok(!/<script\b[^>]*src=['"]\/nd-site-gate\.js['"]/.test(layout));
+    assert.ok(layout.includes('<SiteDevelopmentNotice />'));
   });
 
   it('terms serves code-owned legal body from authoritative HTML (no filesusr iframe)', () => {

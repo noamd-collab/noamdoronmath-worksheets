@@ -459,7 +459,7 @@ describe('Noam AI page context and topic order', () => {
     assert.ok(result.answer.indexOf('דלתון') < result.answer.indexOf('המקבילית'));
     assert.ok(result.answer.indexOf('הריבוע') < result.answer.indexOf('הטרפז'));
     assert.match(result.answer, /הנושא הבא הוא המקבילית/);
-    assert.match(result.answer, /הנושא הקודם הוא משולש שווה שוקיים/);
+    assert.match(result.answer, /הנושא הקודם הוא משולש שווה־שוקיים/);
     const titles = result.chips.map((chip) => chip.label);
     assert.deepEqual(titles, [
       'כיתה ט׳ · דלתון',

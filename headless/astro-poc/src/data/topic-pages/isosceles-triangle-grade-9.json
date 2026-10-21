@@ -161,7 +161,7 @@
     "source": "production-github-cta",
     "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=4",
     "catalogTopicId": 4,
-    "catalogTopicTitle": "משולש שווה שוקיים"
+    "catalogTopicTitle": "משולש שווה־שוקיים"
   },
   "catalogCtas": [
     {
@@ -170,7 +170,7 @@
       "source": "production-github-cta",
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=4",
       "catalogTopicId": 4,
-      "catalogTopicTitle": "משולש שווה שוקיים"
+      "catalogTopicTitle": "משולש שווה־שוקיים"
     }
   ],
   "gradeHubHref": "/grade-9",

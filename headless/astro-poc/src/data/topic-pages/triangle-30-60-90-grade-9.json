@@ -186,7 +186,7 @@
     "source": "production-github-cta",
     "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=37",
     "catalogTopicId": 37,
-    "catalogTopicTitle": "משולש ישר זווית 30-60-90"
+    "catalogTopicTitle": "משולש ישר־זווית 30–60–90"
   },
   "catalogCtas": [
     {
@@ -195,7 +195,7 @@
       "source": "production-github-cta",
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=37",
       "catalogTopicId": 37,
-      "catalogTopicTitle": "משולש ישר זווית 30-60-90"
+      "catalogTopicTitle": "משולש ישר־זווית 30–60–90"
     }
   ],
   "gradeHubHref": "/grade-9",

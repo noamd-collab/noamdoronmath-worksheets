@@ -10,6 +10,7 @@ import { listServedBlogPosts } from '../src/lib/blogPosts.ts';
 import { synthesizeBodyFlow, loadTopicPage } from '../src/lib/topicPages.ts';
 import { contentToParitySnapshot } from '../src/lib/parity/contentToParitySnapshot.ts';
 import { cleanText, diffTopicParity, type TopicParitySnapshot } from '../src/lib/parity/topicParity.ts';
+import { applyContentCorrections, topicPageCorrections } from '../src/lib/parity/contentCorrections.ts';
 
 const LRI = '\u2066';
 const PDI = '\u2069';
@@ -79,9 +80,12 @@ describe('topic pages apply math isolates without rewriting JSON', () => {
   it('parity comparison ignores the isolates', () => {
     const page = loadTopicPage('signed-numbers-grade-7');
     const preview = contentToParitySnapshot(page, 'preview');
-    const source = JSON.parse(
-      readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8')
-    ) as TopicParitySnapshot;
+    const source = applyContentCorrections(
+      JSON.parse(
+        readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8')
+      ) as TopicParitySnapshot,
+      topicPageCorrections('signed-numbers-grade-7')
+    );
     const diffs = diffTopicParity(source, preview).filter((d) => d.severity === 'error');
     assert.deepEqual(
       diffs.map((d) => d.field),
@@ -102,10 +106,27 @@ describe('blog posts isolate math at display time', () => {
     const raw = JSON.stringify(post.blocks);
     assert.equal(raw.includes(LRI), false);
     const view = isolateBlogPostDisplay(post);
-    const formula = view.blocks.find((b) => b.type === 'p' && bare(b.text) === '`8 + 2 × 3`');
+    // Backticks were removed from the stored post (they rendered as visible characters).
+    const formula = view.blocks.find((b) => b.type === 'p' && bare(b.text) === '8 + 2 × 3');
     assert.ok(formula && formula.type === 'p');
     assert.ok(formula.text.includes(`${LRI}8 + 2 × 3${PDI}`));
     const tpl = readFileSync('src/components/BlogPostPage.astro', 'utf8');
     assert.ok(tpl.includes('isolateBlogPostDisplay'));
+  });
+});
+
+describe('degree sign, Hebrew prefixes and punctuation stay outside or inside the run correctly', () => {
+  const show = (s: string) => s.replace(/⁦/g, '⟦').replace(/⁩/g, '⟧');
+  it('keeps ° inside the isolate so it renders right of the number (65°, not °65)', () => {
+    assert.equal(show(isolateMathRuns('אם זווית אחת היא 65°, הזווית')), 'אם זווית אחת היא ⟦65°⟧, הזווית');
+  });
+  it('a hyphen after a Hebrew prefix letter is not a minus sign', () => {
+    assert.equal(show(isolateMathRuns('משלימות יחד ל-180°, וזו')), 'משלימות יחד ל-⟦180°⟧, וזו');
+    assert.equal(show(isolateMathRuns('בין -5 ל־5')), 'בין ⟦-5⟧ ל־⟦5⟧');
+  });
+  it('a run never starts with ":" (תשובה: 70° keeps the colon after the word)', () => {
+    assert.equal(show(isolateMathRuns('תשובה: 70° ו-110°')), 'תשובה: ⟦70°⟧ ו-⟦110°⟧');
+    assert.equal(show(isolateMathRuns('AB:DE=2:3')), '⟦AB:DE=2:3⟧');
+    assert.equal(show(isolateMathRuns('השטח 12×5:2=30 סמ״ר.')), 'השטח ⟦12×5:2=30⟧ סמ״ר.');
   });
 });
