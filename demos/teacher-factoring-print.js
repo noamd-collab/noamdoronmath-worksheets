@@ -2362,7 +2362,8 @@ function answerSliceFor(pages, question) {
     const raw = answerBox(items, question.q, part);
     if (!raw || raw.page !== sheet.page) continue;
     // A wrapped line runs under the other parts. Masks hide those parts; clipping would cut the line.
-    const box = raw.slot ? raw : clipForeignLabels(items, raw, part);
+    // A whole-question answer owns every part label in its band.
+    const box = raw.slot || !part ? raw : clipForeignLabels(items, raw, part);
     const pad = 2;
     const gap = 1.2;
     let x0 = Math.max(0, box.x - pad);
