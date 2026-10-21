@@ -52,7 +52,7 @@ export const FILM = {
     </g>
     <text class="cl-t cl-num" data-el="rB" x="280" y="340" text-anchor="middle" style="font-size:48px;opacity:0">= 4</text>
   `,
-  formulaHTML: `<p class="concept-loop__formula cl-num" dir="ltr"><span data-fx="0"><span class="cl-frac"><span class="cl-frac__n">3</span><span class="cl-frac__d">4</span></span>&thinsp;:&thinsp;<span class="cl-frac"><span class="cl-frac__n">1</span><span class="cl-frac__d">4</span></span>&thinsp;=&thinsp;<span class="cl-ok">3</span></span><span data-fx="1">&ensp;2&thinsp;:&thinsp;<span class="cl-frac"><span class="cl-frac__n">1</span><span class="cl-frac__d">2</span></span>&thinsp;=&thinsp;<span class="cl-ok">4</span></span><span data-fx="2" class="cl-check" aria-hidden="true">✓</span></p>`,
+  formulaHTML: `<p class="concept-loop__formula cl-num" dir="ltr"><span data-fx="0"><span class="cl-frac"><span class="cl-frac__n">3</span><span class="cl-frac__d">4</span></span>&thinsp;:&thinsp;<span class="cl-frac"><span class="cl-frac__n">1</span><span class="cl-frac__d">4</span></span>&thinsp;=&thinsp;<span class="cl-ok">3</span></span><br><span data-fx="1">2&thinsp;:&thinsp;<span class="cl-frac"><span class="cl-frac__n">1</span><span class="cl-frac__d">2</span></span>&thinsp;=&thinsp;<span class="cl-ok">4</span></span><span data-fx="2" class="cl-check" aria-hidden="true">✓</span></p>`,
   render(root, t) {
     const { ph, op, q, qa } = LoopHelpers;
 

@@ -5,6 +5,8 @@
  * Reduced motion, html.nd-motion-off, and html.noam-a11y-motion hold a
  * finished frame. A tiny observer pauses the loop while it is off-screen.
  */
+import AbsoluteValueFilm from './AbsoluteValueFilm.astro';
+import LessonFilm from './LessonFilm.astro';
 import SimilarityLoop from './SimilarityLoop.astro';
 import LessonLoop from './LessonLoop.astro';
 import { isLessonLoop } from '../lib/lessonLoops';
@@ -13,6 +15,7 @@ import LoopSketch from './LoopSketch.astro';
 import {
   CSS_LOOP_IDEAS,
   FORMULA_LOOP_VARIANTS,
+  LESSON_FILM_VARIANTS,
   type CssLoopVariant,
 } from '../lib/landingLoops';
 
@@ -23,8 +26,14 @@ const { variant } = Astro.props;
 const lesson = isLessonLoop(variant);
 const similarity = variant === 'similar' || variant === 'similar-area' || variant === 'similar-aa';
 const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
+const isLessonFilm = (LESSON_FILM_VARIANTS as readonly string[]).includes(variant);
 ---
 
+{variant === 'absolute' ? (
+  <AbsoluteValueFilm />
+) : isLessonFilm ? (
+  <LessonFilm variant={variant} />
+) : (
 <div
   class:list={['ll', `ll--${variant}`, (lesson || similarity) && 'll--lesson']}
   dir="ltr"
@@ -35,6 +44,7 @@ const formula = (FORMULA_LOOP_VARIANTS as readonly string[]).includes(variant);
   {<button class="ll-pause" type="button" disabled aria-label="השהיית ההמחשה" aria-pressed="false">השהיה</button>}
   <div class="ll-content" aria-hidden={lesson || similarity ? undefined : "true"}>{variant === 'similar' || variant === 'similar-area' || variant === 'similar-aa' ? <SimilarityLoop variant={variant}/> : isLessonLoop(variant) ? <LessonLoop variant={variant} /> : formula ? <LoopFormula variant={variant} /> : <LoopSketch variant={variant} />}</div>
 </div>
+)}
 
 <script>
   document.querySelectorAll<HTMLButtonElement>('.ll-pause').forEach(button => {

@@ -1,3 +1,5 @@
+import { wizardPrefillFromSearch } from './wizard-prefill.js';
+
 /* Teacher picker for every catalog sheet.
    Grades 7–9: choose existing exercises across sheets.
    Grades 1–6: choose a sheet by topic and level.
@@ -1119,30 +1121,38 @@ function contentHeight(items) {
   return items.reduce((sum, item, index) => sum + (index ? item.slice.gap : 0) + item.dh, 0);
 }
 
-function scaledGap(gap, factor) {
-  const next = Math.round(gap * factor);
+function gapSize(gap, scale) {
+  if (!gap) return 0;
+  const next = Math.round(gap * scale);
   // A negative gap is the 2px overlap that hides the seam; scaling must not turn it into a gap.
   return gap < 0 ? Math.min(-1, next) : Math.max(1, next);
 }
 
-function shrinkTo(items, limit) {
-  const height = contentHeight(items);
-  if (height <= limit) return items;
-  const factor = limit / height;
-  const scaled = items.map((item) => ({
-    ...item,
-    dh: Math.max(1, Math.round(item.dh * factor)),
-    slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
-  }));
-  const extra = contentHeight(scaled) - limit;
-  if (extra > 0) scaled[scaled.length - 1].dh = Math.max(1, scaled[scaled.length - 1].dh - extra);
-  return scaled;
+function fittedHeight(items, scale) {
+  let cursor = 0;
+  items.forEach((item, index) => {
+    if (index) cursor += gapSize(item.slice.gap, scale);
+    cursor += Math.max(1, Math.round(item.dh * scale));
+  });
+  return cursor;
+}
+
+function fittedScale(items, room) {
+  const natural = contentHeight(items);
+  if (!(natural > room) || room <= 0) return 1;
+  let scale = room / natural;
+  let placed = fittedHeight(items, scale);
+  for (let pass = 0; pass < 4 && placed > room; pass += 1) {
+    scale *= room / placed;
+    placed = fittedHeight(items, scale);
+  }
+  return scale;
 }
 
 function splitQuestion(items, limit) {
   const stem = items.filter((item) => item.slice.kind === 'stem');
   const rows = items.filter((item) => item.slice.kind === 'row');
-  if (rows.length < 2) return [shrinkTo(items, limit)];
+  if (rows.length < 2) return [items];
   const chunks = [];
   let current = [];
   rows.forEach((row) => {
@@ -1156,7 +1166,7 @@ function splitQuestion(items, limit) {
   });
   if (current.length === 1 && chunks.length) chunks[chunks.length - 1].push(current[0]);
   else if (current.length) chunks.push(stem.concat(current));
-  return chunks.map((chunk) => (contentHeight(chunk) > limit ? shrinkTo(chunk, limit) : chunk));
+  return chunks;
 }
 
 const SHEET_PAGE_H = 1440;
@@ -1214,14 +1224,13 @@ function packShort(measured, options) {
   const pages = [];
   let page = [];
   blocks.forEach((block) => {
-    let items = block.items;
+    const items = block.items;
     const limitHere = sheetContentLimit(pages.length, reserveTitle);
-    if (page.length && contentHeight(page.concat(items)) > limitHere) {
+    const joined = page.concat(items);
+    if (page.length && contentHeight(joined) > limitHere && limitHere / contentHeight(joined) < 0.85) {
       pages.push(page);
       page = [];
     }
-    const limit = sheetContentLimit(pages.length, reserveTitle);
-    if (contentHeight(items) > limit) items = shrinkTo(items, limit);
     page = page.concat(items);
   });
   if (page.length) pages.push(page);
@@ -1538,17 +1547,22 @@ function paintPageChrome(ctx, width, pageIndex, pageCount, title) {
   return SHEET_BASAD_H + SHEET_TITLE_H;
 }
 
-function paintMeasuredPage(ctx, items, top) {
+function paintMeasuredPage(ctx, items, top, scale) {
+  const fit = scale || 1;
+  const fullW = ctx.canvas.width;
+  const drawW = Math.max(1, Math.round(fullW * fit));
+  const x0 = Math.floor((fullW - drawW) / 2);
   let y = top;
   items.forEach((item, itemIndex) => {
-    if (itemIndex) y += item.slice.gap;
+    if (itemIndex) y += gapSize(item.slice.gap, fit);
+    const dh = Math.max(1, Math.round(item.dh * fit));
     if (item.slice.kind === 'level') {
       ctx.fillStyle = '#22305a';
-      ctx.font = '22px Heebo, Arial, sans-serif';
+      ctx.font = Math.max(12, Math.round(22 * fit)) + 'px Heebo, Arial, sans-serif';
       ctx.direction = 'rtl';
       ctx.textAlign = 'right';
-      ctx.fillText(item.slice.label || '', ctx.canvas.width - 28, y + 26);
-      y += item.dh;
+      ctx.fillText(item.slice.label || '', x0 + drawW - 28, y + Math.round(26 * fit));
+      y += dh;
       return;
     }
     const pieces = item.slice.pieces && item.slice.pieces.length ? item.slice.pieces : null;
@@ -1560,25 +1574,25 @@ function paintMeasuredPage(ctx, items, top) {
         const sy = box.y * item.bitmap.height;
         const sw = Math.max(1, box.w * item.bitmap.width);
         const sh = Math.max(1, box.h * item.bitmap.height);
-        const dw = box.w * ctx.canvas.width;
-        const ph = (box.h / rowH) * item.dh;
-        const dy = (piece.dy || 0) * item.dh;
-        ctx.drawImage(item.bitmap, sx, sy, sw, sh, piece.at * ctx.canvas.width, y + dy, dw, ph);
+        const dw = box.w * drawW;
+        const ph = (box.h / rowH) * dh;
+        const dy = (piece.dy || 0) * dh;
+        ctx.drawImage(item.bitmap, sx, sy, sw, sh, x0 + piece.at * drawW, y + dy, dw, ph);
       });
     } else {
       const sx = item.slice.box.x * item.bitmap.width;
       const sy = item.slice.box.y * item.bitmap.height;
       const narrow = item.slice.box.w < 0.5;
-      const dx = narrow ? item.slice.box.x * ctx.canvas.width : 0;
-      const dw = narrow ? item.slice.box.w * ctx.canvas.width : ctx.canvas.width;
-      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, dx, y, dw, item.dh);
+      const dx = x0 + (narrow ? item.slice.box.x * drawW : 0);
+      const dw = narrow ? item.slice.box.w * drawW : drawW;
+      ctx.drawImage(item.bitmap, sx, sy, item.sw, item.sh, dx, y, dw, dh);
       const masks = item.slice.box.masks && item.slice.box.masks.length ? item.slice.box.masks : (item.slice.box.mask ? [item.slice.box.mask] : []);
       masks.forEach((mask) => {
         ctx.fillStyle = '#fff';
-        ctx.fillRect(mask.x * ctx.canvas.width, y + mask.y * item.dh, mask.w * ctx.canvas.width, mask.h * item.dh);
+        ctx.fillRect(x0 + mask.x * drawW, y + mask.y * dh, mask.w * drawW, mask.h * dh);
       });
     }
-    y += item.dh;
+    y += dh;
   });
 }
 
@@ -1597,9 +1611,10 @@ async function paintPacked(root, exerciseMeasured, answerMeasured, title) {
   }
   packs.forEach((items, index) => {
     const answers = index >= answerStart;
+    const room = sheetContentLimit(answers ? 1 : index, !answers);
+    const scale = fittedScale(items, room);
+    const body = fittedHeight(items, scale);
     const chrome = answers ? SHEET_BASAD_H : (index === 0 ? SHEET_BASAD_H + SHEET_TITLE_H : SHEET_BASAD_H);
-    let body = 0;
-    items.forEach((item, itemIndex) => { body += (itemIndex ? item.slice.gap : 0) + item.dh; });
     const canvas = canvases[index];
     canvas.width = OUT_W;
     canvas.height = Math.max(chrome + body, 1);
@@ -1607,7 +1622,7 @@ async function paintPacked(root, exerciseMeasured, answerMeasured, title) {
     ctx.fillStyle = '#fff';
     ctx.fillRect(0, 0, OUT_W, canvas.height);
     const usedChrome = paintPageChrome(ctx, OUT_W, answers ? 1 : index, packs.length, answers ? 'תשובות' : title);
-    paintMeasuredPage(ctx, items, usedChrome);
+    paintMeasuredPage(ctx, items, usedChrome, scale);
   });
 }
 
@@ -2187,6 +2202,38 @@ function bind() {
     input.checked = true;
     applyScenario(goal);
   });
+  document.addEventListener('noam-teacher-prefill', (event) => {
+    const detail = event.detail || {};
+    const prefill = detail.exerciseIds ? detail : wizardPrefillFromSearch(detail.href || '');
+    applyWizardPrefill(prefill);
+  });
+}
+
+function applyWizardPrefill(prefill) {
+  if (!prefill || !prefill.grade || !prefill.topic) return;
+  state.grade = String(prefill.grade);
+  state.topic = String(prefill.topic);
+  state.level = prefill.level || 'all';
+  state.scenario = 'other';
+  state.expanded = true;
+  fillGrades();
+  fillTopics();
+  return loadCurrentTopic().then(() => {
+    const allow = new Set(visibleSelectionKeys());
+    const ids = prefill.exerciseIds || [];
+    state.selected = ids.filter((id) => allow.has(id));
+    const note = $('teacher-note');
+    if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
+    render();
+    state.wizard = 'pick';
+    applyWizard();
+    announce('הבחירה מנועם AI נטענה לאשף.');
+    const picked = document.querySelector('#questions input:checked');
+    const card = picked && picked.closest('.q-card');
+    if (card && typeof card.scrollIntoView === 'function') {
+      card.scrollIntoView({ block: 'start', inline: 'nearest' });
+    }
+  });
 }
 
 async function start() {
@@ -2195,9 +2242,14 @@ async function start() {
   if (!response.ok) throw new Error('CATALOG');
   CATALOG = await response.json();
   indexCatalog();
+  bind();
+  const prefill = wizardPrefillFromSearch(location.search);
+  if (prefill) {
+    await applyWizardPrefill(prefill);
+    return;
+  }
   fillGrades();
   fillTopics();
-  bind();
   await loadCurrentTopic();
   applyScenario(state.scenario, { quiet: true });
 }

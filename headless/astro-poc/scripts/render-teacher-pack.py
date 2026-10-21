@@ -93,6 +93,42 @@ def draw_rtl(page, rect, text, size):
     page.insert_htmlbox(rect, html, css=css)
 
 
+def gap_size(gap, scale):
+    if not gap:
+        return 0
+    nxt = int(round(gap * scale))
+    if gap < 0:
+        return min(-1, nxt)
+    return max(1, nxt)
+
+
+def fitted_height(items, scale):
+    cursor = 0
+    for index, item in enumerate(items):
+        if index:
+            cursor += gap_size(item.get('gap') or 0, scale)
+        cursor += max(1, int(round(item['dh'] * scale)))
+    return cursor
+
+
+def fitted_scale(items, room):
+    natural = 0
+    for index, item in enumerate(items):
+        if index:
+            natural += item.get('gap') or 0
+        natural += item['dh']
+    if not (natural > room) or room <= 0:
+        return 1
+    scale = room / float(natural)
+    placed = fitted_height(items, scale)
+    for _ in range(4):
+        if placed <= room:
+            break
+        scale *= room / float(placed)
+        placed = fitted_height(items, scale)
+    return scale
+
+
 def paint_page(out, items, page_index, answers, title, docs, probes):
     out.draw_rect(out.rect, color=(1, 1, 1), fill=(1, 1, 1))
     draw_rtl(out, pymupdf.Rect(28 * SX, 4 * SY, PDF_W - 28 * SX, 38 * SY), 'בס״ד', 14)
@@ -102,17 +138,21 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
         draw_rtl(out, pymupdf.Rect(28 * SX, 84 * SY, PDF_W - 28 * SX, 118 * SY), 'שם:', 13)
         out.draw_line(pymupdf.Point(28 * SX, 112 * SY), pymupdf.Point(PDF_W - 90 * SX, 112 * SY), color=(0.13, 0.19, 0.35), width=1)
         chrome = 40 + 86
+    scale = fitted_scale(items, PAGE_H - chrome)
+    draw_w = max(1, int(round(OUT_W * scale)))
+    x0 = (OUT_W - draw_w) // 2
     y = chrome
     placed = []
     for item_index, item in enumerate(items):
         if item_index:
-            y += item.get('gap') or 0
-        dh = item['dh']
+            y += gap_size(item.get('gap') or 0, scale)
+        dh = max(1, int(round(item['dh'] * scale)))
         kind = item.get('kind')
         box = item.get('box') or {}
         narrow = kind != 'level' and not item.get('pieces') and (box.get('w') or 1) < 0.5
         if kind == 'level':
-            draw_rtl(out, pymupdf.Rect(28 * SX, y * SY, PDF_W - 28 * SX, (y + dh) * SY), item.get('label') or '', 13)
+            right = x0 + draw_w - 28
+            draw_rtl(out, pymupdf.Rect(28 * SX, y * SY, right * SX, (y + dh) * SY), item.get('label') or '', 13)
         else:
             doc = docs[item['pdfId']]
             src = doc[item['page'] - 1]
@@ -139,24 +179,24 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
                     part_dh = (part['h'] / row_h) * dh if row_h else dh
                     dy = (piece.get('dy') or 0) * dh
                     dest = pymupdf.Rect(
-                        piece['at'] * PDF_W,
+                        (x0 + piece['at'] * draw_w) * SX,
                         (y + dy) * SY,
-                        (piece['at'] + part['w']) * PDF_W,
+                        (x0 + (piece['at'] + part['w']) * draw_w) * SX,
                         (y + dy + part_dh) * SY,
                     )
                     out.insert_image(dest, pixmap=part_pix)
             else:
                 pix = src.get_pixmap(matrix=pymupdf.Matrix(2, 2), clip=clip, alpha=False)
-                dx0 = box['x'] * PDF_W if narrow else 0
-                dx1 = (box['x'] + box['w']) * PDF_W if narrow else PDF_W
+                dx0 = (x0 + (box['x'] * draw_w if narrow else 0)) * SX
+                dx1 = (x0 + ((box['x'] + box['w']) * draw_w if narrow else draw_w)) * SX
                 dest = pymupdf.Rect(dx0, y * SY, dx1, (y + dh) * SY)
                 out.insert_image(dest, pixmap=pix)
                 masks = box.get('masks') or ([box['mask']] if box.get('mask') else [])
                 for mask in masks:
                     m = pymupdf.Rect(
-                        mask['x'] * PDF_W,
+                        (x0 + mask['x'] * draw_w) * SX,
                         (y + mask['y'] * dh) * SY,
-                        (mask['x'] + mask['w']) * PDF_W,
+                        (x0 + (mask['x'] + mask['w']) * draw_w) * SX,
                         (y + (mask['y'] + mask['h']) * dh) * SY,
                     )
                     out.draw_rect(m, color=(1, 1, 1), fill=(1, 1, 1))
@@ -166,8 +206,8 @@ def paint_page(out, items, page_index, answers, title, docs, probes):
                 'y': y,
                 'dh': dh,
                 'kind': kind,
-                'x0': box['x'] if narrow else 0.0,
-                'x1': (box['x'] + box['w']) if narrow else 1.0,
+                'x0': (x0 + (box['x'] * draw_w if narrow else 0)) / float(OUT_W),
+                'x1': (x0 + ((box['x'] + box['w']) * draw_w if narrow else draw_w)) / float(OUT_W),
             })
         y += dh
     probes.append(placed)
