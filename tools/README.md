@@ -1,6 +1,6 @@
 # tools/
 
-Calculator copies stay in `fx-82ms/` and `scientific-calculator/`. The scripts below are local release and review helpers.
+Calculator copies stay in `basic-calculator/` and `scientific-calculator/`. The scripts below are local release and review helpers.
 
 - `release/release.sh <sha>` — build from a merged commit on RELEASE_BRANCH and `wix release`. Replaces per-PR release-NNN.sh.
 - `review/run_review.py` (DeepSeek code review), `review/run_qwen.py` (Qwen 3.8 Max visual review). Need CHINESE_MODELS_API_KEY.
