@@ -51,6 +51,7 @@ test('a successful geometry hint exposes drawing without special user wording; f
     window: { NoamLocalVisual: { wantsVisualSupport: () => false } },
     ttl: 'דלתון', localVisualExerciseSource: () => 'מרובע וצלעות', noamRecentThreadText: () => '',
     noamGeometryContext: (text: string) => /דלתון/.test(text),
+    noamNativeFocusUrl: () => null,
     noamRenderAiDiagram: () => ({}), noamRenderGeometryGuide: () => ({}),
   });
   const user = { role: 'user', kind: 'רמז 1', text: 'אפשר רמז 1?' };
