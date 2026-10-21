@@ -5044,15 +5044,22 @@ function packWorksheet(measured, noteHeight) {
     const cap = answerTail ? PAGE_H * 0.4 : PAGE_H * 0.25;
     if (contentHeight(last.items) >= cap) break;
     const combined = prev.items.concat(last.items).map((item) => ({ ...item, slice: { ...item.slice } }));
+    const sample = combined.find((item) => item.bitmap && item.bitmap.width);
+    const device = sample ? (sample.originalPageWidth || sample.bitmap.width) / 1000 : 0;
     let over = heightOf(combined, prev.top) - PAGE_H;
-    for (let index = combined.length - 1; index > 0 && over > 0; index -= 1) {
+    for (let index = combined.length - 1; index > 0 && over > 1e-6; index -= 1) {
       const gap = combined[index].slice.gap || 0;
       if (gap <= 4) continue;
-      const take = Math.min(over, gap - Math.max(4, Math.ceil(gap / 2)));
+      // Whole device pixels only: a fractional shift resamples every crop below
+      // it onto a new subpixel phase and thins its one-pixel rules.
+      const most = gap - Math.max(4, Math.ceil(gap / 2));
+      const want = Math.min(over, most);
+      const up = device ? Math.ceil(want * device) / device : want;
+      const take = up <= most ? up : Math.floor(want * device) / device;
       combined[index].slice.gap = gap - take;
       over -= take;
     }
-    if (over > 0) break;
+    if (over > 1e-6) break;
     prev.items = combined;
     pages.pop();
   }
