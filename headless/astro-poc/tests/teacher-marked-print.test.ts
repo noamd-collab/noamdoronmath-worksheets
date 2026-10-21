@@ -1297,6 +1297,20 @@ describe('teacher catalog picker', () => {
       { slice: { kind: 'answer', gap: 8 }, dh: 200, dw: 800 },
     ], 0);
     assert.equal(pulledAtSix.length, 2);
+    const scaleRow = new Function(`${preview.slice(preview.indexOf('function scaledGap'), preview.indexOf('function shrinkTo'))} return scalePlaced;`)() as (item: unknown, factor: number) => { dh: number; cells: { imageY: number; imageH: number; answerScale: number; stack?: boolean }[] };
+    const shrunk = scaleRow({
+      slice: { kind: 'answer-row', gap: 8 },
+      dh: 120,
+      cells: [
+        { slice: { kind: 'answer' }, dw: 400, dh: 120, imageW: 300, imageH: 110, imageY: 10, labelBaseline: 16, labelW: 92, answerScale: 1 },
+        { slice: { kind: 'answer' }, dw: 300, dh: 118, imageW: 300, imageH: 100, labelW: 60, labelBaseline: 16, answerScale: 1, stack: true },
+      ],
+    }, 0.5);
+    // The row reserves every answer image at the size it is drawn.
+    shrunk.cells.forEach((cell) => {
+      assert.ok(cell.answerScale < 1);
+      assert.ok(shrunk.dh >= (cell.stack ? 18 : cell.imageY) + cell.imageH, JSON.stringify(cell));
+    });
     const leftBehind = pack.packWorksheet([
       { slice: { kind: 'row', gap: 4 }, dh: 1100 },
       { slice: { kind: 'answers-head', gap: 16 }, dh: 34 },

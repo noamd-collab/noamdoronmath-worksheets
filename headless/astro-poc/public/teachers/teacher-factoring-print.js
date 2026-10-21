@@ -1758,6 +1758,28 @@ function scaledGap(gap, factor) {
   return gap < 0 ? Math.min(-1, next) : Math.max(1, next);
 }
 
+// The label text keeps its size, so a scaled answer still needs room for it.
+function scaleAnswerCell(cell, factor) {
+  const imageW = Math.max(1, Math.round(cell.imageW * factor));
+  const imageH = Math.max(1, Math.round(cell.imageH * factor));
+  const labelW = cell.labelW || 0;
+  const labelBaseline = cell.labelBaseline || 16;
+  const imageY = cell.stack ? 0 : Math.round((cell.imageY || 0) * factor);
+  const dh = cell.stack
+    ? Math.max(18, 18 + imageH)
+    : Math.max(18, labelBaseline + 4, imageY + imageH);
+  const dw = cell.stack ? Math.max(labelW, imageW) : labelW + 8 + imageW;
+  return {
+    ...cell,
+    imageW,
+    imageH,
+    imageY,
+    answerScale: (cell.answerScale || 1) * factor,
+    dw,
+    dh,
+  };
+}
+
 function scalePlaced(item, factor) {
   const next = {
     ...item,
@@ -1767,6 +1789,15 @@ function scalePlaced(item, factor) {
   if (item.dw) {
     next.dw = Math.max(1, Math.round(item.dw * factor));
     next.dx = Math.round((item.dx || 0) * factor);
+  }
+  if (factor !== 1 && item.cells) {
+    next.cells = item.cells.map((cell) => (cell.imageH ? scaleAnswerCell(cell, factor) : cell));
+    next.dh = Math.max(next.dh, ...next.cells.map((cell) => cell.dh));
+  } else if (factor !== 1 && item.imageH) {
+    const cell = scaleAnswerCell(item, factor);
+    Object.assign(next, { imageW: cell.imageW, imageH: cell.imageH, imageY: cell.imageY, answerScale: cell.answerScale });
+    next.dw = cell.dw;
+    next.dh = Math.max(next.dh, cell.dh);
   }
   return next;
 }
