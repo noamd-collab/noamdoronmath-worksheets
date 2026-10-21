@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "exerciseId": "G7-T43-A-Q19א",
+  "source": {
+    "pdfId": "250e2c98cba14765b4c575b17e62f874",
+    "page": 7,
+    "crop_note": "Q19 figure region — fixture synthesized from live Network diagnosis 2026-09-25"
+  },
+  "confidence": 0.84,
+  "layers": {
+    "text_numeric": {
+      "version": 1,
+      "layer": "text_numeric",
+      "transcription": "בשרטוט משולש שווה־שוקיים ששוקו 25 ובסיסו 14. מה אורך חצי הבסיס, ומהו הגובה לבסיס?",
+      "numbers": [
+        { "value": 25, "unit": null, "role_hint": "length", "bbox": null, "confidence": 0.93 },
+        { "value": 14, "unit": null, "role_hint": "length", "bbox": null, "confidence": 0.93 }
+      ],
+      "hebrew_phrases": ["משולש שווה־שוקיים", "גובה לבסיס", "חצי הבסיס"],
+      "confidence": 0.9
+    },
+    "vertex_labels": {
+      "version": 1,
+      "layer": "vertex_labels",
+      "visible_labels": [],
+      "emptiness_is_confident": true,
+      "confidence": 0.95
+    },
+    "structural": {
+      "version": 1,
+      "layer": "structural",
+      "nodes": [
+        { "id": "n0", "kind": "vertex" },
+        { "id": "n1", "kind": "vertex" },
+        { "id": "n2", "kind": "vertex" },
+        { "id": "n3", "kind": "foot" }
+      ],
+      "segments": [
+        { "id": "s0", "ends": ["n0", "n1"], "style": "solid", "role_hint": "side" },
+        { "id": "s1", "ends": ["n1", "n2"], "style": "solid", "role_hint": "base" },
+        { "id": "s2", "ends": ["n2", "n0"], "style": "solid", "role_hint": "side" },
+        { "id": "s3", "ends": ["n0", "n3"], "style": "dashed", "role_hint": "altitude" }
+      ],
+      "intersections": [
+        { "node": "n3", "of": ["s3", "s1"] }
+      ],
+      "right_angle_marks": [
+        { "vertex": "n3", "rays": ["n0", "n1"] }
+      ],
+      "equal_side_marks": [
+        { "segments": ["s0", "s2"], "tick_count": 1 }
+      ],
+      "parallel_marks": [],
+      "collinear_orders": [
+        ["n1", "n3", "n2"]
+      ],
+      "shape_hints": [
+        { "kind": "isosceles_triangle", "nodes": ["n0", "n1", "n2"] }
+      ],
+      "numeric_attachments": [
+        { "number": 25, "attaches_to": "s0", "confidence": 0.85 },
+        { "number": 14, "attaches_to": "s1", "confidence": 0.88 }
+      ],
+      "confidence": 0.8
+    }
+  }
+}
