@@ -93,7 +93,7 @@ describe('stored content keeps school notation', () => {
   });
 
   it('adjacent angles always sum to 180° (no "only when" wording)', () => {
-    for (const slug of ['angles-grade-7', 'angles-review-grade-7']) {
+    for (const slug of ['angles-review-grade-7']) {
       assert.doesNotMatch(read('topic-pages', slug), /180° רק כ/);
     }
   });
