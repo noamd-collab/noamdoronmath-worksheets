@@ -1758,88 +1758,13 @@ function scaledGap(gap, factor) {
   return gap < 0 ? Math.min(-1, next) : Math.max(1, next);
 }
 
-function answerRowNeed(cell) {
-  if (!cell || !(cell.imageH > 0)) return 1;
-  if (cell.stack) return (cell.stackLabelH || 18) + cell.imageH;
-  return Math.max(18, (cell.labelBaseline || 0) + 4, (cell.imageY || 0) + cell.imageH);
-}
-
-function scaleAnswerCell(cell, factor) {
-  const next = { ...cell, slice: cell.slice ? { ...cell.slice } : cell.slice };
-  if (cell.imageW) next.imageW = Math.max(1, Math.round(cell.imageW * factor));
-  if (cell.imageH) next.imageH = Math.max(1, Math.round(cell.imageH * factor));
-  if (cell.imageY != null) next.imageY = Math.round(cell.imageY * factor);
-  if (cell.labelBaseline != null) next.labelBaseline = Math.round(cell.labelBaseline * factor);
-  if (cell.labelW) next.labelW = Math.max(1, Math.round(cell.labelW * factor));
-  if (cell.dw) next.dw = Math.max(1, Math.round(cell.dw * factor));
-  if (cell.dx) next.dx = Math.round(cell.dx * factor);
-  if (cell.stack || cell.stackLabelH) next.stackLabelH = Math.max(1, Math.round((cell.stackLabelH || 18) * factor));
-  if (cell.imageH) {
-    const prev = cell.answerScale == null ? 1 : cell.answerScale;
-    // A natural answer is blitted at the ink canvas size. Any real shrink has to
-    // leave answerScale below 1, or paint ignores the smaller image box.
-    if (!(factor < 0.9995)) next.answerScale = prev;
-    else next.answerScale = Math.max(0.05, Math.min(prev * factor, 0.999));
-  }
-  if (cell.dh) next.dh = Math.max(1, Math.round(cell.dh * factor));
-  next.dh = Math.max(next.dh || 1, answerRowNeed(next));
-  return next;
-}
-
-function fitAnswerImage(item) {
-  if (!item) return item;
-  const clipCell = (cell, limit) => {
-    let next = cell;
-    let guard = 0;
-    while (answerRowNeed(next) > limit && next.imageH > 1 && guard < 6) {
-      const factor = limit / answerRowNeed(next);
-      const scaled = scaleAnswerCell(next, factor);
-      scaled.dh = cell.dh;
-      next = scaled;
-      guard += 1;
-    }
-    if (answerRowNeed(next) > limit && next.imageH > 0) {
-      next = { ...next, imageH: Math.max(1, next.imageH - (answerRowNeed(next) - limit)) };
-      if (!(next.answerScale < 1)) next.answerScale = 0.999;
-    }
-    next.dh = cell.dh;
-    return next;
-  };
-  if (item.cells && item.cells.length) {
-    item.cells = item.cells.map((cell) => (answerRowNeed(cell) > item.dh ? clipCell(cell, item.dh) : cell));
-    return item;
-  }
-  if (item.imageH > 0 && answerRowNeed(item) > item.dh) {
-    const dh = item.dh;
-    const scaled = clipCell(item, dh);
-    Object.assign(item, scaled);
-    item.dh = dh;
-  }
-  return item;
-}
-
 function scalePlaced(item, factor) {
   const next = {
     ...item,
     dh: Math.max(1, Math.round(item.dh * factor)),
     slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
   };
-  if (item.cells && item.cells.length) {
-    next.cells = item.cells.map((cell) => scaleAnswerCell(cell, factor));
-    next.dh = Math.max(next.dh, Math.max.apply(null, next.cells.map(answerRowNeed)));
-  } else if (item.imageH > 0) {
-    const scaled = scaleAnswerCell(item, factor);
-    next.imageW = scaled.imageW;
-    next.imageH = scaled.imageH;
-    next.imageY = scaled.imageY;
-    next.labelBaseline = scaled.labelBaseline;
-    next.labelW = scaled.labelW;
-    next.dw = scaled.dw;
-    next.dx = scaled.dx;
-    next.stackLabelH = scaled.stackLabelH;
-    next.answerScale = scaled.answerScale;
-    next.dh = Math.max(next.dh, answerRowNeed(next));
-  } else if (item.dw) {
+  if (item.dw) {
     next.dw = Math.max(1, Math.round(item.dw * factor));
     next.dx = Math.round((item.dx || 0) * factor);
   }
@@ -1853,7 +1778,6 @@ function shrinkTo(items, limit) {
   const scaled = items.map((item) => scalePlaced(item, factor));
   const extra = contentHeight(scaled) - limit;
   if (extra > 0) scaled[scaled.length - 1].dh = Math.max(1, scaled[scaled.length - 1].dh - extra);
-  scaled.forEach(fitAnswerImage);
   return scaled;
 }
 
@@ -5036,25 +4960,6 @@ function packWorksheet(measured, noteHeight) {
   const CONT_TOP = 48;
   const heading = (item) => item && (item.slice.kind === 'stem' || item.slice.kind === 'level' || item.slice.kind === 'answers-head');
   const heightOf = (items, top) => top + FOOT + contentHeight(items);
-  // Rounding the scaled pieces up can leave the page a few pixels tall.
-  // Take one pixel from each line that can spare it, then shrink that line's
-  // answer image so the next row cannot paint over it.
-  const settle = (items, top) => {
-    let guard = 0;
-    while (heightOf(items, top) > PAGE_H + 0.5 && guard < 40) {
-      guard += 1;
-      let shaved = false;
-      for (let index = items.length - 1; index >= 0; index -= 1) {
-        if (items[index].dh > 8) {
-          items[index].dh -= 1;
-          fitAnswerImage(items[index]);
-          shaved = true;
-        }
-      }
-      if (!shaved) break;
-    }
-    return heightOf(items, top) <= PAGE_H + 0.5;
-  };
   const pieceKey = (item) => {
     const slice = item && item.slice;
     if (!slice || (slice.kind !== 'stem' && slice.kind !== 'row') || !slice.block) return '';
@@ -5068,7 +4973,6 @@ function packWorksheet(measured, noteHeight) {
     const scaled = items.map((item) => scalePlaced(item, factor));
     const extra = contentHeight(scaled) - limit;
     if (extra > 0) scaled[scaled.length - 1].dh = Math.max(1, scaled[scaled.length - 1].dh - extra);
-    scaled.forEach(fitAnswerImage);
     return scaled;
   };
   const groups = [];
@@ -5125,44 +5029,16 @@ function packWorksheet(measured, noteHeight) {
     if (need > room) {
       const factor = room / need;
       if (factor < minFactor) break;
-      extra = extra.map((item) => scalePlaced(item, factor));
+      extra = extra.map((item) => ({
+        ...item,
+        dh: Math.max(1, Math.round(item.dh * factor)),
+        slice: { ...item.slice, gap: scaledGap(item.slice.gap, factor) },
+      }));
     }
     const overflow = heightOf(prev.items.concat(extra), prev.top) - PAGE_H;
     if (overflow > 0) extra[extra.length - 1].dh = Math.max(1, extra[extra.length - 1].dh - overflow);
-    extra.forEach(fitAnswerImage);
     if (heightOf(prev.items.concat(extra), prev.top) > PAGE_H) break;
     prev.items = prev.items.concat(extra);
-    pages.pop();
-  }
-  // A short last page goes back onto the previous one, scaled down to 0.72.
-  // A question leftover uses a quarter of a page. An answer-key tail is still
-  // mostly empty at 40%, which is where the one-line key pages were landing.
-  while (pages.length > 1) {
-    const last = pages[pages.length - 1];
-    const prev = pages[pages.length - 2];
-    if (!last.items.length) {
-      pages.pop();
-      continue;
-    }
-    const answerTail = last.items.every((item) => item.slice && (item.slice.kind === 'answer' || item.slice.kind === 'missing' || item.slice.kind === 'answers-head' || item.slice.kind === 'answer-row'));
-    const cap = answerTail ? PAGE_H * 0.4 : PAGE_H * 0.25;
-    if (contentHeight(last.items) >= cap) break;
-    const extra = last.items.map((item) => ({ ...item, slice: { ...item.slice } }));
-    const leadGap = extra.length ? Math.max(0, extra[0].slice.gap || 0) : 0;
-    const room = PAGE_H - heightOf(prev.items, prev.top);
-    if (leadGap + contentHeight(extra) <= room + 0.5) {
-      prev.items = prev.items.concat(extra);
-      pages.pop();
-      continue;
-    }
-    const combined = prev.items.concat(extra);
-    const factor = PAGE_H / heightOf(combined, prev.top);
-    // 0.72 is the readable floor already used for a short key. 0.75 left two
-    // answer tails (0.746 and 0.748) on a page of their own.
-    if (!(factor >= 0.72)) break;
-    const scaled = combined.map((item) => scalePlaced(item, factor));
-    if (!settle(scaled, prev.top)) break;
-    prev.items = scaled;
     pages.pop();
   }
   return pages;
@@ -5440,11 +5316,10 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
         let imageX;
         let imageY;
         if (cell.stack) {
-          const band = cell.stackLabelH || 18;
-          ctx.fillText(cell.slice.text, right, y + Math.max(12, band - 4));
-          printTraceChrome(index, (right - labelW) * scale, y * scale, Math.max(1, labelW * scale), Math.max(1, band * scale));
+          ctx.fillText(cell.slice.text, right, y + 14);
+          printTraceChrome(index, (right - labelW) * scale, y * scale, Math.max(1, labelW * scale), Math.max(1, 18 * scale));
           imageX = right - imageW;
-          imageY = y + band;
+          imageY = y + 18;
         } else {
           const textY = y + (cell.labelBaseline || Math.max(14, Math.round((item.dh + 10) / 2)));
           ctx.fillText(cell.slice.text, right, textY);
@@ -5476,14 +5351,7 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
       const sh = item.baked ? item.bitmap.height : item.sh;
       const destW = item.dw || OUT_W;
       const destX = item.dx || 0;
-      // A near-1 downscale with bilinear smoothing turns a thin black stroke gray
-      // and drops its darkness. Nearest neighbor keeps the ink. A one-pixel
-      // mismatch is already how an unscaled page lands, so leave that smoothed.
-      const resample = Math.abs(destW * scale - sw) > 2 || Math.abs(item.dh * scale - sh) > 2;
-      const prevSmooth = ctx.imageSmoothingEnabled;
-      if (resample) ctx.imageSmoothingEnabled = false;
       ctx.drawImage(item.bitmap, sx, sy, sw, sh, destX, y, destW, item.dh);
-      ctx.imageSmoothingEnabled = prevSmooth;
       printTraceElement(item.slice, index, destX * scale, y * scale, destW * scale, item.dh * scale, sw, sh);
       if (!item.slice.box.segment) fillSliceMasks(ctx, item.slice.box, y, item.dh, destW);
     }
