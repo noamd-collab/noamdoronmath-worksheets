@@ -5198,8 +5198,68 @@ function answerInkCanvas(bitmap, sx, sy, sw, sh, box) {
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(bitmap, sx, sy, sw, sh, 0, 0, w, h);
   clearGreyRules(ctx, w, h);
+  if (!(box && box.wrap)) clearCutNeighbourLines(ctx, w, h);
   if (box) fillSliceMasks(ctx, box, 0, h, w);
   return cut;
+}
+
+// The crop is padded with white above and below its own line, so ink on the first
+// or last row was cut by the window: it is a sliver of the key line above or below.
+// Clear such a stroke unless it reaches the middle row, where the answer itself sits.
+function clearCutNeighbourLines(ctx, width, height) {
+  if (width < 2 || height < 6) return;
+  let image;
+  try {
+    image = ctx.getImageData(0, 0, width, height);
+  } catch (error) {
+    return;
+  }
+  const data = image && image.data;
+  if (!data || data.length < width * height * 4) return;
+  const inkAt = (i) => (data[i * 4] + data[i * 4 + 1] + data[i * 4 + 2]) / 3 < 230;
+  const seen = new Uint8Array(width * height);
+  const mid = height / 2;
+  let changed = false;
+  const seeds = [];
+  for (let x = 0; x < width; x += 1) {
+    seeds.push(x, (height - 1) * width + x);
+  }
+  seeds.forEach((seed) => {
+    if (seen[seed] || !inkAt(seed)) return;
+    const pixels = [];
+    const stack = [seed];
+    seen[seed] = 1;
+    let top = height;
+    let bottom = -1;
+    while (stack.length) {
+      const p = stack.pop();
+      pixels.push(p);
+      const y = (p / width) | 0;
+      const x = p - y * width;
+      if (y < top) top = y;
+      if (y > bottom) bottom = y;
+      for (let dy = -1; dy <= 1; dy += 1) {
+        const ny = y + dy;
+        if (ny < 0 || ny >= height) continue;
+        for (let dx = -1; dx <= 1; dx += 1) {
+          const nx = x + dx;
+          if (nx < 0 || nx >= width) continue;
+          const q = ny * width + nx;
+          if (seen[q] || !inkAt(q)) continue;
+          seen[q] = 1;
+          stack.push(q);
+        }
+      }
+    }
+    if (top <= mid && bottom >= mid) return;
+    pixels.forEach((p) => {
+      data[p * 4] = 255;
+      data[p * 4 + 1] = 255;
+      data[p * 4 + 2] = 255;
+    });
+    changed = true;
+  });
+  if (changed) ctx.putImageData(image, 0, 0);
 }
 
 function printTraceReset() {
