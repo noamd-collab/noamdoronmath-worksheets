@@ -321,6 +321,14 @@ export const FILM_LANDING_LOOPS = {
     marker: 'parallel-cointerior-angles',
     src: '/loops/parallel-cointerior-angles.html',
   },
+  'algebraic-expressions-grade-7': {
+    marker: 'algebraic-substitution-grade-7',
+    src: '/loops/algebraic-substitution-grade-7.html',
+  },
+  'factoring-grade-9': {
+    marker: 'common-factor-minus-parentheses',
+    src: '/loops/common-factor-minus-parentheses-grade-9.html',
+  },
 } as const;
 
 export type FilmLandingSlug = keyof typeof FILM_LANDING_LOOPS;
@@ -337,10 +345,10 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
 }
 
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
-  const lesson = LESSON_TOPIC_MAP[page.slug];
-  if (lesson) return { kind: 'css', variant: lesson, marker: lesson };
   const film = FILM_LANDING_LOOPS[page.slug as FilmLandingSlug];
   if (film) return { kind: 'film', marker: film.marker, src: film.src };
+  const lesson = LESSON_TOPIC_MAP[page.slug];
+  if (lesson) return { kind: 'css', variant: lesson, marker: lesson };
   // A slug-level concept film wins over a slug CSS loop and over its family.
   const slugConcept = SLUG_CONCEPT_OVERRIDE[page.slug as keyof typeof SLUG_CONCEPT_OVERRIDE];
   if (slugConcept) return { kind: 'concept', variant: slugConcept, marker: `concept-${slugConcept}` };
