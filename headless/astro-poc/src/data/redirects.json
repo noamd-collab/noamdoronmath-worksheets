@@ -146,6 +146,11 @@
       "from": "/page",
       "to": "/terms",
       "note": "live 301 → terms; middleware only"
+    },
+    {
+      "from": "/privacy",
+      "to": "/accessibilityadaptation#privacy-policy",
+      "note": "Grade-hub footer still links here. Classic site 301'd /privacy to the combined accessibility page (see nd-site-gate.js). Headless was 404. Not /privacy as its own page."
     }
   ],
   "flaggedDoNotAutoRedirect": [
