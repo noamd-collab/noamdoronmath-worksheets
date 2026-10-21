@@ -617,14 +617,6 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
-      "key": "page:/angles-grade-7",
-      "title": "זוויות צמודות וקודקודיות לכיתה ז׳",
-      "linkedTopic": "topic:7:12",
-      "linkedTitle": "זוויות חלק 2 — יחסים ופעולות",
-      "verified": true,
-      "reason": "links to the topic, same grade, shared title word"
-    },
-    {
       "key": "page:/area-parallelogram-trapezoid-composite-grade-7",
       "title": "שטח מקבילית, טרפז ומצולעים מורכבים לכיתה ז׳",
       "linkedTopic": "topic:7:46",
