@@ -474,6 +474,23 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(player, /initConceptLoops\(\);\s*ensurePlaying\(\);\s*runSlowClock\(\)/);
     assert.match(player, /setTimeout\(start, 120\)/);
   });
+
+  it('sas-snap copy is not the hidden transform copy', () => {
+    const astro = read('src/components/ConceptLoop.astro');
+    const start = astro.indexOf("variant === 'sas-snap'");
+    const end = astro.indexOf("variant === 'obtuse-ht'");
+    const block = astro.slice(start, end);
+    assert.ok(start >= 0 && end > start, 'sas-snap markup block');
+    assert.doesNotMatch(block, /data-el="copy"/);
+    assert.match(block, /data-el="sas-copy"/);
+    const engine = read('src/lib/conceptLoops.ts');
+    const fn = engine.slice(engine.indexOf('function renderSasSnap'), engine.indexOf('const SAS_SNAP_HOLD'));
+    assert.match(fn, /q\(root, 'sas-copy'\)/);
+    assert.match(fn, /op\(sasCopy, 1\)/);
+    assert.match(fn, /op\(q\(root, 'triA'\), 1\)/);
+    assert.match(fn, /op\(q\(root, 'triB'\), 1\)/);
+    assert.doesNotMatch(fn, /q\(root, 'copy'\)/);
+  });
 });
 
 describe('grade loop rotation policy', () => {

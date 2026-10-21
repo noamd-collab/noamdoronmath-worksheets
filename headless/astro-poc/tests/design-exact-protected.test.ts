@@ -25,6 +25,14 @@
  * can import them; that file is pinned here too. Not a silent regen.
  * ConceptLoop.astro moved again so the kite-construct aria names the
  * division with חלקי instead of an ASCII slash (Noam, 18.10.2026).
+ * conceptLoops.ts and ConceptLoop.astro moved again for the grade-8
+ * sas-snap film (Noam, 20.10.2026): two visible triangles, pair-by-pair
+ * marks, then they meet in the middle with both outlines still visible.
+ * Moved again the same day so the dashed triangle is sas-copy: the
+ * existing [data-el='copy'] { opacity: 0 } rule was hiding it.
+ * Moved again so the lap reset keeps both outlines on screen and slides
+ * them apart, instead of fading the card empty (Noam, 21.10.2026).
+ * Explicit content fix, not a silent regen.
  * The viewer released scripts moved again so the glossary and the
  * fraction key draw a horizontal bar instead of an ASCII slash
  * (Noam, 18.10.2026). Glossary files are not in this fence. Not a
@@ -58,9 +66,9 @@ const protectedFiles: Record<string, string> = {
   // kite-construct film added for /kite-grade-9 (explicit content, not a design regen).
   // 2026-10-18 topic films added; easing helpers now live in loopHelpers.ts.
   // PR169: preserve new topic films and honor OS reduced motion.
-    'src/lib/conceptLoops.ts': 'f644fd20a34335d565899aa5369773184bee34565135d55aa9ba4b4a7aa447a0',
+    'src/lib/conceptLoops.ts': '16776933aea73936f536f13c018eb834969775fb06890b8057a7e79e6067347c',
   'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
-  'src/components/ConceptLoop.astro': '894808ad94ae42828f33ff395b0e6d64c038d9d1f2d2f141ac7ccacf72183d34',
+  'src/components/ConceptLoop.astro': '7d725f47d324b76dae27c27874116a93ed59ffb3523c26198140b19276293d7a',
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // 47afe919: intentional text-only school notation on the readout
