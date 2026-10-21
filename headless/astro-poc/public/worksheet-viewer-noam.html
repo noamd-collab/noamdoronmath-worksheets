@@ -1546,8 +1546,8 @@ textarea:focus{
 .noam-diagram-zoom button:focus-visible{outline:3px solid var(--accent-dark);outline-offset:2px}
 .noam-diagram-zoom button:disabled{opacity:.4}
 .noam-diagram-zoom output{min-width:48px;text-align:center;font:700 16px Assistant,sans-serif;direction:ltr}
-.noam-diagram-viewport{overflow:auto;max-width:100%;direction:ltr;overscroll-behavior:contain}
-.noam-diagram-canvas{width:100%}
+.noam-diagram-viewport{overflow:auto;max-width:100%;direction:ltr;overscroll-behavior-x:contain;overscroll-behavior-y:auto}
+.noam-diagram-canvas{width:100%;margin-inline:auto}
 .noam-diagram-pan-help{font:400 14px/1.5 Assistant,sans-serif;margin:8px;text-align:center}
 @media(max-width:600px){
   .noam-diagram-dialog{width:100%;height:100dvh;max-height:100dvh;max-width:100%;margin:0;border:0;border-radius:0}
@@ -2011,7 +2011,7 @@ textarea:focus{
   .panel-body.is-previewing .noam-picked-heading{position:sticky;top:0;background:var(--tint);z-index:1;padding:4px 0}
   .panel-body.is-previewing .noam-picked-preview:not([hidden]),.panel-body.is-previewing .noam-picked-preview img{display:block;max-height:none;overflow:visible}
   .panel-body.is-previewing .noam-picked-preview:not([hidden]){direction:rtl}
-  .panel-body.is-previewing .noam-picked-preview img{width:720px;max-width:none}
+  .panel-body.is-previewing .noam-picked-preview img{width:100%;max-width:100%}
   .panel-body.is-previewing .noam-picked-text:not([hidden]){display:block;max-height:none}
   body.noam-recaptcha-visible .panel{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
   body.noam-panel-open .grecaptcha-badge{z-index:60;bottom:calc(var(--noam-keyboard-gap,0px) + env(safe-area-inset-bottom) + 4px)!important}
@@ -2416,6 +2416,13 @@ html.nd-motion-off .exact-viewer *,html.noam-a11y-motion .exact-viewer *{scroll-
 .exact-viewer .panel-body.is-previewing>.noam-picked{flex:1 1 auto;min-height:0;max-height:none;overflow:auto}
 .exact-viewer .panel-body.is-previewing .noam-picked-preview:not([hidden]){max-height:none;overflow:visible;direction:rtl}
 .exact-viewer .panel-body.is-previewing .noam-picked-preview>img{max-height:none}
+.noam-question-crop{width:100%;max-width:100%;overflow:auto;direction:rtl;overscroll-behavior-x:contain;overscroll-behavior-y:auto}
+.panel-body.is-previewing .noam-question-crop>img{display:block;width:100%;max-width:100%;height:auto;max-height:none}
+.panel-body.is-previewing .noam-question-crop.is-zoomed>img{width:720px;max-width:none}
+.noam-preview-zoom{display:none;min-height:44px;margin:0 0 8px;padding:6px 12px;border:1px solid var(--ink);border-radius:12px;background:#fff;color:var(--ink);font:inherit;cursor:pointer}
+.panel-body.is-previewing .noam-preview-zoom{display:block}
+.noam-preview-pan-help{margin:0 0 8px;font-size:14px}
+
 .exact-viewer .panel-body.is-chat>.noam-transcript{
   flex:1 1 auto;
   min-height:120px;
@@ -5094,6 +5101,13 @@ var noamGlossaryTrigger = null;
 var noamGlossaryCloseTimer = null;
 
 // Announce new events without making rebuilt conversation history a live log.
+function clearNoamAnnouncement(){
+  clearTimeout(noamAnnouncementTimer);
+  noamAnnouncementTimer = null;
+  var status = document.getElementById("noamAnnouncements");
+  if (status){status.textContent = "";}
+}
+
 function announceNoam(text){
   var status = document.getElementById("noamAnnouncements");
   if (!status){return;}
@@ -5475,6 +5489,7 @@ function manifestPinQuestionLabel(exercises){
 }
 
 function renderNoamQuestionParts(exercises, pin){
+  clearNoamAnnouncement();
   var moveFocus = panelBody.contains && panelBody.contains(document.activeElement);
   selectedExercise = null;
   if (selectedPin){ selectedPin.classList.remove("is-active"); }
@@ -5672,6 +5687,7 @@ if (window.MutationObserver){
 }
 
 function selectManifestExercise(exercise, pin){
+  clearNoamAnnouncement();
   panelBody.classList.remove("is-previewing");
   selectedExercise = exercise;
   if (selectedPin){ selectedPin.classList.remove("is-active"); }
@@ -5683,6 +5699,7 @@ function selectManifestExercise(exercise, pin){
 }
 
 function renderExercisePicker(){
+  clearNoamAnnouncement();
   var moveFocus = document.activeElement===panelBack || panelBody.contains(document.activeElement);
   panelBody.classList.remove("is-chat", "is-previewing");
   panelBack.hidden = true;
@@ -6039,19 +6056,17 @@ function renderNoamChat(){
   var drawingAnswer = noamLatestDrawingAnswer(thread);
   var drawingPending = !!(drawingAnswer&&noamDiagramRuntime().messages.has(drawingAnswer));
   var hasConversation = !!(thread.messages.length || thread.history.length || thread.hintIndex);
-  var showQuestionPreview = !hasConversation;
-  if (!showQuestionPreview){panelBody.classList.remove("is-previewing");}
-  var previewing = showQuestionPreview && panelBody.classList.contains("is-previewing");
+  var previewing = panelBody.classList.contains("is-previewing");
   var text = selectedExercise.text || selectedExercise.prompt || selectedExercise.context || "";
   var hasAssistantAnswer = thread.messages.some(function(message){
     return message && message.role === "assistant" && String(message.text || "").trim();
   });
 
   panelBody.innerHTML =
-    '<div class="noam-picked'+(showQuestionPreview?'':' noam-picked-compact')+'">' +
+    '<div class="noam-picked'+(hasConversation?' noam-picked-compact':'')+'">' +
       '<div class="noam-picked-heading"><div class="noam-picked-label">' + esc(exerciseLabel(selectedExercise)) + '</div>' +
-      (showQuestionPreview?'<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הגדלת השאלה')+'</button>':'')+'</div>' +
-      (showQuestionPreview?'<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText" role="status">טוען את השאלה מתוך ה־PDF…</div>':'') +
+      '<button type="button" class="noam-preview-toggle" id="noamPreviewToggle" aria-controls="noamPickedPreview" aria-expanded="'+previewing+'">'+(previewing?'חזרה לשיחה':'הצגת השאלה')+'</button></div>' +
+      '<div class="noam-picked-preview" id="noamPickedPreview" hidden></div><div class="noam-picked-text" id="noamPickedText" role="status">טוען את השאלה מתוך ה־PDF…</div>' +
     '</div>' +
     '<div class="noam-thread-tools">' +
       '<button type="button" class="noam-link-button" id="noamNewThread">שיחה חדשה</button>' +
@@ -6111,7 +6126,7 @@ function renderNoamChat(){
       var expanded = !panelBody.classList.contains("is-previewing");
       panelBody.classList.toggle("is-previewing",expanded);
       this.setAttribute("aria-expanded",String(expanded));
-      this.textContent = expanded ? "חזרה לשיחה" : "הגדלת השאלה";
+      this.textContent = expanded ? "חזרה לשיחה" : "הצגת השאלה";
       panelBody.scrollTop = 0;
       this.focus({preventScroll:true});
     });
@@ -6199,7 +6214,7 @@ function renderNoamChat(){
   document.getElementById("noamDraw").disabled=busy||drawingPending;
   renderPanelMath(panelBody);
   panelBody.querySelectorAll(".noam-row.assistant .noam-bubble,#noamPickedText").forEach(enhanceNoamGlossary);
-  if (showQuestionPreview){renderExercisePreview(selectedExercise,0);}
+  renderExercisePreview(selectedExercise,0);
   restoreNoamChatFocus(focusId);
   transcript.scrollTop = transcript.scrollHeight;
 }
@@ -7250,7 +7265,32 @@ function showExercisePreview(exercise,dataUrl){
       ? noamExerciseSectionLabel(exercise)
       : String(exercise.text||exercise.prompt||"")
   ).slice(0,500);
-  preview.replaceChildren(image);
+  var crop=document.createElement("div");
+  crop.id="noamQuestionCrop";
+  crop.className="noam-question-crop";
+  crop.tabIndex=0;
+  crop.setAttribute("role","region");
+  crop.setAttribute("aria-label","השאלה המקורית מתוך דף העבודה");
+  crop.appendChild(image);
+  var zoom=document.createElement("button");
+  zoom.type="button";
+  zoom.className="noam-preview-zoom";
+  zoom.textContent="הגדלת הטקסט";
+  zoom.setAttribute("aria-controls",crop.id);
+  zoom.setAttribute("aria-pressed","false");
+  var help=document.createElement("p");
+  help.className="noam-preview-pan-help";
+  help.textContent="בהגדלה אפשר לגלול לצדדים כדי לקרוא את כל השאלה.";
+  help.hidden=true;
+  zoom.addEventListener("click",function(){
+    var enlarged=!crop.classList.contains("is-zoomed");
+    crop.classList.toggle("is-zoomed",enlarged);
+    zoom.setAttribute("aria-pressed",String(enlarged));
+    zoom.textContent=enlarged?"התאמה לרוחב":"הגדלת הטקסט";
+    help.hidden=!enlarged;
+    crop.scrollLeft=0;
+  });
+  preview.replaceChildren(zoom,help,crop);
   var nativeFigure=noamNativeFigure(exercise);
   if (nativeFigure){
     var details=document.createElement("details");
@@ -8132,15 +8172,29 @@ function noamAddDiagramExpansion(container,figure){
       canvas=document.createElement("div");canvas.className="noam-diagram-canvas";
       svg.replaceWith(viewport);viewport.appendChild(canvas);canvas.appendChild(svg);
     }
+    var fittedScale=100;
     function setScale(value){
-      scale=Math.max(100,Math.min(250,value));
+      scale=Math.max(fittedScale,Math.min(250,value));
       if(canvas){canvas.style.width=scale+"%";}
-      amount.textContent=scale+"%";minus.disabled=scale===100;plus.disabled=scale===250;
-      if(viewport&&scale===100){viewport.scrollLeft=0;}
+      amount.textContent=scale+"%";minus.disabled=scale===fittedScale;plus.disabled=scale===250;
+      if(viewport&&scale<=100){viewport.scrollLeft=0;}
     }
+    function fitToScreen(){
+      fittedScale=100;
+      setScale(100);
+      if(svg&&content.clientHeight){
+        var height=svg.getBoundingClientRect().height;
+        // Reserve room for the caption, controls and padding, not just the image.
+        var available=content.clientHeight-(content.scrollHeight-height);
+        if(height>0&&available>0){fittedScale=Math.max(10,Math.min(100,Math.floor(available/height*100)));}
+      }
+      setScale(fittedScale);
+      content.scrollTop=0;
+    }
+    function resizeFit(){if(scale===fittedScale){fitToScreen();}}
     minus.addEventListener("click",function(){setScale(scale-25);});
     plus.addEventListener("click",function(){setScale(scale+25);});
-    fit.addEventListener("click",function(){setScale(100);});
+    fit.addEventListener("click",fitToScreen);
     zoom.appendChild(minus);zoom.appendChild(amount);zoom.appendChild(plus);zoom.appendChild(fit);
     setScale(100);
     content.appendChild(copy);
@@ -8159,11 +8213,15 @@ function noamAddDiagramExpansion(container,figure){
       else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
     });
     dialog.addEventListener("close",function(){
+      window.removeEventListener("resize",resizeFit);
       dialog.remove();
       if(expand.isConnected){expand.focus({preventScroll:true});}
     },{once:true});
     document.body.appendChild(dialog);
     dialog.showModal();
+    fitToScreen();
+    if(svg){svg.addEventListener("load",resizeFit);}
+    window.addEventListener("resize",resizeFit);
   });
   container.appendChild(expand);
 }
@@ -8567,7 +8625,7 @@ function askNoam(helpKind,studentMessage){
       if (helpKind==="hint"){thread.hintIndex=Math.min(3,thread.hintIndex+1);}
       if (attachments.length&&typeof clearNoamAttachments==="function"){clearNoamAttachments(exercise.id);}
       saveNoamState();setNoamBusy(false);renderNoamChat();
-      announceNoam(exerciseLabel(exercise) + ". רמזי: " + answer);
+      if (selectedExercise&&selectedExercise.id===exercise.id){announceNoam(exerciseLabel(exercise) + ". רמזי: " + answer);}
     })
     .catch(function(error){
       var errorMessage=String(error&&error.message||"לא הצלחנו לקבל תשובה כרגע.");
@@ -8579,7 +8637,7 @@ function askNoam(helpKind,studentMessage){
         answerErrorCode:String(error&&error.code||"")
       });
       saveNoamState();setNoamBusy(false);renderNoamChat();
-      announceNoam(exerciseLabel(exercise) + ". " + errorMessage);
+      if (selectedExercise&&selectedExercise.id===exercise.id){announceNoam(exerciseLabel(exercise) + ". " + errorMessage);}
     });
 }
 
@@ -9090,7 +9148,7 @@ function esc(s){
   }
   function rowQualifies(row){
     if(!row||!row.classList.contains('assistant')){return false;}
-    if(row.querySelector('.noam-bubble.thinking')){return false;}
+    if(row.querySelector('.noam-bubble.thinking,.noam-retry-action')){return false;}
     var text=rowText(row);
     if(/חושב…|עדיין חושב/.test(text)){return false;}
     if(!String(text||'').replace(/\s+/g,' ').trim()){return false;}
