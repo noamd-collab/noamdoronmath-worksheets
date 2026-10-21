@@ -161,7 +161,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // Dedicated recovery/zoom tests cover these intentional behavior changes.
     // No auth protocol, original PDF/SVG, catalogue or storage format changed.
     // PR212 follow-up: version the plural-relation compiler and its saved plan cache.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e119721fb6e0659e4de77d42b862e16c7106193365cc483308302532465c2561');
+    // PR214: verified native triangle length comparisons preserve their original
+    // SVG/values, including saved drawings and shared metadata fetches. Covered
+    // by ramzi-native-segment-focus.test.ts; no auth, model or storage changes.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '0e0895f73ae14fbeb5282a4d02fee00e3104859a200aaaffc5a4861e328cbc10');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

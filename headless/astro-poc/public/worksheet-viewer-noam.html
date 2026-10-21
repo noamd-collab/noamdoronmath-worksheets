@@ -7047,7 +7047,7 @@ function noamNativeFigure(exercise){
   return figure;
 }
 
-// Local illustration of objects explicitly named in an already delivered hint.
+// Local illustration of named objects or original side-length comparisons in a delivered hint.
 // The public package supplies all coordinates; this never calls a protected AI
 // endpoint and never adds an equality, inferred correspondence or new segment.
 var noamNativeFocusPackages={};
@@ -7059,9 +7059,9 @@ function noamNativeFocusUrl(exercise){
 function noamLoadNativeFocus(exercise){
   var url=noamNativeFocusUrl(exercise);if(!url){return Promise.resolve(null);}
   if(!noamNativeFocusPackages[url]){
-    var entry={data:null,promise:null};noamNativeFocusPackages[url]=entry;
+    var entry={data:null,promise:null,loaded:false};noamNativeFocusPackages[url]=entry;
     entry.promise=fetch(url,{cache:'force-cache'}).then(function(r){return r.ok?r.json():null;})
-      .then(function(data){entry.data=data;return data;}).catch(function(){return null;});
+      .then(function(data){entry.data=data;entry.loaded=true;return data;}).catch(function(){entry.loaded=true;return null;});
   }
   return noamNativeFocusPackages[url].promise;
 }
@@ -7072,6 +7072,9 @@ function noamSourceCoordinateView(figure){
   if(!Array.isArray(box)||box.length!==2||!box.every(Number.isFinite)||
       box.some(function(n){return n<20||n>2000;})){return null;}
   return {width:box[0],height:box[1]};
+}
+function noamNativeLengthComparisonHint(hint){
+  return /צלע|מוט/.test(hint)&&/ארו[ךכ]|קצר|אור[ךכ]/.test(hint)&&!/[A-Za-z]/.test(hint);
 }
 function noamNativeSegmentFocus(data,exercise,hint){
   if(!noamNativeFocusUrl(exercise)||typeof hint!=='string'||hint.length>4000){return null;}
@@ -7097,6 +7100,33 @@ function noamNativeSegmentFocus(data,exercise,hint){
   }
   var names=[],match,re=/(?:^|[^A-Za-z])([A-Z]{2})(?=$|[^A-Za-z])/g;
   while((match=re.exec(hint))){var name=match[1].split('').sort().join('');if(names.indexOf(name)<0){names.push(name);}}
+  var lengthComparison=false;
+  if(!names.length&&noamNativeLengthComparisonHint(hint)){
+    // Preserve all three printed lengths for an original-state comparison.
+    // Never reuse a shared original figure for a later or changed construction.
+    if(q.items[0]!==part||(part.given||[]).length||(part.to_construct||[]).length||(q.to_construct||[]).length){return null;}
+    var scope=[q.text,part.text,hint].join(' ').replace(/(?:לבדוק|בדקו|קבעו|הכריעו)\s+אם\s/g,' ');
+    if(/(?:^|[^א-ת])(?:אם|אילו|נניח|בהנחה|כאשר)(?=$|[^א-ת])|החל[ףפ]|החליפ|יוחלף|הוחלף|תחליפ|מחליפ|שינוי|משנים|שנו|הכפיל|הגדיל|הקטינ|האריכ|הארכה|קצרו|הוסיפ|הוספה|הסר|בנו|בניית|בנייה/.test(scope)){return null;}
+    var vertices=Object.keys(pointMap),edges=segments.filter(function(s){return s&&s.kind==='segment'&&s.role==='edge';});
+    if(vertices.length!==3||edges.length!==3||segments.length!==3){return null;}
+    var values=f.objects&&f.objects.labels;
+    if(!Array.isArray(values)){return null;}
+    values=values.filter(function(l){return l&&l.role==='value';});
+    if(values.length!==3){return null;}
+    var scales=[];
+    for(var edge of edges){
+      if(typeof edge.name!=='string'||!/^[A-Z]{2}$/.test(edge.name)||edge.name[0]===edge.name[1]){return null;}
+      var key=edge.name.split('').sort().join(''),a=pointMap[key[0]],b=pointMap[key[1]];
+      if(!a||!b||names.indexOf(key)>=0){return null;}
+      var labels=values.filter(function(l){return typeof l.for==='string'&&l.for.split('').sort().join('')===key;});
+      if(labels.length!==1||typeof labels[0].text!=='string'||!/^\d+(?:\.\d+)?$/.test(labels[0].text)||Number(labels[0].text)<=0){return null;}
+      scales.push(Math.hypot(a[0]-b[0],a[1]-b[1])/Number(labels[0].text));names.push(key);
+    }
+    // The existing source itself must represent the printed length ratios.
+    // Allow only export rounding; do not select or infer a longest-side answer.
+    if(scales.some(function(s){return !Number.isFinite(s)||s<=0||Math.abs(s/scales[0]-1)>0.02;})){return null;}
+    lengthComparison=true;
+  }
   if(!names.length||names.length>6){return null;}
   var lines=[];
   for(var name of names){
@@ -7109,7 +7139,7 @@ function noamNativeSegmentFocus(data,exercise,hint){
     if(!((near(xy[0],a)&&near(xy[1],b))||(near(xy[1],a)&&near(xy[0],b)))){return null;}
     lines.push({name:name,xy:[a.slice(),b.slice()]});
   }
-  return {width:w,height:h,lines:lines};
+  return {width:w,height:h,lines:lines,lengthComparison:lengthComparison};
 }
 function noamNativeFocusIdentity(exercise){
   return JSON.stringify([noamDiagramSourceIdentity(exercise),exercise.nativeFigureUrl,exercise.nativeQuestionId,exercise.part]);
@@ -7127,7 +7157,7 @@ function noamRenderNativeFocus(visual){
   var figure=noamNativeFigure(exercise);if(!figure){return null;}
   var ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
   svg.setAttribute('viewBox','0 0 '+focus.width+' '+focus.height);svg.setAttribute('class','noam-geometry-svg');
-  svg.setAttribute('role','img');svg.setAttribute('aria-label','השרטוט המקורי עם הדגשת הקטעים שהוזכרו ברמז: '+focus.lines.map(function(l){return l.name;}).join(', '));
+  svg.setAttribute('role','img');svg.setAttribute('aria-label',focus.lengthComparison?'השרטוט המקורי עם שלושת אורכי הצלעות הנתונים והדגשה אחידה של הצלעות':'השרטוט המקורי עם הדגשת הקטעים שהוזכרו ברמז: '+focus.lines.map(function(l){return l.name;}).join(', '));
   svg.style.cssText='display:block;width:100%;height:auto;background:white';
   var image=document.createElementNS(ns,'image');image.setAttribute('href',exercise.nativeFigureUrl);
   image.setAttribute('width',String(focus.width));image.setAttribute('height',String(focus.height));svg.appendChild(image);
@@ -7138,7 +7168,7 @@ function noamRenderNativeFocus(visual){
     line.setAttribute('stroke','#2677bb');line.setAttribute('stroke-width','3');line.setAttribute('stroke-opacity','0.65');svg.appendChild(line);
   });
   figure.querySelector('img').replaceWith(svg);
-  figure.querySelector('figcaption').textContent='עזר מהדף — הדגשה על השרטוט המקורי: '+focus.lines.map(function(l){return l.name;}).join(', ')+'. הצבע מסמן את הקטעים שהוזכרו ברמז, ולא שוויון ביניהם.';
+  figure.querySelector('figcaption').textContent=focus.lengthComparison?'עזר מהדף — השרטוט המקורי עם שלושת אורכי הצלעות הנתונים. ההדגשה האחידה אינה מסמנת שוויון בין הצלעות.':'עזר מהדף — הדגשה על השרטוט המקורי: '+focus.lines.map(function(l){return l.name;}).join(', ')+'. הצבע מסמן את הקטעים שהוזכרו ברמז, ולא שוויון ביניהם.';
   return figure;
 }
 function noamPrepareNativeFocus(exercise,options){
@@ -7147,8 +7177,8 @@ function noamPrepareNativeFocus(exercise,options){
   if(!options||options.helpKind!=='hint'||!/^(?:אפשר\s+)?רמז(?:\s*[123])?\s*[?؟]?$/.test(String(options.studentMessage||'').trim())){return Promise.resolve(null);}
   var hint=String(options&&options.answer||'').slice(0,4000);
   if(/אנך|מקביל|חוצה|תיכון|גובה|האריכ|הארך|הארכ|הוסיפ|הוסף|בנו|בניית|בנייה/.test(hint+' '+String(options&&options.studentMessage||''))){return Promise.resolve(null);}
-  // Do not fetch the package for a reply with no explicitly named segment.
-  if(!/(?:^|[^A-Za-z])[A-Z]{2}(?=$|[^A-Za-z])/.test(hint)){return Promise.resolve(null);}
+  // A length comparison may need the complete labelled original triangle.
+  if(!/(?:^|[^A-Za-z])[A-Z]{2}(?=$|[^A-Za-z])/.test(hint)&&!noamNativeLengthComparisonHint(hint)){return Promise.resolve(null);}
   return noamLoadNativeFocus(exercise).then(function(data){
     if(!noamNativeSegmentFocus(data,exercise,hint)){return null;}
     var visual={type:'native-source-focus',exerciseId:exercise.id,sourceIdentity:noamNativeFocusIdentity(exercise),hint:hint};
@@ -8261,6 +8291,28 @@ function noamRenderAiDiagram(visual){
   if (!visual||!window.NoamDiagramPlan||!window.NoamGeometry||!manifest){return null;}
   var exercise=(manifest.exercises||[]).find(function(item){return item.id===visual.exerciseId;});
   if (!exercise||visual.sourceIdentity!==noamDiagramSourceIdentity(exercise)){return null;}
+  // A previously saved generic outline may have dropped printed side lengths.
+  // Present the verified original aid instead, without rewriting the transcript
+  // or generating another hint. Free-form requests keep their original scope.
+  if(visual.context&&typeof noamNativeLengthComparisonHint==='function'&&
+      noamNativeLengthComparisonHint(String(visual.context.hintText||''))&&
+      /^(?:אפשר\s+)?רמז(?:\s*[123])?\s*[?؟]?$/.test(String(visual.context.studentMessage||'').trim())){
+    var nativeUrl=noamNativeFocusUrl(exercise),nativeEntry=nativeUrl&&noamNativeFocusPackages[nativeUrl];
+    if(nativeUrl&&(!nativeEntry||(!nativeEntry.loaded&&!nativeEntry.data))){
+      if(!noamRenderAiDiagram.nativePending){noamRenderAiDiagram.nativePending=new WeakSet();}
+      if(!noamRenderAiDiagram.nativePending.has(visual)){
+        noamRenderAiDiagram.nativePending.add(visual);
+        noamLoadNativeFocus(exercise).then(function(){
+          if(selectedExercise&&selectedExercise.id===exercise.id&&visual.sourceIdentity===noamDiagramSourceIdentity(selectedExercise)){renderNoamChat();}
+        });
+      }
+      return null;
+    }
+    var sourceFocus=nativeEntry&&nativeEntry.data&&noamNativeSegmentFocus(nativeEntry.data,exercise,visual.context.hintText);
+    if(sourceFocus&&sourceFocus.lengthComparison){
+      return noamRenderNativeFocus({type:'native-source-focus',exerciseId:exercise.id,sourceIdentity:noamNativeFocusIdentity(exercise),hint:visual.context.hintText});
+    }
+  }
   // Old saved drawings predate package-given validation. Hydrate their static
   // source data once, without regenerating a hint or calling the AI endpoint.
   if(visual.context&&!Array.isArray(visual.context.sourceGivens)&&exercise.nativeFigureUrl){

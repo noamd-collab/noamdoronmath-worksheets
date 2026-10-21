@@ -13,7 +13,7 @@ const hint='האם הצלע \\(BC\\) נמצאת בין שתי הזוויות ה�
 function fixture(payload:any=data,ex:any=exercise){
  const {document,window}=parseHTML('<html><body></body></html>');
  const calls:string[]=[];const runtime={messages:new Map(),jobs:new Map(),cache:new Map()};
- const context:any={document,window,manifest,selectedExercise:ex,exerciseLabel:()=> 'שאלה 2 · סעיף ד',
+ const context:any={document,window,manifest:ex===exercise?manifest:{exercises:[ex]},selectedExercise:ex,exerciseLabel:()=> 'השאלה הנבחרת',
   noamDiagramSourceIdentity:(e:any)=>e.id+':'+(e.version||''),renderNoamChat:()=>{},
   fetch:async(url:string)=>{calls.push(url);return{ok:true,json:async()=>payload};},
   noamDiagramRuntime:()=>runtime,noamConstructedVisual:()=>null,saveNoamState:()=>{},noamDiagramRefresh:()=>{},
@@ -85,4 +85,135 @@ it('free drawing requests cannot inherit an old hint and a typed draw retains th
  const f=fixture();const message:any={role:'assistant',text:hint,diagramTyped:true};
  await f.context.requestNoamDiagram(exercise,{messages:[message]},message,{answer:hint,helpKind:'hint',studentMessage:'אפשר רמז 1?'});
  assert.equal(message.visual,undefined);assert.equal(message.diagramError,'diagram compiler unavailable');assert.equal(f.calls.length,0);
+});
+
+const lengthData=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G8-T49/a/noam-ai.json',import.meta.url),'utf8'));
+const lengthManifest=JSON.parse(readFileSync(new URL('../public/noam-ai/manifests/26fd1a0a92204cfb95855ff28bf0dfeb.json',import.meta.url),'utf8'));
+const lengthHint='האם הצלע שצריכה להיות לבדה היא תמיד הארוכה ביותר או הקצרה ביותר?';
+const lengthExercise=lengthManifest.exercises.find((e:any)=>e.q===13&&e.part==='א');
+
+it('side-length comparison preserves the approved triangle, all three values and no inferred right angle',async()=>{
+ const otherData=JSON.parse(readFileSync(new URL('../public/noam-ai/native/G7-T42/b/noam-ai.json',import.meta.url),'utf8'));
+ const otherManifest=JSON.parse(readFileSync(new URL('../public/noam-ai/manifests/8a0161d5a04443e888011f4ba13062f8.json',import.meta.url),'utf8'));
+ for(const sample of [{data:lengthData,ex:lengthExercise,values:[12,35,37]},
+  {data:otherData,ex:otherManifest.exercises.find((e:any)=>e.q===14&&e.part==='א'),values:[15,20,25]}]){
+  const ex=sample.ex,f=fixture(sample.data,ex),message:any={role:'assistant',text:lengthHint};
+  f.context.window.NoamDiagramPlan=undefined;
+  const visual=await f.context.requestNoamDiagram(ex,{messages:[message],history:[]},message,
+   {answer:lengthHint,helpKind:'hint',studentMessage:'אפשר רמז 1?'});
+  assert.equal(visual.type,'native-source-focus');
+  const fig=f.context.noamRenderNativeFocus(visual),svg=fig.querySelector('svg');
+  assert.equal(fig.querySelector('image').getAttribute('href'),ex.nativeFigureUrl);
+  const lines=Array.from(fig.querySelectorAll('line')) as any[];
+  assert.equal(lines.length,3);assert.equal(new Set(lines.map(l=>l.getAttribute('stroke'))).size,1);
+  assert.equal(svg.querySelectorAll('text,path,circle,rect').length,0,'no computed label or angle mark is added');
+  assert.match(fig.querySelector('figcaption').textContent,/השרטוט המקורי עם שלושת אורכי הצלעות הנתונים/);
+  assert.match(svg.getAttribute('aria-label'),/שלושת אורכי הצלעות הנתונים/);
+  assert.doesNotMatch(fig.textContent,/הארוכה|זווית ישרה|שהוזכרו ברמז/);
+  const original=readFileSync(new URL('../public'+ex.nativeFigureUrl,import.meta.url),'utf8');
+  for(const value of sample.values)assert.match(original,new RegExp('>'+value+'</text>'));
+  const sourceFigure=sample.data.figures.find((a:any)=>a.id===ex.nativeFigureId);
+  for(const line of lines){
+   const a=[Number(line.getAttribute('x1')),Number(line.getAttribute('y1'))],b=[Number(line.getAttribute('x2')),Number(line.getAttribute('y2'))];
+   assert.ok(sourceFigure.objects.segments.some((s:any)=>JSON.stringify(s.svg_xy)===JSON.stringify([a,b])||JSON.stringify(s.svg_xy)===JSON.stringify([b,a])));
+  }
+  assert.deepEqual(f.calls,[ex.nativeFigureUrl.replace(/figures\/[^/]+$/,'noam-ai.json')],'no protected AI request for an original-source aid');
+ }
+});
+
+it('the length comparison uses metadata rather than exercise IDs or ABC point names',()=>{
+ const copy=structuredClone(lengthData),question=copy.questions.find((q:any)=>q.id==='q13');
+ const figure=copy.figures.find((f:any)=>f.id==='q13_head'),rename=(s:string)=>s.replace(/[ABC]/g,c=>({A:'R',B:'S',C:'T'}[c]!));
+ question.id='q21';question.figure_id='q21_source';question.items[0].id='q21a';question.items[0].figure_id='q21_source';
+ figure.id='q21_source';figure.question='q21';figure.svg='figures/q21_source.svg';
+ for(const object of [...figure.objects.points,...figure.objects.segments,...figure.objects.labels]){
+  if(object.name)object.name=rename(object.name);if(object.for)object.for=rename(object.for);
+  if(object.role==='value')object.text=String(Number(object.text)/2);
+ }
+ const ex={...lengthExercise,id:'unseen-package-question',nativeQuestionId:'q21',nativeFigureId:'q21_source',nativeFigureUrl:lengthExercise.nativeFigureUrl.replace('q13_head','q21_source')};
+ const f=fixture(copy,ex),focus=f.context.noamNativeSegmentFocus(copy,ex,lengthHint);
+ assert.equal(focus.lengthComparison,true);assert.deepEqual(Array.from(focus.lines,(l:any)=>l.name).sort(),['RS','RT','ST']);
+});
+
+it('changed or later parts never reuse the original length-comparison drawing',async()=>{
+ for(const mutate of [
+  (q:any)=>q.items.unshift({id:'earlier',label:'לפני',figure_id:q.figure_id}),
+  (q:any)=>q.items[0].given=[{text:'אורך אחר'}],
+  (q:any)=>q.items[0].to_construct=[{text:'שרטטו משולש חדש'}],
+  (q:any)=>q.to_construct=[{text:'בנו משולש חדש'}],
+  (q:any)=>q.items[0].text='אם אחת הצלעות היא באורך 13, השוו את אורכי הצלעות.',
+  (q:any)=>q.items[0].text='החליפו את המוט הקצר ובדקו את המצב החדש.',
+  (q:any)=>q.items[0].text='הכפילו את אורך המוט הקצר. השוו בין אורכי הצלעות.',
+  (q:any)=>q.text='לאחר שינוי האורך, השוו את אורכי הצלעות.'
+ ]){
+  const copy=structuredClone(lengthData);mutate(copy.questions.find((q:any)=>q.id==='q13'));
+  assert.equal(await fixture(copy,lengthExercise).make(lengthHint),null);
+ }
+ for(const part of ['ב','ג','ד']){
+  const ex=lengthManifest.exercises.find((e:any)=>e.q===13&&e.part===part);
+  assert.equal(await fixture(lengthData,ex).make(lengthHint),null);
+ }
+});
+
+it('ambiguous or incomplete length data cannot authorize the comparison aid',async()=>{
+ for(const mutate of [
+  (f:any)=>f.objects.labels=f.objects.labels.filter((l:any)=>l.for!=='AC'),
+  (f:any)=>f.objects.labels.push({...f.objects.labels.find((l:any)=>l.role==='value')}),
+  (f:any)=>f.objects.labels.find((l:any)=>l.for==='AC').text='0',
+  (f:any)=>f.objects.labels.find((l:any)=>l.for==='AC').text='x',
+  (f:any)=>f.objects.points.find((p:any)=>p.name==='C').svg_xy[0]-=40,
+  (f:any)=>f.objects.segments.push({...f.objects.segments[0]}),
+  (f:any)=>f.objects.points.push({kind:'point',name:'D',svg_xy:[80,80]})
+ ]){
+  const copy=structuredClone(lengthData);mutate(copy.figures.find((f:any)=>f.id==='q13_head'));
+  assert.equal(await fixture(copy,lengthExercise).make(lengthHint),null);
+ }
+});
+
+it('saved unlabelled outlines restore the original values without another model call or rewriting the conversation',async()=>{
+ const f=fixture(lengthData,lengthExercise),compiled:any[]=[];
+ const renderer='function noamRenderAiDiagram'+source.split('function noamRenderAiDiagram')[1].split('function noamDiagramError')[0];
+ f.context.window.NoamDiagramPlan={compile:(...args:any[])=>{compiled.push(args);return{};}};
+ f.context.window.NoamGeometry={render:()=>f.document.createElement('figure')};
+ let refreshes=0;f.context.renderNoamChat=()=>refreshes++;
+ runInNewContext(renderer,f.context);
+ const visual={type:'ai-diagram',exerciseId:lengthExercise.id,sourceIdentity:f.context.noamDiagramSourceIdentity(lengthExercise),
+  plan:{version:1,status:'ok',points:{A:[2,2],B:[0,0],C:[6,0]}},
+  context:{hintText:lengthHint,studentMessage:'אפשר רמז 1?',sourceGivens:[]}};
+ const unchanged=JSON.stringify(visual);
+ assert.equal(f.context.noamRenderAiDiagram(visual),null,'wait for trusted static metadata');
+ await new Promise(r=>setImmediate(r));
+ const figure=f.context.noamRenderAiDiagram(visual);
+ assert.equal(figure.querySelector('image').getAttribute('href'),lengthExercise.nativeFigureUrl);
+ assert.equal(figure.querySelectorAll('line').length,3);assert.equal(compiled.length,0);
+ assert.equal(JSON.stringify(visual),unchanged);assert.equal(refreshes,1);assert.equal(f.calls.length,1);
+ visual.context.studentMessage='שרטט לי משהו אחר';
+ f.context.noamRenderAiDiagram(visual);assert.equal(compiled.length,1,'free-form drawing keeps its own scope');
+});
+
+it('a late saved length-aid lookup does not redraw another selected question',async()=>{
+ const f=fixture(lengthData,lengthExercise);
+ f.context.window.NoamDiagramPlan={};f.context.window.NoamGeometry={};
+ let refreshes=0;f.context.renderNoamChat=()=>refreshes++;
+ const renderer='function noamRenderAiDiagram'+source.split('function noamRenderAiDiagram')[1].split('function noamDiagramError')[0];
+ runInNewContext(renderer,f.context);
+ const visual={exerciseId:lengthExercise.id,sourceIdentity:f.context.noamDiagramSourceIdentity(lengthExercise),
+  context:{hintText:lengthHint,studentMessage:'אפשר רמז 1?',sourceGivens:[]}};
+ f.context.noamRenderAiDiagram(visual);f.context.selectedExercise={id:'different-part'};
+ await new Promise(r=>setImmediate(r));assert.equal(refreshes,0);
+});
+
+it('two saved diagrams sharing a pending package refresh only the currently selected one',async()=>{
+ const f=fixture(lengthData,lengthExercise),other={...lengthExercise,id:'same-package-other-part',part:'ב'};
+ f.context.manifest.exercises.push(other);f.context.window.NoamDiagramPlan={};f.context.window.NoamGeometry={};
+ let resolve:any,fetches=0,refreshes=0;
+ f.context.fetch=()=>{fetches++;return new Promise(r=>resolve=r);};f.context.renderNoamChat=()=>refreshes++;
+ const renderer='function noamRenderAiDiagram'+source.split('function noamRenderAiDiagram')[1].split('function noamDiagramError')[0];
+ runInNewContext(renderer,f.context);
+ function saved(ex:any){return{exerciseId:ex.id,sourceIdentity:f.context.noamDiagramSourceIdentity(ex),
+  context:{hintText:lengthHint,studentMessage:'אפשר רמז 1?',sourceGivens:[]}};}
+ f.context.noamRenderAiDiagram(saved(lengthExercise));f.context.selectedExercise=other;
+ const second=saved(other);f.context.noamRenderAiDiagram(second);f.context.noamRenderAiDiagram(second);
+ resolve({ok:true,json:async()=>lengthData});await new Promise(r=>setImmediate(r));
+ assert.equal(fetches,1);assert.equal(refreshes,1,'the current visual subscribes to an already pending lookup exactly once');
 });
