@@ -158,3 +158,19 @@ export function familyRelatedTopics(slugOrPath: string, grade: number): FamilyRe
   if (topics.some((row) => row.path === hub.path)) return topics;
   return [hub, ...topics];
 }
+
+/**
+ * Same family in the next grade. Does not replace familyRelatedTopics.
+ * Grade 9 has no next grade. Grades without a family table link to the next hub.
+ */
+export function nextGradeRelatedTopics(slugOrPath: string, grade: number): FamilyRelatedTopic[] {
+  const next = grade + 1;
+  if (next < 1 || next > 9) return [];
+  const family = classifyTopicFamily(slugOrPath);
+  const table = LINKS[next];
+  if (!table) return [gradeHubRelatedTopic(next)];
+  const topics = (table[family] || table.default).slice(0, 3).map(toRelated);
+  const hub = gradeHubRelatedTopic(next);
+  if (topics.some((row) => row.path === hub.path)) return topics;
+  return [hub, ...topics];
+}
