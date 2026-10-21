@@ -1,9 +1,11 @@
 /**
  * GET /sitemap.xml
  *
- * Sitemap index for the cut-over. Child sitemaps list grades, topic pages,
- * worksheets, and the blog. Locs stay on https://www.noamdoronmath.co.il.
- * /sitemap-blog.xml stays the blog child (Wix reserves the *-sitemap.xml suffix).
+ * Same index as /sitemap-index.xml. Locs stay on https://www.noamdoronmath.co.il.
+ * On Wix-managed hosting, Wix serves its own /sitemap.xml before this route
+ * (reserved path; there is no adapter flag to turn that off). Crawlers are
+ * sent to /sitemap-index.xml from robots.txt. This route still serves the
+ * index anywhere the request reaches Astro, including the local build.
  */
 import type { APIRoute } from 'astro';
 import { renderSitemapIndexXml } from '../lib/siteSitemaps';

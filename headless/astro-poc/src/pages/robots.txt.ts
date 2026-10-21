@@ -3,7 +3,8 @@
  *
  * Preview hosts disallow crawling. Production (and SITE_INDEXABLE=true on a
  * non-preview host) allows crawling except dev routes. The Sitemap line always
- * uses the production origin so a preview response does not advertise preview URLs.
+ * uses the production origin and /sitemap-index.xml, which this app serves.
+ * Wix's own /sitemap.xml is reserved and is not this file.
  */
 import type { APIRoute } from 'astro';
 import { renderRobotsTxt, robotsContent } from '../lib/siteSeo';

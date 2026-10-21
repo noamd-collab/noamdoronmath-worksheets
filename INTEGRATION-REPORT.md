@@ -42,8 +42,9 @@
    - **הצעות SEO (#46/#52 מול #90/#104/#105 בבסיס)**: בבסיס נוספו מאז סקירת ה-390 שורות דף נושא אחד (`/kite-grade-9`, G9-T46) ו-8 פוסטים חדשים (#90), ו-G9-T39 הוזז במקומו בקטלוג (#104). הגנרטור `scripts/lib/seo-copy.mjs` ו-`seo-overrides.mjs` הותאמו להפיק בדיוק את אצוות 390 השורות שנסקרו, כך שהרצת `node scripts/build-seo-proposals.mjs` מייצרת 0 diff מול `src/data/seo-proposals.json` ו-`seo-review.csv` (390 שורות, 0 מאושרות, 3 `needsDecision`).
    - **M33 (`SiteHeader.astro`) ו-M25 (`reports/m25-blog/pilot-manifest.txt`)**: הסימון `בס״ד` הוצב בפינה הימנית־עליונה הפיזית (`<span class="basad" data-basad lang="he">בס״ד</span>`, עם `padding-top: 28px` על `.exact-header`) תוך שמירה על כל קישורי הכותרת מהבסיס (תפריט תוספים, למורים, חיפוש במובייל). קובץ המניפסט של M25 צורף לגיט כדי שבדיקת `tests/blog-posts.test.ts` תעבור בקופה נקייה.
    - **בקרת הקטלוג (#59 מול #99 בבסיס)**: ב-`tools/catalog-audit.cjs` נוספה תמיכה ברמת `c2` (`מצוינות 2` שנוספה ב-#99), בהתאמה ל-`scripts/build-learning-catalog.cjs`.
-   - **בדיקות שורש (#57) וגדרות hashes מול הבסיס**: עודכנו `tests/noam-middle-levels.test.cjs` (127 רמות בכיתה ט׳ אחרי הוספת דלתון ב-#104), `tests/noam-viewer-design-portable-paths.test.cjs` (16 תגיות script כולל `noam-site-companion.js` מ-#82 ורמת `c2` מ-#99, והתאמת עריכות הצפיין מ-#68/#78/#83/#106), ו-`tests/design-exact-protected.test.ts` (`TriangleAreaExplorer.astro` מ-#41 ו-`public/learning.html` מ-#82).
+   - **בדיקות שורש (#57) וגדרות hashes מול הבסיס**: עודכנו `tests/noam-middle-levels.test.cjs` (127 רמות בכיתה ט׳ אחרי הוספת דלתון ב-#104), `tests/noam-viewer-design-portable-paths.test.cjs` (16 תגיות script כולל `noam-site-companion.js` מ-#82 ורמת `c2` מ-#99, והתאמת עריכות הצפיין מ-#68/#78/#83/#106), ו-`tests/design-exact-protected.test.ts` (`TriangleAreaExplorer.astro` מ-#41, `public/learning.html` מ-#82, ו-`astro.config.mjs` עבור `wix({ robots: false })`).
    - **טיפוסי TypeScript (`tsc` ו-`typecheck:tests`)**: תוקנו שגיאות טיפוסים בקבצים שנוספו לבסיס אחרי #56 (`scripts/build-site-guide.ts`, `src/lib/angleSumFilm.ts`, `src/pages/games/kefel-mekutsar-2/preview.png.ts`, `ExactHeroControls.astro`, `DistancePointsLoop.astro`, `ParallelCointeriorLoop.astro`, ושבעה קובצי בדיקה חדשים ב-`tests/`).
+   - **`robots.txt` ו-`sitemap` על Wix Managed Hosting**: הוגדר `wix({ robots: false })` ב-`astro.config.mjs` כדי ש-`src/pages/robots.txt.ts` לא יידרס על ידי `/robots.txt` המוזרק של Wix (ללא אזהרת התנגשות ב-build), ושורת `Sitemap:` ב-`robots.txt` מפנה אל `https://www.noamdoronmath.co.il/sitemap-index.xml` (מכיוון ש-`/sitemap.xml` שמור ב-Wix).
 
 ## 3. מה נשמר ללא שינוי משוער (ממתין לנועם)
 
@@ -53,7 +54,7 @@
 - `SITE_INDEXABLE` לא הוגדר בייצור.
 - הפניית `/privacy` → `/accessibilityadaptation#privacy-policy` נמצאת ב-`redirects.json` כפי שהגיעה מ-#44/#53 וממתינה לאישור נועם לפני עלייה לייצור.
 - `/workflow` ו-`/dev-loops` מסומנים `404-מכוון` (ללא הפניה).
-- `ConceptLoop.astro` ו-`astro.config.mjs` לא שונו מעבר למה שבבסיס.
+- `ConceptLoop.astro` לא שונה כלל.
 
 ## 4. בדיקות ותוצאות
 
@@ -93,7 +94,7 @@
 2. **אישור הצעות ה-SEO (`seo-proposals.json` / `seo-review.csv`)**: בחירת השורות להעברה ל-`approved: true`, והכרעה ב-3 נושאי כיתה א׳ (4, 19, 23 — `needsDecision`). כמו כן הכרעה אם להוסיף סבב הצעות ל-8 הפוסטים ולדף הדלתון שנוספו בבסיס אחרי #46/#52.
 3. **אינדוקס בייצור (`SITE_INDEXABLE=true`)**: הגדרת המשתנה ב-`wix env` בייצור בלבד בעת החיבור, והשארת preview על `noindex`.
 4. **הפניית `/privacy`**: אישור או הסרה של ההפניה `/privacy` → `/accessibilityadaptation#privacy-policy` ב-`redirects.json`.
-5. **התנגשות `/robots.txt` ו-`/sitemap.xml` ב-Wix Managed Hosting**: בתיעוד Wix, הנתיב `/robots.txt` נדרס על ידי האינטגרציה אלא אם מגדירים `wix({ robots: false })` ב-`astro.config.mjs` (הקובץ מוגן כרגע), והנתיב `/sitemap.xml` שמור ל-Wix (בעוד `/sitemap-index.xml` מוגש מ-Astro). נדרשת החלטת נועם אם לפתוח את הגדר של `astro.config.mjs` עבור `wix({ robots: false })` ולעדכן את שורת ה-Sitemap ב-`robots.txt` ל-`/sitemap-index.xml`.
+5. **`robots.txt` ו-`sitemap` ב-Wix Managed Hosting**: הוגדר `wix({ robots: false })` ב-`astro.config.mjs` ושורת `Sitemap:` ב-`robots.txt` מפנה ל-`https://www.noamdoronmath.co.il/sitemap-index.xml` (כי `/sitemap.xml` שמור ב-Wix). אין לערוך את SEO Tools > Robots.txt Editor בדשבורד ואין לכבות אינדוקס אתר בדשבורד Wix.
 6. **18 אזהרות `SEARCH_TERMS_MISPLACED` בקטלוג ו-7 שגיאות הטיפוס ב-`ConceptLoop.astro`**: החלטה אם לטפל בהן בסבב נפרד.
 
 ## 7. תוכנית הטמעה ו-Rollback (רק אחרי אישור נועם)

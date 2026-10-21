@@ -41,8 +41,9 @@ describe('siteSeo preview vs production', () => {
     const live = renderRobotsTxt(true);
     assert.match(preview, /Disallow: \//);
     assert.match(live, /Allow: \//);
-    assert.match(preview, /Sitemap: https:\/\/www\.noamdoronmath\.co\.il\/sitemap\.xml/);
-    assert.match(live, /Sitemap: https:\/\/www\.noamdoronmath\.co\.il\/sitemap\.xml/);
+    assert.match(preview, /Sitemap: https:\/\/www\.noamdoronmath\.co\.il\/sitemap-index\.xml/);
+    assert.match(live, /Sitemap: https:\/\/www\.noamdoronmath\.co\.il\/sitemap-index\.xml/);
+    assert.doesNotMatch(live, /\/sitemap\.xml/);
     assert.doesNotMatch(preview, /wix-site-host/);
   });
 
