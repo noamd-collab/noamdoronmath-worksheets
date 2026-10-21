@@ -13,6 +13,8 @@ import grade6 from '../data/grade-hubs/6.json';
 import grade7 from '../data/grade-hubs/7.json';
 import grade8 from '../data/grade-hubs/8.json';
 import grade9 from '../data/grade-hubs/9.json';
+import { loadCatalog } from './catalog/loadCatalog';
+import { alignGradeHubQuadrilaterals } from './gradeHubQuadrilaterals';
 
 export const GRADE_HUB_GRADES = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 export const ELEMENTARY_GRADE_HUBS = [1, 2, 3, 4, 5, 6] as const;
@@ -149,7 +151,8 @@ function assertHub(grade: GradeHubGrade, data: GradeHubContent): GradeHubContent
 }
 
 export function loadGradeHub(grade: GradeHubGrade): GradeHubContent {
-  return assertHub(grade, BY_GRADE[grade]);
+  const hub = assertHub(grade, structuredClone(BY_GRADE[grade]));
+  return alignGradeHubQuadrilaterals(hub, loadCatalog());
 }
 
 export function loadAllGradeHubs(): GradeHubContent[] {

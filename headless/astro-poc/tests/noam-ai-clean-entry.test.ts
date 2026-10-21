@@ -1,6 +1,6 @@
 /**
- * Worksheet viewer opens on the clean printable page. Noam AI (Ramzi, report
- * pins, side panel) stays off until "פתרו באמצעות Noam AI".
+ * Worksheet viewer opens on the clean printable page. The side panel stays off
+ * until "פתרו באמצעות Noam AI". Question pins stay visible in that clean view.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -13,6 +13,22 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const viewer = readFileSync(join(root, 'public/worksheet-viewer-noam.html'), 'utf8');
 const adapter = viewer.match(/<script id="exact-viewer-adapter">([\s\S]*?)<\/script>/)?.[1];
 
+function cssBlock(css: string, header: string): string {
+  const at = css.indexOf(header);
+  assert.ok(at >= 0, header);
+  const open = css.indexOf('{', at);
+  assert.ok(open >= 0, header);
+  let depth = 0;
+  for (let i = open; i < css.length; i += 1) {
+    if (css[i] === '{') depth += 1;
+    else if (css[i] === '}') {
+      depth -= 1;
+      if (depth === 0) return css.slice(open + 1, i);
+    }
+  }
+  assert.fail(`unclosed ${header}`);
+}
+
 describe('clean worksheet before Noam AI', () => {
   it('starts without AI mode and offers the exact entry label', () => {
     assert.match(viewer, /<body class="exact-viewer">/);
@@ -23,13 +39,59 @@ describe('clean worksheet before Noam AI', () => {
     assert.match(viewer, /aria-pressed="false"/);
   });
 
-  it('keeps Ramzi and report pins out of the clean view, print, and the side panel', () => {
-    assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.pdf-page \.noam-exercise-pin/);
-    assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.pdf-page \.noam-report-pin/);
-    assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.panel/);
-    assert.match(viewer, /\.exact-viewer:not\(\.noam-ai-on\) \.fab/);
+  it('shows Ramzi and report pins in the clean view and keeps the side panel closed', () => {
+    const pinRule = viewer.match(
+      /\.exact-viewer:not\(\.noam-ai-on\) \.pdf-page \.noam-exercise-pin,\s*\.exact-viewer:not\(\.noam-ai-on\) \.pdf-page \.noam-report-pin\{[^}]+\}/
+    );
+    assert.ok(pinRule, 'clean-view pin rule');
+    assert.match(pinRule[0], /visibility:\s*visible/);
+    assert.match(pinRule[0], /pointer-events:\s*auto/);
+    assert.doesNotMatch(pinRule[0], /visibility:\s*hidden/);
+    const chromeRule = viewer.match(
+      /\.exact-viewer:not\(\.noam-ai-on\) \.fab,\s*\.exact-viewer:not\(\.noam-ai-on\) \.panel,[\s\S]*?\{[^}]+\}/
+    );
+    assert.ok(chromeRule, 'clean-view panel rule');
+    assert.match(chromeRule[0], /display:\s*none\s*!important/);
     assert.match(viewer, /@media print\{[\s\S]*\.noam-print-arrow[\s\S]*\.noam-print-primary[\s\S]*\.noam-ai-toggle/);
     assert.match(viewer, /חזרה לדף הנקי/);
+  });
+
+  it('names a merged phone pin by its questions and keeps report focus on the band', () => {
+    assert.ok(adapter);
+    const fn = adapter.match(/function questionHitName\(pin\)\{[\s\S]*?\n  \}/)?.[0];
+    assert.ok(fn, 'questionHitName');
+    const context: { result?: string[] } = {};
+    vm.createContext(context);
+    vm.runInContext(
+      `${fn}\nresult = [\n` +
+        `questionHitName({dataset:{label:'שאלות 1, 2 · בחירת שאלה וסעיף · רמזי'}}),\n` +
+        `questionHitName({dataset:{label:'שאלה 1 · סעיף א · העזר ברמזי'}}),\n` +
+        `questionHitName({dataset:{label:'שאלה 3 · בחירת שאלה וסעיף · רמזי'}})\n` +
+        `];`,
+      context
+    );
+    assert.deepEqual(JSON.parse(JSON.stringify(context.result)), [
+      'פתיחת רמזי לשאלות 1, 2',
+      'פתיחת רמזי לשאלה 1 סעיף א',
+      'פתיחת רמזי לשאלה 3',
+    ]);
+    assert.match(adapter, /button\.hidden=!document\.querySelector\('\.noam-exercise-pin\.is-active'\)/);
+    assert.match(adapter, /closest\('\[data-exercise-id\]'\)/);
+    assert.match(adapter, /match\.classList\.add\('is-active'\)/);
+    assert.match(adapter, /document\.addEventListener\('focusin'/);
+    assert.match(adapter, /restoreQuestionFocus\(\)/);
+  });
+
+  it('uses one named question stop, a dark focus ring, and no page-wide touch-action lock', () => {
+    assert.ok(adapter);
+    assert.match(adapter, /פתיחת רמזי לשאלה/);
+    assert.match(adapter, /pin\.tabIndex=-1/);
+    assert.match(adapter, /event\.detail!==0/);
+    assert.match(adapter, /pointerType==='mouse'&&!event\.buttons/);
+    assert.match(viewer, /outline:3px solid #22305a/);
+    assert.doesNotMatch(viewer, /touch-action:\s*manipulation/);
+    assert.doesNotMatch(viewer, /touch-action:\s*pan-x/);
+    assert.match(adapter, /className='noam-link-button exact-report'/);
   });
 
   it('makes download/print the primary clean-view action and points at it', () => {
@@ -44,6 +106,31 @@ describe('clean worksheet before Noam AI', () => {
     assert.match(viewer, /html\.nd-motion-off \.exact-viewer \.noam-print-arrow-icon/);
     assert.match(viewer, /background:#14213d;color:#fff/);
     assert.match(viewer, /\.exact-viewer \.noam-ai-toggle\{[\s\S]*background:#fff/);
+  });
+
+  it('folds secondary phone tools into one menu and leaves the desktop bar rules in place', () => {
+    assert.match(viewer, /<details class="phone-tools" id="phoneTools">/);
+    assert.match(viewer, /id="phoneToolsMenu"/);
+    assert.match(viewer, /\.exact-viewer \.phone-tools\{display:none\}/);
+    const phone = cssBlock(viewer, '@media (max-width:430px)');
+    assert.match(phone, /\.exact-viewer \.phone-tools\{display:block/);
+    assert.match(phone, /min-height:44px/);
+    assert.match(phone, /\.exact-viewer \.header-actions\{display:none\}/);
+    assert.match(phone, /grid-row:5/);
+    assert.match(phone, /padding-inline:12px 8px/);
+    assert.match(phone, /padding-block:0;padding-inline:12px/);
+    assert.match(phone, /\.nl-viewer-progress>summary:focus-visible\{[^}]*outline:3px solid #22305a/);
+    assert.match(viewer, /\.exact-viewer \.bar\{\s*gap:8px;padding:4px 16px;/);
+    assert.ok(adapter);
+    assert.match(adapter, /phoneToolsMenu/);
+    assert.match(adapter, /max-width: 430px/);
+    assert.match(adapter, /'backBtn','topic-back','pdfToolsToggle','nl-viewer-link','nl-viewer-progress'/);
+    const outsideClick = adapter.match(
+      /document\.addEventListener\('click',function\(event\)\{[\s\S]*?\},true\);/
+    );
+    assert.ok(outsideClick, 'outside click uses the capture phase');
+    assert.match(outsideClick[0], /phoneTools\.contains\(event\.target\)/);
+    assert.match(outsideClick[0], /phoneTools\.open=false/);
   });
 
   it('does not auto-open the help panel before the teacher opts in', () => {

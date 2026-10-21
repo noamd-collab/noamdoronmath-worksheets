@@ -19,7 +19,7 @@ const CONTRACT_VERSION = 1;
 /** Default one-level button label from index.html levelLinksHTML (row.oneLabel || …). */
 const DEFAULT_ONE_LABEL = 'דף יחיד — כל הרמות';
 
-const LEVEL_KEYS = ['a', 'b', 'c'];
+const LEVEL_KEYS = ['a', 'b', 'c', 'c2'];
 
 function extractBraceBlock(text, varName, openChar, closeChar) {
   const re = new RegExp('var\\s+' + varName + '\\s*=\\s*\\' + openChar);

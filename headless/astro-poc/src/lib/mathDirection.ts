@@ -21,10 +21,15 @@ function isCore(ch: string): boolean {
   return '−+×÷=≠<>≤≥±√∞%*'.includes(ch);
 }
 
-/** Symbols that may sit inside a math run (parentheses, degree, dashes, …). */
+/**
+ * Symbols that may sit inside a math run (parentheses, en dash, …).
+ * The colon and the em dash are not here. A colon joins a run only as
+ * division (see mathSpanEnd). An em dash is Hebrew punctuation, so it stays
+ * outside the isolate with the label colon.
+ */
 function isMathSymbol(ch: string): boolean {
   if (isCore(ch)) return true;
-  return '()[]{}|∥⊥∠^/~·∙′″⁄–—:+'.includes(ch) || ch === '-';
+  return '()[]{}|∥⊥∠^/~·∙′″⁄–+⟨⟩¦'.includes(ch) || ch === '-';
 }
 
 function isGlue(ch: string): boolean {
@@ -77,7 +82,12 @@ export function isolateMathRuns(input: string): string {
   return out;
 }
 
-/** End index (exclusive) of the math span that starts at `start`. */
+/**
+ * End index (exclusive) of the math span that starts at `start`.
+ * A colon stays inside only as division: tight `(180−40):2` or spaced
+ * `84 : 6`. A colon glued to the run and followed by a space is a label
+ * (`1,512: 56 × 7`), so the run ends before it.
+ */
 function mathSpanEnd(text: string, start: number): number {
   let j = start;
   while (j < text.length) {
@@ -85,9 +95,21 @@ function mathSpanEnd(text: string, start: number): number {
       j += 1;
       continue;
     }
+    if (text[j] === ':' && j > start && j + 1 < text.length && isMathAt(text, j + 1)) {
+      j += 1;
+      continue;
+    }
     if (isGlue(text[j]!)) {
       let k = j;
       while (k < text.length && isGlue(text[k]!)) k += 1;
+      if (text[k] === ':') {
+        let m = k + 1;
+        while (m < text.length && isGlue(text[m]!)) m += 1;
+        if (m < text.length && isMathAt(text, m)) {
+          j = m;
+          continue;
+        }
+      }
       if (k < text.length && isMathAt(text, k)) {
         j = k;
         continue;

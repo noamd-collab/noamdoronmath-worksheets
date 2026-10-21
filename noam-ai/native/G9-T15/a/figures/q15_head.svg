@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 183" width="280" height="183">
+<g data-layer="lines">
+<line id="e0001" data-line="KP" x1="268" y1="26.36" x2="30.31" y2="26.36" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-line="QR" x1="12" y1="156.64" x2="268" y2="156.64" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-ray="QS" x1="26" y1="156.64" x2="186.45" y2="17.18" stroke="#000000" stroke-width="1.5"/>
+<line id="e0004" data-seg="PQ" x1="44.31" y1="26.36" x2="26" y2="156.64" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0005" data-mark="arc PQS" d="M 28.23 140.8 L 29.25 140.97 L 30.26 141.22 L 31.26 141.53 L 32.23 141.9 L 33.17 142.34 L 34.09 142.83 L 34.97 143.39 L 35.81 144 L 36.61 144.67 L 37.37 145.38 L 38.08 146.14" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0006" data-mark="arc RQS" d="M 47 156.64 L 46.96 155.27 L 46.82 153.92 L 46.6 152.57 L 46.29 151.24 L 45.9 149.93 L 45.42 148.65 L 44.86 147.4 L 44.22 146.2 L 43.5 145.04 L 42.71 143.92 L 41.85 142.86" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0007" data-pt="K" cx="254" cy="26.36" r="2" fill="#000000" stroke="none"/>
+<circle id="e0008" data-pt="P" cx="44.31" cy="26.36" r="2" fill="#000000" stroke="none"/>
+<circle id="e0009" data-pt="Q" cx="26" cy="156.64" r="2" fill="#000000" stroke="none"/>
+<circle id="e0010" data-pt="R" cx="254" cy="156.64" r="2" fill="#000000" stroke="none"/>
+<circle id="e0011" data-pt="S" cx="175.88" cy="26.36" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0012" data-for="K" x="254" y="21.86" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">K</text>
+<text id="e0013" data-for="P" x="44.31" y="21.86" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">P</text>
+<text id="e0014" data-for="Q" x="26" y="170.01" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">Q</text>
+<text id="e0015" data-for="R" x="254" y="170.01" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">R</text>
+<text id="e0016" data-for="S" x="172.39" y="21.44" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">S</text>
+</g>
+</svg>

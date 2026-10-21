@@ -1,7 +1,6 @@
 /* Scientific arithmetic for the Noam Doron calculator.
  * This is an independent implementation, not a hardware/firmware emulator.
- * Casio fx-991ES PLUS 2nd edition User's Guide, functions and priority:
- * https://support.casio.com/global/en/calc/manual/fx-570ESPLUS_991ESPLUS_en/
+ * Operator priority follows ordinary scientific-calculator conventions.
  * math.js is used only through a restricted AST interpreter below.
  */
 function createEngine(math) {
@@ -38,9 +37,9 @@ function createEngine(math) {
     fail('סוג הערך אינו נתמך.');
   }
 
-  // PLUS omitted multiplication has priority 7, above explicit ×/÷ (10).
+  // Omitted multiplication has priority 7, above explicit ×/÷ (10).
   // Keep implicit products in math.js, but suppress its exceptional numeric
-  // quotient rule: Casio interprets 1/2i as 1/(2i), not (1/2)i.
+  // quotient rule: 1/2i is read as 1/(2i), not (1/2)i.
   function normalize(expression) {
     if(typeof expression!=='string' || expression.length>1000) fail('הביטוי ארוך מדי: עד 1,000 תווים.','Stack ERROR');
     let source=expression.trim().replace(/[−–]/g,'-').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/π/g,'pi').replace(/√\s*(\d+(?:\.\d+)?)/g,'sqrt($1)').replace(/√/g,'sqrt').replace(/²/g,'^2').replace(/³/g,'^3').replace(/⁻¹/g,'^(-1)').replace(/RanInt#/g,'randomInt').replace(/Ran#/g,'random()');
@@ -173,7 +172,7 @@ function createEngine(math) {
     };
     function rationalExponent(node) {
       // Recover provenance from integer-fraction syntax, never from a nearby
-      // floating-point decimal or a rounded noninteger memory value. PLUS's
+      // floating-point decimal or a rounded noninteger memory value. The
       // real-domain rule permits negative x when y=m/(2n+1).
       let visited=0;
       const abs=x=>x<0n?-x:x;

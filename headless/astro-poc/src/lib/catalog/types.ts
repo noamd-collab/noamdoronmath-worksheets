@@ -3,7 +3,7 @@
  * Kept intentionally close to the generated document — replaceable later for CMS.
  */
 
-export type CatalogLevelKey = 'a' | 'b' | 'c' | 'one';
+export type CatalogLevelKey = 'a' | 'b' | 'c' | 'c2' | 'one';
 
 export interface CatalogLevel {
   key: CatalogLevelKey;

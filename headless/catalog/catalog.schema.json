@@ -83,7 +83,7 @@
             "required": ["key", "label", "cssClass"],
             "additionalProperties": false,
             "properties": {
-              "key": { "type": "string", "enum": ["a", "b", "c"] },
+              "key": { "type": "string", "enum": ["a", "b", "c", "c2"] },
               "label": { "type": "string" },
               "cssClass": { "type": "string", "description": "From LEVELS[].cls — presentation only." }
             }
@@ -254,8 +254,8 @@
       "properties": {
         "key": {
           "type": "string",
-          "enum": ["a", "b", "c", "one"],
-          "description": "Required. Level key from links (a|b|c|one). Catalog identity stays 'one' for single-sheet rows — do not rename to 'b'. When that row is viewer-routed, production levelLinksHTML passes level argument \"b\" into sheetHref (query lv=b); see x-field-classification.sheetHref-recipe."
+          "enum": ["a", "b", "c", "c2", "one"],
+          "description": "Required. Level key from links (a|b|c|c2|one). c2 is מצוינות 2 and only appears when the link row sets it. Catalog identity stays 'one' for single-sheet rows — do not rename to 'b'. When that row is viewer-routed, production levelLinksHTML passes level argument \"b\" into sheetHref (query lv=b); see x-field-classification.sheetHref-recipe."
         },
         "label": {
           "type": "string",

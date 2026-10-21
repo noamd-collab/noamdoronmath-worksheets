@@ -94,7 +94,7 @@ export function buildWorksheetHref(input: WorksheetLinkInput): string {
   viewerUrl.searchParams.set('t', topic.title);
 
   const siblings = topic.routing.siblingPdfQuery || {};
-  for (const key of ['pa', 'pb', 'pc'] as const) {
+  for (const key of ['pa', 'pb', 'pc', 'pc2'] as const) {
     if (siblings[key]) viewerUrl.searchParams.set(key, siblings[key]);
   }
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 322" width="230" height="322">
+<g data-layer="lines">
+<line id="e0001" data-seg="AB" x1="49.16" y1="26" x2="49.16" y2="296" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="AC" x1="49.16" y1="26" x2="180.84" y2="296" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="BC" x1="49.16" y1="296" x2="180.84" y2="296" stroke="#000000" stroke-width="1.5"/>
+<line id="e0004" data-seg="BD" x1="49.16" y1="296" x2="115" y2="161" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="marks">
+<polyline id="e0005" data-mark="right ABC" points="49.16,288 57.16,288 57.16,296" fill="none" stroke="#000000" stroke-width="1"/>
+<line id="e0006" data-mark="tick AD" x1="85.68" y1="91.75" x2="78.48" y2="95.25" stroke="#000000" stroke-width="1"/>
+<line id="e0007" data-mark="tick BD" x1="78.48" y1="226.75" x2="85.68" y2="230.25" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0008" data-pt="A" cx="49.16" cy="26" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0009" data-pt="B" cx="49.16" cy="296" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0010" data-pt="C" cx="180.84" cy="296" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0011" data-pt="D" cx="115" cy="161" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0012" data-for="A" x="46.95" y="20.84" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0013" data-for="B" x="41.83" y="307.77" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0014" data-for="C" x="189.52" y="305.86" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">C</text>
+<text id="e0015" data-for="D" x="124.37" y="160.86" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">D</text>
+</g>
+</svg>

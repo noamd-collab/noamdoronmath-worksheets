@@ -1,0 +1,8783 @@
+{
+ "schema_version": "noam-ai/v1",
+ "package": "G8-T16",
+ "level": "a",
+ "curriculum": {
+  "grade": "8",
+  "track": "ח",
+  "topic": "functions_intro",
+  "unit": "מבוא לפונקציות, ייצוגים, עלייה וירידה, גרפים לינאריים",
+  "allowed_tools": [
+   {
+    "id": "g7.coordinate_system.1",
+    "name": "מערכת צירים והרחבתה"
+   },
+   {
+    "id": "g7.directed_numbers.1",
+    "name": "הכרה"
+   },
+   {
+    "id": "g7.directed_numbers.2",
+    "name": "חיבור"
+   },
+   {
+    "id": "g7.directed_numbers.3",
+    "name": "חיסור"
+   },
+   {
+    "id": "g7.directed_numbers.4",
+    "name": "כפל וחילוק"
+   },
+   {
+    "id": "g7.angles.1",
+    "name": "סימון"
+   },
+   {
+    "id": "g7.angles.2",
+    "name": "מדידה"
+   },
+   {
+    "id": "g7.angles.3",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "g7.angles.4",
+    "name": "סכום והפרש"
+   },
+   {
+    "id": "g7.angles.5",
+    "name": "צמודות וקודקודיות"
+   },
+   {
+    "id": "g7.angles.6",
+    "name": "זוויות במשולש ובמרובע"
+   },
+   {
+    "id": "g7.transformations.1",
+    "name": "צורות חופפות במישור וטרנספורמציות"
+   },
+   {
+    "id": "g7.powers_roots.1",
+    "name": "חזקות עם מעריך טבעי ושורש ריבועי חיובי"
+   },
+   {
+    "id": "g7.areas.1",
+    "name": "שטחים א׳"
+   },
+   {
+    "id": "g7.areas.2",
+    "name": "ב׳"
+   },
+   {
+    "id": "g7.areas.3",
+    "name": "חישוב היקפים"
+   },
+   {
+    "id": "g7.algebraic_expressions.1",
+    "name": "משתנים וביטויים אלגבריים"
+   },
+   {
+    "id": "g7.algebraic_expressions.2",
+    "name": "זהות"
+   },
+   {
+    "id": "g7.algebraic_expressions.3",
+    "name": "כינוס איברים דומים"
+   },
+   {
+    "id": "g7.algebraic_expressions.4",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "g7.solids.1",
+    "name": "גופים במרחב: קובייה"
+   },
+   {
+    "id": "g7.solids.2",
+    "name": "תיבה"
+   },
+   {
+    "id": "g7.solids.3",
+    "name": "מנסרה משולשת"
+   },
+   {
+    "id": "g7.data_frequency.1",
+    "name": "איסוף"
+   },
+   {
+    "id": "g7.data_frequency.2",
+    "name": "ייצוג וקריאת מידע"
+   },
+   {
+    "id": "g7.data_frequency.3",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g7.data_frequency.4",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g7.data_frequency.5",
+    "name": "הסתברות בהקשר של שכיחות יחסית"
+   },
+   {
+    "id": "g7.pythagoras.1",
+    "name": "משפט פיתגורס ושימושיו"
+   },
+   {
+    "id": "g7.equations.1",
+    "name": "משוואות ממעלה ראשונה ופתרונן"
+   },
+   {
+    "id": "g7.word_problems.1",
+    "name": "שאלות בהקשרים בעזרת משוואה ממעלה ראשונה"
+   },
+   {
+    "id": "g7.points_on_graph.1",
+    "name": "נקודות על גרף ברביע I"
+   },
+   {
+    "id": "g8.ratio_scale.1",
+    "name": "יחס"
+   },
+   {
+    "id": "g8.ratio_scale.2",
+    "name": "פרופורציה וקנה מידה"
+   },
+   {
+    "id": "g8.pythagoras.1",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "g8.percentages.1",
+    "name": "אחוזים"
+   },
+   {
+    "id": "g8.cylinder_cone.1",
+    "name": "גליל"
+   },
+   {
+    "id": "g8.cylinder_cone.2",
+    "name": "חרוט"
+   },
+   {
+    "id": "g8.data_center.1",
+    "name": "איסוף מידע"
+   },
+   {
+    "id": "g8.data_center.2",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g8.data_center.3",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g8.data_center.4",
+    "name": "טווח ומדדי מרכז"
+   },
+   {
+    "id": "g8.data_center.5",
+    "name": "שני מקורות מידע"
+   },
+   {
+    "id": "g8.transformations.1",
+    "name": "טרנספורמציות וצורות חופפות"
+   },
+   {
+    "id": "g8.functions_intro.1",
+    "name": "מבוא לפונקציות"
+   },
+   {
+    "id": "g8.functions_intro.2",
+    "name": "ייצוגים"
+   },
+   {
+    "id": "g8.functions_intro.3",
+    "name": "עלייה וירידה"
+   },
+   {
+    "id": "g8.functions_intro.4",
+    "name": "גרפים לינאריים"
+   },
+   {
+    "id": "thm.adjacent_angles",
+    "name": "זוויות צמודות (סכומן 180°)"
+   },
+   {
+    "id": "thm.vertical_angles",
+    "name": "זוויות קודקודיות שוות"
+   },
+   {
+    "id": "thm.angle_bisector",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "thm.alternate_angles",
+    "name": "זוויות מתחלפות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.corresponding_angles",
+    "name": "זוויות מתאימות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.triangle_angle_sum",
+    "name": "סכום הזוויות במשולש 180°"
+   },
+   {
+    "id": "thm.quad_angle_sum",
+    "name": "סכום הזוויות במרובע 360°"
+   },
+   {
+    "id": "frm.area_rectangle",
+    "name": "שטח מלבן = אורך × רוחב"
+   },
+   {
+    "id": "frm.area_triangle",
+    "name": "שטח משולש = צלע × גובה : 2"
+   },
+   {
+    "id": "frm.area_parallelogram",
+    "name": "שטח מקבילית = צלע × גובה"
+   },
+   {
+    "id": "frm.area_trapezoid",
+    "name": "שטח טרפז = (סכום בסיסים) × גובה : 2"
+   },
+   {
+    "id": "frm.perimeter",
+    "name": "היקף מצולע"
+   },
+   {
+    "id": "frm.box_volume",
+    "name": "נפח תיבה"
+   },
+   {
+    "id": "frm.box_surface",
+    "name": "שטח פנים של תיבה"
+   },
+   {
+    "id": "thm.pythagoras",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "thm.pythagoras_converse",
+    "name": "המשפט ההפוך למשפט פיתגורס"
+   },
+   {
+    "id": "mth.distributive",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "mth.first_degree_eq",
+    "name": "פתרון משוואה ממעלה ראשונה"
+   }
+  ],
+  "not_yet_allowed": [
+   {
+    "id": "g8.slope_linear.1",
+    "name": "קצב שינוי"
+   },
+   {
+    "id": "g8.slope_linear.2",
+    "name": "שיפוע"
+   },
+   {
+    "id": "g8.slope_linear.3",
+    "name": "ייצוג אלגברי של פונקציה ליניארית"
+   },
+   {
+    "id": "g8.word_problems_eq.1",
+    "name": "שאלות מילוליות בעזרת משוואות"
+   },
+   {
+    "id": "g8.congruence.1",
+    "name": "חפיפת משולשים"
+   },
+   {
+    "id": "g8.inter_extrapolation.1",
+    "name": "אינטרפולציה"
+   },
+   {
+    "id": "g8.inter_extrapolation.2",
+    "name": "אקסטרפולציה"
+   },
+   {
+    "id": "g8.triangle_parts.1",
+    "name": "צלעות במשולש"
+   },
+   {
+    "id": "g8.triangle_parts.2",
+    "name": "תיכון"
+   },
+   {
+    "id": "g8.triangle_parts.3",
+    "name": "זווית חיצונית"
+   },
+   {
+    "id": "g8.triangle_parts.4",
+    "name": "שווה שוקיים"
+   },
+   {
+    "id": "g8.triangle_parts.5",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g8.systems_basic.1",
+    "name": "מערכות משוואות (רמה בסיסית)"
+   },
+   {
+    "id": "g8.similarity.1",
+    "name": "דמיון משולשים"
+   },
+   {
+    "id": "g8.probability.1",
+    "name": "הסתברות א"
+   },
+   {
+    "id": "g8.probability.2",
+    "name": "הסתברות ב"
+   },
+   {
+    "id": "g8.pythagoras_3d.1",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "g8.inequalities.1",
+    "name": "אי-שוויונות"
+   },
+   {
+    "id": "g9.alg_technique.1",
+    "name": "חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.2",
+    "name": "פישוט ביטויים בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.3",
+    "name": "פתרון משוואות בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.4",
+    "name": "שאלות השוואת שטחים בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9.alg_technique.5",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.6",
+    "name": "פירוק לגורמים: הוצאת גורם משותף"
+   },
+   {
+    "id": "g9.alg_technique.7",
+    "name": "פירוק תלת-איבר ריבועי (מקדם 1)"
+   },
+   {
+    "id": "g9.alg_technique.8",
+    "name": "פירוק בעזרת נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.9",
+    "name": "פתרון משוואות ריבועיות בסיסיות באמצעות פירוק לגורמים"
+   },
+   {
+    "id": "g9.alg_technique.10",
+    "name": "צמצום שברים אלגבריים"
+   },
+   {
+    "id": "g9.alg_technique.11",
+    "name": "כפל וחילוק שברים אלגבריים"
+   },
+   {
+    "id": "g9.kite.1",
+    "name": "הכרת הדלתון"
+   },
+   {
+    "id": "g9.kite.2",
+    "name": "זוויות בדלתון"
+   },
+   {
+    "id": "g9.kite.3",
+    "name": "האלכסון הראשי בדלתון"
+   },
+   {
+    "id": "g9.isosceles_converse.1",
+    "name": "משפטים הפוכים להוכחה כי משולש הוא שווה שוקיים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.1",
+    "name": "היכרות עם הגרף והביטוי האלגברי"
+   },
+   {
+    "id": "g9.quad_func_and_eq.2",
+    "name": "תכונות הפונקציה הריבועית (התייחסות איכותנית): קיצון, עלייה וירידה, חיתוך עם הצירים, חיוביות ושליליות"
+   },
+   {
+    "id": "g9.quad_func_and_eq.3",
+    "name": "הזזה אנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.4",
+    "name": "הזזה אופקית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.5",
+    "name": "שילוב הזזה אופקית ואנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.6",
+    "name": "הצגת פונקציה ריבועית כמכפלה"
+   },
+   {
+    "id": "g9.quad_func_and_eq.7",
+    "name": "הצגה סטנדרטית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.8",
+    "name": "פתרון משוואות ריבועיות בעזרת נוסחת השורשים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.9",
+    "name": "סרטוט גרף על סמך ייצוג סטנדרטי"
+   },
+   {
+    "id": "g9.side_angle_relations.1",
+    "name": "מול הצלע הגדולה ממוקמת הזווית הגדולה"
+   },
+   {
+    "id": "g9.side_angle_relations.2",
+    "name": "מול הזווית הגדולה ממוקמת הצלע הגדולה"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.1",
+    "name": "הניצב מול זווית 30° שווה למחצית היתר"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.2",
+    "name": "משפט הפוך: ניצב השווה למחצית היתר ⇒ הזווית שמולו 30°"
+   },
+   {
+    "id": "g9.parallels_trapezoid.1",
+    "name": "תכונות של הקבלה או אי-הקבלה"
+   },
+   {
+    "id": "g9.parallels_trapezoid.2",
+    "name": "משפט הפוך לישרים מקבילים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.3",
+    "name": "הכרת הטרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.4",
+    "name": "טרפז שווה שוקיים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.5",
+    "name": "הוכחה שמרובע הוא טרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.6",
+    "name": "שטח והיקף טרפז"
+   },
+   {
+    "id": "g9.quad_eq_applications.1",
+    "name": "כולל שימוש בטכניקה אלגברית"
+   },
+   {
+    "id": "g9.quad_inequalities.1",
+    "name": "פתרון אי-שוויון ריבועי בהקשר של פונקציה ריבועית"
+   },
+   {
+    "id": "g9.parallelogram.1",
+    "name": "הגדרת מקבילית"
+   },
+   {
+    "id": "g9.parallelogram.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9.parallelogram.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.rational_equations.1",
+    "name": "פתרון משוואות עם פירוק לגורמים במכנה"
+   },
+   {
+    "id": "g9.rational_equations.2",
+    "name": "תחום הצבה"
+   },
+   {
+    "id": "g9.rational_equations.3",
+    "name": "משוואות שבהן אחד הפתרונות אינו קביל"
+   },
+   {
+    "id": "g9.rectangle.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rectangle.2",
+    "name": "תכונות צלעות, זוויות, אלכסונים"
+   },
+   {
+    "id": "g9.rectangle.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.probability.1",
+    "name": "מהי הסתברות, מושגים בסיסיים (כולל השלמה של ח׳)"
+   },
+   {
+    "id": "g9.probability.2",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9.probability.3",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9.probability.4",
+    "name": "מאורעות דו-שלביים"
+   },
+   {
+    "id": "g9.probability.5",
+    "name": "ייצוגים שונים: טבלה, דיאגרמת עץ, מודל השטח"
+   },
+   {
+    "id": "g9.integrative_literacy.1",
+    "name": "שילוב אלגברה וגיאומטריה בהקשר מהעולם האמיתי"
+   },
+   {
+    "id": "g9.system_degree_2.1",
+    "name": "משמעות אלגברית ומשמעות גרפית של פתרון מערכת משוואות"
+   },
+   {
+    "id": "g9.function_properties.1",
+    "name": "תכונות של גרף: חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה"
+   },
+   {
+    "id": "g9.function_properties.2",
+    "name": "הקשר בין משוואות לגרף של פונקציה"
+   },
+   {
+    "id": "g9.function_properties.3",
+    "name": "הזזה אנכית, הזזה אופקית"
+   },
+   {
+    "id": "g9.function_properties.4",
+    "name": "שיקוף ביחס לציר ה-x"
+   },
+   {
+    "id": "g9.rhombus.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rhombus.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.rhombus.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.square.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.square.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.square.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.right_triangle_median.1",
+    "name": "התיכון ליתר"
+   },
+   {
+    "id": "g9.right_triangle_median.2",
+    "name": "תרגול המשפט בשילוב מרובעים"
+   },
+   {
+    "id": "g9.powers.1",
+    "name": "חוקי חזקות מעריך טבעי או אפס"
+   },
+   {
+    "id": "g9.powers.2",
+    "name": "חוקי שורש ריבועי"
+   },
+   {
+    "id": "g9.word_problems.1",
+    "name": "שאלות מילוליות הנדסיות וכלליות (לרבות משוואה ריבועית או מערכת משוואות)"
+   },
+   {
+    "id": "g9.word_problems.2",
+    "name": "שאלות תנועה"
+   },
+   {
+    "id": "g9.word_problems.3",
+    "name": "שילוב אחוזים"
+   },
+   {
+    "id": "g9.word_problems.4",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9.similarity.1",
+    "name": "יחסי שטחים במשולשים דומים"
+   },
+   {
+    "id": "g9m.graph_reading.1",
+    "name": "תופעות המיוצגות באמצעות גרף במערכת צירים"
+   },
+   {
+    "id": "g9m.graph_reading.2",
+    "name": "קריאת מידע מהגרף ומענה על שאלות"
+   },
+   {
+    "id": "g9m.computational_triangle.1",
+    "name": "סכום זוויות במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.2",
+    "name": "שטח והיקף משולש"
+   },
+   {
+    "id": "g9m.computational_triangle.3",
+    "name": "קטעים מיוחדים במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.4",
+    "name": "שילוב עם מערכת צירים"
+   },
+   {
+    "id": "g9m.linear_function.1",
+    "name": "משמעות השיפוע כקצב שינוי, בשילוב אוריינות"
+   },
+   {
+    "id": "g9m.linear_function.2",
+    "name": "ייצוג אלגברי וגרפי והתאמה ביניהם"
+   },
+   {
+    "id": "g9m.linear_function.3",
+    "name": "נקודה על ישר ומשמעותה"
+   },
+   {
+    "id": "g9m.linear_function.4",
+    "name": "חיתוך עם הצירים"
+   },
+   {
+    "id": "g9m.linear_function.5",
+    "name": "ישרים מקבילים"
+   },
+   {
+    "id": "g9m.linear_function.6",
+    "name": "שטחים והיקפים במערכת צירים"
+   },
+   {
+    "id": "g9m.alg_technique_basic.1",
+    "name": "חוק הפילוג וחוק הפילוג המורחב"
+   },
+   {
+    "id": "g9m.alg_technique_basic.2",
+    "name": "פתרון משוואות פשוטות בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9m.pythagoras.1",
+    "name": "חישובי צלעות במשולשים"
+   },
+   {
+    "id": "g9m.pythagoras.2",
+    "name": "חישובי צלעות בצורות מורכבות"
+   },
+   {
+    "id": "g9m.pythagoras.3",
+    "name": "חישובי היקפים ושטחים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.1",
+    "name": "קווים מיוחדים במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.2",
+    "name": "זוויות במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.4",
+    "name": "תכונות הדלתון"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.5",
+    "name": "חישובי שטחים והיקפים"
+   },
+   {
+    "id": "g9m.statistics.1",
+    "name": "איסוף וארגון נתונים בטבלה, ברשימה ובדיאגרמות"
+   },
+   {
+    "id": "g9m.statistics.2",
+    "name": "שכיחות ושכיחות יחסית"
+   },
+   {
+    "id": "g9m.statistics.3",
+    "name": "טווח נתונים"
+   },
+   {
+    "id": "g9m.statistics.4",
+    "name": "ממוצע, שכיח וחציון"
+   },
+   {
+    "id": "g9m.percentages.1",
+    "name": "החלק היחסי משלם"
+   },
+   {
+    "id": "g9m.percentages.2",
+    "name": "הגדלה והקטנה"
+   },
+   {
+    "id": "g9m.percentages.3",
+    "name": "שאלות מילוליות פשוטות ואורייניות"
+   },
+   {
+    "id": "g9m.similarity.1",
+    "name": "המושג דומים"
+   },
+   {
+    "id": "g9m.similarity.2",
+    "name": "הגדלה או הקטנה של צורות"
+   },
+   {
+    "id": "g9m.similarity.3",
+    "name": "צלעות פרופורציונליות"
+   },
+   {
+    "id": "g9m.similarity.4",
+    "name": "משפט ז.ז"
+   },
+   {
+    "id": "g9m.similarity.5",
+    "name": "חישובי צלעות וזוויות במשולשים דומים"
+   },
+   {
+    "id": "g9m.similarity.6",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9m.equations.1",
+    "name": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.1",
+    "name": "חזרה על ישרים מקבילים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.2",
+    "name": "הגדרת המקבילית"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.3",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.4",
+    "name": "זיהוי מקבילית"
+   },
+   {
+    "id": "g9m.probability.1",
+    "name": "מהי הסתברות"
+   },
+   {
+    "id": "g9m.probability.2",
+    "name": "מושגים בסיסיים"
+   },
+   {
+    "id": "g9m.probability.3",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9m.probability.4",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9m.quad_partial.1",
+    "name": "הצבת ערכי x בביטוי של פונקציה ריבועית וחישוב ערך ה-y"
+   },
+   {
+    "id": "g9m.quad_partial.2",
+    "name": "מפונקציה ריבועית לפתרון משוואה ריבועית"
+   },
+   {
+    "id": "g9m.quad_partial.3",
+    "name": "פתרון משוואות ריבועיות ע״י נוסחת השורשים"
+   },
+   {
+    "id": "g9m.rectangle.1",
+    "name": "הגדרה של מלבן"
+   },
+   {
+    "id": "g9m.rectangle.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems.1",
+    "name": "שאלות מילוליות ושאלות אוריינות בנושאים שונים, כולל שימוש במשוואה ריבועית"
+   },
+   {
+    "id": "g9m.rhombus.1",
+    "name": "הגדרה של מעוין"
+   },
+   {
+    "id": "g9m.rhombus.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.square.1",
+    "name": "הגדרה של ריבוע"
+   },
+   {
+    "id": "g9m.square.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems_integrative.1",
+    "name": "שאלות מילוליות ואוריינות בנושאים שונים"
+   },
+   {
+    "id": "g9m.trapezoid.1",
+    "name": "הגדרה של טרפז"
+   },
+   {
+    "id": "g9m.trapezoid.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.areas_and_perimeters.1",
+    "name": "שאלות אוריינות אינטגרטיביות כולל מעגל — היקף ושטח"
+   },
+   {
+    "id": "thm.co_interior_angles",
+    "name": "זוויות חד-צדדיות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.pythagoras_3d",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "thm.congruence_sas",
+    "name": "משפט חפיפה צ.ז.צ"
+   },
+   {
+    "id": "thm.congruence_asa",
+    "name": "משפט חפיפה ז.צ.ז"
+   },
+   {
+    "id": "thm.congruence_sss",
+    "name": "משפט חפיפה צ.צ.צ"
+   },
+   {
+    "id": "thm.congruence_ssa",
+    "name": "משפט חפיפה צ.צ.ז"
+   },
+   {
+    "id": "thm.congruent_parts",
+    "name": "במשולשים חופפים צלעות וזוויות מתאימות שוות"
+   },
+   {
+    "id": "thm.exterior_angle",
+    "name": "זווית חיצונית למשולש"
+   },
+   {
+    "id": "thm.isosceles_base_angles",
+    "name": "במשולש שווה שוקיים זוויות הבסיס שוות"
+   },
+   {
+    "id": "thm.isosceles_special_lines",
+    "name": "במשולש שווה שוקיים חוצה זווית הראש, התיכון והגובה לבסיס מתלכדים"
+   },
+   {
+    "id": "thm.isosceles_converse",
+    "name": "משפטים הפוכים: הוכחה שמשולש שווה שוקיים"
+   },
+   {
+    "id": "thm.triangle_inequality",
+    "name": "אי-שוויון המשולש"
+   },
+   {
+    "id": "thm.side_angle_order",
+    "name": "מול הצלע הגדולה הזווית הגדולה (וההפך)"
+   },
+   {
+    "id": "thm.similarity_aa",
+    "name": "משפט דמיון ז.ז"
+   },
+   {
+    "id": "thm.similarity_sas",
+    "name": "משפט דמיון צ.ז.צ"
+   },
+   {
+    "id": "thm.similarity_sss",
+    "name": "משפט דמיון צ.צ.צ"
+   },
+   {
+    "id": "thm.similar_area_ratio",
+    "name": "יחס השטחים הוא ריבוע יחס הדמיון"
+   },
+   {
+    "id": "thm.kite_main_diagonal",
+    "name": "בדלתון האלכסון הראשי חוצה את המשני, מאונך לו וחוצה את זוויות הראש"
+   },
+   {
+    "id": "thm.30_60_90",
+    "name": "במשולש ישר זווית הניצב מול 30° שווה למחצית היתר"
+   },
+   {
+    "id": "thm.parallel_converse",
+    "name": "משפטים הפוכים לישרים מקבילים"
+   },
+   {
+    "id": "thm.isosceles_trapezoid",
+    "name": "טרפז שווה שוקיים: זוויות בסיס ואלכסונים"
+   },
+   {
+    "id": "thm.parallelogram_props",
+    "name": "במקבילית צלעות נגדיות שוות, זוויות נגדיות שוות, האלכסונים חוצים זה את זה"
+   },
+   {
+    "id": "thm.parallelogram_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מקבילית"
+   },
+   {
+    "id": "thm.rectangle_props",
+    "name": "במלבן כל הזוויות ישרות והאלכסונים שווים"
+   },
+   {
+    "id": "thm.rectangle_converse",
+    "name": "משפטים הפוכים: מקבילית עם זווית ישרה או עם אלכסונים שווים היא מלבן"
+   },
+   {
+    "id": "thm.rhombus_props",
+    "name": "במעוין כל הצלעות שוות, האלכסונים מאונכים וחוצי זוויות"
+   },
+   {
+    "id": "thm.rhombus_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מעוין"
+   },
+   {
+    "id": "thm.square_props",
+    "name": "ריבוע: מלבן שהוא גם מעוין"
+   },
+   {
+    "id": "thm.right_triangle_median",
+    "name": "התיכון ליתר שווה למחצית היתר"
+   },
+   {
+    "id": "frm.area_rhombus_diagonals",
+    "name": "שטח מעוין / דלתון = מכפלת האלכסונים : 2"
+   },
+   {
+    "id": "thm.midsegment",
+    "name": "קטע אמצעים במשולש ובטרפז"
+   },
+   {
+    "id": "frm.short_multiplication",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "mth.factoring",
+    "name": "פירוק לגורמים"
+   },
+   {
+    "id": "frm.quadratic_formula",
+    "name": "נוסחת השורשים"
+   }
+  ]
+ },
+ "questions": [
+  {
+   "id": "q1",
+   "label": 1,
+   "text": "הגרף הוא של הפונקציה $f$. אין נוסחה נתונה.",
+   "figure_id": "q1_head",
+   "given": [
+    {
+     "text": "הגרף הוא של הפונקציה $f$. אין נוסחה נתונה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q1a",
+     "label": "א",
+     "text": "קראו מן הגרף את $f(0)$ ואת שיעורי A ו־B. כתבו את שתי ההתאמות המסומנות בסימון פונקציה. שחזרו חוק מתאים מן הקריאות ואמתו בו את שתי הנקודות.",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "קראו מן הגרף את $f(0)$ ואת שיעורי A ו־B. כתבו את שתי ההתאמות המסומנות בסימון פונקציה. שחזרו חוק מתאים מן הקריאות ואמתו בו את שתי הנקודות.",
+       "text": "הערך קראו מן הגרף את $f(0)$ ואת שיעורי A ו־B. כתבו את שתי ההתאמות המסומנות בסימון פונקציה. שחזרו חוק מתאים מן הקריאות ואמתו בו את שתי הנקודות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1b",
+     "label": "ב",
+     "text": "רשמו את הקלט שעבורו $f(x)=4$. הסבירו מאיזה ציר התחלתם.",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "רשמו את הקלט שעבורו $f(x)=4$. הסבירו מאיזה ציר התחלתם.",
+       "text": "הערך רשמו את הקלט שעבורו $f(x)=4$. הסבירו מאיזה ציר התחלתם."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1c",
+     "label": "ג",
+     "text": "תלמיד החליף בין הקלט והפלט בתוצאה שמצאתם בסעיף ב וטען שגם ההתאמה ההפוכה מתקיימת. בדקו ותקנו בעזרת הגרף.",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תלמיד החליף בין הקלט והפלט בתוצאה שמצאתם בסעיף ב וטען שגם ההתאמה ההפוכה מתקיימת. בדקו ותקנו בעזרת הגרף.",
+       "text": "הערך תלמיד החליף בין הקלט והפלט בתוצאה שמצאתם בסעיף ב וטען שגם ההתאמה ההפוכה מתקיימת. בדקו ותקנו בעזרת הגרף."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1d",
+     "label": "ד",
+     "text": "רשמו במילים מה מציינים האות, המספר שבסוגריים והערך בסימון שמצאתם בסעיף א.",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "רשמו במילים מה מציינים האות, המספר שבסוגריים והערך בסימון שמצאתם בסעיף א.",
+       "text": "הערך רשמו במילים מה מציינים האות, המספר שבסוגריים והערך בסימון שמצאתם בסעיף א."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "label": 2,
+   "text": "רשומות של $p(x)=3x−7$ אבדו בחלקן. השלימו רק את התאים הריקים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "רשומות של $p(x)=3x−7$ אבדו בחלקן. השלימו רק את התאים הריקים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "$x$",
+     "$p(x)$"
+    ],
+    "rows": [
+     [
+      "$−2$",
+      ""
+     ],
+     [
+      "",
+      "$8$"
+     ],
+     [
+      "$0$",
+      ""
+     ],
+     [
+      "",
+      "$−4$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q2a",
+     "label": "א",
+     "text": "השלימו את הטבלה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את הטבלה.",
+       "text": "הערך השלימו את הטבלה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2b",
+     "label": "ב",
+     "text": "בחרו שורה שבה שחזרתם קלט, וכתבו את המשוואה שבעזרתה מצאתם אותו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בחרו שורה שבה שחזרתם קלט, וכתבו את המשוואה שבעזרתה מצאתם אותו.",
+       "text": "הערך בחרו שורה שבה שחזרתם קלט, וכתבו את המשוואה שבעזרתה מצאתם אותו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2c",
+     "label": "ג",
+     "text": "כתבו כשני זוגות סדורים את השורה בעלת הקלט השלילי ואת השורה בעלת הפלט החיובי.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו כשני זוגות סדורים את השורה בעלת הקלט השלילי ואת השורה בעלת הפלט החיובי.",
+       "text": "הערך כתבו כשני זוגות סדורים את השורה בעלת הקלט השלילי ואת השורה בעלת הפלט החיובי."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2d",
+     "label": "ד",
+     "text": "האם מותר להסיק ששום קלט בין השורות אינו מותר? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם מותר להסיק ששום קלט בין השורות אינו מותר? נמקו.",
+       "text": "הערך האם מותר להסיק ששום קלט בין השורות אינו מותר? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q3",
+   "label": 3,
+   "text": "במעבדה משתמשים בחוק $r(x)=5−2x$. בטבלת הבקרה מופיעים הסברים של תלמידים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "במעבדה משתמשים בחוק $r(x)=5−2x$. בטבלת הבקרה מופיעים הסברים של תלמידים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "רשומה",
+     "פירוש"
+    ],
+    "rows": [
+     [
+      "$r(−3)$",
+      "כפל של שם הפונקציה במספר"
+     ],
+     [
+      "$r(−3)$",
+      "ערך הפונקציה בקלט הנתון"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q3a",
+     "label": "א",
+     "text": "תרגמו למילים את הבקשה $r(−3)$.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תרגמו למילים את הבקשה $r(−3)$.",
+       "text": "הערך תרגמו למילים את הבקשה $r(−3)$."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3b",
+     "label": "ב",
+     "text": "חשבו את הערך שהתבקשתם למצוא, עם שורת הצבה מלאה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את הערך שהתבקשתם למצוא, עם שורת הצבה מלאה.",
+       "text": "הערך חשבו את הערך שהתבקשתם למצוא, עם שורת הצבה מלאה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3c",
+     "label": "ג",
+     "text": "מי מבין שתי הרשומות שבטבלה תקינה? הסבירו את תפקיד הסוגריים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מי מבין שתי הרשומות שבטבלה תקינה? הסבירו את תפקיד הסוגריים.",
+       "text": "הערך מי מבין שתי הרשומות שבטבלה תקינה? הסבירו את תפקיד הסוגריים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3d",
+     "label": "ד",
+     "text": "מה ההבדל בין בקשת סעיף א לבין הבקשה למצוא קלט שפלטו $−3$? פתרו גם את הבקשה החדשה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה ההבדל בין בקשת סעיף א לבין הבקשה למצוא קלט שפלטו $−3$? פתרו גם את הבקשה החדשה.",
+       "text": "הערך מה ההבדל בין בקשת סעיף א לבין הבקשה למצוא קלט שפלטו $−3$? פתרו גם את הבקשה החדשה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q4",
+   "label": 4,
+   "text": "הזמנת מחברות עולה $c(n)=9n+5$ שקלים, כאשר $n$ הוא מספר המחברות. בטבלה כרטיסי הזמנה לבדיקה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הזמנת מחברות עולה $c(n)=9n+5$ שקלים, כאשר $n$ הוא מספר המחברות. בטבלה כרטיסי הזמנה לבדיקה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "כרטיס",
+     "עלות מבוקשת בשקלים"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "$41$"
+     ],
+     [
+      "שני",
+      "$50$"
+     ],
+     [
+      "שלישי",
+      "$47$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q4a",
+     "label": "א",
+     "text": "כתבו את תחום הקלט המתאים והסבירו מדוע.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו את תחום הקלט המתאים והסבירו מדוע.",
+       "text": "הערך כתבו את תחום הקלט המתאים והסבירו מדוע."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4b",
+     "label": "ב",
+     "text": "בדקו אם הכרטיס הראשון אפשרי, ושחזרו את מספר המחברות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בדקו אם הכרטיס הראשון אפשרי, ושחזרו את מספר המחברות.",
+       "text": "הערך בדקו אם הכרטיס הראשון אפשרי, ושחזרו את מספר המחברות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4c",
+     "label": "ג",
+     "text": "פתרו אלגברית את תנאי הכרטיס השני. האם הפתרון מתקבל בהזמנה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו אלגברית את תנאי הכרטיס השני. האם הפתרון מתקבל בהזמנה?",
+       "text": "הערך פתרו אלגברית את תנאי הכרטיס השני. האם הפתרון מתקבל בהזמנה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4d",
+     "label": "ד",
+     "text": "לכרטיס השלישי מצאו את שתי העלויות האפשריות הסמוכות משני צדדי הסכום המבוקש, ואת מספר המחברות בכל אחת.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "לכרטיס השלישי מצאו את שתי העלויות האפשריות הסמוכות משני צדדי הסכום המבוקש, ואת מספר המחברות בכל אחת.",
+       "text": "הערך לכרטיס השלישי מצאו את שתי העלויות האפשריות הסמוכות משני צדדי הסכום המבוקש, ואת מספר המחברות בכל אחת."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4e",
+     "label": "ה",
+     "text": "מדוע עיגול הקלט אינו יוצר הזמנה במחיר המבוקש בכרטיס השלישי?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מדוע עיגול הקלט אינו יוצר הזמנה במחיר המבוקש בכרטיס השלישי?",
+       "text": "הערך מדוע עיגול הקלט אינו יוצר הזמנה במחיר המבוקש בכרטיס השלישי?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q5",
+   "label": 5,
+   "text": "נתונים $g(x)=\\f{x+4}{2}$ ו־$h(x)=7−x$. השוו שתי מדידות ללא הנחה שסדר הגדלים נשמר.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "נתונים $g(x)=\\f{x+4}{2}$ ו־$h(x)=7−x$. השוו שתי מדידות ללא הנחה שסדר הגדלים נשמר."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "קלט",
+     "$g(x)$",
+     "$h(x)$"
+    ],
+    "rows": [
+     [
+      "$0$",
+      "",
+      ""
+     ],
+     [
+      "$6$",
+      "",
+      ""
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q5a",
+     "label": "א",
+     "text": "בקלט $0$, איזה פלט גדול יותר ובכמה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בקלט $0$, איזה פלט גדול יותר ובכמה?",
+       "text": "הערך בקלט $0$, איזה פלט גדול יותר ובכמה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5b",
+     "label": "ב",
+     "text": "בקלט $6$, איזה פלט גדול יותר ובכמה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בקלט $6$, איזה פלט גדול יותר ובכמה?",
+       "text": "הערך בקלט $6$, איזה פלט גדול יותר ובכמה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5c",
+     "label": "ג",
+     "text": "מצאו את הקלט שבו הפלטים שווים ואת נקודת החיתוך המלאה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו את הקלט שבו הפלטים שווים ואת נקודת החיתוך המלאה.",
+       "text": "הערך מצאו את הקלט שבו הפלטים שווים ואת נקודת החיתוך המלאה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5d",
+     "label": "ד",
+     "text": "אמתו את הפלט המשותף בשני החוקים. בנפרד מצאו בכל חוק קלט שפלטו 4. הסבירו מדוע אין להשמיט את שם הפונקציה, ומדוע קלט בלבד אינו נקודת חיתוך.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אמתו את הפלט המשותף בשני החוקים. בנפרד מצאו בכל חוק קלט שפלטו 4. הסבירו מדוע אין להשמיט את שם הפונקציה, ומדוע קלט בלבד אינו נקודת חיתוך.",
+       "text": "הערך אמתו את הפלט המשותף בשני החוקים. בנפרד מצאו בכל חוק קלט שפלטו 4. הסבירו מדוע אין להשמיט את שם הפונקציה, ומדוע קלט בלבד אינו נקודת חיתוך."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q6",
+   "label": 6,
+   "text": "תוכנה מחשבת $u(x)=2(x−3)+5x+1$. עבור הקלט $−2$ נרשמו שתי שורות: א׳ $2(−2−3)+5x+1$; ב׳ $2(x−3)+5·(−2)+1$. יש להחליט אם אפשר לאשר אחת מהן כהצבה מלאה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "תוכנה מחשבת $u(x)=2(x−3)+5x+1$. עבור הקלט $−2$ נרשמו שתי שורות: א׳ $2(−2−3)+5x+1$; ב׳ $2(x−3)+5·(−2)+1$. יש להחליט אם אפשר לאשר אחת מהן כהצבה מלאה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "קלט",
+     "פלט"
+    ],
+    "rows": [
+     [
+      "$−2$",
+      ""
+     ],
+     [
+      "$0$",
+      ""
+     ],
+     [
+      "$3$",
+      ""
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q6a",
+     "label": "א",
+     "text": "בכל שורה זהו את מופע המשתנה שלא הוחלף. האם אחת מהן מלאה?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בכל שורה זהו את מופע המשתנה שלא הוחלף. האם אחת מהן מלאה?",
+       "text": "הערך בכל שורה זהו את מופע המשתנה שלא הוחלף. האם אחת מהן מלאה?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6b",
+     "label": "ב",
+     "text": "תקנו את שתי השורות וחשבו את הפלט בקלט שנבדק.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תקנו את שתי השורות וחשבו את הפלט בקלט שנבדק.",
+       "text": "הערך תקנו את שתי השורות וחשבו את הפלט בקלט שנבדק."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6c",
+     "label": "ג",
+     "text": "השלימו את הטבלה בקלט אפס ובקלט החיובי. פשטו את החוק ואמתו בעזרתו אחת התוצאות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את הטבלה בקלט אפס ובקלט החיובי. פשטו את החוק ואמתו בעזרתו אחת התוצאות.",
+       "text": "הערך השלימו את הטבלה בקלט אפס ובקלט החיובי. פשטו את החוק ואמתו בעזרתו אחת התוצאות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6d",
+     "label": "ד",
+     "text": "שינו רק את שם הפונקציה מ־u ל־v, והשאירו את החוק והקלט. האם הפלט משתנה? מדוע בהצבה מלאה לא נשאר x?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שינו רק את שם הפונקציה מ־u ל־v, והשאירו את החוק והקלט. האם הפלט משתנה? מדוע בהצבה מלאה לא נשאר x?",
+       "text": "הערך שינו רק את שם הפונקציה מ־u ל־v, והשאירו את החוק והקלט. האם הפלט משתנה? מדוע בהצבה מלאה לא נשאר x?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q7",
+   "label": 7,
+   "text": "הישר המצויר מתאים ל־$v(x)=\\f{x}{2}−3$. בודקים נקודה ששיעוריה $(3,−1.4)$ שנראית קרובה לקו.",
+   "figure_id": "q7_head",
+   "given": [
+    {
+     "text": "הישר המצויר מתאים ל־$v(x)=\\f{x}{2}−3$. בודקים נקודה ששיעוריה $(3,−1.4)$ שנראית קרובה לקו."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q7a",
+     "label": "א",
+     "text": "קראו מהגרף אומדן לפלט בקלט של הנקודה.",
+     "figure_id": "q7_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "קראו מהגרף אומדן לפלט בקלט של הנקודה.",
+       "text": "הערך קראו מהגרף אומדן לפלט בקלט של הנקודה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7b",
+     "label": "ב",
+     "text": "בדקו בחישוב מדויק אם הנקודה שייכת לגרף.",
+     "figure_id": "q7_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בדקו בחישוב מדויק אם הנקודה שייכת לגרף.",
+       "text": "הערך בדקו בחישוב מדויק אם הנקודה שייכת לגרף."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7c",
+     "label": "ג",
+     "text": "שמרו את הקלט של הנקודה ותקנו את שיעורה האנכי כך שתשייך לגרף.",
+     "figure_id": "q7_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שמרו את הקלט של הנקודה ותקנו את שיעורה האנכי כך שתשייך לגרף.",
+       "text": "הערך שמרו את הקלט של הנקודה ותקנו את שיעורה האנכי כך שתשייך לגרף."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7d",
+     "label": "ד",
+     "text": "מדוע קרבה חזותית אינה מספיקה? ציינו איזו מן הבדיקות מכריעה.",
+     "figure_id": "q7_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מדוע קרבה חזותית אינה מספיקה? ציינו איזו מן הבדיקות מכריעה.",
+       "text": "הערך מדוע קרבה חזותית אינה מספיקה? ציינו איזו מן הבדיקות מכריעה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q8",
+   "label": 8,
+   "text": "הטבלה היא של $k(x)=\\f{3x+1}{2}$. יש בה תא קלט ותא פלט חסרים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הטבלה היא של $k(x)=\\f{3x+1}{2}$. יש בה תא קלט ותא פלט חסרים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "$x$",
+     "$k(x)$"
+    ],
+    "rows": [
+     [
+      "$−1$",
+      ""
+     ],
+     [
+      "$3$",
+      "$5$"
+     ],
+     [
+      "",
+      "$8$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q8a",
+     "label": "א",
+     "text": "השלימו את שני התאים הריקים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את שני התאים הריקים.",
+       "text": "הערך השלימו את שני התאים הריקים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8b",
+     "label": "ב",
+     "text": "האם השורה השלמה תקינה? הראו הצבה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם השורה השלמה תקינה? הראו הצבה.",
+       "text": "הערך האם השורה השלמה תקינה? הראו הצבה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8c",
+     "label": "ג",
+     "text": "כתבו שתי טענות בסימון פונקציה מן השורות שהשלמתם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו שתי טענות בסימון פונקציה מן השורות שהשלמתם.",
+       "text": "הערך כתבו שתי טענות בסימון פונקציה מן השורות שהשלמתם."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8d",
+     "label": "ד",
+     "text": "מצאו קלט המפיק פלט $0$ ואמתו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו קלט המפיק פלט $0$ ואמתו.",
+       "text": "הערך מצאו קלט המפיק פלט $0$ ואמתו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q9",
+   "label": 9,
+   "text": "נתון $s(x)=5x−9$. תלמיד צריך להכין תרשים קטן מן המידע המילולי בלבד.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "נתון $s(x)=5x−9$. תלמיד צריך להכין תרשים קטן מן המידע המילולי בלבד."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q9a",
+     "label": "א",
+     "text": "מצאו את הפלטים בקלטים $0$ ו־$2$.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו את הפלטים בקלטים $0$ ו־$2$.",
+       "text": "הערך מצאו את הפלטים בקלטים $0$ ו־$2$."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9b",
+     "label": "ב",
+     "text": "שחזרו את הקלט לפלט $6$.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שחזרו את הקלט לפלט $6$.",
+       "text": "הערך שחזרו את הקלט לפלט $6$."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9c",
+     "label": "ג",
+     "text": "כתבו את שלוש ההתאמות שמצאתם כזוגות סדורים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו את שלוש ההתאמות שמצאתם כזוגות סדורים.",
+       "text": "הערך כתבו את שלוש ההתאמות שמצאתם כזוגות סדורים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9d",
+     "label": "ד",
+     "text": "שרטטו מערכת צירים, סמנו את הזוגות וחברו לישר. ציינו סולם מתאים והסבירו כיצד בדקתם את הסימון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שרטטו מערכת צירים, סמנו את הזוגות וחברו לישר. ציינו סולם מתאים והסבירו כיצד בדקתם את הסימון.",
+       "text": "הערך שרטטו מערכת צירים, סמנו את הזוגות וחברו לישר. ציינו סולם מתאים והסבירו כיצד בדקתם את הסימון."
+      }
+     ],
+     "to_construct": [
+      {
+       "text": "שרטוט מערכת צירים וסימון הזוגות שנמצאו וחיבורם לישר"
+      }
+     ],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q10",
+   "label": 10,
+   "text": "בגרף מוצגים $f(x)=x−2$ ו־$g(x)=−2x+7$. שתי תוויות הערכים בדוח נשמטו.",
+   "figure_id": "q10_head",
+   "given": [
+    {
+     "text": "בגרף מוצגים $f(x)=x−2$ ו־$g(x)=−2x+7$. שתי תוויות הערכים בדוח נשמטו."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q10a",
+     "label": "א",
+     "text": "קראו מן הגרף את $f(2)$ ואת $g(2)$.",
+     "figure_id": "q10_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "קראו מן הגרף את $f(2)$ ואת $g(2)$.",
+       "text": "הערך קראו מן הגרף את $f(2)$ ואת $g(2)$."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10b",
+     "label": "ב",
+     "text": "קראו את נקודת החיתוך ובדקו אותה בחוקים.",
+     "figure_id": "q10_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "קראו את נקודת החיתוך ובדקו אותה בחוקים.",
+       "text": "הערך קראו את נקודת החיתוך ובדקו אותה בחוקים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10c",
+     "label": "ג",
+     "text": "האם הפלטים שווים בקלט שבסעיף א? האם הם שווים בקלט שמצאתם בסעיף ב? נמקו מתוך תשובותיכם.",
+     "figure_id": "q10_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם הפלטים שווים בקלט שבסעיף א? האם הם שווים בקלט שמצאתם בסעיף ב? נמקו מתוך תשובותיכם.",
+       "text": "הערך האם הפלטים שווים בקלט שבסעיף א? האם הם שווים בקלט שמצאתם בסעיף ב? נמקו מתוך תשובותיכם."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10d",
+     "label": "ד",
+     "text": "תלמיד השווה את f בקלט שבסעיף א עם g בקלט שמצאתם בסעיף ב וטען שבדק חיתוך. הסבירו את הפגם בלי לחשב מחדש.",
+     "figure_id": "q10_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תלמיד השווה את f בקלט שבסעיף א עם g בקלט שמצאתם בסעיף ב וטען שבדק חיתוך. הסבירו את הפגם בלי לחשב מחדש.",
+       "text": "הערך תלמיד השווה את f בקלט שבסעיף א עם g בקלט שמצאתם בסעיף ב וטען שבדק חיתוך. הסבירו את הפגם בלי לחשב מחדש."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q11",
+   "label": 11,
+   "text": "הגרף של $w$ אינו נושא נקודות מסומנות. קראו את חיתוכי הצירים בעצמכם.",
+   "figure_id": "q11_head",
+   "given": [
+    {
+     "text": "הגרף של $w$ אינו נושא נקודות מסומנות. קראו את חיתוכי הצירים בעצמכם."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q11a",
+     "label": "א",
+     "text": "כתבו טענה המתארת את הפלט בקלט אפס. בנוסף קראו את הפלט בקלט 1, ואז חזרו ממנו אל קלטו בגרף. נמקו מדוע שתי הקריאות האחרונות מתארות אותה נקודה.",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו טענה המתארת את הפלט בקלט אפס. בנוסף קראו את הפלט בקלט 1, ואז חזרו ממנו אל קלטו בגרף. נמקו מדוע שתי הקריאות האחרונות מתארות אותה נקודה.",
+       "text": "הערך כתבו טענה המתארת את הפלט בקלט אפס. בנוסף קראו את הפלט בקלט 1, ואז חזרו ממנו אל קלטו בגרף. נמקו מדוע שתי הקריאות האחרונות מתארות אותה נקודה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11b",
+     "label": "ב",
+     "text": "כתבו טענה המתארת קלט שהפלט בו אפס.",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו טענה המתארת קלט שהפלט בו אפס.",
+       "text": "הערך כתבו טענה המתארת קלט שהפלט בו אפס."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11c",
+     "label": "ג",
+     "text": "כתבו את שתי נקודות החיתוך והסבירו מדוע הן שונות.",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו את שתי נקודות החיתוך והסבירו מדוע הן שונות.",
+       "text": "הערך כתבו את שתי נקודות החיתוך והסבירו מדוע הן שונות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11d",
+     "label": "ד",
+     "text": "האם בכל פונקציה שתי הבקשות חייבות לתת נקודות שונות? תנו דוגמה נגדית בחוק.",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם בכל פונקציה שתי הבקשות חייבות לתת נקודות שונות? תנו דוגמה נגדית בחוק.",
+       "text": "הערך האם בכל פונקציה שתי הבקשות חייבות לתת נקודות שונות? תנו דוגמה נגדית בחוק."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q12",
+   "label": 12,
+   "text": "הטבלה מכילה מידע חלקי בלבד על פונקציה $z$; לא נתון חוק מחוץ לטבלה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הטבלה מכילה מידע חלקי בלבד על פונקציה $z$; לא נתון חוק מחוץ לטבלה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "קלט",
+     "פלט"
+    ],
+    "rows": [
+     [
+      "$−2$",
+      "$5$"
+     ],
+     [
+      "$4$",
+      "$−7$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q12a",
+     "label": "א",
+     "text": "כתבו בסימון פונקציה את הרשומה הראשונה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו בסימון פונקציה את הרשומה הראשונה.",
+       "text": "הערך כתבו בסימון פונקציה את הרשומה הראשונה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12b",
+     "label": "ב",
+     "text": "כתבו את הרשומה השנייה כזוג סדור, והסבירו מדוע אין להחליף את הסדר.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו את הרשומה השנייה כזוג סדור, והסבירו מדוע אין להחליף את הסדר.",
+       "text": "הערך כתבו את הרשומה השנייה כזוג סדור, והסבירו מדוע אין להחליף את הסדר."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12c",
+     "label": "ג",
+     "text": "מה הקלט בטבלה שהפלט שלו חיובי? מהו הפלט בקלט החיובי?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה הקלט בטבלה שהפלט שלו חיובי? מהו הפלט בקלט החיובי?",
+       "text": "הערך מה הקלט בטבלה שהפלט שלו חיובי? מהו הפלט בקלט החיובי?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12d",
+     "label": "ד",
+     "text": "האם ניתן לקבוע מן הטבלה בלבד את $z(0)$? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם ניתן לקבוע מן הטבלה בלבד את $z(0)$? נמקו.",
+       "text": "הערך האם ניתן לקבוע מן הטבלה בלבד את $z(0)$? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q13",
+   "label": 13,
+   "text": "נתון $d(x)=−4x+6$. השלימו רשומות כדי לבדוק טענה על השינוי.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "נתון $d(x)=−4x+6$. השלימו רשומות כדי לבדוק טענה על השינוי."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "$x$",
+     "$d(x)$"
+    ],
+    "rows": [
+     [
+      "$−1$",
+      ""
+     ],
+     [
+      "$1$",
+      ""
+     ],
+     [
+      "$4$",
+      ""
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q13a",
+     "label": "א",
+     "text": "חשבו את הפלטים שבטבלה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את הפלטים שבטבלה.",
+       "text": "הערך חשבו את הפלטים שבטבלה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13b",
+     "label": "ב",
+     "text": "במעבר מן הקלט הראשון לשני, מה שינוי הקלט ומה שינוי הפלט?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "במעבר מן הקלט הראשון לשני, מה שינוי הקלט ומה שינוי הפלט?",
+       "text": "הערך במעבר מן הקלט הראשון לשני, מה שינוי הקלט ומה שינוי הפלט?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13c",
+     "label": "ג",
+     "text": "במעבר מן השני לשלישי, הסבירו מדוע שינוי הפלט אינו זהה למעבר הקודם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "במעבר מן השני לשלישי, הסבירו מדוע שינוי הפלט אינו זהה למעבר הקודם.",
+       "text": "הערך במעבר מן השני לשלישי, הסבירו מדוע שינוי הפלט אינו זהה למעבר הקודם."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13d",
+     "label": "ד",
+     "text": "מה יהיה שינוי הפלט אם הקלט יגדל בחצי יחידה? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מה יהיה שינוי הפלט אם הקלט יגדל בחצי יחידה? נמקו.",
+       "text": "הערך מה יהיה שינוי הפלט אם הקלט יגדל בחצי יחידה? נמקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q14",
+   "label": 14,
+   "text": "להדפסת כרטיסים מוצעים שני מסלולים: $a(n)=8n$ ו־$b(n)=5n+12$ בשקלים. $n$ מספר הכרטיסים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "להדפסת כרטיסים מוצעים שני מסלולים: $a(n)=8n$ ו־$b(n)=5n+12$ בשקלים. $n$ מספר הכרטיסים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "מסלול",
+     "עלות לכרטיס",
+     "תשלום קבוע"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "$8$ שקלים",
+      "$0$ שקלים"
+     ],
+     [
+      "שני",
+      "$5$ שקלים",
+      "$12$ שקלים"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q14a",
+     "label": "א",
+     "text": "השוו עלויות להזמנת כרטיס יחיד.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השוו עלויות להזמנת כרטיס יחיד.",
+       "text": "הערך השוו עלויות להזמנת כרטיס יחיד."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14b",
+     "label": "ב",
+     "text": "מצאו את ההזמנה שבה המחירים שווים ואת המחיר המשותף.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו את ההזמנה שבה המחירים שווים ואת המחיר המשותף.",
+       "text": "הערך מצאו את ההזמנה שבה המחירים שווים ואת המחיר המשותף."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14c",
+     "label": "ג",
+     "text": "איזה משני המסלולים זול יותר להזמנה של $6$ כרטיסים? חשבו את הפרש המחירים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "איזה משני המסלולים זול יותר להזמנה של $6$ כרטיסים? חשבו את הפרש המחירים.",
+       "text": "הערך איזה משני המסלולים זול יותר להזמנה של $6$ כרטיסים? חשבו את הפרש המחירים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14d",
+     "label": "ד",
+     "text": "האם פתרון חיתוך של חוקים תמיד מייצג הזמנה אפשרית? נמקו בכלל, לא רק בדוגמה הזו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם פתרון חיתוך של חוקים תמיד מייצג הזמנה אפשרית? נמקו בכלל, לא רק בדוגמה הזו.",
+       "text": "הערך האם פתרון חיתוך של חוקים תמיד מייצג הזמנה אפשרית? נמקו בכלל, לא רק בדוגמה הזו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q15",
+   "label": 15,
+   "text": "החוק הוא $j(x)=2x+9$. בודקים שלושה כרטיסי נקודות מן הטבלה.",
+   "figure_id": "q15_head",
+   "given": [
+    {
+     "text": "החוק הוא $j(x)=2x+9$. בודקים שלושה כרטיסי נקודות מן הטבלה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "כרטיס",
+     "נקודה"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "$(−2,5)$"
+     ],
+     [
+      "שני",
+      "$(5,−2)$"
+     ],
+     [
+      "שלישי",
+      "$(1,11)$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q15a",
+     "label": "א",
+     "text": "אילו כרטיסים מתארים נקודה על הגרף? אמתו כל אחד.",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אילו כרטיסים מתארים נקודה על הגרף? אמתו כל אחד.",
+       "text": "הערך אילו כרטיסים מתארים נקודה על הגרף? אמתו כל אחד."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15b",
+     "label": "ב",
+     "text": "הכרטיס השגוי נוצר מהחלפת שיעורים של כרטיס אחר. זהו אותו והסבירו מדוע אין זו פעולה השומרת שייכות.",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הכרטיס השגוי נוצר מהחלפת שיעורים של כרטיס אחר. זהו אותו והסבירו מדוע אין זו פעולה השומרת שייכות.",
+       "text": "הערך הכרטיס השגוי נוצר מהחלפת שיעורים של כרטיס אחר. זהו אותו והסבירו מדוע אין זו פעולה השומרת שייכות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15c",
+     "label": "ג",
+     "text": "תקנו רק את השיעור האנכי בכרטיס השגוי.",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תקנו רק את השיעור האנכי בכרטיס השגוי.",
+       "text": "הערך תקנו רק את השיעור האנכי בכרטיס השגוי."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15d",
+     "label": "ד",
+     "text": "האם הכרטיס הראשון שייך גם לגרף $q(x)=x+7$? הסיקו אם שייכות לגרף אחד מספיקה להכרעה לגבי כל גרף.",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "האם הכרטיס הראשון שייך גם לגרף $q(x)=x+7$? הסיקו אם שייכות לגרף אחד מספיקה להכרעה לגבי כל גרף.",
+       "text": "הערך האם הכרטיס הראשון שייך גם לגרף $q(x)=x+7$? הסיקו אם שייכות לגרף אחד מספיקה להכרעה לגבי כל גרף."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q16",
+   "label": 16,
+   "text": "נתון $h(x)=3x−1$. השתמשו ברשת לבנייה ולא באומדן של קו מוכן.",
+   "figure_id": "q16_head",
+   "given": [
+    {
+     "text": "נתון $h(x)=3x−1$. השתמשו ברשת לבנייה ולא באומדן של קו מוכן."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q16a",
+     "label": "א",
+     "text": "חשבו את $h(−1)$ ואת $h(1)$.",
+     "figure_id": "q16_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "חשבו את $h(−1)$ ואת $h(1)$.",
+       "text": "הערך חשבו את $h(−1)$ ואת $h(1)$."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16b",
+     "label": "ב",
+     "text": "מצאו קלט שהפלט בו $5$ ואמתו.",
+     "figure_id": "q16_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו קלט שהפלט בו $5$ ואמתו.",
+       "text": "הערך מצאו קלט שהפלט בו $5$ ואמתו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16c",
+     "label": "ג",
+     "text": "סמנו ברשת את שלוש הנקודות שמצאתם ושרטטו את הישר.",
+     "figure_id": "q16_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "סמנו ברשת את שלוש הנקודות שמצאתם ושרטטו את הישר.",
+       "text": "הערך סמנו ברשת את שלוש הנקודות שמצאתם ושרטטו את הישר."
+      }
+     ],
+     "to_construct": [
+      {
+       "text": "סימון הנקודות שחושבו ושרטוט הישר"
+      }
+     ],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16d",
+     "label": "ד",
+     "text": "לפי הבנייה, כיצד משתנה הפלט כשהקלט גדל ביחידה? קשרו לחוק.",
+     "figure_id": "q16_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "לפי הבנייה, כיצד משתנה הפלט כשהקלט גדל ביחידה? קשרו לחוק.",
+       "text": "הערך לפי הבנייה, כיצד משתנה הפלט כשהקלט גדל ביחידה? קשרו לחוק."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q17",
+   "label": 17,
+   "text": "במערכת מתמטית ללא הגבלת תחום נתון $f(x)=\\f{2}{5}x+3$. בטבלה שתי בקשות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "במערכת מתמטית ללא הגבלת תחום נתון $f(x)=\\f{2}{5}x+3$. בטבלה שתי בקשות."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "בקשה",
+     "תיאור"
+    ],
+    "rows": [
+     [
+      "ישירה",
+      "$f(4)$"
+     ],
+     [
+      "הפוכה",
+      "$f(x)=4$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q17a",
+     "label": "א",
+     "text": "פתרו את הבקשה הישירה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו את הבקשה הישירה.",
+       "text": "הערך פתרו את הבקשה הישירה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17b",
+     "label": "ב",
+     "text": "פתרו את הבקשה ההפוכה ובדקו בהצבה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "פתרו את הבקשה ההפוכה ובדקו בהצבה.",
+       "text": "הערך פתרו את הבקשה ההפוכה ובדקו בהצבה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17c",
+     "label": "ג",
+     "text": "מדוע אין לדחות את הקלט שמצאתם רק מפני שאינו שלם?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מדוע אין לדחות את הקלט שמצאתם רק מפני שאינו שלם?",
+       "text": "הערך מדוע אין לדחות את הקלט שמצאתם רק מפני שאינו שלם?"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17d",
+     "label": "ד",
+     "text": "מצאו קלט שלילי שהפלט בו אפס, והסבירו אם הוא מותר.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו קלט שלילי שהפלט בו אפס, והסבירו אם הוא מותר.",
+       "text": "הערך מצאו קלט שלילי שהפלט בו אפס, והסבירו אם הוא מותר."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q18",
+   "label": 18,
+   "text": "★בודק אוטומטי מכיר את $p(x)=2x−7$. הוא קיבל שתי רשומות: $p(3)=−1$ ו־$p(−3)=−13$.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "★בודק אוטומטי מכיר את $p(x)=2x−7$. הוא קיבל שתי רשומות: $p(3)=−1$ ו־$p(−3)=−13$."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "רשומה",
+     "מצב בבדיקה"
+    ],
+    "rows": [
+     [
+      "$p(3)=−1$",
+      ""
+     ],
+     [
+      "$p(−3)=−13$",
+      ""
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q18a",
+     "label": "א",
+     "text": "בדקו את שתי הרשומות בחוק.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "בדקו את שתי הרשומות בחוק.",
+       "text": "הערך בדקו את שתי הרשומות בחוק."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18b",
+     "label": "ב",
+     "text": "כתבו את הרשומה השנייה כנקודה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו את הרשומה השנייה כנקודה.",
+       "text": "הערך כתבו את הרשומה השנייה כנקודה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18c",
+     "label": "ג",
+     "text": "תלמיד טען שמאחר ששתי התוצאות שליליות, הפונקציה יורדת. הפריכו תוך שימוש בהפרשים בין שתי הרשומות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תלמיד טען שמאחר ששתי התוצאות שליליות, הפונקציה יורדת. הפריכו תוך שימוש בהפרשים בין שתי הרשומות.",
+       "text": "הערך תלמיד טען שמאחר ששתי התוצאות שליליות, הפונקציה יורדת. הפריכו תוך שימוש בהפרשים בין שתי הרשומות."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18d",
+     "label": "ד",
+     "text": "מצאו קלט שפלטו $2$ ובדקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "מצאו קלט שפלטו $2$ ובדקו.",
+       "text": "הערך מצאו קלט שפלטו $2$ ובדקו."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18e",
+     "label": "ה",
+     "text": "הסבירו מדוע בסימון $p(x)$ אין אפשרות לצמצם את $x$ כדי לקבל מספר הקרוי $p$.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הסבירו מדוע בסימון $p(x)$ אין אפשרות לצמצם את $x$ כדי לקבל מספר הקרוי $p$.",
+       "text": "הערך הסבירו מדוע בסימון $p(x)$ אין אפשרות לצמצם את $x$ כדי לקבל מספר הקרוי $p$."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q19",
+   "label": 19,
+   "text": "★צרו שתי דוגמאות של חוק לינארי עולה: אחד יעבור בראשית, והאחר לא יעבור בה. אין חוק מוכתב.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "★צרו שתי דוגמאות של חוק לינארי עולה: אחד יעבור בראשית, והאחר לא יעבור בה. אין חוק מוכתב."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q19a",
+     "label": "א",
+     "text": "כתבו שני חוקים המקיימים את התנאים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "כתבו שני חוקים המקיימים את התנאים.",
+       "text": "הערך כתבו שני חוקים המקיימים את התנאים."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19b",
+     "label": "ב",
+     "text": "לכל אחד מצאו פלט בקלט אפס וקלט שהפלט בו אפס.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "לכל אחד מצאו פלט בקלט אפס וקלט שהפלט בו אפס.",
+       "text": "הערך לכל אחד מצאו פלט בקלט אפס וקלט שהפלט בו אפס."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19c",
+     "label": "ג",
+     "text": "אמתו שהחוקים עולים והסבירו מתי שתי בקשות האפס נותנות אותה נקודה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "אמתו שהחוקים עולים והסבירו מתי שתי בקשות האפס נותנות אותה נקודה.",
+       "text": "הערך אמתו שהחוקים עולים והסבירו מתי שתי בקשות האפס נותנות אותה נקודה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19d",
+     "label": "ד",
+     "text": "שרטטו במערכת אחת את שתי הדוגמאות שלכם וסמנו את חיתוכי הצירים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "שרטטו במערכת אחת את שתי הדוגמאות שלכם וסמנו את חיתוכי הצירים.",
+       "text": "הערך שרטטו במערכת אחת את שתי הדוגמאות שלכם וסמנו את חיתוכי הצירים."
+      }
+     ],
+     "to_construct": [
+      {
+       "text": "שרטוט שתי פונקציות התלמיד וסימון חיתוכי צירים"
+      }
+     ],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q20",
+   "label": 20,
+   "text": "★רשומה חסרה בטבלת $t(x)=11−3x$. יש חשד שאחת הרשומות המלאות שגויה.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "★רשומה חסרה בטבלת $t(x)=11−3x$. יש חשד שאחת הרשומות המלאות שגויה."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "$x$",
+     "$t(x)$"
+    ],
+    "rows": [
+     [
+      "$−1$",
+      "$8$"
+     ],
+     [
+      "$2$",
+      "$5$"
+     ],
+     [
+      "",
+      "$−4$"
+     ],
+     [
+      "$4$",
+      ""
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q20a",
+     "label": "א",
+     "text": "זהו את הרשומה השגויה ותקנו רק את הפלט שלה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "זהו את הרשומה השגויה ותקנו רק את הפלט שלה.",
+       "text": "הערך זהו את הרשומה השגויה ותקנו רק את הפלט שלה."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20b",
+     "label": "ב",
+     "text": "השלימו את הקלט החסר.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את הקלט החסר.",
+       "text": "הערך השלימו את הקלט החסר."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20c",
+     "label": "ג",
+     "text": "השלימו את הפלט החסר.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "השלימו את הפלט החסר.",
+       "text": "הערך השלימו את הפלט החסר."
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20d",
+     "label": "ד",
+     "text": "הכינו תרשים צירים משלכם וסמנו את כל הרשומות לאחר התיקון. הסבירו מדוע אינן דוגמאות לכמה פונקציות שונות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "הכינו תרשים צירים משלכם וסמנו את כל הרשומות לאחר התיקון. הסבירו מדוע אינן דוגמאות לכמה פונקציות שונות.",
+       "text": "הערך הכינו תרשים צירים משלכם וסמנו את כל הרשומות לאחר התיקון. הסבירו מדוע אינן דוגמאות לכמה פונקציות שונות."
+      }
+     ],
+     "to_construct": [
+      {
+       "text": "שרטוט צירים וסימון הרשומות המתוקנות"
+      }
+     ],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  }
+ ],
+ "figures": [
+  {
+   "id": "q1_head",
+   "svg": "figures/q1_head.svg",
+   "question": "q1",
+   "view": {
+    "width_px": 240.0,
+    "height_px": 364.9,
+    "unit_px": 0.611309,
+    "viewbox": [
+     392.6,
+     597.1
+    ]
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "pt-A",
+      "kind": "point",
+      "role": "point",
+      "name": "A",
+      "svg_xy": [
+       168.25,
+       183.8
+      ]
+     },
+     {
+      "svg_id": "pt-B",
+      "kind": "point",
+      "role": "point",
+      "name": "B",
+      "svg_xy": [
+       238.25,
+       323.8
+      ]
+     }
+    ],
+    "segments": [
+     {
+      "svg_id": "seg-axis-x",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.0,
+        393.8
+       ],
+       [
+        362.5,
+        393.8
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-axis-y",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        133.25,
+        588.05
+       ],
+       [
+        133.25,
+        24.55
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-A",
+      "kind": "label",
+      "role": "vertex",
+      "name": "A",
+      "text": "A",
+      "for": "A",
+      "svg_xy": [
+       175.44,
+       171.34
+      ],
+      "ink_box": [
+       169.65,
+       155.76,
+       181.23,
+       176.14
+      ]
+     },
+     {
+      "svg_id": "lbl-B",
+      "kind": "label",
+      "role": "vertex",
+      "name": "B",
+      "text": "B",
+      "for": "B",
+      "svg_xy": [
+       245.44,
+       311.34
+      ],
+      "ink_box": [
+       239.65,
+       295.76,
+       251.23,
+       316.14
+      ]
+     },
+     {
+      "svg_id": "lbl-f",
+      "kind": "label",
+      "role": "value",
+      "name": "f",
+      "text": "f",
+      "for": "f",
+      "svg_xy": [
+       88.08,
+       33.63
+      ],
+      "ink_box": [
+       82.29,
+       18.05,
+       93.87,
+       38.42
+      ]
+     },
+     {
+      "svg_id": "lbl-o0",
+      "kind": "label",
+      "role": "value",
+      "name": "o0",
+      "text": "0",
+      "for": "o0",
+      "svg_xy": [
+       121.21,
+       408.65
+      ],
+      "ink_box": [
+       116.33,
+       395.53,
+       126.08,
+       412.69
+      ]
+     },
+     {
+      "svg_id": "lbl-x",
+      "kind": "label",
+      "role": "value",
+      "name": "x",
+      "text": "x",
+      "for": "x",
+      "svg_xy": [
+       377.85,
+       402.26
+      ],
+      "ink_box": [
+       372.05,
+       386.68,
+       383.64,
+       407.06
+      ]
+     },
+     {
+      "svg_id": "lbl-x2",
+      "kind": "label",
+      "role": "value",
+      "name": "x2",
+      "text": "2",
+      "for": "x2",
+      "svg_xy": [
+       203.25,
+       412.74
+      ],
+      "ink_box": [
+       198.37,
+       399.62,
+       208.13,
+       416.78
+      ]
+     },
+     {
+      "svg_id": "lbl-x4",
+      "kind": "label",
+      "role": "value",
+      "name": "x4",
+      "text": "4",
+      "for": "x4",
+      "svg_xy": [
+       268.79,
+       412.74
+      ],
+      "ink_box": [
+       263.91,
+       399.62,
+       273.67,
+       416.78
+      ]
+     },
+     {
+      "svg_id": "lbl-x6",
+      "kind": "label",
+      "role": "value",
+      "name": "x6",
+      "text": "6",
+      "for": "x6",
+      "svg_xy": [
+       343.25,
+       412.74
+      ],
+      "ink_box": [
+       338.37,
+       399.62,
+       348.13,
+       416.78
+      ]
+     },
+     {
+      "svg_id": "lbl-xm2",
+      "kind": "label",
+      "role": "value",
+      "name": "xm2",
+      "text": "−2",
+      "for": "xm2",
+      "svg_xy": [
+       63.25,
+       412.74
+      ],
+      "ink_box": [
+       53.49,
+       399.62,
+       73.01,
+       416.78
+      ]
+     },
+     {
+      "svg_id": "lbl-y",
+      "kind": "label",
+      "role": "value",
+      "name": "y",
+      "text": "y",
+      "for": "y",
+      "svg_xy": [
+       117.39,
+       24.58
+      ],
+      "ink_box": [
+       111.6,
+       9.0,
+       123.19,
+       29.37
+      ]
+     },
+     {
+      "svg_id": "lbl-y10",
+      "kind": "label",
+      "role": "value",
+      "name": "y10",
+      "text": "10",
+      "for": "y10",
+      "svg_xy": [
+       117.0,
+       48.34
+      ],
+      "ink_box": [
+       107.25,
+       35.22,
+       126.76,
+       52.38
+      ]
+     },
+     {
+      "svg_id": "lbl-y2",
+      "kind": "label",
+      "role": "value",
+      "name": "y2",
+      "text": "2",
+      "for": "y2",
+      "svg_xy": [
+       121.21,
+       328.34
+      ],
+      "ink_box": [
+       116.33,
+       315.22,
+       126.08,
+       332.38
+      ]
+     },
+     {
+      "svg_id": "lbl-y4",
+      "kind": "label",
+      "role": "value",
+      "name": "y4",
+      "text": "4",
+      "for": "y4",
+      "svg_xy": [
+       121.21,
+       258.34
+      ],
+      "ink_box": [
+       116.33,
+       245.22,
+       126.08,
+       262.38
+      ]
+     },
+     {
+      "svg_id": "lbl-y6",
+      "kind": "label",
+      "role": "value",
+      "name": "y6",
+      "text": "6",
+      "for": "y6",
+      "svg_xy": [
+       121.21,
+       188.34
+      ],
+      "ink_box": [
+       116.33,
+       175.22,
+       126.08,
+       192.38
+      ]
+     },
+     {
+      "svg_id": "lbl-y8",
+      "kind": "label",
+      "role": "value",
+      "name": "y8",
+      "text": "8",
+      "for": "y8",
+      "svg_xy": [
+       121.21,
+       118.34
+      ],
+      "ink_box": [
+       116.33,
+       105.22,
+       126.08,
+       122.38
+      ]
+     },
+     {
+      "svg_id": "lbl-ym2",
+      "kind": "label",
+      "role": "value",
+      "name": "ym2",
+      "text": "−2",
+      "for": "ym2",
+      "svg_xy": [
+       117.0,
+       468.34
+      ],
+      "ink_box": [
+       107.25,
+       455.22,
+       126.76,
+       472.38
+      ]
+     },
+     {
+      "svg_id": "lbl-ym4",
+      "kind": "label",
+      "role": "value",
+      "name": "ym4",
+      "text": "−4",
+      "for": "ym4",
+      "svg_xy": [
+       117.0,
+       538.34
+      ],
+      "ink_box": [
+       107.25,
+       525.22,
+       126.76,
+       542.38
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q1_head",
+    "kind": "coordinate_plane",
+    "visual_support": "full",
+    "question": "q1",
+    "svg": "figures/q1_head.svg",
+    "view": {
+     "viewbox": [
+      392.6,
+      597.1
+     ]
+    },
+    "objects": [
+     {
+      "id": "seg-axis-x",
+      "svg_id": "seg-axis-x",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.0,
+        393.8
+       ],
+       [
+        362.5,
+        393.8
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-axis-y",
+      "svg_id": "seg-axis-y",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        133.25,
+        588.05
+       ],
+       [
+        133.25,
+        24.55
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-A",
+      "svg_id": "pt-A",
+      "type": "point",
+      "part": "point",
+      "name": "A",
+      "svg_xy": [
+       168.25,
+       183.8
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "pt-B",
+      "svg_id": "pt-B",
+      "type": "point",
+      "part": "point",
+      "name": "B",
+      "svg_xy": [
+       238.25,
+       323.8
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-A",
+      "svg_id": "lbl-A",
+      "type": "label",
+      "part": "vertex",
+      "name": "A",
+      "text": "A",
+      "svg_xy": [
+       175.44,
+       171.34
+      ],
+      "bbox": [
+       169.65,
+       155.76,
+       181.23,
+       176.14
+      ],
+      "for": "A",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-B",
+      "svg_id": "lbl-B",
+      "type": "label",
+      "part": "vertex",
+      "name": "B",
+      "text": "B",
+      "svg_xy": [
+       245.44,
+       311.34
+      ],
+      "bbox": [
+       239.65,
+       295.76,
+       251.23,
+       316.14
+      ],
+      "for": "B",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-f",
+      "svg_id": "lbl-f",
+      "type": "label",
+      "part": "value",
+      "name": "f",
+      "text": "f",
+      "svg_xy": [
+       88.08,
+       33.63
+      ],
+      "bbox": [
+       82.29,
+       18.05,
+       93.87,
+       38.42
+      ],
+      "for": "f",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-o0",
+      "svg_id": "lbl-o0",
+      "type": "label",
+      "part": "value",
+      "name": "o0",
+      "text": "0",
+      "svg_xy": [
+       121.21,
+       408.65
+      ],
+      "bbox": [
+       116.33,
+       395.53,
+       126.08,
+       412.69
+      ],
+      "for": "o0",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x",
+      "svg_id": "lbl-x",
+      "type": "label",
+      "part": "value",
+      "name": "x",
+      "text": "x",
+      "svg_xy": [
+       377.85,
+       402.26
+      ],
+      "bbox": [
+       372.05,
+       386.68,
+       383.64,
+       407.06
+      ],
+      "for": "x",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x2",
+      "svg_id": "lbl-x2",
+      "type": "label",
+      "part": "value",
+      "name": "x2",
+      "text": "2",
+      "svg_xy": [
+       203.25,
+       412.74
+      ],
+      "bbox": [
+       198.37,
+       399.62,
+       208.13,
+       416.78
+      ],
+      "for": "x2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x4",
+      "svg_id": "lbl-x4",
+      "type": "label",
+      "part": "value",
+      "name": "x4",
+      "text": "4",
+      "svg_xy": [
+       268.79,
+       412.74
+      ],
+      "bbox": [
+       263.91,
+       399.62,
+       273.67,
+       416.78
+      ],
+      "for": "x4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x6",
+      "svg_id": "lbl-x6",
+      "type": "label",
+      "part": "value",
+      "name": "x6",
+      "text": "6",
+      "svg_xy": [
+       343.25,
+       412.74
+      ],
+      "bbox": [
+       338.37,
+       399.62,
+       348.13,
+       416.78
+      ],
+      "for": "x6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-xm2",
+      "svg_id": "lbl-xm2",
+      "type": "label",
+      "part": "value",
+      "name": "xm2",
+      "text": "−2",
+      "svg_xy": [
+       63.25,
+       412.74
+      ],
+      "bbox": [
+       53.49,
+       399.62,
+       73.01,
+       416.78
+      ],
+      "for": "xm2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y",
+      "svg_id": "lbl-y",
+      "type": "label",
+      "part": "value",
+      "name": "y",
+      "text": "y",
+      "svg_xy": [
+       117.39,
+       24.58
+      ],
+      "bbox": [
+       111.6,
+       9.0,
+       123.19,
+       29.37
+      ],
+      "for": "y",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y10",
+      "svg_id": "lbl-y10",
+      "type": "label",
+      "part": "value",
+      "name": "y10",
+      "text": "10",
+      "svg_xy": [
+       117.0,
+       48.34
+      ],
+      "bbox": [
+       107.25,
+       35.22,
+       126.76,
+       52.38
+      ],
+      "for": "y10",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y2",
+      "svg_id": "lbl-y2",
+      "type": "label",
+      "part": "value",
+      "name": "y2",
+      "text": "2",
+      "svg_xy": [
+       121.21,
+       328.34
+      ],
+      "bbox": [
+       116.33,
+       315.22,
+       126.08,
+       332.38
+      ],
+      "for": "y2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y4",
+      "svg_id": "lbl-y4",
+      "type": "label",
+      "part": "value",
+      "name": "y4",
+      "text": "4",
+      "svg_xy": [
+       121.21,
+       258.34
+      ],
+      "bbox": [
+       116.33,
+       245.22,
+       126.08,
+       262.38
+      ],
+      "for": "y4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y6",
+      "svg_id": "lbl-y6",
+      "type": "label",
+      "part": "value",
+      "name": "y6",
+      "text": "6",
+      "svg_xy": [
+       121.21,
+       188.34
+      ],
+      "bbox": [
+       116.33,
+       175.22,
+       126.08,
+       192.38
+      ],
+      "for": "y6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y8",
+      "svg_id": "lbl-y8",
+      "type": "label",
+      "part": "value",
+      "name": "y8",
+      "text": "8",
+      "svg_xy": [
+       121.21,
+       118.34
+      ],
+      "bbox": [
+       116.33,
+       105.22,
+       126.08,
+       122.38
+      ],
+      "for": "y8",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym2",
+      "svg_id": "lbl-ym2",
+      "type": "label",
+      "part": "value",
+      "name": "ym2",
+      "text": "−2",
+      "svg_xy": [
+       117.0,
+       468.34
+      ],
+      "bbox": [
+       107.25,
+       455.22,
+       126.76,
+       472.38
+      ],
+      "for": "ym2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym4",
+      "svg_id": "lbl-ym4",
+      "type": "label",
+      "part": "value",
+      "name": "ym4",
+      "text": "−4",
+      "svg_xy": [
+       117.0,
+       538.34
+      ],
+      "bbox": [
+       107.25,
+       525.22,
+       126.76,
+       542.38
+      ],
+      "for": "ym4",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-f",
+      "type": "statement",
+      "role": "given",
+      "text": "הגרף הוא של הפונקציה $f$. אין נוסחה נתונה.",
+      "objects": []
+     },
+     {
+      "id": "r-find-f0AB",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q1a",
+      "quantity": "value",
+      "what": "קראו מן הגרף את $f(0)$ ואת שיעורי A ו־B. כתבו את שתי ההתאמות המסומנות בסימון פונקציה. שחזרו חוק מתאים מן הקריאות ואמתו בו את שתי הנקודות.",
+      "text": "הערך קראו מן הגרף את $f(0)$ ואת שיעורי A ו־B. כתבו את שתי ההתאמות המסומנות בסימון פונקציה. שחזרו חוק מתאים מן הקריאות ואמתו בו את שתי הנקודות.",
+      "objects": []
+     },
+     {
+      "id": "r-find-fx4",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q1b",
+      "quantity": "value",
+      "what": "רשמו את הקלט שעבורו $f(x)=4$. הסבירו מאיזה ציר התחלתם.",
+      "text": "הערך רשמו את הקלט שעבורו $f(x)=4$. הסבירו מאיזה ציר התחלתם.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q1c",
+      "quantity": "value",
+      "what": "תלמיד החליף בין הקלט והפלט בתוצאה שמצאתם בסעיף ב וטען שגם ההתאמה ההפוכה מתקיימת. בדקו ותקנו בעזרת הגרף.",
+      "text": "הערך תלמיד החליף בין הקלט והפלט בתוצאה שמצאתם בסעיף ב וטען שגם ההתאמה ההפוכה מתקיימת. בדקו ותקנו בעזרת הגרף.",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q1d",
+      "quantity": "value",
+      "what": "רשמו במילים מה מציינים האות, המספר שבסוגריים והערך בסימון שמצאתם בסעיף א.",
+      "text": "הערך רשמו במילים מה מציינים האות, המספר שבסוגריים והערך בסימון שמצאתם בסעיף א.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q1_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q7_head",
+   "svg": "figures/q7_head.svg",
+   "question": "q7",
+   "view": {
+    "width_px": 240.0,
+    "height_px": 193.1,
+    "unit_px": 0.943396,
+    "viewbox": [
+     254.4,
+     204.7
+    ]
+   },
+   "objects": {
+    "segments": [
+     {
+      "svg_id": "seg-axis-x",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.22,
+        84.67
+       ],
+       [
+        231.22,
+        84.67
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-axis-y",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        60.22,
+        195.67
+       ],
+       [
+        60.22,
+        13.67
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-o0",
+      "kind": "label",
+      "role": "value",
+      "name": "o0",
+      "text": "0",
+      "for": "o0",
+      "svg_xy": [
+       52.22,
+       94.86
+      ],
+      "ink_box": [
+       48.94,
+       86.01,
+       55.51,
+       97.58
+      ]
+     },
+     {
+      "svg_id": "lbl-v",
+      "kind": "label",
+      "role": "value",
+      "name": "v",
+      "text": "v",
+      "for": "v",
+      "svg_xy": [
+       12.9,
+       171.98
+      ],
+      "ink_box": [
+       9.0,
+       161.48,
+       16.81,
+       175.22
+      ]
+     },
+     {
+      "svg_id": "lbl-x",
+      "kind": "label",
+      "role": "value",
+      "name": "x",
+      "text": "x",
+      "for": "x",
+      "svg_xy": [
+       241.52,
+       90.36
+      ],
+      "ink_box": [
+       237.61,
+       79.86,
+       245.42,
+       93.59
+      ]
+     },
+     {
+      "svg_id": "lbl-x2",
+      "kind": "label",
+      "role": "value",
+      "name": "x2",
+      "text": "2",
+      "for": "x2",
+      "svg_xy": [
+       100.22,
+       97.31
+      ],
+      "ink_box": [
+       96.93,
+       88.47,
+       103.51,
+       100.04
+      ]
+     },
+     {
+      "svg_id": "lbl-x4",
+      "kind": "label",
+      "role": "value",
+      "name": "x4",
+      "text": "4",
+      "for": "x4",
+      "svg_xy": [
+       140.22,
+       97.31
+      ],
+      "ink_box": [
+       136.93,
+       88.47,
+       143.51,
+       100.04
+      ]
+     },
+     {
+      "svg_id": "lbl-x6",
+      "kind": "label",
+      "role": "value",
+      "name": "x6",
+      "text": "6",
+      "for": "x6",
+      "svg_xy": [
+       180.22,
+       97.31
+      ],
+      "ink_box": [
+       176.93,
+       88.47,
+       183.51,
+       100.04
+      ]
+     },
+     {
+      "svg_id": "lbl-x8",
+      "kind": "label",
+      "role": "value",
+      "name": "x8",
+      "text": "8",
+      "for": "x8",
+      "svg_xy": [
+       220.22,
+       97.31
+      ],
+      "ink_box": [
+       216.93,
+       88.47,
+       223.51,
+       100.04
+      ]
+     },
+     {
+      "svg_id": "lbl-xm2",
+      "kind": "label",
+      "role": "value",
+      "name": "xm2",
+      "text": "−2",
+      "for": "xm2",
+      "svg_xy": [
+       20.22,
+       97.31
+      ],
+      "ink_box": [
+       13.65,
+       88.47,
+       26.8,
+       100.04
+      ]
+     },
+     {
+      "svg_id": "lbl-y",
+      "kind": "label",
+      "role": "value",
+      "name": "y",
+      "text": "y",
+      "for": "y",
+      "svg_xy": [
+       49.22,
+       19.5
+      ],
+      "ink_box": [
+       45.32,
+       9.0,
+       53.13,
+       22.73
+      ]
+     },
+     {
+      "svg_id": "lbl-y2",
+      "kind": "label",
+      "role": "value",
+      "name": "y2",
+      "text": "2",
+      "for": "y2",
+      "svg_xy": [
+       52.22,
+       47.73
+      ],
+      "ink_box": [
+       48.94,
+       38.88,
+       55.51,
+       50.45
+      ]
+     },
+     {
+      "svg_id": "lbl-ym2",
+      "kind": "label",
+      "role": "value",
+      "name": "ym2",
+      "text": "−2",
+      "for": "ym2",
+      "svg_xy": [
+       49.39,
+       127.73
+      ],
+      "ink_box": [
+       42.81,
+       118.88,
+       55.97,
+       130.45
+      ]
+     },
+     {
+      "svg_id": "lbl-ym4",
+      "kind": "label",
+      "role": "value",
+      "name": "ym4",
+      "text": "−4",
+      "for": "ym4",
+      "svg_xy": [
+       49.39,
+       167.73
+      ],
+      "ink_box": [
+       42.81,
+       158.88,
+       55.97,
+       170.45
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q7_head",
+    "kind": "coordinate_plane",
+    "visual_support": "full",
+    "question": "q7",
+    "svg": "figures/q7_head.svg",
+    "view": {
+     "viewbox": [
+      254.4,
+      204.7
+     ]
+    },
+    "objects": [
+     {
+      "id": "seg-axis-x",
+      "svg_id": "seg-axis-x",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.22,
+        84.67
+       ],
+       [
+        231.22,
+        84.67
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-axis-y",
+      "svg_id": "seg-axis-y",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        60.22,
+        195.67
+       ],
+       [
+        60.22,
+        13.67
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-o0",
+      "svg_id": "lbl-o0",
+      "type": "label",
+      "part": "value",
+      "name": "o0",
+      "text": "0",
+      "svg_xy": [
+       52.22,
+       94.86
+      ],
+      "bbox": [
+       48.94,
+       86.01,
+       55.51,
+       97.58
+      ],
+      "for": "o0",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-v",
+      "svg_id": "lbl-v",
+      "type": "label",
+      "part": "value",
+      "name": "v",
+      "text": "v",
+      "svg_xy": [
+       12.9,
+       171.98
+      ],
+      "bbox": [
+       9.0,
+       161.48,
+       16.81,
+       175.22
+      ],
+      "for": "v",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x",
+      "svg_id": "lbl-x",
+      "type": "label",
+      "part": "value",
+      "name": "x",
+      "text": "x",
+      "svg_xy": [
+       241.52,
+       90.36
+      ],
+      "bbox": [
+       237.61,
+       79.86,
+       245.42,
+       93.59
+      ],
+      "for": "x",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x2",
+      "svg_id": "lbl-x2",
+      "type": "label",
+      "part": "value",
+      "name": "x2",
+      "text": "2",
+      "svg_xy": [
+       100.22,
+       97.31
+      ],
+      "bbox": [
+       96.93,
+       88.47,
+       103.51,
+       100.04
+      ],
+      "for": "x2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x4",
+      "svg_id": "lbl-x4",
+      "type": "label",
+      "part": "value",
+      "name": "x4",
+      "text": "4",
+      "svg_xy": [
+       140.22,
+       97.31
+      ],
+      "bbox": [
+       136.93,
+       88.47,
+       143.51,
+       100.04
+      ],
+      "for": "x4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x6",
+      "svg_id": "lbl-x6",
+      "type": "label",
+      "part": "value",
+      "name": "x6",
+      "text": "6",
+      "svg_xy": [
+       180.22,
+       97.31
+      ],
+      "bbox": [
+       176.93,
+       88.47,
+       183.51,
+       100.04
+      ],
+      "for": "x6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x8",
+      "svg_id": "lbl-x8",
+      "type": "label",
+      "part": "value",
+      "name": "x8",
+      "text": "8",
+      "svg_xy": [
+       220.22,
+       97.31
+      ],
+      "bbox": [
+       216.93,
+       88.47,
+       223.51,
+       100.04
+      ],
+      "for": "x8",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-xm2",
+      "svg_id": "lbl-xm2",
+      "type": "label",
+      "part": "value",
+      "name": "xm2",
+      "text": "−2",
+      "svg_xy": [
+       20.22,
+       97.31
+      ],
+      "bbox": [
+       13.65,
+       88.47,
+       26.8,
+       100.04
+      ],
+      "for": "xm2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y",
+      "svg_id": "lbl-y",
+      "type": "label",
+      "part": "value",
+      "name": "y",
+      "text": "y",
+      "svg_xy": [
+       49.22,
+       19.5
+      ],
+      "bbox": [
+       45.32,
+       9.0,
+       53.13,
+       22.73
+      ],
+      "for": "y",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y2",
+      "svg_id": "lbl-y2",
+      "type": "label",
+      "part": "value",
+      "name": "y2",
+      "text": "2",
+      "svg_xy": [
+       52.22,
+       47.73
+      ],
+      "bbox": [
+       48.94,
+       38.88,
+       55.51,
+       50.45
+      ],
+      "for": "y2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym2",
+      "svg_id": "lbl-ym2",
+      "type": "label",
+      "part": "value",
+      "name": "ym2",
+      "text": "−2",
+      "svg_xy": [
+       49.39,
+       127.73
+      ],
+      "bbox": [
+       42.81,
+       118.88,
+       55.97,
+       130.45
+      ],
+      "for": "ym2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym4",
+      "svg_id": "lbl-ym4",
+      "type": "label",
+      "part": "value",
+      "name": "ym4",
+      "text": "−4",
+      "svg_xy": [
+       49.39,
+       167.73
+      ],
+      "bbox": [
+       42.81,
+       158.88,
+       55.97,
+       170.45
+      ],
+      "for": "ym4",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-vxfx23314",
+      "type": "statement",
+      "role": "given",
+      "text": "הישר המצויר מתאים ל־$v(x)=\\f{x}{2}−3$. בודקים נקודה ששיעוריה $(3,−1.4)$ שנראית קרובה לקו.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q7a",
+      "quantity": "value",
+      "what": "קראו מהגרף אומדן לפלט בקלט של הנקודה.",
+      "text": "הערך קראו מהגרף אומדן לפלט בקלט של הנקודה.",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q7b",
+      "quantity": "value",
+      "what": "בדקו בחישוב מדויק אם הנקודה שייכת לגרף.",
+      "text": "הערך בדקו בחישוב מדויק אם הנקודה שייכת לגרף.",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q7c",
+      "quantity": "value",
+      "what": "שמרו את הקלט של הנקודה ותקנו את שיעורה האנכי כך שתשייך לגרף.",
+      "text": "הערך שמרו את הקלט של הנקודה ותקנו את שיעורה האנכי כך שתשייך לגרף.",
+      "objects": []
+     },
+     {
+      "id": "r-find-4",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q7d",
+      "quantity": "value",
+      "what": "מדוע קרבה חזותית אינה מספיקה? ציינו איזו מן הבדיקות מכריעה.",
+      "text": "הערך מדוע קרבה חזותית אינה מספיקה? ציינו איזו מן הבדיקות מכריעה.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q7_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q10_head",
+   "svg": "figures/q10_head.svg",
+   "question": "q10",
+   "view": {
+    "width_px": 213.3,
+    "height_px": 349.8,
+    "unit_px": 1.0,
+    "viewbox": [
+     213.3,
+     349.8
+    ]
+   },
+   "objects": {
+    "segments": [
+     {
+      "svg_id": "seg-axis-x",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.0,
+        229.78
+       ],
+       [
+        191.0,
+        229.78
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-axis-y",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        60.0,
+        340.78
+       ],
+       [
+        60.0,
+        18.78
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-f",
+      "kind": "label",
+      "role": "value",
+      "name": "f",
+      "text": "f",
+      "for": "f",
+      "svg_xy": [
+       13.08,
+       316.7
+      ],
+      "ink_box": [
+       9.43,
+       306.9,
+       16.72,
+       319.72
+      ]
+     },
+     {
+      "svg_id": "lbl-g",
+      "kind": "label",
+      "role": "value",
+      "name": "g",
+      "text": "g",
+      "for": "g",
+      "svg_xy": [
+       32.53,
+       20.32
+      ],
+      "ink_box": [
+       28.89,
+       10.52,
+       36.18,
+       23.34
+      ]
+     },
+     {
+      "svg_id": "lbl-o0",
+      "kind": "label",
+      "role": "value",
+      "name": "o0",
+      "text": "0",
+      "for": "o0",
+      "svg_xy": [
+       52.44,
+       225.94
+      ],
+      "ink_box": [
+       49.37,
+       217.69,
+       55.5,
+       228.48
+      ]
+     },
+     {
+      "svg_id": "lbl-x",
+      "kind": "label",
+      "role": "value",
+      "name": "x",
+      "text": "x",
+      "for": "x",
+      "svg_xy": [
+       200.65,
+       235.1
+      ],
+      "ink_box": [
+       197.0,
+       225.3,
+       204.29,
+       238.12
+      ]
+     },
+     {
+      "svg_id": "lbl-x2",
+      "kind": "label",
+      "role": "value",
+      "name": "x2",
+      "text": "2",
+      "for": "x2",
+      "svg_xy": [
+       99.15,
+       223.63
+      ],
+      "ink_box": [
+       96.08,
+       215.38,
+       102.22,
+       226.17
+      ]
+     },
+     {
+      "svg_id": "lbl-x4",
+      "kind": "label",
+      "role": "value",
+      "name": "x4",
+      "text": "4",
+      "for": "x4",
+      "svg_xy": [
+       140.0,
+       223.63
+      ],
+      "ink_box": [
+       136.93,
+       215.38,
+       143.07,
+       226.17
+      ]
+     },
+     {
+      "svg_id": "lbl-x6",
+      "kind": "label",
+      "role": "value",
+      "name": "x6",
+      "text": "6",
+      "for": "x6",
+      "svg_xy": [
+       180.0,
+       223.63
+      ],
+      "ink_box": [
+       176.93,
+       215.38,
+       183.07,
+       226.17
+      ]
+     },
+     {
+      "svg_id": "lbl-xm2",
+      "kind": "label",
+      "role": "value",
+      "name": "xm2",
+      "text": "−2",
+      "for": "xm2",
+      "svg_xy": [
+       20.0,
+       223.63
+      ],
+      "ink_box": [
+       13.86,
+       215.38,
+       26.14,
+       226.17
+      ]
+     },
+     {
+      "svg_id": "lbl-y",
+      "kind": "label",
+      "role": "value",
+      "name": "y",
+      "text": "y",
+      "for": "y",
+      "svg_xy": [
+       50.03,
+       18.8
+      ],
+      "ink_box": [
+       46.39,
+       9.0,
+       53.68,
+       21.81
+      ]
+     },
+     {
+      "svg_id": "lbl-y10",
+      "kind": "label",
+      "role": "value",
+      "name": "y10",
+      "text": "10",
+      "for": "y10",
+      "svg_xy": [
+       49.79,
+       32.64
+      ],
+      "ink_box": [
+       43.65,
+       24.38,
+       55.93,
+       35.17
+      ]
+     },
+     {
+      "svg_id": "lbl-y2",
+      "kind": "label",
+      "role": "value",
+      "name": "y2",
+      "text": "2",
+      "for": "y2",
+      "svg_xy": [
+       52.44,
+       192.64
+      ],
+      "ink_box": [
+       49.37,
+       184.38,
+       55.5,
+       195.17
+      ]
+     },
+     {
+      "svg_id": "lbl-y4",
+      "kind": "label",
+      "role": "value",
+      "name": "y4",
+      "text": "4",
+      "for": "y4",
+      "svg_xy": [
+       52.44,
+       152.64
+      ],
+      "ink_box": [
+       49.37,
+       144.38,
+       55.5,
+       155.17
+      ]
+     },
+     {
+      "svg_id": "lbl-y6",
+      "kind": "label",
+      "role": "value",
+      "name": "y6",
+      "text": "6",
+      "for": "y6",
+      "svg_xy": [
+       52.44,
+       112.64
+      ],
+      "ink_box": [
+       49.37,
+       104.38,
+       55.5,
+       115.17
+      ]
+     },
+     {
+      "svg_id": "lbl-y8",
+      "kind": "label",
+      "role": "value",
+      "name": "y8",
+      "text": "8",
+      "for": "y8",
+      "svg_xy": [
+       67.56,
+       72.64
+      ],
+      "ink_box": [
+       64.5,
+       64.38,
+       70.63,
+       75.17
+      ]
+     },
+     {
+      "svg_id": "lbl-ym2",
+      "kind": "label",
+      "role": "value",
+      "name": "ym2",
+      "text": "−2",
+      "for": "ym2",
+      "svg_xy": [
+       49.79,
+       270.09
+      ],
+      "ink_box": [
+       43.65,
+       261.83,
+       55.93,
+       272.62
+      ]
+     },
+     {
+      "svg_id": "lbl-ym4",
+      "kind": "label",
+      "role": "value",
+      "name": "ym4",
+      "text": "−4",
+      "for": "ym4",
+      "svg_xy": [
+       49.79,
+       312.64
+      ],
+      "ink_box": [
+       43.65,
+       304.38,
+       55.93,
+       315.17
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q10_head",
+    "kind": "coordinate_plane",
+    "visual_support": "full",
+    "question": "q10",
+    "svg": "figures/q10_head.svg",
+    "view": {
+     "viewbox": [
+      213.3,
+      349.8
+     ]
+    },
+    "objects": [
+     {
+      "id": "seg-axis-x",
+      "svg_id": "seg-axis-x",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.0,
+        229.78
+       ],
+       [
+        191.0,
+        229.78
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-axis-y",
+      "svg_id": "seg-axis-y",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        60.0,
+        340.78
+       ],
+       [
+        60.0,
+        18.78
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-f",
+      "svg_id": "lbl-f",
+      "type": "label",
+      "part": "value",
+      "name": "f",
+      "text": "f",
+      "svg_xy": [
+       13.08,
+       316.7
+      ],
+      "bbox": [
+       9.43,
+       306.9,
+       16.72,
+       319.72
+      ],
+      "for": "f",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-g",
+      "svg_id": "lbl-g",
+      "type": "label",
+      "part": "value",
+      "name": "g",
+      "text": "g",
+      "svg_xy": [
+       32.53,
+       20.32
+      ],
+      "bbox": [
+       28.89,
+       10.52,
+       36.18,
+       23.34
+      ],
+      "for": "g",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-o0",
+      "svg_id": "lbl-o0",
+      "type": "label",
+      "part": "value",
+      "name": "o0",
+      "text": "0",
+      "svg_xy": [
+       52.44,
+       225.94
+      ],
+      "bbox": [
+       49.37,
+       217.69,
+       55.5,
+       228.48
+      ],
+      "for": "o0",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x",
+      "svg_id": "lbl-x",
+      "type": "label",
+      "part": "value",
+      "name": "x",
+      "text": "x",
+      "svg_xy": [
+       200.65,
+       235.1
+      ],
+      "bbox": [
+       197.0,
+       225.3,
+       204.29,
+       238.12
+      ],
+      "for": "x",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x2",
+      "svg_id": "lbl-x2",
+      "type": "label",
+      "part": "value",
+      "name": "x2",
+      "text": "2",
+      "svg_xy": [
+       99.15,
+       223.63
+      ],
+      "bbox": [
+       96.08,
+       215.38,
+       102.22,
+       226.17
+      ],
+      "for": "x2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x4",
+      "svg_id": "lbl-x4",
+      "type": "label",
+      "part": "value",
+      "name": "x4",
+      "text": "4",
+      "svg_xy": [
+       140.0,
+       223.63
+      ],
+      "bbox": [
+       136.93,
+       215.38,
+       143.07,
+       226.17
+      ],
+      "for": "x4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x6",
+      "svg_id": "lbl-x6",
+      "type": "label",
+      "part": "value",
+      "name": "x6",
+      "text": "6",
+      "svg_xy": [
+       180.0,
+       223.63
+      ],
+      "bbox": [
+       176.93,
+       215.38,
+       183.07,
+       226.17
+      ],
+      "for": "x6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-xm2",
+      "svg_id": "lbl-xm2",
+      "type": "label",
+      "part": "value",
+      "name": "xm2",
+      "text": "−2",
+      "svg_xy": [
+       20.0,
+       223.63
+      ],
+      "bbox": [
+       13.86,
+       215.38,
+       26.14,
+       226.17
+      ],
+      "for": "xm2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y",
+      "svg_id": "lbl-y",
+      "type": "label",
+      "part": "value",
+      "name": "y",
+      "text": "y",
+      "svg_xy": [
+       50.03,
+       18.8
+      ],
+      "bbox": [
+       46.39,
+       9.0,
+       53.68,
+       21.81
+      ],
+      "for": "y",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y10",
+      "svg_id": "lbl-y10",
+      "type": "label",
+      "part": "value",
+      "name": "y10",
+      "text": "10",
+      "svg_xy": [
+       49.79,
+       32.64
+      ],
+      "bbox": [
+       43.65,
+       24.38,
+       55.93,
+       35.17
+      ],
+      "for": "y10",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y2",
+      "svg_id": "lbl-y2",
+      "type": "label",
+      "part": "value",
+      "name": "y2",
+      "text": "2",
+      "svg_xy": [
+       52.44,
+       192.64
+      ],
+      "bbox": [
+       49.37,
+       184.38,
+       55.5,
+       195.17
+      ],
+      "for": "y2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y4",
+      "svg_id": "lbl-y4",
+      "type": "label",
+      "part": "value",
+      "name": "y4",
+      "text": "4",
+      "svg_xy": [
+       52.44,
+       152.64
+      ],
+      "bbox": [
+       49.37,
+       144.38,
+       55.5,
+       155.17
+      ],
+      "for": "y4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y6",
+      "svg_id": "lbl-y6",
+      "type": "label",
+      "part": "value",
+      "name": "y6",
+      "text": "6",
+      "svg_xy": [
+       52.44,
+       112.64
+      ],
+      "bbox": [
+       49.37,
+       104.38,
+       55.5,
+       115.17
+      ],
+      "for": "y6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y8",
+      "svg_id": "lbl-y8",
+      "type": "label",
+      "part": "value",
+      "name": "y8",
+      "text": "8",
+      "svg_xy": [
+       67.56,
+       72.64
+      ],
+      "bbox": [
+       64.5,
+       64.38,
+       70.63,
+       75.17
+      ],
+      "for": "y8",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym2",
+      "svg_id": "lbl-ym2",
+      "type": "label",
+      "part": "value",
+      "name": "ym2",
+      "text": "−2",
+      "svg_xy": [
+       49.79,
+       270.09
+      ],
+      "bbox": [
+       43.65,
+       261.83,
+       55.93,
+       272.62
+      ],
+      "for": "ym2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym4",
+      "svg_id": "lbl-ym4",
+      "type": "label",
+      "part": "value",
+      "name": "ym4",
+      "text": "−4",
+      "svg_xy": [
+       49.79,
+       312.64
+      ],
+      "bbox": [
+       43.65,
+       304.38,
+       55.93,
+       315.17
+      ],
+      "for": "ym4",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-fxx2gx2x7",
+      "type": "statement",
+      "role": "given",
+      "text": "בגרף מוצגים $f(x)=x−2$ ו־$g(x)=−2x+7$. שתי תוויות הערכים בדוח נשמטו.",
+      "objects": []
+     },
+     {
+      "id": "r-find-f2g2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q10a",
+      "quantity": "value",
+      "what": "קראו מן הגרף את $f(2)$ ואת $g(2)$.",
+      "text": "הערך קראו מן הגרף את $f(2)$ ואת $g(2)$.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q10b",
+      "quantity": "value",
+      "what": "קראו את נקודת החיתוך ובדקו אותה בחוקים.",
+      "text": "הערך קראו את נקודת החיתוך ובדקו אותה בחוקים.",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q10c",
+      "quantity": "value",
+      "what": "האם הפלטים שווים בקלט שבסעיף א? האם הם שווים בקלט שמצאתם בסעיף ב? נמקו מתוך תשובותיכם.",
+      "text": "הערך האם הפלטים שווים בקלט שבסעיף א? האם הם שווים בקלט שמצאתם בסעיף ב? נמקו מתוך תשובותיכם.",
+      "objects": []
+     },
+     {
+      "id": "r-find-fg",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q10d",
+      "quantity": "value",
+      "what": "תלמיד השווה את f בקלט שבסעיף א עם g בקלט שמצאתם בסעיף ב וטען שבדק חיתוך. הסבירו את הפגם בלי לחשב מחדש.",
+      "text": "הערך תלמיד השווה את f בקלט שבסעיף א עם g בקלט שמצאתם בסעיף ב וטען שבדק חיתוך. הסבירו את הפגם בלי לחשב מחדש.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q10_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q11_head",
+   "svg": "figures/q11_head.svg",
+   "question": "q11",
+   "view": {
+    "width_px": 213.3,
+    "height_px": 249.8,
+    "unit_px": 1.0,
+    "viewbox": [
+     213.3,
+     249.8
+    ]
+   },
+   "objects": {
+    "segments": [
+     {
+      "svg_id": "seg-axis-x",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.0,
+        149.78
+       ],
+       [
+        191.0,
+        149.78
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-axis-y",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        60.0,
+        240.78
+       ],
+       [
+        60.0,
+        18.78
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-o0",
+      "kind": "label",
+      "role": "value",
+      "name": "o0",
+      "text": "0",
+      "for": "o0",
+      "svg_xy": [
+       52.44,
+       159.38
+      ],
+      "ink_box": [
+       49.37,
+       151.12,
+       55.5,
+       161.91
+      ]
+     },
+     {
+      "svg_id": "lbl-w",
+      "kind": "label",
+      "role": "value",
+      "name": "w",
+      "text": "w",
+      "for": "w",
+      "svg_xy": [
+       26.92,
+       42.86
+      ],
+      "ink_box": [
+       23.28,
+       33.06,
+       30.57,
+       45.87
+      ]
+     },
+     {
+      "svg_id": "lbl-x",
+      "kind": "label",
+      "role": "value",
+      "name": "x",
+      "text": "x",
+      "for": "x",
+      "svg_xy": [
+       200.65,
+       155.1
+      ],
+      "ink_box": [
+       197.0,
+       145.3,
+       204.29,
+       158.12
+      ]
+     },
+     {
+      "svg_id": "lbl-x2",
+      "kind": "label",
+      "role": "value",
+      "name": "x2",
+      "text": "2",
+      "for": "x2",
+      "svg_xy": [
+       100.0,
+       161.68
+      ],
+      "ink_box": [
+       96.93,
+       153.43,
+       103.07,
+       164.22
+      ]
+     },
+     {
+      "svg_id": "lbl-x4",
+      "kind": "label",
+      "role": "value",
+      "name": "x4",
+      "text": "4",
+      "for": "x4",
+      "svg_xy": [
+       140.0,
+       161.68
+      ],
+      "ink_box": [
+       136.93,
+       153.43,
+       143.07,
+       164.22
+      ]
+     },
+     {
+      "svg_id": "lbl-x6",
+      "kind": "label",
+      "role": "value",
+      "name": "x6",
+      "text": "6",
+      "for": "x6",
+      "svg_xy": [
+       180.0,
+       161.68
+      ],
+      "ink_box": [
+       176.93,
+       153.43,
+       183.07,
+       164.22
+      ]
+     },
+     {
+      "svg_id": "lbl-xm2",
+      "kind": "label",
+      "role": "value",
+      "name": "xm2",
+      "text": "−2",
+      "for": "xm2",
+      "svg_xy": [
+       20.0,
+       161.68
+      ],
+      "ink_box": [
+       13.86,
+       153.43,
+       26.14,
+       164.22
+      ]
+     },
+     {
+      "svg_id": "lbl-y",
+      "kind": "label",
+      "role": "value",
+      "name": "y",
+      "text": "y",
+      "for": "y",
+      "svg_xy": [
+       50.03,
+       18.8
+      ],
+      "ink_box": [
+       46.39,
+       9.0,
+       53.68,
+       21.81
+      ]
+     },
+     {
+      "svg_id": "lbl-y2",
+      "kind": "label",
+      "role": "value",
+      "name": "y2",
+      "text": "2",
+      "for": "y2",
+      "svg_xy": [
+       52.44,
+       112.64
+      ],
+      "ink_box": [
+       49.37,
+       104.38,
+       55.5,
+       115.17
+      ]
+     },
+     {
+      "svg_id": "lbl-y4",
+      "kind": "label",
+      "role": "value",
+      "name": "y4",
+      "text": "4",
+      "for": "y4",
+      "svg_xy": [
+       52.44,
+       72.64
+      ],
+      "ink_box": [
+       49.37,
+       64.38,
+       55.5,
+       75.17
+      ]
+     },
+     {
+      "svg_id": "lbl-y6",
+      "kind": "label",
+      "role": "value",
+      "name": "y6",
+      "text": "6",
+      "for": "y6",
+      "svg_xy": [
+       52.44,
+       32.64
+      ],
+      "ink_box": [
+       49.37,
+       24.38,
+       55.5,
+       35.17
+      ]
+     },
+     {
+      "svg_id": "lbl-ym2",
+      "kind": "label",
+      "role": "value",
+      "name": "ym2",
+      "text": "−2",
+      "for": "ym2",
+      "svg_xy": [
+       49.79,
+       192.64
+      ],
+      "ink_box": [
+       43.65,
+       184.38,
+       55.93,
+       195.17
+      ]
+     },
+     {
+      "svg_id": "lbl-ym4",
+      "kind": "label",
+      "role": "value",
+      "name": "ym4",
+      "text": "−4",
+      "for": "ym4",
+      "svg_xy": [
+       49.79,
+       232.64
+      ],
+      "ink_box": [
+       43.65,
+       224.38,
+       55.93,
+       235.17
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q11_head",
+    "kind": "coordinate_plane",
+    "visual_support": "full",
+    "question": "q11",
+    "svg": "figures/q11_head.svg",
+    "view": {
+     "viewbox": [
+      213.3,
+      249.8
+     ]
+    },
+    "objects": [
+     {
+      "id": "seg-axis-x",
+      "svg_id": "seg-axis-x",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.0,
+        149.78
+       ],
+       [
+        191.0,
+        149.78
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-axis-y",
+      "svg_id": "seg-axis-y",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        60.0,
+        240.78
+       ],
+       [
+        60.0,
+        18.78
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-o0",
+      "svg_id": "lbl-o0",
+      "type": "label",
+      "part": "value",
+      "name": "o0",
+      "text": "0",
+      "svg_xy": [
+       52.44,
+       159.38
+      ],
+      "bbox": [
+       49.37,
+       151.12,
+       55.5,
+       161.91
+      ],
+      "for": "o0",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-w",
+      "svg_id": "lbl-w",
+      "type": "label",
+      "part": "value",
+      "name": "w",
+      "text": "w",
+      "svg_xy": [
+       26.92,
+       42.86
+      ],
+      "bbox": [
+       23.28,
+       33.06,
+       30.57,
+       45.87
+      ],
+      "for": "w",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x",
+      "svg_id": "lbl-x",
+      "type": "label",
+      "part": "value",
+      "name": "x",
+      "text": "x",
+      "svg_xy": [
+       200.65,
+       155.1
+      ],
+      "bbox": [
+       197.0,
+       145.3,
+       204.29,
+       158.12
+      ],
+      "for": "x",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x2",
+      "svg_id": "lbl-x2",
+      "type": "label",
+      "part": "value",
+      "name": "x2",
+      "text": "2",
+      "svg_xy": [
+       100.0,
+       161.68
+      ],
+      "bbox": [
+       96.93,
+       153.43,
+       103.07,
+       164.22
+      ],
+      "for": "x2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x4",
+      "svg_id": "lbl-x4",
+      "type": "label",
+      "part": "value",
+      "name": "x4",
+      "text": "4",
+      "svg_xy": [
+       140.0,
+       161.68
+      ],
+      "bbox": [
+       136.93,
+       153.43,
+       143.07,
+       164.22
+      ],
+      "for": "x4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x6",
+      "svg_id": "lbl-x6",
+      "type": "label",
+      "part": "value",
+      "name": "x6",
+      "text": "6",
+      "svg_xy": [
+       180.0,
+       161.68
+      ],
+      "bbox": [
+       176.93,
+       153.43,
+       183.07,
+       164.22
+      ],
+      "for": "x6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-xm2",
+      "svg_id": "lbl-xm2",
+      "type": "label",
+      "part": "value",
+      "name": "xm2",
+      "text": "−2",
+      "svg_xy": [
+       20.0,
+       161.68
+      ],
+      "bbox": [
+       13.86,
+       153.43,
+       26.14,
+       164.22
+      ],
+      "for": "xm2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y",
+      "svg_id": "lbl-y",
+      "type": "label",
+      "part": "value",
+      "name": "y",
+      "text": "y",
+      "svg_xy": [
+       50.03,
+       18.8
+      ],
+      "bbox": [
+       46.39,
+       9.0,
+       53.68,
+       21.81
+      ],
+      "for": "y",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y2",
+      "svg_id": "lbl-y2",
+      "type": "label",
+      "part": "value",
+      "name": "y2",
+      "text": "2",
+      "svg_xy": [
+       52.44,
+       112.64
+      ],
+      "bbox": [
+       49.37,
+       104.38,
+       55.5,
+       115.17
+      ],
+      "for": "y2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y4",
+      "svg_id": "lbl-y4",
+      "type": "label",
+      "part": "value",
+      "name": "y4",
+      "text": "4",
+      "svg_xy": [
+       52.44,
+       72.64
+      ],
+      "bbox": [
+       49.37,
+       64.38,
+       55.5,
+       75.17
+      ],
+      "for": "y4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y6",
+      "svg_id": "lbl-y6",
+      "type": "label",
+      "part": "value",
+      "name": "y6",
+      "text": "6",
+      "svg_xy": [
+       52.44,
+       32.64
+      ],
+      "bbox": [
+       49.37,
+       24.38,
+       55.5,
+       35.17
+      ],
+      "for": "y6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym2",
+      "svg_id": "lbl-ym2",
+      "type": "label",
+      "part": "value",
+      "name": "ym2",
+      "text": "−2",
+      "svg_xy": [
+       49.79,
+       192.64
+      ],
+      "bbox": [
+       43.65,
+       184.38,
+       55.93,
+       195.17
+      ],
+      "for": "ym2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym4",
+      "svg_id": "lbl-ym4",
+      "type": "label",
+      "part": "value",
+      "name": "ym4",
+      "text": "−4",
+      "svg_xy": [
+       49.79,
+       232.64
+      ],
+      "bbox": [
+       43.65,
+       224.38,
+       55.93,
+       235.17
+      ],
+      "for": "ym4",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-w",
+      "type": "statement",
+      "role": "given",
+      "text": "הגרף של $w$ אינו נושא נקודות מסומנות. קראו את חיתוכי הצירים בעצמכם.",
+      "objects": []
+     },
+     {
+      "id": "r-find-1",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q11a",
+      "quantity": "value",
+      "what": "כתבו טענה המתארת את הפלט בקלט אפס. בנוסף קראו את הפלט בקלט 1, ואז חזרו ממנו אל קלטו בגרף. נמקו מדוע שתי הקריאות האחרונות מתארות אותה נקודה.",
+      "text": "הערך כתבו טענה המתארת את הפלט בקלט אפס. בנוסף קראו את הפלט בקלט 1, ואז חזרו ממנו אל קלטו בגרף. נמקו מדוע שתי הקריאות האחרונות מתארות אותה נקודה.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q11b",
+      "quantity": "value",
+      "what": "כתבו טענה המתארת קלט שהפלט בו אפס.",
+      "text": "הערך כתבו טענה המתארת קלט שהפלט בו אפס.",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q11c",
+      "quantity": "value",
+      "what": "כתבו את שתי נקודות החיתוך והסבירו מדוע הן שונות.",
+      "text": "הערך כתבו את שתי נקודות החיתוך והסבירו מדוע הן שונות.",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q11d",
+      "quantity": "value",
+      "what": "האם בכל פונקציה שתי הבקשות חייבות לתת נקודות שונות? תנו דוגמה נגדית בחוק.",
+      "text": "הערך האם בכל פונקציה שתי הבקשות חייבות לתת נקודות שונות? תנו דוגמה נגדית בחוק.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q11_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q15_head",
+   "svg": "figures/q15_head.svg",
+   "question": "q15",
+   "view": {
+    "width_px": 240.0,
+    "height_px": 284.5,
+    "unit_px": 0.933852,
+    "viewbox": [
+     257.0,
+     304.6
+    ]
+   },
+   "objects": {
+    "segments": [
+     {
+      "svg_id": "seg-axis-x",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        11.85,
+        244.64
+       ],
+       [
+        233.85,
+        244.64
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-axis-y",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        102.85,
+        295.64
+       ],
+       [
+        102.85,
+        13.64
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-j",
+      "kind": "label",
+      "role": "value",
+      "name": "j",
+      "text": "j",
+      "for": "j",
+      "svg_xy": [
+       12.89,
+       237.31
+      ],
+      "ink_box": [
+       9.0,
+       226.85,
+       16.77,
+       240.52
+      ]
+     },
+     {
+      "svg_id": "lbl-o0",
+      "kind": "label",
+      "role": "value",
+      "name": "o0",
+      "text": "0",
+      "for": "o0",
+      "svg_xy": [
+       94.8,
+       254.82
+      ],
+      "ink_box": [
+       91.53,
+       246.01,
+       98.07,
+       257.53
+      ]
+     },
+     {
+      "svg_id": "lbl-q",
+      "kind": "label",
+      "role": "value",
+      "name": "q",
+      "text": "q",
+      "for": "q",
+      "svg_xy": [
+       15.56,
+       221.93
+      ],
+      "ink_box": [
+       11.67,
+       211.47,
+       19.44,
+       225.14
+      ]
+     },
+     {
+      "svg_id": "lbl-x",
+      "kind": "label",
+      "role": "value",
+      "name": "x",
+      "text": "x",
+      "for": "x",
+      "svg_xy": [
+       244.13,
+       250.31
+      ],
+      "ink_box": [
+       240.24,
+       239.86,
+       248.02,
+       253.53
+      ]
+     },
+     {
+      "svg_id": "lbl-x2",
+      "kind": "label",
+      "role": "value",
+      "name": "x2",
+      "text": "2",
+      "for": "x2",
+      "svg_xy": [
+       142.85,
+       257.31
+      ],
+      "ink_box": [
+       139.57,
+       248.51,
+       146.12,
+       260.02
+      ]
+     },
+     {
+      "svg_id": "lbl-x4",
+      "kind": "label",
+      "role": "value",
+      "name": "x4",
+      "text": "4",
+      "for": "x4",
+      "svg_xy": [
+       182.85,
+       257.31
+      ],
+      "ink_box": [
+       179.57,
+       248.51,
+       186.12,
+       260.02
+      ]
+     },
+     {
+      "svg_id": "lbl-x6",
+      "kind": "label",
+      "role": "value",
+      "name": "x6",
+      "text": "6",
+      "for": "x6",
+      "svg_xy": [
+       222.85,
+       257.31
+      ],
+      "ink_box": [
+       219.57,
+       248.51,
+       226.12,
+       260.02
+      ]
+     },
+     {
+      "svg_id": "lbl-xm2",
+      "kind": "label",
+      "role": "value",
+      "name": "xm2",
+      "text": "−2",
+      "for": "xm2",
+      "svg_xy": [
+       62.85,
+       257.31
+      ],
+      "ink_box": [
+       56.3,
+       248.51,
+       69.39,
+       260.02
+      ]
+     },
+     {
+      "svg_id": "lbl-xm4",
+      "kind": "label",
+      "role": "value",
+      "name": "xm4",
+      "text": "−4",
+      "for": "xm4",
+      "svg_xy": [
+       22.85,
+       257.31
+      ],
+      "ink_box": [
+       16.3,
+       248.51,
+       29.39,
+       260.02
+      ]
+     },
+     {
+      "svg_id": "lbl-y",
+      "kind": "label",
+      "role": "value",
+      "name": "y",
+      "text": "y",
+      "for": "y",
+      "svg_xy": [
+       91.85,
+       19.45
+      ],
+      "ink_box": [
+       87.96,
+       9.0,
+       95.74,
+       22.67
+      ]
+     },
+     {
+      "svg_id": "lbl-y12",
+      "kind": "label",
+      "role": "value",
+      "name": "y12",
+      "text": "12",
+      "for": "y12",
+      "svg_xy": [
+       91.98,
+       127.68
+      ],
+      "ink_box": [
+       85.43,
+       118.88,
+       98.52,
+       130.39
+      ]
+     },
+     {
+      "svg_id": "lbl-y16",
+      "kind": "label",
+      "role": "value",
+      "name": "y16",
+      "text": "16",
+      "for": "y16",
+      "svg_xy": [
+       91.98,
+       87.68
+      ],
+      "ink_box": [
+       85.43,
+       78.88,
+       98.52,
+       90.39
+      ]
+     },
+     {
+      "svg_id": "lbl-y20",
+      "kind": "label",
+      "role": "value",
+      "name": "y20",
+      "text": "20",
+      "for": "y20",
+      "svg_xy": [
+       91.98,
+       47.68
+      ],
+      "ink_box": [
+       85.43,
+       38.88,
+       98.52,
+       50.39
+      ]
+     },
+     {
+      "svg_id": "lbl-y4",
+      "kind": "label",
+      "role": "value",
+      "name": "y4",
+      "text": "4",
+      "for": "y4",
+      "svg_xy": [
+       94.8,
+       207.68
+      ],
+      "ink_box": [
+       91.53,
+       198.88,
+       98.07,
+       210.39
+      ]
+     },
+     {
+      "svg_id": "lbl-y8",
+      "kind": "label",
+      "role": "value",
+      "name": "y8",
+      "text": "8",
+      "for": "y8",
+      "svg_xy": [
+       110.89,
+       165.98
+      ],
+      "ink_box": [
+       107.62,
+       157.18,
+       114.16,
+       168.69
+      ]
+     },
+     {
+      "svg_id": "lbl-ym4",
+      "kind": "label",
+      "role": "value",
+      "name": "ym4",
+      "text": "−4",
+      "for": "ym4",
+      "svg_xy": [
+       91.98,
+       287.68
+      ],
+      "ink_box": [
+       85.43,
+       278.88,
+       98.52,
+       290.39
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q15_head",
+    "kind": "coordinate_plane",
+    "visual_support": "full",
+    "question": "q15",
+    "svg": "figures/q15_head.svg",
+    "view": {
+     "viewbox": [
+      257.0,
+      304.6
+     ]
+    },
+    "objects": [
+     {
+      "id": "seg-axis-x",
+      "svg_id": "seg-axis-x",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        11.85,
+        244.64
+       ],
+       [
+        233.85,
+        244.64
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-axis-y",
+      "svg_id": "seg-axis-y",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        102.85,
+        295.64
+       ],
+       [
+        102.85,
+        13.64
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-j",
+      "svg_id": "lbl-j",
+      "type": "label",
+      "part": "value",
+      "name": "j",
+      "text": "j",
+      "svg_xy": [
+       12.89,
+       237.31
+      ],
+      "bbox": [
+       9.0,
+       226.85,
+       16.77,
+       240.52
+      ],
+      "for": "j",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-o0",
+      "svg_id": "lbl-o0",
+      "type": "label",
+      "part": "value",
+      "name": "o0",
+      "text": "0",
+      "svg_xy": [
+       94.8,
+       254.82
+      ],
+      "bbox": [
+       91.53,
+       246.01,
+       98.07,
+       257.53
+      ],
+      "for": "o0",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-q",
+      "svg_id": "lbl-q",
+      "type": "label",
+      "part": "value",
+      "name": "q",
+      "text": "q",
+      "svg_xy": [
+       15.56,
+       221.93
+      ],
+      "bbox": [
+       11.67,
+       211.47,
+       19.44,
+       225.14
+      ],
+      "for": "q",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x",
+      "svg_id": "lbl-x",
+      "type": "label",
+      "part": "value",
+      "name": "x",
+      "text": "x",
+      "svg_xy": [
+       244.13,
+       250.31
+      ],
+      "bbox": [
+       240.24,
+       239.86,
+       248.02,
+       253.53
+      ],
+      "for": "x",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x2",
+      "svg_id": "lbl-x2",
+      "type": "label",
+      "part": "value",
+      "name": "x2",
+      "text": "2",
+      "svg_xy": [
+       142.85,
+       257.31
+      ],
+      "bbox": [
+       139.57,
+       248.51,
+       146.12,
+       260.02
+      ],
+      "for": "x2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x4",
+      "svg_id": "lbl-x4",
+      "type": "label",
+      "part": "value",
+      "name": "x4",
+      "text": "4",
+      "svg_xy": [
+       182.85,
+       257.31
+      ],
+      "bbox": [
+       179.57,
+       248.51,
+       186.12,
+       260.02
+      ],
+      "for": "x4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x6",
+      "svg_id": "lbl-x6",
+      "type": "label",
+      "part": "value",
+      "name": "x6",
+      "text": "6",
+      "svg_xy": [
+       222.85,
+       257.31
+      ],
+      "bbox": [
+       219.57,
+       248.51,
+       226.12,
+       260.02
+      ],
+      "for": "x6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-xm2",
+      "svg_id": "lbl-xm2",
+      "type": "label",
+      "part": "value",
+      "name": "xm2",
+      "text": "−2",
+      "svg_xy": [
+       62.85,
+       257.31
+      ],
+      "bbox": [
+       56.3,
+       248.51,
+       69.39,
+       260.02
+      ],
+      "for": "xm2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-xm4",
+      "svg_id": "lbl-xm4",
+      "type": "label",
+      "part": "value",
+      "name": "xm4",
+      "text": "−4",
+      "svg_xy": [
+       22.85,
+       257.31
+      ],
+      "bbox": [
+       16.3,
+       248.51,
+       29.39,
+       260.02
+      ],
+      "for": "xm4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y",
+      "svg_id": "lbl-y",
+      "type": "label",
+      "part": "value",
+      "name": "y",
+      "text": "y",
+      "svg_xy": [
+       91.85,
+       19.45
+      ],
+      "bbox": [
+       87.96,
+       9.0,
+       95.74,
+       22.67
+      ],
+      "for": "y",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y12",
+      "svg_id": "lbl-y12",
+      "type": "label",
+      "part": "value",
+      "name": "y12",
+      "text": "12",
+      "svg_xy": [
+       91.98,
+       127.68
+      ],
+      "bbox": [
+       85.43,
+       118.88,
+       98.52,
+       130.39
+      ],
+      "for": "y12",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y16",
+      "svg_id": "lbl-y16",
+      "type": "label",
+      "part": "value",
+      "name": "y16",
+      "text": "16",
+      "svg_xy": [
+       91.98,
+       87.68
+      ],
+      "bbox": [
+       85.43,
+       78.88,
+       98.52,
+       90.39
+      ],
+      "for": "y16",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y20",
+      "svg_id": "lbl-y20",
+      "type": "label",
+      "part": "value",
+      "name": "y20",
+      "text": "20",
+      "svg_xy": [
+       91.98,
+       47.68
+      ],
+      "bbox": [
+       85.43,
+       38.88,
+       98.52,
+       50.39
+      ],
+      "for": "y20",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y4",
+      "svg_id": "lbl-y4",
+      "type": "label",
+      "part": "value",
+      "name": "y4",
+      "text": "4",
+      "svg_xy": [
+       94.8,
+       207.68
+      ],
+      "bbox": [
+       91.53,
+       198.88,
+       98.07,
+       210.39
+      ],
+      "for": "y4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y8",
+      "svg_id": "lbl-y8",
+      "type": "label",
+      "part": "value",
+      "name": "y8",
+      "text": "8",
+      "svg_xy": [
+       110.89,
+       165.98
+      ],
+      "bbox": [
+       107.62,
+       157.18,
+       114.16,
+       168.69
+      ],
+      "for": "y8",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym4",
+      "svg_id": "lbl-ym4",
+      "type": "label",
+      "part": "value",
+      "name": "ym4",
+      "text": "−4",
+      "svg_xy": [
+       91.98,
+       287.68
+      ],
+      "bbox": [
+       85.43,
+       278.88,
+       98.52,
+       290.39
+      ],
+      "for": "ym4",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-jx2x9",
+      "type": "statement",
+      "role": "given",
+      "text": "החוק הוא $j(x)=2x+9$. בודקים שלושה כרטיסי נקודות מן הטבלה.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q15a",
+      "quantity": "value",
+      "what": "אילו כרטיסים מתארים נקודה על הגרף? אמתו כל אחד.",
+      "text": "הערך אילו כרטיסים מתארים נקודה על הגרף? אמתו כל אחד.",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q15b",
+      "quantity": "value",
+      "what": "הכרטיס השגוי נוצר מהחלפת שיעורים של כרטיס אחר. זהו אותו והסבירו מדוע אין זו פעולה השומרת שייכות.",
+      "text": "הערך הכרטיס השגוי נוצר מהחלפת שיעורים של כרטיס אחר. זהו אותו והסבירו מדוע אין זו פעולה השומרת שייכות.",
+      "objects": []
+     },
+     {
+      "id": "r-find-3",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q15c",
+      "quantity": "value",
+      "what": "תקנו רק את השיעור האנכי בכרטיס השגוי.",
+      "text": "הערך תקנו רק את השיעור האנכי בכרטיס השגוי.",
+      "objects": []
+     },
+     {
+      "id": "r-find-qxx7",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q15d",
+      "quantity": "value",
+      "what": "האם הכרטיס הראשון שייך גם לגרף $q(x)=x+7$? הסיקו אם שייכות לגרף אחד מספיקה להכרעה לגבי כל גרף.",
+      "text": "הערך האם הכרטיס הראשון שייך גם לגרף $q(x)=x+7$? הסיקו אם שייכות לגרף אחד מספיקה להכרעה לגבי כל גרף.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q15_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q16_head",
+   "svg": "figures/q16_head.svg",
+   "question": "q16",
+   "view": {
+    "width_px": 193.3,
+    "height_px": 329.8,
+    "unit_px": 1.0,
+    "viewbox": [
+     193.3,
+     329.8
+    ]
+   },
+   "objects": {
+    "segments": [
+     {
+      "svg_id": "seg-axis-x",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.0,
+        189.83
+       ],
+       [
+        171.0,
+        189.83
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-axis-y",
+      "kind": "segment",
+      "role": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        80.0,
+        320.83
+       ],
+       [
+        80.0,
+        18.83
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-o0",
+      "kind": "label",
+      "role": "value",
+      "name": "o0",
+      "text": "0",
+      "for": "o0",
+      "svg_xy": [
+       72.53,
+       199.45
+      ],
+      "ink_box": [
+       69.44,
+       191.13,
+       75.63,
+       202.01
+      ]
+     },
+     {
+      "svg_id": "lbl-x",
+      "kind": "label",
+      "role": "value",
+      "name": "x",
+      "text": "x",
+      "for": "x",
+      "svg_xy": [
+       180.66,
+       195.18
+      ],
+      "ink_box": [
+       176.99,
+       185.3,
+       184.34,
+       198.22
+      ]
+     },
+     {
+      "svg_id": "lbl-x2",
+      "kind": "label",
+      "role": "value",
+      "name": "x2",
+      "text": "2",
+      "for": "x2",
+      "svg_xy": [
+       120.0,
+       201.68
+      ],
+      "ink_box": [
+       116.91,
+       193.36,
+       123.09,
+       204.24
+      ]
+     },
+     {
+      "svg_id": "lbl-x4",
+      "kind": "label",
+      "role": "value",
+      "name": "x4",
+      "text": "4",
+      "for": "x4",
+      "svg_xy": [
+       160.0,
+       201.68
+      ],
+      "ink_box": [
+       156.91,
+       193.36,
+       163.09,
+       204.24
+      ]
+     },
+     {
+      "svg_id": "lbl-xm2",
+      "kind": "label",
+      "role": "value",
+      "name": "xm2",
+      "text": "−2",
+      "for": "xm2",
+      "svg_xy": [
+       40.0,
+       201.68
+      ],
+      "ink_box": [
+       33.81,
+       193.36,
+       46.19,
+       204.24
+      ]
+     },
+     {
+      "svg_id": "lbl-y",
+      "kind": "label",
+      "role": "value",
+      "name": "y",
+      "text": "y",
+      "for": "y",
+      "svg_xy": [
+       70.03,
+       18.88
+      ],
+      "ink_box": [
+       66.36,
+       9.0,
+       73.71,
+       21.92
+      ]
+     },
+     {
+      "svg_id": "lbl-y2",
+      "kind": "label",
+      "role": "value",
+      "name": "y2",
+      "text": "2",
+      "for": "y2",
+      "svg_xy": [
+       72.53,
+       152.71
+      ],
+      "ink_box": [
+       69.44,
+       144.39,
+       75.63,
+       155.27
+      ]
+     },
+     {
+      "svg_id": "lbl-y4",
+      "kind": "label",
+      "role": "value",
+      "name": "y4",
+      "text": "4",
+      "for": "y4",
+      "svg_xy": [
+       72.53,
+       112.71
+      ],
+      "ink_box": [
+       69.44,
+       104.39,
+       75.63,
+       115.27
+      ]
+     },
+     {
+      "svg_id": "lbl-y6",
+      "kind": "label",
+      "role": "value",
+      "name": "y6",
+      "text": "6",
+      "for": "y6",
+      "svg_xy": [
+       72.53,
+       72.71
+      ],
+      "ink_box": [
+       69.44,
+       64.39,
+       75.63,
+       75.27
+      ]
+     },
+     {
+      "svg_id": "lbl-y8",
+      "kind": "label",
+      "role": "value",
+      "name": "y8",
+      "text": "8",
+      "for": "y8",
+      "svg_xy": [
+       72.53,
+       32.71
+      ],
+      "ink_box": [
+       69.44,
+       24.39,
+       75.63,
+       35.27
+      ]
+     },
+     {
+      "svg_id": "lbl-ym2",
+      "kind": "label",
+      "role": "value",
+      "name": "ym2",
+      "text": "−2",
+      "for": "ym2",
+      "svg_xy": [
+       69.87,
+       232.71
+      ],
+      "ink_box": [
+       63.68,
+       224.39,
+       76.05,
+       235.27
+      ]
+     },
+     {
+      "svg_id": "lbl-ym4",
+      "kind": "label",
+      "role": "value",
+      "name": "ym4",
+      "text": "−4",
+      "for": "ym4",
+      "svg_xy": [
+       69.87,
+       272.71
+      ],
+      "ink_box": [
+       63.68,
+       264.39,
+       76.05,
+       275.27
+      ]
+     },
+     {
+      "svg_id": "lbl-ym6",
+      "kind": "label",
+      "role": "value",
+      "name": "ym6",
+      "text": "−6",
+      "for": "ym6",
+      "svg_xy": [
+       69.87,
+       312.71
+      ],
+      "ink_box": [
+       63.68,
+       304.39,
+       76.05,
+       315.27
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q16_head",
+    "kind": "coordinate_plane",
+    "visual_support": "full",
+    "question": "q16",
+    "svg": "figures/q16_head.svg",
+    "view": {
+     "viewbox": [
+      193.3,
+      329.8
+     ]
+    },
+    "objects": [
+     {
+      "id": "seg-axis-x",
+      "svg_id": "seg-axis-x",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-x",
+      "svg_xy": [
+       [
+        9.0,
+        189.83
+       ],
+       [
+        171.0,
+        189.83
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-axis-y",
+      "svg_id": "seg-axis-y",
+      "type": "segment",
+      "part": "axis",
+      "name": "axis-y",
+      "svg_xy": [
+       [
+        80.0,
+        320.83
+       ],
+       [
+        80.0,
+        18.83
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-o0",
+      "svg_id": "lbl-o0",
+      "type": "label",
+      "part": "value",
+      "name": "o0",
+      "text": "0",
+      "svg_xy": [
+       72.53,
+       199.45
+      ],
+      "bbox": [
+       69.44,
+       191.13,
+       75.63,
+       202.01
+      ],
+      "for": "o0",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x",
+      "svg_id": "lbl-x",
+      "type": "label",
+      "part": "value",
+      "name": "x",
+      "text": "x",
+      "svg_xy": [
+       180.66,
+       195.18
+      ],
+      "bbox": [
+       176.99,
+       185.3,
+       184.34,
+       198.22
+      ],
+      "for": "x",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x2",
+      "svg_id": "lbl-x2",
+      "type": "label",
+      "part": "value",
+      "name": "x2",
+      "text": "2",
+      "svg_xy": [
+       120.0,
+       201.68
+      ],
+      "bbox": [
+       116.91,
+       193.36,
+       123.09,
+       204.24
+      ],
+      "for": "x2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-x4",
+      "svg_id": "lbl-x4",
+      "type": "label",
+      "part": "value",
+      "name": "x4",
+      "text": "4",
+      "svg_xy": [
+       160.0,
+       201.68
+      ],
+      "bbox": [
+       156.91,
+       193.36,
+       163.09,
+       204.24
+      ],
+      "for": "x4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-xm2",
+      "svg_id": "lbl-xm2",
+      "type": "label",
+      "part": "value",
+      "name": "xm2",
+      "text": "−2",
+      "svg_xy": [
+       40.0,
+       201.68
+      ],
+      "bbox": [
+       33.81,
+       193.36,
+       46.19,
+       204.24
+      ],
+      "for": "xm2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y",
+      "svg_id": "lbl-y",
+      "type": "label",
+      "part": "value",
+      "name": "y",
+      "text": "y",
+      "svg_xy": [
+       70.03,
+       18.88
+      ],
+      "bbox": [
+       66.36,
+       9.0,
+       73.71,
+       21.92
+      ],
+      "for": "y",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y2",
+      "svg_id": "lbl-y2",
+      "type": "label",
+      "part": "value",
+      "name": "y2",
+      "text": "2",
+      "svg_xy": [
+       72.53,
+       152.71
+      ],
+      "bbox": [
+       69.44,
+       144.39,
+       75.63,
+       155.27
+      ],
+      "for": "y2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y4",
+      "svg_id": "lbl-y4",
+      "type": "label",
+      "part": "value",
+      "name": "y4",
+      "text": "4",
+      "svg_xy": [
+       72.53,
+       112.71
+      ],
+      "bbox": [
+       69.44,
+       104.39,
+       75.63,
+       115.27
+      ],
+      "for": "y4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y6",
+      "svg_id": "lbl-y6",
+      "type": "label",
+      "part": "value",
+      "name": "y6",
+      "text": "6",
+      "svg_xy": [
+       72.53,
+       72.71
+      ],
+      "bbox": [
+       69.44,
+       64.39,
+       75.63,
+       75.27
+      ],
+      "for": "y6",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y8",
+      "svg_id": "lbl-y8",
+      "type": "label",
+      "part": "value",
+      "name": "y8",
+      "text": "8",
+      "svg_xy": [
+       72.53,
+       32.71
+      ],
+      "bbox": [
+       69.44,
+       24.39,
+       75.63,
+       35.27
+      ],
+      "for": "y8",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym2",
+      "svg_id": "lbl-ym2",
+      "type": "label",
+      "part": "value",
+      "name": "ym2",
+      "text": "−2",
+      "svg_xy": [
+       69.87,
+       232.71
+      ],
+      "bbox": [
+       63.68,
+       224.39,
+       76.05,
+       235.27
+      ],
+      "for": "ym2",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym4",
+      "svg_id": "lbl-ym4",
+      "type": "label",
+      "part": "value",
+      "name": "ym4",
+      "text": "−4",
+      "svg_xy": [
+       69.87,
+       272.71
+      ],
+      "bbox": [
+       63.68,
+       264.39,
+       76.05,
+       275.27
+      ],
+      "for": "ym4",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-ym6",
+      "svg_id": "lbl-ym6",
+      "type": "label",
+      "part": "value",
+      "name": "ym6",
+      "text": "−6",
+      "svg_xy": [
+       69.87,
+       312.71
+      ],
+      "bbox": [
+       63.68,
+       304.39,
+       76.05,
+       315.27
+      ],
+      "for": "ym6",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-hx3x1",
+      "type": "statement",
+      "role": "given",
+      "text": "נתון $h(x)=3x−1$. השתמשו ברשת לבנייה ולא באומדן של קו מוכן.",
+      "objects": []
+     },
+     {
+      "id": "r-find-h1h1",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q16a",
+      "quantity": "value",
+      "what": "חשבו את $h(−1)$ ואת $h(1)$.",
+      "text": "הערך חשבו את $h(−1)$ ואת $h(1)$.",
+      "objects": []
+     },
+     {
+      "id": "r-find-5",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q16b",
+      "quantity": "value",
+      "what": "מצאו קלט שהפלט בו $5$ ואמתו.",
+      "text": "הערך מצאו קלט שהפלט בו $5$ ואמתו.",
+      "objects": []
+     },
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q16c",
+      "quantity": "value",
+      "what": "סמנו ברשת את שלוש הנקודות שמצאתם ושרטטו את הישר.",
+      "text": "הערך סמנו ברשת את שלוש הנקודות שמצאתם ושרטטו את הישר.",
+      "objects": []
+     },
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_construct",
+      "item": "q16c",
+      "text": "סימון הנקודות שחושבו ושרטוט הישר",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q16d",
+      "quantity": "value",
+      "what": "לפי הבנייה, כיצד משתנה הפלט כשהקלט גדל ביחידה? קשרו לחוק.",
+      "text": "הערך לפי הבנייה, כיצד משתנה הפלט כשהקלט גדל ביחידה? קשרו לחוק.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q16_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  }
+ ],
+ "visuals": [
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q2_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q2",
+   "objects": [
+    {
+     "id": "q2_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "$x$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "$p(x)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$−2$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$8$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$0$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r5c1",
+     "type": "cell",
+     "row": 5,
+     "col": 1,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q2_table-r5c2",
+     "type": "cell",
+     "row": 5,
+     "col": 2,
+     "value": "$−4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q2_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q3_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q3",
+   "objects": [
+    {
+     "id": "q3_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "רשומה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "פירוש",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$r(−3)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "כפל של שם הפונקציה במספר",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$r(−3)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "ערך הפונקציה בקלט הנתון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q3_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q4_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q4",
+   "objects": [
+    {
+     "id": "q4_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "כרטיס",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q4_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "עלות מבוקשת בשקלים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q4_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "ראשון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q4_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$41$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q4_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "שני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q4_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$50$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q4_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "שלישי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q4_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$47$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q4_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q5_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q5",
+   "objects": [
+    {
+     "id": "q5_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "קלט",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "$g(x)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "$h(x)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$0$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$6$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q5_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q5_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q6_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q6",
+   "objects": [
+    {
+     "id": "q6_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "קלט",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "פלט",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$−2$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$0$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q6_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q8_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q8",
+   "objects": [
+    {
+     "id": "q8_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "$x$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "$k(x)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$−1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q8_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$8$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q8_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q12_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q12",
+   "objects": [
+    {
+     "id": "q12_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "קלט",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "פלט",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$−2$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q12_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$−7$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q12_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q13_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q13",
+   "objects": [
+    {
+     "id": "q13_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "$x$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "$d(x)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$−1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q13_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q14_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q14",
+   "objects": [
+    {
+     "id": "q14_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "מסלול",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "עלות לכרטיס",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "תשלום קבוע",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "ראשון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$8$ שקלים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$0$ שקלים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "שני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$5$ שקלים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q14_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$12$ שקלים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q14_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q15_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q15",
+   "objects": [
+    {
+     "id": "q15_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "כרטיס",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "נקודה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "ראשון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$(−2,5)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "שני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$(5,−2)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "שלישי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$(1,11)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q15_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q17_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q17",
+   "objects": [
+    {
+     "id": "q17_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "בקשה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "תיאור",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "ישירה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$f(4)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "הפוכה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q17_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$f(x)=4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q17_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q18_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q18",
+   "objects": [
+    {
+     "id": "q18_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "רשומה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "מצב בבדיקה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$p(3)=−1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$p(−3)=−13$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q18_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q18_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q20_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q20",
+   "objects": [
+    {
+     "id": "q20_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "$x$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q20_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "$t(x)$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q20_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$−1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q20_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$8$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q20_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$2$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q20_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q20_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q20_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$−4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q20_table-r5c1",
+     "type": "cell",
+     "row": 5,
+     "col": 1,
+     "value": "$4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q20_table-r5c2",
+     "type": "cell",
+     "row": 5,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q20_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  }
+ ]
+}

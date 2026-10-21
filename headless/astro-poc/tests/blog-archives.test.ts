@@ -27,9 +27,9 @@ describe('M26 blog archives', () => {
 
   it('each archive has h1, nav, ordered cards with title+excerpt', () => {
     const expectedCounts: Record<string, number> = {
-      '/blog': 20,
+      '/blog': 68,
       '/blog/categories/elementary-math': 7,
-      '/blog/categories/middle-school-math': 20,
+      '/blog/categories/middle-school-math': 32,
       '/blog/categories/teachers-and-parents': 7,
     };
     for (const archive of listBlogArchives()) {
@@ -84,13 +84,25 @@ describe('M26 blog archives', () => {
         `middle-school missing ${t}`
       );
     }
-    // source order: previously omitted blog cards are the last SSR items
-    assert.deepEqual(
-      blog.cards.slice(-blogMust.length).map((c) => c.title),
-      blogMust
-    );
-    // OPEN-07-FIX: the newest live post leads /blog.
-    assert.equal(blog.cards[0].title, 'פערים לימודיים במתמטיקה: כך סוגרים אותם נכון');
+    // Classic /blog is four SSR pages. Those grade-7 titles stay in the list;
+    // they are no longer the tail of page 1.
+    assert.equal(blog.cards[0].title, 'איך מסבירים היקף ושטח בלי לבלבל בין השניים');
+    const classicGap = [
+      'איך מסבירים היקף ושטח בלי לבלבל בין השניים',
+      'איך מלמדים חילוק ארוך לילדים בלי לנחש בדרך',
+      'למידה אדפטיבית במתמטיקה שמקדמת כל תלמיד',
+      'מהו סדר פעולות ואיך פותרים תרגילים בלי להתבלבל',
+      'איך משתמשים בעוזר מתמטי חכם בלי לוותר על החשיבה',
+      'איך מתרגלים כפל בעזרת משחקים בבית ובכיתה',
+      'פתרון מפשטים לכיתה ז',
+      'תוצאות מתרגול עקבי במתמטיקה שמרגישים בכיתה',
+    ];
+    for (const t of classicGap) {
+      assert.ok(
+        blog.cards.some((c) => c.title === t),
+        `blog missing ${t}`
+      );
+    }
   });
 
   it('preserves cover images+alt when present on live cards', () => {

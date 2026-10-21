@@ -1,0 +1,5562 @@
+{
+ "schema_version": "noam-ai/v1",
+ "package": "G8-T31",
+ "level": "a",
+ "curriculum": {
+  "grade": "8",
+  "track": "ח",
+  "topic": "data_center",
+  "unit": "איסוף מידע, שכיחות, שכיחות יחסית, טווח ומדדי מרכז, שני מקורות מידע",
+  "allowed_tools": [
+   {
+    "id": "g7.coordinate_system.1",
+    "name": "מערכת צירים והרחבתה"
+   },
+   {
+    "id": "g7.directed_numbers.1",
+    "name": "הכרה"
+   },
+   {
+    "id": "g7.directed_numbers.2",
+    "name": "חיבור"
+   },
+   {
+    "id": "g7.directed_numbers.3",
+    "name": "חיסור"
+   },
+   {
+    "id": "g7.directed_numbers.4",
+    "name": "כפל וחילוק"
+   },
+   {
+    "id": "g7.angles.1",
+    "name": "סימון"
+   },
+   {
+    "id": "g7.angles.2",
+    "name": "מדידה"
+   },
+   {
+    "id": "g7.angles.3",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "g7.angles.4",
+    "name": "סכום והפרש"
+   },
+   {
+    "id": "g7.angles.5",
+    "name": "צמודות וקודקודיות"
+   },
+   {
+    "id": "g7.angles.6",
+    "name": "זוויות במשולש ובמרובע"
+   },
+   {
+    "id": "g7.transformations.1",
+    "name": "צורות חופפות במישור וטרנספורמציות"
+   },
+   {
+    "id": "g7.powers_roots.1",
+    "name": "חזקות עם מעריך טבעי ושורש ריבועי חיובי"
+   },
+   {
+    "id": "g7.areas.1",
+    "name": "שטחים א׳"
+   },
+   {
+    "id": "g7.areas.2",
+    "name": "ב׳"
+   },
+   {
+    "id": "g7.areas.3",
+    "name": "חישוב היקפים"
+   },
+   {
+    "id": "g7.algebraic_expressions.1",
+    "name": "משתנים וביטויים אלגבריים"
+   },
+   {
+    "id": "g7.algebraic_expressions.2",
+    "name": "זהות"
+   },
+   {
+    "id": "g7.algebraic_expressions.3",
+    "name": "כינוס איברים דומים"
+   },
+   {
+    "id": "g7.algebraic_expressions.4",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "g7.solids.1",
+    "name": "גופים במרחב: קובייה"
+   },
+   {
+    "id": "g7.solids.2",
+    "name": "תיבה"
+   },
+   {
+    "id": "g7.solids.3",
+    "name": "מנסרה משולשת"
+   },
+   {
+    "id": "g7.data_frequency.1",
+    "name": "איסוף"
+   },
+   {
+    "id": "g7.data_frequency.2",
+    "name": "ייצוג וקריאת מידע"
+   },
+   {
+    "id": "g7.data_frequency.3",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g7.data_frequency.4",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g7.data_frequency.5",
+    "name": "הסתברות בהקשר של שכיחות יחסית"
+   },
+   {
+    "id": "g7.pythagoras.1",
+    "name": "משפט פיתגורס ושימושיו"
+   },
+   {
+    "id": "g7.equations.1",
+    "name": "משוואות ממעלה ראשונה ופתרונן"
+   },
+   {
+    "id": "g7.word_problems.1",
+    "name": "שאלות בהקשרים בעזרת משוואה ממעלה ראשונה"
+   },
+   {
+    "id": "g7.points_on_graph.1",
+    "name": "נקודות על גרף ברביע I"
+   },
+   {
+    "id": "g8.ratio_scale.1",
+    "name": "יחס"
+   },
+   {
+    "id": "g8.ratio_scale.2",
+    "name": "פרופורציה וקנה מידה"
+   },
+   {
+    "id": "g8.pythagoras.1",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "g8.percentages.1",
+    "name": "אחוזים"
+   },
+   {
+    "id": "g8.cylinder_cone.1",
+    "name": "גליל"
+   },
+   {
+    "id": "g8.cylinder_cone.2",
+    "name": "חרוט"
+   },
+   {
+    "id": "g8.data_center.1",
+    "name": "איסוף מידע"
+   },
+   {
+    "id": "g8.data_center.2",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g8.data_center.3",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g8.data_center.4",
+    "name": "טווח ומדדי מרכז"
+   },
+   {
+    "id": "g8.data_center.5",
+    "name": "שני מקורות מידע"
+   },
+   {
+    "id": "thm.adjacent_angles",
+    "name": "זוויות צמודות (סכומן 180°)"
+   },
+   {
+    "id": "thm.vertical_angles",
+    "name": "זוויות קודקודיות שוות"
+   },
+   {
+    "id": "thm.angle_bisector",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "thm.alternate_angles",
+    "name": "זוויות מתחלפות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.corresponding_angles",
+    "name": "זוויות מתאימות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.triangle_angle_sum",
+    "name": "סכום הזוויות במשולש 180°"
+   },
+   {
+    "id": "thm.quad_angle_sum",
+    "name": "סכום הזוויות במרובע 360°"
+   },
+   {
+    "id": "frm.area_rectangle",
+    "name": "שטח מלבן = אורך × רוחב"
+   },
+   {
+    "id": "frm.area_triangle",
+    "name": "שטח משולש = צלע × גובה : 2"
+   },
+   {
+    "id": "frm.area_parallelogram",
+    "name": "שטח מקבילית = צלע × גובה"
+   },
+   {
+    "id": "frm.area_trapezoid",
+    "name": "שטח טרפז = (סכום בסיסים) × גובה : 2"
+   },
+   {
+    "id": "frm.perimeter",
+    "name": "היקף מצולע"
+   },
+   {
+    "id": "frm.box_volume",
+    "name": "נפח תיבה"
+   },
+   {
+    "id": "frm.box_surface",
+    "name": "שטח פנים של תיבה"
+   },
+   {
+    "id": "thm.pythagoras",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "thm.pythagoras_converse",
+    "name": "המשפט ההפוך למשפט פיתגורס"
+   },
+   {
+    "id": "mth.distributive",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "mth.first_degree_eq",
+    "name": "פתרון משוואה ממעלה ראשונה"
+   }
+  ],
+  "not_yet_allowed": [
+   {
+    "id": "g8.transformations.1",
+    "name": "טרנספורמציות וצורות חופפות"
+   },
+   {
+    "id": "g8.functions_intro.1",
+    "name": "מבוא לפונקציות"
+   },
+   {
+    "id": "g8.functions_intro.2",
+    "name": "ייצוגים"
+   },
+   {
+    "id": "g8.functions_intro.3",
+    "name": "עלייה וירידה"
+   },
+   {
+    "id": "g8.functions_intro.4",
+    "name": "גרפים לינאריים"
+   },
+   {
+    "id": "g8.slope_linear.1",
+    "name": "קצב שינוי"
+   },
+   {
+    "id": "g8.slope_linear.2",
+    "name": "שיפוע"
+   },
+   {
+    "id": "g8.slope_linear.3",
+    "name": "ייצוג אלגברי של פונקציה ליניארית"
+   },
+   {
+    "id": "g8.word_problems_eq.1",
+    "name": "שאלות מילוליות בעזרת משוואות"
+   },
+   {
+    "id": "g8.congruence.1",
+    "name": "חפיפת משולשים"
+   },
+   {
+    "id": "g8.inter_extrapolation.1",
+    "name": "אינטרפולציה"
+   },
+   {
+    "id": "g8.inter_extrapolation.2",
+    "name": "אקסטרפולציה"
+   },
+   {
+    "id": "g8.triangle_parts.1",
+    "name": "צלעות במשולש"
+   },
+   {
+    "id": "g8.triangle_parts.2",
+    "name": "תיכון"
+   },
+   {
+    "id": "g8.triangle_parts.3",
+    "name": "זווית חיצונית"
+   },
+   {
+    "id": "g8.triangle_parts.4",
+    "name": "שווה שוקיים"
+   },
+   {
+    "id": "g8.triangle_parts.5",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g8.systems_basic.1",
+    "name": "מערכות משוואות (רמה בסיסית)"
+   },
+   {
+    "id": "g8.similarity.1",
+    "name": "דמיון משולשים"
+   },
+   {
+    "id": "g8.probability.1",
+    "name": "הסתברות א"
+   },
+   {
+    "id": "g8.probability.2",
+    "name": "הסתברות ב"
+   },
+   {
+    "id": "g8.pythagoras_3d.1",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "g8.inequalities.1",
+    "name": "אי-שוויונות"
+   },
+   {
+    "id": "g9.alg_technique.1",
+    "name": "חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.2",
+    "name": "פישוט ביטויים בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.3",
+    "name": "פתרון משוואות בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.4",
+    "name": "שאלות השוואת שטחים בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9.alg_technique.5",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.6",
+    "name": "פירוק לגורמים: הוצאת גורם משותף"
+   },
+   {
+    "id": "g9.alg_technique.7",
+    "name": "פירוק תלת-איבר ריבועי (מקדם 1)"
+   },
+   {
+    "id": "g9.alg_technique.8",
+    "name": "פירוק בעזרת נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.9",
+    "name": "פתרון משוואות ריבועיות בסיסיות באמצעות פירוק לגורמים"
+   },
+   {
+    "id": "g9.alg_technique.10",
+    "name": "צמצום שברים אלגבריים"
+   },
+   {
+    "id": "g9.alg_technique.11",
+    "name": "כפל וחילוק שברים אלגבריים"
+   },
+   {
+    "id": "g9.kite.1",
+    "name": "הכרת הדלתון"
+   },
+   {
+    "id": "g9.kite.2",
+    "name": "זוויות בדלתון"
+   },
+   {
+    "id": "g9.kite.3",
+    "name": "האלכסון הראשי בדלתון"
+   },
+   {
+    "id": "g9.isosceles_converse.1",
+    "name": "משפטים הפוכים להוכחה כי משולש הוא שווה שוקיים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.1",
+    "name": "היכרות עם הגרף והביטוי האלגברי"
+   },
+   {
+    "id": "g9.quad_func_and_eq.2",
+    "name": "תכונות הפונקציה הריבועית (התייחסות איכותנית): קיצון, עלייה וירידה, חיתוך עם הצירים, חיוביות ושליליות"
+   },
+   {
+    "id": "g9.quad_func_and_eq.3",
+    "name": "הזזה אנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.4",
+    "name": "הזזה אופקית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.5",
+    "name": "שילוב הזזה אופקית ואנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.6",
+    "name": "הצגת פונקציה ריבועית כמכפלה"
+   },
+   {
+    "id": "g9.quad_func_and_eq.7",
+    "name": "הצגה סטנדרטית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.8",
+    "name": "פתרון משוואות ריבועיות בעזרת נוסחת השורשים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.9",
+    "name": "סרטוט גרף על סמך ייצוג סטנדרטי"
+   },
+   {
+    "id": "g9.side_angle_relations.1",
+    "name": "מול הצלע הגדולה ממוקמת הזווית הגדולה"
+   },
+   {
+    "id": "g9.side_angle_relations.2",
+    "name": "מול הזווית הגדולה ממוקמת הצלע הגדולה"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.1",
+    "name": "הניצב מול זווית 30° שווה למחצית היתר"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.2",
+    "name": "משפט הפוך: ניצב השווה למחצית היתר ⇒ הזווית שמולו 30°"
+   },
+   {
+    "id": "g9.parallels_trapezoid.1",
+    "name": "תכונות של הקבלה או אי-הקבלה"
+   },
+   {
+    "id": "g9.parallels_trapezoid.2",
+    "name": "משפט הפוך לישרים מקבילים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.3",
+    "name": "הכרת הטרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.4",
+    "name": "טרפז שווה שוקיים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.5",
+    "name": "הוכחה שמרובע הוא טרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.6",
+    "name": "שטח והיקף טרפז"
+   },
+   {
+    "id": "g9.quad_eq_applications.1",
+    "name": "כולל שימוש בטכניקה אלגברית"
+   },
+   {
+    "id": "g9.quad_inequalities.1",
+    "name": "פתרון אי-שוויון ריבועי בהקשר של פונקציה ריבועית"
+   },
+   {
+    "id": "g9.parallelogram.1",
+    "name": "הגדרת מקבילית"
+   },
+   {
+    "id": "g9.parallelogram.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9.parallelogram.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.rational_equations.1",
+    "name": "פתרון משוואות עם פירוק לגורמים במכנה"
+   },
+   {
+    "id": "g9.rational_equations.2",
+    "name": "תחום הצבה"
+   },
+   {
+    "id": "g9.rational_equations.3",
+    "name": "משוואות שבהן אחד הפתרונות אינו קביל"
+   },
+   {
+    "id": "g9.rectangle.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rectangle.2",
+    "name": "תכונות צלעות, זוויות, אלכסונים"
+   },
+   {
+    "id": "g9.rectangle.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.probability.1",
+    "name": "מהי הסתברות, מושגים בסיסיים (כולל השלמה של ח׳)"
+   },
+   {
+    "id": "g9.probability.2",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9.probability.3",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9.probability.4",
+    "name": "מאורעות דו-שלביים"
+   },
+   {
+    "id": "g9.probability.5",
+    "name": "ייצוגים שונים: טבלה, דיאגרמת עץ, מודל השטח"
+   },
+   {
+    "id": "g9.integrative_literacy.1",
+    "name": "שילוב אלגברה וגיאומטריה בהקשר מהעולם האמיתי"
+   },
+   {
+    "id": "g9.system_degree_2.1",
+    "name": "משמעות אלגברית ומשמעות גרפית של פתרון מערכת משוואות"
+   },
+   {
+    "id": "g9.function_properties.1",
+    "name": "תכונות של גרף: חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה"
+   },
+   {
+    "id": "g9.function_properties.2",
+    "name": "הקשר בין משוואות לגרף של פונקציה"
+   },
+   {
+    "id": "g9.function_properties.3",
+    "name": "הזזה אנכית, הזזה אופקית"
+   },
+   {
+    "id": "g9.function_properties.4",
+    "name": "שיקוף ביחס לציר ה-x"
+   },
+   {
+    "id": "g9.rhombus.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rhombus.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.rhombus.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.square.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.square.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.square.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.right_triangle_median.1",
+    "name": "התיכון ליתר"
+   },
+   {
+    "id": "g9.right_triangle_median.2",
+    "name": "תרגול המשפט בשילוב מרובעים"
+   },
+   {
+    "id": "g9.powers.1",
+    "name": "חוקי חזקות מעריך טבעי או אפס"
+   },
+   {
+    "id": "g9.powers.2",
+    "name": "חוקי שורש ריבועי"
+   },
+   {
+    "id": "g9.word_problems.1",
+    "name": "שאלות מילוליות הנדסיות וכלליות (לרבות משוואה ריבועית או מערכת משוואות)"
+   },
+   {
+    "id": "g9.word_problems.2",
+    "name": "שאלות תנועה"
+   },
+   {
+    "id": "g9.word_problems.3",
+    "name": "שילוב אחוזים"
+   },
+   {
+    "id": "g9.word_problems.4",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9.similarity.1",
+    "name": "יחסי שטחים במשולשים דומים"
+   },
+   {
+    "id": "g9m.graph_reading.1",
+    "name": "תופעות המיוצגות באמצעות גרף במערכת צירים"
+   },
+   {
+    "id": "g9m.graph_reading.2",
+    "name": "קריאת מידע מהגרף ומענה על שאלות"
+   },
+   {
+    "id": "g9m.computational_triangle.1",
+    "name": "סכום זוויות במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.2",
+    "name": "שטח והיקף משולש"
+   },
+   {
+    "id": "g9m.computational_triangle.3",
+    "name": "קטעים מיוחדים במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.4",
+    "name": "שילוב עם מערכת צירים"
+   },
+   {
+    "id": "g9m.linear_function.1",
+    "name": "משמעות השיפוע כקצב שינוי, בשילוב אוריינות"
+   },
+   {
+    "id": "g9m.linear_function.2",
+    "name": "ייצוג אלגברי וגרפי והתאמה ביניהם"
+   },
+   {
+    "id": "g9m.linear_function.3",
+    "name": "נקודה על ישר ומשמעותה"
+   },
+   {
+    "id": "g9m.linear_function.4",
+    "name": "חיתוך עם הצירים"
+   },
+   {
+    "id": "g9m.linear_function.5",
+    "name": "ישרים מקבילים"
+   },
+   {
+    "id": "g9m.linear_function.6",
+    "name": "שטחים והיקפים במערכת צירים"
+   },
+   {
+    "id": "g9m.alg_technique_basic.1",
+    "name": "חוק הפילוג וחוק הפילוג המורחב"
+   },
+   {
+    "id": "g9m.alg_technique_basic.2",
+    "name": "פתרון משוואות פשוטות בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9m.pythagoras.1",
+    "name": "חישובי צלעות במשולשים"
+   },
+   {
+    "id": "g9m.pythagoras.2",
+    "name": "חישובי צלעות בצורות מורכבות"
+   },
+   {
+    "id": "g9m.pythagoras.3",
+    "name": "חישובי היקפים ושטחים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.1",
+    "name": "קווים מיוחדים במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.2",
+    "name": "זוויות במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.4",
+    "name": "תכונות הדלתון"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.5",
+    "name": "חישובי שטחים והיקפים"
+   },
+   {
+    "id": "g9m.statistics.1",
+    "name": "איסוף וארגון נתונים בטבלה, ברשימה ובדיאגרמות"
+   },
+   {
+    "id": "g9m.statistics.2",
+    "name": "שכיחות ושכיחות יחסית"
+   },
+   {
+    "id": "g9m.statistics.3",
+    "name": "טווח נתונים"
+   },
+   {
+    "id": "g9m.statistics.4",
+    "name": "ממוצע, שכיח וחציון"
+   },
+   {
+    "id": "g9m.percentages.1",
+    "name": "החלק היחסי משלם"
+   },
+   {
+    "id": "g9m.percentages.2",
+    "name": "הגדלה והקטנה"
+   },
+   {
+    "id": "g9m.percentages.3",
+    "name": "שאלות מילוליות פשוטות ואורייניות"
+   },
+   {
+    "id": "g9m.similarity.1",
+    "name": "המושג דומים"
+   },
+   {
+    "id": "g9m.similarity.2",
+    "name": "הגדלה או הקטנה של צורות"
+   },
+   {
+    "id": "g9m.similarity.3",
+    "name": "צלעות פרופורציונליות"
+   },
+   {
+    "id": "g9m.similarity.4",
+    "name": "משפט ז.ז"
+   },
+   {
+    "id": "g9m.similarity.5",
+    "name": "חישובי צלעות וזוויות במשולשים דומים"
+   },
+   {
+    "id": "g9m.similarity.6",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9m.equations.1",
+    "name": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.1",
+    "name": "חזרה על ישרים מקבילים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.2",
+    "name": "הגדרת המקבילית"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.3",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.4",
+    "name": "זיהוי מקבילית"
+   },
+   {
+    "id": "g9m.probability.1",
+    "name": "מהי הסתברות"
+   },
+   {
+    "id": "g9m.probability.2",
+    "name": "מושגים בסיסיים"
+   },
+   {
+    "id": "g9m.probability.3",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9m.probability.4",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9m.quad_partial.1",
+    "name": "הצבת ערכי x בביטוי של פונקציה ריבועית וחישוב ערך ה-y"
+   },
+   {
+    "id": "g9m.quad_partial.2",
+    "name": "מפונקציה ריבועית לפתרון משוואה ריבועית"
+   },
+   {
+    "id": "g9m.quad_partial.3",
+    "name": "פתרון משוואות ריבועיות ע״י נוסחת השורשים"
+   },
+   {
+    "id": "g9m.rectangle.1",
+    "name": "הגדרה של מלבן"
+   },
+   {
+    "id": "g9m.rectangle.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems.1",
+    "name": "שאלות מילוליות ושאלות אוריינות בנושאים שונים, כולל שימוש במשוואה ריבועית"
+   },
+   {
+    "id": "g9m.rhombus.1",
+    "name": "הגדרה של מעוין"
+   },
+   {
+    "id": "g9m.rhombus.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.square.1",
+    "name": "הגדרה של ריבוע"
+   },
+   {
+    "id": "g9m.square.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems_integrative.1",
+    "name": "שאלות מילוליות ואוריינות בנושאים שונים"
+   },
+   {
+    "id": "g9m.trapezoid.1",
+    "name": "הגדרה של טרפז"
+   },
+   {
+    "id": "g9m.trapezoid.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.areas_and_perimeters.1",
+    "name": "שאלות אוריינות אינטגרטיביות כולל מעגל — היקף ושטח"
+   },
+   {
+    "id": "thm.co_interior_angles",
+    "name": "זוויות חד-צדדיות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.pythagoras_3d",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "thm.congruence_sas",
+    "name": "משפט חפיפה צ.ז.צ"
+   },
+   {
+    "id": "thm.congruence_asa",
+    "name": "משפט חפיפה ז.צ.ז"
+   },
+   {
+    "id": "thm.congruence_sss",
+    "name": "משפט חפיפה צ.צ.צ"
+   },
+   {
+    "id": "thm.congruence_ssa",
+    "name": "משפט חפיפה צ.צ.ז"
+   },
+   {
+    "id": "thm.congruent_parts",
+    "name": "במשולשים חופפים צלעות וזוויות מתאימות שוות"
+   },
+   {
+    "id": "thm.exterior_angle",
+    "name": "זווית חיצונית למשולש"
+   },
+   {
+    "id": "thm.isosceles_base_angles",
+    "name": "במשולש שווה שוקיים זוויות הבסיס שוות"
+   },
+   {
+    "id": "thm.isosceles_special_lines",
+    "name": "במשולש שווה שוקיים חוצה זווית הראש, התיכון והגובה לבסיס מתלכדים"
+   },
+   {
+    "id": "thm.isosceles_converse",
+    "name": "משפטים הפוכים: הוכחה שמשולש שווה שוקיים"
+   },
+   {
+    "id": "thm.triangle_inequality",
+    "name": "אי-שוויון המשולש"
+   },
+   {
+    "id": "thm.side_angle_order",
+    "name": "מול הצלע הגדולה הזווית הגדולה (וההפך)"
+   },
+   {
+    "id": "thm.similarity_aa",
+    "name": "משפט דמיון ז.ז"
+   },
+   {
+    "id": "thm.similarity_sas",
+    "name": "משפט דמיון צ.ז.צ"
+   },
+   {
+    "id": "thm.similarity_sss",
+    "name": "משפט דמיון צ.צ.צ"
+   },
+   {
+    "id": "thm.similar_area_ratio",
+    "name": "יחס השטחים הוא ריבוע יחס הדמיון"
+   },
+   {
+    "id": "thm.kite_main_diagonal",
+    "name": "בדלתון האלכסון הראשי חוצה את המשני, מאונך לו וחוצה את זוויות הראש"
+   },
+   {
+    "id": "thm.30_60_90",
+    "name": "במשולש ישר זווית הניצב מול 30° שווה למחצית היתר"
+   },
+   {
+    "id": "thm.parallel_converse",
+    "name": "משפטים הפוכים לישרים מקבילים"
+   },
+   {
+    "id": "thm.isosceles_trapezoid",
+    "name": "טרפז שווה שוקיים: זוויות בסיס ואלכסונים"
+   },
+   {
+    "id": "thm.parallelogram_props",
+    "name": "במקבילית צלעות נגדיות שוות, זוויות נגדיות שוות, האלכסונים חוצים זה את זה"
+   },
+   {
+    "id": "thm.parallelogram_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מקבילית"
+   },
+   {
+    "id": "thm.rectangle_props",
+    "name": "במלבן כל הזוויות ישרות והאלכסונים שווים"
+   },
+   {
+    "id": "thm.rectangle_converse",
+    "name": "משפטים הפוכים: מקבילית עם זווית ישרה או עם אלכסונים שווים היא מלבן"
+   },
+   {
+    "id": "thm.rhombus_props",
+    "name": "במעוין כל הצלעות שוות, האלכסונים מאונכים וחוצי זוויות"
+   },
+   {
+    "id": "thm.rhombus_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מעוין"
+   },
+   {
+    "id": "thm.square_props",
+    "name": "ריבוע: מלבן שהוא גם מעוין"
+   },
+   {
+    "id": "thm.right_triangle_median",
+    "name": "התיכון ליתר שווה למחצית היתר"
+   },
+   {
+    "id": "frm.area_rhombus_diagonals",
+    "name": "שטח מעוין / דלתון = מכפלת האלכסונים : 2"
+   },
+   {
+    "id": "thm.midsegment",
+    "name": "קטע אמצעים במשולש ובטרפז"
+   },
+   {
+    "id": "frm.short_multiplication",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "mth.factoring",
+    "name": "פירוק לגורמים"
+   },
+   {
+    "id": "frm.quadratic_formula",
+    "name": "נוסחת השורשים"
+   }
+  ]
+ },
+ "questions": [
+  {
+   "id": "q1",
+   "label": 1,
+   "text": [
+    "בתרשים מספר ההודעות ביום בחמש קבוצות בטלפון במשך שבוע. לכל קבוצה יש עמודה אחת: התחתית של העמודה מראה את המספר הקטן ביותר של הודעות ביום, והראש שלה מראה את המספר הגדול ביותר.",
+    "נסמן ב־A את חוג השחמט, ב־B את ועד הבית, ב־C את קבוצת המשפחה, ב־D את שכבת ח׳ וב־E את קבוצת הכדורסל."
+   ],
+   "figure_id": "q1_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q1a",
+     "label": "א",
+     "text": "קראו מהתרשים את המספר הקטן ביותר ואת המספר הגדול ביותר של הודעות ביום בכל קבוצה, וחשבו את הטווח של כל קבוצה.",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1b",
+     "label": "ב",
+     "text": "אורי אמר: \"בקבוצת המשפחה היה יום עם יותר הודעות מאשר בכל יום בחוג השחמט, ולכן הטווח של קבוצת המשפחה גדול יותר.\" האם אורי צודק? נמקו.",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1c",
+     "label": "ג",
+     "text": "בדקו לכל קבוצה, בעזרת התחום שלה, אם ייתכן שהיה בה גם יום עם $16$ הודעות וגם יום עם $48$ הודעות.",
+     "figure_id": "q1_head",
+     "given": [
+      {
+       "text": "בדקו לכל קבוצה, בעזרת התחום שלה, אם ייתכן שהיה בה גם יום עם $16$ הודעות וגם יום עם $48$ הודעות."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "label": 2,
+   "text": [
+    "נתונות שתי רשימות:",
+    "רשימה א׳: $31, 45, 38, 52, 40$",
+    "רשימה ב׳: $−6, 15, 2$",
+    "גלעד כתב: \"הנתונים ברשימה ב׳ פחות מפוזרים, כי המספר הגדול ביותר בה קטן בהרבה.\""
+   ],
+   "figure_id": null,
+   "given": [
+    {
+     "text": "רשימה א׳: $31, 45, 38, 52, 40$"
+    },
+    {
+     "text": "רשימה ב׳: $−6, 15, 2$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q2a",
+     "label": "א",
+     "text": "חשבו את הטווח של כל רשימה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2b",
+     "label": "ב",
+     "text": "מה הטעות בנימוק של גלעד?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2c",
+     "label": "ג",
+     "text": "שנו מספר אחד בלבד ברשימה ב׳ כך שהטווח שלה יהיה $26$ בדיוק.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "שנו מספר אחד בלבד ברשימה ב׳ כך שהטווח שלה יהיה $26$ בדיוק."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q3",
+   "label": 3,
+   "text": "ארבעה תלמידים חישבו את הטווח של ארבע רשימות שונות, וכולם חישבו באותה דרך. בטבלה הרשימות והתשובות שלהם.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "$47, 26, 41, 73, 34$ · $99$"
+    },
+    {
+     "text": "$17, 0, 13$ · $17$"
+    },
+    {
+     "text": "$52, 19, 31$ · $71$"
+    },
+    {
+     "text": "$6, 37, 24$ · $43$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "הרשימה",
+     "התשובה של התלמיד"
+    ],
+    "rows": [
+     [
+      "$47, 26, 41, 73, 34$",
+      "$99$"
+     ],
+     [
+      "$17, 0, 13$",
+      "$17$"
+     ],
+     [
+      "$52, 19, 31$",
+      "$71$"
+     ],
+     [
+      "$6, 37, 24$",
+      "$43$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q3a",
+     "label": "א",
+     "text": "בלי לחשב את הטווחים, סמנו את התשובות שבוודאות אינן יכולות להיות טווח, והסבירו איך ידעתם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3b",
+     "label": "ב",
+     "text": "איזו פעולה אחת עם שני מספרים מכל רשימה מסבירה את כל ארבע התשובות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3c",
+     "label": "ג",
+     "text": "התשובה בשורה השנייה נכונה, אף שהתלמיד חישב באותה דרך. מדוע?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3d",
+     "label": "ד",
+     "text": "חשבו את הטווח הנכון של כל רשימה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q4",
+   "label": 4,
+   "text": [
+    "השינוי במספר החברים בחמישה חוגים לעומת השנה שעברה. מספר שלילי פירושו שמספר החברים ירד.",
+    "$−6, 4, −13, 9, 2$"
+   ],
+   "figure_id": null,
+   "given": [
+    {
+     "text": "$−6, 4, −13, 9, 2$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q4a",
+     "label": "א",
+     "text": "גיל כתב שהטווח הוא $11$ חברים. איזו טעות עשה גיל?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "גיל כתב שהטווח הוא $11$ חברים. איזו טעות עשה גיל?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4b",
+     "label": "ב",
+     "text": "חשבו את הטווח הנכון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4c",
+     "label": "ג",
+     "text": "בחוג שישי השינוי היה $−15$ חברים. מה הטווח של השינויים בששת החוגים?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "בחוג שישי השינוי היה $−15$ חברים. מה הטווח של השינויים בששת החוגים?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4d",
+     "label": "ד",
+     "text": "כתבו רשימה של ארבעה שינויים שליליים, כלומר ארבעה חוגים שבכולם מספר החברים ירד, שהטווח שלהם $18$ בדיוק.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "כתבו רשימה של ארבעה שינויים שליליים, כלומר ארבעה חוגים שבכולם מספר החברים ירד, שהטווח שלהם $18$ בדיוק."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q5",
+   "label": 5,
+   "text": "בספר יש שישה פרקים. בארבעה מהם יש $16, 23, 18, 20$ עמודים. ידוע שבפרק הקצר ביותר בספר יש $14$ עמודים, ושהטווח של מספרי העמודים בששת הפרקים הוא $9$ עמודים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בספר יש שישה פרקים. בארבעה מהם יש $16, 23, 18, 20$ עמודים. ידוע שבפרק הקצר ביותר בספר יש $14$ עמודים, ושהטווח של מספרי העמודים בששת הפרקים הוא $9$ עמודים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q5a",
+     "label": "א",
+     "text": "מהו מספר העמודים שחייב להיות באחד משני הפרקים החסרים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של מספר העמודים",
+       "text": "הערך של מספר העמודים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5b",
+     "label": "ב",
+     "text": "אילו מספרי עמודים אפשריים בפרק האחרון? תארו את כולם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5c",
+     "label": "ג",
+     "text": "השלימו: יש ___ אפשרויות שונות למספר העמודים בפרק האחרון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של מספר האפשרויות",
+       "text": "הערך של מספר האפשרויות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5d",
+     "label": "ד",
+     "text": "נניח שבפרק האחרון $25$ עמודים. חשבו מה היה הטווח במקרה כזה.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "נניח שבפרק האחרון $25$ עמודים. חשבו מה היה הטווח במקרה כזה."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q6",
+   "label": 6,
+   "text": "הסרט הקצר ביותר מבין חמישה סרטי קישוט צריך להיות באורך $30$ ס״מ, והטווח של אורכי הסרטים צריך להיות $15$ ס״מ. שלושה תלמידים רשמו אורכים בס״מ:",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הסרט הקצר ביותר מבין חמישה סרטי קישוט צריך להיות באורך $30$ ס״מ, והטווח של אורכי הסרטים צריך להיות $15$ ס״מ. שלושה תלמידים רשמו אורכים בס״מ:"
+    },
+    {
+     "text": "רוני · $30, 39, 45, 41, 33$"
+    },
+    {
+     "text": "שירה · $30, 38, 47, 42, 45$"
+    },
+    {
+     "text": "עומר · $32, 45, 37, 34, 43$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "תלמיד",
+     "האורכים שרשם"
+    ],
+    "rows": [
+     [
+      "רוני",
+      "$30, 39, 45, 41, 33$"
+     ],
+     [
+      "שירה",
+      "$30, 38, 47, 42, 45$"
+     ],
+     [
+      "עומר",
+      "$32, 45, 37, 34, 43$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q6a",
+     "label": "א",
+     "text": "איזו רשימה מתאימה לשני התנאים? לכל רשימה שאינה מתאימה, כתבו איזה תנאי אינו מתקיים בה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6b",
+     "label": "ב",
+     "text": "שנו מספר אחד ברשימה של שירה כך שהרשימה תתאים לתנאים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6c",
+     "label": "ג",
+     "text": "אילו האורכים יכלו להיות כל מספר, גם לא שלם, כמה רשימות מתאימות היו? בחרו: רשימה אחת בלבד, בדיוק שלוש רשימות, אינסוף רשימות. נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6d",
+     "label": "ד",
+     "text": "ברשימה של רוני מחליפים בכל פעם מספר אחד. בהחלפה הראשונה מחליפים את $39$ ב־$31$ ס״מ, בשנייה את $33$ ב־$46$ ס״מ, ובשלישית את $45$ ב־$44$ ס״מ. לכל החלפה, כל אחת לבדה, קבעו אם הטווח משתנה, ואם כן מהו הטווח החדש.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "ברשימה של רוני מחליפים בכל פעם מספר אחד. בהחלפה הראשונה מחליפים את $39$ ב־$31$ ס״מ, בשנייה את $33$ ב־$46$ ס״מ, ובשלישית את $45$ ב־$44$ ס״מ. לכל החלפה, כל אחת לבדה, קבעו אם הטווח משתנה, ואם כן מהו הטווח החדש."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q7",
+   "label": 7,
+   "text": [
+    "דן התאמן על גיטרה שישה ימים: $12, 30, 18, 25, 21, 16$ דקות.",
+    "גל התאמנה שלושה ימים: $10, 31, 20$ דקות.",
+    "דן אמר לגל: \"התאמנתי במספר גדול יותר של ימים, אז זמני האימון שלי מפוזרים יותר משלך.\""
+   ],
+   "figure_id": null,
+   "given": [
+    {
+     "text": "דן התאמן על גיטרה שישה ימים: $12, 30, 18, 25, 21, 16$ דקות."
+    },
+    {
+     "text": "גל התאמנה שלושה ימים: $10, 31, 20$ דקות."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q7a",
+     "label": "א",
+     "text": "חשבו את הטווח של זמני האימון של כל אחד מהם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7b",
+     "label": "ב",
+     "text": "האם דן צודק? נמקו בעזרת הטווחים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7c",
+     "label": "ג",
+     "text": "דן התאמן ביום נוסף אחד. כמה דקות צריך להיות האימון הנוסף כדי שהטווח של דן יהיה גדול מהטווח של גל? תארו את כל האפשרויות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7d",
+     "label": "ד",
+     "text": "השלימו: הוספה של יום אימון יכולה ___ את הטווח, אבל אף פעם אינה יכולה ___ אותו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q8",
+   "label": 8,
+   "text": [
+    "זמני ההמתנה בדקות של שישה מטופלים במרפאת הגפן:",
+    "$4, 5, 5, 6, 7, 24$"
+   ],
+   "figure_id": null,
+   "given": [
+    {
+     "text": "$4, 5, 5, 6, 7, 24$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q8a",
+     "label": "א",
+     "text": "חשבו את הטווח של זמני ההמתנה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8b",
+     "label": "ב",
+     "text": "כתבו שישה זמני המתנה במרפאה אחרת, עם אותו טווח, שבה לפחות ארבעה מטופלים חיכו יותר מ־$15$ דקות.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "כתבו שישה זמני המתנה במרפאה אחרת, עם אותו טווח, שבה לפחות ארבעה מטופלים חיכו יותר מ־$15$ דקות."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8c",
+     "label": "ג",
+     "text": "על איזו מן השאלות הבאות אפשר לענות בעזרת הטווח בלבד? שאלה ראשונה: בכמה דקות חיכה המטופל שחיכה הכי הרבה יותר מזה שחיכה הכי מעט? שאלה שנייה: כמה מטופלים חיכו פחות מ־$10$ דקות? שאלה שלישית: באיזו מרפאה רוב המטופלים חיכו זמן קצר? איזה מידע, שאינו הטווח, היה עונה על השאלה השלישית?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "על איזו מן השאלות הבאות אפשר לענות בעזרת הטווח בלבד? שאלה ראשונה: בכמה דקות חיכה המטופל שחיכה הכי הרבה יותר מזה שחיכה הכי מעט? שאלה שנייה: כמה מטופלים חיכו פחות מ־$10$ דקות? שאלה שלישית: באיזו מרפאה רוב המטופלים חיכו זמן קצר? איזה מידע, שאינו הטווח, היה עונה על השאלה השלישית?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q9",
+   "label": 9,
+   "text": [
+    "נתונה הרשימה:",
+    "$26, 9, 17, 33, 20$"
+   ],
+   "figure_id": null,
+   "given": [
+    {
+     "text": "$26, 9, 17, 33, 20$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q9a",
+     "label": "א",
+     "text": "חשבו את הטווח של הרשימה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9b",
+     "label": "ב",
+     "text": "החליפו מספר אחד ברשימה במספר אחר, וקיבלו רשימה שהטווח שלה $29$ בדיוק. איזה מספר אפשר היה להחליף, ובאיזה מספר? תנו שתי אפשרויות שונות.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "החליפו מספר אחד ברשימה במספר אחר, וקיבלו רשימה שהטווח שלה $29$ בדיוק. איזה מספר אפשר היה להחליף, ובאיזה מספר? תנו שתי אפשרויות שונות."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9c",
+     "label": "ג",
+     "text": "החלפה אחרת של מספר אחד נתנה רשימה שהטווח שלה $17$ בדיוק. מצאו החלפה כזו.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "החלפה אחרת של מספר אחד נתנה רשימה שהטווח שלה $17$ בדיוק. מצאו החלפה כזו."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q10",
+   "label": 10,
+   "text": [
+    "בחידון אפשר גם להפסיד נקודות. הניקוד של חמישה משתתפים:",
+    "$6, −4, 14, 0, −9$",
+    "השופטים שוקלים ארבעה תיקונים. כל תיקון משנה את הניקוד של משתתף אחד, וכל תיקון נבדק לבדו ברשימה המקורית."
+   ],
+   "figure_id": null,
+   "given": [
+    {
+     "text": "$6, −4, 14, 0, −9$"
+    },
+    {
+     "text": "הניקוד שמתקנים · $−9$ · $0$ · $6$ · $14$"
+    },
+    {
+     "text": "הניקוד אחרי התיקון · $−2$ · $8$ · $16$ · $10$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "התיקון",
+     "ראשון",
+     "שני",
+     "שלישי",
+     "רביעי"
+    ],
+    "rows": [
+     [
+      "הניקוד שמתקנים",
+      "$−9$",
+      "$0$",
+      "$6$",
+      "$14$"
+     ],
+     [
+      "הניקוד אחרי התיקון",
+      "$−2$",
+      "$8$",
+      "$16$",
+      "$10$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q10a",
+     "label": "א",
+     "text": "חשבו את הטווח של הניקוד.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10b",
+     "label": "ב",
+     "text": "איזה תיקון אינו משנה את הטווח? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10c",
+     "label": "ג",
+     "text": "באילו תיקונים הטווח גדל ובאילו הוא קטן? הסבירו לפי מה שקורה לערך הגדול ביותר ולערך הקטן ביותר.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10d",
+     "label": "ד",
+     "text": "חשבו את הטווח החדש אחרי כל תיקון שמשנה את הטווח.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q11",
+   "label": 11,
+   "text": "מספר דקות האיחור של אוטובוס בחמישה ימים: $13, 23, 5, 16, 12$ דקות.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מספר דקות האיחור של אוטובוס בחמישה ימים: $13, 23, 5, 16, 12$ דקות."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q11a",
+     "label": "א",
+     "text": "חשבו את הטווח של זמני האיחור.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11b",
+     "label": "ב",
+     "text": "הוצאה של איזה יום מהרשימה משנה את הטווח, ובכמה דקות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11c",
+     "label": "ג",
+     "text": "התברר שבמקום $16$ דקות היו באחד הימים $21$ דקות איחור. עכשיו הוצאת היום הארוך ביותר והוצאת היום הקצר ביותר נותנות טווחים שונים. חשבו את שניהם.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "התברר שבמקום $16$ דקות היו באחד הימים $21$ דקות איחור. עכשיו הוצאת היום הארוך ביותר והוצאת היום הקצר ביותר נותנות טווחים שונים. חשבו את שניהם."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11d",
+     "label": "ד",
+     "text": "כתבו רשימה משלכם של חמישה זמני איחור שונים זה מזה, שבה הוצאת הזמן הארוך ביותר והוצאת הזמן הקצר ביותר נותנות אותו טווח.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q12",
+   "label": 12,
+   "text": "בארבע חנויות המחיר של אותה מחברת זהה, $p$ שקלים. בחנות חמישית המחיר הוא $13$ שקלים, והטווח של חמשת המחירים הוא $4$ שקלים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בארבע חנויות המחיר של אותה מחברת זהה, $p$ שקלים. בחנות חמישית המחיר הוא $13$ שקלים, והטווח של חמשת המחירים הוא $4$ שקלים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q12a",
+     "label": "א",
+     "text": "מה הטווח של ארבעת המחירים הראשונים? מה אפשר לומר על נתוני רשימה שהטווח שלה אפס?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12b",
+     "label": "ב",
+     "text": "מצאו את שני הערכים האפשריים של $p$ ובדקו כל אחד מהם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12c",
+     "label": "ג",
+     "text": "בחנות שישית המחיר הוא $14$ שקלים. איזה משני הערכים של $p$ נותן לששת המחירים טווח גדול יותר, ומה הטווח הזה?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "בחנות שישית המחיר הוא $14$ שקלים. איזה משני הערכים של $p$ נותן לששת המחירים טווח גדול יותר, ומה הטווח הזה?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12d",
+     "label": "ד",
+     "text": "השלימו: כשמוסיפים לרשימה שהטווח שלה אפס נתון אחד השונה מכל השאר, הטווח החדש שווה ל־___ בין הנתון החדש לבין ___.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q13",
+   "label": 13,
+   "text": "מעלית עצרה בקומות $6, 15, 8, 12$ ואחר כך עצרה פעם אחת נוספת. בבניין יש גם קומות חניה מתחת לקרקע, ומספריהן שליליים. אחרי העצירה הנוספת, הטווח של מספרי הקומות בכל העצירות הוא $16$ בדיוק.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מעלית עצרה בקומות $6, 15, 8, 12$ ואחר כך עצרה פעם אחת נוספת. בבניין יש גם קומות חניה מתחת לקרקע, ומספריהן שליליים. אחרי העצירה הנוספת, הטווח של מספרי הקומות בכל העצירות הוא $16$ בדיוק."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q13a",
+     "label": "א",
+     "text": "האם ייתכן שהעצירה הנוספת הייתה בקומה $10$ של הבניין? נמקו.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "האם ייתכן שהעצירה הנוספת הייתה בקומה $10$ של הבניין? נמקו."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13b",
+     "label": "ב",
+     "text": "אילו מן הקומות $−1$ או $4$ או $18$ או $22$ מתאימות לעצירה הנוספת? האם יש עוד קומות שמתאימות?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "אילו מן הקומות $−1$ או $4$ או $18$ או $22$ מתאימות לעצירה הנוספת? האם יש עוד קומות שמתאימות?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13c",
+     "label": "ג",
+     "text": "המעלית עצרה גם פעם שישית. נניח שבעצירה החמישית היא עצרה בקומה הגבוהה מבין שתי האפשרויות. בכמה קומות שונות יכולה להיות העצירה השישית, אם הטווח של שש העצירות שווה לטווח של חמש העצירות?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של מספר הקומות",
+       "text": "הערך של מספר הקומות"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q14",
+   "label": 14,
+   "text": "מספר הנוסעים במעבורת בחמש הפלגות נרשם כך: $36, 49, 28, 42, 53$ נוסעים. התברר שהמספר $36$ נרשם בטעות. אחרי התיקון הטווח של חמשת המספרים הוא $30$ נוסעים. פקיד הציע שהמספר הנכון הוא $19$ ופקידה הציעה $23$ נוסעים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מספר הנוסעים במעבורת בחמש הפלגות נרשם כך: $36, 49, 28, 42, 53$ נוסעים. התברר שהמספר $36$ נרשם בטעות. אחרי התיקון הטווח של חמשת המספרים הוא $30$ נוסעים. פקיד הציע שהמספר הנכון הוא $19$ ופקידה הציעה $23$ נוסעים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q14a",
+     "label": "א",
+     "text": "בדקו כל אחת משתי ההצעות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14b",
+     "label": "ב",
+     "text": "האם יש מספר נכון נוסף? מצאו אותו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14c",
+     "label": "ג",
+     "text": "הסבירו מדוע המספר הנכון אינו יכול להיות בין $28$ ל־$53$ נוסעים.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "הסבירו מדוע המספר הנכון אינו יכול להיות בין $28$ ל־$53$ נוסעים."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14d",
+     "label": "ד",
+     "text": "רועי אמר: \"המספר הנכון רחוק $30$ מהמספר השגוי, ולכן הוא $6$ או $66$ נוסעים.\" בדקו את שתי ההצעות של רועי ומצאו את הטעות בנימוק שלו.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "רועי אמר: \"המספר הנכון רחוק $30$ מהמספר השגוי, ולכן הוא $6$ או $66$ נוסעים.\" בדקו את שתי ההצעות של רועי ומצאו את הטעות בנימוק שלו."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q15",
+   "label": 15,
+   "text": "לרשימה $11, 21, 14$ מוסיפים מספר רביעי שלם $a$. הטווח של כל ארבעת המספרים הוא $17$ בדיוק. בטבלה הערכים של $a$ ששלושה תלמידים מצאו.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "לרשימה $11, 21, 14$ מוסיפים מספר רביעי שלם $a$. הטווח של כל ארבעת המספרים הוא $17$ בדיוק. בטבלה הערכים של $a$ ששלושה תלמידים מצאו."
+    },
+    {
+     "text": "הערך של $a$ · $28$ · $4$ · $15$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "תלמיד",
+     "דנה",
+     "יואב",
+     "מיכל"
+    ],
+    "rows": [
+     [
+      "הערך של $a$",
+      "$28$",
+      "$4$",
+      "$15$"
+     ]
+    ]
+   },
+   "example": {
+    "title": "דוגמה: שני מקרים",
+    "lines": [
+     "ברשימה $6, 8, m$ הטווח הוא $7$ בדיוק.",
+     "הטווח של $6$ ו־$8$ הוא $2$ בלבד, ולכן $m$ חייב להיות הגדול ביותר או הקטן ביותר.",
+     "אם $m$ הגדול ביותר: $m − 6 = 7$ ולכן $m = 13$",
+     "אם $m$ הקטן ביותר: $8 − m = 7$ ולכן $m = 1$"
+    ]
+   },
+   "items": [
+    {
+     "id": "q15a",
+     "label": "א",
+     "text": "מי מהתלמידים צדק? בדקו כל תשובה.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15b",
+     "label": "ב",
+     "text": "מדוע הערך של מיכל אינו יכול להתאים?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15c",
+     "label": "ג",
+     "text": "אילו הטווח של ארבעת המספרים היה $10$ בלבד, אילו ערכים שלמים של $a$ היו מתאימים? כמה ערכים כאלה יש?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "אילו הטווח של ארבעת המספרים היה $10$ בלבד, אילו ערכים שלמים של $a$ היו מתאימים? כמה ערכים כאלה יש?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15d",
+     "label": "ד",
+     "text": "האם יש ערך של $a$ שבשבילו הטווח של ארבעת המספרים הוא $6$ בלבד? נמקו.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "האם יש ערך של $a$ שבשבילו הטווח של ארבעת המספרים הוא $6$ בלבד? נמקו."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q16",
+   "label": 16,
+   "text": "נתונה רשימה שהטווח שלה $24$ והנתונים עצמם אינם ידועים. בכל שורה של הטבלה מבצעים פעולה אחת על כל נתוני הרשימה המקורית, ורשום הטווח שהתקבל. במקום הריבוע חסר מספר; בשתי השורות הראשונות המספר חיובי.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "נתונה רשימה שהטווח שלה $24$ והנתונים עצמם אינם ידועים. בכל שורה של הטבלה מבצעים פעולה אחת על כל נתוני הרשימה המקורית, ורשום הטווח שהתקבל. במקום הריבוע חסר מספר; בשתי השורות הראשונות המספר חיובי."
+    },
+    {
+     "text": "כפל ב־$□$ · $96$"
+    },
+    {
+     "text": "חילוק ב־$□$ · $6$"
+    },
+    {
+     "text": "הוספה של $□$ · $24$"
+    },
+    {
+     "text": "כפל ב־$2$ ואחר כך חיסור של $□$ · $48$"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "table": {
+    "head": [
+     "הפעולה על כל נתון",
+     "הטווח שהתקבל"
+    ],
+    "rows": [
+     [
+      "כפל ב־$□$",
+      "$96$"
+     ],
+     [
+      "חילוק ב־$□$",
+      "$6$"
+     ],
+     [
+      "הוספה של $□$",
+      "$24$"
+     ],
+     [
+      "כפל ב־$2$ ואחר כך חיסור של $□$",
+      "$48$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q16a",
+     "label": "א",
+     "text": "מצאו את המספר החסר בשתי השורות הראשונות.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16b",
+     "label": "ב",
+     "text": "איזה מספר יכול להיות בריבוע בשתי השורות האחרונות? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16c",
+     "label": "ג",
+     "text": "אחרי פעולה מסוימת על כל הנתונים התקבל טווח $12$ במקום הטווח המקורי. איזו מהפעולות הבאות יכולה להיות הפעולה הזו? פעולה ראשונה: מחלקים ב־$2$ כל נתון. פעולה שנייה: מחסרים $12$ מכל נתון. פעולה שלישית: מחסרים $12$ מכל נתון ואחר כך מחלקים ב־$2$ כל נתון.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "אחרי פעולה מסוימת על כל הנתונים התקבל טווח $12$ במקום הטווח המקורי. איזו מהפעולות הבאות יכולה להיות הפעולה הזו? פעולה ראשונה: מחלקים ב־$2$ כל נתון. פעולה שנייה: מחסרים $12$ מכל נתון. פעולה שלישית: מחסרים $12$ מכל נתון ואחר כך מחלקים ב־$2$ כל נתון."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16d",
+     "label": "ד",
+     "text": "תארו שתי פעולות שונות על כל הנתונים, שאחרי כל אחת מהן הטווח הוא $8$ בדיוק.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "תארו שתי פעולות שונות על כל הנתונים, שאחרי כל אחת מהן הטווח הוא $8$ בדיוק."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q17",
+   "label": 17,
+   "text": [
+    "נסמן ב־$R$ את הטווח של רשימת נתונים כלשהי.",
+    "תמר כפלה ב־$4$ כל נתון ואחר כך הוסיפה $b$ לכל נתון, וכתבה שהטווח החדש הוא $4R + b$"
+   ],
+   "figure_id": null,
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q17a",
+     "label": "א",
+     "text": "מה הטעות של תמר? כתבו את הטווח הנכון.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח החדש",
+       "text": "הערך של הטווח החדש"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17b",
+     "label": "ב",
+     "text": "מוסיפים $7$ לכל נתון ברשימה המקורית. איזה מן הביטויים $R + 7$ או $7R$ או $R$ הוא הטווח החדש? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח החדש",
+       "text": "הערך של הטווח החדש"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17c",
+     "label": "ג",
+     "text": "בדקו את הטווח הנכון מסעיף א על הרשימה $2, 4, 10$ כך: כפלו ב־$4$ כל נתון, הגדילו ב־$3$ כל נתון וחשבו את הטווח של הרשימה החדשה.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "בדקו את הטווח הנכון מסעיף א על הרשימה $2, 4, 10$ כך: כפלו ב־$4$ כל נתון, הגדילו ב־$3$ כל נתון וחשבו את הטווח של הרשימה החדשה."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q18",
+   "label": 18,
+   "text": [
+    "בתחנת מדידה באגם קוראים את גובה המים על סרגל מסומן. כל שנתה בסרגל שווה ל־$2.5$ ס״מ, והשנתה $0$ נמצאת $40$ ס״מ מעל קרקעית האגם. לכן כשהקריאה בסרגל היא $s$ שנתות, עומק המים הוא $2.5s + 40$ ס״מ.",
+    "במשך שבוע נרשמו הקריאות $4, 11, 7, 22, 15$ שנתות."
+   ],
+   "figure_id": null,
+   "given": [
+    {
+     "text": "בתחנת מדידה באגם קוראים את גובה המים על סרגל מסומן. כל שנתה בסרגל שווה ל־$2.5$ ס״מ, והשנתה $0$ נמצאת $40$ ס״מ מעל קרקעית האגם. לכן כשהקריאה בסרגל היא $s$ שנתות, עומק המים הוא $2.5s + 40$ ס״מ."
+    },
+    {
+     "text": "במשך שבוע נרשמו הקריאות $4, 11, 7, 22, 15$ שנתות."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q18a",
+     "label": "א",
+     "text": "חשבו את עומק המים ביום של הקריאה הגבוהה ביותר וביום של הקריאה הנמוכה ביותר, ואת הטווח של עומק המים באותו שבוע.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18b",
+     "label": "ב",
+     "text": "נועה חישבה $2.5 · 18 + 40 = 85$ ס״מ וכתבה שזה הטווח של עומק המים. מה הטעות שלה?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "נועה חישבה $2.5 · 18 + 40 = 85$ ס״מ וכתבה שזה הטווח של עומק המים. מה הטעות שלה?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18c",
+     "label": "ג",
+     "text": "בחודש אחר, הטווח של עומק המים היה $65$ ס״מ. מה היה הטווח של קריאות הסרגל?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "בחודש אחר, הטווח של עומק המים היה $65$ ס״מ. מה היה הטווח של קריאות הסרגל?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18d",
+     "label": "ד",
+     "text": "מה מתאר הטווח שמצאתם בסעיף א? בחרו את התשובה הנכונה: את העומק הגדול ביותר באותו שבוע · את ההפרש בין העומק הגדול ביותר לעומק הקטן ביותר באותו שבוע · את השינוי בעומק מיום ליום.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q19",
+   "label": 19,
+   "text": "הגבהים בס״מ של חמישה שתילי עגבניות בגינת בית הספר: $46, 58, 39, 61, 52$ ס״מ.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "הגבהים בס״מ של חמישה שתילי עגבניות בגינת בית הספר: $46, 58, 39, 61, 52$ ס״מ."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q19a",
+     "label": "א",
+     "text": "מצאו את הגובה של השתיל הגבוה ביותר ושל השתיל הנמוך ביותר, וחשבו את הטווח.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19b",
+     "label": "ב",
+     "text": "השלימו את המשפט כך שיתאר את הטווח של השתילים: כל הגבהים נמצאים בתחום ש־___.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19c",
+     "label": "ג",
+     "text": "שאר השתילים אינם משתנים. בכמה ס״מ לפחות צריך השתיל הנמוך ביותר לגדול כדי שהטווח יהיה $15$ ס״מ בדיוק?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "שאר השתילים אינם משתנים. בכמה ס״מ לפחות צריך השתיל הנמוך ביותר לגדול כדי שהטווח יהיה $15$ ס״מ בדיוק?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הגידול",
+       "text": "הערך של הגידול"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19d",
+     "label": "ד",
+     "text": "ליד חמשת השתילים המקוריים שתלו שתיל שישי שגובהו $70$ ס״מ. מה הטווח של ששת השתילים?",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "ליד חמשת השתילים המקוריים שתלו שתיל שישי שגובהו $70$ ס״מ. מה הטווח של ששת השתילים?"
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q20",
+   "label": 20,
+   "text": "מספר בקבוקי המים שנמכרו בקיוסק של בית הספר בשישה ימים: $42, 57, 38, 75, 49, 61$ בקבוקים.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "מספר בקבוקי המים שנמכרו בקיוסק של בית הספר בשישה ימים: $42, 57, 38, 75, 49, 61$ בקבוקים."
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q20a",
+     "label": "א",
+     "text": "חשבו את הטווח.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20b",
+     "label": "ב",
+     "text": "ביום שבו נמכרו $75$ בקבוקים היה יום ספורט. השלימו: בלי יום הספורט, הטווח של חמשת הימים האחרים הוא ___ בקבוקים.",
+     "figure_id": null,
+     "given": [
+      {
+       "text": "ביום שבו נמכרו $75$ בקבוקים היה יום ספורט. השלימו: בלי יום הספורט, הטווח של חמשת הימים האחרים הוא ___ בקבוקים."
+      }
+     ],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של הטווח",
+       "text": "הערך של הטווח"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20c",
+     "label": "ג",
+     "text": "מנהל הקיוסק מסתכל על הטווח של ששת הימים ואומר: \"זה מספר הבקבוקים שאנחנו מוכרים ביום רגיל.\" האם הוא צודק? נמקו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20d",
+     "label": "ד",
+     "text": "איזו שאלה על מכירת הבקבוקים אי אפשר לענות עליה בעזרת הטווח בלבד?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "של התשובה",
+       "text": "הערך של התשובה"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  }
+ ],
+ "figures": [
+  {
+   "id": "q1_head",
+   "svg": "figures/q1_head.svg",
+   "question": "q1",
+   "view": {
+    "width_px": 221.0,
+    "height_px": 231.9,
+    "unit_px": 1.0,
+    "viewbox": [
+     221.0,
+     231.9
+    ]
+   },
+   "objects": {
+    "segments": [
+     {
+      "svg_id": "seg-0eabc5",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        182.0,
+        142.0
+       ],
+       [
+        200.0,
+        142.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        178.02,
+        143.0
+       ],
+       [
+        196.02,
+        143.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-090c7c"
+      ]
+     },
+     {
+      "svg_id": "seg-168c61",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        80.0,
+        190.0
+       ],
+       [
+        98.0,
+        190.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        76.02,
+        191.0
+       ],
+       [
+        94.02,
+        191.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-8953b8"
+      ]
+     },
+     {
+      "svg_id": "seg-2b1e00",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        114.0,
+        110.0
+       ],
+       [
+        132.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        110.02,
+        111.0
+       ],
+       [
+        128.02,
+        111.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-61653e"
+      ]
+     },
+     {
+      "svg_id": "seg-2cd0c6",
+      "kind": "segment",
+      "role": "axis",
+      "xy": [
+       [
+        30.0,
+        206.0
+       ],
+       [
+        30.0,
+        8.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        26.02,
+        207.0
+       ],
+       [
+        26.02,
+        9.0
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-3bf109",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        166.0,
+        94.0
+       ],
+       [
+        166.0,
+        14.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        162.02,
+        95.0
+       ],
+       [
+        162.02,
+        15.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-2dae1d"
+      ]
+     },
+     {
+      "svg_id": "seg-4097f7",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        200.0,
+        110.0
+       ],
+       [
+        182.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        196.02,
+        111.0
+       ],
+       [
+        178.02,
+        111.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-090c7c"
+      ]
+     },
+     {
+      "svg_id": "seg-48eec3",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        46.0,
+        158.0
+       ],
+       [
+        64.0,
+        158.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        42.02,
+        159.0
+       ],
+       [
+        60.02,
+        159.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-a5ffb5"
+      ]
+     },
+     {
+      "svg_id": "seg-554058",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        64.0,
+        46.0
+       ],
+       [
+        46.0,
+        46.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        60.02,
+        47.0
+       ],
+       [
+        42.02,
+        47.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-a5ffb5"
+      ]
+     },
+     {
+      "svg_id": "seg-5b0d48",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        148.0,
+        94.0
+       ],
+       [
+        166.0,
+        94.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        144.02,
+        95.0
+       ],
+       [
+        162.02,
+        95.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-2dae1d"
+      ]
+     },
+     {
+      "svg_id": "seg-5d051c",
+      "kind": "segment",
+      "role": "axis",
+      "xy": [
+       [
+        30.0,
+        206.0
+       ],
+       [
+        216.0,
+        206.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        26.02,
+        207.0
+       ],
+       [
+        212.02,
+        207.0
+       ]
+      ]
+     },
+     {
+      "svg_id": "seg-65e5d0",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        148.0,
+        14.0
+       ],
+       [
+        148.0,
+        94.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        144.02,
+        15.0
+       ],
+       [
+        144.02,
+        95.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-2dae1d"
+      ]
+     },
+     {
+      "svg_id": "seg-6a09aa",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        132.0,
+        110.0
+       ],
+       [
+        132.0,
+        30.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        128.02,
+        111.0
+       ],
+       [
+        128.02,
+        31.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-61653e"
+      ]
+     },
+     {
+      "svg_id": "seg-9e7987",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        132.0,
+        30.0
+       ],
+       [
+        114.0,
+        30.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        128.02,
+        31.0
+       ],
+       [
+        110.02,
+        31.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-61653e"
+      ]
+     },
+     {
+      "svg_id": "seg-a8a1ce",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        80.0,
+        126.0
+       ],
+       [
+        80.0,
+        190.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        76.02,
+        127.0
+       ],
+       [
+        76.02,
+        191.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-8953b8"
+      ]
+     },
+     {
+      "svg_id": "seg-b094a5",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        200.0,
+        142.0
+       ],
+       [
+        200.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        196.02,
+        143.0
+       ],
+       [
+        196.02,
+        111.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-090c7c"
+      ]
+     },
+     {
+      "svg_id": "seg-b0a0a2",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        64.0,
+        158.0
+       ],
+       [
+        64.0,
+        46.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        60.02,
+        159.0
+       ],
+       [
+        60.02,
+        47.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-a5ffb5"
+      ]
+     },
+     {
+      "svg_id": "seg-c34768",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        182.0,
+        110.0
+       ],
+       [
+        182.0,
+        142.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        178.02,
+        111.0
+       ],
+       [
+        178.02,
+        143.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-090c7c"
+      ]
+     },
+     {
+      "svg_id": "seg-ccfc89",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        46.0,
+        46.0
+       ],
+       [
+        46.0,
+        158.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        42.02,
+        47.0
+       ],
+       [
+        42.02,
+        159.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-a5ffb5"
+      ]
+     },
+     {
+      "svg_id": "seg-e58219",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        166.0,
+        14.0
+       ],
+       [
+        148.0,
+        14.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        162.02,
+        15.0
+       ],
+       [
+        144.02,
+        15.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-2dae1d"
+      ]
+     },
+     {
+      "svg_id": "seg-e71136",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        98.0,
+        190.0
+       ],
+       [
+        98.0,
+        126.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        94.02,
+        191.0
+       ],
+       [
+        94.02,
+        127.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-8953b8"
+      ]
+     },
+     {
+      "svg_id": "seg-ea9fdb",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        114.0,
+        30.0
+       ],
+       [
+        114.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        110.02,
+        31.0
+       ],
+       [
+        110.02,
+        111.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-61653e"
+      ]
+     },
+     {
+      "svg_id": "seg-fad6b5",
+      "kind": "segment",
+      "role": "edge",
+      "xy": [
+       [
+        98.0,
+        126.0
+       ],
+       [
+        80.0,
+        126.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        94.02,
+        127.0
+       ],
+       [
+        76.02,
+        127.0
+       ]
+      ],
+      "ink_svg_id": [
+       "poly-8953b8"
+      ]
+     }
+    ],
+    "polygons": [
+     {
+      "svg_id": "poly-090c7c",
+      "kind": "polygon",
+      "role": "data",
+      "xy": [
+       [
+        182.0,
+        142.0
+       ],
+       [
+        200.0,
+        142.0
+       ],
+       [
+        200.0,
+        110.0
+       ],
+       [
+        182.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        178.02,
+        143.0
+       ],
+       [
+        196.02,
+        143.0
+       ],
+       [
+        196.02,
+        111.0
+       ],
+       [
+        178.02,
+        111.0
+       ]
+      ]
+     },
+     {
+      "svg_id": "poly-2dae1d",
+      "kind": "polygon",
+      "role": "data",
+      "xy": [
+       [
+        148.0,
+        94.0
+       ],
+       [
+        166.0,
+        94.0
+       ],
+       [
+        166.0,
+        14.0
+       ],
+       [
+        148.0,
+        14.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        144.02,
+        95.0
+       ],
+       [
+        162.02,
+        95.0
+       ],
+       [
+        162.02,
+        15.0
+       ],
+       [
+        144.02,
+        15.0
+       ]
+      ]
+     },
+     {
+      "svg_id": "poly-61653e",
+      "kind": "polygon",
+      "role": "data",
+      "xy": [
+       [
+        114.0,
+        110.0
+       ],
+       [
+        132.0,
+        110.0
+       ],
+       [
+        132.0,
+        30.0
+       ],
+       [
+        114.0,
+        30.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        110.02,
+        111.0
+       ],
+       [
+        128.02,
+        111.0
+       ],
+       [
+        128.02,
+        31.0
+       ],
+       [
+        110.02,
+        31.0
+       ]
+      ]
+     },
+     {
+      "svg_id": "poly-8953b8",
+      "kind": "polygon",
+      "role": "data",
+      "xy": [
+       [
+        80.0,
+        190.0
+       ],
+       [
+        98.0,
+        190.0
+       ],
+       [
+        98.0,
+        126.0
+       ],
+       [
+        80.0,
+        126.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        76.02,
+        191.0
+       ],
+       [
+        94.02,
+        191.0
+       ],
+       [
+        94.02,
+        127.0
+       ],
+       [
+        76.02,
+        127.0
+       ]
+      ]
+     },
+     {
+      "svg_id": "poly-a5ffb5",
+      "kind": "polygon",
+      "role": "data",
+      "xy": [
+       [
+        46.0,
+        158.0
+       ],
+       [
+        64.0,
+        158.0
+       ],
+       [
+        64.0,
+        46.0
+       ],
+       [
+        46.0,
+        46.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        42.02,
+        159.0
+       ],
+       [
+        60.02,
+        159.0
+       ],
+       [
+        60.02,
+        47.0
+       ],
+       [
+        42.02,
+        47.0
+       ]
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "lbl-A",
+      "kind": "label",
+      "role": "value",
+      "name": "A",
+      "text": "A",
+      "for": "A",
+      "xy": [
+       55.0,
+       218.853333
+      ],
+      "svg_xy": [
+       51.02,
+       219.85
+      ],
+      "ink_box": [
+       47.35,
+       209.97,
+       54.69,
+       222.89
+      ]
+     },
+     {
+      "svg_id": "lbl-B",
+      "kind": "label",
+      "role": "value",
+      "name": "B",
+      "text": "B",
+      "for": "B",
+      "xy": [
+       89.0,
+       218.853333
+      ],
+      "svg_xy": [
+       85.02,
+       219.85
+      ],
+      "ink_box": [
+       81.35,
+       209.97,
+       88.69,
+       222.89
+      ]
+     },
+     {
+      "svg_id": "lbl-C",
+      "kind": "label",
+      "role": "value",
+      "name": "C",
+      "text": "C",
+      "for": "C",
+      "xy": [
+       123.0,
+       218.853333
+      ],
+      "svg_xy": [
+       119.02,
+       219.85
+      ],
+      "ink_box": [
+       115.35,
+       209.97,
+       122.69,
+       222.89
+      ]
+     },
+     {
+      "svg_id": "lbl-D",
+      "kind": "label",
+      "role": "value",
+      "name": "D",
+      "text": "D",
+      "for": "D",
+      "xy": [
+       157.0,
+       218.853333
+      ],
+      "svg_xy": [
+       153.02,
+       219.85
+      ],
+      "ink_box": [
+       149.35,
+       209.97,
+       156.69,
+       222.89
+      ]
+     },
+     {
+      "svg_id": "lbl-E",
+      "kind": "label",
+      "role": "value",
+      "name": "E",
+      "text": "E",
+      "for": "E",
+      "xy": [
+       191.0,
+       218.853333
+      ],
+      "svg_xy": [
+       187.02,
+       219.85
+      ],
+      "ink_box": [
+       183.35,
+       209.97,
+       190.69,
+       222.89
+      ]
+     },
+     {
+      "svg_id": "lbl-y30",
+      "kind": "label",
+      "role": "value",
+      "name": "y30",
+      "text": "30",
+      "for": "y30",
+      "xy": [
+       19.166667,
+       112.88
+      ],
+      "svg_xy": [
+       15.19,
+       113.88
+      ],
+      "ink_box": [
+       9.0,
+       105.56,
+       21.37,
+       116.44
+      ]
+     },
+     {
+      "svg_id": "lbl-y60",
+      "kind": "label",
+      "role": "value",
+      "name": "y60",
+      "text": "60",
+      "for": "y60",
+      "xy": [
+       19.166667,
+       16.88
+      ],
+      "svg_xy": [
+       15.19,
+       17.88
+      ],
+      "ink_box": [
+       9.0,
+       9.56,
+       21.37,
+       20.44
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q1_head",
+    "kind": "plane_geometry",
+    "visual_support": "full",
+    "question": "q1",
+    "svg": "figures/q1_head.svg",
+    "view": {
+     "viewbox": [
+      221.0,
+      231.9
+     ]
+    },
+    "objects": [
+     {
+      "id": "seg-0eabc5",
+      "svg_id": "seg-0eabc5",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        182.0,
+        142.0
+       ],
+       [
+        200.0,
+        142.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        178.02,
+        143.0
+       ],
+       [
+        196.02,
+        143.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-168c61",
+      "svg_id": "seg-168c61",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        80.0,
+        190.0
+       ],
+       [
+        98.0,
+        190.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        76.02,
+        191.0
+       ],
+       [
+        94.02,
+        191.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-2b1e00",
+      "svg_id": "seg-2b1e00",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        114.0,
+        110.0
+       ],
+       [
+        132.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        110.02,
+        111.0
+       ],
+       [
+        128.02,
+        111.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-2cd0c6",
+      "svg_id": "seg-2cd0c6",
+      "type": "segment",
+      "part": "axis",
+      "xy": [
+       [
+        30.0,
+        206.0
+       ],
+       [
+        30.0,
+        8.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        26.02,
+        207.0
+       ],
+       [
+        26.02,
+        9.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-3bf109",
+      "svg_id": "seg-3bf109",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        166.0,
+        94.0
+       ],
+       [
+        166.0,
+        14.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        162.02,
+        95.0
+       ],
+       [
+        162.02,
+        15.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-4097f7",
+      "svg_id": "seg-4097f7",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        200.0,
+        110.0
+       ],
+       [
+        182.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        196.02,
+        111.0
+       ],
+       [
+        178.02,
+        111.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-48eec3",
+      "svg_id": "seg-48eec3",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        46.0,
+        158.0
+       ],
+       [
+        64.0,
+        158.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        42.02,
+        159.0
+       ],
+       [
+        60.02,
+        159.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-554058",
+      "svg_id": "seg-554058",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        64.0,
+        46.0
+       ],
+       [
+        46.0,
+        46.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        60.02,
+        47.0
+       ],
+       [
+        42.02,
+        47.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-5b0d48",
+      "svg_id": "seg-5b0d48",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        148.0,
+        94.0
+       ],
+       [
+        166.0,
+        94.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        144.02,
+        95.0
+       ],
+       [
+        162.02,
+        95.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-5d051c",
+      "svg_id": "seg-5d051c",
+      "type": "segment",
+      "part": "axis",
+      "xy": [
+       [
+        30.0,
+        206.0
+       ],
+       [
+        216.0,
+        206.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        26.02,
+        207.0
+       ],
+       [
+        212.02,
+        207.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-65e5d0",
+      "svg_id": "seg-65e5d0",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        148.0,
+        14.0
+       ],
+       [
+        148.0,
+        94.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        144.02,
+        15.0
+       ],
+       [
+        144.02,
+        95.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-6a09aa",
+      "svg_id": "seg-6a09aa",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        132.0,
+        110.0
+       ],
+       [
+        132.0,
+        30.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        128.02,
+        111.0
+       ],
+       [
+        128.02,
+        31.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-9e7987",
+      "svg_id": "seg-9e7987",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        132.0,
+        30.0
+       ],
+       [
+        114.0,
+        30.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        128.02,
+        31.0
+       ],
+       [
+        110.02,
+        31.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-a8a1ce",
+      "svg_id": "seg-a8a1ce",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        80.0,
+        126.0
+       ],
+       [
+        80.0,
+        190.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        76.02,
+        127.0
+       ],
+       [
+        76.02,
+        191.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-b094a5",
+      "svg_id": "seg-b094a5",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        200.0,
+        142.0
+       ],
+       [
+        200.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        196.02,
+        143.0
+       ],
+       [
+        196.02,
+        111.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-b0a0a2",
+      "svg_id": "seg-b0a0a2",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        64.0,
+        158.0
+       ],
+       [
+        64.0,
+        46.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        60.02,
+        159.0
+       ],
+       [
+        60.02,
+        47.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-c34768",
+      "svg_id": "seg-c34768",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        182.0,
+        110.0
+       ],
+       [
+        182.0,
+        142.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        178.02,
+        111.0
+       ],
+       [
+        178.02,
+        143.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-ccfc89",
+      "svg_id": "seg-ccfc89",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        46.0,
+        46.0
+       ],
+       [
+        46.0,
+        158.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        42.02,
+        47.0
+       ],
+       [
+        42.02,
+        159.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-e58219",
+      "svg_id": "seg-e58219",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        166.0,
+        14.0
+       ],
+       [
+        148.0,
+        14.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        162.02,
+        15.0
+       ],
+       [
+        144.02,
+        15.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-e71136",
+      "svg_id": "seg-e71136",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        98.0,
+        190.0
+       ],
+       [
+        98.0,
+        126.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        94.02,
+        191.0
+       ],
+       [
+        94.02,
+        127.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-ea9fdb",
+      "svg_id": "seg-ea9fdb",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        114.0,
+        30.0
+       ],
+       [
+        114.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        110.02,
+        31.0
+       ],
+       [
+        110.02,
+        111.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "seg-fad6b5",
+      "svg_id": "seg-fad6b5",
+      "type": "segment",
+      "part": "edge",
+      "xy": [
+       [
+        98.0,
+        126.0
+       ],
+       [
+        80.0,
+        126.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        94.02,
+        127.0
+       ],
+       [
+        76.02,
+        127.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "poly-090c7c",
+      "svg_id": "poly-090c7c",
+      "type": "polygon",
+      "part": "data",
+      "xy": [
+       [
+        182.0,
+        142.0
+       ],
+       [
+        200.0,
+        142.0
+       ],
+       [
+        200.0,
+        110.0
+       ],
+       [
+        182.0,
+        110.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        178.02,
+        143.0
+       ],
+       [
+        196.02,
+        143.0
+       ],
+       [
+        196.02,
+        111.0
+       ],
+       [
+        178.02,
+        111.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "poly-2dae1d",
+      "svg_id": "poly-2dae1d",
+      "type": "polygon",
+      "part": "data",
+      "xy": [
+       [
+        148.0,
+        94.0
+       ],
+       [
+        166.0,
+        94.0
+       ],
+       [
+        166.0,
+        14.0
+       ],
+       [
+        148.0,
+        14.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        144.02,
+        95.0
+       ],
+       [
+        162.02,
+        95.0
+       ],
+       [
+        162.02,
+        15.0
+       ],
+       [
+        144.02,
+        15.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "poly-61653e",
+      "svg_id": "poly-61653e",
+      "type": "polygon",
+      "part": "data",
+      "xy": [
+       [
+        114.0,
+        110.0
+       ],
+       [
+        132.0,
+        110.0
+       ],
+       [
+        132.0,
+        30.0
+       ],
+       [
+        114.0,
+        30.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        110.02,
+        111.0
+       ],
+       [
+        128.02,
+        111.0
+       ],
+       [
+        128.02,
+        31.0
+       ],
+       [
+        110.02,
+        31.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "poly-8953b8",
+      "svg_id": "poly-8953b8",
+      "type": "polygon",
+      "part": "data",
+      "xy": [
+       [
+        80.0,
+        190.0
+       ],
+       [
+        98.0,
+        190.0
+       ],
+       [
+        98.0,
+        126.0
+       ],
+       [
+        80.0,
+        126.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        76.02,
+        191.0
+       ],
+       [
+        94.02,
+        191.0
+       ],
+       [
+        94.02,
+        127.0
+       ],
+       [
+        76.02,
+        127.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "poly-a5ffb5",
+      "svg_id": "poly-a5ffb5",
+      "type": "polygon",
+      "part": "data",
+      "xy": [
+       [
+        46.0,
+        158.0
+       ],
+       [
+        64.0,
+        158.0
+       ],
+       [
+        64.0,
+        46.0
+       ],
+       [
+        46.0,
+        46.0
+       ]
+      ],
+      "svg_xy": [
+       [
+        42.02,
+        159.0
+       ],
+       [
+        60.02,
+        159.0
+       ],
+       [
+        60.02,
+        47.0
+       ],
+       [
+        42.02,
+        47.0
+       ]
+      ],
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-A",
+      "svg_id": "lbl-A",
+      "type": "label",
+      "part": "value",
+      "name": "A",
+      "text": "A",
+      "xy": [
+       55.0,
+       218.853333
+      ],
+      "svg_xy": [
+       51.02,
+       219.85
+      ],
+      "bbox": [
+       47.35,
+       209.97,
+       54.69,
+       222.89
+      ],
+      "for": "A",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-B",
+      "svg_id": "lbl-B",
+      "type": "label",
+      "part": "value",
+      "name": "B",
+      "text": "B",
+      "xy": [
+       89.0,
+       218.853333
+      ],
+      "svg_xy": [
+       85.02,
+       219.85
+      ],
+      "bbox": [
+       81.35,
+       209.97,
+       88.69,
+       222.89
+      ],
+      "for": "B",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-C",
+      "svg_id": "lbl-C",
+      "type": "label",
+      "part": "value",
+      "name": "C",
+      "text": "C",
+      "xy": [
+       123.0,
+       218.853333
+      ],
+      "svg_xy": [
+       119.02,
+       219.85
+      ],
+      "bbox": [
+       115.35,
+       209.97,
+       122.69,
+       222.89
+      ],
+      "for": "C",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-D",
+      "svg_id": "lbl-D",
+      "type": "label",
+      "part": "value",
+      "name": "D",
+      "text": "D",
+      "xy": [
+       157.0,
+       218.853333
+      ],
+      "svg_xy": [
+       153.02,
+       219.85
+      ],
+      "bbox": [
+       149.35,
+       209.97,
+       156.69,
+       222.89
+      ],
+      "for": "D",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-E",
+      "svg_id": "lbl-E",
+      "type": "label",
+      "part": "value",
+      "name": "E",
+      "text": "E",
+      "xy": [
+       191.0,
+       218.853333
+      ],
+      "svg_xy": [
+       187.02,
+       219.85
+      ],
+      "bbox": [
+       183.35,
+       209.97,
+       190.69,
+       222.89
+      ],
+      "for": "E",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y30",
+      "svg_id": "lbl-y30",
+      "type": "label",
+      "part": "value",
+      "name": "y30",
+      "text": "30",
+      "xy": [
+       19.166667,
+       112.88
+      ],
+      "svg_xy": [
+       15.19,
+       113.88
+      ],
+      "bbox": [
+       9.0,
+       105.56,
+       21.37,
+       116.44
+      ],
+      "for": "y30",
+      "role": "context",
+      "display": "initial"
+     },
+     {
+      "id": "lbl-y60",
+      "svg_id": "lbl-y60",
+      "type": "label",
+      "part": "value",
+      "name": "y60",
+      "text": "60",
+      "xy": [
+       19.166667,
+       16.88
+      ],
+      "svg_xy": [
+       15.19,
+       17.88
+      ],
+      "bbox": [
+       9.0,
+       9.56,
+       21.37,
+       20.44
+      ],
+      "for": "y60",
+      "role": "context",
+      "display": "initial"
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-find",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q1a",
+      "quantity": "value",
+      "what": "של הטווח",
+      "text": "הערך של הטווח",
+      "objects": []
+     },
+     {
+      "id": "r-find-2",
+      "type": "find",
+      "role": "to_prove",
+      "item": "q1b",
+      "quantity": "value",
+      "what": "של התשובה",
+      "text": "הערך של התשובה",
+      "objects": []
+     },
+     {
+      "id": "r-statement-1648",
+      "type": "statement",
+      "role": "given",
+      "item": "q1c",
+      "text": "בדקו לכל קבוצה, בעזרת התחום שלה, אם ייתכן שהיה בה גם יום עם $16$ הודעות וגם יום עם $48$ הודעות.",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q1_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  }
+ ],
+ "visuals": [
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q3_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q3",
+   "objects": [
+    {
+     "id": "q3_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "הרשימה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "התשובה של התלמיד",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$47, 26, 41, 73, 34$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$99$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "$17, 0, 13$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$17$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "$52, 19, 31$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$71$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r5c1",
+     "type": "cell",
+     "row": 5,
+     "col": 1,
+     "value": "$6, 37, 24$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q3_table-r5c2",
+     "type": "cell",
+     "row": 5,
+     "col": 2,
+     "value": "$43$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q3_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q6_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q6",
+   "objects": [
+    {
+     "id": "q6_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "תלמיד",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "האורכים שרשם",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "רוני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$30, 39, 45, 41, 33$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "שירה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$30, 38, 47, 42, 45$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "עומר",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q6_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$32, 45, 37, 34, 43$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q6_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q10_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q10",
+   "objects": [
+    {
+     "id": "q10_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "התיקון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "ראשון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "שני",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "שלישי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r1c5",
+     "type": "cell",
+     "row": 1,
+     "col": 5,
+     "value": "רביעי",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "הניקוד שמתקנים",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$−9$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$0$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "$6$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r2c5",
+     "type": "cell",
+     "row": 2,
+     "col": 5,
+     "value": "$14$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "הניקוד אחרי התיקון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$−2$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c3",
+     "type": "cell",
+     "row": 3,
+     "col": 3,
+     "value": "$8$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c4",
+     "type": "cell",
+     "row": 3,
+     "col": 4,
+     "value": "$16$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q10_table-r3c5",
+     "type": "cell",
+     "row": 3,
+     "col": 5,
+     "value": "$10$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q10_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q15_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q15",
+   "objects": [
+    {
+     "id": "q15_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "תלמיד",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "דנה",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "יואב",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "מיכל",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "הערך של $a$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$28$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "$4$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q15_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "$15$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q15_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  },
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q16_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q16",
+   "objects": [
+    {
+     "id": "q16_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "הפעולה על כל נתון",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "הטווח שהתקבל",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "כפל ב־$□$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "$96$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r3c1",
+     "type": "cell",
+     "row": 3,
+     "col": 1,
+     "value": "חילוק ב־$□$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r3c2",
+     "type": "cell",
+     "row": 3,
+     "col": 2,
+     "value": "$6$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r4c1",
+     "type": "cell",
+     "row": 4,
+     "col": 1,
+     "value": "הוספה של $□$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r4c2",
+     "type": "cell",
+     "row": 4,
+     "col": 2,
+     "value": "$24$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r5c1",
+     "type": "cell",
+     "row": 5,
+     "col": 1,
+     "value": "כפל ב־$2$ ואחר כך חיסור של $□$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q16_table-r5c2",
+     "type": "cell",
+     "row": 5,
+     "col": 2,
+     "value": "$48$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q16_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  }
+ ]
+}

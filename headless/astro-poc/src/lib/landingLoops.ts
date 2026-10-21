@@ -1,0 +1,590 @@
+/**
+ * Landing-page loop coverage.
+ *
+ * Topic/grade/marketing landings must expose one looping animation.
+ * Pages that already mount a ConceptLoop keep that film (protected engine).
+ * Every other landing gets a CSS/SVG variant from LandingLoop.astro.
+ * triangle-area-grade-7 keeps its explorer; the explorer glides once, so it
+ * still needs a real loop.
+ */
+import { LESSON_LOOPS, LESSON_LOOP_VARIANTS, LESSON_TOPIC_MAP } from './lessonLoops';
+import topicFamilies from '../data/topicFamilies.json';
+import type { TopicPageContent } from './topicPages';
+
+/**
+ * Family → ConceptLoop film. F01–F06, F21, F26, F38 were the original mounts.
+ * Per Noam's decision (2026-10-15): the existing F07–F13 films play on topic
+ * pages too (ending that part of the KIMI-ANIM-6 exclusion), and the later
+ * families reuse the closest existing film. F10/F14 keep their CSS loops.
+ * F11 subtraction topics use the new baseten-sub CSS loop via
+ * SLUG_CSS_OVERRIDE (only genuinely new loop: two-digit subtraction with
+ * borrowing). Lesson-specific overrides take precedence: family films are
+ * never a substitute for checking the learning objective of a page.
+ */
+export const FAMILY_CONCEPT_LOOP = {
+  F01: 'sticks',
+  F02: 'numberline',
+  F03: 'tenframes',
+  F04: 'balance',
+  F05: 'pattern',
+  F06: 'bars',
+  F07: 'ruler',
+  F08: 'array',
+  F09: 'polygon',
+  F11: 'baseten',
+  F12: 'cookies',
+  F13: 'fraction',
+  F21: 'area-model',
+  F22: 'equiv-half',
+  F23: 'prime-rect',
+  F24: 'unit-frac',
+  F25: 'frac-product',
+  F26: 'triangle',
+  F27: 'tenth-cell',
+  F30: 'frac-product',
+  F33: 'ratio-beads',
+  F38: 'pythagoras',
+} as const;
+
+/** One page whose own idea has its own ConceptLoop film (Kimi's L14 v6). */
+const SLUG_CONCEPT_OVERRIDE = {
+  // Reviewed against the lesson, independently of the family fallback.
+  'build-decompose-shapes-grade-3': 'polygon',
+  'number-neighbors-grade-1': 'neighbors',
+  'hundreds-tens-ones-grade-2': 'place-123',
+  'numbers-to-1000-grade-2': 'place-123',
+  'place-value-grade-3': 'place-123',
+  'even-odd-sequences-a-grade-2': 'odd-pair',
+  'even-odd-sequences-b-grade-2': 'odd-pair',
+  'division-equal-shares-grade-2': 'share-12',
+  'division-measurement-grade-2': 'jumps-4',
+  'division-check-multiplication-grade-3': 'share-12',
+  'division-inverse-multiplication-grade-3': 'share-12',
+  'angles-types-grade-3': 'angle-kinds',
+  'angle-types-grade-4': 'angle-kinds',
+  'lines-angles-shapes-grade-3': 'para-perp',
+  'angles-lines-plane-grade-4': 'para-perp',
+  'classify-triangles-grade-4': 'tri-sort',
+  'triangles-classify-build-grade-4': 'tri-sort',
+  'parallel-perpendicular-shapes-grade-4': 'para-perp',
+  'perimeter-parallel-perpendicular-grade-5': 'para-perp',
+  'polygons-diagonals-grade-4': 'two-diag',
+  'quadrilateral-diagonals-grade-5': 'two-diag',
+  'triangle-height-obtuse-parallelogram-grade-5': 'obtuse-ht',
+  'symmetry-reflection-rotation-grade-4': 'transform',
+  'transformations-grade-5': 'transform',
+  'area-perimeter-rectangle-grade-4': 'rect-count',
+  'area-perimeter-rectangles-grade-5': 'rect-count',
+  'composite-area-grade-5': 'l-split',
+  'area-perimeter-composite-grade-4': 'l-split',
+  'quadrilaterals-classify-grade-4': 'quad-tree',
+  'quadrilateral-family-grade-5': 'quad-tree',
+  'quadrilaterals-review-grade-6': 'quad-tree',
+  'rectangles-squares-grade-4': 'quad-tree',
+  'fraction-times-whole-grade-6': 'quarter-12',
+  'fraction-part-quantity-area-grade-6': 'quarter-12',
+  'fraction-operations-choose-grade-6': 'frac-product',
+  'equations-basics-grade-7': 'balance',
+  'parallelogram-trapezoid-area-grade-9': 'trap-area',
+  'neighbors-numberline-grade-3': 'neighbors',
+  'money-grade-3': 'coins-12',
+  'difference-of-squares-grade-9': 'diff-sq',
+  'kite-grade-9': 'kite-construct',
+  // Clock topics sit in the F07 measurement family but have their own films.
+  'reading-clock-grade-1': 'clock-3',
+  'clock-duration-grade-2': 'clock-span',
+  'time-weight-measures-grade-3': 'clock-span',
+  'time-and-weight-grade-4': 'clock-span',
+  // Equal-shares film for the multiplication/division family topic (no remainder story).
+  'multiplication-division-family-grade-2': 'share-12',
+  // Map-scale film for the scale topic (the family default is ratio-beads).
+  'scale-maps-grade-6': 'map-scale',
+  // Reviewed pages whose family film taught another lesson (7 + 5 past ten,
+  // four-quadrant points, grid area, negatives). Each reuses the existing
+  // film that shows the page's own example.
+  'addition-to-10-grade-1': 'add-within',
+  'numbers-operations-review-grade-2': 'array',
+  'perimeter-polygons-grade-3': 'peri-rect',
+  'order-of-operations-grade-4': 'order-ops',
+  'grade-4-summary': 'grade-4-summary',
+  'distributive-area-model-grade-4': 'distributive-area-model-grade-4',
+  'fraction-division-meaning-grade-6': 'fraction-division-meaning-grade-6',
+  'measurement-geometry-synthesis-grade-6': 'measurement-geometry-synthesis-grade-6',
+  // Within-10 and grade-5 pages retain their lesson-specific corrections.
+  'compose-decompose-10-grade-1': 'add-within',
+  'subtraction-to-10-grade-1': 'birds-sub',
+  'order-of-operations-grade-5': 'order-ops',
+} as const;
+
+export type ConceptLoopVariant =
+  | (typeof FAMILY_CONCEPT_LOOP)[keyof typeof FAMILY_CONCEPT_LOOP]
+  | (typeof SLUG_CONCEPT_OVERRIDE)[keyof typeof SLUG_CONCEPT_OVERRIDE];
+
+/** CSS/SVG loops. Transform and opacity only. */
+export const CSS_LOOP_VARIANTS = [
+  ...LESSON_LOOP_VARIANTS,
+  'powers',
+  'exp-rules',
+  'roots',
+  'signed',
+  'signed-mul',
+  'signed-div',
+  'absolute',
+  'order',
+  'percent',
+  'angles',
+  'measure',
+  'parallel',
+  'area',
+  'area-para',
+  'area-split',
+  'quads',
+  'rect',
+  'rhombus',
+  'square',
+  'trapezoid',
+  'circle',
+  'round-solid',
+  'cone',
+  'cyl-area',
+  'solids',
+  'prism-area',
+  'prism-vol',
+  'coords',
+  'pattern-graph',
+  'scale',
+  'distance',
+  'linear',
+  'parabola',
+  'quad-eq',
+  'quad-factor',
+  'read-graph',
+  'systems',
+  'ineq',
+  'quad-ineq',
+  'stats',
+  'probability',
+  'transform',
+  'triangle-area',
+  'triangles',
+  'exterior',
+  'isosceles',
+  'median',
+  't306090',
+  'side-angle',
+  'congruence',
+  'proof',
+  'similar',
+  'similar-area',
+  'similar-aa',
+  'tools',
+  'baseten-sub',
+  'count-mark',
+  'col-mul',
+  'distrib-area',
+  'frac-div',
+  'sub-via-10',
+  'split-ways',
+  'tri-square',
+  'bonds-10-20',
+  'long-mul',
+  'frac-recip',
+] as const;
+
+export type CssLoopVariant = (typeof CSS_LOOP_VARIANTS)[number];
+
+const FAMILY_CSS_LOOP: Record<string, CssLoopVariant> = {
+  F10: 'stats',
+  F14: 'transform',
+  F15: 'coords',
+  F16: 'angles',
+  F17: 'area',
+  F18: 'triangles',
+  F19: 'quads',
+  F20: 'order',
+  F28: 'stats',
+  F29: 'probability',
+  F31: 'solids',
+  F32: 'percent',
+  F34: 'similar',
+  F35: 'coords',
+  F36: 'signed',
+  F37: 'powers',
+  F39: 'circle',
+  F40: 'parabola',
+  F41: 'linear',
+  F42: 'congruence',
+  F43: 'systems',
+};
+
+/** Finer than the family when the page's own idea is narrower. */
+const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
+  'triangle-area-grade-7': 'triangle-area',
+  'square-root-grade-7': 'roots',
+  'square-roots-grade-9': 'roots',
+  'cylinder-volume-grade-8': 'round-solid',
+  'transition-to-high-school-grade-9': 'quad-factor',
+  'geometric-proof-grade-8': 'proof',
+  'exponent-rules-grade-9': 'exp-rules',
+  'multiplying-signed-numbers-grade-7': 'signed-mul',
+  'dividing-signed-numbers-grade-7': 'signed-div',
+  'number-line-absolute-value-grade-7': 'absolute',
+  'angles-introduction-measurement-grade-7': 'measure',
+  'area-parallelogram-trapezoid-composite-grade-7': 'area-para',
+  'composite-polygons-area-grade-9': 'area-split',
+  'rectangle-grade-9': 'rect',
+  'rhombus-grade-9': 'rhombus',
+  'square-grade-9': 'square',
+  'trapezoid-grade-9': 'trapezoid',
+  'cone-grade-8': 'cone',
+  'cylinder-surface-area-grade-8': 'cyl-area',
+  'triangular-prism-surface-area-grade-9': 'prism-area',
+  'triangular-prism-volume-grade-9': 'prism-vol',
+  'patterns-and-graphs-grade-7': 'pattern-graph',
+  'coordinate-plane-scale-grade-7': 'scale',
+  'coordinate-plane-applications-grade-7': 'distance',
+  'coordinate-plane-applications-grade-9': 'distance',
+  'quadratic-equations-grade-9': 'quad-eq',
+  'reading-graphs-grade-9': 'read-graph',
+  'inequalities-grade-8': 'ineq',
+  'quadratic-inequalities-systems-grade-9': 'quad-ineq',
+  'isosceles-triangle-grade-8': 'isosceles',
+  'isosceles-triangle-grade-9': 'isosceles',
+  'isosceles-triangle-properties-grade-8': 'isosceles',
+  'special-triangles-grade-7-new': 'isosceles',
+  'exterior-angle-triangle-grade-8': 'exterior',
+  'triangle-30-60-90-grade-9': 't306090',
+  'triangle-median-grade-8': 'median',
+  'triangle-sides-angles-grade-9': 'side-angle',
+  'similar-triangles-area-ratio-grade-8': 'similar-area',
+  'triangle-similarity-aa-grade-9': 'similar-aa',
+  'triangle-similarity-proof-grade-8': 'similar-aa',
+  // Two-digit subtraction (incl. borrowing) — the one genuinely new loop.
+  'subtraction-two-digit-borrowing-grade-2': 'baseten-sub',
+  'column-subtraction-borrowing-grade-3': 'baseten-sub',
+  'multi-digit-subtraction-grade-4': 'baseten-sub',
+  // Reviewed pages with no existing film for their idea. The concept-loop
+  // engine is hash-pinned, so these are new CSS loops.
+  'counting-grade-1': 'count-mark',
+  'multiplication-multi-digit-grade-4': 'col-mul',
+  // S = b × h with the perpendicular height. The family film is triangle area.
+  'parallelogram-area-grade-5': 'area-para',
+  // Pages outside that review whose family film taught another lesson, with
+  // no existing film for their own example.
+  'subtraction-to-20-grade-1': 'sub-via-10',
+  'compose-decompose-grade-1': 'split-ways',
+  'shapes-compose-decompose-grade-1': 'tri-square',
+  'number-bonds-10-20-grade-2': 'bonds-10-20',
+  'multiplication-multi-digit-grade-5': 'long-mul',
+  'fraction-division-algorithm-grade-6': 'frac-recip',
+};
+
+export const GRADE_CONCEPT_LOOP = {
+  1: 'tenframes',
+  2: 'sticks',
+  3: 'bars',
+  4: 'numberline',
+  5: 'balance',
+  6: 'pattern',
+  7: 'triangle',
+  8: 'pythagoras',
+  9: 'area-model',
+} as const;
+
+export const MARKETING_LANDING_LOOPS = {
+  'high-school-math': 'parabola',
+  'math-tools': 'tools',
+} as const satisfies Record<string, CssLoopVariant>;
+
+/** Site pages that are policy/contact, not marketing landings. */
+export const NON_LANDING_SITE_SLUGS = [
+  'aboutus',
+  'accessibilityadaptation',
+  'terms',
+  'conditionforfreeworksheets',
+] as const;
+
+/**
+ * One authored film replaces the CSS loop on a single landing.
+ * The file is a static asset; TopicPage mounts it instead of LandingLoop.
+ */
+export const FILM_LANDING_LOOPS = {
+  'analytic-geometry-grade-9': {
+    marker: 'distance-between-points',
+    src: '/loops/distance-between-points.html',
+  },
+  'triangle-quadrilateral-angle-sum-grade-7': {
+    marker: 'triangle-angle-sum-vertex-descent',
+    src: '/loops/triangle-angle-sum-vertex-descent.html',
+  },
+  'parallel-lines-angles-grade-8': {
+    marker: 'parallel-cointerior-angles',
+    src: '/loops/parallel-cointerior-angles.html',
+  },
+} as const;
+
+export type FilmLandingSlug = keyof typeof FILM_LANDING_LOOPS;
+
+export type LandingLoop =
+  | { kind: 'concept'; variant: ConceptLoopVariant; marker: string }
+  | { kind: 'css'; variant: CssLoopVariant; marker: string }
+  | { kind: 'film'; marker: string; src: string };
+
+function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string | undefined {
+  const topicId = page.catalogCta?.catalogTopicId ?? null;
+  if (topicId == null) return undefined;
+  return (topicFamilies as Record<string, string>)[`g${page.grade}-t${topicId}`];
+}
+
+export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
+  const lesson = LESSON_TOPIC_MAP[page.slug];
+  if (lesson) return { kind: 'css', variant: lesson, marker: lesson };
+  const film = FILM_LANDING_LOOPS[page.slug as FilmLandingSlug];
+  if (film) return { kind: 'film', marker: film.marker, src: film.src };
+  // A slug-level concept film wins over a slug CSS loop and over its family.
+  const slugConcept = SLUG_CONCEPT_OVERRIDE[page.slug as keyof typeof SLUG_CONCEPT_OVERRIDE];
+  if (slugConcept) return { kind: 'concept', variant: slugConcept, marker: `concept-${slugConcept}` };
+  const override = SLUG_CSS_OVERRIDE[page.slug];
+  if (override) return { kind: 'css', variant: override, marker: override };
+  const family = familyOf(page);
+  const concept = family ? FAMILY_CONCEPT_LOOP[family as keyof typeof FAMILY_CONCEPT_LOOP] : undefined;
+  if (concept) return { kind: 'concept', variant: concept, marker: `concept-${concept}` };
+  const css = family ? FAMILY_CSS_LOOP[family] : undefined;
+  if (!css) {
+    throw new Error(`No landing loop for ${page.slug} (family ${family ?? 'none'})`);
+  }
+  return { kind: 'css', variant: css, marker: css };
+}
+
+export function marketingLandingLoop(slug: string): CssLoopVariant | undefined {
+  return MARKETING_LANDING_LOOPS[slug as keyof typeof MARKETING_LANDING_LOOPS];
+}
+
+/** Unicode minus. Hyphen-minus reads as a dash and sits too wide in these formulas. */
+export const MINUS = '\u2212';
+
+export function signedLabel(n: number): string {
+  return n < 0 ? `${MINUS}${Math.abs(n)}` : String(n);
+}
+
+/** One powers comparison. `<sup>` is glued to `base` with no whitespace. */
+export type PowerRow = {
+  base: string;
+  sup: string;
+  result: string;
+  expand: string;
+  caption: string;
+  hi: 'parens' | 'sign';
+};
+
+export const POWERS_ROWS: readonly PowerRow[] = [
+  {
+    base: `(${MINUS}3)`,
+    sup: '2',
+    result: '9',
+    expand: `(${MINUS}3) × (${MINUS}3)`,
+    caption: 'המינוס בתוך הסוגריים',
+    hi: 'parens',
+  },
+  {
+    base: `${MINUS}3`,
+    sup: '2',
+    result: `${MINUS}9`,
+    expand: `${MINUS}(3 × 3)`,
+    caption: 'בלי סוגריים: קודם החזקה',
+    hi: 'sign',
+  },
+  {
+    base: `(${MINUS}3)`,
+    sup: '3',
+    result: `${MINUS}27`,
+    expand: `(${MINUS}3) × (${MINUS}3) × (${MINUS}3)`,
+    caption: 'חזקה אי־זוגית: הסימן נשאר',
+    hi: 'parens',
+  },
+];
+
+/** `(−3)<sup>2</sup> = 9` with the exponent tag hard against the base. */
+export function powerMarkup(row: PowerRow): string {
+  return `${row.base}<sup>${row.sup}</sup> = ${row.result}`;
+}
+
+/**
+ * The one idea each new loop teaches. One Hebrew line, shown on the card
+ * and listed in the pull request.
+ */
+export const CSS_LOOP_IDEAS = {
+  ...Object.fromEntries(Object.entries(LESSON_LOOPS).map(([id, lesson]) => [id, lesson.idea])) as { [K in keyof typeof LESSON_LOOPS]: string },
+  powers: `סוגריים קובעים את הסימן: (${MINUS}3)² = 9, בלי סוגריים ${MINUS}3² = ${MINUS}9, וחזקה אי־זוגית (${MINUS}3)³ = ${MINUS}27`,
+  'exp-rules': 'בכפל חזקות עם אותו בסיס מחברים מעריכים: 2³ × 2² = 2⁵',
+  roots: 'השורש שואל איזה מספר בריבוע נותן את זה: 3² = 9 ולכן √9 = 3',
+  signed: `על ישר המספרים מתחילים ב־${MINUS}2 ומוסיפים 5 ימינה, ומגיעים ל־3`,
+  'signed-mul': 'מינוס כפול מינוס נותן פלוס, ומינוס כפול פלוס נותן מינוס',
+  'signed-div': 'בחילוק, סימנים זהים נותנים פלוס וסימנים שונים נותנים מינוס',
+  absolute: `ערך מוחלט הוא המרחק מאפס, ולכן |${MINUS}4| ו־|4| שניהם 4`,
+  order: `קודם כופלים 3 × (${MINUS}4), ורק אחר כך מחברים ל־${MINUS}2`,
+  percent: 'רבע מהשלם הוא 25%, והחלק הצבוע הוא אחד מארבעה',
+  angles: 'זוויות קודקודיות שוות, וצמודות משלימות ל־180°',
+  measure: 'מודדים זווית לפי פתיחת הקרן: כאן הקרן נפתחת עד 60°',
+  parallel: 'חותך בין ישרים מקבילים יוצר זוויות מתאימות שוות',
+  area: 'שטח המלבן הוא מספר המשבצות: 5 שורות של 3, כלומר 15',
+  'area-para': 'שטח מקבילית הוא בסיס כפול הגובה המאונך, לא הצלע האלכסונית',
+  'area-split': 'מצולע מורכב נחתך למלבנים, והשטחים מחוברים',
+  quads: 'גזירת מלבן נותנת מקבילית בלי לשנות את השטח',
+  rect: 'במלבן כל הזוויות ישרות, והאלכסונים שווים זה לזה',
+  rhombus: 'במעוין כל ארבע הצלעות שוות',
+  square: 'בריבוע כל הצלעות שוות ויש זווית ישרה',
+  trapezoid: 'בטרפז יש בדיוק זוג אחד של צלעות מקבילות',
+  circle: 'הקוטר הוא שני רדיוסים, ההיקף 2πr והשטח πr²',
+  'round-solid': 'נפח גליל: עיגול הבסיס נערם לגובה, V = πr²h',
+  cone: 'נפח חרוט הוא שליש מנפח גליל עם אותו בסיס ואותו גובה',
+  'cyl-area': 'מעטפת הגליל נפרסת למלבן שרוחבו היקף הבסיס',
+  solids: 'נפח תיבה מתקבל מאורך כפול רוחב כפול גובה',
+  'prism-area': 'שטח פנים של מנסרה: שני בסיסים משולשים ועוד שלושה מלבנים',
+  'prism-vol': 'נפח מנסרה הוא שטח בסיס המשולש כפול האורך',
+  coords: 'הנקודה עוברת בין הרביעים, ובכל רביע סימני x ו־y מתחלפים',
+  'pattern-graph': 'הנקודות על הגרף מקיימות את אותה חוקיות, כאן y = 2x',
+  scale: 'יחידה אחת על הציר מייצגת 5, ולכן שתי יחידות הן 10',
+  distance: 'המרחק בין שתי נקודות הוא אלכסון של הפרש ה־x והפרש ה־y',
+  linear: 'שיפוע 2: על כל צעד ימינה עולים שני צעדים',
+  parabola: `לפרבולה y = x² יש סימטריה: ל־x ול־${MINUS}x אותו y`,
+  'quad-eq': 'פתרונות המשוואה הריבועית הם נקודות החיתוך עם ציר x',
+  'quad-factor': `מפרקים x² ${MINUS} 5x + 6 ל־(x ${MINUS} 2) × (x ${MINUS} 3) = 0, ולכן x = 2 או x = 3`,
+  'read-graph': 'קוראים מהגרף: ב־x = 2 מתקבל y = 4',
+  systems: 'נקודת החיתוך מקיימת את שתי המשוואות יחד',
+  ineq: 'אי־שוויון x > 2 הוא קרן פתוחה ימינה על ישר המספרים',
+  'quad-ineq': `x² > 9 מתקיים מחוץ לשורשים: x < ${MINUS}3 או x > 3`,
+  stats: 'הממוצע של 4, 6 ו־8 הוא 6: השמונה נותנת 2 לארבע, והכול מתיישר',
+  probability: 'למטבע שתי תוצאות שוות סיכוי, ולכן ההסתברות לחצי',
+  transform: 'הזזה מזיזה את המשולש בלי לשנות את גודלו או את צורתו',
+  'triangle-area': 'משולש עם אותו בסיס וגובה הוא חצי מהמלבן',
+  triangles: 'שלוש זוויות המשולש נפרסות לקו ישר, ולכן סכומן 180°',
+  exterior: 'הזווית החיצונית שווה לסכום שתי הזוויות הפנימיות הרחוקות',
+  isosceles: 'במשולש שווה־שוקיים זוויות הבסיס שוות',
+  median: 'התיכון יוצא מהקודקוד וחוצה את הצלע שמולו לשני חלקים שווים',
+  t306090: 'במשולש 30, 60, 90 הצלע שמול 30 היא חצי מהיתר',
+  'side-angle': 'מול הצלע הארוכה יותר נמצאת הזווית הגדולה יותר',
+  congruence: 'התאמת צלעות וזוויות מביאה את שני המשולשים לחפיפה',
+  proof: 'בהוכחה: נתון שצמודות שוות, הנימוק הוא זוויות צמודות ולכן הסכום 180°, וכל אחת 90°',
+  similar: 'בדמיון הזוויות נשמרות והצלעות גדלות באותו יחס',
+  'similar-area': 'כשהצלעות גדלות פי 2, השטח גדל פי 4',
+  'similar-aa': 'שתי זוויות שוות מספיקות כדי לקבוע דמיון',
+  tools: 'המחשבון פותח קודם סוגריים: 2 × (3 + 1) הופך ל־2 × 4 = 8',
+  'baseten-sub': 'כשאין מספיק יחידות, מוט העשרת מתפרק לעשר יחידות: 52 − 27 = 25',
+  'count-mark': 'סופרים כל בלון פעם אחת ומסמנים אותו. המספר האחרון, 7, הוא מספר הבלונים',
+  'col-mul': 'כופלים מימין לשמאל, וההמרה עוברת לעמודה הבאה: 175 × 5 = 875',
+  'distrib-area': 'מפרקים את 16 ל־10 ועוד 6 ומחברים את שני השטחים: 150 + 90 = 240',
+  'frac-div': 'בכל שלם יש 4 רבעים, ולכן בשני שלמים יש 8 רבעים',
+  'sub-via-10': `ב־15 ${MINUS} 7 מחסרים קודם 5 כדי להגיע ל־10, ואז עוד 2. נשארים 8`,
+  'split-ways': 'מפרקים את 6 לפי הסדר מהקטן לגדול: 1 + 5, 2 + 4, 3 + 3, ולא מפספסים אף דרך',
+  'tri-square': 'שני משולשים זהים נצמדים בצלע הארוכה, בלי רווח ובלי חפיפה, ויוצרים ריבוע',
+  'bonds-10-20': '6 + 4 = 10 היא הרכבה של 10, ובאותו אופן 13 + 7 = 20 היא הרכבה של 20',
+  'long-mul': 'כופלים ב־3, ואז ב־20 בשורה שמתחילה ב־0, ומחברים: 771 + 5,140 = 5,911',
+  'frac-recip': 'בחילוק בשבר הופכים רק את המחלק, ואז כופלים',
+} as const satisfies Record<CssLoopVariant, string>;
+
+export const FORMULA_LOOP_VARIANTS = [
+  'powers',
+  'exp-rules',
+  'roots',
+  'order',
+  'signed-mul',
+  'signed-div',
+  'tools',
+  'proof',
+  'quad-factor',
+  'frac-recip',
+] as const satisfies readonly CssLoopVariant[];
+
+/**
+ * Why a shared picture stays on a page that is not that one topic.
+ * The card still shows the variant's idea. The pull-request table adds this note.
+ */
+export const LOOP_TABLE_NOTES = {
+  'high-school-math': 'עמוד קישורים לחומרי תיכון בלי תרגיל אחד, ולכן נשארת סימטריית הפרבולה',
+} as const satisfies Record<string, string>;
+
+export function cssLoopIdea(variant: CssLoopVariant): string {
+  return CSS_LOOP_IDEAS[variant];
+}
+
+const CAPTION_CORE = /[0-9A-Za-z⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿ₀₁₂₃₄₅₆₇₈₉π°]/;
+const CAPTION_OPERATORS = '−+×÷=≠<>≤≥±√∞%*';
+const CAPTION_MARKS = '()[]{}|∥⊥∠^/~·∙′″⁄–—+';
+
+function captionIsCore(ch: string): boolean {
+  return CAPTION_CORE.test(ch) || CAPTION_OPERATORS.includes(ch);
+}
+
+function captionIsSymbol(ch: string): boolean {
+  return captionIsCore(ch) || CAPTION_MARKS.includes(ch) || ch === '-';
+}
+
+function captionIsGlue(ch: string): boolean {
+  return ch === ' ' || ch === '\t' || ch === '\n' || ch === '\u00a0' || ch === ',';
+}
+
+function captionIsDecimalPoint(text: string, i: number): boolean {
+  return (
+    text[i] === '.' &&
+    i > 0 &&
+    i + 1 < text.length &&
+    /[0-9]/.test(text[i - 1]!) &&
+    /[0-9]/.test(text[i + 1]!)
+  );
+}
+
+function captionIsMathAt(text: string, i: number): boolean {
+  return captionIsSymbol(text[i]!) || captionIsDecimalPoint(text, i);
+}
+
+function captionSpanEnd(text: string, start: number): number {
+  let j = start;
+  while (j < text.length) {
+    if (captionIsMathAt(text, j)) {
+      j += 1;
+      continue;
+    }
+    if (captionIsGlue(text[j]!) || text[j] === ':') {
+      let k = j;
+      while (k < text.length && (captionIsGlue(text[k]!) || text[k] === ':')) k += 1;
+      if (k < text.length && captionIsMathAt(text, k)) {
+        j = k;
+        continue;
+      }
+    }
+    break;
+  }
+  return j;
+}
+
+function captionEscape(text: string): string {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/**
+ * Wrap every math fragment of a Hebrew caption in an LTR isolate.
+ * A prefix such as ל־ or ב־ stays outside the isolate; the number that
+ * follows it is inside. The isolate is unbreakable via `.ll-math`.
+ */
+export function captionMathHtml(input: string): string {
+  let out = '';
+  let i = 0;
+  while (i < input.length) {
+    if (!captionIsMathAt(input, i)) {
+      out += captionEscape(input[i]!);
+      i += 1;
+      continue;
+    }
+    const end = captionSpanEnd(input, i);
+    const slice = input.slice(i, end);
+    const escaped = captionEscape(slice);
+    if ([...slice].some(captionIsCore)) {
+      out += `<bdi dir="ltr" class="ll-math">${escaped}</bdi>`;
+    } else {
+      out += escaped;
+    }
+    i = end;
+  }
+  return out;
+}

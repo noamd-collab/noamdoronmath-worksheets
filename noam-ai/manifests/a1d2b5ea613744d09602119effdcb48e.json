@@ -1,0 +1,2807 @@
+{
+  "schemaVersion": 2,
+  "pdfHash": "a1d2b5ea613744d09602119effdcb48e",
+  "aliases": [],
+  "grade": 7,
+  "topicId": null,
+  "prefix": "G7-T14",
+  "topic": "סכום הזוויות במשולש ובמרובע",
+  "level": "c",
+  "levelCode": "E",
+  "pageCount": 14,
+  "exercisePageCount": 14,
+  "questionCount": 20,
+  "exerciseCount": 73,
+  "parserConfidence": 0.99,
+  "reviewRequired": true,
+  "mappingValidation": "native item labels and question IDs checked",
+  "reviewNote": "Private generated crop template. Printed labels/bounds/native identities mechanically checked as recorded; no visual crop acceptance or media upload performed. Keep reviewRequired true until actual mapping review. MediaID and site topicID are deliberately null pending publisher assignment.",
+  "issues": [],
+  "sourceSha256": "7c7b09d044898cc2a81892b722ddcc899ed0517d234c3b4f186c75e808f382a9",
+  "questions": [
+    {
+      "q": 1,
+      "page": 1,
+      "parts": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ]
+    },
+    {
+      "q": 2,
+      "page": 2,
+      "parts": [
+        "א",
+        "ב"
+      ]
+    },
+    {
+      "q": 3,
+      "page": 2,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 4,
+      "page": 3,
+      "parts": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ]
+    },
+    {
+      "q": 5,
+      "page": 3,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 6,
+      "page": 4,
+      "parts": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ]
+    },
+    {
+      "q": 7,
+      "page": 4,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 8,
+      "page": 5,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 9,
+      "page": 5,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 10,
+      "page": 6,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 11,
+      "page": 7,
+      "parts": [
+        "א",
+        "ב",
+        "ג",
+        "ד",
+        "ה"
+      ]
+    },
+    {
+      "q": 12,
+      "page": 8,
+      "parts": [
+        "א",
+        "ב",
+        "ג",
+        "ד",
+        "ה",
+        "ו"
+      ]
+    },
+    {
+      "q": 13,
+      "page": 9,
+      "parts": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ]
+    },
+    {
+      "q": 14,
+      "page": 9,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 15,
+      "page": 10,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 16,
+      "page": 11,
+      "parts": [
+        "א",
+        "ב",
+        "ג",
+        "ד",
+        "ה"
+      ]
+    },
+    {
+      "q": 17,
+      "page": 11,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 18,
+      "page": 12,
+      "parts": [
+        "א",
+        "ב",
+        "ג"
+      ]
+    },
+    {
+      "q": 19,
+      "page": 13,
+      "parts": [
+        "א",
+        "ב",
+        "ג",
+        "ד",
+        "ה"
+      ]
+    },
+    {
+      "q": 20,
+      "page": 14,
+      "parts": [
+        "א",
+        "ב",
+        "ג",
+        "ד"
+      ]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "G7-T14-E-Q01א",
+      "q": 1,
+      "part": "א",
+      "pin": {
+        "page": 1,
+        "x": 0.835818,
+        "y": 0.400889
+      },
+      "crop": {
+        "page": 1,
+        "x": 0,
+        "y": 0.330361,
+        "w": 1,
+        "h": 0.395149
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0,
+          "y": 0.330361,
+          "w": 1,
+          "h": 0.395149
+        }
+      ],
+      "context": "בתרשים מאריכים את $BC$ עד $D$, את $CA$ דרך $A$ עד $E$, ואת $AB$ דרך $B$ עד $F$. נמדדו הזוויות החיצוניות $\\angle{BAE}=137°$ ו־$\\angle{CBF}=116°$ של $\\tri ABC$.",
+      "text": "שחזרו את הזוויות הפנימיות, ובהן $\\angle{ACB}$, וקבעו את סוג $\\tri ABC$ לפי זוויותיו.",
+      "prompt": "שאלה 1, סעיף א.\nבתרשים מאריכים את $BC$ עד $D$, את $CA$ דרך $A$ עד $E$, ואת $AB$ דרך $B$ עד $F$. נמדדו הזוויות החיצוניות $\\angle{BAE}=137°$ ו־$\\angle{CBF}=116°$ של $\\tri ABC$.\nהסעיף הנבחר: שחזרו את הזוויות הפנימיות, ובהן $\\angle{ACB}$, וקבעו את סוג $\\tri ABC$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1a",
+      "nativeFigureId": "q1_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q1_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q01ב",
+      "q": 1,
+      "part": "ב",
+      "pin": {
+        "page": 1,
+        "x": 0.838548,
+        "y": 0.50068
+      },
+      "crop": {
+        "page": 1,
+        "x": 0,
+        "y": 0.330361,
+        "w": 1,
+        "h": 0.395149
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0,
+          "y": 0.330361,
+          "w": 1,
+          "h": 0.395149
+        }
+      ],
+      "context": "בתרשים מאריכים את $BC$ עד $D$, את $CA$ דרך $A$ עד $E$, ואת $AB$ דרך $B$ עד $F$. נמדדו הזוויות החיצוניות $\\angle{BAE}=137°$ ו־$\\angle{CBF}=116°$ של $\\tri ABC$.",
+      "text": "סדרו את $AB$, $AC$, $BC$ מן הקצרה לארוכה והצדיקו בעזרת הזוויות שמולן.",
+      "prompt": "שאלה 1, סעיף ב.\nבתרשים מאריכים את $BC$ עד $D$, את $CA$ דרך $A$ עד $E$, ואת $AB$ דרך $B$ עד $F$. נמדדו הזוויות החיצוניות $\\angle{BAE}=137°$ ו־$\\angle{CBF}=116°$ של $\\tri ABC$.\nהסעיף הנבחר: סדרו את $AB$, $AC$, $BC$ מן הקצרה לארוכה והצדיקו בעזרת הזוויות שמולן.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1b",
+      "nativeFigureId": "q1_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q1_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q01ג",
+      "q": 1,
+      "part": "ג",
+      "pin": {
+        "page": 1,
+        "x": 0.841127,
+        "y": 0.579719
+      },
+      "crop": {
+        "page": 1,
+        "x": 0,
+        "y": 0.330361,
+        "w": 1,
+        "h": 0.395149
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0,
+          "y": 0.330361,
+          "w": 1,
+          "h": 0.395149
+        }
+      ],
+      "context": "בתרשים מאריכים את $BC$ עד $D$, את $CA$ דרך $A$ עד $E$, ואת $AB$ דרך $B$ עד $F$. נמדדו הזוויות החיצוניות $\\angle{BAE}=137°$ ו־$\\angle{CBF}=116°$ של $\\tri ABC$.",
+      "text": "חשבו את הזווית החיצונית שנותרה, $\\angle{ACD}$.",
+      "prompt": "שאלה 1, סעיף ג.\nבתרשים מאריכים את $BC$ עד $D$, את $CA$ דרך $A$ עד $E$, ואת $AB$ דרך $B$ עד $F$. נמדדו הזוויות החיצוניות $\\angle{BAE}=137°$ ו־$\\angle{CBF}=116°$ של $\\tri ABC$.\nהסעיף הנבחר: חשבו את הזווית החיצונית שנותרה, $\\angle{ACD}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1c",
+      "nativeFigureId": "q1_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q1_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q01ד",
+      "q": 1,
+      "part": "ד",
+      "pin": {
+        "page": 1,
+        "x": 0.840041,
+        "y": 0.658758
+      },
+      "crop": {
+        "page": 1,
+        "x": 0,
+        "y": 0.330361,
+        "w": 1,
+        "h": 0.395149
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0,
+          "y": 0.330361,
+          "w": 1,
+          "h": 0.395149
+        }
+      ],
+      "context": "בתרשים מאריכים את $BC$ עד $D$, את $CA$ דרך $A$ עד $E$, ואת $AB$ דרך $B$ עד $F$. נמדדו הזוויות החיצוניות $\\angle{BAE}=137°$ ו־$\\angle{CBF}=116°$ של $\\tri ABC$.",
+      "text": "חברו את שלוש הזוויות החיצוניות. מהו הסכום שהתקבל? תארו אותו באמצעות סיבוב שלם.",
+      "prompt": "שאלה 1, סעיף ד.\nבתרשים מאריכים את $BC$ עד $D$, את $CA$ דרך $A$ עד $E$, ואת $AB$ דרך $B$ עד $F$. נמדדו הזוויות החיצוניות $\\angle{BAE}=137°$ ו־$\\angle{CBF}=116°$ של $\\tri ABC$.\nהסעיף הנבחר: חברו את שלוש הזוויות החיצוניות. מהו הסכום שהתקבל? תארו אותו באמצעות סיבוב שלם.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1d",
+      "nativeFigureId": "q1_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q1_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q02א",
+      "q": 2,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.835818,
+        "y": 0.226777
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.371399
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.371399
+        }
+      ],
+      "context": "בשרטוט שני משולשים. ב־$\\tri ABC$ שלוש הצלעות שוות: $AB = BC = CA$. ב־$\\tri DEF$ נתון: $\\angle{EDF} = 60°$, $\\angle{DEF} = 60°$.",
+      "text": "הוכיחו כי $\\angle{BAC} = 60°$, $\\angle{ABC} = 60°$ ו־$\\angle{BCA} = 60°$.",
+      "prompt": "שאלה 2, סעיף א.\nבשרטוט שני משולשים. ב־$\\tri ABC$ שלוש הצלעות שוות: $AB = BC = CA$. ב־$\\tri DEF$ נתון: $\\angle{EDF} = 60°$, $\\angle{DEF} = 60°$.\nהסעיף הנבחר: הוכיחו כי $\\angle{BAC} = 60°$, $\\angle{ABC} = 60°$ ו־$\\angle{BCA} = 60°$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2a",
+      "nativeFigureId": "q2_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q2_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q02ב",
+      "q": 2,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.838548,
+        "y": 0.301065
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.371399
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.371399
+        }
+      ],
+      "context": "בשרטוט שני משולשים. ב־$\\tri ABC$ שלוש הצלעות שוות: $AB = BC = CA$. ב־$\\tri DEF$ נתון: $\\angle{EDF} = 60°$, $\\angle{DEF} = 60°$.",
+      "text": "הוכיחו כי $\\tri DEF$ הוא משולש שווה־צלעות. במה ההוכחה הזאת שונה מההוכחה של סעיף א?",
+      "prompt": "שאלה 2, סעיף ב.\nבשרטוט שני משולשים. ב־$\\tri ABC$ שלוש הצלעות שוות: $AB = BC = CA$. ב־$\\tri DEF$ נתון: $\\angle{EDF} = 60°$, $\\angle{DEF} = 60°$.\nהסעיף הנבחר: הוכיחו כי $\\tri DEF$ הוא משולש שווה־צלעות. במה ההוכחה הזאת שונה מההוכחה של סעיף א?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2b",
+      "nativeFigureId": "q2_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q2_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q03א",
+      "q": 3,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.835818,
+        "y": 0.619567
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.42954,
+        "w": 1,
+        "h": 0.410106
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.42954,
+          "w": 1,
+          "h": 0.410106
+        }
+      ],
+      "context": "ב־$\\tri ABC$ נתון $\\angle{ACB} = 90°$, והזווית $\\angle{BAC}$ עולה ב־$24°$ על הזווית $\\angle{ABC}$. הקטע $CD$ הוא הגובה ליתר: $D$ על $AB$ ו־$CD ⊥ AB$.",
+      "text": "חשבו את $\\angle{ABC}$.",
+      "prompt": "שאלה 3, סעיף א.\nב־$\\tri ABC$ נתון $\\angle{ACB} = 90°$, והזווית $\\angle{BAC}$ עולה ב־$24°$ על הזווית $\\angle{ABC}$. הקטע $CD$ הוא הגובה ליתר: $D$ על $AB$ ו־$CD ⊥ AB$.\nהסעיף הנבחר: חשבו את $\\angle{ABC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3a",
+      "nativeFigureId": "q3_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q3_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q03ב",
+      "q": 3,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.838548,
+        "y": 0.693855
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.42954,
+        "w": 1,
+        "h": 0.410106
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.42954,
+          "w": 1,
+          "h": 0.410106
+        }
+      ],
+      "context": "ב־$\\tri ABC$ נתון $\\angle{ACB} = 90°$, והזווית $\\angle{BAC}$ עולה ב־$24°$ על הזווית $\\angle{ABC}$. הקטע $CD$ הוא הגובה ליתר: $D$ על $AB$ ו־$CD ⊥ AB$.",
+      "text": "חשבו את $\\angle{BCD}$.",
+      "prompt": "שאלה 3, סעיף ב.\nב־$\\tri ABC$ נתון $\\angle{ACB} = 90°$, והזווית $\\angle{BAC}$ עולה ב־$24°$ על הזווית $\\angle{ABC}$. הקטע $CD$ הוא הגובה ליתר: $D$ על $AB$ ו־$CD ⊥ AB$.\nהסעיף הנבחר: חשבו את $\\angle{BCD}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3b",
+      "nativeFigureId": "q3_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q3_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q03ג",
+      "q": 3,
+      "part": "ג",
+      "pin": {
+        "page": 2,
+        "x": 0.841127,
+        "y": 0.772894
+      },
+      "crop": {
+        "page": 2,
+        "x": 0,
+        "y": 0.42954,
+        "w": 1,
+        "h": 0.410106
+      },
+      "crops": [
+        {
+          "page": 2,
+          "x": 0,
+          "y": 0.42954,
+          "w": 1,
+          "h": 0.410106
+        }
+      ],
+      "context": "ב־$\\tri ABC$ נתון $\\angle{ACB} = 90°$, והזווית $\\angle{BAC}$ עולה ב־$24°$ על הזווית $\\angle{ABC}$. הקטע $CD$ הוא הגובה ליתר: $D$ על $AB$ ו־$CD ⊥ AB$.",
+      "text": "הוכיחו כי $\\angle{ACD} = \\angle{ABC}$. האם ההוכחה תלויה במספרים של השאלה?",
+      "prompt": "שאלה 3, סעיף ג.\nב־$\\tri ABC$ נתון $\\angle{ACB} = 90°$, והזווית $\\angle{BAC}$ עולה ב־$24°$ על הזווית $\\angle{ABC}$. הקטע $CD$ הוא הגובה ליתר: $D$ על $AB$ ו־$CD ⊥ AB$.\nהסעיף הנבחר: הוכיחו כי $\\angle{ACD} = \\angle{ABC}$. האם ההוכחה תלויה במספרים של השאלה?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3c",
+      "nativeFigureId": "q3_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q3_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q04א",
+      "q": 4,
+      "part": "א",
+      "pin": {
+        "page": 3,
+        "x": 0.835818,
+        "y": 0.228559
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.481822
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.481822
+        }
+      ],
+      "context": "הנקודות $D$ ו־$E$ נמצאות על הצלע $BC$ של $\\tri ABC$, בסדר $B$, $D$, $E$, $C$. נתון: $\\angle{ABC} = 34°$, $\\angle{ACB} = 34°$, $\\angle{BAD} = 56°$, והקטע $AE$ חוצה את $\\angle{DAC}$ ($\\angle{DAE} = \\angle{EAC}$).",
+      "text": "חשבו את $\\angle{ADB}$, וקבעו את סוג $\\tri ABD$ לפי זוויותיו.",
+      "prompt": "שאלה 4, סעיף א.\nהנקודות $D$ ו־$E$ נמצאות על הצלע $BC$ של $\\tri ABC$, בסדר $B$, $D$, $E$, $C$. נתון: $\\angle{ABC} = 34°$, $\\angle{ACB} = 34°$, $\\angle{BAD} = 56°$, והקטע $AE$ חוצה את $\\angle{DAC}$ ($\\angle{DAE} = \\angle{EAC}$).\nהסעיף הנבחר: חשבו את $\\angle{ADB}$, וקבעו את סוג $\\tri ABD$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4a",
+      "nativeFigureId": "q4_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q4_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q04ב",
+      "q": 4,
+      "part": "ב",
+      "pin": {
+        "page": 3,
+        "x": 0.838548,
+        "y": 0.302846
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.481822
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.481822
+        }
+      ],
+      "context": "הנקודות $D$ ו־$E$ נמצאות על הצלע $BC$ של $\\tri ABC$, בסדר $B$, $D$, $E$, $C$. נתון: $\\angle{ABC} = 34°$, $\\angle{ACB} = 34°$, $\\angle{BAD} = 56°$, והקטע $AE$ חוצה את $\\angle{DAC}$ ($\\angle{DAE} = \\angle{EAC}$).",
+      "text": "חשבו את $\\angle{DAE}$.",
+      "prompt": "שאלה 4, סעיף ב.\nהנקודות $D$ ו־$E$ נמצאות על הצלע $BC$ של $\\tri ABC$, בסדר $B$, $D$, $E$, $C$. נתון: $\\angle{ABC} = 34°$, $\\angle{ACB} = 34°$, $\\angle{BAD} = 56°$, והקטע $AE$ חוצה את $\\angle{DAC}$ ($\\angle{DAE} = \\angle{EAC}$).\nהסעיף הנבחר: חשבו את $\\angle{DAE}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4b",
+      "nativeFigureId": "q4_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q4_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q04ג",
+      "q": 4,
+      "part": "ג",
+      "pin": {
+        "page": 3,
+        "x": 0.841127,
+        "y": 0.381885
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.481822
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.481822
+        }
+      ],
+      "context": "הנקודות $D$ ו־$E$ נמצאות על הצלע $BC$ של $\\tri ABC$, בסדר $B$, $D$, $E$, $C$. נתון: $\\angle{ABC} = 34°$, $\\angle{ACB} = 34°$, $\\angle{BAD} = 56°$, והקטע $AE$ חוצה את $\\angle{DAC}$ ($\\angle{DAE} = \\angle{EAC}$).",
+      "text": "חשבו את $\\angle{AEC}$, וקבעו את סוג $\\tri AEC$ לפי זוויותיו.",
+      "prompt": "שאלה 4, סעיף ג.\nהנקודות $D$ ו־$E$ נמצאות על הצלע $BC$ של $\\tri ABC$, בסדר $B$, $D$, $E$, $C$. נתון: $\\angle{ABC} = 34°$, $\\angle{ACB} = 34°$, $\\angle{BAD} = 56°$, והקטע $AE$ חוצה את $\\angle{DAC}$ ($\\angle{DAE} = \\angle{EAC}$).\nהסעיף הנבחר: חשבו את $\\angle{AEC}$, וקבעו את סוג $\\tri AEC$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4c",
+      "nativeFigureId": "q4_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q4_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q04ד",
+      "q": 4,
+      "part": "ד",
+      "pin": {
+        "page": 3,
+        "x": 0.840041,
+        "y": 0.460924
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.481822
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.481822
+        }
+      ],
+      "context": "הנקודות $D$ ו־$E$ נמצאות על הצלע $BC$ של $\\tri ABC$, בסדר $B$, $D$, $E$, $C$. נתון: $\\angle{ABC} = 34°$, $\\angle{ACB} = 34°$, $\\angle{BAD} = 56°$, והקטע $AE$ חוצה את $\\angle{DAC}$ ($\\angle{DAE} = \\angle{EAC}$).",
+      "text": "לאיזה סוג שייך $\\tri ABE$ לפי זוויותיו? נמקו.",
+      "prompt": "שאלה 4, סעיף ד.\nהנקודות $D$ ו־$E$ נמצאות על הצלע $BC$ של $\\tri ABC$, בסדר $B$, $D$, $E$, $C$. נתון: $\\angle{ABC} = 34°$, $\\angle{ACB} = 34°$, $\\angle{BAD} = 56°$, והקטע $AE$ חוצה את $\\angle{DAC}$ ($\\angle{DAE} = \\angle{EAC}$).\nהסעיף הנבחר: לאיזה סוג שייך $\\tri ABE$ לפי זוויותיו? נמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4d",
+      "nativeFigureId": "q4_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q4_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q05א",
+      "q": 5,
+      "part": "א",
+      "pin": {
+        "page": 3,
+        "x": 0.835818,
+        "y": 0.588169
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.539963,
+        "w": 1,
+        "h": 0.37946
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.539963,
+          "w": 1,
+          "h": 0.37946
+        }
+      ],
+      "context": "ב־$\\tri ABC$ נתון $AB = AC$. ממשיכים את השוק $AB$ מעבר ל־$B$ עד הנקודה $D$, ואת השוק $AC$ מעבר ל־$C$ עד הנקודה $E$.",
+      "text": "הוכיחו כי $\\angle{DBC} = \\angle{ECB}$.",
+      "prompt": "שאלה 5, סעיף א.\nב־$\\tri ABC$ נתון $AB = AC$. ממשיכים את השוק $AB$ מעבר ל־$B$ עד הנקודה $D$, ואת השוק $AC$ מעבר ל־$C$ עד הנקודה $E$.\nהסעיף הנבחר: הוכיחו כי $\\angle{DBC} = \\angle{ECB}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5a",
+      "nativeFigureId": "q5_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q5_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q05ב",
+      "q": 5,
+      "part": "ב",
+      "pin": {
+        "page": 3,
+        "x": 0.838548,
+        "y": 0.728989
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.539963,
+        "w": 1,
+        "h": 0.37946
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.539963,
+          "w": 1,
+          "h": 0.37946
+        }
+      ],
+      "context": "ב־$\\tri ABC$ נתון $AB = AC$. ממשיכים את השוק $AB$ מעבר ל־$B$ עד הנקודה $D$, ואת השוק $AC$ מעבר ל־$C$ עד הנקודה $E$.",
+      "text": "כעת נמדד $\\angle{DBC}=116°$. חשבו את זווית הראש $\\angle{BAC}$, והשתמשו בסעיף א לבקרת שתי הזוויות החיצוניות.",
+      "prompt": "שאלה 5, סעיף ב.\nב־$\\tri ABC$ נתון $AB = AC$. ממשיכים את השוק $AB$ מעבר ל־$B$ עד הנקודה $D$, ואת השוק $AC$ מעבר ל־$C$ עד הנקודה $E$.\nהסעיף הנבחר: כעת נמדד $\\angle{DBC}=116°$. חשבו את זווית הראש $\\angle{BAC}$, והשתמשו בסעיף א לבקרת שתי הזוויות החיצוניות.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5b",
+      "nativeFigureId": "q5_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q5_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q05ג",
+      "q": 5,
+      "part": "ג",
+      "pin": {
+        "page": 3,
+        "x": 0.841127,
+        "y": 0.830349
+      },
+      "crop": {
+        "page": 3,
+        "x": 0,
+        "y": 0.539963,
+        "w": 1,
+        "h": 0.37946
+      },
+      "crops": [
+        {
+          "page": 3,
+          "x": 0,
+          "y": 0.539963,
+          "w": 1,
+          "h": 0.37946
+        }
+      ],
+      "context": "ב־$\\tri ABC$ נתון $AB = AC$. ממשיכים את השוק $AB$ מעבר ל־$B$ עד הנקודה $D$, ואת השוק $AC$ מעבר ל־$C$ עד הנקודה $E$.",
+      "text": "בדגם נוסף מסוג זה ההפרש בין $\\angle{ECB}$ ל־$\\angle{ACB}$ הוא $84°$. מצאו את $\\angle{ACB}$ ואת זווית הראש. אין להשתמש במידה מסעיף ב.",
+      "prompt": "שאלה 5, סעיף ג.\nב־$\\tri ABC$ נתון $AB = AC$. ממשיכים את השוק $AB$ מעבר ל־$B$ עד הנקודה $D$, ואת השוק $AC$ מעבר ל־$C$ עד הנקודה $E$.\nהסעיף הנבחר: בדגם נוסף מסוג זה ההפרש בין $\\angle{ECB}$ ל־$\\angle{ACB}$ הוא $84°$. מצאו את $\\angle{ACB}$ ואת זווית הראש. אין להשתמש במידה מסעיף ב.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5c",
+      "nativeFigureId": "q5_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q5_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q06א",
+      "q": 6,
+      "part": "א",
+      "pin": {
+        "page": 4,
+        "x": 0.835818,
+        "y": 0.128668
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.472957
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.472957
+        }
+      ],
+      "context": "במרובע $ABCD$ ההפרשים העוקבים בין הזוויות אינם אחידים: $\\angle{ABC}$ גדולה מ־$\\angle{DAB}$ ב־$22°$, $\\angle{BCD}$ גדולה מ־$\\angle{ABC}$ ב־$9°$, ו־$\\angle{CDA}$ גדולה מ־$\\angle{BCD}$ ב־$24°$. נתון גם $\\angle{BAC}=41°$.",
+      "text": "כתבו משוואה וחשבו את $\\angle{DAB}$.",
+      "prompt": "שאלה 6, סעיף א.\nבמרובע $ABCD$ ההפרשים העוקבים בין הזוויות אינם אחידים: $\\angle{ABC}$ גדולה מ־$\\angle{DAB}$ ב־$22°$, $\\angle{BCD}$ גדולה מ־$\\angle{ABC}$ ב־$9°$, ו־$\\angle{CDA}$ גדולה מ־$\\angle{BCD}$ ב־$24°$. נתון גם $\\angle{BAC}=41°$.\nהסעיף הנבחר: כתבו משוואה וחשבו את $\\angle{DAB}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6a",
+      "nativeFigureId": "q6_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q6_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q06ב",
+      "q": 6,
+      "part": "ב",
+      "pin": {
+        "page": 4,
+        "x": 0.838548,
+        "y": 0.222223
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.472957
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.472957
+        }
+      ],
+      "context": "במרובע $ABCD$ ההפרשים העוקבים בין הזוויות אינם אחידים: $\\angle{ABC}$ גדולה מ־$\\angle{DAB}$ ב־$22°$, $\\angle{BCD}$ גדולה מ־$\\angle{ABC}$ ב־$9°$, ו־$\\angle{CDA}$ גדולה מ־$\\angle{BCD}$ ב־$24°$. נתון גם $\\angle{BAC}=41°$.",
+      "text": "חשבו את $\\angle{CDA}$.",
+      "prompt": "שאלה 6, סעיף ב.\nבמרובע $ABCD$ ההפרשים העוקבים בין הזוויות אינם אחידים: $\\angle{ABC}$ גדולה מ־$\\angle{DAB}$ ב־$22°$, $\\angle{BCD}$ גדולה מ־$\\angle{ABC}$ ב־$9°$, ו־$\\angle{CDA}$ גדולה מ־$\\angle{BCD}$ ב־$24°$. נתון גם $\\angle{BAC}=41°$.\nהסעיף הנבחר: חשבו את $\\angle{CDA}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6b",
+      "nativeFigureId": "q6_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q6_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q06ג",
+      "q": 6,
+      "part": "ג",
+      "pin": {
+        "page": 4,
+        "x": 0.841127,
+        "y": 0.301262
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.472957
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.472957
+        }
+      ],
+      "context": "במרובע $ABCD$ ההפרשים העוקבים בין הזוויות אינם אחידים: $\\angle{ABC}$ גדולה מ־$\\angle{DAB}$ ב־$22°$, $\\angle{BCD}$ גדולה מ־$\\angle{ABC}$ ב־$9°$, ו־$\\angle{CDA}$ גדולה מ־$\\angle{BCD}$ ב־$24°$. נתון גם $\\angle{BAC}=41°$.",
+      "text": "חשבו את $\\angle{CAD}$, וקבעו את סוג $\\tri ACD$ לפי זוויותיו.",
+      "prompt": "שאלה 6, סעיף ג.\nבמרובע $ABCD$ ההפרשים העוקבים בין הזוויות אינם אחידים: $\\angle{ABC}$ גדולה מ־$\\angle{DAB}$ ב־$22°$, $\\angle{BCD}$ גדולה מ־$\\angle{ABC}$ ב־$9°$, ו־$\\angle{CDA}$ גדולה מ־$\\angle{BCD}$ ב־$24°$. נתון גם $\\angle{BAC}=41°$.\nהסעיף הנבחר: חשבו את $\\angle{CAD}$, וקבעו את סוג $\\tri ACD$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6c",
+      "nativeFigureId": "q6_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q6_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q06ד",
+      "q": 6,
+      "part": "ד",
+      "pin": {
+        "page": 4,
+        "x": 0.840041,
+        "y": 0.380301
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.472957
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.472957
+        }
+      ],
+      "context": "במרובע $ABCD$ ההפרשים העוקבים בין הזוויות אינם אחידים: $\\angle{ABC}$ גדולה מ־$\\angle{DAB}$ ב־$22°$, $\\angle{BCD}$ גדולה מ־$\\angle{ABC}$ ב־$9°$, ו־$\\angle{CDA}$ גדולה מ־$\\angle{BCD}$ ב־$24°$. נתון גם $\\angle{BAC}=41°$.",
+      "text": "בדקו מודל אחר: ארבע זוויות המרובע גדלות בהפרש קבוע $d$, והקטנה היא $x$. כתבו את ארבע הזוויות באמצעות $x$ ו־$d$ ובנו משוואה. כיצד נראית המשוואה כשההפרש הוא מעלה אחת?",
+      "prompt": "שאלה 6, סעיף ד.\nבמרובע $ABCD$ ההפרשים העוקבים בין הזוויות אינם אחידים: $\\angle{ABC}$ גדולה מ־$\\angle{DAB}$ ב־$22°$, $\\angle{BCD}$ גדולה מ־$\\angle{ABC}$ ב־$9°$, ו־$\\angle{CDA}$ גדולה מ־$\\angle{BCD}$ ב־$24°$. נתון גם $\\angle{BAC}=41°$.\nהסעיף הנבחר: בדקו מודל אחר: ארבע זוויות המרובע גדלות בהפרש קבוע $d$, והקטנה היא $x$. כתבו את ארבע הזוויות באמצעות $x$ ו־$d$ ובנו משוואה. כיצד נראית המשוואה כשההפרש הוא מעלה אחת?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6d",
+      "nativeFigureId": "q6_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q6_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q07א",
+      "q": 7,
+      "part": "א",
+      "pin": {
+        "page": 4,
+        "x": 0.835818,
+        "y": 0.579303
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.531097,
+        "w": 1,
+        "h": 0.297402
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.531097,
+          "w": 1,
+          "h": 0.297402
+        }
+      ],
+      "context": "במרובע $ABCD$ משורטט האלכסון $AC$. נתון: $\\angle{DAB} = 118°$, $\\angle{ABC} = 61°$, $\\angle{BCD} = 107°$, $\\angle{CAD} = 51°$.",
+      "text": "הוכיחו בעזרת האלכסון $AC$ כי $\\angle{DAB} + \\angle{ABC} + \\angle{BCD} + \\angle{CDA} = 360°$.",
+      "prompt": "שאלה 7, סעיף א.\nבמרובע $ABCD$ משורטט האלכסון $AC$. נתון: $\\angle{DAB} = 118°$, $\\angle{ABC} = 61°$, $\\angle{BCD} = 107°$, $\\angle{CAD} = 51°$.\nהסעיף הנבחר: הוכיחו בעזרת האלכסון $AC$ כי $\\angle{DAB} + \\angle{ABC} + \\angle{BCD} + \\angle{CDA} = 360°$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q7",
+      "nativeItemId": "q7a",
+      "nativeFigureId": "q7_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q7_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q07ב",
+      "q": 7,
+      "part": "ב",
+      "pin": {
+        "page": 4,
+        "x": 0.838548,
+        "y": 0.682708
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.531097,
+        "w": 1,
+        "h": 0.297402
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.531097,
+          "w": 1,
+          "h": 0.297402
+        }
+      ],
+      "context": "במרובע $ABCD$ משורטט האלכסון $AC$. נתון: $\\angle{DAB} = 118°$, $\\angle{ABC} = 61°$, $\\angle{BCD} = 107°$, $\\angle{CAD} = 51°$.",
+      "text": "חשבו את $\\angle{CDA}$.",
+      "prompt": "שאלה 7, סעיף ב.\nבמרובע $ABCD$ משורטט האלכסון $AC$. נתון: $\\angle{DAB} = 118°$, $\\angle{ABC} = 61°$, $\\angle{BCD} = 107°$, $\\angle{CAD} = 51°$.\nהסעיף הנבחר: חשבו את $\\angle{CDA}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q7",
+      "nativeItemId": "q7b",
+      "nativeFigureId": "q7_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q7_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q07ג",
+      "q": 7,
+      "part": "ג",
+      "pin": {
+        "page": 4,
+        "x": 0.841127,
+        "y": 0.761746
+      },
+      "crop": {
+        "page": 4,
+        "x": 0,
+        "y": 0.531097,
+        "w": 1,
+        "h": 0.297402
+      },
+      "crops": [
+        {
+          "page": 4,
+          "x": 0,
+          "y": 0.531097,
+          "w": 1,
+          "h": 0.297402
+        }
+      ],
+      "context": "במרובע $ABCD$ משורטט האלכסון $AC$. נתון: $\\angle{DAB} = 118°$, $\\angle{ABC} = 61°$, $\\angle{BCD} = 107°$, $\\angle{CAD} = 51°$.",
+      "text": "חשבו את $\\angle{ACD}$, וקבעו את סוג $\\tri ACD$ לפי זוויותיו.",
+      "prompt": "שאלה 7, סעיף ג.\nבמרובע $ABCD$ משורטט האלכסון $AC$. נתון: $\\angle{DAB} = 118°$, $\\angle{ABC} = 61°$, $\\angle{BCD} = 107°$, $\\angle{CAD} = 51°$.\nהסעיף הנבחר: חשבו את $\\angle{ACD}$, וקבעו את סוג $\\tri ACD$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q7",
+      "nativeItemId": "q7c",
+      "nativeFigureId": "q7_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q7_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q08א",
+      "q": 8,
+      "part": "א",
+      "pin": {
+        "page": 5,
+        "x": 0.835818,
+        "y": 0.106346
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.396151
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.396151
+        }
+      ],
+      "context": "$\\tri ABC$ הוא משולש כלשהו. כל צלע שלו הוארכה: $BC$ מעבר ל־$C$ עד $D$, $CA$ מעבר ל־$A$ עד $E$, ו־$AB$ מעבר ל־$B$ עד $F$.",
+      "text": "הוכיחו כי $\\angle{ACD} = \\angle{BAC} + \\angle{ABC}$.",
+      "prompt": "שאלה 8, סעיף א.\n$\\tri ABC$ הוא משולש כלשהו. כל צלע שלו הוארכה: $BC$ מעבר ל־$C$ עד $D$, $CA$ מעבר ל־$A$ עד $E$, ו־$AB$ מעבר ל־$B$ עד $F$.\nהסעיף הנבחר: הוכיחו כי $\\angle{ACD} = \\angle{BAC} + \\angle{ABC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q8",
+      "nativeItemId": "q8a",
+      "nativeFigureId": "q8_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q8_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q08ב",
+      "q": 8,
+      "part": "ב",
+      "pin": {
+        "page": 5,
+        "x": 0.838548,
+        "y": 0.273892
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.396151
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.396151
+        }
+      ],
+      "context": "$\\tri ABC$ הוא משולש כלשהו. כל צלע שלו הוארכה: $BC$ מעבר ל־$C$ עד $D$, $CA$ מעבר ל־$A$ עד $E$, ו־$AB$ מעבר ל־$B$ עד $F$.",
+      "text": "הוכיחו כי $\\angle{ACD} + \\angle{BAE} + \\angle{CBF} = 360°$.",
+      "prompt": "שאלה 8, סעיף ב.\n$\\tri ABC$ הוא משולש כלשהו. כל צלע שלו הוארכה: $BC$ מעבר ל־$C$ עד $D$, $CA$ מעבר ל־$A$ עד $E$, ו־$AB$ מעבר ל־$B$ עד $F$.\nהסעיף הנבחר: הוכיחו כי $\\angle{ACD} + \\angle{BAE} + \\angle{CBF} = 360°$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q8",
+      "nativeItemId": "q8b",
+      "nativeFigureId": "q8_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q8_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q08ג",
+      "q": 8,
+      "part": "ג",
+      "pin": {
+        "page": 5,
+        "x": 0.841127,
+        "y": 0.352931
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.396151
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.396151
+        }
+      ],
+      "context": "$\\tri ABC$ הוא משולש כלשהו. כל צלע שלו הוארכה: $BC$ מעבר ל־$C$ עד $D$, $CA$ מעבר ל־$A$ עד $E$, ו־$AB$ מעבר ל־$B$ עד $F$.",
+      "text": "במקרה מסוים נתון $\\angle{ACD}=124°$ ו־$\\angle{BAC}=47°$. שחזרו את שתי הזוויות $\\angle{ACB}$ ו־$\\angle{ABC}$, ואמתו את סכום הזוויות במשולש.",
+      "prompt": "שאלה 8, סעיף ג.\n$\\tri ABC$ הוא משולש כלשהו. כל צלע שלו הוארכה: $BC$ מעבר ל־$C$ עד $D$, $CA$ מעבר ל־$A$ עד $E$, ו־$AB$ מעבר ל־$B$ עד $F$.\nהסעיף הנבחר: במקרה מסוים נתון $\\angle{ACD}=124°$ ו־$\\angle{BAC}=47°$. שחזרו את שתי הזוויות $\\angle{ACB}$ ו־$\\angle{ABC}$, ואמתו את סכום הזוויות במשולש.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q8",
+      "nativeItemId": "q8c",
+      "nativeFigureId": "q8_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q8_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q09א",
+      "q": 9,
+      "part": "א",
+      "pin": {
+        "page": 5,
+        "x": 0.835818,
+        "y": 0.502497
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.454291,
+        "w": 1,
+        "h": 0.290606
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.454291,
+          "w": 1,
+          "h": 0.290606
+        }
+      ],
+      "context": "ב־$\\tri ABC$ נתון $AB = AC$, וזווית הראש $\\angle{BAC}$ גדולה ב־$12°$ מפי $2$ מזווית הבסיס $\\angle{ABC}$.",
+      "text": "כתבו משוואה וחשבו את $\\angle{ABC}$.",
+      "prompt": "שאלה 9, סעיף א.\nב־$\\tri ABC$ נתון $AB = AC$, וזווית הראש $\\angle{BAC}$ גדולה ב־$12°$ מפי $2$ מזווית הבסיס $\\angle{ABC}$.\nהסעיף הנבחר: כתבו משוואה וחשבו את $\\angle{ABC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q9",
+      "nativeItemId": "q9a",
+      "nativeFigureId": "q9_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q9_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q09ב",
+      "q": 9,
+      "part": "ב",
+      "pin": {
+        "page": 5,
+        "x": 0.838548,
+        "y": 0.576785
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.454291,
+        "w": 1,
+        "h": 0.290606
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.454291,
+          "w": 1,
+          "h": 0.290606
+        }
+      ],
+      "context": "ב־$\\tri ABC$ נתון $AB = AC$, וזווית הראש $\\angle{BAC}$ גדולה ב־$12°$ מפי $2$ מזווית הבסיס $\\angle{ABC}$.",
+      "text": "חשבו את $\\angle{BAC}$. האם זווית הראש גדולה מסכום שתי זוויות הבסיס?",
+      "prompt": "שאלה 9, סעיף ב.\nב־$\\tri ABC$ נתון $AB = AC$, וזווית הראש $\\angle{BAC}$ גדולה ב־$12°$ מפי $2$ מזווית הבסיס $\\angle{ABC}$.\nהסעיף הנבחר: חשבו את $\\angle{BAC}$. האם זווית הראש גדולה מסכום שתי זוויות הבסיס?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q9",
+      "nativeItemId": "q9b",
+      "nativeFigureId": "q9_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q9_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q09ג",
+      "q": 9,
+      "part": "ג",
+      "pin": {
+        "page": 5,
+        "x": 0.841127,
+        "y": 0.655824
+      },
+      "crop": {
+        "page": 5,
+        "x": 0,
+        "y": 0.454291,
+        "w": 1,
+        "h": 0.290606
+      },
+      "crops": [
+        {
+          "page": 5,
+          "x": 0,
+          "y": 0.454291,
+          "w": 1,
+          "h": 0.290606
+        }
+      ],
+      "context": "ב־$\\tri ABC$ נתון $AB = AC$, וזווית הראש $\\angle{BAC}$ גדולה ב־$12°$ מפי $2$ מזווית הבסיס $\\angle{ABC}$.",
+      "text": "לאיזה סוג שייך $\\tri ABC$ לפי זוויותיו? הסבירו מדוע זווית ראש הגדולה מסכום זוויות הבסיס נותנת תמיד את הסוג הזה.",
+      "prompt": "שאלה 9, סעיף ג.\nב־$\\tri ABC$ נתון $AB = AC$, וזווית הראש $\\angle{BAC}$ גדולה ב־$12°$ מפי $2$ מזווית הבסיס $\\angle{ABC}$.\nהסעיף הנבחר: לאיזה סוג שייך $\\tri ABC$ לפי זוויותיו? הסבירו מדוע זווית ראש הגדולה מסכום זוויות הבסיס נותנת תמיד את הסוג הזה.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q9",
+      "nativeItemId": "q9c",
+      "nativeFigureId": "q9_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q9_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q10א",
+      "q": 10,
+      "part": "א",
+      "pin": {
+        "page": 6,
+        "x": 0.835818,
+        "y": 0.106346
+      },
+      "crop": {
+        "page": 6,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.366888
+      },
+      "crops": [
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.366888
+        },
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.053575,
+          "w": 1,
+          "h": 0.046875
+        }
+      ],
+      "context": "במרובע $ABCD$ שלוש זוויות קהות: $\\angle{DAB} = 98°$, $\\angle{ABC} = 103°$, $\\angle{BCD} = 112°$. משורטט האלכסון $AC$, ו־$\\angle{BAC} = 35°$.",
+      "text": "חשבו את $\\angle{CDA}$.",
+      "prompt": "שאלה 10, סעיף א.\nבמרובע $ABCD$ שלוש זוויות קהות: $\\angle{DAB} = 98°$, $\\angle{ABC} = 103°$, $\\angle{BCD} = 112°$. משורטט האלכסון $AC$, ו־$\\angle{BAC} = 35°$.\nהסעיף הנבחר: חשבו את $\\angle{CDA}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q10",
+      "nativeItemId": "q10a",
+      "nativeFigureId": "q10_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q10_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q10ב",
+      "q": 10,
+      "part": "ב",
+      "pin": {
+        "page": 6,
+        "x": 0.838548,
+        "y": 0.279238
+      },
+      "crop": {
+        "page": 6,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.366888
+      },
+      "crops": [
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.366888
+        },
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.053575,
+          "w": 1,
+          "h": 0.046875
+        }
+      ],
+      "context": "במרובע $ABCD$ שלוש זוויות קהות: $\\angle{DAB} = 98°$, $\\angle{ABC} = 103°$, $\\angle{BCD} = 112°$. משורטט האלכסון $AC$, ו־$\\angle{BAC} = 35°$.",
+      "text": "חשבו את $\\angle{BCA}$.",
+      "prompt": "שאלה 10, סעיף ב.\nבמרובע $ABCD$ שלוש זוויות קהות: $\\angle{DAB} = 98°$, $\\angle{ABC} = 103°$, $\\angle{BCD} = 112°$. משורטט האלכסון $AC$, ו־$\\angle{BAC} = 35°$.\nהסעיף הנבחר: חשבו את $\\angle{BCA}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q10",
+      "nativeItemId": "q10b",
+      "nativeFigureId": "q10_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q10_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q10ג",
+      "q": 10,
+      "part": "ג",
+      "pin": {
+        "page": 6,
+        "x": 0.841127,
+        "y": 0.358276
+      },
+      "crop": {
+        "page": 6,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.366888
+      },
+      "crops": [
+        {
+          "page": 6,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.366888
+        },
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.053575,
+          "w": 1,
+          "h": 0.046875
+        }
+      ],
+      "context": "במרובע $ABCD$ שלוש זוויות קהות: $\\angle{DAB} = 98°$, $\\angle{ABC} = 103°$, $\\angle{BCD} = 112°$. משורטט האלכסון $AC$, ו־$\\angle{BAC} = 35°$.",
+      "text": "חשבו את $\\angle{CAD}$, וקבעו את סוג $\\tri ACD$ לפי זוויותיו.",
+      "prompt": "שאלה 10, סעיף ג.\nבמרובע $ABCD$ שלוש זוויות קהות: $\\angle{DAB} = 98°$, $\\angle{ABC} = 103°$, $\\angle{BCD} = 112°$. משורטט האלכסון $AC$, ו־$\\angle{BAC} = 35°$.\nהסעיף הנבחר: חשבו את $\\angle{CAD}$, וקבעו את סוג $\\tri ACD$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q10",
+      "nativeItemId": "q10c",
+      "nativeFigureId": "q10_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q10_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q11א",
+      "q": 11,
+      "part": "א",
+      "pin": {
+        "page": 7,
+        "x": 0.835818,
+        "y": 0.148656
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.683375
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.683375
+        }
+      ],
+      "context": "ארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.",
+      "text": "לרשומה $68°$ הכינו את כל השחזורים. האם אפשר לדעת מראש כמה תוויות צריך להדפיס?",
+      "prompt": "שאלה 11, סעיף א.\nארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.\nהסעיף הנבחר: לרשומה $68°$ הכינו את כל השחזורים. האם אפשר לדעת מראש כמה תוויות צריך להדפיס?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q11",
+      "nativeItemId": "q11a"
+    },
+    {
+      "id": "G7-T14-E-Q11ב",
+      "q": 11,
+      "part": "ב",
+      "pin": {
+        "page": 7,
+        "x": 0.838548,
+        "y": 0.222944
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.683375
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.683375
+        }
+      ],
+      "context": "ארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.",
+      "text": "בחנו גם את הרשומה $132°$ והשוו למספר התוויות בסעיף א.",
+      "prompt": "שאלה 11, סעיף ב.\nארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.\nהסעיף הנבחר: בחנו גם את הרשומה $132°$ והשוו למספר התוויות בסעיף א.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q11",
+      "nativeItemId": "q11b"
+    },
+    {
+      "id": "G7-T14-E-Q11ג",
+      "q": 11,
+      "part": "ג",
+      "pin": {
+        "page": 7,
+        "x": 0.841127,
+        "y": 0.301982
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.683375
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.683375
+        }
+      ],
+      "context": "ארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.",
+      "text": "תיקיית $74°$ מכילה רק תווית אחת: $74°,53°,53°$. בדקו את שלמות התיקייה ותקנו אותה במקרה הצורך.",
+      "prompt": "שאלה 11, סעיף ג.\nארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.\nהסעיף הנבחר: תיקיית $74°$ מכילה רק תווית אחת: $74°,53°,53°$. בדקו את שלמות התיקייה ותקנו אותה במקרה הצורך.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q11",
+      "nativeItemId": "q11c"
+    },
+    {
+      "id": "G7-T14-E-Q11ד",
+      "q": 11,
+      "part": "ד",
+      "pin": {
+        "page": 7,
+        "x": 0.840041,
+        "y": 0.403342
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.683375
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.683375
+        }
+      ],
+      "context": "ארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.",
+      "text": "מיינו את כל המידות האפשריות לשלוש קבוצות: אין שחזור; שחזור יחיד; שני שחזורים. ציינו במיוחד מתי שני חישובים שונים מתארים אותו משולש.",
+      "prompt": "שאלה 11, סעיף ד.\nארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.\nהסעיף הנבחר: מיינו את כל המידות האפשריות לשלוש קבוצות: אין שחזור; שחזור יחיד; שני שחזורים. ציינו במיוחד מתי שני חישובים שונים מתארים אותו משולש.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q11",
+      "nativeItemId": "q11d"
+    },
+    {
+      "id": "G7-T14-E-Q11ה",
+      "q": 11,
+      "part": "ה",
+      "pin": {
+        "page": 7,
+        "x": 0.836075,
+        "y": 0.504703
+      },
+      "crop": {
+        "page": 7,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.683375
+      },
+      "crops": [
+        {
+          "page": 7,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.683375
+        }
+      ],
+      "context": "ארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.",
+      "text": "שרטטו שתי סקיצות מן התיקייה המתוקנת בסעיף ג והסבירו איך אפשר לזהות שהן שונות גם בלי מדידה.",
+      "prompt": "שאלה 11, סעיף ה.\nארכיון שומר למשולש שווה־שוקיים רק מידה אחת. שני שחזורים נחשבים שונים אם רשימות הזוויות שלהם שונות, בלי חשיבות לסדר.\nהסעיף הנבחר: שרטטו שתי סקיצות מן התיקייה המתוקנת בסעיף ג והסבירו איך אפשר לזהות שהן שונות גם בלי מדידה.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q11",
+      "nativeItemId": "q11e"
+    },
+    {
+      "id": "G7-T14-E-Q12א",
+      "q": 12,
+      "part": "א",
+      "pin": {
+        "page": 8,
+        "x": 0.835818,
+        "y": 0.106346
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.87402
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.87402
+        }
+      ],
+      "context": "לפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.",
+      "text": "מתכנן רוצה משולש ובו זווית ישרה וגם זווית קהה. מצאו את הסתירה, והסיקו כמה זוויות חדות חייבות להישאר בכל משולש תקין.",
+      "prompt": "שאלה 12, סעיף א.\nלפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.\nהסעיף הנבחר: מתכנן רוצה משולש ובו זווית ישרה וגם זווית קהה. מצאו את הסתירה, והסיקו כמה זוויות חדות חייבות להישאר בכל משולש תקין.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q12",
+      "nativeItemId": "q12a"
+    },
+    {
+      "id": "G7-T14-E-Q12ב",
+      "q": 12,
+      "part": "ב",
+      "pin": {
+        "page": 8,
+        "x": 0.838548,
+        "y": 0.202955
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.87402
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.87402
+        }
+      ],
+      "context": "לפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.",
+      "text": "ברשומה של מרובע שלוש זוויות מסומנות ישרות. הסיקו את הרביעית. כעת החליפו בין ההנחה למסקנה: אם הרביעית ישרה, האם גם שלוש האחרות חייבות להיות ישרות? הוכיחו או הביאו דוגמה נגדית.",
+      "prompt": "שאלה 12, סעיף ב.\nלפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.\nהסעיף הנבחר: ברשומה של מרובע שלוש זוויות מסומנות ישרות. הסיקו את הרביעית. כעת החליפו בין ההנחה למסקנה: אם הרביעית ישרה, האם גם שלוש האחרות חייבות להיות ישרות? הוכיחו או הביאו דוגמה נגדית.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q12",
+      "nativeItemId": "q12b"
+    },
+    {
+      "id": "G7-T14-E-Q12ג",
+      "q": 12,
+      "part": "ג",
+      "pin": {
+        "page": 8,
+        "x": 0.841127,
+        "y": 0.326637
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.87402
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.87402
+        }
+      ],
+      "context": "לפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.",
+      "text": "במשולש, זווית חיצונית היא $143°$ ואחת הפנימיות הרחוקות ממנה היא $58°$. השלימו את המשולש ובדקו אם הפנימית האחרת יכולה להיות גדולה מהחיצונית.",
+      "prompt": "שאלה 12, סעיף ג.\nלפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.\nהסעיף הנבחר: במשולש, זווית חיצונית היא $143°$ ואחת הפנימיות הרחוקות ממנה היא $58°$. השלימו את המשולש ובדקו אם הפנימית האחרת יכולה להיות גדולה מהחיצונית.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q12",
+      "nativeItemId": "q12c"
+    },
+    {
+      "id": "G7-T14-E-Q12ד",
+      "q": 12,
+      "part": "ד",
+      "pin": {
+        "page": 8,
+        "x": 0.840041,
+        "y": 0.427997
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.87402
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.87402
+        }
+      ],
+      "context": "לפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.",
+      "text": "שלוש פינות של מרובע הן $94°$, $111°$, $119°$. מצאו את הרביעית. השתמשו באותו שיקול כדי להכריע אם אפשר לבנות מרובע עם ארבע פינות קהות או עם ארבע פינות חדות.",
+      "prompt": "שאלה 12, סעיף ד.\nלפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.\nהסעיף הנבחר: שלוש פינות של מרובע הן $94°$, $111°$, $119°$. מצאו את הרביעית. השתמשו באותו שיקול כדי להכריע אם אפשר לבנות מרובע עם ארבע פינות קהות או עם ארבע פינות חדות.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q12",
+      "nativeItemId": "q12d"
+    },
+    {
+      "id": "G7-T14-E-Q12ה",
+      "q": 12,
+      "part": "ה",
+      "pin": {
+        "page": 8,
+        "x": 0.836075,
+        "y": 0.529357
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.87402
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.87402
+        }
+      ],
+      "context": "לפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.",
+      "text": "תכננו משולש עם זוויות שלמות כך שהזווית החיצונית תהיה גדולה ב־$46°$ מאחת הפנימיות הרחוקות ממנה. תנו שתי דוגמאות שונות. לאחר מכן תכננו מרובע עם בדיוק שתי פינות ישרות.",
+      "prompt": "שאלה 12, סעיף ה.\nלפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.\nהסעיף הנבחר: תכננו משולש עם זוויות שלמות כך שהזווית החיצונית תהיה גדולה ב־$46°$ מאחת הפנימיות הרחוקות ממנה. תנו שתי דוגמאות שונות. לאחר מכן תכננו מרובע עם בדיוק שתי פינות ישרות.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q12",
+      "nativeItemId": "q12e"
+    },
+    {
+      "id": "G7-T14-E-Q12ו",
+      "q": 12,
+      "part": "ו",
+      "pin": {
+        "page": 8,
+        "x": 0.841517,
+        "y": 0.630717
+      },
+      "crop": {
+        "page": 8,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.87402
+      },
+      "crops": [
+        {
+          "page": 8,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.87402
+        }
+      ],
+      "context": "לפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.",
+      "text": "תכננו זוג משולשים שונים שלשניהם זווית של $60°$. בכל אחד שלוש המידות שונות וכולן כפולות של $20°$. מצאו את שני המשולשים והסבירו מדוע אין אפשרות נוספת תחת התנאים האלה. סרטטו גם את המרובע שתכננתם בסעיף ה.",
+      "prompt": "שאלה 12, סעיף ו.\nלפניכם משימות לבדיקת תקפות של נימוקים. בכל משימה יש לקבוע אילו נתונים מספיקים ואילו אפשרויות נפסלות.\nהסעיף הנבחר: תכננו זוג משולשים שונים שלשניהם זווית של $60°$. בכל אחד שלוש המידות שונות וכולן כפולות של $20°$. מצאו את שני המשולשים והסבירו מדוע אין אפשרות נוספת תחת התנאים האלה. סרטטו גם את המרובע שתכננתם בסעיף ה.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q12",
+      "nativeItemId": "q12f"
+    },
+    {
+      "id": "G7-T14-E-Q13א",
+      "q": 13,
+      "part": "א",
+      "pin": {
+        "page": 9,
+        "x": 0.835818,
+        "y": 0.210742
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.486326
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.486326
+        }
+      ],
+      "context": "במשולש $\\tri ABC$ נתון $AB=AC$ והקשר $\\angle{BAC}=4\\angle{ABC}+12°$. במרובע $DEFG$ הזוויות $\\angle{GDE}$, $\\angle{DEF}$, $\\angle{EFG}$, $\\angle{FGD}$ מתייחסות זו לזו כמו המספרים $4$, $7$, $8$, $11$.",
+      "text": "חשבו את $\\angle{ABC}$.",
+      "prompt": "שאלה 13, סעיף א.\nבמשולש $\\tri ABC$ נתון $AB=AC$ והקשר $\\angle{BAC}=4\\angle{ABC}+12°$. במרובע $DEFG$ הזוויות $\\angle{GDE}$, $\\angle{DEF}$, $\\angle{EFG}$, $\\angle{FGD}$ מתייחסות זו לזו כמו המספרים $4$, $7$, $8$, $11$.\nהסעיף הנבחר: חשבו את $\\angle{ABC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q13",
+      "nativeItemId": "q13a",
+      "nativeFigureId": "q13_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q13_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q13ב",
+      "q": 13,
+      "part": "ב",
+      "pin": {
+        "page": 9,
+        "x": 0.838548,
+        "y": 0.285029
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.486326
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.486326
+        }
+      ],
+      "context": "במשולש $\\tri ABC$ נתון $AB=AC$ והקשר $\\angle{BAC}=4\\angle{ABC}+12°$. במרובע $DEFG$ הזוויות $\\angle{GDE}$, $\\angle{DEF}$, $\\angle{EFG}$, $\\angle{FGD}$ מתייחסות זו לזו כמו המספרים $4$, $7$, $8$, $11$.",
+      "text": "חשבו את $\\angle{BAC}$, וקבעו את סוג $\\tri ABC$ לפי זוויותיו.",
+      "prompt": "שאלה 13, סעיף ב.\nבמשולש $\\tri ABC$ נתון $AB=AC$ והקשר $\\angle{BAC}=4\\angle{ABC}+12°$. במרובע $DEFG$ הזוויות $\\angle{GDE}$, $\\angle{DEF}$, $\\angle{EFG}$, $\\angle{FGD}$ מתייחסות זו לזו כמו המספרים $4$, $7$, $8$, $11$.\nהסעיף הנבחר: חשבו את $\\angle{BAC}$, וקבעו את סוג $\\tri ABC$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q13",
+      "nativeItemId": "q13b",
+      "nativeFigureId": "q13_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q13_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q13ג",
+      "q": 13,
+      "part": "ג",
+      "pin": {
+        "page": 9,
+        "x": 0.841127,
+        "y": 0.364068
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.486326
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.486326
+        }
+      ],
+      "context": "במשולש $\\tri ABC$ נתון $AB=AC$ והקשר $\\angle{BAC}=4\\angle{ABC}+12°$. במרובע $DEFG$ הזוויות $\\angle{GDE}$, $\\angle{DEF}$, $\\angle{EFG}$, $\\angle{FGD}$ מתייחסות זו לזו כמו המספרים $4$, $7$, $8$, $11$.",
+      "text": "חשבו את ארבע הזוויות של המרובע $DEFG$.",
+      "prompt": "שאלה 13, סעיף ג.\nבמשולש $\\tri ABC$ נתון $AB=AC$ והקשר $\\angle{BAC}=4\\angle{ABC}+12°$. במרובע $DEFG$ הזוויות $\\angle{GDE}$, $\\angle{DEF}$, $\\angle{EFG}$, $\\angle{FGD}$ מתייחסות זו לזו כמו המספרים $4$, $7$, $8$, $11$.\nהסעיף הנבחר: חשבו את ארבע הזוויות של המרובע $DEFG$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q13",
+      "nativeItemId": "q13c",
+      "nativeFigureId": "q13_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q13_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q13ד",
+      "q": 13,
+      "part": "ד",
+      "pin": {
+        "page": 9,
+        "x": 0.840041,
+        "y": 0.443107
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.486326
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.486326
+        }
+      ],
+      "context": "במשולש $\\tri ABC$ נתון $AB=AC$ והקשר $\\angle{BAC}=4\\angle{ABC}+12°$. במרובע $DEFG$ הזוויות $\\angle{GDE}$, $\\angle{DEF}$, $\\angle{EFG}$, $\\angle{FGD}$ מתייחסות זו לזו כמו המספרים $4$, $7$, $8$, $11$.",
+      "text": "בדגם נוסף של משולש מידות הזוויות מתקבלות מהכפלת מידה משותפת ב־$3$, ב־$5$ וב־$10$. מצאו את שלוש הזוויות וקבעו איזו מהן גדולה פי $2$ מאחרת.",
+      "prompt": "שאלה 13, סעיף ד.\nבמשולש $\\tri ABC$ נתון $AB=AC$ והקשר $\\angle{BAC}=4\\angle{ABC}+12°$. במרובע $DEFG$ הזוויות $\\angle{GDE}$, $\\angle{DEF}$, $\\angle{EFG}$, $\\angle{FGD}$ מתייחסות זו לזו כמו המספרים $4$, $7$, $8$, $11$.\nהסעיף הנבחר: בדגם נוסף של משולש מידות הזוויות מתקבלות מהכפלת מידה משותפת ב־$3$, ב־$5$ וב־$10$. מצאו את שלוש הזוויות וקבעו איזו מהן גדולה פי $2$ מאחרת.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q13",
+      "nativeItemId": "q13d",
+      "nativeFigureId": "q13_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q13_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q14א",
+      "q": 14,
+      "part": "א",
+      "pin": {
+        "page": 9,
+        "x": 0.835818,
+        "y": 0.637315
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.544467,
+        "w": 1,
+        "h": 0.33754
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.544467,
+          "w": 1,
+          "h": 0.33754
+        },
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.053575,
+          "w": 1,
+          "h": 0.046875
+        }
+      ],
+      "context": "בתהליך בדיקה של מרובע $ABCD$ נרשמו $\\angle{DAB}=87°$, $\\angle{ABC}=109°$, $\\angle{BCD}=72°$, $\\angle{ADB}=41°$. בודקים אם הזווית הרביעית ניתנת לחישוב גם בלי להשתמש בכלל סכום הזוויות במרובע.",
+      "text": "חשבו את $\\angle{CDA}$ כסכום זוויות של מרובע.",
+      "prompt": "שאלה 14, סעיף א.\nבתהליך בדיקה של מרובע $ABCD$ נרשמו $\\angle{DAB}=87°$, $\\angle{ABC}=109°$, $\\angle{BCD}=72°$, $\\angle{ADB}=41°$. בודקים אם הזווית הרביעית ניתנת לחישוב גם בלי להשתמש בכלל סכום הזוויות במרובע.\nהסעיף הנבחר: חשבו את $\\angle{CDA}$ כסכום זוויות של מרובע.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q14",
+      "nativeItemId": "q14a",
+      "nativeFigureId": "q14_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q14_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q14ב",
+      "q": 14,
+      "part": "ב",
+      "pin": {
+        "page": 9,
+        "x": 0.838548,
+        "y": 0.713895
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.544467,
+        "w": 1,
+        "h": 0.33754
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.544467,
+          "w": 1,
+          "h": 0.33754
+        },
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.053575,
+          "w": 1,
+          "h": 0.046875
+        }
+      ],
+      "context": "בתהליך בדיקה של מרובע $ABCD$ נרשמו $\\angle{DAB}=87°$, $\\angle{ABC}=109°$, $\\angle{BCD}=72°$, $\\angle{ADB}=41°$. בודקים אם הזווית הרביעית ניתנת לחישוב גם בלי להשתמש בכלל סכום הזוויות במרובע.",
+      "text": "פתחו מסלול חישוב חלופי דרך האלכסון $BD$: חשבו את $\\angle{ABD}$ ואת $\\angle{DBC}$.",
+      "prompt": "שאלה 14, סעיף ב.\nבתהליך בדיקה של מרובע $ABCD$ נרשמו $\\angle{DAB}=87°$, $\\angle{ABC}=109°$, $\\angle{BCD}=72°$, $\\angle{ADB}=41°$. בודקים אם הזווית הרביעית ניתנת לחישוב גם בלי להשתמש בכלל סכום הזוויות במרובע.\nהסעיף הנבחר: פתחו מסלול חישוב חלופי דרך האלכסון $BD$: חשבו את $\\angle{ABD}$ ואת $\\angle{DBC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q14",
+      "nativeItemId": "q14b",
+      "nativeFigureId": "q14_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q14_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q14ג",
+      "q": 14,
+      "part": "ג",
+      "pin": {
+        "page": 9,
+        "x": 0.841127,
+        "y": 0.792933
+      },
+      "crop": {
+        "page": 9,
+        "x": 0,
+        "y": 0.544467,
+        "w": 1,
+        "h": 0.33754
+      },
+      "crops": [
+        {
+          "page": 9,
+          "x": 0,
+          "y": 0.544467,
+          "w": 1,
+          "h": 0.33754
+        },
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.053575,
+          "w": 1,
+          "h": 0.046875
+        }
+      ],
+      "context": "בתהליך בדיקה של מרובע $ABCD$ נרשמו $\\angle{DAB}=87°$, $\\angle{ABC}=109°$, $\\angle{BCD}=72°$, $\\angle{ADB}=41°$. בודקים אם הזווית הרביעית ניתנת לחישוב גם בלי להשתמש בכלל סכום הזוויות במרובע.",
+      "text": "סיימו את המסלול דרך $\\tri BCD$: חשבו את $\\angle{BDC}$ ואת $\\angle{CDA}$. הסבירו כיצד החיבור של שני המשולשים מבטיח התאמה לתוצאה הראשונה.",
+      "prompt": "שאלה 14, סעיף ג.\nבתהליך בדיקה של מרובע $ABCD$ נרשמו $\\angle{DAB}=87°$, $\\angle{ABC}=109°$, $\\angle{BCD}=72°$, $\\angle{ADB}=41°$. בודקים אם הזווית הרביעית ניתנת לחישוב גם בלי להשתמש בכלל סכום הזוויות במרובע.\nהסעיף הנבחר: סיימו את המסלול דרך $\\tri BCD$: חשבו את $\\angle{BDC}$ ואת $\\angle{CDA}$. הסבירו כיצד החיבור של שני המשולשים מבטיח התאמה לתוצאה הראשונה.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q14",
+      "nativeItemId": "q14c",
+      "nativeFigureId": "q14_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q14_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q15א",
+      "q": 15,
+      "part": "א",
+      "pin": {
+        "page": 10,
+        "x": 0.835818,
+        "y": 0.170977
+      },
+      "crop": {
+        "page": 10,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.290606
+      },
+      "crops": [
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.290606
+        }
+      ],
+      "context": "לוח שקוף $KLMN$ נחתך לאורך $KM$. נתון $\\angle{LKN}=79°$, $\\angle{KLM}=124°$, $\\angle{LMN}=58°$, $\\angle{LKM}=31°$. בודקים את זוויות שני החלקים כדי לתאר אותם לפני החיתוך.",
+      "text": "מה גודל הזווית בפינה $N$, $\\angle{MNK}$?",
+      "prompt": "שאלה 15, סעיף א.\nלוח שקוף $KLMN$ נחתך לאורך $KM$. נתון $\\angle{LKN}=79°$, $\\angle{KLM}=124°$, $\\angle{LMN}=58°$, $\\angle{LKM}=31°$. בודקים את זוויות שני החלקים כדי לתאר אותם לפני החיתוך.\nהסעיף הנבחר: מה גודל הזווית בפינה $N$, $\\angle{MNK}$?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q15",
+      "nativeItemId": "q15a",
+      "nativeFigureId": "q15_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q15_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q15ב",
+      "q": 15,
+      "part": "ב",
+      "pin": {
+        "page": 10,
+        "x": 0.838548,
+        "y": 0.245265
+      },
+      "crop": {
+        "page": 10,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.290606
+      },
+      "crops": [
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.290606
+        }
+      ],
+      "context": "לוח שקוף $KLMN$ נחתך לאורך $KM$. נתון $\\angle{LKN}=79°$, $\\angle{KLM}=124°$, $\\angle{LMN}=58°$, $\\angle{LKM}=31°$. בודקים את זוויות שני החלקים כדי לתאר אותם לפני החיתוך.",
+      "text": "חשבו את $\\angle{KML}$.",
+      "prompt": "שאלה 15, סעיף ב.\nלוח שקוף $KLMN$ נחתך לאורך $KM$. נתון $\\angle{LKN}=79°$, $\\angle{KLM}=124°$, $\\angle{LMN}=58°$, $\\angle{LKM}=31°$. בודקים את זוויות שני החלקים כדי לתאר אותם לפני החיתוך.\nהסעיף הנבחר: חשבו את $\\angle{KML}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q15",
+      "nativeItemId": "q15b",
+      "nativeFigureId": "q15_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q15_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q15ג",
+      "q": 15,
+      "part": "ג",
+      "pin": {
+        "page": 10,
+        "x": 0.841127,
+        "y": 0.324304
+      },
+      "crop": {
+        "page": 10,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.290606
+      },
+      "crops": [
+        {
+          "page": 10,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.290606
+        }
+      ],
+      "context": "לוח שקוף $KLMN$ נחתך לאורך $KM$. נתון $\\angle{LKN}=79°$, $\\angle{KLM}=124°$, $\\angle{LMN}=58°$, $\\angle{LKM}=31°$. בודקים את זוויות שני החלקים כדי לתאר אותם לפני החיתוך.",
+      "text": "חשבו את $\\angle{MKN}$, וקבעו את סוג $\\tri KMN$ לפי זוויותיו.",
+      "prompt": "שאלה 15, סעיף ג.\nלוח שקוף $KLMN$ נחתך לאורך $KM$. נתון $\\angle{LKN}=79°$, $\\angle{KLM}=124°$, $\\angle{LMN}=58°$, $\\angle{LKM}=31°$. בודקים את זוויות שני החלקים כדי לתאר אותם לפני החיתוך.\nהסעיף הנבחר: חשבו את $\\angle{MKN}$, וקבעו את סוג $\\tri KMN$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q15",
+      "nativeItemId": "q15c",
+      "nativeFigureId": "q15_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q15_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q16א",
+      "q": 16,
+      "part": "א",
+      "pin": {
+        "page": 11,
+        "x": 0.835818,
+        "y": 0.210692
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.565316
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.565316
+        }
+      ],
+      "context": "הנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.",
+      "text": "חשבו את $\\angle{BAD}$.",
+      "prompt": "שאלה 16, סעיף א.\nהנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.\nהסעיף הנבחר: חשבו את $\\angle{BAD}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q16",
+      "nativeItemId": "q16a",
+      "nativeFigureId": "q16_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q16_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q16ב",
+      "q": 16,
+      "part": "ב",
+      "pin": {
+        "page": 11,
+        "x": 0.838548,
+        "y": 0.284979
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.565316
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.565316
+        }
+      ],
+      "context": "הנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.",
+      "text": "הוכיחו כי $\\tri ABD$ הוא משולש שווה־צלעות.",
+      "prompt": "שאלה 16, סעיף ב.\nהנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.\nהסעיף הנבחר: הוכיחו כי $\\tri ABD$ הוא משולש שווה־צלעות.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q16",
+      "nativeItemId": "q16b",
+      "nativeFigureId": "q16_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q16_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q16ג",
+      "q": 16,
+      "part": "ג",
+      "pin": {
+        "page": 11,
+        "x": 0.841127,
+        "y": 0.364018
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.565316
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.565316
+        }
+      ],
+      "context": "הנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.",
+      "text": "חשבו את $\\angle{ACB}$, וקבעו את סוג $\\tri ADC$ לפי זוויותיו.",
+      "prompt": "שאלה 16, סעיף ג.\nהנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.\nהסעיף הנבחר: חשבו את $\\angle{ACB}$, וקבעו את סוג $\\tri ADC$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q16",
+      "nativeItemId": "q16c",
+      "nativeFigureId": "q16_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q16_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q16ד",
+      "q": 16,
+      "part": "ד",
+      "pin": {
+        "page": 11,
+        "x": 0.840041,
+        "y": 0.443057
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.565316
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.565316
+        }
+      ],
+      "context": "הנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.",
+      "text": "האם יש בשרטוט עוד משולש שווה־צלעות, מלבד $\\tri ABD$? נמקו.",
+      "prompt": "שאלה 16, סעיף ד.\nהנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.\nהסעיף הנבחר: האם יש בשרטוט עוד משולש שווה־צלעות, מלבד $\\tri ABD$? נמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q16",
+      "nativeItemId": "q16d",
+      "nativeFigureId": "q16_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q16_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q16ה",
+      "q": 16,
+      "part": "ה",
+      "pin": {
+        "page": 11,
+        "x": 0.836075,
+        "y": 0.522096
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.565316
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.565316
+        }
+      ],
+      "context": "הנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.",
+      "text": "מיינו את הרשומות הבאות לנתון, מסקנה או מידע שלא ניתן לקבוע: $D$ על $BC$; $\\tri ABD$ שווה־צלעות; אורך $AD$ גדול מסנטימטר. הסבירו מדוע הזוויות אינן קובעות את הגודל בסנטימטרים.",
+      "prompt": "שאלה 16, סעיף ה.\nהנקודה $D$ נמצאת על הצלע $BC$ של $\\tri ABC$. נתון: $\\angle{ABC} = 60°$, $\\angle{ADB} = 60°$, $\\angle{DAC} = 33°$.\nהסעיף הנבחר: מיינו את הרשומות הבאות לנתון, מסקנה או מידע שלא ניתן לקבוע: $D$ על $BC$; $\\tri ABD$ שווה־צלעות; אורך $AD$ גדול מסנטימטר. הסבירו מדוע הזוויות אינן קובעות את הגודל בסנטימטרים.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q16",
+      "nativeItemId": "q16e",
+      "nativeFigureId": "q16_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q16_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q17א",
+      "q": 17,
+      "part": "א",
+      "pin": {
+        "page": 11,
+        "x": 0.835818,
+        "y": 0.693983
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.623456,
+        "w": 1,
+        "h": 0.312927
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.623456,
+          "w": 1,
+          "h": 0.312927
+        },
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.053575,
+          "w": 1,
+          "h": 0.046875
+        }
+      ],
+      "context": "בתרשים $A,C,E$ על ישר אחד ו־$AB=BC=CD=DE$, עם $\\angle{ABC}=52°$, $\\angle{CDE}=52°$. בוחנים אם שינוי משותף בזוויות הראש יכול להעלים את הזווית שבין $CB$ ל־$CD$ בלי למוטט אף משולש.",
+      "text": "חשבו את $\\angle{BAC}$.",
+      "prompt": "שאלה 17, סעיף א.\nבתרשים $A,C,E$ על ישר אחד ו־$AB=BC=CD=DE$, עם $\\angle{ABC}=52°$, $\\angle{CDE}=52°$. בוחנים אם שינוי משותף בזוויות הראש יכול להעלים את הזווית שבין $CB$ ל־$CD$ בלי למוטט אף משולש.\nהסעיף הנבחר: חשבו את $\\angle{BAC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q17",
+      "nativeItemId": "q17a",
+      "nativeFigureId": "q17_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q17_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q17ב",
+      "q": 17,
+      "part": "ב",
+      "pin": {
+        "page": 11,
+        "x": 0.838548,
+        "y": 0.768271
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.623456,
+        "w": 1,
+        "h": 0.312927
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.623456,
+          "w": 1,
+          "h": 0.312927
+        },
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.053575,
+          "w": 1,
+          "h": 0.046875
+        }
+      ],
+      "context": "בתרשים $A,C,E$ על ישר אחד ו־$AB=BC=CD=DE$, עם $\\angle{ABC}=52°$, $\\angle{CDE}=52°$. בוחנים אם שינוי משותף בזוויות הראש יכול להעלים את הזווית שבין $CB$ ל־$CD$ בלי למוטט אף משולש.",
+      "text": "חשבו את הזווית $\\angle{BCD}$ שבין שני המשולשים.",
+      "prompt": "שאלה 17, סעיף ב.\nבתרשים $A,C,E$ על ישר אחד ו־$AB=BC=CD=DE$, עם $\\angle{ABC}=52°$, $\\angle{CDE}=52°$. בוחנים אם שינוי משותף בזוויות הראש יכול להעלים את הזווית שבין $CB$ ל־$CD$ בלי למוטט אף משולש.\nהסעיף הנבחר: חשבו את הזווית $\\angle{BCD}$ שבין שני המשולשים.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q17",
+      "nativeItemId": "q17b",
+      "nativeFigureId": "q17_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q17_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q17ג",
+      "q": 17,
+      "part": "ג",
+      "pin": {
+        "page": 11,
+        "x": 0.841127,
+        "y": 0.84731
+      },
+      "crop": {
+        "page": 11,
+        "x": 0,
+        "y": 0.623456,
+        "w": 1,
+        "h": 0.312927
+      },
+      "crops": [
+        {
+          "page": 11,
+          "x": 0,
+          "y": 0.623456,
+          "w": 1,
+          "h": 0.312927
+        },
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.053575,
+          "w": 1,
+          "h": 0.046875
+        }
+      ],
+      "context": "בתרשים $A,C,E$ על ישר אחד ו־$AB=BC=CD=DE$, עם $\\angle{ABC}=52°$, $\\angle{CDE}=52°$. בוחנים אם שינוי משותף בזוויות הראש יכול להעלים את הזווית שבין $CB$ ל־$CD$ בלי למוטט אף משולש.",
+      "text": "הוכיחו כי $\\angle{BCD}=\\angle{ABC}$ לכל זווית ראש תקינה. האם $\\angle{BCD}$ יכולה להיות אפס? איזו זווית ראש הייתה נדרשת ומה פירוש הדבר למשולשים?",
+      "prompt": "שאלה 17, סעיף ג.\nבתרשים $A,C,E$ על ישר אחד ו־$AB=BC=CD=DE$, עם $\\angle{ABC}=52°$, $\\angle{CDE}=52°$. בוחנים אם שינוי משותף בזוויות הראש יכול להעלים את הזווית שבין $CB$ ל־$CD$ בלי למוטט אף משולש.\nהסעיף הנבחר: הוכיחו כי $\\angle{BCD}=\\angle{ABC}$ לכל זווית ראש תקינה. האם $\\angle{BCD}$ יכולה להיות אפס? איזו זווית ראש הייתה נדרשת ומה פירוש הדבר למשולשים?\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q17",
+      "nativeItemId": "q17c",
+      "nativeFigureId": "q17_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q17_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q18א",
+      "q": 18,
+      "part": "א",
+      "pin": {
+        "page": 12,
+        "x": 0.835818,
+        "y": 0.309175
+      },
+      "crop": {
+        "page": 12,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.428804
+      },
+      "crops": [
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.428804
+        }
+      ],
+      "context": "הנקודה $C$ נמצאת על הקטע $BE$, והנקודה $D$ נמצאת על הקטע $CA$. לשני המשולשים $\\tri ABC$ ו־$\\tri DBC$ יש אותה זווית חיצונית בקודקוד $C$: $\\angle{ACE} = 128°$. נתון גם: $\\angle{ABD} = 32°$, $\\angle{DBC} = 39°$.",
+      "text": "חשבו את $\\angle{BDC}$ בלי לחשב קודם את $\\angle{ACB}$.",
+      "prompt": "שאלה 18, סעיף א.\nהנקודה $C$ נמצאת על הקטע $BE$, והנקודה $D$ נמצאת על הקטע $CA$. לשני המשולשים $\\tri ABC$ ו־$\\tri DBC$ יש אותה זווית חיצונית בקודקוד $C$: $\\angle{ACE} = 128°$. נתון גם: $\\angle{ABD} = 32°$, $\\angle{DBC} = 39°$.\nהסעיף הנבחר: חשבו את $\\angle{BDC}$ בלי לחשב קודם את $\\angle{ACB}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q18",
+      "nativeItemId": "q18a",
+      "nativeFigureId": "q18_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q18_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q18ב",
+      "q": 18,
+      "part": "ב",
+      "pin": {
+        "page": 12,
+        "x": 0.838548,
+        "y": 0.383463
+      },
+      "crop": {
+        "page": 12,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.428804
+      },
+      "crops": [
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.428804
+        }
+      ],
+      "context": "הנקודה $C$ נמצאת על הקטע $BE$, והנקודה $D$ נמצאת על הקטע $CA$. לשני המשולשים $\\tri ABC$ ו־$\\tri DBC$ יש אותה זווית חיצונית בקודקוד $C$: $\\angle{ACE} = 128°$. נתון גם: $\\angle{ABD} = 32°$, $\\angle{DBC} = 39°$.",
+      "text": "חשבו את $\\angle{BAC}$.",
+      "prompt": "שאלה 18, סעיף ב.\nהנקודה $C$ נמצאת על הקטע $BE$, והנקודה $D$ נמצאת על הקטע $CA$. לשני המשולשים $\\tri ABC$ ו־$\\tri DBC$ יש אותה זווית חיצונית בקודקוד $C$: $\\angle{ACE} = 128°$. נתון גם: $\\angle{ABD} = 32°$, $\\angle{DBC} = 39°$.\nהסעיף הנבחר: חשבו את $\\angle{BAC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q18",
+      "nativeItemId": "q18b",
+      "nativeFigureId": "q18_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q18_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q18ג",
+      "q": 18,
+      "part": "ג",
+      "pin": {
+        "page": 12,
+        "x": 0.841127,
+        "y": 0.462501
+      },
+      "crop": {
+        "page": 12,
+        "x": 0,
+        "y": 0.10045,
+        "w": 1,
+        "h": 0.428804
+      },
+      "crops": [
+        {
+          "page": 12,
+          "x": 0,
+          "y": 0.10045,
+          "w": 1,
+          "h": 0.428804
+        }
+      ],
+      "context": "הנקודה $C$ נמצאת על הקטע $BE$, והנקודה $D$ נמצאת על הקטע $CA$. לשני המשולשים $\\tri ABC$ ו־$\\tri DBC$ יש אותה זווית חיצונית בקודקוד $C$: $\\angle{ACE} = 128°$. נתון גם: $\\angle{ABD} = 32°$, $\\angle{DBC} = 39°$.",
+      "text": "חשבו את $\\angle{ADB}$, וקבעו את סוג $\\tri ABD$ לפי זוויותיו.",
+      "prompt": "שאלה 18, סעיף ג.\nהנקודה $C$ נמצאת על הקטע $BE$, והנקודה $D$ נמצאת על הקטע $CA$. לשני המשולשים $\\tri ABC$ ו־$\\tri DBC$ יש אותה זווית חיצונית בקודקוד $C$: $\\angle{ACE} = 128°$. נתון גם: $\\angle{ABD} = 32°$, $\\angle{DBC} = 39°$.\nהסעיף הנבחר: חשבו את $\\angle{ADB}$, וקבעו את סוג $\\tri ABD$ לפי זוויותיו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q18",
+      "nativeItemId": "q18c",
+      "nativeFigureId": "q18_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q18_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q19א",
+      "q": 19,
+      "part": "א",
+      "pin": {
+        "page": 13,
+        "x": 0.835818,
+        "y": 0.106346
+      },
+      "crop": {
+        "page": 13,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.728017
+      },
+      "crops": [
+        {
+          "page": 13,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.728017
+        }
+      ],
+      "context": "בבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.",
+      "text": "בקובץ אחד נספרו $8$ משולשים ובשני $12$. שחזרו את מספר הצלעות של כל מצולע ואת סכום זוויותיו. הצדיקו בסקיצה את הקשר בין שני המספרים.",
+      "prompt": "שאלה 19, סעיף א.\nבבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.\nהסעיף הנבחר: בקובץ אחד נספרו $8$ משולשים ובשני $12$. שחזרו את מספר הצלעות של כל מצולע ואת סכום זוויותיו. הצדיקו בסקיצה את הקשר בין שני המספרים.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q19",
+      "nativeItemId": "q19a"
+    },
+    {
+      "id": "G7-T14-E-Q19ב",
+      "q": 19,
+      "part": "ב",
+      "pin": {
+        "page": 13,
+        "x": 0.838548,
+        "y": 0.202955
+      },
+      "crop": {
+        "page": 13,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.728017
+      },
+      "crops": [
+        {
+          "page": 13,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.728017
+        }
+      ],
+      "context": "בבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.",
+      "text": "כתבו ביטוי לסכום הזוויות כאשר מספר המשולשים הוא $k$, ואז ביטוי כאשר מספר הצלעות הוא $n$. הראו בסקיצה מדוע אין לספור משולש נוסף ליד שתי הצלעות הסמוכות לקודקוד.",
+      "prompt": "שאלה 19, סעיף ב.\nבבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.\nהסעיף הנבחר: כתבו ביטוי לסכום הזוויות כאשר מספר המשולשים הוא $k$, ואז ביטוי כאשר מספר הצלעות הוא $n$. הראו בסקיצה מדוע אין לספור משולש נוסף ליד שתי הצלעות הסמוכות לקודקוד.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q19",
+      "nativeItemId": "q19b"
+    },
+    {
+      "id": "G7-T14-E-Q19ג",
+      "q": 19,
+      "part": "ג",
+      "pin": {
+        "page": 13,
+        "x": 0.841127,
+        "y": 0.304315
+      },
+      "crop": {
+        "page": 13,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.728017
+      },
+      "crops": [
+        {
+          "page": 13,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.728017
+        }
+      ],
+      "context": "בבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.",
+      "text": "לאחר הוספת $3$ צלעות התקבל מצולע שסכום זוויותיו $2520°$. כמה צלעות היו לפני ההוספה? בדקו את שינוי הסכום.",
+      "prompt": "שאלה 19, סעיף ג.\nבבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.\nהסעיף הנבחר: לאחר הוספת $3$ צלעות התקבל מצולע שסכום זוויותיו $2520°$. כמה צלעות היו לפני ההוספה? בדקו את שינוי הסכום.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q19",
+      "nativeItemId": "q19c"
+    },
+    {
+      "id": "G7-T14-E-Q19ד",
+      "q": 19,
+      "part": "ד",
+      "pin": {
+        "page": 13,
+        "x": 0.840041,
+        "y": 0.405675
+      },
+      "crop": {
+        "page": 13,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.728017
+      },
+      "crops": [
+        {
+          "page": 13,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.728017
+        }
+      ],
+      "context": "בבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.",
+      "text": "מסנן נוסף שומר רק מצולעים משוכללים שהזווית הפנימית שלהם מספר שלם בין $150°$ ל־$165°$, כולל הקצוות. מצאו את כל מספרי הצלעות המתאימים בלי לבדוק כל מצולע בנפרד.",
+      "prompt": "שאלה 19, סעיף ד.\nבבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.\nהסעיף הנבחר: מסנן נוסף שומר רק מצולעים משוכללים שהזווית הפנימית שלהם מספר שלם בין $150°$ ל־$165°$, כולל הקצוות. מצאו את כל מספרי הצלעות המתאימים בלי לבדוק כל מצולע בנפרד.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q19",
+      "nativeItemId": "q19d"
+    },
+    {
+      "id": "G7-T14-E-Q19ה",
+      "q": 19,
+      "part": "ה",
+      "pin": {
+        "page": 13,
+        "x": 0.836075,
+        "y": 0.507035
+      },
+      "crop": {
+        "page": 13,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.728017
+      },
+      "crops": [
+        {
+          "page": 13,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.728017
+        }
+      ],
+      "context": "בבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.",
+      "text": "תוכנה אחת מעגלת זווית של מצולע משוכלל ל־$180°$ ומכריזה שהתקבל ישר. הסבירו מדוע עיגול אינו שוויון, ולאיזה ערך מתקרבות הזוויות עם הוספת צלעות. הוסיפו סקיצה.",
+      "prompt": "שאלה 19, סעיף ה.\nבבדיקת תוכנת שרטוט נרשם מספר המשולשים בחלוקה היוצאת מקודקוד אחד. חוקרים גם מצולעים משוכללים, שבהם כל הצלעות וכל הזוויות שוות.\nהסעיף הנבחר: תוכנה אחת מעגלת זווית של מצולע משוכלל ל־$180°$ ומכריזה שהתקבל ישר. הסבירו מדוע עיגול אינו שוויון, ולאיזה ערך מתקרבות הזוויות עם הוספת צלעות. הוסיפו סקיצה.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q19",
+      "nativeItemId": "q19e"
+    },
+    {
+      "id": "G7-T14-E-Q20א",
+      "q": 20,
+      "part": "א",
+      "pin": {
+        "page": 14,
+        "x": 0.835818,
+        "y": 0.128668
+      },
+      "crop": {
+        "page": 14,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.432597
+      },
+      "crops": [
+        {
+          "page": 14,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.432597
+        }
+      ],
+      "context": "$ABCDEF$ הוא משושה משוכלל: $AB = BC = CD = DE = EF = FA$, ו־$\\angle{FAB} = \\angle{ABC} = \\angle{BCD} = \\angle{CDE} = \\angle{DEF} = \\angle{EFA}$. משורטטים האלכסונים $AC$ ו־$AD$.",
+      "text": "חשבו את $\\angle{ABC}$.",
+      "prompt": "שאלה 20, סעיף א.\n$ABCDEF$ הוא משושה משוכלל: $AB = BC = CD = DE = EF = FA$, ו־$\\angle{FAB} = \\angle{ABC} = \\angle{BCD} = \\angle{CDE} = \\angle{DEF} = \\angle{EFA}$. משורטטים האלכסונים $AC$ ו־$AD$.\nהסעיף הנבחר: חשבו את $\\angle{ABC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q20",
+      "nativeItemId": "q20a",
+      "nativeFigureId": "q20_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q20_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q20ב",
+      "q": 20,
+      "part": "ב",
+      "pin": {
+        "page": 14,
+        "x": 0.838548,
+        "y": 0.22935
+      },
+      "crop": {
+        "page": 14,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.432597
+      },
+      "crops": [
+        {
+          "page": 14,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.432597
+        }
+      ],
+      "context": "$ABCDEF$ הוא משושה משוכלל: $AB = BC = CD = DE = EF = FA$, ו־$\\angle{FAB} = \\angle{ABC} = \\angle{BCD} = \\angle{CDE} = \\angle{DEF} = \\angle{EFA}$. משורטטים האלכסונים $AC$ ו־$AD$.",
+      "text": "חשבו את $\\angle{BAC}$.",
+      "prompt": "שאלה 20, סעיף ב.\n$ABCDEF$ הוא משושה משוכלל: $AB = BC = CD = DE = EF = FA$, ו־$\\angle{FAB} = \\angle{ABC} = \\angle{BCD} = \\angle{CDE} = \\angle{DEF} = \\angle{EFA}$. משורטטים האלכסונים $AC$ ו־$AD$.\nהסעיף הנבחר: חשבו את $\\angle{BAC}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q20",
+      "nativeItemId": "q20b",
+      "nativeFigureId": "q20_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q20_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q20ג",
+      "q": 20,
+      "part": "ג",
+      "pin": {
+        "page": 14,
+        "x": 0.841127,
+        "y": 0.308389
+      },
+      "crop": {
+        "page": 14,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.432597
+      },
+      "crops": [
+        {
+          "page": 14,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.432597
+        }
+      ],
+      "context": "$ABCDEF$ הוא משושה משוכלל: $AB = BC = CD = DE = EF = FA$, ו־$\\angle{FAB} = \\angle{ABC} = \\angle{BCD} = \\angle{CDE} = \\angle{DEF} = \\angle{EFA}$. משורטטים האלכסונים $AC$ ו־$AD$.",
+      "text": "חשבו את $\\angle{ACD}$.",
+      "prompt": "שאלה 20, סעיף ג.\n$ABCDEF$ הוא משושה משוכלל: $AB = BC = CD = DE = EF = FA$, ו־$\\angle{FAB} = \\angle{ABC} = \\angle{BCD} = \\angle{CDE} = \\angle{DEF} = \\angle{EFA}$. משורטטים האלכסונים $AC$ ו־$AD$.\nהסעיף הנבחר: חשבו את $\\angle{ACD}$.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q20",
+      "nativeItemId": "q20c",
+      "nativeFigureId": "q20_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q20_head.svg"
+    },
+    {
+      "id": "G7-T14-E-Q20ד",
+      "q": 20,
+      "part": "ד",
+      "pin": {
+        "page": 14,
+        "x": 0.840041,
+        "y": 0.387427
+      },
+      "crop": {
+        "page": 14,
+        "x": 0,
+        "y": 0.058141,
+        "w": 1,
+        "h": 0.432597
+      },
+      "crops": [
+        {
+          "page": 14,
+          "x": 0,
+          "y": 0.058141,
+          "w": 1,
+          "h": 0.432597
+        }
+      ],
+      "context": "$ABCDEF$ הוא משושה משוכלל: $AB = BC = CD = DE = EF = FA$, ו־$\\angle{FAB} = \\angle{ABC} = \\angle{BCD} = \\angle{CDE} = \\angle{DEF} = \\angle{EFA}$. משורטטים האלכסונים $AC$ ו־$AD$.",
+      "text": "לאיזה סוג שייך $\\tri ACD$ לפי זוויותיו? נמקו.",
+      "prompt": "שאלה 20, סעיף ד.\n$ABCDEF$ הוא משושה משוכלל: $AB = BC = CD = DE = EF = FA$, ו־$\\angle{FAB} = \\angle{ABC} = \\angle{BCD} = \\angle{CDE} = \\angle{DEF} = \\angle{EFA}$. משורטטים האלכסונים $AC$ ו־$AD$.\nהסעיף הנבחר: לאיזה סוג שייך $\\tri ACD$ לפי זוויותיו? נמקו.\nהתייחסו רק לסעיף הנבחר. השרטוט ונתוניו מופיעים בתמונת השאלה. אין לנחש נתונים חסרים.",
+      "needsVision": true,
+      "requiresVision": true,
+      "nativeQuestionId": "q20",
+      "nativeItemId": "q20d",
+      "nativeFigureId": "q20_head",
+      "nativeFigureUrl": "/noam-ai/native/G7-T14/c/figures/q20_head.svg"
+    }
+  ],
+  "nativeExportUrl": "/noam-ai/native/G7-T14/c/noam-ai.json",
+  "nativeLevel": "c",
+  "nativeExportSha256": "afdd917294d42b34737e0ba3523d874b62cc8dafb3b0054a2b1229bd7e04224e"
+}

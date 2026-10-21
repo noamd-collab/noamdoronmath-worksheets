@@ -1,0 +1,264 @@
+---
+/**
+ * Decimal explorers for two topic pages (engine: ../lib/decimalExplorer.ts).
+ *
+ *   kind="divide"  divide-decimals-grade-6, opens on 0.8 : 0.2 = 8 : 2 = 4
+ *   kind="place"   decimal-place-value-grade-5, opens on 0.25
+ *
+ * The first frame is rendered here, so the card is complete before the
+ * script runs.
+ */
+import { LINE, at, decimalQuotient, divideHint, hundredths, jumpPath, placeValue, placeWholeText, quotientText, tenths } from '../lib/decimalExplorer';
+
+interface Props {
+  kind: 'divide' | 'place';
+}
+const { kind } = Astro.props;
+
+const X10 = 8;
+const Y10 = 2;
+const dq = decimalQuotient(X10, Y10);
+const ticks = Array.from({ length: 11 }, (_, i) => i);
+
+const H = 25;
+const pv = placeValue(H);
+const cells = Array.from({ length: 100 }, (_, i) => ({ row: Math.floor(i / 10), col: i % 10 }));
+---
+
+{
+  kind === 'divide' ? (
+    <div class="dec-explorer" data-decimal-explorer="divide">
+      <div class="de-card">
+        <p class="de-ask">כמה קפיצות של <bdi data-el="y">{tenths(Y10)}</bdi> מגיעות ל־<bdi data-el="x">{tenths(X10)}</bdi>?</p>
+        <svg class="de-svg" viewBox="0 0 300 130" aria-hidden="true" focusable="false">
+          <line x1={LINE.x0} y1={LINE.y} x2={LINE.x1} y2={LINE.y} class="de-axis" />
+          {ticks.map((t) => (
+            <g>
+              <line x1={at(t)} y1={LINE.y - (t % 5 === 0 ? 7 : 4)} x2={at(t)} y2={LINE.y + 4} class="de-tick" />
+              <text x={at(t)} y={LINE.y + 32} class:list={['de-lbl', t % 5 === 0 && 'de-lbl--main']} text-anchor="middle">
+                {tenths(t)}
+              </text>
+            </g>
+          ))}
+          <g data-el="layer">
+            <rect x={at(0)} y={LINE.y + 6} width={at(X10) - at(0)} height="10" rx="3" class="de-bar" />
+            {Array.from({ length: dq.jumps }, (_, k) => <path d={jumpPath(k, Y10)} class="de-jump" />)}
+            {Array.from({ length: dq.jumps }, (_, k) => (
+              <text
+                x={(at(k * Y10) + at((k + 1) * Y10)) / 2}
+                y={LINE.y - Math.min(46, 14 + Y10 * 7) - 6}
+                class="de-n"
+                text-anchor="middle"
+              >
+                {k + 1}
+              </text>
+            ))}
+          </g>
+        </svg>
+        <div class="de-sliders">
+          <label class="de-slider de-slider--x">
+            <span>
+              מחלקים את: <bdi data-el="x">{tenths(X10)}</bdi>
+            </span>
+            <input type="range" dir="ltr" data-el="rx" min="1" max="10" step="1" value={X10} />
+          </label>
+          <label class="de-slider de-slider--y">
+            <span>
+              בקפיצות של: <bdi data-el="y">{tenths(Y10)}</bdi>
+            </span>
+            <input type="range" dir="ltr" data-el="ry" min="1" max="5" step="1" value={Y10} />
+          </label>
+        </div>
+        <p class="de-readout" dir="ltr">
+          <span data-el="x">{tenths(X10)}</span> : <span data-el="y">{tenths(Y10)}</span> ={' '}
+          <span data-el="x10">{X10}</span> : <span data-el="y10">{Y10}</span>{' '}<b class="de-ans" data-el="q">{quotientText(X10, Y10)}</b>
+        </p>
+        <p class="de-hint" data-el="hint">{divideHint(X10, Y10)}</p>
+        <p class="sr-only" aria-live="polite" data-el="live" />
+      </div>
+    </div>
+  ) : (
+    <div class="dec-explorer" data-decimal-explorer="place">
+      <div class="de-card">
+        <p class="de-ask">
+          <span data-el="parts">
+            <bdi data-el="v">{hundredths(H)}</bdi> הם <bdi data-el="t">{pv.tenths}</bdi> עשיריות ו־<bdi data-el="u">{pv.hundredths}</bdi> מאיות
+          </span>
+          <span data-el="whole" hidden>{placeWholeText}</span>
+        </p>
+        <p class="de-legend">כל עמודה שלמה היא עשירית. כל משבצת בודדת היא מאית.</p>
+        <div class="de-grid" data-el="grid" dir="ltr" aria-hidden="true">
+          {cells.map((c) => (
+            <span
+              class:list={[
+                'de-cell',
+                c.col < pv.tenths && 'is-tenth',
+                c.col === pv.tenths && c.row < pv.hundredths && 'is-hundredth',
+              ]}
+              data-row={c.row}
+              data-col={c.col}
+            />
+          ))}
+        </div>
+        <label class="de-slider de-slider--x de-slider--wide">
+          <span class="sr-only">מספר עשרוני בין 0 ל־1</span>
+          <input type="range" dir="ltr" data-el="range" min="0" max="100" step="1" value={H} />
+        </label>
+        <p class="de-readout" dir="ltr">
+          <b class="de-ans" data-el="v">{hundredths(H)}</b> = <span data-el="h">{H}</span> × 0.01
+        </p>
+        <p class="sr-only" aria-live="polite" data-el="live" />
+      </div>
+    </div>
+  )
+}
+
+<script>
+  import { initDecimalExplorers } from '../lib/decimalExplorer';
+  initDecimalExplorers();
+</script>
+
+<style>
+  .dec-explorer {
+    margin: 6px 0 20px;
+  }
+  .de-card {
+    background: #fff;
+    border: 1.5px solid rgba(26, 43, 74, 0.1);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    padding: 14px 16px 12px;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .de-ask {
+    margin: 0;
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--navy);
+    text-align: center;
+    text-wrap: balance;
+  }
+  .de-legend,
+  .de-hint {
+    margin: 0;
+    text-align: center;
+    color: var(--muted);
+    font-weight: 600;
+    max-width: 34em;
+  }
+
+  /* number line */
+  .de-svg {
+    display: block;
+    width: min(100%, 420px);
+    height: auto;
+  }
+  .de-svg .de-axis,
+  .de-svg .de-tick {
+    stroke: var(--navy);
+    stroke-width: 2;
+  }
+  .de-svg .de-lbl {
+    font: 600 10px 'Assistant', Arial, sans-serif;
+    fill: var(--muted);
+  }
+  .de-svg .de-lbl--main {
+    font-size: 12px;
+    font-weight: 800;
+    fill: var(--navy);
+  }
+  .de-svg :global(.de-bar) {
+    fill: rgba(230, 165, 52, 0.55);
+  }
+  .de-svg :global(.de-rem) {
+    fill: rgba(229, 115, 92, 0.35);
+  }
+  .de-svg :global(.de-jump) {
+    fill: none;
+    stroke: #1e605e;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+  .de-svg :global(.de-n) {
+    font: 800 12px 'Assistant', Arial, sans-serif;
+    fill: #1e605e;
+  }
+
+  /* hundredths grid */
+  .de-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 3px;
+    width: min(100%, 280px);
+    direction: ltr;
+  }
+  .de-cell {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    background: #eef1f5;
+    transition: background-color 0.15s ease;
+  }
+  .de-cell.is-tenth {
+    background: #e6a534;
+  }
+  .de-cell.is-hundredth {
+    background: #e5735c;
+  }
+
+  .de-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: min(100%, 300px);
+  }
+  .de-slider {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .de-slider--wide {
+    width: min(100%, 280px);
+  }
+  .de-slider input[type='range'] {
+    width: 100%;
+    height: 28px;
+    background: transparent;
+  }
+  .de-slider--x input {
+    accent-color: #e6a534;
+  }
+  .de-slider--y input {
+    accent-color: #1e605e;
+  }
+  .de-slider input:focus-visible {
+    outline: 3px solid var(--cobalt);
+    outline-offset: 2px;
+  }
+  .de-readout {
+    margin: 0;
+    direction: ltr;
+    unicode-bidi: isolate;
+    white-space: nowrap;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .de-ans {
+    color: #e5735c;
+    font-size: 1.2em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .de-cell {
+      transition: none;
+    }
+  }
+  :global(html.noam-a11y-motion) .de-cell {
+    transition: none;
+  }
+</style>
