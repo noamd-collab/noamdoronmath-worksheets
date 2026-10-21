@@ -253,8 +253,8 @@ function ride(hours: number) {
 }
 
 function trailPortion(hours: number) {
-  const climb = Math.hypot(148, 108);
-  const flat = 74;
+  const climb = Math.hypot(112, 90);
+  const flat = 56;
   const total = climb * 2 + flat;
   let walked = 0;
   if (hours <= 2) walked = (hours / 2) * climb;
@@ -264,32 +264,44 @@ function trailPortion(hours: number) {
 }
 
 function renderRead(root: Root, t: number) {
-  const alive = 1 - ph(t, 12.6, 13.5);
-  const raw = Math.min(5, Math.max(0, ((Math.min(10.5, Math.max(0.5, t)) - 0.5) / 10) * 5));
-  const hours = Math.round(raw * 10) / 10;
-  const { d, v } = ride(hours);
-  const gx = 78 + hours * 74;
-  const gy = 268 - d * 3.6;
-  const rx = 64 + (d / 30) * 420;
-  attr(q(root, 'rider'), 'cx', rx);
+  const alive = 1 - ph(t, 16.6, 17.6);
+  let hours = lin(t, 0.25, 4.7) * 5;
+  if (t >= 4.75 && t < 8.05) hours = lerp(5, 1, lin(t, 4.75, 5.35));
+  else if (t >= 8.05 && t < 11.2) hours = lerp(1, 2.5, lin(t, 8.05, 8.6));
+  else if (t >= 11.2) hours = 5;
+  const { d } = ride(hours);
+  const gx = 62 + hours * 56;
+  const gy = 246 - d * 3;
+  move(q(root, 'rider'), 44 + (d / 30) * 284, 50);
   attr(q(root, 'gdot'), 'cx', gx);
   attr(q(root, 'gdot'), 'cy', gy);
-  attr(q(root, 'dashv'), 'x1', gx);
-  attr(q(root, 'dashv'), 'x2', gx);
-  attr(q(root, 'dashv'), 'y1', gy);
-  attr(q(root, 'dashh'), 'y1', gy);
-  attr(q(root, 'dashh'), 'y2', gy);
-  attr(q(root, 'dashh'), 'x2', gx);
-  op(q(root, 'dashv'), ph(t, 0.8, 1.2) * alive);
-  op(q(root, 'dashh'), ph(t, 0.8, 1.2) * alive);
   op(q(root, 'rider'), alive);
-  op(q(root, 'gdot'), ph(t, 0.4, 0.8) * alive);
-  draw(q(root, 'trail'), t < 0.5 ? 0 : trailPortion(hours));
-  text(q(root, 'speed'), `${v} קמ״ש`);
-  text(q(root, 'clock'), `${hours.toFixed(1)} שע׳`);
-  text(q(root, 'dist'), `${d.toFixed(1)} ק״מ`);
-  op(q(root, 'readout'), ph(t, 0.8, 1.2) * alive);
-  op(q(root, 'sum'), ph(t, 10.6, 11.2) * alive);
+  op(q(root, 'gdot'), alive);
+  draw(q(root, 'trail'), t < 0.25 ? 0 : t < 4.7 ? trailPortion(hours) : 1);
+
+  const readOn = ph(t, 5.35, 5.75) * (1 - ph(t, 7.7, 8.15)) * alive;
+  op(q(root, 'dashv'), readOn);
+  op(q(root, 'dashh'), readOn);
+  op(q(root, 'read15'), readOn);
+  setShown(q(root, 'ans1'), readOn);
+
+  const stopOn = ph(t, 8.45, 8.9) * (1 - ph(t, 10.85, 11.25)) * alive;
+  op(q(root, 'segStop'), stopOn);
+  op(q(root, 'stopLbl'), stopOn);
+  setShown(q(root, 'ans2'), stopOn);
+
+  const speedOn = ph(t, 11.45, 11.9) * alive;
+  op(q(root, 'spd0'), speedOn);
+  op(q(root, 'spd1'), speedOn);
+  op(q(root, 'spd2'), speedOn);
+  setShown(q(root, 'ans3'), speedOn * (1 - ph(t, 14.15, 14.55)));
+
+  const trendOn = ph(t, 14.45, 14.95) * alive;
+  op(q(root, 'tr0'), trendOn);
+  op(q(root, 'tr1'), trendOn);
+  op(q(root, 'tr2'), trendOn);
+  setShown(q(root, 'ans4'), trendOn);
+  captions(root, t, ['top0', 'top1', 'top2', 'top3', 'top4'], [4.7, 8.0, 11.2, 14.2], [16.4, 17.5]);
 }
 
 function renderSystems(root: Root, t: number) {
@@ -557,7 +569,7 @@ const SPECS: Record<string, Spec> = {
   powers: { duration: 16, hold: 13.2, render: renderPowers },
   median: { duration: 16, hold: 13.0, render: renderMedian },
   'coord-app': { duration: 15, hold: 12.0, render: renderCoord },
-  'read-graph': { duration: 14, hold: 11.6, render: renderRead },
+  'read-graph': { duration: 18, hold: 15.6, render: renderRead },
   systems: { duration: 14, hold: 11.0, render: renderSystems },
   cone: { duration: 14, hold: 11.0, render: renderCone },
   'cyl-area': { duration: 14, hold: 11.0, render: renderCyl },

@@ -102,7 +102,7 @@ const aria: Record<string, string> = {
   powers: 'סוגריים ב־(−3) בריבוע נותנים 9, בלי סוגריים מתקבל מינוס 9, ובשלישית מינוס 27',
   median: 'התיכון חוצה את הצלע, השטחים שווים, והתיכונים נפגשים ביחס 2 ל־1',
   'coord-app': 'המשולש A מינוס 3 1, B 2 1, C 2 4. האורכים 5 ו־3 והשטח 7.5',
-  'read-graph': 'רוכב נוסע שעתיים ל־30 קילומטר, עוצר שעה, וחוזר. המהירויות 15, 0 ו־15',
+  'read-graph': 'גרף מרחק־זמן של רוכב: עולה ל־30 קילומטר, עוצר, וחוזר. קוראים מרחק, עצירה, מהירות וכיוון.',
   systems: 'הישרים נפגשים ב־(2, 3), והנקודה מקיימת את שתי המשוואות',
   cone: 'נפח החרוט הוא שליש מגליל עם אותו בסיס וגובה, והפריסה היא עיגול וגזרה',
   'cyl-area': 'פריסת הגליל: שני עיגולים ומלבן ברוחב 2 פאי r ובגובה h',
@@ -339,32 +339,62 @@ const aria: Record<string, string> = {
 
     {showRead && (
       <>
-        <p class="concept-loop__top">הרוכב יוצא, עוצר, וחוזר. מה המהירות בכל קטע?</p>
-        <svg class="concept-loop__svg" viewBox="0 0 560 320" role="img" aria-label={aria['read-graph']}>
-          <line class="cl-line" x1="40" y1="48" x2="520" y2="48" />
-          <text class="cl-t" x="64" y="36" text-anchor="middle" direction="rtl">בית</text>
-          <text class="cl-t cl-num" x="484" y="36" text-anchor="middle">30 ק״מ</text>
-          <circle data-el="rider" cx="64" cy="48" r="9" class="cl-pt-a" />
-          <line class="cl-line" x1="78" y1="268" x2="500" y2="268" />
-          <line class="cl-line" x1="78" y1="268" x2="78" y2="120" />
-          <path class="cl-line-thin" d="M78 268 L226 160 L300 160 L448 268" fill="none" />
-          <path data-el="trail" d="M78 268 L226 160 L300 160 L448 268" class="cl-stroke-a" pathLength="1" fill="none" stroke-width="3.5" stroke-dashoffset="1" />
-          <line data-el="dashv" class="cl-dash" x1="78" y1="268" x2="78" y2="268" style="opacity:0" />
-          <line data-el="dashh" class="cl-dash" x1="78" y1="268" x2="78" y2="268" style="opacity:0" />
-          <circle data-el="gdot" cx="78" cy="268" r="6" class="cl-pt-b" style="opacity:0" />
-          <text class="cl-t cl-num" x="78" y="292" text-anchor="middle">0</text>
-          <text class="cl-t cl-num" x="226" y="292" text-anchor="middle">2</text>
-          <text class="cl-t cl-num" x="300" y="292" text-anchor="middle">3</text>
-          <text class="cl-t cl-num" x="448" y="292" text-anchor="middle">5</text>
-          <text class="cl-t" x="500" y="292" text-anchor="end" direction="rtl">שע׳</text>
-          <text class="cl-t cl-num" x="62" y="164" text-anchor="end">30</text>
-          <g data-el="readout" style="opacity:0">
-            <text class="cl-t cl-num lf-mid" data-el="clock" x="360" y="100"></text>
-            <text class="cl-t cl-num lf-mid" data-el="dist" x="360" y="128"></text>
-            <text class="cl-t cl-num lf-mid" data-el="speed" x="360" y="156"></text>
+        <p class="concept-loop__top cl-topswap">
+          <span class="cl-topsz" aria-hidden="true">איפה הגרף עולה, קבוע או יורד?</span>
+          <span class="cl-tops" data-el="top0">הרוכב יוצא, עוצר, וחוזר הביתה</span>
+          <span class="cl-tops" data-el="top1" style="opacity:0">מה המרחק בשעה <bdi dir="ltr" class="ll-math">1</bdi>?</span>
+          <span class="cl-tops" data-el="top2" style="opacity:0">מתי הרוכב עצר?</span>
+          <span class="cl-tops" data-el="top3" style="opacity:0">מה המהירות בכל קטע?</span>
+          <span class="cl-tops" data-el="top4" style="opacity:0">איפה הגרף עולה, קבוע או יורד?</span>
+        </p>
+        <svg class="concept-loop__svg" viewBox="0 0 370 312" role="img" aria-label={aria['read-graph']}>
+          <line class="cl-line" x1="28" y1="64" x2="348" y2="64" />
+          <text class="cl-t" x="44" y="18" text-anchor="middle" direction="rtl">בית</text>
+          <text class="cl-t cl-num" x="328" y="18" text-anchor="middle">30 ק״מ</text>
+          <g data-el="rider">
+            <circle cx="0" cy="-16" r="5" fill="#22305a" />
+            <path d="M0 -10 V2 M-8 -3 H8 M-5 12 L0 2 L5 12" fill="none" stroke="#22305a" stroke-width="2.2" stroke-linecap="round" />
+            <circle cx="-6" cy="14" r="3.2" fill="none" stroke="#e5735c" stroke-width="2" />
+            <circle cx="6" cy="14" r="3.2" fill="none" stroke="#e5735c" stroke-width="2" />
           </g>
+          <line class="cl-line" x1="62" y1="246" x2="356" y2="246" />
+          <line class="cl-line" x1="62" y1="256" x2="62" y2="140" />
+          <text class="cl-t" x="202" y="296" text-anchor="middle" direction="rtl">זמן בשעות</text>
+          <text class="cl-t" x="20" y="200" text-anchor="middle" direction="rtl" transform="rotate(-90 20 200)">מרחק בק״מ</text>
+          {[0, 1, 2, 3, 4, 5].map((n) => (
+            <g>
+              <line class="cl-line" x1={62 + n * 56} y1="246" x2={62 + n * 56} y2="254" />
+              <text class="cl-t cl-num" x={62 + n * 56} y="270" text-anchor="middle">{n}</text>
+            </g>
+          ))}
+          {[10, 20, 30].map((n) => (
+            <g>
+              <line class="cl-line" x1="54" y1={246 - n * 3} x2="62" y2={246 - n * 3} />
+              <text class="cl-t cl-num" x="50" y={246 - n * 3 + 5} text-anchor="end">{n}</text>
+            </g>
+          ))}
+          <path class="cl-line-thin" d="M62 246 L174 156 L230 156 L342 246" fill="none" />
+          <path data-el="trail" d="M62 246 L174 156 L230 156 L342 246" class="cl-stroke-a" pathLength="1" fill="none" stroke-width="3.5" stroke-dashoffset="1" />
+          <line data-el="segStop" x1="174" y1="156" x2="230" y2="156" stroke="#e6a534" stroke-width="8" stroke-linecap="round" style="opacity:0" />
+          <line data-el="dashv" class="cl-dash" x1="118" y1="246" x2="118" y2="201" style="opacity:0" />
+          <line data-el="dashh" class="cl-dash" x1="62" y1="201" x2="118" y2="201" style="opacity:0" />
+          <text class="cl-t cl-num cl-ok" data-el="read15" x="110" y="184" text-anchor="end" style="opacity:0">15 ק״מ</text>
+          <text class="cl-t" data-el="stopLbl" x="202" y="142" text-anchor="middle" direction="rtl" style="opacity:0">עצירה</text>
+          <text class="cl-t cl-num" data-el="spd0" x="140" y="228" text-anchor="middle" style="opacity:0">15 קמ״ש</text>
+          <text class="cl-t cl-num" data-el="spd1" x="202" y="182" text-anchor="middle" style="opacity:0">0</text>
+          <text class="cl-t cl-num" data-el="spd2" x="245" y="228" text-anchor="middle" style="opacity:0">15 קמ״ש חזרה</text>
+          <text class="cl-t cl-ok" data-el="tr0" x="118" y="172" text-anchor="middle" direction="rtl" style="opacity:0">עולה</text>
+          <text class="cl-t" data-el="tr1" x="202" y="136" text-anchor="middle" direction="rtl" fill="#a67c12" style="opacity:0">קבוע</text>
+          <text class="cl-t" data-el="tr2" x="286" y="170" text-anchor="middle" direction="rtl" fill="#a84434" style="opacity:0">יורד</text>
+          <circle data-el="gdot" cx="62" cy="246" r="6" class="cl-pt-b" />
         </svg>
-        <p class="lf-answer cl-ok" data-el="sum" style="opacity:0">המהירויות <bdi dir="ltr" class="ll-math">15</bdi>, <bdi dir="ltr" class="ll-math">0</bdi>, <bdi dir="ltr" class="ll-math">15</bdi></p>
+        <div class="lf-swap">
+          <span class="lf-swap__sizer">בשעה 1 המרחק הוא 15 ק״מ</span>
+          <p class="lf-swap__item cl-ok" data-el="ans1" style="opacity:0">בשעה <bdi dir="ltr" class="ll-math">1</bdi> המרחק הוא <bdi dir="ltr" class="ll-math">15</bdi> ק״מ</p>
+          <p class="lf-swap__item cl-ok" data-el="ans2" style="opacity:0">עצר בין השעה <bdi dir="ltr" class="ll-math">2</bdi> לשעה <bdi dir="ltr" class="ll-math">3</bdi></p>
+          <p class="lf-swap__item cl-ok" data-el="ans3" style="opacity:0"><bdi dir="ltr" class="ll-math">15</bdi> קמ״ש, אחר כך <bdi dir="ltr" class="ll-math">0</bdi>, ובחזרה <bdi dir="ltr" class="ll-math">15</bdi></p>
+          <p class="lf-swap__item cl-ok" data-el="ans4" style="opacity:0">עולה, קבוע, יורד</p>
+        </div>
       </>
     )}
 

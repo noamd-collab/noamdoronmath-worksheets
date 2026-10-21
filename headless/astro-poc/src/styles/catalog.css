@@ -3302,6 +3302,9 @@ html.noam-a11y-motion .hero-draw {
   font-weight: 600;
   fill: var(--navy);
 }
+.concept-loop[data-lesson='read-graph'] .cl-t {
+  font-size: 16px;
+}
 .concept-loop .cl-num,
 .cl-num {
   direction: ltr;
