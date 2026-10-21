@@ -1,6 +1,6 @@
 # Wix media IDs — 2026-10-15
 
-2026-10-21 rerun: no upload. `WIX_MEDIA_API_KEY` is not in this agent. `CLOUD_AGENT_ALL_SECRET_NAMES` and `CLOUD_AGENT_INJECTED_SECRET_NAMES` are only `WIX_FORMS_API_KEY`. No publish, no wix release, no merge. G8-T26 and G9-T32 were not touched. Kimi Code: these IDs are not ready from this rerun.
+2026-10-21 19:11 IDT recheck: still no upload. The user named `WIX_MEDIA_API_KEY`, but this running agent does not have it. `CLOUD_AGENT_ALL_SECRET_NAMES` and `CLOUD_AGENT_INJECTED_SECRET_NAMES` are only `WIX_FORMS_API_KEY`. No publish, no wix release, no merge. G8-T26 and G9-T32 were not touched. Kimi Code: do not open draft PRs from this rerun.
 
 ## Site IDs (checked 2026-10-21, before any upload call)
 

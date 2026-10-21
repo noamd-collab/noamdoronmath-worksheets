@@ -13,6 +13,13 @@
     "wixRelease": false,
     "merge": false
   },
+  "rerun2026-10-21-1911-IDT": {
+    "uploaded": false,
+    "reason": "User said WIX_MEDIA_API_KEY is available. This process still has only WIX_FORMS_API_KEY in CLOUD_AGENT_ALL_SECRET_NAMES and CLOUD_AGENT_INJECTED_SECRET_NAMES. No media call was made.",
+    "publish": false,
+    "wixRelease": false,
+    "merge": false
+  },
   "rerun2026-10-21": {
     "uploaded": false,
     "reason": "WIX_MEDIA_API_KEY is not injected. CLOUD_AGENT_ALL_SECRET_NAMES and CLOUD_AGENT_INJECTED_SECRET_NAMES are only WIX_FORMS_API_KEY.",
@@ -42,7 +49,7 @@
       "WIX_FORMS_API_KEY"
     ],
     "wixMediaApiKeyPresent": false,
-    "checkedAt": "2026-10-21T15:53:00Z"
+    "checkedAt": "2026-10-21T16:11:00Z"
   },
   "conversation": "Wix media student files",
   "agent": "Cursor",
