@@ -716,20 +716,14 @@
     for (var i = 0; i < cards.length; i++) {
       var rect = cards[i].getBoundingClientRect();
       if (rect.width < 1 || rect.height < 1 || rect.bottom <= headerBottom || rect.top >= window.innerHeight) continue;
-      var thumb = cards[i].querySelector(".q-thumb");
-      var thumbBox = thumb ? thumb.getBoundingClientRect() : null;
-      var top = rect.top;
-      var bottom = rect.bottom;
-      if (thumbBox && thumbBox.height > 1) {
-        top = Math.min(top, thumbBox.top);
-        bottom = Math.max(bottom, thumbBox.bottom);
-      }
-      var height = bottom - top;
+      var answer = cardExtent(cards[i]);
+      var top = answer.top;
+      var bottom = answer.bottom;
+      var height = answer.height;
       var overlap = Math.min(bottom, mine.bottom) - Math.max(top, mine.top);
       if (overlap < 8) continue;
       var startsAbove = top < mine.top;
       var justInside = top < mine.top + 40 && overlap > height * 0.5;
-      rect = { top: top, bottom: bottom, left: rect.left, right: rect.right, width: rect.width, height: height };
       if (!startsAbove && !justInside) continue;
       if (!hit || overlap > hitOverlap) {
         hit = cards[i];
@@ -750,8 +744,11 @@
     var thumb = node.querySelector(".q-thumb");
     var thumbBox = thumb ? thumb.getBoundingClientRect() : null;
     if (thumbBox && thumbBox.height > 1) return { top: thumbBox.top, bottom: thumbBox.bottom, height: thumbBox.height };
+    var desc = node.querySelector(".q-desc");
+    var descBox = desc ? desc.getBoundingClientRect() : null;
+    if (descBox && descBox.height > 1) return { top: descBox.top, bottom: descBox.bottom, height: descBox.height };
     var rect = node.getBoundingClientRect();
-    return { top: rect.top, bottom: rect.bottom, height: rect.height };
+    return { top: rect.top, bottom: rect.bottom, height: Math.max(1, rect.height) };
   }
 
   function clearPhoneCards() {
@@ -787,7 +784,7 @@
         var top = Math.round(rect.bottom + 8);
         var bottomOffset = parseFloat(panel.style.bottom) || 8;
         var height = Math.round(window.innerHeight - bottomOffset - top);
-        if (height >= 56 && height < mine.height) {
+        if (height >= 48 && height < mine.height) {
           panel.style.height = height + "px";
           panel.dataset.height = String(height);
           mine = panel.getBoundingClientRect();

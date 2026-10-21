@@ -95,6 +95,22 @@ export function isHeadlessPreviewHost(hostname) {
   return PREVIEW_HOST.test(String(hostname || "").trim().toLowerCase());
 }
 
+/**
+ * The public host for a preview probe.
+ * request.url on the Wix runtime can be an internal host, so a preview
+ * x-forwarded-host or Host is used when the URL itself is neither the
+ * preview nor the production site. A production URL is never replaced.
+ */
+export function publicRequestHost(requestUrl, forwardedHost, hostHeader) {
+  const urlHost = requestHostName(requestUrl);
+  const forwarded = requestHostName(String(forwardedHost || "").split(",")[0]);
+  const host = requestHostName(String(hostHeader || "").split(",")[0]);
+  if (isHeadlessPreviewHost(urlHost) || isProductionRecaptchaHost(urlHost)) return urlHost;
+  if (isHeadlessPreviewHost(forwarded) || isProductionRecaptchaHost(forwarded)) return forwarded;
+  if (isHeadlessPreviewHost(host) || isProductionRecaptchaHost(host)) return host;
+  return urlHost || forwarded || host;
+}
+
 export function isAllowedRecaptchaHostname(hostname) {
   return isProductionRecaptchaHost(hostname) || isHeadlessPreviewHost(hostname);
 }

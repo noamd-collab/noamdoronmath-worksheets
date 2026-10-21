@@ -5,11 +5,12 @@ import { handleCompanionTurn } from '../../../noam-ai/site-companion/companion.j
 import {
   acceptDevBypass,
   memoryRateBackend,
+  publicRequestHost,
   recaptchaBypassFromEnv,
 } from '../../../noam-ai/site-companion/bot-guard.js';
 import { handleNoamSiteCompanion } from '../../../noam-ai/site-companion/endpoint.js';
 import { advanceExerciseIntake } from '../../../noam-ai/site-companion/exercise-intake.js';
-import { countRateBackend, rateBucketId } from '../../../noam-ai/site-companion/rate-bucket.js';
+import { countRateBackend, nextRateWrite, rateBucketId, readRateCount } from '../../../noam-ai/site-companion/rate-bucket.js';
 import { TEACHERS_TEXT, resolveDeterministicTurn } from '../../../noam-ai/site-companion/guide-flow.js';
 import { wizardPrefillFromSearch } from '../public/teachers/wizard-prefill.js';
 
@@ -217,7 +218,9 @@ describe('Noam AI production spec', () => {
     assert.ok(client.includes('html.noam-companion-open .grecaptcha-badge{visibility:hidden!important}'));
     assert.ok(client.includes('מוגן באמצעות reCAPTCHA'));
     assert.match(route, /recaptchaBypassFromEnv\(process\.env, requestHost\)/);
-    assert.match(route, /new URL\(request\.url\)\.hostname/);
+    assert.match(route, /publicRequestHost\(\s*request\.url/);
+    assert.match(route, /x-forwarded-host/);
+    assert.equal(/new URL\(request\.url\)\.hostname/.test(route), false);
     assert.equal(/recaptchaBypassFromEnv\(process\.env,\s*context\.request\.headers/.test(route), false);
 
     const enabled = recaptchaBypassFromEnv({
@@ -475,6 +478,8 @@ describe('Noam AI production spec', () => {
     assert.ok(client.includes('#teacher-note'));
     assert.ok(client.includes('#questions .q-card'));
     assert.ok(client.includes('if (mode === "compact") placeOffWizard();'));
+    assert.ok(client.includes('.q-thumb'));
+    assert.ok(client.includes('height >= 48'));
     assert.ok(client.includes('chipsCleared'));
     assert.ok(client.includes('plain: true'));
     const teachersHtml = readFileSync(new URL('../public/teachers/index.html', import.meta.url), 'utf8');
@@ -716,5 +721,17 @@ describe('Noam AI production spec', () => {
     assert.equal(blocked.status, 429);
     assert.equal((blocked.body as { backend?: string }).backend, 'memory');
     assert.match(String((blocked.body as { wixError?: string }).wixError), /permission denied/);
+  });
+
+  it('reads a wrapped Wix count and keeps a production URL off the preview probe', () => {
+    const wrapped = readRateCount({ dataItem: { data: { count: 12, windowStart: 1_000 } } });
+    assert.equal(wrapped.count, 12);
+    assert.equal(nextRateWrite({ dataItem: { data: { count: 12, windowStart: 1_000 } } }, 1_500, 12, 60_000), null);
+    const preview = 'pbv9bz-noam-math-astro-poc-amiramnoam-130a.wix-site-host.com';
+    assert.equal(publicRequestHost('https://internal.local/api/noamSiteCompanion', preview, 'internal.local'), preview);
+    assert.equal(
+      publicRequestHost('https://www.noamdoronmath.co.il/api/noamSiteCompanion', preview, preview),
+      'www.noamdoronmath.co.il',
+    );
   });
 });

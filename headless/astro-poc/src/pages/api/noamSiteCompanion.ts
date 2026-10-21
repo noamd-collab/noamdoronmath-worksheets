@@ -15,7 +15,7 @@ import {
   handleNoamSiteCompanion,
   visitorIpFrom,
 } from '../../../../../noam-ai/site-companion/endpoint.js';
-import { recaptchaBypassFromEnv } from '../../../../../noam-ai/site-companion/bot-guard.js';
+import { publicRequestHost, recaptchaBypassFromEnv } from '../../../../../noam-ai/site-companion/bot-guard.js';
 import { secretFromEnv } from '../../lib/noamSecrets';
 import { createWixRateBackend } from '../../lib/noamRateStore';
 
@@ -40,11 +40,11 @@ function send(result: { status: number; headers: Record<string, string>; body: u
 }
 
 function requestHostOf(request: Request): string {
-  try {
-    return new URL(request.url).hostname;
-  } catch {
-    return '';
-  }
+  return publicRequestHost(
+    request.url,
+    request.headers.get('x-forwarded-host') || '',
+    request.headers.get('host') || '',
+  );
 }
 
 async function respond(context: Parameters<APIRoute>[0]): Promise<Response> {

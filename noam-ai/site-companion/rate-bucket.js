@@ -12,7 +12,8 @@ export function rateBucketId(key) {
 
 export function readRateCount(row) {
   if (!row || typeof row !== "object") return { count: 0, windowStart: 0 };
-  const data = row.data && typeof row.data === "object" ? row.data : row;
+  const nested = row.dataItem && typeof row.dataItem === "object" ? row.dataItem : row;
+  const data = nested.data && typeof nested.data === "object" ? nested.data : nested;
   const count = Number(data.count);
   const windowStart = Number(data.windowStart);
   return {
