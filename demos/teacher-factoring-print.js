@@ -5366,27 +5366,8 @@ function paintWorksheetPage(canvas, page, index, count, title, note) {
       const sh = item.baked ? item.bitmap.height : item.sh;
       const destW = item.dw || OUT_W;
       const destX = item.dx || 0;
-      const W = Math.round(destW * scale);
-      const H = Math.round(item.dh * scale);
-      const near = (a, b) => Math.abs(a - b) <= Math.max(2, b * 0.005);
-      if (near(W, sw) && near(H, sh) && W <= item.bitmap.width && H <= item.bitmap.height) {
-        // Within half a percent of natural size, smoothing a fractional source
-        // onto a fractional destination only smears one-pixel rules into gray.
-        // Copy whole source pixels instead, at the size the row reserved.
-        const x0 = Math.min(item.bitmap.width - W, Math.max(0, Math.round(sx + (sw - W) / 2)));
-        const y0 = Math.min(item.bitmap.height - H, Math.max(0, Math.round(sy + (sh - H) / 2)));
-        const dx = Math.round(destX * scale);
-        const dy = Math.round(y * scale);
-        ctx.save();
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(item.bitmap, x0, y0, W, H, dx, dy, W, H);
-        ctx.restore();
-        printTraceElement(item.slice, index, dx, dy, W, H, W, H);
-      } else {
-        ctx.drawImage(item.bitmap, sx, sy, sw, sh, destX, y, destW, item.dh);
-        printTraceElement(item.slice, index, destX * scale, y * scale, destW * scale, item.dh * scale, sw, sh);
-      }
+      ctx.drawImage(item.bitmap, sx, sy, sw, sh, destX, y, destW, item.dh);
+      printTraceElement(item.slice, index, destX * scale, y * scale, destW * scale, item.dh * scale, sw, sh);
       if (!item.slice.box.segment) fillSliceMasks(ctx, item.slice.box, y, item.dh, destW);
     }
     y += item.dh;
