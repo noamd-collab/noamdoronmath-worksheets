@@ -86,6 +86,8 @@ const SLUG_CONCEPT_OVERRIDE = {
   'fraction-operations-choose-grade-6': 'frac-product',
   'equations-basics-grade-7': 'balance',
   'parallelogram-trapezoid-area-grade-9': 'trap-area',
+  // Parallelogram area: shear parallelogram into rectangle (same base & height, same area).
+  'parallelogram-area-grade-5': 'para-rect',
   'neighbors-numberline-grade-3': 'neighbors',
   'money-grade-3': 'coins-12',
   'difference-of-squares-grade-9': 'diff-sq',
@@ -267,8 +269,6 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   // engine is hash-pinned, so these are new CSS loops.
   'counting-grade-1': 'count-mark',
   'multiplication-multi-digit-grade-4': 'col-mul',
-  // S = b × h with the perpendicular height. The family film is triangle area.
-  'parallelogram-area-grade-5': 'area-para',
   // Pages outside that review whose family film taught another lesson, with
   // no existing film for their own example.
   'subtraction-to-20-grade-1': 'sub-via-10',

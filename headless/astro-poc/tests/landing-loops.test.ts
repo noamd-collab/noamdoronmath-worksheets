@@ -121,7 +121,7 @@ describe('landing loop coverage', () => {
       'distributive-area-model-grade-4': 'concept:distributive-area-model-grade-4',
       'multiplication-multi-digit-grade-4': 'css:col-mul',
       'grade-4-summary': 'concept:grade-4-summary',
-      'parallelogram-area-grade-5': 'css:area-para',
+      'parallelogram-area-grade-5': 'concept:para-rect',
       'fraction-division-meaning-grade-6': 'concept:fraction-division-meaning-grade-6',
       'measurement-geometry-synthesis-grade-6': 'concept:measurement-geometry-synthesis-grade-6',
     };
@@ -340,7 +340,7 @@ describe('landing loop coverage', () => {
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
     // Some corrected CSS lessons move to dedicated concept films as they become available.
-    assert.ok(cssPages >= 121, `expected coverage of the existing CSS lessons, got ${cssPages}`);
+    assert.ok(cssPages >= 120, `expected coverage of the existing CSS lessons, got ${cssPages}`);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);

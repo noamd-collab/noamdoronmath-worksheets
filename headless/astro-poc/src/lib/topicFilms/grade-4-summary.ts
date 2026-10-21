@@ -49,7 +49,7 @@ export const FILM = {
     <text class="cl-t cl-num" data-el="est" x="280" y="355" text-anchor="middle" style="font-size:32px;opacity:0">≈ 4,500</text>
     <text class="cl-t cl-num" data-el="chk" x="280" y="395" text-anchor="middle" style="font-size:30px;opacity:0">4,522 ≈ 4,500 ✓</text>
   `,
-  formulaHTML: `<p class="concept-loop__formula cl-num" dir="ltr"><span data-fx="0">≈ 2,800 + 1,700</span><span data-fx="1">= 4,500</span><span data-fx="2">2,847 + 1,675</span><span data-fx="3">= 4,522</span><span data-fx="4" class="cl-check" aria-hidden="true">✓</span></p>`,
+  formulaHTML: `<p class="concept-loop__formula cl-num" dir="ltr"><span data-fx="0">≈ 2,800 + 1,700</span><span data-fx="1">= 4,500</span><br><span data-fx="2">2,847 + 1,675</span><span data-fx="3">= 4,522</span><span data-fx="4" class="cl-check" aria-hidden="true">✓</span></p>`,
   render(root, t) {
     const { ph, op, q, qa } = LoopHelpers;
     const fade = 1 - ph(t, 13.5, 14.8);
