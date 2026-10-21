@@ -60,4 +60,4 @@ The 15.10 rows below are the earlier remote sha256 check. This rerun did not upl
 | G9-T17 | r2 | `d8e7ad_b38c199bb4bf4c828a23c4c3f25ac3da.pdf` | yes `c3af8e51572474639141c99affc4f173f32b1a0f7f46fb5b3623ab848d90bb15` | `d8e7ad_b38c199bb4bf4c828a23c4c3f25ac3da.pdf` | https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_b38c199bb4bf4c828a23c4c3f25ac3da.pdf |
 | G9-T17 | r3 | `d8e7ad_11c7f97008dc4d8c95c46dfc04f47eeb.pdf` | yes `5422705880099d510ecba50c4fc1dae93f21fc6f55416a9f01bee4a85e97f3e8` | `d8e7ad_11c7f97008dc4d8c95c46dfc04f47eeb.pdf` | https://36dd9544-acf9-4e85-a01a-798f3c1efbb9.usrfiles.com/ugd/d8e7ad_11c7f97008dc4d8c95c46dfc04f47eeb.pdf |
 
-Kimi Code: the 2026-10-21 rerun did not upload. `WIX_MEDIA_API_KEY` is not in this agent. Do not open draft PRs from this rerun. G8-T26 and G9-T32 stay untouched.
+Kimi Code: the 2026-10-21 19:11 IDT recheck did not upload. `WIX_MEDIA_API_KEY` is still not in this agent. Do not open draft PRs from this rerun. G8-T26 and G9-T32 stay untouched.
