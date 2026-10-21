@@ -18,6 +18,7 @@ import {
   handleCompanionTurn,
   isRoleQuestion,
   isWorksheetSolveRequest,
+  qwenChatUrlFrom,
   qwenRequestBody,
 } from '../../../noam-ai/site-companion/companion.js';
 import {
@@ -124,7 +125,10 @@ describe('Noam AI site manual', () => {
       assert.ok(guideIds.includes(id), id);
     }
     assert.equal(guideIds.includes('6a37fe7160324a17ad107b3dbe43c1db'), false);
-    assert.equal(guide.counts.topic, 95);
+    assert.equal(guide.counts.topic, 265);
+    const counting = guide.records.find((row) => row.id === 'topic-counting-grade-1');
+    assert.equal(counting && counting.href, '/counting-grade-1');
+    assert.equal(counting && counting.topic, 'מונים בלי לפספס');
     const kite = guide.records.find((row) => row.id === 'topic-kite-grade-9');
     assert.equal(kite && kite.href, '/kite-grade-9');
     assert.equal(kite && kite.topic, 'דלתון');
@@ -150,7 +154,7 @@ describe('Noam AI site manual', () => {
     assert.match(sheet.contains, new RegExp(manifest.pageCount + ' עמודים'));
     const topic = guide.records.find((row) => row.href === '/factoring-grade-9');
     assert.match(topic.contains, /בדקו את עצמכם/);
-    assert.match(topic.how, /רמה א׳ מתאימה לביסוס/);
+    assert.match(topic.how, /רמה א׳ היא רמת התרגול הרגילה וברירת המחדל/);
     assert.equal(topic.contains.includes('(x−3)(x+3)'), false);
     const teachers = guide.records.find((row) => row.href === '/teachers');
     assert.match(teachers.how, /כיתה, נושא ומטרת השיעור/);
@@ -168,7 +172,7 @@ describe('Noam AI site manual', () => {
     assert.equal(result.status, 0, (result.stderr || '') + (result.stdout || ''));
   });
 
-  it('retrieves a real factoring page and does not call the model when nothing matches', async () => {
+  it('retrieves a real factoring page and lets the model clarify unfamiliar wording', async () => {
     const pdfId = factoringLevelA().pdfId;
     const rows = retrieveGuide(guide, 'כיתה ט׳ פירוק לגורמים', 6);
     assert.ok(rows.length > 0);
@@ -177,10 +181,10 @@ describe('Noam AI site manual', () => {
     let called = 0;
     const result = await handleCompanionTurn(
       { message: 'xxxxqqqq yyyywwww', page: { kind: 'home', path: '/', title: 'בית' } },
-      { guide, catalog, apiKey: 'test', fetch: async () => { called += 1; throw new Error('should not call'); } }
+      { guide, catalog, apiKey: 'test', fetch: async () => { called += 1; return {ok:true, json: async () => ({choices:[{message:{content:JSON.stringify({answer:'באיזו כיתה ובאיזה נושא לחפש?'})}}]})}; } }
     );
-    assert.equal(called, 0);
-    assert.equal(result.source, 'catalog-gap');
+    assert.equal(called, 1);
+    assert.equal(result.source, 'model');
     assert.equal(result.links.length, 0);
     assert.match(result.text, /באיזו כיתה/);
   });
@@ -196,7 +200,7 @@ describe('Noam AI model role', () => {
     assert.equal(body.model, QWEN_MODEL);
     assert.equal(body.enable_thinking, false);
     assert.equal(body.stream, false);
-    assert.equal(body.messages[0].content, SYSTEM_PROMPT);
+    assert.ok(body.messages[0].content.startsWith(SYSTEM_PROMPT));
     assert.match(SYSTEM_PROMPT, /אתה לא רמזי/);
     assert.match(SYSTEM_PROMPT, /אסור לך לתת רמז/);
     const huge = 'א'.repeat(5000);
@@ -259,10 +263,10 @@ describe('Noam AI model role', () => {
     assert.equal(result.source, 'model');
     assert.equal(result.model, 'qwen3.8-flash');
     assert.equal(result.primary.href, allowed.href);
-    assert.equal(result.chips.length, 1);
-    assert.equal(result.chips[0].id, records[3].id);
+    assert.equal(result.chips.length, 2);
+    assert.equal(result.chips[0].id, records[1].id);
     assert.equal(result.chips.some((chip) => chip.label === result.primary.label), false);
-    assert.equal(result.links.length, 2);
+    assert.equal(result.links.length, 3);
     assert.equal(result.essential.length, 0);
     assert.match(result.essentialNote, /לא ממציא שאלות/);
     assert.match(result.details, /לסמן את השאלות שנבחרו/);
@@ -333,6 +337,139 @@ describe('Noam AI model role', () => {
     assert.equal(result.chips.length, 0);
     assert.equal(result.links.length, 0);
   });
+
+  it('grounds a mocked provider answer on the requested level B sheet', async () => {
+    let called = 0;
+    const result = await handleCompanionTurn(
+      { message: 'אני מחפש דפים לכיתה ט׳ על פירוק לגורמים, רמה ב׳', page: { kind: 'home', path: '/', title: 'בית' } },
+      {
+        guide,
+        apiKey: 'server-side',
+        fetch: async (_url, init) => {
+          called += 1;
+          const sent = JSON.parse(String(init.body));
+          assert.equal(sent.model, 'qwen3.8-flash');
+          assert.match(sent.messages[1].content, /g9-t2-b/);
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              choices: [{
+                message: {
+                  content: JSON.stringify({
+                    answer: 'הנה דף פירוק לגורמים ברמה ב׳',
+                    primaryRecordId: 'g9-t2-b',
+                    chipRecordIds: ['topic-factoring-grade-9'],
+                  }),
+                },
+              }],
+            }),
+          };
+        },
+      }
+    );
+    assert.equal(called, 1);
+    assert.equal(result.source, 'model');
+    assert.equal(result.model, 'qwen3.8-flash');
+    assert.match(result.primary.label, /רמה ב׳/);
+    assert.match(result.primary.href, /lv=b/);
+    assert.equal(result.primary.href.includes('lv=a'), false);
+    assert.equal(result.chips.some((chip) => chip.href === '/factoring-grade-9'), true);
+  });
+
+  it('sends a configured Model Studio base URL and model name', async () => {
+    let seen = '';
+    const result = await handleCompanionTurn(
+      { message: 'אני מחפש דפים לכיתה ט׳ על פירוק לגורמים, רמה ב׳', page: { kind: 'home', path: '/', title: 'בית' } },
+      {
+        guide,
+        apiKey: 'server-side',
+        baseUrl: 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
+        model: 'qwen-plus',
+        fetch: async (url, init) => {
+          seen = String(url);
+          assert.equal(JSON.parse(String(init.body)).model, 'qwen-plus');
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              choices: [{ message: { content: JSON.stringify({ answer: 'הנה רמה ב׳', primaryRecordId: 'g9-t2-b' }) } }],
+            }),
+          };
+        },
+      }
+    );
+    assert.equal(seen, 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions');
+    assert.equal(result.source, 'model');
+    assert.equal(result.model, 'qwen-plus');
+    assert.match(result.primary.href, /lv=b/);
+  });
+
+  it('rejects an unknown base URL without a request or logging the rejected value', async () => {
+    const logs = [];
+    const leaked = 'sk-rejected-value-should-not-appear';
+    let seen = '';
+    await handleCompanionTurn(
+      { message: 'אני מחפש דפים לכיתה ט׳ על פירוק לגורמים, רמה ב׳', page: { kind: 'home', path: '/', title: 'בית' } },
+      {
+        guide,
+        apiKey: 'server-side',
+        baseUrl: 'https://evil.example/' + leaked,
+        model: 'not a model',
+        log: (entry) => logs.push(entry),
+        fetch: async (url) => {
+          seen = String(url);
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              choices: [{ message: { content: JSON.stringify({ answer: 'הנה', primaryRecordId: 'g9-t2-b' }) } }],
+            }),
+          };
+        },
+      }
+    );
+    assert.equal(seen, '');
+    assert.equal(logs.some((entry) => entry.code === 'QWEN_CONFIG_REJECTED'), true);
+    assert.equal(JSON.stringify(logs).includes(leaked), false);
+    assert.equal(JSON.stringify(logs).includes('evil.example'), false);
+    assert.equal(qwenChatUrlFrom('https://dashscope.aliyuncs.com/compatible-mode/v1'), 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions');
+    assert.equal(qwenChatUrlFrom('https://user:secret@dashscope-intl.aliyuncs.com/compatible-mode/v1'), '');
+  });
+
+  it('on provider 401 or 403 keeps level B and logs a key-free reason', async () => {
+    const secret = 'sk-live-should-not-leak';
+    for (const status of [401, 403]) {
+      const logs = [];
+      const result = await handleCompanionTurn(
+        { message: 'אני מחפש דפים לכיתה ט׳ על פירוק לגורמים, רמה ב׳', page: { kind: 'home', path: '/', title: 'בית' } },
+        {
+          guide,
+          apiKey: secret,
+          log: (entry) => logs.push(entry),
+          fetch: async () => ({
+            ok: false,
+            status,
+            json: async () => ({ error: { code: 'invalid_api_key', message: 'bad ' + secret } }),
+          }),
+        }
+      );
+      assert.equal(result.ok, false);
+      assert.equal(result.source, 'fallback');
+      assert.equal(result.code, 'MODEL_AUTH_FAILED');
+      assert.match(result.answer, /רמה ב׳/);
+      assert.doesNotMatch(result.answer, /רמה א/);
+      assert.match(result.primary.href, /lv=b/);
+      assert.equal(result.primary.href.includes('lv=a'), false);
+      assert.equal(result.links.some((link) => link.href === '/factoring-grade-9'), true);
+      assert.equal(JSON.stringify(result).includes(secret), false);
+      assert.equal(JSON.stringify(logs).includes(secret), false);
+      assert.equal(logs[0].status, status);
+      assert.equal(logs[0].code, 'MODEL_AUTH_FAILED');
+      assert.equal(logs[0].providerCode, 'invalid_api_key');
+      assert.match(logs[0].reason, /rejected the API key/);
+    }
+  });
 });
 
 describe('Noam AI starters and client guard', () => {
@@ -369,6 +506,11 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('#noam-site-companion-answer,#noam-site-companion-details,#noam-site-companion-chips{font-family:" + SITE_FONT + "}"'));
     assert.ok(client.includes('#noam-site-companion,#noam-site-companion *,#noam-site-companion-panel,#noam-site-companion-panel *{font-family:" + SITE_FONT + " !important}"'));
     assert.ok(client.includes('noam-bot-client.js?v=20260921-diagnostics1'));
+    assert.ok(client.includes('function answerKind(result)'));
+    assert.ok(client.includes('data-answer-kind'));
+    assert.ok(client.includes('data-response-error'));
+    assert.ok(client.includes('source === "model" || source === "classifier"'));
+    assert.ok(client.includes('source === "fallback" || source === "local-fallback"'));
     assert.ok(client.includes('setProperty("font-family", SITE_FONT, "important")'));
     assert.ok(client.includes('אחר'));
     assert.ok(client.includes('noam-teacher-option'));
@@ -402,7 +544,7 @@ describe('Noam AI starters and client guard', () => {
     assert.ok(client.includes('closer.textContent = window.innerWidth < 768 ? "סגירה" : "×"'));
     assert.ok(client.includes('revealLessonCard'));
     assert.ok(client.includes('.exact-topic-demo, .concept-loop__card, .ka-film'));
-    assert.ok(client.includes('html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:8px!important'));
+    assert.ok(client.includes('html.noam-ai-engaged #noam-accessibility{top:auto!important;bottom:calc(42dvh + 8px)!important'));
     assert.ok(client.includes('seen["label:" + label]'));
     const a11y = readFileSync(new URL('../public/noam-accessibility.js', import.meta.url), 'utf8');
     assert.match(a11y, /\.exact-topic-demo,\.concept-loop__card,\.ka-film/);
@@ -459,7 +601,7 @@ describe('Noam AI page context and topic order', () => {
     assert.ok(result.answer.indexOf('דלתון') < result.answer.indexOf('המקבילית'));
     assert.ok(result.answer.indexOf('הריבוע') < result.answer.indexOf('הטרפז'));
     assert.match(result.answer, /הנושא הבא הוא המקבילית/);
-    assert.match(result.answer, /הנושא הקודם הוא משולש שווה־שוקיים/);
+    assert.match(result.answer, /הנושא הקודם הוא משולש שווה שוקיים/);
     const titles = result.chips.map((chip) => chip.label);
     assert.deepEqual(titles, [
       'כיתה ט׳ · דלתון',

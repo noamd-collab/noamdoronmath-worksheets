@@ -14,9 +14,9 @@ import {
 } from '../scripts/lib/content-refresh-apply.mjs';
 
 describe('M35 content-refresh recoverable apply', () => {
-  let root: string;
-  let stampDir: string;
-  let lockPath: string;
+  let root;
+  let stampDir;
+  let lockPath;
 
   beforeEach(() => {
     root = fs.mkdtempSync(path.join(os.tmpdir(), 'm35-apply-'));
@@ -31,13 +31,13 @@ describe('M35 content-refresh recoverable apply', () => {
     fs.rmSync(root, { recursive: true, force: true });
   });
 
-  function seedExisting(name: string, content: string) {
+  function seedExisting(name, content) {
     const to = path.join(root, 'live', name);
     fs.writeFileSync(to, content);
     return to;
   }
 
-  function stageProposed(name: string, content: string) {
+  function stageProposed(name, content) {
     const from = path.join(root, 'proposed', name);
     fs.writeFileSync(from, content);
     return from;

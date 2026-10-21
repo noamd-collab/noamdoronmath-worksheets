@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { skipLiveHtmlInCi } from './skip-live-html.ts';
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import {
@@ -148,7 +149,7 @@ describe('M25 blog pilot', () => {
         assert.ok(/blog\/categories/.test(post.postCategory?.href || ''));
       }
       if (baseline.recentPosts) {
-        assert.ok((post.recentPosts?.items?.length ?? 0) >= 3);
+        assert.ok(post.recentPosts?.items?.length >= 3);
         for (const item of post.recentPosts!.items) {
           assert.ok(item.title.length > 5);
           assert.ok(/\/post\//.test(item.href));
@@ -344,7 +345,11 @@ describe('M25 blog pilot', () => {
     assert.equal(archive.cards[0]?.title, 'איך מסבירים היקף ושטח בלי לבלבל בין השניים');
   });
 
-  it('manifest file documents classification + pilot (no bulk 63)', () => {
+  it('manifest file documents classification + pilot (no bulk 63)', {
+    skip: skipLiveHtmlInCi(
+      'reports/m25-blog/pilot-manifest.txt is a gitignored live-capture report.',
+    ),
+  }, () => {
     const m = readFileSync('reports/m25-blog/pilot-manifest.txt', 'utf8');
     assert.ok(m.includes('59'));
     assert.ok(m.includes('Pilot posts (8)'));

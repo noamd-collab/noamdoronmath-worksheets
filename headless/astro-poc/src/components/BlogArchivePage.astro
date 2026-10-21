@@ -1,5 +1,4 @@
 ---
-import { wixFillSize } from '../lib/wixMedia';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogSeoTags from './BlogSeoTags.astro';
 import {
@@ -74,7 +73,7 @@ const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
 
     <section class="blog-archive__list" aria-label="פוסטים" data-blog-archive-list>
       {
-        archive.cards.map((card, cardIndex) => (
+        archive.cards.map((card) => (
           <article class="blog-archive__card" data-blog-archive-card>
             {
               card.imageSrc && (
@@ -88,9 +87,7 @@ const jsonLdScripts = Array.isArray(archive.jsonLd) ? archive.jsonLd : [];
                   <img
                     src={card.imageSrc}
                     alt={card.imageAlt || card.title}
-                    loading={cardIndex === 0 ? 'eager' : 'lazy'}
-                    fetchpriority={cardIndex === 0 ? 'high' : undefined}
-                    {...(wixFillSize(card.imageSrc) || {})}
+                    loading="lazy"
                     data-blog-archive-card-img
                   />
                 </a>

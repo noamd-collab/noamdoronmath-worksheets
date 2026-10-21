@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 152" width="152" height="152">
+<g data-layer="wedges">
+<path id="e0001" d="M 76 76 L 76 4 A 72 72 0 0 1 122.28 20.84 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qj:a"/>
+<path id="e0002" d="M 76 76 L 122.28 20.84 A 72 72 0 0 1 146.91 63.5 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qj:b"/>
+<path id="e0003" d="M 76 76 L 146.91 63.5 A 72 72 0 0 1 138.35 112 Z" fill="#e3e3e3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qj:c"/>
+<path id="e0004" d="M 76 76 L 138.35 112 A 72 72 0 0 1 100.63 143.66 Z" fill="#b3b3b3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qj:d"/>
+<path id="e0005" d="M 76 76 L 100.63 143.66 A 72 72 0 0 1 51.37 143.66 Z" fill="#ececec" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qj:e"/>
+<path id="e0006" d="M 76 76 L 51.37 143.66 A 72 72 0 0 1 13.65 112 Z" fill="#c2c2c2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qj:f"/>
+<path id="e0007" d="M 76 76 L 13.65 112 A 72 72 0 0 1 5.09 63.5 Z" fill="#d9d9d9" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qj:g"/>
+<path id="e0008" d="M 76 76 L 5.09 63.5 A 72 72 0 0 1 29.72 20.84 Z" fill="#a8a8a8" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qj:h"/>
+<path id="e0009" d="M 76 76 L 29.72 20.84 A 72 72 0 0 1 76 4 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qj:i"/>
+</g>
+<g data-layer="lines">
+<circle id="e0010" cx="76" cy="76" r="72" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qj"/>
+</g>
+</svg>

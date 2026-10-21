@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 183.06" width="152" height="183.06">
+<g data-layer="wedges">
+<path id="e0001" d="M 76 107.06 L 76 35.06 A 72 72 0 0 1 140.15 74.37 A 72 72 0 0 1 134.25 149.38 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qa:a"/>
+<path id="e0002" d="M 76 107.06 L 134.25 149.38 A 72 72 0 0 1 76 179.06 A 72 72 0 0 1 17.75 149.38 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qa:b"/>
+<path id="e0003" d="M 76 107.06 L 17.75 149.38 A 72 72 0 0 1 33.68 48.81 Z" fill="#e3e3e3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qa:c"/>
+<path id="e0004" d="M 76 107.06 L 33.68 48.81 A 72 72 0 0 1 76 35.06 Z" fill="#b3b3b3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qa:d"/>
+</g>
+<g data-layer="lines">
+<circle id="e0005" cx="76" cy="107.06" r="72" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qa"/>
+<path id="e0006" d="M 59.98 57.76 L 48.49 28.51" fill="none" stroke="#000000" stroke-width="0.8" stroke-linecap="round" data-pie="leader" data-for="sector:qa:d"/>
+</g>
+<g data-layer="labels">
+<text id="e0007" x="114.49" y="86.52" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qa:a">רויצ</text>
+<text id="e0008" x="114.49" y="97.14" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qa:a">35%</text>
+<text id="e0009" x="76" y="148.13" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qa:b">הקיזומ</text>
+<text id="e0010" x="76" y="161.16" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qa:b">30%</text>
+<text id="e0011" x="33.33" y="99.38" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qa:c">טרופס</text>
+<text id="e0012" x="33.33" y="110" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qa:c">25%</text>
+<text id="e0013" x="46.33" y="13.63" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qa:d">האירק</text>
+<text id="e0014" x="46.33" y="26.66" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qa:d">10%</text>
+</g>
+</svg>

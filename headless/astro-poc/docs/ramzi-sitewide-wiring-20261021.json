@@ -1,0 +1,1057 @@
+{
+  "at": "2026-10-21T00:31:08.646Z",
+  "packages": 144,
+  "levels": 412,
+  "counts": {
+    "exercises": 30972,
+    "selectedTaskMatches": 30972,
+    "sourceRequestMatches": 30972,
+    "nativeFigures": 14697,
+    "validFigureLinks": 14697,
+    "sourceGivensMatchSelectedFigure": 14697,
+    "nativeHintsHaveDrawingAction": 14697,
+    "edgeProbes": 32345,
+    "supportedEdgeProbes": 31443,
+    "figureKinds": {
+      "pie_chart": 265,
+      "coordinate_plane": 4314,
+      "plane_geometry": 7663,
+      "construction": 425,
+      "number_line": 357,
+      "solid_3d": 659,
+      "net_2d": 210,
+      "function_graph": 804
+    },
+    "unsupportedReasons": {
+      "ambiguous-or-unsupported-geometry": 882,
+      "point-role-or-schema": 20
+    }
+  },
+  "perPackage": {
+    "G8-T26": {
+      "levels": 1,
+      "exercises": 48,
+      "nativeFigures": 18,
+      "edgeProbes": 18,
+      "supportedEdgeProbes": 18
+    },
+    "G8-T49": {
+      "levels": 3,
+      "exercises": 244,
+      "nativeFigures": 195,
+      "edgeProbes": 602,
+      "supportedEdgeProbes": 602
+    },
+    "G9-T32": {
+      "levels": 3,
+      "exercises": 311,
+      "nativeFigures": 241,
+      "edgeProbes": 1183,
+      "supportedEdgeProbes": 1183
+    },
+    "G8-T03": {
+      "levels": 3,
+      "exercises": 205,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T05": {
+      "levels": 3,
+      "exercises": 247,
+      "nativeFigures": 210,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T06": {
+      "levels": 3,
+      "exercises": 244,
+      "nativeFigures": 174,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T23": {
+      "levels": 3,
+      "exercises": 241,
+      "nativeFigures": 12,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T35": {
+      "levels": 1,
+      "exercises": 83,
+      "nativeFigures": 51,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T56": {
+      "levels": 1,
+      "exercises": 81,
+      "nativeFigures": 28,
+      "edgeProbes": 44,
+      "supportedEdgeProbes": 44
+    },
+    "G8-T57": {
+      "levels": 1,
+      "exercises": 81,
+      "nativeFigures": 24,
+      "edgeProbes": 88,
+      "supportedEdgeProbes": 88
+    },
+    "G8-T58": {
+      "levels": 1,
+      "exercises": 84,
+      "nativeFigures": 29,
+      "edgeProbes": 44,
+      "supportedEdgeProbes": 44
+    },
+    "G8-T59": {
+      "levels": 1,
+      "exercises": 37,
+      "nativeFigures": 12,
+      "edgeProbes": 21,
+      "supportedEdgeProbes": 21
+    },
+    "G8-T60": {
+      "levels": 1,
+      "exercises": 49,
+      "nativeFigures": 10,
+      "edgeProbes": 25,
+      "supportedEdgeProbes": 25
+    },
+    "G8-T08": {
+      "levels": 3,
+      "exercises": 218,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T40": {
+      "levels": 3,
+      "exercises": 256,
+      "nativeFigures": 218,
+      "edgeProbes": 1064,
+      "supportedEdgeProbes": 1064
+    },
+    "G8-T42": {
+      "levels": 3,
+      "exercises": 256,
+      "nativeFigures": 173,
+      "edgeProbes": 531,
+      "supportedEdgeProbes": 531
+    },
+    "G8-T43": {
+      "levels": 3,
+      "exercises": 266,
+      "nativeFigures": 230,
+      "edgeProbes": 1073,
+      "supportedEdgeProbes": 927
+    },
+    "G8-T44": {
+      "levels": 3,
+      "exercises": 248,
+      "nativeFigures": 211,
+      "edgeProbes": 794,
+      "supportedEdgeProbes": 738
+    },
+    "G8-T45": {
+      "levels": 3,
+      "exercises": 243,
+      "nativeFigures": 215,
+      "edgeProbes": 1286,
+      "supportedEdgeProbes": 1286
+    },
+    "G8-T46": {
+      "levels": 3,
+      "exercises": 243,
+      "nativeFigures": 203,
+      "edgeProbes": 1006,
+      "supportedEdgeProbes": 1006
+    },
+    "G8-T47": {
+      "levels": 3,
+      "exercises": 243,
+      "nativeFigures": 204,
+      "edgeProbes": 1104,
+      "supportedEdgeProbes": 1104
+    },
+    "G8-T48": {
+      "levels": 3,
+      "exercises": 242,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T50": {
+      "levels": 3,
+      "exercises": 243,
+      "nativeFigures": 207,
+      "edgeProbes": 766,
+      "supportedEdgeProbes": 732
+    },
+    "G8-T51": {
+      "levels": 3,
+      "exercises": 246,
+      "nativeFigures": 207,
+      "edgeProbes": 180,
+      "supportedEdgeProbes": 180
+    },
+    "G8-T52": {
+      "levels": 3,
+      "exercises": 249,
+      "nativeFigures": 176,
+      "edgeProbes": 144,
+      "supportedEdgeProbes": 144
+    },
+    "G8-T53": {
+      "levels": 3,
+      "exercises": 250,
+      "nativeFigures": 174,
+      "edgeProbes": 164,
+      "supportedEdgeProbes": 156
+    },
+    "G8-T54": {
+      "levels": 3,
+      "exercises": 246,
+      "nativeFigures": 209,
+      "edgeProbes": 327,
+      "supportedEdgeProbes": 303
+    },
+    "G8-T55": {
+      "levels": 3,
+      "exercises": 241,
+      "nativeFigures": 217,
+      "edgeProbes": 724,
+      "supportedEdgeProbes": 724
+    },
+    "G9-T01": {
+      "levels": 3,
+      "exercises": 238,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T02": {
+      "levels": 3,
+      "exercises": 280,
+      "nativeFigures": 50,
+      "edgeProbes": 280,
+      "supportedEdgeProbes": 240
+    },
+    "G9-T05": {
+      "levels": 3,
+      "exercises": 206,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T07": {
+      "levels": 3,
+      "exercises": 123,
+      "nativeFigures": 108,
+      "edgeProbes": 69,
+      "supportedEdgeProbes": 69
+    },
+    "G9-T08": {
+      "levels": 3,
+      "exercises": 500,
+      "nativeFigures": 414,
+      "edgeProbes": 886,
+      "supportedEdgeProbes": 886
+    },
+    "G8-T01": {
+      "levels": 1,
+      "exercises": 62,
+      "nativeFigures": 13,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T07": {
+      "levels": 3,
+      "exercises": 204,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T09": {
+      "levels": 3,
+      "exercises": 248,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T03": {
+      "levels": 3,
+      "exercises": 225,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T10": {
+      "levels": 3,
+      "exercises": 128,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T11": {
+      "levels": 3,
+      "exercises": 96,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T12": {
+      "levels": 3,
+      "exercises": 225,
+      "nativeFigures": 178,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T13": {
+      "levels": 3,
+      "exercises": 232,
+      "nativeFigures": 114,
+      "edgeProbes": 422,
+      "supportedEdgeProbes": 422
+    },
+    "G9-T18": {
+      "levels": 3,
+      "exercises": 158,
+      "nativeFigures": 132,
+      "edgeProbes": 476,
+      "supportedEdgeProbes": 476
+    },
+    "G9-T20": {
+      "levels": 3,
+      "exercises": 161,
+      "nativeFigures": 128,
+      "edgeProbes": 792,
+      "supportedEdgeProbes": 764
+    },
+    "G7-ASSESS1": {
+      "levels": 3,
+      "exercises": 147,
+      "nativeFigures": 114,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T01": {
+      "levels": 3,
+      "exercises": 343,
+      "nativeFigures": 255,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T02": {
+      "levels": 3,
+      "exercises": 219,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T03": {
+      "levels": 3,
+      "exercises": 225,
+      "nativeFigures": 9,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T04": {
+      "levels": 3,
+      "exercises": 283,
+      "nativeFigures": 9,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T05": {
+      "levels": 3,
+      "exercises": 210,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T06": {
+      "levels": 3,
+      "exercises": 211,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T07": {
+      "levels": 3,
+      "exercises": 205,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T08": {
+      "levels": 3,
+      "exercises": 171,
+      "nativeFigures": 142,
+      "edgeProbes": 55,
+      "supportedEdgeProbes": 55
+    },
+    "G7-T09": {
+      "levels": 3,
+      "exercises": 269,
+      "nativeFigures": 202,
+      "edgeProbes": 155,
+      "supportedEdgeProbes": 155
+    },
+    "G7-T10": {
+      "levels": 3,
+      "exercises": 234,
+      "nativeFigures": 203,
+      "edgeProbes": 460,
+      "supportedEdgeProbes": 460
+    },
+    "G7-T11": {
+      "levels": 3,
+      "exercises": 338,
+      "nativeFigures": 236,
+      "edgeProbes": 96,
+      "supportedEdgeProbes": 96
+    },
+    "G7-T12": {
+      "levels": 3,
+      "exercises": 239,
+      "nativeFigures": 178,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T13": {
+      "levels": 3,
+      "exercises": 239,
+      "nativeFigures": 191,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T14": {
+      "levels": 3,
+      "exercises": 210,
+      "nativeFigures": 158,
+      "edgeProbes": 521,
+      "supportedEdgeProbes": 521
+    },
+    "G7-T15": {
+      "levels": 3,
+      "exercises": 245,
+      "nativeFigures": 194,
+      "edgeProbes": 606,
+      "supportedEdgeProbes": 606
+    },
+    "G7-T16": {
+      "levels": 1,
+      "exercises": 68,
+      "nativeFigures": 60,
+      "edgeProbes": 272,
+      "supportedEdgeProbes": 272
+    },
+    "G7-T17": {
+      "levels": 3,
+      "exercises": 216,
+      "nativeFigures": 184,
+      "edgeProbes": 503,
+      "supportedEdgeProbes": 503
+    },
+    "G7-T18": {
+      "levels": 3,
+      "exercises": 251,
+      "nativeFigures": 171,
+      "edgeProbes": 1074,
+      "supportedEdgeProbes": 1034
+    },
+    "G7-T19": {
+      "levels": 3,
+      "exercises": 204,
+      "nativeFigures": 167,
+      "edgeProbes": 1001,
+      "supportedEdgeProbes": 1001
+    },
+    "G7-T20": {
+      "levels": 3,
+      "exercises": 253,
+      "nativeFigures": 217,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T21": {
+      "levels": 3,
+      "exercises": 265,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T22": {
+      "levels": 3,
+      "exercises": 274,
+      "nativeFigures": 22,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T23": {
+      "levels": 3,
+      "exercises": 280,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T24": {
+      "levels": 3,
+      "exercises": 233,
+      "nativeFigures": 161,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T25": {
+      "levels": 3,
+      "exercises": 238,
+      "nativeFigures": 36,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T26": {
+      "levels": 3,
+      "exercises": 245,
+      "nativeFigures": 149,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T27": {
+      "levels": 3,
+      "exercises": 239,
+      "nativeFigures": 36,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T28": {
+      "levels": 3,
+      "exercises": 240,
+      "nativeFigures": 44,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T29": {
+      "levels": 3,
+      "exercises": 243,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T30": {
+      "levels": 3,
+      "exercises": 274,
+      "nativeFigures": 36,
+      "edgeProbes": 72,
+      "supportedEdgeProbes": 72
+    },
+    "G7-T31": {
+      "levels": 3,
+      "exercises": 257,
+      "nativeFigures": 219,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T32": {
+      "levels": 3,
+      "exercises": 244,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T33": {
+      "levels": 3,
+      "exercises": 270,
+      "nativeFigures": 12,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T34": {
+      "levels": 3,
+      "exercises": 265,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T35": {
+      "levels": 3,
+      "exercises": 259,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T36": {
+      "levels": 3,
+      "exercises": 256,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T37": {
+      "levels": 3,
+      "exercises": 240,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T38": {
+      "levels": 3,
+      "exercises": 262,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T39": {
+      "levels": 3,
+      "exercises": 276,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T40": {
+      "levels": 3,
+      "exercises": 252,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T41": {
+      "levels": 3,
+      "exercises": 240,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G7-T42": {
+      "levels": 3,
+      "exercises": 251,
+      "nativeFigures": 146,
+      "edgeProbes": 1015,
+      "supportedEdgeProbes": 823
+    },
+    "G7-T43": {
+      "levels": 3,
+      "exercises": 245,
+      "nativeFigures": 202,
+      "edgeProbes": 722,
+      "supportedEdgeProbes": 722
+    },
+    "G7-T44": {
+      "levels": 3,
+      "exercises": 203,
+      "nativeFigures": 172,
+      "edgeProbes": 849,
+      "supportedEdgeProbes": 849
+    },
+    "G7-T45": {
+      "levels": 3,
+      "exercises": 239,
+      "nativeFigures": 200,
+      "edgeProbes": 848,
+      "supportedEdgeProbes": 848
+    },
+    "G7-T46": {
+      "levels": 3,
+      "exercises": 252,
+      "nativeFigures": 212,
+      "edgeProbes": 1416,
+      "supportedEdgeProbes": 1416
+    },
+    "G7-T47": {
+      "levels": 3,
+      "exercises": 240,
+      "nativeFigures": 200,
+      "edgeProbes": 96,
+      "supportedEdgeProbes": 96
+    },
+    "G7-T48": {
+      "levels": 3,
+      "exercises": 245,
+      "nativeFigures": 144,
+      "edgeProbes": 108,
+      "supportedEdgeProbes": 108
+    },
+    "G7-T49": {
+      "levels": 3,
+      "exercises": 135,
+      "nativeFigures": 90,
+      "edgeProbes": 165,
+      "supportedEdgeProbes": 165
+    },
+    "G8-ASSESS1": {
+      "levels": 3,
+      "exercises": 140,
+      "nativeFigures": 112,
+      "edgeProbes": 243,
+      "supportedEdgeProbes": 237
+    },
+    "G8-CIRCLE": {
+      "levels": 3,
+      "exercises": 148,
+      "nativeFigures": 115,
+      "edgeProbes": 151,
+      "supportedEdgeProbes": 151
+    },
+    "G8-INTERP": {
+      "levels": 3,
+      "exercises": 147,
+      "nativeFigures": 102,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T02": {
+      "levels": 3,
+      "exercises": 201,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T04": {
+      "levels": 3,
+      "exercises": 248,
+      "nativeFigures": 25,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T10": {
+      "levels": 3,
+      "exercises": 245,
+      "nativeFigures": 94,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T11": {
+      "levels": 3,
+      "exercises": 210,
+      "nativeFigures": 127,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T12": {
+      "levels": 3,
+      "exercises": 210,
+      "nativeFigures": 136,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T13": {
+      "levels": 3,
+      "exercises": 227,
+      "nativeFigures": 154,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T14": {
+      "levels": 3,
+      "exercises": 240,
+      "nativeFigures": 184,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T15": {
+      "levels": 3,
+      "exercises": 218,
+      "nativeFigures": 183,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T16": {
+      "levels": 3,
+      "exercises": 249,
+      "nativeFigures": 69,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T17": {
+      "levels": 3,
+      "exercises": 244,
+      "nativeFigures": 208,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T18": {
+      "levels": 3,
+      "exercises": 244,
+      "nativeFigures": 145,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T19": {
+      "levels": 3,
+      "exercises": 244,
+      "nativeFigures": 196,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T20": {
+      "levels": 3,
+      "exercises": 222,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T21": {
+      "levels": 3,
+      "exercises": 225,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T22": {
+      "levels": 3,
+      "exercises": 235,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T24": {
+      "levels": 3,
+      "exercises": 215,
+      "nativeFigures": 8,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T25": {
+      "levels": 3,
+      "exercises": 246,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T27": {
+      "levels": 1,
+      "exercises": 92,
+      "nativeFigures": 37,
+      "edgeProbes": 51,
+      "supportedEdgeProbes": 51
+    },
+    "G8-T28": {
+      "levels": 3,
+      "exercises": 208,
+      "nativeFigures": 22,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T29": {
+      "levels": 3,
+      "exercises": 238,
+      "nativeFigures": 156,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T30": {
+      "levels": 3,
+      "exercises": 242,
+      "nativeFigures": 204,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T31": {
+      "levels": 3,
+      "exercises": 227,
+      "nativeFigures": 6,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T32": {
+      "levels": 3,
+      "exercises": 253,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T33": {
+      "levels": 3,
+      "exercises": 238,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T34": {
+      "levels": 3,
+      "exercises": 241,
+      "nativeFigures": 4,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T36": {
+      "levels": 3,
+      "exercises": 248,
+      "nativeFigures": 97,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T37": {
+      "levels": 3,
+      "exercises": 251,
+      "nativeFigures": 190,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-T38": {
+      "levels": 3,
+      "exercises": 166,
+      "nativeFigures": 149,
+      "edgeProbes": 1008,
+      "supportedEdgeProbes": 918
+    },
+    "G8-T39": {
+      "levels": 3,
+      "exercises": 248,
+      "nativeFigures": 214,
+      "edgeProbes": 1236,
+      "supportedEdgeProbes": 1048
+    },
+    "G8-T41": {
+      "levels": 3,
+      "exercises": 248,
+      "nativeFigures": 179,
+      "edgeProbes": 579,
+      "supportedEdgeProbes": 579
+    },
+    "G8-T62": {
+      "levels": 3,
+      "exercises": 141,
+      "nativeFigures": 118,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G8-TWOSRC": {
+      "levels": 3,
+      "exercises": 140,
+      "nativeFigures": 94,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-3060": {
+      "levels": 3,
+      "exercises": 153,
+      "nativeFigures": 133,
+      "edgeProbes": 471,
+      "supportedEdgeProbes": 459
+    },
+    "G9-KITE": {
+      "levels": 3,
+      "exercises": 192,
+      "nativeFigures": 154,
+      "edgeProbes": 678,
+      "supportedEdgeProbes": 672
+    },
+    "G9-SIDEANG": {
+      "levels": 3,
+      "exercises": 143,
+      "nativeFigures": 119,
+      "edgeProbes": 318,
+      "supportedEdgeProbes": 318
+    },
+    "G9-T04": {
+      "levels": 3,
+      "exercises": 189,
+      "nativeFigures": 0,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T06": {
+      "levels": 3,
+      "exercises": 295,
+      "nativeFigures": 256,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T09": {
+      "levels": 3,
+      "exercises": 166,
+      "nativeFigures": 9,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T15": {
+      "levels": 3,
+      "exercises": 172,
+      "nativeFigures": 151,
+      "edgeProbes": 178,
+      "supportedEdgeProbes": 178
+    },
+    "G9-T17": {
+      "levels": 3,
+      "exercises": 180,
+      "nativeFigures": 158,
+      "edgeProbes": 704,
+      "supportedEdgeProbes": 696
+    },
+    "G9-T19": {
+      "levels": 3,
+      "exercises": 150,
+      "nativeFigures": 129,
+      "edgeProbes": 724,
+      "supportedEdgeProbes": 718
+    },
+    "G9-T31": {
+      "levels": 3,
+      "exercises": 267,
+      "nativeFigures": 20,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T33": {
+      "levels": 3,
+      "exercises": 129,
+      "nativeFigures": 105,
+      "edgeProbes": 351,
+      "supportedEdgeProbes": 333
+    },
+    "G9-T34": {
+      "levels": 3,
+      "exercises": 132,
+      "nativeFigures": 91,
+      "edgeProbes": 20,
+      "supportedEdgeProbes": 20
+    },
+    "G9-T35": {
+      "levels": 3,
+      "exercises": 146,
+      "nativeFigures": 117,
+      "edgeProbes": 462,
+      "supportedEdgeProbes": 462
+    },
+    "G9-T36": {
+      "levels": 3,
+      "exercises": 132,
+      "nativeFigures": 105,
+      "edgeProbes": 0,
+      "supportedEdgeProbes": 0
+    },
+    "G9-T40": {
+      "levels": 3,
+      "exercises": 183,
+      "nativeFigures": 152,
+      "edgeProbes": 580,
+      "supportedEdgeProbes": 580
+    },
+    "G9-TRAP": {
+      "levels": 3,
+      "exercises": 131,
+      "nativeFigures": 114,
+      "edgeProbes": 444,
+      "supportedEdgeProbes": 444
+    }
+  },
+  "scope": "Real client source-selection and native-focus functions with exact released data. Crop calls are stubbed to verify identity; no PDF/content re-audit, model calls, auth requests, or production writes. Synthetic named-edge probes are not AI acceptance.",
+  "limitations": [
+    "Dynamic model plans and answer quality are not proven per section.",
+    "No native figure is not a missing package; arithmetic and other tasks may use other visual routes.",
+    "Unsupported native edge focus can fall through to protected generation; it is not a missing source asset."
+  ],
+  "previousAcceptance": {
+    "revision": "e414ccb61936d810aab972850d41acb12b2bdc13",
+    "dataDiff": "",
+    "reusedUnchangedContent": true
+  },
+  "alternatePartFigures": 79,
+  "functionalChecks": {
+    "alternateSourceFallbacks": 79,
+    "alternateNamedEdgeProbes": 53,
+    "passed": true
+  }
+}

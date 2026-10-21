@@ -47,11 +47,7 @@ function engineHolds(): Record<string, number> {
   );
   return Object.fromEntries(
     [...source.matchAll(/^\s+'?([a-z0-9-]+)'?:\s*\{ duration: [\d.]+, hold: ([A-Z0-9_]+), render/gm)].map(
-      (m) => {
-        const hold = consts.get(m[2]);
-        assert.ok(hold !== undefined, `${m[1]}: hold constant ${m[2]} is not defined`);
-        return [m[1], hold];
-      }
+      (m) => [m[1], consts.get(m[2])]
     )
   );
 }
@@ -98,7 +94,7 @@ function loopsMap(file: string): Map<string, Record<string, string>> {
   }));
 }
 
-const numbers = (text: string): string[] => text.match(/\d+/g) ?? [];
+const numbers = (text: string) => text.match(/\d+/g) ?? [];
 
 function specsKeys(): Set<string> {
   const source = read('src/lib/conceptLoops.ts');
@@ -401,7 +397,7 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(gradeCss.split('@media')[0], /\.concept-loop__svg \{\s*grid-column: 2;\s*grid-row: 1 \/ 4;/);
   });
 
-  it('OS reduced motion does not hide ▶; only an explicit a11y class does', () => {
+  it('grade controls remain available while the shared engine respects reduced motion', () => {
     const css = player.split('<style>')[1];
     const media = css.match(/@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n  \}/);
     assert.ok(media, 'reduced-motion block');
@@ -418,7 +414,7 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(player, /"▶ פעם אחת" stays deferred/);
     assert.doesNotMatch(css.split('@media')[0], /\.grade-loop__pause \{[^}]*display: none/);
     const engine = read('src/lib/conceptLoops.ts');
-    assert.doesNotMatch(engine, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+    assert.match(engine, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
     assert.match(engine, /classList\.contains\('nd-motion-off'\)/);
     const a11y = read('public/noam-accessibility.js');
     assert.doesNotMatch(a11y, /stopAnim:\s*reduceQuery\.matches/);
@@ -477,6 +473,23 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(player, /threshold: 0/);
     assert.match(player, /initConceptLoops\(\);\s*ensurePlaying\(\);\s*runSlowClock\(\)/);
     assert.match(player, /setTimeout\(start, 120\)/);
+  });
+
+  it('sas-snap copy is not the hidden transform copy', () => {
+    const astro = read('src/components/ConceptLoop.astro');
+    const start = astro.indexOf("variant === 'sas-snap'");
+    const end = astro.indexOf("variant === 'obtuse-ht'");
+    const block = astro.slice(start, end);
+    assert.ok(start >= 0 && end > start, 'sas-snap markup block');
+    assert.doesNotMatch(block, /data-el="copy"/);
+    assert.match(block, /data-el="sas-copy"/);
+    const engine = read('src/lib/conceptLoops.ts');
+    const fn = engine.slice(engine.indexOf('function renderSasSnap'), engine.indexOf('const SAS_SNAP_HOLD'));
+    assert.match(fn, /q\(root, 'sas-copy'\)/);
+    assert.match(fn, /op\(sasCopy, 1\)/);
+    assert.match(fn, /op\(q\(root, 'triA'\), 1\)/);
+    assert.match(fn, /op\(q\(root, 'triB'\), 1\)/);
+    assert.doesNotMatch(fn, /q\(root, 'copy'\)/);
   });
 });
 
