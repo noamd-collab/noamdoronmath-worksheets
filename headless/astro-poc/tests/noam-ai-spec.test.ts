@@ -479,6 +479,7 @@ describe('Noam AI production spec', () => {
     assert.ok(client.includes('#questions .q-card'));
     assert.ok(client.includes('if (mode === "compact") placeOffWizard();'));
     assert.ok(client.includes('.q-thumb'));
+    assert.ok(client.includes('function phoneAnswerHit('));
     assert.ok(client.includes('height >= 48'));
     assert.ok(client.includes('chipsCleared'));
     assert.ok(client.includes('plain: true'));

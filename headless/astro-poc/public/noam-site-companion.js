@@ -709,35 +709,37 @@
     }
   }
 
+  function rangesOverlap(a0, a1, b0, b1) {
+    return Math.min(a1, b1) - Math.max(a0, b0);
+  }
+
+  function phoneAnswerHit(mine) {
+    var nodes = document.querySelectorAll("#questions .q-thumb, #questions .q-desc");
+    for (var i = 0; i < nodes.length; i++) {
+      var box = nodes[i].getBoundingClientRect();
+      if (box.width < 1 || box.height < 1 || box.bottom <= 0 || box.top >= window.innerHeight) continue;
+      if (rangesOverlap(mine.left, mine.right, box.left, box.right) >= 8 && rangesOverlap(mine.top, mine.bottom, box.top, box.bottom) >= 8) return true;
+    }
+    return false;
+  }
+
   function phoneCardNode(mine, headerBottom) {
     var cards = document.querySelectorAll("#questions .q-card");
     var hit = null;
-    var hitOverlap = 0;
+    var hitBottom = 0;
     for (var i = 0; i < cards.length; i++) {
       var rect = cards[i].getBoundingClientRect();
       if (rect.width < 1 || rect.height < 1 || rect.bottom <= headerBottom || rect.top >= window.innerHeight) continue;
       var answer = cardExtent(cards[i]);
-      var top = answer.top;
-      var bottom = answer.bottom;
-      var height = answer.height;
-      var overlap = Math.min(bottom, mine.bottom) - Math.max(top, mine.top);
+      if (rangesOverlap(mine.left, mine.right, rect.left, rect.right) < 8) continue;
+      var overlap = rangesOverlap(mine.top, mine.bottom, answer.top, answer.bottom);
       if (overlap < 8) continue;
-      var startsAbove = top < mine.top;
-      var justInside = top < mine.top + 40 && overlap > height * 0.5;
-      if (!startsAbove && !justInside) continue;
-      if (!hit || overlap > hitOverlap) {
+      if (!hit || answer.bottom > hitBottom) {
         hit = cards[i];
-        hitOverlap = overlap;
+        hitBottom = answer.bottom;
       }
     }
     return hit;
-  }
-
-  function collapseToIcon() {
-    saveThread(true, false);
-    mode = "closed";
-    panel.dataset.mode = "closed";
-    paintChrome(true);
   }
 
   function cardExtent(node) {
@@ -751,54 +753,68 @@
     return { top: rect.top, bottom: rect.bottom, height: Math.max(1, rect.height) };
   }
 
+  function restoreCompactHeight() {
+    var size = panelSize(window.innerWidth, window.innerHeight);
+    var bottomOffset = parseFloat(panel.style.bottom) || 8;
+    var avail = window.innerHeight - bottomOffset - 8;
+    var height = Math.min(size.height, Math.max(72, avail));
+    if (size.width * height > size.maxArea) height = Math.floor(size.maxArea / size.width);
+    height = Math.max(48, Math.round(height));
+    panel.style.height = height + "px";
+    panel.dataset.height = String(height);
+  }
+
+  function liftOffAnswer(headerBottom) {
+    var mine = panel.getBoundingClientRect();
+    var card = phoneCardNode(mine, headerBottom);
+    if (!card) return;
+    var rect = cardExtent(card);
+    var bottomOffset = parseFloat(panel.style.bottom) || 8;
+    var top = Math.round(rect.bottom + 8);
+    var height = Math.round(window.innerHeight - bottomOffset - top);
+    if (height >= 48 && height < mine.height) {
+      panel.style.height = height + "px";
+      panel.dataset.height = String(height);
+      mine = panel.getBoundingClientRect();
+      rect = cardExtent(card);
+    }
+    if (rangesOverlap(mine.top, mine.bottom, rect.top, rect.bottom) < 8) return;
+    var title = card.querySelector(".q-title");
+    var anchorTop = title ? title.getBoundingClientRect().top : rect.top;
+    var room = Math.max(0, Math.floor(anchorTop - headerBottom));
+    var scroller = document.scrollingElement || document.documentElement;
+    var maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop);
+    var need = Math.round(rect.bottom - mine.top + 8);
+    var scrollBy = Math.min(need, room, maxScroll);
+    if (scrollBy > 1) scroller.scrollTop += scrollBy;
+  }
+
   function clearPhoneCards() {
     if (clearingPhone || placingWizard || mode !== "compact" || window.innerWidth >= 768 || Date.now() < phoneQuietUntil) return;
     var mine = panel.getBoundingClientRect();
     if (mine.width < 1) return;
     var header = document.querySelector(".topbar");
     var headerBottom = header ? header.getBoundingClientRect().bottom : 0;
-    var card = phoneCardNode(mine, headerBottom);
-    if (!card) return;
     phoneQuietUntil = Date.now() + 180;
     clearingPhone = true;
     try {
-      for (var pass = 0; pass < 2 && card; pass++) {
-        var rect = cardExtent(card);
-        var need = Math.round(rect.bottom - mine.top + 8);
-        var first = document.querySelector("#questions input:checked");
-        var firstCard = first ? first.closest(".q-card") : null;
-        var title = firstCard ? firstCard.querySelector(".q-title") : null;
-        var anchorTop = title ? title.getBoundingClientRect().top : (firstCard ? firstCard.getBoundingClientRect().top : headerBottom + need);
-        var scroller = document.scrollingElement || document.documentElement;
-        var room = Math.max(0, Math.floor(anchorTop - headerBottom));
-        var maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop);
-        var scrollBy = Math.min(need, room, maxScroll);
-        if (scrollBy > 1) scroller.scrollTop += scrollBy;
+      restoreCompactHeight();
+      var bottom = (parseFloat(panel.style.bottom) || 8) + "px";
+      var corners = [
+        { right: "8px", left: "auto" },
+        { right: "auto", left: "8px" },
+      ];
+      for (var i = 0; i < corners.length; i++) {
+        panel.style.right = corners[i].right;
+        panel.style.left = corners[i].left;
+        panel.style.top = "auto";
+        panel.style.bottom = bottom;
         mine = panel.getBoundingClientRect();
-        rect = cardExtent(card);
-        var overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
-        if (overlap < 8) {
-          card = phoneCardNode(mine, headerBottom);
-          continue;
-        }
-        var top = Math.round(rect.bottom + 8);
-        var bottomOffset = parseFloat(panel.style.bottom) || 8;
-        var height = Math.round(window.innerHeight - bottomOffset - top);
-        if (height >= 48 && height < mine.height) {
-          panel.style.height = height + "px";
-          panel.dataset.height = String(height);
-          mine = panel.getBoundingClientRect();
-          rect = cardExtent(card);
-          overlap = Math.min(rect.bottom, mine.bottom) - Math.max(rect.top, mine.top);
-          if (overlap < 8) {
-            card = phoneCardNode(mine, headerBottom);
-            continue;
-          }
-        }
-        if (pass > 0) return;
-        collapseToIcon();
-        return;
+        if (!phoneAnswerHit(mine)) return;
       }
+      panel.style.right = "8px";
+      panel.style.left = "auto";
+      liftOffAnswer(headerBottom);
     } finally {
       clearingPhone = false;
     }
