@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 152" width="152" height="152">
+<g data-layer="wedges">
+<path id="e0001" d="M 76 76 L 76 4 A 72 72 0 0 1 144.48 53.75 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qp:a"/>
+<path id="e0002" d="M 76 76 L 144.48 53.75 A 72 72 0 0 1 134.25 118.32 A 72 72 0 0 1 76 148 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qp:b"/>
+<path id="e0003" d="M 76 76 L 76 148 A 72 72 0 0 1 4 76 A 72 72 0 0 1 76 4 Z" fill="#e3e3e3" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qp:c"/>
+</g>
+<g data-layer="lines">
+<circle id="e0004" cx="76" cy="76" r="72" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qp"/>
+</g>
+<g data-layer="labels">
+<text id="e0005" x="101.39" y="40.13" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="name" data-for="sector:qp:a">A</text>
+<text id="e0006" x="101.39" y="50.75" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qp:a">20%</text>
+<text id="e0007" x="110.95" y="100.47" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="name" data-for="sector:qp:b">B</text>
+<text id="e0008" x="110.95" y="111.09" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qp:b">30%</text>
+<text id="e0009" x="32.8" y="75.08" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="name" data-for="sector:qp:c">C</text>
+<text id="e0010" x="32.8" y="85.7" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qp:c">50%</text>
+</g>
+</svg>

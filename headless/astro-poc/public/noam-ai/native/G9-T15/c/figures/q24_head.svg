@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 258" width="200" height="258">
+<g data-layer="lines">
+<line id="e0001" data-ray="AD" x1="95.14" y1="90.02" x2="188" y2="90.02" stroke="#000000" stroke-width="1.5"/>
+<line id="e0002" data-seg="AB" x1="95.14" y1="90.02" x2="26" y2="231.77" stroke="#000000" stroke-width="1.5"/>
+<line id="e0003" data-seg="AC" x1="95.14" y1="90.02" x2="164.28" y2="231.77" stroke="#000000" stroke-width="1"/>
+<line id="e0004" data-seg="AE" x1="95.14" y1="90.02" x2="126.25" y2="26.23" stroke="#000000" stroke-width="1.5"/>
+<line id="e0005" data-seg="BC" x1="26" y1="231.77" x2="164.28" y2="231.77" stroke="#000000" stroke-width="1.5"/>
+</g>
+<g data-layer="marks">
+<path id="e0006" data-mark="arc DAE" d="M 110.75 90.02 L 110.72 88.99 L 110.62 87.97 L 110.45 86.96 L 110.22 85.96 L 109.92 84.98 L 109.56 84.02 L 109.13 83.09 L 108.65 82.19 L 108.1 81.32 L 107.5 80.48 L 106.85 79.69 L 106.15 78.95 L 105.4 78.25 L 104.6 77.6 L 103.76 77 L 102.89 76.47 L 101.98 75.99" fill="none" stroke="#000000" stroke-width="1"/>
+<path id="e0007" data-mark="arc CAD" d="M 104.18 108.55 L 105.45 107.87 L 106.67 107.11 L 107.83 106.26 L 108.93 105.34 L 109.97 104.34 L 110.93 103.27 L 111.82 102.14 L 112.62 100.94 L 113.34 99.7 L 113.97 98.4 L 114.51 97.07 L 114.96 95.7 L 115.3 94.31 L 115.55 92.89 L 115.7 91.46 L 115.75 90.02" fill="none" stroke="#000000" stroke-width="1"/>
+</g>
+<g data-layer="points">
+<circle id="e0008" data-pt="A" cx="95.14" cy="90.02" r="2" fill="#000000" stroke="none"/>
+<circle id="e0009" data-pt="B" cx="26" cy="231.77" r="0.75" fill="#000000" stroke="none"/>
+<circle id="e0010" data-pt="C" cx="164.28" cy="231.77" r="2" fill="#000000" stroke="none"/>
+<circle id="e0011" data-pt="D" cx="174" cy="90.02" r="2" fill="#000000" stroke="none"/>
+<circle id="e0012" data-pt="E" cx="126.25" cy="26.23" r="2" fill="#000000" stroke="none"/>
+</g>
+<g data-layer="labels">
+<text id="e0013" data-for="A" x="85.66" y="89.83" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">A</text>
+<text id="e0014" data-for="B" x="17.41" y="241.57" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">B</text>
+<text id="e0015" data-for="C" x="172.96" y="241.63" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">C</text>
+<text id="e0016" data-for="D" x="174" y="85.52" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">D</text>
+<text id="e0017" data-for="E" x="130.71" y="21.51" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000">E</text>
+</g>
+</svg>

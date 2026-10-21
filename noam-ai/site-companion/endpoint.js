@@ -9,6 +9,7 @@ import {
   MISSING_TEXT,
   QUESTION_GAP,
   QWEN_MODEL,
+  resolveQwenTarget,
   RAMZI_TEXT,
   handleCompanionTurn,
   isWorksheetSolveRequest,
@@ -30,6 +31,8 @@ import {
 } from "./teacher-pick.js";
 
 export const QWEN_SECRET_NAME = "QWEN_API_KEY";
+export const QWEN_BASE_URL_NAME = "QWEN_BASE_URL";
+export const QWEN_MODEL_NAME = "QWEN_MODEL";
 export const NOAM_RECAPTCHA_SECRET_NAME = "NOAM_RECAPTCHA_SECRET_KEY";
 /** Public site key already served by the live bot config. Not a secret. */
 export const PUBLIC_RECAPTCHA_SITE_KEY = "6LdPhawtAAAAAIqCGLcShp8J1XO16Z9lVGTYuwgq";
@@ -173,22 +176,35 @@ export async function runCompanionTurn(payload, deps) {
   }
   if (page.kind === "teachers") {
     let classification = null;
+    let classificationFailure = "MODEL_RESPONSE_FAILED";
     try {
       classification = await classifyTeacherRequest(payload, {
         apiKey: settings.qwenKey,
+        baseUrl: settings.qwenBaseUrl,
+        model: settings.qwenModel,
         fetch: settings.fetch,
         timeoutMs: settings.qwenTimeoutMs,
+        log: settings.log,
+        teacherIndex: settings.teacherIndex,
       });
     } catch (error) {
       if (isOutboundTimeout(error)) throw error;
       classification = null;
+      classificationFailure = ["MODEL_AUTH_FAILED", "MODEL_HTTP", "QWEN_CONFIG_REJECTED"].includes(error.code) ? error.code : "MODEL_RESPONSE_FAILED";
     }
     const pick = selectTeacherPicks(settings.teacherIndex, payload, classification);
-    if (!pick.sheets.length) return missingTeacher();
+    if (!pick.sheets.length) {
+      const missing = missingTeacher();
+      return classification ? missing : Object.assign(missing, { source: "fallback", model: null, code: classificationFailure });
+    }
     const body = teacherAnswer(pick, settings.catalog);
+    if (classification) body.model = resolveQwenTarget({model: settings.qwenModel, baseUrl: settings.qwenBaseUrl}).model;
     if (!classification) {
       body.model = null;
-      body.source = "catalog";
+      body.source = "fallback";
+      body.code = classificationFailure;
+      body.answer = "החיבור למודל לא הצליח. הנה בחירה בסיסית מהמאגר: " + body.answer;
+      body.text = body.answer;
     }
     return body;
   }
@@ -196,8 +212,11 @@ export async function runCompanionTurn(payload, deps) {
     catalog: settings.catalog,
     guide: settings.guide,
     apiKey: settings.qwenKey,
+    baseUrl: settings.qwenBaseUrl,
+    model: settings.qwenModel,
     fetch: settings.fetch,
     timeoutMs: settings.qwenTimeoutMs,
+    log: settings.log,
   });
   return withIds(Object.assign({ active: true }, result), [], []);
 }

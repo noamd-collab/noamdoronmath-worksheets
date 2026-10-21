@@ -1,6 +1,10 @@
 ---
 import StackedFraction from './StackedFraction.astro';
 import KiteAreaFilm from './KiteAreaFilm.astro';
+import { FILM as distribFilm } from '../lib/topicFilms/distributive-area-model-grade-4';
+import { FILM as fracDivFilm } from '../lib/topicFilms/fraction-division-meaning-grade-6';
+import { FILM as grade4SummaryFilm } from '../lib/topicFilms/grade-4-summary';
+import { FILM as measureFilm } from '../lib/topicFilms/measurement-geometry-synthesis-grade-6';
 /**
  * KIMI-LOOPS-K3 — Brilliant-style self-playing math film loops.
  *
@@ -92,10 +96,22 @@ export interface Props {
     | 'topic-card'
     | 'mark-250'
     | 'quad-gate'
-    | 'two-diag'
-    | 'kite-construct';
+  | 'two-diag'
+  | 'kite-construct'
+  | 'distributive-area-model-grade-4'
+  | 'fraction-division-meaning-grade-6'
+  | 'grade-4-summary'
+  | 'measurement-geometry-synthesis-grade-6';
 }
 const { variant } = Astro.props;
+
+const authoredFilms = {
+  'distributive-area-model-grade-4': distribFilm,
+  'fraction-division-meaning-grade-6': fracDivFilm,
+  'grade-4-summary': grade4SummaryFilm,
+  'measurement-geometry-synthesis-grade-6': measureFilm,
+};
+const authoredFilm = authoredFilms[variant as keyof typeof authoredFilms];
 
 const ariaLabels: Record<string, string> = {
   triangle:
@@ -185,7 +201,7 @@ const ariaLabels: Record<string, string> = {
   'quad-gate': 'הדגמה: צורה עם 4 צלעות נכנסת לסל המרובעים, ומשולש נשאר בחוץ.',
   'two-diag': 'הדגמה: במרובע נמתחים שני אלכסונים, אחד ואחר כך השני.',
   'kite-construct':
-    'הדגמה: קודם שטח הדלתון. משכפלים את ארבעת המשולשים ומסובבים כל עותק ב־180° סביב אמצע צלע הדלתון, עד שנוצר מלבן שגובהו AC ורוחבו BD. שטח המלבן הוא AC כפול BD, והוא כפול משטח הדלתון, ולכן S = (AC × BD) / 2. אחר כך בונים דלתון בסרגל ומחוגה: ציר, נקודות A ו־B, שני עיגולים, קודקודים C ו־D, דלתון קמור ואחר כך קעור.',
+    'הדגמה: קודם שטח הדלתון. משכפלים את ארבעת המשולשים ומסובבים כל עותק ב־180° סביב אמצע צלע הדלתון, עד שנוצר מלבן שגובהו AC ורוחבו BD. שטח המלבן הוא AC כפול BD, והוא כפול משטח הדלתון, ולכן S = (AC × BD) חלקי 2. אחר כך בונים דלתון בסרגל ומחוגה: ציר, נקודות A ו־B, שני עיגולים, קודקודים C ו־D, דלתון קמור ואחר כך קעור.',
 };
 
 /* fixed top-strip problem text per variant (families layout);
@@ -259,7 +275,7 @@ const topTexts: Record<string, { text: string; ltr?: boolean }> = {
   'two-diag': { text: 'כמה אלכסונים?' },
   'kite-construct': { text: 'למה מחלקים ב־2?' },
 };
-const top = topTexts[variant];
+const top = authoredFilm ? authoredFilm.top : topTexts[variant];
 
 /* ——— Pythagoras tile geometry (viewBox units). The engine reads the
    data-home-* / data-target-* attributes — single source of truth. ——— */
@@ -1200,9 +1216,15 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       variant === 'para-rect' && (
         <svg class="concept-loop__svg" viewBox="0 0 560 340" role="img" aria-label={ariaLabels[variant]}>
           <polygon class="cl-line cl-fill-a" data-el="shape" points="160,240 400,240 472,128 232,128" />
-          <line class="cl-dash" data-el="height" x1="160" y1="240" x2="160" y2="128" />
-          <text class="cl-t cl-num" data-el="lbl-h" x="128" y="190" style="opacity:0">h</text>
-          <text class="cl-t" data-el="lbl-same" x="280" y="196" text-anchor="middle" style="opacity:0">אותו שטח</text>
+          {/* altitude drops from the top-left corner onto the base; the engine hides it when it would sit on the rectangle edge */}
+          <line class="cl-dash" data-el="height" x1="232" y1="128" x2="232" y2="240" />
+          <path class="cl-line" data-el="h-sq" d="M232 226 L246 226 L246 240" />
+          {/* outside height bracket, used once the shape is a rectangle */}
+          <path class="cl-arc" data-el="h-brk" d="M232 128 L142 128 L142 240 L160 240" style="opacity:0" />
+          <text class="cl-t cl-num" data-el="lbl-h" x="248" y="190" text-anchor="middle" direction="ltr" unicode-bidi="isolate" style="opacity:0">h</text>
+          <path class="cl-arc" data-el="b-brk" d="M160 250 L160 262 L400 262 L400 250" style="opacity:0" />
+          <text class="cl-t cl-num" data-el="lbl-b" x="280" y="280" text-anchor="middle" direction="ltr" unicode-bidi="isolate" style="opacity:0">b</text>
+          <text class="cl-t" data-el="lbl-same" x="280" y="196" text-anchor="middle" direction="rtl" unicode-bidi="isolate" style="opacity:0">אותו שטח</text>
         </svg>
       )
     }
@@ -2247,6 +2269,17 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
       )
     }
     {
+      authoredFilm && (
+        <svg
+          class="concept-loop__svg"
+          viewBox={authoredFilm.viewBox}
+          role="img"
+          aria-label={authoredFilm.ariaLabel}
+          set:html={authoredFilm.svgMarkup}
+        />
+      )
+    }
+    {
       variant === 'kite-construct' && (
         <>
           <KiteAreaFilm />
@@ -2986,6 +3019,7 @@ const pctCells = Array.from({ length: 100 }, (_, i) => ({
         </p>
       )
     }
+    {authoredFilm && <Fragment set:html={authoredFilm.formulaHTML} />}
     {
       variant === 'kite-construct' && (
         <div data-el="kite-caption" style="display:none">

@@ -73,7 +73,10 @@ describe('M24 site / policy pages', () => {
     assert.ok(gate.includes('/terms'));
     assert.ok(!gate.includes("PRIVACY_URL = '/privacy'"));
     const layout = readFileSync('src/layouts/BaseLayout.astro', 'utf8');
-    assert.ok(layout.includes('nd-site-gate.js'));
+    // 0027b8ca (exact design port) removed the blocking gate modal.
+    // The notice is non-blocking; legal links stay in the footer.
+    assert.ok(layout.includes('SiteDevelopmentNotice'));
+    assert.doesNotMatch(layout, /<script\b[^>]*src=['"]\/nd-site-gate\.js['"]/);
   });
 
   it('terms serves code-owned legal body from authoritative HTML (no filesusr iframe)', () => {
