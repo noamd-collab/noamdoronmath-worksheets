@@ -3284,6 +3284,89 @@ function leftFigureBoxes(bitmap, y0, y1) {
     ruleRow[y] = 1;
   }
   const ruleAt = (y) => y > 0 && y < height && ruleRow[y] === 1;
+  // A second drawing can stand beside the first on the same rows (DEF next to
+  // ABC). It is one connected shape several text lines tall; a glyph is one line.
+  const sideDrawing = (low, high, fromX) => {
+    const cell = 2;
+    const reachY = Math.round(height * 0.03);
+    const yTop = Math.max(0, low - reachY);
+    const yBot = Math.min(height - 1, high + reachY);
+    const x0 = Math.max(0, fromX);
+    const x1 = Math.min(width - 1, Math.floor(width * 0.75));
+    const cols = Math.floor((x1 - x0) / cell);
+    const rowsN = Math.floor((yBot - yTop + 1) / cell);
+    if (cols < 4 || rowsN < 4) return null;
+    const blocked = (y) => (y >= top && y <= bot && barRow[y - top]) || ruleAt(y);
+    const mask = new Uint8Array(cols * rowsN);
+    for (let r = 0; r < rowsN; r += 1) {
+      for (let c = 0; c < cols; c += 1) {
+        let hit = 0;
+        for (let dy = 0; dy < cell && !hit; dy += 1) {
+          const y = yTop + r * cell + dy;
+          if (blocked(y)) continue;
+          for (let dx = 0; dx < cell; dx += 1) if (dark(x0 + c * cell + dx, y)) { hit = 1; break; }
+        }
+        mask[r * cols + c] = hit;
+      }
+    }
+    const seen = new Uint8Array(cols * rowsN);
+    const parts = [];
+    for (let start = 0; start < mask.length; start += 1) {
+      if (!mask[start] || seen[start]) continue;
+      const stack = [start];
+      seen[start] = 1;
+      const part = { r0: rowsN, r1: -1, c0: cols, c1: -1 };
+      while (stack.length) {
+        const at = stack.pop();
+        const r = Math.floor(at / cols);
+        const c = at - r * cols;
+        if (r < part.r0) part.r0 = r;
+        if (r > part.r1) part.r1 = r;
+        if (c < part.c0) part.c0 = c;
+        if (c > part.c1) part.c1 = c;
+        for (let dr = -2; dr <= 2; dr += 1) {
+          for (let dc = -2; dc <= 2; dc += 1) {
+            const rr = r + dr;
+            const cc = c + dc;
+            if (rr < 0 || cc < 0 || rr >= rowsN || cc >= cols) continue;
+            const next = rr * cols + cc;
+            if (!mask[next] || seen[next]) continue;
+            seen[next] = 1;
+            stack.push(next);
+          }
+        }
+      }
+      parts.push({
+        x0: x0 + part.c0 * cell,
+        x1: x0 + (part.c1 + 1) * cell - 1,
+        y0: yTop + part.r0 * cell,
+        y1: yTop + (part.r1 + 1) * cell - 1,
+      });
+    }
+    const tallEnough = Math.max((high - low) * 0.4, height * 0.04);
+    const drawings = parts.filter((part) => part.y1 - part.y0 + 1 >= tallEnough && part.y1 >= low && part.y0 <= high);
+    if (!drawings.length) return null;
+    const out = {
+      x1: Math.max(...drawings.map((part) => part.x1)),
+      y0: Math.min(...drawings.map((part) => part.y0)),
+      y1: Math.max(...drawings.map((part) => part.y1)),
+    };
+    // A vertex letter sits within a few pixels of its drawing. Measure against the
+    // drawing alone, so one letter cannot pull in the sentence above it.
+    const near = { ...out, x0: Math.min(...drawings.map((part) => part.x0)) };
+    const lab = Math.round(height * 0.012);
+    const pad = Math.round(width * 0.02);
+    parts.forEach((part) => {
+      if (drawings.includes(part) || part.y1 - part.y0 + 1 >= tallEnough) return;
+      if (part.x1 - part.x0 + 1 > width * 0.025) return;
+      if (part.x0 < near.x0 - pad || part.x1 > near.x1 + pad) return;
+      if (part.y1 < near.y0 - lab || part.y0 > near.y1 + lab) return;
+      out.x1 = Math.max(out.x1, part.x1);
+      out.y0 = Math.min(out.y0, part.y0);
+      out.y1 = Math.max(out.y1, part.y1);
+    });
+    return out;
+  };
   const pushBox = (low, high) => {
     if ((high - low) / height < 0.025) return;
     let minX = xStop;
@@ -3335,6 +3418,12 @@ function leftFigureBoxes(bitmap, y0, y1) {
       } else if (++miss > gapPx) break;
     }
     maxX = last;
+    const side = sideDrawing(low, high, last + gapPx);
+    if (side) {
+      maxX = Math.max(maxX, side.x1);
+      low = Math.min(low, side.y0);
+      high = Math.max(high, side.y1);
+    }
     boxes.push({
       x0: minX / width,
       x1: (maxX + 1) / width,
