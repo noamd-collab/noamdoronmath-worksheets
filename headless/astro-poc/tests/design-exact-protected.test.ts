@@ -106,7 +106,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // 2026-10-19: Help marks replace repeated robots; expanded source previews scroll
     // so the original SVG disclosure is reachable on desktop as well as phone.
     // PR197: reviewed full-width phone diagrams, fullscreen modal and bounded zoom.
-    assert.equal(sha256(head), 'bd63c61ec71a4c34b4e1ae0485484a08af978ac5a0f2005db1af435242aa08f2');
+    // PR212: Noam-approved height-aware diagram fit, vertical scroll chaining,
+    // and opt-in question zoom; manually checked at 390x844 and 1280x800.
+    // Only presentation CSS changed in this head; metadata/SEO/fonts stay fixed.
+    assert.equal(sha256(head), 'b589c3b750e23afaac27cac03180e19bc2502a8066ed101b7ff464466eaadcdf');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
@@ -153,7 +156,12 @@ describe('exact-design protected live-baseline boundaries', () => {
     // generated diagram succeeded; failure history, retry and auth remain unchanged.
     // 2026-10-21: exact subsection sources, original SVG coordinate units,
     // native chart drawing actions and truthful visible source fallback.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), 'ab6077323994a10a7579d09821a292ee0e0220962df018cecd29e42752247d4b');
+    // PR212: keep original question access after errors, fit cloned diagrams,
+    // clear stale section announcements, and omit understanding buttons on errors.
+    // Dedicated recovery/zoom tests cover these intentional behavior changes.
+    // No auth protocol, original PDF/SVG, catalogue or storage format changed.
+    // PR212 follow-up: version the plural-relation compiler and its saved plan cache.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e119721fb6e0659e4de77d42b862e16c7106193365cc483308302532465c2561');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

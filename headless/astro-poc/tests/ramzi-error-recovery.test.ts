@@ -33,8 +33,8 @@ test('security failure stays an error with its retry action through repeated dec
   assert.equal(document.querySelectorAll('.exact-hint-head').length, 0);
   assert.equal(document.querySelectorAll('.exact-error-title').length, 1);
   assert.equal(document.querySelector('.noam-row.assistant')!.getAttribute('role'), 'alert');
-  assert.equal(document.querySelectorAll('.ramzi-check').length, 1);
-  assert.equal(document.querySelectorAll('.ramzi-check button').length, 2);
+  assert.equal(document.querySelectorAll('.ramzi-check').length, 0, 'a failed request has no explanation to assess');
+  assert.equal(document.querySelectorAll('.ramzi-check button').length, 0);
   assert.equal(document.querySelectorAll('.noam-row').length, 2);
   assert.equal(focusCount, 6);
   const row = document.querySelector('.noam-row.assistant')!;

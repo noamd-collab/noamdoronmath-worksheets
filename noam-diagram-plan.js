@@ -16,6 +16,7 @@
   PROMPT_SCHEMA += " Optional rays:[[M,A],[M,C]] are directed from the first point through the second. A ray must be explicitly called a ray in affirmative source text (Hebrew קרן/קרניים or English ray/rays). Its base segment is included automatically; repeating that point pair in segments is optional. Never convert a segment or line to a ray based on a student request. The renderer adds arrowheads beyond the named through-point. Preserve explicitly stated acute/obtuse angle classes; an approximate diagram description is not an exact degree measurement.";
   PROMPT_SCHEMA += " Angle-label examples: for {from:'E',vertex:'A',to:'D'} use label:'∠EAD' or label:''; for {from:'D',vertex:'A',to:'C'} use label:'∠DAC'. Write plain Unicode angle names, with the vertex in the middle. Never use alpha/beta, an equality such as EAD=DAC, explanatory words, or a computed angle value as a label. Identifying two angles does not mark or prove their equality.";
   PROMPT_SCHEMA += " Name-only or empty angle/segment labels identify objects; they need no evidence entry. Reserve evidence for factual markings and numeric values.";
+  PROMPT_SCHEMA += " An affirmative source relation to a list applies to EVERY named segment: PK מקביל לצלעות AB ו-CD requires both PK∥AB and PK∥CD. Satisfy all requiredRelations in a validator diagnostic together, preserving every other given. Never infer these relations from a question, negation, proof goal, or student assertion.";
 
   function fail(reason,constraint){throw Object.assign(new Error(reason),{reason:reason},constraint?{constraint:constraint}:{});}
   function object(value){return value&&typeof value==="object"&&!Array.isArray(value)&&(Object.getPrototypeOf(value)===Object.prototype||Object.getPrototypeOf(value)===null);}
@@ -322,9 +323,17 @@
   }
   var UNPROVEN=/(?:\?|הוכיחו|הוכח(?:ה|ת|ו)?(?=[^א-ת]|$)|להוכיח|להראות|הראו|הראה\s+(?:כי|ש)|האם|מדוע|למה|כדי|צריך|עליכם|עליך|מטר[הת]|רוצים|נרצה|ננסה|בדקו|בדוק|חפשו|מצאו|נשער|(?:^|[^א-ת])אם(?:[^א-ת]|$)|נניח|בהנחה|משערים|השערה|(?:^|[^א-ת])או(?:[^א-ת]|$)|אינ[הו]|טרם|עדיין|ייתכן|אולי|לא(?:[^א-ת]|$)|אינו|אינה|אין(?:[^א-ת]|$)|≠|prove|suppose|assum|hypothet|conjectur|\b(?:either|or)\b|not\b|false\b|unknown\b|whether\b|show\s+that)/i;
   function explicitRelationSymbols(sentence){
-    return String(sentence||"").replace(/⟂/g,"⊥").replace(
-      /([A-Z]{2})\s+(?:(?:הוא|הינו)\s+)?(מאונך|ניצב|מקביל)\s+ל[־-]?\s*(?:(?:אלכסון|ישר|צלע|קטע)\s+)?([A-Z]{2})(?![A-Z])/g,
-      function(_all,first,relation,second){return first+(relation==="מקביל"?"∥":"⊥")+second;});
+    // A named segment followed by a predicate or supported construction starts a new clause,
+    // even after a comma or ו-. It is not another operand of the earlier list.
+    var clauses=String(sentence||"").replace(/⟂/g,"⊥").replace(
+      /(?:,\s*(?:ו[־-]?\s*)?|\s+ו[־-]?\s*)(?=[A-Z]{2}(?![A-Za-z])\s*(?:(?:הוא|הינו|היא|הינה|ה?גובה|ה?תיכון)(?=\s|[.,;]|$)|(?:מאונך|ניצב|מקביל)\s+ל|is\s+(?:an?\s+)?(?:altitude|height)(?=\s|[.,;]|$)|[=∥⊥]))/gi,"; ");
+    return clauses.replace(
+      /([A-Z]{2})\s+(?:(?:הוא|הינו)\s+)?(מאונך|ניצב|מקביל)\s+ל[־-]?\s*(?:(?:אלכסו(?:ן|נים)|ישר(?:ים)?|צלע(?:ות)?|קטע(?:ים)?)\s+)?([A-Z]{2}(?:\s*(?:,\s*(?:ו[־-]?\s*)?|ו[־-]?\s*)[A-Z]{2})*)(?![A-Z])/g,
+      function(_all,first,relation,others){
+        // An explicit list states the relation to every named segment. Keep
+        // them separate so validation and the existing repair see all givens.
+        return others.match(/[A-Z]{2}/g).map(function(second){return first+(relation==="מקביל"?"∥":"⊥")+second;}).join("; ");
+      });
   }
   function sentences(value){return clean(value).split(/(?<=[.!?])(?=\s|$)|;/).map(function(v){return v.trim();}).filter(Boolean);}
   // Compile stated constructions to geometry, independent of worksheet IDs.
@@ -599,7 +608,15 @@
       }
       sentences(question+". "+hint+". "+constructionGivens(rawQuestion)).filter(function(s){return !UNPROVEN.test(s);}).forEach(function(sentence){
         var s=compact(explicitRelationSymbols(sentence)),match,re=/(?:^|[^A-Z0-9+*/=−-])([A-Z]{2})(=|∥|⊥)([A-Z]{2})(?=$|[^A-Z0-9+*/=−-])/g;
-        while((match=re.exec(s))){if(allPresent(match[1]+match[3])){var a=match[1].split(""),b=match[3].split("");if(match[2]==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,match[2])){fail("source_coordinate_contradiction",{type:"relation",first:a,second:b,relation:match[2]});}}}
+        var statedRelations=[];
+        while((match=re.exec(s))){if(allPresent(match[1]+match[3])){statedRelations.push({type:"relation",first:match[1].split(""),second:match[3].split(""),relation:match[2]});}}
+        statedRelations.forEach(function(constraint){
+          var a=constraint.first,b=constraint.second;
+          if(constraint.relation==="="?!sameLength(distance(points[a[0]],points[a[1]]),distance(points[b[0]],points[b[1]])):!linesAgree(a,b,constraint.relation)){
+            if(statedRelations.length>1){constraint.requiredRelations=statedRelations.slice(0,16).map(function(item){return item.first.join("")+item.relation+item.second.join("");});}
+            fail("source_coordinate_contradiction",constraint);
+          }
+        });
         re=/(?:^|[^A-Z0-9+*/=−-])∠?([A-Z]{3})=(\d+(?:\.\d+)?)°(?=$|[^A-Z0-9+*/=−-])/g;
         while((match=re.exec(s))){if(allPresent(match[1])){var anglePoints=match[1].split(""),expectedDegrees=Number(match[2]),actualDegrees=angle(anglePoints).degrees;if(Math.abs(actualDegrees-expectedDegrees)>.5){
           // Only parsed geometry values enter diagnostics; never source prose.

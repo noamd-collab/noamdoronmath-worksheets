@@ -21,7 +21,10 @@ for(const file of ['worksheet-viewer-noam.html','headless/astro-poc/public/works
       }
       return el;
     };
-    const context=vm.createContext({document}); // no fetch, storage or model available
+    const context=vm.createContext({document,window:{
+      addEventListener:window.addEventListener.bind(window),
+      removeEventListener:window.removeEventListener.bind(window)
+    }}); // resize events only; no fetch, storage or model available
     vm.runInContext(fn,context);
     context.noamAddDiagramExpansion(document.querySelector('#bubble'),figure);
     const button=document.querySelector('.noam-diagram-expand');
