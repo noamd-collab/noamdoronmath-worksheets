@@ -71,4 +71,3 @@ it('screenshots all concrete worksheet routes when their dynamic page or next ba
     assert.deepEqual(result.pages,['/worksheet-pilot/remaining-101-20261019','/worksheet-pilot/fourth-ten-20261019','/worksheet-pilot/third-ten-20261019','/worksheet-pilot/second-ten-20261019','/worksheet-pilot/next-ten-20261019','/worksheet-pilot/approved-three-20261019']);
   }
 });
-
