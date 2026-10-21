@@ -2212,6 +2212,8 @@ function applyWizardPrefill(prefill) {
     const note = $('teacher-note');
     if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
     render();
+    state.wizard = 'pick';
+    applyWizard();
     announce('הבחירה מנועם AI נטענה לאשף.');
     const picked = document.querySelector('#questions input:checked');
     const card = picked && picked.closest('.q-card');

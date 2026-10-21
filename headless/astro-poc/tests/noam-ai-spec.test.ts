@@ -89,6 +89,7 @@ describe('Noam AI production spec', () => {
     assert.equal(parsed && parsed.minutes, 30);
     assert.match(teacherPage, /applyWizardPrefill/);
     assert.match(teacherPage, /wizardPrefillFromSearch\(location\.search\)/);
+    assert.match(teacherPage, /render\(\);\s*state\.wizard = 'pick';\s*applyWizard\(\);/);
   });
 
   it('asks the missing slots in order and never offers רמה ג׳', () => {
@@ -480,6 +481,7 @@ describe('Noam AI production spec', () => {
     assert.ok(client.includes('if (mode === "compact") placeOffWizard();'));
     assert.ok(client.includes('.q-thumb'));
     assert.ok(client.includes('function phoneAnswerHit('));
+    assert.ok(client.includes('function nextCardHidden('));
     assert.ok(client.includes('height >= 48'));
     assert.ok(client.includes('chipsCleared'));
     assert.ok(client.includes('plain: true'));

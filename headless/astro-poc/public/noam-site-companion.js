@@ -871,30 +871,108 @@
     return document.scrollingElement || document.documentElement;
   }
 
+  function followingCard(card) {
+    var cards = document.querySelectorAll("#questions .q-card");
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i] === card) return cards[i + 1] || null;
+    }
+    return null;
+  }
+
+  function contentHit(mine, node) {
+    if (!node) return false;
+    var box = node.getBoundingClientRect();
+    if (box.width < 1 || box.height < 1 || box.bottom <= 0 || box.top >= window.innerHeight) return false;
+    return rangesOverlap(mine.left, mine.right, box.left, box.right) >= 8 && rangesOverlap(mine.top, mine.bottom, box.top, box.bottom) >= 8;
+  }
+
+  function nextCardHidden(mine, card) {
+    var next = followingCard(card);
+    if (!next) return false;
+    return contentHit(mine, next.querySelector(".q-title")) || contentHit(mine, next.querySelector("input")) || contentHit(mine, next.querySelector(".q-thumb")) || contentHit(mine, next.querySelector(".q-desc"));
+  }
+
+  function fitAbove(bottom) {
+    var bottomOffset = parseFloat(panel.style.bottom) || 8;
+    var height = Math.round(window.innerHeight - bottomOffset - Math.round(bottom + 8));
+    var mine = panel.getBoundingClientRect();
+    if (height >= 48 && height < mine.height) {
+      panel.style.height = height + "px";
+      panel.dataset.height = String(height);
+      return true;
+    }
+    return false;
+  }
+
+  function blockerBottom(card, includeChrome) {
+    var bottom = cardExtent(card).bottom;
+    if (!includeChrome) return bottom;
+    var nodes = [card.querySelector(".q-title"), card.querySelector("input"), card.querySelector(".q-thumb"), card.querySelector(".q-desc")];
+    for (var i = 0; i < nodes.length; i++) {
+      if (!nodes[i]) continue;
+      var box = nodes[i].getBoundingClientRect();
+      if (box.height > 1 && box.bottom > bottom) bottom = box.bottom;
+    }
+    return bottom;
+  }
+
+  function panelClear(card) {
+    var mine = panel.getBoundingClientRect();
+    return !phoneAnswerHit(mine) && !nextCardHidden(mine, card);
+  }
+
+  function scrollAbove(bottom, anchorTop, headerBottom) {
+    var mine = panel.getBoundingClientRect();
+    var need = Math.round(bottom - mine.top + 8);
+    if (need <= 1) return anchorTop;
+    var room = Math.max(0, Math.floor(anchorTop - headerBottom));
+    var scroller = pageScroller();
+    var maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop);
+    var scrollBy = Math.min(need, room, maxScroll);
+    if (scrollBy <= 1) return anchorTop;
+    scroller.scrollTop += scrollBy;
+    return anchorTop - scrollBy;
+  }
+
   function liftOffAnswer(headerBottom, allowScroll) {
     var mine = panel.getBoundingClientRect();
     var card = phoneCardNode(mine, headerBottom);
     if (!card) return;
-    var rect = cardExtent(card);
-    var bottomOffset = parseFloat(panel.style.bottom) || 8;
-    var top = Math.round(rect.bottom + 8);
-    var height = Math.round(window.innerHeight - bottomOffset - top);
-    if (height >= 48 && height < mine.height) {
-      panel.style.height = height + "px";
-      panel.dataset.height = String(height);
-      mine = panel.getBoundingClientRect();
-      rect = cardExtent(card);
+    var next = followingCard(card);
+    fitAbove(cardExtent(card).bottom);
+    if (panelClear(card)) return;
+    if (next && next.getBoundingClientRect().top - cardExtent(card).bottom >= 48) {
+      var answerBottom = cardExtent(card).bottom;
+      var nextTop = next.getBoundingClientRect().top;
+      var gap = Math.round(nextTop - answerBottom);
+      var bottomEdge = Math.min(Math.round(nextTop), window.innerHeight - 8);
+      var gapHeight = Math.min(gap, bottomEdge - Math.round(answerBottom));
+      if (gapHeight >= 48 && bottomEdge - gapHeight >= answerBottom) {
+        panel.style.height = gapHeight + "px";
+        panel.dataset.height = String(gapHeight);
+        panel.style.top = "auto";
+        panel.style.bottom = Math.round(window.innerHeight - bottomEdge) + "px";
+        if (panelClear(card)) return;
+      }
     }
-    if (rangesOverlap(mine.top, mine.bottom, rect.top, rect.bottom) < 8) return;
+    var sharedBottom = cardExtent(card).bottom;
+    if (next) sharedBottom = Math.max(sharedBottom, blockerBottom(next, true));
+    fitAbove(sharedBottom);
+    if (panelClear(card)) return;
     if (allowScroll === false) return;
+    panel.style.top = "auto";
+    panel.style.bottom = "8px";
+    panel.style.height = "48px";
+    panel.dataset.height = "48";
+    if (panelClear(card)) return;
     var title = card.querySelector(".q-title");
-    var anchorTop = title ? title.getBoundingClientRect().top : rect.top;
-    var room = Math.max(0, Math.floor(anchorTop - headerBottom));
-    var scroller = pageScroller();
-    var maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop);
-    var need = Math.round(rect.bottom - mine.top + 8);
-    var scrollBy = Math.min(need, room, maxScroll);
-    if (scrollBy > 1) scroller.scrollTop += scrollBy;
+    var anchorTop = title ? title.getBoundingClientRect().top : cardExtent(card).top;
+    anchorTop = scrollAbove(cardExtent(card).bottom, anchorTop, headerBottom);
+    if (next) anchorTop = scrollAbove(blockerBottom(next, true), anchorTop, headerBottom);
+    if (panelClear(card)) return;
+    mine = panel.getBoundingClientRect();
+    var extra = phoneCardNode(mine, headerBottom);
+    if (extra && extra !== card) scrollAbove(blockerBottom(extra, true), anchorTop, headerBottom);
   }
 
   function clearPhoneCards(allowScroll) {
@@ -906,8 +984,12 @@
     phoneQuietUntil = Date.now() + 180;
     clearingPhone = true;
     try {
-      restoreCompactHeight();
-      var bottom = (parseFloat(panel.style.bottom) || 8) + "px";
+      if (allowScroll !== false) {
+        panel.style.top = "auto";
+        panel.style.bottom = "8px";
+        restoreCompactHeight();
+      }
+      var bottom = "8px";
       var corners = [
         { right: "8px", left: "auto" },
         { right: "auto", left: "8px" },
