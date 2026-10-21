@@ -9,8 +9,18 @@ HEAD אחרי רישום ה-SHA: `c6f9168fbbf1feec633354aed418ee3328461677`
 HEAD אחרי מדידת בס״ד: `7fe57a0c374389c7c0d321da46e42bc064df0aa5`  
 HEAD אחרי תיקון robots/sitemap, ועליו רץ האימות הראשון של 21.10.2026: `bfbdf7dec02bd3fe96b21ae35ebdcc18ca1cda9d`  
 HEAD אחרי רישום האימות הראשון: `de8ab8936f2bc8b301b22575ee928f4ca86ae9d2`  
-עליו רצה בדיקה חוזרת ב-21.10.2026, בלי שינוי קוד: `test:unit` 451/0/1, `tsc` 0, build מקומי יציאה 0. ה-HEAD שאחרי רישום הבדיקה הזו מופיע בגוף PR #60.  
+עליו רצה בדיקה חוזרת ב-21.10.2026, בלי שינוי קוד: `test:unit` 452 בדיקות, 451 עברו, 0 נכשלו, 1 דולג. `tsc` יציאה 0. build מקומי יציאה 0. ה-HEAD שאחרי רישום הבדיקה הזו הוא `ca4010ca6ebf048680a9d3f5cedce534d954dd31`.  
 לא מוזג. ענפי המקור לא שונו. אין release, DNS, או פריסה לייצור.
+
+## לא נבלע (21.10.2026)
+
+המשימה לא מיותרת ולא נבלעה ב־PR אחר.
+
+- `headless/astro-poc-baseline` עומד על `9eb9e25eec79be067f9e51e9aec93b35a149e235`. `f10dd3e`, `0acbf139`, `bfbdf7de` ו־`ca4010ca` אינם אבות שלו. `0acbf139` נמצא רק על `cursor/seo-cutover-integration-9e0a`.
+- בבסיס חסרים `src/data/seo-proposals.json`, `src/pages/llms.txt.ts`, `src/lib/structuredData.ts`, `INTEGRATION-REPORT.md` ו־`reports/m25-blog/pilot-manifest.txt`. אין `robots: false`. ב־`SiteHeader.astro` של הבסיס אין `data-basad`. `data-basad` בבסיס קיים רק ב־`public/learning.html`.
+- PR #147 ו־PR #151 מוזגו אל `main`, לא אל `headless/astro-poc-baseline`. PR #145 ו־PR #150 נשארו טיוטות מול `main`.
+- `6d8306e9` על הבסיס הוא הערת ניסיון מקומי של PR #61 מעל PR #60. הניסיון לא נדחף, ו־PR #60 לא נכנס לבסיס.
+- ה־PR נשאר `dirty` כי הבסיס התקדם. הבסיס לא מוזג לתוך הענף, וה־PR לא מוזג.
 
 הבסיס התקדם מאז שנפתחו שלבי ה-SEO: נכללים בו כבר מיזוג #41 (לופים) ומיזוג #50 (תוויות נגישות). הם לא חלק מ-15 ה-PR-ים, והם כבר ב-ancestry.
 
@@ -78,8 +88,8 @@ HEAD אחרי רישום האימות הראשון: `de8ab8936f2bc8b301b22575ee9
 | שורש `node --test tests/*.cjs` | 405/405 |
 | `npm run test:unit` לפני תיקון M33/M25 | 449 עברו, 2 נכשלו, 1 דולג. לא ירוק |
 | `npm run test:unit` אחרי התיקון | 452 בדיקות: 451 עברו, 0 נכשלו, 1 דולג |
-| אימות חוזר 21.10.2026 על `bfbdf7de` | `test:unit` 451/0/1, `tsc` 0, build מקומי יציאה 0 |
-| בדיקה חוזרת 21.10.2026 על `de8ab893` | `test:unit` 451/0/1, `tsc` 0, build מקומי יציאה 0. אין שינוי קוד |
+| אימות חוזר 21.10.2026 על `bfbdf7de` | `test:unit`: 452 בדיקות, 451 עברו, 0 נכשלו, 1 דולג. `tsc` 0. build מקומי יציאה 0 |
+| בדיקה חוזרת 21.10.2026 על `de8ab893` | `test:unit`: 452 בדיקות, 451 עברו, 0 נכשלו, 1 דולג. `tsc` 0. build מקומי יציאה 0. אין שינוי קוד |
 | `npm run typecheck:tests` | 0 |
 | `npx tsc -p tsconfig.json --noEmit` אחרי `astro check` | 0, גם אחרי התיקון |
 | `npm run typecheck` (`astro check`) עם `WIX_CLIENT_ID` מקומי בלבד | 7 שגיאות, כולן ב-`ConceptLoop.astro` המוגן. לא נגעתי בקובץ |
