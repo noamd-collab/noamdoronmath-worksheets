@@ -105,7 +105,7 @@ describe('seo audit', () => {
     assert.equal(blogLocs.length, blogPaths.size);
     for (const post of listServedBlogPosts()) assert.ok(blogPaths.has(post.path), post.path);
     for (const archive of listBlogArchives()) assert.ok(blogPaths.has(archive.path), archive.path);
-    assert.equal(listServedBlogPosts().length, 60);
+    assert.equal(listServedBlogPosts().length, 68);
     assert.equal(listBlogArchives().length, 4);
 
     const all = [...indexLocs, ...pageLocs, ...blogLocs];

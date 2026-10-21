@@ -392,6 +392,8 @@ ${results
 ## Deferred
 - /blog index and 3 category pages (different templates; after post gate)
 - remaining 51 posts (bulk only after pilot trustworthy)
+- aboutus contact mailto-only (rendered link is mailto; not one of the 63 blog URLs)
+- terms is a separate site page, not one of the 63 blog URLs
 `
 );
 

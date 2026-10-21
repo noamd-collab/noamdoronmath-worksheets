@@ -265,6 +265,24 @@ export const KEEP_CURRENT = [
 ];
 
 /**
+ * Scope of the PR 46 / PR 52 SEO proposal review (390 rows: 328 catalog topics +
+ * 2 shared-id topic pages + 60 blog posts). Pages/posts added to the baseline
+ * after the cut-over review (#90, #104, #105) have their own reviewed meta and
+ * are excluded until a separate proposal batch is commissioned.
+ */
+export const EXCLUDED_FROM_PROPOSAL_BATCH = new Set([
+  '/kite-grade-9',
+  '/post/למידה-אדפטיבית-במתמטיקה-שמקדמת-כל-תלמיד',
+  '/post/תוצאות-מתרגול-עקבי-במתמטיקה-שמרגישים-בכיתה',
+  '/post/איך-מתרגלים-כפל-בעזרת-משחקים-בבית-ובכיתה',
+  '/post/איך-מסבירים-היקף-ושטח-בלי-לבלבל-בין-השניים',
+  '/post/פתרון-מפשטים-לכיתה-ז',
+  '/post/איך-משתמשים-בעוזר-מתמטי-חכם-בלי-לוותר-על-החשיבה',
+  '/post/איך-מלמדים-חילוק-ארוך-לילדים-בלי-לנחש-בדרך',
+  '/post/מהו-סדר-פעולות-ואיך-פותרים-תרגילים-בלי-להתבלבל',
+]);
+
+/**
  * Open questions for Noam. Copy stays as generated; approved stays false. Do not guess.
  */
 const SIMILAR_G1 = 'שלושה נושאים כמעט זהים בכיתה א׳ (4 "מרכיבים ומפרקים עד 10", 19 "מרכיבים ומפרקים", 23 "הרכבה ופירוק") באותה קבוצה ועם אותו אייקון. אין בקטלוג מידע שמבדיל ביניהם – נדרשת החלטת נועם (להבדיל בשם או לאחד).';

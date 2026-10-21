@@ -20,6 +20,7 @@ import {
   EXACT,
   KEEP_CURRENT,
   NEEDS_DECISION,
+  EXCLUDED_FROM_PROPOSAL_BATCH,
 } from './seo-overrides.mjs';
 
 export const TITLE_MAX = 60;
@@ -130,10 +131,13 @@ function pick(path, field, ruleValue) {
 
 export function buildProposals(root) {
   const catalog = JSON.parse(readFileSync(join(root, 'src/data/catalog.v1.json'), 'utf8'));
-  const topicPages = readJsonDir(join(root, 'src/data/topic-pages'));
+  const topicPages = readJsonDir(join(root, 'src/data/topic-pages')).filter(
+    (page) => !EXCLUDED_FROM_PROPOSAL_BATCH.has(decoded(page.path))
+  );
   const posts = readdirSync(join(root, 'src/data/blog-posts'))
     .filter((name) => name.endsWith('.json'))
-    .map((name) => JSON.parse(readFileSync(join(root, 'src/data/blog-posts', name), 'utf8')));
+    .map((name) => JSON.parse(readFileSync(join(root, 'src/data/blog-posts', name), 'utf8')))
+    .filter((post) => !EXCLUDED_FROM_PROPOSAL_BATCH.has(decoded(post.path)));
   const pages = new Map();
   for (const page of topicPages) {
     const id = page.catalogCta?.catalogTopicId;
@@ -181,7 +185,16 @@ export function buildProposals(root) {
   }
 
   for (const grade of catalog.grades) {
-    for (const topic of grade.topics) {
+    // G9-T39 (trapezoid) was moved earlier in grade 9's topic array in #104;
+    // in PR 46/52 it sat at the end of grade 9 after topic 36.
+    const orderedTopics =
+      grade.grade === 9
+        ? [
+            ...grade.topics.filter((topic) => topic.id !== 39 && topic.id !== 46),
+            ...grade.topics.filter((topic) => topic.id === 39),
+          ]
+        : grade.topics;
+    for (const topic of orderedTopics) {
       const page = pages.get(`${grade.grade}:${topic.id}`);
       const path = page?.path || `/worksheets?grade=${grade.grade}&topic=${topic.id}`;
       if (seenPaths.has(path)) continue;

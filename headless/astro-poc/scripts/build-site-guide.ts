@@ -95,7 +95,7 @@ function levelFaq(page: any): string {
 
 function demoLine(page: { slug: string; grade: number; catalogCta?: { catalogTopicId?: number } }): string {
   try {
-    const loop = topicLandingLoop(page);
+    const loop = topicLandingLoop(page as Parameters<typeof topicLandingLoop>[0]);
     if (loop.kind === 'css') return 'הדגמה: ' + cssLoopIdea(loop.variant);
     if (loop.kind === 'concept') {
       if (loop.variant === 'kite-construct') {
@@ -147,7 +147,7 @@ function push(records: GuideRecord[], record: GuideRecord) {
     const value = record[key];
     if (value === undefined || value === null || value === '') continue;
     if (typeof value === 'string') {
-      const max = key === 'terms' ? 240 : key === 'title' ? 180 : key === 'how' || key === 'contains' ? 480 : 180;
+      const max = key === 'terms' ? 240 : key === 'how' || key === 'contains' ? 480 : 180;
       const text = clip(value, max);
       if (text) (clean as Record<string, unknown>)[key] = text;
     } else {

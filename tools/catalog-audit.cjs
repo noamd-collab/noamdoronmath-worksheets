@@ -28,7 +28,7 @@ const { loadIndexCatalog, buildCatalog, validateCatalog, stableStringify } = req
 
 const SEVERITIES = ['error', 'warning', 'review', 'info'];
 const PDF_ID = /^[0-9a-f]{32}$/;
-const LEVEL_ORDER = { a: 0, b: 1, c: 2, one: 3 };
+const LEVEL_ORDER = { a: 0, b: 1, c: 2, c2: 3, one: 4 };
 const HEB_GRADE = { 1: 'א', 2: 'ב', 3: 'ג', 4: 'ד', 5: 'ה', 6: 'ו', 7: 'ז', 8: 'ח', 9: 'ט' };
 
 const P = {
@@ -248,7 +248,7 @@ function checkIndexData(au, raw) {
         continue;
       }
       if (levels.includes('one') && levels.some((l) => l !== 'one')) au.find('error', 'DATA_LEVEL_ONE_AND_ABC', { grade, topicId: t.id, source: P.index, evidence: src(`.links[${t.id}]`) }, 'topic has a single shared sheet and separate levels');
-      else if (!levels.includes('one') && levels.join() !== 'a,b,c') {
+      else if (!levels.includes('one') && levels.join() !== 'a,b,c' && levels.join() !== 'a,b,c,c2') {
         au.find('review', 'DATA_LEVELS_PARTIAL', { grade, topicId: t.id, subject: t.t, source: P.index, evidence: `levels ${levels.join(',')}${t.aLabel ? '; aLabel "' + t.aLabel + '"' : ''}${t.cLabel ? '; cLabel "' + t.cLabel + '"' : ''}` }, `only level(s) ${levels.join(', ')}${t.parent !== undefined ? ' (subtopic of ' + t.parent + ')' : ''}`);
       }
       for (const lv of levels) {
@@ -409,7 +409,7 @@ function learningOutputs(raw) {
   for (const [g, data] of Object.entries(raw.DATA)) {
     for (const t of data.topics) {
       const row = data.links[t.id] || {};
-      for (const l of ['a', 'b', 'c', 'one']) {
+      for (const l of ['a', 'b', 'c', 'c2', 'one']) {
         if (!row[l]) continue;
         items.push({
           id: `g${g}-t${t.id}-${l}`,
@@ -418,7 +418,7 @@ function learningOutputs(raw) {
           parent: t.parent || t.id,
           title: t.t,
           l,
-          label: l === 'one' ? row.oneLabel || 'כל הרמות' : t[l + 'Label'] || { a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות' }[l],
+          label: l === 'one' ? row.oneLabel || 'כל הרמות' : t[l + 'Label'] || { a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות', c2: 'מצוינות 2' }[l],
           pdf: row[l],
           x: t.x || (raw.NOAM_PREFIX_FALLBACK[g] || {})[t.id] || '',
         });

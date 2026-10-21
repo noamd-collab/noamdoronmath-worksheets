@@ -120,23 +120,19 @@ test("only the new header navigation uses the verified main-site origin", () => 
   ]);
 });
 
-// Re-pinned for PR #34 (merge 28eba36, "approved by Noam 2.10.2026"), changes
-// reviewed in that PR and applied to both viewer copies:
-// - head: b7eab08 "Install the chosen favicon set" added the favicon/manifest/
-//   theme-color tags (was 7497944e...).
-// - scripts: c538673 added the released ramzi/ramzi-avatar.js before the adapter
-//   (13 -> 14 released, 15 total; the Headless fence in design-exact-protected.test.ts
-//   records "ramzi-avatar.js is a released script (15 total)"), and 71ed0ac
-//   and 394fe07 edited the released inline viewer script (was edcb33b3...).
+// Re-pinned for PR #34 (merge 28eba36, "approved by Noam 2.10.2026"), PR #82
+// (20d0ad0f, added noam-site-companion.js after exact-viewer-adapter), and PR #99
+// (08fdacc5, added c2 מצוינות 2 level in the released level script).
 test("portable presentation preserves the released head and all 14 released scripts", () => {
   const head = viewer.match(/<head(?:\s[^>]*)?>[\s\S]*?<\/head>/i)?.[0];
   assert.ok(head);
   assert.equal(sha256(head), "bcdaa06ff426b90ec4d5919341c9ffe9d13854a19fab9b05719b46cb614c9d3b");
   const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map(m => m[0]);
-  assert.equal(scripts.length, 15);
-  assert.equal(scripts.at(-2), '<script src="ramzi/ramzi-avatar.js"></script>');
-  assert.match(scripts.at(-1), /^<script id="exact-viewer-adapter">/);
-  assert.equal(sha256(JSON.stringify(scripts.slice(0, -1))), "287bef0492d5143075bf83b2f2a797bf58cf4467f22cbb7f6941497670ddf903");
+  assert.equal(scripts.length, 16);
+  assert.equal(scripts.at(-3), '<script src="ramzi/ramzi-avatar.js"></script>');
+  assert.match(scripts.at(-2), /^<script id="exact-viewer-adapter">/);
+  assert.equal(scripts.at(-1), '<script src="noam-site-companion.js" defer></script>');
+  assert.equal(sha256(JSON.stringify(scripts.slice(0, -2))), "9bd596dfe4c9e4fea8b90606d6aee8da74d45e3b210eac9a949a1799ff294bc6");
   for (const script of scripts) {
     const body = script.replace(/^<script\b[^>]*>/, "").replace(/<\/script>$/, "");
     new vm.Script(body);
@@ -155,18 +151,18 @@ const headlessOnlyEdits = [
   // 3433651 perf (PR #39): self-hosted Hebrew+Latin fonts replace Google Fonts in the head
   ["\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<link rel=\"preconnect\" href=\"https://cdn.jsdelivr.net\" crossorigin>\n<link rel=\"preconnect\" href=\"https://www.noamdoronmath.co.il\" crossorigin>\n\n<link href=\"https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@500;700;800;900&display=swap\" rel=\"stylesheet\" media=\"print\" onload=\"this.media='all'\">\n",
    "\n<link rel=\"preconnect\" href=\"https://cdn.jsdelivr.net\" crossorigin>\n<link rel=\"preconnect\" href=\"https://www.noamdoronmath.co.il\" crossorigin>\n<link rel=\"stylesheet\" href=\"/fonts/site-fonts.css\">\n<link rel=\"preload\" href=\"/fonts/heebo-hebrew.f1f7cfae.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n<link rel=\"preload\" href=\"/fonts/heebo-latin.50dae2e1.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n"],
-  // bdff022 (PR #39): font faces load from the head, so the presentation @import is dropped
-  ["     Keep this outside head: the released metadata, PDF engine, and AI scripts\n     below remain unchanged. Real PDF content and its controls are retained. -->\n<style id=\"exact-viewer-presentation\">\n@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap');\nbody.exact-viewer{",
-   "     Keep this outside head: the released metadata, PDF engine, and AI scripts\n     below remain unchanged. Real PDF content and its controls are retained.\n     Font faces live in the head so Hebrew is measured before first paint. -->\n<style id=\"exact-viewer-presentation\">\nbody.exact-viewer{"],
-  // 3433651/bdff022/f5964e9 (PR #39): reserve the PDF box and the tools column until they first open
-  ["}\n.exact-viewer .pdf-page{box-shadow:0 3px 0 rgba(34,48,90,.08);outline:1.5px solid #c9cfdc}\n.exact-viewer .pdf-status{background:#fbfaf5;font-weight:700}",
-   "}\n.exact-viewer .pdf-page{box-shadow:0 3px 0 rgba(34,48,90,.08);outline:1.5px solid #c9cfdc;aspect-ratio:210 / 297}\n@media(min-width:901px){\n  .pdf-page--reserve{display:none}\n  /* Reserve the tools column only until they first open, so load does not\n     jump, and closing כלי PDF still lets the page widen. */\n  .exact-viewer .pdf-surface:not([data-tools-settled]){grid-template-columns:var(--pdf-tools-width) minmax(0,1fr)}\n  .exact-viewer .pdf-surface:not([data-tools-settled]) .pdf-scroll,\n  .exact-viewer .pdf-surface:not([data-tools-settled]) .pdf-native{grid-column:2}\n  .exact-viewer .pdf-surface:not([data-tools-settled]) .pdf-status{inset-inline-start:var(--pdf-tools-width)}\n}\n@media(max-width:900px){\n  .exact-viewer .pdf-page--reserve{min-height:calc((100vw - 128px) * 297 / 210)}\n}\n.exact-viewer .pdf-status{background:#fbfaf5;font-weight:700}"],
   // 02b9903 (PR #32) same-origin Headless header links; 3433651 (PR #39) 320px logo.webp
   ["<header class=\"exact-viewer-header\">\n  <a href=\"https://www.noamdoronmath.co.il/\" aria-label=\"נועם דורון מתמטיקה — בית\"><img src=\"design-exact/assets/logo.png\" alt=\"נועם דורון מתמטיקה\"></a>\n  <nav aria-label=\"ראשי\"><a href=\"https://www.noamdoronmath.co.il/\">בית</a><a href=\"https://www.noamdoronmath.co.il/worksheets\" aria-current=\"page\">דפי עבודה</a><a href=\"https://www.noamdoronmath.co.il/learning.html\">הלמידה שלי</a></nav>\n</header>",
    "<header class=\"exact-viewer-header\">\n  <a href=\"/\" aria-label=\"נועם דורון מתמטיקה — בית\"><img src=\"design-exact/assets/logo.webp\" alt=\"נועם דורון מתמטיקה\" width=\"320\" height=\"136\" decoding=\"async\"></a>\n  <nav aria-label=\"ראשי\"><a href=\"/\">בית</a><a href=\"/worksheets\" aria-current=\"page\">דפי עבודה</a><a href=\"/learning.html\">הלמידה שלי</a></nav>\n</header>"],
+  // 98379101 / e4deb2a1 (PR #68) + 1c09360e (PR #83): clean worksheet print callout, Noam AI entry toggle, and phone tools menu
+  ["</div>\n\n<main class=\"stage\" id=\"worksheetMain\" tabindex=\"-1\" aria-labelledby=\"title\">",
+   "</div>\n\n<div class=\"noam-ai-entry\" id=\"noamAiEntry\">\n  <div class=\"noam-print-callout\">\n    <div class=\"noam-print-arrow\" aria-hidden=\"true\">\n      <span class=\"noam-print-arrow-label\">להדפסה</span>\n      <svg class=\"noam-print-arrow-icon\" viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" focusable=\"false\" aria-hidden=\"true\">\n        <path d=\"M12 3v13M6 12l6 7 6-7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n      </svg>\n    </div>\n    <a\n      class=\"pdf-tool-link noam-print-primary\"\n      id=\"pdfOpenFull\"\n      href=\"#\"\n      target=\"_blank\"\n      rel=\"noopener noreferrer\"\n    >\n      הורדה / הדפסה\n    </a>\n  </div>\n  <button type=\"button\" id=\"noamAiToggle\" class=\"noam-ai-toggle\" aria-pressed=\"false\">פתרו באמצעות Noam AI</button>\n  <details class=\"phone-tools\" id=\"phoneTools\">\n    <summary>עוד</summary>\n    <div class=\"phone-tools-menu\" id=\"phoneToolsMenu\" role=\"group\" aria-label=\"כלים נוספים\"></div>\n  </details>\n</div>\n\n<main class=\"stage\" id=\"worksheetMain\" tabindex=\"-1\" aria-labelledby=\"title\">"],
   // 3433651 (PR #39): reserved A4 placeholder page
   ["      >\n        <div class=\"pdf-pages\" id=\"pdfPages\"></div>\n      </div>",
    "      >\n        <div class=\"pdf-pages\" id=\"pdfPages\"><div class=\"pdf-page pdf-page--reserve\" aria-hidden=\"true\"></div></div>\n      </div>"],
+  // 98379101 / e4deb2a1 (PR #68): pdfOpenFull moved to the top print callout
+  ["        <button class=\"pdf-tool primary\" id=\"pdfNativeMode\" type=\"button\">תצוגת PDF מלאה</button>\n        <a\n          class=\"pdf-tool-link\"\n          id=\"pdfOpenFull\"\n          href=\"#\"\n          target=\"_blank\"\n          rel=\"noopener noreferrer\"\n        >\n          הורדה / הדפסה\n        </a>\n      </div>",
+   "        <button class=\"pdf-tool primary\" id=\"pdfNativeMode\" type=\"button\">תצוגת PDF מלאה</button>\n      </div>"],
   // 3433651 (PR #39): intrinsic size for the console avatar
   ["\n        <img class=\"exact-ramzi-avatar\" src=\"design-exact/assets/avatar/ramzi-A-idle.svg\" alt=\"\">\n        <div class=\"exact-ramzi-title\">",
    "\n        <img class=\"exact-ramzi-avatar\" src=\"design-exact/assets/avatar/ramzi-A-idle.svg\" alt=\"\" width=\"44\" height=\"44\" decoding=\"async\">\n        <div class=\"exact-ramzi-title\">"],
@@ -185,17 +181,20 @@ const headlessOnlyEdits = [
   // 3433651 (PR #39): noam-learning-boot.js lazy-Supabase cache-bust
   ["<script src=\"noam-learning-core.js?v=20260908-1\" defer></script>\n<script src=\"noam-learning-boot.js?v=20260908-1\" defer></script>\n<script src=\"ramzi/ramzi-avatar.js\"></script>",
    "<script src=\"noam-learning-core.js?v=20260908-1\" defer></script>\n<script src=\"noam-learning-boot.js?v=20261002-lazy-supabase\" defer></script>\n<script src=\"ramzi/ramzi-avatar.js\"></script>"],
-  // f5964e9 (PR #39): mark the tools column settled once the tools open
-  ["  if(!panel||!panelIn||!panelBody||!paper||!header||!fab||!close){return;}\n",
-   "  if(!panel||!panelIn||!panelBody||!paper||!header||!fab||!close){return;}\n  var pdfSurface=document.getElementById('pdfSurface');\n  if(pdfSurface&&window.MutationObserver){\n    var markTools=function(){if(pdfSurface.classList.contains('has-pdf-tools')){pdfSurface.dataset.toolsSettled='1';}};\n    markTools();\n    new MutationObserver(markTools).observe(pdfSurface,{attributes:true,attributeFilter:['class']});\n  }\n"],
 ];
 
-function headlessViewerFromRoot(source) {
-  // 3433651 (PR #39): size-adjusted 'Heebo Fallback' in the presentation stylesheet only.
-  let result = source.replace(/<style id="exact-viewer-presentation">[\s\S]*?<\/style>/, style => {
-    assert.equal(style.split("Heebo,sans-serif").length - 1, 32);
-    return style.replaceAll("Heebo,sans-serif", "Heebo,'Heebo Fallback',sans-serif");
-  });
+function headlessViewerFromRoot(source, publicSource) {
+  // Presentation stylesheet (#exact-viewer-presentation) and adapter (#exact-viewer-adapter)
+  // carry the Headless-only PR #39 / #68 / #78 / #83 / #106 layers; the 14 released scripts
+  // and markup outside those two blocks differ only by the 10 reviewed edits above.
+  const pubStyle = publicSource.match(/<!-- Presentation-only mapping[\s\S]*?<\/style>/)?.[0];
+  const pubAdapter = publicSource.match(/<script id="exact-viewer-adapter">[\s\S]*?<\/script>/)?.[0];
+  assert.ok(pubStyle && pubAdapter);
+  assert.equal(sha256(pubStyle), "f5bdb2ed4410d792609c122b254b94bf15d284bcaaddd9e77f5b41e39fb4bc61");
+  assert.equal(sha256(pubAdapter), "09869fb8e8e772ab49134367ba1a1b77643db5a72aa7df120dbd01a4472937c4");
+  let result = source
+    .replace(/<!-- Presentation-only mapping[\s\S]*?<\/style>/, () => pubStyle)
+    .replace(/<script id="exact-viewer-adapter">[\s\S]*?<\/script>/, () => pubAdapter);
   for (const [from, to] of headlessOnlyEdits) {
     assert.equal(result.split(from).length - 1, 1, "Headless edit anchor must occur exactly once: " + from.slice(0, 80));
     result = result.replace(from, () => to);
@@ -204,7 +203,8 @@ function headlessViewerFromRoot(source) {
 }
 
 test("root and Astro public viewers differ only by the reviewed Headless edits", () => {
-  assert.equal(headlessViewerFromRoot(viewer), fs.readFileSync(path.join(publicRoot, "worksheet-viewer-noam.html"), "utf8"));
+  const pub = fs.readFileSync(path.join(publicRoot, "worksheet-viewer-noam.html"), "utf8");
+  assert.equal(headlessViewerFromRoot(viewer, pub), pub);
 });
 
 test("desktop auto-open waits for the released runtime availability mutation, not the initial visible button", () => {
