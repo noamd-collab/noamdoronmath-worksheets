@@ -33,7 +33,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
       status: 200,
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
-        ...(context.url.searchParams.get('pilot') === '1' ? { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } : {}),
         'Cache-Control': 'public, max-age=0, must-revalidate',
       },
     });

@@ -47,7 +47,11 @@ function engineHolds(): Record<string, number> {
   );
   return Object.fromEntries(
     [...source.matchAll(/^\s+'?([a-z0-9-]+)'?:\s*\{ duration: [\d.]+, hold: ([A-Z0-9_]+), render/gm)].map(
-      (m) => [m[1], consts.get(m[2])]
+      (m) => {
+        const hold = consts.get(m[2]);
+        assert.ok(hold !== undefined, `${m[1]}: hold constant ${m[2]} is not defined`);
+        return [m[1], hold];
+      }
     )
   );
 }
@@ -94,7 +98,7 @@ function loopsMap(file: string): Map<string, Record<string, string>> {
   }));
 }
 
-const numbers = (text: string) => text.match(/\d+/g) ?? [];
+const numbers = (text: string): string[] => text.match(/\d+/g) ?? [];
 
 function specsKeys(): Set<string> {
   const source = read('src/lib/conceptLoops.ts');
@@ -397,7 +401,7 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(gradeCss.split('@media')[0], /\.concept-loop__svg \{\s*grid-column: 2;\s*grid-row: 1 \/ 4;/);
   });
 
-  it('grade controls remain available while the shared engine respects reduced motion', () => {
+  it('OS reduced motion does not hide ▶; only an explicit a11y class does', () => {
     const css = player.split('<style>')[1];
     const media = css.match(/@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n  \}/);
     assert.ok(media, 'reduced-motion block');
@@ -414,7 +418,7 @@ describe('GradeLoopPlayer render contract', () => {
     assert.match(player, /"▶ פעם אחת" stays deferred/);
     assert.doesNotMatch(css.split('@media')[0], /\.grade-loop__pause \{[^}]*display: none/);
     const engine = read('src/lib/conceptLoops.ts');
-    assert.match(engine, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+    assert.doesNotMatch(engine, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
     assert.match(engine, /classList\.contains\('nd-motion-off'\)/);
     const a11y = read('public/noam-accessibility.js');
     assert.doesNotMatch(a11y, /stopAnim:\s*reduceQuery\.matches/);

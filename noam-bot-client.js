@@ -154,15 +154,12 @@
     }
 
     function getVerification(action) {
-      var stage = "config";
       return timed(function (state) {
         return getConfig(state).then(function (config) {
           checkActive(state);
-          stage = "script";
           return Promise.resolve().then(function () { return loadRecaptcha(config.siteKey); })
             .then(function (recaptcha) {
               checkActive(state);
-              stage = "ready";
               return new Promise(function (resolve, reject) {
                 recaptcha.ready(function () {
                   Promise.resolve().then(function () {
@@ -172,7 +169,6 @@
                     }
                     // Send only the public site key and fixed action to Google.
                     // Execute once per AI request; tokens are never cached.
-                    stage = "execute";
                     return recaptcha.execute(config.siteKey, { action: action });
                   }).then(resolve, reject);
                 });
@@ -180,7 +176,6 @@
             });
         }).then(function (token) {
           checkActive(state);
-          stage = "token";
           if (typeof token !== "string" || !token || token.length > 8192) {
             throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
           }
@@ -190,18 +185,6 @@
         // A fetch implementation may not honor abort. Allow a later user action
         // to fetch config again instead of retaining an unresolved promise.
         if (error && error.code === "BOT_VERIFICATION_TIMEOUT") { configPromise = null; }
-        // Trace where verification stopped without logging Google's exception,
-        // the public key, the response token, or any worksheet/chat content.
-        if (win.console && typeof win.console.warn === "function") {
-          var code = error && error.code;
-          var knownCodes = ["BOT_CONFIG_UNAVAILABLE", "BOT_CLIENT_UNAVAILABLE",
-            "BOT_VERIFICATION_TIMEOUT", "BOT_VERIFICATION_FAILED", "NOT_ACTIVE"];
-          win.console.warn("NOAM_VERIFICATION_FAILED", JSON.stringify({
-            action: action,
-            stage: stage,
-            code: knownCodes.indexOf(code) >= 0 ? code : "BOT_VERIFICATION_FAILED"
-          }));
-        }
         if (isProtectionError(error)) { throw error; }
         throw makeError(VERIFY_MESSAGE, "BOT_VERIFICATION_FAILED");
       });

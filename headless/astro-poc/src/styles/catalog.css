@@ -3037,7 +3037,8 @@ a {
   border: none;
   border-radius: 10px;
   background: var(--accent, #e5ff82);
-  color: #1d1c19;
+  /* --on-accent is the text color the theme pairs with --accent (#1d1c19 on teal was 3.45:1). */
+  color: var(--on-accent, #1d1c19);
   cursor: pointer;
   min-height: 44px;
 }

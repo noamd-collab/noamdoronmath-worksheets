@@ -5281,7 +5281,7 @@ export const catalog = {
         },
         {
           "key": "synth",
-          "label": "סיכום וחשיבה",
+          "label": "סינתזה וחשיבה",
           "reducedProgram": false
         }
       ],
@@ -5816,7 +5816,7 @@ export const catalog = {
         },
         {
           "id": 17,
-          "title": "דף סיכום מדידות גאומטריה ופתרון רב שלבי",
+          "title": "דף סינתזה מדידות גאומטריה ופתרון רב שלבי",
           "group": "synth",
           "icon": "ruler",
           "levels": [
@@ -8216,7 +8216,7 @@ export const catalog = {
         },
         {
           "key": "synth",
-          "label": "שילוב, הרחבה והערכה",
+          "label": "סינתזה, הרחבה והערכה",
           "reducedProgram": false
         },
         {
@@ -10324,7 +10324,7 @@ export const catalog = {
         },
         {
           "id": 55,
-          "title": "שילוב גאומטרי",
+          "title": "סינתזה גאומטרית",
           "description": "שאלות המשלבות חפיפה, דמיון, פיתגורס וחישובי שטח בסרטוט אחד.",
           "group": "synth",
           "icon": "triangle",

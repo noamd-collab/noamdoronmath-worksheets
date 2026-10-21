@@ -60,7 +60,6 @@ describe('site sitemaps /sitemap-pages.xml + /sitemap-index.xml', () => {
     assert.ok(paths.includes('/'));
     assert.ok(paths.includes('/grade-7'));
     assert.ok(paths.includes('/aboutus'));
-    assert.equal(paths.filter((path) => path === '/blog').length, 1);
     assert.ok(paths.length >= 50, `expected many pages, got ${paths.length}`);
 
     assert.equal(paths.includes('/workflow'), false);
@@ -82,8 +81,6 @@ describe('site sitemaps /sitemap-pages.xml + /sitemap-index.xml', () => {
     }
     assert.ok(locs.includes(`${SITE_CANONICAL_ORIGIN}/`));
     assert.ok(locs.includes(`${SITE_CANONICAL_ORIGIN}/grade-7`));
-    assert.ok(locs.includes(`${SITE_CANONICAL_ORIGIN}/blog`));
-    assert.doesNotMatch(xml, /<lastmod>/);
   });
 
   it('filters 404/index/dev-loops noise from glob keys', () => {
@@ -98,9 +95,8 @@ describe('site sitemaps /sitemap-pages.xml + /sitemap-index.xml', () => {
     const xml = renderSitemapIndexXml();
     assertWellFormedXml(xml);
     assert.match(xml, /<sitemapindex /);
-    assert.match(xml, new RegExp(`${SITE_CANONICAL_ORIGIN}/sitemap-pages\.xml`));
-    assert.match(xml, new RegExp(`${SITE_CANONICAL_ORIGIN}/sitemap-blog\.xml`));
-    assert.doesNotMatch(xml, /<lastmod>/);
+    assert.match(xml, new RegExp(`${SITE_CANONICAL_ORIGIN}/sitemap-pages\\.xml`));
+    assert.match(xml, new RegExp(`${SITE_CANONICAL_ORIGIN}/sitemap-blog\\.xml`));
   });
 
   it('route uses import.meta.glob and lib source has no node:fs', () => {

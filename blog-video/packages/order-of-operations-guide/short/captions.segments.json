@@ -1,0 +1,150 @@
+{
+  "timing": "ESTIMATE ONLY — spread by word count over an unmeasured duration. Not a final SRT. Re-time against the rendered video before upload.",
+  "estTotalSeconds": 45.5,
+  "segments": [
+    {
+      "id": "hook",
+      "estStart": 0,
+      "estEnd": 7.7,
+      "cues": [
+        {
+          "text": "התרגיל ⁦8 + 2 × 3⁩ נראה קצר, אבל הוא יכול",
+          "estStart": 0,
+          "estEnd": 4.7
+        },
+        {
+          "text": "להוביל לשתי תשובות שונות:",
+          "estStart": 4.7,
+          "estEnd": 6.4
+        },
+        {
+          "text": "30 או 14.",
+          "estStart": 6.4,
+          "estEnd": 7.7
+        }
+      ]
+    },
+    {
+      "id": "trap",
+      "estStart": 7.7,
+      "estEnd": 12.6,
+      "cues": [
+        {
+          "text": "מי שמחשב משמאל לימין מקבל 30.",
+          "estStart": 7.7,
+          "estEnd": 10.4
+        },
+        {
+          "text": "אבל התשובה הנכונה היא 14.",
+          "estStart": 10.4,
+          "estEnd": 12.6
+        }
+      ]
+    },
+    {
+      "id": "rule",
+      "estStart": 12.6,
+      "estEnd": 20.3,
+      "cues": [
+        {
+          "text": "יש סדר קבוע. קודם סוגריים.",
+          "estStart": 12.6,
+          "estEnd": 14.6
+        },
+        {
+          "text": "אחר כך חזקות ושורשים, אם יש.",
+          "estStart": 14.6,
+          "estEnd": 17.1
+        },
+        {
+          "text": "אחר כך כפל וחילוק, ורק בסוף חיבור וחיסור.",
+          "estStart": 17.1,
+          "estEnd": 20.3
+        }
+      ]
+    },
+    {
+      "id": "solve",
+      "estStart": 20.3,
+      "estEnd": 28.8,
+      "cues": [
+        {
+          "text": "בתרגיל שלנו אין סוגריים ואין חזקות, אז",
+          "estStart": 20.3,
+          "estEnd": 23.3
+        },
+        {
+          "text": "מתחילים בכפל: ⁦2 × 3 = 6⁩.",
+          "estStart": 23.3,
+          "estEnd": 26.3
+        },
+        {
+          "text": "ואז ⁦8 + 6 = 14⁩.",
+          "estStart": 26.3,
+          "estEnd": 28.8
+        }
+      ]
+    },
+    {
+      "id": "same-rank",
+      "estStart": 28.8,
+      "estEnd": 37,
+      "cues": [
+        {
+          "text": "ועוד דבר שחשוב לזכור: כפל וחילוק נמצאים",
+          "estStart": 28.8,
+          "estEnd": 31.7
+        },
+        {
+          "text": "באותה דרגה, וגם חיבור וחיסור.",
+          "estStart": 31.7,
+          "estEnd": 33.7
+        },
+        {
+          "text": "כשיש שתי פעולות מאותה דרגה, מתקדמים משמאל",
+          "estStart": 33.7,
+          "estEnd": 36.6
+        },
+        {
+          "text": "לימין.",
+          "estStart": 36.6,
+          "estEnd": 37
+        }
+      ]
+    },
+    {
+      "id": "habit",
+      "estStart": 37,
+      "estEnd": 41,
+      "cues": [
+        {
+          "text": "וכתבו שלב ביניים. שלב ביניים אחד יכול",
+          "estStart": 37,
+          "estEnd": 39.8
+        },
+        {
+          "text": "למנוע טעות שלמה.",
+          "estStart": 39.8,
+          "estEnd": 41
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "estStart": 41,
+      "estEnd": 45.5,
+      "cues": [
+        {
+          "text": "בפוסט המלא יש עוד דוגמאות, עם סוגריים,",
+          "estStart": 41,
+          "estEnd": 43.9
+        },
+        {
+          "text": "חזקות וחילוק. הקישור בתיאור.",
+          "estStart": 43.9,
+          "estEnd": 45.5
+        }
+      ]
+    }
+  ]
+}

@@ -8,18 +8,23 @@
   },
   "scripts": {
     "dev": "wix dev",
-    "prebuild": "tsx scripts/build-site-guide.ts && node scripts/bundle-native-svg.mjs generate",
+    "prebuild": "tsx scripts/build-site-guide.ts",
     "build": "wix build",
     "check:site-guide": "tsx scripts/build-site-guide.ts --check",
     "preview": "wix preview",
     "astro": "astro",
     "typecheck": "astro check",
+    "typecheck:tests": "tsc -p tsconfig.tests.json",
     "test": "node scripts/run-tests.mjs",
     "test:unit": "node scripts/run-tests.mjs --unit",
     "catalog:measure": "node scripts/build-teacher-catalog.mjs",
     "test:live-ssr": "node scripts/run-tests.mjs --live-ssr",
+    "test:journeys": "node scripts/run-journeys.mjs",
     "refresh:catalog": "node scripts/refresh-catalog-snapshot.mjs refresh",
     "check:catalog": "node scripts/refresh-catalog-snapshot.mjs check",
+    "refresh:search-index": "tsx scripts/build-search-index.ts",
+    "check:search-index": "tsx scripts/build-search-index.ts --check",
+    "eval:search": "tsx scripts/search-eval.ts",
     "refresh:content": "node scripts/content-refresh.mjs",
     "check:content": "node scripts/content-refresh.mjs --check",
     "check:cms": "npx tsx scripts/cms-catalog-status.ts",
@@ -31,9 +36,7 @@
     "release": "wix release",
     "generate": "wix generate",
     "env": "wix env",
-    "skills": "wix skills",
-    "postbuild": "node scripts/bundle-native-svg.mjs finalize",
-    "predev": "node scripts/bundle-native-svg.mjs generate"
+    "skills": "wix skills"
   },
   "dependencies": {
     "@astrojs/node": "^9.5.5",
@@ -50,13 +53,14 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@emnapi/runtime": "^1.11.3",
+    "@types/node": "^22.20.5",
     "@wix/astro": "^2.39.0",
     "@wix/astro-pages": "^2.0.4",
     "@wix/astro-wix-hosting-adapter": "^2.0.0",
     "@wix/cli": "^1.1.92",
-    "esbuild": "0.27.7",
-    "linkedom": "^0.18.12",
-    "puppeteer-core": "^25.13.0",
+    "pdfjs-dist": "3.11.174",
+    "puppeteer-core": "^25.12.0",
     "tsx": "^4.23.15"
   },
   "allowScripts": {
