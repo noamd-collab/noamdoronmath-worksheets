@@ -12,16 +12,16 @@ import {
   resolveQwenTarget,
   RAMZI_TEXT,
   handleCompanionTurn,
-  isRoleQuestion,
   isWorksheetSolveRequest,
-  roleAnswer,
 } from "./companion.js";
+import { resolveDeterministicTurn } from "./guide-flow.js";
 import {
   corsHeadersFor,
   guardCompanionRequest,
   isAllowedOrigin,
   isHeadlessPreviewHost,
   isOutboundTimeout,
+  takeCompanionRate,
 } from "./bot-guard.js";
 import {
   classifyTeacherRequest,
@@ -149,11 +149,10 @@ function missingTeacher() {
 
 export async function runCompanionTurn(payload, deps) {
   const settings = deps || {};
+  const guided = resolveDeterministicTurn(payload, settings);
+  if (guided) return guided;
   const page = payload && payload.page && typeof payload.page === "object" ? payload.page : {};
   const message = String((payload && payload.message) || "");
-  if (isRoleQuestion(message)) {
-    return withIds(Object.assign({ active: true }, roleAnswer(payload)), [], []);
-  }
   if (isWorksheetSolveRequest("worksheet", message)) {
     const text = page.kind === "worksheet" ? RAMZI_TEXT : "נועם AI לא פותר שאלה ולא ממציא תרגיל. הבחירה היא רק מתוך מה שכבר קיים באתר.";
     return withIds(
@@ -299,6 +298,39 @@ function jsonResponse(status, body, origin) {
   return { status, headers: responseHeaders(origin), body };
 }
 
+function requestHostFrom(request, settings) {
+  if (settings && settings.requestHost) return String(settings.requestHost).trim();
+  const raw = request && typeof request.url === "string" ? request.url : "";
+  try {
+    return new URL(raw).hostname;
+  } catch (error) {
+    return "";
+  }
+}
+
+function denied(guard, origin) {
+  const fail = withIds(
+    {
+      ok: false,
+      active: true,
+      code: guard.code,
+      source: "fallback",
+      error: FALLBACK_TEXT,
+      text: FALLBACK_TEXT,
+      answer: FALLBACK_TEXT,
+      options: [],
+      links: [],
+      essential: [],
+    },
+    [],
+    []
+  );
+  if (guard.code === "BOT_VERIFICATION_FAILED" && guard.siteverify) {
+    fail.siteverify = guard.siteverify;
+  }
+  return { status: guard.status || 403, headers: responseHeaders(origin), body: fail };
+}
+
 function readJson(payload) {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) return {};
   return payload;
@@ -335,54 +367,61 @@ export async function handleNoamSiteCompanion(request, deps) {
   if (!originAllowed) {
     return { status: 403, headers: { Vary: "Origin" }, body: "" };
   }
-  // A greeting has no model call and no cost. Answer it before the guard.
-  if (isRoleQuestion(payload.message)) {
-    return jsonResponse(200, await runCompanionTurn(payload, settings), origin);
+  const requestHost = requestHostFrom(request, settings);
+  const store = settings.store || defaultStore;
+  // Fixed answers skip reCAPTCHA. They still take the same 12/min slot.
+  const limited = await takeCompanionRate(
+    {
+      clientIp: settings.clientIp,
+      botVerification: payload.botVerification,
+      now: settings.now,
+    },
+    { store, noIpGlobalMax: settings.noIpGlobalMax, rateBackend: settings.rateBackend }
+  );
+  if (!limited.ok) {
+    const fail = denied(limited, origin);
+    if (payload.rateProbe === true && isHeadlessPreviewHost(requestHost) && fail.body && typeof fail.body === "object") {
+      fail.body.backend = limited.backend || "memory";
+      if (limited.wixError) fail.body.wixError = String(limited.wixError).slice(0, 300);
+    }
+    return fail;
   }
+  if (payload.rateProbe === true) {
+    const probe = { ok: true, active: true, probe: true, code: "RATE_OK" };
+    if (isHeadlessPreviewHost(requestHost)) {
+      probe.backend = limited.backend || "memory";
+      if (limited.wixError) probe.wixError = String(limited.wixError).slice(0, 300);
+    }
+    return jsonResponse(200, probe, origin);
+  }
+  // Guide, topic order, and lesson picking do not call the model.
+  // Answer them before reCAPTCHA so a failed check does not block a real visitor.
+  const guided = resolveDeterministicTurn(payload, settings);
+  if (guided) return jsonResponse(200, guided, origin);
   const guard = await guardCompanionRequest(
     {
       origin,
+      requestHost,
       clientIp: settings.clientIp,
       message: payload.message,
       botVerification: payload.botVerification,
       now: settings.now,
     },
     {
-      store: settings.store || defaultStore,
+      store,
+      skipRateLimit: true,
       secret: settings.recaptchaSecret,
       fetch: settings.fetch,
       extraOrigins: isHeadlessPreviewOrigin(origin) ? [origin] : [],
       recaptchaTimeoutMs: settings.recaptchaTimeoutMs,
       noIpGlobalMax: settings.noIpGlobalMax,
+      recaptchaBypass: settings.recaptchaBypass,
     }
   );
   if (!guard.ok && guard.code === "UNAVAILABLE") {
     return jsonResponse(200, unavailableBody(), origin);
   }
-  if (!guard.ok) {
-    const fail = withIds(
-      {
-        ok: false,
-        active: true,
-        code: guard.code,
-        source: "fallback",
-        error: FALLBACK_TEXT,
-        text: FALLBACK_TEXT,
-        answer: FALLBACK_TEXT,
-        options: [],
-        links: [],
-        essential: [],
-      },
-      [],
-      []
-    );
-    if (guard.code === "BOT_VERIFICATION_FAILED" && guard.siteverify) {
-      fail.siteverify = guard.siteverify;
-    }
-    const cors = corsHeadersFor(origin);
-    if (!cors) return { status: 403, headers: { Vary: "Origin" }, body: "" };
-    return { status: guard.status, headers: cors, body: fail };
-  }
+  if (!guard.ok) return denied(guard, origin);
   try {
     const result = await runCompanionTurn(payload, settings);
     return jsonResponse(200, result, origin);

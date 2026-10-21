@@ -252,7 +252,22 @@ function navigationAnswer(current, previous, next) {
   if (previous) lines.push("\u05D4\u05E0\u05D5\u05E9\u05D0 \u05D4\u05E7\u05D5\u05D3\u05DD \u05DC\u05E4\u05E0\u05D9 " + current.title + " \u05D4\u05D5\u05D0 " + previous.title + ".");
   return lines.join(" ");
 }
+var KITE_QUERY = /דלתון|עפיפון|\bkite\b/i;
+function anchoredTopic(input, catalog, guide) {
+  const message = String(input && input.message || "");
+  if (!KITE_QUERY.test(message)) return null;
+  const sequence = didacticSequence(catalog);
+  const item = sequence.find((row) => Number(row.grade) === 9 && bareTitle(row.title) === bareTitle("\u05D3\u05DC\u05EA\u05D5\u05DF"));
+  if (!item) return null;
+  const named = gradeMentioned(message);
+  const answer = named != null && named !== 9 ? "\u05D3\u05DC\u05EA\u05D5\u05DF \u05D4\u05D5\u05D0 \u05E0\u05D5\u05E9\u05D0 \u05D1\u05DE\u05E8\u05D5\u05D1\u05E2\u05D9\u05DD \u05E9\u05DC \u05DB\u05D9\u05EA\u05D4 \u05D8\u05F3. \u05D0\u05D9\u05DF \u05D3\u05E3 \u05D3\u05DC\u05EA\u05D5\u05DF \u05D1\u05DB\u05D9\u05EA\u05D4 \u05D0\u05D7\u05E8\u05EA." : "\u05D3\u05DC\u05EA\u05D5\u05DF \u05D4\u05D5\u05D0 \u05E0\u05D5\u05E9\u05D0 \u05D1\u05DE\u05E8\u05D5\u05D1\u05E2\u05D9\u05DD \u05E9\u05DC \u05DB\u05D9\u05EA\u05D4 \u05D8\u05F3, \u05D1\u05EA\u05D7\u05D9\u05DC\u05EA \u05E1\u05D3\u05E8 \u05D4\u05DE\u05E8\u05D5\u05D1\u05E2\u05D9\u05DD.";
+  const chip = chipFor(guide, item);
+  const details = ["\u05DB\u05D9\u05EA\u05D4 \u05D8\u05F3 \xB7 \u05DE\u05E8\u05D5\u05D1\u05E2\u05D9\u05DD", "\u05D4\u05E7\u05D9\u05E9\u05D5\u05E8 \u05E4\u05D5\u05EA\u05D7 \u05D0\u05EA \u05D3\u05E3 \u05D4\u05D3\u05DC\u05EA\u05D5\u05DF \u05E9\u05DC \u05DB\u05D9\u05EA\u05D4 \u05D8\u05F3.", "\u05E1\u05D3\u05E8 \u05D4\u05DE\u05E8\u05D5\u05D1\u05E2\u05D9\u05DD \u05DE\u05EA\u05D7\u05D9\u05DC \u05D1\u05D3\u05DC\u05EA\u05D5\u05DF."].join("\n");
+  return resultFrom(answer, details, uniqueChips([chip]));
+}
 function suggestTopicGroup(input, catalog, guide) {
+  const anchored = anchoredTopic(input, catalog, guide);
+  if (anchored) return anchored;
   const sequence = didacticSequence(catalog);
   if (!sequence.length) return null;
   const page = input && input.page || {};

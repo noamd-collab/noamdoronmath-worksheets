@@ -1,3 +1,5 @@
+import { wizardPrefillFromSearch } from './wizard-prefill.js';
+
 /* Teacher picker for every catalog sheet.
    Grades 7–9: choose existing exercises across sheets.
    Grades 1–6: choose a sheet by topic and level.
@@ -2187,6 +2189,38 @@ function bind() {
     input.checked = true;
     applyScenario(goal);
   });
+  document.addEventListener('noam-teacher-prefill', (event) => {
+    const detail = event.detail || {};
+    const prefill = detail.exerciseIds ? detail : wizardPrefillFromSearch(detail.href || '');
+    applyWizardPrefill(prefill);
+  });
+}
+
+function applyWizardPrefill(prefill) {
+  if (!prefill || !prefill.grade || !prefill.topic) return;
+  state.grade = String(prefill.grade);
+  state.topic = String(prefill.topic);
+  state.level = prefill.level || 'all';
+  state.scenario = 'other';
+  state.expanded = true;
+  fillGrades();
+  fillTopics();
+  return loadCurrentTopic().then(() => {
+    const allow = new Set(visibleSelectionKeys());
+    const ids = prefill.exerciseIds || [];
+    state.selected = ids.filter((id) => allow.has(id));
+    const note = $('teacher-note');
+    if (note && prefill.minutes && !note.value) note.value = 'אורך שיעור: ' + prefill.minutes + ' דקות';
+    render();
+    state.wizard = 'pick';
+    applyWizard();
+    announce('הבחירה מנועם AI נטענה לאשף.');
+    const picked = document.querySelector('#questions input:checked');
+    const card = picked && picked.closest('.q-card');
+    if (card && typeof card.scrollIntoView === 'function') {
+      card.scrollIntoView({ block: 'start', inline: 'nearest' });
+    }
+  });
 }
 
 async function start() {
@@ -2195,9 +2229,14 @@ async function start() {
   if (!response.ok) throw new Error('CATALOG');
   CATALOG = await response.json();
   indexCatalog();
+  bind();
+  const prefill = wizardPrefillFromSearch(location.search);
+  if (prefill) {
+    await applyWizardPrefill(prefill);
+    return;
+  }
   fillGrades();
   fillTopics();
-  bind();
   await loadCurrentTopic();
   applyScenario(state.scenario, { quiet: true });
 }
