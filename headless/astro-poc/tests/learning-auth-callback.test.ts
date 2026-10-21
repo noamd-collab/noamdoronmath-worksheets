@@ -83,33 +83,27 @@ describe('M35 learning auth same-origin callback', () => {
   });
 
   it('guest progress merge fills missing account rows without overwrite', async () => {
-    const mem: {
-      data: Record<string, string>;
-      getItem(k: string): string | null;
-      setItem(k: string, v: unknown): void;
-      removeItem(k: string): void;
-    } = {
+    const mem = {
       data: {
         'noam-learning-guest-v1': JSON.stringify({
           a: { status: 'started', updated_at: '2026-01-01T00:00:00.000Z' },
           b: { status: 'completed', updated_at: '2026-01-02T00:00:00.000Z' },
         }),
       },
-      getItem(k: string) {
+      getItem(k) {
         return this.data[k] || null;
       },
-      setItem(k: string, v: unknown) {
+      setItem(k, v) {
         this.data[k] = String(v);
       },
-      removeItem(k: string) {
+      removeItem(k) {
         delete this.data[k];
       },
     };
     const cloudRows = {
       b: { worksheet_id: 'b', status: 'review', updated_at: '2026-01-03T00:00:00.000Z' },
     };
-    type UpsertRow = { worksheet_id: string; [key: string]: unknown };
-    const upserted: { rows: UpsertRow[]; opts: { ignoreDuplicates?: boolean } }[] = [];
+    const upserted = [];
     const client = {
       from() {
         const api = {
@@ -125,7 +119,7 @@ describe('M35 learning auth same-origin callback', () => {
               error: null,
             });
           },
-          upsert(rows: UpsertRow[], opts: { ignoreDuplicates?: boolean }) {
+          upsert(rows, opts) {
             upserted.push({ rows, opts });
             return {
               select() {
@@ -135,7 +129,7 @@ describe('M35 learning auth same-origin callback', () => {
                   },
                 };
               },
-              then(resolve: (result: { data: null; error: null }) => void) {
+              then(resolve) {
                 resolve({ data: null, error: null });
               },
             };

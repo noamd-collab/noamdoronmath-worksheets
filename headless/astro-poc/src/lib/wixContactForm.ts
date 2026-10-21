@@ -13,8 +13,6 @@
  * Never log the API key or message bodies.
  */
 
-import { runtimeProcessEnv } from './runtimeEnv';
-
 export const PRODUCTION_CONTACT_FORM = {
   formId: 'b8f7e551-c9bd-44a1-8371-45c115344b8f',
   componentId: 'comp-mrxgdvcl',
@@ -69,7 +67,7 @@ export type ContactSubmitMode = 'dry-run' | 'live' | 'live-blocked';
 
 function formsApiKey(): string {
   try {
-    return String(runtimeProcessEnv().WIX_FORMS_API_KEY || '').trim();
+    return String((process.env as Record<string, string | undefined>).WIX_FORMS_API_KEY || '').trim();
   } catch {
     return '';
   }
@@ -77,7 +75,7 @@ function formsApiKey(): string {
 
 function liveSubmitFlagEnabled(): boolean {
   try {
-    const v = String(runtimeProcessEnv().WIX_FORMS_LIVE_SUBMIT || '')
+    const v = String((process.env as Record<string, string | undefined>).WIX_FORMS_LIVE_SUBMIT || '')
       .trim()
       .toLowerCase();
     return v === '1' || v === 'true' || v === 'yes';

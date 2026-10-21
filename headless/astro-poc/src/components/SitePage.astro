@@ -1,5 +1,4 @@
 ---
-import { wixFillSize } from '../lib/wixMedia';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LineArtDoodles from './LineArtDoodles.astro';
 import LandingLoop from './LandingLoop.astro';
@@ -120,7 +119,7 @@ const marketingLoop = marketingLandingLoop(page.slug);
                   if (block.type === 'img') {
                     return (
                       <figure class="site-page__figure">
-                        <img src={block.src} alt={block.alt || ''} loading="lazy" {...(wixFillSize(block.src) || {})} />
+                        <img src={block.src} alt={block.alt || ''} loading="lazy" />
                       </figure>
                     );
                   }
@@ -208,7 +207,7 @@ const marketingLoop = marketingLandingLoop(page.slug);
           if (block.type === 'img') {
             return (
               <figure class="site-page__figure">
-                <img src={block.src} alt={block.alt || ''} loading="lazy" {...(wixFillSize(block.src) || {})} />
+                <img src={block.src} alt={block.alt || ''} loading="lazy" />
               </figure>
             );
           }

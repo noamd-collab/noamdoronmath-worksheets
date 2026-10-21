@@ -17,7 +17,7 @@ Independent educational browser calculator for Noam Doron Math. The shell is a g
 
 - All eight mode families: COMP, CMPLX, STAT, BASE-N, EQN, MATRIX, TABLE and VECTOR.
 - SHIFT, ALPHA, MODE/SETUP, replay/editing, ON/OFF, insertion/deletion, Ans, variables A–F/X/Y/M, STO/RCL and M+/M−.
-- Natural fraction/root/power templates, mixed fractions, fraction/decimal toggle, π, e, logarithms, trigonometric and inverse functions, hyperbolic functions, factorials, combinations, permutations, percentages, random values and RanInt#.
+- Fraction, root and power templates, mixed fractions, fraction/decimal toggle, π, e, logarithms, trigonometric and inverse functions, hyperbolic functions, factorials, combinations, permutations, percentages, random values and RanInt#.
 - DEG/RAD/GRA, Fix/Sci/Norm, decimal separators, engineering notation, DMS, coordinate conversions and screen contrast.
 - CALC, SOLVE, finite sums, numerical derivatives and integrals; 40 CODATA 2014 constants and 40 conversion codes.
 - Frequency statistics, seven regression models plus one-variable statistics, normal-distribution functions, means/sums/deviations and predictions.

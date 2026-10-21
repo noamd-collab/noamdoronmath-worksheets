@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129.63 206.87" width="129.63" height="206.87" data-dialect="wspec-graph-svg/1">
+<g data-layer="grid">
+<line id="e0001" data-grid="x 0" x1="20.32" y1="43.74" x2="20.32" y2="177.04" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0002" data-grid="x 1" x1="33.65" y1="43.74" x2="33.65" y2="161.21" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0003" data-grid="x 1" x1="33.65" y1="172.08" x2="33.65" y2="177.04" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0004" data-grid="x 2" x1="46.98" y1="43.74" x2="46.98" y2="177.04" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0005" data-grid="x 3" x1="60.31" y1="43.74" x2="60.31" y2="177.04" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0006" data-grid="x 4" x1="73.64" y1="43.74" x2="73.64" y2="177.04" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0007" data-grid="x 5" x1="86.97" y1="43.74" x2="86.97" y2="177.04" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0008" data-grid="x 6" x1="100.3" y1="43.74" x2="100.3" y2="177.04" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0009" data-grid="y 0" x1="20.32" y1="177.04" x2="100.3" y2="177.04" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0010" data-grid="y 1" x1="20.32" y1="163.71" x2="31.55" y2="163.71" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0011" data-grid="y 1" x1="42.67" y1="163.71" x2="100.3" y2="163.71" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0012" data-grid="y 2" x1="20.32" y1="150.38" x2="100.3" y2="150.38" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0013" data-grid="y 3" x1="20.32" y1="137.05" x2="100.3" y2="137.05" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0014" data-grid="y 4" x1="20.32" y1="123.72" x2="100.3" y2="123.72" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0015" data-grid="y 5" x1="20.32" y1="110.39" x2="100.3" y2="110.39" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0016" data-grid="y 6" x1="20.32" y1="97.06" x2="100.3" y2="97.06" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0017" data-grid="y 7" x1="20.32" y1="83.73" x2="100.3" y2="83.73" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0018" data-grid="y 8" x1="20.32" y1="70.4" x2="100.3" y2="70.4" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0019" data-grid="y 9" x1="20.32" y1="57.07" x2="100.3" y2="57.07" stroke="#c8c8c8" stroke-width="0.47"/>
+<line id="e0020" data-grid="y 10" x1="20.32" y1="43.74" x2="100.3" y2="43.74" stroke="#c8c8c8" stroke-width="0.47"/>
+</g>
+<g data-layer="axes">
+<line id="e0021" data-axis="x" x1="12.32" y1="177.04" x2="108.29" y2="177.04" stroke="#000000" stroke-width="1.07"/>
+<polygon id="e0022" data-arrow="x" points="108.29,174.24 115.29,177.04 108.29,179.84" fill="#000000" stroke="none"/>
+<line id="e0023" data-axis="y" x1="20.32" y1="185.03" x2="20.32" y2="35.74" stroke="#000000" stroke-width="1.07"/>
+<polygon id="e0024" data-arrow="y" points="17.52,35.74 20.32,28.74 23.12,35.74" fill="#000000" stroke="none"/>
+<line id="e0025" data-tick="x 1" x1="33.65" y1="174.04" x2="33.65" y2="180.04" stroke="#000000" stroke-width="0.8"/>
+<line id="e0026" data-tick="x 2" x1="46.98" y1="174.04" x2="46.98" y2="180.04" stroke="#000000" stroke-width="0.8"/>
+<line id="e0027" data-tick="x 3" x1="60.31" y1="174.04" x2="60.31" y2="180.04" stroke="#000000" stroke-width="0.8"/>
+<line id="e0028" data-tick="x 4" x1="73.64" y1="174.04" x2="73.64" y2="180.04" stroke="#000000" stroke-width="0.8"/>
+<line id="e0029" data-tick="x 5" x1="86.97" y1="174.04" x2="86.97" y2="180.04" stroke="#000000" stroke-width="0.8"/>
+<line id="e0030" data-tick="x 6" x1="100.3" y1="174.04" x2="100.3" y2="180.04" stroke="#000000" stroke-width="0.8"/>
+<line id="e0031" data-tick="y 2" x1="17.32" y1="150.38" x2="23.32" y2="150.38" stroke="#000000" stroke-width="0.8"/>
+<line id="e0032" data-tick="y 4" x1="17.32" y1="123.72" x2="23.32" y2="123.72" stroke="#000000" stroke-width="0.8"/>
+<line id="e0033" data-tick="y 6" x1="17.32" y1="97.06" x2="23.32" y2="97.06" stroke="#000000" stroke-width="0.8"/>
+<line id="e0034" data-tick="y 8" x1="17.32" y1="70.4" x2="23.32" y2="70.4" stroke="#000000" stroke-width="0.8"/>
+<line id="e0035" data-tick="y 10" x1="17.32" y1="43.74" x2="23.32" y2="43.74" stroke="#000000" stroke-width="0.8"/>
+</g>
+<g data-layer="curves">
+<line id="e0036" data-curve="curve:A" x1="20.32" y1="177.04" x2="100.3" y2="43.74" stroke="#000000" stroke-width="1.33"/>
+<line id="e0037" data-curve="curve:B" x1="20.32" y1="97.06" x2="100.3" y2="123.72" stroke="#000000" stroke-width="1.33"/>
+</g>
+<g data-layer="labels">
+<text id="e0038" data-axname="x" x="120.46" y="183.69" font-family="David Libre,serif" font-size="12.67" font-style="italic" text-anchor="middle" fill="#000000">x</text>
+<text id="e0039" data-axname="y" x="12.35" y="33.17" font-family="David Libre,serif" font-size="12.67" font-style="italic" text-anchor="middle" fill="#000000">y</text>
+<text id="e0040" data-num="origin" x="18.82" y="189" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">0</text>
+<text id="e0041" data-num="x 1" x="33.65" y="189" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">1</text>
+<text id="e0042" data-num="x 2" x="46.98" y="189" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">2</text>
+<text id="e0043" data-num="x 3" x="60.31" y="189" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">3</text>
+<text id="e0044" data-num="x 4" x="73.64" y="189" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">4</text>
+<text id="e0045" data-num="x 5" x="86.97" y="189" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">5</text>
+<text id="e0046" data-num="x 6" x="100.3" y="189" font-family="David Libre,serif" font-size="10.67" text-anchor="middle" fill="#000000">6</text>
+<text id="e0047" data-num="y 2" x="15.82" y="154.11" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">6</text>
+<text id="e0048" data-num="y 4" x="15.82" y="127.45" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">12</text>
+<text id="e0049" data-num="y 6" x="15.82" y="100.79" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">18</text>
+<text id="e0050" data-num="y 8" x="15.82" y="74.13" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">24</text>
+<text id="e0051" data-num="y 10" x="15.82" y="47.47" font-family="David Libre,serif" font-size="10.67" text-anchor="end" fill="#000000">30</text>
+<text id="e0052" data-axtitle="x" x="100.09" y="200.87" font-family="David Libre,serif" font-size="12.67" text-anchor="middle" direction="ltr" unicode-bidi="bidi-override" fill="#000000">תועש</text>
+<text id="e0053" data-axtitle="y" x="20.32" y="14.87" font-family="David Libre,serif" font-size="12.67" text-anchor="middle" direction="ltr" unicode-bidi="bidi-override" fill="#000000">מ״ק</text>
+<text id="e0054" data-for="curve:A" x="37.11" y="171.08" font-family="David Libre,serif" font-size="12.67" text-anchor="middle" fill="#000000">A</text>
+<text id="e0055" data-for="curve:B" x="26.14" y="93.9" font-family="David Libre,serif" font-size="12.67" text-anchor="middle" fill="#000000">B</text>
+</g>
+</svg>

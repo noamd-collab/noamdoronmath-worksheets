@@ -4,6 +4,41 @@ body.exact-site {
   font-size:16px;line-height:normal;-webkit-font-smoothing:auto;
   background-image:none;background-attachment:scroll;
 }
+/* Phone dock: the scrollport stops above the two launchers, which sit on
+   opposite bottom corners. 128px stays after the footer so the last line
+   can scroll clear of that edge. The lock applies only when .exact-frame
+   is the scroller; a page without that frame keeps normal document scroll. */
+@media (max-width: 800px) {
+  html:not(.noam-ai-engaged):has(body.exact-site > .exact-frame) {
+    height: 100dvh;
+    overflow: hidden;
+  }
+  html:not(.noam-ai-engaged):has(body.exact-site > .exact-frame) body.exact-site,
+  html.noam-a11y-pad:not(.noam-ai-engaged):has(body.exact-site > .exact-frame) body.exact-site {
+    height: 100dvh;
+    overflow: hidden;
+    padding-bottom: 0;
+    scroll-padding-bottom: 0;
+  }
+  html:not(.noam-ai-engaged) .exact-frame {
+    min-height: 0;
+    height: calc(100dvh - 80px - env(safe-area-inset-bottom, 0px));
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
+  }
+  html:not(.noam-ai-engaged) .exact-site .exact-footer {
+    margin-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
+  }
+}
+@media print {
+  html, body.exact-site, .exact-frame {
+    height: auto !important;
+    overflow: visible !important;
+    min-height: 0 !important;
+  }
+  .exact-site .exact-footer { margin-bottom: 0 !important; }
+}
 .exact-frame {
   position:relative;z-index:0;isolation:isolate;font-family:Heebo,'Heebo Fallback',sans-serif;
   color:#22305a;min-height:100vh;background-color:#fbfaf5;
@@ -48,7 +83,7 @@ body.exact-site {
   background:#e8f4f3;color:#1f6462;border:1px solid #8fbfbd;
   font-size:11px;font-weight:700;line-height:1.65;letter-spacing:0;
 }
-.exact-nav-toggle,.exact-nav-learn-mobile,.exact-nav-search-mobile {display:none!important;}
+.exact-nav-toggle,.exact-nav-learn-mobile {display:none!important;}
 @media (min-width: 900px) {
   .exact-header {height:90px;box-sizing:border-box;}
   .exact-header__row {flex-wrap:nowrap!important;gap:8px!important;height:100%;box-sizing:border-box;padding-top:0!important;padding-bottom:0!important;padding-inline:12px!important;}
@@ -94,7 +129,7 @@ body.exact-site {
   .exact-header nav[data-nav-panel] {align-items:stretch;}
   .exact-header nav[data-nav-panel] a {box-sizing:border-box;min-height:44px;padding:10px 12px!important;border-radius:10px!important;text-align:start;}
   .exact-header nav[data-nav-panel] a.exact-nav-teachers {display:flex;}
-  .exact-header nav[data-nav-panel] .exact-nav-learn-mobile,.exact-header nav[data-nav-panel] .exact-nav-search-mobile {display:block!important;}
+  .exact-header nav[data-nav-panel] .exact-nav-learn-mobile {display:block!important;}
   .exact-nav-tools {display:block;}
   .exact-nav-tools__btn {display:none!important;}
   .exact-nav-drop {

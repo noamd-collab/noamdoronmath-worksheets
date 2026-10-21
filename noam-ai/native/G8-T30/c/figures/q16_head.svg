@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 152" width="152" height="152">
+<g data-layer="wedges">
+<path id="e0001" d="M 76 76 L 76 4 A 72 72 0 0 1 130.75 29.24 A 72 72 0 0 1 147.11 87.26 Z" fill="#f2f2f2" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qp:a"/>
+<path id="e0002" d="M 76 76 L 147.11 87.26 A 72 72 0 0 1 68.47 147.61 A 72 72 0 0 1 4.1 72.23 A 72 72 0 0 1 76 4 Z" fill="#cccccc" stroke="#000000" stroke-width="1" stroke-linejoin="round" data-pie="wedge" data-for="sector:qp:b"/>
+</g>
+<g data-layer="lines">
+<circle id="e0003" cx="76" cy="76" r="72" fill="none" stroke="#000000" stroke-width="1" data-pie="outline" data-for="pie:qp"/>
+</g>
+<g data-layer="labels">
+<text id="e0004" x="108.85" y="47.02" font-size="12.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" direction="ltr" unicode-bidi="bidi-override" data-pie="name" data-for="sector:qp:a">טמחש</text>
+<text id="e0005" x="108.85" y="57.64" font-size="10.67" font-family="David Libre,serif" text-anchor="middle" fill="#000000" data-pie="val" data-for="sector:qp:a">99°</text>
+</g>
+</svg>

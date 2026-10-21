@@ -32,7 +32,7 @@ describe('grade 9 PDF v2 replacements', () => {
     assert.ok(grade);
     const topic = grade.topics.find((entry) => entry.noamTopicId === 'G9-T15');
     assert.ok(topic);
-    assert.equal(topic.title, 'משולש שווה־שוקיים');
+    assert.equal(topic.title, 'משולש שווה שוקיים');
     assert.match(topic.description || '', /הקדמה לדלתון/);
     assert.match(catalog.searchTerms['9']['4'], /דלתון/);
     assert.match(catalog.searchTerms['9']['4'], /kite/);

@@ -1,0 +1,10026 @@
+{
+ "schema_version": "noam-ai/v1",
+ "package": "G8-T15",
+ "level": "c",
+ "curriculum": {
+  "grade": "8",
+  "track": "ח",
+  "topic": "slope_linear",
+  "unit": "קצב שינוי, שיפוע, ייצוג אלגברי של פונקציה ליניארית",
+  "allowed_tools": [
+   {
+    "id": "g7.coordinate_system.1",
+    "name": "מערכת צירים והרחבתה"
+   },
+   {
+    "id": "g7.directed_numbers.1",
+    "name": "הכרה"
+   },
+   {
+    "id": "g7.directed_numbers.2",
+    "name": "חיבור"
+   },
+   {
+    "id": "g7.directed_numbers.3",
+    "name": "חיסור"
+   },
+   {
+    "id": "g7.directed_numbers.4",
+    "name": "כפל וחילוק"
+   },
+   {
+    "id": "g7.angles.1",
+    "name": "סימון"
+   },
+   {
+    "id": "g7.angles.2",
+    "name": "מדידה"
+   },
+   {
+    "id": "g7.angles.3",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "g7.angles.4",
+    "name": "סכום והפרש"
+   },
+   {
+    "id": "g7.angles.5",
+    "name": "צמודות וקודקודיות"
+   },
+   {
+    "id": "g7.angles.6",
+    "name": "זוויות במשולש ובמרובע"
+   },
+   {
+    "id": "g7.transformations.1",
+    "name": "צורות חופפות במישור וטרנספורמציות"
+   },
+   {
+    "id": "g7.powers_roots.1",
+    "name": "חזקות עם מעריך טבעי ושורש ריבועי חיובי"
+   },
+   {
+    "id": "g7.areas.1",
+    "name": "שטחים א׳"
+   },
+   {
+    "id": "g7.areas.2",
+    "name": "ב׳"
+   },
+   {
+    "id": "g7.areas.3",
+    "name": "חישוב היקפים"
+   },
+   {
+    "id": "g7.algebraic_expressions.1",
+    "name": "משתנים וביטויים אלגבריים"
+   },
+   {
+    "id": "g7.algebraic_expressions.2",
+    "name": "זהות"
+   },
+   {
+    "id": "g7.algebraic_expressions.3",
+    "name": "כינוס איברים דומים"
+   },
+   {
+    "id": "g7.algebraic_expressions.4",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "g7.solids.1",
+    "name": "גופים במרחב: קובייה"
+   },
+   {
+    "id": "g7.solids.2",
+    "name": "תיבה"
+   },
+   {
+    "id": "g7.solids.3",
+    "name": "מנסרה משולשת"
+   },
+   {
+    "id": "g7.data_frequency.1",
+    "name": "איסוף"
+   },
+   {
+    "id": "g7.data_frequency.2",
+    "name": "ייצוג וקריאת מידע"
+   },
+   {
+    "id": "g7.data_frequency.3",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g7.data_frequency.4",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g7.data_frequency.5",
+    "name": "הסתברות בהקשר של שכיחות יחסית"
+   },
+   {
+    "id": "g7.pythagoras.1",
+    "name": "משפט פיתגורס ושימושיו"
+   },
+   {
+    "id": "g7.equations.1",
+    "name": "משוואות ממעלה ראשונה ופתרונן"
+   },
+   {
+    "id": "g7.word_problems.1",
+    "name": "שאלות בהקשרים בעזרת משוואה ממעלה ראשונה"
+   },
+   {
+    "id": "g7.points_on_graph.1",
+    "name": "נקודות על גרף ברביע I"
+   },
+   {
+    "id": "g8.ratio_scale.1",
+    "name": "יחס"
+   },
+   {
+    "id": "g8.ratio_scale.2",
+    "name": "פרופורציה וקנה מידה"
+   },
+   {
+    "id": "g8.pythagoras.1",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "g8.percentages.1",
+    "name": "אחוזים"
+   },
+   {
+    "id": "g8.cylinder_cone.1",
+    "name": "גליל"
+   },
+   {
+    "id": "g8.cylinder_cone.2",
+    "name": "חרוט"
+   },
+   {
+    "id": "g8.data_center.1",
+    "name": "איסוף מידע"
+   },
+   {
+    "id": "g8.data_center.2",
+    "name": "שכיחות"
+   },
+   {
+    "id": "g8.data_center.3",
+    "name": "שכיחות יחסית"
+   },
+   {
+    "id": "g8.data_center.4",
+    "name": "טווח ומדדי מרכז"
+   },
+   {
+    "id": "g8.data_center.5",
+    "name": "שני מקורות מידע"
+   },
+   {
+    "id": "g8.transformations.1",
+    "name": "טרנספורמציות וצורות חופפות"
+   },
+   {
+    "id": "g8.functions_intro.1",
+    "name": "מבוא לפונקציות"
+   },
+   {
+    "id": "g8.functions_intro.2",
+    "name": "ייצוגים"
+   },
+   {
+    "id": "g8.functions_intro.3",
+    "name": "עלייה וירידה"
+   },
+   {
+    "id": "g8.functions_intro.4",
+    "name": "גרפים לינאריים"
+   },
+   {
+    "id": "g8.slope_linear.1",
+    "name": "קצב שינוי"
+   },
+   {
+    "id": "g8.slope_linear.2",
+    "name": "שיפוע"
+   },
+   {
+    "id": "g8.slope_linear.3",
+    "name": "ייצוג אלגברי של פונקציה ליניארית"
+   },
+   {
+    "id": "thm.adjacent_angles",
+    "name": "זוויות צמודות (סכומן 180°)"
+   },
+   {
+    "id": "thm.vertical_angles",
+    "name": "זוויות קודקודיות שוות"
+   },
+   {
+    "id": "thm.angle_bisector",
+    "name": "חוצה זווית"
+   },
+   {
+    "id": "thm.alternate_angles",
+    "name": "זוויות מתחלפות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.corresponding_angles",
+    "name": "זוויות מתאימות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.triangle_angle_sum",
+    "name": "סכום הזוויות במשולש 180°"
+   },
+   {
+    "id": "thm.quad_angle_sum",
+    "name": "סכום הזוויות במרובע 360°"
+   },
+   {
+    "id": "frm.area_rectangle",
+    "name": "שטח מלבן = אורך × רוחב"
+   },
+   {
+    "id": "frm.area_triangle",
+    "name": "שטח משולש = צלע × גובה : 2"
+   },
+   {
+    "id": "frm.area_parallelogram",
+    "name": "שטח מקבילית = צלע × גובה"
+   },
+   {
+    "id": "frm.area_trapezoid",
+    "name": "שטח טרפז = (סכום בסיסים) × גובה : 2"
+   },
+   {
+    "id": "frm.perimeter",
+    "name": "היקף מצולע"
+   },
+   {
+    "id": "frm.box_volume",
+    "name": "נפח תיבה"
+   },
+   {
+    "id": "frm.box_surface",
+    "name": "שטח פנים של תיבה"
+   },
+   {
+    "id": "thm.pythagoras",
+    "name": "משפט פיתגורס"
+   },
+   {
+    "id": "thm.pythagoras_converse",
+    "name": "המשפט ההפוך למשפט פיתגורס"
+   },
+   {
+    "id": "mth.distributive",
+    "name": "חוק הפילוג"
+   },
+   {
+    "id": "mth.first_degree_eq",
+    "name": "פתרון משוואה ממעלה ראשונה"
+   }
+  ],
+  "not_yet_allowed": [
+   {
+    "id": "g8.word_problems_eq.1",
+    "name": "שאלות מילוליות בעזרת משוואות"
+   },
+   {
+    "id": "g8.congruence.1",
+    "name": "חפיפת משולשים"
+   },
+   {
+    "id": "g8.inter_extrapolation.1",
+    "name": "אינטרפולציה"
+   },
+   {
+    "id": "g8.inter_extrapolation.2",
+    "name": "אקסטרפולציה"
+   },
+   {
+    "id": "g8.triangle_parts.1",
+    "name": "צלעות במשולש"
+   },
+   {
+    "id": "g8.triangle_parts.2",
+    "name": "תיכון"
+   },
+   {
+    "id": "g8.triangle_parts.3",
+    "name": "זווית חיצונית"
+   },
+   {
+    "id": "g8.triangle_parts.4",
+    "name": "שווה שוקיים"
+   },
+   {
+    "id": "g8.triangle_parts.5",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g8.systems_basic.1",
+    "name": "מערכות משוואות (רמה בסיסית)"
+   },
+   {
+    "id": "g8.similarity.1",
+    "name": "דמיון משולשים"
+   },
+   {
+    "id": "g8.probability.1",
+    "name": "הסתברות א"
+   },
+   {
+    "id": "g8.probability.2",
+    "name": "הסתברות ב"
+   },
+   {
+    "id": "g8.pythagoras_3d.1",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "g8.inequalities.1",
+    "name": "אי-שוויונות"
+   },
+   {
+    "id": "g9.alg_technique.1",
+    "name": "חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.2",
+    "name": "פישוט ביטויים בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.3",
+    "name": "פתרון משוואות בעזרת חוק הפילוג המורחב"
+   },
+   {
+    "id": "g9.alg_technique.4",
+    "name": "שאלות השוואת שטחים בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9.alg_technique.5",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.6",
+    "name": "פירוק לגורמים: הוצאת גורם משותף"
+   },
+   {
+    "id": "g9.alg_technique.7",
+    "name": "פירוק תלת-איבר ריבועי (מקדם 1)"
+   },
+   {
+    "id": "g9.alg_technique.8",
+    "name": "פירוק בעזרת נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "g9.alg_technique.9",
+    "name": "פתרון משוואות ריבועיות בסיסיות באמצעות פירוק לגורמים"
+   },
+   {
+    "id": "g9.alg_technique.10",
+    "name": "צמצום שברים אלגבריים"
+   },
+   {
+    "id": "g9.alg_technique.11",
+    "name": "כפל וחילוק שברים אלגבריים"
+   },
+   {
+    "id": "g9.kite.1",
+    "name": "הכרת הדלתון"
+   },
+   {
+    "id": "g9.kite.2",
+    "name": "זוויות בדלתון"
+   },
+   {
+    "id": "g9.kite.3",
+    "name": "האלכסון הראשי בדלתון"
+   },
+   {
+    "id": "g9.isosceles_converse.1",
+    "name": "משפטים הפוכים להוכחה כי משולש הוא שווה שוקיים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.1",
+    "name": "היכרות עם הגרף והביטוי האלגברי"
+   },
+   {
+    "id": "g9.quad_func_and_eq.2",
+    "name": "תכונות הפונקציה הריבועית (התייחסות איכותנית): קיצון, עלייה וירידה, חיתוך עם הצירים, חיוביות ושליליות"
+   },
+   {
+    "id": "g9.quad_func_and_eq.3",
+    "name": "הזזה אנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.4",
+    "name": "הזזה אופקית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.5",
+    "name": "שילוב הזזה אופקית ואנכית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.6",
+    "name": "הצגת פונקציה ריבועית כמכפלה"
+   },
+   {
+    "id": "g9.quad_func_and_eq.7",
+    "name": "הצגה סטנדרטית"
+   },
+   {
+    "id": "g9.quad_func_and_eq.8",
+    "name": "פתרון משוואות ריבועיות בעזרת נוסחת השורשים"
+   },
+   {
+    "id": "g9.quad_func_and_eq.9",
+    "name": "סרטוט גרף על סמך ייצוג סטנדרטי"
+   },
+   {
+    "id": "g9.side_angle_relations.1",
+    "name": "מול הצלע הגדולה ממוקמת הזווית הגדולה"
+   },
+   {
+    "id": "g9.side_angle_relations.2",
+    "name": "מול הזווית הגדולה ממוקמת הצלע הגדולה"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.1",
+    "name": "הניצב מול זווית 30° שווה למחצית היתר"
+   },
+   {
+    "id": "g9.right_triangle_30_60_90.2",
+    "name": "משפט הפוך: ניצב השווה למחצית היתר ⇒ הזווית שמולו 30°"
+   },
+   {
+    "id": "g9.parallels_trapezoid.1",
+    "name": "תכונות של הקבלה או אי-הקבלה"
+   },
+   {
+    "id": "g9.parallels_trapezoid.2",
+    "name": "משפט הפוך לישרים מקבילים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.3",
+    "name": "הכרת הטרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.4",
+    "name": "טרפז שווה שוקיים"
+   },
+   {
+    "id": "g9.parallels_trapezoid.5",
+    "name": "הוכחה שמרובע הוא טרפז"
+   },
+   {
+    "id": "g9.parallels_trapezoid.6",
+    "name": "שטח והיקף טרפז"
+   },
+   {
+    "id": "g9.quad_eq_applications.1",
+    "name": "כולל שימוש בטכניקה אלגברית"
+   },
+   {
+    "id": "g9.quad_inequalities.1",
+    "name": "פתרון אי-שוויון ריבועי בהקשר של פונקציה ריבועית"
+   },
+   {
+    "id": "g9.parallelogram.1",
+    "name": "הגדרת מקבילית"
+   },
+   {
+    "id": "g9.parallelogram.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9.parallelogram.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.rational_equations.1",
+    "name": "פתרון משוואות עם פירוק לגורמים במכנה"
+   },
+   {
+    "id": "g9.rational_equations.2",
+    "name": "תחום הצבה"
+   },
+   {
+    "id": "g9.rational_equations.3",
+    "name": "משוואות שבהן אחד הפתרונות אינו קביל"
+   },
+   {
+    "id": "g9.rectangle.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rectangle.2",
+    "name": "תכונות צלעות, זוויות, אלכסונים"
+   },
+   {
+    "id": "g9.rectangle.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.probability.1",
+    "name": "מהי הסתברות, מושגים בסיסיים (כולל השלמה של ח׳)"
+   },
+   {
+    "id": "g9.probability.2",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9.probability.3",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9.probability.4",
+    "name": "מאורעות דו-שלביים"
+   },
+   {
+    "id": "g9.probability.5",
+    "name": "ייצוגים שונים: טבלה, דיאגרמת עץ, מודל השטח"
+   },
+   {
+    "id": "g9.integrative_literacy.1",
+    "name": "שילוב אלגברה וגיאומטריה בהקשר מהעולם האמיתי"
+   },
+   {
+    "id": "g9.system_degree_2.1",
+    "name": "משמעות אלגברית ומשמעות גרפית של פתרון מערכת משוואות"
+   },
+   {
+    "id": "g9.function_properties.1",
+    "name": "תכונות של גרף: חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה"
+   },
+   {
+    "id": "g9.function_properties.2",
+    "name": "הקשר בין משוואות לגרף של פונקציה"
+   },
+   {
+    "id": "g9.function_properties.3",
+    "name": "הזזה אנכית, הזזה אופקית"
+   },
+   {
+    "id": "g9.function_properties.4",
+    "name": "שיקוף ביחס לציר ה-x"
+   },
+   {
+    "id": "g9.rhombus.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.rhombus.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.rhombus.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.square.1",
+    "name": "הגדרה"
+   },
+   {
+    "id": "g9.square.2",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9.square.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9.right_triangle_median.1",
+    "name": "התיכון ליתר"
+   },
+   {
+    "id": "g9.right_triangle_median.2",
+    "name": "תרגול המשפט בשילוב מרובעים"
+   },
+   {
+    "id": "g9.powers.1",
+    "name": "חוקי חזקות מעריך טבעי או אפס"
+   },
+   {
+    "id": "g9.powers.2",
+    "name": "חוקי שורש ריבועי"
+   },
+   {
+    "id": "g9.word_problems.1",
+    "name": "שאלות מילוליות הנדסיות וכלליות (לרבות משוואה ריבועית או מערכת משוואות)"
+   },
+   {
+    "id": "g9.word_problems.2",
+    "name": "שאלות תנועה"
+   },
+   {
+    "id": "g9.word_problems.3",
+    "name": "שילוב אחוזים"
+   },
+   {
+    "id": "g9.word_problems.4",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9.similarity.1",
+    "name": "יחסי שטחים במשולשים דומים"
+   },
+   {
+    "id": "g9m.graph_reading.1",
+    "name": "תופעות המיוצגות באמצעות גרף במערכת צירים"
+   },
+   {
+    "id": "g9m.graph_reading.2",
+    "name": "קריאת מידע מהגרף ומענה על שאלות"
+   },
+   {
+    "id": "g9m.computational_triangle.1",
+    "name": "סכום זוויות במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.2",
+    "name": "שטח והיקף משולש"
+   },
+   {
+    "id": "g9m.computational_triangle.3",
+    "name": "קטעים מיוחדים במשולש"
+   },
+   {
+    "id": "g9m.computational_triangle.4",
+    "name": "שילוב עם מערכת צירים"
+   },
+   {
+    "id": "g9m.linear_function.1",
+    "name": "משמעות השיפוע כקצב שינוי, בשילוב אוריינות"
+   },
+   {
+    "id": "g9m.linear_function.2",
+    "name": "ייצוג אלגברי וגרפי והתאמה ביניהם"
+   },
+   {
+    "id": "g9m.linear_function.3",
+    "name": "נקודה על ישר ומשמעותה"
+   },
+   {
+    "id": "g9m.linear_function.4",
+    "name": "חיתוך עם הצירים"
+   },
+   {
+    "id": "g9m.linear_function.5",
+    "name": "ישרים מקבילים"
+   },
+   {
+    "id": "g9m.linear_function.6",
+    "name": "שטחים והיקפים במערכת צירים"
+   },
+   {
+    "id": "g9m.alg_technique_basic.1",
+    "name": "חוק הפילוג וחוק הפילוג המורחב"
+   },
+   {
+    "id": "g9m.alg_technique_basic.2",
+    "name": "פתרון משוואות פשוטות בעזרת חוק הפילוג"
+   },
+   {
+    "id": "g9m.pythagoras.1",
+    "name": "חישובי צלעות במשולשים"
+   },
+   {
+    "id": "g9m.pythagoras.2",
+    "name": "חישובי צלעות בצורות מורכבות"
+   },
+   {
+    "id": "g9m.pythagoras.3",
+    "name": "חישובי היקפים ושטחים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.1",
+    "name": "קווים מיוחדים במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.2",
+    "name": "זוויות במשולש שווה שוקיים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.3",
+    "name": "משפטים הפוכים"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.4",
+    "name": "תכונות הדלתון"
+   },
+   {
+    "id": "g9m.kite_and_isosceles.5",
+    "name": "חישובי שטחים והיקפים"
+   },
+   {
+    "id": "g9m.statistics.1",
+    "name": "איסוף וארגון נתונים בטבלה, ברשימה ובדיאגרמות"
+   },
+   {
+    "id": "g9m.statistics.2",
+    "name": "שכיחות ושכיחות יחסית"
+   },
+   {
+    "id": "g9m.statistics.3",
+    "name": "טווח נתונים"
+   },
+   {
+    "id": "g9m.statistics.4",
+    "name": "ממוצע, שכיח וחציון"
+   },
+   {
+    "id": "g9m.percentages.1",
+    "name": "החלק היחסי משלם"
+   },
+   {
+    "id": "g9m.percentages.2",
+    "name": "הגדלה והקטנה"
+   },
+   {
+    "id": "g9m.percentages.3",
+    "name": "שאלות מילוליות פשוטות ואורייניות"
+   },
+   {
+    "id": "g9m.similarity.1",
+    "name": "המושג דומים"
+   },
+   {
+    "id": "g9m.similarity.2",
+    "name": "הגדלה או הקטנה של צורות"
+   },
+   {
+    "id": "g9m.similarity.3",
+    "name": "צלעות פרופורציונליות"
+   },
+   {
+    "id": "g9m.similarity.4",
+    "name": "משפט ז.ז"
+   },
+   {
+    "id": "g9m.similarity.5",
+    "name": "חישובי צלעות וזוויות במשולשים דומים"
+   },
+   {
+    "id": "g9m.similarity.6",
+    "name": "שאלות אוריינות"
+   },
+   {
+    "id": "g9m.equations.1",
+    "name": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.1",
+    "name": "חזרה על ישרים מקבילים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.2",
+    "name": "הגדרת המקבילית"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.3",
+    "name": "תכונות הצלעות, הזוויות והאלכסונים"
+   },
+   {
+    "id": "g9m.parallels_and_parallelogram.4",
+    "name": "זיהוי מקבילית"
+   },
+   {
+    "id": "g9m.probability.1",
+    "name": "מהי הסתברות"
+   },
+   {
+    "id": "g9m.probability.2",
+    "name": "מושגים בסיסיים"
+   },
+   {
+    "id": "g9m.probability.3",
+    "name": "חישובי הסתברות והקשר לשכיחות יחסית"
+   },
+   {
+    "id": "g9m.probability.4",
+    "name": "מאורע משלים"
+   },
+   {
+    "id": "g9m.quad_partial.1",
+    "name": "הצבת ערכי x בביטוי של פונקציה ריבועית וחישוב ערך ה-y"
+   },
+   {
+    "id": "g9m.quad_partial.2",
+    "name": "מפונקציה ריבועית לפתרון משוואה ריבועית"
+   },
+   {
+    "id": "g9m.quad_partial.3",
+    "name": "פתרון משוואות ריבועיות ע״י נוסחת השורשים"
+   },
+   {
+    "id": "g9m.rectangle.1",
+    "name": "הגדרה של מלבן"
+   },
+   {
+    "id": "g9m.rectangle.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems.1",
+    "name": "שאלות מילוליות ושאלות אוריינות בנושאים שונים, כולל שימוש במשוואה ריבועית"
+   },
+   {
+    "id": "g9m.rhombus.1",
+    "name": "הגדרה של מעוין"
+   },
+   {
+    "id": "g9m.rhombus.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.square.1",
+    "name": "הגדרה של ריבוע"
+   },
+   {
+    "id": "g9m.square.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.word_problems_integrative.1",
+    "name": "שאלות מילוליות ואוריינות בנושאים שונים"
+   },
+   {
+    "id": "g9m.trapezoid.1",
+    "name": "הגדרה של טרפז"
+   },
+   {
+    "id": "g9m.trapezoid.2",
+    "name": "תכונות צלעות, זוויות ואלכסונים"
+   },
+   {
+    "id": "g9m.areas_and_perimeters.1",
+    "name": "שאלות אוריינות אינטגרטיביות כולל מעגל — היקף ושטח"
+   },
+   {
+    "id": "thm.co_interior_angles",
+    "name": "זוויות חד-צדדיות בין ישרים מקבילים"
+   },
+   {
+    "id": "thm.pythagoras_3d",
+    "name": "משפט פיתגורס במרחב"
+   },
+   {
+    "id": "thm.congruence_sas",
+    "name": "משפט חפיפה צ.ז.צ"
+   },
+   {
+    "id": "thm.congruence_asa",
+    "name": "משפט חפיפה ז.צ.ז"
+   },
+   {
+    "id": "thm.congruence_sss",
+    "name": "משפט חפיפה צ.צ.צ"
+   },
+   {
+    "id": "thm.congruence_ssa",
+    "name": "משפט חפיפה צ.צ.ז"
+   },
+   {
+    "id": "thm.congruent_parts",
+    "name": "במשולשים חופפים צלעות וזוויות מתאימות שוות"
+   },
+   {
+    "id": "thm.exterior_angle",
+    "name": "זווית חיצונית למשולש"
+   },
+   {
+    "id": "thm.isosceles_base_angles",
+    "name": "במשולש שווה שוקיים זוויות הבסיס שוות"
+   },
+   {
+    "id": "thm.isosceles_special_lines",
+    "name": "במשולש שווה שוקיים חוצה זווית הראש, התיכון והגובה לבסיס מתלכדים"
+   },
+   {
+    "id": "thm.isosceles_converse",
+    "name": "משפטים הפוכים: הוכחה שמשולש שווה שוקיים"
+   },
+   {
+    "id": "thm.triangle_inequality",
+    "name": "אי-שוויון המשולש"
+   },
+   {
+    "id": "thm.side_angle_order",
+    "name": "מול הצלע הגדולה הזווית הגדולה (וההפך)"
+   },
+   {
+    "id": "thm.similarity_aa",
+    "name": "משפט דמיון ז.ז"
+   },
+   {
+    "id": "thm.similarity_sas",
+    "name": "משפט דמיון צ.ז.צ"
+   },
+   {
+    "id": "thm.similarity_sss",
+    "name": "משפט דמיון צ.צ.צ"
+   },
+   {
+    "id": "thm.similar_area_ratio",
+    "name": "יחס השטחים הוא ריבוע יחס הדמיון"
+   },
+   {
+    "id": "thm.kite_main_diagonal",
+    "name": "בדלתון האלכסון הראשי חוצה את המשני, מאונך לו וחוצה את זוויות הראש"
+   },
+   {
+    "id": "thm.30_60_90",
+    "name": "במשולש ישר זווית הניצב מול 30° שווה למחצית היתר"
+   },
+   {
+    "id": "thm.parallel_converse",
+    "name": "משפטים הפוכים לישרים מקבילים"
+   },
+   {
+    "id": "thm.isosceles_trapezoid",
+    "name": "טרפז שווה שוקיים: זוויות בסיס ואלכסונים"
+   },
+   {
+    "id": "thm.parallelogram_props",
+    "name": "במקבילית צלעות נגדיות שוות, זוויות נגדיות שוות, האלכסונים חוצים זה את זה"
+   },
+   {
+    "id": "thm.parallelogram_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מקבילית"
+   },
+   {
+    "id": "thm.rectangle_props",
+    "name": "במלבן כל הזוויות ישרות והאלכסונים שווים"
+   },
+   {
+    "id": "thm.rectangle_converse",
+    "name": "משפטים הפוכים: מקבילית עם זווית ישרה או עם אלכסונים שווים היא מלבן"
+   },
+   {
+    "id": "thm.rhombus_props",
+    "name": "במעוין כל הצלעות שוות, האלכסונים מאונכים וחוצי זוויות"
+   },
+   {
+    "id": "thm.rhombus_converse",
+    "name": "משפטים הפוכים: הוכחה שמרובע מעוין"
+   },
+   {
+    "id": "thm.square_props",
+    "name": "ריבוע: מלבן שהוא גם מעוין"
+   },
+   {
+    "id": "thm.right_triangle_median",
+    "name": "התיכון ליתר שווה למחצית היתר"
+   },
+   {
+    "id": "frm.area_rhombus_diagonals",
+    "name": "שטח מעוין / דלתון = מכפלת האלכסונים : 2"
+   },
+   {
+    "id": "thm.midsegment",
+    "name": "קטע אמצעים במשולש ובטרפז"
+   },
+   {
+    "id": "frm.short_multiplication",
+    "name": "נוסחאות הכפל המקוצר"
+   },
+   {
+    "id": "mth.factoring",
+    "name": "פירוק לגורמים"
+   },
+   {
+    "id": "frm.quadratic_formula",
+    "name": "נוסחת השורשים"
+   }
+  ]
+ },
+ "questions": [
+  {
+   "id": "q1",
+   "label": 1,
+   "text": "השיפוע של ישר הוא $4$, והנקודות $(1,−2)$ ו־$(3,a)$ נמצאות עליו.",
+   "figure_id": "q1_head",
+   "given": [
+    {
+     "text": "שיעור x של (1, −2) = 1"
+    },
+    {
+     "text": "שיעור y של (1, −2) = −2"
+    },
+    {
+     "text": "שיעור x של (−1, −10) = −1"
+    },
+    {
+     "text": "שיעור y של (−1, −10) = −10"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיף ג מבקש לבדוק אם נקודה נמצאת על הישר; בדיקה אינה יעד של משפחת הגרפים, ולכן לסעיף אין יעד, ושורת המפתח שלו כתובה ביד",
+    "missing": [
+     "q1c NO_TARGET: the item (task verify) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q1a",
+     "label": "א",
+     "text": "מצאו את $a$.",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "ערך y של הישר כאשר x = 3"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1b",
+     "label": "ב",
+     "text": "מהי משוואת הישר?",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1c",
+     "label": "ג",
+     "text": "האם $(−1,−10)$ היא נקודה של הישר?",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיף ג מבקש לבדוק אם נקודה נמצאת על הישר; בדיקה אינה יעד של משפחת הגרפים, ולכן לסעיף אין יעד, ושורת המפתח שלו כתובה ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q1d",
+     "label": "ד",
+     "text": "עבור אילו ערכי $x$ ערכי $y$ של הישר חיוביים?",
+     "figure_id": "q1_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "תחום החיוביות של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q2",
+   "label": 2,
+   "text": "הנקודות $(−2,3.5)$ ו־$(2,1.5)$ נמצאות על ישר.",
+   "figure_id": "q2_head",
+   "given": [
+    {
+     "text": "שיעור x של (−2, 3.5) = −2"
+    },
+    {
+     "text": "שיעור y של (−2, 3.5) = 3.5"
+    },
+    {
+     "text": "שיעור x של (2, 1.5) = 2"
+    },
+    {
+     "text": "שיעור y של (2, 1.5) = 1.5"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q2a",
+     "label": "א",
+     "text": "חשבו את שיפוע הישר.",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "השיפוע של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2b",
+     "label": "ב",
+     "text": "מצאו את משוואתו.",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q2c",
+     "label": "ג",
+     "text": "באיזו נקודה הישר חותך את הציר האופקי?",
+     "figure_id": "q2_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודת החיתוך של הישר עם ציר x"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q3",
+   "label": 3,
+   "text": "שני ישרים: $y = (2k + 1)x − 4$ ו־$y = 7x + 5$.",
+   "figure_id": "q3_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיפים א, ג ו־ד שואלים על ערך הפרמטר k ועל התלכדות; למשפחת הגרפים אין יעד של פרמטר במשוואה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q3a NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q3c NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target",
+     "q3d NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q3a",
+     "label": "א",
+     "text": "החליטו כיצד לכוון את $k$ כדי שהקווים לא ייפגשו. הראו את תנאי הכיוון שלכם.",
+     "figure_id": "q3_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א, ג ו־ד שואלים על ערך הפרמטר k ועל התלכדות; למשפחת הגרפים אין יעד של פרמטר במשוואה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3b",
+     "label": "ב",
+     "text": "כתבו את הנוסחה שתתקבל לאחר כיוון הפרמטר מסעיף א.",
+     "figure_id": "q3_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3c",
+     "label": "ג",
+     "text": "בודק מציע למצוא כיוון אחר של הפרמטר שיגרום לשני הקווים לחפוף. האם אפשר למלא את בקשתו?",
+     "figure_id": "q3_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א, ג ו־ד שואלים על ערך הפרמטר k ועל התלכדות; למשפחת הגרפים אין יעד של פרמטר במשוואה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q3d",
+     "label": "ד",
+     "text": "כעת דרוש פלט קבוע לכל קלט. איך צריך לשנות את כיוון הפרמטר?",
+     "figure_id": "q3_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א, ג ו־ד שואלים על ערך הפרמטר k ועל התלכדות; למשפחת הגרפים אין יעד של פרמטר במשוואה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q4",
+   "label": 4,
+   "text": "לכל מספר $m$ מתאים הישר $y = m\\text{}x + 5$. כל הישרים האלה יחד הם משפחה של ישרים.",
+   "figure_id": "q4_head",
+   "given": [
+    {
+     "text": "שיעור x של (2, −3) = 2"
+    },
+    {
+     "text": "שיעור y של (2, −3) = −3"
+    },
+    {
+     "text": "שיעור x של (0, −1) = 0"
+    },
+    {
+     "text": "שיעור y של (0, −1) = −1"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיפים א ו־ג שואלים על כל ישרי המשפחה ומבקשים נימוק; למשפחת הגרפים אין יעד של משפחת ישרים, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q4a NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target",
+     "q4c NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q4a",
+     "label": "א",
+     "text": "באיזו נקודה עוברים כל ישרי המשפחה? הסבירו.",
+     "figure_id": "q4_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א ו־ג שואלים על כל ישרי המשפחה ומבקשים נימוק; למשפחת הגרפים אין יעד של משפחת ישרים, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4b",
+     "label": "ב",
+     "text": "איזה ישר מהמשפחה עובר דרך $(2,−3)$? כתבו את משוואתו.",
+     "figure_id": "q4_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q4c",
+     "label": "ג",
+     "text": "האם יש במשפחה ישר שעובר דרך $(0,−1)$? נמקו.",
+     "figure_id": "q4_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א ו־ג שואלים על כל ישרי המשפחה ומבקשים נימוק; למשפחת הגרפים אין יעד של משפחת ישרים, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q5",
+   "label": 5,
+   "text": "גיל טוען שהישרים $y = −4x + 9$ ו־$y = 7 − 4x$ נפגשים בנקודה אחת.",
+   "figure_id": null,
+   "given": [
+    {
+     "text": "y = −4x + 9"
+    },
+    {
+     "text": "y = 7 − 4x"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q5a",
+     "label": "א",
+     "text": "השוו בין שני הביטויים ופתרו את המשוואה. מה מתקבל?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "תוצאת הבדיקה האלגברית",
+       "text": "הערך תוצאת הבדיקה האלגברית"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5b",
+     "label": "ב",
+     "text": "מה התוצאה אומרת על המיקום של שני הישרים זה ביחס לזה? הסבירו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המיקום של שני הישרים",
+       "text": "הערך המיקום של שני הישרים"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5c",
+     "label": "ג",
+     "text": "שנו מספר אחד במשוואה השנייה כך ששני הישרים יתלכדו.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשוואה השנייה אחרי השינוי",
+       "text": "הערך המשוואה השנייה אחרי השינוי"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q5d",
+     "label": "ד",
+     "text": "במקום זאת משנים את המקדם של $x$ במשוואה השנייה ל־$−3$ (ומשאירים את $7$). באיזו נקודה נחתכים עכשיו הישרים? סרטטו סקיצה שלהם.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "נקודת החיתוך",
+       "text": "הערך נקודת החיתוך"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q6",
+   "label": 6,
+   "text": "בשרטוט הישר $y = 3x − 6$.",
+   "figure_id": "q6_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיף ד שואל איזה מהישרים מקביל ואיזה פוגש את הנתון על הציר האנכי; למשפחת הגרפים אין יעד של בחירת ישר, ולכן לסעיף אין יעד, ושורת המפתח שלו כתובה ביד",
+    "missing": [
+     "q6d NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q6a",
+     "label": "א",
+     "text": "הכינו כרטיס זיהוי לגרף ובו שני מפגשיו עם צירי המערכת.",
+     "figure_id": "q6_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודת החיתוך של הישר עם ציר y"
+      },
+      {
+       "text": "נקודת החיתוך של הישר עם ציר x"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6b",
+     "label": "ב",
+     "text": "בעריכה הראשונה משנים רק את ערך ההתחלה לשלוש פעמים ערכו הנוכחי. רשמו את הנוסחה המעודכנת.",
+     "figure_id": "q6_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6c",
+     "label": "ג",
+     "text": "בעריכה שנייה של המקור מאטים את קצב השינוי למחצית, בלי לשנות את ערך ההתחלה. רשמו גם נוסחה זו.",
+     "figure_id": "q6_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q6d",
+     "label": "ד",
+     "text": "סכמו את שתי העריכות בכרטיס בקרה: איזו שמרה על כיוון הקו, ואיזו שמרה על נקודת ההתחלה שלו? הסבירו כיצד רואים זאת בנוסחאות ובגרפים.",
+     "figure_id": "q6_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיף ד שואל איזה מהישרים מקביל ואיזה פוגש את הנתון על הציר האנכי; למשפחת הגרפים אין יעד של בחירת ישר, ולכן לסעיף אין יעד, ושורת המפתח שלו כתובה ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q7",
+   "label": 7,
+   "text": "נתון הישר $y = 1.5x + 6$.",
+   "figure_id": "q7_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q7a",
+     "label": "א",
+     "text": "מכשיר מחליף בכל נקודה את סימן הקואורדינטה האופקית בלבד. תארו בנוסחה את אוסף הנקודות החדש.",
+     "figure_id": "q7_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7b",
+     "label": "ב",
+     "text": "בפעולה נפרדת על המקור, המכשיר מחליף רק את סימן הקואורדינטה האנכית. איזה חוק יתקבל?",
+     "figure_id": "q7_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7c",
+     "label": "ג",
+     "text": "חפשו נקודה משותפת למקור ולתוצאה מסעיף א. הסבירו גאומטרית מדוע היא לא זזה בפעולה.",
+     "figure_id": "q7_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודות החיתוך של הישר ושל הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q7d",
+     "label": "ד",
+     "text": "בצעו בדיקת נקודה משותפת גם לפעולה מסעיף ב.",
+     "figure_id": "q7_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודות החיתוך של הישר ושל הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q8",
+   "label": 8,
+   "text": "בשרטוט הישר $f$ שמשוואתו $y = 3x + 9$ והישר $g$ שמשוואתו $y = −3x + 9$.",
+   "figure_id": "q8_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיפים ג, ד ו־ה עוסקים במשולש שהישרים יוצרים: הוכחה, שטח ובדיקה בפיתגורס; למשפחת הגרפים אין יעד של משולש, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q8c NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target",
+     "q8d NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q8e NO_TARGET: the item (task verify) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q8a",
+     "label": "א",
+     "text": "סמנו את ראש האוהל: הנקודה המשותפת ל־$f$ ול־$g$. מצאו את שיעוריה.",
+     "figure_id": "q8_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודות החיתוך של הישר f ושל הישר g"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8b",
+     "label": "ב",
+     "text": "רגלי האוהל מונחות על הציר האופקי. שחזרו את מיקומי הרגליים מתוך חוקי $f$ ו־$g$.",
+     "figure_id": "q8_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודת החיתוך של הישר f עם ציר x"
+      },
+      {
+       "text": "נקודת החיתוך של הישר g עם ציר x"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8c",
+     "label": "ג",
+     "text": "האם שני המוטות המחברים את הראש לרגליים יכולים להיות בעלי אותו אורך? הוכיחו באמצעות שיעורי הקדקודים.",
+     "figure_id": "q8_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ג, ד ו־ה עוסקים במשולש שהישרים יוצרים: הוכחה, שטח ובדיקה בפיתגורס; למשפחת הגרפים אין יעד של משולש, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8d",
+     "label": "ד",
+     "text": "חשבו את שטח חתך האוהל, שהוא המשולש שהתקבל.",
+     "figure_id": "q8_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ג, ד ו־ה עוסקים במשולש שהישרים יוצרים: הוכחה, שטח ובדיקה בפיתגורס; למשפחת הגרפים אין יעד של משולש, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q8e",
+     "label": "ה",
+     "text": "היצרן דורש מוטות מאונכים. בדקו בפיתגורס אם חתך זה עומד בדרישה.",
+     "figure_id": "q8_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ג, ד ו־ה עוסקים במשולש שהישרים יוצרים: הוכחה, שטח ובדיקה בפיתגורס; למשפחת הגרפים אין יעד של משולש, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q9",
+   "label": 9,
+   "text": "במפה מסומנות תחנות $A(−4,7)$ ו־$B(2,−5)$. מתכננים ביניהן שביל ישר ומקום מנוחה בחצי הדרך.",
+   "figure_id": "q9_head",
+   "given": [
+    {
+     "text": "שיעור x של A = −4"
+    },
+    {
+     "text": "שיעור y של A = 7"
+    },
+    {
+     "text": "שיעור x של B = 2"
+    },
+    {
+     "text": "שיעור y של B = −5"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיפים ב ו־ג עוסקים באמצע קטע ובבדיקה שלו; למשפחת הגרפים אין יעד של אמצע קטע, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q9b NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q9c NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q9a",
+     "label": "א",
+     "text": "איזו נוסחה תאפשר לבדוק אם סימון במפה נמצא על קו השביל $AB$?",
+     "figure_id": "q9_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9b",
+     "label": "ב",
+     "text": "תכננו את מיקום המנוחה על $AB$ באמצעות שני שיעורי התחנות.",
+     "figure_id": "q9_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ב ו־ג עוסקים באמצע קטע ובבדיקה שלו; למשפחת הגרפים אין יעד של אמצע קטע, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q9c",
+     "label": "ג",
+     "text": "בצעו בקרת תכנון: האם נקודת המנוחה עומדת בחוק השביל שחישבתם? הציגו בדיקה אלגברית.",
+     "figure_id": "q9_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ב ו־ג עוסקים באמצע קטע ובבדיקה שלו; למשפחת הגרפים אין יעד של אמצע קטע, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q10",
+   "label": 10,
+   "text": [
+    "על שולחן הטכנאי שני מדי מסה. $A$ כולל את משקל האריזה, ואילו $B$ מציג רק את משקל החומר. בכל מכשיר כל המנות שוות זו לזו, אך מנה במכשיר $A$ שונה ממנה במכשיר $B$.",
+    "הקווים מתארים את קריאת המאזניים בגרמים בהתאם למספר המנות."
+   ],
+   "figure_id": "q10_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיפים א, ג ו־ד מבקשים ביטויים, תחום מרחקים והשוואה מחוץ לשרטוט; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q10a NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q10c NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q10d NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q10a",
+     "label": "א",
+     "text": "שחזרו נוסחה לקריאת כל מכשיר לאחר הכנסת $x$ מנות.",
+     "figure_id": "q10_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א, ג ו־ד מבקשים ביטויים, תחום מרחקים והשוואה מחוץ לשרטוט; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10b",
+     "label": "ב",
+     "text": "שני המכשירים מכילים $3$ מנות. מהי הקריאה בכל אחד?",
+     "figure_id": "q10_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "ערך y של הישר A כאשר x = 3"
+      },
+      {
+       "text": "ערך y של הישר B כאשר x = 3"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10c",
+     "label": "ג",
+     "text": "באילו כמויות מנות המכשיר $A$ יציג מסה קטנה יותר?",
+     "figure_id": "q10_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א, ג ו־ד מבקשים ביטויים, תחום מרחקים והשוואה מחוץ לשרטוט; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q10d",
+     "label": "ד",
+     "text": "הגרף נגמר לפני המדידה הבאה. חשבו מה יהיה הפרש הקריאות כשמכניסים $12$ מנות לכל מכשיר, וזהו את הקריאה הקטנה.",
+     "figure_id": "q10_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א, ג ו־ד מבקשים ביטויים, תחום מרחקים והשוואה מחוץ לשרטוט; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q11",
+   "label": 11,
+   "text": "בשרטוט שלושה ישרים: $p$, $q$, $r$.",
+   "figure_id": "q11_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיף ג מבקש הסבר כללי על משפחת ישרים; למשפחת הגרפים אין יעד כזה, ולכן לסעיף אין יעד, ושורת המפתח שלו כתובה ביד",
+    "missing": [
+     "q11c NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q11a",
+     "label": "א",
+     "text": "בדקו איזו רשומת קלט–פלט מתאימה יחד לכל שלושת הקווים.",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודות החיתוך של הישר p ושל הישר q"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11b",
+     "label": "ב",
+     "text": "הכינו נוסחה לכל קו, וציינו מה בה משותף לשלוש הנוסחאות ומה שונה.",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר p"
+      },
+      {
+       "text": "המשוואה של הישר q"
+      },
+      {
+       "text": "המשוואה של הישר r"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q11c",
+     "label": "ג",
+     "text": "הסבירו מדוע קו נוסף מן הצורה $y = m\\text{}x − 6$, לכל ערך של $m$, יעבור גם הוא דרך הרשומה שמצאתם.",
+     "figure_id": "q11_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיף ג מבקש הסבר כללי על משפחת ישרים; למשפחת הגרפים אין יעד כזה, ולכן לסעיף אין יעד, ושורת המפתח שלו כתובה ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q12",
+   "label": 12,
+   "text": [
+    "האורך של קפיץ תלוי במשקל שתולים עליו, לפי הנוסחה $y = 0.2w + 15$.",
+    "$w$ הוא המשקל בגרם, ו־$y$ הוא אורך הקפיץ בס״מ."
+   ],
+   "figure_id": null,
+   "given": [
+    {
+     "text": "נוסחת הקשר y = 0.2w + 15"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "items": [
+    {
+     "id": "q12a",
+     "label": "א",
+     "text": "מה אורך הקפיץ כשתולים עליו $40$ גרם?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ס״מ",
+       "what": "אורך הקפיץ עם ארבעים גרם",
+       "text": "הערך אורך הקפיץ עם ארבעים גרם"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12b",
+     "label": "ב",
+     "text": "מה אורך הקפיץ כשלא תולים עליו דבר?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "unit": "ס״מ",
+       "what": "אורך הקפיץ בלי משקל",
+       "text": "הערך אורך הקפיץ בלי משקל"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12c",
+     "label": "ג",
+     "text": "איזה משקל צריך לתלות כדי שאורך הקפיץ יהיה $20$ ס״מ?",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [
+      {
+       "type": "find",
+       "quantity": "value",
+       "what": "המשקל לאורך עשרים ס״מ",
+       "text": "הערך המשקל לאורך עשרים ס״מ"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q12d",
+     "label": "ד",
+     "text": "צרפו לנוסחה הוראות שימוש: הסבירו כיצד תשתנה קריאת האורך בעקבות תוספת גרם אחד. ציירו סקיצה עם יחידות בשני הצירים.",
+     "figure_id": null,
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q13",
+   "label": 13,
+   "text": "קובץ מדידות מתהליך שקצבו קבוע נפגם. העמודות שנותרו תקינות צריכות להספיק לשחזור הקובץ.",
+   "figure_id": "q13_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיף ב מבקש להשלים תאים בטבלה; למשפחת הגרפים אין יעד של תאי טבלה, ולכן לסעיף אין יעד, ושורת המפתח שלו כתובה ביד",
+    "missing": [
+     "q13b NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "table": {
+    "head": [
+     "$x$",
+     "$−3$",
+     "$−1$",
+     "$1$",
+     "$3$",
+     "$5$"
+    ],
+    "rows": [
+     [
+      "$y$",
+      "",
+      "",
+      "$7$",
+      "",
+      "$−9$"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "id": "q13a",
+     "label": "א",
+     "text": "זהו מן העמודות השלמות את קצב התהליך.",
+     "figure_id": "q13_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "השיפוע של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13b",
+     "label": "ב",
+     "text": "שחזרו את שלוש המדידות שנמחקו, לפי הקצב שזיהיתם.",
+     "figure_id": "q13_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיף ב מבקש להשלים תאים בטבלה; למשפחת הגרפים אין יעד של תאי טבלה, ולכן לסעיף אין יעד, ושורת המפתח שלו כתובה ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13c",
+     "label": "ג",
+     "text": "מהי משוואת הישר?",
+     "figure_id": "q13_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q13d",
+     "label": "ד",
+     "text": "עבור איזה $x$ מתקבל $y = 39$?",
+     "figure_id": "q13_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "ערכי x של הישר שבהם y = 39"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q14",
+   "label": 14,
+   "text": "את הישר $y = −5x + 8$ מזיזים $3$ יחידות כלפי מטה.",
+   "figure_id": "q14_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיפים ב ו־ד מבקשים נימוק ומרחק בין שתי נקודות; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q14b NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target",
+     "q14d NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q14a",
+     "label": "א",
+     "text": "מהי המשוואה אחרי ההזזה?",
+     "figure_id": "q14_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "המשוואה של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14b",
+     "label": "ב",
+     "text": "הסבירו איזו תכונה מאפשרת לזהות שההעתק נוצר בהזזה אנכית בלבד.",
+     "figure_id": "q14_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ב ו־ד מבקשים נימוק ומרחק בין שתי נקודות; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14c",
+     "label": "ג",
+     "text": "סמנו על הציר האופקי את מיקומי האפס של המקור ושל ההעתק, וחשבו אותם.",
+     "figure_id": "q14_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודת החיתוך של הישר עם ציר x"
+      },
+      {
+       "text": "נקודת החיתוך של הישר עם ציר x"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q14d",
+     "label": "ד",
+     "text": "השוו את המרחק בין סימוני האפס למרחק ההזזה האנכית, שהוא $3$. הסבירו את הקשר באמצעות השיפוע.",
+     "figure_id": "q14_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ב ו־ד מבקשים נימוק ומרחק בין שתי נקודות; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q15",
+   "label": 15,
+   "text": "שתי משוואות יוצרות מערכת: $y = −3x + 4$ ו־$y = k\\text{}x − 4$.",
+   "figure_id": "q15_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיפים א, ג ו־ד שואלים על ערכי הפרמטר k; למשפחת הגרפים אין יעד של פרמטר, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q15a NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target",
+     "q15c NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target",
+     "q15d NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q15a",
+     "label": "א",
+     "text": "עבור איזה ערך של $k$ אין למערכת פתרון? נמקו.",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א, ג ו־ד שואלים על ערכי הפרמטר k; למשפחת הגרפים אין יעד של פרמטר, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15b",
+     "label": "ב",
+     "text": "פתרו את המערכת כאשר $k = 1$.",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודות החיתוך של הישר ושל הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15c",
+     "label": "ג",
+     "text": "יכול להיות שלמערכת יהיו אינסוף פתרונות, בשביל $k$ כלשהו? נמקו.",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א, ג ו־ד שואלים על ערכי הפרמטר k; למשפחת הגרפים אין יעד של פרמטר, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q15d",
+     "label": "ד",
+     "text": "עבור איזה ערך של $k$ הפתרון של המערכת הוא נקודה שבה $x = 4$?",
+     "figure_id": "q15_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים א, ג ו־ד שואלים על ערכי הפרמטר k; למשפחת הגרפים אין יעד של פרמטר, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q16",
+   "label": 16,
+   "text": "נתון ישר שמשוואתו $y = m\\text{}x + b$.",
+   "figure_id": "q16_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "הסעיפים שואלים באילו רביעים עובר ישר כללי, מבקשים דוגמה ונימוק; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q16a NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q16b NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q16c NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q16d NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q16a",
+     "label": "א",
+     "text": "כש־$m$ ו־$b$ שליליים שניהם, דרך אילו רביעים הישר עובר?",
+     "figure_id": "q16_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים שואלים באילו רביעים עובר ישר כללי, מבקשים דוגמה ונימוק; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16b",
+     "label": "ב",
+     "text": "כש־$m$ חיובי ו־$b$ שלילי, דרך אילו רביעים הישר עובר?",
+     "figure_id": "q16_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים שואלים באילו רביעים עובר ישר כללי, מבקשים דוגמה ונימוק; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16c",
+     "label": "ג",
+     "text": "תנו דוגמה למשוואת ישר שעובר ברביעים הראשון והשני בלבד.",
+     "figure_id": "q16_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים שואלים באילו רביעים עובר ישר כללי, מבקשים דוגמה ונימוק; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q16d",
+     "label": "ד",
+     "text": "הסבירו מדוע אף ישר אינו עובר בכל ארבעת הרביעים.",
+     "figure_id": "q16_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים שואלים באילו רביעים עובר ישר כללי, מבקשים דוגמה ונימוק; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q17",
+   "label": 17,
+   "text": "כל הישרים בשאלה זו עוברים דרך הנקודה $(−1,5)$, והמשוואה של כל אחד מהם היא $y = m\\text{}x + b$.",
+   "figure_id": "q17_head",
+   "given": [
+    {
+     "text": "שיעור x של (−1, 5) = −1"
+    },
+    {
+     "text": "שיעור y של (−1, 5) = 5"
+    },
+    {
+     "text": "שיעור x של (9, 0) = 9"
+    },
+    {
+     "text": "שיעור y של (9, 0) = 0"
+    }
+   ],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיף א מבקש ביטוי ל־b באמצעות m, וסעיף ב מבקש דוגמאות פתוחות; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q17a NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q17b NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q17a",
+     "label": "א",
+     "text": "הביעו את $b$ באמצעות $m$.",
+     "figure_id": "q17_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיף א מבקש ביטוי ל־b באמצעות m, וסעיף ב מבקש דוגמאות פתוחות; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17b",
+     "label": "ב",
+     "text": "תנו שתי דוגמאות שונות לישרים כאלה.",
+     "figure_id": "q17_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיף א מבקש ביטוי ל־b באמצעות m, וסעיף ב מבקש דוגמאות פתוחות; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17c",
+     "label": "ג",
+     "text": "עבור איזה $m$ הישר עובר גם דרך ראשית הצירים?",
+     "figure_id": "q17_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "השיפוע של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q17d",
+     "label": "ד",
+     "text": "עבור איזה $m$ הישר חותך את הציר האופקי בנקודה $(9,0)$?",
+     "figure_id": "q17_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "השיפוע של הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q18",
+   "label": 18,
+   "text": "תוכנת שרטוטים מוחקת קווים שנחשבים לכפולים. המתכנת הציע לזהות כפילות לפי המקום שבו כל קו פוגש את הציר האנכי: אם המקומות זהים, התוכנה תשמור קו אחד בלבד.",
+   "figure_id": "q18_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "הסעיפים מבקשים השערה, דוגמה נגדית וניסוח מחדש של טענה; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q18a NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target",
+     "q18b NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q18c NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q18a",
+     "label": "א",
+     "text": "העריכו אם המחיקה תשמור תמיד על השרטוט המקורי. כתבו את התחזית לפני הניסוי.",
+     "figure_id": "q18_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים מבקשים השערה, דוגמה נגדית וניסוח מחדש של טענה; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18b",
+     "label": "ב",
+     "text": "בנו קובץ ניסוי ובו שתי נוסחאות. הפעילו עליהן את הצעת המתכנת ובדקו אם מידע אבד. צרפו סקיצה והכריעו בעזרת הקובץ.",
+     "figure_id": "q18_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים מבקשים השערה, דוגמה נגדית וניסוח מחדש של טענה; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q18c",
+     "label": "ג",
+     "text": "כתבו למתכנת תנאי מדויק למחיקת עותק מיותר. הסבירו מדוע התנאי שלכם מספיק וגם נחוץ.",
+     "figure_id": "q18_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים מבקשים השערה, דוגמה נגדית וניסוח מחדש של טענה; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q19",
+   "label": 19,
+   "text": "שירות שיחות מחו״ל מציע שתי תוכניות חודשיות. תוכנית א: $0.6$ שקלים לכל דקה. תוכנית ב: $36$ שקלים לחודש, ועוד $0.15$ שקלים לכל דקה.",
+   "figure_id": "q19_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "הסעיפים מבקשים ביטויים, תחום, חיסכון ונימוק; למשפחת הגרפים אין יעדים כאלה בשרטוט ריק, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q19a NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q19b NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q19c NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q19d NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q19a",
+     "label": "א",
+     "text": "הכינו נוסחאות לשני גיליונות חיוב. כל גיליון יקבל את מספר דקות השיחה $x$ ויחזיר את הסכום בשקלים.",
+     "figure_id": "q19_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים מבקשים ביטויים, תחום, חיסכון ונימוק; למשפחת הגרפים אין יעדים כאלה בשרטוט ריק, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19b",
+     "label": "ב",
+     "text": "יועץ רוצה להמליץ על ב רק ללקוחות שישלמו בה פחות. רשמו את קבוצת כמויות השימוש שההמלצה מתאימה לה, ואת הגבול שבו לא תחסוך דבר.",
+     "figure_id": "q19_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים מבקשים ביטויים, תחום, חיסכון ונימוק; למשפחת הגרפים אין יעדים כאלה בשרטוט ריק, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19c",
+     "label": "ג",
+     "text": "בתיק הלקוחה רשומות $150$ דקות בחודש הקודם. בדוח הנוכחי מצוין גידול של $60$ אחוזים. הכינו לה השוואת חשבוניות לחודש הנוכחי: כמה תחויב בכל גיליון, ומה ההפרש?",
+     "figure_id": "q19_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים מבקשים ביטויים, תחום, חיסכון ונימוק; למשפחת הגרפים אין יעדים כאלה בשרטוט ריק, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q19d",
+     "label": "ד",
+     "text": "הלקוחה מבקשת תחזית בלי להכין שוב שתי חשבוניות: מה תעשה דקת שיחה נוספת להפרש ביניהן? נמקו באמצעות התעריפים.",
+     "figure_id": "q19_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "הסעיפים מבקשים ביטויים, תחום, חיסכון ונימוק; למשפחת הגרפים אין יעדים כאלה בשרטוט ריק, ולכן לסעיפים אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  },
+  {
+   "id": "q20",
+   "label": 20,
+   "text": [
+    "המשוואות של ארבעת הישרים שבשרטוט הן $y = x + 5$, $y = x − 5$, $y = −x + 7$, $y = −x − 7$.",
+    "ארבעת הקווים הם גבולות של חלקה סגורה במפה."
+   ],
+   "figure_id": "q20_head",
+   "given": [],
+   "to_prove": [],
+   "to_construct": [],
+   "spec_unsupported": {
+    "reason": "סעיפים ב, ג ו־ד שואלים על סוג המרובע, על שטחו ועל האלכסונים; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+    "missing": [
+     "q20b NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target",
+     "q20c NO_TARGET: the item (task compute) has no target in the public spec: what it asks is not a supported target",
+     "q20d NO_TARGET: the item (task prove) has no target in the public spec: what it asks is not a supported target"
+    ]
+   },
+   "items": [
+    {
+     "id": "q20a",
+     "label": "א",
+     "text": "הכינו רשימת קואורדינטות עבור פינות החלקה, מתוך מפגשי הגבולות.",
+     "figure_id": "q20_head",
+     "given": [],
+     "to_prove": [
+      {
+       "text": "נקודות החיתוך של הישר ושל הישר"
+      },
+      {
+       "text": "נקודות החיתוך של הישר ושל הישר"
+      },
+      {
+       "text": "נקודות החיתוך של הישר ושל הישר"
+      },
+      {
+       "text": "נקודות החיתוך של הישר ושל הישר"
+      }
+     ],
+     "to_construct": [],
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20b",
+     "label": "ב",
+     "text": "מודֵד טוען שאפשר לתאר את החלקה בשם מיוחד של מרובע. תנו שם מדויק והצדיקו אותו בעזרת כיווני הגבולות.",
+     "figure_id": "q20_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ב, ג ו־ד שואלים על סוג המרובע, על שטחו ועל האלכסונים; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20c",
+     "label": "ג",
+     "text": "חשבו את שטח החלקה ביחידות הרשת.",
+     "figure_id": "q20_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ב, ג ו־ד שואלים על סוג המרובע, על שטחו ועל האלכסונים; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    },
+    {
+     "id": "q20d",
+     "label": "ד",
+     "text": "מתכננים שני שבילים בין פינות נגדיות. בדקו שתי טענות: השבילים שווים באורכם; הם מאונכים זה לזה. הכריעו בכל טענה בעזרת חישוב.",
+     "figure_id": "q20_head",
+     "given": [],
+     "to_prove": [],
+     "to_construct": [],
+     "no_target_reason": "סעיפים ב, ג ו־ד שואלים על סוג המרובע, על שטחו ועל האלכסונים; למשפחת הגרפים אין יעדים כאלה, ולכן לסעיפים אלה אין יעד, ושורות המפתח שלהם כתובות ביד",
+     "hint_mode": "guiding_question"
+    }
+   ]
+  }
+ ],
+ "figures": [
+  {
+   "id": "q1_head",
+   "svg": "figures/q1_head.svg",
+   "question": "q1",
+   "view": {
+    "width_px": 157.34,
+    "height_px": 201.59,
+    "unit_px": 1.0,
+    "viewbox": [
+     157.34,
+     201.59
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "e0062",
+      "kind": "point",
+      "role": "point",
+      "name": "mark:P",
+      "svg_xy": [
+       78.23,
+       107.31
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "e0063",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       148.17,
+       97.92
+      ]
+     },
+     {
+      "svg_id": "e0064",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       54.21,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q1_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q1",
+    "svg": "figures/q1_head.svg",
+    "view": {
+     "viewbox": [
+      157.34,
+      201.59
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0078"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       },
+       {
+        "svg_id": "e0081"
+       },
+       {
+        "svg_id": "e0082"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "mark:P",
+      "svg_id": "e0062",
+      "type": "mark",
+      "svg_xy": [
+       78.23,
+       107.31
+      ],
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0062"
+       }
+      ]
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-x",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של (1, −2) = 1",
+      "objects": []
+     },
+     {
+      "id": "r-statement-y",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של (1, −2) = −2",
+      "objects": []
+     },
+     {
+      "id": "r-statement-x-b",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של (−1, −10) = −1",
+      "objects": []
+     },
+     {
+      "id": "r-statement-y-b",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של (−1, −10) = −10",
+      "objects": []
+     },
+     {
+      "id": "r-statement-yx",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q1a",
+      "text": "ערך y של הישר כאשר x = 3",
+      "objects": []
+     },
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q1b",
+      "text": "המשוואה של הישר",
+      "objects": []
+     },
+     {
+      "id": "r-statement-b",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q1d",
+      "text": "תחום החיוביות של הישר",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q1_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q2_head",
+   "svg": "figures/q2_head.svg",
+   "question": "q2",
+   "view": {
+    "width_px": 214.52,
+    "height_px": 164.21,
+    "unit_px": 1.0,
+    "viewbox": [
+     214.52,
+     164.21
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "e0065",
+      "kind": "point",
+      "role": "point",
+      "name": "mark:P",
+      "svg_xy": [
+       44.67,
+       65.39
+      ]
+     },
+     {
+      "svg_id": "e0066",
+      "kind": "point",
+      "role": "point",
+      "name": "mark:Q",
+      "svg_xy": [
+       106.56,
+       96.33
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "e0067",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       205.35,
+       126.19
+      ]
+     },
+     {
+      "svg_id": "e0068",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       67.65,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q2_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q2",
+    "svg": "figures/q2_head.svg",
+    "view": {
+     "viewbox": [
+      214.52,
+      164.21
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0078"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0081"
+       },
+       {
+        "svg_id": "e0082"
+       },
+       {
+        "svg_id": "e0083"
+       },
+       {
+        "svg_id": "e0084"
+       },
+       {
+        "svg_id": "e0085"
+       },
+       {
+        "svg_id": "e0086"
+       },
+       {
+        "svg_id": "e0087"
+       },
+       {
+        "svg_id": "e0088"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "mark:P",
+      "svg_id": "e0065",
+      "type": "mark",
+      "svg_xy": [
+       44.67,
+       65.39
+      ],
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0065"
+       }
+      ]
+     },
+     {
+      "id": "mark:Q",
+      "svg_id": "e0066",
+      "type": "mark",
+      "svg_xy": [
+       106.56,
+       96.33
+      ],
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0066"
+       }
+      ]
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-x",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של (−2, 3.5) = −2",
+      "objects": []
+     },
+     {
+      "id": "r-statement-y",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של (−2, 3.5) = 3.5",
+      "objects": []
+     },
+     {
+      "id": "r-statement-x-b",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של (2, 1.5) = 2",
+      "objects": []
+     },
+     {
+      "id": "r-statement-y-b",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של (2, 1.5) = 1.5",
+      "objects": []
+     },
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q2a",
+      "text": "השיפוע של הישר",
+      "objects": []
+     },
+     {
+      "id": "r-statement-b",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q2b",
+      "text": "המשוואה של הישר",
+      "objects": []
+     },
+     {
+      "id": "r-statement-x-c",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q2c",
+      "text": "נקודת החיתוך של הישר עם ציר x",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q2_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q3_head",
+   "svg": "figures/q3_head.svg",
+   "question": "q3",
+   "view": {
+    "width_px": 165.43,
+    "height_px": 239.33,
+    "unit_px": 1.0,
+    "viewbox": [
+     165.43,
+     239.33
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0056",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       156.26,
+       171.91
+      ]
+     },
+     {
+      "svg_id": "e0057",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       66.11,
+       14.87
+      ]
+     }
+    ],
+    "paths": [
+     {
+      "svg_id": "e0055",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:g",
+      "svg_xy": [
+       43.51,
+       223.6
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q3_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q3",
+    "svg": "figures/q3_head.svg",
+    "view": {
+     "viewbox": [
+      165.43,
+      239.33
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:g",
+      "type": "curve",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0055"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q3b",
+      "text": "המשוואה של הישר",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q3_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q4_head",
+   "svg": "figures/q4_head.svg",
+   "question": "q4",
+   "view": {
+    "width_px": 168.11,
+    "height_px": 210.62,
+    "unit_px": 1.0,
+    "viewbox": [
+     168.11,
+     210.62
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "e0066",
+      "kind": "point",
+      "role": "point",
+      "name": "mark:P",
+      "svg_xy": [
+       106.56,
+       196.89
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "e0067",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       158.94,
+       157.13
+      ]
+     },
+     {
+      "svg_id": "e0068",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       67.65,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q4_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q4",
+    "svg": "figures/q4_head.svg",
+    "view": {
+     "viewbox": [
+      168.11,
+      210.62
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0078"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       },
+       {
+        "svg_id": "e0081"
+       },
+       {
+        "svg_id": "e0082"
+       },
+       {
+        "svg_id": "e0083"
+       },
+       {
+        "svg_id": "e0084"
+       },
+       {
+        "svg_id": "e0085"
+       },
+       {
+        "svg_id": "e0086"
+       },
+       {
+        "svg_id": "e0087"
+       },
+       {
+        "svg_id": "e0088"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "mark:P",
+      "svg_id": "e0066",
+      "type": "mark",
+      "svg_xy": [
+       106.56,
+       196.89
+      ],
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0066"
+       }
+      ]
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-x",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של (2, −3) = 2",
+      "objects": []
+     },
+     {
+      "id": "r-statement-y",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של (2, −3) = −3",
+      "objects": []
+     },
+     {
+      "id": "r-statement-x-b",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של (0, −1) = 0",
+      "objects": []
+     },
+     {
+      "id": "r-statement-y-b",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של (0, −1) = −1",
+      "objects": []
+     },
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q4b",
+      "text": "המשוואה של הישר",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q4_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q6_head",
+   "svg": "figures/q6_head.svg",
+   "question": "q6",
+   "view": {
+    "width_px": 180.85,
+    "height_px": 259.93,
+    "unit_px": 1.0,
+    "viewbox": [
+     180.85,
+     259.93
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0075",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       171.68,
+       115.36
+      ]
+     },
+     {
+      "svg_id": "e0076",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       46.44,
+       14.87
+      ]
+     }
+    ],
+    "paths": [
+     {
+      "svg_id": "e0074",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:k",
+      "svg_xy": [
+       35.97,
+       247.01
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q6_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q6",
+    "svg": "figures/q6_head.svg",
+    "view": {
+     "viewbox": [
+      180.85,
+      259.93
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0078"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       },
+       {
+        "svg_id": "e0081"
+       },
+       {
+        "svg_id": "e0082"
+       },
+       {
+        "svg_id": "e0083"
+       },
+       {
+        "svg_id": "e0084"
+       },
+       {
+        "svg_id": "e0085"
+       },
+       {
+        "svg_id": "e0086"
+       },
+       {
+        "svg_id": "e0087"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0088"
+       },
+       {
+        "svg_id": "e0089"
+       },
+       {
+        "svg_id": "e0090"
+       },
+       {
+        "svg_id": "e0091"
+       },
+       {
+        "svg_id": "e0092"
+       },
+       {
+        "svg_id": "e0093"
+       },
+       {
+        "svg_id": "e0094"
+       },
+       {
+        "svg_id": "e0095"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:k",
+      "type": "curve",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0074"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-y",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q6a",
+      "text": "נקודת החיתוך של הישר עם ציר y",
+      "objects": []
+     },
+     {
+      "id": "r-statement-x",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q6a",
+      "text": "נקודת החיתוך של הישר עם ציר x",
+      "objects": []
+     },
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q6b",
+      "text": "המשוואה של הישר",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q6_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q7_head",
+   "svg": "figures/q7_head.svg",
+   "question": "q7",
+   "view": {
+    "width_px": 228.62,
+    "height_px": 224.72,
+    "unit_px": 1.0,
+    "viewbox": [
+     228.62,
+     224.72
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0062",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       219.45,
+       125.39
+      ]
+     },
+     {
+      "svg_id": "e0063",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       98.01,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q7_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q7",
+    "svg": "figures/q7_head.svg",
+    "view": {
+     "viewbox": [
+      228.62,
+      224.72
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q7a",
+      "text": "המשוואה של הישר",
+      "objects": []
+     },
+     {
+      "id": "r-statement-b",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q7c",
+      "text": "נקודות החיתוך של הישר ושל הישר",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q7_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q8_head",
+   "svg": "figures/q8_head.svg",
+   "question": "q8",
+   "view": {
+    "width_px": 227.14,
+    "height_px": 295.23,
+    "unit_px": 1.0,
+    "viewbox": [
+     227.14,
+     295.23
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0057",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       217.97,
+       250.89
+      ]
+     },
+     {
+      "svg_id": "e0058",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       97.03,
+       14.87
+      ]
+     },
+     {
+      "svg_id": "e0071",
+      "kind": "label",
+      "role": "curve_label",
+      "text": "f",
+      "for": "curve:f",
+      "svg_xy": [
+       32.13,
+       278.07
+      ]
+     },
+     {
+      "svg_id": "e0072",
+      "kind": "label",
+      "role": "curve_label",
+      "text": "g",
+      "for": "curve:g",
+      "svg_xy": [
+       80.73,
+       40.08
+      ]
+     }
+    ],
+    "paths": [
+     {
+      "svg_id": "e0055",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:f",
+      "svg_xy": [
+       39.0,
+       280.23
+      ]
+     },
+     {
+      "svg_id": "e0056",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:g",
+      "svg_xy": [
+       87.0,
+       28.23
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q8_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q8",
+    "svg": "figures/q8_head.svg",
+    "view": {
+     "viewbox": [
+      227.14,
+      295.23
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:f",
+      "type": "curve",
+      "name": "f",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0071"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:g",
+      "type": "curve",
+      "name": "g",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0072"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-fg",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q8a",
+      "text": "נקודות החיתוך של הישר f ושל הישר g",
+      "objects": []
+     },
+     {
+      "id": "r-statement-fx",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q8b",
+      "text": "נקודת החיתוך של הישר f עם ציר x",
+      "objects": []
+     },
+     {
+      "id": "r-statement-gx",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q8b",
+      "text": "נקודת החיתוך של הישר g עם ציר x",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q8_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q9_head",
+   "svg": "figures/q9_head.svg",
+   "question": "q9",
+   "view": {
+    "width_px": 168.11,
+    "height_px": 179.68,
+    "unit_px": 1.0,
+    "viewbox": [
+     168.11,
+     179.68
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "e0063",
+      "kind": "point",
+      "role": "point",
+      "name": "mark:A",
+      "svg_xy": [
+       29.2,
+       49.92
+      ],
+      "letter": "A"
+     },
+     {
+      "svg_id": "e0064",
+      "kind": "point",
+      "role": "point",
+      "name": "mark:B",
+      "svg_xy": [
+       122.03,
+       142.74
+      ],
+      "letter": "B"
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "e0065",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       158.94,
+       110.72
+      ]
+     },
+     {
+      "svg_id": "e0066",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       83.12,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q9_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q9",
+    "svg": "figures/q9_head.svg",
+    "view": {
+     "viewbox": [
+      168.11,
+      179.68
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0078"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       },
+       {
+        "svg_id": "e0081"
+       },
+       {
+        "svg_id": "e0082"
+       },
+       {
+        "svg_id": "e0083"
+       },
+       {
+        "svg_id": "e0084"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "mark:A",
+      "svg_id": "e0063",
+      "type": "mark",
+      "name": "A",
+      "svg_xy": [
+       29.2,
+       49.92
+      ],
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0085"
+       }
+      ]
+     },
+     {
+      "id": "mark:B",
+      "svg_id": "e0064",
+      "type": "mark",
+      "name": "B",
+      "svg_xy": [
+       122.03,
+       142.74
+      ],
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0086"
+       }
+      ]
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-xA",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של A = −4",
+      "objects": []
+     },
+     {
+      "id": "r-statement-yA",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של A = 7",
+      "objects": []
+     },
+     {
+      "id": "r-statement-xB",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של B = 2",
+      "objects": []
+     },
+     {
+      "id": "r-statement-yB",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של B = −5",
+      "objects": []
+     },
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q9a",
+      "text": "המשוואה של הישר",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q9_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q10_head",
+   "svg": "figures/q10_head.svg",
+   "question": "q10",
+   "view": {
+    "width_px": 182.95,
+    "height_px": 206.87,
+    "unit_px": 1.0,
+    "viewbox": [
+     182.95,
+     206.87
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0045",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       173.78,
+       183.69
+      ]
+     },
+     {
+      "svg_id": "e0046",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       12.35,
+       33.17
+      ]
+     },
+     {
+      "svg_id": "e0063",
+      "kind": "label",
+      "role": "axis_unit",
+      "text": "מנות",
+      "for": "axis:x",
+      "svg_xy": [
+       153.41,
+       200.87
+      ]
+     },
+     {
+      "svg_id": "e0064",
+      "kind": "label",
+      "role": "axis_unit",
+      "text": "גרם",
+      "for": "axis:y",
+      "svg_xy": [
+       20.32,
+       14.87
+      ]
+     },
+     {
+      "svg_id": "e0065",
+      "kind": "label",
+      "role": "curve_label",
+      "text": "A",
+      "for": "curve:A",
+      "svg_xy": [
+       27.75,
+       148.62
+      ]
+     },
+     {
+      "svg_id": "e0066",
+      "kind": "label",
+      "role": "curve_label",
+      "text": "B",
+      "for": "curve:B",
+      "svg_xy": [
+       41.69,
+       172.96
+      ]
+     }
+    ],
+    "paths": [
+     {
+      "svg_id": "e0043",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:A",
+      "svg_xy": [
+       20.32,
+       137.05
+      ]
+     },
+     {
+      "svg_id": "e0044",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:B",
+      "svg_xy": [
+       20.32,
+       177.04
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q10_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q10",
+    "svg": "figures/q10_head.svg",
+    "view": {
+     "viewbox": [
+      182.95,
+      206.87
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0063"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0064"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:A",
+      "type": "curve",
+      "name": "A",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0065"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:B",
+      "type": "curve",
+      "name": "B",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0066"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-yAx",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q10b",
+      "text": "ערך y של הישר A כאשר x = 3",
+      "objects": []
+     },
+     {
+      "id": "r-statement-yBx",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q10b",
+      "text": "ערך y של הישר B כאשר x = 3",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q10_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q11_head",
+   "svg": "figures/q11_head.svg",
+   "question": "q11",
+   "view": {
+    "width_px": 148.64,
+    "height_px": 278.04,
+    "unit_px": 1.0,
+    "viewbox": [
+     148.64,
+     278.04
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0063",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       139.47,
+       112.06
+      ]
+     },
+     {
+      "svg_id": "e0064",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       58.02,
+       14.87
+      ]
+     },
+     {
+      "svg_id": "e0076",
+      "kind": "label",
+      "role": "curve_label",
+      "text": "p",
+      "for": "curve:p",
+      "svg_xy": [
+       45.79,
+       260.54
+      ]
+     },
+     {
+      "svg_id": "e0077",
+      "kind": "label",
+      "role": "curve_label",
+      "text": "q",
+      "for": "curve:q",
+      "svg_xy": [
+       26.27,
+       39.9
+      ]
+     },
+     {
+      "svg_id": "e0078",
+      "kind": "label",
+      "role": "curve_label",
+      "text": "r",
+      "for": "curve:r",
+      "svg_xy": [
+       18.44,
+       155.58
+      ]
+     }
+    ],
+    "paths": [
+     {
+      "svg_id": "e0060",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:p",
+      "svg_xy": [
+       52.66,
+       265.37
+      ]
+     },
+     {
+      "svg_id": "e0061",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:q",
+      "svg_xy": [
+       12.66,
+       25.43
+      ]
+     },
+     {
+      "svg_id": "e0062",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:r",
+      "svg_xy": [
+       12.66,
+       158.73
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q11_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q11",
+    "svg": "figures/q11_head.svg",
+    "view": {
+     "viewbox": [
+      148.64,
+      278.04
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:p",
+      "type": "curve",
+      "name": "p",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0076"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:q",
+      "type": "curve",
+      "name": "q",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0077"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:r",
+      "type": "curve",
+      "name": "r",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0078"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-pq",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q11a",
+      "text": "נקודות החיתוך של הישר p ושל הישר q",
+      "objects": []
+     },
+     {
+      "id": "r-statement-p",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q11b",
+      "text": "המשוואה של הישר p",
+      "objects": []
+     },
+     {
+      "id": "r-statement-q",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q11b",
+      "text": "המשוואה של הישר q",
+      "objects": []
+     },
+     {
+      "id": "r-statement-r",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q11b",
+      "text": "המשוואה של הישר r",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q11_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q13_head",
+   "svg": "figures/q13_head.svg",
+   "question": "q13",
+   "view": {
+    "width_px": 199.05,
+    "height_px": 179.68,
+    "unit_px": 1.0,
+    "viewbox": [
+     199.05,
+     179.68
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0066",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       189.88,
+       126.19
+      ]
+     },
+     {
+      "svg_id": "e0067",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       67.65,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q13_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q13",
+    "svg": "figures/q13_head.svg",
+    "view": {
+     "viewbox": [
+      199.05,
+      179.68
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0078"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       },
+       {
+        "svg_id": "e0081"
+       },
+       {
+        "svg_id": "e0082"
+       },
+       {
+        "svg_id": "e0083"
+       },
+       {
+        "svg_id": "e0084"
+       },
+       {
+        "svg_id": "e0085"
+       },
+       {
+        "svg_id": "e0086"
+       },
+       {
+        "svg_id": "e0087"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q13a",
+      "text": "השיפוע של הישר",
+      "objects": []
+     },
+     {
+      "id": "r-statement-b",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q13c",
+      "text": "המשוואה של הישר",
+      "objects": []
+     },
+     {
+      "id": "r-statement-xy",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q13d",
+      "text": "ערכי x של הישר שבהם y = 39",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q13_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q14_head",
+   "svg": "figures/q14_head.svg",
+   "question": "q14",
+   "view": {
+    "width_px": 139.36,
+    "height_px": 204.61,
+    "unit_px": 1.0,
+    "viewbox": [
+     139.36,
+     204.61
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0054",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       130.19,
+       143.02
+      ]
+     },
+     {
+      "svg_id": "e0055",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       32.61,
+       14.87
+      ]
+     }
+    ],
+    "paths": [
+     {
+      "svg_id": "e0053",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:g",
+      "svg_xy": [
+       40.58,
+       25.73
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q14_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q14",
+    "svg": "figures/q14_head.svg",
+    "view": {
+     "viewbox": [
+      139.36,
+      204.61
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:g",
+      "type": "curve",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0053"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q14a",
+      "text": "המשוואה של הישר",
+      "objects": []
+     },
+     {
+      "id": "r-statement-x",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q14c",
+      "text": "נקודת החיתוך של הישר עם ציר x",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q14_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q15_head",
+   "svg": "figures/q15_head.svg",
+   "question": "q15",
+   "view": {
+    "width_px": 139.36,
+    "height_px": 232.27,
+    "unit_px": 1.0,
+    "viewbox": [
+     139.36,
+     232.27
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0060",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       130.19,
+       143.02
+      ]
+     },
+     {
+      "svg_id": "e0061",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       46.44,
+       14.87
+      ]
+     }
+    ],
+    "paths": [
+     {
+      "svg_id": "e0059",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:f",
+      "svg_xy": [
+       35.97,
+       25.73
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q15_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q15",
+    "svg": "figures/q15_head.svg",
+    "view": {
+     "viewbox": [
+      139.36,
+      232.27
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:f",
+      "type": "curve",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0059"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q15b",
+      "text": "נקודות החיתוך של הישר ושל הישר",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q15_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q16_head",
+   "svg": "figures/q16_head.svg",
+   "question": "q16",
+   "view": {
+    "width_px": 180.85,
+    "height_px": 330.46,
+    "unit_px": 1.0,
+    "viewbox": [
+     180.85,
+     330.46
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0071",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       171.68,
+       178.98
+      ]
+     },
+     {
+      "svg_id": "e0072",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       74.1,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q16_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q16",
+    "svg": "figures/q16_head.svg",
+    "view": {
+     "viewbox": [
+      180.85,
+      330.46
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0078"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       },
+       {
+        "svg_id": "e0081"
+       },
+       {
+        "svg_id": "e0082"
+       },
+       {
+        "svg_id": "e0083"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0084"
+       },
+       {
+        "svg_id": "e0085"
+       },
+       {
+        "svg_id": "e0086"
+       },
+       {
+        "svg_id": "e0087"
+       },
+       {
+        "svg_id": "e0088"
+       },
+       {
+        "svg_id": "e0089"
+       },
+       {
+        "svg_id": "e0090"
+       },
+       {
+        "svg_id": "e0091"
+       },
+       {
+        "svg_id": "e0092"
+       },
+       {
+        "svg_id": "e0093"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q16_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q17_head",
+   "svg": "figures/q17_head.svg",
+   "question": "q17",
+   "view": {
+    "width_px": 245.46,
+    "height_px": 226.09,
+    "unit_px": 1.0,
+    "viewbox": [
+     245.46,
+     226.09
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "points": [
+     {
+      "svg_id": "e0085",
+      "kind": "point",
+      "role": "point",
+      "name": "mark:P",
+      "svg_xy": [
+       44.67,
+       73.13
+      ]
+     }
+    ],
+    "labels": [
+     {
+      "svg_id": "e0086",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       236.29,
+       157.13
+      ]
+     },
+     {
+      "svg_id": "e0087",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       52.18,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q17_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q17",
+    "svg": "figures/q17_head.svg",
+    "view": {
+     "viewbox": [
+      245.46,
+      226.09
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0086"
+       },
+       {
+        "svg_id": "e0088"
+       },
+       {
+        "svg_id": "e0089"
+       },
+       {
+        "svg_id": "e0090"
+       },
+       {
+        "svg_id": "e0091"
+       },
+       {
+        "svg_id": "e0092"
+       },
+       {
+        "svg_id": "e0093"
+       },
+       {
+        "svg_id": "e0094"
+       },
+       {
+        "svg_id": "e0095"
+       },
+       {
+        "svg_id": "e0096"
+       },
+       {
+        "svg_id": "e0097"
+       },
+       {
+        "svg_id": "e0098"
+       },
+       {
+        "svg_id": "e0099"
+       },
+       {
+        "svg_id": "e0100"
+       },
+       {
+        "svg_id": "e0101"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0078"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       },
+       {
+        "svg_id": "e0081"
+       },
+       {
+        "svg_id": "e0082"
+       },
+       {
+        "svg_id": "e0083"
+       },
+       {
+        "svg_id": "e0084"
+       },
+       {
+        "svg_id": "e0087"
+       },
+       {
+        "svg_id": "e0088"
+       },
+       {
+        "svg_id": "e0102"
+       },
+       {
+        "svg_id": "e0103"
+       },
+       {
+        "svg_id": "e0104"
+       },
+       {
+        "svg_id": "e0105"
+       },
+       {
+        "svg_id": "e0106"
+       },
+       {
+        "svg_id": "e0107"
+       },
+       {
+        "svg_id": "e0108"
+       },
+       {
+        "svg_id": "e0109"
+       },
+       {
+        "svg_id": "e0110"
+       },
+       {
+        "svg_id": "e0111"
+       },
+       {
+        "svg_id": "e0112"
+       },
+       {
+        "svg_id": "e0113"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "mark:P",
+      "svg_id": "e0085",
+      "type": "mark",
+      "svg_xy": [
+       44.67,
+       73.13
+      ],
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0085"
+       }
+      ]
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement-x",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של (−1, 5) = −1",
+      "objects": []
+     },
+     {
+      "id": "r-statement-y",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של (−1, 5) = 5",
+      "objects": []
+     },
+     {
+      "id": "r-statement-x-b",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור x של (9, 0) = 9",
+      "objects": []
+     },
+     {
+      "id": "r-statement-y-b",
+      "type": "statement",
+      "role": "given",
+      "text": "שיעור y של (9, 0) = 0",
+      "objects": []
+     },
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q17c",
+      "text": "השיפוע של הישר",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q17_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q18_head",
+   "svg": "figures/q18_head.svg",
+   "question": "q18",
+   "view": {
+    "width_px": 199.05,
+    "height_px": 318.91,
+    "unit_px": 1.0,
+    "viewbox": [
+     199.05,
+     318.91
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0102",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       189.88,
+       126.19
+      ]
+     },
+     {
+      "svg_id": "e0103",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       83.12,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q18_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q18",
+    "svg": "figures/q18_head.svg",
+    "view": {
+     "viewbox": [
+      199.05,
+      318.91
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0074"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0078"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       },
+       {
+        "svg_id": "e0081"
+       },
+       {
+        "svg_id": "e0082"
+       },
+       {
+        "svg_id": "e0083"
+       },
+       {
+        "svg_id": "e0102"
+       },
+       {
+        "svg_id": "e0104"
+       },
+       {
+        "svg_id": "e0105"
+       },
+       {
+        "svg_id": "e0106"
+       },
+       {
+        "svg_id": "e0107"
+       },
+       {
+        "svg_id": "e0108"
+       },
+       {
+        "svg_id": "e0109"
+       },
+       {
+        "svg_id": "e0110"
+       },
+       {
+        "svg_id": "e0111"
+       },
+       {
+        "svg_id": "e0112"
+       },
+       {
+        "svg_id": "e0113"
+       },
+       {
+        "svg_id": "e0114"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0084"
+       },
+       {
+        "svg_id": "e0085"
+       },
+       {
+        "svg_id": "e0086"
+       },
+       {
+        "svg_id": "e0087"
+       },
+       {
+        "svg_id": "e0088"
+       },
+       {
+        "svg_id": "e0089"
+       },
+       {
+        "svg_id": "e0090"
+       },
+       {
+        "svg_id": "e0091"
+       },
+       {
+        "svg_id": "e0092"
+       },
+       {
+        "svg_id": "e0093"
+       },
+       {
+        "svg_id": "e0094"
+       },
+       {
+        "svg_id": "e0095"
+       },
+       {
+        "svg_id": "e0096"
+       },
+       {
+        "svg_id": "e0097"
+       },
+       {
+        "svg_id": "e0098"
+       },
+       {
+        "svg_id": "e0099"
+       },
+       {
+        "svg_id": "e0100"
+       },
+       {
+        "svg_id": "e0101"
+       },
+       {
+        "svg_id": "e0103"
+       },
+       {
+        "svg_id": "e0104"
+       },
+       {
+        "svg_id": "e0115"
+       },
+       {
+        "svg_id": "e0116"
+       },
+       {
+        "svg_id": "e0117"
+       },
+       {
+        "svg_id": "e0118"
+       },
+       {
+        "svg_id": "e0119"
+       },
+       {
+        "svg_id": "e0120"
+       },
+       {
+        "svg_id": "e0121"
+       },
+       {
+        "svg_id": "e0122"
+       },
+       {
+        "svg_id": "e0123"
+       },
+       {
+        "svg_id": "e0124"
+       },
+       {
+        "svg_id": "e0125"
+       },
+       {
+        "svg_id": "e0126"
+       },
+       {
+        "svg_id": "e0127"
+       },
+       {
+        "svg_id": "e0128"
+       },
+       {
+        "svg_id": "e0129"
+       },
+       {
+        "svg_id": "e0130"
+       },
+       {
+        "svg_id": "e0131"
+       },
+       {
+        "svg_id": "e0132"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0062"
+       },
+       {
+        "svg_id": "e0063"
+       },
+       {
+        "svg_id": "e0064"
+       },
+       {
+        "svg_id": "e0065"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q18_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q19_head",
+   "svg": "figures/q19_head.svg",
+   "question": "q19",
+   "view": {
+    "width_px": 187.86,
+    "height_px": 286.85,
+    "unit_px": 1.0,
+    "viewbox": [
+     187.86,
+     286.85
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0046",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       178.69,
+       263.67
+      ]
+     },
+     {
+      "svg_id": "e0047",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       17.26,
+       33.17
+      ]
+     },
+     {
+      "svg_id": "e0062",
+      "kind": "label",
+      "role": "axis_unit",
+      "text": "דקות",
+      "for": "axis:x",
+      "svg_xy": [
+       158.32,
+       280.85
+      ]
+     },
+     {
+      "svg_id": "e0063",
+      "kind": "label",
+      "role": "axis_unit",
+      "text": "שקלים",
+      "for": "axis:y",
+      "svg_xy": [
+       25.22,
+       14.87
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q19_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q19",
+    "svg": "figures/q19_head.svg",
+    "view": {
+     "viewbox": [
+      187.86,
+      286.85
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0062"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0063"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q19_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  },
+  {
+   "id": "q20_head",
+   "svg": "figures/q20_head.svg",
+   "question": "q20",
+   "view": {
+    "width_px": 228.62,
+    "height_px": 224.72,
+    "unit_px": 1.0,
+    "viewbox": [
+     228.62,
+     224.72
+    ],
+    "rotate": 0.0
+   },
+   "objects": {
+    "labels": [
+     {
+      "svg_id": "e0066",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "x",
+      "for": "axis:x",
+      "svg_xy": [
+       219.45,
+       125.39
+      ]
+     },
+     {
+      "svg_id": "e0067",
+      "kind": "label",
+      "role": "axis_name",
+      "text": "y",
+      "for": "axis:y",
+      "svg_xy": [
+       98.01,
+       14.87
+      ]
+     }
+    ],
+    "paths": [
+     {
+      "svg_id": "e0062",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:a",
+      "svg_xy": [
+       12.66,
+       145.4
+      ]
+     },
+     {
+      "svg_id": "e0063",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:b",
+      "svg_xy": [
+       79.31,
+       212.05
+      ]
+     },
+     {
+      "svg_id": "e0064",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:c",
+      "svg_xy": [
+       105.97,
+       25.43
+      ]
+     },
+     {
+      "svg_id": "e0065",
+      "kind": "curve",
+      "role": "data",
+      "name": "curve:d",
+      "svg_xy": [
+       12.66,
+       118.74
+      ]
+     }
+    ]
+   },
+   "constraints": [],
+   "visual_model": {
+    "schema_version": "visual-model/v1",
+    "id": "q20_head",
+    "kind": "function_graph",
+    "visual_support": "full",
+    "question": "q20",
+    "svg": "figures/q20_head.svg",
+    "view": {
+     "viewbox": [
+      228.62,
+      224.72
+     ],
+     "rotate": 0.0
+    },
+    "objects": [
+     {
+      "id": "axis:x",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0046"
+       },
+       {
+        "svg_id": "e0047"
+       },
+       {
+        "svg_id": "e0050"
+       },
+       {
+        "svg_id": "e0051"
+       },
+       {
+        "svg_id": "e0052"
+       },
+       {
+        "svg_id": "e0053"
+       },
+       {
+        "svg_id": "e0054"
+       },
+       {
+        "svg_id": "e0055"
+       },
+       {
+        "svg_id": "e0066"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0069"
+       },
+       {
+        "svg_id": "e0070"
+       },
+       {
+        "svg_id": "e0071"
+       },
+       {
+        "svg_id": "e0072"
+       },
+       {
+        "svg_id": "e0073"
+       },
+       {
+        "svg_id": "e0074"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "axis:y",
+      "type": "axis",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0048"
+       },
+       {
+        "svg_id": "e0049"
+       },
+       {
+        "svg_id": "e0056"
+       },
+       {
+        "svg_id": "e0057"
+       },
+       {
+        "svg_id": "e0058"
+       },
+       {
+        "svg_id": "e0059"
+       },
+       {
+        "svg_id": "e0060"
+       },
+       {
+        "svg_id": "e0061"
+       },
+       {
+        "svg_id": "e0067"
+       },
+       {
+        "svg_id": "e0068"
+       },
+       {
+        "svg_id": "e0075"
+       },
+       {
+        "svg_id": "e0076"
+       },
+       {
+        "svg_id": "e0077"
+       },
+       {
+        "svg_id": "e0078"
+       },
+       {
+        "svg_id": "e0079"
+       },
+       {
+        "svg_id": "e0080"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:a",
+      "type": "curve",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0062"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:b",
+      "type": "curve",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0063"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:c",
+      "type": "curve",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0064"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "curve:d",
+      "type": "curve",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0065"
+       }
+      ],
+      "svg_id": null
+     },
+     {
+      "id": "plane:xy",
+      "type": "plane",
+      "role": "context",
+      "display": "initial",
+      "parts": [
+       {
+        "svg_id": "e0001"
+       },
+       {
+        "svg_id": "e0002"
+       },
+       {
+        "svg_id": "e0003"
+       },
+       {
+        "svg_id": "e0004"
+       },
+       {
+        "svg_id": "e0005"
+       },
+       {
+        "svg_id": "e0006"
+       },
+       {
+        "svg_id": "e0007"
+       },
+       {
+        "svg_id": "e0008"
+       },
+       {
+        "svg_id": "e0009"
+       },
+       {
+        "svg_id": "e0010"
+       },
+       {
+        "svg_id": "e0011"
+       },
+       {
+        "svg_id": "e0012"
+       },
+       {
+        "svg_id": "e0013"
+       },
+       {
+        "svg_id": "e0014"
+       },
+       {
+        "svg_id": "e0015"
+       },
+       {
+        "svg_id": "e0016"
+       },
+       {
+        "svg_id": "e0017"
+       },
+       {
+        "svg_id": "e0018"
+       },
+       {
+        "svg_id": "e0019"
+       },
+       {
+        "svg_id": "e0020"
+       },
+       {
+        "svg_id": "e0021"
+       },
+       {
+        "svg_id": "e0022"
+       },
+       {
+        "svg_id": "e0023"
+       },
+       {
+        "svg_id": "e0024"
+       },
+       {
+        "svg_id": "e0025"
+       },
+       {
+        "svg_id": "e0026"
+       },
+       {
+        "svg_id": "e0027"
+       },
+       {
+        "svg_id": "e0028"
+       },
+       {
+        "svg_id": "e0029"
+       },
+       {
+        "svg_id": "e0030"
+       },
+       {
+        "svg_id": "e0031"
+       },
+       {
+        "svg_id": "e0032"
+       },
+       {
+        "svg_id": "e0033"
+       },
+       {
+        "svg_id": "e0034"
+       },
+       {
+        "svg_id": "e0035"
+       },
+       {
+        "svg_id": "e0036"
+       },
+       {
+        "svg_id": "e0037"
+       },
+       {
+        "svg_id": "e0038"
+       },
+       {
+        "svg_id": "e0039"
+       },
+       {
+        "svg_id": "e0040"
+       },
+       {
+        "svg_id": "e0041"
+       },
+       {
+        "svg_id": "e0042"
+       },
+       {
+        "svg_id": "e0043"
+       },
+       {
+        "svg_id": "e0044"
+       },
+       {
+        "svg_id": "e0045"
+       }
+      ],
+      "svg_id": null
+     }
+    ],
+    "relations": [
+     {
+      "id": "r-statement",
+      "type": "statement",
+      "role": "to_prove",
+      "item": "q20a",
+      "text": "נקודות החיתוך של הישר ושל הישר",
+      "objects": []
+     }
+    ],
+    "highlight_given": [],
+    "aux": [],
+    "actions": {
+     "allowed": [
+      "show",
+      "highlight",
+      "show_aux"
+     ],
+     "show": [
+      "q20_head"
+     ],
+     "highlight": [],
+     "show_aux": []
+    }
+   }
+  }
+ ],
+ "visuals": [
+  {
+   "schema_version": "visual-model/v1",
+   "id": "q13_table",
+   "kind": "table",
+   "visual_support": "partial",
+   "question": "q13",
+   "objects": [
+    {
+     "id": "q13_table-r1c1",
+     "type": "cell",
+     "row": 1,
+     "col": 1,
+     "value": "$x$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c2",
+     "type": "cell",
+     "row": 1,
+     "col": 2,
+     "value": "$−3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c3",
+     "type": "cell",
+     "row": 1,
+     "col": 3,
+     "value": "$−1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c4",
+     "type": "cell",
+     "row": 1,
+     "col": 4,
+     "value": "$1$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c5",
+     "type": "cell",
+     "row": 1,
+     "col": 5,
+     "value": "$3$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r1c6",
+     "type": "cell",
+     "row": 1,
+     "col": 6,
+     "value": "$5$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c1",
+     "type": "cell",
+     "row": 2,
+     "col": 1,
+     "value": "$y$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c2",
+     "type": "cell",
+     "row": 2,
+     "col": 2,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c3",
+     "type": "cell",
+     "row": 2,
+     "col": 3,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c4",
+     "type": "cell",
+     "row": 2,
+     "col": 4,
+     "value": "$7$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c5",
+     "type": "cell",
+     "row": 2,
+     "col": 5,
+     "value": "",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    },
+    {
+     "id": "q13_table-r2c6",
+     "type": "cell",
+     "row": 2,
+     "col": 6,
+     "value": "$−9$",
+     "role": "given",
+     "display": "initial",
+     "svg_id": null
+    }
+   ],
+   "relations": [],
+   "highlight_given": [],
+   "aux": [],
+   "actions": {
+    "allowed": [
+     "show",
+     "highlight",
+     "show_aux"
+    ],
+    "show": [
+     "q13_table"
+    ],
+    "highlight": [],
+    "show_aux": []
+   },
+   "svg": null
+  }
+ ]
+}

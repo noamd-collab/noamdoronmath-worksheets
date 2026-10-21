@@ -20,6 +20,12 @@ import {
   TOPIC_PAGE_M30_REDIRECTS,
   TOPIC_PAGE_M30_UNMIGRATED,
   TOPIC_PAGE_KITE_SLUGS,
+  TOPIC_PAGE_G1_SLUGS,
+  TOPIC_PAGE_G2_SLUGS,
+  TOPIC_PAGE_G3_SLUGS,
+  TOPIC_PAGE_G4_SLUGS,
+  TOPIC_PAGE_G5_SLUGS,
+  TOPIC_PAGE_G6_SLUGS,
   TOPIC_PAGE_PILOT_SLUGS,
   TOPIC_PAGE_SLUGS,
   extractJsonLdFaq,
@@ -72,7 +78,13 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
         TOPIC_PAGE_M22_SLUGS.length +
         TOPIC_PAGE_M23_SLUGS.length +
         TOPIC_PAGE_M30_SLUGS.length +
-        TOPIC_PAGE_KITE_SLUGS.length
+        TOPIC_PAGE_KITE_SLUGS.length +
+        TOPIC_PAGE_G1_SLUGS.length +
+        TOPIC_PAGE_G2_SLUGS.length +
+        TOPIC_PAGE_G3_SLUGS.length +
+        TOPIC_PAGE_G4_SLUGS.length +
+        TOPIC_PAGE_G5_SLUGS.length +
+        TOPIC_PAGE_G6_SLUGS.length
     );
     assert.equal(TOPIC_PAGE_M20_SLUGS.length, 11);
     assert.equal(TOPIC_PAGE_M21_SLUGS.length, 24);
@@ -301,15 +313,14 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
     assert.equal(page.catalogCtas[2].label, 'מהו פתרון של משוואה — בחירת דף ורמה');
   });
 
-  it('algebraic-expressions preserves three CTAs in production DOM order/labels', () => {
+  it('algebraic-expressions preserves three CTA destinations and order with corrected Hebrew labels', () => {
     const page = loadTopicPage('algebraic-expressions-grade-7');
     assert.equal(page.catalogCtas.length, 3);
     assert.deepEqual(
       page.catalogCtas.map((c) => c.catalogTopicId),
       [30, 23, 22]
     );
-    // Production wording kept after whitespace normalization; only the two typos from
-    // production ("וגריים", "אגבריים") are fixed, as listed in content-corrections.json.
+    // Awkward production wording kept after whitespace normalization (no invented polish).
     assert.equal(page.catalogCtas[0].label, 'גורם משותף ומינוס לפני סוגריים — בחירת דף ורמה');
     assert.equal(page.catalogCtas[1].label, 'הצבה בביטויים אלגבריים — בחירת דף ורמה');
     assert.equal(page.catalogCtas[2].label, 'משתנים וביטויים אלגבריים — בחירת דף ורמה');

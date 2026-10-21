@@ -56,26 +56,20 @@
 
 <script>
   (function () {
-    type Box = { left: number; right: number; top: number; bottom: number };
-    type Pt = { x: number; y: number };
-    var layer = document.querySelector<HTMLElement>('.plane-layer');
+    var layer = document.querySelector('.plane-layer');
     if (!layer) return;
     var reduced =
       window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
       document.documentElement.classList.contains('noam-a11y-motion');
-    const svgEl = layer.querySelector<SVGSVGElement>('.plane-svg');
-    const trailEl = layer.querySelector<SVGPathElement>('.plane-trail');
-    const iconEl = layer.querySelector<SVGGElement>('.plane-icon');
-    if (!svgEl || !trailEl || !iconEl) return;
-    const svg: SVGSVGElement = svgEl;
-    const trail: SVGPathElement = trailEl;
-    const icon: SVGGElement = iconEl;
+    var svg = layer.querySelector('.plane-svg');
+    var trail = layer.querySelector('.plane-trail');
+    var icon = layer.querySelector('.plane-icon');
     var layerRect = layer.getBoundingClientRect();
     var W = layerRect.width;
     var H = layerRect.height;
     var mobile = W < 768;
 
-    function boxOf(el: Element | null): Box | null {
+    function boxOf(el) {
       if (!el) return null;
       var r = el.getBoundingClientRect();
       if (r.width < 8 || r.height < 8) return null;
@@ -86,13 +80,13 @@
         bottom: r.bottom - layerRect.top,
       };
     }
-    function r(n: number) {
+    function r(n) {
       return Math.round(n);
     }
-    function C(c1x: number, c1y: number, c2x: number, c2y: number, x: number, y: number) {
+    function C(c1x, c1y, c2x, c2y, x, y) {
       return ' C ' + r(c1x) + ',' + r(c1y) + ' ' + r(c2x) + ',' + r(c2y) + ' ' + r(x) + ',' + r(y);
     }
-    function clamp(v: number, a: number, b: number) {
+    function clamp(v, a, b) {
       return Math.max(a, Math.min(b, v));
     }
 
@@ -118,7 +112,7 @@
     }
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
 
-    function pathHits(dAttr: string, boxes: Box[]) {
+    function pathHits(dAttr, boxes) {
       var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       p.setAttribute('d', dAttr);
       var len = 0;
@@ -146,8 +140,8 @@
       return false;
     }
 
-    var obstacles = [card, copy].filter((b): b is Box => b !== null);
-    var d: string | null;
+    var obstacles = [card, copy].filter(Boolean);
+    var d;
 
     if (card && copy) {
       var uL = Math.min(card.left, copy.left);
@@ -155,7 +149,7 @@
       var uT = Math.min(card.top, copy.top);
       var uB = Math.max(card.bottom, copy.bottom);
 
-      function buildOrbit(pad: number) {
+      function buildOrbit(pad) {
         // Outer orbit frame — control points stay OUTSIDE so Beziers don't
         // sag into the card/copy. Soft wave amplitudes for a flowing look.
         var L = clamp(uL - pad, 6, W * 0.2);
@@ -229,14 +223,14 @@
     }
     var scale = mobile ? 0.62 : 1;
 
-    function place(p: Pt, tangent: Pt) {
+    function place(p, tangent) {
       var deg = (Math.atan2(tangent.y, tangent.x) * 180) / Math.PI;
       icon.setAttribute(
         'transform',
         'translate(' + p.x + ' ' + p.y + ') rotate(' + deg + ') scale(' + scale + ')'
       );
     }
-    function pointAt(t: number) {
+    function pointAt(t) {
       var p = path.getPointAtLength(len * t);
       var p2 = path.getPointAtLength(Math.min(len, len * t + 2));
       return { p: p, tangent: { x: p2.x - p.x, y: p2.y - p.y } };
@@ -257,11 +251,11 @@
 
     trail.setAttribute('d', d);
     var DURATION = 16000;
-    var start: number | null = null;
-    function ease(t: number) {
+    var start = null;
+    function ease(t) {
       return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
     }
-    function frame(ts: number) {
+    function frame(ts) {
       if (start === null) start = ts + 700;
       var t = Math.min(1, Math.max(0, (ts - start) / DURATION));
       var s = pointAt(ease(t));
@@ -274,7 +268,7 @@
           sessionStorage.setItem('plane-flown-orbit-v1', '1');
         } catch (e) {}
         var fadeStart = ts;
-        (function fadeOut(now: number) {
+        (function fadeOut(now) {
           var fade = Math.min(1, (now - fadeStart) / 1600);
           trail.style.opacity = String(0.55 * (1 - fade));
           if (fade < 1) requestAnimationFrame(fadeOut);
