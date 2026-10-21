@@ -618,4 +618,18 @@ describe('teacher catalog picker', () => {
       assert.ok(picked.includes(`ex:${source.pdfId}:15ב`));
     }
   });
+
+  it('never leaves 0 available exercises or 0 suggestions when filtering levels on single-level topics', () => {
+    const catalogData = JSON.parse(readFileSync(new URL('../public/teachers/teacher-catalog.json', import.meta.url), 'utf8'));
+    const g8t1 = catalogData.grades.find((g: { grade: number }) => g.grade === 8).topics.find((t: { id: number }) => t.id === 1);
+    assert.deepEqual(g8t1.sheets.map((s: { level: string }) => s.level), ['one']);
+    const g9t43 = catalogData.grades.find((g: { grade: number }) => g.grade === 9).topics.find((t: { id: number }) => t.id === 43);
+    assert.deepEqual(g9t43.sheets.map((s: { level: string }) => s.level), ['c']);
+    assert.match(printer, /function syncLevels\(\)/);
+    assert.match(printer, /return matching\.length \? matching : topic\.sheets/);
+    assert.match(printer, /state\.level === 'all' \|\| state\.level === 'a'/);
+    const levelHandler = printer.slice(printer.indexOf("document.querySelectorAll('[name=level]')"), printer.indexOf("$('grade').addEventListener"));
+    assert.match(levelHandler, /if \(!next\.length && state\.scenario !== 'other'\)/);
+    assert.match(levelHandler, /exercisePreset\(state\.scenario\)/);
+  });
 });

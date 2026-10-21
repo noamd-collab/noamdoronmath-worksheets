@@ -95,6 +95,7 @@ let rendering = false;
 let printMode = 'marked';
 let printOpener = null;
 let loadToken = 0;
+let topicLoadPromise = null;
 let aiPickPending = 0;
 let teacherBotClientPromise = null;
 
@@ -302,13 +303,31 @@ function band() {
 }
 
 function pilotOn() {
-  return band() === 'middle' && String(state.grade) === '9' && String(state.topic) === '2' && sheets.has(FACTORING_PDF);
+  return band() === 'middle' && String(state.grade) === '9' && String(state.topic) === '2' && (state.level === 'all' || state.level === 'a') && sheets.has(FACTORING_PDF);
 }
 
 function topicSheets() {
   const topic = currentTopic();
   if (!topic) return [];
-  return topic.sheets.filter((sheet) => state.level === 'all' || sheet.level === state.level);
+  if (state.level === 'all') return topic.sheets;
+  const matching = topic.sheets.filter((sheet) => sheet.level === state.level);
+  return matching.length ? matching : topic.sheets;
+}
+
+function syncLevels() {
+  const topic = currentTopic();
+  const levels = new Set((topic ? topic.sheets : []).map((sheet) => sheet.level));
+  const hasSpecific = ['a', 'b', 'c'].some((lvl) => levels.has(lvl));
+  if (state.level !== 'all' && (!hasSpecific || !levels.has(state.level))) {
+    state.level = 'all';
+  }
+  document.querySelectorAll('[name=level]').forEach((el) => {
+    if (el.value === 'all') {
+      el.disabled = false;
+      return;
+    }
+    el.disabled = !hasSpecific || !levels.has(el.value);
+  });
 }
 
 function visibleSelectionKeys() {
@@ -403,6 +422,7 @@ function fillTopics() {
   }
   $('topic').innerHTML = topics.map((topic) => `<option value="${topic.id}">${escapeHTML(topic.title)}</option>`).join('');
   if (state.topic) $('topic').value = String(state.topic);
+  syncLevels();
 }
 
 function shownQuestions(pool) {
@@ -460,6 +480,7 @@ function render() {
   $('other-banner').hidden = state.scenario !== 'other';
   $('grade').value = String(state.grade);
   if ($('topic').value !== String(state.topic) && state.topic) $('topic').value = String(state.topic);
+  syncLevels();
   document.querySelectorAll('[name=scenario]').forEach((el) => { el.checked = el.value === state.scenario; });
   document.querySelectorAll('[name=style]').forEach((el) => { el.checked = el.value === state.style; });
   document.querySelectorAll('[name=level]').forEach((el) => { el.checked = el.value === state.level; });
@@ -634,7 +655,9 @@ async function paintThumb(canvas) {
 function levelAllows(source) {
   if (!source) return true;
   if (state.level === 'all') return true;
-  return !source.level || source.level === state.level;
+  if (!source.level || source.level === 'one' || source.level === state.level) return true;
+  const topic = currentTopic();
+  return !(topic && topic.sheets.some((sheet) => sheet.level === state.level));
 }
 
 function clearPreparedPrint() {
@@ -1953,18 +1976,22 @@ async function loadCurrentTopic() {
   const token = ++loadToken;
   const topic = currentTopic();
   if (!topic) return;
-  if (band() === 'middle') {
-    await Promise.all(topic.sheets.filter((sheet) => sheet.mode === 'exercise').map((sheet) => loadExerciseSheet(sheet.pdfId)));
-  }
-  if (token !== loadToken) return;
-  if (sheets.has(FACTORING_PDF)) {
-    const known = new Set(sheets.get(FACTORING_PDF).questions.map((question) => question.id));
-    Object.values(SCENARIOS).forEach((cfg) => {
-      [...cfg.selected, ...cfg.essential, ...cfg.deepen, cfg.suggestion].forEach((id) => {
-        if (!known.has(id)) throw new Error('MISSING_' + id);
+  const run = (async () => {
+    if (band() === 'middle') {
+      await Promise.all(topic.sheets.filter((sheet) => sheet.mode === 'exercise').map((sheet) => loadExerciseSheet(sheet.pdfId)));
+    }
+    if (token !== loadToken) return;
+    if (sheets.has(FACTORING_PDF)) {
+      const known = new Set(sheets.get(FACTORING_PDF).questions.map((question) => question.id));
+      Object.values(SCENARIOS).forEach((cfg) => {
+        [...cfg.selected, ...cfg.essential, ...cfg.deepen, cfg.suggestion].forEach((id) => {
+          if (!known.has(id)) throw new Error('MISSING_' + id);
+        });
       });
-    });
-  }
+    }
+  })();
+  topicLoadPromise = run;
+  await run;
 }
 
 const WIZARD_ORDER = ['grade', 'topic', 'level', 'scenario', 'style', 'pick', 'result'];
@@ -2049,10 +2076,16 @@ function bind() {
     if (!el.checked) return;
     state.level = el.value;
     state.expanded = false;
-    const next = keepVisible(state.selected, visibleSelectionKeys());
+    let next = keepVisible(state.selected, visibleSelectionKeys());
+    if (!next.length && state.scenario !== 'other') {
+      if (pilotOn() && SCENARIOS[state.scenario]) next = SCENARIOS[state.scenario].selected.map((id) => exKey(FACTORING_PDF, id));
+      else if (band() === 'elementary') next = elementaryPreset(state.scenario);
+      else next = exercisePreset(state.scenario);
+    }
     if (next.join('\n') !== selectionKey()) {
       snapshot();
       state.selected = next;
+      state.lastAiPickCount = 0;
       clearPreparedPrint();
     }
     render();
@@ -2071,10 +2104,12 @@ function bind() {
   });
   $('topic').addEventListener('change', async () => {
     state.topic = $('topic').value;
+    state.level = 'all';
     state.expanded = false;
     state.selected = [];
     history = [];
     clearPreparedPrint();
+    syncLevels();
     await loadCurrentTopic();
     if (state.scenario === 'other') render();
     else applyScenario(state.scenario, { quiet: true });
@@ -2115,6 +2150,14 @@ function bind() {
   if ($('wizard-next')) $('wizard-next').addEventListener('click', async () => {
     const index = WIZARD_ORDER.indexOf(state.wizard || 'grade');
     state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
+    if (state.wizard === 'pick') {
+      if (topicLoadPromise) await topicLoadPromise;
+      if (!state.selected.length && state.scenario !== 'other') {
+        applyScenario(state.scenario, { quiet: true });
+        return;
+      }
+      render();
+    }
     applyWizard();
     if (state.wizard === 'result') await showWizardResult();
   });
