@@ -678,7 +678,13 @@ describe('teacher short worksheet pack', () => {
       { level: 'b', ids: ['10א', '19ד'] },
     ]);
     const answerSlices = [];
-    for (const level of ['c', 'a', 'b']) {
+    const answerLevels = [];
+    for (const question of regress.ordered) {
+      const level = question.source.level;
+      if (!answerLevels.includes(level)) answerLevels.push(level);
+    }
+    assert.deepEqual(answerLevels, ['a', 'b', 'c']);
+    for (const level of answerLevels) {
       const specs = regress.ordered.filter((question) => question.source.level === level).map((question) => ({ q: question.q, part: question.part || '' }));
       const wanted = [...new Set(specs.map((spec) => spec.q))];
       const crops = api.answerCropsFromLines(measuredLines.lines[SHEET_IDS[level]], specs);
@@ -747,11 +753,16 @@ describe('teacher short worksheet pack', () => {
       slice,
       dh: slice.kind === 'level' ? 36 : dhOfAns(slice.box),
     }));
+    const answerPages = api.packShort(answerMeasured, { answers: true });
+    assert.deepEqual(
+      answerPages.flat().filter((item) => item.slice.kind === 'level').map((item) => item.slice.label),
+      ['רמה א׳', 'רמה ב׳', 'מצוינות'],
+    );
     const rendered = runPack({
       title: 'מצולעים',
       pdfs,
       exercisePages: regress.pages.map(tag),
-      answerPages: api.packShort(answerMeasured, { answers: true }).map(tag),
+      answerPages: answerPages.map(tag),
       outPdf: `${scratch}/regression.pdf`,
       outDir: scratch,
     });
