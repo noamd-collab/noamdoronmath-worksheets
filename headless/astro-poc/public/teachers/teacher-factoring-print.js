@@ -3304,16 +3304,15 @@ function leftFigureBoxes(bitmap, y0, y1) {
     const frac = span ? n / span : 0;
     if (frac >= 0.45 && frac <= 0.78 && longest < width * 0.02 && gaps >= 20) dashLike[y] = 1;
   }
+  // A rule is at most three rows thick at print resolution.
   for (let y = 1; y < height - 1; y += 1) {
-    if (!dashLike[y]) continue;
-    const up = dashLike[y - 1] === 1;
-    const down = dashLike[y + 1] === 1;
-    if (up && down) continue;
-    const above = y - (up ? 2 : 1);
-    const below = y + (down ? 2 : 1);
-    if (above >= 0 && dashLike[above]) continue;
-    if (below < height && dashLike[below]) continue;
-    ruleRow[y] = 1;
+    if (!dashLike[y] || dashLike[y - 1]) continue;
+    let end = y;
+    while (end + 1 < height && dashLike[end + 1]) end += 1;
+    if (end - y < 3) {
+      for (let k = y; k <= end; k += 1) ruleRow[k] = 1;
+    }
+    y = end;
   }
   const ruleAt = (y) => y > 0 && y < height && ruleRow[y] === 1;
   const pushBox = (low, high) => {
