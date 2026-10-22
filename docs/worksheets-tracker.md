@@ -1,6 +1,6 @@
 # Worksheet tracker
 
-One row per grade and topic in `headless/astro-poc/src/data/catalog.v1.json` on `headless/astro-poc-baseline` (`9eb9e25e`). That file is generated from `index.html`. Level names are the catalog labels.
+One row per grade and topic in `headless/astro-poc/src/data/catalog.v1.json` on `main` (`746df4e4`). That file is generated from `index.html`. The catalog and `index.html` bytes are unchanged since `a7ddd8cd`. Level names are the catalog labels.
 
 Columns: grade, topic, levels present, author, reviewed, live, PR.
 
@@ -11,7 +11,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 - #88 replaced specific grade 3 and grade 6 media ids (round 6). That PR does not say those sheets were reviewed, so those levels stay `unknown` and the PR is listed on that level only.
 - #100 names three levels that failed review and were not changed: G7-T02 c, G7-T04 b, G7-T11 c. Other levels left off the replacement lists are `unknown`, not failed.
 - `noamd-collab/noam-agent-hub` was not readable (repository not found with this token). Nothing from that repo is in this table.
-- Topic titles match `catalog.v1.json` at `9eb9e25e`. Twenty-four titles changed spelling in `d3bb8361` (Hebrew hyphens and geresh). Review, author, live, and PR cells were not changed.
+- Topic titles match `index.html` / `catalog.v1.json` on `main` (`746df4e4`; same bytes as `a7ddd8cd`). #216 had copied baseline spellings, including two labels #175 had already renamed (`שילוב גאומטרי`, `דף סיכום מדידות`). `סמ` and `סמק` are the catalog spelling. Review, author, live, and PR cells were not changed.
 - Topics named in the staging stub as pending (G7-T28, G7-T47, G7-T48, G8-T11, G8-T26, G8-T29, G8-T37, G8-T49, G8-T35, G9-T17, G9-T32) are filled only from the catalog and the PRs above. The stub's author and pending status were not copied.
 
 | Grade | Topic | Levels | Author | Reviewed | Live | PR |
@@ -39,14 +39,14 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה א׳ | נתונים (id 21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה א׳ | בעיות מילוליות פשוטות (id 22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה א׳ | הרכבה ופירוק (id 23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ב׳ | חוזרים להרכבות 10 ו־20 (id 1) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ב׳ | חוזרים להרכבות 10 ו 20 (id 1) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | עשרות ויחידות בתחום 100 (id 2) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | סדר השוואה וישר מספרים (id 3) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | מוסיפים עשרות ומפרקים מספרים (id 4) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ב׳ | חיבור דו־ספרתי ללא המרה (id 5) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ב׳ | חיבור דו־ספרתי עם המרה (id 6) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ב׳ | חיסור דו־ספרתי ללא פריטה (id 7) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ב׳ | חיסור דו־ספרתי עם פריטה (id 8) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ב׳ | חיבור דו ספרתי ללא המרה (id 5) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ב׳ | חיבור דו ספרתי עם המרה (id 6) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ב׳ | חיסור דו ספרתי ללא פריטה (id 7) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ב׳ | חיסור דו ספרתי עם פריטה (id 8) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | אסטרטגיות חישוב אומדן ופיצוי (id 9) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | שוויון ומספר חסר (id 10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | בעיות מילוליות וכסף (id 11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -59,8 +59,8 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ב׳ | חילוק לחלקים שווים (id 18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | משפחת כפל וחילוק (id 19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | פי בקבוצות שוות (id 20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ב׳ | זוגי אי־זוגי וסדרות א׳ (id 21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ב׳ | זוגי אי־זוגי וסדרות ב׳ (id 22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ב׳ | זוגי אי זוגי וסדרות א (id 21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ב׳ | זוגי אי זוגי וסדרות ב (id 22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | מדידת אורך (id 23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | בעיות מילוליות וכסף פשוט (id 24) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ב׳ | שעון ומשך זמן (id 25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -89,19 +89,19 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ג׳ | מדידות זמן ומשקל (id 19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #88 |
 | כיתה ג׳ | קוראים דיאגרמה (id 20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #88 |
 | כיתה ג׳ | חילוק ובדיקה בכפל (id 21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ג׳ | מדידות אורך ס״מ ומטר (id 22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ג׳ | מדידות אורך סמ ומטר (id 22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ג׳ | בונים ומפרקים צורות (id 23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ג׳ | אוספים נתונים (id 24) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #88 |
 | כיתה ג׳ | כסף (id 25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | מספרים עד מיליון קריאה ופירוק (id 1) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | סדר שכנים ועיגול בתחום המיליון (id 2) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ד׳ | חיבור רב־ספרתי בטור (id 3) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ד׳ | חיסור רב־ספרתי בטור (id 4) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ד׳ | חיבור רב ספרתי בטור (id 3) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ד׳ | חיסור רב ספרתי בטור (id 4) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | אומדן ובעיות חיבור וחיסור כולל כסף (id 5) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | חוקי פעולות וכפל בעשרות שלמות (id 6) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | סדר פעולות חשבון (id 7) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | חוק הפילוג ומכפלות חלקיות (id 8) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ד׳ | כפל רב־ספרתי (id 9) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ד׳ | כפל רב ספרתי (id 9) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | חילוק ארוך ושארית (id 10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | שבר ייצוגים ושמות שקולים (id 11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | שברים על ישר והשוואה (id 12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -122,10 +122,10 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ד׳ | זוויות וקווים במישור (id 27) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | משולשים מיון ובנייה (id 28) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ד׳ | מרובעים תכונות מיון והכלה (id 29) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ד׳ | דף סיכום אינטגרטיבי לכיתה ד׳ (id 31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ד׳ | דף סיכום אינטגרטיבי לכיתה ד (id 31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | תובנה מספרית כפל וחילוק בעשרות ומאות (id 1) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | מספרים גדולים ערך מקום עיגול ואומדן (id 2) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ה׳ | כפל רב־ספרתי ובדיקת סבירות (id 3) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ה׳ | כפל רב ספרתי ובדיקת סבירות (id 3) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | חילוק מאונך ושארית (id 4) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | גורמים ראשוניים ופריקים (id 5) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | סדר פעולות תכנון ולא רק ביצוע (id 6) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -135,7 +135,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ה׳ | מכנה משותף בחירה יעילה (id 10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | חיבור וחיסור שברים במכנים שונים (id 11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | חלק מכמות (id 12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ה׳ | שברים גדולים מ־1 ומספרים מעורבים (id 13) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ה׳ | שברים גדולים מ 1 ומספרים מעורבים (id 13) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | חיבור וחיסור מספרים מעורבים (id 14) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | השלמת שברים ופעולות הפוכות (id 15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | קריאת טבלאות וחישוב נתונים (id 16) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -145,7 +145,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ה׳ | בניית צורות ומיון לפי תכונות (id 20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | המרות יחידות ומדידת משקל (id 21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | היקף יחידות וקווים מקבילים מאונכים (id 22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ה׳ | גובה במשולש חד־זווית וישר־זווית (id 23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ה׳ | גובה במשולש חד זווית וישר זווית (id 23) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | גובה במשולש קהה ובמקבילית (id 24) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | שטח והיקף של מלבנים וריבועים (id 25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ה׳ | שטח צורה מורכבת פירוק והרכבה (id 26) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -169,12 +169,12 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ו׳ | כפל מספרים עשרוניים (id 9) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | חילוק מספרים עשרוניים (id 10) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | חקר גופים ותכונותיהם (id 11) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ו׳ | תיבות ופריסות מעבר בין דו־ממד לתלת־ממד (id 12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ו׳ | תיבות ופריסות מעבר בין דו ממד לתלת ממד (id 12) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | שטח פנים של תיבה (id 13) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | נפח תיבה ומבנים (id 14) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ו׳ | קיבול סמ״ק ליטר ומ״ק (id 15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ו׳ | קיבול סמק ליטר ומק (id 15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | מרובעים ויחסי הכלה חזרה מנומקת (id 16) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ו׳ | דף סינתזה מדידות גאומטריה ופתרון רב־שלבי (id 17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ו׳ | דף סיכום מדידות גאומטריה ופתרון רב שלבי (id 17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | שבר עשרוני ואחוז שלושה ייצוגים לאותו מספר (id 18) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | אחוז כחלק מכמות (id 19) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ו׳ | מציאת השלם ויישומי אחוזים (id 20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -184,7 +184,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ו׳ | אוספים ומייצגים נתונים (id 24) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #88 |
 | כיתה ו׳ | משווים קבוצות ומנסחים מסקנות זהירות (id 25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | #88 |
 | כיתה ו׳ | שינוי ממדים מה קורה להיקף לשטח ולנפח (id 26) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ו׳ | חוקיות ופתרון בעיות רב־שלביות (id 27) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ו׳ | חוקיות ופתרון בעיות רב שלביות (id 27) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ז׳ | מספרים מכוונים — ישר המספרים וערך מוחלט (G7-T01) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
 | כיתה ז׳ | חיבור וחיסור מספרים מכוונים (G7-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#100); b yes (#100); c failed review, not changed (#100) | unknown | #100 |
 | כיתה ז׳ | כפל מספרים מכוונים (G7-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#100) | unknown | #100 |
@@ -274,8 +274,8 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | משפטי חפיפה (G8-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#99); c yes (#99) | unknown | #99 (b,c) |
 | כיתה ח׳ | הוכחה גאומטרית (G8-T40) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | זווית חיצונית (G8-T41) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#99); b yes (#99); c unknown | unknown | #99 (a,b) |
-| כיתה ח׳ | משולש שווה־שוקיים (G8-T42) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | הוכחה — שווה־שוקיים (G8-T43) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
+| כיתה ח׳ | משולש שווה שוקיים (G8-T42) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
+| כיתה ח׳ | הוכחה — שווה שוקיים (G8-T43) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | התיכון במשולש (G8-T44) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | דמיון משולשים (G8-T45) | רמה א׳, רמה ב׳, רמת מצוינות, מצוינות 2 | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | הוכחת דמיון (G8-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
@@ -289,7 +289,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | אי־שוויון (G8-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a unknown; b yes (#99); c yes (#99) | unknown | #99 (b,c) |
 | כיתה ח׳ | אי־שוויון גרפי (G8-T05) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | פיתגורס במרחב (G8-T51) | רמה א׳, רמה ב׳, רמת מצוינות, מצוינות 2 | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | סינתזה גאומטרית (G8-T55) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
+| כיתה ח׳ | שילוב גאומטרי (G8-T55) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | העמקה — בעיות לא שגרתיות (G8-T56) | העמקה | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | העמקה — חקר והכללה (G8-T57) | העמקה | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | חזרה מסכמת (G8-T58) | דף תלמיד | unknown | yes (#99) | unknown | #99 |
@@ -303,7 +303,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ט׳ | חוק הפילוג המורחב (G9-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | פירוק לגורמים (G9-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | צמצום שברים אלגבריים (G9-T04) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
-| כיתה ט׳ | משולש שווה־שוקיים (G9-T15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
+| כיתה ט׳ | משולש שווה שוקיים (G9-T15) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | הפונקציה הריבועית (G9-T06) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | משוואות ריבועיות ונוסחת השורשים (G9-T31) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#98) | unknown | #98 |
 | כיתה ט׳ | המקבילית (G9-T17) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
@@ -335,13 +335,13 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ט׳ | פונקציה קווית (G9-T34) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | משפט פיתגורס (G9-T35) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | קריאת גרפים (G9-T36) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | משולש ישר־זווית 30–60–90 (G9-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ט׳ | משולש ישר זווית 30-60-90 (G9-T37) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | יחסי צלעות וזוויות (G9-T38) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | הטרפז (G9-T39) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
 | כיתה ט׳ | דמיון משולשים — משפט ז.ז וחישובים (G9-T40) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | פירוק לגורמים 1 — הוצאת גורם משותף (G9-T41, parent 2) | גורם משותף · רמה א׳ | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | פירוק לגורמים 2 — נוסחאות הכפל המקוצר וטרינום (G9-T42, parent 2) | כפל מקוצר וטרינום · רמה א׳ | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | פירוק לגורמים 3 — פירוק מלא, משוואות ושברים אלגבריים (G9-T43, parent 2) | פירוק מלא ומשוואות · רמת מצוינות | unknown | unknown | unknown | unknown |
-| כיתה ט׳ | דו־איבר בריבוע (G9-T44) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
+| כיתה ט׳ | דו איבר בריבוע (G9-T44) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | הפרש ריבועים (G9-T45) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | unknown | unknown | unknown |
 | כיתה ט׳ | דלתון (G9-T46) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | no (#104, Qwen/DeepSeek skipped) | unknown | #104 |
