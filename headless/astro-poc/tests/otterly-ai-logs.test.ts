@@ -217,9 +217,15 @@ describe('Otterly forwarding', () => {
   it('hands the promise to waitUntil when the runtime provides it', async () => {
     const jobs: Array<Promise<unknown>> = [];
     let calls = 0;
+    const ctx = {
+      waitUntil(this: unknown, job: Promise<unknown>) {
+        assert.equal(this, ctx, 'runtime waitUntil must keep its receiver');
+        jobs.push(job);
+      },
+    };
     scheduleOtterlyPageLog(
       page({
-        locals: { runtime: { ctx: { waitUntil: (job: Promise<unknown>) => jobs.push(job) } } },
+        locals: { runtime: { ctx } },
         fetchImpl: async () => {
           calls += 1;
           return new Response(null, { status: 500 });
@@ -235,7 +241,9 @@ describe('Otterly forwarding', () => {
   it('wires the middleware without awaiting the webhook', () => {
     const source = readFileSync(new URL('../src/middleware.ts', import.meta.url), 'utf8');
     const script = readFileSync(new URL('../scripts/otterly-log-sample.ts', import.meta.url), 'utf8');
-    assert.match(source, /scheduleOtterlyPageLog\(/);
+    assert.equal(source.match(/scheduleOtterlyPageLog\(/g)?.length, 1);
+    assert.equal(source.includes('forwardAiBotHitToOtterly'), false);
+    assert.equal(source.includes('analytics.otterly.ai/logs'), false);
     assert.equal(source.includes('await scheduleOtterlyPageLog'), false);
     assert.match(source, /OTTERLY_API_KEY/);
     assert.match(script, /process\.env\.OTTERLY_API_KEY/);

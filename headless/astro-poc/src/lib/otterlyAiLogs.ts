@@ -20,6 +20,7 @@ export const AI_CRAWLER_TOKENS = [
   'ClaudeBot',
   'Claude-User',
   'PerplexityBot',
+  'Perplexity-User',
   'Google-Extended',
   'Bytespider',
 ] as const;
@@ -291,5 +292,5 @@ function isIpv6(value: string): boolean {
 function readWaitUntil(locals: unknown): WaitUntil | undefined {
   if (!locals || typeof locals !== 'object') return undefined;
   const ctx = (locals as { runtime?: { ctx?: { waitUntil?: unknown } } }).runtime?.ctx;
-  return typeof ctx?.waitUntil === 'function' ? (ctx.waitUntil as WaitUntil) : undefined;
+  return typeof ctx?.waitUntil === 'function' ? (ctx.waitUntil as WaitUntil).bind(ctx) : undefined;
 }
