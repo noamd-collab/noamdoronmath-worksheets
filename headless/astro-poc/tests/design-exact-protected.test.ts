@@ -55,7 +55,9 @@ const protectedFiles: Record<string, string> = {
   // QWEN_BASE_URL and QWEN_MODEL were added so a Model Studio key can point
   // at its region and model without another code change. Adapter, output,
   // and integrations are unchanged. The other Astro configs are not in this fence.
-  'astro.config.mjs': 'f940201eed3b4d37887c50dee706af4cbce38a701cc4c56606927c637f42beb7',
+  // PR 225 on main added optional OTTERLY_API_KEY. This pin records that file.
+  // astro.config.mjs itself was not edited on the teachers branch.
+  'astro.config.mjs': '47a79a219626a539875a5561b9a914cb183343066fa89abfceae4a4635cbb646',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   // 2026-10-18: Noam-approved text-only wording migration (סינתזה → סיכום/שילוב); IDs, URLs, levels, and PDF mappings remain unchanged.
