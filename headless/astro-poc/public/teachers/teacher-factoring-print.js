@@ -2735,62 +2735,6 @@ function answerEdgeSpan(bitmap, box, yTop, yBot) {
   return { minX, maxX };
 }
 
-/**
- * A stem line inside a shaded panel ("חקירה מודרכת") ends at its text, which drops
- * the panel. The panel fill is lighter than ink, so widening to it adds no ink.
- */
-function growToPanel(box, bitmap) {
-  if (!box || box.mask || (box.masks && box.masks.length)) return box;
-  const width = bitmap.width;
-  const height = bitmap.height;
-  const y0 = Math.max(0, Math.floor(box.y * height));
-  const y1 = Math.min(height, Math.ceil((box.y + box.h) * height));
-  if (y1 - y0 < 8) return box;
-  let data;
-  try {
-    data = bitmap.getContext('2d').getImageData(0, y0, width, y1 - y0).data;
-  } catch (error) {
-    return box;
-  }
-  const panel = (x, y) => {
-    const i = (y * width + x) * 4;
-    const r = data[i];
-    const g = data[i + 1];
-    const b = data[i + 2];
-    return r >= 236 && r <= 251 && g >= 236 && g <= 251 && b >= 234 && b <= 251 && Math.max(r, g, b) - Math.min(r, g, b) <= 8;
-  };
-  const edge = (start, step) => {
-    if (start < 0 || start >= width) return null;
-    const found = [];
-    for (let y = 0; y < y1 - y0; y += 1) {
-      if (!panel(start, y)) continue;
-      let x = start;
-      let miss = 0;
-      while (x + step >= 0 && x + step < width) {
-        if (panel(x + step, y)) miss = 0;
-        else if ((miss += 1) > 2) break;
-        x += step;
-      }
-      found.push(x - step * miss);
-    }
-    if (found.length < Math.max(8, (y1 - y0) * 0.4)) return null;
-    found.sort((a, b) => a - b);
-    const mid = found[Math.floor(found.length / 2)];
-    const near = found.filter((x) => Math.abs(x - mid) <= 3).length;
-    return near >= found.length * 0.8 ? mid : null;
-  };
-  const left = Math.floor(box.x * width);
-  const right = Math.ceil((box.x + box.w) * width) - 1;
-  const panelLeft = edge(left + 1, -1);
-  const panelRight = edge(right - 1, 1);
-  let x0 = left;
-  let x1 = right;
-  if (panelLeft != null && panelLeft < left - width * 0.02) x0 = Math.max(0, panelLeft - 2);
-  if (panelRight != null && panelRight > right + width * 0.02) x1 = Math.min(width - 1, panelRight + 2);
-  if (x0 === left && x1 === right) return box;
-  return { ...box, x: x0 / width, w: (x1 + 1 - x0) / width };
-}
-
 function trimPieceBox(slice, bitmap) {
   const box = slice.box;
   if (!box || !bitmap) return slice;
@@ -4536,7 +4480,7 @@ function rebuildQuestionGroup(group, texts) {
       kind: entry.kind,
       page: entry.page,
       gap: index ? 8 : lead,
-      box: entry.box.segment === 'stem' ? growToPanel(entry.box, sample.bitmap) : entry.box,
+      box: entry.box,
       figures: entry.figures || figures,
       clip: sourceClip(group[0].slice.source, entry.page, entry.box.segment || entry.kind),
     };
