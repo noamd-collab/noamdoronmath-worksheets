@@ -16,6 +16,7 @@
     "typecheck": "astro check",
     "test": "node scripts/run-tests.mjs",
     "test:unit": "node scripts/run-tests.mjs --unit",
+    "otterly:sample": "tsx scripts/otterly-log-sample.ts",
     "catalog:measure": "node scripts/build-teacher-catalog.mjs",
     "test:live-ssr": "node scripts/run-tests.mjs --live-ssr",
     "refresh:catalog": "node scripts/refresh-catalog-snapshot.mjs refresh",

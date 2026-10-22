@@ -14,6 +14,7 @@ export default defineConfig({
     QWEN_BASE_URL:envField.string({context:'server',access:'secret',optional:true}),
     QWEN_MODEL:envField.string({context:'server',access:'secret',optional:true}),
     NOAM_RECAPTCHA_SECRET_KEY:envField.string({context:'server',access:'secret',optional:true}),
+    OTTERLY_API_KEY:envField.string({context:'server',access:'secret',optional:true}),
   }},
   vite:{cacheDir:'./.vite-design-preview'},
 });
