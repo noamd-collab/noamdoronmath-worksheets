@@ -1937,7 +1937,16 @@ function answerBox(items, questionNumber, part) {
     if (width > 90 && words.length > 3) return null;
     if (words.length > 4) return null;
     const line = Math.max(label.h || 12, 12);
-    const floor = nextMarker ? nextMarker.y + Math.max(nextMarker.h || 0, 10) + 2 : label.y - line * 4;
+    let floor = nextMarker ? nextMarker.y + Math.max(nextMarker.h || 0, 10) + 2 : label.y - line * 4;
+    // The next part's label line, in either ".ג" or "ג." order, ends this answer.
+    (items || []).forEach((item) => {
+      const y = item.y || 0;
+      if (y > label.y - line * 0.55 || y < floor) return;
+      const x = item.x || 0;
+      if (x < left - 4 || x > right + 12) return;
+      const token = String(item.str || '').trim();
+      if (/^\.?[אבגדהו]\.?$/.test(token) || /^[·•]?\s*[אבגדהו]\./.test(token)) floor = Math.max(floor, y + 4);
+    });
     const following = (items || []).filter((item) => {
       const y = item.y || 0;
       if (y > label.y - line * 0.55) return false;
