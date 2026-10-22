@@ -171,9 +171,6 @@ nav[data-nav-panel] a:hover{background:rgba(42,124,122,.1)}
 .filter{display:flex;gap:6px;flex-wrap:wrap}
 .filter button{padding:6px 14px;border:2px solid rgba(34,48,90,.35);border-radius:999px;background:#fff;font-size:14px;font-weight:700;min-height:44px;color:var(--ink)}
 .filter button[aria-pressed="true"]{background:var(--ink);color:#fbfaf5;border-color:var(--ink)}
-.ai-pick-group .ai-pick-btn{border-color:var(--ink);background:var(--cream);color:var(--ink);box-shadow:2px 2px 0 var(--yellow)}
-.ai-pick-group .ai-pick-btn:hover:not(:disabled){background:var(--mint);box-shadow:3px 3px 0 var(--teal)}
-.ai-pick-group .ai-pick-btn[aria-pressed="true"]{background:var(--teal-dark);color:#fbfaf5;border-color:var(--ink);box-shadow:2px 2px 0 var(--yellow)}
 .question-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .q-card{
   display:flex;align-items:flex-start;gap:10px;min-height:0;padding:14px;
@@ -365,9 +362,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 .source-sheet{margin:0 0 18px}
 .source-stage{position:relative;direction:ltr;background:#fff}
 .source-stage canvas{display:block;width:100%;height:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.source-mark{position:absolute;box-sizing:border-box;pointer-events:none;color:#21645f;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.source-mark svg{display:block;width:100%;height:100%;overflow:hidden}
-.source-mark path{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.source-mark{position:absolute;box-sizing:border-box;background:rgba(255,214,90,.55);outline:3px solid #c47d00;border-radius:4px;pointer-events:none;mix-blend-mode:multiply;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .print-unprepared{margin:0;font:16px/1.4 Heebo,Arial,sans-serif}
 .source-sheet figcaption,.crop-sheet figcaption{direction:rtl;font-size:13px;margin-top:6px;color:#3d4870}
 .crop-sheet{margin:0 0 18px}
@@ -393,7 +388,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
   .print-area .crop-sheet.has-teacher-note .teacher-print-note{flex:0 0 auto;overflow:visible}
   .print-area .source-stage{width:180mm;height:254mm;flex:0 0 auto;background:transparent}
   .print-area .source-stage canvas{width:180mm;height:254mm}
-  .print-area .source-mark{display:none} /* The same check is baked into the print canvas. */
+  .print-area .source-mark{background:transparent;outline:none;border:2px solid #c47d00;border-radius:0;mix-blend-mode:normal}
   .print-area .print-unprepared{display:block!important;margin:0;font-size:16px}
   .print-area figcaption{width:180mm;margin:2mm 0 0;font-size:10px;line-height:1.3}
 }
@@ -451,7 +446,7 @@ dialog::backdrop{background:rgba(34,48,90,.46)}
 <div id="available-content"><p class="logic-note"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span id="rationale">תחילה גורם מספרי, אחר כך סימנים וגורם משתנה. אין צורך להתחיל מכל הדף.</span></p>
 <div class="other-note-banner" id="other-banner" hidden><strong>בחירה ידנית עם הערת מורה</strong><p>הרצף האחרון נשאר כפי שהוא. אפשר לבחור שאלות ולצרף את ההערה לתוכנית.</p></div>
 <div class="toolbar"><h3>הפניות לשאלות <span class="toolbar-meta" id="available-count"></span></h3><button class="text-btn" id="undo" disabled><svg aria-hidden="true"><use href="#i-undo"/></svg>ביטול שינוי</button></div>
-<div class="list-header"><span>הסימון ניתן לשינוי</span><div class="filter ai-pick-group" id="ai-pick-group" role="group" aria-label="בחירה מהירה עם AI"><button type="button" class="ai-pick-btn" id="ai-pick-15" data-ai-pick="15" aria-pressed="false">בחר 15 עם AI</button><button type="button" class="ai-pick-btn" id="ai-pick-30" data-ai-pick="30" aria-pressed="false" aria-label="בחר 30 עם AI">בחר 30</button><button type="button" class="ai-pick-btn" id="ai-pick-45" data-ai-pick="45" aria-pressed="false" aria-label="בחר 45 עם AI">בחר 45</button></div><div class="filter" aria-label="סינון תצוגת השאלות"><button type="button" id="filter-all" aria-pressed="true">כל ההצעות</button><button type="button" id="filter-selected" aria-pressed="false">רק הבחירה שלי</button></div></div>
+<div class="list-header"><span>הסימון ניתן לשינוי</span><div class="filter" aria-label="סינון תצוגת השאלות"><button type="button" id="filter-all" aria-pressed="true">כל ההצעות</button><button type="button" id="filter-selected" aria-pressed="false">רק הבחירה שלי</button></div></div>
 <div class="question-list" id="questions"></div><button class="text-btn show-more" id="show-more">הצגת שאלות נוספות <span class="count-dot" id="more-count"></span></button>
 <div class="suggestion" id="suggestion"><svg aria-hidden="true"><use href="#i-bulb"/></svg><div class="suggestion-copy"><strong>נשאר מקום לעוד צעד?</strong><p id="suggestion-text">אפשר להוסיף סעיף עם שלושה איברים.</p></div><button type="button" id="add-suggestion">הוספה לבחירה</button></div>
 <details class="details"><summary>מה עומד מאחורי ההצעה?</summary><div class="details-body"><p id="pedagogy-details"></p><p style="margin-top:8px">חיוני = בסיס לרצף המוצע; נוסף = חיזוק לבחירתכם; העמקה = אתגר אפשרי. אלו תיוגים פדגוגיים של ההדגמה, לא תיוגי המחבר.</p><p style="margin-top:8px">ההפניות מתארות בקצרה שאלות קיימות. בעבודה עם המקור יש לשמור על הוראות משותפות, סעיפים תלויים, נוסח ותרשימים.</p></div></details>

@@ -3037,7 +3037,8 @@ a {
   border: none;
   border-radius: 10px;
   background: var(--accent, #e5ff82);
-  color: #1d1c19;
+  /* --on-accent is the text color the theme pairs with --accent (#1d1c19 on teal was 3.45:1). */
+  color: var(--on-accent, #1d1c19);
   cursor: pointer;
   min-height: 44px;
 }
@@ -3301,27 +3302,12 @@ html.noam-a11y-motion .hero-draw {
 .concept-loop .cl-fill-d { fill: #e5e7eb; }
 .concept-loop .cl-stroke-a { stroke: var(--cobalt); stroke-width: 2.5; }
 .concept-loop .cl-stroke-b { stroke: #7c3aed; stroke-width: 2.5; }
-/* SAS copy stays dashed even where .cl-line would otherwise draw a solid stroke. */
-.concept-loop .cl-sas-dash {
-  stroke-dasharray: 14 11;
-  stroke-width: 3.5;
-}
-.concept-loop[data-loop='sas-snap'] .cl-sas-cap {
-  font-size: 22px;
-  font-weight: 800;
-}
-@media (max-width: 640px) {
-  .concept-loop[data-loop='sas-snap'] .cl-sas-cap { font-size: 26px; }
-}
 
 .concept-loop .cl-t {
   font-family: 'Assistant', Arial, sans-serif;
   font-size: 15px;
   font-weight: 600;
   fill: var(--navy);
-}
-.concept-loop[data-lesson='read-graph'] .cl-t {
-  font-size: 16px;
 }
 .concept-loop .cl-num,
 .cl-num {
@@ -3334,19 +3320,6 @@ html.noam-a11y-motion .hero-draw {
 .concept-loop .cl-num.cl-rtl {
   direction: rtl;
   unicode-bidi: isolate;
-}
-/* Slope card only: the added ticks and ordered pairs. The original step
-   labels stay on .cl-t. */
-.concept-loop[data-loop='slope'] .cl-slope-tick {
-  font-size: 16px;
-  font-weight: 700;
-}
-.concept-loop[data-loop='slope'] .cl-slope-pair {
-  font-size: 18px;
-  font-weight: 800;
-  paint-order: stroke;
-  stroke: #fff;
-  stroke-width: 4px;
 }
 .concept-loop .cl-sfrac-bar {
   stroke: var(--navy);
@@ -3732,14 +3705,7 @@ html.noam-a11y-motion .tri-explorer .te-handle { transition: none; }
 /* numberline: the top question swaps per phase without layout shift */
 .concept-loop__top.cl-topswap { position: relative; }
 .cl-topsz { visibility: hidden; }
-.cl-tops { position: absolute; inset: 0; unicode-bidi: isolate; }
-.concept-loop .ll-math {
-  display: inline-block;
-  direction: ltr;
-  unicode-bidi: isolate;
-  white-space: nowrap;
-  margin-inline: 0.22em;
-}
+.cl-tops { position: absolute; inset: 0; }
 
 /* ——— plane flight layer: content always paints above it ——— */
 .home-hero__copy,
@@ -3943,8 +3909,6 @@ body {
 .concept-loop [data-el='cut-v'], .concept-loop [data-el='cut-h'], .concept-loop [data-el='q-shade'], .concept-loop [data-el='q-lbl'],
 .concept-loop [data-el='bar-o'], .concept-loop [data-el='bar-shade'], .concept-loop [data-el='bar-d1'], .concept-loop [data-el='bar-d2'], .concept-loop [data-el='bar-d3'], .concept-loop [data-el='bar-lbl'],
 .concept-loop [data-el='nl'], .concept-loop [data-el='nl0'], .concept-loop [data-el='nl1'], .concept-loop [data-el='nl-pt'], .concept-loop [data-el='nl-lbl'],
-/* data-el="copy" is the transform film's moving piece and stays hidden until that film fades it in.
-   sas-snap uses data-el="sas-copy" so this rule does not blank its dashed triangle. */
 .concept-loop [data-el='axis'], .concept-loop [data-el='copy'], .concept-loop [data-el='copy-fill'],
 .concept-loop [data-el='pivot'], .concept-loop [data-el='vec'], .concept-loop [data-el='vec-head'] {
   opacity: 0;

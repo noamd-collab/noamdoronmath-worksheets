@@ -1,0 +1,30 @@
+{
+  "dryRun": true,
+  "sent": false,
+  "contractVerified": false,
+  "narrationText": "niqqud (default for dry run; not decided)",
+  "request": {
+    "method": "POST",
+    "url": "https://api.heygen.com/v3/video-agents",
+    "headers": {
+      "X-Api-Key": "<HEYGEN_API_KEY from environment, never stored>",
+      "content-type": "application/json"
+    },
+    "body": {
+      "mode": "generate",
+      "avatar_id": "MISSING: Noam's own avatar look ID",
+      "voice_id": "MISSING: Noam's own voice ID",
+      "orientation": "portrait",
+      "prompt": "Present this Hebrew narration word for word, exactly as written, with no rewording, additions or omissions. Do not add on-screen text that is not given.\n\nהתרגיל שמונה ועוד שתיים כפול שלוש נראה קצר, אבל הוא יכול להוביל לשתי תשובות שונות: שלושים או ארבע עֶשְׂרֵה.\nמי שֶׁמְּחַשֵּׁב משמאל לימין מקבל שלושים. אבל התשובה הנכונה היא ארבע עֶשְׂרֵה.\nיש סדר קבוע. קודם סוגריים. אחר כך חֲזָקוֹת ושורשים, אם יש. אחר כך כֶּפֶל וחילוק, ורק בסוף חיבור וחיסור.\nבתרגיל שלנו אין סוגריים ואין חֲזָקוֹת, אז מתחילים בַּכֶּפֶל: שתיים כפול שלוש שווה שש. ואז שמונה ועוד שש שווה ארבע עֶשְׂרֵה.\nסוגריים אומרים לנו: עצרו רגע, וטפלו קודם בחלק הזה. בתרגיל חמש כפול, בסוגריים, שבע פחות שלוש, מתחילים בסוגריים: שבע פחות שלוש שווה ארבע. ואז חמש כפול ארבע שווה עשרים.\nטעות נפוצה היא להכפיל קודם חמש בשבע, ורק אז להחסיר שלוש. זו לא הדרך, כי הסוגריים משנים את סדר החישוב.\nועוד דבר שחשוב לזכור: כֶּפֶל וחילוק נמצאים באותה דרגה, וגם חיבור וחיסור. כשיש שתי פעולות מאותה דרגה, מתקדמים משמאל לימין.\nומכאן מלכודת נפוצה: לחשוב שֶׁכֶּפֶל תמיד קודם לחילוק. בתרגיל עשרים וארבע חלקי ארבע כפול שלוש מתחילים משמאל: עשרים וארבע חלקי ארבע שווה שש, ושש כפול שלוש שווה שמונה עֶשְׂרֵה.\nהורים ומורים יכולים לעזור בלי לפתור במקום התלמיד. במקום לומר מיד את התשובה, שואלים: מה הפעולה הראשונה שאתה רואה? יש כאן סוגריים?\nולפני שמגישים, בדיקה קצרה: הסוגריים חוּשְּׁבוּ ראשונים? פעולות מאותה דרגה חוּשְּׁבוּ משמאל לימין? והתוצאה הגיונית? שלב ביניים אחד כתוב יכול למנוע טעות שְׁלֵמָה.\nבפוסט המלא יש עוד דוגמאות, ושיטה מסודרת לתרגיל ארוך. הקישור בתיאור."
+    }
+  },
+  "blockers": [
+    "content not approved by Noam (status: awaiting-noam-review)",
+    "series is on hold until Noam approves a sample video; this video is not in pilot.videos",
+    "Noam's own avatar ID is missing or not confirmed as his (heygen.avatarId + avatarOwnerConfirmed)",
+    "Noam's own voice ID is missing or not confirmed as his (heygen.voiceId + voiceOwnerConfirmed)",
+    "heygen.narrationText not chosen (\"niqqud\" or \"unpointed\"); decide after a listening test",
+    "HeyGen quota/cost not checked (heygen.quotaChecked)",
+    "heygen.contract.json is not filled from official docs (verifiedFromDocs !== true)"
+  ]
+}

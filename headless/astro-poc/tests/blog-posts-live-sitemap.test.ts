@@ -6,13 +6,10 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { BLOG_POST_CLASSIC_GAP_PATHS, BLOG_POST_SERVED_PATHS } from '../src/lib/blogPosts';
-import { skipLiveHtmlInCi } from './skip-live-html.ts';
 
 const norm = (p: string) => decodeURIComponent(p.replace(/^https:\/\/www\.noamdoronmath\.co\.il/, '')).replace(/\/$/, '');
 
-describe('OPEN-07-FIX live blog sitemap parity', {
-  skip: skipLiveHtmlInCi('fetches the live blog-posts sitemap from www.noamdoronmath.co.il.'),
-}, () => {
+describe('OPEN-07-FIX live blog sitemap parity', () => {
   it('served posts cover blog-posts-sitemap.xml', async () => {
     const res = await fetch('https://www.noamdoronmath.co.il/blog-posts-sitemap.xml', { headers: { accept: 'application/xml' } });
     assert.equal(res.status, 200);
