@@ -26,7 +26,6 @@ export default defineConfig({
       QWEN_BASE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
       QWEN_MODEL: envField.string({ context: 'server', access: 'secret', optional: true }),
       NOAM_RECAPTCHA_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
-      // Same optional Otterly key as astro.config.mjs so this config can compile middleware.
       OTTERLY_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },

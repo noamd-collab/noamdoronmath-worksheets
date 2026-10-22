@@ -53,11 +53,10 @@ const protectedFiles: Record<string, string> = {
   // Optional server secrets QWEN_API_KEY and NOAM_RECAPTCHA_SECRET_KEY were
   // added so the headless Noam AI route can read Wix Secrets Manager.
   // QWEN_BASE_URL and QWEN_MODEL were added so a Model Studio key can point
-  // at its region and model without another code change. Adapter, output,
+  // at its region and model without another code change.
+  // OTTERLY_API_KEY was added for the AI-crawler log webhook. Adapter, output,
   // and integrations are unchanged. The other Astro configs are not in this fence.
-  // PR 225 on main added optional OTTERLY_API_KEY. This pin records that file.
-  // astro.config.mjs itself was not edited on the teachers branch.
-  'astro.config.mjs': '47a79a219626a539875a5561b9a914cb183343066fa89abfceae4a4635cbb646',
+  'astro.config.mjs': 'c4c09d4d24b65fb25f956c91e0eeaf3407afd499dba34713e074f41c24203b92',
   // G9 PDF v2, G8 PDF v2 (two c2 levels), and G7 PDF v2.
   // Packages-120: replaced student PDF ids and added G9-T46 (דלתון) in the geometry group.
   // 2026-10-18: Noam-approved text-only wording migration (סינתזה → סיכום/שילוב); IDs, URLs, levels, and PDF mappings remain unchanged.
