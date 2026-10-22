@@ -173,7 +173,10 @@ describe('exact-design protected live-baseline boundaries', () => {
     // PR214: verified native triangle length comparisons preserve their original
     // SVG/values, including saved drawings and shared metadata fetches. Covered
     // by ramzi-native-segment-focus.test.ts; no auth, model or storage changes.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '0e0895f73ae14fbeb5282a4d02fee00e3104859a200aaaffc5a4861e328cbc10');
+    // 2026-10-22: four live-check client fixes — recaptcha host fallback,
+    // labeled shifted-parabola example, union-area language, numeric-square sense.
+    // No auth, keys, score thresholds, worker or storage changes.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), 'e494cb99cda9b4bbff1f66dfb1d821fd13c1069c902fb98d81fadd37a3307d8f');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

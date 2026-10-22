@@ -128,29 +128,68 @@
       if (!scriptPromise) {
         scriptPromise = new Promise(function (resolve, reject) {
           if (!doc || !doc.head) { reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE")); return; }
-          var script = doc.createElement("script");
-          var timer = setTimeout(function () { finish(false); }, verificationTimeout);
+          // Official Google hosts only. Fallback does not skip execute/token.
+          var hosts = [
+            "https://www.google.com/recaptcha/api.js?render=",
+            "https://www.recaptcha.net/recaptcha/api.js?render="
+          ];
+          var hostIndex = 0;
+          var script = null;
           var finished = false;
-          function finish(ok) {
+          var timer = setTimeout(function () {
+            cleanupScript();
+            fail();
+          }, verificationTimeout);
+          function cleanupScript() {
+            if (!script) { return; }
+            script.onload = null;
+            script.onerror = null;
+            if (script.parentNode) { script.parentNode.removeChild(script); }
+            script = null;
+          }
+          function fail() {
             if (finished) { return; }
             finished = true;
             clearTimeout(timer);
-            script.onload = null;
-            script.onerror = null;
+            cleanupScript();
+            reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
+          }
+          function succeed(api) {
+            if (finished) { return; }
+            finished = true;
+            clearTimeout(timer);
+            if (script) {
+              script.onload = null;
+              script.onerror = null;
+            }
+            resolve(api);
+          }
+          function finish(ok) {
+            if (finished) { return; }
             // api.js can finish before Google's secondary bundle adds execute.
             // Wait for ready before checking that API, under the same deadline.
             if (ok && win.grecaptcha && typeof win.grecaptcha.ready === "function") {
-              resolve(win.grecaptcha);
-            } else {
-              if (script.parentNode) { script.parentNode.removeChild(script); }
-              reject(makeError(VERIFY_MESSAGE, "BOT_CLIENT_UNAVAILABLE"));
+              succeed(win.grecaptcha);
+              return;
             }
+            cleanupScript();
+            if (hostIndex < hosts.length - 1) {
+              hostIndex += 1;
+              loadNext();
+              return;
+            }
+            fail();
           }
-          script.src = "https://www.google.com/recaptcha/api.js?render=" + encodeURIComponent(siteKey);
-          script.async = true;
-          script.onload = function () { finish(true); };
-          script.onerror = function () { finish(false); };
-          doc.head.appendChild(script);
+          function loadNext() {
+            if (finished) { return; }
+            script = doc.createElement("script");
+            script.src = hosts[hostIndex] + encodeURIComponent(siteKey);
+            script.async = true;
+            script.onload = function () { finish(true); };
+            script.onerror = function () { finish(false); };
+            doc.head.appendChild(script);
+          }
+          loadNext();
         }).catch(function (error) { scriptPromise = null; throw error; });
       }
       return scriptPromise;

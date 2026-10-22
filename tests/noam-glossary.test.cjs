@@ -178,6 +178,24 @@ test("Pythagoras is available at the grade where the catalog teaches it", () => 
   assert.deepEqual(glossary.findTerms("משפט פיתגורס", 7).map(match => match.id), ["pythagorean"]);
 });
 
+test("Pythagoras square-sum language is numeric, not the geometric square", () => {
+  const pythagoras = glossary.findTerms("בדקו בעזרת סכום ריבועים שהמוטות מקיימים את משפט פיתגורס.", 8);
+  assert.equal(pythagoras.some(match => match.id === "square"), false);
+  assert.ok(pythagoras.some(match => match.id === "numeric-square"));
+  assert.ok(pythagoras.some(match => match.id === "pythagorean"));
+  const helper = glossary.findTerms("הכריעו בעזרת ריבועים אם המשולש ישר־זווית.", 8);
+  assert.equal(helper.some(match => match.id === "square"), false);
+  assert.ok(helper.some(match => match.id === "numeric-square"));
+});
+
+test("geometric square stays linked in its own definition context", () => {
+  assert.deepEqual(
+    glossary.findTerms("הגדרה של ריבוע: מרובע שכל צלעותיו שוות.", 8).map(match => match.id),
+    ["square"]
+  );
+  assert.deepEqual(glossary.findTerms("הזווית הישרה בריבוע", 9).map(match => match.id), ["right-angle", "square"]);
+});
+
 test("the viewer exposes hover, focus, tap and a free detailed explanation tab", () => {
   assert.match(viewer, /noam-glossary-curriculum\.js\?v=[^<]+<\/script>\s*<script src="noam-glossary\.js/);
   assert.match(viewer, /noam-glossary\.js\?v=/);

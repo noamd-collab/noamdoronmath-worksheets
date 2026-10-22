@@ -5643,6 +5643,20 @@ function localVisualExerciseSource(exercise){
   }).join("\n");
 }
 
+function noamParsedLocalVisual(exercise){
+  var local=window.NoamLocalVisual;
+  if(!local||!exercise){return null;}
+  var source=localVisualExerciseSource(exercise);
+  if(local.parseFactoredQuadraticInequality){
+    var inequality=local.parseFactoredQuadraticInequality(source);
+    if(inequality){return inequality;}
+  }
+  if(local.parseShiftedParabolaExample){
+    return local.parseShiftedParabolaExample(source)||null;
+  }
+  return null;
+}
+
 function tryNoamLocalVisual(studentMessage){
   var local=window.NoamLocalVisual;
   var previousThread=selectedExercise&&exerciseThread(selectedExercise.id);
@@ -5659,8 +5673,7 @@ function tryNoamLocalVisual(studentMessage){
   options.helpKind="free_question";
   options.hintIndex=0;
   delete options.focusKey;
-  var visual=noamConstructedVisual(selectedExercise,options)||
-    window.NoamLocalVisual.parseFactoredQuadraticInequality(localVisualExerciseSource(selectedExercise));
+  var visual=noamConstructedVisual(selectedExercise,options)||noamParsedLocalVisual(selectedExercise);
   if (!visual){
     if (!window.NoamDiagramPlan){return false;}
     var drawingExercise=selectedExercise;
@@ -6732,6 +6745,24 @@ function noamClarifySignedAddLanguage(answer){
   return text;
 }
 
+function noamInteriorOverlapContext(text){
+  var source=String(text||"");
+  return /שטח\s+האיחוד|משני\s+עבר|עברי\s+(?:ה)?צלע|משתפים\s+(?:את\s+)?אותו|צלע\s+משותפת/.test(source);
+}
+
+/* Opposite sides of a shared side do not prove non-congruence.
+   Union area uses no shared interior. Do not rewrite genuine SSS/ASA/SAS. */
+function noamClarifyInteriorOverlapLanguage(answer){
+  var text=String(answer||"");
+  if(!text){return text;}
+  if(/(?:צ\.צ\.צ|ז\.צ\.ז|צ\.ז\.צ)/.test(text)&&!/(?:אינם|לא)\s+חופפ/.test(text)){return text;}
+  if(!/חופפ/.test(text)||!/משני\s+עבר/.test(text)||!/(?:אינם|לא)\s+חופפ/.test(text)){return text;}
+  return text.replace(
+    /(?:המשולשים\s+)?(?:אינם|לא)\s+חופפים(?:ים)?[^.]*משני\s+עבר[^.]*[.!?]?/g,
+    "המשולשים אינם בהכרח לא-חופפים רק כי הם משני עברי צלע משותפת. לשטח האיחוד אין חפיפת פנים, ולכן מחברים את השטחים. "
+  );
+}
+
 function noamMixedSignAddExpression(text){
   var source=String(text||"");
   return /[−\-]\s*\d+\s*\+\s*(?![−\-])\d+/.test(source) ||
@@ -7161,6 +7192,9 @@ function noamSolverMessage(studentMessage,thread,topic,guidePrompt,analysis){
     : signedGuard;
   var verified=String(guidePrompt||"");
   var guard=verified||generalGuard;
+  if (typeof noamInteriorOverlapContext==="function"&&noamInteriorOverlapContext(topic+" "+current+" "+recent+" "+analysisText)){
+    guard+=(guard?" ":"")+"אל תטען שהמשולשים אינם חופפים רק כי הם משני עברי צלע משותפת. חפיפה נבדקת לפי משפטי חפיפה. לשטח האיחוד אין חפיפת פנים — מחברים שטחים בלי לחשוף את המספר.";
+  }
   if (visual){guard+=verified?" ציין בדיוק מה לסמן בשרטוט.":" התלמיד מתקשה בזיהוי חזותי. ציין מה לסמן; אל תבקש ממנו לנחש. האתר יציג שרטוט לצד התשובה, לכן אל תאמר שאינך יכול לצייר.";}
   var label="הודעת התלמיד עכשיו: ";
   var currentBudget=Math.min(current.length,Math.max(90,Math.floor(budget*(verified ? .24 : .42))));
@@ -7478,8 +7512,11 @@ function requestNoamDiagram(exercise,thread,message,providedOptions){
     helpKind:String(options.helpKind||""),hintIndex:Number(options.hintIndex)||0,
     progress:Number(options.progress)||0,focusKey:String(options.focusKey||"")};
   message.diagramOptions=options;
-  var local=noamConstructedVisual(exercise,options);
+  var local=noamConstructedVisual(exercise,options)||(typeof noamParsedLocalVisual==="function"?noamParsedLocalVisual(exercise):null);
   if (local){
+    if(local.type!=="geometry-guide"&&window.NoamLocalVisual&&window.NoamLocalVisual.assistantText){
+      message.text=window.NoamLocalVisual.assistantText(local);
+    }
     message.visual=local;delete message.diagramError;
     saveNoamState();noamDiagramRefresh(exercise,thread,message,true);
     return Promise.resolve(local);
@@ -7654,7 +7691,12 @@ function askNoam(helpKind,studentMessage){
     })
     .then(function(result){
       if (!result||!result.ok||!result.answer){ throw new Error((result&&result.error)||"נועם AI לא זמין כרגע."); }
-      if (result&&result.answer){result.answer=noamClarifySignedAddLanguage(result.answer);}
+      if (result&&result.answer){
+        result.answer=noamClarifySignedAddLanguage(result.answer);
+        if(typeof noamClarifyInteriorOverlapLanguage==="function"){
+          result.answer=noamClarifyInteriorOverlapLanguage(result.answer);
+        }
+      }
       var elapsed=Date.now()-started;
       return new Promise(function(resolve){setTimeout(function(){resolve(result);},Math.max(0,MIN_WAIT-elapsed));});
     })
