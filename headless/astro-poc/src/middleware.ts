@@ -10,53 +10,14 @@
  * Astra / Wix quirk: public `*.html` assets 404 for document navigations that
  * include a query string. `context.rewrite(pathname)` still 404s on Wix — return
  * the bundled HTML body instead so the browser URL (and location.search) stay.
- *
- * OtterlyAI agent analytics: page requests from known AI bots are forwarded
- * in the background to the Otterly logs webhook. Failures never affect the page.
  */
 import { defineMiddleware } from 'astro:middleware';
-import { OTTERLY_API_KEY } from 'astro:env/server';
 import { redirectTargetForSiteUgdPath } from './lib/wixMedia';
 import { resolveRedirect } from './lib/redirects';
 import { PUBLIC_HTML_SHELLS } from './lib/publicHtmlShells';
-import { secretFromEnv } from './lib/noamSecrets';
-
-const OTTERLY_LOGS_URL = 'https://analytics.otterly.ai/logs';
-const AI_BOT_USER_AGENT =
-  /GPTBot|ChatGPT-User|OAI-SearchBot|ClaudeBot|Claude-User|PerplexityBot|Perplexity-User|Google-Extended|Bytespider/i;
-
-function forwardAiBotHitToOtterly(request: Request, url: URL): void {
-  if (request.method !== 'GET') return;
-  // Skip static assets; only page requests are useful for agent analytics.
-  if (/\.[a-z0-9]+$/i.test(url.pathname)) return;
-  const userAgent = request.headers.get('user-agent') ?? '';
-  if (!AI_BOT_USER_AGENT.test(userAgent)) return;
-  const apiKey = secretFromEnv('OTTERLY_API_KEY', OTTERLY_API_KEY);
-  if (!apiKey) return;
-
-  const event: Record<string, string> = {
-    requestUrl: url.href,
-    userAgent,
-    timestamp: new Date().toISOString(),
-  };
-  const referer = request.headers.get('referer');
-  if (referer && /^https?:\/\//i.test(referer)) event.referer = referer;
-
-  fetch(OTTERLY_LOGS_URL, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify([event]),
-  }).catch(() => {
-    // Ignore delivery errors; the page response must not depend on analytics.
-  });
-}
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const path = context.url.pathname;
-  forwardAiBotHitToOtterly(context.request, context.url);
   const target = redirectTargetForSiteUgdPath(path, context.url.search);
   if (target) {
     return context.redirect(target, 301);
@@ -72,7 +33,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
       status: 200,
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
-        ...(context.url.searchParams.get('pilot') === '1' ? { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } : {}),
         'Cache-Control': 'public, max-age=0, must-revalidate',
       },
     });

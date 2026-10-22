@@ -7,20 +7,10 @@
  * triangle-area-grade-7 keeps its explorer; the explorer glides once, so it
  * still needs a real loop.
  */
-import { LESSON_LOOPS, LESSON_LOOP_VARIANTS, LESSON_TOPIC_MAP } from './lessonLoops';
 import topicFamilies from '../data/topicFamilies.json';
 import type { TopicPageContent } from './topicPages';
 
-/**
- * Family → ConceptLoop film. F01–F06, F21, F26, F38 were the original mounts.
- * Per Noam's decision (2026-10-15): the existing F07–F13 films play on topic
- * pages too (ending that part of the KIMI-ANIM-6 exclusion), and the later
- * families reuse the closest existing film. F10/F14 keep their CSS loops.
- * F11 subtraction topics use the new baseten-sub CSS loop via
- * SLUG_CSS_OVERRIDE (only genuinely new loop: two-digit subtraction with
- * borrowing). Lesson-specific overrides take precedence: family films are
- * never a substitute for checking the learning objective of a page.
- */
+/** Same mount list TopicPage used before this change (F01–F06, F21, F26, F38). */
 export const FAMILY_CONCEPT_LOOP = {
   F01: 'sticks',
   F02: 'numberline',
@@ -28,185 +18,23 @@ export const FAMILY_CONCEPT_LOOP = {
   F04: 'balance',
   F05: 'pattern',
   F06: 'bars',
-  F07: 'ruler',
-  F08: 'array',
-  F09: 'polygon',
-  F11: 'baseten',
-  F12: 'cookies',
-  F13: 'fraction',
   F21: 'area-model',
-  F22: 'equiv-half',
-  F23: 'prime-rect',
-  F24: 'unit-frac',
-  F25: 'frac-product',
   F26: 'triangle',
-  F27: 'tenth-cell',
-  F30: 'frac-product',
-  F33: 'ratio-beads',
   F38: 'pythagoras',
 } as const;
 
 /** One page whose own idea has its own ConceptLoop film (Kimi's L14 v6). */
 const SLUG_CONCEPT_OVERRIDE = {
-  // Reviewed against the lesson, independently of the family fallback.
-  'build-decompose-shapes-grade-3': 'polygon',
-  'number-neighbors-grade-1': 'neighbors',
-  'hundreds-tens-ones-grade-2': 'place-123',
-  'numbers-to-1000-grade-2': 'place-123',
-  'place-value-grade-3': 'place-123',
-  'even-odd-sequences-a-grade-2': 'odd-pair',
-  'even-odd-sequences-b-grade-2': 'odd-pair',
-  'division-equal-shares-grade-2': 'share-12',
-  'division-measurement-grade-2': 'jumps-4',
-  'division-check-multiplication-grade-3': 'share-12',
-  'division-inverse-multiplication-grade-3': 'share-12',
-  'angles-types-grade-3': 'angle-kinds',
-  'angle-types-grade-4': 'angle-kinds',
-  'lines-angles-shapes-grade-3': 'para-perp',
-  'angles-lines-plane-grade-4': 'para-perp',
-  'classify-triangles-grade-4': 'tri-sort',
-  'triangles-classify-build-grade-4': 'tri-sort',
-  'parallel-perpendicular-shapes-grade-4': 'para-perp',
-  'perimeter-parallel-perpendicular-grade-5': 'para-perp',
-  'polygons-diagonals-grade-4': 'two-diag',
-  'quadrilateral-diagonals-grade-5': 'two-diag',
-  'triangle-height-obtuse-parallelogram-grade-5': 'obtuse-ht',
-  'symmetry-reflection-rotation-grade-4': 'transform',
-  'transformations-grade-5': 'transform',
-  'area-perimeter-rectangle-grade-4': 'rect-count',
-  'area-perimeter-rectangles-grade-5': 'rect-count',
-  'composite-area-grade-5': 'l-split',
-  'area-perimeter-composite-grade-4': 'l-split',
-  'quadrilaterals-classify-grade-4': 'quad-tree',
-  'quadrilateral-family-grade-5': 'quad-tree',
-  'quadrilaterals-review-grade-6': 'quad-tree',
-  'rectangles-squares-grade-4': 'quad-tree',
-  'fraction-times-whole-grade-6': 'quarter-12',
-  'fraction-part-quantity-area-grade-6': 'quarter-12',
-  'fraction-operations-choose-grade-6': 'frac-product',
-  'equations-basics-grade-7': 'balance',
-  'parallelogram-trapezoid-area-grade-9': 'trap-area',
-  // Parallelogram area: shear parallelogram into rectangle (same base & height, same area).
-  'parallelogram-area-grade-5': 'para-rect',
-  'neighbors-numberline-grade-3': 'neighbors',
-  'money-grade-3': 'coins-12',
   'difference-of-squares-grade-9': 'diff-sq',
   'kite-grade-9': 'kite-construct',
-  // Clock topics sit in the F07 measurement family but have their own films.
-  'reading-clock-grade-1': 'clock-3',
-  'clock-duration-grade-2': 'clock-span',
-  'time-weight-measures-grade-3': 'clock-span',
-  'time-and-weight-grade-4': 'clock-span',
-  // Equal-shares film for the multiplication/division family topic (no remainder story).
-  'multiplication-division-family-grade-2': 'share-12',
-  // Map-scale film for the scale topic (the family default is ratio-beads).
-  'scale-maps-grade-6': 'map-scale',
-  // Reviewed pages whose family film taught another lesson (7 + 5 past ten,
-  // four-quadrant points, grid area, negatives). Each reuses the existing
-  // film that shows the page's own example.
-  'addition-to-10-grade-1': 'add-within',
-  'numbers-operations-review-grade-2': 'array',
-  'perimeter-polygons-grade-3': 'peri-rect',
-  'order-of-operations-grade-4': 'order-ops',
-  'grade-4-summary': 'grade-4-summary',
-  'distributive-area-model-grade-4': 'distributive-area-model-grade-4',
-  'fraction-division-meaning-grade-6': 'fraction-division-meaning-grade-6',
-  'measurement-geometry-synthesis-grade-6': 'measurement-geometry-synthesis-grade-6',
-  // Within-10 and grade-5 pages retain their lesson-specific corrections.
-  'compose-decompose-10-grade-1': 'add-within',
-  'subtraction-to-10-grade-1': 'birds-sub',
-  'order-of-operations-grade-5': 'order-ops',
 } as const;
 
 export type ConceptLoopVariant =
   | (typeof FAMILY_CONCEPT_LOOP)[keyof typeof FAMILY_CONCEPT_LOOP]
   | (typeof SLUG_CONCEPT_OVERRIDE)[keyof typeof SLUG_CONCEPT_OVERRIDE];
 
-/**
- * Old ConceptLoop films (Kimi K3, F01–F14, L01–L56). Specs stay in
- * conceptLoops.ts. A slug here mounts that film instead of the PR71 CSS loop.
- */
-export const EXTRA_FILMS = [
-  'signed-jump',
-  'coord-walk',
-  'slope',
-  'similar',
-  'sas-snap',
-  'quad-tree',
-  'trap-area',
-  'pct-25',
-  'two-coins',
-  'exterior',
-  'corr-angles',
-  'sup-angles',
-  'angle-kinds',
-  'circ-unroll',
-  'cyl-stack',
-  'half-eq',
-  'parab',
-  'mean-cols',
-  'transform',
-  'angle-sum',
-  'para-rect',
-  'area-x4',
-  'map-scale',
-  'l-split',
-  'rect-count',
-  'box-vol',
-  'signed-ops',
-  'tri-sort',
-  'pattern',
-] as const;
-
-export type FilmVariant = ConceptLoopVariant | (typeof EXTRA_FILMS)[number];
-
-/** Topic page → old film. Pages absent from this map keep their CSS loop. */
-export const SLUG_FILM: Record<string, FilmVariant> = {
-  'signed-numbers-grade-7': 'signed-jump',
-  'coordinate-plane-quadrants-grade-7': 'coord-walk',
-  'coordinate-plane-four-quadrants-grade-7': 'coord-walk',
-  'coordinate-plane-grade-8': 'coord-walk',
-  'coordinate-plane-scale-grade-7': 'map-scale',
-  'linear-function-grade-8': 'slope',
-  'linear-function-grade-9': 'slope',
-  'geometric-proof-grade-8': 'sas-snap',
-  'triangle-congruence-grade-8': 'sas-snap',
-  'congruence-theorems-grade-8': 'sas-snap',
-  'triangle-congruence-proofs-grade-8': 'sas-snap',
-  'square-grade-9': 'quad-tree',
-  'rhombus-grade-9': 'quad-tree',
-  'parallelogram-grade-9': 'quad-tree',
-  'trapezoid-grade-9': 'trap-area',
-  'area-parallelogram-trapezoid-composite-grade-7': 'para-rect',
-  'percentage-problems-grade-8': 'pct-25',
-  'probability-grade-9': 'two-coins',
-  'exterior-angle-triangle-grade-8': 'exterior',
-  'adjacent-vertical-angles-grade-7': 'sup-angles',
-  'angles-review-grade-7': 'sup-angles',
-  'angles-introduction-measurement-grade-7': 'angle-kinds',
-  'circle-area-circumference-grade-8': 'circ-unroll',
-  'cylinder-volume-grade-8': 'cyl-stack',
-  'triangle-30-60-90-grade-9': 'half-eq',
-  'isosceles-triangle-grade-8': 'half-eq',
-  'isosceles-triangle-grade-9': 'half-eq',
-  'isosceles-triangle-properties-grade-8': 'half-eq',
-  'quadratic-function-grade-9': 'parab',
-  'statistics-grade-8': 'mean-cols',
-  'statistics-grade-9': 'mean-cols',
-  'congruent-polygons-transformations-grade-9': 'transform',
-  'triangle-area-grade-7': 'triangle',
-  'order-of-operations-signed-numbers-grade-7': 'signed-ops',
-  'composite-polygons-area-grade-9': 'l-split',
-  'area-rectangle-perimeter-grade-7': 'rect-count',
-  'rectangle-square-area-grade-9': 'rect-count',
-  'solids-box-cube-prism-grade-7': 'box-vol',
-  'special-triangles-grade-7-new': 'tri-sort',
-  'patterns-and-graphs-grade-7': 'pattern',
-};
-
 /** CSS/SVG loops. Transform and opacity only. */
 export const CSS_LOOP_VARIANTS = [
-  ...LESSON_LOOP_VARIANTS,
   'powers',
   'exp-rules',
   'roots',
@@ -262,19 +90,6 @@ export const CSS_LOOP_VARIANTS = [
   'similar-area',
   'similar-aa',
   'tools',
-  'baseten-sub',
-  'count-mark',
-  'col-mul',
-  'distrib-area',
-  'frac-div',
-  'sub-via-10',
-  'split-ways',
-  'tri-square',
-  'bonds-10-20',
-  'long-mul',
-  'frac-recip',
-  'coord-app',
-  'parallel-more',
 ] as const;
 
 export type CssLoopVariant = (typeof CSS_LOOP_VARIANTS)[number];
@@ -328,8 +143,8 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'triangular-prism-volume-grade-9': 'prism-vol',
   'patterns-and-graphs-grade-7': 'pattern-graph',
   'coordinate-plane-scale-grade-7': 'scale',
-  'coordinate-plane-applications-grade-7': 'coord-app',
-  'coordinate-plane-applications-grade-9': 'coord-app',
+  'coordinate-plane-applications-grade-7': 'distance',
+  'coordinate-plane-applications-grade-9': 'distance',
   'quadratic-equations-grade-9': 'quad-eq',
   'reading-graphs-grade-9': 'read-graph',
   'inequalities-grade-8': 'ineq',
@@ -345,22 +160,6 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'similar-triangles-area-ratio-grade-8': 'similar-area',
   'triangle-similarity-aa-grade-9': 'similar-aa',
   'triangle-similarity-proof-grade-8': 'similar-aa',
-  // Two-digit subtraction (incl. borrowing) — the one genuinely new loop.
-  'subtraction-two-digit-borrowing-grade-2': 'baseten-sub',
-  'column-subtraction-borrowing-grade-3': 'baseten-sub',
-  'multi-digit-subtraction-grade-4': 'baseten-sub',
-  // Reviewed pages with no existing film for their idea. The concept-loop
-  // engine is hash-pinned, so these are new CSS loops.
-  'counting-grade-1': 'count-mark',
-  'multiplication-multi-digit-grade-4': 'col-mul',
-  // Pages outside that review whose family film taught another lesson, with
-  // no existing film for their own example.
-  'subtraction-to-20-grade-1': 'sub-via-10',
-  'compose-decompose-grade-1': 'split-ways',
-  'shapes-compose-decompose-grade-1': 'tri-square',
-  'number-bonds-10-20-grade-2': 'bonds-10-20',
-  'multiplication-multi-digit-grade-5': 'long-mul',
-  'fraction-division-algorithm-grade-6': 'frac-recip',
 };
 
 export const GRADE_CONCEPT_LOOP = {
@@ -405,20 +204,12 @@ export const FILM_LANDING_LOOPS = {
     marker: 'parallel-cointerior-angles',
     src: '/loops/parallel-cointerior-angles.html',
   },
-  'algebraic-expressions-grade-7': {
-    marker: 'algebraic-substitution-grade-7',
-    src: '/loops/algebraic-substitution-grade-7.html',
-  },
-  'factoring-grade-9': {
-    marker: 'common-factor-minus-parentheses',
-    src: '/loops/common-factor-minus-parentheses-grade-9.html',
-  },
 } as const;
 
 export type FilmLandingSlug = keyof typeof FILM_LANDING_LOOPS;
 
 export type LandingLoop =
-  | { kind: 'concept'; variant: FilmVariant; marker: string }
+  | { kind: 'concept'; variant: ConceptLoopVariant; marker: string }
   | { kind: 'css'; variant: CssLoopVariant; marker: string }
   | { kind: 'film'; marker: string; src: string };
 
@@ -428,23 +219,9 @@ function familyOf(page: Pick<TopicPageContent, 'grade' | 'catalogCta'>): string 
   return (topicFamilies as Record<string, string>)[`g${page.grade}-t${topicId}`];
 }
 
-/** The PR71 CSS loop for this page, even when a film now replaces it on the page. */
-export function topicCssVariant(
-  page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>,
-): CssLoopVariant | undefined {
-  const override = SLUG_CSS_OVERRIDE[page.slug];
-  if (override) return override;
-  const family = familyOf(page);
-  return family ? FAMILY_CSS_LOOP[family] : undefined;
-}
-
 export function topicLandingLoop(page: Pick<TopicPageContent, 'slug' | 'grade' | 'catalogCta'>): LandingLoop {
   const film = FILM_LANDING_LOOPS[page.slug as FilmLandingSlug];
   if (film) return { kind: 'film', marker: film.marker, src: film.src };
-  const lesson = LESSON_TOPIC_MAP[page.slug];
-  if (lesson) return { kind: 'css', variant: lesson, marker: lesson };
-  const oldFilm = SLUG_FILM[page.slug];
-  if (oldFilm) return { kind: 'concept', variant: oldFilm, marker: `concept-${oldFilm}` };
   // A slug-level concept film wins over a slug CSS loop and over its family.
   const slugConcept = SLUG_CONCEPT_OVERRIDE[page.slug as keyof typeof SLUG_CONCEPT_OVERRIDE];
   if (slugConcept) return { kind: 'concept', variant: slugConcept, marker: `concept-${slugConcept}` };
@@ -518,13 +295,12 @@ export function powerMarkup(row: PowerRow): string {
  * and listed in the pull request.
  */
 export const CSS_LOOP_IDEAS = {
-  ...Object.fromEntries(Object.entries(LESSON_LOOPS).map(([id, lesson]) => [id, lesson.idea])) as { [K in keyof typeof LESSON_LOOPS]: string },
   powers: `סוגריים קובעים את הסימן: (${MINUS}3)² = 9, בלי סוגריים ${MINUS}3² = ${MINUS}9, וחזקה אי־זוגית (${MINUS}3)³ = ${MINUS}27`,
-  'exp-rules': 'בכפל חזקות עם אותו בסיס מחברים מעריכים: 2² × 2³ = 2⁵',
-  roots: 'ריבוע של 3 על 3 הוא 9 משבצות, ולכן 3² = 9 וגם √9 = 3',
+  'exp-rules': 'בכפל חזקות עם אותו בסיס מחברים מעריכים: 2³ × 2² = 2⁵',
+  roots: 'השורש שואל איזה מספר בריבוע נותן את זה: 3² = 9 ולכן √9 = 3',
   signed: `על ישר המספרים מתחילים ב־${MINUS}2 ומוסיפים 5 ימינה, ומגיעים ל־3`,
-  'signed-mul': `קפיצות על הישר: (${MINUS}2) × 3 = ${MINUS}6, ואחרי היפוך (${MINUS}2) × (${MINUS}3) = 6`,
-  'signed-div': `חילוק על הישר: (${MINUS}8) עם (${MINUS}2) נותן 4, ועם 2 נותן (${MINUS}4)`,
+  'signed-mul': 'מינוס כפול מינוס נותן פלוס, ומינוס כפול פלוס נותן מינוס',
+  'signed-div': 'בחילוק, סימנים זהים נותנים פלוס וסימנים שונים נותנים מינוס',
   absolute: `ערך מוחלט הוא המרחק מאפס, ולכן |${MINUS}4| ו־|4| שניהם 4`,
   order: `קודם כופלים 3 × (${MINUS}4), ורק אחר כך מחברים ל־${MINUS}2`,
   percent: 'רבע מהשלם הוא 25%, והחלק הצבוע הוא אחד מארבעה',
@@ -542,10 +318,10 @@ export const CSS_LOOP_IDEAS = {
   circle: 'הקוטר הוא שני רדיוסים, ההיקף 2πr והשטח πr²',
   'round-solid': 'נפח גליל: עיגול הבסיס נערם לגובה, V = πr²h',
   cone: 'נפח חרוט הוא שליש מנפח גליל עם אותו בסיס ואותו גובה',
-  'cyl-area': 'פריסת הגליל: שני עיגולים ומלבן ברוחב 2πr ובגובה h',
+  'cyl-area': 'מעטפת הגליל נפרסת למלבן שרוחבו היקף הבסיס',
   solids: 'נפח תיבה מתקבל מאורך כפול רוחב כפול גובה',
-  'prism-area': 'פריסת המנסרה: שני משולשים ושלושה מלבנים, והנפח הוא שטח הבסיס כפול הגובה',
-  'prism-vol': 'נפח המנסרה הוא שטח בסיס המשולש כפול הגובה, והפריסה פותחת את כל הפאות',
+  'prism-area': 'שטח פנים של מנסרה: שני בסיסים משולשים ועוד שלושה מלבנים',
+  'prism-vol': 'נפח מנסרה הוא שטח בסיס המשולש כפול האורך',
   coords: 'הנקודה עוברת בין הרביעים, ובכל רביע סימני x ו־y מתחלפים',
   'pattern-graph': 'הנקודות על הגרף מקיימות את אותה חוקיות, כאן y = 2x',
   scale: 'יחידה אחת על הציר מייצגת 5, ולכן שתי יחידות הן 10',
@@ -554,18 +330,18 @@ export const CSS_LOOP_IDEAS = {
   parabola: `לפרבולה y = x² יש סימטריה: ל־x ול־${MINUS}x אותו y`,
   'quad-eq': 'פתרונות המשוואה הריבועית הם נקודות החיתוך עם ציר x',
   'quad-factor': `מפרקים x² ${MINUS} 5x + 6 ל־(x ${MINUS} 2) × (x ${MINUS} 3) = 0, ולכן x = 2 או x = 3`,
-  'read-graph': 'בגרף מרחק־זמן: בשעה 1 יש 15 ק״מ, עצירה מ־2 עד 3, מהירות 15 אחר כך 0 ואז 15, והגרף עולה, קבוע או יורד',
-  systems: 'נקודת החיתוך (2, 3) מקיימת את שתי המשוואות יחד',
-  ineq: 'עיגול ריק: 2 לא כלול, והקרן הפתוחה יוצאת מקצה העיגול עבור x > 2',
+  'read-graph': 'קוראים מהגרף: ב־x = 2 מתקבל y = 4',
+  systems: 'נקודת החיתוך מקיימת את שתי המשוואות יחד',
+  ineq: 'אי־שוויון x > 2 הוא קרן פתוחה ימינה על ישר המספרים',
   'quad-ineq': `x² > 9 מתקיים מחוץ לשורשים: x < ${MINUS}3 או x > 3`,
   stats: 'הממוצע של 4, 6 ו־8 הוא 6: השמונה נותנת 2 לארבע, והכול מתיישר',
   probability: 'למטבע שתי תוצאות שוות סיכוי, ולכן ההסתברות לחצי',
   transform: 'הזזה מזיזה את המשולש בלי לשנות את גודלו או את צורתו',
   'triangle-area': 'משולש עם אותו בסיס וגובה הוא חצי מהמלבן',
-  triangles: 'הקודקוד זז והקשתות חיות, וסכום הזוויות נשאר 180°',
+  triangles: 'שלוש זוויות המשולש נפרסות לקו ישר, ולכן סכומן 180°',
   exterior: 'הזווית החיצונית שווה לסכום שתי הזוויות הפנימיות הרחוקות',
   isosceles: 'במשולש שווה־שוקיים זוויות הבסיס שוות',
-  median: 'התיכון חוצה את הצלע, שני השטחים שווים, והתיכונים נפגשים ביחס 2:1',
+  median: 'התיכון יוצא מהקודקוד וחוצה את הצלע שמולו לשני חלקים שווים',
   t306090: 'במשולש 30, 60, 90 הצלע שמול 30 היא חצי מהיתר',
   'side-angle': 'מול הצלע הארוכה יותר נמצאת הזווית הגדולה יותר',
   congruence: 'התאמת צלעות וזוויות מביאה את שני המשולשים לחפיפה',
@@ -574,45 +350,7 @@ export const CSS_LOOP_IDEAS = {
   'similar-area': 'כשהצלעות גדלות פי 2, השטח גדל פי 4',
   'similar-aa': 'שתי זוויות שוות מספיקות כדי לקבוע דמיון',
   tools: 'המחשבון פותח קודם סוגריים: 2 × (3 + 1) הופך ל־2 × 4 = 8',
-  'baseten-sub': 'כשאין מספיק יחידות, מוט העשרת מתפרק לעשר יחידות: 52 − 27 = 25',
-  'count-mark': 'סופרים כל בלון פעם אחת ומסמנים אותו. המספר האחרון, 7, הוא מספר הבלונים',
-  'col-mul': 'כופלים מימין לשמאל, וההמרה עוברת לעמודה הבאה: 175 × 5 = 875',
-  'distrib-area': 'מפרקים את 16 ל־10 ועוד 6 ומחברים את שני השטחים: 150 + 90 = 240',
-  'frac-div': 'בכל שלם יש 4 רבעים, ולכן בשני שלמים יש 8 רבעים',
-  'sub-via-10': `ב־15 ${MINUS} 7 מחסרים קודם 5 כדי להגיע ל־10, ואז עוד 2. נשארים 8`,
-  'split-ways': 'מפרקים את 6 לפי הסדר מהקטן לגדול: 1 + 5, 2 + 4, 3 + 3, ולא מפספסים אף דרך',
-  'tri-square': 'שני משולשים זהים נצמדים בצלע הארוכה, בלי רווח ובלי חפיפה, ויוצרים ריבוע',
-  'bonds-10-20': '6 + 4 = 10 היא הרכבה של 10, ובאותו אופן 13 + 7 = 20 היא הרכבה של 20',
-  'long-mul': 'כופלים ב־3, ואז ב־20 בשורה שמתחילה ב־0, ומחברים: 771 + 5,140 = 5,911',
-  'frac-recip': 'בחילוק בשבר הופכים רק את המחלק, ואז כופלים',
-  'coord-app': `המשולש A(${MINUS}3, 1), B(2, 1), C(2, 4): האורכים 5 ו־3, והשטח 7.5`,
-  'parallel-more': 'מתחלפות פנימיות, מתחלפות חיצוניות, חד־צדדיות שסכומן 180°, וגם קודקודיות וצמודות',
 } as const satisfies Record<CssLoopVariant, string>;
-
-/** Rich lesson films. Same card language as ConceptLoop, separate from the protected engine. */
-export const LESSON_FILM_VARIANTS = [
-  'powers',
-  'exp-rules',
-  'roots',
-  'signed-mul',
-  'signed-div',
-  'ineq',
-  'quad-ineq',
-  'cone',
-  'cyl-area',
-  'prism-area',
-  'prism-vol',
-  'coord-app',
-  'read-graph',
-  'systems',
-  'quad-eq',
-  'quad-factor',
-  'rect',
-  'triangles',
-  'side-angle',
-  'median',
-  'parallel-more',
-] as const satisfies readonly CssLoopVariant[];
 
 export const FORMULA_LOOP_VARIANTS = [
   'powers',
@@ -624,7 +362,6 @@ export const FORMULA_LOOP_VARIANTS = [
   'tools',
   'proof',
   'quad-factor',
-  'frac-recip',
 ] as const satisfies readonly CssLoopVariant[];
 
 /**

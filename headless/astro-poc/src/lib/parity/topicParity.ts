@@ -71,13 +71,8 @@ export function stripBidiIsolates(s: string | null | undefined): string {
   return (s || '').replace(/[\u2066\u2067\u2068\u2069]/g, '');
 }
 
-/** Turn stored bar markers back into slashes for production-fixture comparison. */
-export function expandFractionMarkers(s: string): string {
-  return s.replace(/⟨([^⟨⟩¦]*)¦([^⟨⟩¦]*)⟩/g, '$1/$2');
-}
-
 export function cleanText(s: string | null | undefined): string {
-  return expandFractionMarkers(stripBidiIsolates(s))
+  return stripBidiIsolates(s)
     .replace(/[\u200b\u200e\u200f\ufeff]/g, '')
     .replace(/\s+/g, ' ')
     .trim();

@@ -32,12 +32,7 @@ export default defineConfig({
       // Optional so `wix preview` / `wix build` succeed before Noam adds them.
       // Names must match Secrets Manager on Noam Math Astro POC.
       QWEN_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
-      // Optional. Empty keeps the Token Plan default. A Model Studio key needs the matching base URL and model.
-      QWEN_BASE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
-      QWEN_MODEL: envField.string({ context: 'server', access: 'secret', optional: true }),
       NOAM_RECAPTCHA_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
-      // OtterlyAI agent analytics webhook key (Bearer token). Optional: without it, nothing is forwarded.
-      OTTERLY_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });
