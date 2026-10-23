@@ -9,8 +9,9 @@ it('zooms only a copy, bounds the scale, resets, closes and restores focus witho
  const {document,window}=parseHTML('<html><body><div id="row"><figure class="noam-geometry"><svg class="noam-geometry-svg" viewBox="0 0 320 224"><text>A</text></svg><span class="noam-term">זווית</span></figure></div></body></html>');
  const create=document.createElement.bind(document);
  document.createElement=(name:string)=>{const el=create(name);if(name==='dialog'){el.showModal=()=>el.setAttribute('open','');el.close=()=>el.dispatchEvent(new window.Event('close'));}return el;};
- const row=document.getElementById('row')!,figure=row.querySelector('figure')!,before=figure.outerHTML;
+ const row=document.getElementById('row')!,figure=row.querySelector('figure')!;
  runInNewContext(helper+';noamAddDiagramExpansion(row,figure);',{document,window,row,figure});
+ const before=figure.outerHTML;
  const trigger=row.querySelector('button')!;let focused=false;trigger.focus=()=>{focused=true;};trigger.click();
  const dialog=document.querySelector('dialog')!,zoom=dialog.querySelector('.noam-diagram-zoom')!;
  const [minus,plus,fit]=zoom.querySelectorAll('button');
