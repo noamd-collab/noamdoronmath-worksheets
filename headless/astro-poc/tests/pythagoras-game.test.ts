@@ -78,6 +78,26 @@ describe('eliyahu pythagoras game page', () => {
     }
   });
 
+  it('stacks a beta promo under the kefel card on the home page', () => {
+    const card = readFileSync(fromTest('../src/components/GamePromoCard.astro'), 'utf8');
+    const home = readFileSync(fromTest('../src/pages/index.astro'), 'utf8');
+    const kefelAt = card.indexOf('data-home-game-promo');
+    const betaAt = card.indexOf('id="pythagoras-promo"');
+    assert.ok(home.includes('<GamePromoCard />'));
+    assert.ok(kefelAt > 0 && betaAt > kefelAt);
+    assert.ok(card.includes('חדש!'));
+    assert.ok(card.includes('נסו את המשחק החדש!'));
+    assert.ok(card.includes('PUBLIC_LESSON_PATH'));
+    assert.match(card, /data-home-pythagoras-promo[\s\S]*בטא/);
+    assert.ok(card.includes('משחק פיתגורס כבר כאן!'));
+    assert.ok(card.includes('גרסת בטא'));
+    assert.ok(card.includes('href={PYTHAGORAS_GAME_PATH}'));
+    assert.ok(card.includes('data-pop="160"'));
+    assert.equal(card.includes('dialog'), false);
+    const beta = card.slice(betaAt);
+    assert.equal(/\d+\s*\/\s*\d+/.test(beta), false);
+  });
+
   it('is findable in search under the grade-8 Pythagoras catalog card', () => {
     const index = JSON.parse(readFileSync(fromTest('../src/data/search-index.v1.json'), 'utf8')) as SearchIndex;
     const doc = index.docs.find((item) => item.href === PYTHAGORAS_GAME_PATH);

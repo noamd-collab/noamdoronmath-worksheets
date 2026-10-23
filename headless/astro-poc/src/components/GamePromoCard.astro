@@ -1,5 +1,6 @@
 ---
 import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
+import { PYTHAGORAS_GAME_PATH } from '../lib/pythagorasGame';
 ---
 <section class="exact-game-promo">
   <a class="exact-game-promo__card" href={PUBLIC_LESSON_PATH} data-home-game-promo>
@@ -18,6 +19,25 @@ import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
       <span class="exact-game-promo__go">למשחק</span>
     </span>
   </a>
+  <div class="exact-game-promo__slot" id="pythagoras-promo" data-pop="160">
+    <a class="exact-game-promo__card exact-game-promo__card--beta" href={PYTHAGORAS_GAME_PATH} data-home-pythagoras-promo>
+      <span class="exact-game-promo__shot" aria-hidden="true">
+        <svg class="exact-game-promo__mark" viewBox="0 0 200 132" width="200" height="132">
+          <polygon points="28,108 28,28 168,108" fill="#f4e7c3" stroke="#22305a" stroke-width="3" stroke-linejoin="round"></polygon>
+          <path d="M28 92 H44 V108" fill="none" stroke="#22305a" stroke-width="2"></path>
+          <text x="14" y="72" fill="#1e605e" style="font:800 16px Heebo;">a</text>
+          <text x="90" y="124" fill="#1e605e" style="font:800 16px Heebo;">b</text>
+          <text x="104" y="62" fill="#e5735c" style="font:800 16px Heebo;">c</text>
+        </svg>
+      </span>
+      <span class="exact-game-promo__copy">
+        <span class="exact-game-promo__badge">בטא</span>
+        <h2 class="exact-game-promo__title">משחק פיתגורס כבר כאן!</h2>
+        <p class="exact-game-promo__text">גרסת בטא. שיעור קצר עם אליהו על משפט פיתגורס.</p>
+        <span class="exact-game-promo__go">למשחק</span>
+      </span>
+    </a>
+  </div>
 </section>
 <style>
   .exact-game-promo{max-width:1200px;margin:0 auto;padding:0 24px 64px;}
@@ -49,10 +69,16 @@ import { PUBLIC_LESSON_PATH } from '../lib/publicLesson';
   .exact-game-promo__go{
     margin-top:6px;font-weight:700;font-size:16px;color:#1e605e;text-decoration:underline;text-underline-offset:4px;
   }
+  .exact-game-promo__slot{margin-top:18px;}
+  .exact-game-promo__card--beta .exact-game-promo__shot{
+    flex:0 0 220px;justify-content:center;padding:12px 8px;
+  }
+  .exact-game-promo__mark{display:block;width:min(200px,100%);height:auto;}
   @media(max-width:700px){
     .exact-game-promo{padding:0 14px 40px;}
     .exact-game-promo__card{flex-direction:column;}
     .exact-game-promo__shot{border-inline-end:0;border-bottom:2px solid #22305a;}
+    .exact-game-promo__card--beta .exact-game-promo__shot{flex-basis:auto;padding:14px 12px 8px;}
     .exact-game-promo__copy{padding:18px 16px 20px;}
     .exact-game-promo__text{font-size:17px;}
   }
