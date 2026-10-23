@@ -1,6 +1,6 @@
 {
   "source": "noamd-collab/noam-agent-hub issue 1 comment 6251087305, main bdd75cf7",
-  "note": "The audit's full MATCH table is only in REPORT.md. MATCH topic pages are every served topic slug outside these three lists (163 = 265 - 102).",
+  "note": "The audit's full MATCH table is only in REPORT.md. MATCH topic pages are every served topic slug outside these three lists (162 = 264 - 102). angles-grade-7 left the served set when it became a redirect.",
   "wrong_topic": [
     "equations-basics-grade-7",
     "algebraic-fractions-grade-9",
