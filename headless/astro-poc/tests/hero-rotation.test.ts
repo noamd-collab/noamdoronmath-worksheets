@@ -42,7 +42,7 @@ function heroPool(): string[] {
  * Audit comment 6251087305 partitions topic pages into MATCH and the three
  * lists in the fixture. The 174-row MATCH table is only in REPORT.md.
  * 162 MATCH topic pages = every served topic slug outside those lists.
- * angles-grade-7 left this set when PR 85 replaced that page with a redirect.
+ * angles-grade-7 left the served set when PR #85 made it a redirect.
  */
 function auditMatchSlugs(): Set<string> {
   const audit = JSON.parse(read('tests/fixtures/audit-6251087305-non-match.json')) as {

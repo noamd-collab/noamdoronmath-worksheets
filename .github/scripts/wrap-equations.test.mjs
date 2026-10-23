@@ -89,7 +89,7 @@ describe('wrapEquations', () => {
         if (wrapEquations(text).includes('exact-eq')) wrapped.push(text);
       }
     }
-    assert.equal(entries, 299);
+    assert.equal(entries, 300);
     assert.equal(wrapped.length, 15);
     assert.ok(wrapped.some((text) => text.includes('⟨a¦b⟩=⟨c¦d⟩')));
     assert.ok(wrapped.some((text) => text.includes('⟨2¦3⟩=⟨8¦12⟩')));

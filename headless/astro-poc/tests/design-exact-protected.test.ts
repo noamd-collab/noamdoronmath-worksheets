@@ -118,7 +118,8 @@ describe('exact-design protected live-baseline boundaries', () => {
     // PR212: Noam-approved height-aware diagram fit, vertical scroll chaining,
     // and opt-in question zoom; manually checked at 390x844 and 1280x800.
     // Only presentation CSS changed in this head; metadata/SEO/fonts stay fixed.
-    assert.equal(sha256(head), 'b589c3b750e23afaac27cac03180e19bc2502a8066ed101b7ff464466eaadcdf');
+    // 2026-10-23: pointer cursor on expandable local visuals. Metadata unchanged.
+    assert.equal(sha256(head), 'c10ecfc705406e89dc0a5b78f57c7d9bd8fa6cb970352c16a24c714d09590e27');
     const scripts = [...viewer.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)].map((match) => match[0]);
     const adapters = scripts.filter((script) => /^<script id="exact-viewer-adapter">/.test(script));
     const companion = scripts.filter((script) => /noam-site-companion\.js/.test(script));
@@ -173,7 +174,13 @@ describe('exact-design protected live-baseline boundaries', () => {
     // PR214: verified native triangle length comparisons preserve their original
     // SVG/values, including saved drawings and shared metadata fetches. Covered
     // by ramzi-native-segment-focus.test.ts; no auth, model or storage changes.
-    assert.equal(sha256(JSON.stringify(releasedScripts)), '0e0895f73ae14fbeb5282a4d02fee00e3104859a200aaaffc5a4861e328cbc10');
+    // 2026-10-22: four live-check client fixes — recaptcha host fallback,
+    // labeled shifted-parabola example, union-area language, numeric-square sense.
+    // No auth, keys, score thresholds, worker or storage changes.
+    // 2026-10-23: local constructed visuals get the same enlarge control as
+    // generated diagrams; Pythagoras "הריבוע של" stays numeric. Cursor/cache
+    // query only. No auth, keys, score, worker or storage changes.
+    assert.equal(sha256(JSON.stringify(releasedScripts)), '0cb1504d859ded5910eb7388454583e63f04448b5d177f62b2112e8d576b6e92');
   });
 
   it('keeps Headless viewer adapters without rewriting the GitHub Pages root viewer', () => {

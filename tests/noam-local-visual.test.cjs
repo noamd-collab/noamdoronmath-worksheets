@@ -152,6 +152,31 @@ test("ambiguous or unsupported exercise text falls through to the existing AI", 
   assert.equal(LocalVisual.parseFactoredQuadraticInequality("(x − 4)(x − 4) ≥ 0"), null);
 });
 
+test("shifted y=x²+c with two intercepts draws a labeled example, not question data", () => {
+  const q1d =
+    "בשרטוט הפרבולה y = x². מזיזים אותה למעלה או למטה, וכך מתקבלות כל הפרבולות מהצורה y = x² + c. לאילו ערכים של c הפרבולה חותכת את ציר x בשתי נקודות? באיזה מקום שתי הנקודות האלה רחוקות זו מזו 26 יחידות?";
+  const spec = LocalVisual.parseShiftedParabolaExample(q1d);
+  assert.equal(spec.type, "shifted-parabola-example");
+  assert.equal(spec.equation, "y=x²−4");
+  assert.deepEqual(spec.roots, [-2, 2]);
+  const answer = LocalVisual.assistantText(spec);
+  assert.match(answer, /דוגמה להמחשה — לא נתוני השאלה/);
+  assert.doesNotMatch(answer, /13|169|26/);
+  const card = LocalVisual.render(fakeDocument(), spec);
+  const caption = descendants(card).find(node => node.className === "noam-visual-title");
+  assert.equal(caption.textContent, "דוגמה להמחשה — לא נתוני השאלה");
+  assert.doesNotMatch(JSON.stringify(spec), /13|169|26/);
+});
+
+test("a second same-level family wording gets the same pedagogical example", () => {
+  const other =
+    "פרבולה מהמשפחה y = x² + c פוגשת את הציר האופקי בשתי נקודות. הקודקוד מתחת לציר x. איזו פרבולה היא?";
+  const spec = LocalVisual.parseShiftedParabolaExample(other);
+  assert.equal(spec.type, "shifted-parabola-example");
+  assert.deepEqual(spec.roots, [-2, 2]);
+  assert.equal(LocalVisual.parseShiftedParabolaExample("בשרטוט הפרבולה y = x². מה הקדקוד שלה?"), null);
+});
+
 test("the visual answer teaches the graph connection without stating interval notation", () => {
   const spec = LocalVisual.parseFactoredQuadraticInequality("(x − 4)(x + 1) ≥ 0");
   const answer = LocalVisual.assistantText(spec);

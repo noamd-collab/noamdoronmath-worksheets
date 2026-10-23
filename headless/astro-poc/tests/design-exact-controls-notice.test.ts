@@ -160,14 +160,11 @@ describe('protected math sources stay pinned after the L01 removal', () => {
   // so [data-el='copy'] { opacity: 0 } no longer hides it.
   // Moved again so the lap reset keeps both outlines on screen.
   // Explicit content fix, not a silent regen.
-  // Moved again for the grade-7 slope film on main (PR 84): axis ticks
-  // 0–4 and the pairs (0,0), (1,2), (2,4) stay on the drawing and fade
-  // with it. These pins record main's bytes. The source files stay as main
-  // left them.
+  // Hashes now match design-exact-protected: sas-snap / lap-reset content
+  // already on main. Not a silent regen of the films.
   const expected = {
     'src/components/ConceptLoop.astro': '5c19bb66f66c892a81879e9eb3110ae024befaf0b2cd56fc21c0231c83479e85',
     // PR169: preserve new topic films and honor OS reduced motion.
-    // PR 84: slope points and pairs fade with the drawing.
     'src/lib/conceptLoops.ts': '9d86bb3d615a654aee60354659a7232a8e65f5dd702ad5d33c642b66dbfa9c46',
     'src/lib/loopHelpers.ts': 'bfa9538f5721ee835862742147b8bbe0718afe64d85d010f2d1edae4ffa3ba77',
   };
