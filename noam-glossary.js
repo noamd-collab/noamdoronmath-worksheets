@@ -535,6 +535,16 @@
       question:"איך מזהים איזו צלע היא היתר לפני שמציבים בנוסחה?"
     },
     {
+      id:"numeric-square",term:"ריבוע של מספר",
+      aliases:["סכום ריבועים","סכום ריבועי","ריבועי הניצבים","ריבוע היתר","בעזרת ריבועים","ריבועים"],
+      grades:[7,8,9],kind:"מושג",
+      short:"מכפלה של מספר בעצמו — לא הצורה הגאומטרית ריבוע.",
+      detail:"במשפט פיתגורס ובחישוב אורכים, ריבוע הוא פעולה מספרית: a². סכום ריבועים הוא a²+b², ולא ציור של מרובעים. הגדרת הריבוע כמרובע נשארת בערך הנפרד.",
+      example:"3²+4²=5² הוא סכום ריבועים מספריים, לא הגדרה של ריבוע.",
+      prerequisite:"חזקות ומשולש ישר־זווית.",
+      question:"מתי המילה ריבוע מתארת כפל של מספר בעצמו, ומתי היא צורה?"
+    },
+    {
       id:"parallelogram",term:"מקבילית",aliases:["מקבילית","מקביליות"],grades:[7,8,9],kind:"הגדרה",
       short:"מרובע שבו שני זוגות הצלעות הנגדיות מקבילים.",
       detail:"במקבילית הצלעות הנגדיות שוות, הזוויות הנגדיות שוות והאלכסונים חוצים זה את זה.",
@@ -616,15 +626,42 @@
     return true;
   }
 
+  function nearbyGlossaryWindow(source,index,end){
+    return String(source||"").slice(Math.max(0,index-48),Math.min(String(source||"").length,end+48));
+  }
+
+  function numericSquareContext(source,index,end){
+    var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
+    if(/סכום\s*ריבוע|ריבועי\s*(?:ה)?(?:ניצב|יתר|צלע)|בעזרת\s*ריבוע/.test(matched)){return true;}
+    var around=nearbyGlossaryWindow(source,index,end);
+    return /פיתגורס|ניצב|יתר|סכום\s+ריבוע|חזק(?:ה|ות)|בעזרת\s+ריבוע|[a-zA-Z]\s*²|\d+\s*²/.test(around);
+  }
+
+  function geometricSquareContext(source,index,end){
+    var around=nearbyGlossaryWindow(source,index,end);
+    return /הגדר(?:ה|ת)\s+של\s+ריבוע|מרובע|צלע|אלכסון|מלבן|מעוין|זווית\s+ישרה|ארבע\s+צלעות/.test(around);
+  }
+
   // "ביחס ל…" is positional Hebrew ("with respect to"), not the numeric ratio concept.
   // Keep bare "יחס" / "היחס" / "יחס בין…" linkable.
+  // Pythagoras "ריבועים" is a², not the quadrilateral.
   function contextAllowsMatch(entry,source,index,end){
-    if(!entry||entry.id!=="ratio"){return true;}
-    var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
-    if(!/(^|ו)ביחס$/.test(matched)){return true;}
-    var after=String(source||"").slice(end);
-    if(/^[\s\u00a0\u200e\u200f\u202a-\u202e]*[־\-\u2010-\u2015\u2212]?[\s\u00a0\u200e\u200f\u202a-\u202e]*ל/.test(after)){
-      return false;
+    if(!entry){return true;}
+    if(entry.id==="ratio"){
+      var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
+      if(!/(^|ו)ביחס$/.test(matched)){return true;}
+      var after=String(source||"").slice(end);
+      if(/^[\s\u00a0\u200e\u200f\u202a-\u202e]*[־\-\u2010-\u2015\u2212]?[\s\u00a0\u200e\u200f\u202a-\u202e]*ל/.test(after)){
+        return false;
+      }
+      return true;
+    }
+    if(entry.id==="square"){
+      return !(numericSquareContext(source,index,end)&&!geometricSquareContext(source,index,end));
+    }
+    if(entry.id==="numeric-square"){
+      if(geometricSquareContext(source,index,end)&&!numericSquareContext(source,index,end)){return false;}
+      return numericSquareContext(source,index,end);
     }
     return true;
   }

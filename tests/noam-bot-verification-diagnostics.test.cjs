@@ -29,7 +29,9 @@ function harness(file, options = {}) {
         scripts.push(script);
         script.parentNode = this;
         queueMicrotask(() => {
-          if (options.scriptError) { script.onerror(options.scriptError); }
+          if (options.failHost && String(script.src || "").includes(options.failHost)) {
+            script.onerror(new Error("host blocked"));
+          } else if (options.scriptError) { script.onerror(options.scriptError); }
           else { win.grecaptcha = recaptcha; script.onload(); }
         });
       },
@@ -91,7 +93,21 @@ for (const file of ["noam-bot-client.js", "headless/astro-poc/public/noam-bot-cl
     const h = harness(file, { scriptError: new Error("private script event detail") });
     await assert.rejects(h.client.postJson(`${api}/noamImageSolve`, {}), { code: "BOT_CLIENT_UNAVAILABLE" });
     assertDiagnostic(h, "script", "BOT_CLIENT_UNAVAILABLE");
+    assert.equal(h.scripts.length, 2);
+    assert.equal(h.scripts[0].src, "https://www.google.com/recaptcha/api.js?render=public-test-key");
+    assert.equal(h.scripts[1].src, "https://www.recaptcha.net/recaptcha/api.js?render=public-test-key");
     assert.equal(h.scripts[0].parentNode, null);
+    assert.equal(h.scripts[1].parentNode, null);
+  });
+
+  test(`${file}: recaptcha.net is tried after google.com without skipping the token`, async () => {
+    const h = harness(file, { failHost: "google.com/recaptcha" });
+    assert.equal((await h.client.postJson(`${api}/noamImageSolve`, { exerciseId: "synthetic-exercise" })).answer, "רמז");
+    assert.equal(h.scripts.length, 2);
+    assert.equal(h.scripts[0].src, "https://www.google.com/recaptcha/api.js?render=public-test-key");
+    assert.equal(h.scripts[1].src, "https://www.recaptcha.net/recaptcha/api.js?render=public-test-key");
+    assert.equal(JSON.parse(h.modelCalls()[0].request.body).botVerification.token, "test-verification-token");
+    assert.deepEqual(h.warnings, []);
   });
 
   test(`${file}: a late ready callback cannot send a model request after timeout`, async () => {
