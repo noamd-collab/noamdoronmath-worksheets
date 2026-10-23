@@ -1530,6 +1530,7 @@ textarea:focus{
 .noam-draw-action:disabled{cursor:wait;opacity:.65}
 /* Expand an existing diagram independently of the short chat scrollport. */
 .noam-diagram-expand{min-height:44px;font-size:15px}
+.noam-diagram-expandable{cursor:pointer}
 .noam-diagram-dialog{box-sizing:border-box;width:min(720px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - 24px);padding:0;border:2px solid var(--ink);border-radius:20px;background:#fff;color:var(--ink);direction:rtl;overflow:hidden}
 .noam-diagram-dialog[open]{display:flex;flex-direction:column}
 .noam-diagram-dialog::backdrop{background:rgba(15,25,45,.55)}
@@ -3216,7 +3217,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 <script src="noam-diagram-plan.js?v=20261021-plural-relations1"></script>
 <script src="noam-local-visual.js?v=20260920-3"></script>
 <script src="noam-glossary-curriculum.js?v=20261018-fracbar"></script>
-<script src="noam-glossary.js?v=20261018-fracbar"></script>
+<script src="noam-glossary.js?v=20261023-numeric-sq"></script>
 <script>
 (function(){
 
@@ -5743,6 +5744,17 @@ function setNoamDiagramButtonLabel(button,label,showBeta){
   button.setAttribute("aria-label",label+(showBeta?" Beta":""));
 }
 
+function noamVisualCanExpand(visual){
+  return !!visual&&(
+    visual.type==="native-source-focus"||
+    visual.type==="ai-diagram"||
+    visual.type==="geometry-guide"||
+    visual.type==="shifted-parabola-example"||
+    visual.type==="labeled-triangle"||
+    visual.type==="factored-quadratic-inequality"
+  );
+}
+
 function addTranscriptBubble(container, role, text, kind, visual, message, thread){
   var row = document.createElement("div");
   row.className = "noam-row " + role;
@@ -5778,7 +5790,7 @@ function addTranscriptBubble(container, role, text, kind, visual, message, threa
       ? noamRenderGeometryGuide(visual)
       : window.NoamLocalVisual&&window.NoamLocalVisual.render(document,visual);
     if (visualElement){
-      if(visual.type==="native-source-focus"||visual.type==="ai-diagram"||visual.type==="geometry-guide"){noamAddDiagramExpansion(bubble,visualElement);}
+      if(noamVisualCanExpand(visual)){noamAddDiagramExpansion(bubble,visualElement);}
       bubble.appendChild(visualElement);
     }
   }
@@ -8216,7 +8228,7 @@ function noamAddDiagramExpansion(container,figure){
     copy.querySelectorAll(".noam-term").forEach(function(term){
       term.replaceWith(document.createTextNode(term.textContent));
     });
-    var svg=copy.querySelector(".noam-geometry-svg");
+    var svg=copy.querySelector(".noam-geometry-svg, .noam-visual-svg");
     var zoom=document.createElement("div");
     zoom.className="noam-diagram-zoom";
     zoom.setAttribute("role","group");
@@ -8286,6 +8298,12 @@ function noamAddDiagramExpansion(container,figure){
     fitToScreen();
     if(svg){svg.addEventListener("load",resizeFit);}
     window.addEventListener("resize",resizeFit);
+  });
+  figure.classList.add("noam-diagram-expandable");
+  figure.addEventListener("click",function(event){
+    var target=event.target;
+    if(target&&target.closest&&target.closest("button,a,summary,details,.noam-term,.noam-visual-question,.noam-visual-steps")){return;}
+    expand.click();
   });
   container.appendChild(expand);
 }

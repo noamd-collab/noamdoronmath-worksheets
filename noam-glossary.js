@@ -536,7 +536,7 @@
     },
     {
       id:"numeric-square",term:"ריבוע של מספר",
-      aliases:["סכום ריבועים","סכום ריבועי","ריבועי הניצבים","ריבוע היתר","בעזרת ריבועים","ריבועים"],
+      aliases:["סכום ריבועים","סכום ריבועי","ריבועי הניצבים","ריבוע היתר","בעזרת ריבועים","ריבועים","ריבוע"],
       grades:[7,8,9],kind:"מושג",
       short:"מכפלה של מספר בעצמו — לא הצורה הגאומטרית ריבוע.",
       detail:"במשפט פיתגורס ובחישוב אורכים, ריבוע הוא פעולה מספרית: a². סכום ריבועים הוא a²+b², ולא ציור של מרובעים. הגדרת הריבוע כמרובע נשארת בערך הנפרד.",
@@ -633,13 +633,17 @@
   function numericSquareContext(source,index,end){
     var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
     if(/סכום\s*ריבוע|ריבועי\s*(?:ה)?(?:ניצב|יתר|צלע)|בעזרת\s*ריבוע/.test(matched)){return true;}
+    var after=String(source||"").slice(end);
+    // "הריבוע של …" is a², even when nearby words mention triangle sides.
+    if(/^[\s\u00a0\u200e\u200f]*של/.test(after)){return true;}
     var around=nearbyGlossaryWindow(source,index,end);
-    return /פיתגורס|ניצב|יתר|סכום\s+ריבוע|חזק(?:ה|ות)|בעזרת\s+ריבוע|[a-zA-Z]\s*²|\d+\s*²/.test(around);
+    return /פיתגורס|ניצב|יתר|סכום\s+ריבוע|חזק(?:ה|ות)|בעזרת\s+ריבוע|לחבר\s+את\s+(?:ה)?ריבוע|[a-zA-Z]\s*²|\d+\s*²/.test(around);
   }
 
   function geometricSquareContext(source,index,end){
     var around=nearbyGlossaryWindow(source,index,end);
-    return /הגדר(?:ה|ת)\s+של\s+ריבוע|מרובע|צלע|אלכסון|מלבן|מעוין|זווית\s+ישרה|ארבע\s+צלעות/.test(around);
+    // Bare "צלע/צלעות" is also Pythagoras language ("שתי הצלעות הקצרות").
+    return /הגדר(?:ה|ת)\s+של\s+ריבוע|מרובע|אלכסון|מלבן|מעוין|זוויות?\s+ישר(?:ה|ות)|ארבע\s+צלעות|צלעות(?:יו)?\s+שוות|כצורה|גאומטר/.test(around);
   }
 
   // "ביחס ל…" is positional Hebrew ("with respect to"), not the numeric ratio concept.
