@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Build + publish the Astro site to Wix from a given commit.
 # Usage: tools/release/release.sh <expected-commit-sha> [repo-dir]
-# Env (see tools/.env.example): WIX_CLI_API_KEY (optional, for non-interactive login), NODE_BIN, RELEASE_BRANCH (default: main)
+# Env (see tools/.env.example): WIX_CLI_API_KEY (optional, for non-interactive login), NODE_BIN, RELEASE_BRANCH (default: headless/astro-poc-baseline until the main switch merges)
 set -u
 [ -f "$(dirname "$0")/../.env" ] && set -a && . "$(dirname "$0")/../.env" && set +a
 EXPECT="${1:?expected commit sha}"; REPO="${2:-$(git rev-parse --show-toplevel)}"
-BRANCH="${RELEASE_BRANCH:-main}"
+BRANCH="${RELEASE_BRANCH:-headless/astro-poc-baseline}"
 [ -n "${NODE_BIN:-}" ] && export PATH="$NODE_BIN:$PATH"
 cd "$REPO" || exit 1
 git fetch origin "$BRANCH" && git checkout --detach "$EXPECT" || exit 2

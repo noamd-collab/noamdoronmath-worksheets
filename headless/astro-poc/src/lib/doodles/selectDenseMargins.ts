@@ -92,8 +92,8 @@ export function selectDenseMargins(
   const rng = mulberry32(hashPathname(`edge:${path}`));
   const order = shuffleIndices(rng, motifs.length).map((i) => motifs[i]);
 
-  const startTops = [...PHI_EDGE_TOPS_START];
-  const endTops = [...PHI_EDGE_TOPS_END];
+  const startTops: number[] = [...PHI_EDGE_TOPS_START];
+  const endTops: number[] = [...PHI_EDGE_TOPS_END];
   while (startTops.length + endTops.length < order.length) {
     const nextStart = Math.min(
       92,

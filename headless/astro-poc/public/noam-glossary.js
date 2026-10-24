@@ -33,8 +33,8 @@
     {
       id:"power",term:"חזקה",aliases:["חזקה","חזקות","בסיס החזקה","מעריך החזקה"],grades:[7,8,9],kind:"מושג",
       short:"כתיבה מקוצרת לכפל חוזר של אותו גורם; ההגדרה מתרחבת גם למעריך שלם.",
-      detail:"בביטוי aⁿ המספר a הוא הבסיס ו־n הוא המעריך. כש־n מספר טבעי, המעריך קובע כמה פעמים הבסיס מופיע כגורם. ההגדרה מתרחבת למעריך שלם: a⁰ = 1 ו־a⁻ⁿ = ⟨1¦aⁿ⟩ (כאשר a ≠ 0).",
-      example:"3⁴ = 3×3×3×3; וגם 2⁻³ = ⟨1¦2³⟩.",prerequisite:"כפל וסדר פעולות חשבון.",
+      detail:"בביטוי aⁿ המספר a הוא הבסיס ו־n הוא המעריך. כש־n מספר טבעי, המעריך קובע כמה פעמים הבסיס מופיע כגורם. ההגדרה מתרחבת למעריך שלם: a⁰ = 1 ו־a⁻ⁿ = 1/aⁿ (כאשר a ≠ 0).",
+      example:"3⁴ = 3×3×3×3; וגם 2⁻³ = 1/2³.",prerequisite:"כפל וסדר פעולות חשבון.",
       question:"מה ההבדל בין בסיס החזקה לבין המעריך, ומה קורה כשהמעריך שלילי?"
     },
     {
@@ -103,14 +103,14 @@
     {
       id:"proportion",term:"פרופורציה",aliases:["פרופורציה","פרופורציות"],grades:[7,8,9],kind:"מושג",
       short:"שוויון בין שני יחסים.",
-      detail:"בפרופורציה ⟨a¦b⟩=⟨c¦d⟩ אפשר להשתמש בכפל בהצלבה, כל עוד המכנים אינם אפס. הכפל בהצלבה נובע מכפל שני האגפים באותו מספר.",
-      example:"⟨2¦3⟩=⟨8¦12⟩ היא פרופורציה נכונה.",prerequisite:"יחס, שברים ומשוואות.",
+      detail:"בפרופורציה a/b=c/d אפשר להשתמש בכפל בהצלבה, כל עוד המכנים אינם אפס. הכפל בהצלבה נובע מכפל שני האגפים באותו מספר.",
+      example:"2/3=8/12 היא פרופורציה נכונה.",prerequisite:"יחס, שברים ומשוואות.",
       question:"למה מותר לבצע כפל בהצלבה בפרופורציה?"
     },
     {
       id:"percentage",term:"אחוז",aliases:["אחוז","אחוזים"],grades:[7,8,9],kind:"מושג",
       short:"חלק מתוך מאה.",
-      detail:"p אחוזים הם השבר ⟨p¦100⟩. כדי למצוא אחוז מכמות, כופלים את הכמות בשבר או במספר העשרוני המתאים.",
+      detail:"p אחוזים הם השבר p/100. כדי למצוא אחוז מכמות, כופלים את הכמות בשבר או במספר העשרוני המתאים.",
       example:"25% מ־80 הם 20.",prerequisite:"שברים ומספרים עשרוניים.",
       question:"איך מבחינים בין האחוז, החלק והכמות השלמה?"
     },
@@ -216,14 +216,14 @@
       id:"relative-frequency",term:"שכיחות יחסית",aliases:["שכיחות יחסית","שכיחויות יחסיות"],grades:[7,8,9],kind:"מושג",
       short:"החלק של הופעות הערך מתוך מספר התצפיות הכולל.",
       detail:"מחלקים את השכיחות במספר הנתונים. אפשר לכתוב את התוצאה כשבר, כמספר עשרוני או כאחוז, וסכום השכיחויות היחסיות הוא 1.",
-      example:"אם ערך הופיע 5 פעמים מתוך 20, שכיחותו היחסית היא ⟨1¦4⟩ או 25%.",prerequisite:"שכיחות, שברים ואחוזים.",
+      example:"אם ערך הופיע 5 פעמים מתוך 20, שכיחותו היחסית היא 1/4 או 25%.",prerequisite:"שכיחות, שברים ואחוזים.",
       question:"מה ההבדל בין שכיחות לבין שכיחות יחסית?"
     },
     {
       id:"probability",term:"הסתברות",aliases:["הסתברות","הסתברויות"],grades:[7,8,9],kind:"מושג",
       short:"מספר בין 0 ל־1 המתאר עד כמה מאורע צפוי להתרחש.",
       detail:"כאשר כל התוצאות שוות־סיכוי, ההסתברות היא מספר התוצאות הרצויות חלקי מספר התוצאות האפשריות. הסתברות 0 מתארת מאורע בלתי אפשרי ו־1 מאורע ודאי.",
-      example:"בקובייה הוגנת, ההסתברות לקבל 6 היא ⟨1¦6⟩.",prerequisite:"שברים ומרחב תוצאות.",
+      example:"בקובייה הוגנת, ההסתברות לקבל 6 היא 1/6.",prerequisite:"שברים ומרחב תוצאות.",
       question:"מתי מותר להשתמש במספר התוצאות הרצויות חלקי מספר התוצאות האפשריות?"
     },
     {
@@ -320,7 +320,7 @@
     {
       id:"cone",term:"חרוט",aliases:["חרוט","חרוטים"],grades:[7,8,9],kind:"הגדרה",
       short:"גוף בעל בסיס עגול וקודקוד אחד המחובר לכל נקודות המעגל.",
-      detail:"נפח חרוט הוא שליש מנפח גליל בעל אותו בסיס ואותו גובה: ⟨πr²h¦3⟩.",
+      detail:"נפח חרוט הוא שליש מנפח גליל בעל אותו בסיס ואותו גובה: πr²h/3.",
       example:"אם לגליל ולחרוט אותו בסיס ואותו גובה, נפח החרוט הוא שליש מנפח הגליל.",prerequisite:"מעגל, גליל ונפח.",
       question:"למה משווים חרוט לגליל בעל אותו בסיס ואותו גובה?"
     },
@@ -356,7 +356,7 @@
       id:"algebraic-fraction",term:"שבר אלגברי",aliases:["שבר אלגברי","שברים אלגבריים","צמצום שברים אלגבריים"],grades:[9],kind:"מושג",
       short:"שבר שבמונה או במכנה שלו מופיע ביטוי אלגברי.",
       detail:"מצמצמים גורמים שלמים ולא איברים שמחוברים או מחוסרים. לפני הצמצום קובעים תחום הצבה לפי המכנה המקורי.",
-      example:"⟨(x²−9)¦(x−3)⟩ מצטמצם ל־x+3, אך x≠3.",prerequisite:"פירוק לגורמים ותחום הצבה.",
+      example:"(x²−9)/(x−3) מצטמצם ל־x+3, אך x≠3.",prerequisite:"פירוק לגורמים ותחום הצבה.",
       question:"מדוע אסור לצמצם איברים שמחוברים בתוך סכום?"
     },
     {
@@ -370,7 +370,7 @@
       id:"quadratic-formula",term:"נוסחת השורשים",aliases:["נוסחת השורשים","נוסחה ריבועית"],grades:[9],kind:"נוסחה",
       short:"נוסחה למציאת פתרונות המשוואה ax²+bx+c=0.",
       detail:"מציבים בזהירות את a, b ו־c כולל הסימנים. הביטוי b²−4ac שמתחת לשורש קובע כמה פתרונות ממשיים יש.",
-      example:"x=⟨[−b±√(b²−4ac)]¦(2a)⟩.",prerequisite:"משוואה ריבועית, הצבה ושורש ריבועי.",
+      example:"x=[−b±√(b²−4ac)]/(2a).",prerequisite:"משוואה ריבועית, הצבה ושורש ריבועי.",
       question:"איך מזהים נכון את a, b ו־c לפני ההצבה בנוסחה?"
     },
     {
@@ -391,7 +391,7 @@
       id:"domain",term:"תחום הצבה",aliases:["תחום הצבה","תחום ההצבה"],grades:[8,9],kind:"מושג",
       short:"כל הערכים שמותר להציב בביטוי.",
       detail:"מוציאים מהתחום ערכים שגורמים לפעולה שאינה מוגדרת, למשל חילוק באפס. את ההגבלה קובעים לפני צמצום הביטוי.",
-      example:"ב־⟨1¦(x−3)⟩ אסור להציב x=3.",prerequisite:"שברים אלגבריים ומשמעות של מכנה.",
+      example:"ב־1/(x−3) אסור להציב x=3.",prerequisite:"שברים אלגבריים ומשמעות של מכנה.",
       question:"למה צריך לקבוע תחום הצבה לפני שמצמצמים?"
     },
     {
@@ -535,16 +535,6 @@
       question:"איך מזהים איזו צלע היא היתר לפני שמציבים בנוסחה?"
     },
     {
-      id:"numeric-square",term:"ריבוע של מספר",
-      aliases:["סכום ריבועים","סכום ריבועי","ריבועי הניצבים","ריבוע היתר","בעזרת ריבועים","ריבועים","ריבוע"],
-      grades:[7,8,9],kind:"מושג",
-      short:"מכפלה של מספר בעצמו — לא הצורה הגאומטרית ריבוע.",
-      detail:"במשפט פיתגורס ובחישוב אורכים, ריבוע הוא פעולה מספרית: a². סכום ריבועים הוא a²+b², ולא ציור של מרובעים. הגדרת הריבוע כמרובע נשארת בערך הנפרד.",
-      example:"3²+4²=5² הוא סכום ריבועים מספריים, לא הגדרה של ריבוע.",
-      prerequisite:"חזקות ומשולש ישר־זווית.",
-      question:"מתי המילה ריבוע מתארת כפל של מספר בעצמו, ומתי היא צורה?"
-    },
-    {
       id:"parallelogram",term:"מקבילית",aliases:["מקבילית","מקביליות"],grades:[7,8,9],kind:"הגדרה",
       short:"מרובע שבו שני זוגות הצלעות הנגדיות מקבילים.",
       detail:"במקבילית הצלעות הנגדיות שוות, הזוויות הנגדיות שוות והאלכסונים חוצים זה את זה.",
@@ -626,46 +616,15 @@
     return true;
   }
 
-  function nearbyGlossaryWindow(source,index,end){
-    return String(source||"").slice(Math.max(0,index-48),Math.min(String(source||"").length,end+48));
-  }
-
-  function numericSquareContext(source,index,end){
-    var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
-    if(/סכום\s*ריבוע|ריבועי\s*(?:ה)?(?:ניצב|יתר|צלע)|בעזרת\s*ריבוע/.test(matched)){return true;}
-    var after=String(source||"").slice(end);
-    // "הריבוע של …" is a², even when nearby words mention triangle sides.
-    if(/^[\s\u00a0\u200e\u200f]*של/.test(after)){return true;}
-    var around=nearbyGlossaryWindow(source,index,end);
-    return /פיתגורס|ניצב|יתר|סכום\s+ריבוע|חזק(?:ה|ות)|בעזרת\s+ריבוע|לחבר\s+את\s+(?:ה)?ריבוע|[a-zA-Z]\s*²|\d+\s*²/.test(around);
-  }
-
-  function geometricSquareContext(source,index,end){
-    var around=nearbyGlossaryWindow(source,index,end);
-    // Bare "צלע/צלעות" is also Pythagoras language ("שתי הצלעות הקצרות").
-    return /הגדר(?:ה|ת)\s+של\s+ריבוע|מרובע|אלכסון|מלבן|מעוין|זוויות?\s+ישר(?:ה|ות)|ארבע\s+צלעות|צלעות(?:יו)?\s+שוות|כצורה|גאומטר/.test(around);
-  }
-
   // "ביחס ל…" is positional Hebrew ("with respect to"), not the numeric ratio concept.
   // Keep bare "יחס" / "היחס" / "יחס בין…" linkable.
-  // Pythagoras "ריבועים" is a², not the quadrilateral.
   function contextAllowsMatch(entry,source,index,end){
-    if(!entry){return true;}
-    if(entry.id==="ratio"){
-      var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
-      if(!/(^|ו)ביחס$/.test(matched)){return true;}
-      var after=String(source||"").slice(end);
-      if(/^[\s\u00a0\u200e\u200f\u202a-\u202e]*[־\-\u2010-\u2015\u2212]?[\s\u00a0\u200e\u200f\u202a-\u202e]*ל/.test(after)){
-        return false;
-      }
-      return true;
-    }
-    if(entry.id==="square"){
-      return !(numericSquareContext(source,index,end)&&!geometricSquareContext(source,index,end));
-    }
-    if(entry.id==="numeric-square"){
-      if(geometricSquareContext(source,index,end)&&!numericSquareContext(source,index,end)){return false;}
-      return numericSquareContext(source,index,end);
+    if(!entry||entry.id!=="ratio"){return true;}
+    var matched=canonicalizeGlossaryText(source.slice(index,end)).toLocaleLowerCase("he");
+    if(!/(^|ו)ביחס$/.test(matched)){return true;}
+    var after=String(source||"").slice(end);
+    if(/^[\s\u00a0\u200e\u200f\u202a-\u202e]*[־\-\u2010-\u2015\u2212]?[\s\u00a0\u200e\u200f\u202a-\u202e]*ל/.test(after)){
+      return false;
     }
     return true;
   }

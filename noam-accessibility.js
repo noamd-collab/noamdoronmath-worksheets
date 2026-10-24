@@ -41,12 +41,6 @@
         button:disabled { opacity:.45; cursor:default; }
         #launch { width:48px; height:48px; padding:8px; border-radius:50%; background:#075e57; color:white; border:2px solid white; box-shadow:0 2px 8px #14213d66; display:grid; place-items:center; }
         #launch svg { width:28px; height:28px; }
-        /* Worksheet tools stay secondary to the question-level Ramzi controls. */
-        :host-context(body.exact-viewer) #launch {
-          width:44px; height:44px; padding:9px; border:1px solid #aab6c5;
-          border-radius:12px; background:#fbfaf5; color:#1e605e; box-shadow:none;
-        }
-        :host-context(body.exact-viewer) #launch svg { width:24px; height:24px; }
         dialog { direction:rtl; position:fixed; inset:auto 14px calc(140px + env(safe-area-inset-bottom)) auto; margin:0; width:min(330px,calc(100vw - 28px)); max-height:calc(100dvh - 165px); overflow:auto; background:#fff; color:#14213d; border:2px solid #14213d; border-radius:18px; padding:16px; box-shadow:0 8px 30px #14213d40; font:16px/1.5 Arial,sans-serif; }
         dialog::backdrop { background:#14213d26; }
         header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
