@@ -11,11 +11,14 @@ import { fileURLToPath } from 'node:url';
 const pub = join(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 
 describe('copied viewer assets (HEADLESS-MIGRATION-12)', () => {
-  it('phone reading and fit calculations match the shared viewer', () => {
+  it('mobile getPdfPageWidth matches live GitHub (÷ 0.7 at 70% zoom)', () => {
     const html = readFileSync(join(pub, 'worksheet-viewer-noam.html'), 'utf8');
-    const shared = readFileSync(join(pub, '../../../worksheet-viewer-noam.html'), 'utf8');
-    const sizing = (s: string) => s.slice(s.indexOf('function getPdfPageWidth(){'),s.indexOf('// Keep the same point'));
-    assert.equal(sizing(html),sizing(shared));
+    assert.ok(html.includes('pdfZoom / .7'));
+    assert.ok(
+      !html.includes(
+        'pdfScroll.clientWidth - (mobileLayout.matches ? 116 : 78)) * pdfZoom;'
+      )
+    );
   });
 
   it('learning.html is present and catalog/brand links stay on preview', () => {

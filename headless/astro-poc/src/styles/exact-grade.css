@@ -262,7 +262,6 @@
   flex-direction: column;
   gap: 6px;
   height: 100%;
-  min-width: 0;
   padding: 18px 20px;
   background: #fff;
   border: 2px solid #22305a;
@@ -270,7 +269,6 @@
   color: #22305a;
   font-size: 18px;
   font-weight: 700;
-  overflow-wrap: anywhere;
   text-decoration: none;
   transition: transform .2s, box-shadow .2s;
 }

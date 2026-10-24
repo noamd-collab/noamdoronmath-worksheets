@@ -1,0 +1,27 @@
+name: blog-video-check
+
+# Offline checks for the blog-to-video scripts and tooling in blog-video/.
+# No secrets, no network calls, nothing is generated or published.
+on:
+  pull_request:
+    paths:
+      - 'blog-video/**'
+      - '.github/workflows/blog-video-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unit, fixture and package checks
+        run: node --test blog-video/test/*.test.mjs
+      - name: Production gates (dry run)
+        run: node blog-video/bin/produce.mjs plan

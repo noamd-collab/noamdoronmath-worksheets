@@ -14,7 +14,7 @@ import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 /**
  * Non-public / noise slugs — never appear in /sitemap-pages.xml.
  */
-const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops', 'loop-compare']);
+const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops', 'search']);
 
 function excludePath(path: string): boolean {
   if (path !== '/' && REDIRECT_RULES.some((r) => r.from === path)) return true;
@@ -46,32 +46,30 @@ export function listMainPagePaths(pageModuleKeys: readonly string[]): string[] {
     throw new Error('listMainPagePaths requires Vite glob module keys (no filesystem on Workers)');
   }
   const paths = pathsFromAstroModuleKeys(pageModuleKeys);
-  // These public HTML endpoints sit outside the top-level .astro glob. Blog
-  // posts/archives stay in their existing dedicated child map, not this list.
-  for (const publicPath of [PUBLIC_LESSON_PATH, '/blog']) {
-    if (!excludePath(publicPath) && !paths.includes(publicPath)) paths.push(publicPath);
-  }
+  // Nested routes are outside the top-level pages glob. /math-tools is in that
+  // glob; the public lesson lives under it in the menu, so it is listed too.
+  if (!paths.includes(PUBLIC_LESSON_PATH)) paths.push(PUBLIC_LESSON_PATH);
   return paths.sort((a, b) => a.localeCompare(b));
 }
 
 export function renderPagesSitemapXml(pageModuleKeys: readonly string[]): string {
-  // No trustworthy per-page revision dates are available here. Omitting
-  // lastmod is preferable to claiming every page changed on each request.
+  const today = new Date().toISOString().slice(0, 10);
   const urls = listMainPagePaths(pageModuleKeys)
     .map(
       (path) =>
-        `  <url><loc>${SITE_CANONICAL_ORIGIN}${path === '/' ? '/' : path}</loc></url>`
+        `  <url><loc>${SITE_CANONICAL_ORIGIN}${path === '/' ? '/' : path}</loc><lastmod>${today}</lastmod></url>`
     )
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
 export function renderSitemapIndexXml(): string {
+  const today = new Date().toISOString().slice(0, 10);
   const children = ['/sitemap-pages.xml', BLOG_SITEMAP_PATH];
   const body = children
     .map(
       (p) =>
-        `  <sitemap><loc>${SITE_CANONICAL_ORIGIN}${p}</loc></sitemap>`
+        `  <sitemap><loc>${SITE_CANONICAL_ORIGIN}${p}</loc><lastmod>${today}</lastmod></sitemap>`
     )
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</sitemapindex>\n`;

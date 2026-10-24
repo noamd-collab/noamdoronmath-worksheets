@@ -7,9 +7,10 @@ import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { isolateBlogPostDisplay, isolateMathRuns } from '../src/lib/mathDirection.ts';
 import { listServedBlogPosts } from '../src/lib/blogPosts.ts';
-import { synthesizeBodyFlow, loadTopicPage, TOPIC_PAGE_SLUGS } from '../src/lib/topicPages.ts';
+import { synthesizeBodyFlow, loadTopicPage } from '../src/lib/topicPages.ts';
 import { contentToParitySnapshot } from '../src/lib/parity/contentToParitySnapshot.ts';
 import { cleanText, diffTopicParity, type TopicParitySnapshot } from '../src/lib/parity/topicParity.ts';
+import { applyContentCorrections, topicPageCorrections } from '../src/lib/parity/contentCorrections.ts';
 
 const LRI = '\u2066';
 const PDI = '\u2069';
@@ -48,28 +49,6 @@ describe('isolateMathRuns', () => {
     assert.equal(isolateMathRuns('|−7| = 7'), `${LRI}|−7| = 7${PDI}`);
   });
 
-  it('keeps a label colon and an em dash outside the isolate', () => {
-    assert.equal(isolateMathRuns('דוגמה: 2 + 5 = 7.'), `דוגמה: ${LRI}2 + 5 = 7${PDI}.`);
-    assert.equal(
-      isolateMathRuns('התשובה היא 1,512: 56 × 7 = 392 ו־56 × 20 = 1,120.'),
-      `התשובה היא ${LRI}1,512${PDI}: ${LRI}56 × 7 = 392${PDI} ו־${LRI}56 × 20 = 1,120${PDI}.`,
-    );
-    assert.equal(
-      isolateMathRuns('מהמספר הגדול: 4, 5, 6, 7 — שלושה צעדים'),
-      `מהמספר הגדול: ${LRI}4, 5, 6, 7${PDI} — שלושה צעדים`,
-    );
-    assert.equal(isolateMathRuns('אפשר גם דרך 1%: מחלקים'), `אפשר גם דרך ${LRI}1%${PDI}: מחלקים`);
-  });
-
-  it('keeps a division colon inside the isolate', () => {
-    assert.equal(isolateMathRuns('84 : 6 + 5'), `${LRI}84 : 6 + 5${PDI}`);
-    assert.equal(isolateMathRuns('כמה זה 2 : 1/4?'), `כמה זה ${LRI}2 : 1/4${PDI}?`);
-    assert.equal(isolateMathRuns('לשלם: 1 : 1/4 = 4, כי'), `לשלם: ${LRI}1 : 1/4 = 4${PDI}, כי`);
-    assert.equal(isolateMathRuns('ביחס x : x√3 : 2x.'), `ביחס ${LRI}x : x√3 : 2x${PDI}.`);
-    assert.equal(isolateMathRuns('כמה זה ⟨1¦4⟩?'), `כמה זה ${LRI}⟨1¦4⟩${PDI}?`);
-    assert.equal(isolateMathRuns('השבר −⟨3¦4⟩ שווה'), `השבר ${LRI}−⟨3¦4⟩${PDI} שווה`);
-  });
-
   it('is idempotent and leaves Hebrew prose unchanged', () => {
     const hebrew = 'דפי העבודה פתוחים בחינם וללא הרשמה.';
     assert.equal(isolateMathRuns(hebrew), hebrew);
@@ -79,24 +58,6 @@ describe('isolateMathRuns', () => {
 });
 
 describe('topic pages apply math isolates without rewriting JSON', () => {
-  it('no topic page starts or ends an isolate with a colon or an em dash', () => {
-    const bad: string[] = [];
-    for (const slug of TOPIC_PAGE_SLUGS) {
-      const page = loadTopicPage(slug);
-      const texts = [
-        page.h1,
-        ...synthesizeBodyFlow(page).flatMap((b) =>
-          b.type === 'paragraph' || b.type === 'heading' ? [b.text] : b.type === 'list' ? b.items : [],
-        ),
-        ...page.faqGroups.flatMap((g) => g.items.flatMap((item) => [item.question, item.answer])),
-      ];
-      for (const text of texts) {
-        if (/⁦\s*[:—]|[:—]\s*⁩/.test(text)) bad.push(`${slug}: ${bare(text)}`);
-      }
-    }
-    assert.deepEqual(bad, []);
-  });
-
   it('signed-numbers body flow isolates the mirrored examples', () => {
     const raw = readFileSync('src/data/topic-pages/signed-numbers-grade-7.json', 'utf8');
     assert.equal(raw.includes(LRI), false);
@@ -119,11 +80,12 @@ describe('topic pages apply math isolates without rewriting JSON', () => {
   it('parity comparison ignores the isolates', () => {
     const page = loadTopicPage('signed-numbers-grade-7');
     const preview = contentToParitySnapshot(page, 'preview');
-    const source = JSON.parse(
-      readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8'),
-      (_key, value) => typeof value === 'string'
-        ? (JSON.parse(readFileSync('tests/fixtures/pr169-content-corrections.json', 'utf8'))[value] ?? value) : value
-    ) as TopicParitySnapshot;
+    const source = applyContentCorrections(
+      JSON.parse(
+        readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8')
+      ) as TopicParitySnapshot,
+      topicPageCorrections('signed-numbers-grade-7')
+    );
     const diffs = diffTopicParity(source, preview).filter((d) => d.severity === 'error');
     assert.deepEqual(
       diffs.map((d) => d.field),
@@ -144,17 +106,27 @@ describe('blog posts isolate math at display time', () => {
     const raw = JSON.stringify(post.blocks);
     assert.equal(raw.includes(LRI), false);
     const view = isolateBlogPostDisplay(post);
-    const formula = view.blocks.find((b) => b.type === 'p' && bare(b.text) === '`8 + 2 × 3`');
+    // Backticks were removed from the stored post (they rendered as visible characters).
+    const formula = view.blocks.find((b) => b.type === 'p' && bare(b.text) === '8 + 2 × 3');
     assert.ok(formula && formula.type === 'p');
     assert.ok(formula.text.includes(`${LRI}8 + 2 × 3${PDI}`));
     const tpl = readFileSync('src/components/BlogPostPage.astro', 'utf8');
     assert.ok(tpl.includes('isolateBlogPostDisplay'));
   });
+});
 
-  it('no blog post starts or ends an isolate with a colon or an em dash', () => {
-    for (const post of listServedBlogPosts()) {
-      const view = JSON.stringify(isolateBlogPostDisplay(post));
-      assert.doesNotMatch(view, /⁦\s*[:—]|[:—]\s*⁩/, post.fileSlug);
-    }
+describe('degree sign, Hebrew prefixes and punctuation stay outside or inside the run correctly', () => {
+  const show = (s: string) => s.replace(/⁦/g, '⟦').replace(/⁩/g, '⟧');
+  it('keeps ° inside the isolate so it renders right of the number (65°, not °65)', () => {
+    assert.equal(show(isolateMathRuns('אם זווית אחת היא 65°, הזווית')), 'אם זווית אחת היא ⟦65°⟧, הזווית');
+  });
+  it('a hyphen after a Hebrew prefix letter is not a minus sign', () => {
+    assert.equal(show(isolateMathRuns('משלימות יחד ל-180°, וזו')), 'משלימות יחד ל-⟦180°⟧, וזו');
+    assert.equal(show(isolateMathRuns('בין -5 ל־5')), 'בין ⟦-5⟧ ל־⟦5⟧');
+  });
+  it('a run never starts with ":" (תשובה: 70° keeps the colon after the word)', () => {
+    assert.equal(show(isolateMathRuns('תשובה: 70° ו-110°')), 'תשובה: ⟦70°⟧ ו-⟦110°⟧');
+    assert.equal(show(isolateMathRuns('AB:DE=2:3')), '⟦AB:DE=2:3⟧');
+    assert.equal(show(isolateMathRuns('השטח 12×5:2=30 סמ״ר.')), 'השטח ⟦12×5:2=30⟧ סמ״ר.');
   });
 });

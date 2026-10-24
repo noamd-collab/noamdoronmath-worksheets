@@ -56,7 +56,7 @@ export function renderExactPeek(key: string, data: PeekLiveData = EMPTY_DATA): s
     const style = Object.entries(PKS[kind] || {}).map(([k,v]) => `${k.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}:${v}`).join(';');
     return `<span data-pk style="position:absolute;left:${x*12}px;top:${y*12}px;width:${w*12}px;height:${h*12}px;box-sizing:border-box;${style}"></span>`;
   }).join('');
-  const ai = entry.ai ? `<div class="exact-peek-ai"><span class="exact-peek-ai-icon"><span data-ai="ring"></span><span>AI</span></span><span class="exact-peek-ai-copy"><strong>מנווט AI זמין בכל דף</strong><span><span data-ai="type">מסביר צעד אחר צעד</span><span class="exact-peek-dots"><i data-ai="dot"></i><i data-ai="dot"></i><i data-ai="dot"></i></span></span></span></div>` : '';
+  const ai = entry.ai ? `<div class="exact-peek-ai"><span class="exact-peek-ai-icon"><span data-ai="ring"></span><span>AI</span></span><span class="exact-peek-ai-copy"><strong>נועם AI זמין בכל דף</strong><span><span data-ai="type">מסביר צעד אחר צעד</span><span class="exact-peek-dots"><i data-ai="dot"></i><i data-ai="dot"></i><i data-ai="dot"></i></span></span></span></div>` : '';
   return `<div class="exact-peek-preview" dir="ltr" aria-hidden="true">${blocks}${specialPreview(key,data)}</div><div class="exact-peek-heading"><strong>${escape(entry.title)}</strong><span>${escape(entry.tag)}</span></div><p>${escape(entry.desc)}</p>${ai}`;
 }
 
