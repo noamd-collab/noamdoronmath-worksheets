@@ -8,6 +8,7 @@
 import redirectsMap from '../data/redirects.json';
 import { BLOG_SITEMAP_PATH } from './blogSitemap';
 import { PUBLIC_LESSON_PATH } from './publicLesson';
+import { PYTHAGORAS_GAME_PATH } from './pythagorasGame';
 import { REDIRECT_RULES } from './redirects';
 import { SITE_CANONICAL_ORIGIN } from './siteSeo';
 
@@ -49,6 +50,7 @@ export function listMainPagePaths(pageModuleKeys: readonly string[]): string[] {
   // Nested routes are outside the top-level pages glob. /math-tools is in that
   // glob; the public lesson lives under it in the menu, so it is listed too.
   if (!paths.includes(PUBLIC_LESSON_PATH)) paths.push(PUBLIC_LESSON_PATH);
+  if (!paths.includes(PYTHAGORAS_GAME_PATH)) paths.push(PYTHAGORAS_GAME_PATH);
   return paths.sort((a, b) => a.localeCompare(b));
 }
 
